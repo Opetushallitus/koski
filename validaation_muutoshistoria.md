@@ -1,15 +1,22 @@
 # Koskeen tallennettavien tietojen validaatiosäännöt
 
+## 23.3.2026
+
+- Aikuisten perusopetuksen oppiaineen oppimäärä voi olla valinnainen tai paikallinen, kun suoritustapa on 'koulutus'.
+    - Kun suoritustapa on erityinen tutkinto, oppiaineen on edelleen oltava pakollinen ja valtakunnallinen.
+
 ## 18.3.2026
+
 - Estetään ammatillisen näyttöjen päättyminen ennan alkamista
 
 ## 16.3.2026
+
 - Estetään päällekkäisen perusopetuksen vuosiluokan suorituksen opiskeluoikeuden siirto samaan oppilaitokseen.
     - Uuden vuosiluokan suorituksen siirto uudella opiskeluoikeudella ei enää luo duplikaattia opiskeluoikeutta.
 
-
 ## 4.3.2026
--Sallitaan osatutkintotavoitteisen valmiiksi merkkaaminen jos kyseessä on linkitetty opiskeluoikeus
+
+- Sallitaan osatutkintotavoitteisen valmiiksi merkkaaminen jos kyseessä on linkitetty opiskeluoikeus
 
 ## 2.3.2026
 

@@ -1738,15 +1738,28 @@ class KoskiValidator(
 
   private def validateOppiaineet(suoritus: Suoritus) = suoritus match {
     case _: LukionOppiaineenOppimääränSuoritus2015 => validateTyhjänOppiaineenVahvistus(suoritus)
-    case _: NuortenPerusopetuksenOppiaineenOppimääränSuoritus | _: AikuistenPerusopetuksenOppiaineenOppimääränSuoritus =>
+    case _: NuortenPerusopetuksenOppiaineenOppimääränSuoritus =>
       HttpStatus.fold(
         validateTyhjänOppiaineenVahvistus(suoritus),
         HttpStatus.validate(
-          suoritus.koulutusmoduuli match {
-            case v: Valinnaisuus => v.pakollinen
-            case _ => true
-          }
-        )(KoskiErrorCategory.badRequest.validation.perusopetus.valinnainenOppiaineenOppimäärä(suoritus.koulutusmoduuli.tunniste.koodiarvo)())
+          onPakollinenSuoritus(suoritus)
+        )(
+          KoskiErrorCategory.badRequest.validation.perusopetus.valinnainenOppiaineenOppimäärä(suoritus.koulutusmoduuli.tunniste.koodiarvo)()
+        )
+      )
+    case s: AikuistenPerusopetuksenOppiaineenOppimääränSuoritus if s.suoritustapa.koodiarvo == "erityinentutkinto" =>
+      HttpStatus.fold(
+        validateTyhjänOppiaineenVahvistus(suoritus),
+        HttpStatus.validate(
+          onPakollinenSuoritus(suoritus)
+        )(
+          KoskiErrorCategory.badRequest.validation.perusopetus.erityinenTutkintoValinnainenOppiaineenOppimäärä(suoritus.koulutusmoduuli.tunniste.koodiarvo)()
+        ),
+        validateAikuistenPerusopetusOppiaineenOppimääräPaikallinenSuoritus(suoritus)
+      )
+    case s: AikuistenPerusopetuksenOppiaineenOppimääränSuoritus if s.suoritustapa.koodiarvo == "koulutus" =>
+      HttpStatus.fold(
+        validateTyhjänOppiaineenVahvistus(suoritus)
       )
     case s: PerusopetuksenVuosiluokanSuoritus if s.koulutusmoduuli.luokkaAste == "9" && s.valmis && !s.jääLuokalle && s.osasuoritusLista.nonEmpty =>
       KoskiErrorCategory.badRequest.validation.tila.oppiaineitaEiSallita("9.vuosiluokan suoritukseen ei voi syöttää oppiaineita, kun sillä on vahvistus, eikä oppilas jää luokalle")
@@ -1754,6 +1767,22 @@ class KoskiValidator(
       KoskiErrorCategory.badRequest.validation.rakenne.luokkaAstePuuttuu("Luokka-aste vaaditaan kun viimeisin arviointi on muuta kuin 'O'")
     case _ =>
       HttpStatus.ok
+  }
+
+  private def onPakollinenSuoritus(suoritus: Suoritus): Boolean = {
+    suoritus.koulutusmoduuli match {
+      case v: Valinnaisuus => v.pakollinen
+      case _ => true
+    }
+  }
+
+  private def validateAikuistenPerusopetusOppiaineenOppimääräPaikallinenSuoritus(suoritus: Suoritus) = {
+    HttpStatus.validate(
+      suoritus.koulutusmoduuli match {
+        case _: AikuistenPerusopetuksenPaikallinenOppiaine => false
+        case _ => true
+      }
+    )(KoskiErrorCategory.badRequest.validation.perusopetus.erityinenTutkintoPaikallinenOppiaineenOppimäärä(suoritus.koulutusmoduuli.tunniste.koodiarvo)())
   }
 
   private def validateTyhjänOppiaineenVahvistus(suoritus: Suoritus) = {
