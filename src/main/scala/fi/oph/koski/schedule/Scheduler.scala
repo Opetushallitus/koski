@@ -6,7 +6,7 @@ import java.time.{Duration, LocalDateTime}
 import java.util.concurrent.Executors
 import java.util.concurrent.TimeUnit.MILLISECONDS
 
-import fi.oph.koski.config.KoskiApplication
+import fi.oph.koski.config.{Environment, KoskiApplication}
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.db._
 import fi.oph.koski.executors.NamedThreadFactory
@@ -44,8 +44,14 @@ class Scheduler(
 
   @volatile private var suspended = false
 
-  def suspend(): Unit = { suspended = true }
-  def unsuspend(): Unit = { suspended = false }
+  def suspend(): Unit = {
+    require(Environment.isUnitTestEnvironment(application.config), "suspend() on sallittu vain testeissä")
+    suspended = true
+  }
+  def unsuspend(): Unit = {
+    require(Environment.isUnitTestEnvironment(application.config), "unsuspend() on sallittu vain testeissä")
+    suspended = false
+  }
 
   // Insert row if it doesn't exist yet; don't clobber existing rows
   runDbSync(sqlu"""INSERT INTO scheduler (name, nextfiretime, context) VALUES ($name, ${scheduling.nextFireTime()}, NULL) ON CONFLICT DO NOTHING""")
