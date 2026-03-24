@@ -86,7 +86,7 @@ case class PerusopetukseenValmistavanRaportti(repository: PerusopetukseenValmist
       suoritustyyppi = row.päätasonSuoritus.suorituksenTyyppi,
       suorituksenTila = if (row.päätasonSuoritus.vahvistusPäivä.isDefined) t.get("raportti-excel-default-value-valmis") else t.get("raportti-excel-default-value-kesken"),
       suorituksenVahvistuspaiva = row.päätasonSuoritus.vahvistusPäivä.getOrElse("").toString,
-      läsnäolopäiviäAikajaksonAikana = row.aikajaksot.filter(_.tila == "lasna").map(j => Aikajakso(j.alku.toLocalDate, Some(j.loppu.toLocalDate))).map(lengthInDaysInDateRange(_, alku, loppu)).sum
+      läsnäolopäiviäAikajaksonAikana = row.aikajaksot.filter(j => j.tila == "lasna" || j.tila == "eronnut" || j.tila == "valmistunut").map(j => Aikajakso(j.alku.toLocalDate, Some(j.loppu.toLocalDate))).map(lengthInDaysInDateRange(_, alku, loppu)).sum
     )
   }
 
