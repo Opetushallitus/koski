@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?><database name="valpas" schema="public" type="PostgreSQL - 15.2 (Debian 15.2-1.pgdg110+1)">
+<?xml version="1.0" encoding="UTF-8"?><database name="valpas" schema="public" type="PostgreSQL - 15.17 (Debian 15.17-1.pgdg13+1)">
    <sequences>
       <sequence increment="1" name="oppivelvollisuuden_keskeytyshistoria_id_seq" startValue="1"/>
    </sequences>
