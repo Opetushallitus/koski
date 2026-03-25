@@ -129,6 +129,21 @@ const authorizeAndVerifyData = async (page: Page, testPerson: TestPerson) => {
 
   await waitForUrlPart(page, "form-post-response-cb");
 
+  // Wait for the <pre> element to contain valid, complete JSON before reading.
+  // The server fetches an access token and then the protected resource, which
+  // can take a while. Without this wait the browser may still be streaming the
+  // response body, causing JSON.parse to fail with "Unterminated string".
+  await page.waitForFunction(() => {
+    const pre = document.querySelector("pre");
+    if (!pre || !pre.textContent) return false;
+    try {
+      JSON.parse(pre.textContent);
+      return true;
+    } catch {
+      return false;
+    }
+  });
+
   const raw = await page.$eval("pre", el => el.textContent ?? "");
   const json = JSON.parse(raw) as { henkilö?: Record<string, unknown> };
 
