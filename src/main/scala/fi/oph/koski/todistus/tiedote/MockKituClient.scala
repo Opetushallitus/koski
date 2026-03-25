@@ -5,8 +5,12 @@ import fi.oph.koski.log.Logging
 
 class MockKituClient extends KituClient with Logging {
   @volatile private var httpStatusCode: Option[Int] = None
+  private val callCounter = new java.util.concurrent.atomic.AtomicInteger(0)
+
+  def callCount: Int = callCounter.get()
 
   override def getExamineeDetails(opiskeluoikeusOid: String): Either[HttpStatus, KituExamineeDetails] = {
+    callCounter.incrementAndGet()
     logger.info(s"MockKituClient: getExamineeDetails opiskeluoikeusOid=$opiskeluoikeusOid")
     httpStatusCode match {
       case Some(status) =>
@@ -31,5 +35,6 @@ class MockKituClient extends KituClient with Logging {
 
   def reset(): Unit = {
     httpStatusCode = None
+    callCounter.set(0)
   }
 }

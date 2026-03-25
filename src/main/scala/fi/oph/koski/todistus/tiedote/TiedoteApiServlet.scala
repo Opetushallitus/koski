@@ -39,8 +39,8 @@ class TiedoteApiServlet(implicit val application: KoskiApplication)
       haltWithStatus(KoskiErrorCategory.notImplemented("Tiedotepalvelu ei ole käytössä"))
     }
 
-    val processed = service.processAll()
     val retried = service.retryAllFailed()
+    val processed = service.processAll()
 
     renderObject(Map(
       "processed" -> processed,
