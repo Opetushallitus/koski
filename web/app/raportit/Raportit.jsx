@@ -899,6 +899,7 @@ function PerusopetukseenValmistavanTarkistusRaportti({ stateP }) {
       shortDescription={shortDescriptionText}
       example={exampleText}
       osasuoritusType={osasuoritusTypes.OPINNOT}
+      hideOsasuoritustenAikarajaus
       lang={lang}
     />
   )
