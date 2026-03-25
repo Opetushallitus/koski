@@ -609,13 +609,14 @@ object AmmatillinenValidation {
   }
 
   private def validateNäyttöjenSuoritusajat(oo: AmmatillinenOpiskeluoikeus): HttpStatus = {
-    val näytöt = oo.suoritukset.flatMap(_.rekursiivisetOsasuoritukset).collect {
-      case s: MahdollisestiToiseenTutkintoonLiittyväTutkinnonOsanSuoritus => s.näyttö
+    val suorituksetJaNäytöt = oo.suoritukset.flatMap(_.rekursiivisetOsasuoritukset).collect {
+      case s: MahdollisestiToiseenTutkintoonLiittyväTutkinnonOsanSuoritus => s.näyttö.map((s, _))
     }.flatten
 
-    HttpStatus.fold(näytöt.flatMap(_.suoritusaika).map { aika =>
+    HttpStatus.fold(suorituksetJaNäytöt.flatMap { case (suoritus, näyttö) => näyttö.suoritusaika.map((suoritus, _)) }.map { case (suoritus, aika) =>
       HttpStatus.validate(aika.alku.isBefore(aika.loppu) || (aika.alku == aika.loppu)) {
-        KoskiErrorCategory.badRequest.validation.date.näytönSuoritusaika()
+        val osasuorituksenNimi = suoritus.koulutusmoduuli.tunniste.getNimi.map(_.get("fi")).getOrElse(suoritus.koulutusmoduuli.tunniste.koodiarvo)
+        KoskiErrorCategory.badRequest.validation.date.näytönSuoritusaika(s"""Osasuorituksen: '$osasuorituksenNimi' näytön päättymispäivä on ennen alkamispäivää""")
       }
     })
   }

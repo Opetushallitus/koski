@@ -7,7 +7,7 @@
 
 ## 18.3.2026
 
-- Estetään ammatillisen näyttöjen päättyminen ennan alkamista
+- Estetään ammatillisen osasuoritusten näyttöjen päättyminen ennan alkamista
 
 ## 16.3.2026
 
