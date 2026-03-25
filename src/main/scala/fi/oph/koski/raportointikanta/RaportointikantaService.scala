@@ -158,6 +158,7 @@ class RaportointikantaService(application: KoskiApplication) extends Logging {
     loadDatabase.status.isLoading && {
       if (Environment.isServerEnvironment(application.config)) {
         val holders = application.workerLeaseRepository.activeHolders(raportointikantaLoaderLeaseName)
+          .filterNot(_ == application.instanceId)
         val loading = holders.nonEmpty
         if (!loading) {
           logger.warn("Raportointikannan generointi oli tietokannan mukaan käynnissä, mutta yhtäkään hengissä olevaa instanssia ei löytynyt. Tämä viittaa siihen että edellinen generointi on kaatunut tai pysäytetty kesken.")
