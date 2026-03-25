@@ -9,7 +9,6 @@ import org.json4s.jackson.JsonMethods
 import org.scalatest.matchers.should.Matchers
 
 import java.net.URL
-import java.time.Duration
 
 trait MassaluovutusTestMethods extends KoskiHttpSpec with Matchers {
   val app = KoskiApplicationForTests
@@ -83,10 +82,10 @@ trait MassaluovutusTestMethods extends KoskiHttpSpec with Matchers {
 
   def withoutRunningQueryScheduler[T](f: => T): T =
     try {
-      app.massaluovutusScheduler.pause(Duration.ofDays(1))
+      app.massaluovutusScheduler.schedulerInstance.foreach(_.suspend())
       f
     } finally {
       app.massaluovutusService.truncate()
-      app.massaluovutusScheduler.resume()
+      app.massaluovutusScheduler.schedulerInstance.foreach(_.unsuspend())
     }
 }

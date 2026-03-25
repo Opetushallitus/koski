@@ -86,7 +86,7 @@ valpas-web/src/                # Valpas frontend (separate React app)
 
 ### Scala
 - No `println` statements
-- No `return` statements
+- No `return` statements (including mid-function early returns — use idiomatic control flow instead)
 - Class names: PascalCase
 - Use `@Description`, `@KoodistoUri`, and other schema annotations for data models
 

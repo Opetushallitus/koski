@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?><database name="koski" schema="oph" type="PostgreSQL - 15.2 (Debian 15.2-1.pgdg110+1)">
+<?xml version="1.0" encoding="UTF-8"?><database name="koski" schema="oph" type="PostgreSQL - 15.17 (Debian 15.17-1.pgdg13+1)">
    <sequences>
       <sequence increment="1" name="opintooikeus_id_seq" startValue="1"/>
       <sequence increment="1" name="paivitetty_opiskeluoikeus_id_seq" startValue="1"/>
@@ -25,7 +25,7 @@
             <column ascending="true" name="serviceticket"/>
          </index>
       </table>
-      <table name="henkilo" numRows="204" remarks="" schema="oph" type="TABLE">
+      <table name="henkilo" numRows="208" remarks="" schema="oph" type="TABLE">
          <column autoUpdated="false" defaultValue="null" digits="0" id="0" name="oid" nullable="false" remarks="" size="2147483647" type="text" typeCode="12">
             <child column="master_oid" foreignKey="henkilo_master_oid_fkey" implied="false" onDeleteCascade="false" schema="oph" table="henkilo"/>
             <child column="oppija_oid" foreignKey="opiskeluoikeus_oppija_oid" implied="false" onDeleteCascade="false" schema="oph" table="opiskeluoikeus"/>
@@ -358,13 +358,12 @@
          </column>
          <column autoUpdated="false" defaultValue="null" digits="6" id="1" name="nextfiretime" nullable="false" remarks="" size="29" type="timestamp" typeCode="93"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="2" name="context" nullable="true" remarks="" size="2147483647" type="jsonb" typeCode="1111"/>
-         <column autoUpdated="false" defaultValue="null" digits="6" id="3" name="pauseduntil" nullable="true" remarks="" size="29" type="timestamp" typeCode="93"/>
          <primaryKey column="name" sequenceNumberInPK="1"/>
          <index name="scheduler_pkey" unique="true">
             <column ascending="true" name="name"/>
          </index>
       </table>
-      <table name="schema_version" numRows="108" remarks="" schema="oph" type="TABLE">
+      <table name="schema_version" numRows="110" remarks="" schema="oph" type="TABLE">
          <column autoUpdated="false" defaultValue="null" digits="0" id="0" name="version_rank" nullable="false" remarks="" size="10" type="int4" typeCode="4"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="installed_rank" nullable="false" remarks="" size="10" type="int4" typeCode="4"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="2" name="version" nullable="false" remarks="" size="50" type="varchar" typeCode="12"/>

@@ -1,21 +1,28 @@
 package fi.oph.koski.todistus.tiedote
 
 import fi.oph.koski.config.KoskiApplication
+import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.koskiuser.KoskiSpecificSession
 import fi.oph.koski.log.KoskiAuditLogMessageField.{opiskeluoikeusOid => opiskeluoikeusOidField, oppijaHenkiloOid, tiedoteTyyppi}
 import fi.oph.koski.log.KoskiOperation.TIEDOTE_LAHETETTY
 import fi.oph.koski.log.{AuditLog, KoskiAuditLogMessage, Logging}
+import fi.oph.koski.todistus.{TodistusState, TodistusTemplateVariant}
 import fi.oph.koski.util.Timing
 import org.postgresql.util.{PSQLException, PSQLState}
 
-import java.time.LocalDateTime
 import java.util.UUID
+import scala.util.{Failure, Success, Try}
 
 class KielitutkintotodistusTiedoteService(application: KoskiApplication) extends Logging with Timing {
   private val repository = application.kielitutkintotodistusTiedoteRepository
+  private val todistusService = application.todistusService
   private val client = application.tiedotuspalveluClient
+  private val kituClient = application.kituClient
   private val maxAttempts = application.config.getInt("tiedote.maxAttempts")
   private val batchSize = application.config.getInt("tiedote.batchSize")
+  private val pollIntervalMs = application.config.getInt("tiedote.todistusPollIntervalMs")
+  private val pollTimeoutMs = application.config.getInt("tiedote.todistusPollTimeoutMs")
+  private val stuckThresholdMinutes = application.config.getInt("tiedote.stuckThresholdMinutes")
 
   def processAll(): Int = {
     timed("processAll", thresholdMs = 0) {
@@ -38,49 +45,119 @@ class KielitutkintotodistusTiedoteService(application: KoskiApplication) extends
   private def processOne(opiskeluoikeusOid: String, oppijaOid: String, versionumero: Int): Unit = {
     logger.info(s"Lähetetään tiedote: oppija=$oppijaOid oo=$opiskeluoikeusOid")
 
-    val (state, error) = client.sendKielitutkintoTodistusTiedote(oppijaOid, s"$opiskeluoikeusOid-initial") match {
-      case Right(()) =>
-        (KielitutkintotodistusTiedoteState.COMPLETED, None)
-      case Left(err) =>
-        (KielitutkintotodistusTiedoteState.ERROR, Some(err.toString))
-    }
-
-    val job = KielitutkintotodistusTiedoteJob(
-      id = UUID.randomUUID().toString,
+    val tiedoteJobId = UUID.randomUUID().toString
+    val tiedoteJob = KielitutkintotodistusTiedoteJob(
+      id = tiedoteJobId,
       oppijaOid = oppijaOid,
       opiskeluoikeusOid = opiskeluoikeusOid,
-      state = state,
-      completedAt = if (state == KielitutkintotodistusTiedoteState.COMPLETED) Some(LocalDateTime.now()) else None,
+      state = KielitutkintotodistusTiedoteState.WAITING_FOR_TODISTUS,
       worker = Some(repository.workerId),
       attempts = 1,
-      error = error,
       opiskeluoikeusVersio = versionumero
     )
 
-    try {
-      repository.add(job)
-      if (state == KielitutkintotodistusTiedoteState.COMPLETED) {
-        AuditLog.log(KoskiAuditLogMessage(TIEDOTE_LAHETETTY, KoskiSpecificSession.systemUser, Map(
-          oppijaHenkiloOid -> oppijaOid,
-          opiskeluoikeusOidField -> opiskeluoikeusOid,
-          tiedoteTyyppi -> "kielitodistus"
-        )))
-        logger.info(s"Tiedote lähetetty: oo=$opiskeluoikeusOid")
-      } else {
-        logger.error(s"Tiedotteen lähetys epäonnistui: oo=$opiskeluoikeusOid virhe=${error.getOrElse("")}")
-      }
-    } catch {
-      case e: PSQLException if e.getSQLState == PSQLState.UNIQUE_VIOLATION.getState =>
+    Try(repository.add(tiedoteJob)) match {
+      case Success(_) =>
+        generateAndSend(tiedoteJobId, oppijaOid, opiskeluoikeusOid, s"$opiskeluoikeusOid-initial", attempt = 1)
+      case Failure(e: PSQLException) if e.getSQLState == PSQLState.UNIQUE_VIOLATION.getState =>
         logger.info(s"Tiedote on jo olemassa opiskeluoikeudelle $opiskeluoikeusOid, ohitetaan")
-      case e: Exception =>
+      case Failure(e) =>
         logger.error(e)(s"Tiedotteen tallennus epäonnistui opiskeluoikeudelle $opiskeluoikeusOid")
         throw e
     }
   }
 
+  private def generateAndSend(tiedoteJobId: String, oppijaOid: String, opiskeluoikeusOid: String, idempotencyKey: String, attempt: Int): Unit = {
+    val kituResult = kituClient.getExamineeDetails(opiskeluoikeusOid)
+
+    kituResult match {
+      case Left(err) if attempt < maxAttempts =>
+        repository.setFailed(tiedoteJobId, s"Kitu-kutsu epäonnistui: $err")
+        logger.warn(s"Yhteystietojen haku kitulta epäonnistui, yritetään myöhemmin uudelleen: tiedote=$tiedoteJobId oo=$opiskeluoikeusOid yritys=$attempt/$maxAttempts virhe=$err")
+
+      case _ =>
+        val examineeDetails = kituResult match {
+          case Right(details) => Some(details)
+          case Left(err) =>
+            logger.warn(s"Yhteystietojen haku kitulta epäonnistui $maxAttempts yrityksen jälkeen, lähetetään tiedote ilman yhteystietoja: tiedote=$tiedoteJobId oo=$opiskeluoikeusOid virhe=$err")
+            None
+        }
+
+        val todistusResult = examineeDetails.flatMap(details => generateTodistus(tiedoteJobId, oppijaOid, opiskeluoikeusOid, details))
+
+        val result = client.sendKielitutkintoTodistusTiedote(
+          oppijaOid,
+          idempotencyKey,
+          todistusResult.map(_.location.bucket),
+          todistusResult.map(_.location.key),
+          examineeDetails
+        )
+
+        result match {
+          case Right(_) =>
+            AuditLog.log(KoskiAuditLogMessage(TIEDOTE_LAHETETTY, KoskiSpecificSession.systemUser, Map(
+              oppijaHenkiloOid -> oppijaOid,
+              opiskeluoikeusOidField -> opiskeluoikeusOid,
+              tiedoteTyyppi -> "kielitodistus"
+            )))
+            val opiskeluoikeusVersio = todistusResult.flatMap(_.opiskeluoikeusVersionumero).getOrElse(0)
+            repository.setCompleted(tiedoteJobId, opiskeluoikeusVersio)
+            logger.info(s"Tiedote lähetetty: tiedote=$tiedoteJobId oo=$opiskeluoikeusOid printtitodistusPdf=${if (todistusResult.isDefined) "kyllä" else "ei"}")
+          case Left(err) =>
+            repository.setFailed(tiedoteJobId, err.toString)
+            logger.error(s"Tiedotteen lähetys epäonnistui: tiedote=$tiedoteJobId oo=$opiskeluoikeusOid virhe=$err")
+        }
+    }
+  }
+
+  private def generateTodistus(tiedoteJobId: String, oppijaOid: String, opiskeluoikeusOid: String, examineeDetails: KituExamineeDetails): Option[GeneratedTodistus] = {
+    val result = for {
+      templateVariant <- examineeDetails.todistuskieli
+        .map(kieli => s"${kieli.koodiarvo.toLowerCase}_tulostettava_uusi")
+        .filter(TodistusTemplateVariant.printVariants.contains)
+        .toRight(KoskiErrorCategory.internalError(s"Tutkinnon suorittajan kielelle ei löydy tulostettavaa todistuspohjaa: ${examineeDetails.todistuskieli.map(_.koodiarvo)}"))
+
+      todistusJob <- todistusService.createTodistusJobForSystem(opiskeluoikeusOid, oppijaOid, templateVariant)
+      _ = repository.setState(tiedoteJobId, KielitutkintotodistusTiedoteState.WAITING_FOR_TODISTUS)
+      _ = logger.info(s"TodistusJob luotu tiedotteelle: tiedote=$tiedoteJobId todistus=${todistusJob.id}")
+
+      completedTodistus <- pollForTodistusCompletion(todistusJob.id)
+
+      location <- todistusService.copyToTiedoteBucket(completedTodistus.id)
+      _ = logger.info(s"Printtitodistus kopioitu tiedote-buckettiin: tiedote=$tiedoteJobId todistus=${completedTodistus.id} bucket=${location.bucket} key=${location.key}")
+    } yield GeneratedTodistus(location, completedTodistus.opiskeluoikeusVersionumero)
+
+    result match {
+      case Right(todistus) => Some(todistus)
+      case Left(err) =>
+        logger.warn(s"Printtitodistuksen generointi epäonnistui, lähetetään tiedote ilman printtitodistusta: tiedote=$tiedoteJobId oo=$opiskeluoikeusOid virhe=$err")
+        None
+    }
+  }
+
+  private def pollForTodistusCompletion(todistusJobId: String): Either[HttpStatus, fi.oph.koski.todistus.TodistusJob] = {
+    val deadline = System.currentTimeMillis() + pollTimeoutMs
+    var result: Option[Either[HttpStatus, fi.oph.koski.todistus.TodistusJob]] = None
+
+    while (result.isEmpty && System.currentTimeMillis() < deadline) {
+      todistusService.getJobStatus(todistusJobId) match {
+        case Right(job) if job.state == TodistusState.COMPLETED =>
+          result = Some(Right(job))
+        case Right(job) if job.state == TodistusState.ERROR =>
+          result = Some(Left(KoskiErrorCategory.internalError(s"TodistusJob epäonnistui: ${job.error.getOrElse("tuntematon virhe")}")))
+        case Left(err) =>
+          result = Some(Left(err))
+        case _ =>
+          Thread.sleep(pollIntervalMs)
+      }
+    }
+
+    result.getOrElse(Left(KoskiErrorCategory.internalError(s"TodistusJob $todistusJobId ei valmistunut ${pollTimeoutMs}ms aikana")))
+  }
+
   def retryAllFailed(): Int = {
     timed("retryAllFailed", thresholdMs = 0) {
-      val retryable = repository.findAllRetryable(maxAttempts)
+      val retryable = repository.findAllRetryable(maxAttempts, stuckThresholdMinutes)
       retryable.foreach(retryOne)
       logger.info(s"retryAllFailed valmis: käsitelty ${retryable.size} uudelleenyritystä")
       retryable.size
@@ -89,19 +166,11 @@ class KielitutkintotodistusTiedoteService(application: KoskiApplication) extends
 
   private def retryOne(job: KielitutkintotodistusTiedoteJob): Unit = {
     logger.info(s"Yritetään tiedotetta uudelleen: job=${job.id} yritys=${job.attempts}/$maxAttempts")
-
-    client.sendKielitutkintoTodistusTiedote(job.oppijaOid, job.opiskeluoikeusOid) match {
-      case Right(()) =>
-        repository.setCompleted(job.id)
-        AuditLog.log(KoskiAuditLogMessage(TIEDOTE_LAHETETTY, KoskiSpecificSession.systemUser, Map(
-          oppijaHenkiloOid -> job.oppijaOid,
-          opiskeluoikeusOidField -> job.opiskeluoikeusOid,
-          tiedoteTyyppi -> "kielitodistus"
-        )))
-        logger.info(s"Tiedote lähetetty uudelleenyrityksellä: job=${job.id}")
-      case Left(error) =>
-        repository.setFailed(job.id, error.toString)
-        logger.error(s"Tiedotteen uudelleenyritys epäonnistui: job=${job.id} yritys=${job.attempts}/$maxAttempts virhe=$error")
-    }
+    generateAndSend(job.id, job.oppijaOid, job.opiskeluoikeusOid, job.opiskeluoikeusOid, attempt = job.attempts)
   }
 }
+
+private case class GeneratedTodistus(
+  location: fi.oph.koski.todistus.TiedoteBucketLocation,
+  opiskeluoikeusVersionumero: Option[Int]
+)

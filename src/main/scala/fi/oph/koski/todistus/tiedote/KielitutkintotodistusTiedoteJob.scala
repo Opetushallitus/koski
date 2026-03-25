@@ -16,6 +16,7 @@ case class KielitutkintotodistusTiedoteJob(
 )
 
 object KielitutkintotodistusTiedoteState {
+  val WAITING_FOR_TODISTUS = "WAITING_FOR_TODISTUS"
   val COMPLETED = "COMPLETED"
   val ERROR = "ERROR"
 }

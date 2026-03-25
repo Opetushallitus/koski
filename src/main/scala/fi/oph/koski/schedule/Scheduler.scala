@@ -6,8 +6,7 @@ import java.time.{Duration, LocalDateTime}
 import java.util.concurrent.Executors
 import java.util.concurrent.TimeUnit.MILLISECONDS
 
-import fi.oph.koski.config.KoskiApplication
-import fi.oph.koski.db.DB
+import fi.oph.koski.config.{Environment, KoskiApplication}
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.db._
 import fi.oph.koski.executors.NamedThreadFactory
@@ -43,18 +42,33 @@ class Scheduler(
   private val taskExecutor = Executors.newSingleThreadScheduledExecutor(NamedThreadFactory(name))
   private val runningTasksOnThisNode = new java.util.concurrent.atomic.AtomicInteger(0)
 
+  @volatile private var suspended = false
+
+  def suspend(): Unit = {
+    require(Environment.isUnitTestEnvironment(application.config), "suspend() on sallittu vain testeissä")
+    suspended = true
+  }
+  def unsuspend(): Unit = {
+    require(Environment.isUnitTestEnvironment(application.config), "unsuspend() on sallittu vain testeissä")
+    suspended = false
+  }
+
   // Insert row if it doesn't exist yet; don't clobber existing rows
   runDbSync(sqlu"""INSERT INTO scheduler (name, nextfiretime, context) VALUES ($name, ${scheduling.nextFireTime()}, NULL) ON CONFLICT DO NOTHING""")
-  // Always clear pausedUntil on startup (preserves existing behavior)
-  runDbSync(KoskiTables.Scheduler.filter(_.name === name).map(_.pausedUntil).update(None))
 
-  // Read context and lastFired after ensuring the row exists
+  // Read context after ensuring the row exists
   private val context: Option[JValue] = getScheduler.flatMap(_.context).orElse(initialContext)
-  // Initialize lastFired from DB. If DB value is in the past, use current time
-  // so the first fire waits one interval (prevents fire-on-startup for stale rows).
-  private var lastFired: Timestamp = {
-    val dbTime = getScheduler.map(_.nextFireTime).getOrElse(new Timestamp(0))
-    if (dbTime.before(now)) now else dbTime
+  // If nextFireTime is in the past (stale from a previous instance), recompute from now.
+  // This prevents fire-on-startup for stale rows.
+  private var localNextFireTime: Timestamp = {
+    val dbTime = getScheduler.map(_.nextFireTime).getOrElse(scheduling.nextFireTime())
+    if (dbTime.before(now)) {
+      val fresh = scheduling.nextFireTime()
+      runDbSync(KoskiTables.Scheduler.filter(_.name === name).map(_.nextFireTime).update(fresh))
+      fresh
+    } else {
+      dbTime
+    }
   }
 
   // Persist initialContext to DB if the row was just created with NULL context
@@ -79,35 +93,38 @@ class Scheduler(
   def isTaskRunning: Boolean = runningTasksOnThisNode.get() > 0
 
   private def fireIfTime() = {
-    if (shouldFire) {
-      try {
-        fire
-      } catch {
-        case e: Exception =>
-          logger.error(e)(s"Scheduled task $name failed: ${e.getMessage}")
+    try {
+      if (shouldFire) {
+        try {
+          fire
+        } catch {
+          case e: Exception =>
+            logger.error(e)(s"Scheduled task $name failed: ${e.getMessage}")
+        }
       }
+    } catch {
+      case e: Throwable =>
+        logger.error(e)(s"Scheduled task $name encountered fatal error in fireIfTime: ${e.getMessage}")
     }
   }
 
   private def shouldFire: Boolean = try {
     val scheduler = getScheduler
-    val isPaused = scheduler.exists(_.paused)
     val hasLease = leaseElector.forall(_.hasLease)
-    if (isPaused || !hasLease) {
+    if (suspended || !hasLease) {
       false
     } else {
-      // When using a lease elector, read last fire time from DB to maintain global
-      // cadence across nodes. This ensures a new lease holder respects the previous
-      // holder's last fire time rather than using stale local state.
-      val fireSeed = if (leaseElector.isDefined) {
-        scheduler.map(_.nextFireTime).getOrElse(lastFired)
+      // For lease-coordinated schedulers, read nextFireTime from DB to maintain global
+      // cadence across nodes. For non-lease schedulers, use the local copy.
+      val nextFireTime = if (leaseElector.isDefined) {
+        scheduler.map(_.nextFireTime).getOrElse(localNextFireTime)
       } else {
-        lastFired
+        localNextFireTime
       }
-      val nextFireTime = scheduling.nextFireTime(fireSeed.toLocalDateTime)
-      val shouldFire = now.after(nextFireTime)
+      val currentTime = now
+      val shouldFire = currentTime.after(nextFireTime)
       if (shouldFire) {
-        lastFired = now
+        localNextFireTime = scheduling.nextFireTime(currentTime.toLocalDateTime)
         runningTasksOnThisNode.incrementAndGet()
       }
       shouldFire
@@ -118,9 +135,9 @@ class Scheduler(
   }
 
   private def fire = try {
-    // Write lastFired to DB immediately so a new lease holder sees the updated
-    // nextFireTime before the task completes, preventing premature firing.
-    runDbSync(KoskiTables.Scheduler.filter(_.name === name).map(_.nextFireTime).update(lastFired))
+    // Write nextFireTime to DB immediately so a new lease holder sees the updated
+    // value before the task completes, preventing premature firing.
+    runDbSync(KoskiTables.Scheduler.filter(_.name === name).map(_.nextFireTime).update(localNextFireTime))
     val context: Option[JValue] = runDbSync(KoskiTables.Scheduler.filter(_.name === name).result.head).context
     logger.debug(s"Firing scheduled task $name ${context.map(c => s"with context ${JsonMethods.compact(c)}").mkString}")
     val newContext: Option[JValue] = task(context)
@@ -138,37 +155,6 @@ class Scheduler(
   } catch {
     case e: Exception => logger.error(e)(s"Error getting scheduler $name")
     None
-  }
-}
-
-object Scheduler extends Logging {
-  /** Pauses the named scheduler for the given duration by setting pausedUntil in the database.
-   *
-   * This is non-blocking: it returns immediately after updating the DB. An already in-flight task
-   * will run to completion; only subsequent firings are suppressed. If you need "drain and quiesce"
-   * semantics (e.g. before maintenance), wait for `isTaskRunning == false` after pausing. */
-  def pauseForDuration(db: DB, name: String, duration: Duration): Boolean = {
-    val pausedUntilTime = Timestamp.valueOf(LocalDateTime.now().plus(duration))
-    val scheduler = KoskiTables.Scheduler.filter(_.name === name)
-
-    val currentRow = QueryMethods.runDbSync(db, scheduler.result.headOption)
-    currentRow match {
-      case Some(row) =>
-        val newNextFireTime = if (row.nextFireTime.before(pausedUntilTime)) pausedUntilTime else row.nextFireTime
-        QueryMethods.runDbSync(db, scheduler.map(s => (s.pausedUntil, s.nextFireTime)).update((Some(pausedUntilTime), newNextFireTime)))
-        true
-      case None =>
-        false
-    }
-  }
-
-  def resume(db: DB, name: String): Boolean = {
-    QueryMethods.runDbSync(db, {
-      KoskiTables.Scheduler
-        .filter(_.name === name)
-        .map(s => (s.pausedUntil, s.nextFireTime))
-        .update((None, Timestamp.valueOf(LocalDateTime.now())))
-    }) > 0
   }
 }
 

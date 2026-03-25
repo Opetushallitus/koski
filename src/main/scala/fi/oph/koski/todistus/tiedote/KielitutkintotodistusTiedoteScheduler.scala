@@ -5,8 +5,6 @@ import fi.oph.koski.log.Logging
 import fi.oph.koski.schedule.{IntervalSchedule, Schedule, Scheduler}
 import org.json4s.JValue
 
-import java.time.Duration
-
 class KielitutkintotodistusTiedoteScheduler(application: KoskiApplication) extends Logging {
   val schedulerName = "kielitutkintotodistus-tiedote"
   val tiedoteService: KielitutkintotodistusTiedoteService = application.kielitutkintotodistusTiedoteService
@@ -16,11 +14,7 @@ class KielitutkintotodistusTiedoteScheduler(application: KoskiApplication) exten
   def createScheduler: Option[Scheduler] = {
     if (!application.config.getBoolean("tiedote.enabled")) return None
 
-    val schedule: Schedule = if (application.config.hasPath("tiedote.checkInterval")) {
-      new IntervalSchedule(application.config.getDuration("tiedote.checkInterval"))
-    } else {
-      new IntervalSchedule(Duration.ofHours(1))
-    }
+    val schedule: Schedule = new IntervalSchedule(application.config.getDuration("tiedote.checkInterval"))
 
     schedulerInstance = Some(new Scheduler(
       application,

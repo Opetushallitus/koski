@@ -5,11 +5,8 @@ import fi.oph.koski.log.Logging
 import fi.oph.koski.schedule.{IntervalSchedule, Scheduler}
 import org.json4s.JValue
 
-import java.time.Duration
-
 class MassaluovutusScheduler(application: KoskiApplication) extends Logging {
   val schedulerName = "massaluovutus"
-  val backpressureDuration: Duration = application.config.getDuration("kyselyt.backpressureLimits.duration")
   val concurrency: Int = MassaluovutusUtils.concurrency(application.config)
   val massaluovutukset: MassaluovutusService = application.massaluovutusService
 
@@ -32,10 +29,6 @@ class MassaluovutusScheduler(application: KoskiApplication) extends Logging {
     schedulerInstance
   }
 
-  def pause(duration: Duration): Boolean = Scheduler.pauseForDuration(application.masterDatabase.db, schedulerName, duration)
-
-  def resume(): Boolean = Scheduler.resume(application.masterDatabase.db, schedulerName)
-
   def shutdown(): Unit = {
     schedulerInstance.foreach(_.shutdown)
   }
@@ -43,12 +36,11 @@ class MassaluovutusScheduler(application: KoskiApplication) extends Logging {
   private def runNextQuery(_context: Option[JValue]): Option[JValue] = {
     if (massaluovutukset.hasNext) {
       if (massaluovutukset.systemIsOverloaded) {
-        logger.info(s"System is overloaded. Postponing running the next query for $backpressureDuration")
-        Scheduler.pauseForDuration(application.masterDatabase.db, schedulerName, backpressureDuration)
+        logger.info("System is overloaded, skipping this round")
       } else {
         massaluovutukset.runNext()
       }
     }
-    None // MassaluovutusScheduler päivitä kontekstia vain käynnistyessään
+    None
   }
 }

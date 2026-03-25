@@ -44,6 +44,43 @@ class TodistusService(application: KoskiApplication) extends Logging with Timing
     user.hasRole(Rooli.rooliPäätasonSuoritukseen(KIELITUTKINTO, SuorituksenTyyppi.yleinenKielitutkinto)) && user.hasRole(OPHKATSELIJA)
   }
 
+  def createTodistusJobForSystem(
+    opiskeluoikeusOid: String,
+    oppijaOid: String,
+    templateVariant: String
+  ): Either[HttpStatus, TodistusJob] = {
+    implicit val systemUser: KoskiSpecificSession = KoskiSpecificSession.systemKatselijaUser
+    for {
+      oppijanHenkilö <- application.henkilöRepository.findByOid(oppijaOid)
+        .toRight(KoskiErrorCategory.notFound.oppijaaEiLöydyTaiEiOikeuksia())
+      rawOpiskeluoikeus <- application.opiskeluoikeusRepository.findByOid(opiskeluoikeusOid)
+      job = TodistusJob(
+        id = UUID.randomUUID().toString,
+        userOid = Some(systemUser.oid),
+        oppijaOid = oppijaOid,
+        opiskeluoikeusOid = opiskeluoikeusOid,
+        templateVariant = templateVariant,
+        opiskeluoikeusVersionumero = Some(rawOpiskeluoikeus.versionumero),
+        oppijaHenkilötiedotHash = Some(laskeHenkilötiedotHash(oppijanHenkilö)),
+        isStamped = false
+      )
+      result <- todistusRepository.addOrReuseExisting(job)
+    } yield result
+  }
+
+  def getJobStatus(id: String): Either[HttpStatus, TodistusJob] = {
+    todistusRepository.get(id)
+  }
+
+  def copyToTiedoteBucket(todistusJobId: String): Either[HttpStatus, TiedoteBucketLocation] = {
+    for {
+      _ <- resultRepository.copyObject(BucketType.RAW, BucketType.TIEDOTE, todistusJobId)
+    } yield TiedoteBucketLocation(
+      bucket = resultRepository.tiedoteBucketName,
+      key = resultRepository.objectKey(BucketType.TIEDOTE, todistusJobId)
+    )
+  }
+
   def currentStatus(req: TodistusIdRequest)(implicit user: KoskiSpecificSession): Either[HttpStatus, TodistusJob] = {
     if (user.hasRole(OPHPAAKAYTTAJA)) {
       todistusRepository
@@ -555,3 +592,5 @@ class TodistusService(application: KoskiApplication) extends Logging with Timing
     }
   }
 }
+
+case class TiedoteBucketLocation(bucket: String, key: String)

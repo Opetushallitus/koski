@@ -62,97 +62,26 @@ class SchedulerSpec extends AnyFreeSpec with TestEnvironment with Matchers {
     def schedulerShouldRecover = Wait.until(sharedResource.get == 2, timeoutMs = 1000, retryIntervalMs = 10)
   }
 
-  "pauseForDuration and resume" - {
-    val db = KoskiApplicationForTests.masterDatabase.db
+  "suspend and unsuspend" in {
+    val executionCount = new AtomicInteger(0)
+    val scheduler = testScheduler(
+      "test-suspend",
+      _ => { executionCount.incrementAndGet(); None }
+    )
 
-    "pauses and resumes scheduler" in {
-      val executionCount = new AtomicInteger(0)
-      val scheduler = testScheduler(
-        "test-pause-not-running",
-        _ => { executionCount.incrementAndGet(); None }
-      )
+    Wait.until(executionCount.get >= 2, timeoutMs = 1000)
 
-      Wait.until(executionCount.get >= 2, timeoutMs = 1000)
+    scheduler.suspend()
+    Wait.until(!scheduler.isTaskRunning, timeoutMs = 1000)
+    val countAfterSuspend = executionCount.get
 
-      val paused = Scheduler.pauseForDuration(db, "test-pause-not-running", java.time.Duration.ofSeconds(1))
-      paused should be(true)
-      Wait.until(!scheduler.isTaskRunning, timeoutMs = 1000)
-      val countAfterPause = executionCount.get
+    Thread.sleep(200)
+    executionCount.get should equal(countAfterSuspend) // Should not execute while suspended
 
-      Thread.sleep(500)
-      executionCount.get should equal(countAfterPause) // Should not execute during pause
+    scheduler.unsuspend()
+    Wait.until(executionCount.get > countAfterSuspend, timeoutMs = 1000) // Should resume
 
-      Thread.sleep(600) // Wait for pause to end
-      Wait.until(executionCount.get > countAfterPause, timeoutMs = 1000) // Should resume
-
-      scheduler.shutdown
-    }
-
-    "pauseForDuration is non-blocking and returns while task is still running" in {
-      val taskStarted = new java.util.concurrent.CountDownLatch(1)
-      val taskCanFinish = new java.util.concurrent.CountDownLatch(1)
-      val executionCount = new AtomicInteger(0)
-
-      val scheduler = testScheduler(
-        "test-pause-nonblocking",
-        _ => {
-          taskStarted.countDown()
-          taskCanFinish.await(5, java.util.concurrent.TimeUnit.SECONDS)
-          executionCount.incrementAndGet()
-          None
-        }
-      )
-
-      // Wait for task to start running
-      taskStarted.await(5, java.util.concurrent.TimeUnit.SECONDS)
-      scheduler.isTaskRunning should be(true)
-
-      // pauseForDuration should return immediately even though task is still running
-      val before = System.currentTimeMillis()
-      val paused = Scheduler.pauseForDuration(db, "test-pause-nonblocking", java.time.Duration.ofSeconds(10))
-      val elapsed = System.currentTimeMillis() - before
-      paused should be(true)
-      elapsed should be < 1000L
-      scheduler.isTaskRunning should be(true) // task still running
-
-      // Let task finish
-      taskCanFinish.countDown()
-      Wait.until(!scheduler.isTaskRunning, timeoutMs = 1000)
-
-      scheduler.shutdown
-    }
-
-    "clears pause when new Scheduler is created with same name" in {
-      val executionCount = new AtomicInteger(0)
-      val scheduler1 = testScheduler(
-        "test-pause-restart",
-        _ => { executionCount.incrementAndGet(); None }
-      )
-
-      Wait.until(executionCount.get >= 1, timeoutMs = 1000)
-
-      // Pause for a long time
-      val paused = Scheduler.pauseForDuration(db, "test-pause-restart", java.time.Duration.ofMinutes(10))
-      paused should be(true)
-      Wait.until(!scheduler1.isTaskRunning, timeoutMs = 1000)
-      val countAfterPause = executionCount.get
-
-      Thread.sleep(300)
-      executionCount.get should equal(countAfterPause) // Should not execute during pause
-
-      // Create new scheduler with same name (simulates container restart)
-      // This should clear the pause
-      val scheduler2 = testScheduler(
-        "test-pause-restart",
-        _ => { executionCount.incrementAndGet(); None }
-      )
-
-      // Should start executing again despite the previous 10 minute pause
-      Wait.until(executionCount.get > countAfterPause, timeoutMs = 1000)
-
-      scheduler1.shutdown
-      scheduler2.shutdown
-    }
+    scheduler.shutdown
   }
 
   "Scheduler with FixedTimeOfDaySchedule doesn't fire immediately on startup" in {
