@@ -174,6 +174,7 @@ object AmmatillinenOpiskalijavuositiedotRaportti extends AikajaksoRaportti {
     val lisätiedot = JsonSerializer.extract[Option[AmmatillisenOpiskeluoikeudenLisätiedot]](opiskeluoikeus.data \ "lisätiedot")
     val korotettuOpiskeluoikeusOidit = päätasonSuoritukset.flatMap(s => JsonSerializer.extract[Option[String]](s.data \ "korotettuOpiskeluoikeusOid"))
     val sisältääTutkinnonTaiTelmanSuorituksen = päätasonSuoritukset.map(_.suorituksenTyyppi).exists(st => st == "ammatillinentutkinto" || st == "telma")
+    val sisältääTutkinnonOsanTaiTopksSuorituksen = päätasonSuoritukset.map(_.suorituksenTyyppi).exists(st => st == "ammatillinentutkintoosittainen" || st == "tutkinnonosaapienemmistäkokonaisuuksistakoostuvasuoritus")
 
     OpiskelijavuositiedotRow(
       opiskeluoikeusOid = opiskeluoikeus.opiskeluoikeusOid,
@@ -208,7 +209,11 @@ object AmmatillinenOpiskalijavuositiedotRaportti extends AikajaksoRaportti {
       arvioituPäättymispäivä = arvioituPäättymispäivä,
       opiskelijavuosikertymä = AmmatillinenRaporttiUtils.opiskelijavuosikertymä(aikajaksot),
       läsnäTaiValmistunutPäivät = aikajaksoPäivät(aikajaksot, a => (a.tila == "lasna" || a.tila == "valmistunut")),
-      opiskelijavuosikertymä2026 = if (sisältääTutkinnonTaiTelmanSuorituksen) { Some(AmmatillinenRaporttiUtils.opiskelijavuosikertymä2026(aikajaksot)) } else None,
+      opiskelijavuosikertymä2026 = if (sisältääTutkinnonTaiTelmanSuorituksen) {
+        Some(AmmatillinenRaporttiUtils.opiskelijavuosikertymä2026(aikajaksot, laskeHeinäkuunPäivät = false))
+      } else if (sisältääTutkinnonOsanTaiTopksSuorituksen) {
+        Some(AmmatillinenRaporttiUtils.opiskelijavuosikertymä2026(aikajaksot, laskeHeinäkuunPäivät = true))
+      } else None,
       opiskelijavuoteenKuuluvatLomaPäivät = opiskelijavuoteenKuuluvatLomaPäivät,
       muutLomaPäivät = muutLomaPäivät,
       majoitusPäivät = aikajaksoPäivät(aikajaksot, _.majoitus),

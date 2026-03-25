@@ -176,11 +176,11 @@ object AmmatillinenRaporttiUtils {
     })).sum
   }
 
-  def opiskelijavuosikertymä2026(aikajaksot: Seq[ROpiskeluoikeusAikajaksoRow]): Double = {
+  def opiskelijavuosikertymä2026(aikajaksot: Seq[ROpiskeluoikeusAikajaksoRow], laskeHeinäkuunPäivät: Boolean): Double = {
     aikajaksot.map(j => j.tila match {
-      case "katsotaaneronneeksi" => (j.lengthInDaysExcludeJuly - 1).max(0) * (j.osaAikaisuus.toDouble / 100.0)
-      case "lasna" => j.lengthInDaysExcludeJuly * (j.osaAikaisuus.toDouble / 100.0)
-      case "valmistunut" => j.lengthInDaysExcludeJuly
+      case "katsotaaneronneeksi" => (j.lengthInDaysFrom2026(laskeHeinäkuunPäivät) - 1).max(0) * (j.osaAikaisuus.toDouble / 100.0)
+      case "lasna" => j.lengthInDaysFrom2026(laskeHeinäkuunPäivät) * (j.osaAikaisuus.toDouble / 100.0)
+      case "valmistunut" => j.lengthInDaysFrom2026(laskeHeinäkuunPäivät)
       case _ => 0
     }).sum
   }

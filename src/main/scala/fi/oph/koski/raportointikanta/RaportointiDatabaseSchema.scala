@@ -806,7 +806,7 @@ case class ROpiskeluoikeusAikajaksoRow(
 
   def lengthInDays: Int = ChronoUnit.DAYS.between(alku.toLocalDate, loppu.toLocalDate).toInt + 1
 
-  def lengthInDaysExcludeJuly: Int = {
+  def lengthInDaysFrom2026(laskeHeinäkuunPäivät: Boolean): Int = {
     val laskentaAlkaenPäivä = LocalDate.of(2026, 1, 1)
 
     val jaksonAlku = if (alku.toLocalDate.isBefore(laskentaAlkaenPäivä)) {
@@ -834,11 +834,15 @@ case class ROpiskeluoikeusAikajaksoRow(
       0
     } else {
       val päiviäAikajaksolla = ChronoUnit.DAYS.between(jaksonAlku, jaksonLoppu).toInt + 1
-      val heinäkuunPäiviäAikajaksolla = (0 to jaksonLoppu.getYear - jaksonAlku.getYear).map { yearOffset =>
+      val vähennettäviäPäiviäAikajaksolla = if (laskeHeinäkuunPäivät) {
+        0
+      } else {
+        (0 to jaksonLoppu.getYear - jaksonAlku.getYear).map { yearOffset =>
           heinäkuunPäiviäAikajaksollaVuodessa(jaksonAlku.getYear + yearOffset)
         }.sum
+      }
 
-      päiviäAikajaksolla - heinäkuunPäiviäAikajaksolla
+      päiviäAikajaksolla - vähennettäviäPäiviäAikajaksolla
     }
   }
 

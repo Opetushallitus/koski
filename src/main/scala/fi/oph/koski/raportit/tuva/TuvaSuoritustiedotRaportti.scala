@@ -283,7 +283,7 @@ object TuvaSuoritustiedotRaportti {
       oikeuttaMaksuttomuuteenPidennetty = lisätiedot.flatMap(_.oikeuttaMaksuttomuuteenPidennetty.map(omps => omps.map(_.toString).mkString(", "))).filter(_.nonEmpty),
       opiskelijavuosikertymä = AmmatillinenRaporttiUtils.opiskelijavuosikertymä(aikajaksot),
       läsnäTaiValmistunutPäivät = aikajaksoPäivät(aikajaksot, a => (a.tila == "lasna" || a.tila == "valmistunut")),
-      opiskelijavuosikertymä2026 = AmmatillinenRaporttiUtils.opiskelijavuosikertymä2026(aikajaksot),
+      opiskelijavuosikertymä2026 = AmmatillinenRaporttiUtils.opiskelijavuosikertymä2026(aikajaksot, laskeHeinäkuunPäivät = false),
       opiskelijavuoteenKuuluvatLomaPäivät = opiskelijavuoteenKuuluvatLomaPäivät,
       muutLomaPäivät = muutLomaPäivät,
       majoitusPäivät = Some(aikajaksoPäivät(aikajaksot, _.majoitus)),
