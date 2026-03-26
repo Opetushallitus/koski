@@ -77,14 +77,14 @@
 <text text-anchor="start" x="59" y="-82.8" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000">name</text>
 <polygon fill="none" stroke="#000000" points="38,-56.7 38,-75.7 135,-75.7 135,-56.7 38,-56.7"/>
 <text text-anchor="start" x="41" y="-62.8" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000">...</text>
-<polygon fill="#ffffff" stroke="transparent" points="38,-37.7 38,-56.7 63,-56.7 63,-37.7 38,-37.7"/>
-<polygon fill="none" stroke="#000000" points="38,-37.7 38,-56.7 63,-56.7 63,-37.7 38,-37.7"/>
+<polygon fill="#ffffff" stroke="transparent" points="38,-37.7 38,-56.7 60,-56.7 60,-37.7 38,-37.7"/>
+<polygon fill="none" stroke="#000000" points="38,-37.7 38,-56.7 60,-56.7 60,-37.7 38,-37.7"/>
 <text text-anchor="start" x="41" y="-43.8" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000"> &#160;</text>
-<polygon fill="#ffffff" stroke="transparent" points="63,-37.7 63,-56.7 107,-56.7 107,-37.7 63,-37.7"/>
-<polygon fill="none" stroke="#000000" points="63,-37.7 63,-56.7 107,-56.7 107,-37.7 63,-37.7"/>
-<text text-anchor="start" x="71.6105" y="-43.8" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000">9 rows</text>
-<polygon fill="#ffffff" stroke="transparent" points="107,-37.7 107,-56.7 135,-56.7 135,-37.7 107,-37.7"/>
-<polygon fill="none" stroke="#000000" points="107,-37.7 107,-56.7 135,-56.7 135,-37.7 107,-37.7"/>
+<polygon fill="#ffffff" stroke="transparent" points="60,-37.7 60,-56.7 109,-56.7 109,-37.7 60,-37.7"/>
+<polygon fill="none" stroke="#000000" points="60,-37.7 60,-56.7 109,-56.7 109,-37.7 60,-37.7"/>
+<text text-anchor="start" x="67.4956" y="-43.8" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000">10 rows</text>
+<polygon fill="#ffffff" stroke="transparent" points="109,-37.7 109,-56.7 135,-56.7 135,-37.7 109,-37.7"/>
+<polygon fill="none" stroke="#000000" points="109,-37.7 109,-56.7 135,-56.7 135,-37.7 109,-37.7"/>
 <text text-anchor="start" x="116.4053" y="-43.8" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000">1 &gt;</text>
 </a>
 </g>
