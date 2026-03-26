@@ -20,7 +20,8 @@ Taustaprosessit
 └── TodistusCleanupScheduler – hoitaa vanhentuneita ja epäonnistuneita (esim. kontin kaatuminen) töitä
 
 Ydinpalvelu
-└── TodistusService          – koordinoi kokonaisen todistuksen luonnin
+├── TodistusService          – koordinoi kokonaisen todistuksen luonnin
+└── TodistusFeatureFlags     – feature-flagit (enabledForAll, enabledForPääkäyttäjä)
 
 Tietokanta ja S3
 ├── TodistusJobRepository    – todistus-jobit (PostgreSQL). Tietokannassa taulu todistus_job .

@@ -12,6 +12,8 @@ class TodistusCleanupScheduler(application: KoskiApplication) extends Logging {
   var schedulerInstance: Option[Scheduler] = None
 
   def createScheduler: Option[Scheduler] = {
+    if (!application.todistusFeatureFlags.isServiceEnabled) return None
+
     schedulerInstance = Some(new Scheduler(
       application,
       schedulerName,

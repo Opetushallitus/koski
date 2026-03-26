@@ -23,6 +23,7 @@ class TodistusDownloadServlet(implicit val application: KoskiApplication)
   val frontendValvontaMode: FrontendValvontaMode.FrontendValvontaMode = FrontendValvontaMode.ENABLED
 
   before() {
+    requireTodistusEnabled
     requireKansalainenOrTodistuksiaLataavaOphKäyttäjä
   }
 
