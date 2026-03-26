@@ -92,6 +92,28 @@ class Scheduler(
 
   def isTaskRunning: Boolean = runningTasksOnThisNode.get() > 0
 
+  def triggerNow(): Unit = {
+    require(Environment.isUnitTestEnvironment(application.config) || leaseElector.forall(_.hasLease),
+      "triggerNow() vaatii aktiivisen lease-varauksen")
+    taskExecutor.submit(new Runnable {
+      def run(): Unit = {
+        runningTasksOnThisNode.incrementAndGet()
+        try {
+          val context: Option[JValue] = runDbSync(KoskiTables.Scheduler.filter(_.name === name).result.head).context
+          logger.info(s"Manually triggered task $name")
+          val newContext: Option[JValue] = task(context)
+          if (newContext.isDefined) {
+            runDbSync(KoskiTables.Scheduler.filter(_.name === name).map(_.context).update(newContext))
+          }
+        } catch {
+          case e: Exception => logger.error(e)(s"Manually triggered task $name failed: ${e.getMessage}")
+        } finally {
+          runningTasksOnThisNode.decrementAndGet()
+        }
+      }
+    })
+  }
+
   private def fireIfTime() = {
     try {
       if (shouldFire) {

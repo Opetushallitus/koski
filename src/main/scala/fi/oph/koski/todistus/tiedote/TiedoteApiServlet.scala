@@ -38,13 +38,16 @@ class TiedoteApiServlet(implicit val application: KoskiApplication)
     if (!application.config.getBoolean("tiedote.enabled")) {
       haltWithStatus(KoskiErrorCategory.notImplemented("Tiedotepalvelu ei ole käytössä"))
     }
+    if (application.kielitutkintotodistusTiedoteScheduler.schedulerInstance.exists(_.isTaskRunning)) {
+      haltWithStatus(KoskiErrorCategory.conflict("Tiedotteiden käsittely on jo käynnissä"))
+    }
 
-    val retried = service.retryAllFailed()
-    val processed = service.processAll()
-
-    renderObject(Map(
-      "processed" -> processed,
-      "retried" -> retried
-    ))
+    application.kielitutkintotodistusTiedoteScheduler.schedulerInstance match {
+      case Some(scheduler) =>
+        scheduler.triggerNow()
+        renderObject(Map("status" -> "triggered"))
+      case None =>
+        haltWithStatus(KoskiErrorCategory.notImplemented("Tiedote-scheduler ei ole käynnissä"))
+    }
   }
 }
