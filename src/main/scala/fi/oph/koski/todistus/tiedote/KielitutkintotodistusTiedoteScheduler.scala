@@ -33,8 +33,8 @@ class KielitutkintotodistusTiedoteScheduler(application: KoskiApplication) exten
   }
 
   private def runBatch(_context: Option[JValue]): Option[JValue] = {
-    tiedoteService.processAll()
     tiedoteService.retryAllFailed()
+    tiedoteService.processAll()
     None
   }
 }

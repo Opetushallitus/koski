@@ -275,13 +275,19 @@ class KielitutkintotodistusTiedoteWorkflowSpec extends KielitutkintotodistusTied
         mockKituClient.respondWithHttpStatus(404)
 
         // Ensimmäinen yritys -> ERROR, uudelleenyritykset kunnes maxAttempts täyttyy
-        app.kielitutkintotodistusTiedoteService.processAll()
-        app.kielitutkintotodistusTiedoteService.retryAllFailed()
-        app.kielitutkintotodistusTiedoteService.retryAllFailed()
+        app.kielitutkintotodistusTiedoteService.processAll() // attempt 1
+        val jobCount = app.kielitutkintotodistusTiedoteRepository.findAll(100, 0).size
+        app.kielitutkintotodistusTiedoteService.retryAllFailed() // attempt 2
+        app.kielitutkintotodistusTiedoteService.retryAllFailed() // attempt 3
+
+        app.kielitutkintotodistusTiedoteService.retryAllFailed() // 4th attempt should have no effect
+
+        mockKituClient.callCount should equal(jobCount * 3)
 
         val job = app.kielitutkintotodistusTiedoteRepository.findAll(100, 0).find(_.opiskeluoikeusOid == opiskeluoikeusOid)
         job shouldBe defined
         job.get.state should equal(KielitutkintotodistusTiedoteState.COMPLETED)
+        job.get.attempts should equal(3)
         job.get.opiskeluoikeusVersio should equal(0)
       }
     }

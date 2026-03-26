@@ -2,6 +2,7 @@ package fi.oph.koski.todistus.tiedote
 
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
 import fi.oph.koski.koskiuser.MockUsers
+import fi.oph.koski.util.Wait
 
 class TiedoteApiSpec extends KielitutkintotodistusTiedoteSpecHelpers {
 
@@ -69,11 +70,12 @@ class TiedoteApiSpec extends KielitutkintotodistusTiedoteSpecHelpers {
         withoutRunningTiedoteScheduler {
           get("api/tiedote/run", headers = authHeaders(MockUsers.paakayttaja) ++ jsonContent) {
             verifyResponseStatusOk()
-            response.body should include("processed")
+            response.body should include("triggered")
           }
 
-          val jobs = app.kielitutkintotodistusTiedoteRepository.findAll(100, 0)
-          jobs.length should be > 0
+          Wait.until {
+            app.kielitutkintotodistusTiedoteRepository.findAll(100, 0).nonEmpty
+          }
         }
       }
 

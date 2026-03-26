@@ -52,7 +52,7 @@ class KielitutkintotodistusTiedoteService(application: KoskiApplication) extends
       opiskeluoikeusOid = opiskeluoikeusOid,
       state = KielitutkintotodistusTiedoteState.WAITING_FOR_TODISTUS,
       worker = Some(repository.workerId),
-      attempts = 1,
+      attempts = 0,
       opiskeluoikeusVersio = versionumero
     )
 
@@ -165,8 +165,9 @@ class KielitutkintotodistusTiedoteService(application: KoskiApplication) extends
   }
 
   private def retryOne(job: KielitutkintotodistusTiedoteJob): Unit = {
-    logger.info(s"Yritetään tiedotetta uudelleen: job=${job.id} yritys=${job.attempts}/$maxAttempts")
-    generateAndSend(job.id, job.oppijaOid, job.opiskeluoikeusOid, job.opiskeluoikeusOid, attempt = job.attempts)
+    val attempt = job.attempts + 1
+    logger.info(s"Yritetään tiedotetta uudelleen: job=${job.id} yritys=$attempt/$maxAttempts")
+    generateAndSend(job.id, job.oppijaOid, job.opiskeluoikeusOid, job.opiskeluoikeusOid, attempt = attempt)
   }
 }
 
