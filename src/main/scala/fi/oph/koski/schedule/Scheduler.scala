@@ -91,6 +91,7 @@ class Scheduler(
   }
 
   def isTaskRunning: Boolean = runningTasksOnThisNode.get() > 0
+  def hasLease: Boolean = leaseElector.forall(_.hasLease)
 
   def triggerNow(): Unit = {
     require(Environment.isUnitTestEnvironment(application.config) || leaseElector.forall(_.hasLease),
