@@ -37,8 +37,8 @@ private[henkilo] case class HenkilötiedotSearchFacade(henkilöRepository: Henki
 
   // Sisällyttää vain henkilöt, joilta löytyy vähintään yksi (tälle käyttäjälle näkyvä) opiskeluoikeus Koskesta, ei tarkista Virta- eikä YTR-palvelusta
   private def searchHenkilötiedot(queryString: String)(implicit user: KoskiSpecificSession): HenkilötiedotSearchResponse = {
-    val oids = henkilöRepository.findByOids(queryString)
-    val filtered = koskiOpiskeluoikeudet.filterOppijat(oids).map(_.toHenkilötiedotJaOid)
+    val henkilötiedot = henkilöRepository.findByNimi(queryString)
+    val filtered = koskiOpiskeluoikeudet.filterOppijat(henkilötiedot).map(_.toHenkilötiedotJaOid)
     HenkilötiedotSearchResponse(filtered.sorted(HenkilötiedotJaOid.orderingByName))
   }
 
