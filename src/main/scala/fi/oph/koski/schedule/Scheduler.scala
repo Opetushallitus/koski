@@ -23,8 +23,14 @@ class Scheduler(
   task: Option[JValue] => Option[JValue],
   intervalMillis: Int = 10000,
   concurrency: Int = 0, // 0 = no lease coordination, task runs on all nodes; >= 1 = lease-coordinated with N slots
+  independentWorkers: Boolean = false, // true = each lease holder fires on its own local cadence, not shared DB nextFireTime
   private[schedule] val leaseElectorOverride: Option[WorkerLeaseElector] = None
 ) extends QueryMethods with Logging {
+
+  if (independentWorkers && concurrency < 2 && leaseElectorOverride.isEmpty) {
+    logger.warn(s"Scheduler $name: independentWorkers=true ignored because concurrency=$concurrency (requires >= 2)")
+  }
+  private val effectiveIndependentWorkers = independentWorkers && (concurrency >= 2 || leaseElectorOverride.isDefined)
 
   override val db: DB = application.masterDatabase.db
 
@@ -60,14 +66,20 @@ class Scheduler(
   private val context: Option[JValue] = getScheduler.flatMap(_.context).orElse(initialContext)
   // If nextFireTime is in the past (stale from a previous instance), recompute from now.
   // This prevents fire-on-startup for stale rows.
+  // For independentWorkers, each node uses its own cadence, so ignore the DB value
+  // and start with now (fire on first tick).
   private var localNextFireTime: Timestamp = {
-    val dbTime = getScheduler.map(_.nextFireTime).getOrElse(scheduling.nextFireTime())
-    if (dbTime.before(now)) {
-      val fresh = scheduling.nextFireTime()
-      runDbSync(KoskiTables.Scheduler.filter(_.name === name).map(_.nextFireTime).update(fresh))
-      fresh
+    if (effectiveIndependentWorkers) {
+      new Timestamp(0) // fire immediately on first tick
     } else {
-      dbTime
+      val dbTime = getScheduler.map(_.nextFireTime).getOrElse(scheduling.nextFireTime())
+      if (dbTime.before(now)) {
+        val fresh = scheduling.nextFireTime()
+        runDbSync(KoskiTables.Scheduler.filter(_.name === name).map(_.nextFireTime).update(fresh))
+        fresh
+      } else {
+        dbTime
+      }
     }
   }
 
@@ -115,8 +127,9 @@ class Scheduler(
       false
     } else {
       // For lease-coordinated schedulers, read nextFireTime from DB to maintain global
-      // cadence across nodes. For non-lease schedulers, use the local copy.
-      val nextFireTime = if (leaseElector.isDefined) {
+      // cadence across nodes. For non-lease or independentWorkers schedulers, use the
+      // local copy so each node fires on its own cadence.
+      val nextFireTime = if (leaseElector.isDefined && !effectiveIndependentWorkers) {
         scheduler.map(_.nextFireTime).getOrElse(localNextFireTime)
       } else {
         localNextFireTime
@@ -137,7 +150,10 @@ class Scheduler(
   private def fire = try {
     // Write nextFireTime to DB immediately so a new lease holder sees the updated
     // value before the task completes, preventing premature firing.
-    runDbSync(KoskiTables.Scheduler.filter(_.name === name).map(_.nextFireTime).update(localNextFireTime))
+    // Skip for independentWorkers — each node tracks its own cadence.
+    if (!effectiveIndependentWorkers) {
+      runDbSync(KoskiTables.Scheduler.filter(_.name === name).map(_.nextFireTime).update(localNextFireTime))
+    }
     val context: Option[JValue] = runDbSync(KoskiTables.Scheduler.filter(_.name === name).result.head).context
     logger.debug(s"Firing scheduled task $name ${context.map(c => s"with context ${JsonMethods.compact(c)}").mkString}")
     val newContext: Option[JValue] = task(context)

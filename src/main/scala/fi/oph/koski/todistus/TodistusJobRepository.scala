@@ -177,6 +177,7 @@ class TodistusJobRepository(val db: DB, val workerId: String, config: Config) ex
         WHERE state = 'QUEUED'
         ORDER BY created_at
         LIMIT 1
+        FOR UPDATE SKIP LOCKED
       )
       RETURNING *
       """.as[TodistusJob]).headOption
