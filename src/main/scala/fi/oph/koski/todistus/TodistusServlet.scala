@@ -17,6 +17,13 @@ trait TodistusServlet extends ScalatraServlet with HasKoskiSpecificSession with 
   implicit def session: KoskiSpecificSession
 
   val service: TodistusService = application.todistusService
+  private val featureFlags: TodistusFeatureFlags = application.todistusFeatureFlags
+
+  protected def requireTodistusEnabled: Unit = {
+    if (!featureFlags.isEnabledForUser(session)) {
+      haltWithStatus(KoskiErrorCategory.notImplemented("Todistuspalvelu ei ole käytössä"))
+    }
+  }
 
   protected def requireKansalainenOrTodistuksiaLataavaOphKäyttäjä: Unit = {
     getUser match {

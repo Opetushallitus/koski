@@ -38,7 +38,7 @@ import fi.oph.koski.suoritusjako.{SuoritusjakoRepository, SuoritusjakoRepository
 import fi.oph.koski.suostumus.SuostumuksenPeruutusService
 import fi.oph.koski.tiedonsiirto.{IPService, TiedonsiirtoService}
 import fi.oph.koski.todistus.swisscomclient.{SwisscomClient, SwisscomConfig}
-import fi.oph.koski.todistus.{TodistusCleanupScheduler, TodistusJobRepository, TodistusScheduler, TodistusService}
+import fi.oph.koski.todistus.{TodistusCleanupScheduler, TodistusFeatureFlags, TodistusJobRepository, TodistusScheduler, TodistusService}
 import fi.oph.koski.todistus.tiedote.{KielitutkintotodistusTiedoteRepository, KielitutkintotodistusTiedoteScheduler, KielitutkintotodistusTiedoteService, KituClient, TiedotuspalveluClient}
 import fi.oph.koski.tutkinto.TutkintoRepository
 import fi.oph.koski.userdirectory.DirectoryClient
@@ -241,6 +241,7 @@ class KoskiApplication(
   lazy val omaDataOAuth2Repository = new OmaDataOAuth2Repository(this, masterDatabase.db)
   lazy val omaDataOAuth2Service = new OmaDataOAuth2Service(omaDataOAuth2Repository, this)
 
+  lazy val todistusFeatureFlags = new TodistusFeatureFlags(config)
   lazy val todistusWorkerId = instanceId
   lazy val todistusService = new TodistusService(this)
   lazy val todistusRepository = new TodistusJobRepository(

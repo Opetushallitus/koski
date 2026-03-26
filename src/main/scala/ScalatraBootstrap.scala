@@ -152,13 +152,10 @@ class ScalatraBootstrap extends LifeCycle with Logging with Timing with GlobalEx
     mount("/koski/api/vkt", new KiosServlet) // TODO: TOR-2471: Poista kun KIOS-tiimi on siirtynyt käyttämään /koski/api/kios -polkua
     mount("/koski/api/hakemuspalvelu", new HakemuspalveluServlet)
 
-    if (!Environment.isProdEnvironment(application.config)) {
-      // TODO: TOR-2400: Ei vielä tuotantoon
-      mount("/koski/api/todistus", new TodistusApiServlet)
-      mount("/koski/todistus/download", new TodistusDownloadServlet)
-      mount("/koski/todistus/preview", new TodistusPreviewServlet)
-      mount("/koski/api/tiedote", new TiedoteApiServlet)
-    }
+    mount("/koski/api/todistus", new TodistusApiServlet)
+    mount("/koski/todistus/download", new TodistusDownloadServlet)
+    mount("/koski/todistus/preview", new TodistusPreviewServlet)
+    mount("/koski/api/tiedote", new TiedoteApiServlet)
     mount("/koski/omadata", new MyDataReactServlet)
     mount("/koski/koesuoritus", new YtrKoesuoritusServlet)
     mount("/koski/api/yotodistus", new YoTodistusServlet)

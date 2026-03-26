@@ -22,6 +22,7 @@ class TodistusPreviewServlet(implicit val application: KoskiApplication)
   val frontendValvontaMode: FrontendValvontaMode.FrontendValvontaMode = FrontendValvontaMode.ENABLED
 
   before() {
+    requireTodistusEnabled
     requireOphPääkäyttäjä
   }
 

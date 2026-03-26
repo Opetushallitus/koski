@@ -16,6 +16,7 @@ class TodistusApiServlet(implicit val application: KoskiApplication)
   implicit def session: KoskiSpecificSession = koskiSessionOption.get
 
   before() {
+    requireTodistusEnabled
     requireKansalainenOrTodistuksiaLataavaOphKäyttäjä
   }
 
