@@ -599,7 +599,7 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
               )
               val suoritus = copySuoritus(arviointiHyvä(), None).copy(näyttö = Some(virheellinenNäyttö))
               "palautetaan HTTP 400" in (setup(suoritus)(
-                verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.date.näytönSuoritusaika())
+                verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.date.näytönSuoritusaika(s"""Osasuorituksen: 'Markkinointi ja asiakaspalvelu' näytön päättymispäivä on ennen alkamispäivää"""))
               ))
             }
 
