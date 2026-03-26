@@ -43,9 +43,12 @@ class TiedoteApiServlet(implicit val application: KoskiApplication)
     }
 
     application.kielitutkintotodistusTiedoteScheduler.schedulerInstance match {
-      case Some(scheduler) =>
+      case Some(scheduler) if scheduler.hasLease =>
         scheduler.triggerNow()
         renderObject(Map("status" -> "triggered"))
+      case Some(_) =>
+        // Tämä endpointti on lähinnä testaamista varten. TODO toteuta triggerNow käyttämään kantaa koordinoidusti jos tulee tarpeen.
+        haltWithStatus(KoskiErrorCategory.unavailable("Tiedote-scheduler ei ole aktiivinen tällä instanssilla. Kokeile pyyntöä uudelleen, jotta se ohjautuisi aktiiviselle instanssille."))
       case None =>
         haltWithStatus(KoskiErrorCategory.notImplemented("Tiedote-scheduler ei ole käynnissä"))
     }
