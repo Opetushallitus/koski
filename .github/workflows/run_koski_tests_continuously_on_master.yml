@@ -12,7 +12,6 @@ jobs:
   tests:
     name: "👀"
     uses: ./.github/workflows/all_tests.yml
-    secrets: inherit
   trivy:
     name: Trivy
     uses: ./.github/workflows/trivy_check.yml
