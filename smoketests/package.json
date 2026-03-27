@@ -8,6 +8,7 @@
     "omadata:local": "ts-node src/omadata-oauth2-sample.ts local",
     "omadata:dev": "ts-node src/omadata-oauth2-sample.ts dev",
     "omadata:qa": "ts-node src/omadata-oauth2-sample.ts qa",
+    "qa:tiedote": "ts-node src/qa-tiedote.ts",
     "preinstall": "node -e \"if(!process.env.npm_execpath.includes(\\\"pnpm\\\")){console.error(\\\"❌ Please use pnpm\\\");process.exit(1)}\""
   },
   "author": "",
@@ -20,5 +21,8 @@
   "engines": {
     "pnpm": ">=10.28.2"
   },
-  "packageManager": "pnpm@10.33.0+sha512.10568bb4a6afb58c9eb3630da90cc9516417abebd3fabbe6739f0ae795728da1491e9db5a544c76ad8eb7570f5c4bb3d6c637b2cb41bfdcdb47fa823c8649319"
+  "packageManager": "pnpm@10.33.0+sha512.10568bb4a6afb58c9eb3630da90cc9516417abebd3fabbe6739f0ae795728da1491e9db5a544c76ad8eb7570f5c4bb3d6c637b2cb41bfdcdb47fa823c8649319",
+  "devDependencies": {
+    "@types/node": "^25.5.0"
+  }
 }
