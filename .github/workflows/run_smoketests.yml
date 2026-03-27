@@ -42,11 +42,19 @@ jobs:
       - name: Test omadata-oauth2-sample testiopintopolussa
         run: cd smoketests && pnpm run omadata:qa
 
+      - name: Test kielitutkintotodistus tiedote flow
+        env:
+          KOSKI_BASE_URL: https://koski.testiopintopolku.fi/koski
+          KOSKI_USER: ${{ secrets.KOSKI_USER_USERNAME }}
+          KOSKI_PASS: ${{ secrets.KOSKI_USER_PASSWORD }}
+          TIEDOTE_SMOKETEST_OO_OID: "1.2.246.562.15.xxxxx"
+        run: cd smoketests && pnpm run qa:tiedote
+
       - name: Report failure
         uses: ravsamhq/notify-slack-action@02b169fd81108a34dbb029df4a41dd27ad680290
         if: ${{ failure() }}
         with:
           status: ${{ job.status }}
-          notification_title: "Run smoketests: failure in kansalainen/omadata tests"
+          notification_title: "Run smoketests: failure in kansalainen/omadata/tiedote tests"
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}

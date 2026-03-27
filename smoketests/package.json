@@ -8,6 +8,7 @@
     "omadata:local": "ts-node src/omadata-oauth2-sample.ts local",
     "omadata:dev": "ts-node src/omadata-oauth2-sample.ts dev",
     "omadata:qa": "ts-node src/omadata-oauth2-sample.ts qa",
+    "qa:tiedote": "ts-node src/qa-tiedote.ts",
     "preinstall": "node -e \"if(!process.env.npm_execpath.includes(\\\"pnpm\\\")){console.error(\\\"❌ Please use pnpm\\\");process.exit(1)}\""
   },
   "author": "",
