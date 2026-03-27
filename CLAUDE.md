@@ -151,6 +151,8 @@ Test versions: `koski_test`, `valpas_test`, `raportointikanta_test`
 Located in: `src/main/resources/db/migration/`
 Migrations run automatically on application startup.
 
+**Important:** When adding a new migration file, update the expected file count in `src/test/scala/fi/oph/koski/migration/MigrationSpec.scala` (`MigrationSpec`).
+
 ### Connect to local DB
 ```bash
 psql -h localhost koski oph
