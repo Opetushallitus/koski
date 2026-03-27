@@ -130,7 +130,7 @@ class HealthChecker(val application: KoskiApplication) extends Logging with Timi
   private def oppijaCheck(oppija: Either[HttpStatus, NimellinenHenkilö]): HttpStatus = oppija.left.getOrElse(HttpStatus.ok)
 
   private def openSearchCheck(oppija: Either[HttpStatus, NimellinenHenkilö]): HttpStatus = oppija.flatMap { henkilö =>
-    get("opensearch", application.perustiedotRepository.findOids(henkilö.kokonimi))
+    get("opensearch", application.perustiedotRepository.findOidsByNimi(henkilö.kokonimi))
       .filterOrElse(_.contains(oid), KoskiErrorCategory.notFound.oppijaaEiLöydy(s"Healthcheck user $oid, not found from OpenSearch"))
   }.left.getOrElse(HttpStatus.ok)
 

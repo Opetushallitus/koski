@@ -30,7 +30,7 @@ class YtlService(application: KoskiApplication) extends Logging {
     // Haku pitää tehdä master-oppijoiden kautta, jotta saadaan palautettua opiskeluoikeudet myös mahdollisilta
     // sisaruksena olevilta linkitetyiltä oppijoilta.
     val masterHenkilöt: Map[Henkilö.Oid, LaajatOppijaHenkilöTiedot] =
-      application.opintopolkuHenkilöFacade.findMasterOppijat(pyydetytOppijaOidit)
+      application.opintopolkuHenkilöFacade.findMasterOppijatWithSlaveOids(pyydetytOppijaOidit)
     val masterOppijanLinkitetytOppijaOidit: Map[Henkilö.Oid, List[Henkilö.Oid]] = masterHenkilöt.collect {
       case (_, hlö) =>
         (hlö.oid, hlö.linkitetytOidit)

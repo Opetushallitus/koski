@@ -129,8 +129,8 @@ case class OpintopolkuHenkilöRepository(henkilöt: OpintopolkuHenkilöFacade, k
     henkilöt.findMasterOppija(oid)
   }
 
-  def findMastersByOids(oids: List[String]): List[LaajatOppijaHenkilöTiedot] = {
-    henkilöt.findMasterOppijat(oids).values.toList
+  def findMastersWithSlaveOids(oids: List[String]): List[LaajatOppijaHenkilöTiedot] = {
+    henkilöt.findMasterOppijatWithSlaveOids(oids).values.toList
   }
 
   def findByOid(oid: String): Option[LaajatOppijaHenkilöTiedot] = {

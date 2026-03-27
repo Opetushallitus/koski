@@ -35,10 +35,20 @@ class OppijaSearchSpec extends AnyFreeSpec with Matchers with SearchTestMethods 
     }
     "Finds only those that are in Koski" in {
       searchForNames(masterEiKoskessa.hetu.get) should equal(Nil)
+      searchForNames(slaveMasterEiKoskessa.henkilö.hetu.get) should equal(Nil)
     }
     "Finds with master info" in {
       createOrUpdate(KoskiSpecificMockOppijat.slaveMasterEiKoskessa.henkilö, defaultOpiskeluoikeus)
+
       searchForNames(masterEiKoskessa.hetu.get) should equal(List("Master Master"))
+      searchForNames(slaveMasterEiKoskessa.henkilö.hetu.get) should equal(List("Master Master"))
+
+      searchForNames(masterEiKoskessa.oid) should equal(List("Master Master"))
+      searchForNames(slaveMasterEiKoskessa.henkilö.oid) should equal(List("Master Master"))
+
+      // Löytää kaikki Master-nimiset oppijat:
+      searchForNames(masterEiKoskessa.kokonimi) should equal(List("Master Master", "Master of Puppets"))
+      searchForNames(slaveMasterEiKoskessa.henkilö.nimitiedot.kokonimi) should equal(Nil)
     }
     "Audit logging" in {
       search("eero", defaultUser) {

@@ -175,7 +175,7 @@ class OpiskeluoikeudenPerustiedotRepository(
   }
 
 
-  def findOids(hakusana: String)(implicit session: KoskiSpecificSession): List[Oid] = {
+  def findOidsByNimi(hakusana: String)(implicit session: KoskiSpecificSession): List[Oid] = {
     if (hakusana == "") {
       throw new InvalidRequestException(KoskiErrorCategory.badRequest.queryParam.searchTermTooShort())
     }
