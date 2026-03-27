@@ -85,5 +85,37 @@ class TiedoteApiSpec extends KielitutkintotodistusTiedoteSpecHelpers {
         }
       }
     }
+
+    "DELETE /jobs/:opiskeluoikeusOid" - {
+      "OPH-pääkäyttäjä voi poistaa tiedotejobin" in {
+        withoutRunningTiedoteScheduler {
+          app.kielitutkintotodistusTiedoteService.processAll()
+
+          val jobs = app.kielitutkintotodistusTiedoteRepository.findAll(1, 0)
+          jobs should not be empty
+
+          val job = jobs.head
+          delete(s"api/tiedote/jobs/${job.opiskeluoikeusOid}", headers = authHeaders(MockUsers.paakayttaja) ++ jsonContent) {
+            verifyResponseStatusOk()
+            response.body should include(job.opiskeluoikeusOid)
+          }
+
+          // Varmistetaan, että jobi on poistettu
+          app.kielitutkintotodistusTiedoteRepository.findAll(100, 0).map(_.opiskeluoikeusOid) should not contain job.opiskeluoikeusOid
+        }
+      }
+
+      "Palauttaa 404 jos tiedotetta ei löydy" in {
+        delete("api/tiedote/jobs/1.2.246.562.15.00000000000", headers = authHeaders(MockUsers.paakayttaja) ++ jsonContent) {
+          verifyResponseStatus(404)
+        }
+      }
+
+      "Tavallinen käyttäjä saa 403" in {
+        delete("api/tiedote/jobs/1.2.246.562.15.00000000000", headers = authHeaders(MockUsers.stadinAmmattiopistoKatselija) ++ jsonContent) {
+          verifyResponseStatus(403)
+        }
+      }
+    }
   }
 }
