@@ -65,6 +65,7 @@ export const AikajaksoRaporttiAikarajauksella = ({
   kotikuntaPvmInputHelp,
   example,
   osasuoritusType = osasuoritusTypes.TUTKINNON_OSA,
+  hideOsasuoritustenAikarajaus,
   lang
 }) => {
   const alkuAtom = Atom()
@@ -114,22 +115,28 @@ export const AikajaksoRaporttiAikarajauksella = ({
 
       <AikajaksoValinta alkuAtom={alkuAtom} loppuAtom={loppuAtom} />
 
-      <Listavalinta
-        seamless
-        atom={osasuoritustenAikarajausAtom}
-        options={[
-          {
-            key: false,
-            value: <KaikkiSuorituksetLabel osasuoritusType={osasuoritusType} />
-          },
-          {
-            key: true,
-            value: (
-              <AikarajatutSuorituksetLabel osasuoritusType={osasuoritusType} />
-            )
-          }
-        ]}
-      />
+      {!hideOsasuoritustenAikarajaus && (
+        <Listavalinta
+          seamless
+          atom={osasuoritustenAikarajausAtom}
+          options={[
+            {
+              key: false,
+              value: (
+                <KaikkiSuorituksetLabel osasuoritusType={osasuoritusType} />
+              )
+            },
+            {
+              key: true,
+              value: (
+                <AikarajatutSuorituksetLabel
+                  osasuoritusType={osasuoritusType}
+                />
+              )
+            }
+          ]}
+        />
+      )}
 
       {showKotikuntaPvmInput && (
         <PaivaValinta
