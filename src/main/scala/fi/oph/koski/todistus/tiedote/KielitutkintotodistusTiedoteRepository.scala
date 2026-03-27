@@ -29,6 +29,7 @@ class KielitutkintotodistusTiedoteRepository(val db: DB, val workerId: String, c
         AND NOT EXISTS (
           SELECT 1 FROM kielitutkintotodistus_tiedote_job tj
           WHERE tj.opiskeluoikeus_oid = oo.oid
+            AND tj.state != ${KielitutkintotodistusTiedoteState.DELETED}
         )
       ORDER BY oo.aikaleima
       LIMIT $limit
@@ -36,6 +37,11 @@ class KielitutkintotodistusTiedoteRepository(val db: DB, val workerId: String, c
   }
 
   def add(job: KielitutkintotodistusTiedoteJob): KielitutkintotodistusTiedoteJob = {
+    runDbSync(sql"""
+      DELETE FROM kielitutkintotodistus_tiedote_job
+      WHERE opiskeluoikeus_oid = ${job.opiskeluoikeusOid}
+        AND state = ${KielitutkintotodistusTiedoteState.DELETED}
+      """.asUpdate)
     runDbSync(sql"""
       INSERT INTO kielitutkintotodistus_tiedote_job(id, oppija_oid, opiskeluoikeus_oid, state, created_at, completed_at, worker, attempts, error, opiskeluoikeus_versio)
       VALUES (
@@ -141,9 +147,10 @@ class KielitutkintotodistusTiedoteRepository(val db: DB, val workerId: String, c
     runDbSync(sql"TRUNCATE TABLE kielitutkintotodistus_tiedote_job".asUpdate)
   }
 
-  def deleteByOpiskeluoikeusOid(opiskeluoikeusOid: String): Option[KielitutkintotodistusTiedoteJob] = {
+  def setDeletedByOpiskeluoikeusOid(opiskeluoikeusOid: String): Option[KielitutkintotodistusTiedoteJob] = {
     runDbSync(sql"""
-      DELETE FROM kielitutkintotodistus_tiedote_job
+      UPDATE kielitutkintotodistus_tiedote_job
+      SET state = ${KielitutkintotodistusTiedoteState.DELETED}
       WHERE opiskeluoikeus_oid = $opiskeluoikeusOid
       RETURNING *
       """.as[KielitutkintotodistusTiedoteJob]).headOption

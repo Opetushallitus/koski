@@ -60,7 +60,7 @@ class TiedoteApiServlet(implicit val application: KoskiApplication)
   delete("/jobs/:opiskeluoikeusOid") {
     val opiskeluoikeusOid = params("opiskeluoikeusOid")
 
-    repository.deleteByOpiskeluoikeusOid(opiskeluoikeusOid) match {
+    repository.setDeletedByOpiskeluoikeusOid(opiskeluoikeusOid) match {
       case Some(job) =>
         AuditLog.log(KoskiAuditLogMessage(TIEDOTE_RESETOITU, session, Map(
           oppijaHenkiloOid -> job.oppijaOid,

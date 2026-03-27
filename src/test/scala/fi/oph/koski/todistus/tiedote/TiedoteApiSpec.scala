@@ -100,8 +100,9 @@ class TiedoteApiSpec extends KielitutkintotodistusTiedoteSpecHelpers {
             response.body should include(job.opiskeluoikeusOid)
           }
 
-          // Varmistetaan, että jobi on poistettu
-          app.kielitutkintotodistusTiedoteRepository.findAll(100, 0).map(_.opiskeluoikeusOid) should not contain job.opiskeluoikeusOid
+          // Varmistetaan, että jobin tila on DELETED
+          val updatedJobs = app.kielitutkintotodistusTiedoteRepository.findAll(100, 0)
+          updatedJobs.find(_.opiskeluoikeusOid == job.opiskeluoikeusOid).map(_.state) should equal(Some("DELETED"))
         }
       }
 
