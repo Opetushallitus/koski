@@ -151,6 +151,7 @@ object KoskiErrorCategory {
         val tpoVääräOpintotaso = subcategory("tpoVääräOpintotaso", "Suorituksen opintotaso ei sisälly opiskeluoikeuden oppimäärään.")
         val tpoEriTaiteenalat = subcategory("tpoEriTaiteenalat", "Taiteen perusopetuksen opiskeluoikeudella ei voi olla suorituksia eri taiteenaloilta.")
         val dpCoreDeprecated = subcategory("dpCoreDeprecated", "DP Core -suoritukset on siirrettävä osasuorituksina")
+        val paikallinenTutkinnonOsaToisestaTutkinnosta = subcategory("paikallinenTutkinnonOsaToisestaTutkinnosta", "Paikallista tutkinnon osaa ei voi merkitä tutkinnon osaksi toisesta tutkinnosta")
       }
       val rakenne = new Rakenne
 

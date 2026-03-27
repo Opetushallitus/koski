@@ -156,6 +156,59 @@ class OppijaValidationAmmatillisenTutkinnonOsittainenSuoritusSpec extends Tutkin
             "palautetaan HTTP 200 (ei validoida rakennetta tässä)" in (setupOppijaWithTutkinnonOsaSuoritus(suoritus)(
               verifyResponseStatusOk()))
           }
+
+          "Paikallinen tutkinnon osa toisesta tutkinnosta" - {
+            val ajoneuvoalanAmmattitutkinto2025 = AmmatillinenTutkintoKoulutus(Koodistokoodiviite("354345", "koulutus"), Some("OPH-3418-2025"))
+
+            "Kun toisesta tutkinnosta -perusteen voimassaolo alkaa 1.8.2025 tai jälkeen, paikallista tutkinnon osaa ei hyväksytä" - {
+              val suoritus = paikallinenTutkinnonOsaSuoritus.copy(
+                tutkinto = Some(ajoneuvoalanAmmattitutkinto2025),
+                tutkinnonOsanRyhmä = ammatillisetTutkinnonOsat
+              )
+              "palautetaan HTTP 400" in (setupOppijaWithTutkinnonOsaSuoritus(suoritus)(
+                verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.rakenne.paikallinenTutkinnonOsaToisestaTutkinnosta(
+                  "Paikallista tutkinnon osaa 'paikallinen osa' ei voi siirtää tutkinnon osaksi toisesta tutkinnosta. Tutkinnon osa 'paikallinen osa' on merkitty paikalliseksi."
+                ))))
+            }
+
+            "Kun toisesta tutkinnosta -perusteen voimassaolo alkaa ennen 1.8.2025, paikallinen tutkinnon osa hyväksytään" - {
+              val vanhaAmmattitutkinto = AmmatillinenTutkintoKoulutus(Koodistokoodiviite("384248", "koulutus"), Some("OPH-1161-2018"))
+              val suoritus = paikallinenTutkinnonOsaSuoritus.copy(
+                tutkinto = Some(vanhaAmmattitutkinto),
+                tutkinnonOsanRyhmä = ammatillisetTutkinnonOsat
+              )
+              "palautetaan HTTP 200" in (setupOppijaWithTutkinnonOsaSuoritus(suoritus)(
+                verifyResponseStatusOk()))
+            }
+          }
+
+          "Toisesta tutkinnosta -perusteen voimassaolo arviointipäivänä" - {
+            val ajoneuvoalanAmmattitutkinto2025 = AmmatillinenTutkintoKoulutus(Koodistokoodiviite("354345", "koulutus"), Some("OPH-3418-2025"))
+
+            "Kun arviointipäivä on ennen perusteen voimassaolon alkua, palautetaan HTTP 400" - {
+              val suoritus = osittaisenTutkinnonOsaSuoritus.copy(
+                tutkinto = Some(ajoneuvoalanAmmattitutkinto2025),
+                koulutusmoduuli = kestävälläTavallaToimiminen,
+                arviointi = arviointiHyvä(date(2025, 7, 31)),
+                tutkinnonOsanRyhmä = ammatillisetTutkinnonOsat
+              )
+              "palautetaan HTTP 400" in (setupOppijaWithTutkinnonOsaSuoritus(suoritus)(
+                verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.rakenne.perusteEiVoimassa(
+                  "Tutkinnon osan perusteen OPH-3418-2025 tulee olla voimassa tai siirtymäajalla arviointipäivänä 2025-07-31."
+                ))))
+            }
+
+            "Kun arviointipäivä on perusteen voimassaolon alkamisen jälkeen, palautetaan HTTP 200" - {
+              val suoritus = osittaisenTutkinnonOsaSuoritus.copy(
+                tutkinto = Some(ajoneuvoalanAmmattitutkinto2025),
+                koulutusmoduuli = kestävälläTavallaToimiminen,
+                arviointi = arviointiHyvä(date(2025, 8, 1)),
+                tutkinnonOsanRyhmä = ammatillisetTutkinnonOsat
+              )
+              "palautetaan HTTP 200" in (setupOppijaWithTutkinnonOsaSuoritus(suoritus)(
+                verifyResponseStatusOk()))
+            }
+          }
         }
 
         "Suorituksen tila" - {
