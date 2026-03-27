@@ -105,7 +105,7 @@
   "pnpm": {
     "overrides": {
       "axios": "^1.12.0",
-      "brace-expansion@^1": "1.1.12",
+      "brace-expansion@^1": "1.1.13",
       "brace-expansion@^2": "5.0.5",
       "js-yaml@^3": "3.14.2",
       "js-yaml@^4": "4.1.1",
