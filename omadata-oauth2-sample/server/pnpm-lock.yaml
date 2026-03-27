@@ -6,7 +6,7 @@ settings:
 
 overrides:
   brace-expansion@^1: 1.1.12
-  brace-expansion@^2: 2.0.2
+  brace-expansion@^2: 5.0.5
 
 importers:
 
