@@ -9,14 +9,35 @@ on:
       commithash:
         description: "Commit hash to deploy from"
         required: true
+      force:
+        description: "Skip master check (emergency rollback)"
+        type: boolean
+        default: false
 env:
   DOCKER_BUILDKIT: 1
   SSH_AUTH_SOCK: /tmp/ssh_agent.sock
 
 run-name: Deploy to ${{ inputs.environment }}
 jobs:
+  check-master:
+    name: Check commit contains master
+    if: ${{ !inputs.force }}
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Verify commit contains latest master
+        run: |
+          MASTER_SHA=$(gh api repos/${{ github.repository }}/git/ref/heads/master --jq '.object.sha')
+          STATUS=$(gh api repos/${{ github.repository }}/compare/${MASTER_SHA}...${{ inputs.commithash }} --jq '.status')
+          if [ "$STATUS" = "behind" ] || [ "$STATUS" = "diverged" ]; then
+            echo "::error::Commit ${{ inputs.commithash }} does not contain latest master. Merge master first, or enable force option."
+            exit 1
+          fi
+        env:
+          GH_TOKEN: ${{ github.token }}
   build:
     name: Build Koski
+    needs: [check-master]
+    if: ${{ !cancelled() && (needs.check-master.result == 'success' || needs.check-master.result == 'skipped') }}
     runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
