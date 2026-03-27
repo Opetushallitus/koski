@@ -58,7 +58,7 @@ class KielitutkintotodistusTiedoteService(application: KoskiApplication) extends
 
     Try(repository.add(tiedoteJob)) match {
       case Success(_) =>
-        generateAndSend(tiedoteJobId, oppijaOid, opiskeluoikeusOid, s"$opiskeluoikeusOid-initial", attempt = 1)
+        generateAndSend(tiedoteJobId, oppijaOid, opiskeluoikeusOid, attempt = 1)
       case Failure(e: PSQLException) if e.getSQLState == PSQLState.UNIQUE_VIOLATION.getState =>
         logger.info(s"Tiedote on jo olemassa opiskeluoikeudelle $opiskeluoikeusOid, ohitetaan")
       case Failure(e) =>
@@ -67,7 +67,7 @@ class KielitutkintotodistusTiedoteService(application: KoskiApplication) extends
     }
   }
 
-  private def generateAndSend(tiedoteJobId: String, oppijaOid: String, opiskeluoikeusOid: String, idempotencyKey: String, attempt: Int): Unit = {
+  private def generateAndSend(tiedoteJobId: String, oppijaOid: String, opiskeluoikeusOid: String, attempt: Int): Unit = {
     val kituResult = kituClient.getExamineeDetails(opiskeluoikeusOid)
 
     kituResult match {
@@ -87,7 +87,7 @@ class KielitutkintotodistusTiedoteService(application: KoskiApplication) extends
 
         val result = client.sendKielitutkintoTodistusTiedote(
           oppijaOid,
-          idempotencyKey,
+          s"$opiskeluoikeusOid-initial",
           todistusResult.map(_.location.bucket),
           todistusResult.map(_.location.key),
           examineeDetails
@@ -167,7 +167,7 @@ class KielitutkintotodistusTiedoteService(application: KoskiApplication) extends
   private def retryOne(job: KielitutkintotodistusTiedoteJob): Unit = {
     val attempt = job.attempts + 1
     logger.info(s"Yritetään tiedotetta uudelleen: job=${job.id} yritys=$attempt/$maxAttempts")
-    generateAndSend(job.id, job.oppijaOid, job.opiskeluoikeusOid, job.opiskeluoikeusOid, attempt = attempt)
+    generateAndSend(job.id, job.oppijaOid, job.opiskeluoikeusOid, attempt = attempt)
   }
 }
 
