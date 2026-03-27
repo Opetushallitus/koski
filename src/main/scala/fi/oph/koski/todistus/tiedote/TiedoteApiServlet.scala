@@ -4,6 +4,9 @@ import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.koskiuser.{KoskiCookieAndBasicAuthenticationSupport, KoskiSpecificSession}
 import fi.oph.koski.koskiuser.Rooli.OPHPAAKAYTTAJA
+import fi.oph.koski.log.KoskiAuditLogMessageField.{opiskeluoikeusOid => opiskeluoikeusOidField, oppijaHenkiloOid}
+import fi.oph.koski.log.KoskiOperation.TIEDOTE_RESETOITU
+import fi.oph.koski.log.{AuditLog, KoskiAuditLogMessage}
 import fi.oph.koski.servlet.{KoskiSpecificApiServlet, NoCache}
 
 class TiedoteApiServlet(implicit val application: KoskiApplication)
@@ -51,6 +54,21 @@ class TiedoteApiServlet(implicit val application: KoskiApplication)
         haltWithStatus(KoskiErrorCategory.unavailable("Tiedote-scheduler ei ole aktiivinen tällä instanssilla. Kokeile pyyntöä uudelleen, jotta se ohjautuisi aktiiviselle instanssille."))
       case None =>
         haltWithStatus(KoskiErrorCategory.notImplemented("Tiedote-scheduler ei ole käynnissä"))
+    }
+  }
+
+  delete("/jobs/:opiskeluoikeusOid") {
+    val opiskeluoikeusOid = params("opiskeluoikeusOid")
+
+    repository.deleteByOpiskeluoikeusOid(opiskeluoikeusOid) match {
+      case Some(job) =>
+        AuditLog.log(KoskiAuditLogMessage(TIEDOTE_RESETOITU, session, Map(
+          oppijaHenkiloOid -> job.oppijaOid,
+          opiskeluoikeusOidField -> opiskeluoikeusOid
+        )))
+        renderObject(job)
+      case None =>
+        haltWithStatus(KoskiErrorCategory.notFound("Tiedotetta ei löytynyt opiskeluoikeudelle"))
     }
   }
 }

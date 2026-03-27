@@ -141,6 +141,14 @@ class KielitutkintotodistusTiedoteRepository(val db: DB, val workerId: String, c
     runDbSync(sql"TRUNCATE TABLE kielitutkintotodistus_tiedote_job".asUpdate)
   }
 
+  def deleteByOpiskeluoikeusOid(opiskeluoikeusOid: String): Option[KielitutkintotodistusTiedoteJob] = {
+    runDbSync(sql"""
+      DELETE FROM kielitutkintotodistus_tiedote_job
+      WHERE opiskeluoikeus_oid = $opiskeluoikeusOid
+      RETURNING *
+      """.as[KielitutkintotodistusTiedoteJob]).headOption
+  }
+
   implicit private val getJobResult: GetResult[KielitutkintotodistusTiedoteJob] = GetResult[KielitutkintotodistusTiedoteJob](r => {
     KielitutkintotodistusTiedoteJob(
       id = r.rs.getString("id"),
