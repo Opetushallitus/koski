@@ -88,6 +88,7 @@ class KielitutkintotodistusTiedoteWorkflowSpec extends KielitutkintotodistusTied
         val completedJobs = repository.findAll(10, 0, Some(KielitutkintotodistusTiedoteState.COMPLETED))
         completedJobs should have length 1
         mockTiedotuspalveluClient.sentNotifications should have length 1
+        mockTiedotuspalveluClient.sentNotifications.head.idempotencyKey shouldEqual s"$ooOid-initial"
       }
     }
 
