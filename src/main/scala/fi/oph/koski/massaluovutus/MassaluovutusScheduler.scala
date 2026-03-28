@@ -24,7 +24,8 @@ class MassaluovutusScheduler(application: KoskiApplication) extends Logging {
       None,
       runNextQuery,
       intervalMillis = 1000,
-      concurrency = concurrency
+      concurrency = concurrency,
+      independentWorkers = true
     ))
     schedulerInstance
   }

@@ -153,6 +153,7 @@ class QueryRepository(
         WHERE state = ${QueryState.pending}
         ORDER BY (now() - created_at) * priority
         LIMIT 1
+        FOR UPDATE SKIP LOCKED
       )
       RETURNING *
       """.as[Query])

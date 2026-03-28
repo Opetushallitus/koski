@@ -103,6 +103,65 @@ class SchedulerSpec extends AnyFreeSpec with TestEnvironment with Matchers {
     scheduler.shutdown
   }
 
+  "independentWorkers" - {
+    "multiple lease holders fire concurrently when independentWorkers is enabled" in {
+      val executionCountA = new AtomicInteger(0)
+      val executionCountB = new AtomicInteger(0)
+      val leaseA = new ControllableLeaseElector
+      val leaseB = new ControllableLeaseElector
+
+      leaseA.leaseHeld = true
+      leaseB.leaseHeld = true
+
+      // Long interval: without independentWorkers, the first to fire would push
+      // nextFireTime 2s into the future, blocking the other from firing.
+      val interval = Duration.ofMillis(2000)
+
+      val schedulerA = new Scheduler(
+        KoskiApplicationForTests, "test-independent-workers", new IntervalSchedule(interval), None,
+        _ => { executionCountA.incrementAndGet(); None },
+        intervalMillis = 50,
+        independentWorkers = true,
+        leaseElectorOverride = Some(leaseA)
+      )
+
+      val schedulerB = new Scheduler(
+        KoskiApplicationForTests, "test-independent-workers", new IntervalSchedule(interval), None,
+        _ => { executionCountB.incrementAndGet(); None },
+        intervalMillis = 50,
+        independentWorkers = true,
+        leaseElectorOverride = Some(leaseB)
+      )
+
+      // Both should fire within a short window — not blocked by the 2s interval
+      Wait.until(executionCountA.get >= 1, timeoutMs = 1500)
+      Wait.until(executionCountB.get >= 1, timeoutMs = 1500)
+
+      schedulerA.shutdown
+      schedulerB.shutdown
+    }
+
+    "lease holder without lease does not fire even with independentWorkers" in {
+      val executionCount = new AtomicInteger(0)
+      val lease = new ControllableLeaseElector
+
+      lease.leaseHeld = false
+
+      val scheduler = new Scheduler(
+        KoskiApplicationForTests, "test-independent-no-lease", new IntervalSchedule(Duration.ofMillis(100)), None,
+        _ => { executionCount.incrementAndGet(); None },
+        intervalMillis = 10,
+        independentWorkers = true,
+        leaseElectorOverride = Some(lease)
+      )
+
+      Thread.sleep(500)
+      executionCount.get should equal(0)
+
+      scheduler.shutdown
+    }
+  }
+
   "lease handover" - {
     "new lease holder respects global cadence from DB, does not fire immediately" in {
       val executionCountA = new AtomicInteger(0)
