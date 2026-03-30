@@ -21,7 +21,7 @@
     <http4s-blaze-client.version>0.23.17</http4s-blaze-client.version>
     <http4s-scala-xml.version>0.24.0</http4s-scala-xml.version>
     <json4s.version>4.0.7</json4s.version>
-    <awssdk.version>2.42.19</awssdk.version>
+    <awssdk.version>2.42.22</awssdk.version>
     <jetty.version>9.4.58.v20250814</jetty.version>
     <prometheus.client.version>0.16.0</prometheus.client.version>
     <scoverage.plugin.version>1.4.11</scoverage.plugin.version>
