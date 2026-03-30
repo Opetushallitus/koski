@@ -15,7 +15,8 @@
   "platformAutomerge": false,
   "rangeStrategy": "replace",
   "ignoreDeps": [
-    "com.github.Opetushallitus.java-utils:oid-generator"
+    "com.github.Opetushallitus.java-utils:oid-generator",
+    "brace-expansion"
   ],
   "packageRules": [
     {
@@ -29,13 +30,6 @@
       "description": "Disable digest updates (dev/test infra images, limited value)",
       "matchUpdateTypes": [
         "digest"
-      ],
-      "enabled": false
-    },
-    {
-      "description": "Don't update brace-expansion v1 override (eslint 9 requires minimatch@3 which needs brace-expansion@1)",
-      "matchPackageNames": [
-        "brace-expansion@^1"
       ],
       "enabled": false
     },
