@@ -33,6 +33,14 @@
       "enabled": false
     },
     {
+      "description": "Don't update brace-expansion v1 override (eslint 9 requires minimatch@3 which needs brace-expansion@1)",
+      "matchPackageNames": [
+        "brace-expansion"
+      ],
+      "matchCurrentVersion": "/^1\\./",
+      "enabled": false
+    },
+    {
       "description": "Group all Parcel updates together (skip for now)",
       "groupName": "parcel",
       "enabled": false,
