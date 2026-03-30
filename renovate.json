@@ -33,6 +33,15 @@
       "enabled": false
     },
     {
+      "description": "Group all Parcel updates together (skip for now)",
+      "matchPackagePatterns": [
+        "^parcel$",
+        "^@parcel/"
+      ],
+      "groupName": "parcel",
+      "enabled": false
+    },
+    {
       "description": "Group minor npm updates",
       "matchManagers": [
         "npm"
