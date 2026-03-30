@@ -28,7 +28,12 @@ class KiosServlet(implicit val application: KoskiApplication) extends KoskiSpeci
   post("/hetu") {
     val ophKatselijaUser = KoskiSpecificSession.ophKatselijaUser(request)
     withJsonBody { json =>
-      renderEither(extractAndValidateHetu(json).flatMap(hetu => application.kiosService.findOppijaByHetu(hetu)(ophKatselijaUser)))
+      val oppija = extractAndValidateHetu(json).flatMap(hetu => application.kiosService.findOppijaByHetu(hetu)(ophKatselijaUser))
+      oppija.map(o => o.opiskeluoikeudet.foreach {
+        case x: KiosKoskeenTallennettavaOpiskeluoikeus if x.oid.isDefined => auditLog(o.henkilö.oid, opiskeluoikeusOid = x.oid.get)
+        case _ => auditLog(o.henkilö.oid)
+      })
+      renderEither(oppija)
     }()
   }
 

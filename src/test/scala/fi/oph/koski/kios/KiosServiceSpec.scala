@@ -66,6 +66,14 @@ class KiosServiceSpec
     }
   }
 
+  "Hetu-haku kirjoittaa auditlogin" in {
+    AuditLogTester.clearMessages()
+    post("/api/kios/hetu", JsonSerializer.writeWithRoot(HetuRequest(hetu = KoskiSpecificMockOppijat.dippainssi.hetu.get)), headers = authHeaders(kiosKäyttäjä) ++ jsonContent) {
+      verifyResponseStatusOk()
+      AuditLogTester.verifyLastAuditLogMessageForOperation(Map("operation" -> "KIOS_OPISKELUOIKEUS_HAKU"))
+    }
+  }
+
   "Kosken testioppijoiden tiedot voi hakea, ja ne joko palauttavat tiedot tai 404" in {
     // Tämä testi varmistaa, että mitään yllättäviä 500 tms. virheitä ei tapahdu, ja suuruusluokat on oikein, eli suurin osa testioppijoista löytyy, ja osa palauttaa 404.
     val oppijaOidit = KoskiSpecificMockOppijat.defaultOppijat
