@@ -2,8 +2,7 @@ package fi.oph.koski.massaluovutus
 
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.log.Logging
-import fi.oph.koski.schedule.{IntervalSchedule, Scheduler}
-import org.json4s.JValue
+import fi.oph.koski.schedule.IndependentIntervalScheduler
 
 class MassaluovutusScheduler(application: KoskiApplication) extends Logging {
   val schedulerName = "massaluovutus"
@@ -14,26 +13,25 @@ class MassaluovutusScheduler(application: KoskiApplication) extends Logging {
     massaluovutukset.cancelAllTasks("Interrupted: worker shutdown")
   }
 
-  var schedulerInstance: Option[Scheduler] = None
+  var schedulerInstance: Option[IndependentIntervalScheduler] = None
 
-  def scheduler: Option[Scheduler] = {
-    schedulerInstance = Some(new Scheduler(
+  def scheduler: Option[IndependentIntervalScheduler] = {
+    schedulerInstance = Some(IndependentIntervalScheduler(
       application,
       schedulerName,
-      new IntervalSchedule(application.config.getDuration("kyselyt.checkInterval")),
-      None,
+      application.config.getDuration("kyselyt.checkInterval"),
       runNextQuery,
-      intervalMillis = 1000,
+      shouldFireCheckIntervalMillis = 1000,
       concurrency = concurrency
     ))
     schedulerInstance
   }
 
   def shutdown(): Unit = {
-    schedulerInstance.foreach(_.shutdown)
+    schedulerInstance.foreach(_.shutdown())
   }
 
-  private def runNextQuery(_context: Option[JValue]): Option[JValue] = {
+  private def runNextQuery(): Unit = {
     if (massaluovutukset.hasNext) {
       if (massaluovutukset.systemIsOverloaded) {
         logger.info("System is overloaded, skipping this round")
@@ -41,6 +39,5 @@ class MassaluovutusScheduler(application: KoskiApplication) extends Logging {
         massaluovutukset.runNext()
       }
     }
-    None
   }
 }

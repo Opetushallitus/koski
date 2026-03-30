@@ -18,17 +18,17 @@ class UpdateHenkilotTask(application: KoskiApplication) extends Timing {
   // After first call that actually yields some changes from the data source, we'll use the timestamp
   // of latest change (+1 millisecond) as the limit.
   private val backBufferMs = 10 * 60 * 1000
-  def scheduler: Option[Scheduler] =
+  def scheduler: Option[GlobalIntervalScheduler] =
     if (application.config.getString("schedule.henkilötiedotUpdateInterval") == "never") {
       None
     } else {
-      Some(new Scheduler(
+      Some(GlobalIntervalScheduler.withContext(
         application,
         "henkilötiedot-update",
-        new IntervalSchedule(application.config.getDuration("schedule.henkilötiedotUpdateInterval")),
+        application.config.getDuration("schedule.henkilötiedotUpdateInterval"),
         henkilöUpdateContext(currentTimeMillis - backBufferMs),
         updateHenkilöt(refresh = false),
-        concurrency = 1
+        shouldFireCheckIntervalMillis = 10000
       ))
     }
 
@@ -108,7 +108,7 @@ class UpdateHenkilotTask(application: KoskiApplication) extends Timing {
   private def findOppijatWithoutSlaveOids(filteredOids: List[String]) =
     application.opintopolkuHenkilöFacade.findOppijatNoSlaveOids(filteredOids).sortBy(_.modified)
 
-  private def henkilöUpdateContext(lastRun: Long) = Some(JsonSerializer.serializeWithRoot(HenkilöUpdateContext(lastRun)))
+  private def henkilöUpdateContext(lastRun: Long): JValue = JsonSerializer.serializeWithRoot(HenkilöUpdateContext(lastRun))
 }
 
 private case class WithModifiedTime(tiedot: OppijaHenkilöWithMasterInfo, modified: Long)

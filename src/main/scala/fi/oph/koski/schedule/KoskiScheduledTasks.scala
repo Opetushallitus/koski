@@ -4,21 +4,21 @@ import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.tiedonsiirto.TiedonsiirtoScheduler
 
 class KoskiScheduledTasks(application: KoskiApplication) {
-  val updateHenkilötScheduler: Option[Scheduler] = new UpdateHenkilotTask(application).scheduler
-  val syncPerustiedot: Option[Scheduler] = application.perustiedotSyncScheduler.scheduler
-  val manualSyncPerustiedot: Option[Scheduler] = application.perustiedotManualSyncScheduler.scheduler
+  val updateHenkilötScheduler: Option[GlobalIntervalScheduler] = new UpdateHenkilotTask(application).scheduler
+  val syncPerustiedot: Option[GlobalIntervalScheduler] = application.perustiedotSyncScheduler.scheduler
+  val manualSyncPerustiedot: Option[GlobalIntervalScheduler] = application.perustiedotManualSyncScheduler.scheduler
   val syncTiedonsiirrot = new TiedonsiirtoScheduler(
     application,
     application.tiedonsiirtoService
   )
-  val purgeOldSessions: Option[Scheduler] = new PurgeOldSessionsTask(application).scheduler
-  val runQueries: Option[Scheduler] = application.massaluovutusScheduler.scheduler
-  val cleanupQueries: Option[Scheduler] = application.massaluovutusCleanupScheduler.scheduler
+  val purgeOldSessions: Option[GlobalIntervalScheduler] = new PurgeOldSessionsTask(application).scheduler
+  val runQueries: Option[IndependentIntervalScheduler] = application.massaluovutusScheduler.scheduler
+  val cleanupQueries: Option[GlobalIntervalScheduler] = application.massaluovutusCleanupScheduler.scheduler
 
-  val todistusScheduler: Option[Scheduler] = application.todistusScheduler.createScheduler
-  val todistusCleanupScheduler: Option[Scheduler] = application.todistusCleanupScheduler.createScheduler
+  val todistusScheduler: Option[IndependentIntervalScheduler] = application.todistusScheduler.createScheduler
+  val todistusCleanupScheduler: Option[GlobalIntervalScheduler] = application.todistusCleanupScheduler.createScheduler
 
-  val kielitutkintotodistusTiedoteScheduler: Option[Scheduler] = application.kielitutkintotodistusTiedoteScheduler.createScheduler
+  val kielitutkintotodistusTiedoteScheduler: Option[GlobalIntervalScheduler] = application.kielitutkintotodistusTiedoteScheduler.createScheduler
 
   def init(): Unit = {}
 }

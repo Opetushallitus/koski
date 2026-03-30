@@ -67,15 +67,13 @@ class TiedoteApiSpec extends KielitutkintotodistusTiedoteSpecHelpers {
 
     "GET /run" - {
       "OPH-pääkäyttäjä voi käynnistää batch-ajon heti" in {
-        withoutRunningTiedoteScheduler {
-          get("api/tiedote/run", headers = authHeaders(MockUsers.paakayttaja) ++ jsonContent) {
-            verifyResponseStatusOk()
-            response.body should include("triggered")
-          }
+        get("api/tiedote/run", headers = authHeaders(MockUsers.paakayttaja) ++ jsonContent) {
+          verifyResponseStatusOk()
+          response.body should include("triggered")
+        }
 
-          Wait.until {
-            app.kielitutkintotodistusTiedoteRepository.findAll(100, 0).nonEmpty
-          }
+        Wait.until {
+          app.kielitutkintotodistusTiedoteRepository.findAll(100, 0).nonEmpty
         }
       }
 

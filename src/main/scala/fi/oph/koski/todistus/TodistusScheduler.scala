@@ -2,8 +2,8 @@ package fi.oph.koski.todistus
 
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.log.Logging
-import fi.oph.koski.schedule.{IntervalSchedule, Scheduler}
-import org.json4s.JValue
+import fi.oph.koski.schedule.IndependentIntervalScheduler
+
 
 class TodistusScheduler(application: KoskiApplication) extends Logging {
   val schedulerName = "todistus"
@@ -13,32 +13,29 @@ class TodistusScheduler(application: KoskiApplication) extends Logging {
     todistusService.markAllMyJobsInterrupted()
   }
 
-  var schedulerInstance: Option[Scheduler] = None
+  var schedulerInstance: Option[IndependentIntervalScheduler] = None
 
-  def createScheduler: Option[Scheduler] = {
+  def createScheduler: Option[IndependentIntervalScheduler] = {
     if (!application.todistusFeatureFlags.isServiceEnabled) return None
 
-    schedulerInstance = Some(new Scheduler(
+    schedulerInstance = Some(IndependentIntervalScheduler(
       application,
       schedulerName,
-      new IntervalSchedule(application.config.getDuration("todistus.checkInterval")),
-      None,
+      application.config.getDuration("todistus.checkInterval"),
       runNextTodistus,
-      intervalMillis = 1000,
+      shouldFireCheckIntervalMillis = 1000,
       concurrency = application.config.getInt("todistus.concurrency")
     ))
     schedulerInstance
   }
 
   def shutdown(): Unit = {
-    schedulerInstance.foreach(_.shutdown)
+    schedulerInstance.foreach(_.shutdown())
   }
 
-  private def runNextTodistus(_context: Option[JValue]): Option[JValue] = {
+  private def runNextTodistus(): Unit = {
     if (todistusService.hasNext) {
       todistusService.runNext()
     }
-
-    None
   }
 }
