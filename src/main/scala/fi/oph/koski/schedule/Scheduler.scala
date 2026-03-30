@@ -22,21 +22,24 @@ class Scheduler(
   initialContext: Option[JValue],
   task: Option[JValue] => Option[JValue],
   intervalMillis: Int = 10000,
-  concurrency: Int = 0, // 0 = no lease coordination, task runs on all nodes; >= 1 = lease-coordinated with N slots
-  private[schedule] val leaseElectorOverride: Option[WorkerLeaseElector] = None
+  mode: SchedulerMode = RunOnAllNodes
 ) extends QueryMethods with Logging {
 
   override val db: DB = application.masterDatabase.db
 
-  private val leaseElector: Option[WorkerLeaseElector] = leaseElectorOverride.orElse(
-    if (concurrency >= 1) Some(new WorkerLeaseElector(
-      application.workerLeaseRepository,
-      name,
-      application.instanceId,
-      slots = concurrency,
-      leaseDuration = application.config.getDuration("schedule.workerLease.duration"),
-      heartbeatInterval = application.config.getDuration("schedule.workerLease.heartbeatInterval")
-    )) else None
+  private val leaseElector: Option[WorkerLeaseElector] = mode match {
+    case RunOnAllNodes => None
+    case m: LeaseControlledWithSharedSchedule => m.leaseElectorOverrideForTests.orElse(Some(createLeaseElector(m.concurrency)))
+    case m: LeaseControlledWithIndependentSchedules => m.leaseElectorOverrideForTests.orElse(Some(createLeaseElector(m.concurrency)))
+  }
+
+  private def createLeaseElector(slots: Int) = new WorkerLeaseElector(
+    application.workerLeaseRepository,
+    name,
+    application.instanceId,
+    slots = slots,
+    leaseDuration = application.config.getDuration("schedule.workerLease.duration"),
+    heartbeatInterval = application.config.getDuration("schedule.workerLease.heartbeatInterval")
   )
 
   private val taskExecutor = Executors.newSingleThreadScheduledExecutor(NamedThreadFactory(name))
@@ -60,14 +63,20 @@ class Scheduler(
   private val context: Option[JValue] = getScheduler.flatMap(_.context).orElse(initialContext)
   // If nextFireTime is in the past (stale from a previous instance), recompute from now.
   // This prevents fire-on-startup for stale rows.
+  // For LeaseControlledWithIndependentSchedules, each node uses its own cadence,
+  // so ignore the DB value and fire on first tick.
   private var localNextFireTime: Timestamp = {
-    val dbTime = getScheduler.map(_.nextFireTime).getOrElse(scheduling.nextFireTime())
-    if (dbTime.before(now)) {
-      val fresh = scheduling.nextFireTime()
-      runDbSync(KoskiTables.Scheduler.filter(_.name === name).map(_.nextFireTime).update(fresh))
-      fresh
+    if (mode.independentSchedules) {
+      new Timestamp(0) // fire immediately on first tick
     } else {
-      dbTime
+      val dbTime = getScheduler.map(_.nextFireTime).getOrElse(scheduling.nextFireTime())
+      if (dbTime.before(now)) {
+        val fresh = scheduling.nextFireTime()
+        runDbSync(KoskiTables.Scheduler.filter(_.name === name).map(_.nextFireTime).update(fresh))
+        fresh
+      } else {
+        dbTime
+      }
     }
   }
 
@@ -137,9 +146,9 @@ class Scheduler(
     if (suspended || !hasLease) {
       false
     } else {
-      // For lease-coordinated schedulers, read nextFireTime from DB to maintain global
-      // cadence across nodes. For non-lease schedulers, use the local copy.
-      val nextFireTime = if (leaseElector.isDefined) {
+      // For LeaseControlledWithSharedSchedule, read nextFireTime from DB to maintain
+      // global cadence across nodes. Otherwise, use the local copy.
+      val nextFireTime = if (leaseElector.isDefined && !mode.independentSchedules) {
         scheduler.map(_.nextFireTime).getOrElse(localNextFireTime)
       } else {
         localNextFireTime
@@ -160,7 +169,10 @@ class Scheduler(
   private def fire = try {
     // Write nextFireTime to DB immediately so a new lease holder sees the updated
     // value before the task completes, preventing premature firing.
-    runDbSync(KoskiTables.Scheduler.filter(_.name === name).map(_.nextFireTime).update(localNextFireTime))
+    // Skip for LeaseControlledWithIndependentSchedules — each node tracks its own cadence.
+    if (!mode.independentSchedules) {
+      runDbSync(KoskiTables.Scheduler.filter(_.name === name).map(_.nextFireTime).update(localNextFireTime))
+    }
     val context: Option[JValue] = runDbSync(KoskiTables.Scheduler.filter(_.name === name).result.head).context
     logger.debug(s"Firing scheduled task $name ${context.map(c => s"with context ${JsonMethods.compact(c)}").mkString}")
     val newContext: Option[JValue] = task(context)
@@ -194,4 +206,44 @@ class FixedTimeOfDaySchedule(hour: Int, minute: Int) extends Schedule {
 class IntervalSchedule(duration: Duration) extends Schedule {
   override def scheduleNextFireTime(seed: LocalDateTime): LocalDateTime = seed.plus(duration)
   override def toString = s"IntervalSchedule(duration=$duration)"
+}
+
+sealed trait SchedulerMode {
+  private[schedule] def independentSchedules: Boolean
+}
+
+object SchedulerMode extends Logging {
+  def leaseControlledWithIndependentSchedules(concurrency: Int): SchedulerMode = {
+    if (concurrency >= 2) {
+      LeaseControlledWithIndependentSchedules(concurrency)
+    } else {
+      logger.warn(s"concurrency=$concurrency on liian pieni rinnakkaiselle suoritukselle, käytetään jaettua skedulointia")
+      leaseControlledWithSharedSchedule(concurrency)
+    }
+  }
+
+  def leaseControlledWithSharedSchedule(concurrency: Int): SchedulerMode = {
+    if (concurrency >= 1) {
+      LeaseControlledWithSharedSchedule(concurrency)
+    } else {
+      logger.warn(s"concurrency=$concurrency on liian pieni lease-kontrolloidulle suoritukselle, ajetaan kaikilla nodeilla")
+      RunOnAllNodes
+    }
+  }
+}
+
+case object RunOnAllNodes extends SchedulerMode {
+  private[schedule] val independentSchedules: Boolean = true
+}
+private[schedule] case class LeaseControlledWithSharedSchedule(
+  concurrency: Int,
+  private[schedule] val leaseElectorOverrideForTests: Option[WorkerLeaseElector] = None
+) extends SchedulerMode {
+  private[schedule] val independentSchedules: Boolean = false
+}
+private[schedule] case class LeaseControlledWithIndependentSchedules(
+  concurrency: Int,
+  private[schedule] val leaseElectorOverrideForTests: Option[WorkerLeaseElector] = None
+) extends SchedulerMode {
+  private[schedule] val independentSchedules: Boolean = true
 }

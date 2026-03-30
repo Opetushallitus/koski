@@ -2,7 +2,7 @@ package fi.oph.koski.todistus.tiedote
 
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.log.Logging
-import fi.oph.koski.schedule.{IntervalSchedule, Schedule, Scheduler}
+import fi.oph.koski.schedule.{IntervalSchedule, Schedule, Scheduler, SchedulerMode}
 import org.json4s.JValue
 
 class KielitutkintotodistusTiedoteScheduler(application: KoskiApplication) extends Logging {
@@ -23,7 +23,7 @@ class KielitutkintotodistusTiedoteScheduler(application: KoskiApplication) exten
       None,
       runBatch,
       intervalMillis = 1000,
-      concurrency = 1
+      mode = SchedulerMode.leaseControlledWithSharedSchedule(concurrency = 1)
     ))
     schedulerInstance
   }

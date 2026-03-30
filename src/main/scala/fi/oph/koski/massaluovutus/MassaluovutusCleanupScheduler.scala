@@ -2,7 +2,7 @@ package fi.oph.koski.massaluovutus
 
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.log.Logging
-import fi.oph.koski.schedule.{IntervalSchedule, Scheduler}
+import fi.oph.koski.schedule.{IntervalSchedule, Scheduler, SchedulerMode}
 import org.json4s.JValue
 
 class MassaluovutusCleanupScheduler(application: KoskiApplication) extends Logging {
@@ -16,7 +16,7 @@ class MassaluovutusCleanupScheduler(application: KoskiApplication) extends Loggi
       None,
       runNextQuery,
       intervalMillis = 1000,
-      concurrency = 1
+      mode = SchedulerMode.leaseControlledWithSharedSchedule(concurrency = 1)
     ))
   }
 

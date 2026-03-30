@@ -103,6 +103,63 @@ class SchedulerSpec extends AnyFreeSpec with TestEnvironment with Matchers {
     scheduler.shutdown
   }
 
+  "independentSchedules" - {
+    "multiple lease holders fire concurrently when independentSchedules is enabled" in {
+      val executionCountA = new AtomicInteger(0)
+      val executionCountB = new AtomicInteger(0)
+      val leaseA = new ControllableLeaseElector
+      val leaseB = new ControllableLeaseElector
+
+      leaseA.leaseHeld = true
+      leaseB.leaseHeld = true
+
+      // Long interval: without independentSchedules, the first to fire would push
+      // nextFireTime 2s into the future, blocking the other from firing.
+      val interval = Duration.ofMillis(2000)
+
+      // Multiple containers are simulated by multiple Scheduler objects with same name.
+      val schedulerA = new Scheduler(
+        KoskiApplicationForTests, "test-independent-workers", new IntervalSchedule(interval), None,
+        _ => { executionCountA.incrementAndGet(); None },
+        intervalMillis = 50,
+        mode = LeaseControlledWithIndependentSchedules(2, leaseElectorOverrideForTests = Some(leaseA))
+      )
+
+      val schedulerB = new Scheduler(
+        KoskiApplicationForTests, "test-independent-workers", new IntervalSchedule(interval), None,
+        _ => { executionCountB.incrementAndGet(); None },
+        intervalMillis = 50,
+        mode = LeaseControlledWithIndependentSchedules(2, leaseElectorOverrideForTests = Some(leaseB))
+      )
+
+      // Both should fire within a short window — not blocked by the 2s interval
+      Wait.until(executionCountA.get >= 1, timeoutMs = 1500)
+      Wait.until(executionCountB.get >= 1, timeoutMs = 1500)
+
+      schedulerA.shutdown
+      schedulerB.shutdown
+    }
+
+    "lease holder without lease does not fire even with independentSchedules" in {
+      val executionCount = new AtomicInteger(0)
+      val lease = new ControllableLeaseElector
+
+      lease.leaseHeld = false
+
+      val scheduler = new Scheduler(
+        KoskiApplicationForTests, "test-independent-no-lease", new IntervalSchedule(Duration.ofMillis(100)), None,
+        _ => { executionCount.incrementAndGet(); None },
+        intervalMillis = 10,
+        mode = LeaseControlledWithIndependentSchedules(2, leaseElectorOverrideForTests = Some(lease))
+      )
+
+      Thread.sleep(500)
+      executionCount.get should equal(0)
+
+      scheduler.shutdown
+    }
+  }
+
   "lease handover" - {
     "new lease holder respects global cadence from DB, does not fire immediately" in {
       val executionCountA = new AtomicInteger(0)
@@ -119,14 +176,14 @@ class SchedulerSpec extends AnyFreeSpec with TestEnvironment with Matchers {
         KoskiApplicationForTests, "test-handover-cadence", new IntervalSchedule(interval), None,
         _ => { executionCountA.incrementAndGet(); None },
         intervalMillis = 50,
-        leaseElectorOverride = Some(leaseA)
+        mode = LeaseControlledWithSharedSchedule(1, leaseElectorOverrideForTests = Some(leaseA))
       )
 
       val schedulerB = new Scheduler(
         KoskiApplicationForTests, "test-handover-cadence", new IntervalSchedule(interval), None,
         _ => { executionCountB.incrementAndGet(); None },
         intervalMillis = 50,
-        leaseElectorOverride = Some(leaseB)
+        mode = LeaseControlledWithSharedSchedule(1, leaseElectorOverrideForTests = Some(leaseB))
       )
 
       // Wait for A to fire at least once
@@ -146,6 +203,38 @@ class SchedulerSpec extends AnyFreeSpec with TestEnvironment with Matchers {
 
       schedulerA.shutdown
       schedulerB.shutdown
+    }
+  }
+
+  "SchedulerMode factory fallbacks" - {
+    "leaseControlledWithIndependentSchedules with concurrency >= 2 returns LeaseControlledWithIndependentSchedules" in {
+      SchedulerMode.leaseControlledWithIndependentSchedules(concurrency = 3) shouldBe a[LeaseControlledWithIndependentSchedules]
+    }
+
+    "leaseControlledWithIndependentSchedules with concurrency = 1 falls back to LeaseControlledWithSharedSchedule" in {
+      val mode = SchedulerMode.leaseControlledWithIndependentSchedules(concurrency = 1)
+      mode shouldBe a[LeaseControlledWithSharedSchedule]
+      mode.asInstanceOf[LeaseControlledWithSharedSchedule].concurrency should equal(1)
+    }
+
+    "leaseControlledWithIndependentSchedules with concurrency = 0 falls back to RunOnAllNodes" in {
+      SchedulerMode.leaseControlledWithIndependentSchedules(concurrency = 0) should equal(RunOnAllNodes)
+    }
+
+    "leaseControlledWithIndependentSchedules with negative concurrency falls back to RunOnAllNodes" in {
+      SchedulerMode.leaseControlledWithIndependentSchedules(concurrency = -1) should equal(RunOnAllNodes)
+    }
+
+    "leaseControlledWithSharedSchedule with concurrency >= 1 returns LeaseControlledWithSharedSchedule" in {
+      SchedulerMode.leaseControlledWithSharedSchedule(concurrency = 1) shouldBe a[LeaseControlledWithSharedSchedule]
+    }
+
+    "leaseControlledWithSharedSchedule with concurrency = 0 falls back to RunOnAllNodes" in {
+      SchedulerMode.leaseControlledWithSharedSchedule(concurrency = 0) should equal(RunOnAllNodes)
+    }
+
+    "leaseControlledWithSharedSchedule with negative concurrency falls back to RunOnAllNodes" in {
+      SchedulerMode.leaseControlledWithSharedSchedule(concurrency = -1) should equal(RunOnAllNodes)
     }
   }
 

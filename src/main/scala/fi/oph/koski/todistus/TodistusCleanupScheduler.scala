@@ -1,7 +1,7 @@
 package fi.oph.koski.todistus
 
 import fi.oph.koski.config.KoskiApplication
-import fi.oph.koski.schedule.{IntervalSchedule, Scheduler}
+import fi.oph.koski.schedule.{IntervalSchedule, Scheduler, SchedulerMode}
 import fi.oph.koski.log.Logging
 import org.json4s.JValue
 
@@ -21,7 +21,7 @@ class TodistusCleanupScheduler(application: KoskiApplication) extends Logging {
       None,
       runNext,
       intervalMillis = 1000,
-      concurrency = 1
+      mode = SchedulerMode.leaseControlledWithSharedSchedule(concurrency = 1)
     ))
     schedulerInstance
   }

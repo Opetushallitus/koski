@@ -16,7 +16,7 @@ case class PerustiedotSyncScheduler(app: KoskiApplication) extends Timing {
         None,
         syncAndLogErrors,
         intervalMillis = 1000,
-        concurrency = 1
+        mode = LeaseControlledWithSharedSchedule(1)
       ))
     }
 

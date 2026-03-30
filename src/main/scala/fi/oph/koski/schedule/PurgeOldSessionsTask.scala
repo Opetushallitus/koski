@@ -13,7 +13,7 @@ class PurgeOldSessionsTask(app: KoskiApplication) extends Timing {
     new IntervalSchedule(Duration.ofHours(3)),
     None,
     tryRun,
-    concurrency = 1
+    mode = LeaseControlledWithSharedSchedule(1)
   ))
 
   private def tryRun(unused: Option[JValue]) = timed("purgeOldSessions") {

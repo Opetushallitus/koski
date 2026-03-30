@@ -2,7 +2,7 @@ package fi.oph.koski.todistus
 
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.log.Logging
-import fi.oph.koski.schedule.{IntervalSchedule, Scheduler}
+import fi.oph.koski.schedule.{IntervalSchedule, Scheduler, SchedulerMode}
 import org.json4s.JValue
 
 class TodistusScheduler(application: KoskiApplication) extends Logging {
@@ -25,7 +25,7 @@ class TodistusScheduler(application: KoskiApplication) extends Logging {
       None,
       runNextTodistus,
       intervalMillis = 1000,
-      concurrency = application.config.getInt("todistus.concurrency")
+      mode = SchedulerMode.leaseControlledWithIndependentSchedules(application.config.getInt("todistus.concurrency"))
     ))
     schedulerInstance
   }

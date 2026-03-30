@@ -13,7 +13,7 @@ case class PerustiedotManualSyncScheduler(app: KoskiApplication) extends Timing 
     new IntervalSchedule(Duration.ofMinutes(5)),
     None,
     manualSyncAndLogErrors,
-    concurrency = 1
+    mode = LeaseControlledWithSharedSchedule(1)
   ))
 
   private def manualSyncAndLogErrors(options: Option[JValue]): Option[JValue] = timed("perustiedotManualSync", 500) {

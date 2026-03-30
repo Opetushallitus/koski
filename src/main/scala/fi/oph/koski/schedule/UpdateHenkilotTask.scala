@@ -28,7 +28,7 @@ class UpdateHenkilotTask(application: KoskiApplication) extends Timing {
         new IntervalSchedule(application.config.getDuration("schedule.henkilötiedotUpdateInterval")),
         henkilöUpdateContext(currentTimeMillis - backBufferMs),
         updateHenkilöt(refresh = false),
-        concurrency = 1
+        mode = LeaseControlledWithSharedSchedule(1)
       ))
     }
 
