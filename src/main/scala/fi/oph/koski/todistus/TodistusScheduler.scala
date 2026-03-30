@@ -3,7 +3,7 @@ package fi.oph.koski.todistus
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.log.Logging
 import fi.oph.koski.schedule.{IntervalSchedule, Scheduler, SchedulerMode}
-import org.json4s.JValue
+
 
 class TodistusScheduler(application: KoskiApplication) extends Logging {
   val schedulerName = "todistus"
@@ -18,11 +18,10 @@ class TodistusScheduler(application: KoskiApplication) extends Logging {
   def createScheduler: Option[Scheduler] = {
     if (!application.todistusFeatureFlags.isServiceEnabled) return None
 
-    schedulerInstance = Some(new Scheduler(
+    schedulerInstance = Some(Scheduler(
       application,
       schedulerName,
       new IntervalSchedule(application.config.getDuration("todistus.checkInterval")),
-      None,
       runNextTodistus,
       intervalMillis = 1000,
       mode = SchedulerMode.leaseControlledWithIndependentSchedules(application.config.getInt("todistus.concurrency"))
@@ -31,14 +30,12 @@ class TodistusScheduler(application: KoskiApplication) extends Logging {
   }
 
   def shutdown(): Unit = {
-    schedulerInstance.foreach(_.shutdown)
+    schedulerInstance.foreach(_.shutdown())
   }
 
-  private def runNextTodistus(_context: Option[JValue]): Option[JValue] = {
+  private def runNextTodistus(): Unit = {
     if (todistusService.hasNext) {
       todistusService.runNext()
     }
-
-    None
   }
 }

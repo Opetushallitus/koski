@@ -1,32 +1,22 @@
 package fi.oph.koski.schedule
 
 import java.time.Duration.{ofMillis => millis}
-import java.time.LocalDateTime.now
-import java.util.concurrent.atomic.AtomicInteger
+import java.util.concurrent.atomic.{AtomicInteger, AtomicReference}
 import fi.oph.koski.{KoskiApplicationForTests, TestEnvironment}
+import fi.oph.koski.db.QueryMethods
 import fi.oph.koski.util.Wait
-import org.json4s.JValue
+import org.json4s.{JValue, JInt}
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.should.Matchers
 
 import java.time.Duration
 
 class SchedulerSpec extends AnyFreeSpec with TestEnvironment with Matchers {
-  "Next fire time is on selected time next day" in {
-    val nextFireTime = new FixedTimeOfDaySchedule(3, 10).nextFireTime().toLocalDateTime
-    val expected = now.plusDays(1).withHour(3).withMinute(10)
-    nextFireTime.getDayOfMonth should equal(expected.getDayOfMonth)
-    nextFireTime.getHour should equal(expected.getHour)
-    nextFireTime.getMinute should equal(expected.getMinute)
-    nextFireTime.getSecond should equal(expected.getSecond)
-  }
-
   "Scheduler doesn't run if previous is active" in {
     val sharedResource: AtomicInteger = new AtomicInteger(0)
-    def longRunningTask(x: Option[JValue]) = {
+    def longRunningTask() = {
       Thread.sleep(100)
       sharedResource.incrementAndGet()
-      None
     }
 
     val scheduler = testScheduler("test-no-overlap", longRunningTask)
@@ -35,7 +25,7 @@ class SchedulerSpec extends AnyFreeSpec with TestEnvironment with Matchers {
     (System.currentTimeMillis() - start >= 100) should be(true)
     Wait.until(sharedResource.get == 2, timeoutMs = 5000)
     (System.currentTimeMillis() - start >= 200) should be(true)
-    scheduler.shutdown
+    scheduler.shutdown()
   }
 
   "Scheduler" - {
@@ -46,16 +36,15 @@ class SchedulerSpec extends AnyFreeSpec with TestEnvironment with Matchers {
       Thread.sleep(50)
       fixScheduler
       schedulerShouldRecover
-      s.shutdown
+      s.shutdown()
     }
 
-    def failingTask(x: Option[JValue]) = {
+    def failingTask() = {
       Thread.sleep(10)
       if (sharedResource.get() < 1) {
         throw new Exception("error")
       }
       sharedResource.incrementAndGet()
-      None
     }
 
     def fixScheduler = sharedResource.set(1)
@@ -66,7 +55,7 @@ class SchedulerSpec extends AnyFreeSpec with TestEnvironment with Matchers {
     val executionCount = new AtomicInteger(0)
     val scheduler = testScheduler(
       "test-suspend",
-      _ => { executionCount.incrementAndGet(); None }
+      () => { executionCount.incrementAndGet() }
     )
 
     Wait.until(executionCount.get >= 2, timeoutMs = 1000)
@@ -81,30 +70,11 @@ class SchedulerSpec extends AnyFreeSpec with TestEnvironment with Matchers {
     scheduler.unsuspend()
     Wait.until(executionCount.get > countAfterSuspend, timeoutMs = 1000) // Should resume
 
-    scheduler.shutdown
+    scheduler.shutdown()
   }
 
-  "Scheduler with FixedTimeOfDaySchedule doesn't fire immediately on startup" in {
-    val executionCount = new AtomicInteger(0)
-
-    val scheduler = new Scheduler(
-      KoskiApplicationForTests,
-      "test-no-immediate-fire",
-      new FixedTimeOfDaySchedule(3, 0),
-      None,
-      _ => { executionCount.incrementAndGet(); None },
-      intervalMillis = 10
-    )
-
-    // Wait a bit and verify it didn't fire
-    Thread.sleep(200)
-    executionCount.get should equal(0)
-
-    scheduler.shutdown
-  }
-
-  "independentSchedules" - {
-    "multiple lease holders fire concurrently when independentSchedules is enabled" in {
+  "independentWorkers" - {
+    "multiple lease holders fire concurrently when independentWorkers is enabled" in {
       val executionCountA = new AtomicInteger(0)
       val executionCountB = new AtomicInteger(0)
       val leaseA = new ControllableLeaseElector
@@ -113,21 +83,21 @@ class SchedulerSpec extends AnyFreeSpec with TestEnvironment with Matchers {
       leaseA.leaseHeld = true
       leaseB.leaseHeld = true
 
-      // Long interval: without independentSchedules, the first to fire would push
+      // Long interval: without independentWorkers, the first to fire would push
       // nextFireTime 2s into the future, blocking the other from firing.
       val interval = Duration.ofMillis(2000)
 
       // Multiple containers are simulated by multiple Scheduler objects with same name.
-      val schedulerA = new Scheduler(
-        KoskiApplicationForTests, "test-independent-workers", new IntervalSchedule(interval), None,
-        _ => { executionCountA.incrementAndGet(); None },
+      val schedulerA = Scheduler(
+        KoskiApplicationForTests, "test-independent-workers", new IntervalSchedule(interval),
+        () => { executionCountA.incrementAndGet() },
         intervalMillis = 50,
         mode = LeaseControlledWithIndependentSchedules(2, leaseElectorOverrideForTests = Some(leaseA))
       )
 
-      val schedulerB = new Scheduler(
-        KoskiApplicationForTests, "test-independent-workers", new IntervalSchedule(interval), None,
-        _ => { executionCountB.incrementAndGet(); None },
+      val schedulerB = Scheduler(
+        KoskiApplicationForTests, "test-independent-workers", new IntervalSchedule(interval),
+        () => { executionCountB.incrementAndGet() },
         intervalMillis = 50,
         mode = LeaseControlledWithIndependentSchedules(2, leaseElectorOverrideForTests = Some(leaseB))
       )
@@ -136,19 +106,19 @@ class SchedulerSpec extends AnyFreeSpec with TestEnvironment with Matchers {
       Wait.until(executionCountA.get >= 1, timeoutMs = 1500)
       Wait.until(executionCountB.get >= 1, timeoutMs = 1500)
 
-      schedulerA.shutdown
-      schedulerB.shutdown
+      schedulerA.shutdown()
+      schedulerB.shutdown()
     }
 
-    "lease holder without lease does not fire even with independentSchedules" in {
+    "lease holder without lease does not fire even with independentWorkers" in {
       val executionCount = new AtomicInteger(0)
       val lease = new ControllableLeaseElector
 
       lease.leaseHeld = false
 
-      val scheduler = new Scheduler(
-        KoskiApplicationForTests, "test-independent-no-lease", new IntervalSchedule(Duration.ofMillis(100)), None,
-        _ => { executionCount.incrementAndGet(); None },
+      val scheduler = Scheduler(
+        KoskiApplicationForTests, "test-independent-no-lease", new IntervalSchedule(Duration.ofMillis(100)),
+        () => { executionCount.incrementAndGet() },
         intervalMillis = 10,
         mode = LeaseControlledWithIndependentSchedules(2, leaseElectorOverrideForTests = Some(lease))
       )
@@ -156,7 +126,7 @@ class SchedulerSpec extends AnyFreeSpec with TestEnvironment with Matchers {
       Thread.sleep(500)
       executionCount.get should equal(0)
 
-      scheduler.shutdown
+      scheduler.shutdown()
     }
   }
 
@@ -172,16 +142,16 @@ class SchedulerSpec extends AnyFreeSpec with TestEnvironment with Matchers {
 
       val interval = Duration.ofMillis(1000)
 
-      val schedulerA = new Scheduler(
-        KoskiApplicationForTests, "test-handover-cadence", new IntervalSchedule(interval), None,
-        _ => { executionCountA.incrementAndGet(); None },
+      val schedulerA = Scheduler(
+        KoskiApplicationForTests, "test-handover-cadence", new IntervalSchedule(interval),
+        () => { executionCountA.incrementAndGet() },
         intervalMillis = 50,
         mode = LeaseControlledWithSharedSchedule(1, leaseElectorOverrideForTests = Some(leaseA))
       )
 
-      val schedulerB = new Scheduler(
-        KoskiApplicationForTests, "test-handover-cadence", new IntervalSchedule(interval), None,
-        _ => { executionCountB.incrementAndGet(); None },
+      val schedulerB = Scheduler(
+        KoskiApplicationForTests, "test-handover-cadence", new IntervalSchedule(interval),
+        () => { executionCountB.incrementAndGet() },
         intervalMillis = 50,
         mode = LeaseControlledWithSharedSchedule(1, leaseElectorOverrideForTests = Some(leaseB))
       )
@@ -201,45 +171,82 @@ class SchedulerSpec extends AnyFreeSpec with TestEnvironment with Matchers {
       // After the full interval elapses, B should fire
       Wait.until(executionCountB.get > countAfterTransfer, timeoutMs = 3000)
 
-      schedulerA.shutdown
-      schedulerB.shutdown
+      schedulerA.shutdown()
+      schedulerB.shutdown()
+    }
+  }
+
+  "Scheduler.withContext" - {
+    "persists and passes context between firings" in {
+      val schedulerName = "test-context-persistence"
+
+      // Reset scheduler row to ensure clean state on repeated runs
+      import fi.oph.koski.db.PostgresDriverWithJsonSupport.plainAPI._
+      QueryMethods.runDbSync(KoskiApplicationForTests.masterDatabase.db, sqlu"DELETE FROM scheduler WHERE name = $schedulerName")
+
+      val receivedContexts = new AtomicReference[List[Option[JValue]]](List.empty)
+
+      def task(context: Option[JValue]): Option[JValue] = {
+        receivedContexts.getAndUpdate(list => list :+ context)
+        val counter = context.collect { case JInt(n) => n.toInt }.getOrElse(0)
+        Some(JInt(counter + 1))
+      }
+
+      val scheduler = Scheduler.withContext(
+        KoskiApplicationForTests,
+        schedulerName,
+        new IntervalSchedule(millis(1)),
+        JInt(0),
+        task,
+        intervalMillis = 1
+      )
+
+      Wait.until(receivedContexts.get.size >= 2, timeoutMs = 5000)
+
+      val contexts = receivedContexts.get
+      // First firing receives the initial context
+      contexts(0) should equal(Some(JInt(0)))
+      // Second firing receives the updated context from DB
+      contexts(1) should equal(Some(JInt(1)))
+
+      scheduler.shutdown()
     }
   }
 
   "SchedulerMode factory fallbacks" - {
-    "leaseControlledWithIndependentSchedules with concurrency >= 2 returns LeaseControlledWithIndependentSchedules" in {
+    "leaseControlledWithIndependentSchedulesFromConfig with concurrency >= 2 returns LeaseControlledWithIndependentSchedules" in {
       SchedulerMode.leaseControlledWithIndependentSchedules(concurrency = 3) shouldBe a[LeaseControlledWithIndependentSchedules]
     }
 
-    "leaseControlledWithIndependentSchedules with concurrency = 1 falls back to LeaseControlledWithSharedSchedule" in {
+    "leaseControlledWithIndependentSchedulesFromConfig with concurrency = 1 falls back to LeaseControlledWithSharedSchedule" in {
       val mode = SchedulerMode.leaseControlledWithIndependentSchedules(concurrency = 1)
       mode shouldBe a[LeaseControlledWithSharedSchedule]
       mode.asInstanceOf[LeaseControlledWithSharedSchedule].concurrency should equal(1)
     }
 
-    "leaseControlledWithIndependentSchedules with concurrency = 0 falls back to RunOnAllNodes" in {
+    "leaseControlledWithIndependentSchedulesFromConfig with concurrency = 0 falls back to RunOnAllNodes" in {
       SchedulerMode.leaseControlledWithIndependentSchedules(concurrency = 0) should equal(RunOnAllNodes)
     }
 
-    "leaseControlledWithIndependentSchedules with negative concurrency falls back to RunOnAllNodes" in {
+    "leaseControlledWithIndependentSchedulesFromConfig with negative concurrency falls back to RunOnAllNodes" in {
       SchedulerMode.leaseControlledWithIndependentSchedules(concurrency = -1) should equal(RunOnAllNodes)
     }
 
-    "leaseControlledWithSharedSchedule with concurrency >= 1 returns LeaseControlledWithSharedSchedule" in {
+    "leaseControlledWithSharedScheduleFromConfig with concurrency >= 1 returns LeaseControlledWithSharedSchedule" in {
       SchedulerMode.leaseControlledWithSharedSchedule(concurrency = 1) shouldBe a[LeaseControlledWithSharedSchedule]
     }
 
-    "leaseControlledWithSharedSchedule with concurrency = 0 falls back to RunOnAllNodes" in {
+    "leaseControlledWithSharedScheduleFromConfig with concurrency = 0 falls back to RunOnAllNodes" in {
       SchedulerMode.leaseControlledWithSharedSchedule(concurrency = 0) should equal(RunOnAllNodes)
     }
 
-    "leaseControlledWithSharedSchedule with negative concurrency falls back to RunOnAllNodes" in {
+    "leaseControlledWithSharedScheduleFromConfig with negative concurrency falls back to RunOnAllNodes" in {
       SchedulerMode.leaseControlledWithSharedSchedule(concurrency = -1) should equal(RunOnAllNodes)
     }
   }
 
-  private def testScheduler(name: String = "test", task: Option[JValue] => Option[JValue]) = {
-    new Scheduler(KoskiApplicationForTests, name, new IntervalSchedule(millis(1)), None, task, intervalMillis = 1)
+  private def testScheduler(name: String = "test", task: () => Unit) = {
+    Scheduler(KoskiApplicationForTests, name, new IntervalSchedule(millis(1)), task, intervalMillis = 1)
   }
 }
 

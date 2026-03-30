@@ -3,7 +3,6 @@ package fi.oph.koski.todistus.tiedote
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.log.Logging
 import fi.oph.koski.schedule.{IntervalSchedule, Schedule, Scheduler, SchedulerMode}
-import org.json4s.JValue
 
 class KielitutkintotodistusTiedoteScheduler(application: KoskiApplication) extends Logging {
   val schedulerName = "kielitutkintotodistus-tiedote"
@@ -16,11 +15,10 @@ class KielitutkintotodistusTiedoteScheduler(application: KoskiApplication) exten
 
     val schedule: Schedule = new IntervalSchedule(application.config.getDuration("tiedote.checkInterval"))
 
-    schedulerInstance = Some(new Scheduler(
+    schedulerInstance = Some(Scheduler(
       application,
       schedulerName,
       schedule,
-      None,
       runBatch,
       intervalMillis = 1000,
       mode = SchedulerMode.leaseControlledWithSharedSchedule(concurrency = 1)
@@ -29,12 +27,11 @@ class KielitutkintotodistusTiedoteScheduler(application: KoskiApplication) exten
   }
 
   def shutdown(): Unit = {
-    schedulerInstance.foreach(_.shutdown)
+    schedulerInstance.foreach(_.shutdown())
   }
 
-  private def runBatch(_context: Option[JValue]): Option[JValue] = {
+  private def runBatch(): Unit = {
     tiedoteService.retryAllFailed()
     tiedoteService.processAll()
-    None
   }
 }

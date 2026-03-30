@@ -22,13 +22,12 @@ class UpdateHenkilotTask(application: KoskiApplication) extends Timing {
     if (application.config.getString("schedule.henkilötiedotUpdateInterval") == "never") {
       None
     } else {
-      Some(new Scheduler(
+      Some(Scheduler.withContext(
         application,
         "henkilötiedot-update",
         new IntervalSchedule(application.config.getDuration("schedule.henkilötiedotUpdateInterval")),
         henkilöUpdateContext(currentTimeMillis - backBufferMs),
-        updateHenkilöt(refresh = false),
-        mode = LeaseControlledWithSharedSchedule(1)
+        updateHenkilöt(refresh = false)
       ))
     }
 
@@ -108,7 +107,7 @@ class UpdateHenkilotTask(application: KoskiApplication) extends Timing {
   private def findOppijatWithoutSlaveOids(filteredOids: List[String]) =
     application.opintopolkuHenkilöFacade.findOppijatNoSlaveOids(filteredOids).sortBy(_.modified)
 
-  private def henkilöUpdateContext(lastRun: Long) = Some(JsonSerializer.serializeWithRoot(HenkilöUpdateContext(lastRun)))
+  private def henkilöUpdateContext(lastRun: Long): JValue = JsonSerializer.serializeWithRoot(HenkilöUpdateContext(lastRun))
 }
 
 private case class WithModifiedTime(tiedot: OppijaHenkilöWithMasterInfo, modified: Long)

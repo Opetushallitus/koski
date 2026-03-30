@@ -15,14 +15,97 @@ import org.json4s._
 import org.json4s.jackson.JsonMethods
 
 
-class Scheduler(
+object Scheduler {
+  def apply(
+    application: KoskiApplication,
+    name: String,
+    scheduling: Schedule,
+    task: () => Unit,
+    intervalMillis: Int = 10000,
+    mode: SchedulerMode = RunOnAllNodes
+  ): Scheduler = new Scheduler(
+    application,
+    name,
+    scheduling,
+    None,
+    _ => { task(); None },
+    intervalMillis,
+    mode
+  )
+
+  // Using context works without conflicts only with Lease controlled single node scheduler, therefore
+  // a separate factory method.
+  def withContext(
+    application: KoskiApplication,
+    name: String,
+    scheduling: Schedule,
+    initialContext: JValue,
+    task: Option[JValue] => Option[JValue],
+    intervalMillis: Int = 10000
+  ): Scheduler = new Scheduler(
+    application,
+    name,
+    scheduling,
+    Some(initialContext),
+    task,
+    intervalMillis,
+    LeaseControlledWithSharedSchedule(1, readAndWriteContext = true)
+  )
+}
+
+
+sealed trait SchedulerMode {
+  private[schedule] def independentSchedules: Boolean
+  private[schedule] def readAndWriteContext: Boolean
+}
+
+object SchedulerMode extends Logging {
+  def leaseControlledWithIndependentSchedules(concurrency: Int): SchedulerMode = {
+    if (concurrency >= 2) {
+      LeaseControlledWithIndependentSchedules(concurrency)
+    } else {
+      logger.warn(s"concurrency=$concurrency on liian pieni rinnakkaiselle suoritukselle, käytetään jaettua skedulointia")
+      leaseControlledWithSharedSchedule(concurrency)
+    }
+  }
+
+  def leaseControlledWithSharedSchedule(concurrency: Int): SchedulerMode = {
+    if (concurrency >= 1) {
+      LeaseControlledWithSharedSchedule(concurrency)
+    } else {
+      logger.warn(s"concurrency=$concurrency on liian pieni lease-kontrolloidulle suoritukselle, ajetaan kaikilla nodeilla")
+      RunOnAllNodes
+    }
+  }
+}
+
+case object RunOnAllNodes extends SchedulerMode {
+  private[schedule] val independentSchedules: Boolean = true
+  private[schedule] def readAndWriteContext: Boolean = false
+}
+private case class LeaseControlledWithSharedSchedule(
+  concurrency: Int,
+  private[schedule] val readAndWriteContext: Boolean = false,
+  private[schedule] val leaseElectorOverrideForTests: Option[WorkerLeaseElector] = None
+) extends SchedulerMode {
+  private[schedule] val independentSchedules: Boolean = false
+}
+private case class LeaseControlledWithIndependentSchedules(
+  concurrency: Int,
+  private[schedule] val leaseElectorOverrideForTests: Option[WorkerLeaseElector] = None
+) extends SchedulerMode {
+  private[schedule] val independentSchedules: Boolean = true
+  private[schedule] def readAndWriteContext: Boolean = false
+}
+
+class Scheduler private (
   application: KoskiApplication,
   name: String,
   scheduling: Schedule,
   initialContext: Option[JValue],
   task: Option[JValue] => Option[JValue],
-  intervalMillis: Int = 10000,
-  mode: SchedulerMode = RunOnAllNodes
+  intervalMillis: Int,
+  mode: SchedulerMode
 ) extends QueryMethods with Logging {
 
   override val db: DB = application.masterDatabase.db
@@ -59,8 +142,6 @@ class Scheduler(
   // Insert row if it doesn't exist yet; don't clobber existing rows
   runDbSync(sqlu"""INSERT INTO scheduler (name, nextfiretime, context) VALUES ($name, ${scheduling.nextFireTime()}, NULL) ON CONFLICT DO NOTHING""")
 
-  // Read context after ensuring the row exists
-  private val context: Option[JValue] = getScheduler.flatMap(_.context).orElse(initialContext)
   // If nextFireTime is in the past (stale from a previous instance), recompute from now.
   // This prevents fire-on-startup for stale rows.
   // For LeaseControlledWithIndependentSchedules, each node uses its own cadence,
@@ -81,8 +162,10 @@ class Scheduler(
   }
 
   // Persist initialContext to DB if the row was just created with NULL context
-  if (initialContext.isDefined && getScheduler.flatMap(_.context).isEmpty) {
-    runDbSync(KoskiTables.Scheduler.filter(_.name === name).map(_.context).update(initialContext))
+  if (mode.readAndWriteContext) {
+    if (initialContext.isDefined && getScheduler.flatMap(_.context).isEmpty) {
+      runDbSync(KoskiTables.Scheduler.filter(_.name === name).map(_.context).update(initialContext))
+    }
   }
 
   leaseElector.foreach(_.start(
@@ -94,7 +177,7 @@ class Scheduler(
 
   taskExecutor.scheduleAtFixedRate(() => fireIfTime(), 0, intervalMillis, MILLISECONDS)
 
-  def shutdown: Unit = {
+  def shutdown(): Unit = {
     taskExecutor.shutdown()
     leaseElector.foreach(_.shutdown())
   }
@@ -109,12 +192,7 @@ class Scheduler(
       def run(): Unit = {
         runningTasksOnThisNode.incrementAndGet()
         try {
-          val context: Option[JValue] = runDbSync(KoskiTables.Scheduler.filter(_.name === name).result.head).context
-          logger.info(s"Manually triggered task $name")
-          val newContext: Option[JValue] = task(context)
-          if (newContext.isDefined) {
-            runDbSync(KoskiTables.Scheduler.filter(_.name === name).map(_.context).update(newContext))
-          }
+          doFire(_ => logger.info(s"Manually triggered task $name"))
         } catch {
           case e: Exception => logger.error(e)(s"Manually triggered task $name failed: ${e.getMessage}")
         } finally {
@@ -124,11 +202,11 @@ class Scheduler(
     })
   }
 
-  private def fireIfTime() = {
+  private def fireIfTime(): Unit = {
     try {
       if (shouldFire) {
         try {
-          fire
+          fire()
         } catch {
           case e: Exception =>
             logger.error(e)(s"Scheduled task $name failed: ${e.getMessage}")
@@ -166,22 +244,31 @@ class Scheduler(
     false
   }
 
-  private def fire = try {
+  private def fire(): Unit = try {
     // Write nextFireTime to DB immediately so a new lease holder sees the updated
     // value before the task completes, preventing premature firing.
     // Skip for LeaseControlledWithIndependentSchedules — each node tracks its own cadence.
     if (!mode.independentSchedules) {
       runDbSync(KoskiTables.Scheduler.filter(_.name === name).map(_.nextFireTime).update(localNextFireTime))
     }
-    val context: Option[JValue] = runDbSync(KoskiTables.Scheduler.filter(_.name === name).result.head).context
-    logger.debug(s"Firing scheduled task $name ${context.map(c => s"with context ${JsonMethods.compact(c)}").mkString}")
-    val newContext: Option[JValue] = task(context)
-    if (newContext.isDefined) {
-      runDbSync(KoskiTables.Scheduler.filter(_.name === name).map(_.context).update(newContext))
-    }
+    doFire(context => logger.debug(s"Firing scheduled task $name ${context.map(c => s"with context ${JsonMethods.compact(c)}").mkString}"))
   } finally {
     runningTasksOnThisNode.decrementAndGet()
   }
+
+  private def doFire(log: Option[JValue] => Unit): Unit = {
+    val context: Option[JValue] = if (mode.readAndWriteContext) {
+      runDbSync(KoskiTables.Scheduler.filter(_.name === name).result.head).context
+    } else {
+      None
+    }
+    log(context)
+    val newContext: Option[JValue] = task(context)
+    if (mode.readAndWriteContext && newContext.isDefined) {
+      runDbSync(KoskiTables.Scheduler.filter(_.name === name).map(_.context).update(newContext))
+    }
+  }
+
 
   private def now = new Timestamp(currentTimeMillis)
 
@@ -198,52 +285,7 @@ trait Schedule {
   def scheduleNextFireTime(seed: LocalDateTime): LocalDateTime
 }
 
-class FixedTimeOfDaySchedule(hour: Int, minute: Int) extends Schedule {
-  override def scheduleNextFireTime(seed: LocalDateTime): LocalDateTime = seed.plusDays(1).withHour(hour).withMinute(minute)
-  override def toString = s"FixedTimeOfDaySchedule(hour=$hour,minute=$minute)"
-}
-
 class IntervalSchedule(duration: Duration) extends Schedule {
   override def scheduleNextFireTime(seed: LocalDateTime): LocalDateTime = seed.plus(duration)
   override def toString = s"IntervalSchedule(duration=$duration)"
-}
-
-sealed trait SchedulerMode {
-  private[schedule] def independentSchedules: Boolean
-}
-
-object SchedulerMode extends Logging {
-  def leaseControlledWithIndependentSchedules(concurrency: Int): SchedulerMode = {
-    if (concurrency >= 2) {
-      LeaseControlledWithIndependentSchedules(concurrency)
-    } else {
-      logger.warn(s"concurrency=$concurrency on liian pieni rinnakkaiselle suoritukselle, käytetään jaettua skedulointia")
-      leaseControlledWithSharedSchedule(concurrency)
-    }
-  }
-
-  def leaseControlledWithSharedSchedule(concurrency: Int): SchedulerMode = {
-    if (concurrency >= 1) {
-      LeaseControlledWithSharedSchedule(concurrency)
-    } else {
-      logger.warn(s"concurrency=$concurrency on liian pieni lease-kontrolloidulle suoritukselle, ajetaan kaikilla nodeilla")
-      RunOnAllNodes
-    }
-  }
-}
-
-case object RunOnAllNodes extends SchedulerMode {
-  private[schedule] val independentSchedules: Boolean = true
-}
-private[schedule] case class LeaseControlledWithSharedSchedule(
-  concurrency: Int,
-  private[schedule] val leaseElectorOverrideForTests: Option[WorkerLeaseElector] = None
-) extends SchedulerMode {
-  private[schedule] val independentSchedules: Boolean = false
-}
-private[schedule] case class LeaseControlledWithIndependentSchedules(
-  concurrency: Int,
-  private[schedule] val leaseElectorOverrideForTests: Option[WorkerLeaseElector] = None
-) extends SchedulerMode {
-  private[schedule] val independentSchedules: Boolean = true
 }

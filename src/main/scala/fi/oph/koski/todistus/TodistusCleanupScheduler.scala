@@ -3,7 +3,6 @@ package fi.oph.koski.todistus
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.schedule.{IntervalSchedule, Scheduler, SchedulerMode}
 import fi.oph.koski.log.Logging
-import org.json4s.JValue
 
 class TodistusCleanupScheduler(application: KoskiApplication) extends Logging {
   val schedulerName = "todistus-cleanup"
@@ -14,11 +13,10 @@ class TodistusCleanupScheduler(application: KoskiApplication) extends Logging {
   def createScheduler: Option[Scheduler] = {
     if (!application.todistusFeatureFlags.isServiceEnabled) return None
 
-    schedulerInstance = Some(new Scheduler(
+    schedulerInstance = Some(Scheduler(
       application,
       schedulerName,
       new IntervalSchedule(application.config.getDuration("todistus.cleanupInterval")),
-      None,
       runNext,
       intervalMillis = 1000,
       mode = SchedulerMode.leaseControlledWithSharedSchedule(concurrency = 1)
@@ -27,12 +25,11 @@ class TodistusCleanupScheduler(application: KoskiApplication) extends Logging {
   }
 
   def shutdown(): Unit = {
-    schedulerInstance.foreach(_.shutdown)
+    schedulerInstance.foreach(_.shutdown())
   }
 
-  private def runNext(_ignore: Option[JValue]): Option[JValue] = {
+  private def runNext(): Unit = {
     val activeWorkers = application.workerLeaseRepository.activeHolders("todistus")
     todistusService.cleanup(activeWorkers)
-    None
   }
 }

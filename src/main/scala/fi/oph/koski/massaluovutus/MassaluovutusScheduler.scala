@@ -3,7 +3,6 @@ package fi.oph.koski.massaluovutus
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.log.Logging
 import fi.oph.koski.schedule.{IntervalSchedule, Scheduler, SchedulerMode}
-import org.json4s.JValue
 
 class MassaluovutusScheduler(application: KoskiApplication) extends Logging {
   val schedulerName = "massaluovutus"
@@ -17,11 +16,10 @@ class MassaluovutusScheduler(application: KoskiApplication) extends Logging {
   var schedulerInstance: Option[Scheduler] = None
 
   def scheduler: Option[Scheduler] = {
-    schedulerInstance = Some(new Scheduler(
+    schedulerInstance = Some(Scheduler(
       application,
       schedulerName,
       new IntervalSchedule(application.config.getDuration("kyselyt.checkInterval")),
-      None,
       runNextQuery,
       intervalMillis = 1000,
       mode = SchedulerMode.leaseControlledWithIndependentSchedules(concurrency)
@@ -30,10 +28,10 @@ class MassaluovutusScheduler(application: KoskiApplication) extends Logging {
   }
 
   def shutdown(): Unit = {
-    schedulerInstance.foreach(_.shutdown)
+    schedulerInstance.foreach(_.shutdown())
   }
 
-  private def runNextQuery(_context: Option[JValue]): Option[JValue] = {
+  private def runNextQuery(): Unit = {
     if (massaluovutukset.hasNext) {
       if (massaluovutukset.systemIsOverloaded) {
         logger.info("System is overloaded, skipping this round")
@@ -41,6 +39,5 @@ class MassaluovutusScheduler(application: KoskiApplication) extends Logging {
         massaluovutukset.runNext()
       }
     }
-    None
   }
 }
