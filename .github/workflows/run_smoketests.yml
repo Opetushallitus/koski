@@ -47,7 +47,7 @@ jobs:
           KOSKI_BASE_URL: https://koski.testiopintopolku.fi/koski
           KOSKI_USER: ${{ secrets.KOSKI_USER_USERNAME }}
           KOSKI_PASS: ${{ secrets.KOSKI_USER_PASSWORD }}
-          TIEDOTE_SMOKETEST_OO_OID: "1.2.246.562.15.81438051591"
+          TIEDOTE_SMOKETEST_OO_OID: "1.2.246.562.15.98526955087"
         run: cd smoketests && pnpm run qa:tiedote
 
       - name: Report failure

@@ -50,13 +50,25 @@ async function resetTiedoteJob(): Promise<void> {
 }
 
 async function triggerRun(): Promise<void> {
-  console.log("Triggering tiedote run...");
-  const res = await fetch(`${baseUrl}/api/tiedote/run`, { headers });
+  const maxAttempts = 100;
+  console.log(`Triggering tiedote run (up to ${maxAttempts} attempts to hit scheduler container)...`);
 
-  if (res.status !== 200) {
-    throw new Error(`Trigger failed with status ${res.status}: ${await res.text()}`);
+  for (let attempt = 1; attempt <= maxAttempts; attempt++) {
+    const res = await fetch(`${baseUrl}/api/tiedote/run`, { headers });
+    const body = await res.text();
+
+    if (res.status === 200 && body.includes('"status":"triggered"')) {
+      console.log(`Tiedote run triggered on attempt ${attempt}`);
+      return;
+    }
+
+    if (attempt < maxAttempts) {
+      console.log(`  Attempt ${attempt}/${maxAttempts}: ${res.status} ${body}, retrying...`);
+      await sleep(1000);
+    } else {
+      throw new Error(`Failed to trigger tiedote run after ${maxAttempts} attempts. Last response: ${res.status} ${body}`);
+    }
   }
-  console.log("Tiedote run triggered");
 }
 
 async function pollForCompletion(): Promise<TiedoteJob> {
