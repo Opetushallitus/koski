@@ -151,7 +151,8 @@ object KoskiOperation extends Enumeration {
   TODISTUKSEN_LUONTI,
   TODISTUKSEN_LATAAMINEN,
   TODISTUKSEN_ESIKATSELU,
-  TIEDOTE_LAHETETTY = Value
+  TIEDOTE_LAHETETTY,
+  TIEDOTE_RESETOITU = Value
 }
 
 private class KoskiAuditLogOperation(op: KoskiOperation) extends AuditLogOperation(op)
