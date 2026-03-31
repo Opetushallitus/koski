@@ -32,6 +32,7 @@
     <finalName>${project.artifactId}-${project.version}</finalName>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <verapdf.version>1.28.2</verapdf.version>
+    <netty.version>4.1.132.Final</netty.version>
   </properties>
 
   <dependencyManagement>
@@ -40,6 +41,16 @@
         <groupId>org.scala-lang.modules</groupId>
         <artifactId>scala-xml_2.13</artifactId>
         <version>2.4.0</version>
+      </dependency>
+      <dependency>
+        <groupId>io.netty</groupId>
+        <artifactId>netty-codec-http</artifactId>
+        <version>${netty.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>io.netty</groupId>
+        <artifactId>netty-codec-http2</artifactId>
+        <version>${netty.version}</version>
       </dependency>
     </dependencies>
   </dependencyManagement>
