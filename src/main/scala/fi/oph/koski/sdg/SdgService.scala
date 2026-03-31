@@ -10,7 +10,7 @@ import fi.oph.koski.suoritusjako.common.{OpiskeluoikeusFacade}
 class SdgService(application: KoskiApplication) extends GlobalExecutionContext with Logging {
   private val opiskeluoikeusFacade = new OpiskeluoikeusFacade[Opiskeluoikeus](
     application,
-    Some(SdgYlioppilastutkinnonOpiskeluoikeus.fromKoskiSchema),
+    Some(SdgYlioppilastutkinnonOpiskeluoikeus.fromKoskiSchema(application.organisaatioRepository)),
     Some(SdgKorkeakoulunOpiskeluoikeus.fromKoskiSchema)
   )
 
