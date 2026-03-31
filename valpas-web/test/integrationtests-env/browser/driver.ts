@@ -1,5 +1,4 @@
 import { afterAll, afterEach, beforeAll, beforeEach } from "@jest/globals"
-import "chromedriver"
 import { Builder, WebDriver } from "selenium-webdriver"
 import chrome from "selenium-webdriver/chrome"
 import { downloadDir } from "./downloads"
