@@ -5,6 +5,7 @@ import fi.oph.koski.api.misc.OpiskeluoikeusTestMethodsAmmatillinen
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.koskiuser.{MockUser, MockUsers}
+import fi.oph.koski.ytr.YtrConversionUtils
 import fi.oph.koski.log.AuditLogTester
 import fi.oph.koski.schema.OpiskeluoikeudenTyyppi
 import fi.oph.koski.ytr.MockYtrClient
@@ -145,6 +146,19 @@ class KehaSDGSpec
     postHetu(KoskiSpecificMockOppijat.lukiolainen.hetu.get) {
       verifyResponseStatusOk()
       body should not include ("\"jääLuokalle\"")
+    }
+  }
+
+  "YO-opiskeluoikeuden oppilaitos on aina Ylioppilastutkintolautakunta" in {
+    postHetu(KoskiSpecificMockOppijat.ylioppilas.hetu.get) {
+      verifyResponseStatusOk()
+      val response = JsonSerializer.parse[SdgOppija](body)
+
+      val yoOo = response.opiskeluoikeudet.find(
+        _.tyyppi == OpiskeluoikeudenTyyppi.ylioppilastutkinto
+      ).getOrElse(fail("YO-opiskeluoikeutta ei löydy"))
+
+      yoOo.oppilaitos.map(_.oid) should equal(Some(YtrConversionUtils.ytlOid))
     }
   }
 

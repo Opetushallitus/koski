@@ -1,48 +1,45 @@
 package fi.oph.koski.sdg
 
+import fi.oph.koski.organisaatio.OrganisaatioRepository
 import fi.oph.koski.schema
 import fi.oph.koski.schema.annotation.KoodistoKoodiarvo
+import fi.oph.koski.ytr.YtrConversionUtils
 import fi.oph.scalaschema.annotation.{Description, Title}
 
 object SdgYlioppilastutkinnonOpiskeluoikeus {
-  def fromKoskiSchema(yo: schema.YlioppilastutkinnonOpiskeluoikeus): Opiskeluoikeus = SdgYlioppilastutkinnonOpiskeluoikeus(
-    oid = yo.oid,
-    oppilaitos = yo.oppilaitos.map(ol =>
-      schema.Oppilaitos(
-        ol.oid,
-        ol.oppilaitosnumero,
-        ol.nimi,
-        ol.kotipaikka
-      )
-    ),
-    koulutustoimija = yo.koulutustoimija.map(kt =>
-      schema.Koulutustoimija(
-        kt.oid,
-        kt.nimi,
-        kt.yTunnus,
-        kt.kotipaikka
-      )
-    ),
-    tila = OpiskeluoikeudenTila(
-      opiskeluoikeusjaksot = yo.tila.opiskeluoikeusjaksot.map(j => SdgOpiskeluoikeusjakso(
-        tila = j.tila,
-        alku = j.alku
-      ))
-    ),
-    suoritukset = yo.suoritukset.map(s => SdgYlioppilastutkinnonSuoritus(
-      s.koulutusmoduuli,
-      Some(SdgToimipiste(
-        s.toimipiste.oid,
-        s.toimipiste.nimi,
-        s.toimipiste.kotipaikka
+  def fromKoskiSchema(organisaatioRepository: OrganisaatioRepository)(yo: schema.YlioppilastutkinnonOpiskeluoikeus): Opiskeluoikeus = {
+    SdgYlioppilastutkinnonOpiskeluoikeus(
+      oid = yo.oid,
+      oppilaitos = Some(YtrConversionUtils.ytlOppilaitos(organisaatioRepository)),
+      koulutustoimija = yo.koulutustoimija.map(kt =>
+        schema.Koulutustoimija(
+          kt.oid,
+          kt.nimi,
+          kt.yTunnus,
+          kt.kotipaikka
+        )
+      ),
+      tila = OpiskeluoikeudenTila(
+        opiskeluoikeusjaksot = yo.tila.opiskeluoikeusjaksot.map(j => SdgOpiskeluoikeusjakso(
+          tila = j.tila,
+          alku = j.alku
+        ))
+      ),
+      suoritukset = yo.suoritukset.map(s => SdgYlioppilastutkinnonSuoritus(
+        s.koulutusmoduuli,
+        Some(SdgToimipiste(
+          s.toimipiste.oid,
+          s.toimipiste.nimi,
+          s.toimipiste.kotipaikka
+        )),
+        vahvistus = s.vahvistus.map(v => SdgVahvistus(v.päivä)),
+        tyyppi = s.tyyppi,
+        osasuoritukset = s.osasuoritukset.map(_.map(SdgYlioppilastutkinnonOsasuoritus.fromKoskiSchema)),
+        koulusivistyskieli = s.koulusivistyskieli
       )),
-      vahvistus = s.vahvistus.map(v => SdgVahvistus(v.päivä)),
-      tyyppi = s.tyyppi,
-      osasuoritukset = s.osasuoritukset.map(_.map(SdgYlioppilastutkinnonOsasuoritus.fromKoskiSchema)),
-      koulusivistyskieli = s.koulusivistyskieli
-    )),
-    tyyppi = yo.tyyppi
-  )
+      tyyppi = yo.tyyppi
+    )
+  }
 }
 
 @Title("Ylioppilastutkinnon opiskeluoikeus")
