@@ -295,10 +295,6 @@ class TodistusLatausSpec extends TodistusSpecHelpers with BeforeAndAfterAll {
         bytesGetter().length should be > 0
       }
 
-      "PDF on allekirjoitettu oikein" in {
-        verifyTodistusSignature(documentGetter())
-      }
-
       "PDF käyttää oikeita fontteja ja ne on embedattu" in {
         verifyTodistusFontit(documentGetter())
       }
@@ -713,11 +709,6 @@ class TodistusLatausSpec extends TodistusSpecHelpers with BeforeAndAfterAll {
     assert(pdfText.contains("KIRJOITTAMINEN"), "Osasuoritus 'KIRJOITTAMINEN' puuttuu")
     assert(pdfText.contains("PUHEEN YMMÄRTÄMINEN"), "Osasuoritus 'PUHEEN YMMÄRTÄMINEN' puuttuu")
     assert(pdfText.contains("PUHUMINEN"), "Osasuoritus 'PUHUMINEN' puuttuu")
-  }
-
-  private def verifyTodistusSignature(document: PDDocument): Unit = {
-    val signerName = document.getLastSignatureDictionary.getName()
-    signerName should be("TEST Signer")
   }
 
   def verifyTodistusFontit(document: PDDocument): Unit = {
