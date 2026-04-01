@@ -22,11 +22,7 @@ case class SwisscomConfig(
   signatureStandard: String,
   signatureRevocationInformation: String,
   signatureClaimedIdentityName: String,
-  signatureClaimedIdentityKey: String,
-  signatureName: String,
-  signatureReason: String,
-  signatureLocation: String,
-  signatureContactInfo: String
+  signatureClaimedIdentityKey: String
 ) extends NotLoggable
 
 object SwisscomConfig extends Logging {
@@ -61,11 +57,7 @@ object SwisscomConfig extends Logging {
       signatureStandard = signatureConfig.getString("standard"),
       signatureRevocationInformation = signatureConfig.getString("revocationInformation"),
       signatureClaimedIdentityName = "mock",
-      signatureClaimedIdentityKey = "mock",
-      signatureName = signatureConfig.getString("name"),
-      signatureReason = signatureConfig.getString("reason"),
-      signatureLocation = signatureConfig.getString("location"),
-      signatureContactInfo = signatureConfig.getString("contactInfo")
+      signatureClaimedIdentityKey = "mock"
     )
   }
 
@@ -133,11 +125,7 @@ object SwisscomConfig extends Logging {
       signatureStandard = signatureConfig.getString("standard"),
       signatureRevocationInformation = signatureConfig.getString("revocationInformation"),
       signatureClaimedIdentityName = secrets.signatureClaimedIdentityName,
-      signatureClaimedIdentityKey = secrets.signatureClaimedIdentityKey,
-      signatureName = signatureConfig.getString("name"),
-      signatureReason = signatureConfig.getString("reason"),
-      signatureLocation = signatureConfig.getString("location"),
-      signatureContactInfo = signatureConfig.getString("contactInfo")
+      signatureClaimedIdentityKey = secrets.signatureClaimedIdentityKey
     )
   }
 }

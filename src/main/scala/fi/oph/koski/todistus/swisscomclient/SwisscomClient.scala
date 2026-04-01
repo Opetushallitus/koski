@@ -73,10 +73,6 @@ trait SwisscomClient extends Logging {
     signDate.add(Calendar.MINUTE, 3)
 
     pdSignature.setSignDate(signDate)
-    pdSignature.setName(config.signatureName)
-    pdSignature.setReason(config.signatureReason)
-    pdSignature.setLocation(config.signatureLocation)
-    pdSignature.setContactInfo(config.signatureContactInfo)
 
     val options = new SignatureOptions
     options.setPreferredSignatureSize(config.signaturePreferredSize)
