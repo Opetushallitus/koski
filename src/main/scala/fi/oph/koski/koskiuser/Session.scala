@@ -124,8 +124,7 @@ class KoskiSpecificSession(
   def hasTallennetutYlioppilastutkinnonOpiskeluoikeudetAccess: Boolean =
     globalKäyttöoikeudet.exists(_.globalPalveluroolit.contains(Palvelurooli(TALLENNETUT_YLIOPPILASTUTKINNON_OPISKELUOIKEUDET)))
 
-  def hasKiosAccess: Boolean = globalKäyttöoikeudet.exists(_.globalPalveluroolit.contains(Palvelurooli(KIOS))) ||
-    globalKäyttöoikeudet.exists(_.globalPalveluroolit.contains(Palvelurooli(VKT))) // TODO: TOR-2471: Poista kun VKT-rooli on korvattu KIOS-roolilla
+  def hasKiosAccess: Boolean = globalKäyttöoikeudet.exists(_.globalPalveluroolit.contains(Palvelurooli(KIOS)))
   def hasHakemuspalveluAccess: Boolean = globalKäyttöoikeudet.exists(_.globalPalveluroolit.contains(Palvelurooli(HAKEMUSPALVELU_API)))
 
   def getKoulutustoimijatWithWriteAccess: List[Oid] = orgKäyttöoikeudet

@@ -603,7 +603,7 @@ object MockUsers {
     "valeria",
     "1.2.246.562.24.42042042058",
     Seq(OrganisaatioJaKäyttöoikeudet(Opetushallitus.organisaatioOid, List(
-      PalveluJaOikeus("KOSKI", Rooli.VKT)
+      PalveluJaOikeus("KOSKI", Rooli.KIOS)
     )))
   )
 
@@ -663,15 +663,15 @@ object MockUsers {
   )
 
   val valtionhallinnonKielitutkinnonKäyttäjä = KoskiMockUser(
-    "vkt",
-    "vkt",
+    "valtionhallinnon-kielitutkinto",
+    "valtionhallinnon-kielitutkinto",
     "1.2.246.562.10.53400745791",
     List(päätasonSuoritukseenRajoitettuKatselija(KIELITUTKINTO, valtionhallinnonKielitutkinto))
   )
 
-  val ykiJaVktKäyttäjä = KoskiMockUser(
-    "yki-vkt",
-    "yki-vkt",
+  val ykiJaValtionhallinnonKielitutkinnonKäyttäjä = KoskiMockUser(
+    "yki-ja-valtionhallinnon-kielitutkinto",
+    "yki-ja-valtionhallinnon-kielitutkinto",
     "1.2.246.562.10.53400745792",
     List(
       päätasonSuoritukseenRajoitettuKatselija(KIELITUTKINTO, yleinenKielitutkinto),
@@ -794,7 +794,7 @@ object MockUsers {
     kielitutkintorekisteriKäyttäjä,
     yleisenKielitutkinnonKäyttäjä,
     valtionhallinnonKielitutkinnonKäyttäjä,
-    ykiJaVktKäyttäjä,
+    ykiJaValtionhallinnonKielitutkinnonKäyttäjä,
     paakayttajaPlusYki,
     stadinTelma,
     kaksiTallentajaoikeutta,
