@@ -530,7 +530,7 @@ class KäyttöoikeusryhmätSpec
 
       "Yleinen kielitutkinto + valtionhallinnon kielitutkinto" in {
         testPerustiedot(
-          user = MockUsers.ykiJaVktKäyttäjä,
+          user = MockUsers.ykiJaValtionhallinnonKielitutkinnonKäyttäjä,
           opiskeluoikeustyypit = List("kielitutkinto"),
           päätasonsuoritustyypit = List("yleinenkielitutkinto", "valtionhallinnonkielitutkinto")
         )
@@ -564,7 +564,7 @@ class KäyttöoikeusryhmätSpec
 
       "Yleinen kielitutkinto + valtionhallinnon kielitutkinto" in {
         testEditorApi(
-          user = MockUsers.ykiJaVktKäyttäjä,
+          user = MockUsers.ykiJaValtionhallinnonKielitutkinnonKäyttäjä,
           expectedWords = List("yleinenkielitutkinto", "valtionhallinnonkielitutkinto"),
           unexpectedWords = List()
         )
@@ -606,7 +606,7 @@ class KäyttöoikeusryhmätSpec
 
       "Yleinen kielitutkinto + valtionhallinnon kielitutkinto" in {
         testUi2OppijaApi(
-          user = MockUsers.ykiJaVktKäyttäjä,
+          user = MockUsers.ykiJaValtionhallinnonKielitutkinnonKäyttäjä,
           opiskeluoikeustyypit = List("kielitutkinto"),
           päätasonsuoritustyypit = List("yleinenkielitutkinto", "valtionhallinnonkielitutkinto")
         )
