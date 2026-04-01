@@ -616,7 +616,7 @@ object AmmatillinenValidation {
     HttpStatus.fold(suorituksetJaNäytöt.flatMap { case (suoritus, näyttö) => näyttö.suoritusaika.map((suoritus, _)) }.map { case (suoritus, aika) =>
       HttpStatus.validate(aika.alku.isBefore(aika.loppu) || (aika.alku == aika.loppu)) {
         val osasuorituksenNimi = suoritus.koulutusmoduuli.tunniste.getNimi.map(_.get("fi")).getOrElse(suoritus.koulutusmoduuli.tunniste.koodiarvo)
-        KoskiErrorCategory.badRequest.validation.date.näytönSuoritusaika(s"""Osasuorituksen: '$osasuorituksenNimi' näytön päättymispäivä on ennen alkamispäivää""")
+        KoskiErrorCategory.badRequest.validation.date.näytönSuoritusaika(s"""Osasuorituksen '$osasuorituksenNimi' näytön päättymispäivä on ennen alkamispäivää""")
       }
     })
   }
