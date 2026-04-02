@@ -192,7 +192,7 @@ class OppijaValidationAikuistenPerusopetuksenOppiaineenOppimaaraSpec extends Tut
       val alkuvaiheenSuoritus = ExamplesAikuistenPerusopetus.aikuistenPerusopetuksenAlkuvaiheenSuoritus(None)
       val mutated = oo.copy(suoritukset = List(alkuvaiheenSuoritus))
       putOpiskeluoikeus(mutated, defaultHenkilö, headers = authHeaders() ++ jsonContent) {
-        verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.perusopetus.aikuistenPerusopetusAineopinnotSuoritustyyppiMuuttunut("Aikuisten perusopetuksen oppiaineen oppimäärän opiskeluoikeutta ei voi muuttaa oppimäärän opiskeluoikeudeksi"))
+        verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.rakenne.suorituksenTyyppiMuuttunut("Aikuisten perusopetuksen oppiaineen oppimäärän opiskeluoikeutta ei voi muuttaa oppimäärän opiskeluoikeudeksi"))
       }
     }
 
@@ -200,7 +200,7 @@ class OppijaValidationAikuistenPerusopetuksenOppiaineenOppimaaraSpec extends Tut
       val oo = setupOppijaWithAndGetOpiskeluoikeus(ExamplesAikuistenPerusopetus.aikuistenPerusopetuksenOpiskeluoikeusAlkuvaiheineenValmistunutVanhanOppivelvollisuuslainAikana, defaultHenkilö, authHeaders(paakayttaja) ++ jsonContent)
       val mutated = oo.copy(suoritukset = ExamplesAikuistenPerusopetus.matematiikanAineOpiskelijaKesken.suoritukset)
       putOpiskeluoikeus(mutated, defaultHenkilö, headers = authHeaders() ++ jsonContent) {
-        verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.perusopetus.aikuistenPerusopetusAineopinnotSuoritustyyppiMuuttunut("Aikuisten perusopetuksen oppimäärän opiskeluoikeutta ei voi muuttaa oppiaineen oppimäärän opiskeluoikeudeksi"))
+        verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.rakenne.suorituksenTyyppiMuuttunut("Aikuisten perusopetuksen oppimäärän opiskeluoikeutta ei voi muuttaa oppiaineen oppimäärän opiskeluoikeudeksi"))
       }
     }
   }

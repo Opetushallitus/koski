@@ -350,9 +350,9 @@ object PerusopetuksenOpiskeluoikeusValidation extends Logging {
       val oldAineopinnot = oldOo.suoritukset.exists(_.tyyppi.koodiarvo == "perusopetuksenoppiaineenoppimaara")
       val newAineopinnot = newOo.suoritukset.exists(_.tyyppi.koodiarvo == "perusopetuksenoppiaineenoppimaara")
       if (oldAineopinnot && !newAineopinnot) {
-        KoskiErrorCategory.badRequest.validation.perusopetus.aikuistenPerusopetusAineopinnotSuoritustyyppiMuuttunut("Aikuisten perusopetuksen oppiaineen oppimäärän opiskeluoikeutta ei voi muuttaa oppimäärän opiskeluoikeudeksi")
+        KoskiErrorCategory.badRequest.validation.rakenne.suorituksenTyyppiMuuttunut("Aikuisten perusopetuksen oppiaineen oppimäärän opiskeluoikeutta ei voi muuttaa oppimäärän opiskeluoikeudeksi")
       } else if (!oldAineopinnot && newAineopinnot) {
-        KoskiErrorCategory.badRequest.validation.perusopetus.aikuistenPerusopetusAineopinnotSuoritustyyppiMuuttunut("Aikuisten perusopetuksen oppimäärän opiskeluoikeutta ei voi muuttaa oppiaineen oppimäärän opiskeluoikeudeksi")
+        KoskiErrorCategory.badRequest.validation.rakenne.suorituksenTyyppiMuuttunut("Aikuisten perusopetuksen oppimäärän opiskeluoikeutta ei voi muuttaa oppiaineen oppimäärän opiskeluoikeudeksi")
       } else {
         HttpStatus.ok
       }

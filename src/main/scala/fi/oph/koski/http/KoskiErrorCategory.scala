@@ -151,6 +151,7 @@ object KoskiErrorCategory {
         val tpoVääräOpintotaso = subcategory("tpoVääräOpintotaso", "Suorituksen opintotaso ei sisälly opiskeluoikeuden oppimäärään.")
         val tpoEriTaiteenalat = subcategory("tpoEriTaiteenalat", "Taiteen perusopetuksen opiskeluoikeudella ei voi olla suorituksia eri taiteenaloilta.")
         val dpCoreDeprecated = subcategory("dpCoreDeprecated", "DP Core -suoritukset on siirrettävä osasuorituksina")
+        val suorituksenTyyppiMuuttunut = subcategory("suorituksenTyyppiMuuttunut", "Suorituksen tyyppiä ei voi muuttaa")
       }
       val rakenne = new Rakenne
 
@@ -316,7 +317,6 @@ object KoskiErrorCategory {
         val valmistavanLisäopetuksenKestoYlittääVuoden = subcategory("valmistavanLisäopetuksenKestoYlittääVuoden", "Valmistavan lisäopetuksen kokonaiskesto voi olla enintään yksi vuosi (365 päivää)")
         val valmistavanLisäopetusJaksotPäällekkäin = subcategory("valmistavanLisäopetusJaksotPäällekkäin", "Valmistavan lisäopetuksen aikajaksot eivät saa olla päällekkäin")
         val valmistavanLisäopetusAvoinJaksoLiianVanha = subcategory("valmistavanLisäopetusAvoinJaksoLiianVanha", "Valmistavan lisäopetusjakson päättymispäivä puuttuu ja alkamispäivä on yli vuoden vanha")
-        val aikuistenPerusopetusAineopinnotSuoritustyyppiMuuttunut = subcategory("aikuistenPerusopetusAineopinnotSuoritustyyppiMuuttunut", "Aikuisten perusopetuksen oppiaineen oppimäärän suorituksen tyyppiä ei voi muuttaa")
         def valinnainenOppiaineenOppimäärä(oppiaineKoodiarvo: String) = subcategory("valinnainenOppiaineenOppimäärä", s"Oppiaineen oppimäärän opiskeluoikeudessa yhteinen oppiaine $oppiaineKoodiarvo ei voi olla valinnainen.")
         def erityinenTutkintoValinnainenOppiaineenOppimäärä(oppiaineKoodiarvo: String) = subcategory("erityinenTutkintoValinnainenOppiaineenOppimäärä", s"Oppiaineen oppimäärän opiskeluoikeudessa oppiaine $oppiaineKoodiarvo ei voi olla valinnainen, kun suoritustapa on erityinen tutkinto.")
         def erityinenTutkintoPaikallinenOppiaineenOppimäärä(oppiaineKoodiarvo: String) = subcategory("erityinenTutkintoPaikallinenOppiaineenOppimäärä", s"Oppiaineen oppimäärän opiskeluoikeudessa oppiaine $oppiaineKoodiarvo ei voi olla paikallinen, kun suoritustapa on erityinen tutkinto.")
