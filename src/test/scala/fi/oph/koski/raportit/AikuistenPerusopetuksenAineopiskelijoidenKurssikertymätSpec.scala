@@ -4,7 +4,7 @@ import fi.oph.koski.api.misc.PutOpiskeluoikeusTestMethods
 import fi.oph.koski.documentation.ExampleData.{longTimeAgo, opiskeluoikeusLäsnä, opiskeluoikeusValmistunut, valtionosuusRahoitteinen}
 import fi.oph.koski.documentation.ExamplesAikuistenPerusopetus
 import fi.oph.koski.documentation.ExamplesAikuistenPerusopetus.{aikuistenPerusopetukseOppimääränSuoritus, aikuistenPerusopetuksenAlkuvaiheenSuoritus, aikuistenPerusopetus2017, oppiaineidenSuoritukset2017}
-import fi.oph.koski.henkilo.KoskiSpecificMockOppijat.aikuisOpiskelija
+import fi.oph.koski.henkilo.KoskiSpecificMockOppijat.{aikuisOpiskelija, oppiaineenKorottaja}
 import fi.oph.koski.henkilo.LaajatOppijaHenkilöTiedot
 import fi.oph.koski.koskiuser.KoskiMockUser
 import fi.oph.koski.localization.LocalizationReader
@@ -36,7 +36,7 @@ class AikuistenPerusopetuksenAineopiskelijoidenKurssikertymätSpec
 
   override protected def alterFixture(): Unit = {
     lisääPäätasonSuorituksia(
-      aikuisOpiskelija,
+      oppiaineenKorottaja,
       List(
         ExamplesAikuistenPerusopetus.oppiaineenOppimääränSuoritusAI1,
         ExamplesAikuistenPerusopetus.oppiaineenOppimääränSuoritusYH
