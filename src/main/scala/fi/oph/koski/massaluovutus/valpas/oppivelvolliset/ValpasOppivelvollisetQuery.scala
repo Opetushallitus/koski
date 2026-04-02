@@ -10,7 +10,7 @@ import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.schema.annotation.EnumValues
 import fi.oph.koski.util.Futures
 import fi.oph.koski.valpas.log.ValpasAuditLog
-import fi.oph.koski.valpas.massaluovutus.{ValpasMassaluovutusOppivelvollinenOppija, ValpasOppivelvollisetMassaluovutusResult}
+import fi.oph.koski.valpas.massaluovutus.{ValpasMassaluovutusConverter, ValpasOppivelvollisetMassaluovutusResult}
 import fi.oph.koski.valpas.rouhinta.{RouhintaOpiskeluoikeus, ValpasKuntarouhintaService, ValpasRouhintaOppivelvollinen}
 import fi.oph.scalaschema.annotation.{Description, Title}
 
@@ -72,10 +72,10 @@ case class ValpasOppivelvollisetQuery(
             // Täydennä keskeytykset oppijoille
             .map(oppijat => rouhintaOvKeskeytyksetService.fetchOppivelvollisuudenKeskeytykset(oppijat))
             // Täydennä aktiiviset oppivelvollisuuteen kelpaavat opiskeluoikeudet oppijoille
-            .map(oppijat => oppijat.map(oppija => ValpasMassaluovutusOppivelvollinenOppija.apply(oppija, oppijanAktiivisetOpiskeluoikeudet(oppija.oppijanumero))))
+            .map(oppijat => oppijat.map(oppija => ValpasMassaluovutusConverter.toOppivelvollinenOppija(oppija, oppijanAktiivisetOpiskeluoikeudet(oppija.oppijanumero))))
         }
         .map { oppijat =>
-          val onrOppijatResult = Futures.await(onrOppivelvollisetOppijat.map(_.map(oppija => ValpasMassaluovutusOppivelvollinenOppija.apply(oppija, Seq.empty))))
+          val onrOppijatResult = Futures.await(onrOppivelvollisetOppijat.map(_.map(oppija => ValpasMassaluovutusConverter.toOppivelvollinenOppija(oppija, Seq.empty))))
           val oppijatResult = oppijat ++ onrOppijatResult
 
           // Rikastetaan oppijat oppivelvollisuustiedoilla

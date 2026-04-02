@@ -5,7 +5,7 @@ import fi.oph.koski.henkilo.{OppijaHenkilö, OppijaNumerorekisteriKuntarouhintaO
 import fi.oph.koski.schema.{KoodiViite, Koodistokoodiviite, LocalizedString}
 import fi.oph.koski.valpas.opiskeluoikeusrepository.{OrderedOpiskeluoikeusTiedot, ValpasHenkilö, ValpasOpiskeluoikeusLaajatTiedot}
 import fi.oph.koski.valpas.oppija.{OppijaHakutilanteillaLaajatTiedot, ValpasKuntailmoitusSuppeatTiedot}
-import fi.oph.koski.valpas.valpasrepository.ValpasOppivelvollisuudenKeskeytys
+import fi.oph.koski.valpas.valpasrepository.{ValpasKuntailmoituksenOppijanYhteystiedot, ValpasOppivelvollisuudenKeskeytys}
 
 case class ValpasRouhintaOppivelvollinen(
   oppijanumero: ValpasHenkilö.Oid,
@@ -17,7 +17,8 @@ case class ValpasRouhintaOppivelvollinen(
   viimeisinOppivelvollisuudenSuorittamiseenKelpaavaOpiskeluoikeus: Option[RouhintaOpiskeluoikeus],
   oppivelvollisuudenKeskeytys: Seq[ValpasOppivelvollisuudenKeskeytys],
   vainOppijanumerorekisterissä: Boolean,
-  aktiivinenKuntailmoitus: Option[ValpasKuntailmoitusSuppeatTiedot]
+  aktiivinenKuntailmoitus: Option[ValpasKuntailmoitusSuppeatTiedot],
+  aktiivisenKuntailmoituksenOppijanYhteystiedot: Option[ValpasKuntailmoituksenOppijanYhteystiedot]
 )
 
 object ValpasRouhintaOppivelvollinen {
@@ -26,9 +27,8 @@ object ValpasRouhintaOppivelvollinen {
       .filter(oo => oo.oppivelvollisuudenSuorittamiseenKelpaava && !oo.isOpiskeluTulevaisuudessa)
       .flatMap(oo => RouhintaOpiskeluoikeus.apply(oo))
 
-    val aktiivinenKuntailmoitus =
+    val aktiivinenKuntailmoitusLaajatTiedot =
       tiedot.kuntailmoitukset.find(_.aktiivinen.contains(true))
-        .map(ValpasKuntailmoitusSuppeatTiedot.apply)
 
     ValpasRouhintaOppivelvollinen(
       oppijanumero = tiedot.oppija.henkilö.oid,
@@ -40,7 +40,8 @@ object ValpasRouhintaOppivelvollinen {
       viimeisinOppivelvollisuudenSuorittamiseenKelpaavaOpiskeluoikeus = oos.sorted.lastOption,
       oppivelvollisuudenKeskeytys = tiedot.oppivelvollisuudenKeskeytykset.filter(_.voimassa),
       vainOppijanumerorekisterissä = false,
-      aktiivinenKuntailmoitus = aktiivinenKuntailmoitus
+      aktiivinenKuntailmoitus = aktiivinenKuntailmoitusLaajatTiedot.map(ValpasKuntailmoitusSuppeatTiedot.apply),
+      aktiivisenKuntailmoituksenOppijanYhteystiedot = aktiivinenKuntailmoitusLaajatTiedot.flatMap(_.oppijanYhteystiedot)
     )
   }
 
@@ -55,7 +56,8 @@ object ValpasRouhintaOppivelvollinen {
       viimeisinOppivelvollisuudenSuorittamiseenKelpaavaOpiskeluoikeus = None,
       oppivelvollisuudenKeskeytys = Seq.empty,
       vainOppijanumerorekisterissä = true,
-      aktiivinenKuntailmoitus = None
+      aktiivinenKuntailmoitus = None,
+      aktiivisenKuntailmoituksenOppijanYhteystiedot = None
     )
   }
 
@@ -69,7 +71,8 @@ object ValpasRouhintaOppivelvollinen {
     viimeisinOppivelvollisuudenSuorittamiseenKelpaavaOpiskeluoikeus = None,
     oppivelvollisuudenKeskeytys = Nil,
     vainOppijanumerorekisterissä = true,
-    aktiivinenKuntailmoitus = None
+    aktiivinenKuntailmoitus = None,
+    aktiivisenKuntailmoituksenOppijanYhteystiedot = None
   )
 }
 
