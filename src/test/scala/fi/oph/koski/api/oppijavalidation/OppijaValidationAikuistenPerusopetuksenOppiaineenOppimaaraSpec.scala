@@ -3,9 +3,11 @@ package fi.oph.koski.api.oppijavalidation
 import fi.oph.koski.KoskiHttpSpec
 import fi.oph.koski.api.misc.OpiskeluoikeusTestMethodsAikuistenPerusopetus
 import fi.oph.koski.documentation.ExampleData._
-import fi.oph.koski.documentation.PerusopetusExampleData
+import fi.oph.koski.documentation.{ExamplesAikuistenPerusopetus, PerusopetusExampleData}
 import fi.oph.koski.documentation.YleissivistavakoulutusExampleData.jyväskylänNormaalikoulu
+import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
 import fi.oph.koski.http.KoskiErrorCategory
+import fi.oph.koski.koskiuser.MockUsers.paakayttaja
 import fi.oph.koski.schema.LocalizedString.finnish
 import fi.oph.koski.schema._
 
@@ -180,6 +182,25 @@ class OppijaValidationAikuistenPerusopetuksenOppiaineenOppimaaraSpec extends Tut
 
       setupOppijaWithOpiskeluoikeus(valinnainen) {
         verifyResponseStatusOk()
+      }
+    }
+  }
+
+  "Päätason suorituksen tyypin muuttaminen" - {
+    "Hylkää aikuisten perusopetuksen oppiaineen oppimäärän suoritustyypin muutos" in {
+      val oo = setupOppijaWithAndGetOpiskeluoikeus(ExamplesAikuistenPerusopetus.matematiikanAineOpiskelijaKesken, defaultHenkilö, authHeaders(paakayttaja) ++ jsonContent)
+      val alkuvaiheenSuoritus = ExamplesAikuistenPerusopetus.aikuistenPerusopetuksenAlkuvaiheenSuoritus(None)
+      val mutated = oo.copy(suoritukset = List(alkuvaiheenSuoritus))
+      putOpiskeluoikeus(mutated, defaultHenkilö, headers = authHeaders() ++ jsonContent) {
+        verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.perusopetus.aikuistenPerusopetusAineopinnotSuoritustyyppiMuuttunut("Aikuisten perusopetuksen oppiaineen oppimäärän opiskeluoikeutta ei voi muuttaa oppimäärän opiskeluoikeudeksi"))
+      }
+    }
+
+    "Hylkää aikuisten perusopetuksen suoritustyypin muutos oppiaineen oppimääräksi" in {
+      val oo = setupOppijaWithAndGetOpiskeluoikeus(ExamplesAikuistenPerusopetus.aikuistenPerusopetuksenOpiskeluoikeusAlkuvaiheineenValmistunutVanhanOppivelvollisuuslainAikana, defaultHenkilö, authHeaders(paakayttaja) ++ jsonContent)
+      val mutated = oo.copy(suoritukset = ExamplesAikuistenPerusopetus.matematiikanAineOpiskelijaKesken.suoritukset)
+      putOpiskeluoikeus(mutated, defaultHenkilö, headers = authHeaders() ++ jsonContent) {
+        verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.perusopetus.aikuistenPerusopetusAineopinnotSuoritustyyppiMuuttunut("Aikuisten perusopetuksen oppimäärän opiskeluoikeutta ei voi muuttaa oppiaineen oppimäärän opiskeluoikeudeksi"))
       }
     }
   }
