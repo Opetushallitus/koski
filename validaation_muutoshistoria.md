@@ -1,5 +1,9 @@
 # Koskeen tallennettavien tietojen validaatiosäännöt
 
+## 7.4.2026
+
+- Aikuisten perusopetuksessa suorituksen tyyppiä ei voi muuttaa aineopinnoista oppimäärän opinnoiksi tai päinvastoin.
+
 ## 23.3.2026
 
 - Aikuisten perusopetuksen oppiaineen oppimäärä voi olla valinnainen tai paikallinen, kun suoritustapa on 'koulutus'.

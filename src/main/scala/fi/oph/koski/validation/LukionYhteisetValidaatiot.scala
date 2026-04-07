@@ -33,9 +33,9 @@ object LukionYhteisetValidaatiot {
       val newHasOppimaara   = has("lukionoppimaara")(n.suoritukset)
       val newHasAineopinnot = has("lukionaineopinnot")(n.suoritukset)
       if (oldHasOppimaara && newHasAineopinnot) {
-        KoskiErrorCategory.forbidden.kiellettyMuutos("Lukion oppimäärän opiskeluoikeutta ei voi muuttaa aineopiskeluksi.")
+        KoskiErrorCategory.badRequest.validation.rakenne.suorituksenTyyppiMuuttunut("Lukion oppimäärän opiskeluoikeutta ei voi muuttaa aineopiskeluksi.")
       } else if (oldHasAineopinnot && newHasOppimaara) {
-        KoskiErrorCategory.forbidden.kiellettyMuutos("Lukion aineopiskelijan opiskeluoikeutta ei voi muuttaa oppimääräksi.")
+        KoskiErrorCategory.badRequest.validation.rakenne.suorituksenTyyppiMuuttunut("Lukion aineopiskelijan opiskeluoikeutta ei voi muuttaa oppimääräksi.")
       } else {
         HttpStatus.ok
       }
