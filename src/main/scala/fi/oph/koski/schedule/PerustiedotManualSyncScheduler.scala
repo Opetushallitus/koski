@@ -11,8 +11,7 @@ case class PerustiedotManualSyncScheduler(app: KoskiApplication) extends Timing 
     "perustiedot-manual-sync",
     Duration.ofMinutes(5),
     manualSyncAndLogErrors,
-    shouldFireCheckIntervalMillis = 10000,
-    concurrency = 1
+    shouldFireCheckIntervalMillis = 10000
   ))
 
   private def manualSyncAndLogErrors(): Unit = timed("perustiedotManualSync", 500) {

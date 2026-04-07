@@ -18,8 +18,7 @@ class KielitutkintotodistusTiedoteScheduler(application: KoskiApplication) exten
       schedulerName,
       application.config.getDuration("tiedote.checkInterval"),
       runBatch,
-      shouldFireCheckIntervalMillis = 1000,
-      concurrency = 1
+      shouldFireCheckIntervalMillis = 1000
     ))
     schedulerInstance
   }

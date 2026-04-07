@@ -14,22 +14,15 @@ import fi.oph.koski.log.Logging
 import org.json4s._
 import org.json4s.jackson.JsonMethods
 
-/** Lease-kontrolloitu scheduler, jossa kaikki lease-haltijat jakavat saman aikataulun DB:n kautta.
- *
- * Jos concurrency >= 2, niin useampi lease-haltija voi suorittaa tehtävää yhtäaikaa, mutta ne jakavat
- * silti yhteisen nextFireTime -kentän tietokannassa, mikä vähentää suorituskertoja.
- *
- * HUOM! nextFireTime:n rinnakkaista lukemista ja asettamista ei ole tietokantalukoilla tällä hetkellä
- * estetty, joten rinnakkaisten suoritusten määrä ei ole täsmälleen rajoitettu.
- * */
+/** Lease-kontrolloitu scheduler, jossa yksi instanssi kerrallaan suorittaa tehtävää.
+ * Kaikki instanssit jakavat saman nextFireTime:n DB:n kautta. */
 object GlobalIntervalScheduler {
   def apply(
     application: KoskiApplication,
     name: String,
     interval: Duration,
     task: () => Unit,
-    shouldFireCheckIntervalMillis: Int,
-    concurrency: Int // Lease-slottien määrä. Arvot <= 0 toimivat kuten 1.
+    shouldFireCheckIntervalMillis: Int
   ): GlobalIntervalScheduler =
     new GlobalIntervalScheduler(
       application,
@@ -37,7 +30,6 @@ object GlobalIntervalScheduler {
       interval,
       _ => { task(); None },
       shouldFireCheckIntervalMillis,
-      concurrency,
       initialContext = None,
       readAndWriteContext = false,
       leaseElectorOverrideForTests = None
@@ -49,7 +41,6 @@ object GlobalIntervalScheduler {
     interval: Duration,
     task: () => Unit,
     shouldFireCheckIntervalMillis: Int,
-    concurrency: Int, // Lease-slottien määrä. Arvot <= 0 toimivat kuten 1.
     leaseElectorOverrideForTests: WorkerLeaseElector
   ): GlobalIntervalScheduler = {
     require(Environment.isUnitTestEnvironment(application.config), "leaseElectorOverrideForTests sallittu vain testeissä")
@@ -60,15 +51,13 @@ object GlobalIntervalScheduler {
       interval,
       _ => { task(); None },
       shouldFireCheckIntervalMillis,
-      concurrency,
       initialContext = None,
       readAndWriteContext = false,
       leaseElectorOverrideForTests = Some(leaseElectorOverrideForTests)
     )
   }
 
-  /** Luo lease-kontrolloidun schedulerin kontekstin kanssa. Context toimii oikein vain yhdellä nodella,
-   * joten tämä pakottaa concurrency = 1. */
+  /** Luo schedulerin kontekstin kanssa. */
   def withContext(
     application: KoskiApplication,
     name: String,
@@ -84,7 +73,6 @@ object GlobalIntervalScheduler {
       initialContext = Some(initialContext),
       contextTask = task,
       shouldFireCheckIntervalMillis = shouldFireCheckIntervalMillis,
-      concurrency = 1,
       readAndWriteContext = true,
       leaseElectorOverrideForTests = None
     )
@@ -96,7 +84,6 @@ class GlobalIntervalScheduler private(
   interval: Duration,
   contextTask: Option[JValue] => Option[JValue],
   shouldFireCheckIntervalMillis: Int,
-  concurrency: Int, // Lease-slottien määrä. Arvot <= 0 toimivat kuten 1.
   initialContext: Option[JValue],
   readAndWriteContext: Boolean,
   leaseElectorOverrideForTests: Option[WorkerLeaseElector]
@@ -104,15 +91,15 @@ class GlobalIntervalScheduler private(
 
   override val db: DB = application.masterDatabase.db
 
-  private val leaseElector: Option[WorkerLeaseElector] = leaseElectorOverrideForTests.orElse(
-    Some(new WorkerLeaseElector(
+  private val leaseElector: WorkerLeaseElector = leaseElectorOverrideForTests.getOrElse(
+    new WorkerLeaseElector(
       application.workerLeaseRepository,
       name,
       application.instanceId,
-      slots = concurrency,
+      slots = 1,
       leaseDuration = application.config.getDuration("schedule.workerLease.duration"),
       heartbeatInterval = application.config.getDuration("schedule.workerLease.heartbeatInterval")
-    ))
+    )
   )
 
   private val taskExecutor = Executors.newSingleThreadScheduledExecutor(NamedThreadFactory(name))
@@ -132,26 +119,15 @@ class GlobalIntervalScheduler private(
   // Insert row if it doesn't exist yet; don't clobber existing rows
   runDbSync(sqlu"""INSERT INTO scheduler (name, nextfiretime, context) VALUES ($name, ${nextFireTime()}, NULL) ON CONFLICT DO NOTHING""")
 
-  private var localNextFireTime: Timestamp = {
-    val dbTime = getScheduler.map(_.nextFireTime).getOrElse(nextFireTime())
-    if (dbTime.before(now)) {
-      val fresh = nextFireTime()
-      runDbSync(KoskiTables.Scheduler.filter(_.name === name).map(_.nextFireTime).update(fresh))
-      fresh
-    } else {
-      dbTime
-    }
-  }
-
   // Persist initialContext to DB if the row was just created with NULL context
   if (readAndWriteContext && initialContext.isDefined && getScheduler.flatMap(_.context).isEmpty) {
     runDbSync(KoskiTables.Scheduler.filter(_.name === name).map(_.context).update(initialContext))
   }
 
-  leaseElector.foreach(_.start(
+  leaseElector.start(
     onAcquired = slot => logger.info(s"Scheduler $name acquired lease (slot $slot)"),
     onLost = slot => logger.warn(s"Scheduler $name lost lease (slot $slot)")
-  ))
+  )
 
   logger.info(s"Starting scheduler $name with interval $interval")
 
@@ -159,7 +135,7 @@ class GlobalIntervalScheduler private(
 
   def shutdown(): Unit = {
     taskExecutor.shutdown()
-    leaseElector.foreach(_.shutdown())
+    leaseElector.shutdown()
   }
 
   def isTaskRunning: Boolean = {
@@ -172,7 +148,7 @@ class GlobalIntervalScheduler private(
     runDbSync(KoskiTables.Scheduler.filter(_.name === name).map(_.nextFireTime).update(new Timestamp(0)))
   }
 
-  def hasLease: Boolean = leaseElector.forall(_.hasLease)
+  def hasLease: Boolean = leaseElector.hasLease
 
   private def fireIfTime(): Unit = {
     try {
@@ -191,17 +167,17 @@ class GlobalIntervalScheduler private(
   }
 
   private def shouldFire: Boolean = try {
-    val hasLease = leaseElector.forall(_.hasLease)
-    if (suspended || !hasLease) {
+    if (suspended || !leaseElector.hasLease) {
       false
     } else {
-      // Read nextFireTime from DB to maintain global cadence across nodes
-      val dbNextFireTime = getScheduler.map(_.nextFireTime).getOrElse(localNextFireTime)
+      val dbNextFireTime = getScheduler.map(_.nextFireTime)
       val currentTime = now
-      val shouldFire = currentTime.after(dbNextFireTime)
-      if (shouldFire) {
-        localNextFireTime = nextFireTime(currentTime.toLocalDateTime)
-        runningTasksOnThisNode.incrementAndGet()
+      val shouldFire = dbNextFireTime match {
+        case Some(nft) => currentTime.after(nft)
+        case None =>
+          logger.warn(s"Scheduler row for $name not found in DB, re-creating")
+          runDbSync(sqlu"""INSERT INTO scheduler (name, nextfiretime, context) VALUES ($name, ${nextFireTime()}, NULL) ON CONFLICT DO NOTHING""")
+          false
       }
       shouldFire
     }
@@ -211,9 +187,10 @@ class GlobalIntervalScheduler private(
   }
 
   private def fire(): Unit = try {
+    runningTasksOnThisNode.incrementAndGet()
     // Write nextFireTime to DB immediately so a new lease holder sees the updated
     // value before the task completes, preventing premature firing.
-    runDbSync(KoskiTables.Scheduler.filter(_.name === name).map(_.nextFireTime).update(localNextFireTime))
+    runDbSync(KoskiTables.Scheduler.filter(_.name === name).map(_.nextFireTime).update(nextFireTime()))
     val context: Option[JValue] = if (readAndWriteContext) {
       runDbSync(KoskiTables.Scheduler.filter(_.name === name).result.head).context
     } else {

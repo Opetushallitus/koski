@@ -18,8 +18,7 @@ class TodistusCleanupScheduler(application: KoskiApplication) extends Logging {
       schedulerName,
       application.config.getDuration("todistus.cleanupInterval"),
       runNext,
-      shouldFireCheckIntervalMillis = 1000,
-      concurrency = 1
+      shouldFireCheckIntervalMillis = 1000
     ))
     schedulerInstance
   }

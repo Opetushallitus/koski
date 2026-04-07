@@ -13,8 +13,7 @@ case class PerustiedotSyncScheduler(app: KoskiApplication) extends Timing {
         "perustiedot-sync",
         app.config.getDuration("schedule.perustiedotSyncInterval"),
         syncAndLogErrors,
-        shouldFireCheckIntervalMillis = 1000,
-        concurrency = 1
+        shouldFireCheckIntervalMillis = 1000
       ))
     }
 

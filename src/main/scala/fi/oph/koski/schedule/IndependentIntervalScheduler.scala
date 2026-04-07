@@ -10,9 +10,9 @@ import fi.oph.koski.config.{Environment, KoskiApplication}
 import fi.oph.koski.executors.NamedThreadFactory
 import fi.oph.koski.log.Logging
 
-/** Scheduler, jossa kukin node käyttää omaa paikallista aikatauluaan.
- * Kun concurrency >= 1, lease-kontrollointi rajoittaa aktiivisten nodien määrää.
- * Kun concurrency = 0, kaikki ajossaolevat nodet ajavat tehtävää ilman lease-kontrollointia. */
+/** Scheduler, jossa kukin instanssi käyttää omaa paikallista aikatauluaan.
+ * Kun concurrency >= 1, lease-kontrollointi rajoittaa aktiivisten instanssien määrää.
+ * Kun concurrency = 0, kaikki ajossaolevat instanssit ajavat tehtävää ilman lease-kontrollointia. */
 object IndependentIntervalScheduler {
   def apply(
     application: KoskiApplication,

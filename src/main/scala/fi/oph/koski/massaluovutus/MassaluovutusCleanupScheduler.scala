@@ -13,8 +13,7 @@ class MassaluovutusCleanupScheduler(application: KoskiApplication) extends Loggi
       "massaluovutus-cleanup",
       application.config.getDuration("kyselyt.cleanupInterval"),
       runNextQuery,
-      shouldFireCheckIntervalMillis = 1000,
-      concurrency = 1
+      shouldFireCheckIntervalMillis = 1000
     ))
   }
 

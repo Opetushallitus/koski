@@ -11,8 +11,7 @@ class PurgeOldSessionsTask(app: KoskiApplication) extends Timing {
     "purge-old-sessions",
     Duration.ofHours(3),
     tryRun,
-    shouldFireCheckIntervalMillis = 10000,
-    concurrency = 1
+    shouldFireCheckIntervalMillis = 10000
   ))
 
   private def tryRun(): Unit = timed("purgeOldSessions") {
