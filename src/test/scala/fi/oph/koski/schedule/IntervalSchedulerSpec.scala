@@ -4,7 +4,7 @@ import java.time.Duration
 import java.time.Duration.{ofMillis => millis}
 import java.util.concurrent.atomic.{AtomicInteger, AtomicReference}
 import fi.oph.koski.{KoskiApplicationForTests, TestEnvironment}
-import fi.oph.koski.db.QueryMethods
+import fi.oph.koski.db.{KoskiTables, QueryMethods}
 import fi.oph.koski.util.Wait
 import org.json4s.{JInt, JValue}
 import org.scalatest.freespec.AnyFreeSpec
@@ -28,7 +28,7 @@ class IntervalSchedulerSpec extends AnyFreeSpec with TestEnvironment with Matche
         val scheduler = GlobalIntervalScheduler(
           KoskiApplicationForTests, schedulerName, millis(1),
           () => executionCount.incrementAndGet(),
-          shouldFireCheckIntervalMillis = 1, concurrency = 1
+          shouldFireCheckIntervalMillis = 1
         )
         Wait.until(executionCount.get >= 2, timeoutMs = 5000)
         scheduler.shutdown()
@@ -56,7 +56,7 @@ class IntervalSchedulerSpec extends AnyFreeSpec with TestEnvironment with Matche
         val scheduler = GlobalIntervalScheduler(
           KoskiApplicationForTests, schedulerName, millis(1),
           () => { Thread.sleep(500); sharedResource.incrementAndGet() },
-          shouldFireCheckIntervalMillis = 1, concurrency = 1
+          shouldFireCheckIntervalMillis = 1
         )
         val start = System.currentTimeMillis
         Wait.until(sharedResource.get == 1, timeoutMs = 700)
@@ -88,7 +88,6 @@ class IntervalSchedulerSpec extends AnyFreeSpec with TestEnvironment with Matche
 
         resetSchedulerRow(schedulerName)
 
-
         val errorCount = new AtomicInteger(0)
         val successCount = new AtomicInteger(0)
         val scheduler = GlobalIntervalScheduler(
@@ -98,7 +97,7 @@ class IntervalSchedulerSpec extends AnyFreeSpec with TestEnvironment with Matche
             if (successCount.get() < 1) { errorCount.incrementAndGet(); throw new Exception("error") }
             successCount.incrementAndGet()
           },
-          shouldFireCheckIntervalMillis = 1, concurrency = 1
+          shouldFireCheckIntervalMillis = 1
         )
         Thread.sleep(50)
         errorCount.get should be > 0
@@ -137,7 +136,7 @@ class IntervalSchedulerSpec extends AnyFreeSpec with TestEnvironment with Matche
         val scheduler = GlobalIntervalScheduler(
           KoskiApplicationForTests, schedulerName, millis(1),
           () => executionCount.incrementAndGet(),
-          shouldFireCheckIntervalMillis = 1, concurrency = 1
+          shouldFireCheckIntervalMillis = 1
         )
         Wait.until(executionCount.get >= 2, timeoutMs = 1000)
         scheduler.suspend()
@@ -181,7 +180,7 @@ class IntervalSchedulerSpec extends AnyFreeSpec with TestEnvironment with Matche
         val scheduler = GlobalIntervalScheduler.withLeaseElectorOverrideForTests(
           KoskiApplicationForTests, schedulerName, millis(100),
           () => executionCount.incrementAndGet(),
-          shouldFireCheckIntervalMillis = 10, concurrency = 1,
+          shouldFireCheckIntervalMillis = 10,
           leaseElectorOverrideForTests = lease
         )
         Thread.sleep(500)
@@ -213,7 +212,6 @@ class IntervalSchedulerSpec extends AnyFreeSpec with TestEnvironment with Matche
 
       resetSchedulerRow(schedulerName)
 
-
       val executionCountA = new AtomicInteger(0)
       val executionCountB = new AtomicInteger(0)
       val leaseA = new ControllableLeaseElector
@@ -227,14 +225,14 @@ class IntervalSchedulerSpec extends AnyFreeSpec with TestEnvironment with Matche
       val schedulerA = GlobalIntervalScheduler.withLeaseElectorOverrideForTests(
         KoskiApplicationForTests, schedulerName, interval,
         executionCountA.incrementAndGet,
-        shouldFireCheckIntervalMillis = 50, concurrency = 1,
+        shouldFireCheckIntervalMillis = 50,
         leaseElectorOverrideForTests = leaseA
       )
 
       val schedulerB = GlobalIntervalScheduler.withLeaseElectorOverrideForTests(
         KoskiApplicationForTests, schedulerName, interval,
         executionCountB.incrementAndGet,
-        shouldFireCheckIntervalMillis = 50, concurrency = 1,
+        shouldFireCheckIntervalMillis = 50,
         leaseElectorOverrideForTests = leaseB
       )
 
@@ -253,61 +251,6 @@ class IntervalSchedulerSpec extends AnyFreeSpec with TestEnvironment with Matche
       schedulerB.shutdown()
     }
 
-    "shared nextFireTime limits total fire rate across multiple lease holders" in {
-      val schedulerName = "global-no-parallel"
-
-      resetSchedulerRow(schedulerName)
-
-      val totalExecutionCount = new AtomicInteger(0)
-      val leaseA = new ControllableLeaseElector
-      val leaseB = new ControllableLeaseElector
-
-      leaseA.leaseHeld = true
-      leaseB.leaseHeld = true
-
-      val interval = millis(2000)
-
-      val start = System.currentTimeMillis
-
-      val schedulerA = GlobalIntervalScheduler.withLeaseElectorOverrideForTests(
-        KoskiApplicationForTests, schedulerName, interval,
-        () => totalExecutionCount.incrementAndGet(),
-        shouldFireCheckIntervalMillis = 50, concurrency = 2,
-        leaseElectorOverrideForTests = leaseA
-      )
-
-      // Add some sleep so that both schedulers don't start at exactly the same time to prevent race condition of
-      // both schedulers reading nextFireTime from DB simultaneously.
-      Thread.sleep(500)
-
-      totalExecutionCount.get should equal(0)
-
-      val schedulerB = GlobalIntervalScheduler.withLeaseElectorOverrideForTests(
-        KoskiApplicationForTests, schedulerName, interval,
-        () => totalExecutionCount.incrementAndGet(),
-        shouldFireCheckIntervalMillis = 50, concurrency = 2,
-        leaseElectorOverrideForTests = leaseB
-      )
-
-      Thread.sleep(500)
-
-      totalExecutionCount.get should equal(0)
-
-      // Wait for initial fire
-      Wait.until(totalExecutionCount.get >= 1, timeoutMs = 1500)
-
-      totalExecutionCount.get should equal(1)
-
-      Thread.sleep(2000)
-      val end = System.currentTimeMillis
-      totalExecutionCount.get should equal(2)
-      (end - start) should be >=(4000L)
-      (end - start) should be <=(6000L)
-
-      schedulerA.shutdown()
-      schedulerB.shutdown()
-    }
-
     "triggerNow resets nextFireTime and task fires soon" in {
       val schedulerName = "global-trigger-now"
 
@@ -317,7 +260,7 @@ class IntervalSchedulerSpec extends AnyFreeSpec with TestEnvironment with Matche
       val scheduler = GlobalIntervalScheduler(
         KoskiApplicationForTests, schedulerName, Duration.ofHours(1),
         () => executionCount.incrementAndGet(),
-        shouldFireCheckIntervalMillis = 50, concurrency = 1
+        shouldFireCheckIntervalMillis = 50
       )
 
       // Long interval, fresh row — should not fire on its own
@@ -328,6 +271,72 @@ class IntervalSchedulerSpec extends AnyFreeSpec with TestEnvironment with Matche
       Wait.until(executionCount.get >= 1, timeoutMs = 1000)
 
       scheduler.shutdown()
+    }
+
+    "recovers if scheduler row is deleted while running" in {
+      val schedulerName = "global-row-deleted"
+
+      resetSchedulerRow(schedulerName)
+
+      val executionCount = new AtomicInteger(0)
+      val scheduler = GlobalIntervalScheduler(
+        KoskiApplicationForTests, schedulerName, millis(1),
+        () => executionCount.incrementAndGet(),
+        shouldFireCheckIntervalMillis = 50
+      )
+
+      Wait.until(executionCount.get >= 1, timeoutMs = 5000)
+
+      // Delete the scheduler row while the scheduler is running
+      resetSchedulerRow(schedulerName)
+
+      val countAfterDelete = executionCount.get
+
+      // Scheduler re-creates the row and resumes firing
+      Wait.until(executionCount.get > countAfterDelete, timeoutMs = 5000)
+
+      scheduler.shutdown()
+    }
+
+    "setting nextFireTime far in the future stops the scheduler" in {
+      val schedulerName = "global-disabled-by-nextfiretime"
+
+      resetSchedulerRow(schedulerName)
+
+      val executionCount = new AtomicInteger(0)
+      val scheduler = GlobalIntervalScheduler(
+        KoskiApplicationForTests, schedulerName, millis(1),
+        () => executionCount.incrementAndGet(),
+        shouldFireCheckIntervalMillis = 50
+      )
+
+      Wait.until(executionCount.get >= 1, timeoutMs = 5000)
+
+      // Set nextFireTime to year 9999 — scheduler should stop firing
+      import java.sql.Timestamp
+      val farFuture = Timestamp.valueOf("9999-12-31 23:59:59")
+      QueryMethods.runDbSync(KoskiApplicationForTests.masterDatabase.db,
+        KoskiTables.Scheduler.filter(_.name === schedulerName).map(_.nextFireTime).update(farFuture))
+
+      val countAfterDisable = executionCount.get
+      Thread.sleep(500)
+      executionCount.get should equal(countAfterDisable)
+
+      scheduler.shutdown()
+
+      // Even a new scheduler instance with the same name should not fire,
+      // because the DB row still has the far-future nextFireTime (ON CONFLICT DO NOTHING)
+      val executionCount2 = new AtomicInteger(0)
+      val scheduler2 = GlobalIntervalScheduler(
+        KoskiApplicationForTests, schedulerName, millis(1),
+        () => executionCount2.incrementAndGet(),
+        shouldFireCheckIntervalMillis = 50
+      )
+
+      Thread.sleep(500)
+      executionCount2.get should equal(0)
+
+      scheduler2.shutdown()
     }
 
     "withContext" - {
