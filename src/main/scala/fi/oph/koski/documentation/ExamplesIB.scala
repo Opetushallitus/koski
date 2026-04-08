@@ -386,7 +386,8 @@ object ExamplesIB {
         LukionOpiskeluoikeusjakso(date(2016, 6, 4), LukioExampleData.opiskeluoikeusPäättynyt, Some(ExampleData.valtionosuusRahoitteinen))
       )
     ),
-    suoritukset = List(preIBSuoritus, ibTutkinnonSuoritus(predicted = false))
+    suoritukset = List(preIBSuoritus, ibTutkinnonSuoritus(predicted = false)),
+    iboTunniste = Some("ABC123"),
   )
 
   val kaikkiArviointityypitArvioinnissaSisältäväVanhanmallinenOpiskeluoikeus: IBOpiskeluoikeus = opiskeluoikeus.copy(

@@ -1,3 +1,7 @@
+# 2.4.2026
+
+- Lisätty IB-tutkinnon opiskeluoikeuteen vapaaehtoinen `iboTunniste`-kenttä (Option[String]), jolla voidaan tallentaa opiskelijan tunniste IBO:n järjestelmässä.
+
 # 18.2.2026
 
 - Kielitutkintojen opiskeluoikeuksia ei voi enää katsella oppilaitostunnuksilla, ellei niille ole erikseen määritelty oikeutta kielitutkintoihin.

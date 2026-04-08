@@ -21,6 +21,7 @@ export type IBOpiskeluoikeus = {
   organisaatiohistoria?: Array<OpiskeluoikeudenOrganisaatiohistoria>
   sisältyyOpiskeluoikeuteen?: SisältäväOpiskeluoikeus
   oid?: string
+  iboTunniste?: string
   versionumero?: number
   suoritukset: Array<IBPäätasonSuoritus>
   aikaleima?: string
@@ -41,6 +42,7 @@ export const IBOpiskeluoikeus = (
     organisaatiohistoria?: Array<OpiskeluoikeudenOrganisaatiohistoria>
     sisältyyOpiskeluoikeuteen?: SisältäväOpiskeluoikeus
     oid?: string
+    iboTunniste?: string
     versionumero?: number
     suoritukset?: Array<IBPäätasonSuoritus>
     aikaleima?: string
