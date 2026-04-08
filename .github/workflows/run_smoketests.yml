@@ -1,7 +1,7 @@
 name: Run smoketests
 on:
   schedule:
-    - cron: "30 5-12 * * MON-SUN"
+    - cron: "30 5-12 * * SUN-SAT"
   workflow_dispatch:
 
 env:
