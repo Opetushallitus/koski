@@ -117,7 +117,7 @@ object KoskiSpecificMockOppijat {
     }
   )
   val eskariAikaisillaLisätiedoilla = koskiSpecificOppijat.oppija("Lisä-Eskari", "Essiina", "300996-7419")
-  val master = koskiSpecificOppijat.oppija("of Puppets", "Master", "101097-6107")
+  val master = koskiSpecificOppijat.oppijaSyntymäaikaHetusta("of Puppets", "Master", "101097-6107")
   val slave = koskiSpecificOppijat.addOppijaHenkilöWithMasterInfo(OppijaHenkilöWithMasterInfo(LaajatOppijaHenkilöTiedot(oid = "1.2.246.562.24.00000051473", sukunimi = "of Puppets", etunimet = "Slave", kutsumanimi = "Slave", hetu = Some("101097-6107"), syntymäaika = None), Some(master)))
   val masterEiKoskessa = koskiSpecificOppijat.addLaajatOppijaHenkilöTiedot(LaajatOppijaHenkilöTiedot(oid = koskiSpecificOppijat.generateId(), sukunimi = "Master", etunimet = "Master", kutsumanimi = "Master", hetu = Some("270366-697B"), syntymäaika = None))
   val slaveMasterEiKoskessa = koskiSpecificOppijat.addOppijaHenkilöWithMasterInfo(OppijaHenkilöWithMasterInfo(LaajatOppijaHenkilöTiedot(oid = "1.2.246.562.24.41000051473", hetu = Some("270366-697B"), syntymäaika = None, sukunimi = "Slave", etunimet = "Slave", kutsumanimi = "Slave"), Some(masterEiKoskessa)))

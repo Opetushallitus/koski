@@ -128,7 +128,7 @@ class ElaketurvakeskusSpec
 
         aineisto.tutkinnot.filter(_.henkilö.hetu.contains(master.hetu.get)).toSet should equal(Set(
           EtkTutkintotieto(
-            EtkHenkilö(master.hetu, Some(date(1997, 10, 10)), master.sukunimi, master.etunimet, None),
+            EtkHenkilö(master.hetu, Some(date(1997, 10, 10)), master.sukunimi, master.etunimet, Some(2)),
             EtkTutkinto(Some("ammatillinenperustutkinto"), Some(date(2012, 9, 1)), Some(date(2016, 5, 31))),
             Some(EtkViite(opiskeluoikeudenOid, Some(1), Some(slave.henkilö.oid)))
           )
