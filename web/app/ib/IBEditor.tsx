@@ -45,6 +45,7 @@ import { OsasuoritusOf } from '../util/schema'
 import { containsPaikallinenSuoritus } from '../util/suoritus'
 import { useBooleanState } from '../util/useBooleanState'
 import { IBLisätiedot } from './IBLisatiedot'
+import { IBOpiskeluoikeudenLisäkentät } from './IBOpiskeluoikeudenLisäkentät'
 import { IBPäätasonSuoritusTiedot } from './IBPaatasonSuoritusTiedot'
 import { UusiIBTutkintoOppiaineDialog } from './dialogs/UusiIBTutkintoOppiaineDialog'
 import { UusiIBTutkintoOsasuoritusDialog } from './dialogs/UusiIBTutkintoOsasuoritusDialog'
@@ -155,6 +156,7 @@ const IBPäätasonSuoritusEditor: React.FC<
       invalidatable={invalidatable}
       onChangeSuoritus={setPäätasonSuoritus}
       createOpiskeluoikeusjakso={LukionOpiskeluoikeusjakso}
+      additionalOpiskeluoikeusFields={IBOpiskeluoikeudenLisäkentät}
       lisätiedotContainer={IBLisätiedot}
       testId={päätasonSuoritus.testId}
       {...addSuoritusProps}
