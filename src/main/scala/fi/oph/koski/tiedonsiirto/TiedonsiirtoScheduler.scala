@@ -1,23 +1,21 @@
 package fi.oph.koski.tiedonsiirto
 
 import fi.oph.koski.config.KoskiApplication
-import fi.oph.koski.schedule.{IntervalSchedule, Scheduler}
+import fi.oph.koski.schedule.IndependentIntervalScheduler
 import fi.oph.koski.util.Timing
-import org.json4s.JValue
 
 class TiedonsiirtoScheduler(application: KoskiApplication, tiedonsiirtoService: TiedonsiirtoService) extends Timing {
-  val scheduler: Scheduler =
-    new Scheduler(
+  val scheduler: IndependentIntervalScheduler =
+    IndependentIntervalScheduler(
       application,
       "tiedonsiirto-sync",
-      new IntervalSchedule(application.config.getDuration("schedule.tiedonsiirtoSyncInterval")),
-      None,
+      application.config.getDuration("schedule.tiedonsiirtoSyncInterval"),
       syncTiedonsiirrot,
-      intervalMillis = 1000
+      shouldFireCheckIntervalMillis = 1000,
+      concurrency = 0
     )
 
-  def syncTiedonsiirrot(ctx: Option[JValue]): Option[JValue] = {
+  def syncTiedonsiirrot(): Unit = {
     tiedonsiirtoService.syncToOpenSearch(refresh = true)
-    None
   }
 }

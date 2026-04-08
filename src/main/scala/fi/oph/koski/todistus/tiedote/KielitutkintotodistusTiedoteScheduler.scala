@@ -2,39 +2,33 @@ package fi.oph.koski.todistus.tiedote
 
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.log.Logging
-import fi.oph.koski.schedule.{IntervalSchedule, Schedule, Scheduler}
-import org.json4s.JValue
+import fi.oph.koski.schedule.GlobalIntervalScheduler
 
 class KielitutkintotodistusTiedoteScheduler(application: KoskiApplication) extends Logging {
   val schedulerName = "kielitutkintotodistus-tiedote"
   val tiedoteService: KielitutkintotodistusTiedoteService = application.kielitutkintotodistusTiedoteService
 
-  var schedulerInstance: Option[Scheduler] = None
+  var schedulerInstance: Option[GlobalIntervalScheduler] = None
 
-  def createScheduler: Option[Scheduler] = {
+  def createScheduler: Option[GlobalIntervalScheduler] = {
     if (!application.config.getBoolean("tiedote.enabled")) return None
 
-    val schedule: Schedule = new IntervalSchedule(application.config.getDuration("tiedote.checkInterval"))
-
-    schedulerInstance = Some(new Scheduler(
+    schedulerInstance = Some(GlobalIntervalScheduler(
       application,
       schedulerName,
-      schedule,
-      None,
+      application.config.getDuration("tiedote.checkInterval"),
       runBatch,
-      intervalMillis = 1000,
-      concurrency = 1
+      shouldFireCheckIntervalMillis = 1000
     ))
     schedulerInstance
   }
 
   def shutdown(): Unit = {
-    schedulerInstance.foreach(_.shutdown)
+    schedulerInstance.foreach(_.shutdown())
   }
 
-  private def runBatch(_context: Option[JValue]): Option[JValue] = {
+  private def runBatch(): Unit = {
     tiedoteService.retryAllFailed()
     tiedoteService.processAll()
-    None
   }
 }
