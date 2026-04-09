@@ -1,24 +1,26 @@
 package fi.oph.koski.todistus
 
-import fi.oph.koski.KoskiApplicationForTests
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.plainAPI._
 import fi.oph.koski.db.QueryMethods
 import fi.oph.koski.TestEnvironment
-import org.scalatest.BeforeAndAfterEach
-import org.scalatest.freespec.AnyFreeSpec
+import org.scalatest.{BeforeAndAfterAll, BeforeAndAfterEach}
 import org.scalatest.matchers.should.Matchers
 
 import java.time.{Duration, LocalDateTime}
 import java.util.UUID
 
-class TodistusCleanupLeaseSpec extends AnyFreeSpec with TestEnvironment with Matchers with BeforeAndAfterEach {
-  private val app = KoskiApplicationForTests
+class TodistusCleanupLeaseSpec extends TodistusSpecHelpers with TestEnvironment with Matchers with BeforeAndAfterEach with BeforeAndAfterAll {
   private val db = app.masterDatabase.db
 
   override protected def beforeEach(): Unit = {
-    QueryMethods.runDbSync(db, sql"TRUNCATE TABLE todistus_job".asUpdate)
+    cleanup()
     QueryMethods.runDbSync(db, sql"DELETE FROM worker_lease WHERE name = 'todistus'".asUpdate)
     super.beforeEach()
+  }
+
+  override protected def afterAll(): Unit = {
+    cleanup()
+    super.afterAll()
   }
 
   "cleanup requeues orphaned todistus jobs based on active leases" in {
