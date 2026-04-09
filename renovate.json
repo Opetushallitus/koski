@@ -34,6 +34,17 @@
       "enabled": false
     },
     {
+      "description": "Re-enable digest and major updates for GitHub Actions (SHA-pinned actions only move via digest bumps)",
+      "matchManagers": [
+        "github-actions"
+      ],
+      "matchUpdateTypes": [
+        "digest",
+        "major"
+      ],
+      "enabled": true
+    },
+    {
       "description": "Group all Parcel updates together (skip for now)",
       "groupName": "parcel",
       "enabled": false,
