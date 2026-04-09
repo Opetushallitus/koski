@@ -207,6 +207,161 @@ class TodistusLatausSpec extends TodistusSpecHelpers with BeforeAndAfterAll {
 
   private lazy val enPresignedPdfText: String = new PDFTextStripper().getText(enPresignedPdfDocument)
 
+  // Printattava todistus: fi_tulostettava_paivitys (2 sivua, ei tiedotesivua)
+  private val fiPaivitysTemplateVariant = "fi_tulostettava_paivitys"
+
+  private lazy val fiPaivitysTodistusJob: TodistusJob = {
+    val req = TodistusGenerateRequest(opiskeluoikeusOid, fiPaivitysTemplateVariant)
+    addGenerateJobSuccessfullyAsVirkailijaPääkäyttäjä(req) { todistusJob =>
+      todistusJob.state should equal(TodistusState.QUEUED)
+      todistusJob
+    }
+  }
+
+  private lazy val fiPaivitysCompletedJob: TodistusJob = waitForCompletionAsVirkailijaPääkäyttäjä(fiPaivitysTodistusJob.id)
+
+  private lazy val fiPaivitysPdfBytes: Array[Byte] = {
+    var bytes: Array[Byte] = null
+    get(s"/todistus/download/${fiPaivitysCompletedJob.id}", headers = authHeaders(MockUsers.paakayttaja)) {
+      verifyResponseStatusOk()
+      bytes = response.getContentBytes()
+    }
+    bytes
+  }
+
+  private var _fiPaivitysPdfDocument: Option[PDDocument] = None
+  private lazy val fiPaivitysPdfDocument: PDDocument = {
+    val doc = Loader.loadPDF(fiPaivitysPdfBytes)
+    _fiPaivitysPdfDocument = Some(doc)
+    doc
+  }
+
+  private lazy val fiPaivitysPdfText: String = new PDFTextStripper().getText(fiPaivitysPdfDocument)
+
+  // Printattava todistus: sv_tulostettava_uusi (3 sivua)
+  private val svUusiTemplateVariant = "sv_tulostettava_uusi"
+
+  private lazy val svUusiTodistusJob: TodistusJob = {
+    val req = TodistusGenerateRequest(opiskeluoikeusOid, svUusiTemplateVariant)
+    addGenerateJobSuccessfullyAsVirkailijaPääkäyttäjä(req) { todistusJob =>
+      todistusJob.state should equal(TodistusState.QUEUED)
+      todistusJob
+    }
+  }
+
+  private lazy val svUusiCompletedJob: TodistusJob = waitForCompletionAsVirkailijaPääkäyttäjä(svUusiTodistusJob.id)
+
+  private lazy val svUusiPdfBytes: Array[Byte] = {
+    var bytes: Array[Byte] = null
+    get(s"/todistus/download/${svUusiCompletedJob.id}", headers = authHeaders(MockUsers.paakayttaja)) {
+      verifyResponseStatusOk()
+      bytes = response.getContentBytes()
+    }
+    bytes
+  }
+
+  private var _svUusiPdfDocument: Option[PDDocument] = None
+  private lazy val svUusiPdfDocument: PDDocument = {
+    val doc = Loader.loadPDF(svUusiPdfBytes)
+    _svUusiPdfDocument = Some(doc)
+    doc
+  }
+
+  private lazy val svUusiPdfText: String = new PDFTextStripper().getText(svUusiPdfDocument)
+
+  // Printattava todistus: sv_tulostettava_paivitys (2 sivua)
+  private val svPaivitysTemplateVariant = "sv_tulostettava_paivitys"
+
+  private lazy val svPaivitysTodistusJob: TodistusJob = {
+    val req = TodistusGenerateRequest(opiskeluoikeusOid, svPaivitysTemplateVariant)
+    addGenerateJobSuccessfullyAsVirkailijaPääkäyttäjä(req) { todistusJob =>
+      todistusJob.state should equal(TodistusState.QUEUED)
+      todistusJob
+    }
+  }
+
+  private lazy val svPaivitysCompletedJob: TodistusJob = waitForCompletionAsVirkailijaPääkäyttäjä(svPaivitysTodistusJob.id)
+
+  private lazy val svPaivitysPdfBytes: Array[Byte] = {
+    var bytes: Array[Byte] = null
+    get(s"/todistus/download/${svPaivitysCompletedJob.id}", headers = authHeaders(MockUsers.paakayttaja)) {
+      verifyResponseStatusOk()
+      bytes = response.getContentBytes()
+    }
+    bytes
+  }
+
+  private var _svPaivitysPdfDocument: Option[PDDocument] = None
+  private lazy val svPaivitysPdfDocument: PDDocument = {
+    val doc = Loader.loadPDF(svPaivitysPdfBytes)
+    _svPaivitysPdfDocument = Some(doc)
+    doc
+  }
+
+  private lazy val svPaivitysPdfText: String = new PDFTextStripper().getText(svPaivitysPdfDocument)
+
+  // Printattava todistus: en_tulostettava_uusi (3 sivua)
+  private val enUusiTemplateVariant = "en_tulostettava_uusi"
+
+  private lazy val enUusiTodistusJob: TodistusJob = {
+    val req = TodistusGenerateRequest(opiskeluoikeusOid, enUusiTemplateVariant)
+    addGenerateJobSuccessfullyAsVirkailijaPääkäyttäjä(req) { todistusJob =>
+      todistusJob.state should equal(TodistusState.QUEUED)
+      todistusJob
+    }
+  }
+
+  private lazy val enUusiCompletedJob: TodistusJob = waitForCompletionAsVirkailijaPääkäyttäjä(enUusiTodistusJob.id)
+
+  private lazy val enUusiPdfBytes: Array[Byte] = {
+    var bytes: Array[Byte] = null
+    get(s"/todistus/download/${enUusiCompletedJob.id}", headers = authHeaders(MockUsers.paakayttaja)) {
+      verifyResponseStatusOk()
+      bytes = response.getContentBytes()
+    }
+    bytes
+  }
+
+  private var _enUusiPdfDocument: Option[PDDocument] = None
+  private lazy val enUusiPdfDocument: PDDocument = {
+    val doc = Loader.loadPDF(enUusiPdfBytes)
+    _enUusiPdfDocument = Some(doc)
+    doc
+  }
+
+  private lazy val enUusiPdfText: String = new PDFTextStripper().getText(enUusiPdfDocument)
+
+  // Printattava todistus: en_tulostettava_paivitys (2 sivua)
+  private val enPaivitysTemplateVariant = "en_tulostettava_paivitys"
+
+  private lazy val enPaivitysTodistusJob: TodistusJob = {
+    val req = TodistusGenerateRequest(opiskeluoikeusOid, enPaivitysTemplateVariant)
+    addGenerateJobSuccessfullyAsVirkailijaPääkäyttäjä(req) { todistusJob =>
+      todistusJob.state should equal(TodistusState.QUEUED)
+      todistusJob
+    }
+  }
+
+  private lazy val enPaivitysCompletedJob: TodistusJob = waitForCompletionAsVirkailijaPääkäyttäjä(enPaivitysTodistusJob.id)
+
+  private lazy val enPaivitysPdfBytes: Array[Byte] = {
+    var bytes: Array[Byte] = null
+    get(s"/todistus/download/${enPaivitysCompletedJob.id}", headers = authHeaders(MockUsers.paakayttaja)) {
+      verifyResponseStatusOk()
+      bytes = response.getContentBytes()
+    }
+    bytes
+  }
+
+  private var _enPaivitysPdfDocument: Option[PDDocument] = None
+  private lazy val enPaivitysPdfDocument: PDDocument = {
+    val doc = Loader.loadPDF(enPaivitysPdfBytes)
+    _enPaivitysPdfDocument = Some(doc)
+    doc
+  }
+
+  private lazy val enPaivitysPdfText: String = new PDFTextStripper().getText(enPaivitysPdfDocument)
+
   // Temp-hakemistot debuggausta varten
   private lazy val datePrefix: String = {
     java.time.LocalDate.now().format(java.time.format.DateTimeFormatter.ISO_LOCAL_DATE)
@@ -239,6 +394,21 @@ class TodistusLatausSpec extends TodistusSpecHelpers with BeforeAndAfterAll {
     }
     if (_enPresignedPdfDocument.isDefined) {
       _enPresignedPdfDocument.get.close()
+    }
+    if (_fiPaivitysPdfDocument.isDefined) {
+      _fiPaivitysPdfDocument.get.close()
+    }
+    if (_svUusiPdfDocument.isDefined) {
+      _svUusiPdfDocument.get.close()
+    }
+    if (_svPaivitysPdfDocument.isDefined) {
+      _svPaivitysPdfDocument.get.close()
+    }
+    if (_enUusiPdfDocument.isDefined) {
+      _enUusiPdfDocument.get.close()
+    }
+    if (_enPaivitysPdfDocument.isDefined) {
+      _enPaivitysPdfDocument.get.close()
     }
     cleanup()
     super.afterAll()
@@ -345,47 +515,67 @@ class TodistusLatausSpec extends TodistusSpecHelpers with BeforeAndAfterAll {
     }
   }
 
-  // Testaa printattava todistus erikseen, koska sillä on eri rakenne
-  "printattava-todistus" - {
-    "Lataus onnistuu" in {
-      printPdfBytes.length should be > 0
+  // Testaa printattavat todistukset - tekstivertailu vain suomiversioille
+  Seq(
+    ("fi_tulostettava_uusi", () => printPdfText),
+    ("fi_tulostettava_paivitys", () => fiPaivitysPdfText)
+  ).foreach { case (variant, textGetter) =>
+    s"printattava-todistus-$variant" - {
+      "PDF sisältää oikeat tekstit" in {
+        verifyYleinenKielitutkintoTodistusSisalto(textGetter())
+      }
     }
+  }
 
-    "PDF sisältää oikeat tekstit" in {
-      verifyYleinenKielitutkintoTodistusSisalto(printPdfText)
+  Seq(
+    ("fi_tulostettava_uusi", 3, () => printPdfBytes, () => printPdfDocument, () => printPdfText, () => printCompletedJob),
+    ("fi_tulostettava_paivitys", 2, () => fiPaivitysPdfBytes, () => fiPaivitysPdfDocument, () => fiPaivitysPdfText, () => fiPaivitysCompletedJob),
+    ("sv_tulostettava_uusi", 3, () => svUusiPdfBytes, () => svUusiPdfDocument, () => svUusiPdfText, () => svUusiCompletedJob),
+    ("sv_tulostettava_paivitys", 2, () => svPaivitysPdfBytes, () => svPaivitysPdfDocument, () => svPaivitysPdfText, () => svPaivitysCompletedJob),
+    ("en_tulostettava_uusi", 3, () => enUusiPdfBytes, () => enUusiPdfDocument, () => enUusiPdfText, () => enUusiCompletedJob),
+    ("en_tulostettava_paivitys", 2, () => enPaivitysPdfBytes, () => enPaivitysPdfDocument, () => enPaivitysPdfText, () => enPaivitysCompletedJob)
+  ).foreach { case (variant, expectedPages, bytesGetter, documentGetter, textGetter, jobGetter) =>
+    val lang = variant.split("_").head
+    s"printattava-todistus-$variant" - {
+      "Lataus onnistuu" in {
+        bytesGetter().length should be > 0
+      }
+
+      "PDF ei sisällä allekirjoitusta" in {
+        val signatureDictionary = documentGetter().getLastSignatureDictionary
+        signatureDictionary should be(null)
+      }
+
+      "PDF käyttää oikeita fontteja ja ne on embedattu" in {
+        verifyTodistusFontit(documentGetter())
+      }
+
+      "PDF:ssä on oikea määrä sivuja" in {
+        verifyTodistusSivumaara(documentGetter(), expectedPages)
+      }
+
+      "PDF metadata sisältää oikeat tiedot" in {
+        verifyTodistusMetadata(documentGetter(), jobGetter(), opiskeluoikeus, lang)
+      }
+
+      "PDF on PDF/UA-1 -saavutettava" in {
+        verifyPdfUaAccessibility(bytesGetter())
+      }
+
+      "PDF sivukoko on A4" in {
+        verifyPageSize(documentGetter(), expectedPages)
+      }
+
+      "PDF alueet ja logot vastaavat referenssikuvaa pikselitasolla" in {
+        verifyAreasByPixelPrintTemplate(documentGetter(), s"$variant", expectedPages, variant)
+      }
     }
+  }
 
-    "PDF ei sisällä allekirjoitusta" in {
-      val signatureDictionary = printPdfDocument.getLastSignatureDictionary
-      signatureDictionary should be(null)
-    }
-
-    "PDF käyttää oikeita fontteja ja ne on embedattu" in {
-      verifyTodistusFontit(printPdfDocument)
-    }
-
-    "PDF:ssä on oikea määrä sivuja" in {
-      verifyTodistusSivumaara(printPdfDocument, 3)
-    }
-
-    "PDF metadata sisältää oikeat tiedot" in {
-      verifyTodistusMetadata(printPdfDocument, printCompletedJob, opiskeluoikeus)
-    }
-
-    "PDF on PDF/UA-1 -saavutettava" in {
-      verifyPdfUaAccessibility(printPdfBytes)
-    }
-
-    "PDF sivukoko on A4" in {
-      verifyPageSize(printPdfDocument, 3)
-    }
-
+  // Tee kattavammat tekstipohjaiset tarkistukset fi_tulostettava_uusi-versiolle
+  "printattava-todistus-fi_tulostettava_uusi" - {
     "PDF tekstisisällöt ovat oikeilla paikoilla" in {
       verifyTeksitOvatGraafisestiOikeillaKohdillaPrintTemplate(printPdfDocument)
-    }
-
-    "PDF alueet ja logot vastaavat referenssikuvaa pikselitasolla" in {
-      verifyAreasByPixelPrintTemplate(printPdfDocument, "fi-printattava-todistus")
     }
   }
 
@@ -666,27 +856,30 @@ class TodistusLatausSpec extends TodistusSpecHelpers with BeforeAndAfterAll {
     )
   }
 
-  // Printattavan todistuksen pikselitason vertailu (3 sivua)
-  def verifyAreasByPixelPrintTemplate(document: PDDocument, lataustapa: String): Unit = {
-    val testRegions = Seq(
+  // Printattavan todistuksen pikselitason vertailu (_uusi: 3 sivua, _paivitys: 2 sivua)
+  def verifyAreasByPixelPrintTemplate(document: PDDocument, lataustapa: String, pageCount: Int = 3, variant: String = "fi_tulostettava_uusi"): Unit = {
+    val baseRegions = Seq(
       // Sivu 1
       TestRegion("vasen_ylanurkka", pageIndex = 0, x = 45, y = 55, width = 200, height = 100, minContentRatio = 0.25),
       TestRegion("oikea_alanurkka", pageIndex = 0, x = 420, y = 740, width = 130, height = 50, minContentRatio = 0.15),
       TestRegion("sivu1_kokonaan", pageIndex = 0, x = 0, y = 0, width = 595, height = 842, minContentRatio = 0.05, skipPixelComparison = true),
 
       // Sivu 2
-      TestRegion("sivu2_kokonaan", pageIndex = 1, x = 0, y = 0, width = 595, height = 842, minContentRatio = 0.10, skipPixelComparison = true),
-
-      // Sivu 3 (leiska)
-      TestRegion("sivu3_kokonaan", pageIndex = 2, x = 0, y = 0, width = 595, height = 842, minContentRatio = 0.05, skipPixelComparison = true)
+      TestRegion("sivu2_kokonaan", pageIndex = 1, x = 0, y = 0, width = 595, height = 842, minContentRatio = 0.10, skipPixelComparison = true)
     )
+
+    val testRegions = if (pageCount >= 3) {
+      baseRegions :+ TestRegion("sivu3_kokonaan", pageIndex = 2, x = 0, y = 0, width = 595, height = 842, minContentRatio = 0.05, skipPixelComparison = true)
+    } else {
+      baseRegions
+    }
 
     verifyPixelRegions(
       document,
       lataustapa,
-      "/todistus-test-kielitutkinto-yleinenkielitutkinto-fi_tulostettava_uusi-expected",
+      s"/todistus-test-kielitutkinto-yleinenkielitutkinto-$variant-expected",
       testRegions,
-      pageCount = 3
+      pageCount = pageCount
     )
   }
 
@@ -755,18 +948,27 @@ class TodistusLatausSpec extends TodistusSpecHelpers with BeforeAndAfterAll {
     }
   }
 
-  def verifyTodistusMetadata(document: PDDocument, todistusJob: TodistusJob, opiskeluoikeus: KielitutkinnonOpiskeluoikeus): Unit = {
+  private case class ExpectedMetadata(title: String, subject: String, author: String, keywords: String)
+
+  private val expectedMetadataByLang: Map[String, ExpectedMetadata] = Map(
+    "fi" -> ExpectedMetadata("Todistus", "Todistus yleisen kielitutkinnon suorittamisesta", "Opetushallitus", "todistus, yleinen kielitutkinto"),
+    "sv" -> ExpectedMetadata("Intyg", "Intyg om slutförande av den allmänna språkexamen", "Utbildningsstyrelsen", "Certifikat, Allmänna språkexamina"),
+    "en" -> ExpectedMetadata("Certificate", "Certificate of completion of the National Certificate of Language Proficiency", "Finnish National Agency for Education", "Certificate, National Certificate of Language Proficiency")
+  )
+
+  def verifyTodistusMetadata(document: PDDocument, todistusJob: TodistusJob, opiskeluoikeus: KielitutkinnonOpiskeluoikeus, lang: String = "fi"): Unit = {
     val info = document.getDocumentInformation
+    val expected = expectedMetadataByLang(lang)
 
     info.getCustomMetadataValue("OppijaOid") should equal(todistusJob.oppijaOid)
     info.getCustomMetadataValue("OpiskeluoikeusOid") should equal(todistusJob.opiskeluoikeusOid)
     info.getCustomMetadataValue("TodistusJobId") should equal(todistusJob.id)
     info.getCustomMetadataValue("OpiskeluoikeusVersionumero") should equal(opiskeluoikeus.versionumero.get.toString)
 
-    info.getTitle should equal("Todistus")
-    info.getSubject should equal("Todistus yleisen kielitutkinnon suorittamisesta")
-    info.getAuthor should equal("Opetushallitus")
-    info.getKeywords should equal("todistus, yleinen kielitutkinto")
+    info.getTitle should equal(expected.title)
+    info.getSubject should equal(expected.subject)
+    info.getAuthor should equal(expected.author)
+    info.getKeywords should equal(expected.keywords)
 
     val generointiStartedAt = info.getCustomMetadataValue("GenerointiStartedAt")
     withClue(s"GenerointiStartedAt-metadatassa virhe. Saatu: $generointiStartedAt ") {

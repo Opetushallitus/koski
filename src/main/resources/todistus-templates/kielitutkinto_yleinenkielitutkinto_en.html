@@ -1,8 +1,9 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="fi-FI">
+<html xmlns:th="http://www.thymeleaf.org" lang="en-FI">
+<!-- Käytetään en-FI, koska päivämääräformaatti syntymäajassa on Suomessa käytettävässä muodossa -->
 <head>
   <meta charset="UTF-8"/>
-  <title>Todistus</title>
+  <title>Certificate</title>
   <meta name="subject" content="Certificate of completion of the National Certificate of Language Proficiency"/>
   <meta name="author" content="Finnish National Agency for Education"/>
   <meta name="description" content="Certificate of completion of the National Certificate of Language Proficiency"/>
@@ -463,7 +464,7 @@
     <section id="henkilötiedot">
 
       <p class="nimi"><span
-        th:text="${oppijaNimi}">Etunimi Etunimi Etunimi Etunimi Etunimi Sukunimisukunimisukunimi</span></p>
+        th:text="${oppijaNimi}">Etunimi Etunimi Etunimi Etunimi Etunimi Kielitutkinto imi Sukunimisukunimi sukusukuni</span></p>
 
       <p class="syntymaaika">(born <span th:text="${oppijaSyntymäaika}">PP.KK.VVVV</span>)</p>
 
@@ -516,7 +517,7 @@
       Test organizer:
     </h2>
     <p class="jarjestaja-nimi" th:text="${järjestäjäNimi}">
-      Espoon seudun koulutuskuntayhtymä Omnia, Omnia koulutus, Espoon työväenopisto
+      Länsi-Uudenmaan steinerpedagogisen varhaiskasvatuksen kannatusyhdistys ry, Understödsföreningen för steinerpedagogisk småbarnspedagogik i Västra Nyland rf
     </p>
 
     <p class="allekirjoitus-info">
