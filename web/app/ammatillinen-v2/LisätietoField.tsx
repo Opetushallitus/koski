@@ -19,7 +19,9 @@ export const LisätietoView = ({
   return (
     <>
       <div>{t(value?.tunniste.nimi)}</div>
-      <div className={'LisätietoKuvaus'}>{t(value?.kuvaus)}</div>
+      <div className={'LisätietoKuvaus'} style={{ whiteSpace: 'pre-line' }}>
+        {t(value?.kuvaus)}
+      </div>
     </>
   )
 }

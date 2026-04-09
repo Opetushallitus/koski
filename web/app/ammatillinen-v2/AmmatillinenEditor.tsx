@@ -358,6 +358,7 @@ const AmmatillisenOsittaisenSuorituksenTiedot: React.FC<{
           form={form}
           view={LocalizedTextView}
           edit={LocalizedTextEdit}
+          editProps={{ large: true }}
           path={path.prop('todistuksellaNäkyvätLisätiedot')}
         />
       </KeyValueRow>
@@ -1016,6 +1017,7 @@ export const TyössäoppimisjaksoEdit = ({
       </KeyValueRow>
       <KeyValueRow localizableLabel="Työssäoppimispaikka">
         <LocalizedTextEdit
+          large
           value={value?.työssäoppimispaikka}
           onChange={(työssäoppimispaikka) =>
             onChange({
@@ -1028,6 +1030,7 @@ export const TyössäoppimisjaksoEdit = ({
       </KeyValueRow>
       <KeyValueRow localizableLabel="Työtehtävät">
         <LocalizedTextEdit
+          large
           value={value?.työtehtävät}
           onChange={(työtehtävät) =>
             onChange({
@@ -1144,6 +1147,7 @@ export const KoulutussopimusEdit = ({
       </KeyValueRow>
       <KeyValueRow localizableLabel="Työssäoppimispaikka">
         <LocalizedTextEdit
+          large
           value={value?.työssäoppimispaikka}
           onChange={(työssäoppimispaikka) =>
             onChange({
@@ -1168,6 +1172,7 @@ export const KoulutussopimusEdit = ({
       </KeyValueRow>
       <KeyValueRow localizableLabel="Työtehtävät">
         <LocalizedTextEdit
+          large
           value={value?.työtehtävät}
           onChange={(työtehtävät) =>
             onChange({

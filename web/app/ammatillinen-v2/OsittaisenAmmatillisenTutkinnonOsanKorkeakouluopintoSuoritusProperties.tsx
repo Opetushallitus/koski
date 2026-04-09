@@ -54,7 +54,7 @@ export const OsittaisenAmmatillisenTutkinnonOsanKorkeakouluopintoSuoritusPropert
                 suoritusIndex: 1,
                 osasuoritusIndex: index,
                 columns: {
-                  'Osa-alue': t(s.koulutusmoduuli.tunniste.nimi),
+                  Osasuoritus: t(s.koulutusmoduuli.tunniste.nimi),
                   Laajuus: (
                     <FormField
                       form={form}

@@ -70,7 +70,9 @@ export const NäyttöAmmatillinenOsittainenView = ({
 
 const NäyttöViewBase = (value?: AnyNäyttö) => (
   <KeyValueTable>
-    <KeyValueRow localizableLabel="Kuvaus">{t(value?.kuvaus)}</KeyValueRow>
+    <KeyValueRow localizableLabel="Kuvaus">
+      <span style={{ whiteSpace: 'pre-line' }}>{t(value?.kuvaus)}</span>
+    </KeyValueRow>
     <KeyValueRow localizableLabel={'Suorituspaikka'}>
       {t(value?.suorituspaikka?.tunniste.nimi)}
       {': '}
@@ -252,7 +254,7 @@ const NäytönArviointiEdit = ({
       </KeyValueRow>
       <KeyValueRow localizableLabel="Arvioijat">
         {value?.arvioitsijat?.map((a, index) => (
-          <div key={`nayton.arvioijat.${a.nimi}`}>
+          <div key={`nayton.arvioijat.${index}`}>
             <TextEdit
               value={a.nimi}
               onChange={(nimi) =>

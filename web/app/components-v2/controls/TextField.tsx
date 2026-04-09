@@ -54,13 +54,12 @@ export const TextEdit: React.FC<TextEditProps> = (props) => {
             (props.errors || props.hasErrors) && 'TextEdit__input--error'
           )}
           placeholder={props.placeholder}
+          value={value || ''}
           onChange={onChangeCB}
           autoFocus={props.autoFocus}
           disabled={props.disabled}
           data-testid={testId}
-        >
-          {value || ''}
-        </textarea>
+        />
       ) : (
         <input
           className={cx(

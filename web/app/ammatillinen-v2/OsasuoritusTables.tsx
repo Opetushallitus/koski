@@ -229,7 +229,15 @@ const TableForTutkinnonOsaRyhmä = ({
       completed={(rowIndex) => {
         const osasuoritus = (osittainenPäätasonSuoritus.suoritus
           .osasuoritukset || [])[originalIndexMap[rowIndex]]
-        if (osasuoritus === undefined) {
+        if (
+          osasuoritus === undefined ||
+          isOsittaisenAmmatillisenTutkinnonOsanKorkeakouluopintoSuoritus(
+            osasuoritus
+          ) ||
+          isOsittaisenAmmatillisenTutkinnonOsanJatkoOpintovalmiuksiaTukevienOpintojenSuoritus(
+            osasuoritus
+          )
+        ) {
           return undefined
         }
         return hasAmmatillinenArviointi(osasuoritus)
