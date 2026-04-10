@@ -34,12 +34,11 @@
       "enabled": false
     },
     {
-      "description": "Re-enable digest and major updates for GitHub Actions (SHA-pinned actions only move via digest bumps)",
+      "description": "Re-enable major updates for GitHub Actions to track upstream Node.js version migrations",
       "matchManagers": [
         "github-actions"
       ],
       "matchUpdateTypes": [
-        "digest",
         "major"
       ],
       "enabled": true
