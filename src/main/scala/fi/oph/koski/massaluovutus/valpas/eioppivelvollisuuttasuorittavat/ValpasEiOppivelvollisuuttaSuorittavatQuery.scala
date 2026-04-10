@@ -8,7 +8,7 @@ import fi.oph.koski.massaluovutus.{QueryFormat, QueryResultWriter}
 import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.schema.annotation.EnumValues
 import fi.oph.koski.valpas.log.ValpasAuditLog
-import fi.oph.koski.valpas.massaluovutus.{ValpasEiOppivelvollisuuttaSuorittavatMassaluovutusResult, ValpasMassaluovutusEiOppivelvollisuuttaSuorittavaOppija}
+import fi.oph.koski.valpas.massaluovutus.{ValpasEiOppivelvollisuuttaSuorittavatMassaluovutusResult, ValpasMassaluovutusConverter}
 import fi.oph.koski.valpas.rouhinta.{ValpasKuntarouhintaService, ValpasRouhintaOppivelvollinen}
 import fi.oph.scalaschema.annotation.{DefaultValue, Description, Title}
 
@@ -56,7 +56,7 @@ case class ValpasEiOppivelvollisuuttaSuorittavatQuery(
           ovSuorittamattomatOppijatAktiivisuustiedoillaJaKeskeytyksillä
             .left.map(_.errorString.getOrElse("Tuntematon virhe"))
             .map { tulos =>
-              val oppijat = tulos.filter(_.aktiivinenKuntailmoitus.nonEmpty).map(ValpasMassaluovutusEiOppivelvollisuuttaSuorittavaOppija.apply)
+              val oppijat = tulos.filter(_.aktiivinenKuntailmoitus.nonEmpty).map(ValpasMassaluovutusConverter.toEiOppivelvollisuuttaSuorittavaOppija)
               // Rikastetaan oppijat oppivelvollisuustiedoilla
               withEiOppivelvollisuuttaSuorittavatOppivelvollisuustiedot(oppijat, application)
             }
@@ -67,7 +67,7 @@ case class ValpasEiOppivelvollisuuttaSuorittavatQuery(
             .haeKunnanPerusteellaIlmanOikeustarkastusta(kunta)
             .left.map(_.errorString.getOrElse("Tuntematon virhe"))
             .map { tulos =>
-              val oppijat = tulos.eiOppivelvollisuuttaSuorittavat.map(ValpasMassaluovutusEiOppivelvollisuuttaSuorittavaOppija.apply)
+              val oppijat = tulos.eiOppivelvollisuuttaSuorittavat.map(ValpasMassaluovutusConverter.toEiOppivelvollisuuttaSuorittavaOppija)
               // Rikastetaan oppijat oppivelvollisuustiedoilla
               withEiOppivelvollisuuttaSuorittavatOppivelvollisuustiedot(oppijat, application)
             }

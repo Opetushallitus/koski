@@ -376,6 +376,33 @@ class ValpasMassaluovutusServletSpec extends ValpasTestBase with BeforeAndAfterE
         }
       }
 
+      "palauttaa kuntailmoituksen oppijan yhteystiedot" in {
+        val queryId = postQuery(getAktiivisetQuery(MockOrganisaatiot.pyhtäänKunta, vainAktiivisetKuntailmoitukset = true),
+          ValpasMockUsers.valpasPyhtääPk
+        ) {
+          verifyResponseStatusOk()
+          (JsonMethods.parse(body) \ "queryId").extract[String]
+        }
+
+        waitForCompletion(queryId, ValpasMockUsers.valpasPyhtääPk)
+
+        val fileUrl: String = verifyAndGetFileUrl(queryId)
+
+        verifyResultAndContent(fileUrl, ValpasMockUsers.valpasPyhtääPk) {
+          val json = JsonMethods.parse(body)
+          val oppijat = (json \ "oppijat").extract[List[JObject]]
+          oppijat.size shouldBe 1
+
+          val yhteystiedot = oppijat.head \ "aktiivinenKuntailmoitus" \ "oppijanYhteystiedot"
+          (yhteystiedot \ "puhelinnumero").extract[String] shouldBe "0401234567"
+          (yhteystiedot \ "email").extract[String] shouldBe "Veijo.Valpas@gmail.com"
+          (yhteystiedot \ "lähiosoite").extract[String] shouldBe "Esimerkkikatu 123"
+          (yhteystiedot \ "postinumero").extract[String] shouldBe "99999"
+          (yhteystiedot \ "postitoimipaikka").extract[String] shouldBe "Pyhtää"
+          (yhteystiedot \ "maa" \ "koodiarvo").extract[String] shouldBe "246"
+        }
+      }
+
       "hylkää tiedoston latauksen, jos käyttäjällä ei ole oikeuksia" in {
         val queryId = postQuery(getQuery(MockOrganisaatiot.pyhtäänKunta), ValpasMockUsers.valpasPyhtääPk) {
           verifyResponseStatusOk()

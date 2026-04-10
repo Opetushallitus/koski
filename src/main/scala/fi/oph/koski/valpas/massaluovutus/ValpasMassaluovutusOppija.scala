@@ -5,9 +5,7 @@ import fi.oph.koski.schema.{Koodistokoodiviite, KoskiSchema, LocalizedString, Or
 
 import java.time.{LocalDate, LocalDateTime}
 import fi.oph.koski.valpas.opiskeluoikeusrepository.ValpasHenkilö
-import fi.oph.koski.valpas.oppija.ValpasKuntailmoitusSuppeatTiedot
-import fi.oph.koski.valpas.rouhinta.{RouhintaOpiskeluoikeus, ValpasRouhintaOppivelvollinen}
-import fi.oph.koski.valpas.valpasrepository.ValpasOppivelvollisuudenKeskeytys
+import fi.oph.koski.valpas.valpasrepository.ValpasKuntailmoituksenOppijanYhteystiedot
 import fi.oph.scalaschema.annotation.{Description, Title}
 import fi.oph.scalaschema.{ClassSchema, SchemaToJson}
 import org.json4s.JValue
@@ -56,31 +54,6 @@ case class ValpasMassaluovutusOppivelvollinenOppija(
 object ValpasMassaluovutusOppivelvollinenOppija {
   lazy val schemaJson: JValue =
     SchemaToJson.toJsonSchema(KoskiSchema.createSchema(classOf[ValpasMassaluovutusOppivelvollinenOppija]).asInstanceOf[ClassSchema])
-
-  def apply(
-    oppivelvollinen: ValpasRouhintaOppivelvollinen,
-    aktiivisetOpiskeluoikeudet: Seq[RouhintaOpiskeluoikeus]
-  ): ValpasMassaluovutusOppivelvollinenOppija = ValpasMassaluovutusOppivelvollinenOppija(
-    oppijanumero = oppivelvollinen.oppijanumero,
-    kaikkiOidit = oppivelvollinen.kaikkiOidit,
-    etunimet = oppivelvollinen.etunimet,
-    sukunimi = oppivelvollinen.sukunimi,
-    syntymäaika = oppivelvollinen.syntymäaika,
-    hetu = oppivelvollinen.hetu,
-    aktiivisetOppivelvollisuudenSuorittamiseenKelpaavatOpiskeluoikeudet = aktiivisetOpiskeluoikeudet
-      .map(ValpasMassaluovutusOpiskeluoikeus.apply),
-    viimeisinOppivelvollisuudenSuorittamiseenKelpaavaOpiskeluoikeus =
-      oppivelvollinen
-        .viimeisinOppivelvollisuudenSuorittamiseenKelpaavaOpiskeluoikeus
-        .map(ValpasMassaluovutusOpiskeluoikeus.apply),
-    oppivelvollisuudenKeskeytys = oppivelvollinen
-      .oppivelvollisuudenKeskeytys
-      .map(ValpasMassaluovutusOppivelvollisuudenKeskeytys.apply),
-    vainOppijanumerorekisterissä = oppivelvollinen.vainOppijanumerorekisterissä,
-    aktiivinenKuntailmoitus = oppivelvollinen.aktiivinenKuntailmoitus.map(ValpasMassaluovutusKuntailmoitus.apply),
-    oikeusMaksuttomaanKoulutukseenVoimassaAsti = None,
-    kotikuntaSuomessaAlkaen = None
-  )
 }
 
 @Title("Ei oppivelvollisuutta suorittava oppija")
@@ -102,27 +75,6 @@ case class ValpasMassaluovutusEiOppivelvollisuuttaSuorittavaOppija(
 object ValpasMassaluovutusEiOppivelvollisuuttaSuorittavaOppija {
   lazy val schemaJson: JValue =
     SchemaToJson.toJsonSchema(KoskiSchema.createSchema(classOf[ValpasMassaluovutusEiOppivelvollisuuttaSuorittavaOppija]).asInstanceOf[ClassSchema])
-
-  def apply(oppivelvollinen: ValpasRouhintaOppivelvollinen): ValpasMassaluovutusEiOppivelvollisuuttaSuorittavaOppija =
-    ValpasMassaluovutusEiOppivelvollisuuttaSuorittavaOppija(
-      oppijanumero = oppivelvollinen.oppijanumero,
-      kaikkiOidit = oppivelvollinen.kaikkiOidit,
-      etunimet = oppivelvollinen.etunimet,
-      sukunimi = oppivelvollinen.sukunimi,
-      syntymäaika = oppivelvollinen.syntymäaika,
-      hetu = oppivelvollinen.hetu,
-      viimeisinOppivelvollisuudenSuorittamiseenKelpaavaOpiskeluoikeus =
-        oppivelvollinen
-          .viimeisinOppivelvollisuudenSuorittamiseenKelpaavaOpiskeluoikeus
-          .map(ValpasMassaluovutusOpiskeluoikeus.apply),
-      oppivelvollisuudenKeskeytys = oppivelvollinen
-        .oppivelvollisuudenKeskeytys
-        .map(ValpasMassaluovutusOppivelvollisuudenKeskeytys.apply),
-      vainOppijanumerorekisterissä = oppivelvollinen.vainOppijanumerorekisterissä,
-      aktiivinenKuntailmoitus = oppivelvollinen.aktiivinenKuntailmoitus.map(ValpasMassaluovutusKuntailmoitus.apply),
-      oikeusMaksuttomaanKoulutukseenVoimassaAsti = None,
-      kotikuntaSuomessaAlkaen = None
-    )
 }
 
 @Title("Opiskeluoikeus")
@@ -142,17 +94,6 @@ case class ValpasMassaluovutusOpiskeluoikeus(
   toimipiste: LocalizedString,
 )
 
-object ValpasMassaluovutusOpiskeluoikeus {
-  def apply(oo: RouhintaOpiskeluoikeus): ValpasMassaluovutusOpiskeluoikeus = ValpasMassaluovutusOpiskeluoikeus(
-    suorituksenTyyppi = oo.suorituksenTyyppi,
-    koulutusmoduulinTunniste = oo.koulutusmoduulinTunniste,
-    päättymispäivä = oo.päättymispäivä,
-    viimeisinValpasTila = oo.viimeisinValpasTila,
-    viimeisinTila = oo.viimeisinTila,
-    toimipiste = oo.toimipiste
-  )
-}
-
 @Title("Oppivelvollisuuden keskeytys")
 case class ValpasMassaluovutusOppivelvollisuudenKeskeytys(
   @Description("Oppivelvollisuuden keskeytyksen yksilöivä tunniste")
@@ -166,17 +107,6 @@ case class ValpasMassaluovutusOppivelvollisuudenKeskeytys(
   tulevaisuudessa: Boolean,
 )
 
-object ValpasMassaluovutusOppivelvollisuudenKeskeytys {
-  def apply(keskeytys: ValpasOppivelvollisuudenKeskeytys): ValpasMassaluovutusOppivelvollisuudenKeskeytys = ValpasMassaluovutusOppivelvollisuudenKeskeytys(
-    id = keskeytys.id,
-    tekijäOrganisaatioOid = keskeytys.tekijäOrganisaatioOid,
-    alku = keskeytys.alku,
-    loppu = keskeytys.loppu,
-    voimassa = keskeytys.voimassa,
-    tulevaisuudessa = keskeytys.tulevaisuudessa
-  )
-}
-
 @Title("Kuntailmoitus")
 case class ValpasMassaluovutusKuntailmoitus(
   oppijaOid: Option[String],
@@ -189,20 +119,9 @@ case class ValpasMassaluovutusKuntailmoitus(
   hakenutMuualle: Option[Boolean],
   onUudempiaIlmoituksiaMuihinKuntiin: Option[Boolean],
   aktiivinen: Option[Boolean],
+  @Description("Kuntailmoitukselle tallennetut oppijan yhteystiedot")
+  oppijanYhteystiedot: Option[ValpasKuntailmoituksenOppijanYhteystiedot],
 )
-
-object ValpasMassaluovutusKuntailmoitus {
-  def apply(ilmoitus: ValpasKuntailmoitusSuppeatTiedot): ValpasMassaluovutusKuntailmoitus = ValpasMassaluovutusKuntailmoitus(
-    oppijaOid = ilmoitus.oppijaOid,
-    id = ilmoitus.id,
-    tekijä = ValpasMassaluovutusKuntailmoituksenTekijä(ilmoitus.tekijä.organisaatio),
-    kunta = ilmoitus.kunta,
-    aikaleima = ilmoitus.aikaleima,
-    hakenutMuualle = ilmoitus.hakenutMuualle,
-    onUudempiaIlmoituksiaMuihinKuntiin = ilmoitus.onUudempiaIlmoituksiaMuihinKuntiin,
-    aktiivinen = ilmoitus.aktiivinen
-  )
-}
 
 @Title("Kuntailmoituksen tekijä")
 case class ValpasMassaluovutusKuntailmoituksenTekijä(
