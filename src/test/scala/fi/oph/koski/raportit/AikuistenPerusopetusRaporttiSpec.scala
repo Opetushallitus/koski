@@ -33,6 +33,10 @@ class AikuistenPerusopetusRaporttiSpec
   override protected def alterFixture(): Unit = {
     lisääMaksuttomuusJaPäätasonSuorituksia(
       vuonna2005SyntynytEiOpiskeluoikeuksiaFikstuurissa,
+      ExamplesAikuistenPerusopetus.aikuistenPerusopetuksenOpiskeluoikeusAlkuvaiheineenValmistunutUudenOppivelvollisuuslainAikana.suoritukset
+    )
+    lisääPäätasonSuorituksia(
+      vuonna2005SyntynytEiOpiskeluoikeuksiaFikstuurissa,
       List(
         ExamplesAikuistenPerusopetus.oppiaineenOppimääränSuoritusAI1,
         ExamplesAikuistenPerusopetus.oppiaineenOppimääränSuoritusYH
@@ -293,7 +297,7 @@ class AikuistenPerusopetusRaporttiSpec
       lazy val sheets = buildReport(
         jyväskylänNormaalikoulu,
         date(2012, 1, 1),
-        date(2016, 1, 1),
+        date(2027, 1, 1),
         AikuistenPerusopetusAlkuvaiheRaportti,
         osasuoritustenAikarajaus = true
       )
@@ -323,7 +327,9 @@ class AikuistenPerusopetusRaporttiSpec
             "Sukunimi" -> aikuisOpiskelija.sukunimi,
             "Etunimet" -> aikuisOpiskelija.etunimet,
             "Toimipisteen nimi" -> "Jyväskylän normaalikoulu",
-            "Suorituksen tyyppi" -> "aikuistenperusopetuksenoppimaaranalkuvaihe"
+            "Suorituksen tyyppi" -> "aikuistenperusopetuksenoppimaaranalkuvaihe",
+            "LYK1 Arkielämä ja yhteiskunnan palvelut valtakunnallinen" -> "Arvosana 9, Laajuus 1.0",
+            "LYK2 Demokraattinen yhteiskunta valtakunnallinen" -> "Arvosana 9, Laajuus 1.0",
           )
           val (_, yh) = findRowsWithColumnsByTitle("YH v Yhteiskuntatietous ja kulttuurintuntemus", kurssit)
           verifyOppijanRow(aikuisOpiskelija, expectedaikuisOpiskelijaYhKurssitRow, yh, addOpiskeluoikeudenOid = false)
@@ -351,15 +357,15 @@ class AikuistenPerusopetusRaporttiSpec
             "Oppijan master-oid" -> Some(aikuisOpiskelija.oid),
             "Opiskeluoikeuden alkamispäivä" -> Some(date(2008, 8, 15)),
             "Viimeisin opiskeluoikeuden tila" -> Some("valmistunut"),
-            "Opiskeluoikeuden tilat aikajakson aikana" -> "lasna",
+            "Opiskeluoikeuden tilat aikajakson aikana" -> "lasna, valmistunut",
             "Suorituksen tyyppi" -> "aikuistenperusopetuksenoppimaaranalkuvaihe",
             "Opiskeluoikeudella päättövaiheen suoritus" -> true,
             "Tutkintokoodi/koulutusmoduulin koodi" -> "aikuistenperusopetuksenoppimaaranalkuvaihe",
             "Suorituksen nimi" -> Some("Aikuisten perusopetuksen oppimäärän alkuvaihe"),
             "Suorituksen tila" -> "valmis",
             "Suorituksen vahvistuspäivä" -> Some(date(2016, 6, 4)),
-            "Läsnäolopäiviä aikajakson aikana" -> 1462,
-            "Rahoitukset" -> "1",
+            "Läsnäolopäiviä aikajakson aikana" -> 2346,
+            "Rahoitukset" -> "1, 1",
             "Läsnä/valmistunut-rahoitusmuodot syötetty" -> true,
             "Ryhmä" -> None,
             "Ulkomaanjaksot" -> None,
@@ -371,21 +377,76 @@ class AikuistenPerusopetusRaporttiSpec
             "hetu" -> aikuisOpiskelija.hetu,
             "Sukunimi" -> aikuisOpiskelija.sukunimi,
             "Etunimet" -> aikuisOpiskelija.etunimet,
-            "Yhteislaajuus (kaikki kurssit)" -> 0.0,
-            "Yhteislaajuus (suoritetut kurssit)" -> 0.0,
+            "Yhteislaajuus (kaikki kurssit)" -> 25.0,
+            "Yhteislaajuus (suoritetut kurssit)" -> 23.0,
             "Yhteislaajuus (hylätyllä arvosanalla suoritetut kurssit)" -> 0.0,
-            "Yhteislaajuus (tunnustetut kurssit)" -> 0.0,
+            "Yhteislaajuus (tunnustetut kurssit)" -> 2.0,
             "Yhteislaajuus (eri vuonna korotetut kurssit)" -> 0.0,
-            "AI Suomen kieli ja kirjallisuus valtakunnallinen" -> "Arvosana 9, Laajuus 0.0 kurssia",
-            "A1 Englanti valtakunnallinen" -> "Arvosana 7, Laajuus 0.0 kurssia",
-            "MA Matematiikka valtakunnallinen" -> "Arvosana 10, Laajuus 0.0 kurssia",
-            "YH Yhteiskuntatietous ja kulttuurintuntemus valtakunnallinen" -> "Arvosana 8, Laajuus 0.0 kurssia",
-            "TE Terveystieto valtakunnallinen" -> "Arvosana 10, Laajuus 0.0 kurssia",
+            "AI Suomen kieli ja kirjallisuus valtakunnallinen" -> "Arvosana 9, Laajuus 14.0 kurssia",
+            "A1 Englanti valtakunnallinen" -> "Arvosana 7, Laajuus 4.0 kurssia",
+            "MA Matematiikka valtakunnallinen" -> "Arvosana 10, Laajuus 3.0 kurssia",
+            "YH Yhteiskuntatietous ja kulttuurintuntemus valtakunnallinen" -> "Arvosana 8, Laajuus 2.0 kurssia",
+            "TE Terveystieto valtakunnallinen" -> "Arvosana 10, Laajuus 1.0 kurssia",
             "OP Opinto-ohjaus ja työelämän taidot valtakunnallinen" -> "Arvosana S, Laajuus 0.0 kurssia",
-            "YL Ympäristö- ja luonnontieto valtakunnallinen" -> "Arvosana 8, Laajuus 0.0 kurssia"
+            "YL Ympäristö- ja luonnontieto valtakunnallinen" -> "Arvosana 8, Laajuus 1.0 kurssia"
           )
 
           verifyOppijanRow(aikuisOpiskelija, expectedaikuisOpiskelijaRow, oppiaineetRowsWithColumns)
+        }
+
+        "Oppimäärän suoritus maksuttomuustiedoilla" in {
+          lazy val expectedaikuisOpiskelijaRow = Map(
+            "Opiskeluoikeuden oid" -> "",
+            "Oppilaitoksen nimi" -> "Jyväskylän normaalikoulu",
+            "Lähdejärjestelmä" -> None,
+            "Koulutustoimijan nimi" -> "Jyväskylän yliopisto",
+            "Toimipisteen nimi" -> "Jyväskylän normaalikoulu",
+            "Opiskeluoikeuden tunniste lähdejärjestelmässä" -> None,
+            "Päivitetty" -> today,
+            "Yksilöity" -> true,
+            "Oppijan oid" -> vuonna2005SyntynytEiOpiskeluoikeuksiaFikstuurissa.oid,
+            "Oppijan master-oid" -> Some(vuonna2005SyntynytEiOpiskeluoikeuksiaFikstuurissa.oid),
+            "Opiskeluoikeuden alkamispäivä" -> Some(date(2021, 1, 1)),
+            "Viimeisin opiskeluoikeuden tila" -> Some("lasna"),
+            "Opiskeluoikeuden tilat aikajakson aikana" -> "lasna",
+            "Opiskeluoikeudella päättövaiheen suoritus" -> true,
+            "Tutkintokoodi/koulutusmoduulin koodi" -> "aikuistenperusopetuksenoppimaaranalkuvaihe",
+            "Suorituksen tyyppi" -> "aikuistenperusopetuksenoppimaaranalkuvaihe",
+            "Suorituksen nimi" -> Some("Aikuisten perusopetuksen oppimäärän alkuvaihe"),
+            "Suorituksen tila" -> "valmis",
+            "Suorituksen vahvistuspäivä" -> Some(date(2021, 6, 4)),
+            "Läsnäolopäiviä aikajakson aikana" -> 2192,
+            "Majoitusetu" -> None,
+            "Rahoitukset" -> "1, 1, 1, 1",
+            "Läsnä/valmistunut-rahoitusmuodot syötetty" -> true,
+            "Ryhmä" -> None,
+            "Ulkomaanjaksot" -> None,
+            "Sisäoppilaitosmainen majoitus" -> None,
+            "Maksuttomuus" -> Some("2021-01-01 – 2021-12-31, 2022-01-01 – 2026-02-01"),
+            "Maksullisuus" -> Some("2026-02-02 – "),
+            "Oikeutta maksuttomuuteen pidennetty" -> Some("2026-01-01 – 2026-02-01"),
+            "hetu" -> vuonna2005SyntynytEiOpiskeluoikeuksiaFikstuurissa.hetu,
+            "Sukunimi" -> vuonna2005SyntynytEiOpiskeluoikeuksiaFikstuurissa.sukunimi,
+            "Etunimet" -> vuonna2005SyntynytEiOpiskeluoikeuksiaFikstuurissa.etunimet,
+            "Yhteislaajuus (kaikki kurssit)" -> 25.0,
+            "Yhteislaajuus (suoritetut kurssit)" -> 23.0,
+            "Yhteislaajuus (hylätyllä arvosanalla suoritetut kurssit)" -> 0.0,
+            "Yhteislaajuus (tunnustetut kurssit)" -> 2.0,
+            "Yhteislaajuus (eri vuonna korotetut kurssit)" -> 0.0,
+            "AI Suomen kieli ja kirjallisuus valtakunnallinen" -> "Arvosana 9, Laajuus 14.0 kurssia",
+            "A1 Englanti valtakunnallinen" -> "Arvosana 7, Laajuus 4.0 kurssia",
+            "MA Matematiikka valtakunnallinen" -> "Arvosana 10, Laajuus 3.0 kurssia",
+            "OP Opinto-ohjaus ja työelämän taidot valtakunnallinen" -> "Arvosana S, Laajuus 0.0 kurssia",
+            "TE Terveystieto valtakunnallinen" -> "Arvosana 10, Laajuus 1.0 kurssia",
+            "YH Yhteiskuntatietous ja kulttuurintuntemus valtakunnallinen" -> "Arvosana 8, Laajuus 2.0 kurssia",
+            "YL Ympäristö- ja luonnontieto valtakunnallinen" -> "Arvosana 8, Laajuus 1.0 kurssia"
+          )
+
+          verifyOppijanRow(vuonna2005SyntynytEiOpiskeluoikeuksiaFikstuurissa,
+            expectedaikuisOpiskelijaRow,
+            oppiaineetRowsWithColumns,
+            expectedOpiskeluoikeusOid = oppija(vuonna2005SyntynytEiOpiskeluoikeuksiaFikstuurissa.oid, defaultUser).tallennettavatOpiskeluoikeudet.head.oid
+          )
         }
       }
     }
@@ -670,21 +731,21 @@ class AikuistenPerusopetusRaporttiSpec
             "Opiskeluoikeuden alkamispäivä" -> Some(date(2021, 1, 1)),
             "Viimeisin opiskeluoikeuden tila" -> Some("lasna"),
             "Opiskeluoikeuden tilat aikajakson aikana" -> "lasna",
-            "Opiskeluoikeudella alkuvaiheen suoritus" -> true,
-            "Opiskeluoikeudella päättövaiheen suoritus" -> true,
+            "Opiskeluoikeudella alkuvaiheen suoritus" -> false,
+            "Opiskeluoikeudella päättövaiheen suoritus" -> false,
             "Suorituksen tyyppi" -> "perusopetuksenoppiaineenoppimaara",
             "Suorituksen tila" -> "valmis",
             "Suorituksen vahvistuspäivä" -> None,
             "Läsnäolopäiviä aikajakson aikana" -> 1827,
             "Majoitusetu" -> None,
-            "Rahoitukset" -> "1, 1, 1",
+            "Rahoitukset" -> "1",
             "Läsnä/valmistunut-rahoitusmuodot syötetty" -> true,
             "Ryhmä" -> None,
             "Ulkomaanjaksot" -> None,
             "Sisäoppilaitosmainen majoitus" -> None,
-            "Maksuttomuus" -> Some("2022-01-01 – 2026-02-01"),
-            "Maksullisuus" -> Some("2026-02-02 – "),
-            "Oikeutta maksuttomuuteen pidennetty" -> Some("2026-01-01 – 2026-02-01"),
+            "Maksuttomuus" -> None,
+            "Maksullisuus" -> None,
+            "Oikeutta maksuttomuuteen pidennetty" -> None,
             "hetu" -> vuonna2005SyntynytEiOpiskeluoikeuksiaFikstuurissa.hetu,
             "Sukunimi" -> vuonna2005SyntynytEiOpiskeluoikeuksiaFikstuurissa.sukunimi,
             "Etunimet" -> vuonna2005SyntynytEiOpiskeluoikeuksiaFikstuurissa.etunimet
@@ -797,9 +858,9 @@ class AikuistenPerusopetusRaporttiSpec
     sheet.rows.map(_.zip(sheet.columnSettings)).map(_.map { case (data, column) => column.title -> data }.toMap)
   }
 
-  private def verifyOppijanRow(oppija: LaajatOppijaHenkilöTiedot, expected: Map[String, Any], all: Seq[Map[String, Any]], addOpiskeluoikeudenOid: Boolean = true) = {
+  private def verifyOppijanRow(oppija: LaajatOppijaHenkilöTiedot, expected: Map[String, Any], all: Seq[Map[String, Any]], addOpiskeluoikeudenOid: Boolean = true, expectedOpiskeluoikeusOid: Option[String] = None) = {
     val expectedResult = if (addOpiskeluoikeudenOid) {
-      val opiskeluoikeudenOid = lastOpiskeluoikeus(oppija.oid).oid
+      val opiskeluoikeudenOid = expectedOpiskeluoikeusOid.orElse(lastOpiskeluoikeus(oppija.oid).oid)
       opiskeluoikeudenOid shouldBe defined
       expected ++ Map("Opiskeluoikeuden oid" -> opiskeluoikeudenOid.get)
     } else {
@@ -837,24 +898,41 @@ class AikuistenPerusopetusRaporttiSpec
 
   private def lisääMaksuttomuusJaPäätasonSuorituksia(oppija: LaajatOppijaHenkilöTiedot, päätasonSuoritukset: List[AikuistenPerusopetuksenPäätasonSuoritus]) = {
     val oo = ExamplesAikuistenPerusopetus.aikuistenPerusopetuksenOpiskeluoikeusAlkuvaiheineenValmistunutUudenOppivelvollisuuslainAikana
+    putOppija(Oppija(
+      oppija, List(
+        oo.copy(
+          oid = None,
+          tila = AikuistenPerusopetuksenOpiskeluoikeudenTila(
+            List(AikuistenPerusopetuksenOpiskeluoikeusjakso(date(2021, 1, 1), opiskeluoikeusLäsnä, Some(valtionosuusRahoitteinen)))
+          ),
+          lisätiedot = Some(AikuistenPerusopetuksenOpiskeluoikeudenLisätiedot(
+            maksuttomuus = Some(List(
+              Maksuttomuus(date(2021, 1, 1), Some(date(2021, 12, 31)), true),
+              Maksuttomuus(date(2022, 1, 1), Some(date(2026, 2, 1)), true),
+              Maksuttomuus(date(2026, 2, 2), None, false),
+            )),
+            oikeuttaMaksuttomuuteenPidennetty = Some(List(OikeuttaMaksuttomuuteenPidennetty(
+              date(2026, 1, 1),
+              date(2026, 2, 1)
+            )))
+          )),
+          suoritukset = päätasonSuoritukset
+        )
+      )
+    )) {
+      verifyResponseStatusOk()
+    }
+  }
+
+  private def lisääPäätasonSuorituksia(oppija: LaajatOppijaHenkilöTiedot, päätasonSuoritukset: List[AikuistenPerusopetuksenPäätasonSuoritus]) = {
+    val oo = ExamplesAikuistenPerusopetus.aikuistenPerusopetuksenOpiskeluoikeusAlkuvaiheineenValmistunutUudenOppivelvollisuuslainAikana
     putOppija(Oppija(oppija, List(
       oo.copy(
         oid = None,
         tila = AikuistenPerusopetuksenOpiskeluoikeudenTila(
           List(AikuistenPerusopetuksenOpiskeluoikeusjakso(date(2021, 1, 1), opiskeluoikeusLäsnä, Some(valtionosuusRahoitteinen)))
         ),
-        lisätiedot = Some(AikuistenPerusopetuksenOpiskeluoikeudenLisätiedot(
-          maksuttomuus = Some(List(
-            Maksuttomuus(date(2021, 1, 1), Some(date(2021, 12, 31)), true),
-            Maksuttomuus(date(2022, 1, 1), Some(date(2026, 2, 1)), true),
-            Maksuttomuus(date(2026, 2, 2), None, false),
-          )),
-          oikeuttaMaksuttomuuteenPidennetty = Some(List(OikeuttaMaksuttomuuteenPidennetty(
-            date(2026, 1, 1),
-            date(2026, 2, 1)
-          )))
-        )),
-        suoritukset = päätasonSuoritukset ::: oo.suoritukset)))
+        suoritukset = päätasonSuoritukset)))
     ) {
       verifyResponseStatusOk()
     }
