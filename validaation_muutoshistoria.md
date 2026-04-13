@@ -1,5 +1,9 @@
 # Koskeen tallennettavien tietojen validaatiosäännöt
 
+## 10.4.2026
+
+- Aikuisten perusopetuksen opiskeluoikeutta ei voi lisätä, silloin kun sillä on sekä oppimäärän että aineopintojen suorituksia.
+
 ## 7.4.2026
 
 - Aikuisten perusopetuksessa suorituksen tyyppiä ei voi muuttaa aineopinnoista oppimäärän opinnoiksi tai päinvastoin.

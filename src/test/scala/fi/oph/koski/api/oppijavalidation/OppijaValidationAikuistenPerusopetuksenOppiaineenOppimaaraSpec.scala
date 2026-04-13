@@ -203,5 +203,14 @@ class OppijaValidationAikuistenPerusopetuksenOppiaineenOppimaaraSpec extends Tut
         verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.rakenne.suorituksenTyyppiMuuttunut("Aikuisten perusopetuksen oppimäärän opiskeluoikeutta ei voi muuttaa oppiaineen oppimäärän opiskeluoikeudeksi"))
       }
     }
+
+    "Ei sallita aikuisten perusopetuksen opiskeluoikeuden lisäämistä, jolla on sekä oppimäärän että oppiaineen oppimäärän suorituksia" in {
+      val oo = ExamplesAikuistenPerusopetus.matematiikanAineOpiskelijaKesken.copy(
+        suoritukset = ExamplesAikuistenPerusopetus.matematiikanAineOpiskelijaKesken.suoritukset ++ List(ExamplesAikuistenPerusopetus.aikuistenPerusopetuksenAlkuvaiheenSuoritus(None))
+      )
+      setupOppijaWithOpiskeluoikeus(oo, defaultHenkilö, authHeaders(paakayttaja) ++ jsonContent){
+        verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.rakenne.epäsopiviaSuorituksia("Aikuisten perusopetuksen opiskeluoikeudella ei voi olla sekä oppimäärän että oppiaineen oppimäärän suorituksia"))
+      }
+    }
   }
 }
