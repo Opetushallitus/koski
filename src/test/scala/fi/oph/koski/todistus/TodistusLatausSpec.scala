@@ -850,7 +850,7 @@ class TodistusLatausSpec extends TodistusSpecHelpers with BeforeAndAfterAll {
     verifyPixelRegions(
       document,
       s"$lang-$lataustapa",
-      s"/todistus-test-kielitutkinto-yleinenkielitutkinto-$lang-expected",
+      s"/todistus-test-kielitutkinto-yleinenkielitutkinto-expected/$lang",
       testRegions,
       pageCount = 2
     )
@@ -877,7 +877,7 @@ class TodistusLatausSpec extends TodistusSpecHelpers with BeforeAndAfterAll {
     verifyPixelRegions(
       document,
       lataustapa,
-      s"/todistus-test-kielitutkinto-yleinenkielitutkinto-$variant-expected",
+      s"/todistus-test-kielitutkinto-yleinenkielitutkinto-expected/$variant",
       testRegions,
       pageCount = pageCount
     )
