@@ -784,11 +784,12 @@ class MassaluovutusSpec extends AnyFreeSpec with MassaluovutusTestMethods with M
           ))
         }
 
-        "DIA-tutkinnoista palautetaan vain valmistuneet tutkinnot" in {
+        "DIA-tutkinnon suoritukset palautetaan" in {
           extractStrings(
             getOpiskeluoikeudet(Some("diatutkinto")),
             viimeisinTila
           ) should equal(List(
+            "lasna",
             "valmistunut"
           ))
         }
@@ -810,7 +811,7 @@ class MassaluovutusSpec extends AnyFreeSpec with MassaluovutusTestMethods with M
           ))
         }
 
-        "EB-tutkinnoista palautetaan vain valmistuneet tutkinnot" in {
+        "EB-tutkinnon suoritus palautetaan" in {
           extractStrings(
             getOpiskeluoikeudet(Some("ebtutkinto")),
             viimeisinTila
@@ -834,11 +835,12 @@ class MassaluovutusSpec extends AnyFreeSpec with MassaluovutusTestMethods with M
           ))
         }
 
-        "IB-tutkinnoista palautetaan vain valmistuneet tutkinnot" in {
+        "IB-tutkinnon suoritukset palautetaan" in {
           extractStrings(
             getOpiskeluoikeudet(Some("ibtutkinto")),
             viimeisinTila
           ) should equal(List(
+            "lasna",
             "valmistunut"
           ))
         }
@@ -1215,11 +1217,12 @@ class MassaluovutusSpec extends AnyFreeSpec with MassaluovutusTestMethods with M
           ))
         }
 
-        "DIA-tutkinnoista palautetaan vain valmistuneet tutkinnot" in {
+        "DIA-tutkinnon suoritukset palautetaan" in {
           extractStrings(
             getOpiskeluoikeudet(Some("diatutkinto")),
             viimeisinTila
           ) should equal(List(
+            "lasna",
             "valmistunut"
           ))
         }
@@ -1241,7 +1244,7 @@ class MassaluovutusSpec extends AnyFreeSpec with MassaluovutusTestMethods with M
           ))
         }
 
-        "EB-tutkinnoista palautetaan vain valmistuneet tutkinnot" in {
+        "EB-tutkinnon suoritus palautetaan" in {
           extractStrings(
             getOpiskeluoikeudet(Some("ebtutkinto")),
             viimeisinTila
@@ -1265,11 +1268,12 @@ class MassaluovutusSpec extends AnyFreeSpec with MassaluovutusTestMethods with M
           ))
         }
 
-        "IB-tutkinnoista palautetaan vain valmistuneet tutkinnot" in {
+        "IB-tutkinnon suoritukset palautetaan" in {
           extractStrings(
             getOpiskeluoikeudet(Some("ibtutkinto")),
             viimeisinTila
           ) should equal(List(
+            "lasna",
             "valmistunut"
           ))
         }
