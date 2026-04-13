@@ -63,6 +63,11 @@
       margin: 0;
     }
 
+    @page thirdpage {
+      size: A4 portrait;
+      margin: 0;
+    }
+
     .first {
       margin: 0;
       padding: 60pt 50pt 60pt 50pt;
@@ -80,6 +85,20 @@
 
       margin: 0;
       padding: 60pt 50pt 60pt 50pt;
+      width: 595.27pt;
+      height: 841.89pt;
+      box-sizing: border-box;
+      position: relative;
+      /* DEBUG: */
+      /*background: #eef;*/
+    }
+
+    .third {
+      page: thirdpage;
+      page-break-before: always;
+
+      margin: 0;
+      padding: 60pt 100pt 60pt 100pt;
       width: 595.27pt;
       height: 841.89pt;
       box-sizing: border-box;
@@ -447,6 +466,73 @@
       margin-top: 0;
 
       /*background: sandybrown;*/
+    }
+
+    .oikaisutiedot {
+      position: relative;
+      padding: 0pt 0pt 0pt 0pt;
+      margin: 0;
+    }
+
+    .oikaisutiedot-otsikko {
+      font-size: 14pt;
+      line-height: 20pt;
+      font-weight: 600;
+      text-align: center;
+      margin-bottom: 20pt;
+      margin-top: 0;
+
+      text-transform: uppercase;
+    }
+
+    .oikaisutiedot-kappale {
+      font-size: 10pt;
+      line-height: 15pt;
+      font-weight: 400;
+
+      text-align: left;
+      margin-bottom: 10pt;
+      margin-top: 0;
+    }
+
+    .oikaisutiedot-ol-hanging {
+      font-size: 10pt;
+      line-height: 15pt;
+      font-weight: 400;
+
+      margin: 0;
+      padding-left: 1.5em;
+    }
+
+    .oikaisutiedot-ul-hanging {
+      font-size: 10pt;
+      line-height: 15pt;
+      font-weight: 400;
+
+      margin-bottom: 10pt;
+      padding-left: 1.5em;
+    }
+
+    .oikaisutiedot-ol-li {
+    }
+
+    .oikaisutiedot-ol-li-p {
+      margin-bottom: 10pt;
+    }
+
+    .oikaisutiedot-ul-li {
+      margin: 0;
+    }
+
+    .oikaisutiedot-linkki {
+      white-space: nowrap;
+      color: #0033CC;
+      text-decoration: underline;
+    }
+
+    .oikaisutiedot-highlight {
+      white-space: nowrap;
+      font-weight: 700;
     }
 
   </style>
