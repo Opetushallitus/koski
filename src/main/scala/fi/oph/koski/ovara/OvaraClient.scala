@@ -34,8 +34,8 @@ object EmptyOvaraClient extends OvaraClient {
 }
 
 object MockOvaraClient extends OvaraClient {
-  private val mockData: Map[String, List[OvaraOpiskelijavalintatieto]] = Map(
-    KoskiSpecificMockOppijat.ammattilainen.oid -> List(
+  private val mockData: Map[String, Either[HttpStatus, List[OvaraOpiskelijavalintatieto]]] = Map(
+    KoskiSpecificMockOppijat.ammattilainen.oid -> Right(List(
       OvaraOpiskelijavalintatieto(
         oppijanumero = KoskiSpecificMockOppijat.ammattilainen.oid,
         hetu = None,
@@ -71,11 +71,12 @@ object MockOvaraClient extends OvaraClient {
           )
         )
       )
-    )
+    )),
+    KoskiSpecificMockOppijat.koululainen.oid -> Left(KoskiErrorCategory.unavailable.ovara())
   )
 
   override def fetchOpiskelijavalintatiedot(oppijaOid: String): Either[HttpStatus, List[OvaraOpiskelijavalintatieto]] =
-    Right(mockData.getOrElse(oppijaOid, List.empty))
+    mockData.getOrElse(oppijaOid, Right(List.empty))
 }
 
 class RemoteOvaraClient(config: Config) extends OvaraClient with Logging {

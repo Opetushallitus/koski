@@ -5,7 +5,7 @@ import fi.oph.koski.api.misc.{OpiskeluoikeusTestMethods, OpiskeluoikeusTestMetho
 import fi.oph.koski.db.KoskiTables.OAuth2JakoKaikki
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.documentation.PerusopetusExampleData
-import fi.oph.koski.fixture.{FixtureCreator, PerusopetuksenOpiskeluoikeusTestData}
+import fi.oph.koski.fixture.FixtureCreator
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.json.JsonSerializer
@@ -19,6 +19,8 @@ import fi.oph.koski.suoritetuttutkinnot.SuoritetutTutkinnotAmmatillinenOpiskeluo
 import fi.oph.koski.suoritusjako.aktiivisetjapaattyneetopinnot.AktiivisetJaPäättyneetOpinnotVerifiers
 import fi.oph.koski.suoritusjako.suoritetuttutkinnot.SuoritetutTutkinnotVerifiers
 import fi.oph.koski.{DatabaseTestMethods, KoskiApplicationForTests, schema}
+import org.json4s.{DefaultFormats, Formats}
+import org.json4s.jackson.JsonMethods
 
 import java.sql.Timestamp
 import java.time.Instant
@@ -1010,7 +1012,7 @@ class OmaDataOAuth2BackendSpec
           .find(_.tyyppi.koodiarvo == schema.OpiskeluoikeudenTyyppi.ammatillinenkoulutus.koodiarvo)
           .get
 
-        val scope = "HENKILOTIEDOT_SYNTYMAAIKA HENKILOTIEDOT_NIMI OPISKELUOIKEUDET_KAIKKI_TIEDOT_JA_VALINTATIEDOT"
+        val scope = "HENKILOTIEDOT_HETU OPISKELUOIKEUDET_KAIKKI_TIEDOT_JA_VALINTATIEDOT"
 
         val pkce = createChallengeAndVerifier()
         val token = createAuthorizationAndToken(oppija, pkce, scope, MockUsers.omadataOAuth2KaikkiOikeudetPalvelukäyttäjä)
@@ -1018,6 +1020,13 @@ class OmaDataOAuth2BackendSpec
         postResourceServer(token, MockUsers.omadataOAuth2KaikkiOikeudetPalvelukäyttäjä) {
           verifyResponseStatusOk()
           val data = JsonSerializer.parse[OmaDataOAuth2KaikkiOpiskeluoikeudetJaValintatiedot](response.body)
+
+          data.henkilö.hetu.isDefined shouldBe true
+          data.henkilö.oid shouldBe None
+          data.henkilö.etunimet shouldBe None
+          data.henkilö.kutsumanimi shouldBe None
+          data.henkilö.sukunimi shouldBe None
+          data.henkilö.syntymäaika shouldBe None
 
           data.opiskeluoikeudet should have length 1
           data.opiskeluoikeudet.head shouldBe a[AmmatillinenOpiskeluoikeus]
@@ -1050,7 +1059,7 @@ class OmaDataOAuth2BackendSpec
         expectedOoData.lisätiedot.map(_.asInstanceOf[PerusopetuksenOpiskeluoikeudenLisätiedot]).flatMap(_.vuosiluokkiinSitoutumatonOpetus) should be(None)
         fullOoData.lisätiedot.map(_.asInstanceOf[PerusopetuksenOpiskeluoikeudenLisätiedot]).flatMap(_.vuosiluokkiinSitoutumatonOpetus) should be(Some(true))
 
-        val scope = "HENKILOTIEDOT_SYNTYMAAIKA HENKILOTIEDOT_NIMI OPISKELUOIKEUDET_KAIKKI_TIEDOT_JA_VALINTATIEDOT"
+        val scope = "HENKILOTIEDOT_HETU OPISKELUOIKEUDET_KAIKKI_TIEDOT_JA_VALINTATIEDOT"
 
         val pkce = createChallengeAndVerifier()
         val token = createAuthorizationAndToken(oppija, pkce, scope, MockUsers.omadataOAuth2KaikkiOikeudetPalvelukäyttäjä)
@@ -1073,7 +1082,7 @@ class OmaDataOAuth2BackendSpec
       "audit-logitetaan" in {
         val oppija = KoskiSpecificMockOppijat.ammattilainen
 
-        val scope = "HENKILOTIEDOT_SYNTYMAAIKA HENKILOTIEDOT_NIMI OPISKELUOIKEUDET_KAIKKI_TIEDOT_JA_VALINTATIEDOT"
+        val scope = "HENKILOTIEDOT_HETU OPISKELUOIKEUDET_KAIKKI_TIEDOT_JA_VALINTATIEDOT"
 
         val pkce = createChallengeAndVerifier()
         val token = createAuthorizationAndToken(oppija, pkce, scope, MockUsers.omadataOAuth2KaikkiOikeudetPalvelukäyttäjä)
@@ -1092,6 +1101,23 @@ class OmaDataOAuth2BackendSpec
             ),
           ))
 
+        }
+      }
+
+      "palauttaa virheen, jos valintatietojen haku epäonnistuu" in {
+        implicit val formats: Formats = DefaultFormats
+        val oppija = KoskiSpecificMockOppijat.koululainen
+
+        val scope = "HENKILOTIEDOT_HETU OPISKELUOIKEUDET_KAIKKI_TIEDOT_JA_VALINTATIEDOT"
+
+        val pkce = createChallengeAndVerifier()
+        val token = createAuthorizationAndToken(oppija, pkce, scope, MockUsers.omadataOAuth2KaikkiOikeudetPalvelukäyttäjä)
+
+        postResourceServer(token, MockUsers.omadataOAuth2KaikkiOikeudetPalvelukäyttäjä) {
+          verifyResponseStatus(503)
+          val result = JsonMethods.parse(response.body)
+          (result \ "error").extract[String] should be("server_error")
+          (result \ "error_description").extract[String] should include("Valintatietoja ei juuri nyt saada haettua. Yritä myöhemmin uudelleen.")
         }
       }
     }

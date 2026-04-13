@@ -95,7 +95,6 @@ class OmaDataOAuth2ResourceServerServlet(implicit val application: KoskiApplicat
   private def renderError(errorType: OmaDataOAuth2ErrorType, httpStatus: HttpStatus, message: String, log: String => Unit): Unit = {
     val errorResult = logAndCreateError(errorType, httpStatus.errorString.getOrElse(message), log)
     renderErrorWithStatus(errorResult, httpStatus.statusCode)
-    renderObject(errorResult)
   }
 
   private def logAndCreateError(errorType: OmaDataOAuth2ErrorType, message: String, log: String => Unit) = {
