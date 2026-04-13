@@ -2,6 +2,7 @@ package fi.oph.koski.omadataoauth2
 
 import fi.oph.koski.aktiivisetjapaattyneetopinnot.AktiivisetJaPäättyneetOpinnotOpiskeluoikeus
 import fi.oph.koski.henkilo.LaajatOppijaHenkilöTiedot
+import fi.oph.koski.ovara.OvaraOpiskelijavalintatieto
 import fi.oph.koski.schema
 import fi.oph.koski.schema.{Opiskeluoikeus, TäydellisetHenkilötiedot}
 import fi.oph.koski.suoritetuttutkinnot.SuoritetutTutkinnotOpiskeluoikeus
@@ -20,7 +21,7 @@ object OmaDataOAuth2KaikkiOpiskeluoikeudetJaValintatiedot {
 case class OmaDataOAuth2KaikkiOpiskeluoikeudetJaValintatiedot(
   henkilö: OmaDataOAuth2Henkilötiedot,
   opiskeluoikeudet: List[Opiskeluoikeus],
-  valintatiedot: List[Valintatieto],
+  valintatiedot: List[OvaraOpiskelijavalintatieto],
   tokenInfo: OmaDataOAuth2TokenInfo
 )
 
@@ -179,5 +180,3 @@ case class OmaDataOAuth2TokenInfo(
   expirationTime: String
 )
 
-// TODO: täydennä valintatiedot tähän myöhemmin
-case class Valintatieto()

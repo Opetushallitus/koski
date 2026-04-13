@@ -13,6 +13,7 @@ import fi.oph.koski.koskiuser.{KoskiMockUser, MockUsers}
 import fi.oph.koski.log.AuditLogTester
 import fi.oph.koski.omadataoauth2.OmaDataOAuth2Security.{createChallengeAndVerifier, sha256}
 import fi.oph.koski.omadataoauth2._
+import fi.oph.koski.ovara.OvaraOpiskelijavalintatieto
 import fi.oph.koski.schema.{AmmatillinenOpiskeluoikeus, PerusopetuksenOpiskeluoikeudenLisätiedot, PerusopetuksenOpiskeluoikeus}
 import fi.oph.koski.suoritetuttutkinnot.SuoritetutTutkinnotAmmatillinenOpiskeluoikeus
 import fi.oph.koski.suoritusjako.aktiivisetjapaattyneetopinnot.AktiivisetJaPäättyneetOpinnotVerifiers
@@ -1021,7 +1022,13 @@ class OmaDataOAuth2BackendSpec
           data.opiskeluoikeudet should have length 1
           data.opiskeluoikeudet.head shouldBe a[AmmatillinenOpiskeluoikeus]
 
-          data.valintatiedot should have length 0
+          data.valintatiedot should have length 1
+          val valintatieto = data.valintatiedot.head
+          valintatieto shouldBe a[OvaraOpiskelijavalintatieto]
+          valintatieto.oppijanumero should be(oppija.oid)
+          valintatieto.hakemukset should have length 1
+          valintatieto.hakemukset.head.hakemusOid should be("1.2.246.562.11.00000000000001049800")
+          valintatieto.hakemukset.head.hakutoiveet.head.valinnanTila should be(Some("HYVAKSYTTY"))
 
           val actualOo = data.opiskeluoikeudet.head.asInstanceOf[AmmatillinenOpiskeluoikeus]
 

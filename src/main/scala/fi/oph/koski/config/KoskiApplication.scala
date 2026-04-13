@@ -22,6 +22,7 @@ import fi.oph.koski.log.{AuditLog, Logging, TimedProxy}
 import fi.oph.koski.luovutuspalvelu.v2clientlist.{LuovutuspalveluV2ClientListService, LuovutuspalveluV2XRoadConfigService}
 import fi.oph.koski.mydata.{MyDataRepository, MyDataService}
 import fi.oph.koski.omadataoauth2.{OmaDataOAuth2Repository, OmaDataOAuth2Service}
+import fi.oph.koski.ovara.OvaraClient
 import fi.oph.koski.omattiedot.HuoltajaService
 import fi.oph.koski.opiskeluoikeus._
 import fi.oph.koski.oppija.KoskiOppijaFacade
@@ -239,7 +240,8 @@ class KoskiApplication(
   lazy val workerLeaseRepository: WorkerLeaseRepository = new WorkerLeaseRepository(masterDatabase.db)
 
   lazy val omaDataOAuth2Repository = new OmaDataOAuth2Repository(this, masterDatabase.db)
-  lazy val omaDataOAuth2Service = new OmaDataOAuth2Service(omaDataOAuth2Repository, this)
+  lazy val ovaraClient = OvaraClient(config)
+  lazy val omaDataOAuth2Service = new OmaDataOAuth2Service(omaDataOAuth2Repository, this, ovaraClient)
 
   lazy val todistusFeatureFlags = new TodistusFeatureFlags(config)
   lazy val todistusWorkerId = instanceId
