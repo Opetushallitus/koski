@@ -585,7 +585,7 @@ class TodistusLatausSpec extends TodistusSpecHelpers with BeforeAndAfterAll {
 
     val regions = Seq(
       TextRegion("sivu1_otsikot", pageIndex = 0,
-        x = 50, y = 150, width = 500, height = 200,
+        x = 50, y = 140, width = 500, height = 200,
         expectedTexts = Seq(
           "TODISTUS",
           "Suorittaja iminim Niminimi Niminiminimin",
@@ -594,21 +594,21 @@ class TodistusLatausSpec extends TodistusSpecHelpers with BeforeAndAfterAll {
         )),
 
       TextRegion("sivu1_kokeeninimi", pageIndex = 0,
-        x = 150, y = 280, width = 300, height = 70,
+        x = 150, y = 265, width = 300, height = 70,
         expectedTexts = Seq(
           "on osallistunut yleisten kielitutkintojen",
           "suomen kielen keskitason tutkintoon"
         )),
 
       TextRegion("sivu1_johdanto_arvosanoihin", pageIndex = 0,
-        x = 100, y = 325, width = 400, height = 50,
+        x = 100, y = 315, width = 400, height = 50,
         expectedTexts = Seq(
           "Suorituksen perusteella hänen kielitaitonsa on arvioitu osataidoittain",
           "seuraavasti:"
         )),
 
       TextRegion("alueet", pageIndex = 0,
-        x = 100, y = 375, width = 150, height = 90,
+        x = 100, y = 350, width = 150, height = 90,
         expectedTexts = Seq(
           "PUHEEN YMMÄRTÄMINEN",
           "PUHUMINEN",
@@ -617,7 +617,7 @@ class TodistusLatausSpec extends TodistusSpecHelpers with BeforeAndAfterAll {
         )),
 
       TextRegion("arvosanat", pageIndex = 0,
-        x = 250, y = 375, width = 150, height = 90,
+        x = 250, y = 350, width = 150, height = 90,
         expectedTexts = Seq(
           "4, keskitaso",
           "3, keskitaso",
@@ -626,7 +626,7 @@ class TodistusLatausSpec extends TodistusSpecHelpers with BeforeAndAfterAll {
         )),
 
       TextRegion("arvosanakuvaus", pageIndex = 0,
-        x = 100, y = 470, width = 400, height = 100,
+        x = 100, y = 440, width = 400, height = 100,
         expectedTexts = Seq(
           "Tutkinnon kunkin osataidon hyväksytystä suorituksesta voi saada tasoarvion 3-4.",
           "Yleisissä kielitutkinnoissa kielitaidon arviointi perustuu kuuteen taitotasoon, jotka",
@@ -635,7 +635,7 @@ class TodistusLatausSpec extends TodistusSpecHelpers with BeforeAndAfterAll {
         )),
 
       TextRegion("allekirjoitus", pageIndex = 0,
-        x = 49, y = 600, width = 356, height = 200,
+        x = 49, y = 610, width = 356, height = 200,
         expectedTexts = Seq("Tutkinnon järjestäjä:",
           "Varsinais-Suomen kansanopisto",
           "Helsingissä, 3.1.2011",
@@ -647,13 +647,13 @@ class TodistusLatausSpec extends TodistusSpecHelpers with BeforeAndAfterAll {
           " asti.")),
 
       TextRegion("Sivun 2 otsikkorivi", pageIndex = 1,
-        x = 50, y = 60, width = 500, height = 40,
+        x = 50, y = 50, width = 500, height = 40,
         expectedTexts = Seq("TAITOTASOKUVAUKSET",
           "EVK:N",
           "ASTEIKKO")),
 
       TextRegion("Sivun 2 vasen palsta", pageIndex = 1,
-        x = 50, y = 90, width = 40, height = 650,
+        x = 50, y = 80, width = 40, height = 650,
         expectedTexts = Seq("YLIN TASO",
           "6",
           "5",
@@ -665,43 +665,43 @@ class TodistusLatausSpec extends TodistusSpecHelpers with BeforeAndAfterAll {
           "1")),
 
       TextRegion("Sivun 2 taso 6", pageIndex = 1,
-        x = 85, y = 105, width = 410, height = 75,
+        x = 85, y = 95, width = 410, height = 75,
         expectedTexts = Seq(
           "Ymmärtää vaikeuksitta kaikenlaista"
         )),
 
       TextRegion("Sivun 2 taso 5", pageIndex = 1,
-        x = 85, y = 190, width = 410, height = 75,
+        x = 85, y = 180, width = 410, height = 75,
         expectedTexts = Seq(
           "Ymmärtää kaikenlaista normaalitempoista"
         )),
 
       TextRegion("Sivun 2 taso 4", pageIndex = 1,
-        x = 85, y = 305, width = 410, height = 75,
+        x = 85, y = 295, width = 410, height = 75,
         expectedTexts = Seq(
           "Ymmärtää normaalitempoista puhetta"
         )),
 
       TextRegion("Sivun 2 taso 3", pageIndex = 1,
-        x = 85, y = 420, width = 410, height = 75,
+        x = 85, y = 410, width = 410, height = 75,
         expectedTexts = Seq(
           "Ymmärtää pidempää yhtäjaksoista"
         )),
 
       TextRegion("Sivun 2 taso 2", pageIndex = 1,
-        x = 85, y = 550, width = 410, height = 75,
+        x = 85, y = 540, width = 410, height = 75,
         expectedTexts = Seq(
           "Ymmärtää selkeää ja yksinkertaistettua"
         )),
 
       TextRegion("Sivun 2 taso 1", pageIndex = 1,
-        x = 85, y = 650, width = 410, height = 75,
+        x = 85, y = 640, width = 410, height = 75,
         expectedTexts = Seq(
           "Ymmärtää hitaasta ja selkeästä"
         )),
 
       TextRegion("Sivun 2 oikea palsta", pageIndex = 1,
-        x = 500, y = 90, width = 40, height = 650,
+        x = 500, y = 80, width = 40, height = 650,
         expectedTexts = Seq(
           "C2",
           "C1",
@@ -711,7 +711,7 @@ class TodistusLatausSpec extends TodistusSpecHelpers with BeforeAndAfterAll {
           "A1")),
 
       TextRegion("Sivun 2 alaviite", pageIndex = 1,
-        x = 45, y = 770, width = 500, height = 50,
+        x = 45, y = 760, width = 500, height = 50,
         expectedTexts = Seq(
           "Yleisten kielitutkintojen taitotasoasteikko on linkitetty empiirisesti eurooppalaisen viitekehyksen asteikkoon.")),
     )
@@ -724,7 +724,7 @@ class TodistusLatausSpec extends TodistusSpecHelpers with BeforeAndAfterAll {
     val regions = Seq(
       // Sivu 1: Pääosin samat kuin tavallisessa todistuksessa, mutta allekirjoitusalue eri
       TextRegion("sivu1_otsikot", pageIndex = 0,
-        x = 50, y = 150, width = 500, height = 200,
+        x = 50, y = 140, width = 500, height = 200,
         expectedTexts = Seq(
           "TODISTUS",
           "Suorittaja iminim Niminimi Niminiminimin",
@@ -732,22 +732,22 @@ class TodistusLatausSpec extends TodistusSpecHelpers with BeforeAndAfterAll {
           "(1.1.2007)"
         )),
 
-      TextRegion("sivu1_kokeeninimi", pageIndex = 0,
-        x = 150, y = 280, width = 300, height = 70,
+      TextRegion("sivu1_kokeennimi", pageIndex = 0,
+        x = 150, y = 265, width = 300, height = 70,
         expectedTexts = Seq(
           "on osallistunut yleisten kielitutkintojen",
           "suomen kielen keskitason tutkintoon"
         )),
 
       TextRegion("sivu1_johdanto_arvosanoihin", pageIndex = 0,
-        x = 100, y = 325, width = 400, height = 50,
+        x = 100, y = 305, width = 400, height = 50,
         expectedTexts = Seq(
           "Suorituksen perusteella hänen kielitaitonsa on arvioitu osataidoittain",
           "seuraavasti:"
         )),
 
       TextRegion("alueet", pageIndex = 0,
-        x = 100, y = 375, width = 150, height = 90,
+        x = 100, y = 350, width = 150, height = 90,
         expectedTexts = Seq(
           "PUHEEN YMMÄRTÄMINEN",
           "PUHUMINEN",
@@ -756,7 +756,7 @@ class TodistusLatausSpec extends TodistusSpecHelpers with BeforeAndAfterAll {
         )),
 
       TextRegion("arvosanat", pageIndex = 0,
-        x = 250, y = 375, width = 150, height = 90,
+        x = 250, y = 350, width = 150, height = 90,
         expectedTexts = Seq(
           "4, keskitaso",
           "3, keskitaso",
@@ -766,7 +766,7 @@ class TodistusLatausSpec extends TodistusSpecHelpers with BeforeAndAfterAll {
 
       // Printattavan todistuksen allekirjoitusalue on erilainen - vain perustiedot, ei eIDAS-leiman tietoja
       TextRegion("allekirjoitus_print", pageIndex = 0,
-        x = 49, y = 600, width = 356, height = 150,
+        x = 49, y = 570, width = 356, height = 150,
         expectedTexts = Seq(
           "Tutkinnon järjestäjä:",
           "Varsinais-Suomen kansanopisto",
@@ -775,13 +775,13 @@ class TodistusLatausSpec extends TodistusSpecHelpers with BeforeAndAfterAll {
 
       // Sivu 2: Taitotasokuvaukset (samat kuin tavallisessa todistuksessa)
       TextRegion("Sivun 2 otsikkorivi", pageIndex = 1,
-        x = 50, y = 60, width = 500, height = 40,
+        x = 50, y = 50, width = 500, height = 40,
         expectedTexts = Seq("TAITOTASOKUVAUKSET",
           "EVK:N",
           "ASTEIKKO")),
 
       TextRegion("Sivun 2 vasen palsta", pageIndex = 1,
-        x = 50, y = 90, width = 40, height = 650,
+        x = 50, y = 80, width = 40, height = 650,
         expectedTexts = Seq("YLIN TASO",
           "6",
           "5",
@@ -794,13 +794,13 @@ class TodistusLatausSpec extends TodistusSpecHelpers with BeforeAndAfterAll {
 
       // Sivu 3: Printattavan todistuksen leiska (uusi sivu, jota ei ole tavallisessa todistuksessa)
       TextRegion("sivu3_otsikko", pageIndex = 2,
-        x = 100, y = 60, width = 396, height = 30,
+        x = 100, y = 50, width = 396, height = 30,
         expectedTexts = Seq(
           "TIETOA TODISTUKSEN SAAJALLE"
         )),
 
       TextRegion("sivu3_teksti", pageIndex = 2,
-        x = 100, y = 95, width = 396, height = 650,
+        x = 100, y = 85, width = 396, height = 650,
         expectedTexts = Seq(
           "Opetushallitus on myöntänyt sinulle todistuksen yleisestä kielitutkinnosta (YKI).",
           "YKI-testissä saat jokaisesta osakokeesta oman erillisen arvosanan eli",
@@ -841,8 +841,8 @@ class TodistusLatausSpec extends TodistusSpecHelpers with BeforeAndAfterAll {
     // minContentRatio: Minimiosuus ei-valkoisia pikseleitä jotta alue katsotaan sisällölliseksi
     // skipPixelComparison: Jos true, vertaillaan vain sisältömääriä, ei pikselikohtaista samankaltaisuutta
     val testRegions = Seq(
-      TestRegion("vasen_ylanurkka", pageIndex = 0, x = 45, y = 55, width = 200, height = 100, minContentRatio = 0.25),
-      TestRegion("oikea_alanurkka", pageIndex = 0, x = 420, y = 740, width = 130, height = 50, minContentRatio = 0.15),
+      TestRegion("vasen_ylanurkka", pageIndex = 0, x = 45, y = 45, width = 200, height = 100, minContentRatio = 0.25),
+      TestRegion("oikea_alanurkka", pageIndex = 0, x = 420, y = 750, width = 130, height = 50, minContentRatio = 0.15),
       TestRegion("sivu1_kokonaan", pageIndex = 0, x = 0, y = 0, width = 595, height = 842, minContentRatio = 0.05, skipPixelComparison = true),
       TestRegion("sivu2_kokonaan", pageIndex = 1, x = 0, y = 0, width = 595, height = 842, minContentRatio = 0.10, skipPixelComparison = true)
     )
@@ -850,7 +850,7 @@ class TodistusLatausSpec extends TodistusSpecHelpers with BeforeAndAfterAll {
     verifyPixelRegions(
       document,
       s"$lang-$lataustapa",
-      s"/todistus-test-kielitutkinto-yleinenkielitutkinto-$lang-expected",
+      s"/todistus-test-kielitutkinto-yleinenkielitutkinto-expected/$lang",
       testRegions,
       pageCount = 2
     )
@@ -860,8 +860,8 @@ class TodistusLatausSpec extends TodistusSpecHelpers with BeforeAndAfterAll {
   def verifyAreasByPixelPrintTemplate(document: PDDocument, lataustapa: String, pageCount: Int = 3, variant: String = "fi_tulostettava_uusi"): Unit = {
     val baseRegions = Seq(
       // Sivu 1
-      TestRegion("vasen_ylanurkka", pageIndex = 0, x = 45, y = 55, width = 200, height = 100, minContentRatio = 0.25),
-      TestRegion("oikea_alanurkka", pageIndex = 0, x = 420, y = 740, width = 130, height = 50, minContentRatio = 0.15),
+      TestRegion("vasen_ylanurkka", pageIndex = 0, x = 45, y = 45, width = 200, height = 100, minContentRatio = 0.25),
+      TestRegion("oikea_alanurkka", pageIndex = 0, x = 420, y = 750, width = 130, height = 50, minContentRatio = 0.15),
       TestRegion("sivu1_kokonaan", pageIndex = 0, x = 0, y = 0, width = 595, height = 842, minContentRatio = 0.05, skipPixelComparison = true),
 
       // Sivu 2
@@ -877,7 +877,7 @@ class TodistusLatausSpec extends TodistusSpecHelpers with BeforeAndAfterAll {
     verifyPixelRegions(
       document,
       lataustapa,
-      s"/todistus-test-kielitutkinto-yleinenkielitutkinto-$variant-expected",
+      s"/todistus-test-kielitutkinto-yleinenkielitutkinto-expected/$variant",
       testRegions,
       pageCount = pageCount
     )
