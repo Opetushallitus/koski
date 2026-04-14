@@ -158,7 +158,10 @@ const runTest = async (environment: Environment) =>
       `Running omadata-oauth2-sample smoke test (${environment}) – attempt ${attempt}/${RETRIES}`
     );
 
-    const browser = await puppeteer.launch({ headless: true });
+    const browser = await puppeteer.launch({
+      headless: true,
+      args: ["--no-sandbox", "--disable-setuid-sandbox"],
+    });
     const isLocal = environment === "local";
     const page = await browser.newPage();
 
