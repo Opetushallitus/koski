@@ -2,11 +2,11 @@ package fi.oph.koski.omadataoauth2
 
 import fi.oph.koski.aktiivisetjapaattyneetopinnot.AktiivisetJaPäättyneetOpinnotOpiskeluoikeus
 import fi.oph.koski.henkilo.LaajatOppijaHenkilöTiedot
-import fi.oph.koski.ovara.OvaraOpiskelijavalintatieto
 import fi.oph.koski.schema
-import fi.oph.koski.schema.{Opiskeluoikeus, TäydellisetHenkilötiedot}
+import fi.oph.koski.schema.annotation.{EnumValues, KoodistoUri}
+import fi.oph.koski.schema.{Koodistokoodiviite, LocalizedString, Opiskeluoikeus, TäydellisetHenkilötiedot}
 import fi.oph.koski.suoritetuttutkinnot.SuoritetutTutkinnotOpiskeluoikeus
-import fi.oph.scalaschema.annotation.Title
+import fi.oph.scalaschema.annotation.{Description, Title}
 import fi.oph.scalaschema.{ClassSchema, SchemaToJson}
 import org.json4s.JValue
 
@@ -21,7 +21,7 @@ object OmaDataOAuth2KaikkiOpiskeluoikeudetJaValintatiedot {
 case class OmaDataOAuth2KaikkiOpiskeluoikeudetJaValintatiedot(
   henkilö: OmaDataOAuth2Henkilötiedot,
   opiskeluoikeudet: List[Opiskeluoikeus],
-  valintatiedot: List[OvaraOpiskelijavalintatieto],
+  valintatiedot: Option[OmaDataOAuth2Valintatieto],
   tokenInfo: OmaDataOAuth2TokenInfo
 )
 
@@ -180,3 +180,82 @@ case class OmaDataOAuth2TokenInfo(
   expirationTime: String
 )
 
+case class OmaDataOAuth2Valintatieto(
+  hakemukset: List[OmaDataOAuth2Hakemus]
+)
+
+@Title("Hakemus")
+case class OmaDataOAuth2Hakemus(
+  hakemusOid: String,
+  @KoodistoUri("haunkohdejoukko")
+  haunKohdejoukko: Option[Koodistokoodiviite],
+  @KoodistoUri("hakutapa")
+  hakutapa: Option[Koodistokoodiviite],
+  haku: OmaDataOAuth2Haku,
+  hakutoiveet: List[OmaDataOAuth2Hakutoive]
+)
+
+case class OmaDataOAuth2Haku(
+  oid: String,
+  nimi: LocalizedString
+)
+
+@Title("Hakutoive")
+case class OmaDataOAuth2Hakutoive(
+  hakukohde: OmaDataOAuth2HakutoiveOrganisaatio,
+  tarjoaja: Option[OmaDataOAuth2HakutoiveOrganisaatio],
+  @KoodistoUri("kausi")
+  koulutuksenAlkamiskausi: Option[Koodistokoodiviite],
+  @Description("Vuosiluku merkkijonona")
+  koulutuksenAlkamisvuosi: Option[String],
+  @EnumValues(OmaDataOAuth2ValinnanTila.values)
+  valinnanTila: Option[String],
+  @EnumValues(OmaDataOAuth2VastaanotonTila.values)
+  vastaanotonTila: Option[String],
+  @EnumValues(OmaDataOAuth2IlmoittautumisenTila.values)
+  ilmoittautumisenTila: Option[String]
+)
+
+case class OmaDataOAuth2HakutoiveOrganisaatio(
+  oid: String,
+  nimi: LocalizedString
+)
+
+object OmaDataOAuth2ValinnanTila {
+  val values: Set[String] = Set(
+    "HYVAKSYTTY",
+    "VARASIJALTA_HYVAKSYTTY",
+    "HARKINNANVARAISESTI_HYVAKSYTTY",
+    "VARALLA",
+    "HYLATTY",
+    "PERUUNTUNUT",
+    "PERUNUT",
+    "PERUUTETTU",
+    "KESKEN"
+  )
+}
+
+object OmaDataOAuth2VastaanotonTila {
+  val values: Set[String] = Set(
+    "EHDOLLISESTI_VASTAANOTTANUT",
+    "VASTAANOTTANUT_SITOVASTI",
+    "EI_VASTAANOTETTU_MAARA_AIKANA",
+    "PERUNUT",
+    "PERUUTETTU",
+    "OTTANUT_VASTAAN_TOISEN_PAIKAN",
+    "KESKEN"
+  )
+}
+
+object OmaDataOAuth2IlmoittautumisenTila {
+  val values: Set[String] = Set(
+    "EI_TEHTY",
+    "LASNA_KOKO_LUKUVUOSI",
+    "POISSA_KOKO_LUKUVUOSI",
+    "EI_ILMOITTAUTUNUT",
+    "LASNA_SYKSY",
+    "POISSA_SYKSY",
+    "LASNA",
+    "POISSA"
+  )
+}

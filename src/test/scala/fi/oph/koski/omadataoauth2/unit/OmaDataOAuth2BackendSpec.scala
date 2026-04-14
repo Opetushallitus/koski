@@ -13,7 +13,6 @@ import fi.oph.koski.koskiuser.{KoskiMockUser, MockUsers}
 import fi.oph.koski.log.AuditLogTester
 import fi.oph.koski.omadataoauth2.OmaDataOAuth2Security.{createChallengeAndVerifier, sha256}
 import fi.oph.koski.omadataoauth2._
-import fi.oph.koski.ovara.OvaraOpiskelijavalintatieto
 import fi.oph.koski.schema.{AmmatillinenOpiskeluoikeus, PerusopetuksenOpiskeluoikeudenLisätiedot, PerusopetuksenOpiskeluoikeus}
 import fi.oph.koski.suoritetuttutkinnot.SuoritetutTutkinnotAmmatillinenOpiskeluoikeus
 import fi.oph.koski.suoritusjako.aktiivisetjapaattyneetopinnot.AktiivisetJaPäättyneetOpinnotVerifiers
@@ -1031,13 +1030,32 @@ class OmaDataOAuth2BackendSpec
           data.opiskeluoikeudet should have length 1
           data.opiskeluoikeudet.head shouldBe a[AmmatillinenOpiskeluoikeus]
 
-          data.valintatiedot should have length 1
-          val valintatieto = data.valintatiedot.head
-          valintatieto shouldBe a[OvaraOpiskelijavalintatieto]
-          valintatieto.oppijanumero should be(oppija.oid)
+          data.valintatiedot shouldBe defined
+          val valintatieto = data.valintatiedot.get
           valintatieto.hakemukset should have length 1
-          valintatieto.hakemukset.head.hakemusOid should be("1.2.246.562.11.00000000000001049800")
-          valintatieto.hakemukset.head.hakutoiveet.head.valinnanTila should be(Some("HYVAKSYTTY"))
+
+          val hakemus = valintatieto.hakemukset.head
+          hakemus.hakemusOid shouldBe "1.2.246.562.11.00000000000001049800"
+          hakemus.haunKohdejoukko.map(_.koodiarvo) shouldBe Some("12")
+          hakemus.haunKohdejoukko.map(_.koodistoUri) shouldBe Some("haunkohdejoukko")
+          hakemus.hakutapa.map(_.koodiarvo) shouldBe Some("01")
+          hakemus.hakutapa.map(_.koodistoUri) shouldBe Some("hakutapa")
+          hakemus.haku.oid shouldBe "1.2.246.562.29.00000000000000005467"
+          hakemus.haku.nimi.valueList should contain ("fi" -> "Yhteishaku kevät 2024")
+          hakemus.haku.nimi.valueList should contain ("sv" -> "Gemensam ansökan våren 2024")
+          hakemus.hakutoiveet should have length 1
+
+          val hakutoive = hakemus.hakutoiveet.head
+          hakutoive.hakukohde.oid shouldBe "1.2.246.562.20.00000000000000005476"
+          hakutoive.hakukohde.nimi.valueList should contain ("fi" -> "Tietotekniikan koulutusohjelma")
+          hakutoive.tarjoaja.map(_.oid) shouldBe Some("1.2.246.562.10.42160341923")
+          hakutoive.tarjoaja.map(_.nimi.valueList) shouldBe Some(List("fi" -> "Esimerkkioppilaitos"))
+          hakutoive.koulutuksenAlkamiskausi.map(_.koodiarvo) shouldBe Some("s")
+          hakutoive.koulutuksenAlkamiskausi.map(_.koodistoUri) shouldBe Some("kausi")
+          hakutoive.koulutuksenAlkamisvuosi shouldBe Some("2024")
+          hakutoive.valinnanTila shouldBe Some("HYVAKSYTTY")
+          hakutoive.vastaanotonTila shouldBe Some("VASTAANOTTANUT_SITOVASTI")
+          hakutoive.ilmoittautumisenTila shouldBe Some("LASNA")
 
           val actualOo = data.opiskeluoikeudet.head.asInstanceOf[AmmatillinenOpiskeluoikeus]
 
@@ -1071,7 +1089,7 @@ class OmaDataOAuth2BackendSpec
           data.opiskeluoikeudet should have length 1
           data.opiskeluoikeudet.head shouldBe a[PerusopetuksenOpiskeluoikeus]
 
-          data.valintatiedot should have length 0
+          data.valintatiedot shouldBe None
 
           val actualOo = data.opiskeluoikeudet.head.asInstanceOf[PerusopetuksenOpiskeluoikeus]
 

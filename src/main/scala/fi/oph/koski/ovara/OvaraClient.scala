@@ -49,18 +49,18 @@ object MockOvaraClient extends OvaraClient {
               oid = "1.2.246.562.29.00000000000000005467",
               nimi = OvaraNimi(fi = Some("Yhteishaku kevät 2024"), sv = Some("Gemensam ansökan våren 2024"), en = None)
             ),
-            haunKohdejoukko = "haunkohdejoukko_12#1",
-            hakutapa = "hakutapa_01#1",
+            haunKohdejoukko = Some("haunkohdejoukko_12#1"),
+            hakutapa = Some("hakutapa_01#1"),
             hakutoiveet = List(
               OvaraHakutoive(
                 hakukohde = OvaraOrganisaatio(
                   oid = "1.2.246.562.20.00000000000000005476",
                   nimi = OvaraNimi(fi = Some("Tietotekniikan koulutusohjelma"), sv = None, en = None)
                 ),
-                tarjoaja = OvaraOrganisaatio(
+                tarjoaja = Some(OvaraOrganisaatio(
                   oid = "1.2.246.562.10.42160341923",
                   nimi = OvaraNimi(fi = Some("Esimerkkioppilaitos"), sv = None, en = None)
-                ),
+                )),
                 koulutuksenAlkamiskausiUri = Some("kausi_s#1"),
                 koulutuksenAlkamisvuosi = Some("2024"),
                 valinnanTila = Some("HYVAKSYTTY"),

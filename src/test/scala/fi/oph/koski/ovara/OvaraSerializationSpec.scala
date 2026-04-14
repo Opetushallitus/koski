@@ -230,8 +230,8 @@ class OvaraSerializationSpec extends AnyFreeSpec with Matchers {
       hakemus1.haku.nimi.fi should be(Some("Korkeakoulujen kevään 2024 toinen yhteishaku "))
       hakemus1.haku.nimi.sv should be(Some("Högskolornas andra gemensamma ansökan, våren 2024"))
       hakemus1.haku.nimi.en should be(Some("Joint Application to Degree Programmes in Finnish/Swedish, Spring 2024"))
-      hakemus1.haunKohdejoukko should be("haunkohdejoukko_12#1")
-      hakemus1.hakutapa should be("hakutapa_01#1")
+      hakemus1.haunKohdejoukko should be(Some("haunkohdejoukko_12#1"))
+      hakemus1.hakutapa should be(Some("hakutapa_01#1"))
       hakemus1.hakutoiveet should have length 3
 
       val hakutoive1 = hakemus1.hakutoiveet.head
@@ -239,10 +239,10 @@ class OvaraSerializationSpec extends AnyFreeSpec with Matchers {
       hakutoive1.hakukohde.nimi.fi should be (Some("Bioteknologian ja biolääketieteen tekniikan koulutus, Tekniikan kandidaatti ja diplomi-insinööri (3 v + 2 v) - DIA-yhteisvalinta"))
       hakutoive1.hakukohde.nimi.sv should be (Some("Bioteknologian ja biolääketieteen tekniikan koulutus, Tekniikan kandidaatti ja diplomi-insinööri (3 v + 2 v) - DIA-yhteisvalinta"))
       hakutoive1.hakukohde.nimi.en should be (Some("Bioteknologian ja biolääketieteen tekniikan koulutus, Tekniikan kandidaatti ja diplomi-insinööri (3 v + 2 v) - DIA-yhteisvalinta"))
-      hakutoive1.tarjoaja.oid should be("1.2.246.562.10.80037732585")
-      hakutoive1.tarjoaja.nimi.fi should be(Some("Lääketieteen ja terveysteknologian tiedekunta"))
-      hakutoive1.tarjoaja.nimi.sv should be(Some("Lääketieteen ja terveysteknologian tiedekunta"))
-      hakutoive1.tarjoaja.nimi.en should be(None)
+      hakutoive1.tarjoaja.get.oid should be("1.2.246.562.10.80037732585")
+      hakutoive1.tarjoaja.get.nimi.fi should be(Some("Lääketieteen ja terveysteknologian tiedekunta"))
+      hakutoive1.tarjoaja.get.nimi.sv should be(Some("Lääketieteen ja terveysteknologian tiedekunta"))
+      hakutoive1.tarjoaja.get.nimi.en should be(None)
       hakutoive1.koulutuksenAlkamiskausiUri should be(Some("kausi_s#1"))
       hakutoive1.koulutuksenAlkamisvuosi should be(Some("2024"))
       hakutoive1.valinnanTila should be(None)
@@ -255,8 +255,8 @@ class OvaraSerializationSpec extends AnyFreeSpec with Matchers {
       hakemus2.haku.nimi.fi should be (Some("Korkeakoulujen kevään 2025 toinen yhteishaku "))
       hakemus2.haku.nimi.sv should be (Some("Högskolornas andra gemensamma ansökan, våren 2025"))
       hakemus2.haku.nimi.en should be (Some("Joint Application to Degree Programmes in Finnish/Swedish, Spring 2025"))
-      hakemus2.haunKohdejoukko should be("haunkohdejoukko_12#1")
-      hakemus2.hakutapa should be("hakutapa_01#1")
+      hakemus2.haunKohdejoukko should be(Some("haunkohdejoukko_12#1"))
+      hakemus2.hakutapa should be(Some("hakutapa_01#1"))
       hakemus2.hakutoiveet should have length 5
 
       val hakutoive2 = hakemus2.hakutoiveet.head

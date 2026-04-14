@@ -12,8 +12,8 @@ case class OvaraOpiskelijavalintatieto(
 case class OvaraHakemus(
   hakemusOid: String,
   haku: OvaraHaku,
-  haunKohdejoukko: String,
-  hakutapa: String,
+  haunKohdejoukko: Option[String],
+  hakutapa: Option[String],
   hakutoiveet: List[OvaraHakutoive]
 )
 
@@ -23,7 +23,7 @@ case class OvaraNimi(fi: Option[String], sv: Option[String], en: Option[String])
 
 case class OvaraHakutoive(
   hakukohde: OvaraOrganisaatio,
-  tarjoaja: OvaraOrganisaatio,
+  tarjoaja: Option[OvaraOrganisaatio],
   koulutuksenAlkamiskausiUri: Option[String],
   koulutuksenAlkamisvuosi: Option[String],
   valinnanTila: Option[String],
