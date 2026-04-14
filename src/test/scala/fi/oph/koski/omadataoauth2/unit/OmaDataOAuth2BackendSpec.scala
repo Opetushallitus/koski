@@ -7,7 +7,6 @@ import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.documentation.PerusopetusExampleData
 import fi.oph.koski.fixture.FixtureCreator
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
-import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.koskiuser.{KoskiMockUser, MockUsers}
 import fi.oph.koski.log.AuditLogTester

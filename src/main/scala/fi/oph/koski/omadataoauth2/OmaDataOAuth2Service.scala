@@ -161,7 +161,7 @@ class OmaDataOAuth2Service(oauth2Repository: OmaDataOAuth2Repository, val applic
           OmaDataOAuth2KaikkiOpiskeluoikeudetJaValintatiedot(
             henkilö = OmaDataOAuth2Henkilötiedot(henkilö, scope),
             opiskeluoikeudet = opiskeluoikeudet.toList,
-            valintatiedot = convertToOmaDataValintatieto(valintatiedot),
+            valintatiedot = convertToOmaDataValintatieto(valintatiedot).filter(_.hakemukset.nonEmpty),
             tokenInfo = OmaDataOAuth2TokenInfo(scope, tokenExpirationTime)
           )
         )
@@ -172,8 +172,8 @@ class OmaDataOAuth2Service(oauth2Repository: OmaDataOAuth2Repository, val applic
     }
   }
 
-  private def convertToOmaDataValintatieto(valintatiedot: List[OvaraOpiskelijavalintatieto]): Option[OmaDataOAuth2Valintatieto] =
-    valintatiedot.headOption.map { valintatieto =>
+  private def convertToOmaDataValintatieto(valintatiedot: Option[OvaraOpiskelijavalintatieto]): Option[OmaDataOAuth2Valintatieto] =
+    valintatiedot.map { valintatieto =>
       OmaDataOAuth2Valintatieto(
         hakemukset = valintatieto.hakemukset.map { hakemus =>
           OmaDataOAuth2Hakemus(

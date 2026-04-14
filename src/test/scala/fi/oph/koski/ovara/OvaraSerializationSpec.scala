@@ -8,7 +8,7 @@ class OvaraSerializationSpec extends AnyFreeSpec with Matchers {
   "OvaraOpiskelijavalintatieto" - {
     "deserialisoituu oikein JSON:sta" in {
       val json =
-        """[ {
+        """{
           |  "oppijanumero" : "1.2.246.562.24.98249516231",
           |  "hetu" : "1.2.246.562.24.98249516231",
           |  "syntymaaika" : "241164-927S",
@@ -209,14 +209,9 @@ class OvaraSerializationSpec extends AnyFreeSpec with Matchers {
           |      "ilmoittautumisenTila" : null
           |    } ]
           |  } ]
-          |}
-          |]""".stripMargin
+          |}""".stripMargin
 
-      val result = JsonSerializer.parse[List[OvaraOpiskelijavalintatieto]](json)
-
-      result should have length 1
-
-      val valintatieto = result.head
+      val valintatieto = JsonSerializer.parse[OvaraOpiskelijavalintatieto](json)
       valintatieto.oppijanumero should be("1.2.246.562.24.98249516231")
       valintatieto.hetu should be(Some("1.2.246.562.24.98249516231"))
       valintatieto.syntymaaika should be(Some("241164-927S"))

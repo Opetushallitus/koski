@@ -26,16 +26,16 @@ object OvaraClient extends Logging {
 }
 
 trait OvaraClient {
-  def fetchOpiskelijavalintatiedot(oppijaOid: String): Either[HttpStatus, List[OvaraOpiskelijavalintatieto]]
+  def fetchOpiskelijavalintatiedot(oppijaOid: String): Either[HttpStatus, Option[OvaraOpiskelijavalintatieto]]
 }
 
 object EmptyOvaraClient extends OvaraClient {
-  override def fetchOpiskelijavalintatiedot(oppijaOid: String): Either[HttpStatus, List[OvaraOpiskelijavalintatieto]] = Right(List.empty)
+  override def fetchOpiskelijavalintatiedot(oppijaOid: String): Either[HttpStatus, Option[OvaraOpiskelijavalintatieto]] = Right(None)
 }
 
 object MockOvaraClient extends OvaraClient {
-  private val mockData: Map[String, Either[HttpStatus, List[OvaraOpiskelijavalintatieto]]] = Map(
-    KoskiSpecificMockOppijat.ammattilainen.oid -> Right(List(
+  private val mockData: Map[String, Either[HttpStatus, Option[OvaraOpiskelijavalintatieto]]] = Map(
+    KoskiSpecificMockOppijat.ammattilainen.oid -> Right(Some(
       OvaraOpiskelijavalintatieto(
         oppijanumero = KoskiSpecificMockOppijat.ammattilainen.oid,
         hetu = None,
@@ -75,8 +75,8 @@ object MockOvaraClient extends OvaraClient {
     KoskiSpecificMockOppijat.koululainen.oid -> Left(KoskiErrorCategory.unavailable.ovara())
   )
 
-  override def fetchOpiskelijavalintatiedot(oppijaOid: String): Either[HttpStatus, List[OvaraOpiskelijavalintatieto]] =
-    mockData.getOrElse(oppijaOid, Right(List.empty))
+  override def fetchOpiskelijavalintatiedot(oppijaOid: String): Either[HttpStatus, Option[OvaraOpiskelijavalintatieto]] =
+    mockData.getOrElse(oppijaOid, Right(None))
 }
 
 class RemoteOvaraClient(config: Config) extends OvaraClient with Logging {
@@ -86,9 +86,9 @@ class RemoteOvaraClient(config: Config) extends OvaraClient with Logging {
     preferGettingCredentialsFromSecretsManager = true
   )
 
-  override def fetchOpiskelijavalintatiedot(oppijaOid: String): Either[HttpStatus, List[OvaraOpiskelijavalintatieto]] =
+  override def fetchOpiskelijavalintatiedot(oppijaOid: String): Either[HttpStatus, Option[OvaraOpiskelijavalintatieto]] =
     try {
-      Right(runIO(http.get(uri"/ovara-backend/api/opiskelijavalintatiedot?ovara_oppijanumerot=${oppijaOid}")(Http.parseJson[List[OvaraOpiskelijavalintatieto]])))
+      Right(runIO(http.get(uri"/ovara-backend/api/opiskelijavalintatiedot?ovara_oppijanumero=${oppijaOid}")(Http.parseJsonOptional[OvaraOpiskelijavalintatieto])))
     } catch {
       case NonFatal(e) =>
         logger.error(e)("Failed to fetch opiskelijavalintatiedot from Ovara")
