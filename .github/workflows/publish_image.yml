@@ -52,7 +52,7 @@ jobs:
         uses: ./.github/actions/setup_java_11
 
       - name: Setup settings.xml
-        uses: s4u/maven-settings-action@60912582505985be4cc55d2b890eb32767f8de5f # v2.8.0
+        uses: s4u/maven-settings-action@894661b3ddae382f1ae8edbeab60987e08cf0788 # v4.0.0
         if: steps.check-image.outputs.image-exists != '0'
         with:
           servers: '[{"id": "github","configuration": {"httpHeaders": {"property": {"name": "Authorization","value": "Bearer ${{ secrets.GITHUB_TOKEN }}"}}}}]'
