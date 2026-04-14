@@ -1,6 +1,5 @@
 package fi.oph.koski.massaluovutus.suorituspalvelu.opiskeluoikeus
 
-import fi.oph.koski.massaluovutus.suorituspalvelu.SupaUtils.isValmistunut
 import fi.oph.koski.schema._
 import fi.oph.koski.schema.annotation.KoodistoKoodiarvo
 import fi.oph.koski.util.Optional.when
@@ -25,25 +24,24 @@ case class SupaInternationalSchoolOpiskeluoikeus(
 ) extends SupaOpiskeluoikeus
 
 object SupaInternationalSchoolOpiskeluoikeus {
-  def apply(oo: InternationalSchoolOpiskeluoikeus, oppijaOid: String): Option[SupaOpiskeluoikeus] =
-    when(isValmistunut(oo)) {
-      SupaInternationalSchoolOpiskeluoikeus(
-        oppijaOid = oppijaOid,
-        tyyppi = oo.tyyppi,
-        oid = oo.oid.get,
-        koulutustoimija = oo.koulutustoimija,
-        oppilaitos = oo.oppilaitos,
-        tila = oo.tila,
-        alkamispäivä = oo.alkamispäivä,
-        päättymispäivä = oo.päättymispäivä,
-        suoritukset = oo.suoritukset.flatMap {
-          case s: DiplomaVuosiluokanSuoritus => SupaDiplomaVuosiluokanSuoritus(s)
-          case _ => None
-        },
-        versionumero = oo.versionumero,
-        aikaleima = oo.aikaleima
-      )
-    }
+  def apply(oo: InternationalSchoolOpiskeluoikeus, oppijaOid: String): Option[SupaOpiskeluoikeus] = Some(
+    SupaInternationalSchoolOpiskeluoikeus(
+      oppijaOid = oppijaOid,
+      tyyppi = oo.tyyppi,
+      oid = oo.oid.get,
+      koulutustoimija = oo.koulutustoimija,
+      oppilaitos = oo.oppilaitos,
+      tila = oo.tila,
+      alkamispäivä = oo.alkamispäivä,
+      päättymispäivä = oo.päättymispäivä,
+      suoritukset = oo.suoritukset.flatMap {
+        case s: DiplomaVuosiluokanSuoritus => SupaDiplomaVuosiluokanSuoritus(s)
+        case _ => None
+      },
+      versionumero = oo.versionumero,
+      aikaleima = oo.aikaleima
+    )
+  )
 }
 
 @Title("Diploma vuosiluokan suoritus")

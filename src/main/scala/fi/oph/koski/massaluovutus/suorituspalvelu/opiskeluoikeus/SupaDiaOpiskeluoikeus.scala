@@ -1,9 +1,7 @@
 package fi.oph.koski.massaluovutus.suorituspalvelu.opiskeluoikeus
 
-import fi.oph.koski.massaluovutus.suorituspalvelu.SupaUtils.isValmistunut
 import fi.oph.koski.schema._
 import fi.oph.koski.schema.annotation.KoodistoKoodiarvo
-import fi.oph.koski.util.Optional.when
 import fi.oph.scalaschema.annotation.Title
 
 import java.time.{LocalDate, LocalDateTime}
@@ -25,24 +23,23 @@ case class SupaDIAOpiskeluoikeus(
 ) extends SupaOpiskeluoikeus
 
 object SupaDIAOpiskeluoikeus {
-  def apply(oo: DIAOpiskeluoikeus, oppijaOid: String): Option[SupaDIAOpiskeluoikeus] =
-    when (isValmistunut(oo)) {
-      SupaDIAOpiskeluoikeus(
-        oppijaOid = oppijaOid,
-        tyyppi = oo.tyyppi,
-        oid = oo.oid.get,
-        koulutustoimija = oo.koulutustoimija,
-        oppilaitos = oo.oppilaitos,
-        tila = oo.tila,
-        alkamispäivä = oo.alkamispäivä,
-        päättymispäivä = oo.päättymispäivä,
-        suoritukset = oo.suoritukset.collect {
-          case tutkinnonSuoritus: DIATutkinnonSuoritus if tutkinnonSuoritus.valmis => SupaDIATutkinnonSuoritus(tutkinnonSuoritus)
-        },
-        versionumero = oo.versionumero,
-        aikaleima = oo.aikaleima
-      )
-    }
+  def apply(oo: DIAOpiskeluoikeus, oppijaOid: String): Option[SupaDIAOpiskeluoikeus] = Some(
+    SupaDIAOpiskeluoikeus(
+      oppijaOid = oppijaOid,
+      tyyppi = oo.tyyppi,
+      oid = oo.oid.get,
+      koulutustoimija = oo.koulutustoimija,
+      oppilaitos = oo.oppilaitos,
+      tila = oo.tila,
+      alkamispäivä = oo.alkamispäivä,
+      päättymispäivä = oo.päättymispäivä,
+      suoritukset = oo.suoritukset.collect {
+        case tutkinnonSuoritus: DIATutkinnonSuoritus => SupaDIATutkinnonSuoritus(tutkinnonSuoritus)
+      },
+      versionumero = oo.versionumero,
+      aikaleima = oo.aikaleima
+    )
+  )
 }
 
 @Title("DIA-tutkinnon suoritus")

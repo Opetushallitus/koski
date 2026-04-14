@@ -1,9 +1,7 @@
 package fi.oph.koski.massaluovutus.suorituspalvelu.opiskeluoikeus
 
-import fi.oph.koski.massaluovutus.suorituspalvelu.SupaUtils.isValmistunut
 import fi.oph.koski.schema._
 import fi.oph.koski.schema.annotation.KoodistoKoodiarvo
-import fi.oph.koski.util.Optional.when
 import fi.oph.scalaschema.annotation.Title
 
 import java.time.{LocalDate, LocalDateTime}
@@ -25,24 +23,23 @@ case class SupaIBOpiskeluoikeus(
 ) extends SupaOpiskeluoikeus
 
 object SupaIBOpiskeluoikeus {
-  def apply(oo: IBOpiskeluoikeus, oppijaOid: String): Option[SupaIBOpiskeluoikeus] =
-    when(isValmistunut(oo)) {
-      SupaIBOpiskeluoikeus(
-        oppijaOid = oppijaOid,
-        tyyppi = oo.tyyppi,
-        oid = oo.oid.get,
-        koulutustoimija = oo.koulutustoimija,
-        oppilaitos = oo.oppilaitos,
-        tila = oo.tila,
-        alkamispäivä = oo.alkamispäivä,
-        päättymispäivä = oo.päättymispäivä,
-        suoritukset = oo.suoritukset.collect {
-          case s: IBTutkinnonSuoritus => SupaIBTutkinnonSuoritus(s)
-        },
-        versionumero = oo.versionumero,
-        aikaleima = oo.aikaleima
-      )
-    }
+  def apply(oo: IBOpiskeluoikeus, oppijaOid: String): Option[SupaIBOpiskeluoikeus] = Some(
+    SupaIBOpiskeluoikeus(
+      oppijaOid = oppijaOid,
+      tyyppi = oo.tyyppi,
+      oid = oo.oid.get,
+      koulutustoimija = oo.koulutustoimija,
+      oppilaitos = oo.oppilaitos,
+      tila = oo.tila,
+      alkamispäivä = oo.alkamispäivä,
+      päättymispäivä = oo.päättymispäivä,
+      suoritukset = oo.suoritukset.collect {
+        case s: IBTutkinnonSuoritus => SupaIBTutkinnonSuoritus(s)
+      },
+      versionumero = oo.versionumero,
+      aikaleima = oo.aikaleima
+    )
+  )
 }
 
 @Title("IB-tutkinnon suoritus")
