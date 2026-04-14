@@ -8,7 +8,7 @@ import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.log.Logging
 import fi.oph.koski.mydata.MyDataConfig
-import fi.oph.koski.schema.LocalizedString
+import fi.oph.koski.schema.{LocalizedString, Oppija}
 import fi.oph.koski.omaopintopolkuloki.AuditLogDynamoDB.AuditLogTableName
 import fi.oph.koski.schema.Henkilö.Oid
 import software.amazon.awssdk.services.dynamodb.model.{AttributeValue, QueryRequest}
@@ -19,14 +19,14 @@ class AuditLogService(val application: KoskiApplication) extends Logging with My
   private val organisaatioRepository = application.organisaatioRepository
   private val dynamoDB = AuditLogDynamoDB.buildDb(application.config)
 
-  def queryLogsFromDynamo(masterOppijaOid: String): Either[HttpStatus, Seq[OrganisaationAuditLogit]] = {
+  def queryLogsFromDynamo(masterOppijaOid: String, allowedOrganisaatiot: AllowedOrganisaatiot): Either[HttpStatus, Seq[OrganisaationAuditLogit]] = {
     val kaikkiOppijanOidit = application.opintopolkuHenkilöFacade.findSlaveOids(masterOppijaOid).toSet + masterOppijaOid
 
     val queryResult = kaikkiOppijanOidit
       .iterator
       .flatMap(runQuery)
 
-    buildLogs(queryResult)
+    buildLogs(queryResult, allowedOrganisaatiot)
   }
 
   private def runQuery(oppijaOid: Oid): Iterator[util.Map[Oid, AttributeValue]] = {
@@ -91,12 +91,25 @@ class AuditLogService(val application: KoskiApplication) extends Logging with My
     AuditlogRow(organizationOid, raw, time)
   }
 
-  private def buildLogs(queryResult: Iterator[util.Map[Oid, AttributeValue]]): Either[HttpStatus, Seq[OrganisaationAuditLogit]] = {
+  private def buildLogs(queryResult: Iterator[util.Map[Oid, AttributeValue]], allowedOrganisaatiot: AllowedOrganisaatiot): Either[HttpStatus, Seq[OrganisaationAuditLogit]] = {
     val timestampsGrouped = queryResult
       .map(item => {
         val parsedRow = convertToAuditLogRow(item)
         val parsedRaw = JsonSerializer.parse[AuditlogRaw](parsedRow.raw, ignoreExtras = true)
-        val organisaatioOidit = parsedRow.organizationOid.sorted
+        // Suodatus koskee vain KOSKI-palvelun auditlogeja. Varda/kitu-rivit näytetään sellaisenaan.
+        val isKoskiLog = parsedRaw.serviceName == "koski"
+        val filteredOrganisaatiot =
+          if (!isKoskiLog || allowedOrganisaatiot.isEmpty) parsedRow.organizationOid
+          else {
+            val intersected = parsedRow.organizationOid.filter(oid =>
+              oid == Opetushallitus.organisaatioOid || allowedOrganisaatiot.contains(oid)
+            )
+            if (intersected.nonEmpty) intersected else parsedRow.organizationOid
+          }
+        // KOSKI-logeille järjestys: OPH > koulutustoimija > oppilaitos > muu
+        val organisaatioOidit =
+          if (isKoskiLog) filteredOrganisaatiot.sortBy(oid => (allowedOrganisaatiot.priority(oid), oid))
+          else filteredOrganisaatiot.sorted
         val timestampString = parsedRow.time
         val serviceName = parsedRaw.serviceName
         val isMyDataUse = parsedRaw.operation.startsWith("OAUTH2_KATSOMINEN") || parsedRow.organizationOid.headOption.exists(isMyDataOrg)
@@ -116,10 +129,10 @@ class AuditLogService(val application: KoskiApplication) extends Logging with My
         .map {
           case ((orgs, serviceName, isMyDataUse, isJakolinkkiUse), timestamps) =>
             HttpStatus.foldEithers(orgs.map(toOrganisaatio))
-              .map(orgs => OrganisaationAuditLogit(orgs, serviceName, isMyDataUse, isJakolinkkiUse, timestamps))
+              .map(orgs => OrganisaationAuditLogit(orgs, serviceName, isMyDataUse, isJakolinkkiUse, timestamps.sorted.reverse))
         }
         .toSeq
-    )
+    ).map(_.sortBy(_.timestamps.headOption)(Ordering[Option[String]].reverse))
   }
 
   private def toOrganisaatio(oid: String): Either[HttpStatus, Organisaatio] = {
@@ -138,6 +151,28 @@ class AuditLogService(val application: KoskiApplication) extends Logging with My
     } else {
       None
     }
+  }
+}
+
+object AuditLogService {
+  def allowedOrganisaatiot(oppija: Oppija): AllowedOrganisaatiot = {
+    val koulutustoimijat = oppija.opiskeluoikeudet.flatMap(_.koulutustoimija.map(_.oid)).toSet
+    val oppilaitokset = oppija.opiskeluoikeudet.flatMap(_.oppilaitos.map(_.oid)).toSet
+    AllowedOrganisaatiot(koulutustoimijat, oppilaitokset)
+  }
+}
+
+case class AllowedOrganisaatiot(
+  koulutustoimijat: Set[String],
+  oppilaitokset: Set[String]
+) {
+  def isEmpty: Boolean = koulutustoimijat.isEmpty && oppilaitokset.isEmpty
+  def contains(oid: String): Boolean = koulutustoimijat.contains(oid) || oppilaitokset.contains(oid)
+  def priority(oid: String): Int = {
+    if (oid == Opetushallitus.organisaatioOid) 0
+    else if (koulutustoimijat.contains(oid)) 1
+    else if (oppilaitokset.contains(oid)) 2
+    else 3
   }
 }
 
