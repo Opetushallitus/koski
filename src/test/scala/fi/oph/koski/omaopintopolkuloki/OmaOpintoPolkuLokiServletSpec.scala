@@ -66,6 +66,35 @@ class OmaOpintoPolkuLokiServletSpec extends AnyFreeSpec with Matchers with Koski
         verifyResponseStatus(500, KoskiErrorCategory.internalError())
       }
     }
+    "Suodattaa pois organisaatiot, joissa kansalaisella ei ole opiskeluoikeutta" in {
+      val orgs = auditlogs(KoskiSpecificMockOppijat.koululainen).flatMap(_.organizations.map(_.oid)).toSet
+      orgs should contain (MockOrganisaatiot.helsinginKaupunki)
+      orgs should not contain (MockOrganisaatiot.kuopionKaupunki)
+    }
+    "Opetushallitus näytetään aina, vieras organisaatio suodatetaan pois" in {
+      val logs = auditlogs(KoskiSpecificMockOppijat.koululainen)
+      val ophRow = logs.find(_.organizations.exists(_.oid == Opetushallitus.organisaatioOid))
+      ophRow shouldBe defined
+      ophRow.get.organizations.map(_.oid) should contain (Opetushallitus.organisaatioOid)
+      ophRow.get.organizations.map(_.oid) should not contain (MockOrganisaatiot.kuopionKaupunki)
+    }
+    "Jos KOSKI-oikeus sekä koulutustoimijaan että oppilaitokseen, näytetään koulutustoimija ensin" in {
+      val logs = auditlogs(KoskiSpecificMockOppijat.koululainen)
+      val row = logs.find(l => l.organizations.exists(_.oid == MockOrganisaatiot.kulosaarenAlaAste) && l.organizations.exists(_.oid == MockOrganisaatiot.helsinginKaupunki))
+      row shouldBe defined
+      row.get.organizations.head.oid shouldBe MockOrganisaatiot.helsinginKaupunki
+    }
+    "Jos KOSKI-oikeus kahteen oppilaitokseen, näytetään se jossa kansalaisella on opiskeluoikeus" in {
+      val logs = auditlogs(KoskiSpecificMockOppijat.koululainen)
+      val orgs = logs.flatMap(_.organizations.map(_.oid)).toSet
+      orgs should contain (MockOrganisaatiot.kulosaarenAlaAste)
+      orgs should not contain (MockOrganisaatiot.stadinAmmattiopisto)
+    }
+    "Opetushallitus-rivi näytetään vaikka kansalaisella ei ole opiskeluoikeuksia siellä" in {
+      auditlogs(KoskiSpecificMockOppijat.aikuisOpiskelija).map(_.organizations.map(_.oid)) should contain theSameElementsAs List(
+        List(Opetushallitus.organisaatioOid)
+      )
+    }
     "Rajapinta vaatii kirjautumisen" in {
       post("api/omaopintopolkuloki/auditlogs",
         body = JsonSerializer.writeWithRoot(Map("hetu" -> "")),jsonContent
