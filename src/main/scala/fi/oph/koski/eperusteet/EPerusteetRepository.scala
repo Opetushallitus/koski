@@ -48,7 +48,7 @@ trait EPerusteetRepository {
 
   protected val betaEperusteenTarvitsevatDiaarinumerot = Map(
     "vapaasivistystyo" -> List("OPH-58-2021", "OPH-2984-2017", "1/011/2012", "OPH-123-2021"),
-    "lukiokoulutus" -> List("OPH-2267-2019", "OPH-4958-2020", "OPH-2263-2019"))
+    "lukiokoulutus" -> List("OPH-4958-2020"))
 
   protected val webLanguages = List("fi", "sv")
 
