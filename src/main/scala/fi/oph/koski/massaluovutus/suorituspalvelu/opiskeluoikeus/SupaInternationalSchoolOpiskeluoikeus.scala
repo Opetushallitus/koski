@@ -59,7 +59,7 @@ case class SupaDiplomaVuosiluokanSuoritus(
 
 object SupaDiplomaVuosiluokanSuoritus {
   def apply(s: DiplomaVuosiluokanSuoritus): Option[SupaDiplomaVuosiluokanSuoritus] =
-    when (s.valmis && s.koulutusmoduuli.tunniste.koodiarvo == "12") {
+    when (s.koulutusmoduuli.tunniste.koodiarvo == "12") {
       SupaDiplomaVuosiluokanSuoritus(
         tyyppi = s.tyyppi,
         alkamispäivä = s.alkamispäivä,

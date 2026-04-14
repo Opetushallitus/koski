@@ -845,6 +845,16 @@ class MassaluovutusSpec extends AnyFreeSpec with MassaluovutusTestMethods with M
           ))
         }
 
+        "International School -opiskeluoikeuden suoritukset palautetaan" in {
+          extractStrings(
+            getOpiskeluoikeudet(Some("internationalschool")),
+            viimeisinTila
+          ) should equal(List(
+            "lasna",
+            "valmistunut"
+          ))
+        }
+
         "Opiskeluoikeudet sisältävät versionumeron ja aikaleiman sekä opiskeluoikeuden alkamis- ja päättymispäivän" in {
           val oos = getOpiskeluoikeudet()
             .filterNot(v => (v \ "poistettu").extractOpt[Boolean].contains(true))
@@ -1271,6 +1281,16 @@ class MassaluovutusSpec extends AnyFreeSpec with MassaluovutusTestMethods with M
         "IB-tutkinnon suoritukset palautetaan" in {
           extractStrings(
             getOpiskeluoikeudet(Some("ibtutkinto")),
+            viimeisinTila
+          ) should equal(List(
+            "lasna",
+            "valmistunut"
+          ))
+        }
+
+        "International School -opiskeluoikeuden suoritukset palautetaan" in {
+          extractStrings(
+            getOpiskeluoikeudet(Some("internationalschool")),
             viimeisinTila
           ) should equal(List(
             "lasna",
