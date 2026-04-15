@@ -243,7 +243,7 @@ private[cas] object TicketGrantingTicketClient extends Logging {
   }
 }
 
-private[cas] object SessionCookieClient {
+private[cas] object SessionCookieClient extends Logging {
   import CasClient._
 
   def getSessionCookieValue
@@ -267,7 +267,10 @@ private[cas] object SessionCookieClient {
       }
     }
 
-    FetchHelper.fetch(client, callerId, request, handler)
+    FetchHelper.fetch(client, callerId, request, handler).handleErrorWith { error =>
+      logger.warn(s"Failed to fetch session cookie value, retrying once. Error: ${error.getMessage}", error)
+      FetchHelper.fetch(client, callerId, request, handler)
+    }
   }
 }
 
