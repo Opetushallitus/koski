@@ -96,7 +96,6 @@ object Oppivelvollisuustiedot {
     )
 
   def createPrecomputedTable(s: Schema, confidentialSchema: Schema, valpasRajapäivätService: ValpasRajapäivätService, config: Config) = {
-    val tarkastelupäivä = valpasRajapäivätService.tarkastelupäivä
     val valpasLakiVoimassaVanhinSyntymäaika = valpasRajapäivätService.lakiVoimassaVanhinSyntymäaika.toString
     val valpasLakiVoimassaPeruskoulustaValmistuneilla = valpasRajapäivätService.lakiVoimassaPeruskoulustaValmistuneillaAlku.toString
     val oppivelvollisuusAlkaaIka = valpasRajapäivätService.oppivelvollisuusAlkaaIka.toString
@@ -105,10 +104,7 @@ object Oppivelvollisuustiedot {
     val oppivelvollisuusLoppuuIka = valpasRajapäivätService.oppivelvollisuusLoppuuIka.toString
     val maksuttomuusLoppuuIka = valpasRajapäivätService.maksuttomuusLoppuuIka.toString
 
-    val ulkopuolisetKunnatTaiKuntaVirheellinen = validatedUnboundCodeList(oppivelvollisuudenUlkopuolisetKunnatTaiKuntaVirheellinen)
     val ulkopuolisetKunnat = validatedUnboundCodeList(oppivelvollisuudenUlkopuolisetKunnat)
-
-    val kotikuntahistoriaConfig = KotikuntahistoriaConfig(config)
 
     sqlu"""
       create table #${s.name}.oppivelvollisuustiedot as
