@@ -5,7 +5,8 @@ import fi.oph.scalaschema._
 import org.json4s.JsonAST
 
 case class KoodistoUri(koodistoUri: String) extends Metadata {
-  def asLink: String = s"/koski/dokumentaatio/koodisto/$koodistoUri/latest"
+  private val url = s"/koski/dokumentaatio/koodisto/$koodistoUri/latest"
+  def asLink = <a href={url} target="_blank">{koodistoUri}</a>
 
   override def appendMetadataToJsonSchema(obj: JsonAST.JObject) = {
     appendToDescription(obj, s"(Koodisto: $asLink)")
