@@ -493,6 +493,38 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
               verifyResponseStatusOk()))
           }
 
+          "Paikallinen tutkinnon osa toisesta tutkinnosta" - {
+            val ajoneuvoalanAmmattitutkinto2025Koulutus = AmmatillinenTutkintoKoulutus(Koodistokoodiviite("354345", "koulutus"), Some("OPH-3418-2025"))
+            def ammattitutkinto2025Suoritus(osasuoritus: AmmatillisenTutkinnonOsanSuoritus) =
+              autoalanPerustutkinnonSuoritus().copy(
+                koulutusmoduuli = ajoneuvoalanAmmattitutkinto2025Koulutus,
+                suoritustapa = tutkinnonSuoritustapaReformi,
+                osaamisala = None,
+                tutkintonimike = None,
+                osasuoritukset = Some(List(osasuoritus))
+              )
+
+            "Kun päätason tutkinnon perusteen voimassaolo alkaa 1.8.2025 tai jälkeen, paikallista tutkinnon osaa toisesta tutkinnosta ei hyväksytä" - {
+              val osa = paikallinenTutkinnonOsaSuoritus.copy(
+                tutkinto = Some(autoalanPerustutkinto),
+                tutkinnonOsanRyhmä = ammatillisetTutkinnonOsat
+              )
+              "palautetaan HTTP 400" in (setupTutkintoSuoritus(ammattitutkinto2025Suoritus(osa))(
+                verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.rakenne.paikallinenTutkinnonOsaToisestaTutkinnosta(
+                  "Paikallista tutkinnon osaa 'paikallinen osa' ei voi merkitä tutkinnon osaksi toisesta tutkinnosta."
+                ))))
+            }
+
+            "Kun päätason tutkinnon perusteen voimassaolo alkaa ennen 1.8.2025, paikallinen tutkinnon osa toisesta tutkinnosta hyväksytään" - {
+              val osa = paikallinenTutkinnonOsaSuoritus.copy(
+                tutkinto = Some(ajoneuvoalanAmmattitutkinto2025Koulutus),
+                tutkinnonOsanRyhmä = ammatillisetTutkinnonOsat
+              )
+              "palautetaan HTTP 200" in (setupTutkinnonOsaSuoritus(osa, tutkinnonSuoritustapaOps)(
+                verifyResponseStatusOk()))
+            }
+          }
+
         }
 
         "Tunnisteen koodiarvon validointi" - {

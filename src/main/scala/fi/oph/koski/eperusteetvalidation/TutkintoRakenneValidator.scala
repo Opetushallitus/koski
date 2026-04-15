@@ -38,27 +38,35 @@ case class TutkintoRakenneValidator(tutkintoRepository: TutkintoRepository, kood
               case osaSuoritus: AmmatillisenTutkinnonOsanSuoritus =>
                 HttpStatus.fold(osaSuoritus.koulutusmoduuli match {
                   case osa: ValtakunnallinenTutkinnonOsa =>
-                    HttpStatus.fold {
-                      val tulokset = rakenteet.map(rakenne =>
-                        validateTutkinnonOsa(
-                          osaSuoritus,
-                          osa,
-                          rakenne,
-                          tutkintoSuoritus.suoritustapa,
-                          alkamispäiväLäsnä,
-                          vaadittuPerusteenVoimassaolopäivä,
-                          oo,
-                          suoritus
+                    HttpStatus.fold(
+                      HttpStatus.fold {
+                        val tulokset = rakenteet.map(rakenne =>
+                          validateTutkinnonOsa(
+                            osaSuoritus,
+                            osa,
+                            rakenne,
+                            tutkintoSuoritus.suoritustapa,
+                            alkamispäiväLäsnä,
+                            vaadittuPerusteenVoimassaolopäivä,
+                            oo,
+                            suoritus
+                          )
                         )
-                      )
-                      if (tulokset.exists(_.isOk)) {
-                        List(HttpStatus.ok)
-                      } else {
-                        tulokset
-                      }
-                    }
+                        if (tulokset.exists(_.isOk)) {
+                          List(HttpStatus.ok)
+                        } else {
+                          tulokset
+                        }
+                      },
+                      osaSuoritus.tutkinto.flatMap(_.perusteenDiaarinumero)
+                        .map(diaari => validateToisestaTutkinnostaPerusteVoimassa(osaSuoritus, diaari, rakenteet))
+                        .getOrElse(HttpStatus.ok)
+                    )
                   case osa: PaikallinenTutkinnonOsa =>
-                    HttpStatus.ok // vain OpsTutkinnonosatoteutukset validoidaan, muut sellaisenaan läpi, koska niiden rakennetta ei tunneta
+                    osaSuoritus.tutkinto.flatMap(_.perusteenDiaarinumero) match {
+                      case Some(_) => validatePaikallinenTutkinnonOsaToisestaTutkinnosta(osa, rakenteet)
+                      case None => HttpStatus.ok
+                    }
                   case osa: KorkeakouluopinnotTutkinnonOsa =>
                     HttpStatus.ok
                   case osa: JatkoOpintovalmiuksiaTukeviaOpintojaTutkinnonOsa =>
@@ -87,27 +95,35 @@ case class TutkintoRakenneValidator(tutkintoRepository: TutkintoRepository, kood
                   case osaSuoritus: OsittaisenAmmatillisenTutkinnonOsanSuoritus =>
                     HttpStatus.fold(osaSuoritus.koulutusmoduuli match {
                       case osa: ValtakunnallinenTutkinnonOsa =>
-                        HttpStatus.fold {
-                          val tulokset = rakenteet.map(rakenne =>
-                            validateTutkinnonOsa(
-                              osaSuoritus,
-                              osa,
-                              rakenne,
-                              suoritus.suoritustapa,
-                              alkamispäiväLäsnä,
-                              vaadittuPerusteenVoimassaolopäivä,
-                              oo,
-                              suoritus
+                        HttpStatus.fold(
+                          HttpStatus.fold {
+                            val tulokset = rakenteet.map(rakenne =>
+                              validateTutkinnonOsa(
+                                osaSuoritus,
+                                osa,
+                                rakenne,
+                                suoritus.suoritustapa,
+                                alkamispäiväLäsnä,
+                                vaadittuPerusteenVoimassaolopäivä,
+                                oo,
+                                suoritus
+                              )
                             )
-                          )
-                          if (tulokset.exists(_.isOk)) {
-                            List(HttpStatus.ok)
-                          } else {
-                            tulokset
-                          }
-                        }
+                            if (tulokset.exists(_.isOk)) {
+                              List(HttpStatus.ok)
+                            } else {
+                              tulokset
+                            }
+                          },
+                          osaSuoritus.tutkinto.flatMap(_.perusteenDiaarinumero)
+                            .map(diaari => validateToisestaTutkinnostaPerusteVoimassa(osaSuoritus, diaari, rakenteet))
+                            .getOrElse(HttpStatus.ok)
+                        )
                       case osa: PaikallinenTutkinnonOsa =>
-                        HttpStatus.ok // vain OpsTutkinnonosatoteutukset validoidaan, muut sellaisenaan läpi, koska niiden rakennetta ei tunneta
+                        osaSuoritus.tutkinto.flatMap(_.perusteenDiaarinumero) match {
+                          case Some(_) => validatePaikallinenTutkinnonOsaToisestaTutkinnosta(osa, rakenteet)
+                          case None => HttpStatus.ok
+                        }
                       case osa: KorkeakouluopinnotTutkinnonOsa =>
                         HttpStatus.ok
                       case osa: JatkoOpintovalmiuksiaTukeviaOpintojaTutkinnonOsa =>
@@ -166,10 +182,25 @@ case class TutkintoRakenneValidator(tutkintoRepository: TutkintoRepository, kood
                             KoskiErrorCategory.badRequest.validation.rakenne.suoritustapaaEiLöydyRakenteesta(s"Suoritustapaa ei löydy tutkinnon rakenteesta perusteelle ${rakenne.diaarinumero} (${rakenne.id})")
                         }
                       }
-                    if (tulokset.exists(_.isOk)) {
+                    val rakenneValidointi = if (tulokset.exists(_.isOk)) {
                       List(HttpStatus.ok)
                     } else {
                       tulokset
+                    }
+                    val osanTutkinnonRakenteet = os.tutkinto.perusteenDiaarinumero
+                      .map(d => tutkintoRepository.findPerusteRakenteet(d, None))
+                      .getOrElse(List.empty)
+                    val perusteVoimassaValidointi = os.tutkinto.perusteenDiaarinumero match {
+                      case Some(diaari) => List(validateToisestaTutkinnostaPerusteVoimassa(os, diaari, osanTutkinnonRakenteet))
+                      case None => List(HttpStatus.ok)
+                    }
+                    rakenneValidointi ++ perusteVoimassaValidointi
+                  case osa: PaikallinenTutkinnonOsa =>
+                    os.tutkinto.perusteenDiaarinumero match {
+                      case Some(diaari) =>
+                        val osanTutkinnonRakenteet = tutkintoRepository.findPerusteRakenteet(diaari, None)
+                        List(validatePaikallinenTutkinnonOsaToisestaTutkinnosta(osa, osanTutkinnonRakenteet))
+                      case None => List(HttpStatus.ok)
                     }
                   case _ => List(HttpStatus.ok)
                 }
@@ -233,6 +264,55 @@ case class TutkintoRakenneValidator(tutkintoRepository: TutkintoRepository, kood
             HttpStatus.justStatus(validateKoulutustyypitJaHaeRakenteet(d, None, Some(vaadittuPerusteenVoimassaolopäivä)))
           case _ => HttpStatus.ok
         }
+    }
+  }
+
+  private def toisestaTutkinnostaValidaatiotKoskevat(rakenne: TutkintoRakenne): Boolean = {
+    val koulutustyyppi = rakenne.koulutustyyppi
+    val rajapäivä = if (ammatillisenPerustutkinnonTyypit.contains(koulutustyyppi)) {
+      LocalDate.of(2026, 8, 1)
+    } else if (ammatillisetKoulutustyypit.contains(koulutustyyppi)) {
+      LocalDate.of(2025, 8, 1)
+    } else {
+      return false
+    }
+    rakenne.voimassaoloAlkaa.exists(!_.isBefore(rajapäivä))
+  }
+
+  private def validatePaikallinenTutkinnonOsaToisestaTutkinnosta(
+    osa: PaikallinenTutkinnonOsa,
+    päätasonTutkinnonRakenteet: List[TutkintoRakenne]
+  ): HttpStatus = {
+    if (päätasonTutkinnonRakenteet.exists(toisestaTutkinnostaValidaatiotKoskevat)) {
+      KoskiErrorCategory.badRequest.validation.rakenne.paikallinenTutkinnonOsaToisestaTutkinnosta(
+        s"Paikallista tutkinnon osaa '${osa.tunniste.nimi.get("fi")}' ei voi merkitä tutkinnon osaksi toisesta tutkinnosta."
+      )
+    } else {
+      HttpStatus.ok
+    }
+  }
+
+  private def validateToisestaTutkinnostaPerusteVoimassa(
+    osaSuoritus: Suoritus,
+    toisestaTutkinnnostaDiaarinumero: String,
+    päätasonTutkinnonRakenteet: List[TutkintoRakenne]
+  ): HttpStatus = {
+    if (päätasonTutkinnonRakenteet.exists(toisestaTutkinnostaValidaatiotKoskevat)) {
+      val arviointipäivä = osaSuoritus.arviointi.toList.flatten.flatMap(_.arviointipäivä).sorted.lastOption
+      arviointipäivä match {
+        case Some(päivä) =>
+          val voimassaolevatRakenteet = tutkintoRepository.findPerusteRakenteet(toisestaTutkinnnostaDiaarinumero, Some(päivä))
+          if (voimassaolevatRakenteet.nonEmpty) {
+            HttpStatus.ok
+          } else {
+            KoskiErrorCategory.badRequest.validation.rakenne.perusteEiVoimassa(
+              s"Tutkinnon osan '${osaSuoritus.koulutusmoduuli.nimi.get("fi")}' perusteen $toisestaTutkinnnostaDiaarinumero tulee olla voimassa tai siirtymäajalla arviointipäivänä $päivä."
+            )
+          }
+        case None => HttpStatus.ok
+      }
+    } else {
+      HttpStatus.ok
     }
   }
 
