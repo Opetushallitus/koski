@@ -57,6 +57,11 @@ object ValpasExampleData {
     ),
     ValpasKuntailmoitusFixture(
       oppilaitoksenIlmoitusKaikillaTiedoilla.withOppijaOid(
+        ValpasMockOppijat.eiOppivelvollinenLukuvuosimaksuRahoitteinen.oid
+      )
+    ),
+    ValpasKuntailmoitusFixture(
+      oppilaitoksenIlmoitusKaikillaTiedoilla.withOppijaOid(
         ValpasMockOppijat.lukionAloittanutJaLopettanutJollaIlmoituksia.oid
       ),
       Some(date(2021, 6, 15))

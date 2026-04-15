@@ -276,6 +276,21 @@ describe("Oppijahaku", () => {
     )
   })
 
+  it("Maksuttomuus: Haku näyttää ilmoituksen maksuttomuusoikeudettomuudesta, jos oppija ei ole oppivelvollinen, koska on lukuvuosimaksullisia opiskeluoikeuksia", async () => {
+    allowNetworkError(
+      "api/henkilohaku/maksuttomuus/161106C769J",
+      "403 (Forbidden)",
+    )
+    await hakuLogin("valpas-jkl-normaali")
+    await fillQueryField("161106C769J", "maksuttomuusoppijasearch")
+    await submit("maksuttomuusoppijasearch")
+    await expectResultToBe(
+      "Henkilö ei ole laajennetun oppivelvollisuuden piirissä, tai hän on suorittanut oppivelvollisuutensa eikä hänellä ole oikeutta maksuttomaan koulutukseen.",
+      undefined,
+      "maksuttomuusoppijasearch",
+    )
+  })
+
   it("Maksuttomuus: Haku näyttää ilmoituksen maksuttomuusoikeudettomuudesta, jos oppija ei ole oppivelvollinen, koska on vahvistettu international schoolin 9. luokan suoritus ennen lain voimaantuloa", async () => {
     allowNetworkError(
       "api/henkilohaku/maksuttomuus/090605A517L",

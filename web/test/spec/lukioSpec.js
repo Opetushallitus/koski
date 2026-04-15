@@ -1055,10 +1055,11 @@ describe('Lukiokoulutus', function () {
         expect(addOppija.rahoitusIsVisible()).to.equal(true)
       })
 
-      it('vaihtoehtoina on ainoastaan "valtionosuusrahoitteinen koulutus" ja "muuta kautta rahoitettu"', function () {
+      it('vaihtoehtoina on ainoastaan "valtionosuusrahoitteinen koulutus", "muuta kautta rahoitettu" ja "Lukuvuosimaksu"', function () {
         expect(addOppija.opintojenRahoitukset()).to.deep.equal([
           'Valtionosuusrahoitteinen koulutus',
-          'Muuta kautta rahoitettu'
+          'Muuta kautta rahoitettu',
+          'Lukuvuosimaksu'
         ])
       })
 

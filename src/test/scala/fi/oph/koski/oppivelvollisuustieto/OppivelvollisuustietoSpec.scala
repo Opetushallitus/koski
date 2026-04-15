@@ -58,6 +58,9 @@ class OppivelvollisuustietoSpec
         reloadRaportointikanta()
         queryOids(oppivelvollisuustietoLiianVanha.oid) shouldBe(Nil)
       }
+      "Henkilöllä on lukuvuosimaksurahoitteinen opiskeluoikeus" in {
+        queryOids(oppivelvollisuustietoLukuvuosimaksu.oid) shouldBe(Nil)
+      }
       "Henkilö on suorittanut aikuisten perusopetuksen oppimäärän ennen vuotta 2021" in {
         clearAndInsert(oikeusOpiskelunMaksuttomuuteen, ExamplesAikuistenPerusopetus.aikuistenPerusopetuksenOpiskeluoikeusAlkuvaiheineenValmistunutVanhanOppivelvollisuuslainAikana)
         reloadRaportointikanta()

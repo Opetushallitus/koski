@@ -122,6 +122,10 @@ class CompositeOpiskeluoikeusRepository(main: KoskiOpiskeluoikeusRepository, vir
     main.getPerusopetuksenAikavälitIlmanKäyttöoikeustarkistusta(tallennettavaOpiskeluoikeus, oppijaOid)
   }
 
+  def onLukuvuosimaksuRahoitteisiaOpiskeluoikeuksiaIlmanKäyttöoikeustarkistusta(tallennettavaOpiskeluoikeus: Option[KoskeenTallennettavaOpiskeluoikeus], oppijaOid: String): Boolean = {
+    main.onLukuvuosimaksuRahoitteisiaOpiskeluoikeuksiaIlmanKäyttöoikeustarkistusta(tallennettavaOpiskeluoikeus, oppijaOid)
+  }
+
   def getLukionOpiskeluoikeuksienAlkamisajatIlmanKäyttöoikeustarkistusta(
     oppijaOid: String,
     muutettavanOpiskeluoikeudenOid: Option[String]

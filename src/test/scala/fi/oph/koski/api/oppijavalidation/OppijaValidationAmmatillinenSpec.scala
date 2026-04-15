@@ -1862,6 +1862,22 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
             verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.tilaltaPuuttuuRahoitusmuoto("Opiskeluoikeuden tilalta valmistunut puuttuu rahoitusmuoto"))
           }
         }
+        "lukuvuosimaksurahoitusta ei voi käyttää ennen 1.8.2026 alkavassa opiskeluoikeudessa" in {
+          setupOppijaWithOpiskeluoikeus(makeOpiskeluoikeus(alkamispäivä = date(2026, 7, 31)).copy(tila = AmmatillinenOpiskeluoikeudenTila(List(
+            AmmatillinenOpiskeluoikeusjakso(date(2026, 7, 31), opiskeluoikeusLäsnä, Some(lukuvuosimaksuRahoitteinen))
+          )))) {
+            verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.date.alkamispäivä(
+              "Lukuvuosimaksurahoitusta (opintojenRahoitus koodiarvo 16) ei voi käyttää opiskeluoikeudessa, jonka alkamispäivä on ennen 1.8.2026"
+            ))
+          }
+        }
+        "lukuvuosimaksurahoitusta voi käyttää 1.8.2026 tai myöhemmin alkavassa opiskeluoikeudessa" in {
+          setupOppijaWithOpiskeluoikeus(makeOpiskeluoikeus(alkamispäivä = date(2026, 8, 1)).copy(tila = AmmatillinenOpiskeluoikeudenTila(List(
+            AmmatillinenOpiskeluoikeusjakso(date(2026, 8, 1), opiskeluoikeusLäsnä, Some(lukuvuosimaksuRahoitteinen))
+          )))) {
+            verifyResponseStatusOk()
+          }
+        }
       }
     }
 

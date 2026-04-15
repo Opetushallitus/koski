@@ -391,6 +391,8 @@ object KoskiSpecificMockOppijat {
 
   val valmistavanEronnut = koskiSpecificOppijat.oppija("Valmistava-Eronnut", "Vera", "150910A123F")
 
+  val oppivelvollisuustietoLukuvuosimaksu = koskiSpecificOppijat.oppijaSyntymäaikaHetusta("Oppivelvollisuustieto", "Lukuvuosimaksu", "100206D676D", kotikunta = Some(Kunta.helsinki))
+
   def defaultOppijat = koskiSpecificOppijat.getOppijat
   def defaultKuntahistoriat: mutable.Map[String, Seq[OppijanumerorekisteriKotikuntahistoriaRow]] = koskiSpecificOppijat.getKuntahistoriat
   def defaultTurvakieltoKuntahistoriat: mutable.Map[String, Seq[OppijanumerorekisteriKotikuntahistoriaRow]] = koskiSpecificOppijat.getTurvakieltoKuntahistoriat

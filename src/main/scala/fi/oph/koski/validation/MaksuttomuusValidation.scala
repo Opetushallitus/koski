@@ -29,6 +29,7 @@ object MaksuttomuusValidation extends Logging {
                                        ): HttpStatus = {
     val oppijanSyntymäpäivä = oppijanHenkilötiedot.flatMap(_.syntymäaika)
     val perusopetuksenAikavälit = opiskeluoikeusRepository.getPerusopetuksenAikavälitIlmanKäyttöoikeustarkistusta(Some(opiskeluoikeus), oppijanOid)
+    val onLukuvuosimaksuRahoitteinen = opiskeluoikeusRepository.onLukuvuosimaksuRahoitteisiaOpiskeluoikeuksiaIlmanKäyttöoikeustarkistusta(Some(opiskeluoikeus), oppijanOid)
 
     val maksuttomuustietoSiirretty =
       opiskeluoikeus
@@ -65,7 +66,7 @@ object MaksuttomuusValidation extends Logging {
 
     // Tilanteet, joissa maksuttomuustietoja ei saa siirtää. Jos tuplen ensimmäinen arvo on true, ehto aktivoituu ja toinen arvon kertoo syyn.
     val eiLaajennettuOppivelvollinenSyyt =
-      eiOppivelvollisuudenLaajentamislainPiirissäSyyt(oppijanSyntymäpäivä, perusopetuksenAikavälit, rajapäivät)
+      eiOppivelvollisuudenLaajentamislainPiirissäSyyt(oppijanSyntymäpäivä, perusopetuksenAikavälit, rajapäivät, onLukuvuosimaksuRahoitteinen)
 
 
     val maksutonKoulutus = opiskeluoikeus
@@ -86,6 +87,7 @@ object MaksuttomuusValidation extends Logging {
       rajapäivät,
       oppijanumerorekisteri,
       vapautettuOppivelvollisuudesta,
+      onLukuvuosimaksuRahoitteinen,
       config,
     )
 
@@ -148,7 +150,8 @@ object MaksuttomuusValidation extends Logging {
   def eiOppivelvollisuudenLaajentamislainPiirissäSyyt(
     oppijanSyntymäpäivä: Option[LocalDate],
     perusopetuksenAikavälit: Seq[Päivämääräväli],
-    rajapäivät: ValpasRajapäivätService
+    rajapäivät: ValpasRajapäivätService,
+    onLukuvuosimaksuRahoitteinen: Boolean
   ): Seq[String] =
   {
     val lakiVoimassaPeruskoulustaValmistuneille = rajapäivät.lakiVoimassaPeruskoulustaValmistuneillaAlku
@@ -163,6 +166,7 @@ object MaksuttomuusValidation extends Logging {
       (valmistunutPeruskoulustaEnnen2021, s"oppija on suorittanut oppivelvollisuutensa ennen ${lakiVoimassaPeruskoulustaValmistuneille.format(FinnishDateFormat.finnishDateFormat)} eikä tästä syystä kuulu laajennetun oppivelvollisuuden piiriin"),
       (oppijanSyntymäpäivä.isEmpty, "oppijan syntymäaika puuttuu oppijanumerorekisteristä"),
       (oppijanSyntymäpäivä.isDefined && !oppijanIkäOikeuttaaMaksuttomuuden, s"oppija on syntynyt ennen vuotta ${lakiVoimassaVanhinSyntymäaika.getYear()} eikä tästä syystä kuulu laajennetun oppivelvollisuuden piiriin"),
+      (onLukuvuosimaksuRahoitteinen, "oppijalla on lukuvuosimaksurahoitteinen opiskeluoikeus eikä hän tästä syystä kuulu laajennetun oppivelvollisuuden piiriin"),
     )
   }
 
@@ -199,6 +203,7 @@ object MaksuttomuusValidation extends Logging {
     rajapäivät: ValpasRajapäivätService,
     oppijanumerorekisteri: OpintopolkuHenkilöFacade,
     vapautettuOppivelvollisuudesta: Boolean,
+    onLukuvuosimaksuRahoitteinen: Boolean,
     config: Config,
   ): (Boolean, MaksuttomuustiedotVaaditaanLogData) = {
     val oppijanSyntymäpäivä = oppijanHenkilötiedot.flatMap(_.syntymäaika)
@@ -245,8 +250,10 @@ object MaksuttomuusValidation extends Logging {
       oppijaOnKotikuntahistorianPerusteellaLainPiirissä &&
       eiOsatutkintotavoitteinen &&
       eiESH &&
-      // 6.oppijaa ei ole vapautettu oppivelvollisuudesta
-      !vapautettuOppivelvollisuudesta
+      // 6. oppijaa ei ole vapautettu oppivelvollisuudesta
+      !vapautettuOppivelvollisuudesta &&
+      // 7. oppijalla ei ole lukuvuosimaksurahoitteista opiskeluoikeutta
+      !onLukuvuosimaksuRahoitteinen
 
     val logData = MaksuttomuustiedotVaaditaanLogData(originalResult, newResult)
 

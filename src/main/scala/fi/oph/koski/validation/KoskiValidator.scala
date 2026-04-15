@@ -142,6 +142,7 @@ class KoskiValidator(
           päätasonSuoritusLuokatEnabled(opiskeluoikeus),
           osasuoritusTyypitEnabled(opiskeluoikeus),
           validateOpintojenrahoitus(opiskeluoikeus),
+          validateLukuvuosimaksuRahoitus(opiskeluoikeus),
           validateSisältyvyys(henkilö, opiskeluoikeus),
           validateOpiskeluoikeudenPäivämäärät(opiskeluoikeus),
           validatePäätasonSuoritustenStatus(opiskeluoikeus),
@@ -492,6 +493,23 @@ class KoskiValidator(
     HttpStatus.validate(
       !tilat.contains(jakso.tila.koodiarvo) || jakso.opintojenRahoitus.isEmpty
     )(KoskiErrorCategory.badRequest.validation.tila.tilallaEiSaaOllaRahoitusmuotoa(s"Opiskeluoikeuden tilalla ${jakso.tila.koodiarvo} ei saa olla rahoitusmuotoa"))
+  }
+
+  private def validateLukuvuosimaksuRahoitus(opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus): HttpStatus = {
+    val lukuvuosimaksuKoodiarvo = "16"
+    val rajapäivä = LocalDate.parse(config.getString("validaatiot.lukuvuosimaksuRahoitusVoimassaAlkaen"))
+
+    val käyttääLukuvuosimaksua = opiskeluoikeus.tila.opiskeluoikeusjaksot
+      .collect { case j: KoskiOpiskeluoikeusjakso => j }
+      .exists(_.opintojenRahoitus.exists(_.koodiarvo == lukuvuosimaksuKoodiarvo))
+
+    val alkamispäiväEnnenRajapäivää = opiskeluoikeus.alkamispäivä.exists(_.isBefore(rajapäivä))
+
+    HttpStatus.validate(!käyttääLukuvuosimaksua || !alkamispäiväEnnenRajapäivää)(
+      KoskiErrorCategory.badRequest.validation.date.alkamispäivä(
+        s"Lukuvuosimaksurahoitusta (opintojenRahoitus koodiarvo 16) ei voi käyttää opiskeluoikeudessa, jonka alkamispäivä on ennen ${FinnishDateFormat.finnishDateFormat.format(rajapäivä)}"
+      )
+    )
   }
 
   private def validateSisältyvyys(henkilö: Option[Henkilö], opiskeluoikeus: Opiskeluoikeus)(implicit user: KoskiSpecificSession, accessType: AccessType.Value): HttpStatus = opiskeluoikeus.sisältyyOpiskeluoikeuteen match {

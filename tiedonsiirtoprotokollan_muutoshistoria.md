@@ -1,3 +1,7 @@
+# 20.4.2026
+
+- Lisätty lukion ja ammatillisen opiskeluoikeuksiin uusi rahoitusmuoto 16, lukuvuosimaksu.
+
 # 2.4.2026
 
 - Lisätty IB-tutkinnon opiskeluoikeuteen vapaaehtoinen `iboTunniste`-kenttä (Option[String]), jolla voidaan tallentaa opiskelijan tunniste IBO:n järjestelmässä.

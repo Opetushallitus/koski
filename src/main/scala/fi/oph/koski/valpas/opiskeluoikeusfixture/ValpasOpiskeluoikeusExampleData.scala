@@ -615,6 +615,22 @@ object ValpasOpiskeluoikeusExampleData {
     )
   )
 
+  def ammattikouluLukuvuosimaksuOpiskeluoikeus = ammattikouluValmistunutOpiskeluoikeus(alkamispäivä = date(2026, 8, 1), päättymispäivä = date(2027, 6, 1)).copy(
+    tila = AmmatillinenOpiskeluoikeudenTila(List(
+      AmmatillinenOpiskeluoikeusjakso(date(2026, 8, 1), opiskeluoikeusLäsnä, Some(ExampleData.lukuvuosimaksuRahoitteinen)),
+    )),
+    suoritukset = List(
+      AmmattitutkintoExample.näyttötutkintoonValmistavanKoulutuksenSuoritus.copy(
+        alkamispäivä = Some(date(2026, 8, 2)),
+        vahvistus = None
+      ),
+      AmmattitutkintoExample.ammatillisenTutkinnonSuoritus.copy(
+        alkamispäivä = Some(date(2026, 8, 2)),
+        vahvistus = None
+      )
+    )
+  )
+
   def ammattikouluValmaOpiskeluoikeus = ammattikouluValmistunutOpiskeluoikeus().copy(
     tila = AmmatillinenOpiskeluoikeudenTila(List(
       AmmatillinenOpiskeluoikeusjakso(date(2012, 9, 1), opiskeluoikeusLäsnä, Some(ExampleData.valtionosuusRahoitteinen)),

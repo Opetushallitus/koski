@@ -88,11 +88,13 @@ class ValpasOppijanumerorekisteriService(application: KoskiApplication) {
   }
 
   def onMaksuttomuuskäyttäjänHenkilöhaussaNäkyväVainOnrssäOlevaOppija(henkilö: OppijaHenkilö): Boolean = {
+    val onLukuvuosimaksuRahoitteinen = opiskeluoikeusRepository.onLukuvuosimaksuRahoitteisiaOpiskeluoikeuksiaIlmanKäyttöoikeustarkistusta(None, henkilö.oid)
     val onMahdollisestiLainPiirissä =
       MaksuttomuusValidation.eiOppivelvollisuudenLaajentamislainPiirissäSyyt(
         henkilö.syntymäaika,
         opiskeluoikeusRepository.getPerusopetuksenAikavälitIlmanKäyttöoikeustarkistusta(None, henkilö.oid),
-        rajapäivätService
+        rajapäivätService,
+        onLukuvuosimaksuRahoitteinen
       ).isEmpty
     lazy val onTarpeeksiVanhaKeskeytysmerkintöjäVarten = onTarpeeksiVanhaOllakseenLainPiirissä(henkilö)
     lazy val näytäHetunOlemassaolonPerusteella = henkilö.hetu.isDefined
@@ -113,10 +115,12 @@ class ValpasOppijanumerorekisteriService(application: KoskiApplication) {
   }
 
   private def onKansalaiselleNäkyväVainOnrssäOlevaOppija(henkilö: OppijaHenkilö): Boolean = {
+    val onLukuvuosimaksuRahoitteinen = opiskeluoikeusRepository.onLukuvuosimaksuRahoitteisiaOpiskeluoikeuksiaIlmanKäyttöoikeustarkistusta(None, henkilö.oid)
     val onMahdollisestiLainPiirissä = MaksuttomuusValidation.eiOppivelvollisuudenLaajentamislainPiirissäSyyt(
       henkilö.syntymäaika,
       opiskeluoikeusRepository.getPerusopetuksenAikavälitIlmanKäyttöoikeustarkistusta(None, henkilö.oid),
-      rajapäivätService
+      rajapäivätService,
+      onLukuvuosimaksuRahoitteinen
     ).isEmpty
     lazy val onTarpeeksiVanhaKeskeytysmerkintöjäVarten = rajapäivätService.oppijaOnTarpeeksiVanhaKeskeytysmerkintöjäVarten(henkilö.syntymäaika)
 
