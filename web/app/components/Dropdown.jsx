@@ -328,7 +328,7 @@ export default ({
                     <li
                       key="__truncation_hint__"
                       className="truncation-hint"
-                      role="note"
+                      role="presentation"
                     >
                       {t('Tarkenna hakua nähdäksesi lisää vaihtoehtoja')}
                     </li>
