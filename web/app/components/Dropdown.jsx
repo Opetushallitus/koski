@@ -12,6 +12,8 @@ import { elementWithLoadingIndicator } from './AjaxLoadingIndicator'
 import { t } from '../i18n/i18n'
 import { buildClassNames } from './classnames'
 
+const MAX_VISIBLE_OPTIONS = 100
+
 /*
   options: [] or Observable []
   keyValue: item => string
@@ -59,7 +61,10 @@ export default ({
     queryFilter
   )
   const allOptionsP = filteredOptionsP.map((opts) => {
-    const truncated = opts.length > MAX_VISIBLE_OPTIONS
+    // Rajoita näkyvät vaihtoehdot vain, kun suodatinkenttä on käytössä –
+    // muuten käyttäjällä ei olisi keinoa päästä käsiksi rajauksen taakse
+    // jääviin vaihtoehtoihin.
+    const truncated = enableFilter && opts.length > MAX_VISIBLE_OPTIONS
     const visible = truncated ? opts.slice(0, MAX_VISIBLE_OPTIONS) : opts
     return {
       options: visible.concat(newItem ? [newItem] : []),
@@ -337,8 +342,6 @@ export default ({
     </span>
   )
 }
-
-const MAX_VISIBLE_OPTIONS = 100
 
 const queryFilter = (options, query, displayValue) => {
   if (!query) return options
