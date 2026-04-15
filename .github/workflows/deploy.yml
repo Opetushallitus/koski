@@ -21,10 +21,10 @@ run-name: Deploy to ${{ inputs.environment }}
 jobs:
   check-master:
     name: Check commit contains master
-    if: ${{ !inputs.force }}
     runs-on: ubuntu-24.04
     steps:
       - name: Verify commit contains latest master
+        if: ${{ !inputs.force }}
         run: |
           set -euo pipefail
           MASTER_SHA=$(gh api repos/${{ github.repository }}/git/ref/heads/master --jq '.object.sha')
@@ -39,7 +39,6 @@ jobs:
   build:
     name: Build Koski
     needs: [check-master]
-    if: ${{ !cancelled() && (needs.check-master.result == 'success' || needs.check-master.result == 'skipped') }}
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
