@@ -22,7 +22,13 @@ import { TutkinnonOsanSuoritusEditor } from './TutkinnonOsanSuoritusEditor'
 class NäytönSuorituspaikkaEditor extends React.Component {
   render() {
     const { model } = this.props
-    return <Editor model={model} path="kuvaus" />
+    return (
+      <span>
+        {modelTitle(model, 'tunniste')}
+        {modelData(model, 'kuvaus') ? ': ' : null}
+        <Editor model={model} path="kuvaus" />
+      </span>
+    )
   }
 }
 NäytönSuorituspaikkaEditor.readOnly = true
