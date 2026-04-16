@@ -1052,9 +1052,12 @@ class OmaDataOAuth2BackendSpec
           hakutoive.koulutuksenAlkamiskausi.map(_.koodiarvo) shouldBe Some("s")
           hakutoive.koulutuksenAlkamiskausi.map(_.koodistoUri) shouldBe Some("kausi")
           hakutoive.koulutuksenAlkamisvuosi shouldBe Some("2024")
-          hakutoive.valinnanTila shouldBe Some("HYVAKSYTTY")
-          hakutoive.vastaanotonTila shouldBe Some("VASTAANOTTANUT_SITOVASTI")
-          hakutoive.ilmoittautumisenTila shouldBe Some("LASNA")
+          hakutoive.valinnanTila.map(_.koodiarvo) shouldBe Some("hyvaksytty")
+          hakutoive.valinnanTila.map(_.koodistoUri) shouldBe Some("omadatavalinnantila")
+          hakutoive.vastaanotonTila.map(_.koodiarvo) shouldBe Some("vastaanottanutsitovasti")
+          hakutoive.vastaanotonTila.map(_.koodistoUri) shouldBe Some("omadatavastaanotontila")
+          hakutoive.ilmoittautumisenTila.map(_.koodiarvo) shouldBe Some("lasna")
+          hakutoive.ilmoittautumisenTila.map(_.koodistoUri) shouldBe Some("omadatailmoittautumisentila")
 
           val actualOo = data.opiskeluoikeudet.head.asInstanceOf[AmmatillinenOpiskeluoikeus]
 
@@ -1135,6 +1138,96 @@ class OmaDataOAuth2BackendSpec
           val result = JsonMethods.parse(response.body)
           (result \ "error").extract[String] should be("server_error")
           (result \ "error_description").extract[String] should include("Valintatietoja ei juuri nyt saada haettua. Yritä myöhemmin uudelleen.")
+        }
+      }
+
+      "palauttaa virheen, jos Ovara palauttaa virheellisen koodistokoodiviitteen" in {
+        implicit val formats: Formats = DefaultFormats
+        val oppija = KoskiSpecificMockOppijat.amis
+        val scope = "HENKILOTIEDOT_HETU OPISKELUOIKEUDET_KAIKKI_TIEDOT_JA_VALINTATIEDOT"
+        val pkce = createChallengeAndVerifier()
+        val token = createAuthorizationAndToken(oppija, pkce, scope, MockUsers.omadataOAuth2KaikkiOikeudetPalvelukäyttäjä)
+        postResourceServer(token, MockUsers.omadataOAuth2KaikkiOikeudetPalvelukäyttäjä) {
+          verifyResponseStatus(500)
+          val result = JsonMethods.parse(response.body)
+          (result \ "error").extract[String] should be("server_error")
+          (result \ "error_description").extract[String] should include("Valintatietojen käsittelyssä tapahtui odottamaton virhe.")
+        }
+      }
+
+      "palauttaa virheen, jos Ovara palauttaa tuntemattoman tila-arvon" in {
+        implicit val formats: Formats = DefaultFormats
+        val oppija = KoskiSpecificMockOppijat.lukiolainen
+        val scope = "HENKILOTIEDOT_HETU OPISKELUOIKEUDET_KAIKKI_TIEDOT_JA_VALINTATIEDOT"
+        val pkce = createChallengeAndVerifier()
+        val token = createAuthorizationAndToken(oppija, pkce, scope, MockUsers.omadataOAuth2KaikkiOikeudetPalvelukäyttäjä)
+        postResourceServer(token, MockUsers.omadataOAuth2KaikkiOikeudetPalvelukäyttäjä) {
+          verifyResponseStatus(500)
+          val result = JsonMethods.parse(response.body)
+          (result \ "error").extract[String] should be("server_error")
+          (result \ "error_description").extract[String] should include("Valintatietojen käsittelyssä tapahtui odottamaton virhe.")
+        }
+      }
+
+      "kutsuu Ovaraa oppijan master-oidilla, kun oppijalla on slave-oid" in {
+        val oppija = KoskiSpecificMockOppijat.slaveAmmattilainen
+        val scope = "HENKILOTIEDOT_HETU OPISKELUOIKEUDET_KAIKKI_TIEDOT_JA_VALINTATIEDOT"
+        val pkce = createChallengeAndVerifier()
+        val token = createAuthorizationAndToken(oppija.henkilö, pkce, scope, MockUsers.omadataOAuth2KaikkiOikeudetPalvelukäyttäjä)
+        postResourceServer(token, MockUsers.omadataOAuth2KaikkiOikeudetPalvelukäyttäjä) {
+          verifyResponseStatusOk()
+          val data = JsonSerializer.parse[OmaDataOAuth2KaikkiOpiskeluoikeudetJaValintatiedot](response.body)
+          data.henkilö.hetu shouldBe KoskiSpecificMockOppijat.masterYlioppilasJaAmmattilainen.hetu
+          data.valintatiedot shouldBe defined
+          data.valintatiedot.get.hakemukset.head.hakemusOid shouldBe "1.2.246.562.11.00000000000001234569"
+        }
+      }
+
+      "kaikki tunnetut Ovara tila-arvot muuntuvat koodistokoodiviitteiksi" in {
+        val koodistoPalvelu = KoskiApplicationForTests.koodistoViitePalvelu
+
+        val valinnanTilatOvarasta = List(
+          "HYVAKSYTTY",
+          "VARASIJALTA_HYVAKSYTTY",
+          "HARKINNANVARAISESTI_HYVAKSYTTY",
+          "VARALLA",
+          "HYLATTY",
+          "PERUUNTUNUT",
+          "PERUNUT",
+          "PERUUTETTU",
+          "KESKEN"
+        )
+        val vastaanotonTilatOvarasta = List(
+          "EHDOLLISESTI_VASTAANOTTANUT",
+          "VASTAANOTTANUT_SITOVASTI",
+          "EI_VASTAANOTETTU_MAARA_AIKANA",
+          "PERUNUT",
+          "PERUUTETTU",
+          "OTTANUT_VASTAAN_TOISEN_PAIKAN",
+          "KESKEN"
+        )
+        val ilmoittautumisenTilatOvarasta = List(
+          "EI_TEHTY",
+          "LASNA_KOKO_LUKUVUOSI",
+          "POISSA_KOKO_LUKUVUOSI",
+          "EI_ILMOITTAUTUNUT",
+          "LASNA_SYKSY",
+          "POISSA_SYKSY",
+          "LASNA",
+          "POISSA"
+        )
+
+        valinnanTilatOvarasta.foreach { tila =>
+          val koodiarvo = tila.toLowerCase.replace("_", "")
+          noException should be thrownBy koodistoPalvelu.validateRequired("omadatavalinnantila", koodiarvo)
+        }
+        vastaanotonTilatOvarasta.foreach { tila =>
+          val koodiarvo = tila.toLowerCase.replace("_", "")
+          noException should be thrownBy koodistoPalvelu.validateRequired("omadatavastaanotontila", koodiarvo)
+        }
+        ilmoittautumisenTilatOvarasta.foreach { tila =>
+          val koodiarvo = tila.toLowerCase.replace("_", "")
+          noException should be thrownBy koodistoPalvelu.validateRequired("omadatailmoittautumisentila", koodiarvo)
         }
       }
     }

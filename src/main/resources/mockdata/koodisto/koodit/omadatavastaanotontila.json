@@ -1,0 +1,93 @@
+[
+  {
+    "metadata": [
+      {"nimi": "Ehdollisesti vastaanottanut", "kuvaus": "", "lyhytNimi": "", "kieli": "FI"},
+      {"nimi": "Ehdollisesti vastaanottanut", "kuvaus": "", "lyhytNimi": "", "kieli": "SV"},
+      {"nimi": "Ehdollisesti vastaanottanut", "kuvaus": "", "lyhytNimi": "", "kieli": "EN"}
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "omadatavastaanotontila_ehdollisestivastaanottanut",
+    "versio": 1,
+    "koodiArvo": "ehdollisestivastaanottanut"
+  },
+  {
+    "metadata": [
+      {"nimi": "Vastaanottanut sitovasti", "kuvaus": "", "lyhytNimi": "", "kieli": "FI"},
+      {"nimi": "Vastaanottanut sitovasti", "kuvaus": "", "lyhytNimi": "", "kieli": "SV"},
+      {"nimi": "Vastaanottanut sitovasti", "kuvaus": "", "lyhytNimi": "", "kieli": "EN"}
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "omadatavastaanotontila_vastaanottanutsitovasti",
+    "versio": 1,
+    "koodiArvo": "vastaanottanutsitovasti"
+  },
+  {
+    "metadata": [
+      {"nimi": "Ei vastaanotettu määräaikana", "kuvaus": "", "lyhytNimi": "", "kieli": "FI"},
+      {"nimi": "Ei vastaanotettu määräaikana", "kuvaus": "", "lyhytNimi": "", "kieli": "SV"},
+      {"nimi": "Ei vastaanotettu määräaikana", "kuvaus": "", "lyhytNimi": "", "kieli": "EN"}
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "omadatavastaanotontila_eivastaanotettumaaraaikana",
+    "versio": 1,
+    "koodiArvo": "eivastaanotettumaaraaikana"
+  },
+  {
+    "metadata": [
+      {"nimi": "Perunut", "kuvaus": "", "lyhytNimi": "", "kieli": "FI"},
+      {"nimi": "Perunut", "kuvaus": "", "lyhytNimi": "", "kieli": "SV"},
+      {"nimi": "Perunut", "kuvaus": "", "lyhytNimi": "", "kieli": "EN"}
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "omadatavastaanotontila_perunut",
+    "versio": 1,
+    "koodiArvo": "perunut"
+  },
+  {
+    "metadata": [
+      {"nimi": "Peruutettu", "kuvaus": "", "lyhytNimi": "", "kieli": "FI"},
+      {"nimi": "Peruutettu", "kuvaus": "", "lyhytNimi": "", "kieli": "SV"},
+      {"nimi": "Peruutettu", "kuvaus": "", "lyhytNimi": "", "kieli": "EN"}
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "omadatavastaanotontila_peruutettu",
+    "versio": 1,
+    "koodiArvo": "peruutettu"
+  },
+  {
+    "metadata": [
+      {"nimi": "Ottanut vastaan toisen paikan", "kuvaus": "", "lyhytNimi": "", "kieli": "FI"},
+      {"nimi": "Ottanut vastaan toisen paikan", "kuvaus": "", "lyhytNimi": "", "kieli": "SV"},
+      {"nimi": "Ottanut vastaan toisen paikan", "kuvaus": "", "lyhytNimi": "", "kieli": "EN"}
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "omadatavastaanotontila_ottanutvastaantoisenpaikan",
+    "versio": 1,
+    "koodiArvo": "ottanutvastaantoisenpaikan"
+  },
+  {
+    "metadata": [
+      {"nimi": "Kesken", "kuvaus": "", "lyhytNimi": "", "kieli": "FI"},
+      {"nimi": "Kesken", "kuvaus": "", "lyhytNimi": "", "kieli": "SV"},
+      {"nimi": "Kesken", "kuvaus": "", "lyhytNimi": "", "kieli": "EN"}
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "omadatavastaanotontila_kesken",
+    "versio": 1,
+    "koodiArvo": "kesken"
+  }
+]
