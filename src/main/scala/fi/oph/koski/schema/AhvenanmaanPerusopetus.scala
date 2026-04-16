@@ -226,6 +226,8 @@ case class AhvenanmaanPerusopetuksenOppimääränSuoritus(
   koulutusmoduuli: AhvenanmaanPerusopetus,
   toimipiste: OrganisaatioWithOid,
   vahvistus: Option[HenkilövahvistusPaikkakunnalla] = None,
+  // Suora @KoodistoUri koska ei extendaa SuoritustavallinenPerusopetuksenSuoritus-traitia.
+  // Jos skeema pysyy lähellä manner-Suomea, harkitse traitin käyttöä tämän tilalla.
   @KoodistoUri("perusopetuksensuoritustapa")
   suoritustapa: Koodistokoodiviite,
   suorituskieli: Koodistokoodiviite,
@@ -265,6 +267,8 @@ case class AhvenanmaanPerusopetuksenOppiaineenSuoritus(
   @KoodistoKoodiarvo("ahvenanmaanperusopetuksenoppiaine")
   tyyppi: Koodistokoodiviite =
     Koodistokoodiviite("ahvenanmaanperusopetuksenoppiaine", koodistoUri = "suorituksentyyppi"),
+  // Suora @KoodistoUri koska ei extendaa SuoritustapanaMahdollisestiErityinenTutkinto-traitia.
+  // Jos skeema pysyy lähellä manner-Suomea, harkitse traitin käyttöä tämän tilalla.
   @KoodistoUri("perusopetuksensuoritustapa")
   @KoodistoKoodiarvo("erityinentutkinto")
   suoritustapa: Option[Koodistokoodiviite] = None,
@@ -334,6 +338,8 @@ case class AhvenanmaanPerusopetuksenKäyttäytymisenArviointi(
 
 // TODO TOR-2587: peach – koko luokka; vahvistettava onko käytössä Ahvenanmaalla.
 case class AhvenanmaanOmanÄidinkielenOpinnotLaajuusVuosiviikkotunteina(
+  // Suora @KoodistoUri koska luokka ei extendaa YleissivistävänKoulutuksenArviointi-traitia.
+  // Jos skeema pysyy lähellä manner-Suomea, harkitse traitin käyttöä tämän tilalla.
   @KoodistoUri("arviointiasteikkoyleissivistava")
   arvosana: Koodistokoodiviite,
   arviointipäivä: Option[LocalDate] = None,
@@ -425,6 +431,9 @@ case class AhvenanmaanPerusopetuksenMuuOppiaine(
 // Ahvenanmaalla on vain "vieras kieli" (ei toista kotimaista).
 // TODO TOR-2587: nimi/koodisto voi muuttua kun Ahvenanmaan oppiainekoodisto valmistuu.
 case class AhvenanmaanPerusopetuksenVierasKieli(
+  // Suora @KoodistoUri koska ei extendaa YleissivistavaOppiaine-traitia (toisin kuin MuuOppiaine).
+  // Jos skeema pysyy lähellä manner-Suomea, harkitse traitin käyttöä tämän tilalla.
+  @KoodistoUri("koskioppiaineetyleissivistava")
   @KoodistoKoodiarvo("A1")
   @KoodistoKoodiarvo("A2")
   @KoodistoKoodiarvo("B1")

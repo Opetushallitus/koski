@@ -1,4 +1,8 @@
 import {
+  AhvenanmaanPerusopetuksenPaikallinenOppiaine,
+  isAhvenanmaanPerusopetuksenPaikallinenOppiaine
+} from './AhvenanmaanPerusopetuksenPaikallinenOppiaine'
+import {
   AikuistenPerusopetuksenAlkuvaiheenPaikallinenOppiaine,
   isAikuistenPerusopetuksenAlkuvaiheenPaikallinenOppiaine
 } from './AikuistenPerusopetuksenAlkuvaiheenPaikallinenOppiaine'
@@ -87,6 +91,7 @@ import {
  * @see `fi.oph.koski.schema.StorablePreference`
  */
 export type StorablePreference =
+  | AhvenanmaanPerusopetuksenPaikallinenOppiaine
   | AikuistenPerusopetuksenAlkuvaiheenPaikallinenOppiaine
   | AikuistenPerusopetuksenPaikallinenOppiaine
   | IBCoreKurssi
@@ -111,6 +116,7 @@ export type StorablePreference =
   | VapaanSivistystyönVapaatavoitteisenKoulutuksenOsasuoritus
 
 export const isStorablePreference = (a: any): a is StorablePreference =>
+  isAhvenanmaanPerusopetuksenPaikallinenOppiaine(a) ||
   isAikuistenPerusopetuksenAlkuvaiheenPaikallinenOppiaine(a) ||
   isAikuistenPerusopetuksenPaikallinenOppiaine(a) ||
   isIBCoreKurssi(a) ||

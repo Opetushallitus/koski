@@ -1,4 +1,8 @@
 import {
+  AhvenanmaanPerusopetuksenKäyttäytymisenArviointi,
+  isAhvenanmaanPerusopetuksenKäyttäytymisenArviointi
+} from './AhvenanmaanPerusopetuksenKayttaytymisenArviointi'
+import {
   AmmatillinenArviointi,
   isAmmatillinenArviointi
 } from './AmmatillinenArviointi'
@@ -92,6 +96,10 @@ import {
   isMuunKuinSäännellynKoulutuksenArviointi
 } from './MuunKuinSaannellynKoulutuksenArviointi'
 import {
+  NumeerinenAhvenanmaanPerusopetuksenOppiaineenArviointi,
+  isNumeerinenAhvenanmaanPerusopetuksenOppiaineenArviointi
+} from './NumeerinenAhvenanmaanPerusopetuksenOppiaineenArviointi'
+import {
   NumeerinenInternationalSchoolOppiaineenArviointi,
   isNumeerinenInternationalSchoolOppiaineenArviointi
 } from './NumeerinenInternationalSchoolOppiaineenArviointi'
@@ -141,6 +149,10 @@ import {
   isPrimaryAlaoppimisalueArviointi
 } from './PrimaryAlaoppimisalueArviointi'
 import { PuhviKoe2019, isPuhviKoe2019 } from './PuhviKoe2019'
+import {
+  SanallinenAhvenanmaanPerusopetuksenOppiaineenArviointi,
+  isSanallinenAhvenanmaanPerusopetuksenOppiaineenArviointi
+} from './SanallinenAhvenanmaanPerusopetuksenOppiaineenArviointi'
 import {
   SanallinenInternationalSchoolOppiaineenArviointi,
   isSanallinenInternationalSchoolOppiaineenArviointi
@@ -232,6 +244,7 @@ import {
  * @see `fi.oph.koski.schema.Arviointi`
  */
 export type Arviointi =
+  | AhvenanmaanPerusopetuksenKäyttäytymisenArviointi
   | AmmatillinenArviointi
   | DIAOppiaineenTutkintovaiheenNumeerinenArviointi
   | DIAOppiaineenTutkintovaiheenSuoritusmerkintäArviointi
@@ -256,6 +269,7 @@ export type Arviointi =
   | LukutaitokoulutuksenArviointi
   | MuunAmmatillisenKoulutuksenArviointi
   | MuunKuinSäännellynKoulutuksenArviointi
+  | NumeerinenAhvenanmaanPerusopetuksenOppiaineenArviointi
   | NumeerinenInternationalSchoolOppiaineenArviointi
   | NumeerinenLukionArviointi
   | NumeerinenLukionModuulinTaiPaikallisenOpintojaksonArviointi2019
@@ -270,6 +284,7 @@ export type Arviointi =
   | PerusopetuksenKäyttäytymisenArviointi
   | PrimaryAlaoppimisalueArviointi
   | PuhviKoe2019
+  | SanallinenAhvenanmaanPerusopetuksenOppiaineenArviointi
   | SanallinenInternationalSchoolOppiaineenArviointi
   | SanallinenLukionArviointi
   | SanallinenLukionModuulinTaiPaikallisenOpintojaksonArviointi2019
@@ -293,6 +308,7 @@ export type Arviointi =
   | YlioppilaskokeenArviointi
 
 export const isArviointi = (a: any): a is Arviointi =>
+  isAhvenanmaanPerusopetuksenKäyttäytymisenArviointi(a) ||
   isAmmatillinenArviointi(a) ||
   isDIAOppiaineenTutkintovaiheenNumeerinenArviointi(a) ||
   isDIAOppiaineenTutkintovaiheenSuoritusmerkintäArviointi(a) ||
@@ -317,6 +333,7 @@ export const isArviointi = (a: any): a is Arviointi =>
   isLukutaitokoulutuksenArviointi(a) ||
   isMuunAmmatillisenKoulutuksenArviointi(a) ||
   isMuunKuinSäännellynKoulutuksenArviointi(a) ||
+  isNumeerinenAhvenanmaanPerusopetuksenOppiaineenArviointi(a) ||
   isNumeerinenInternationalSchoolOppiaineenArviointi(a) ||
   isNumeerinenLukionArviointi(a) ||
   isNumeerinenLukionModuulinTaiPaikallisenOpintojaksonArviointi2019(a) ||
@@ -333,6 +350,7 @@ export const isArviointi = (a: any): a is Arviointi =>
   isPerusopetuksenKäyttäytymisenArviointi(a) ||
   isPrimaryAlaoppimisalueArviointi(a) ||
   isPuhviKoe2019(a) ||
+  isSanallinenAhvenanmaanPerusopetuksenOppiaineenArviointi(a) ||
   isSanallinenInternationalSchoolOppiaineenArviointi(a) ||
   isSanallinenLukionArviointi(a) ||
   isSanallinenLukionModuulinTaiPaikallisenOpintojaksonArviointi2019(a) ||

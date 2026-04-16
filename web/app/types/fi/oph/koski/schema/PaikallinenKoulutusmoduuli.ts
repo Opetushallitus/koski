@@ -1,4 +1,8 @@
 import {
+  AhvenanmaanPerusopetuksenPaikallinenOppiaine,
+  isAhvenanmaanPerusopetuksenPaikallinenOppiaine
+} from './AhvenanmaanPerusopetuksenPaikallinenOppiaine'
+import {
   AikuistenPerusopetuksenAlkuvaiheenPaikallinenOppiaine,
   isAikuistenPerusopetuksenAlkuvaiheenPaikallinenOppiaine
 } from './AikuistenPerusopetuksenAlkuvaiheenPaikallinenOppiaine'
@@ -137,6 +141,7 @@ import {
  * @see `fi.oph.koski.schema.PaikallinenKoulutusmoduuli`
  */
 export type PaikallinenKoulutusmoduuli =
+  | AhvenanmaanPerusopetuksenPaikallinenOppiaine
   | AikuistenPerusopetuksenAlkuvaiheenPaikallinenOppiaine
   | AikuistenPerusopetuksenPaikallinenOppiaine
   | AmmatillisenTutkinnonOsaaPienempiKokonaisuus
@@ -174,6 +179,7 @@ export type PaikallinenKoulutusmoduuli =
 export const isPaikallinenKoulutusmoduuli = (
   a: any
 ): a is PaikallinenKoulutusmoduuli =>
+  isAhvenanmaanPerusopetuksenPaikallinenOppiaine(a) ||
   isAikuistenPerusopetuksenAlkuvaiheenPaikallinenOppiaine(a) ||
   isAikuistenPerusopetuksenPaikallinenOppiaine(a) ||
   isAmmatillisenTutkinnonOsaaPienempiKokonaisuus(a) ||
