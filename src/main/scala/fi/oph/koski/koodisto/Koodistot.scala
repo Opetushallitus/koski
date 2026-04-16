@@ -121,6 +121,9 @@ object Koodistot {
     KoodistoAsetus("ammatillisensuorituksenkorotus"),
     KoodistoAsetus("omadataoauth2scope"),
     KoodistoAsetus("omadataoauth2client"),
+    KoodistoAsetus("omadatavalinnantila"),
+    KoodistoAsetus("omadatavastaanotontila"),
+    KoodistoAsetus("omadatailmoittautumisentila"),
     // TODO: Nämä siirtyvät KIOS-viranhaltijoiden ylläpidettäväksi, mutta luodaan ne ensin KOSKI-koodilla.
     KoodistoAsetus("ykiarvosana"),
     KoodistoAsetus("ykisuorituksenosa"),

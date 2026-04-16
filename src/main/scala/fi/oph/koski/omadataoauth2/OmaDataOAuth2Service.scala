@@ -3,16 +3,19 @@ package fi.oph.koski.omadataoauth2
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.koskiuser.KoskiSpecificSession
+import fi.oph.koski.ovara.{OvaraClient, OvaraNimi, OvaraOpiskelijavalintatieto}
 import fi.oph.koski.log.KoskiAuditLogMessageField.{omaDataKumppani, omaDataOAuth2Scope, oppijaHenkiloOid}
 import fi.oph.koski.log.KoskiOperation.{KANSALAINEN_MYDATA_LISAYS, KANSALAINEN_MYDATA_POISTO, OAUTH2_ACCESS_TOKEN_LUONTI}
-import fi.oph.koski.log.{AuditLog, KoskiAuditLogMessage, KoskiOperation, Logging}
+import fi.oph.koski.log.{AuditLog, KoskiAuditLogMessage, Logging}
 import fi.oph.koski.omadataoauth2.OmaDataOAuth2ErrorType.invalid_request
 import fi.oph.koski.omadataoauth2.OmaDataOAuth2Security.generateSecret
-import fi.oph.koski.schema.{LocalizedString, Opiskeluoikeus, Oppija, TäydellisetHenkilötiedot}
+import fi.oph.koski.schema.{Finnish, Koodistokoodiviite, LocalizedString, Opiskeluoikeus, Oppija, TäydellisetHenkilötiedot}
 import fi.oph.koski.util.ChainingSyntax.eitherChainingOps
+import scala.util.control.NonFatal
 
 class OmaDataOAuth2Service(oauth2Repository: OmaDataOAuth2Repository, val application: KoskiApplication) extends Logging with OmaDataOAuth2Config {
 
+  val ovaraClient: OvaraClient = application.ovaraClient
   var overridenCreateResultForUnitTests: Option[Either[OmaDataOAuth2Error, String]] = None
 
   def create(
@@ -154,19 +157,84 @@ class OmaDataOAuth2Service(oauth2Repository: OmaDataOAuth2Repository, val applic
   }
 
   def findKaikkiTiedotJaValintatiedot(oppijaOid: String, scope: String, overrideSession: KoskiSpecificSession, tokenExpirationTime: String): Either[HttpStatus, OmaDataOAuth2KaikkiOpiskeluoikeudetJaValintatiedot] = {
-    application.oppijaFacade.findOppija(oppijaOid)(overrideSession).flatMap(_.warningsToLeft) match {
+    application.oppijaFacade.findOppija(oppijaOid, findMasterIfSlaveOid = true)(overrideSession).flatMap(_.warningsToLeft) match {
       case Right(Oppija(henkilö: TäydellisetHenkilötiedot, opiskeluoikeudet: Seq[Opiskeluoikeus])) =>
-        Right(OmaDataOAuth2KaikkiOpiskeluoikeudetJaValintatiedot(
-          henkilö = OmaDataOAuth2Henkilötiedot(henkilö, scope),
-          opiskeluoikeudet = opiskeluoikeudet.toList,
-          valintatiedot = List.empty, // TODO: lisää valintatiedot tähän myöhemmin
-          tokenInfo = OmaDataOAuth2TokenInfo(scope, tokenExpirationTime)
-        ))
+        try {
+          ovaraClient.fetchOpiskelijavalintatiedot(henkilö.oid).map(valintatiedot =>
+            OmaDataOAuth2KaikkiOpiskeluoikeudetJaValintatiedot(
+              henkilö = OmaDataOAuth2Henkilötiedot(henkilö, scope),
+              opiskeluoikeudet = opiskeluoikeudet.toList,
+              valintatiedot = convertToOmaDataValintatieto(valintatiedot).filter(_.hakemukset.nonEmpty),
+              tokenInfo = OmaDataOAuth2TokenInfo(scope, tokenExpirationTime)
+            )
+          )
+        } catch {
+          case NonFatal(e) =>
+            logger.error(e)(e.getMessage)
+            Left(KoskiErrorCategory.internalError("Valintatietojen käsittelyssä tapahtui odottamaton virhe."))
+        }
       case Right(_) =>
         Left(KoskiErrorCategory.internalError("Datatype not recognized"))
       case Left(httpStatus) =>
         Left(httpStatus)
     }
   }
+
+  private def convertToOmaDataValintatieto(valintatiedot: Option[OvaraOpiskelijavalintatieto]): Option[OmaDataOAuth2Valintatieto] =
+    valintatiedot.map { valintatieto =>
+      OmaDataOAuth2Valintatieto(
+        hakemukset = valintatieto.hakemukset.map { hakemus =>
+          OmaDataOAuth2Hakemus(
+            hakemusOid = hakemus.hakemusOid,
+            haunKohdejoukko = hakemus.haunKohdejoukko.map(parseKoodistokoodiviite),
+            hakutapa = hakemus.hakutapa.map(parseKoodistokoodiviite),
+            haku = OmaDataOAuth2Haku(
+              oid = hakemus.haku.oid,
+              nimi = ovaraNimiToLocalizedString(hakemus.haku.nimi)
+            ),
+            hakutoiveet = hakemus.hakutoiveet.map { hakutoive =>
+              OmaDataOAuth2Hakutoive(
+                hakukohde = OmaDataOAuth2HakutoiveOrganisaatio(
+                  oid = hakutoive.hakukohde.oid,
+                  nimi = ovaraNimiToLocalizedString(hakutoive.hakukohde.nimi)
+                ),
+                tarjoaja = hakutoive.tarjoaja.map(tarjoaja =>
+                  OmaDataOAuth2HakutoiveOrganisaatio(
+                    oid = tarjoaja.oid,
+                    nimi = ovaraNimiToLocalizedString(tarjoaja.nimi)
+                  )
+                ),
+                koulutuksenAlkamiskausi = hakutoive.koulutuksenAlkamiskausiUri.map(parseKoodistokoodiviite),
+                koulutuksenAlkamisvuosi = hakutoive.koulutuksenAlkamisvuosi,
+                valinnanTila = hakutoive.valinnanTila.map(t => validateTila(t.toLowerCase.replace("_", ""), "omadatavalinnantila")),
+                vastaanotonTila = hakutoive.vastaanotonTila.map(t => validateTila(t.toLowerCase.replace("_", ""), "omadatavastaanotontila")),
+                ilmoittautumisenTila = hakutoive.ilmoittautumisenTila.map(t => validateTila(t.toLowerCase.replace("_", ""), "omadatailmoittautumisentila"))
+              )
+            }
+          )
+        }
+      )
+    }
+
+  private def validateTila(koodiArvo: String, koodistoUri: String): Koodistokoodiviite =
+    application.koodistoViitePalvelu.validateRequired(koodistoUri, koodiArvo)
+
+  private def parseKoodistokoodiviite(str: String): Koodistokoodiviite = {
+    val withoutVersion = str.split("#").head
+    val lastUnderscore = withoutVersion.lastIndexOf('_')
+    if (lastUnderscore < 0) {
+      throw new IllegalArgumentException(s"Valintatiedoissa palautui tuntematon koodistokoodiviite: $str")
+    }
+    val koodistoUri = withoutVersion.substring(0, lastUnderscore)
+    val koodiarvo = withoutVersion.substring(lastUnderscore + 1)
+    Koodistokoodiviite(koodiarvo, koodistoUri)
+  }
+
+  private def ovaraNimiToLocalizedString(nimi: OvaraNimi): LocalizedString =
+    LocalizedString.sanitize(Map(
+      "fi" -> nimi.fi.getOrElse(""),
+      "sv" -> nimi.sv.getOrElse(""),
+      "en" -> nimi.en.getOrElse("")
+    )).getOrElse(Finnish(""))
 }
 

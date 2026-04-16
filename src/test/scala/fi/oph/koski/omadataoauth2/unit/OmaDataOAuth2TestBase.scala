@@ -1,10 +1,10 @@
 package fi.oph.koski.omadataoauth2.unit
 
 import fi.oph.koski.KoskiHttpSpec
-import fi.oph.koski.henkilo.{KoskiSpecificMockOppijat, LaajatOppijaHenkilöTiedot}
+import fi.oph.koski.henkilo.{KoskiSpecificMockOppijat, LaajatOppijaHenkilöTiedot, OppijaHenkilö}
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.koskiuser.{KoskiMockUser, MockUsers}
-import fi.oph.koski.omadataoauth2.{OAuth2AccessTokenSuccessResponse, ChallengeAndVerifier, OmaDataOAuth2Security}
+import fi.oph.koski.omadataoauth2.{ChallengeAndVerifier, OAuth2AccessTokenSuccessResponse, OmaDataOAuth2Security}
 import org.http4s.Uri
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.should.Matchers
@@ -120,7 +120,7 @@ class OmaDataOAuth2TestBase extends AnyFreeSpec with KoskiHttpSpec with Matchers
     actualParams.get(key)
   }
 
-  def createAuthorizationAndToken(kansalainen: LaajatOppijaHenkilöTiedot, pkce: ChallengeAndVerifier, scope: String = validScope, user: KoskiMockUser = validPalvelukäyttäjä): String = {
+  def createAuthorizationAndToken(kansalainen: OppijaHenkilö, pkce: ChallengeAndVerifier, scope: String = validScope, user: KoskiMockUser = validPalvelukäyttäjä): String = {
     val code = createAuthorization(kansalainen, pkce.challenge, scope, user)
 
     val token = postAuthorizationServerClientIdFromUsername(
@@ -136,7 +136,7 @@ class OmaDataOAuth2TestBase extends AnyFreeSpec with KoskiHttpSpec with Matchers
   }
 
   // Huom, tämä ohittaa yksikkötestejä varten "tuotantologiikan" ja lukee code:n suoraan URI:sta, eikä redirect_uri:n kautta
-  def createAuthorization(kansalainen: LaajatOppijaHenkilöTiedot, codeChallenge: String, scope: String = validScope, user: KoskiMockUser = validPalvelukäyttäjä) = {
+  def createAuthorization(kansalainen: OppijaHenkilö, codeChallenge: String, scope: String = validScope, user: KoskiMockUser = validPalvelukäyttäjä) = {
     val paramsString = createParamsString(
       (createValidAuthorizeParams.toMap +
         ("code_challenge" -> codeChallenge) +

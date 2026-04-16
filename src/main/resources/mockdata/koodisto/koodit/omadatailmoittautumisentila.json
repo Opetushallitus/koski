@@ -1,0 +1,106 @@
+[
+  {
+    "metadata": [
+      {"nimi": "Ei tehty", "kuvaus": "", "lyhytNimi": "", "kieli": "FI"},
+      {"nimi": "Ei tehty", "kuvaus": "", "lyhytNimi": "", "kieli": "SV"},
+      {"nimi": "Ei tehty", "kuvaus": "", "lyhytNimi": "", "kieli": "EN"}
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "omadatailmoittautumisentila_eitehty",
+    "versio": 1,
+    "koodiArvo": "eitehty"
+  },
+  {
+    "metadata": [
+      {"nimi": "Läsnä koko lukuvuosi", "kuvaus": "", "lyhytNimi": "", "kieli": "FI"},
+      {"nimi": "Läsnä koko lukuvuosi", "kuvaus": "", "lyhytNimi": "", "kieli": "SV"},
+      {"nimi": "Läsnä koko lukuvuosi", "kuvaus": "", "lyhytNimi": "", "kieli": "EN"}
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "omadatailmoittautumisentila_lasnakokolukuvuosi",
+    "versio": 1,
+    "koodiArvo": "lasnakokolukuvuosi"
+  },
+  {
+    "metadata": [
+      {"nimi": "Poissa koko lukuvuosi", "kuvaus": "", "lyhytNimi": "", "kieli": "FI"},
+      {"nimi": "Poissa koko lukuvuosi", "kuvaus": "", "lyhytNimi": "", "kieli": "SV"},
+      {"nimi": "Poissa koko lukuvuosi", "kuvaus": "", "lyhytNimi": "", "kieli": "EN"}
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "omadatailmoittautumisentila_poissakokolukuvuosi",
+    "versio": 1,
+    "koodiArvo": "poissakokolukuvuosi"
+  },
+  {
+    "metadata": [
+      {"nimi": "Ei ilmoittautunut", "kuvaus": "", "lyhytNimi": "", "kieli": "FI"},
+      {"nimi": "Ei ilmoittautunut", "kuvaus": "", "lyhytNimi": "", "kieli": "SV"},
+      {"nimi": "Ei ilmoittautunut", "kuvaus": "", "lyhytNimi": "", "kieli": "EN"}
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "omadatailmoittautumisentila_eiilmoittautunut",
+    "versio": 1,
+    "koodiArvo": "eiilmoittautunut"
+  },
+  {
+    "metadata": [
+      {"nimi": "Läsnä syksy", "kuvaus": "", "lyhytNimi": "", "kieli": "FI"},
+      {"nimi": "Läsnä syksy", "kuvaus": "", "lyhytNimi": "", "kieli": "SV"},
+      {"nimi": "Läsnä syksy", "kuvaus": "", "lyhytNimi": "", "kieli": "EN"}
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "omadatailmoittautumisentila_lasnasyksy",
+    "versio": 1,
+    "koodiArvo": "lasnasyksy"
+  },
+  {
+    "metadata": [
+      {"nimi": "Poissa syksy", "kuvaus": "", "lyhytNimi": "", "kieli": "FI"},
+      {"nimi": "Poissa syksy", "kuvaus": "", "lyhytNimi": "", "kieli": "SV"},
+      {"nimi": "Poissa syksy", "kuvaus": "", "lyhytNimi": "", "kieli": "EN"}
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "omadatailmoittautumisentila_poissasyksy",
+    "versio": 1,
+    "koodiArvo": "poissasyksy"
+  },
+  {
+    "metadata": [
+      {"nimi": "Läsnä", "kuvaus": "", "lyhytNimi": "", "kieli": "FI"},
+      {"nimi": "Läsnä", "kuvaus": "", "lyhytNimi": "", "kieli": "SV"},
+      {"nimi": "Läsnä", "kuvaus": "", "lyhytNimi": "", "kieli": "EN"}
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "omadatailmoittautumisentila_lasna",
+    "versio": 1,
+    "koodiArvo": "lasna"
+  },
+  {
+    "metadata": [
+      {"nimi": "Poissa", "kuvaus": "", "lyhytNimi": "", "kieli": "FI"},
+      {"nimi": "Poissa", "kuvaus": "", "lyhytNimi": "", "kieli": "SV"},
+      {"nimi": "Poissa", "kuvaus": "", "lyhytNimi": "", "kieli": "EN"}
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "omadatailmoittautumisentila_poissa",
+    "versio": 1,
+    "koodiArvo": "poissa"
+  }
+]

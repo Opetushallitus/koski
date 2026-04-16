@@ -241,6 +241,7 @@ jobs:
         with:
           suites: |
             fi.oph.koski.oppivelvollisuustieto, \
+            fi.oph.koski.ovara, \
             fi.oph.koski.valvira, \
             fi.oph.koski.virta, \
             fi.oph.koski.sdg, \

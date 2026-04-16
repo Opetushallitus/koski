@@ -1,0 +1,119 @@
+[
+  {
+    "metadata": [
+      {"nimi": "Hyväksytty", "kuvaus": "", "lyhytNimi": "", "kieli": "FI"},
+      {"nimi": "Hyväksytty", "kuvaus": "", "lyhytNimi": "", "kieli": "SV"},
+      {"nimi": "Hyväksytty", "kuvaus": "", "lyhytNimi": "", "kieli": "EN"}
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "omadatavalinnantila_hyvaksytty",
+    "versio": 1,
+    "koodiArvo": "hyvaksytty"
+  },
+  {
+    "metadata": [
+      {"nimi": "Varasijalta hyväksytty", "kuvaus": "", "lyhytNimi": "", "kieli": "FI"},
+      {"nimi": "Varasijalta hyväksytty", "kuvaus": "", "lyhytNimi": "", "kieli": "SV"},
+      {"nimi": "Varasijalta hyväksytty", "kuvaus": "", "lyhytNimi": "", "kieli": "EN"}
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "omadatavalinnantila_varasijaltahyvaksytty",
+    "versio": 1,
+    "koodiArvo": "varasijaltahyvaksytty"
+  },
+  {
+    "metadata": [
+      {"nimi": "Harkinnanvaraisesti hyväksytty", "kuvaus": "", "lyhytNimi": "", "kieli": "FI"},
+      {"nimi": "Harkinnanvaraisesti hyväksytty", "kuvaus": "", "lyhytNimi": "", "kieli": "SV"},
+      {"nimi": "Harkinnanvaraisesti hyväksytty", "kuvaus": "", "lyhytNimi": "", "kieli": "EN"}
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "omadatavalinnantila_harkinnanvaraisestihyvaksytty",
+    "versio": 1,
+    "koodiArvo": "harkinnanvaraisestihyvaksytty"
+  },
+  {
+    "metadata": [
+      {"nimi": "Varalla", "kuvaus": "", "lyhytNimi": "", "kieli": "FI"},
+      {"nimi": "Varalla", "kuvaus": "", "lyhytNimi": "", "kieli": "SV"},
+      {"nimi": "Varalla", "kuvaus": "", "lyhytNimi": "", "kieli": "EN"}
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "omadatavalinnantila_varalla",
+    "versio": 1,
+    "koodiArvo": "varalla"
+  },
+  {
+    "metadata": [
+      {"nimi": "Hylätty", "kuvaus": "", "lyhytNimi": "", "kieli": "FI"},
+      {"nimi": "Hylätty", "kuvaus": "", "lyhytNimi": "", "kieli": "SV"},
+      {"nimi": "Hylätty", "kuvaus": "", "lyhytNimi": "", "kieli": "EN"}
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "omadatavalinnantila_hylatty",
+    "versio": 1,
+    "koodiArvo": "hylatty"
+  },
+  {
+    "metadata": [
+      {"nimi": "Peruuntunut", "kuvaus": "", "lyhytNimi": "", "kieli": "FI"},
+      {"nimi": "Peruuntunut", "kuvaus": "", "lyhytNimi": "", "kieli": "SV"},
+      {"nimi": "Peruuntunut", "kuvaus": "", "lyhytNimi": "", "kieli": "EN"}
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "omadatavalinnantila_peruuntunut",
+    "versio": 1,
+    "koodiArvo": "peruuntunut"
+  },
+  {
+    "metadata": [
+      {"nimi": "Perunut", "kuvaus": "", "lyhytNimi": "", "kieli": "FI"},
+      {"nimi": "Perunut", "kuvaus": "", "lyhytNimi": "", "kieli": "SV"},
+      {"nimi": "Perunut", "kuvaus": "", "lyhytNimi": "", "kieli": "EN"}
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "omadatavalinnantila_perunut",
+    "versio": 1,
+    "koodiArvo": "perunut"
+  },
+  {
+    "metadata": [
+      {"nimi": "Peruutettu", "kuvaus": "", "lyhytNimi": "", "kieli": "FI"},
+      {"nimi": "Peruutettu", "kuvaus": "", "lyhytNimi": "", "kieli": "SV"},
+      {"nimi": "Peruutettu", "kuvaus": "", "lyhytNimi": "", "kieli": "EN"}
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "omadatavalinnantila_peruutettu",
+    "versio": 1,
+    "koodiArvo": "peruutettu"
+  },
+  {
+    "metadata": [
+      {"nimi": "Kesken", "kuvaus": "", "lyhytNimi": "", "kieli": "FI"},
+      {"nimi": "Kesken", "kuvaus": "", "lyhytNimi": "", "kieli": "SV"},
+      {"nimi": "Kesken", "kuvaus": "", "lyhytNimi": "", "kieli": "EN"}
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "omadatavalinnantila_kesken",
+    "versio": 1,
+    "koodiArvo": "kesken"
+  }
+]

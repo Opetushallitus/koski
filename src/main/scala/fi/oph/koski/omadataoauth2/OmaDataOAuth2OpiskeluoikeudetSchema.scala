@@ -3,9 +3,10 @@ package fi.oph.koski.omadataoauth2
 import fi.oph.koski.aktiivisetjapaattyneetopinnot.AktiivisetJaPäättyneetOpinnotOpiskeluoikeus
 import fi.oph.koski.henkilo.LaajatOppijaHenkilöTiedot
 import fi.oph.koski.schema
-import fi.oph.koski.schema.{Opiskeluoikeus, TäydellisetHenkilötiedot}
+import fi.oph.koski.schema.annotation.KoodistoUri
+import fi.oph.koski.schema.{Koodistokoodiviite, LocalizedString, Opiskeluoikeus, TäydellisetHenkilötiedot}
 import fi.oph.koski.suoritetuttutkinnot.SuoritetutTutkinnotOpiskeluoikeus
-import fi.oph.scalaschema.annotation.Title
+import fi.oph.scalaschema.annotation.{Description, Title}
 import fi.oph.scalaschema.{ClassSchema, SchemaToJson}
 import org.json4s.JValue
 
@@ -20,7 +21,7 @@ object OmaDataOAuth2KaikkiOpiskeluoikeudetJaValintatiedot {
 case class OmaDataOAuth2KaikkiOpiskeluoikeudetJaValintatiedot(
   henkilö: OmaDataOAuth2Henkilötiedot,
   opiskeluoikeudet: List[Opiskeluoikeus],
-  valintatiedot: List[Valintatieto],
+  valintatiedot: Option[OmaDataOAuth2Valintatieto],
   tokenInfo: OmaDataOAuth2TokenInfo
 )
 
@@ -179,5 +180,44 @@ case class OmaDataOAuth2TokenInfo(
   expirationTime: String
 )
 
-// TODO: täydennä valintatiedot tähän myöhemmin
-case class Valintatieto()
+case class OmaDataOAuth2Valintatieto(
+  hakemukset: List[OmaDataOAuth2Hakemus]
+)
+
+@Title("Hakemus")
+case class OmaDataOAuth2Hakemus(
+  hakemusOid: String,
+  @KoodistoUri("haunkohdejoukko")
+  haunKohdejoukko: Option[Koodistokoodiviite],
+  @KoodistoUri("hakutapa")
+  hakutapa: Option[Koodistokoodiviite],
+  haku: OmaDataOAuth2Haku,
+  hakutoiveet: List[OmaDataOAuth2Hakutoive]
+)
+
+case class OmaDataOAuth2Haku(
+  oid: String,
+  nimi: LocalizedString
+)
+
+@Title("Hakutoive")
+case class OmaDataOAuth2Hakutoive(
+  hakukohde: OmaDataOAuth2HakutoiveOrganisaatio,
+  tarjoaja: Option[OmaDataOAuth2HakutoiveOrganisaatio],
+  @KoodistoUri("kausi")
+  koulutuksenAlkamiskausi: Option[Koodistokoodiviite],
+  @Description("Vuosiluku merkkijonona")
+  koulutuksenAlkamisvuosi: Option[String],
+  @KoodistoUri("omadatavalinnantila")
+  valinnanTila: Option[Koodistokoodiviite],
+  @KoodistoUri("omadatavastaanotontila")
+  vastaanotonTila: Option[Koodistokoodiviite],
+  @KoodistoUri("omadatailmoittautumisentila")
+  ilmoittautumisenTila: Option[Koodistokoodiviite]
+)
+
+case class OmaDataOAuth2HakutoiveOrganisaatio(
+  oid: String,
+  nimi: LocalizedString
+)
+

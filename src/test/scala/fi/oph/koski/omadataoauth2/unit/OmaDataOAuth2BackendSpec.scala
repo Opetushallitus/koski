@@ -5,9 +5,8 @@ import fi.oph.koski.api.misc.{OpiskeluoikeusTestMethods, OpiskeluoikeusTestMetho
 import fi.oph.koski.db.KoskiTables.OAuth2JakoKaikki
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.documentation.PerusopetusExampleData
-import fi.oph.koski.fixture.{FixtureCreator, PerusopetuksenOpiskeluoikeusTestData}
+import fi.oph.koski.fixture.FixtureCreator
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
-import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.koskiuser.{KoskiMockUser, MockUsers}
 import fi.oph.koski.log.AuditLogTester
@@ -18,6 +17,8 @@ import fi.oph.koski.suoritetuttutkinnot.SuoritetutTutkinnotAmmatillinenOpiskeluo
 import fi.oph.koski.suoritusjako.aktiivisetjapaattyneetopinnot.AktiivisetJaPäättyneetOpinnotVerifiers
 import fi.oph.koski.suoritusjako.suoritetuttutkinnot.SuoritetutTutkinnotVerifiers
 import fi.oph.koski.{DatabaseTestMethods, KoskiApplicationForTests, schema}
+import org.json4s.{DefaultFormats, Formats}
+import org.json4s.jackson.JsonMethods
 
 import java.sql.Timestamp
 import java.time.Instant
@@ -1009,7 +1010,7 @@ class OmaDataOAuth2BackendSpec
           .find(_.tyyppi.koodiarvo == schema.OpiskeluoikeudenTyyppi.ammatillinenkoulutus.koodiarvo)
           .get
 
-        val scope = "HENKILOTIEDOT_SYNTYMAAIKA HENKILOTIEDOT_NIMI OPISKELUOIKEUDET_KAIKKI_TIEDOT_JA_VALINTATIEDOT"
+        val scope = "HENKILOTIEDOT_HETU OPISKELUOIKEUDET_KAIKKI_TIEDOT_JA_VALINTATIEDOT"
 
         val pkce = createChallengeAndVerifier()
         val token = createAuthorizationAndToken(oppija, pkce, scope, MockUsers.omadataOAuth2KaikkiOikeudetPalvelukäyttäjä)
@@ -1018,10 +1019,45 @@ class OmaDataOAuth2BackendSpec
           verifyResponseStatusOk()
           val data = JsonSerializer.parse[OmaDataOAuth2KaikkiOpiskeluoikeudetJaValintatiedot](response.body)
 
+          data.henkilö.hetu.isDefined shouldBe true
+          data.henkilö.oid shouldBe None
+          data.henkilö.etunimet shouldBe None
+          data.henkilö.kutsumanimi shouldBe None
+          data.henkilö.sukunimi shouldBe None
+          data.henkilö.syntymäaika shouldBe None
+
           data.opiskeluoikeudet should have length 1
           data.opiskeluoikeudet.head shouldBe a[AmmatillinenOpiskeluoikeus]
 
-          data.valintatiedot should have length 0
+          data.valintatiedot shouldBe defined
+          val valintatieto = data.valintatiedot.get
+          valintatieto.hakemukset should have length 1
+
+          val hakemus = valintatieto.hakemukset.head
+          hakemus.hakemusOid shouldBe "1.2.246.562.11.00000000000001049800"
+          hakemus.haunKohdejoukko.map(_.koodiarvo) shouldBe Some("12")
+          hakemus.haunKohdejoukko.map(_.koodistoUri) shouldBe Some("haunkohdejoukko")
+          hakemus.hakutapa.map(_.koodiarvo) shouldBe Some("01")
+          hakemus.hakutapa.map(_.koodistoUri) shouldBe Some("hakutapa")
+          hakemus.haku.oid shouldBe "1.2.246.562.29.00000000000000005467"
+          hakemus.haku.nimi.valueList should contain ("fi" -> "Yhteishaku kevät 2024")
+          hakemus.haku.nimi.valueList should contain ("sv" -> "Gemensam ansökan våren 2024")
+          hakemus.hakutoiveet should have length 1
+
+          val hakutoive = hakemus.hakutoiveet.head
+          hakutoive.hakukohde.oid shouldBe "1.2.246.562.20.00000000000000005476"
+          hakutoive.hakukohde.nimi.valueList should contain ("fi" -> "Tietotekniikan koulutusohjelma")
+          hakutoive.tarjoaja.map(_.oid) shouldBe Some("1.2.246.562.10.42160341923")
+          hakutoive.tarjoaja.map(_.nimi.valueList) shouldBe Some(List("fi" -> "Esimerkkioppilaitos"))
+          hakutoive.koulutuksenAlkamiskausi.map(_.koodiarvo) shouldBe Some("s")
+          hakutoive.koulutuksenAlkamiskausi.map(_.koodistoUri) shouldBe Some("kausi")
+          hakutoive.koulutuksenAlkamisvuosi shouldBe Some("2024")
+          hakutoive.valinnanTila.map(_.koodiarvo) shouldBe Some("hyvaksytty")
+          hakutoive.valinnanTila.map(_.koodistoUri) shouldBe Some("omadatavalinnantila")
+          hakutoive.vastaanotonTila.map(_.koodiarvo) shouldBe Some("vastaanottanutsitovasti")
+          hakutoive.vastaanotonTila.map(_.koodistoUri) shouldBe Some("omadatavastaanotontila")
+          hakutoive.ilmoittautumisenTila.map(_.koodiarvo) shouldBe Some("lasna")
+          hakutoive.ilmoittautumisenTila.map(_.koodistoUri) shouldBe Some("omadatailmoittautumisentila")
 
           val actualOo = data.opiskeluoikeudet.head.asInstanceOf[AmmatillinenOpiskeluoikeus]
 
@@ -1043,7 +1079,7 @@ class OmaDataOAuth2BackendSpec
         expectedOoData.lisätiedot.map(_.asInstanceOf[PerusopetuksenOpiskeluoikeudenLisätiedot]).flatMap(_.vuosiluokkiinSitoutumatonOpetus) should be(None)
         fullOoData.lisätiedot.map(_.asInstanceOf[PerusopetuksenOpiskeluoikeudenLisätiedot]).flatMap(_.vuosiluokkiinSitoutumatonOpetus) should be(Some(true))
 
-        val scope = "HENKILOTIEDOT_SYNTYMAAIKA HENKILOTIEDOT_NIMI OPISKELUOIKEUDET_KAIKKI_TIEDOT_JA_VALINTATIEDOT"
+        val scope = "HENKILOTIEDOT_HETU OPISKELUOIKEUDET_KAIKKI_TIEDOT_JA_VALINTATIEDOT"
 
         val pkce = createChallengeAndVerifier()
         val token = createAuthorizationAndToken(oppija, pkce, scope, MockUsers.omadataOAuth2KaikkiOikeudetPalvelukäyttäjä)
@@ -1055,7 +1091,7 @@ class OmaDataOAuth2BackendSpec
           data.opiskeluoikeudet should have length 1
           data.opiskeluoikeudet.head shouldBe a[PerusopetuksenOpiskeluoikeus]
 
-          data.valintatiedot should have length 0
+          data.valintatiedot shouldBe None
 
           val actualOo = data.opiskeluoikeudet.head.asInstanceOf[PerusopetuksenOpiskeluoikeus]
 
@@ -1066,7 +1102,7 @@ class OmaDataOAuth2BackendSpec
       "audit-logitetaan" in {
         val oppija = KoskiSpecificMockOppijat.ammattilainen
 
-        val scope = "HENKILOTIEDOT_SYNTYMAAIKA HENKILOTIEDOT_NIMI OPISKELUOIKEUDET_KAIKKI_TIEDOT_JA_VALINTATIEDOT"
+        val scope = "HENKILOTIEDOT_HETU OPISKELUOIKEUDET_KAIKKI_TIEDOT_JA_VALINTATIEDOT"
 
         val pkce = createChallengeAndVerifier()
         val token = createAuthorizationAndToken(oppija, pkce, scope, MockUsers.omadataOAuth2KaikkiOikeudetPalvelukäyttäjä)
@@ -1085,6 +1121,113 @@ class OmaDataOAuth2BackendSpec
             ),
           ))
 
+        }
+      }
+
+      "palauttaa virheen, jos valintatietojen haku epäonnistuu" in {
+        implicit val formats: Formats = DefaultFormats
+        val oppija = KoskiSpecificMockOppijat.koululainen
+
+        val scope = "HENKILOTIEDOT_HETU OPISKELUOIKEUDET_KAIKKI_TIEDOT_JA_VALINTATIEDOT"
+
+        val pkce = createChallengeAndVerifier()
+        val token = createAuthorizationAndToken(oppija, pkce, scope, MockUsers.omadataOAuth2KaikkiOikeudetPalvelukäyttäjä)
+
+        postResourceServer(token, MockUsers.omadataOAuth2KaikkiOikeudetPalvelukäyttäjä) {
+          verifyResponseStatus(503)
+          val result = JsonMethods.parse(response.body)
+          (result \ "error").extract[String] should be("server_error")
+          (result \ "error_description").extract[String] should include("Valintatietoja ei juuri nyt saada haettua. Yritä myöhemmin uudelleen.")
+        }
+      }
+
+      "palauttaa virheen, jos Ovara palauttaa virheellisen koodistokoodiviitteen" in {
+        implicit val formats: Formats = DefaultFormats
+        val oppija = KoskiSpecificMockOppijat.amis
+        val scope = "HENKILOTIEDOT_HETU OPISKELUOIKEUDET_KAIKKI_TIEDOT_JA_VALINTATIEDOT"
+        val pkce = createChallengeAndVerifier()
+        val token = createAuthorizationAndToken(oppija, pkce, scope, MockUsers.omadataOAuth2KaikkiOikeudetPalvelukäyttäjä)
+        postResourceServer(token, MockUsers.omadataOAuth2KaikkiOikeudetPalvelukäyttäjä) {
+          verifyResponseStatus(500)
+          val result = JsonMethods.parse(response.body)
+          (result \ "error").extract[String] should be("server_error")
+          (result \ "error_description").extract[String] should include("Valintatietojen käsittelyssä tapahtui odottamaton virhe.")
+        }
+      }
+
+      "palauttaa virheen, jos Ovara palauttaa tuntemattoman tila-arvon" in {
+        implicit val formats: Formats = DefaultFormats
+        val oppija = KoskiSpecificMockOppijat.lukiolainen
+        val scope = "HENKILOTIEDOT_HETU OPISKELUOIKEUDET_KAIKKI_TIEDOT_JA_VALINTATIEDOT"
+        val pkce = createChallengeAndVerifier()
+        val token = createAuthorizationAndToken(oppija, pkce, scope, MockUsers.omadataOAuth2KaikkiOikeudetPalvelukäyttäjä)
+        postResourceServer(token, MockUsers.omadataOAuth2KaikkiOikeudetPalvelukäyttäjä) {
+          verifyResponseStatus(500)
+          val result = JsonMethods.parse(response.body)
+          (result \ "error").extract[String] should be("server_error")
+          (result \ "error_description").extract[String] should include("Valintatietojen käsittelyssä tapahtui odottamaton virhe.")
+        }
+      }
+
+      "kutsuu Ovaraa oppijan master-oidilla, kun oppijalla on slave-oid" in {
+        val oppija = KoskiSpecificMockOppijat.slaveAmmattilainen
+        val scope = "HENKILOTIEDOT_HETU OPISKELUOIKEUDET_KAIKKI_TIEDOT_JA_VALINTATIEDOT"
+        val pkce = createChallengeAndVerifier()
+        val token = createAuthorizationAndToken(oppija.henkilö, pkce, scope, MockUsers.omadataOAuth2KaikkiOikeudetPalvelukäyttäjä)
+        postResourceServer(token, MockUsers.omadataOAuth2KaikkiOikeudetPalvelukäyttäjä) {
+          verifyResponseStatusOk()
+          val data = JsonSerializer.parse[OmaDataOAuth2KaikkiOpiskeluoikeudetJaValintatiedot](response.body)
+          data.henkilö.hetu shouldBe KoskiSpecificMockOppijat.masterYlioppilasJaAmmattilainen.hetu
+          data.valintatiedot shouldBe defined
+          data.valintatiedot.get.hakemukset.head.hakemusOid shouldBe "1.2.246.562.11.00000000000001234569"
+        }
+      }
+
+      "kaikki tunnetut Ovara tila-arvot muuntuvat koodistokoodiviitteiksi" in {
+        val koodistoPalvelu = KoskiApplicationForTests.koodistoViitePalvelu
+
+        val valinnanTilatOvarasta = List(
+          "HYVAKSYTTY",
+          "VARASIJALTA_HYVAKSYTTY",
+          "HARKINNANVARAISESTI_HYVAKSYTTY",
+          "VARALLA",
+          "HYLATTY",
+          "PERUUNTUNUT",
+          "PERUNUT",
+          "PERUUTETTU",
+          "KESKEN"
+        )
+        val vastaanotonTilatOvarasta = List(
+          "EHDOLLISESTI_VASTAANOTTANUT",
+          "VASTAANOTTANUT_SITOVASTI",
+          "EI_VASTAANOTETTU_MAARA_AIKANA",
+          "PERUNUT",
+          "PERUUTETTU",
+          "OTTANUT_VASTAAN_TOISEN_PAIKAN",
+          "KESKEN"
+        )
+        val ilmoittautumisenTilatOvarasta = List(
+          "EI_TEHTY",
+          "LASNA_KOKO_LUKUVUOSI",
+          "POISSA_KOKO_LUKUVUOSI",
+          "EI_ILMOITTAUTUNUT",
+          "LASNA_SYKSY",
+          "POISSA_SYKSY",
+          "LASNA",
+          "POISSA"
+        )
+
+        valinnanTilatOvarasta.foreach { tila =>
+          val koodiarvo = tila.toLowerCase.replace("_", "")
+          noException should be thrownBy koodistoPalvelu.validateRequired("omadatavalinnantila", koodiarvo)
+        }
+        vastaanotonTilatOvarasta.foreach { tila =>
+          val koodiarvo = tila.toLowerCase.replace("_", "")
+          noException should be thrownBy koodistoPalvelu.validateRequired("omadatavastaanotontila", koodiarvo)
+        }
+        ilmoittautumisenTilatOvarasta.foreach { tila =>
+          val koodiarvo = tila.toLowerCase.replace("_", "")
+          noException should be thrownBy koodistoPalvelu.validateRequired("omadatailmoittautumisentila", koodiarvo)
         }
       }
     }
