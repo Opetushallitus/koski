@@ -13,31 +13,58 @@ import fi.oph.scalaschema.annotation._
 // kuuluminen lopulliseen skeemaan on vielä Ahvenanmaan työryhmältä
 // vahvistamatta (persikanväri wiki-taulukossa).
 //
-// Avoimet työryhmäkysymykset (odottavat päätöstä, tämä tiedosto ei toistaiseksi
-// enää paisu ennen kuin nämä on ratkaistu):
-//   - Tutkintotoimikunta ja Yritys näkyvät yhä skeemakatselimessa, koska
-//     jaettu `HenkilövahvistusPaikkakunnalla.myöntäjäOrganisaatio` viittaa
-//     niihin. Wiki yliviivaa molemmat. Jos halutaan aidosti pois, tarvitaan
-//     oma AhvenanmaanHenkilövahvistusPaikkakunnalla jossa org-union on
-//     rajatumpi (Oppilaitos | Koulutustoimija | OrganisaatioOID | Toimipiste).
-//   - `sisältyyOpiskeluoikeuteen`/SisältäväOpiskeluoikeus – pakollinen
-//     `Opiskeluoikeus`-traitin kontrakti. Täällä @Hidden, mutta ei varsinaisesti
-//     pudotettu. Aidosti irti saaminen vaatii erillisen opiskeluoikeustraitin.
-//   - Opiskeluoikeusjakson tila: oma koodisto vai jaettu
-//     koskiopiskeluoikeudentila? Vaikuttaa `AhvenanmaanPerusopetuksen-
-//     Opiskeluoikeusjakso.tila`-kenttään.
-//   - Käyttäytymisen arviointi ("Ansvar och samarbete"): aina sanallinen vai
-//     myös numeerinen? Vaikuttaa `AhvenanmaanPerusopetuksenKäyttäytymisen-
-//     Arviointi`-luokan muotoon.
-//   - Ahvenanmaan oppiainekoodisto: AhvenanmaanPerusopetuksenMuuOppiaine.tunniste
-//     nykyään valtakunnallisen koodiston placeholder (pudotettu AI/KT/ET).
-//     Lopullinen koodisto sisältänee mm. svenska, svenska som andraspråk ja
-//     yhdistetyn uskonto/livsåskådning-oppiaineen.
-//   - Arviointiasteikko: erillinen Ahvenanmaan koodisto (ruotsinkieliset
-//     käännökset eroavat valtakunnallisista)?
-//   - Koulutuskoodi/perusteenDiaarinumero: `AhvenanmaanPerusopetus` käyttää
-//     nyt 201101 ja diaarinumero-kenttä jätetty avoimeksi. Ehdokas
-//     ÅLR2020/9841, mutta ePerusteissa ei julkaisua.
+// ┌─────────────────────────────────────────────────────────────────────────┐
+// │ Avoimet kysymykset asiantuntijoille — priorisoitu blast radiuksen mukaan │
+// └─────────────────────────────────────────────────────────────────────────┘
+//
+// ── Rakennekysymykset (ratkaise ensin — vaikuttavat luokkahierarkiaan) ───
+//
+//  1. Aineopiskeluoikeus (NuortenPerusopetuksenOppiaineenOppimääränSuoritus)
+//     — yliviivattu wikissä; tällä hetkellä pudotettu. Tuleeko myöhemmin?
+//  2. Koodistot — omat vai jaetut?
+//     a) opiskeluoikeudentila: oma vai jaettu koskiopiskeluoikeudentila?
+//     b) oppiainekoodisto: oma tarvitaan koska AI puuttuu (vain
+//        svenska / svenska som andraspråk) ja uskonto+livsåskådning
+//        yhdistetty yhdeksi. Koodiston sisältö?
+//     c) arviointiasteikkokoodisto: oma (ruotsinkieliset käännökset
+//        eroavat valtakunnallisista)?
+//  3. Koulutuskoodi ja perusteenDiaarinumero:
+//     - Käytetäänkö manner-Suomen 201101:ä?
+//     - Diaarinumerona ÅLR2020/9841 vai tyhjä (ei ePerusteet-julkaisua)?
+//     - Tarvitaanko ePerusteet-validointia lainkaan?
+//
+// ── Peach-kenttien vahvistus (jokaiselle: kuuluuko skeemaan?) ───────────
+//
+//  4. Toiminta-alueen suoritus — samatko toiminta-alueet samoilla nimillä?
+//  5. OmanÄidinkielenOpinnot — käytössä Ahvenanmaalla?
+//  6. joustavaPerusopetus (JOPO) — wiki: "Todennäköisesti ei".
+//  7. kielikylpykieli, vuosiluokkiinSitoutumatonOpetus,
+//     tavoitekokonaisuuksittainOpiskelu, valmistavanLisäopetus,
+//     rajattuOppimäärä — kyllä vai ei?
+//  8. Laajuudet (vuosiviikkotunnit) — käytetäänkö oppiaineissa ja
+//     toiminta-alueissa ylipäätään?
+//
+// ── Käyttäytymisen arviointi ("Ansvar och samarbete") ────────────────────
+//
+//  9. Aina sanallinen vai myös numeerinen?
+// 10. kuvaus-kenttä: wiki "Ahvenanmaa ei haluaisi, mutta kysytään".
+//
+// ── Sanallinen arviointi ─────────────────────────────────────────────────
+//
+// 11. Mitkä arvoista S/H/O ovat käytössä? Kaikki vai osa?
+//
+// ── Jaetut tyypit (rajatumpi haarautus?) ────────────────────────────────
+//
+// 12. HenkilövahvistusPaikkakunnalla.myöntäjäOrganisaatio sisältää nyt
+//     Tutkintotoimikunnan ja Yrityksen joita wiki ei halua. Tehdäänkö
+//     Ahvenanmaalle oma vahvistustyyppi (rajattu org-union)?
+// 13. sisältyyOpiskeluoikeuteen — pidetäänkö @Hidden vai pudotetaan
+//     kokonaan (vaatii oman opiskeluoikeus-traitin)?
+//
+// ── Kosmeettinen ────────────────────────────────────────────────────────
+//
+// 14. Oppiaine-luokan nimi: jääkö MuuOppiaine vai Oppiaine /
+//     AhvenanmaanOppiaine?
 //
 // Tallennettavuus ja wiring-askeleet (tarvitaan ennen kuin tyyppi voidaan
 // aidosti tallentaa Koskeen — tätä ei tehty tässä ensimmäisessä vedoksessa):
@@ -199,6 +226,7 @@ case class AhvenanmaanPerusopetuksenOppimääränSuoritus(
   koulutusmoduuli: AhvenanmaanPerusopetus,
   toimipiste: OrganisaatioWithOid,
   vahvistus: Option[HenkilövahvistusPaikkakunnalla] = None,
+  @KoodistoUri("perusopetuksensuoritustapa")
   suoritustapa: Koodistokoodiviite,
   suorituskieli: Koodistokoodiviite,
   // TODO TOR-2587: peach – vahvistettava.
@@ -237,6 +265,8 @@ case class AhvenanmaanPerusopetuksenOppiaineenSuoritus(
   @KoodistoKoodiarvo("ahvenanmaanperusopetuksenoppiaine")
   tyyppi: Koodistokoodiviite =
     Koodistokoodiviite("ahvenanmaanperusopetuksenoppiaine", koodistoUri = "suorituksentyyppi"),
+  @KoodistoUri("perusopetuksensuoritustapa")
+  @KoodistoKoodiarvo("erityinentutkinto")
   suoritustapa: Option[Koodistokoodiviite] = None,
   @Title("Luokka-aste")
   @KoodistoUri("perusopetuksenluokkaaste")
@@ -304,6 +334,7 @@ case class AhvenanmaanPerusopetuksenKäyttäytymisenArviointi(
 
 // TODO TOR-2587: peach – koko luokka; vahvistettava onko käytössä Ahvenanmaalla.
 case class AhvenanmaanOmanÄidinkielenOpinnotLaajuusVuosiviikkotunteina(
+  @KoodistoUri("arviointiasteikkoyleissivistava")
   arvosana: Koodistokoodiviite,
   arviointipäivä: Option[LocalDate] = None,
   @KoodistoUri("kieli")
