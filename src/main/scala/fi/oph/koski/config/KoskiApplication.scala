@@ -241,7 +241,7 @@ class KoskiApplication(
 
   lazy val omaDataOAuth2Repository = new OmaDataOAuth2Repository(this, masterDatabase.db)
   lazy val ovaraClient = OvaraClient(config)
-  lazy val omaDataOAuth2Service = new OmaDataOAuth2Service(omaDataOAuth2Repository, this, ovaraClient)
+  lazy val omaDataOAuth2Service = new OmaDataOAuth2Service(omaDataOAuth2Repository, this)
 
   lazy val todistusFeatureFlags = new TodistusFeatureFlags(config)
   lazy val todistusWorkerId = instanceId

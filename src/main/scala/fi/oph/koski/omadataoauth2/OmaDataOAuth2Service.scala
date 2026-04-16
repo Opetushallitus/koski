@@ -6,14 +6,15 @@ import fi.oph.koski.koskiuser.KoskiSpecificSession
 import fi.oph.koski.ovara.{OvaraClient, OvaraNimi, OvaraOpiskelijavalintatieto}
 import fi.oph.koski.log.KoskiAuditLogMessageField.{omaDataKumppani, omaDataOAuth2Scope, oppijaHenkiloOid}
 import fi.oph.koski.log.KoskiOperation.{KANSALAINEN_MYDATA_LISAYS, KANSALAINEN_MYDATA_POISTO, OAUTH2_ACCESS_TOKEN_LUONTI}
-import fi.oph.koski.log.{AuditLog, KoskiAuditLogMessage, KoskiOperation, Logging}
+import fi.oph.koski.log.{AuditLog, KoskiAuditLogMessage, Logging}
 import fi.oph.koski.omadataoauth2.OmaDataOAuth2ErrorType.invalid_request
 import fi.oph.koski.omadataoauth2.OmaDataOAuth2Security.generateSecret
 import fi.oph.koski.schema.{Finnish, Koodistokoodiviite, LocalizedString, Opiskeluoikeus, Oppija, TäydellisetHenkilötiedot}
 import fi.oph.koski.util.ChainingSyntax.eitherChainingOps
 
-class OmaDataOAuth2Service(oauth2Repository: OmaDataOAuth2Repository, val application: KoskiApplication, ovaraClient: OvaraClient) extends Logging with OmaDataOAuth2Config {
+class OmaDataOAuth2Service(oauth2Repository: OmaDataOAuth2Repository, val application: KoskiApplication) extends Logging with OmaDataOAuth2Config {
 
+  val ovaraClient: OvaraClient = application.ovaraClient
   var overridenCreateResultForUnitTests: Option[Either[OmaDataOAuth2Error, String]] = None
 
   def create(
