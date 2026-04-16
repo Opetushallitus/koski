@@ -1,27 +1,215 @@
 {
   "koodistoUri": "oppilaitosnumero",
+  "resourceUri": "https://virkailija.opintopolku.fi/koodisto-service/rest/codes/oppilaitosnumero",
+  "omistaja": "Opetushallitus",
+  "organisaatioOid": "1.2.246.562.10.00000000001",
+  "lukittu": null,
+  "withinCodes": [],
+  "includesCodes": [
+    {
+      "codesUri": "oppilaitoksenopetuskieli",
+      "codesVersion": 2,
+      "passive": false,
+      "nimi": {
+        "FI": "oppilaitoksen opetuskieli",
+        "SV": "oppilaitoksen opetuskieli",
+        "EN": "oppilaitoksen opetuskieli"
+      },
+      "kuvaus": {
+        "FI": "Käytössä organisaatiopalvelussa. \n\nOrganisaation kieli on mainittu OKMn tai VMn opetuksen- tai koulutuksen järjestäjän antamassa koulutustehtäväpäätöksessä. Koodistoon liittyvät tiedustelut yhteisetpalvelut@opintopolku.fi\nOpetushallitus varaa oikeuden muuttaa Opintopolun koodistoja, niissä olevia koodeja sekä niiden selitteitä ja kuvauksia\n\nYleisin kieli on suomi ja ruotsi tai niiden yhdistelmä.",
+        "SV": "Käytössä organisaatiopalvelussa. \n\nOrganisaation kieli on mainittu OKMn tai VMn opetuksen- tai koulutuksen järjestäjän antamassa koulutustehtäväpäätöksessä. Koodistoon liittyvät tiedustelut yhteisetpalvelut@opintopolku.fi\nOpetushallitus varaa oikeuden muuttaa Opintopolun koodistoja, niissä olevia koodeja sekä niiden selitteitä ja kuvauksia\n\nYleisin kieli on suomi ja ruotsi tai niiden yhdistelmä.",
+        "EN": "Käytössä organisaatiopalvelussa. \n\nOrganisaation kieli on mainittu OKMn tai VMn opetuksen- tai koulutuksen järjestäjän antamassa koulutustehtäväpäätöksessä. Koodistoon liittyvät tiedustelut yhteisetpalvelut@opintopolku.fi\nOpetushallitus varaa oikeuden muuttaa Opintopolun koodistoja, niissä olevia koodeja sekä niiden selitteitä ja kuvauksia\n\nYleisin kieli on suomi ja ruotsi tai niiden yhdistelmä."
+      }
+    },
+    {
+      "codesUri": "opetuspisteet",
+      "codesVersion": 1,
+      "passive": false,
+      "nimi": {
+        "FI": "opetuspisteet",
+        "SV": "opetuspisteet",
+        "EN": "opetuspisteet"
+      },
+      "kuvaus": {
+        "FI": "Toimipiste (opetuspiste) on kokonaisuus, jossa toiminta tapahtuu samassa tai läheisissä katuosoitteissa ja jossa rakennusten etäisyys toisistaan on enintään satoja metrejä. Toimipisteellä ei tarkoiteta organisaatiorakenteeseen perustuvaa toimintayksikköä vaan lähtökohtana on fyysinen kokonaisuus. Toimipisteen tunniste muodostuu Oppilaitoksen tunnisteesta ja toimipisteen järjestysnumerosta. Muutokset tähän koodistoon päivittyvät organisaatiopalvelussa tehdyillä päivityksillä.",
+        "SV": "opetuspisteet",
+        "EN": "opetuspisteet"
+      }
+    },
+    {
+      "codesUri": "posti",
+      "codesVersion": 2,
+      "passive": false,
+      "nimi": {
+        "FI": "posti",
+        "SV": "posti",
+        "EN": "posti"
+      },
+      "kuvaus": {
+        "FI": "Suomi on jaettu viisinumeroisiin postinumeroalueisiin. Postinumeron kaksi ensimmäistä numeroa määrittelevät, millä alueella postinumeron mukainen paikkakunta sijaitsee. Nämä numerot kertovat, mihin lajittelukeskukseen postit lähetetään. Postinumeron kolme viimeistä numeroa kertovat, mihin postinumeroalueen sisällä olevaan postitoimipaikkaan lähetys toimitetaan. Viimeinen numeroista kertoo, onko lähetys lähetetty postilokeroon vai katuosoitteeseen. Mikäli viimeinen numero on 1, se on tarkoitettu postilokeroon. Katuosoitteeseen tarkoitettu posti merkitään numerolla 0, joissain tapauksissa haja-asutusalueilla numerolla 5. Paljon postia saavilla yrityksillä ja yhteisöillä voi olla oma suurasiakaspostinumero. Erikoisena postinumerona on 99999 Korvatunturi eli Joulupukin posti.\n \nPosti jakaa suuret kaupungit omiin postinumeroalueisiinsa siten, että keskustan alue on aina 100-loppuinen ja mitä kauemmaksi keskustasta siirrytään, sen suuremmiksi viimeiset kolme numeroa yleensä kasvavat. Ensin edetään sataluvuilla, mutta suuria postinumeroalueita joudutaan usein pilkkomaan kymmenluvuilla. Pienet kaupungit ja kunnat saattavat muodostua vain yhdestä postinumeroalueesta, kuten esimerkiksi Kauniainen (02700) ja Kaskinen (64260).\n\nKoodistoon liittyvät tiedustelut yhteisetpalvelut@opintopolku.fi\nOpetushallitus varaa oikeuden muuttaa Opintopolun koodistoja, niissä olevia koodeja sekä niiden selitteitä ja kuvauksia",
+        "SV": "posti",
+        "EN": "posti"
+      }
+    },
+    {
+      "codesUri": "kunta",
+      "codesVersion": 2,
+      "passive": false,
+      "nimi": {
+        "SV": "kommun",
+        "FI": "kunta",
+        "EN": "municipality"
+      },
+      "kuvaus": {
+        "SV": "Kunta on tietyn alueen ja sen asukkaiden muodostama yhteisö. Kunta on rajoiltaan määrätty alue niin, että kunkin kunnan toiminta kohdistuu sen alueeseen, siellä asuviin ja oleskeleviin ihmisiin ja siellä tapahtuvaan toimintaan. Uusien kuntien perustamisesta päättää valtioneuvosto ja uusista kuntanumeroista valtiovarainministeriön kuntaosasto. Vuonna 1995 voimaan tullut kuntalaki tuntee virallisena kuntamuotona vain kunnan, mutta kunta voi käyttää kaupunki-nimitystä, jos se itse katsoo täyttävänsä kaupunkimaiselle yhdyskunnalle asetettavat vaatimukset. \n\nKoodistoon liittyvät tiedustelut yhteisetpalvelut@opintopolku.fi\nOpetushallitus varaa oikeuden muuttaa Opintopolun koodistoja, niissä olevia koodeja sekä niiden selitteitä ja kuvauksia",
+        "FI": "Kunta on tietyn alueen ja sen asukkaiden muodostama yhteisö. Kunta on rajoiltaan määrätty alue niin, että kunkin kunnan toiminta kohdistuu sen alueeseen, siellä asuviin ja oleskeleviin ihmisiin ja siellä tapahtuvaan toimintaan. Uusien kuntien perustamisesta päättää valtioneuvosto ja uusista kuntanumeroista valtiovarainministeriön kuntaosasto. Vuonna 1995 voimaan tullut kuntalaki tuntee virallisena kuntamuotona vain kunnan, mutta kunta voi käyttää kaupunki-nimitystä, jos se itse katsoo täyttävänsä kaupunkimaiselle yhdyskunnalle asetettavat vaatimukset. \n\nKoodistoon liittyvät tiedustelut yhteisetpalvelut@opintopolku.fi\nOpetushallitus varaa oikeuden muuttaa Opintopolun koodistoja, niissä olevia koodeja sekä niiden selitteitä ja kuvauksia",
+        "EN": "Kunta on tietyn alueen ja sen asukkaiden muodostama yhteisö. Kunta on rajoiltaan määrätty alue niin, että kunkin kunnan toiminta kohdistuu sen alueeseen, siellä asuviin ja oleskeleviin ihmisiin ja siellä tapahtuvaan toimintaan. Uusien kuntien perustamisesta päättää valtioneuvosto ja uusista kuntanumeroista valtiovarainministeriön kuntaosasto. Vuonna 1995 voimaan tullut kuntalaki tuntee virallisena kuntamuotona vain kunnan, mutta kunta voi käyttää kaupunki-nimitystä, jos se itse katsoo täyttävänsä kaupunkimaiselle yhdyskunnalle asetettavat vaatimukset. \n\nKoodistoon liittyvät tiedustelut yhteisetpalvelut@opintopolku.fi\nOpetushallitus varaa oikeuden muuttaa Opintopolun koodistoja, niissä olevia koodeja sekä niiden selitteitä ja kuvauksia"
+      }
+    },
+    {
+      "codesUri": "kunta",
+      "codesVersion": 1,
+      "passive": true,
+      "nimi": {
+        "FI": "kunta",
+        "SV": "kommun",
+        "EN": "municipality"
+      },
+      "kuvaus": {
+        "FI": "Kunta on tietyn alueen ja sen asukkaiden muodostama yhteisö. Kunta on rajoiltaan määrätty alue niin, että kunkin kunnan toiminta kohdistuu sen alueeseen, siellä asuviin ja oleskeleviin ihmisiin ja siellä tapahtuvaan toimintaan. Uusien kuntien perustamisesta päättää valtioneuvosto ja uusista kuntanumeroista valtiovarainministeriön kuntaosasto. Vuonna 1995 voimaan tullut kuntalaki tuntee virallisena kuntamuotona vain kunnan, mutta kunta voi käyttää kaupunki-nimitystä, jos se itse katsoo täyttävänsä kaupunkimaiselle yhdyskunnalle asetettavat vaatimukset.",
+        "SV": "kommun",
+        "EN": "municipality"
+      }
+    },
+    {
+      "codesUri": "posti",
+      "codesVersion": 1,
+      "passive": true,
+      "nimi": {
+        "FI": "posti",
+        "SV": "posti",
+        "EN": "posti"
+      },
+      "kuvaus": {
+        "FI": "Suomi on jaettu viisinumeroisiin postinumeroalueisiin. Postinumeron kaksi ensimmäistä numeroa määrittelevät, millä alueella postinumeron mukainen paikkakunta sijaitsee. Nämä numerot kertovat, mihin lajittelukeskukseen postit lähetetään. Postinumeron kolme viimeistä numeroa kertovat, mihin postinumeroalueen sisällä olevaan postitoimipaikkaan lähetys toimitetaan. Viimeinen numeroista kertoo, onko lähetys lähetetty postilokeroon vai katuosoitteeseen. Mikäli viimeinen numero on 1, se on tarkoitettu postilokeroon. Katuosoitteeseen tarkoitettu posti merkitään numerolla 0, joissain tapauksissa haja-asutusalueilla numerolla 5. Paljon postia saavilla yrityksillä ja yhteisöillä voi olla oma suurasiakaspostinumero. Erikoisena postinumerona on 99999 Korvatunturi eli Joulupukin posti.\n \nPosti jakaa suuret kaupungit omiin postinumeroalueisiinsa siten, että keskustan alue on aina 100-loppuinen ja mitä kauemmaksi keskustasta siirrytään, sen suuremmiksi viimeiset kolme numeroa yleensä kasvavat. Ensin edetään sataluvuilla, mutta suuria postinumeroalueita joudutaan usein pilkkomaan kymmenluvuilla. Pienet kaupungit ja kunnat saattavat muodostua vain yhdestä postinumeroalueesta, kuten esimerkiksi Kauniainen (02700) ja Kaskinen (64260).",
+        "SV": "posti",
+        "EN": "posti"
+      }
+    },
+    {
+      "codesUri": "oppilaitostyyppi",
+      "codesVersion": 1,
+      "passive": false,
+      "nimi": {
+        "FI": "oppilaitostyyppi",
+        "SV": "läroanstaltstyp",
+        "EN": "Type of educational institution"
+      },
+      "kuvaus": {
+        "FI": "Koulutusta koskeva lainsäädäntö on uudistettu pääosin vuoden 1999 alusta. Oppilaitostyyppiluokituksen uudistuksessa on huomioitu lainsäädännön uudistus. Uudistetussa oppilaitostyyppiluokituksessa ryhmä 11 Peruskoulut sisältää aikaisemman luokituksen ryhmät: peruskoulun ala-asteen koulut, peruskoulun yläasteen koulut, peruskoulua korvaavat koulut sekä harjoittelukouluista ja muut peruskoulu-/tai lukioasteen käsittävistä kouluista vain perusopetusta antavat oppilaitokset. Uudistetun luokituksen ryhmä lukiot sisältää lukiokoulutuksen lainsäädännön muututtua lukiot ja aikuislukiot.\nAmmatillisten oppilaitosten osalta perinteiset eri alojen ammatilliset oppi-laitostyypit on yhdistetty yhdeksi ryhmäksi ammatilliset oppilaitokset. Am-matillisia erityisoppilaitoksia ovat oppilaitokset, jotka ovat tarkoitettuja opiskelijoille, joilla on vamman, sairauden tai muun syyn johdosta vaikeuk-sia selviytyä opinnoista ilman erityistoimenpiteitä. Ammatilliset erikoisoppilaitokset ovat elinkeinoelämän, useimmiten teollisuuden tai kaupan ylläpitämiä ammatillisia oppilaitoksia, joissa annetaan pääasiassa lisäkoulutusta tai tutkintoon valmentavaa koulutusta.\nMuilta osin on oppilaitostyyppiluokituksessa muutettu lähinnä vain oppilaitosten ryhmittelyn numerointia ja oppilaitostyyppien järjestystä. \nKoodistoon liittyvät tiedustelut yhteisetpalvelut@opintopolku.fi\nOpetushallitus varaa oikeuden muuttaa Opintopolun koodistoja, niissä olevia koodeja sekä niiden selitteitä ja kuvauksia.\n\nLuokitukseen on lisätty Opetushallituksen tarpeisiin oppilaitostyyppejä jota eivät ole virallisessa Tilastokeskuksen oppilaitostyyppiluokituksessa. Lisätttyjä oppilaitostyyppejä ovat 93 Muut koulutuksen järjestäjät, 91 Kirjeoppilaitokset, neuvontajärjestöt ja 67 taiteen perusopetuksen oppilaitokset (ei musiikki)",
+        "SV": "läroanstaltstyp",
+        "EN": "Type of educational institution"
+      }
+    },
+    {
+      "codesUri": "oppilaitoksenopetuskieli",
+      "codesVersion": 1,
+      "passive": true,
+      "nimi": {
+        "SV": "oppilaitoksen opetuskieli",
+        "FI": "oppilaitoksen opetuskieli",
+        "EN": "oppilaitoksen opetuskieli"
+      },
+      "kuvaus": {
+        "SV": "oppilaitoksen opetuskieli",
+        "FI": "Käytössä organisaatiopalvelussa. \n\nOrganisaation kieli on mainittu OKMn tai VMn opetuksen- tai koulutuksen järjestäjän antamassa koulutustehtäväpäätöksessä. \n\nYleisin kieli on suomi ja ruotsi tai niiden yhdistelmä.",
+        "EN": "oppilaitoksen opetuskieli"
+      }
+    },
+    {
+      "codesUri": "urheilijankoulutus",
+      "codesVersion": 1,
+      "passive": false,
+      "nimi": {
+        "SV": "urheilijan koulutus",
+        "FI": "urheilijan koulutus",
+        "EN": "urheilijan koulutus"
+      },
+      "kuvaus": {
+        "SV": "urheilijan koulutus",
+        "FI": "urheilijan koulutus",
+        "EN": "urheilijan koulutus"
+      }
+    }
+  ],
+  "levelsWithCodes": [
+    {
+      "codesUri": "ytlnlukiokoodit",
+      "codesVersion": 1,
+      "passive": true,
+      "nimi": {
+        "FI": "YTLn lukiokoodit",
+        "SV": "YTLn lukiokoodit",
+        "EN": "YTLn lukiokoodit"
+      },
+      "kuvaus": {
+        "FI": "Oppilaitoskoodisto ja YTLn lukioiden koodit on rinnastettu toisiinsa. Ensijaisena avaimena on YTLn lukiokoodit. Tämä koodisto pitää sisällään YTLn lukioille antamat nelinumeroiset koodit. Koodisto ei ole vielä valmis. Kaikkia rinnastuksia ei ole vielä tehty.\nYlläpitäjä on Heidi Bergström.",
+        "SV": "Oppilaitoskoodisto ja YTLn lukioiden koodit on rinnastettu toisiinsa. Tämä koodisto pitää sisällään YTLn lukioille antamat nelinumeroiset koodit.",
+        "EN": "Oppilaitoskoodisto ja YTLn lukioiden koodit on rinnastettu toisiinsa. Tämä koodisto pitää sisällään YTLn lukioille antamat nelinumeroiset koodit."
+      }
+    }
+  ],
+  "codesGroupUri": "oppilaitoskoodistot",
+  "version": 30,
   "versio": 1,
+  "paivitysPvm": "2022-11-25",
+  "paivittajaOid": "1.2.246.562.24.25909319372",
+  "voimassaAlkuPvm": "2013-01-01",
+  "voimassaLoppuPvm": null,
+  "tila": "LUONNOS",
   "metadata": [
     {
       "kieli": "FI",
       "nimi": "oppilaitosnumero",
-      "kuvaus": "Tilastokeskus on antanut oppilaitoksille yksilöintitunnuksen. Tunnus on viisimerkkinen ja tunnukselle on varattu numerosarja 00000-99999. Tunnus on annettu ja annetaan ainoastaa pääkoululle. Samaa oppilaitostunnusta käytetään kaikissa oppilaitokseen liittyvissä toimintayksiköissä. Tietoa ylläpidetään organisaatiopalvelussa josta se kopioituu tähän koodistoon.\n\nKoodistoon liittyvät tiedustelut yhteisetpalvelut@opintopolku.fi\nOpetushallitus varaa oikeuden muuttaa Opintopolun koodistoja ja niissä olevia koodeja."
-    },
-    {
-      "kieli": "SV",
-      "nimi": "oppilaitosnumero",
-      "kuvaus": "Tilastokeskus on antanut oppilaitoksille yksilöintitunnuksen. Tunnus on viisimerkkinen ja tunnukselle on varattu numerosarja 00000-99999. Tunnus on annettu ja annetaan ainoastaa pääkoululle. Samaa oppilaitostunnusta käytetään kaikissa oppilaitokseen liittyvissä toimintayksiköissä. Tietoa ylläpidetään organisaatiopalvelussa josta se kopioituu tähän koodistoon.\n\nKoodistoon liittyvät tiedustelut yhteisetpalvelut@opintopolku.fi\nOpetushallitus varaa oikeuden muuttaa Opintopolun koodistoja ja niissä olevia koodeja."
+      "kuvaus": "Tilastokeskus on antanut oppilaitoksille yksilöintitunnuksen. Tunnus on viisimerkkinen ja tunnukselle on varattu numerosarja 00000-99999. Tunnus on annettu ja annetaan ainoastaa pääkoululle. Samaa oppilaitostunnusta käytetään kaikissa oppilaitokseen liittyvissä toimintayksiköissä. Tietoa ylläpidetään organisaatiopalvelussa josta se kopioituu tähän koodistoon.\n\nKoodistoon liittyvät tiedustelut yhteisetpalvelut@opintopolku.fi\nOpetushallitus varaa oikeuden muuttaa Opintopolun koodistoja ja niissä olevia koodeja.",
+      "kayttoohje": null,
+      "kasite": null,
+      "kohdealue": null,
+      "sitovuustaso": null,
+      "kohdealueenOsaAlue": null,
+      "toimintaymparisto": null,
+      "tarkentaaKoodistoa": null,
+      "huomioitavaKoodisto": null,
+      "koodistonLahde": null
     },
     {
       "kieli": "EN",
       "nimi": "oppilaitosnumero",
-      "kuvaus": "Tilastokeskus on antanut oppilaitoksille yksilöintitunnuksen. Tunnus on viisimerkkinen ja tunnukselle on varattu numerosarja 00000-99999. Tunnus on annettu ja annetaan ainoastaa pääkoululle. Samaa oppilaitostunnusta käytetään kaikissa oppilaitokseen liittyvissä toimintayksiköissä. Tietoa ylläpidetään organisaatiopalvelussa josta se kopioituu tähän koodistoon.\n\nKoodistoon liittyvät tiedustelut yhteisetpalvelut@opintopolku.fi\nOpetushallitus varaa oikeuden muuttaa Opintopolun koodistoja ja niissä olevia koodeja."
+      "kuvaus": "Tilastokeskus on antanut oppilaitoksille yksilöintitunnuksen. Tunnus on viisimerkkinen ja tunnukselle on varattu numerosarja 00000-99999. Tunnus on annettu ja annetaan ainoastaa pääkoululle. Samaa oppilaitostunnusta käytetään kaikissa oppilaitokseen liittyvissä toimintayksiköissä. Tietoa ylläpidetään organisaatiopalvelussa josta se kopioituu tähän koodistoon.\n\nKoodistoon liittyvät tiedustelut yhteisetpalvelut@opintopolku.fi\nOpetushallitus varaa oikeuden muuttaa Opintopolun koodistoja ja niissä olevia koodeja.",
+      "kayttoohje": null,
+      "kasite": null,
+      "kohdealue": null,
+      "sitovuustaso": null,
+      "kohdealueenOsaAlue": null,
+      "toimintaymparisto": null,
+      "tarkentaaKoodistoa": null,
+      "huomioitavaKoodisto": null,
+      "koodistonLahde": null
+    },
+    {
+      "kieli": "SV",
+      "nimi": "oppilaitosnumero",
+      "kuvaus": "Tilastokeskus on antanut oppilaitoksille yksilöintitunnuksen. Tunnus on viisimerkkinen ja tunnukselle on varattu numerosarja 00000-99999. Tunnus on annettu ja annetaan ainoastaa pääkoululle. Samaa oppilaitostunnusta käytetään kaikissa oppilaitokseen liittyvissä toimintayksiköissä. Tietoa ylläpidetään organisaatiopalvelussa josta se kopioituu tähän koodistoon.\n\nKoodistoon liittyvät tiedustelut yhteisetpalvelut@opintopolku.fi\nOpetushallitus varaa oikeuden muuttaa Opintopolun koodistoja ja niissä olevia koodeja.",
+      "kayttoohje": null,
+      "kasite": null,
+      "kohdealue": null,
+      "sitovuustaso": null,
+      "kohdealueenOsaAlue": null,
+      "toimintaymparisto": null,
+      "tarkentaaKoodistoa": null,
+      "huomioitavaKoodisto": null,
+      "koodistonLahde": null
     }
   ],
-  "codesGroupUri": "oppilaitoskoodistot",
-  "voimassaAlkuPvm": "2013-01-01",
-  "organisaatioOid": "1.2.246.562.10.00000000001",
-  "withinCodes": [],
-  "tila": "LUONNOS",
-  "version": 30
+  "codesVersions": []
 }

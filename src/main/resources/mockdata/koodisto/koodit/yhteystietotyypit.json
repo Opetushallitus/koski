@@ -34,12 +34,12 @@
         "kieli": "FI"
       },
       {
-        "nimi": null,
+        "nimi": "Tillfällig utländsk adress (Befolkningsdatasystemet)",
         "kuvaus": null,
         "kieli": "SV"
       },
       {
-        "nimi": null,
+        "nimi": "VTJ tilapäinen ulkomainen osoite",
         "kuvaus": null,
         "kieli": "EN"
       }
@@ -59,12 +59,12 @@
         "kieli": "FI"
       },
       {
-        "nimi": null,
+        "nimi": "BDS adress i hemlandet",
         "kuvaus": null,
         "kieli": "SV"
       },
       {
-        "nimi": null,
+        "nimi": "VTJ kotimainen postiosoite",
         "kuvaus": null,
         "kieli": "EN"
       }
@@ -84,12 +84,12 @@
         "kieli": "FI"
       },
       {
-        "nimi": null,
+        "nimi": "BDS adress utomlands",
         "kuvaus": null,
         "kieli": "SV"
       },
       {
-        "nimi": null,
+        "nimi": "VTJ ulkomainen postiosoite",
         "kuvaus": null,
         "kieli": "EN"
       }
@@ -109,7 +109,7 @@
         "kieli": "FI"
       },
       {
-        "nimi": "Oikeustulkkirekisterin yhteystiedot",
+        "nimi": "Kontaktuppgifter till Registret över rättstolkar",
         "kuvaus": null,
         "kieli": "SV"
       },
@@ -135,7 +135,7 @@
         "kieli": "FI"
       },
       {
-        "nimi": "Auktorisoitujen kääntäjien rekisterin yhteystiedot",
+        "nimi": "Kontaktuppgifter till Registret över auktoriserade translatorer",
         "kuvaus": null,
         "kieli": "SV"
       },
@@ -322,12 +322,12 @@
         "kieli": "FI"
       },
       {
-        "nimi": null,
+        "nimi": "Elektronisk adress (Befolkningsdatasystemet)",
         "kuvaus": null,
         "kieli": "SV"
       },
       {
-        "nimi": null,
+        "nimi": "VTJ Sähköinen osoite",
         "kuvaus": null,
         "kieli": "EN"
       }
@@ -347,12 +347,12 @@
         "kieli": "FI"
       },
       {
-        "nimi": null,
+        "nimi": "Tillfällig inhemsk adress (Befolkningsdatasystemet)",
         "kuvaus": null,
         "kieli": "SV"
       },
       {
-        "nimi": null,
+        "nimi": "VTJ tilapäinen kotimainen osoite",
         "kuvaus": null,
         "kieli": "EN"
       }

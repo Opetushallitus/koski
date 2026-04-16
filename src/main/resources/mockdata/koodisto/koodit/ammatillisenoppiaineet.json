@@ -406,6 +406,138 @@
   {
     "metadata": [
       {
+        "nimi": "Fysikaaliset ja kemialliset ilmiöt ja niiden soveltaminen",
+        "kuvaus": "Fysikaaliset ja kemialliset ilmiöt ja niiden soveltaminen",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Fysikaliska och kemiska fenomen och tillämpning av dem",
+        "kuvaus": "Fysikaliska och kemiska fenomen och tillämpning av dem",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Physical and chemical phenomena and their application",
+        "kuvaus": "Physical and chemical phenomena and their application",
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [
+      {
+        "codeElementUri": "tutkinnonosat_108356",
+        "codeElementVersion": 1,
+        "passive": false
+      }
+    ],
+    "includesCodeElements": [
+      {
+        "codeElementUri": "osaamistavoitteet_1101",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1108",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1109",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1106",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1104",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1102",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1103",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1378",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1380",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1375",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1115",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1376",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1377",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1113",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1379",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1374",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1110",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1111",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1373",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1118",
+        "codeElementVersion": 1,
+        "passive": false
+      }
+    ],
+    "levelsWithCodeElements": [],
+    "koodiUri": "ammatillisenoppiaineet_mlfk26",
+    "versio": 1,
+    "koodiArvo": "MLFK26"
+  },
+  {
+    "metadata": [
+      {
         "nimi": "Matematiikka ja matematiikan soveltaminen",
         "kuvaus": "Käytössä YTO:t",
         "lyhytNimi": "Matematiikka ja matematiikan soveltaminen",
@@ -597,6 +729,188 @@
     "koodiUri": "ammatillisenoppiaineet_mlma",
     "versio": 1,
     "koodiArvo": "MLMA"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "Matematiikka ja matematiikan soveltaminen",
+        "kuvaus": "Matematiikka ja matematiikan soveltaminen",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Matematik och tillämpad matematik",
+        "kuvaus": "Matematik och tillämpad matematik",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Mathematics and application of mathematics",
+        "kuvaus": "Mathematics and application of mathematics",
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [
+      {
+        "codeElementUri": "tutkinnonosat_108356",
+        "codeElementVersion": 1,
+        "passive": false
+      }
+    ],
+    "includesCodeElements": [
+      {
+        "codeElementUri": "osaamistavoitteet_1136",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1131",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1130",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1144",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1141",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1139",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1389",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1387",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1388",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1384",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1385",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1383",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1145",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1146",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1394",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1391",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1392",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1147",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1390",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1393",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1382",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1386",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1381",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1127",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1128",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1125",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1123",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1120",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1121",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1150",
+        "codeElementVersion": 1,
+        "passive": false
+      }
+    ],
+    "levelsWithCodeElements": [],
+    "koodiUri": "ammatillisenoppiaineet_mlma26",
+    "versio": 1,
+    "koodiArvo": "MLMA26"
   },
   {
     "metadata": [
@@ -1368,26 +1682,466 @@
     "koodiArvo": "VVAI22"
   },
   {
-    "koodiUri": "ammatillisenoppiaineet_vvtk26",
-    "koodiArvo": "VVTK26",
     "metadata": [
       {
-        "nimi": "Viestintä ja vuorovaikutus vieraalla kielellä",
-        "lyhytNimi": "Viestintä ja vuorovaikutus vieraalla kielellä",
+        "nimi": "Viestintä ja vuorovaikutus äidinkielellä",
+        "kuvaus": "Viestintä ja vuorovaikutus äidinkielellä",
         "kieli": "FI"
       },
       {
-        "nimi": "Kommunikation och interaktion",
-        "lyhytNimi": "Kommunikation och interaktion",
+        "nimi": "Kommunikation och interaktion på modersmålet",
+        "kuvaus": "Kommunikation och interaktion på modersmålet",
         "kieli": "SV"
       },
       {
-        "nimi": "Communication and interaction in foreign tongue",
-        "lyhytNimi": "Communication and interaction in mother tongue",
+        "nimi": "Communication and interaction in mother tongue",
+        "kuvaus": "Communication and interaction in mother tongue",
         "kieli": "EN"
       }
     ],
-    "versio": 1
+    "withinCodeElements": [
+      {
+        "codeElementUri": "tutkinnonosat_108357",
+        "codeElementVersion": 1,
+        "passive": false
+      }
+    ],
+    "includesCodeElements": [
+      {
+        "codeElementUri": "osaamistavoitteet_1439",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1249",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1246",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1250",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1244",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1248",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1245",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1242",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1243",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1440",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1486",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1484",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1485",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1478",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1481",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1476",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1477",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1474",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1475",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1470",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1472",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1468",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1469",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1462",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1466",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1458",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1459",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1454",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1455",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1448",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1450",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1445",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1447",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1292",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1293",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1290",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1291",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1288",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1289",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1286",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1287",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1483",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1296",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1480",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1482",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1294",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1473",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1295",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1479",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1467",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1471",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1464",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1465",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1460",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1463",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1456",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1457",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1452",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1453",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1449",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1451",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1443",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1444",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1441",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1442",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1258",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1256",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1253",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1254",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1251",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1252",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1297",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1261",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1259",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1277",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1274",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1275",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1273",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1284",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1285",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1282",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1283",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1280",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1281",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1278",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1279",
+        "codeElementVersion": 1,
+        "passive": false
+      }
+    ],
+    "levelsWithCodeElements": [],
+    "koodiUri": "ammatillisenoppiaineet_vvai26",
+    "versio": 1,
+    "koodiArvo": "VVAI26"
   },
   {
     "metadata": [
@@ -1641,6 +2395,128 @@
     "koodiUri": "ammatillisenoppiaineet_vvtd",
     "versio": 1,
     "koodiArvo": "VVTD"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "Toiminta digitaalisessa ympäristössä",
+        "kuvaus": "Toiminta digitaalisessa ympäristössä",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Verksamhet i den digitala miljön",
+        "kuvaus": "Verksamhet i den digitala miljön",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Operating in a digital environment",
+        "kuvaus": "Operating in a digital environment",
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [
+      {
+        "codeElementUri": "tutkinnonosat_108357",
+        "codeElementVersion": 1,
+        "passive": false
+      }
+    ],
+    "includesCodeElements": [
+      {
+        "codeElementUri": "osaamistavoitteet_1411",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1413",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1189",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1405",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1190",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1406",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1187",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1188",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1410",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1412",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1408",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1409",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1195",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1404",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1407",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1403",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1414",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1415",
+        "codeElementVersion": 1,
+        "passive": false
+      }
+    ],
+    "levelsWithCodeElements": [],
+    "koodiUri": "ammatillisenoppiaineet_vvtd26",
+    "versio": 1,
+    "koodiArvo": "VVTD26"
   },
   {
     "metadata": [
@@ -1915,6 +2791,273 @@
   {
     "metadata": [
       {
+        "nimi": "Viestintä ja vuorovaikutus toisella kotimaisella kielellä",
+        "kuvaus": "Viestintä ja vuorovaikutus toisella kotimaisella kielellä",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Kommunikation och interaktion på det andra inhemska språket",
+        "kuvaus": "Kommunikation och interaktion på det andra inhemska språket",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Communication and interaction in the second national language",
+        "kuvaus": "Communication and interaction in the second national language",
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [
+      {
+        "codeElementUri": "tutkinnonosat_108357",
+        "codeElementVersion": 1,
+        "passive": false
+      }
+    ],
+    "includesCodeElements": [
+      {
+        "codeElementUri": "osaamistavoitteet_1163",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1223",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1164",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1161",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1162",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1159",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1160",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1157",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1158",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1230",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1171",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1231",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1228",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1169",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1170",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1226",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1167",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1168",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1224",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1165",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1166",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1238",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1236",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1237",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1234",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1436",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1437",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1232",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1433",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1434",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1429",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1430",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1428",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1431",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1438",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1427",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1432",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1435",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1221",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1173",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1172",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1155",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1156",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1153",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1154",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1151",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1152",
+        "codeElementVersion": 1,
+        "passive": false
+      }
+    ],
+    "levelsWithCodeElements": [],
+    "koodiUri": "ammatillisenoppiaineet_vvtk26",
+    "versio": 1,
+    "koodiArvo": "VVTK26"
+  },
+  {
+    "metadata": [
+      {
         "nimi": "Taide ja luova ilmaisu",
         "kuvaus": "käytössä YTO:t",
         "lyhytNimi": "Taide ja luova ilmaisu",
@@ -2011,6 +3154,88 @@
     "koodiUri": "ammatillisenoppiaineet_vvtl",
     "versio": 1,
     "koodiArvo": "VVTL"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "Taide ja luova ilmaisu",
+        "kuvaus": "Taide ja luova ilmaisu",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Konst och kreativt uttryck",
+        "kuvaus": "Konst och kreativt uttryck",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Art and creative expression",
+        "kuvaus": "Art and creative expression",
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [
+      {
+        "codeElementUri": "tutkinnonosat_108357",
+        "codeElementVersion": 1,
+        "passive": false
+      }
+    ],
+    "includesCodeElements": [
+      {
+        "codeElementUri": "osaamistavoitteet_1175",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1395",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1397",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1401",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1402",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1398",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1400",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1396",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1177",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1399",
+        "codeElementVersion": 1,
+        "passive": false
+      }
+    ],
+    "levelsWithCodeElements": [],
+    "koodiUri": "ammatillisenoppiaineet_vvtl26",
+    "versio": 1,
+    "koodiArvo": "VVTL26"
   },
   {
     "metadata": [
@@ -2131,6 +3356,108 @@
     "koodiUri": "ammatillisenoppiaineet_vvvk",
     "versio": 1,
     "koodiArvo": "VVVK"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "Viestintä ja vuorovaikutus vieraalla kielellä",
+        "kuvaus": "Viestintä ja vuorovaikutus vieraalla kielellä",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Kommunikation och interaktion på ett främmande språk",
+        "kuvaus": "Kommunikation och interaktion på ett främmande språk",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Communication and interaction in a foreign language",
+        "kuvaus": "Communication and interaction in a foreign language",
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [
+      {
+        "codeElementUri": "tutkinnonosat_108357",
+        "codeElementVersion": 1,
+        "passive": false
+      }
+    ],
+    "includesCodeElements": [
+      {
+        "codeElementUri": "osaamistavoitteet_1426",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1423",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1425",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1421",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1422",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1416",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1419",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1207",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1204",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1205",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1420",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1424",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1417",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1418",
+        "codeElementVersion": 1,
+        "passive": false
+      }
+    ],
+    "levelsWithCodeElements": [],
+    "koodiUri": "ammatillisenoppiaineet_vvvk26",
+    "versio": 1,
+    "koodiArvo": "VVVK26"
   },
   {
     "metadata": [
@@ -2349,6 +3676,255 @@
   {
     "metadata": [
       {
+        "nimi": "Kestävän kehityksen edistäminen",
+        "kuvaus": "Kestävän kehityksen edistäminen",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Främjande av hållbar utveckling",
+        "kuvaus": "Främjande av hållbar utveckling",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Promoting sustainable development",
+        "kuvaus": "Promoting sustainable development",
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [
+      {
+        "codeElementUri": "tutkinnonosat_108358",
+        "codeElementVersion": 1,
+        "passive": false
+      }
+    ],
+    "includesCodeElements": [
+      {
+        "codeElementUri": "osaamistavoitteet_1303",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1301",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1302",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1300",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1000",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1001",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1008",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1009",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1006",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1007",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1004",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1005",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1002",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1305",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1003",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1306",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1299",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1304",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1298",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1010",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1011",
+        "codeElementVersion": 1,
+        "passive": false
+      }
+    ],
+    "levelsWithCodeElements": [],
+    "koodiUri": "ammatillisenoppiaineet_ytkk26",
+    "versio": 1,
+    "koodiArvo": "YTKK26"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "Liikunta ja terveystieto sekä työkyvyn ja hyvinvoinnin edistäminen",
+        "kuvaus": "Liikunta ja terveystieto sekä työkyvyn ja hyvinvoinnin edistäminen",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Gymnastik och hälsokunskap samt främjande av arbetsförmågan och välbefinnandet",
+        "kuvaus": "Gymnastik och hälsokunskap samt främjande av arbetsförmågan och välbefinnandet",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Physical and health education and promoting ability to work and wellbeing at work",
+        "kuvaus": "Physical and health education and promoting ability to work and wellbeing at work",
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [
+      {
+        "codeElementUri": "tutkinnonosat_108358",
+        "codeElementVersion": 1,
+        "passive": false
+      }
+    ],
+    "includesCodeElements": [
+      {
+        "codeElementUri": "osaamistavoitteet_1308",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1023",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1022",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1320",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1318",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1319",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1312",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1315",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1307",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1310",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1316",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1317",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1313",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1314",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1309",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1311",
+        "codeElementVersion": 1,
+        "passive": false
+      }
+    ],
+    "levelsWithCodeElements": [],
+    "koodiUri": "ammatillisenoppiaineet_ytltth26",
+    "versio": 1,
+    "koodiArvo": "YTLTTH26"
+  },
+  {
+    "metadata": [
+      {
         "nimi": "Opiskelu- ja urasuunnitteluvalmiudet",
         "kuvaus": "Käytössä YTO:t",
         "lyhytNimi": "Opiskelu- ja urasuunnitteluvalmiudet",
@@ -2460,6 +4036,98 @@
     "koodiUri": "ammatillisenoppiaineet_ytou",
     "versio": 1,
     "koodiArvo": "YTOU"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "Opiskelu- ja urasuunnitteluvalmiudet",
+        "kuvaus": "Opiskelu- ja urasuunnitteluvalmiudet",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Färdigheter i studie- och karriärplanering",
+        "kuvaus": "Färdigheter i studie- och karriärplanering",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Study and career planning capabilities",
+        "kuvaus": "Study and career planning capabilities",
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [
+      {
+        "codeElementUri": "tutkinnonosat_108358",
+        "codeElementVersion": 1,
+        "passive": false
+      }
+    ],
+    "includesCodeElements": [
+      {
+        "codeElementUri": "osaamistavoitteet_1339",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1340",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1337",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1338",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1333",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1334",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1336",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1335",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1331",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1332",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1330",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1341",
+        "codeElementVersion": 1,
+        "passive": false
+      }
+    ],
+    "levelsWithCodeElements": [],
+    "koodiUri": "ammatillisenoppiaineet_ytou26",
+    "versio": 1,
+    "koodiArvo": "YTOU26"
   },
   {
     "metadata": [
@@ -2719,6 +4387,153 @@
   {
     "metadata": [
       {
+        "nimi": "Työelämässä toimiminen",
+        "kuvaus": "Työelämässä toimiminen",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Att verka i arbetslivet",
+        "kuvaus": "Att verka i arbetslivet",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Operating in the world of work",
+        "kuvaus": "Operating in the world of work",
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [
+      {
+        "codeElementUri": "tutkinnonosat_108358",
+        "codeElementVersion": 1,
+        "passive": false
+      }
+    ],
+    "includesCodeElements": [
+      {
+        "codeElementUri": "osaamistavoitteet_1358",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1063",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1355",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1061",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1357",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1350",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1351",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1068",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1067",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1064",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1347",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1065",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1348",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1345",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1346",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1343",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1344",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1356",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1353",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1354",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1349",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1352",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1342",
+        "codeElementVersion": 1,
+        "passive": false
+      }
+    ],
+    "levelsWithCodeElements": [],
+    "koodiUri": "ammatillisenoppiaineet_yttt26",
+    "versio": 1,
+    "koodiArvo": "YTTT26"
+  },
+  {
+    "metadata": [
+      {
         "nimi": "Yhteiskunnassa ja kansalaisena toimiminen",
         "kuvaus": "Käytössä YTO:t",
         "lyhytNimi": "yhteiskunnassa ja kansalaisena toimiminen",
@@ -2864,6 +4679,133 @@
   {
     "metadata": [
       {
+        "nimi": "Yhteiskunnassa ja kansalaisena toimiminen",
+        "kuvaus": "Yhteiskunnassa ja kansalaisena toimiminen",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Att verka i samhället och som medborgare",
+        "kuvaus": "Att verka i samhället och som medborgare",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Operating as a member of society and a citizen",
+        "kuvaus": "Operating as a member of society and a citizen",
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [
+      {
+        "codeElementUri": "tutkinnonosat_108358",
+        "codeElementVersion": 1,
+        "passive": false
+      }
+    ],
+    "includesCodeElements": [
+      {
+        "codeElementUri": "osaamistavoitteet_1359",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1081",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1080",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1368",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1372",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1363",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1364",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1370",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1371",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1361",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1367",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1369",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1085",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1365",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1086",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1366",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1083",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1360",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1362",
+        "codeElementVersion": 1,
+        "passive": false
+      }
+    ],
+    "levelsWithCodeElements": [],
+    "koodiUri": "ammatillisenoppiaineet_ytyk26",
+    "versio": 1,
+    "koodiArvo": "YTYK26"
+  },
+  {
+    "metadata": [
+      {
         "nimi": "Yrittäjyys ja yrittäjämäinen toiminta",
         "kuvaus": "Käytössä YTO:t",
         "lyhytNimi": "Yrittäjyys ja yrittäjämäinen toiminta",
@@ -2945,6 +4887,93 @@
     "koodiUri": "ammatillisenoppiaineet_ytyy",
     "versio": 1,
     "koodiArvo": "YTYY"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "Yrittäjyys ja yrittäjämäinen toiminta",
+        "kuvaus": "Yrittäjyys ja yrittäjämäinen toiminta",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Företagsamhet och företagarinriktad verksamhet",
+        "kuvaus": "Företagsamhet och företagarinriktad verksamhet",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Entrepreneurship and entrepreneurial activities",
+        "kuvaus": "Entrepreneurship and entrepreneurial activities",
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [
+      {
+        "codeElementUri": "tutkinnonosat_108358",
+        "codeElementVersion": 1,
+        "passive": false
+      }
+    ],
+    "includesCodeElements": [
+      {
+        "codeElementUri": "osaamistavoitteet_1037",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1328",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1038",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1326",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1325",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1329",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1327",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1324",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1322",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1323",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "osaamistavoitteet_1321",
+        "codeElementVersion": 1,
+        "passive": false
+      }
+    ],
+    "levelsWithCodeElements": [],
+    "koodiUri": "ammatillisenoppiaineet_ytyy26",
+    "versio": 1,
+    "koodiArvo": "YTYY26"
   },
   {
     "metadata": [

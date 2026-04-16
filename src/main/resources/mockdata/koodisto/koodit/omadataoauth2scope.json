@@ -36,13 +36,13 @@
         "kieli": "FI"
       },
       {
-        "nimi": "Kaikki henkilötiedot (hetu, syntymäaika, nimi, oppijanumero)",
+        "nimi": "Alla personuppgifter (personbeteckning, födelsedatum, namn, studentnummer)",
         "kuvaus": "",
         "lyhytNimi": "",
         "kieli": "SV"
       },
       {
-        "nimi": "Kaikki henkilötiedot (hetu, syntymäaika, nimi, oppijanumero)",
+        "nimi": "All personal data (personal identity code, date of birth, name, student number)",
         "kuvaus": "",
         "lyhytNimi": "",
         "kieli": "EN"
@@ -142,19 +142,19 @@
   {
     "metadata": [
       {
-        "nimi": "Aktiiviset ja päättyneet opinnot",
+        "nimi": "Perusasteen jälkeisiin aktiivisiin ja päättyneisiin opintoihin liittyvät tiedot, jotka löytyvät kansallisista opinto- ja tutkintorekistereistä",
         "kuvaus": "",
         "lyhytNimi": "",
         "kieli": "FI"
       },
       {
-        "nimi": "Aktiva och avslutade studier",
+        "nimi": "Uppgifter om aktiva och avslutade studier efter grundstadiet som finns i nationella studie- och examensregister",
         "kuvaus": "",
         "lyhytNimi": "",
         "kieli": "SV"
       },
       {
-        "nimi": "Active and finished studies",
+        "nimi": "Information related to active and completed post-comprehensive studies that can be found in national registers of studies and qualifications",
         "kuvaus": "",
         "lyhytNimi": "",
         "kieli": "EN"
@@ -176,13 +176,13 @@
         "kieli": "FI"
       },
       {
-        "nimi": "Kaikki opiskeluoikeustiedot",
+        "nimi": "Alla studierättsuppgifter",
         "kuvaus": "",
         "lyhytNimi": "",
         "kieli": "SV"
       },
       {
-        "nimi": "Kaikki opiskeluoikeustiedot",
+        "nimi": "All study rights information",
         "kuvaus": "",
         "lyhytNimi": "",
         "kieli": "EN"
@@ -194,34 +194,6 @@
     "koodiUri": "omadataoauth2scope_opiskeluoikeudetkaikkitiedot",
     "versio": 1,
     "koodiArvo": "opiskeluoikeudet_kaikki_tiedot"
-  },
-  {
-    "metadata": [
-      {
-        "nimi": "Suoritetut tutkinnot",
-        "kuvaus": "",
-        "lyhytNimi": "",
-        "kieli": "FI"
-      },
-      {
-        "nimi": "Avlagda examina",
-        "kuvaus": "",
-        "lyhytNimi": "",
-        "kieli": "SV"
-      },
-      {
-        "nimi": "Completed degrees",
-        "kuvaus": "",
-        "lyhytNimi": "",
-        "kieli": "EN"
-      }
-    ],
-    "withinCodeElements": [],
-    "includesCodeElements": [],
-    "levelsWithCodeElements": [],
-    "koodiUri": "omadataoauth2scope_opiskeluoikeudetsuoritetuttutkinnot",
-    "versio": 1,
-    "koodiArvo": "opiskeluoikeudet_suoritetut_tutkinnot"
   },
   {
     "metadata": [
@@ -250,5 +222,33 @@
     "koodiUri": "omadataoauth2scope_opiskeluoikeudetkaikkitiedotjavalintatiedot",
     "versio": 1,
     "koodiArvo": "opiskeluoikeudet_kaikki_tiedot_ja_valintatiedot"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "Suoritetut tutkinnot",
+        "kuvaus": "",
+        "lyhytNimi": "",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Avlagda examina",
+        "kuvaus": "",
+        "lyhytNimi": "",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Completed degrees",
+        "kuvaus": "",
+        "lyhytNimi": "",
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "omadataoauth2scope_opiskeluoikeudetsuoritetuttutkinnot",
+    "versio": 1,
+    "koodiArvo": "opiskeluoikeudet_suoritetut_tutkinnot"
   }
 ]

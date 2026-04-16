@@ -49375,6 +49375,11 @@
         "codeElementUri": "koulutus_771216",
         "codeElementVersion": 12,
         "passive": false
+      },
+      {
+        "codeElementUri": "koulutus_752501",
+        "codeElementVersion": 1,
+        "passive": false
       }
     ],
     "includesCodeElements": [],
