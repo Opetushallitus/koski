@@ -625,7 +625,7 @@ describe('Ammatillinen koulutus 1', function () {
             'Vahvistus 31.5.2016 Reijo Reksi , rehtori\n' +
             'Näyttö\n' +
             'Kuvaus Vuosihuoltojen suorittaminen\n' +
-            'Suorituspaikka työpaikka Volkswagen Center\n' +
+            'Suorituspaikka työpaikka : Volkswagen Center\n' +
             'Suoritusaika 2.2.2018 — 2.2.2018\n' +
             'Arvosana 5\n' +
             'Arviointipäivä 20.10.2014\n' +
