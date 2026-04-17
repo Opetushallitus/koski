@@ -4,6 +4,7 @@ import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.huoltaja.{HuollettavienHakuOnnistui}
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.koskiuser.RequiresKansalainen
+import fi.oph.koski.log.Logging
 import fi.oph.koski.servlet.{KoskiSpecificApiServlet, NoCache}
 
 case class AuditlogRequest(
@@ -11,7 +12,7 @@ case class AuditlogRequest(
 )
 
 class OmaOpintoPolkuLokiServlet(implicit val application: KoskiApplication) extends
-  RequiresKansalainen with KoskiSpecificApiServlet with NoCache {
+  RequiresKansalainen with KoskiSpecificApiServlet with NoCache with Logging {
 
   val auditLogs = new AuditLogService(application)
 
@@ -31,10 +32,26 @@ class OmaOpintoPolkuLokiServlet(implicit val application: KoskiApplication) exte
         case _ => List.empty
       }.headOption.getOrElse(session.oid)
 
+      val allowedOrganisaatiot = loadAllowedOrganisaatiot(personOid)
+
       renderEither(
-        auditLogs.queryLogsFromDynamo(personOid)
+        auditLogs.queryLogsFromDynamo(personOid, allowedOrganisaatiot)
       )
     })()
+  }
+
+  private def loadAllowedOrganisaatiot(personOid: String): AllowedOrganisaatiot = {
+    val oppijaResult =
+      if (personOid == session.oid) application.huoltajaService.findUserOppijaAllowEmpty(session)
+      else application.huoltajaService.findHuollettavaOppija(personOid)(session)
+
+    oppijaResult match {
+      case Right(withWarnings) =>
+        AuditLogService.allowedOrganisaatiot(withWarnings.getIgnoringWarnings)
+      case Left(status) =>
+        logger.warn(s"Opiskeluoikeuksien lataus oma-opintopolku-lokin organisaatiosuodatusta varten epäonnistui (personOid=$personOid): $status")
+        AllowedOrganisaatiot(Set.empty, Set.empty)
+    }
   }
 
   get("/whoami") {

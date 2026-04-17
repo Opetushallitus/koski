@@ -221,6 +221,106 @@ object AuditLogMockData extends Logging {
       organizationOid = List(MockOrganisaatiot.helsinginKaupunki),
       raw = rawAuditlog("OPISKELUOIKEUS_KATSOMINEN")
     ),
+    // Koululaisen opiskeluoikeudet ovat Helsingin kaupungilla/Kulosaaren ala-asteella.
+    // Rivi sisältää "vieraan" Kuopion kaupungin, jonka suodatuksen pitää pudottaa pois.
+    MockData(
+      studentOid = KoskiSpecificMockOppijat.koululainen.oid,
+      time = "2026-04-09T12:00:00.104+03",
+      organizationOid = List(MockOrganisaatiot.kuopionKaupunki, MockOrganisaatiot.helsinginKaupunki),
+      raw = rawAuditlog("OPISKELUOIKEUS_KATSOMINEN")
+    ),
+    // OPH-katsoja nähnyt koululaisen tiedot. OPH näytetään aina, vieras org pudotetaan.
+    MockData(
+      studentOid = KoskiSpecificMockOppijat.koululainen.oid,
+      time = "2026-04-09T13:00:00.104+03",
+      organizationOid = List(Opetushallitus.organisaatioOid, MockOrganisaatiot.kuopionKaupunki),
+      raw = rawAuditlog("OPISKELUOIKEUS_KATSOMINEN")
+    ),
+    // KOSKI-oikeus sekä koulutustoimijaan että oppilaitokseen => molemmat jäävät, koulutustoimija ensin
+    MockData(
+      studentOid = KoskiSpecificMockOppijat.koululainen.oid,
+      time = "2026-04-09T14:00:00.104+03",
+      organizationOid = List(MockOrganisaatiot.kulosaarenAlaAste, MockOrganisaatiot.helsinginKaupunki),
+      raw = rawAuditlog("OPISKELUOIKEUS_KATSOMINEN")
+    ),
+    // KOSKI-oikeus kahteen oppilaitokseen => vain oppijan oma oppilaitos jää
+    MockData(
+      studentOid = KoskiSpecificMockOppijat.koululainen.oid,
+      time = "2026-04-09T15:00:00.104+03",
+      organizationOid = List(MockOrganisaatiot.stadinAmmattiopisto, MockOrganisaatiot.kulosaarenAlaAste),
+      raw = rawAuditlog("OPISKELUOIKEUS_KATSOMINEN")
+    ),
+
+    // demoNordea: lukio opiskeluoikeus Jyväskylän normaalikoulussa (oppilaitos), koulutustoimija Jyväskylän yliopisto.
+    // Rivit järjestetty UI-näkymän mukaan (uusin ensin). Samoiksi ryhmiksi yhdistyvät rivit peräkkäin.
+
+    // UI-rivi 1: "Digi- ja väestötietovirasto" (MyData/OAuth2, ei suodateta)
+    MockData(
+      studentOid = KoskiSpecificMockOppijat.demoNordea.oid,
+      time = "2026-01-19T09:00:00.000+03",
+      organizationOid = List(MockOrganisaatiot.dvv),
+      raw = rawAuditlog("OAUTH2_KATSOMINEN_KAIKKI_TIEDOT")
+    ),
+    // UI-rivi 2: "Helsingin kaupunki" (fallback — kumpikaan org ei matchaa opiskeluoikeuksiin)
+    MockData(
+      studentOid = KoskiSpecificMockOppijat.demoNordea.oid,
+      time = "2026-01-18T09:00:00.000+03",
+      organizationOid = List(MockOrganisaatiot.helsinginKaupunki, MockOrganisaatiot.kuopionKaupunki),
+      raw = rawAuditlog("OPISKELUOIKEUS_KATSOMINEN")
+    ),
+    // UI-rivi 3: "Jyväskylän yliopisto + Jyväskylän normaalikoulu" (molemmat matchaavat, koulutustoimija ensin)
+    MockData(
+      studentOid = KoskiSpecificMockOppijat.demoNordea.oid,
+      time = "2026-01-17T09:00:00.000+03",
+      organizationOid = List(MockOrganisaatiot.jyväskylänNormaalikoulu, MockOrganisaatiot.jyväskylänYliopisto),
+      raw = rawAuditlog("OPISKELUOIKEUS_KATSOMINEN")
+    ),
+    // UI-rivi 4: "Opetushallitus + Jyväskylän yliopisto" (OPH aina mukana, prioriteetti 0 > 1)
+    MockData(
+      studentOid = KoskiSpecificMockOppijat.demoNordea.oid,
+      time = "2026-01-16T09:00:00.000+03",
+      organizationOid = List(MockOrganisaatiot.jyväskylänYliopisto, Opetushallitus.organisaatioOid),
+      raw = rawAuditlog("OPISKELUOIKEUS_KATSOMINEN")
+    ),
+    // UI-rivi 5: "Opetushallitus" (yhdistyy kahdesta rivistä — pelkkä OPH + OPH jonka vieressä vieras org)
+    MockData(
+      studentOid = KoskiSpecificMockOppijat.demoNordea.oid,
+      time = "2026-01-15T09:00:00.000+03",
+      organizationOid = List(Opetushallitus.organisaatioOid, MockOrganisaatiot.helsinginKaupunki),
+      raw = rawAuditlog("OPISKELUOIKEUS_KATSOMINEN")
+    ),
+    MockData(
+      studentOid = KoskiSpecificMockOppijat.demoNordea.oid,
+      time = "2026-01-14T09:00:00.000+03",
+      organizationOid = List(Opetushallitus.organisaatioOid),
+      raw = rawAuditlog("OPISKELUOIKEUS_KATSOMINEN")
+    ),
+    // UI-rivi 6: "Jyväskylän normaalikoulu" (yhdistyy — pelkkä oppilaitos + oppilaitos jonka vierestä vieras putoaa)
+    MockData(
+      studentOid = KoskiSpecificMockOppijat.demoNordea.oid,
+      time = "2026-01-13T09:00:00.000+03",
+      organizationOid = List(MockOrganisaatiot.jyväskylänNormaalikoulu, MockOrganisaatiot.stadinAmmattiopisto),
+      raw = rawAuditlog("OPISKELUOIKEUS_KATSOMINEN")
+    ),
+    MockData(
+      studentOid = KoskiSpecificMockOppijat.demoNordea.oid,
+      time = "2026-01-11T09:00:00.000+03",
+      organizationOid = List(MockOrganisaatiot.jyväskylänNormaalikoulu),
+      raw = rawAuditlog("OPISKELUOIKEUS_KATSOMINEN")
+    ),
+    // UI-rivi 7: "Jyväskylän yliopisto" (yhdistyy — pelkkä koulutustoimija + koulutustoimija jonka vierestä vieras putoaa)
+    MockData(
+      studentOid = KoskiSpecificMockOppijat.demoNordea.oid,
+      time = "2026-01-12T09:00:00.000+03",
+      organizationOid = List(MockOrganisaatiot.jyväskylänYliopisto, MockOrganisaatiot.helsinginKaupunki),
+      raw = rawAuditlog("OPISKELUOIKEUS_KATSOMINEN")
+    ),
+    MockData(
+      studentOid = KoskiSpecificMockOppijat.demoNordea.oid,
+      time = "2026-01-10T09:00:00.000+03",
+      organizationOid = List(MockOrganisaatiot.jyväskylänYliopisto),
+      raw = rawAuditlog("OPISKELUOIKEUS_KATSOMINEN")
+    ),
 
   )
 
