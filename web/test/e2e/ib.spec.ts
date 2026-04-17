@@ -805,7 +805,7 @@ test.describe('IB', () => {
 
           await page.getByTestId('oo.0.suoritukset.0.omanÄidinkielenOpinnot.1.osasuoritus').click()
 
-          await expect(page.getByTestId('oo.0.suoritukset.0.nimi')).toContainText('Vuorovaikutus 1')
+          await expect(page.getByTestId('oo.0.suoritukset.0.nimi')).toContainText('Kieli- ja tekstitietoisuus')
           await expect(page.getByTestId('oo.0.suoritukset.0.laajuus')).toContainText('9 opintopistettä')
           await expect(page.getByTestId('oo.0.suoritukset.0.suorituskieli')).toContainText('viro')
           await expect(page.getByTestId('oo.0.suoritukset.0.arvosana.0')).toContainText('10 (erinomainen)')

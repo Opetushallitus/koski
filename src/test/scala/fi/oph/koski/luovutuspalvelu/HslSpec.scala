@@ -463,6 +463,6 @@ class HslSpec extends AnyFreeSpec with KoskiHttpSpec with OpiskeluoikeusTestMeth
 
     val ilmoittautumisjaksot = (lisätiedot \ "lukukausiIlmoittautuminen" \ "ilmoittautumisjaksot").children
     ilmoittautumisjaksot should not be empty
-    ilmoittautumisjaksot.head shouldEqual JsonMethods.parse("""{"alku":"2013-08-01","loppu":"2013-12-31","tila":{"koodiarvo":"1","nimi":{"fi":"Läsnä","sv":"Närvarande"},"koodistoUri":"virtalukukausiilmtila","koodistoVersio":1},"ylioppilaskunnanJäsen":true}""")
+    ilmoittautumisjaksot.head shouldEqual JsonMethods.parse("""{"alku":"2013-08-01","loppu":"2013-12-31","tila":{"koodiarvo":"1","nimi":{"fi":"Läsnä","sv":"Närvarande","en":"Present"},"koodistoUri":"virtalukukausiilmtila","koodistoVersio":1},"ylioppilaskunnanJäsen":true}""")
   }
 }

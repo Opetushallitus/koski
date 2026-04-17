@@ -44,13 +44,13 @@ describe('Lukiokoulutus2019', function () {
             'Kieli saame, lappi\n' +
             'Laajuus 3 op\n' +
             'Osasuoritukset Kurssi Suorituskieli Arviointi\n' +
+            'Tekstien tulkinta ja kirjoittaminen\n' +
+            'Laajuus 1 op pohjoissaame Arvosana O\n' +
+            'Arviointipäivä 30.8.2019\n' +
             'Kieli- ja tekstitietoisuus\n' +
             'Laajuus 1 op pohjoissaame Arvosana O\n' +
             'Arviointipäivä 30.8.2019\n' +
             'Vuorovaikutus 1\n' +
-            'Laajuus 1 op pohjoissaame Arvosana O\n' +
-            'Arviointipäivä 30.8.2019\n' +
-            'Tekstien tulkinta ja kirjoittaminen\n' +
             'Laajuus 1 op pohjoissaame Arvosana O\n' +
             'Arviointipäivä 30.8.2019\n' +
             'Puhvi-koe Arvosana 7\n' +

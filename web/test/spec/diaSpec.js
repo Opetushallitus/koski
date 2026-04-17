@@ -61,7 +61,7 @@ describe('DIA', function () {
           expect(extractAsText(S('.lisätiedot'))).to.equal(
             'Lisätiedot\n' +
               'Pidennetty päättymispäivä kyllä\n' +
-              'Ulkomainen vaihto-opiskelija. kyllä\n' +
+              'Ulkomainen vaihto-opiskelija kyllä\n' +
               'Erityisen koulutustehtävän jaksot 1.9.2012 — 4.6.2016 Tehtävä Kieliin painottuva koulutus\n' +
               'Ulkomaanjaksot 4.1.2013 — 16.3.2013 Maa Ahvenanmaa Kuvaus Ulkomaanjakso'
           )

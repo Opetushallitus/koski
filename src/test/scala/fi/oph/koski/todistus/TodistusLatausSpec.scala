@@ -619,10 +619,10 @@ class TodistusLatausSpec extends TodistusSpecHelpers with BeforeAndAfterAll {
       TextRegion("arvosanat", pageIndex = 0,
         x = 250, y = 350, width = 150, height = 90,
         expectedTexts = Seq(
-          "4, keskitaso",
-          "3, keskitaso",
-          "3, keskitaso",
-          "Alle 3 (hylätty)"
+          "4",
+          "3",
+          "3",
+          "Alle 3"
         )),
 
       TextRegion("arvosanakuvaus", pageIndex = 0,
@@ -758,10 +758,10 @@ class TodistusLatausSpec extends TodistusSpecHelpers with BeforeAndAfterAll {
       TextRegion("arvosanat", pageIndex = 0,
         x = 250, y = 350, width = 150, height = 90,
         expectedTexts = Seq(
-          "4, keskitaso",
-          "3, keskitaso",
-          "3, keskitaso",
-          "Alle 3 (hylätty)"
+          "4",
+          "3",
+          "3",
+          "Alle 3"
         )),
 
       // Printattavan todistuksen allekirjoitusalue on erilainen - vain perustiedot, ei eIDAS-leiman tietoja
