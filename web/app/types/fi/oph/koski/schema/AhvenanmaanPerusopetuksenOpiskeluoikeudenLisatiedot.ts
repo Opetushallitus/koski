@@ -10,8 +10,6 @@ export type AhvenanmaanPerusopetuksenOpiskeluoikeudenLisätiedot = {
   kotiopetusjaksot?: Array<Aikajakso>
   tavoitekokonaisuuksittainOpiskelu?: Array<Aikajakso>
   vuosiluokkiinSitoutumatonOpetus?: boolean
-  valmistavanLisäopetus?: Array<Aikajakso>
-  joustavaPerusopetus?: Aikajakso
 }
 
 export const AhvenanmaanPerusopetuksenOpiskeluoikeudenLisätiedot = (
@@ -19,8 +17,6 @@ export const AhvenanmaanPerusopetuksenOpiskeluoikeudenLisätiedot = (
     kotiopetusjaksot?: Array<Aikajakso>
     tavoitekokonaisuuksittainOpiskelu?: Array<Aikajakso>
     vuosiluokkiinSitoutumatonOpetus?: boolean
-    valmistavanLisäopetus?: Array<Aikajakso>
-    joustavaPerusopetus?: Aikajakso
   } = {}
 ): AhvenanmaanPerusopetuksenOpiskeluoikeudenLisätiedot => ({
   $class:

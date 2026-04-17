@@ -37,9 +37,9 @@ import fi.oph.scalaschema.annotation._
 //
 //  4. Toiminta-alueen suoritus — samatko toiminta-alueet samoilla nimillä?
 //  5. OmanÄidinkielenOpinnot — käytössä Ahvenanmaalla?
-//  6. joustavaPerusopetus (JOPO) — wiki: "Todennäköisesti ei".
+//  6. (poistettu: joustavaPerusopetus ja valmistavanLisäopetus pudotettu)
 //  7. kielikylpykieli, vuosiluokkiinSitoutumatonOpetus,
-//     tavoitekokonaisuuksittainOpiskelu, valmistavanLisäopetus,
+//     tavoitekokonaisuuksittainOpiskelu,
 //     rajattuOppimäärä — kyllä vai ei?
 //  8. Laajuudet (vuosiviikkotunnit) — käytetäänkö oppiaineissa ja
 //     toiminta-alueissa ylipäätään?
@@ -140,11 +140,6 @@ case class AhvenanmaanPerusopetuksenOpiskeluoikeudenLisätiedot(
   @Description("Kotiopetusjaksot huoltajan päätöksestä alkamis- ja päättymispäivineen.")
   @Tooltip("Kotiopetusjaksot huoltajan päätöksestä alkamis- ja päättymispäivineen.")
   kotiopetusjaksot: Option[List[Aikajakso]] = None,
-  // TODO TOR-2587: vahvistettava kuuluuko Ahvenanmaalle; wikissä "Todennäköisesti ei".
-  @Description("Opiskelu joustavassa perusopetuksessa (JOPO).")
-  @OksaUri("tmpOKSAID453", "joustava perusopetus")
-  @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT))
-  joustavaPerusopetus: Option[Aikajakso] = None,
   // TODO TOR-2587: peach – vahvistettava.
   @Title("Opiskelee tavoitekokonaisuuksittain")
   @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT))
@@ -154,9 +149,6 @@ case class AhvenanmaanPerusopetuksenOpiskeluoikeudenLisätiedot(
   @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT))
   @Title("Vuosiluokkiin sitomaton opetus")
   vuosiluokkiinSitoutumatonOpetus: Option[Boolean] = None,
-  // TODO TOR-2587: peach – vahvistettava.
-  @Description("Perusopetukseen valmistavan opetuksen lisäopetuksen aikajaksot.")
-  valmistavanLisäopetus: Option[List[Aikajakso]] = None,
 ) extends OpiskeluoikeudenLisätiedot
 
 // Opiskeluoikeuden tila.
