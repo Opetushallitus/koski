@@ -1194,6 +1194,4 @@ describe('Ammatillinen koulutus 1', function () {
       )
     })
   })
-
-
 })
