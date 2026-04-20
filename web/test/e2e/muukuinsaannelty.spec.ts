@@ -47,7 +47,7 @@ test.describe('Muu kuin säännelty koulutus', () => {
       await uusiOppijaPage.fill({
         etunimet: 'Jonna',
         sukunimi: 'Muksunen',
-        opintokokonaisuus: '2319 21VF2 Valaisu',
+        opintokokonaisuus: '13435 4H Företagare',
         jotpaAsianumero:
           '01/5848/2023 - TTS Kehitys Oy - Pientalojen kestävien energiaratkaisujen suunnitteluosaaminen'
       })

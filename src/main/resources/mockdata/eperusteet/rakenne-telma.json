@@ -191,7 +191,6 @@
               "tila": "valmis",
               "tunniste": "rakenne",
               "teksti": null,
-              "koodit": [],
               "liite": false,
               "osanTyyppi": "tekstikappale"
             },
@@ -219,7 +218,6 @@
                 "fi": "<p>Työhön ja itsenäiseen elämään valmentavan koulutuksen lähtökohtana ovat opiskelijan tarpeet. Koulutuksen osien osaamistavoitteet, tarkempi sisältö ja laajuus valitaan koulutuksen perusteista henkilökohtaisen osaamisen kehittämissuunnitelman mukaisesti. Koulutuksen osat arvioidaan suhteutettuna yksilöllisiin tavoitteisiin. Työhön ja itsenäiseen elämään valmentava koulutus mahdollistaa poikkeustapauksissa myös jatko-opintoihin hakeutumisen opiskelijan yksilöllisten valmiuksien mukaisesti.</p>\n\n<p> </p>\n\n<p>Koko koulutus on erityisopetusta, ja kaikille opiskelijoille laaditaan henkilökohtainen osaamisen kehittämissuunnitelma. Siinä määritellään opintojen ajallinen kesto sekä eri osaamistavoitteisiin käytettävä aika sekä niiden yksilöllinen laajuus. Opiskelun tavoitteet ja painopistealueet voivat muuttua opiskelun kuluessakin mm. opiskelijan elämäntilanteen tai terveydentilan muutoksien vuoksi.</p>",
                 "sv": "<p>De studerandes behov utgör utgångspunkt för utbildningen som handleder för arbete och ett självständigt liv. Utbildningsdelarnas mål för kunnandet samt delarnas innehåll på detaljnivå och omfattning väljs i utbildningsgrunderna enligt den studerandes personliga studieplan. Utbildningsdelarna bedöms med avseende på de individuella målen. Utbildningen som handleder för arbete och ett självständigt liv möjliggör i undantagsfall även ansökan till fortsatta studier i enlighet med den studerandes individuella förutsättningar.</p>\n\n<p> </p>\n\n<p>Hela utbildningen utgör specialundervisning och för alla som deltar i den utarbetas personliga utvecklingsplaner för kunnandet. I den anges studiernas längd, tid som ska användas för de olika målen för kunnande och studiernas individuella omfattning. Målen för studierna och tyngdpunktsområdena kan förändras under studiernas gång bl.a. om den studerandes livssituation eller hälsotillstånd förändras. Utbildningsanordnaren bestämmer studietiden enligt den studerandes individuella behov och mål.</p>"
               },
-              "koodit": [],
               "liite": false,
               "osanTyyppi": "tekstikappale"
             },
@@ -244,7 +242,6 @@
                     "fi": "<p>Opiskelun alkuvaiheessa opiskelijan toimintakyky arvioidaan/kartoitetaan, jotta hänen vahvuuteensa ja tuen tarpeensa voidaan tunnistaa. Toimintakyvyn ja osaamisen selvittämiseksi tulee käyttää monipuolisia menetelmiä kuten aikaisempia tutkimuksia ja lausuntoja, havainnointia, kokeiluja, opiskelijan itsearviointia sekä tarvittaessa testauksia ja kartoituksia. Opiskelijan tilannetta ja toimintakykyä selvitetään fyysisestä, psyykkisestä, sosiaalisesta ja toiminnallisesta näkökulmasta. Näistä saatua tietoa käytetään yksilöllisten osaamistavoitteiden lähtökohtana. Toimintakyvyn kehittymistä ja vahvistumista arvioidaan koko opintojen ajan sekä niiden päättyessä.</p>",
                     "sv": "<p>I början av studierna bedöms/kartläggs de studerandes funktionsförmåga för att man ska kunna identifiera vilka styrkor och behov av stöd de har. För att ta reda på deras funktionsförmåga och kunnande bör mångsidiga metoder användas, såsom tidigare undersökningar och utlåtanden, observationer, försök, självvärdering av den studerande och vid behov tester och kartläggningar. Den studerandes situation och funktionsförmåga utreds ur fysisk, psykisk, social och funktionell synvinkel. Den information som erhålls används som utgångspunkt för de individuella målen för kunnandet. Hur funktionsförmågan utvecklas och stärks bedöms under hela studietiden och i slutet av den.</p>"
                   },
-                  "koodit": [],
                   "liite": false,
                   "osanTyyppi": "tekstikappale"
                 },
@@ -275,7 +272,6 @@
                 "fi": "<p>Koulutuksessa voidaan poiketa arvioinnin yleisistä perusteista näiden koulutusten perusteiden määräämällä tavalla. Opiskelijan arvioinnissa opiskelijan osaamista verrataan koulutuksen perusteiden pohjalta laadittuihin opiskelijan henkilökohtaisiin osaamistavoitteisiin. Nämä osaamistavoitteet tulee kirjata opiskelijan henkilökohtaiseen osaamisen kehittämissuunnitelmaan. Työhön ja itsenäiseen elämään valmentavassa koulutuksessa osaaminen arvioidaan sanallisesti, jolloin kuvataan, miten opiskelija on saavuttanut osaamistavoitteensa. Tarvittaessa voidaan osaamisen arviointia täydentää myös kuvallisella arvioinnilla.</p>\n\n<p> </p>\n\n<p>Osaamisen arvioinnin perusteella tehdään tarvittavat muutokset opiskelijan opetukseen ja oppimisen tukemiseen. Muutokset kirjataan henkilökohtaiseen osaamisen kehittämissuunnitelmaan.</p>\n\n<p> </p>\n\n<p>Valinnaisissa koulutuksen osissa mahdollisesti suoritetut ammatillisen tutkinnon osat tai yhteisten tutkinnon osien osa-alueet arvioidaan siten, kuin niitä koskevissa tutkintojen perusteissa määrätään.</p>",
                 "sv": "<p>I utbildningen får man avvika från de allmänna grunderna för bedömningen på det sätt som bestäms i dessa utbildningsgrunder. Vid bedömningen jämförs den studerandes kunnande med de personliga målen för kunnandet som satts upp utifrån utbildningsgrunderna. Dessa mål för kunnandet ska antecknas i den personliga utvecklingsplanen för kunnandet. I utbildningen som förbereder för arbete och ett självständigt liv är bedömningen av kunnandet verbal, varvid beskrivs hur den studerande har uppnått sina mål för kunnandet Vid behov kan bedömningen av kunnandet kompletteras med en visuell bedömning.</p>\n\n<p> </p>\n\n<p>Utgående från bedömningen av kunnandet görs de ändringar som behövs i undervisningen och i stödet för inlärningen. Ändringarna antecknas i den personliga utvecklingsplanen för kunnandet.</p>\n\n<p> </p>\n\n<p>Om den studerande i de valbara utbildningsdelarna avlagt examensdelar eller delområden av gemensamma examensdelar från en yrkesinriktad grundexamen bedöms dessa enligt grunderna för den aktuella grundexamen.</p>"
               },
-              "koodit": [],
               "liite": false,
               "osanTyyppi": "tekstikappale"
             },
@@ -298,7 +294,6 @@
               "valmis": false,
               "kaannettava": false,
               "teksti": null,
-              "koodit": [],
               "liite": false,
               "osanTyyppi": "tekstikappale"
             },
@@ -324,7 +319,6 @@
                     "fi": "<p>Työhön ja itsenäiseen elämään valmentava koulutus on tarkoitettu eniten erityistä ja laajaa tukea tarvitseville henkilöille, jotka näin voivat saada henkilökohtaisten tavoitteiden tai valmiuksien mukaista opetusta ja ohjausta, kuitenkin niin, että koulutuksen tavoitteena ei pääsääntöisesti ole ammatilliseen koulutukseen siirtyminen. Opiskelijan jatko-opintosuunnitelmaan voi kuitenkin sisältyä esimerkiksi ammatillisten perustutkintojen yksittäisten tutkinnon osien tai ammattitaitovaatimusten suorittaminen.</p>\n\n<p> </p>\n\n<p>Koulutus toteutetaan kokonaisuudessaan erityisopetuksena. Sen avulla turvataan henkilökohtaisiin edellytyksiin perustuva oppiminen, itsensä kehittäminen ja ihmisenä kasvaminen. Erityisopetukseen liitetään tarvittaessa muita tukitoimia ja kuntoutusta yhteistyössä opiskelijan lähiverkoston ja kuntoutuspalveluiden tuottajien kanssa. Koulutus on osa kokonaiskuntoutusta, jota toteutetaan yhteistyössä moniammatillisesti ja monialaisesti eri tahojen kanssa.</p>\n\n<p> </p>\n\n<p>Työhön ja itsenäiseen elämään valmentavan koulutuksen laajuus on 60 osaamispistettä ja suoritusaika on vähintään yksi vuosi. Suoritusaika määräytyy opiskelijan yksilöllisten tavoitteiden ja valmiuksien perusteella. Päätös suoritusajasta tehdään opintojen alussa, mutta päätöstä voidaan muuttaa koulutuksen aikana. Koulutuksen suoritusaika voi kuitenkin olla pitempi, enintään kolme vuotta.</p>\n\n<p> </p>\n\n<p>Koulutuksessa on liikkumavaraa koulutuksen osien osaamispisteissä, jotta opiskelija voi suunnitella opintonsa joustavasti henkilökohtaisen opiskelusuunnitelman mukaisesti.</p>\n\n<p> </p>\n\n<p>Jotta koulutuksellinen tasa-arvo toteutuu, jokaisen opiskelijan työhön ja itsenäiseen elämään valmentavaan koulutukseen tukena tulee olla henkilökohtainen osaamisen kehittämissuunnitelma, jota päivitetään aina tarvittaessa koulutuksen aikana. Se perustuu opiskelun alussa tehtävään alkukartoitukseen.</p>",
                     "sv": "<p>Utbildningen som handleder för arbete och ett självständigt liv utgör en del av den reformerade helheten av handledande utbildningar. Utbildningen är avsedd för dem som har det största behovet av särskilt och omfattande stöd och som på detta sätt kan få undervisning och handledning som är anpassad efter deras personliga mål eller förutsättningar, dock så att målet för utbildningen i regel inte är att de ska kunna övergå till yrkesutbildning. I den fortsatta planeringen för den studerande kan dock ingå avläggandet av t.ex. enskilda examensdelar eller avläggandet av krav på yrkesskicklighet inom grundläggande yrkesutbildning.</p>\n\n<p> </p>\n\n<p>Utbildningen genomförs i sin helhet som specialundervisning. Med hjälp av specialundervisningen tryggar man en inlärning som utgår från de personliga förutsättningarna och bidrar till att den studerande utvecklas och växer som människa. I specialundervisningen ingår vid behov andra stödåtgärder och rehabilitering i samarbete med den studerandes närmaste krets och med producenter av rehabiliteringstjänster. Utbildningen är en del av helhetsrehabiliteringen, som genomförs yrkesövergripande och inom flera områden i samarbete med olika aktörer.</p>\n\n<p> </p>\n\n<p>Omfattningen av den handledande utbildningen för arbete och ett självständigt liv är 60 kompetenspoäng och tiden för genomförandet är minst ett år. Hur lång tid den tar beror på den studerandes individuella mål och förutsättningar. Beslutet om utbildningens längd fattas i början av studierna, men beslutet kan ändras under utbildningen. Utbildningen kan ta längre än ett år, men högst tre år.</p>\n\n<p> </p>\n\n<p>I utbildningen finns spelrum i fråga om utbildningsdelarnas kompetenspoäng, vilket betyder att de studerande kan planera sina studier flexibelt enligt sin personliga studieplan.</p>\n\n<p> </p>\n\n<p>För att jämlikheten i fråga om utbildning ska förverkligas ska alla studerande som deltar i den handledande utbildningen för arbete och ett självständigt liv ha en personlig plan för kunnande som uppdateras vid behov under utbildningen. Denna plan baserar sig på en inledande kartläggning som görs när studierna börjar.</p>"
                   },
-                  "koodit": [],
                   "liite": false,
                   "osanTyyppi": "tekstikappale"
                 },
@@ -351,7 +345,6 @@
                     "fi": "<p>Koulutuksen arvoperusta on ihmisyys, jokaiselle kuuluva ihmisarvo ja oikeus hyvään elämään. Keskeiset siihen liittyvät arvot kuten tasa-arvoisuus, suvaitsevaisuus, erityisyyden kunnioitus ja itsemääräämisoikeus ohjaavat koulutusta ja siihen liittyvää päätöksentekoa. Koulutus korostaa yksilöllisyyttä ja pyrkii samalla tukemaan yhteisöllisyyttä. Opiskelija kohdataan aktiivisena, tavoitteisiinsa pyrkivänä oman elämänsä asiantuntijana, jota tuetaan ja ohjataan ottamaan vastuuta opiskelustaan ja ihmisenä kasvamisestaan.</p>\n\n<p> </p>\n\n<p>Työhön ja itsenäiseen elämään valmentavaan koulutukseen osallistuvilla opiskelijoilla on yhdenvertainen oikeus opetukseen ja oppimiseen. Koulutus edistää erityistä tukea tarvitsevien nuorten mahdollisuuksia hyvään elämään ja elinikäisen oppimiseen. Opiskelijoiden täysivaltaisen osallistumisen edistämiseksi on fyysinen ja sosiaalinen ympäristö muokattava esteettömäksi sekä varmistettava teknologian ja palveluiden saavutettavuus.</p>",
                     "sv": "<p>Utbildningen grundar sig på humanitet, allas människovärde och rätten till ett gott liv. De centrala värderingarna i anknytning till denna värdegrund, såsom jämlikhet, tolerans, respekt för olikhet och självbestämmanderätt, styr utbildningen och de beslut som fattas om den. Utbildningen betonar individualitet och strävar samtidigt till att stödja gemenskap. De studerande bemöts som aktiva människor som försöker nå sina mål och som är experter på sitt eget liv. De ges stöd och handledning så att de ska kunna ta ansvar för sina studier och sin utveckling som människa.</p>\n\n<p> </p>\n\n<p>De som deltar i handledande utbildning för arbete och ett självständigt liv har lika rätt till undervisning och lärande. Utbildningen främjar möjligheterna för unga som behöver särskilt stöd till ett gott liv och till livslångt lärande. För att främja de studerandes fulla delaktighet bör den fysiska och sociala miljön göras hinderfri och tillgången till teknisk utrustning och tjänster säkerställas.</p>"
                   },
-                  "koodit": [],
                   "liite": false,
                   "osanTyyppi": "tekstikappale"
                 },
@@ -379,7 +372,6 @@
                     "fi": "<p>Työhön ja itsenäiseen elämään valmentavan koulutuksen tavoitteena on antaa sairauden tai vamman vuoksi erityistä tukea tarvitseville opiskelijoille henkilökohtaisten tavoitteiden ja valmiuksien mukaista opetusta ja ohjausta<em>. </em></p>\n\n<p> </p>\n\n<p>Koulutuksen tavoitteena on, että opiskelija itsenäistyy elämän eri osa-alueilla ja valmentautuu työhön<em>.</em> Hän selviytyy jokapäiväisessä elämässään mahdollisimman itsenäisesti, kehittää omatoimisuuttaan ja työhön ja ammattiin suuntautunutta toimintakykyään erilaisissa ympäristöissä. Hän saa itselleen sopivia keinoja selviytyä arjessa ja toimia yhteiskunnan kokonaisvaltaisena jäsenenä. Lisäksi tavoitteena on, että opiskelija tutustuu työelämään ja löytää itselleen sopivan muodon osallistua siihen. Koulutuksen aikana selvitetään itsenäisen elämän edellyttämät ohjaus- ja tukipalvelut sekä tarvittavat apuvälineet.</p>",
                     "sv": "<p>Målet för utbildningen som handleder för arbete och ett självständigt liv är att studerande som behöver särskilt stöd på grund av sjukdom eller skada ges undervisning och handledning enligt deras individuella mål och förutsättningar.</p>\n\n<p> </p>\n\n<p>Målet är också att de studerande ska bli självständiga på livets olika delområden och förbereda sig för arbete<em>.</em> De klarar sig i det dagliga livet så självständigt som möjligt, utvecklar sin förmåga att klara sig på egen hand och sin funktionsförmåga i olika miljöer. De får lämpliga metoder som hjälper dem att klara sig i vardagen och agera som fullvärdiga samhällsmedlemmar. Dessutom är målsättningen att de studerande bekantar sig med arbetslivet och finner ett lämpligt sätt att delta i det. Under utbildningen utreds vilka handlednings- och stödtjänster samt hjälpmedel som behövs för ett självständigt liv.</p>"
                   },
-                  "koodit": [],
                   "liite": false,
                   "osanTyyppi": "tekstikappale"
                 },
@@ -406,7 +398,6 @@
                     "fi": "<p>Työhön ja itsenäiseen elämään valmentavaan koulutukseen voi sisältyä kuntoutusta ja kuntouttavaa toimintatapaa. Tällöin pääpaino oppilaitoksessa on pedagogisella, oppimista tukevalla kuntoutuksella. Pedagogisella kuntoutuksella tarkoitetaan toimintaa ja toimenpiteitä, jotka edistävät ja vahvistavat opiskelijoiden hyvinvointia, yksilöllisiä oppimisvalmiuksia ja osallistumismahdollisuuksia. Pedagogisen kuntoutuksen lähtökohtana ovat opiskelijan yksilölliset oppimisedellytykset, tarpeet ja odotukset, toimintakyky ja voimavarat.</p>\n\n<p> </p>\n\n<p>Koulutuksen tavoitteena on tällöin, että opiskelija itsenäistyy elämän eri osa-alueilla ja valmentautuu työhön henkilökohtaisten tavoitteidensa ja valmiuksiensa mukaisesti. Opiskelija kehittää omatoimisuuttaan ja toimintakykyään, omaksuu itselleen sopivia keinoja selviytyä arjessa sekä kykenee ottamaan vastuuta elämästään omien edellytystensä mukaisesti</p>",
                     "sv": "<p>I utbildningen som handleder för arbete och ett självständigt liv kan ingå rehabilitering och ett rehabiliterande arbetssätt. Då läggs huvudvikten på pedagogisk rehabilitering som stöder lärandet. Med pedagogisk rehabilitering avses verksamhet och åtgärder som främjar och stärker de studerandes välbefinnande, individuella studiefärdigheter och möjligheter till deltagande. Den pedagogiska rehabiliteringen utformas enligt de studerandes individuella studiefärdigheter, behov och förväntningar, funktionsförmåga och resurser.</p>\n\n<p> </p>\n\n<p>Målet för utbildningen är då att de studerande blir självständiga på livets olika delområden och förbereder sig för arbete enligt sina personliga mål och förutsättningar. De studerande utvecklar sin förmåga att klara sig på egen hand och sin funktionsförmåga, börjar använda lämpliga metoder för att klara sig i vardagen och kan ta ansvar för sitt liv i enlighet med sina förutsättningar.</p>"
                   },
-                  "koodit": [],
                   "liite": false,
                   "osanTyyppi": "tekstikappale"
                 },
@@ -441,7 +432,7 @@
         {
           "id": 2988470,
           "laajuus": 0,
-          "laajuusMaksimi": 20.0,
+          "laajuusMaksimi": 20,
           "jarjestys": 3,
           "_tutkinnonOsa": "3018112"
         }
@@ -1080,7 +1071,7 @@
       "koodiArvo": "400007",
       "laajuus": 0,
       "tutkinnonosaViiteId": 2988470,
-      "laajuusMaksimi": 20.0,
+      "laajuusMaksimi": 20,
       "osaAlueet": [],
       "tyyppi": "normaali",
       "valmaTelmaSisalto": {

@@ -62217,6 +62217,11 @@
         "codeElementUri": "koulutus_731100",
         "codeElementVersion": 11,
         "passive": true
+      },
+      {
+        "codeElementUri": "koulutus_752501",
+        "codeElementVersion": 1,
+        "passive": false
       }
     ],
     "includesCodeElements": [],

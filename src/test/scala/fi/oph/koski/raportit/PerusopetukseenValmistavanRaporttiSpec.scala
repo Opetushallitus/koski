@@ -131,7 +131,7 @@ class PerusopetukseenValmistavanRaporttiSpec extends AnyFreeSpec with Matchers w
             "Yksilöity",
             "Oppijan oid",
             "Oppijan master-oid",
-            "hetu",
+            "Hetu",
             "Sukunimi",
             "Etunimet",
             "Kansalaisuus",
@@ -155,7 +155,7 @@ class PerusopetukseenValmistavanRaporttiSpec extends AnyFreeSpec with Matchers w
       "Eropäivä lasketaan läsnäolopäiviin" in {
         val (report, sheet) = haeRaportti(MockOrganisaatiot.jyväskylänNormaalikoulu)
         val titles = sheet.columnSettings.map(_.title)
-        val hetuIdx = titles.indexOf("hetu")
+        val hetuIdx = titles.indexOf("Hetu")
         val läsnäolopäivätIdx = titles.indexOf("Läsnäolopäiviä aikajakson aikana")
         val eronnutRow = report.find(row => row(hetuIdx) == Some("150910A123F")).get
         // lasna 2020-01-01 — 2020-01-10 = 10 päivää + eropäivä 2020-01-11 = 11

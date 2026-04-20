@@ -1,38 +1,268 @@
 {
   "koodistoUri": "tutkinnonosat",
+  "resourceUri": "https://virkailija.opintopolku.fi/koodisto-service/rest/codes/tutkinnonosat",
+  "omistaja": "Opetushallitus",
+  "organisaatioOid": "1.2.246.562.10.00000000001",
+  "lukittu": null,
+  "withinCodes": [
+    {
+      "codesUri": "tutkintonimikkeet",
+      "codesVersion": 2,
+      "passive": false,
+      "nimi": {
+        "SV": "tutkintonimikkeet",
+        "FI": "tutkintonimikkeet",
+        "EN": "tutkintonimikkeet"
+      },
+      "kuvaus": {
+        "SV": "tutkintonimikkeet",
+        "FI": "tutkintonimikkeet",
+        "EN": "tutkintonimikkeet"
+      }
+    },
+    {
+      "codesUri": "koulutus",
+      "codesVersion": 12,
+      "passive": false,
+      "nimi": {
+        "FI": "koulutus",
+        "SV": "koulutus",
+        "EN": "koulutus"
+      },
+      "kuvaus": {
+        "FI": "Koodistoa ylläpitävät Perttu Venäläinen (ammatilliset koulutukset), Riku Hanhinen (korkeakoulutukset), Juho Helminen (yleissivistävä koulutus). Koodistoa käytetään mm. hakujen koulutustarjonnassa, KOSKI-palvelun tiedonsiirroissa, OIVAssa ja OKM Virta-palvelussa. Tilastokeskus vastaa koodiston koodituksesta (https://www2.tilastokeskus.fi/fi/luokitukset/koulutus/). Koodeja ylläpidetään käsin. Koodiston ja Tilastokeskuksen välillä ei ole integraatiota.",
+        "SV": "koulutus",
+        "EN": "koulutus"
+      }
+    }
+  ],
+  "includesCodes": [
+    {
+      "codesUri": "osaamistavoitteet",
+      "codesVersion": 1,
+      "passive": false,
+      "nimi": {
+        "FI": "osaamistavoitteet"
+      },
+      "kuvaus": {
+        "FI": "ePerusteet yhteisten tutkinnon osien osa-alueet"
+      }
+    },
+    {
+      "codesUri": "ammatillisenoppiaineet",
+      "codesVersion": 1,
+      "passive": false,
+      "nimi": {
+        "SV": "Delområden för gemensamma examensdelar",
+        "FI": "Yhteisten tutkinnon osien osa-alueet",
+        "EN": "Yhteisten tutkinnon osien osa-alueet"
+      },
+      "kuvaus": {
+        "SV": "Delområden för gemensamma examensdelar",
+        "FI": "Yhteisten tutkinnon osien osa-alueet",
+        "EN": "Yhteisten tutkinnon osien osa-alueet"
+      }
+    },
+    {
+      "codesUri": "ammattitaitovaatimukset",
+      "codesVersion": 1,
+      "passive": false,
+      "nimi": {
+        "FI": "ammattitaitovaatimukset"
+      },
+      "kuvaus": {
+        "FI": "ePerusteet ammattitaitovaatimukset"
+      }
+    }
+  ],
+  "levelsWithCodes": [
+    {
+      "codesUri": "rautatiekalustonkunnossapidonjarjestys",
+      "codesVersion": 1,
+      "passive": false,
+      "nimi": {
+        "SV": "rautatiekaluston kunnossapidon  järjestys",
+        "FI": "rautatiekaluston kunnossapidon  järjestys",
+        "EN": "rautatiekaluston kunnossapidon  järjestys"
+      },
+      "kuvaus": {
+        "SV": "rautatiekaluston kunnossapidon  järjestys",
+        "FI": "rautatiekaluston kunnossapidon  järjestys",
+        "EN": "rautatiekaluston kunnossapidon  järjestys"
+      }
+    },
+    {
+      "codesUri": "majoitusjaravitsemisalanesijarjestys",
+      "codesVersion": 2,
+      "passive": false,
+      "nimi": {
+        "SV": "majoitus- ja ravitsemisalan esi järjestys",
+        "FI": "majoitus- ja ravitsemisalan esi järjestys",
+        "EN": "majoitus- ja ravitsemisalan esi järjestys"
+      },
+      "kuvaus": {
+        "SV": "majoitus- ja ravitsemisalan esi järjestys",
+        "FI": "majoitus- ja ravitsemisalan esi järjestys",
+        "EN": "majoitus- ja ravitsemisalan esi järjestys"
+      }
+    },
+    {
+      "codesUri": "tuotantoelaintenhoidonjahyvijarjestys",
+      "codesVersion": 2,
+      "passive": false,
+      "nimi": {
+        "SV": "tuotantoeläinten hoidon ja hyvi järjestys",
+        "FI": "tuotantoeläinten hoidon ja hyvi järjestys",
+        "EN": "tuotantoeläinten hoidon ja hyvi järjestys"
+      },
+      "kuvaus": {
+        "SV": "tuotantoeläinten hoidon ja hyvi järjestys",
+        "FI": "tuotantoeläinten hoidon ja hyvi järjestys",
+        "EN": "tuotantoeläinten hoidon ja hyvi järjestys"
+      }
+    },
+    {
+      "codesUri": "jalkikasittelykoneenhoitajajarjestys",
+      "codesVersion": 1,
+      "passive": true,
+      "nimi": {
+        "SV": "jälkikäsittelykoneenhoitaja järjestys",
+        "FI": "jälkikäsittelykoneenhoitaja järjestys",
+        "EN": "jälkikäsittelykoneenhoitaja järjestys"
+      },
+      "kuvaus": {
+        "SV": "jälkikäsittelykoneenhoitaja järjestys",
+        "FI": "jälkikäsittelykoneenhoitaja järjestys",
+        "EN": "jälkikäsittelykoneenhoitaja järjestys"
+      }
+    },
+    {
+      "codesUri": "informaatiojakirjastopalvelujarjestys",
+      "codesVersion": 1,
+      "passive": true,
+      "nimi": {
+        "SV": "informaatio- ja kirjastopalvelu järjestys",
+        "FI": "informaatio- ja kirjastopalvelu järjestys",
+        "EN": "informaatio- ja kirjastopalvelu järjestys"
+      },
+      "kuvaus": {
+        "SV": "informaatio- ja kirjastopalvelu järjestys",
+        "FI": "informaatio- ja kirjastopalvelu järjestys",
+        "EN": "informaatio- ja kirjastopalvelu järjestys"
+      }
+    },
+    {
+      "codesUri": "kiskoliikenteenturvalaiteasenjarjestys",
+      "codesVersion": 1,
+      "passive": true,
+      "nimi": {
+        "SV": "kiskoliikenteen turvalaiteasen järjestys",
+        "FI": "kiskoliikenteen turvalaiteasen järjestys",
+        "EN": "kiskoliikenteen turvalaiteasen järjestys"
+      },
+      "kuvaus": {
+        "SV": "kiskoliikenteen turvalaiteasen järjestys",
+        "FI": "kiskoliikenteen turvalaiteasen järjestys",
+        "EN": "kiskoliikenteen turvalaiteasen järjestys"
+      }
+    },
+    {
+      "codesUri": "koulunkaynninaamujailtapaivjarjestys",
+      "codesVersion": 1,
+      "passive": true,
+      "nimi": {
+        "SV": "koulunkäynnin aamu- ja iltapäiv järjestys",
+        "FI": "koulunkäynnin aamu- ja iltapäiv järjestys",
+        "EN": "koulunkäynnin aamu- ja iltapäiv järjestys"
+      },
+      "kuvaus": {
+        "SV": "koulunkäynnin aamu- ja iltapäiv järjestys",
+        "FI": "koulunkäynnin aamu- ja iltapäiv järjestys",
+        "EN": "koulunkäynnin aamu- ja iltapäiv järjestys"
+      }
+    },
+    {
+      "codesUri": "koulunkaynninaamujailtapaivajarjestys",
+      "codesVersion": 1,
+      "passive": false,
+      "nimi": {
+        "SV": "koulunkäynnin aamu ja iltapäivä järjestys",
+        "FI": "koulunkäynnin aamu ja iltapäivä järjestys",
+        "EN": "koulunkäynnin aamu ja iltapäivä järjestys"
+      },
+      "kuvaus": {
+        "SV": "koulunkäynnin aamu ja iltapäivä järjestys",
+        "FI": "koulunkäynnin aamu ja iltapäivä järjestys",
+        "EN": "koulunkäynnin aamu ja iltapäivä järjestys"
+      }
+    },
+    {
+      "codesUri": "koululaistenaamujailtapaivajarjestys",
+      "codesVersion": 1,
+      "passive": false,
+      "nimi": {
+        "FI": "koululaisten aamu- ja iltapäivä järjestys",
+        "SV": "koululaisten aamu- ja iltapäivä järjestys",
+        "EN": "koululaisten aamu- ja iltapäivä järjestys"
+      },
+      "kuvaus": {
+        "FI": "koululaisten aamu- ja iltapäivä järjestys",
+        "SV": "koululaisten aamu- ja iltapäivä järjestys",
+        "EN": "koululaisten aamu- ja iltapäivä järjestys"
+      }
+    }
+  ],
+  "codesGroupUri": "koulutuskoodistot",
+  "version": 63,
   "versio": 2,
+  "paivitysPvm": "2023-09-27",
+  "paivittajaOid": "1.2.246.562.24.78186833301",
+  "voimassaAlkuPvm": "2018-03-02",
+  "voimassaLoppuPvm": null,
+  "tila": "LUONNOS",
   "metadata": [
+    {
+      "kieli": "EN",
+      "nimi": "tutkinnon osat",
+      "kuvaus": "tutkinnon osat",
+      "kayttoohje": null,
+      "kasite": null,
+      "kohdealue": null,
+      "sitovuustaso": null,
+      "kohdealueenOsaAlue": null,
+      "toimintaymparisto": null,
+      "tarkentaaKoodistoa": null,
+      "huomioitavaKoodisto": null,
+      "koodistonLahde": null
+    },
     {
       "kieli": "FI",
       "nimi": "tutkinnon osat",
-      "kuvaus": "tutkinnon osat"
+      "kuvaus": "tutkinnon osat",
+      "kayttoohje": null,
+      "kasite": null,
+      "kohdealue": null,
+      "sitovuustaso": null,
+      "kohdealueenOsaAlue": null,
+      "toimintaymparisto": null,
+      "tarkentaaKoodistoa": null,
+      "huomioitavaKoodisto": null,
+      "koodistonLahde": null
     },
     {
       "kieli": "SV",
       "nimi": "examensdelar",
-      "kuvaus": "examensdelar"
-    },
-    {
-      "kieli": "EN",
-      "nimi": "tutkinnon osat",
-      "kuvaus": "tutkinnon osat"
+      "kuvaus": "examensdelar",
+      "kayttoohje": null,
+      "kasite": null,
+      "kohdealue": null,
+      "sitovuustaso": null,
+      "kohdealueenOsaAlue": null,
+      "toimintaymparisto": null,
+      "tarkentaaKoodistoa": null,
+      "huomioitavaKoodisto": null,
+      "koodistonLahde": null
     }
   ],
-  "codesGroupUri": "koulutuskoodistot",
-  "voimassaAlkuPvm": "2018-03-02",
-  "organisaatioOid": "1.2.246.562.10.00000000001",
-  "withinCodes": [
-    {
-      "codesUri": "koulutus",
-      "codesVersion": 12,
-      "passive": false
-    },
-    {
-      "codesUri": "tutkintonimikkeet",
-      "codesVersion": 2,
-      "passive": false
-    }
-  ],
-  "tila": "LUONNOS",
-  "version": 62
+  "codesVersions": [1]
 }

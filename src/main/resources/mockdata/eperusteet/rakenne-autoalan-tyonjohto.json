@@ -236,7 +236,6 @@
               "valmis": false,
               "kaannettava": false,
               "teksti": null,
-              "koodit": [],
               "liite": false,
               "osanTyyppi": "tekstikappale"
             },
@@ -258,7 +257,6 @@
               "valmis": false,
               "kaannettava": false,
               "teksti": null,
-              "koodit": [],
               "liite": false,
               "osanTyyppi": "tekstikappale"
             },
@@ -281,7 +279,6 @@
                     "_id": "1017680",
                     "fi": "<p>Näyttötutkinnot ovat ammattitaidon hankkimistavasta riippumattomia. Koulutuksessa, työelämässä ja harrastuksissa hankittua osaamista käsitellään yhtenä kokonaisuutena siten, että osaaminen voidaan hyödyntää tutkinnoissa vaaditun ammattitaidon näytöissä.</p>\n\n<p>Näyttötutkinnot ovat rakenteeltaan modulaarisia. Ne muodostuvat työelämästä ja sen kehitystarpeista johdetuista tehtäväkokonaisuuksista, joille on ominaista toiminnallisen ja tiedollisen perustan yhteisyys, ammattitaidon monipuolisuus sekä työprosessin ja sen tulosten yhdentyminen. Tutkinnon osa muodostaa ammattipätevyyden osa-alueen, joka voidaan erottaa luonnollisesta työprosessista itsenäiseksi ja arvioitavaksi kokonaisuudeksi. Näytöt järjestetään ja suoritetaan joustavasti osa kerrallaan. Koko tutkinnon sijasta tavoitteena voi olla myös tietyn tai tiettyjen tutkinnon osien suorittaminen. Ammattitaitovaatimusten kuvauksen perustana on pätevyystyypitys, jonka katsotaan parhaiten soveltuvan ammattialalle. Kuvauksessa keskitytään ammatin ydintoimintojen vaatimuksiin, toimintaprosessien hallintaan ja laaja-alaiseen ammattikäytäntöön. Vaatimukset kattavat myös työelämässä tarvittavan kielitaidon ja sosiaaliset valmiudet.</p>"
                   },
-                  "koodit": [],
                   "liite": false,
                   "osanTyyppi": "tekstikappale"
                 },
@@ -306,7 +303,6 @@
                     "_id": "1017682",
                     "fi": "<p>Näyttötutkintoihin osallistumiselle ei muodollisesti voida asettaa koulutukseen osallistumista koskevia ennakkoehtoja. Pääsääntöisesti tutkinnot suoritetaan kuitenkin erilaisen valmentavan koulutuksen yhteydessä. Valmistavan koulutuksen järjestäjän tulee vahvistaa opetussuunnitelma tutkintojen mukaisesti. Koulutus ja siihen sisältyvät näytöt on jäsennettävä tutkinnon osien mukaisesti. Koulutuksen järjestäjän velvollisuutena on järjestää näytöt osana valmistavaa koulutusta. Opiskelijan velvollisuutena on osallistua näyttöihin osana opintojaan.</p>\n\n<p>Ammatillisena peruskoulutuksena suoritettavaan tutkintoon sisältyvät yhteiset opinnot eivät ole pakollisia koulutuksessa, joka valmistaa näyttötutkintona suoritettavaan perustutkintoon. Niiden tavoitteet tulee ottaa kuitenkin soveltuvin osin huomioon opetussuunnitelmassa ja opetuksen järjestämisessä.</p>"
                   },
-                  "koodit": [],
                   "liite": false,
                   "osanTyyppi": "tekstikappale"
                 },
@@ -331,7 +327,6 @@
                     "_id": "1017686",
                     "fi": "<p>Näyttöjen arviointi edellyttää järjestelmällistä aineiston keräämistä, päätöksentekoa ja dokumentointia tutkinnon suorittajan ammatillisista ja työtoimintavalmiuksista suhteessa tutkinnon perusteissa määriteltyihin ammattitaitovaatimuksiin ja arviointikriteereihin. Arvioinnin painopisteen tulee olla tekemisessä ja työssä oppimisessa. Taito tai osaaminen on arvioitava pääsääntöisesti suoraan vastaavasta työtoiminnasta.</p>\n\n<p>Näyttöympäristön tulee olla mahdollisimman realistinen ja autenttinen. Arvioinnissa tulee käyttää monipuolisesti erilaisia ensisijaisesti laadullisia arviointimenetelmiä kuten havainnointia, haastatteluja, kyselyjä, aikaisempia dokumentoituja näyttöjä sekä itse- ja ryhmäarviointia. Näytöt tulee järjestää tutkinnon osittain siten, että niissä voidaan arvioida ammatinhallinnan kannalta keskeisten tavoitteiden saavuttamista.</p>\n\n<p>Arvioinnin kohteilla ilmaistaan osaamisen alueet, joihin arvioinnissa kiinnitetään erityistä huomiota. Kohteet tulee kiinnittää ydintaitoihin, työn perustana olevan tiedon hallintaan, työmenetelmien, työvälineiden ja materiaalin hallintaan sekä työprosessien hallintaan. Sekä arvioinnin kohteet että kriteerit johdetaan vastaavan tutkinnon osan ammattitaitovaatimuksista. Arvioinnin kohteisiin perustuvat arviointikriteerit kuvaavat ja täsmentävät eritasoisia suorituksia. Kriteereillä ilmaistaan kynnykset, joiden avulla erotellaan eritasoiset suoritukset.</p>"
                   },
-                  "koodit": [],
                   "liite": false,
                   "osanTyyppi": "tekstikappale"
                 },

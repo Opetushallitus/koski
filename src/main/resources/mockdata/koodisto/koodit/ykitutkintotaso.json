@@ -2,18 +2,18 @@
   {
     "metadata": [
       {
-        "nimi": "Keskitaso",
+        "nimi": "Yleiset kielitutkinnot (YKI), keskitaso",
         "kuvaus": "",
         "lyhytNimi": "",
         "kieli": "FI"
       },
       {
-        "nimi": null,
+        "nimi": "Allmänna språkexamina (YKI), mellannivå",
         "kuvaus": null,
         "kieli": "SV"
       },
       {
-        "nimi": null,
+        "nimi": "National Certificates of Language Proficiency (YKI), intermediate level",
         "kuvaus": null,
         "kieli": "EN"
       }
@@ -28,18 +28,18 @@
   {
     "metadata": [
       {
-        "nimi": "Perustaso",
+        "nimi": "Yleiset kielitutkinnot (YKI), perustaso",
         "kuvaus": "",
         "lyhytNimi": "",
         "kieli": "FI"
       },
       {
-        "nimi": null,
+        "nimi": "Allmänna språkexamina (YKI), grundnivå",
         "kuvaus": null,
         "kieli": "SV"
       },
       {
-        "nimi": null,
+        "nimi": "National Certificates of Language Proficiency (YKI), basic level",
         "kuvaus": null,
         "kieli": "EN"
       }
@@ -54,18 +54,18 @@
   {
     "metadata": [
       {
-        "nimi": "Ylin taso",
+        "nimi": "Yleiset kielitutkinnot (YKI), ylin taso",
         "kuvaus": "",
         "lyhytNimi": "",
         "kieli": "FI"
       },
       {
-        "nimi": null,
+        "nimi": "Allmänna språkexamina (YKI), högsta nivå",
         "kuvaus": null,
         "kieli": "SV"
       },
       {
-        "nimi": null,
+        "nimi": "National Certificates of Language Proficiency (YKI), advanced level",
         "kuvaus": null,
         "kieli": "EN"
       }

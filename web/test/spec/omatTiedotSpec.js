@@ -43,7 +43,7 @@ describe('Omat tiedot', function () {
 
         it('Näytetään opintoni-ingressi', function () {
           expect(omattiedot.ingressi()).to.equal(
-            'Tällä sivulla näkyvät kaikki sähköisesti tallennetut opintosuoritukset yksittäisistä kursseista kokonaisiin tutkintoihin.'
+            'Tällä sivulla näytetään kaikki valtakunnallisista tietovarannoista löytyvät tiedot omista opintosuorituksistasi.'
           )
         })
 
@@ -79,7 +79,7 @@ describe('Omat tiedot', function () {
 
           it('Näytetään ruotsinkielinen ingressi', function () {
             expect(omattiedot.ingressi()).to.equal(
-              'På denna sida syns alla studieprestationer som sparats elektroniskt, från enskilda kurser till hela examina.'
+              'På den här sidan visas alla uppgifter om dina studieprestationer som finns i nationella databaser.'
             )
           })
         })
@@ -102,7 +102,7 @@ describe('Omat tiedot', function () {
 
           it('Näytetään englanninkielinen ingressi', function () {
             expect(omattiedot.ingressi()).to.equal(
-              'This page displays all electronically stored study information, from individual credits to completed degrees.'
+              'This page shows you all the information about your studies found in national databases.'
             )
           })
         })
@@ -179,11 +179,11 @@ describe('Omat tiedot', function () {
 
           it('näytetään lista tiedoista, joita palvelussa ei pystytä näyttämään', function () {
             expect(form.contentsAsText()).to.equal(
-              'Huomioithan, että Oma Opintopolku-palvelussa ei pystytä näyttämään seuraavia tietoja:\n' +
+              'Huomioithan, että Oma Opintopolku-palvelussa ei pystytä näyttämään esimerkiksi seuraavia tietoja:\n' +
                 'Korkeakoulututkintoja ennen vuotta 1995. Tässä voi olla korkeakoulukohtaisia poikkeuksia.\n' +
                 'Ennen vuotta 1990 suoritettuja suomalaisia ylioppilastutkintoja.\n' +
                 'Ennen vuotta 2018 suoritettuja peruskoulun, ammattikoulun, suomalaisen lukion tai Suomessa suoritetun kansainvälisen lukion tutkintoja, suorituksia ja opiskeluoikeuksia.\n' +
-                'Asiani koskee tietoa, joka näkyy, tai kuuluisi yllämainitun perusteella näkyä Oma Opintopolku-palvelussa.'
+                'Asiani koskee tietoa, joka näkyy, tai jonka kuuluisi mielestäni näkyä Oma Opintopolku -palvelussa.'
             )
           })
 

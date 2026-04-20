@@ -2,19 +2,19 @@
   {
     "metadata": [
       {
-        "nimi": "1, perustaso",
-        "kuvaus": "",
+        "nimi": "1",
+        "kuvaus": "1, perustaso",
         "lyhytNimi": "",
         "kieli": "FI"
       },
       {
-        "nimi": null,
-        "kuvaus": null,
+        "nimi": "1",
+        "kuvaus": "1, grundnivå",
         "kieli": "SV"
       },
       {
-        "nimi": null,
-        "kuvaus": null,
+        "nimi": "1",
+        "kuvaus": "1, basic level",
         "kieli": "EN"
       }
     ],
@@ -34,12 +34,12 @@
         "kieli": "FI"
       },
       {
-        "nimi": null,
+        "nimi": "Avbrytits",
         "kuvaus": null,
         "kieli": "SV"
       },
       {
-        "nimi": null,
+        "nimi": "Interrupted",
         "kuvaus": null,
         "kieli": "EN"
       }
@@ -60,12 +60,12 @@
         "kieli": "FI"
       },
       {
-        "nimi": null,
+        "nimi": "Fusk",
         "kuvaus": null,
         "kieli": "SV"
       },
       {
-        "nimi": null,
+        "nimi": "Fraud",
         "kuvaus": null,
         "kieli": "EN"
       }
@@ -80,19 +80,19 @@
   {
     "metadata": [
       {
-        "nimi": "2, perustaso",
-        "kuvaus": "",
+        "nimi": "2",
+        "kuvaus": "2, perustaso",
         "lyhytNimi": "",
         "kieli": "FI"
       },
       {
-        "nimi": null,
-        "kuvaus": null,
+        "nimi": "2",
+        "kuvaus": "2, grundnivå",
         "kieli": "SV"
       },
       {
-        "nimi": null,
-        "kuvaus": null,
+        "nimi": "2",
+        "kuvaus": "2, basic level",
         "kieli": "EN"
       }
     ],
@@ -106,19 +106,19 @@
   {
     "metadata": [
       {
-        "nimi": "3, keskitaso",
-        "kuvaus": "",
+        "nimi": "3",
+        "kuvaus": "3, keskitaso",
         "lyhytNimi": "",
         "kieli": "FI"
       },
       {
-        "nimi": null,
-        "kuvaus": null,
+        "nimi": "3",
+        "kuvaus": "3, mellannivå",
         "kieli": "SV"
       },
       {
-        "nimi": null,
-        "kuvaus": null,
+        "nimi": "3",
+        "kuvaus": "3, intermediate level",
         "kieli": "EN"
       }
     ],
@@ -132,19 +132,19 @@
   {
     "metadata": [
       {
-        "nimi": "4, keskitaso",
-        "kuvaus": "",
+        "nimi": "4",
+        "kuvaus": "4, keskitaso",
         "lyhytNimi": "",
         "kieli": "FI"
       },
       {
-        "nimi": null,
-        "kuvaus": null,
+        "nimi": "4",
+        "kuvaus": "4, mellannivå",
         "kieli": "SV"
       },
       {
-        "nimi": null,
-        "kuvaus": null,
+        "nimi": "4",
+        "kuvaus": "4, intermediate level",
         "kieli": "EN"
       }
     ],
@@ -158,19 +158,19 @@
   {
     "metadata": [
       {
-        "nimi": "5, ylin taso",
-        "kuvaus": "",
+        "nimi": "5",
+        "kuvaus": "5, ylin taso",
         "lyhytNimi": "",
         "kieli": "FI"
       },
       {
-        "nimi": null,
-        "kuvaus": null,
+        "nimi": "5",
+        "kuvaus": "5, högsta nivå",
         "kieli": "SV"
       },
       {
-        "nimi": null,
-        "kuvaus": null,
+        "nimi": "5",
+        "kuvaus": "5, advanced level",
         "kieli": "EN"
       }
     ],
@@ -184,19 +184,19 @@
   {
     "metadata": [
       {
-        "nimi": "6, ylin taso",
-        "kuvaus": "",
+        "nimi": "6",
+        "kuvaus": "6, ylin taso",
         "lyhytNimi": "",
         "kieli": "FI"
       },
       {
-        "nimi": null,
-        "kuvaus": null,
+        "nimi": "6",
+        "kuvaus": "6, högsta nivå",
         "kieli": "SV"
       },
       {
-        "nimi": null,
-        "kuvaus": null,
+        "nimi": "6",
+        "kuvaus": "6, advanced level",
         "kieli": "EN"
       }
     ],
@@ -210,19 +210,19 @@
   {
     "metadata": [
       {
-        "nimi": "Ei voi arvioida",
-        "kuvaus": "",
+        "nimi": "Ei voida arvioida",
+        "kuvaus": "Ei voida arvioida",
         "lyhytNimi": "",
         "kieli": "FI"
       },
       {
-        "nimi": null,
-        "kuvaus": null,
+        "nimi": "Kan inte bedömas",
+        "kuvaus": "Kan inte bedömas",
         "kieli": "SV"
       },
       {
-        "nimi": null,
-        "kuvaus": null,
+        "nimi": "Cannot be assessed",
+        "kuvaus": "Cannot be assessed",
         "kieli": "EN"
       }
     ],
@@ -236,19 +236,19 @@
   {
     "metadata": [
       {
-        "nimi": "Alle 1 (hylätty)",
-        "kuvaus": "",
+        "nimi": "Alle 1",
+        "kuvaus": "Alle 1",
         "lyhytNimi": "",
         "kieli": "FI"
       },
       {
-        "nimi": null,
-        "kuvaus": null,
+        "nimi": "Under 1",
+        "kuvaus": "Under 1",
         "kieli": "SV"
       },
       {
-        "nimi": null,
-        "kuvaus": null,
+        "nimi": "Below 1",
+        "kuvaus": "Below 1",
         "kieli": "EN"
       }
     ],
@@ -262,19 +262,19 @@
   {
     "metadata": [
       {
-        "nimi": "Alle 3 (hylätty)",
-        "kuvaus": "",
+        "nimi": "Alle 3",
+        "kuvaus": "Alle 3",
         "lyhytNimi": "",
         "kieli": "FI"
       },
       {
-        "nimi": null,
-        "kuvaus": null,
+        "nimi": "Under 3",
+        "kuvaus": "Under 3",
         "kieli": "SV"
       },
       {
-        "nimi": null,
-        "kuvaus": null,
+        "nimi": "Below 3",
+        "kuvaus": "Below 3",
         "kieli": "EN"
       }
     ],
@@ -288,19 +288,19 @@
   {
     "metadata": [
       {
-        "nimi": "Alle 5 (hylätty)",
-        "kuvaus": "",
+        "nimi": "Alle 5",
+        "kuvaus": "Alle 5",
         "lyhytNimi": "",
         "kieli": "FI"
       },
       {
-        "nimi": null,
-        "kuvaus": null,
+        "nimi": "Under 5",
+        "kuvaus": "Under 5",
         "kieli": "SV"
       },
       {
-        "nimi": null,
-        "kuvaus": null,
+        "nimi": "Below 5",
+        "kuvaus": "Below 5",
         "kieli": "EN"
       }
     ],

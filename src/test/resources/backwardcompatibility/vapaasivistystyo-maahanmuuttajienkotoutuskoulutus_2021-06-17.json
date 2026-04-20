@@ -438,5 +438,6 @@
       "koodistoUri" : "opiskeluoikeudentyyppi"
     },
     "alkamispäivä" : "2021-09-01"
-  } ]
+  } ],
+  "ignoreKoskiValidator" : true
 }

@@ -65,7 +65,9 @@ class KoodistotTest extends AnyFreeSpec with TestEnvironment with Matchers {
       "suorituksentyyppi_lukionvaltakunnallinenmoduuli2019",
       "arviointiasteikkoeuropeanschoolofhelsinkinumericalmark_10-1",
       "arviointiasteikkoeuropeanschoolofhelsinkis7preliminarymark_10-1",
-      "arviointiasteikkoeuropeanschoolofhelsinkifinalmark_1000"
+      "arviointiasteikkoeuropeanschoolofhelsinkifinalmark_1000",
+      "europeanschoolofhelsinkiprimarylapsialaoppimisalue_lsachievingwellinrelationtohisherability",
+      "arviointiasteikkoeuropeanschoolofhelsinkiprimarymark_-"
     )
     // Tässä koodistossa on niin monta poikkeusta ettei erikseen luetella niitä tässä.
     val PoikkeavatKoodistot = Seq(

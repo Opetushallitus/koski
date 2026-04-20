@@ -656,7 +656,6 @@
               "tila": "valmis",
               "tunniste": "rakenne",
               "teksti": null,
-              "koodit": [],
               "liite": false,
               "osanTyyppi": "tekstikappale"
             },
@@ -683,7 +682,6 @@
                 "_tunniste": "9b48910a-daac-4dc4-b679-6acfc9d432ff",
                 "fi": "<p>Automekaanikon erikoisammattitutkinnon suorittaneella on ajoneuvoalan laajaa asiantuntijuutta edellyttävä ammattitaito. Hän osaa toimia ajoneuvoalan asiantuntijana sekä alan ammattilaisille että kuluttajille. Tutkinnon suorittaneella on vahva kokonaisnäkemys ajoneuvoalasta ja sen kehitysmahdollisuuksista. Hän osaa toimia alan verkostoissa. Tutkinnon suorittanut osaa suunnitella ajoneuvoalan asiantuntijapalvelun kohderyhmälle ja toteuttaa sen.</p>\n\n<p>Tutkinnon suorittaja voi suunnata osaamistaan esimiestehtäviin, yritystoiminnan kehittämiseen, alan teknisiin erityistehtäviin henkilö- ja pakkettiautojen; kuorma- ja linja-autojen tai työkoneiden osalta. Valintojensa mukaisesti tutkinnon suorittanut osaa toimia ajoneuvoalan yrityksessä monipuolisena asiantuntijana tai esimiestehtävissä kehittäen johtamistaitojaan. Hän tuntee alaa koskevan ajoneuvolainsäädännön, työsuojelusäädökset ja määräykset sekä osaa soveltaa niitä. Hän osaa toimia sidosryhmäyhteistyössä. Erikoistuessaan alan teknisiin erityistehtäviin, tutkinnon suorittaja osaa suunnitella ja ratkaista ajoneuvoihin ja niiden toimintaan liittyviä, haastavia ongelmia, jonka osana tarvitaan korkeatasoista vianetsinnän ja niiden teorioiden soveltamista. Testaus- ja kilpailutoiminnan tutkinnon osan suorittanut osaa toimia osana uusien ajoneuvomallien testausryhmää tai kilpa-autoiluun erikoistuneen tiimin asiantuntijajäsenenä, jossa hyödynnetään korkealuokkaista teknistä välineistöä.</p>\n\n<p>Automekaanikon erikoisammattitutkinto muodostuu kolmesta osaamisalasta; henkilöautotekniikan, kuorma- ja linja-autotekniikan sekä työkonetekniikan osaamisalasta. Osaamisalat muodostuvat kahdesta pakollisesta ja kahdesta valinnaisesta tutkinnon osasta. Henkilöautotekniikan osaamisalan ja kuorma- ja linja-autotekniikan osaamisalan pakolliset tutkinnon osat ovat Korjauksen haltuunotto ja Ajoneuvo vianmääritys. Työkonetekniikan osaamisalan pakolliset tutkinnon osat ovat Korjauksen haltuunotto ja Työkoneiden vianmääritykset. Valinnaiset tutkinnon osat ovat Teknisenä asiantuntijana toimiminen, Testaus- ja kilpailutoiminta, Sähköajoneuvojen korjaus, Päälli- ja korirakenteiden asennus sekä korjaus, Alusta- ja järrujärjestelmien asiantuntijana toimiminen, Koneenohjausjärjestelmien ylläpito ja säätäminen sekä Ajoneuvoalan kehitystehtävä. Valinnaisena tutkinnon osana voi valita myös muun tutkinnon osan toisesta ammatti- tai erikoisammattitutkinnosta.</p>"
               },
-              "koodit": [],
               "liite": false,
               "osanTyyppi": "tekstikappale"
             },
@@ -707,7 +705,6 @@
                     "_tunniste": "8d7e8d90-954b-4655-bf65-b1fd422f74fb",
                     "fi": "<p>Automekaanikon erikoisammattitutkinnon suorittanut voi toimia työntekijänä, yrittäjänä tai itsenäisenä ammatinharjoittajana. Tutkinnon suorittanut voi toimia esimiehenä, koulutustehtävissä, alan tuotekehitystehtävissä tai alan yritystoiminnan kehittämistehtävissä.</p>"
                   },
-                  "koodit": [],
                   "liite": false,
                   "osanTyyppi": "tekstikappale"
                 },
@@ -736,7 +733,6 @@
                     "fi": "<p>Tutkintotodistuksen antaa Opetushallituksen asettama tutkintotoimikunta.</p>",
                     "sv": "<p>Slutbetyget utfärdas av en examenskommission som tillsatts av Utbildningsstyrelsen.</p>"
                   },
-                  "koodit": [],
                   "liite": false,
                   "osanTyyppi": "tekstikappale"
                 },
@@ -765,7 +761,6 @@
                     "fi": "<p>Opetus- ja kulttuuriministeriö</p>\n\n<p>Opetushallitus, opetus- ja kulttuuriministeriön alainen keskusvirasto</p>",
                     "sv": "<p>Undervisnings- och kulturministeriet</p>\n\n<p>Utbildningsstyrelsen, centralt ämbetsverk som är underställt undervisnings- och kulturministeriet</p>"
                   },
-                  "koodit": [],
                   "liite": false,
                   "osanTyyppi": "tekstikappale"
                 },
@@ -793,7 +788,6 @@
                     "fi": "<p>Kansallinen tutkintojen viitekehys 5</p>\n\n<p>Eurooppalainen tutkintojen viitekehys 5</p>\n\n<p>ISCED 4</p>",
                     "sv": "<p>NQF 5 / EQF 5 / ISCED 4</p>"
                   },
-                  "koodit": [],
                   "liite": false,
                   "osanTyyppi": "tekstikappale"
                 },
@@ -822,7 +816,6 @@
                     "fi": "<p>Hyväksytty/hylätty</p>",
                     "sv": "<p>Godkänd/underkänd</p>"
                   },
-                  "koodit": [],
                   "liite": false,
                   "osanTyyppi": "tekstikappale"
                 },
@@ -851,7 +844,6 @@
                     "fi": "<p>Tutkinto tuottaa kelpoisuuden korkeakouluopintoihin.</p>",
                     "sv": "<p>Denna examen ger tillträde till högskolestudier.</p>"
                   },
-                  "koodit": [],
                   "liite": false,
                   "osanTyyppi": "tekstikappale"
                 },
@@ -880,7 +872,6 @@
                     "fi": "<p>Laki ammatillisesta aikuiskoulutuksesta 631/1998, asetus ammatillisesta aikuiskoulutuksesta 812/1998</p>",
                     "sv": "<p>Lagen om yrkesinriktad vuxenutbildning 631/1998, förordningen om yrkesinriktad vuxenutbildning 812/1998</p>"
                   },
-                  "koodit": [],
                   "liite": false,
                   "osanTyyppi": "tekstikappale"
                 },
@@ -909,7 +900,6 @@
                     "fi": "<p>Tutkinto suoritetaan osoittamalla tutkintotilaisuuksissa Opetushallituksen päättämissä tutkinnon perusteissa vaadittu ammattitaito. Tarvittaessa järjestetään tutkintoon valmistavaa koulutusta. Koulutuksen järjestäjä huolehtii näyttötutkintoon ja siihen valmistavaan koulutukseen hakeutumisen, tutkinnon suorittamisen ja tarvittavan ammattitaidon hankkimisen henkilökohtaistamisesta.</p>",
                     "sv": "<p>Examen avläggs vid examenstillfällen där examinanden visar sin yrkesskicklighet. De nationella examensfordringarna har definierats i examensgrunder som fastställts av Utbildningsstyrelsen. Vid behov anordnas utbildning som förbereder för examen. Utbildningsanordnaren sörjer för den personliga tillämpningen vid ansökan till fristående examen och till utbildning som förbereder för examen, vid avläggande av examen och vid förvärvande av behövlig yrkesskicklighet.</p>"
                   },
-                  "koodit": [],
                   "liite": false,
                   "osanTyyppi": "tekstikappale"
                 },
@@ -938,7 +928,6 @@
                     "fi": "<p>Näyttötutkinnon suorittaminen on ammattitaidon hankkimistavasta riippumatonta. Tutkintoon osallistujalle ei ole asetettu muodollisia koulutusvaatimuksia.</p>",
                     "sv": "<p>En fristående examen kan avläggas oavsett hur yrkesskickligheten har förvärvats. På dem som deltar i examen ställs inga formella utbildningskrav.</p>"
                   },
-                  "koodit": [],
                   "liite": false,
                   "osanTyyppi": "tekstikappale"
                 },

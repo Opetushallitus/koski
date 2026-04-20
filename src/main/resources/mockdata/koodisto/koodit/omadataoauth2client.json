@@ -52,6 +52,31 @@
   {
     "metadata": [
       {
+        "nimi": "Luotettava työntekijä -palvelu",
+        "kuvaus": null,
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Pålitlig medarbetare-tjänst",
+        "kuvaus": null,
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Trusted Employee Service",
+        "kuvaus": null,
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "omadataoauth2client_luotettavatyontekijapk",
+    "versio": 1,
+    "koodiArvo": "luotettavatyontekijapk"
+  },
+  {
+    "metadata": [
+      {
         "nimi": "OAuth2 debug client (fi)",
         "kuvaus": null,
         "kieli": "FI"
@@ -226,5 +251,30 @@
     "koodiUri": "omadataoauth2client_osaamispolkupk",
     "versio": 1,
     "koodiArvo": "osaamispolkupk"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "Waltti",
+        "kuvaus": null,
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Waltti",
+        "kuvaus": null,
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Waltti",
+        "kuvaus": null,
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "omadataoauth2client_walttipk",
+    "versio": 1,
+    "koodiArvo": "walttipk"
   }
 ]

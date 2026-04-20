@@ -14,7 +14,7 @@
         "kieli": "SV"
       },
       {
-        "nimi": null,
+        "nimi": "Present",
         "kuvaus": null,
         "kieli": "EN"
       }
@@ -41,7 +41,7 @@
         "kieli": "SV"
       },
       {
-        "nimi": null,
+        "nimi": "Absent",
         "kuvaus": null,
         "kieli": "EN"
       }
@@ -68,7 +68,7 @@
         "kieli": "SV"
       },
       {
-        "nimi": null,
+        "nimi": "Absent, does not consume study time",
         "kuvaus": null,
         "kieli": "EN"
       }
@@ -95,7 +95,7 @@
         "kieli": "SV"
       },
       {
-        "nimi": null,
+        "nimi": "Missing",
         "kuvaus": null,
         "kieli": "EN"
       }

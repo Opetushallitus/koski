@@ -92,7 +92,7 @@ class YleinenKielitutkintoTodistusDataBuilderSpec extends AnyFreeSpec with Match
           .find(_.suoritus == "Tekstin ymmärtäminen")
 
         tekstinymmartaminenSuoritus should not be empty
-        tekstinymmartaminenSuoritus.get.arvosana should equal("4, keskitaso")
+        tekstinymmartaminenSuoritus.get.arvosana should equal("4")
       }
 
       "valitsee tuoreimman arvioinnin oikein, kun arviointipäivät ovat käänteisessä järjestyksessä" in {
@@ -128,7 +128,7 @@ class YleinenKielitutkintoTodistusDataBuilderSpec extends AnyFreeSpec with Match
           .find(_.suoritus == "Tekstin ymmärtäminen")
 
         tekstinymmartaminenSuoritus should not be empty
-        tekstinymmartaminenSuoritus.get.arvosana should equal("5, ylin taso")
+        tekstinymmartaminenSuoritus.get.arvosana should equal("5")
       }
 
       "valitsee tuoreimman arvioinnin kolmesta vaihtoehdosta" in {
@@ -165,7 +165,7 @@ class YleinenKielitutkintoTodistusDataBuilderSpec extends AnyFreeSpec with Match
           .find(_.suoritus == "Tekstin ymmärtäminen")
 
         tekstinymmartaminenSuoritus should not be empty
-        tekstinymmartaminenSuoritus.get.arvosana should equal("5, ylin taso")
+        tekstinymmartaminenSuoritus.get.arvosana should equal("5")
       }
     }
 

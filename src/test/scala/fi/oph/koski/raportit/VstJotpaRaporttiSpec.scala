@@ -33,7 +33,7 @@ class VstJotpaRaporttiSpec
       "Yksilöity",
       "Oppijan oid",
       "Oppijan master-oid",
-      "hetu",
+      "Hetu",
       "Sukunimi",
       "Etunimet",
       "Kotikunta",

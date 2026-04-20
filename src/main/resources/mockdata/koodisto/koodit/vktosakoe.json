@@ -2,26 +2,20 @@
   {
     "metadata": [
       {
-        "nimi": "Tekstin ymmärtäminen",
-        "kuvaus": "",
-        "lyhytNimi": "",
-        "kieli": "FI"
-      }
-    ],
-    "withinCodeElements": [],
-    "includesCodeElements": [],
-    "levelsWithCodeElements": [],
-    "koodiUri": "vktosakoe_tekstinymmartaminen",
-    "versio": 1,
-    "koodiArvo": "tekstinymmartaminen"
-  },
-  {
-    "metadata": [
-      {
         "nimi": "Kirjoittaminen",
         "kuvaus": "",
         "lyhytNimi": "",
         "kieli": "FI"
+      },
+      {
+        "nimi": "Skriftlig färdighet",
+        "kuvaus": null,
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Writing",
+        "kuvaus": null,
+        "kieli": "EN"
       }
     ],
     "withinCodeElements": [],
@@ -38,6 +32,16 @@
         "kuvaus": "",
         "lyhytNimi": "",
         "kieli": "FI"
+      },
+      {
+        "nimi": "Hörförståelse",
+        "kuvaus": null,
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Listening comprehension",
+        "kuvaus": null,
+        "kieli": "EN"
       }
     ],
     "withinCodeElements": [],
@@ -54,6 +58,16 @@
         "kuvaus": "",
         "lyhytNimi": "",
         "kieli": "FI"
+      },
+      {
+        "nimi": "Muntlig färdighet",
+        "kuvaus": null,
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Speaking",
+        "kuvaus": null,
+        "kieli": "EN"
       }
     ],
     "withinCodeElements": [],
@@ -62,5 +76,31 @@
     "koodiUri": "vktosakoe_puhuminen",
     "versio": 1,
     "koodiArvo": "puhuminen"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "Tekstin ymmärtäminen",
+        "kuvaus": "",
+        "lyhytNimi": "",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Läsförståelse",
+        "kuvaus": null,
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Reading comprehension",
+        "kuvaus": null,
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "vktosakoe_tekstinymmartaminen",
+    "versio": 1,
+    "koodiArvo": "tekstinymmartaminen"
   }
 ]

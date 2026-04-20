@@ -2,6 +2,31 @@
   {
     "metadata": [
       {
+        "nimi": "+++++",
+        "kuvaus": null,
+        "kieli": "FI"
+      },
+      {
+        "nimi": "+++++",
+        "kuvaus": null,
+        "kieli": "SV"
+      },
+      {
+        "nimi": "+++++",
+        "kuvaus": null,
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "arviointiasteikkoeuropeanschoolofhelsinkiprimarymark_-",
+    "versio": 1,
+    "koodiArvo": "5"
+  },
+  {
+    "metadata": [
+      {
         "nimi": "+",
         "kuvaus": null,
         "lyhytNimi": "+",
@@ -106,5 +131,55 @@
     "koodiUri": "arviointiasteikkoeuropeanschoolofhelsinkiprimarymark_4",
     "versio": 1,
     "koodiArvo": "4"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "Achieved",
+        "kuvaus": null,
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Achieved",
+        "kuvaus": null,
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Achieved",
+        "kuvaus": null,
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "arviointiasteikkoeuropeanschoolofhelsinkiprimarymark_achieved",
+    "versio": 1,
+    "koodiArvo": "Achieved"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "Partially achieved",
+        "kuvaus": null,
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Partially achieved",
+        "kuvaus": null,
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Partially achieved",
+        "kuvaus": null,
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "arviointiasteikkoeuropeanschoolofhelsinkiprimarymark_partiallyachieved",
+    "versio": 1,
+    "koodiArvo": "Partially achieved"
   }
 ]

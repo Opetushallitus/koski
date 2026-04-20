@@ -20,7 +20,6 @@ class OppijaValidationVapaaSivistystyöKOTOSpec extends AnyFreeSpec with PutOpis
     "Päätason suorituksen laajuus lasketaan automaattisesti osasuoritusten laajuuksista" in {
       val opiskeluoikeus = opiskeluoikeusKOTO.withSuoritukset(List(
         suoritusKOTO.copy(
-          vahvistus = None,
           osasuoritukset = Some(List(
             vapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenTyöelämäJaYhteiskuntataitojenOpintojenSuoritus(laajuus = LaajuusOpintopisteissä(60)),
             vapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenOhjauksenSuoritus(laajuus = LaajuusOpintopisteissä(9))
@@ -95,7 +94,7 @@ class OppijaValidationVapaaSivistystyöKOTOSpec extends AnyFreeSpec with PutOpis
         )
 
         setupOppijaWithOpiskeluoikeus(opiskeluoikeus) {
-          verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.vapaaSivistystyö.kotoAlkamispäivä2012())
+          verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.rakenne.perusteEiVoimassa())
         }
       }
     }
