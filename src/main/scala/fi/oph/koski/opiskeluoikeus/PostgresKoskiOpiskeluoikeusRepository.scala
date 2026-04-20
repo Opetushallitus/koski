@@ -147,7 +147,7 @@ class PostgresKoskiOpiskeluoikeusRepository(
     val tallennettavaOid = tallennettavaOpiskeluoikeus.flatMap(_.oid)
     val tallennettavaLähdejärjestelmänKoodiarvo = tallennettavaOpiskeluoikeus.flatMap(_.lähdejärjestelmänId).map(_.lähdejärjestelmä.koodiarvo)
     val tallennettavaLähdejärjestelmänId = tallennettavaOpiskeluoikeus.flatMap(_.lähdejärjestelmänId).flatMap(_.id)
-    
+
     val aiemmistaOpiskeluoikeuksista = runDbSync(
       sql"""
         with master as (
@@ -198,6 +198,59 @@ class PostgresKoskiOpiskeluoikeusRepository(
       vahvistuspäivä = r.getLocalDateOption("vahvistuspaiva"),
     )
   })
+
+  // HUOMIOI, JOS TÄTÄ MUUTAT: Pitää olla synkassa Oppivelvollisuustiedot.scala:n createPrecomputedTable-metodissa
+  // raportointikantaan tehtävän tarkistuksen kanssa.
+  def onLukuvuosimaksuRahoitteisiaOpiskeluoikeuksiaIlmanKäyttöoikeustarkistusta(tallennettavaOpiskeluoikeus: Option[KoskeenTallennettavaOpiskeluoikeus], oppijaOid: String): Boolean = {
+    val lukuvuosimaksuKoodiarvo = "16"
+
+    val tallennettavassaOnLukuvuosimaksu = tallennettavaOpiskeluoikeus.exists(oo =>
+      !oo.mitätöity && oo.tila.opiskeluoikeusjaksot
+        .collect { case j: KoskiOpiskeluoikeusjakso => j }
+        .exists(_.opintojenRahoitus.exists(_.koodiarvo == lukuvuosimaksuKoodiarvo))
+    )
+
+    if (tallennettavassaOnLukuvuosimaksu) {
+      true
+    } else {
+      val tallennettavaOid = tallennettavaOpiskeluoikeus.flatMap(_.oid)
+      val tallennettavaLähdejärjestelmänKoodiarvo = tallennettavaOpiskeluoikeus.flatMap(_.lähdejärjestelmänId).map(_.lähdejärjestelmä.koodiarvo)
+      val tallennettavaLähdejärjestelmänId = tallennettavaOpiskeluoikeus.flatMap(_.lähdejärjestelmänId).flatMap(_.id)
+
+      runDbSync(
+        sql"""
+          with master as (
+            select case when master_oid is not null then master_oid else oid end as oid
+            from henkilo
+            where oid = $oppijaOid
+          ), linkitetyt as (
+            select oid as oids
+            from henkilo
+            where henkilo.oid = (select oid from master) or henkilo.master_oid = (select oid from master)
+          )
+          select exists(
+            select 1
+            from opiskeluoikeus
+            cross join jsonb_array_elements(data -> 'tila' -> 'opiskeluoikeusjaksot') jaksot
+            where not opiskeluoikeus.mitatoity
+              and (not (
+                        ($tallennettavaOid is not null)
+                        and (opiskeluoikeus.oid = $tallennettavaOid)
+                       )
+                  )
+              and (not (
+                        ($tallennettavaLähdejärjestelmänId is not null)
+                        and (opiskeluoikeus.data -> 'lähdejärjestelmänId' ->> 'id' is not null)
+                        and (opiskeluoikeus.data -> 'lähdejärjestelmänId' ->> 'id' = $tallennettavaLähdejärjestelmänId)
+                        and (opiskeluoikeus.data -> 'lähdejärjestelmänId' -> 'lähdejärjestelmä' ->> 'koodiarvo' = $tallennettavaLähdejärjestelmänKoodiarvo)
+                       )
+                  )
+              and jaksot -> 'opintojenRahoitus' ->> 'koodiarvo' = $lukuvuosimaksuKoodiarvo
+              and oppija_oid = any(select oids from linkitetyt)
+          )
+        """.as[Boolean]).head
+    }
+  }
 
   // TODO: Tässä logiikassa on bugi: Muut opiskeluoikeudet pitäisi olla mahdollista tunnistaa myös muulla keinoin
   // kuin oidilla (eli myös lähdejärjestelmän id:llä, aikaisemmin myös oppilaitos yms. tyypeillä)

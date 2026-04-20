@@ -60,6 +60,7 @@ class ValpasYtlServletSpec  extends ValpasTestBase with BeforeAndAfterEach {
 
   val oppijatEiOikeuttaMaksuttomuuteenKoskaOVLUlkopuolella = List(
     ValpasMockOppijat.eiOppivelvollinenSyntynytEnnen2004,
+    ValpasMockOppijat.eiOppivelvollinenLukuvuosimaksuRahoitteinen,
   )
 
   val oppijatEiOikeuttaMaksuttomuuteenKoskaValmistunut = List(

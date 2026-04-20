@@ -766,6 +766,30 @@ class MaksuttomuusSpec extends AnyFreeSpec with OpiskeluoikeusTestMethodsAmmatil
         verifyResponseStatusOk()
       }
     }
+
+    "Maksuttomuustietoja ei vaadita, jos oppijalla on lukuvuosimaksurahoitteinen opiskeluoikeus" in {
+      val lukuvuosimaksuOo = makeOpiskeluoikeus(alkamispäivä = date(2026, 8, 1)).copy(
+        tila = AmmatillinenOpiskeluoikeudenTila(List(
+          AmmatillinenOpiskeluoikeusjakso(date(2026, 8, 1), opiskeluoikeusLäsnä, Some(ExampleData.lukuvuosimaksuRahoitteinen))
+        ))
+      )
+      setupOppijaWithOpiskeluoikeus(lukuvuosimaksuOo, oppija) {
+        verifyResponseStatusOk()
+      }
+    }
+
+    "Ei saa siirtää maksuttomuustietoja, jos oppijalla on lukuvuosimaksurahoitteinen opiskeluoikeus" in {
+      val lukuvuosimaksuOo = makeOpiskeluoikeus(alkamispäivä = date(2026, 8, 1)).copy(
+        tila = AmmatillinenOpiskeluoikeudenTila(List(
+          AmmatillinenOpiskeluoikeusjakso(date(2026, 8, 1), opiskeluoikeusLäsnä, Some(ExampleData.lukuvuosimaksuRahoitteinen))
+        )),
+        lisätiedot = Some(AmmatillisenOpiskeluoikeudenLisätiedot(hojks = None, maksuttomuus = Some(List(Maksuttomuus(date(2026, 8, 1), None, true)))))
+      )
+      setupOppijaWithOpiskeluoikeus(lukuvuosimaksuOo, oppija) {
+        verifyResponseStatus(400, Nil)
+        body should include("oppijalla on lukuvuosimaksurahoitteinen opiskeluoikeus")
+      }
+    }
   }
 
   "Maksuttomuuden pidennyksen laskenta" - {

@@ -44,6 +44,7 @@ object ExampleData {
 
   lazy val valtionosuusRahoitteinen: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "1", koodistoUri = "opintojenrahoitus")
   lazy val muutaKauttaRahoitettu: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "6", koodistoUri = "opintojenrahoitus")
+  lazy val lukuvuosimaksuRahoitteinen: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "16", koodistoUri = "opintojenrahoitus")
   lazy val jatkuvanOppimisenRahoitus: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "14", koodistoUri = "opintojenrahoitus")
   lazy val jatkuvanOppimisenUudistuksenRahoitus: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "15", koodistoUri = "opintojenrahoitus")
 

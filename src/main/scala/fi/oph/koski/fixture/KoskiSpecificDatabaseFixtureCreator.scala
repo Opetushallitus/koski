@@ -337,6 +337,10 @@ class KoskiSpecificDatabaseFixtureCreator(application: KoskiApplication) extends
       (KoskiSpecificMockOppijat.menehtynytOppija, PerusopetusExampleData.päättötodistusOpiskeluoikeus()),
       (KoskiSpecificMockOppijat.demoNordea, ExamplesLukio.päättötodistus()),
       (KoskiSpecificMockOppijat.kelaPerusopetusUusillaLisätiedoilla, PerusopetusExampleData.päättötodistusOpiskeluoikeusUusillaLisätiedoilla()),
+      (KoskiSpecificMockOppijat.oppivelvollisuustietoLukuvuosimaksu, AmmatillinenOpiskeluoikeusTestData.opiskeluoikeus(MockOrganisaatiot.stadinAmmattiopisto, alkamispäivä = date(2026, 8, 1)).copy(
+        tila = AmmatillinenOpiskeluoikeudenTila(List(AmmatillinenOpiskeluoikeusjakso(date(2026, 8, 1), ExampleData.opiskeluoikeusLäsnä, Some(ExampleData.lukuvuosimaksuRahoitteinen)))),
+        lisätiedot = Some(AmmatillisenOpiskeluoikeudenLisätiedot(hojks = None)),
+      )),
     )
   }
 

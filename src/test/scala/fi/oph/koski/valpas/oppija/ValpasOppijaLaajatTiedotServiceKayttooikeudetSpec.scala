@@ -100,6 +100,13 @@ class ValpasOppijaLaajatTiedotServiceKäyttöoikeudetSpec extends ValpasOppijaTe
       ) shouldBe false
     }
 
+    "Käyttäjä, jolla globaalit oikeudet, ei näe oppijaa, joka ei ole lain piirissä, koska lukuovuosimaksullisia opiskeluoikeuksia" in {
+      canAccessOppijaYhteystiedoillaJaKuntailmoituksilla(
+        ValpasMockOppijat.eiOppivelvollinenLukuvuosimaksuRahoitteinen,
+        ValpasMockUsers.valpasOphPääkäyttäjä
+      ) shouldBe false
+    }
+
     "Käyttäjä, jolla OPPILAITOS_HAKEUTUMINEN globaalit oikeudet, ei näe oppijaa, joka on valmistunut peruskoulusta yli 2 kk aiemmin" in {
       canAccessOppijaYhteystiedoillaJaKuntailmoituksilla(
         ValpasMockOppijat.yli2kkAiemminPeruskoulustaValmistunut,

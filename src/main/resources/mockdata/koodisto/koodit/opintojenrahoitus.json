@@ -375,5 +375,32 @@
     "koodiUri": "opintojenrahoitus_9",
     "versio": 1,
     "koodiArvo": "9"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "Lukuvuosimaksu",
+        "kuvaus": "",
+        "lyhytNimi": "",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Lukuvuosimaksu",
+        "kuvaus": "",
+        "lyhytNimi": "",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Lukuvuosimaksu",
+        "kuvaus": null,
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "opintojenrahoitus_16",
+    "versio": 1,
+    "koodiArvo": "16"
   }
 ]

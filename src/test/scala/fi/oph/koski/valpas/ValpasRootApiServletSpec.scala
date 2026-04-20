@@ -79,6 +79,14 @@ class ValpasRootApiServletSpec extends ValpasTestBase with BeforeAndAfterEach {
     }
   }
 
+  "Lukuvuosimaksurahoitteisen oppijan tietojen lataaminen ei onnistu" taggedAs(ValpasBackendTag) in {
+    val oppijaOid = ValpasMockOppijat.eiOppivelvollinenLukuvuosimaksuRahoitteinen.oid
+    authGet(getOppijaUrl(oppijaOid)) {
+      verifyResponseStatus(403, ValpasErrorCategory.forbidden.oppija())
+      AuditLogTester.verifyNoAuditLogMessages()
+    }
+  }
+
   "Oppija, johon ei ole oikeuksia, ja jota ei ole olemassa tuottavat saman vastaukset" taggedAs(ValpasBackendTag) in {
     val jklOppija = ValpasMockOppijat.oppivelvollinenYsiluokkaKeskenKeväällä2021
     authGet(getOppijaUrl(jklOppija.oid), ValpasMockUsers.valpasHelsinkiPeruskoulu) {

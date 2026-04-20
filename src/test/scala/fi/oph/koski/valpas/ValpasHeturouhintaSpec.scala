@@ -66,6 +66,8 @@ class ValpasHeturouhintaSpec extends ValpasRouhintaTestBase {
   val oppivelvollisuudenUlkopuolistenHetut = List(
     ValpasMockOppijat.eiOppivelvollinenSyntynytEnnen2004.hetu.get,
     ValpasMockOppijat.eiOppivelvollinenLiianNuori.hetu.get,
+    ValpasMockOppijat.ennenLainRajapäivääPeruskoulustaValmistunut.hetu.get,
+    ValpasMockOppijat.eiOppivelvollinenLukuvuosimaksuRahoitteinen.hetu.get,
   )
 
   val amiksestaValmistuneidenHetut = List(

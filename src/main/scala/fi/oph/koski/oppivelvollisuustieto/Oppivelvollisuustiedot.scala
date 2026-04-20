@@ -96,7 +96,6 @@ object Oppivelvollisuustiedot {
     )
 
   def createPrecomputedTable(s: Schema, confidentialSchema: Schema, valpasRajapäivätService: ValpasRajapäivätService, config: Config) = {
-    val tarkastelupäivä = valpasRajapäivätService.tarkastelupäivä
     val valpasLakiVoimassaVanhinSyntymäaika = valpasRajapäivätService.lakiVoimassaVanhinSyntymäaika.toString
     val valpasLakiVoimassaPeruskoulustaValmistuneilla = valpasRajapäivätService.lakiVoimassaPeruskoulustaValmistuneillaAlku.toString
     val oppivelvollisuusAlkaaIka = valpasRajapäivätService.oppivelvollisuusAlkaaIka.toString
@@ -105,10 +104,7 @@ object Oppivelvollisuustiedot {
     val oppivelvollisuusLoppuuIka = valpasRajapäivätService.oppivelvollisuusLoppuuIka.toString
     val maksuttomuusLoppuuIka = valpasRajapäivätService.maksuttomuusLoppuuIka.toString
 
-    val ulkopuolisetKunnatTaiKuntaVirheellinen = validatedUnboundCodeList(oppivelvollisuudenUlkopuolisetKunnatTaiKuntaVirheellinen)
     val ulkopuolisetKunnat = validatedUnboundCodeList(oppivelvollisuudenUlkopuolisetKunnat)
-
-    val kotikuntahistoriaConfig = KotikuntahistoriaConfig(config)
 
     sqlu"""
       create table #${s.name}.oppivelvollisuustiedot as
@@ -147,6 +143,18 @@ object Oppivelvollisuustiedot {
               where syntymaaika >= '#$valpasLakiVoimassaVanhinSyntymäaika'::date
                 and kotikunta_suomessa_ensimmaisen_kerran_alkaen.pvm is not null
                 and kotikunta_suomessa_ensimmaisen_kerran_alkaen.pvm < syntymaaika + interval '18 years'
+                -- Lukuvuosimaksurahoitteinen oppija ei ole oppivelvollinen
+                -- HUOMIOI, JOS TÄTÄ MUUTAT: Pitää olla synkassa onkoLukuvuosimaksuRahoitteinenIlmanKäyttöoikeustarkistusta-metodissa
+                -- tuotantokantaan tehtävän tarkistuksen kanssa.
+                and henkilo.master_oid not in (
+                                select
+                                  henkilo.master_oid
+                                from
+                                  #${s.name}.r_henkilo henkilo
+                                  join #${s.name}.r_opiskeluoikeus oo on henkilo.oppija_oid = oo.oppija_oid
+                                  join #${s.name}.r_opiskeluoikeus_aikajakso aj on oo.opiskeluoikeus_oid = aj.opiskeluoikeus_oid
+                                where aj.opintojen_rahoitus = '16'
+                )
                 and henkilo.master_oid not in (
                                 select
                                   henkilo.master_oid

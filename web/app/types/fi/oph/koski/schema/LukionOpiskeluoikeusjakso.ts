@@ -19,7 +19,7 @@ export type LukionOpiskeluoikeusjakso = {
     | 'valiaikaisestikeskeytynyt'
     | 'valmistunut'
   >
-  opintojenRahoitus?: Koodistokoodiviite<'opintojenrahoitus', '1' | '6'>
+  opintojenRahoitus?: Koodistokoodiviite<'opintojenrahoitus', '1' | '6' | '16'>
 }
 
 export const LukionOpiskeluoikeusjakso = (o: {
@@ -34,7 +34,7 @@ export const LukionOpiskeluoikeusjakso = (o: {
     | 'valiaikaisestikeskeytynyt'
     | 'valmistunut'
   >
-  opintojenRahoitus?: Koodistokoodiviite<'opintojenrahoitus', '1' | '6'>
+  opintojenRahoitus?: Koodistokoodiviite<'opintojenrahoitus', '1' | '6' | '16'>
 }): LukionOpiskeluoikeusjakso => ({
   $class: 'fi.oph.koski.schema.LukionOpiskeluoikeusjakso',
   ...o

@@ -1,5 +1,10 @@
 # Koskeen tallennettavien tietojen validaatiosäännöt
 
+## 20.4.2026
+
+- Lukion ja ammatillisissa opiskeluoikeuksissa sallitaan uusi rahoitusmuoto 16 (lukuvuosimaksu) 1.8.2026 tai myöhemmin alkaneissa opiskeluoikeuksissa
+- Oppija, jolla on lukuvuosimaksurahoitteinen (rahoitusmuoto 16) opiskeluoikeus, ei kuulu laajennetun oppivelvollisuuden piiriin eikä hänelle voi siirtää maksuttomuustietoja
+
 ## 10.4.2026
 
 - Aikuisten perusopetuksen opiskeluoikeutta ei voi lisätä, silloin kun sillä on sekä oppimäärän että aineopintojen suorituksia.

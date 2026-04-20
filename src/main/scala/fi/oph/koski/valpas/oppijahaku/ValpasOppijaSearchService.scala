@@ -118,11 +118,13 @@ class ValpasOppijaSearchService(application: KoskiApplication) extends Logging {
     (henkilö: OppijaHenkilö)
   : Either[HttpStatus, ValpasHenkilöhakuResult] = {
     val perusopetuksenAikavälit = opiskeluoikeusRepository.getPerusopetuksenAikavälitIlmanKäyttöoikeustarkistusta(None, henkilö.oid)
+    val onLukuvuosimaksuRahoitteinen = opiskeluoikeusRepository.onLukuvuosimaksuRahoitteisiaOpiskeluoikeuksiaIlmanKäyttöoikeustarkistusta(None, henkilö.oid)
     val onMahdollisestiLainPiirissä =
       MaksuttomuusValidation.eiOppivelvollisuudenLaajentamislainPiirissäSyyt(
         henkilö.syntymäaika,
         perusopetuksenAikavälit,
-        rajapäivätService
+        rajapäivätService,
+        onLukuvuosimaksuRahoitteinen
       ).isEmpty
 
     if (onMahdollisestiLainPiirissä) {

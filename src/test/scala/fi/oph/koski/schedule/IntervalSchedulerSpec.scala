@@ -312,11 +312,20 @@ class IntervalSchedulerSpec extends AnyFreeSpec with TestEnvironment with Matche
 
       Wait.until(executionCount.get >= 1, timeoutMs = 5000)
 
-      // Set nextFireTime to year 9999 — scheduler should stop firing
+      // Set nextFireTime to year 9999 — scheduler should stop firing.
+      // An in-flight fire() may overwrite our value, so keep setting it until it sticks.
       import java.sql.Timestamp
       val farFuture = Timestamp.valueOf("9999-12-31 23:59:59")
-      QueryMethods.runDbSync(KoskiApplicationForTests.masterDatabase.db,
+      def setFarFuture(): Unit = QueryMethods.runDbSync(KoskiApplicationForTests.masterDatabase.db,
         KoskiTables.Scheduler.filter(_.name === schedulerName).map(_.nextFireTime).update(farFuture))
+      def getNextFireTime: Timestamp = QueryMethods.runDbSync(KoskiApplicationForTests.masterDatabase.db,
+        KoskiTables.Scheduler.filter(_.name === schedulerName).map(_.nextFireTime).result.head)
+
+      Wait.until({
+        setFarFuture()
+        Thread.sleep(50)
+        getNextFireTime == farFuture
+      }, timeoutMs = 5000)
 
       val countAfterDisable = executionCount.get
       Thread.sleep(500)
