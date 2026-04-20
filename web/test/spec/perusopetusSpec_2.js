@@ -949,8 +949,7 @@ describe('Perusopetus 2', function () {
               'venäjä',
               'vietnam',
               'viittomakieli',
-              'viro, eesti',
-              'wolof'
+              'Tarkenna hakua nähdäksesi lisää vaihtoehtoja'
             ])
           })
           after(editor.cancelChanges)
