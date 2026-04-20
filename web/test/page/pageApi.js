@@ -141,11 +141,31 @@ function Page(mainElement) {
               click(findSingle('.select', S(input)), 'click')()
             }
 
-            var result = S(input)
-              .find('.options li.option')
-              .filter(function (i_, v) {
-                return $(v).text().includes(value)
-              })[index]
+            var findOption = function () {
+              return S(input)
+                .find('.options li.option')
+                .filter(function (i_, v) {
+                  return $(v).text().includes(value)
+                })[index]
+            }
+
+            var result = findOption()
+
+            // Dropdown rajoittaa näkyvien vaihtoehtojen määrän 100:aan. Jos
+            // haluttu arvo ei ole ensimmäisten joukossa, kirjoitetaan se
+            // suodatinkenttään, jolloin lista suodattuu ja valinta löytyy.
+            if (!result) {
+              var filterInput = S(input).find('.input-container input')
+              if (filterInput.length > 0) {
+                var domInput = filterInput[0]
+                Object.getOwnPropertyDescriptor(
+                  Object.getPrototypeOf(domInput),
+                  'value'
+                ).set.call(domInput, value)
+                triggerEvent(filterInput, 'input')()
+                result = findOption()
+              }
+            }
 
             if (result) {
               return triggerEvent(result, 'mousedown')()

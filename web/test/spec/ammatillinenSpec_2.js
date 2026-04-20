@@ -331,13 +331,14 @@ describe('Ammatillinen koulutus 2', function () {
               'Aikuisten perusopetus (0009)'
             ])
 
-            expect(osaamisalat.slice(-5)).to.deep.equal([
-              'Yritystoiminnan suunnittelun ja käynnistämisen osaamisala (2284)',
-              'Äänitekniikan osaamisala (2240)',
-              'Ääniteknikko (2128)',
-              'Äänitetuottaja (2127)',
-              'Äänityön osaamisala (2007)'
-            ])
+            // Dropdown näyttää enintään 100 ensimmäistä vaihtoehtoa ("Ei valintaa"
+            // + 99 osaamisalaa, aakkosjärjestyksessä) ja loppuun "tarkenna hakua"
+            // -vihjeen. Vihje todistaa, että koko osaamisalakoodisto (870 koodia)
+            // haettiin eikä vain perustekohtaiset.
+            expect(osaamisalat.length).to.equal(101)
+            expect(osaamisalat[osaamisalat.length - 1]).to.equal(
+              'Tarkenna hakua nähdäksesi lisää vaihtoehtoja'
+            )
           })
         })
       })

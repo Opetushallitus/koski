@@ -12,6 +12,8 @@ import { elementWithLoadingIndicator } from './AjaxLoadingIndicator'
 import { t } from '../i18n/i18n'
 import { buildClassNames } from './classnames'
 
+const MAX_VISIBLE_OPTIONS = 100
+
 /*
   options: [] or Observable []
   keyValue: item => string
@@ -58,9 +60,17 @@ export default ({
     Bacon.constant(displayValue),
     queryFilter
   )
-  const allOptionsP = filteredOptionsP.map((opts) =>
-    opts.concat(newItem ? [newItem] : [])
-  )
+  const allOptionsP = filteredOptionsP.map((opts) => {
+    // Rajoita näkyvät vaihtoehdot vain, kun suodatinkenttä on käytössä –
+    // muuten käyttäjällä ei olisi keinoa päästä käsiksi rajauksen taakse
+    // jääviin vaihtoehtoihin.
+    const truncated = enableFilter && opts.length > MAX_VISIBLE_OPTIONS
+    const visible = truncated ? opts.slice(0, MAX_VISIBLE_OPTIONS) : opts
+    return {
+      options: visible.concat(newItem ? [newItem] : []),
+      truncated
+    }
+  })
   let inputElem = null
   let listElem = null
   const handleOnBlur = () => openAtom.set(false)
@@ -133,10 +143,7 @@ export default ({
       queryAtom.set(undefined)
     }
   }
-  const handleMouseOver = (allOptions, o) => {
-    const index = allOptions.findIndex(
-      (option) => keyValue(option) === keyValue(o)
-    )
+  const handleMouseOver = (index) => {
     selectionIndexAtom.set(index)
   }
   const isNewItem = (allOptions, o, i) => newItem && i === allOptions.length - 1
@@ -157,7 +164,7 @@ export default ({
   return (
     <span>
       {elementWithLoadingIndicator(
-        allOptionsP.map((allOptions) => {
+        allOptionsP.map(({ options: allOptions, truncated }) => {
           const grouped =
             R.keys(
               R.groupBy((opt) => opt.groupName)(
@@ -236,84 +243,96 @@ export default ({
                   data-testid="koodisto-dropdown-all-options"
                   role="listbox"
                 >
-                  {flatMapArray(allOptions, (o, i) => {
-                    const isNew = isNewItem(allOptions, o, i)
-                    const isZeroValue = keyValue(o) === 'eivalintaa'
-                    const itemClassName = Bacon.combineWith(
-                      (s, r, a) => s + r + a,
-                      selectionIndexAtom.map((selectionIndex) =>
-                        buildClassNames([
-                          'option',
-                          i === selectionIndex &&
-                            isOptionEnabled(o) &&
-                            'selected',
-                          isNew && 'new-item',
-                          isZeroValue && 'zero-value'
-                        ])
-                      ),
-                      removeIndexAtom.map((removeIndex) =>
-                        removeIndex === i ? ' removing' : ''
-                      ),
-                      isOptionEnabled(o) ? '' : ' option-disabled'
-                    )
-                    const itemElement = (
-                      <li
-                        role="listitem"
-                        key={keyValue(o) || displayValue(o)}
-                        aria-label={displayValue(o)}
-                        className={itemClassName}
-                        onMouseDown={(e) => {
-                          selectOption(e, o)
-                        }}
-                        onClick={(e) => {
-                          selectOption(e, o)
-                        }}
-                        onMouseOver={() => handleMouseOver(allOptions, o)}
-                        data-testid={itemTestId(o)}
-                      >
-                        {isNew ? (
-                          <span data-testid={'new-item'}>
-                            <span className="plus">{''}</span>
-                            {displayValue(newItem)}
-                          </span>
-                        ) : isRemovable(o) ? (
-                          <span className="removable-option" title={removeText}>
-                            {displayValue(o)}
-                            <a
-                              className="remove-value"
-                              onMouseDown={(e) => {
-                                selectRemoval(e, o)
-                              }}
-                              onClick={(e) => {
-                                selectRemoval(e, o)
-                              }}
-                              onMouseOver={() => removeIndexAtom.set(i)}
-                              onMouseLeave={() =>
-                                removeIndexAtom.set(undefined)
-                              }
-                            />
-                          </span>
-                        ) : (
-                          displayValue(o)
-                        )}
-                      </li>
-                    )
-                    const groupName =
-                      grouped &&
-                      (i === 0 || allOptions[i - 1].groupName !== o.groupName)
-                        ? o.groupName
-                        : ''
-                    if (groupName) {
-                      return [
-                        <li key={groupName} className="group-header">
-                          {groupName}
-                        </li>,
-                        itemElement
-                      ]
-                    } else {
-                      return [itemElement]
-                    }
-                  })}
+                  {Bacon.combineWith(
+                    selectionIndexAtom,
+                    removeIndexAtom,
+                    (selectionIndex, removeIndex) =>
+                      flatMapArray(allOptions, (o, i) => {
+                        const isNew = isNewItem(allOptions, o, i)
+                        const isZeroValue = keyValue(o) === 'eivalintaa'
+                        const itemClassName =
+                          buildClassNames([
+                            'option',
+                            i === selectionIndex &&
+                              isOptionEnabled(o) &&
+                              'selected',
+                            isNew && 'new-item',
+                            isZeroValue && 'zero-value'
+                          ]) +
+                          (removeIndex === i ? ' removing' : '') +
+                          (isOptionEnabled(o) ? '' : ' option-disabled')
+                        const itemElement = (
+                          <li
+                            role="listitem"
+                            key={keyValue(o) || displayValue(o)}
+                            aria-label={displayValue(o)}
+                            className={itemClassName}
+                            onMouseDown={(e) => {
+                              selectOption(e, o)
+                            }}
+                            onClick={(e) => {
+                              selectOption(e, o)
+                            }}
+                            onMouseOver={() => handleMouseOver(i)}
+                            data-testid={itemTestId(o)}
+                          >
+                            {isNew ? (
+                              <span data-testid={'new-item'}>
+                                <span className="plus">{''}</span>
+                                {displayValue(newItem)}
+                              </span>
+                            ) : isRemovable(o) ? (
+                              <span
+                                className="removable-option"
+                                title={removeText}
+                              >
+                                {displayValue(o)}
+                                <a
+                                  className="remove-value"
+                                  onMouseDown={(e) => {
+                                    selectRemoval(e, o)
+                                  }}
+                                  onClick={(e) => {
+                                    selectRemoval(e, o)
+                                  }}
+                                  onMouseOver={() => removeIndexAtom.set(i)}
+                                  onMouseLeave={() =>
+                                    removeIndexAtom.set(undefined)
+                                  }
+                                />
+                              </span>
+                            ) : (
+                              displayValue(o)
+                            )}
+                          </li>
+                        )
+                        const groupName =
+                          grouped &&
+                          (i === 0 ||
+                            allOptions[i - 1].groupName !== o.groupName)
+                            ? o.groupName
+                            : ''
+                        if (groupName) {
+                          return [
+                            <li key={groupName} className="group-header">
+                              {groupName}
+                            </li>,
+                            itemElement
+                          ]
+                        } else {
+                          return [itemElement]
+                        }
+                      })
+                  )}
+                  {truncated && (
+                    <li
+                      key="__truncation_hint__"
+                      className="truncation-hint"
+                      role="presentation"
+                    >
+                      {t('Tarkenna hakua nähdäksesi lisää vaihtoehtoja')}
+                    </li>
+                  )}
                 </ul>
               )}
             </div>
