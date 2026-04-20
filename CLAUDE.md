@@ -89,6 +89,7 @@ valpas-web/src/                # Valpas frontend (separate React app)
 - No `return` statements (including mid-function early returns — use idiomatic control flow instead)
 - Class names: PascalCase
 - Use `@Description`, `@KoodistoUri`, and other schema annotations for data models
+- When adding a new parameter with a default value to an existing function, check all call sites and evaluate whether they should pass the real value instead of relying on the default. The compiler won't warn about missing values.
 
 ### TypeScript/JavaScript
 - Use TypeScript for new code
@@ -136,6 +137,8 @@ Test users are defined in `src/main/scala/fi/oph/koski/koskiuser/MockUsers.scala
 Default test user: username "pää", password "pää"
 Test students for Koski local development are defined in `src/main/scala/fi/oph/koski/henkilo/KoskiSpecificMockOppijat.scala`
 Test students for Valpas local development are defined in `src/main/scala/fi/oph/koski/valpas/opiskeluoikeusfixture/ValpasMockOppijat.scala`
+
+**Important:** New mock oppijat in `KoskiSpecificMockOppijat` and `ValpasMockOppijat` must be added at the **end** of the list, not in the middle. Oppija OIDs are generated sequentially, so inserting in the middle shifts all subsequent OIDs and breaks fixture data and UI tests.
 
 ## Database
 
