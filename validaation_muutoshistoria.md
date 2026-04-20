@@ -1,5 +1,8 @@
 # Koskeen tallennettavien tietojen validaatiosäännöt
 
+## 29.4.2026
+- Ammatillisen osittaisen ja osia useammasta tutkinnosta -suoritusten yhteisten tutkinnon osien laajuus täytyy täsmätä sen osa-alueiden laajuuteen
+
 ## 20.4.2026
 
 - Lukion ja ammatillisissa opiskeluoikeuksissa sallitaan uusi rahoitusmuoto 16 (lukuvuosimaksu) 1.8.2026 tai myöhemmin alkaneissa opiskeluoikeuksissa
