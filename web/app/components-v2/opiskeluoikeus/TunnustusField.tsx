@@ -24,7 +24,11 @@ export const TunnustusView = <T extends SelitettyOsaamisenTunnustaminen>(
   const testId = useTestId('tunnustettu.value')
 
   return (
-    <div {...common(props, ['TunnustusView'])} data-testid={testId}>
+    <div
+      {...common(props, ['TunnustusView'])}
+      data-testid={testId}
+      style={{ whiteSpace: 'pre-line' }}
+    >
       {t(props.value?.selite) || '–'}
     </div>
   )
@@ -134,7 +138,11 @@ export const OsaamisenTunnustusView = (
     <TestIdLayer id="tunnustettu">
       <KeyValueTable>
         <KeyValueRow localizableLabel="Selite">
-          <TestIdText id="selite">{t(props.value?.selite) || '–'}</TestIdText>
+          <TestIdText id="selite">
+            <span style={{ whiteSpace: 'pre-line' }}>
+              {t(props.value?.selite) || '–'}
+            </span>
+          </TestIdText>
         </KeyValueRow>
         <KeyValueRow localizableLabel="Rahoituksen piirissä">
           <BooleanView

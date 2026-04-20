@@ -237,6 +237,7 @@ export const AmmatillisenOsittaisenUseastaTutkinnostaSuorituksenTiedot: React.FC
           form={form}
           view={LocalizedTextView}
           edit={LocalizedTextEdit}
+          editProps={{ large: true }}
           path={path.prop('todistuksellaNäkyvätLisätiedot')}
           testId="todistuksellaNäkyvätLisätiedot"
         />

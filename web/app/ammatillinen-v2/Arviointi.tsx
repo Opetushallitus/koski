@@ -49,7 +49,9 @@ export const ArviointiView = ({
           ))}
         </TestIdLayer>
       </KeyValueRow>
-      <KeyValueRow localizableLabel="Kuvaus">{t(value?.kuvaus)}</KeyValueRow>
+      <KeyValueRow localizableLabel="Kuvaus">
+        <span style={{ whiteSpace: 'pre-line' }}>{t(value?.kuvaus)}</span>
+      </KeyValueRow>
     </>
   )
 }
@@ -144,6 +146,7 @@ export const ArviointiEdit = ({
       </KeyValueRow>
       <KeyValueRow localizableLabel="Kuvaus">
         <LocalizedTextEdit
+          large
           value={value?.kuvaus}
           onChange={(kuvaus) =>
             onChange({ ...emptyArviointi, ...value, kuvaus })
