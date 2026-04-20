@@ -1988,14 +1988,14 @@ test.describe('Vapaa sivistystyö', () => {
       })
 
       test('Perusteen vaihtaminen', async ({ vstOppijaPage }) => {
-        await vstOppijaPage.setPeruste('OPH-123-2021')
+        await vstOppijaPage.setPeruste('1/011/2012')
         expect(await vstOppijaPage.peruste()).toEqual(
-          'OPH-123-2021 Aikuisten maahanmuuttajien kotoutumiskoulutuksen opetussuunnitelman perusteet 2012'
+          '1/011/2012 Aikuisten maahanmuuttajien kotoutumiskoulutuksen opetussuunnitelman perusteet 2012'
         )
 
         await vstOppijaPage.setPeruste('OPH-649-2022')
         expect(await vstOppijaPage.peruste()).toEqual(
-          'OPH-649-2022 Aikuisten maahanmuuttajien kotoutumiskoulutuksen opetussuunnitelman perusteet 2012'
+          'OPH-649-2022 Kotoutumiskoulutuksen opetussuunnitelman perusteet 2022'
         )
 
         await vstOppijaPage.tallenna()

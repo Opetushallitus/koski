@@ -16,7 +16,7 @@
         "fi" : "Varsinais-Suomen kansanopisto"
       }
     },
-    "arvioituPäättymispäivä" : "2022-05-31",
+    "arvioituPäättymispäivä" : "2022-02-28",
     "tila" : {
       "opiskeluoikeusjaksot" : [ {
         "alku" : "2021-09-01",
@@ -24,6 +24,16 @@
           "koodiarvo" : "lasna",
           "nimi" : {
             "fi" : "Läsnä"
+          },
+          "koodistoUri" : "koskiopiskeluoikeudentila",
+          "koodistoVersio" : 1
+        }
+      }, {
+        "alku" : "2022-02-28",
+        "tila" : {
+          "koodiarvo" : "valmistunut",
+          "nimi" : {
+            "fi" : "Valmistunut"
           },
           "koodistoUri" : "koskiopiskeluoikeudentila",
           "koodistoVersio" : 1
@@ -43,7 +53,7 @@
           "koodiarvo" : "999910",
           "koodistoUri" : "koulutus"
         },
-        "perusteenDiaarinumero" : "OPH-123-2021",
+        "perusteenDiaarinumero" : "1/011/2012",
         "laajuus" : {
           "arvo" : 54.0,
           "yksikkö" : {
@@ -63,7 +73,7 @@
         }
       },
       "vahvistus" : {
-        "päivä" : "2022-05-31",
+        "päivä" : "2022-02-28",
         "myöntäjäOrganisaatio" : {
           "oid" : "1.2.246.562.10.14613773812",
           "oppilaitosnumero" : {
@@ -437,7 +447,7 @@
       "koodiarvo" : "vapaansivistystyonkoulutus",
       "koodistoUri" : "opiskeluoikeudentyyppi"
     },
-    "alkamispäivä" : "2021-09-01"
-  } ],
-  "ignoreKoskiValidator" : true
+    "alkamispäivä" : "2021-09-01",
+    "päättymispäivä" : "2022-02-28"
+  } ]
 }

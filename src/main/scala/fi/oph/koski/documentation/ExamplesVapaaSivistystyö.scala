@@ -53,9 +53,10 @@ object VapaaSivistystyöExample {
   )
 
   lazy val opiskeluoikeusKOTO = VapaanSivistystyönOpiskeluoikeus(
-    arvioituPäättymispäivä = Some(date(2022, 5, 31)),
+    arvioituPäättymispäivä = Some(date(2022, 2, 28)),
     tila = VapaanSivistystyönOpiskeluoikeudenTila(List(
-      OppivelvollisilleSuunnattuVapaanSivistystyönOpiskeluoikeusjakso(date(2021, 9, 1), opiskeluoikeusLäsnä)
+      OppivelvollisilleSuunnattuVapaanSivistystyönOpiskeluoikeusjakso(date(2021, 9, 1), opiskeluoikeusLäsnä),
+      OppivelvollisilleSuunnattuVapaanSivistystyönOpiskeluoikeusjakso(date(2022, 2, 28), opiskeluoikeusValmistunut),
     )),
     lisätiedot = None,
     oppilaitos = Some(varsinaisSuomenKansanopisto),
@@ -168,8 +169,8 @@ object VapaaSivistystyöExample {
   lazy val suoritusKOTO = OppivelvollisilleSuunnattuMaahanmuuttajienKotoutumiskoulutuksenSuoritus(
     toimipiste = OidOrganisaatio(MockOrganisaatiot.itäsuomenYliopisto),
     tyyppi = Koodistokoodiviite(koodiarvo = "vstmaahanmuuttajienkotoutumiskoulutus", koodistoUri = "suorituksentyyppi"),
-    koulutusmoduuli = VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutus(perusteenDiaarinumero = Some("OPH-123-2021"), laajuus = Some(LaajuusOpintopisteissä(54))),
-    vahvistus = vahvistus(päivä = date(2022, 5, 31)),
+    koulutusmoduuli = VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutus(perusteenDiaarinumero = Some("1/011/2012"), laajuus = Some(LaajuusOpintopisteissä(54))),
+    vahvistus = vahvistus(päivä = date(2022, 2, 28)),
     suorituskieli = suomenKieli,
     todistuksellaNäkyvätLisätiedot = None,
     osasuoritukset = Some(List(
