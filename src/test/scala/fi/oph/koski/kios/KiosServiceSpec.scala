@@ -56,9 +56,10 @@ class KiosServiceSpec
   }
 
   "Access control toimii oikein" in {
+    AuditLogTester.clearMessages()
     post("/api/kios/oid", JsonSerializer.writeWithRoot(OidRequest(oid = KoskiSpecificMockOppijat.dippainssi.oid)), headers = authHeaders(kiosKäyttäjä) ++ jsonContent){
       verifyResponseStatusOk()
-      AuditLogTester.verifyLastAuditLogMessageForOperation(Map("operation" -> "KIOS_OPISKELUOIKEUS_HAKU"))
+      AuditLogTester.verifyOnlyAuditLogMessageForOperation(Map("operation" -> "KIOS_OPISKELUOIKEUS_HAKU"))
     }
 
     post("/api/kios/oid", JsonSerializer.writeWithRoot(OidRequest(oid = KoskiSpecificMockOppijat.dippainssi.oid)), headers = authHeaders(hakemuspalveluKäyttäjä) ++ jsonContent){
@@ -66,11 +67,26 @@ class KiosServiceSpec
     }
   }
 
-  "Hetu-haku kirjoittaa auditlogin" in {
+  "Hetu-haku kirjoittaa yhden auditlog-rivin per POST" in {
     AuditLogTester.clearMessages()
     post("/api/kios/hetu", JsonSerializer.writeWithRoot(HetuRequest(hetu = KoskiSpecificMockOppijat.dippainssi.hetu.get)), headers = authHeaders(kiosKäyttäjä) ++ jsonContent) {
       verifyResponseStatusOk()
-      AuditLogTester.verifyLastAuditLogMessageForOperation(Map("operation" -> "KIOS_OPISKELUOIKEUS_HAKU"))
+      AuditLogTester.verifyOnlyAuditLogMessageForOperation(Map(
+        "operation" -> "KIOS_OPISKELUOIKEUS_HAKU",
+        "target" -> Map("oppijaHenkiloOid" -> KoskiSpecificMockOppijat.dippainssi.oid),
+      ))
+    }
+  }
+
+  "Auditlogiin kirjoitetaan oppijan oid myös kun palautettavia opiskeluoikeuksia ei ole" in {
+    AuditLogTester.clearMessages()
+    val oppija = KoskiSpecificMockOppijat.ylioppilasEiValmistunut
+    post("/api/kios/oid", JsonSerializer.writeWithRoot(OidRequest(oid = oppija.oid)), headers = authHeaders(kiosKäyttäjä) ++ jsonContent) {
+      verifyResponseStatusOk()
+      AuditLogTester.verifyOnlyAuditLogMessageForOperation(Map(
+        "operation" -> "KIOS_OPISKELUOIKEUS_HAKU",
+        "target" -> Map("oppijaHenkiloOid" -> oppija.oid),
+      ))
     }
   }
 
