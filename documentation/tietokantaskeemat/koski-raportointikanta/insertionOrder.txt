@@ -15,7 +15,6 @@ osasuoritus_arvioitu_opiskeluoikeuden_ulkopuolella
 paallekkaiset_opiskeluoikeudet
 r_aikajakso
 r_henkilo
-r_henkilo_vipunen
 r_koodisto_koodi
 r_kotikuntahistoria
 r_koulutuksen_jarjestamismuoto_ammatillinen

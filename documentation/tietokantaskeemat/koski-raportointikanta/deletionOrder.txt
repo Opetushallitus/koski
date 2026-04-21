@@ -15,7 +15,6 @@ r_mitatoitu_opiskeluoikeus
 r_koulutuksen_jarjestamismuoto_ammatillinen
 r_kotikuntahistoria
 r_koodisto_koodi
-r_henkilo_vipunen
 r_henkilo
 r_aikajakso
 paallekkaiset_opiskeluoikeudet
