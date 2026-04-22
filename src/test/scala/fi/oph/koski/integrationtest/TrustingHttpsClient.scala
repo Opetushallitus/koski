@@ -1,28 +1,24 @@
 package fi.oph.koski.integrationtest
 
-import org.apache.http.client.config.{CookieSpecs, RequestConfig}
-import org.apache.http.conn.ssl.{NoopHostnameVerifier, SSLConnectionSocketFactory}
-import org.apache.http.impl.client.{CloseableHttpClient, HttpClients}
-import org.apache.http.ssl.{SSLContextBuilder, TrustStrategy}
-
-import java.security.cert.X509Certificate
+import org.apache.hc.client5.http.impl.classic.{CloseableHttpClient, HttpClients}
+import org.apache.hc.client5.http.impl.io.PoolingHttpClientConnectionManagerBuilder
+import org.apache.hc.client5.http.ssl.{NoopHostnameVerifier, TrustAllStrategy}
+import org.apache.hc.core5.ssl.SSLContextBuilder
 
 object TrustingHttpsClient {
   def createClient: CloseableHttpClient = {
-    HttpClients
-      .custom
-      .setSSLSocketFactory(makeSslConnectionSocketFactory)
-      .disableRedirectHandling
-      .disableCookieManagement
-      .build
-  }
+    val sslContext = new SSLContextBuilder()
+      .loadTrustMaterial(null, TrustAllStrategy.INSTANCE)
+      .build()
 
-  private def makeSslConnectionSocketFactory = {
-    val builder = new SSLContextBuilder();
-    builder.loadTrustMaterial(
-      null, new TrustStrategy() {
-        override def isTrusted(x509Certificates: Array[X509Certificate], s: String) = true
-      })
-    new SSLConnectionSocketFactory(builder.build(), NoopHostnameVerifier.INSTANCE)
+    val connectionManager = PoolingHttpClientConnectionManagerBuilder.create()
+      .setTlsSocketStrategy(new org.apache.hc.client5.http.ssl.DefaultClientTlsStrategy(sslContext, NoopHostnameVerifier.INSTANCE))
+      .build()
+
+    HttpClients
+      .custom()
+      .setConnectionManager(connectionManager)
+      .disableRedirectHandling()
+      .build()
   }
 }
