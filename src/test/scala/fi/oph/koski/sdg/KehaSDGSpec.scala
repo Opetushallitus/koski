@@ -100,6 +100,40 @@ class KehaSDGSpec
     }
   }
 
+  "Lukio 2019: kaikki tuetut osasuoritustyypit tulevat läpi" in {
+    val hetu = KoskiSpecificMockOppijat.uusiLukio.hetu.get
+    postHetu(hetu) {
+      verifyResponseStatusOk()
+      val response = JsonSerializer.parse[SdgOppija](body)
+
+      val suoritus = response.opiskeluoikeudet
+        .flatMap(_.suoritukset)
+        .collect { case s: SdgLukionOppimääränSuoritus2019 => s }
+        .headOption
+        .getOrElse(fail("Suoritusta SdgLukionOppimääränSuoritus2019 ei löydy"))
+
+      val outer = suoritus.osasuoritukset.getOrElse(Nil)
+      val oppiaineet = outer.collect { case o: SdgLukionOppiaineenSuoritus2019 => o }
+      val muutOpinnot = outer.collect { case o: SdgMuidenLukioOpintojenSuoritus2019 => o }
+
+      withClue("SdgLukionOppiaineenSuoritus2019 puuttuu") { oppiaineet should not be empty }
+      withClue("SdgMuidenLukioOpintojenSuoritus2019 puuttuu") { muutOpinnot should not be empty }
+
+      val oppiaineInner = oppiaineet.flatMap(_.osasuoritukset.getOrElse(Nil))
+      withClue("SdgLukionModuulinSuoritusOppiaineissa2019 puuttuu oppiaineen alta") {
+        oppiaineInner.collect { case o: SdgLukionModuulinSuoritusOppiaineissa2019 => o } should not be empty
+      }
+
+      val muuInner = muutOpinnot.flatMap(_.osasuoritukset.getOrElse(Nil))
+      withClue("SdgLukionModuulinSuoritusMuissaOpinnoissa2019 puuttuu muun opinnon alta") {
+        muuInner.collect { case o: SdgLukionModuulinSuoritusMuissaOpinnoissa2019 => o } should not be empty
+      }
+      withClue("SdgLukionPaikallisenOpintojaksonSuoritus2019 puuttuu muun opinnon alta") {
+        muuInner.collect { case o: SdgLukionPaikallisenOpintojaksonSuoritus2019 => o } should not be empty
+      }
+    }
+  }
+
   "Lukio 2015 osasuoritukset tulevat läpi" in {
     val hetu = KoskiSpecificMockOppijat.lukiolainen.hetu.get
     postHetu(hetu) {
