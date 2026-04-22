@@ -77,6 +77,29 @@ class KehaSDGSpec
     }
   }
 
+  "Lukion osasuoritukset tulevat läpi" in {
+    val hetu = KoskiSpecificMockOppijat.uusiLukio.hetu.get
+    postHetu(hetu) {
+      verifyResponseStatusOk()
+      val response = JsonSerializer.parse[SdgOppija](body)
+
+      val suoritus = response.opiskeluoikeudet
+        .flatMap(_.suoritukset)
+        .find(_.tyyppi.koodiarvo == "lukionoppimaara")
+        .getOrElse(fail("Suoritusta tyyppiä lukionoppimaara ei löydy"))
+
+      val osasuoritukset = suoritus.osasuoritukset.getOrElse(fail("Osasuorituksia ei löydy"))
+      osasuoritukset should not be empty
+
+      val oppiaineet = osasuoritukset.collect { case o: SdgLukionOppiaineenSuoritus2019 => o }
+      withClue("Oppiaineet (SdgLukionOppiaineenSuoritus2019) puuttuvat osasuorituksista") {
+        oppiaineet should not be empty
+      }
+
+      body should not include ("\"suoritettuErityisenäTutkintona\"")
+    }
+  }
+
   "Rajapinnan parametrit" in {
     val hetu = KoskiSpecificMockOppijat.ammattilainen.hetu.get
 
