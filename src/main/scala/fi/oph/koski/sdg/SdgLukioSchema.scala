@@ -120,6 +120,8 @@ trait LukionOppimääränOsasuoritus2019 extends Osasuoritus
 case class SdgLukionOppiaineenSuoritus2019(
   koulutusmoduuli: schema.LukionOppiaine2019,
   arviointi: Option[List[SdgLukionArviointi]],
+  @SkipSerialization
+  suoritettuErityisenäTutkintona: Option[Boolean] = None,
   suorituskieli: Option[schema.Koodistokoodiviite],
   osasuoritukset: Option[List[LukionOppiaineenOsasuoritus2019]],
   @KoodistoKoodiarvo("lukionoppiaine")
