@@ -8,11 +8,20 @@ import { FieldEditorProps, FieldViewerProps } from '../forms/FormField'
 import { TextEdit } from './TextField'
 
 export type LocalizedTextViewProps = CommonProps<
-  FieldViewerProps<LocalizedString, EmptyObject>
+  FieldViewerProps<LocalizedString, EmptyObject> & {
+    multiline?: boolean
+  }
 >
 
 export const LocalizedTextView: React.FC<LocalizedTextViewProps> = (props) => (
-  <TestIdText {...common(props)} id={props.testId}>
+  <TestIdText
+    {...common(props)}
+    id={props.testId}
+    style={{
+      ...props.style,
+      ...(props.multiline ? { whiteSpace: 'pre-line' } : {})
+    }}
+  >
     {t(props.value)}
   </TestIdText>
 )
