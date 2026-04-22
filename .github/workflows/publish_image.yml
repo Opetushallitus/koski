@@ -14,7 +14,6 @@ jobs:
   publish:
     name: Publish Koski Docker image
     runs-on: ubuntu-24.04
-    environment: dev
     permissions:
       id-token: write
       contents: read
@@ -29,7 +28,7 @@ jobs:
         with:
           role-to-assume: ${{ secrets.ECR_ROLE }}
           role-duration-seconds: 3600
-          role-session-name: KoskiPublishEcr-dev-${{ inputs.commithash }}
+          role-session-name: KoskiPublishEcr-${{ inputs.commithash }}
           aws-region: eu-west-1
 
       - name: Login to Amazon ECR
