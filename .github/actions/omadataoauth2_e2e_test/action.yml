@@ -12,7 +12,7 @@ runs:
   using: "composite"
   steps:
     - name: "🔨 Setup Java"
-      uses: ./.github/actions/setup_java_11_and_23
+      uses: ./.github/actions/setup_java_17_and_23
     - name: "🔨 Setup backend and databases"
       uses: ./.github/actions/setup_backend
     - name: "🌍 Setup Playwright"

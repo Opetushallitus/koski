@@ -7,16 +7,15 @@ import fi.oph.koski.cache.JMXCacheManager
 import fi.oph.koski.config.{AppConfig, Environment, KoskiApplication}
 import fi.oph.koski.executors.Pools
 import fi.oph.koski.log.{LogConfiguration, Logging, MaskedSlf4jRequestLogWriter}
-import io.prometheus.client.exporter.MetricsServlet
+import io.prometheus.client.servlet.jakarta.exporter.MetricsServlet
 import org.eclipse.jetty.jmx.MBeanContainer
+import org.eclipse.jetty.http.UriCompliance
 import org.eclipse.jetty.server._
 import org.eclipse.jetty.server.handler.gzip.GzipHandler
-import org.eclipse.jetty.server.handler.{HandlerCollection, StatisticsHandler}
-import org.eclipse.jetty.servlet.{ServletContextHandler, ServletHolder}
+import org.eclipse.jetty.server.handler.StatisticsHandler
+import org.eclipse.jetty.ee10.servlet.{ResourceServlet, ServletContextHandler, ServletHolder, ServletMapping}
 import org.eclipse.jetty.util.thread.QueuedThreadPool
-import org.eclipse.jetty.webapp.WebAppContext
-
-import scala.concurrent.duration.DurationInt
+import org.eclipse.jetty.ee10.webapp.WebAppContext
 
 object JettyLauncher extends App with Logging {
   LogConfiguration.configureLogging()
@@ -71,17 +70,16 @@ class JettyLauncher(val port: Int, val application: KoskiApplication) extends Lo
 
   setupConnector()
 
-  private val handlers = new HandlerCollection()
-  private val rootContext = new ServletContextHandler()
+  private val metricsContext = setupPrometheusMetrics()
+  private val appContext = setupKoskiApplicationContext()
 
-  server.setHandler(handlers)
-
-  setupPrometheusMetrics()
-  setupKoskiApplicationContext()
-  setupGzipForStaticResources()
-  setupJMX()
-
-  handlers.addHandler(rootContext)
+  server.setHandler(
+    setupJMX(
+      setupGzipForStaticResources(
+        new Handler.Sequence(metricsContext, appContext)
+      )
+    )
+  )
 
   def start(): Server = {
     server.start()
@@ -92,6 +90,12 @@ class JettyLauncher(val port: Int, val application: KoskiApplication) extends Lo
   private def setupConnector(): Unit = {
     val httpConfig = new HttpConfiguration()
     httpConfig.addCustomizer( new ForwardedRequestCustomizer() )
+    val uriCompliance = {
+      val allowed = new java.util.HashSet(UriCompliance.LEGACY.getAllowed)
+      allowed.add(UriCompliance.Violation.ILLEGAL_PATH_CHARACTERS)
+      UriCompliance.from(allowed)
+    }
+    httpConfig.setUriCompliance(uriCompliance)
     val connectionFactory = new HttpConnectionFactory( httpConfig )
     val connector = new ServerConnector(server, connectionFactory)
     connector.setPort(port)
@@ -106,54 +110,73 @@ class JettyLauncher(val port: Int, val application: KoskiApplication) extends Lo
     server.setRequestLog(requestLog)
   }
 
-  private def setupKoskiApplicationContext(): Unit = {
+  private def setupKoskiApplicationContext(): WebAppContext = {
     val context = new WebAppContext()
     context.setAttribute("koski.application", application)
     context.setParentLoaderPriority(true)
     context.setContextPath("/")
-    context.setResourceBase(verifyResourceBase())
-    context.setInitParameter("org.eclipse.jetty.servlet.Default.dirAllowed", "false")
-    context.setInitParameter("org.eclipse.jetty.servlet.Default.etags", "true")
+    context.setBaseResourceAsPath(Paths.get(verifyResourceBase()))
+    context.getServletHandler.setDecodeAmbiguousURIs(true)
+    context.setDefaultRequestCharacterEncoding("UTF-8")
+    context.setDefaultResponseCharacterEncoding("UTF-8")
+    context.setAttribute("org.eclipse.jetty.server.Request.queryEncoding", "UTF-8")
+    context.setInitParameter("org.eclipse.jetty.ee10.servlet.Default.dirAllowed", "false")
+    context.setInitParameter("org.eclipse.jetty.ee10.servlet.Default.etags", "true")
 
     if (Environment.isLocalDevelopmentEnvironment(config)) {
       // Avoid random SIGBUS errors when static files memory-mapped by Jetty (and being sent to client)
       // are modified (by "make watch"). Can be reproduced somewhat reliably with Java 8 by editing
       // a .less file and quickly doing a reload in the browser.
-      context.setInitParameter("org.eclipse.jetty.servlet.Default.useFileMappedBuffer", "false")
+      context.setInitParameter("org.eclipse.jetty.ee10.servlet.Default.useFileMappedBuffer", "false")
     }
-    handlers.addHandler(context)
+
+    // Jetty 12 EE10: DefaultServlet cannot be mapped to sub-paths, use ResourceServlet instead
+    val staticResourceHolder = new ServletHolder("static-resources", classOf[ResourceServlet])
+    staticResourceHolder.setInitParameter("dirAllowed", "false")
+    staticResourceHolder.setInitParameter("etags", "true")
+    staticResourceHolder.setInitParameter("pathInfoOnly", "false")
+    context.getServletHandler.addServlet(staticResourceHolder)
+    val staticMapping = new ServletMapping()
+    staticMapping.setServletName("static-resources")
+    staticMapping.setPathSpecs(Array(
+      "/koski/buildversion.txt", "/koski/favicon.ico", "/koski/empty.js",
+      "/koski/js/*", "/koski/css/*", "/koski/external_css/*", "/koski/fonts/*",
+      "/koski/images/*", "/koski/test/*",
+      "/koski/json-schema-viewer/js/*", "/koski/json-schema-viewer/styles/*",
+      "/koski/json-schema-viewer/images/*", "/koski/json-schema-viewer/jquery/*",
+      "/koski/wsdl/*", "/valpas/assets/*"
+    ))
+    context.getServletHandler.addServletMapping(staticMapping)
+
+    context
   }
 
   private def verifyResourceBase(): String = {
-    val base = System.getProperty("resourcebase", "./target/webapp")
+    val base = Paths.get(System.getProperty("resourcebase", "./target/webapp")).toAbsolutePath.normalize().toString
     if (!Files.exists(Paths.get(base))) {
       throw new RuntimeException("WebApplication resource base: " + base + " does not exist.")
     }
     base
   }
 
-  private def setupGzipForStaticResources(): Unit = {
-    val gzip = new GzipHandler
+  private def setupGzipForStaticResources(handler: Handler): GzipHandler = {
+    val gzip = new GzipHandler(handler)
     gzip.setIncludedMimeTypes("text/css", "text/html", "application/javascript")
     gzip.setIncludedPaths("/koski/css/*", "/koski/external_css/*", "/koski/js/*", "/koski/json-schema-viewer/*", "/valpas/assets/*")
-    gzip.setHandler(server.getHandler)
-    server.setHandler(gzip)
+    gzip
   }
 
-  private def setupJMX(): Unit = {
+  private def setupJMX(handler: Handler): StatisticsHandler = {
     val mbContainer = new MBeanContainer(ManagementFactory.getPlatformMBeanServer)
     server.addBean(mbContainer)
-
-    val stats = new StatisticsHandler
-    stats.setHandler(server.getHandler)
-    server.setHandler(stats)
+    new StatisticsHandler(handler)
   }
 
-  private def setupPrometheusMetrics(): Unit = {
+  private def setupPrometheusMetrics(): ServletContextHandler = {
     val metricsServletContext = new ServletContextHandler()
     metricsServletContext.setContextPath("/metrics")
     metricsServletContext.addServlet(new ServletHolder(new MetricsServlet), "")
-    handlers.addHandler(metricsServletContext)
+    metricsServletContext
   }
 }
 

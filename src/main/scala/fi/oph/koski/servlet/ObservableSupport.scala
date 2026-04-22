@@ -5,7 +5,6 @@ import java.io.EOFException
 import fi.oph.koski.http.HttpStatus
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.koskiuser.KoskiSpecificSession
-import org.eclipse.jetty.server.HttpConnection
 import rx.lang.scala.Observable
 
 import scala.reflect.runtime.universe.TypeTag
@@ -20,7 +19,7 @@ trait ObservableSupport extends KoskiSpecificApiServlet {
       // Client abort, ok
     case e: Exception =>
       logger.error(s"Error occurred while streaming: ${e.toString}")
-      HttpConnection.getCurrentConnection.abort(e)
+      response.getOutputStream.close()
   }
 
   def streamResponse[T : TypeTag](x: Either[HttpStatus, Observable[T]], user: KoskiSpecificSession): Unit = x match {

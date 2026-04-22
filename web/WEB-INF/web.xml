@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<web-app version="2.5" xmlns="http://java.sun.com/xml/ns/javaee"
+<web-app version="6.0" xmlns="https://jakarta.ee/xml/ns/jakartaee"
 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
+xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee https://jakarta.ee/xml/ns/jakartaee/web-app_6_0.xsd">
   <listener>
     <listener-class>org.scalatra.servlet.ScalatraListener</listener-class>
   </listener>
@@ -19,25 +19,6 @@ xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns
   <welcome-file-list>
     <welcome-file>index.html</welcome-file>
   </welcome-file-list>
-
-  <servlet-mapping>
-    <servlet-name>default</servlet-name>
-    <url-pattern>/koski/buildversion.txt</url-pattern>
-    <url-pattern>/koski/favicon.ico</url-pattern>
-    <url-pattern>/koski/empty.js</url-pattern>
-    <url-pattern>/koski/js/*</url-pattern>
-    <url-pattern>/koski/css/*</url-pattern>
-    <url-pattern>/koski/external_css/*</url-pattern>
-    <url-pattern>/koski/fonts/*</url-pattern>
-    <url-pattern>/koski/images/*</url-pattern>
-    <url-pattern>/koski/test/*</url-pattern>
-    <url-pattern>/koski/json-schema-viewer/js/*</url-pattern>
-    <url-pattern>/koski/json-schema-viewer/styles/*</url-pattern>
-    <url-pattern>/koski/json-schema-viewer/images/*</url-pattern>
-    <url-pattern>/koski/json-schema-viewer/jquery/*</url-pattern>
-    <url-pattern>/koski/wsdl/*</url-pattern>
-    <url-pattern>/valpas/assets/*</url-pattern>
-  </servlet-mapping>
 
   <filter>
     <filter-name>hostname</filter-name>

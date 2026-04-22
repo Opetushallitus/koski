@@ -10,7 +10,7 @@ runs:
   using: "composite"
   steps:
     - name: "🔨 Setup Java"
-      uses: ./.github/actions/setup_java_11
+      uses: ./.github/actions/setup_java_17
     - name: "🔨 Setup backend and databases"
       uses: ./.github/actions/setup_backend
 

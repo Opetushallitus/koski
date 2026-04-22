@@ -2,7 +2,7 @@ package fi.oph.koski.log
 
 import java.net.InetAddress
 
-import javax.servlet.http.HttpServletRequest
+import jakarta.servlet.http.HttpServletRequest
 import fi.oph.koski.koskiuser.{UserWithOid, UserWithUsername}
 import org.scalatra.servlet.RichRequest
 

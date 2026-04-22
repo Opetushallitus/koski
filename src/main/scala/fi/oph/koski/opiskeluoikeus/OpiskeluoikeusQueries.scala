@@ -12,7 +12,7 @@ import fi.oph.koski.schema.Henkilö._
 import fi.oph.koski.servlet.{KoskiSpecificApiServlet, ObservableSupport}
 import fi.oph.koski.util.SortOrder.Ascending
 import fi.oph.koski.util.{Pagination, PaginationSettings, QueryPagination}
-import javax.servlet.http.HttpServletRequest
+import jakarta.servlet.http.HttpServletRequest
 import org.scalatra._
 import rx.lang.scala.Observable
 

@@ -2,21 +2,16 @@ package fi.oph.koski.raamit
 
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.log.Logging
-import org.eclipse.jetty.client.HttpClient
-import org.eclipse.jetty.client.api.{Request, Response, Result}
-import org.eclipse.jetty.http.HttpHeader
-import org.eclipse.jetty.util.HttpCookieStore
-import org.eclipse.jetty.util.ssl.SslContextFactory
+import org.eclipse.jetty.client.{ContentResponse, HttpClient, Request}
+import org.eclipse.jetty.http.{HttpCookieStore, HttpField, HttpHeader}
 import org.scalatra.ScalatraServlet
 
 import java.net.{URI, URL}
-import java.nio.ByteBuffer
 import java.util
-import java.util.concurrent.{CountDownLatch, TimeUnit}
-import java.util.concurrent.atomic.AtomicReference
+import java.util.concurrent.TimeUnit
 import java.util.{HashSet, Locale}
-import javax.servlet.http.{HttpServletRequest, HttpServletResponse}
-import scala.util.control.Breaks._
+import jakarta.servlet.http.{HttpServletRequest, HttpServletResponse}
+import scala.jdk.CollectionConverters._
 
 /**
  * fi.oph.koski.raamit.RaamiProxyServlet -luokalla proxytetään virkailijan ja oppijan raamea. Tätä toiminnallisuutta ei tule käyttää tuotannossa
@@ -27,73 +22,39 @@ class RaamiProxyServlet(val proxyHost: String, val proxyPrefix: String, val appl
   protected val hopHeaders = Set("connection", "keep-alive", "proxy-authentication", "proxy-connection", "transfer-encoding", "te", "trailer", "upgrade")
 
   override def service(request: HttpServletRequest, response: HttpServletResponse): Unit = {
-    val httpClient = new HttpClient(new SslContextFactory.Client)
+    val httpClient = new HttpClient()
     httpClient.start()
     // Kytketään GZip pois: https://github.com/eclipse/jetty.project/issues/7681
-    httpClient.getContentDecoderFactories().clear();
+    httpClient.getContentDecoderFactories().clear()
     // Evästeitä ei saa säilöä kun proxytetaan
-    httpClient.setCookieStore(new HttpCookieStore.Empty());
+    httpClient.setHttpCookieStore(new HttpCookieStore.Empty())
 
     val rewrittenTarget: String = rewriteTarget(request, proxyPrefix, proxyHost)
-
-    val responseRef = new AtomicReference[Response]
-    val latch = new CountDownLatch(1)
 
     val proxyRequest = httpClient
       .newRequest(rewrittenTarget) // Redirectejä ei seurata kun kyseessä on proxy
       .followRedirects(false)
       .method(request.getMethod)
-      .timeout(5, TimeUnit.SECONDS)
+      .timeout(10, TimeUnit.SECONDS)
     // Kopioidaan pyynnön headerit mukaan
     copyRequestHeaders(request, proxyRequest)
     // Asetetaan HOST-header
     setHostHeader(proxyRequest, proxyHost)
 
-    var responseBuffer = Array[Byte]()
-    // Puskurin maksimikoko on 8MB
-    val maxBufferSize = 8000000
+    val contentResponse: ContentResponse = proxyRequest.send()
 
-    // Async pyyntö
-    proxyRequest.send(new Response.Listener() {
-      override def onComplete(result: Result): Unit = {
-        if (result.isSucceeded) {
-          responseRef.set(result.getResponse)
-          latch.countDown()
-        } else {
-          logger.error(result.getFailure)(s"RaamiProxyServlet request failed for ${rewrittenTarget}")
-        }
-      }
-
-      override def onContent(res: Response, content: ByteBuffer): Unit = {
-        val newBufferSize = responseBuffer.length + content.remaining
-        if (newBufferSize > maxBufferSize) {
-          logger.error(new IllegalArgumentException(s"RaamiProxyServlet buffer capacity exceeded for entity ${request.getRequestURI}"))(s"RaamiProxyServlet buffer capacity exceeded for entity ${request.getRequestURI}")
-          throw new IllegalArgumentException(s"RaamiProxyServlet buffer capacity exceeded for entity ${request.getRequestURI}")
-        }
-        val newBuffer = new Array[Byte](newBufferSize)
-        System.arraycopy(responseBuffer, 0, newBuffer, 0, responseBuffer.length)
-        content.get(newBuffer, responseBuffer.length, content.remaining)
-        responseBuffer = newBuffer
-      }
-    })
-
-    def result = latch.await(10, TimeUnit.SECONDS)
-
-    if (!result) {
-      logger.error(new Exception(s"Timeout of 10 seconds exceeded in RaamiProxyServlet when requesting ${rewrittenTarget}"))(s"Timeout of 10 seconds exceeded in RaamiProxyServlet when requesting ${rewrittenTarget}")
-    }
-
-    val httpResponse = responseRef.get();
-    copyResponseHeaders(httpResponse, response)
-    response.setStatus(httpResponse.getStatus)
-    response.getOutputStream().write(responseBuffer)
+    copyResponseHeaders(contentResponse, response)
+    response.setStatus(contentResponse.getStatus)
+    response.getOutputStream.write(contentResponse.getContent)
     httpClient.stop()
   }
 
   protected def setHostHeader(request: Request, value: String): Request = {
-    // Jetty.HttpClient ei osaa korvata headeria, ellei sitä aseta ensin tyhjäksi
-    request.header(HttpHeader.HOST, null)
-    request.header(HttpHeader.HOST, new URL(value).getHost)
+    request.headers(h => {
+      h.remove(HttpHeader.HOST)
+      h.put(HttpHeader.HOST, new URL(value).getHost)
+    })
+    request
   }
 
   protected def rewriteTarget(request: HttpServletRequest, prefix: String, proxyTo: String): String = {
@@ -118,46 +79,26 @@ class RaamiProxyServlet(val proxyHost: String, val proxyPrefix: String, val appl
     rewrittenURI.toString
   }
 
-  protected def copyResponseHeaders(proxyResponse: Response, clientResponse: HttpServletResponse): Unit = {
-    val headerNames = proxyResponse.getHeaders.getFieldNames
-    while ( {
-      headerNames.hasMoreElements
-    }) {
-      val headerName = headerNames.nextElement
-      val headerValues = proxyResponse.getHeaders.getValues(headerName)
-      while ( {
-        headerValues.hasMoreElements
-      }) {
-        val headerValue = headerValues.nextElement
-        if (headerValue != null) clientResponse.setHeader(headerName, headerValue)
-      }
+  protected def copyResponseHeaders(proxyResponse: ContentResponse, clientResponse: HttpServletResponse): Unit = {
+    proxyResponse.getHeaders.asScala.foreach { field: HttpField =>
+      clientResponse.setHeader(field.getName, field.getValue)
     }
   }
 
   protected def copyRequestHeaders(clientRequest: HttpServletRequest, proxyRequest: Request): Unit = {
-    proxyRequest.getHeaders.clear()
+    proxyRequest.headers(h => h.clear())
     val headersToRemove = findConnectionHeaders(clientRequest)
     val headerNames = clientRequest.getHeaderNames
-    while ( {
-      headerNames.hasMoreElements
-    }) {
+    while (headerNames.hasMoreElements) {
       val headerName = headerNames.nextElement
       val lowerHeaderName = headerName.toLowerCase(Locale.ENGLISH)
-      breakable {
-        if (HttpHeader.HOST.is(headerName)) break() // Ohitetaan HOST-header
-      }
-      breakable {
-        if (hopHeaders.contains(lowerHeaderName)) break()
-      }
-      breakable {
-        if (headersToRemove != null && headersToRemove.contains(lowerHeaderName)) break()
-      }
-      val headerValues = clientRequest.getHeaders(headerName)
-      while ( {
-        headerValues.hasMoreElements
-      }) {
-        val headerValue = headerValues.nextElement
-        if (headerValue != null) proxyRequest.header(headerName, headerValue)
+      if (!HttpHeader.HOST.is(headerName) && !hopHeaders.contains(lowerHeaderName) &&
+        (headersToRemove == null || !headersToRemove.contains(lowerHeaderName))) {
+        val headerValues = clientRequest.getHeaders(headerName)
+        while (headerValues.hasMoreElements) {
+          val headerValue = headerValues.nextElement
+          if (headerValue != null) proxyRequest.headers(h => h.add(headerName, headerValue))
+        }
       }
     }
   }
@@ -166,9 +107,7 @@ class RaamiProxyServlet(val proxyHost: String, val proxyPrefix: String, val appl
     // http://tools.ietf.org/html/rfc7230#section-6.1.
     val hopHeaders: HashSet[String] = new util.HashSet[String]
     val connectionHeaders = clientRequest.getHeaders(HttpHeader.CONNECTION.asString)
-    while ( {
-      connectionHeaders.hasMoreElements
-    }) {
+    while (connectionHeaders.hasMoreElements) {
       val value = connectionHeaders.nextElement
       val values = value.split(",")
       for (name <- values) {

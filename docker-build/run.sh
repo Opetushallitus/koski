@@ -10,6 +10,7 @@ JAVA_OPTS="\
 -Dcom.sun.management.jmxremote.rmi.port=5555 \
 -Dcom.sun.management.jmxremote.authenticate=false \
 -Djava.rmi.server.hostname=localhost \
+-Duser.timezone=Europe/Helsinki \
 -Djava.io.tmpdir=/tmp \
 -Dkoski.port=8080 \
 -DHOSTNAME="$(hostname)" \

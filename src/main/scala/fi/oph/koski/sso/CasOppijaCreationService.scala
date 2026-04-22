@@ -6,7 +6,7 @@ import fi.oph.koski.sso.CasAttributes._
 import org.scalatra.servlet.ServletApiImplicits.enrichRequest
 
 import java.nio.charset.StandardCharsets
-import javax.servlet.http.HttpServletRequest
+import jakarta.servlet.http.HttpServletRequest
 
 class CasOppijaCreationService(henkilöRepository: HenkilöRepository) {
   def findOrCreateByOidOrHetu(request: HttpServletRequest, tunnisteet: KansalaisenTunnisteet): Option[OppijaHenkilö] = {
