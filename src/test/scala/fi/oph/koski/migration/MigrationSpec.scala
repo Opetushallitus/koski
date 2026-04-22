@@ -48,18 +48,17 @@ class MigrationSpec extends AnyFreeSpec with Matchers with RaportointikantaTestM
         "OrganisaatioHistoriaRowBuilder.scala"                      -> "7e586d9e273a5a4ee7beae257f22c7f4",
         "OrganisaatioLoader.scala"                                  -> "4f7ce51cb922dbc11e694ebe85ab3472",
         "PäivitettyOpiskeluoikeusLoader.scala"                      -> "500545bbe7ef47dedcfdc49580b536d2",
-        "RaportointiDatabase.scala"                                 -> "d78896e970fabb013afc63e94cd2cc5f",
+        "RaportointiDatabase.scala"                                 -> "bc12d85f0bcf488a494f6a168a2ca37b",
         "RaportointiDatabaseCustomFunctions.scala"                  -> "956f101d1219c49ac9134b72a30caf3a",
         "RaportointiDatabaseSchema.scala"                           -> "9933f252ff9fea9d29e79a2606428b7c",
-        "RaportointikantaService.scala"                             -> "2a7106bf12f185ed941af7d9b3492c1c",
+        "RaportointikantaService.scala"                             -> "46b176ad238ce88673edc305eb58c58a",
         "RaportointikantaStatusServlet.scala"                       -> "bfb4d4d668ecbff866468ae2dc5c1e0b",
         "RaportointikantaTestServlet.scala"                         -> "ad92e33c2f816ed65c0693f5dc0143b4",
         "RaportointikantaTableQueries.scala"                        -> "f2f26c217992539c1e61dcbd031fc642",
         "TOPKSAmmatillinenRaporttiRowBuilder.scala"                 -> "a9c26a13385ff576810f3ef831240437",
         "OpiskeluoikeusLoaderRowBuilder.scala"                      -> "cea96e3bef7b30c4e6448ba8117d480b",
         "IncrementalUpdateOpiskeluoikeusLoader.scala"               -> "b1bd97221605ff4d93dfa38b78838fdc",
-        "FullReloadOpiskeluoikeusLoader.scala"                      -> "b7920c2257afaecf09f1212fbf393326",
-        "VipunenExport.scala"                                       -> "e01d5a8dedee5127212210694624131f"
+        "FullReloadOpiskeluoikeusLoader.scala"                      -> "b7920c2257afaecf09f1212fbf393326"
       )
 
       val errors = getListOfFiles(dir).flatMap(file => {
