@@ -9,7 +9,7 @@ export const LuvanHallintaHeadline = ({ birthday }) => (
         <Text name="Tietojeni käyttö" />
       </h1>
       <p className="info">
-        <Text name="Tällä sivulla voit tarkastella ja hallinnoida antamiasi käyttölupia tietoihisi. Lisäksi näet..." />
+        <Text name="Tällä sivulla voit tarkastella ja hallinnoida antamiasi suostumuksia tietojesi käyttöön. Lisäksi näet..." />
         {'*'}
       </p>
     </div>

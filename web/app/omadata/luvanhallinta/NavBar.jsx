@@ -4,7 +4,7 @@ import Text from '../../i18n/Text'
 const NavBar = () => (
   <div className="navigation">
     <span className="activeTab">
-      <Text name="Annetut käyttöluvat" />
+      <Text name="Annetut suostumukset" />
     </span>
     <a className="link" href="/oma-opintopolku-loki/">
       <span className="inactiveTab">

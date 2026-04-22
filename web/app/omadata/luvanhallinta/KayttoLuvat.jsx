@@ -23,7 +23,7 @@ export const Kayttolupa = ({ kayttolupa, removeCallback }) => {
         <div className="container">
           <div className="voimassaolo">
             <div className="teksti">
-              <Text name="Lupa voimassa" />
+              <Text name="Suostumus voimassa" />
             </div>
             <div className="aikaleima">
               <span className="mobile-whitespace">{': '}</span>
@@ -59,7 +59,7 @@ export const Kayttolupa = ({ kayttolupa, removeCallback }) => {
               })
             }
           >
-            <Text name="Peru lupa" />
+            <Text name="Peru suostumus" />
           </button>
         </div>
       </div>
@@ -95,7 +95,7 @@ export const OAuth2Käyttölupa = ({ kayttolupa, removeCallback }) => {
         <div className="container">
           <div className="voimassaolo">
             <div className="teksti">
-              <Text name="Lupa voimassa" />
+              <Text name="Suostumus voimassa" />
             </div>
             <div className="aikaleima">
               <span className="mobile-whitespace">{': '}</span>
@@ -127,7 +127,7 @@ export const OAuth2Käyttölupa = ({ kayttolupa, removeCallback }) => {
               })
             }}
           >
-            <Text name="Peru lupa" />
+            <Text name="Peru suostumus" />
           </button>
         </div>
       </div>
@@ -151,8 +151,8 @@ export const NoMyDataPermissions = () => (
   <li className="no-permission">
     <Text
       name={
-        'Et ole tällä hetkellä antanut millekään palveluntarjoajalle lupaa nähdä opintotietojasi Oma Opintopolusta. ' +
-        'Luvan myöntäminen tapahtuu kyseisen palvelutarjoajan sivun kautta.'
+        'Et ole tällä hetkellä antanut millekään palveluntarjoajalle suostumusta nähdä opintotietojasi Oma Opintopolusta. ' +
+        'Suostumuksen antaminen tapahtuu kyseisen palvelutarjoajan sivun kautta.'
       }
     />
   </li>
