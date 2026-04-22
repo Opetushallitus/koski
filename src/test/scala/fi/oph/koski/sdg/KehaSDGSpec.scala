@@ -100,6 +100,27 @@ class KehaSDGSpec
     }
   }
 
+  "Lukio 2015 osasuoritukset tulevat läpi" in {
+    val hetu = KoskiSpecificMockOppijat.lukiolainen.hetu.get
+    postHetu(hetu) {
+      verifyResponseStatusOk()
+      val response = JsonSerializer.parse[SdgOppija](body)
+
+      val suoritus = response.opiskeluoikeudet
+        .flatMap(_.suoritukset)
+        .find(_.isInstanceOf[SdgLukionOppimääränSuoritus2015])
+        .getOrElse(fail("Suoritusta SdgLukionOppimääränSuoritus2015 ei löydy"))
+
+      val osasuoritukset = suoritus.osasuoritukset.getOrElse(fail("Osasuorituksia ei löydy"))
+      osasuoritukset should not be empty
+
+      val oppiaineet = osasuoritukset.collect { case o: SdgLukionOppiaineenSuoritus2015 => o }
+      withClue("Oppiaineet (SdgLukionOppiaineenSuoritus2015) puuttuvat osasuorituksista") {
+        oppiaineet should not be empty
+      }
+    }
+  }
+
   "Rajapinnan parametrit" in {
     val hetu = KoskiSpecificMockOppijat.ammattilainen.hetu.get
 
