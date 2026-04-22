@@ -10,6 +10,7 @@ class MassaluovutusScheduler(application: KoskiApplication) extends Logging {
   val massaluovutukset: MassaluovutusService = application.massaluovutusService
 
   sys.addShutdownHook {
+    shutdown()
     massaluovutukset.cancelAllTasks("Interrupted: worker shutdown")
   }
 

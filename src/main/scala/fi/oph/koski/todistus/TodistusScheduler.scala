@@ -10,6 +10,7 @@ class TodistusScheduler(application: KoskiApplication) extends Logging {
   val todistusService: TodistusService = application.todistusService
 
   sys.addShutdownHook {
+    shutdown()
     todistusService.markAllMyJobsInterrupted()
   }
 
