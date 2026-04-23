@@ -1257,7 +1257,7 @@ class TodistusLatausSpec extends TodistusSpecHelpers with BeforeAndAfterAll {
 
       // Tarkista että sisältömäärät ovat lähellä toisiaan
       val contentRatioDifference = math.abs(actualContentRatio - expectedContentRatio)
-      val maxAllowedDifference = 0.005
+      val maxAllowedDifference = 0.0005
 
       withClue(f"Alueen '${region.name}' sisältömäärät poikkeavat liikaa toisistaan. Actual: ${actualContentRatio * 100}%.2f%%, expected: ${expectedContentRatio * 100}%.2f%%, ero ${contentRatioDifference * 100}%.2f%% (max ${maxAllowedDifference * 100}%.2f%%). Tarkista että koordinaatit ovat oikein. ") {
         contentRatioDifference should be <= maxAllowedDifference
