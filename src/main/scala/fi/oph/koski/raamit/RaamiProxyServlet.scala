@@ -24,29 +24,32 @@ class RaamiProxyServlet(val proxyHost: String, val proxyPrefix: String, val appl
   override def service(request: HttpServletRequest, response: HttpServletResponse): Unit = {
     val httpClient = new HttpClient()
     httpClient.start()
-    // Kytketään GZip pois: https://github.com/eclipse/jetty.project/issues/7681
-    httpClient.getContentDecoderFactories().clear()
-    // Evästeitä ei saa säilöä kun proxytetaan
-    httpClient.setHttpCookieStore(new HttpCookieStore.Empty())
+    try {
+      // Kytketään GZip pois: https://github.com/eclipse/jetty.project/issues/7681
+      httpClient.getContentDecoderFactories().clear()
+      // Evästeitä ei saa säilöä kun proxytetaan
+      httpClient.setHttpCookieStore(new HttpCookieStore.Empty())
 
-    val rewrittenTarget: String = rewriteTarget(request, proxyPrefix, proxyHost)
+      val rewrittenTarget: String = rewriteTarget(request, proxyPrefix, proxyHost)
 
-    val proxyRequest = httpClient
-      .newRequest(rewrittenTarget) // Redirectejä ei seurata kun kyseessä on proxy
-      .followRedirects(false)
-      .method(request.getMethod)
-      .timeout(10, TimeUnit.SECONDS)
-    // Kopioidaan pyynnön headerit mukaan
-    copyRequestHeaders(request, proxyRequest)
-    // Asetetaan HOST-header
-    setHostHeader(proxyRequest, proxyHost)
+      val proxyRequest = httpClient
+        .newRequest(rewrittenTarget) // Redirectejä ei seurata kun kyseessä on proxy
+        .followRedirects(false)
+        .method(request.getMethod)
+        .timeout(10, TimeUnit.SECONDS)
+      // Kopioidaan pyynnön headerit mukaan
+      copyRequestHeaders(request, proxyRequest)
+      // Asetetaan HOST-header
+      setHostHeader(proxyRequest, proxyHost)
 
-    val contentResponse: ContentResponse = proxyRequest.send()
+      val contentResponse: ContentResponse = proxyRequest.send()
 
-    copyResponseHeaders(contentResponse, response)
-    response.setStatus(contentResponse.getStatus)
-    response.getOutputStream.write(contentResponse.getContent)
-    httpClient.stop()
+      copyResponseHeaders(contentResponse, response)
+      response.setStatus(contentResponse.getStatus)
+      response.getOutputStream.write(contentResponse.getContent)
+    } finally {
+      httpClient.stop()
+    }
   }
 
   protected def setHostHeader(request: Request, value: String): Request = {
