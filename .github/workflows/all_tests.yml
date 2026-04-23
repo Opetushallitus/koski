@@ -34,7 +34,7 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f # v6
         with:
-          node-version: "24.14.1"
+          node-version: "24.15.0"
 
       - name: Run linter
         run: |
@@ -283,7 +283,7 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f # v6
         with:
-          node-version: "24.14.1"
+          node-version: "24.15.0"
       - run: |
           cd web
           pnpm install $PNPM_FROZEN_FLAG
@@ -335,7 +335,7 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f # v6
         with:
-          node-version: "24.14.1"
+          node-version: "24.15.0"
 
 
       - name: Run linter and tests
