@@ -19,6 +19,7 @@ import org.eclipse.jetty.ee10.webapp.WebAppContext
 
 object JettyLauncher extends App with Logging {
   LogConfiguration.configureLogging()
+  verifyTimezone()
 
   private val globalPort = System.getProperty("koski.port", "7021").toInt
 
@@ -50,6 +51,16 @@ object JettyLauncher extends App with Logging {
     case e: Throwable =>
       logger.error(e)("Error in server startup")
       System.exit(1)
+  }
+
+  private def verifyTimezone(): Unit = {
+    val tz = java.util.TimeZone.getDefault
+    if (tz.getID != "Europe/Helsinki") {
+      throw new RuntimeException(
+        s"JVM timezone is ${tz.getID}, expected Europe/Helsinki. " +
+        s"Set -Duser.timezone=Europe/Helsinki in JVM flags."
+      )
+    }
   }
 }
 
