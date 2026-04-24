@@ -21,7 +21,6 @@ trait KoskiSpecificAuthenticationSupport extends AuthenticationSupport with Kosk
         if (
           session.hasHSLAccess ||
             session.hasSuomiFiAccess ||
-            session.hasTilastokeskusAccess ||
             session.hasKelaAccess ||
             session.hasYtlAccess ||
             session.hasValviraAccess ||

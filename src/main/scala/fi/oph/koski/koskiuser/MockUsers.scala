@@ -540,7 +540,6 @@ object MockUsers {
     "Teppo",
     "1.2.246.562.24.78787878787",
     Seq(OrganisaatioJaKäyttöoikeudet(MockOrganisaatiot.tilastokeskus, List(
-      PalveluJaOikeus("KOSKI", Rooli.TILASTOKESKUS),
       PalveluJaOikeus("KOSKI", Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT),
       PalveluJaOikeus("KOSKI", Rooli.GLOBAALI_LUKU_PERUSOPETUS),
       PalveluJaOikeus("KOSKI", Rooli.GLOBAALI_LUKU_TOINEN_ASTE),

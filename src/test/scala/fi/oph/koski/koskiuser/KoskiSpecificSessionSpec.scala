@@ -152,7 +152,7 @@ class KoskiSpecificSessionSpec
           OpiskeluoikeudenTyyppi.korkeakoulutus
         ).flatMap(OoPtsMask.fromKoodistokoodiviite))
       }
-      "tilastokeskus saa arkaluontoisenkin datan" in {
+      "LUOTTAMUKSELLINEN_KAIKKI_TIEDOT oikeuttaa arkaluonteisiin tietoihin" in {
         val session = createAndVerifySession("Teppo", MockUsers.tilastokeskusKäyttäjä.ldapUser)
         session.sensitiveDataAllowed(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT)) should be(true)
       }
@@ -410,7 +410,6 @@ object Responses {
       "organisaatiot" -> List(Map(
         "organisaatioOid" -> MockOrganisaatiot.evira,
         "kayttooikeudet" -> List(
-          Map("palvelu" -> "KOSKI", "oikeus" -> "TILASTOKESKUS"),
           Map("palvelu" -> "KOSKI", "oikeus" -> "LUOTTAMUKSELLINEN_KAIKKI_TIEDOT"),
           Map("palvelu" -> "KOSKI", "oikeus" -> "GLOBAALI_LUKU_PERUSOPETUS"),
           Map("palvelu" -> "KOSKI", "oikeus" -> "GLOBAALI_LUKU_TOINEN_ASTE"),
