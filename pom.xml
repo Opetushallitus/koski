@@ -400,7 +400,7 @@
     <dependency>
       <groupId>org.thymeleaf</groupId>
       <artifactId>thymeleaf</artifactId>
-      <version>3.1.4.RELEASE</version>
+      <version>3.1.5.RELEASE</version>
     </dependency>
     <dependency>
       <groupId>io.github.openhtmltopdf</groupId>
