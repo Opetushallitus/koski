@@ -80,7 +80,7 @@ describe('MyData', function () {
         'HSL Helsingin Seudun Liikenne'
       )
       expect(extractAsText(S('.voimassaolo > .teksti > span'))).equal(
-        'Lupa voimassa'
+        'Suostumus voimassa'
       )
     })
 
@@ -131,7 +131,7 @@ describe('MyData', function () {
     })
     it('Näytetään käyttölupien kohdalla oikea teksti', function () {
       expect(extractAsText(S('.kayttolupa-list > .no-permission'))).equal(
-        'Et ole tällä hetkellä antanut millekään palveluntarjoajalle lupaa nähdä opintotietojasi Oma Opintopolusta. Luvan myöntäminen tapahtuu kyseisen palvelutarjoajan sivun kautta.'
+        'Et ole tällä hetkellä antanut millekään palveluntarjoajalle suostumusta nähdä opintotietojasi Oma Opintopolusta. Suostumuksen antaminen tapahtuu kyseisen palvelutarjoajan sivun kautta.'
       )
     })
     it('Ei näytetä virheilmoitusta', function () {

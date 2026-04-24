@@ -104,7 +104,7 @@ export class LuvanHallinta extends React.Component {
       errorHandler: () => {
         this.setState({
           showDeleteConfirm: false,
-          error: t('Luvan poistaminen epäonnistui')
+          error: t('Suostumuksen poistaminen epäonnistui')
         })
       }
     }).onValue(() => {
@@ -177,14 +177,16 @@ export class LuvanHallinta extends React.Component {
                 fullscreen={true}
                 onDismiss={this.hideDeleteConfirm}
                 onSubmit={() => this.removePermission(lupaToRemove)}
-                okTextKey={'Kyllä, poista lupa'}
-                cancelTextKey="Älä poista lupaa"
+                okTextKey={'Kyllä, poista suostumus'}
+                cancelTextKey="Älä poista suostumusta"
               >
                 <div className="kayttoluvat-modal-container">
                   <Text name="Olet poistamassa palveluntarjoajalle" />
                   <span>{` "${lupaToRemove.name}" `}</span>
                   <Text
-                    name={'annettua lupaa nähdä opintoihisi liittyviä tietoja'}
+                    name={
+                      'annettua suostumusta nähdä opintoihisi liittyviä tietoja'
+                    }
                   />
                   {
                     // Näytetään vain HSL luville
@@ -193,7 +195,7 @@ export class LuvanHallinta extends React.Component {
                         <span> </span>
                         <Text
                           name={
-                            'Poistaessasi luvan menetät palveluntarjoajan tarjoamat opintoihisi liittyvät edut'
+                            'Poistaessasi suostumuksen menetät palveluntarjoajan tarjoamat opintoihisi liittyvät edut'
                           }
                         />
                       </>
