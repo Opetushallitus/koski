@@ -24,7 +24,7 @@ object EsiopetusValidation {
         validateTuenJaksojenPäällekkäisyys(lisätiedot),
         validateOppivelvollisuudenPidennysjaksojenPäällekkäisyys(lisätiedot),
       ))
-      :+ validateVanhojenJaksokenttienPäättyminenSiirryttäessäUusiin(config, oo.alkamispäivä, oo.päättymispäivä, oo.lisätiedot),
+      :+ validateVanhojenJaksokenttienPäättyminenSiirryttäessäUusiin(config, oo.päättymispäivä, oo.lisätiedot),
     )
 
   private def validateTuenJaksojenPäällekkäisyys(tiedot: EsiopetuksenOpiskeluoikeudenLisätiedot): HttpStatus = {

@@ -37,11 +37,11 @@ object ExamplesPerusopetus {
         )
       ),
       lisätiedot = Some(PerusopetuksenOpiskeluoikeudenLisätiedot(
-        pidennettyOppivelvollisuus = Some(Aikajakso(date(2014, 6, 6), None)),
-        vaikeastiVammainen = Some(List(Aikajakso(date(2014, 6, 6), None))),
+        pidennettyOppivelvollisuus = Some(Aikajakso(date(2014, 6, 6), Some(date(2016, 6, 4)))),
+        vaikeastiVammainen = Some(List(Aikajakso(date(2014, 6, 6), Some(date(2016, 6, 4))))),
         erityisenTuenPäätökset = Some(List(ErityisenTuenPäätös(
           alku = Some(date(2014, 6, 6)),
-          loppu = None,
+          loppu = Some(date(2016, 6, 4)),
           erityisryhmässä = Some(false),
           tukimuodot = None,
           opiskeleeToimintaAlueittain = true

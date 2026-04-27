@@ -948,7 +948,7 @@ class OppijaValidationEsiopetusSpec extends TutkinnonPerusteetTest[EsiopetuksenO
     }
   }
 
-  "Opiskeluoikeudet oppivelvollisuuden pidennyksen ja tuen päätöksien muutosten siirtymäajan (1.8.2025 - 1.8.2026) yli" - {
+  "Opiskeluoikeudet oppivelvollisuuden pidennyksen ja tuen päätöksien muutosten siirtymäajan (1.8.2025 - 31.8.2026) yli" - {
     def makeOpiskeluoikeus(
       tuenPäätöksenJaksot: Option[List[Tukijakso]] = None,
       erityisenTuenPäätökset: Option[List[ErityisenTuenPäätös]] = None,
@@ -994,15 +994,15 @@ class OppijaValidationEsiopetusSpec extends TutkinnonPerusteetTest[EsiopetuksenO
         ))),
         erityisenTuenPäätökset = Some(List(ErityisenTuenPäätös(
           alku = Some(date(2025, 8, 13)),
-          loppu = Some(date(2026, 8, 1)),
+          loppu = Some(date(2026, 8, 31)),
         ))),
         varhennetunOppivelvollisuudenJaksot = Some(List(Aikajakso(
-          alku = Some(date(2026, 8, 1)),
-          loppu = Some(date(2026, 8, 3)),
+          alku = Some(date(2026, 8, 31)),
+          loppu = Some(date(2026, 9, 3)),
         ))),
         tuenPäätöksenJaksot = Some(List(Tukijakso(
-          alku = Some(date(2026, 8, 1)),
-          loppu = Some(date(2026, 8, 3)),
+          alku = Some(date(2026, 8, 31)),
+          loppu = Some(date(2026, 9, 3)),
         ))),
       )) {
         verifyResponseStatus(400,
@@ -1013,7 +1013,7 @@ class OppijaValidationEsiopetusSpec extends TutkinnonPerusteetTest[EsiopetuksenO
       }
     }
 
-    "Pidennettyä oppivelvollisuutta ei voi merkitä päättyväksi 1.8.2026 tai myöhemmin" - {
+    "Pidennettyä oppivelvollisuutta ei voi merkitä päättyväksi 31.8.2026 jälkeen" - {
       "Suljettu aikajakso" in {
         setupOppijaWithOpiskeluoikeus(makeOpiskeluoikeus(
           pidennettyOppivelvollisuus = Some(Aikajakso(
@@ -1044,7 +1044,7 @@ class OppijaValidationEsiopetusSpec extends TutkinnonPerusteetTest[EsiopetuksenO
       }
 
       "Avoin aikajakso" in {
-        setupOppijaWithOpiskeluoikeus(makeOpiskeluoikeus(
+        val oo = makeOpiskeluoikeus(
           pidennettyOppivelvollisuus = Some(Aikajakso(
             alku = Some(date(2025, 8, 13)),
             loppu = None,
@@ -1057,7 +1057,15 @@ class OppijaValidationEsiopetusSpec extends TutkinnonPerusteetTest[EsiopetuksenO
             alku = Some(date(2025, 8, 13)),
             loppu = None,
           ))),
-        )) {
+        ).copy(
+          tila = NuortenPerusopetuksenOpiskeluoikeudenTila(
+            List(
+              NuortenPerusopetuksenOpiskeluoikeusjakso(date(2025, 8, 13), opiskeluoikeusLäsnä),
+              NuortenPerusopetuksenOpiskeluoikeusjakso(date(2026, 9, 1), opiskeluoikeusValmistunut)
+            )
+          )
+        )
+        setupOppijaWithOpiskeluoikeus(oo) {
           verifyResponseStatus(400,
             KoskiErrorCategory.badRequest.validation.date.pidennettyOppivelvollisuus(
               "Pidennetyn oppivelvollisuuden (13.8.2025-) viimeinen mahdollinen päättymispäivä on 31.8.2026."
@@ -1070,6 +1078,241 @@ class OppijaValidationEsiopetusSpec extends TutkinnonPerusteetTest[EsiopetuksenO
             ),
           )
         }
+      }
+    }
+
+    "Pidennettyä oppivelvollisuutta ei voi merkitä sallittujen päivien ulkopuolelle opiskeluoikeudelle, joka alkaa rajapäivän (31.8.2026) jälkeen" - {
+      "Suljettu aikajakso" in {
+        val oo = makeOpiskeluoikeus(
+          pidennettyOppivelvollisuus = Some(Aikajakso(
+            alku = Some(date(2026, 9, 1)),
+            loppu = Some(date(2027, 6, 30)),
+          )),
+          vammainen = Some(List(Aikajakso(
+            alku = Some(date(2026, 9, 1)),
+            loppu = Some(date(2027, 6, 30)),
+          ))),
+          erityisenTuenPäätökset = Some(List(ErityisenTuenPäätös(
+            alku = Some(date(2026, 9, 1)),
+            loppu = Some(date(2027, 6, 30)),
+          ))),
+        ).copy(
+          tila = NuortenPerusopetuksenOpiskeluoikeudenTila(List(
+            NuortenPerusopetuksenOpiskeluoikeusjakso(date(2026, 9, 1), opiskeluoikeusLäsnä),
+          ))
+        )
+        setupOppijaWithOpiskeluoikeus(oo) {
+          verifyResponseStatus(400,
+            KoskiErrorCategory.badRequest.validation.date.pidennettyOppivelvollisuus("Pidennetyn oppivelvollisuuden (1.9.2026-30.6.2027) viimeinen mahdollinen alkamispäivä on 31.7.2026."),
+            KoskiErrorCategory.badRequest.validation.date.pidennettyOppivelvollisuus("Pidennetyn oppivelvollisuuden (1.9.2026-30.6.2027) viimeinen mahdollinen päättymispäivä on 31.8.2026."),
+            KoskiErrorCategory.badRequest.validation.date.vammaisuusjakso("Vammaisuuden jakson (1.9.2026-30.6.2027) viimeinen mahdollinen alkamispäivä on 31.7.2026."),
+            KoskiErrorCategory.badRequest.validation.date.vammaisuusjakso("Vammaisuuden jakson (1.9.2026-30.6.2027) viimeinen mahdollinen päättymispäivä on 31.8.2026."),
+            KoskiErrorCategory.badRequest.validation.date("Erityisen tuen päätöksen (1.9.2026-30.6.2027) viimeinen mahdollinen alkamispäivä on 31.7.2026."),
+            KoskiErrorCategory.badRequest.validation.date("Erityisen tuen päätöksen (1.9.2026-30.6.2027) viimeinen mahdollinen päättymispäivä on 31.8.2026."),
+          )
+        }
+      }
+
+      "Avoin aikajakso" in {
+        val oo = makeOpiskeluoikeus(
+          pidennettyOppivelvollisuus = Some(Aikajakso(
+            alku = Some(date(2026, 9, 1)),
+            loppu = None,
+          )),
+          vaikeastiVammainen = Some(List(Aikajakso(
+            alku = Some(date(2026, 9, 1)),
+            loppu = None,
+          ))),
+          erityisenTuenPäätökset = Some(List(ErityisenTuenPäätös(
+            alku = Some(date(2026, 9, 1)),
+            loppu = None,
+          ))),
+        ).copy(
+          tila = NuortenPerusopetuksenOpiskeluoikeudenTila(List(
+            NuortenPerusopetuksenOpiskeluoikeusjakso(date(2026, 9, 1), opiskeluoikeusLäsnä),
+          ))
+        )
+        setupOppijaWithOpiskeluoikeus(oo) {
+          verifyResponseStatus(400,
+            KoskiErrorCategory.badRequest.validation.date.pidennettyOppivelvollisuus("Pidennetyn oppivelvollisuuden (1.9.2026-) viimeinen mahdollinen alkamispäivä on 31.7.2026."),
+            KoskiErrorCategory.badRequest.validation.date.pidennettyOppivelvollisuus("Pidennetyn oppivelvollisuuden (1.9.2026-) viimeinen mahdollinen päättymispäivä on 31.8.2026."),
+            KoskiErrorCategory.badRequest.validation.date.vammaisuusjakso("Vaikeasti vammaisuuden jakson (1.9.2026-) viimeinen mahdollinen alkamispäivä on 31.7.2026."),
+            KoskiErrorCategory.badRequest.validation.date.vammaisuusjakso("Vaikeasti vammaisuuden jakson (1.9.2026-) viimeinen mahdollinen päättymispäivä on 31.8.2026."),
+            KoskiErrorCategory.badRequest.validation.date("Erityisen tuen päätöksen (1.9.2026-) viimeinen mahdollinen alkamispäivä on 31.7.2026."),
+            KoskiErrorCategory.badRequest.validation.date("Erityisen tuen päätöksen (1.9.2026-) viimeinen mahdollinen päättymispäivä on 31.8.2026."),
+          )
+        }
+      }
+    }
+
+    "Opiskeluoikeus joka alkaa rajapäivän jälkeen on sallittu ilman pidennettyä oppivelvollisuutta" in {
+      val oo = makeOpiskeluoikeus().copy(
+        tila = NuortenPerusopetuksenOpiskeluoikeudenTila(List(
+          NuortenPerusopetuksenOpiskeluoikeusjakso(date(2026, 9, 1), opiskeluoikeusLäsnä),
+        ))
+      )
+      setupOppijaWithOpiskeluoikeus(oo) {
+        verifyResponseStatusOk()
+      }
+    }
+
+    "Pidennettyä oppivelvollisuutta ei voi merkitä sallittujen päivien ulkopuolelle, vaikka opiskeluoikeus päättyy ennen rajapäivää" - {
+
+      "Suljettu aikajakso on kielletty, kun jaksot eivät ole sallituissa rajoissa" in {
+        val oo = makeOpiskeluoikeus(
+          pidennettyOppivelvollisuus = Some(Aikajakso(
+            alku = Some(date(2025, 8, 13)),
+            loppu = Some(date(2026, 9, 1)),
+          )),
+          vammainen = Some(List(Aikajakso(
+            alku = Some(date(2025, 8, 13)),
+            loppu = Some(date(2026, 9, 1)),
+          ))),
+          erityisenTuenPäätökset = Some(List(ErityisenTuenPäätös(
+            alku = Some(date(2025, 8, 13)),
+            loppu = Some(date(2026, 9, 1)),
+          ))),
+        ).copy(
+          tila = NuortenPerusopetuksenOpiskeluoikeudenTila(List(
+            NuortenPerusopetuksenOpiskeluoikeusjakso(date(2025, 8, 13), opiskeluoikeusLäsnä),
+            NuortenPerusopetuksenOpiskeluoikeusjakso(date(2026, 6, 30), opiskeluoikeusValmistunut),
+          ))
+        )
+        setupOppijaWithOpiskeluoikeus(oo) {
+          verifyResponseStatus(400,
+            KoskiErrorCategory.badRequest.validation.date.pidennettyOppivelvollisuus(
+              "Pidennetyn oppivelvollisuuden (13.8.2025-1.9.2026) viimeinen mahdollinen päättymispäivä on 31.8.2026."
+            ),
+            KoskiErrorCategory.badRequest.validation.date.vammaisuusjakso(
+              "Vammaisuuden jakson (13.8.2025-1.9.2026) viimeinen mahdollinen päättymispäivä on 31.8.2026."
+            ),
+            KoskiErrorCategory.badRequest.validation.date(
+              "Erityisen tuen päätöksen (13.8.2025-1.9.2026) viimeinen mahdollinen päättymispäivä on 31.8.2026."
+            ),
+          )
+        }
+      }
+
+      "Opiskeluoikeus joka päättyy ennen rajapäivää on sallittu, jos jaksot myös päättyvät ennen rajapäivää" in {
+        setupOppijaWithOpiskeluoikeus(makeOpiskeluoikeus(
+          pidennettyOppivelvollisuus = Some(Aikajakso(
+            alku = Some(date(2025, 8, 13)),
+            loppu = Some(date(2026, 6, 30)),
+          )),
+          vammainen = Some(List(Aikajakso(
+            alku = Some(date(2025, 8, 13)),
+            loppu = Some(date(2026, 6, 30)),
+          ))),
+          erityisenTuenPäätökset = Some(List(ErityisenTuenPäätös(
+            alku = Some(date(2025, 8, 13)),
+            loppu = Some(date(2026, 6, 30)),
+          ))),
+        ).copy(
+          tila = NuortenPerusopetuksenOpiskeluoikeudenTila(List(
+            NuortenPerusopetuksenOpiskeluoikeusjakso(date(2025, 8, 13), opiskeluoikeusLäsnä),
+            NuortenPerusopetuksenOpiskeluoikeusjakso(date(2026, 6, 30), opiskeluoikeusValmistunut),
+          ))
+        )) {
+          verifyResponseStatusOk()
+        }
+      }
+
+      "Avoin jakso sallittu, kun opiskeluoikeus on jo päättynyt ennen rajapäivää" in {
+        val oo = makeOpiskeluoikeus(
+          pidennettyOppivelvollisuus = Some(Aikajakso(
+            alku = Some(date(2025, 8, 13)),
+            loppu = None,
+          )),
+          vaikeastiVammainen = Some(List(Aikajakso(
+            alku = Some(date(2025, 8, 13)),
+            loppu = None,
+          ))),
+          erityisenTuenPäätökset = Some(List(ErityisenTuenPäätös(
+            alku = Some(date(2025, 8, 13)),
+            loppu = None,
+          ))),
+        ).copy(
+          tila = NuortenPerusopetuksenOpiskeluoikeudenTila(List(
+            NuortenPerusopetuksenOpiskeluoikeusjakso(date(2025, 8, 13), opiskeluoikeusLäsnä),
+            NuortenPerusopetuksenOpiskeluoikeusjakso(date(2026, 6, 30), opiskeluoikeusValmistunut),
+          ))
+        )
+        setupOppijaWithOpiskeluoikeus(oo) {
+          verifyResponseStatusOk()
+        }
+      }
+    }
+
+    "Pidennettyä oppivelvollisuutta ei voi merkitä alkamaan 1.8.2026 tai sen jälkeen" - {
+      "Suljettu aikajakso" in {
+        setupOppijaWithOpiskeluoikeus(makeOpiskeluoikeus(
+          pidennettyOppivelvollisuus = Some(Aikajakso(
+            alku = Some(date(2026, 8, 1)),
+            loppu = Some(date(2026, 8, 31)),
+          )),
+          vammainen = Some(List(Aikajakso(
+            alku = Some(date(2026, 8, 1)),
+            loppu = Some(date(2026, 8, 31)),
+          ))),
+          erityisenTuenPäätökset = Some(List(ErityisenTuenPäätös(
+            alku = Some(date(2026, 8, 1)),
+            loppu = Some(date(2026, 8, 31)),
+          ))),
+        )) {
+          verifyResponseStatus(400,
+            KoskiErrorCategory.badRequest.validation.date.pidennettyOppivelvollisuus(
+              "Pidennetyn oppivelvollisuuden (1.8.2026-31.8.2026) viimeinen mahdollinen alkamispäivä on 31.7.2026."
+            ),
+            KoskiErrorCategory.badRequest.validation.date.vammaisuusjakso(
+              "Vammaisuuden jakson (1.8.2026-31.8.2026) viimeinen mahdollinen alkamispäivä on 31.7.2026."
+            ),
+            KoskiErrorCategory.badRequest.validation.date(
+              "Erityisen tuen päätöksen (1.8.2026-31.8.2026) viimeinen mahdollinen alkamispäivä on 31.7.2026."
+            ),
+          )
+        }
+      }
+
+      "Avoin aikajakso" in {
+        setupOppijaWithOpiskeluoikeus(makeOpiskeluoikeus(
+          pidennettyOppivelvollisuus = Some(Aikajakso(
+            alku = Some(date(2026, 8, 1)),
+            loppu = None,
+          )),
+          vaikeastiVammainen = Some(List(Aikajakso(
+            alku = Some(date(2026, 8, 1)),
+            loppu = None,
+          ))),
+          erityisenTuenPäätökset = Some(List(ErityisenTuenPäätös(
+            alku = Some(date(2026, 8, 1)),
+            loppu = None,
+          ))),
+        )) {
+          verifyResponseStatus(400,
+            KoskiErrorCategory.badRequest.validation.date.pidennettyOppivelvollisuus("Pidennetyn oppivelvollisuuden (1.8.2026-) viimeinen mahdollinen alkamispäivä on 31.7.2026."),
+            KoskiErrorCategory.badRequest.validation.date.vammaisuusjakso("Vaikeasti vammaisuuden jakson (1.8.2026-) viimeinen mahdollinen alkamispäivä on 31.7.2026."),
+            KoskiErrorCategory.badRequest.validation.date("Erityisen tuen päätöksen (1.8.2026-) viimeinen mahdollinen alkamispäivä on 31.7.2026."),
+          )
+        }
+      }
+    }
+
+    "Pidennetty oppivelvollisuus sallittu, kun jakso alkaa ennen 1.8.2026" in {
+      setupOppijaWithOpiskeluoikeus(makeOpiskeluoikeus(
+        pidennettyOppivelvollisuus = Some(Aikajakso(
+          alku = Some(date(2026, 7, 31)),
+          loppu = Some(date(2026, 8, 31)),
+        )),
+        vammainen = Some(List(Aikajakso(
+          alku = Some(date(2026, 7, 31)),
+          loppu = Some(date(2026, 8, 31)),
+        ))),
+        erityisenTuenPäätökset = Some(List(ErityisenTuenPäätös(
+          alku = Some(date(2026, 7, 31)),
+          loppu = Some(date(2026, 8, 31)),
+        ))),
+      )) {
+        verifyResponseStatusOk()
       }
     }
   }
