@@ -25,9 +25,8 @@ case class IBOpiskeluoikeus(
   override val lisätiedot: Option[LukionOpiskeluoikeudenLisätiedot] = None,
   organisaatiohistoria: Option[List[OpiskeluoikeudenOrganisaatiohistoria]] = None,
   lähdejärjestelmäkytkentäPurettu: Option[LähdejärjestelmäkytkennänPurkaminen] = None,
-  @Description("Opiskelijan tunniste IBO:n järjestelmässä")
   iboTunniste: Option[String] = None,
-) extends KoskeenTallennettavaOpiskeluoikeus {
+) extends KoskeenTallennettavaOpiskeluoikeus with IboTunnisteellinen {
   override def withOppilaitos(oppilaitos: Oppilaitos) = this.copy(oppilaitos = Some(oppilaitos))
   override def withKoulutustoimija(koulutustoimija: Koulutustoimija) = this.copy(koulutustoimija = Some(koulutustoimija))
 

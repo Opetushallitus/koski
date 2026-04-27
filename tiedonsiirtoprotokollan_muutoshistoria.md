@@ -1,3 +1,7 @@
+# 28.4.2026
+
+- Lisätty International School -opiskeluoikeuteen vapaaehtoinen `iboTunniste`-kenttä (Option[String]), jolla voidaan tallentaa opiskelijan tunniste IBO:n järjestelmässä.
+
 # 20.4.2026
 
 - Lisätty lukion ja ammatillisen opiskeluoikeuksiin uusi rahoitusmuoto 16, lukuvuosimaksu.

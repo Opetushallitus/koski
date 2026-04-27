@@ -428,3 +428,8 @@ trait LähdejärjestelmäkytkentäPurettavissa extends Lähdejärjestelmällinen
   @Hidden
   def lähdejärjestelmäkytkentäPurettu: Option[LähdejärjestelmäkytkennänPurkaminen]
 }
+
+trait IboTunnisteellinen {
+  @Description("Opiskelijan tunniste IBO:n järjestelmässä")
+  def iboTunniste: Option[String]
+}
