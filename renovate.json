@@ -5,9 +5,6 @@
     ":preserveSemverRanges"
   ],
   "osvVulnerabilityAlerts": true,
-  "env": {
-    "npm_config_frozen_lockfile": "false"
-  },
   "vulnerabilityAlerts": {
     "enabled": true,
     "labels": [
