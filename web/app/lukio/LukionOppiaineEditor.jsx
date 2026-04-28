@@ -199,9 +199,10 @@ export class LukionOppiaineEditor extends React.Component {
             <a className="remove-value" onClick={() => pushRemoval(oppiaine)} />
           </td>
         )}
-        {doActionWhileMounted(oppiaine.context.saveChangesBus, () => {
-          this.saveChangedPreferences()
-        })}
+        {oppiaine.context.saveChangesBus &&
+          doActionWhileMounted(oppiaine.context.saveChangesBus, () => {
+            this.saveChangedPreferences()
+          })}
       </tr>
     )
   }
