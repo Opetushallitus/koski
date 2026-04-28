@@ -5,6 +5,7 @@ import com.google.common.util.concurrent.UncheckedExecutionException
 import fi.oph.koski.log.Logging
 import fi.oph.koski.util.Invocation
 
+import java.time.{Duration => JDuration}
 import java.util.UUID
 import scala.concurrent.duration.Duration
 
@@ -68,7 +69,7 @@ class ExpiringCache(val name: String, val params: ExpiringCache.Params)(implicit
       .newBuilder()
       .recordStats()
       .maximumSize(params.maxSize)
-      .expireAfterWrite(params.duration.length, params.duration.unit)
+      .expireAfterWrite(JDuration.ofNanos(params.duration.toNanos))
       .build(cacheLoader)
   }
 }
