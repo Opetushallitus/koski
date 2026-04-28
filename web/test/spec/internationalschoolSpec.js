@@ -561,4 +561,28 @@ describe('International school', function () {
       })
     })
   })
+
+  describe('Omattiedot / kansalainen', function () {
+    var omattiedot = OmatTiedotPage()
+    var etusivu = LandingPage()
+    var korhopankki = KorhoPankki()
+
+    before(Authentication().logout, etusivu.openPage)
+    before(
+      etusivu.login(),
+      wait.until(korhopankki.isReady),
+      korhopankki.login('170186-854H'),
+      wait.until(omattiedot.isVisible)
+    )
+
+    describe('Kun opiskeluoikeus avataan', function () {
+      before(opinnot.valitseOmatTiedotOpiskeluoikeus(0))
+
+      it('Näytetään tiedot', function () {
+        expect(extractAsText(S('table.suoritukset.oppiaineet'))).to.contain(
+          'Language A: literature, suomi'
+        )
+      })
+    })
+  })
 })
