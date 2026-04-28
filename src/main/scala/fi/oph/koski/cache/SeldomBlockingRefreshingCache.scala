@@ -5,6 +5,7 @@ import com.google.common.util.concurrent.{Futures, ListenableFuture, UncheckedEx
 import fi.oph.koski.log.Logging
 import fi.oph.koski.util.Invocation
 
+import java.time.{Duration => JDuration}
 import scala.concurrent.ExecutionContextExecutor
 import scala.concurrent.duration.Duration
 
@@ -101,8 +102,8 @@ class SeldomBlockingRefreshingCache(val name: String, val params: SeldomBlocking
       .newBuilder()
       .recordStats()
       .maximumSize(params.maxSize)
-      .refreshAfterWrite(params.refreshDuration.length, params.refreshDuration.unit)
-      .expireAfterWrite(params.duration.length, params.duration.unit)
+      .refreshAfterWrite(JDuration.ofNanos(params.refreshDuration.toNanos))
+      .expireAfterWrite(JDuration.ofNanos(params.duration.toNanos))
       .build(cacheLoader)
   }
 }

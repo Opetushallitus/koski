@@ -31,7 +31,7 @@
     <bouncycastle.version>1.84</bouncycastle.version>
     <finalName>${project.artifactId}-${project.version}</finalName>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <verapdf.version>1.28.2</verapdf.version>
+    <verapdf.version>1.30.1</verapdf.version>
     <netty.version>4.2.12.Final</netty.version>
   </properties>
 
@@ -105,7 +105,7 @@
     <dependency>
       <groupId>com.google.guava</groupId>
       <artifactId>guava</artifactId>
-      <version>33.5.0-jre</version>
+      <version>33.6.0-jre</version>
     </dependency>
     <dependency>
       <groupId>javax.servlet</groupId>
@@ -416,7 +416,7 @@
     <dependency>
       <groupId>commons-io</groupId>
       <artifactId>commons-io</artifactId>
-      <version>2.21.0</version>
+      <version>2.22.0</version>
     </dependency>
     <dependency>
       <groupId>io.github.openhtmltopdf</groupId>
