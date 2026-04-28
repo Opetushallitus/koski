@@ -20,7 +20,8 @@ case class InternationalSchoolOpiskeluoikeus(
   override val lisätiedot: Option[InternationalSchoolOpiskeluoikeudenLisätiedot] = None,
   organisaatiohistoria: Option[List[OpiskeluoikeudenOrganisaatiohistoria]] = None,
   lähdejärjestelmäkytkentäPurettu: Option[LähdejärjestelmäkytkennänPurkaminen] = None,
-) extends KoskeenTallennettavaOpiskeluoikeus {
+  iboTunniste: Option[String] = None
+) extends KoskeenTallennettavaOpiskeluoikeus with IboTunnisteellinen {
   override def withOppilaitos(oppilaitos: Oppilaitos) = this.copy(oppilaitos = Some(oppilaitos))
   override def withKoulutustoimija(koulutustoimija: Koulutustoimija) = this.copy(koulutustoimija = Some(koulutustoimija))
   override def sisältyyOpiskeluoikeuteen: Option[SisältäväOpiskeluoikeus] = None

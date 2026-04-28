@@ -189,7 +189,8 @@ object ExamplesInternationalSchool {
         InternationalSchoolOpiskeluoikeusjakso(date(2018, 6, 30), LukioExampleData.opiskeluoikeusPäättynyt)
       )
     ),
-    suoritukset = List(gradeExplorer, grade1, grade2, grade3, grade4, grade5, grade6, grade7, grade8, grade9, grade10, grade11, grade12)
+    suoritukset = List(gradeExplorer, grade1, grade2, grade3, grade4, grade5, grade6, grade7, grade8, grade9, grade10, grade11, grade12),
+    iboTunniste = Some("ibo1")
   )
 
   val examples = List(

@@ -19,6 +19,7 @@ export type InternationalSchoolOpiskeluoikeus = {
   tyyppi: Koodistokoodiviite<'opiskeluoikeudentyyppi', 'internationalschool'>
   organisaatiohistoria?: Array<OpiskeluoikeudenOrganisaatiohistoria>
   oid?: string
+  iboTunniste?: string
   versionumero?: number
   suoritukset: Array<InternationalSchoolVuosiluokanSuoritus>
   aikaleima?: string
@@ -38,6 +39,7 @@ export const InternationalSchoolOpiskeluoikeus = (
     tyyppi?: Koodistokoodiviite<'opiskeluoikeudentyyppi', 'internationalschool'>
     organisaatiohistoria?: Array<OpiskeluoikeudenOrganisaatiohistoria>
     oid?: string
+    iboTunniste?: string
     versionumero?: number
     suoritukset?: Array<InternationalSchoolVuosiluokanSuoritus>
     aikaleima?: string
