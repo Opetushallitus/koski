@@ -11,6 +11,7 @@ import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.organisaatio.MockOrganisaatiot.jyväskylänNormaalikoulu
 import fi.oph.koski.raportit.aikuistenperusopetus.{AikuistenPerusopetuksenOppimääräArvioinnit, AikuistenPerusopetuksenOppimääränArvioinnitRow}
 import fi.oph.koski.raportointikanta.RaportointikantaTestMethods
+import fi.oph.koski.localization.LocalizedStringImplicits._
 import fi.oph.koski.schema._
 import fi.oph.koski.{DirtiesFixtures, KoskiApplicationForTests}
 import org.scalatest.BeforeAndAfterAll
@@ -29,7 +30,7 @@ class AikuistenPerusopetuksenOppimääränArvioinnitSpec
     with PutOpiskeluoikeusTestMethods[AikuistenPerusopetuksenOpiskeluoikeus] {
 
   private val application = KoskiApplicationForTests
-  private val raporttiBuilder = AikuistenPerusopetuksenOppimääräArvioinnit(application.raportointiDatabase.db)
+  private val raporttiBuilder = AikuistenPerusopetuksenOppimääräArvioinnit(application.raportointiDatabase.db, application.koodistoViitePalvelu)
   private lazy val t: LocalizationReader = new LocalizationReader(KoskiApplicationForTests.koskiLocalizationRepository, "fi")
   private val aikaisintaan: LocalDate = date(2006, 1, 1)
   private val viimeistaan: LocalDate = date(2018, 12, 30)
@@ -72,6 +73,18 @@ class AikuistenPerusopetuksenOppimääränArvioinnitSpec
                   alkuvaiheenKurssinSuoritus("AÄI4").copy(arviointi = Some(List(
                     PerusopetuksenOppiaineenArviointi(10, Some(aikaisintaan.plusWeeks(4)))
                   ))),
+                  alkuvaiheenKurssinSuoritus("AÄI5").copy(
+                    tunnustettu = Some(OsaamisenTunnustaminen(None, "Osoittanut osaamisen käytännössä.")),
+                    arviointi = Some(List(
+                      PerusopetuksenOppiaineenArviointi(8, Some(aikaisintaan.plusWeeks(6)))
+                    ))
+                  ),
+                  alkuvaiheenKurssinSuoritus("AÄI6").copy(
+                    tunnustettu = Some(OsaamisenTunnustaminen(None, "Osoittanut osaamisen käytännössä.", true)),
+                    arviointi = Some(List(
+                      PerusopetuksenOppiaineenArviointi(8, Some(aikaisintaan.plusWeeks(7)))
+                    ))
+                  ),
                 ))
               )
             ))
@@ -110,6 +123,9 @@ class AikuistenPerusopetuksenOppimääränArvioinnitSpec
         "ensimmainenArviointi",
         "hylatynKorotus",
         "hyvaksytynKorotus",
+        "rahoitusmuotoArviointipaivana",
+        "tunnustettu",
+        "tunnustettuRahoituksenPiirissa",
       ))
     }
 
@@ -196,6 +212,37 @@ class AikuistenPerusopetuksenOppimääränArvioinnitSpec
       firstRow.ensimmainenArviointi should be (true)
       firstRow.hylatynKorotus should be (Some(false))
       firstRow.hyvaksytynKorotus should be (Some(false))
+      firstRow.rahoitusmuotoArviointipaivana should be (Some("Valtionosuusrahoitteinen koulutus"))
+      firstRow.tunnustettu should be (false)
+      firstRow.tunnustettuRahoituksenPiirissa should be (None)
+    }
+
+    "Raportin rivit ÄI5 - tunnustettu ei rahoituksen piirissä" in {
+      val rows = raportti.rows.map(_.asInstanceOf[AikuistenPerusopetuksenOppimääränArvioinnitRow])
+      val arviointiRivit = rows
+        .filter(_.opiskeluoikeusOid == resultOo.oid.get)
+        .filter(_.kurssinKoodi == "AÄI5")
+
+      arviointiRivit should have size 1
+
+      val firstRow = arviointiRivit.head
+      firstRow.rahoitusmuotoArviointipaivana should be (Some("Valtionosuusrahoitteinen koulutus"))
+      firstRow.tunnustettu should be (true)
+      firstRow.tunnustettuRahoituksenPiirissa should be (Some(false))
+    }
+
+    "Raportin rivit ÄI6 - tunnustettu rahoituksen piirissä" in {
+      val rows = raportti.rows.map(_.asInstanceOf[AikuistenPerusopetuksenOppimääränArvioinnitRow])
+      val arviointiRivit = rows
+        .filter(_.opiskeluoikeusOid == resultOo.oid.get)
+        .filter(_.kurssinKoodi == "AÄI6")
+
+      arviointiRivit should have size 1
+
+      val firstRow = arviointiRivit.head
+      firstRow.rahoitusmuotoArviointipaivana should be (Some("Valtionosuusrahoitteinen koulutus"))
+      firstRow.tunnustettu should be (true)
+      firstRow.tunnustettuRahoituksenPiirissa should be (Some(true))
     }
   }
 

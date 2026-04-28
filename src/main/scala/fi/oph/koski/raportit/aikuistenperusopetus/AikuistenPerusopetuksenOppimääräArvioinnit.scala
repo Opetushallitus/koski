@@ -2,6 +2,7 @@ package fi.oph.koski.raportit.aikuistenperusopetus
 
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.plainAPI._
 import fi.oph.koski.db.{DB, QueryMethods}
+import fi.oph.koski.koodisto.{KoodistoPalvelu, KoodistoViite, KoodistoViitePalvelu}
 import fi.oph.koski.koskiuser.KoskiSpecificSession
 import fi.oph.koski.localization.LocalizationReader
 import fi.oph.koski.raportit.{Column, DataSheet}
@@ -11,7 +12,7 @@ import java.sql.Date
 import java.time.LocalDate
 import scala.concurrent.duration.DurationInt
 
-case class AikuistenPerusopetuksenOppimääräArvioinnit(db: DB) extends QueryMethods  {
+case class AikuistenPerusopetuksenOppimääräArvioinnit(db: DB, koodistoViitePalvelu: KoodistoViitePalvelu) extends QueryMethods  {
   implicit private val getResult: GetResult[AikuistenPerusopetuksenOppimääränArvioinnitRow] = GetResult(r =>
     AikuistenPerusopetuksenOppimääränArvioinnitRow(
       opiskeluoikeusOid = r.<<,
@@ -33,6 +34,9 @@ case class AikuistenPerusopetuksenOppimääräArvioinnit(db: DB) extends QueryMe
       ensimmainenArviointi = r.<<,
       hylatynKorotus = r.nextBooleanOption(),
       hyvaksytynKorotus = r.nextBooleanOption(),
+      rahoitusmuotoArviointipaivana = r.nextStringOption(),
+      tunnustettu = r.nextBoolean(),
+      tunnustettuRahoituksenPiirissa = r.nextBooleanOption()
     )
   )
 
@@ -41,7 +45,13 @@ case class AikuistenPerusopetuksenOppimääräArvioinnit(db: DB) extends QueryMe
     val rows = runDbSync(raporttiQuery, timeout = 5.minutes)
     DataSheet(
       title = t.get("raportti-excel-arvioinnit-sheet-name"),
-      rows = rows,
+      rows = rows.map(r => r.copy(
+        rahoitusmuotoArviointipaivana = r.rahoitusmuotoArviointipaivana.map(rahoitusKoodistokoodi =>
+          koodistoViitePalvelu.validate("opintojenrahoitus", rahoitusKoodistokoodi)
+            .flatMap(_.nimi.map(_.get(t.language)))
+            .getOrElse(rahoitusKoodistokoodi)
+        )
+      )),
       columnSettings = columnSettings(t)
     )
   }
@@ -100,13 +110,14 @@ case class AikuistenPerusopetuksenOppimääräArvioinnit(db: DB) extends QueryMe
             ) > 0
           ) THEN true
           ELSE false
-        END AS hyvaksytyn_korotus
+        END AS hyvaksytyn_korotus,
+        oa.opintojen_rahoitus,
+        os.tunnustettu,
+        CASE WHEN (os.tunnustettu) THEN os.tunnustettu_rahoituksen_piirissa END
       FROM r_opiskeluoikeus oo
       JOIN r_paatason_suoritus ps
         ON oo.opiskeluoikeus_oid = ps.opiskeluoikeus_oid
         AND oo.sisaltyy_opiskeluoikeuteen_oid IS NULL
-      JOIN r_opiskeluoikeus_aikajakso oa
-        ON oo.opiskeluoikeus_oid = oa.opiskeluoikeus_oid
       JOIN r_osasuoritus os
         ON ps.paatason_suoritus_id = os.paatason_suoritus_id
         OR oo.opiskeluoikeus_oid = os.sisaltyy_opiskeluoikeuteen_oid
@@ -116,6 +127,9 @@ case class AikuistenPerusopetuksenOppimääräArvioinnit(db: DB) extends QueryMe
           (elem -> 'arvosana' ->> 'koodiarvo') AS arviointi_arvosana
         FROM jsonb_array_elements(os.data->'arviointi') AS elem
       ) ae ON true
+      JOIN r_opiskeluoikeus_aikajakso oa
+        ON oo.opiskeluoikeus_oid = oa.opiskeluoikeus_oid
+          AND (ae.arviointi_pvm)::date BETWEEN oa.alku AND oa.loppu
       WHERE (oppilaitos_oid = ANY($oppilaitosOidit) OR koulutustoimija_oid = ANY($oppilaitosOidit))
         AND (ps.suorituksen_tyyppi = 'aikuistenperusopetuksenoppimaara'
           OR ps.suorituksen_tyyppi = 'aikuistenperusopetuksenoppimaaranalkuvaihe')
@@ -144,6 +158,9 @@ case class AikuistenPerusopetuksenOppimääräArvioinnit(db: DB) extends QueryMe
     "ensimmainenArviointi" -> Column(t.get("raportti-excel-kolumni-ensimmainenArviointi"), comment = Some(t.get("raportti-excel-kolumni-ensimmainenArviointi-comment"))),
     "hylatynKorotus" -> Column(t.get("raportti-excel-kolumni-hylatynKorotus"), comment = Some(t.get("raportti-excel-kolumni-hylatynKorotus-comment"))),
     "hyvaksytynKorotus" -> Column(t.get("raportti-excel-kolumni-hyvaksytynKorotus"), comment = Some(t.get("raportti-excel-kolumni-hyvaksytynKorotus-comment"))),
+    "rahoitusmuotoArviointipaivana" -> Column(t.get("raportti-excel-kolumni-rahoitusmuotoArviointipaivana"), comment = Some(t.get("raportti-excel-kolumni-rahoitusmuotoArviointipaivana-comment"))),
+    "tunnustettu" -> Column(t.get("raportti-excel-kolumni-tunnustettu"), comment = Some(t.get("raportti-excel-kolumni-tunnustettu-comment"))),
+    "tunnustettuRahoituksenPiirissa" -> Column(t.get("raportti-excel-kolumni-tunnustettuRahoituksenPiirissa"), comment = Some(t.get("raportti-excel-kolumni-tunnustettuRahoituksenPiirissa-comment"))),
   )
 }
 
@@ -167,4 +184,7 @@ case class AikuistenPerusopetuksenOppimääränArvioinnitRow(
   ensimmainenArviointi: Boolean,
   hylatynKorotus: Option[Boolean],
   hyvaksytynKorotus: Option[Boolean],
+  rahoitusmuotoArviointipaivana: Option[String],
+  tunnustettu: Boolean,
+  tunnustettuRahoituksenPiirissa: Option[Boolean]
 )
