@@ -33,7 +33,8 @@ object AmmatillinenValidation {
           validateViestintäJaVuorovaikutusOsaAlueetEiValtakunnallisina(ammatillinen),
           validateViestintäJaVuorovaikutus26KoodiarvotEiSallittuEnnen2026(ammatillinen, config),
           validateOsatutkintotavoitteisenValmistuminen(ammatillinen, isKuoriopiskeluoikeus),
-          validateNäyttöjenSuoritusajat(ammatillinen)
+          validateNäyttöjenSuoritusajat(ammatillinen),
+          validateYhteistenTutkinnonOsienLaajuus(ammatillinen, isKuoriopiskeluoikeus)
         )
       case _ => HttpStatus.ok
     }
@@ -97,6 +98,48 @@ object AmmatillinenValidation {
       case _: NäyttötutkintoonValmistavanKoulutuksenSuoritus => true
       case _ => false
     }
+  }
+
+  private def validateYhteistenTutkinnonOsienLaajuus(
+    ammatillinen: AmmatillinenOpiskeluoikeus,
+    isKuoriopiskeluoikeus: Boolean
+  ): HttpStatus = {
+    HttpStatus.fold(ammatillinen.suoritukset.map {
+      case s: AmmatillisenTutkinnonSuoritus
+        if !isKuoriopiskeluoikeus
+        && s.koulutusmoduuli.koulutustyyppi.contains(Koulutustyyppi.ammatillinenPerustutkinto) =>
+        validateTäydenTutkinnonYhteistenOsienLaajuus(s)
+      case s: AmmatillisenTutkinnonOsittainenSuoritus if s.korotettuOpiskeluoikeusOid.isEmpty =>
+        validateOsittaisenYhteisenTutkinnonOsanLaajuus(s.osasuoritusLista)
+      case s: AmmatillisenTutkinnonOsittainenUseastaTutkinnostaSuoritus =>
+        validateOsittaisenYhteisenTutkinnonOsanLaajuus(s.osasuoritusLista)
+      case _ => HttpStatus.ok
+    })
+  }
+
+  private def validateTäydenTutkinnonYhteistenOsienLaajuus(s: AmmatillisenTutkinnonSuoritus): HttpStatus = {
+    val yhteisetOsaSuoritukset = s.osasuoritusLista.filter(o => o.arvioitu && AmmatillisenTutkinnonOsa.yhteisetTutkinnonOsat.contains(o.koulutusmoduuli.tunniste))
+
+    HttpStatus.fold(yhteisetOsaSuoritukset.map { yht =>
+      if (yht.osasuoritusLista.forall(_.koulutusmoduuli.laajuusArvo(0.0) == 0.0)) HttpStatus.ok
+      else validateYtoLaajuusVastaaOsaAlueita(yht)
+    })
+  }
+
+  private def validateOsittaisenYhteisenTutkinnonOsanLaajuus(osasuoritukset: List[Suoritus]): HttpStatus = {
+    val ytos = osasuoritukset.collect { case yto: YhteisenTutkinnonOsanSuoritus => yto }
+    HttpStatus.fold(ytos.map { yto =>
+      if (!yto.arvioitu || yto.osasuoritusLista.isEmpty || yto.koulutusmoduuli.getLaajuus.isEmpty) HttpStatus.ok
+      else validateYtoLaajuusVastaaOsaAlueita(yto)
+    })
+  }
+
+  private def validateYtoLaajuusVastaaOsaAlueita(yto: Suoritus): HttpStatus = {
+    val parentLaajuus = yto.koulutusmoduuli.laajuusArvo(0.0)
+    val osaAlueidenSumma = yto.osasuoritusLista.map(_.koulutusmoduuli.laajuusArvo(0.0)).sum
+    HttpStatus.validate(Math.abs(parentLaajuus - osaAlueidenSumma) < 0.001)(
+      KoskiErrorCategory.badRequest.validation.laajuudet.osasuoritustenLaajuuksienSumma(
+        s"Yhteisen tutkinnon osan '${yto.koulutusmoduuli.nimi.get("fi")}' laajuus $parentLaajuus ei vastaa osa-alueiden laajuuksien summaa $osaAlueidenSumma"))
   }
 
   private def validateAmmatillisenKorotus(ammatillinen: AmmatillinenOpiskeluoikeus): HttpStatus = {

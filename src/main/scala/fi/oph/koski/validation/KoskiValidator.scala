@@ -1893,25 +1893,6 @@ class KoskiValidator(
       } else HttpStatus.ok
     }
 
-    def validateYhteistenOsienLaajuus(s: AmmatillisenTutkinnonSuoritus): HttpStatus = {
-      val yhteisetOsaSuoritukset = s.osasuoritusLista.filter(o => o.arvioitu && AmmatillisenTutkinnonOsa.yhteisetTutkinnonOsat.contains(o.koulutusmoduuli.tunniste))
-
-      val mismatchingLaajuudet = yhteisetOsaSuoritukset.filter(yht => {
-        val yläsuorituksenLaajuus = yht.koulutusmoduuli.getLaajuus.map(_.arvo).getOrElse(0.0)
-        val alasuoritustenLaajuus = yht.osasuoritusLista.map(_.koulutusmoduuli).map(_.getLaajuus.getOrElse(LaajuusOsaamispisteissä(0.0)).arvo).sum
-        yläsuorituksenLaajuus != alasuoritustenLaajuus && alasuoritustenLaajuus != 0.0
-      })
-
-      val yhteistenKooditJoillaVääräOsasuoritustenYhteisLaajuus = mismatchingLaajuudet.map(osa => {
-        s"'${osa.koulutusmoduuli.tunniste.getNimi.map(_.get("Finnish")).getOrElse(osa.koulutusmoduuli.tunniste.koodiarvo)}'"
-      })
-
-      HttpStatus.validate(
-        mismatchingLaajuudet.isEmpty
-      )(KoskiErrorCategory.badRequest.validation.laajuudet.osasuoritustenLaajuuksienSumma(
-        s"Yhteisillä tutkinnon osilla ${yhteistenKooditJoillaVääräOsasuoritustenYhteisLaajuus.mkString(", ")} on eri laajuus kun tutkinnon osien osa-alueiden yhteenlaskettu summa"))
-    }
-
     def validateYhteistenOsienKoodit(s: AmmatillisenTutkinnonSuoritus): HttpStatus = {
       s.suoritustapa.koodiarvo match {
         case "reformi" => {
@@ -1932,7 +1913,6 @@ class KoskiValidator(
 
     def yhteistenValidaatiot(suoritus: AmmatillisenTutkinnonSuoritus): HttpStatus = {
       HttpStatus.fold(List(validateOnOsaAlueita(suoritus),
-        validateYhteistenOsienLaajuus(suoritus),
         validateYhteislaajuus(suoritus),
         validateEiSamojaKoodeja(suoritus),
         validateYhteistenOsienKoodit(suoritus)))

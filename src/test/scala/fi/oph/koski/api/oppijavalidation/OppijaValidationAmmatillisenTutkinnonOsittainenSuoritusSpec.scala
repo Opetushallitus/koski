@@ -1520,6 +1520,7 @@ class OppijaValidationAmmatillisenTutkinnonOsittainenSuoritusSpec extends Tutkin
       "Valmis osatutkintotavoitteinen valmiilla yhteisellä tutkinnon osalla hyväksytään" in {
         val yhteinenOsa = yhteisenOsittaisenTutkinnonTutkinnonOsansuoritus(k3, yhteisetTutkinnonOsat, "101054", "Matemaattis-luonnontieteellinen osaaminen", 9).copy(osasuoritukset = Some(List(
           YhteisenTutkinnonOsanOsaAlueenSuoritus(koulutusmoduuli = PaikallinenAmmatillisenTutkinnonOsanOsaAlue(PaikallinenKoodi("MA", "Matematiikka"), "Matematiikan opinnot", pakollinen = true, Some(LaajuusOsaamispisteissä(3))), arviointi = Some(List(arviointiKiitettävä))),
+          YhteisenTutkinnonOsanOsaAlueenSuoritus(koulutusmoduuli = PaikallinenAmmatillisenTutkinnonOsanOsaAlue(PaikallinenKoodi("FY", "Fysiikka"), "Fysiikan opinnot", pakollinen = false, Some(LaajuusOsaamispisteissä(6))), arviointi = Some(List(arviointiKiitettävä))),
         )))
         val suoritus = ammatillisenTutkinnonOsittainenSuoritus.copy(
           osasuoritukset = Some(List(yhteinenOsa))
@@ -1543,6 +1544,76 @@ class OppijaValidationAmmatillisenTutkinnonOsittainenSuoritusSpec extends Tutkin
           ))
         )
         putOpiskeluoikeus(kuoriOpiskeluoikeus)(verifyResponseStatusOk())
+      }
+    }
+
+    "Yhteisen tutkinnon osan laajuus" - {
+      val matematiikka3 = YhteisenTutkinnonOsanOsaAlueenSuoritus(
+        koulutusmoduuli = PaikallinenAmmatillisenTutkinnonOsanOsaAlue(PaikallinenKoodi("MA", "Matematiikka"), "Matematiikan opinnot", pakollinen = true, Some(LaajuusOsaamispisteissä(3))),
+        arviointi = Some(List(arviointiKiitettävä))
+      )
+      val fysiikka2 = YhteisenTutkinnonOsanOsaAlueenSuoritus(
+        koulutusmoduuli = PaikallinenAmmatillisenTutkinnonOsanOsaAlue(PaikallinenKoodi("FY", "Fysiikka"), "Fysiikan opinnot", pakollinen = true, Some(LaajuusOsaamispisteissä(2))),
+        arviointi = Some(List(arviointiKiitettävä))
+      )
+      val fysiikka6 = YhteisenTutkinnonOsanOsaAlueenSuoritus(
+        koulutusmoduuli = PaikallinenAmmatillisenTutkinnonOsanOsaAlue(PaikallinenKoodi("FY", "Fysiikka"), "Fysiikan opinnot", pakollinen = false, Some(LaajuusOsaamispisteissä(6))),
+        arviointi = Some(List(arviointiKiitettävä))
+      )
+
+      def ytoSuoritusWithLaajuus(parentLaajuus: Int, osaAlueet: Option[List[YhteisenTutkinnonOsanOsaAlueenSuoritus]]) =
+        yhteisenOsittaisenTutkinnonTutkinnonOsansuoritus(k3, yhteisetTutkinnonOsat, "101054", "Matemaattis-luonnontieteellinen osaaminen", parentLaajuus).copy(osasuoritukset = osaAlueet)
+
+      "Osa-alueiden laajuuksien summa vastaa yhteisen tutkinnon osan laajuutta" in {
+        val yto = ytoSuoritusWithLaajuus(9, Some(List(matematiikka3, fysiikka6)))
+        val suoritus = ammatillisenTutkinnonOsittainenSuoritus.copy(osasuoritukset = Some(List(yto)))
+        setupOppijaWithOpiskeluoikeus(makeOpiskeluoikeus(suoritus = suoritus)) {
+          verifyResponseStatusOk()
+        }
+      }
+
+      "Osa-alueiden laajuuksien summa ei vastaa yhteisen tutkinnon osan laajuutta" in {
+        val yto = ytoSuoritusWithLaajuus(15, Some(List(matematiikka3, fysiikka2)))
+        val suoritus = ammatillisenTutkinnonOsittainenSuoritus.copy(osasuoritukset = Some(List(yto)))
+        setupOppijaWithOpiskeluoikeus(makeOpiskeluoikeus(suoritus = suoritus)) {
+          verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.laajuudet.osasuoritustenLaajuuksienSumma(
+            "Yhteisen tutkinnon osan 'Matemaattis-luonnontieteellinen osaaminen' laajuus 15.0 ei vastaa osa-alueiden laajuuksien summaa 5.0"
+          ))
+        }
+      }
+
+      "Validointi skipataan kun yhteistä tutkinnon osaa ei ole arvioitu" in {
+        val yto = ytoSuoritusWithLaajuus(15, Some(List(matematiikka3, fysiikka2))).copy(
+          arviointi = None,
+          vahvistus = None
+        )
+        val suoritus = osittainenSuoritusKesken.copy(osasuoritukset = Some(List(yto)))
+        setupOppijaWithOpiskeluoikeus(makeOpiskeluoikeus(suoritus = suoritus)) {
+          verifyResponseStatusOk()
+        }
+      }
+
+      "Validointi skipataan kun yhteisellä tutkinnon osalla ei ole osa-alueita" in {
+        val yto = ytoSuoritusWithLaajuus(9, None)
+        val suoritus = ammatillisenTutkinnonOsittainenSuoritus.copy(osasuoritukset = Some(List(yto)))
+        setupOppijaWithOpiskeluoikeus(makeOpiskeluoikeus(suoritus = suoritus)) {
+          verifyResponseStatusOk()
+        }
+      }
+
+      "Validointi skipataan kun yhteisellä tutkinnon osalla ei ole laajuutta" in {
+        val ytoIlmanLaajuutta = yhteisenOsittaisenTutkinnonTutkinnonOsansuoritus(k3, yhteisetTutkinnonOsat, "101054", "Matemaattis-luonnontieteellinen osaaminen", 5).copy(
+          koulutusmoduuli = YhteinenTutkinnonOsa(
+            tunniste = Koodistokoodiviite("101054", Some("Matemaattis-luonnontieteellinen osaaminen"), "tutkinnonosat"),
+            pakollinen = true,
+            laajuus = None
+          ),
+          osasuoritukset = Some(List(matematiikka3, fysiikka2))
+        )
+        val suoritus = ammatillisenTutkinnonOsittainenSuoritus.copy(osasuoritukset = Some(List(ytoIlmanLaajuutta)))
+        setupOppijaWithOpiskeluoikeus(makeOpiskeluoikeus(suoritus = suoritus)) {
+          verifyResponseStatusOk()
+        }
       }
     }
   }

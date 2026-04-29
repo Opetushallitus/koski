@@ -145,7 +145,7 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
               "Palautetaan HTTP 400" in (
               setupTutkinnonOsaSuoritus(yhtTutkinnonOsanSuoritus, tutkinnonSuoritustapaOps) (
                 verifyResponseStatus(400,
-                  KoskiErrorCategory.badRequest.validation.laajuudet.osasuoritustenLaajuuksienSumma("Yhteisillä tutkinnon osilla 'Viestintä- ja vuorovaikutusosaaminen' on eri laajuus kun tutkinnon osien osa-alueiden yhteenlaskettu summa")))
+                  KoskiErrorCategory.badRequest.validation.laajuudet.osasuoritustenLaajuuksienSumma("Yhteisen tutkinnon osan 'Viestintä- ja vuorovaikutusosaaminen' laajuus 11.0 ei vastaa osa-alueiden laajuuksien summaa 13.0")))
                 )
             }
 

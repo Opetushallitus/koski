@@ -221,13 +221,14 @@ class OppijaValidationAmmatillisenTutkinnonOsittainenUseastaTutkinnostaSuoritusS
       "Ei voi syöttää tutkinnon osan osa-aluetta liian pienellä laajuudella" in {
         val suoritus = osittainenSuoritusKesken.copy(
           osasuoritukset = Some(List(
-            yhteisenOsittaisenTutkinnonTutkinnonOsanUseastaTutkinnostaSuoritus(h2, yhteisetTutkinnonOsat, "106728", "Matemaattis-luonnontieteellinen osaaminen", 12).copy(
+            yhteisenOsittaisenTutkinnonTutkinnonOsanUseastaTutkinnostaSuoritus(h2, yhteisetTutkinnonOsat, "106728", "Matemaattis-luonnontieteellinen osaaminen", 6).copy(
               tutkinto = AmmatillinenTutkintoKoulutus(
                 Koodistokoodiviite("351301", Some(finnish("Ajoneuvoalan perustutkinto")), "koulutus", None),
                 perusteenDiaarinumero = Some("OPH-5410-2021")
               ),
               osasuoritukset = Some(List(
-                YhteisenTutkinnonOsanOsaAlueenSuoritus(koulutusmoduuli = ValtakunnallinenAmmatillisenTutkinnonOsanOsaAlue(Koodistokoodiviite("MLFK", "ammatillisenoppiaineet"), pakollinen = true, Some(LaajuusOsaamispisteissä(1))), arviointi = Some(List(arviointiKiitettävä)))
+                YhteisenTutkinnonOsanOsaAlueenSuoritus(koulutusmoduuli = ValtakunnallinenAmmatillisenTutkinnonOsanOsaAlue(Koodistokoodiviite("MLFK", "ammatillisenoppiaineet"), pakollinen = true, Some(LaajuusOsaamispisteissä(1))), arviointi = Some(List(arviointiKiitettävä))),
+                YhteisenTutkinnonOsanOsaAlueenSuoritus(koulutusmoduuli = PaikallinenAmmatillisenTutkinnonOsanOsaAlue(PaikallinenKoodi("MA", finnish("Matematiikka")), finnish("Matematiikan opinnot"), pakollinen = false, Some(LaajuusOsaamispisteissä(5))), arviointi = Some(List(arviointiKiitettävä)))
               ))
             )
           ))
@@ -461,6 +462,35 @@ class OppijaValidationAmmatillisenTutkinnonOsittainenUseastaTutkinnostaSuoritusS
 
         postOppija(makeOppija(defaultHenkilö, List(myöhempiOpiskeluoikeus))) {
           verifyResponseStatusOk()
+        }
+      }
+    }
+
+    "Yhteisen tutkinnon osan laajuus" - {
+      "Osa-alueiden laajuuksien summa ei vastaa yhteisen tutkinnon osan laajuutta" in {
+        val yto = yhteisenOsittaisenTutkinnonTutkinnonOsanUseastaTutkinnostaSuoritus(h2, yhteisetTutkinnonOsat, "101054", "Matemaattis-luonnontieteellinen osaaminen", 10).copy(
+          tunnustettu = Some(OsaamisenTunnustaminen(
+            osaaminen = None,
+            selite = finnish("Aiemmin hankittu osaaminen")
+          )),
+          tutkinto = AmmatillinenTutkintoKoulutus(
+            Koodistokoodiviite("361902", Some(finnish("Luonto- ja ympäristöalan perustutkinto")), "koulutus", None),
+            Some("62/011/2014")
+          ),
+          osasuoritukset = Some(List(
+            YhteisenTutkinnonOsanOsaAlueenSuoritus(
+              koulutusmoduuli = PaikallinenAmmatillisenTutkinnonOsanOsaAlue(
+                PaikallinenKoodi("MA", finnish("Matematiikka")), finnish("Matematiikan opinnot"), pakollinen = true, Some(LaajuusOsaamispisteissä(3))
+              ),
+              arviointi = Some(List(arviointiKiitettävä))
+            )
+          ))
+        )
+        val suoritus = osittainenSuoritusKesken.copy(osasuoritukset = Some(List(yto)))
+        setupOppijaWithOpiskeluoikeus(makeOpiskeluoikeus(suoritus = suoritus)) {
+          verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.laajuudet.osasuoritustenLaajuuksienSumma(
+            "Yhteisen tutkinnon osan 'Matemaattis-luonnontieteellinen osaaminen' laajuus 10.0 ei vastaa osa-alueiden laajuuksien summaa 3.0"
+          ))
         }
       }
     }
