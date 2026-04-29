@@ -601,19 +601,17 @@ class MassaluovutusSpec extends AnyFreeSpec with MassaluovutusTestMethods with M
           verifyResultAndContent(complete.files.last, user) {
             val json = JsonMethods.parse(body)
             val oos = json.asInstanceOf[JArray]
-            oos.arr.map(v =>
-              (
-                (v \ "oppijaOid").extract[String],
-                (v \ "opiskeluoikeudet").extract[List[JObject]].lastOption.map(oo => (oo \ "oid").extract[String])
-                  .orElse((v \ "virheellisetOpiskeluoikeudet").extract[List[JObject]].lastOption.map(oo => (oo \ "oid").extract[String]))
-                  .get
-              )
-            ).last match {
-              case (oppijaOid, opiskeluoikeusOid) => AuditLogTester.verifyLastAuditLogMessageForOperation(Map(
+            oos.arr.map { v =>
+              val oppijaOid = (v \ "oppijaOid").extract[String]
+              val ooOidit = (v \ "opiskeluoikeudet").extract[List[JObject]].map(oo => (oo \ "oid").extract[String])
+              val virheellisetOidit = (v \ "virheellisetOpiskeluoikeudet").extractOpt[List[JObject]].getOrElse(Nil).map(oo => (oo \ "oid").extract[String])
+              (oppijaOid, (ooOidit ++ virheellisetOidit).mkString(","))
+            }.last match {
+              case (oppijaOid, opiskeluoikeusOidit) => AuditLogTester.verifyLastAuditLogMessageForOperation(Map(
                 "operation" -> "SUORITUSPALVELU_OPISKELUOIKEUS_HAKU",
                 "target" -> Map(
                   "oppijaHenkiloOid" -> oppijaOid,
-                  "opiskeluoikeusOid" -> opiskeluoikeusOid,
+                  "opiskeluoikeusOid" -> opiskeluoikeusOidit,
                 ),
               ))
             }
@@ -1043,17 +1041,17 @@ class MassaluovutusSpec extends AnyFreeSpec with MassaluovutusTestMethods with M
           verifyResultAndContent(complete.files.last, user) {
             val json = JsonMethods.parse(body)
             val oos = json.asInstanceOf[JArray]
-            oos.arr.map(v =>
-              (
-                (v \ "oppijaOid").extract[String],
-                (v \ "opiskeluoikeudet").extract[List[JObject]].lastOption.map(oo => (oo \ "oid").extract[String]).getOrElse("")
-              )
-            ).last match {
-              case (oppijaOid, opiskeluoikeusOid) => AuditLogTester.verifyLastAuditLogMessageForOperation(Map(
+            oos.arr.map { v =>
+              val oppijaOid = (v \ "oppijaOid").extract[String]
+              val ooOidit = (v \ "opiskeluoikeudet").extract[List[JObject]].map(oo => (oo \ "oid").extract[String])
+              val virheellisetOidit = (v \ "virheellisetOpiskeluoikeudet").extractOpt[List[JObject]].getOrElse(Nil).map(oo => (oo \ "oid").extract[String])
+              (oppijaOid, (ooOidit ++ virheellisetOidit).mkString(","))
+            }.last match {
+              case (oppijaOid, opiskeluoikeusOidit) => AuditLogTester.verifyLastAuditLogMessageForOperation(Map(
                 "operation" -> "SUORITUSPALVELU_OPISKELUOIKEUS_HAKU",
                 "target" -> Map(
                   "oppijaHenkiloOid" -> oppijaOid,
-                  "opiskeluoikeusOid" -> opiskeluoikeusOid,
+                  "opiskeluoikeusOid" -> opiskeluoikeusOidit,
                 ),
               ))
             }

@@ -60,7 +60,7 @@ class SupaServlet(implicit val application: KoskiApplication)
       ))
 
     supaVersioResponse.foreach { response =>
-      SuorituspalveluQuery.auditLog(response.oppijaOid, response.opiskeluoikeus.oid, response.opiskeluoikeus.versionumero)
+      SuorituspalveluQuery.auditLog(response.oppijaOid, List(response.opiskeluoikeus.oid), response.opiskeluoikeus.versionumero)
     }
 
     renderEither[SupaOpiskeluoikeudenVersioResponse](supaVersioResponse)
