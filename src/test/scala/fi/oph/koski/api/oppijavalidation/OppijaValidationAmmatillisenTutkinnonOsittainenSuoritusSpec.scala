@@ -1615,6 +1615,18 @@ class OppijaValidationAmmatillisenTutkinnonOsittainenSuoritusSpec extends Tutkin
           verifyResponseStatusOk()
         }
       }
+
+      "Validointi skipataan kun yhteisen tutkinnon osan osa-alueilla ei ole laajuuksia" in {
+        val osaAlueIlmanLaajuutta = YhteisenTutkinnonOsanOsaAlueenSuoritus(
+          koulutusmoduuli = PaikallinenAmmatillisenTutkinnonOsanOsaAlue(PaikallinenKoodi("OMA-OSA-ALUE", "Oma osa-alue"), "Paikallinen osa-alue", pakollinen = false, laajuus = None),
+          arviointi = Some(List(arviointiKiitettävä))
+        )
+        val yto = ytoSuoritusWithLaajuus(9, Some(List(osaAlueIlmanLaajuutta)))
+        val suoritus = ammatillisenTutkinnonOsittainenSuoritus.copy(osasuoritukset = Some(List(yto)))
+        setupOppijaWithOpiskeluoikeus(makeOpiskeluoikeus(suoritus = suoritus)) {
+          verifyResponseStatusOk()
+        }
+      }
     }
   }
 

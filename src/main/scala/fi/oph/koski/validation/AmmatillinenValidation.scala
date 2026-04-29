@@ -129,7 +129,10 @@ object AmmatillinenValidation {
   private def validateOsittaisenYhteisenTutkinnonOsanLaajuus(osasuoritukset: List[Suoritus]): HttpStatus = {
     val ytos = osasuoritukset.collect { case yto: YhteisenTutkinnonOsanSuoritus => yto }
     HttpStatus.fold(ytos.map { yto =>
-      if (!yto.arvioitu || yto.osasuoritusLista.isEmpty || yto.koulutusmoduuli.getLaajuus.isEmpty) HttpStatus.ok
+      if (!yto.arvioitu
+        || yto.osasuoritusLista.isEmpty
+        || yto.koulutusmoduuli.getLaajuus.isEmpty
+        || yto.osasuoritusLista.forall(_.koulutusmoduuli.laajuusArvo(0.0) == 0.0)) HttpStatus.ok
       else validateYtoLaajuusVastaaOsaAlueita(yto)
     })
   }

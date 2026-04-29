@@ -493,6 +493,27 @@ class OppijaValidationAmmatillisenTutkinnonOsittainenUseastaTutkinnostaSuoritusS
           ))
         }
       }
+
+      "Validointi skipataan kun yhteisen tutkinnon osan osa-alueilla ei ole laajuuksia" in {
+        val yto = yhteisenOsittaisenTutkinnonTutkinnonOsanUseastaTutkinnostaSuoritus(h2, yhteisetTutkinnonOsat, "101054", "Matemaattis-luonnontieteellinen osaaminen", 9).copy(
+          tutkinto = AmmatillinenTutkintoKoulutus(
+            Koodistokoodiviite("361902", Some(finnish("Luonto- ja ympäristöalan perustutkinto")), "koulutus", None),
+            Some("62/011/2014")
+          ),
+          osasuoritukset = Some(List(
+            YhteisenTutkinnonOsanOsaAlueenSuoritus(
+              koulutusmoduuli = PaikallinenAmmatillisenTutkinnonOsanOsaAlue(
+                PaikallinenKoodi("OMA-OSA-ALUE", finnish("Oma osa-alue")), finnish("Paikallinen osa-alue"), pakollinen = false, laajuus = None
+              ),
+              arviointi = Some(List(arviointiKiitettävä))
+            )
+          ))
+        )
+        val suoritus = osittainenSuoritusKesken.copy(osasuoritukset = Some(List(yto)))
+        setupOppijaWithOpiskeluoikeus(makeOpiskeluoikeus(suoritus = suoritus)) {
+          verifyResponseStatusOk()
+        }
+      }
     }
   }
 }
