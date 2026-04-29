@@ -38,23 +38,28 @@ class WorkerLeaseElector(
     started = false
   }
 
-  private def tick(onAcquired: Int => Unit, onLost: Int => Unit): Unit = synchronized {
-    currentSlot match {
-      case Some(slot) =>
-        val renewed = repository.tryAcquireOrRenew(name, slot, holderId, leaseDuration)
-        if (!renewed) {
-          currentSlot = None
-          onLost(slot)
-        }
-      case None =>
-        val slotOrder = preferredSlotOrder
-        slotOrder.find(slot => repository.tryAcquireOrRenew(name, slot, holderId, leaseDuration)) match {
-          case Some(slot) =>
-            currentSlot = Some(slot)
-            onAcquired(slot)
-          case None =>
-        }
+  private def tick(onAcquired: Int => Unit, onLost: Int => Unit): Unit = try {
+    synchronized {
+      currentSlot match {
+        case Some(slot) =>
+          val renewed = repository.tryAcquireOrRenew(name, slot, holderId, leaseDuration)
+          if (!renewed) {
+            currentSlot = None
+            onLost(slot)
+          }
+        case None =>
+          val slotOrder = preferredSlotOrder
+          slotOrder.find(slot => repository.tryAcquireOrRenew(name, slot, holderId, leaseDuration)) match {
+            case Some(slot) =>
+              currentSlot = Some(slot)
+              onAcquired(slot)
+            case None =>
+          }
+      }
     }
+  } catch {
+    case e: Throwable =>
+      logger.error(e)(s"WorkerLeaseElector tick failed for $name: ${e.getMessage}")
   }
 
   private def preferredSlotOrder: Seq[Int] = {

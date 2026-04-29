@@ -1,8 +1,8 @@
 package fi.oph.koski.servlet
 
 import java.net.InetAddress
-import javax.servlet._
-import javax.servlet.http.HttpServletResponse
+import jakarta.servlet._
+import jakarta.servlet.http.HttpServletResponse
 
 class HostnameFilter extends Filter {
   val hostname = InetAddress.getLocalHost.getHostName

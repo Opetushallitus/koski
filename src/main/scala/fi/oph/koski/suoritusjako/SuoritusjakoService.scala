@@ -18,7 +18,7 @@ import fi.oph.koski.util.ChainingSyntax.chainingOps
 import fi.oph.koski.util.WithWarnings
 import org.scalatra.servlet.RichRequest
 
-import javax.servlet.http.HttpServletRequest
+import jakarta.servlet.http.HttpServletRequest
 
 
 case class SuoritusjakoPayload(

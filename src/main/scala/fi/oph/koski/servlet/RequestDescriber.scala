@@ -1,6 +1,6 @@
 package fi.oph.koski.servlet
 
-import javax.servlet.http.HttpServletRequest
+import jakarta.servlet.http.HttpServletRequest
 
 import org.json4s.JsonAST.JString
 import org.json4s._

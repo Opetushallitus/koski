@@ -12,23 +12,26 @@ import java.time.{Instant, ZonedDateTime}
 import java.util.UUID
 
 class SessionRepositorySpec extends AnyFreeSpec with TestEnvironment with Matchers with DatabaseTestMethods with BeforeAndAfterAll {
-  private def createDummySession(dateTime: ZonedDateTime) = {
-    val fakeServiceTicket: String = "koski-" + UUID.randomUUID()
-    // JDK11 muuttaa ZonedDateTimen toiminnallisuutta, koska se käyttää tarkempaa kelloa kuin JDK8.
-    // Tämän takia nanosekunnit on lisättävä aikaleimaan erikseen.
-    // https://bugs.openjdk.org/browse/JDK-8068730
-    val epochMillis = dateTime.toInstant.toEpochMilli
-    val nanos = dateTime.getNano % 1000000
-    val sqlTimestamp = Timestamp.from(Instant.ofEpochMilli(epochMillis).plusNanos(nanos))
+  // Returns the `started` instant as the DB actually stored it (not as we sent it).
+  private def insertSession(at: ZonedDateTime): Instant = {
+    val serviceTicket = "koski-" + UUID.randomUUID()
+    val ts = Timestamp.from(at.toInstant)
     runDbSync(KoskiTables.CasServiceTicketSessions += SSOSessionRow(
-      fakeServiceTicket, "test", "test", "test", sqlTimestamp, sqlTimestamp, None)
-    )
+      serviceTicket = serviceTicket,
+      username = "test",
+      userOid = "test",
+      name = "test",
+      started = ts,
+      updated = ts,
+      huollettavatSearchResult = None,
+    ))
+    runDbSync(
+      KoskiTables.CasServiceTicketSessions.filter(_.serviceTicket === serviceTicket).map(_.started).result.head
+    ).toInstant
   }
 
-  private def sessionsStarteds = {
-    val query = KoskiTables.CasServiceTicketSessions.map(_.started)
-    runDbSync(query.result)
-  }
+  private def storedSessionInstants: Seq[Instant] =
+    runDbSync(KoskiTables.CasServiceTicketSessions.map(_.started).result).map(_.toInstant)
 
   override protected def beforeAll(): Unit = {
     super.beforeAll()
@@ -36,22 +39,15 @@ class SessionRepositorySpec extends AnyFreeSpec with TestEnvironment with Matche
   }
 
   "Vanhentuneiden sessioiden poisto" in {
-    val staleSessions = Vector(
-      ZonedDateTime.now().minusMonths(22),
-      ZonedDateTime.now().minusMonths(13)
-    )
-    val currentSessions = Vector(
-      ZonedDateTime.now().minusMonths(11),
-      ZonedDateTime.now().minusMonths(1)
-    )
-    (staleSessions ++ currentSessions).foreach(createDummySession)
-    sessionsStarteds.length should be(4)
+    val now = ZonedDateTime.now()
+    val cutoff = now.minusYears(1).toInstant
 
-    val purgeBefore = ZonedDateTime.now().minusYears(1).toInstant
-    KoskiApplicationForTests.koskiSessionRepository.purgeOldSessions(purgeBefore)
+    Seq(now.minusMonths(22), now.minusMonths(13)).foreach(insertSession)
+    val currentStarts = Seq(now.minusMonths(11), now.minusMonths(1)).map(insertSession)
+    storedSessionInstants should have size 4
 
-    sessionsStarteds.map(_.toInstant) should contain theSameElementsAs(
-      currentSessions.map(_.toInstant)
-    )
+    KoskiApplicationForTests.koskiSessionRepository.purgeOldSessions(cutoff)
+
+    storedSessionInstants should contain theSameElementsAs currentStarts
   }
 }

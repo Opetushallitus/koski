@@ -64,7 +64,7 @@ import fi.oph.koski.ytl.YtlServlet
 import fi.oph.koski.ytr.download.{YtrDownloadService, YtrStatusServlet, YtrTestServlet}
 import fi.oph.koski.ytr.{YoTodistusServlet, YtrKoesuoritusApiServlet, YtrKoesuoritusServlet}
 
-import javax.servlet.ServletContext
+import jakarta.servlet.ServletContext
 import org.scalatra._
 
 import scala.concurrent.Future

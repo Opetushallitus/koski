@@ -3,7 +3,7 @@ package fi.oph.koski.mydata
 import fi.oph.koski.{KoskiApplicationForTests, TestEnvironment}
 import fi.oph.koski.servlet.InvalidRequestException
 
-import javax.servlet.http.HttpServletRequest
+import jakarta.servlet.http.HttpServletRequest
 import org.scalamock.scalatest.MockFactory
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.should.Matchers
