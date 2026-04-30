@@ -62,6 +62,13 @@ object AuditLogTester extends Matchers with LogTester {
       throw new IllegalStateException("Audit log message found, expected none")
     }
 
+  def verifyNoAuditLogMessagesForOperation(operation: String): Unit = {
+    val matching = filteredMessagesByOperation(Map("operation" -> operation))
+    if (matching.nonEmpty) {
+      throw new IllegalStateException(s"Expected no audit log messages for operation '$operation' but found: ${matching.mkString(", ")}")
+    }
+  }
+
   private def verifyAuditLogObject(msg: JObject, params: Map[String, Any]): Unit = {
     implicit val formats: Formats = GenericJsonFormats.genericFormats
     withClue(s"Audit log message: $msg | Expected: $params") {
