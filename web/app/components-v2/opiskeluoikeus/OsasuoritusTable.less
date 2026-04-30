@@ -31,6 +31,35 @@
   padding: (@baseline / 2) 0;
 }
 
+.OsasuoritusRow .OsasuoritusRow__expandColumn {
+  min-width: 2 * @baseline;
+}
+
+.OsasuoritusRow + .OsasuoritusRow {
+  margin-top: (@baseline / 2);
+}
+
+.OsasuoritusRow--edit {
+  .OsasuoritusRow__dataColumn,
+  .OsasuoritusRow__removeColumn {
+    align-self: flex-end;
+  }
+
+  .OsasuoritusRow__nameColumn > .OsasuoritusRow__cellContent {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+
+    > * {
+      width: 100%;
+    }
+  }
+}
+
+.OsasuoritusRow__cellContent {
+  width: 100%;
+}
+
 .OsasuoritusPropertyLabel {
   opacity: 0.5;
 }

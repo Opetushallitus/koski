@@ -54,6 +54,7 @@ export const VSTVapaatavoitteinenEditor: React.FC<
         createOpiskeluoikeusjakso={
           createVstVapaatavoitteinenOpiskeluoikeusjakso
         }
+        suoritusIndex={päätasonSuoritus.index}
         onChangeSuoritus={onChangeSuoritus}
         opiskeluoikeusJaksoClassName="fi.oph.koski.schema.VapaanSivistystyönVapaatavoitteisenKoulutuksenOpiskeluoikeusjakso"
         testId={päätasonSuoritus.testId}

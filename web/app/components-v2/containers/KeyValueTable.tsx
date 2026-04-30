@@ -24,6 +24,7 @@ export const KeyValueTable = (props: KeyValueTableProps) => (
 
 export type KeyValueRowProps = CommonPropsWithChildren<{
   localizableLabel?: string | LocalizedString
+  labelContent?: React.ReactNode
   indent?: number
   innerKeyValueTable?: boolean
   largeLabel?: boolean
@@ -51,7 +52,7 @@ export const KeyValueRow = (props: KeyValueRowProps) => {
         valign="top"
         component="span"
       >
-        <Trans>{props.localizableLabel}</Trans>
+        {props.labelContent ?? <Trans>{props.localizableLabel}</Trans>}
       </Column>
       <Column
         className="KeyValueRow__value"

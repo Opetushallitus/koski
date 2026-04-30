@@ -154,6 +154,7 @@ const IBPäätasonSuoritusEditor: React.FC<
       form={form}
       oppijaOid={oppijaOid}
       invalidatable={invalidatable}
+      suoritusIndex={päätasonSuoritus.index}
       onChangeSuoritus={setPäätasonSuoritus}
       createOpiskeluoikeusjakso={LukionOpiskeluoikeusjakso}
       additionalOpiskeluoikeusFields={IBOpiskeluoikeudenLisäkentät}

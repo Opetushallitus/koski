@@ -40,6 +40,7 @@ export type EditorContainerProps<T extends Opiskeluoikeus> =
     form: FormModel<T>
     oppijaOid: string
     invalidatable: boolean
+    suoritusIndex: number
     onChangeSuoritus: (suoritusIndex: number) => void
     testId: string
     createOpiskeluoikeusjakso: (
@@ -102,14 +103,13 @@ export const EditorContainer = <T extends Opiskeluoikeus>(
           .map((s) => Boolean(s.vahvistus))
           .every((s) => s)
 
-  const [suoritusIndex, setSuoritusIndex] = useState(0)
+  const { suoritusIndex } = props
   const changeSuoritusTab = useCallback(
     (index: number) => {
       if (index < 0) {
         props.onCreateSuoritus?.()
       } else {
         props.onChangeSuoritus(index)
-        setSuoritusIndex(index)
       }
     },
     [props]

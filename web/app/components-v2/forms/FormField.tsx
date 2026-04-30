@@ -11,7 +11,6 @@ import { ValidationError } from './validator'
 
 // Components that render FieldErrors internally should register here
 // to prevent FormField from rendering a duplicate
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const componentsWithBuiltInErrors = new Set<React.FC<any>>()
 
 export type FieldViewerProps<FieldValue, ViewerProps> = ViewerProps & {

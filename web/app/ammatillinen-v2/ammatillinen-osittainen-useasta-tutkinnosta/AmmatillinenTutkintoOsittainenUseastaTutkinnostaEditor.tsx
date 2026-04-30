@@ -96,6 +96,7 @@ export const AmmatillinenTutkintoOsittainenUseastaTutkinnostaEditor: React.FC<
         form={props.form}
         oppijaOid={props.oppijaOid}
         invalidatable={props.invalidatable}
+        suoritusIndex={päätasonSuoritus.index}
         onChangeSuoritus={setPäätasonSuoritus}
         testId={päätasonSuoritus.testId}
         createOpiskeluoikeusjakso={createAmmatillinenOpiskeluoikeusJakso}

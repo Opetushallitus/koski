@@ -443,6 +443,7 @@ const AmmatillinenTutkintoOsittainenEditor: React.FC<
         form={props.form}
         oppijaOid={props.oppijaOid}
         invalidatable={props.invalidatable}
+        suoritusIndex={päätasonSuoritus.index}
         onChangeSuoritus={setPäätasonSuoritus}
         testId={päätasonSuoritus.testId}
         createOpiskeluoikeusjakso={createAmmatillinenOpiskeluoikeusJakso}

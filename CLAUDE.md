@@ -34,6 +34,8 @@ make build               # Build entire application
 make run                 # Run application (http://localhost:7021/koski/virkailija)
 make watch               # Watch frontend for changes
 
+make front               # One-shot frontend build in prod mode (non-watching; use after editing web/app/ to refresh bundles)
+
 # Testing
 make test                # Run all tests
 make backtest            # Backend tests only
@@ -206,6 +208,7 @@ make view-db-docs
 - Any data from the repositories I'm working with or my usage of Claude Code must not be shared with anyone
 - Never commit files containing secrets (`.env`, credentials)
 - Always before making a commit, ask for me to confirm and review the changes
+- Always before making a commit, run Prettier if any frontend files have been modified
 - TypeScript types in `web/app/types/fi/oph/koski/` are auto-generated - don't edit manually
 - The application uses CAS for authentication in production
 - Audit logging is required for all user actions involving personal data

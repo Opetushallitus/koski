@@ -30,8 +30,9 @@ export class KoskiFixtures {
 
   async putOppija(oppija: Raw<Oppija>): Promise<HenkilönOpiskeluoikeusVersiot> {
     const response = await this.page.request.put('/koski/api/oppija', { data: oppija })
-    const body = await response.body()
-    return JSON.parse(body.toString()) as HenkilönOpiskeluoikeusVersiot
+    const body = await response.text()
+    expect(response.ok(), body).toBeTruthy()
+    return JSON.parse(body) as HenkilönOpiskeluoikeusVersiot
   }
 
   async teardown() {

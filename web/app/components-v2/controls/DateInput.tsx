@@ -18,7 +18,7 @@ import { useTestId } from '../../appstate/useTestId'
 
 export type DateInputProps = {
   value?: string
-  onChange: (value?: string) => void
+  onChange: (value?: string, rawValue?: string) => void
   min?: string
   max?: string
   testId?: string
@@ -87,7 +87,10 @@ const useDateEditState = (props: DateInputProps) => {
     [datePickerVisible]
   )
 
-  const finnishDate = useMemo(() => ISO2FinnishDate(props.value), [props.value])
+  const finnishDate = useMemo(
+    () => (props.value ? ISO2FinnishDate(props.value) || props.value : ''),
+    [props.value]
+  )
   const [internalFinnishDate, setInternalFinnishDate] = useState(finnishDate)
   useEffect(() => {
     if (finnishDate !== internalFinnishDate) {
@@ -107,14 +110,14 @@ const useDateEditState = (props: DateInputProps) => {
       setInternalFinnishDate(newFinnishDate)
       const date = parseFinnishDate(newFinnishDate)
       const isoDate = date && formatISODate(date)
-      onChange(isoDate)
+      onChange(isoDate, newFinnishDate)
     },
     [onChange]
   )
 
   const onDayClick = useCallback(
     (date: Date) => {
-      setInternalFinnishDate(formatFinnishDate(date))
+      setInternalFinnishDate(formatFinnishDate(date) || '')
       setDatePickerVisible(false)
       const isoDate = formatISODate(date)
       if (isoDate && isoDate !== value) {
