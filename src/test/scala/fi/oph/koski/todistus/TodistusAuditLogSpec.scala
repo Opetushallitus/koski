@@ -220,9 +220,8 @@ class TodistusAuditLogSpec extends TodistusSpecHelpers {
         }
 
         // Vain KANSALAINEN_LOGIN-loki pitäisi löytyä, ei TODISTUKSEN_LATAAMINEN-lokia
-        val logMessages = AuditLogTester.getLogMessages
-        logMessages.length should equal(1)
-        AuditLogTester.verifyLastAuditLogMessageForOperation(Map(
+        AuditLogTester.verifyNoAuditLogMessagesForOperation(KoskiOperation.TODISTUKSEN_LATAAMINEN.toString)
+        AuditLogTester.verifyOnlyAuditLogMessageForOperation(Map(
           "operation" -> KoskiOperation.KANSALAINEN_LOGIN.toString
         ))
       }
