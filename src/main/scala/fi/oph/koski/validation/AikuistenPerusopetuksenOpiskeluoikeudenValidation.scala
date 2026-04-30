@@ -1,7 +1,15 @@
 package fi.oph.koski.validation
 
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
-import fi.oph.koski.schema.{AikuistenPerusopetuksenOpiskeluoikeus, KoskeenTallennettavaOpiskeluoikeus, Opiskeluoikeus}
+import fi.oph.koski.schema.{
+  AikuistenPerusopetuksenAlkuvaiheenKurssinSuoritus,
+  AikuistenPerusopetuksenKurssinSuoritus,
+  AikuistenPerusopetuksenOpiskeluoikeus,
+  KoodiViite,
+  KoskeenTallennettavaOpiskeluoikeus,
+  Opiskeluoikeus,
+  PerusopetuksenOppiaineenArviointi
+}
 
 object AikuistenPerusopetuksenOpiskeluoikeudenValidation {
 
@@ -9,7 +17,11 @@ object AikuistenPerusopetuksenOpiskeluoikeudenValidation {
     oo: Opiskeluoikeus
   ): HttpStatus = {
     oo match {
-      case aipeOo: AikuistenPerusopetuksenOpiskeluoikeus => validateAikuistenPerusopetusOppimääränJaAineopintojenSuoritusSamaanAikaan(aipeOo)
+      case aipeOo: AikuistenPerusopetuksenOpiskeluoikeus =>
+        HttpStatus.fold(
+          validateAikuistenPerusopetusOppimääränJaAineopintojenSuoritusSamaanAikaan(aipeOo),
+          validateKurssienArviointipäivät(aipeOo)
+        )
       case _ => HttpStatus.ok
     }
   }
@@ -21,6 +33,28 @@ object AikuistenPerusopetuksenOpiskeluoikeudenValidation {
     HttpStatus.validate(!(sisältääAineopintoja && sisältääMuitaKuinAineopintoja))(
       KoskiErrorCategory.badRequest.validation.rakenne.epäsopiviaSuorituksia("Aikuisten perusopetuksen opiskeluoikeudella ei voi olla sekä oppimäärän että oppiaineen oppimäärän suorituksia")
     )
+  }
+
+  def validateKurssienArviointipäivät(oo: AikuistenPerusopetuksenOpiskeluoikeus): HttpStatus = {
+    val puuttuvat = oo.suoritukset.flatMap(_.rekursiivisetOsasuoritukset).collect {
+      case k: AikuistenPerusopetuksenKurssinSuoritus if arviointipäiväPuuttuu(k.arviointi) =>
+        kurssinTunniste(k.koulutusmoduuli.tunniste)
+      case k: AikuistenPerusopetuksenAlkuvaiheenKurssinSuoritus if arviointipäiväPuuttuu(k.arviointi) =>
+        kurssinTunniste(k.koulutusmoduuli.tunniste)
+    }
+    HttpStatus.fold(puuttuvat.map(tunniste =>
+      KoskiErrorCategory.badRequest.validation.arviointi.arviointipäiväPuuttuu(
+        s"Aikuisten perusopetuksen kurssilta $tunniste puuttuu arviointipäivä"
+      )
+    ))
+  }
+
+  private def arviointipäiväPuuttuu(arvioinnit: Option[List[PerusopetuksenOppiaineenArviointi]]): Boolean =
+    arvioinnit.exists(_.exists(_.arviointipäivä.isEmpty))
+
+  private def kurssinTunniste(tunniste: KoodiViite): String = {
+    val nimi = tunniste.getNimi.flatMap(_.getOptional("fi")).map(" " + _).getOrElse("")
+    s"${tunniste.koodiarvo}$nimi"
   }
 
   def validateAikuistenPerusopetusAineopinnotVaihto(oldState: KoskeenTallennettavaOpiskeluoikeus, newState: KoskeenTallennettavaOpiskeluoikeus): HttpStatus = (oldState, newState) match {

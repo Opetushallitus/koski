@@ -330,6 +330,8 @@ class AikuistenPerusopetusRaporttiSpec
             "Suorituksen tyyppi" -> "aikuistenperusopetuksenoppimaaranalkuvaihe",
             "LYK1 Arkielämä ja yhteiskunnan palvelut valtakunnallinen" -> "Arvosana 9, Laajuus 1.0",
             "LYK2 Demokraattinen yhteiskunta valtakunnallinen" -> "Arvosana 9, Laajuus 1.0",
+            "LYKX Kulttuurinen moniarvoisuus paikallinen" -> "Arvosana 9, Laajuus 1.0",
+            "LYKY Tasa-arvo yhteiskunnassa paikallinen" -> "Arvosana 9, Laajuus 1.0",
           )
           val (_, yh) = findRowsWithColumnsByTitle("YH v Yhteiskuntatietous ja kulttuurintuntemus", kurssit)
           verifyOppijanRow(aikuisOpiskelija, expectedaikuisOpiskelijaYhKurssitRow, yh, addOpiskeluoikeudenOid = false)
@@ -377,15 +379,15 @@ class AikuistenPerusopetusRaporttiSpec
             "Hetu" -> aikuisOpiskelija.hetu,
             "Sukunimi" -> aikuisOpiskelija.sukunimi,
             "Etunimet" -> aikuisOpiskelija.etunimet,
-            "Yhteislaajuus (kaikki kurssit)" -> 25.0,
-            "Yhteislaajuus (suoritetut kurssit)" -> 23.0,
+            "Yhteislaajuus (kaikki kurssit)" -> 27.0,
+            "Yhteislaajuus (suoritetut kurssit)" -> 25.0,
             "Yhteislaajuus (hylätyllä arvosanalla suoritetut kurssit)" -> 0.0,
             "Yhteislaajuus (tunnustetut kurssit)" -> 2.0,
             "Yhteislaajuus (eri vuonna korotetut kurssit)" -> 0.0,
             "AI Suomen kieli ja kirjallisuus valtakunnallinen" -> "Arvosana 9, Laajuus 14.0 kurssia",
             "A1 Englanti valtakunnallinen" -> "Arvosana 7, Laajuus 4.0 kurssia",
             "MA Matematiikka valtakunnallinen" -> "Arvosana 10, Laajuus 3.0 kurssia",
-            "YH Yhteiskuntatietous ja kulttuurintuntemus valtakunnallinen" -> "Arvosana 8, Laajuus 2.0 kurssia",
+            "YH Yhteiskuntatietous ja kulttuurintuntemus valtakunnallinen" -> "Arvosana 8, Laajuus 4.0 kurssia",
             "TE Terveystieto valtakunnallinen" -> "Arvosana 10, Laajuus 1.0 kurssia",
             "OP Opinto-ohjaus ja työelämän taidot valtakunnallinen" -> "Arvosana S, Laajuus 0.0 kurssia",
             "YL Ympäristö- ja luonnontieto valtakunnallinen" -> "Arvosana 8, Laajuus 1.0 kurssia"
@@ -428,8 +430,8 @@ class AikuistenPerusopetusRaporttiSpec
             "Hetu" -> vuonna2005SyntynytEiOpiskeluoikeuksiaFikstuurissa.hetu,
             "Sukunimi" -> vuonna2005SyntynytEiOpiskeluoikeuksiaFikstuurissa.sukunimi,
             "Etunimet" -> vuonna2005SyntynytEiOpiskeluoikeuksiaFikstuurissa.etunimet,
-            "Yhteislaajuus (kaikki kurssit)" -> 25.0,
-            "Yhteislaajuus (suoritetut kurssit)" -> 23.0,
+            "Yhteislaajuus (kaikki kurssit)" -> 27.0,
+            "Yhteislaajuus (suoritetut kurssit)" -> 25.0,
             "Yhteislaajuus (hylätyllä arvosanalla suoritetut kurssit)" -> 0.0,
             "Yhteislaajuus (tunnustetut kurssit)" -> 2.0,
             "Yhteislaajuus (eri vuonna korotetut kurssit)" -> 0.0,
@@ -438,7 +440,7 @@ class AikuistenPerusopetusRaporttiSpec
             "MA Matematiikka valtakunnallinen" -> "Arvosana 10, Laajuus 3.0 kurssia",
             "OP Opinto-ohjaus ja työelämän taidot valtakunnallinen" -> "Arvosana S, Laajuus 0.0 kurssia",
             "TE Terveystieto valtakunnallinen" -> "Arvosana 10, Laajuus 1.0 kurssia",
-            "YH Yhteiskuntatietous ja kulttuurintuntemus valtakunnallinen" -> "Arvosana 8, Laajuus 2.0 kurssia",
+            "YH Yhteiskuntatietous ja kulttuurintuntemus valtakunnallinen" -> "Arvosana 8, Laajuus 4.0 kurssia",
             "YL Ympäristö- ja luonnontieto valtakunnallinen" -> "Arvosana 8, Laajuus 1.0 kurssia"
           )
 

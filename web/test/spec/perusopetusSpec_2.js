@@ -2405,6 +2405,9 @@ describe('Perusopetus 2', function () {
             äidinkieli.lisääKurssiDialog.valitseKurssi('Kieli ja kulttuuri'),
             äidinkieli.lisääKurssiDialog.lisääKurssi,
             äidinkieli.kurssi('ÄI4').arvosana.setValue('8'),
+            äidinkieli.kurssi('ÄI4').toggleDetails,
+            äidinkieli.kurssi('ÄI4').arviointipäivä.setValue('1.1.2024'),
+            äidinkieli.kurssi('ÄI4').toggleDetails,
             editor.saveChanges
           )
 

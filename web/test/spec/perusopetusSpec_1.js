@@ -592,6 +592,9 @@ describe('Perusopetus 1', function () {
               describe('Kun annetaan arvosana ja tallennetaan', function () {
                 before(
                   äidinkieli.kurssi('ÄI5').arvosana.setValue('8'),
+                  äidinkieli.kurssi('ÄI5').toggleDetails,
+                  äidinkieli.kurssi('ÄI5').arviointipäivä.setValue('1.1.2024'),
+                  äidinkieli.kurssi('ÄI5').toggleDetails,
                   editor.saveChanges
                 )
 
@@ -752,6 +755,9 @@ describe('Perusopetus 1', function () {
                 .setValue('Äidinkielen paikallinen erikoiskurssi'),
               äidinkieli.lisääKurssiDialog.lisääKurssi,
               äidinkieli.kurssi('ÄIX1').arvosana.setValue('10'),
+              äidinkieli.kurssi('ÄIX1').toggleDetails,
+              äidinkieli.kurssi('ÄIX1').arviointipäivä.setValue('1.1.2024'),
+              äidinkieli.kurssi('ÄIX1').toggleDetails,
               editor.saveChanges
             )
             it('Toimii', function () { })
@@ -835,16 +841,25 @@ describe('Perusopetus 1', function () {
               äidinkieli.lisääKurssiDialog.valitseKurssi('AÄI7'),
               äidinkieli.lisääKurssiDialog.lisääKurssi,
               äidinkieli.kurssi('AÄI7').arvosana.setValue('8'),
+              äidinkieli.kurssi('AÄI7').toggleDetails,
+              äidinkieli.kurssi('AÄI7').arviointipäivä.setValue('1.1.2024'),
+              äidinkieli.kurssi('AÄI7').toggleDetails,
 
               äidinkieli.avaaLisääKurssiDialog,
               äidinkieli.lisääKurssiDialog.valitseKurssi('IS21'),
               äidinkieli.lisääKurssiDialog.lisääKurssi,
               äidinkieli.kurssi('IS21').arvosana.setValue('8'),
+              äidinkieli.kurssi('IS21').toggleDetails,
+              äidinkieli.kurssi('IS21').arviointipäivä.setValue('1.1.2024'),
+              äidinkieli.kurssi('IS21').toggleDetails,
 
               äidinkieli.avaaLisääKurssiDialog,
               äidinkieli.lisääKurssiDialog.valitseKurssi('IMO1'),
               äidinkieli.lisääKurssiDialog.lisääKurssi,
               äidinkieli.kurssi('IMO1').arvosana.setValue('8'),
+              äidinkieli.kurssi('IMO1').toggleDetails,
+              äidinkieli.kurssi('IMO1').arviointipäivä.setValue('1.1.2024'),
+              äidinkieli.kurssi('IMO1').toggleDetails,
               editor.saveChanges
             )
 
@@ -870,6 +885,9 @@ describe('Perusopetus 1', function () {
                 .setValue('Äidinkielen paikallinen erikoiskurssi'),
               äidinkieli.lisääKurssiDialog.lisääKurssi,
               äidinkieli.kurssi('ÄIX1').arvosana.setValue('10'),
+              äidinkieli.kurssi('ÄIX1').toggleDetails,
+              äidinkieli.kurssi('ÄIX1').arviointipäivä.setValue('1.1.2024'),
+              äidinkieli.kurssi('ÄIX1').toggleDetails,
               editor.saveChanges
             )
             it('Toimii', function () { })

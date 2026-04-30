@@ -581,6 +581,7 @@ function Kurssi(elem) {
         : ''
     },
     arvosana: Editor(elem).propertyBySelector('.arvosana'),
+    arviointipäivä: Editor(elem).propertyBySelector('.details .property.päivä'),
     toggleDetails: click(subElement(elem, '.tunniste')),
     showDetails: function () {
       if (api.detailsText() === '') return api.toggleDetails()
