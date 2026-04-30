@@ -5,6 +5,9 @@ import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.should.Matchers
 
+import java.net.URI
+import java.net.http.{HttpClient => JdkHttpClient, HttpRequest, HttpResponse}
+
 class JettyConfigurationSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers {
   "URL-polut" - {
     "OID polulla toimii" in {
@@ -32,6 +35,37 @@ class JettyConfigurationSpec extends AnyFreeSpec with KoskiHttpSpec with Matcher
 
     "Hakemistolistaus on estetty" in {
       get("js/") { verifyResponseStatusOk(403) }
+    }
+  }
+
+  "Gzip-pakkaus" - {
+    // Käytetään JDK:n HttpClientiä, koska Scalatra-testikehyksen alla oleva
+    // Apache HttpComponents purkaa gzip-vastaukset läpinäkyvästi ja poistaa
+    // Content-Encoding-headerin ennen kuin testi näkee vastauksen.
+    val jdkClient = JdkHttpClient.newHttpClient()
+
+    def fetchRaw(path: String, acceptEncoding: Option[String]): HttpResponse[Array[Byte]] = {
+      val builder = HttpRequest.newBuilder(URI.create(s"$baseUrl/$path"))
+      acceptEncoding.foreach(enc => builder.header("Accept-Encoding", enc))
+      jdkClient.send(builder.build(), HttpResponse.BodyHandlers.ofByteArray())
+    }
+
+    "Staattisille resursseille palautetaan gzip-pakattu sisältö, kun client sitä pyytää" in {
+      val res = fetchRaw("js/koski-main.js", Some("gzip"))
+      res.statusCode should be(200)
+      res.headers.firstValue("Content-Encoding").orElse("") should equal("gzip")
+    }
+
+    "Pakkausta ei tehdä, jos client ei sitä pyydä" in {
+      val res = fetchRaw("js/koski-main.js", None)
+      res.statusCode should be(200)
+      res.headers.firstValue("Content-Encoding").isPresent should be(false)
+    }
+
+    "Pakkausta ei tehdä konfiguroitujen polkujen ulkopuolella" in {
+      val res = fetchRaw("images/loader.svg", Some("gzip"))
+      res.statusCode should be(200)
+      res.headers.firstValue("Content-Encoding").isPresent should be(false)
     }
   }
 
