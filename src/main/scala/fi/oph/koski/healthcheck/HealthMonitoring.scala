@@ -45,6 +45,7 @@ object Subsystem extends Enumeration {
     CAS,
     Virta,
     Suoritusrekisteri,
+    Ovara,
     MockSystemForTests
   = Value
 }

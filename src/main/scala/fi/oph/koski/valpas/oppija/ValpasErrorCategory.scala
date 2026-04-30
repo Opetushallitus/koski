@@ -46,9 +46,11 @@ object ValpasErrorCategory {
 
   object badGateway extends ErrorCategory("badGateway", 502, "Virhe yhdyskäytävässä tai ulkoisessa palvelussa") {
     val sure = subcategory("sure", "Suoritusrekisterin palauttama hakukoostetieto oli viallinen.")
+    val ovara = subcategory("ovara", "Ovaran palauttama hakukoostetieto oli viallinen.")
   }
 
   object unavailable extends ErrorCategory("unavailable", 503, "Palvelu ei ole juuri nyt käytettävissä") {
     val sure = subcategory("sure", "Hakukoosteita ei juuri nyt saada haettua suoritusrekisteristä. Yritä myöhemmin uudelleen.")
+    val ovara = subcategory("ovara", "Hakukoosteita ei juuri nyt saada haettua Ovarasta. Yritä myöhemmin uudelleen.")
   }
 }
