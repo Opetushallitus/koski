@@ -105,9 +105,7 @@ Minimissään tarvitset nämä:
 
 - Git (osx, linux sisältää tämän, komentorivillä `git`)
 - GNU Make (osx, linux sisältää tämän, komentorivillä `make`)
-- JDK 11 (osx: `brew tap homebrew/cask-versions`
-  `brew install temurin11 --cask`)
-  - Muista asettaa `JAVA_HOME` viittaamaan äsken asennetun Javan polkuun, että maven ja sbt osaavat käyttää oikeaa versiota.
+- JDK 17
 - Maven 3 (osx: `brew install maven`)
 - Node.js (`.nvmrc`-tiedoston mukainen versio)
 - Docker PostgreSQL:n ja OpenSearchin ajamiseen konteissa
