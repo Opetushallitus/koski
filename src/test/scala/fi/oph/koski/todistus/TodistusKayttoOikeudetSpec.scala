@@ -30,16 +30,16 @@ class TodistusKayttoOikeudetSpec extends TodistusSpecHelpers {
     }
 
     "onnistuu kansalaiselta omasta kielitutkinnon opiskeluoikeudesta, joka on tallennettu kansalaisen toisella oppija-oidilla" in {
-      val templateVariant = "fi"
-      // Master ja slave jakavat saman hetun, slave on linkitetty masteriin
-      val masterHetu = KoskiSpecificMockOppijat.master.hetu.get
-      val slaveOid = KoskiSpecificMockOppijat.slave.henkilö.oid
-
-      // Luo opiskeluoikeus slave-oppijalle (linkitetty OID)
-      val slaveOpiskeluoikeus = setupOppijaWithAndGetOpiskeluoikeus(vahvistettuKielitutkinnonOpiskeluoikeus, KoskiSpecificMockOppijat.slave.henkilö, MockUsers.paakayttaja)
-      val opiskeluoikeusOid = slaveOpiskeluoikeus.oid.get
-
       withoutRunningSchedulers {
+        val templateVariant = "fi"
+        // Master ja slave jakavat saman hetun, slave on linkitetty masteriin
+        val masterHetu = KoskiSpecificMockOppijat.master.hetu.get
+        val slaveOid = KoskiSpecificMockOppijat.slave.henkilö.oid
+
+        // Luo opiskeluoikeus slave-oppijalle (linkitetty OID)
+        val slaveOpiskeluoikeus = setupOppijaWithAndGetOpiskeluoikeus(vahvistettuKielitutkinnonOpiskeluoikeus, KoskiSpecificMockOppijat.slave.henkilö, MockUsers.paakayttaja)
+        val opiskeluoikeusOid = slaveOpiskeluoikeus.oid.get
+
         // Kirjaudu master-oppijana
         // Pyydä todistusta slave-oppijan opiskeluoikeudella
         val req = TodistusGenerateRequest(opiskeluoikeusOid, templateVariant)
@@ -53,14 +53,14 @@ class TodistusKayttoOikeudetSpec extends TodistusSpecHelpers {
     }
 
     "onnistuu huoltajalta huollettavan kielitutkinnon opiskeluoikeudesta" in {
-      val templateVariant = "fi"
-      val huollettavanOo = setupOppijaWithAndGetOpiskeluoikeus(vahvistettuKielitutkinnonOpiskeluoikeus, KoskiSpecificMockOppijat.eskari, MockUsers.paakayttaja)
-      val kirjautujanHetu = KoskiSpecificMockOppijat.faija.hetu.get
-      val huollettavanOpiskeluoikeusOid = huollettavanOo.oid.get
-
-      val req = TodistusGenerateRequest(huollettavanOpiskeluoikeusOid, templateVariant)
-
       withoutRunningSchedulers {
+        val templateVariant = "fi"
+        val huollettavanOo = setupOppijaWithAndGetOpiskeluoikeus(vahvistettuKielitutkinnonOpiskeluoikeus, KoskiSpecificMockOppijat.eskari, MockUsers.paakayttaja)
+        val kirjautujanHetu = KoskiSpecificMockOppijat.faija.hetu.get
+        val huollettavanOpiskeluoikeusOid = huollettavanOo.oid.get
+
+        val req = TodistusGenerateRequest(huollettavanOpiskeluoikeusOid, templateVariant)
+
         addGenerateJobSuccessfully(req, kirjautujanHetu) { todistusJob =>
           todistusJob.state should equal(TodistusState.QUEUED)
           getStatusSuccessfully(todistusJob.id, kirjautujanHetu) { status =>
@@ -122,15 +122,15 @@ class TodistusKayttoOikeudetSpec extends TodistusSpecHelpers {
     }
 
     "kansalaiselta mitätöidystä opiskeluoikeudesta" in {
-      val templateVariant = "fi"
-      val oo = setupOppijaWithAndGetOpiskeluoikeus(vahvistettuKielitutkinnonOpiskeluoikeus, KoskiSpecificMockOppijat.eskari, MockUsers.paakayttaja)
-      mitätöiOppijanKaikkiOpiskeluoikeudet(KoskiSpecificMockOppijat.eskari)
-      val hetu = KoskiSpecificMockOppijat.eskari.hetu.get
-      val opiskeluoikeusOid = oo.oid.get
-
-      val req = TodistusGenerateRequest(opiskeluoikeusOid, templateVariant)
-
       withoutRunningSchedulers {
+        val templateVariant = "fi"
+        val oo = setupOppijaWithAndGetOpiskeluoikeus(vahvistettuKielitutkinnonOpiskeluoikeus, KoskiSpecificMockOppijat.eskari, MockUsers.paakayttaja)
+        mitätöiOppijanKaikkiOpiskeluoikeudet(KoskiSpecificMockOppijat.eskari)
+        val hetu = KoskiSpecificMockOppijat.eskari.hetu.get
+        val opiskeluoikeusOid = oo.oid.get
+
+        val req = TodistusGenerateRequest(opiskeluoikeusOid, templateVariant)
+
         addGenerateJob(req, hetu) {
           verifyResponseStatus(404)
         }
@@ -184,15 +184,15 @@ class TodistusKayttoOikeudetSpec extends TodistusSpecHelpers {
   "Statuspyyntö onnistuu" - {
 
     "Huoltajalta huollettavan luomaan generointi-jobiin" in {
-      val templateVariant = "fi"
-      val huollettavanOo = setupOppijaWithAndGetOpiskeluoikeus(vahvistettuKielitutkinnonOpiskeluoikeus, KoskiSpecificMockOppijat.eskari, MockUsers.paakayttaja)
-      val huollettavanHetu = KoskiSpecificMockOppijat.eskari.hetu.get
-      val huoltajanHetu = KoskiSpecificMockOppijat.faija.hetu.get
-      val huollettavanOpiskeluoikeusOid = huollettavanOo.oid.get
-
-      val req = TodistusGenerateRequest(huollettavanOpiskeluoikeusOid, templateVariant)
-
       withoutRunningSchedulers {
+        val templateVariant = "fi"
+        val huollettavanOo = setupOppijaWithAndGetOpiskeluoikeus(vahvistettuKielitutkinnonOpiskeluoikeus, KoskiSpecificMockOppijat.eskari, MockUsers.paakayttaja)
+        val huollettavanHetu = KoskiSpecificMockOppijat.eskari.hetu.get
+        val huoltajanHetu = KoskiSpecificMockOppijat.faija.hetu.get
+        val huollettavanOpiskeluoikeusOid = huollettavanOo.oid.get
+
+        val req = TodistusGenerateRequest(huollettavanOpiskeluoikeusOid, templateVariant)
+
         addGenerateJobSuccessfully(req, huollettavanHetu) { todistusJob =>
           todistusJob.state should equal(TodistusState.QUEUED)
 
@@ -300,15 +300,15 @@ class TodistusKayttoOikeudetSpec extends TodistusSpecHelpers {
   "Huoltajan luoma todistus ja oppijan omat oikeudet" - {
     "Oppija pääsee omiin todistuksiin, vaikka huoltaja olisi luonut pyynnön" - {
       "Status by id onnistuu" in {
-        val templateVariant = "fi"
-        val huollettavanOo = setupOppijaWithAndGetOpiskeluoikeus(vahvistettuKielitutkinnonOpiskeluoikeus, KoskiSpecificMockOppijat.eskari, MockUsers.paakayttaja)
-        val huoltajanHetu = KoskiSpecificMockOppijat.faija.hetu.get
-        val huollettavanHetu = KoskiSpecificMockOppijat.eskari.hetu.get
-        val huollettavanOpiskeluoikeusOid = huollettavanOo.oid.get
-
-        val req = TodistusGenerateRequest(huollettavanOpiskeluoikeusOid, templateVariant)
-
         withoutRunningSchedulers {
+          val templateVariant = "fi"
+          val huollettavanOo = setupOppijaWithAndGetOpiskeluoikeus(vahvistettuKielitutkinnonOpiskeluoikeus, KoskiSpecificMockOppijat.eskari, MockUsers.paakayttaja)
+          val huoltajanHetu = KoskiSpecificMockOppijat.faija.hetu.get
+          val huollettavanHetu = KoskiSpecificMockOppijat.eskari.hetu.get
+          val huollettavanOpiskeluoikeusOid = huollettavanOo.oid.get
+
+          val req = TodistusGenerateRequest(huollettavanOpiskeluoikeusOid, templateVariant)
+
           // Huoltaja luo todistuspyynnön
           val todistusJob = addGenerateJobSuccessfully(req, huoltajanHetu) { todistusJob =>
             todistusJob.state should equal(TodistusState.QUEUED)
@@ -324,15 +324,15 @@ class TodistusKayttoOikeudetSpec extends TodistusSpecHelpers {
       }
 
       "Status parametreilla onnistuu" in {
-        val templateVariant = "fi"
-        val huollettavanOo = setupOppijaWithAndGetOpiskeluoikeus(vahvistettuKielitutkinnonOpiskeluoikeus, KoskiSpecificMockOppijat.eskari, MockUsers.paakayttaja)
-        val huoltajanHetu = KoskiSpecificMockOppijat.faija.hetu.get
-        val huollettavanHetu = KoskiSpecificMockOppijat.eskari.hetu.get
-        val huollettavanOpiskeluoikeusOid = huollettavanOo.oid.get
-
-        val req = TodistusGenerateRequest(huollettavanOpiskeluoikeusOid, templateVariant)
-
         withoutRunningSchedulers {
+          val templateVariant = "fi"
+          val huollettavanOo = setupOppijaWithAndGetOpiskeluoikeus(vahvistettuKielitutkinnonOpiskeluoikeus, KoskiSpecificMockOppijat.eskari, MockUsers.paakayttaja)
+          val huoltajanHetu = KoskiSpecificMockOppijat.faija.hetu.get
+          val huollettavanHetu = KoskiSpecificMockOppijat.eskari.hetu.get
+          val huollettavanOpiskeluoikeusOid = huollettavanOo.oid.get
+
+          val req = TodistusGenerateRequest(huollettavanOpiskeluoikeusOid, templateVariant)
+
           // Huoltaja luo todistuspyynnön
           val todistusJob = addGenerateJobSuccessfully(req, huoltajanHetu) { todistusJob =>
             todistusJob.state should equal(TodistusState.QUEUED)
@@ -348,56 +348,60 @@ class TodistusKayttoOikeudetSpec extends TodistusSpecHelpers {
       }
 
       "Download onnistuu kun todistus on valmis" in {
-        val templateVariant = "fi"
-        val huollettavanOo = setupOppijaWithAndGetOpiskeluoikeus(vahvistettuKielitutkinnonOpiskeluoikeus, KoskiSpecificMockOppijat.eskari, MockUsers.paakayttaja)
-        val huoltajanHetu = KoskiSpecificMockOppijat.faija.hetu.get
-        val huollettavanHetu = KoskiSpecificMockOppijat.eskari.hetu.get
-        val huollettavanOpiskeluoikeusOid = huollettavanOo.oid.get
+        withoutRunningTiedoteScheduler {
+          val templateVariant = "fi"
+          val huollettavanOo = setupOppijaWithAndGetOpiskeluoikeus(vahvistettuKielitutkinnonOpiskeluoikeus, KoskiSpecificMockOppijat.eskari, MockUsers.paakayttaja)
+          val huoltajanHetu = KoskiSpecificMockOppijat.faija.hetu.get
+          val huollettavanHetu = KoskiSpecificMockOppijat.eskari.hetu.get
+          val huollettavanOpiskeluoikeusOid = huollettavanOo.oid.get
 
-        val req = TodistusGenerateRequest(huollettavanOpiskeluoikeusOid, templateVariant)
+          val req = TodistusGenerateRequest(huollettavanOpiskeluoikeusOid, templateVariant)
 
-        // Huoltaja luo todistuspyynnön
-        val todistusJob = addGenerateJobSuccessfully(req, huoltajanHetu) { todistusJob =>
-          todistusJob.state should equal(TodistusState.QUEUED)
-          todistusJob
+          // Huoltaja luo todistuspyynnön
+          val todistusJob = addGenerateJobSuccessfully(req, huoltajanHetu) { todistusJob =>
+            todistusJob.state should equal(TodistusState.QUEUED)
+            todistusJob
+          }
+
+          // Odotetaan todistuksen valmistumista (käyttäen huoltajan hetua pollaamaan)
+          val completedJob = waitForCompletion(todistusJob.id, huoltajanHetu)
+          completedJob.state should equal(TodistusState.COMPLETED)
+
+          // Huollettava itse yrittää ladata todistuksen
+          verifyDownloadResult(s"/todistus/download/${todistusJob.id}", huollettavanHetu)
         }
-
-        // Odotetaan todistuksen valmistumista (käyttäen huoltajan hetua pollaamaan)
-        val completedJob = waitForCompletion(todistusJob.id, huoltajanHetu)
-        completedJob.state should equal(TodistusState.COMPLETED)
-
-        // Huollettava itse yrittää ladata todistuksen
-        verifyDownloadResult(s"/todistus/download/${todistusJob.id}", huollettavanHetu)
       }
     }
   }
 
   "Mitätöidyn opiskeluoikeuden todistuksen lataus" - {
     "estyy jos opiskeluoikeus on mitätöity todistuksen luomisen jälkeen" in {
-      val templateVariant = "fi"
-      val oppija = KoskiSpecificMockOppijat.eskari
-      val hetu = oppija.hetu.get
+      withoutRunningTiedoteScheduler {
+        val templateVariant = "fi"
+        val oppija = KoskiSpecificMockOppijat.eskari
+        val hetu = oppija.hetu.get
 
-      // Luo opiskeluoikeus ja todistus
-      val oo = setupOppijaWithAndGetOpiskeluoikeus(vahvistettuKielitutkinnonOpiskeluoikeus, oppija, MockUsers.paakayttaja)
-      val opiskeluoikeusOid = oo.oid.get
+        // Luo opiskeluoikeus ja todistus
+        val oo = setupOppijaWithAndGetOpiskeluoikeus(vahvistettuKielitutkinnonOpiskeluoikeus, oppija, MockUsers.paakayttaja)
+        val opiskeluoikeusOid = oo.oid.get
 
-      val req = TodistusGenerateRequest(opiskeluoikeusOid, templateVariant)
+        val req = TodistusGenerateRequest(opiskeluoikeusOid, templateVariant)
 
-      val todistusJob = addGenerateJobSuccessfully(req, hetu) { todistusJob =>
-        todistusJob.state should equal(TodistusState.QUEUED)
-        todistusJob
-      }
+        val todistusJob = addGenerateJobSuccessfully(req, hetu) { todistusJob =>
+          todistusJob.state should equal(TodistusState.QUEUED)
+          todistusJob
+        }
 
-      val completedJob = waitForCompletion(todistusJob.id, hetu)
-      completedJob.state should equal(TodistusState.COMPLETED)
+        val completedJob = waitForCompletion(todistusJob.id, hetu)
+        completedJob.state should equal(TodistusState.COMPLETED)
 
-      // Mitätöi opiskeluoikeus todistuksen luomisen jälkeen
-      mitätöiOppijanKaikkiOpiskeluoikeudet(oppija)
+        // Mitätöi opiskeluoikeus todistuksen luomisen jälkeen
+        mitätöiOppijanKaikkiOpiskeluoikeudet(oppija)
 
-      // Yritä ladata todistus - pitäisi epäonnistua
-      getResult(s"/todistus/download/${todistusJob.id}", hetu) {
-        verifyResponseStatus(503)
+        // Yritä ladata todistus - pitäisi epäonnistua
+        getResult(s"/todistus/download/${todistusJob.id}", hetu) {
+          verifyResponseStatus(503)
+        }
       }
     }
   }
@@ -749,13 +753,15 @@ class TodistusKayttoOikeudetSpec extends TodistusSpecHelpers {
     }
 
     "palauttaa 404 jos opiskeluoikeus on mitätöity" in {
-      val templateVariant = "fi"
-      val oo = setupOppijaWithAndGetOpiskeluoikeus(vahvistettuKielitutkinnonOpiskeluoikeus, KoskiSpecificMockOppijat.eskari, MockUsers.paakayttaja)
-      mitätöiOppijanKaikkiOpiskeluoikeudet(KoskiSpecificMockOppijat.eskari)
-      val opiskeluoikeusOid = oo.oid.get
+      withoutRunningSchedulers {
+        val templateVariant = "fi"
+        val oo = setupOppijaWithAndGetOpiskeluoikeus(vahvistettuKielitutkinnonOpiskeluoikeus, KoskiSpecificMockOppijat.eskari, MockUsers.paakayttaja)
+        mitätöiOppijanKaikkiOpiskeluoikeudet(KoskiSpecificMockOppijat.eskari)
+        val opiskeluoikeusOid = oo.oid.get
 
-      get(s"todistus/preview/$templateVariant/$opiskeluoikeusOid", headers = authHeaders(MockUsers.paakayttaja)) {
-        verifyResponseStatus(404)
+        get(s"todistus/preview/$templateVariant/$opiskeluoikeusOid", headers = authHeaders(MockUsers.paakayttaja)) {
+          verifyResponseStatus(404)
+        }
       }
     }
   }

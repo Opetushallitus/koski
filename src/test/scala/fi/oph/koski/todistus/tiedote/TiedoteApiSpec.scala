@@ -2,9 +2,10 @@ package fi.oph.koski.todistus.tiedote
 
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
 import fi.oph.koski.koskiuser.MockUsers
+import fi.oph.koski.todistus.TodistusSpecHelpers
 import fi.oph.koski.util.Wait
 
-class TiedoteApiSpec extends KielitutkintotodistusTiedoteSpecHelpers {
+class TiedoteApiSpec extends TodistusSpecHelpers {
 
   override protected def afterEach(): Unit = {
     cleanup()

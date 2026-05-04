@@ -41,34 +41,38 @@ class TodistusLinkitettyOppijaSpec extends TodistusSpecHelpers {
 
   "Todistus linkitetyn oppijan opiskeluoikeudesta" - {
     "käyttää master-oppijan henkilötietoja kun kansalainen lataa todistuksen" in {
-      val opiskeluoikeusOid = luoOpiskeluoikeusSlavelle()
-      val req = TodistusGenerateRequest(opiskeluoikeusOid, "fi")
+      withoutRunningTiedoteScheduler {
+        val opiskeluoikeusOid = luoOpiskeluoikeusSlavelle()
+        val req = TodistusGenerateRequest(opiskeluoikeusOid, "fi")
 
-      val job = addGenerateJobSuccessfully(req, hetu) { j =>
-        j.oppijaOid should equal(slave.henkilö.oid)
-        j
-      }
-      val completedJob = waitForCompletion(job.id, hetu)
-      completedJob.state should equal(TodistusState.COMPLETED)
+        val job = addGenerateJobSuccessfully(req, hetu) { j =>
+          j.oppijaOid should equal(slave.henkilö.oid)
+          j
+        }
+        val completedJob = waitForCompletion(job.id, hetu)
+        completedJob.state should equal(TodistusState.COMPLETED)
 
-      verifyDownloadResultAndContent(s"/todistus/download/${completedJob.id}", hetu) {
-        verifyPdfSisältääMasterinTiedot(response.getContentBytes())
+        verifyDownloadResultAndContent(s"/todistus/download/${completedJob.id}", hetu) {
+          verifyPdfSisältääMasterinTiedot(response.getContentBytes())
+        }
       }
     }
 
     "käyttää master-oppijan henkilötietoja kun virkailija lataa todistuksen" in {
-      val opiskeluoikeusOid = luoOpiskeluoikeusSlavelle()
-      val req = TodistusGenerateRequest(opiskeluoikeusOid, "fi")
+      withoutRunningTiedoteScheduler {
+        val opiskeluoikeusOid = luoOpiskeluoikeusSlavelle()
+        val req = TodistusGenerateRequest(opiskeluoikeusOid, "fi")
 
-      val job = addGenerateJobSuccessfullyAsVirkailijaPääkäyttäjä(req) { j =>
-        j.oppijaOid should equal(slave.henkilö.oid)
-        j
-      }
-      val completedJob = waitForCompletionAsVirkailijaPääkäyttäjä(job.id)
-      completedJob.state should equal(TodistusState.COMPLETED)
+        val job = addGenerateJobSuccessfullyAsVirkailijaPääkäyttäjä(req) { j =>
+          j.oppijaOid should equal(slave.henkilö.oid)
+          j
+        }
+        val completedJob = waitForCompletionAsVirkailijaPääkäyttäjä(job.id)
+        completedJob.state should equal(TodistusState.COMPLETED)
 
-      verifyPresignedResultAndContent(s"/todistus/download/presigned/${completedJob.id}") {
-        verifyPdfSisältääMasterinTiedot(response.getContentBytes())
+        verifyPresignedResultAndContent(s"/todistus/download/presigned/${completedJob.id}") {
+          verifyPdfSisältääMasterinTiedot(response.getContentBytes())
+        }
       }
     }
   }

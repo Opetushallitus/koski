@@ -3,12 +3,14 @@ package fi.oph.koski.todistus.tiedote
 import com.typesafe.config.ConfigValueFactory
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
+import fi.oph.koski.koskiuser.MockUsers
 import fi.oph.koski.log.{AuditLogTester, KoskiAuditLogMessageField, KoskiOperation}
+import fi.oph.koski.todistus.TodistusSpecHelpers
 import fi.oph.koski.util.Wait
 import fi.oph.koski.json.GenericJsonFormats
 import org.json4s.jackson.JsonMethods.parse
 
-class KielitutkintotodistusTiedoteWorkflowSpec extends KielitutkintotodistusTiedoteSpecHelpers {
+class KielitutkintotodistusTiedoteWorkflowSpec extends TodistusSpecHelpers {
 
   override protected def afterEach(): Unit = {
     cleanup()
@@ -359,9 +361,9 @@ class KielitutkintotodistusTiedoteWorkflowSpec extends KielitutkintotodistusTied
     }
 
     "Scheduler ei käsittele tiedotteita kun se on pysäytetty" in {
-      waitForSchedulerIdle()
+      waitForTiedoteSchedulerIdle()
       app.kielitutkintotodistusTiedoteScheduler.schedulerInstance.foreach(_.suspend())
-      waitForSchedulerIdle()
+      waitForTiedoteSchedulerIdle()
       app.kielitutkintotodistusTiedoteRepository.truncateForLocal()
       mockTiedotuspalveluClient.reset()
 
@@ -375,8 +377,10 @@ class KielitutkintotodistusTiedoteWorkflowSpec extends KielitutkintotodistusTied
     }
 
     "Scheduler lähettää tiedotteen automaattisesti kun se on päällä" in {
-      val oppijaOid = KoskiSpecificMockOppijat.kielitutkinnonSuorittaja.oid
-      val opiskeluoikeusOid = getVahvistettuKielitutkinnonOpiskeluoikeusOid(oppijaOid).get
+      val oppija = KoskiSpecificMockOppijat.eskari
+      val oppijaOid = oppija.oid
+      val oo = setupOppijaWithAndGetOpiskeluoikeus(vahvistettuKielitutkinnonOpiskeluoikeus, oppija, MockUsers.paakayttaja)
+      val opiskeluoikeusOid = oo.oid.get
 
       // Schedulerin pitäisi poimia tiedote automaattisesti
       Wait.until {

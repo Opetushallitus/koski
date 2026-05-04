@@ -168,8 +168,17 @@ object NotInitializedFixtureState {
 
 abstract class DatabaseFixtureState(application: KoskiApplication) extends FixtureState {
   def resetFixtures(skipInvalidOpiskeluoikeudet: Boolean): Unit = {
-    application.henkilöRepository.opintopolku.henkilöt.asInstanceOf[MockOpintopolkuHenkilöFacade].resetFixtures(defaultOppijat, defaultKuntahistoriat, defaultTurvakieltoKuntahistoriat)
-    timed("Resetting database fixtures") (databaseFixtureCreator.resetFixtures(skipInvalidOpiskeluoikeudet))
+    // Keskeytä tiedotteiden käsittely fikstuurireseting ajaksi ja merkitse fixturen
+    // kielitutkinto-opiskeluoikeudet jo "lähetetyiksi", jottei scheduler ala generoida
+    // tiedotteita ja printtitodistus-PDF:iä jokaiselle fixturen opiskeluoikeudelle.
+    application.kielitutkintotodistusTiedoteScheduler.schedulerInstance.foreach(_.suspend())
+    try {
+      application.henkilöRepository.opintopolku.henkilöt.asInstanceOf[MockOpintopolkuHenkilöFacade].resetFixtures(defaultOppijat, defaultKuntahistoriat, defaultTurvakieltoKuntahistoriat)
+      timed("Resetting database fixtures") (databaseFixtureCreator.resetFixtures(skipInvalidOpiskeluoikeudet))
+      application.kielitutkintotodistusTiedoteRepository.markAllExistingKielitutkinnotAsCompletedForLocal()
+    } finally {
+      application.kielitutkintotodistusTiedoteScheduler.schedulerInstance.foreach(_.unsuspend())
+    }
   }
 
   def oppijaOids: List[String] = (
