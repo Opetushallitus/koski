@@ -3,7 +3,7 @@ import { useTree } from '../../appstate/tree'
 import { t } from '../../i18n/i18n'
 import { Opiskeluoikeus } from '../../types/fi/oph/koski/schema/Opiskeluoikeus'
 import { useLayout } from '../../util/useDepth'
-import { CommonProps } from '../CommonProps'
+import { CommonProps, cx } from '../CommonProps'
 import {
   COLUMN_COUNT,
   Column,
@@ -29,13 +29,20 @@ export type OsasuoritusTableProps<
   P = object
 > = CommonProps<{
   editMode: FormModel<object>['editMode']
+  columns?: Array<OsasuoritusTableColumn<DATA_KEYS>>
   rows: Array<OsasuoritusRowData<DATA_KEYS>>
   completed?: Completed
   onRemove?: (index: number) => void
   addNewOsasuoritusView?: React.FC<P>
   addNewOsasuoritusViewProps?: P
   forceOpen?: boolean
+  expandedContentIndent?: number
 }>
+
+export type OsasuoritusTableColumn<DATA_KEYS extends string> = {
+  key: DATA_KEYS
+  label?: string
+}
 
 export type OsasuoritusRowData<DATA_KEYS extends string> = {
   suoritusIndex: number
@@ -43,6 +50,7 @@ export type OsasuoritusRowData<DATA_KEYS extends string> = {
   osasuoritusPath?: FormOptic<Opiskeluoikeus, any>
   expandable: boolean
   columns: Partial<Record<DATA_KEYS, React.ReactNode>>
+  alwaysVisibleContent?: React.ReactElement
   content?: React.ReactElement
 }
 
@@ -58,10 +66,17 @@ export const OsasuoritusTable = <DATA_KEYS extends string, P>(
   const newOsasuoritusIds = useNewItems(getRowId, props.rows)
 
   const skipExpandableColumn = rows.every((row) => !row.expandable)
+  const tableColumns = rows[0] ? getTableColumns(rows[0], props.columns) : []
 
   return (
     <>
-      {rows[0] && <OsasuoritusHeader row={rows[0]} editMode={editMode} />}
+      {rows[0] && (
+        <OsasuoritusHeader
+          columns={tableColumns}
+          canRemove={editMode && onRemove !== undefined}
+          skipExpandableColumn={skipExpandableColumn}
+        />
+      )}
       <TestIdLayer id="osasuoritukset">
         {rows.map((row, index) => (
           <TestIdLayer
@@ -71,10 +86,12 @@ export const OsasuoritusTable = <DATA_KEYS extends string, P>(
             <OsasuoritusRow
               editMode={editMode}
               row={row}
+              columns={tableColumns}
               initiallyOpen={newOsasuoritusIds.includes(getRowId(row))}
               forceOpen={props.forceOpen}
               expandable={row.expandable}
               skipExpandableColumn={skipExpandableColumn}
+              expandedContentIndent={props.expandedContentIndent}
               completed={completed ? completed(index) : undefined}
               onRemove={
                 onRemove !== undefined ? () => onRemove(index) : undefined
@@ -99,30 +116,44 @@ export type OsasuoritusRowProps<DATA_KEYS extends string> = CommonProps<{
   expandable?: boolean
   skipExpandableColumn?: boolean
   row: OsasuoritusRowData<DATA_KEYS>
+  columns: Array<OsasuoritusTableColumn<DATA_KEYS>>
   onRemove?: () => void
   initiallyOpen?: boolean
   forceOpen?: boolean
+  expandedContentIndent?: number
+}>
+
+type OsasuoritusHeaderProps<DATA_KEYS extends string> = CommonProps<{
+  columns: Array<OsasuoritusTableColumn<DATA_KEYS>>
+  canRemove?: boolean
+  skipExpandableColumn?: boolean
 }>
 
 export const OsasuoritusHeader = <DATA_KEYS extends string>(
-  props: Omit<OsasuoritusRowProps<DATA_KEYS>, 'initiallyOpen'>
+  props: OsasuoritusHeaderProps<DATA_KEYS>
 ) => {
   const [indentation] = useLayout(OSASUORITUSTABLE_DEPTH_KEY)
-  const spans = getSpans(props.row.columns, indentation)
+  const spans = getSpans(
+    props.columns,
+    indentation,
+    props.canRemove,
+    props.skipExpandableColumn
+  )
   return (
     <>
       <ColumnRow className="OsasuoritusHeader">
         {spans.indent > 0 && (
           <Column span={spans.indent} className="OsasuoritusHeader__indent" />
         )}
-        {Object.keys(props.row.columns).map((key, index) => (
+        {props.columns.map((column, index) => (
           <Column
             key={index}
             span={index === 0 ? spans.nameHeader : spans.data}
           >
-            {t(key)}
+            {getColumnLabel(column)}
           </Column>
         ))}
+        {spans.rightIcons > 0 && <Column span={spans.rightIcons} />}
       </ColumnRow>
     </>
   )
@@ -133,7 +164,7 @@ export const OsasuoritusRow = <DATA_KEYS extends string>(
 ) => {
   const [indentation, LayoutProvider] = useLayout(OSASUORITUSTABLE_DEPTH_KEY)
   const spans = getSpans(
-    props.row.columns,
+    props.columns,
     indentation,
     Boolean(props.editMode && props.onRemove),
     props.skipExpandableColumn
@@ -146,12 +177,21 @@ export const OsasuoritusRow = <DATA_KEYS extends string>(
 
   return (
     <TreeNode>
-      <ColumnRow className="OsasuoritusRow">
+      <ColumnRow
+        className={cx(
+          'OsasuoritusRow',
+          props.editMode && 'OsasuoritusRow--edit'
+        )}
+      >
         {spans.indent > 0 && (
           <Column span={spans.indent} className="OsasuoritusHeader__indent" />
         )}
         {!props.skipExpandableColumn && (
-          <Column span={spans.leftIcons} align="right">
+          <Column
+            span={spans.leftIcons}
+            align="right"
+            className="OsasuoritusRow__expandColumn"
+          >
             {props.row.content && expandable && (
               <ExpandButton
                 expanded={isOpen}
@@ -161,7 +201,7 @@ export const OsasuoritusRow = <DATA_KEYS extends string>(
             )}
           </Column>
         )}
-        <Column span={1}>
+        <Column span={1} className="OsasuoritusRow__completedColumn">
           {props.completed === true && (
             // eslint-disable-next-line react/jsx-no-literals
             <span aria-label={t('Suoritus valmis')}>&#x2713;</span>
@@ -171,15 +211,26 @@ export const OsasuoritusRow = <DATA_KEYS extends string>(
             <span aria-label={t('Suoritus kesken')}>&#x29D6;</span>
           )}
         </Column>
-        {Object.values<React.ReactNode>(props.row.columns).map(
-          (value, index) => (
-            <Column key={index} span={index === 0 ? spans.name : spans.data}>
-              {value}
-            </Column>
-          )
-        )}
+        {props.columns.map((column, index) => (
+          <Column
+            key={index}
+            span={index === 0 ? spans.name : spans.data}
+            className={
+              index === 0
+                ? 'OsasuoritusRow__nameColumn'
+                : 'OsasuoritusRow__dataColumn'
+            }
+          >
+            <div className="OsasuoritusRow__cellContent">
+              {props.row.columns[column.key]}
+            </div>
+          </Column>
+        ))}
         {props.editMode && props.onRemove && (
-          <Column span={spans.rightIcons}>
+          <Column
+            span={spans.rightIcons}
+            className="OsasuoritusRow__removeColumn"
+          >
             <IconButton
               charCode={CHARCODE_REMOVE}
               label={t('Poista')}
@@ -190,8 +241,13 @@ export const OsasuoritusRow = <DATA_KEYS extends string>(
           </Column>
         )}
       </ColumnRow>
+      {props.row.alwaysVisibleContent && (
+        <LayoutProvider indent={3}>
+          {props.row.alwaysVisibleContent}
+        </LayoutProvider>
+      )}
       {expandable && isOpen && props.row.content && (
-        <LayoutProvider indent={2}>
+        <LayoutProvider indent={props.expandedContentIndent ?? 2}>
           <TestIdLayer id="properties">
             <Section>{props.row.content}</Section>
           </TestIdLayer>
@@ -202,25 +258,25 @@ export const OsasuoritusRow = <DATA_KEYS extends string>(
 }
 
 const getSpans = (
-  dataObj: object,
+  columns: Array<OsasuoritusTableColumn<string>>,
   depth?: number,
   canRemove?: boolean,
   skipExpandableColumn?: boolean
 ) => {
-  const DATA_SPAN: ResponsiveValue<number> = { default: 4, phone: 8, small: 6 }
-
   const indent = depth || 0
   const leftIcons = skipExpandableColumn ? 0 : 1
   const completed = 1
   const rightIcons = canRemove ? 1 : 0
-  const dataCount = Object.values(dataObj).length
-  const data = mapResponsiveValue(
-    (w: number) => w * Math.max(0, dataCount - 1)
-  )(DATA_SPAN)
-  const name = mapResponsiveValue(
-    (w: number) =>
-      COLUMN_COUNT - indent - leftIcons - completed - w - rightIcons
-  )(data)
+  const availableColumns =
+    COLUMN_COUNT - indent - leftIcons - completed - rightIcons
+  const dataColumnCount = Math.max(0, columns.length - 1)
+  const dataSpan: ResponsiveValue<number> = {
+    default: 4,
+    phone: fitDataColumnSpan(8, availableColumns, dataColumnCount),
+    small: fitDataColumnSpan(6, availableColumns, dataColumnCount)
+  }
+  const data = mapResponsiveValue((w: number) => w * dataColumnCount)(dataSpan)
+  const name = mapResponsiveValue((w: number) => availableColumns - w)(data)
   const nameHeader = mapResponsiveValue(
     (w: number) => w + leftIcons + completed
   )(name)
@@ -230,11 +286,47 @@ const getSpans = (
     leftIcons,
     completed,
     rightIcons,
-    data: DATA_SPAN,
+    data: dataSpan,
     name,
     nameHeader
   }
 }
+
+const MIN_NARROW_NAME_SPAN = 8
+
+const fitDataColumnSpan = (
+  preferredSpan: number,
+  availableColumns: number,
+  dataColumnCount: number
+): number => {
+  if (dataColumnCount === 0) {
+    return preferredSpan
+  }
+
+  const maxSpan = Math.floor(
+    (availableColumns - MIN_NARROW_NAME_SPAN) / dataColumnCount
+  )
+
+  return Math.max(1, Math.min(preferredSpan, maxSpan))
+}
+
+const getTableColumns = <DATA_KEYS extends string>(
+  row: OsasuoritusRowData<DATA_KEYS>,
+  columns?: Array<OsasuoritusTableColumn<DATA_KEYS>>
+): Array<OsasuoritusTableColumn<DATA_KEYS>> =>
+  columns ||
+  Object.keys(row.columns).map((key) => ({
+    key: key as DATA_KEYS
+  }))
+
+const getColumnLabel = <DATA_KEYS extends string>(
+  column: OsasuoritusTableColumn<DATA_KEYS>
+) =>
+  column.label === undefined
+    ? t(column.key)
+    : column.label
+      ? t(column.label)
+      : null
 
 export const osasuoritusTestId = (
   suoritusIndex: number,

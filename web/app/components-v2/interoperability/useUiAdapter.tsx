@@ -12,8 +12,10 @@ import { modelData } from '../../editor/EditorModel'
 import { t } from '../../i18n/i18n'
 import { Contextualized } from '../../types/EditorModelContext'
 import { ObjectModel } from '../../types/EditorModels'
+import { isNuortenPerusopetuksenOppimääränSuoritus } from '../../types/fi/oph/koski/schema/NuortenPerusopetuksenOppimaaranSuoritus'
 import { Opiskeluoikeus } from '../../types/fi/oph/koski/schema/Opiskeluoikeus'
 import { Oppija } from '../../types/fi/oph/koski/schema/Oppija'
+import { isPerusopetuksenVuosiluokanSuoritus } from '../../types/fi/oph/koski/schema/PerusopetuksenVuosiluokanSuoritus'
 import { intersects, last } from '../../util/fp/arrays'
 import { getHenkilöOid } from '../../util/henkilo'
 import {
@@ -144,7 +146,12 @@ const useUiAdapterImpl = <T extends any[]>(
   const [adapter, setAdapter] = useSafeState<UiAdapter>(loadingUiAdapter)
 
   const v2Mode = useMemo(() => {
-    const v2OpiskeluoikeusTyypit = Object.keys(opiskeluoikeusEditors)
+    const hasPerusopetusFeatureFlag =
+      localStorage.getItem('perusopetus-v2') !== null ||
+      new URLSearchParams(window.location.search).has('perusopetus-v2')
+    const v2OpiskeluoikeusTyypit = Object.keys(opiskeluoikeusEditors).filter(
+      (tyyppi) => tyyppi !== 'perusopetus' || hasPerusopetusFeatureFlag
+    )
     return intersects(string.Eq)(opiskeluoikeustyypit)(v2OpiskeluoikeusTyypit)
   }, [opiskeluoikeustyypit])
 
@@ -180,6 +187,25 @@ const useUiAdapterImpl = <T extends any[]>(
             'ammatillinentutkintoosittainen'
 
           if (!isOsittainen) {
+            return undefined
+          }
+        }
+
+        if (tyyppi === 'perusopetus') {
+          const hasFeatureFlag =
+            localStorage.getItem('perusopetus-v2') !== null ||
+            new URLSearchParams(window.location.search).has('perusopetus-v2')
+
+          if (!hasFeatureFlag) {
+            return undefined
+          }
+
+          const allSuorituksetSupported = oo?.suoritukset?.every(
+            (s) =>
+              isPerusopetuksenVuosiluokanSuoritus(s) ||
+              isNuortenPerusopetuksenOppimääränSuoritus(s)
+          )
+          if (!allSuorituksetSupported) {
             return undefined
           }
         }

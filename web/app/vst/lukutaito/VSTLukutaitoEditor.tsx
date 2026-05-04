@@ -49,6 +49,7 @@ export const VSTLukutaitoEditor: React.FC<VSTLukutaitoEditorProps> = ({
         suorituksetVahvistettu={arviointienPuolestaVahvistettavissa(form.state)}
         createOpiskeluoikeusjakso={createVstLukutaitoOpiskeluoikeusjakso}
         lisätiedotContainer={VSTLisatiedot}
+        suoritusIndex={päätasonSuoritus.index}
         onChangeSuoritus={onChangeSuoritus}
         opiskeluoikeusJaksoClassName="fi.oph.koski.schema.OppivelvollisilleSuunnattuVapaanSivistystyönOpiskeluoikeusjakso"
         testId={päätasonSuoritus.testId}

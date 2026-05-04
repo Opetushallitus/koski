@@ -49,6 +49,7 @@ export const VSTOsaamismerkkiEditor: React.FC<VSTOsaamismerkkiEditor> = ({
         suorituksenNimi={() => finnish('Vapaan sivistystyön osaamismerkki')}
         suorituksetVahvistettu={arviointienPuolestaVahvistettavissa(form.state)}
         createOpiskeluoikeusjakso={createVstOsaamismerkkiOpiskeluoikeusjakso}
+        suoritusIndex={päätasonSuoritus.index}
         onChangeSuoritus={onChangeSuoritus}
         opiskeluoikeusJaksoClassName="fi.oph.koski.schema.VapaanSivistystyönOsaamismerkinOpiskeluoikeusjakso"
         testId={päätasonSuoritus.testId}

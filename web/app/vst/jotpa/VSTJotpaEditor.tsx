@@ -50,6 +50,7 @@ export const VSTJotpaEditor: React.FC<VSTJotpaEditorProps> = ({
         suorituksetVahvistettu={arviointienPuolestaVahvistettavissa(form.state)}
         createOpiskeluoikeusjakso={createVstJotpaOpiskeluoikeusjakso}
         lisätiedotContainer={VSTLisatiedot}
+        suoritusIndex={päätasonSuoritus.index}
         onChangeSuoritus={onChangeSuoritus}
         opiskeluoikeusJaksoClassName="fi.oph.koski.schema.VapaanSivistystyönJotpaKoulutuksenOpiskeluoikeusjakso"
         testId={päätasonSuoritus.testId}

@@ -4,11 +4,13 @@ import { TaiteenPerusopetusEditor } from '../../taiteenperusopetus/TaiteenPeruso
 import { VSTEditor } from '../../vst/VSTEditor'
 import { AdaptedOpiskeluoikeusEditorCollection } from './useUiAdapter'
 import AmmatillinenEditor from '../../ammatillinen-v2/AmmatillinenEditor'
+import PerusopetusEditor from '../../perusopetus-v2/PerusopetusEditor'
 
 export const opiskeluoikeusEditors: AdaptedOpiskeluoikeusEditorCollection = {
   taiteenperusopetus: TaiteenPerusopetusEditor,
   vapaansivistystyonkoulutus: VSTEditor,
   ibtutkinto: IBEditor,
   kielitutkinto: KielitutkintoEditor,
-  ammatillinenkoulutus: AmmatillinenEditor
+  ammatillinenkoulutus: AmmatillinenEditor,
+  perusopetus: PerusopetusEditor
 }

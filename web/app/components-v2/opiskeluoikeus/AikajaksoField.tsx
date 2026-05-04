@@ -43,14 +43,20 @@ export const AikajaksoEdit = <T extends AikajaksoLike>({
   createAikajakso,
   testId
 }: AikajaksoEditProps<T>) => {
-  const setAlku = (alku?: string) => {
-    const aikajakso = alku && createAikajakso({ ...value, alku })
+  const setAlku = (alku?: string, rawAlku?: string) => {
+    const aikajakso = createAikajakso({
+      ...value,
+      alku: alku ?? rawAlku ?? ''
+    })
     aikajakso && onChange(aikajakso)
   }
 
-  const setLoppu = (loppu?: string) => {
-    const aikajakso =
-      loppu && createAikajakso({ alku: todayISODate(), ...value, loppu })
+  const setLoppu = (loppu?: string, rawLoppu?: string) => {
+    const aikajakso = createAikajakso({
+      alku: todayISODate(),
+      ...value,
+      loppu: loppu ?? (rawLoppu ? rawLoppu : undefined)
+    })
     aikajakso && onChange(aikajakso)
   }
 

@@ -55,6 +55,7 @@ export const KOPSEditor: React.FC<KOPSEditorProps> = ({
           createVstOppivelvollisilleSuunnattuOpiskeluoikeusjakso
         }
         lisätiedotContainer={VSTLisatiedot}
+        suoritusIndex={päätasonSuoritus.index}
         onChangeSuoritus={onChangeSuoritus}
         opiskeluoikeusJaksoClassName="fi.oph.koski.schema.OppivelvollisilleSuunnattuVapaanSivistystyönOpiskeluoikeusjakso"
         testId={päätasonSuoritus.testId}

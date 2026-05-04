@@ -72,6 +72,7 @@ export const VSTKoto2022Editor: React.FC<VSTKoto2022EditorProps> = ({
         suorituksetVahvistettu={arviointienPuolestaVahvistettavissa(form.state)}
         createOpiskeluoikeusjakso={createKoto2022Opiskeluoikeusjakso}
         lisätiedotContainer={VSTLisatiedot}
+        suoritusIndex={päätasonSuoritus.index}
         onChangeSuoritus={onChangeSuoritus}
         opiskeluoikeusJaksoClassName="fi.oph.koski.schema.OppivelvollisilleSuunnattuVapaanSivistystyönOpiskeluoikeusjakso"
         testId={päätasonSuoritus.testId}

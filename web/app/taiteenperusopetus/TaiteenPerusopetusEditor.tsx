@@ -196,6 +196,7 @@ const PäätasonSuoritusEditor: React.FC<
         form={form}
         oppijaOid={props.oppijaOid}
         invalidatable={props.invalidatable}
+        suoritusIndex={päätasonSuoritus.index}
         onChangeSuoritus={setPäätasonSuoritus}
         createOpiskeluoikeusjakso={TaiteenPerusopetuksenOpiskeluoikeusjakso}
         suorituksenNimi={taiteenPerusopetuksenSuorituksenNimi}
