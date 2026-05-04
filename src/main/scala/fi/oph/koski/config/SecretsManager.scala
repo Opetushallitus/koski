@@ -24,22 +24,17 @@ object SecretsManager extends Logging {
   private lazy val client: SecretsManagerClient =
     SecretsManagerClient.builder().region(Region.EU_WEST_1).build()
 
+  // Keyed by secretId; assumes single region/account for the JVM lifetime (see hard-coded client config above).
   private val cache: ConcurrentHashMap[String, CachedSecret] = new ConcurrentHashMap()
 
   private case class CachedSecret(value: String, fetchedAt: Instant)
 
-  private[config] def fetch(secretId: String): String = {
-    val now = Instant.now()
-    val existing = cache.get(secretId)
-    if (existing != null && Duration.between(existing.fetchedAt, now).compareTo(ttl) < 0) {
-      existing.value
-    } else {
-      // computeIfAbsent gives single-flight per key; we evict expired entries first
-      // so the next caller refreshes.
-      if (existing != null) cache.remove(secretId, existing)
-      cache.computeIfAbsent(secretId, id => CachedSecret(loadFromAws(id), Instant.now())).value
-    }
-  }
+  private[config] def fetch(secretId: String): String =
+    cache.compute(secretId, (id, current) => {
+      val now = Instant.now()
+      if (current != null && Duration.between(current.fetchedAt, now).compareTo(ttl) < 0) current
+      else CachedSecret(loadFromAws(id), now)
+    }).value
 
   private def loadFromAws(secretId: String): String = {
     logger.debug(s"Fetching secret $secretId from AWS Secrets Manager")
