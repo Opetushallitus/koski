@@ -10,8 +10,9 @@ import fi.oph.koski.log.{LogConfiguration, Logging, MaskedSlf4jRequestLogWriter}
 import io.prometheus.client.servlet.jakarta.exporter.MetricsServlet
 import org.eclipse.jetty.jmx.MBeanContainer
 import org.eclipse.jetty.http.UriCompliance
+import org.eclipse.jetty.compression.gzip.GzipCompression
+import org.eclipse.jetty.compression.server.{CompressionConfig, CompressionHandler}
 import org.eclipse.jetty.server._
-import org.eclipse.jetty.server.handler.gzip.GzipHandler
 import org.eclipse.jetty.server.handler.StatisticsHandler
 import org.eclipse.jetty.ee10.servlet.{ResourceServlet, ServletContextHandler, ServletHolder, ServletMapping}
 import org.eclipse.jetty.util.thread.QueuedThreadPool
@@ -174,11 +175,18 @@ class JettyLauncher(val port: Int, val application: KoskiApplication) extends Lo
     base
   }
 
-  private def setupGzipForStaticResources(handler: Handler): GzipHandler = {
-    val gzip = new GzipHandler(handler)
-    gzip.setIncludedMimeTypes("text/css", "text/html", "application/javascript")
-    gzip.setIncludedPaths("/koski/css/*", "/koski/external_css/*", "/koski/js/*", "/koski/json-schema-viewer/*", "/valpas/assets/*")
-    gzip
+  private def setupGzipForStaticResources(handler: Handler): CompressionHandler = {
+    val compression = new CompressionHandler(handler)
+    compression.putCompression(new GzipCompression())
+    val config = CompressionConfig.builder().defaults().build()
+    Seq(
+      "/koski/css/*",
+      "/koski/external_css/*",
+      "/koski/js/*",
+      "/koski/json-schema-viewer/*",
+      "/valpas/assets/*",
+    ).foreach(path => compression.putConfiguration(path, config))
+    compression
   }
 
   private def setupJMX(handler: Handler): StatisticsHandler = {

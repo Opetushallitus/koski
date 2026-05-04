@@ -8,9 +8,14 @@ import org.scalamock.scalatest.MockFactory
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.should.Matchers
 
+import scala.annotation.nowarn
 import scala.jdk.CollectionConverters._
 
 
+// jakarta.servlet 6.1 deprecated PushBuilder. ScalaMock's mock[HttpServletRequest]
+// macro expansion references newPushBuilder()'s return type, surfacing the
+// deprecation at every mock/stub site. Suppress here — it's not our usage.
+@nowarn("cat=deprecation&msg=PushBuilder")
 class MyDataSupportTest extends AnyFreeSpec with TestEnvironment with Matchers with MockFactory {
 
   val memberId = "hsl"
