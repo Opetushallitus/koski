@@ -401,11 +401,6 @@
       <artifactId>aws-secretsmanager-jdbc</artifactId>
       <version>2.1.0</version>
     </dependency>
-    <dependency>
-      <groupId>com.amazonaws.secretsmanager</groupId>
-      <artifactId>aws-secretsmanager-caching-java</artifactId>
-      <version>2.2.0</version>
-    </dependency>
     <!-- PDF generation deps -->
     <dependency>
       <groupId>org.thymeleaf</groupId>
