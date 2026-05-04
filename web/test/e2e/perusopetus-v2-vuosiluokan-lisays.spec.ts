@@ -318,6 +318,46 @@ test.describe('Perusopetuksen uusi käyttöliittymä: vuosiluokan suorituksen li
     await expect(toimintaAlueet.nth(4)).toContainText('kognitiiviset taidot')
   })
 
+  test('Epäonnistunut tallennus ei riko lisätyn vuosiluokan osasuoritusten validointia', async ({
+    page,
+    oppijaPage,
+    fixtures
+  }) => {
+    await fixtures.reset()
+    const oppija = await fixtures.putOppija(tyhjäTeroPerusopetus())
+    await oppijaPage.goto(v2Url(oppija.henkilö.oid))
+
+    await lisääVuosiluokka(page, '1', '1A', '1.1.2017')
+
+    await page.route('**/koski/api/oppija**', async (route) => {
+      if (route.request().method() === 'PUT') {
+        await route.fulfill({
+          status: 500,
+          contentType: 'application/json',
+          body: JSON.stringify([
+            {
+              key: 'internal.error',
+              message: 'Simuloitu palvelinvirhe testissä'
+            }
+          ])
+        })
+      } else {
+        await route.continue()
+      }
+    })
+
+    await page.getByTestId('oo.0.opiskeluoikeus.save').click()
+
+    await expect(page.getByTestId('oo.0.opiskeluoikeus.save')).toBeVisible({
+      timeout: 10000
+    })
+    await expect(page.getByTestId('oo.0.opiskeluoikeus.save')).toBeEnabled()
+    await expect(page.getByText('Odottamaton virhe')).not.toBeVisible()
+    await expect(
+      page.getByText('Korjaa virheelliset tiedot.')
+    ).not.toBeVisible()
+  })
+
   test('Toisen suorituksen lisääminen käyttää edellisen toimipistettä ja auto-valitsee 2. vuosiluokan', async ({
     page,
     oppijaPage,
