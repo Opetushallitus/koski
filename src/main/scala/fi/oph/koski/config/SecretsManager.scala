@@ -27,7 +27,7 @@ object SecretsManager extends Logging {
   // Keyed by secretId; assumes single region/account for the JVM lifetime (see hard-coded client config above).
   private val cache: ConcurrentHashMap[String, CachedSecret] = new ConcurrentHashMap()
 
-  private case class CachedSecret(value: String, fetchedAt: Instant)
+  private case class CachedSecret(value: String, fetchedAt: Instant) extends NotLoggable
 
   private[config] def fetch(secretId: String): String =
     cache.compute(secretId, (id, current) => {
