@@ -353,8 +353,7 @@ test.describe('Perusopetuksen uusi käyttöliittymä: oppiainemuutokset', () => 
     await page.getByTestId('oo.0.opiskeluoikeus.edit').click()
 
     // Valinnainen Liikunta on osasuoritukset-taulukon indeksissä 20
-    // (ks. PerusopetusExampleData.oppiaineSuoritukset). Vain valinnaisilla
-    // oppiaineilla on laajuus-kenttä (pakollinen !== true).
+    // (ks. PerusopetusExampleData.oppiaineSuoritukset).
     await expect(
       page.getByTestId('oo.0.suoritukset.0.osasuoritukset.20.nimi')
     ).toContainText('Liikunta')

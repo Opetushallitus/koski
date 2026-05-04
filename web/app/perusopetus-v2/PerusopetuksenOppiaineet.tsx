@@ -98,6 +98,7 @@ import {
   isVieraanKielenOppiaine,
   isÄidinkielenOppiaine
 } from '../uusiopiskeluoikeus/opiskeluoikeusCreator/yleissivistavat'
+import { shouldShowLaajuusColumn } from './oppiaineLaajuus'
 
 const ParasArvosanaKoodiarvoView = <T extends Arviointi>(
   props: ParasArvosanaViewProps<T>
@@ -258,15 +259,13 @@ const Oppiainetaulukko: React.FC<OppiainetaulukkoProps> = ({
     | SuoritusWithOsasuoritukset
     | undefined
   const allOsasuoritukset = suoritus?.osasuoritukset || []
-  const showLaajuus =
-    pakollinen !== true &&
-    (form.editMode ||
-      osasuoritukset.some(
-        (s) =>
-          'koulutusmoduuli' in s &&
-          'laajuus' in s.koulutusmoduuli &&
-          s.koulutusmoduuli.laajuus
-      ))
+  const showLaajuus = shouldShowLaajuusColumn({
+    editMode: form.editMode,
+    isToimintaAlueittain,
+    pakollinen,
+    suoritus,
+    osasuoritukset
+  })
   const rows = osasuoritukset.map((s, i) => {
     const dataIndex = allOsasuoritukset.indexOf(s)
     return oppiaineToRow(
