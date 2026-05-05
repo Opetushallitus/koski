@@ -2,8 +2,9 @@ const CopyWebpackPlugin = require('copy-webpack-plugin')
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin')
 const path = require('path')
 
-module.exports = {
+module.exports = (_, argv = {}) => ({
   context: __dirname,
+  devtool: argv.mode === 'development' ? 'inline-source-map' : false,
   entry: {
     main: './app/Virkailija.jsx',
     omattiedot: './app/OmatTiedot.jsx',
@@ -125,4 +126,4 @@ module.exports = {
   watchOptions: {
     ignored: /node_modules/
   }
-}
+})
