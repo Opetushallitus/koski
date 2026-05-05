@@ -27,11 +27,13 @@ import {
   isPerusopetuksenVuosiluokanSuoritus
 } from '../types/fi/oph/koski/schema/PerusopetuksenVuosiluokanSuoritus'
 import { OppiaineenTaiToiminta_AlueenSuoritus } from '../types/fi/oph/koski/schema/OppiaineenTaiToimintaAlueenSuoritus'
-import { modelData } from '../editor/EditorModel'
-import { ListModel } from '../types/EditorModels'
-import { luokkaAsteenOsasuoritukset } from '../perusopetus/Perusopetus'
+import { PerusopetuksenToiminta_Alue } from '../types/fi/oph/koski/schema/PerusopetuksenToimintaAlue'
+import { PerusopetuksenToiminta_AlueenSuoritus } from '../types/fi/oph/koski/schema/PerusopetuksenToimintaAlueenSuoritus'
 import { Toimipiste } from '../types/fi/oph/koski/schema/Toimipiste'
-import { puuttuvatLuokkaAsteet } from './luokkaAsteenOppiaineet'
+import {
+  luokkaAsteenOppiaineet,
+  puuttuvatLuokkaAsteet
+} from './luokkaAsteenOppiaineet'
 import { isToimintaAlueittainOpiskelu } from './toimintaAlueittain'
 
 export type UusiPerusopetuksenVuosiluokanSuoritusModalProps = CommonProps<{
@@ -110,9 +112,10 @@ export const UusiPerusopetuksenVuosiluokanSuoritusModal: React.FC<
     )?.koodiviite
     if (!tunniste || !toimipiste || !luokka || !alkamispäivä) return
 
-    const osasuoritukset = await fetchLuokkaAsteenOsasuoritukset(
+    const osasuoritukset = createLuokkaAsteenOsasuoritukset(
       tunniste.koodiarvo,
-      isToimintaAlueittainOpiskelu(opiskeluoikeus)
+      isToimintaAlueittainOpiskelu(opiskeluoikeus),
+      perusteenDiaarinumero
     )
 
     const suoritus = PerusopetuksenVuosiluokanSuoritus({
@@ -263,23 +266,33 @@ const hierarkiaToOptions = (
     }
   })
 
-const fetchLuokkaAsteenOsasuoritukset = async (
+const createLuokkaAsteenOsasuoritukset = (
   luokkaAste: string,
-  toimintaAlueittain: boolean
-): Promise<OppiaineenTaiToiminta_AlueenSuoritus[] | undefined> => {
+  toimintaAlueittain: boolean,
+  perusteenDiaarinumero?: string
+): OppiaineenTaiToiminta_AlueenSuoritus[] | undefined => {
   if (luokkaAste === '9') {
     return undefined
   }
 
-  const model = (await luokkaAsteenOsasuoritukset(
-    luokkaAste,
-    toimintaAlueittain
-  ).toPromise()) as ListModel
-  const osasuoritukset = modelData(model) as
-    | OppiaineenTaiToiminta_AlueenSuoritus[]
-    | undefined
+  const osasuoritukset = toimintaAlueittain
+    ? toimintaAlueidenSuoritukset()
+    : luokkaAsteenOppiaineet(luokkaAste, perusteenDiaarinumero)
 
   return osasuoritukset && osasuoritukset.length > 0
     ? osasuoritukset
     : undefined
 }
+
+const toimintaAlueidenSuoritukset =
+  (): PerusopetuksenToiminta_AlueenSuoritus[] =>
+    ['1', '2', '3', '4', '5'].map((koodiarvo) =>
+      PerusopetuksenToiminta_AlueenSuoritus({
+        koulutusmoduuli: PerusopetuksenToiminta_Alue({
+          tunniste: Koodistokoodiviite({
+            koodiarvo,
+            koodistoUri: 'perusopetuksentoimintaalue'
+          })
+        })
+      })
+    )

@@ -318,6 +318,46 @@ test.describe('Perusopetuksen uusi käyttöliittymä: vuosiluokan suorituksen li
     await expect(toimintaAlueet.nth(4)).toContainText('kognitiiviset taidot')
   })
 
+  test('Epäonnistunut tallennus ei riko lisätyn vuosiluokan osasuoritusten validointia', async ({
+    page,
+    oppijaPage,
+    fixtures
+  }) => {
+    await fixtures.reset()
+    const oppija = await fixtures.putOppija(tyhjäTeroPerusopetus())
+    await oppijaPage.goto(v2Url(oppija.henkilö.oid))
+
+    await lisääVuosiluokka(page, '1', '1A', '1.1.2017')
+
+    await page.route('**/koski/api/oppija**', async (route) => {
+      if (route.request().method() === 'PUT') {
+        await route.fulfill({
+          status: 500,
+          contentType: 'application/json',
+          body: JSON.stringify([
+            {
+              key: 'internal.error',
+              message: 'Simuloitu palvelinvirhe testissä'
+            }
+          ])
+        })
+      } else {
+        await route.continue()
+      }
+    })
+
+    await page.getByTestId('oo.0.opiskeluoikeus.save').click()
+
+    await expect(page.getByTestId('oo.0.opiskeluoikeus.save')).toBeVisible({
+      timeout: 10000
+    })
+    await expect(page.getByTestId('oo.0.opiskeluoikeus.save')).toBeEnabled()
+    await expect(page.getByText('Odottamaton virhe')).not.toBeVisible()
+    await expect(
+      page.getByText('Korjaa virheelliset tiedot.')
+    ).not.toBeVisible()
+  })
+
   test('Toisen suorituksen lisääminen käyttää edellisen toimipistettä ja auto-valitsee 2. vuosiluokan', async ({
     page,
     oppijaPage,
@@ -363,7 +403,7 @@ test.describe('Perusopetuksen uusi käyttöliittymä: vuosiluokan suorituksen li
       page.getByTestId('oo.0.suoritukset.1.luokka.edit.input')
     ).not.toBeVisible()
 
-    // Toinen lisäys: aktiivisen tabin tulee vaihtua juuri lisättyyn (index 2)
+    // Toinen lisäys: aktiivisen tabin tulee vaihtua juuri lisättyyn (index 1, koska vuosiluokat järjestetään laskevasti)
     await addNewTab(page).click()
     const modal = page.locator('.Modal')
     await expect(modal).toBeVisible()
@@ -380,8 +420,38 @@ test.describe('Perusopetuksen uusi käyttöliittymä: vuosiluokan suorituksen li
     await expect(modal).not.toBeVisible()
 
     await expect(
-      page.getByTestId('oo.0.suoritukset.2.luokka.edit.input')
+      page.getByTestId('oo.0.suoritukset.1.luokka.edit.input')
     ).toHaveValue('2A')
+  })
+
+  test('Lisätty vuosiluokka sijoitetaan oikeaan tabijärjestykseen', async ({
+    page,
+    oppijaPage,
+    fixtures
+  }) => {
+    await fixtures.reset()
+    const oppija = await fixtures.putOppija(tyhjäTeroPerusopetus())
+    await oppijaPage.goto(v2Url(oppija.henkilö.oid))
+
+    await lisääVuosiluokka(page, '9', '9A', '1.1.2019')
+    await lisääVuosiluokka(page, '7', '7A', '1.1.2017')
+    await lisääVuosiluokka(page, '8', '8A', '1.1.2018')
+
+    await expect(page.getByTestId('oo.0.suoritusTabs.0.tab')).toContainText(
+      'Päättötodistus'
+    )
+    await expect(page.getByTestId('oo.0.suoritusTabs.1.tab')).toContainText(
+      '9. vuosiluokka'
+    )
+    await expect(page.getByTestId('oo.0.suoritusTabs.2.tab')).toContainText(
+      '8. vuosiluokka'
+    )
+    await expect(page.getByTestId('oo.0.suoritusTabs.3.tab')).toContainText(
+      '7. vuosiluokka'
+    )
+    await expect(
+      page.getByTestId('oo.0.suoritukset.2.luokka.edit.input')
+    ).toHaveValue('8A')
   })
 })
 
@@ -393,11 +463,28 @@ async function lisääVuosiluokka(
   alkamispäivä: string
 ) {
   // Siirry muokkaustilaan
+  const addTab = addNewTab(page)
   const editBtn = page.getByTestId('oo.0.opiskeluoikeus.edit')
-  await expect(editBtn).toBeVisible()
-  await editBtn.click()
-  await expect(addNewTab(page)).toBeVisible()
-  await addNewTab(page).click()
+
+  const visibleControl = await Promise.race([
+    addTab
+      .waitFor({ state: 'visible', timeout: 5000 })
+      .then(() => 'add' as const)
+      .catch(() => undefined),
+    editBtn
+      .waitFor({ state: 'visible', timeout: 5000 })
+      .then(() => 'edit' as const)
+      .catch(() => undefined)
+  ])
+
+  if (visibleControl === 'edit') {
+    await editBtn.click()
+  } else if (visibleControl !== 'add') {
+    await expect(addTab).toBeVisible()
+  }
+
+  await expect(addTab).toBeVisible()
+  await addTab.click()
 
   const modal = page.locator('.Modal')
   await expect(modal).toBeVisible()

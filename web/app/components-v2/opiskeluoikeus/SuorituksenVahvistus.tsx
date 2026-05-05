@@ -7,7 +7,6 @@ import { Opiskeluoikeus } from '../../types/fi/oph/koski/schema/Opiskeluoikeus'
 import { Oppilaitos } from '../../types/fi/oph/koski/schema/Oppilaitos'
 import { Organisaatio } from '../../types/fi/oph/koski/schema/Organisaatio'
 import { Vahvistus } from '../../types/fi/oph/koski/schema/Vahvistus'
-import { EmptyObject } from '../../util/objects'
 import {
   PäätasonSuoritusOf,
   isValmistuvaTerminaalitila
@@ -42,6 +41,8 @@ export type SuorituksenVahvistusFieldProps<
   disableAdd?: boolean
   disableRemoval?: boolean
   vahvistusClass: ClassOf<V>
+  statusInfo?: React.ReactNode
+  modalBodyExtra?: React.ReactNode
 }>
 
 export const SuorituksenVahvistusField = <
@@ -62,11 +63,16 @@ export const SuorituksenVahvistusField = <
       optional
       view={SuorituksenVahvistusView}
       edit={SuorituksenVahvistusEdit}
+      viewProps={{
+        statusInfo: props.statusInfo
+      }}
       editProps={{
         organisaatio: props.organisaatio,
         vahvistusClass: props.vahvistusClass,
         disableAdd: props.disableAdd,
-        disableRemoval
+        disableRemoval,
+        statusInfo: props.statusInfo,
+        modalBodyExtra: props.modalBodyExtra
       }}
     />
   )
@@ -75,15 +81,16 @@ export const SuorituksenVahvistusField = <
 // Suorituksen vahvitus viewer
 
 export type SuorituksenVahvistusViewProps<T extends Vahvistus> = CommonProps<
-  FieldViewerProps<T | undefined, EmptyObject>
+  FieldViewerProps<T | undefined, { statusInfo?: React.ReactNode }>
 >
 
 export const SuorituksenVahvistusView = <T extends Vahvistus>({
   value,
+  statusInfo,
   ...rest
 }: SuorituksenVahvistusViewProps<T>) => (
   <TestIdLayer id="suorituksenVahvistus.value">
-    <SuorituksenVahvistus vahvistus={value} {...rest} />
+    <SuorituksenVahvistus vahvistus={value} statusInfo={statusInfo} {...rest} />
   </TestIdLayer>
 )
 
@@ -97,6 +104,8 @@ export type SuorituksenVahvistusEditProps<T extends Vahvistus> = CommonProps<
       organisaatio?: Organisaatio
       disableAdd?: boolean
       disableRemoval?: boolean
+      statusInfo?: React.ReactNode
+      modalBodyExtra?: React.ReactNode
     }
   >
 >
@@ -108,6 +117,8 @@ export const SuorituksenVahvistusEdit = <T extends Vahvistus>({
   organisaatio,
   disableAdd,
   disableRemoval,
+  statusInfo,
+  modalBodyExtra,
   ...rest
 }: SuorituksenVahvistusEditProps<T>) => {
   const [modalVisible, setModalVisible] = useState(false)
@@ -132,7 +143,7 @@ export const SuorituksenVahvistusEdit = <T extends Vahvistus>({
 
   return organisaatio ? (
     <TestIdLayer id="suorituksenVahvistus.edit">
-      <SuorituksenVahvistus vahvistus={value} {...rest}>
+      <SuorituksenVahvistus vahvistus={value} statusInfo={statusInfo} {...rest}>
         {value ? (
           <FlatButton
             onClick={onMerkitseKeskeneräiseksi}
@@ -154,6 +165,7 @@ export const SuorituksenVahvistusEdit = <T extends Vahvistus>({
           <SuorituksenVahvistusModal
             organisaatio={organisaatio}
             vahvistusClass={vahvistusClass}
+            bodyExtra={modalBodyExtra}
             onSubmit={onSubmit}
             onCancel={onCancel}
           />
@@ -165,12 +177,14 @@ export const SuorituksenVahvistusEdit = <T extends Vahvistus>({
 
 type SuorituksenVahvistusProps = CommonPropsWithChildren<{
   vahvistus?: Vahvistus
+  statusInfo?: React.ReactNode
 }>
 
 export const SuorituksenVahvistus: React.FC<SuorituksenVahvistusProps> = (
   props
 ) => {
   const { vahvistus } = props
+  const suoritusValmis = vahvistus && isVahvistusPäiväMennyt(vahvistus)
   const myöntäjäHenkilöt = useMemo(
     () =>
       vahvistus && isHenkilövahvistus(vahvistus)
@@ -185,16 +199,12 @@ export const SuorituksenVahvistus: React.FC<SuorituksenVahvistusProps> = (
     <div
       {...common(props, [
         'SuorituksenVahvistus',
-        vahvistus &&
-          isVahvistusPäiväMennyt(vahvistus) &&
-          'SuorituksenVahvistus--valmis'
+        suoritusValmis && 'SuorituksenVahvistus--valmis'
       ])}
     >
       <div className="SuorituksenVahvistus__status">
         <TestIdText id="status">
-          {vahvistus && isVahvistusPäiväMennyt(vahvistus)
-            ? t('Suoritus valmis')
-            : t('Suoritus kesken')}
+          {suoritusValmis ? t('Suoritus valmis') : t('Suoritus kesken')}
         </TestIdText>
       </div>
       {vahvistus && (
@@ -214,6 +224,11 @@ export const SuorituksenVahvistus: React.FC<SuorituksenVahvistusProps> = (
             ))}
           </TestIdLayer>
         </>
+      )}
+      {suoritusValmis && props.statusInfo && (
+        <div className="SuorituksenVahvistus__statusInfo">
+          {props.statusInfo}
+        </div>
       )}
       {props.children}
     </div>

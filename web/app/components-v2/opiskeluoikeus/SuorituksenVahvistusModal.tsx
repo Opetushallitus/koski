@@ -44,6 +44,7 @@ import {
 export type SuorituksenVahvistusModalProps<T extends Vahvistus> = CommonProps<{
   vahvistusClass: ClassOf<T>
   organisaatio: Organisaatio
+  bodyExtra?: React.ReactNode
   onSubmit: (form: T) => void
   onCancel: () => void
 }>
@@ -203,6 +204,8 @@ export const SuorituksenVahvistusModal = <
             />
           </Label>
         )}
+
+        {props.bodyExtra}
       </ModalBody>
       <ModalFooter>
         <FlatButton onClick={props.onCancel} testId="cancel">
