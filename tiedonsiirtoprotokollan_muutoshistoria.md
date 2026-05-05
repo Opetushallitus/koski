@@ -1,3 +1,7 @@
+# 5.5.2026
+
+- Lisätty ensimmäinen luonnos Ahvenanmaan perusopetuksen skeemasta (TOR-2587). Uusi opiskeluoikeustyyppi `ahvenanmaanperusopetus`, haarautettu manner-Suomen perusopetuksen skeemasta. Ei vielä tallennuskelpoinen; koodistot ja validointi puuttuvat.
+
 # 28.4.2026
 
 - Lisätty International School -opiskeluoikeuteen vapaaehtoinen `iboTunniste`-kenttä (Option[String]), jolla voidaan tallentaa opiskelijan tunniste IBO:n järjestelmässä.

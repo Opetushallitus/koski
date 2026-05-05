@@ -1,4 +1,16 @@
 import {
+  AhvenanmaanPerusopetuksenMuuOppiaine,
+  isAhvenanmaanPerusopetuksenMuuOppiaine
+} from './AhvenanmaanPerusopetuksenMuuOppiaine'
+import {
+  AhvenanmaanPerusopetuksenPaikallinenOppiaine,
+  isAhvenanmaanPerusopetuksenPaikallinenOppiaine
+} from './AhvenanmaanPerusopetuksenPaikallinenOppiaine'
+import {
+  AhvenanmaanPerusopetuksenVierasKieli,
+  isAhvenanmaanPerusopetuksenVierasKieli
+} from './AhvenanmaanPerusopetuksenVierasKieli'
+import {
   AikuistenPerusopetuksenPaikallinenOppiaine,
   isAikuistenPerusopetuksenPaikallinenOppiaine
 } from './AikuistenPerusopetuksenPaikallinenOppiaine'
@@ -193,6 +205,9 @@ import {
  * @see `fi.oph.koski.schema.Valinnaisuus`
  */
 export type Valinnaisuus =
+  | AhvenanmaanPerusopetuksenMuuOppiaine
+  | AhvenanmaanPerusopetuksenPaikallinenOppiaine
+  | AhvenanmaanPerusopetuksenVierasKieli
   | AikuistenPerusopetuksenPaikallinenOppiaine
   | AikuistenPerusopetuksenUskonto
   | AikuistenPerusopetuksenVierasTaiToinenKotimainenKieli
@@ -248,6 +263,9 @@ export type Valinnaisuus =
   | YhteinenTutkinnonOsa
 
 export const isValinnaisuus = (a: any): a is Valinnaisuus =>
+  isAhvenanmaanPerusopetuksenMuuOppiaine(a) ||
+  isAhvenanmaanPerusopetuksenPaikallinenOppiaine(a) ||
+  isAhvenanmaanPerusopetuksenVierasKieli(a) ||
   isAikuistenPerusopetuksenPaikallinenOppiaine(a) ||
   isAikuistenPerusopetuksenUskonto(a) ||
   isAikuistenPerusopetuksenVierasTaiToinenKotimainenKieli(a) ||

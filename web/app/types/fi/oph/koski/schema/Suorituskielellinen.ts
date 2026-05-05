@@ -1,4 +1,12 @@
 import {
+  AhvenanmaanPerusopetuksenOppimääränSuoritus,
+  isAhvenanmaanPerusopetuksenOppimääränSuoritus
+} from './AhvenanmaanPerusopetuksenOppimaaranSuoritus'
+import {
+  AhvenanmaanPerusopetuksenVuosiluokanSuoritus,
+  isAhvenanmaanPerusopetuksenVuosiluokanSuoritus
+} from './AhvenanmaanPerusopetuksenVuosiluokanSuoritus'
+import {
   AikuistenPerusopetuksenAlkuvaiheenSuoritus,
   isAikuistenPerusopetuksenAlkuvaiheenSuoritus
 } from './AikuistenPerusopetuksenAlkuvaiheenSuoritus'
@@ -171,6 +179,8 @@ import {
  * @see `fi.oph.koski.schema.Suorituskielellinen`
  */
 export type Suorituskielellinen =
+  | AhvenanmaanPerusopetuksenOppimääränSuoritus
+  | AhvenanmaanPerusopetuksenVuosiluokanSuoritus
   | AikuistenPerusopetuksenAlkuvaiheenSuoritus
   | AikuistenPerusopetuksenOppiaineenOppimääränSuoritus
   | AikuistenPerusopetuksenOppimääränSuoritus
@@ -216,6 +226,8 @@ export type Suorituskielellinen =
   | VapaanSivistystyönVapaatavoitteisenKoulutuksenSuoritus
 
 export const isSuorituskielellinen = (a: any): a is Suorituskielellinen =>
+  isAhvenanmaanPerusopetuksenOppimääränSuoritus(a) ||
+  isAhvenanmaanPerusopetuksenVuosiluokanSuoritus(a) ||
   isAikuistenPerusopetuksenAlkuvaiheenSuoritus(a) ||
   isAikuistenPerusopetuksenOppiaineenOppimääränSuoritus(a) ||
   isAikuistenPerusopetuksenOppimääränSuoritus(a) ||
