@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useCallback, useState } from 'react'
 import { useKoodisto } from '../appstate/koodisto'
 import { FormModel } from '../components-v2/forms/FormModel'
 import { ActivePäätasonSuoritus } from '../components-v2/containers/EditorContainer'
@@ -54,6 +54,7 @@ import {
   BooleanView,
   BooleanEdit
 } from '../components-v2/opiskeluoikeus/BooleanField'
+import { Checkbox } from '../components-v2/controls/Checkbox'
 import {
   LocalizedTextView,
   LocalizedTextEdit
@@ -75,6 +76,7 @@ export const PerusopetuksenSuorituksenTiedot: React.FC<
 > = ({ form, päätasonSuoritus }) => {
   const path = päätasonSuoritus.path
   const suoritus = päätasonSuoritus.suoritus
+  const luokalleSiirtymisenTeksti = getLuokalleSiirtymisenTeksti(suoritus)
 
   return (
     <>
@@ -219,8 +221,67 @@ export const PerusopetuksenSuorituksenTiedot: React.FC<
         organisaatio={form.state.oppilaitos}
         disableAdd={false}
         vahvistusClass={HenkilövahvistusPaikkakunnalla.className}
+        statusInfo={
+          luokalleSiirtymisenTeksti && (
+            <TestIdText id="luokalleSiirtyminen">
+              {t(luokalleSiirtymisenTeksti)}
+            </TestIdText>
+          )
+        }
+        modalBodyExtra={
+          isPerusopetuksenVuosiluokanSuoritus(suoritus) && (
+            <LuokalleSiirtyminenModalCheckbox
+              form={form}
+              path={path}
+              suoritus={suoritus}
+            />
+          )
+        }
       />
     </>
+  )
+}
+
+const getLuokalleSiirtymisenTeksti = (suoritus: object): string | undefined => {
+  if (!isPerusopetuksenVuosiluokanSuoritus(suoritus)) return undefined
+
+  const luokka = suoritus.koulutusmoduuli.tunniste.koodiarvo
+  if (luokka === '9') {
+    return suoritus.jääLuokalle ? 'Oppilas jää luokalle' : undefined
+  }
+
+  return suoritus.jääLuokalle
+    ? 'Ei siirretä seuraavalle luokalle'
+    : 'Siirretään seuraavalle luokalle'
+}
+
+const LuokalleSiirtyminenModalCheckbox: React.FC<{
+  form: FormModel<PerusopetuksenOpiskeluoikeus>
+  path: any
+  suoritus: PerusopetuksenVuosiluokanSuoritus
+}> = ({ form, path, suoritus }) => {
+  const vuosiluokkaPath = path as unknown as FormOptic<
+    PerusopetuksenOpiskeluoikeus,
+    PerusopetuksenVuosiluokanSuoritus
+  >
+  const isYsiluokka = suoritus.koulutusmoduuli.tunniste.koodiarvo === '9'
+
+  const onChange = useCallback(
+    (siirretäänSeuraavalleLuokalle: boolean) => {
+      form.updateAt(vuosiluokkaPath.prop('jääLuokalle'), () => {
+        return !siirretäänSeuraavalleLuokalle
+      })
+    },
+    [form, vuosiluokkaPath]
+  )
+
+  return isYsiluokka ? null : (
+    <Checkbox
+      label="Siirretään seuraavalle luokalle"
+      checked={!suoritus.jääLuokalle}
+      onChange={onChange}
+      testId="luokalleSiirtyminen"
+    />
   )
 }
 

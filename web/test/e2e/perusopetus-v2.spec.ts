@@ -194,6 +194,11 @@ test.describe('Perusopetuksen uusi käyttöliittymä', () => {
     await expect(
       page.getByTestId('oo.0.suoritukset.2.suorituksenVahvistus.value.details')
     ).toContainText('Vahvistus: 30.5.2015 Jyväskylä')
+    await expect(
+      page.getByTestId(
+        'oo.0.suoritukset.2.suorituksenVahvistus.value.luokalleSiirtyminen'
+      )
+    ).toContainText('Siirretään seuraavalle luokalle')
 
     // Käyttäytymisen arviointi: arvosana + sanallinen kuvaus
     await expect(
@@ -251,6 +256,11 @@ test.describe('Perusopetuksen uusi käyttöliittymä', () => {
     await expect(
       page.getByTestId('oo.0.suoritukset.3.suorituksenVahvistus.value.details')
     ).toContainText('Vahvistus: 30.5.2014 Jyväskylä')
+    await expect(
+      page.getByTestId(
+        'oo.0.suoritukset.3.suorituksenVahvistus.value.luokalleSiirtyminen'
+      )
+    ).toContainText('Ei siirretä seuraavalle luokalle')
   })
 
   test('Renderöi toiminta-alueittain opiskelleen oppijan päättötodistuksen', async ({
