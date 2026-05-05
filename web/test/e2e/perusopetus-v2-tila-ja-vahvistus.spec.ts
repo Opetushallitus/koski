@@ -226,6 +226,40 @@ test.describe('Perusopetuksen uusi käyttöliittymä: tila ja vahvistus', () => 
     ).toContainText('Reijo Reksi (rehtori)')
   })
 
+  test('Vuosiluokan merkitseminen valmiiksi -dialogissa näytetään seuraavalle luokalle siirtämisen valinta', async ({
+    page,
+    oppijaPage,
+    fixtures
+  }) => {
+    await fixtures.reset()
+    await oppijaPage.goto(kaisaUrl)
+
+    await page.getByTestId('oo.0.suoritusTabs.2.tab').click()
+    await page.getByTestId('oo.0.opiskeluoikeus.edit').click()
+    await page.getByTestId('oo.0.opiskeluoikeus.tila.edit.items.1.remove').click()
+    await page.getByTestId(
+      'oo.0.suoritukset.2.suorituksenVahvistus.edit.merkitseKeskeneräiseksi'
+    ).click()
+
+    const merkitseValmiiksiBtn = page.getByTestId(
+      'oo.0.suoritukset.2.suorituksenVahvistus.edit.merkitseValmiiksi'
+    )
+    await expect(merkitseValmiiksiBtn).toBeVisible()
+    await merkitseValmiiksiBtn.click()
+
+    const siirretäänSeuraavalleLuokalle = page.getByTestId(
+      'oo.0.suoritukset.2.suorituksenVahvistus.edit.modal.luokalleSiirtyminen'
+    )
+    await expect(siirretäänSeuraavalleLuokalle).toContainText(
+      'Siirretään seuraavalle luokalle'
+    )
+    await expect(
+      page.getByTestId(
+        'oo.0.suoritukset.2.suorituksenVahvistus.edit.modal.luokalleSiirtyminen.input'
+      )
+    ).toBeChecked()
+  })
+
   test('Merkitse valmiiksi: peruuta-painike sulkee dialogin', async ({
     page,
     oppijaPage,
