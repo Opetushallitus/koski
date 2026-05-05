@@ -2,14 +2,14 @@ import { Koodistokoodiviite } from './Koodistokoodiviite'
 import { LocalizedString } from './LocalizedString'
 
 /**
- * Numeerinen arviointi asteikolla 4 (hylätty) - 10 (erinomainen)
+ * Numeerinen arviointi asteikolla 4 (underkänd) - 10 (utmärkt)
  *
  * @see `fi.oph.koski.schema.NumeerinenAhvenanmaanPerusopetuksenOppiaineenArviointi`
  */
 export type NumeerinenAhvenanmaanPerusopetuksenOppiaineenArviointi = {
   $class: 'fi.oph.koski.schema.NumeerinenAhvenanmaanPerusopetuksenOppiaineenArviointi'
   arvosana: Koodistokoodiviite<
-    'arviointiasteikkoyleissivistava',
+    'ahvenanmaanarviointiasteikkoyleissivistava',
     '4' | '5' | '6' | '7' | '8' | '9' | '10'
   >
   päivä?: string
@@ -18,7 +18,7 @@ export type NumeerinenAhvenanmaanPerusopetuksenOppiaineenArviointi = {
 
 export const NumeerinenAhvenanmaanPerusopetuksenOppiaineenArviointi = (o: {
   arvosana: Koodistokoodiviite<
-    'arviointiasteikkoyleissivistava',
+    'ahvenanmaanarviointiasteikkoyleissivistava',
     '4' | '5' | '6' | '7' | '8' | '9' | '10'
   >
   päivä?: string

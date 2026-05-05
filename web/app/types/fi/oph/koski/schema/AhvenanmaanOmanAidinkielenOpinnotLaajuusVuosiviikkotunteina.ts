@@ -9,14 +9,20 @@ import { LaajuusVuosiviikkotunneissa } from './LaajuusVuosiviikkotunneissa'
  */
 export type AhvenanmaanOmanÄidinkielenOpinnotLaajuusVuosiviikkotunteina = {
   $class: 'fi.oph.koski.schema.AhvenanmaanOmanÄidinkielenOpinnotLaajuusVuosiviikkotunteina'
-  arvosana: Koodistokoodiviite<'arviointiasteikkoyleissivistava', string>
+  arvosana: Koodistokoodiviite<
+    'ahvenanmaanarviointiasteikkoyleissivistava',
+    string
+  >
   arviointipäivä?: string
   kieli: Koodistokoodiviite<'kieli', string>
   laajuus?: LaajuusVuosiviikkotunneissa
 }
 
 export const AhvenanmaanOmanÄidinkielenOpinnotLaajuusVuosiviikkotunteina = (o: {
-  arvosana: Koodistokoodiviite<'arviointiasteikkoyleissivistava', string>
+  arvosana: Koodistokoodiviite<
+    'ahvenanmaanarviointiasteikkoyleissivistava',
+    string
+  >
   arviointipäivä?: string
   kieli: Koodistokoodiviite<'kieli', string>
   laajuus?: LaajuusVuosiviikkotunneissa

@@ -14,24 +14,28 @@ export type AhvenanmaanPerusopetuksenMuuOppiaine = {
   kuvaus?: LocalizedString
   perusteenDiaarinumero?: string
   tunniste: Koodistokoodiviite<
-    'koskioppiaineetyleissivistava',
-    | 'HI'
-    | 'MU'
-    | 'BI'
-    | 'KO'
-    | 'FI'
-    | 'KE'
-    | 'YH'
-    | 'TE'
-    | 'KS'
-    | 'FY'
-    | 'GE'
-    | 'LI'
-    | 'KU'
+    'ahvenanmaankoskioppiaineetyleissivistava',
+    | 'SV'
+    | 'SVA'
     | 'MA'
     | 'YL'
+    | 'BI'
+    | 'GE'
+    | 'FK'
+    | 'FY'
+    | 'KE'
+    | 'TE'
+    | 'RO'
+    | 'HI'
+    | 'MU'
+    | 'YH'
+    | 'KU'
+    | 'KS'
+    | 'TKS'
+    | 'TES'
+    | 'LI'
+    | 'KO'
     | 'OP'
-    | 'PS'
   >
 }
 
@@ -41,24 +45,28 @@ export const AhvenanmaanPerusopetuksenMuuOppiaine = (o: {
   kuvaus?: LocalizedString
   perusteenDiaarinumero?: string
   tunniste: Koodistokoodiviite<
-    'koskioppiaineetyleissivistava',
-    | 'HI'
-    | 'MU'
-    | 'BI'
-    | 'KO'
-    | 'FI'
-    | 'KE'
-    | 'YH'
-    | 'TE'
-    | 'KS'
-    | 'FY'
-    | 'GE'
-    | 'LI'
-    | 'KU'
+    'ahvenanmaankoskioppiaineetyleissivistava',
+    | 'SV'
+    | 'SVA'
     | 'MA'
     | 'YL'
+    | 'BI'
+    | 'GE'
+    | 'FK'
+    | 'FY'
+    | 'KE'
+    | 'TE'
+    | 'RO'
+    | 'HI'
+    | 'MU'
+    | 'YH'
+    | 'KU'
+    | 'KS'
+    | 'TKS'
+    | 'TES'
+    | 'LI'
+    | 'KO'
     | 'OP'
-    | 'PS'
   >
 }): AhvenanmaanPerusopetuksenMuuOppiaine => ({
   $class: 'fi.oph.koski.schema.AhvenanmaanPerusopetuksenMuuOppiaine',

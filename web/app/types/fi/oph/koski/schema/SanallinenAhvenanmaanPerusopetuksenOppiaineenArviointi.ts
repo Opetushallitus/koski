@@ -2,15 +2,15 @@ import { Koodistokoodiviite } from './Koodistokoodiviite'
 import { LocalizedString } from './LocalizedString'
 
 /**
- * Sanallinen arviointi; koodiarvot S (suoritettu), H (hylätty), O (osallistunut).
+ * Sanallinen arviointi; koodiarvot G (godkänd), D (deltagit), U (underkänd).
  *
  * @see `fi.oph.koski.schema.SanallinenAhvenanmaanPerusopetuksenOppiaineenArviointi`
  */
 export type SanallinenAhvenanmaanPerusopetuksenOppiaineenArviointi = {
   $class: 'fi.oph.koski.schema.SanallinenAhvenanmaanPerusopetuksenOppiaineenArviointi'
   arvosana: Koodistokoodiviite<
-    'arviointiasteikkoyleissivistava',
-    'S' | 'H' | 'O'
+    'ahvenanmaanarviointiasteikkoyleissivistava',
+    'G' | 'D' | 'U'
   >
   kuvaus?: LocalizedString
   päivä?: string
@@ -19,8 +19,8 @@ export type SanallinenAhvenanmaanPerusopetuksenOppiaineenArviointi = {
 
 export const SanallinenAhvenanmaanPerusopetuksenOppiaineenArviointi = (o: {
   arvosana: Koodistokoodiviite<
-    'arviointiasteikkoyleissivistava',
-    'S' | 'H' | 'O'
+    'ahvenanmaanarviointiasteikkoyleissivistava',
+    'G' | 'D' | 'U'
   >
   kuvaus?: LocalizedString
   päivä?: string

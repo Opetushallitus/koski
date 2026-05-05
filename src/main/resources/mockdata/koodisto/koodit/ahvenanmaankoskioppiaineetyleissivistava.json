@@ -1,0 +1,314 @@
+[
+  {
+    "metadata": [
+      { "nimi": "Svenska", "kuvaus": null, "kieli": "SV" },
+      { "nimi": "Ruotsi", "kuvaus": null, "kieli": "FI" }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "ahvenanmaankoskioppiaineetyleissivistava_SV",
+    "versio": 1,
+    "koodiArvo": "SV"
+  },
+  {
+    "metadata": [
+      { "nimi": "Svenska som andraspråk", "kuvaus": null, "kieli": "SV" },
+      { "nimi": "Ruotsi toisena kielenä", "kuvaus": null, "kieli": "FI" }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "ahvenanmaankoskioppiaineetyleissivistava_SVA",
+    "versio": 1,
+    "koodiArvo": "SVA"
+  },
+  {
+    "metadata": [
+      { "nimi": "Matematik", "kuvaus": null, "kieli": "SV" },
+      { "nimi": "Matematiikka", "kuvaus": null, "kieli": "FI" }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "ahvenanmaankoskioppiaineetyleissivistava_MA",
+    "versio": 1,
+    "koodiArvo": "MA"
+  },
+  {
+    "metadata": [
+      { "nimi": "Omgivningskunskap", "kuvaus": null, "kieli": "SV" },
+      { "nimi": "Ympäristöoppi", "kuvaus": null, "kieli": "FI" }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "ahvenanmaankoskioppiaineetyleissivistava_YL",
+    "versio": 1,
+    "koodiArvo": "YL"
+  },
+  {
+    "metadata": [
+      { "nimi": "Biologi", "kuvaus": null, "kieli": "SV" },
+      { "nimi": "Biologia", "kuvaus": null, "kieli": "FI" }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "ahvenanmaankoskioppiaineetyleissivistava_BI",
+    "versio": 1,
+    "koodiArvo": "BI"
+  },
+  {
+    "metadata": [
+      { "nimi": "Geografi", "kuvaus": null, "kieli": "SV" },
+      { "nimi": "Maantieto", "kuvaus": null, "kieli": "FI" }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "ahvenanmaankoskioppiaineetyleissivistava_GE",
+    "versio": 1,
+    "koodiArvo": "GE"
+  },
+  {
+    "metadata": [
+      { "nimi": "Fysik & kemi", "kuvaus": null, "kieli": "SV" },
+      { "nimi": "Fysiikka ja kemia", "kuvaus": null, "kieli": "FI" }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "ahvenanmaankoskioppiaineetyleissivistava_FK",
+    "versio": 1,
+    "koodiArvo": "FK"
+  },
+  {
+    "metadata": [
+      { "nimi": "Fysik", "kuvaus": null, "kieli": "SV" },
+      { "nimi": "Fysiikka", "kuvaus": null, "kieli": "FI" }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "ahvenanmaankoskioppiaineetyleissivistava_FY",
+    "versio": 1,
+    "koodiArvo": "FY"
+  },
+  {
+    "metadata": [
+      { "nimi": "Kemi", "kuvaus": null, "kieli": "SV" },
+      { "nimi": "Kemia", "kuvaus": null, "kieli": "FI" }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "ahvenanmaankoskioppiaineetyleissivistava_KE",
+    "versio": 1,
+    "koodiArvo": "KE"
+  },
+  {
+    "metadata": [
+      { "nimi": "Hälsokunskap", "kuvaus": null, "kieli": "SV" },
+      { "nimi": "Terveystieto", "kuvaus": null, "kieli": "FI" }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "ahvenanmaankoskioppiaineetyleissivistava_TE",
+    "versio": 1,
+    "koodiArvo": "TE"
+  },
+  {
+    "metadata": [
+      { "nimi": "Religions- och livsåskådningskunskap", "kuvaus": null, "kieli": "SV" },
+      { "nimi": "Uskonto ja elämänkatsomustieto", "kuvaus": null, "kieli": "FI" }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "ahvenanmaankoskioppiaineetyleissivistava_RO",
+    "versio": 1,
+    "koodiArvo": "RO"
+  },
+  {
+    "metadata": [
+      { "nimi": "Historia", "kuvaus": null, "kieli": "SV" },
+      { "nimi": "Historia", "kuvaus": null, "kieli": "FI" }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "ahvenanmaankoskioppiaineetyleissivistava_HI",
+    "versio": 1,
+    "koodiArvo": "HI"
+  },
+  {
+    "metadata": [
+      { "nimi": "Musik", "kuvaus": null, "kieli": "SV" },
+      { "nimi": "Musiikki", "kuvaus": null, "kieli": "FI" }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "ahvenanmaankoskioppiaineetyleissivistava_MU",
+    "versio": 1,
+    "koodiArvo": "MU"
+  },
+  {
+    "metadata": [
+      { "nimi": "Samhällskunskap", "kuvaus": null, "kieli": "SV" },
+      { "nimi": "Yhteiskuntaoppi", "kuvaus": null, "kieli": "FI" }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "ahvenanmaankoskioppiaineetyleissivistava_YH",
+    "versio": 1,
+    "koodiArvo": "YH"
+  },
+  {
+    "metadata": [
+      { "nimi": "Bildkonst", "kuvaus": null, "kieli": "SV" },
+      { "nimi": "Kuvataide", "kuvaus": null, "kieli": "FI" }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "ahvenanmaankoskioppiaineetyleissivistava_KU",
+    "versio": 1,
+    "koodiArvo": "KU"
+  },
+  {
+    "metadata": [
+      { "nimi": "Slöjd", "kuvaus": null, "kieli": "SV" },
+      { "nimi": "Käsityö", "kuvaus": null, "kieli": "FI" }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "ahvenanmaankoskioppiaineetyleissivistava_KS",
+    "versio": 1,
+    "koodiArvo": "KS"
+  },
+  {
+    "metadata": [
+      { "nimi": "Textilslöjd", "kuvaus": null, "kieli": "SV" },
+      { "nimi": "Tekstiilityö", "kuvaus": null, "kieli": "FI" }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "ahvenanmaankoskioppiaineetyleissivistava_TKS",
+    "versio": 1,
+    "koodiArvo": "TKS"
+  },
+  {
+    "metadata": [
+      { "nimi": "Teknisk slöjd", "kuvaus": null, "kieli": "SV" },
+      { "nimi": "Tekninen työ", "kuvaus": null, "kieli": "FI" }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "ahvenanmaankoskioppiaineetyleissivistava_TES",
+    "versio": 1,
+    "koodiArvo": "TES"
+  },
+  {
+    "metadata": [
+      { "nimi": "Idrott", "kuvaus": null, "kieli": "SV" },
+      { "nimi": "Liikunta", "kuvaus": null, "kieli": "FI" }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "ahvenanmaankoskioppiaineetyleissivistava_LI",
+    "versio": 1,
+    "koodiArvo": "LI"
+  },
+  {
+    "metadata": [
+      { "nimi": "Hem- och konsumentkunskap", "kuvaus": null, "kieli": "SV" },
+      { "nimi": "Kotitalous", "kuvaus": null, "kieli": "FI" }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "ahvenanmaankoskioppiaineetyleissivistava_KO",
+    "versio": 1,
+    "koodiArvo": "KO"
+  },
+  {
+    "metadata": [
+      { "nimi": "Elevhandledning", "kuvaus": null, "kieli": "SV" },
+      { "nimi": "Oppilaanohjaus", "kuvaus": null, "kieli": "FI" }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "ahvenanmaankoskioppiaineetyleissivistava_OP",
+    "versio": 1,
+    "koodiArvo": "OP"
+  },
+  {
+    "metadata": [
+      { "nimi": "A1-språk", "kuvaus": null, "kieli": "SV" },
+      { "nimi": "A1-kieli", "kuvaus": null, "kieli": "FI" }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "ahvenanmaankoskioppiaineetyleissivistava_A1",
+    "versio": 1,
+    "koodiArvo": "A1"
+  },
+  {
+    "metadata": [
+      { "nimi": "A2-språk", "kuvaus": null, "kieli": "SV" },
+      { "nimi": "A2-kieli", "kuvaus": null, "kieli": "FI" }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "ahvenanmaankoskioppiaineetyleissivistava_A2",
+    "versio": 1,
+    "koodiArvo": "A2"
+  },
+  {
+    "metadata": [
+      { "nimi": "B1-språk", "kuvaus": null, "kieli": "SV" },
+      { "nimi": "B1-kieli", "kuvaus": null, "kieli": "FI" }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "ahvenanmaankoskioppiaineetyleissivistava_B1",
+    "versio": 1,
+    "koodiArvo": "B1"
+  },
+  {
+    "metadata": [
+      { "nimi": "B2-språk", "kuvaus": null, "kieli": "SV" },
+      { "nimi": "B2-kieli", "kuvaus": null, "kieli": "FI" }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "ahvenanmaankoskioppiaineetyleissivistava_B2",
+    "versio": 1,
+    "koodiArvo": "B2"
+  },
+  {
+    "metadata": [
+      { "nimi": "B3-språk", "kuvaus": null, "kieli": "SV" },
+      { "nimi": "B3-kieli", "kuvaus": null, "kieli": "FI" }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "ahvenanmaankoskioppiaineetyleissivistava_B3",
+    "versio": 1,
+    "koodiArvo": "B3"
+  }
+]

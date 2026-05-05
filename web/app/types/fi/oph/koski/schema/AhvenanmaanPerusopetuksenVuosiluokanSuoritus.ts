@@ -19,6 +19,7 @@ export type AhvenanmaanPerusopetuksenVuosiluokanSuoritus = {
     'suorituksentyyppi',
     'ahvenanmaanperusopetuksenvuosiluokka'
   >
+  suorituskieli: Koodistokoodiviite<'kieli', string>
   luokka: string
   suoritustapa?: Koodistokoodiviite<'perusopetuksensuoritustapa', string>
   todistuksellaNäkyvätLisätiedot?: LocalizedString
@@ -29,8 +30,6 @@ export type AhvenanmaanPerusopetuksenVuosiluokanSuoritus = {
   tila?: Koodistokoodiviite<'suorituksentila', string>
   alkamispäivä?: string
   omanÄidinkielenOpinnot?: AhvenanmaanOmanÄidinkielenOpinnotLaajuusVuosiviikkotunteina
-  suorituskieli: Koodistokoodiviite<'kieli', string>
-  kielikylpykieli?: Koodistokoodiviite<'kieli', string>
   käyttäytymisenArvio?: AhvenanmaanPerusopetuksenKäyttäytymisenArviointi
   koulutusmoduuli: AhvenanmaanPerusopetuksenLuokkaAste
 }
@@ -41,6 +40,7 @@ export const AhvenanmaanPerusopetuksenVuosiluokanSuoritus = (o: {
     'suorituksentyyppi',
     'ahvenanmaanperusopetuksenvuosiluokka'
   >
+  suorituskieli: Koodistokoodiviite<'kieli', string>
   luokka: string
   suoritustapa?: Koodistokoodiviite<'perusopetuksensuoritustapa', string>
   todistuksellaNäkyvätLisätiedot?: LocalizedString
@@ -51,8 +51,6 @@ export const AhvenanmaanPerusopetuksenVuosiluokanSuoritus = (o: {
   tila?: Koodistokoodiviite<'suorituksentila', string>
   alkamispäivä?: string
   omanÄidinkielenOpinnot?: AhvenanmaanOmanÄidinkielenOpinnotLaajuusVuosiviikkotunteina
-  suorituskieli: Koodistokoodiviite<'kieli', string>
-  kielikylpykieli?: Koodistokoodiviite<'kieli', string>
   käyttäytymisenArvio?: AhvenanmaanPerusopetuksenKäyttäytymisenArviointi
   koulutusmoduuli: AhvenanmaanPerusopetuksenLuokkaAste
 }): AhvenanmaanPerusopetuksenVuosiluokanSuoritus => ({

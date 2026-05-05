@@ -15,8 +15,8 @@ export type AhvenanmaanPerusopetuksenVierasKieli = {
   kuvaus?: LocalizedString
   perusteenDiaarinumero?: string
   tunniste: Koodistokoodiviite<
-    'koskioppiaineetyleissivistava',
-    'A1' | 'A2' | 'B1' | 'B2' | 'B3' | 'AOM'
+    'ahvenanmaankoskioppiaineetyleissivistava',
+    'A1' | 'A2' | 'B1' | 'B3'
   >
 }
 
@@ -27,8 +27,8 @@ export const AhvenanmaanPerusopetuksenVierasKieli = (o: {
   kuvaus?: LocalizedString
   perusteenDiaarinumero?: string
   tunniste: Koodistokoodiviite<
-    'koskioppiaineetyleissivistava',
-    'A1' | 'A2' | 'B1' | 'B2' | 'B3' | 'AOM'
+    'ahvenanmaankoskioppiaineetyleissivistava',
+    'A1' | 'A2' | 'B1' | 'B3'
   >
 }): AhvenanmaanPerusopetuksenVierasKieli => ({
   $class: 'fi.oph.koski.schema.AhvenanmaanPerusopetuksenVierasKieli',

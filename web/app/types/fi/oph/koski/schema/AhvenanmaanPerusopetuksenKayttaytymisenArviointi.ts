@@ -8,14 +8,20 @@ import { LocalizedString } from './LocalizedString'
  */
 export type AhvenanmaanPerusopetuksenKäyttäytymisenArviointi = {
   $class: 'fi.oph.koski.schema.AhvenanmaanPerusopetuksenKäyttäytymisenArviointi'
-  arvosana: Koodistokoodiviite<'arviointiasteikkoyleissivistava', string>
+  arvosana: Koodistokoodiviite<
+    'ahvenanmaanarviointiasteikkoyleissivistava',
+    'G' | 'D' | 'U'
+  >
   kuvaus?: LocalizedString
   päivä?: string
   hyväksytty?: boolean
 }
 
 export const AhvenanmaanPerusopetuksenKäyttäytymisenArviointi = (o: {
-  arvosana: Koodistokoodiviite<'arviointiasteikkoyleissivistava', string>
+  arvosana: Koodistokoodiviite<
+    'ahvenanmaanarviointiasteikkoyleissivistava',
+    'G' | 'D' | 'U'
+  >
   kuvaus?: LocalizedString
   päivä?: string
   hyväksytty?: boolean

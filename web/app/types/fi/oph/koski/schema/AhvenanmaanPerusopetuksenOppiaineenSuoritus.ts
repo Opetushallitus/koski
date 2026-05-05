@@ -20,9 +20,8 @@ export type AhvenanmaanPerusopetuksenOppiaineenSuoritus = {
     'perusopetuksensuoritustapa',
     'erityinentutkinto'
   >
-  rajattuOppimäärä: boolean
+  mukautettuOppimäärä: boolean
   koulutusmoduuli: AhvenanmaanPerusopetuksenOppiaine
-  yksilöllistettyOppimäärä: boolean
   tila?: Koodistokoodiviite<'suorituksentila', string>
   luokkaAste?: Koodistokoodiviite<'perusopetuksenluokkaaste', string>
 }
@@ -38,9 +37,8 @@ export const AhvenanmaanPerusopetuksenOppiaineenSuoritus = (o: {
     'perusopetuksensuoritustapa',
     'erityinentutkinto'
   >
-  rajattuOppimäärä: boolean
+  mukautettuOppimäärä: boolean
   koulutusmoduuli: AhvenanmaanPerusopetuksenOppiaine
-  yksilöllistettyOppimäärä: boolean
   tila?: Koodistokoodiviite<'suorituksentila', string>
   luokkaAste?: Koodistokoodiviite<'perusopetuksenluokkaaste', string>
 }): AhvenanmaanPerusopetuksenOppiaineenSuoritus => ({

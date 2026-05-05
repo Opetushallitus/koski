@@ -28,21 +28,18 @@ import fi.oph.scalaschema.annotation._
 //        yhdistetty yhdeksi. Koodiston sisältö?
 //     c) arviointiasteikkokoodisto: oma (ruotsinkieliset käännökset
 //        eroavat valtakunnallisista)?
-//  3. Koulutuskoodi ja perusteenDiaarinumero:
-//     - Käytetäänkö manner-Suomen 201101:ä?
-//     - Diaarinumerona ÅLR2020/9841 vai tyhjä (ei ePerusteet-julkaisua)?
-//     - Tarvitaanko ePerusteet-validointia lainkaan?
+//  3. (ratkaistu: diaarinumero ÅLR2020/9841, koulutuskoodi 201101,
+//     ePerusteet-validointia ei käytetä koska ops ei ole julkisena)
 //
 // ── Peach-kenttien vahvistus (jokaiselle: kuuluuko skeemaan?) ───────────
 //
 //  4. Toiminta-alueen suoritus — samatko toiminta-alueet samoilla nimillä?
 //  5. OmanÄidinkielenOpinnot — käytössä Ahvenanmaalla?
-//  6. (poistettu: joustavaPerusopetus ja valmistavanLisäopetus pudotettu)
-//  7. kielikylpykieli, vuosiluokkiinSitoutumatonOpetus,
-//     tavoitekokonaisuuksittainOpiskelu,
-//     rajattuOppimäärä — kyllä vai ei?
-//  8. Laajuudet (vuosiviikkotunnit) — käytetäänkö oppiaineissa ja
-//     toiminta-alueissa ylipäätään?
+//  6. (ratkaistu: joustavaPerusopetus, valmistavanLisäopetus,
+//     tavoitekokonaisuuksittainOpiskelu, kielikylpykieli ja rajattuOppimäärä
+//     pudotettu; yksilöllistettyOppimäärä → mukautettuOppimäärä)
+//  7. vuosiluokkiinSitoutumatonOpetus — kyllä vai ei?
+//  8. (ratkaistu: laajuudet vvt pidetään, ei pakollinen)
 //
 // ── Käyttäytymisen arviointi ("Ansvar och samarbete") ────────────────────
 //
@@ -141,10 +138,6 @@ case class AhvenanmaanPerusopetuksenOpiskeluoikeudenLisätiedot(
   @Tooltip("Kotiopetusjaksot huoltajan päätöksestä alkamis- ja päättymispäivineen.")
   kotiopetusjaksot: Option[List[Aikajakso]] = None,
   // TODO TOR-2587: peach – vahvistettava.
-  @Title("Opiskelee tavoitekokonaisuuksittain")
-  @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT))
-  tavoitekokonaisuuksittainOpiskelu: Option[List[Aikajakso]] = None,
-  // TODO TOR-2587: peach – vahvistettava.
   @Description("Oppilas on vuosiluokkiin sitomattomassa opetuksessa (kyllä/ei).")
   @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT))
   @Title("Vuosiluokkiin sitomaton opetus")
@@ -192,11 +185,6 @@ case class AhvenanmaanPerusopetuksenVuosiluokanSuoritus(
   // TODO TOR-2587: peach – vahvistettava säilyykö Ahvenanmaan skeemassa.
   @Tooltip("Osallistuminen perusopetusta täydentävän oman äidinkielen opiskeluun.")
   omanÄidinkielenOpinnot: Option[AhvenanmaanOmanÄidinkielenOpinnotLaajuusVuosiviikkotunteina] = None,
-  // TODO TOR-2587: peach – vahvistettava.
-  @Description("Oppilaan kotimaisten kielten kielikylvyn kieli.")
-  @KoodistoUri("kieli")
-  @OksaUri("tmpOKSAID439", "kielikylpy")
-  kielikylpykieli: Option[Koodistokoodiviite] = None,
   @Description("Tieto siitä, että oppilas jää luokalle")
   @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT))
   @DefaultValue(false)
@@ -250,10 +238,7 @@ sealed trait AhvenanmaanOppiaineenTaiToimintaAlueenSuoritus
 case class AhvenanmaanPerusopetuksenOppiaineenSuoritus(
   koulutusmoduuli: AhvenanmaanPerusopetuksenOppiaine,
   @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT, Rooli.SUORITUSJAKO_KATSELIJA))
-  yksilöllistettyOppimäärä: Boolean = false,
-  // TODO TOR-2587: peach – selvitetään onko tulossa Ahvenanmaalle (wiki).
-  @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT, Rooli.SUORITUSJAKO_KATSELIJA))
-  rajattuOppimäärä: Boolean = false,
+  mukautettuOppimäärä: Boolean = false,
   arviointi: Option[List[AhvenanmaanPerusopetuksenOppiaineenArviointi]] = None,
   suorituskieli: Option[Koodistokoodiviite] = None,
   @KoodistoKoodiarvo("ahvenanmaanperusopetuksenoppiaine")
@@ -287,29 +272,42 @@ case class AhvenanmaanPerusopetuksenToimintaAlueenSuoritus(
 // ---------- Arvioinnit ----------
 
 sealed trait AhvenanmaanPerusopetuksenOppiaineenArviointi
-  extends YleissivistävänKoulutuksenArviointi
+  extends Arviointi
 
-// TODO TOR-2587: peach – mahdollinen Ahvenanmaan oma arviointiasteikkokoodisto
-// (ruotsinkieliset käännökset eroavat valtakunnallisista).
-@Description("Numeerinen arviointi asteikolla 4 (hylätty) - 10 (erinomainen)")
+@Description("Numeerinen arviointi asteikolla 4 (underkänd) - 10 (utmärkt)")
 case class NumeerinenAhvenanmaanPerusopetuksenOppiaineenArviointi(
+  @KoodistoUri("ahvenanmaanarviointiasteikkoyleissivistava")
+  @KoodistoKoodiarvo("4")
+  @KoodistoKoodiarvo("5")
+  @KoodistoKoodiarvo("6")
+  @KoodistoKoodiarvo("7")
+  @KoodistoKoodiarvo("8")
+  @KoodistoKoodiarvo("9")
+  @KoodistoKoodiarvo("10")
   arvosana: Koodistokoodiviite,
   @Description("Päivämäärä, jolloin arviointi on annettu. Muoto YYYY-MM-DD.")
   päivä: Option[LocalDate]
-) extends AhvenanmaanPerusopetuksenOppiaineenArviointi with NumeerinenYleissivistävänKoulutuksenArviointi {
+) extends AhvenanmaanPerusopetuksenOppiaineenArviointi with KoodistostaLöytyväArviointi {
   def arviointipäivä = päivä
+  def arvioitsijat = None
+  def hyväksytty = arvosana.koodiarvo != "4"
 }
 
-// TODO TOR-2587: peach – selvitettävä mitkä arvoista S/H/O ovat Ahvenanmaalla käytössä.
-@Description("Sanallinen arviointi; koodiarvot S (suoritettu), H (hylätty), O (osallistunut).")
+@Description("Sanallinen arviointi; koodiarvot G (godkänd), D (deltagit), U (underkänd).")
 case class SanallinenAhvenanmaanPerusopetuksenOppiaineenArviointi(
-  arvosana: Koodistokoodiviite = Koodistokoodiviite("S", "arviointiasteikkoyleissivistava"),
+  @KoodistoUri("ahvenanmaanarviointiasteikkoyleissivistava")
+  @KoodistoKoodiarvo("G")
+  @KoodistoKoodiarvo("D")
+  @KoodistoKoodiarvo("U")
+  arvosana: Koodistokoodiviite = Koodistokoodiviite("G", "ahvenanmaanarviointiasteikkoyleissivistava"),
   @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT))
   kuvaus: Option[LocalizedString],
   @Description("Päivämäärä, jolloin arviointi on annettu. Muoto YYYY-MM-DD.")
   päivä: Option[LocalDate] = None
-) extends AhvenanmaanPerusopetuksenOppiaineenArviointi with SanallinenYleissivistävänKoulutuksenArviointi {
+) extends AhvenanmaanPerusopetuksenOppiaineenArviointi with KoodistostaLöytyväArviointi with SanallinenArviointi {
   def arviointipäivä = päivä
+  def arvioitsijat = None
+  def hyväksytty = arvosana.koodiarvo != "U"
 }
 
 // "Ansvar och samarbete" – Ahvenanmaan vastine käyttäytymisen arvioinnille.
@@ -318,21 +316,25 @@ case class SanallinenAhvenanmaanPerusopetuksenOppiaineenArviointi(
 @Description("Käyttäytymisen (Ansvar och samarbete) arviointi.")
 @IgnoreInAnyOfDeserialization
 case class AhvenanmaanPerusopetuksenKäyttäytymisenArviointi(
-  arvosana: Koodistokoodiviite = Koodistokoodiviite("S", "arviointiasteikkoyleissivistava"),
+  @KoodistoUri("ahvenanmaanarviointiasteikkoyleissivistava")
+  @KoodistoKoodiarvo("G")
+  @KoodistoKoodiarvo("D")
+  @KoodistoKoodiarvo("U")
+  arvosana: Koodistokoodiviite = Koodistokoodiviite("G", "ahvenanmaanarviointiasteikkoyleissivistava"),
   // TODO TOR-2587: peach – Ahvenanmaa ei haluaisi kuvaus-kenttää.
   @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT))
   kuvaus: Option[LocalizedString] = None,
   @Hidden
   päivä: Option[LocalDate] = None
-) extends YleissivistävänKoulutuksenArviointi with SanallinenArviointi {
+) extends KoodistostaLöytyväArviointi with SanallinenArviointi {
   def arviointipäivä = päivä
+  def arvioitsijat = None
+  def hyväksytty = arvosana.koodiarvo != "U"
 }
 
 // TODO TOR-2587: peach – koko luokka; vahvistettava onko käytössä Ahvenanmaalla.
 case class AhvenanmaanOmanÄidinkielenOpinnotLaajuusVuosiviikkotunteina(
-  // Suora @KoodistoUri koska luokka ei extendaa YleissivistävänKoulutuksenArviointi-traitia.
-  // Jos skeema pysyy lähellä manner-Suomea, harkitse traitin käyttöä tämän tilalla.
-  @KoodistoUri("arviointiasteikkoyleissivistava")
+  @KoodistoUri("ahvenanmaanarviointiasteikkoyleissivistava")
   arvosana: Koodistokoodiviite,
   arviointipäivä: Option[LocalDate] = None,
   @KoodistoUri("kieli")
@@ -342,8 +344,8 @@ case class AhvenanmaanOmanÄidinkielenOpinnotLaajuusVuosiviikkotunteina(
 
 // ---------- Koulutusmoduulit ----------
 
-// TODO TOR-2587: peach – koulutuskoodi (nyt 201101 manner-Suomen mukainen) ja
-// perusteenDiaarinumero (ehdokas ÅLR2020/9841; ePerusteissa ei julkaisua).
+// Diaarinumero on ÅLR2020/9841 mutta ops ei ole julkisena ePerusteissa,
+// joten ePerusteet-validointia ei voi käyttää.
 @Description("Ahvenanmaan perusopetuksen tunnistetiedot")
 case class AhvenanmaanPerusopetus(
   perusteenDiaarinumero: Option[String],
@@ -358,7 +360,7 @@ case class AhvenanmaanPerusopetuksenLuokkaAste(
   @KoodistoUri("perusopetuksenluokkaaste")
   @Title("Luokka-aste")
   tunniste: Koodistokoodiviite,
-  // TODO TOR-2587: peach – perusteenDiaarinumero vahvistamatta (ehdokas ÅLR2020/9841).
+  // Diaarinumero ÅLR2020/9841; ei ePerusteissa.
   perusteenDiaarinumero: Option[String],
   // TODO TOR-2587: peach – koulutustyyppi vahvistamatta.
   koulutustyyppi: Option[Koodistokoodiviite] = None,
@@ -385,53 +387,45 @@ trait AhvenanmaanPerusopetuksenOppiaine
   def laajuus: Option[LaajuusVuosiviikkotunneissa]
 }
 
-// Valtakunnalliset KT/ET/AI-oppiaineet on pudotettu: Ahvenanmaalla uskonto ja
-// livsåskådning on yksi yhteinen oppiaine, ja äidinkielenä on pelkästään
-// svenska / svenska som andraspråk (ei AI-rakennetta).
-// TODO TOR-2587: peach – Ahvenanmaan oma oppiainekoodisto puuttuu vielä;
-// @KoodistoKoodiarvo-listaus päivitetään kun koodisto on määritelty. Alla
-// nykyinen valtakunnallinen lista toimii placeholderina, josta on pudotettu
-// AI, KT ja ET.
 @Title("Oppiaine")
 case class AhvenanmaanPerusopetuksenMuuOppiaine(
-  @KoodistoKoodiarvo("HI")
-  @KoodistoKoodiarvo("MU")
-  @KoodistoKoodiarvo("BI")
-  @KoodistoKoodiarvo("KO")
-  @KoodistoKoodiarvo("FI")
-  @KoodistoKoodiarvo("KE")
-  @KoodistoKoodiarvo("YH")
-  @KoodistoKoodiarvo("TE")
-  @KoodistoKoodiarvo("KS")
-  @KoodistoKoodiarvo("FY")
-  @KoodistoKoodiarvo("GE")
-  @KoodistoKoodiarvo("LI")
-  @KoodistoKoodiarvo("KU")
+  @KoodistoUri("ahvenanmaankoskioppiaineetyleissivistava")
+  @KoodistoKoodiarvo("SV")
+  @KoodistoKoodiarvo("SVA")
   @KoodistoKoodiarvo("MA")
   @KoodistoKoodiarvo("YL")
+  @KoodistoKoodiarvo("BI")
+  @KoodistoKoodiarvo("GE")
+  @KoodistoKoodiarvo("FK")
+  @KoodistoKoodiarvo("FY")
+  @KoodistoKoodiarvo("KE")
+  @KoodistoKoodiarvo("TE")
+  @KoodistoKoodiarvo("RO")
+  @KoodistoKoodiarvo("HI")
+  @KoodistoKoodiarvo("MU")
+  @KoodistoKoodiarvo("YH")
+  @KoodistoKoodiarvo("KU")
+  @KoodistoKoodiarvo("KS")
+  @KoodistoKoodiarvo("TKS")
+  @KoodistoKoodiarvo("TES")
+  @KoodistoKoodiarvo("LI")
+  @KoodistoKoodiarvo("KO")
   @KoodistoKoodiarvo("OP")
-  @KoodistoKoodiarvo("PS")
   tunniste: Koodistokoodiviite,
   pakollinen: Boolean = true,
   perusteenDiaarinumero: Option[String] = None,
   override val laajuus: Option[LaajuusVuosiviikkotunneissa] = None,
   kuvaus: Option[LocalizedString] = None
 ) extends AhvenanmaanPerusopetuksenOppiaine
-  with YleissivistavaOppiaine
   with KoodistostaLöytyväKoulutusmoduuli
 
 // Ahvenanmaalla on vain "vieras kieli" (ei toista kotimaista).
-// TODO TOR-2587: nimi/koodisto voi muuttua kun Ahvenanmaan oppiainekoodisto valmistuu.
 case class AhvenanmaanPerusopetuksenVierasKieli(
-  // Suora @KoodistoUri koska ei extendaa YleissivistavaOppiaine-traitia (toisin kuin MuuOppiaine).
-  // Jos skeema pysyy lähellä manner-Suomea, harkitse traitin käyttöä tämän tilalla.
-  @KoodistoUri("koskioppiaineetyleissivistava")
+  @KoodistoUri("ahvenanmaankoskioppiaineetyleissivistava")
   @KoodistoKoodiarvo("A1")
   @KoodistoKoodiarvo("A2")
   @KoodistoKoodiarvo("B1")
-  @KoodistoKoodiarvo("B2")
   @KoodistoKoodiarvo("B3")
-  @KoodistoKoodiarvo("AOM")
   tunniste: Koodistokoodiviite,
   @Description("Mikä kieli on kyseessä")
   @KoodistoUri("kielivalikoima")
