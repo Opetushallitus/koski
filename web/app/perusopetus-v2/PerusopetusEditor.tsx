@@ -217,15 +217,17 @@ const useVuosiluokanSuorituksenLisäys = (
 
   const onSubmit = useCallback(
     (uusiSuoritus: PerusopetuksenVuosiluokanSuoritus) => {
-      const newIndex = form.state.suoritukset.length
-      form.modify('suoritukset')(
-        (arr: PerusopetuksenPäätasonSuoritus[] | undefined) => [
-          ...(arr || []),
-          uusiSuoritus
-        ]
-      )
+      const suoritukset = sortPerusopetuksenSuoritukset([
+        ...form.state.suoritukset,
+        uusiSuoritus
+      ])
+      const newIndex = suoritukset.indexOf(uusiSuoritus)
+
+      form.modify('suoritukset')(() => suoritukset)
       setModalVisible(false)
-      setPäätasonSuoritus(newIndex)
+      setPäätasonSuoritus(
+        newIndex >= 0 ? newIndex : form.state.suoritukset.length
+      )
     },
     [form, setPäätasonSuoritus]
   )
