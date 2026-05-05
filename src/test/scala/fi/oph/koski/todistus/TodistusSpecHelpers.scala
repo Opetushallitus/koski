@@ -4,11 +4,11 @@ import fi.oph.koski.api.misc.PutOpiskeluoikeusTestMethods
 import fi.oph.koski.documentation.ExamplesKielitutkinto
 import fi.oph.koski.henkilo.OppijaHenkilö
 import fi.oph.koski.koskiuser.MockUsers.paakayttaja
-import fi.oph.koski.koskiuser.MockUsers
+import fi.oph.koski.koskiuser.{KoskiMockUser, MockUsers}
 import fi.oph.koski.log.AuditLogTester
-import fi.oph.koski.koskiuser.KoskiMockUser
 import fi.oph.koski.schema.{KielitutkinnonOpiskeluoikeus, Opiskeluoikeus, Suoritus, YleisenKielitutkinnonSuoritus}
 import fi.oph.koski.schema.KoskiSchema.strictDeserialization
+import fi.oph.koski.todistus.tiedote.{MockKituClient, MockTiedotuspalveluClient}
 import fi.oph.koski.util.Wait
 import fi.oph.koski.{KoskiApplicationForTests, KoskiHttpSpec}
 import org.json4s.DefaultFormats
@@ -37,16 +37,27 @@ class TodistusSpecHelpers extends AnyFreeSpec with KoskiHttpSpec with Matchers w
   }
 
   protected def cleanup(): Unit = {
-    Wait.until { !hasWork }
-    Wait.until(!app.todistusScheduler.schedulerInstance.exists(_.isTaskRunning))
-    Wait.until(!app.todistusCleanupScheduler.schedulerInstance.exists(_.isTaskRunning))
+    withoutRunningSchedulers(truncate = true) {
+      AuditLogTester.clearMessages()
+    }
+  }
 
-    app.todistusRepository.truncateForLocal()
-    AuditLogTester.clearMessages()
+  protected def mockTiedotuspalveluClient: MockTiedotuspalveluClient =
+    app.tiedotuspalveluClient.asInstanceOf[MockTiedotuspalveluClient]
+
+  protected def mockKituClient: MockKituClient =
+    app.kituClient.asInstanceOf[MockKituClient]
+
+  protected def waitForTiedoteSchedulerIdle(): Unit = {
+    Wait.until(!app.kielitutkintotodistusTiedoteScheduler.schedulerInstance.exists(_.isTaskRunning))
   }
 
   def hasWork: Boolean = {
     KoskiApplicationForTests.todistusRepository.numberOfMyRunningJobs > 0 || KoskiApplicationForTests.todistusRepository.numberOfQueuedJobs > 0
+  }
+
+  def getVahvistettuKielitutkinnonOpiskeluoikeusOid(oppijaOid: String): Option[String] = {
+    getVahvistettuKielitutkinnonOpiskeluoikeus(oppijaOid).flatMap(_.oid)
   }
 
   def getVahvistettuKielitutkinnonOpiskeluoikeus(oppijaOid: String): Option[KielitutkinnonOpiskeluoikeus] = {
@@ -248,27 +259,78 @@ class TodistusSpecHelpers extends AnyFreeSpec with KoskiHttpSpec with Matchers w
     result.toOption.get
   }
 
+  /**
+   * Suspendoi vain tiedotescheduleria. Käytä testeissä, jotka tarvitsevat
+   * todistusschedulerin käynnissä (esim. waitForCompletion), mutteivät halua
+   * tiedotetehtävän taustalla luovan ylimääräisiä TodistusJobeja.
+   */
+  protected def withoutRunningTiedoteScheduler[T](f: => T): T = {
+    if (schedulersSuspendedByBlock) {
+      throw new IllegalStateException("nesting of withoutRunningSchedulers is not supported")
+    }
+    schedulersSuspendedByBlock = true
+    try {
+      app.kielitutkintotodistusTiedoteScheduler.schedulerInstance.foreach(_.suspend())
+      waitForTiedoteSchedulerIdle()
+      app.kielitutkintotodistusTiedoteRepository.truncateForLocal()
+      app.todistusRepository.truncateForLocal()
+      mockTiedotuspalveluClient.reset()
+      mockKituClient.reset()
+      f
+    } finally {
+      // Palauta tiedotetauluun "kaikki käsitelty" -tila ennen schedulerin
+      // käynnistämistä, jottei se ala generoida tiedotteita fixture-datalle.
+      app.kielitutkintotodistusTiedoteRepository.markAllExistingKielitutkinnotAsCompletedForLocal()
+      app.kielitutkintotodistusTiedoteScheduler.schedulerInstance.foreach(_.unsuspend())
+      schedulersSuspendedByBlock = false
+    }
+  }
+
+  // Vahti, joka estää withoutRunningSchedulers-blokkien sisäkkäisyyden.
+  private var schedulersSuspendedByBlock: Boolean = false
+
   def withoutRunningSchedulers[T](f: => T): T = withoutRunningSchedulers(true)(f)
 
-  def withoutRunningSchedulers[T](truncate: Boolean)(f: => T): T =
+  /**
+   * Suspendoi kaikki todistuksiin liittyvät schedulerit (tiedote, todistus, cleanup)
+   * yhdellä kierroksella ja tyhjentää testidatan ennen testin alkua. Sisäkkäisyys ei
+   * ole tuettu — tarvittaessa kutsuvan koodin pitää päättää, kumpi taso hoitaa
+   * suspendin ja tilan tyhjennyksen.
+   */
+  def withoutRunningSchedulers[T](truncate: Boolean)(f: => T): T = {
+    if (schedulersSuspendedByBlock) {
+      throw new IllegalStateException("nesting of withoutRunningSchedulers is not supported")
+    }
+    schedulersSuspendedByBlock = true
     try {
-      Wait.until { !hasWork }
-
+      app.kielitutkintotodistusTiedoteScheduler.schedulerInstance.foreach(_.suspend())
       app.todistusScheduler.schedulerInstance.foreach(_.suspend())
       app.todistusCleanupScheduler.schedulerInstance.foreach(_.suspend())
 
-      // Wait for any running tasks to complete
+      waitForTiedoteSchedulerIdle()
       Wait.until(!app.todistusScheduler.schedulerInstance.exists(_.isTaskRunning))
       Wait.until(!app.todistusCleanupScheduler.schedulerInstance.exists(_.isTaskRunning))
+
+      app.kielitutkintotodistusTiedoteRepository.truncateForLocal()
+      app.todistusRepository.truncateForLocal()
+      mockTiedotuspalveluClient.reset()
+      mockKituClient.reset()
 
       f
     } finally {
       if (truncate) {
         app.todistusRepository.truncateForLocal()
       }
+      // Palauta tiedotetauluun "kaikki käsitelty" -tila ennen schedulerien
+      // käynnistämistä, jottei tiedotescheduler ala generoida tiedotteita
+      // fixture-datalle ja hidasta seuraavia testejä.
+      app.kielitutkintotodistusTiedoteRepository.markAllExistingKielitutkinnotAsCompletedForLocal()
+      app.kielitutkintotodistusTiedoteScheduler.schedulerInstance.foreach(_.unsuspend())
       app.todistusScheduler.schedulerInstance.foreach(_.unsuspend())
       app.todistusCleanupScheduler.schedulerInstance.foreach(_.unsuspend())
+      schedulersSuspendedByBlock = false
     }
+  }
 
   def laskeHenkilötiedotHash(henkilö: OppijaHenkilö): String = {
     val data = s"${henkilö.etunimet}|${henkilö.sukunimi}|${henkilö.syntymäaika.getOrElse("")}"

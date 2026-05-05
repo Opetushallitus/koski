@@ -12,14 +12,14 @@ class TodistusAuditLogSpec extends TodistusSpecHelpers {
 
   "Audit-lokitukset" - {
     "TODISTUKSEN_LUONTI lokitetaan kun kansalainen luo todistuksen" in {
-      val templateVariant = "fi"
-      val hetu = KoskiSpecificMockOppijat.kielitutkinnonSuorittaja.hetu.get
-      val oppijaOid = KoskiSpecificMockOppijat.kielitutkinnonSuorittaja.oid
-      val opiskeluoikeusOid = getVahvistettuKielitutkinnonOpiskeluoikeus(oppijaOid).flatMap(_.oid).get
-
-      val req = TodistusGenerateRequest(opiskeluoikeusOid, templateVariant)
-
       withoutRunningSchedulers {
+        val templateVariant = "fi"
+        val hetu = KoskiSpecificMockOppijat.kielitutkinnonSuorittaja.hetu.get
+        val oppijaOid = KoskiSpecificMockOppijat.kielitutkinnonSuorittaja.oid
+        val opiskeluoikeusOid = getVahvistettuKielitutkinnonOpiskeluoikeus(oppijaOid).flatMap(_.oid).get
+
+        val req = TodistusGenerateRequest(opiskeluoikeusOid, templateVariant)
+
         AuditLogTester.clearMessages()
 
         addGenerateJobSuccessfully(req, hetu) { todistusJob =>
@@ -39,15 +39,15 @@ class TodistusAuditLogSpec extends TodistusSpecHelpers {
     }
 
     "TODISTUKSEN_LUONTI lokitetaan kun huoltaja luo todistuksen huollettavalle" in {
-      val templateVariant = "fi"
-      val huollettavanOo = setupOppijaWithAndGetOpiskeluoikeus(vahvistettuKielitutkinnonOpiskeluoikeus, KoskiSpecificMockOppijat.eskari, MockUsers.paakayttaja)
-      val huoltajanHetu = KoskiSpecificMockOppijat.faija.hetu.get
-      val huollettavanOid = KoskiSpecificMockOppijat.eskari.oid
-      val huollettavanOpiskeluoikeusOid = huollettavanOo.oid.get
-
-      val req = TodistusGenerateRequest(huollettavanOpiskeluoikeusOid, templateVariant)
-
       withoutRunningSchedulers {
+        val templateVariant = "fi"
+        val huollettavanOo = setupOppijaWithAndGetOpiskeluoikeus(vahvistettuKielitutkinnonOpiskeluoikeus, KoskiSpecificMockOppijat.eskari, MockUsers.paakayttaja)
+        val huoltajanHetu = KoskiSpecificMockOppijat.faija.hetu.get
+        val huollettavanOid = KoskiSpecificMockOppijat.eskari.oid
+        val huollettavanOpiskeluoikeusOid = huollettavanOo.oid.get
+
+        val req = TodistusGenerateRequest(huollettavanOpiskeluoikeusOid, templateVariant)
+
         AuditLogTester.clearMessages()
 
         addGenerateJobSuccessfully(req, huoltajanHetu) { todistusJob =>
@@ -67,13 +67,13 @@ class TodistusAuditLogSpec extends TodistusSpecHelpers {
     }
 
     "TODISTUKSEN_LUONTI lokitetaan kun pääkäyttäjä luo printattavan todistuksen" in {
-      val templateVariant = "fi_tulostettava_uusi"
-      val oppijaOid = KoskiSpecificMockOppijat.kielitutkinnonSuorittaja.oid
-      val opiskeluoikeusOid = getVahvistettuKielitutkinnonOpiskeluoikeus(oppijaOid).flatMap(_.oid).get
-
-      val req = TodistusGenerateRequest(opiskeluoikeusOid, templateVariant)
-
       withoutRunningSchedulers {
+        val templateVariant = "fi_tulostettava_uusi"
+        val oppijaOid = KoskiSpecificMockOppijat.kielitutkinnonSuorittaja.oid
+        val opiskeluoikeusOid = getVahvistettuKielitutkinnonOpiskeluoikeus(oppijaOid).flatMap(_.oid).get
+
+        val req = TodistusGenerateRequest(opiskeluoikeusOid, templateVariant)
+
         AuditLogTester.clearMessages()
 
         addGenerateJobSuccessfullyAsVirkailijaPääkäyttäjä(req) { todistusJob =>
@@ -94,120 +94,126 @@ class TodistusAuditLogSpec extends TodistusSpecHelpers {
     }
 
     "TODISTUKSEN_LATAAMINEN lokitetaan kun kansalainen lataa valmiin todistuksen" in {
-      val templateVariant = "fi"
-      val oppija = KoskiSpecificMockOppijat.kielitutkinnonSuorittaja
-      val hetu = oppija.hetu.get
-      val oppijaOid = oppija.oid
-      val opiskeluoikeus = getVahvistettuKielitutkinnonOpiskeluoikeus(oppijaOid)
-      val opiskeluoikeusOid = opiskeluoikeus.flatMap(_.oid).get
-      val opiskeluoikeusVersionumero = opiskeluoikeus.flatMap(_.versionumero).get
+      withoutRunningTiedoteScheduler {
+        val templateVariant = "fi"
+        val oppija = KoskiSpecificMockOppijat.kielitutkinnonSuorittaja
+        val hetu = oppija.hetu.get
+        val oppijaOid = oppija.oid
+        val opiskeluoikeus = getVahvistettuKielitutkinnonOpiskeluoikeus(oppijaOid)
+        val opiskeluoikeusOid = opiskeluoikeus.flatMap(_.oid).get
+        val opiskeluoikeusVersionumero = opiskeluoikeus.flatMap(_.versionumero).get
 
-      val req = TodistusGenerateRequest(opiskeluoikeusOid, templateVariant)
+        val req = TodistusGenerateRequest(opiskeluoikeusOid, templateVariant)
 
-      val todistusJob = addGenerateJobSuccessfully(req, hetu) { todistusJob =>
-        todistusJob.state should equal(TodistusState.QUEUED)
-        todistusJob
+        val todistusJob = addGenerateJobSuccessfully(req, hetu) { todistusJob =>
+          todistusJob.state should equal(TodistusState.QUEUED)
+          todistusJob
+        }
+
+        val completedJob = waitForCompletion(todistusJob.id, hetu)
+        completedJob.state should equal(TodistusState.COMPLETED)
+
+        AuditLogTester.clearMessages()
+
+        verifyDownloadResult(s"/todistus/download/${todistusJob.id}", hetu)
+
+        AuditLogTester.verifyLastAuditLogMessageForOperation(Map(
+          "operation" -> KoskiOperation.TODISTUKSEN_LATAAMINEN.toString,
+          "target" -> Map(
+            KoskiAuditLogMessageField.oppijaHenkiloOid.toString -> oppijaOid,
+            KoskiAuditLogMessageField.opiskeluoikeusOid.toString -> opiskeluoikeusOid,
+            KoskiAuditLogMessageField.opiskeluoikeusVersio.toString -> opiskeluoikeusVersionumero.toString,
+            KoskiAuditLogMessageField.todistusId.toString -> todistusJob.id,
+            KoskiAuditLogMessageField.todistusTemplateVariant.toString -> templateVariant
+          )
+        ))
       }
-
-      val completedJob = waitForCompletion(todistusJob.id, hetu)
-      completedJob.state should equal(TodistusState.COMPLETED)
-
-      AuditLogTester.clearMessages()
-
-      verifyDownloadResult(s"/todistus/download/${todistusJob.id}", hetu)
-
-      AuditLogTester.verifyLastAuditLogMessageForOperation(Map(
-        "operation" -> KoskiOperation.TODISTUKSEN_LATAAMINEN.toString,
-        "target" -> Map(
-          KoskiAuditLogMessageField.oppijaHenkiloOid.toString -> oppijaOid,
-          KoskiAuditLogMessageField.opiskeluoikeusOid.toString -> opiskeluoikeusOid,
-          KoskiAuditLogMessageField.opiskeluoikeusVersio.toString -> opiskeluoikeusVersionumero.toString,
-          KoskiAuditLogMessageField.todistusId.toString -> todistusJob.id,
-          KoskiAuditLogMessageField.todistusTemplateVariant.toString -> templateVariant
-        )
-      ))
     }
 
     "TODISTUKSEN_LATAAMINEN lokitetaan kun huoltaja lataa huollettavan todistuksen" in {
-      val templateVariant = "fi"
-      val huollettavanOo = setupOppijaWithAndGetOpiskeluoikeus(vahvistettuKielitutkinnonOpiskeluoikeus, KoskiSpecificMockOppijat.eskari, MockUsers.paakayttaja)
-      val huoltajanHetu = KoskiSpecificMockOppijat.faija.hetu.get
-      val huollettavanOid = KoskiSpecificMockOppijat.eskari.oid
-      val huollettavanOpiskeluoikeusOid = huollettavanOo.oid.get
-      val huollettavanOpiskeluoikeusVersionumero = huollettavanOo.versionumero.get
+      withoutRunningTiedoteScheduler {
+        val templateVariant = "fi"
+        val huollettavanOo = setupOppijaWithAndGetOpiskeluoikeus(vahvistettuKielitutkinnonOpiskeluoikeus, KoskiSpecificMockOppijat.eskari, MockUsers.paakayttaja)
+        val huoltajanHetu = KoskiSpecificMockOppijat.faija.hetu.get
+        val huollettavanOid = KoskiSpecificMockOppijat.eskari.oid
+        val huollettavanOpiskeluoikeusOid = huollettavanOo.oid.get
+        val huollettavanOpiskeluoikeusVersionumero = huollettavanOo.versionumero.get
 
-      val req = TodistusGenerateRequest(huollettavanOpiskeluoikeusOid, templateVariant)
+        val req = TodistusGenerateRequest(huollettavanOpiskeluoikeusOid, templateVariant)
 
-      val todistusJob = addGenerateJobSuccessfully(req, huoltajanHetu) { todistusJob =>
-        todistusJob.state should equal(TodistusState.QUEUED)
-        todistusJob
+        val todistusJob = addGenerateJobSuccessfully(req, huoltajanHetu) { todistusJob =>
+          todistusJob.state should equal(TodistusState.QUEUED)
+          todistusJob
+        }
+
+        val completedJob = waitForCompletion(todistusJob.id, huoltajanHetu)
+        completedJob.state should equal(TodistusState.COMPLETED)
+
+        AuditLogTester.clearMessages()
+
+        verifyDownloadResult(s"/todistus/download/${todistusJob.id}", huoltajanHetu)
+
+        AuditLogTester.verifyLastAuditLogMessageForOperation(Map(
+          "operation" -> KoskiOperation.TODISTUKSEN_LATAAMINEN.toString,
+          "target" -> Map(
+            KoskiAuditLogMessageField.oppijaHenkiloOid.toString -> huollettavanOid,
+            KoskiAuditLogMessageField.opiskeluoikeusOid.toString -> huollettavanOpiskeluoikeusOid,
+            KoskiAuditLogMessageField.opiskeluoikeusVersio.toString -> huollettavanOpiskeluoikeusVersionumero.toString,
+            KoskiAuditLogMessageField.todistusId.toString -> todistusJob.id,
+            KoskiAuditLogMessageField.todistusTemplateVariant.toString -> templateVariant
+          )
+        ))
       }
-
-      val completedJob = waitForCompletion(todistusJob.id, huoltajanHetu)
-      completedJob.state should equal(TodistusState.COMPLETED)
-
-      AuditLogTester.clearMessages()
-
-      verifyDownloadResult(s"/todistus/download/${todistusJob.id}", huoltajanHetu)
-
-      AuditLogTester.verifyLastAuditLogMessageForOperation(Map(
-        "operation" -> KoskiOperation.TODISTUKSEN_LATAAMINEN.toString,
-        "target" -> Map(
-          KoskiAuditLogMessageField.oppijaHenkiloOid.toString -> huollettavanOid,
-          KoskiAuditLogMessageField.opiskeluoikeusOid.toString -> huollettavanOpiskeluoikeusOid,
-          KoskiAuditLogMessageField.opiskeluoikeusVersio.toString -> huollettavanOpiskeluoikeusVersionumero.toString,
-          KoskiAuditLogMessageField.todistusId.toString -> todistusJob.id,
-          KoskiAuditLogMessageField.todistusTemplateVariant.toString -> templateVariant
-        )
-      ))
     }
 
     "TODISTUKSEN_LATAAMINEN lokitetaan kun oppija lataa huoltajan luoman todistuksen" in {
-      val templateVariant = "fi"
-      val huollettavanOo = setupOppijaWithAndGetOpiskeluoikeus(vahvistettuKielitutkinnonOpiskeluoikeus, KoskiSpecificMockOppijat.eskari, MockUsers.paakayttaja)
-      val huoltajanHetu = KoskiSpecificMockOppijat.faija.hetu.get
-      val huollettavanHetu = KoskiSpecificMockOppijat.eskari.hetu.get
-      val huollettavanOid = KoskiSpecificMockOppijat.eskari.oid
-      val huollettavanOpiskeluoikeusOid = huollettavanOo.oid.get
-      val huollettavanOpiskeluoikeusVersionumero = huollettavanOo.versionumero.get
+      withoutRunningTiedoteScheduler {
+        val templateVariant = "fi"
+        val huollettavanOo = setupOppijaWithAndGetOpiskeluoikeus(vahvistettuKielitutkinnonOpiskeluoikeus, KoskiSpecificMockOppijat.eskari, MockUsers.paakayttaja)
+        val huoltajanHetu = KoskiSpecificMockOppijat.faija.hetu.get
+        val huollettavanHetu = KoskiSpecificMockOppijat.eskari.hetu.get
+        val huollettavanOid = KoskiSpecificMockOppijat.eskari.oid
+        val huollettavanOpiskeluoikeusOid = huollettavanOo.oid.get
+        val huollettavanOpiskeluoikeusVersionumero = huollettavanOo.versionumero.get
 
-      val req = TodistusGenerateRequest(huollettavanOpiskeluoikeusOid, templateVariant)
+        val req = TodistusGenerateRequest(huollettavanOpiskeluoikeusOid, templateVariant)
 
-      // Huoltaja luo todistuspyynnön
-      val todistusJob = addGenerateJobSuccessfully(req, huoltajanHetu) { todistusJob =>
-        todistusJob.state should equal(TodistusState.QUEUED)
-        todistusJob
+        // Huoltaja luo todistuspyynnön
+        val todistusJob = addGenerateJobSuccessfully(req, huoltajanHetu) { todistusJob =>
+          todistusJob.state should equal(TodistusState.QUEUED)
+          todistusJob
+        }
+
+        val completedJob = waitForCompletion(todistusJob.id, huoltajanHetu)
+        completedJob.state should equal(TodistusState.COMPLETED)
+
+        AuditLogTester.clearMessages()
+
+        // Huollettava itse lataa todistuksen
+        verifyDownloadResult(s"/todistus/download/${todistusJob.id}", huollettavanHetu)
+
+        AuditLogTester.verifyLastAuditLogMessageForOperation(Map(
+          "operation" -> KoskiOperation.TODISTUKSEN_LATAAMINEN.toString,
+          "target" -> Map(
+            KoskiAuditLogMessageField.oppijaHenkiloOid.toString -> huollettavanOid,
+            KoskiAuditLogMessageField.opiskeluoikeusOid.toString -> huollettavanOpiskeluoikeusOid,
+            KoskiAuditLogMessageField.opiskeluoikeusVersio.toString -> huollettavanOpiskeluoikeusVersionumero.toString,
+            KoskiAuditLogMessageField.todistusId.toString -> todistusJob.id,
+            KoskiAuditLogMessageField.todistusTemplateVariant.toString -> templateVariant
+          )
+        ))
       }
-
-      val completedJob = waitForCompletion(todistusJob.id, huoltajanHetu)
-      completedJob.state should equal(TodistusState.COMPLETED)
-
-      AuditLogTester.clearMessages()
-
-      // Huollettava itse lataa todistuksen
-      verifyDownloadResult(s"/todistus/download/${todistusJob.id}", huollettavanHetu)
-
-      AuditLogTester.verifyLastAuditLogMessageForOperation(Map(
-        "operation" -> KoskiOperation.TODISTUKSEN_LATAAMINEN.toString,
-        "target" -> Map(
-          KoskiAuditLogMessageField.oppijaHenkiloOid.toString -> huollettavanOid,
-          KoskiAuditLogMessageField.opiskeluoikeusOid.toString -> huollettavanOpiskeluoikeusOid,
-          KoskiAuditLogMessageField.opiskeluoikeusVersio.toString -> huollettavanOpiskeluoikeusVersionumero.toString,
-          KoskiAuditLogMessageField.todistusId.toString -> todistusJob.id,
-          KoskiAuditLogMessageField.todistusTemplateVariant.toString -> templateVariant
-        )
-      ))
     }
 
     "TODISTUKSEN_LATAAMINEN ei lokiteta kun todistus ei ole valmis" in {
-      val templateVariant = "fi"
-      val hetu = KoskiSpecificMockOppijat.kielitutkinnonSuorittaja.hetu.get
-      val oppijaOid = KoskiSpecificMockOppijat.kielitutkinnonSuorittaja.oid
-      val opiskeluoikeusOid = getVahvistettuKielitutkinnonOpiskeluoikeus(oppijaOid).flatMap(_.oid).get
-
-      val req = TodistusGenerateRequest(opiskeluoikeusOid, templateVariant)
-
       withoutRunningSchedulers {
+        val templateVariant = "fi"
+        val hetu = KoskiSpecificMockOppijat.kielitutkinnonSuorittaja.hetu.get
+        val oppijaOid = KoskiSpecificMockOppijat.kielitutkinnonSuorittaja.oid
+        val opiskeluoikeusOid = getVahvistettuKielitutkinnonOpiskeluoikeus(oppijaOid).flatMap(_.oid).get
+
+        val req = TodistusGenerateRequest(opiskeluoikeusOid, templateVariant)
+
         val todistusJob = addGenerateJobSuccessfully(req, hetu) { todistusJob =>
           todistusJob.state should equal(TodistusState.QUEUED)
           todistusJob

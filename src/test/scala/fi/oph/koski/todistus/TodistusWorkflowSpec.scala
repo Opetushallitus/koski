@@ -97,45 +97,47 @@ class TodistusWorkflowSpec extends TodistusSpecHelpers {
     }
 
     "Luo uuden todistuksen, jos opiskeluoikeus-versionumero on muuttunut" in {
-      val templateVariant = "fi"
-      val hetu = KoskiSpecificMockOppijat.kielitutkinnonSuorittaja.hetu.get
-      val oppijaOid = KoskiSpecificMockOppijat.kielitutkinnonSuorittaja.oid
-      val opiskeluoikeusOid = getVahvistettuKielitutkinnonOpiskeluoikeus(oppijaOid).flatMap(_.oid).get
+      withoutRunningTiedoteScheduler {
+        val templateVariant = "fi"
+        val hetu = KoskiSpecificMockOppijat.kielitutkinnonSuorittaja.hetu.get
+        val oppijaOid = KoskiSpecificMockOppijat.kielitutkinnonSuorittaja.oid
+        val opiskeluoikeusOid = getVahvistettuKielitutkinnonOpiskeluoikeus(oppijaOid).flatMap(_.oid).get
 
-      val req = TodistusGenerateRequest(opiskeluoikeusOid, templateVariant)
+        val req = TodistusGenerateRequest(opiskeluoikeusOid, templateVariant)
 
-      // Luo ensimmäinen todistus ja odota sen valmistumista
-      val firstJob = addGenerateJobSuccessfully(req, hetu) { todistusJob =>
-        todistusJob.state should equal(TodistusState.QUEUED)
-        todistusJob
+        // Luo ensimmäinen todistus ja odota sen valmistumista
+        val firstJob = addGenerateJobSuccessfully(req, hetu) { todistusJob =>
+          todistusJob.state should equal(TodistusState.QUEUED)
+          todistusJob
+        }
+        val completedFirstJob = waitForCompletion(firstJob.id, hetu)
+        completedFirstJob.state should equal(TodistusState.COMPLETED)
+
+        // Päivitä opiskeluoikeutta, jolloin versionumero kasvaa
+        val oo = getVahvistettuKielitutkinnonOpiskeluoikeus(oppijaOid).get
+        val paivitettyOo = oo.copy(
+          tila = oo.tila.copy(opiskeluoikeusjaksot = oo.tila.opiskeluoikeusjaksot.map(
+            j => j.copy(alku = j.alku.plusDays(1))
+          )),
+          suoritukset = oo.suoritukset.map(s => {
+            val ks = s.asInstanceOf[YleisenKielitutkinnonSuoritus]
+            ks.copy(vahvistus = ks.vahvistus.map(_.copy(päivä = ks.vahvistus.map(_.päivä).map(_.plusDays(1)).get)))
+          })
+        )
+        putOpiskeluoikeus(paivitettyOo, henkilö = KoskiSpecificMockOppijat.kielitutkinnonSuorittaja, headers = authHeaders(MockUsers.paakayttaja) ++ jsonContent) {
+          verifyResponseStatusOk()
+        }
+
+        // Pyydä todistusta uudestaan
+        val secondJob = addGenerateJobSuccessfully(req, hetu) { todistusJob =>
+          todistusJob
+        }
+
+        // Toisen pyynnön pitäisi luoda uusi job eri versionumerolla
+        secondJob.id should not equal firstJob.id
+        val completedSecondJob = waitForCompletion(secondJob.id, hetu)
+        completedSecondJob.state should equal(TodistusState.COMPLETED)
       }
-      val completedFirstJob = waitForCompletion(firstJob.id, hetu)
-      completedFirstJob.state should equal(TodistusState.COMPLETED)
-
-      // Päivitä opiskeluoikeutta, jolloin versionumero kasvaa
-      val oo = getVahvistettuKielitutkinnonOpiskeluoikeus(oppijaOid).get
-      val paivitettyOo = oo.copy(
-        tila = oo.tila.copy(opiskeluoikeusjaksot = oo.tila.opiskeluoikeusjaksot.map(
-          j => j.copy(alku = j.alku.plusDays(1))
-        )),
-        suoritukset = oo.suoritukset.map(s => {
-          val ks = s.asInstanceOf[YleisenKielitutkinnonSuoritus]
-          ks.copy(vahvistus = ks.vahvistus.map(_.copy(päivä = ks.vahvistus.map(_.päivä).map(_.plusDays(1)).get)))
-        })
-      )
-      putOpiskeluoikeus(paivitettyOo, henkilö = KoskiSpecificMockOppijat.kielitutkinnonSuorittaja, headers = authHeaders(MockUsers.paakayttaja) ++ jsonContent) {
-        verifyResponseStatusOk()
-      }
-
-      // Pyydä todistusta uudestaan
-      val secondJob = addGenerateJobSuccessfully(req, hetu) { todistusJob =>
-        todistusJob
-      }
-
-      // Toisen pyynnön pitäisi luoda uusi job eri versionumerolla
-      secondJob.id should not equal firstJob.id
-      val completedSecondJob = waitForCompletion(secondJob.id, hetu)
-      completedSecondJob.state should equal(TodistusState.COMPLETED)
     }
 
     "Luo uuden todistuksen, jos aiempi on EXPIRED-tilassa" in {
@@ -525,36 +527,38 @@ class TodistusWorkflowSpec extends TodistusSpecHelpers {
     }
 
     "Palauttaa 404 jos versionumero on muuttunut" in {
-      val templateVariant = "fi"
-      val hetu = KoskiSpecificMockOppijat.kielitutkinnonSuorittaja.hetu.get
-      val oppijaOid = KoskiSpecificMockOppijat.kielitutkinnonSuorittaja.oid
-      val opiskeluoikeusOid = getVahvistettuKielitutkinnonOpiskeluoikeus(oppijaOid).flatMap(_.oid).get
+      withoutRunningTiedoteScheduler {
+        val templateVariant = "fi"
+        val hetu = KoskiSpecificMockOppijat.kielitutkinnonSuorittaja.hetu.get
+        val oppijaOid = KoskiSpecificMockOppijat.kielitutkinnonSuorittaja.oid
+        val opiskeluoikeusOid = getVahvistettuKielitutkinnonOpiskeluoikeus(oppijaOid).flatMap(_.oid).get
 
-      val req = TodistusGenerateRequest(opiskeluoikeusOid, templateVariant)
+        val req = TodistusGenerateRequest(opiskeluoikeusOid, templateVariant)
 
-      // Luo todistus ja odota sen valmistumista
-      val job = addGenerateJobSuccessfully(req, hetu) { todistusJob => todistusJob }
-      val completedJob = waitForCompletion(job.id, hetu)
-      completedJob.state should equal(TodistusState.COMPLETED)
+        // Luo todistus ja odota sen valmistumista
+        val job = addGenerateJobSuccessfully(req, hetu) { todistusJob => todistusJob }
+        val completedJob = waitForCompletion(job.id, hetu)
+        completedJob.state should equal(TodistusState.COMPLETED)
 
-      // Päivitä opiskeluoikeutta, jolloin versionumero kasvaa
-      val oo = getVahvistettuKielitutkinnonOpiskeluoikeus(oppijaOid).get
-      val paivitettyOo = oo.copy(
-        tila = oo.tila.copy(opiskeluoikeusjaksot = oo.tila.opiskeluoikeusjaksot.map(
-          j => j.copy(alku = j.alku.plusDays(1))
-        )),
-        suoritukset = oo.suoritukset.map(s => {
-          val ks = s.asInstanceOf[YleisenKielitutkinnonSuoritus]
-          ks.copy(vahvistus = ks.vahvistus.map(_.copy(päivä = ks.vahvistus.map(_.päivä).map(_.plusDays(1)).get)))
-        })
-      )
-      putOpiskeluoikeus(paivitettyOo, henkilö = KoskiSpecificMockOppijat.kielitutkinnonSuorittaja, headers = authHeaders(MockUsers.paakayttaja) ++ jsonContent) {
-        verifyResponseStatusOk()
-      }
+        // Päivitä opiskeluoikeutta, jolloin versionumero kasvaa
+        val oo = getVahvistettuKielitutkinnonOpiskeluoikeus(oppijaOid).get
+        val paivitettyOo = oo.copy(
+          tila = oo.tila.copy(opiskeluoikeusjaksot = oo.tila.opiskeluoikeusjaksot.map(
+            j => j.copy(alku = j.alku.plusDays(1))
+          )),
+          suoritukset = oo.suoritukset.map(s => {
+            val ks = s.asInstanceOf[YleisenKielitutkinnonSuoritus]
+            ks.copy(vahvistus = ks.vahvistus.map(_.copy(päivä = ks.vahvistus.map(_.päivä).map(_.plusDays(1)).get)))
+          })
+        )
+        putOpiskeluoikeus(paivitettyOo, henkilö = KoskiSpecificMockOppijat.kielitutkinnonSuorittaja, headers = authHeaders(MockUsers.paakayttaja) ++ jsonContent) {
+          verifyResponseStatusOk()
+        }
 
-      // Kutsu status-endpointia - pitäisi palauttaa 404 koska versionumero muuttunut
-      checkStatusByParameters(req, hetu) {
-        verifyResponseStatus(404)
+        // Kutsu status-endpointia - pitäisi palauttaa 404 koska versionumero muuttunut
+        checkStatusByParameters(req, hetu) {
+          verifyResponseStatus(404)
+        }
       }
     }
 

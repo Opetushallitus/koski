@@ -142,6 +142,40 @@ class KielitutkintotodistusTiedoteRepository(val db: DB, val workerId: String, c
     runDbSync(sql"TRUNCATE TABLE kielitutkintotodistus_tiedote_job".asUpdate)
   }
 
+  /**
+   * Lisää COMPLETED-tilassa olevan tiedote-jobin jokaiselle olemassa olevalle kielitutkinto-
+   * opiskeluoikeudelle, jolla ei ole vielä tiedote-jobia. Tällä estetään tiedotescheduleria
+   * käsittelemästä fixture-datassa luotuja opiskeluoikeuksia testien aikana, mikä muuten
+   * hidastaisi testejä merkittävästi (jokaiselle generoitaisiin printtitodistus-PDF).
+   */
+  def markAllExistingKielitutkinnotAsCompletedForLocal(): Int = {
+    require(
+      Environment.isUnitTestEnvironment(config) || Environment.isLocalDevelopmentEnvironment(config),
+      "markAllExistingKielitutkinnotAsCompletedForLocal can only be used in local test environment"
+    )
+    runDbSync(sql"""
+      INSERT INTO kielitutkintotodistus_tiedote_job(id, oppija_oid, opiskeluoikeus_oid, state, created_at, completed_at, worker, attempts, error, opiskeluoikeus_versio)
+      SELECT
+        gen_random_uuid(),
+        oo.oppija_oid,
+        oo.oid,
+        ${KielitutkintotodistusTiedoteState.COMPLETED},
+        NOW(),
+        NOW(),
+        'fixture-bypass',
+        0,
+        NULL,
+        oo.versionumero
+      FROM opiskeluoikeus oo
+      WHERE oo.koulutusmuoto = 'kielitutkinto'
+        AND 'yleinenkielitutkinto' = ANY(oo.suoritustyypit)
+        AND NOT EXISTS (
+          SELECT 1 FROM kielitutkintotodistus_tiedote_job tj
+          WHERE tj.opiskeluoikeus_oid = oo.oid
+        )
+      """.asUpdate)
+  }
+
   def setDeletedByOpiskeluoikeusOid(opiskeluoikeusOid: String): Option[KielitutkintotodistusTiedoteJob] = {
     runDbSync(sql"""
       UPDATE kielitutkintotodistus_tiedote_job
