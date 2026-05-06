@@ -66,13 +66,7 @@ trait SwisscomClient extends Logging {
 
     pdSignature.setFilter(PDSignature.FILTER_ADOBE_PPKLITE)
     pdSignature.setSubFilter(PDSignature.SUBFILTER_ETSI_CADES_DETACHED)
-    // Add 3 Minutes to move signing time within the OnDemand Certificate Validity
-    // This is only relevant _in case the signature does not include a timestamp_
-    // See section 5.8.5.1 of the Reference Guide
-    val signDate = Calendar.getInstance
-    signDate.add(Calendar.MINUTE, 3)
-
-    pdSignature.setSignDate(signDate)
+    pdSignature.setSignDate(Calendar.getInstance)
 
     val options = new SignatureOptions
     options.setPreferredSignatureSize(config.signaturePreferredSize)
