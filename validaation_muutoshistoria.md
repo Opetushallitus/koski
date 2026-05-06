@@ -1,5 +1,12 @@
 # Koskeen tallennettavien tietojen validaatiosäännöt
 
+## 6.5.2026
+
+- Esi- ja perusopetuksen tuen muutoksen validaatiot on muutettu astumaan voimaan 1.9.2026 aiemman 1.8.2026 sijaan.
+    - Validaation astuttua voimaan, ei sallita sellaista aikajaksoa, joka alkaa 1.8.2026 tai sen jälkeen pidennetylle oppivelvollisuudelle, vammaisuudelle, vaikeasti vammaisuudelle tai erityiselle tuelle.
+    - Validaation astuttua voimaan, yllä mainitut jaksot on edelleen asetettava päättymään viimeistään 31.8.2026.
+    - Validaation astuttua voimaan, avoin päättymispäivä yllä mainituille jaksoille on kuitenkin sallittu sellaisille opiskeluoikeuksille, jotka päättyvät ennen 31.8.2026.
+
 ## 5.5.2026
 - Aikuisten perusopetuksen kurssin arvioinnilta vaaditaan päivämäärä. Validaatio koskee kaikkia opiskeluoikeuksia ilman aikarajausta, myös päättyneitä.
 

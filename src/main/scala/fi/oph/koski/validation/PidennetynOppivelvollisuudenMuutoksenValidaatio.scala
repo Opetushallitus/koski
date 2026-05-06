@@ -11,7 +11,6 @@ import java.time.LocalDate
 object PidennetynOppivelvollisuudenMuutoksenValidaatio {
   def validateVanhojenJaksokenttienPäättyminenSiirryttäessäUusiin(
     config: Config,
-    alkamispäivä: Option[LocalDate],
     päättymispäivä: Option[LocalDate],
     lisätiedot: Option[PidennettyOppivelvollisuus]
   ): HttpStatus = {
@@ -20,46 +19,56 @@ object PidennetynOppivelvollisuudenMuutoksenValidaatio {
       .isEqualOrAfter(LocalDate.parse(
         config.getString("validaatiot.esiJaPerusopetuksenVanhojenJaksojenPäättymispäivänValidaatiotAstuvatVoimaan")
       ))
-    val rajapäivä = LocalDate.parse(config.getString("validaatiot.varhennettuOppivelvollisuusVoimaan"))
-
-    lazy val pidennetynOppivelvollisuudenViimeinenKäyttöpäivä = LocalDate.parse(config.getString("validaatiot.pidennetynOppivelvollisuudenViimeinenKäyttöpäivä"))
-    lazy val vammaisuustietojenViimeinenKäyttöpäivä = LocalDate.parse(config.getString("validaatiot.vammaisuustietojenViimeinenKäyttöpäivä"))
-    lazy val erityisenTuenPäätöstenViimeinenKäyttöpäivä = LocalDate.parse(config.getString("validaatiot.erityisenTuenPäätöstenViimeinenKäyttöpäivä"))
+    val rajapäiväAlku = LocalDate.parse(config.getString("validaatiot.pidennetynOppivelvollisuudenViimeinenSallittuAloituspäivä"))
+    val rajapäiväLoppu = LocalDate.parse(config.getString("validaatiot.pidennetynOppivelvollisuudenViimeinenKäyttöpäivä"))
+    val jatkuuRajapäivänJälkeen = päättymispäivä.forall(_.isAfter(rajapäiväLoppu))
 
     if (validaatioVoimassa) {
-      val alkanutEnnenRajapäivää = alkamispäivä.exists(_.isBefore(rajapäivä))
-      val jatkuuRajapäivänJälkeen = päättymispäivä.exists(_.isEqualOrAfter(rajapäivä)) || päättymispäivä.isEmpty
+      val invalidOppivelvollisuudenPidennysAlku = filterInvalidJaksotAlku(lisätiedot.flatMap(_.pidennettyOppivelvollisuus).toList, rajapäiväAlku)
+      val invalidOppivelvollisuudenPidennysLoppu = filterInvalidJaksotLoppu(lisätiedot.flatMap(_.pidennettyOppivelvollisuus).toList, rajapäiväLoppu, jatkuuRajapäivänJälkeen)
+      val invalidVammaisuusjaksotAlku = filterInvalidJaksotAlku(lisätiedot.toList.flatMap(_.vammainen.toList.flatten), rajapäiväAlku)
+      val invalidVammaisuusjaksotLoppu = filterInvalidJaksotLoppu(lisätiedot.toList.flatMap(_.vammainen.toList.flatten), rajapäiväLoppu, jatkuuRajapäivänJälkeen)
+      val invalidVaikeaVammaisuusjaksotAlku = filterInvalidJaksotAlku(lisätiedot.toList.flatMap(_.vaikeastiVammainen.toList.flatten), rajapäiväAlku)
+      val invalidVaikeaVammaisuusjaksotLoppu = filterInvalidJaksotLoppu(lisätiedot.toList.flatMap(_.vaikeastiVammainen.toList.flatten), rajapäiväLoppu, jatkuuRajapäivänJälkeen)
+      val invalidErityisenTuenJaksotAlku = filterInvalidJaksotAlku(lisätiedot.toList.flatMap(_.erityisenTuenPäätökset.toList.flatten).map(_.toAikajakso), rajapäiväAlku)
+      val invalidErityisenTuenJaksotLoppu = filterInvalidJaksotLoppu(lisätiedot.toList.flatMap(_.erityisenTuenPäätökset.toList.flatten).map(_.toAikajakso), rajapäiväLoppu, jatkuuRajapäivänJälkeen)
 
-      if (alkanutEnnenRajapäivää && jatkuuRajapäivänJälkeen) {
-        val invalidOppivelvollisuudenPidennys = filterInvalidJaksot(lisätiedot.flatMap(_.pidennettyOppivelvollisuus).toList, pidennetynOppivelvollisuudenViimeinenKäyttöpäivä)
-        val invalidVammaisuusjaksot = filterInvalidJaksot(lisätiedot.toList.flatMap(_.vammainen.toList.flatten), pidennetynOppivelvollisuudenViimeinenKäyttöpäivä)
-        val invalidVaikeaVammaisuusjaksot = filterInvalidJaksot(lisätiedot.toList.flatMap(_.vaikeastiVammainen.toList.flatten), vammaisuustietojenViimeinenKäyttöpäivä)
-        val invalidErityisenTuenJaksot = filterInvalidJaksot(lisätiedot.toList.flatMap(_.erityisenTuenPäätökset.toList.flatten).map(_.toAikajakso), erityisenTuenPäätöstenViimeinenKäyttöpäivä)
-
-        HttpStatus.fold(
-          HttpStatus.validate(invalidOppivelvollisuudenPidennys.isEmpty)(
-            KoskiErrorCategory.badRequest.validation.date.pidennettyOppivelvollisuus(s"Pidennetyn oppivelvollisuuden (${formatJaksot(invalidOppivelvollisuudenPidennys)}) viimeinen mahdollinen päättymispäivä on ${FinnishDateFormat.format(pidennetynOppivelvollisuudenViimeinenKäyttöpäivä)}.")
-          ),
-          HttpStatus.validate(invalidVammaisuusjaksot.isEmpty)(
-            KoskiErrorCategory.badRequest.validation.date.vammaisuusjakso(s"Vammaisuuden jakson (${formatJaksot(invalidVammaisuusjaksot)}) viimeinen mahdollinen päättymispäivä on ${FinnishDateFormat.format(vammaisuustietojenViimeinenKäyttöpäivä)}.")
-          ),
-          HttpStatus.validate(invalidVaikeaVammaisuusjaksot.isEmpty)(
-            KoskiErrorCategory.badRequest.validation.date.vammaisuusjakso(s"Vaikeasti vammaisuuden jakson (${formatJaksot(invalidVaikeaVammaisuusjaksot)}) viimeinen mahdollinen päättymispäivä on ${FinnishDateFormat.format(vammaisuustietojenViimeinenKäyttöpäivä)}.")
-          ),
-          HttpStatus.validate(invalidErityisenTuenJaksot.isEmpty)(
-            KoskiErrorCategory.badRequest.validation.date(s"Erityisen tuen päätöksen (${formatJaksot(invalidErityisenTuenJaksot)}) viimeinen mahdollinen päättymispäivä on ${FinnishDateFormat.format(erityisenTuenPäätöstenViimeinenKäyttöpäivä)}.")
-          ),
-        )
-      } else {
-        HttpStatus.ok
-      }
+      HttpStatus.fold(
+        HttpStatus.validate(invalidOppivelvollisuudenPidennysAlku.isEmpty)(
+          KoskiErrorCategory.badRequest.validation.date.pidennettyOppivelvollisuus(s"Pidennetyn oppivelvollisuuden (${formatJaksot(invalidOppivelvollisuudenPidennysAlku)}) viimeinen mahdollinen alkamispäivä on ${FinnishDateFormat.format(rajapäiväAlku)}.")
+        ),
+        HttpStatus.validate(invalidOppivelvollisuudenPidennysLoppu.isEmpty)(
+          KoskiErrorCategory.badRequest.validation.date.pidennettyOppivelvollisuus(s"Pidennetyn oppivelvollisuuden (${formatJaksot(invalidOppivelvollisuudenPidennysLoppu)}) viimeinen mahdollinen päättymispäivä on ${FinnishDateFormat.format(rajapäiväLoppu)}.")
+        ),
+        HttpStatus.validate(invalidVammaisuusjaksotAlku.isEmpty)(
+          KoskiErrorCategory.badRequest.validation.date.vammaisuusjakso(s"Vammaisuuden jakson (${formatJaksot(invalidVammaisuusjaksotAlku)}) viimeinen mahdollinen alkamispäivä on ${FinnishDateFormat.format(rajapäiväAlku)}.")
+        ),
+        HttpStatus.validate(invalidVammaisuusjaksotLoppu.isEmpty)(
+          KoskiErrorCategory.badRequest.validation.date.vammaisuusjakso(s"Vammaisuuden jakson (${formatJaksot(invalidVammaisuusjaksotLoppu)}) viimeinen mahdollinen päättymispäivä on ${FinnishDateFormat.format(rajapäiväLoppu)}.")
+        ),
+        HttpStatus.validate(invalidVaikeaVammaisuusjaksotAlku.isEmpty)(
+          KoskiErrorCategory.badRequest.validation.date.vammaisuusjakso(s"Vaikeasti vammaisuuden jakson (${formatJaksot(invalidVaikeaVammaisuusjaksotAlku)}) viimeinen mahdollinen alkamispäivä on ${FinnishDateFormat.format(rajapäiväAlku)}.")
+        ),
+        HttpStatus.validate(invalidVaikeaVammaisuusjaksotLoppu.isEmpty)(
+          KoskiErrorCategory.badRequest.validation.date.vammaisuusjakso(s"Vaikeasti vammaisuuden jakson (${formatJaksot(invalidVaikeaVammaisuusjaksotLoppu)}) viimeinen mahdollinen päättymispäivä on ${FinnishDateFormat.format(rajapäiväLoppu)}.")
+        ),
+        HttpStatus.validate(invalidErityisenTuenJaksotAlku.isEmpty)(
+          KoskiErrorCategory.badRequest.validation.date(s"Erityisen tuen päätöksen (${formatJaksot(invalidErityisenTuenJaksotAlku)}) viimeinen mahdollinen alkamispäivä on ${FinnishDateFormat.format(rajapäiväAlku)}.")
+        ),
+        HttpStatus.validate(invalidErityisenTuenJaksotLoppu.isEmpty)(
+          KoskiErrorCategory.badRequest.validation.date(s"Erityisen tuen päätöksen (${formatJaksot(invalidErityisenTuenJaksotLoppu)}) viimeinen mahdollinen päättymispäivä on ${FinnishDateFormat.format(rajapäiväLoppu)}.")
+        ),
+      )
     } else {
       HttpStatus.ok
     }
   }
 
-  private def filterInvalidJaksot(jaksot: List[Aikajakso], rajapäivä: LocalDate): List[Aikajakso] =
-    jaksot.filter(j => j.alku.isEqualOrAfter(rajapäivä) || j.loppu.fold(true)(_.isAfter(rajapäivä)))
+  private def filterInvalidJaksotAlku(jaksot: List[Aikajakso], rajapäiväAlku: LocalDate): List[Aikajakso] =
+    jaksot.filter(j => j.alku.isAfter(rajapäiväAlku))
+
+  private def filterInvalidJaksotLoppu(jaksot: List[Aikajakso], rajapäiväLoppu: LocalDate, jatkuuRajapäivänJälkeen: Boolean): List[Aikajakso] =
+    jaksot.filter(j => j.loppu.fold(jatkuuRajapäivänJälkeen)(jaksonLoppu => jaksonLoppu.isAfter(rajapäiväLoppu)))
 
   private def formatJaksot(jaksot: List[Aikajakso]): String =
     jaksot.map(_.toFinnishDateFormat).mkString(", ")

@@ -68,13 +68,13 @@ object ExamplesEsiopetus {
     tila = NuortenPerusopetuksenOpiskeluoikeudenTila(
       List(
         NuortenPerusopetuksenOpiskeluoikeusjakso(date(2025, 8, 13), opiskeluoikeusLäsnä),
-        NuortenPerusopetuksenOpiskeluoikeusjakso(date(2026, 8, 3), opiskeluoikeusValmistunut)
+        NuortenPerusopetuksenOpiskeluoikeusjakso(date(2026, 8, 31), opiskeluoikeusValmistunut)
       )
     ),
     lisätiedot = Some(EsiopetuksenOpiskeluoikeudenLisätiedot(
       tuenPäätöksenJaksot = Some(List(Tukijakso(
         alku = Some(date(2025, 8, 13)),
-        loppu = Some(date(2026, 8, 3)),
+        loppu = Some(date(2026, 8, 31)),
       ))),
     )),
   )

@@ -25,7 +25,7 @@ object PerusopetuksenOpiskeluoikeusValidation extends Logging {
           validateNuortenPerusopetuksenOpiskeluoikeudenTila(poo),
           validateVuosiluokanAlkamispäivät(poo),
           validatePäätasonSuoritus(poo),
-          validateVanhojenJaksokenttienPäättyminenSiirryttäessäUusiin(config, poo.alkamispäivä, poo.päättymispäivä, poo.lisätiedot),
+          validateVanhojenJaksokenttienPäättyminenSiirryttäessäUusiin(config, poo.päättymispäivä, poo.lisätiedot),
           validateTavoitekokonaisuuksittainOpiskeleva(config,poo),
           validateVuosiluokkiinSitoutumatonOpetusEiSallittu(config,poo)
         ) ++ poo.lisätiedot.toList.flatMap(lisätiedot => List(
