@@ -898,6 +898,9 @@ describe('Perusopetus 3', function () {
             describe('Kun annetaan arvosana ja tallennetaan', function () {
               before(
                 äidinkieli.kurssi('S21').arvosana.setValue('8'),
+                äidinkieli.kurssi('S21').toggleDetails,
+                äidinkieli.kurssi('S21').arviointipäivä.setValue('1.1.2024'),
+                äidinkieli.kurssi('S21').toggleDetails,
                 editor.saveChanges
               )
 
@@ -927,6 +930,9 @@ describe('Perusopetus 3', function () {
             describe('Kun annetaan arvosana ja tallennetaan', function () {
               before(
                 äidinkieli.kurssi('AS211').arvosana.setValue('5'),
+                äidinkieli.kurssi('AS211').toggleDetails,
+                äidinkieli.kurssi('AS211').arviointipäivä.setValue('1.1.2024'),
+                äidinkieli.kurssi('AS211').toggleDetails,
                 editor.saveChanges
               )
 

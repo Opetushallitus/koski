@@ -1,5 +1,4 @@
 {
-  "ignoreKoskiValidator" : true,
   "henkilö" : {
     "hetu" : "220109-784L",
     "etunimet" : "Kaisa",
@@ -1211,6 +1210,7 @@
               "koodiarvo" : "9",
               "koodistoUri" : "arviointiasteikkoyleissivistava"
             },
+            "päivä" : "2016-01-09",
             "hyväksytty" : true
           } ],
           "tyyppi" : {
@@ -1248,6 +1248,7 @@
               "koodiarvo" : "9",
               "koodistoUri" : "arviointiasteikkoyleissivistava"
             },
+            "päivä" : "2016-01-09",
             "hyväksytty" : true
           } ],
           "tyyppi" : {
@@ -1730,6 +1731,7 @@
               "koodiarvo" : "4",
               "koodistoUri" : "arviointiasteikkoyleissivistava"
             },
+            "päivä" : "2016-01-09",
             "hyväksytty" : false
           } ],
           "tyyppi" : {
@@ -1767,6 +1769,7 @@
               "koodiarvo" : "9",
               "koodistoUri" : "arviointiasteikkoyleissivistava"
             },
+            "päivä" : "2016-01-09",
             "hyväksytty" : true
           } ],
           "tyyppi" : {

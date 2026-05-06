@@ -1,5 +1,4 @@
 {
-  "ignoreKoskiValidator" : true,
   "henkilö" : {
     "hetu" : "220109-784L",
     "etunimet" : "Kaisa",
@@ -11,10 +10,30 @@
       "oid" : "1.2.246.562.10.14613773812",
       "oppilaitosnumero" : {
         "koodiarvo" : "00204",
+        "nimi" : {
+          "fi" : "Jyväskylän normaalikoulu",
+          "sv" : "Jyväskylän normaalikoulu",
+          "en" : "Jyväskylän normaalikoulu"
+        },
+        "lyhytNimi" : {
+          "fi" : "Jyväskylän normaalikoulu",
+          "sv" : "Jyväskylän normaalikoulu",
+          "en" : "Jyväskylän normaalikoulu"
+        },
         "koodistoUri" : "oppilaitosnumero"
       },
       "nimi" : {
-        "fi" : "Jyväskylän normaalikoulu"
+        "fi" : "Jyväskylän normaalikoulu",
+        "sv" : "Jyväskylän normaalikoulu",
+        "en" : "Jyväskylän normaalikoulu"
+      },
+      "kotipaikka" : {
+        "koodiarvo" : "179",
+        "nimi" : {
+          "fi" : "Jyväskylä",
+          "sv" : "Jyväskylä"
+        },
+        "koodistoUri" : "kunta"
       }
     },
     "tila" : {
@@ -33,7 +52,7 @@
           "koodistoUri" : "opintojenrahoitus"
         }
       }, {
-        "alku" : "2016-06-04",
+        "alku" : "2018-06-04",
         "tila" : {
           "koodiarvo" : "valmistunut",
           "nimi" : {
@@ -60,10 +79,30 @@
         "oid" : "1.2.246.562.10.14613773812",
         "oppilaitosnumero" : {
           "koodiarvo" : "00204",
+          "nimi" : {
+            "fi" : "Jyväskylän normaalikoulu",
+            "sv" : "Jyväskylän normaalikoulu",
+            "en" : "Jyväskylän normaalikoulu"
+          },
+          "lyhytNimi" : {
+            "fi" : "Jyväskylän normaalikoulu",
+            "sv" : "Jyväskylän normaalikoulu",
+            "en" : "Jyväskylän normaalikoulu"
+          },
           "koodistoUri" : "oppilaitosnumero"
         },
         "nimi" : {
-          "fi" : "Jyväskylän normaalikoulu"
+          "fi" : "Jyväskylän normaalikoulu",
+          "sv" : "Jyväskylän normaalikoulu",
+          "en" : "Jyväskylän normaalikoulu"
+        },
+        "kotipaikka" : {
+          "koodiarvo" : "179",
+          "nimi" : {
+            "fi" : "Jyväskylä",
+            "sv" : "Jyväskylä"
+          },
+          "koodistoUri" : "kunta"
         }
       },
       "vahvistus" : {
@@ -79,10 +118,30 @@
           "oid" : "1.2.246.562.10.14613773812",
           "oppilaitosnumero" : {
             "koodiarvo" : "00204",
+            "nimi" : {
+              "fi" : "Jyväskylän normaalikoulu",
+              "sv" : "Jyväskylän normaalikoulu",
+              "en" : "Jyväskylän normaalikoulu"
+            },
+            "lyhytNimi" : {
+              "fi" : "Jyväskylän normaalikoulu",
+              "sv" : "Jyväskylän normaalikoulu",
+              "en" : "Jyväskylän normaalikoulu"
+            },
             "koodistoUri" : "oppilaitosnumero"
           },
           "nimi" : {
-            "fi" : "Jyväskylän normaalikoulu"
+            "fi" : "Jyväskylän normaalikoulu",
+            "sv" : "Jyväskylän normaalikoulu",
+            "en" : "Jyväskylän normaalikoulu"
+          },
+          "kotipaikka" : {
+            "koodiarvo" : "179",
+            "nimi" : {
+              "fi" : "Jyväskylä",
+              "sv" : "Jyväskylä"
+            },
+            "koodistoUri" : "kunta"
           }
         },
         "myöntäjäHenkilöt" : [ {
@@ -94,10 +153,30 @@
             "oid" : "1.2.246.562.10.14613773812",
             "oppilaitosnumero" : {
               "koodiarvo" : "00204",
+              "nimi" : {
+                "fi" : "Jyväskylän normaalikoulu",
+                "sv" : "Jyväskylän normaalikoulu",
+                "en" : "Jyväskylän normaalikoulu"
+              },
+              "lyhytNimi" : {
+                "fi" : "Jyväskylän normaalikoulu",
+                "sv" : "Jyväskylän normaalikoulu",
+                "en" : "Jyväskylän normaalikoulu"
+              },
               "koodistoUri" : "oppilaitosnumero"
             },
             "nimi" : {
-              "fi" : "Jyväskylän normaalikoulu"
+              "fi" : "Jyväskylän normaalikoulu",
+              "sv" : "Jyväskylän normaalikoulu",
+              "en" : "Jyväskylän normaalikoulu"
+            },
+            "kotipaikka" : {
+              "koodiarvo" : "179",
+              "nimi" : {
+                "fi" : "Jyväskylä",
+                "sv" : "Jyväskylä"
+              },
+              "koodistoUri" : "kunta"
             }
           }
         } ]
@@ -129,6 +208,16 @@
           "arvo" : 1.0,
           "yksikkö" : {
             "koodiarvo" : "4",
+            "nimi" : {
+              "fi" : "kurssia",
+              "sv" : "kurser",
+              "en" : "course units"
+            },
+            "lyhytNimi" : {
+              "fi" : "kurssia",
+              "sv" : "kurser",
+              "en" : "courses"
+            },
             "koodistoUri" : "opintojenlaajuusyksikko"
           }
         },
@@ -163,6 +252,16 @@
               "arvo" : 1.0,
               "yksikkö" : {
                 "koodiarvo" : "4",
+                "nimi" : {
+                  "fi" : "kurssia",
+                  "sv" : "kurser",
+                  "en" : "course units"
+                },
+                "lyhytNimi" : {
+                  "fi" : "kurssia",
+                  "sv" : "kurser",
+                  "en" : "courses"
+                },
                 "koodistoUri" : "opintojenlaajuusyksikko"
               }
             }
@@ -172,6 +271,7 @@
               "koodiarvo" : "9",
               "koodistoUri" : "arviointiasteikkoyleissivistava"
             },
+            "päivä" : "2016-01-09",
             "hyväksytty" : true
           } ],
           "tyyppi" : {
@@ -188,6 +288,16 @@
               "arvo" : 1.0,
               "yksikkö" : {
                 "koodiarvo" : "4",
+                "nimi" : {
+                  "fi" : "kurssia",
+                  "sv" : "kurser",
+                  "en" : "course units"
+                },
+                "lyhytNimi" : {
+                  "fi" : "kurssia",
+                  "sv" : "kurser",
+                  "en" : "courses"
+                },
                 "koodistoUri" : "opintojenlaajuusyksikko"
               }
             }
@@ -197,6 +307,7 @@
               "koodiarvo" : "9",
               "koodistoUri" : "arviointiasteikkoyleissivistava"
             },
+            "päivä" : "2016-01-09",
             "hyväksytty" : true
           } ],
           "tyyppi" : {
@@ -213,6 +324,16 @@
               "arvo" : 1.0,
               "yksikkö" : {
                 "koodiarvo" : "3",
+                "nimi" : {
+                  "fi" : "vuosiviikkotuntia",
+                  "sv" : "årsveckotimmar",
+                  "en" : "weekly lessons per year"
+                },
+                "lyhytNimi" : {
+                  "fi" : "vuosiviikkotuntia",
+                  "sv" : "årsveckotimmar",
+                  "en" : "weekly lessons per year"
+                },
                 "koodistoUri" : "opintojenlaajuusyksikko"
               }
             }
@@ -222,6 +343,7 @@
               "koodiarvo" : "9",
               "koodistoUri" : "arviointiasteikkoyleissivistava"
             },
+            "päivä" : "2016-01-09",
             "hyväksytty" : true
           } ],
           "tyyppi" : {
@@ -240,6 +362,16 @@
               "arvo" : 1.0,
               "yksikkö" : {
                 "koodiarvo" : "4",
+                "nimi" : {
+                  "fi" : "kurssia",
+                  "sv" : "kurser",
+                  "en" : "course units"
+                },
+                "lyhytNimi" : {
+                  "fi" : "kurssia",
+                  "sv" : "kurser",
+                  "en" : "courses"
+                },
                 "koodistoUri" : "opintojenlaajuusyksikko"
               }
             }
@@ -249,6 +381,7 @@
               "koodiarvo" : "9",
               "koodistoUri" : "arviointiasteikkoyleissivistava"
             },
+            "päivä" : "2016-01-09",
             "hyväksytty" : true
           } ],
           "tyyppi" : {
@@ -267,6 +400,16 @@
               "arvo" : 1.0,
               "yksikkö" : {
                 "koodiarvo" : "3",
+                "nimi" : {
+                  "fi" : "vuosiviikkotuntia",
+                  "sv" : "årsveckotimmar",
+                  "en" : "weekly lessons per year"
+                },
+                "lyhytNimi" : {
+                  "fi" : "vuosiviikkotuntia",
+                  "sv" : "årsveckotimmar",
+                  "en" : "weekly lessons per year"
+                },
                 "koodistoUri" : "opintojenlaajuusyksikko"
               }
             }
@@ -276,6 +419,7 @@
               "koodiarvo" : "9",
               "koodistoUri" : "arviointiasteikkoyleissivistava"
             },
+            "päivä" : "2016-01-09",
             "hyväksytty" : true
           } ],
           "tyyppi" : {
@@ -325,6 +469,16 @@
             "arvo" : 1.0,
             "yksikkö" : {
               "koodiarvo" : "3",
+              "nimi" : {
+                "fi" : "vuosiviikkotuntia",
+                "sv" : "årsveckotimmar",
+                "en" : "weekly lessons per year"
+              },
+              "lyhytNimi" : {
+                "fi" : "vuosiviikkotuntia",
+                "sv" : "årsveckotimmar",
+                "en" : "weekly lessons per year"
+              },
               "koodistoUri" : "opintojenlaajuusyksikko"
             }
           }
@@ -369,11 +523,7 @@
             "koodiarvo" : "KT",
             "koodistoUri" : "koskioppiaineetyleissivistava"
           },
-          "pakollinen" : true,
-          "uskonnonOppimäärä" : {
-            "koodiarvo" : "EV",
-            "koodistoUri" : "uskonnonoppimaara"
-          }
+          "pakollinen" : true
         },
         "arviointi" : [ {
           "arvosana" : {
@@ -587,6 +737,16 @@
             "arvo" : 1.0,
             "yksikkö" : {
               "koodiarvo" : "3",
+              "nimi" : {
+                "fi" : "vuosiviikkotuntia",
+                "sv" : "årsveckotimmar",
+                "en" : "weekly lessons per year"
+              },
+              "lyhytNimi" : {
+                "fi" : "vuosiviikkotuntia",
+                "sv" : "årsveckotimmar",
+                "en" : "weekly lessons per year"
+              },
               "koodistoUri" : "opintojenlaajuusyksikko"
             }
           }
@@ -670,6 +830,16 @@
             "arvo" : 0.5,
             "yksikkö" : {
               "koodiarvo" : "3",
+              "nimi" : {
+                "fi" : "vuosiviikkotuntia",
+                "sv" : "årsveckotimmar",
+                "en" : "weekly lessons per year"
+              },
+              "lyhytNimi" : {
+                "fi" : "vuosiviikkotuntia",
+                "sv" : "årsveckotimmar",
+                "en" : "weekly lessons per year"
+              },
               "koodistoUri" : "opintojenlaajuusyksikko"
             }
           }
@@ -700,6 +870,16 @@
             "arvo" : 4.0,
             "yksikkö" : {
               "koodiarvo" : "3",
+              "nimi" : {
+                "fi" : "vuosiviikkotuntia",
+                "sv" : "årsveckotimmar",
+                "en" : "weekly lessons per year"
+              },
+              "lyhytNimi" : {
+                "fi" : "vuosiviikkotuntia",
+                "sv" : "årsveckotimmar",
+                "en" : "weekly lessons per year"
+              },
               "koodistoUri" : "opintojenlaajuusyksikko"
             }
           }
@@ -750,6 +930,6 @@
       "koodistoUri" : "opiskeluoikeudentyyppi"
     },
     "alkamispäivä" : "2008-08-15",
-    "päättymispäivä" : "2016-06-04"
+    "päättymispäivä" : "2018-06-04"
   } ]
 }

@@ -5,7 +5,8 @@ import fi.oph.koski.db.KoskiTables.KoskiOpiskeluOikeudetWithAccessCheck
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.documentation.ExampleData._
 import fi.oph.koski.documentation.ExamplesAikuistenPerusopetus
-import fi.oph.koski.documentation.ExamplesAikuistenPerusopetus.{aikuistenPerusopetuksenAlkuvaiheenSuoritus, oppiaineidenSuoritukset2015, oppiaineidenSuoritukset2017}
+import fi.oph.koski.documentation.ExamplesAikuistenPerusopetus.{aikuistenPerusopetuksenAlkuvaiheenSuoritus, kurssinSuoritus2017, oppiaineidenSuoritukset2015, oppiaineidenSuoritukset2017}
+import fi.oph.koski.documentation.PerusopetusExampleData.arviointi
 import fi.oph.koski.documentation.ExamplesEsiopetus.osaAikainenErityisopetus
 import fi.oph.koski.documentation.YleissivistavakoulutusExampleData.jyväskylänNormaalikoulu
 import fi.oph.koski.http._
@@ -254,6 +255,116 @@ class OppijaValidationAikuistenPerusopetusSpec
       (tietokannasta.data \\ "lisätiedot").toString.contains("vammainen") should equal (false)
       (tietokannasta.data \\ "lisätiedot").toString.contains("vaikeastiVammainen") should equal (false)
       (tietokannasta.data \\ "lisätiedot").toString.contains("oikeusMaksuttomaanAsuntolapaikkaan") should equal (false)
+    }
+  }
+
+  "Kurssin arviointipäivä" - {
+    "vaaditaan oppimäärän kurssilta" in {
+      val opiskeluoikeus = defaultOpiskeluoikeus.copy(
+        suoritukset = List(aikuistenPerusopetuksenOppimääränSuoritus(Some("OPH-1280-2017")).copy(
+          osasuoritukset = oppiaineidenSuoritukset2017.map(xs =>
+            List(xs.head.copy(
+              osasuoritukset = xs.head.osasuoritukset.map(kurssit =>
+                kurssinSuoritus2017("ÄI3", laajuus = LaajuusVuosiviikkotunneissa(1)).copy(arviointi = arviointi(7, None)) :: kurssit.tail
+              )
+            ))
+          ))
+        )
+      )
+      setupOppijaWithOpiskeluoikeus(opiskeluoikeus) {
+        verifyResponseStatus(400, ErrorMatcher.regex(
+          KoskiErrorCategory.badRequest.validation.arviointi.arviointipäiväPuuttuu,
+          ".*ÄI3.*".r
+        ))
+      }
+    }
+
+    "vaaditaan alkuvaiheen kurssilta" in {
+      val opiskeluoikeus = defaultOpiskeluoikeus.copy(
+        suoritukset = List(aikuistenPerusopetuksenAlkuvaiheenSuoritus().copy(
+          osasuoritukset = aikuistenPerusopetuksenAlkuvaiheenSuoritus().osasuoritukset.map(xs =>
+            List(xs.head.copy(
+              osasuoritukset = xs.head.osasuoritukset.map(kurssit =>
+                List(kurssit.head.copy(arviointi = arviointi(8, None)))
+              )
+            ))
+          ))
+        )
+      )
+      setupOppijaWithOpiskeluoikeus(opiskeluoikeus) {
+        verifyResponseStatus(400, ErrorMatcher.regex(
+          KoskiErrorCategory.badRequest.validation.arviointi.arviointipäiväPuuttuu,
+          ".*LÄI1.*".r
+        ))
+      }
+    }
+
+    "virheilmoitus annetaan jokaisesta puuttuvasta kurssista erikseen" in {
+      val opiskeluoikeus = defaultOpiskeluoikeus.copy(
+        suoritukset = List(aikuistenPerusopetuksenOppimääränSuoritus(Some("OPH-1280-2017")).copy(
+          osasuoritukset = oppiaineidenSuoritukset2017.map(xs =>
+            List(xs.head.copy(
+              osasuoritukset = xs.head.osasuoritukset.map(_ =>
+                List(
+                  kurssinSuoritus2017("ÄI3", laajuus = LaajuusVuosiviikkotunneissa(1)).copy(arviointi = arviointi(7, None)),
+                  kurssinSuoritus2017("ÄI4").copy(arviointi = arviointi(8, None))
+                )
+              )
+            ))
+          ))
+        )
+      )
+      setupOppijaWithOpiskeluoikeus(opiskeluoikeus) {
+        verifyResponseStatus(400, List(
+          ErrorMatcher.regex(
+            KoskiErrorCategory.badRequest.validation.arviointi.arviointipäiväPuuttuu,
+            ".*ÄI3.*".r
+          ),
+          ErrorMatcher.regex(
+            KoskiErrorCategory.badRequest.validation.arviointi.arviointipäiväPuuttuu,
+            ".*ÄI4.*".r
+          )
+        ))
+      }
+    }
+
+    "ei vaadita kun arviointia ei ole" in {
+      val opiskeluoikeus = defaultOpiskeluoikeus.copy(
+        suoritukset = List(aikuistenPerusopetuksenOppimääränSuoritus(Some("OPH-1280-2017")).copy(
+          vahvistus = None,
+          osasuoritukset = oppiaineidenSuoritukset2017.map(xs =>
+            List(xs.head.copy(
+              arviointi = None,
+              osasuoritukset = xs.head.osasuoritukset.map(kurssit =>
+                List(kurssit.head.copy(arviointi = None))
+              )
+            ))
+          ))
+        )
+      )
+      setupOppijaWithOpiskeluoikeus(opiskeluoikeus) {
+        verifyResponseStatusOk()
+      }
+    }
+
+    "vaaditaan myös päättyneeseen opiskeluoikeuteen" in {
+      val opiskeluoikeus = opiskeluoikeusWithValmistunutTila.copy(
+        suoritukset = List(aikuistenPerusopetuksenOppimääränSuoritus(Some("OPH-1280-2017")).copy(
+          osasuoritukset = oppiaineidenSuoritukset2017.map(xs =>
+            List(xs.head.copy(
+              osasuoritukset = xs.head.osasuoritukset.map(kurssit =>
+                kurssinSuoritus2017("ÄI3", laajuus = LaajuusVuosiviikkotunneissa(1)).copy(arviointi = arviointi(7, None)) :: kurssit.tail
+              )
+            ))
+          ))
+        )
+      )
+      setupOppijaWithOpiskeluoikeus(opiskeluoikeus) {
+        verifyResponseStatus(400, ErrorMatcher.regex(
+          KoskiErrorCategory.badRequest.validation.arviointi.arviointipäiväPuuttuu,
+          ".*ÄI3.*".r
+        ))
+      }
     }
   }
 

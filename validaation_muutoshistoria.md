@@ -1,5 +1,8 @@
 # Koskeen tallennettavien tietojen validaatiosäännöt
 
+## 5.5.2026
+- Aikuisten perusopetuksen kurssin arvioinnilta vaaditaan päivämäärä. Validaatio koskee kaikkia opiskeluoikeuksia ilman aikarajausta, myös päättyneitä.
+
 ## 29.4.2026
 - Ammatillisen osittaisen ja osia useammasta tutkinnosta -suoritusten yhteisten tutkinnon osien laajuus täytyy täsmätä sen osa-alueiden laajuuteen
 

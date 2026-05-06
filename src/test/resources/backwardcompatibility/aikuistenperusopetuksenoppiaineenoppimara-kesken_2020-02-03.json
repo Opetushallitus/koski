@@ -1,4 +1,5 @@
 {
+  "ignoreKoskiValidator" : true,
   "henkilö" : {
     "hetu" : "010101-123N",
     "etunimet" : "Eero",

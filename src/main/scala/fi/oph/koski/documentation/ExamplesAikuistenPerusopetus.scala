@@ -230,7 +230,7 @@ object ExamplesAikuistenPerusopetus {
             ))
           ),
           kurssinSuoritus2017("ÄI3", laajuus = LaajuusVuosiviikkotunneissa(1)),
-          kurssinSuoritus2017("ÄI4").copy(arviointi = arviointi(4)),
+          kurssinSuoritus2017("ÄI4").copy(arviointi = arviointi(4, Some(LocalDate.parse("2016-01-09")))),
           kurssinSuoritusPaikallinen("ÄI10", "Paikallinen äidinkielen kurssi")
         ))
       ),
@@ -269,7 +269,7 @@ object ExamplesAikuistenPerusopetus {
 
   def kurssinSuoritusPaikallinen(koodiarvo: String, kuvaus: String, laajuus: LaajuusVuosiviikkotunneissaTaiKursseissa = LaajuusKursseissa(1)) = AikuistenPerusopetuksenKurssinSuoritus(
     PaikallinenAikuistenPerusopetuksenKurssi(PaikallinenKoodi(koodiarvo, kuvaus), Some(laajuus)),
-    arviointi = arviointi(9)
+    arviointi = arviointi(9, Some(LocalDate.parse("2016-01-09")))
   )
 
   def aikuistenPerusopetuksenAlkuvaihe = {
@@ -369,7 +369,7 @@ object ExamplesAikuistenPerusopetus {
 
   def alkuvaiheenPaikallisenKurssinSuoritus(koodiarvo: String, nimi: String, laajuus: LaajuusVuosiviikkotunneissaTaiKursseissa = LaajuusKursseissa(1)) = AikuistenPerusopetuksenAlkuvaiheenKurssinSuoritus(
     PaikallinenAikuistenPerusopetuksenAlkuvaiheenKurssi(PaikallinenKoodi(koodiarvo, nimi), Some(laajuus)),
-    arviointi = arviointi(9)
+    arviointi = arviointi(9, Some(LocalDate.parse("2016-01-09")))
   )
 
   def äidinkieli(kieli: String, diaarinumero: Option[String] = None) = AikuistenPerusopetuksenÄidinkieliJaKirjallisuus(
