@@ -212,6 +212,30 @@ test.describe('Perusopetuksen uusi käyttöliittymä: suoritusten tiedot regress
     await expect(suoritusPerusteRivi(page)).toContainText('1/011/2004')
   })
 
+  test.describe('Organisaatiovalitsin pääkäyttäjänä', () => {
+    test.use({ storageState: virkailija('pää') })
+
+    test('näyttää nykyisen oppilaitoksen muokkaustilassa', async ({
+      page,
+      oppijaPage
+    }) => {
+      await oppijaPage.goto(kaisaUrl)
+      await page.getByTestId('oo.0.opiskeluoikeus.edit').click()
+
+      const organisaatioInput = page.getByTestId(
+        'oo.0.suoritukset.0.organisaatio.edit.input'
+      )
+      await expect(organisaatioInput).toHaveValue('Jyväskylän normaalikoulu')
+
+      await organisaatioInput.click()
+      await expect(
+        page
+          .locator('.Select__optionLabel')
+          .filter({ hasText: /^Jyväskylän normaalikoulu$/ })
+      ).toBeVisible()
+    })
+  })
+
   test('Ensimmäisen oppiaineen poisto ei korruptoi seuraavan oppiaineen arvosanaa', async ({
     page,
     oppijaPage
