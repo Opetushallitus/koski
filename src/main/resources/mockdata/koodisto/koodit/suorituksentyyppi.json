@@ -1,6 +1,54 @@
 [
   {
     "metadata": [
+      { "nimi": "Ahvenanmaan perusopetuksen oppimäärä", "kuvaus": "", "lyhytNimi": "", "kieli": "FI" },
+      { "nimi": "Grundskolans lärokurs på Åland", "kuvaus": "", "lyhytNimi": "", "kieli": "SV" }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "suorituksentyyppi_ahvenanmaanperusopetuksenoppimaara",
+    "versio": 1,
+    "koodiArvo": "ahvenanmaanperusopetuksenoppimaara"
+  },
+  {
+    "metadata": [
+      { "nimi": "Ahvenanmaan perusopetuksen vuosiluokka", "kuvaus": "", "lyhytNimi": "", "kieli": "FI" },
+      { "nimi": "Grundskolans årskurs på Åland", "kuvaus": "", "lyhytNimi": "", "kieli": "SV" }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "suorituksentyyppi_ahvenanmaanperusopetuksenvuosiluokka",
+    "versio": 1,
+    "koodiArvo": "ahvenanmaanperusopetuksenvuosiluokka"
+  },
+  {
+    "metadata": [
+      { "nimi": "Ahvenanmaan perusopetuksen oppiaine", "kuvaus": "", "lyhytNimi": "", "kieli": "FI" },
+      { "nimi": "Läroämne i grundskolan på Åland", "kuvaus": "", "lyhytNimi": "", "kieli": "SV" }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "suorituksentyyppi_ahvenanmaanperusopetuksenoppiaine",
+    "versio": 1,
+    "koodiArvo": "ahvenanmaanperusopetuksenoppiaine"
+  },
+  {
+    "metadata": [
+      { "nimi": "Ahvenanmaan perusopetuksen toiminta-alue", "kuvaus": "", "lyhytNimi": "", "kieli": "FI" },
+      { "nimi": "Verksamhetsområde i grundskolan på Åland", "kuvaus": "", "lyhytNimi": "", "kieli": "SV" }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "suorituksentyyppi_ahvenanmaanperusopetuksentoimintaalue",
+    "versio": 1,
+    "koodiArvo": "ahvenanmaanperusopetuksentoimintaalue"
+  },
+  {
+    "metadata": [
       {
         "nimi": "Aikuisten perusopetuksen alkuvaiheen kurssi",
         "kuvaus": "",

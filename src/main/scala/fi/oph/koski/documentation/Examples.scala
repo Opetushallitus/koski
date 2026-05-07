@@ -12,6 +12,7 @@ object Examples {
     ExamplesPerusopetukseenValmistavaOpetus.examples ++
     ExamplesEsiopetus.examples ++
     ExamplesPerusopetus.examples ++
+    ExamplesAhvenanmaanPerusopetus.examples ++
     ExamplesAikuistenPerusopetus.examples ++
     ExamplesPerusopetuksenLisaopetus.examples ++
     ExamplesLukioonValmistavaKoulutus.examples ++

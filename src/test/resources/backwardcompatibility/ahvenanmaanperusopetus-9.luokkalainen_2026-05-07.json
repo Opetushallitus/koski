@@ -1,0 +1,1100 @@
+{
+  "henkilö" : {
+    "hetu" : "150510A0873",
+    "etunimet" : "Alina",
+    "kutsumanimi" : "Alina",
+    "sukunimi" : "Åländsk"
+  },
+  "opiskeluoikeudet" : [ {
+    "oppilaitos" : {
+      "oid" : "1.2.246.562.10.14613773812",
+      "oppilaitosnumero" : {
+        "koodiarvo" : "00204",
+        "nimi" : {
+          "fi" : "Jyväskylän normaalikoulu",
+          "sv" : "Jyväskylän normaalikoulu",
+          "en" : "Jyväskylän normaalikoulu"
+        },
+        "lyhytNimi" : {
+          "fi" : "Jyväskylän normaalikoulu",
+          "sv" : "Jyväskylän normaalikoulu",
+          "en" : "Jyväskylän normaalikoulu"
+        },
+        "koodistoUri" : "oppilaitosnumero"
+      },
+      "nimi" : {
+        "fi" : "Jyväskylän normaalikoulu",
+        "sv" : "Jyväskylän normaalikoulu",
+        "en" : "Jyväskylän normaalikoulu"
+      },
+      "kotipaikka" : {
+        "koodiarvo" : "179",
+        "nimi" : {
+          "fi" : "Jyväskylä",
+          "sv" : "Jyväskylä"
+        },
+        "koodistoUri" : "kunta"
+      }
+    },
+    "tila" : {
+      "opiskeluoikeusjaksot" : [ {
+        "alku" : "2017-08-15",
+        "tila" : {
+          "koodiarvo" : "lasna",
+          "nimi" : {
+            "fi" : "Läsnä"
+          },
+          "koodistoUri" : "koskiopiskeluoikeudentila",
+          "koodistoVersio" : 1
+        }
+      }, {
+        "alku" : "2026-06-04",
+        "tila" : {
+          "koodiarvo" : "valmistunut",
+          "nimi" : {
+            "fi" : "Valmistunut"
+          },
+          "koodistoUri" : "koskiopiskeluoikeudentila",
+          "koodistoVersio" : 1
+        }
+      } ]
+    },
+    "suoritukset" : [ {
+      "koulutusmoduuli" : {
+        "tunniste" : {
+          "koodiarvo" : "9",
+          "koodistoUri" : "perusopetuksenluokkaaste"
+        },
+        "perusteenDiaarinumero" : "ÅLR2020/9841"
+      },
+      "luokka" : "9A",
+      "toimipiste" : {
+        "oid" : "1.2.246.562.10.14613773812",
+        "oppilaitosnumero" : {
+          "koodiarvo" : "00204",
+          "nimi" : {
+            "fi" : "Jyväskylän normaalikoulu",
+            "sv" : "Jyväskylän normaalikoulu",
+            "en" : "Jyväskylän normaalikoulu"
+          },
+          "lyhytNimi" : {
+            "fi" : "Jyväskylän normaalikoulu",
+            "sv" : "Jyväskylän normaalikoulu",
+            "en" : "Jyväskylän normaalikoulu"
+          },
+          "koodistoUri" : "oppilaitosnumero"
+        },
+        "nimi" : {
+          "fi" : "Jyväskylän normaalikoulu",
+          "sv" : "Jyväskylän normaalikoulu",
+          "en" : "Jyväskylän normaalikoulu"
+        },
+        "kotipaikka" : {
+          "koodiarvo" : "179",
+          "nimi" : {
+            "fi" : "Jyväskylä",
+            "sv" : "Jyväskylä"
+          },
+          "koodistoUri" : "kunta"
+        }
+      },
+      "vahvistus" : {
+        "päivä" : "2026-06-04",
+        "paikkakunta" : {
+          "koodiarvo" : "179",
+          "nimi" : {
+            "fi" : "Jyväskylä"
+          },
+          "koodistoUri" : "kunta"
+        },
+        "myöntäjäOrganisaatio" : {
+          "oid" : "1.2.246.562.10.14613773812",
+          "oppilaitosnumero" : {
+            "koodiarvo" : "00204",
+            "nimi" : {
+              "fi" : "Jyväskylän normaalikoulu",
+              "sv" : "Jyväskylän normaalikoulu",
+              "en" : "Jyväskylän normaalikoulu"
+            },
+            "lyhytNimi" : {
+              "fi" : "Jyväskylän normaalikoulu",
+              "sv" : "Jyväskylän normaalikoulu",
+              "en" : "Jyväskylän normaalikoulu"
+            },
+            "koodistoUri" : "oppilaitosnumero"
+          },
+          "nimi" : {
+            "fi" : "Jyväskylän normaalikoulu",
+            "sv" : "Jyväskylän normaalikoulu",
+            "en" : "Jyväskylän normaalikoulu"
+          },
+          "kotipaikka" : {
+            "koodiarvo" : "179",
+            "nimi" : {
+              "fi" : "Jyväskylä",
+              "sv" : "Jyväskylä"
+            },
+            "koodistoUri" : "kunta"
+          }
+        },
+        "myöntäjäHenkilöt" : [ {
+          "nimi" : "Reijo Reksi",
+          "titteli" : {
+            "fi" : "rehtori"
+          },
+          "organisaatio" : {
+            "oid" : "1.2.246.562.10.14613773812",
+            "oppilaitosnumero" : {
+              "koodiarvo" : "00204",
+              "nimi" : {
+                "fi" : "Jyväskylän normaalikoulu",
+                "sv" : "Jyväskylän normaalikoulu",
+                "en" : "Jyväskylän normaalikoulu"
+              },
+              "lyhytNimi" : {
+                "fi" : "Jyväskylän normaalikoulu",
+                "sv" : "Jyväskylän normaalikoulu",
+                "en" : "Jyväskylän normaalikoulu"
+              },
+              "koodistoUri" : "oppilaitosnumero"
+            },
+            "nimi" : {
+              "fi" : "Jyväskylän normaalikoulu",
+              "sv" : "Jyväskylän normaalikoulu",
+              "en" : "Jyväskylän normaalikoulu"
+            },
+            "kotipaikka" : {
+              "koodiarvo" : "179",
+              "nimi" : {
+                "fi" : "Jyväskylä",
+                "sv" : "Jyväskylä"
+              },
+              "koodistoUri" : "kunta"
+            }
+          }
+        } ]
+      },
+      "suorituskieli" : {
+        "koodiarvo" : "SV",
+        "nimi" : {
+          "fi" : "ruotsi"
+        },
+        "koodistoUri" : "kieli"
+      },
+      "jääLuokalle" : false,
+      "osasuoritukset" : [ {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "SV",
+            "koodistoUri" : "ahvenanmaankoskioppiaineetyleissivistava"
+          },
+          "pakollinen" : true
+        },
+        "mukautettuOppimäärä" : false,
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "9",
+            "koodistoUri" : "ahvenanmaanarviointiasteikkoyleissivistava"
+          },
+          "päivä" : "2026-06-04",
+          "hyväksytty" : true
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "ahvenanmaanperusopetuksenoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "MA",
+            "koodistoUri" : "ahvenanmaankoskioppiaineetyleissivistava"
+          },
+          "pakollinen" : true
+        },
+        "mukautettuOppimäärä" : false,
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "8",
+            "koodistoUri" : "ahvenanmaanarviointiasteikkoyleissivistava"
+          },
+          "päivä" : "2026-06-04",
+          "hyväksytty" : true
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "ahvenanmaanperusopetuksenoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "BI",
+            "koodistoUri" : "ahvenanmaankoskioppiaineetyleissivistava"
+          },
+          "pakollinen" : true
+        },
+        "mukautettuOppimäärä" : false,
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "8",
+            "koodistoUri" : "ahvenanmaanarviointiasteikkoyleissivistava"
+          },
+          "päivä" : "2026-06-04",
+          "hyväksytty" : true
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "ahvenanmaanperusopetuksenoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "GE",
+            "koodistoUri" : "ahvenanmaankoskioppiaineetyleissivistava"
+          },
+          "pakollinen" : true
+        },
+        "mukautettuOppimäärä" : false,
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "7",
+            "koodistoUri" : "ahvenanmaanarviointiasteikkoyleissivistava"
+          },
+          "päivä" : "2026-06-04",
+          "hyväksytty" : true
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "ahvenanmaanperusopetuksenoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "FY",
+            "koodistoUri" : "ahvenanmaankoskioppiaineetyleissivistava"
+          },
+          "pakollinen" : true
+        },
+        "mukautettuOppimäärä" : false,
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "7",
+            "koodistoUri" : "ahvenanmaanarviointiasteikkoyleissivistava"
+          },
+          "päivä" : "2026-06-04",
+          "hyväksytty" : true
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "ahvenanmaanperusopetuksenoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "KE",
+            "koodistoUri" : "ahvenanmaankoskioppiaineetyleissivistava"
+          },
+          "pakollinen" : true
+        },
+        "mukautettuOppimäärä" : false,
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "8",
+            "koodistoUri" : "ahvenanmaanarviointiasteikkoyleissivistava"
+          },
+          "päivä" : "2026-06-04",
+          "hyväksytty" : true
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "ahvenanmaanperusopetuksenoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "TE",
+            "koodistoUri" : "ahvenanmaankoskioppiaineetyleissivistava"
+          },
+          "pakollinen" : true
+        },
+        "mukautettuOppimäärä" : false,
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "8",
+            "koodistoUri" : "ahvenanmaanarviointiasteikkoyleissivistava"
+          },
+          "päivä" : "2026-06-04",
+          "hyväksytty" : true
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "ahvenanmaanperusopetuksenoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "RO",
+            "koodistoUri" : "ahvenanmaankoskioppiaineetyleissivistava"
+          },
+          "pakollinen" : true
+        },
+        "mukautettuOppimäärä" : false,
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "8",
+            "koodistoUri" : "ahvenanmaanarviointiasteikkoyleissivistava"
+          },
+          "päivä" : "2026-06-04",
+          "hyväksytty" : true
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "ahvenanmaanperusopetuksenoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "HI",
+            "koodistoUri" : "ahvenanmaankoskioppiaineetyleissivistava"
+          },
+          "pakollinen" : true
+        },
+        "mukautettuOppimäärä" : false,
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "9",
+            "koodistoUri" : "ahvenanmaanarviointiasteikkoyleissivistava"
+          },
+          "päivä" : "2026-06-04",
+          "hyväksytty" : true
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "ahvenanmaanperusopetuksenoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "YH",
+            "koodistoUri" : "ahvenanmaankoskioppiaineetyleissivistava"
+          },
+          "pakollinen" : true
+        },
+        "mukautettuOppimäärä" : false,
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "8",
+            "koodistoUri" : "ahvenanmaanarviointiasteikkoyleissivistava"
+          },
+          "päivä" : "2026-06-04",
+          "hyväksytty" : true
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "ahvenanmaanperusopetuksenoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "MU",
+            "koodistoUri" : "ahvenanmaankoskioppiaineetyleissivistava"
+          },
+          "pakollinen" : true
+        },
+        "mukautettuOppimäärä" : false,
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "9",
+            "koodistoUri" : "ahvenanmaanarviointiasteikkoyleissivistava"
+          },
+          "päivä" : "2026-06-04",
+          "hyväksytty" : true
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "ahvenanmaanperusopetuksenoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "KU",
+            "koodistoUri" : "ahvenanmaankoskioppiaineetyleissivistava"
+          },
+          "pakollinen" : true
+        },
+        "mukautettuOppimäärä" : false,
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "8",
+            "koodistoUri" : "ahvenanmaanarviointiasteikkoyleissivistava"
+          },
+          "päivä" : "2026-06-04",
+          "hyväksytty" : true
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "ahvenanmaanperusopetuksenoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "KS",
+            "koodistoUri" : "ahvenanmaankoskioppiaineetyleissivistava"
+          },
+          "pakollinen" : true
+        },
+        "mukautettuOppimäärä" : false,
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "7",
+            "koodistoUri" : "ahvenanmaanarviointiasteikkoyleissivistava"
+          },
+          "päivä" : "2026-06-04",
+          "hyväksytty" : true
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "ahvenanmaanperusopetuksenoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "LI",
+            "koodistoUri" : "ahvenanmaankoskioppiaineetyleissivistava"
+          },
+          "pakollinen" : true
+        },
+        "mukautettuOppimäärä" : false,
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "9",
+            "koodistoUri" : "ahvenanmaanarviointiasteikkoyleissivistava"
+          },
+          "päivä" : "2026-06-04",
+          "hyväksytty" : true
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "ahvenanmaanperusopetuksenoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "KO",
+            "koodistoUri" : "ahvenanmaankoskioppiaineetyleissivistava"
+          },
+          "pakollinen" : true
+        },
+        "mukautettuOppimäärä" : false,
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "8",
+            "koodistoUri" : "ahvenanmaanarviointiasteikkoyleissivistava"
+          },
+          "päivä" : "2026-06-04",
+          "hyväksytty" : true
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "ahvenanmaanperusopetuksenoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "OP",
+            "koodistoUri" : "ahvenanmaankoskioppiaineetyleissivistava"
+          },
+          "pakollinen" : true
+        },
+        "mukautettuOppimäärä" : false,
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "8",
+            "koodistoUri" : "ahvenanmaanarviointiasteikkoyleissivistava"
+          },
+          "päivä" : "2026-06-04",
+          "hyväksytty" : true
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "ahvenanmaanperusopetuksenoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "A1",
+            "koodistoUri" : "ahvenanmaankoskioppiaineetyleissivistava"
+          },
+          "kieli" : {
+            "koodiarvo" : "EN",
+            "koodistoUri" : "kielivalikoima"
+          },
+          "pakollinen" : true
+        },
+        "mukautettuOppimäärä" : false,
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "9",
+            "koodistoUri" : "ahvenanmaanarviointiasteikkoyleissivistava"
+          },
+          "päivä" : "2026-06-04",
+          "hyväksytty" : true
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "ahvenanmaanperusopetuksenoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "B1",
+            "koodistoUri" : "ahvenanmaankoskioppiaineetyleissivistava"
+          },
+          "kieli" : {
+            "koodiarvo" : "FI",
+            "koodistoUri" : "kielivalikoima"
+          },
+          "pakollinen" : true
+        },
+        "mukautettuOppimäärä" : false,
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "7",
+            "koodistoUri" : "ahvenanmaanarviointiasteikkoyleissivistava"
+          },
+          "päivä" : "2026-06-04",
+          "hyväksytty" : true
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "ahvenanmaanperusopetuksenoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      } ],
+      "tyyppi" : {
+        "koodiarvo" : "ahvenanmaanperusopetuksenvuosiluokka",
+        "koodistoUri" : "suorituksentyyppi"
+      }
+    }, {
+      "koulutusmoduuli" : {
+        "perusteenDiaarinumero" : "ÅLR2020/9841",
+        "tunniste" : {
+          "koodiarvo" : "201101",
+          "koodistoUri" : "koulutus"
+        }
+      },
+      "toimipiste" : {
+        "oid" : "1.2.246.562.10.14613773812",
+        "oppilaitosnumero" : {
+          "koodiarvo" : "00204",
+          "nimi" : {
+            "fi" : "Jyväskylän normaalikoulu",
+            "sv" : "Jyväskylän normaalikoulu",
+            "en" : "Jyväskylän normaalikoulu"
+          },
+          "lyhytNimi" : {
+            "fi" : "Jyväskylän normaalikoulu",
+            "sv" : "Jyväskylän normaalikoulu",
+            "en" : "Jyväskylän normaalikoulu"
+          },
+          "koodistoUri" : "oppilaitosnumero"
+        },
+        "nimi" : {
+          "fi" : "Jyväskylän normaalikoulu",
+          "sv" : "Jyväskylän normaalikoulu",
+          "en" : "Jyväskylän normaalikoulu"
+        },
+        "kotipaikka" : {
+          "koodiarvo" : "179",
+          "nimi" : {
+            "fi" : "Jyväskylä",
+            "sv" : "Jyväskylä"
+          },
+          "koodistoUri" : "kunta"
+        }
+      },
+      "vahvistus" : {
+        "päivä" : "2026-06-04",
+        "paikkakunta" : {
+          "koodiarvo" : "179",
+          "nimi" : {
+            "fi" : "Jyväskylä"
+          },
+          "koodistoUri" : "kunta"
+        },
+        "myöntäjäOrganisaatio" : {
+          "oid" : "1.2.246.562.10.14613773812",
+          "oppilaitosnumero" : {
+            "koodiarvo" : "00204",
+            "nimi" : {
+              "fi" : "Jyväskylän normaalikoulu",
+              "sv" : "Jyväskylän normaalikoulu",
+              "en" : "Jyväskylän normaalikoulu"
+            },
+            "lyhytNimi" : {
+              "fi" : "Jyväskylän normaalikoulu",
+              "sv" : "Jyväskylän normaalikoulu",
+              "en" : "Jyväskylän normaalikoulu"
+            },
+            "koodistoUri" : "oppilaitosnumero"
+          },
+          "nimi" : {
+            "fi" : "Jyväskylän normaalikoulu",
+            "sv" : "Jyväskylän normaalikoulu",
+            "en" : "Jyväskylän normaalikoulu"
+          },
+          "kotipaikka" : {
+            "koodiarvo" : "179",
+            "nimi" : {
+              "fi" : "Jyväskylä",
+              "sv" : "Jyväskylä"
+            },
+            "koodistoUri" : "kunta"
+          }
+        },
+        "myöntäjäHenkilöt" : [ {
+          "nimi" : "Reijo Reksi",
+          "titteli" : {
+            "fi" : "rehtori"
+          },
+          "organisaatio" : {
+            "oid" : "1.2.246.562.10.14613773812",
+            "oppilaitosnumero" : {
+              "koodiarvo" : "00204",
+              "nimi" : {
+                "fi" : "Jyväskylän normaalikoulu",
+                "sv" : "Jyväskylän normaalikoulu",
+                "en" : "Jyväskylän normaalikoulu"
+              },
+              "lyhytNimi" : {
+                "fi" : "Jyväskylän normaalikoulu",
+                "sv" : "Jyväskylän normaalikoulu",
+                "en" : "Jyväskylän normaalikoulu"
+              },
+              "koodistoUri" : "oppilaitosnumero"
+            },
+            "nimi" : {
+              "fi" : "Jyväskylän normaalikoulu",
+              "sv" : "Jyväskylän normaalikoulu",
+              "en" : "Jyväskylän normaalikoulu"
+            },
+            "kotipaikka" : {
+              "koodiarvo" : "179",
+              "nimi" : {
+                "fi" : "Jyväskylä",
+                "sv" : "Jyväskylä"
+              },
+              "koodistoUri" : "kunta"
+            }
+          }
+        } ]
+      },
+      "suoritustapa" : {
+        "koodiarvo" : "koulutus",
+        "koodistoUri" : "perusopetuksensuoritustapa"
+      },
+      "suorituskieli" : {
+        "koodiarvo" : "SV",
+        "nimi" : {
+          "fi" : "ruotsi"
+        },
+        "koodistoUri" : "kieli"
+      },
+      "osasuoritukset" : [ {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "SV",
+            "koodistoUri" : "ahvenanmaankoskioppiaineetyleissivistava"
+          },
+          "pakollinen" : true
+        },
+        "mukautettuOppimäärä" : false,
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "9",
+            "koodistoUri" : "ahvenanmaanarviointiasteikkoyleissivistava"
+          },
+          "päivä" : "2026-06-04",
+          "hyväksytty" : true
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "ahvenanmaanperusopetuksenoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "MA",
+            "koodistoUri" : "ahvenanmaankoskioppiaineetyleissivistava"
+          },
+          "pakollinen" : true
+        },
+        "mukautettuOppimäärä" : false,
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "8",
+            "koodistoUri" : "ahvenanmaanarviointiasteikkoyleissivistava"
+          },
+          "päivä" : "2026-06-04",
+          "hyväksytty" : true
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "ahvenanmaanperusopetuksenoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "BI",
+            "koodistoUri" : "ahvenanmaankoskioppiaineetyleissivistava"
+          },
+          "pakollinen" : true
+        },
+        "mukautettuOppimäärä" : false,
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "8",
+            "koodistoUri" : "ahvenanmaanarviointiasteikkoyleissivistava"
+          },
+          "päivä" : "2026-06-04",
+          "hyväksytty" : true
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "ahvenanmaanperusopetuksenoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "GE",
+            "koodistoUri" : "ahvenanmaankoskioppiaineetyleissivistava"
+          },
+          "pakollinen" : true
+        },
+        "mukautettuOppimäärä" : false,
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "7",
+            "koodistoUri" : "ahvenanmaanarviointiasteikkoyleissivistava"
+          },
+          "päivä" : "2026-06-04",
+          "hyväksytty" : true
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "ahvenanmaanperusopetuksenoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "FY",
+            "koodistoUri" : "ahvenanmaankoskioppiaineetyleissivistava"
+          },
+          "pakollinen" : true
+        },
+        "mukautettuOppimäärä" : false,
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "7",
+            "koodistoUri" : "ahvenanmaanarviointiasteikkoyleissivistava"
+          },
+          "päivä" : "2026-06-04",
+          "hyväksytty" : true
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "ahvenanmaanperusopetuksenoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "KE",
+            "koodistoUri" : "ahvenanmaankoskioppiaineetyleissivistava"
+          },
+          "pakollinen" : true
+        },
+        "mukautettuOppimäärä" : false,
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "8",
+            "koodistoUri" : "ahvenanmaanarviointiasteikkoyleissivistava"
+          },
+          "päivä" : "2026-06-04",
+          "hyväksytty" : true
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "ahvenanmaanperusopetuksenoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "TE",
+            "koodistoUri" : "ahvenanmaankoskioppiaineetyleissivistava"
+          },
+          "pakollinen" : true
+        },
+        "mukautettuOppimäärä" : false,
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "8",
+            "koodistoUri" : "ahvenanmaanarviointiasteikkoyleissivistava"
+          },
+          "päivä" : "2026-06-04",
+          "hyväksytty" : true
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "ahvenanmaanperusopetuksenoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "RO",
+            "koodistoUri" : "ahvenanmaankoskioppiaineetyleissivistava"
+          },
+          "pakollinen" : true
+        },
+        "mukautettuOppimäärä" : false,
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "8",
+            "koodistoUri" : "ahvenanmaanarviointiasteikkoyleissivistava"
+          },
+          "päivä" : "2026-06-04",
+          "hyväksytty" : true
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "ahvenanmaanperusopetuksenoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "HI",
+            "koodistoUri" : "ahvenanmaankoskioppiaineetyleissivistava"
+          },
+          "pakollinen" : true
+        },
+        "mukautettuOppimäärä" : false,
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "9",
+            "koodistoUri" : "ahvenanmaanarviointiasteikkoyleissivistava"
+          },
+          "päivä" : "2026-06-04",
+          "hyväksytty" : true
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "ahvenanmaanperusopetuksenoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "YH",
+            "koodistoUri" : "ahvenanmaankoskioppiaineetyleissivistava"
+          },
+          "pakollinen" : true
+        },
+        "mukautettuOppimäärä" : false,
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "8",
+            "koodistoUri" : "ahvenanmaanarviointiasteikkoyleissivistava"
+          },
+          "päivä" : "2026-06-04",
+          "hyväksytty" : true
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "ahvenanmaanperusopetuksenoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "MU",
+            "koodistoUri" : "ahvenanmaankoskioppiaineetyleissivistava"
+          },
+          "pakollinen" : true
+        },
+        "mukautettuOppimäärä" : false,
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "9",
+            "koodistoUri" : "ahvenanmaanarviointiasteikkoyleissivistava"
+          },
+          "päivä" : "2026-06-04",
+          "hyväksytty" : true
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "ahvenanmaanperusopetuksenoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "KU",
+            "koodistoUri" : "ahvenanmaankoskioppiaineetyleissivistava"
+          },
+          "pakollinen" : true
+        },
+        "mukautettuOppimäärä" : false,
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "8",
+            "koodistoUri" : "ahvenanmaanarviointiasteikkoyleissivistava"
+          },
+          "päivä" : "2026-06-04",
+          "hyväksytty" : true
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "ahvenanmaanperusopetuksenoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "KS",
+            "koodistoUri" : "ahvenanmaankoskioppiaineetyleissivistava"
+          },
+          "pakollinen" : true
+        },
+        "mukautettuOppimäärä" : false,
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "7",
+            "koodistoUri" : "ahvenanmaanarviointiasteikkoyleissivistava"
+          },
+          "päivä" : "2026-06-04",
+          "hyväksytty" : true
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "ahvenanmaanperusopetuksenoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "LI",
+            "koodistoUri" : "ahvenanmaankoskioppiaineetyleissivistava"
+          },
+          "pakollinen" : true
+        },
+        "mukautettuOppimäärä" : false,
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "9",
+            "koodistoUri" : "ahvenanmaanarviointiasteikkoyleissivistava"
+          },
+          "päivä" : "2026-06-04",
+          "hyväksytty" : true
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "ahvenanmaanperusopetuksenoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "KO",
+            "koodistoUri" : "ahvenanmaankoskioppiaineetyleissivistava"
+          },
+          "pakollinen" : true
+        },
+        "mukautettuOppimäärä" : false,
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "8",
+            "koodistoUri" : "ahvenanmaanarviointiasteikkoyleissivistava"
+          },
+          "päivä" : "2026-06-04",
+          "hyväksytty" : true
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "ahvenanmaanperusopetuksenoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "OP",
+            "koodistoUri" : "ahvenanmaankoskioppiaineetyleissivistava"
+          },
+          "pakollinen" : true
+        },
+        "mukautettuOppimäärä" : false,
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "8",
+            "koodistoUri" : "ahvenanmaanarviointiasteikkoyleissivistava"
+          },
+          "päivä" : "2026-06-04",
+          "hyväksytty" : true
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "ahvenanmaanperusopetuksenoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "A1",
+            "koodistoUri" : "ahvenanmaankoskioppiaineetyleissivistava"
+          },
+          "kieli" : {
+            "koodiarvo" : "EN",
+            "koodistoUri" : "kielivalikoima"
+          },
+          "pakollinen" : true
+        },
+        "mukautettuOppimäärä" : false,
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "9",
+            "koodistoUri" : "ahvenanmaanarviointiasteikkoyleissivistava"
+          },
+          "päivä" : "2026-06-04",
+          "hyväksytty" : true
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "ahvenanmaanperusopetuksenoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "B1",
+            "koodistoUri" : "ahvenanmaankoskioppiaineetyleissivistava"
+          },
+          "kieli" : {
+            "koodiarvo" : "FI",
+            "koodistoUri" : "kielivalikoima"
+          },
+          "pakollinen" : true
+        },
+        "mukautettuOppimäärä" : false,
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "7",
+            "koodistoUri" : "ahvenanmaanarviointiasteikkoyleissivistava"
+          },
+          "päivä" : "2026-06-04",
+          "hyväksytty" : true
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "ahvenanmaanperusopetuksenoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      } ],
+      "tyyppi" : {
+        "koodiarvo" : "ahvenanmaanperusopetuksenoppimaara",
+        "koodistoUri" : "suorituksentyyppi"
+      }
+    } ],
+    "tyyppi" : {
+      "koodiarvo" : "ahvenanmaanperusopetus",
+      "koodistoUri" : "opiskeluoikeudentyyppi"
+    },
+    "alkamispäivä" : "2017-08-15",
+    "päättymispäivä" : "2026-06-04"
+  } ]
+}

@@ -341,6 +341,7 @@ class KoskiSpecificDatabaseFixtureCreator(application: KoskiApplication) extends
         tila = AmmatillinenOpiskeluoikeudenTila(List(AmmatillinenOpiskeluoikeusjakso(date(2026, 8, 1), ExampleData.opiskeluoikeusLäsnä, Some(ExampleData.lukuvuosimaksuRahoitteinen)))),
         lisätiedot = Some(AmmatillisenOpiskeluoikeudenLisätiedot(hojks = None)),
       )),
+      (KoskiSpecificMockOppijat.ahvenanmaanPerusoppilas, AhvenanmaanPerusopetusExampleData.opiskeluoikeus),
     )
   }
 

@@ -1,7 +1,6 @@
 import { Koodistokoodiviite } from './Koodistokoodiviite'
 import { LocalizedString } from './LocalizedString'
 import { OpiskeluoikeudenOrganisaatiohistoria } from './OpiskeluoikeudenOrganisaatiohistoria'
-import { SisältäväOpiskeluoikeus } from './SisaltavaOpiskeluoikeus'
 import { AhvenanmaanPerusopetuksenPäätasonSuoritus } from './AhvenanmaanPerusopetuksenPaatasonSuoritus'
 import { LähdejärjestelmäId } from './LahdejarjestelmaId'
 import { LähdejärjestelmäkytkennänPurkaminen } from './LahdejarjestelmakytkennanPurkaminen'
@@ -19,7 +18,6 @@ export type AhvenanmaanPerusopetuksenOpiskeluoikeus = {
   $class: 'fi.oph.koski.schema.AhvenanmaanPerusopetuksenOpiskeluoikeus'
   tyyppi: Koodistokoodiviite<'opiskeluoikeudentyyppi', 'ahvenanmaanperusopetus'>
   organisaatiohistoria?: Array<OpiskeluoikeudenOrganisaatiohistoria>
-  sisältyyOpiskeluoikeuteen?: SisältäväOpiskeluoikeus
   oid?: string
   versionumero?: number
   suoritukset: Array<AhvenanmaanPerusopetuksenPäätasonSuoritus>
@@ -41,7 +39,6 @@ export const AhvenanmaanPerusopetuksenOpiskeluoikeus = (
       'ahvenanmaanperusopetus'
     >
     organisaatiohistoria?: Array<OpiskeluoikeudenOrganisaatiohistoria>
-    sisältyyOpiskeluoikeuteen?: SisältäväOpiskeluoikeus
     oid?: string
     versionumero?: number
     suoritukset?: Array<AhvenanmaanPerusopetuksenPäätasonSuoritus>

@@ -1,3 +1,7 @@
+# 7.5.2026
+
+- Ahvenanmaan perusopetuksen (TOR-2587) wiring: tyypin rekisteröinti, koodistofixturet, esimerkkioppija, ePerusteet-validoinnin ohitus. Tallennettavissa dev/QA-ympäristöissä; tuotannossa estetty `features.disabledPäätasonSuoritusTyypit`-konfiguraatiolla.
+
 # 5.5.2026
 
 - Lisätty ensimmäinen luonnos Ahvenanmaan perusopetuksen skeemasta (TOR-2587). Uusi opiskeluoikeustyyppi `ahvenanmaanperusopetus`, haarautettu manner-Suomen perusopetuksen skeemasta. Ei vielä tallennuskelpoinen; koodistot ja validointi puuttuvat.

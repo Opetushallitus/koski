@@ -414,7 +414,7 @@ class KäyttöoikeusryhmätSpec
     }
 
     "näkee vain perusopetuksen opiskeluoikeudet" in {
-      queryOppijat(user = perusopetusViranomainen).flatMap(_.opiskeluoikeudet).map(_.tyyppi.koodiarvo).toSet should be(Set("aikuistenperusopetus", "esiopetus", "europeanschoolofhelsinki", "internationalschool", "perusopetukseenvalmistavaopetus", "perusopetuksenlisaopetus", "perusopetus"))
+      queryOppijat(user = perusopetusViranomainen).flatMap(_.opiskeluoikeudet).map(_.tyyppi.koodiarvo).toSet should be(Set("ahvenanmaanperusopetus", "aikuistenperusopetus", "esiopetus", "europeanschoolofhelsinki", "internationalschool", "perusopetukseenvalmistavaopetus", "perusopetuksenlisaopetus", "perusopetus"))
     }
 
     "ei näe muun typpisiä opiskeluoikeuksia" in {

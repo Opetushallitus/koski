@@ -106,8 +106,6 @@ case class AhvenanmaanPerusopetuksenOpiskeluoikeus(
   lähdejärjestelmänId: Option[LähdejärjestelmäId] = None,
   oppilaitos: Option[Oppilaitos],
   koulutustoimija: Option[Koulutustoimija] = None,
-  @Hidden
-  sisältyyOpiskeluoikeuteen: Option[SisältäväOpiskeluoikeus] = None,
   tila: AhvenanmaanPerusopetuksenOpiskeluoikeudenTila,
   lisätiedot: Option[AhvenanmaanPerusopetuksenOpiskeluoikeudenLisätiedot] = None,
   suoritukset: List[AhvenanmaanPerusopetuksenPäätasonSuoritus],
@@ -123,6 +121,7 @@ case class AhvenanmaanPerusopetuksenOpiskeluoikeus(
   override def withKoulutustoimija(koulutustoimija: Koulutustoimija) =
     this.copy(koulutustoimija = Some(koulutustoimija))
   override def arvioituPäättymispäivä = None
+  override def sisältyyOpiskeluoikeuteen: Option[SisältäväOpiskeluoikeus] = None
 
   def kotiopetuksessa(päivämäärä: LocalDate): Boolean = lisätiedot match {
     case Some(l) => l.kotiopetusjaksot.toList.flatten.exists(_.contains(päivämäärä))
@@ -238,6 +237,7 @@ sealed trait AhvenanmaanOppiaineenTaiToimintaAlueenSuoritus
 case class AhvenanmaanPerusopetuksenOppiaineenSuoritus(
   koulutusmoduuli: AhvenanmaanPerusopetuksenOppiaine,
   @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT, Rooli.SUORITUSJAKO_KATSELIJA))
+  @DefaultValue(false)
   mukautettuOppimäärä: Boolean = false,
   arviointi: Option[List[AhvenanmaanPerusopetuksenOppiaineenArviointi]] = None,
   suorituskieli: Option[Koodistokoodiviite] = None,

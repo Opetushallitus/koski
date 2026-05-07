@@ -111,6 +111,9 @@ class EPerusteisiinPerustuvaValidator(
             validatePerusteVoimassa(diaarillinen.perusteenDiaarinumero.get, LocalDate.of(2022, 7, 31))
           case (s: NäyttötutkintoonValmistavanKoulutuksenSuoritus, _) if s.tutkinto.perusteenDiaarinumero.isDefined =>
             validatePerusteVoimassa(s.tutkinto.perusteenDiaarinumero.get, vaadittuPerusteenVoimassaolopäivä)
+          case (_: AhvenanmaanPerusopetuksenPäätasonSuoritus, _) =>
+            // Ahvenanmaan OPS (ÅLR2020/9841) ei ole julkisena ePerusteissa.
+            HttpStatus.ok
           case (_, diaarillinen: Diaarinumerollinen) if diaarillinen.perusteenDiaarinumero.isDefined =>
             validatePerusteVoimassa(diaarillinen.perusteenDiaarinumero.get, vaadittuPerusteenVoimassaolopäivä)
           case _ => HttpStatus.ok
