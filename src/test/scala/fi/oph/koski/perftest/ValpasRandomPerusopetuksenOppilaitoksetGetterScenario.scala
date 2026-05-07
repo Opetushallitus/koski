@@ -8,7 +8,7 @@ import java.nio.charset.Charset
 object ValpasRandomPerusopetuksenOppilaitoksetGetterScenario extends PerfTestScenario {
   val HAKUTIEDOT_FETCH_LIST_SIZE = 100
 
-  val oids = new RandomValpasPeruskouluOid()
+  val oids = new RandomValpasPeruskouluOidFromS3()
   oids.next // To check before start
   def operation(x: Int) = {
     val data = oids.next

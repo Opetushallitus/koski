@@ -17,6 +17,9 @@ jobs:
   valpas-organisaatio-listaus:
     name: valpas-organisaatio-listaus
     runs-on: ubuntu-24.04
+    permissions:
+      id-token: write
+      contents: read
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
 
@@ -29,6 +32,12 @@ jobs:
         with:
           node-version: "24.15.0"
 
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@ec61189d14ec14c8efccab744f656cffd0e33f37 # v6
+        with:
+          role-to-assume: ${{ secrets.VALPAS_PERFTEST_S3_ROLE }}
+          aws-region: eu-west-1
+
       - name: Build
         run: mvn test-compile
 
@@ -38,7 +47,6 @@ jobs:
           export PERFTEST_ROUNDS=1700
           export WARMUP_ROUNDS=50
           export PERFTEST_SUCCESS_THRESHOLD_PERCENTAGE=98
-          export KOSKI_VALPAS_ORGANISAATIOT_FILENAME="valpas_qa_peruskoulujen_ja_oppijoiden_oidit.txt"
           mvn exec:java -Dexec.mainClass="fi.oph.koski.perftest.ValpasRandomPerusopetuksenOppilaitoksetGetter"
 
       - name: Report failure
@@ -53,6 +61,9 @@ jobs:
   valpas-oppija-detaalit:
     name: valpas-oppija-detaalit
     runs-on: ubuntu-24.04
+    permissions:
+      id-token: write
+      contents: read
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
 
@@ -65,6 +76,12 @@ jobs:
         with:
           node-version: "24.15.0"
 
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@ec61189d14ec14c8efccab744f656cffd0e33f37 # v6
+        with:
+          role-to-assume: ${{ secrets.VALPAS_PERFTEST_S3_ROLE }}
+          aws-region: eu-west-1
+
       - name: Build
         run: mvn test-compile
 
@@ -74,7 +91,6 @@ jobs:
           export PERFTEST_ROUNDS=5000
           export WARMUP_ROUNDS=50
           export PERFTEST_SUCCESS_THRESHOLD_PERCENTAGE=98
-          export KOSKI_VALPAS_OPPIJAOIDIT_FILENAME="valpas_qa_oppija_oidit.txt"
           mvn exec:java -Dexec.mainClass="fi.oph.koski.perftest.ValpasRandomPerusopetuksenOppijaGetter"
 
       - name: Report failure

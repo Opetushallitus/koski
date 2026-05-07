@@ -16,12 +16,11 @@ abstract class ValpasOpiskeluoikeusInserterScenario {
   def lähdejärjestelmäId = Some(LähdejärjestelmäId(Some(UUID.randomUUID().toString), Koodistokoodiviite(lähdejärjestelmät(Random.nextInt(lähdejärjestelmät.length)), "lahdejarjestelma")))
   val alkamispäivä = date(2021, 8, 15)
   val valmistumispäivä = date(2022, 6, 4)
-  val peruskoulut = new RandomValpasPeruskouluOid()
+  val peruskoulut = new RandomValpasPeruskouluOidFromFile()
   val luokka = "9A"
 
-
   def opiskeluoikeudet(x: Int) = {
-    val peruskoulu = Oppilaitos(peruskoulut.next.oppilaitos, None, None)
+    val peruskoulu = Oppilaitos(peruskoulut.next, None, None)
 
     val yhdeksännenLuokanSuoritus = PerusopetuksenVuosiluokanSuoritus(
       koulutusmoduuli = PerusopetuksenLuokkaAste(9, perusopetuksenDiaarinumero),

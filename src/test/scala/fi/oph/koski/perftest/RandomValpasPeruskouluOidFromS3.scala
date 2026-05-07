@@ -4,14 +4,13 @@ import fi.oph.koski.util.EnvVariables
 import fi.oph.koski.schema.Organisaatio
 import fi.oph.koski.valpas.opiskeluoikeusrepository.ValpasHenkilö
 
-import scala.io.Source
 import scala.util.Random
 
-class RandomValpasPeruskouluOid extends EnvVariables {
-  private def organisaatioListaTiedosto: String = "src/test/resources/" + requiredEnv("KOSKI_VALPAS_ORGANISAATIOT_FILENAME")
-  private def randomLines(filename: String) = Random.shuffle(Source.fromFile(filename).getLines().toList)
-  private val oids = randomLines(organisaatioListaTiedosto)
-  private var index = 0;
+class RandomValpasPeruskouluOidFromS3 extends EnvVariables {
+  private val s3Key = env("KOSKI_VALPAS_ORGANISAATIOT_S3_KEY", ValpasPerftestS3.defaultOrganisaatioJaOppijaOiditCsv)
+  private val oids = Random.shuffle(ValpasPerftestS3.getLines(s3Key))
+  private var index = 0
+
   private def nextFrom(list: List[String]) = this.synchronized {
     index = index + 1
     PeruskouluJaOppijat(list.apply(index % list.length))
@@ -27,7 +26,7 @@ case class PeruskouluJaOppijat(
 
 object PeruskouluJaOppijat {
   def apply(source: String): PeruskouluJaOppijat = {
-    val oppilaitos :: oppijat = source.split(" ").toList
-    PeruskouluJaOppijat(oppilaitos, oppijat)
+    val Array(oppilaitosOid, oppijatStr) = source.split(",", 2)
+    PeruskouluJaOppijat(oppilaitosOid, oppijatStr.split(" ").toList)
   }
 }

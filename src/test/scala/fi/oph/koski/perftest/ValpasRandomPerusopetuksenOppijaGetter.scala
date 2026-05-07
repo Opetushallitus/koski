@@ -8,7 +8,7 @@ object ValpasRandomPerusopetuksenOppijaGetter extends App {
 }
 
 object ValpasRandomPerusopetuksenOppijaGetterScenario extends PerfTestScenario {
-  val oids = new RandomValpasOppijaOid()
+  val oids = new RandomValpasOppijaOidFromS3()
   oids.next // To check before start
   def operation(x: Int) = List(Operation(uri = s"valpas/api/oppija/${oids.next}", uriPattern=Some("valpas/api/oppija/_")))
   override def bodyValidator: Boolean = {

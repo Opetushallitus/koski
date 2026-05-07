@@ -5,7 +5,7 @@ import fi.oph.koski.schema._
 
 trait FixtureOidDataInserterScenario extends PerfTestScenario {
   val responseCodes = List(200)
-  val randomOid = new RandomValpasOppijaOid()
+  val randomOid = new RandomValpasOppijaOidFromS3()
 
   def opiskeluoikeudet(oppijaIndex: Int): List[Opiskeluoikeus]
 
