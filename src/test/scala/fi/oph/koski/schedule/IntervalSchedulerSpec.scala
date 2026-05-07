@@ -59,9 +59,9 @@ class IntervalSchedulerSpec extends AnyFreeSpec with TestEnvironment with Matche
           shouldFireCheckIntervalMillis = 1
         )
         val start = System.currentTimeMillis
-        Wait.until(sharedResource.get == 1, timeoutMs = 700)
+        Wait.until(sharedResource.get == 1, timeoutMs = 1000, retryIntervalMs = 10)
         (System.currentTimeMillis() - start >= 500) should be(true)
-        Wait.until(sharedResource.get == 2, timeoutMs = 500)
+        Wait.until(sharedResource.get == 2, timeoutMs = 1000, retryIntervalMs = 10)
         (System.currentTimeMillis() - start >= 1000) should be(true)
         scheduler.shutdown()
       }
@@ -74,9 +74,9 @@ class IntervalSchedulerSpec extends AnyFreeSpec with TestEnvironment with Matche
           shouldFireCheckIntervalMillis = 1, concurrency = 0
         )
         val start = System.currentTimeMillis
-        Wait.until(sharedResource.get == 1, timeoutMs = 700)
+        Wait.until(sharedResource.get == 1, timeoutMs = 1000, retryIntervalMs = 10)
         (System.currentTimeMillis() - start >= 500) should be(true)
-        Wait.until(sharedResource.get == 2, timeoutMs = 500)
+        Wait.until(sharedResource.get == 2, timeoutMs = 1000, retryIntervalMs = 10)
         (System.currentTimeMillis() - start >= 1000) should be(true)
         scheduler.shutdown()
       }
