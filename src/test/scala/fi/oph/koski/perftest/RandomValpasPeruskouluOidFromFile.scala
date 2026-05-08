@@ -8,7 +8,7 @@ import scala.util.Random
 
 class RandomValpasPeruskouluOidFromFile extends EnvVariables {
   private val filename = env("KOSKI_VALPAS_ORGANISAATIOT_FILENAME", "valpas_local_peruskoulujen_oidit.txt")
-  private val oids = Random.shuffle(Source.fromFile(filename).getLines().toList.filter(_.nonEmpty))
+  private val oids = Random.shuffle(Source.fromFile("src/test/resources/" + filename).getLines().toList.filter(_.nonEmpty))
   private var index = 0
 
   private def nextFrom(list: List[Organisaatio.Oid]) = this.synchronized {
