@@ -9,6 +9,9 @@ import {
   Column,
   ColumnRow,
   ResponsiveValue,
+  ResponsiveValueObj,
+  ResponsiveValueTarget,
+  isResponsiveValueObj,
   mapResponsiveValue
 } from '../containers/Columns'
 import { Section } from '../containers/Section'
@@ -42,6 +45,7 @@ export type OsasuoritusTableProps<
 export type OsasuoritusTableColumn<DATA_KEYS extends string> = {
   key: DATA_KEYS
   label?: string
+  span?: ResponsiveValue<number>
 }
 
 export type OsasuoritusRowData<DATA_KEYS extends string> = {
@@ -148,7 +152,7 @@ export const OsasuoritusHeader = <DATA_KEYS extends string>(
         {props.columns.map((column, index) => (
           <Column
             key={index}
-            span={index === 0 ? spans.nameHeader : spans.data}
+            span={index === 0 ? spans.nameHeader : spans.data[index - 1]}
           >
             {getColumnLabel(column)}
           </Column>
@@ -214,7 +218,7 @@ export const OsasuoritusRow = <DATA_KEYS extends string>(
         {props.columns.map((column, index) => (
           <Column
             key={index}
-            span={index === 0 ? spans.name : spans.data}
+            span={index === 0 ? spans.name : spans.data[index - 1]}
             className={
               index === 0
                 ? 'OsasuoritusRow__nameColumn'
@@ -275,8 +279,11 @@ const getSpans = (
     phone: fitDataColumnSpan(8, availableColumns, dataColumnCount),
     small: fitDataColumnSpan(6, availableColumns, dataColumnCount)
   }
-  const data = mapResponsiveValue((w: number) => w * dataColumnCount)(dataSpan)
-  const name = mapResponsiveValue((w: number) => availableColumns - w)(data)
+  const data = columns.slice(1).map((column) => column.span ?? dataSpan)
+  const dataWidth = sumResponsiveValues(data)
+  const name = mapResponsiveValue((w: number) => availableColumns - w)(
+    dataWidth
+  )
   const nameHeader = mapResponsiveValue(
     (w: number) => w + leftIcons + completed
   )(name)
@@ -286,13 +293,47 @@ const getSpans = (
     leftIcons,
     completed,
     rightIcons,
-    data: dataSpan,
+    data,
     name,
     nameHeader
   }
 }
 
 const MIN_NARROW_NAME_SPAN = 8
+
+const RESPONSIVE_VALUE_TARGETS: ResponsiveValueTarget[] = [
+  'default',
+  'phone',
+  'small',
+  'large'
+]
+
+const valueAtTarget = (
+  value: ResponsiveValue<number>,
+  target: ResponsiveValueTarget
+): number =>
+  isResponsiveValueObj(value) ? (value[target] ?? value.default) : value
+
+const sumResponsiveValues = (
+  values: Array<ResponsiveValue<number>>
+): ResponsiveValue<number> =>
+  RESPONSIVE_VALUE_TARGETS.reduce<ResponsiveValueObj<number>>((sum, target) => {
+    const value = values.reduce<number>(
+      (total, current) => total + valueAtTarget(current, target),
+      0
+    )
+
+    return target === 'default' ||
+      values.some(
+        (current) =>
+          isResponsiveValueObj(current) && current[target] !== undefined
+      )
+      ? {
+          ...sum,
+          [target]: value
+        }
+      : sum
+  }, {} as ResponsiveValueObj<number>)
 
 const fitDataColumnSpan = (
   preferredSpan: number,

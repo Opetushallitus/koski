@@ -286,7 +286,7 @@ const Oppiainetaulukko: React.FC<OppiainetaulukkoProps> = ({
     { key: columnHeader },
     ...(showArvosana ? [{ key: 'Arvosana' }] : []),
     ...(showLaajuus ? [{ key: 'Laajuus' }] : []),
-    { key: ' ', label: '' }
+    { key: ' ', label: '', span: 1 }
   ]
 
   return (
@@ -359,7 +359,7 @@ const GroupedOppiaineet: React.FC<GroupedOppiaineetProps> = ({
     <ColumnRow valign="top">
       {(pakolliset.length > 0 || form.editMode) && (
         <Column
-          span={{ default: 10, large: 24 }}
+          span={{ default: 12, large: 24 }}
           data-testid="oppiaineet-pakolliset"
         >
           <Oppiainetaulukko
@@ -377,7 +377,7 @@ const GroupedOppiaineet: React.FC<GroupedOppiaineetProps> = ({
       )}
       {(valinnaiset.length > 0 || form.editMode || käyttäytymisenArvio) && (
         <Column
-          span={{ default: 14, large: 24 }}
+          span={{ default: 12, large: 24 }}
           data-testid="oppiaineet-valinnaiset"
         >
           {(valinnaiset.length > 0 || form.editMode) && (
@@ -554,9 +554,18 @@ const oppiaineToRow = <T extends string>(
       />
     ) : laajuus ? (
       <TestIdText id="laajuus.value">
-        <span
-          style={{ whiteSpace: 'nowrap' }}
-        >{`${laajuus.arvo} ${t(laajuus.yksikkö.nimi)}`}</span>
+        <span className="PerusopetuksenOppiaineet__laajuus">
+          {laajuus.arvo}{' '}
+          <span
+            className={`PerusopetuksenOppiaineet__laajuusYksikko${
+              laajuus.yksikkö.koodiarvo === '3'
+                ? ' PerusopetuksenOppiaineet__laajuusYksikko--vuosiviikkotuntia'
+                : ''
+            }`}
+          >
+            {t(laajuus.yksikkö.nimi)}
+          </span>
+        </span>
       </TestIdText>
     ) : null
   }
