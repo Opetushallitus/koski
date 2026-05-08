@@ -82,7 +82,16 @@ trait DatabaseConfig extends NotLoggable with Logging {
 
   private final def configForIamAuth(config: Config): Config = {
     if (useIamAuth) {
-      val host = iamHostEnvVar.flatMap(sys.env.get).getOrElse(config.getString("host"))
+      val host = iamHostEnvVar match {
+        case Some(envVarName) =>
+          sys.env.getOrElse(envVarName,
+            throw new RuntimeException(
+              s"IAM auth is enabled but env var $envVarName is not set"
+            )
+          )
+        case None =>
+          config.getString("host")
+      }
       config
         .withValue("host", fromAnyRef(host))
         .withValue("user", fromAnyRef("koski_iam"))
