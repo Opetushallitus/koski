@@ -10,15 +10,18 @@ import java.util.concurrent.ConcurrentLinkedQueue
 import scala.jdk.CollectionConverters._
 
 object ValpasPeruskouluFromOidsOpiskeluoikeusInserter extends App with Logging {
-  PerfTestRunner.executeTest(ValpasFromOidsOpiskeluoikeusInserterScenario)
-
-  val outputFile = ValpasPerftestS3.defaultOrganisaatioJaOppijaOiditCsv
-  ValpasFromOidsOpiskeluoikeusInserterScenario.writeCsv(outputFile)
-  logger.info(s"Tulokset kirjoitettiin tiedostoon: $outputFile")
+  try {
+    PerfTestRunner.executeTest(ValpasFromOidsOpiskeluoikeusInserterScenario)
+  } finally {
+    val outputFile = ValpasPerftestS3.defaultOrganisaatioJaOppijaOiditCsv
+    ValpasFromOidsOpiskeluoikeusInserterScenario.writeCsv(outputFile)
+    logger.info(s"Tulokset kirjoitettiin tiedostoon: $outputFile")
+  }
 }
 
 object ValpasFromOidsOpiskeluoikeusInserterScenario extends ValpasOpiskeluoikeusInserterScenario with FixtureOidDataInserterScenario {
   override val luokka = "9A"
+  override val readBody = true
 
   private val insertedOppijatByOppilaitos = new ConcurrentHashMap[String, ConcurrentLinkedQueue[String]]()
 
