@@ -25,6 +25,7 @@ import { mapObjectValues } from '../util/fp/objects'
 import { fetchKoodistot } from '../util/koskiApi'
 import { PropsWithOnlyChildren } from '../util/react'
 import { coerceForSort } from '../util/strings'
+import { uniqueKoodistoUris, uniqueKoodistot } from './koodistoUtils'
 
 const Loading = Symbol('loading')
 const Failed = Symbol('failed')
@@ -64,24 +65,26 @@ export const useKoodistot = <T extends string>(
   ...koodistoUris: Array<string | null | undefined>
 ) => {
   const { koodistot, loadKoodistot } = useContext(KoodistoContext)
+  const koodistoUriKey = String(koodistoUris)
+  const koodistoUrisToLoad = useMemo(
+    () => uniqueKoodistoUris(koodistoUris),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [koodistoUriKey]
+  )
 
   useEffect(() => {
-    loadKoodistot(koodistoUris.filter(nonNull))
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [String(koodistoUris), loadKoodistot])
+    loadKoodistot(koodistoUrisToLoad)
+  }, [koodistoUrisToLoad, loadKoodistot])
 
   return useMemo(() => {
-    const k = koodistoUris
-      .filter(nonNull)
-      .flatMap(
-        (uri) =>
-          (Array.isArray(koodistot[uri])
-            ? koodistot[uri]
-            : []) as KoodistokoodiviiteKoodistonNimellä<T>[]
-      )
-    return A.isNonEmpty(k) ? k : null
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [String(koodistoUris), koodistot])
+    const k = koodistoUrisToLoad.flatMap(
+      (uri) =>
+        (Array.isArray(koodistot[uri])
+          ? koodistot[uri]
+          : []) as KoodistokoodiviiteKoodistonNimellä<T>[]
+    )
+    return A.isNonEmpty(k) ? uniqueKoodistot(k) : null
+  }, [koodistoUrisToLoad, koodistot])
 }
 
 /**
@@ -160,13 +163,13 @@ export const useKoodistoFiller = (): (<T>(a: T) => Promise<T>) =>
   useCallback(async <T,>(obj: T): Promise<T> => {
     const collectKoodistoUris = (a: any): string[] =>
       Array.isArray(a)
-        ? distinct(a.flatMap(collectKoodistoUris))
+        ? uniqueKoodistoUris(a.flatMap(collectKoodistoUris))
         : typeof a === 'object'
           ? isKoodistokoodiviite(a)
             ? a.nimi === undefined
               ? [a.koodistoUri]
               : []
-            : distinct(Object.values(a).flatMap(collectKoodistoUris))
+            : uniqueKoodistoUris(Object.values(a).flatMap(collectKoodistoUris))
           : []
 
     const uris = collectKoodistoUris(obj)
@@ -224,7 +227,7 @@ class KoodistoLoader {
   onChange?: () => void
 
   async loadKoodistot(koodistoUris: string[]): Promise<boolean> {
-    const unfetchedKoodistoUris = koodistoUris.filter(
+    const unfetchedKoodistoUris = uniqueKoodistoUris(koodistoUris).filter(
       (uri) =>
         this.koodistot[uri] !== Loading && !Array.isArray(this.koodistot[uri])
     )
@@ -328,8 +331,6 @@ export const KoodistoProvider = (props: KoodistoProviderProps) => {
     </KoodistoContext.Provider>
   )
 }
-
-const distinct = A.uniq(string.Eq)
 
 export const KoodistokoodiviiteKoodistonNimelläOrd = Ord.contramap(
   (k: KoodistokoodiviiteKoodistonNimellä) =>
