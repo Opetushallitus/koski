@@ -171,7 +171,10 @@ export const PerusopetuksenOppiaineet: React.FC<
   return (
     <div className="oppiaineet">
       <h5>{t(title)}</h5>
-      <p data-testid="perusopetuksen-arvosteluasteikko">
+      <p
+        className="perusopetuksen-arvosteluasteikko"
+        data-testid="perusopetuksen-arvosteluasteikko"
+      >
         {t('Arvostelu 4-10, S (suoritettu) tai H (hylätty)')}
       </p>
       {hasGrouping ? (
