@@ -25,6 +25,6 @@ object ValpasPerftestS3 extends EnvVariables {
   def getLines(key: String): List[String] = {
     val request = GetObjectRequest.builder.bucket(bucket).key(key).build
     val bytes = client.getObjectAsBytes(request)
-    bytes.asUtf8String().split("\n").toList.filter(_.nonEmpty).drop(1)
+    bytes.asUtf8String().split("\n").toList.map(_.trim).filter(_.nonEmpty).drop(1)
   }
 }
