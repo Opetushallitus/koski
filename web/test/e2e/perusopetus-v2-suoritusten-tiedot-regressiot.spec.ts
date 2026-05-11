@@ -212,6 +212,61 @@ test.describe('Perusopetuksen uusi käyttöliittymä: suoritusten tiedot regress
     await expect(suoritusPerusteRivi(page)).toContainText('1/011/2004')
   })
 
+  test('Täydentävien oman äidinkielen opintojen arvosanat näkyvät kerran lisäysmodalissa', async ({
+    page,
+    oppijaPage
+  }) => {
+    await oppijaPage.goto(kaisaUrl)
+    await page.getByTestId('oo.0.opiskeluoikeus.edit').click()
+
+    await page
+      .getByTestId('oo.0.suoritukset.0.osasuoritukset.0.arvosana.edit.input')
+      .click()
+    await expect(
+      page.locator('.Select__optionLabel').filter({ hasText: /^10$/ })
+    ).toBeVisible()
+    await page.keyboard.press('Escape')
+
+    await page
+      .getByTestId('oo.0.suoritukset.0.omanÄidinkielenOpinnot.lisää')
+      .click()
+    await page.getByTestId('oo.0.suoritukset.0.modal.arvosana.input').click()
+
+    const arvosanaLabels = await page
+      .getByTestId('oo.0.suoritukset.0.modal.arvosana.options')
+      .locator('.Select__optionLabel')
+      .allTextContents()
+
+    expect(arvosanaLabels).toHaveLength(10)
+    expect(new Set(arvosanaLabels).size).toBe(arvosanaLabels.length)
+    expect(arvosanaLabels).toContain('10 erinomainen')
+    expect(arvosanaLabels).toContain('S hyväksytty')
+  })
+
+  test.describe('Organisaatiovalitsin pääkäyttäjänä', () => {
+    test.use({ storageState: virkailija('pää') })
+
+    test('näyttää nykyisen oppilaitoksen muokkaustilassa', async ({
+      page,
+      oppijaPage
+    }) => {
+      await oppijaPage.goto(kaisaUrl)
+      await page.getByTestId('oo.0.opiskeluoikeus.edit').click()
+
+      const organisaatioInput = page.getByTestId(
+        'oo.0.suoritukset.0.organisaatio.edit.input'
+      )
+      await expect(organisaatioInput).toHaveValue('Jyväskylän normaalikoulu')
+
+      await organisaatioInput.click()
+      await expect(
+        page
+          .locator('.Select__optionLabel')
+          .filter({ hasText: /^Jyväskylän normaalikoulu$/ })
+      ).toBeVisible()
+    })
+  })
+
   test('Ensimmäisen oppiaineen poisto ei korruptoi seuraavan oppiaineen arvosanaa', async ({
     page,
     oppijaPage

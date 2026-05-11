@@ -1,4 +1,6 @@
 import type { Page } from '@playwright/test'
+import { Oppija } from '../../app/types/fi/oph/koski/schema/Oppija'
+import { Raw } from '../../app/util/schema'
 import { expect, test } from './base'
 import { virkailija } from './setup/auth'
 
@@ -38,6 +40,97 @@ const lisatiedotRow = (page: Page, label: string) =>
   page
     .locator('.EditorContainer__lisatiedot .KeyValueRow')
     .filter({ hasText: label })
+
+const jynOid = '1.2.246.562.10.14613773812'
+const jynNimi = 'Jyväskylän normaalikoulu'
+const jynOppilaitos = {
+  oid: jynOid,
+  oppilaitosnumero: {
+    koodiarvo: '00204',
+    nimi: { fi: jynNimi, sv: jynNimi, en: jynNimi },
+    koodistoUri: 'oppilaitosnumero'
+  },
+  nimi: { fi: jynNimi, sv: jynNimi, en: jynNimi },
+  kotipaikka: {
+    koodiarvo: '179',
+    nimi: { fi: 'Jyväskylä', sv: 'Jyväskylä' },
+    koodistoUri: 'kunta'
+  }
+}
+
+type OppijaWithTestFlags = Raw<Oppija> & {
+  ignoreKoskiValidator: boolean
+}
+
+const oppijaVanhentuneillaLisätiedoilla = (): OppijaWithTestFlags => ({
+  // Osa vanhentuneista kentistä siivotaan normaaleissa siirroissa pois;
+  // tässä mallinnetaan jo aiemmin tallennettua vanhaa dataa.
+  ignoreKoskiValidator: true,
+  henkilö: {
+    hetu: '010110A1230',
+    etunimet: 'Vanhentunut',
+    kutsumanimi: 'Vanhentunut',
+    sukunimi: 'Lisätieto'
+  },
+  opiskeluoikeudet: [
+    {
+      tyyppi: {
+        koodiarvo: 'perusopetus',
+        koodistoUri: 'opiskeluoikeudentyyppi'
+      },
+      oppilaitos: jynOppilaitos,
+      tila: {
+        opiskeluoikeusjaksot: [
+          {
+            alku: '2017-01-01',
+            tila: {
+              koodiarvo: 'lasna',
+              koodistoUri: 'koskiopiskeluoikeudentila'
+            }
+          }
+        ]
+      },
+      lisätiedot: {
+        perusopetuksenAloittamistaLykätty: false,
+        erityisenTuenPäätös: {
+          alku: '2017-01-01',
+          loppu: '2017-12-31',
+          opiskeleeToimintaAlueittain: false,
+          erityisryhmässä: false
+        },
+        kotiopetus: {
+          alku: '2018-01-01',
+          loppu: '2018-02-01'
+        },
+        ulkomailla: {
+          alku: '2019-01-01',
+          loppu: '2019-02-01'
+        }
+      },
+      suoritukset: [
+        {
+          tyyppi: {
+            koodiarvo: 'perusopetuksenoppimaara',
+            koodistoUri: 'suorituksentyyppi'
+          },
+          koulutusmoduuli: {
+            tunniste: {
+              koodiarvo: '201101',
+              koodistoUri: 'koulutus'
+            },
+            perusteenDiaarinumero: '104/011/2014'
+          },
+          toimipiste: jynOppilaitos,
+          suorituskieli: { koodiarvo: 'FI', koodistoUri: 'kieli' },
+          suoritustapa: {
+            koodiarvo: 'koulutus',
+            koodistoUri: 'perusopetuksensuoritustapa'
+          }
+        }
+      ]
+    }
+  ]
+})
 
 const addAikajakso = async (page: Page, label: string) => {
   await lisatiedotRow(page, label)
@@ -136,6 +229,61 @@ test.describe('Perusopetuksen uusi käyttöliittymä: opiskeluoikeuden lisätied
     await expect(
       page.getByTestId(`${lisatieto('vuosiluokkiinSitoutumatonOpetus')}.value`)
     ).toContainText('Kyllä')
+  })
+
+  test('Vanhentuneet lisätiedot näytetään ja ovat muokattavissa vanhan käyttöliittymän ehdoilla', async ({
+    page,
+    oppijaPage,
+    fixtures
+  }) => {
+    await fixtures.reset()
+    const oppija = await fixtures.putOppija(oppijaVanhentuneillaLisätiedoilla())
+    await oppijaPage.goto(
+      `${oppija.henkilö.oid}?opiskeluoikeudenTyyppi=perusopetus&perusopetus-v2=true`
+    )
+
+    await expect(
+      lisatiedotRow(page, 'Perusopetuksen aloittamista lykätty')
+    ).toHaveCount(0)
+    await expect(
+      page.getByTestId(`${lisatieto('kotiopetus')}.alku`)
+    ).toContainText('1.1.2018')
+    await expect(
+      page.getByTestId(`${lisatieto('ulkomailla')}.alku`)
+    ).toContainText('1.1.2019')
+    const erityisenTuenJaksot = lisatiedotRow(page, 'Erityisen tuen jaksot')
+    await expect(erityisenTuenJaksot).toContainText(
+      'Opiskelee toiminta-alueittain ei'
+    )
+    await expect(erityisenTuenJaksot).toContainText(
+      'Opiskelee erityisryhmässä ei'
+    )
+
+    await page.getByTestId(editButton).click()
+
+    const aloittamistaLykätty = page.getByTestId(
+      `${lisatieto('perusopetuksenAloittamistaLykätty')}.edit.input`
+    )
+    await expect(aloittamistaLykätty).toBeVisible()
+    await expect(aloittamistaLykätty).not.toBeChecked()
+    await aloittamistaLykätty.check()
+    await expect(aloittamistaLykätty).toBeChecked()
+
+    await expect(
+      page.getByTestId(aikajaksoInput('kotiopetus', 'alku'))
+    ).toHaveValue('1.1.2018')
+    await expect(
+      page.getByTestId(aikajaksoInput('ulkomailla', 'alku'))
+    ).toHaveValue('1.1.2019')
+
+    const erityisryhmässä = lisatiedotRow(
+      page,
+      'Erityisen tuen jaksot'
+    ).getByRole('checkbox', { name: 'Opiskelee erityisryhmässä' })
+    await expect(erityisryhmässä).toBeVisible()
+    await expect(erityisryhmässä).not.toBeChecked()
+    await erityisryhmässä.check()
+    await expect(erityisryhmässä).toBeChecked()
   })
 
   test('Joustava perusopetus: validi päivämääräväli tallentuu', async ({

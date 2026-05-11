@@ -10,8 +10,12 @@ import { ErityisenTuenPäätös } from '../types/fi/oph/koski/schema/ErityisenTu
 import { DateInput } from '../components-v2/controls/DateInput'
 import { Checkbox } from '../components-v2/controls/Checkbox'
 import { t } from '../i18n/i18n'
+import { BooleanView } from '../components-v2/opiskeluoikeus/BooleanField'
 
 const emptyPäätös = ErityisenTuenPäätös({ opiskeleeToimintaAlueittain: false })
+
+const hasDeprecatedBooleanValue = (value?: boolean | null): value is boolean =>
+  value !== undefined && value !== null
 
 export const ErityisenTuenPäätösView: React.FC<
   FieldViewerProps<ErityisenTuenPäätös | undefined, EmptyObject>
@@ -26,23 +30,37 @@ export const ErityisenTuenPäätösView: React.FC<
       <TestIdText id="loppu">
         {value.loppu && ISO2FinnishDate(value.loppu)}
       </TestIdText>
-      {value.opiskeleeToimintaAlueittain && (
-        <span>
-          {' ('}
-          {t('opiskelee toiminta-alueittain')}
-          {')'}
-        </span>
-      )}
-      {value.erityisryhmässä && (
-        <span>
-          {' ('}
-          {t('erityisryhmässä')}
-          {')'}
-        </span>
+      <BooleanValue
+        label="Opiskelee toiminta-alueittain"
+        value={value.opiskeleeToimintaAlueittain}
+        testId="opiskeleeToimintaAlueittain"
+      />
+      {hasDeprecatedBooleanValue(value.erityisryhmässä) && (
+        <BooleanValue
+          label="Opiskelee erityisryhmässä"
+          value={value.erityisryhmässä}
+          testId="erityisryhmässä"
+        />
       )}
     </div>
   )
 }
+
+const BooleanValue: React.FC<{
+  label: string
+  value: boolean
+  testId: string
+}> = ({ label, value, testId }) => (
+  <div>
+    <span>{t(label)} </span>
+    <BooleanView
+      value={value}
+      testId={testId}
+      trueText={t('kyllä')}
+      falseText={t('ei')}
+    />
+  </div>
+)
 
 export const ErityisenTuenPäätösEdit: React.FC<
   FieldEditorProps<ErityisenTuenPäätös | undefined, EmptyObject>
@@ -68,16 +86,16 @@ export const ErityisenTuenPäätösEdit: React.FC<
         onChange={(opiskeleeToimintaAlueittain) =>
           onChange({ ...current, opiskeleeToimintaAlueittain })
         }
-        label={t('Opiskelee toiminta-alueittain')}
+        label="Opiskelee toiminta-alueittain"
         testId="opiskeleeToimintaAlueittain"
       />
-      {current.erityisryhmässä && (
+      {hasDeprecatedBooleanValue(current.erityisryhmässä) && (
         <Checkbox
           checked={current.erityisryhmässä}
           onChange={(erityisryhmässä) =>
             onChange({ ...current, erityisryhmässä })
           }
-          label={t('Erityisryhmässä')}
+          label="Opiskelee erityisryhmässä"
           testId="erityisryhmässä"
         />
       )}

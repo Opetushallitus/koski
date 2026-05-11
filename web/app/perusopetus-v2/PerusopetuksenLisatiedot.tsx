@@ -211,8 +211,12 @@ type LisätiedotPath = FormOptic<
 const hasOldUiValue = (value: unknown): boolean =>
   value !== undefined &&
   value !== null &&
-  value !== false &&
   (!Array.isArray(value) || value.length > 0)
+
+const shouldShowDeprecatedBoolean = (
+  value: boolean | undefined,
+  editMode: boolean
+): boolean => hasOldUiValue(value) && (editMode || value !== false)
 
 const BooleanRow: React.FC<{
   form: FormModel<PerusopetuksenOpiskeluoikeus>
@@ -222,7 +226,11 @@ const BooleanRow: React.FC<{
   value: boolean | undefined
   deprecated?: boolean
 }> = ({ form, lisatiedotPath, fieldName, label, value, deprecated }) => {
-  if (deprecated ? !hasOldUiValue(value) : !form.editMode && value !== true) {
+  if (
+    deprecated
+      ? !shouldShowDeprecatedBoolean(value, form.editMode)
+      : !form.editMode && value !== true
+  ) {
     return null
   }
 
@@ -371,21 +379,25 @@ const ErityisenTuenPäätöksetRow: React.FC<{
         <>
           {/* Legacy single field */}
           {lisätiedot.erityisenTuenPäätös && (
-            <FormField
-              form={form}
-              path={singlePath}
-              view={ErityisenTuenPäätösView}
-              edit={ErityisenTuenPäätösEdit}
-            />
+            <TestIdLayer id="erityisenTuenPäätös">
+              <FormField
+                form={form}
+                path={singlePath}
+                view={ErityisenTuenPäätösView}
+                edit={ErityisenTuenPäätösEdit}
+              />
+            </TestIdLayer>
           )}
           {/* Array field */}
-          <FormListField
-            form={form}
-            path={päätöksetPath}
-            view={ErityisenTuenPäätösView}
-            edit={ErityisenTuenPäätösEdit}
-            removable
-          />
+          <TestIdLayer id="erityisenTuenPäätökset">
+            <FormListField
+              form={form}
+              path={päätöksetPath}
+              view={ErityisenTuenPäätösView}
+              edit={ErityisenTuenPäätösEdit}
+              removable
+            />
+          </TestIdLayer>
           <ButtonGroup>
             <FlatButton
               onClick={() =>
@@ -404,7 +416,26 @@ const ErityisenTuenPäätöksetRow: React.FC<{
           </ButtonGroup>
         </>
       ) : (
-        `${allPäätökset.length} ${allPäätökset.length === 1 ? 'päätös' : 'päätöstä'}`
+        <>
+          {lisätiedot.erityisenTuenPäätös && (
+            <TestIdLayer id="erityisenTuenPäätös">
+              <FormField
+                form={form}
+                path={singlePath}
+                view={ErityisenTuenPäätösView}
+                edit={ErityisenTuenPäätösEdit}
+              />
+            </TestIdLayer>
+          )}
+          <TestIdLayer id="erityisenTuenPäätökset">
+            <FormListField
+              form={form}
+              path={päätöksetPath}
+              view={ErityisenTuenPäätösView}
+              edit={ErityisenTuenPäätösEdit}
+            />
+          </TestIdLayer>
+        </>
       )}
     </KeyValueRow>
   )

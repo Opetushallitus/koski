@@ -8,8 +8,15 @@ import { localize, t } from '../../i18n/i18n'
 import { OrganisaatioHierarkia } from '../../types/fi/oph/koski/organisaatio/OrganisaatioHierarkia'
 import { isKoulutustoimija } from '../../types/fi/oph/koski/schema/Koulutustoimija'
 import { Organisaatio } from '../../types/fi/oph/koski/schema/Organisaatio'
+import { isOppilaitos } from '../../types/fi/oph/koski/schema/Oppilaitos'
+import { isToimipiste } from '../../types/fi/oph/koski/schema/Toimipiste'
+import { nonNull } from '../../util/fp/arrays'
 import { EmptyObject } from '../../util/objects'
-import { getOrganisaatioId, toOrganisaatio } from '../../util/organisaatiot'
+import {
+  getOrganisaationKotipaikka,
+  getOrganisaatioId,
+  toOrganisaatio
+} from '../../util/organisaatiot'
 import { common, CommonProps } from '../CommonProps'
 import { OptionList, Select, SelectOption } from '../controls/Select'
 import { FieldEditorProps, FieldViewerProps } from '../forms/FormField'
@@ -41,12 +48,14 @@ export const OrganisaatioEdit = <T extends Organisaatio>(
   const [query, setQuery] = useState('')
   const queriedOrganisaatiot = useOrganisaatioHierarkia(query)
 
+  const includedOrganisaatiot = useMemo(
+    () => [props.value, ...(props.include || [])].filter(nonNull),
+    [props.include, props.value]
+  )
+
   const organisaatiot = useMemo(
-    () => [
-      ...queriedOrganisaatiot,
-      ...(props.include?.map(organisaatioToOrganisaatioHierarkia) || [])
-    ],
-    [props.include, queriedOrganisaatiot]
+    () => addMissingOrganisaatiot(queriedOrganisaatiot, includedOrganisaatiot),
+    [includedOrganisaatiot, queriedOrganisaatiot]
   )
   const hasOwnOrganisaatiot = useHasOwnOrganisaatiot()
 
@@ -100,11 +109,42 @@ const organisaatioHierarkiaToOptions = <T extends Organisaatio>(
     }
   })
 
+const addMissingOrganisaatiot = <T extends Organisaatio>(
+  orgs: OrganisaatioHierarkia[],
+  included: T[]
+): OrganisaatioHierarkia[] => {
+  const missing = included.filter(
+    (org) => !hasOrganisaatio(orgs, getOrganisaatioId(org))
+  )
+
+  return missing.length === 0
+    ? orgs
+    : [...orgs, ...missing.map(organisaatioToOrganisaatioHierarkia)]
+}
+
+const hasOrganisaatio = (orgs: OrganisaatioHierarkia[], oid: string): boolean =>
+  orgs.some(
+    (org) => org.oid === oid || hasOrganisaatio(org.children || [], oid)
+  )
+
 const organisaatioToOrganisaatioHierarkia = <T extends Organisaatio>(
   org: T
 ): OrganisaatioHierarkia =>
   OrganisaatioHierarkia({
     oid: getOrganisaatioId(org),
     aktiivinen: true,
-    nimi: org.nimi || localize('–')
+    nimi: org.nimi || localize('–'),
+    organisaatiotyypit: organisaatiotyypit(org),
+    kotipaikka: getOrganisaationKotipaikka(org),
+    oppilaitosnumero: isOppilaitos(org) ? org.oppilaitosnumero : undefined,
+    yTunnus: isKoulutustoimija(org) ? org.yTunnus : undefined
   })
+
+const organisaatiotyypit = (org: Organisaatio): string[] =>
+  isKoulutustoimija(org)
+    ? ['KOULUTUSTOIMIJA']
+    : isOppilaitos(org)
+      ? ['OPPILAITOS']
+      : isToimipiste(org)
+        ? ['TOIMIPISTE']
+        : []
