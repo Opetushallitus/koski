@@ -20,6 +20,7 @@ object TiedotuspalveluClient {
 trait TiedotuspalveluClient {
   def sendKielitutkintoTodistusTiedote(
     oppijanumero: String,
+    opiskeluoikeusOid: String,
     idempotencyKey: String,
     todistusBucket: Option[String],
     todistusKey: Option[String],

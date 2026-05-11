@@ -3,11 +3,11 @@ package fi.oph.koski.todistus.tiedote
 import com.typesafe.config.ConfigValueFactory
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
+import fi.oph.koski.json.GenericJsonFormats
 import fi.oph.koski.koskiuser.MockUsers
 import fi.oph.koski.log.{AuditLogTester, KoskiAuditLogMessageField, KoskiOperation}
 import fi.oph.koski.todistus.TodistusSpecHelpers
 import fi.oph.koski.util.Wait
-import fi.oph.koski.json.GenericJsonFormats
 import org.json4s.jackson.JsonMethods.parse
 
 class KielitutkintotodistusTiedoteWorkflowSpec extends TodistusSpecHelpers {
@@ -36,7 +36,13 @@ class KielitutkintotodistusTiedoteWorkflowSpec extends TodistusSpecHelpers {
         job.get.oppijaOid should equal(oppijaOid)
         job.get.state should equal(KielitutkintotodistusTiedoteState.COMPLETED)
         job.get.completedAt shouldBe defined
-        mockTiedotuspalveluClient.sentNotifications.exists(n => n.oppijanumero == oppijaOid && n.idempotencyKey == s"$opiskeluoikeusOid-initial" && n.todistusBucket.nonEmpty && n.todistusKey.nonEmpty) should be(true)
+
+        val notification = mockTiedotuspalveluClient.sentNotifications.find(_.oppijanumero == oppijaOid)
+        notification shouldBe defined
+        notification.get.opiskeluoikeusOid should equal(opiskeluoikeusOid)
+        notification.get.idempotencyKey should equal(s"$opiskeluoikeusOid-initial")
+        notification.get.todistusBucket should not be empty
+        notification.get.todistusKey should not be empty
       }
     }
 
@@ -50,6 +56,7 @@ class KielitutkintotodistusTiedoteWorkflowSpec extends TodistusSpecHelpers {
         // Varmista, että bucket ja key on lähetetty tiedotuspalvelulle
         val notification = mockTiedotuspalveluClient.sentNotifications.find(_.oppijanumero == oppijaOid)
         notification shouldBe defined
+        notification.get.opiskeluoikeusOid should equal(opiskeluoikeusOid)
         notification.get.todistusBucket should equal(Some("koski-tiedotuspalvelu-local"))
         notification.get.todistusKey.get should endWith("/tiedote.pdf")
       }

@@ -87,6 +87,7 @@ class KielitutkintotodistusTiedoteService(application: KoskiApplication) extends
 
         val result = client.sendKielitutkintoTodistusTiedote(
           oppijaOid,
+          opiskeluoikeusOid,
           s"$opiskeluoikeusOid-initial",
           todistusResult.map(_.location.bucket),
           todistusResult.map(_.location.key),
