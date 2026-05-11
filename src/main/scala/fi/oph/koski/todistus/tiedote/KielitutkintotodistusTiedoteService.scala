@@ -68,7 +68,7 @@ class KielitutkintotodistusTiedoteService(application: KoskiApplication) extends
   }
 
   private def generateAndSend(tiedoteJobId: String, oppijaOid: String, opiskeluoikeusOid: String, attempt: Int): Unit = {
-    val kituResult = kituClient.getExamineeDetails(opiskeluoikeusOid)
+    val kituResult = getKituExamineeDetails(opiskeluoikeusOid)
 
     kituResult match {
       case Left(err) if attempt < maxAttempts =>
@@ -107,6 +107,18 @@ class KielitutkintotodistusTiedoteService(application: KoskiApplication) extends
             repository.setFailed(tiedoteJobId, err.toString)
             logger.error(s"Tiedotteen lähetys epäonnistui: tiedote=$tiedoteJobId oo=$opiskeluoikeusOid virhe=$err")
         }
+    }
+  }
+
+  private def getKituExamineeDetails(opiskeluoikeusOid: String): Either[HttpStatus, KituExamineeDetails] = {
+    application.possu.findByOidIlmanKäyttöoikeustarkistusta(opiskeluoikeusOid).flatMap { row =>
+      row.toOpiskeluoikeusUnsafe(KoskiSpecificSession.systemUser).lähdejärjestelmänId.flatMap(_.id.filter(_.nonEmpty)) match {
+        case Some(lähdejärjestelmänId) =>
+          kituClient.getExamineeDetails(lähdejärjestelmänId)
+        case None =>
+          logger.warn(s"Yhteystietojen haku kitulta ohitetaan, koska lähdejärjestelmänId.id puuttuu: oo=$opiskeluoikeusOid")
+          Left(KoskiErrorCategory.unavailable("Kitu-kutsu ohitettu: lähdejärjestelmänId.id puuttuu"))
+      }
     }
   }
 

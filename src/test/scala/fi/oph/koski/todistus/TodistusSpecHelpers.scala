@@ -1,7 +1,10 @@
 package fi.oph.koski.todistus
 
 import fi.oph.koski.api.misc.PutOpiskeluoikeusTestMethods
+import fi.oph.koski.db.PostgresDriverWithJsonSupport.plainAPI._
+import fi.oph.koski.db.QueryMethods
 import fi.oph.koski.documentation.ExamplesKielitutkinto
+import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
 import fi.oph.koski.henkilo.OppijaHenkilö
 import fi.oph.koski.koskiuser.MockUsers.paakayttaja
 import fi.oph.koski.koskiuser.{KoskiMockUser, MockUsers}
@@ -47,6 +50,48 @@ class TodistusSpecHelpers extends AnyFreeSpec with KoskiHttpSpec with Matchers w
 
   protected def mockKituClient: MockKituClient =
     app.kituClient.asInstanceOf[MockKituClient]
+
+  protected def withLähdejärjestelmällisetKielitutkintofixturet[T](f: => T): T = {
+    val ensisijainenOid = getVahvistettuKielitutkinnonOpiskeluoikeusOid(KoskiSpecificMockOppijat.kielitutkinnonSuorittaja.oid)
+    val eligibleOids = app.kielitutkintotodistusTiedoteRepository.findEligibleBatch(1000).map(_._1)
+    val oids = (ensisijainenOid.toList ++ eligibleOids.filterNot(ensisijainenOid.contains)).distinct
+
+    try {
+      oids.zipWithIndex.foreach { case (opiskeluoikeusOid, index) =>
+        asetaKielitutkinnonLähdejärjestelmänId(opiskeluoikeusOid, f"yki.${123456 + index}%06d")
+      }
+      f
+    } finally {
+      oids.foreach(poistaKielitutkinnonLähdejärjestelmänId)
+    }
+  }
+
+  private def asetaKielitutkinnonLähdejärjestelmänId(opiskeluoikeusOid: String, lähdejärjestelmänId: String): Unit = {
+    QueryMethods.runDbSync(app.masterDatabase.db, sql"""
+      UPDATE opiskeluoikeus
+      SET data = jsonb_set(
+        data,
+        '{lähdejärjestelmänId}',
+        jsonb_build_object(
+          'id', $lähdejärjestelmänId,
+          'lähdejärjestelmä', jsonb_build_object(
+            'koodiarvo', 'kielitutkintorekisteri',
+            'koodistoUri', 'lahdejarjestelma'
+          )
+        ),
+        true
+      )
+      WHERE oid = $opiskeluoikeusOid
+      """.asUpdate)
+  }
+
+  private def poistaKielitutkinnonLähdejärjestelmänId(opiskeluoikeusOid: String): Unit = {
+    QueryMethods.runDbSync(app.masterDatabase.db, sql"""
+      UPDATE opiskeluoikeus
+      SET data = data - 'lähdejärjestelmänId'
+      WHERE oid = $opiskeluoikeusOid
+      """.asUpdate)
+  }
 
   protected def waitForTiedoteSchedulerIdle(): Unit = {
     Wait.until(!app.kielitutkintotodistusTiedoteScheduler.schedulerInstance.exists(_.isTaskRunning))

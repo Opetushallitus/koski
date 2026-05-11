@@ -12,6 +12,12 @@ import org.json4s.jackson.JsonMethods.parse
 
 class KielitutkintotodistusTiedoteWorkflowSpec extends TodistusSpecHelpers {
 
+  override protected def withoutRunningTiedoteScheduler[T](f: => T): T = {
+    super.withoutRunningTiedoteScheduler {
+      withLähdejärjestelmällisetKielitutkintofixturet(f)
+    }
+  }
+
   override protected def afterEach(): Unit = {
     cleanup()
   }
@@ -225,6 +231,42 @@ class KielitutkintotodistusTiedoteWorkflowSpec extends TodistusSpecHelpers {
         mockTiedotuspalveluClient.sentNotifications.find(_.oppijanumero == oppijaOid) shouldBe None
 
         val job = app.kielitutkintotodistusTiedoteRepository.findAll(100, 0).find(_.opiskeluoikeusOid == opiskeluoikeusOid)
+        job shouldBe defined
+        job.get.state should equal(KielitutkintotodistusTiedoteState.ERROR)
+      }
+    }
+
+    "Hakee Kitu-yhteystiedot lähdejärjestelmän tunnisteella" in {
+      withoutRunningTiedoteScheduler {
+        val oppijaOid = KoskiSpecificMockOppijat.kielitutkinnonSuorittaja.oid
+        val opiskeluoikeusOid = getVahvistettuKielitutkinnonOpiskeluoikeusOid(oppijaOid).get
+
+        app.kielitutkintotodistusTiedoteService.processAll()
+
+        mockKituClient.calledLähdejärjestelmänIds should contain("yki.123456")
+        mockKituClient.calledEndpoints should contain("/yhteystiedot/api/opiskeluoikeus/lahdejarjestelman/yki.123456")
+        mockKituClient.calledEndpoints should not contain s"/yhteystiedot/api/opiskeluoikeus/$opiskeluoikeusOid"
+      }
+    }
+
+    "Ei kutsu Kitua kun lähdejärjestelmänId puuttuu" in {
+      super.withoutRunningTiedoteScheduler {
+        val oppija = KoskiSpecificMockOppijat.kielitutkintoTodistusVirhe
+        app.kielitutkintotodistusTiedoteRepository.markAllExistingKielitutkinnotAsCompletedForLocal()
+        val opiskeluoikeus = setupOppijaWithAndGetOpiskeluoikeus(
+          vahvistettuKielitutkinnonOpiskeluoikeus.copy(lähdejärjestelmänId = None),
+          oppija,
+          MockUsers.paakayttaja
+        )
+
+        mockKituClient.reset()
+
+        app.kielitutkintotodistusTiedoteService.processAll()
+
+        mockKituClient.callCount should equal(0)
+        mockTiedotuspalveluClient.sentNotifications.find(_.oppijanumero == oppija.oid) shouldBe None
+
+        val job = app.kielitutkintotodistusTiedoteRepository.findAll(100, 0).find(_.opiskeluoikeusOid == opiskeluoikeus.oid.get)
         job shouldBe defined
         job.get.state should equal(KielitutkintotodistusTiedoteState.ERROR)
       }
