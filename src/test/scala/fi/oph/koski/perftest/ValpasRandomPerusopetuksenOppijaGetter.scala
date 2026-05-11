@@ -1,5 +1,6 @@
 package fi.oph.koski.perftest
 
+import fi.oph.koski.perftest.PerfTestScenario.maskOppijaOids
 import org.json4s.JField
 import org.json4s.jackson.JsonMethods
 
@@ -23,7 +24,7 @@ object ValpasRandomPerusopetuksenOppijaGetterScenario extends PerfTestScenario {
     val hasError = bodyContainsError || !bodyContainsValintaTila
 
     if (hasError) {
-      logger.error(this.body)
+      logger.error(maskOppijaOids(this.body))
     }
 
     !hasError

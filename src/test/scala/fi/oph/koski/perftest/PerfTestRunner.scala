@@ -3,9 +3,9 @@ package fi.oph.koski.perftest
 import java.io._
 import java.lang.System.currentTimeMillis
 import java.util.zip.GZIPOutputStream
-
 import fi.oph.koski.http.HttpStatusException
 import fi.oph.koski.log.{LoggerWithContext, Logging}
+import fi.oph.koski.perftest.PerfTestScenario.maskOppijaOids
 import fi.oph.koski.util.Streams
 
 import scala.annotation.tailrec
@@ -70,7 +70,7 @@ object PerfTestRunner extends Logging {
                 val success = try {
                   scenario.submit(o.method, o.uri, o.queryParams, headers, body) {
                     if (!o.responseCodes.contains(scenario.response.status)) {
-                      scenario.logger.error(HttpStatusException(scenario.response.status, scenario.response.body, o.method, o.uri).getMessage)
+                      scenario.logger.error(maskOppijaOids(HttpStatusException(scenario.response.status, scenario.response.body, o.method, o.uri).getMessage))
                       false
                     } else {
                       if (scenario.readBody) {
@@ -81,7 +81,7 @@ object PerfTestRunner extends Logging {
                   }
                 } catch {
                   case e: Exception =>
-                    scenario.logger.error(e.getMessage)
+                    scenario.logger.error(maskOppijaOids(e.getMessage))
                     false
                 }
                 val elapsed = currentTimeMillis - started

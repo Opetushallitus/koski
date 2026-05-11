@@ -17,4 +17,9 @@ trait PerfTestScenario extends KoskidevHttpSpecification with EnvVariables with 
   def bodyValidator: Boolean = true
 
   override def logger = super.logger
+
+}
+
+object PerfTestScenario {
+  def maskOppijaOids(body: String): String = body.replaceAll("""1\.2\.246\.562\.24\.\d+""", "***")
 }
