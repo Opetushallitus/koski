@@ -410,6 +410,7 @@ trait MuuOppiaineIB extends IBOppiaine {
   @KoodistoKoodiarvo("SPO")
   @KoodistoKoodiarvo("MATAA")
   @KoodistoKoodiarvo("MATAI")
+  @KoodistoKoodiarvo("WS")
   def tunniste: Koodistokoodiviite
 }
 
