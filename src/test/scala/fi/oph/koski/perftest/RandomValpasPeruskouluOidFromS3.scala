@@ -7,7 +7,7 @@ import fi.oph.koski.valpas.opiskeluoikeusrepository.ValpasHenkilö
 import scala.util.Random
 
 class RandomValpasPeruskouluOidFromS3 extends EnvVariables {
-  private val s3Key = env("KOSKI_VALPAS_ORGANISAATIOT_S3_KEY", ValpasPerftestS3.defaultOrganisaatioJaOppijaOiditCsv)
+  private val s3Key = optEnv("VALPAS_ORGANISAATIOT_S3_KEY").filter(_.nonEmpty).getOrElse(ValpasPerftestS3.defaultOrganisaatioJaOppijaOiditCsv)
   private val oids = Random.shuffle(ValpasPerftestS3.getLines(s3Key))
   private var index = 0
 

@@ -44,6 +44,7 @@ jobs:
           export PERFTEST_ROUNDS=850
           export WARMUP_ROUNDS=0
           export PERFTEST_SUCCESS_THRESHOLD_PERCENTAGE=98
+          export VALPAS_ORGANISAATIOT_S3_KEY=${{ secrets.VALPAS_ORGANISAATIOT_S3_KEY }}
           mvn exec:java -Dexec.mainClass="fi.oph.koski.perftest.ValpasRandomPerusopetuksenOppilaitoksetGetter"
 
       - name: Report failure
@@ -88,6 +89,7 @@ jobs:
           export PERFTEST_ROUNDS=5000
           export WARMUP_ROUNDS=0
           export PERFTEST_SUCCESS_THRESHOLD_PERCENTAGE=98
+          export VALPAS_OPPIJAOIDIT_S3_KEY=${{ secrets.VALPAS_OPPIJAOIDIT_S3_KEY }}
           mvn exec:java -Dexec.mainClass="fi.oph.koski.perftest.ValpasRandomPerusopetuksenOppijaGetter"
 
       - name: Report failure
