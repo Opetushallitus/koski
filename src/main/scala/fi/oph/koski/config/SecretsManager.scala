@@ -11,13 +11,6 @@ import java.time.{Duration, Instant}
 import java.util.concurrent.ConcurrentHashMap
 import scala.reflect.runtime.universe._
 
-case class DatabaseConnectionConfig(
-  host: String,
-  port: Int,
-  username: String,
-  password: String
-) extends NotLoggable
-
 object SecretsManager extends Logging {
   private val ttl: Duration = Duration.ofHours(1)
 
@@ -44,9 +37,6 @@ object SecretsManager extends Logging {
 }
 
 class SecretsManager extends Logging {
-  def getDatabaseSecret(secretId: String): DatabaseConnectionConfig =
-    getStructuredSecret[DatabaseConnectionConfig](secretId)
-
   def getStructuredSecret[T: TypeTag](secretId: String): T = {
     logger.debug(s"Searching for secret $secretId")
     JsonSerializer.extract[T](parse(getSecretString(secretId)), ignoreExtras = true)

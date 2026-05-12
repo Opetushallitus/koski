@@ -2,41 +2,23 @@ package fi.oph.koski.db
 
 import com.typesafe.config.Config
 import com.typesafe.config.ConfigValueFactory._
-import fi.oph.koski.config.{Environment, FluentConfig, SecretsManager}
+import fi.oph.koski.config.{Environment, FluentConfig}
 import fi.oph.koski.log.{Logging, NotLoggable}
 import fi.oph.koski.raportointikanta.Schema
 import slick.jdbc.PostgresProfile
 
-
-object DatabaseConfig {
-  val EnvVarForKoskiDbSecret = "DB_KOSKI_SECRET_ID"
-  val EnvVarForRaportointiDbSecret = "DB_RAPORTOINTI_SECRET_ID"
-}
-
 class KoskiDatabaseConfig(val rootConfig: Config) extends DatabaseConfig {
-  override val envVarForSecretId: String = DatabaseConfig.EnvVarForKoskiDbSecret
-
   override protected def databaseSpecificConfig: Config = rootConfig.getConfig("dbs.koski")
+
+  override protected def iamHostEnvVar: Option[String] = Some("DB_KOSKI_HOST")
 
   override def migrationLocations: Option[String] = Some("db.migration")
 }
 
 class KoskiReplicaConfig(val rootConfig: Config) extends DatabaseConfig {
-  override val envVarForSecretId: String = DatabaseConfig.EnvVarForKoskiDbSecret
-
   override protected def databaseSpecificConfig: Config = rootConfig.getConfig("dbs.replica")
 
-  override protected def makeConfig(): Config = {
-    if (useSecretsManager) {
-      val host = sys.env.getOrElse(
-        "DB_KOSKI_REPLICA_HOST",
-        throw new RuntimeException("Secrets manager enabled for DB secrets but environment variable DB_KOSKI_REPLICA_HOST not set")
-      )
-      super.makeConfig().withValue("host", fromAnyRef(host))
-    } else {
-      super.makeConfig()
-    }
-  }
+  override protected def iamHostEnvVar: Option[String] = Some("DB_KOSKI_REPLICA_HOST")
 }
 
 trait RaportointiDatabaseConfigBase extends DatabaseConfig {
@@ -47,29 +29,29 @@ trait RaportointiDatabaseConfigBase extends DatabaseConfig {
 }
 
 class RaportointiDatabaseConfig(val rootConfig: Config, val schema: Schema) extends RaportointiDatabaseConfigBase {
-  override val envVarForSecretId: String = DatabaseConfig.EnvVarForRaportointiDbSecret
-
   override protected def databaseSpecificConfig: Config =
     rootConfig.getConfig("dbs.raportointi")
       .withValue("poolName", fromAnyRef(s"koskiRaportointiPool-${schema.name}"))
+
+  override protected def iamHostEnvVar: Option[String] = Some("DB_RAPORTOINTI_HOST")
 
   def withSchema(schema: Schema): RaportointiDatabaseConfig = new RaportointiDatabaseConfig(rootConfig, schema)
 }
 
 class RaportointiGenerointiDatabaseConfig(val rootConfig: Config, val schema: Schema) extends RaportointiDatabaseConfigBase {
-  override val envVarForSecretId: String = DatabaseConfig.EnvVarForRaportointiDbSecret
-
   override protected def databaseSpecificConfig: Config =
     rootConfig.getConfig("dbs.raportointiGenerointi")
       .withValue("poolName", fromAnyRef(s"koskiRaportointiGenerointiPool-${schema.name}"))
+
+  override protected def iamHostEnvVar: Option[String] = Some("DB_RAPORTOINTI_HOST")  // same RDS instance as raportointi
 
   def withSchema(schema: Schema): RaportointiGenerointiDatabaseConfig = new RaportointiGenerointiDatabaseConfig(rootConfig, schema)
 }
 
 class ValpasDatabaseConfig(val rootConfig: Config) extends DatabaseConfig {
-  override val envVarForSecretId: String = DatabaseConfig.EnvVarForKoskiDbSecret // Samalla instanssilla kuin pääkanta
-
   override protected def databaseSpecificConfig: Config = rootConfig.getConfig("dbs.valpas")
+
+  override protected def iamHostEnvVar: Option[String] = Some("DB_KOSKI_HOST")  // same RDS instance as koski master
 
   override def migrationLocations: Option[String] = Some("valpas.migration")
 }
@@ -77,29 +59,17 @@ class ValpasDatabaseConfig(val rootConfig: Config) extends DatabaseConfig {
 trait DatabaseConfig extends NotLoggable with Logging {
   val rootConfig: Config
 
-  protected val envVarForSecretId: String
-
-  protected final val useSecretsManager: Boolean = Environment.usesAwsSecretsManager
+  // Reads USE_SECRETS_MANAGER env var (kept for infra compat, also gates non-DB callers).
+  final val useIamAuth: Boolean = Environment.usesAwsSecretsManager
 
   protected def databaseSpecificConfig: Config
 
-  private final def sharedConfig: Config = rootConfig.getConfig("db")
+  // Env var that overrides the host when IAM auth is on. CDK populates these in server
+  // environments (it knows the RDS endpoints). None means "no override" — local dev keeps
+  // host = "localhost" from reference.conf since useIamAuth is false there anyway.
+  protected def iamHostEnvVar: Option[String] = None
 
-  private final def configWithSecrets(config: Config): Config = {
-    if (useSecretsManager) {
-      val secretsClient = new SecretsManager()
-      val secretId = secretsClient.getSecretId("Koski DB secrets", envVarForSecretId)
-      val secretConfig = secretsClient.getDatabaseSecret(secretId)
-      config
-        .withValue("host", fromAnyRef(secretConfig.host))
-        .withValue("port", fromAnyRef(secretConfig.port))
-        .withValue("user", fromAnyRef(secretConfig.username))
-        .withValue("password", fromAnyRef(secretConfig.password))
-        .withValue("secretId", fromAnyRef(secretId))
-    } else {
-      config
-    }
-  }
+  private final def sharedConfig: Config = rootConfig.getConfig("db")
 
   private final def configWithTestDb(config: Config): Config = {
     if (Environment.isUnitTestEnvironment(rootConfig)) {
@@ -110,24 +80,49 @@ trait DatabaseConfig extends NotLoggable with Logging {
     }
   }
 
+  private final def configForIamAuth(config: Config): Config = {
+    if (useIamAuth) {
+      val host = iamHostEnvVar match {
+        case Some(envVarName) =>
+          sys.env.getOrElse(envVarName,
+            throw new RuntimeException(
+              s"IAM auth is enabled but env var $envVarName is not set"
+            )
+          )
+        case None =>
+          config.getString("host")
+      }
+      config
+        .withValue("host", fromAnyRef(host))
+        .withValue("user", fromAnyRef("koski_iam"))
+    } else {
+      config
+    }
+  }
+
   protected def makeConfig(): Config = {
     databaseSpecificConfig
       .withFallback(sharedConfig)
-      .andThen(configWithSecrets)
+      .andThen(configForIamAuth)
       .andThen(configWithTestDb)
   }
 
   private final def configForSlick(): Config = {
-    (if (useSecretsManager) {
-      // Secrets Manager JDBC-ajuri haluaa käyttäjänimenä secret ID:n. Korvataan
-      // konfiguraation käyttäjänimi vasta tässä vaiheessa, jotta konfiguraatio
-      // toimii myös Flywayn käyttämän tavallisen JDBC-ajurin kanssa.
+    if (useIamAuth) {
+      // The AWS Advanced JDBC Wrapper expects socketTimeout in milliseconds
+      // (it does TimeUnit.toSeconds(value) before forwarding to postgres
+      // JDBC's setSocketTimeout). Our reference.conf has socketTimeout in
+      // seconds — the natural unit for plain postgres JDBC used in local
+      // dev. Convert here, only on the IAM-auth path.
+      val socketTimeoutMs = config.getInt("properties.socketTimeout") * 1000
       config
-        .withValue("user", config.getValue("secretId"))
-        .withValue("driverClassName", fromAnyRef("com.amazonaws.secretsmanager.sql.AWSSecretsManagerPostgreSQLDriver"))
+        .withValue("driverClassName", fromAnyRef("software.amazon.jdbc.Driver"))
+        .withValue("password", fromAnyRef(""))
+        .withValue("properties.socketTimeout", fromAnyRef(socketTimeoutMs))
+        .withValue("url", fromAnyRef(url(useIamProtocol = true)))
     } else {
-      config
-    }).withValue("url", fromAnyRef(url(useSecretsManagerProtocol = useSecretsManager)))
+      config.withValue("url", fromAnyRef(url(useIamProtocol = false)))
+    }
   }
 
   private final lazy val config: Config = makeConfig()
@@ -142,18 +137,20 @@ trait DatabaseConfig extends NotLoggable with Logging {
 
   final def user: String = config.getString("user")
 
-  final def password: String = config.getString("password")
+  final def password: String = if (useIamAuth) "" else config.getString("password")
 
-  final def url(useSecretsManagerProtocol: Boolean): String = {
-    val protocol = if (useSecretsManagerProtocol) {
-      "jdbc-secretsmanager:postgresql"
+  final def url(useIamProtocol: Boolean): String = {
+    if (useIamProtocol) {
+      // Pair IAM auth with SSL in the URL so both Slick and Flyway see the params
+      // (Flyway's setDataSource(url, user, password) overload doesn't accept Properties).
+      // RDS IAM requires TLS; ssl=true&sslmode=require enforces it for any consumer of this URL.
+      s"jdbc:aws-wrapper:postgresql://${host}:${port}/${dbname}?wrapperPlugins=iam&ssl=true&sslmode=require"
     } else {
-      "jdbc:postgresql"
+      s"jdbc:postgresql://${host}:${port}/${dbname}"
     }
-    s"$protocol://${host}:${port}/${dbname}"
   }
 
-  final def isLocal: Boolean = host == "localhost" && !useSecretsManager
+  final def isLocal: Boolean = host == "localhost" && !useIamAuth
 
   final def toSlickDatabase: DB = {
     logger.info(s"Using database $dbname")
