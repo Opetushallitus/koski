@@ -3224,7 +3224,7 @@ packages:
     hasBin: true
 
   mocha-chrome@https://codeload.github.com/opetushallitus/mocha-chrome/tar.gz/b5a822a65b719e648b1bbe73e86cfd2290a59cc3:
-    resolution: {tarball: https://codeload.github.com/opetushallitus/mocha-chrome/tar.gz/b5a822a65b719e648b1bbe73e86cfd2290a59cc3}
+    resolution: {gitHosted: true, tarball: https://codeload.github.com/opetushallitus/mocha-chrome/tar.gz/b5a822a65b719e648b1bbe73e86cfd2290a59cc3}
     version: 3.0.0
     engines: {node: '>=18.0.0'}
     hasBin: true
