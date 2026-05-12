@@ -109,9 +109,16 @@ trait DatabaseConfig extends NotLoggable with Logging {
 
   private final def configForSlick(): Config = {
     if (useIamAuth) {
+      // The AWS Advanced JDBC Wrapper expects socketTimeout in milliseconds
+      // (it does TimeUnit.toSeconds(value) before forwarding to postgres
+      // JDBC's setSocketTimeout). Our reference.conf has socketTimeout in
+      // seconds — the natural unit for plain postgres JDBC used in local
+      // dev. Convert here, only on the IAM-auth path.
+      val socketTimeoutMs = config.getInt("properties.socketTimeout") * 1000
       config
         .withValue("driverClassName", fromAnyRef("software.amazon.jdbc.Driver"))
         .withValue("password", fromAnyRef(""))
+        .withValue("properties.socketTimeout", fromAnyRef(socketTimeoutMs))
         .withValue("url", fromAnyRef(url(useIamProtocol = true)))
     } else {
       config.withValue("url", fromAnyRef(url(useIamProtocol = false)))
