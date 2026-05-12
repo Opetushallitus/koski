@@ -26,14 +26,14 @@ abstract class ValpasOpiskeluoikeusInserterScenario {
       koulutusmoduuli = PerusopetuksenLuokkaAste(9, perusopetuksenDiaarinumero),
       luokka = luokka,
       alkamispäivä = Some(alkamispäivä),
-      vahvistus = vahvistusPaikkakunnalla(valmistumispäivä),
+      vahvistus = vahvistusPaikkakunnalla(valmistumispäivä, org = peruskoulu),
       toimipiste = peruskoulu,
       suorituskieli = suomenKieli
     )
     val perusopetuksenOppimäärä = NuortenPerusopetuksenOppimääränSuoritus(
       koulutusmoduuli = perusopetus,
-      toimipiste = jyväskylänNormaalikoulu,
-      vahvistus = vahvistusPaikkakunnalla(valmistumispäivä),
+      toimipiste = peruskoulu,
+      vahvistus = vahvistusPaikkakunnalla(valmistumispäivä, org = peruskoulu),
       suoritustapa = suoritustapaKoulutus,
       osasuoritukset = kaikkiAineet,
       suorituskieli = suomenKieli
