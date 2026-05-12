@@ -1,4 +1,4 @@
-# Koski suorityskykytestit
+# Koski suorituskykytestit
 
 Suorituskykytestit ovat ajossa Github Actionsissa ja ne ajetaan joka yö testiopintopolkua vasten.
 
@@ -11,83 +11,126 @@ Kosken testeissä testidata generoidaan automaattisesti testien yhteydessä. Dat
 
 ## Valpas testidata
 
-HUOM HUOM! Tämä ohje ei ole ajantasalla (2025-06): testidatan hallinta pitää rakentaa osin uudestaan muulla tavalla.
-Datat on päivitetty viimeksi keväällä 2022 täysin tämän ohjeen mukaisesti. Kesällä 2025 on tehty pieni päivitys samalla
-datan luontiskriptillä DVV:n testiaineistosta löytyville joillekin oppijoille.
-
 Koska Valppaassa oleellinen osa kokonaisuutta on haku- ja valintapalvelusta tuleva tieto, pitää testidatassa olla
-oppijoita, joilla on haku- ja valintatuloksia. Tätä varten tulee testidataa luoda niin, että oppijalla on Koskessa
-oppivelvollisuuden suorittamiseen liittyvä opiskeluoikeus (oppija löytyy Valppaasta) ja haku- ja valintapalvelussa
-haku- ja valintatuloksia.
+oppijoita, joilla on haku- ja valintatuloksia. Tätä varten tulee testidataa luoda niin, että:
+1. Oppijalla on Koskessa oppivelvollisuuden suorittamiseen liittyvä opiskeluoikeus, voidaan luoda itse insertereillä, kts. ohjeet alempaa.
+1. Haku- ja valintapalvelu Ovarassa on haku- ja valintatuloksia oppijoille.
+1. Oppijanumerorekisterissä on oppijoille kotikuntahistoriat, tämä vaaditaan että oppijat näkyvät Valppaassa.
 
-Koska Valppaassa näkyy kerrallaan vain yhden vuoden oppijat, tulee Koskessa olevat opiskeluoikeudet data päivittää
+Koska Valppaassa näkyy kerrallaan vain yhden vuoden oppijat, tulee Koskessa olevat opiskeluoikeudet päivittää
 testiympäristöön 30.9. Lisäksi oppijat tulee päivittää jos haku- ja valintapalvelussa oppijoiden datat muuttuvat.
+
+### Testidatan tallennuspaikka
+
+Valppaan suorituskykytestit testaavat kahta eri näkymää: yksittäisen oppijan sivua sekä oppilaitosten listanäkymää.
+Yksittäisen oppijan näkymän testi käyttää pohjadatana listausta oppija OIDeja. Oppilaitoksen listanäkymä käyttää
+pohjadatana mappausta oppilaitoksesta oppija OIDeihin, joilla on kyseisessä oppilaitoksessa opiskeluoikeus.
+
+Oppija-OIDit ja oppilaitos-oppija-mappaus tallennetaan S3-bucketiin `valpas-perf-test-oppija-oids-qa`.
+Bucket sisältää kaksi CSV-tiedostoa, joiden nimet konfiguroidaan GitHub-secreteillä `VALPAS_OPPIJAOIDIT_S3_KEY`
+ja `VALPAS_ORGANISAATIOT_S3_KEY` (ks. [CI-konfiguraatio](#ci-ympäristön-konfiguraatio)):
+
+- Oppija-OIDit (`VALPAS_OPPIJAOIDIT_S3_KEY`, oletus `valpas_qa_oppija_oidit.csv`) — header `master_oid`,
+  yksi OID per rivi.
+  - Tämä tiedosto pyydetään Ovaran ylläpitäjiltä ja ladataan sitten Kosken S3-bucketiin, josta se on saatavilla Oppijanumerorekisterin ylläpitäjille kotikuntahistorioiden luontia varten.
+- Oppilaitos-oppija-mappaus (`VALPAS_ORGANISAATIOT_S3_KEY`, oletus `valpas_qa_peruskoulujen_ja_oppijoiden_oidit.csv`)
+  — header `oppilaitos_oid,oppija_oidit`, yksi rivi per oppilaitos, oppija-OIDit välilyönnillä erotettuna
+  toisessa sarakkeessa
+  - Tämä tiedosto voidaan muodostaa itse, kun testioppijoille on ensin luotu sopivat opiskeluoikeudet.
+
+Nämä tiedostot ladataan manuaalisesti S3:een.
+Suorituskykytestit lukevat tiedostot suoraan S3:sta OIDC-autentikoinnilla (ks. [CI-konfiguraatio](#ci-ympäristön-konfiguraatio)).
+
+Paikallisesti suorituskykytestit ja inserter lukevat myös tiedostot suoraan S3:sta. Ne käyttävät paikallista AWS SSO kirjautumista autentikointiin.
 
 ### Valpas testidatan päivittäminen
 
 #### 1. Vanhan datan poisto QA-ympäristön kannasta
 
-Vanha data on poistettava QA-ympäristöstä, ennen kuin datoja voidaan päivittää.
+Mahdollinen vanha data on poistettava QA-ympäristöstä ennen kuin uusia datoja voidaan lisätä.
 
-Kyselyssä `alkamispaiva`, `paattymispaiva` ja `luokka` -kentissä käytetty seuraavanlaisia arvoja:
+Tarkista [opiskeluoikeuden luovasta koodista](../src/test/scala/fi/oph/koski/perftest/ValpasOpiskeluoikeusInserterScenario.scala)
+mitä arvoja `alkamispäivä`, `valmistumispäivä` ja `luokka` -muuttujilla on. Tällä hetkellä arvot ovat:
 
-    - `X` on opiskeluoikeuden alkamispäivä, joka on muotoa `YYYY-08-15`, on määritelty [opiskeluoikeuden luovaan koodiin](../src/test/scala/fi/oph/koski/perftest/ValpasOpiskeluoikeusInserterScenario.scala).
-- `Y` on opiskeluoikeuden päättymispäivä, joka on muotoa `YYYY-06-04`, on määritelty [opiskeluoikeuden luovaan koodiin](../src/test/scala/fi/oph/koski/perftest/ValpasOpiskeluoikeusInserterScenario.scala).
-- `Z` on opiskeluoikeuden luokka, joka on määritelty [opiskeluoikeuden luovaan koodiin](../src/test/scala/fi/oph/koski/perftest/ValpasOpiskeluoikeusInserterScenario.scala).
+- `alkamispaiva`: `2025-08-15`
+- `paattymispaiva`: `2026-05-31`
+- `luokka`: `9A`
 
-Alkamis- ja päättymispäivä muodostavat yhdessä aikajakson. Esimerkiksi kauden `2021-2022` opiskeluoikeuksien aikajakso on `2021-08-05` - `2022-06-04`. Tarkista [opiskeluoikeuden luovasta koodista](../src/test/scala/fi/oph/koski/perftest/ValpasOpiskeluoikeusInserterScenario.scala) mitä arvoja kyselyssä on syytä käyttää.
-
-Huom! 2021-2022 datoje ei ole QA:lta poistettu, koska testiaineistoissa on tullut muutoksia. Eli 2021-2022 datat ovat edelleen QA:n tietokannassa.
-
-2025-05 on luotu uudet datat DVV:n pysyvästä testiaineistosta löytyville oppijoille päivämäärätiedoilla
-2024-08-15 - 2025-05-31 ja luokkatiedolla 9P, vain 3 eri oppilaitokseen.
-
-Ensin on hyvä asettaa kyselyn aikakatkaisu tarpeaksi suureksi, ettei kyselyä lopeteta aikakatkaisuun:
-```sql
-SET statement_timeout to 7200000; -- 7200 sekuntia = 2 tuntia
-```
-
-Vanha data poistetaan QA:n tietokannasta seuraavalla kyselyllä:
+Ensin on hyvä asettaa kyselyn aikakatkaisu tarpeeksi suureksi:
 
 ```sql
--- Tarkista suorituskykytestien dokumentaatiosta, mitä arvoja alkamispäivä, päättymispäivä ja luokka tulee olla.
--- X on opiskeluoikeuden alkamispäivä, joka on muotoa YYYY-08-15 ja joka on määritelty opiskeluoikeuden luovaan koodiin.
--- Y on opiskeluoikeuden päättymispäivä, joka on muotoa YYYY-06-04 ja joka on määritelty opiskeluoikeuden luovaan koodiin.
--- Z on opiskeluoikeuden luokka, joka on määritelty opiskeluoikeuden luovaan koodiin.
-DELETE FROM opiskeluoikeus WHERE koulutusmuoto = 'perusopetus' AND alkamispaiva = 'X' AND paattymispaiva = 'Y' AND luokka = 'Z';
+SET statement_timeout TO 7200000; -- 7200 sekuntia = 2 tuntia
 ```
 
-#### 2. Oppija-OID:ien päivittäminen
-* Mikäli haku- ja valintapalvelun datat ovat päivittyneet, lisää haku- ja valintapalvelun kehittäjiltä saadut oppijaoidit
-[valpas_qa_oppija_oidit.txt](../src/test/resources/valpas_qa_oppija_oidit.txt) tiedostoon.
+Vanha data poistetaan QA:n operatiivisesta tietokannasta (`koski`):
 
-* Päivitä opiskeluoikeuksiin lisättävät alkamis- ja loppumispäivämäärät
+```sql
+DELETE FROM opiskeluoikeus
+WHERE koulutusmuoto = 'perusopetus'
+  AND alkamispaiva = '2025-08-15'
+  AND paattymispaiva = '2026-05-31'
+  AND luokka = '9A';
+```
+
+Huom! QA:n tietokannassa on edelleen vanhempaa testidataa:
+- kausi 2021–2022, ei poistettu testiaineistomuutosten takia
+- kausi 2024-08-15–2025-05-31, luokka `9P`, 3 oppilaitosta
+- 2025-05 on luotu uudet datat DVV:n pysyvästä testiaineistosta löytyville oppijoille päivämäärätiedoilla
+
+#### 2. Oppija-OIDien päivittäminen
+
+Jos oppija-OIDit muuttuvat:
+
+- Lataa uusi oppija-OID CSV-tiedosto S3-bucketiin `valpas-perf-test-oppija-oids-qa` GitHub-secretin
+  `VALPAS_OPPIJAOIDIT_S3_KEY` mukaisella nimellä
+- CSV-muoto: header `master_oid`, yksi OID per rivi
+
+#### 3. Päivämäärien päivittäminen koodissa
+
+Päivitä opiskeluoikeuksiin lisättävät alkamis- ja päättymispäivämäärät
 [opiskeluoikeuden luovaan koodiin](../src/test/scala/fi/oph/koski/perftest/ValpasOpiskeluoikeusInserterScenario.scala).
 
-* Aja uusi data testiympäristöön seuraavasti, HUOM! päivitä oppijoiden määrä:
+#### 4. Uuden datan ajo testiympäristöön
 
+Inserter lukee oppija-OIDit S3:sta (`VALPAS_OPPIJAOIDIT_S3_KEY`) ja oppilaitos-OIDit paikallisesta tiedostosta
+(`src/test/resources/` + `KOSKI_VALPAS_ORGANISAATIOT_FILENAME`). Paikallinen oppilaitos-OID-tiedosto sisältää yhden
+oppilaitos-OIDin per rivi ilman headeria.
+
+Tee ensin AWS login.
+```bash
+aws sso login --sso-session <sso session name in local aws config>
 ```
+
+Aja inserter sitten seuraavasti. **Huom!** päivitä `PERFTEST_ROUNDS` vastaamaan oppija-OID-tiedoston rivien tarkkaa
+määrää (ilman headeria):
+
+```bash
 export KOSKI_USER="XXXXXX"
 export KOSKI_PASS="XXXXXX"
 export KOSKI_BASE_URL="https://koski.testiopintopolku.fi/koski"
 export VIRKAILIJA="https://virkailija.testiopintopolku.fi"
-export PERFTEST_ROUNDS=72004 # oidien määrä tiedostossa valpas_qa_oppija_oidit.txt, käytä tarkkaa määrää
+export PERFTEST_ROUNDS=75000  # Oppija OIDien tarkka määrä csv-tiedostossa, eli rivien määrä ilman headeria
 export KOSKI_SERVER_COUNT=2
 export PERFTEST_THREADS=10
 export WARMUP_ROUNDS=0
 export KOSKI_VALPAS_ORGANISAATIOT_FILENAME="valpas_qa_peruskoulujen_oidit.txt"
-export KOSKI_VALPAS_OPPIJAOIDIT_FILENAME="valpas_qa_oppija_oidit.txt"
+export VALPAS_OPPIJAOIDIT_S3_KEY="<oppija-OID-csv-tiedoston nimi S3:ssa>"
 
 mvn test-compile
 mvn exec:java -Dexec.mainClass="fi.oph.koski.perftest.ValpasPeruskouluFromOidsOpiskeluoikeusInserter"
 ```
 
-#### 3. valpas_qa_peruskoulujen_ja_oppijoiden_oidit.txt -tiedoston päivittäminen
+Inserter kirjoittaa ajon päätyttyä tiedoston `valpas_qa_peruskoulujen_ja_oppijoiden_oidit.csv` nykyiseen
+hakemistoon. Tiedosto sisältää insertin aikana muodostuneen oppilaitos-oppija-mappauksen.
 
-Kun uusi data on ajettu testiympäristöön, generoi raportointikanta uudelleen.
+#### 5. Tulostiedoston lataaminen S3:een
 
-Oidit pitää lisäksi päivittää oppilaitostensa kanssa tiedostoon
-[valpas_qa_peruskoulujen_ja_oppijoiden_oidit.txt](../src/test/resources/valpas_qa_peruskoulujen_ja_oppijoiden_oidit.txt)  raportointikantaan ajettavalla sql-kyselyllä:
+Lataa insertin tuottama CSV-tiedosto manuaalisesti S3-bucketiin `valpas-perf-test-oppija-oids-qa`
+GitHub-secretin `VALPAS_ORGANISAATIOT_S3_KEY` mukaisella nimellä:
+
+Jos insertin automaattinen CSV-generointi epäonnistuu, voidaan oppilaitos-oppija-mappaus generoida
+vaihtoehtoisesti raportointikantaan ajettavalla SQL-kyselyllä insertin jälkeen (edellyttää raportointikannan
+regenerointia). Kysely ajetaan raportointikantaa (`raportointikanta`) vasten:
 
 ```sql
 WITH oppilaitokset AS (
@@ -99,28 +142,27 @@ WITH oppilaitokset AS (
 )
    , loytyvat_oppijat AS (
         SELECT unnest(string_to_array(
-            -- Tähän riville kaikki oppija-oidit, jotka löytyvät Valppaasta (valpas_qa_oppija_oidit.txt) välilyönnillä erotettuna:
-                '1.2.246.562.24.50770631005 1.2.246.562.24.10001511889 1.2.246.562.24.10001665997  ...',
+            -- Tähän riville kaikki oppija-oidit välilyönnillä erotettuna:
+                '1.2.246.562.24.50770631005 1.2.246.562.24.10001511889 1.2.246.562.24.10001665997 ...',
                 ' '
             )) AS oppija_oid
     )
 SELECT
-    concat(
-            oppilaitos_oid,
-            ' ',
-            (SELECT
-                 string_agg(DISTINCT r_opiskeluoikeus.oppija_oid, ' ')
-             FROM
-                 r_opiskeluoikeus
-                     JOIN loytyvat_oppijat ON r_opiskeluoikeus.oppija_oid = loytyvat_oppijat.oppija_oid
-             WHERE
-                 oppilaitos_oid = oppilaitokset.oppilaitos_oid)
-        ) AS row
-FROM oppilaitokset;
+    oppilaitos_oid,
+    string_agg(DISTINCT r_opiskeluoikeus.oppija_oid, ' ') AS oppija_oidit
+FROM oppilaitokset
+JOIN r_opiskeluoikeus ON r_opiskeluoikeus.oppilaitos_oid = oppilaitokset.oppilaitos_oid
+JOIN loytyvat_oppijat ON r_opiskeluoikeus.oppija_oid = loytyvat_oppijat.oppija_oid
+GROUP BY oppilaitos_oid;
 ```
 
-Kyselyn voi luoda ajamalla `node src/test/resources/valpas_qa_peruskoulujen_ja_oppijoiden_query_export.js`
+Kyselyn voi luoda myös ajamalla `node src/test/resources/valpas_qa_peruskoulujen_ja_oppijoiden_query_export.js`,
+kun oppijoiden ja oppilaitosten oid:t on tallennettu paikallisesti tiedostoihin `valpas_qa_peruskoulujen_oidit.txt` ja `valpas_qa_oppija_oidit.txt`.
 
-Tämän kyselyn tulos kopioidaan tiedostoon [valpas_qa_peruskoulujen_ja_oppijoiden_oidit.txt](../src/test/resources/valpas_qa_peruskoulujen_ja_oppijoiden_oidit.txt). Tiedosto sisältää joka rivillä ensin oppilaitoksen oidin ja sen jälkeen oppilaitoksesta haettavien oppijoiden oidit.
+Kyselyn tulos muotoillaan CSV-muotoon (header `oppilaitos_oid,oppija_oidit`) ja ladataan S3:een
+`VALPAS_ORGANISAATIOT_S3_KEY`:n mukaisella nimellä.
 
-Ilman näitä oppija-oideja jää Sure-rajapinnan listahaut testaamatta.
+### CI-ympäristön konfiguraatio
+
+Ajantasaisen tiedon CI-ajojen parametreista (threadit, roundit, jne.) saa
+[github actionsin konfiguraatiosta](../.github/workflows/run_valpas_performance_tests.yml).
