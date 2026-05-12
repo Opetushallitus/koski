@@ -123,6 +123,9 @@ mvn exec:java -Dexec.mainClass="fi.oph.koski.perftest.ValpasPeruskouluFromOidsOp
 Inserter kirjoittaa ajon päätyttyä tiedoston `valpas_qa_peruskoulujen_ja_oppijoiden_oidit.csv` nykyiseen
 hakemistoon. Tiedosto sisältää insertin aikana muodostuneen oppilaitos-oppija-mappauksen.
 
+Luotuihin opiskeluoikeuksiin voi tarvittaessa ajaa päivityksiä [erillisellä inserterillä](../src/test/scala/fi/oph/koski/perftest/ValpasPeruskouluUpdateOpiskeluoikeusInserter.scala).
+Yhteisten ympäristömuuttujien (`PERFTEST_ROUNDS` yms.) lisäksi tämä inserter lukee erillisestä paikallisesta csv-tiedostosta oppilaitos oid:n, oppijan oid:n ja opiskeluoikeuden oid:n taulukon.
+
 #### 5. Tulostiedoston lataaminen S3:een
 
 Lataa insertin tuottama CSV-tiedosto manuaalisesti S3-bucketiin `valpas-perf-test-oppija-oids-qa`

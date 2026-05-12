@@ -6,7 +6,6 @@ import java.util.UUID
 import fi.oph.koski.documentation.ExampleData.{suomenKieli, vahvistusPaikkakunnalla}
 import fi.oph.koski.documentation.PerusopetusExampleData
 import fi.oph.koski.documentation.PerusopetusExampleData.{kaikkiAineet, perusopetuksenDiaarinumero, perusopetus, suoritustapaKoulutus}
-import fi.oph.koski.documentation.YleissivistavakoulutusExampleData.jyväskylänNormaalikoulu
 import fi.oph.koski.schema.{Koodistokoodiviite, LähdejärjestelmäId, NuortenPerusopetuksenOppimääränSuoritus, Oppilaitos, PerusopetuksenLuokkaAste, PerusopetuksenVuosiluokanSuoritus}
 
 import scala.util.Random
@@ -16,11 +15,13 @@ abstract class ValpasOpiskeluoikeusInserterScenario {
   def lähdejärjestelmäId = Some(LähdejärjestelmäId(Some(UUID.randomUUID().toString), Koodistokoodiviite(lähdejärjestelmät(Random.nextInt(lähdejärjestelmät.length)), "lahdejarjestelma")))
   val alkamispäivä = date(2025, 8, 15)
   val valmistumispäivä = date(2026, 5, 31)
-  val peruskoulut = new RandomValpasPeruskouluOidFromFile()
+  lazy val peruskoulut = new RandomValpasPeruskouluOidFromFile()
   val luokka = "9A"
 
-  def opiskeluoikeudet(x: Int) = {
-    val peruskoulu = Oppilaitos(peruskoulut.next, None, None)
+  def opiskeluoikeudet(x: Int) = opiskeluoikeudetForOppilaitos(peruskoulut.next)
+
+  def opiskeluoikeudetForOppilaitos(oppilaitosOid: String) = {
+    val peruskoulu = Oppilaitos(oppilaitosOid, None, None)
 
     val yhdeksännenLuokanSuoritus = PerusopetuksenVuosiluokanSuoritus(
       koulutusmoduuli = PerusopetuksenLuokkaAste(9, perusopetuksenDiaarinumero),
