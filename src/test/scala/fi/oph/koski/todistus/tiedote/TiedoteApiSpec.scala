@@ -7,6 +7,12 @@ import fi.oph.koski.util.Wait
 
 class TiedoteApiSpec extends TodistusSpecHelpers {
 
+  override protected def withoutRunningTiedoteScheduler[T](f: => T): T = {
+    super.withoutRunningTiedoteScheduler {
+      withLähdejärjestelmällisetKielitutkintofixturet(f)
+    }
+  }
+
   override protected def afterEach(): Unit = {
     cleanup()
   }

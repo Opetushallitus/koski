@@ -8,6 +8,7 @@ import fi.oph.koski.log.Logging
 
 case class KielitutkintoTodistusTiedoteRequest(
   oppijanumero: String,
+  opiskeluoikeusOid: String,
   idempotencyKey: String,
   todistusBucket: Option[String],
   todistusKey: Option[String],
@@ -23,12 +24,20 @@ class RemoteTiedotuspalveluClient(config: Config) extends TiedotuspalveluClient 
 
   override def sendKielitutkintoTodistusTiedote(
     oppijanumero: String,
+    opiskeluoikeusOid: String,
     idempotencyKey: String,
     todistusBucket: Option[String],
     todistusKey: Option[String],
     kituExamineeDetails: Option[KituExamineeDetails]
   ): Either[HttpStatus, Unit] = {
-    val request = KielitutkintoTodistusTiedoteRequest(oppijanumero, idempotencyKey, todistusBucket, todistusKey, kituExamineeDetails)
+    val request = KielitutkintoTodistusTiedoteRequest(
+      oppijanumero = oppijanumero,
+      opiskeluoikeusOid = opiskeluoikeusOid,
+      idempotencyKey = idempotencyKey,
+      todistusBucket = todistusBucket,
+      todistusKey = todistusKey,
+      kituExamineeDetails = kituExamineeDetails
+    )
 
     try {
       runIO(

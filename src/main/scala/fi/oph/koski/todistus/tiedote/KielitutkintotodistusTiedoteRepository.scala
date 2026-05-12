@@ -14,9 +14,13 @@ class KielitutkintotodistusTiedoteRepository(val db: DB, val workerId: String, c
   private val earliestDate = config.getString("tiedote.earliestDate")
   private val gracePeriodHours = config.getInt("tiedote.gracePeriodHours")
 
-  def findEligibleBatch(limit: Int): Seq[(String, String, Int)] = {
+  def findEligibleBatch(limit: Int): Seq[KielitutkintotodistusTiedoteEligible] = {
     runDbSync(sql"""
-      SELECT oo.oid, oo.oppija_oid, oo.versionumero
+      SELECT
+        oo.oid,
+        oo.oppija_oid,
+        oo.versionumero,
+        NULLIF(oo.data #>> '{lähdejärjestelmänId,id}', '') AS lahdejarjestelman_id
       FROM opiskeluoikeus oo
       JOIN opiskeluoikeushistoria h ON h.opiskeluoikeus_id = oo.id AND h.versionumero = 1
       WHERE oo.koulutusmuoto = 'kielitutkinto'
@@ -33,16 +37,17 @@ class KielitutkintotodistusTiedoteRepository(val db: DB, val workerId: String, c
         )
       ORDER BY oo.aikaleima
       LIMIT $limit
-      """.as[(String, String, Int)])
+      """.as[KielitutkintotodistusTiedoteEligible])
   }
 
   def add(job: KielitutkintotodistusTiedoteJob): KielitutkintotodistusTiedoteJob = {
     runDbSync(sql"""
-      INSERT INTO kielitutkintotodistus_tiedote_job(id, oppija_oid, opiskeluoikeus_oid, state, created_at, completed_at, worker, attempts, error, opiskeluoikeus_versio)
+      INSERT INTO kielitutkintotodistus_tiedote_job(id, oppija_oid, opiskeluoikeus_oid, lahdejarjestelman_id, state, created_at, completed_at, worker, attempts, error, opiskeluoikeus_versio)
       VALUES (
         ${job.id}::uuid,
         ${job.oppijaOid},
         ${job.opiskeluoikeusOid},
+        ${job.lähdejärjestelmänId},
         ${job.state},
         ${java.sql.Timestamp.valueOf(job.createdAt)},
         ${job.completedAt.map(java.sql.Timestamp.valueOf)},
@@ -154,11 +159,12 @@ class KielitutkintotodistusTiedoteRepository(val db: DB, val workerId: String, c
       "markAllExistingKielitutkinnotAsCompletedForLocal can only be used in local test environment"
     )
     runDbSync(sql"""
-      INSERT INTO kielitutkintotodistus_tiedote_job(id, oppija_oid, opiskeluoikeus_oid, state, created_at, completed_at, worker, attempts, error, opiskeluoikeus_versio)
+      INSERT INTO kielitutkintotodistus_tiedote_job(id, oppija_oid, opiskeluoikeus_oid, lahdejarjestelman_id, state, created_at, completed_at, worker, attempts, error, opiskeluoikeus_versio)
       SELECT
         gen_random_uuid(),
         oo.oppija_oid,
         oo.oid,
+        NULLIF(oo.data #>> '{lähdejärjestelmänId,id}', ''),
         ${KielitutkintotodistusTiedoteState.COMPLETED},
         NOW(),
         NOW(),
@@ -190,6 +196,7 @@ class KielitutkintotodistusTiedoteRepository(val db: DB, val workerId: String, c
       id = r.rs.getString("id"),
       oppijaOid = r.rs.getString("oppija_oid"),
       opiskeluoikeusOid = r.rs.getString("opiskeluoikeus_oid"),
+      lähdejärjestelmänId = Option(r.rs.getString("lahdejarjestelman_id")),
       state = r.rs.getString("state"),
       createdAt = r.rs.getTimestamp("created_at").toLocalDateTime,
       completedAt = Option(r.rs.getTimestamp("completed_at")).map(_.toLocalDateTime),
@@ -199,4 +206,14 @@ class KielitutkintotodistusTiedoteRepository(val db: DB, val workerId: String, c
       opiskeluoikeusVersio = r.rs.getInt("opiskeluoikeus_versio")
     )
   })
+
+  implicit private val getEligibleResult: GetResult[KielitutkintotodistusTiedoteEligible] =
+    GetResult[KielitutkintotodistusTiedoteEligible](r =>
+      KielitutkintotodistusTiedoteEligible(
+        opiskeluoikeusOid = r.rs.getString("oid"),
+        oppijaOid = r.rs.getString("oppija_oid"),
+        opiskeluoikeusVersio = r.rs.getInt("versionumero"),
+        lähdejärjestelmänId = Option(r.rs.getString("lahdejarjestelman_id"))
+      )
+    )
 }

@@ -2,7 +2,7 @@ package fi.oph.koski.todistus.tiedote
 
 import com.typesafe.config.Config
 import fi.oph.koski.http._
-import fi.oph.koski.http.Http.{UriInterpolator, parseJson, runIO}
+import fi.oph.koski.http.Http.{parseJson, runIO}
 import fi.oph.koski.log.Logging
 
 class RemoteKituClient(config: Config) extends KituClient with Logging {
@@ -12,10 +12,18 @@ class RemoteKituClient(config: Config) extends KituClient with Logging {
   private val http = new OtuvaOAuth2ClientFactory(OtuvaOAuth2Credentials.fromSecretsManager, otuvaTokenEndpoint)
     .apply(baseUrl, Http.retryingClient("kitu"))
 
-  override def getExamineeDetails(opiskeluoikeusOid: String): Either[HttpStatus, KituExamineeDetails] = {
+  override def getExamineeDetails(lähdejärjestelmänId: String): Either[HttpStatus, KituExamineeDetails] = {
+    getExamineeDetails(KituClient.examineeDetailsUri(lähdejärjestelmänId))
+  }
+
+  override def getExamineeDetailsByOpiskeluoikeusOid(opiskeluoikeusOid: String): Either[HttpStatus, KituExamineeDetails] = {
+    getExamineeDetails(KituClient.examineeDetailsByOpiskeluoikeusOidUri(opiskeluoikeusOid))
+  }
+
+  private def getExamineeDetails(uri: Http.ParameterizedUriWrapper): Either[HttpStatus, KituExamineeDetails] = {
     try {
       val result = runIO(
-        http.get(uri"/kielitutkinnot/yhteystiedot/api/opiskeluoikeus/$opiskeluoikeusOid")(parseJson[KituExamineeDetails])
+        http.get(uri)(parseJson[KituExamineeDetails])
       )
       Right(result)
     } catch {

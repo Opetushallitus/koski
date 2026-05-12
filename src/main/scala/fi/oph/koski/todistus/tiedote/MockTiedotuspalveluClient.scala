@@ -5,6 +5,7 @@ import fi.oph.koski.log.Logging
 
 case class SentTiedote(
   oppijanumero: String,
+  opiskeluoikeusOid: String,
   idempotencyKey: String,
   todistusBucket: Option[String],
   todistusKey: Option[String],
@@ -16,14 +17,26 @@ class MockTiedotuspalveluClient extends TiedotuspalveluClient with Logging {
 
   override def sendKielitutkintoTodistusTiedote(
     oppijanumero: String,
+    opiskeluoikeusOid: String,
     idempotencyKey: String,
     todistusBucket: Option[String],
     todistusKey: Option[String],
     kituExamineeDetails: Option[KituExamineeDetails]
   ): Either[HttpStatus, Unit] = {
-    logger.info(s"MockTiedotuspalveluClient: sendKielitutkintoTodistusTiedote oppijanumero=$oppijanumero idempotencyKey=$idempotencyKey todistusBucket=$todistusBucket todistusKey=$todistusKey")
+    logger.info(
+      "MockTiedotuspalveluClient: sendKielitutkintoTodistusTiedote " +
+        s"oppijanumero=$oppijanumero opiskeluoikeusOid=$opiskeluoikeusOid idempotencyKey=$idempotencyKey " +
+        s"todistusBucket=$todistusBucket todistusKey=$todistusKey"
+    )
     synchronized {
-      sentNotifications = sentNotifications :+ SentTiedote(oppijanumero, idempotencyKey, todistusBucket, todistusKey, kituExamineeDetails)
+      sentNotifications = sentNotifications :+ SentTiedote(
+        oppijanumero,
+        opiskeluoikeusOid,
+        idempotencyKey,
+        todistusBucket,
+        todistusKey,
+        kituExamineeDetails
+      )
     }
     Right(())
   }

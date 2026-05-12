@@ -6,6 +6,7 @@ case class KielitutkintotodistusTiedoteJob(
   id: String,
   oppijaOid: String,
   opiskeluoikeusOid: String,
+  lähdejärjestelmänId: Option[String],
   state: String,
   createdAt: LocalDateTime = LocalDateTime.now(),
   completedAt: Option[LocalDateTime] = None,
@@ -13,6 +14,13 @@ case class KielitutkintotodistusTiedoteJob(
   attempts: Int = 0,
   error: Option[String] = None,
   opiskeluoikeusVersio: Int = 0
+)
+
+case class KielitutkintotodistusTiedoteEligible(
+  opiskeluoikeusOid: String,
+  oppijaOid: String,
+  opiskeluoikeusVersio: Int,
+  lähdejärjestelmänId: Option[String]
 )
 
 object KielitutkintotodistusTiedoteState {
