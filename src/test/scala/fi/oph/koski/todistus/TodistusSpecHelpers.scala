@@ -53,7 +53,7 @@ class TodistusSpecHelpers extends AnyFreeSpec with KoskiHttpSpec with Matchers w
 
   protected def withLähdejärjestelmällisetKielitutkintofixturet[T](f: => T): T = {
     val ensisijainenOid = getVahvistettuKielitutkinnonOpiskeluoikeusOid(KoskiSpecificMockOppijat.kielitutkinnonSuorittaja.oid)
-    val eligibleOids = app.kielitutkintotodistusTiedoteRepository.findEligibleBatch(1000).map(_._1)
+    val eligibleOids = app.kielitutkintotodistusTiedoteRepository.findEligibleBatch(1000).map(_.opiskeluoikeusOid)
     val oids = (ensisijainenOid.toList ++ eligibleOids.filterNot(ensisijainenOid.contains)).distinct
 
     try {

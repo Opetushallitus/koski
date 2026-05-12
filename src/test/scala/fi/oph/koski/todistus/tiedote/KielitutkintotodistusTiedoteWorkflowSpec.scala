@@ -2,6 +2,8 @@ package fi.oph.koski.todistus.tiedote
 
 import com.typesafe.config.ConfigValueFactory
 import fi.oph.koski.config.KoskiApplication
+import fi.oph.koski.db.PostgresDriverWithJsonSupport.plainAPI._
+import fi.oph.koski.db.QueryMethods
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
 import fi.oph.koski.json.GenericJsonFormats
 import fi.oph.koski.koskiuser.MockUsers
@@ -81,16 +83,17 @@ class KielitutkintotodistusTiedoteWorkflowSpec extends TodistusSpecHelpers {
         val eligible = repository.findEligibleBatch(1).headOption
         eligible shouldBe defined
 
-        val (ooOid, oOid, versio) = eligible.get
+        val eligibleRow = eligible.get
         val job = KielitutkintotodistusTiedoteJob(
           id = java.util.UUID.randomUUID().toString,
-          oppijaOid = oOid,
-          opiskeluoikeusOid = ooOid,
+          oppijaOid = eligibleRow.oppijaOid,
+          opiskeluoikeusOid = eligibleRow.opiskeluoikeusOid,
+          lähdejärjestelmänId = eligibleRow.lähdejärjestelmänId,
           state = KielitutkintotodistusTiedoteState.ERROR,
           worker = Some(repository.workerId),
           attempts = 1,
           error = Some("Tiedotuspalvelu ei vastaa"),
-          opiskeluoikeusVersio = versio
+          opiskeluoikeusVersio = eligibleRow.opiskeluoikeusVersio
         )
         repository.add(job)
 
@@ -103,7 +106,7 @@ class KielitutkintotodistusTiedoteWorkflowSpec extends TodistusSpecHelpers {
         val completedJobs = repository.findAll(10, 0, Some(KielitutkintotodistusTiedoteState.COMPLETED))
         completedJobs should have length 1
         mockTiedotuspalveluClient.sentNotifications should have length 1
-        mockTiedotuspalveluClient.sentNotifications.head.idempotencyKey shouldEqual s"$ooOid-initial"
+        mockTiedotuspalveluClient.sentNotifications.head.idempotencyKey shouldEqual s"${eligibleRow.opiskeluoikeusOid}-initial"
       }
     }
 
@@ -145,16 +148,17 @@ class KielitutkintotodistusTiedoteWorkflowSpec extends TodistusSpecHelpers {
     "Kirjaa audit-lokin kun tiedote lähetetään uudelleenyrityksellä" in {
       withoutRunningTiedoteScheduler {
         val repository = app.kielitutkintotodistusTiedoteRepository
-        val (ooOid, oOid, versio) = repository.findEligibleBatch(1).head
+        val eligibleRow = repository.findEligibleBatch(1).head
         repository.add(KielitutkintotodistusTiedoteJob(
           id = java.util.UUID.randomUUID().toString,
-          oppijaOid = oOid,
-          opiskeluoikeusOid = ooOid,
+          oppijaOid = eligibleRow.oppijaOid,
+          opiskeluoikeusOid = eligibleRow.opiskeluoikeusOid,
+          lähdejärjestelmänId = eligibleRow.lähdejärjestelmänId,
           state = KielitutkintotodistusTiedoteState.ERROR,
           worker = Some(repository.workerId),
           attempts = 1,
           error = Some("Tiedotuspalvelu ei vastaa"),
-          opiskeluoikeusVersio = versio
+          opiskeluoikeusVersio = eligibleRow.opiskeluoikeusVersio
         ))
 
         AuditLogTester.clearMessages()
@@ -163,29 +167,89 @@ class KielitutkintotodistusTiedoteWorkflowSpec extends TodistusSpecHelpers {
         AuditLogTester.verifyLastAuditLogMessageForOperation(Map(
           "operation" -> KoskiOperation.TIEDOTE_LAHETETTY.toString,
           "target" -> Map(
-            KoskiAuditLogMessageField.oppijaHenkiloOid.toString -> oOid,
-            KoskiAuditLogMessageField.opiskeluoikeusOid.toString -> ooOid,
+            KoskiAuditLogMessageField.oppijaHenkiloOid.toString -> eligibleRow.oppijaOid,
+            KoskiAuditLogMessageField.opiskeluoikeusOid.toString -> eligibleRow.opiskeluoikeusOid,
             KoskiAuditLogMessageField.tiedoteTyyppi.toString -> "kielitodistus"
           )
         ))
       }
     }
 
+    "Uudelleenyritys käyttää tiedotejobiin tallennettua lähdejärjestelmän tunnistetta" in {
+      withoutRunningTiedoteScheduler {
+        val repository = app.kielitutkintotodistusTiedoteRepository
+        val eligibleRow = repository.findEligibleBatch(1).head
+        val lähdejärjestelmänId = eligibleRow.lähdejärjestelmänId.get
+
+        repository.add(KielitutkintotodistusTiedoteJob(
+          id = java.util.UUID.randomUUID().toString,
+          oppijaOid = eligibleRow.oppijaOid,
+          opiskeluoikeusOid = eligibleRow.opiskeluoikeusOid,
+          lähdejärjestelmänId = Some(lähdejärjestelmänId),
+          state = KielitutkintotodistusTiedoteState.ERROR,
+          worker = Some(repository.workerId),
+          attempts = 1,
+          error = Some("Tiedotuspalvelu ei vastaa"),
+          opiskeluoikeusVersio = eligibleRow.opiskeluoikeusVersio
+        ))
+
+        QueryMethods.runDbSync(app.masterDatabase.db, sql"""
+          UPDATE opiskeluoikeus
+          SET data = data - 'lähdejärjestelmänId'
+          WHERE oid = ${eligibleRow.opiskeluoikeusOid}
+          """.asUpdate)
+        mockKituClient.reset()
+
+        app.kielitutkintotodistusTiedoteService.retryAllFailed()
+
+        mockKituClient.calledLähdejärjestelmänIds should contain(lähdejärjestelmänId)
+        mockKituClient.calledEndpoints should not contain s"/yhteystiedot/api/opiskeluoikeus/${eligibleRow.opiskeluoikeusOid}"
+      }
+    }
+
+    "Uudelleenyritys käyttää oid-hakua jos lähdejärjestelmän tunniste puuttuu tiedotejobista" in {
+      withoutRunningTiedoteScheduler {
+        val repository = app.kielitutkintotodistusTiedoteRepository
+        val eligibleRow = repository.findEligibleBatch(1).head
+
+        repository.add(KielitutkintotodistusTiedoteJob(
+          id = java.util.UUID.randomUUID().toString,
+          oppijaOid = eligibleRow.oppijaOid,
+          opiskeluoikeusOid = eligibleRow.opiskeluoikeusOid,
+          lähdejärjestelmänId = None,
+          state = KielitutkintotodistusTiedoteState.ERROR,
+          worker = Some(repository.workerId),
+          attempts = 1,
+          error = Some("Tiedotuspalvelu ei vastaa"),
+          opiskeluoikeusVersio = eligibleRow.opiskeluoikeusVersio
+        ))
+
+        mockKituClient.reset()
+
+        app.kielitutkintotodistusTiedoteService.retryAllFailed()
+
+        mockKituClient.calledLähdejärjestelmänIds shouldBe empty
+        mockKituClient.calledOpiskeluoikeusOids should contain(eligibleRow.opiskeluoikeusOid)
+        mockKituClient.calledEndpoints should contain(s"/yhteystiedot/api/opiskeluoikeus/${eligibleRow.opiskeluoikeusOid}")
+      }
+    }
+
     "Yrittää kesken jäänyttä tiedotetta uudelleen" in {
       withoutRunningTiedoteScheduler {
         val repository = app.kielitutkintotodistusTiedoteRepository
-        val (ooOid, oOid, versio) = repository.findEligibleBatch(1).head
+        val eligibleRow = repository.findEligibleBatch(1).head
 
         // Luo WAITING_FOR_TODISTUS-tilaan jäänyt job, joka on tarpeeksi vanha
         val stuckJob = KielitutkintotodistusTiedoteJob(
           id = java.util.UUID.randomUUID().toString,
-          oppijaOid = oOid,
-          opiskeluoikeusOid = ooOid,
+          oppijaOid = eligibleRow.oppijaOid,
+          opiskeluoikeusOid = eligibleRow.opiskeluoikeusOid,
+          lähdejärjestelmänId = eligibleRow.lähdejärjestelmänId,
           state = KielitutkintotodistusTiedoteState.WAITING_FOR_TODISTUS,
           createdAt = java.time.LocalDateTime.now().minusMinutes(15),
           worker = Some(repository.workerId),
           attempts = 1,
-          opiskeluoikeusVersio = versio
+          opiskeluoikeusVersio = eligibleRow.opiskeluoikeusVersio
         )
         repository.add(stuckJob)
 
@@ -203,17 +267,18 @@ class KielitutkintotodistusTiedoteWorkflowSpec extends TodistusSpecHelpers {
     "Ei yritä uudelleen tuoretta WAITING_FOR_TODISTUS-tiedotetta" in {
       withoutRunningTiedoteScheduler {
         val repository = app.kielitutkintotodistusTiedoteRepository
-        val (ooOid, oOid, versio) = repository.findEligibleBatch(1).head
+        val eligibleRow = repository.findEligibleBatch(1).head
 
         // Luo tuore WAITING_FOR_TODISTUS-tilaan jäänyt job
         val recentJob = KielitutkintotodistusTiedoteJob(
           id = java.util.UUID.randomUUID().toString,
-          oppijaOid = oOid,
-          opiskeluoikeusOid = ooOid,
+          oppijaOid = eligibleRow.oppijaOid,
+          opiskeluoikeusOid = eligibleRow.opiskeluoikeusOid,
+          lähdejärjestelmänId = eligibleRow.lähdejärjestelmänId,
           state = KielitutkintotodistusTiedoteState.WAITING_FOR_TODISTUS,
           worker = Some(repository.workerId),
           attempts = 1,
-          opiskeluoikeusVersio = versio
+          opiskeluoikeusVersio = eligibleRow.opiskeluoikeusVersio
         )
         repository.add(recentJob)
 
@@ -250,13 +315,17 @@ class KielitutkintotodistusTiedoteWorkflowSpec extends TodistusSpecHelpers {
 
         app.kielitutkintotodistusTiedoteService.processAll()
 
+        val job = app.kielitutkintotodistusTiedoteRepository.findAll(100, 0).find(_.opiskeluoikeusOid == opiskeluoikeusOid)
+        job shouldBe defined
+        job.get.lähdejärjestelmänId should equal(Some("yki.123456"))
+
         mockKituClient.calledLähdejärjestelmänIds should contain("yki.123456")
         mockKituClient.calledEndpoints should contain("/yhteystiedot/api/opiskeluoikeus/lahdejarjestelman/yki.123456")
         mockKituClient.calledEndpoints should not contain s"/yhteystiedot/api/opiskeluoikeus/$opiskeluoikeusOid"
       }
     }
 
-    "Ei kutsu Kitua kun lähdejärjestelmänId puuttuu" in {
+    "Hakee Kitu-yhteystiedot opiskeluoikeuden oidilla kun lähdejärjestelmänId puuttuu" in {
       super.withoutRunningTiedoteScheduler {
         val oppija = KoskiSpecificMockOppijat.kielitutkintoTodistusVirhe
         app.kielitutkintotodistusTiedoteRepository.markAllExistingKielitutkinnotAsCompletedForLocal()
@@ -270,12 +339,16 @@ class KielitutkintotodistusTiedoteWorkflowSpec extends TodistusSpecHelpers {
 
         app.kielitutkintotodistusTiedoteService.processAll()
 
-        mockKituClient.callCount should equal(0)
-        mockTiedotuspalveluClient.sentNotifications.find(_.oppijanumero == oppija.oid) shouldBe None
+        val opiskeluoikeusOid = opiskeluoikeus.oid.get
+        mockKituClient.calledLähdejärjestelmänIds shouldBe empty
+        mockKituClient.calledOpiskeluoikeusOids should contain(opiskeluoikeusOid)
+        mockKituClient.calledEndpoints should contain(s"/yhteystiedot/api/opiskeluoikeus/$opiskeluoikeusOid")
+        mockTiedotuspalveluClient.sentNotifications.find(_.oppijanumero == oppija.oid) shouldBe defined
 
-        val job = app.kielitutkintotodistusTiedoteRepository.findAll(100, 0).find(_.opiskeluoikeusOid == opiskeluoikeus.oid.get)
+        val job = app.kielitutkintotodistusTiedoteRepository.findAll(100, 0).find(_.opiskeluoikeusOid == opiskeluoikeusOid)
         job shouldBe defined
-        job.get.state should equal(KielitutkintotodistusTiedoteState.ERROR)
+        job.get.lähdejärjestelmänId shouldBe None
+        job.get.state should equal(KielitutkintotodistusTiedoteState.COMPLETED)
       }
     }
 
@@ -366,7 +439,7 @@ class KielitutkintotodistusTiedoteWorkflowSpec extends TodistusSpecHelpers {
       withoutRunningTiedoteScheduler {
         val oppijaOid = KoskiSpecificMockOppijat.kielitutkinnonSuorittaja.oid
         val eligible = app.kielitutkintotodistusTiedoteRepository.findEligibleBatch(100)
-        val oppijaEligible = eligible.filter { case (_, oOid, _) => oOid == oppijaOid }
+        val oppijaEligible = eligible.filter(_.oppijaOid == oppijaOid)
         // Suorittajalla on 2 yleistä kielitutkintoa ja 3 valtionhallinnon kielitutkintoa,
         // mutta vain yleiset kielitutkinnot pitää olla mukana
         oppijaEligible should have length 2

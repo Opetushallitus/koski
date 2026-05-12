@@ -10,16 +10,30 @@ class MockKituClient extends KituClient with Logging {
   private val callCounter = new java.util.concurrent.atomic.AtomicInteger(0)
   private val endpointCalls = new java.util.concurrent.ConcurrentLinkedQueue[String]()
   private val lähdejärjestelmänIdCalls = new java.util.concurrent.ConcurrentLinkedQueue[String]()
+  private val opiskeluoikeusOidCalls = new java.util.concurrent.ConcurrentLinkedQueue[String]()
 
   def callCount: Int = callCounter.get()
   def calledEndpoints: List[String] = endpointCalls.asScala.toList
   def calledLähdejärjestelmänIds: List[String] = lähdejärjestelmänIdCalls.asScala.toList
+  def calledOpiskeluoikeusOids: List[String] = opiskeluoikeusOidCalls.asScala.toList
 
   override def getExamineeDetails(lähdejärjestelmänId: String): Either[HttpStatus, KituExamineeDetails] = {
     callCounter.incrementAndGet()
     endpointCalls.add(KituClient.examineeDetailsEndpoint(lähdejärjestelmänId))
     lähdejärjestelmänIdCalls.add(lähdejärjestelmänId)
     logger.info(s"MockKituClient: getExamineeDetails lähdejärjestelmänId=$lähdejärjestelmänId")
+    response
+  }
+
+  override def getExamineeDetailsByOpiskeluoikeusOid(opiskeluoikeusOid: String): Either[HttpStatus, KituExamineeDetails] = {
+    callCounter.incrementAndGet()
+    endpointCalls.add(KituClient.examineeDetailsByOpiskeluoikeusOidEndpoint(opiskeluoikeusOid))
+    opiskeluoikeusOidCalls.add(opiskeluoikeusOid)
+    logger.info(s"MockKituClient: getExamineeDetails opiskeluoikeusOid=$opiskeluoikeusOid")
+    response
+  }
+
+  private def response: Either[HttpStatus, KituExamineeDetails] = {
     httpStatusCode match {
       case Some(status) =>
         Left(KoskiErrorCategory.unavailable(s"Kitu-kutsu epäonnistui: $status"))
@@ -46,5 +60,6 @@ class MockKituClient extends KituClient with Logging {
     callCounter.set(0)
     endpointCalls.clear()
     lähdejärjestelmänIdCalls.clear()
+    opiskeluoikeusOidCalls.clear()
   }
 }

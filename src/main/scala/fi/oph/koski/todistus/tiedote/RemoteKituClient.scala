@@ -13,9 +13,17 @@ class RemoteKituClient(config: Config) extends KituClient with Logging {
     .apply(baseUrl, Http.retryingClient("kitu"))
 
   override def getExamineeDetails(lähdejärjestelmänId: String): Either[HttpStatus, KituExamineeDetails] = {
+    getExamineeDetails(KituClient.examineeDetailsUri(lähdejärjestelmänId))
+  }
+
+  override def getExamineeDetailsByOpiskeluoikeusOid(opiskeluoikeusOid: String): Either[HttpStatus, KituExamineeDetails] = {
+    getExamineeDetails(KituClient.examineeDetailsByOpiskeluoikeusOidUri(opiskeluoikeusOid))
+  }
+
+  private def getExamineeDetails(uri: Http.ParameterizedUriWrapper): Either[HttpStatus, KituExamineeDetails] = {
     try {
       val result = runIO(
-        http.get(KituClient.examineeDetailsUri(lähdejärjestelmänId))(parseJson[KituExamineeDetails])
+        http.get(uri)(parseJson[KituExamineeDetails])
       )
       Right(result)
     } catch {

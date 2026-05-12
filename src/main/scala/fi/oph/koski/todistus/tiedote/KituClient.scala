@@ -14,6 +14,12 @@ object KituClient {
   private[tiedote] def examineeDetailsEndpoint(lähdejärjestelmänId: String): String =
     examineeDetailsUri(lähdejärjestelmänId).uri.path.toString.stripPrefix(kituServicePrefix)
 
+  private[tiedote] def examineeDetailsByOpiskeluoikeusOidUri(opiskeluoikeusOid: String): ParameterizedUriWrapper =
+    uri"/kielitutkinnot/yhteystiedot/api/opiskeluoikeus/$opiskeluoikeusOid"
+
+  private[tiedote] def examineeDetailsByOpiskeluoikeusOidEndpoint(opiskeluoikeusOid: String): String =
+    examineeDetailsByOpiskeluoikeusOidUri(opiskeluoikeusOid).uri.path.toString.stripPrefix(kituServicePrefix)
+
   def apply(config: Config): KituClient = {
     if (config.getString("kitu.baseUrl") == "mock") {
       if (Environment.isServerEnvironment(config)) {
@@ -28,6 +34,7 @@ object KituClient {
 
 trait KituClient {
   def getExamineeDetails(lähdejärjestelmänId: String): Either[HttpStatus, KituExamineeDetails]
+  def getExamineeDetailsByOpiskeluoikeusOid(opiskeluoikeusOid: String): Either[HttpStatus, KituExamineeDetails]
 }
 
 case class KituExamineeDetails(
