@@ -40,6 +40,7 @@ export type IBDPCoreOppiaineMuu = {
     | 'SPO'
     | 'MATAA'
     | 'MATAI'
+    | 'WS'
   >
   laajuus?: LaajuusOpintopisteissä
   taso?: Koodistokoodiviite<'oppiaineentasoib', string>
@@ -78,6 +79,7 @@ export const IBDPCoreOppiaineMuu = (o: {
     | 'SPO'
     | 'MATAA'
     | 'MATAI'
+    | 'WS'
   >
   laajuus?: LaajuusOpintopisteissä
   taso?: Koodistokoodiviite<'oppiaineentasoib', string>

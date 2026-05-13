@@ -144,6 +144,23 @@ class OppijaValidationIBSpec extends AnyFreeSpec with KoskiHttpSpec with PutOpis
         }
       }
 
+      "Uusi oppiaine WS sallittu IBOppiaineMuu" in {
+        val oo = defaultOpiskeluoikeus.copy(suoritukset = List(ibTutkinnonSuoritus(predicted = false).copy(
+          osasuoritukset = Some(List(
+            IBOppiaineenSuoritus(
+              koulutusmoduuli = ibOppiaine("WS", higherLevel, 3),
+              osasuoritukset = None,
+              arviointi = ibArviointi("S"),
+              predictedArviointi = None,
+            )
+          ))
+        )))
+
+        setupOppijaWithOpiskeluoikeus(oo) {
+          verifyResponseStatusOk()
+        }
+      }
+
       "IB-kurssin suoritukseen voi lisätä tunnustettu-rakenteen" in {
         val oo = defaultOpiskeluoikeus.copy(suoritukset = List(ibTutkinnonSuoritus(predicted = false).copy(
           osasuoritukset = Some(List(

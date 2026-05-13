@@ -1015,5 +1015,33 @@
     "koodiUri": "oppiaineetib_va",
     "versio": 1,
     "koodiArvo": "VA"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "World studies",
+        "kuvaus": "",
+        "lyhytNimi": "World studies",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "World studies",
+        "kuvaus": "",
+        "lyhytNimi": "World studies",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "World studies",
+        "kuvaus": "",
+        "lyhytNimi": "World studies",
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "oppiaineetib_ws",
+    "versio": 1,
+    "koodiArvo": "WS"
   }
 ]
