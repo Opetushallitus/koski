@@ -17,15 +17,9 @@ import fi.oph.koski.valpas.oppija.ValpasErrorCategory
 import org.json4s.{DefaultFormats, Formats, JValue}
 
 import java.net.URLEncoder
-import java.time.{LocalDate, LocalDateTime, OffsetDateTime, ZoneId}
+import java.time.{LocalDateTime, OffsetDateTime, ZoneId}
 import scala.concurrent.duration.DurationInt
 import scala.util.Try
-
-case class OvaraKoodiViite(
-  koodiarvo: String,
-  koodistoUri: String,
-  koodistoVersio: Option[Int],
-)
 
 case class OvaraNimi(fi: Option[String], sv: Option[String], en: Option[String])
 
@@ -37,14 +31,15 @@ case class OvaraHakutoiveResponse(
   koulutusNimi: OvaraNimi,
   koulutusOid: Option[String],
   hakutoivenumero: Int,
-  pisteet: Option[BigDecimal], // TODO: tarkista tyyppi Ovarasta (Int)
-  alinHyvaksyttyPistemaara: Option[BigDecimal], // TODO: tarkista tyyppi Ovarasta (String)
+  pisteet: Option[BigDecimal],
+  alinHyvaksyttyPistemaara: Option[BigDecimal],
+  alinValintaPistemaara: Option[Int],
   valintatila: Option[String], // Enum
-  varasijanumero: Option[Int], // TODO: tarkista tyyppi Ovarasta (Int)
+  varasijanumero: Option[Int],
   vastaanottotieto: Option[String], // Enum
   ilmoittautumistila: Option[String], // Enum
-  harkinnanvaraisuus: Option[String], // TODO: tarkista tyyppi Ovarasta (String)
-  hakukohdeKoulutuskoodi: Option[Seq[OvaraKoodiViite]], // TODO: tarkista tyyppi Ovarasta (Seq[OvaraKoodiViite])
+  harkinnanvaraisuus: Option[String],
+  hakukohdeKoulutuskoodi: Option[Seq[Koodistokoodiviite]],
 )
 
 case class OvaraHakukoosteResponse(
@@ -53,19 +48,19 @@ case class OvaraHakukoosteResponse(
   aktiivinenHaku: Option[Boolean],
   hakemusOid: String,
   hakemusUrl: String,
-  hakutapa: OvaraKoodiViite,
-  hakutyyppi: Option[OvaraKoodiViite], // TODO: tarkista tyyppi Ovarasta (OvaraKoodiViite)
-  haunAlkamispaivamaara: String, // TODO: tarkista tyyppi Ovarasta (LocalDate / LocalDateTime)
+  hakutapa: Koodistokoodiviite,
+  hakutyyppi: Option[Koodistokoodiviite], // TODO: kenttä poistettu Ovarasta?
+  haunAlkamispaivamaara: String,
   hakuNimi: OvaraNimi,
   email: String,
   lahiosoite: String,
   postinumero: String,
   postitoimipaikka: Option[String],
-  maa: Option[OvaraKoodiViite],
+  maa: Option[Koodistokoodiviite],
   matkapuhelin: String,
-  huoltajanNimi: Option[String],
-  huoltajanPuhelinnumero: Option[String],
-  huoltajanSahkoposti: Option[String],
+  huoltajanNimi: Option[String], // TODO: kenttä poistettu Ovarasta?
+  huoltajanPuhelinnumero: Option[String], // TODO: kenttä poistettu Ovarasta?
+  huoltajanSahkoposti: Option[String], // TODO: kenttä poistettu Ovarasta?
   hakutoiveet: Seq[OvaraHakutoiveResponse],
   hakemuksenMuokkauksenAikaleima: Option[String],
 )
@@ -128,11 +123,11 @@ class OvaraHakukoosteService(
 
       val decoder = parseJsonWithDeserialize(deserialize) _
       val timedBlockname = if (oppijaOids.size == 1) "getHakukoosteetOvaraSingle" else "getHakukoosteetOvaraMultiple"
-      val aktiivisetParam = if (ainoastaanAktiivisetHaut) "&ainoastaanAktiivisetHaut=true" else ""
 
       timed(timedBlockname, 10) {
         val ioResult = if (oppijaOids.size == 1) {
           val encodedOid = URLEncoder.encode(oppijaOids.head, "UTF-8")
+          val aktiivisetParam = if (ainoastaanAktiivisetHaut) "&ainoastaanAktiivisetHaut=true" else ""
           http.get(
             s"$baseUrl/api/valpas?ovara_oppijanumero=$encodedOid$aktiivisetParam".toUri,
             timeout = totalTimeout,
@@ -210,6 +205,7 @@ class OvaraHakukoosteService(
     }
 
   private def toHakutoive(t: OvaraHakutoiveResponse, errorClue: String): Either[HttpStatus, Hakutoive] = {
+    // Valppaan käyttötapauksessa eli 2. asteen koulutuksissa ei pitäisi olla kuin yksi koulutuskoodi:
     val koulutusKoodiResult: Either[HttpStatus, Option[Koodistokoodiviite]] =
       t.hakukohdeKoulutuskoodi.flatMap(_.headOption) match {
         case Some(kv) => validateKoodiviite(kv, errorClue).map(Some(_))
@@ -236,7 +232,7 @@ class OvaraHakukoosteService(
     }
   }
 
-  private def validateKoodiviite(kv: OvaraKoodiViite, errorClue: String): Either[HttpStatus, Koodistokoodiviite] =
+  private def validateKoodiviite(kv: Koodistokoodiviite, errorClue: String): Either[HttpStatus, Koodistokoodiviite] =
     koodistoViitePalvelu.validate(kv.koodistoUri, kv.koodiarvo) match {
       case Some(validated) => Right(validated)
       case None =>
@@ -244,16 +240,14 @@ class OvaraHakukoosteService(
         Left(ValpasErrorCategory.badGateway.ovara())
     }
 
-  private def validateOptionalKoodiviite(kv: Option[OvaraKoodiViite], errorClue: String): Either[HttpStatus, Option[Koodistokoodiviite]] =
+  private def validateOptionalKoodiviite(kv: Option[Koodistokoodiviite], errorClue: String): Either[HttpStatus, Option[Koodistokoodiviite]] =
     kv match {
       case None => Right(None)
       case Some(koodiviite) => validateKoodiviite(koodiviite, errorClue).map(Some(_))
     }
 
   private def parseDateToDateTime(dateStr: String, errorClue: String): Either[HttpStatus, LocalDateTime] =
-    Try(
-      LocalDate.parse(dateStr).atStartOfDay() // TODO: korjaa kun myös aika tulee rajapinnasta päivämäärän lisäksi
-    ).toEither.left.map { e =>
+    Try(LocalDateTime.parse(dateStr)).toEither.left.map { e =>
       logger.error(s"Invalid haunAlkamispaivamaara '$dateStr' from Ovara for $errorClue: ${e.getMessage}")
       ValpasErrorCategory.badGateway.ovara()
     }

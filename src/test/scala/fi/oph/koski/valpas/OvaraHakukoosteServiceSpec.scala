@@ -161,7 +161,7 @@ class OvaraHakukoosteServiceSpec extends ValpasTestBase with Matchers with Eithe
       result.oppijaOid should equal(oppijaOid)
       result.hakutapa.koodiarvo should equal("01")
       result.hakuNimi.get("fi") should startWith("Perusopetuksen jälkeisen")
-      result.haunAlkamispaivamaara should equal(LocalDateTime.of(2024, 8, 31, 0, 0))
+      result.haunAlkamispaivamaara should equal(LocalDateTime.of(2022, 8, 31, 23, 59))
       result.hakemuksenMuokkauksenAikaleima should equal(Some(LocalDateTime.of(2026, 3, 30, 21, 37, 13, 544214000)))
       result.maa.map(_.koodiarvo) should equal(Some("246"))
       result.hakutoiveet should have length 3
@@ -254,7 +254,6 @@ object OvaraHakukoosteServiceSpec {
     hakukoosteet.map(hakukoosteToOvaraJson(_, hakutapaKoodiarvo)).mkString("[", ",", "]")
 
   private def hakukoosteToOvaraJson(h: Hakukooste, hakutapaKoodiarvo: String): String = {
-    val haunAlkamispaivamaara = h.haunAlkamispaivamaara.toLocalDate.toString
     val muokkausaika = h.hakemuksenMuokkauksenAikaleima.map(dt => s""""${dt}+00:00"""").getOrElse("null")
     s"""{
        |  "hakemusOid": "${h.hakemusOid}",
@@ -271,7 +270,7 @@ object OvaraHakukoosteServiceSpec {
        |  "hakutapa": {"koodiarvo": "$hakutapaKoodiarvo", "koodistoUri": "hakutapa"},
        |  "hakutyyppi": ${koodiviiteJson(h.hakutyyppi)},
        |  "aktiivinenHaku": ${h.aktiivinenHaku.getOrElse(false)},
-       |  "haunAlkamispaivamaara": "$haunAlkamispaivamaara",
+       |  "haunAlkamispaivamaara": "${h.haunAlkamispaivamaara.toString}",
        |  "oppijaOid": "${h.oppijaOid}",
        |  "huoltajanNimi": ${h.huoltajanNimi.map(s => s""""$s"""").getOrElse("null")},
        |  "huoltajanPuhelinnumero": ${h.huoltajanPuhelinnumero.map(s => s""""$s"""").getOrElse("null")},
@@ -318,17 +317,21 @@ object OvaraHakukoosteServiceSpec {
        |    "hakemusOid": "1.2.246.562.11.00000000000003301492",
        |    "hakemusUrl": "https://virkailija.testiopintopolku.fi/lomake-editori/applications/search?term=1.2.246.562.11.00000000000003301492",
        |    "hakemuksenMuokkauksenAikaleima": "2026-03-30T21:37:13.544214+03:00",
-       |    "email": "testi@testiopintopolku.fi",
-       |    "matkapuhelin": "+358481234567",
-       |    "lahiosoite": "Testitie 1",
+       |    "email": "leena_maija_testi_raappana_testi-10545516007@testiopintopolku.fi",
+       |    "matkapuhelin": "+3584810545516",
+       |    "lahiosoite": "Testitie 10545516007",
        |    "postinumero": "00100",
-       |    "postitoimipaikka": "00100",
+       |    "postitoimipaikka": "HELSINKI",
        |    "maa": {
        |      "versioituUri": "maatjavaltiot2_246#2",
        |      "koodiarvo": "246",
        |      "koodistoUri": "maatjavaltiot2",
        |      "koodistoVersio": 2,
-       |      "nimi": {"fi": "Suomi", "sv": "Finland", "en": "Finland"}
+       |      "nimi": {
+       |        "fi": "Suomi",
+       |        "sv": "Finland",
+       |        "en": "Finland"
+       |      }
        |    },
        |    "hakuOid": "1.2.246.562.29.00000000000000075761",
        |    "hakuNimi": {
@@ -341,96 +344,120 @@ object OvaraHakukoosteServiceSpec {
        |      "koodiarvo": "01",
        |      "koodistoUri": "hakutapa",
        |      "koodistoVersio": 1,
-       |      "nimi": {"fi": "Yhteishaku", "sv": "Gemensam ansökan", "en": "Joint application"}
-       |    },
-       |    "hakutyyppi": {
-       |      "versioituUri": "hakutyyppi_01#1",
-       |      "koodiarvo": "01",
-       |      "koodistoUri": "hakutyyppi",
-       |      "koodistoVersio": 1,
-       |      "nimi": {"fi": "Varsinainen haku", "sv": "Egentlig ansökan"}
+       |      "nimi": {
+       |        "fi": "Yhteishaku",
+       |        "sv": "Gemensam ansökan",
+       |        "en": "Joint application"
+       |      }
        |    },
        |    "aktiivinenHaku": true,
-       |    "haunAlkamispaivamaara": "2024-08-31",
+       |    "haunAlkamispaivamaara": "2022-08-31T23:59:00",
        |    "oppijaOid": "$oppijaOid",
-       |    "huoltajanNimi": null,
-       |    "huoltajanPuhelinnumero": null,
-       |    "huoltajanSahkoposti": null,
        |    "hakutoiveet": [
        |      {
        |        "hakukohdeOid": "1.2.246.562.20.00000000000000080037",
-       |        "hakukohdeNimi": {"fi": "Musiikkialan perustutkinto (vaativa erityinen tuki)"},
+       |        "hakukohdeNimi": {
+       |          "fi": "Musiikkialan perustutkinto (vaativa erityinen tuki)",
+       |          "sv": "Grundexamen i musik (krävande särskilt stöd)",
+       |          "en": "Musiikkialan perustutkinto (vaativa erityinen tuki)"
+       |        },
        |        "hakutoivenumero": 2,
        |        "hakukohdeOrganisaatio": "1.2.246.562.10.76662434703",
-       |        "organisaatioNimi": {"fi": "Lahti, Villähde"},
+       |        "organisaatioNimi": {
+       |          "fi": "Lahti, Villähde",
+       |          "sv": "Lahti, Villähde"
+       |        },
        |        "koulutusOid": "1.2.246.562.13.00000000000000010985",
-       |        "koulutusNimi": {"fi": "Musiikkialan perustutkinto"},
+       |        "koulutusNimi": {
+       |          "fi": "Musiikkialan perustutkinto (voimaantulo 1.8.2026)",
+       |          "sv": "Grundexamen i musik (träder i kraft 1.8.2026)",
+       |          "en": "Vocational qualification in Music (valid from 1.8.2026)"
+       |        },
        |        "hakukohdeKoulutuskoodi": [
        |          {
        |            "versioituUri": "koulutus_321204#12",
        |            "koodiarvo": "321204",
        |            "koodistoUri": "koulutus",
        |            "koodistoVersio": 12,
-       |            "nimi": {"fi": "Musiikkialan perustutkinto"}
+       |            "nimi": {
+       |              "fi": "Musiikkialan perustutkinto",
+       |              "sv": "Grundexamen i musik",
+       |              "en": "Vocational qualification in Music"
+       |            }
        |          }
        |        ],
-       |        "vastaanottotieto": null,
-       |        "valintatila": null,
-       |        "ilmoittautumistila": null,
-       |        "harkinnanvaraisuus": "EI_HARKINNANVARAINEN_HAKUKOHDE",
-       |        "pisteet": 0,
-       |        "varasijanumero": 0,
-       |        "alinHyvaksyttyPistemaara": null
+       |        "valintatila": "HYVAKSYTTY",
+       |        "alinHyvaksyttyPistemaara": -6,
+       |        "alinValintaPistemaara": 0,
+       |        "pisteet": -6
        |      },
        |      {
        |        "hakukohdeOid": "1.2.246.562.20.00000000000000077691",
-       |        "hakukohdeNimi": {"fi": "Ravintola- ja catering-alan perustutkinto (vaativa erityinen tuki)"},
+       |        "hakukohdeNimi": {
+       |          "fi": "Ravintola- ja catering-alan perustutkinto (vaativa erityinen tuki)",
+       |          "sv": "Grundexamen inom restaurang- och cateringbranschen (krävande särskilt stöd)",
+       |          "en": "Ravintola- ja catering-alan perustutkinto (vaativa erityinen tuki)"
+       |        },
        |        "hakutoivenumero": 1,
        |        "hakukohdeOrganisaatio": "1.2.246.562.10.98880530088",
-       |        "organisaatioNimi": {"fi": "Lahti, Ståhlberginkatu"},
+       |        "organisaatioNimi": {
+       |          "fi": "Lahti, Ståhlberginkatu",
+       |          "sv": "Lahti, Ståhlberginkatu"
+       |        },
        |        "koulutusOid": "1.2.246.562.13.00000000000000011009",
-       |        "koulutusNimi": {"fi": "Ravintola- ja catering-alan perustutkinto"},
+       |        "koulutusNimi": {
+       |          "fi": "Ravintola- ja catering-alan perustutkinto (voimaantulo 1.8.2026)",
+       |          "sv": "Grundexamen inom restaurang- och cateringbranschen (träder i kraft 1.8.2026)",
+       |          "en": "Vocational qualification in Restaurant and Catering Services (valid from 1.8.2026)"
+       |        },
        |        "hakukohdeKoulutuskoodi": [
        |          {
        |            "versioituUri": "koulutus_381142#7",
        |            "koodiarvo": "381142",
        |            "koodistoUri": "koulutus",
        |            "koodistoVersio": 7,
-       |            "nimi": {"fi": "Ravintola- ja catering-alan perustutkinto"}
+       |            "nimi": {
+       |              "fi": "Ravintola- ja catering-alan perustutkinto",
+       |              "sv": "Grundexamen inom restaurang- och cateringbranschen",
+       |              "en": "Vocational qualification in Restaurant and Catering Services"
+       |            }
        |          }
        |        ],
-       |        "vastaanottotieto": null,
-       |        "valintatila": null,
-       |        "ilmoittautumistila": null,
-       |        "harkinnanvaraisuus": "EI_HARKINNANVARAINEN_HAKUKOHDE",
-       |        "pisteet": 0,
-       |        "varasijanumero": 0,
-       |        "alinHyvaksyttyPistemaara": null
+       |        "alinValintaPistemaara": 0
        |      },
        |      {
        |        "hakukohdeOid": "1.2.246.562.20.00000000000000078067",
-       |        "hakukohdeNimi": {"fi": "Kiinteistönhoidon osaamisala"},
+       |        "hakukohdeNimi": {
+       |          "fi": "Kiinteistönhoidon osaamisala, Puhtaus- ja kiinteistöpalvelualan perustutkinto (vaativa erityinen tuki)",
+       |          "sv": "Kompetensområdet för fastighetsskötsel, Grundexamen inom rengörings- och fastighetsservicebranschen (krävande särskilt stöd)",
+       |          "en": "Kiinteistönhoidon osaamisala, Puhtaus- ja kiinteistöpalvelualan perustutkinto (vaativa erityinen tuki)"
+       |        },
        |        "hakutoivenumero": 3,
        |        "hakukohdeOrganisaatio": "1.2.246.562.10.33661993627",
-       |        "organisaatioNimi": {"fi": "Lahti, Vipusenkatu"},
+       |        "organisaatioNimi": {
+       |          "fi": "Lahti, Vipusenkatu",
+       |          "sv": "Lahti, Vipusenkatu"
+       |        },
        |        "koulutusOid": "1.2.246.562.13.00000000000000010988",
-       |        "koulutusNimi": {"fi": "Puhtaus- ja kiinteistöpalvelualan perustutkinto"},
+       |        "koulutusNimi": {
+       |          "fi": "Puhtaus- ja kiinteistöpalvelualan perustutkinto (voimaantulo 1.8.2026)",
+       |          "sv": "Grundexamen inom rengörings- och fastighetsservicebranschen (träder i kraft 1.8.2026)",
+       |          "en": "Vocational qualification in Cleaning and Property Services (valid from 1.8.2026)"
+       |        },
        |        "hakukohdeKoulutuskoodi": [
        |          {
        |            "versioituUri": "koulutus_381141#7",
        |            "koodiarvo": "381141",
        |            "koodistoUri": "koulutus",
        |            "koodistoVersio": 7,
-       |            "nimi": {"fi": "Puhtaus- ja kiinteistöpalvelualan perustutkinto"}
+       |            "nimi": {
+       |              "fi": "Puhtaus- ja kiinteistöpalvelualan perustutkinto",
+       |              "sv": "Grundexamen inom rengörings- och fastighetsservicebranschen",
+       |              "en": "Vocational qualification in Cleaning and Property Services"
+       |            }
        |          }
        |        ],
-       |        "vastaanottotieto": null,
-       |        "valintatila": null,
-       |        "ilmoittautumistila": null,
-       |        "harkinnanvaraisuus": "EI_HARKINNANVARAINEN_HAKUKOHDE",
-       |        "pisteet": 0,
-       |        "varasijanumero": 0,
-       |        "alinHyvaksyttyPistemaara": null
+       |        "alinValintaPistemaara": 0
        |      }
        |    ]
        |  },
@@ -438,12 +465,22 @@ object OvaraHakukoosteServiceSpec {
        |    "hakemusOid": "1.2.246.562.11.00000000000002632918",
        |    "hakemusUrl": "https://virkailija.testiopintopolku.fi/lomake-editori/applications/search?term=1.2.246.562.11.00000000000002632918",
        |    "hakemuksenMuokkauksenAikaleima": "2026-03-30T21:37:13.544214+03:00",
-       |    "email": "testi@testiopintopolku.fi",
-       |    "matkapuhelin": "+358481234567",
-       |    "lahiosoite": "Testitie 1",
+       |    "email": "leena_maija_testi_raappana_testi-10545516007@testiopintopolku.fi",
+       |    "matkapuhelin": "+3584810545516",
+       |    "lahiosoite": "Testitie 10545516007",
        |    "postinumero": "00100",
-       |    "postitoimipaikka": "00100",
-       |    "maa": null,
+       |    "postitoimipaikka": "HELSINKI",
+       |    "maa": {
+       |      "versioituUri": "maatjavaltiot2_246#2",
+       |      "koodiarvo": "246",
+       |      "koodistoUri": "maatjavaltiot2",
+       |      "koodistoVersio": 2,
+       |      "nimi": {
+       |        "fi": "Suomi",
+       |        "sv": "Finland",
+       |        "en": "Finland"
+       |      }
+       |    },
        |    "hakuOid": "1.2.246.562.29.00000000000000056840",
        |    "hakuNimi": {
        |      "fi": "Perusopetuksen jälkeisen koulutuksen yhteishaku 2025",
@@ -451,20 +488,90 @@ object OvaraHakukoosteServiceSpec {
        |      "en": "Joint application to upper secondary education and preparatory education 2025"
        |    },
        |    "hakutapa": {
+       |      "versioituUri": "hakutapa_01#1",
        |      "koodiarvo": "01",
-       |      "koodistoUri": "hakutapa"
-       |    },
-       |    "hakutyyppi": {
-       |      "koodiarvo": "01",
-       |      "koodistoUri": "hakutyyppi"
+       |      "koodistoUri": "hakutapa",
+       |      "koodistoVersio": 1,
+       |      "nimi": {
+       |        "fi": "Yhteishaku",
+       |        "sv": "Gemensam ansökan",
+       |        "en": "Joint application"
+       |      }
        |    },
        |    "aktiivinenHaku": true,
-       |    "haunAlkamispaivamaara": "2024-08-31",
-       |    "oppijaOid": "$oppijaOid",
-       |    "huoltajanNimi": null,
-       |    "huoltajanPuhelinnumero": null,
-       |    "huoltajanSahkoposti": null,
-       |    "hakutoiveet": []
+       |    "haunAlkamispaivamaara": "2022-08-31T23:59:00",
+       |    "oppijaOid": "1.2.246.562.24.10545516007",
+       |    "hakutoiveet": [
+       |      {
+       |        "hakukohdeOid": "1.2.246.562.20.00000000000000058170",
+       |        "hakukohdeNimi": {
+       |          "fi": "Tutkintokoulutukseen valmentava koulutus (TUVA) (vaativana erityisenä tukena)",
+       |          "sv": "Tutkintokoulutukseen valmentava koulutus (TUVA) (vaativana erityisenä tukena)",
+       |          "en": "Tutkintokoulutukseen valmentava koulutus (TUVA) (vaativana erityisenä tukena)"
+       |        },
+       |        "hakutoivenumero": 1,
+       |        "hakukohdeOrganisaatio": "1.2.246.562.10.32485805991",
+       |        "organisaatioNimi": {
+       |          "fi": "Lahti, Svinhufvudinkatu",
+       |          "sv": "Lahti, Svinhufvudinkatu"
+       |        },
+       |        "koulutusOid": "1.2.246.562.13.00000000000000002055",
+       |        "koulutusNimi": {
+       |          "fi": "Tutkintokoulutukseen valmentava koulutus (TUVA)",
+       |          "sv": "Utbildning som handleder för examensutbildning (Hux)",
+       |          "en": "Tutkintokoulutukseen valmentava koulutus (TUVA)"
+       |        },
+       |        "hakukohdeKoulutuskoodi": [
+       |          {
+       |            "versioituUri": "koulutus_999908#1",
+       |            "koodiarvo": "999908",
+       |            "koodistoUri": "koulutus",
+       |            "koodistoVersio": 1,
+       |            "nimi": {
+       |              "fi": "Tutkintokoulutukseen valmentava koulutus",
+       |              "sv": "Utbildning som handleder för examensutbildning",
+       |              "en": "Tutkintokoulutukseen valmentava koulutus"
+       |            }
+       |          }
+       |        ],
+       |        "harkinnanvaraisuus": "EI_HARKINNANVARAINEN_HAKUKOHDE",
+       |        "alinValintaPistemaara": 0
+       |      },
+       |      {
+       |        "hakukohdeOid": "1.2.246.562.20.00000000000000058485",
+       |        "hakukohdeNimi": {
+       |          "fi": "Työhön ja itsenäiseen elämään valmentava koulutus (TELMA)",
+       |          "sv": "Työhön ja itsenäiseen elämään valmentava koulutus (TELMA)",
+       |          "en": "Työhön ja itsenäiseen elämään valmentava koulutus (TELMA)"
+       |        },
+       |        "hakutoivenumero": 2,
+       |        "hakukohdeOrganisaatio": "1.2.246.562.10.32485805991",
+       |        "organisaatioNimi": {
+       |          "fi": "Lahti, Svinhufvudinkatu",
+       |          "sv": "Lahti, Svinhufvudinkatu"
+       |        },
+       |        "koulutusOid": "1.2.246.562.13.00000000000000002150",
+       |        "koulutusNimi": {
+       |          "fi": "Työhön ja itsenäiseen elämään valmentava koulutus (TELMA)",
+       |          "sv": "Utbildning som handleder för arbete och ett självständigt liv (TELMA)",
+       |          "en": "Työhön ja itsenäiseen elämään valmentava koulutus (TELMA)"
+       |        },
+       |        "hakukohdeKoulutuskoodi": [
+       |          {
+       |            "versioituUri": "koulutus_999903#9",
+       |            "koodiarvo": "999903",
+       |            "koodistoUri": "koulutus",
+       |            "koodistoVersio": 9,
+       |            "nimi": {
+       |              "fi": "Työhön ja itsenäiseen elämään valmentava koulutus (TELMA)",
+       |              "sv": "Utbildning som handleder för arbete och ett självständigt liv (TELMA)"
+       |            }
+       |          }
+       |        ],
+       |        "harkinnanvaraisuus": "EI_HARKINNANVARAINEN_HAKUKOHDE",
+       |        "alinValintaPistemaara": 0
+       |      }
+       |    ]
        |  }
        |]""".stripMargin
 }
