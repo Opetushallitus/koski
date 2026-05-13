@@ -57,7 +57,8 @@ export const isIBOppiaineMuuTunniste = koodiviiteTunnisteGuard('oppiaineetib', [
   'DES',
   'SPO',
   'MATAA',
-  'MATAI'
+  'MATAI',
+  'WS'
 ] as const)
 
 export const isLukionMatematiikka2015Tunniste = koodiviiteTunnisteGuard(
