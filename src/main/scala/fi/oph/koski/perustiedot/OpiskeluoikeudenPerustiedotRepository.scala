@@ -87,9 +87,9 @@ class OpiskeluoikeudenPerustiedotRepository(
 
     val openSearchFilters: List[Map[String, Any]] = filters.flatMap {
       case Nimihaku(hakusana) => nameFilter(hakusana)
-      case Luokkahaku(hakusana) => hakusana.trim.split(" ").toList.map(_.toLowerCase).map { prefix =>
-        Map("prefix" -> Map("luokka.keyword" -> prefix))
-      }
+      case Luokkahaku(hakusana) => List(
+        Map("prefix" -> Map("luokka.keyword" -> hakusana.trim.toLowerCase))
+      )
       case OpiskeluoikeudenTyyppi(tyyppi) => List(Map("term" -> Map("tyyppi.koodiarvo" -> tyyppi.koodiarvo)))
       case OpiskeluoikeudenTila(tila) =>
         List(
