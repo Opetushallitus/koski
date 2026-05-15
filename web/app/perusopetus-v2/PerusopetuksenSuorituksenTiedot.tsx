@@ -212,7 +212,7 @@ export const PerusopetuksenSuorituksenTiedot: React.FC<
           <VuosiluokanLiitetiedot form={form} path={path} suoritus={suoritus} />
         )}
 
-        <KoulusivistyskieliRow suoritus={suoritus} />
+        <KoulusivistyskieliRow form={form} suoritus={suoritus} />
       </KeyValueTable>
 
       <SuorituksenVahvistusField
@@ -403,23 +403,25 @@ const KielikylpykieliRow: React.FC<{
   )
 }
 
-const KoulusivistyskieliRow: React.FC<{ suoritus: object }> = ({
-  suoritus
-}) => {
+const KoulusivistyskieliRow: React.FC<{
+  form: FormModel<PerusopetuksenOpiskeluoikeus>
+  suoritus: object
+}> = ({ form, suoritus }) => {
   const koulusivistyskieli = (
     suoritus as {
       koulusivistyskieli?: Koodistokoodiviite<'kieli', 'FI' | 'SV'>[]
     }
   ).koulusivistyskieli
 
-  if (!koulusivistyskieli || koulusivistyskieli.length === 0) {
+  const hasValue = Boolean(koulusivistyskieli && koulusivistyskieli.length > 0)
+  if (!hasValue && !form.editMode) {
     return null
   }
 
   return (
     <KeyValueRow labelContent={<KoulusivistyskieliPropertyTitle />}>
       <TestIdText id="koulusivistyskieli">
-        {koulusivistyskieli.map((k) => t(k.nimi)).join(', ')}
+        {hasValue ? koulusivistyskieli!.map((k) => t(k.nimi)).join(', ') : ' '}
       </TestIdText>
     </KeyValueRow>
   )
