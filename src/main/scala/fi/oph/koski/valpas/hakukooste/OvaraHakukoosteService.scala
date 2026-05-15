@@ -226,7 +226,7 @@ class OvaraHakukoosteService(
         varasijanumero = t.varasijanumero,
         vastaanottotieto = t.vastaanottotieto,
         ilmoittautumistila = t.ilmoittautumistila,
-        harkinnanvaraisuus = t.harkinnanvaraisuus.filter(Harkinnanvaraisuus.isHarkinnanvarainen),
+        harkinnanvaraisuus = t.harkinnanvaraisuus,
         hakukohdeKoulutuskoodi = koulutusKoodi,
       )
     }

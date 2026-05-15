@@ -283,7 +283,6 @@ object OvaraHakukoosteServiceSpec {
     val koulutuskoodit = t.hakukohdeKoulutuskoodi
       .map(kv => s"""[{"koodiarvo": "${kv.koodiarvo}", "koodistoUri": "${kv.koodistoUri}"}]""")
       .getOrElse("[]")
-    val harkinnanvaraisuus = t.harkinnanvaraisuus.getOrElse("EI_HARKINNANVARAINEN_HAKUKOHDE")
     s"""{
        |  "hakukohdeOid": "${t.hakukohdeOid}",
        |  "hakukohdeNimi": ${localizedStringJson(t.hakukohdeNimi)},
@@ -296,7 +295,7 @@ object OvaraHakukoosteServiceSpec {
        |  "vastaanottotieto": ${t.vastaanottotieto.map(s => s""""$s"""").getOrElse("null")},
        |  "valintatila": ${t.valintatila.map(s => s""""$s"""").getOrElse("null")},
        |  "ilmoittautumistila": ${t.ilmoittautumistila.map(s => s""""$s"""").getOrElse("null")},
-       |  "harkinnanvaraisuus": "$harkinnanvaraisuus",
+       |  "harkinnanvaraisuus": ${t.harkinnanvaraisuus.getOrElse("null")},
        |  "pisteet": ${t.pisteet.map(_.toString).getOrElse("null")},
        |  "varasijanumero": ${t.varasijanumero.map(_.toString).getOrElse("null")},
        |  "alinHyvaksyttyPistemaara": ${t.alinHyvaksyttyPistemaara.map(_.toString).getOrElse("null")}
