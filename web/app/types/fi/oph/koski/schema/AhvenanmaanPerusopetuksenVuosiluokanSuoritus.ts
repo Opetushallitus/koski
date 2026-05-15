@@ -3,7 +3,6 @@ import { LocalizedString } from './LocalizedString'
 import { OrganisaatioWithOid } from './OrganisaatioWithOid'
 import { AhvenanmaanOppiaineenTaiToimintaAlueenSuoritus } from './AhvenanmaanOppiaineenTaiToimintaAlueenSuoritus'
 import { HenkilövahvistusPaikkakunnalla } from './HenkilovahvistusPaikkakunnalla'
-import { AhvenanmaanOmanÄidinkielenOpinnotLaajuusVuosiviikkotunteina } from './AhvenanmaanOmanAidinkielenOpinnotLaajuusVuosiviikkotunteina'
 import { AhvenanmaanPerusopetuksenKäyttäytymisenArviointi } from './AhvenanmaanPerusopetuksenKayttaytymisenArviointi'
 import { AhvenanmaanPerusopetuksenLuokkaAste } from './AhvenanmaanPerusopetuksenLuokkaAste'
 
@@ -29,7 +28,6 @@ export type AhvenanmaanPerusopetuksenVuosiluokanSuoritus = {
   vahvistus?: HenkilövahvistusPaikkakunnalla
   tila?: Koodistokoodiviite<'suorituksentila', string>
   alkamispäivä?: string
-  omanÄidinkielenOpinnot?: AhvenanmaanOmanÄidinkielenOpinnotLaajuusVuosiviikkotunteina
   käyttäytymisenArvio?: AhvenanmaanPerusopetuksenKäyttäytymisenArviointi
   koulutusmoduuli: AhvenanmaanPerusopetuksenLuokkaAste
 }
@@ -50,7 +48,6 @@ export const AhvenanmaanPerusopetuksenVuosiluokanSuoritus = (o: {
   vahvistus?: HenkilövahvistusPaikkakunnalla
   tila?: Koodistokoodiviite<'suorituksentila', string>
   alkamispäivä?: string
-  omanÄidinkielenOpinnot?: AhvenanmaanOmanÄidinkielenOpinnotLaajuusVuosiviikkotunteina
   käyttäytymisenArvio?: AhvenanmaanPerusopetuksenKäyttäytymisenArviointi
   koulutusmoduuli: AhvenanmaanPerusopetuksenLuokkaAste
 }): AhvenanmaanPerusopetuksenVuosiluokanSuoritus => ({

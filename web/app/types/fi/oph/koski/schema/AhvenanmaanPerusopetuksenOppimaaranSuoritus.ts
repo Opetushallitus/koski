@@ -4,7 +4,6 @@ import { AhvenanmaanPerusopetus } from './AhvenanmaanPerusopetus'
 import { OrganisaatioWithOid } from './OrganisaatioWithOid'
 import { AhvenanmaanOppiaineenTaiToimintaAlueenSuoritus } from './AhvenanmaanOppiaineenTaiToimintaAlueenSuoritus'
 import { HenkilövahvistusPaikkakunnalla } from './HenkilovahvistusPaikkakunnalla'
-import { AhvenanmaanOmanÄidinkielenOpinnotLaajuusVuosiviikkotunteina } from './AhvenanmaanOmanAidinkielenOpinnotLaajuusVuosiviikkotunteina'
 
 /**
  * Ahvenanmaan perusopetuksen koko oppimäärän suoritus. Nämä suoritukset näkyvät päättötodistuksella.
@@ -18,6 +17,7 @@ export type AhvenanmaanPerusopetuksenOppimääränSuoritus = {
     'suorituksentyyppi',
     'ahvenanmaanperusopetuksenoppimaara'
   >
+  tila?: Koodistokoodiviite<'suorituksentila', string>
   suorituskieli: Koodistokoodiviite<'kieli', string>
   suoritustapa: Koodistokoodiviite<'perusopetuksensuoritustapa', string>
   todistuksellaNäkyvätLisätiedot?: LocalizedString
@@ -25,8 +25,6 @@ export type AhvenanmaanPerusopetuksenOppimääränSuoritus = {
   toimipiste: OrganisaatioWithOid
   osasuoritukset?: Array<AhvenanmaanOppiaineenTaiToimintaAlueenSuoritus>
   vahvistus?: HenkilövahvistusPaikkakunnalla
-  tila?: Koodistokoodiviite<'suorituksentila', string>
-  omanÄidinkielenOpinnot?: AhvenanmaanOmanÄidinkielenOpinnotLaajuusVuosiviikkotunteina
 }
 
 export const AhvenanmaanPerusopetuksenOppimääränSuoritus = (o: {
@@ -35,6 +33,7 @@ export const AhvenanmaanPerusopetuksenOppimääränSuoritus = (o: {
     'suorituksentyyppi',
     'ahvenanmaanperusopetuksenoppimaara'
   >
+  tila?: Koodistokoodiviite<'suorituksentila', string>
   suorituskieli: Koodistokoodiviite<'kieli', string>
   suoritustapa: Koodistokoodiviite<'perusopetuksensuoritustapa', string>
   todistuksellaNäkyvätLisätiedot?: LocalizedString
@@ -42,8 +41,6 @@ export const AhvenanmaanPerusopetuksenOppimääränSuoritus = (o: {
   toimipiste: OrganisaatioWithOid
   osasuoritukset?: Array<AhvenanmaanOppiaineenTaiToimintaAlueenSuoritus>
   vahvistus?: HenkilövahvistusPaikkakunnalla
-  tila?: Koodistokoodiviite<'suorituksentila', string>
-  omanÄidinkielenOpinnot?: AhvenanmaanOmanÄidinkielenOpinnotLaajuusVuosiviikkotunteina
 }): AhvenanmaanPerusopetuksenOppimääränSuoritus => ({
   tyyppi: Koodistokoodiviite({
     koodiarvo: 'ahvenanmaanperusopetuksenoppimaara',

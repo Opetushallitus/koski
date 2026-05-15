@@ -22,7 +22,7 @@ import fi.oph.scalaschema.annotation._
 //  1. Aineopiskeluoikeus (NuortenPerusopetuksenOppiaineenOppimääränSuoritus)
 //     — yliviivattu wikissä; tällä hetkellä pudotettu. Tuleeko myöhemmin?
 //  2. Koodistot — omat vai jaetut?
-//     a) opiskeluoikeudentila: oma vai jaettu koskiopiskeluoikeudentila?
+//     a) (ratkaistu: jaettu koskiopiskeluoikeudentila, ei peruutettu-tilaa)
 //     b) oppiainekoodisto: oma tarvitaan koska AI puuttuu (vain
 //        svenska / svenska som andraspråk) ja uskonto+livsåskådning
 //        yhdistetty yhdeksi. Koodiston sisältö?
@@ -34,11 +34,12 @@ import fi.oph.scalaschema.annotation._
 // ── Peach-kenttien vahvistus (jokaiselle: kuuluuko skeemaan?) ───────────
 //
 //  4. Toiminta-alueen suoritus — samatko toiminta-alueet samoilla nimillä?
-//  5. OmanÄidinkielenOpinnot — käytössä Ahvenanmaalla?
+//  5. (ratkaistu: omanÄidinkielenOpinnot, luokkaAste ja
+//     vuosiluokkiinSitoutumatonOpetus pudotettu)
 //  6. (ratkaistu: joustavaPerusopetus, valmistavanLisäopetus,
 //     tavoitekokonaisuuksittainOpiskelu, kielikylpykieli ja rajattuOppimäärä
 //     pudotettu; yksilöllistettyOppimäärä → mukautettuOppimäärä)
-//  7. vuosiluokkiinSitoutumatonOpetus — kyllä vai ei?
+//  7. (ratkaistu: vuosiluokkiinSitoutumatonOpetus pudotettu)
 //  8. (ratkaistu: laajuudet vvt pidetään, ei pakollinen)
 //
 // ── Käyttäytymisen arviointi ("Ansvar och samarbete") ────────────────────
@@ -136,18 +137,10 @@ case class AhvenanmaanPerusopetuksenOpiskeluoikeudenLisätiedot(
   @Description("Kotiopetusjaksot huoltajan päätöksestä alkamis- ja päättymispäivineen.")
   @Tooltip("Kotiopetusjaksot huoltajan päätöksestä alkamis- ja päättymispäivineen.")
   kotiopetusjaksot: Option[List[Aikajakso]] = None,
-  // TODO TOR-2587: peach – vahvistettava.
-  @Description("Oppilas on vuosiluokkiin sitomattomassa opetuksessa (kyllä/ei).")
-  @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT))
-  @Title("Vuosiluokkiin sitomaton opetus")
-  vuosiluokkiinSitoutumatonOpetus: Option[Boolean] = None,
 ) extends OpiskeluoikeudenLisätiedot
 
-// Opiskeluoikeuden tila.
-// TODO TOR-2587: peach – selvitettävä käyttääkö Ahvenanmaa omaa koodistoa
-// vai jaettua "koskiopiskeluoikeudentila"-koodistoa. Sallitut arvot wikissä:
-// eronnut, peruutettu, katsotaaneronneeksi, lasna, mitatoity,
-// valiaikaisestikeskeytynyt, valmistunut.
+// Käytetään valtakunnallista koskiopiskeluoikeudentila-koodistoa, mutta
+// peruutettu-tilaa ei sallita.
 case class AhvenanmaanPerusopetuksenOpiskeluoikeudenTila(
   @MinItems(1)
   opiskeluoikeusjaksot: List[AhvenanmaanPerusopetuksenOpiskeluoikeusjakso]
@@ -155,8 +148,14 @@ case class AhvenanmaanPerusopetuksenOpiskeluoikeudenTila(
 
 case class AhvenanmaanPerusopetuksenOpiskeluoikeusjakso(
   alku: LocalDate,
+  @KoodistoKoodiarvo("eronnut")
+  @KoodistoKoodiarvo("katsotaaneronneeksi")
+  @KoodistoKoodiarvo("lasna")
+  @KoodistoKoodiarvo("mitatoity")
+  @KoodistoKoodiarvo("valiaikaisestikeskeytynyt")
+  @KoodistoKoodiarvo("valmistunut")
   tila: Koodistokoodiviite
-) extends KoskiLaajaOpiskeluoikeusjakso
+) extends KoskiOpiskeluoikeusjakso
 
 // ---------- Päätason suoritukset ----------
 
@@ -181,9 +180,6 @@ case class AhvenanmaanPerusopetuksenVuosiluokanSuoritus(
   suorituskieli: Koodistokoodiviite,
   @Tooltip("Mahdolliset muut suorituskielet.")
   muutSuorituskielet: Option[List[Koodistokoodiviite]] = None,
-  // TODO TOR-2587: peach – vahvistettava säilyykö Ahvenanmaan skeemassa.
-  @Tooltip("Osallistuminen perusopetusta täydentävän oman äidinkielen opiskeluun.")
-  omanÄidinkielenOpinnot: Option[AhvenanmaanOmanÄidinkielenOpinnotLaajuusVuosiviikkotunteina] = None,
   @Description("Tieto siitä, että oppilas jää luokalle")
   @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT))
   @DefaultValue(false)
@@ -210,12 +206,8 @@ case class AhvenanmaanPerusopetuksenOppimääränSuoritus(
   @KoodistoUri("perusopetuksensuoritustapa")
   suoritustapa: Koodistokoodiviite,
   suorituskieli: Koodistokoodiviite,
-  // TODO TOR-2587: peach – vahvistettava.
   @Tooltip("Mahdolliset muut suorituskielet.")
   muutSuorituskielet: Option[List[Koodistokoodiviite]] = None,
-  // TODO TOR-2587: peach – vahvistettava.
-  @Tooltip("Osallistuminen perusopetusta täydentävän oman äidinkielen opiskeluun.")
-  omanÄidinkielenOpinnot: Option[AhvenanmaanOmanÄidinkielenOpinnotLaajuusVuosiviikkotunteina] = None,
   override val osasuoritukset: Option[List[AhvenanmaanOppiaineenTaiToimintaAlueenSuoritus]] = None,
   todistuksellaNäkyvätLisätiedot: Option[LocalizedString] = None,
   @KoodistoKoodiarvo("ahvenanmaanperusopetuksenoppimaara")
@@ -249,10 +241,6 @@ case class AhvenanmaanPerusopetuksenOppiaineenSuoritus(
   @KoodistoUri("perusopetuksensuoritustapa")
   @KoodistoKoodiarvo("erityinentutkinto")
   suoritustapa: Option[Koodistokoodiviite] = None,
-  @Title("Luokka-aste")
-  @KoodistoUri("perusopetuksenluokkaaste")
-  @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT, Rooli.SUORITUSJAKO_KATSELIJA))
-  luokkaAste: Option[Koodistokoodiviite] = None,
 ) extends AhvenanmaanOppiaineenTaiToimintaAlueenSuoritus with Vahvistukseton
 
 // TODO TOR-2587: peach – koko toiminta-alueen suoritus; wikissä "Selvitettävä ovatko
@@ -331,16 +319,6 @@ case class AhvenanmaanPerusopetuksenKäyttäytymisenArviointi(
   def arvioitsijat = None
   def hyväksytty = arvosana.koodiarvo != "U"
 }
-
-// TODO TOR-2587: peach – koko luokka; vahvistettava onko käytössä Ahvenanmaalla.
-case class AhvenanmaanOmanÄidinkielenOpinnotLaajuusVuosiviikkotunteina(
-  @KoodistoUri("ahvenanmaanarviointiasteikkoyleissivistava")
-  arvosana: Koodistokoodiviite,
-  arviointipäivä: Option[LocalDate] = None,
-  @KoodistoUri("kieli")
-  kieli: Koodistokoodiviite,
-  laajuus: Option[LaajuusVuosiviikkotunneissa] = None
-)
 
 // ---------- Koulutusmoduulit ----------
 
