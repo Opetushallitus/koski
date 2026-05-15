@@ -1,6 +1,7 @@
 import React, { useCallback, useMemo, useState } from 'react'
 import { useKoodisto, useKoodistoFiller } from '../appstate/koodisto'
 import { useOrganisaatioHierarkia } from '../appstate/organisaatioHierarkia'
+import { usePeruste } from '../appstate/peruste'
 import { TestIdLayer } from '../appstate/useTestId'
 import { common, CommonProps } from '../components-v2/CommonProps'
 import { Label } from '../components-v2/containers/Label'
@@ -91,17 +92,27 @@ export const UusiPerusopetuksenVuosiluokanSuoritusModal: React.FC<
     [hierarkia]
   )
 
+  const perusteet = usePeruste('perusopetuksenvuosiluokka')
+  const perusteOptions = useMemo<SelectOption<string>[]>(
+    () =>
+      (perusteet || []).map((p) => ({
+        key: p.koodiarvo,
+        label: `${p.koodiarvo} ${t(p.nimi)}`,
+        value: p.koodiarvo
+      })),
+    [perusteet]
+  )
+  const [perusteenDiaarinumero, setPerusteenDiaarinumero] = useState<
+    string | undefined
+  >(() => findPerusteenDiaarinumero(opiskeluoikeus))
+
   const valid =
     luokkaAste !== undefined &&
     luokka !== undefined &&
     luokka.length > 0 &&
     !!toimipiste &&
-    !!alkamispäivä
-
-  const perusteenDiaarinumero = useMemo(
-    () => findPerusteenDiaarinumero(opiskeluoikeus),
-    [opiskeluoikeus]
-  )
+    !!alkamispäivä &&
+    !!perusteenDiaarinumero
 
   const pohjasuoritus = opiskeluoikeus.suoritukset[0]
 
@@ -154,6 +165,16 @@ export const UusiPerusopetuksenVuosiluokanSuoritusModal: React.FC<
       <TestIdLayer id="uusiVuosiluokanSuoritus">
         <ModalTitle>{t('Suorituksen lisäys')}</ModalTitle>
         <ModalBody>
+          <Label label="Peruste">
+            <Select
+              options={perusteOptions}
+              value={perusteenDiaarinumero}
+              onChange={(o) => setPerusteenDiaarinumero(o?.value)}
+              skipAutoFocus
+              testId="peruste"
+            />
+          </Label>
+
           <Label label="Luokka-aste">
             <Select
               options={luokkaAsteOptions}

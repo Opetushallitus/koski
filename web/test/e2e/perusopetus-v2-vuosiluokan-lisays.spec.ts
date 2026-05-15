@@ -210,6 +210,34 @@ test.describe('Perusopetuksen uusi käyttöliittymä: vuosiluokan suorituksen li
       )
       await expect(oppiaineet).toHaveCount(9)
     })
+
+    test('Peruste-kenttä näytetään ja esivalitaan opiskeluoikeuden olemassaolevasta perusteesta', async ({
+      page,
+      oppijaPage,
+      fixtures
+    }) => {
+      await fixtures.reset()
+      const oppija = await fixtures.putOppija(tyhjäTeroPerusopetus())
+      await oppijaPage.goto(v2Url(oppija.henkilö.oid))
+
+      await page.getByTestId('oo.0.opiskeluoikeus.edit').click()
+      await addNewTab(page).click()
+
+      const perusteInput = page.getByTestId(
+        'oo.0.modal.uusiVuosiluokanSuoritus.peruste.input'
+      )
+      await expect(perusteInput).toBeVisible()
+      // Esivalinta tulee päättötodistuksen perusteesta (104/011/2014).
+      await expect(perusteInput).toHaveValue(/104\/011\/2014/)
+
+      // Valikon voi avata ja siellä on vähintään tämä peruste valittavissa.
+      await perusteInput.click()
+      await expect(
+        page
+          .locator('.Select__optionLabel')
+          .filter({ hasText: /104\/011\/2014/ })
+      ).toBeVisible()
+    })
   })
 
   test.describe('Oppiaineiden esitäyttö luokka-asteen mukaan', () => {
