@@ -1,7 +1,6 @@
 package fi.oph.koski.perftest
 
 import fi.oph.koski.json.JsonSerializer
-import fi.oph.koski.perftest.PerfTestScenario.maskOppijaOids
 import fi.oph.koski.valpas.Oppijalista
 
 import java.nio.charset.Charset
@@ -27,7 +26,7 @@ object ValpasRandomPerusopetuksenOppilaitoksetGetterScenario extends PerfTestSce
   override def bodyValidator: Boolean = {
     val bodyContainsError = this.body.contains("hakutilanneError")
     if (bodyContainsError) {
-      logger.error(maskOppijaOids(this.body))
+      logger.error(this.body)
     }
     !bodyContainsError
   }

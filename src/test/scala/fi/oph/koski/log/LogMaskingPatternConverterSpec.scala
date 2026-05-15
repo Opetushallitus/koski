@@ -1,7 +1,7 @@
 package fi.oph.koski.log
 
 import fi.oph.koski.TestEnvironment
-import fi.oph.koski.log.LogUtils.HETU_MASK
+import fi.oph.koski.log.LogUtils.{HETU_MASK, OPPIJA_OID_MASK}
 import org.json4s.{JObject, JValue}
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.should.Matchers
@@ -30,7 +30,11 @@ class LogMaskingPatternConverterSpec extends AnyFreeSpec with TestEnvironment wi
       }
       "JsonTemplateLayout: MaskedLogstashJsonEventLayoutV1.json, OpenSearch id" in {
         logger.info("Id: 1.2.246.562.24.00000000040_040404-0404")
-        latestMaskedJsonMessage should equal(s"Id: 1.2.246.562.24.00000000040_${HETU_MASK}")
+        if (sys.env.contains("CI")) {
+          latestMaskedJsonMessage should equal(s"Id: ${OPPIJA_OID_MASK}_${HETU_MASK}")
+        } else {
+          latestMaskedJsonMessage should equal(s"Id: 1.2.246.562.24.00000000040_${HETU_MASK}")
+        }
       }
     }
     "Hetujen maskaus ja viestin lyhennys" - {
