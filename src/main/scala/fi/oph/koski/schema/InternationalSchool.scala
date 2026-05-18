@@ -103,9 +103,10 @@ case class InternationalSchoolOpiskeluoikeudenTila(
 case class InternationalSchoolOpiskeluoikeusjakso(
   alku: LocalDate,
   tila: Koodistokoodiviite,
-  @Description("Opintojen rahoitus. Mikäli kyseessä on kaksoitutkintoa suorittava opiskelija, jonka rahoituksen saa ammatillinen oppilaitos, tulee käyttää arvoa 6: Muuta kautta rahoitettu. Muussa tapauksessa käytetään arvoa 1: Valtionosuusrahoitteinen koulutus.")
+  @Description("Opintojen rahoitus. Mikäli kyseessä on kaksoitutkintoa suorittava opiskelija, jonka rahoituksen saa ammatillinen oppilaitos, tulee käyttää arvoa 6: Muuta kautta rahoitettu. Muussa tapauksessa käytetään arvoa 1: Valtionosuusrahoitteinen koulutus. Lukuvuosimaksu 16 käytössä vain 1.8.2026 tai myöhemmin alkavissa International School of Helsinki -opiskeluoikeuksissa.")
   @KoodistoKoodiarvo("1")
   @KoodistoKoodiarvo("6")
+  @KoodistoKoodiarvo("16")
   override val opintojenRahoitus: Option[Koodistokoodiviite] = None
 ) extends KoskiLaajaOpiskeluoikeusjakso
 

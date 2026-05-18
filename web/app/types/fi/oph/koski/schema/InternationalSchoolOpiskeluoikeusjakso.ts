@@ -19,7 +19,7 @@ export type InternationalSchoolOpiskeluoikeusjakso = {
     | 'valiaikaisestikeskeytynyt'
     | 'valmistunut'
   >
-  opintojenRahoitus?: Koodistokoodiviite<'opintojenrahoitus', '1' | '6'>
+  opintojenRahoitus?: Koodistokoodiviite<'opintojenrahoitus', '1' | '6' | '16'>
 }
 
 export const InternationalSchoolOpiskeluoikeusjakso = (o: {
@@ -34,7 +34,7 @@ export const InternationalSchoolOpiskeluoikeusjakso = (o: {
     | 'valiaikaisestikeskeytynyt'
     | 'valmistunut'
   >
-  opintojenRahoitus?: Koodistokoodiviite<'opintojenrahoitus', '1' | '6'>
+  opintojenRahoitus?: Koodistokoodiviite<'opintojenrahoitus', '1' | '6' | '16'>
 }): InternationalSchoolOpiskeluoikeusjakso => ({
   $class: 'fi.oph.koski.schema.InternationalSchoolOpiskeluoikeusjakso',
   ...o

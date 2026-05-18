@@ -122,6 +122,34 @@ class OppijaValidationInternationalSchoolSpec extends AnyFreeSpec with KoskiHttp
     }
   }
 
+  "Opintojen rahoitus" - {
+    "lukuvuosimaksurahoitusta ei voi käyttää ennen 1.8.2026 alkavassa opiskeluoikeudessa" in {
+      val oo = defaultOpiskeluoikeus.copy(
+        tila = InternationalSchoolOpiskeluoikeudenTila(List(
+          InternationalSchoolOpiskeluoikeusjakso(date(2026, 7, 31), LukioExampleData.opiskeluoikeusAktiivinen, Some(ExampleData.lukuvuosimaksuRahoitteinen))
+        )),
+        suoritukset = List(InternationalSchoolExampleData.diplomaSuoritus(12, date(2026, 7, 31), None))
+      )
+      setupOppijaWithOpiskeluoikeus(oo) {
+        verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.date.alkamispäivä(
+          "Lukuvuosimaksurahoitusta (opintojenRahoitus koodiarvo 16) ei voi käyttää opiskeluoikeudessa, jonka alkamispäivä on ennen 1.8.2026"
+        ))
+      }
+    }
+
+    "lukuvuosimaksurahoitusta voi käyttää 1.8.2026 tai myöhemmin alkavassa opiskeluoikeudessa" in {
+      val oo = defaultOpiskeluoikeus.copy(
+        tila = InternationalSchoolOpiskeluoikeudenTila(List(
+          InternationalSchoolOpiskeluoikeusjakso(date(2026, 8, 1), LukioExampleData.opiskeluoikeusAktiivinen, Some(ExampleData.lukuvuosimaksuRahoitteinen))
+        )),
+        suoritukset = List(InternationalSchoolExampleData.diplomaSuoritus(12, date(2026, 8, 1), None))
+      )
+      setupOppijaWithOpiskeluoikeus(oo) {
+        verifyResponseStatusOk()
+      }
+    }
+  }
+
   override def tag = implicitly[reflect.runtime.universe.TypeTag[InternationalSchoolOpiskeluoikeus]]
   def tutkintoSuoritus: DiplomaVuosiluokanSuoritus = InternationalSchoolExampleData.diplomaSuoritus(12, date(2019, 8, 15), None)
 

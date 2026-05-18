@@ -178,5 +178,25 @@ class OppijaValidationDIASpec extends AnyFreeSpec with KoskiHttpSpec with Opiske
         opiskeluoikeusPeruutettu
       ).foreach(verifyRahoitusmuotoKielletty)
     }
+
+    "lukuvuosimaksurahoitusta ei voi käyttää ennen 1.8.2026 alkavassa opiskeluoikeudessa" in {
+      val oo = defaultOpiskeluoikeus.copy(tila = DIAOpiskeluoikeudenTila(List(
+        DIAOpiskeluoikeusjakso(LocalDate.of(2026, 7, 31), opiskeluoikeusLäsnä, Some(lukuvuosimaksuRahoitteinen))
+      )))
+      setupOppijaWithOpiskeluoikeus(oo) {
+        verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.date.alkamispäivä(
+          "Lukuvuosimaksurahoitusta (opintojenRahoitus koodiarvo 16) ei voi käyttää opiskeluoikeudessa, jonka alkamispäivä on ennen 1.8.2026"
+        ))
+      }
+    }
+
+    "lukuvuosimaksurahoitusta voi käyttää 1.8.2026 tai myöhemmin alkavassa opiskeluoikeudessa" in {
+      val oo = defaultOpiskeluoikeus.copy(tila = DIAOpiskeluoikeudenTila(List(
+        DIAOpiskeluoikeusjakso(LocalDate.of(2026, 8, 1), opiskeluoikeusLäsnä, Some(lukuvuosimaksuRahoitteinen))
+      )))
+      setupOppijaWithOpiskeluoikeus(oo) {
+        verifyResponseStatusOk()
+      }
+    }
   }
 }
