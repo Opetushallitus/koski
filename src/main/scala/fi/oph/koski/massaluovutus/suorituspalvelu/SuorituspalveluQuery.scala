@@ -37,13 +37,8 @@ trait SuorituspalveluQuery extends OpetushallituksenMassaluovutusQueryParameters
           val responseOpiskeluoikeudet = response.collect { case Right(oo) => oo }
           val responseVirheellisetOpiskeluoikeudet = response.collect { case Left(virheellinenOo) => virheellinenOo }
 
-          responseOpiskeluoikeudet.foreach { oo =>
-            SuorituspalveluQuery.auditLog(oppija_oid, oo.oid, None)
-          }
-
-          responseVirheellisetOpiskeluoikeudet.foreach { virheellinenOo =>
-            SuorituspalveluQuery.auditLog(oppija_oid, virheellinenOo.oid, None)
-          }
+          val auditLogOidit = responseOpiskeluoikeudet.map(_.oid) ++ responseVirheellisetOpiskeluoikeudet.map(_.oid)
+          SuorituspalveluQuery.auditLog(oppija_oid, auditLogOidit)
 
           Some(
             SupaResponse(
@@ -148,20 +143,20 @@ object SuorituspalveluQuery {
     "perusopetukseenvalmistavaopetus",
   )
 
-  def auditLog(oppijaOid: String, opiskeluoikeusOid: String, versionumero: Option[Int])(implicit user: Session): Unit =
-    AuditLog
-      .log(
-        KoskiAuditLogMessage(
-          KoskiOperation.SUORITUSPALVELU_OPISKELUOIKEUS_HAKU,
-          user,
-          (
-            Map(
-              KoskiAuditLogMessageField.oppijaHenkiloOid -> oppijaOid,
-              KoskiAuditLogMessageField.opiskeluoikeusOid -> opiskeluoikeusOid,
-            ) ++ versionumero.map(v => Map(
-              KoskiAuditLogMessageField.opiskeluoikeusVersio -> v.toString
-            )).getOrElse(Map.empty[AuditLogMessageField, String])
-          ).toMap
-        )
+  def auditLog(oppijaOid: String, opiskeluoikeusOidit: Seq[String], versionumero: Option[Int] = None)(implicit user: Session): Unit = {
+    val base: AuditLogMessage.ExtraFields = Map(KoskiAuditLogMessageField.oppijaHenkiloOid -> oppijaOid)
+    val withOidit =
+      if (opiskeluoikeusOidit.nonEmpty) base + (KoskiAuditLogMessageField.opiskeluoikeusOid -> opiskeluoikeusOidit.mkString(","))
+      else base
+    val fields = withOidit ++ versionumero.map(v =>
+      Map(KoskiAuditLogMessageField.opiskeluoikeusVersio -> v.toString)
+    ).getOrElse(Map.empty[AuditLogMessageField, String])
+    AuditLog.log(
+      KoskiAuditLogMessage(
+        KoskiOperation.SUORITUSPALVELU_OPISKELUOIKEUS_HAKU,
+        user,
+        fields
       )
+    )
+  }
 }
