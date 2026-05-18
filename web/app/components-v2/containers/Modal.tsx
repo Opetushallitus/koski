@@ -34,8 +34,12 @@ export const Modal: React.FC<ModalProps> = (props) => {
 
   useEffect(() => {
     if (isActive) {
+      // [data-skip-autofocus] -elementit jäävät tab-järjestykseen, mutta
+      // niitä ei valita modalin avautuessa automaattisesti.
       const inputs: NodeListOf<HTMLInputElement> | undefined =
-        ref.current?.querySelectorAll('input, textarea, button, [tabindex]')
+        ref.current?.querySelectorAll(
+          'input:not([data-skip-autofocus]), textarea:not([data-skip-autofocus]), button:not([data-skip-autofocus]), [tabindex]:not([data-skip-autofocus])'
+        )
       inputs?.[0]?.focus?.()
     }
   }, [isActive])

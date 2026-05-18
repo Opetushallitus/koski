@@ -43,6 +43,7 @@ export type SelectProps<T> = CommonProps<{
   maxOptions?: number
   allowOpenUpwards?: boolean
   hasErrors?: boolean
+  skipAutoFocus?: boolean
   testId: string | number
 }>
 
@@ -129,6 +130,7 @@ export const Select = <T,>(props: SelectProps<T>) => {
             props.disabled ||
             (!props.onSearch && props.options.length === 0)
           }
+          data-skip-autofocus={props.skipAutoFocus ? '' : undefined}
           {...select.inputEventListeners}
           data-testid={inputTestId}
           ref={input}

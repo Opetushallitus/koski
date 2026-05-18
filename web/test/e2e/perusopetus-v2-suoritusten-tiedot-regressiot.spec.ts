@@ -5,6 +5,9 @@ import { virkailija } from './setup/auth'
 const kaisaOid = '1.2.246.562.24.00000000007'
 const kaisaUrl = `${kaisaOid}?opiskeluoikeudenTyyppi=perusopetus&perusopetus-v2=true`
 
+const ylermiOid = '1.2.246.562.24.00000000010'
+const ylermiUrl = `${ylermiOid}?opiskeluoikeudenTyyppi=perusopetus&perusopetus-v2=true`
+
 const tallenna = async (page: Page) => {
   await page.getByTestId('oo.0.opiskeluoikeus.save').click()
   await expect(page.getByTestId('oo.0.opiskeluoikeus.edit')).toBeVisible({
@@ -147,6 +150,37 @@ test.describe('Perusopetuksen uusi käyttöliittymä: suoritusten tiedot regress
     await expect(lisätiedotValue).toContainText('Ensimmäinen rivi')
     await expect(lisätiedotValue).toContainText('Toinen rivi')
     await expect(lisätiedotValue).toHaveCSS('white-space', 'pre-line')
+  })
+
+  test('Päättötodistuksen koulusivistyskieli näytetään muokkaustilassa myös kun arvoa ei vielä ole', async ({
+    page,
+    oppijaPage
+  }) => {
+    await oppijaPage.goto(ylermiUrl)
+
+    // Ylermin päättötodistus on kesken eikä hyväksyttyä äidinkielen arviointia ole,
+    // joten koulusivistyskielen synteettinen kenttä on tyhjä.
+    expect(
+      (await suorituksenTiedotRivienOtsikot(page, 0).allTextContents()).map(
+        (label) => label.trim()
+      )
+    ).not.toContain('Koulusivistyskieli')
+
+    await page.getByTestId('oo.0.opiskeluoikeus.edit').click()
+
+    await expect(suorituksenTiedotRivienOtsikot(page, 0)).toContainText([
+      'Koulusivistyskieli'
+    ])
+
+    const koulusivistyskieliRivi = suorituksenTiedotRivi(
+      page,
+      0,
+      'koulusivistyskieli'
+    )
+    await expect(koulusivistyskieliRivi.locator('.info-icon')).toBeVisible()
+    await expect(
+      page.getByTestId('oo.0.suoritukset.0.koulusivistyskieli')
+    ).toHaveText(/^\s*$/)
   })
 
   test('Vuosiluokan tyhjä suoritustapa näytetään muokkaustilassa', async ({
