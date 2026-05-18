@@ -85,19 +85,14 @@ import fi.oph.scalaschema.annotation._
 //      luovutusskeemojen (Kela, HSL, Supa, Hakemuspalvelu, Migri,
 //      AktiivisetJaPaattyneetOpinnot) per-tyyppiset lisäykset.
 //
-// Input-deserialisointi menee automaattisesti:
-// SchemaValidatingExtractor.extract[KoskeenTallennettavaOpiskeluoikeus]
-// dispatchaa @Discriminator tyyppi -kentän perusteella, ja @KoodistoKoodiarvo
-// -annotaatio tässä luokassa riittää siihen ohjaukseen. Käytännössä kuitenkin
-// tallennus torjutaan tällä hetkellä askeleessa 2: koodistopalvelu ei tunne
-// uutta koodiarvoa, joten validointi epäonnistuu – toimii turvaverkkona
-// ennen kuin wiring on valmis.
-//
-// Skippaus eksplisiittisesti: jos tyyppi halutaan varmuudella ulos tallennus-
-// polusta ennen wiringiä, vaihda `extends KoskeenTallennettavaOpiskeluoikeus`
-// pelkkään `extends Opiskeluoikeus`:iin – skeemakatselimessa tyyppi säilyy
-// näkyvillä, mutta deserialisoija ei enää pidä sitä kelvollisena tallennus-
-// kohteena.
+// Tuotannon kirjoitussuojaus:
+// Tuotannossa tallennus estetään features.disabledPäätasonSuoritusLuokat
+// -konfiguraatiolla:
+//   features.disabledPäätasonSuoritusLuokat = [
+//     "AhvenanmaanPerusopetuksenVuosiluokanSuoritus",
+//     "AhvenanmaanPerusopetuksenOppimääränSuoritus"
+//   ]
+// Kun Ahvenanmaa on valmis tuotantoon, poistetaan nämä tuotantokonfiguraatiosta.
 
 @Description("Ahvenanmaan perusopetuksen opiskeluoikeus")
 case class AhvenanmaanPerusopetuksenOpiskeluoikeus(

@@ -1,6 +1,6 @@
 # 7.5.2026
 
-- Ahvenanmaan perusopetuksen (TOR-2587) wiring: tyypin rekisteröinti, koodistofixturet, esimerkkioppija, ePerusteet-validoinnin ohitus. Tallennettavissa dev/QA-ympäristöissä; tuotannossa estetty `features.disabledPäätasonSuoritusTyypit`-konfiguraatiolla.
+- Ahvenanmaan perusopetuksen (TOR-2587) wiring: tyypin rekisteröinti, koodistofixturet, esimerkkioppija, ePerusteet-validoinnin ohitus. Tallennettavissa dev/QA-ympäristöissä; tuotannossa estetty `features.disabledPäätasonSuoritusLuokat`-konfiguraatiolla.
 
 # 5.5.2026
 
