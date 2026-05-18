@@ -29,6 +29,7 @@ class SureHakukoosteServiceSpec extends ValpasTestBase with Matchers with Either
       |opintopolku.virkailija.password = "bar"
       |valpas.hakukoosteEnabled = true
       |valpas.hakukoosteTimeoutSeconds = 2
+      |valpas.hakukoosteService = "sure"
     """.stripMargin)
 
   private val mockClient = ValpasHakukoosteService(KoskiApplicationForTests, Some(config))
