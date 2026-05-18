@@ -38,6 +38,7 @@ This document describes the recommended approach (network-read worker; see §1) 
 12. **Column backfills tracked in a new `r_backfill_status` metadata table** so Lampi/Vipunen consumers can detect "this column isn't fully populated yet" rather than silently exporting NULLs. (§1.4 Flavor A)
 13. **No live read replica in Phase 1**. With the 900 s ceiling + snapshot-clone for Lampi + partitioning, the bloat math works out. Add a replica later only if measurements show CPU/IOPS saturation. (§1.5a)
 14. **No Aurora migration** as part of this project. The 900 s ceiling makes vanilla RDS streaming replicas (if ever needed) perfectly serviceable. Evaluate Aurora independently. (§1.5a)
+15. **DBT not adopted** as either the primary transformation layer or the aggregate-table maintenance layer. Same SQL-can't-replicate-Scala blockers as §4 (schema-version drift, 18-variant ADT type matching), plus DBT's batch orientation conflicts with the per-OO transactional consistency property §1.1 relies on. Sibling Ovara uses DBT successfully for a similar reporting-DB pattern, but Ovara's source JSON is current-shape (from Lampi-siirtaja), its dw layer is temporally-accumulating, and its consistency contract is eventual-within-a-window — none of which fits Koski's interactive-Valpas audience. (§5)
 
 ### Implementation plan (phased rollout)
 
@@ -871,6 +872,63 @@ What `buildKoskiRow` actually does today (`OpiskeluoikeusLoaderRowBuilder.scala`
 
 ---
 
+## §5. Alternative considered & largely rejected: introduce DBT for the transformation layer
+
+Could DBT (data build tool) replace some or all of the Scala-driven raportointikanta build? The sibling Ovara project (`/home/ahtiainen/ovara-vm`) uses DBT extensively for a similar reporting-database pattern: ~141 models layered `raw → stg → int → dw → pub`, materialized into Postgres on a scheduled Fargate task, with incremental `merge` strategy on the dw layer keyed by `(resourceid, muokattu)` metadata timestamps. Lineage DAG, auto-generated docs, declarative incremental semantics — well-suited to Ovara's style of ELT.
+
+### Why DBT is structurally a poor fit for the **core** raportointikanta build
+
+Every reason §4 gave for keeping the JSON → r_* transformation in Scala applies to DBT too — DBT models are SQL, so they inherit the same SQL-can't-do-this constraints. Plus extra blockers specific to the continuous-mode design:
+
+1. **Schema-version drift is solved by the Scala deserializer.** Ovara's stg-layer JSON parsing works because its source systems land *current-shape* JSON into `raw.*` via Lampi-siirtaja. Koski's `opiskeluoikeus.data` is heterogeneous historical JSON spanning years of `Opiskeluoikeus.scala` versions; `toOpiskeluoikeusUnsafe` in `OpiskeluoikeusLoaderRowBuilder` invokes hundreds of generated json4s codecs to up-convert old docs. No equivalent exists in DBT-side SQL.
+2. **Type pattern-matching over the 18-variant `Opiskeluoikeus` ADT reproduces poorly in SQL.** Same blocker as §4 reason #2. DBT macros could template some of it, but every new schema variant becomes two changes (Scala + DBT macros) instead of one, with no compile-time coverage check on the DBT side.
+3. **Per-OO atomicity isn't expressible in DBT.** §1.1's worker design rests on "one OO update = one Slick transaction across all `r_*` tables, so readers never observe partial state." DBT runs each model as its own transaction; readers could see `r_opiskeluoikeus` updated while `r_osasuoritus` is still stale. Wrapping multiple DBT model executions in one transaction is not something DBT supports.
+4. **DBT is batch-oriented; continuous mode is event-driven.** Ovara's DBT is cron-scheduled (every hour in Ovara's case). Koski wants ~15-min freshness from continuous mode (§1.1). Running DBT every 15 min is possible but each run is a full incremental sweep with model-compilation overhead, not a per-OO event drain — defeats §1.1's purpose and per-OO transactional property.
+5. **The shape of Ovara's incremental merge is wrong for `r_*`.** Ovara merges by `(resourceid, muokattu)` and accumulates history — its `dw` layer is a temporal snapshot store. Koski's `r_*` tables are not temporal; they should always reflect the **current** shape of each OO with historic rows replaced (today's per-OO DELETE-all + INSERT-all). Mimicking this in DBT requires a `delete+insert` per-OO model, which is exactly what the Scala worker already does — but with one more round trip and external orchestration.
+6. **Ovara's overall consistency contract is weaker than Koski needs.** Under closer inspection Ovara accepts eventual-consistency-within-a-window: ingest is *not* paused during `dbt build` (separate DynamoDB locks for `lampi-scheduled-task` and `dbt-scheduled-task`); the watermark in `completed_dbt_runs.start_time` is written per-model at end-of-model with `current_timestamp`, so different downstream models can effectively read source data from different points-in-time of the same ingest stream within one run; the S3 export opens a fresh Postgres connection per table (`DatabaseToS3.exportTableToS3`) with no transaction held across tables; no orchestration enforces a serialized "ingest stops → dbt → export" cycle. For Ovara's BI consumers that's invisible. For Koski's interactive consumers (Valpas) it would be a regression — a half-deleted OO whose `r_opiskeluoikeus` row is gone but whose `r_osasuoritus` rows linger breaks the UI. The continuous worker's per-OO Slick transaction (§1.1) gives **strictly stronger** cross-table consistency than Ovara's design accepts; adopting Ovara's DBT pattern on production raportointikanta RDS would weaken that.
+
+These six reasons rule out DBT as the **primary** transformation layer. The Scala `OpiskeluoikeusLoaderRowBuilder` + continuous worker stays as designed in §1.1.
+
+### Where DBT could play a narrow optional role
+
+Two sub-areas exist where DBT's strengths (declarative SQL, lineage DAG, auto-generated docs, incremental materialization with metadata-timestamp filtering) match the problem shape:
+
+1. **Precomputed / aggregate tables (§1.3).** `PaallekkaisetOpiskeluoikeudet`, the 8 Lukio kertymä tables, `Oppivelvollisuustiedot`, `OpiskeluoikeudenUlkopuolellaArvioidutOsasuoritukset` are all deterministic SQL aggregations over already-normalized `r_*` tables. Today they're inline SQL inside `RaportointiDatabase.createPrecomputedTables`. Shape-wise they're identical to Ovara's `pub_dim_*` / `int_*` layers. DBT could express them with `ref()` lineage and incremental materialization (`WHERE master_oid IN (recent dirty oppijas)` etc.).
+
+   **Tradeoff against §1.3's design.** §1.3 maintains these inside the same per-OO Slick transaction that writes the base `r_*` rows — so a `PaallekkaisetOpiskeluoikeudet` row is always consistent with the `r_opiskeluoikeus` rows that fed it. A DBT batch run on a 5–15 min cron would let these go briefly stale between runs (precomputed.as_of < base_r_*.as_of by up to one cron interval). Invisible for most users (today's nightly batch is 24 h stale), but violates a property §1.3 explicitly preserves.
+
+   **Cost of introducing DBT just for ~11 aggregate tables.** New tooling (dbt-core, dbt-postgres image), new Fargate task / scheduler / DynamoDB lock, new profile config in CDK, new "dbt build" step in CI, mixed Scala-and-DBT orchestration in `RaportointikantaService`, team training. Today's alternative is small inline SQL with explicit `recomputeOppija(masterOid)` from the worker — already maintainable, no new tools.
+
+   **Verdict for §1.3 specifically: not adopted.** Defer.
+
+2. **Future denormalized / analyst views over `r_*` — on the §1.8 snapshot-clone.** If a Lampi or Vipunen consumer ever asks for a flattened wide view (one row per oppija with denormalized suoritus data, or a join across `r_opiskeluoikeus` + `r_henkilo` + `r_organisaatio` for a specific dashboard), the natural place for that work is a **DBT layer running on the §1.8 snapshot-clone**, not on production raportointikanta RDS.
+
+   **Why the snapshot-clone is the right host.** An RDS storage-layer snapshot is transactionally consistent by construction; the temporary instance restored from it presents a **frozen point-in-time world**. Every issue that ruled DBT out for the core build dissolves here: there's no concurrent per-OO mutation to race against, so per-OO atomicity is moot; the world doesn't change while DBT runs, so the batch orientation is fine; the watermark-drift / per-table-export-window consistency holes that Ovara accepts on its live DB simply can't occur on a frozen clone, because there's no ingest happening underneath; the resulting wide-view tables exist on a throw-away instance, so the "is this consistent with the latest writer state" question doesn't even apply. Lineage / DAG / auto-docs / incremental-merge all earn their cost because the consumer audience explicitly wants documented, versioned derived shapes. **DBT-on-snapshot-clone is actually a stricter consistency model than Ovara's DBT-on-live-DB**, even though it uses the same tool.
+
+   **Architectural parallel to Ovara.** Ovara's point-in-time soundness comes from (a) `pub.*` tables `materialized: table` — rebuilt fresh from scratch each dbt run, so the temporally-accumulating dw layer never leaks to consumers — and (b) `lampi-siirtaja` exporting `pub` / `int1` / `gen` to S3 as CSV plus a `manifest.json`. Vipunen / Lampi consumers read those versioned immutable S3 artifacts, not the live DB. The "sound view" boundary is the S3 export step, fed by a freshly-rebuilt pub layer. Koski's §1.8 snapshot-clone-to-S3 path is the same idea via a different mechanism (RDS snapshot of a continuously-fresh DB instead of from-scratch DBT rebuild). DBT on the snapshot-clone slots into the same architectural position as Ovara's `pub.*` layer.
+
+   **Verdict: keep in mind as a future-Phase option.** Not on the Phase 1–5 critical path. Re-evaluate if/when a wide-view consumer requirement appears. The clone instance is short-lived (hours) so DBT can be invoked from the snapshot-clone orchestrator (Step Functions / Fargate) without persistent infrastructure — no separate cron, no separate lock table, no co-existence with the production loader.
+
+### Why not "use DBT for the full-reload aggregate-table step only"
+
+A narrow variant: keep Scala for the base `r_*` build, but invoke DBT for `createPrecomputedTables` instead of inline SQL. Tempting because it gets lineage / docs / DAG visualization for the aggregate layer without touching the loader.
+
+- The aggregate layer is ~11 SQL statements — small enough that today's inline-SQL approach in `RaportointiDatabase.createPrecomputedTables` is already maintainable.
+- Introducing DBT adds: new Docker image, new Fargate task with EventBridge/lock orchestration, env-var-driven profile config in CDK, mixed Scala-and-DBT orchestration in `RaportointikantaService.loadRestAndSwap`, a new "what was the last DBT run state" question alongside the existing worker state. Operational surface grows for small payoff.
+- The "we'd get docs and lineage" win is real but small: ~11 models, lineage essentially `r_*` → precomputed with no deeper graph to discover.
+
+**Verdict: not adopted.**
+
+### When to revisit
+
+- A Lampi/Vipunen (or analyst) consumer asks for **denormalized wide views** with documented lineage. DBT on the §1.8 snapshot-clone is the right answer at that point.
+- The set of precomputed/aggregate tables grows by ~3× and the inline-SQL approach becomes hard to navigate. The lineage DAG starts earning operational cost.
+- Koski grows a *non-OO* data source that lands current-shape JSON via a Lampi-siirtaja-style pull (no schema-version drift, no 18-variant ADT). DBT's stg→dw pattern fits naturally for that subset, independently of `r_*`.
+
+None of these triggers exist today. **Do not introduce DBT in Phases 1–5 of this rollout.**
+
+---
+
 ## Critical files (for future implementation)
 
 Files most likely to be touched under §1:
@@ -920,4 +978,5 @@ This is a feasibility doc, so verification is described, not executed:
 11. **When to upgrade to §2 (logical replication)**: decide based on observed schema-additive backfill cadence and any analyst-query needs for raw `opiskeluoikeus.data` on raportointikanta RDS. Migration is purely additive, so deferring is safe.
 12. **Lampi as upstream source for periodic refresh** (§1.1b future option, §4 Phase 8): when (if ever) to migrate `r_henkilo` / `r_kotikuntahistoria` / `r_organisaatio` periodic-refresh from live HTTP to Lampi dump consumption. Triggering signals: ONR retry-envelope tripping in production, or OPH platform team flagging Koski's refresh scan as a co-tenant problem. Open prerequisite: confirm with the Lampi / OPH platform team the dump SLA, format, schema stability, and whether turvakielto-side data is published at all. Cheap to start the conversation now even if implementation is deferred.
 13. **Postgres-side JSON → r_* transformation, beyond GENERATED columns** (§4): the wholesale rewrite is rejected for the reasons in §4. The GENERATED-column shortcut is adopted in §1.4 Flavor A. No further investigation recommended unless the schema-version-drift problem changes shape (e.g. we adopt a strict, version-stamped JSON contract on `opiskeluoikeus.data`, which would invalidate reason #1 of the rejection).
-12. **Aurora migration**: independent of §1/§2. Aurora's structural advantages (no `max_standby_streaming_delay` decision, sub-100ms reader freshness, faster failover, fast snapshot/restore for the Lampi clone pattern) are real but bounded once the 900 s query ceiling is in place. Evaluate on its own merits (cost, ops appetite, read-scaling needs), not as part of this project.
+14. **Aurora migration**: independent of §1/§2. Aurora's structural advantages (no `max_standby_streaming_delay` decision, sub-100ms reader freshness, faster failover, fast snapshot/restore for the Lampi clone pattern) are real but bounded once the 900 s query ceiling is in place. Evaluate on its own merits (cost, ops appetite, read-scaling needs), not as part of this project.
+15. **DBT for the transformation/aggregate layer**: rejected as both primary loader replacement and aggregate-table maintenance tool (§5). Sibling Ovara (`/home/ahtiainen/ovara-vm`) uses DBT for a similar ELT pattern, but Koski's Scala-side `toOpiskeluoikeusUnsafe` (schema-version drift), 18-variant `Opiskeluoikeus` ADT type matching, and the per-OO atomicity property of §1.1 make DBT structurally wrong as a core tool — and Ovara's eventual-consistency-within-a-window contract would be a regression for interactive Valpas. Reconsider only if a denormalized wide-view Lampi/Vipunen consumer requirement appears (then on the §1.8 snapshot-clone, where the frozen storage-layer copy eliminates the consistency holes Ovara accepts on its live DB), or if the aggregate-table set grows >3×.
