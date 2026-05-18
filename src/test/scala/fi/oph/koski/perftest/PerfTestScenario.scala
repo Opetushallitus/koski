@@ -17,4 +17,5 @@ trait PerfTestScenario extends KoskidevHttpSpecification with EnvVariables with 
   def bodyValidator: Boolean = true
 
   override def logger = super.logger
+
 }

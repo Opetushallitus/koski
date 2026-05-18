@@ -3,7 +3,6 @@ package fi.oph.koski.perftest
 import java.io._
 import java.lang.System.currentTimeMillis
 import java.util.zip.GZIPOutputStream
-
 import fi.oph.koski.http.HttpStatusException
 import fi.oph.koski.log.{LoggerWithContext, Logging}
 import fi.oph.koski.util.Streams

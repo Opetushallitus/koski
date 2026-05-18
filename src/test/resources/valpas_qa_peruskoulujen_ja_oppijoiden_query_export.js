@@ -19,17 +19,16 @@ const query = `WITH oppilaitokset AS (
             )) AS oppija_oid
     )
 SELECT
+    oppilaitos_oid,
     concat(
-            oppilaitos_oid,
-            ' ',
-            (SELECT
-                 string_agg(DISTINCT r_opiskeluoikeus.oppija_oid, ' ')
-             FROM
-                 r_opiskeluoikeus
-                     JOIN loytyvat_oppijat ON r_opiskeluoikeus.oppija_oid = loytyvat_oppijat.oppija_oid
-             WHERE
-                 oppilaitos_oid = oppilaitokset.oppilaitos_oid)
-        ) AS row
+        (SELECT
+            string_agg(DISTINCT r_opiskeluoikeus.oppija_oid, ' ')
+        FROM
+            r_opiskeluoikeus
+                JOIN loytyvat_oppijat ON r_opiskeluoikeus.oppija_oid = loytyvat_oppijat.oppija_oid
+        WHERE
+            oppilaitos_oid = oppilaitokset.oppilaitos_oid)
+    ) AS oppija_oidit
 FROM oppilaitokset;`
 
 fs.writeFileSync(path.join(__dirname, "valpas_qa_peruskoulujen_ja_oppijoiden_oidit.sql"), query)
