@@ -224,6 +224,9 @@ case class TutkintoRakenneValidator(tutkintoRepository: TutkintoRepository, kood
             HttpStatus.justStatus(validateKoulutustyypitJaHaeRakenteet(d, Some(List(aikuistenPerusopetus)), Some(vaadittuPerusteenVoimassaolopäivä)))
           case d: AikuistenPerusopetuksenAlkuvaihe =>
             HttpStatus.justStatus(validateKoulutustyypitJaHaeRakenteet(d, Some(List(aikuistenPerusopetus)), Some(vaadittuPerusteenVoimassaolopäivä)))
+          case _: AhvenanmaanPerusopetus | _: AhvenanmaanPerusopetuksenLuokkaAste =>
+            // Ahvenanmaan OPS (ÅLR2020/9841) ei ole julkisena ePerusteissa, joten diaarinumerovalidointia ei tehdä.
+            HttpStatus.ok
           case d: PerusopetuksenDiaarinumerollinenKoulutus =>
             HttpStatus.justStatus(validateKoulutustyypitJaHaeRakenteet(d, Some(List(perusopetus)), Some(vaadittuPerusteenVoimassaolopäivä)))
           case d: PerusopetukseenValmistavaOpetus =>

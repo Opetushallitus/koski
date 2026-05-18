@@ -2,6 +2,28 @@
   {
     "metadata": [
       {
+        "nimi": "Ahvenanmaan perusopetus",
+        "kuvaus": "",
+        "lyhytNimi": "Ahvenanmaan perusopetus",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Grundskola på Åland",
+        "kuvaus": "",
+        "lyhytNimi": "",
+        "kieli": "SV"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "opiskeluoikeudentyyppi_ahvenanmaanperusopetus",
+    "versio": 1,
+    "koodiArvo": "ahvenanmaanperusopetus"
+  },
+  {
+    "metadata": [
+      {
         "nimi": "Aikuisten perusopetus",
         "kuvaus": "",
         "lyhytNimi": "Aikuisten perusopetus",

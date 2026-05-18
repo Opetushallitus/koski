@@ -15,6 +15,7 @@ export type AhvenanmaanPerusopetuksenOppiaineenSuoritus = {
     'suorituksentyyppi',
     'ahvenanmaanperusopetuksenoppiaine'
   >
+  tila?: Koodistokoodiviite<'suorituksentila', string>
   suorituskieli?: Koodistokoodiviite<'kieli', string>
   suoritustapa?: Koodistokoodiviite<
     'perusopetuksensuoritustapa',
@@ -22,8 +23,6 @@ export type AhvenanmaanPerusopetuksenOppiaineenSuoritus = {
   >
   mukautettuOppimäärä: boolean
   koulutusmoduuli: AhvenanmaanPerusopetuksenOppiaine
-  tila?: Koodistokoodiviite<'suorituksentila', string>
-  luokkaAste?: Koodistokoodiviite<'perusopetuksenluokkaaste', string>
 }
 
 export const AhvenanmaanPerusopetuksenOppiaineenSuoritus = (o: {
@@ -32,20 +31,20 @@ export const AhvenanmaanPerusopetuksenOppiaineenSuoritus = (o: {
     'suorituksentyyppi',
     'ahvenanmaanperusopetuksenoppiaine'
   >
+  tila?: Koodistokoodiviite<'suorituksentila', string>
   suorituskieli?: Koodistokoodiviite<'kieli', string>
   suoritustapa?: Koodistokoodiviite<
     'perusopetuksensuoritustapa',
     'erityinentutkinto'
   >
-  mukautettuOppimäärä: boolean
+  mukautettuOppimäärä?: boolean
   koulutusmoduuli: AhvenanmaanPerusopetuksenOppiaine
-  tila?: Koodistokoodiviite<'suorituksentila', string>
-  luokkaAste?: Koodistokoodiviite<'perusopetuksenluokkaaste', string>
 }): AhvenanmaanPerusopetuksenOppiaineenSuoritus => ({
   tyyppi: Koodistokoodiviite({
     koodiarvo: 'ahvenanmaanperusopetuksenoppiaine',
     koodistoUri: 'suorituksentyyppi'
   }),
+  mukautettuOppimäärä: false,
   $class: 'fi.oph.koski.schema.AhvenanmaanPerusopetuksenOppiaineenSuoritus',
   ...o
 })

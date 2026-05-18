@@ -343,7 +343,7 @@ describe('Oppijataulukko', function () {
           'Tiedonsiirto, Tiina',
           'Toiminta, Tommi'
         ])
-        expect(page.opiskeluoikeudeTotal()).to.equal('123')
+        expect(page.opiskeluoikeudeTotal()).to.equal('124')
       })
     })
 

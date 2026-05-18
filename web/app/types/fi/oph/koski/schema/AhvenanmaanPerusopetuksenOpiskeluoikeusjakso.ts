@@ -12,7 +12,6 @@ export type AhvenanmaanPerusopetuksenOpiskeluoikeusjakso = {
   tila: Koodistokoodiviite<
     'koskiopiskeluoikeudentila',
     | 'eronnut'
-    | 'peruutettu'
     | 'katsotaaneronneeksi'
     | 'lasna'
     | 'mitatoity'
@@ -26,7 +25,6 @@ export const AhvenanmaanPerusopetuksenOpiskeluoikeusjakso = (o: {
   tila: Koodistokoodiviite<
     'koskiopiskeluoikeudentila',
     | 'eronnut'
-    | 'peruutettu'
     | 'katsotaaneronneeksi'
     | 'lasna'
     | 'mitatoity'

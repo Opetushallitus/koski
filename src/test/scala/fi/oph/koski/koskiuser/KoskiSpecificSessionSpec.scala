@@ -119,6 +119,7 @@ class KoskiSpecificSessionSpec
       "viranomainen perusopetus" in {
         val session = createAndVerifySession("Pertti", MockUsers.perusopetusViranomainen.ldapUser)
         val expectedOpiskeluoikeustyypit = Set(
+          ahvenanmaanperusopetus,
           esiopetus,
           perusopetus,
           aikuistenperusopetus,
