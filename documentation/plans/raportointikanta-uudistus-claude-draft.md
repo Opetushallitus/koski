@@ -41,6 +41,7 @@ This document describes the recommended approach (network-read worker; see §1) 
 15. **DBT not adopted** as either the primary transformation layer or the aggregate-table maintenance layer. Same SQL-can't-replicate-Scala blockers as §4 (schema-version drift, 18-variant ADT type matching), plus DBT's batch orientation conflicts with the per-OO transactional consistency property §1.1 relies on. Sibling Ovara uses DBT successfully for a similar reporting-DB pattern, but Ovara's source JSON is current-shape (from Lampi-siirtaja), its dw layer is temporally-accumulating, and its consistency contract is eventual-within-a-window — none of which fits Koski's interactive-Valpas audience. (§5)
 16. **Per-oppija (not per-OO) atomic transaction is the hard consistency invariant**: end-user features must always show derived data computed from the same opiskeluoikeus generation as the visible base rows. Drives the per-oppija worker tick batching and the removal of the dirty-oppija mini-queue / second-pass logic. Relaxed for analysis paths only. (§1.1c)
 17. **Greenfield reference design documented as §6, forward-looking only.** Variant A (pragmatic OPH-norm: oppija-document store for Valpas + DBT-built BI store) and Variant B (no-constraints ideal: Kafka + Debezium + DynamoDB / managed search + Snowflake / BigQuery). Today's §1 path doesn't strand work toward either variant — the continuous worker, change-queue, and snapshot-clone are directly reusable as the Valpas-side half of Variant A. (§6)
+18. **Throughput-optimization is on the critical path of Phase 3, not optional polish**. Production data shows the existing incremental loader runs at ~0.92 s/OO; continuous mode plus §1.1c's per-oppija atomicity requires ≤ 0.43 s/OO. Highest-impact levers (per §1.1d): batched `r_opiskeluoikeus` upsert, diff-aware writes on `r_osasuoritus` / `r_aikajakso` (§1.6a / I2), index audit, per-oppija worker parallelism. I15–I20 produce the measurements that prioritize the levers.
 
 ### Implementation plan (phased rollout)
 
@@ -115,12 +116,18 @@ Each phase has prerequisite investigations (gates) that must finish before the p
 | I12 | Worker hosting: dedicated `raportointikantaContinuousWorkerTaskDefinition` Fargate task vs running inside main Koski Fargate. | "Existing pieces…" / CDK, decision #1 | 3 | CDK decision + task definition spec. | A few hours | Platform eng |
 | I13 | §2 (logical replication) timing — once continuous mode is live, observe schema-additive backfill cadence + analyst-query needs for raw `opiskeluoikeus.data` on raportointikanta RDS. | §2, decision #11 | 7 (conditional) | Ongoing observation; threshold criteria for triggering Phase 7. | Continuous | Tech lead |
 | I14 | Postgres-side transformation beyond GENERATED columns — only revisit if Koski adopts a strict, version-stamped JSON contract on `opiskeluoikeus.data` (invalidates rejection reason #1 of §4). | §4, decision #13 | none | No work unless trigger condition fires. | n/a | n/a |
+| I15 | Phase-level timing breakdown of `IncrementalUpdateOpiskeluoikeusLoader.updateBatch` against a real prod-like batch. Wrap each `update*` call + `toOpiskeluoikeusUnsafe` with `System.nanoTime()` logging; surface `BuiltTimeNanos`. | §1.1d, decision #18 | 3 (gates optimization decisions) | Per-table seconds + Scala-side seconds for one representative 500-OO batch. Confirms whether DB or Scala dominates and which `update*` is the worst offender. | A few days | Backend eng |
+| I16 | OO-size distribution in real batches: row counts per OO in `r_osasuoritus`, `r_paatason_suoritus`, `r_aikajakso`, `r_organisaatiohistoria` for a sample of recent queue entries; plot histogram, identify P95/P99 outliers. | §1.1d, decision #18 | 3 | Distribution chart + decision on whether a "slow lane" for heavy OOs is justified. | A few hours | Backend eng |
+| I17 | EXPLAIN (ANALYZE, BUFFERS, TIMING) for representative DELETE + INSERT pairs on `r_osasuoritus` and `r_paatason_suoritus` with realistic 500-oid IN lists. | §1.1d, decision #18 | 3 | Plans + buffer counts; spots ineffective index use or excessive heap I/O. | Half a day | Backend eng |
+| I18 | JDBC round-trip / statement count per batch under the current loader. Enable Slick statement logging or use a JDBC proxy (pgbadger / hsqldb-proxy); count statements emitted for one batch and attribute them to `update*` methods. | §1.1d, decision #18 | 3 | Statement count per OO; confirms or refutes the per-row-`insertOrUpdate` chattiness on `r_opiskeluoikeus`. | Half a day | Backend eng |
+| I19 | Batch-size scaling sweep: rerun the loader against batch ∈ {50, 200, 500, 2000}. Compare seconds/OO across sizes. Sub-linear scaling ⇒ per-batch overhead; linear ⇒ per-OO bound; super-linear ⇒ contention / pool exhaustion. | §1.1d, decision #18 | 3 | Throughput curve; informs whether bigger batches help and where the contention point is. | A day (incl. run time) | Backend eng |
+| I20 | Autovacuum-paused isolation test: rerun a 500-OO batch with `ALTER TABLE r_osasuoritus SET (autovacuum_enabled = false)` for the test window, restore after. Compare against baseline. | §1.1d, decision #18 | 3 | Confirms or refutes how much of the 460 s is IOPS contention with autovacuum. Drives §1.9 autovacuum tuning targets. | Half a day | Backend eng |
 
 ### Development phases
 
 #### Phase 0 — Pre-work (start immediately, no production behavior change)
 
-**Investigations to kick off**: I3, I4, I5, I6, I7, I10, I11, I12.
+**Investigations to kick off**: I3, I4, I5, I6, I7, I10, I11, I12, **I15, I16, I17, I18, I19, I20** (throughput measurements per §1.1d — independent of the rest, can start day 1 since they instrument the existing production loader).
 
 **Tasks**:
 - 🅳 PG version upgrade (PG 13 → 15 or 16) on raportointikanta RDS, scheduled before any partitioning work (§1.10). Not strictly required for Phase 1 but worth doing first because it eases later partitioning + autovacuum tuning and is independently good hygiene.
@@ -156,10 +163,18 @@ Each phase has prerequisite investigations (gates) that must finish before the p
 
 #### Phase 3 — Continuous worker (the meat of the project)
 
-**Prerequisites**: Phase 2 production-deployed. I2, I6, I7, I8, I9, I12.
+**Prerequisites**: Phase 2 production-deployed. I2, I6, I7, I8, I9, I12. **I15–I20** (throughput measurements; gate the optimization tasks below).
+
+**Throughput-optimization workstream** (on the critical path per §1.1d):
+- 🅳 Replace the per-row `insertOrUpdate` on `r_opiskeluoikeus` (`RaportointiDatabase.scala:295`) with batched UPSERT — either pre-split new vs existing and use `++=`, or raw `INSERT … ON CONFLICT DO UPDATE`. Expected highest single-line impact.
+- 🅳 Apply diff-aware updates per I2's chosen strategy (Option A / B / C of §1.6a) to `r_osasuoritus`, `r_aikajakso`, `r_opiskeluoikeus_aikajakso`, `r_organisaatiohistoria`, and every other r_* table that today follows DELETE-everything-then-INSERT-everything. Skips unchanged rows entirely.
+- 🅳 Index audit on `r_osasuoritus` and `r_paatason_suoritus` (`RaportointiDatabaseSchema.scala:1273–1282`): cross-check each of the 5 indexes against actual Valpas / report query patterns; drop any that aren't earning their write cost.
+- 🅳 Parallelize the worker across oppija partitions: shard the queue by `hash(oppija_oid) mod N` and run N parallel oppija-lanes (target N ≈ 4 initially, tune by measurement). The `WorkerLeaseElector` lease becomes per-partition. Per-oppija atomicity (§1.1c) is preserved because no two lanes touch the same oppija concurrently.
+- 🅳 *(conditional, only if I16 shows long-tail dominance)* Implement a slow-lane queue + worker for OOs whose row counts exceed a threshold, so the fast lane isn't blocked by occasional korkeakoulu / ammatillinen heavyweights.
+- 🅳 *(conditional, only if I15 shows JSON parse dominates)* Either replace json4s with `jsoniter-scala` on the hot deserialization path, or short-circuit rebuild when the OO's `aikaleima` hasn't advanced since the last build.
 
 **Tasks** (Scala):
-- 🅳 `RaportointikantaContinuousWorker.scala`: tick (60 s) = dedupe queue rows → SELECT OOs from primary (preserve `PäivitettyOpiskeluoikeusLoader.scala:33–45` replica-lag-aware pattern) → `buildKoskiRow` → per-OO Slick transaction across all r_* tables → mark queue rows processed. Per-OO try/catch with exponential backoff against `yritykset` / `viimeisin_virhe`; ~10-retry DLQ.
+- 🅳 `RaportointikantaContinuousWorker.scala`: tick (60 s) = dedupe queue rows → group by `oppija_oid` (§1.1c) → SELECT OOs from primary (preserve `PäivitettyOpiskeluoikeusLoader.scala:33–45` replica-lag-aware pattern) → `buildKoskiRow` → **one Slick transaction per oppija** across all r_* tables and the oppija's derived aggregates → mark queue rows processed. Per-oppija try/catch with exponential backoff against `yritykset` / `viimeisin_virhe`; ~10-retry DLQ.
 - 🅳 Replace `OpiskeluoikeusLoaderRowBuilder.suoritusIds` (shared in-process `AtomicLong`) with Postgres sequences owned by raportointikanta RDS (`r_paatason_suoritus_id_seq`, `r_osasuoritus_id_seq`, plus YTR analogs). One Flyway migration to create the sequences + seed from current max IDs.
 - 🅳 Per-OO YTR upsert path: add `RaportointiDatabase.updateYtrOpiskeluoikeus(oid, …)` plus `updateYtrTutkintokokonaisuudenSuoritukset / updateYtrTutkintokerranSuoritukset / updateYtrKokeenSuoritukset / updateYtrTutkintokokonaisuudenKokeenSuoritukset` mirroring the Koski variants in `RaportointiDatabase.scala` (lines 294–378).
 - 🅳 `PrecomputedTable` trait + per-table implementations, all invoked once per oppija inside the per-oppija transaction (§1.1c):
@@ -395,6 +410,44 @@ Architecture if pursued: hybrid. Keep `OpintopolkuHenkilöFacade` HTTP for first
 **Cost**: each per-oppija transaction does one extra indexed read of the oppija's OOs from r_* (typical fan-out 1–3 OOs, max ~10), plus one recompute pass per derived table. Negligible vs. the existing per-OO upsert cost; eliminates an entire second-pass code path.
 
 **What end-user features can rely on**: any single-oppija SELECT joining `r_opiskeluoikeus` + any derived aggregate table for that oppija returns a coherent snapshot. Multi-oppija queries (e.g. kuntailmoitusvalmistelu listing all 17-year-olds in a kunta) return rows that are each internally consistent but may be from slightly different per-oppija as-of moments. That weaker cross-oppija property is acceptable — the user-facing UX of multi-oppija lists tolerates per-row freshness drift, and Postgres MVCC ensures every row is committed-consistent regardless.
+
+### §1.1d Throughput budget and the 0.92 s/OO production data point
+
+**Production measurement**: today's `IncrementalUpdateOpiskeluoikeusLoader.updateBatch` processes a 500-OO batch in approximately **460 s** (≈ 0.92 s/OO) — and that's without computing derived/precomputed tables and without per-oppija transactional consistency. Both of those costs are added by §1.1c.
+
+**Budget math**:
+
+- 200 000 OO updates / 24 h ÷ 86 400 s ≈ **2.3 OO/s average** ⇒ steady-state budget ≈ **0.43 s/OO**.
+- At today's 0.92 s/OO the worker can process ~94 000 OOs/day — **less than half** the average target, before adding §1.1c's work.
+- Bursts (mass-imports of 5 000+ OOs in minutes) need significantly more headroom; "drain a 5 000-OO burst within a few ticks" requires sub-100-ms-per-OO performance, which is the right design ambition.
+
+**Conclusion**: optimization is on the **critical path of Phase 3**, not a polish step. The continuous worker as designed in §1.1 + §1.1c cannot ship at today's per-OO cost. The execution roadmap reflects this: investigations I15–I20 (below) measure where the time goes, and Phase 3's tasks include the specific optimization work the measurements should drive.
+
+#### Most likely causes (ranked by expected impact, to be confirmed by I15–I20)
+
+1. **Per-row `insertOrUpdate` on `r_opiskeluoikeus`** (`RaportointiDatabase.scala:295`): `DBIO.sequence(opiskeluoikeudet.map(ROpiskeluoikeudet.insertOrUpdate))` runs 500 individual statements inside one `runDbSync`. Each is a separate round trip and prepared statement. **Fix**: batch via `++=` (after pre-splitting new vs existing) or via raw `INSERT … ON CONFLICT (opiskeluoikeus_oid) DO UPDATE SET …`. Expected order-of-magnitude reduction for this table alone.
+
+2. **Full DELETE-then-INSERT on `r_osasuoritus`** (`RaportointiDatabase.scala:396–398`) with 5 indexes (`RaportointiDatabaseSchema.scala:1273–1282`). For a 40-osasuoritus OO × 500 OOs ≈ 20 000 row deletes + 20 000 row inserts × 5 indexes = ~200 000 index page modifications per batch, even when most rows didn't materially change. Same issue applies to `r_aikajakso` and the suoritus family. **Fix**: diff-aware updates (the existing §1.6a investigation I2). On intuition this is high-leverage; needs I2's measurement to confirm.
+
+3. **Heavy I/O on `DELETE WHERE opiskeluoikeus_oid IN (500 oids)`** against `r_osasuoritus`'s ~100 M-row heap. Indexed by opiskeluoikeus_oid but the bitmap heap scan reads many scattered pages. Worth `EXPLAIN (ANALYZE, BUFFERS)` confirmation.
+
+4. **21 separate `runDbSync` calls per batch** (one per table type) means 21 transactions and 21 commit-fsyncs per batch. ~150–200 ms total — not dominant, but eliminated by §1.1c's per-oppija transaction model anyway.
+
+5. **`toOpiskeluoikeusUnsafe` JSON deserialization** (`OpiskeluoikeusLoaderRowBuilder.scala:44`), parallelized via `.par.map(buildKoskiRow)` at line 87. Typical ~30–80 ms/OO × 500 with default `.par` parallelism (~CPU count) ≈ 5–15 s. Not the bottleneck unless I15 finds otherwise. If it does, options are (a) replace json4s with `jsoniter-scala` on the hot path, or (b) skip rebuild when `aikaleima` is unchanged.
+
+6. **Mixed-size OOs**: P95 OO size may be 10× P50 (korkeakoulu / lukio with many kurssit, ammatillinen with many osasuoritus). A handful of long-tail OOs may dominate the wall clock. I16 produces the distribution.
+
+7. **Autovacuum on `r_osasuoritus` competing for IOPS** during writes. Already mitigated by §1.9's tuning + §1.6 partitioning, but worth measuring (I20).
+
+#### Optimization levers (Phase 3 tasks, ranked)
+
+1. **Batch the `r_opiskeluoikeus` upsert** — see cause #1. Highest expected per-line-of-code impact.
+2. **Implement diff-aware updates** (the §1.6a investigation's outcome; tracked by I2). Apply to `r_osasuoritus`, `r_aikajakso`, `r_opiskeluoikeus_aikajakso`, `r_organisaatiohistoria` — every table where today's pattern is "DELETE everything for this OO, INSERT everything back".
+3. **Per-oppija transaction** (already required by §1.1c). Single commit per oppija replaces ~21 commits per batch.
+4. **Drop redundant indexes on `r_osasuoritus`** — audit the 5 indexes against actual Valpas / report queries; each removed index reduces every write proportionally.
+5. **Parallelize the worker across oppijas** — §1.1c gives natural per-oppija atomicity; nothing prevents N workers each handling a partition of `oppija_oid` in parallel. 4× parallelism realistic without contention (different rows, different pages). Worth confirming compatibility with the single-slot `WorkerLeaseElector` — the lease likely needs to become per-partition.
+6. **Slow lane for heavy OOs** — separate queue / cadence for OOs above a row-count threshold so they don't block the fast lane. Only worth implementing if I16 shows long-tail dominance.
+7. **§2 logical-replication upgrade** — eliminates the primary-side SELECT cost (local reads); listed in the existing Phase 7 conditional, but moves up in attractiveness if I15 shows the primary SELECT dominates.
 
 ### §1.2 No more blue/green schema swap (for steady-state continuous mode)
 
@@ -756,6 +809,7 @@ The snapshot-clone approach is right for scheduled, batch exports. It is **not**
 
 ### §1.9 Operational risks & mitigations
 
+- **Current per-OO throughput is ~2× the steady-state budget** (§1.1d): production data shows the existing incremental loader runs at ~0.92 s/OO, against a ~0.43 s/OO continuous-mode budget — and §1.1c's per-oppija atomic model adds work on top. Optimization work (batch upserts, diff-aware writes, index audit, per-oppija parallelism) is on the critical path of Phase 3, not optional polish. Investigations I15–I20 produce the measurements that drive the specific fixes.
 - **YTR queue-trigger gap**: today's queue trigger isn't wired for `ytr_opiskeluoikeus`. Adding it is a small Flyway migration but is on the critical path for continuous YTR processing.
 - **Autovacuum on `r_osasuoritus` is itself a long-running operation**. A production log sample shows an explicit `VACUUM ANALYZE` (the one at the end of `loadRestAndSwap`, `RaportointikantaService.scala:261`) taking **3 079 856 ms ≈ 51 min**.
   - **Under continuous mode the *explicit* VACUUM ANALYZE goes away** (no more full rebuild → no `loadRestAndSwap` → no `vacuumAnalyze()` call). It's replaced by autovacuum running continuously on r_osasuoritus.
@@ -1093,3 +1147,4 @@ This is a feasibility doc, so verification is described, not executed:
 15. **DBT for the transformation/aggregate layer**: rejected as both primary loader replacement and aggregate-table maintenance tool (§5). Sibling Ovara (`/home/ahtiainen/ovara-vm`) uses DBT for a similar ELT pattern, but Koski's Scala-side `toOpiskeluoikeusUnsafe` (schema-version drift), 18-variant `Opiskeluoikeus` ADT type matching, and the per-OO atomicity property of §1.1 make DBT structurally wrong as a core tool — and Ovara's eventual-consistency-within-a-window contract would be a regression for interactive Valpas. Reconsider only if a denormalized wide-view Lampi/Vipunen consumer requirement appears (then on the §1.8 snapshot-clone, where the frozen storage-layer copy eliminates the consistency holes Ovara accepts on its live DB), or if the aggregate-table set grows >3×.
 16. **Per-oppija atomic consistency invariant** (§1.1c): hard requirement for end-user features (Valpas, virkailija interactive views) — derived data shown for an oppija must always be computed from the same opiskeluoikeus generation the user sees. Relaxed for analysis paths (Lampi / Vipunen / batch BI). Drives the per-oppija (not per-OO) transaction batching in §1.1 and the elimination of the dirty-oppija mini-queue / second-pass logic in §1.3.
 17. **Greenfield reference design** (§6): two reference variants documented (pragmatic OPH-norm Variant A; no-constraints ideal Variant B). Forward-looking only; not on the Phase 1–5 rollout. Sign-posts that would trigger Variant A: Valpas latency requirements diverge further from BI batch needs; analyst concurrency outgrows PostgreSQL; wide-view denormalized Lampi/Vipunen consumer requirement appears. Sign-posts for Variant B: all of Variant A's plus growth past ~20 M OOs and OPH platform-wide adoption of Kafka or managed DWH for other services.
+18. **Throughput budget vs production reality** (§1.1d): the existing loader runs at ~0.92 s/OO; continuous mode budget is ≤ 0.43 s/OO and §1.1c adds work on top. Optimization is on the critical path of Phase 3. Investigations I15–I20 measure where the time goes; specific Phase 3 tasks (batched `r_opiskeluoikeus` upsert; diff-aware writes on `r_osasuoritus` / `r_aikajakso`; index audit; per-oppija worker parallelism) follow from the measurements.

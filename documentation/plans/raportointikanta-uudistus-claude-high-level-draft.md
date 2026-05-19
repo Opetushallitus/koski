@@ -62,6 +62,20 @@ Phases 1 and 2 run in parallel. Phases 6–8 are explicitly "only if measured ne
 - **Backfilling a new derived column is slower under this approach.** A schema-additive column requires reading every opiskeluoikeus from the OLTP database (days, not hours). **Mitigated** by (a) a backfill-status metadata table so consumers know which columns are still loading, and (b) the option to upgrade to logical replication later if backfills become routine.
 - **Synchronous Valpas queries are never throttled.** Backpressure is applied to async/queued reports only — interactive UX requires consistent availability. This works because synchronous queries are already bounded to 15 minutes by client timeouts, which keeps the bloat math comfortable on the live database.
 
+## Risk on the critical path: per-OO throughput
+
+A production measurement of today's incremental loader shows it processes ~500 opiskeluoikeus updates in ~460 seconds, i.e. **~0.92 seconds per OO**, and that's without computing the derived aggregates or running per-oppija transactions.
+
+The steady-state continuous-mode budget is **~0.43 seconds per OO** (200 000 OO updates/day evenly distributed = 2.3/s). Once the per-oppija atomic consistency invariant above is layered on, the cost goes up, not down. So **today's loader is roughly 2× slower than the continuous-mode budget**, and optimization is on the critical path of Phase 3 — not optional polish to add after cutover.
+
+The plan reflects this directly: investigations I15–I20 in Phase 0 measure where the seconds actually go (DB writes? JSON parse? long-tail OOs? autovacuum contention?), and Phase 3's Scala work includes a dedicated throughput-optimization workstream. The highest-impact levers identified upfront:
+- **Batched upsert** for `r_opiskeluoikeus` (today's per-row pattern is the most visible chattiness).
+- **Diff-aware writes** for `r_osasuoritus` / `r_aikajakso` so only rows whose content actually changed are deleted+inserted.
+- **Index audit** on the heaviest write-target tables — each redundant index makes every write proportionally slower.
+- **Per-oppija worker parallelism** — the per-oppija atomicity invariant means different oppijas can be processed in parallel without contention.
+
+Until measurements come back from I15–I20 we cannot pick the order, only the set. If the measurements show that none of the levers above closes the gap, that's a Phase 3 exit-criterion failure and forces re-evaluation before production cutover.
+
 ## Hard consistency invariant
 
 End-user features (Valpas, virkailija interactive views) require that the derived data shown for an oppija (oppivelvollisuustiedot, päällekkäiset opiskeluoikeudet, Lukio-kertymät, …) is always computed from the same underlying opiskeluoikeus state that the user currently sees. Roughly: the data shown for one oppija must be characterizable as "as of KOSKI data-transfer time T" — a coherent snapshot, never a mix of fresh visible OOs with stale derived aggregates.
@@ -97,6 +111,7 @@ Both variants are forward-looking. Neither is part of the rollout this plan desc
 ## Success metrics
 
 - **Queue lag p95 under 15 minutes** for 30 days post-cutover.
+- **Per-OO worker latency ≤ 0.4 s** (production target) — from today's measured ~0.92 s/OO. Gates Phase 3 exit.
 - **Zero cross-table consistency drift** measured by the nightly consistency checker.
 - **No regression in synchronous report p95 latency** versus today's nightly-baseline.
 - **No regression in Lampi/Vipunen export reliability** after the snapshot-clone migration.
