@@ -41,7 +41,8 @@ This document describes the recommended approach (network-read worker; see §1) 
 15. **DBT not adopted** as either the primary transformation layer or the aggregate-table maintenance layer. Same SQL-can't-replicate-Scala blockers as §4 (schema-version drift, 18-variant ADT type matching), plus DBT's batch orientation conflicts with the per-OO transactional consistency property §1.1 relies on. Sibling Ovara uses DBT successfully for a similar reporting-DB pattern, but Ovara's source JSON is current-shape (from Lampi-siirtaja), its dw layer is temporally-accumulating, and its consistency contract is eventual-within-a-window — none of which fits Koski's interactive-Valpas audience. (§5)
 16. **Per-oppija (not per-OO) atomic transaction is the hard consistency invariant**: end-user features must always show derived data computed from the same opiskeluoikeus generation as the visible base rows. Drives the per-oppija worker tick batching and the removal of the dirty-oppija mini-queue / second-pass logic. Relaxed for analysis paths only. (§1.1c)
 17. **Greenfield reference design documented as §6, forward-looking only.** Variant A (pragmatic OPH-norm: oppija-document store for Valpas + DBT-built BI store) and Variant B (no-constraints ideal: Kafka + Debezium + DynamoDB / managed search + Snowflake / BigQuery). Today's §1 path doesn't strand work toward either variant — the continuous worker, change-queue, and snapshot-clone are directly reusable as the Valpas-side half of Variant A. (§6)
-18. **Throughput-optimization is on the critical path of Phase 3, not optional polish**. Production data shows the existing incremental loader runs at ~0.92 s/OO; continuous mode plus §1.1c's per-oppija atomicity requires ≤ 0.43 s/OO. Highest-impact levers (per §1.1d): batched `r_opiskeluoikeus` upsert, diff-aware writes on `r_osasuoritus` / `r_aikajakso` (§1.6a / I2), index audit, per-oppija worker parallelism. I15–I20 produce the measurements that prioritize the levers.
+18. **Throughput-optimization is on the critical path of Phase 3, not optional polish**. Production data shows the existing incremental loader runs at ~0.92 s/OO; continuous mode plus §1.1c's per-oppija atomicity requires ≤ 0.43 s/OO. Highest-impact levers (per §1.1d): batched `r_opiskeluoikeus` upsert, diff-aware writes on `r_osasuoritus` / `r_aikajakso` (§1.6a / I2), subtree-aware branching from the V84 trigger (§1.1e), index audit, per-oppija worker parallelism. I15–I20 produce the measurements that prioritize the levers.
+19. **Subtree-aware change detection from the V84 trigger** (§1.1e): extend V84 to compute booleans describing which JSONB subtrees of `data` changed; the worker skips whole r_* table groups whose source subtree didn't change. Cheap to compute (`IS DISTINCT FROM` on JSONB binaries, ~10–30 µs per write). Complementary and multiplicative with §1.6a diff-aware writes — subtree flags skip whole tables, diff-aware skips rows within touched tables. Lands in Phase 1 alongside the existing queue extension. Option B (typed-model comparison in the worker) deferred as a targeted refinement post-cutover if needed.
 
 ### Implementation plan (phased rollout)
 
@@ -103,7 +104,7 @@ Each phase has prerequisite investigations (gates) that must finish before the p
 | ID | Investigation | Source | Gates phase | Deliverable | Effort | Owner role |
 |---|---|---|---|---|---|---|
 | I1 | Partition-key profiling for `r_osasuoritus` / `r_paatason_suoritus` / `r_opiskeluoikeus`: representative Valpas and kt/oppilaitos-scoped raportit query plans against production-like data; per-partition row counts under birth-year, kt, oppilaitos, two-level. | §1.6, decision #3 | 5 | Decision memo: chosen partition key + bucket plan (1-year vs 2-year vs 5-year for birth-year), per-partition row-count estimates, EXPLAIN profiles. | 1–2 weeks | DB-savvy engineer |
-| I2 | How often do OO updates actually change `r_osasuoritus` / aikajakso content vs leave it identical | §1.6a, decision #4 | 3 (worker write strategy) | Short report + chosen worker write strategy: today's DELETE-all+INSERT-all (Option D), per-row diff (Option A), or stable composite PKs (Option C). | A few days | Backend eng |
+| I2 | How often do OO updates actually change `r_osasuoritus` / aikajakso content vs leave it identical. Drives the choice between today's DELETE-all+INSERT-all (the fallback) and diff-aware writes (Option 1 / 2 / 3 in §1.6a). Strong prior is diff-aware wins by 5–50× on `r_osasuoritus`; measurement confirms. | §1.6a, decision #4 | 3 (worker write strategy) | Short report with the per-table change-ratio distribution + a recommended strategy (diff-aware via `INSERT ON CONFLICT … WHERE IS DISTINCT FROM` is the recommended starting point per §1.6a). | A few days | Backend eng |
 | I3 | Lampi-team conversation: dump publication SLA, format (Parquet/CSV/JSON-lines), schema stability, turvakielto handling, per-source granularity (ONR vs Organisaatio vs Koodisto), audit / authoritative-source semantics, inbound-consumption permissions. | §1.1b "Future option", decision #12 | 8 | Meeting notes + go/no-go criteria for Phase 8. Open inbound-S3 permissions question. | 1 conversation + follow-up | Tech lead |
 | I4 | V84 trigger-coverage audit: enumerate every code path that mutates `opiskeluoikeus` (including `SuostumuksenPeruutusService.etsiPoistetut` and YTR-side writes) and verify the trigger fires for each. | "Existing pieces…", decision #6 | 1 | Audit doc; if gaps found, explicit `jono.lisää(oid)` calls (or trigger fix) land in Phase 1. | A few days | Backend eng |
 | I5 | Lampi-during-backfill behavior: (a) block until complete, (b) skip in-progress columns, (c) sidecar file listing in-progress columns. | §1.4 Flavor A, decision #5 | 1 (`r_backfill_status` consumer semantics) | Behavior decision recorded; orchestrator pseudocode for the chosen flavor. | 1 conversation | Tech lead + Lampi/Vipunen consumers |
@@ -122,12 +123,14 @@ Each phase has prerequisite investigations (gates) that must finish before the p
 | I18 | JDBC round-trip / statement count per batch under the current loader. Enable Slick statement logging or use a JDBC proxy (pgbadger / hsqldb-proxy); count statements emitted for one batch and attribute them to `update*` methods. | §1.1d, decision #18 | 3 | Statement count per OO; confirms or refutes the per-row-`insertOrUpdate` chattiness on `r_opiskeluoikeus`. | Half a day | Backend eng |
 | I19 | Batch-size scaling sweep: rerun the loader against batch ∈ {50, 200, 500, 2000}. Compare seconds/OO across sizes. Sub-linear scaling ⇒ per-batch overhead; linear ⇒ per-OO bound; super-linear ⇒ contention / pool exhaustion. | §1.1d, decision #18 | 3 | Throughput curve; informs whether bigger batches help and where the contention point is. | A day (incl. run time) | Backend eng |
 | I20 | Autovacuum-paused isolation test: rerun a 500-OO batch with `ALTER TABLE r_osasuoritus SET (autovacuum_enabled = false)` for the test window, restore after. Compare against baseline. | §1.1d, decision #18 | 3 | Confirms or refutes how much of the 460 s is IOPS contention with autovacuum. Drives §1.9 autovacuum tuning targets. | Half a day | Backend eng |
+| I21 | Subtree-aware-trigger overhead measurement (§1.1e Option A): on a staging or pre-prod copy of primary OLTP, replace the V84 trigger with the flag-computing version, then drive a realistic write workload (bulk siirtoaja import + interactive virkailija edits) and measure the added trigger latency per write. Confirms the 10–30 µs estimate. | §1.1e, decision #19 | 1 (gates Phase 1's trigger replacement) | Per-write trigger overhead (median + p99) under both interactive and bulk-import workloads. Go/no-go signal for Phase 1's trigger swap. | A day | Backend eng + DB-savvy engineer |
+| I22 | Subtree-change distribution measurement: query `opiskeluoikeushistoria.muutos` over a 90-day window, classify each history entry's JSON-patch paths into the §1.1e subtree buckets, report the joint distribution (% of updates touching only `tila`, only `suoritukset`, both, etc.). Confirms or refutes the strong prior that most updates touch a single subtree. | §1.1e, decision #19 | 1 (informs whether Option A's wins are as big as expected; doesn't gate) | Histogram + cross-tabulation of subtree-change patterns. Inputs to the throughput model for Phase 3 sizing. | A day | Backend eng |
 
 ### Development phases
 
 #### Phase 0 — Pre-work (start immediately, no production behavior change)
 
-**Investigations to kick off**: I3, I4, I5, I6, I7, I10, I11, I12, **I15, I16, I17, I18, I19, I20** (throughput measurements per §1.1d — independent of the rest, can start day 1 since they instrument the existing production loader).
+**Investigations to kick off**: I3, I4, I5, I6, I7, I10, I11, I12, **I15, I16, I17, I18, I19, I20** (throughput measurements per §1.1d — independent of the rest, can start day 1 since they instrument the existing production loader), **I21, I22** (subtree-aware trigger overhead + subtree-change distribution per §1.1e; I21 gates Phase 1's trigger swap; I22 informs Phase 3 sizing).
 
 **Tasks**:
 - 🅳 PG version upgrade (PG 13 → 15 or 16) on raportointikanta RDS, scheduled before any partitioning work (§1.10). Not strictly required for Phase 1 but worth doing first because it eases later partitioning + autovacuum tuning and is independently good hygiene.
@@ -136,11 +139,11 @@ Each phase has prerequisite investigations (gates) that must finish before the p
 
 #### Phase 1 — Foundations
 
-**Prerequisites**: I4 (V84 trigger coverage), I5 (Lampi-during-backfill behavior).
+**Prerequisites**: I4 (V84 trigger coverage), I5 (Lampi-during-backfill behavior), **I21** (subtree-aware trigger overhead — gates the trigger swap).
 
 **Tasks**:
 - 🅳 Config flag `raportointikanta.continuousMode` (default `false`). [`reference.conf`, `KoskiApplication.scala`]
-- 🅳 Flyway migration on primary Koski RDS: extend `paivitetty_opiskeluoikeus` with `yritykset int default 0` and `viimeisin_virhe text`.
+- 🅳 Flyway migration on primary Koski RDS: extend `paivitetty_opiskeluoikeus` with `yritykset int default 0`, `viimeisin_virhe text`, `oppija_oid varchar` (denormalization for the per-oppija batching in §1.1c), and the subtree-change flag columns (`suoritukset_muuttunut bool`, `tila_muuttunut bool`, `lisatiedot_muuttunut bool`, `organisaatiohistoria_muuttunut bool`, `juuritason_kentat_muuttunut bool`) per §1.1e. Replace the V84 trigger function with the extended version that populates these flags via `IS DISTINCT FROM` on JSONB subtrees. Existing rows pre-migration get NULL flags — worker treats NULL as "rebuild everything" for backward compatibility.
 - 🅳 Flyway migration on primary Koski RDS: add the missing `ytr_paivitetty_opiskeluoikeus` queue-population trigger on `ytr_opiskeluoikeus` (mirror of V84; today only V90's `aikaleima` trigger exists).
 - 🅳 Flyway migration on raportointikanta RDS: create `r_backfill_status` table per §1.4 Flavor A.
 - 🅳 If I4 surfaced gaps: add explicit `jono.lisää(oid)` calls in offending services (e.g. `SuostumuksenPeruutusService.etsiPoistetut`).
@@ -166,8 +169,10 @@ Each phase has prerequisite investigations (gates) that must finish before the p
 **Prerequisites**: Phase 2 production-deployed. I2, I6, I7, I8, I9, I12. **I15–I20** (throughput measurements; gate the optimization tasks below).
 
 **Throughput-optimization workstream** (on the critical path per §1.1d):
+- 🅳 **Subtree-aware branching in the worker (Option A from §1.1e)**: read `suoritukset_muuttunut` / `tila_muuttunut` / `lisatiedot_muuttunut` / `organisaatiohistoria_muuttunut` / `juuritason_kentat_muuttunut` flags from each queue row; skip whole r_* table groups whose source subtree didn't change. Flags table → tables mapping per §1.1e. NULL flags ⇒ rebuild everything (safe default for pre-migration rows). Multiplies with the §1.6a diff-aware writes below.
+- 🅳 *(deferred, conditional)* Option B from §1.1e — typed-model comparison in the worker — only for specific r_* table groups where I21 / production profiling shows Option A's JSON-level flagging produces false-positive rebuilds. Not on the Phase 3 critical path; add as a targeted refinement post-cutover if needed.
 - 🅳 Replace the per-row `insertOrUpdate` on `r_opiskeluoikeus` (`RaportointiDatabase.scala:295`) with batched UPSERT — either pre-split new vs existing and use `++=`, or raw `INSERT … ON CONFLICT DO UPDATE`. Expected highest single-line impact.
-- 🅳 Apply diff-aware updates per I2's chosen strategy (Option A / B / C of §1.6a) to `r_osasuoritus`, `r_aikajakso`, `r_opiskeluoikeus_aikajakso`, `r_organisaatiohistoria`, and every other r_* table that today follows DELETE-everything-then-INSERT-everything. Skips unchanged rows entirely.
+- 🅳 Apply diff-aware updates per I2's chosen strategy (Option 1 / 2 / 3 of §1.6a — Option 1, `INSERT ON CONFLICT … WHERE IS DISTINCT FROM`, is the recommended starting point) to `r_osasuoritus`, `r_aikajakso`, `r_opiskeluoikeus_aikajakso`, `r_organisaatiohistoria`, `r_paatason_suoritus`, and every other r_* table that today follows DELETE-everything-then-INSERT-everything. Each table gets one Flyway migration to add a logical unique index alongside its synthetic PK (path I in §1.6a's "stable identity" choice), and one rewritten `update*` method in `RaportointiDatabase`. Skips unchanged rows entirely.
 - 🅳 Index audit on `r_osasuoritus` and `r_paatason_suoritus` (`RaportointiDatabaseSchema.scala:1273–1282`): cross-check each of the 5 indexes against actual Valpas / report query patterns; drop any that aren't earning their write cost.
 - 🅳 Parallelize the worker across oppija partitions: shard the queue by `hash(oppija_oid) mod N` and run N parallel oppija-lanes (target N ≈ 4 initially, tune by measurement). The `WorkerLeaseElector` lease becomes per-partition. Per-oppija atomicity (§1.1c) is preserved because no two lanes touch the same oppija concurrently.
 - 🅳 *(conditional, only if I16 shows long-tail dominance)* Implement a slow-lane queue + worker for OOs whose row counts exceed a threshold, so the fast lane isn't blocked by occasional korkeakoulu / ammatillinen heavyweights.
@@ -185,7 +190,7 @@ Each phase has prerequisite investigations (gates) that must finish before the p
 - 🅳 `HenkiloRefreshScheduler` on raportointikanta RDS, cadence per I6. Walks `r_henkilo` in chunks, re-fetches `LaajatOppijaHenkilöTiedot` + kuntahistoria, handles turvakielto state transitions by atomically moving rows between `public` and `confidential` schemas. First-touch path stays inline in the per-OO transaction.
 - 🅳 Move `OrganisaatioLoader` / `KoodistoLoader` / `OppivelvollisuudenVapautusLoader` out of `loadRestAndSwap` into independent periodic schedulers running against raportointikanta RDS.
 - 🅳 `RaportointikantaConsistencyChecker.scala`: nightly sample-OO diff between continuous `r_*` and a freshly-rebuilt staging schema; alerts on any drift.
-- 🅳 If I2 chose Option A or C: implement the diff-aware update path. Otherwise: keep today's DELETE-all + INSERT-all (Option D).
+- 🅳 *(covered by the throughput-optimization workstream above; kept here as a marker)* If I2's measurement justifies it, diff-aware writes land per §1.6a Option 1. If I2 shows the change ratio is too high to benefit, keep today's DELETE-all + INSERT-all.
 - 🅳 Wire `RaportointikantaLoadLimiter` into `MassaluovutusScheduler.runNext` for async-only backpressure. Source `workerQueueLagSeconds` + the existing `DatabaseLoadLimiter.checkOverloading` pattern.
 - 🅳 If I7 reclassified any synchronous reports as async-queued: implement the routing change in `RaportitServlet` (queue via massaluovutus instead of running inline). **Never apply backpressure to interactive Valpas.**
 - 🅳 Enrich `RaportointikantaStatusServlet` + `/paivitysaika` per §1.7 (`loadType`, `workerQueueLagSeconds`, `workerQueueDepth`, `precomputedTablesAsOf`, `lastFullReloadCompletedAt`). Keep the old field for UI backwards compatibility.
@@ -319,7 +324,7 @@ The worker drains the existing `paivitetty_opiskeluoikeus` queue on primary Kosk
 The tick:
 1. Read up to `batchSize = 500` unprocessed rows from `paivitetty_opiskeluoikeus` on primary Koski RDS. Dedupe by `opiskeluoikeus_oid` keeping the latest (collapses bursts) and **group the resulting rows by `oppija_oid`** so the rest of the tick processes one oppija at a time (see §1.1c for why; the queue carries `oppija_oid` as a denormalized column added by the same Flyway migration that adds `yritykset` / `viimeisin_virhe`).
 2. SELECT the affected OO rows from `opiskeluoikeus` on primary (same pattern as today's loader's `PäivitettyOpiskeluoikeusLoader`).
-3. For each **oppija batch** (all changed OOs for that oppija together), run `buildKoskiRow` for each OO, then in **one Slick transaction per oppija** on raportointikanta RDS: upsert all R-tables for every changed OO; then re-read the oppija's OOs from r_* (post-update inside the same transaction); then recompute and upsert that oppija's derived aggregates (PaallekkaisetOpiskeluoikeudet, Oppivelvollisuustiedot, the Lukio-kertymä family, OpiskeluoikeudenUlkopuolellaArvioidutOsasuoritukset). The whole transaction commits as one — reports never observe a half-updated state across the oppija's r_* rows or between r_* and derived aggregates (§1.1c).
+3. For each **oppija batch** (all changed OOs for that oppija together), run `buildKoskiRow` for each OO, then in **one Slick transaction per oppija** on raportointikanta RDS: read the per-row subtree-change flags (§1.1e) and branch on which r_* table groups need rebuilding; upsert the affected R-tables for every changed OO using diff-aware writes per §1.6a; then re-read the oppija's OOs from r_* (post-update inside the same transaction); then recompute and upsert that oppija's derived aggregates whose source subtree changed (PaallekkaisetOpiskeluoikeudet, Oppivelvollisuustiedot, the Lukio-kertymä family, OpiskeluoikeudenUlkopuolellaArvioidutOsasuoritukset). The whole transaction commits as one — reports never observe a half-updated state across the oppija's r_* rows or between r_* and derived aggregates (§1.1c).
 4. Mark every queue row processed for that oppija on primary (idempotent since upserts are idempotent — if step 3 succeeded but the queue update failed, retry re-does the same upserts harmlessly).
 
 Cadence: tick every **60 s**. With 200 000 updates/day average and batch=500 the worker is mostly idle, but bursts of 5 000+ updates from a virkailija mass-import drain within a few ticks. The 15-min target leaves plenty of headroom.
@@ -448,6 +453,101 @@ Architecture if pursued: hybrid. Keep `OpintopolkuHenkilöFacade` HTTP for first
 5. **Parallelize the worker across oppijas** — §1.1c gives natural per-oppija atomicity; nothing prevents N workers each handling a partition of `oppija_oid` in parallel. 4× parallelism realistic without contention (different rows, different pages). Worth confirming compatibility with the single-slot `WorkerLeaseElector` — the lease likely needs to become per-partition.
 6. **Slow lane for heavy OOs** — separate queue / cadence for OOs above a row-count threshold so they don't block the fast lane. Only worth implementing if I16 shows long-tail dominance.
 7. **§2 logical-replication upgrade** — eliminates the primary-side SELECT cost (local reads); listed in the existing Phase 7 conditional, but moves up in attractiveness if I15 shows the primary SELECT dominates.
+
+### §1.1e Subtree-aware change detection from the V84 trigger
+
+A complementary upstream optimization to the diff-aware writes of §1.6a: instead of detecting which **rows** changed inside an r_* table, detect at write time which **JSONB subtree of `opiskeluoikeus.data` changed** and skip whole r_* tables whose source subtree is unchanged. Most virkailija edits touch only one subtree (`tila` alone, `suoritukset` alone, `lisätiedot` alone) — today every queue entry causes recomputation of ~11 r_* tables regardless.
+
+#### Option A — boolean flags computed in the V84 trigger (recommended starting point)
+
+Extend the V84 trigger so each `paivitetty_opiskeluoikeus` row carries booleans describing which subtrees changed. Postgres compares JSONB binaries via `IS DISTINCT FROM` in microseconds with short-circuit on first difference, so the trigger cost is small.
+
+```sql
+CREATE OR REPLACE FUNCTION paivitetty_opiskeluoikeus_kirjaus() RETURNS trigger AS $$
+BEGIN
+  INSERT INTO paivitetty_opiskeluoikeus (
+    opiskeluoikeus_oid,
+    oppija_oid,
+    aikaleima,
+    suoritukset_muuttunut,
+    tila_muuttunut,
+    lisatiedot_muuttunut,
+    organisaatiohistoria_muuttunut,
+    juuritason_kentat_muuttunut
+  ) VALUES (
+    NEW.oid,
+    NEW.oppija_oid,
+    NEW.aikaleima,
+    COALESCE(NEW.data->'suoritukset',            '[]'::jsonb)
+      IS DISTINCT FROM COALESCE(OLD.data->'suoritukset',            '[]'::jsonb),
+    COALESCE(NEW.data->'tila',                   '{}'::jsonb)
+      IS DISTINCT FROM COALESCE(OLD.data->'tila',                   '{}'::jsonb),
+    COALESCE(NEW.data->'lisätiedot',             '{}'::jsonb)
+      IS DISTINCT FROM COALESCE(OLD.data->'lisätiedot',             '{}'::jsonb),
+    COALESCE(NEW.data->'organisaatiohistoria',   '[]'::jsonb)
+      IS DISTINCT FROM COALESCE(OLD.data->'organisaatiohistoria',   '[]'::jsonb),
+    -- juuritason kentät: oppilaitos, koulutustoimija, tyyppi, lähdejärjestelmä, sisältyyOpiskeluoikeuteen, …
+    (NEW.data - 'suoritukset' - 'tila' - 'lisätiedot' - 'organisaatiohistoria')
+      IS DISTINCT FROM (OLD.data - 'suoritukset' - 'tila' - 'lisätiedot' - 'organisaatiohistoria')
+  );
+  RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+```
+
+For INSERTs (`OLD IS NULL`) all flags are `true` — first materialization touches every table.
+
+**Worker logic** uses the flags to branch on which r_* table groups to rebuild:
+
+| Flag | r_* tables the worker rebuilds for this OO |
+|---|---|
+| `suoritukset_muuttunut` | `r_paatason_suoritus`, `r_osasuoritus`, `r_koulutuksen_jarjestamismuoto_ammatillinen`, `r_osaamisen_hankkimistapa_ammatillinen`, `muu_ammatillinen_raportointi`, `topks_ammatillinen_raportointi`, the Lukio kertymä family |
+| `tila_muuttunut` | `r_aikajakso`, `r_opiskeluoikeus_aikajakso`, `esiopetus_opiskeluoik_aikajakso` |
+| `lisatiedot_muuttunut` | `r_opiskeluoikeus` (most lisätiedot fields land there) |
+| `organisaatiohistoria_muuttunut` | `r_organisaatiohistoria` |
+| `juuritason_kentat_muuttunut` | `r_opiskeluoikeus` (top-level scalars) |
+
+Derived aggregates (§1.1c) follow their input dependencies: `PaallekkaisetOpiskeluoikeudet` recomputes if `suoritukset_muuttunut OR tila_muuttunut`; `Oppivelvollisuustiedot` similar; Lukio-kertymät only `suoritukset_muuttunut`.
+
+#### Option B — typed-model comparison in the worker (more precise, costlier per OO)
+
+Same idea but the comparison happens post-`toOpiskeluoikeusUnsafe`, on the typed Scala domain model:
+
+```scala
+val newOo = toOpiskeluoikeusUnsafe(currentDataJson)
+val oldOo = previousVersionFromHistoria.map(toOpiskeluoikeusUnsafe)
+val suorituksetChanged = oldOo.forall(_.suoritukset != newOo.suoritukset)
+val tilaChanged        = oldOo.forall(_.tila != newOo.tila)
+// …
+```
+
+- **Pro**: comparison is on exactly the model `buildKoskiRow` consumes. A JSON-level change to a field the schema ignores can't trigger a false-positive rebuild.
+- **Pro**: zero impact on primary OLTP. The trigger stays minimal.
+- **Con**: every tick does an extra `opiskeluoikeushistoria` SELECT (cheap, indexed) plus an extra `toOpiskeluoikeusUnsafe` parse (~30–80 ms — not cheap; meaningful against §1.1d's 0.43 s/OO budget).
+
+#### Recommended: Option A first, Option B as targeted refinement
+
+Adopt Option A in Phase 1 — the flag columns slot naturally into the same Flyway migration that adds `yritykset` / `viimeisin_virhe` to the queue. Worker reads and branches in Phase 3. If later profiling reveals specific r_* table groups being rebuilt uselessly (the JSON-changed-but-typed-model-didn't gap), layer Option B's typed comparison on top **only for those specific tables**, not blanket-applied.
+
+#### Stacking with §1.6a diff-aware writes
+
+The two optimizations are **independent and multiplicative**:
+
+- Subtree flags decide "should we touch table X at all?"
+- Diff-aware writes (§1.6a) decide "within table X, which rows actually changed?"
+
+If a typical edit touches 1 subtree out of 5 (skip 4/5 of table groups) **and** within the touched group only 1 of 5 rows actually changed (diff-aware writes that one row), combined work is roughly **20× × 5× ≈ 100× fewer mutations** than today. Even with much weaker assumptions, the combination pushes the §1.1d throughput budget into comfortable territory.
+
+#### Cost on primary OLTP — measurement needed (I21)
+
+The V84 trigger fires on every `opiskeluoikeus` write. Adding 5 `IS DISTINCT FROM` comparisons on JSONB subtrees is ~10–30 µs per write. Bulk-import paths (siirtoaja at ~1000 OO/s) would see ~10–30 ms of extra trigger latency per second of import — small in absolute terms but worth confirming before deploying to production. I21 covers this measurement on the existing production workload.
+
+#### Edge cases
+
+- **INSERTs** (`OLD IS NULL`): all flags true; worker materializes every table. No special case.
+- **Mitätöinti / soft-delete**: an UPDATE that mutates `tila`; `tila_muuttunut` becomes true. The existing mitätöity-partitioning code in `IncrementalUpdateOpiskeluoikeusLoader.updateBatch:64–76` runs unchanged; flags don't alter that routing.
+- **YTR side**: the analogous YTR queue trigger (already planned in Phase 1) gets the same flag columns. YTR has no precomputed dependencies so its flag set is simpler.
+- **Backward compatibility**: a queue entry with all flags NULL (e.g. created by a hot patch before the migration completes) should be treated as "all-flags-true" so the worker rebuilds everything — safe-default behavior.
 
 ### §1.2 No more blue/green schema swap (for steady-state continuous mode)
 
@@ -718,21 +818,85 @@ This is correct but wasteful under continuous mode:
 - **Index update cost**: every DELETE + INSERT touches every index on the affected tables — even though the new row is identical to the old one.
 - **WAL volume**: every unchanged row that gets rewritten generates WAL records.
 
-**Investigation: can the worker skip unchanged rows?**
+**Why this is high-leverage**: a typical OO has ~40 osasuoritus rows and `r_osasuoritus` has 5 indexes. Today's full re-emission of all rows means **80 row mutations + 400 index entry mutations + WAL for 80 rows** per OO. If the typical OO update actually changes 1 row out of 40 (intuition for "virkailija edited one arvosana"-style edits), diff-aware reduces that to **1 row mutation + 5 index mutations + WAL for 1 row** — roughly **80× fewer write mutations**, at the cost of one extra SELECT reading ~5–50 heap pages. The SELECT is far below the savings. Investigation I2 measures the actual change ratio; intuition is "diff-aware wins by 5–50× on average for `r_osasuoritus`".
 
-Option A — **Compare-then-upsert**: before writing, read the existing r_osasuoritus rows for this OO, hash-compare against the new rows, and only DELETE+INSERT the differences. Pros: minimizes dead tuples. Cons: per-OO transaction now does an extra SELECT; comparison cost grows with osasuoritus count; correctness depends on a stable hash function. Worth measuring.
+**The shared prerequisite: stable logical identity per row.** Every diff strategy needs a way to recognize "this osasuoritus row in the new build corresponds to this row in the existing table". Today's `osasuoritus_id` is a synthetic sequence value that's regenerated on every upsert — useless for matching. Two paths:
 
-Option B — **`INSERT … ON CONFLICT DO UPDATE` (UPSERT) with content equality short-circuit**: use UPSERT per row instead of DELETE+INSERT. If the new values match the existing ones, the row is updated to the same content (still generates a dead tuple under Postgres MVCC, but at least HOT updates might apply if no indexed column changes). Pros: simpler than diff. Cons: rows that disappear from the new set aren't auto-deleted — still need a separate DELETE pass. Maybe not better than today.
+- **(I) Add a logical unique index alongside the synthetic PK.** Keep `osasuoritus_id` as the primary key (so downstream consumers, FK references, exports continue to work). Add a `UNIQUE (opiskeluoikeus_oid, päätason_suoritus_index, osasuoritus_path_hash)` index by Flyway migration; use that key for UPSERT conflict-detection. Small, additive migration. **Recommended starting point.**
+- **(II) Replace `osasuoritus_id` with a stable hash of the logical key.** Cleaner long-term — every row has a globally-stable identity. But it's a bigger change: any consumer that uses `osasuoritus_id` (raportit SQL, Lampi exports, internal joins) needs auditing and possibly migration. Worth the cost only if path (I) hits a wall.
 
-Option C — **Stable composite primary keys + true diff**: today's r_osasuoritus uses a synthetic `osasuoritus_id` (from a sequence) — the same osasuoritus across two upserts gets different IDs. If we changed the primary key to a stable hash of (opiskeluoikeus_oid, päätason_suoritus_index, osasuoritus_path), unchanged rows would keep their ID and could be detected as "already present, skip". Pros: clean diff semantics. Cons: schema migration; downstream consumers of `osasuoritus_id` would need to handle the new format; full reload would have to assign consistent IDs.
+Same path-(I) approach applies to `r_paatason_suoritus`, `r_aikajakso`, `r_opiskeluoikeus_aikajakso`, `r_organisaatiohistoria`, and the other DELETE-all+INSERT-all tables — one migration per table.
 
-Option D — **Don't bother; let autovacuum + partitioning absorb the waste**. The 900 s ceiling caps the bloat envelope at ~0.1 % per worst-case query; partitioning shrinks per-partition vacuum to single-digit minutes. The waste might be tolerable.
+**Three implementations of the diff once stable identity is in place**:
 
-**TODO**: measure how often OO updates actually change the osasuoritus rows vs leave them unchanged. The cost/benefit of Options A–C depends on this ratio. If most OO updates only touch the parent `opiskeluoikeus` fields (tila, päättymispäivä, etc.) and leave the osasuoritus tree intact, Option A or C is a big win. If most OO updates also touch osasuoritus, the savings are modest and Option D is fine.
+#### Option 1 — `INSERT … ON CONFLICT DO UPDATE … WHERE IS DISTINCT FROM` (recommended)
 
-Same investigation applies to `r_aikajakso`-family tables: aikajaksot are computed from the OO's tila history. If the tila didn't change, the aikajakso rows didn't change either — re-emitting them generates dead tuples for nothing.
+```sql
+INSERT INTO r_osasuoritus (...columns...)
+VALUES (...), (...), (...)
+ON CONFLICT (opiskeluoikeus_oid, päätason_suoritus_index, osasuoritus_path_hash) DO UPDATE SET
+  col1 = EXCLUDED.col1,
+  col2 = EXCLUDED.col2,
+  ...
+WHERE (r_osasuoritus.col1, r_osasuoritus.col2, ...) IS DISTINCT FROM
+      (EXCLUDED.col1, EXCLUDED.col2, ...);
 
-Worth doing this measurement before committing to a worker implementation strategy. Initial implementation can use today's DELETE-all + INSERT-all approach (simplest), and Option A/C can be added as a performance optimization once measurement justifies it.
+DELETE FROM r_osasuoritus
+WHERE opiskeluoikeus_oid = $oid
+  AND osasuoritus_path_hash NOT IN (...new path hashes...);
+```
+
+Postgres handles the diff itself — if every column is equal the UPDATE is skipped entirely. **No dead tuple, no index churn for unchanged rows.** Two statements per (table, OO). Works with Slick's `++=` batch insertion. Cleanest and most compact.
+
+#### Option 2 — PostgreSQL `MERGE` (PG 15+)
+
+```sql
+MERGE INTO r_osasuoritus tgt
+USING (VALUES (...), (...)) AS src (...columns...)
+ON tgt.opiskeluoikeus_oid = src.opiskeluoikeus_oid
+  AND tgt.osasuoritus_path_hash = src.osasuoritus_path_hash
+WHEN NOT MATCHED THEN INSERT (...) VALUES (src...)
+WHEN MATCHED AND (tgt.col1, tgt.col2, ...) IS DISTINCT FROM (src.col1, src.col2, ...)
+  THEN UPDATE SET col1 = src.col1, ...;
+
+DELETE FROM r_osasuoritus
+WHERE opiskeluoikeus_oid = $oid
+  AND osasuoritus_path_hash NOT IN (...);
+```
+
+Equivalent semantics, single MERGE statement. Available once Phase 0's PG upgrade lands (PG 15+). Slightly more readable; behaviour identical to Option 1.
+
+#### Option 3 — Scala-side diff with targeted writes
+
+```scala
+val existing = db.run(ROsasuoritukset.filter(_.opiskeluoikeusOid === oid).result)
+val nuevo    = builtRows
+val byKey    = (rs: Seq[ROsasuoritusRow]) => rs.map(r => logicalKey(r) -> r).toMap
+val ex = byKey(existing); val nx = byKey(nuevo)
+
+val toDelete = ex.keySet -- nx.keySet
+val toInsert = nx.collect { case (k, r) if !ex.contains(k) => r }
+val toUpdate = nx.collect {
+  case (k, r) if ex.contains(k) && !contentEquals(ex(k), r) => r
+}
+// Issue targeted DELETE / INSERT / UPDATE for the three sets
+```
+
+One extra round trip for the SELECT, comparison runs in Scala. Useful only when the diff logic needs Scala-side context (e.g. hash partial subtrees, ignore certain fields). For the common case Options 1 or 2 are simpler.
+
+**Recommended path**: Option 1 with path (I) stable-identity. Smallest migration footprint; lets the database do the diff; works with the existing Slick `++=` pattern.
+
+#### When diff-aware loses
+
+If most OO updates touch every osasuoritus row (e.g. a schema-version normalisation that rewrites every column, or workflows that cascade edits across the whole suoritus tree), the SELECT/diff overhead adds cost without saving any writes. In that case today's DELETE-all + INSERT-all is the right pattern. **I2 produces the change-ratio measurement** that decides this for real. Strong prior is "diff-aware wins comfortably", but the measurement is what proves it.
+
+#### Fallback: don't bother
+
+If I2 measurement returns "most updates change everything" *and* §1.6 partitioning + §1.9 autovacuum tuning bring vacuum cycles below the dead-tuple-creation rate, the diff machinery can be skipped entirely — autovacuum absorbs the waste. The 900 s reader ceiling bounds the bloat envelope at ~0.1 % of table per query (§1.5pre). This is the "do nothing" lane and the safe fallback if Option 1's migration cost is unattractive.
+
+#### Same approach for the other DELETE-all+INSERT-all tables
+
+`r_aikajakso` and `r_opiskeluoikeus_aikajakso` are derived from the OO's `tila` history: if `tila` didn't change, the aikajakso rows didn't change either. `r_organisaatiohistoria` changes only on rare org-history events. `r_paatason_suoritus`, `r_koulutuksen_jarjestamismuoto_ammatillinen`, `r_osaamisen_hankkimistapa_ammatillinen`, `esiopetus_opiskeluoik_aikajakso`, `muu_ammatillinen_raportointi`, `topks_ammatillinen_raportointi` — same pattern. Each gets its own logical-unique-index Flyway migration and its own Option-1 UPSERT in `RaportointiDatabase.update*`. The volume win is largest on `r_osasuoritus` (most rows per OO, most indexes); the smaller tables benefit proportionally less but the cost of doing it is also small.
 
 ### §1.7 Freshness / `/paivitysaika`
 
@@ -1147,4 +1311,5 @@ This is a feasibility doc, so verification is described, not executed:
 15. **DBT for the transformation/aggregate layer**: rejected as both primary loader replacement and aggregate-table maintenance tool (§5). Sibling Ovara (`/home/ahtiainen/ovara-vm`) uses DBT for a similar ELT pattern, but Koski's Scala-side `toOpiskeluoikeusUnsafe` (schema-version drift), 18-variant `Opiskeluoikeus` ADT type matching, and the per-OO atomicity property of §1.1 make DBT structurally wrong as a core tool — and Ovara's eventual-consistency-within-a-window contract would be a regression for interactive Valpas. Reconsider only if a denormalized wide-view Lampi/Vipunen consumer requirement appears (then on the §1.8 snapshot-clone, where the frozen storage-layer copy eliminates the consistency holes Ovara accepts on its live DB), or if the aggregate-table set grows >3×.
 16. **Per-oppija atomic consistency invariant** (§1.1c): hard requirement for end-user features (Valpas, virkailija interactive views) — derived data shown for an oppija must always be computed from the same opiskeluoikeus generation the user sees. Relaxed for analysis paths (Lampi / Vipunen / batch BI). Drives the per-oppija (not per-OO) transaction batching in §1.1 and the elimination of the dirty-oppija mini-queue / second-pass logic in §1.3.
 17. **Greenfield reference design** (§6): two reference variants documented (pragmatic OPH-norm Variant A; no-constraints ideal Variant B). Forward-looking only; not on the Phase 1–5 rollout. Sign-posts that would trigger Variant A: Valpas latency requirements diverge further from BI batch needs; analyst concurrency outgrows PostgreSQL; wide-view denormalized Lampi/Vipunen consumer requirement appears. Sign-posts for Variant B: all of Variant A's plus growth past ~20 M OOs and OPH platform-wide adoption of Kafka or managed DWH for other services.
-18. **Throughput budget vs production reality** (§1.1d): the existing loader runs at ~0.92 s/OO; continuous mode budget is ≤ 0.43 s/OO and §1.1c adds work on top. Optimization is on the critical path of Phase 3. Investigations I15–I20 measure where the time goes; specific Phase 3 tasks (batched `r_opiskeluoikeus` upsert; diff-aware writes on `r_osasuoritus` / `r_aikajakso`; index audit; per-oppija worker parallelism) follow from the measurements.
+18. **Throughput budget vs production reality** (§1.1d): the existing loader runs at ~0.92 s/OO; continuous mode budget is ≤ 0.43 s/OO and §1.1c adds work on top. Optimization is on the critical path of Phase 3. Investigations I15–I20 measure where the time goes; specific Phase 3 tasks (batched `r_opiskeluoikeus` upsert; diff-aware writes on `r_osasuoritus` / `r_aikajakso`; subtree-aware branching from the V84 trigger (§1.1e); index audit; per-oppija worker parallelism) follow from the measurements.
+19. **Subtree-aware change detection from the V84 trigger** (§1.1e): extend V84 to compute boolean flags describing which JSONB subtrees of `data` changed; the worker skips whole r_* table groups whose source subtree didn't change. Cheap to compute (`IS DISTINCT FROM` on JSONB binaries; I21 confirms the ~10–30 µs estimate); multiplicative with §1.6a diff-aware writes. Phase 1 lands the trigger swap and the flag columns; Phase 3 wires up the worker-side branching. Option B (worker-side typed-model comparison) is a deferred targeted refinement.

@@ -68,13 +68,16 @@ A production measurement of today's incremental loader shows it processes ~500 o
 
 The steady-state continuous-mode budget is **~0.43 seconds per OO** (200 000 OO updates/day evenly distributed = 2.3/s). Once the per-oppija atomic consistency invariant above is layered on, the cost goes up, not down. So **today's loader is roughly 2× slower than the continuous-mode budget**, and optimization is on the critical path of Phase 3 — not optional polish to add after cutover.
 
-The plan reflects this directly: investigations I15–I20 in Phase 0 measure where the seconds actually go (DB writes? JSON parse? long-tail OOs? autovacuum contention?), and Phase 3's Scala work includes a dedicated throughput-optimization workstream. The highest-impact levers identified upfront:
+The plan reflects this directly: investigations I15–I22 in Phase 0 measure where the seconds actually go (DB writes? JSON parse? long-tail OOs? autovacuum contention? subtree-change distribution?), and Phase 3's Scala work includes a dedicated throughput-optimization workstream. The highest-impact levers identified upfront:
+- **Subtree-aware change detection from the database trigger**: extend the trigger that already records "this opiskeluoikeus changed" to also record *which part* of it changed (suoritukset / tila / lisätiedot / organisaatiohistoria / juuritason kentät). The worker then skips whole reporting tables whose source subtree didn't change. Most virkailija edits touch only one subtree; today every queue entry causes recomputation of all ~11 reporting tables regardless.
+- **Diff-aware writes** for `r_osasuoritus` / `r_aikajakso` so only rows whose content actually changed are deleted+inserted (instead of today's "delete everything for this OO, re-insert everything"). Independent of and multiplicative with subtree-aware branching: the trigger flags skip whole tables, diff-aware writes skip rows within touched tables.
 - **Batched upsert** for `r_opiskeluoikeus` (today's per-row pattern is the most visible chattiness).
-- **Diff-aware writes** for `r_osasuoritus` / `r_aikajakso` so only rows whose content actually changed are deleted+inserted.
 - **Index audit** on the heaviest write-target tables — each redundant index makes every write proportionally slower.
 - **Per-oppija worker parallelism** — the per-oppija atomicity invariant means different oppijas can be processed in parallel without contention.
 
-Until measurements come back from I15–I20 we cannot pick the order, only the set. If the measurements show that none of the levers above closes the gap, that's a Phase 3 exit-criterion failure and forces re-evaluation before production cutover.
+Combined effect of the first two levers, on conservative assumptions (typical edit touches 1 of 5 subtrees and within the touched group only 1 of 5 rows actually changed), is on the order of **100× fewer database mutations per OO update** than today. Even at much weaker assumptions, the combination comfortably closes the 2× gap between today's ~0.9 s/OO and the ~0.4 s/OO continuous-mode budget.
+
+Until measurements come back from I15–I22 we cannot pick the order, only the set. If the measurements show that none of the levers above closes the gap, that's a Phase 3 exit-criterion failure and forces re-evaluation before production cutover.
 
 ## Hard consistency invariant
 
