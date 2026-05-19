@@ -5,6 +5,7 @@ import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.log.Logging
 import fi.oph.koski.util.Streams
 import fi.oph.koski.ytr.MockYtrClient.yoTodistusResource
+import software.amazon.awssdk.core.exception.SdkClientException
 import software.amazon.awssdk.core.sync.ResponseTransformer
 import software.amazon.awssdk.services.s3.{S3Client, S3Utilities}
 import software.amazon.awssdk.services.s3.model.{GetObjectRequest, GetObjectResponse}
@@ -64,6 +65,9 @@ class RemoteYoTodistusService(application: KoskiApplication, config: YtrS3Config
         objectRequest(req.certificateUrl),
         ResponseTransformer.toOutputStream[GetObjectResponse](output),
       )
+    } catch {
+      case e: SdkClientException if e.getMessage != null && e.getMessage.contains("Broken pipe") =>
+        logger.warn(s"getCertificate: client disconnected during download of $req")
     } finally {
       logger.info(s"getCertificate end $req")
       output.flush()
