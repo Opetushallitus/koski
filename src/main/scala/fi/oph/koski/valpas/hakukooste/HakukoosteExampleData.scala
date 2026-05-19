@@ -145,7 +145,7 @@ object HakukoosteExampleData {
           koulutusNimi = "Leipomoalan ammattitutkinto",
           valintatila = Some("HYVAKSYTTY"),
           vastaanottotieto = Some("EHDOLLISESTI_VASTAANOTTANUT"),
-          harkinnanvaraisuus = Some("sosiaalisetsyyt")
+          harkinnanvaraisuus = Some("ATARU_SOSIAALISET_SYYT")
         ),
         hakutoive(
           hakukohdeOid = generateOid(),

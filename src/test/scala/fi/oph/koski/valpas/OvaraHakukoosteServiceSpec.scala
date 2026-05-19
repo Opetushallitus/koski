@@ -9,7 +9,7 @@ import com.typesafe.config.ConfigFactory
 import fi.oph.koski.KoskiApplicationForTests
 import fi.oph.koski.henkilo.LaajatOppijaHenkilöTiedot
 import fi.oph.koski.schema.BlankableLocalizedString
-import fi.oph.koski.valpas.hakukooste.{Hakukooste, Hakutoive, HakukoosteExampleData, ValpasHakukoosteService}
+import fi.oph.koski.valpas.hakukooste.{Hakukooste, HakukoosteExampleData, Hakutoive, Harkinnanvaraisuus, ValpasHakukoosteService}
 import fi.oph.koski.valpas.opiskeluoikeusfixture.ValpasMockOppijat
 import fi.oph.koski.valpas.opiskeluoikeusrepository.{ValpasHenkilöLaajatTiedot, ValpasOppivelvollinenOppijaLaajatTiedot}
 import org.scalatest.matchers.should.Matchers
@@ -166,7 +166,13 @@ class OvaraHakukoosteServiceSpec extends ValpasTestBase with Matchers with Eithe
       result.maa.map(_.koodiarvo) should equal(Some("246"))
       result.hakutoiveet should have length 3
       result.hakutoiveet.head.hakukohdeOid should equal("1.2.246.562.20.00000000000000080037")
-      result.hakutoiveet.head.harkinnanvaraisuus should be(None)
+      result.hakutoiveet.head.harkinnanvaraisuus should be(Some("ATARU_SOSIAALISET_SYYT"))
+      Harkinnanvaraisuus.isHarkinnanvarainen(result.hakutoiveet.head.harkinnanvaraisuus.get) shouldBe true
+
+      val hakutoive2 = results.last.hakutoiveet.last
+      hakutoive2.hakukohdeOid should equal("1.2.246.562.20.00000000000000058485")
+      hakutoive2.harkinnanvaraisuus should be(Some("EI_HARKINNANVARAINEN_HAKUKOHDE"))
+      Harkinnanvaraisuus.isHarkinnanvarainen(hakutoive2.harkinnanvaraisuus.get) shouldBe false
     }
 
     "palauttaa hakutilanteet kun ovara palauttaa saman oppija-oidin" in {
@@ -388,7 +394,8 @@ object OvaraHakukoosteServiceSpec {
        |        "valintatila": "HYVAKSYTTY",
        |        "alinHyvaksyttyPistemaara": -6,
        |        "alinValintaPistemaara": 0,
-       |        "pisteet": -6
+       |        "pisteet": -6,
+       |        "harkinnanvaraisuus": "ATARU_SOSIAALISET_SYYT"
        |      },
        |      {
        |        "hakukohdeOid": "1.2.246.562.20.00000000000000077691",
