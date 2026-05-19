@@ -91,6 +91,12 @@
       "description": "Wait 3 days before updating Maven dependencies",
       "matchManagers": ["maven"],
       "minimumReleaseAge": "3 days"
+    },
+    {
+      "description": "Pin postgres Docker image to match RDS version (RDS upgrades to 15.17 on 2026-06-03; auto-minor-version-upgrade is enabled in RDS). Bump this constraint when RDS is upgraded further.",
+      "matchManagers": ["docker-compose"],
+      "matchPackageNames": ["postgres"],
+      "allowedVersions": "<=15.17"
     }
   ],
   "ignorePaths": [
