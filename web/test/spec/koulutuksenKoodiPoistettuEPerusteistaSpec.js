@@ -32,7 +32,8 @@ describe('Koulutuksen koodi poistettu ePerusteista', function () {
     before(
       Authentication().login(),
       page.openPage,
-      page.oppijaHaku.searchAndSelect('161097-132N')
+      page.oppijaHaku.searchAndSelect('161097-132N'),
+      wait.forAjax
     )
 
     describe('Ennen muokkaamista', function () {
@@ -58,7 +59,8 @@ describe('Koulutuksen koodi poistettu ePerusteista', function () {
     before(
       Authentication().login(),
       page.openPage,
-      page.oppijaHaku.searchAndSelect('151099-036E')
+      page.oppijaHaku.searchAndSelect('151099-036E'),
+      wait.forAjax
     )
 
     describe('Katselutilassa', function () {
