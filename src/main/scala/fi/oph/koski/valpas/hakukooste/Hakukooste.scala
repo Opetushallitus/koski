@@ -56,10 +56,7 @@ case class Hakutoive(
   harkinnanvaraisuus: Option[String],
   @KoodistoUri("koulutus")
   hakukohdeKoulutuskoodi: Option[Koodistokoodiviite]
-) {
-  @SyntheticProperty
-  def onHakenutHarkinnanvaraisesti = harkinnanvaraisuus.isDefined
-}
+)
 
 object Vastaanottotieto {
   val values = Set(
@@ -123,11 +120,22 @@ object Ilmoittautumistila {
 
 object Harkinnanvaraisuus {
   val values = Set(
+    // Suren palauttamat harkinnanvaraisuus-enumit:
     "oppimisvaikudet", // Typo lähdekoodissa, https://github.com/Opetushallitus/haku/blob/master/hakemus-api/src/main/java/fi/vm/sade/haku/virkailija/lomakkeenhallinta/hakulomakepohja/phase/hakutoiveet/HakutoiveetPhase.java#L212-L221
     "sosiaalisetsyyt",
     "todistustenvertailuvaikeudet",
     "todistustenpuuttuminen",
-    "riittamatonkielitaito"
+    "riittamatonkielitaito",
+    // Ovaran palauttamat harkinnanvaraisuus-enumit, joista voidaan tulkita että hakija on hakenut harkinnanvaraisesti:
+    "SURE_YKS_MAT_AI",
+    "SURE_EI_PAATTOTODISTUSTA",
+    "ATARU_YKS_MAT_AI",
+    "ATARU_ULKOMAILLA_OPISKELTU",
+    "ATARU_EI_PAATTOTODISTUSTA",
+    "ATARU_SOSIAALISET_SYYT",
+    "ATARU_OPPIMISVAIKEUDET",
+    "ATARU_KOULUTODISTUSTEN_VERTAILUVAIKEUDET",
+    "ATARU_RIITTAMATON_TUTKINTOKIELEN_TAITO"
   )
 
   def isHarkinnanvarainen(value: String) = values.contains(value)
