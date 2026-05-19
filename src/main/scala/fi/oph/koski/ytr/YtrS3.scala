@@ -4,11 +4,13 @@ import com.typesafe.config.Config
 import fi.oph.koski.config.{Environment, KoskiApplication, SecretsManager}
 import fi.oph.koski.log.NotLoggable
 import software.amazon.awssdk.auth.credentials.{AwsBasicCredentials, StaticCredentialsProvider}
+import software.amazon.awssdk.http.apache.ApacheHttpClient
 import software.amazon.awssdk.regions.Region
 import software.amazon.awssdk.services.s3.S3Client
 import software.amazon.awssdk.services.sts.StsClient
 import software.amazon.awssdk.services.sts.auth.StsAssumeRoleCredentialsProvider
 import software.amazon.awssdk.services.sts.model.AssumeRoleRequest
+
 
 case class YtrS3Config(accessKeyId: String, secretAccessKey: String, roleArn: String, externalId: String, bucket: String) extends NotLoggable
 
@@ -22,7 +24,20 @@ class YtrS3(config: YtrS3Config) {
     .roleSessionName("koski-ytr-role")
     .build
 
-  private val stsClient: StsClient = StsClient.builder.region(Region.EU_WEST_1).credentialsProvider(credentials).build
+  private val httpClient = ApacheHttpClient.builder()
+    .maxConnections(150)
+    .build()
+
+  // Separate pool so STS token refresh doesn't compete with S3 downloads
+  private val stsHttpClient = ApacheHttpClient.builder()
+    .maxConnections(10)
+    .build()
+
+  private val stsClient: StsClient = StsClient.builder
+    .region(Region.EU_WEST_1)
+    .credentialsProvider(credentials)
+    .httpClient(stsHttpClient)
+    .build
 
   private val assumeRole = StsAssumeRoleCredentialsProvider.builder
     .stsClient(stsClient)
@@ -31,7 +46,11 @@ class YtrS3(config: YtrS3Config) {
 
   val bucket: String = ytrS3Bucket
 
-  val client: S3Client = S3Client.builder.region(Region.EU_NORTH_1).credentialsProvider(assumeRole).build
+  val client: S3Client = S3Client.builder
+    .region(Region.EU_NORTH_1)
+    .credentialsProvider(assumeRole)
+    .httpClient(httpClient)
+    .build
 }
 
 object YtrS3Config {
