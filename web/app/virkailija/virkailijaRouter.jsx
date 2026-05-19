@@ -14,7 +14,8 @@ import {
   dokumentaatioLuovutuspalveluP,
   dokumentaatioPalveluväyläOmadataP,
   dokumentaatioKyselytP,
-  dokumentaatioOmadataOAuth2P
+  dokumentaatioOmadataOAuth2P,
+  dokumentaatioValpasP
 } from '../dokumentaatio/Dokumentaatio'
 import { onlyIfHasReadAccess } from './accessCheck'
 import { raportitContentP } from '../raportit/Raportit'
@@ -50,6 +51,8 @@ export const routeP = locationP
       return dokumentaatioYleistäP()
     } else if (path === '/koski/dokumentaatio/tietomalli') {
       return dokumentaatioTietomalliP()
+    } else if (path === '/koski/dokumentaatio/valpas') {
+      return dokumentaatioValpasP()
     } else if (path === '/koski/dokumentaatio/koodistot') {
       return dokumentaatioKoodistotP()
     } else if (
