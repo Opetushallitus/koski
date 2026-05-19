@@ -39,6 +39,8 @@ This document describes the recommended approach (network-read worker; see §1) 
 13. **No live read replica in Phase 1**. With the 900 s ceiling + snapshot-clone for Lampi + partitioning, the bloat math works out. Add a replica later only if measurements show CPU/IOPS saturation. (§1.5a)
 14. **No Aurora migration** as part of this project. The 900 s ceiling makes vanilla RDS streaming replicas (if ever needed) perfectly serviceable. Evaluate Aurora independently. (§1.5a)
 15. **DBT not adopted** as either the primary transformation layer or the aggregate-table maintenance layer. Same SQL-can't-replicate-Scala blockers as §4 (schema-version drift, 18-variant ADT type matching), plus DBT's batch orientation conflicts with the per-OO transactional consistency property §1.1 relies on. Sibling Ovara uses DBT successfully for a similar reporting-DB pattern, but Ovara's source JSON is current-shape (from Lampi-siirtaja), its dw layer is temporally-accumulating, and its consistency contract is eventual-within-a-window — none of which fits Koski's interactive-Valpas audience. (§5)
+16. **Per-oppija (not per-OO) atomic transaction is the hard consistency invariant**: end-user features must always show derived data computed from the same opiskeluoikeus generation as the visible base rows. Drives the per-oppija worker tick batching and the removal of the dirty-oppija mini-queue / second-pass logic. Relaxed for analysis paths only. (§1.1c)
+17. **Greenfield reference design documented as §6, forward-looking only.** Variant A (pragmatic OPH-norm: oppija-document store for Valpas + DBT-built BI store) and Variant B (no-constraints ideal: Kafka + Debezium + DynamoDB / managed search + Snowflake / BigQuery). Today's §1 path doesn't strand work toward either variant — the continuous worker, change-queue, and snapshot-clone are directly reusable as the Valpas-side half of Variant A. (§6)
 
 ### Implementation plan (phased rollout)
 
@@ -160,11 +162,11 @@ Each phase has prerequisite investigations (gates) that must finish before the p
 - 🅳 `RaportointikantaContinuousWorker.scala`: tick (60 s) = dedupe queue rows → SELECT OOs from primary (preserve `PäivitettyOpiskeluoikeusLoader.scala:33–45` replica-lag-aware pattern) → `buildKoskiRow` → per-OO Slick transaction across all r_* tables → mark queue rows processed. Per-OO try/catch with exponential backoff against `yritykset` / `viimeisin_virhe`; ~10-retry DLQ.
 - 🅳 Replace `OpiskeluoikeusLoaderRowBuilder.suoritusIds` (shared in-process `AtomicLong`) with Postgres sequences owned by raportointikanta RDS (`r_paatason_suoritus_id_seq`, `r_osasuoritus_id_seq`, plus YTR analogs). One Flyway migration to create the sequences + seed from current max IDs.
 - 🅳 Per-OO YTR upsert path: add `RaportointiDatabase.updateYtrOpiskeluoikeus(oid, …)` plus `updateYtrTutkintokokonaisuudenSuoritukset / updateYtrTutkintokerranSuoritukset / updateYtrKokeenSuoritukset / updateYtrTutkintokokonaisuudenKokeenSuoritukset` mirroring the Koski variants in `RaportointiDatabase.scala` (lines 294–378).
-- 🅳 `PrecomputedTable` trait + per-table implementations:
-  - `OpiskeluoikeudenUlkopuolellaArvioidutOsasuoritukset`: per-OO delete+insert.
-  - `PaallekkaisetOpiskeluoikeudet`: enqueue master_oid into new `dirty_oppija` mini-queue table on raportointikanta RDS; second pass per tick recomputes.
-  - Eight Lukio-kertymä tables: per-OO delete+insert.
-  - `Oppivelvollisuustiedot`: dirty-queue + nightly full rebuild scheduler for config-driven changes (rajapäivät etc.).
+- 🅳 `PrecomputedTable` trait + per-table implementations, all invoked once per oppija inside the per-oppija transaction (§1.1c):
+  - `OpiskeluoikeudenUlkopuolellaArvioidutOsasuoritukset`: delete-by-oo + insert per affected OO, inside the oppija transaction.
+  - `PaallekkaisetOpiskeluoikeudet`: cross-OO over one oppija — recompute from the oppija's r_* rows post-update, upsert, all inside the oppija transaction.
+  - Eight Lukio-kertymä tables: delete-by-oo + insert per affected OO, inside the oppija transaction.
+  - `Oppivelvollisuustiedot`: recompute for the oppija inside the oppija transaction; **plus** a nightly full rebuild scheduler for config-driven changes (rajapäivät etc.). No separate `dirty_oppija` mini-queue.
 - 🅳 `HenkiloRefreshScheduler` on raportointikanta RDS, cadence per I6. Walks `r_henkilo` in chunks, re-fetches `LaajatOppijaHenkilöTiedot` + kuntahistoria, handles turvakielto state transitions by atomically moving rows between `public` and `confidential` schemas. First-touch path stays inline in the per-OO transaction.
 - 🅳 Move `OrganisaatioLoader` / `KoodistoLoader` / `OppivelvollisuudenVapautusLoader` out of `loadRestAndSwap` into independent periodic schedulers running against raportointikanta RDS.
 - 🅳 `RaportointikantaConsistencyChecker.scala`: nightly sample-OO diff between continuous `r_*` and a freshly-rebuilt staging schema; alerts on any drift.
@@ -300,11 +302,10 @@ The real work is: build the continuous worker; close the YTR-trigger gap; handle
 The worker drains the existing `paivitetty_opiskeluoikeus` queue on primary Koski RDS:
 
 The tick:
-1. Read up to `batchSize = 500` unprocessed rows from `paivitetty_opiskeluoikeus` on primary Koski RDS. Dedupe by `opiskeluoikeus_oid` keeping the latest (collapses bursts).
+1. Read up to `batchSize = 500` unprocessed rows from `paivitetty_opiskeluoikeus` on primary Koski RDS. Dedupe by `opiskeluoikeus_oid` keeping the latest (collapses bursts) and **group the resulting rows by `oppija_oid`** so the rest of the tick processes one oppija at a time (see §1.1c for why; the queue carries `oppija_oid` as a denormalized column added by the same Flyway migration that adds `yritykset` / `viimeisin_virhe`).
 2. SELECT the affected OO rows from `opiskeluoikeus` on primary (same pattern as today's loader's `PäivitettyOpiskeluoikeusLoader`).
-3. For each OO, run `buildKoskiRow`, then upsert all R-tables on raportointikanta RDS **in one Slick transaction per OO** so reports never observe a half-updated state across `r_opiskeluoikeus / r_paatason_suoritus / r_osasuoritus`.
-4. Inside the same transaction, invalidate / recompute the per-OO and per-oppija precomputed-table rows for that OO (§1.3).
-5. Mark queue rows processed on primary (queue update on primary; idempotent since upserts are idempotent — if step 4 succeeded but step 5 failed, retry just re-does the same upserts harmlessly).
+3. For each **oppija batch** (all changed OOs for that oppija together), run `buildKoskiRow` for each OO, then in **one Slick transaction per oppija** on raportointikanta RDS: upsert all R-tables for every changed OO; then re-read the oppija's OOs from r_* (post-update inside the same transaction); then recompute and upsert that oppija's derived aggregates (PaallekkaisetOpiskeluoikeudet, Oppivelvollisuustiedot, the Lukio-kertymä family, OpiskeluoikeudenUlkopuolellaArvioidutOsasuoritukset). The whole transaction commits as one — reports never observe a half-updated state across the oppija's r_* rows or between r_* and derived aggregates (§1.1c).
+4. Mark every queue row processed for that oppija on primary (idempotent since upserts are idempotent — if step 3 succeeded but the queue update failed, retry re-does the same upserts harmlessly).
 
 Cadence: tick every **60 s**. With 200 000 updates/day average and batch=500 the worker is mostly idle, but bursts of 5 000+ updates from a virkailija mass-import drain within a few ticks. The 15-min target leaves plenty of headroom.
 
@@ -373,6 +374,28 @@ Architecture if pursued: hybrid. Keep `OpintopolkuHenkilöFacade` HTTP for first
 
 **Recommendation: defer to a later phase, not Phase 1.** Continuous mode ships fine on live HTTP. Re-evaluate when (a) the ONR retry envelope starts tripping in production logs on a recurring basis, or (b) the OPH platform team flags Koski's refresh scan as a co-tenant problem. Slot as Phase 8 in the rollout list above (Execution roadmap). Cheap option-value step worth doing now: open a conversation with the Lampi team about inbound consumption permissions and dump-schema documentation so the answers are in hand if/when we pursue this.
 
+### §1.1c Per-oppija atomic consistency invariant (end-user requirement)
+
+**Invariant**: an end-user feature reading raportointikanta for a single oppija (Valpas, virkailija interactive views) must never observe a state where the visible `r_opiskeluoikeus` rows reflect one generation of underlying opiskeluoikeus data but the derived aggregates for that oppija (`PaallekkaisetOpiskeluoikeudet`, `Oppivelvollisuustiedot`, the Lukio-kertymä tables, `OpiskeluoikeudenUlkopuolellaArvioidutOsasuoritukset`) reflect an earlier generation. Within one oppija the data must be a coherent snapshot — informally, characterizable as "as of KOSKI data-transfer time T for this oppija".
+
+**Scope**: applies to all r_* and derived tables read by end-user-facing features. Does **not** apply to Lampi/Vipunen exports or batch analytics, which are explicitly allowed to be eventually-consistent at the per-row level. Also does not apply to globally-config-driven changes (rajapäivät updates affecting `Oppivelvollisuustiedot` for many oppijas at once); those still need either a blue/green rebuild or a tolerated inconsistency window.
+
+**How the worker preserves the invariant**: the continuous worker batches by **oppija**, not by individual OO. Each tick:
+
+1. Read up to `batchSize` rows from `paivitetty_opiskeluoikeus`, group by `oppija_oid` (queue rows already carry `opiskeluoikeus_oid`; an `oppija_oid` denormalization column is added by the same Flyway migration that extends the queue with `yritykset` / `viimeisin_virhe`, so the group-by doesn't require a join to `opiskeluoikeus` on every tick).
+2. For each oppija batch, in **one Slick transaction** on raportointikanta RDS:
+   - Update all r_* rows for every changed OO of that oppija (the existing per-OO upsert logic, applied repeatedly within the transaction).
+   - Re-read all of that oppija's OOs from r_* (now post-update inside the same transaction).
+   - Recompute and upsert all the oppija's derived aggregates: `PaallekkaisetOpiskeluoikeudet`, `Oppivelvollisuustiedot`, the Lukio-kertymä family, `OpiskeluoikeudenUlkopuolellaArvioidutOsasuoritukset`.
+   - Commit.
+3. Mark every processed queue row for that oppija on primary (idempotent — replay re-derives the same rows safely).
+
+**Why this is strictly stronger than a per-OO design**: per-OO atomicity already prevented half-updated state within one OO. Per-oppija atomicity additionally prevents the post-OO-A / pre-derived-recompute window that an earlier iteration of §1.3 left open (a `dirty_oppija` mini-queue with a second-pass tick). That mini-queue and the second-pass logic are no longer needed and are removed from §1.3.
+
+**Cost**: each per-oppija transaction does one extra indexed read of the oppija's OOs from r_* (typical fan-out 1–3 OOs, max ~10), plus one recompute pass per derived table. Negligible vs. the existing per-OO upsert cost; eliminates an entire second-pass code path.
+
+**What end-user features can rely on**: any single-oppija SELECT joining `r_opiskeluoikeus` + any derived aggregate table for that oppija returns a coherent snapshot. Multi-oppija queries (e.g. kuntailmoitusvalmistelu listing all 17-year-olds in a kunta) return rows that are each internally consistent but may be from slightly different per-oppija as-of moments. That weaker cross-oppija property is acceptable — the user-facing UX of multi-oppija lists tolerates per-row freshness drift, and Postgres MVCC ensures every row is committed-consistent regardless.
+
 ### §1.2 No more blue/green schema swap (for steady-state continuous mode)
 
 Continuous writes go directly into raportointikanta RDS's `public` schema. The 5-min `ALTER SCHEMA RENAME` retry logic in long reports (`RaportointiDatabase.retryDbSync`) is **not** exercised in steady-state — but **keep it** as a safety net for the full-reload swap in §1.4 Flavor B. The drain step (§1.4 step 7) is supposed to ensure no long queries are in flight at swap time, but the retry path provides defence in depth if a query slipped through.
@@ -381,16 +404,16 @@ Blue/green machinery — the `etl` schema, `FullReloadOpiskeluoikeusLoader`, sch
 
 ### §1.3 Precomputed / aggregate tables
 
-Built today in `RaportointiDatabase.createPrecomputedTables` (lines 156–179). The continuous worker maintains them via the same per-OO transaction that updates the base R-tables:
+Built today in `RaportointiDatabase.createPrecomputedTables` (lines 156–179). Under continuous mode the worker maintains them inside the **per-oppija transaction** described in §1.1c — every derived aggregate that depends on an oppija's r_* state is recomputed in the same transaction that updates the base rows, so a single-oppija read of base + derived always returns a coherent snapshot.
 
 | Table | How it stays fresh |
 |---|---|
-| `OpiskeluoikeudenUlkopuolellaArvioidutOsasuoritukset` | Per-OO delete-by-oo + insert. Pure function of one OO. |
-| `PaallekkaisetOpiskeluoikeudet` | Cross-OO over one oppija. Enqueue `master_oid` into a new `dirty_oppija` mini-queue inside the per-OO transaction; a second pass on the same worker tick recomputes that oppija's rows. |
-| `LukioOppimaaranKussikertymat`, `Lukio2019OppimaaranOpintopistekertymat`, `LukioOppiaineenOppimaaranKurssikertymat`, `Lukio2019AineopintojenOpintopistekertymat`, `LukioOppiaineRahoitusmuodonMukaan`, `Lukio2019OppiaineRahoitusmuodonMukaan`, `LukioOppiaineEriVuonnaKorotetutKurssit`, `Lukio2019OppiaineEriVuonnaKorotetutOpintopisteet` | Deterministic per-OO aggregations of `r_osasuoritus`/`r_paatason_suoritus` data. Per-OO delete-by-oo + insert in the same transaction. |
-| `Oppivelvollisuustiedot` | Per-oppija via dirty queue **+ scheduled full rebuild** (e.g. nightly). Mixes Koski + Valpas data and depends on rajapäivät / config that change globally; the nightly catches those config-driven changes. |
+| `OpiskeluoikeudenUlkopuolellaArvioidutOsasuoritukset` | Pure function of one OO. Delete-by-oo + insert, inside the per-oppija transaction (§1.1c). |
+| `PaallekkaisetOpiskeluoikeudet` | Cross-OO over one oppija. **Recomputed inside the same per-oppija transaction** that updates the affected OO's r_* rows (§1.1c). All of the oppija's OOs are re-read post-update, the aggregate is recomputed, the rows are upserted, all in one commit. |
+| `LukioOppimaaranKussikertymat`, `Lukio2019OppimaaranOpintopistekertymat`, `LukioOppiaineenOppimaaranKurssikertymat`, `Lukio2019AineopintojenOpintopistekertymat`, `LukioOppiaineRahoitusmuodonMukaan`, `Lukio2019OppiaineRahoitusmuodonMukaan`, `LukioOppiaineEriVuonnaKorotetutKurssit`, `Lukio2019OppiaineEriVuonnaKorotetutOpintopisteet` | Deterministic per-OO aggregations of `r_osasuoritus` / `r_paatason_suoritus` data. Delete-by-oo + insert, inside the per-oppija transaction. |
+| `Oppivelvollisuustiedot` | Per-oppija. **Recomputed inside the same per-oppija transaction** (§1.1c). **Plus a scheduled nightly full rebuild** for globally-config-driven changes (rajapäivät, oppivelvollisuuden-vapautukset). The nightly rebuild is the one acknowledged exception to the per-oppija invariant — see §1.1c "Scope". |
 
-Introduce a `PrecomputedTable` trait with `invalidate(oo: Oid)` / `recomputeOppija(masterOid)` so each table encapsulates its own incremental logic and the worker stays a thin orchestrator.
+Introduce a `PrecomputedTable` trait with `recomputeOppija(masterOid)` — invoked once per oppija inside the per-oppija transaction (§1.1c). The worker stays a thin orchestrator; no separate dirty-oppija queue and no second-pass tick logic.
 
 ### §1.4 Full regeneration / schema change
 
@@ -588,6 +611,8 @@ Because raportointikanta RDS is a separate Postgres, its schema can diverge from
 2. **Autovacuum scaling under continuous writes**: today's full-table `VACUUM ANALYZE` on `r_osasuoritus` takes ~51 min in production (§1.9). Under continuous mode an unpartitioned autovacuum pass would run that long every time the dead-tuple threshold is hit. With any partitioning, autovacuum runs per-partition in parallel — typical per-partition duration drops to single-digit minutes and several partitions vacuum concurrently. **Any reasonable partitioning scheme gives the autovacuum benefit**; the choice of partition key is mostly about which queries get explicit pruning.
 
 #### Open investigation: partition key choice is not obvious
+
+*(The partition-key conflict described in this subsection is a symptom of serving two fundamentally different workloads from one store; §6 — greenfield reference design — describes the architectural pattern that eliminates it.)*
 
 The two latency-critical workload families pull in different directions:
 
@@ -924,8 +949,94 @@ A narrow variant: keep Scala for the base `r_*` build, but invoke DBT for `creat
 - A Lampi/Vipunen (or analyst) consumer asks for **denormalized wide views** with documented lineage. DBT on the §1.8 snapshot-clone is the right answer at that point.
 - The set of precomputed/aggregate tables grows by ~3× and the inline-SQL approach becomes hard to navigate. The lineage DAG starts earning operational cost.
 - Koski grows a *non-OO* data source that lands current-shape JSON via a Lampi-siirtaja-style pull (no schema-version drift, no 18-variant ADT). DBT's stg→dw pattern fits naturally for that subset, independently of `r_*`.
+- Variant A of §6 (greenfield reference design) adopts DBT for the BI store half — see §6 for the broader context in which DBT becomes the natural tool.
 
 None of these triggers exist today. **Do not introduce DBT in Phases 1–5 of this rollout.**
+
+---
+
+## §6. Greenfield reference design (what we'd build today)
+
+This section is forward-looking, not part of the Phase 1–5 rollout. It exists so that the chosen continuous-update path (§1) can be evaluated against a clean-sheet design rather than only against today's nightly batch.
+
+**Scope assumption (user-confirmed)**: OLTP stays as Koski has today — primary RDS, JSONB `opiskeluoikeus.data`, the Scala domain model with `toOpiskeluoikeusUnsafe` absorbing schema-version drift. Only the downstream Valpas + reporting / BI layer is open for redesign.
+
+### Why a clean-sheet design would not look like today's r_*
+
+Today's `r_*` tables serve two workloads with fundamentally different access patterns:
+
+- **Valpas**: oppija-centric, age-bounded (oppivelvollisuus 17–25), sub-second-interactive. One oppija's whole life lit up across all their OOs.
+- **Reporting / BI / Vipunen / Lampi**: koulutustoimija-centric, batch, aggregations over millions of rows. Analysts.
+
+Most of the operational complexity in §1 is a symptom of trying to serve both from one store:
+
+- The §1.6 partition-key conflict (Valpas wants birth-year, BI wants koulutustoimija) — exists only because the same physical table serves both.
+- Autovacuum tuning + bloat-envelope reasoning under the 900 s ceiling — exists only because writers and Valpas-interactive readers contend for the same heap.
+- §1.5's asymmetric "backpressure for async reports, never for Valpas" — exists only because both classes of consumer share a database that can become loaded.
+- §1.8's snapshot-clone for Lampi exports — exists only because long export queries on a Valpas-serving database are unacceptable.
+- §5's rejection of DBT — exists only because the writer must preserve per-oppija transactional consistency (§1.1c) for Valpas.
+
+A clean-sheet design **splits these via CQRS** (Command Query Responsibility Segregation) — separate read models, each tuned to its actual workload. Two variants follow.
+
+### Variant A — Pragmatic OPH-norm design (PostgreSQL / OpenSearch / S3 / Fargate / DBT)
+
+Three downstream components, all on platforms OPH already operates:
+
+1. **Valpas read model — denormalized oppija-document store.**
+   - Tech: OpenSearch (OPH already uses it for Koski's own search backend), or a denormalized JSONB document table on a dedicated PostgreSQL instance.
+   - Shape: one document per oppija, fully denormalized — all OOs, all päätason suoritus, all osasuoritus, kotikuntahistoria, oppivelvollisuustiedot, organisaatio refs, ONR henkilö data, all pre-joined and current-state-only.
+   - Update mechanism: a continuous worker (the §1.1 + §1.1c pattern, repurposed) consumes the OLTP change stream and re-emits the affected oppija's document atomically per change.
+   - Reads: Valpas does `GET /oppija/{oid}` returning one document. Sub-millisecond, no joins. Kuntailmoitusvalmistelu and oppivelvollisuusscanner become single-document filters (`WHERE oppivelvollisuus.aktivinen = true AND syntymäpäivä BETWEEN ...`), trivially indexable.
+   - **The per-oppija atomic consistency invariant (§1.1c) is a structural property of this store, not an implementation discipline**: there is literally one document per oppija, it is replaced atomically, and a reader either sees the pre-update or post-update version. The §1.3 "recompute derived aggregates in the same transaction" gymnastics disappear because the derived aggregates are already part of the document.
+
+2. **Reporting / BI store — classical raportointikanta built declaratively.**
+   - Tech: PostgreSQL RDS (same as today's raportointikanta), but built with DBT in the Ovara-style pattern (`raw → stg → int → pub`).
+   - Shape: star schema tuned for koulutustoimija / oppilaitos analyst queries — no longer compromised by Valpas's age-band access pattern, free to choose `koulutustoimija_oid` as the natural partition key.
+   - Update mechanism: scheduled DBT runs (hourly or as needed), not real-time. Per-oppija atomicity is no longer required because Valpas isn't reading this store; the §5 rejection of DBT lifts.
+   - Lampi exports: from a freshly-rebuilt `pub.*` layer (Ovara pattern), or from a snapshot-clone — both work because no interactive consumer is reading this store.
+
+3. **Common change-stream — connecting OLTP to both downstream stores.**
+   - Option: the existing `paivitetty_opiskeluoikeus` queue (V84 trigger) plus the missing YTR trigger, reused as a multi-consumer log.
+   - Option: PostgreSQL logical replication from primary OLTP into a "raw" schema on a shared downstream RDS, with both the Valpas continuous worker and the DBT batch consuming from there.
+   - Either way, the queue/log itself is shared; only the read-model consumers diverge.
+
+**What's eliminated vs. today's plan.** The §1.6 partitioning conflict dissolves (Valpas store is naturally oppija-keyed, BI store is naturally koulutustoimija-keyed). The §1.1c per-oppija-atomic discipline becomes a structural property rather than an explicit invariant the worker must preserve. Per-OO transactional consistency requirement disappears at the BI store (Valpas reads one denormalized document atomically; BI is allowed to be eventually-consistent). §5's case against DBT dissolves for the BI store (per-oppija atomicity is no longer a constraint there). §1.8's snapshot-clone becomes optional, not load-bearing. §1.5's asymmetric backpressure becomes unnecessary — neither store has competing interactive vs. batch tenants.
+
+**What stays the same.** `toOpiskeluoikeusUnsafe` still runs in Scala somewhere (probably in the change-stream consumer that feeds both the Valpas store and a `stg_raw_opiskeluoikeus` typed-row intermediate that DBT then reads). Schema-version drift is still solved by the same json4s codecs.
+
+**What's harder.** Cross-store consistency: a single oppija's data lives in two places, and "Valpas shows fresh, BI shows N-minutes-stale" (or vice versa) is observable. This is the classic CQRS price. A consistency checker comparing the two stores' view of sampled oppijas becomes operational hygiene. Notably, the user's consistency requirement explicitly allows this — it is scoped to within one store for end-user features, not across stores.
+
+### Variant B — No-constraints ideal (Kafka / Aurora or DynamoDB / Snowflake or BigQuery)
+
+Same CQRS shape, best-of-breed tech per layer:
+
+1. **Change-data-capture.** Debezium on primary OLTP → Kafka (MSK on AWS). Replayable, ordered, multi-consumer, schema-registry-backed. Removes the bespoke `paivitetty_opiskeluoikeus` trigger and queue table entirely. The OLTP database stops carrying the queue responsibility.
+2. **Valpas read model.** DynamoDB single-table design (one item per oppija, sub-10ms point reads, auto-scales independently) or a managed Elasticsearch / OpenSearch cluster. Either eliminates per-table autovacuum / partitioning concerns entirely. Real-time updates via a Kafka consumer in Scala that runs `toOpiskeluoikeusUnsafe` and emits the document. Same structural per-oppija atomicity property as Variant A — one item per oppija.
+3. **BI / reporting store.** Snowflake or BigQuery. Columnar storage, separates compute from storage so analyst query concurrency scales independently from the continuous-write path. DBT runs natively on both platforms. Vipunen / Lampi consumers either query directly via warehouse credentials or receive scheduled exports — no `aws_s3.query_export_to_s3` workarounds needed.
+4. **Common infrastructure.** Kafka cluster (managed: MSK), schema registry, monitoring around CDC connector + replication-slot health, IAM federation into the warehouse.
+
+**What's eliminated vs. Variant A.** PostgreSQL autovacuum tuning, partitioning operations on multi-hundred-million-row tables, the snapshot-clone-for-Lampi orchestration, the 900 s-ceiling-based reasoning about bloat envelopes — all of those are workarounds for using a single OLTP-class relational engine to serve workloads that have outgrown it. Variant B retires the workaround surface entirely.
+
+**What's harder.** Three new platforms (Kafka / Debezium, DynamoDB or managed search, Snowflake or BigQuery) to operate and budget for. None are in OPH's current toolbox. Migration to a managed DWH is a multi-year organisational commitment with its own access-model, billing, and procurement politics. Variant B is the right end-state if Koski grows into a 15 M+ OO scale with high analyst-query concurrency; it is overkill at today's volume.
+
+### Why we're not building either variant now
+
+The continuous-update path in §1 is the **pragmatic incremental step**: it gets ~95 % of Variant A's Valpas-freshness benefit at ~5 % of the cost, while keeping `r_*` as the single store the team already operates. The partition-key conflict and autovacuum cost are real but bounded — by the 900 s ceiling (§1.5pre) on the read side, by partitioning (§1.6) on the autovacuum side, and by the snapshot-clone (§1.8) on the export side. The plan's §1 design **doesn't strand work toward Variant A**: the continuous worker, the per-oppija transaction discipline (§1.1c), the per-OO change stream, the queue + replay machinery, and the snapshot-clone pattern are all directly reusable if the CQRS split ever happens.
+
+### Sign-posts that would push us toward Variant A
+
+- Valpas p99 latency requirements tighten further than sub-second under concurrent BI load, even after §1.6 partitioning lands.
+- Analyst-query concurrency on raportointikanta saturates a reasonably vertically-scaled RDS instance.
+- Schema-additive backfills on `r_*` become a continuous operational drag (§2 logical-replication trigger, but Variant A solves it differently — at the BI-store boundary).
+- A wide-view denormalized Lampi/Vipunen consumer requirement appears (the same trigger §5's narrow-role-for-DBT identifies — Variant A makes it the obvious place to apply DBT).
+
+### Sign-posts that would push us toward Variant B
+
+- All of Variant A's triggers, plus growth past ~20 M OOs where columnar storage genuinely outperforms PostgreSQL for the BI workload.
+- A multi-team analyst audience needs federated query access (a managed DWH's auth and access-control model becomes load-bearing).
+- OPH platform-wide adoption of Kafka or a managed DWH for other services makes the operational cost shared rather than Koski-specific.
+
+None of these signposts are visible today. The §1 path is the right next step. This appendix exists so we know what comes after if and when the signposts appear, and so we can validate that today's design is shaped to migrate cleanly if it does.
 
 ---
 
@@ -980,3 +1091,5 @@ This is a feasibility doc, so verification is described, not executed:
 13. **Postgres-side JSON → r_* transformation, beyond GENERATED columns** (§4): the wholesale rewrite is rejected for the reasons in §4. The GENERATED-column shortcut is adopted in §1.4 Flavor A. No further investigation recommended unless the schema-version-drift problem changes shape (e.g. we adopt a strict, version-stamped JSON contract on `opiskeluoikeus.data`, which would invalidate reason #1 of the rejection).
 14. **Aurora migration**: independent of §1/§2. Aurora's structural advantages (no `max_standby_streaming_delay` decision, sub-100ms reader freshness, faster failover, fast snapshot/restore for the Lampi clone pattern) are real but bounded once the 900 s query ceiling is in place. Evaluate on its own merits (cost, ops appetite, read-scaling needs), not as part of this project.
 15. **DBT for the transformation/aggregate layer**: rejected as both primary loader replacement and aggregate-table maintenance tool (§5). Sibling Ovara (`/home/ahtiainen/ovara-vm`) uses DBT for a similar ELT pattern, but Koski's Scala-side `toOpiskeluoikeusUnsafe` (schema-version drift), 18-variant `Opiskeluoikeus` ADT type matching, and the per-OO atomicity property of §1.1 make DBT structurally wrong as a core tool — and Ovara's eventual-consistency-within-a-window contract would be a regression for interactive Valpas. Reconsider only if a denormalized wide-view Lampi/Vipunen consumer requirement appears (then on the §1.8 snapshot-clone, where the frozen storage-layer copy eliminates the consistency holes Ovara accepts on its live DB), or if the aggregate-table set grows >3×.
+16. **Per-oppija atomic consistency invariant** (§1.1c): hard requirement for end-user features (Valpas, virkailija interactive views) — derived data shown for an oppija must always be computed from the same opiskeluoikeus generation the user sees. Relaxed for analysis paths (Lampi / Vipunen / batch BI). Drives the per-oppija (not per-OO) transaction batching in §1.1 and the elimination of the dirty-oppija mini-queue / second-pass logic in §1.3.
+17. **Greenfield reference design** (§6): two reference variants documented (pragmatic OPH-norm Variant A; no-constraints ideal Variant B). Forward-looking only; not on the Phase 1–5 rollout. Sign-posts that would trigger Variant A: Valpas latency requirements diverge further from BI batch needs; analyst concurrency outgrows PostgreSQL; wide-view denormalized Lampi/Vipunen consumer requirement appears. Sign-posts for Variant B: all of Variant A's plus growth past ~20 M OOs and OPH platform-wide adoption of Kafka or managed DWH for other services.

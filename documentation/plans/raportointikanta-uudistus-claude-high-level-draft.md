@@ -62,6 +62,16 @@ Phases 1 and 2 run in parallel. Phases 6–8 are explicitly "only if measured ne
 - **Backfilling a new derived column is slower under this approach.** A schema-additive column requires reading every opiskeluoikeus from the OLTP database (days, not hours). **Mitigated** by (a) a backfill-status metadata table so consumers know which columns are still loading, and (b) the option to upgrade to logical replication later if backfills become routine.
 - **Synchronous Valpas queries are never throttled.** Backpressure is applied to async/queued reports only — interactive UX requires consistent availability. This works because synchronous queries are already bounded to 15 minutes by client timeouts, which keeps the bloat math comfortable on the live database.
 
+## Hard consistency invariant
+
+End-user features (Valpas, virkailija interactive views) require that the derived data shown for an oppija (oppivelvollisuustiedot, päällekkäiset opiskeluoikeudet, Lukio-kertymät, …) is always computed from the same underlying opiskeluoikeus state that the user currently sees. Roughly: the data shown for one oppija must be characterizable as "as of KOSKI data-transfer time T" — a coherent snapshot, never a mix of fresh visible OOs with stale derived aggregates.
+
+**The continuous-update worker satisfies this by batching per oppija**, not per individual OO: each tick groups queue rows by oppija, then runs one atomic transaction per oppija that updates the oppija's base rows AND recomputes their derived aggregates AND commits everything together. The dirty-oppija mini-queue / second-pass design that an earlier iteration of the plan considered has been removed for this reason.
+
+**Relaxed for analysis.** Lampi / Vipunen / batch BI consumers are explicitly allowed to be eventually-consistent at the per-row level — the manifest-based S3 export model already accepts this. The invariant binds only the end-user-interactive read path.
+
+**Multi-oppija views** (e.g. kuntailmoitusvalmistelu listing all 17-year-olds in a kunta) return rows where each oppija is internally consistent but rows can be from slightly different per-oppija as-of moments. That weaker cross-oppija property is acceptable for the UX.
+
 ## Open questions that need stakeholder input
 
 1. **Partitioning key** for the heaviest tables: profile real query patterns from Valpas (oppija-centric) vs. report consumers (organisaatio-centric) before committing.
@@ -69,6 +79,20 @@ Phases 1 and 2 run in parallel. Phases 6–8 are explicitly "only if measured ne
 3. **Behavior during a column backfill**: should Lampi exports block until the backfill completes, skip in-progress columns, or proceed with a sidecar list of incomplete columns? Decide with downstream consumers.
 4. **ONR refresh cadence**: today's nightly batch gives ≤24h staleness of person data implicitly. Confirm acceptable target under continuous mode (every 4h? 12h? 24h?).
 5. **Long synchronous reports**: which currently-synchronous reports should route through an async queue instead? UX change worth confirming with product.
+
+## What would we build today if Koski didn't exist?
+
+A clean-sheet design would split the two workloads that today's `r_*` tables serve into separate, purpose-built read models — a denormalized **oppija-document store for Valpas** (one document per oppija with all data pre-joined for sub-millisecond lookups) and a **classical reporting store** for analysts / Vipunen / Lampi (declarative DBT-built, batch-refreshed, snapshot-exported). Both fed from the same change-stream off OLTP. This is the pattern known as CQRS.
+
+Most of the operational complexity in the current plan — the partition-key conflict, autovacuum tuning on shared tables, the careful asymmetry of backpressuring async reports but not Valpas, the snapshot-clone for Lampi exports, the per-oppija atomic discipline the continuous worker must explicitly maintain — is a symptom of serving two fundamentally different workloads from one store. A clean-sheet design **eliminates the conflict and makes the consistency invariant a structural property** (one document per oppija means atomic-replacement is automatic), at the cost of operating an additional store and accepting that the same oppija can be at slightly different freshness in the two stores.
+
+**Why we're not building this now.** The continuous-update path in this plan gets roughly 95 % of the Valpas-freshness benefit at roughly 5 % of the cost, and keeps a single reporting store that the team already operates. The current plan's machinery (continuous worker, change-queue, snapshot-clone) is reusable as the Valpas-side half of the clean-sheet design — meaning today's work doesn't strand if pressure ever validates the split.
+
+**Two reference variants** are documented in §6 of the full plan:
+- **A pragmatic version** on OPH-norm tech (OpenSearch or PostgreSQL document table for Valpas; PostgreSQL + DBT for the reporting store).
+- **A no-constraints ideal** (Kafka + Debezium / DynamoDB or managed Elasticsearch / Snowflake or BigQuery) for the long-run end-state if Koski scales past ~20 M OOs and analyst concurrency outgrows PostgreSQL.
+
+Both variants are forward-looking. Neither is part of the rollout this plan describes.
 
 ## Success metrics
 
