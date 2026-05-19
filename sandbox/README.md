@@ -1,7 +1,7 @@
 # Koski
 Koski toimii kattavana opetustoimialan tietovarantona, joka tarjoaa
 tutkintoon johtavat suoritustiedot eri koulutusasteilta. Yleinen Koski-dokumentaatio
-kootaan [wikiin](https://wiki.eduuni.fi/display/OPHPALV/Koski).
+kootaan [wikiin](https://wiki.eduuni.fi/spaces/ophPPK/pages/190613682/KOSKI).
 
 
 ## Kosken hiekkalaatikkoympäristö tiedon hyödyntäjille
