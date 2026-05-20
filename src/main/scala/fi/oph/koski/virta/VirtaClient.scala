@@ -10,10 +10,13 @@ import fi.oph.koski.http.{Http, HttpConnectionException}
 import fi.oph.koski.log.{Logging, NotLoggable, TimedProxy}
 import fi.oph.koski.util.Files
 import fi.oph.koski.xml.NodeSeqImplicits._
+import software.amazon.awssdk.services.dynamodb.DynamoDbClient
 
 import scala.xml.{Elem, Node}
 
 object VirtaClient extends Logging {
+  val VirtaCacheTableName = "VirtaCache"
+
   def apply(hetu: Hetu, config: Config, healthMonitoring: Option[HealthMonitoring] = None) = {
     val serviceUrl = {
       if (Environment.usesAwsSecretsManager) {
@@ -32,7 +35,10 @@ object VirtaClient extends Logging {
       case _ =>
         val virtaConfig = if (Environment.usesAwsSecretsManager) VirtaConfig.fromSecretsManager else VirtaConfig.fromConfig(config)
         logger.info("Using Virta integration endpoint " + virtaConfig.serviceUrl)
-        TimedProxy[VirtaClient](RemoteVirtaClient(virtaConfig, healthMonitoring))
+        val remoteClient = RemoteVirtaClient(virtaConfig, healthMonitoring)
+        val dynamoClient = DynamoDbClient.create()
+        val dynamoCache = new VirtaDynamoDbCache(dynamoClient, VirtaCacheTableName)
+        TimedProxy[VirtaClient](new CachingVirtaClient(remoteClient, dynamoCache))
     }
   }
 }
