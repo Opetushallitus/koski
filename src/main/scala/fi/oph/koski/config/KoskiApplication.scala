@@ -56,7 +56,7 @@ import fi.oph.koski.valpas.oppivelvollisuudenkeskeytys.ValpasOppivelvollisuudenK
 import fi.oph.koski.valpas.oppivelvollisuudestavapautus.ValpasOppivelvollisuudestaVapautusService
 import fi.oph.koski.valpas.rouhinta.ValpasRouhintaOppivelvollisuudenKeskeytysService
 import fi.oph.koski.valpas.valpasrepository.{OpiskeluoikeusLisätiedotRepository, OppivelvollisuudenKeskeytysRepository, OppivelvollisuudenKeskeytysRepositoryService, ValpasKuntailmoitusRepository}
-import fi.oph.koski.virta.{VirtaAccessChecker, VirtaClient, VirtaOpiskeluoikeusRepository}
+import fi.oph.koski.virta.{VirtaAccessChecker, VirtaCacheInvalidationScheduler, VirtaClient, VirtaOpiskeluoikeusRepository}
 import fi.oph.koski.kios.KiosService
 import fi.oph.koski.ytr.YoTodistusService
 import fi.oph.koski.ytr.download.YtrDownloadService
@@ -112,6 +112,7 @@ class KoskiApplication(
   lazy val historyRepository = KoskiOpiskeluoikeusHistoryRepository(masterDatabase.db)
   lazy val ytrHistoryRepository = YtrOpiskeluoikeusHistoryRepository(masterDatabase.db)
   lazy val virta = TimedProxy[AuxiliaryOpiskeluoikeusRepository](VirtaOpiskeluoikeusRepository(virtaClient, oppilaitosRepository, koodistoViitePalvelu, organisaatioRepository, virtaAccessChecker, Some(validator)))
+  lazy val virtaCacheInvalidationScheduler = new VirtaCacheInvalidationScheduler(this)
   lazy val henkilöCache = new KoskiHenkilöCache(masterDatabase.db)
   lazy val ePerusteetValidator = new EPerusteisiinPerustuvaValidator(ePerusteet, tutkintoRepository, koodistoViitePalvelu, config)
   lazy val ePerusteetChangeValidator = new EPerusteetOpiskeluoikeusChangeValidator(ePerusteet, tutkintoRepository, koodistoViitePalvelu)

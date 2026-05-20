@@ -20,5 +20,7 @@ class KoskiScheduledTasks(application: KoskiApplication) {
 
   val kielitutkintotodistusTiedoteScheduler: Option[GlobalIntervalScheduler] = application.kielitutkintotodistusTiedoteScheduler.createScheduler
 
+  application.virtaCacheInvalidationScheduler.start()
+
   def init(): Unit = {}
 }
