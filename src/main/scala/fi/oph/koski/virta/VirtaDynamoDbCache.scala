@@ -12,18 +12,19 @@ import scala.xml.{Elem, XML}
 class VirtaDynamoDbCache(client: DynamoDbClient, tableName: String) extends Logging {
   private val helsinkiZone = ZoneId.of("Europe/Helsinki")
 
-  def get(hakuehdot: List[VirtaHakuehto]): Option[Elem] = {
+  def get(hakuehdot: List[VirtaHakuehto], opType: String): Option[Elem] = {
     try {
-      val key = serializeKey(hakuehdot)
       val request = GetItemRequest.builder()
         .tableName(tableName)
-        .key(Map("cacheKey" -> str(key)).asJava)
+        .key(Map("cacheKey" -> str(serializeKey(hakuehdot, opType))).asJava)
         .build()
       val item = client.getItem(request).item()
-      if (item.isEmpty) return None
-      val storedGeneration = item.get("generation").s()
-      if (storedGeneration != currentGeneration()) return None
-      Some(XML.loadString(item.get("data").s()))
+      if (item.isEmpty) None
+      else {
+        val storedGeneration = item.get("generation").s()
+        if (storedGeneration != currentGeneration()) None
+        else Some(XML.loadString(item.get("data").s()))
+      }
     } catch {
       case NonFatal(e) =>
         logger.warn(s"VirtaDynamoDbCache.get epäonnistui: ${e.getMessage}")
@@ -31,11 +32,11 @@ class VirtaDynamoDbCache(client: DynamoDbClient, tableName: String) extends Logg
     }
   }
 
-  def put(hakuehdot: List[VirtaHakuehto], data: Elem): Unit = {
+  def put(hakuehdot: List[VirtaHakuehto], data: Elem, opType: String): Unit = {
     try {
       val ttlEpoch = Instant.now().getEpochSecond + 48 * 3600
       val item = Map(
-        "cacheKey"   -> str(serializeKey(hakuehdot)),
+        "cacheKey"   -> str(serializeKey(hakuehdot, opType)),
         "data"       -> str(data.toString()),
         "generation" -> str(currentGeneration()),
         "ttl"        -> num(ttlEpoch),
@@ -54,11 +55,11 @@ class VirtaDynamoDbCache(client: DynamoDbClient, tableName: String) extends Logg
     date.toString
   }
 
-  private def serializeKey(hakuehdot: List[VirtaHakuehto]): String =
-    hakuehdot.map {
+  private def serializeKey(hakuehdot: List[VirtaHakuehto], opType: String): String =
+    s"$opType:${hakuehdot.map {
       case VirtaHakuehtoHetu(h)                      => s"hetu:$h"
       case VirtaHakuehtoKansallinenOppijanumero(oid)  => s"oid:$oid"
-    }.sorted.mkString(",")
+    }.sorted.mkString(",")}"
 
   private def str(s: String) = AttributeValue.builder().s(s).build()
   private def num(n: Long)   = AttributeValue.builder().n(n.toString).build()

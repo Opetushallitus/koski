@@ -6,21 +6,21 @@ class CachingVirtaClient(underlying: VirtaClient, cache: VirtaDynamoDbCache) ext
 
   override def opintotiedot(hakuehto: VirtaHakuehto): Option[Elem] = {
     val hakuehdot = List(hakuehto)
-    cache.get(hakuehdot) match {
+    cache.get(hakuehdot, "single") match {
       case Some(xml) => Some(xml)
       case None =>
         val result = underlying.opintotiedot(hakuehto)
-        result.foreach(xml => cache.put(hakuehdot, xml))
+        result.foreach(xml => cache.put(hakuehdot, xml, "single"))
         result
     }
   }
 
   override def opintotiedotMassahaku(hakuehdot: List[VirtaHakuehto]): Option[Elem] = {
-    cache.get(hakuehdot) match {
+    cache.get(hakuehdot, "mass") match {
       case Some(xml) => Some(xml)
       case None =>
         val result = underlying.opintotiedotMassahaku(hakuehdot)
-        result.foreach(xml => cache.put(hakuehdot, xml))
+        result.foreach(xml => cache.put(hakuehdot, xml, "mass"))
         result
     }
   }
