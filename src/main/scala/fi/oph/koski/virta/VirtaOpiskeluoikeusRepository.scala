@@ -21,7 +21,7 @@ case class VirtaOpiskeluoikeusRepository(
   organisaatioRepository: OrganisaatioRepository,
   accessChecker: AccessChecker,
   validator: Option[KoskiValidator] = None
-)(implicit cacheInvalidator: CacheManager) extends AuxiliaryOpiskeluoikeusRepositoryImpl[KorkeakoulunOpiskeluoikeus, VirtaCacheKey](accessChecker, 24.hours, 50000) {
+)(implicit cacheInvalidator: CacheManager) extends AuxiliaryOpiskeluoikeusRepositoryImpl[KorkeakoulunOpiskeluoikeus, VirtaCacheKey](accessChecker, 24.hours, 1000) {
   private val converter = VirtaXMLConverter(oppilaitosRepository, koodistoViitePalvelu, organisaatioRepository)
 
   override def findByOppija(tunnisteet: HenkilönTunnisteet)(implicit user: KoskiSpecificSession): List[KorkeakoulunOpiskeluoikeus] = {

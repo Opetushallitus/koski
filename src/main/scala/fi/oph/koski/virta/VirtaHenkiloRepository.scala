@@ -13,7 +13,7 @@ import scala.util.control.NonFatal
 case class VirtaHenkilöRepository(v: VirtaClient, accessChecker: VirtaAccessChecker)(implicit cacheInvalidator: CacheManager) extends HetuBasedHenkilöRepository with Logging {
 
   private val cache = KeyValueCache[String, Option[UusiHenkilö]](
-    ExpiringCache(getClass.getSimpleName + ".henkilötiedot", 24.hours, 10000),
+    ExpiringCache(getClass.getSimpleName + ".henkilötiedot", 24.hours, 1000),
     fetchFromVirta
   )
 
