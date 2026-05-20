@@ -10,7 +10,11 @@ import scala.collection.parallel.CollectionConverters._
 import scala.concurrent.duration.DurationInt
 import scala.util.control.NonFatal
 
-abstract class AuxiliaryOpiskeluoikeusRepositoryImpl[OO <: Opiskeluoikeus, CK <: AnyRef](accessChecker: AccessChecker)(implicit cacheInvalidator: CacheManager) extends AuxiliaryOpiskeluoikeusRepository with Logging {
+abstract class AuxiliaryOpiskeluoikeusRepositoryImpl[OO <: Opiskeluoikeus, CK <: AnyRef](
+  accessChecker: AccessChecker,
+  cacheDuration: scala.concurrent.duration.Duration = 1.hour,
+  cacheMaxSize: Int = 100
+)(implicit cacheInvalidator: CacheManager) extends AuxiliaryOpiskeluoikeusRepository with Logging {
 
   override def filterOppijat[A <: HenkilönTunnisteet](oppijat: List[A])(implicit user: KoskiSpecificSession): List[A] = {
     val globalAccess = accessChecker.hasGlobalAccess(user)
@@ -50,7 +54,7 @@ abstract class AuxiliaryOpiskeluoikeusRepositoryImpl[OO <: Opiskeluoikeus, CK <:
 
   protected def uncachedOpiskeluoikeudet(cacheKey: CK): List[OO]
 
-  private val cache = KeyValueCache[CK, List[OO]](ExpiringCache(getClass.getSimpleName + ".opiskeluoikeudet", 1.hour, 100), uncachedOpiskeluoikeudet)
+  private val cache = KeyValueCache[CK, List[OO]](ExpiringCache(getClass.getSimpleName + ".opiskeluoikeudet", cacheDuration, cacheMaxSize), uncachedOpiskeluoikeudet)
 
   private def cachedOpiskeluoikeudet(tunnisteet: HenkilönTunnisteet): List[OO] = {
     cache(buildCacheKey(tunnisteet))
@@ -59,7 +63,7 @@ abstract class AuxiliaryOpiskeluoikeusRepositoryImpl[OO <: Opiskeluoikeus, CK <:
   // tunniste -> org.oids cache for filtering only (much larger than opiskeluoikeus cache)
   // can contain special value "UnknownOrganization" to indicate that opiskeluoikeus exists, but it has oppilaitos=None
   // (this is used in filterOppijat when globalAccess is True)
-  private val organizationsCache = KeyValueCache[CK, List[Organisaatio.Oid]](ExpiringCache(getClass.getSimpleName + ".organisations", 1.hour, 100000), uncachedOrganizations)
+  private val organizationsCache = KeyValueCache[CK, List[Organisaatio.Oid]](ExpiringCache(getClass.getSimpleName + ".organisations", cacheDuration, 100000), uncachedOrganizations)
   private val UnknownOrganization = "1.2.246.562.10.99999999999"
 
   private def uncachedOrganizations(cacheKey: CK): List[Organisaatio.Oid] = {
