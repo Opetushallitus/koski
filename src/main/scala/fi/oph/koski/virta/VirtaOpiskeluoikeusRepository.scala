@@ -24,6 +24,11 @@ case class VirtaOpiskeluoikeusRepository(
 )(implicit cacheInvalidator: CacheManager) extends AuxiliaryOpiskeluoikeusRepositoryImpl[KorkeakoulunOpiskeluoikeus, VirtaCacheKey](accessChecker, 24.hours, 50000) {
   private val converter = VirtaXMLConverter(oppilaitosRepository, koodistoViitePalvelu, organisaatioRepository)
 
+  override def findByOppija(tunnisteet: HenkilönTunnisteet)(implicit user: KoskiSpecificSession): List[KorkeakoulunOpiskeluoikeus] = {
+    logger.info(s"Virta oppija lookup: oppija=${tunnisteet.oid} käyttäjä=${user.username}")
+    super.findByOppija(tunnisteet)
+  }
+
   override protected def uncachedOpiskeluoikeudet(cacheKey: VirtaCacheKey): List[KorkeakoulunOpiskeluoikeus] = {
     val opiskeluoikeudet = virtaHaku(cacheKey)
     opiskeluoikeudet.foreach(validate)
