@@ -1,7 +1,7 @@
 # Koski
 
 Koski toimii kattavana opetustoimialan tietovarantona, joka tarjoaa
-tutkintoon johtavat suoritustiedot eri koulutusasteilta. Yleinen Koski-dokumentaatio kootaan [wikiin](https://wiki.eduuni.fi/display/OPHPALV/Koski).
+tutkintoon johtavat suoritustiedot eri koulutusasteilta. Yleinen Koski-dokumentaatio kootaan [wikiin](https://wiki.eduuni.fi/spaces/ophPPK/pages/190613682/KOSKI).
 
 Tässä git-repositoriossa on Koski-järjestelmän ohjelmakoodi, tietokannan rakennuslausekkeet ja tekninen dokumentaatio ohjelmistokehitystä varten.
 
@@ -9,7 +9,7 @@ Koski on [EUPL](LICENSE.txt)-lisensoitu sovellus, josta on mahdollista käynnist
 
 ## Valpas
 
-Kosken kanssa tässä samassa git-repositoriossa on myös Valpas-palvelun toteutus. Valpas on oppivelvollisuuden valvontapalvelu, joka käyttää mm. Koski-tietovarannon tietoja. Yleinen Valpas-dokumentaatio on [wikissä](https://wiki.eduuni.fi/display/OPHPALV/Valpas-palvelu). Valppaan käyttöliittymän toteutuksesta on erillinen [README.md](valpas-web/README.md).
+Kosken kanssa tässä samassa git-repositoriossa on myös Valpas-palvelun toteutus. Valpas on oppivelvollisuuden valvontapalvelu, joka käyttää mm. Koski-tietovarannon tietoja. Yleinen Valpas-dokumentaatio on [wikissä](https://wiki.eduuni.fi/spaces/ophPPK/pages/197666912/Valpas-palvelu). Valppaan käyttöliittymän toteutuksesta on erillinen [README.md](valpas-web/README.md).
 
 ## Käsitteet
 
@@ -352,14 +352,14 @@ Koski-sovelluskoodissa audit-loggaus tehdään `AuditLog`-luokan kautta ja sovel
 
 ### OPH:n palvelut
 
-| Kuvaus              | URL                                                                                                                                                                                                                           | Muuta                                                                                 |
-| ------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------- |
-| Koski               | [hallinta-ui](https://virkailija.opintopolku.fi/koski/) [api][koski-api] [pulssi-ui](https://koski.opintopolku.fi/koski/pulssi)                                                                                               |
-| Valpas              | [palvelukuvaus](https://wiki.eduuni.fi/display/OPHPALV/Valpas-palvelu) [käyttöliittymä](https://virkailija.opintopolku.fi/valpas/virkailija/) [UI-toteutus](valpas-web/README.md)                                             | Kosken yhteyteen toteutettu oppivelvollisuuden valvontapalvelu.                       |
-| CAS                 | [palvelukortti](https://wiki.eduuni.fi/display/ophpolku/Rajapintojen+autentikaatio)                                                                                                                                           | Käyttäjän autentikointi Koskeen ja muihin OPH:n palveluihin.                          |
-| Lokalisointipalvelu | [palvelukortti](https://wiki.eduuni.fi/display/ophpolku/Lokalisointipalvelu)                                                                                                                                                  | Palveluiden käyttöliittymien käännöksien hallinta.                                    |
-| ePerusteet          | [palvelukortti](https://wiki.eduuni.fi/display/OPHPALV/ePerusteet) [api][eperusteet-api] [api-dokumentaatio](https://wiki.eduuni.fi/display/ophpolku/ePerusteet+julkiset+rajapinnat) [ui](https://eperusteet.opintopolku.fi/) | ePerusteet-palvelu                                                                    |
-| Suoritusrekisteri   | [palvelukortti](https://wiki.eduuni.fi/display/ophpolku/SURE-suoritustiedot) [api](https://virkailija.testiopintopolku.fi/suoritusrekisteri/swagger/index.html#/Valpas-resource)                                              | Suoritusrekisteri, jonka kautta Valpas hakee tietoja opiskelijahauista ja valinnoista |
+| Kuvaus              | URL                                                                                                                                                                                                                                                       | Muuta                                                                                 |
+| ------------------- |-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------|
+| Koski               | [hallinta-ui](https://virkailija.opintopolku.fi/koski/) [api][koski-api] [pulssi-ui](https://koski.opintopolku.fi/koski/pulssi)                                                                                                                           |                                                                                       |
+| Valpas              | [palvelukuvaus](https://wiki.eduuni.fi/spaces/ophPPK/pages/197666912/Valpas-palvelu) [käyttöliittymä](https://virkailija.opintopolku.fi/valpas/virkailija/) [UI-toteutus](valpas-web/README.md)                                                           | Kosken yhteyteen toteutettu oppivelvollisuuden valvontapalvelu.                       |
+| CAS                 | [palvelukortti](https://wiki.eduuni.fi/spaces/ophPPK/pages/190635567/Rajapintojen+autentikaatio)                                                                                                                                                          | Käyttäjän autentikointi Koskeen ja muihin OPH:n palveluihin.                          |
+| Lokalisointipalvelu | [palvelukortti](https://wiki.eduuni.fi/spaces/ophPPK/pages/534972518/Lokalisointipalvelu+palvelukortti)                                                                                                                                                   | Palveluiden käyttöliittymien käännöksien hallinta.                                    |
+| ePerusteet          | [palvelukortti](https://wiki.eduuni.fi/spaces/ophPPK/pages/450081297/ePerusteet) [api][eperusteet-api] [api-dokumentaatio](https://wiki.eduuni.fi/spaces/ophPPK/pages/313141156/ePerusteet+julkiset+rajapinnat) [ui](https://eperusteet.opintopolku.fi/)  | ePerusteet-palvelu                                                                    |
+| Suoritusrekisteri   | [palvelukortti](https://wiki.eduuni.fi/spaces/ophPPK/pages/522316903/Suoritusrekisteri+palvelukortti) [api](https://virkailija.testiopintopolku.fi/suoritusrekisteri/swagger/index.html#/Valpas-resource)                                                 | Suoritusrekisteri, jonka kautta Valpas hakee tietoja opiskelijahauista ja valinnoista |
 
 ### OPH:n yleiskäyttöiset palvelut
 
@@ -403,11 +403,11 @@ Kehityskäytössä voit käyttää erilaisia asetuksia tekemällä asetustiedost
 
 ### Oppijanumerorekisteri, organisaatiopalvelu ja käyttöoikeuspalvelu
 
-Koski ei tallenna henkilötietoja omaan tietokantaansa, vaan hakee ja tallentaa ne Opintopolun [oppijanumerorekisteriin](https://wiki.eduuni.fi/display/OPHPALV/Oppijanumerorekisteri) ([toteutus](src/main/scala/fi/oph/koski/henkilo/AuthenticationServiceClient.scala)).
+Koski ei tallenna henkilötietoja omaan tietokantaansa, vaan hakee ja tallentaa ne Opintopolun [oppijanumerorekisteriin](https://wiki.eduuni.fi/spaces/ophPPK/pages/522316952/Oppijanumerorekisterin+palvelukortti) ([toteutus](src/main/scala/fi/oph/koski/henkilo/AuthenticationServiceClient.scala)).
 
 Kun käyttäjä hakee henkilön tietoja esimerkiksi sukunimellä, hakee Koski listan mahdollisista henkilöistä ensin oppinumerorekisteristä, jonka jälkeen Koski suodattaa hakutuloksen Koskessa olevien opinto-oikeuksien perusteella ([toteutus](src/main/scala/fi/oph/koski/henkilo/HenkilotiedotSearchFacade.scala)).
 
-Käyttäjä voi nähdä vain ne opinto-oikeudet, jotka liittyvät oppilaitokseen, johon hänellä on käyttöoikeus. Koski hakee henkilön organisaatioliitokset [organisaatiopalvelusta](https://wiki.eduuni.fi/display/OPHPALV/Organisaatiopalveluu) ja käyttöoikeudet [käyttöoikeuspalvelusta](https://wiki.eduuni.fi/pages/viewpage.action?pageId=190613734).
+Käyttäjä voi nähdä vain ne opinto-oikeudet, jotka liittyvät oppilaitokseen, johon hänellä on käyttöoikeus. Koski hakee henkilön organisaatioliitokset [organisaatiopalvelusta]https://wiki.eduuni.fi/spaces/ophPPK/pages/453739970/Organisaatiopalvelu+oppilaitokset+ja+toimipisteet+Organisations%C2%ADtj%C3%A4nsten+l%C3%A4roanstalter+och+verksamhetsst%C3%A4llen) ja käyttöoikeudet [OTUVAn käyttöoikeuspalvelusta](https://wiki.eduuni.fi/spaces/ophPPK/pages/522313728/Opetushallituksen+tunnistus-+ja+valtuutuspalvelu+OTUVA+palvelukortti).
 
 Esimerkki [organisaatiohierarkian](https://virkailija.testiopintopolku.fi/organisaatio-service/swagger/index.html#!/organisaatiov2/searchOrganisaatioHierarkia) hakemisesta:
 

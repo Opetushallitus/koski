@@ -86,6 +86,8 @@ const dokumentaatioContentP = (location, contentP) =>
             ''
           )}
 
+          {naviLink('/koski/dokumentaatio/valpas', 'Valpas', location, '')}
+
           {naviLink(
             '/koski/dokumentaatio/koodistot',
             'Koodistot',
@@ -346,6 +348,22 @@ export const dokumentaatioKyselytP = (path) => {
     )
   }
 }
+
+export const dokumentaatioValpasP = () =>
+  dokumentaatioContentP(
+    '/koski/dokumentaatio/valpas',
+    htmlSectionsP().map((htmlSections) => ({
+      content: (
+        <div>
+          <div
+            className="markdown-content"
+            dangerouslySetInnerHTML={{ __html: htmlSections.valpas }}
+          ></div>
+        </div>
+      ),
+      title: 'Dokumentaatio - Valpas'
+    }))
+  )
 
 export const dokumentaatioOmadataOAuth2P = (path) => {
   const basePath = '/koski/dokumentaatio/rajapinnat/oauth2'

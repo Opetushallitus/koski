@@ -431,7 +431,7 @@ Näillä kutsuilla haetaan usean henkilön (enintään 5000 kpl) valintakoetulok
 
 Tiedot haetaan Valintarekisteristä. Koski välittää pyynnöt Valintarekisterin rajapintaan ja palauttaa vastaukset kutsujalle.
 
-Katso esimerkkivastaukset ja virhekoodit tarkemmin [Valintarekisterin dokumentaatiosta](https://wiki.eduuni.fi/display/ophpolku/Valintarekisterin+rajapinta+Migrille).
+Katso esimerkkivastaukset ja virhekoodit tarkemmin [Valintarekisterin dokumentaatiosta](https://wiki.eduuni.fi/spaces/ophPPK/pages/262277164/Valintarekisterin+rajapinta+Migrille).
 
 ## /koski/api/luovutuspalvelu/ytl/oppijat
 

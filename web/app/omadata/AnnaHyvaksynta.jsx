@@ -47,7 +47,7 @@ export default ({ memberName, onAcceptClick, logoutURL }) => (
           <Text name="Tarkemmat tiedot luovutettavista henkilötiedoista löydät KOSKI-palvelun Wiki -sivustolta" />
         </p>
         <p>
-          <a href="https://wiki.eduuni.fi/display/OPHPALV/Oma+Data%3A+Opiskelijastatus+-+palautuvat+tiedot">
+          <a href="https://wiki.eduuni.fi/spaces/ophPPK/pages/190612686/Oma+Data+HSL-+toteutus+Opiskelijastatus+-+palautuvat+tiedot">
             <Text name="Tietoa KOSKI-palvelun pyytämistä henkilötiedoista" />
           </a>
         </p>
@@ -55,7 +55,7 @@ export default ({ memberName, onAcceptClick, logoutURL }) => (
           <Text name="Suostumuksesi päättymisajankohta (suostumuksen voimassaoloaika on 12 kk ellet peru suostumustasi aiemmin)" />
         </p>
         <p>
-          <a href="https://wiki.eduuni.fi/display/OPHPALV/Oma+Data%3A+Opiskelijastatus+-+palautuvat+tiedot">
+          <a href="https://wiki.eduuni.fi/spaces/ophPPK/pages/190612686/Oma+Data+HSL-+toteutus+Opiskelijastatus+-+palautuvat+tiedot">
             <Text name="Tietoa KOSKI-palvelun pyytämistä henkilötiedoista" />
           </a>
         </p>

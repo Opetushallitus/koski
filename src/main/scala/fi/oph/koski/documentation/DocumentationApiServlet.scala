@@ -113,6 +113,14 @@ class DocumentationApiServlet(application: KoskiApplication) extends KoskiSpecif
     ValpasInternalSchema.kuntaSuppeaSchemaJson
   }
 
+  get("/valpas-internal-heturouhinta-schema.json") {
+    ValpasInternalSchema.heturouhintaSchemaJson
+  }
+
+  get("/valpas-internal-kuntarouhinta-schema.json") {
+    ValpasInternalSchema.kuntarouhintaSchemaJson
+  }
+
   get("/migri-oppija-schema.json") {
     MigriSchema.schemaJson
   }

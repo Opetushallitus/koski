@@ -74,6 +74,7 @@ object KoskiTiedonSiirtoHtml {
     "tietomalli",
     "tietomalli_esimerkit",
     "koodistot",
+    "valpas",
     "rajapinnat_oppilashallintojarjestelmat",
     "rajapinnat_luovutuspalvelu",
     "rajapinnat_palveluvayla_omadata"
