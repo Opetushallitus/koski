@@ -22,7 +22,7 @@ trait UlkomaanaikajaksojaSisältävä {
 }
 
 trait Ulkomaanaikajaksollinen extends UlkomaanaikajaksojaSisältävä{
-  @Deprecated("Käytä korvaavaa kenttää Ulkomaanjaksot")
+  @Deprecated("kayta korvaavaa ulkomaanjaksot")
   def ulkomailla: Option[Aikajakso]
   def ulkomaanjaksot: Option[List[Aikajakso]]
 

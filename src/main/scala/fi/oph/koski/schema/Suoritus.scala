@@ -27,7 +27,7 @@ trait Suoritus {
   @SyntheticProperty
   @ReadOnly("Ei käytössä.")
   @Hidden
-  @Deprecated("Ei käytössä.")
+  @Deprecated("tila ei kaytossa")
   def tila: Option[Koodistokoodiviite] = None
   @Description("Arviointi. Jos listalla useampi arviointi, tulkitaan myöhemmät arvioinnit arvosanan korotuksiksi edellisiin samalla listalla oleviin arviointeihin. Jos aiempaa, esimerkiksi väärin kirjattua, arviota korjataan, ei listalle tule uutta arviota")
   def arviointi: Option[List[Arviointi]]

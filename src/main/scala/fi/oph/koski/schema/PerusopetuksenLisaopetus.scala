@@ -59,7 +59,7 @@ case class PerusopetuksenLisäopetuksenOpiskeluoikeudenLisätiedot(
   @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT))
   @OksaUri("tmpOKSAID242", "koulunkäynnin aloittamisen lykkääminen")
   @DefaultValue(None)
-  @Deprecated("Kenttä ei ole käytössä")
+  @Deprecated("perusopetuksen aloittamista lykatty ei kaytossa")
   perusopetuksenAloittamistaLykätty: Option[Boolean] = None,
   @Description("Perusopetuksen aloituksen aikaistaminen (true/false). Oppilas aloittanut perusopetuksen ennen oppivelvollisuusikää.")
   @Tooltip("Perusopetuksen aloitusta aikaistettu, eli oppilas aloittanut peruskoulun ennen oppivelvollisuusikää.")
@@ -80,7 +80,7 @@ case class PerusopetuksenLisäopetuksenOpiskeluoikeudenLisätiedot(
   @Description("Erityisen tuen päätös alkamis- ja päättymispäivineen. Kentän puuttuminen tai null-arvo tulkitaan siten, että päätöstä ei ole tehty. Rahoituksen laskennassa käytettävä tieto.")
   @Tooltip("Mahdollisen erityisen tuen päätöksen alkamis- ja päättymispäivät. Rahoituksen laskennassa käytettävä tieto.")
   @OksaUri("tmpOKSAID281", "henkilökohtainen opetuksen järjestämistä koskeva suunnitelma")
-  @Deprecated("Käytä korvaavaa kenttää Erityisen tuen päätökset")
+  @Deprecated("kayta korvaavaa erityisen tuen paatokset")
   @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT))
   erityisenTuenPäätös: Option[ErityisenTuenPäätös] = None,
   @Description("Erityisen tuen päätökset alkamis- ja päättymispäivineen. Voi olla useita erillisiä jaksoja. Rahoituksen laskennassa käytettävä tieto.")
@@ -108,14 +108,14 @@ case class PerusopetuksenLisäopetuksenOpiskeluoikeudenLisätiedot(
   joustavaPerusopetus: Option[Aikajakso] = None,
   @Description("Tieto opiskelusta kotiopetuksessa huoltajan päätöksestä alkamis- ja päättymispäivineen. Kentän puuttuminen tai null-arvo tulkitaan siten, ettei oppilas ole kotiopetuksessa. Rahoituksen laskennassa käytettävä tieto.")
   @Tooltip("Tieto mahdollisesta opiskelusta kotiopetuksessa huoltajan päätöksestä alkamis- ja päättymispäivineen. Rahoituksen laskennassa käytettävä tieto.")
-  @Deprecated("Käytä korvaavaa kenttää Kotiopetusjaksot")
+  @Deprecated("kayta korvaavaa kotiopetusjaksot")
   kotiopetus: Option[Aikajakso] = None,
   @Description("Kotiopetusjaksot huoltajan päätöksestä alkamis- ja päättymispäivineen. Kentän puuttuminen tai null-arvo tulkitaan siten, ettei oppilas ole kotiopetuksessa. Rahoituksen laskennassa käytettävä tieto.")
   @Tooltip("Kotiopetusjaksot huoltajan päätöksestä alkamis- ja päättymispäivineen. Rahoituksen laskennassa käytettävä tieto.")
   kotiopetusjaksot: Option[List[Aikajakso]] = None,
   @Description("Tieto opiskelusta ulkomailla huoltajan ilmoituksesta alkamis- ja päättymispäivineen. Kentän puuttuminen tai null-arvo tulkitaan siten, ettei oppilas ole ulkomailla. Rahoituksen laskennassa käytettävä tieto.")
   @Tooltip("Tieto opiskelusta ulkomailla huoltajan ilmoituksesta alkamis- ja päättymispäivineen. Rahoituksen laskennassa käytettävä tieto.")
-  @Deprecated("Käytä korvaavaa kenttää Ulkomaanjaksot")
+  @Deprecated("kayta korvaavaa ulkomaanjaksot")
   ulkomailla: Option[Aikajakso] = None,
   @Description("Huoltajan ilmoittamat ulkomaan opintojaksot alkamis- ja päättymispäivineen. Rahoituksen laskennassa käytettävä tieto.")
   @Tooltip("Huoltajan ilmoittamat ulkomaan opintojaksot alkamis- ja päättymispäivineen. Rahoituksen laskennassa käytettävä tieto.")
@@ -190,7 +190,7 @@ case class PerusopetuksenLisäopetuksenSuoritus(
   @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT))
   @DefaultValue(None)
   @Title("Osa-aikainen erityisopetus perusopetuksen lisäopetuksen aikana")
-  @Deprecated("Tätä kenttää ei toistaiseksi käytetä.")
+  @Deprecated("kentta ei toistaiseksi kaytossa")
   @Hidden
   osaAikainenErityisopetus: Option[Boolean] = None,
   @Description("Oppiaineiden suoritukset")
