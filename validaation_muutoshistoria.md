@@ -1,5 +1,9 @@
 # Koskeen tallennettavien tietojen validaatiosäännöt
 
+## 18.5.2026
+
+- DIA-tutkinnon ja International School of Helsinki -opiskeluoikeuksissa sallitaan uusi rahoitusmuoto 16 (lukuvuosimaksu) 1.8.2026 tai myöhemmin alkaneissa opiskeluoikeuksissa
+
 ## 6.5.2026
 
 - Esi- ja perusopetuksen tuen muutoksen validaatiot on muutettu astumaan voimaan 1.9.2026 aiemman 1.8.2026 sijaan.

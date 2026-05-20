@@ -19,7 +19,7 @@ export type DIAOpiskeluoikeusjakso = {
     | 'valiaikaisestikeskeytynyt'
     | 'valmistunut'
   >
-  opintojenRahoitus?: Koodistokoodiviite<'opintojenrahoitus', '1' | '6'>
+  opintojenRahoitus?: Koodistokoodiviite<'opintojenrahoitus', '1' | '6' | '16'>
 }
 
 export const DIAOpiskeluoikeusjakso = (o: {
@@ -34,7 +34,7 @@ export const DIAOpiskeluoikeusjakso = (o: {
     | 'valiaikaisestikeskeytynyt'
     | 'valmistunut'
   >
-  opintojenRahoitus?: Koodistokoodiviite<'opintojenrahoitus', '1' | '6'>
+  opintojenRahoitus?: Koodistokoodiviite<'opintojenrahoitus', '1' | '6' | '16'>
 }): DIAOpiskeluoikeusjakso => ({
   $class: 'fi.oph.koski.schema.DIAOpiskeluoikeusjakso',
   ...o

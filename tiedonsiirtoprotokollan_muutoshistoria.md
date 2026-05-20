@@ -1,3 +1,7 @@
+# 18.5.2026
+
+- Lisätty DIA-tutkinnon ja International School of Helsinki -opiskeluoikeuksiin uusi rahoitusmuoto 16, lukuvuosimaksu.
+
 # 7.5.2026
 
 - Ahvenanmaan perusopetuksen (TOR-2587) wiring: tyypin rekisteröinti, koodistofixturet, esimerkkioppija, ePerusteet-validoinnin ohitus. Tallennettavissa dev/QA-ympäristöissä; tuotannossa estetty `features.disabledPäätasonSuoritusLuokat`-konfiguraatiolla.
