@@ -10,6 +10,7 @@ import fi.oph.koski.raportointikanta.OpiskeluoikeusLoader.isRaportointikantaanSi
 import fi.oph.koski.schema.Opiskeluoikeus
 import fi.oph.koski.suostumus.SuostumuksenPeruutusService
 import fi.oph.koski.util.TimeConversions.toTimestamp
+
 import rx.lang.scala.Observable
 
 import java.time.{LocalDateTime, ZonedDateTime}
@@ -26,6 +27,18 @@ class IncrementalUpdateOpiskeluoikeusLoader(
   batchSize: Int = OpiskeluoikeusLoader.DefaultBatchSize,
   onAfterPage: (Int, Seq[OpiskeluoikeusRow]) => Unit = (_, _) => (),
 ) extends OpiskeluoikeusLoader {
+
+  private val SlowOperationThresholdMs = 5000
+
+  private def timedMs[T](name: String)(block: => T): (T, Long) = {
+    val t0 = System.nanoTime()
+    val result = block
+    val ms = (System.nanoTime() - t0) / 1000000
+    if (ms >= SlowOperationThresholdMs) {
+      logger.warn(s"Hidas operaatio: $name kesti ${ms} ms")
+    }
+    (result, ms)
+  }
 
   def loadOpiskeluoikeudet(): Observable[LoadResult] = {
     setStatusStarted(Some(toTimestamp(update.dueTime)))
@@ -82,52 +95,70 @@ class IncrementalUpdateOpiskeluoikeusLoader(
     val loadBatchStartTime = System.nanoTime()
 
     val oppijaOids = oot.map(_.oppijaOid).distinct
-    val masterOidsByOppijaOid = getMasterOidsForOppijaOids(oppijaOids)
+    val (masterOidsByOppijaOid, masterOidsMs) = timedMs("masterOids")(getMasterOidsForOppijaOids(oppijaOids))
 
-    val (errors, outputRows) = oot.par
-      .map(row => OpiskeluoikeusLoaderRowBuilder.buildKoskiRow(row, masterOidsByOppijaOid.get(row.oppijaOid).flatten))
-      .seq
-      .partition(_.isLeft)
-
+    val (buildResult, rowBuildMs) = timedMs("rowBuild") {
+      oot.par
+        .map(row => OpiskeluoikeusLoaderRowBuilder.buildKoskiRow(row, masterOidsByOppijaOid.get(row.oppijaOid).flatten))
+        .seq
+        .partition(_.isLeft)
+    }
+    val (errors, outputRows) = buildResult
     val successfulRows = outputRows.collect { case Right(value) => value }
+    val toOpiskeluoikeusUnsafeMs = successfulRows.map(_.toOpiskeluoikeusUnsafeDuration).sum / 1000000
 
-    db.updateOpiskeluoikeudet(successfulRows.map(_.rOpiskeluoikeusRow), mitätöidytOot)
-    db.updateOrganisaatioHistoria(successfulRows.flatMap(_.organisaatioHistoriaRows))
+    val (_, updateOoMs)                  = timedMs("updateOpiskeluoikeudet")(db.updateOpiskeluoikeudet(successfulRows.map(_.rOpiskeluoikeusRow), mitätöidytOot))
+    val (_, updateOrgHistoriaMs)         = timedMs("updateOrganisaatioHistoria")(db.updateOrganisaatioHistoria(successfulRows.flatMap(_.organisaatioHistoriaRows)))
 
     val opiskeluoikeusAikajaksoRows = successfulRows.flatMap(_.rOpiskeluoikeusAikajaksoRows)
-    db.updateOpiskeluoikeusAikajaksot(opiskeluoikeusAikajaksoRows)
+    val (_, updateOoAikajaksoMs)         = timedMs("updateOpiskeluoikeusAikajaksot")(db.updateOpiskeluoikeusAikajaksot(opiskeluoikeusAikajaksoRows))
 
     val aikajaksoRows = successfulRows.flatMap(_.rAikajaksoRows)
-    db.updateAikajaksot(aikajaksoRows)
+    val (_, updateAikajaksoMs)           = timedMs("updateAikajaksot")(db.updateAikajaksot(aikajaksoRows))
 
     val ammatillisenKoulutuksenJarjestamismuotoAikajaksoRows = successfulRows.flatMap(_.rAmmatillisenKoulutuksenJarjestamismuotoAikajaksoRows)
-    db.updateAmmatillisenKoulutuksenJarjestamismuotoAikajaksot(ammatillisenKoulutuksenJarjestamismuotoAikajaksoRows)
+    val (_, updateJarjestamismuotoMs)    = timedMs("updateJarjestamismuotoAikajaksot")(db.updateAmmatillisenKoulutuksenJarjestamismuotoAikajaksot(ammatillisenKoulutuksenJarjestamismuotoAikajaksoRows))
 
     val updateOsaamisenHankkimistapaAikajaksoRows = successfulRows.flatMap(_.rOsaamisenHankkimistapaAikajaksoRows)
-    db.updateOsaamisenHankkimistapaAikajaksoRows(updateOsaamisenHankkimistapaAikajaksoRows)
+    val (_, updateHankkimistapaMs)       = timedMs("updateHankkimistapaAikajaksot")(db.updateOsaamisenHankkimistapaAikajaksoRows(updateOsaamisenHankkimistapaAikajaksoRows))
 
     val esiopetusOpiskeluoikeusAikajaksoRows = successfulRows.flatMap(_.esiopetusOpiskeluoikeusAikajaksoRows)
-    db.updateEsiopetusOpiskeluoikeusAikajaksot(esiopetusOpiskeluoikeusAikajaksoRows)
+    val (_, updateEsiopetusMs)           = timedMs("updateEsiopetusAikajaksot")(db.updateEsiopetusOpiskeluoikeusAikajaksot(esiopetusOpiskeluoikeusAikajaksoRows))
 
     val päätasonSuoritusRows = successfulRows.flatMap(_.rPäätasonSuoritusRows)
-    db.updatePäätasonSuoritukset(päätasonSuoritusRows)
+    val (_, updatePäätasonMs)            = timedMs("updatePäätasonSuoritukset")(db.updatePäätasonSuoritukset(päätasonSuoritusRows))
 
     val osasuoritusRows = successfulRows.flatMap(_.rOsasuoritusRows)
-    db.updateOsasuoritukset(osasuoritusRows)
+    val (_, updateOsasuoritusMs)         = timedMs("updateOsasuoritukset")(db.updateOsasuoritukset(osasuoritusRows))
 
     val muuAmmatillinenRaportointiRows = successfulRows.flatMap(_.muuAmmatillinenOsasuoritusRaportointiRows)
-    db.updateMuuAmmatillinenRaportointi(muuAmmatillinenRaportointiRows)
+    val (_, updateMuuAmmatillinenMs)     = timedMs("updateMuuAmmatillinenRaportointi")(db.updateMuuAmmatillinenRaportointi(muuAmmatillinenRaportointiRows))
 
     val topksAmmatillinenRaportointiRows = successfulRows.flatMap(_.topksAmmatillinenRaportointiRows)
-    db.updateTOPKSAmmatillinenRaportointi(topksAmmatillinenRaportointiRows)
+    val (_, updateTopksMs)               = timedMs("updateTOPKSAmmatillinenRaportointi")(db.updateTOPKSAmmatillinenRaportointi(topksAmmatillinenRaportointiRows))
 
     db.setLastUpdate(statusName)
     db.updateStatusCount(statusName, successfulRows.size)
     val result = errors.collect { case Left(err) => err } :+ LoadProgressResult(successfulRows.size, päätasonSuoritusRows.size + osasuoritusRows.size)
 
     val loadBatchDuration: Long = (System.nanoTime() - loadBatchStartTime) / 1000000
-    val toOpiskeluoikeusUnsafeDuration: Long = successfulRows.map(_.toOpiskeluoikeusUnsafeDuration).sum / 1000000
-    logger.info(s"Batchin käsittely kesti ${loadBatchDuration} ms, jossa toOpiskeluOikeusUnsafe ${toOpiskeluoikeusUnsafeDuration} ms.")
+    logger.info(
+      s"Batchin käsittely [${oot.size} oo, ${päätasonSuoritusRows.size} ps, ${osasuoritusRows.size} os] kesti " +
+      s"yhteensä=${loadBatchDuration}ms, jossa " +
+      s"masterOids=${masterOidsMs}ms, " +
+      s"rowBuild=${rowBuildMs}ms (toOoUnsafe=${toOpiskeluoikeusUnsafeMs}ms), " +
+      s"updateOo=${updateOoMs}ms, " +
+      s"updateOrgHistoria=${updateOrgHistoriaMs}ms, " +
+      s"updateOoAikajakso=${updateOoAikajaksoMs}ms, " +
+      s"updateAikajakso=${updateAikajaksoMs}ms, " +
+      s"updateJarjestamismuoto=${updateJarjestamismuotoMs}ms, " +
+      s"updateHankkimistapa=${updateHankkimistapaMs}ms, " +
+      s"updateEsiopetus=${updateEsiopetusMs}ms, " +
+      s"updatePäätason=${updatePäätasonMs}ms, " +
+      s"updateOsasuoritus=${updateOsasuoritusMs}ms, " +
+      s"updateMuuAmmatillinen=${updateMuuAmmatillinenMs}ms, " +
+      s"updateTopks=${updateTopksMs}ms"
+    )
     result
   }
 
