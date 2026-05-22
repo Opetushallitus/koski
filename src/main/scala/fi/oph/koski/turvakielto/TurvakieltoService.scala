@@ -21,9 +21,15 @@ object TurvakieltoService {
     val vahvistusL = shapeless.lens[KoskeenTallennettavaPäätasonSuoritus].field[Option[Vahvistus]]("vahvistus")
     val osasuorituksetL = shapeless.lens[KoskeenTallennettavaPäätasonSuoritus].field[Option[List[Suoritus]]]("osasuoritukset")
 
-    toimipisteL.set(päätasonSuoritus)(turvakieltotoimipiste)
+    val withToimipisteJaVahvistus = toimipisteL.set(päätasonSuoritus)(turvakieltotoimipiste)
       .pipe(vahvistusL.modify(_)(poistaVahvistuksenTurvakiellonAlaisetTiedot))
-      .pipe(osasuorituksetL.modify(_)(_.map(_.map(poistaOsasuorituksenTurvakiellonAlaisetTiedot))))
+
+    // Vain niillä päätason suorituksilla, joilla on osasuoritukset-kenttä (Suoritus-traitin oletus on None),
+    // ajetaan linssin kautta — muutoin mojaven reflektiopohjainen setField heittää NoSuchMethodExceptionin.
+    if (withToimipisteJaVahvistus.osasuoritukset.isDefined)
+      osasuorituksetL.modify(withToimipisteJaVahvistus)(_.map(_.map(poistaOsasuorituksenTurvakiellonAlaisetTiedot)))
+    else
+      withToimipisteJaVahvistus
   }
 
   def poistaOsasuorituksenTurvakiellonAlaisetTiedot(suoritus: Suoritus): Suoritus = {
