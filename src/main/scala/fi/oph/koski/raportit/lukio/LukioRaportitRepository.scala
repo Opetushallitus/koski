@@ -19,7 +19,7 @@ case class LukioRaportitRepository(db: DB) extends QueryMethods with Raportointi
   private val defaultTimeout = 5.minutes
   private type OpiskeluoikeusOid = String
   private type OppijaOid = String
-  private type PäätasonSuoritusId = Long
+  private type PäätasonSuoritusId = String
   private type AikajaksoId = Long
   private type Koulutusmooduuli_koodiarvo = String
   private type OppiaineenNimi = String

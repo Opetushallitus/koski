@@ -14,8 +14,10 @@ import fi.oph.koski.schema.{Henkilö, Opiskeluoikeus, Organisaatio}
 import fi.oph.koski.util.DateOrdering.{ascedingSqlTimestampOrdering, sqlDateOrdering}
 import fi.oph.koski.valpas.opiskeluoikeusrepository.ValpasRajapäivätService
 import fi.oph.scalaschema.annotation.SyntheticProperty
+import org.json4s.jackson.JsonMethods.{compact, render}
 import org.postgresql.util.PSQLException
 import slick.dbio.DBIO
+import slick.jdbc.SimpleJdbcAction
 
 import java.sql.Timestamp.{valueOf => toTimestamp}
 import java.sql.{Date, Timestamp}
@@ -280,17 +282,6 @@ class RaportointiDatabase(config: RaportointiDatabaseConfigBase) extends Logging
     }
   }
 
-  def getLatestSuoritusId: Long =
-    runDbSync(
-      sql"""
-        SELECT greatest(
-          (SELECT max(paatason_suoritus_id) FROM #${schema.name}.r_paatason_suoritus),
-          (SELECT max(osasuoritus_id) FROM #${schema.name}.r_osasuoritus)
-        )
-      """.as[Option[Long]])
-      .head
-      .getOrElse(0)
-
   def updateOpiskeluoikeudet(opiskeluoikeudet: Seq[ROpiskeluoikeusRow], mitätöidytOpiskeluoikeudet: Seq[Oid]): Unit = {
     runDbSync(DBIO.sequence(opiskeluoikeudet.map(ROpiskeluoikeudet.insertOrUpdate)), timeout = 5.minutes)
     runDbSync(ROpiskeluoikeudet.filter(_.opiskeluoikeusOid inSetBind mitätöidytOpiskeluoikeudet).delete, timeout = 5.minutes)
@@ -371,10 +362,27 @@ class RaportointiDatabase(config: RaportointiDatabaseConfigBase) extends Logging
   def loadPäätasonSuoritukset(suoritukset: Seq[RPäätasonSuoritusRow]): Unit =
     runDbSync(RPäätasonSuoritukset ++= suoritukset)
 
+
   def updatePäätasonSuoritukset(suoritukset: Seq[RPäätasonSuoritusRow]): Unit = {
     val opiskeluoikeusOids = suoritukset.map(_.opiskeluoikeusOid).toSet
-    runDbSync(RPäätasonSuoritukset.filter(_.opiskeluoikeusOid inSet opiskeluoikeusOids).delete, timeout = 5.minutes)
-    runDbSync(RPäätasonSuoritukset ++= suoritukset, timeout = 5.minutes)
+    val nykyisetRivit: Map[String, String] = runDbSync(
+      RPäätasonSuoritukset
+        .filter(_.opiskeluoikeusOid inSet opiskeluoikeusOids)
+        .map(r => (r.päätasonSuoritusId, r.dataHash))
+        .result,
+      timeout = 5.minutes
+    ).toMap
+
+    val uudetIdt = suoritukset.map(_.päätasonSuoritusId).toSet
+    val lisättävätTaiPäivitettävätRivit = suoritukset.filter(r => nykyisetRivit.get(r.päätasonSuoritusId).forall(_ != r.dataHash))
+    val poistetutTaiPäivitetytRivit = nykyisetRivit.keySet -- uudetIdt ++ lisättävätTaiPäivitettävätRivit.map(_.päätasonSuoritusId).toSet.intersect(nykyisetRivit.keySet)
+
+    if (poistetutTaiPäivitetytRivit.nonEmpty) {
+      runDbSync(RPäätasonSuoritukset.filter(_.päätasonSuoritusId inSet poistetutTaiPäivitetytRivit).delete, timeout = 5.minutes)
+    }
+    if (lisättävätTaiPäivitettävätRivit.nonEmpty) {
+      runDbSync(RPäätasonSuoritukset ++= lisättävätTaiPäivitettävätRivit, timeout = 5.minutes)
+    }
   }
 
   def loadOsasuoritukset(suoritukset: Seq[ROsasuoritusRow]): Unit =
@@ -394,8 +402,24 @@ class RaportointiDatabase(config: RaportointiDatabaseConfigBase) extends Logging
 
   def updateOsasuoritukset(suoritukset: Seq[ROsasuoritusRow]): Unit = {
     val opiskeluoikeusOids = suoritukset.map(_.opiskeluoikeusOid).toSet
-    runDbSync(ROsasuoritukset.filter(_.opiskeluoikeusOid inSet opiskeluoikeusOids).delete, timeout = 10.minutes)
-    runDbSync(ROsasuoritukset ++= suoritukset, timeout = 10.minutes)
+    val nykyisetRivit: Map[String, String] = runDbSync(
+      ROsasuoritukset
+        .filter(_.opiskeluoikeusOid inSet opiskeluoikeusOids)
+        .map(r => (r.osasuoritusId, r.dataHash))
+        .result,
+      timeout = 10.minutes
+    ).toMap
+
+    val uudetIdt = suoritukset.map(_.osasuoritusId).toSet
+    val lisättävätTaiPäivitettävätRivit = suoritukset.filter(r => nykyisetRivit.get(r.osasuoritusId).forall(_ != r.dataHash))
+    val poistetutTaiPäivitetytRivit = nykyisetRivit.keySet -- uudetIdt ++ lisättävätTaiPäivitettävätRivit.map(_.osasuoritusId).toSet.intersect(nykyisetRivit.keySet)
+
+    if (poistetutTaiPäivitetytRivit.nonEmpty) {
+      runDbSync(ROsasuoritukset.filter(_.osasuoritusId inSet poistetutTaiPäivitetytRivit).delete, timeout = 10.minutes)
+    }
+    if (lisättävätTaiPäivitettävätRivit.nonEmpty) {
+      runDbSync(ROsasuoritukset ++= lisättävätTaiPäivitettävätRivit, timeout = 10.minutes)
+    }
   }
 
   def loadMuuAmmatillinenRaportointi(rows: Seq[MuuAmmatillinenOsasuoritusRaportointiRow]): Unit =

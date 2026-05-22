@@ -68,7 +68,7 @@ case class VstRaportitRepository(raportointiDatabase: RaportointiDatabase) exten
     opiskeluoikeus: ROpiskeluoikeusRow,
     aikajaksot: Map[String, Seq[ROpiskeluoikeusAikajaksoRow]],
     päätasonSuoritukset: Map[String, Seq[RPäätasonSuoritusRow]],
-    osasuoritukset: Map[Long, Seq[ROsasuoritusRow]],
+    osasuoritukset: Map[String, Seq[ROsasuoritusRow]],
     henkilot: Map[String, RHenkilöRow],
   ) = {
     päätasonSuoritukset.getOrElse(opiskeluoikeus.opiskeluoikeusOid, Nil).map(päätasonsuoritus =>
@@ -95,7 +95,7 @@ case class VstRaportitRepository(raportointiDatabase: RaportointiDatabase) exten
   implicit val getResult: GetResult[OpiskeluoikeusPtsAikajaksot] = GetResult[OpiskeluoikeusPtsAikajaksot](pr =>
       OpiskeluoikeusPtsAikajaksot(
         pr.nextString(),
-        pr.nextLong(),
+        pr.nextString(),
         pr.nextArray(),
       ))
 
@@ -127,7 +127,7 @@ case class VstRaportitRepository(raportointiDatabase: RaportointiDatabase) exten
 
   case class OpiskeluoikeusPtsAikajaksot(
     opiskeluoikeusOid: String,
-    päätasonSuoritusId: Long,
+    päätasonSuoritusId: String,
     aikajaksoIds: Seq[Long],
   )
 }

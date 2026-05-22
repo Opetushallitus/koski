@@ -466,9 +466,9 @@ class AmmatillinenTutkintoRaporttiSpec
 
   private def osasuoritusRow(suorituksenTyyppi: String, koulutusmoduulikoodiarvo: String, tutkinnonOsanRyhmä: Option[String]) = {
     ROsasuoritusRow(
-      osasuoritusId = 1L,
+      osasuoritusId = "1",
       ylempiOsasuoritusId = None,
-      päätasonSuoritusId = 1L,
+      päätasonSuoritusId = "1",
       opiskeluoikeusOid = "1",
       suorituksenTyyppi = suorituksenTyyppi,
       koulutusmoduuliKoodiarvo = koulutusmoduulikoodiarvo,
@@ -492,7 +492,8 @@ class AmmatillinenTutkintoRaporttiSpec
       tunnustettu = false,
       tunnustettuRahoituksenPiirissä = false,
       data = mockJValueData(tutkinnonOsanRyhmä),
-      sisältyyOpiskeluoikeuteenOid = None
+      sisältyyOpiskeluoikeuteenOid = None,
+      dataHash = ""
     )
   }
 

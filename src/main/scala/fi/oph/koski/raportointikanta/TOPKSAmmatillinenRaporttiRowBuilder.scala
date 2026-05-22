@@ -3,7 +3,7 @@ package fi.oph.koski.raportointikanta
 import fi.oph.koski.schema.{Suoritus, YhteisenTutkinnonOsanOsaAlueenSuoritus}
 
 object TOPKSAmmatillinenRaporttiRowBuilder {
-  def build(opiskeluoikeudenOid: String, päätasonSuoritusId: Long, os: Suoritus): TOPKSAmmatillinenRaportointiRow = {
+  def build(opiskeluoikeudenOid: String, päätasonSuoritusId: String, os: Suoritus): TOPKSAmmatillinenRaportointiRow = {
     TOPKSAmmatillinenRaportointiRow(
       opiskeluoikeudenOid,
       päätasonSuoritusId,

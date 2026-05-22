@@ -4,7 +4,7 @@ import fi.oph.koski.schema._
 
 
 object MuuAmmatillinenRaporttiRowBuilder {
-  def build(opiskeluoikeudenOid: String, päätasonSuoritusId: Long, os: Suoritus): MuuAmmatillinenOsasuoritusRaportointiRow = {
+  def build(opiskeluoikeudenOid: String, päätasonSuoritusId: String, os: Suoritus): MuuAmmatillinenOsasuoritusRaportointiRow = {
     MuuAmmatillinenOsasuoritusRaportointiRow(
       opiskeluoikeusOid = opiskeluoikeudenOid,
       päätasonSuoritusId = päätasonSuoritusId,

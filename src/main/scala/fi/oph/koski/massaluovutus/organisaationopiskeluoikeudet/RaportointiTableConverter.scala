@@ -3,23 +3,18 @@ package fi.oph.koski.massaluovutus.organisaationopiskeluoikeudet
 import fi.oph.koski.massaluovutus.CsvRecord
 import fi.oph.koski.raportointikanta.{ROsasuoritusRow, RPäätasonSuoritusRow}
 
-object RaportointitableIds {
-  def päätasonSuoritusId(ooOid: String, ptsId: Long): String = s"$ooOid.$ptsId"
-  def osasuoritusId(ooOid: String, ptsId: Long, osId: Long) = s"$ooOid.$ptsId.$osId"
-}
-
 class CsvPäätasonSuoritus(row: RPäätasonSuoritusRow) extends CsvRecord(row) {
   override def get(fieldName: String): Option[Any] = fieldName match {
-    case "päätasonSuoritusId" => Some(RaportointitableIds.päätasonSuoritusId(row.opiskeluoikeusOid, row.päätasonSuoritusId))
+    case "päätasonSuoritusId" => Some(row.päätasonSuoritusId)
     case _ => None
   }
 }
 
 class CsvOsauoritus(row: ROsasuoritusRow) extends CsvRecord(row) {
   override def get(fieldName: String): Option[Any] = fieldName match {
-    case "päätasonSuoritusId" => Some(RaportointitableIds.päätasonSuoritusId(row.opiskeluoikeusOid, row.päätasonSuoritusId))
-    case "osasuoritusId" => Some(RaportointitableIds.osasuoritusId(row.opiskeluoikeusOid, row.päätasonSuoritusId, row.osasuoritusId))
-    case "ylempiOsasuoritusId" => Some(row.ylempiOsasuoritusId.map(RaportointitableIds.osasuoritusId(row.opiskeluoikeusOid, row.päätasonSuoritusId, _)))
+    case "päätasonSuoritusId" => Some(row.päätasonSuoritusId)
+    case "osasuoritusId" => Some(row.osasuoritusId)
+    case "ylempiOsasuoritusId" => Some(row.ylempiOsasuoritusId)
     case _ => None
   }
 }

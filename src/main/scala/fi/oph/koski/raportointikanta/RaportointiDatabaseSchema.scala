@@ -229,7 +229,7 @@ object RaportointiDatabaseSchema {
   class EsiopetusOpiskeluoikeusAikajaksoConfidentialTableTemp(tag: Tag) extends EsiopetusOpiskeluoikeusAikajaksoTable(tag, TempConfidential)
 
   class RPäätasonSuoritusTable(tag: Tag, schema: Schema = Public) extends Table[RPäätasonSuoritusRow](tag, schema.nameOpt, "r_paatason_suoritus") {
-    val päätasonSuoritusId = column[Long]("paatason_suoritus_id", O.PrimaryKey)
+    val päätasonSuoritusId = column[String]("paatason_suoritus_id", O.PrimaryKey)
     val opiskeluoikeusOid = column[String]("opiskeluoikeus_oid", StringIdentifierType)
     val suorituksenTyyppi = column[String]("suorituksen_tyyppi", StringIdentifierType)
     val koulutusmoduuliKoodisto = column[Option[String]]("koulutusmoduuli_koodisto", StringIdentifierType)
@@ -256,13 +256,14 @@ object RaportointiDatabaseSchema {
     val perusteenDiaarinumero = column[Option[String]]("perusteen_diaarinumero", StringIdentifierType)
     val jääLuokalle = column[Option[Boolean]]("jaa_luokalle")
     val data = column[JValue]("data")
+    val dataHash = column[String]("data_hash")
 
     def * = (päätasonSuoritusId :: opiskeluoikeusOid :: suorituksenTyyppi ::
       koulutusmoduuliKoodisto :: koulutusmoduuliKoodiarvo :: koulutusmoduuliKoulutustyyppi ::
       koulutusmoduuliLaajuusArvo :: koulutusmoduuliLaajuusYksikkö :: koulutusmoduuliNimi ::
       tutkinnonNimiPerusteessa :: suorituskieliKoodiarvo :: oppimääräKoodiarvo :: alkamispäivä ::
       vahvistusPäivä :: arviointiArvosanaKoodiarvo :: arviointiArvosanaKoodisto :: arviointiHyväksytty ::
-      arviointiPäivä :: toimipisteOid :: toimipisteNimi :: toimipisteNimiSv :: sisältyyOpiskeluoikeuteenOid :: tutkintonimike :: luokkaTaiRyhmä :: perusteenDiaarinumero :: jääLuokalle :: data ::
+      arviointiPäivä :: toimipisteOid :: toimipisteNimi :: toimipisteNimiSv :: sisältyyOpiskeluoikeuteenOid :: tutkintonimike :: luokkaTaiRyhmä :: perusteenDiaarinumero :: jääLuokalle :: data :: dataHash ::
       HNil).mapTo[RPäätasonSuoritusRow]
   }
 
@@ -273,9 +274,9 @@ object RaportointiDatabaseSchema {
   class RPäätasonSuoritusConfidentialTableTemp(tag: Tag) extends RPäätasonSuoritusTable(tag, TempConfidential)
 
   class ROsasuoritusTable(tag: Tag, schema: Schema = Public) extends Table[ROsasuoritusRow](tag, schema.nameOpt, "r_osasuoritus") {
-    val osasuoritusId = column[Long]("osasuoritus_id", O.PrimaryKey)
-    val ylempiOsasuoritusId = column[Option[Long]]("ylempi_osasuoritus_id")
-    val päätasonSuoritusId = column[Long]("paatason_suoritus_id")
+    val osasuoritusId = column[String]("osasuoritus_id", O.PrimaryKey)
+    val ylempiOsasuoritusId = column[Option[String]]("ylempi_osasuoritus_id")
+    val päätasonSuoritusId = column[String]("paatason_suoritus_id")
     val opiskeluoikeusOid = column[String]("opiskeluoikeus_oid", StringIdentifierType)
     val suorituksenTyyppi = column[String]("suorituksen_tyyppi", StringIdentifierType)
     val koulutusmoduuliKoodisto = column[Option[String]]("koulutusmoduuli_koodisto", StringIdentifierType)
@@ -301,6 +302,7 @@ object RaportointiDatabaseSchema {
     val luokkaAste = column[Option[String]]("luokka_aste", StringIdentifierType)
     val data = column[JValue]("data")
     val sisältyyOpiskeluoikeuteenOid = column[Option[String]]("sisaltyy_opiskeluoikeuteen_oid", StringIdentifierType)
+    val dataHash = column[String]("data_hash")
     def * = (
       osasuoritusId ::
       ylempiOsasuoritusId ::
@@ -330,6 +332,7 @@ object RaportointiDatabaseSchema {
       luokkaAste ::
       data ::
       sisältyyOpiskeluoikeuteenOid ::
+      dataHash ::
       HNil
     ).mapTo[ROsasuoritusRow]
   }
@@ -340,7 +343,7 @@ object RaportointiDatabaseSchema {
 
   class MuuAmmatillinenOsasuoritusRaportointiTable(tag: Tag, schema: Schema = Public) extends Table[MuuAmmatillinenOsasuoritusRaportointiRow](tag, schema.nameOpt, "muu_ammatillinen_raportointi") {
     val opiskeluoikeusOid = column[String]("opiskeluoikeus_oid", StringIdentifierType)
-    val päätasonSuoritusId = column[Long]("paatason_suoritus_id")
+    val päätasonSuoritusId = column[String]("paatason_suoritus_id")
     val toteuttavanLuokanNimi = column[String]("toteuttavan_luokan_nimi")
     val koulutusmoduuliLaajuusArvo = column[Option[Double]]("koulutusmoduuli_laajuus_arvo", SqlType("numeric"))
     val koulutusmoduuliLaajuusYksikkö = column[Option[String]]("koulutusmoduuli_laajuus_yksikko", StringIdentifierType)
@@ -354,7 +357,7 @@ object RaportointiDatabaseSchema {
 
   class TOPKSAmmatillinenOsasuoritusRaportointiTable(tag: Tag, schema: Schema = Public) extends Table[TOPKSAmmatillinenRaportointiRow](tag, schema.nameOpt, "topks_ammatillinen_raportointi") {
     val opiskeluoikeudenOid =  column[String]("opiskeluoikeus_oid", StringIdentifierType)
-    val päätasonSuoritusId = column[Long]("paatason_suoritus_id")
+    val päätasonSuoritusId = column[String]("paatason_suoritus_id")
     val toteuttavanLuokanNimi = column[String]("toteuttavan_luokan_nimi")
     val rahoituksenPiirissä = column[Boolean]("rahoituksen_piirissa")
     val arviointiHyväksytty = column[Boolean]("arviointi_hyvaksytty")
@@ -455,7 +458,7 @@ object RaportointiDatabaseSchema {
   class RYtrTutkintokokonaisuudenSuoritusTable(tag: Tag, schema: Schema = Public) extends Table[RYtrTutkintokokonaisuudenSuoritusRow](tag, schema.nameOpt, "r_ytr_tutkintokokonaisuuden_suoritus") {
     val ytrTutkintokokonaisuudenSuoritusId = column[Long]("ytr_tutkintokokonaisuuden_suoritus_id", O.PrimaryKey)
 
-    val päätasonSuoritusId = column[Long]("paatason_suoritus_id")
+    val päätasonSuoritusId = column[String]("paatason_suoritus_id")
     val opiskeluoikeusOid = column[String]("opiskeluoikeus_oid", StringIdentifierType)
 
     val tyyppiKoodiarvo = column[Option[String]]("tyyppi_koodiarvo", StringIdentifierType)
@@ -485,7 +488,7 @@ object RaportointiDatabaseSchema {
     val ytrTutkintokerranSuoritusId = column[Long]("ytr_tutkintokerran_suoritus_id", O.PrimaryKey)
 
     val ytrTutkintokokonaisuudenSuoritusId = column[Long]("ytr_tutkintokokonaisuuden_suoritus_id")
-    val päätasonSuoritusId = column[Long]("paatason_suoritus_id")
+    val päätasonSuoritusId = column[String]("paatason_suoritus_id")
     val opiskeluoikeusOid = column[String]("opiskeluoikeus_oid", StringIdentifierType)
 
     val tutkintokertaKoodiarvo = column[String]("tutkintokerta_koodiarvo", StringIdentifierType)
@@ -526,7 +529,7 @@ object RaportointiDatabaseSchema {
 
     val ytrTutkintokerranSuoritusId = column[Long]("ytr_tutkintokerran_suoritus_id")
     val ytrTutkintokokonaisuudenSuoritusId = column[Long]("ytr_tutkintokokonaisuuden_suoritus_id")
-    val päätasonSuoritusId = column[Long]("paatason_suoritus_id")
+    val päätasonSuoritusId = column[String]("paatason_suoritus_id")
     val opiskeluoikeusOid = column[String]("opiskeluoikeus_oid", StringIdentifierType)
 
     val suorituksenTyyppi = column[String]("suorituksen_tyyppi", StringIdentifierType)
@@ -889,7 +892,7 @@ sealed trait RSuoritusRow {
 }
 
 case class RPäätasonSuoritusRow(
-                                 päätasonSuoritusId: Long,
+                                 päätasonSuoritusId: String,
                                  opiskeluoikeusOid: String,
                                  suorituksenTyyppi: String,
                                  koulutusmoduuliKoodisto: Option[String],
@@ -916,6 +919,7 @@ case class RPäätasonSuoritusRow(
                                  perusteenDiaarinumero: Option[String],
                                  jääLuokalle: Option[Boolean],
                                  data: JValue,
+                                 dataHash: String,
                                ) extends RSuoritusRow {
   override def matchesWith(x: YleissivistäväRaporttiOppiaineTaiKurssi, lang: String): Boolean = {
     val isPaikallinen = !koulutusmoduuliKoodisto.contains("koskioppiaineetyleissivistava")
@@ -963,9 +967,9 @@ case class RPäätasonSuoritusRow(
 }
 
 case class ROsasuoritusRow(
-  osasuoritusId: Long,
-  ylempiOsasuoritusId: Option[Long],
-  päätasonSuoritusId: Long,
+  osasuoritusId: String,
+  ylempiOsasuoritusId: Option[String],
+  päätasonSuoritusId: String,
   opiskeluoikeusOid: String,
   suorituksenTyyppi: String,
   koulutusmoduuliKoodisto: Option[String],
@@ -990,7 +994,8 @@ case class ROsasuoritusRow(
   tunnustettuRahoituksenPiirissä: Boolean,
   luokkaAste: Option[String] = None,
   data: JValue,
-  sisältyyOpiskeluoikeuteenOid: Option[String]
+  sisältyyOpiskeluoikeuteenOid: Option[String],
+  dataHash: String,
 ) extends RSuoritusRow {
   override def matchesWith(x: YleissivistäväRaporttiOppiaineTaiKurssi, lang: String): Boolean = {
     x match {
@@ -1090,7 +1095,7 @@ case class ROppivelvollisuudestaVapautusRow(
 
 case class MuuAmmatillinenOsasuoritusRaportointiRow(
                                                      opiskeluoikeusOid: String,
-                                                     päätasonSuoritusId: Long,
+                                                     päätasonSuoritusId: String,
                                                      toteuttavanLuokanNimi: String,
                                                      koulutusmoduuliLaajuusArvo: Option[Double] = None,
                                                      koulutusmoduuliLaajuusYksikkö: Option[String] = None,
@@ -1099,7 +1104,7 @@ case class MuuAmmatillinenOsasuoritusRaportointiRow(
 
 case class TOPKSAmmatillinenRaportointiRow(
                                             opiskeluoikeudenOid: String,
-                                            päätasonSuoritusId: Long,
+                                            päätasonSuoritusId: String,
                                             toteuttavanLuokanNimi: String,
                                             rahoituksenPiirissä: Boolean,
                                             arviointiHyväksytty: Boolean,
@@ -1111,7 +1116,7 @@ case class TOPKSAmmatillinenRaportointiRow(
 case class RYtrTutkintokokonaisuudenSuoritusRow(
                                                  ytrTutkintokokonaisuudenSuoritusId: Long,
 
-                                                 päätasonSuoritusId: Long,
+                                                 päätasonSuoritusId: String,
                                                  opiskeluoikeusOid: String,
 
                                                  tyyppiKoodiarvo: Option[String],
@@ -1128,7 +1133,7 @@ case class RYtrTutkintokerranSuoritusRow(
                                           ytrTutkintokerranSuoritusId: Long,
 
                                           ytrTutkintokokonaisuudenSuoritusId: Long,
-                                          päätasonSuoritusId: Long,
+                                          päätasonSuoritusId: String,
                                           opiskeluoikeusOid: String,
 
                                           tutkintokertaKoodiarvo: String,
@@ -1149,7 +1154,7 @@ case class RYtrKokeenSuoritusRow(
 
                                   ytrTutkintokerranSuoritusId: Long,
                                   ytrTutkintokokonaisuudenSuoritusId: Long,
-                                  päätasonSuoritusId: Long,
+                                  päätasonSuoritusId: String,
                                   opiskeluoikeusOid: String,
 
                                   // Jaetut kentät ROsasuoritusRow kanssa

@@ -14,7 +14,7 @@ case class PerusopetukseenValmistavanRaportitRepository(db: DB) extends QueryMet
 
   type OpiskeluoikeusOid = String
   type Tunnisteet = (OpiskeluoikeusOid)
-  private type PäätasonSuoritusId = Long
+  private type PäätasonSuoritusId = String
 
   private val defaultTimeout: FiniteDuration = 5.minutes
 

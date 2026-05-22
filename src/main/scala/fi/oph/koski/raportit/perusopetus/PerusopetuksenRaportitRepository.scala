@@ -18,7 +18,7 @@ import scala.concurrent.duration.DurationInt
 case class PerusopetuksenRaportitRepository(db: DB) extends QueryMethods with RaportointikantaTableQueries {
 
   type OpiskeluoikeusOid = String
-  type PäätasonSuoritusId = Long
+  type PäätasonSuoritusId = String
   type AikajaksoId = Long
   type Tunnisteet = (OpiskeluoikeusOid, Seq[PäätasonSuoritusId], Seq[AikajaksoId])
 
@@ -321,7 +321,7 @@ case class PerusopetuksenRaportitRepository(db: DB) extends QueryMethods with Ra
 }
 
 case class VuosiluokanTiedot(
-   id: Long,
+   id: String,
    vahvistuspäivä: Option[LocalDate],
    vuosiluokka: String
 )

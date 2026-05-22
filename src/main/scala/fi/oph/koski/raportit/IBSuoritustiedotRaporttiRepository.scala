@@ -18,7 +18,7 @@ case class IBSuoritustiedotRaporttiRepository(
   private val defaultTimeout = 5.minutes
   private type OppijaOid = String
   private type OpiskeluoikeusOid = String
-  private type PäätasonSuoritusId = Long
+  private type PäätasonSuoritusId = String
   private type AikajaksoId = Long
 
   def suoritustiedot(
