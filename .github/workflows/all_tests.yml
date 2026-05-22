@@ -240,6 +240,7 @@ jobs:
       - uses: ./.github/actions/koski_backend_test
         with:
           suites: |
+            fi.oph.koski.opensearch, \
             fi.oph.koski.oppivelvollisuustieto, \
             fi.oph.koski.ovara, \
             fi.oph.koski.valvira, \

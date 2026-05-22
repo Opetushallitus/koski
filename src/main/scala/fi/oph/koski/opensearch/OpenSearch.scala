@@ -1,7 +1,7 @@
 package fi.oph.koski.opensearch
 
 import com.typesafe.config.Config
-import fi.oph.koski.http.Http
+import fi.oph.koski.http.{Http, RequestSigner}
 import fi.oph.koski.log.Logging
 import fi.oph.koski.util.PaginationSettings
 
@@ -15,7 +15,20 @@ case class OpenSearch(config: Config) extends Logging {
 
   private val url = s"$protocol://$host:$port"
 
-  val http: Http = Http(url, "opensearch")
+  // TOR-1466: SigV4 signing for AWS-managed OpenSearch under FGAC. Feature-flagged
+  // so the signer can ship in code with no behavior change, then be activated
+  // per env via AppConfig (opensearch.useIamAuth=true) before the irreversible
+  // FGAC enable step on the domain.
+  private val signer: Option[RequestSigner] =
+    if (config.getBoolean("opensearch.useIamAuth")) {
+      val region = config.getString("opensearch.region")
+      logger.info(s"OpenSearch IAM auth enabled, signing requests with SigV4 (region=$region)")
+      Some(new SigV4Signer(region))
+    } else {
+      None
+    }
+
+  val http: Http = Http(url, "opensearch").copy(signer = signer)
 }
 
 object OpenSearch {

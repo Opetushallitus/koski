@@ -172,7 +172,15 @@ object Http extends Logging {
 
 }
 
-case class Http(root: String, client: Client[IO]) extends Logging {
+/** Optional pre-send transformer for outgoing requests. Used to inject SigV4
+  * signatures for AWS-managed OpenSearch when the FGAC IAM-auth feature is on.
+  * Implementations should be idempotent and side-effect-free apart from
+  * resolving credentials. */
+trait RequestSigner {
+  def sign(request: Request[IO]): IO[Request[IO]]
+}
+
+case class Http(root: String, client: Client[IO], signer: Option[RequestSigner] = None) extends Logging {
   private val DefaultTimeout = 2.minutes
 
   private val rootUri = Http.uriFromString(root)
@@ -218,12 +226,17 @@ case class Http(root: String, client: Client[IO]) extends Logging {
     (request: Request[IO], uriTemplate: String, timeout: FiniteDuration)
     (decoder: Decode[ResultType])
   : IO[ResultType] = {
-    runRequest(uriTemplate, decoder, timeout)(
-      request
-        .withUri(addRoot(request.uri))
-        .withHeaders(request.headers ++ commonHeaders)
-        .addCookie(OpintopolkuCsrfToken.serviceCookie)
-    )
+    val prepared = request
+      .withUri(addRoot(request.uri))
+      .withHeaders(request.headers ++ commonHeaders)
+      .addCookie(OpintopolkuCsrfToken.serviceCookie)
+
+    val readyToSend: IO[Request[IO]] = signer match {
+      case Some(s) => s.sign(prepared)
+      case None    => IO.pure(prepared)
+    }
+
+    readyToSend.flatMap(runRequest(uriTemplate, decoder, timeout))
   }
 
   private def runRequest[ResultType]
