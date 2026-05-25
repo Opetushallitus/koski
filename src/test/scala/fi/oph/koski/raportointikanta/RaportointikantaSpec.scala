@@ -1,10 +1,11 @@
 package fi.oph.koski.raportointikanta
 
-import fi.oph.koski.api.misc.{OpiskeluoikeudenMitätöintiJaPoistoTestMethods, OpiskeluoikeusTestMethodsAmmatillinen}
+import fi.oph.koski.api.misc.{OpiskeluoikeudenMitätöintiJaPoistoTestMethods, OpiskeluoikeusTestMethodsAmmatillinen, PaatasonSuoritusTestMethods}
 import fi.oph.koski.db.KoskiTables.{KoskiOpiskeluOikeudet, PoistetutOpiskeluoikeudet, YtrOpiskeluOikeudet}
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
-import fi.oph.koski.documentation.ExampleData.{helsinki, suomi}
-import fi.oph.koski.documentation.{AmmatillinenExampleData, ExampleData, YleissivistavakoulutusExampleData}
+import fi.oph.koski.documentation.ExampleData.{helsinki, longTimeAgo, suomi}
+import fi.oph.koski.documentation.PerusopetusExampleData.{oppiaine, suoritus, vuosiviikkotuntia}
+import fi.oph.koski.documentation.{AmmatillinenExampleData, ExampleData, PerusopetusExampleData, YleissivistavakoulutusExampleData}
 import fi.oph.koski.henkilo.{KoskiSpecificMockOppijat, LaajatOppijaHenkilöTiedot}
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat.{master, masterEiKoskessa, turvakielto}
 import fi.oph.koski.json.{JsonFiles, JsonSerializer}
@@ -37,7 +38,8 @@ class RaportointikantaSpec
     with DatabaseTestMethods
     with DirtiesFixtures
     with OpiskeluoikeudenMitätöintiJaPoistoTestMethods
-    with YtrDownloadTestMethods {
+    with YtrDownloadTestMethods
+    with PaatasonSuoritusTestMethods {
   override implicit val formats: DefaultFormats = DefaultFormats
 
   override protected def alterFixture(): Unit = {
@@ -1244,6 +1246,158 @@ class RaportointikantaSpec
 
       opiskeluoikeusCount should be(alkuperäinenOpiskeluoikeusCount + 1)
       mitätöityOpiskeluoikeusCount should be (alkuperäinenMitätöityOpiskeluoikeusCount - 1)
+    }
+  }
+
+  "Inkrementaalinen lataus päivittää suoritusrivit oikein" - {
+    def perusopetusOoWithOsasuoritukset = PerusopetusExampleData.opiskeluoikeus(
+      päättymispäivä = None,
+      suoritukset = List(
+        PerusopetusExampleData.yhdeksännenLuokanSuoritus,
+        PerusopetusExampleData.perusopetuksenOppimääränSuoritus
+      )
+    )
+
+    "Uudet suoritusrivit lisätään raportointikantaan" in {
+      KoskiApplicationForTests.fixtureCreator.resetFixtures(reloadRaportointikanta = true, reloadYtrData = true)
+
+      val opiskeluoikeus = postAndGetOpiskeluoikeus(perusopetusOoWithOsasuoritukset, KoskiSpecificMockOppijat.tyhjä)
+      val opiskeluoikeusOid = opiskeluoikeus.oid.get
+
+      päivitäRaportointikantaInkrementaalisesti()
+
+      mainRaportointiDb.runDbSync(
+        mainRaportointiDb.RPäätasonSuoritukset.filter(_.opiskeluoikeusOid === opiskeluoikeusOid).result
+      ).length shouldBe 2
+
+      mainRaportointiDb.runDbSync(
+        mainRaportointiDb.ROsasuoritukset.filter(_.opiskeluoikeusOid === opiskeluoikeusOid).result
+      ) should not be empty
+    }
+
+    "Muuttuneet suoritusrivit päivitetään raportointikantaan" in {
+      KoskiApplicationForTests.fixtureCreator.resetFixtures(reloadRaportointikanta = true, reloadYtrData = true)
+
+      val oo = postAndGetOpiskeluoikeus(perusopetusOoWithOsasuoritukset, KoskiSpecificMockOppijat.tyhjä)
+      val opiskeluoikeusOid = oo.oid.get
+      päivitäRaportointikantaInkrementaalisesti()
+
+      mainRaportointiDb.runDbSync(
+        mainRaportointiDb.RPäätasonSuoritukset
+          .filter(r => r.opiskeluoikeusOid === opiskeluoikeusOid && r.suorituksenTyyppi === "perusopetuksenvuosiluokka")
+          .result
+      ).head.luokkaTaiRyhmä shouldBe Some("9C")
+
+      mainRaportointiDb.runDbSync(
+        mainRaportointiDb.ROsasuoritukset
+          .filter(r => r.opiskeluoikeusOid === opiskeluoikeusOid && r.koulutusmoduuliKoodiarvo === "MA")
+          .result
+      ).head.arviointiArvosanaKoodiarvo shouldBe Some("9")
+
+      createOrUpdate(
+        KoskiSpecificMockOppijat.tyhjä,
+        PerusopetusExampleData.opiskeluoikeus(
+          suoritukset = List(
+          PerusopetusExampleData.yhdeksännenLuokanSuoritus.copy(
+            luokka = "9A"
+          ),
+          PerusopetusExampleData.perusopetuksenOppimääränSuoritus.copy(
+            osasuoritukset = PerusopetusExampleData
+              .perusopetuksenOppimääränSuoritus
+              .osasuoritukset.map(_.filter(_.koulutusmoduuli.tunniste.koodiarvo != "MA") :+
+                suoritus(oppiaine("MA", vuosiviikkotuntia(1))).copy(arviointi = PerusopetusExampleData.arviointi(10)))
+          )
+        )).copy(
+          oid = oo.oid
+        )
+      )
+      päivitäRaportointikantaInkrementaalisesti()
+
+      mainRaportointiDb.runDbSync(
+        mainRaportointiDb.RPäätasonSuoritukset
+          .filter(r => r.opiskeluoikeusOid === opiskeluoikeusOid && r.suorituksenTyyppi === "perusopetuksenvuosiluokka")
+          .result
+      ).head.luokkaTaiRyhmä shouldBe Some("9A")
+
+      mainRaportointiDb.runDbSync(
+        mainRaportointiDb.ROsasuoritukset
+          .filter(r => r.opiskeluoikeusOid === opiskeluoikeusOid && r.koulutusmoduuliKoodiarvo === "MA")
+          .result
+      ).head.arviointiArvosanaKoodiarvo shouldBe Some("10")
+    }
+
+    "Poistetut suoritusrivit poistetaan raportointikannasta" in {
+      KoskiApplicationForTests.fixtureCreator.resetFixtures(reloadRaportointikanta = true, reloadYtrData = true)
+
+      val oo = postAndGetOpiskeluoikeus(perusopetusOoWithOsasuoritukset, KoskiSpecificMockOppijat.tyhjä)
+      val opiskeluoikeusOid = oo.oid.get
+      päivitäRaportointikantaInkrementaalisesti()
+
+      mainRaportointiDb.runDbSync(
+        mainRaportointiDb.RPäätasonSuoritukset.filter(_.opiskeluoikeusOid === opiskeluoikeusOid).result
+      ) should have size 2
+
+      mainRaportointiDb.runDbSync(
+        mainRaportointiDb.ROsasuoritukset
+          .filter(r => r.opiskeluoikeusOid === opiskeluoikeusOid && r.koulutusmoduuliKoodiarvo === "MA")
+          .result
+      ) should have size 1
+
+      deletePäätasonSuoritus(opiskeluoikeusOid, oo.versionumero.get, oo.suoritukset.find(_.tyyppi.koodiarvo == "perusopetuksenoppimaara").get) {
+        verifyResponseStatusOk()
+      }
+
+      päivitäRaportointikantaInkrementaalisesti()
+
+      mainRaportointiDb.runDbSync(
+        mainRaportointiDb.RPäätasonSuoritukset.filter(_.opiskeluoikeusOid === opiskeluoikeusOid).result
+      ) should have size 1
+
+      mainRaportointiDb.runDbSync(
+        mainRaportointiDb.ROsasuoritukset
+          .filter(r => r.opiskeluoikeusOid === opiskeluoikeusOid && r.koulutusmoduuliKoodiarvo === "MA")
+          .result
+      ).length shouldBe 0
+    }
+
+    "Suoritusrivit päivitetään kun opiskeluoikeuden sisältyyOpiskeluoikeuteenOid muuttuu" in {
+      KoskiApplicationForTests.fixtureCreator.resetFixtures(reloadRaportointikanta = true, reloadYtrData = true)
+
+      val oo = postAndGetOpiskeluoikeus(perusopetusOoWithOsasuoritukset, KoskiSpecificMockOppijat.tyhjä)
+      val opiskeluoikeusOid = oo.oid.get
+      päivitäRaportointikantaInkrementaalisesti()
+
+      val suorituksetEnnen = mainRaportointiDb.runDbSync(
+        mainRaportointiDb.RPäätasonSuoritukset.filter(_.opiskeluoikeusOid === opiskeluoikeusOid).result
+      )
+      val osasuorituksetEnnen = mainRaportointiDb.runDbSync(
+        mainRaportointiDb.ROsasuoritukset.filter(_.opiskeluoikeusOid === opiskeluoikeusOid).result
+      )
+
+      suorituksetEnnen should not be empty
+      suorituksetEnnen.foreach(_.sisältyyOpiskeluoikeuteenOid shouldBe None)
+      osasuorituksetEnnen should not be empty
+      osasuorituksetEnnen.foreach(_.sisältyyOpiskeluoikeuteenOid shouldBe None)
+
+      val opiskeluoikeusRow = runDbSync(KoskiOpiskeluOikeudet.filter(_.oid === opiskeluoikeusOid).result).head
+      val sisältyyOpiskeluoikeusRow = runDbSync(KoskiOpiskeluOikeudet.filter(_.oid !== opiskeluoikeusOid).result).head
+
+      päivitäOpiskeluoikeus(opiskeluoikeusRow.copy(sisältäväOpiskeluoikeusOid = Some(sisältyyOpiskeluoikeusRow.oid)))
+      KoskiApplicationForTests.päivitetytOpiskeluoikeudetJono.lisää(opiskeluoikeusOid)
+
+      päivitäRaportointikantaInkrementaalisesti()
+
+      val suorituksetJälkeen = mainRaportointiDb.runDbSync(
+        mainRaportointiDb.RPäätasonSuoritukset.filter(_.opiskeluoikeusOid === opiskeluoikeusOid).result
+      )
+      val osasuorituksetJälkeen = mainRaportointiDb.runDbSync(
+        mainRaportointiDb.ROsasuoritukset.filter(_.opiskeluoikeusOid === opiskeluoikeusOid).result
+      )
+
+      suorituksetJälkeen should not be empty
+      suorituksetJälkeen.foreach(_.sisältyyOpiskeluoikeuteenOid shouldBe Some(sisältyyOpiskeluoikeusRow.oid))
+      osasuorituksetJälkeen should not be empty
+      osasuorituksetJälkeen.foreach(_.sisältyyOpiskeluoikeuteenOid shouldBe Some(sisältyyOpiskeluoikeusRow.oid))
     }
   }
 
