@@ -118,7 +118,7 @@ class MassaluovutusService(application: KoskiApplication) extends GlobalExecutio
   }
 
   def systemIsOverloaded: Boolean =
-    (application.replicaDatabase.replayLag.toSeconds > maxAllowedDatabaseReplayLag.getSeconds) || databaseLoadLimiter.checkOverloading
+    (application.masterDatabase.replayLag.toSeconds > maxAllowedDatabaseReplayLag.getSeconds) || databaseLoadLimiter.checkOverloading
 
   def cancelAllTasks(reason: String): Boolean = queries.setRunningTasksFailed(reason)
 

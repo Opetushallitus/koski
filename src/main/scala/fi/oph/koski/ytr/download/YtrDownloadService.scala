@@ -50,7 +50,7 @@ class YtrDownloadService(
     var tooMuchLagOnLastCheck = false
     val task = new java.util.TimerTask {
       def run() = {
-        val replayLag = application.replicaDatabase.replayLag.toSeconds
+        val replayLag = application.masterDatabase.replayLag.toSeconds
         if (replayLag > maxAllowedLagInSeconds) {
           logger.warn(s"Replay lag (${replayLag} s) is above threshold - will sleep ${longerSleepPerStudentInMs} ms between oppijas")
           extraSleepPerStudentInMs = longerSleepPerStudentInMs
