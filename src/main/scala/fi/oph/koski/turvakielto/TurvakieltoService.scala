@@ -8,11 +8,18 @@ import scala.util.chaining._
 object TurvakieltoService {
   def poistaOpiskeluoikeudenTurvakiellonAlaisetTiedot(opiskeluoikeus: Opiskeluoikeus): Opiskeluoikeus =
     opiskeluoikeus match {
-      case oo: KoskeenTallennettavaOpiskeluoikeus => oo
-        .withOppilaitos(turvakieltooppilaitos)
-        .withKoulutustoimija(turvakieltokoulutustoimija)
-        .withHistoria(None)
-        .withSuoritukset(oo.suoritukset.map(poistaPäätasonSuorituksenTurvakiellonAlaisetTiedot))
+      case oo: KoskeenTallennettavaOpiskeluoikeus =>
+        val withOrganisaatiot = oo
+          .withOppilaitos(turvakieltooppilaitos)
+          .withKoulutustoimija(turvakieltokoulutustoimija)
+        // Useat tyypit (esim. YlioppilastutkinnonOpiskeluoikeus) perivät organisaatiohistorian
+        // kiinteänä def-jäsenenä eivätkä sisällytä sitä konstruktoriparametrina, jolloin lensin
+        // ajaminen heittäisi NoSuchMethodExceptionin. Ohitetaan jos ei ole muutettavaa.
+        val withHistoria =
+          if (withOrganisaatiot.organisaatiohistoria.isDefined) withOrganisaatiot.withHistoria(None)
+          else withOrganisaatiot
+        withHistoria
+          .withSuoritukset(withHistoria.suoritukset.map(poistaPäätasonSuorituksenTurvakiellonAlaisetTiedot))
       case oo: Any => oo
     }
 
