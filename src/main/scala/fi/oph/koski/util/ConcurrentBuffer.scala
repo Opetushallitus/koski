@@ -9,6 +9,10 @@ class ConcurrentBuffer[T] {
     xs += x
   }
 
+  def appendAll(ys: Iterable[T]): Unit = synchronized {
+    xs ++= ys
+  }
+
   def popAll: List[T] = synchronized {
     val values = xs.toList
     xs.clear()
