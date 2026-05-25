@@ -90,7 +90,7 @@ trait SuorituspalveluQuery extends OpetushallituksenMassaluovutusQueryParameters
 
   private def selectDbByLag(application: KoskiApplication, opiskeluoikeusAikaleima: Timestamp): DB = {
     val safetyLimit = 15.seconds
-    val replicaLag = application.replicaDatabase.replayLag
+    val replicaLag = application.masterDatabase.replayLag
     val totalLagSeconds = safetyLimit.toSeconds + replicaLag.toSeconds
     if (opiskeluoikeusAikaleima.toLocalDateTime.plusSeconds(totalLagSeconds).isAfter(LocalDateTime.now())) {
       logger.warn(s"Using master database for query due to replica lag of $replicaLag")
