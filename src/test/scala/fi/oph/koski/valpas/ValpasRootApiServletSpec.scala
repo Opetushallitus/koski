@@ -71,6 +71,12 @@ class ValpasRootApiServletSpec extends ValpasTestBase with BeforeAndAfterEach {
     }
   }
 
+  "Nivelvaiheen oppijalistan hakeminen onnistuu" taggedAs(ValpasBackendTag) in {
+    authGet(getNivelvaiheOppijaListUrl(MockOrganisaatiot.jyväskylänNormaalikoulu)) {
+      verifyResponseStatusOk()
+    }
+  }
+
   "Ei-oppivelvollisen oppijan tietojen lataaminen ei onnistu" taggedAs(ValpasBackendTag) in {
     val oppijaOid = ValpasMockOppijat.eiOppivelvollinenSyntynytEnnen2004.oid
     authGet(getOppijaUrl(oppijaOid)) {
@@ -483,6 +489,7 @@ class ValpasRootApiServletSpec extends ValpasTestBase with BeforeAndAfterEach {
 
   def getOppijaListUrl(organisaatioOid: String) = s"/valpas/api/oppijat/$organisaatioOid"
   def getOppijaListHakutiedoillaUrl(organisaatioOid: String) = s"/valpas/api/oppijat/$organisaatioOid/hakutiedot"
+  def getNivelvaiheOppijaListUrl(organisaatioOid: String) = s"/valpas/api/oppijat-nivelvaihe/$organisaatioOid"
 
   def withoutVariatingEntries[T](headers: Map[String, T]) =
     headers.view.filterKeys(_ != "Date").toMap

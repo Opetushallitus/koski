@@ -37,15 +37,12 @@ class OpiskeluoikeusLisätiedotRepository(valpasDatabase: ValpasDatabase, config
     if (keys.isEmpty) {
       Seq()
     } else {
+      val keySet = keys.toSet
+      val oppijaOids = keys.map(_.oppijaOid).toSet
       runDbSync(OpiskeluoikeusLisätiedot
-        .filter { t =>
-          keys.map(k =>
-            t.oppijaOid === k.oppijaOid &&
-              t.opiskeluoikeusOid === k.opiskeluoikeusOid &&
-              t.oppilaitosOid === k.oppilaitosOid
-          ).reduceLeft(_ || _)
-        }.result
-      )
+        .filter(t => t.oppijaOid inSet oppijaOids)
+        .result
+      ).filter(row => keySet.contains(OpiskeluoikeusLisätiedotKey(row.oppijaOid, row.opiskeluoikeusOid, row.oppilaitosOid)))
     }
   }
 
