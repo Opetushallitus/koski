@@ -214,6 +214,7 @@ jobs:
             fi.oph.koski.sure, \
             fi.oph.koski.supa, \
             fi.oph.koski.tools, \
+            fi.oph.koski.turvakielto, \
             fi.oph.koski.userdirectory, \
             fi.oph.koski.util, \
             fi.oph.koski.versioning
