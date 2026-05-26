@@ -138,7 +138,12 @@ case class Oppilaitos(
   oppilaitosnumero: Option[AktiivisetJaPäättyneetOpinnotKoodistokoodiviite],
   nimi: Option[schema.LocalizedString],
   kotipaikka: Option[AktiivisetJaPäättyneetOpinnotKoodistokoodiviite]
-)
+) {
+  @Description("Oppilaitoksen tyyppi")
+  @SyntheticProperty
+  def oppilaitostyyppi: Option[AktiivisetJaPäättyneetOpinnotKoodistokoodiviite] =
+    schema.OppilaitostyyppiLookup.lookup(oid).map(AktiivisetJaPäättyneetOpinnotKoodistokoodiviite.fromKoskiSchema)
+}
 
 case class Koulutustoimija(
   oid: String,

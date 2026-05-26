@@ -27,7 +27,7 @@ import fi.oph.koski.omattiedot.HuoltajaService
 import fi.oph.koski.opiskeluoikeus._
 import fi.oph.koski.oppija.KoskiOppijaFacade
 import fi.oph.koski.oppilaitos.OppilaitosRepository
-import fi.oph.koski.organisaatio.{OrganisaatioRepository, OrganisaatioService}
+import fi.oph.koski.organisaatio.{OppilaitostyyppiResolver, OrganisaatioRepository, OrganisaatioService}
 import fi.oph.koski.perustiedot.{OpiskeluoikeudenPerustiedotIndexer, OpiskeluoikeudenPerustiedotRepository, PerustiedotManualSyncRepository, PerustiedotSyncRepository}
 import fi.oph.koski.pulssi.{KoskiPulssi, PrometheusRepository}
 import fi.oph.koski.raportointikanta.{Confidential, Public, RaportointiDatabase, RaportointikantaService}
@@ -81,6 +81,10 @@ class KoskiApplication(
   lazy val casService = new CasService(config)
   lazy val casOppijaCreationService = new CasOppijaCreationService(henkilöRepository)
   lazy val organisaatioRepository = OrganisaatioRepository(config, koodistoViitePalvelu)
+  lazy val oppilaitostyyppiResolver = new OppilaitostyyppiResolver(organisaatioRepository, koodistoViitePalvelu)
+  // Asetetaan lukuhetken oppilaitostyyppi-haku globaaliin (Oppilaitos.oppilaitostyyppi-synteettinen kenttä käyttää tätä).
+  // Asetetaan eagerina luokan rungossa, jotta se kattaa sekä tuotannon että testit (KoskiApplicationForTests periytyy tästä).
+  fi.oph.koski.schema.OppilaitostyyppiLookup.lookup = oid => oppilaitostyyppiResolver.oppilaitostyyppi(oid)
   lazy val organisaatioService = new OrganisaatioService(this)
   lazy val directoryClient = DirectoryClient(config, casService)
   lazy val luovutuspalveluV2ClientListService = LuovutuspalveluV2ClientListService(config)
