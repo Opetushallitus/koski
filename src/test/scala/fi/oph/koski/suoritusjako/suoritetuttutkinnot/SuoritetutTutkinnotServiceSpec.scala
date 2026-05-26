@@ -256,6 +256,24 @@ class SuoritetutTutkinnotServiceSpec
       })
     }
 
+    "Oppilaitokselle palautetaan tämänhetkinen oppilaitostyyppi" in {
+      val oppija = KoskiSpecificMockOppijat.masterYlioppilasJaAmmattilainen
+
+      val result = suoritusjakoService.findSuoritetutTutkinnotOppija(oppija.oid)
+
+      result.isRight should be(true)
+
+      result.map(o => {
+        val kiipulanOpiskeluoikeus =
+          o.opiskeluoikeudet
+            .find(_.oppilaitos.map(_.oid) == Some(MockOrganisaatiot.kiipulanAmmattiopisto))
+            .get
+
+        // Kiipulan ammattiopisto on ammatillinen erityisoppilaitos (oppilaitostyyppi 22)
+        kiipulanOpiskeluoikeus.oppilaitos.flatMap(_.oppilaitostyyppi).map(_.koodiarvo) should be(Some("22"))
+      })
+    }
+
   }
 
   "YO-tutkinto" - {

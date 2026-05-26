@@ -82,6 +82,10 @@ case class EnumValues(values: Set[String]) extends RepresentationalMetadata {
   }
 }
 
+/* Tämä kenttä täydennetään lukuhetkellä (ks. OppilaitostyyppiLookup) eikä sitä tallenneta opiskeluoikeuden dataan.
+   KoskiTables.serialize suodattaa tällä merkityt kentät pois tallennettavasta JSONista. */
+case class EiTallennetaOpiskeluoikeudenDataan() extends RepresentationalMetadata
+
 case class MapKoulutustoimijaOidToTuntematonOppilaitos() extends RepresentationalMetadata
 case class MapOidOrganisaatioToOppilaitos() extends RepresentationalMetadata
 case class MapOidOrganisaatioToKoulutustoimija() extends RepresentationalMetadata

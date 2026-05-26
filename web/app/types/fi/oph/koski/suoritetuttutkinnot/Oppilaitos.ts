@@ -8,17 +8,19 @@ import { LocalizedString } from '../schema/LocalizedString'
  */
 export type Oppilaitos = {
   $class: 'fi.oph.koski.suoritetuttutkinnot.Oppilaitos'
-  oid: string
   oppilaitosnumero?: SuoritetutTutkinnotKoodistokoodiviite
-  nimi?: LocalizedString
+  oppilaitostyyppi?: SuoritetutTutkinnotKoodistokoodiviite
   kotipaikka?: SuoritetutTutkinnotKoodistokoodiviite
+  oid: string
+  nimi?: LocalizedString
 }
 
 export const Oppilaitos = (o: {
-  oid: string
   oppilaitosnumero?: SuoritetutTutkinnotKoodistokoodiviite
-  nimi?: LocalizedString
+  oppilaitostyyppi?: SuoritetutTutkinnotKoodistokoodiviite
   kotipaikka?: SuoritetutTutkinnotKoodistokoodiviite
+  oid: string
+  nimi?: LocalizedString
 }): Oppilaitos => ({
   $class: 'fi.oph.koski.suoritetuttutkinnot.Oppilaitos',
   ...o
