@@ -268,12 +268,25 @@ class TiedonsiirtoService(
         val id = tiedonsiirto.id
         (doc, id)
       }
-      docsAndIds
-        .grouped(1000)
-        .map(group => index.updateBulk(group, upsert = true, refresh = refresh))
-        .collect { case (errors, response) if errors => JsonMethods.pretty(response) }
-        .foreach(resp => logger.error(s"OpenSearch indexing failed: $resp"))
-      logger.debug(s"Done syncing ${tiedonsiirrot.length} tiedonsiirrot documents")
+      try {
+        docsAndIds
+          .grouped(1000)
+          .map(group => index.updateBulk(group, upsert = true, refresh = refresh))
+          .collect { case (errors, response) if errors => JsonMethods.pretty(response) }
+          .foreach(resp => logger.error(s"OpenSearch indexing failed: $resp"))
+        logger.debug(s"Done syncing ${tiedonsiirrot.length} tiedonsiirrot documents")
+      } catch {
+        // HTTP-level failures (e.g. 401 from FGAC before role mapping, 5xx,
+        // network errors) throw out of updateBulk. Without this catch, popped
+        // items in `tiedonsiirrot` would be dropped on the floor — the
+        // tiedonsiirto-v2 index is the only durable home for these docs and
+        // there's no retry. Re-enqueue the whole batch so the next scheduler
+        // tick retries. updateBulk uses upsert semantics with stable doc IDs,
+        // so re-doing partially-succeeded items is idempotent.
+        case e: Throwable =>
+          tiedonsiirtoBuffer.appendAll(tiedonsiirrot)
+          logger.error(e)(s"OpenSearch sync failed; re-enqueued ${tiedonsiirrot.length} tiedonsiirrot docs for retry")
+      }
     }
   }
 

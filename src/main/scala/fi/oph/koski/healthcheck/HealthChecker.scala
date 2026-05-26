@@ -35,12 +35,18 @@ class HealthChecker(val application: KoskiApplication) extends Logging with Timi
     application.validator.updateFieldsAndValidateAsJson(Oppija(OidHenkilö(oid), List(perustutkintoOpiskeluoikeusValmis())))
   }
 
-  val internalSystems: Seq[Subsystem] = List(
-    KoskiDatabase,
-    RaportointiDatabase,
-    ValpasDatabase,
-    PerustiedotIndex,
-    TiedonsiirtoIndex,
+  // TOR-1466: the OpenSearch subsystem checks (PerustiedotIndex, TiedonsiirtoIndex)
+  // are configurably included in the ALB-facing healthcheck. Default keeps the
+  // pre-1466 behavior of treating OS index reachability as ECS-task-fatal.
+  // Flip the flag to false during planned OS operations (FGAC enable + bootstrap)
+  // where transient 401s would otherwise crash-loop the app via ECS rotation.
+  // The external /healthcheck (non-ALB) endpoint always checks OS regardless.
+  private val includeOpensearchSubsystems: Boolean =
+    application.config.getBoolean("healthcheck.includeOpensearchSubsystems")
+
+  val internalSystems: Seq[Subsystem] = (
+    List[Subsystem](KoskiDatabase, RaportointiDatabase, ValpasDatabase) ++
+      (if (includeOpensearchSubsystems) List[Subsystem](PerustiedotIndex, TiedonsiirtoIndex) else List.empty)
   ) ++ (
     if (Environment.isUnitTestEnvironment(application.config)) {
       List(MockSystemForTests)
