@@ -55,8 +55,10 @@ class LocalizedSchemaJson(localizationsSnapshot: () => Map[String, LocalizedStri
   }
 
   private def annotateClassDefinition(classJson: JObject, classSchema: ClassSchema, lookup: Map[String, LocalizedString]): JObject = {
-    val classKeys = KoskiSpecificSchemaLocalization.description(classSchema).map(_._1)
-    val withClassTrans = mergeTranslation(classJson, translationField(classKeys, lookup))
+    val classDescriptions = KoskiSpecificSchemaLocalization.description(classSchema)
+    val (withDescription, overriddenKeys) = overrideDescription(classJson, classDescriptions, lookup)
+    val entries = asEntries(classDescriptions, withFiFallback = true)
+    val withClassTrans = mergeTranslation(withDescription, translationField(entries, lookup, overriddenKeys))
     updateField(withClassTrans, "properties") {
       case JObject(propEntries) =>
         JObject(propEntries.map { case (key, propJson) =>
@@ -71,20 +73,67 @@ class LocalizedSchemaJson(localizationsSnapshot: () => Map[String, LocalizedStri
 
   private def annotateProperty(propJson: JObject, property: Property, lookup: Map[String, LocalizedString]): JObject = {
     import KoskiSpecificSchemaLocalization._
-    val keys: List[String] =
-      title(property)._1 ::
-        description(property).map(_._1) :::
-        tooltip(property).map(_._1) :::
-        infoDescription(property).map(_._1) :::
-        infoLinkTitle(property).map(_._1) :::
-        infoLinkUrl(property).map(_._1) :::
-        deprecated(property).toList.map(_._1)
-    mergeTranslation(propJson, translationField(keys, lookup))
+    val descriptions = description(property)
+    val entries: List[(String, Option[String])] =
+      (title(property)._1, None) ::
+        asEntries(descriptions, withFiFallback = true) :::
+        tooltip(property).map(t => (t._1, None)) :::
+        infoDescription(property).map(t => (t._1, None)) :::
+        infoLinkTitle(property).map(t => (t._1, None)) :::
+        infoLinkUrl(property).map(t => (t._1, None)) :::
+        deprecated(property).toList.map(t => (t._1, None))
+    val (withDescription, overriddenKeys) = overrideDescription(propJson, descriptions, lookup)
+    mergeTranslation(withDescription, translationField(entries, lookup, overriddenKeys))
   }
 
-  private def translationField(keys: List[String], lookup: Map[String, LocalizedString]): Option[JObject] = {
+  private def asEntries(keysAndText: List[(String, String)], withFiFallback: Boolean): List[(String, Option[String])] =
+    keysAndText.map { case (k, t) => (k, if (withFiFallback) Some(t) else None) }
+
+  // Substitutes each @Description's text with its Tolgee fi value inside the JSON
+  // description field. Substring replacement (not whole-field) so that annotation-
+  // appended suffixes like "(Oksa: …)", "(Koodisto: …)", "(Vanhentunut kenttä: …)"
+  // survive — those come from other metadata via appendToDescription. Returns the
+  // set of keys whose fi value was applied so the caller can drop them from
+  // translation.fi (no point shipping the same value twice).
+  private def overrideDescription(obj: JObject, descriptions: List[(String, String)], lookup: Map[String, LocalizedString]): (JObject, Set[String]) = {
+    val currentDesc = (obj \ "description") match {
+      case JString(s) => s
+      case _ => ""
+    }
+    if (currentDesc.isEmpty) (obj, Set.empty)
+    else {
+      val (updated, used) = descriptions.foldLeft((currentDesc, Set.empty[String])) {
+        case ((acc, usedAcc), (key, originalText)) =>
+          lookup.get(key).flatMap(_.getOptional("fi")).filter(_.nonEmpty) match {
+            case Some(fi) if acc.contains(originalText) => (acc.replace(originalText, fi), usedAcc + key)
+            case _ => (acc, usedAcc)
+          }
+      }
+      val out = if (updated == currentDesc) obj else obj.merge(JObject("description" -> JString(updated)))
+      (out, used)
+    }
+  }
+
+  // Builds the per-locale translation field. Each entry is a Tolgee lookup key
+  // plus an optional fi fallback (the code @Description text). The fallback
+  // only kicks in when Tolgee has no entry at all for that key — if Tolgee has
+  // the key, its values (including missing fi) are trusted as-is. Keys in
+  // `excludeFromFi` contribute nothing to translation.fi (used to dedup when
+  // the description JSON field already shows the Tolgee fi).
+  private def translationField(
+    entries: List[(String, Option[String])],
+    lookup: Map[String, LocalizedString],
+    excludeFromFi: Set[String] = Set.empty
+  ): Option[JObject] = {
     val byLocale = LocalizedString.languages.flatMap { lang =>
-      val values = keys.flatMap(k => lookup.get(k).flatMap(_.getOptional(lang))).filter(_.nonEmpty)
+      val values = entries.flatMap { case (key, fiFallback) =>
+        if (lang == "fi" && excludeFromFi.contains(key)) None
+        else lookup.get(key) match {
+          case Some(localized) => localized.getOptional(lang).filter(_.nonEmpty)
+          case None if lang == "fi" => fiFallback.filter(_.nonEmpty)
+          case None => None
+        }
+      }
       if (values.isEmpty) None else Some(lang -> values)
     }
     if (byLocale.isEmpty) None
