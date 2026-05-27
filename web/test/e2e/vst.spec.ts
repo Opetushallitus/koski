@@ -50,7 +50,7 @@ test.describe('Vapaa sivistystyö', () => {
           'Jatkuvan oppimisen ja työllisyyden palvelukeskuksen rahoitus'
         )
         await expect(getByTestId('opiskeluoikeus.voimassaoloaika')).toHaveText(
-          'Opiskeluoikeuden voimassaoloaika: 1.1.2023 –'
+          'Opiskeluoikeuden voimassaoloaika: 1.1.2023 —'
         )
         await expect(getByTestId('suoritukset.0.toimipiste.value')).toHaveText(
           'Varsinais-Suomen kansanopisto'
@@ -135,7 +135,7 @@ test.describe('Vapaa sivistystyö', () => {
           getByTestId('opiskeluoikeus.tila.value.items.0.tila')
         ).toHaveText('Läsnä')
         await expect(getByTestId('opiskeluoikeus.voimassaoloaika')).toHaveText(
-          'Opiskeluoikeuden voimassaoloaika: 1.9.2021 – 31.5.2022 (Arvioitu päättymispäivä)'
+          'Opiskeluoikeuden voimassaoloaika: 1.9.2021 — 31.5.2022 (Arvioitu päättymispäivä)'
         )
         await expect(getByTestId('suoritukset.0.toimipiste.value')).toHaveText(
           'Itä-Suomen yliopisto'
@@ -236,7 +236,7 @@ test.describe('Vapaa sivistystyö', () => {
           getByTestId('opiskeluoikeus.tila.value.items.0.tila')
         ).toHaveText('Läsnä')
         await expect(getByTestId('opiskeluoikeus.voimassaoloaika')).toHaveText(
-          'Opiskeluoikeuden voimassaoloaika: 1.9.2021 – 31.5.2022 (Arvioitu päättymispäivä)'
+          'Opiskeluoikeuden voimassaoloaika: 1.9.2021 — 31.5.2022 (Arvioitu päättymispäivä)'
         )
         await expect(getByTestId('suoritukset.0.toimipiste.value')).toHaveText(
           'Varsinais-Suomen kansanopisto'
@@ -555,7 +555,7 @@ test.describe('Vapaa sivistystyö', () => {
           getByTestId('opiskeluoikeus.tila.value.items.0.tila')
         ).toHaveText('Läsnä')
         await expect(getByTestId('opiskeluoikeus.voimassaoloaika')).toHaveText(
-          'Opiskeluoikeuden voimassaoloaika: 1.9.2021 – 31.5.2022 (Arvioitu päättymispäivä)'
+          'Opiskeluoikeuden voimassaoloaika: 1.9.2021 — 31.5.2022 (Arvioitu päättymispäivä)'
         )
         await expect(getByTestId('suoritukset.0.toimipiste.value')).toHaveText(
           'Varsinais-Suomen kansanopisto'
@@ -873,7 +873,7 @@ test.describe('Vapaa sivistystyö', () => {
           getByTestId('opiskeluoikeus.tila.value.items.0.tila')
         ).toHaveText('Läsnä')
         await expect(getByTestId('opiskeluoikeus.voimassaoloaika')).toHaveText(
-          'Opiskeluoikeuden voimassaoloaika: 1.8.2022 –'
+          'Opiskeluoikeuden voimassaoloaika: 1.8.2022 —'
         )
         await expect(getByTestId('suoritukset.0.toimipiste.value')).toHaveText(
           'Varsinais-Suomen kansanopisto'
@@ -1066,7 +1066,7 @@ test.describe('Vapaa sivistystyö', () => {
           getByTestId('opiskeluoikeus.tila.value.items.0.tila')
         ).toHaveText('Hyväksytysti suoritettu')
         await expect(getByTestId('opiskeluoikeus.voimassaoloaika')).toHaveText(
-          'Opiskeluoikeuden voimassaoloaika: 31.5.2022 – 31.5.2022'
+          'Opiskeluoikeuden voimassaoloaika: 31.5.2022 — 31.5.2022'
         )
         await expect(getByTestId('suoritukset.0.toimipiste.value')).toHaveText(
           'Varsinais-Suomen kansanopisto'
@@ -1205,7 +1205,7 @@ test.describe('Vapaa sivistystyö', () => {
           getByTestId('opiskeluoikeus.tila.value.items.0.tila')
         ).toHaveText('Hyväksytysti suoritettu')
         await expect(getByTestId('opiskeluoikeus.voimassaoloaika')).toHaveText(
-          'Opiskeluoikeuden voimassaoloaika: 1.1.2024 – 1.1.2024'
+          'Opiskeluoikeuden voimassaoloaika: 1.1.2024 — 1.1.2024'
         )
         await expect(getByTestId('suoritusTabs.0.tab')).toHaveText(
           'Vapaan sivistystyön osaamismerkki'
@@ -2343,7 +2343,7 @@ test.describe('Vapaa sivistystyö', () => {
           'Oma osaamispolku(2024, hyväksytysti suoritettu)Opiskeluoikeuden oid: 1.2.246.562.15'
         )
         await expect(getByTestId('opiskeluoikeus.voimassaoloaika')).toHaveText(
-          'Opiskeluoikeuden voimassaoloaika: 1.1.2024 – 1.1.2024'
+          'Opiskeluoikeuden voimassaoloaika: 1.1.2024 — 1.1.2024'
         )
         await expect(getByTestId('suoritukset.0.toimipiste.value')).toHaveText(
           'Varsinais-Suomen kansanopisto'

@@ -184,8 +184,8 @@ test.describe('Perusopetuksen uusi käyttöliittymä: tilan validointi', () => {
     const voimassaoloaika = await page
       .getByTestId('oo.0.opiskeluoikeus.voimassaoloaika')
       .textContent()
-    // Formaatti: "Opiskeluoikeuden voimassaoloaika: 15.8.2008 – d.m.yyyy"
-    expect(voimassaoloaika).toMatch(/15\.8\.2008 – \d+\.\d+\.\d{4}/)
+    // Formaatti: "Opiskeluoikeuden voimassaoloaika: 15.8.2008 — d.m.yyyy"
+    expect(voimassaoloaika).toMatch(/15\.8\.2008 — \d+\.\d+\.\d{4}/)
   })
 
   test('Päättyneellä opiskeluoikeudella (valmistunut) tilaa ei voi lisätä', async ({
@@ -220,7 +220,7 @@ test.describe('Perusopetuksen uusi käyttöliittymä: tilan validointi', () => {
     const peruutettuVoimassaoloaika = await page
       .getByTestId('oo.0.opiskeluoikeus.voimassaoloaika')
       .textContent()
-    expect(peruutettuVoimassaoloaika).toMatch(/15\.8\.2008 – \d+\.\d+\.\d{4}/)
+    expect(peruutettuVoimassaoloaika).toMatch(/15\.8\.2008 — \d+\.\d+\.\d{4}/)
 
     await page.getByTestId(editButton).click()
     await expect(page.getByTestId(tilaAddButton)).not.toBeVisible()
@@ -270,13 +270,13 @@ test.describe('Perusopetuksen uusi käyttöliittymä: tilan validointi', () => {
       timeout: 15000
     })
 
-    // Voimassaoloaika on edelleen "15.8.2008 –" ilman päättymispäivää
+    // Voimassaoloaika on edelleen "15.8.2008 —" ilman päättymispäivää
     const voimassaoloaika = await page
       .getByTestId('oo.0.opiskeluoikeus.voimassaoloaika')
       .textContent()
-    // Formaatti: "Opiskeluoikeuden voimassaoloaika: 15.8.2008 –"
+    // Formaatti: "Opiskeluoikeuden voimassaoloaika: 15.8.2008 —"
     // (Tyhjä päättymispäivä: viiva ilman seuraavaa päivämäärää)
-    expect(voimassaoloaika).toMatch(/15\.8\.2008 –\s*$/)
+    expect(voimassaoloaika).toMatch(/15\.8\.2008 —\s*$/)
   })
 
   test('Tulevaisuuden väliaikaisesti keskeytynyt ei muuta nykyistä aktiivista tilaa', async ({

@@ -29,7 +29,7 @@ test.describe('Perusopetuksen uusi käyttöliittymä', () => {
     // Opiskeluoikeuden voimassaoloaika
     await expect(
       page.getByTestId('oo.0.opiskeluoikeus.voimassaoloaika')
-    ).toContainText('15.8.2008 – 4.6.2016')
+    ).toContainText('15.8.2008 — 4.6.2016')
 
     // Suorituksen tiedot
     await expect(page.getByTestId('oo.0.suoritukset.0.koulutus')).toContainText(
@@ -278,7 +278,7 @@ test.describe('Perusopetuksen uusi käyttöliittymä', () => {
     // Opiskeluoikeuden voimassaoloaika
     await expect(
       page.getByTestId('oo.0.opiskeluoikeus.voimassaoloaika')
-    ).toContainText('15.8.2017 – 18.10.2024')
+    ).toContainText('15.8.2017 — 18.10.2024')
 
     // Suorituksen tiedot
     await expect(page.getByTestId('oo.0.suoritukset.0.koulutus')).toContainText(

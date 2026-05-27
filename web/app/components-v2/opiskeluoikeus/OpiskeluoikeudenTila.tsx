@@ -75,6 +75,7 @@ export const OpiskeluoikeudenTilaView = <T extends OpiskeluoikeudenTila>(
                     ? 'OpiskeluoikeudenTila-viimeisin'
                     : undefined
                 }
+                nameWidth={2}
                 columnSpans={{ default: [2, '*'], phone: [4, '*'] }}
               >
                 {[

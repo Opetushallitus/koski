@@ -88,6 +88,11 @@ export const EditorContainer = <T extends Opiskeluoikeus>(
     [props.form]
   )
 
+  const hasOrganisaatiohistoria =
+    'organisaatiohistoria' in props.form.state &&
+    Array.isArray(props.form.state.organisaatiohistoria) &&
+    props.form.state.organisaatiohistoria.length > 0
+
   const [lisatiedotOpen, setLisatiedotOpen] = useState(true)
   const onSave = useCallback(() => {
     props.form.save(
@@ -185,12 +190,16 @@ export const EditorContainer = <T extends Opiskeluoikeus>(
             <Spacer />
           </>
         )}
-        <FormField
-          form={props.form}
-          path={opiskeluoikeudenOrganisaatiohistoriaPath}
-          view={OrganisaatiohistoriaView}
-        />
-        <Spacer />
+        {hasOrganisaatiohistoria && (
+          <>
+            <FormField
+              form={props.form}
+              path={opiskeluoikeudenOrganisaatiohistoriaPath}
+              view={OrganisaatiohistoriaView}
+            />
+            <Spacer />
+          </>
+        )}
         {LisätiedotContainer !== undefined &&
           (props.form.editMode ||
             ('lisätiedot' in props.form.state &&

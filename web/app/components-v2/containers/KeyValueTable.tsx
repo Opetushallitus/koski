@@ -70,26 +70,31 @@ export type KeyColumnedValuesRowProps = CommonProps<{
   localizableName?: string | LocalizedString
   children: React.ReactNode[]
   columnSpans?: ResponsiveValue<Array<number | '*'>>
+  /** Nimisarakkeen leveys ruudukon sarakkeissa. Oletuksena 4. */
+  nameWidth?: number
 }>
 
-const NAME_WIDTH: ResponsiveValue<number> = { default: 4 }
-const VALUE_AREA_WIDTH = COLUMN_COUNT - NAME_WIDTH.default
+const DEFAULT_NAME_WIDTH = 4
 
 export const KeyColumnedValuesRow = (props: KeyColumnedValuesRowProps) => {
+  const nameWidth = props.nameWidth ?? DEFAULT_NAME_WIDTH
+  const valueAreaWidth = COLUMN_COUNT - nameWidth
   const spans = useMemo(() => {
     if (props.columnSpans) {
-      return mapResponsiveValue(calculateAutomaticWidths)(props.columnSpans)
+      return mapResponsiveValue(calculateAutomaticWidths(valueAreaWidth))(
+        props.columnSpans
+      )
     } else {
-      const autoWidth = Math.min(VALUE_AREA_WIDTH / props.children.length)
+      const autoWidth = Math.min(valueAreaWidth / props.children.length)
       return mapTimes(props.children.length, constant(autoWidth))
     }
-  }, [props.columnSpans, props.children.length])
+  }, [props.columnSpans, props.children.length, valueAreaWidth])
 
   return props.children ? (
     <ColumnRow component="li" {...common(props, ['KeyValueRow'])}>
       <Column
         className="KeyValueRow__name"
-        span={NAME_WIDTH}
+        span={{ default: nameWidth }}
         valign="top"
         component="span"
       >
@@ -110,11 +115,11 @@ export const KeyColumnedValuesRow = (props: KeyColumnedValuesRowProps) => {
   ) : null
 }
 
-const calculateAutomaticWidths = (
-  columnSpans: Array<number | '*'>
-): number[] => {
-  const fixed = sum(columnSpans.filter(isNumber) || [])
-  const autoWidths = columnSpans.filter((s) => s === '*').length || 1
-  const autoWidth = Math.min((VALUE_AREA_WIDTH - fixed) / autoWidths)
-  return columnSpans.map((s) => (s === '*' ? autoWidth : s))
-}
+const calculateAutomaticWidths =
+  (valueAreaWidth: number) =>
+  (columnSpans: Array<number | '*'>): number[] => {
+    const fixed = sum(columnSpans.filter(isNumber) || [])
+    const autoWidths = columnSpans.filter((s) => s === '*').length || 1
+    const autoWidth = Math.min((valueAreaWidth - fixed) / autoWidths)
+    return columnSpans.map((s) => (s === '*' ? autoWidth : s))
+  }
