@@ -43,6 +43,7 @@ test.describe('Perusopetuksen uusi käyttöliittymä: paikallinen oppiaine', () 
     test.setTimeout(60000)
     await fixtures.reset()
     await oppijaPage.goto(kaisaUrl)
+    await page.getByTestId('oo.0.suoritusTabs.0.tab').click()
 
     // Päättötodistus (tab 0) käyttää groupattua näkymää pakolliset/valinnaiset
     // -jaolla. Lisätään uusi paikallinen valinnainen oppiaine.
@@ -144,6 +145,7 @@ test.describe('Perusopetuksen uusi käyttöliittymä: paikallinen oppiaine', () 
     test.setTimeout(90000)
     await fixtures.reset()
     await oppijaPage.goto(kaisaUrl)
+    await page.getByTestId('oo.0.suoritusTabs.0.tab').click()
 
     // Lisää paikallinen Tanssi päättötodistukselle ja tallenna
     await page.getByTestId('oo.0.opiskeluoikeus.edit').click()
@@ -191,6 +193,7 @@ test.describe('Perusopetuksen uusi käyttöliittymä: paikallinen oppiaine', () 
 
     // Lataa sivu uudelleen (varmistetaan että preferences ladataan)
     await oppijaPage.goto(kaisaUrl)
+    await page.getByTestId('oo.0.suoritusTabs.0.tab').click()
     await page.getByTestId('oo.0.opiskeluoikeus.edit').click()
 
     // Avaa valinnaisten dropdown — Tanssin pitäisi löytyä sieltä

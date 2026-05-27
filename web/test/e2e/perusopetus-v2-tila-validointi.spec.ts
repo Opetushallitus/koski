@@ -63,6 +63,7 @@ test.describe('Perusopetuksen uusi käyttöliittymä: tilan validointi', () => {
   }) => {
     await fixtures.reset()
     await oppijaPage.goto(ysiluokkalainenUrl)
+    await page.getByTestId('oo.0.suoritusTabs.0.tab').click()
 
     // Avaa tilanlisäysdialogi
     await page.getByTestId(editButton).click()
@@ -91,6 +92,7 @@ test.describe('Perusopetuksen uusi käyttöliittymä: tilan validointi', () => {
   }) => {
     await fixtures.reset()
     await oppijaPage.goto(ysiluokkalainenUrl)
+    await page.getByTestId('oo.0.suoritusTabs.0.tab').click()
     await page.getByTestId(editButton).click()
 
     // V2:n vakaa virheellisen päivämäärän polku on tilarivin oma
@@ -109,6 +111,7 @@ test.describe('Perusopetuksen uusi käyttöliittymä: tilan validointi', () => {
   }) => {
     await fixtures.reset()
     await oppijaPage.goto(ysiluokkalainenUrl)
+    await page.getByTestId('oo.0.suoritusTabs.0.tab').click()
     await expect(
       page.getByTestId('oo.0.opiskeluoikeus.tila.value.items.0.date')
     ).toContainText('15.8.2008')
@@ -126,6 +129,7 @@ test.describe('Perusopetuksen uusi käyttöliittymä: tilan validointi', () => {
   }) => {
     await fixtures.reset()
     await oppijaPage.goto(ysiluokkalainenUrl)
+    await page.getByTestId('oo.0.suoritusTabs.0.tab').click()
     await expect(
       page.getByTestId('oo.0.opiskeluoikeus.tila.value.items.0.date')
     ).toContainText('15.8.2008')
@@ -146,6 +150,7 @@ test.describe('Perusopetuksen uusi käyttöliittymä: tilan validointi', () => {
     test.setTimeout(60000)
     await fixtures.reset()
     await oppijaPage.goto(kaisaUrl)
+    await page.getByTestId('oo.0.suoritusTabs.0.tab').click()
 
     // Alkutila: valmistunut 4.6.2016 → voimassaoloaika päättyy siihen
     await expect(
@@ -195,6 +200,7 @@ test.describe('Perusopetuksen uusi käyttöliittymä: tilan validointi', () => {
   }) => {
     await fixtures.reset()
     await oppijaPage.goto(kaisaUrl)
+    await page.getByTestId('oo.0.suoritusTabs.0.tab').click()
     await page.getByTestId(editButton).click()
 
     // Kaisalla on valmistunut-tila → tilan lisäys-painike ei ole näkyvissä
@@ -208,6 +214,7 @@ test.describe('Perusopetuksen uusi käyttöliittymä: tilan validointi', () => {
   }) => {
     await fixtures.reset()
     await oppijaPage.goto(ysiluokkalainenUrl)
+    await page.getByTestId('oo.0.suoritusTabs.0.tab').click()
 
     await page.getByTestId(editButton).click()
     await addTila(page, 'peruutettu')
@@ -246,6 +253,7 @@ test.describe('Perusopetuksen uusi käyttöliittymä: tilan validointi', () => {
     test.setTimeout(60000)
     await fixtures.reset()
     await oppijaPage.goto(kaisaUrl)
+    await page.getByTestId('oo.0.suoritusTabs.0.tab').click()
 
     // Tyhjennä valmistunut-tila ja vahvistus
     await page.getByTestId(editButton).click()
@@ -286,6 +294,7 @@ test.describe('Perusopetuksen uusi käyttöliittymä: tilan validointi', () => {
   }) => {
     await fixtures.reset()
     await oppijaPage.goto(ysiluokkalainenUrl)
+    await page.getByTestId('oo.0.suoritusTabs.0.tab').click()
 
     await page.getByTestId(editButton).click()
     await addTila(page, 'valiaikaisestikeskeytynyt', '9.5.2117')

@@ -252,9 +252,10 @@ export const EditorContainer = <T extends Opiskeluoikeus>(
 }
 
 export const usePäätasonSuoritus = <T extends Opiskeluoikeus>(
-  form: FormModel<T>
+  form: FormModel<T>,
+  initialIndex = 0
 ): [ActivePäätasonSuoritus<T>, (suoritusIndex: number) => void] => {
-  const [index, setIndex] = useState(0)
+  const [index, setIndex] = useState(initialIndex)
   const state = useMemo(
     () => ({
       index,

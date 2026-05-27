@@ -17,6 +17,9 @@ test.describe('Perusopetuksen uusi käyttöliittymä', () => {
     oppijaPage
   }) => {
     await oppijaPage.goto(kaisaUrl)
+    // Näkymä avautuu viimeisimmälle vuosiluokalle; oppimäärän tiedot ovat
+    // Päättötodistus-välilehdellä.
+    await page.getByTestId('oo.0.suoritusTabs.0.tab').click()
 
     // Opiskeluoikeuden otsikko + edit-painike
     await expect(page.getByTestId('oo.0.opiskeluoikeus.nimi')).toContainText(
@@ -83,6 +86,7 @@ test.describe('Perusopetuksen uusi käyttöliittymä', () => {
 
   test('Näyttää oppiaineiden arvosanat', async ({ page, oppijaPage }) => {
     await oppijaPage.goto(kaisaUrl)
+    await page.getByTestId('oo.0.suoritusTabs.0.tab').click()
 
     // Arvosteluasteikko-kuvaus
     await expect(

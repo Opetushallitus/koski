@@ -89,8 +89,19 @@ const PerusopetuksenPäätasonSuoritusEditor: React.FC<
     form: FormModel<PerusopetuksenOpiskeluoikeus>
   }
 > = (props) => {
+  // Avataan oletuksena viimeisin vuosiluokka (suoritukset on lajiteltu niin,
+  // että oppimäärä on ensin ja vuosiluokat laskevassa järjestyksessä).
+  // Jos vuosiluokkia ei ole, näytetään ensimmäinen suoritus (oppimäärä).
+  const initialSuoritusIndex = useMemo(() => {
+    const i = props.form.state.suoritukset.findIndex(
+      isPerusopetuksenVuosiluokanSuoritus
+    )
+    return i >= 0 ? i : 0
+  }, [props.form.state.suoritukset])
+
   const [päätasonSuoritus, setPäätasonSuoritus] = usePäätasonSuoritus(
-    props.form
+    props.form,
+    initialSuoritusIndex
   )
 
   const createOpiskeluoikeusjakso = (

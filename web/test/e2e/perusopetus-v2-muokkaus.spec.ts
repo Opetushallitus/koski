@@ -21,6 +21,7 @@ test.describe('Perusopetuksen uusi käyttöliittymä: muokkaustila', () => {
       oppijaPage
     }) => {
       await oppijaPage.goto(kaisaUrl)
+      await page.getByTestId('oo.0.suoritusTabs.0.tab').click()
 
       // Muokkaa-painike näkyy
       await expect(page.getByTestId('oo.0.opiskeluoikeus.edit')).toContainText(
@@ -129,6 +130,7 @@ test.describe('Perusopetuksen uusi käyttöliittymä: muokkaustila', () => {
       oppijaPage
     }) => {
       await oppijaPage.goto(kaisaUrl)
+      await page.getByTestId('oo.0.suoritusTabs.0.tab').click()
 
       // Tarkista alkutila
       await expect(
@@ -167,6 +169,7 @@ test.describe('Perusopetuksen uusi käyttöliittymä: muokkaustila', () => {
       oppijaPage
     }) => {
       await oppijaPage.goto(kaisaUrl)
+      await page.getByTestId('oo.0.suoritusTabs.0.tab').click()
 
       // Tarkista alkutila
       await expect(
@@ -323,6 +326,7 @@ test.describe('Perusopetuksen uusi käyttöliittymä: muokkaustila', () => {
       oppijaPage
     }) => {
       await oppijaPage.goto(kaisaUrl)
+      await page.getByTestId('oo.0.suoritusTabs.0.tab').click()
 
       // Äidinkieli (osasuoritukset.0) ei ole yksilöllistetty → ei footnote-merkintää
       await expect(
@@ -360,6 +364,7 @@ test.describe('Perusopetuksen uusi käyttöliittymä: muokkaustila', () => {
       oppijaPage
     }) => {
       await oppijaPage.goto(kaisaUrl)
+      await page.getByTestId('oo.0.suoritusTabs.0.tab').click()
 
       // Matematiikka (osasuoritukset.7) ei ole painotettu → ei **-merkintää
       await expect(
@@ -397,6 +402,7 @@ test.describe('Perusopetuksen uusi käyttöliittymä: muokkaustila', () => {
       oppijaPage
     }) => {
       await oppijaPage.goto(kaisaUrl)
+      await page.getByTestId('oo.0.suoritusTabs.0.tab').click()
 
       // Alkutila: todistuksella näkyvät lisätiedot ei näy (ei dataa)
       await expect(
@@ -539,6 +545,7 @@ test.describe('Perusopetuksen uusi käyttöliittymä: muokkaustila', () => {
       oppijaPage
     }) => {
       await oppijaPage.goto(kaisaUrl)
+      await page.getByTestId('oo.0.suoritusTabs.0.tab').click()
 
       // Siirry muokkaustilaan oppimäärällä
       await page.getByTestId('oo.0.opiskeluoikeus.edit').click()
@@ -609,6 +616,7 @@ test.describe('Perusopetuksen uusi käyttöliittymä: muokkaustila', () => {
       oppijaPage
     }) => {
       await oppijaPage.goto(kaisaUrl)
+      await page.getByTestId('oo.0.suoritusTabs.0.tab').click()
 
       // Alkutila: vuosiluokkiinSitoutumatonOpetus ei ole asetettu (ei näy)
       await expect(
@@ -704,6 +712,7 @@ test.describe('Perusopetuksen uusi käyttöliittymä: muokkaustila', () => {
     }) => {
       await fixtures.reset()
       await oppijaPage.goto(tommiUrl)
+      await page.getByTestId('oo.0.suoritusTabs.0.tab').click()
 
       // Tarkista alkutila: 5 toiminta-aluetta
       await expect(
@@ -765,6 +774,7 @@ test.describe('Perusopetuksen uusi käyttöliittymä: muokkaustila', () => {
     }) => {
       await fixtures.reset()
       await oppijaPage.goto(tommiUrl)
+      await page.getByTestId('oo.0.suoritusTabs.0.tab').click()
 
       await page.getByTestId('oo.0.opiskeluoikeus.edit').click()
       await page
