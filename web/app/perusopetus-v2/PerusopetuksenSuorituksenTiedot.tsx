@@ -80,7 +80,9 @@ export const PerusopetuksenSuorituksenTiedot: React.FC<
 
   return (
     <>
-      <KeyValueTable>
+      {/* labelWidth pitää pisimmätkin nimet yhdellä rivillä ja tasaa arvot
+          samaan sarakkeeseen vanhan käyttöliittymän tapaan. */}
+      <KeyValueTable labelWidth={6}>
         <KeyColumnedValuesRow
           localizableName={
             isPerusopetuksenVuosiluokanSuoritus(suoritus)
