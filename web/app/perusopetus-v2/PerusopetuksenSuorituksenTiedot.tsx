@@ -753,7 +753,7 @@ const TäydentävätOmanÄidinkielenOpinnotRow: React.FC<{
               />
             ) : (
               <TestIdText id="omanÄidinkielenOpinnot.arvosana">
-                {opinnot?.arvosana.koodiarvo} {t(opinnot?.arvosana.nimi)}
+                {opinnot?.arvosana.koodiarvo}
               </TestIdText>
             )}
           </KeyValueRow>
