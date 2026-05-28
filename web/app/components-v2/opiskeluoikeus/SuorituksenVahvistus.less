@@ -1,7 +1,9 @@
 .SuorituksenVahvistus {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
-  padding: 0 @h-padding;
+  align-content: center;
+  padding: (@baseline / 2) @h-padding;
   min-height: 4 * @baseline;
 
   background-color: @color-info-box-background--neutral;
@@ -13,6 +15,15 @@
   .SuorituksenVahvistus__status {
     text-transform: uppercase;
     font-weight: 600;
+  }
+
+  // Luokalle siirtymisen / jäämisen teksti omalle rivilleen "Suoritus valmis"
+  // -rivin alle, kuten vanhassa käyttöliittymässä. order: 1 pitää muokkaustilan
+  // painikkeen ensimmäisellä rivillä ja työntää tämän tekstin viimeiseksi.
+  .SuorituksenVahvistus__statusInfo {
+    flex-basis: 100%;
+    order: 1;
+    margin-right: 0;
   }
 
   &.SuorituksenVahvistus--valmis {
