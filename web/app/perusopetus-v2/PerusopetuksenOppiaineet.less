@@ -5,6 +5,23 @@
   margin-bottom: (@baseline / 2);
 }
 
+.oppiaineet {
+  // Alaviitemerkit (* / **) sinisellä, jotta erottuvat arvosanasta.
+  // Merkki ei vie tilaa (width: 0), jottei se työnnä oikealle tasattua
+  // arvosanaa vasemmalle, vaan ylittää sarakkeen oikealle reunan yli.
+  .footnote-hint {
+    color: @color-link-blue;
+    display: inline-block;
+    width: 0;
+    white-space: nowrap;
+  }
+
+  // Alaviitteiden selitteet harmaalla, jotta erottuvat muusta tekstistä.
+  .selitteet {
+    color: @color-disabled-text;
+  }
+}
+
 .PerusopetuksenOppiaineet__laajuus {
   white-space: nowrap;
 }

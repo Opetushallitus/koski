@@ -227,7 +227,9 @@ export const PerusopetuksenOppiaineet: React.FC<
             )}
         </>
       )}
-      {footnotes.length > 0 && <FootnoteDescriptions data={footnotes} />}
+      {!form.editMode && footnotes.length > 0 && (
+        <FootnoteDescriptions data={footnotes} />
+      )}
     </div>
   )
 }
@@ -284,9 +286,8 @@ const Oppiainetaulukko: React.FC<OppiainetaulukkoProps> = ({
   })
   const columns: Array<OsasuoritusTableColumn<string>> = [
     { key: columnHeader },
-    ...(showArvosana ? [{ key: 'Arvosana' }] : []),
-    ...(showLaajuus ? [{ key: 'Laajuus' }] : []),
-    { key: ' ', label: '', span: 1 }
+    ...(showArvosana ? [{ key: 'Arvosana', align: 'right' as const }] : []),
+    ...(showLaajuus ? [{ key: 'Laajuus' }] : [])
   ]
 
   return (
@@ -516,19 +517,36 @@ const oppiaineToRow = <T extends string>(
     ) : (
       <TestIdText id="nimi">{nimi}</TestIdText>
     )
+  // Alaviitemerkit (* / **) näytetään arvosanan perässä (ks. CSS: sininen).
+  // Muokkaustilassa niitä ei näytetä, koska ne sotkevat syöttökenttien
+  // asettelua (ominaisuudet muokataan rivin laajennusosiosta).
+  const rowFootnotes = footnotesForSuoritus(suoritus)
+  const footnoteEl =
+    !form.editMode && rowFootnotes.length > 0 ? (
+      <TestIdText id="footnote">
+        {rowFootnotes.map((note) => (
+          <sup key={note.hint} className="footnote-hint" title={t(note.title)}>
+            {` ${note.hint}`}
+          </sup>
+        ))}
+      </TestIdText>
+    ) : null
   if (showArvosana) {
     columns['Arvosana' as T | 'Arvosana' | ' '] = (
-      <FormField
-        form={form}
-        path={osasuoritusPath.prop('arviointi')}
-        optional
-        view={ParasArvosanaKoodiarvoView}
-        edit={ParasArvosanaEdit}
-        editProps={{
-          suoritusClassName: suoritus.$class,
-          format: koodiarvoOnly
-        }}
-      />
+      <>
+        <FormField
+          form={form}
+          path={osasuoritusPath.prop('arviointi')}
+          optional
+          view={ParasArvosanaKoodiarvoView}
+          edit={ParasArvosanaEdit}
+          editProps={{
+            suoritusClassName: suoritus.$class,
+            format: koodiarvoOnly
+          }}
+        />
+        {footnoteEl}
+      </>
     )
   }
   if (showLaajuus) {
@@ -569,17 +587,15 @@ const oppiaineToRow = <T extends string>(
       </TestIdText>
     ) : null
   }
-  const rowFootnotes = footnotesForSuoritus(suoritus)
-  columns[' ' as T | 'Arvosana' | 'Laajuus' | ' '] =
-    rowFootnotes.length > 0 ? (
-      <TestIdText id="footnote">
-        {rowFootnotes.map((note) => (
-          <sup key={note.hint} className="footnote-hint" title={t(note.title)}>
-            {` ${note.hint}`}
-          </sup>
-        ))}
-      </TestIdText>
-    ) : null
+  // Jos arvosanasaraketta ei näytetä, liitetään alaviite oppiaineen nimeen.
+  if (footnoteEl && !showArvosana) {
+    columns[columnHeader] = (
+      <>
+        {columns[columnHeader]}
+        {footnoteEl}
+      </>
+    )
+  }
 
   return {
     suoritusIndex,

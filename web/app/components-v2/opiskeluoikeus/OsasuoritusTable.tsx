@@ -46,6 +46,7 @@ export type OsasuoritusTableColumn<DATA_KEYS extends string> = {
   key: DATA_KEYS
   label?: string
   span?: ResponsiveValue<number>
+  align?: ResponsiveValue<'left' | 'center' | 'right'>
 }
 
 export type OsasuoritusRowData<DATA_KEYS extends string> = {
@@ -70,6 +71,9 @@ export const OsasuoritusTable = <DATA_KEYS extends string, P>(
   const newOsasuoritusIds = useNewItems(getRowId, props.rows)
 
   const skipExpandableColumn = rows.every((row) => !row.expandable)
+  // Completed-sarake (suoritettu/kesken -merkki) varataan vain, jos taulukko
+  // käyttää completed-tilaa. Esim. perusopetus ei, joten sarake jätetään pois.
+  const showCompleted = completed !== undefined
   const tableColumns = rows[0] ? getTableColumns(rows[0], props.columns) : []
 
   return (
@@ -79,6 +83,7 @@ export const OsasuoritusTable = <DATA_KEYS extends string, P>(
           columns={tableColumns}
           canRemove={editMode && onRemove !== undefined}
           skipExpandableColumn={skipExpandableColumn}
+          showCompleted={showCompleted}
         />
       )}
       <TestIdLayer id="osasuoritukset">
@@ -96,6 +101,7 @@ export const OsasuoritusTable = <DATA_KEYS extends string, P>(
               expandable={row.expandable}
               skipExpandableColumn={skipExpandableColumn}
               expandedContentIndent={props.expandedContentIndent}
+              showCompleted={showCompleted}
               completed={completed ? completed(index) : undefined}
               onRemove={
                 onRemove !== undefined ? () => onRemove(index) : undefined
@@ -117,6 +123,7 @@ export const OsasuoritusTable = <DATA_KEYS extends string, P>(
 export type OsasuoritusRowProps<DATA_KEYS extends string> = CommonProps<{
   editMode: boolean
   completed?: boolean
+  showCompleted?: boolean
   expandable?: boolean
   skipExpandableColumn?: boolean
   row: OsasuoritusRowData<DATA_KEYS>
@@ -131,6 +138,7 @@ type OsasuoritusHeaderProps<DATA_KEYS extends string> = CommonProps<{
   columns: Array<OsasuoritusTableColumn<DATA_KEYS>>
   canRemove?: boolean
   skipExpandableColumn?: boolean
+  showCompleted?: boolean
 }>
 
 export const OsasuoritusHeader = <DATA_KEYS extends string>(
@@ -141,7 +149,8 @@ export const OsasuoritusHeader = <DATA_KEYS extends string>(
     props.columns,
     indentation,
     props.canRemove,
-    props.skipExpandableColumn
+    props.skipExpandableColumn,
+    props.showCompleted
   )
   return (
     <>
@@ -149,10 +158,15 @@ export const OsasuoritusHeader = <DATA_KEYS extends string>(
         {spans.indent > 0 && (
           <Column span={spans.indent} className="OsasuoritusHeader__indent" />
         )}
+        {/* Tyhjät sarakkeet laajennus- ja completed-painikkeille, jotta
+            ensimmäisen sarakkeen otsikko on rivien nimien yläpuolella. */}
+        {!props.skipExpandableColumn && <Column span={spans.leftIcons} />}
+        {spans.completed > 0 && <Column span={spans.completed} />}
         {props.columns.map((column, index) => (
           <Column
             key={index}
-            span={index === 0 ? spans.nameHeader : spans.data[index - 1]}
+            span={index === 0 ? spans.name : spans.data[index - 1]}
+            align={column.align}
           >
             {getColumnLabel(column)}
           </Column>
@@ -171,7 +185,8 @@ export const OsasuoritusRow = <DATA_KEYS extends string>(
     props.columns,
     indentation,
     Boolean(props.editMode && props.onRemove),
-    props.skipExpandableColumn
+    props.skipExpandableColumn,
+    props.showCompleted
   )
 
   const expandable = props.expandable === undefined ? true : props.expandable
@@ -205,20 +220,23 @@ export const OsasuoritusRow = <DATA_KEYS extends string>(
             )}
           </Column>
         )}
-        <Column span={1} className="OsasuoritusRow__completedColumn">
-          {props.completed === true && (
-            // eslint-disable-next-line react/jsx-no-literals
-            <span aria-label={t('Suoritus valmis')}>&#x2713;</span>
-          )}
-          {props.completed === false && (
-            // eslint-disable-next-line react/jsx-no-literals
-            <span aria-label={t('Suoritus kesken')}>&#x29D6;</span>
-          )}
-        </Column>
+        {props.showCompleted && (
+          <Column span={1} className="OsasuoritusRow__completedColumn">
+            {props.completed === true && (
+              // eslint-disable-next-line react/jsx-no-literals
+              <span aria-label={t('Suoritus valmis')}>&#x2713;</span>
+            )}
+            {props.completed === false && (
+              // eslint-disable-next-line react/jsx-no-literals
+              <span aria-label={t('Suoritus kesken')}>&#x29D6;</span>
+            )}
+          </Column>
+        )}
         {props.columns.map((column, index) => (
           <Column
             key={index}
             span={index === 0 ? spans.name : spans.data[index - 1]}
+            align={column.align}
             className={
               index === 0
                 ? 'OsasuoritusRow__nameColumn'
@@ -265,11 +283,12 @@ const getSpans = (
   columns: Array<OsasuoritusTableColumn<string>>,
   depth?: number,
   canRemove?: boolean,
-  skipExpandableColumn?: boolean
+  skipExpandableColumn?: boolean,
+  showCompleted?: boolean
 ) => {
   const indent = depth || 0
   const leftIcons = skipExpandableColumn ? 0 : 1
-  const completed = 1
+  const completed = showCompleted ? 1 : 0
   const rightIcons = canRemove ? 1 : 0
   const availableColumns =
     COLUMN_COUNT - indent - leftIcons - completed - rightIcons
@@ -284,9 +303,6 @@ const getSpans = (
   const name = mapResponsiveValue((w: number) => availableColumns - w)(
     dataWidth
   )
-  const nameHeader = mapResponsiveValue(
-    (w: number) => w + leftIcons + completed
-  )(name)
 
   return {
     indent,
@@ -294,8 +310,7 @@ const getSpans = (
     completed,
     rightIcons,
     data,
-    name,
-    nameHeader
+    name
   }
 }
 
