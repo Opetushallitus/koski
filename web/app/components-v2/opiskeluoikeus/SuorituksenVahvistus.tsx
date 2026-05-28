@@ -225,7 +225,7 @@ export const SuorituksenVahvistus: React.FC<SuorituksenVahvistusProps> = (
           </TestIdLayer>
         </>
       )}
-      {suoritusValmis && props.statusInfo && (
+      {vahvistus && props.statusInfo && (
         <div className="SuorituksenVahvistus__statusInfo">
           {props.statusInfo}
         </div>
