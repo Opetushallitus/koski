@@ -91,7 +91,7 @@ object PerusopetuksenOpiskeluoikeusValidation extends Logging {
                 val tavoitekokonaisuusosuujaksolle = vahvistuspäivä.exists(d => tavoitekokonaisuuksittainOpiskeluVoimassa(oo, d))
                 if (vahvistuspäivä.isEmpty || (vsopOn && vahvistuspäivä.exists(p => !p.isAfter(cutoff)))) { None }
                 else if (!tavoitekokonaisuusosuujaksolle ) {
-                  Some(KoskiErrorCategory.badRequest.validation.date(s"Perusopetuksen oppiaineen suorituksella on tavoitekokonaisuuksittain opiskeluun liittyvä tieto luokkaAste (${la.koodiarvo}) mutta ei tavoitekokonaisuuksittain opiskelun aikajaksoa, joka kattaisi vuosiluokan vahvistuspäivän tai suorituksen arviointipäivän."))
+                  Some(KoskiErrorCategory.badRequest.validation.date(s"Perusopetuksen oppiaineen ${os.koulutusmoduuli.tunniste.koodiarvo} suorituksella on tavoitekokonaisuuksittain opiskeluun liittyvä tieto luokkaAste (${la.koodiarvo}) mutta ei tavoitekokonaisuuksittain opiskelun aikajaksoa, joka kattaisi vuosiluokan vahvistuspäivän tai suorituksen arviointipäivän."))
                 } else if (la == vuosiluokka) {
                   Some(KoskiErrorCategory.badRequest.validation.date(s"Perusopetuksen oppiaineen suorituksen tavoitekokonaisuuksittain opiskeluun liittyvä kenttä luokkaAste ei saa olla sama kuin vuosiluokka (${vuosiluokka.koodiarvo})"))
                 } else{ None }

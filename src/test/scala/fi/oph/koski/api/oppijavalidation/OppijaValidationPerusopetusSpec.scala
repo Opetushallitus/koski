@@ -386,7 +386,7 @@ class OppijaValidationPerusopetusSpec extends TutkinnonPerusteetTest[Perusopetuk
 
         "Kielletty pakollisten oppiaineiden suorituksilta" in {
           setupOppijaWithOpiskeluoikeus(defaultOpiskeluoikeus.copy(suoritukset = List(yhdeksännenLuokanSuoritus, päättötodistusSuoritus.copy(osasuoritukset = Some(List(pakollinenS)))))) {
-            verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.arviointi.sallittuVainValinnaiselle("Arviointi S on sallittu vain jos oppimäärä on rajattu (yksilöllistetty) tai valinnaisille oppiaineille joiden laajuus on alle kaksi vuosiviikkotuntia"))
+            verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.arviointi.sallittuVainValinnaiselle("Arviointi S on sallittu vain jos oppiaineen AI oppimäärä on rajattu (yksilöllistetty) tai valinnaisille oppiaineille joiden laajuus on alle kaksi vuosiviikkotuntia"))
           }
         }
 
@@ -437,7 +437,7 @@ class OppijaValidationPerusopetusSpec extends TutkinnonPerusteetTest[Perusopetuk
 
         "Kielletty pakollisten oppiaineiden suorituksilta" in {
           setupOppijaWithOpiskeluoikeus(defaultOpiskeluoikeus.copy(suoritukset = List(yhdeksännenLuokanSuoritus, päättötodistusSuoritus.copy(osasuoritukset = Some(List(pakollinenO)))))) {
-            verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.arviointi.sallittuVainValinnaiselle("Arviointi O on sallittu vain jos oppimäärä on rajattu (yksilöllistetty) tai valinnaisille oppiaineille joiden laajuus on alle kaksi vuosiviikkotuntia"))
+            verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.arviointi.sallittuVainValinnaiselle("Arviointi O on sallittu vain jos oppiaineen AI oppimäärä on rajattu (yksilöllistetty) tai valinnaisille oppiaineille joiden laajuus on alle kaksi vuosiviikkotuntia"))
           }
         }
 
@@ -449,14 +449,14 @@ class OppijaValidationPerusopetusSpec extends TutkinnonPerusteetTest[Perusopetuk
 
         "Kielletty valinnaisten oppiaineiden suorituksilta joiden laajuus on 2 vuosiviikkotuntia tai yli" in {
           setupOppijaWithOpiskeluoikeus(defaultOpiskeluoikeus.copy(suoritukset = List(yhdeksännenLuokanSuoritus, päättötodistusSuoritus.copy(osasuoritukset = Some(List(valinnainenO)))))) {
-            verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.arviointi.sallittuVainValinnaiselle("Arviointi O on sallittu vain jos oppimäärä on rajattu (yksilöllistetty) tai valinnaisille oppiaineille joiden laajuus on alle kaksi vuosiviikkotuntia"))
+            verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.arviointi.sallittuVainValinnaiselle("Arviointi O on sallittu vain jos oppiaineen AI oppimäärä on rajattu (yksilöllistetty) tai valinnaisille oppiaineille joiden laajuus on alle kaksi vuosiviikkotuntia"))
           }
         }
 
         "Kielletty valinnaisten kielioppiaineiden suorituksilta joiden laajuus on 2 vuosiviikkotuntia tai yli" in {
           val valinnainenKieliO = suoritus(kieli("B1", "SV").copy(pakollinen = false, laajuus = vuosiviikkotuntia(2))).copy(arviointi = osallistunut)
           setupOppijaWithOpiskeluoikeus(defaultOpiskeluoikeus.copy(suoritukset = List(yhdeksännenLuokanSuoritus, päättötodistusSuoritus.copy(osasuoritukset = Some(List(valinnainenKieliO)))))) {
-            verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.arviointi.sallittuVainValinnaiselle("Arviointi O on sallittu vain jos oppimäärä on rajattu (yksilöllistetty) tai valinnaisille oppiaineille joiden laajuus on alle kaksi vuosiviikkotuntia"))
+            verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.arviointi.sallittuVainValinnaiselle("Arviointi O on sallittu vain jos oppiaineen B1 oppimäärä on rajattu (yksilöllistetty) tai valinnaisille oppiaineille joiden laajuus on alle kaksi vuosiviikkotuntia"))
           }
         }
 
@@ -477,7 +477,7 @@ class OppijaValidationPerusopetusSpec extends TutkinnonPerusteetTest[Perusopetuk
         "Kielletty paikallisten oppiaineden suorituksilta joiden laajuus on 2 vuosiviikkotuntia tai yli" in {
           val paikallinenLaajuus2 = suoritus(paikallinenOppiaine("HI", "Historia", "Opiskellaan historiaa", vuosiviikkotuntia(2))).copy(arviointi = osallistunut)
           setupOppijaWithOpiskeluoikeus(defaultOpiskeluoikeus.copy(suoritukset = List(yhdeksännenLuokanSuoritus, päättötodistusSuoritus.copy(osasuoritukset = Some(List(paikallinenLaajuus2)))))) {
-            verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.arviointi.sallittuVainValinnaiselle("Arviointi O on sallittu vain jos oppimäärä on rajattu (yksilöllistetty) tai valinnaisille oppiaineille joiden laajuus on alle kaksi vuosiviikkotuntia"))
+            verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.arviointi.sallittuVainValinnaiselle("Arviointi O on sallittu vain jos oppiaineen HI oppimäärä on rajattu (yksilöllistetty) tai valinnaisille oppiaineille joiden laajuus on alle kaksi vuosiviikkotuntia"))
           }
         }
       }
@@ -806,7 +806,7 @@ class OppijaValidationPerusopetusSpec extends TutkinnonPerusteetTest[Perusopetuk
 
         setupOppijaWithOpiskeluoikeus(makeSeiskaluokanRajattuOppimäärä("5")) {
           verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.date(
-            "Rajatulle oppimäärälle sallitaan arvosanat S ja H vain kun kyseessä on 1. - 8. lk suoritus"
+            "Rajatulle oppimäärälle AI sallitaan arvosanat S ja H vain kun kyseessä on 1. - 8. lk suoritus"
           ))
         }
 
@@ -847,7 +847,7 @@ class OppijaValidationPerusopetusSpec extends TutkinnonPerusteetTest[Perusopetuk
 
         setupOppijaWithOpiskeluoikeus(makeYsiluokanLuokallejääntiRajattuOppimäärä("5")) {
           verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.date(
-            "Rajatulle oppimäärälle sallitaan arvosanat S ja H vain kun kyseessä on 9. lk ja oppilas jää luokalle"
+            "Rajatulle oppimäärälle AI sallitaan arvosanat S ja H vain kun kyseessä on 9. lk ja oppilas jää luokalle"
           ))
         }
 
@@ -879,7 +879,7 @@ class OppijaValidationPerusopetusSpec extends TutkinnonPerusteetTest[Perusopetuk
 
         setupOppijaWithOpiskeluoikeus(makeYsiluokanRajattuOppimäärä("S")) {
           verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.date(
-            "Rajatulle oppimäärälle sallitaan vain arvosana 5 kun kyseessä on perusopetuksen oppimäärän suoritus"
+            "Rajatulle oppimäärälle AI sallitaan vain arvosana 5 kun kyseessä on perusopetuksen oppimäärän suoritus"
           ))
         }
 
@@ -1026,7 +1026,7 @@ class OppijaValidationPerusopetusSpec extends TutkinnonPerusteetTest[Perusopetuk
           setupOppijaWithOpiskeluoikeus(withLuokkaAste.build) {
             verifyResponseStatus(400,
               KoskiErrorCategory.badRequest.validation.date(
-                "Perusopetuksen oppiaineen suorituksella on tavoitekokonaisuuksittain opiskeluun liittyvä tieto luokkaAste (8) mutta ei tavoitekokonaisuuksittain opiskelun aikajaksoa, joka kattaisi vuosiluokan vahvistuspäivän tai suorituksen arviointipäivän."
+                "Perusopetuksen oppiaineen HI suorituksella on tavoitekokonaisuuksittain opiskeluun liittyvä tieto luokkaAste (8) mutta ei tavoitekokonaisuuksittain opiskelun aikajaksoa, joka kattaisi vuosiluokan vahvistuspäivän tai suorituksen arviointipäivän."
               )
             )
           }
