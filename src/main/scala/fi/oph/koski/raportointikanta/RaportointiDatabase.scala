@@ -363,8 +363,8 @@ class RaportointiDatabase(config: RaportointiDatabaseConfigBase) extends Logging
     runDbSync(RPäätasonSuoritukset ++= suoritukset)
 
 
-  def updatePäätasonSuoritukset(suoritukset: Seq[RPäätasonSuoritusRow]): Unit = {
-    val opiskeluoikeusOids = suoritukset.map(_.opiskeluoikeusOid).toSet
+  def updatePäätasonSuoritukset(uudetRivit: Seq[RPäätasonSuoritusRow]): Unit = {
+    val opiskeluoikeusOids = uudetRivit.map(_.opiskeluoikeusOid).toSet
     val nykyisetRivit: Map[String, String] = runDbSync(
       RPäätasonSuoritukset
         .filter(_.opiskeluoikeusOid inSet opiskeluoikeusOids)
@@ -373,8 +373,8 @@ class RaportointiDatabase(config: RaportointiDatabaseConfigBase) extends Logging
       timeout = 5.minutes
     ).toMap
 
-    val uudetIdt = suoritukset.map(_.päätasonSuoritusId).toSet
-    val lisättävätTaiPäivitettävätRivit = suoritukset.filter(r => nykyisetRivit.get(r.päätasonSuoritusId).forall(_ != r.dataHash))
+    val uudetIdt = uudetRivit.map(_.päätasonSuoritusId).toSet
+    val lisättävätTaiPäivitettävätRivit = uudetRivit.filter(r => nykyisetRivit.get(r.päätasonSuoritusId).forall(_ != r.dataHash))
     val poistetutTaiPäivitetytRivit = nykyisetRivit.keySet -- uudetIdt ++ lisättävätTaiPäivitettävätRivit.map(_.päätasonSuoritusId).toSet.intersect(nykyisetRivit.keySet)
 
     if (poistetutTaiPäivitetytRivit.nonEmpty) {
@@ -400,18 +400,21 @@ class RaportointiDatabase(config: RaportointiDatabaseConfigBase) extends Logging
     runDbSync(RYtrTutkintokokonaisuudenKokeenSuoritukset ++= tutkintokokonaisuudenKokeet, timeout = 5.minutes)
   }
 
-  def updateOsasuoritukset(suoritukset: Seq[ROsasuoritusRow]): Unit = {
-    val opiskeluoikeusOids = suoritukset.map(_.opiskeluoikeusOid).toSet
-    val nykyisetRivit: Map[String, String] = runDbSync(
-      ROsasuoritukset
-        .filter(_.opiskeluoikeusOid inSet opiskeluoikeusOids)
-        .map(r => (r.osasuoritusId, r.dataHash))
-        .result,
-      timeout = 10.minutes
-    ).toMap
+  def updateOsasuoritukset(uudetRivit: Seq[ROsasuoritusRow], kaikkiOpiskeluoikeusOids: Set[String]): Unit = {
+    val nykyisetRivit: Map[String, String] = if (kaikkiOpiskeluoikeusOids.nonEmpty) {
+      runDbSync(
+        ROsasuoritukset
+          .filter(_.opiskeluoikeusOid inSet kaikkiOpiskeluoikeusOids)
+          .map(r => (r.osasuoritusId, r.dataHash))
+          .result,
+        timeout = 10.minutes
+      ).toMap
+    } else {
+      Map.empty
+    }
 
-    val uudetIdt = suoritukset.map(_.osasuoritusId).toSet
-    val lisättävätTaiPäivitettävätRivit = suoritukset.filter(r => nykyisetRivit.get(r.osasuoritusId).forall(_ != r.dataHash))
+    val uudetIdt = uudetRivit.map(_.osasuoritusId).toSet
+    val lisättävätTaiPäivitettävätRivit = uudetRivit.filter(r => nykyisetRivit.get(r.osasuoritusId).forall(_ != r.dataHash))
     val poistetutTaiPäivitetytRivit = nykyisetRivit.keySet -- uudetIdt ++ lisättävätTaiPäivitettävätRivit.map(_.osasuoritusId).toSet.intersect(nykyisetRivit.keySet)
 
     if (poistetutTaiPäivitetytRivit.nonEmpty) {

@@ -114,6 +114,7 @@ class IncrementalUpdateOpiskeluoikeusLoader(
     val ammatillisenKoulutuksenJarjestamismuotoAikajaksoRows = successfulRows.flatMap(_.rAmmatillisenKoulutuksenJarjestamismuotoAikajaksoRows)
     val updateOsaamisenHankkimistapaAikajaksoRows            = successfulRows.flatMap(_.rOsaamisenHankkimistapaAikajaksoRows)
     val esiopetusOpiskeluoikeusAikajaksoRows                 = successfulRows.flatMap(_.esiopetusOpiskeluoikeusAikajaksoRows)
+    val opiskeluoikeusRows                                   = successfulRows.map(_.rOpiskeluoikeusRow)
     val päätasonSuoritusRows                                 = successfulRows.flatMap(_.rPäätasonSuoritusRows)
     val osasuoritusRows                                      = successfulRows.flatMap(_.rOsasuoritusRows)
     val muuAmmatillinenRaportointiRows                       = successfulRows.flatMap(_.muuAmmatillinenOsasuoritusRaportointiRows)
@@ -124,11 +125,11 @@ class IncrementalUpdateOpiskeluoikeusLoader(
     def parallelUpdate[T](name: String)(block: => T): Future[T] =
       Future(block).recover { case e => logger.error(e)(s"Raportointikannan inkrementaalisen latauksen operaatio $name epäonnistui"); throw e }
 
-    val fOo          = parallelUpdate("updateOpiskeluoikeudet")(timedMs("updateOpiskeluoikeudet")(db.updateOpiskeluoikeudet(successfulRows.map(_.rOpiskeluoikeusRow), mitätöidytOot)))
+    val fOo          = parallelUpdate("updateOpiskeluoikeudet")(timedMs("updateOpiskeluoikeudet")(db.updateOpiskeluoikeudet(opiskeluoikeusRows, mitätöidytOot)))
     val fOrgHistoria = parallelUpdate("updateOrganisaatioHistoria")(timedMs("updateOrganisaatioHistoria")(db.updateOrganisaatioHistoria(successfulRows.flatMap(_.organisaatioHistoriaRows))))
     val fAikajakso   = parallelUpdate("updateOpiskeluoikeusAikajaksot")(timedMs("updateOpiskeluoikeusAikajaksot")(db.updateOpiskeluoikeusAikajaksot(opiskeluoikeusAikajaksoRows)))
     val fPäätason    = parallelUpdate("updatePäätasonSuoritukset")(timedMs("updatePäätasonSuoritukset")(db.updatePäätasonSuoritukset(päätasonSuoritusRows)))
-    val fOsasuoritus = parallelUpdate("updateOsasuoritukset")(timedMs("updateOsasuoritukset")(db.updateOsasuoritukset(osasuoritusRows)))
+    val fOsasuoritus = parallelUpdate("updateOsasuoritukset")(timedMs("updateOsasuoritukset")(db.updateOsasuoritukset(osasuoritusRows, opiskeluoikeusRows.map(_.opiskeluoikeusOid).toSet)))
 
     val (updateOoMs, updateOrgHistoriaMs, updateOoAikajaksoMs, updatePäätasonMs, updateOsasuoritusMs) =
       Await.result(for {
