@@ -1,13 +1,15 @@
 import * as string from 'fp-ts/string'
-import React, { useEffect, useMemo } from 'react'
+import React, { useEffect, useMemo, useRef } from 'react'
 import {
   ApiMethodHook,
+  createPreferLocalCache,
   useApiMethod,
   useMergedApiData,
   useOnApiError,
   useOnApiSuccess,
   useSafeState
 } from '../../api-fetch'
+import { useVersionumero } from '../../appstate/useSearchParam'
 import { modelData } from '../../editor/EditorModel'
 import { t } from '../../i18n/i18n'
 import { Contextualized } from '../../types/EditorModelContext'
@@ -48,7 +50,7 @@ export type UiAdapter = {
 
   getOpiskeluoikeusEditor: (
     opiskeluoikeusModel: ObjectModel
-  ) => AdapterComponent | undefined
+  ) => AdaptedEditorElement | undefined
 }
 
 const loadingUiAdapter: UiAdapter = {
@@ -61,31 +63,59 @@ const disabledUiAdapter: UiAdapter = {
   getOpiskeluoikeusEditor: () => undefined
 }
 
-export type AdapterComponent = () => React.ReactElement
+export type AdaptedEditorElement = React.ReactElement
 
 export type OpiskeluoikeusEditorProps<T extends Opiskeluoikeus> = {
   opiskeluoikeus: T
 }
 
+// Versioidun opiskeluoikeuden data on muuttumatonta (versio N ei koskaan
+// muutu), joten välimuisti voi tarjoilla aiemmin katsotun version suoraan ilman
+// uutta backend-kutsua. Näin versiohistoriassa edestakaisin liikkuminen ei hae
+// samaa versiota uudelleen, kuten vanhassa käyttöliittymässä (Http.cachedGet).
+const opiskeluoikeusVersioCache = createPreferLocalCache(fetchOpiskeluoikeus)
+
 export const useVirkailijaUiAdapter = (oppijaModel: ObjectModel): UiAdapter => {
   const oppijaOid = modelData(oppijaModel, 'henkilö.oid')
   const oppijaFetch = useApiMethod(fetchOppija)
-  const opiskeluoikeusFetch = useApiMethod(fetchOpiskeluoikeus)
+  const opiskeluoikeusFetch = useApiMethod(
+    fetchOpiskeluoikeus,
+    opiskeluoikeusVersioCache
+  )
 
   const ooTyypit: string[] =
     modelData(oppijaModel, 'opiskeluoikeudet')?.map(
       (o: any) => o.tyyppi.koodiarvo
     ) || []
 
-  const fetchData = () => {
+  const loadOppija = () => {
     oppijaFetch.call(oppijaOid)
+  }
+
+  // Versiohistorian valinta vaihtaa vain valitun opiskeluoikeuden versiota
+  // (koko oppijaa ei ladata uudelleen): replaceOppijanOpiskeluoikeus yhdistää
+  // versioidun opiskeluoikeuden oppijan tietoihin.
+  //
+  // Versiosta poistuttaessa versioitu haku tyhjennetään ja nykyinen
+  // opiskeluoikeus haetaan uudelleen, koska se on voinut muuttua (esim. juuri
+  // tehty tallennus) sivun avaamisen jälkeen — pelkkä alkuperäinen (mount-ajan)
+  // data näyttäisi muuten vanhentuneen version. Sivun avaus ilman versiota ei
+  // laukaise uudelleenhakua, koska loadOppija on jo hakenut nykyiset tiedot.
+  const edellinenVersionumeroRef = useRef<string | undefined>(undefined)
+  const loadValittuVersio = () => {
     const query = parseQuery(window.location.search)
     if (query.opiskeluoikeus && query.versionumero) {
       opiskeluoikeusFetch.call(
         query.opiskeluoikeus,
         parseInt(query.versionumero)
       )
+    } else {
+      opiskeluoikeusFetch.clear()
+      if (edellinenVersionumeroRef.current !== undefined) {
+        oppijaFetch.call(oppijaOid)
+      }
     }
+    edellinenVersionumeroRef.current = query.versionumero
   }
 
   const oppija = useMergedApiData(
@@ -94,7 +124,7 @@ export const useVirkailijaUiAdapter = (oppijaModel: ObjectModel): UiAdapter => {
     replaceOppijanOpiskeluoikeus
   )
 
-  return useUiAdapterImpl(ooTyypit, fetchData, oppija)
+  return useUiAdapterImpl(ooTyypit, loadOppija, oppija, loadValittuVersio)
 }
 
 const replaceOppijanOpiskeluoikeus = (
@@ -141,9 +171,11 @@ export const useKansalainenUiAdapter = (
 const useUiAdapterImpl = <T extends any[]>(
   opiskeluoikeustyypit: string[],
   oppijaDataNeeded: () => void,
-  oppija: ApiMethodHook<Oppija, T>
+  oppija: ApiMethodHook<Oppija, T>,
+  onVersionumeroChange?: () => void
 ): UiAdapter => {
   const [adapter, setAdapter] = useSafeState<UiAdapter>(loadingUiAdapter)
+  const versionumero = useVersionumero()
 
   const v2Mode = useMemo(() => {
     const hasPerusopetusFeatureFlag =
@@ -162,6 +194,15 @@ const useUiAdapterImpl = <T extends any[]>(
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [v2Mode])
+
+  // Versionumeron muuttuessa haetaan vain valittu versio (ei koko näkymää
+  // uudelleen), jolloin versiohistoriassa liikkuminen ei lataa sivua uudelleen.
+  useEffect(() => {
+    if (v2Mode) {
+      onVersionumeroChange?.()
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [v2Mode, versionumero])
 
   useOnApiSuccess(oppija, (result) => {
     const opiskeluoikeudet = result.data.opiskeluoikeudet
@@ -210,15 +251,33 @@ const useUiAdapterImpl = <T extends any[]>(
           }
         }
 
-        return Editor
-          ? () => (
-              <Editor
-                oppijaOid={oppijaOid}
-                opiskeluoikeus={oo}
-                invalidatable={opiskeluoikeusModel.invalidatable}
-              />
-            )
-          : undefined
+        // Palautetaan valmis elementti (ei uutta komponenttifunktiota joka
+        // renderillä), jolla on versioon sidottu key. Näin React säilyttää
+        // editorin re-renderöinneissä eikä kiinnitä sitä uudelleen turhaan
+        // (vältetään mm. versiohistorian toistuvat haut), vaan vasta version
+        // vaihtuessa — jolloin lomake alustuu uudelleen versioidulla datalla.
+        //
+        // Key koostuu kahdesta osasta:
+        //  - p<param>: osoiterivin versionumero (tai 'cur' nykyiselle), jotta
+        //    "nykyinen versio" ja "versio N" eivät koskaan törmää vaikka
+        //    ladattu versionumero olisi sama. Ilman tätä tallennuksen jälkeen
+        //    vanhentunut oppijaFetch (versionumero=1) ja katseltava versio 1
+        //    tuottaisivat saman keyn, jolloin lomake ei alustuisi uudelleen.
+        //  - d<dataVersio>: tosiasiassa ladatun datan versionumero, jotta
+        //    uudelleenkiinnitys tapahtuu vasta kun haettu data on saapunut.
+        const ooVer = (oo as { versionumero?: number } | undefined)
+          ?.versionumero
+        const versionumeroParam = new URLSearchParams(
+          window.location.search
+        ).get('versionumero')
+        return Editor && oo ? (
+          <Editor
+            key={`${oid}:p${versionumeroParam ?? 'cur'}:d${ooVer ?? ''}`}
+            oppijaOid={oppijaOid}
+            opiskeluoikeus={oo}
+            invalidatable={opiskeluoikeusModel.invalidatable}
+          />
+        ) : undefined
       }
     })
   })
@@ -229,12 +288,13 @@ const useUiAdapterImpl = <T extends any[]>(
       getOpiskeluoikeusEditor(opiskeluoikeusModel) {
         const tyyppi = modelData(opiskeluoikeusModel, 'tyyppi')?.koodiarvo
         if (Object.keys(opiskeluoikeusEditors).includes(tyyppi)) {
-          return () => (
+          return (
             <div className="error">
               {t('Näkymää ei saada ladattua. Yritä hetken päästä uudelleen.')}
             </div>
           )
         }
+        return undefined
       }
     })
   })

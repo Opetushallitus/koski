@@ -64,6 +64,7 @@ export const OpiskeluoikeusEditToolbar = (
           {inVersiohistoria ? (
             <PoistuVersiohistoriastaButton
               opiskeluoikeusOid={opiskeluoikeusOid}
+              showLabel
             />
           ) : !props.editMode ? (
             <RaisedButton onClick={props.onStartEdit} testId="edit">

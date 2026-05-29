@@ -4,6 +4,7 @@ import { isKorkeakoulunOpiskeluoikeus } from '../types/fi/oph/koski/schema/Korke
 import { Opiskeluoikeus } from '../types/fi/oph/koski/schema/Opiskeluoikeus'
 import { isYlioppilastutkinnonOpiskeluoikeus } from '../types/fi/oph/koski/schema/YlioppilastutkinnonOpiskeluoikeus'
 import { fetchOpiskeluoikeus } from './koskiApi'
+import { invalidateVersiohistoriaCache } from './versiohistoriaCache'
 import { isRight } from 'fp-ts/Either'
 
 export type PäätasonSuoritusOf<T extends Opiskeluoikeus> = T['suoritukset'][0]
@@ -26,6 +27,10 @@ export const mergeOpiskeluoikeusVersionumeroAndRefetch =
   async (oo: T): Promise<T> => {
     const oid = (oo as any)?.oid as string | undefined
     const versio = oid && update.opiskeluoikeudet.find((o) => o.oid === oid)
+
+    // Tallennus loi uuden version -> versiolistan välimuisti vanhentui.
+    // Tyhjennetään se, jotta uusi versio näkyy listaa seuraavan kerran avatessa.
+    invalidateVersiohistoriaCache()
 
     // Haetaan opiskeluoikeus uudestaan jotta saadaan backendista täydennetyt kentät
     const refetchedOo =

@@ -158,14 +158,12 @@ const OpiskeluoikeusEditor = ({
   uiAdapter,
   testId
 }) => {
-  const Editor = uiAdapter.getOpiskeluoikeusEditor(opiskeluoikeus)
+  const editor = uiAdapter.getOpiskeluoikeusEditor(opiskeluoikeus)
   return (
     <TestIdLayer id={testId}>
-      {Editor ? (
+      {editor ? (
         <li key={testId}>
-          <div className="opiskeluoikeus-container">
-            <Editor key={testId} />
-          </div>
+          <div className="opiskeluoikeus-container">{editor}</div>
         </li>
       ) : (
         <li key={testId}>
@@ -179,10 +177,10 @@ const OpiskeluoikeusEditor = ({
   )
 }
 
-const Osaamismerkki = ({ opiskeluoikeus, opiskeluoikeusIndex, uiAdapter }) => {
-  const Editor = uiAdapter.getOpiskeluoikeusEditor(opiskeluoikeus)
+const Osaamismerkki = ({ opiskeluoikeus, uiAdapter }) => {
+  const editor = uiAdapter.getOpiskeluoikeusEditor(opiskeluoikeus)
 
-  return Editor ? <Editor key={opiskeluoikeusIndex} /> : null
+  return editor ?? null
 }
 
 class Opiskeluoikeus extends React.Component {

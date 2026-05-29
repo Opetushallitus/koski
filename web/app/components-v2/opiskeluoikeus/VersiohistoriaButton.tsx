@@ -1,15 +1,12 @@
 import React, { useCallback, useMemo, useRef, useState } from 'react'
-import {
-  createLocalThenApiCache,
-  isSuccess,
-  useApiWithParams
-} from '../../api-fetch'
+import { isSuccess, useApiWithParams } from '../../api-fetch'
 import { useVersionumero } from '../../appstate/useSearchParam'
 import { TestIdLayer } from '../../appstate/useTestId'
 import { ISO2FinnishDateTime } from '../../date/date'
 import { t } from '../../i18n/i18n'
 import { last } from '../../util/fp/arrays'
 import { fetchVersiohistoria } from '../../util/koskiApi'
+import { versiohistoriaCache } from '../../util/versiohistoriaCache'
 import { currentQueryWith } from '../../util/url'
 import { CommonProps, cx } from '../CommonProps'
 import { PositionalPopup } from '../containers/PositionalPopup'
@@ -70,13 +67,11 @@ type VersiohistoriaListProps = CommonProps<{
   onClose: () => void
 }>
 
-const versiolistaCache = createLocalThenApiCache(fetchVersiohistoria)
-
 const VersiohistoriaList: React.FC<VersiohistoriaListProps> = (props) => {
   const historia = useApiWithParams(
     fetchVersiohistoria,
     props.open ? [props.opiskeluoikeusOid] : undefined,
-    versiolistaCache
+    versiohistoriaCache
   )
 
   const versioParam = useVersionumero()
@@ -93,20 +88,14 @@ const VersiohistoriaList: React.FC<VersiohistoriaListProps> = (props) => {
     <TestIdLayer id="list">
       <ul className="VersiohistoriaList" role="navigation">
         <li className="VersiohistoriaList__close">
-          {versioParam ? (
-            <PoistuVersiohistoriastaButton
-              opiskeluoikeusOid={props.opiskeluoikeusOid}
-            />
-          ) : (
-            <a
-              role="button"
-              onClick={props.onClose}
-              aria-label={t('Sulje')}
-              className="VersiohistoriaList__closeButton"
-            >
-              {'✕'}
-            </a>
-          )}
+          <a
+            role="button"
+            onClick={props.onClose}
+            aria-label={t('Sulje')}
+            className="VersiohistoriaList__closeButton"
+          >
+            {'✕'}
+          </a>
         </li>
         {historia.data.map((versio) => (
           <li
@@ -136,6 +125,10 @@ const VersiohistoriaList: React.FC<VersiohistoriaListProps> = (props) => {
 
 export type PoistuVersiohistoriastaButtonProps = {
   opiskeluoikeusOid?: string
+  // Näytä myös tekstilabel rastin vieressä. Oletuksena pelkkä rasti
+  // (esim. versiolistan kulman sulkupainike). Muokkauspalkissa label
+  // selventää, mitä painike tekee.
+  showLabel?: boolean
 }
 
 export const PoistuVersiohistoriastaButton = (
@@ -148,6 +141,6 @@ export const PoistuVersiohistoriastaButton = (
     })}
     aria-label={t('Poistu versiohistoriasta')}
   >
-    {'✕'}
+    {props.showLabel ? `✕ ${t('Poistu versiohistoriasta')}` : '✕'}
   </LinkButton>
 )
