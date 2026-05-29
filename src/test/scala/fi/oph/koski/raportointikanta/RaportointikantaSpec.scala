@@ -1398,6 +1398,43 @@ class RaportointikantaSpec
       osasuorituksetJälkeen should not be empty
       osasuorituksetJälkeen.foreach(_.sisältyyOpiskeluoikeuteenOid shouldBe Some(sisältyyOpiskeluoikeusRow.oid))
     }
+
+    "Mitätöidyn opiskeluoikeuden suoritusrivit poistetaan raportointikannasta" in {
+      KoskiApplicationForTests.fixtureCreator.resetFixtures(reloadRaportointikanta = true, reloadYtrData = true)
+
+      val oo = postAndGetOpiskeluoikeus(perusopetusOoWithOsasuoritukset, KoskiSpecificMockOppijat.tyhjä)
+      val opiskeluoikeusOid = oo.oid.get
+      päivitäRaportointikantaInkrementaalisesti()
+
+      mainRaportointiDb.runDbSync(
+        mainRaportointiDb.ROpiskeluoikeudet.filter(_.opiskeluoikeusOid === opiskeluoikeusOid).result
+      ) should not be empty
+      mainRaportointiDb.runDbSync(
+        mainRaportointiDb.RMitätöidytOpiskeluoikeudet.filter(_.opiskeluoikeusOid === opiskeluoikeusOid).result
+      ) shouldBe empty
+      mainRaportointiDb.runDbSync(
+        mainRaportointiDb.RPäätasonSuoritukset.filter(_.opiskeluoikeusOid === opiskeluoikeusOid).result
+      ) should not be empty
+      mainRaportointiDb.runDbSync(
+        mainRaportointiDb.ROsasuoritukset.filter(_.opiskeluoikeusOid === opiskeluoikeusOid).result
+      ) should not be empty
+
+      mitätöiOpiskeluoikeus(opiskeluoikeusOid)
+      päivitäRaportointikantaInkrementaalisesti()
+
+      mainRaportointiDb.runDbSync(
+        mainRaportointiDb.ROpiskeluoikeudet.filter(_.opiskeluoikeusOid === opiskeluoikeusOid).result
+      ) shouldBe empty
+      mainRaportointiDb.runDbSync(
+        mainRaportointiDb.RMitätöidytOpiskeluoikeudet.filter(_.opiskeluoikeusOid === opiskeluoikeusOid).result
+      ) should not be empty
+      mainRaportointiDb.runDbSync(
+        mainRaportointiDb.RPäätasonSuoritukset.filter(_.opiskeluoikeusOid === opiskeluoikeusOid).result
+      ) shouldBe empty
+      mainRaportointiDb.runDbSync(
+        mainRaportointiDb.ROsasuoritukset.filter(_.opiskeluoikeusOid === opiskeluoikeusOid).result
+      ) shouldBe empty
+    }
   }
 
   "Inkrementaalinen lataus muutetaan täyslataukseksi jos päivitettäviä rivien määrä ylittää raja-arvon" in {
