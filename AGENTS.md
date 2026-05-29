@@ -217,3 +217,26 @@ make view-db-docs
 
 - **Digital certificates**, digitaaliset todistukset, digitodistukset, see: `documentation/todistus.md`.
   - When adding new major features to certificates, also update the `documentation/todistus.md` file.
+
+## GenAI tool usage guidelines
+
+These guidelines apply to all GenAI tools (e.g. ChatGPT, Claude, IntelliJ IDEA GenAI features, Microsoft Copilot, Cursor) used in this project. AI assistants acting on behalf of the user must follow them.
+
+### Purpose and benefits
+GenAI tools are used to assist a human, not to act autonomously. Intended benefits:
+- Speeding up routine tasks (e.g. generating automated tests)
+- Helping locate and identify defects (e.g. explaining complex program logic in plain language)
+- Enabling one-off operations (e.g. quickly learning a command-line debugging tool)
+- Supporting professional development and motivation by enabling new ways of working
+
+### Restrictions and risk management
+- **Human review is mandatory.** Any feature that performs work or generates code directly into production without clear human review and testing is **strictly forbidden**.
+- **Avoid experimental features.** GenAI tools evolve rapidly; do not use new, experimental capabilities before they have stabilized.
+- **Protect confidential data.** Use tool settings that prevent confidential OPH data from being sent to model training pipelines.
+- **Minimize IPR risk.** Enable tool features that mitigate IPR violations, such as automatic duplicate detection and blocking of GPL-licensed code suggestions.
+- **Use judgment when adopting new tools.** Consult with other specialists before introducing tools not already established in the project.
+
+### Summary for AI assistants
+- Act as an assistant to the human, never as an autonomous executor of tasks.
+- Ensure confidential content stays protected and IPR risks are minimized.
+- Treat all AI-generated output as work that must be reviewed by the user with the same scrutiny as code from a junior developer — do not assume it is correct or safe to apply without confirmation.
