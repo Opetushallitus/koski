@@ -213,6 +213,38 @@ make view-db-docs
 - The application uses CAS for authentication in production
 - Audit logging is required for all user actions involving personal data
 
+## Maintaining these instructions
+
+AGENTS.md (and the files it references, such as `documentation/todistus.md`) is a shared resource for the whole team and for future agent sessions. Keep it concise and readable for humans — not just for agents.
+
+### Suggesting new entries
+
+While working, if a non-obvious convention, gotcha, workflow, or piece of project context surfaces that would help **teammates and future agent sessions**, proactively suggest documenting it here. Good candidates:
+
+- Pitfalls that took time to diagnose (ordering constraints, hidden coupling, etc.)
+- Conventions that aren't obvious from reading the code
+- Workflows that span multiple tools, repos, or services
+- Decisions and their rationale where a future reader might otherwise undo them
+
+Skip what is already obvious from the code, commit history, or other documentation.
+
+### Where to put the entry
+
+- **Short, cross-cutting rules**: add to AGENTS.md inside the most relevant existing section. Add new top-level sections sparingly.
+- **Feature-specific or longer guidance** (more than a short paragraph): create or extend a dedicated file under `documentation/`, and add a one-line pointer under "Instructions for working with specific features" (see the `documentation/todistus.md` entry as the template).
+
+### Style
+
+- Concise and skimmable — bullets or short paragraphs.
+- Written for a human teammate first; an agent will read it just fine either way.
+- State the rule or fact first; add a brief reason only if it isn't obvious.
+- Prefer updating an existing entry over adding a sibling one. Avoid duplication; link instead.
+
+### Process
+
+- Suggest the addition to the user before editing. Do not modify AGENTS.md or its referenced docs autonomously.
+- In the commit body, mention the motivating context so future readers can judge whether the entry still applies.
+
 ## Instructions for working with specific features
 
 - **Digital certificates**, digitaaliset todistukset, digitodistukset, see: `documentation/todistus.md`.
