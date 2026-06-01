@@ -70,7 +70,9 @@ export const OsasuoritusTable = <DATA_KEYS extends string, P>(
   const { addNewOsasuoritusView: AddNewOsasuoritusView } = props
   const newOsasuoritusIds = useNewItems(getRowId, props.rows)
 
-  const skipExpandableColumn = rows.every((row) => !row.expandable)
+  // Laajennussarake (+-painike) varataan aina, vaikka mikään rivi ei olisi
+  // laajennettavissa, jotta otsikkorivi pysyy kohdistettuna rivien kanssa.
+  const skipExpandableColumn = false
   // Completed-sarake (suoritettu/kesken -merkki) varataan vain, jos taulukko
   // käyttää completed-tilaa. Esim. perusopetus ei, joten sarake jätetään pois.
   const showCompleted = completed !== undefined
