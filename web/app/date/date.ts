@@ -49,7 +49,7 @@ export const formatRange =
   (formatter: (s: string) => string | undefined) =>
   (from?: string, to?: string) => {
     const range = [from ? formatter(from) : '', to ? formatter(to) : '']
-    return range.join(' – ').trim()
+    return range.join(' — ').trim()
   }
 
 export const formatDateRange = formatRange(ISO2FinnishDate)

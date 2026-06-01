@@ -42,13 +42,13 @@ export const OppijaEditor = ({ model }) => {
                   oppilaitoksenOpiskeluoikeudet,
                   'opiskeluoikeudet'
                 ).map((opiskeluoikeus, opiskeluoikeusIndex) => {
-                  const Editor =
+                  const editor =
                     uiAdapter.getOpiskeluoikeusEditor(opiskeluoikeus)
                   return (
                     <li key={oppilaitosIndex + '-' + opiskeluoikeusIndex}>
-                      {Editor ? (
+                      {editor ? (
                         <TestIdRoot id={`oo.${opiskeluoikeusIndex}`}>
-                          <Editor />
+                          {editor}
                         </TestIdRoot>
                       ) : (
                         <OpiskeluoikeusEditor

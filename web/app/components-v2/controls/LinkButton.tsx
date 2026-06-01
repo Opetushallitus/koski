@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react'
-import { goto } from '../../util/url'
+import { pushLocation } from '../../util/url'
 import { common, CommonPropsWithChildren } from '../CommonProps'
 import { useTestId } from '../../appstate/useTestId'
 
@@ -10,7 +10,7 @@ export type LinkButtonProps = CommonPropsWithChildren<{
 
 export const LinkButton: React.FC<LinkButtonProps> = (props) => {
   const testId = useTestId(props.testId)
-  const onClick = useCallback(() => goto(props.href), [props.href])
+  const onClick = useCallback(() => pushLocation(props.href), [props.href])
   return (
     <button
       {...common(props, ['LinkButton'])}

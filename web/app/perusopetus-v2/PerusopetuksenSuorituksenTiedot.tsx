@@ -80,7 +80,9 @@ export const PerusopetuksenSuorituksenTiedot: React.FC<
 
   return (
     <>
-      <KeyValueTable>
+      {/* labelWidth pitää pisimmätkin nimet yhdellä rivillä ja tasaa arvot
+          samaan sarakkeeseen vanhan käyttöliittymän tapaan. */}
+      <KeyValueTable labelWidth={6}>
         <KeyColumnedValuesRow
           localizableName={
             isPerusopetuksenVuosiluokanSuoritus(suoritus)
@@ -751,7 +753,7 @@ const TäydentävätOmanÄidinkielenOpinnotRow: React.FC<{
               />
             ) : (
               <TestIdText id="omanÄidinkielenOpinnot.arvosana">
-                {opinnot?.arvosana.koodiarvo} {t(opinnot?.arvosana.nimi)}
+                {opinnot?.arvosana.koodiarvo}
               </TestIdText>
             )}
           </KeyValueRow>

@@ -21,6 +21,7 @@ test.describe('Perusopetuksen uusi käyttöliittymä: kielioppiaineen kielivalin
     test.setTimeout(60000)
     await fixtures.reset()
     await oppijaPage.goto(kaisaUrl)
+    await page.getByTestId('oo.0.suoritusTabs.0.tab').click()
     // Päättötodistus (tab 0) sisältää kaikki oppiaineet.
     // Valinnainen B1-kieli (ruotsi) on osasuoritukset-listan indeksissä 2.
     // V2:n oppiainenimi on kaksiosainen: oppiaineen nimi ("B1-kieli, ") +
@@ -66,6 +67,7 @@ test.describe('Perusopetuksen uusi käyttöliittymä: kielioppiaineen kielivalin
     test.setTimeout(60000)
     await fixtures.reset()
     await oppijaPage.goto(kaisaUrl)
+    await page.getByTestId('oo.0.suoritusTabs.0.tab').click()
 
     await page.getByTestId('oo.0.opiskeluoikeus.edit').click()
 

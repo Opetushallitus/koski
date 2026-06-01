@@ -1,10 +1,12 @@
+// Otsikkorivi erotetaan osasuorituksista ohuella viivalla vanhan
+// käyttöliittymän tapaan (ei vaaleansinistä palkkia).
 .OsasuoritusHeader {
-  background-color: @color-light-blue;
   font-weight: 600;
-  margin-bottom: @baseline;
+  margin-bottom: (@baseline / 2);
+  border-bottom: 1px solid @color-disabled;
 
   .Column {
-    min-height: 4 * @baseline;
+    min-height: 2 * @baseline;
     display: flex;
     align-items: center;
 
@@ -12,19 +14,6 @@
       padding-left: @h-padding;
     }
   }
-  .OsasuoritusHeader__indent {
-    background: white;
-  }
-}
-
-// Kansalaisen näkymän taustaväri
-.omattiedot .OsasuoritusHeader .OsasuoritusHeader__indent {
-  background: @color-lightgray !important;
-}
-
-// Suoritusjaon näkymän taustaväri
-.suoritusjako .OsasuoritusHeader .OsasuoritusHeader__indent {
-  background: @color-lightgray !important;
 }
 
 .OsasuoritusProperty {

@@ -21,7 +21,7 @@ test.describe('IB', () => {
       const tiedot = ibOppijaPage.$.opiskeluoikeus
 
       await expect(tiedot.voimassaoloaika.elem).toHaveText(
-        'Opiskeluoikeuden voimassaoloaika: 1.9.2012 – 4.6.2016'
+        'Opiskeluoikeuden voimassaoloaika: 1.9.2012 — 4.6.2016'
       )
       await expect(tiedot.tila.value.items(0).tila.elem).toHaveText(
         'Valmistunut'
@@ -477,7 +477,7 @@ test.describe('IB', () => {
         const tiedot = ibOppijaPage.$.opiskeluoikeus
 
         await expect(tiedot.voimassaoloaika.elem).toHaveText(
-          'Opiskeluoikeuden voimassaoloaika: 1.9.2012 – 4.6.2016'
+          'Opiskeluoikeuden voimassaoloaika: 1.9.2012 — 4.6.2016'
         )
         await expect(tiedot.tila.value.items(0).tila.elem).toHaveText(
           'Valmistunut'
@@ -970,7 +970,7 @@ test.describe('IB', () => {
         const tiedot = ibOppijaPage.$.opiskeluoikeus
 
         await expect(tiedot.voimassaoloaika.elem).toHaveText(
-          'Opiskeluoikeuden voimassaoloaika: 1.9.2012 – 4.6.2016'
+          'Opiskeluoikeuden voimassaoloaika: 1.9.2012 — 4.6.2016'
         )
         await expect(tiedot.tila.value.items(0).tila.elem).toHaveText(
           'Valmistunut'

@@ -33,6 +33,21 @@ export const updateQuery =
       ...params
     })
 
-export const currentQueryWith = updateQuery(window.location.href)
+// Luetaan nykyinen osoite kutsuhetkellä (ei moduulin latautuessa), jotta
+// asiakaspuolen navigoinnissa (pushLocation) parametrit yhdistyvät ajantasaiseen
+// osoitteeseen eikä alkuperäiseen lataushetken osoitteeseen.
+export const currentQueryWith = (params: LocationQueryIn): string =>
+  updateQuery(window.location.href)(params)
 
 export const goto = (href: string) => window.location.assign(href)
+
+// Tapahtuma, jolla pushLocation ilmoittaa osoitteen muuttuneen ilman koko sivun
+// uudelleenlatausta. useSearchParam kuuntelee tätä (ja popstatea).
+export const LOCATION_CHANGE_EVENT = 'locationchange'
+
+// Asiakaspuolen navigointi: päivitä osoite selaimen historiaan lataamatta sivua
+// uudelleen ja ilmoita muutoksesta osoitetta lukeville hookeille.
+export const pushLocation = (href: string): void => {
+  window.history.pushState({}, '', href)
+  window.dispatchEvent(new Event(LOCATION_CHANGE_EVENT))
+}

@@ -79,6 +79,7 @@ test.describe('Perusopetuksen uusi käyttöliittymä: suoritusten tiedot regress
     oppijaPage
   }) => {
     await oppijaPage.goto(kaisaUrl)
+    await page.getByTestId('oo.0.suoritusTabs.0.tab').click()
 
     await expect(suorituksenTiedotRivienOtsikot(page, 0)).toContainText([
       'Koulutus',
@@ -125,6 +126,7 @@ test.describe('Perusopetuksen uusi käyttöliittymä: suoritusten tiedot regress
     oppijaPage
   }) => {
     await oppijaPage.goto(kaisaUrl)
+    await page.getByTestId('oo.0.suoritusTabs.0.tab').click()
     await page.getByTestId('oo.0.opiskeluoikeus.edit').click()
 
     await expectLabelsInOrder(suorituksenTiedotRivienOtsikot(page, 0), [
@@ -157,6 +159,7 @@ test.describe('Perusopetuksen uusi käyttöliittymä: suoritusten tiedot regress
     oppijaPage
   }) => {
     await oppijaPage.goto(ylermiUrl)
+    await page.getByTestId('oo.0.suoritusTabs.0.tab').click()
 
     // Ylermin päättötodistus on kesken eikä hyväksyttyä äidinkielen arviointia ole,
     // joten koulusivistyskielen synteettinen kenttä on tyhjä.
@@ -231,6 +234,7 @@ test.describe('Perusopetuksen uusi käyttöliittymä: suoritusten tiedot regress
     oppijaPage
   }) => {
     await oppijaPage.goto(kaisaUrl)
+    await page.getByTestId('oo.0.suoritusTabs.0.tab').click()
 
     await expect(suoritusPerusteRivi(page)).toContainText('104/011/2014')
 
@@ -251,6 +255,7 @@ test.describe('Perusopetuksen uusi käyttöliittymä: suoritusten tiedot regress
     oppijaPage
   }) => {
     await oppijaPage.goto(kaisaUrl)
+    await page.getByTestId('oo.0.suoritusTabs.0.tab').click()
     await page.getByTestId('oo.0.opiskeluoikeus.edit').click()
 
     await page
@@ -285,6 +290,7 @@ test.describe('Perusopetuksen uusi käyttöliittymä: suoritusten tiedot regress
       oppijaPage
     }) => {
       await oppijaPage.goto(kaisaUrl)
+      await page.getByTestId('oo.0.suoritusTabs.0.tab').click()
       await page.getByTestId('oo.0.opiskeluoikeus.edit').click()
 
       const organisaatioInput = page.getByTestId(

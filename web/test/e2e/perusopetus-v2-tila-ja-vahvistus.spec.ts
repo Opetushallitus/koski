@@ -17,6 +17,7 @@ test.describe('Perusopetuksen uusi käyttöliittymä: tila ja vahvistus', () => 
   }) => {
     await fixtures.reset()
     await oppijaPage.goto(kaisaUrl)
+    await page.getByTestId('oo.0.suoritusTabs.0.tab').click()
 
     // Tarkista alkutila: suoritus valmis
     await expect(
@@ -59,6 +60,7 @@ test.describe('Perusopetuksen uusi käyttöliittymä: tila ja vahvistus', () => 
   }) => {
     await fixtures.reset()
     await oppijaPage.goto(kaisaUrl)
+    await page.getByTestId('oo.0.suoritusTabs.0.tab').click()
 
     // Tarkista alkutila: valmistunut + läsnä
     await expect(
@@ -98,6 +100,7 @@ test.describe('Perusopetuksen uusi käyttöliittymä: tila ja vahvistus', () => 
   }) => {
     await fixtures.reset()
     await oppijaPage.goto(kaisaUrl)
+    await page.getByTestId('oo.0.suoritusTabs.0.tab').click()
 
     // Poista ensin valmistunut-tila ja vahvistus, jotta tilan lisäys on mahdollista
     await page.getByTestId('oo.0.opiskeluoikeus.edit').click()
@@ -112,6 +115,7 @@ test.describe('Perusopetuksen uusi käyttöliittymä: tila ja vahvistus', () => 
 
     // Lataa sivu uudelleen varmistaaksemme puhtaan tilan
     await oppijaPage.goto(kaisaUrl)
+    await page.getByTestId('oo.0.suoritusTabs.0.tab').click()
 
     // Lisää eronnut-tila
     await page.getByTestId('oo.0.opiskeluoikeus.edit').click()
@@ -140,6 +144,7 @@ test.describe('Perusopetuksen uusi käyttöliittymä: tila ja vahvistus', () => 
   }) => {
     await fixtures.reset()
     await oppijaPage.goto(kaisaUrl)
+    await page.getByTestId('oo.0.suoritusTabs.0.tab').click()
 
     // Ensin merkitään oppimäärä keskeneräiseksi
     await page.getByTestId('oo.0.opiskeluoikeus.edit').click()
@@ -267,6 +272,7 @@ test.describe('Perusopetuksen uusi käyttöliittymä: tila ja vahvistus', () => 
   }) => {
     await fixtures.reset()
     await oppijaPage.goto(kaisaUrl)
+    await page.getByTestId('oo.0.suoritusTabs.0.tab').click()
 
     // Merkitään oppimäärä keskeneräiseksi ensin
     await page.getByTestId('oo.0.opiskeluoikeus.edit').click()
@@ -309,6 +315,7 @@ test.describe('Perusopetuksen uusi käyttöliittymä: tila ja vahvistus', () => 
   }) => {
     await fixtures.reset()
     await oppijaPage.goto(kaisaUrl)
+    await page.getByTestId('oo.0.suoritusTabs.0.tab').click()
 
     // Merkitään oppimäärä keskeneräiseksi ensin
     await page.getByTestId('oo.0.opiskeluoikeus.edit').click()
@@ -350,6 +357,7 @@ test.describe('Perusopetuksen uusi käyttöliittymä: tila ja vahvistus', () => 
   }) => {
     await fixtures.reset()
     await oppijaPage.goto(kaisaUrl)
+    await page.getByTestId('oo.0.suoritusTabs.0.tab').click()
 
     // 1. Merkitään oppimäärä keskeneräiseksi
     await page.getByTestId('oo.0.opiskeluoikeus.edit').click()

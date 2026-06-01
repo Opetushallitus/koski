@@ -78,4 +78,89 @@ test.describe('Perusopetuksen uusi käyttöliittymä: versiohistoria', () => {
       page.getByTestId('oo.0.opiskeluoikeus.versiohistoria.list.2')
     ).toBeVisible()
   })
+
+  test('Version selaaminen ja siitä poistuminen ei lataa koko sivua uudelleen', async ({
+    page,
+    oppijaPage,
+    fixtures
+  }) => {
+    await fixtures.reset()
+    await oppijaPage.goto(kaisaUrl)
+
+    // Merkki häviää, jos koko sivu ladataan uudelleen (vanha käyttäytyminen)
+    await page.evaluate(() => {
+      ;(window as unknown as { __noReload?: boolean }).__noReload = true
+    })
+    const notReloaded = () =>
+      page.evaluate(
+        () => (window as unknown as { __noReload?: boolean }).__noReload === true
+      )
+
+    const button = page.getByTestId('oo.0.opiskeluoikeus.versiohistoria.button')
+    await button.click()
+    await page.getByTestId('oo.0.opiskeluoikeus.versiohistoria.list.1').click()
+
+    // Versioon siirrytään asiakaspuolella: otsikko ja osoite päivittyvät
+    await expect(button).toContainText('Versionumero: v1')
+    await expect(page).toHaveURL(/versionumero=1/)
+    // Muokkausta ei tarjota versiota selatessa
+    await expect(page.getByTestId('oo.0.opiskeluoikeus.edit')).toHaveCount(0)
+    expect(await notReloaded()).toBe(true)
+
+    // Suljetaan versiolista, jottei se jää muokkauspalkin poistumispainikkeen
+    // päälle, ja poistutaan versiohistoriasta muokkauspalkin painikkeesta.
+    await button.click()
+    await page
+      .getByRole('button', { name: 'Poistu versiohistoriasta' })
+      .click()
+    await expect(button).toContainText('Versiohistoria')
+    await expect(page).not.toHaveURL(/versionumero=/)
+    await expect(page.getByTestId('oo.0.opiskeluoikeus.edit')).toBeVisible()
+    expect(await notReloaded()).toBe(true)
+  })
+
+  test('Tallennuksen jälkeen vanhan version selaus ja siitä poistuminen näyttää uusimman tallennetun version', async ({
+    page,
+    oppijaPage,
+    fixtures
+  }) => {
+    test.setTimeout(60000)
+    await fixtures.reset()
+    await oppijaPage.goto(kaisaUrl)
+
+    const marker = 'REGRESSIO_UUSIN_TALLENNETTU'
+
+    // Muokkaa todistuksella näkyviä lisätietoja ja tallenna -> syntyy uusi versio
+    await page.getByTestId('oo.0.opiskeluoikeus.edit').click()
+    await page
+      .getByTestId('oo.0.suoritukset.1.todistuksellaNäkyvätLisätiedot.edit.input')
+      .fill(marker)
+    await page.getByTestId('oo.0.opiskeluoikeus.save').click()
+    await expect(page.getByTestId('oo.0.opiskeluoikeus.edit')).toBeVisible({
+      timeout: 15000
+    })
+    // Nykyinen näkymä näyttää juuri tallennetun arvon
+    await expect(page.getByText(marker)).toBeVisible()
+
+    // Selaa vanhinta versiota v1 (jossa juuri tallennettua lisätietoa ei ole)
+    await page.getByTestId('oo.0.opiskeluoikeus.versiohistoria.button').click()
+    await page.getByTestId('oo.0.opiskeluoikeus.versiohistoria.list.1').click()
+    await expect(page).toHaveURL(/versionumero=1/)
+    await expect(page.getByText(marker)).toHaveCount(0)
+
+    // Versiosta poistuminen näyttää uusimman TALLENNETUN version, ei
+    // alkuperäistä (mountin aikaista) tilaa. Tämä oli aiemmin rikki: editori
+    // jäi näyttämään vanhentunutta dataa, koska oppijaFetchiä ei haettu
+    // uudelleen ja remount-key törmäsi tallennusta edeltäneeseen versioon.
+    // Suljetaan ensin versiolista, jottei se peitä muokkauspalkin
+    // poistumispainiketta. Varmistus tehdään merkkijonohaulla (ei tiettyä
+    // testId-solmua), jottei poistumisen jälkeinen oletusvälilehden valinta
+    // vaikuta siihen.
+    await page.getByTestId('oo.0.opiskeluoikeus.versiohistoria.button').click()
+    await page
+      .getByRole('button', { name: 'Poistu versiohistoriasta' })
+      .click()
+    await expect(page).not.toHaveURL(/versionumero=/)
+    await expect(page.getByText(marker)).toBeVisible({ timeout: 15000 })
+  })
 })

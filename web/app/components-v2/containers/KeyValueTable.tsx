@@ -1,6 +1,6 @@
 import { constant } from 'fp-ts/lib/function'
 import { isNumber } from 'fp-ts/lib/number'
-import React, { useMemo } from 'react'
+import React, { createContext, useContext, useMemo } from 'react'
 import { TestIdLayer } from '../../appstate/useTestId'
 import { LocalizedString } from '../../types/fi/oph/koski/schema/LocalizedString'
 import { mapTimes } from '../../util/fp/arrays'
@@ -16,10 +16,22 @@ import {
   mapResponsiveValue
 } from './Columns'
 
-export type KeyValueTableProps = CommonPropsWithChildren
+/**
+ * Nimisarakkeen leveys (ruudukon sarakkeissa) jaetaan taulukon riveille
+ * contextin kautta. Sisäkkäinen KeyValueTable nollaa arvon, joten leveys ei
+ * vuoda sisätauluihin.
+ */
+const KeyValueTableContext = createContext<{ labelWidth?: number }>({})
+
+export type KeyValueTableProps = CommonPropsWithChildren<{
+  /** Pakottaa kaikkien rivien nimisarakkeen tähän leveyteen (ruudukon sarakkeissa). */
+  labelWidth?: number
+}>
 
 export const KeyValueTable = (props: KeyValueTableProps) => (
-  <ul {...common(props, ['KeyValueTable'])}>{props.children}</ul>
+  <KeyValueTableContext.Provider value={{ labelWidth: props.labelWidth }}>
+    <ul {...common(props, ['KeyValueTable'])}>{props.children}</ul>
+  </KeyValueTableContext.Provider>
 )
 
 export type KeyValueRowProps = CommonPropsWithChildren<{
@@ -32,11 +44,14 @@ export type KeyValueRowProps = CommonPropsWithChildren<{
 
 export const KeyValueRow = (props: KeyValueRowProps) => {
   const indent = props.indent || 0
+  const { labelWidth } = useContext(KeyValueTableContext)
   const nameSpans = props.innerKeyValueTable
     ? { default: 8, small: 12, phone: 16 }
     : props.largeLabel
       ? { default: 8, small: 12, phone: 12 }
-      : { default: 4, small: 8, phone: 12 }
+      : labelWidth !== undefined
+        ? { default: labelWidth, small: Math.max(labelWidth, 8), phone: 12 }
+        : { default: 4, small: 8, phone: 12 }
   const valueSpans = {
     default: 24 - nameSpans.default - indent,
     small: 24 - nameSpans.small - indent,
@@ -70,26 +85,32 @@ export type KeyColumnedValuesRowProps = CommonProps<{
   localizableName?: string | LocalizedString
   children: React.ReactNode[]
   columnSpans?: ResponsiveValue<Array<number | '*'>>
+  /** Nimisarakkeen leveys ruudukon sarakkeissa. Oletuksena 4. */
+  nameWidth?: number
 }>
 
-const NAME_WIDTH: ResponsiveValue<number> = { default: 4 }
-const VALUE_AREA_WIDTH = COLUMN_COUNT - NAME_WIDTH.default
+const DEFAULT_NAME_WIDTH = 4
 
 export const KeyColumnedValuesRow = (props: KeyColumnedValuesRowProps) => {
+  const { labelWidth } = useContext(KeyValueTableContext)
+  const nameWidth = props.nameWidth ?? labelWidth ?? DEFAULT_NAME_WIDTH
+  const valueAreaWidth = COLUMN_COUNT - nameWidth
   const spans = useMemo(() => {
     if (props.columnSpans) {
-      return mapResponsiveValue(calculateAutomaticWidths)(props.columnSpans)
+      return mapResponsiveValue(calculateAutomaticWidths(valueAreaWidth))(
+        props.columnSpans
+      )
     } else {
-      const autoWidth = Math.min(VALUE_AREA_WIDTH / props.children.length)
+      const autoWidth = Math.min(valueAreaWidth / props.children.length)
       return mapTimes(props.children.length, constant(autoWidth))
     }
-  }, [props.columnSpans, props.children.length])
+  }, [props.columnSpans, props.children.length, valueAreaWidth])
 
   return props.children ? (
     <ColumnRow component="li" {...common(props, ['KeyValueRow'])}>
       <Column
         className="KeyValueRow__name"
-        span={NAME_WIDTH}
+        span={{ default: nameWidth }}
         valign="top"
         component="span"
       >
@@ -110,11 +131,11 @@ export const KeyColumnedValuesRow = (props: KeyColumnedValuesRowProps) => {
   ) : null
 }
 
-const calculateAutomaticWidths = (
-  columnSpans: Array<number | '*'>
-): number[] => {
-  const fixed = sum(columnSpans.filter(isNumber) || [])
-  const autoWidths = columnSpans.filter((s) => s === '*').length || 1
-  const autoWidth = Math.min((VALUE_AREA_WIDTH - fixed) / autoWidths)
-  return columnSpans.map((s) => (s === '*' ? autoWidth : s))
-}
+const calculateAutomaticWidths =
+  (valueAreaWidth: number) =>
+  (columnSpans: Array<number | '*'>): number[] => {
+    const fixed = sum(columnSpans.filter(isNumber) || [])
+    const autoWidths = columnSpans.filter((s) => s === '*').length || 1
+    const autoWidth = Math.min((valueAreaWidth - fixed) / autoWidths)
+    return columnSpans.map((s) => (s === '*' ? autoWidth : s))
+  }

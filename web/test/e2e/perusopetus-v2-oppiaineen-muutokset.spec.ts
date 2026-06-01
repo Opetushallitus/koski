@@ -125,6 +125,7 @@ test.describe('Perusopetuksen uusi käyttöliittymä: oppiainemuutokset', () => 
   }) => {
     await fixtures.reset()
     await oppijaPage.goto(kaisaUrl)
+    await page.getByTestId('oo.0.suoritusTabs.0.tab').click()
 
     // Päättötodistus on tab 0. Siirry muokkaustilaan.
     await page.getByTestId('oo.0.opiskeluoikeus.edit').click()
@@ -164,6 +165,7 @@ test.describe('Perusopetuksen uusi käyttöliittymä: oppiainemuutokset', () => 
   }) => {
     await fixtures.reset()
     await oppijaPage.goto(kaisaUrl)
+    await page.getByTestId('oo.0.suoritusTabs.0.tab').click()
 
     // Alkutila: päättötodistus valmis, äidinkielen arvosana näkyy
     await expect(
@@ -208,6 +210,7 @@ test.describe('Perusopetuksen uusi käyttöliittymä: oppiainemuutokset', () => 
     test.setTimeout(90000)
     await fixtures.reset()
     await oppijaPage.goto(kaisaUrl)
+    await page.getByTestId('oo.0.suoritusTabs.0.tab').click()
 
     // 1. Merkitse päättötodistus keskeneräiseksi: arvosanat piilottuvat
     await page.getByTestId('oo.0.opiskeluoikeus.edit').click()
@@ -348,6 +351,7 @@ test.describe('Perusopetuksen uusi käyttöliittymä: oppiainemuutokset', () => 
   }) => {
     await fixtures.reset()
     await oppijaPage.goto(kaisaUrl)
+    await page.getByTestId('oo.0.suoritusTabs.0.tab').click()
 
     // Päättötodistus on tab 0 (oletus). Siirry muokkaustilaan.
     await page.getByTestId('oo.0.opiskeluoikeus.edit').click()

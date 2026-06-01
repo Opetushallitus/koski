@@ -18,6 +18,7 @@ test.describe('Perusopetuksen uusi käyttöliittymä: tallennusvirheet', () => {
   }) => {
     await fixtures.reset()
     await oppijaPage.goto(kaisaUrl)
+    await page.getByTestId('oo.0.suoritusTabs.0.tab').click()
     await page.getByTestId('oo.0.opiskeluoikeus.edit').click()
 
     // Tee muutos: todistuksella näkyvät lisätiedot -kenttä oppimäärätabilla
@@ -78,6 +79,7 @@ test.describe('Perusopetuksen uusi käyttöliittymä: tallennusvirheet', () => {
   }) => {
     await fixtures.reset()
     await oppijaPage.goto(kaisaUrl)
+    await page.getByTestId('oo.0.suoritusTabs.0.tab').click()
     await page.getByTestId('oo.0.opiskeluoikeus.edit').click()
 
     await page

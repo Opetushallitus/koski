@@ -67,7 +67,9 @@ test.describe('Perusopetuksen uusi käyttöliittymä: päätason suorituksen poi
     await fixtures.reset()
     await oppijaPage.goto(kaisaUrl)
 
-    // Kaisalla on 4 päätason suoritusta — aloitetaan muokkaus oppimäärä-tabilla
+    // Kaisalla on 4 päätason suoritusta. Näkymä avautuu viimeisimmälle
+    // vuosiluokalle; valitaan oppimäärä (tab 0) ja aloitetaan muokkaus.
+    await page.getByTestId('oo.0.suoritusTabs.0.tab').click()
     await page.getByTestId('oo.0.opiskeluoikeus.edit').click()
 
     // Poista suoritus -painike näkyy
@@ -102,6 +104,8 @@ test.describe('Perusopetuksen uusi käyttöliittymä: päätason suorituksen poi
     await fixtures.reset()
     await oppijaPage.goto(kaisaUrl)
 
+    // Valitaan oppimäärä (tab 0); näkymä avautuu viimeisimmälle vuosiluokalle.
+    await page.getByTestId('oo.0.suoritusTabs.0.tab').click()
     await page.getByTestId('oo.0.opiskeluoikeus.edit').click()
 
     // Poista päätason oppimäärä (tab 0 = Päättötodistus)
