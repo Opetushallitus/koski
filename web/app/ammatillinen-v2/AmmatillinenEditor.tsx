@@ -478,6 +478,7 @@ const AmmatillinenTutkintoOsittainenEditor: React.FC<
         )}
         <OsasuoritusTables
           form={props.form}
+          oppilaitosOid={organisaatio?.oid}
           osittainenPäätasonSuoritus={osittainenPäätasonSuoritus}
         />
         <AmisLaajuudetYhteensä suoritus={osittainenPäätasonSuoritus.suoritus} />
