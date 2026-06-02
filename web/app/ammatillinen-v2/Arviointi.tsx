@@ -49,9 +49,11 @@ export const ArviointiView = ({
           ))}
         </TestIdLayer>
       </KeyValueRow>
-      <KeyValueRow localizableLabel="Kuvaus">
-        <span style={{ whiteSpace: 'pre-line' }}>{t(value?.kuvaus)}</span>
-      </KeyValueRow>
+      {t(value?.kuvaus) && (
+        <KeyValueRow localizableLabel="Kuvaus">
+          <span style={{ whiteSpace: 'pre-line' }}>{t(value?.kuvaus)}</span>
+        </KeyValueRow>
+      )}
     </>
   )
 }
