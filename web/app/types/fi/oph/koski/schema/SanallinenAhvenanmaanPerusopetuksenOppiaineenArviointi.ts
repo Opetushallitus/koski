@@ -12,7 +12,6 @@ export type SanallinenAhvenanmaanPerusopetuksenOppiaineenArviointi = {
     'ahvenanmaanarviointiasteikkoyleissivistava',
     'G' | 'D' | 'U'
   >
-  kuvaus?: LocalizedString
   päivä?: string
   hyväksytty?: boolean
 }
@@ -22,7 +21,6 @@ export const SanallinenAhvenanmaanPerusopetuksenOppiaineenArviointi = (o: {
     'ahvenanmaanarviointiasteikkoyleissivistava',
     'G' | 'D' | 'U'
   >
-  kuvaus?: LocalizedString
   päivä?: string
   hyväksytty?: boolean
 }): SanallinenAhvenanmaanPerusopetuksenOppiaineenArviointi => ({

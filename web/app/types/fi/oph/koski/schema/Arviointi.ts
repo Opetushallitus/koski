@@ -1,7 +1,7 @@
 import {
-  AhvenanmaanPerusopetuksenKäyttäytymisenArviointi,
-  isAhvenanmaanPerusopetuksenKäyttäytymisenArviointi
-} from './AhvenanmaanPerusopetuksenKayttaytymisenArviointi'
+  AhvenanmaanPerusopetuksenVastuuJaYhteistyöArviointi,
+  isAhvenanmaanPerusopetuksenVastuuJaYhteistyöArviointi
+} from './AhvenanmaanPerusopetuksenVastuuJaYhteistyoArviointi'
 import {
   AmmatillinenArviointi,
   isAmmatillinenArviointi
@@ -244,7 +244,7 @@ import {
  * @see `fi.oph.koski.schema.Arviointi`
  */
 export type Arviointi =
-  | AhvenanmaanPerusopetuksenKäyttäytymisenArviointi
+  | AhvenanmaanPerusopetuksenVastuuJaYhteistyöArviointi
   | AmmatillinenArviointi
   | DIAOppiaineenTutkintovaiheenNumeerinenArviointi
   | DIAOppiaineenTutkintovaiheenSuoritusmerkintäArviointi
@@ -308,7 +308,7 @@ export type Arviointi =
   | YlioppilaskokeenArviointi
 
 export const isArviointi = (a: any): a is Arviointi =>
-  isAhvenanmaanPerusopetuksenKäyttäytymisenArviointi(a) ||
+  isAhvenanmaanPerusopetuksenVastuuJaYhteistyöArviointi(a) ||
   isAmmatillinenArviointi(a) ||
   isDIAOppiaineenTutkintovaiheenNumeerinenArviointi(a) ||
   isDIAOppiaineenTutkintovaiheenSuoritusmerkintäArviointi(a) ||

@@ -9,12 +9,12 @@ import { LaajuusVuosiviikkotunneissa } from './LaajuusVuosiviikkotunneissa'
  */
 export type AhvenanmaanPerusopetuksenToimintaAlue = {
   $class: 'fi.oph.koski.schema.AhvenanmaanPerusopetuksenToimintaAlue'
-  tunniste: Koodistokoodiviite<'perusopetuksentoimintaalue', string>
+  tunniste: Koodistokoodiviite<'ahvenanmaanperusopetuksentoimintaalue', string>
   laajuus?: LaajuusVuosiviikkotunneissa
 }
 
 export const AhvenanmaanPerusopetuksenToimintaAlue = (o: {
-  tunniste: Koodistokoodiviite<'perusopetuksentoimintaalue', string>
+  tunniste: Koodistokoodiviite<'ahvenanmaanperusopetuksentoimintaalue', string>
   laajuus?: LaajuusVuosiviikkotunneissa
 }): AhvenanmaanPerusopetuksenToimintaAlue => ({
   $class: 'fi.oph.koski.schema.AhvenanmaanPerusopetuksenToimintaAlue',

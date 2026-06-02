@@ -34,7 +34,6 @@ object AhvenanmaanPerusopetusExampleData {
   def sanallinen(arvosana: String = "G") =
     Some(List(SanallinenAhvenanmaanPerusopetuksenOppiaineenArviointi(
       arvosana = Koodistokoodiviite(arvosana, "ahvenanmaanarviointiasteikkoyleissivistava"),
-      kuvaus = None,
       päivä = Some(date(2026, 6, 4))
     )))
 

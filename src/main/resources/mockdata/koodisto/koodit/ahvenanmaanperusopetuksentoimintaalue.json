@@ -1,0 +1,62 @@
+[
+  {
+    "metadata": [
+      { "nimi": "motoriset taidot", "kuvaus": null, "kieli": "FI" },
+      { "nimi": "motoriska färdigheter", "kuvaus": null, "kieli": "SV" }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "ahvenanmaanperusopetuksentoimintaalue_1",
+    "versio": 1,
+    "koodiArvo": "1"
+  },
+  {
+    "metadata": [
+      { "nimi": "kieli ja kommunikaatio", "kuvaus": null, "kieli": "FI" },
+      { "nimi": "språkliga och kommunikativa färdigheter", "kuvaus": null, "kieli": "SV" }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "ahvenanmaanperusopetuksentoimintaalue_2",
+    "versio": 1,
+    "koodiArvo": "2"
+  },
+  {
+    "metadata": [
+      { "nimi": "sosiaaliset taidot", "kuvaus": null, "kieli": "FI" },
+      { "nimi": "sociala färdigheter", "kuvaus": null, "kieli": "SV" }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "ahvenanmaanperusopetuksentoimintaalue_3",
+    "versio": 1,
+    "koodiArvo": "3"
+  },
+  {
+    "metadata": [
+      { "nimi": "päivittäisten toimintojen taidot", "kuvaus": null, "kieli": "FI" },
+      { "nimi": "vardagsfärdigheter", "kuvaus": null, "kieli": "SV" }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "ahvenanmaanperusopetuksentoimintaalue_4",
+    "versio": 1,
+    "koodiArvo": "4"
+  },
+  {
+    "metadata": [
+      { "nimi": "kognitiiviset taidot", "kuvaus": null, "kieli": "FI" },
+      { "nimi": "kognitiva färdigheter", "kuvaus": null, "kieli": "SV" }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "ahvenanmaanperusopetuksentoimintaalue_5",
+    "versio": 1,
+    "koodiArvo": "5"
+  }
+]
