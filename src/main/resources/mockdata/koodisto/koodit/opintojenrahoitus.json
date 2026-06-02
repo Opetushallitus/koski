@@ -402,5 +402,33 @@
     "koodiUri": "opintojenrahoitus_16",
     "versio": 1,
     "koodiArvo": "16"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "Tilauskoulutus",
+        "kuvaus": "",
+        "lyhytNimi": "",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Tilauskoulutus",
+        "kuvaus": "",
+        "lyhytNimi": "",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Tilauskoulutus",
+        "kuvaus": "",
+        "lyhytNimi": "",
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "opintojenrahoitus_17",
+    "versio": 1,
+    "koodiArvo": "17"
   }
 ]

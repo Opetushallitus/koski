@@ -1,5 +1,12 @@
 # Koskeen tallennettavien tietojen validaatiosäännöt
 
+## 3.6.2026
+
+- Ammatillisen opiskeluoikeuden uudelle rahoitusmuodolle tilauskoulutus (koodiarvo 17) on lisätty seuraavat validaatiot:
+  - Tilauskoulutusrahoitusta voi käyttää vain opiskeluoikeuksissa, joiden alkamispäivä on 1.8.2026 tai myöhemmin.
+  - Tilauskoulutusrahoitusta ei voi vaihtaa muuhun rahoitusmuotoon eikä muuta rahoitusmuotoa tilauskoulutukseen päivityksen yhteydessä.
+  - Tilauskoulutusrahoitusta ei voi olla myöskään samaan aikaan muiden rahoitusmuotojen kanssa opiskeluoikeudella.
+
 ## 18.5.2026
 
 - DIA-tutkinnon ja International School of Helsinki -opiskeluoikeuksissa sallitaan uusi rahoitusmuoto 16 (lukuvuosimaksu) 1.8.2026 tai myöhemmin alkaneissa opiskeluoikeuksissa
