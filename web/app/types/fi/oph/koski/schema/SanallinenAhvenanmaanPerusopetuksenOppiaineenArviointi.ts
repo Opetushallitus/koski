@@ -1,4 +1,5 @@
 import { Koodistokoodiviite } from './Koodistokoodiviite'
+import { LocalizedString } from './LocalizedString'
 
 /**
  * Sanallinen arviointi; koodiarvot G (godkänd), D (deltagit), U (underkänd).

@@ -1,4 +1,5 @@
 import { Koodistokoodiviite } from './Koodistokoodiviite'
+import { LocalizedString } from './LocalizedString'
 
 /**
  * Vastuu ja yhteistyö (Ansvar och samarbete) -arviointi. Sallittu arvo G (godkänd).
@@ -15,16 +16,22 @@ export type AhvenanmaanPerusopetuksenVastuuJaYhteistyöArviointi = {
   hyväksytty?: boolean
 }
 
-export const AhvenanmaanPerusopetuksenVastuuJaYhteistyöArviointi = (o: {
-  arvosana: Koodistokoodiviite<
-    'ahvenanmaanarviointiasteikkoyleissivistava',
-    'G'
-  >
-  päivä?: string
-  hyväksytty?: boolean
-}): AhvenanmaanPerusopetuksenVastuuJaYhteistyöArviointi => ({
+export const AhvenanmaanPerusopetuksenVastuuJaYhteistyöArviointi = (
+  o: {
+    arvosana?: Koodistokoodiviite<
+      'ahvenanmaanarviointiasteikkoyleissivistava',
+      'G'
+    >
+    päivä?: string
+    hyväksytty?: boolean
+  } = {}
+): AhvenanmaanPerusopetuksenVastuuJaYhteistyöArviointi => ({
   $class:
     'fi.oph.koski.schema.AhvenanmaanPerusopetuksenVastuuJaYhteistyöArviointi',
+  arvosana: Koodistokoodiviite({
+    koodiarvo: 'G',
+    koodistoUri: 'ahvenanmaanarviointiasteikkoyleissivistava'
+  }),
   ...o
 })
 
