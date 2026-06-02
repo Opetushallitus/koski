@@ -142,6 +142,8 @@ Test students for Valpas local development are defined in `src/main/scala/fi/oph
 
 **Important:** New mock oppijat in `KoskiSpecificMockOppijat` and `ValpasMockOppijat` must be added at the **end** of the list, not in the middle. Oppija OIDs are generated sequentially, so inserting in the middle shifts all subsequent OIDs and breaks fixture data and UI tests.
 
+Because the OIDs are deterministic, Playwright/e2e tests can hardcode a fixture oppija's OID (the existing `perusopetus-v2-*.spec.ts` specs do this). To find the OID for an oppija that doesn't pin one explicitly, resolve it once against the running app, e.g. `curl -u pää:pää -X POST localhost:7021/koski/api/henkilo/search -H 'Content-Type: application/json' -d '{"query":"Sukunimi"}'`.
+
 ## Database
 
 ### Local Development
