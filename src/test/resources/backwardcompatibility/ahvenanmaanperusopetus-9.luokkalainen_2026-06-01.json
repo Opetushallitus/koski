@@ -332,7 +332,7 @@
       }, {
         "koulutusmoduuli" : {
           "tunniste" : {
-            "koodiarvo" : "RO",
+            "koodiarvo" : "RELI",
             "koodistoUri" : "ahvenanmaankoskioppiaineetyleissivistava"
           },
           "pakollinen" : true
@@ -374,7 +374,7 @@
       }, {
         "koulutusmoduuli" : {
           "tunniste" : {
-            "koodiarvo" : "YH",
+            "koodiarvo" : "SA",
             "koodistoUri" : "ahvenanmaankoskioppiaineetyleissivistava"
           },
           "pakollinen" : true
@@ -479,7 +479,7 @@
       }, {
         "koulutusmoduuli" : {
           "tunniste" : {
-            "koodiarvo" : "KO",
+            "koodiarvo" : "HEKO",
             "koodistoUri" : "ahvenanmaankoskioppiaineetyleissivistava"
           },
           "pakollinen" : true
@@ -848,7 +848,7 @@
       }, {
         "koulutusmoduuli" : {
           "tunniste" : {
-            "koodiarvo" : "RO",
+            "koodiarvo" : "RELI",
             "koodistoUri" : "ahvenanmaankoskioppiaineetyleissivistava"
           },
           "pakollinen" : true
@@ -890,7 +890,7 @@
       }, {
         "koulutusmoduuli" : {
           "tunniste" : {
-            "koodiarvo" : "YH",
+            "koodiarvo" : "SA",
             "koodistoUri" : "ahvenanmaankoskioppiaineetyleissivistava"
           },
           "pakollinen" : true
@@ -995,7 +995,7 @@
       }, {
         "koulutusmoduuli" : {
           "tunniste" : {
-            "koodiarvo" : "KO",
+            "koodiarvo" : "HEKO",
             "koodistoUri" : "ahvenanmaankoskioppiaineetyleissivistava"
           },
           "pakollinen" : true
