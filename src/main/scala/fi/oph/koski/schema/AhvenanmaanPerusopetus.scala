@@ -33,7 +33,8 @@ import fi.oph.scalaschema.annotation._
 //
 // ── Peach-kenttien vahvistus (jokaiselle: kuuluuko skeemaan?) ───────────
 //
-//  4. Toiminta-alueen suoritus — samatko toiminta-alueet samoilla nimillä?
+//  4. (ratkaistu: samat 5 toiminta-aluetta kuin manner-Suomessa, mutta
+//     omassa ahvenanmaanperusopetuksentoimintaalue-koodistossa)
 //  5. (ratkaistu: omanÄidinkielenOpinnot, luokkaAste ja
 //     vuosiluokkiinSitoutumatonOpetus pudotettu)
 //  6. (ratkaistu: joustavaPerusopetus, valmistavanLisäopetus,
@@ -42,14 +43,16 @@ import fi.oph.scalaschema.annotation._
 //  7. (ratkaistu: vuosiluokkiinSitoutumatonOpetus pudotettu)
 //  8. (ratkaistu: laajuudet vvt pidetään, ei pakollinen)
 //
-// ── Käyttäytymisen arviointi ("Ansvar och samarbete") ────────────────────
+// ── Vastuu ja yhteistyö ("Ansvar och samarbete") ─────────────────────────
 //
-//  9. Aina sanallinen vai myös numeerinen?
-// 10. kuvaus-kenttä: wiki "Ahvenanmaa ei haluaisi, mutta kysytään".
+//  9. (ratkaistu: sanallinen, vain arvo G; käyttäytymisenArvio →
+//     vastuuJaYhteistyöArvio)
+// 10. (ratkaistu: kuvaus-kenttä pudotettu)
 //
 // ── Sanallinen arviointi ─────────────────────────────────────────────────
 //
-// 11. Mitkä arvoista S/H/O ovat käytössä? Kaikki vai osa?
+// 11. Mitkä arvoista G/D/U ovat käytössä? Kaikki vai osa? (kuvaus-kenttä
+//     pudotettu)
 //
 // ── Jaetut tyypit (rajatumpi haarautus?) ────────────────────────────────
 //
@@ -157,7 +160,6 @@ case class AhvenanmaanPerusopetuksenOpiskeluoikeusjakso(
 trait AhvenanmaanPerusopetuksenPäätasonSuoritus
   extends KoskeenTallennettavaPäätasonSuoritus
   with Toimipisteellinen
-  with MonikielinenSuoritus
   with Suorituskielellinen
 
 @Description("Ahvenanmaan perusopetuksen vuosiluokan suoritus. Nämä suoritukset näkyvät lukuvuositodistuksella.")
@@ -173,15 +175,12 @@ case class AhvenanmaanPerusopetuksenVuosiluokanSuoritus(
   @KoodistoUri("perusopetuksensuoritustapa")
   suoritustapa: Option[Koodistokoodiviite] = None,
   suorituskieli: Koodistokoodiviite,
-  @Tooltip("Mahdolliset muut suorituskielet.")
-  muutSuorituskielet: Option[List[Koodistokoodiviite]] = None,
   @Description("Tieto siitä, että oppilas jää luokalle")
   @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT))
   @DefaultValue(false)
   @Title("Oppilas jää luokalle")
   jääLuokalle: Boolean = false,
-  // TODO TOR-2587: peach – "Ansvar och samarbete"; muotoa (sanallinen vs. numeerinen) ei ole vahvistettu.
-  käyttäytymisenArvio: Option[AhvenanmaanPerusopetuksenKäyttäytymisenArviointi] = None,
+  vastuuJaYhteistyöArvio: Option[AhvenanmaanPerusopetuksenVastuuJaYhteistyöArviointi] = None,
   @Title("Oppiaineet")
   override val osasuoritukset: Option[List[AhvenanmaanOppiaineenTaiToimintaAlueenSuoritus]] = None,
   todistuksellaNäkyvätLisätiedot: Option[LocalizedString] = None,
@@ -201,8 +200,6 @@ case class AhvenanmaanPerusopetuksenOppimääränSuoritus(
   @KoodistoUri("perusopetuksensuoritustapa")
   suoritustapa: Koodistokoodiviite,
   suorituskieli: Koodistokoodiviite,
-  @Tooltip("Mahdolliset muut suorituskielet.")
-  muutSuorituskielet: Option[List[Koodistokoodiviite]] = None,
   override val osasuoritukset: Option[List[AhvenanmaanOppiaineenTaiToimintaAlueenSuoritus]] = None,
   todistuksellaNäkyvätLisätiedot: Option[LocalizedString] = None,
   @KoodistoKoodiarvo("ahvenanmaanperusopetuksenoppimaara")
@@ -238,8 +235,6 @@ case class AhvenanmaanPerusopetuksenOppiaineenSuoritus(
   suoritustapa: Option[Koodistokoodiviite] = None,
 ) extends AhvenanmaanOppiaineenTaiToimintaAlueenSuoritus with Vahvistukseton
 
-// TODO TOR-2587: peach – koko toiminta-alueen suoritus; wikissä "Selvitettävä ovatko
-// samat toiminta-alueet ja samoilla nimillä kuin manner-Suomessa".
 @Description("Ahvenanmaan perusopetuksen toiminta-alueen suoritus osana oppimäärän tai vuosiluokan suoritusta.")
 @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT))
 case class AhvenanmaanPerusopetuksenToimintaAlueenSuoritus(
@@ -283,36 +278,27 @@ case class SanallinenAhvenanmaanPerusopetuksenOppiaineenArviointi(
   @KoodistoKoodiarvo("D")
   @KoodistoKoodiarvo("U")
   arvosana: Koodistokoodiviite = Koodistokoodiviite("G", "ahvenanmaanarviointiasteikkoyleissivistava"),
-  @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT))
-  kuvaus: Option[LocalizedString],
   @Description("Päivämäärä, jolloin arviointi on annettu. Muoto YYYY-MM-DD.")
   päivä: Option[LocalDate] = None
-) extends AhvenanmaanPerusopetuksenOppiaineenArviointi with KoodistostaLöytyväArviointi with SanallinenArviointi {
+) extends AhvenanmaanPerusopetuksenOppiaineenArviointi with KoodistostaLöytyväArviointi {
   def arviointipäivä = päivä
   def arvioitsijat = None
   def hyväksytty = arvosana.koodiarvo != "U"
 }
 
 // "Ansvar och samarbete" – Ahvenanmaan vastine käyttäytymisen arvioinnille.
-// TODO TOR-2587: peach – muoto (sanallinen / numeerinen) vahvistamatta;
-// wikissä "Ahvenanmaa ei haluaisi kuvaus-kenttää, mutta kysytään".
-@Description("Käyttäytymisen (Ansvar och samarbete) arviointi.")
+@Description("Vastuu ja yhteistyö (Ansvar och samarbete) -arviointi. Sallittu arvo G (godkänd).")
 @IgnoreInAnyOfDeserialization
-case class AhvenanmaanPerusopetuksenKäyttäytymisenArviointi(
+case class AhvenanmaanPerusopetuksenVastuuJaYhteistyöArviointi(
   @KoodistoUri("ahvenanmaanarviointiasteikkoyleissivistava")
   @KoodistoKoodiarvo("G")
-  @KoodistoKoodiarvo("D")
-  @KoodistoKoodiarvo("U")
   arvosana: Koodistokoodiviite = Koodistokoodiviite("G", "ahvenanmaanarviointiasteikkoyleissivistava"),
-  // TODO TOR-2587: peach – Ahvenanmaa ei haluaisi kuvaus-kenttää.
-  @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT))
-  kuvaus: Option[LocalizedString] = None,
   @Hidden
   päivä: Option[LocalDate] = None
-) extends KoodistostaLöytyväArviointi with SanallinenArviointi {
+) extends KoodistostaLöytyväArviointi {
   def arviointipäivä = päivä
   def arvioitsijat = None
-  def hyväksytty = arvosana.koodiarvo != "U"
+  def hyväksytty = true
 }
 
 // ---------- Koulutusmoduulit ----------
@@ -345,7 +331,7 @@ case class AhvenanmaanPerusopetuksenLuokkaAste(
 // TODO TOR-2587: peach – vahvistettava käyttävätkö Ahvenanmaalla laajuuksia.
 @Description("Ahvenanmaan perusopetuksen toiminta-alueen tunnistetiedot")
 case class AhvenanmaanPerusopetuksenToimintaAlue(
-  @KoodistoUri("perusopetuksentoimintaalue")
+  @KoodistoUri("ahvenanmaanperusopetuksentoimintaalue")
   tunniste: Koodistokoodiviite,
   laajuus: Option[LaajuusVuosiviikkotunneissa] = None
 ) extends KoodistostaLöytyväKoulutusmoduuli with KoulutusmoduuliValinnainenLaajuus

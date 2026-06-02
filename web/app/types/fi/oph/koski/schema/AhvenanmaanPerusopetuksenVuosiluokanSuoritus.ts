@@ -3,7 +3,7 @@ import { LocalizedString } from './LocalizedString'
 import { OrganisaatioWithOid } from './OrganisaatioWithOid'
 import { AhvenanmaanOppiaineenTaiToimintaAlueenSuoritus } from './AhvenanmaanOppiaineenTaiToimintaAlueenSuoritus'
 import { HenkilövahvistusPaikkakunnalla } from './HenkilovahvistusPaikkakunnalla'
-import { AhvenanmaanPerusopetuksenKäyttäytymisenArviointi } from './AhvenanmaanPerusopetuksenKayttaytymisenArviointi'
+import { AhvenanmaanPerusopetuksenVastuuJaYhteistyöArviointi } from './AhvenanmaanPerusopetuksenVastuuJaYhteistyoArviointi'
 import { AhvenanmaanPerusopetuksenLuokkaAste } from './AhvenanmaanPerusopetuksenLuokkaAste'
 
 /**
@@ -13,7 +13,6 @@ import { AhvenanmaanPerusopetuksenLuokkaAste } from './AhvenanmaanPerusopetuksen
  */
 export type AhvenanmaanPerusopetuksenVuosiluokanSuoritus = {
   $class: 'fi.oph.koski.schema.AhvenanmaanPerusopetuksenVuosiluokanSuoritus'
-  muutSuorituskielet?: Array<Koodistokoodiviite<'kieli', string>>
   tyyppi: Koodistokoodiviite<
     'suorituksentyyppi',
     'ahvenanmaanperusopetuksenvuosiluokka'
@@ -28,12 +27,11 @@ export type AhvenanmaanPerusopetuksenVuosiluokanSuoritus = {
   vahvistus?: HenkilövahvistusPaikkakunnalla
   tila?: Koodistokoodiviite<'suorituksentila', string>
   alkamispäivä?: string
-  käyttäytymisenArvio?: AhvenanmaanPerusopetuksenKäyttäytymisenArviointi
+  vastuuJaYhteistyöArvio?: AhvenanmaanPerusopetuksenVastuuJaYhteistyöArviointi
   koulutusmoduuli: AhvenanmaanPerusopetuksenLuokkaAste
 }
 
 export const AhvenanmaanPerusopetuksenVuosiluokanSuoritus = (o: {
-  muutSuorituskielet?: Array<Koodistokoodiviite<'kieli', string>>
   tyyppi?: Koodistokoodiviite<
     'suorituksentyyppi',
     'ahvenanmaanperusopetuksenvuosiluokka'
@@ -48,7 +46,7 @@ export const AhvenanmaanPerusopetuksenVuosiluokanSuoritus = (o: {
   vahvistus?: HenkilövahvistusPaikkakunnalla
   tila?: Koodistokoodiviite<'suorituksentila', string>
   alkamispäivä?: string
-  käyttäytymisenArvio?: AhvenanmaanPerusopetuksenKäyttäytymisenArviointi
+  vastuuJaYhteistyöArvio?: AhvenanmaanPerusopetuksenVastuuJaYhteistyöArviointi
   koulutusmoduuli: AhvenanmaanPerusopetuksenLuokkaAste
 }): AhvenanmaanPerusopetuksenVuosiluokanSuoritus => ({
   tyyppi: Koodistokoodiviite({

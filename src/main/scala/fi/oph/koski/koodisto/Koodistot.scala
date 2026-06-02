@@ -14,6 +14,7 @@ object Koodistot {
   val koskiKoodistoAsetukset = List (
     KoodistoAsetus("ahvenanmaanarviointiasteikkoyleissivistava"),
     KoodistoAsetus("ahvenanmaankoskioppiaineetyleissivistava"),
+    KoodistoAsetus("ahvenanmaanperusopetuksentoimintaalue"),
     KoodistoAsetus("aikuistenperusopetuksenkurssit2015"),
     KoodistoAsetus("aikuistenperusopetuksenalkuvaiheenkurssit2017"),
     KoodistoAsetus("aikuistenperusopetuksenalkuvaiheenoppiaineet"),

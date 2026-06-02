@@ -12,7 +12,6 @@ import { HenkilövahvistusPaikkakunnalla } from './HenkilovahvistusPaikkakunnall
  */
 export type AhvenanmaanPerusopetuksenOppimääränSuoritus = {
   $class: 'fi.oph.koski.schema.AhvenanmaanPerusopetuksenOppimääränSuoritus'
-  muutSuorituskielet?: Array<Koodistokoodiviite<'kieli', string>>
   tyyppi: Koodistokoodiviite<
     'suorituksentyyppi',
     'ahvenanmaanperusopetuksenoppimaara'
@@ -28,7 +27,6 @@ export type AhvenanmaanPerusopetuksenOppimääränSuoritus = {
 }
 
 export const AhvenanmaanPerusopetuksenOppimääränSuoritus = (o: {
-  muutSuorituskielet?: Array<Koodistokoodiviite<'kieli', string>>
   tyyppi?: Koodistokoodiviite<
     'suorituksentyyppi',
     'ahvenanmaanperusopetuksenoppimaara'
