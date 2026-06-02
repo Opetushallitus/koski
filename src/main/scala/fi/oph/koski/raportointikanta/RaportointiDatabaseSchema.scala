@@ -1243,9 +1243,6 @@ sealed trait Schema {
   // Laita tähän vain ne indeksit, jotka tarvitaan inkrementaalisen generoinnin nopeuttamiseksi.
   def createIndexesForIncrementalUpdate() = DBIO.seq(
     sqlu"CREATE INDEX ON #${name}.r_osasuoritus(opiskeluoikeus_oid)",
-    sqlu"CREATE INDEX ON #${name}.r_paatason_suoritus(opiskeluoikeus_oid)",
-    sqlu"CREATE INDEX ON #${name}.r_opiskeluoikeus_aikajakso(opiskeluoikeus_oid)",
-    sqlu"CREATE INDEX ON #${name}.r_organisaatiohistoria(opiskeluoikeus_oid)",
   )
 
   def createOpiskeluoikeusIndexes() = DBIO.seq(
