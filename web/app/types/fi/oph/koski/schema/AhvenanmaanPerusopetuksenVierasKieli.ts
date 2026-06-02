@@ -16,7 +16,7 @@ export type AhvenanmaanPerusopetuksenVierasKieli = {
   perusteenDiaarinumero?: string
   tunniste: Koodistokoodiviite<
     'ahvenanmaankoskioppiaineetyleissivistava',
-    'A1' | 'A2' | 'B1' | 'B3'
+    'A1' | 'A2' | 'B1' | 'B2'
   >
 }
 
@@ -28,7 +28,7 @@ export const AhvenanmaanPerusopetuksenVierasKieli = (o: {
   perusteenDiaarinumero?: string
   tunniste: Koodistokoodiviite<
     'ahvenanmaankoskioppiaineetyleissivistava',
-    'A1' | 'A2' | 'B1' | 'B3'
+    'A1' | 'A2' | 'B1' | 'B2'
   >
 }): AhvenanmaanPerusopetuksenVierasKieli => ({
   $class: 'fi.oph.koski.schema.AhvenanmaanPerusopetuksenVierasKieli',

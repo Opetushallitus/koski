@@ -381,9 +381,9 @@ case class AhvenanmaanPerusopetuksenMuuOppiaine(
   @KoodistoKoodiarvo("KS")
   @KoodistoKoodiarvo("TX")
   @KoodistoKoodiarvo("TN")
-  @KoodistoKoodiarvo("LI")
+  @KoodistoKoodiarvo("ID")
   @KoodistoKoodiarvo("HEKO")
-  @KoodistoKoodiarvo("OP")
+  @KoodistoKoodiarvo("EH")
   tunniste: Koodistokoodiviite,
   pakollinen: Boolean = true,
   perusteenDiaarinumero: Option[String] = None,
@@ -398,7 +398,7 @@ case class AhvenanmaanPerusopetuksenVierasKieli(
   @KoodistoKoodiarvo("A1")
   @KoodistoKoodiarvo("A2")
   @KoodistoKoodiarvo("B1")
-  @KoodistoKoodiarvo("B3")
+  @KoodistoKoodiarvo("B2")
   tunniste: Koodistokoodiviite,
   @Description("Mikä kieli on kyseessä")
   @KoodistoUri("kielivalikoima")
