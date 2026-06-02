@@ -1036,7 +1036,7 @@ class OppijaValidationPerusopetusSpec extends TutkinnonPerusteetTest[Perusopetuk
           ).build) {
             verifyResponseStatus(400,
               KoskiErrorCategory.badRequest.validation.date(
-                "Perusopetuksen oppiaineen suorituksen tavoitekokonaisuuksittain opiskeluun liittyvä kenttä luokkaAste ei saa olla sama kuin vuosiluokka (8)"
+                "Perusopetuksen oppiaineen HI suorituksen tavoitekokonaisuuksittain opiskeluun liittyvä kenttä luokkaAste ei saa olla sama kuin vuosiluokka (8)"
               )
             )
           }
