@@ -1,0 +1,34 @@
+name: Run opiskeluoikeus inserter / updater
+on:
+  workflow_dispatch:
+    inputs:
+      opiskeluoikeus_count:
+        description: "Luotavien opiskeluoikeuksien määrä QA-ympäristöön. Yksi kierros luo 2 opiskeluoikeutta (peruskoulu + lukio/ammattikoulu)."
+        required: true
+        default: "1000"
+        type: string
+
+env:
+  KOSKI_SERVER_COUNT: 2
+  KOSKI_USER: ${{ secrets.KOSKI_USER_USERNAME }}
+  KOSKI_PASS: ${{ secrets.KOSKI_USER_PASSWORD }}
+  KOSKI_BASE_URL: https://koski.testiopintopolku.fi/koski
+
+jobs:
+  run:
+    name: run-mixed-inserter-updater
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+
+      - uses: ./.github/actions/setup_java_17
+
+      - name: Build
+        run: mvn test-compile -P-frontend
+
+      - name: Run MixedOpiskeluoikeusInserterUpdater
+        run: |
+          export PERFTEST_ROUNDS=$(( ${{ inputs.opiskeluoikeus_count }} / 2 ))
+          export PERFTEST_THREADS=4
+          export WARMUP_ROUNDS=0
+          mvn exec:java -Dexec.mainClass="fi.oph.koski.perftest.MixedOpiskeluoikeusInserterUpdater"
