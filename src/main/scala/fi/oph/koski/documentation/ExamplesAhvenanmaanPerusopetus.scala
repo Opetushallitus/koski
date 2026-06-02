@@ -59,9 +59,9 @@ object AhvenanmaanPerusopetusExampleData {
     oppiaineenSuoritus(oppiaine("MU", "Musik"), 9),
     oppiaineenSuoritus(oppiaine("KU", "Bildkonst"), 8),
     oppiaineenSuoritus(oppiaine("KS", "Slöjd"), 7),
-    oppiaineenSuoritus(oppiaine("LI", "Idrott"), 9),
+    oppiaineenSuoritus(oppiaine("ID", "Idrott"), 9),
     oppiaineenSuoritus(oppiaine("HEKO", "Hem- och konsumentkunskap"), 8),
-    oppiaineenSuoritus(oppiaine("OP", "Elevhandledning"), 8),
+    oppiaineenSuoritus(oppiaine("EH", "Elevhandledning"), 8),
     oppiaineenSuoritus(vierasKieli("A1", "EN"), 9),
     oppiaineenSuoritus(vierasKieli("B1", "FI"), 7),
   )

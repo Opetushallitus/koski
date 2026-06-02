@@ -33,9 +33,9 @@ export type AhvenanmaanPerusopetuksenMuuOppiaine = {
     | 'KS'
     | 'TX'
     | 'TN'
-    | 'LI'
+    | 'ID'
     | 'HEKO'
-    | 'OP'
+    | 'EH'
   >
 }
 
@@ -64,9 +64,9 @@ export const AhvenanmaanPerusopetuksenMuuOppiaine = (o: {
     | 'KS'
     | 'TX'
     | 'TN'
-    | 'LI'
+    | 'ID'
     | 'HEKO'
-    | 'OP'
+    | 'EH'
   >
 }): AhvenanmaanPerusopetuksenMuuOppiaine => ({
   $class: 'fi.oph.koski.schema.AhvenanmaanPerusopetuksenMuuOppiaine',
