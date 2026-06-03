@@ -131,7 +131,7 @@ class OvaraHakukoosteServiceSpec extends ValpasTestBase with Matchers with Eithe
     "välittää ainoastaanAktiivisetHaut-parametrin GET-kutsussa" in {
       wireMockServer.stubFor(
         WireMock.get(WireMock.urlPathEqualTo(ovaraHakukoosteUrl))
-          .withQueryParam("ainoastaanAktiivisetHaut", WireMock.equalTo("true"))
+          .withQueryParam("ovara_vain_aktiiviset", WireMock.equalTo("true"))
           .willReturn(WireMock.ok().withBody("[]")))
 
       val result = mockClient.getHakukoosteet(Set("asdf"), ainoastaanAktiivisetHaut = true, "test").value
@@ -141,7 +141,7 @@ class OvaraHakukoosteServiceSpec extends ValpasTestBase with Matchers with Eithe
     "välittää ainoastaanAktiivisetHaut-parametrin POST-kutsussa" in {
       wireMockServer.stubFor(
         WireMock.post(WireMock.urlPathEqualTo(ovaraHakukoosteUrl))
-          .withQueryParam("ainoastaanAktiivisetHaut", WireMock.equalTo("true"))
+          .withQueryParam("ovara_vain_aktiiviset", WireMock.equalTo("true"))
           .willReturn(WireMock.ok().withBody("[]")))
 
       val result = mockClient.getHakukoosteet(Set("asdf1", "asdf2"), ainoastaanAktiivisetHaut = true, "test").value

@@ -127,14 +127,14 @@ class OvaraHakukoosteService(
       timed(timedBlockname, 10) {
         val ioResult = if (oppijaOids.size == 1) {
           val encodedOid = URLEncoder.encode(oppijaOids.head, "UTF-8")
-          val aktiivisetParam = if (ainoastaanAktiivisetHaut) "&ainoastaanAktiivisetHaut=true" else ""
+          val aktiivisetParam = if (ainoastaanAktiivisetHaut) "&ovara_vain_aktiiviset=true" else ""
           http.get(
             s"$baseUrl/api/valpas?ovara_oppijanumero=$encodedOid$aktiivisetParam".toUri,
             timeout = totalTimeout,
           )(decoder)
         } else {
           val encoder = json4sEncoderOf[Seq[ValpasHenkilö.Oid]]
-          val postQueryParams = if (ainoastaanAktiivisetHaut) "?ainoastaanAktiivisetHaut=true" else ""
+          val postQueryParams = if (ainoastaanAktiivisetHaut) "?ovara_vain_aktiiviset=true" else ""
           http.post(
             s"$baseUrl/api/valpas$postQueryParams".toUri,
             oppijaOids.toSeq,
