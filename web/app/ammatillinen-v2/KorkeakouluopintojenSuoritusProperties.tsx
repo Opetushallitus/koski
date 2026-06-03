@@ -27,6 +27,10 @@ import {
   KoodistoEdit,
   KoodistoView
 } from '../components-v2/opiskeluoikeus/KoodistoField'
+import {
+  LocalizedTextEdit,
+  LocalizedTextView
+} from '../components-v2/controls/LocalizedTestField'
 
 export type KorkeakouluopintojenSuoritusPropertiesProps = {
   form: FormModel<AmmatillinenOpiskeluoikeus>
@@ -57,6 +61,44 @@ export const KorkeakouluopintojenSuoritusProperties = ({
           </OsasuoritusPropertyValue>
         </OsasuoritusProperty>
       )}
+      <OsasuoritusProperty label={'Kuvaus'}>
+        <OsasuoritusPropertyValue>
+          <FormField
+            form={form}
+            path={osasuoritusPath.prop('koulutusmoduuli').prop('kuvaus')}
+            view={LocalizedTextView}
+            viewProps={{ style: { whiteSpace: 'pre-line' } }}
+            edit={LocalizedTextEdit}
+            editProps={{ large: true }}
+            testId="kuvaus"
+          />
+        </OsasuoritusPropertyValue>
+      </OsasuoritusProperty>
+      <OsasuoritusProperty label={'Arviointi'}>
+        <OsasuoritusPropertyValue>
+          <FormListField
+            removable
+            form={form}
+            view={ArviointiView}
+            edit={ArviointiEdit}
+            path={osasuoritusPath.prop('arviointi')}
+          />
+          {form.editMode && (
+            <ButtonGroup>
+              <FlatButton
+                onClick={() =>
+                  form.updateAt(
+                    osasuoritusPath.prop('arviointi').valueOr([]),
+                    append(emptyArviointi)
+                  )
+                }
+              >
+                {t('Lisää')}
+              </FlatButton>
+            </ButtonGroup>
+          )}
+        </OsasuoritusPropertyValue>
+      </OsasuoritusProperty>
       {(form.editMode || osasuoritus.tunnustettu) && (
         <OsasuoritusProperty label={'Tunnustettu'}>
           <OsasuoritusPropertyValue>
@@ -100,31 +142,6 @@ export const KorkeakouluopintojenSuoritusProperties = ({
           </OsasuoritusPropertyValue>
         </OsasuoritusProperty>
       )}
-      <OsasuoritusProperty label={'Arviointi'}>
-        <OsasuoritusPropertyValue>
-          <FormListField
-            removable
-            form={form}
-            view={ArviointiView}
-            edit={ArviointiEdit}
-            path={osasuoritusPath.prop('arviointi')}
-          />
-          {form.editMode && (
-            <ButtonGroup>
-              <FlatButton
-                onClick={() =>
-                  form.updateAt(
-                    osasuoritusPath.prop('arviointi').valueOr([]),
-                    append(emptyArviointi)
-                  )
-                }
-              >
-                {t('Lisää')}
-              </FlatButton>
-            </ButtonGroup>
-          )}
-        </OsasuoritusPropertyValue>
-      </OsasuoritusProperty>
     </>
   )
 }

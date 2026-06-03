@@ -149,6 +149,7 @@ const NewKorkeakouluopintokokonaisuus = ({
                 suoritusPath.prop('osasuoritukset').valueOr([]),
                 (o) => [...o, newKorkeakouluopintokokonaisuus(nimi)]
               )
+              setShowModal(false)
             }}
           />
         )}
