@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react'
+import React, { useCallback, useMemo, useState } from 'react'
 import { OpiskeluoikeusContext } from '../appstate/opiskeluoikeus'
 import { useSchema } from '../appstate/constraints'
 import { AdaptedOpiskeluoikeusEditorProps } from '../components-v2/interoperability/useUiAdapter'
@@ -16,19 +16,26 @@ import { AhvenanmaanPerusopetuksenOpiskeluoikeus } from '../types/fi/oph/koski/s
 import { AhvenanmaanPerusopetuksenOpiskeluoikeusjakso } from '../types/fi/oph/koski/schema/AhvenanmaanPerusopetuksenOpiskeluoikeusjakso'
 import { AhvenanmaanPerusopetuksenPäätasonSuoritus } from '../types/fi/oph/koski/schema/AhvenanmaanPerusopetuksenPaatasonSuoritus'
 import { isAhvenanmaanPerusopetuksenOppimääränSuoritus } from '../types/fi/oph/koski/schema/AhvenanmaanPerusopetuksenOppimaaranSuoritus'
-import { isAhvenanmaanPerusopetuksenVuosiluokanSuoritus } from '../types/fi/oph/koski/schema/AhvenanmaanPerusopetuksenVuosiluokanSuoritus'
+import {
+  AhvenanmaanPerusopetuksenVuosiluokanSuoritus,
+  isAhvenanmaanPerusopetuksenVuosiluokanSuoritus
+} from '../types/fi/oph/koski/schema/AhvenanmaanPerusopetuksenVuosiluokanSuoritus'
 import { LocalizedString } from '../types/fi/oph/koski/schema/LocalizedString'
 import { deletePäätasonSuoritus } from '../util/koskiApi'
 import {
   getOpiskeluoikeusOid,
   getVersionumero,
+  isTerminaalitila,
   mergeOpiskeluoikeusVersionumeroAndRefetch
 } from '../util/opiskeluoikeus'
+import { viimeisinOpiskelujaksonTila } from '../util/schema'
 import { deleteAt } from '../util/fp/arrays'
+import { puuttuvatLuokkaAsteet } from '../perusopetus-v2/luokkaAsteenOppiaineet'
 import { AhvenanmaanPerusopetuksenLisatiedot } from './AhvenanmaanPerusopetuksenLisatiedot'
 import { AhvenanmaanPerusopetuksenOppiaineet } from './AhvenanmaanPerusopetuksenOppiaineet'
 import { AhvenanmaanPerusopetuksenSuorituksenTiedot } from './AhvenanmaanPerusopetuksenSuorituksenTiedot'
 import { poistettavaPäätasonSuoritus } from './paatasonSuoritusPoisto'
+import { UusiAhvenanmaanPerusopetuksenVuosiluokanSuoritusModal } from './UusiAhvenanmaanPerusopetuksenVuosiluokanSuoritusModal'
 
 export type AhvenanmaanPerusopetusEditorProps =
   AdaptedOpiskeluoikeusEditorProps<AhvenanmaanPerusopetuksenOpiskeluoikeus>
@@ -86,6 +93,11 @@ const AhvenanmaanPerusopetuksenPäätasonSuoritusEditor: React.FC<
     initialSuoritusIndex
   )
 
+  const addSuoritusProps = useVuosiluokanSuorituksenLisäys(
+    props.form,
+    setPäätasonSuoritus
+  )
+
   const createOpiskeluoikeusjakso = (
     seed: UusiOpiskeluoikeusjakso<AhvenanmaanPerusopetuksenOpiskeluoikeusjakso>
   ) => AhvenanmaanPerusopetuksenOpiskeluoikeusjakso(seed)
@@ -110,35 +122,39 @@ const AhvenanmaanPerusopetuksenPäätasonSuoritusEditor: React.FC<
   ])
 
   return (
-    <EditorContainer
-      form={props.form}
-      oppijaOid={props.oppijaOid}
-      invalidatable={props.invalidatable}
-      suoritusIndex={päätasonSuoritus.index}
-      onChangeSuoritus={setPäätasonSuoritus}
-      testId={päätasonSuoritus.testId}
-      createOpiskeluoikeusjakso={createOpiskeluoikeusjakso}
-      lisätiedotContainer={AhvenanmaanPerusopetuksenLisatiedot}
-      suorituksenNimi={suorituksenNimi}
-    >
-      {props.form.editMode && props.form.state.suoritukset.length > 1 && (
-        <RemovePaatasonSuoritus
+    <>
+      <EditorContainer
+        form={props.form}
+        oppijaOid={props.oppijaOid}
+        invalidatable={props.invalidatable}
+        suoritusIndex={päätasonSuoritus.index}
+        onChangeSuoritus={setPäätasonSuoritus}
+        testId={päätasonSuoritus.testId}
+        createOpiskeluoikeusjakso={createOpiskeluoikeusjakso}
+        lisätiedotContainer={AhvenanmaanPerusopetuksenLisatiedot}
+        suorituksenNimi={suorituksenNimi}
+        {...addSuoritusProps.editorContainerProps}
+      >
+        {props.form.editMode && props.form.state.suoritukset.length > 1 && (
+          <RemovePaatasonSuoritus
+            form={props.form}
+            päätasonSuoritus={päätasonSuoritus}
+            removePäätasonSuoritus={removePäätasonSuoritus}
+          />
+        )}
+        <AhvenanmaanPerusopetuksenSuorituksenTiedot
           form={props.form}
           päätasonSuoritus={päätasonSuoritus}
-          removePäätasonSuoritus={removePäätasonSuoritus}
         />
-      )}
-      <AhvenanmaanPerusopetuksenSuorituksenTiedot
-        form={props.form}
-        päätasonSuoritus={päätasonSuoritus}
-      />
-      <Spacer />
-      <AhvenanmaanPerusopetuksenOppiaineet
-        form={props.form}
-        päätasonSuoritus={päätasonSuoritus}
-      />
-      <Spacer />
-    </EditorContainer>
+        <Spacer />
+        <AhvenanmaanPerusopetuksenOppiaineet
+          form={props.form}
+          päätasonSuoritus={päätasonSuoritus}
+        />
+        <Spacer />
+      </EditorContainer>
+      {addSuoritusProps.modal}
+    </>
   )
 }
 
@@ -167,6 +183,66 @@ const poistaPäätasonSuoritusBackendiltä = async (
         ooVersiot
       )(opiskeluoikeusPoistonJälkeen)
   )
+}
+
+const useVuosiluokanSuorituksenLisäys = (
+  form: FormModel<AhvenanmaanPerusopetuksenOpiskeluoikeus>,
+  setPäätasonSuoritus: (suoritusIndex: number) => void
+) => {
+  const [modalVisible, setModalVisible] = useState(false)
+
+  const missingLuokkaAsteet = useMemo(
+    () =>
+      puuttuvatLuokkaAsteet(
+        form.state.suoritukset.flatMap((s) =>
+          isAhvenanmaanPerusopetuksenVuosiluokanSuoritus(s) && !s.jääLuokalle
+            ? [s.koulutusmoduuli.tunniste.koodiarvo]
+            : []
+        )
+      ),
+    [form.state.suoritukset]
+  )
+
+  const voiLisätä = useMemo(() => {
+    const vTila = viimeisinOpiskelujaksonTila(form.state.tila)
+    if (!vTila || isTerminaalitila(vTila)) return false
+    return missingLuokkaAsteet.length > 0
+  }, [form.state.tila, missingLuokkaAsteet.length])
+
+  const onCreateSuoritus = useCallback(() => setModalVisible(true), [])
+
+  const onSubmit = useCallback(
+    (uusiSuoritus: AhvenanmaanPerusopetuksenVuosiluokanSuoritus) => {
+      const suoritukset = sortSuoritukset([
+        ...form.state.suoritukset,
+        uusiSuoritus
+      ])
+      const newIndex = suoritukset.indexOf(uusiSuoritus)
+      form.modify('suoritukset')(() => suoritukset)
+      setModalVisible(false)
+      setPäätasonSuoritus(
+        newIndex >= 0 ? newIndex : form.state.suoritukset.length
+      )
+    },
+    [form, setPäätasonSuoritus]
+  )
+
+  const editorContainerProps = voiLisätä
+    ? {
+        suorituksenLisäys: localize(t('lisää vuosiluokan suoritus')),
+        onCreateSuoritus
+      }
+    : {}
+
+  const modal = modalVisible ? (
+    <UusiAhvenanmaanPerusopetuksenVuosiluokanSuoritusModal
+      opiskeluoikeus={form.state}
+      onSubmit={onSubmit}
+      onClose={() => setModalVisible(false)}
+    />
+  ) : null
+
+  return { editorContainerProps, modal }
 }
 
 const suorituksenNimi = (

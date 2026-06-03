@@ -176,4 +176,47 @@ test.describe('Ahvenanmaan perusopetuksen käyttöliittymä', () => {
       page.getByTestId('oo.0.opiskeluoikeus.lisätiedot.kotiopetusjaksot.0.alku')
     ).toContainText('1.1.2020')
   })
+
+  test('Uuden vuosiluokan lisäys esitäyttää luokka-asteen oppiaineet', async ({
+    page,
+    oppijaPage,
+    fixtures
+  }) => {
+    test.setTimeout(60000)
+    await fixtures.reset()
+    await oppijaPage.goto(url)
+    await page.getByTestId(editButton).click()
+
+    // Esimerkkioppija on valmistunut (terminaalitila), jolloin vuosiluokkaa ei
+    // voi lisätä. Poistetaan valmistunut-jakso, jolloin lisäys-välilehti tulee
+    // näkyviin.
+    await page
+      .getByTestId('oo.0.opiskeluoikeus.tila.edit.items.1.remove')
+      .click()
+
+    // "lisää vuosiluokan suoritus" on viimeinen välilehti (Avgångsbetyg=0,
+    // 9. vuosiluokka=1, lisäys=2).
+    await page.getByTestId('oo.0.suoritusTabs.2.tab').click()
+
+    // Luokka-aste on oletuksena 1. vuosiluokka; täytetään luokka ja
+    // alkamispäivä (toimipiste peritään viimeisimmästä suorituksesta).
+    await page
+      .getByTestId('oo.0.modal.uusiVuosiluokanSuoritus.luokka.input')
+      .fill('1A')
+    await page
+      .getByTestId('oo.0.modal.uusiVuosiluokanSuoritus.alkamispäivä.edit.input')
+      .fill('15.8.2016')
+    await page.getByTestId('oo.0.modal.uusiVuosiluokanSuoritus.submit').click()
+
+    // Uusi 1. vuosiluokka lajitellaan viimeiseksi (indeksi 2). Oppiaineet on
+    // esitäytetty 1.–2. luokan mallilla (8 ainetta), arvosanoja ei vielä ole.
+    await expect(
+      page.getByTestId('oo.0.suoritukset.2.osasuoritukset.0.nimi')
+    ).toContainText('Ruotsi')
+    await expect(
+      page.locator(
+        '[data-testid^="oo.0.suoritukset.2.osasuoritukset."][data-testid$=".nimi"]'
+      )
+    ).toHaveCount(8)
+  })
 })
