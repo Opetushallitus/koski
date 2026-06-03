@@ -32,7 +32,7 @@ export const ArviointiView = ({
   value
 }: CommonProps<FieldViewerProps<AmmatillinenArviointi, EmptyObject>>) => {
   return (
-    <>
+    <KeyValueTable>
       <KeyValueRow localizableLabel="Arvosana">
         <TestIdText id="arvosana">{value?.arvosana.koodiarvo}</TestIdText>
       </KeyValueRow>
@@ -54,7 +54,7 @@ export const ArviointiView = ({
           <span style={{ whiteSpace: 'pre-line' }}>{t(value?.kuvaus)}</span>
         </KeyValueRow>
       )}
-    </>
+    </KeyValueTable>
   )
 }
 export const emptyArviointi: AmmatillinenArviointi = AmmatillinenArviointi({
@@ -70,7 +70,7 @@ export const ArviointiEdit = ({
   onChange
 }: FieldEditorProps<AmmatillinenArviointi, EmptyObject>) => {
   return (
-    <>
+    <KeyValueTable>
       <KeyValueRow localizableLabel="Arvosana">
         <AmisArvosanaSelect
           value={value?.arvosana}
@@ -155,7 +155,7 @@ export const ArviointiEdit = ({
           }
         />
       </KeyValueRow>
-    </>
+    </KeyValueTable>
   )
 }
 type AmisArvosanaSelectProps = {
