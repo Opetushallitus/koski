@@ -94,37 +94,13 @@ export const OsasuoritusTables = ({
   // Jos kyseessä esim. erikoisammattitutkinto, niin niputetaan kaikki ryhmät yhteen.
   if (perusteenRyhmät.length === 0) {
     return (
-      <>
-        <TableForTutkinnonOsaRyhmä
-          form={form}
-          oppilaitosOid={oppilaitosOid}
-          osittainenPäätasonSuoritus={osittainenPäätasonSuoritus}
-          ryhmä={'Tutkinnon osat'}
-          perusteenRyhmät={perusteenRyhmät}
-        />
-        <TableForTutkinnonOsaRyhmä
-          form={form}
-          oppilaitosOid={oppilaitosOid}
-          osittainenPäätasonSuoritus={osittainenPäätasonSuoritus}
-          ryhmä="Korkeakouluopinnot"
-          perusteenRyhmät={perusteenRyhmät}
-          filter={
-            isOsittaisenAmmatillisenTutkinnonOsanKorkeakouluopintoSuoritus
-          }
-          forceShow={form.editMode}
-        />
-        <TableForTutkinnonOsaRyhmä
-          form={form}
-          oppilaitosOid={oppilaitosOid}
-          osittainenPäätasonSuoritus={osittainenPäätasonSuoritus}
-          ryhmä="Yhteisten tutkinnon osien osa-alueita, lukio-opintoja tai muita jatko-opintovalmiuksia tukevia opintoja"
-          perusteenRyhmät={perusteenRyhmät}
-          filter={
-            isOsittaisenAmmatillisenTutkinnonOsanJatkoOpintovalmiuksiaTukevienOpintojenSuoritus
-          }
-          forceShow={form.editMode}
-        />
-      </>
+      <TableForTutkinnonOsaRyhmä
+        form={form}
+        oppilaitosOid={oppilaitosOid}
+        osittainenPäätasonSuoritus={osittainenPäätasonSuoritus}
+        ryhmä={'Tutkinnon osat'}
+        perusteenRyhmät={perusteenRyhmät}
+      />
     )
   }
 
@@ -163,26 +139,6 @@ export const OsasuoritusTables = ({
         form={form}
         oppilaitosOid={oppilaitosOid}
         osittainenPäätasonSuoritus={osittainenPäätasonSuoritus}
-        ryhmä="Korkeakouluopinnot"
-        perusteenRyhmät={perusteenRyhmät}
-        filter={isOsittaisenAmmatillisenTutkinnonOsanKorkeakouluopintoSuoritus}
-        forceShow={form.editMode}
-      />
-      <TableForTutkinnonOsaRyhmä
-        form={form}
-        oppilaitosOid={oppilaitosOid}
-        osittainenPäätasonSuoritus={osittainenPäätasonSuoritus}
-        ryhmä="Yhteisten tutkinnon osien osa-alueita, lukio-opintoja tai muita jatko-opintovalmiuksia tukevia opintoja"
-        perusteenRyhmät={perusteenRyhmät}
-        filter={
-          isOsittaisenAmmatillisenTutkinnonOsanJatkoOpintovalmiuksiaTukevienOpintojenSuoritus
-        }
-        forceShow={form.editMode}
-      />
-      <TableForTutkinnonOsaRyhmä
-        form={form}
-        oppilaitosOid={oppilaitosOid}
-        osittainenPäätasonSuoritus={osittainenPäätasonSuoritus}
         ryhmä="Muut suoritukset"
         perusteenRyhmät={perusteenRyhmät}
       />
@@ -200,8 +156,6 @@ interface TableProps {
   ryhmä: string
   perusteenRyhmät: Koodistokoodiviite<'tutkinnonosaryhmä'>[]
   forceOpen?: boolean
-  filter?: (s: OsittaisenAmmatillisenTutkinnonOsanSuoritus) => boolean
-  forceShow?: boolean
 }
 
 export const dummyRow = <T extends string>(
@@ -226,28 +180,14 @@ const TableForTutkinnonOsaRyhmä = ({
   osittainenPäätasonSuoritus,
   ryhmä,
   perusteenRyhmät,
-  forceOpen,
-  filter,
-  forceShow
+  forceOpen
 }: TableProps) => {
   const originalIndexMap: Record<number, number> = {}
 
-  const defaultFilter = (s: OsittaisenAmmatillisenTutkinnonOsanSuoritus) => {
-    if (
-      isOsittaisenAmmatillisenTutkinnonOsanKorkeakouluopintoSuoritus(s) ||
-      isOsittaisenAmmatillisenTutkinnonOsanJatkoOpintovalmiuksiaTukevienOpintojenSuoritus(
-        s
-      )
-    ) {
-      return false
-    }
-    return (
-      (s.tutkinnonOsanRyhmä?.nimi as Finnish | undefined)?.fi === ryhmä ||
-      ryhmä === 'Tutkinnon osat' ||
-      (s.tutkinnonOsanRyhmä === undefined && ryhmä === 'Muut suoritukset')
-    )
-  }
-  const matchFilter = filter ?? defaultFilter
+  const matchFilter = (s: OsittaisenAmmatillisenTutkinnonOsanSuoritus) =>
+    (s.tutkinnonOsanRyhmä?.nimi as Finnish | undefined)?.fi === ryhmä ||
+    ryhmä === 'Tutkinnon osat' ||
+    (s.tutkinnonOsanRyhmä === undefined && ryhmä === 'Muut suoritukset')
 
   const rows = osittainenPäätasonSuoritus.suoritus.osasuoritukset
     ?.map((s, originalIndex) => ({ s, originalIndex }))
@@ -268,7 +208,7 @@ const TableForTutkinnonOsaRyhmä = ({
     perusteenRyhmät.find((r) => (r.nimi as Finnish).fi === ryhmä) !==
       undefined || perusteenRyhmät.length === 0
 
-  if (!forceShow && !ryhmäPerusteessa && (!rows || rows.length === 0)) {
+  if (!ryhmäPerusteessa && (!rows || rows.length === 0)) {
     return null
   }
 
@@ -305,15 +245,7 @@ const TableForTutkinnonOsaRyhmä = ({
       completed={(rowIndex) => {
         const osasuoritus = (osittainenPäätasonSuoritus.suoritus
           .osasuoritukset || [])[originalIndexMap[rowIndex]]
-        if (
-          osasuoritus === undefined ||
-          isOsittaisenAmmatillisenTutkinnonOsanKorkeakouluopintoSuoritus(
-            osasuoritus
-          ) ||
-          isOsittaisenAmmatillisenTutkinnonOsanJatkoOpintovalmiuksiaTukevienOpintojenSuoritus(
-            osasuoritus
-          )
-        ) {
+        if (osasuoritus === undefined) {
           return undefined
         }
         return hasAmmatillinenArviointi(osasuoritus)
@@ -512,47 +444,6 @@ const NewAmisOsasuoritus = ({
     [lisättävätTutkinnonOsat]
   )
 
-  if (ryhmä === 'Korkeakouluopinnot') {
-    return (
-      <FlatButton
-        onClick={() =>
-          form.updateAt(
-            suoritusPath.prop('osasuoritukset').valueOr([]),
-            (a) => [
-              ...a,
-              OsittaisenAmmatillisenTutkinnonOsanKorkeakouluopintoSuoritus()
-            ]
-          )
-        }
-        testId="uusi-korkeakouluopinto"
-      >
-        {t('Lisää korkeakouluopinto')}
-      </FlatButton>
-    )
-  }
-
-  if (
-    ryhmä ===
-    'Yhteisten tutkinnon osien osa-alueita, lukio-opintoja tai muita jatko-opintovalmiuksia tukevia opintoja'
-  ) {
-    return (
-      <FlatButton
-        onClick={() =>
-          form.updateAt(
-            suoritusPath.prop('osasuoritukset').valueOr([]),
-            (a) => [
-              ...a,
-              OsittaisenAmmatillisenTutkinnonOsanJatkoOpintovalmiuksiaTukevienOpintojenSuoritus()
-            ]
-          )
-        }
-        testId="uusi-jatko-opintovalmiuksia"
-      >
-        {t('Lisää opinto')}
-      </FlatButton>
-    )
-  }
-
   if (ryhmä === 'Yhteiset tutkinnon osat') {
     return (
       <>
@@ -574,40 +465,108 @@ const NewAmisOsasuoritus = ({
       </>
     )
   }
+  const osasuoritukset =
+    getValue(suoritusPath.prop('osasuoritukset'))(form.state) || []
+  const onReformi =
+    getValue(suoritusPath.prop('suoritustapa').prop('koodiarvo'))(
+      form.state
+    ) === 'reformi'
+  const onAmmatillisetRyhmä = ryhmäKoodi.koodiarvo === '1'
+  const showLisääKorkeakouluopinto =
+    onAmmatillisetRyhmä &&
+    onReformi &&
+    !osasuoritukset.some(
+      isOsittaisenAmmatillisenTutkinnonOsanKorkeakouluopintoSuoritus
+    )
+  const showLisääJatkoOpinto =
+    onAmmatillisetRyhmä &&
+    onReformi &&
+    !osasuoritukset.some(
+      isOsittaisenAmmatillisenTutkinnonOsanJatkoOpintovalmiuksiaTukevienOpintojenSuoritus
+    )
+
   return (
-    <ColumnRow>
-      <Column span={12}>
-        <KoodistoSelect
-          addNewText={'Lisää tutkinnon osa'}
-          koodistoUri={'tutkinnonosat'}
-          format={format}
-          filter={ammatillisetFilter}
-          onSelect={(osa) => {
-            osa &&
-              form.updateAt(
-                suoritusPath.prop('osasuoritukset').valueOr([]),
-                (a) => [...a, newMuuOsa(osa, ryhmäKoodi)]
-              )
-          }}
-          testId={'uusi-muu-tutkinnonosa'}
-        />
-      </Column>
-      <Column span={6}>
-        <NewPaikallinen
-          form={form}
-          ryhmäKoodi={ryhmäKoodi}
-          suoritusPath={suoritusPath}
-        />
-      </Column>
-      <Column span={6}>
-        <NewToisestaTutkinnosta
-          form={form}
-          oppilaitosOid={oppilaitosOid}
-          ryhmäKoodi={ryhmäKoodi}
-          suoritusPath={suoritusPath}
-        />
-      </Column>
-    </ColumnRow>
+    <>
+      <ColumnRow>
+        <Column span={12}>
+          <KoodistoSelect
+            addNewText={'Lisää tutkinnon osa'}
+            koodistoUri={'tutkinnonosat'}
+            format={format}
+            filter={ammatillisetFilter}
+            onSelect={(osa) => {
+              osa &&
+                form.updateAt(
+                  suoritusPath.prop('osasuoritukset').valueOr([]),
+                  (a) => [...a, newMuuOsa(osa, ryhmäKoodi)]
+                )
+            }}
+            testId={'uusi-muu-tutkinnonosa'}
+          />
+        </Column>
+        <Column span={6}>
+          <NewPaikallinen
+            form={form}
+            ryhmäKoodi={ryhmäKoodi}
+            suoritusPath={suoritusPath}
+          />
+        </Column>
+        <Column span={6}>
+          <NewToisestaTutkinnosta
+            form={form}
+            oppilaitosOid={oppilaitosOid}
+            ryhmäKoodi={ryhmäKoodi}
+            suoritusPath={suoritusPath}
+          />
+        </Column>
+      </ColumnRow>
+      {showLisääKorkeakouluopinto && (
+        <FlatButton
+          onClick={() =>
+            form.updateAt(
+              suoritusPath.prop('osasuoritukset').valueOr([]),
+              (a) => [
+                ...a,
+                OsittaisenAmmatillisenTutkinnonOsanKorkeakouluopintoSuoritus({
+                  tutkinnonOsanRyhmä: ryhmäKoodi as Koodistokoodiviite<
+                    'ammatillisentutkinnonosanryhma',
+                    '1'
+                  >
+                })
+              ]
+            )
+          }
+          testId="uusi-korkeakouluopinto"
+        >
+          {t('Lisää korkeakouluopintoja')}
+        </FlatButton>
+      )}
+      {showLisääJatkoOpinto && (
+        <FlatButton
+          onClick={() =>
+            form.updateAt(
+              suoritusPath.prop('osasuoritukset').valueOr([]),
+              (a) => [
+                ...a,
+                OsittaisenAmmatillisenTutkinnonOsanJatkoOpintovalmiuksiaTukevienOpintojenSuoritus(
+                  {
+                    tutkinnonOsanRyhmä: ryhmäKoodi as Koodistokoodiviite<
+                      'ammatillisentutkinnonosanryhma',
+                      '1'
+                    >
+                  }
+                )
+              ]
+            )
+          }
+          testId="uusi-jatko-opintovalmiuksia"
+        >
+          {t(
+            'Lisää yhteisten tutkinnon osien osa-alueita, lukio-opintoja tai muita jatko-opintovalmiuksia tukevia opintoja'
+          )}
+        </FlatButton>
+      )}
+    </>
   )
 }
 
