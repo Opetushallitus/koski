@@ -1313,9 +1313,9 @@ class KoskiValidator(
             case os: RajattavaOppimäärä if os.rajattuOppimäärä =>
               suoritus.koulutusmoduuli.tunniste.koodiarvo match {
                 case "9" if s.jääLuokalle =>
-                  HttpStatus.validate(vainSallitutArvosanat(os, "S", "H"))(KoskiErrorCategory.badRequest.validation.date(s"Rajatulle oppimäärälle ${os.koulutusmoduuli.tunniste.koodiarvo} sallitaan arvosanat S ja H vain kun kyseessä on 9. lk ja oppilas jää luokalle"))
+                  HttpStatus.validate(vainSallitutArvosanat(os, "S", "H"))(KoskiErrorCategory.badRequest.validation.date(s"Rajatulle oppimäärälle ${os.koulutusmoduuli.tunniste.koodiarvo} sallitaan vain arvosanat S ja H kun kyseessä on 9. lk ja oppilas jää luokalle"))
                 case "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" =>
-                  HttpStatus.validate(vainSallitutArvosanat(os, "S", "H"))(KoskiErrorCategory.badRequest.validation.date(s"Rajatulle oppimäärälle ${os.koulutusmoduuli.tunniste.koodiarvo} sallitaan arvosanat S ja H vain kun kyseessä on 1. - 8. lk suoritus"))
+                  HttpStatus.validate(vainSallitutArvosanat(os, "S", "H"))(KoskiErrorCategory.badRequest.validation.date(s"Rajatulle oppimäärälle ${os.koulutusmoduuli.tunniste.koodiarvo} sallitaan vain arvosanat S ja H kun kyseessä on 1. - 8. lk suoritus"))
                 case _ => HttpStatus.ok
               }
             case _ => HttpStatus.ok
