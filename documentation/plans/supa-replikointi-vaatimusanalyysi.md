@@ -357,7 +357,94 @@ Tämä antaisi malliksi "tiukin tuoreusvaatimus määrittää inkrementtikanavan
 per lähde", mutta mekanismit ovat kuitenkin samankaltaisia (taulun
 cachella + invariantin tarkistus workerissa).
 
-## 5. Vertailutaulukko
+## 5. Skeemamuutosten hallinta
+
+Vaatimus F4 sanoo että skeemamuutokset on tehtävä hallitusti. Tämä luku
+käsittelee, miten muutokset näkyvät kuluttajalle ja mitä mekanismeja eri
+vaihtoehdoissa tarvitaan.
+
+### Skeemamuutosten luokat
+
+- **Additiiviset, ei-rikkovat**: uusi optionaalinen kenttä. Vanhat kuluttajat
+  ignooravat sitä, uudet käyttävät. Ei tarvitse uudelleenlatausta.
+- **Rikkovat datamuutokset**: kentän nimi/tyyppi muuttuu, semantiikka muuttuu
+  (esim. enum-arvot), kenttä poistetaan. Kuluttajan koodi on päivitettävä, ja
+  data joko serialisoidaan uudelleen tai kuluttaja käsittelee molemmat versiot.
+- **Konsolidointitaulujen skeemamuutos** (vain raportointikanta): vaatii koko
+  taulun uudelleengeneroinnin tai osan rivien uudelleenlaskennan, koska osa
+  riveistä ei tule muuttumaan enää koskaan tavallisten Oo-outbox-rivien
+  laukaisemana (esim. lopullisen tilassaan olevat Oo:t).
+
+### Strategiat
+
+Riippumatta valitusta vaihtoehdosta perusratkaisuja on kolme:
+
+1. **Versionoitu payload + rinnakkaiset tuetut versiot**: outbox-rivissä on
+   `schema_version`. Kosken puoli kirjoittaa N viimeisintä versiota tai osaa
+   muuttaa formaattia lennossa. Kuluttaja siirtyy uuteen versioon omaan
+   tahtiinsa. Additiivisille muutoksille riittävä.
+2. **Versiokohtainen kanava + cutover**: rikkovat muutokset julkaistaan
+   uudessa kanavassa (Supalla esim. uusi rajapintaversio, outboxilla erillinen
+   versiotagi tai erillinen outbox-taulu). Kuluttaja lataa täysbootstrapin
+   uudesta kanavasta, ackaa vanhassa loppuun ja vaihtaa kursorin.
+3. **Koordinoitu kova vaihto**: vanha kanava lopetetaan ja uusi avataan
+   sovittuna ajankohtana. Vaatii downtime-ikkunan tai välivaiheen.
+
+### Vaihtoehtokohtaiset vivahteet
+
+- **A (S3)**: `schema_version` voi olla osa tiedostonimeä tai
+  bucket-prefiksiä, jolloin kuluttaja kytkeytyy haluamaansa versioon.
+  Strategiat 1 ja 2 luonnollisia.
+- **B/C (outbox)**: `schema_version` on outbox-taulun sarake. Strategia 1
+  luonnollinen; cutover (strategia 2) onnistuu kirjoittamalla rinnakkain
+  vanhaan ja uuteen outboxiin tarpeellisen ajan.
+- **D (WAL)**: vaikein — WAL on Postgres-spesifinen formaatti ja taulutason
+  skeemamuutos heijastuu välittömästi. Sovellustason versiointi vaatii
+  erillistä metadataa, mikä syö osan WALin eduista.
+
+### Automaattinen vai koordinoitu bootstrap?
+
+Keskeinen suunnittelukysymys: voiko kuluttaja **havaita itse** että skeema on
+muuttunut ja triggeröidä täysbootstrapin, vai vaatiiko se sovittua
+koordinaatiota?
+
+- **Automaattinen havaitseminen**: rajapinta julkaisee jokaisen rivin yhteydessä
+  tai erillisessä metadatarajapinnassa `current_schema_version` -arvon. Jos
+  kuluttaja havaitsee version, jota ei tunne, se voi joko (a) pysähtyä ja
+  hälyttää, tai (b) triggeröidä automaattisen täysbootstrapin uudella versiolla.
+  **Plussa**: skeemamuutos voidaan tehdä ilman erillistä sopimista jokaisen
+  kuluttajan kanssa. **Miinus**: automaattinen bootstrap voi tuoda yllättäviä
+  kuormahuippuja.
+- **Koordinoitu**: skeemamuutoksesta ilmoitetaan kuluttajille etukäteen, ne
+  päivittävät logiikkansa, ja muutos julkaistaan vasta valmiusilmoituksen
+  jälkeen. **Plussa**: hallittavaa. **Miinus**: hitaampaa, vaatii erillistä
+  prosessia ja koordinointia tiimien välillä.
+
+**Supa**: koordinoitu malli on käytännössä pakollinen, koska kuluttaja on
+ulkoinen ja sillä on omat julkaisusyklinsä. Versiointimekanismi (strategia 1
+tai 2) antaa neuvotteluvaraa muutoksen ajoitukseen.
+
+**Raportointikanta**: automaattinen malli on luonnollinen — worker on Kosken
+omassa repossa ja päivittyy samassa deploymentissa skeemamuutoksen kanssa
+(flyway-migraatio + worker-koodi yhdessä). Tällöin "versiointi" tapahtuu
+käytännössä koodin tasolla, eikä payload-versionointia välttämättä tarvita
+ollenkaan, jos worker aina hallitsee uusimman muodon.
+
+### Konsolidointitaulujen skeemamuutos
+
+Erikoistapaus raportointikannalle (F12). Kun konsolidointitaulun skeema tai
+laskentalogiikka muuttuu, tarvitaan **täystäyttö kyseisten taulujen osalta**:
+
+- **Massa-uudelleenajo**: ajetaan koko konsolidointitaulu uudelleen koodissa,
+  itsenäisenä komentona deploymentin yhteydessä.
+- **Outboxin uudelleenseedaus**: kirjoitetaan outboxiin synteettiset rivit
+  kaikille kyseiseen konsolidointiin liittyville Oo:ille, jolloin tavallinen
+  worker rakentaa taulut uudelleen rivi kerrallaan. Edut: sama koodipolku
+  kuin tavallisessa käsittelyssä, ei erillistä migraatiotyökalua tarvita.
+
+Sama mekanismi toimii myös F3:n "jälkikäteen päivittäminen" -tarpeeseen.
+
+## 6. Vertailutaulukko
 
 Tiivistys vaihtoehdoista molempien skenaarioiden kannalta:
 
@@ -377,7 +464,7 @@ Ulkoisten lähteiden inkrementti (vain raportointikanta):
 | Z. ONR-outbox               | ✅          | Matala     | Push-feed          |
 | W. Pelkkä Lampi-snapshot    | ❌ ONR:lle  | Matala     | Lampi-dump         |
 
-## 6. Avoimet kysymykset
+## 7. Avoimet kysymykset
 
 - **Skooppi**: vain `opiskeluoikeus`, vai myös päättelyperusteet ja
   cron-päättelyt (jotka voivat muuttaa Oo:n näkymää ilman varsinaista
@@ -405,10 +492,14 @@ Ulkoisten lähteiden inkrementti (vain raportointikanta):
   data on virheellistä raportointikannassa tai Supassa, mikä on
   uudelleenladon mekanismi? Onko se sama outbox-tie (seedaa outboxiin),
   vai erillinen "force-refresh"-rajapinta?
-- **Skeemaversiointi**: miten breaking-muutokset Oo-JSONiin välitetään
-  ja koordinoidaan Supa-tiimin kanssa? Raportointikannassa Kosken oma
-  worker voi mukautua skeemamuutoksiin yhdessä Oo-skeeman päivityksen
-  kanssa.
+- **Skeemaversiointi Supan kanssa**: valitaanko strategia 1 (rinnakkaiset
+  versiot) vai 2 (versiokohtainen kanava + cutover, ks. §5) Supan kanssa?
+  Riippuu siitä, kuinka usein rikkovia muutoksia tehdään ja paljonko
+  rinnakkaisversioiden ylläpito maksaa Kosken puolella.
+- **Automaattisen bootstrapin laajuus**: jos raportointikanta-worker
+  triggeröi automaattisen bootstrapin skeemamuutoksen takia, miten estetään
+  sen aiheuttamat kuormahuiput tuotantopolulla? Tuleeko kuormaa rajoittaa
+  vai ajaa rinnakkaisinstanssina?
 - **Audit-loki**: riittääkö ack-poisto, vai pidetäänkö pysyvä lähetysloki
   erillisessä taulussa (henkilötietojen luovutuksen jäljitettävyys —
   erityisesti Supan tapauksessa).
