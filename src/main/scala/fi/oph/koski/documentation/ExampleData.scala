@@ -47,6 +47,7 @@ object ExampleData {
   lazy val lukuvuosimaksuRahoitteinen: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "16", koodistoUri = "opintojenrahoitus")
   lazy val jatkuvanOppimisenRahoitus: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "14", koodistoUri = "opintojenrahoitus")
   lazy val jatkuvanOppimisenUudistuksenRahoitus: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "15", koodistoUri = "opintojenrahoitus")
+  lazy val tilauskoulutusRahoitus: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "17", koodistoUri = "opintojenrahoitus")
 
   def vahvistusValinnaisellaTittelillä(päivä: LocalDate = date(2016, 6, 4), org: Organisaatio = jyväskylänNormaalikoulu, titteli: Option[LocalizedString] = Some("rehtori")) =
     Some(

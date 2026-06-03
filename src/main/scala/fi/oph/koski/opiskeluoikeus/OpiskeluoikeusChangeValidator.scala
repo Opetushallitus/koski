@@ -4,7 +4,7 @@ import com.typesafe.config.Config
 import fi.oph.koski.eperusteetvalidation.EPerusteetOpiskeluoikeusChangeValidator
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.organisaatio.OrganisaatioRepository
-import fi.oph.koski.schema.{KoskeenTallennettavaOpiskeluoikeus, YlioppilastutkinnonOpiskeluoikeus}
+import fi.oph.koski.schema.{KoskeenTallennettavaOpiskeluoikeus, KoskiOpiskeluoikeusjakso, YlioppilastutkinnonOpiskeluoikeus}
 import fi.oph.koski.validation.DateValidation.validateOpiskeluoikeudenPäivämäärät
 import fi.oph.koski.validation.{AikuistenPerusopetuksenOpiskeluoikeudenValidation, AmmatillinenValidation, PerusopetuksenOpiskeluoikeusValidation, TaiteenPerusopetusValidation, TutkintokoulutukseenValmentavaKoulutusValidation}
 import fi.oph.koski.validation.LukionYhteisetValidaatiot.validateLukioJaAineopiskeluVaihto
@@ -34,7 +34,8 @@ class OpiskeluoikeusChangeValidator(
           TaiteenPerusopetusValidation.validateHankintakoulutusEiMuuttunut(oldState, newState),
           validateLukioJaAineopiskeluVaihto(oldState, newState),
           AikuistenPerusopetuksenOpiskeluoikeudenValidation.validateAikuistenPerusopetusAineopinnotVaihto(oldState, newState),
-          AmmatillinenValidation.validateKorotetunOpiskeluoikeudenLinkitysEiMuuttunut(oldState, newState)
+          AmmatillinenValidation.validateKorotetunOpiskeluoikeudenLinkitysEiMuuttunut(oldState, newState),
+          validateTilauskoulutusRahoitusmuodonMuutos(oldState, newState)
         )
     }
   }
@@ -129,6 +130,31 @@ class OpiskeluoikeusChangeValidator(
       HttpStatus.validate(oppilaitoksenVaihtoSallittuPoikkeustilanteessa || oppilaitoksenVaihtoSallittu) {
         KoskiErrorCategory.badRequest.validation.organisaatio.oppilaitoksenVaihto()
       }
+    } else {
+      HttpStatus.ok
+    }
+  }
+
+  private def validateTilauskoulutusRahoitusmuodonMuutos(
+    vanhaOpiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus,
+    uusiOpiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus
+  ): HttpStatus = {
+    val tilauskoulutusKoodiarvo = "17"
+
+    def hasTilauskoulutus(oo: KoskeenTallennettavaOpiskeluoikeus): Boolean =
+      oo.tila.opiskeluoikeusjaksot
+        .collect { case j: KoskiOpiskeluoikeusjakso => j }
+        .exists(_.opintojenRahoitus.exists(_.koodiarvo == tilauskoulutusKoodiarvo))
+
+    def hasMuuRahoitusmuoto(oo: KoskeenTallennettavaOpiskeluoikeus): Boolean =
+      oo.tila.opiskeluoikeusjaksot
+        .collect { case j: KoskiOpiskeluoikeusjakso => j }
+        .exists(_.opintojenRahoitus.exists(_.koodiarvo != tilauskoulutusKoodiarvo))
+
+    if (hasTilauskoulutus(vanhaOpiskeluoikeus) && hasMuuRahoitusmuoto(uusiOpiskeluoikeus)) {
+      KoskiErrorCategory.badRequest.validation.tila.tilanRahoitusmuodonYhtenäisyys("Tilauskoulutusrahoitteisen opiskeluoikeuden rahoitusmuotoa ei voi vaihtaa muuhun rahoitusmuotoon.")
+    } else if (hasMuuRahoitusmuoto(vanhaOpiskeluoikeus) && hasTilauskoulutus(uusiOpiskeluoikeus)) {
+      KoskiErrorCategory.badRequest.validation.tila.tilanRahoitusmuodonYhtenäisyys("Opiskeluoikeuden rahoitusmuotoa ei voi vaihtaa tilauskoulutukseen.")
     } else {
       HttpStatus.ok
     }

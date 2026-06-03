@@ -1,3 +1,7 @@
+# 3.6.2026
+
+- Lisätty uusi rahoitusmuoto tilauskoulutus ammatillisen koulutuksen opiskeluoikeuksille.
+
 # 18.5.2026
 
 - Lisätty DIA-tutkinnon ja International School of Helsinki -opiskeluoikeuksiin uusi rahoitusmuoto 16, lukuvuosimaksu.

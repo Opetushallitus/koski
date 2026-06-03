@@ -1878,6 +1878,54 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
             verifyResponseStatusOk()
           }
         }
+        "tilauskoulutusrahoitusta ei voi käyttää ennen 1.8.2026 alkavassa opiskeluoikeudessa" in {
+          setupOppijaWithOpiskeluoikeus(makeOpiskeluoikeus(alkamispäivä = date(2026, 7, 31)).copy(tila = AmmatillinenOpiskeluoikeudenTila(List(
+            AmmatillinenOpiskeluoikeusjakso(date(2026, 7, 31), opiskeluoikeusLäsnä, Some(tilauskoulutusRahoitus))
+          )))) {
+            verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.date.alkamispäivä(
+              "Tilauskoulutusrahoitusta (opintojenRahoitus koodiarvo 17) ei voi käyttää opiskeluoikeudessa, jonka alkamispäivä on ennen 1.8.2026"
+            ))
+          }
+        }
+        "tilauskoulutusrahoitusta voi käyttää 1.8.2026 tai myöhemmin alkavassa opiskeluoikeudessa" in {
+          setupOppijaWithOpiskeluoikeus(makeOpiskeluoikeus(alkamispäivä = date(2026, 8, 1)).copy(tila = AmmatillinenOpiskeluoikeudenTila(List(
+            AmmatillinenOpiskeluoikeusjakso(date(2026, 8, 1), opiskeluoikeusLäsnä, Some(tilauskoulutusRahoitus))
+          )))) {
+            verifyResponseStatusOk()
+          }
+        }
+        "tilauskoulutusrahoitusta ei voi käyttää samassa opiskeluoikeudessa muiden rahoitusmuotojen kanssa" in {
+          setupOppijaWithOpiskeluoikeus(makeOpiskeluoikeus(alkamispäivä = date(2026, 8, 1)).copy(tila = AmmatillinenOpiskeluoikeudenTila(List(
+            AmmatillinenOpiskeluoikeusjakso(date(2026, 8, 1), opiskeluoikeusLäsnä, Some(tilauskoulutusRahoitus)),
+            AmmatillinenOpiskeluoikeusjakso(date(2026, 9, 1), opiskeluoikeusLäsnä, Some(valtionosuusRahoitteinen))
+          )))) {
+            verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.tilanRahoitusmuodonYhtenäisyys("Tilauskoulutusrahoitusta ei voi käyttää samassa opiskeluoikeudessa muiden rahoitusmuotojen kanssa."))
+          }
+        }
+        "tilauskoulutusrahoitusta ei voi vaihtaa muuhun rahoitusmuotoon päivityksessä" in {
+          val tallennettuna = setupOppijaWithAndGetOpiskeluoikeus(
+            makeOpiskeluoikeus(alkamispäivä = date(2026, 8, 1)).copy(tila = AmmatillinenOpiskeluoikeudenTila(List(
+              AmmatillinenOpiskeluoikeusjakso(date(2026, 8, 1), opiskeluoikeusLäsnä, Some(tilauskoulutusRahoitus))
+            ))),
+          )
+          putOpiskeluoikeus(tallennettuna.copy(tila = AmmatillinenOpiskeluoikeudenTila(List(
+            AmmatillinenOpiskeluoikeusjakso(date(2026, 8, 1), opiskeluoikeusLäsnä, Some(valtionosuusRahoitteinen))
+          )))) {
+            verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.tilanRahoitusmuodonYhtenäisyys("Tilauskoulutusrahoitteisen opiskeluoikeuden rahoitusmuotoa ei voi vaihtaa muuhun rahoitusmuotoon."))
+          }
+        }
+        "muuta rahoitusmuotoa ei voi vaihtaa tilauskoulutukseen päivityksessä" in {
+          val tallennettuna = setupOppijaWithAndGetOpiskeluoikeus(
+            makeOpiskeluoikeus(alkamispäivä = date(2026, 8, 1)).copy(tila = AmmatillinenOpiskeluoikeudenTila(List(
+              AmmatillinenOpiskeluoikeusjakso(date(2026, 8, 1), opiskeluoikeusLäsnä, Some(valtionosuusRahoitteinen))
+            )))
+          )
+          putOpiskeluoikeus(tallennettuna.copy(tila = AmmatillinenOpiskeluoikeudenTila(List(
+            AmmatillinenOpiskeluoikeusjakso(date(2026, 8, 1), opiskeluoikeusLäsnä, Some(tilauskoulutusRahoitus))
+          )))) {
+            verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.tilanRahoitusmuodonYhtenäisyys("Opiskeluoikeuden rahoitusmuotoa ei voi vaihtaa tilauskoulutukseen."))
+          }
+        }
       }
     }
 

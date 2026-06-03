@@ -143,6 +143,7 @@ class KoskiValidator(
           osasuoritusTyypitEnabled(opiskeluoikeus),
           validateOpintojenrahoitus(opiskeluoikeus),
           validateLukuvuosimaksuRahoitus(opiskeluoikeus),
+          validateTilauskoulutusRahoitus(opiskeluoikeus),
           validateSisältyvyys(henkilö, opiskeluoikeus),
           validateOpiskeluoikeudenPäivämäärät(opiskeluoikeus),
           validatePäätasonSuoritustenStatus(opiskeluoikeus),
@@ -508,6 +509,26 @@ class KoskiValidator(
     HttpStatus.validate(!käyttääLukuvuosimaksua || !alkamispäiväEnnenRajapäivää)(
       KoskiErrorCategory.badRequest.validation.date.alkamispäivä(
         s"Lukuvuosimaksurahoitusta (opintojenRahoitus koodiarvo 16) ei voi käyttää opiskeluoikeudessa, jonka alkamispäivä on ennen ${FinnishDateFormat.finnishDateFormat.format(rajapäivä)}"
+      )
+    )
+  }
+
+  private def validateTilauskoulutusRahoitus(opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus): HttpStatus = {
+    val tilauskoulutusKoodiarvo = "17"
+    val rajapäivä = LocalDate.parse(config.getString("validaatiot.tilauskoulutusRahoitusVoimassaAlkaen"))
+
+    val jaksot = opiskeluoikeus.tila.opiskeluoikeusjaksot.collect { case j: KoskiOpiskeluoikeusjakso => j }
+    val tilauskoulutusJaksot = jaksot.filter(_.opintojenRahoitus.exists(_.koodiarvo == tilauskoulutusKoodiarvo))
+    val muutRahoitusJaksot = jaksot.filter(_.opintojenRahoitus.exists(_.koodiarvo != tilauskoulutusKoodiarvo))
+
+    HttpStatus.fold(
+      HttpStatus.validate(tilauskoulutusJaksot.isEmpty || !opiskeluoikeus.alkamispäivä.exists(_.isBefore(rajapäivä)))(
+        KoskiErrorCategory.badRequest.validation.date.alkamispäivä(
+          s"Tilauskoulutusrahoitusta (opintojenRahoitus koodiarvo 17) ei voi käyttää opiskeluoikeudessa, jonka alkamispäivä on ennen ${FinnishDateFormat.finnishDateFormat.format(rajapäivä)}"
+        )
+      ),
+      HttpStatus.validate(tilauskoulutusJaksot.isEmpty || muutRahoitusJaksot.isEmpty)(
+        KoskiErrorCategory.badRequest.validation.tila.tilanRahoitusmuodonYhtenäisyys("Tilauskoulutusrahoitusta ei voi käyttää samassa opiskeluoikeudessa muiden rahoitusmuotojen kanssa.")
       )
     )
   }
