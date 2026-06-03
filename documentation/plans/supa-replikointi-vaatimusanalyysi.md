@@ -31,6 +31,11 @@ replikansa. Käytännössä tämä tarkoittaa:
   ulkoinen kuluttaja pyytää siis tiukempaa konsistenssia kuin mitä Koski
   itse sisäisesti tarjoaa.
 
+Massaluovutusrajapintaa ei myöskään ole tarkoitettu
+jonomekanismiensa yms. suhteen tällaiseen minuuttitason synkronointiin,
+vaan enemmänkin kerran päivässä tehtävien aikataulultaan ei-kriittisiin
+pyyntöihin.
+
 ### Raportointikanta
 
 Raportointikanta on Kosken oma erillinen RDS-PostgreSQL-tietokanta, johon Oo-data
@@ -50,7 +55,7 @@ Nykyinen täysgeneraatiomalli tarkoittaa:
 
 - Pitkä viive: tuoreus mitataan tunneissa/päivissä, ei minuuteissa.
 - Iso kuormahuippu ajon aikana.
-- Bootstrap on koko prosessi joka kerta — inkrementaalisuutta ei ole.
+- Bootstrap on koko prosessi joka kerta — jatkuvaa inkrementaalisuutta ei ole.
 
 ### Yhteinen juurisyy
 
@@ -107,7 +112,7 @@ ongelma.
   lähdejärjestelmien ylläpitäjien toivomus.
 - **F11**: Minuuttitason inkrementtipäivitykset ulkoisista lähteistä on
   haettava jostain tuoreemmasta kanavasta kuin Lampi-dumpit (jotka ovat
-  ONR:llä n. tunti jäljessä).
+  ONR:llä n. tunti (TODO: tarkistettava) jäljessä).
 - **F12 (konsolidointitaulut)**: Yhden Oo-muutoksen käsittely voi vaatia
   useamman riippuvan rivin uudelleenlaskennan (esim. saman oppijan muiden
   Oo:iden rinnakkaisuustiedot, oppivelvollisuustiedot). Toteutuksessa on
@@ -127,6 +132,14 @@ ongelma.
   saa hävitä, ja millä skeemalla.
 - **NF6**: Ulkoisten lähteiden tuotantopalveluiden kuormitus minimoitava
   (ei N+1-hakuja per outbox-rivi, jos vältettävissä).
+- **NF7 (replica-vauhti)**: Kumpikin kuluttaja pysyy Koskin
+  **Postgres-tason replican** vauhdissa — kaikki lukuoperaatiot Kosken
+  tietokantaan kohdistuvat replicaan, ja master-lukuja tehdään vain
+  pakon vaatiessa (käytännössä: ei lainkaan tavallisessa kulutuksessa).
+  Tämä on suora vastareaktio nykyiseen Supa-toteutukseen, jossa kuluttaja
+  fallbackaa masteriin kun replica on liikaa jäljessä. Replication lag
+  on hyväksyttävä lisäviive NF1:n minuuttibudjetin sisällä, mutta kuluttaja
+  ei saa pakottaa Koskea palvelemaan sitä master-tasolla.
 
 ### Reunaehdot
 
