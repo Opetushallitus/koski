@@ -267,6 +267,7 @@ const NewLukioOpinto = ({
               suoritusPath.prop('osasuoritukset').valueOr([]),
               (o) => [...o, newLukioOpinto(nimi, peruste)]
             )
+            setShowModal(false)
           }}
         />
       )}
@@ -346,6 +347,7 @@ const NewMuidenOpintovalmiuksiaTukevienOpintojenSuoritus = ({
                 newMuidenOpintovalmiuksiaTukevienOpintojenSuoritus(nimi)
               ]
             )
+            setShowModal(false)
           }}
         />
       )}
