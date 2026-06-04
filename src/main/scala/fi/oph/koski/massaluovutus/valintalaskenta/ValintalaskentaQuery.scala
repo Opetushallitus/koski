@@ -135,7 +135,7 @@ case class ValintalaskentaQuery(
 
   private def toResponse(application: KoskiApplication)(row: KoskiOpiskeluoikeusRow): Option[ValintalaskentaOpiskeluoikeus] = {
     val json = KoskiTables.KoskiOpiskeluoikeusTable.readAsJValue(row.data, row.oid, row.versionumero, row.aikaleima)
-    application.validatingAndResolvingExtractor.extract[KoskeenTallennettavaOpiskeluoikeus](KoskiSchema.strictDeserialization)(json) match {
+    application.validatingAndResolvingExtractor.extract[KoskeenTallennettavaOpiskeluoikeus](KoskiSchema.lenientDeserializationWithoutValidation)(json) match {
       case Right(oo: KoskeenTallennettavaOpiskeluoikeus) => Some(ValintalaskentaOpiskeluoikeus(oo))
       case Left(errors) =>
         logger.warn(s"Error deserializing opiskeluoikeus: ${errors}")
