@@ -252,41 +252,6 @@ class MassaluovutusSpec extends AnyFreeSpec with MassaluovutusTestMethods with M
 
         complete.files should have length 2
       }
-
-      "Palauttaa epäonnistuneen kyselyn, mutta jättää merkinnän auditlokiin" in {
-        AuditLogTester.clearMessages()
-
-        val user = MockUsers.paakayttaja
-        val queryId = addQuerySuccessfully(
-          MassaluovutusQueryOrganisaationOpiskeluoikeudetJson(
-            alkanutAikaisintaan = LocalDate.of(2010, 1, 1),
-            organisaatioOid = Some(MockOrganisaatiot.helsinginKaupunki)
-          ), user
-        ) { response =>
-          response.status should equal(QueryState.pending)
-          response.query.asInstanceOf[MassaluovutusQueryOrganisaationOpiskeluoikeudet].organisaatioOid should contain(
-            MockOrganisaatiot.helsinginKaupunki
-          )
-          response.queryId
-        }
-        val failed = waitForFailure(queryId, user)
-
-        failed.status shouldBe QueryState.failed
-        failed.error.get should fullyMatch regex  "^Oppijan (1\\.2\\.246\\.562\\.24\\.\\d+) opiskeluoikeuden (1\\.2\\.246\\.562\\.15\\.\\d+) deserialisointi epäonnistui$".r // Näkyy pääkäyttäjälle
-
-        // Tulokset ennen rikkinäisen opiskeluoikeuden käsittelyä on kirjoitettu vastaukseen:
-        failed.files should have length 0
-        failed.files.foreach(verifyResult(_, user))
-
-        // Tulokset poikkeukseen saakka on kirjoitettu S3:een, vaikka epäonnistuneen kyselyn tuloksessa tiedostoja ei listata
-        // Osoitteen arvaamalla käyttäjä voi kuitenkin saada nähtäväkseen tulokset ennen poikkeuksen lentämistä
-        AuditLogTester.verifyLastAuditLogMessageForOperation(Map(
-          "operation" -> "OPISKELUOIKEUS_HAKU",
-          "target" -> Map(
-            "hakuEhto" -> "alkanutAikaisintaan=2010-01-01&organisaatio=1.2.246.562.10.346830761110",
-          ),
-        ))
-      }
     }
 
     "CSV" - {
@@ -970,35 +935,6 @@ class MassaluovutusSpec extends AnyFreeSpec with MassaluovutusTestMethods with M
           KoskiSpecificMockOppijat.master.oid -> OpiskeluoikeudenTyyppi.perusopetus.koodiarvo
         )
       }
-
-      "Palauttaa virheeseen päätyneitä opiskeluoikeuksia" in {
-        val queryId = addQuerySuccessfully(getQuery(LocalDateTime.now().minusHours(1)), user) { response =>
-          response.status should equal(QueryState.pending)
-          response.queryId
-        }
-
-        val complete = waitForCompletion(queryId, user)
-
-        val jsonFiles = complete.files.map { file =>
-          verifyResultAndContent(file, user) {
-            JsonMethods.parse(body)
-          }
-        }
-
-        val oppijat = jsonFiles.head.extract[Seq[JObject]]
-        val virheelliset = oppijat.filter(oppija => (oppija \ "virheellisetOpiskeluoikeudet").extract[Seq[JObject]].nonEmpty)
-
-        virheelliset should not be empty
-        virheelliset.foreach { oppija =>
-          val virheellisetOpiskeluoikeudet = (oppija \ "virheellisetOpiskeluoikeudet").extract[Seq[JObject]]
-          virheellisetOpiskeluoikeudet.foreach { oo =>
-            (oo  \ "oppijaOid") should not equal JNothing
-            (oo \ "oid") should not equal JNothing
-            (oo \ "versionumero") should not equal JNothing
-            (oo \ "virheet").extract[List[String]] should not be empty
-          }
-        }
-      }
     }
 
     "Suorituspalvelukysely - oppija-oideilla hakeminen" - {
@@ -1404,8 +1340,8 @@ class MassaluovutusSpec extends AnyFreeSpec with MassaluovutusTestMethods with M
         complete.files shouldBe empty
       }
 
-      "Palauttaa virheeseen päätyneitä opiskeluoikeuksia" in {
-        val queryId = addQuerySuccessfully(getQuery(oppijaOids), user) { response =>
+      "Palauttaa opiskeluoikeuden jolla on virheellisesti muodostettuja jaksoja ja rikkinäisiä koodiviitteitä ilman virhettä" in {
+        val queryId = addQuerySuccessfully(getQuery(Seq(KoskiSpecificMockOppijat.kelaRikkinäinenOpiskeluoikeus.oid)), user) { response =>
           response.status should equal(QueryState.pending)
           response.queryId
         }
@@ -1419,18 +1355,14 @@ class MassaluovutusSpec extends AnyFreeSpec with MassaluovutusTestMethods with M
         }
 
         val oppijat = jsonFiles.head.extract[Seq[JObject]]
-        val virheelliset = oppijat.filter(oppija => (oppija \ "virheellisetOpiskeluoikeudet").extract[Seq[JObject]].nonEmpty)
+        oppijat.length shouldBe 1
 
-        virheelliset should not be empty
-        virheelliset.foreach { oppija =>
-          val virheellisetOpiskeluoikeudet = (oppija \ "virheellisetOpiskeluoikeudet").extract[Seq[JObject]]
-          virheellisetOpiskeluoikeudet.foreach { oo =>
-            (oo  \ "oppijaOid") should not equal JNothing
-            (oo \ "oid") should not equal JNothing
-            (oo \ "versionumero") should not equal JNothing
-            (oo \ "virheet").extract[List[String]] should not be empty
-          }
-        }
+        val virheelliset = oppijat.filter(oppija => (oppija \ "virheellisetOpiskeluoikeudet").extract[Seq[JObject]].nonEmpty)
+        virheelliset shouldBe empty
+
+        val opiskeluoikeudet = (oppijat.head \ "opiskeluoikeudet").extract[Seq[JObject]]
+        val suoritustapa = (opiskeluoikeudet.head \ "suoritukset")(0) \ "suoritustapa" \ "koodiarvo"
+        suoritustapa.extract[String] shouldBe "rikkinäinenKoodi"
       }
     }
   }
