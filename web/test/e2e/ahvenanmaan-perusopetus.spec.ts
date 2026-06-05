@@ -58,13 +58,16 @@ test.describe('Ahvenanmaan perusopetuksen käyttöliittymä', () => {
       '8. vuosiluokka'
     )
 
-    // Oletustabi on 9. vuosiluokka. Se on tyhjä: päättövuoden arvosanat ovat
-    // päättötodistuksella, ei vuosiluokan suorituksella (kuten manner-Suomessa).
+    // Oletustabi on 9. vuosiluokka. Sen oppiaineita ei näytetä, koska oppilas ei
+    // jää luokalle: päättövuoden arvosanat ovat päättötodistuksella (kuten
+    // manner-Suomessa).
     await expect(page.getByTestId('oo.0.suoritukset.1.koulutus')).toContainText(
       '9. vuosiluokka'
     )
+    await expect(page.locator('.oppiaineet')).toHaveCount(0)
 
-    // 8. luokan läsårsbetyg sisältää oppiaineet arvosanoineen (Ruotsi = 9).
+    // 8. luokan läsårsbetyg sen sijaan sisältää oppiaineet arvosanoineen
+    // (Ruotsi = 9).
     await page.getByTestId(vuosiluokkaTab).click()
     await expect(page.locator('.oppiaineet')).toBeVisible()
     await expect(
@@ -240,5 +243,25 @@ test.describe('Ahvenanmaan perusopetuksen käyttöliittymä', () => {
         '[data-testid^="oo.0.suoritukset.3.osasuoritukset."][data-testid$=".nimi"]'
       )
     ).toHaveCount(8)
+  })
+
+  test('Tyhjän vuosiluokan muokkauksessa näytetään sekä pakolliset että valinnaiset oppiaineet', async ({
+    page,
+    oppijaPage,
+    fixtures
+  }) => {
+    test.setTimeout(60000)
+    await fixtures.reset()
+    await oppijaPage.goto(url)
+    await page.getByTestId(editButton).click()
+
+    // Oletustabi on tyhjä 9. vuosiluokka. Merkitään oppilas jäämään luokalle,
+    // jolloin (tyhjän) vuosiluokan oppiaineet tulevat näkyviin.
+    await page.getByTestId('oo.0.suoritukset.1.jääLuokalle.edit.input').click()
+
+    // Tyhjällekin vuosiluokalle näytetään molemmat ryhmät, jotta sekä pakollisen
+    // että valinnaisen oppiaineen lisäys on mahdollista (ei vain valinnaisen).
+    await expect(page.getByTestId('oppiaineet-pakolliset')).toBeVisible()
+    await expect(page.getByTestId('oppiaineet-valinnaiset')).toBeVisible()
   })
 })

@@ -110,6 +110,17 @@ export const AhvenanmaanPerusopetuksenOppiaineet: React.FC<
   const suoritus = päätasonSuoritus.suoritus
   const suoritusIndex = päätasonSuoritus.index
 
+  // 9. vuosiluokan oppiaineet näytetään vain jos oppilas jää luokalle; muuten
+  // päättövuoden arvosanat ovat päättötodistuksella (avgångsbetyg), eikä
+  // oppiaineita näytetä vuosiluokalla – kuten manner-Suomessa.
+  if (
+    isAhvenanmaanPerusopetuksenVuosiluokanSuoritus(suoritus) &&
+    suoritus.koulutusmoduuli.tunniste.koodiarvo === '9' &&
+    !suoritus.jääLuokalle
+  ) {
+    return null
+  }
+
   const suoritusPath = päätasonSuoritus.path as unknown as FormOptic<
     AhvenanmaanPerusopetuksenOpiskeluoikeus,
     SuoritusWithOsasuoritukset
@@ -129,13 +140,17 @@ export const AhvenanmaanPerusopetuksenOppiaineet: React.FC<
     !isAhvenanmaanPerusopetuksenOppimääränSuoritus(suoritus) ||
     !!suoritus.vahvistus
 
+  // Ryhmittely yhteisiin (pakolliset) ja valinnaisiin oppiaineisiin. Näytetään
+  // myös tyhjälle vuosiluokalle muokkaustilassa, jotta molemmat lisäyspudotukset
+  // (pakollinen + valinnainen) ovat käytettävissä – ei vain valinnaisen.
   const hasGrouping =
     !isToimintaAlueittain &&
-    osasuoritukset.some(
-      (s) =>
-        isAhvenanmaanPerusopetuksenOppiaineenSuoritus(s) &&
-        'pakollinen' in s.koulutusmoduuli
-    )
+    (form.editMode ||
+      osasuoritukset.some(
+        (s) =>
+          isAhvenanmaanPerusopetuksenOppiaineenSuoritus(s) &&
+          'pakollinen' in s.koulutusmoduuli
+      ))
 
   const footnotes = computeFootnotes(osasuoritukset)
 
