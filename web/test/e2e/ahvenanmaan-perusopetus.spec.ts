@@ -82,6 +82,11 @@ test.describe('Ahvenanmaan perusopetuksen käyttöliittymä', () => {
     await expect(
       page.getByTestId('oo.0.suoritukset.0.osasuoritukset.0.arvosana.value')
     ).toContainText('9')
+
+    // Peruste näkyy linkkinä Ahvenanmaan opsiin (laroplan.ax).
+    await expect(
+      page.locator('a[href="https://www.laroplan.ax/laroplan-grundskolan"]')
+    ).toContainText('ÅLR2020/9841')
   })
 
   test('Arvosanavalikko tarjoaa sekä numeeriset (4-10) että sanalliset (G/D/U) arvosanat', async ({

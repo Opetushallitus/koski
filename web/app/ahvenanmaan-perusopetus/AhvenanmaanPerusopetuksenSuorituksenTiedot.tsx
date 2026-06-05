@@ -22,7 +22,6 @@ import {
   KoodistoEdit,
   KoodistoView
 } from '../components-v2/opiskeluoikeus/KoodistoField'
-import { PerusteView } from '../components-v2/opiskeluoikeus/PerusteField'
 import {
   OrganisaatioEdit,
   OrganisaatioView
@@ -71,11 +70,11 @@ export const AhvenanmaanPerusopetuksenSuorituksenTiedot: React.FC<
               {t(suoritus.koulutusmoduuli.tunniste.nimi)}{' '}
               {suoritus.koulutusmoduuli.tunniste.koodiarvo}
             </TestIdText>,
-            // Ahvenanmaan ops (ÅLR2020/9841) ei ole ePerusteissa, joten
-            // diaarinumero näytetään vain luettavana (ei muokattava pudotus).
-            <PerusteView
+            // Ahvenanmaan ops (ÅLp21) ei ole ePerusteissa, joten diaarinumero
+            // linkitetään suoraan laroplan.ax-sivustolle (ei ePerusteet-hakua).
+            <PerusteLinkki
               key="peruste"
-              value={suoritus.koulutusmoduuli.perusteenDiaarinumero}
+              diaarinumero={suoritus.koulutusmoduuli.perusteenDiaarinumero}
             />
           ]}
         </KeyColumnedValuesRow>
@@ -162,6 +161,22 @@ export const AhvenanmaanPerusopetuksenSuorituksenTiedot: React.FC<
     </>
   )
 }
+
+// Ahvenanmaan perusopetuksen ops ÅLp21 (ÅLR2020/9841) ei ole ePerusteissa, joten
+// diaarinumero linkitetään kovakoodatusti Ålands landskapsregeringin
+// laroplan.ax-sivustolle yhteisen PerusteView-komponentin sijaan.
+const AHVENANMAAN_OPS_URL = 'https://www.laroplan.ax/laroplan-grundskolan'
+
+const PerusteLinkki: React.FC<{ diaarinumero?: string }> = ({
+  diaarinumero
+}) =>
+  diaarinumero ? (
+    <a href={AHVENANMAAN_OPS_URL} target="_blank" rel="noopener noreferrer">
+      <TestIdText id="peruste.value">{diaarinumero}</TestIdText>
+    </a>
+  ) : (
+    <TestIdText id="peruste.value">{'-'}</TestIdText>
+  )
 
 const getLuokalleSiirtymisenTeksti = (suoritus: object): string | undefined => {
   if (!isAhvenanmaanPerusopetuksenVuosiluokanSuoritus(suoritus))
