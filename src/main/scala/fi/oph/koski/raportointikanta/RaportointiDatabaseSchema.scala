@@ -1246,6 +1246,7 @@ sealed trait Schema {
     sqlu"CREATE INDEX ON #${name}.r_paatason_suoritus(opiskeluoikeus_oid)",
     sqlu"CREATE INDEX ON #${name}.r_opiskeluoikeus_aikajakso(opiskeluoikeus_oid)",
     sqlu"CREATE INDEX ON #${name}.r_organisaatiohistoria(opiskeluoikeus_oid)",
+    sqlu"CREATE INDEX ON #${name}.r_osaamisen_hankkimistapa_ammatillinen(opiskeluoikeus_oid)",
   )
 
   def createOpiskeluoikeusIndexes() = DBIO.seq(
