@@ -307,6 +307,11 @@ class RaportointiDatabase(config: RaportointiDatabaseConfigBase) extends Logging
   def updateMitätöidytOpiskeluoikeudet(rows: Seq[RMitätöityOpiskeluoikeusRow], olemassaolevatOot: Seq[Opiskeluoikeus.Oid]): Unit = {
     runDbSync(DBIO.sequence(rows.map(RMitätöidytOpiskeluoikeudet.insertOrUpdate)), timeout = 5.minutes)
     runDbSync(RMitätöidytOpiskeluoikeudet.filter(_.opiskeluoikeusOid inSetBind olemassaolevatOot).delete, timeout = 5.minutes)
+    val mitätöidytOids = rows.map(_.opiskeluoikeusOid).toSet
+    if (mitätöidytOids.nonEmpty) {
+      runDbSync(RPäätasonSuoritukset.filter(_.opiskeluoikeusOid inSet mitätöidytOids).delete, timeout = 5.minutes)
+      runDbSync(ROsasuoritukset.filter(_.opiskeluoikeusOid inSet mitätöidytOids).delete, timeout = 10.minutes)
+    }
   }
 
   def oppijaOidsFromOpiskeluoikeudet: Seq[String] = {
