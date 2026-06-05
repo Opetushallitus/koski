@@ -3,6 +3,7 @@ package fi.oph.koski.raportointikanta
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.db.{DB, DatabaseUtilQueries, QueryMethods, RaportointiDatabaseConfigBase}
 import fi.oph.koski.henkilo.Kotikuntahistoria
+import fi.oph.koski.db.DatabaseExecutionContext
 import fi.oph.koski.log.Logging
 import fi.oph.koski.oppivelvollisuustieto.Oppivelvollisuustiedot
 import fi.oph.koski.raportit.PaallekkaisetOpiskeluoikeudet
@@ -22,6 +23,7 @@ import java.sql.{Date, Timestamp}
 import java.time.LocalDateTime.now
 import java.time._
 import scala.concurrent.duration.{DurationInt, FiniteDuration}
+import scala.concurrent.{Await, Future}
 
 object RaportointiDatabase {
   // Raportointikannan skeeman muuttuessa päivitä versionumeroa yksi ylöspäin.
@@ -31,7 +33,7 @@ object RaportointiDatabase {
   def schemaVersion: (Int, String) = (32, "d2fb4070c2e4d38b501143b464d3a953")
 }
 
-class RaportointiDatabase(config: RaportointiDatabaseConfigBase) extends Logging with QueryMethods {
+class RaportointiDatabase(config: RaportointiDatabaseConfigBase) extends Logging with QueryMethods with DatabaseExecutionContext {
   val schema: Schema = config.schema
   val confidential: Option[ConfidentialRaportointiDatabase] = ConfidentialRaportointiDatabase(config)
   override def defaultRetryIntervalMs = 30000
@@ -129,7 +131,9 @@ class RaportointiDatabase(config: RaportointiDatabaseConfigBase) extends Logging
   }
 
   def createIndexesForIncrementalUpdate(): Unit = {
-    runDbSync(schema.createIndexesForIncrementalUpdate(), timeout = 120.minutes)
+    schema.createIndexesForIncrementalUpdate()
+      .grouped(3) // Älä tee liian monta samaan aikaan, jotta yhteydet riittävät
+      .foreach(batch => Await.result(Future.sequence(batch.map(db.run(_))), 120.minutes))
     confidential.foreach(_.createIndexesForIncrementalUpdate())
   }
 

@@ -1241,7 +1241,7 @@ sealed trait Schema {
     sqlu"DROP SCHEMA IF EXISTS #$name CASCADE"
 
   // Laita tähän vain ne indeksit, jotka tarvitaan inkrementaalisen generoinnin nopeuttamiseksi.
-  def createIndexesForIncrementalUpdate() = DBIO.seq(
+  def createIndexesForIncrementalUpdate(): Seq[DBIO[Int]] = Seq(
     sqlu"CREATE INDEX ON #${name}.r_osasuoritus(opiskeluoikeus_oid)",
     sqlu"CREATE INDEX ON #${name}.r_paatason_suoritus(opiskeluoikeus_oid)",
     sqlu"CREATE INDEX ON #${name}.r_opiskeluoikeus_aikajakso(opiskeluoikeus_oid)",
@@ -1357,7 +1357,7 @@ case object Temp extends Schema {
 }
 
 sealed trait ConfidentialSchema extends Schema {
-  override def createIndexesForIncrementalUpdate() = DBIO.seq()
+  override def createIndexesForIncrementalUpdate(): Seq[DBIO[Int]] = Seq.empty
   override def createOpiskeluoikeusIndexes() = DBIO.seq()
   override def createOtherIndexes() = DBIO.seq(
     Kotikuntahistoria.createIndexes(this),
