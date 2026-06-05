@@ -24,10 +24,10 @@ import { Koodistokoodiviite } from '../types/fi/oph/koski/schema/Koodistokoodivi
 //    yhteiskuntaoppi (SA) alkaa.
 //  - åk 7–9: fysiikka (FY) ja kemia (KE) eriytyvät; kotitalous (HEKO) alkaa.
 //
-// Olennainen ero manner-Suomeen: 9. luokka EI palauta tyhjää listaa, vaan koko
-// yläluokkien aineiston — Ahvenanmaalla jokainen vuosiluokka (myös 9.) saa
-// lukuvuositodistuksen (läsårsbetyg) arvosanoineen, ja päättötodistus
-// (avgångsbetyg, sama aineisto kuin åk 7–9) on tästä erillinen.
+// Kuten manner-Suomessa, 9. luokka palauttaa tyhjän listan: päättövuoden
+// arvosanat kirjataan päättötodistukselle (avgångsbetyg, sama aineisto kuin
+// åk 7–9), ei vuosiluokan suoritukselle. Jos oppilas jää luokalle
+// (jääLuokalle), 9. luokan oma läsårsbetyg täytetään käsin.
 //
 // Valinnaiset aineet (valbara ämnen / tillvalsämnen) sekä valinnaiset kielet
 // (A2 åk 5–, B1 åk 7–, B2 åk 8–) eivät kuulu esitäyttöön, vaan lisätään käsin.
@@ -93,7 +93,7 @@ const vierasKieli = (
 /**
  * Palauttaa esitäytettävät oppiaineiden suoritukset annetulle luokka-asteelle.
  * Aineiston järjestys vastaa betygsformulärin "Gemensamma ämnen" -listausta.
- * Tuntematon luokka-aste palauttaa tyhjän listan.
+ * 9. luokka ja tuntematon luokka-aste palauttavat tyhjän listan.
  */
 export const ahvenanmaanLuokkaAsteenOppiaineet = (
   luokkaAste: string,
@@ -173,9 +173,9 @@ export const ahvenanmaanLuokkaAsteenOppiaineet = (
     ]
   }
 
-  // Åk 7–9 (sama aineisto myös 9. luokalle, ks. moduulin kommentti): FY ja KE
-  // eriytyvät, kotitalous (HEKO) alkaa.
-  if (n >= 7 && n <= 9) {
+  // Åk 7–8: FY ja KE eriytyvät, kotitalous (HEKO) alkaa. 9. luokka jää
+  // tyhjäksi (arvosanat avgångsbetygiin, ks. moduulin kommentti).
+  if (n >= 7 && n <= 8) {
     return [
       m('SV'),
       m('MA'),

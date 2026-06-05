@@ -291,7 +291,13 @@ const createLuokkaAsteenOsasuoritukset = (
   toimintaAlueittain: boolean,
   perusteenDiaarinumero?: string
 ): AhvenanmaanOppiaineenTaiToimintaAlueenSuoritus[] | undefined => {
-  // Ahvenanmaalla myös 9. luokka esitäytetään (toisin kuin manner-Suomessa).
+  // 9. luokan päättövuoden arvosanat kirjataan päättötodistukselle
+  // (avgångsbetyg), joten vuosiluokan suoritus jätetään tyhjäksi – kuten
+  // manner-Suomessa. Luokalle jäävän 9. luokan läsårsbetyg täytetään käsin.
+  if (luokkaAste === '9') {
+    return undefined
+  }
+
   const osasuoritukset = toimintaAlueittain
     ? toimintaAlueidenSuoritukset()
     : ahvenanmaanLuokkaAsteenOppiaineet(luokkaAste, perusteenDiaarinumero)

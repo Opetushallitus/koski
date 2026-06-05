@@ -1488,6 +1488,10 @@ class KoskiValidator(
            _: NäyttötutkintoonValmistavanKoulutuksenSuoritus
       => true
       case s: PerusopetuksenVuosiluokanSuoritus if s.koulutusmoduuli.tunniste.koodiarvo == "9" || s.jääLuokalle => true
+      // Ahvenanmaalla 9. luokan (tai luokalle jäävän) vuosiluokan suoritus voi olla
+      // vahvistettu ilman oppiaineita: päättövuoden arvosanat kirjataan päättö-
+      // todistukselle (avgångsbetyg), kuten manner-Suomessa.
+      case s: AhvenanmaanPerusopetuksenVuosiluokanSuoritus if s.koulutusmoduuli.tunniste.koodiarvo == "9" || s.jääLuokalle => true
       case _: PerusopetuksenVuosiluokanSuoritus
         if PerusopetuksenOpiskeluoikeusValidation.onVuosiluokkiinSitoutumatonOpetus(opiskeluoikeus) => true
       case s: PerusopetuksenVuosiluokanSuoritus

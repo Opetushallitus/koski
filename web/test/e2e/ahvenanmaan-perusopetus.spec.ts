@@ -4,15 +4,19 @@ import { virkailija } from './setup/auth'
 /**
  * Testit Ahvenanmaan perusopetuksen v2-editorille.
  *
- * Åländsk Alina (150510A0873) on Ahvenanmaan perusopetuksen oppilas, jolla on
- * vahvistettu 9. vuosiluokan suoritus ja oppimäärän suoritus (Avgångsbetyg).
- * Tabit on lajiteltu: 0 = Avgångsbetyg (oppimäärä), 1 = 9. vuosiluokka.
+ * Åländsk Alina (150510A0873) on valmistunut Ahvenanmaan perusopetuksen
+ * oppilas. Esimerkkidata noudattaa manner-Suomen mallia: päättövuoden (9. lk)
+ * vuosiluokan suoritus on tyhjä ja lopulliset arvosanat ovat päättötodistuksella
+ * (Avgångsbetyg). Edellinen lukuvuositodistus (8. lk) sisältää oppiaineet
+ * arvosanoineen.
+ *
+ * Suoritukset lajitellaan: 0 = Avgångsbetyg (oppimäärä), 1 = 9. vuosiluokka
+ * (tyhjä, oletustabi), 2 = 8. vuosiluokka (läsårsbetyg arvosanoineen).
  *
  * Editori on aina päällä (ei feature-flagia), joten URL:ssä ei ole
  * `perusopetus-v2`-parametria. Erot manner-Suomen perusopetukseen:
  *  - Arvosteluasteikko 4-10 / G-D-U (ahvenanmaanarviointiasteikkoyleissivistava),
  *    sekä numeeriset että sanalliset arvosanat samassa pudotusvalikossa.
- *  - 9. luokan oppiaineita ei piiloteta (toisin kuin manner-Suomessa).
  *  - Käyttäytymisen sijaan "Ansvar och samarbete" (vastuuJaYhteistyöArvio),
  *    jonka ainoa sallittu arvo on G.
  *  - Lisätiedoissa vain kotiopetusjaksot.
@@ -24,10 +28,14 @@ const url = `${oppijaOid}?opiskeluoikeudenTyyppi=ahvenanmaanperusopetus`
 const editButton = 'oo.0.opiskeluoikeus.edit'
 const saveButton = 'oo.0.opiskeluoikeus.save'
 
+// 8. vuosiluokan läsårsbetyg sisältää oppiaineet arvosanoineen (ei oletustabi).
+const avgångsbetygTab = 'oo.0.suoritusTabs.0.tab'
+const vuosiluokkaTab = 'oo.0.suoritusTabs.2.tab'
+
 const ensimmäisenOppiaineenArvosanaView =
-  'oo.0.suoritukset.1.osasuoritukset.0.arvosana.value'
+  'oo.0.suoritukset.2.osasuoritukset.0.arvosana.value'
 const ensimmäisenOppiaineenArvosanaEdit =
-  'oo.0.suoritukset.1.osasuoritukset.0.arvosana.edit.input'
+  'oo.0.suoritukset.2.osasuoritukset.0.arvosana.edit.input'
 
 test.describe('Ahvenanmaan perusopetuksen käyttöliittymä', () => {
   test.use({ storageState: virkailija('kalle') })
@@ -46,26 +54,28 @@ test.describe('Ahvenanmaan perusopetuksen käyttöliittymä', () => {
     await expect(page.getByTestId('oo.0.suoritusTabs.1.tab')).toContainText(
       '9. vuosiluokka'
     )
+    await expect(page.getByTestId('oo.0.suoritusTabs.2.tab')).toContainText(
+      '8. vuosiluokka'
+    )
 
-    // Oletustabi on 9. vuosiluokka, jonka oppiaineet näkyvät (9. luokkaa ei
-    // piiloteta kuten manner-Suomessa).
+    // Oletustabi on 9. vuosiluokka. Se on tyhjä: päättövuoden arvosanat ovat
+    // päättötodistuksella, ei vuosiluokan suorituksella (kuten manner-Suomessa).
     await expect(page.getByTestId('oo.0.suoritukset.1.koulutus')).toContainText(
       '9. vuosiluokka'
     )
-    await expect(page.locator('.oppiaineet')).toBeVisible()
 
-    // Ahvenanmaan arvosteluasteikon ohjeteksti.
+    // 8. luokan läsårsbetyg sisältää oppiaineet arvosanoineen (Ruotsi = 9).
+    await page.getByTestId(vuosiluokkaTab).click()
+    await expect(page.locator('.oppiaineet')).toBeVisible()
     await expect(
       page.locator('.perusopetuksen-arvosteluasteikko')
     ).toContainText('G (godkänd)')
-
-    // Numeerinen arvosana näkyy (Ruotsi = 9).
     await expect(
       page.getByTestId(ensimmäisenOppiaineenArvosanaView)
     ).toContainText('9')
 
-    // Oppimäärän (Avgångsbetyg) tabilla suoritustapa ja arvosanat.
-    await page.getByTestId('oo.0.suoritusTabs.0.tab').click()
+    // Avgångsbetyg (oppimäärä) sisältää lopulliset arvosanat.
+    await page.getByTestId(avgångsbetygTab).click()
     await expect(
       page.getByTestId('oo.0.suoritukset.0.suoritustapa.value')
     ).toContainText('Koulutus')
@@ -81,6 +91,7 @@ test.describe('Ahvenanmaan perusopetuksen käyttöliittymä', () => {
   }) => {
     await fixtures.reset()
     await oppijaPage.goto(url)
+    await page.getByTestId(vuosiluokkaTab).click()
     await page.getByTestId(editButton).click()
 
     await page.getByTestId(ensimmäisenOppiaineenArvosanaEdit).click()
@@ -99,6 +110,7 @@ test.describe('Ahvenanmaan perusopetuksen käyttöliittymä', () => {
     test.setTimeout(60000)
     await fixtures.reset()
     await oppijaPage.goto(url)
+    await page.getByTestId(vuosiluokkaTab).click()
     await page.getByTestId(editButton).click()
 
     await page.getByTestId(ensimmäisenOppiaineenArvosanaEdit).click()
@@ -110,6 +122,7 @@ test.describe('Ahvenanmaan perusopetuksen käyttöliittymä', () => {
 
     await page.getByTestId(saveButton).click()
     await expect(page.getByTestId(editButton)).toBeVisible({ timeout: 15000 })
+    await page.getByTestId(vuosiluokkaTab).click()
     await expect(
       page.getByTestId(ensimmäisenOppiaineenArvosanaView)
     ).toContainText('G')
@@ -123,12 +136,15 @@ test.describe('Ahvenanmaan perusopetuksen käyttöliittymä', () => {
     test.setTimeout(60000)
     await fixtures.reset()
     await oppijaPage.goto(url)
+    // Ansvar och samarbete annetaan lukuvuositodistuksella (8. lk), ei
+    // päättötodistuksella.
+    await page.getByTestId(vuosiluokkaTab).click()
     await page.getByTestId(editButton).click()
 
     // Lisätään arvio: ainoa sallittu arvo on G (godkänd).
-    await page.getByTestId('oo.0.suoritukset.1.vastuuJaYhteistyo.lisaa').click()
+    await page.getByTestId('oo.0.suoritukset.2.vastuuJaYhteistyo.lisaa').click()
     await expect(
-      page.getByTestId('oo.0.suoritukset.1.vastuuJaYhteistyo.arvosana')
+      page.getByTestId('oo.0.suoritukset.2.vastuuJaYhteistyo.arvosana')
     ).toContainText('G')
 
     await page.getByTestId(saveButton).click()
@@ -136,8 +152,9 @@ test.describe('Ahvenanmaan perusopetuksen käyttöliittymä', () => {
 
     // Arvio säilyy tallennuksen ja sivun uudelleenlatauksen yli.
     await oppijaPage.goto(url)
+    await page.getByTestId(vuosiluokkaTab).click()
     await expect(
-      page.getByTestId('oo.0.suoritukset.1.vastuuJaYhteistyo.arvosana')
+      page.getByTestId('oo.0.suoritukset.2.vastuuJaYhteistyo.arvosana')
     ).toContainText('G')
   })
 
@@ -195,8 +212,8 @@ test.describe('Ahvenanmaan perusopetuksen käyttöliittymä', () => {
       .click()
 
     // "lisää vuosiluokan suoritus" on viimeinen välilehti (Avgångsbetyg=0,
-    // 9. vuosiluokka=1, lisäys=2).
-    await page.getByTestId('oo.0.suoritusTabs.2.tab').click()
+    // 9. vuosiluokka=1, 8. vuosiluokka=2, lisäys=3).
+    await page.getByTestId('oo.0.suoritusTabs.3.tab').click()
 
     // Luokka-aste on oletuksena 1. vuosiluokka; täytetään luokka ja
     // alkamispäivä (toimipiste peritään viimeisimmästä suorituksesta).
@@ -208,14 +225,14 @@ test.describe('Ahvenanmaan perusopetuksen käyttöliittymä', () => {
       .fill('15.8.2016')
     await page.getByTestId('oo.0.modal.uusiVuosiluokanSuoritus.submit').click()
 
-    // Uusi 1. vuosiluokka lajitellaan viimeiseksi (indeksi 2). Oppiaineet on
+    // Uusi 1. vuosiluokka lajitellaan viimeiseksi (indeksi 3). Oppiaineet on
     // esitäytetty 1.–2. luokan mallilla (8 ainetta), arvosanoja ei vielä ole.
     await expect(
-      page.getByTestId('oo.0.suoritukset.2.osasuoritukset.0.nimi')
+      page.getByTestId('oo.0.suoritukset.3.osasuoritukset.0.nimi')
     ).toContainText('Ruotsi')
     await expect(
       page.locator(
-        '[data-testid^="oo.0.suoritukset.2.osasuoritukset."][data-testid$=".nimi"]'
+        '[data-testid^="oo.0.suoritukset.3.osasuoritukset."][data-testid$=".nimi"]'
       )
     ).toHaveCount(8)
   })
