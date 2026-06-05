@@ -129,6 +129,8 @@ Run specific test suite:
 mvn test -Dsuites="fi.oph.koski.schema.SchemaSpec"
 ```
 
+**Important:** `BackwardCompatibilitySpec` compares each documentation `Example` against a stored JSON snapshot under `src/test/resources/backwardcompatibility/`, matched by sanitized example name. When you **rename or change the data of an `Example`** (e.g. in `documentation/Examples*.scala`), regenerate its snapshot: run `BackwardCompatibilitySpec` locally — it writes a new dated file — and commit it. CI fails if the snapshot is missing (it refuses to write on CI). If you renamed the example, also delete the now-orphaned old snapshot.
+
 ### Frontend Tests
 - **Mocha tests**: `web/test/` - run with `make fronttest`
 - **Playwright tests**: `web/test/playwright/` - run with `make integrationtest`
