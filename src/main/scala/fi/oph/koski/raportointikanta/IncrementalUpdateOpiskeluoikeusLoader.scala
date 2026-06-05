@@ -126,20 +126,18 @@ class IncrementalUpdateOpiskeluoikeusLoader(
       Future(block).recover { case e => logger.error(e)(s"Raportointikannan inkrementaalisen latauksen operaatio $name epäonnistui"); throw e }
 
     val fOo          = parallelUpdate("updateOpiskeluoikeudet")(timedMs("updateOpiskeluoikeudet")(db.updateOpiskeluoikeudet(successfulRows.map(_.rOpiskeluoikeusRow), mitätöidytOot)))
-    val fOrgHistoria = parallelUpdate("updateOrganisaatioHistoria")(timedMs("updateOrganisaatioHistoria")(db.updateOrganisaatioHistoria(successfulRows.flatMap(_.organisaatioHistoriaRows))))
-    val fAikajakso   = parallelUpdate("updateOpiskeluoikeusAikajaksot")(timedMs("updateOpiskeluoikeusAikajaksot")(db.updateOpiskeluoikeusAikajaksot(opiskeluoikeusAikajaksoRows)))
     val fPäätason    = parallelUpdate("updatePäätasonSuoritukset")(timedMs("updatePäätasonSuoritukset")(db.updatePäätasonSuoritukset(päätasonSuoritusRows)))
     val fOsasuoritus = parallelUpdate("updateOsasuoritukset")(timedMs("updateOsasuoritukset")(db.updateOsasuoritukset(osasuoritusRows)))
 
-    val (updateOoMs, updateOrgHistoriaMs, updateOoAikajaksoMs, updatePäätasonMs, updateOsasuoritusMs) =
+    val (updateOoMs, updatePäätasonMs, updateOsasuoritusMs) =
       Await.result(for {
         (_, ooMs)          <- fOo
-        (_, orgHistoriaMs) <- fOrgHistoria
-        (_, aikajaksoMs)   <- fAikajakso
         (_, päätasonMs)    <- fPäätason
         (_, osasuoritusMs) <- fOsasuoritus
-      } yield (ooMs, orgHistoriaMs, aikajaksoMs, päätasonMs, osasuoritusMs), 15.minutes)
+      } yield (ooMs, päätasonMs, osasuoritusMs), 15.minutes)
 
+    val (_, updateOrgHistoriaMs)      = timedMs("updateOrganisaatioHistoria")(db.updateOrganisaatioHistoria(successfulRows.flatMap(_.organisaatioHistoriaRows)))
+    val (_, updateOoAikajaksoMs)      = timedMs("updateOpiskeluoikeusAikajaksot")(db.updateOpiskeluoikeusAikajaksot(opiskeluoikeusAikajaksoRows))
     val (_, updateAikajaksoMs)        = timedMs("updateAikajaksot")(db.updateAikajaksot(aikajaksoRows))
     val (_, updateJarjestamismuotoMs) = timedMs("updateJarjestamismuotoAikajaksot")(db.updateAmmatillisenKoulutuksenJarjestamismuotoAikajaksot(ammatillisenKoulutuksenJarjestamismuotoAikajaksoRows))
     val (_, updateHankkimistapaMs)    = timedMs("updateHankkimistapaAikajaksot")(db.updateOsaamisenHankkimistapaAikajaksoRows(updateOsaamisenHankkimistapaAikajaksoRows))
