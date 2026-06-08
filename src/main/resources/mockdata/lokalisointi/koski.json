@@ -9138,7 +9138,7 @@
   {
     "id": null,
     "namespace": "koski",
-    "key": "deprecated:ei kaytossa ennen lain voimaantuloa",
+    "key": "deprecated:ei kaytossa yths maksettu",
     "locale": "fi",
     "value": "Ei käytössä 1.1.2021 eteenpäin",
     "category": "koski",
@@ -56610,7 +56610,7 @@
   {
     "id": null,
     "namespace": "koski",
-    "key": "deprecated:ei kaytossa ennen lain voimaantuloa",
+    "key": "deprecated:ei kaytossa yths maksettu",
     "locale": "sv",
     "value": "Inte i bruk fr.o.m. 1.1.2021",
     "category": "koski",
