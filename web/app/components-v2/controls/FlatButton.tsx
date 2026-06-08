@@ -3,6 +3,7 @@ import { LocalizedString } from '../../types/fi/oph/koski/schema/LocalizedString
 import { common, CommonProps } from '../CommonProps'
 import { Trans } from '../texts/Trans'
 import { useTestId } from '../../appstate/useTestId'
+import { CHARCODE_ADD, IconLabel } from '../texts/Icon'
 
 export type FlatButtonProps = CommonProps<{
   children: LocalizedString | string
@@ -10,6 +11,7 @@ export type FlatButtonProps = CommonProps<{
   fullWidth?: boolean
   disabled?: boolean
   compact?: boolean
+  withAddIcon?: boolean
   buttonRef?: React.MutableRefObject<HTMLButtonElement | null>
   testId?: string
 }>
@@ -26,6 +28,10 @@ export const FlatButton = (props: FlatButtonProps) => (
     ref={props.buttonRef}
     data-testid={useTestId(props.testId)}
   >
-    {props.children}
+    {props.withAddIcon ? (
+      <IconLabel charCode={CHARCODE_ADD}>{props.children}</IconLabel>
+    ) : (
+      props.children
+    )}
   </button>
 )
