@@ -245,7 +245,18 @@ const TableForTutkinnonOsaRyhmä = ({
       completed={(rowIndex) => {
         const osasuoritus = (osittainenPäätasonSuoritus.suoritus
           .osasuoritukset || [])[originalIndexMap[rowIndex]]
-        if (osasuoritus === undefined) {
+        if (
+          osasuoritus === undefined ||
+          isOsittaisenAmmatillisenTutkinnonOsanKorkeakouluopintoSuoritus(
+            osasuoritus
+          ) ||
+          isOsittaisenAmmatillisenTutkinnonOsanJatkoOpintovalmiuksiaTukevienOpintojenSuoritus(
+            osasuoritus
+          )
+        ) {
+          // Näiden tyyppien tila tulee niiden alaosasuorituksista, ei
+          // ylätason arvioinnista, joten päärivillä ei näytetä
+          // valmis/kesken-merkkiä.
           return undefined
         }
         return hasAmmatillinenArviointi(osasuoritus)
