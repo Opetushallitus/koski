@@ -60,23 +60,30 @@ export const OpiskeluoikeusEditToolbar = (
         {hasAnyInvalidateAccess && props.invalidatable && opiskeluoikeusOid && (
           <MitätöintiButton opiskeluoikeusOid={opiskeluoikeusOid} />
         )}
-        <RequiresWriteAccess opiskeluoikeus={props.opiskeluoikeus}>
-          {inVersiohistoria ? (
-            <PoistuVersiohistoriastaButton
-              opiskeluoikeusOid={opiskeluoikeusOid}
-              showLabel
-            />
-          ) : !props.editMode ? (
-            <RaisedButton onClick={props.onStartEdit} testId="edit">
-              {t('Muokkaa')}
-            </RaisedButton>
-          ) : (
-            !hasAnyInvalidateAccess &&
-            opiskeluoikeusOid && (
-              <MitätöintiButton opiskeluoikeusOid={opiskeluoikeusOid} />
-            )
-          )}
-        </RequiresWriteAccess>
+        {inVersiohistoria ? (
+          // Versiohistoriasta poistuminen on pelkkä navigaatio (?versionumero
+          // pois URL:sta), ei muokkaus, joten sitä ei saa rajata
+          // RequiresWriteAccess:lla. Muuten käyttäjä jää jumiin
+          // versiohistoriaan, jos historian versiossa on lähdejärjestelmänId
+          // (RequiresWriteAccess piilottaa lapset silloin).
+          <PoistuVersiohistoriastaButton
+            opiskeluoikeusOid={opiskeluoikeusOid}
+            showLabel
+          />
+        ) : (
+          <RequiresWriteAccess opiskeluoikeus={props.opiskeluoikeus}>
+            {!props.editMode ? (
+              <RaisedButton onClick={props.onStartEdit} testId="edit">
+                {t('Muokkaa')}
+              </RaisedButton>
+            ) : (
+              !hasAnyInvalidateAccess &&
+              opiskeluoikeusOid && (
+                <MitätöintiButton opiskeluoikeusOid={opiskeluoikeusOid} />
+              )
+            )}
+          </RequiresWriteAccess>
+        )}
         <RequiresLahdejarjestelmakytkennanPurkaminenAccess
           opiskeluoikeus={props.opiskeluoikeus}
         >
