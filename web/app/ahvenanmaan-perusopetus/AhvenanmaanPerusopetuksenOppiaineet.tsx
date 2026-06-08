@@ -290,7 +290,12 @@ const Oppiainetaulukko: React.FC<OppiainetaulukkoProps> = ({
           }
         ]
       : []),
-    ...(showLaajuus ? [{ key: 'Laajuus', span: 2 }] : [])
+    // Laajuussarake on kapea vain muokkaustilassa (siinä on pelkkä numerokenttä
+    // ja arvosanapudotus tarvitsee tilan). Näkymässä käytetään oletusleveyttä,
+    // jotta yksikön nimi (esim. vuosiviikkotuntia) ei ylivuoda sarakkeen yli.
+    ...(showLaajuus
+      ? [{ key: 'Laajuus', span: form.editMode ? 2 : undefined }]
+      : [])
   ]
 
   return (
