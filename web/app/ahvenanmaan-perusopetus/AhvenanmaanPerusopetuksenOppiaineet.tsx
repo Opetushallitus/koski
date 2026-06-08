@@ -24,8 +24,7 @@ import { FieldViewerProps, FormField } from '../components-v2/forms/FormField'
 import { FormModel, FormOptic } from '../components-v2/forms/FormModel'
 import {
   ParasArvosanaEdit,
-  ParasArvosanaViewProps,
-  koodiarvoOnly
+  ParasArvosanaViewProps
 } from '../components-v2/opiskeluoikeus/ArvosanaField'
 import {
   BooleanEdit,
@@ -84,13 +83,26 @@ import { parasArviointi } from '../util/arvioinnit'
 import { deleteAt } from '../util/fp/arrays'
 import { EmptyObject } from '../util/objects'
 
-const ParasArvosanaKoodiarvoView = <T extends Arviointi>(
+// Ahvenanmaan arviointiasteikossa numeeriset arvosanat (4–10) näytetään
+// numerona, mutta sanalliset (G/D/U) koko nimellään käyttöliittymän kielellä
+// (esim. G → Godkänd / Hyväksytty). Käytetään sekä näkymässä että pudotuksessa.
+const ahvenanmaanArvosananNimi = (
+  k: Pick<Koodistokoodiviite, 'koodiarvo' | 'nimi'>
+): string => {
+  if (/^\d+$/.test(k.koodiarvo)) {
+    return k.koodiarvo
+  }
+  const nimi = t(k.nimi)
+  return nimi ? nimi.charAt(0).toUpperCase() + nimi.slice(1) : k.koodiarvo
+}
+
+const AhvenanmaanArvosanaView = <T extends Arviointi>(
   props: ParasArvosanaViewProps<T>
 ) => {
   const paras = props.value !== undefined && parasArviointi(props.value)
   return (
     <TestIdText id="arvosana.value">
-      {paras ? paras.arvosana.koodiarvo : ''}
+      {paras ? ahvenanmaanArvosananNimi(paras.arvosana) : ''}
     </TestIdText>
   )
 }
@@ -265,8 +277,20 @@ const Oppiainetaulukko: React.FC<OppiainetaulukkoProps> = ({
   })
   const columns: Array<OsasuoritusTableColumn<string>> = [
     { key: columnHeader },
-    ...(showArvosana ? [{ key: 'Arvosana', align: 'right' as const }] : []),
-    ...(showLaajuus ? [{ key: 'Laajuus' }] : [])
+    // Leveämpi arvosanasarake mahtuu sanallisille arvosanoille (esim. Godkänd);
+    // laajuussarake on kapeampi, koska siinä on vain pieni luku. Näkymässä
+    // arvosana tasataan oikealle (lyhyet arvot), mutta muokkaustilassa sarake
+    // venytetään täyteen leveyteen, jotta otsikko kohdistuu pudotusvalikon kanssa.
+    ...(showArvosana
+      ? [
+          {
+            key: 'Arvosana',
+            align: form.editMode ? undefined : ('right' as const),
+            span: 6
+          }
+        ]
+      : []),
+    ...(showLaajuus ? [{ key: 'Laajuus', span: 2 }] : [])
   ]
 
   return (
@@ -495,11 +519,11 @@ const oppiaineToRow = <T extends string>(
           form={form}
           path={osasuoritusPath.prop('arviointi')}
           optional
-          view={ParasArvosanaKoodiarvoView}
+          view={AhvenanmaanArvosanaView}
           edit={ParasArvosanaEdit}
           editProps={{
             suoritusClassName: suoritus.$class,
-            format: koodiarvoOnly
+            format: ahvenanmaanArvosananNimi
           }}
         />
         {footnoteEl}
@@ -909,6 +933,7 @@ const VastuuJaYhteistyöArvioField: React.FC<{
   >
   suoritus: AhvenanmaanPerusopetuksenVuosiluokanSuoritus
 }> = ({ form, suoritusPath, suoritus }) => {
+  const fillKoodistot = useKoodistoFiller()
   const arvioPath = suoritusPath.prop('vastuuJaYhteistyöArvio')
   const arvio = suoritus.vastuuJaYhteistyöArvio
   const hasArvio = !!arvio
@@ -932,11 +957,14 @@ const VastuuJaYhteistyöArvioField: React.FC<{
         </h5>
         {form.editMode && !hasArvio ? (
           <FlatButton
-            onClick={() =>
-              form.updateAt(arvioPath, () =>
+            onClick={async () => {
+              // Täytetään koodiston nimi, jotta arvosana näkyy heti koko
+              // nimellään (esim. Godkänd) eikä koodiarvona (G).
+              const uusiArvio = await fillKoodistot(
                 AhvenanmaanPerusopetuksenVastuuJaYhteistyöArviointi({})
               )
-            }
+              form.updateAt(arvioPath, () => uusiArvio)
+            }}
             testId="lisaa"
           >
             {t('lisää')}
@@ -946,7 +974,7 @@ const VastuuJaYhteistyöArvioField: React.FC<{
             <KeyValueTable>
               <KeyValueRow localizableLabel="Arvosana">
                 <TestIdText id="arvosana">
-                  {arvio.arvosana.koodiarvo}
+                  {ahvenanmaanArvosananNimi(arvio.arvosana)}
                 </TestIdText>
               </KeyValueRow>
             </KeyValueTable>

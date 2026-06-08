@@ -104,10 +104,12 @@ test.describe('Ahvenanmaan perusopetuksen käyttöliittymä', () => {
 
     await page.getByTestId(ensimmäisenOppiaineenArvosanaEdit).click()
     const options = page.locator('.Select__optionLabel')
+    // Numeeriset näkyvät numerona, sanalliset koko nimellään (käyttöliittymä
+    // suomeksi: G → Hyväksytty, U → Hylätty).
     await expect(options.filter({ hasText: /^10$/ })).toBeVisible()
     await expect(options.filter({ hasText: /^4$/ })).toBeVisible()
-    await expect(options.filter({ hasText: /^G$/ })).toBeVisible()
-    await expect(options.filter({ hasText: /^U$/ })).toBeVisible()
+    await expect(options.filter({ hasText: /^Hyväksytty$/ })).toBeVisible()
+    await expect(options.filter({ hasText: /^Hylätty$/ })).toBeVisible()
   })
 
   test('Sanallisen arvosanan (G) valinta ja tallennus', async ({
@@ -122,9 +124,10 @@ test.describe('Ahvenanmaan perusopetuksen käyttöliittymä', () => {
     await page.getByTestId(editButton).click()
 
     await page.getByTestId(ensimmäisenOppiaineenArvosanaEdit).click()
+    // Sanallinen arvosana G näkyy valikossa koko nimellään (Hyväksytty).
     await page
       .locator('.Select__optionLabel')
-      .filter({ hasText: /^G$/ })
+      .filter({ hasText: /^Hyväksytty$/ })
       .first()
       .click()
 
@@ -133,7 +136,7 @@ test.describe('Ahvenanmaan perusopetuksen käyttöliittymä', () => {
     await page.getByTestId(vuosiluokkaTab).click()
     await expect(
       page.getByTestId(ensimmäisenOppiaineenArvosanaView)
-    ).toContainText('G')
+    ).toContainText('Hyväksytty')
   })
 
   test('Vastuu ja yhteistyö (Ansvar och samarbete) -arvion lisäys ja tallennus', async ({
@@ -149,11 +152,12 @@ test.describe('Ahvenanmaan perusopetuksen käyttöliittymä', () => {
     await page.getByTestId(vuosiluokkaTab).click()
     await page.getByTestId(editButton).click()
 
-    // Lisätään arvio: ainoa sallittu arvo on G (godkänd).
+    // Lisätään arvio: ainoa sallittu arvo on G (godkänd), joka näytetään koko
+    // nimellään (käyttöliittymä suomeksi: Hyväksytty).
     await page.getByTestId('oo.0.suoritukset.2.vastuuJaYhteistyo.lisaa').click()
     await expect(
       page.getByTestId('oo.0.suoritukset.2.vastuuJaYhteistyo.arvosana')
-    ).toContainText('G')
+    ).toContainText('Hyväksytty')
 
     await page.getByTestId(saveButton).click()
     await expect(page.getByTestId(editButton)).toBeVisible({ timeout: 15000 })
@@ -163,7 +167,7 @@ test.describe('Ahvenanmaan perusopetuksen käyttöliittymä', () => {
     await page.getByTestId(vuosiluokkaTab).click()
     await expect(
       page.getByTestId('oo.0.suoritukset.2.vastuuJaYhteistyo.arvosana')
-    ).toContainText('G')
+    ).toContainText('Hyväksytty')
   })
 
   test('Lisätiedot: kotiopetusjakson lisäys ja tallennus', async ({
