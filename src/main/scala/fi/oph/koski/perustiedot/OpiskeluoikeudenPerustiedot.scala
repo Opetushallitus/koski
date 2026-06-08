@@ -1,6 +1,6 @@
 package fi.oph.koski.perustiedot
 
-import java.time.LocalDate
+import java.time.{LocalDate, LocalDateTime}
 
 import fi.oph.koski.db.{HenkilöRow, KoskiOpiskeluoikeusRow}
 import fi.oph.koski.henkilo.{OppijaHenkilö, OppijaHenkilöWithMasterInfo}
@@ -37,7 +37,9 @@ case class OpiskeluoikeudenPerustiedot(
   @KoodistoUri("koskiopiskeluoikeudentila")
   tilat: Option[List[OpiskeluoikeusJaksonPerustiedot]], // Optionality can be removed after re-indexing
   @Description("Luokan tai ryhmän tunniste, esimerkiksi 9C")
-  luokka: Option[String]
+  luokka: Option[String],
+  @Description("Opiskeluoikeuden tietokantarivin viimeisin muokkausaikaleima. Käytetään mm. inkrementaalisten OpenSearch-migraatioiden lähteenä (--aikaleima-from).")
+  aikaleima: Option[LocalDateTime]
 ) extends OpiskeluoikeudenOsittaisetTiedot
 
 case class NimitiedotJaOid(oid: String, etunimet: String, kutsumanimi: String, sukunimi: String)
@@ -119,7 +121,8 @@ object OpiskeluoikeudenPerustiedot {
       extract[Koodistokoodiviite](data \ "tyyppi"),
       suoritukset,
       Some(fixTilat(extract[List[OpiskeluoikeusJaksonPerustiedot]](data \ "tila" \ "opiskeluoikeusjaksot", ignoreExtras = true))),
-      luokka)
+      luokka,
+      extract[Option[LocalDateTime]](data \ "aikaleima"))
   }
 
   private def getLuokka(oo: Opiskeluoikeus): Option[String] = oo match {
