@@ -97,6 +97,12 @@
       "matchManagers": ["docker-compose"],
       "matchPackageNames": ["postgres"],
       "allowedVersions": "<=15.17"
+    },
+    {
+      "description": "Skip Node 24.16.x in smoketests — extract-zip silently truncates Chrome extraction, breaking `puppeteer browsers install chrome` (nodejs/node#63487). Remove this rule once a fixed Node release is verified.",
+      "matchFileNames": [".github/workflows/run_smoketests.yml"],
+      "matchPackageNames": ["node"],
+      "allowedVersions": "<24.16.0 || >=24.17.0"
     }
   ],
   "ignorePaths": [
