@@ -522,6 +522,7 @@ const NewAmisOsasuoritus = ({
       </ColumnRow>
       {showLisääKorkeakouluopinto && (
         <FlatButton
+          withAddIcon
           onClick={() =>
             form.updateAt(
               suoritusPath.prop('osasuoritukset').valueOr([]),
@@ -543,6 +544,7 @@ const NewAmisOsasuoritus = ({
       )}
       {showLisääJatkoOpinto && (
         <FlatButton
+          withAddIcon
           onClick={() =>
             form.updateAt(
               suoritusPath.prop('osasuoritukset').valueOr([]),
@@ -618,7 +620,7 @@ const NewPaikallinen = ({
 
   return (
     <>
-      <FlatButton onClick={() => setShowModal(true)}>
+      <FlatButton withAddIcon onClick={() => setShowModal(true)}>
         {t('Lisää paikallinen tutkinnon osa')}
       </FlatButton>
       {showModal && (
@@ -714,7 +716,7 @@ const NewToisestaTutkinnosta = ({
 
   return (
     <>
-      <FlatButton onClick={() => setShowModal(true)}>
+      <FlatButton withAddIcon onClick={() => setShowModal(true)}>
         {t('Lisää tutkinnon osa toisesta tutkinnosta')}
       </FlatButton>
       {showModal && (
