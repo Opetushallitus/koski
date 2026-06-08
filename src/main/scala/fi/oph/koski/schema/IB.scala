@@ -61,15 +61,15 @@ case class IBTutkinnonSuoritus(
   @Description("Oppiaineiden suoritukset")
   @Title("Oppiaineet")
   override val osasuoritukset: Option[List[IBTutkinnonOppiaineenSuoritus]],
-  @Deprecated("Theory of Knowledge tallennetaan osasuorituksiin 1.8.2025 tai myöhemmin alkaneille IB-opinnoille")
+  @Deprecated("ib tok siirretty osasuorituksiin")
   theoryOfKnowledge: Option[IBTheoryOfKnowledgeSuoritus],
-  @Deprecated("Extended Essay tallennetaan osasuorituksiin 1.8.2025 tai myöhemmin alkaneille IB-opinnoille")
+  @Deprecated("ib extended essay siirretty osasuorituksiin")
   extendedEssay: Option[IBExtendedEssaySuoritus],
-  @Deprecated("CAS tallennetaan osasuorituksiin 1.8.2025 tai myöhemmin alkaneille IB-opinnoille")
+  @Deprecated("ib cas siirretty osasuorituksiin")
   creativityActionService: Option[IBCASSuoritus],
   @Description("Tutkinnon lisäpisteet. Max 3 pistettä yhteensä")
   @KoodistoUri("arviointiasteikkolisapisteetib")
-  @Deprecated("Lisäpisteitä ei tallennetaa 1.8.2025 tai myöhemmin alkaneille IB-opinnoille")
+  @Deprecated("ib lisapisteita ei tallenneta")
   lisäpisteet: Option[Koodistokoodiviite] = None,
   todistuksellaNäkyvätLisätiedot: Option[LocalizedString] = None,
   @KoodistoKoodiarvo("ibtutkinto")
@@ -172,14 +172,14 @@ case class IBExtendedEssaySuoritus(
 @Title("IB-oppiaineen arviointi")
 case class IBOppiaineenArviointi(
   @Description("Onko arvoitu arvosana vai ei, jos ei niin tarkoittaa IBOn vahvistamaa arvosanaa")
-  @Deprecated("Käytä IB-oppiaineen suorituksen predictedArviointi-kenttää")
+  @Deprecated("ib kayta predicted arviointi kenttaa")
   @Hidden
   predicted: Option[Boolean] = None,
   @KoodistoUri("arviointiasteikkoib")
   arvosana: Koodistokoodiviite,
   @Description("Effort-arvosana, kuvaa opiskelijan tunnollisuutta, aktiivisuutta ja yritteliäisyyttä. Arvosteluasteikko: A = very good, B = good, C = needs improvement")
   @KoodistoUri("effortasteikkoib")
-  @Deprecated("Effort-arvosanaa ei enää tallenneta KOSKI-tietovarantoon")
+  @Deprecated("ib effort arvosanaa ei tallenneta")
   effort: Option[Koodistokoodiviite] = None,
   @Description("Arviointipäivämäärä")
   päivä: Option[LocalDate]
@@ -190,14 +190,14 @@ case class IBOppiaineenArviointi(
 @Title("IB-Core oppiaineen arviointi")
 case class IBCoreOppiaineenArviointi(
   @Description("Onko arvoitu arvosana vai ei, jos ei niin tarkoittaa IBOn vahvistamaa arvosanaa")
-  @Deprecated("Käytä IB-oppiaineen suorituksen predictedArviointi-kenttää")
+  @Deprecated("ib kayta predicted arviointi kenttaa")
   @Hidden
   predicted: Option[Boolean] = None,
   @KoodistoUri("arviointiasteikkocorerequirementsib")
   arvosana: Koodistokoodiviite,
   @Description("Effort-arvosana, kuvaa opiskelijan tunnollisuutta, aktiivisuutta ja yritteliäisyyttä. Arvosteluasteikko: A = very good, B = good, C = needs improvement")
   @KoodistoUri("effortasteikkoib")
-  @Deprecated("Effort-arvosanaa ei enää tallenneta KOSKI-tietovarantoon")
+  @Deprecated("ib effort arvosanaa ei tallenneta")
   effort: Option[Koodistokoodiviite] = None,
   @Description("Arviointipäivämäärä")
   päivä: Option[LocalDate]
@@ -233,7 +233,7 @@ object IBOppiaineenPredictedArviointi {
 @Title("IB CAS -oppiaineen arviointi")
 @OnlyWhen("../tyyppi/koodiarvo","iboppiainecas")
 case class IBCASOppiaineenArviointi(
-  @Deprecated("Tietoa ei kirjata IB CAS -oppiaineen arviointiin")
+  @Deprecated("ib cas ei arviointiin")
   predicted: Option[Boolean] = None,
   @KoodistoUri("arviointiasteikkoib")
   @KoodistoKoodiarvo("S")
@@ -345,7 +345,7 @@ object CoreRequirementsArvionti {
 @Title("IB Core Requirements -arviointi")
 case class IBCoreRequirementsArviointi(
   arvosana: Koodistokoodiviite,
-  @Deprecated("Tietoa ei kirjata IB Core Requirements -arviointiin")
+  @Deprecated("ib core requirements ei arviointiin")
   predicted: Option[Boolean] = None,
   @Description("Arviointipäivämäärä")
   päivä: Option[LocalDate]

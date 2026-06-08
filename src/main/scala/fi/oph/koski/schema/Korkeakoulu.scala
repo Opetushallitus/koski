@@ -229,7 +229,7 @@ case class Lukukausi_Ilmoittautumisjakso(
   tila: Koodistokoodiviite,
   ylioppilaskunnanJäsen: Option[Boolean] = None,
   @SensitiveData(Set(Rooli.MIGRI, Rooli.HSL, Rooli.SUOMIFI))
-  @Deprecated("Ei käytössä 1.1.2021 eteenpäin")
+  @Deprecated("ei kaytossa yths maksettu")
   ythsMaksettu: Option[Boolean] = None,
   @Title("Lukuvuosimaksu")
   maksetutLukuvuosimaksut: Option[Lukuvuosi_IlmoittautumisjaksonLukuvuosiMaksu] = None

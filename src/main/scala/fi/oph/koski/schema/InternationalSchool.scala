@@ -324,7 +324,7 @@ case class PassFailOppiaineenArviointi(
 ) extends InternationalSchoolArviointi with DiplomaArviointi with MYPArviointi
 
 case class InternationalSchoolCoreRequirementsArviointi(
-  @Deprecated("Tietoa ei kirjata Core Requirements -arviointiin")
+  @Deprecated("intschool core requirements ei arviointiin")
   predicted: Option[Boolean] = None,
   arvosana: Koodistokoodiviite,
   päivä: Option[LocalDate] = None

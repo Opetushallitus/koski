@@ -60,7 +60,7 @@ case class EsiopetuksenOpiskeluoikeudenLisätiedot(
   @Description("Erityisen tuen päätös alkamis- ja päättymispäivineen. Kentän puuttuminen tai null-arvo tulkitaan siten, että päätöstä ei ole tehty. Rahoituksen laskennassa käytettävä tieto.")
   @Tooltip("Mahdollisen erityisen tuen päätöksen alkamis- ja päättymispäivät. Rahoituksen laskennassa käytettävä tieto.")
   @OksaUri("tmpOKSAID281", "henkilökohtainen opetuksen järjestämistä koskeva suunnitelma")
-  @Deprecated("Käytä korvaavaa kenttää Erityisen tuen päätökset")
+  @Deprecated("kayta korvaavaa erityisen tuen paatokset")
   @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT))
   erityisenTuenPäätös: Option[ErityisenTuenPäätös] = None,
   @Description("Erityisen tuen päätökset alkamis- ja päättymispäivineen. Voi olla useita erillisiä jaksoja. Rahoituksen laskennassa käytettävä tieto.")
@@ -135,7 +135,7 @@ case class EsiopetuksenSuoritus(
   @Tooltip("Oppilaan osallistuminen osa-aikaiseen erityisopetukseen lukuvuoden aikana")
   @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT))
   @KoodistoUri("osaaikainenerityisopetuslukuvuodenaikana")
-  @Deprecated("Tätä kenttää ei toistaiseksi käytetä.")
+  @Deprecated("kentta ei toistaiseksi kaytossa")
   osaAikainenErityisopetus: Option[List[Koodistokoodiviite]] = None,
   @KoodistoKoodiarvo("esiopetuksensuoritus")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("esiopetuksensuoritus", koodistoUri = "suorituksentyyppi"),

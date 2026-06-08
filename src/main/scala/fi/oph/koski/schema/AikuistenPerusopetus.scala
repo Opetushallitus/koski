@@ -100,7 +100,7 @@ case class AikuistenPerusopetuksenOpiskeluoikeudenLisätiedot(
   tehostetunTuenPäätökset: Option[List[Aikajakso]] = None,
   @Description("Opiskelu ulkomailla alkamis- ja päättymispäivineen. Kentän puuttuminen tai null-arvo tulkitaan siten, ettei oppilas ole ulkomailla.")
   @Tooltip("Tieto opiskelusta ulkomailla alkamis- ja päättymispäivineen. Rahoituksen laskennassa käytettävä tieto.")
-  @Deprecated("Käytä korvaavaa kenttää Ulkomaanjaksot")
+  @Deprecated("kayta korvaavaa ulkomaanjaksot")
   ulkomailla: Option[Aikajakso] = None,
   @Description("Ulkomaan opintojaksot alkamis- ja päättymispäivineen. Kentän puuttuminen tai null-arvo tulkitaan siten, ettei oppilas ole ulkomailla.")
   @Tooltip("Ulkomaan opiontojaksot alkamis- ja päättymispäivineen. Rahoituksen laskennassa käytettävä tieto.")
