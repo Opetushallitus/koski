@@ -67,7 +67,6 @@ export const KorkeakouluopintojenSuoritusProperties = ({
             form={form}
             path={osasuoritusPath.prop('koulutusmoduuli').prop('kuvaus')}
             view={LocalizedTextView}
-            viewProps={{ style: { whiteSpace: 'pre-line' } }}
             edit={LocalizedTextEdit}
             editProps={{ large: true }}
             testId="kuvaus"

@@ -124,7 +124,6 @@ export const MuunOsittaisenAmmatillisenTutkinnonTutkinnonosanSuoritusProperties 
                     >
                   ).prop('kuvaus')}
                   view={LocalizedTextView}
-                  viewProps={{ style: { whiteSpace: 'pre-line' } }}
                   edit={LocalizedTextEdit}
                   editProps={{ large: true }}
                   testId="paikallinenKuvaus"
