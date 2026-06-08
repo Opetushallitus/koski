@@ -791,7 +791,7 @@ class OppijaValidationPerusopetusSpec extends TutkinnonPerusteetTest[Perusopetuk
         }
       }
 
-      "Rajatulle oppimäärälle sallitaan arvosanat S ja H vain kun kyseessä on 1. - 8. lk suoritus" in {
+      "Rajatulle oppimäärälle sallitaan vain arvosanat S ja H kun kyseessä on 1. - 8. lk suoritus" in {
         def makeSeiskaluokanRajattuOppimäärä(arvosana: String) = makeOpiskeluoikeus().copy(
           suoritukset = List(
             seitsemännenLuokanSuoritus.copy(
@@ -806,7 +806,7 @@ class OppijaValidationPerusopetusSpec extends TutkinnonPerusteetTest[Perusopetuk
 
         setupOppijaWithOpiskeluoikeus(makeSeiskaluokanRajattuOppimäärä("5")) {
           verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.date(
-            "Rajatulle oppimäärälle AI sallitaan arvosanat S ja H vain kun kyseessä on 1. - 8. lk suoritus"
+            "Rajatulle oppimäärälle AI sallitaan vain arvosanat S ja H kun kyseessä on 1. - 8. lk suoritus"
           ))
         }
 
@@ -832,7 +832,7 @@ class OppijaValidationPerusopetusSpec extends TutkinnonPerusteetTest[Perusopetuk
         }
       }
 
-      "Rajatulle oppimäärälle sallitaan arvosanat S ja H vain kun kyseessä on 9. lk ja oppilas jää luokalle" in {
+      "Rajatulle oppimäärälle sallitaan vain arvosanat S ja H kun kyseessä on 9. lk ja oppilas jää luokalle" in {
         def makeYsiluokanLuokallejääntiRajattuOppimäärä(arvosana: String) = makeOpiskeluoikeus().copy(
           suoritukset = List(
             yhdeksännenLuokanLuokallejääntiSuoritus.copy(
@@ -847,7 +847,7 @@ class OppijaValidationPerusopetusSpec extends TutkinnonPerusteetTest[Perusopetuk
 
         setupOppijaWithOpiskeluoikeus(makeYsiluokanLuokallejääntiRajattuOppimäärä("5")) {
           verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.date(
-            "Rajatulle oppimäärälle AI sallitaan arvosanat S ja H vain kun kyseessä on 9. lk ja oppilas jää luokalle"
+            "Rajatulle oppimäärälle AI sallitaan vain arvosanat S ja H kun kyseessä on 9. lk ja oppilas jää luokalle"
           ))
         }
 
