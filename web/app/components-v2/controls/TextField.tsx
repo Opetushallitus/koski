@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { TestIdText, useTestId } from '../../appstate/useTestId'
 import { EmptyObject } from '../../types/EditorModels'
 import { common, CommonProps, cx } from '../CommonProps'
@@ -36,10 +36,16 @@ export const TextEdit: React.FC<TextEditProps> = (props) => {
   const testId = useTestId(props.testId, 'input')
 
   const { onChange, value } = props
+  // Paikallinen puskuri kursorin loppuun hyppimisen estämiseksi, kun props.value
+  // päivittyy asynkronisesti FormField.set:n kautta (await fillKoodistot).
+  const [internalValue, setInternalValue] = useState(value || '')
+  useEffect(() => setInternalValue(value || ''), [value])
+
   const onChangeCB: React.ChangeEventHandler<
     HTMLInputElement | HTMLTextAreaElement
   > = useCallback(
     (event) => {
+      setInternalValue(event.target.value)
       onChange(event.target.value === '' ? undefined : event.target.value)
     },
     [onChange]
@@ -54,7 +60,7 @@ export const TextEdit: React.FC<TextEditProps> = (props) => {
             (props.errors || props.hasErrors) && 'TextEdit__input--error'
           )}
           placeholder={props.placeholder}
-          value={value || ''}
+          value={internalValue}
           onChange={onChangeCB}
           autoFocus={props.autoFocus}
           disabled={props.disabled}
@@ -67,7 +73,7 @@ export const TextEdit: React.FC<TextEditProps> = (props) => {
             (props.errors || props.hasErrors) && 'TextEdit__input--error'
           )}
           placeholder={props.placeholder}
-          value={value || ''}
+          value={internalValue}
           onChange={onChangeCB}
           autoFocus={props.autoFocus}
           disabled={props.disabled}
@@ -83,9 +89,13 @@ componentsWithBuiltInErrors.add(TextEdit)
 export const MultilineTextEdit: React.FC<TextEditProps> = (props) => {
   const testId = useTestId(props.testId, 'input')
 
-  const { onChange } = props
+  const { onChange, value } = props
+  const [internalValue, setInternalValue] = useState(value || '')
+  useEffect(() => setInternalValue(value || ''), [value])
+
   const onChangeCB: React.ChangeEventHandler<HTMLTextAreaElement> = useCallback(
     (event) => {
+      setInternalValue(event.target.value)
       onChange(event.target.value)
     },
     [onChange]
@@ -99,7 +109,7 @@ export const MultilineTextEdit: React.FC<TextEditProps> = (props) => {
           (props.errors || props.hasErrors) && 'TextEdit__input--error'
         )}
         placeholder={props.placeholder}
-        value={props.value}
+        value={internalValue}
         onChange={onChangeCB}
         autoFocus={props.autoFocus}
         data-testid={testId}
