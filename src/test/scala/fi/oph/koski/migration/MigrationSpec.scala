@@ -48,16 +48,16 @@ class MigrationSpec extends AnyFreeSpec with Matchers with RaportointikantaTestM
         "OrganisaatioHistoriaRowBuilder.scala"                      -> "7e586d9e273a5a4ee7beae257f22c7f4",
         "OrganisaatioLoader.scala"                                  -> "4f7ce51cb922dbc11e694ebe85ab3472",
         "PäivitettyOpiskeluoikeusLoader.scala"                      -> "500545bbe7ef47dedcfdc49580b536d2",
-        "RaportointiDatabase.scala"                                 -> "bc12d85f0bcf488a494f6a168a2ca37b",
+        "RaportointiDatabase.scala"                                 -> "a70f7d0384ddc0f2f7d7013a6db35aea",
         "RaportointiDatabaseCustomFunctions.scala"                  -> "956f101d1219c49ac9134b72a30caf3a",
-        "RaportointiDatabaseSchema.scala"                           -> "8324587643a55a6a556ae777809b4309",
+        "RaportointiDatabaseSchema.scala"                           -> "7b09fd46853d7f612bf034f9284f445f",
         "RaportointikantaService.scala"                             -> "46b176ad238ce88673edc305eb58c58a",
         "RaportointikantaStatusServlet.scala"                       -> "bfb4d4d668ecbff866468ae2dc5c1e0b",
         "RaportointikantaTestServlet.scala"                         -> "ad92e33c2f816ed65c0693f5dc0143b4",
         "RaportointikantaTableQueries.scala"                        -> "f2f26c217992539c1e61dcbd031fc642",
         "TOPKSAmmatillinenRaporttiRowBuilder.scala"                 -> "a9c26a13385ff576810f3ef831240437",
         "OpiskeluoikeusLoaderRowBuilder.scala"                      -> "cea96e3bef7b30c4e6448ba8117d480b",
-        "IncrementalUpdateOpiskeluoikeusLoader.scala"               -> "db90a08dd785efd5a9b61c0e72b3995c",
+        "IncrementalUpdateOpiskeluoikeusLoader.scala"               -> "833544297f6cdbcf7f49aef8b73dbbd8",
         "FullReloadOpiskeluoikeusLoader.scala"                      -> "b7920c2257afaecf09f1212fbf393326"
       )
 

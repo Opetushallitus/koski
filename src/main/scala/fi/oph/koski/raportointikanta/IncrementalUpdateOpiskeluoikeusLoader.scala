@@ -11,11 +11,14 @@ import fi.oph.koski.schema.Opiskeluoikeus
 import fi.oph.koski.suostumus.SuostumuksenPeruutusService
 import fi.oph.koski.util.TimeConversions.toTimestamp
 
+import fi.oph.koski.executors.Pools
+
 import rx.lang.scala.Observable
 
 import java.time.{LocalDateTime, ZonedDateTime}
-import scala.concurrent.duration.FiniteDuration
 import scala.collection.parallel.CollectionConverters._
+import scala.concurrent.duration._
+import scala.concurrent.{Await, Future}
 
 class IncrementalUpdateOpiskeluoikeusLoader(
   suostumuksenPeruutusService: SuostumuksenPeruutusService,
@@ -107,35 +110,40 @@ class IncrementalUpdateOpiskeluoikeusLoader(
     val successfulRows = outputRows.collect { case Right(value) => value }
     val toOpiskeluoikeusUnsafeMs = successfulRows.map(_.toOpiskeluoikeusUnsafeDuration).sum / 1000000
 
-    val (_, updateOoMs)                  = timedMs("updateOpiskeluoikeudet")(db.updateOpiskeluoikeudet(successfulRows.map(_.rOpiskeluoikeusRow), mitätöidytOot))
-    val (_, updateOrgHistoriaMs)         = timedMs("updateOrganisaatioHistoria")(db.updateOrganisaatioHistoria(successfulRows.flatMap(_.organisaatioHistoriaRows)))
-
-    val opiskeluoikeusAikajaksoRows = successfulRows.flatMap(_.rOpiskeluoikeusAikajaksoRows)
-    val (_, updateOoAikajaksoMs)         = timedMs("updateOpiskeluoikeusAikajaksot")(db.updateOpiskeluoikeusAikajaksot(opiskeluoikeusAikajaksoRows))
-
-    val aikajaksoRows = successfulRows.flatMap(_.rAikajaksoRows)
-    val (_, updateAikajaksoMs)           = timedMs("updateAikajaksot")(db.updateAikajaksot(aikajaksoRows))
-
+    val opiskeluoikeusAikajaksoRows                          = successfulRows.flatMap(_.rOpiskeluoikeusAikajaksoRows)
+    val aikajaksoRows                                        = successfulRows.flatMap(_.rAikajaksoRows)
     val ammatillisenKoulutuksenJarjestamismuotoAikajaksoRows = successfulRows.flatMap(_.rAmmatillisenKoulutuksenJarjestamismuotoAikajaksoRows)
-    val (_, updateJarjestamismuotoMs)    = timedMs("updateJarjestamismuotoAikajaksot")(db.updateAmmatillisenKoulutuksenJarjestamismuotoAikajaksot(ammatillisenKoulutuksenJarjestamismuotoAikajaksoRows))
+    val updateOsaamisenHankkimistapaAikajaksoRows            = successfulRows.flatMap(_.rOsaamisenHankkimistapaAikajaksoRows)
+    val esiopetusOpiskeluoikeusAikajaksoRows                 = successfulRows.flatMap(_.esiopetusOpiskeluoikeusAikajaksoRows)
+    val päätasonSuoritusRows                                 = successfulRows.flatMap(_.rPäätasonSuoritusRows)
+    val osasuoritusRows                                      = successfulRows.flatMap(_.rOsasuoritusRows)
+    val muuAmmatillinenRaportointiRows                       = successfulRows.flatMap(_.muuAmmatillinenOsasuoritusRaportointiRows)
+    val topksAmmatillinenRaportointiRows                     = successfulRows.flatMap(_.topksAmmatillinenRaportointiRows)
 
-    val updateOsaamisenHankkimistapaAikajaksoRows = successfulRows.flatMap(_.rOsaamisenHankkimistapaAikajaksoRows)
-    val (_, updateHankkimistapaMs)       = timedMs("updateHankkimistapaAikajaksot")(db.updateOsaamisenHankkimistapaAikajaksoRows(updateOsaamisenHankkimistapaAikajaksoRows))
+    implicit val ec = Pools.globalExecutor
 
-    val esiopetusOpiskeluoikeusAikajaksoRows = successfulRows.flatMap(_.esiopetusOpiskeluoikeusAikajaksoRows)
-    val (_, updateEsiopetusMs)           = timedMs("updateEsiopetusAikajaksot")(db.updateEsiopetusOpiskeluoikeusAikajaksot(esiopetusOpiskeluoikeusAikajaksoRows))
+    def parallelUpdate[T](name: String)(block: => T): Future[T] =
+      Future(block).recover { case e => logger.error(e)(s"Raportointikannan inkrementaalisen latauksen operaatio $name epäonnistui"); throw e }
 
-    val päätasonSuoritusRows = successfulRows.flatMap(_.rPäätasonSuoritusRows)
-    val (_, updatePäätasonMs)            = timedMs("updatePäätasonSuoritukset")(db.updatePäätasonSuoritukset(päätasonSuoritusRows))
+    val fOo          = parallelUpdate("updateOpiskeluoikeudet")(timedMs("updateOpiskeluoikeudet")(db.updateOpiskeluoikeudet(successfulRows.map(_.rOpiskeluoikeusRow), mitätöidytOot)))
+    val fPäätason    = parallelUpdate("updatePäätasonSuoritukset")(timedMs("updatePäätasonSuoritukset")(db.updatePäätasonSuoritukset(päätasonSuoritusRows)))
+    val fOsasuoritus = parallelUpdate("updateOsasuoritukset")(timedMs("updateOsasuoritukset")(db.updateOsasuoritukset(osasuoritusRows)))
 
-    val osasuoritusRows = successfulRows.flatMap(_.rOsasuoritusRows)
-    val (_, updateOsasuoritusMs)         = timedMs("updateOsasuoritukset")(db.updateOsasuoritukset(osasuoritusRows))
+    val (updateOoMs, updatePäätasonMs, updateOsasuoritusMs) =
+      Await.result(for {
+        (_, ooMs)          <- fOo
+        (_, päätasonMs)    <- fPäätason
+        (_, osasuoritusMs) <- fOsasuoritus
+      } yield (ooMs, päätasonMs, osasuoritusMs), 15.minutes)
 
-    val muuAmmatillinenRaportointiRows = successfulRows.flatMap(_.muuAmmatillinenOsasuoritusRaportointiRows)
-    val (_, updateMuuAmmatillinenMs)     = timedMs("updateMuuAmmatillinenRaportointi")(db.updateMuuAmmatillinenRaportointi(muuAmmatillinenRaportointiRows))
-
-    val topksAmmatillinenRaportointiRows = successfulRows.flatMap(_.topksAmmatillinenRaportointiRows)
-    val (_, updateTopksMs)               = timedMs("updateTOPKSAmmatillinenRaportointi")(db.updateTOPKSAmmatillinenRaportointi(topksAmmatillinenRaportointiRows))
+    val (_, updateOrgHistoriaMs)      = timedMs("updateOrganisaatioHistoria")(db.updateOrganisaatioHistoria(successfulRows.flatMap(_.organisaatioHistoriaRows)))
+    val (_, updateOoAikajaksoMs)      = timedMs("updateOpiskeluoikeusAikajaksot")(db.updateOpiskeluoikeusAikajaksot(opiskeluoikeusAikajaksoRows))
+    val (_, updateAikajaksoMs)        = timedMs("updateAikajaksot")(db.updateAikajaksot(aikajaksoRows))
+    val (_, updateJarjestamismuotoMs) = timedMs("updateJarjestamismuotoAikajaksot")(db.updateAmmatillisenKoulutuksenJarjestamismuotoAikajaksot(ammatillisenKoulutuksenJarjestamismuotoAikajaksoRows))
+    val (_, updateHankkimistapaMs)    = timedMs("updateHankkimistapaAikajaksot")(db.updateOsaamisenHankkimistapaAikajaksoRows(updateOsaamisenHankkimistapaAikajaksoRows))
+    val (_, updateEsiopetusMs)        = timedMs("updateEsiopetusAikajaksot")(db.updateEsiopetusOpiskeluoikeusAikajaksot(esiopetusOpiskeluoikeusAikajaksoRows))
+    val (_, updateMuuAmmatillinenMs)  = timedMs("updateMuuAmmatillinenRaportointi")(db.updateMuuAmmatillinenRaportointi(muuAmmatillinenRaportointiRows))
+    val (_, updateTopksMs)            = timedMs("updateTOPKSAmmatillinenRaportointi")(db.updateTOPKSAmmatillinenRaportointi(topksAmmatillinenRaportointiRows))
 
     db.setLastUpdate(statusName)
     db.updateStatusCount(statusName, successfulRows.size)
