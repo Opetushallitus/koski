@@ -32,14 +32,19 @@ export type TextEditProps = CommonProps<
   >
 >
 
+// Paikallinen puskuri kursorin loppuun hyppimisen estämiseksi, kun props.value
+// päivittyy asynkronisesti FormField.set:n kautta (await fillKoodistot).
+const useBufferedValue = (value: string | undefined) => {
+  const [internalValue, setInternalValue] = useState(value || '')
+  useEffect(() => setInternalValue(value || ''), [value])
+  return [internalValue, setInternalValue] as const
+}
+
 export const TextEdit: React.FC<TextEditProps> = (props) => {
   const testId = useTestId(props.testId, 'input')
 
   const { onChange, value } = props
-  // Paikallinen puskuri kursorin loppuun hyppimisen estämiseksi, kun props.value
-  // päivittyy asynkronisesti FormField.set:n kautta (await fillKoodistot).
-  const [internalValue, setInternalValue] = useState(value || '')
-  useEffect(() => setInternalValue(value || ''), [value])
+  const [internalValue, setInternalValue] = useBufferedValue(value)
 
   const onChangeCB: React.ChangeEventHandler<
     HTMLInputElement | HTMLTextAreaElement
@@ -48,7 +53,7 @@ export const TextEdit: React.FC<TextEditProps> = (props) => {
       setInternalValue(event.target.value)
       onChange(event.target.value === '' ? undefined : event.target.value)
     },
-    [onChange]
+    [onChange, setInternalValue]
   )
 
   return (
@@ -90,15 +95,14 @@ export const MultilineTextEdit: React.FC<TextEditProps> = (props) => {
   const testId = useTestId(props.testId, 'input')
 
   const { onChange, value } = props
-  const [internalValue, setInternalValue] = useState(value || '')
-  useEffect(() => setInternalValue(value || ''), [value])
+  const [internalValue, setInternalValue] = useBufferedValue(value)
 
   const onChangeCB: React.ChangeEventHandler<HTMLTextAreaElement> = useCallback(
     (event) => {
       setInternalValue(event.target.value)
       onChange(event.target.value)
     },
-    [onChange]
+    [onChange, setInternalValue]
   )
 
   return (
