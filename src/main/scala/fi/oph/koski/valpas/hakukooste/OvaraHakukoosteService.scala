@@ -52,12 +52,12 @@ case class OvaraHakukoosteResponse(
   hakutyyppi: Option[Koodistokoodiviite], // TODO: kenttä poistettu Ovarasta?
   haunAlkamispaivamaara: String,
   hakuNimi: OvaraNimi,
-  email: String,
-  lahiosoite: String,
-  postinumero: String,
+  email: Option[String],
+  lahiosoite: Option[String],
+  postinumero: Option[String],
   postitoimipaikka: Option[String],
   maa: Option[Koodistokoodiviite],
-  matkapuhelin: String,
+  matkapuhelin: Option[String],
   huoltajanNimi: Option[String], // TODO: kenttä poistettu Ovarasta?
   huoltajanPuhelinnumero: Option[String], // TODO: kenttä poistettu Ovarasta?
   huoltajanSahkoposti: Option[String], // TODO: kenttä poistettu Ovarasta?
@@ -184,12 +184,12 @@ class OvaraHakukoosteService(
       hakutyyppi = hakutyyppi,
       haunAlkamispaivamaara = haunAlkamispaivamaara,
       hakuNimi = toLocalizedString(response.hakuNimi),
-      email = response.email,
-      lahiosoite = response.lahiosoite,
-      postinumero = response.postinumero,
+      email = response.email.getOrElse(""),
+      lahiosoite = response.lahiosoite.getOrElse(""),
+      postinumero = response.postinumero.getOrElse(""),
       postitoimipaikka = response.postitoimipaikka,
       maa = maa,
-      matkapuhelin = response.matkapuhelin,
+      matkapuhelin = response.matkapuhelin.getOrElse(""),
       huoltajanNimi = response.huoltajanNimi,
       huoltajanPuhelinnumero = response.huoltajanPuhelinnumero,
       huoltajanSähkoposti = response.huoltajanSahkoposti,
