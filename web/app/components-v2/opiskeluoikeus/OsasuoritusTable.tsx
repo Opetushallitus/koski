@@ -173,7 +173,12 @@ export const OsasuoritusHeader = <DATA_KEYS extends string>(
             {getColumnLabel(column)}
           </Column>
         ))}
-        {spans.rightIcons > 0 && <Column span={spans.rightIcons} />}
+        {spans.rightIcons > 0 && (
+          <Column
+            span={spans.rightIcons}
+            className="OsasuoritusHeader__rightIcons"
+          />
+        )}
       </ColumnRow>
     </>
   )

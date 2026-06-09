@@ -154,13 +154,17 @@ export const PerusopetuksenOppiaineet: React.FC<
     !isNuortenPerusopetuksenOppimääränSuoritus(suoritus) ||
     !!suoritus.vahvistus
 
+  // Ryhmittely yhteisiin (pakolliset) ja valinnaisiin oppiaineisiin. Näytetään
+  // myös tyhjälle vuosiluokalle muokkaustilassa, jotta molemmat lisäyspudotukset
+  // (pakollinen + valinnainen) ovat käytettävissä – ei vain valinnaisen.
   const hasGrouping =
     !isToimintaAlueittain &&
-    osasuoritukset.some(
-      (s) =>
-        isNuortenPerusopetuksenOppiaineenSuoritus(s) &&
-        'pakollinen' in s.koulutusmoduuli
-    )
+    (form.editMode ||
+      osasuoritukset.some(
+        (s) =>
+          isNuortenPerusopetuksenOppiaineenSuoritus(s) &&
+          'pakollinen' in s.koulutusmoduuli
+      ))
 
   const footnotes = computeFootnotes(osasuoritukset)
 

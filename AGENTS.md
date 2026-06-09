@@ -129,6 +129,8 @@ Run specific test suite:
 mvn test -Dsuites="fi.oph.koski.schema.SchemaSpec"
 ```
 
+**Important:** `BackwardCompatibilitySpec` compares each documentation `Example` against a stored JSON snapshot under `src/test/resources/backwardcompatibility/`, matched by sanitized example name. When you **rename or change the data of an `Example`** (e.g. in `documentation/Examples*.scala`), regenerate its snapshot: run `BackwardCompatibilitySpec` locally — it writes a new dated file — and commit it. CI fails if the snapshot is missing (it refuses to write on CI). If you renamed the example, also delete the now-orphaned old snapshot.
+
 ### Frontend Tests
 - **Mocha tests**: `web/test/` - run with `make fronttest`
 - **Playwright tests**: `web/test/playwright/` - run with `make integrationtest`
@@ -141,6 +143,8 @@ Test students for Koski local development are defined in `src/main/scala/fi/oph/
 Test students for Valpas local development are defined in `src/main/scala/fi/oph/koski/valpas/opiskeluoikeusfixture/ValpasMockOppijat.scala`
 
 **Important:** New mock oppijat in `KoskiSpecificMockOppijat` and `ValpasMockOppijat` must be added at the **end** of the list, not in the middle. Oppija OIDs are generated sequentially, so inserting in the middle shifts all subsequent OIDs and breaks fixture data and UI tests.
+
+Because the OIDs are deterministic, Playwright/e2e tests can hardcode a fixture oppija's OID (the existing `perusopetus-v2-*.spec.ts` specs do this). To find the OID for an oppija that doesn't pin one explicitly, resolve it once against the running app, e.g. `curl -u pää:pää -X POST localhost:7021/koski/api/henkilo/search -H 'Content-Type: application/json' -d '{"query":"Sukunimi"}'`.
 
 ## Database
 

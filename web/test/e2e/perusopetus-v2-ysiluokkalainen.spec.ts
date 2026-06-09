@@ -88,9 +88,7 @@ test.describe('Perusopetuksen uusi käyttöliittymä: 9. vuosiluokan oppilas', (
     await expect(page.locator('.oppiaineet')).not.toBeVisible()
 
     // Aseta jääLuokalle = true
-    await page
-      .getByTestId('oo.0.suoritukset.1.jääLuokalle.edit.input')
-      .check()
+    await page.getByTestId('oo.0.suoritukset.1.jääLuokalle.edit.input').check()
 
     // Oppiaineet-taulukko tulee näkyviin
     await expect(page.locator('.oppiaineet')).toBeVisible()
@@ -109,9 +107,7 @@ test.describe('Perusopetuksen uusi käyttöliittymä: 9. vuosiluokan oppilas', (
     await page.getByTestId('oo.0.opiskeluoikeus.edit').click()
 
     // Aseta jääLuokalle = true, jotta oppiaineet tulevat näkyviin
-    await page
-      .getByTestId('oo.0.suoritukset.1.jääLuokalle.edit.input')
-      .check()
+    await page.getByTestId('oo.0.suoritukset.1.jääLuokalle.edit.input').check()
 
     // Lisää Matematiikka pakolliseksi oppiaineeksi
     const uusiOppiaineInput = page
@@ -130,6 +126,13 @@ test.describe('Perusopetuksen uusi käyttöliittymä: 9. vuosiluokan oppilas', (
     )
     await expect(oppiaineNimet).toHaveCount(1)
     await expect(oppiaineNimet.first()).toContainText('Matematiikka')
+
+    // Tyhjälle vuosiluokalle näytetään molemmat ryhmät, ja oppiaine lisätään
+    // pakollisten (ei valinnaisten) ryhmään.
+    await expect(page.getByTestId('oppiaineet-pakolliset')).toContainText(
+      'Matematiikka'
+    )
+    await expect(page.getByTestId('oppiaineet-valinnaiset')).toBeVisible()
 
     // Anna arvosana 5
     const arvosanaSelect = page
@@ -151,7 +154,11 @@ test.describe('Perusopetuksen uusi käyttöliittymä: 9. vuosiluokan oppilas', (
 
     // Ollaan edelleen 9. vuosiluokan tabilla, arvosana näkyy
     await expect(
-      page.locator('[data-testid^="oo.0.suoritukset.1.osasuoritukset."][data-testid$=".arvosana.value"]').first()
+      page
+        .locator(
+          '[data-testid^="oo.0.suoritukset.1.osasuoritukset."][data-testid$=".arvosana.value"]'
+        )
+        .first()
     ).toContainText('5')
   })
 
@@ -167,14 +174,9 @@ test.describe('Perusopetuksen uusi käyttöliittymä: 9. vuosiluokan oppilas', (
     // 1. Aseta jääLuokalle ja lisää yksi pakollinen oppiaine arvosanalla
     await page.getByTestId('oo.0.suoritusTabs.1.tab').click()
     await page.getByTestId('oo.0.opiskeluoikeus.edit').click()
-    await page
-      .getByTestId('oo.0.suoritukset.1.jääLuokalle.edit.input')
-      .check()
+    await page.getByTestId('oo.0.suoritukset.1.jääLuokalle.edit.input').check()
 
-    await page
-      .locator('[data-testid$=".uusi-oppiaine.input"]')
-      .first()
-      .click()
+    await page.locator('[data-testid$=".uusi-oppiaine.input"]').first().click()
     await page
       .locator('.Select__optionLabel')
       .filter({ hasText: /^Matematiikka$/ })
@@ -191,6 +193,11 @@ test.describe('Perusopetuksen uusi käyttöliittymä: 9. vuosiluokan oppilas', (
       .filter({ hasText: /^8/ })
       .first()
       .click()
+
+    // Pakollinen oppiaine vaatii laajuuden ennen vahvistusta.
+    await page
+      .getByTestId('oo.0.suoritukset.1.osasuoritukset.0.laajuus.input')
+      .fill('2')
 
     // 2. Avaa merkitse valmiiksi -dialogi
     const merkitseValmiiksiBtn = page.getByTestId(
@@ -219,9 +226,7 @@ test.describe('Perusopetuksen uusi käyttöliittymä: 9. vuosiluokan oppilas', (
 
     // 4. Submit dialogi
     await page
-      .getByTestId(
-        'oo.0.suoritukset.1.suorituksenVahvistus.edit.modal.submit'
-      )
+      .getByTestId('oo.0.suoritukset.1.suorituksenVahvistus.edit.modal.submit')
       .click()
     await expect(modal).not.toBeVisible()
 
@@ -233,9 +238,7 @@ test.describe('Perusopetuksen uusi käyttöliittymä: 9. vuosiluokan oppilas', (
 
     // 6. Vahvistustiedot näkyvät
     await expect(
-      page.getByTestId(
-        'oo.0.suoritukset.1.suorituksenVahvistus.value.status'
-      )
+      page.getByTestId('oo.0.suoritukset.1.suorituksenVahvistus.value.status')
     ).toContainText('Suoritus valmis')
     await expect(
       page.getByTestId(
