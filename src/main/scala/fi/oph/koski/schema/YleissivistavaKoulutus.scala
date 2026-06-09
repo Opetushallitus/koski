@@ -34,7 +34,7 @@ trait Yksilöllistettävä {
 
 trait RajattavaOppimäärä extends Yksilöllistettävä {
   @DefaultValue(false)
-  @Description("kentta kaytossa 20250801")
+  @Description("rajattu oppimäärä käyttöönotto")
   @Description("Tieto siitä, onko oppiaineen oppimäärä rajattu (true/false). Jos oppilas opiskelee yhdessä rajatun oppimäärän mukaan, myös päättöarviointi voi näissä aineissa olla sanallinen. Korvaa aiemman kentän yksilöllistetty oppimäärä.")
   @Tooltip("Onko oppilas opiskellut oppiaineessa rajatun oppimäärän. Jos oppilas opiskelee yhdessä rajatun oppimäärän mukaan, myös päättöarviointi voi näissä aineissa olla sanallinen.")
   @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT, Rooli.SUORITUSJAKO_KATSELIJA))
