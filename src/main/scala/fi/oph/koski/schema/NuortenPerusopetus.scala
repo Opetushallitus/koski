@@ -87,17 +87,17 @@ case class PerusopetuksenOpiskeluoikeudenLisätiedot(
   @Tooltip("Perusopetuksen aloitusta aikaistettu, eli oppilas aloittanut peruskoulun ennen oppivelvollisuusikää.")
   @DefaultValue(false)
   aloittanutEnnenOppivelvollisuutta: Boolean = false,
-  @Description("Kenttä ei käytössä 1.9.2026 alkaen.")
+  @Description("kentta ei kaytossa 20260901")
   @Description("Pidennetty oppivelvollisuus alkamis- ja päättymispäivineen. Kentän puuttuminen tai null-arvo tulkitaan siten, että oppilaalla ei ole pidennettyä oppivelvollisuutta. Rahoituksen laskennassa käytettävä tieto.")
   @Tooltip("Mahdollisen pidennetyn oppivelvollisuuden alkamis- ja päättymispäivät. Rahoituksen laskennassa käytettävä tieto.")
   @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT))
   @OksaUri("tmpOKSAID517", "pidennetty oppivelvollisuus")
   pidennettyOppivelvollisuus: Option[Aikajakso] = None,
-  @Description("Kenttä käytössä 1.8.2026 alkaen.")
+  @Description("kentta kaytossa 20260801")
   @Description("Päätös opetuksen järjestämisestä oppilaalle vamman, sairauden tai toimintakyvyn rajoitteen perusteella.")
   @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT))
   opetuksenJärjestäminenVammanSairaudenTaiRajoitteenPerusteella: Option[List[Aikajakso]] = None,
-  @Description("Kenttä käytössä 1.8.2026 alkaen.")
+  @Description("kentta kaytossa 20260801")
   @Description("Oppilaalla päätös opiskelun järjestämisestä toiminta-alueittain. Tällöin oppilaalla on rajattu oppimäärä ja opetus järjestetty toiminta-alueittain. Oppilaalla on aina tukea koskeva päätös. Oppilaan opetussuunnitelmaan kuuluvat toiminta-alueet ovat motoriset taidot, kieli ja kommunikaatio, sosiaaliset taidot, päivittäisten toimintojen taidot ja kognitiiviset taidot. Huom: toiminta-alue arviointeineen on kuvattu oppiaineen suorituksessa.")
   @Tooltip("Opiskeleeko oppilas toiminta-alueittain? Toiminta-alueittain opiskelussa oppilaalla on yksilöllistetty oppimäärä ja opetus järjestetty toiminta-alueittain. Tuolloin oppilaalla on aina tukea koskeva päätös. Oppilaan opetussuunnitelmaan kuuluvat toiminta-alueet ovat motoriset taidot, kieli ja kommunikaatio, sosiaaliset taidot, päivittäisten toimintojen taidot ja kognitiiviset taidot.")
   @Title("Opiskelee toiminta-alueittain")
@@ -118,13 +118,13 @@ case class PerusopetuksenOpiskeluoikeudenLisätiedot(
   @Deprecated("kayta korvaavaa erityisen tuen paatokset")
   @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT))
   erityisenTuenPäätös: Option[ErityisenTuenPäätös] = None,
-  @Description("Kenttä ei käytössä 1.8.2026 alkaen.")
+  @Description("kentta ei kaytossa 20260801")
   @Description("Erityisen tuen päätökset alkamis- ja päättymispäivineen. Voi olla useita erillisiä jaksoja. Rahoituksen laskennassa käytettävä tieto.")
   @Tooltip("Mahdollisen erityisen tuen päätösten alkamis- ja päättymispäivät. Voi olla useita erillisiä jaksoja. Rahoituksen laskennassa käytettävä tieto.")
   @OksaUri("tmpOKSAID281", "henkilökohtainen opetuksen järjestämistä koskeva suunnitelma")
   @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT))
   erityisenTuenPäätökset: Option[List[ErityisenTuenPäätös]] = None,
-  @Description("Kenttä käytössä 1.8.2025 alkaen.")
+  @Description("kentta kaytossa 20250801")
   @Description("Korvaa aiemman kentän erityisenTuenPäätökset.")
   @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT))
   tuenPäätöksenJaksot: Option[List[Tukijakso]] = None,
@@ -164,12 +164,12 @@ case class PerusopetuksenOpiskeluoikeudenLisätiedot(
   @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT))
   @Title("Vuosiluokkiin sitomaton opetus")
   vuosiluokkiinSitoutumatonOpetus: Option[Boolean] = None,
-  @Description("Kenttä ei käytössä 1.9.2026 alkaen.")
+  @Description("kentta ei kaytossa 20260901")
   @Description("Onko oppija muu kuin vaikeimmin kehitysvammainen. Lista alku-loppu päivämääräpareja. Rahoituksen laskennassa käytettävä tieto.")
   @Tooltip("Tieto siitä, onko oppija muu kuin vaikeimmin kehitysvammainen (alku- ja loppupäivämäärät). Voi olla useita erillisiä jaksoja. Rahoituksen laskennassa käytettävä tieto.")
   @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT))
   vammainen: Option[List[Aikajakso]] = None,
-  @Description("Kenttä ei käytössä 1.9.2026 alkaen.")
+  @Description("kentta ei kaytossa 20260901")
   @Description("Onko oppija vaikeasti kehitysvammainen. Lista alku-loppu päivämääräpareja. Rahoituksen laskennassa käytettävä tieto.")
   @Tooltip("Tieto siitä, onko oppija vaikeasti kehitysvammainen (alku- ja loppupäivämäärät). Voi olla useita erillisiä jaksoja. Rahoituksen laskennassa käytettävä tieto.")
   @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT))
