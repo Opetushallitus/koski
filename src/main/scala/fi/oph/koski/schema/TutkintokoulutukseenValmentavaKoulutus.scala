@@ -73,7 +73,7 @@ case class TutkintokoulutukseenValmentavanOpiskeluoikeudenTila(
 
 case class TutkintokoulutukseenValmentavanOpiskeluoikeusjakso(
   alku: LocalDate,
-  @Description("Loma-tila ei ole käytössä 1.1.2026 alkaen.")
+  @Description("loma tila ei kaytossa 20260101")
   // Eronnut-tila on sallittu siksi, että tuotantoon ehti livahtaa väärää dataa. Tilan jatkokäyttö on
   // estetty validaatiolla.
   @KoodistoKoodiarvo("eronnut")

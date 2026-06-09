@@ -299,7 +299,7 @@ case class IBKurssi(
   tunniste: PaikallinenKoodi,
   @Discriminator
   pakollinen: Boolean = true,
-  @Description("1.8.2024 alkaen laajuus tallennetaan opintopisteissä. Sitä ennen alkaneisiin opiskeluoikeuksiin tallennetaan kursseina.")
+  @Description("ib laajuus opintopisteet kursseista")
   override val laajuus: Option[LaajuusOpintopisteissäTaiKursseissa]
 ) extends KoulutusmoduuliValinnainenLaajuus with Valinnaisuus with PreIBKurssi2015 with StorablePreference {
   def nimi: LocalizedString = tunniste.nimi
@@ -418,7 +418,7 @@ trait MuuOppiaineIB extends IBOppiaine {
 case class IBOppiaineMuu(
   @Description("IB-lukion oppiaineen tunnistetiedot")
   tunniste: Koodistokoodiviite,
-  @Description("Laajuus ennen 1.8.2024 ilmoitetaan tunneissa. Sen jälkeen opintopisteissä")
+  @Description("ib laajuus opintopisteet tunneista")
   laajuus: Option[LaajuusOpintopisteissäTaiTunneissa] = None,
   @Description("Oppiaineen taso (Higher Level (HL) tai Standard Level (SL)")
   taso: Option[Koodistokoodiviite] = None,
@@ -431,7 +431,7 @@ case class IBOppiaineMuu(
 case class IBOppiaineLanguage(
  @Description("IB-lukion kielioppiaineen tunnistetiedot")
  tunniste: Koodistokoodiviite,
- @Description("Laajuus ennen 1.8.2024 ilmoitetaan tunneissa. Sen jälkeen opintopisteissä")
+ @Description("ib laajuus opintopisteet tunneista")
  laajuus: Option[LaajuusOpintopisteissäTaiTunneissa],
  @Description("Oppiaineen taso (Higher Level (HL) tai Standard Level (SL)")
  taso: Option[Koodistokoodiviite],

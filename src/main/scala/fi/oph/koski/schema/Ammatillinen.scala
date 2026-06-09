@@ -182,7 +182,7 @@ case class AmmatillinenOpiskeluoikeudenTila(
 @Description("Sisältää myös tiedon opintojen rahoituksesta jaksoittain")
 case class AmmatillinenOpiskeluoikeusjakso(
   alku: LocalDate,
-  @Description("Loma-tila ei ole käytössä 1.1.2026 alkaen.")
+  @Description("loma tila ei kaytossa 20260101")
   tila: Koodistokoodiviite,
   @Description("Opintojen rahoitus")
   override val opintojenRahoitus: Option[Koodistokoodiviite] = None
