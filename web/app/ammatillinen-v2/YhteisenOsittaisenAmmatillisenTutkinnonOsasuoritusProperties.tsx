@@ -340,7 +340,7 @@ const NewYhteisenTutkinnonOsanOsaAlueenSuoritus = ({
           }}
           testId="uusi-yhteinen-osan-osa-alue"
         />
-        <FlatButton onClick={() => setShowModal(true)}>
+        <FlatButton withAddIcon onClick={() => setShowModal(true)}>
           {t('Lisää paikallinen tutkinnon osan osa-alue')}
         </FlatButton>
         {showModal && (
