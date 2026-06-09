@@ -229,7 +229,7 @@ const NewYhteisenTutkinnonOsanOsaAlueenSuoritus = ({
         }}
         testId="uusi-yhteinen-osan-osa-alue"
       />
-      <FlatButton onClick={() => setShowModal(true)}>
+      <FlatButton withAddIcon onClick={() => setShowModal(true)}>
         {t('Lisää paikallinen tutkinnon osan osa-alue')}
       </FlatButton>
       {showModal && (
@@ -256,7 +256,7 @@ const NewLukioOpinto = ({
 
   return (
     <>
-      <FlatButton onClick={() => setShowModal(true)}>
+      <FlatButton withAddIcon onClick={() => setShowModal(true)}>
         {t('Lisää lukio-opinto')}
       </FlatButton>
       {showModal && (
@@ -333,7 +333,7 @@ const NewMuidenOpintovalmiuksiaTukevienOpintojenSuoritus = ({
 
   return (
     <>
-      <FlatButton onClick={() => setShowModal(true)}>
+      <FlatButton withAddIcon onClick={() => setShowModal(true)}>
         {t('Lisää muu opintovalmiuksia tukeva opinto')}
       </FlatButton>
       {showModal && (
