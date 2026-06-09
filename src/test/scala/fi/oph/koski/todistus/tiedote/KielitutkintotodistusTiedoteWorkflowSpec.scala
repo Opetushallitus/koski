@@ -446,9 +446,9 @@ class KielitutkintotodistusTiedoteWorkflowSpec extends TodistusSpecHelpers {
       }
     }
 
-    "Ei käsittele opiskeluoikeuksia joiden vahvistuspäivä on ennen earliestDate-rajausta" in {
+    "Ei käsittele opiskeluoikeuksia joiden alkamispäivä on ennen earliestDate-rajausta" in {
       withoutRunningTiedoteScheduler {
-        // Testiympäristön earliestDate on 2010-01-01, fixture-vahvistuspäivät ovat 2011+ joten ne ovat eligible
+        // Testiympäristön earliestDate on 2010-01-01, fixture-opiskeluoikeuksien alkamispäivät ovat 2011+ joten ne ovat eligible
         val eligibleBefore = app.kielitutkintotodistusTiedoteRepository.findEligibleBatch(100)
         eligibleBefore should not be empty
 

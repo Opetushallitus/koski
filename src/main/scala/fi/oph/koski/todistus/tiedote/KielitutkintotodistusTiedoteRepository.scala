@@ -28,7 +28,7 @@ class KielitutkintotodistusTiedoteRepository(val db: DB, val workerId: String, c
         AND NOT oo.mitatoity
         AND NOT oo.poistettu
         AND oo.data #>> '{suoritukset,0,vahvistus}' IS NOT NULL
-        AND (oo.data #>> '{suoritukset,0,vahvistus,päivä}')::date >= ${earliestDate}::date
+        AND oo.alkamispaiva >= ${earliestDate}::date
         AND h.aikaleima <= NOW() - ($gracePeriodHours * INTERVAL '1 hour')
         AND NOT EXISTS (
           SELECT 1 FROM kielitutkintotodistus_tiedote_job tj
