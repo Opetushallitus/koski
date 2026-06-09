@@ -55,6 +55,8 @@ trait EPerusteetRepository {
   protected def webBaseUrl: String
 
   def findOsaamismerkkiRakenteet(): List[EPerusteOsaamismerkkiRakenne]
+
+  def isHealthy: Boolean
 }
 
 object EPerusteetRepository {

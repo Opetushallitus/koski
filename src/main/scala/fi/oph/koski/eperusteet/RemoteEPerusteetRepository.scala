@@ -8,6 +8,9 @@ import fi.oph.koski.tutkinto.Koulutustyyppi.Koulutustyyppi
 
 import java.time.LocalDate
 import scala.concurrent.duration.DurationInt
+import scala.util.Try
+
+private case class EPerusteetHealthResponse(status: String)
 
 
 class RemoteEPerusteetRepository(ePerusteetRoot: String, ePerusteetWebBaseUrl: String)(implicit cacheInvalidator: CacheManager) extends EPerusteetRepository {
@@ -64,5 +67,9 @@ class RemoteEPerusteetRepository(ePerusteetRoot: String, ePerusteetWebBaseUrl: S
 
     runIO(program)
   }
+
+  override def isHealthy: Boolean =
+    Try(runIO(http.get(uri"/actuator/health")(Http.parseJson[EPerusteetHealthResponse]))).toOption
+      .exists(_.status == "UP")
 
 }
