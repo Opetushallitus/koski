@@ -62,7 +62,7 @@ case class OppijanumeroRekisteriClient(
     // esim. raportointoinkannan generointi jatkamaan, vaikka onr-yhteys hetken pätkisikin.
     val client = unsafeRetryingClient(baseUrl, retryStrategy.applyConfig, retryStrategy.backoffPolicy)
 
-    oauth2clientFactory(onrBaseUrl, client)
+    oauth2clientFactory(onrBaseUrl, client).copy(defaultTimeout = retryStrategy.idleTimeout + 2.seconds)
   }
 
   private def henkilöByOid[T](oid: String) =
