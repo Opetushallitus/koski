@@ -12,7 +12,7 @@ import { RemovePaatasonSuoritus } from '../components-v2/opiskeluoikeus/RemovePa
 import { NuortenPerusopetuksenOpiskeluoikeusjakso } from '../types/fi/oph/koski/schema/NuortenPerusopetuksenOpiskeluoikeusjakso'
 import { UusiOpiskeluoikeusjakso } from '../components-v2/opiskeluoikeus/UusiOpiskeluoikeudenTilaModal'
 import { Spacer } from '../components-v2/layout/Spacer'
-import { finnish, localize, t } from '../i18n/i18n'
+import { localize, t } from '../i18n/i18n'
 import { LocalizedString } from '../types/fi/oph/koski/schema/LocalizedString'
 import { PerusopetuksenSuorituksenTiedot } from './PerusopetuksenSuorituksenTiedot'
 import { PerusopetuksenOppiaineet } from './PerusopetuksenOppiaineet'
@@ -265,7 +265,7 @@ const perusopetuksenSuorituksenNimi = (
   s: PerusopetuksenPäätasonSuoritus
 ): LocalizedString => {
   if (isNuortenPerusopetuksenOppimääränSuoritus(s)) {
-    return finnish('Päättötodistus')
+    return localize(t('Päättötodistus'))
   }
   return (
     s.koulutusmoduuli.tunniste.nimi ||
