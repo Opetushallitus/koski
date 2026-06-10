@@ -17,6 +17,7 @@ import org.json4s.{JArray, JField, JObject, JString, JValue}
 
 import java.time.{LocalDate, ZonedDateTime}
 import scala.collection.mutable
+import scala.concurrent.duration.DurationInt
 
 trait YtrClient {
   def oppijaByHetu(ssn: YtrSsnWithPreviousSsns): Option[YtrOppija] = {
@@ -231,7 +232,7 @@ case class RemoteYtrClient(rootUrl: String, user: String, password: String) exte
     unsafeRetryingClient("ytrWithPostRetry"),
     username = user,
     password = password
-  ))
+  ), defaultTimeout = 4.minutes)
 
   def oppijaJsonByHetu(ssn: YtrSsnWithPreviousSsns): Option[JValue] = {
     runIO(postRetryingHttp.post(uri"/api/oph-koski/student", ssn)(json4sEncoderOf[YtrSsnWithPreviousSsns])(Http.parseJsonOptional[JValue]))

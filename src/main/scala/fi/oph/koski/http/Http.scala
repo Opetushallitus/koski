@@ -26,6 +26,8 @@ import scala.util.{Failure, Success, Try}
 import scala.xml.Elem
 
 object Http extends Logging {
+  val DefaultTimeout: FiniteDuration = 2.minutes
+
   private implicit val ioPool: IORuntime = IORuntime(
     compute = Pools.globalExecutor,
     blocking = Pools.httpExecutionContext,
@@ -180,8 +182,7 @@ trait RequestSigner {
   def sign(request: Request[IO]): IO[Request[IO]]
 }
 
-case class Http(root: String, client: Client[IO], signer: Option[RequestSigner] = None) extends Logging {
-  private val DefaultTimeout = 2.minutes
+case class Http(root: String, client: Client[IO], signer: Option[RequestSigner] = None, defaultTimeout: FiniteDuration = Http.DefaultTimeout) extends Logging {
 
   private val rootUri = Http.uriFromString(root)
 
@@ -193,14 +194,14 @@ case class Http(root: String, client: Client[IO], signer: Option[RequestSigner] 
   private def get(uri: Uri): Request[IO] = Request(uri = uri)
 
   def get[ResultType]
-    (uri: ParameterizedUriWrapper, timeout: FiniteDuration = DefaultTimeout)
+    (uri: ParameterizedUriWrapper, timeout: FiniteDuration = defaultTimeout)
     (decode: Decode[ResultType])
   : IO[ResultType] = processRequest(get(uri.uri), uri.template, timeout)(decode)
 
   private def head(uri: Uri): Request[IO] = Request(uri = uri, method = Method.HEAD)
 
   def head[ResultType]
-    (uri: ParameterizedUriWrapper, timeout: FiniteDuration = DefaultTimeout)
+    (uri: ParameterizedUriWrapper, timeout: FiniteDuration = defaultTimeout)
     (decode: Decode[ResultType])
   : IO[ResultType] = processRequest(head(uri.uri), uri.template, timeout)(decode)
 
@@ -208,7 +209,7 @@ case class Http(root: String, client: Client[IO], signer: Option[RequestSigner] 
     Request(uri = uri, method = Method.POST).withEntity(entity)(encode)
 
   def post[I <: AnyRef, O <: Any]
-    (uri: ParameterizedUriWrapper, entity: I, timeout: FiniteDuration = DefaultTimeout)
+    (uri: ParameterizedUriWrapper, entity: I, timeout: FiniteDuration = defaultTimeout)
     (encode: EntityEncoder[IO, I])
     (decode: Decode[O])
   : IO[O] = processRequest(post(uri.uri, entity, encode), uriTemplate = uri.template, timeout)(decode)
@@ -217,7 +218,7 @@ case class Http(root: String, client: Client[IO], signer: Option[RequestSigner] 
     Request(uri = uri, method = Method.PUT).withEntity(entity)(encode)
 
   def put[I <: AnyRef, O <: Any]
-    (uri: ParameterizedUriWrapper, entity: I, timeout: FiniteDuration = DefaultTimeout)
+    (uri: ParameterizedUriWrapper, entity: I, timeout: FiniteDuration = defaultTimeout)
     (encode: EntityEncoder[IO, I])
     (decode: Decode[O])
   : IO[O] = processRequest(put(uri.uri, entity, encode), uri.template, timeout)(decode)
