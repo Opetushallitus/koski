@@ -30,6 +30,8 @@ import fi.oph.koski.ytl.YtlSchema
 import scala.reflect.runtime.{universe => ru}
 
 class DocumentationApiServlet(application: KoskiApplication) extends KoskiSpecificApiServlet with Unauthenticated with NoCache {
+  private val localizedSchemaJson = new LocalizedSchemaJson(() => application.koskiLocalizationRepository.localizations)
+
   get("/categoryNames.json") {
     KoskiTiedonSiirtoHtml.categoryNames
   }
@@ -54,7 +56,7 @@ class DocumentationApiServlet(application: KoskiApplication) extends KoskiSpecif
     renderOption(KoskiErrorCategory.notFound)(Examples.oppijaExamples.find(_.name == params("name")).map(_.data))
   }
   get("/koski-oppija-schema.json") {
-    KoskiSchema.schemaJson
+    localizedSchemaJson.translated("koski-oppija", KoskiSchema.schemaJson, KoskiSchema.schema)
   }
 
   get("/valvira-oppija-schema.json") {
