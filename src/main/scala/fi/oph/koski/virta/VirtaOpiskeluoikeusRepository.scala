@@ -12,6 +12,7 @@ import fi.oph.koski.oppilaitos.{MockOppilaitosRepository, OppilaitosRepository}
 import fi.oph.koski.organisaatio.{MockOrganisaatioRepository, OrganisaatioRepository}
 import fi.oph.koski.schema.{KorkeakoulunOpiskeluoikeus, Oppija, UusiHenkilö}
 import fi.oph.koski.validation.KoskiValidator
+import scala.concurrent.duration.DurationInt
 
 case class VirtaOpiskeluoikeusRepository(
   virta: VirtaClient,
@@ -20,8 +21,13 @@ case class VirtaOpiskeluoikeusRepository(
   organisaatioRepository: OrganisaatioRepository,
   accessChecker: AccessChecker,
   validator: Option[KoskiValidator] = None
-)(implicit cacheInvalidator: CacheManager) extends AuxiliaryOpiskeluoikeusRepositoryImpl[KorkeakoulunOpiskeluoikeus, VirtaCacheKey](accessChecker) {
+)(implicit cacheInvalidator: CacheManager) extends AuxiliaryOpiskeluoikeusRepositoryImpl[KorkeakoulunOpiskeluoikeus, VirtaCacheKey](accessChecker, 24.hours, 1000) {
   private val converter = VirtaXMLConverter(oppilaitosRepository, koodistoViitePalvelu, organisaatioRepository)
+
+  override def findByOppija(tunnisteet: HenkilönTunnisteet)(implicit user: KoskiSpecificSession): List[KorkeakoulunOpiskeluoikeus] = {
+    logger.info(s"Virta oppija lookup: oppija=${tunnisteet.oid} käyttäjä=${user.username}")
+    super.findByOppija(tunnisteet)
+  }
 
   override protected def uncachedOpiskeluoikeudet(cacheKey: VirtaCacheKey): List[KorkeakoulunOpiskeluoikeus] = {
     val opiskeluoikeudet = virtaHaku(cacheKey)
