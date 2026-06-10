@@ -23,7 +23,7 @@ object OpiskeluoikeudenPerustiedotIndexer {
       "filter" -> Map(
         "finnish_folding" -> Map(
           "type" -> "icu_folding",
-          "unicodeSetFilter" -> "[^åäöÅÄÖ]"
+          "unicode_set_filter" -> "[^åäöÅÄÖ]"
         )
       ),
       "analyzer" -> Map(
@@ -74,7 +74,8 @@ object OpiskeluoikeudenPerustiedotIndexer {
         )
       ),
       "tilat" -> Map("type" -> "nested"),
-      "suoritukset" -> Map("type" -> "nested")
+      "suoritukset" -> Map("type" -> "nested"),
+      "aikaleima" -> Map("type" -> "date")
     )
   )
 }
