@@ -11,7 +11,7 @@ import { FormModel, useForm } from '../components-v2/forms/FormModel'
 import { RemovePaatasonSuoritus } from '../components-v2/opiskeluoikeus/RemovePaatasonSuoritus'
 import { UusiOpiskeluoikeusjakso } from '../components-v2/opiskeluoikeus/UusiOpiskeluoikeudenTilaModal'
 import { Spacer } from '../components-v2/layout/Spacer'
-import { finnish, localize, t } from '../i18n/i18n'
+import { localize, t } from '../i18n/i18n'
 import { AhvenanmaanPerusopetuksenOpiskeluoikeus } from '../types/fi/oph/koski/schema/AhvenanmaanPerusopetuksenOpiskeluoikeus'
 import { AhvenanmaanPerusopetuksenOpiskeluoikeusjakso } from '../types/fi/oph/koski/schema/AhvenanmaanPerusopetuksenOpiskeluoikeusjakso'
 import { AhvenanmaanPerusopetuksenPäätasonSuoritus } from '../types/fi/oph/koski/schema/AhvenanmaanPerusopetuksenPaatasonSuoritus'
@@ -249,7 +249,7 @@ const suorituksenNimi = (
   s: AhvenanmaanPerusopetuksenPäätasonSuoritus
 ): LocalizedString => {
   if (isAhvenanmaanPerusopetuksenOppimääränSuoritus(s)) {
-    return finnish('Avgångsbetyg')
+    return localize(t('Päättötodistus'))
   }
   return (
     s.koulutusmoduuli.tunniste.nimi ||

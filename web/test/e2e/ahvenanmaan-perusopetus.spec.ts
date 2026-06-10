@@ -48,8 +48,9 @@ test.describe('Ahvenanmaan perusopetuksen käyttöliittymä', () => {
     await fixtures.reset()
     await oppijaPage.goto(url)
 
+    // Tabin nimi seuraa käyttöliittymän kieltä (testeissä suomi).
     await expect(page.getByTestId('oo.0.suoritusTabs.0.tab')).toContainText(
-      'Avgångsbetyg'
+      'Päättötodistus'
     )
     await expect(page.getByTestId('oo.0.suoritusTabs.1.tab')).toContainText(
       '9. vuosiluokka'
