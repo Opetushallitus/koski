@@ -100,7 +100,7 @@ trait OsittaisenAmmatillisenTutkinnonOsanUseastaTutkinnostaSuoritus extends Osas
 
 @Title("Yhteisen tutkinnon osan suoritus")
 case class SdgYhteisenTutkinnonOsanSuoritus(
-  koulutusmoduuli: schema.AmmatillisenTutkinnonOsa,
+  koulutusmoduuli: schema.YhteinenTutkinnonOsa,
   tutkinto: Option[schema.AmmatillinenTutkintoKoulutus],
   @KoodistoKoodiarvo("2") // Yhteiset tutkinnon osat
   tutkinnonOsanRyhmä: Option[schema.Koodistokoodiviite],
@@ -116,7 +116,7 @@ case class SdgYhteisenTutkinnonOsanSuoritus(
 
 @Title("Muun tutkinnon osan suoritus")
 case class SdgMuunTutkinnonOsanSuoritus(
-  koulutusmoduuli: schema.AmmatillisenTutkinnonOsa,
+  koulutusmoduuli: schema.MuuKuinYhteinenTutkinnonOsa,
   tutkinto: Option[schema.AmmatillinenTutkintoKoulutus],
   @KoodistoKoodiarvo("1") // Ammatilliset tutkinnon osat
   @KoodistoKoodiarvo("3") // Vapaavalintaiset tutkinnon osat
@@ -132,7 +132,7 @@ case class SdgMuunTutkinnonOsanSuoritus(
 @Title("Korkeakouluopintoja")
 @OnlyWhen("../../suoritustapa/koodiarvo", "reformi")
 case class SdgAmmatillinenKorkeakouluopintoja(
-  koulutusmoduuli: schema.AmmatillisenTutkinnonOsa,
+  koulutusmoduuli: schema.KorkeakouluopinnotTutkinnonOsa,
   @KoodistoKoodiarvo("1") // Ammatilliset tutkinnon osat
   tutkinnonOsanRyhmä: Option[schema.Koodistokoodiviite],
   osasuoritukset: Option[List[SdgAmmatillinenKorkeakouluopintojenSuoritus]],
@@ -141,7 +141,7 @@ case class SdgAmmatillinenKorkeakouluopintoja(
 
 @Title("Yhteisten tutkinnon osien osa-alueita, lukio-opintoja tai muita jatko-opintovalmiuksia tukevia opintoja")
 case class SdgAmmatillisenTutkinnonOsanJatkoOpintovalmiuksiaTukevienOpintojenSuoritus(
-  koulutusmoduuli: schema.AmmatillisenTutkinnonOsa,
+  koulutusmoduuli: schema.JatkoOpintovalmiuksiaTukeviaOpintojaTutkinnonOsa,
   tutkinnonOsanRyhmä: Option[schema.Koodistokoodiviite],
   osasuoritukset: Option[List[YhteistenTutkinnonOsienOsaAlueidenTaiLukioOpintojenTaiMuidenOpintovalmiuksiaTukevienOpintojenOsasuoritus]] = None,
   tyyppi: schema.Koodistokoodiviite
