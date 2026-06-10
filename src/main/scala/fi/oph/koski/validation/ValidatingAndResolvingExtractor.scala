@@ -21,16 +21,19 @@ class ValidatingAndResolvingExtractor(
    */
   def extract[T](deserializationContext: ExtractionContext)(json: JValue)(implicit tag: TypeTag[T])
   : Either[HttpStatus, T] = {
-    val customDeserializers = if (deserializationContext.validate) {
+    val (customDeserializers, extractoitava) = if (deserializationContext.validate) {
       val cd = List(
         OrganisaatioResolvingCustomDeserializer(organisaatioRepository),
         KoodistoResolvingCustomDeserializer(koodistoPalvelu),
       )
-      JaksoCustomDeserializer(cd) :: cd
+      // @EiTallennetaOpiskeluoikeudenDataan-kentät (esim. lukuhetkellä täydennetty oppilaitostyyppi) eivät ole osa
+      // syötettä. Poistetaan ennen validointia, jotta luku → muokkaus → tallennus -kierrätys (editori, fixturet,
+      // tiedonsiirto) ei hylkää niitä ylimääräisinä kenttinä.
+      (JaksoCustomDeserializer(cd) :: cd, fi.oph.koski.schema.KoskiSchema.poistaEiTallennettavatKentät(json))
     } else {
-      List()
+      (List(), json)
     }
-    extract(json, deserializationContext.copy(customDeserializers = customDeserializers))
+    extract(extractoitava, deserializationContext.copy(customDeserializers = customDeserializers))
   }
 
   def extract[T](json: JValue, deserializationContext: ExtractionContext)(implicit tag: TypeTag[T]): Either[HttpStatus, T] = {

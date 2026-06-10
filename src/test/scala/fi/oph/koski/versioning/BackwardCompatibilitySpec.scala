@@ -12,7 +12,7 @@ import fi.oph.koski.json.{JsonFiles, JsonSerializer}
 import fi.oph.koski.koskiuser.{AccessType, KoskiSpecificSession}
 import fi.oph.koski.log.Logging
 import fi.oph.koski.schema.KoskiSchema.strictDeserialization
-import fi.oph.koski.schema.{KoskeenTallennettavaOpiskeluoikeus, Oppija}
+import fi.oph.koski.schema.{KoskeenTallennettavaOpiskeluoikeus, KoskiSchema, Oppija}
 import fi.oph.koski.util.EnvVariables
 import fi.oph.scalaschema.{ExtractionContext, SchemaValidatingExtractor}
 import org.json4s.JValue
@@ -97,7 +97,7 @@ class BackwardCompatibilitySpec extends AnyFreeSpec with KoskiHttpSpec with Test
         val latest = existingFiles.last
         val (lastFileJson, _, _) = readFile(latest)
 
-        if (JsonSerializer.serializeWithRoot(example.data) != lastFileJson) {
+        if (KoskiSchema.poistaEiTallennettavatKentät(JsonSerializer.serializeWithRoot(example.data)) != lastFileJson) {
           logger.info(s"Example data differs for ${example.name} at ${latest}. Creating new version.")
           writeNewVersion(example)
         }
@@ -122,7 +122,7 @@ class BackwardCompatibilitySpec extends AnyFreeSpec with KoskiHttpSpec with Test
             }
           }
 
-          val afterRoundtrip: JValue = JsonSerializer.serializeWithRoot(oppija)
+          val afterRoundtrip: JValue = KoskiSchema.poistaEiTallennettavatKentät(JsonSerializer.serializeWithRoot(oppija))
           if (!skipRoundtripCheck) {
             JsonMethods.compact(mangle(afterRoundtrip)) should equal(JsonMethods.compact(mangle(json)))
           }
