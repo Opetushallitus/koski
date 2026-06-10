@@ -111,4 +111,6 @@ object MockEPerusteetRepository extends EPerusteetRepository {
 
   override def findOsaamismerkkiRakenteet(): List[EPerusteOsaamismerkkiRakenne] =
     osaamismerkkiRakenteetTiedostosta
+
+  override def isHealthy: Boolean = true
 }

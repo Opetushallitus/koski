@@ -4,7 +4,6 @@ import cats.effect.IO
 import fi.oph.koski.cache._
 import fi.oph.koski.config.{Environment, KoskiApplication}
 import fi.oph.koski.documentation.AmmatillinenExampleData._
-import fi.oph.koski.eperusteet.ERakenneOsa
 import fi.oph.koski.http._
 import fi.oph.koski.koodisto.{KoodistoPalvelu, KoodistoViite}
 import fi.oph.koski.koskiuser.{AccessType, KoskiSpecificSession}
@@ -118,12 +117,12 @@ class HealthChecker(val application: KoskiApplication) extends Logging with Timi
       case Organisaatiopalvelu => organisaatioPalveluCheck
       case EPerusteet => ePerusteetCheck
       case CAS => casCheck
-      case KoskiDatabase => assertTrue("koski database", application.masterDatabase.util.databaseIsOnline)
-      case RaportointiDatabase => assertTrue("raportointi database", application.raportointiDatabase.util.databaseIsOnline)
-      case ValpasDatabase => assertTrue("valpas database", application.valpasDatabase.util.databaseIsOnline)
-      case PerustiedotIndex => assertTrue("perustiedot index", application.perustiedotIndexer.index.isOnline)
-      case TiedonsiirtoIndex => assertTrue("tiedonsiirrot index", application.tiedonsiirtoService.index.isOnline)
-      case MockSystemForTests => assertTrue("mock system for tests", {
+      case KoskiDatabase => booleanCheck("koski database", application.masterDatabase.util.databaseIsOnline)
+      case RaportointiDatabase => booleanCheck("raportointi database", application.raportointiDatabase.util.databaseIsOnline)
+      case ValpasDatabase => booleanCheck("valpas database", application.valpasDatabase.util.databaseIsOnline)
+      case PerustiedotIndex => booleanCheck("perustiedot index", application.perustiedotIndexer.index.isOnline)
+      case TiedonsiirtoIndex => booleanCheck("tiedonsiirrot index", application.tiedonsiirtoService.index.isOnline)
+      case MockSystemForTests => booleanCheck("mock system for tests", {
         mockSystemCounter -= 1
 
         mockSystemCheckFunction(mockSystemCounter)
@@ -154,8 +153,7 @@ class HealthChecker(val application: KoskiApplication) extends Logging with Timi
     }
 
   private def ePerusteetCheck: HttpStatus = Timing.timed("ePerusteetCheck", 3000, this.getClass) {
-    val diaarinumerot = List("OPH-2664-2017")
-    HttpStatus.fold(diaarinumerot.map(checkPeruste))
+    booleanCheck("ePerusteet", ePerusteet.isHealthy)
   }
 
   private def logHealthStatus(status: scala.collection.Map[Subsystem, HttpStatus]): Unit = {
@@ -184,16 +182,6 @@ class HealthChecker(val application: KoskiApplication) extends Logging with Timi
       case Left(status) => status
     }
   }
-
-  private def checkPeruste(diaarinumero: String) = get("ePerusteet", ePerusteet.findTarkatRakenteet(diaarinumero, None).headOption, timeout = 15 seconds).flatMap {
-    case None => Left(KoskiErrorCategory.notFound.diaarinumeroaEiLöydy(s"Tutkinnon rakennetta $diaarinumero ei löydy Perusteista"))
-    case Some(rakenne) =>
-      val rakenteet: List[ERakenneOsa] = rakenne.suoritustavat.toList.flatten.flatMap(_.rakenne)
-      rakenteet match {
-        case Nil => Left(KoskiErrorCategory.notFound.diaarinumeroaEiLöydy(s"Tutkinnon $diaarinumero rakenne on tyhjä"))
-        case _ => Right(HttpStatus.ok)
-      }
-  }.left.getOrElse(HttpStatus.ok)
 
   private def findOrCreateOppija: Either[HttpStatus, NimellinenHenkilö] = {
     def findOrCreate(canCreate: Boolean): Either[HttpStatus, NimellinenHenkilö] = getOppija(oid) match {
@@ -247,7 +235,7 @@ class HealthChecker(val application: KoskiApplication) extends Logging with Timi
     )
   }
 
-  private def assertTrue(key: String, f: => Boolean): HttpStatus = {
+  private def booleanCheck(key: String, f: => Boolean): HttpStatus = {
     get(key, f) match {
       case Left(err) => err
       case Right(false) => KoskiErrorCategory.internalError.subcategory(key, s"healthcheck for $key failed")()

@@ -8,6 +8,9 @@ import fi.oph.koski.tutkinto.Koulutustyyppi.Koulutustyyppi
 
 import java.time.LocalDate
 import scala.concurrent.duration.DurationInt
+import scala.util.Try
+
+private case class EPerusteetHealthResponse(status: String)
 
 
 class RemoteEPerusteetRepository(ePerusteetRoot: String, ePerusteetWebBaseUrl: String)(implicit cacheInvalidator: CacheManager) extends EPerusteetRepository {
@@ -16,13 +19,14 @@ class RemoteEPerusteetRepository(ePerusteetRoot: String, ePerusteetWebBaseUrl: S
   override protected def webBaseUrl: String = ePerusteetWebBaseUrl
 
   def findPerusteet(query: String): List[EPerusteRakenne] = {
-    runIO(http.get(uri"/api/external/perusteet?poistuneet=true&sivukoko=100&nimi=${query}")(Http.parseJson[EPerusteOsaRakenteet])).data
+    runIO(http.get(uri"/api/external/perusteet?poistuneet=true&sivukoko=50&nimi=${query}")(Http.parseJson[EPerusteOsaRakenteet])).data
   }
 
+  // HUOM! Hakee vain ensimmäisen sivun – käytä ainoastaan koulutustyypeillä joilla on varmasti enintään 50 perustetta.
   def findPerusteetByKoulutustyyppi(koulutustyypit: Set[Koulutustyyppi]): List[EPerusteRakenne] = if (koulutustyypit.isEmpty) {
     Nil
   } else {
-    runIO(http.get(s"/api/external/perusteet?poistuneet=true&sivukoko=100&${koulutustyypit.map(k => s"koulutustyyppi=koulutustyyppi_${k.koodiarvo}").mkString("&")}".toUri)(Http.parseJson[EPerusteOsaRakenteet])).data
+    runIO(http.get(s"/api/external/perusteet?poistuneet=true&sivukoko=50&${koulutustyypit.map(k => s"koulutustyyppi=koulutustyyppi_${k.koodiarvo}").mkString("&")}".toUri)(Http.parseJson[EPerusteOsaRakenteet])).data
   }
 
   def findTarkatRakenteet(diaariNumero: String, päivä: Option[LocalDate]): List[EPerusteTarkkaRakenne] = {
@@ -48,7 +52,7 @@ class RemoteEPerusteetRepository(ePerusteetRoot: String, ePerusteetWebBaseUrl: S
   )
 
   private def fetchKaikkiRakenteet(diaarinumero: String): List[EPerusteOsaRakenne] = {
-    runIO(http.get(uri"/api/external/perusteet?poistuneet=true&sivukoko=100&diaarinumero=${diaarinumero}")(Http.parseJson[EPerusteOsaRakenteet])).data
+    runIO(http.get(uri"/api/external/perusteet?poistuneet=true&sivukoko=50&diaarinumero=${diaarinumero}")(Http.parseJson[EPerusteOsaRakenteet])).data
   }
 
   private val osaamismerkkiRakenneCache = KeyValueCache[String, List[EPerusteOsaamismerkkiRakenne]](
@@ -63,5 +67,9 @@ class RemoteEPerusteetRepository(ePerusteetRoot: String, ePerusteetWebBaseUrl: S
 
     runIO(program)
   }
+
+  override def isHealthy: Boolean =
+    Try(runIO(http.get(uri"/actuator/health")(Http.parseJson[EPerusteetHealthResponse]))).toOption
+      .exists(_.status == "UP")
 
 }
