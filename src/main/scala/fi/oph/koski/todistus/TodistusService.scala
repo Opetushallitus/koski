@@ -22,7 +22,7 @@ import java.security.MessageDigest
 import scala.util.Using
 import fi.oph.koski.util.ChainingSyntax.eitherChainingOps
 
-import java.time.LocalDateTime
+import java.time.{LocalDate, LocalDateTime}
 import java.util.{Properties, UUID}
 
 class TodistusService(application: KoskiApplication) extends Logging with Timing {
@@ -34,6 +34,7 @@ class TodistusService(application: KoskiApplication) extends Logging with Timing
   private val yleinenKielitutkintoTodistusDataBuilder = new YleinenKielitutkintoTodistusDataBuilder(application)
 
   private val expirationDuration = application.config.getDuration("todistus.expirationDuration")
+  private val aikaisinSallittuAlkamispäivä = LocalDate.parse(application.config.getString("todistus.yleinenKielitutkinto.earliestDate"))
   private val validoiAllekirjoitusrakenne = application.config.getBoolean("todistus.allekirjoitusvalidointi.validoi")
   private val vainLokitusAllekirjoitusValidoinneille = application.config.getBoolean("todistus.allekirjoitusvalidointi.vainLokitus")
   private val allekirjoitusvalidointiConfig = PdfSignatureAnalyzer.ValidationConfig.fromConfig(application.config)
@@ -184,6 +185,7 @@ class TodistusService(application: KoskiApplication) extends Logging with Timing
     for {
       rawOpiskeluoikeus <- application.possu.findByOidIlmanKäyttöoikeustarkistusta(req.opiskeluoikeusOid)
       validatedOpiskeluoikeus <- tarkistaKäyttöoikeudetOpiskeluoikeuteen(rawOpiskeluoikeus)
+      _ <- tarkistaAlkamispäiväEiEnnenRajapäivää(validatedOpiskeluoikeus)
       opiskeluoikeus = validatedOpiskeluoikeus.toOpiskeluoikeusUnsafe
       _ <- tarkistaOnVahvistettuYleisenKielitutkinnonOpiskeluoikeus(opiskeluoikeus)
     } yield validatedOpiskeluoikeus
@@ -259,7 +261,19 @@ class TodistusService(application: KoskiApplication) extends Logging with Timing
         (),
         KoskiErrorCategory.unavailable.todistus.opiskeluoikeusMitatoity()
       )
+      _ <- tarkistaAlkamispäiväEiEnnenRajapäivää(rawOpiskeluoikeus)
     } yield todistusJob
+  }
+
+  // Todistuksen saa vain rajapäivänä tai sen jälkeen suoritetusta kokeesta (YKI:ssä
+  // opiskeluoikeuden alkamispäivä on tutkintopäivä). Sama rajapäivä ohjaa tiedotteiden
+  // lähetystä tiedotuspalveluun.
+  private def tarkistaAlkamispäiväEiEnnenRajapäivää(rawOpiskeluoikeus: KoskiOpiskeluoikeusRow): Either[HttpStatus, Unit] = {
+    Either.cond(
+      !rawOpiskeluoikeus.alkamispäivä.toLocalDate.isBefore(aikaisinSallittuAlkamispäivä),
+      (),
+      KoskiErrorCategory.notFound.opiskeluoikeuttaEiLöydyTaiEiOikeuksia()
+    )
   }
 
   private def simulateMockDownloadError(job: TodistusJob): Either[HttpStatus, Unit] = {
