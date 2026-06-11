@@ -173,8 +173,14 @@ object AmmatillinenOpiskalijavuositiedotRaportti extends AikajaksoRaportti {
         .unzip
     val lisätiedot = JsonSerializer.extract[Option[AmmatillisenOpiskeluoikeudenLisätiedot]](opiskeluoikeus.data \ "lisätiedot")
     val korotettuOpiskeluoikeusOidit = päätasonSuoritukset.flatMap(s => JsonSerializer.extract[Option[String]](s.data \ "korotettuOpiskeluoikeusOid"))
-    val sisältääTutkinnonTaiTelmanSuorituksen = päätasonSuoritukset.map(_.suorituksenTyyppi).exists(st => st == "ammatillinentutkinto" || st == "telma")
-    val sisältääTutkinnonOsanTaiTopksSuorituksen = päätasonSuoritukset.map(_.suorituksenTyyppi).exists(st => st == "ammatillinentutkintoosittainen" || st == "tutkinnonosaapienemmistäkokonaisuuksistakoostuvasuoritus")
+    val suorituksetJoistaHeinäkuuPoistetaan = Set("ammatillinentutkinto", "telma", "tuvakoulutuksensuoritus")
+    val suorituksetJoistaHeinäkuutaEiPoisteta = Set(
+      "ammatillinentutkintoosittainen",
+      "tutkinnonosaapienemmistäkokonaisuuksistakoostuvasuoritus",
+      "muuammatillinenkoulutus",
+    )
+    val sisältääHeinäkuuPoistetaanSuorituksen = päätasonSuoritukset.map(_.suorituksenTyyppi).exists(suorituksetJoistaHeinäkuuPoistetaan)
+    val sisältääHeinäkuuMukanaSuorituksen = päätasonSuoritukset.map(_.suorituksenTyyppi).exists(suorituksetJoistaHeinäkuutaEiPoisteta)
 
     OpiskelijavuositiedotRow(
       opiskeluoikeusOid = opiskeluoikeus.opiskeluoikeusOid,
@@ -209,9 +215,9 @@ object AmmatillinenOpiskalijavuositiedotRaportti extends AikajaksoRaportti {
       arvioituPäättymispäivä = arvioituPäättymispäivä,
       opiskelijavuosikertymä = AmmatillinenRaporttiUtils.opiskelijavuosikertymä(aikajaksot),
       läsnäTaiValmistunutPäivät = aikajaksoPäivät(aikajaksot, a => (a.tila == "lasna" || a.tila == "valmistunut")),
-      opiskelijavuosikertymä2026 = if (sisältääTutkinnonTaiTelmanSuorituksen) {
+      opiskelijavuosikertymä2026 = if (sisältääHeinäkuuPoistetaanSuorituksen) {
         Some(AmmatillinenRaporttiUtils.opiskelijavuosikertymä2026(aikajaksot, laskeHeinäkuunPäivät = false))
-      } else if (sisältääTutkinnonOsanTaiTopksSuorituksen) {
+      } else if (sisältääHeinäkuuMukanaSuorituksen) {
         Some(AmmatillinenRaporttiUtils.opiskelijavuosikertymä2026(aikajaksot, laskeHeinäkuunPäivät = true))
       } else None,
       opiskelijavuoteenKuuluvatLomaPäivät = opiskelijavuoteenKuuluvatLomaPäivät,

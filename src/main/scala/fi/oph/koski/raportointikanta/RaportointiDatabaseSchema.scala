@@ -807,7 +807,7 @@ case class ROpiskeluoikeusAikajaksoRow(
   def lengthInDays: Int = ChronoUnit.DAYS.between(alku.toLocalDate, loppu.toLocalDate).toInt + 1
 
   def lengthInDaysFrom2026(laskeHeinäkuunPäivät: Boolean): Int = {
-    val laskentaAlkaenPäivä = LocalDate.of(2026, 1, 1)
+    val laskentaAlkaenPäivä = LocalDate.of(2023, 7, 1)
 
     val jaksonAlku = if (alku.toLocalDate.isBefore(laskentaAlkaenPäivä)) {
       laskentaAlkaenPäivä

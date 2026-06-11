@@ -181,7 +181,14 @@ object AmmatillinenRaporttiUtils {
       case "katsotaaneronneeksi" => (j.lengthInDaysFrom2026(laskeHeinäkuunPäivät) - 1).max(0) * (j.osaAikaisuus.toDouble / 100.0)
       case "lasna" => j.lengthInDaysFrom2026(laskeHeinäkuunPäivät) * (j.osaAikaisuus.toDouble / 100.0)
       case "valmistunut" => j.lengthInDaysFrom2026(laskeHeinäkuunPäivät)
+      case "loma" if !j.alku.toLocalDate.isAfter(lomaTransitionEnd) =>
+        // 1.7.2023–31.12.2025: loma-tilan päivät käsitellään kuten lasna uudessa laskennassa.
+        val typistetty = if (j.loppu.toLocalDate.isAfter(lomaTransitionEnd))
+          j.copy(loppu = Date.valueOf(lomaTransitionEnd)) else j
+        typistetty.lengthInDaysFrom2026(laskeHeinäkuunPäivät) * (j.osaAikaisuus.toDouble / 100.0)
       case _ => 0
     }).sum
   }
+
+  private val lomaTransitionEnd = LocalDate.of(2025, 12, 31)
 }
