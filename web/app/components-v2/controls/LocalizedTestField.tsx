@@ -12,7 +12,11 @@ export type LocalizedTextViewProps = CommonProps<
 >
 
 export const LocalizedTextView: React.FC<LocalizedTextViewProps> = (props) => (
-  <TestIdText {...common(props)} id={props.testId}>
+  <TestIdText
+    {...common(props)}
+    id={props.testId}
+    style={{ whiteSpace: 'pre-line', ...props.style }}
+  >
     {t(props.value)}
   </TestIdText>
 )
