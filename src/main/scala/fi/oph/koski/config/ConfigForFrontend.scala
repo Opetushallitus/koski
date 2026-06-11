@@ -17,11 +17,13 @@ object ConfigForFrontend {
 
 case class Rajapäivät(
   ibLaajuusOpintopisteinäAlkaen: String,
+  kielitutkintotodistusAikaisinAlkamispäivä: String,
 )
 
 object Rajapäivät {
   def apply(config: Config): Rajapäivät = Rajapäivät(
     ibLaajuusOpintopisteinäAlkaen = dateString(config, "validaatiot.ibLaajuudetOpintopisteinäAlkaen"),
+    kielitutkintotodistusAikaisinAlkamispäivä = dateString(config, "todistus.yleinenKielitutkinto.earliestDate"),
   )
 
   // Tarkastaa että päivämäärä on validi ja varmistaa sen formaatin frontin ymmärtämässä muodossa

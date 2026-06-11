@@ -11,7 +11,7 @@ import java.time.LocalDateTime
 
 class KielitutkintotodistusTiedoteRepository(val db: DB, val workerId: String, config: Config) extends QueryMethods with Logging with DatabaseConverters {
 
-  private val earliestDate = config.getString("tiedote.earliestDate")
+  private val earliestDate = config.getString("todistus.yleinenKielitutkinto.earliestDate")
   private val gracePeriodHours = config.getInt("tiedote.gracePeriodHours")
 
   def findEligibleBatch(limit: Int): Seq[KielitutkintotodistusTiedoteEligible] = {

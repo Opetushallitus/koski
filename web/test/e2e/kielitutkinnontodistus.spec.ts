@@ -3,8 +3,11 @@ import { kansalainen, virkailija } from './setup/auth'
 
 const hetut = {
   kielitutkinnonSuorittaja: '010107A329V',
-  kielitutkintoTodistusVirhe: '020107A540T'
+  kielitutkintoTodistusVirhe: '020107A540T',
+  kielitutkintoEnnenRajapäivää: '150385-731L'
 }
+
+const kielitutkintoEnnenRajapäivääOid = '1.2.246.562.24.00000000191'
 
 test.describe('Digitaalinen kielitutkintotodistus', () => {
   test.beforeEach(async ({ fixtures }) => {
@@ -102,6 +105,53 @@ test.describe('Digitaalinen kielitutkintotodistus', () => {
         kielitutkintoOppijaPage.$.suoritukset(0).kielitutkintoTodistus.start
       await startButton.waitFor()
       expect(await startButton.isVisible()).toBeTruthy()
+    })
+  })
+
+  test.describe('Ennen rajapäivää suoritettu tutkinto', () => {
+    test.describe('Kansalaisena', () => {
+      test.use({
+        storageState: kansalainen(hetut.kielitutkintoEnnenRajapäivää)
+      })
+
+      test('todistusosiota ei näytetä', async ({ page, kansalainenPage }) => {
+        await page.goto('/koski/omattiedot')
+        await kansalainenPage.openOpiskeluoikeusByIndex(0)
+
+        // Tutkinnon tiedot näytetään normaalisti
+        await expect(
+          page.getByText('Testipäivä', { exact: true })
+        ).toBeVisible()
+
+        // Todistusosiota ei näytetä
+        await expect(page.locator('.Todistus')).toBeHidden()
+        await expect(
+          page.getByTestId(
+            'oo.0.suoritukset.0.kielitutkintoTodistus.language.input'
+          )
+        ).toBeHidden()
+      })
+    })
+
+    test.describe('Virkailijana', () => {
+      test.use({ storageState: virkailija('pää') })
+
+      test('todistusosiota ei näytetä', async ({ page }) => {
+        await page.goto(`/koski/oppija/${kielitutkintoEnnenRajapäivääOid}`)
+
+        // Tutkinnon tiedot näytetään normaalisti
+        await expect(
+          page.getByText('Testipäivä', { exact: true })
+        ).toBeVisible()
+
+        // Todistusosiota ei näytetä
+        await expect(page.locator('.Todistus')).toBeHidden()
+        await expect(
+          page.getByTestId(
+            'oo.0.suoritukset.0.kielitutkintoTodistus.language.input'
+          )
+        ).toBeHidden()
+      })
     })
   })
 
