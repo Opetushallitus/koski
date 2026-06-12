@@ -205,7 +205,7 @@ class AmmatillinenOpiskelijavuositiedotRaporttiSpec
     }
 
     "opiskelijavuosikertymä ilman heinäkuun päiviä lasketaan oikein" - {
-      "laskenta alkaa 1.1.2026" in {
+      "laskenta alkaa 1.7.2023" in {
         AmmatillinenRaporttiUtils.opiskelijavuosikertymä2026(Seq(
           ROpiskeluoikeusAikajaksoRow(oid, Date.valueOf("2016-01-01"), Date.valueOf("2016-01-31"), "lasna", Date.valueOf("2016-01-01"))
         ), laskeHeinäkuunPäivät = false) should equal(0)
@@ -217,10 +217,10 @@ class AmmatillinenOpiskelijavuositiedotRaporttiSpec
         ), laskeHeinäkuunPäivät = false) should equal(31)
       }
 
-      "läsnäolopäivät ilman heinäkuuta aikajaksolla, kun jakso alkaa ennen 1.1.2026" in {
+      "läsnäolopäivät ilman heinäkuuta aikajaksolla, kun jakso alkaa ennen 1.7.2023" in {
         AmmatillinenRaporttiUtils.opiskelijavuosikertymä2026(Seq(
-          ROpiskeluoikeusAikajaksoRow(oid, Date.valueOf("2025-12-31"), Date.valueOf("2026-01-31"), "lasna", Date.valueOf("2026-01-01"))
-        ), laskeHeinäkuunPäivät = false) should equal(31)
+          ROpiskeluoikeusAikajaksoRow(oid, Date.valueOf("2023-06-15"), Date.valueOf("2023-08-15"), "lasna", Date.valueOf("2023-06-15"))
+        ), laskeHeinäkuunPäivät = false) should equal(15) // 1.–15.8.2023; kesäkuu rajattu pois, heinäkuu vähennetty
       }
 
       "yhden päivän jakso heinäkuun ulkopuolella" in {
@@ -288,10 +288,40 @@ class AmmatillinenOpiskelijavuositiedotRaporttiSpec
           ROpiskeluoikeusAikajaksoRow(oid, Date.valueOf("2026-06-01"), Date.valueOf("2026-08-31"), "lasna", Date.valueOf("2026-01-01"), osaAikaisuus = 50)
         ), laskeHeinäkuunPäivät = false) should be (30.5 +- 0.001)
       }
+
+      "loma-päivät siirtymäkaudella 1.7.2023–31.12.2025 lasketaan kuten lasna-päivät" in {
+        AmmatillinenRaporttiUtils.opiskelijavuosikertymä2026(Seq(
+          ROpiskeluoikeusAikajaksoRow(oid, Date.valueOf("2024-08-01"), Date.valueOf("2024-08-15"), "loma", Date.valueOf("2024-08-01"))
+        ), laskeHeinäkuunPäivät = false) should equal(15)
+      }
+
+      "loma-päiviä ei lasketa 1.1.2026 jälkeen" in {
+        AmmatillinenRaporttiUtils.opiskelijavuosikertymä2026(Seq(
+          ROpiskeluoikeusAikajaksoRow(oid, Date.valueOf("2026-02-01"), Date.valueOf("2026-02-15"), "loma", Date.valueOf("2026-02-01"))
+        ), laskeHeinäkuunPäivät = false) should equal(0)
+      }
+
+      "loma-jakso joka ylittää 31.12.2025 katkaistaan siirtymäkauden loppuun" in {
+        AmmatillinenRaporttiUtils.opiskelijavuosikertymä2026(Seq(
+          ROpiskeluoikeusAikajaksoRow(oid, Date.valueOf("2025-12-01"), Date.valueOf("2026-01-15"), "loma", Date.valueOf("2025-12-01"))
+        ), laskeHeinäkuunPäivät = false) should equal(31) // joulukuu 2025
+      }
+
+      "loma-jakson heinäkuun päivät poistetaan kun laskeHeinäkuunPäivät=false" in {
+        AmmatillinenRaporttiUtils.opiskelijavuosikertymä2026(Seq(
+          ROpiskeluoikeusAikajaksoRow(oid, Date.valueOf("2024-07-01"), Date.valueOf("2024-07-31"), "loma", Date.valueOf("2024-07-01"))
+        ), laskeHeinäkuunPäivät = false) should equal(0)
+      }
+
+      "loma-päivien osa-aikaisuus huomioidaan" in {
+        AmmatillinenRaporttiUtils.opiskelijavuosikertymä2026(Seq(
+          ROpiskeluoikeusAikajaksoRow(oid, Date.valueOf("2024-08-01"), Date.valueOf("2024-08-31"), "loma", Date.valueOf("2024-08-01"), osaAikaisuus = 50)
+        ), laskeHeinäkuunPäivät = false) should be (15.5 +- 0.001)
+      }
     }
 
-    "opiskelijavuosikertymä ammatillinentutkintoosittainen/topks-suorituksilla lasketaan oikein" - {
-      "ennen vuotta 2026 olevia päiviä ei lasketa mukaan" in {
+    "opiskelijavuosikertymä ammatillinentutkintoosittainen/topks/muu ammatillinen -suorituksilla lasketaan oikein" - {
+      "ennen 1.7.2023 olevia päiviä ei lasketa mukaan" in {
         AmmatillinenRaporttiUtils.opiskelijavuosikertymä2026(Seq(
           ROpiskeluoikeusAikajaksoRow(oid, Date.valueOf("2016-01-01"), Date.valueOf("2016-01-31"), "lasna", Date.valueOf("2016-01-01"))
         ), laskeHeinäkuunPäivät = true) should equal(0)
@@ -337,6 +367,18 @@ class AmmatillinenOpiskelijavuositiedotRaporttiSpec
       "ei lasketa kertymää muista tiloista kuin lasna, valmistunut ja katsotaaneronneeksi" in {
         AmmatillinenRaporttiUtils.opiskelijavuosikertymä2026(Seq(
           ROpiskeluoikeusAikajaksoRow(oid, Date.valueOf("2026-06-01"), Date.valueOf("2026-08-01"), "valiaikaisestikeskeytynyt", Date.valueOf("2026-01-01"))
+        ), laskeHeinäkuunPäivät = true) should equal(0)
+      }
+
+      "loma-päivät siirtymäkaudella lasketaan myös heinäkuussa kun laskeHeinäkuunPäivät=true" in {
+        AmmatillinenRaporttiUtils.opiskelijavuosikertymä2026(Seq(
+          ROpiskeluoikeusAikajaksoRow(oid, Date.valueOf("2024-07-01"), Date.valueOf("2024-07-31"), "loma", Date.valueOf("2024-07-01"))
+        ), laskeHeinäkuunPäivät = true) should equal(31)
+      }
+
+      "loma-päiviä ei lasketa 1.1.2026 jälkeen vaikka laskeHeinäkuunPäivät=true" in {
+        AmmatillinenRaporttiUtils.opiskelijavuosikertymä2026(Seq(
+          ROpiskeluoikeusAikajaksoRow(oid, Date.valueOf("2026-07-01"), Date.valueOf("2026-07-31"), "loma", Date.valueOf("2026-07-01"))
         ), laskeHeinäkuunPäivät = true) should equal(0)
       }
     }
