@@ -144,6 +144,7 @@ jobs:
             fi.oph.koski.environment, \
             fi.oph.koski.etk, \
             fi.oph.koski.hakemuspalvelu, \
+            fi.oph.koski.healthcheck, \
             fi.oph.koski.henkilo, \
             fi.oph.koski.http, \
             fi.oph.koski.cas, \
