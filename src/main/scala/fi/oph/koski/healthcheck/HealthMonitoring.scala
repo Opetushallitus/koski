@@ -6,19 +6,42 @@ import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.log.Logging
 import org.json4s.jackson.JsonMethods
 
-class HealthMonitoring extends Logging {
+class HealthMonitoring(now: () => Long = () => System.currentTimeMillis()) extends Logging {
   val operational: collection.mutable.Map[Subsystem, Boolean] = collection.mutable.Map.empty
+
+  // Virta epäonnistuu ajoittain yksittäisten kutsujen tasolla, joten yksittäisistä virheistä ei hälytetä (ne lokitetaan
+  // varoituksina kutsukohtaisesti). Tämä havaitsee pidempikestoisen katkon: jos Virta on tuottanut pelkkiä virheitä
+  // yhtäjaksoisesti yli VirtaOutageThresholdMillis:n verran, lokitetaan kerran error-tasolla hälytystä varten.
+  private val VirtaOutageThresholdMillis: Long = 15 * 60 * 1000
+  private var virtaLastSuccess: Long = now()
+  private var virtaOutageAlerted: Boolean = false
 
   def log(status: Seq[SubsystemHealthStatus]): Unit = {
     logList(status ++ storedStatus)
   }
 
   def setSubsystemStatus(subsystem: Subsystem, operational: Boolean): Unit = {
+    if (subsystem == Subsystem.Virta) {
+      trackVirtaAvailability(operational)
+    }
     if (!this.operational.get(subsystem).contains(operational)) {
       this.operational += (subsystem -> operational)
       logList(storedStatus)
     }
   }
+
+  private def trackVirtaAvailability(operational: Boolean): Unit = synchronized {
+    if (operational) {
+      virtaLastSuccess = now()
+      virtaOutageAlerted = false
+    } else if (!virtaOutageAlerted && now() - virtaLastSuccess >= VirtaOutageThresholdMillis) {
+      virtaOutageAlerted = true
+      onVirtaOutageDetected()
+    }
+  }
+
+  protected def onVirtaOutageDetected(): Unit =
+    logger.error("Virta has been unavailable for over 15 minutes")
 
   private def logList(status: Seq[SubsystemHealthStatus]): Unit = {
     status.foreach(s => logger.info(JsonSerializer.writeWithRoot(s)))
