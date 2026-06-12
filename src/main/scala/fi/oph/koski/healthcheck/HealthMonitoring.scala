@@ -6,12 +6,17 @@ import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.log.Logging
 import org.json4s.jackson.JsonMethods
 
-class HealthMonitoring(now: () => Long = () => System.currentTimeMillis()) extends Logging {
+class HealthMonitoring(
+  now: () => Long = () => System.currentTimeMillis(),
+  virtaOutageAlertingEnabled: Boolean = false
+) extends Logging {
   val operational: collection.mutable.Map[Subsystem, Boolean] = collection.mutable.Map.empty
 
   // Virta epäonnistuu ajoittain yksittäisten kutsujen tasolla, joten yksittäisistä virheistä ei hälytetä (ne lokitetaan
   // varoituksina kutsukohtaisesti). Tämä havaitsee pidempikestoisen katkon: jos Virta on tuottanut pelkkiä virheitä
   // yhtäjaksoisesti yli VirtaOutageThresholdMillis:n verran, lokitetaan kerran error-tasolla hälytystä varten.
+  // Hälytys on käytössä vain tuotannossa: muissa ympäristöissä Virta-liikenne on niin vähäistä, että edellinen onnistuminen
+  // voi olla tunteja vanha, jolloin yksittäinen virhe ylittäisi heti kynnyksen ja aiheuttaisi väärän hälytyksen.
   private val VirtaOutageThresholdMillis: Long = 15 * 60 * 1000
   private var virtaLastSuccess: Long = now()
   private var virtaOutageAlerted: Boolean = false
@@ -21,7 +26,7 @@ class HealthMonitoring(now: () => Long = () => System.currentTimeMillis()) exten
   }
 
   def setSubsystemStatus(subsystem: Subsystem, operational: Boolean): Unit = {
-    if (subsystem == Subsystem.Virta) {
+    if (subsystem == Subsystem.Virta && virtaOutageAlertingEnabled) {
       trackVirtaAvailability(operational)
     }
     if (!this.operational.get(subsystem).contains(operational)) {
@@ -41,7 +46,7 @@ class HealthMonitoring(now: () => Long = () => System.currentTimeMillis()) exten
   }
 
   protected def onVirtaOutageDetected(): Unit =
-    logger.error("Virta has been unavailable for over 15 minutes")
+    logger.error(s"Virta has been unavailable for over ${VirtaOutageThresholdMillis / 60000} minutes")
 
   private def logList(status: Seq[SubsystemHealthStatus]): Unit = {
     status.foreach(s => logger.info(JsonSerializer.writeWithRoot(s)))

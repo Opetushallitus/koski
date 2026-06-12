@@ -225,7 +225,9 @@ class KoskiApplication(
     valpasOppivelvollisuudestaVapautusService,
     config
   )
-  lazy val healthMonitoring: HealthMonitoring = new HealthMonitoring()
+  lazy val healthMonitoring: HealthMonitoring = new HealthMonitoring(
+    virtaOutageAlertingEnabled = Environment.isProdEnvironment(config)
+  )
   lazy val yoTodistusService: YoTodistusService = YoTodistusService(this)
   lazy val validationContext: ValidationTestContext = new ValidationTestContext(config)
   lazy val massaluovutusService: MassaluovutusService = new MassaluovutusService(this)

@@ -12,7 +12,7 @@ class HealthMonitoringSpec extends AnyFreeSpec with Matchers {
   private class Fixture {
     private var clock: Long = 0L
     private var alerts: Int = 0
-    val monitoring: HealthMonitoring = new HealthMonitoring(() => clock) {
+    val monitoring: HealthMonitoring = new HealthMonitoring(() => clock, virtaOutageAlertingEnabled = true) {
       override protected def onVirtaOutageDetected(): Unit = alerts += 1
     }
     def advance(millis: Long): Unit = clock += millis
@@ -67,6 +67,17 @@ class HealthMonitoringSpec extends AnyFreeSpec with Matchers {
       f.advance(ThresholdMillis)
       f.monitoring.setSubsystemStatus(Oppijanumerorekisteri, operational = false)
       f.outageAlerts should equal(0)
+    }
+
+    "Hälytys ei laukea kun se on pois päältä (vain tuotannossa käytössä)" in {
+      var clock = 0L
+      var alerts = 0
+      val monitoring = new HealthMonitoring(() => clock, virtaOutageAlertingEnabled = false) {
+        override protected def onVirtaOutageDetected(): Unit = alerts += 1
+      }
+      clock += ThresholdMillis
+      monitoring.setSubsystemStatus(Virta, operational = false)
+      alerts should equal(0)
     }
   }
 }
