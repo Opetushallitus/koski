@@ -6,12 +6,13 @@ import java.time.{LocalDate, LocalDateTime}
 import fi.oph.koski.db.KoskiOpiskeluoikeusRow
 import fi.oph.koski.executors.GlobalExecutionContext
 import fi.oph.koski.henkilo.{HenkilöRepository, HenkilönTunnisteet, Hetu, LaajatOppijaHenkilöTiedot, PossiblyUnverifiedHenkilöOid, UnverifiedHenkilöOid, VerifiedHenkilöOid}
-import fi.oph.koski.http.{HttpException, HttpStatus, KoskiErrorCategory}
+import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.koskiuser.KoskiSpecificSession
 import fi.oph.koski.log.Logging
 import fi.oph.koski.schema.Henkilö.Oid
 import fi.oph.koski.schema.{KoskeenTallennettavaOpiskeluoikeus, LähdejärjestelmäId, LähdejärjestelmäkytkennänPurkaminen, LähdejärjestelmäkytkentäPurettavissa, Opiskeluoikeus}
 import fi.oph.koski.turvakielto.TurvakieltoService
+import fi.oph.koski.virta.VirtaError
 import fi.oph.koski.util.{Futures, WithWarnings}
 import fi.oph.koski.validation.LahdejarjestelmakytkennanPurkaminenValidation
 
@@ -56,7 +57,7 @@ class CompositeOpiskeluoikeusRepository(main: KoskiOpiskeluoikeusRepository, vir
 
   def mapFailureToVirtaUnavailable(result: Try[Seq[Opiskeluoikeus]], oid: String): Try[WithWarnings[Seq[Opiskeluoikeus]]] = {
     result match {
-      case Failure(exception) if isExpectedVirtaFailure(exception) =>
+      case Failure(exception) if VirtaError.isExpectedFailure(exception) =>
         logger.warn(s"Failed to fetch Virta data for $oid: ${exception.getMessage}")
       case Failure(exception) =>
         logger.error(exception)(s"Failed to fetch Virta data for $oid")
@@ -72,13 +73,6 @@ class CompositeOpiskeluoikeusRepository(main: KoskiOpiskeluoikeusRepository, vir
     }
     Success(WithWarnings.fromTry(result, KoskiErrorCategory.unavailable.ytr(), Nil))
   }
-
-  // Virran ajoittaiset yksittäiset virheet (yhteys- tai HTTP-virheet) ovat odotettavissa eikä niistä hälytetä error-tasolla.
-  // Muut poikkeukset (esim. bugi omassa koodissa) ovat odottamattomia ja lokitetaan edelleen error-tasolla.
-  private def isExpectedVirtaFailure(t: Throwable): Boolean =
-    Iterator.iterate(Option(t))(_.flatMap(e => Option(e.getCause)))
-      .takeWhile(_.isDefined).flatten
-      .exists(_.isInstanceOf[HttpException])
 
   def findByOppija(tunnisteet: HenkilönTunnisteet, useVirta: Boolean, useYtr: Boolean)(implicit user: KoskiSpecificSession): WithWarnings[Seq[Opiskeluoikeus]] = {
     val oid = tunnisteet.oid
