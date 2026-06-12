@@ -131,6 +131,8 @@ mvn test -Dsuites="fi.oph.koski.schema.SchemaSpec"
 
 **Important:** `BackwardCompatibilitySpec` compares each documentation `Example` against a stored JSON snapshot under `src/test/resources/backwardcompatibility/`, matched by sanitized example name. When you **rename or change the data of an `Example`** (e.g. in `documentation/Examples*.scala`), regenerate its snapshot: run `BackwardCompatibilitySpec` locally — it writes a new dated file — and commit it. CI fails if the snapshot is missing (it refuses to write on CI). If you renamed the example, also delete the now-orphaned old snapshot.
 
+**Important:** `GithubActionsSpec` (`src/test/scala/fi/oph/koski/meta/`) asserts that **every test package** under `src/test/scala/fi/oph/koski/` is listed in **both** `.github/workflows/all_tests.yml` and the `Makefile` (the `membersOnlySuites` list). When you add the **first** spec in a new package (a directory not used by tests before), add that package (e.g. `fi.oph.koski.healthcheck`) to both files, or those two suites fail. Adding more specs to an existing package needs no change.
+
 ### Frontend Tests
 - **Mocha tests**: `web/test/` - run with `make fronttest`
 - **Playwright tests**: `web/test/playwright/` - run with `make integrationtest`

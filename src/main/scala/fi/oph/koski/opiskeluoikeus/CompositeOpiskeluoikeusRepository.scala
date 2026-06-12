@@ -12,6 +12,7 @@ import fi.oph.koski.log.Logging
 import fi.oph.koski.schema.Henkilö.Oid
 import fi.oph.koski.schema.{KoskeenTallennettavaOpiskeluoikeus, LähdejärjestelmäId, LähdejärjestelmäkytkennänPurkaminen, LähdejärjestelmäkytkentäPurettavissa, Opiskeluoikeus}
 import fi.oph.koski.turvakielto.TurvakieltoService
+import fi.oph.koski.virta.VirtaError
 import fi.oph.koski.util.{Futures, WithWarnings}
 import fi.oph.koski.validation.LahdejarjestelmakytkennanPurkaminenValidation
 
@@ -56,7 +57,10 @@ class CompositeOpiskeluoikeusRepository(main: KoskiOpiskeluoikeusRepository, vir
 
   def mapFailureToVirtaUnavailable(result: Try[Seq[Opiskeluoikeus]], oid: String): Try[WithWarnings[Seq[Opiskeluoikeus]]] = {
     result match {
-      case Failure(exception) => logger.error(exception)(s"Failed to fetch Virta data for $oid")
+      case Failure(exception) if VirtaError.isExpectedFailure(exception) =>
+        logger.warn(s"Failed to fetch Virta data for $oid: ${exception.getMessage}")
+      case Failure(exception) =>
+        logger.error(exception)(s"Failed to fetch Virta data for $oid")
       case Success(_) =>
     }
     Success(WithWarnings.fromTry(result, KoskiErrorCategory.unavailable.virta(), Nil))
