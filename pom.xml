@@ -21,7 +21,7 @@
     <http4s-blaze-client.version>0.23.17</http4s-blaze-client.version>
     <http4s-scala-xml.version>0.24.0</http4s-scala-xml.version>
     <json4s.version>4.0.7</json4s.version>
-    <awssdk.version>2.44.7</awssdk.version>
+    <awssdk.version>2.46.8</awssdk.version>
     <jetty.version>12.1.10</jetty.version>
     <prometheus.client.version>0.16.0</prometheus.client.version>
     <scoverage.plugin.version>1.4.11</scoverage.plugin.version>
@@ -141,7 +141,7 @@
     <dependency>
       <groupId>com.fasterxml.jackson.core</groupId>
       <artifactId>jackson-databind</artifactId>
-      <version>2.21.3</version>
+      <version>2.22.0</version>
     </dependency>
     <dependency>
       <groupId>org.json4s</groupId>
