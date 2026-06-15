@@ -166,7 +166,7 @@ object ValpasMockOppijat {
   val perusopetukseenValmistautuva17VuottaTäyttävä = valpasOppijat.oppijaSyntymäaikaHetusta("Perusopetukseen-valmistautuva-17-vuotta-täyttävä", "Valpas", "060104A339M", kotikunta = Some(Kunta.helsinki))
   val perusopetukseenValmistavastaValmistunut17Vuotias = valpasOppijat.oppijaSyntymäaikaHetusta("Perusopetukseen-valmistavasta-valmistunut-17-vuotta-täyttävä", "Valpas", "290504A780X", kotikunta = Some(Kunta.helsinki))
   val perusopetukseenValmistavastaEronnut17Vuotias = valpasOppijat.oppijaSyntymäaikaHetusta("Perusopetukseen-valmistavasta-eronnut-17-vuotta-täyttävä", "Valpas", "210604A184B", kotikunta = Some(Kunta.helsinki))
-  val sureHautAinaEpäonnistuvaOppija = valpasOppijat.oppijaSyntymäaikaHetusta("Sure-haut-aina-epäonnistuvat", "Valpas", "180704A3397", kotikunta = Some(Kunta.helsinki))
+  val hakukoosteenHakuAinaEpäonnistuvaOppija = valpasOppijat.oppijaSyntymäaikaHetusta("Hakukoosteen-haku-aina-epäonnistuu", "Valpas", "180704A3397", kotikunta = Some(Kunta.helsinki))
   val eiKoskessaAlle18VuotiasMuttaEiOppivelvollinenSyntymäajanPerusteella = valpasOppijat.oppijaSyntymäaikaHetusta("Kosketon-ei-oppivelvollinen-alle-18-v", "Valpas", "250903A698N", kotikunta = Some(Kunta.helsinki))
   val eiKoskessaOppivelvollinenAhvenanmaalainen = valpasOppijat.oppijaSyntymäaikaHetusta("Kosketon-ahvenanmaalainen", "Valpas", "050705A749A", kotikunta = Some("170"))
   val eiKoskessaOppivelvollinenAhvenanmaalainenTurvakiellollinen = valpasOppijat.oppijaSyntymäaikaHetusta("Kosketon-ahvenanmaalainen-turvakielto", "Valpas", "091105A8136", turvakielto = true, kotikunta = Some("170"))

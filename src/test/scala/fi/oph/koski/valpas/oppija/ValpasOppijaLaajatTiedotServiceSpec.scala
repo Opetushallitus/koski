@@ -71,7 +71,7 @@ class ValpasOppijaLaajatTiedotServiceSpec extends ValpasOppijaTestBase {
 
     "palauttaa oppijan tiedot, vaikka hakukoostekysely epäonnistuisi" in {
       val result = oppijaLaajatTiedotService.getOppijaLaajatTiedotYhteystiedoillaJaKuntailmoituksilla(ValpasMockOppijat.hakukohteidenHakuEpäonnistuu.oid)(defaultSession).toOption.get
-      result.hakutilanneError.get should equal("Hakukoosteita ei juuri nyt saada haettua suoritusrekisteristä. Yritä myöhemmin uudelleen.")
+      result.hakutilanneError.get should equal("Hakukoosteita ei juuri nyt saada haettua. Yritä myöhemmin uudelleen.")
       validateOppijaLaajatTiedot(
         result.oppija,
         ValpasMockOppijat.hakukohteidenHakuEpäonnistuu,

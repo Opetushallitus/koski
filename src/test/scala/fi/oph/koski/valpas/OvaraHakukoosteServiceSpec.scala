@@ -26,7 +26,6 @@ class OvaraHakukoosteServiceSpec extends ValpasTestBase with Matchers with Eithe
       |opintopolku.virkailija.password = "bar"
       |valpas.hakukoosteEnabled = true
       |valpas.hakukoosteTimeoutSeconds = 2
-      |valpas.hakukoosteService = "ovara"
     """.stripMargin)
 
   private val mockClient = ValpasHakukoosteService(KoskiApplicationForTests, Some(config))
@@ -65,7 +64,7 @@ class OvaraHakukoosteServiceSpec extends ValpasTestBase with Matchers with Eithe
 
       val result = mockClient.getHakukoosteet(queryOids, ainoastaanAktiivisetHaut = false, "test").left.value
       result.statusCode should equal(502)
-      result.errorString.get should startWith("Ovaran palauttama hakukoostetieto oli viallinen")
+      result.errorString.get should startWith("Palautunut hakukoostetieto oli viallinen")
     }
 
     "käsittelee virhetilanteen kun JSON-vastauksen kenttärakenne on virheellinen" in {
@@ -75,7 +74,7 @@ class OvaraHakukoosteServiceSpec extends ValpasTestBase with Matchers with Eithe
 
       val result = mockClient.getHakukoosteet(Set("asdf"), ainoastaanAktiivisetHaut = false, "test").left.value
       result.statusCode should equal(502)
-      result.errorString.get should startWith("Ovaran palauttama hakukoostetieto oli viallinen")
+      result.errorString.get should startWith("Palautunut hakukoostetieto oli viallinen")
     }
 
     "toimii kun vastaus katkeaa kesken" in {

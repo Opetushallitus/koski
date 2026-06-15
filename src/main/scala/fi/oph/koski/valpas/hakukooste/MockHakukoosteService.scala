@@ -13,11 +13,11 @@ class MockHakukoosteService(application: KoskiApplication) extends ValpasHakukoo
 
   // Näillä oideilla kutsuminen aiheuttaa virhetilanteen (käytetään virhetilanteiden hallinnan testaamiseen)
   private def errorOids = Map(
-    "unavailable" -> ValpasErrorCategory.unavailable.sure(),
-    ValpasMockOppijat.hakukohteidenHakuEpäonnistuu.oid -> ValpasErrorCategory.unavailable.sure()
+    "unavailable" -> ValpasErrorCategory.unavailable.ovara(),
+    ValpasMockOppijat.hakukohteidenHakuEpäonnistuu.oid -> ValpasErrorCategory.unavailable.ovara()
   )
 
-  private def failsWholeFetchOid = ValpasMockOppijat.sureHautAinaEpäonnistuvaOppija
+  private def failsWholeFetchOid = ValpasMockOppijat.hakukoosteenHakuAinaEpäonnistuvaOppija
 
   def getHakukoosteet(
     oppijaOids: Set[ValpasHenkilö.Oid],
@@ -25,7 +25,7 @@ class MockHakukoosteService(application: KoskiApplication) extends ValpasHakukoo
     errorClue: String
   ): Either[HttpStatus, Seq[Hakukooste]] = {
     if (oppijaOids.contains(failsWholeFetchOid.oid)) {
-      Left(ValpasErrorCategory.unavailable.sure())
+      Left(ValpasErrorCategory.unavailable.ovara())
     } else if (oppijaOids.forall(errorOids.contains)) {
       Left(HttpStatus.fold(oppijaOids.map(errorOids(_))))
     } else {
