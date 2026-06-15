@@ -31,10 +31,9 @@ class ValpasOppivelvollisuudestaVapautusService(application: KoskiApplication) e
 
   def findVapautukset(oppijaOids: List[String]): Seq[OppivelvollisuudestaVapautus] = {
     val aktiivisetKunnat = organisaatioService.aktiivisetKunnat()
-    val dueTime = raportitService.viimeisinOpiskeluoikeuspäivitystenVastaanottoaika
-    val vapautukset = db.getOppivelvollisuudestaVapautetutOppijat(oppijaOids)
-    vapautukset
-      .flatMap(OppivelvollisuudestaVapautus.apply(aktiivisetKunnat, rajapäivätService, dueTime))
+    db.getOppivelvollisuudestaVapautetutOppijat(oppijaOids)
+      .filter(_.mitätöity.isEmpty)
+      .map(OppivelvollisuudestaVapautus.apply(aktiivisetKunnat, rajapäivätService))
   }
 
   def mapVapautetutOppijat[T](oppijat: Seq[T], toOids: T => Seq[String])(map: (T, OppivelvollisuudestaVapautus) => T): Seq[T] = {
@@ -132,15 +131,21 @@ object OppivelvollisuudestaVapautus {
     if (mitätöity && (mitätöintiPäivittynytRaportointikantaan || raportointikantaanEiVieläOlePäivitettyVapautusta)) {
       None
     } else {
-      Some(OppivelvollisuudestaVapautus(
-        oppijaOid = vapautus.oppijaOid,
-        vapautettu = vapautus.vapautettu,
-        tulevaisuudessa = rajapäivätService.tarkastelupäivä.isBefore(vapautus.vapautettu),
-        mitätöitymässä = vapautus.mitätöity.isDefined,
-        kunta = aktiivisetKunnat.find(_.kotipaikka.exists(_.koodiarvo == vapautus.kunta)),
-      ))
+      Some(apply(aktiivisetKunnat, rajapäivätService)(vapautus))
     }
   }
+
+  def apply(
+    aktiivisetKunnat: Seq[OrganisaatioWithOid],
+    rajapäivätService: ValpasRajapäivätService
+  )(vapautus: RawOppivelvollisuudestaVapautus): OppivelvollisuudestaVapautus =
+    OppivelvollisuudestaVapautus(
+      oppijaOid = vapautus.oppijaOid,
+      vapautettu = vapautus.vapautettu,
+      tulevaisuudessa = rajapäivätService.tarkastelupäivä.isBefore(vapautus.vapautettu),
+      mitätöitymässä = vapautus.mitätöity.isDefined,
+      kunta = aktiivisetKunnat.find(_.kotipaikka.exists(_.koodiarvo == vapautus.kunta)),
+    )
 }
 
 case class OppivelvollisuudestaVapautuksenPohjatiedot(
