@@ -17,6 +17,7 @@ import { YleisenKielitutkinnonSuoritus } from '../types/fi/oph/koski/schema/Ylei
 import { ykiParasArvosana } from './yleinenKielitutkinto'
 import { YleinenKielitutkintoTodistusLataus } from './YleinenKielitutkintoTodistusLataus'
 import { useKansalainenTaiVirkailija } from '../appstate/user'
+import { config } from '../util/config'
 
 declare global {
   interface Window {
@@ -51,6 +52,15 @@ export const YleinenKielitutkintoEditor: React.FC<
     localStorage.getItem('pdf-todistus') !== null ||
     new URLSearchParams(window.location.search).has('pdf-todistus')
 
+  // Todistus on saatavilla vain rajapäivänä tai sen jälkeen suoritetuille
+  // tutkinnoille (YKI:ssä opiskeluoikeuden alkamispäivä on tutkintopäivä).
+  // ISO-muotoiset päivämäärät voi vertailla merkkijonoina.
+  const alkamispäivä = form.state.alkamispäivä
+  const onAikaisintaanTodistusrajapäivänä =
+    alkamispäivä !== undefined &&
+    alkamispäivä >=
+      config().rajapäivät.kielitutkintotodistusAikaisinAlkamispäivä
+
   return suoritus ? (
     <>
       <YleisenKielitutkinnonTiedot
@@ -76,7 +86,8 @@ export const YleinenKielitutkintoEditor: React.FC<
 
       {isKansalainenTaiVirkailija &&
         form.state.oid &&
-        hasFeatureFlagPdfTodistus && (
+        hasFeatureFlagPdfTodistus &&
+        onAikaisintaanTodistusrajapäivänä && (
           <YleinenKielitutkintoTodistusLataus
             opiskeluoikeusOid={form.state.oid}
           />

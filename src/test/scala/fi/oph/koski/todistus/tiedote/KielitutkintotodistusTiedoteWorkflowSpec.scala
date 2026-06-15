@@ -454,7 +454,7 @@ class KielitutkintotodistusTiedoteWorkflowSpec extends TodistusSpecHelpers {
 
         // Luodaan uusi repository tulevaisuuden päivämäärärajauksella
         val futureConfig = app.config
-          .withValue("tiedote.earliestDate", ConfigValueFactory.fromAnyRef("2099-01-01"))
+          .withValue("todistus.yleinenKielitutkinto.earliestDate", ConfigValueFactory.fromAnyRef("2099-01-01"))
         val restrictedRepo = new KielitutkintotodistusTiedoteRepository(app.masterDatabase.db, app.instanceId, futureConfig)
 
         val eligibleAfter = restrictedRepo.findEligibleBatch(100)

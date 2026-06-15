@@ -395,6 +395,8 @@ object KoskiSpecificMockOppijat {
 
   val ahvenanmaanPerusoppilas = koskiSpecificOppijat.oppija("Åländsk", "Alina", "150510A0873")
 
+  val kielitutkintoEnnenRajapäivää = koskiSpecificOppijat.oppija("Vanha-Kielitutkinto", "Veera", "150385-731L", syntymäaika = Some(LocalDate.of(1985, 3, 15)))
+
   def defaultOppijat = koskiSpecificOppijat.getOppijat
   def defaultKuntahistoriat: mutable.Map[String, Seq[OppijanumerorekisteriKotikuntahistoriaRow]] = koskiSpecificOppijat.getKuntahistoriat
   def defaultTurvakieltoKuntahistoriat: mutable.Map[String, Seq[OppijanumerorekisteriKotikuntahistoriaRow]] = koskiSpecificOppijat.getTurvakieltoKuntahistoriat
