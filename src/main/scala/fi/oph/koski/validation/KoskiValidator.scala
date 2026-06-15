@@ -744,24 +744,15 @@ class KoskiValidator(
     val varhennettuOppivelvollisuusVoimaan = LocalDate.parse(config.getString("validaatiot.varhennettuOppivelvollisuusVoimaan"))
     lisätiedot match {
       case Some(lt: VarhennettuOppivelvollisuus) =>
-        val sisältymättömätJaksot = sisältymättömätAikajaksot(lt.varhennetunOppivelvollisuudenJaksot, lt)
-
         val aikaisinAlkamispäivä = findEnsimmäinenAlkamispäivä(lt.varhennetunOppivelvollisuudenJaksot)
 
         val varhennettuAlkaaLiianAikaisin = aikaisinAlkamispäivä match {
           case Some(x) => x.isBefore(varhennettuOppivelvollisuusVoimaan)
           case _ => false
         }
-        HttpStatus.fold(
-          HttpStatus.validate(!varhennettuAlkaaLiianAikaisin)(
-            KoskiErrorCategory.badRequest.validation.date(
-              s"Varhennetun oppivelvollisuuden jaksot -lisätiedon varhaisin sallittu voimassaolopäivä on $varhennettuOppivelvollisuusVoimaan"
-            )
-          ),
-          HttpStatus.validate(sisältymättömätJaksot.isEmpty)(
-            KoskiErrorCategory.badRequest.validation.date(
-              s"Varhennetun oppivelvollisuuden jaksoissa (${sisältymättömätJaksot.get.mkString(",")}) on päiviä, joille ei ole tuen päätöksen jaksoa"
-            )
+        HttpStatus.validate(!varhennettuAlkaaLiianAikaisin)(
+          KoskiErrorCategory.badRequest.validation.date(
+            s"Varhennetun oppivelvollisuuden jaksot -lisätiedon varhaisin sallittu voimassaolopäivä on $varhennettuOppivelvollisuusVoimaan"
           )
         )
       case _ => HttpStatus.ok

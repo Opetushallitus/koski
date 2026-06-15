@@ -1,5 +1,10 @@
 # Koskeen tallennettavien tietojen validaatiosäännöt
 
+## 17.6.2026
+
+- Poistettiin validaatio, joka vaati varhennetun oppivelvollisuuden jaksolle voimassa olevan tuen päätöksen jakson.
+  - Varhennetun oppivelvollisuuden jakson saa siis siirtää ilman yhtäkään tuen päätöksen jaksoa.
+
 ## 3.6.2026
 
 - Ammatillisen opiskeluoikeuden uudelle rahoitusmuodolle tilauskoulutus (koodiarvo 17) on lisätty seuraavat validaatiot:
