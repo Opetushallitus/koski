@@ -273,13 +273,9 @@ object OvaraHakukoosteServiceSpec {
        |  "hakuOid": "${h.hakuOid}",
        |  "hakuNimi": ${localizedStringJson(h.hakuNimi)},
        |  "hakutapa": {"koodiarvo": "$hakutapaKoodiarvo", "koodistoUri": "hakutapa"},
-       |  "hakutyyppi": ${koodiviiteJson(h.hakutyyppi)},
        |  "aktiivinenHaku": ${h.aktiivinenHaku.getOrElse(false)},
        |  "haunAlkamispaivamaara": "${h.haunAlkamispaivamaara.toString}",
        |  "oppijaOid": "${h.oppijaOid}",
-       |  "huoltajanNimi": ${h.huoltajanNimi.map(s => s""""$s"""").getOrElse("null")},
-       |  "huoltajanPuhelinnumero": ${h.huoltajanPuhelinnumero.map(s => s""""$s"""").getOrElse("null")},
-       |  "huoltajanSahkoposti": ${h.huoltajanSähkoposti.map(s => s""""$s"""").getOrElse("null")},
        |  "hakutoiveet": [${h.hakutoiveet.map(hakutoiveJson).mkString(",")}]
        |}""".stripMargin
   }

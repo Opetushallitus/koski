@@ -28,9 +28,6 @@ case class Hakukooste(
   @KoodistoUri("maatjavaltiot2")
   maa: Option[Koodistokoodiviite],
   matkapuhelin: String,
-  huoltajanNimi: Option[String],
-  huoltajanPuhelinnumero: Option[String],
-  huoltajanSähkoposti: Option[String],
   hakutoiveet: Seq[Hakutoive],
   hakemuksenMuokkauksenAikaleima: Option[LocalDateTime]
 )

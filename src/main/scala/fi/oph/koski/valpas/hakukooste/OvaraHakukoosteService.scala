@@ -49,7 +49,6 @@ case class OvaraHakukoosteResponse(
   hakemusOid: String,
   hakemusUrl: String,
   hakutapa: Koodistokoodiviite,
-  hakutyyppi: Option[Koodistokoodiviite], // TODO: kenttä poistettu Ovarasta?
   haunAlkamispaivamaara: String,
   hakuNimi: OvaraNimi,
   email: Option[String],
@@ -58,9 +57,6 @@ case class OvaraHakukoosteResponse(
   postitoimipaikka: Option[String],
   maa: Option[Koodistokoodiviite],
   matkapuhelin: Option[String],
-  huoltajanNimi: Option[String], // TODO: kenttä poistettu Ovarasta?
-  huoltajanPuhelinnumero: Option[String], // TODO: kenttä poistettu Ovarasta?
-  huoltajanSahkoposti: Option[String], // TODO: kenttä poistettu Ovarasta?
   hakutoiveet: Seq[OvaraHakutoiveResponse],
   hakemuksenMuokkauksenAikaleima: Option[String],
 )
@@ -170,7 +166,6 @@ class OvaraHakukoosteService(
   private def toHakukooste(response: OvaraHakukoosteResponse, errorClue: String): Either[HttpStatus, Hakukooste] =
     for {
       hakutapa <- validateKoodiviite(response.hakutapa, errorClue)
-      hakutyyppi <- validateOptionalKoodiviite(response.hakutyyppi, errorClue)
       maa <- validateOptionalKoodiviite(response.maa, errorClue)
       hakutoiveet <- convertHakutoiveet(response.hakutoiveet, errorClue)
       haunAlkamispaivamaara <- parseDateToDateTime(response.haunAlkamispaivamaara, errorClue)
@@ -181,7 +176,7 @@ class OvaraHakukoosteService(
       hakemusOid = response.hakemusOid,
       hakemusUrl = response.hakemusUrl,
       hakutapa = hakutapa,
-      hakutyyppi = hakutyyppi,
+      hakutyyppi = None, // Tämä kenttä ei tällä hetkellä palaudu Ovarasta
       haunAlkamispaivamaara = haunAlkamispaivamaara,
       hakuNimi = toLocalizedString(response.hakuNimi),
       email = response.email.getOrElse(""),
@@ -190,9 +185,6 @@ class OvaraHakukoosteService(
       postitoimipaikka = response.postitoimipaikka,
       maa = maa,
       matkapuhelin = response.matkapuhelin.getOrElse(""),
-      huoltajanNimi = response.huoltajanNimi,
-      huoltajanPuhelinnumero = response.huoltajanPuhelinnumero,
-      huoltajanSähkoposti = response.huoltajanSahkoposti,
       hakutoiveet = hakutoiveet,
       hakemuksenMuokkauksenAikaleima = response.hakemuksenMuokkauksenAikaleima.flatMap { s =>
         Try(OffsetDateTime.parse(s).atZoneSameInstant(ZoneId.of("Europe/Helsinki")).toLocalDateTime).toOption

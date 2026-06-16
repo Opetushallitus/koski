@@ -224,9 +224,6 @@ object HakukoosteExampleData {
       postitoimipaikka = postitoimipaikka,
       maa = maa,
       matkapuhelin = "0401234567",
-      huoltajanNimi = Some("Huoltaja Sukunimi"),
-      huoltajanPuhelinnumero = Some("0407654321"),
-      huoltajanSähkoposti = Some("huoltaja.sukunimi@gmail.com"),
       hakutoiveet = hakutoiveet.map(hakutoive => hakutoive.copy(
         organisaatioNimi = MockOrganisaatioRepository
           .getOrganisaationNimiHetkellä(hakutoive.hakukohdeOrganisaatio, alkamisaika.toLocalDate)

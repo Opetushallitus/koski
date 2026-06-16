@@ -65,19 +65,6 @@ object ValpasYhteystiedot {
     sähköposti = Some(hakukooste.email),
   )
 
-  def oppijanIlmoittamatHuoltajanYhteystiedot(hakukooste: Hakukooste, yhteystietoryhmänNimi: LocalizedString): Option[ValpasYhteystiedot] =
-    if (hakukooste.huoltajanNimi.nonEmpty || hakukooste.huoltajanPuhelinnumero.nonEmpty || hakukooste.huoltajanSähkoposti.nonEmpty) {
-      Some(ValpasYhteystiedot(
-        alkuperä = ValpasYhteystietoHakemukselta(hakukooste),
-        yhteystietoryhmänNimi = yhteystietoryhmänNimi,
-        henkilönimi = hakukooste.huoltajanNimi,
-        matkapuhelinnumero = hakukooste.huoltajanPuhelinnumero,
-        sähköposti = hakukooste.huoltajanSähkoposti,
-      ))
-    } else {
-      None
-    }
-
   def virallinenYhteystieto(yhteystiedot: Yhteystiedot, nimi: LocalizedString): ValpasYhteystiedot = ValpasYhteystiedot(
     alkuperä = ValpasYhteystietoOppijanumerorekisteristä(yhteystiedot.alkuperä, yhteystiedot.tyyppi),
     yhteystietoryhmänNimi = nimi,
