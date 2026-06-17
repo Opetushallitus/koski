@@ -18,6 +18,7 @@ export type KorkeakoulututkinnonSuoritus = {
   tila?: Koodistokoodiviite<'suorituksentila', string>
   hyväksilukupäivä?: string
   suorituskieli?: Koodistokoodiviite<'kieli', string>
+  lisätieto?: LocalizedString
   koulutusmoduuli: Korkeakoulututkinto
   toimipiste: Oppilaitos
   osasuoritukset?: Array<KorkeakoulunOpintojaksonSuoritus>
@@ -30,6 +31,7 @@ export const KorkeakoulututkinnonSuoritus = (o: {
   tila?: Koodistokoodiviite<'suorituksentila', string>
   hyväksilukupäivä?: string
   suorituskieli?: Koodistokoodiviite<'kieli', string>
+  lisätieto?: LocalizedString
   koulutusmoduuli: Korkeakoulututkinto
   toimipiste: Oppilaitos
   osasuoritukset?: Array<KorkeakoulunOpintojaksonSuoritus>
