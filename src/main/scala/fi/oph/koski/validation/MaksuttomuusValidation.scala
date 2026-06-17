@@ -75,7 +75,7 @@ object MaksuttomuusValidation extends Logging {
       .exists(_.exists(_.maksuton))
 
     val vapautettuOppivelvollisuudesta = valpasOppivelvollisuudestaVapautusService
-      .findVapautukset(List(oppijanOid)).exists(vapautus => !vapautus.tulevaisuudessa && !vapautus.mitätöitymässä)
+      .findVapautukset(List(oppijanOid)).exists(!_.tulevaisuudessa)
 
     val vapautettuOppivelvollisuudestaJaKoulutusMaksuton = vapautettuOppivelvollisuudesta && maksutonKoulutus
     val oppijaOnHetuton = oppijanHenkilötiedot.exists(_.hetu.isEmpty)

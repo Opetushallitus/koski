@@ -159,6 +159,35 @@ class MaksuttomuusSpec extends AnyFreeSpec with OpiskeluoikeusTestMethodsAmmatil
         }
         oppivelvollisuudestaVapautusService.db.deleteAll()
       }
+
+      "Jos vapautus on mitätöity, maksuttomuustiedon saa siirtää kun maksuton = true" in {
+        oppivelvollisuudestaVapautusService.db.deleteAll()
+        oppivelvollisuudestaVapautusService.db.lisääOppivelvollisuudestaVapautus(oppija.oid, "", LocalDate.of(2000, 8, 1), "091")
+        oppivelvollisuudestaVapautusService.db.mitätöiOppivelvollisuudestaVapautus(oppija.oid, "091")
+
+        setupOppijaWithMaksuttomuus(
+          List(Maksuttomuus(date(2021, 8, 1), None, maksuton = true)),
+          oppija,
+          alkamispäivällä(defaultOpiskeluoikeus, date(2021, 8, 1))
+        ) {
+          verifyResponseStatusOk()
+        }
+        oppivelvollisuudestaVapautusService.db.deleteAll()
+      }
+
+      "Jos vapautus on tulevaisuudessa, maksuttomuustiedon saa siirtää kun maksuton = true" in {
+        oppivelvollisuudestaVapautusService.db.deleteAll()
+        oppivelvollisuudestaVapautusService.db.lisääOppivelvollisuudestaVapautus(oppija.oid, "", LocalDate.of(2099, 1, 1), "091")
+
+        setupOppijaWithMaksuttomuus(
+          List(Maksuttomuus(date(2021, 8, 1), None, maksuton = true)),
+          oppija,
+          alkamispäivällä(defaultOpiskeluoikeus, date(2021, 8, 1))
+        ) {
+          verifyResponseStatusOk()
+        }
+        oppivelvollisuudestaVapautusService.db.deleteAll()
+      }
     }
 
     "Siirto kun opiskelijalla perusopetuksen päättötodistus tai siihen verrattavissa oleva suoritus" - {
@@ -724,6 +753,28 @@ class MaksuttomuusSpec extends AnyFreeSpec with OpiskeluoikeusTestMethodsAmmatil
       setupOppijaWithOpiskeluoikeus(opiskeluoikeus, oppija) {
         verifyResponseStatusOk()
       }
+      oppivelvollisuudestaVapautusService.db.deleteAll()
+    }
+
+    "Maksuttomuustietoja vaaditaan, jos vapautus on mitätöity" in {
+      oppivelvollisuudestaVapautusService.db.deleteAll()
+      oppivelvollisuudestaVapautusService.db.lisääOppivelvollisuudestaVapautus(oppija.oid, "", LocalDate.of(2000, 8, 1), "091")
+      oppivelvollisuudestaVapautusService.db.mitätöiOppivelvollisuudestaVapautus(oppija.oid, "091")
+
+      setupOppijaWithOpiskeluoikeus(opiskeluoikeus, oppija) {
+        verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation("Tieto koulutuksen maksuttomuudesta/maksullisuudesta vaaditaan opiskeluoikeudelle."))
+      }
+      oppivelvollisuudestaVapautusService.db.deleteAll()
+    }
+
+    "Maksuttomuustietoja vaaditaan, jos vapautus on tulevaisuudessa" in {
+      oppivelvollisuudestaVapautusService.db.deleteAll()
+      oppivelvollisuudestaVapautusService.db.lisääOppivelvollisuudestaVapautus(oppija.oid, "", LocalDate.of(2099, 1, 1), "091")
+
+      setupOppijaWithOpiskeluoikeus(opiskeluoikeus, oppija) {
+        verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation("Tieto koulutuksen maksuttomuudesta/maksullisuudesta vaaditaan opiskeluoikeudelle."))
+      }
+      oppivelvollisuudestaVapautusService.db.deleteAll()
     }
 
     "Maksuttomuustietoja ei vaadita, jos oppija on syntynyt ennen 2004" in {
