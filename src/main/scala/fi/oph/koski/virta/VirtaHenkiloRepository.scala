@@ -25,6 +25,9 @@ case class VirtaHenkilöRepository(v: VirtaClient, accessChecker: VirtaAccessChe
           UusiHenkilö(hetu = hetu, etunimet = etunimet, kutsumanimi = kutsumanimi, sukunimi = sukunimi)
         })
     } catch {
+      case NonFatal(e) if VirtaError.isExpectedFailure(e) =>
+        logger.warn(s"Failed to fetch data from Virta: ${e.getMessage}")
+        Left(KoskiErrorCategory.unavailable.virta())
       case NonFatal(e) =>
         logger.error(e)("Failed to fetch data from Virta")
         Left(KoskiErrorCategory.unavailable.virta())
