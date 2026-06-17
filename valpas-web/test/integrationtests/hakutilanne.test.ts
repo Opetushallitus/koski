@@ -393,7 +393,11 @@ describe("Hakutilannenäkymä", () => {
   it("Epäonnistunut hakutietojen haku näyttää virheilmoituksen", async () => {
     await loginAs(hakutilannePath, "valpas-monta")
     await urlIsEventually(pathToUrl(saksalainenKouluHakutilannePath))
-    await setTableTextFilter(".hakutilanne", 1, "hakukoosteen-haku-aina-epäonnistuu")
+    await setTableTextFilter(
+      ".hakutilanne",
+      1,
+      "hakukoosteen-haku-aina-epäonnistuu",
+    )
     await dataTableEventuallyEquals(
       ".hakutilanne",
       "Hakukoosteen-haku-aina-epäonnistuu Valpas  | 18.7.2004 | 9C  | – | Virhe oppijan hakuhistorian hakemisessa | – | – | – |",
