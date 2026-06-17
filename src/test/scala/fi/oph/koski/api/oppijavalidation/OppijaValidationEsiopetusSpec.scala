@@ -884,12 +884,11 @@ class OppijaValidationEsiopetusSpec extends TutkinnonPerusteetTest[EsiopetuksenO
         defaultOpiskeluoikeus.copy(
           tila = NuortenPerusopetuksenOpiskeluoikeudenTila(List(NuortenPerusopetuksenOpiskeluoikeusjakso(date(2026, 7, 31), opiskeluoikeusLäsnä))),
           lisätiedot = Some(EsiopetuksenOpiskeluoikeudenLisätiedot(
-            varhennetunOppivelvollisuudenJaksot = Some(List(Aikajakso(alku = Some(alku), loppu = None))),
-            tuenPäätöksenJaksot = Some(List(Tukijakso(alku = Some(alku), loppu = None))),
+            varhennetunOppivelvollisuudenJaksot = Some(List(Aikajakso(alku = Some(alku), loppu = None)))
           ))
         )
       }
-      "Varhennettu oppivelvollisuus ei saa alkaa ennen voimaantuloa ja vaatii tukijakson" in {
+      "Varhennettu oppivelvollisuus ei saa alkaa ennen voimaantuloa" in {
         val oo = makeOpiskeluoikeus(päätöksetSallittuAlkaen)
         setupOppijaWithOpiskeluoikeus(oo) {
           verifyResponseStatusOk()
@@ -899,13 +898,6 @@ class OppijaValidationEsiopetusSpec extends TutkinnonPerusteetTest[EsiopetuksenO
         setupOppijaWithOpiskeluoikeus(ooLiianAikaisin) {
           verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.date(
             "Varhennetun oppivelvollisuuden jaksot -lisätiedon varhaisin sallittu voimassaolopäivä on 2026-08-01"
-          ))
-        }
-
-        val ooIlmanTukijaksoja = oo.copy(lisätiedot = oo.lisätiedot.map(_.copy(tuenPäätöksenJaksot = None)))
-        setupOppijaWithOpiskeluoikeus(ooIlmanTukijaksoja) {
-          verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.date(
-            "Varhennetun oppivelvollisuuden jaksoissa (2026-08-01 – ) on päiviä, joille ei ole tuen päätöksen jaksoa"
           ))
         }
       }
