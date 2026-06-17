@@ -131,7 +131,7 @@ describe('Käyttöoikeudet', function () {
     })
   })
 
-  describe('Linkit henkilöpalveluun, Virta-opintotietoihin ja suoritusrekisteriin oppijan sivulla', function () {
+  describe('Linkit henkilöpalveluun ja Virta-opintotietoihin oppijan sivulla', function () {
     describe('Käyttäjällä on kirjoitusoikeudet henkilöpalveluun', function () {
       before(
         Authentication().logout,
@@ -141,7 +141,7 @@ describe('Käyttöoikeudet', function () {
       )
       it('Linkit näytetään', function () {
         expect(extractAsText(S('.oppija-content h2 a'))).to.equal(
-          'JSON Oppijanumerorekisteri Virta XML Suoritusrekisteri'
+          'JSON Oppijanumerorekisteri Virta XML'
         )
       })
     })

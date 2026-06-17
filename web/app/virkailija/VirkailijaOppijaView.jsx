@@ -430,21 +430,6 @@ export class Oppija extends React.Component {
                   </a>
                 )
             )}
-            {showSureLink.map(
-              (show) =>
-                show && (
-                  <a
-                    href={`/suoritusrekisteri/#/opiskelijat?henkilo=${modelData(
-                      henkilö,
-                      'oid'
-                    )}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    {'Suoritusrekisteri'}
-                  </a>
-                )
-            )}
           </h2>
           <div className="oppijanumero">
             {t('Oppijanumero')}
