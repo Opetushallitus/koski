@@ -11,7 +11,6 @@ export const navigateTo = function (path, event) {
     (event.altKey || event.shiftKey || event.metaKey || event.ctrlKey)
   )
     return
-  const prevLoc = previousLocation
   const nextLoc = parsePath(path)
   previousLocation = nextLoc
   history.pushState(null, null, path)
@@ -20,7 +19,6 @@ export const navigateTo = function (path, event) {
 }
 
 export const replaceLocation = (path) => {
-  const prevLoc = previousLocation
   const nextLoc = parsePath(path)
   previousLocation = nextLoc
   history.replaceState(null, null, path)
@@ -32,7 +30,6 @@ window.onpopstate = function () {
     history.pushState(null, null, previousLocation.toString())
     return
   }
-  const prevLoc = previousLocation
   const nextLoc = currentLocation()
   previousLocation = nextLoc
   locationBus.push(nextLoc)
