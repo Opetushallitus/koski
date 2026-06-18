@@ -33,6 +33,12 @@ object RaportointiDatabase {
   def schemaVersion: (Int, String) = (32, "d2fb4070c2e4d38b501143b464d3a953")
 }
 
+private case class Kloonaus(
+  taulu: String,
+  primaryKeys: List[String] = List.empty,
+  timeout: FiniteDuration = 120.minutes,
+)
+
 class RaportointiDatabase(config: RaportointiDatabaseConfigBase) extends Logging with QueryMethods with DatabaseExecutionContext {
   val schema: Schema = config.schema
   val confidential: Option[ConfidentialRaportointiDatabase] = ConfidentialRaportointiDatabase(config)
@@ -205,42 +211,57 @@ class RaportointiDatabase(config: RaportointiDatabaseConfigBase) extends Logging
   def cloneUpdateableTables(source: RaportointiDatabase, enableYtr: Boolean): Unit = {
     import fi.oph.koski.db.PostgresDriverWithJsonSupport.plainAPI._
 
-    val BATCH_SIZE = 10000000
-    val BATCH_WARNING_TIME_LIMIT = 10.minutes
-
-    case class Kloonaus(
-      taulu: String,
-      primaryKeys: List[String] = List.empty,
-      timeout: FiniteDuration = 120.minutes,
-    );
-
-    val kloonattavatTaulut = List(
-      Kloonaus("r_opiskeluoikeus", List("opiskeluoikeus_oid")),
-      Kloonaus("r_organisaatiohistoria"),
-      Kloonaus("esiopetus_opiskeluoik_aikajakso"),
-      Kloonaus("r_opiskeluoikeus_aikajakso", List("id")),
-      Kloonaus("r_paatason_suoritus", List("paatason_suoritus_id")),
-      Kloonaus("r_osasuoritus", List("osasuoritus_id")),
-      Kloonaus("muu_ammatillinen_raportointi"),
-      Kloonaus("topks_ammatillinen_raportointi"),
-      Kloonaus("r_mitatoitu_opiskeluoikeus", List("opiskeluoikeus_oid")),
-      Kloonaus("r_aikajakso"),
-      Kloonaus("r_koulutuksen_jarjestamismuoto_ammatillinen"),
-      Kloonaus("r_osaamisen_hankkimistapa_ammatillinen")
-    ) ++ (if (enableYtr) {
-      List(
-        Kloonaus("r_ytr_tutkintokokonaisuuden_suoritus", List("ytr_tutkintokokonaisuuden_suoritus_id")),
-        Kloonaus("r_ytr_tutkintokerran_suoritus", List("ytr_tutkintokerran_suoritus_id")),
-        Kloonaus("r_ytr_kokeen_suoritus", List("ytr_kokeen_suoritus_id")),
-        Kloonaus("r_ytr_tutkintokokonaisuuden_kokeen_suoritus", List("ytr_tutkintokokonaisuuden_suoritus_id", "ytr_kokeen_suoritus_id")),
-      )
-    } else {
-      List.empty
-    })
+    cloneTables(source, updateableTablesToClone(enableYtr))
 
     val päivitettävätIdSekvenssit = List(
       ("r_opiskeluoikeus_aikajakso", "id"),
     )
+    päivitettävätIdSekvenssit.foreach { seq =>
+      val (taulu, col) = seq
+      runDbSync(sql"""SELECT setval('#${schema.name}.#${taulu}_#${col}_seq', (SELECT max(#${col}) FROM #${schema.name}.#${taulu}))""".as[Long])
+    }
+
+    for {
+      confDest <- confidential
+      confSource <- source.confidential
+    } confDest.cloneTables(confSource, confidentialUpdateableTablesToClone)
+  }
+
+  private def updateableTablesToClone(enableYtr: Boolean): List[Kloonaus] = List(
+    Kloonaus("r_opiskeluoikeus", List("opiskeluoikeus_oid")),
+    Kloonaus("r_organisaatiohistoria"),
+    Kloonaus("esiopetus_opiskeluoik_aikajakso"),
+    Kloonaus("r_opiskeluoikeus_aikajakso", List("id")),
+    Kloonaus("r_paatason_suoritus", List("paatason_suoritus_id")),
+    Kloonaus("r_osasuoritus", List("osasuoritus_id")),
+    Kloonaus("muu_ammatillinen_raportointi"),
+    Kloonaus("topks_ammatillinen_raportointi"),
+    Kloonaus("r_mitatoitu_opiskeluoikeus", List("opiskeluoikeus_oid")),
+    Kloonaus("r_aikajakso"),
+    Kloonaus("r_koulutuksen_jarjestamismuoto_ammatillinen"),
+    Kloonaus("r_osaamisen_hankkimistapa_ammatillinen"),
+    Kloonaus("r_henkilo", List("oppija_oid")),
+    Kloonaus("r_kotikuntahistoria"),
+  ) ++ (if (enableYtr) {
+    List(
+      Kloonaus("r_ytr_tutkintokokonaisuuden_suoritus", List("ytr_tutkintokokonaisuuden_suoritus_id")),
+      Kloonaus("r_ytr_tutkintokerran_suoritus", List("ytr_tutkintokerran_suoritus_id")),
+      Kloonaus("r_ytr_kokeen_suoritus", List("ytr_kokeen_suoritus_id")),
+      Kloonaus("r_ytr_tutkintokokonaisuuden_kokeen_suoritus", List("ytr_tutkintokokonaisuuden_suoritus_id", "ytr_kokeen_suoritus_id")),
+    )
+  } else {
+    List.empty
+  })
+
+  private def confidentialUpdateableTablesToClone: List[Kloonaus] = List(
+    Kloonaus("r_kotikuntahistoria"),
+  )
+
+  private[raportointikanta] def cloneTables(source: RaportointiDatabase, kloonattavatTaulut: List[Kloonaus]): Unit = {
+    import fi.oph.koski.db.PostgresDriverWithJsonSupport.plainAPI._
+
+    val BATCH_SIZE = 10000000
+    val BATCH_WARNING_TIME_LIMIT = 10.minutes
 
     kloonattavatTaulut.foreach { kloonaus =>
       val startTime = System.currentTimeMillis
@@ -276,11 +297,6 @@ class RaportointiDatabase(config: RaportointiDatabaseConfigBase) extends Logging
 
       val elapsedSeconds = (System.currentTimeMillis - startTime) / 1000
       logger.info(s"Kopioitiin rivit ${source.schema.name}.${kloonaus.taulu} --> ${schema.name}.${kloonaus.taulu}, ${elapsedSeconds} s")
-    }
-
-    päivitettävätIdSekvenssit.foreach { seq =>
-      val (taulu, col) = seq
-      runDbSync(sql"""SELECT setval('#${schema.name}.#${taulu}_#${col}_seq', (SELECT max(#${col}) FROM #${schema.name}.#${taulu}))""".as[Long])
     }
   }
 
@@ -431,6 +447,26 @@ class RaportointiDatabase(config: RaportointiDatabaseConfigBase) extends Logging
   def loadKotikuntahistoria(historia: Seq[RKotikuntahistoriaRow]): Unit =
     runDbSync(RKotikuntahistoria ++= historia.filterNot(_.turvakielto))
 
+  def updateHenkilöt(henkilöt: Seq[RHenkilöRow]): Unit = {
+    val oppijaOids = henkilöt.map(_.oppijaOid).toSet
+    if (oppijaOids.nonEmpty) {
+      runDbSync(RHenkilöt.filter(_.oppijaOid inSet oppijaOids).delete, timeout = 5.minutes)
+    }
+    if (henkilöt.nonEmpty) {
+      runDbSync(RHenkilöt ++= henkilöt, timeout = 5.minutes)
+    }
+  }
+
+  def updateKotikuntahistoria(masterOids: Set[String], historia: Seq[RKotikuntahistoriaRow]): Unit = {
+    if (masterOids.nonEmpty) {
+      runDbSync(RKotikuntahistoria.filter(_.masterOppijaOid inSet masterOids).delete, timeout = 5.minutes)
+    }
+    val ladattavat = historia.filterNot(_.turvakielto)
+    if (ladattavat.nonEmpty) {
+      runDbSync(RKotikuntahistoria ++= ladattavat, timeout = 5.minutes)
+    }
+  }
+
   def loadOrganisaatiot(organisaatiot: Seq[ROrganisaatioRow]): Unit =
     runDbSync(ROrganisaatiot ++= organisaatiot)
 
@@ -462,6 +498,9 @@ class RaportointiDatabase(config: RaportointiDatabaseConfigBase) extends Logging
 
   def setStatusLoadCompletedAndCount(name: String, count: Int): Unit =
     runDbSync(sqlu"update #${schema.name}.raportointikanta_status set count=$count, load_completed=now() where name = $name")
+
+  def getStatusLoadStarted(name: String): Option[Timestamp] =
+    runDbSync(RaportointikantaStatus.filter(_.name === name).map(_.loadStarted).result.headOption).flatten
 
   def status: RaportointikantaStatusResponse =
     RaportointikantaStatusResponse(schema.name, queryStatus)
@@ -767,6 +806,15 @@ class ConfidentialRaportointiDatabase(config: RaportointiDatabaseConfigBase) ext
 
   override def loadKotikuntahistoria(historia: Seq[RKotikuntahistoriaRow]): Unit =
     runDbSync(RKotikuntahistoria ++= historia)
+
+  override def updateKotikuntahistoria(masterOids: Set[String], historia: Seq[RKotikuntahistoriaRow]): Unit = {
+    if (masterOids.nonEmpty) {
+      runDbSync(RKotikuntahistoria.filter(_.masterOppijaOid inSet masterOids).delete, timeout = 5.minutes)
+    }
+    if (historia.nonEmpty) {
+      runDbSync(RKotikuntahistoria ++= historia, timeout = 5.minutes)
+    }
+  }
 }
 
 object ConfidentialRaportointiDatabase {

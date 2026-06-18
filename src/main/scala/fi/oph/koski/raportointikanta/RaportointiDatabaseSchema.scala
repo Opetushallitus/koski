@@ -1247,6 +1247,7 @@ sealed trait Schema {
     sqlu"CREATE INDEX ON #${name}.r_opiskeluoikeus_aikajakso(opiskeluoikeus_oid)",
     sqlu"CREATE INDEX ON #${name}.r_organisaatiohistoria(opiskeluoikeus_oid)",
     sqlu"CREATE INDEX ON #${name}.r_osaamisen_hankkimistapa_ammatillinen(opiskeluoikeus_oid)",
+    sqlu"CREATE INDEX ON #${name}.r_kotikuntahistoria(master_oid)",
   )
 
   def createOpiskeluoikeusIndexes() = DBIO.seq(
@@ -1357,7 +1358,9 @@ case object Temp extends Schema {
 }
 
 sealed trait ConfidentialSchema extends Schema {
-  override def createIndexesForIncrementalUpdate(): Seq[DBIO[Int]] = Seq.empty
+  override def createIndexesForIncrementalUpdate(): Seq[DBIO[Int]] = Seq(
+    sqlu"CREATE INDEX ON #${name}.r_kotikuntahistoria(master_oid)",
+  )
   override def createOpiskeluoikeusIndexes() = DBIO.seq()
   override def createOtherIndexes() = DBIO.seq(
     Kotikuntahistoria.createIndexes(this),
