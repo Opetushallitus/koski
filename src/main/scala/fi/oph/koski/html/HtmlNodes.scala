@@ -9,8 +9,8 @@ import fi.oph.koski.util.JsStringInterpolation._
 import fi.oph.koski.util.XML.CommentedPCData
 import org.scalatra.servlet.RichRequest
 
-import java.io.File
 import java.net.URLDecoder
+import java.nio.file.Paths
 import scala.xml.NodeSeq.Empty
 import scala.xml.{Elem, NodeSeq}
 import fi.oph.koski.xml.NodeSeqImplicits._
@@ -32,6 +32,7 @@ trait HtmlNodes extends KoskiSpecificBaseServlet with LanguageSupport {
     nonce: String
   ): Elem = {
     val bodyClasses = scriptBundleName.replace("koski-", "").replace(".js", "") + "-page"
+    val scriptSrc = s"/koski/js/$scriptBundleName?${resolveScriptVersion(scriptBundleName)}"
     <html lang={lang}>
       <head>
         {commonHead(responsive, allowIndexing, nonce) ++ windowNonce(nonce) ++ raamit.script(nonce)}
@@ -52,7 +53,7 @@ trait HtmlNodes extends KoskiSpecificBaseServlet with LanguageSupport {
           {setWindowVar("config", frontendConfig)}
         </script>
         {scripts}
-        <script nonce={nonce} id="bundle" src={"/koski/js/" + scriptBundleName + "?" + buildVersion.getOrElse(scriptTimestamp(scriptBundleName))}></script>
+        <script nonce={nonce} id="bundle" src={scriptSrc}></script>
         <!-- oppija-raamit footer is inserted here -->
       </body>
     </html>
@@ -91,7 +92,34 @@ trait HtmlNodes extends KoskiSpecificBaseServlet with LanguageSupport {
       """)}
     </script>
 
-  private def scriptTimestamp(scriptBundleName: String) = new File(s"./target/webapp/js/$scriptBundleName").lastModified()
+  private def resolveScriptVersion(scriptBundleName: String): String =
+    ScriptCacheBuster.resolveScriptVersion(
+      isLocalDevelopmentEnvironment = Environment.isLocalDevelopmentEnvironment(application.config),
+      buildVersion = buildVersion,
+      scriptBundleName = scriptBundleName
+    )
+}
+
+private[html] object ScriptCacheBuster {
+  def resolveScriptVersion(
+    isLocalDevelopmentEnvironment: Boolean,
+    buildVersion: Option[String],
+    scriptBundleName: String,
+    resourceBase: String = System.getProperty("resourcebase", "./target/webapp")
+  ): String =
+    if (isLocalDevelopmentEnvironment) {
+      readScriptTimestamp(resourceBase, scriptBundleName).toString
+    } else {
+      requireBuildVersion(buildVersion)
+    }
+
+  def readScriptTimestamp(resourceBase: String, scriptBundleName: String): Long =
+    Paths.get(resourceBase, "koski", "js", scriptBundleName).toFile.lastModified()
+
+  private def requireBuildVersion(buildVersion: Option[String]): String =
+    buildVersion.getOrElse {
+      throw new IllegalStateException("buildversion.txt missing vcsRevision")
+    }
 }
 
 trait Raamit {
