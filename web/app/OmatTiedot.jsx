@@ -19,7 +19,7 @@ import Text from './i18n/Text'
 import editorMapping from './oppija/editors'
 import { userP } from './util/user'
 import { addContext, modelData, modelItems } from './editor/EditorModel'
-import { locationP } from './util/location'
+import { locationP, redirectTo } from './util/location'
 import { Header } from './omattiedot/header/Header'
 import { EiSuorituksiaInfo } from './omattiedot/EiSuorituksiaInfo'
 import { patchSaavutettavuusLeima } from './saavutettavuusLeima'
@@ -57,8 +57,13 @@ const omatTiedotP = (oid) => {
 const topBarP = userP.map((user) => <OmatTiedotTopBar user={user} />)
 const oppijaSelectionBus = new Bacon.Bus()
 const loadingOppijaStream = Bacon.mergeAll(oppijaSelectionBus, locationP)
-  .flatMapLatest((loc) =>
-    Bacon.fromArray([
+  .flatMapLatest((loc) => {
+    if (loc.path === '/koski') {
+      redirectTo('/koski/omattiedot')
+      return Bacon.never()
+    }
+
+    return Bacon.fromArray([
       Bacon.constant(
         <div className="main-content ajax-indicator-bg">
           <Text name="Ladataan..." />
@@ -79,7 +84,7 @@ const loadingOppijaStream = Bacon.mergeAll(oppijaSelectionBus, locationP)
         )
       )
     ])
-  )
+  })
   .flatMapLatest((x) => x)
 
 const contentP = loadingOppijaStream.toProperty().startWith(

@@ -1,5 +1,6 @@
 import React from 'react'
-import { locationP, parseQuery } from '../util/location.js'
+import Bacon from 'baconjs'
+import { locationP, parseQuery, redirectTo } from '../util/location.js'
 import { oppijaContentP } from './VirkailijaOppijaView'
 import { UusiOppija } from '../uusioppija/UusiOppija'
 import { tiedonsiirtolokiContentP } from '../tiedonsiirrot/Tiedonsiirtoloki'
@@ -20,6 +21,11 @@ import {
 import { onlyIfHasReadAccess } from './accessCheck'
 import { raportitContentP } from '../raportit/Raportit'
 
+const redirectRouteTo = (path) => {
+  redirectTo(path)
+  return Bacon.never()
+}
+
 export const routeP = locationP
   .flatMapLatest(({ path, queryString, params, hash }) => {
     const oppijaId = (path.match(new RegExp('/koski/oppija/(.*)')) || [])[1]
@@ -35,6 +41,8 @@ export const routeP = locationP
         content: <UusiOppija hetu={uusiOppijaHetu} oid={uusiOppijaOid} />,
         title: 'Uuden opiskelijan lisäys'
       }
+    } else if (path === '/koski') {
+      return redirectRouteTo('/koski/virkailija')
     } else if (path === '/koski/virkailija') {
       return onlyIfHasReadAccess(oppijataulukkoContentP(queryString, params))
     } else if (path === '/koski/tiedonsiirrot') {

@@ -22,6 +22,15 @@ export const replaceLocation = (path) => {
   const nextLoc = parsePath(path)
   previousLocation = nextLoc
   history.replaceState(null, null, path)
+  return nextLoc
+}
+
+export const redirectTo = (path) => {
+  // Defer because redirects are likely to be triggered while handling the exported locationP
+  // which is derived from the locationBus into which we push here.
+  setTimeout(() => {
+    locationBus.push(replaceLocation(path))
+  }, 0)
 }
 
 window.onpopstate = function () {
