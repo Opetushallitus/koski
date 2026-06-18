@@ -276,5 +276,30 @@
     "koodiUri": "omadataoauth2client_walttipk",
     "versio": 1,
     "koodiArvo": "walttipk"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "Opin.fi-palvelu",
+        "kuvaus": null,
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Tjänsten Opin.fi",
+        "kuvaus": null,
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Opin.fi service",
+        "kuvaus": null,
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "omadataoauth2client_opintosetelipk",
+    "versio": 1,
+    "koodiArvo": "opintosetelipk"
   }
 ]
