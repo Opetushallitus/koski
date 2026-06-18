@@ -24,7 +24,7 @@ import * as string from 'fp-ts/lib/string'
 import { arraysEqual } from '../util/fp/arrays'
 
 export const listviewPath = () => {
-  return sessionStorage.previousListViewPath || '/koski/'
+  return sessionStorage.previousListViewPath || '/koski/virkailija'
 }
 
 export class Oppijataulukko extends React.Component {
@@ -58,7 +58,7 @@ export class Oppijataulukko extends React.Component {
         </h2>
         <div className="oppijataulukko">
           {näytettävätRivit ? (
-            <table>
+            <table data-testid="oppijataulukko">
               <thead>
                 <tr>
                   <SortingTableHeader

@@ -7,15 +7,22 @@ import { parseBool } from '../util/util'
 
 export default class extends React.Component {
   render() {
-    let { href, className, exitHook = true } = this.props
+    let {
+      href,
+      className,
+      exitHook = true,
+      children,
+      ...otherProps
+    } = this.props
     exitHook = parseBool(exitHook)
     return (
       <a
+        {...otherProps}
         href={href}
         className={className}
         onClick={navigateWithExitHook(href, exitHook)}
       >
-        {this.props.children}
+        {children}
       </a>
     )
   }

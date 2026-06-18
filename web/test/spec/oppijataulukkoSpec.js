@@ -370,7 +370,7 @@ describe('Oppijataulukko', function () {
           'Mastinen, Maarni',
           'Monia, Useita',
           'Monikoululainen, Miia',
-          'Rikkinäinen, Kela',
+          'Rikkinäinen, Kela'
         ])
         expect(page.opiskeluoikeudeTotal()).to.equal('13')
       })
@@ -549,7 +549,22 @@ describe('Oppijataulukko', function () {
               page.oppijataulukko.data().map(function (row) {
                 return row[8]
               })
-            ).to.deep.equal([ '9B', '9C', '9C', '9C', '9C', '9C', '9C', '9C', '9C', '9C', '9C', '9C', '9C', '9D' ])
+            ).to.deep.equal([
+              '9B',
+              '9C',
+              '9C',
+              '9C',
+              '9C',
+              '9C',
+              '9C',
+              '9C',
+              '9C',
+              '9C',
+              '9C',
+              '9C',
+              '9C',
+              '9D'
+            ])
           })
       })
       it('Laskeva järjestys', function () {
@@ -560,7 +575,22 @@ describe('Oppijataulukko', function () {
               page.oppijataulukko.data().map(function (row) {
                 return row[8]
               })
-            ).to.deep.equal([ '9D', '9C', '9C', '9C', '9C', '9C', '9C', '9C', '9C', '9C', '9C', '9C', '9C', '9B' ])
+            ).to.deep.equal([
+              '9D',
+              '9C',
+              '9C',
+              '9C',
+              '9C',
+              '9C',
+              '9C',
+              '9C',
+              '9C',
+              '9C',
+              '9C',
+              '9C',
+              '9C',
+              '9B'
+            ])
           })
       })
     })

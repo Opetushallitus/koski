@@ -4,6 +4,7 @@ import { OpiskeluoikeudenTilaDialog } from './dialogs/OpiskeluoikeudentilaDialog
 export class KoskiOppijaPage {
   readonly page: Page
   readonly oppijaHeading: Locator
+  readonly opiskelijatLink: Locator
   readonly hetu: Locator
   readonly koulutusmoduuli: Locator
   readonly luokka: Locator
@@ -35,6 +36,7 @@ export class KoskiOppijaPage {
       "[data-selected='true']"
     )
     this.oppijaHeading = page.getByTestId('oppija-heading')
+    this.opiskelijatLink = page.getByTestId('oppija-opiskelijat-link')
     // Opiskeluoikeuden perustiedot
     this.hetu = this.oppijaHeading.getByTestId('oppija-henkilotunnus')
     this.koulutusmoduuli = this.page.getByTestId('koulutusmoduuli-value')
@@ -46,9 +48,11 @@ export class KoskiOppijaPage {
     this.tallennusBtn = page.getByRole('button', { name: 'Tallenna muutokset' })
 
     this.opiskeluoikeudenTila = new OpiskeluoikeudenTilaDialog(page)
-    this.muokkausNäkymäBtn = page.getByRole('button', {
-      name: 'Muokkaa opiskeluoikeutta'
-    }).or(page.getByTestId('oo.0.opiskeluoikeus.edit'))
+    this.muokkausNäkymäBtn = page
+      .getByRole('button', {
+        name: 'Muokkaa opiskeluoikeutta'
+      })
+      .or(page.getByTestId('oo.0.opiskeluoikeus.edit'))
     this.peruutaMuutoksetLink = page.getByRole('link', {
       name: 'Peruuta muutokset'
     })
@@ -64,11 +68,15 @@ export class KoskiOppijaPage {
     this.vahvistaOpiskeluoikeudenMitätöintiButton = page.getByRole('link', {
       name: 'Vahvista mitätöinti, operaatiota ei voi peruuttaa'
     })
-    this.puraLähdejärjestelmäkytkentä = page.getByRole('link', {
-      name: 'Pura lähdejärjestelmäkytkentä'
-    }).or(page.getByRole('button', {
-      name: 'Pura lähdejärjestelmäkytkentä'
-    }))
+    this.puraLähdejärjestelmäkytkentä = page
+      .getByRole('link', {
+        name: 'Pura lähdejärjestelmäkytkentä'
+      })
+      .or(
+        page.getByRole('button', {
+          name: 'Pura lähdejärjestelmäkytkentä'
+        })
+      )
     this.vahvistaLähdejärjestelmäkytkentäButton = page.getByRole('button', {
       name: 'Vahvista lähdejärjestelmä'
     })
