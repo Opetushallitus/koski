@@ -145,6 +145,7 @@ jobs:
             fi.oph.koski.etk, \
             fi.oph.koski.hakemuspalvelu, \
             fi.oph.koski.henkilo, \
+            fi.oph.koski.html, \
             fi.oph.koski.http, \
             fi.oph.koski.cas, \
             fi.oph.koski.json, \

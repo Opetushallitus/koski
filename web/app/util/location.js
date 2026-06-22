@@ -11,7 +11,6 @@ export const navigateTo = function (path, event) {
     (event.altKey || event.shiftKey || event.metaKey || event.ctrlKey)
   )
     return
-  const prevLoc = previousLocation
   const nextLoc = parsePath(path)
   previousLocation = nextLoc
   history.pushState(null, null, path)
@@ -20,10 +19,18 @@ export const navigateTo = function (path, event) {
 }
 
 export const replaceLocation = (path) => {
-  const prevLoc = previousLocation
   const nextLoc = parsePath(path)
   previousLocation = nextLoc
   history.replaceState(null, null, path)
+  return nextLoc
+}
+
+export const redirectTo = (path) => {
+  // Defer because redirects are likely to be triggered while handling the exported locationP
+  // which is derived from the locationBus into which we push here.
+  setTimeout(() => {
+    locationBus.push(replaceLocation(path))
+  }, 0)
 }
 
 window.onpopstate = function () {
@@ -32,7 +39,6 @@ window.onpopstate = function () {
     history.pushState(null, null, previousLocation.toString())
     return
   }
-  const prevLoc = previousLocation
   const nextLoc = currentLocation()
   previousLocation = nextLoc
   locationBus.push(nextLoc)

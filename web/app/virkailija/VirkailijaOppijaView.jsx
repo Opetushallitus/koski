@@ -332,7 +332,11 @@ const stateToContent = ({
           <EditLocalizationsLink />
           {userP.map((user) =>
             !user.isViranomainen ? (
-              <Link className="back-link" href={listviewPath()}>
+              <Link
+                className="back-link"
+                href={listviewPath()}
+                data-testid="oppija-opiskelijat-link"
+              >
                 <Text name="Opiskelijat" />
               </Link>
             ) : null

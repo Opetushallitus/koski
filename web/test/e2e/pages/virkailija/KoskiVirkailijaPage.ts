@@ -3,9 +3,11 @@ import { expect } from '../../base'
 
 export class KoskiVirkailijaPage {
   readonly virhepalkki: Locator
+  readonly oppijataulukko: Locator
 
   constructor(private readonly page: Page) {
     this.virhepalkki = page.getByTestId('error')
+    this.oppijataulukko = page.getByTestId('oppijataulukko')
   }
 
   async goto() {
