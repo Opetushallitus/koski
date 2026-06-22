@@ -3,7 +3,6 @@ package fi.oph.koski.todistus
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.frontendvalvonta.FrontendValvontaMode
 import fi.oph.koski.html.{EiRaameja, Raamit}
-import fi.oph.koski.koskiuser.{KoskiCookieAndBasicAuthenticationSupport, KoskiSpecificSession}
 import fi.oph.koski.servlet.{KoskiHtmlServlet, NoCache}
 
 import scala.util.Using
@@ -12,10 +11,7 @@ class TodistusDownloadServlet(implicit val application: KoskiApplication)
   extends KoskiHtmlServlet
     with TodistusServlet
     with NoCache
-    with KoskiCookieAndBasicAuthenticationSupport
 {
-  implicit def session: KoskiSpecificSession = koskiSessionOption.get
-
   protected val virkailijaRaamitSet: Boolean = false
   protected def virkailijaRaamit: Raamit = EiRaameja
 

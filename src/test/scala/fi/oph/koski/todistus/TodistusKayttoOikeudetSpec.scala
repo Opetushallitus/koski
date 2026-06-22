@@ -1,6 +1,7 @@
 package fi.oph.koski.todistus
 
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
+import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.koskiuser.MockUsers
 import fi.oph.koski.schema.KielitutkinnonOpiskeluoikeus
 
@@ -177,6 +178,33 @@ class TodistusKayttoOikeudetSpec extends TodistusSpecHelpers {
         get(s"api/todistus/generate/${req.toPathParams}", headers = authHeaders(MockUsers.kalle) ++ jsonContent) {
           verifyResponseStatus(403)
         }
+      }
+    }
+  }
+
+  "Tunnistautumaton kutsu" - {
+    // Regressiotesti: aiemmin tunnistautumaton kutsu kaatui 500-virheeseen (None.get),
+    // koska requireTodistusEnabled pakotti session-arvon ennen kuin tunnistautuminen oli
+    // tarkistettu. Nyt vastauksena tulee 401.
+    val oppijaOid = KoskiSpecificMockOppijat.kielitutkinnonSuorittaja.oid
+
+    "statuspyyntö parametreilla palauttaa 401:n eikä 500:aa" in {
+      val opiskeluoikeusOid = getVahvistettuKielitutkinnonOpiskeluoikeus(oppijaOid).flatMap(_.oid).get
+      get(s"api/todistus/status/fi/$opiskeluoikeusOid", headers = jsonContent) {
+        verifyResponseStatus(401, KoskiErrorCategory.unauthorized.notAuthenticated())
+      }
+    }
+
+    "statuspyyntö id:llä palauttaa 401:n eikä 500:aa" in {
+      get(s"api/todistus/status/${java.util.UUID.randomUUID()}", headers = jsonContent) {
+        verifyResponseStatus(401, KoskiErrorCategory.unauthorized.notAuthenticated())
+      }
+    }
+
+    "generointipyyntö palauttaa 401:n eikä 500:aa" in {
+      val opiskeluoikeusOid = getVahvistettuKielitutkinnonOpiskeluoikeus(oppijaOid).flatMap(_.oid).get
+      get(s"api/todistus/generate/fi/$opiskeluoikeusOid", headers = jsonContent) {
+        verifyResponseStatus(401, KoskiErrorCategory.unauthorized.notAuthenticated())
       }
     }
   }

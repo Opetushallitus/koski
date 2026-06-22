@@ -1,7 +1,6 @@
 package fi.oph.koski.todistus
 
 import fi.oph.koski.config.KoskiApplication
-import fi.oph.koski.koskiuser.{KoskiCookieAndBasicAuthenticationSupport, KoskiSpecificSession}
 import fi.oph.koski.log.KoskiOperation.TODISTUKSEN_LUONTI
 import fi.oph.koski.log.KoskiAuditLogMessageField
 import fi.oph.koski.servlet.{KoskiSpecificApiServlet, NoCache}
@@ -11,10 +10,7 @@ class TodistusApiServlet(implicit val application: KoskiApplication)
   extends KoskiSpecificApiServlet
     with TodistusServlet
     with NoCache
-    with KoskiCookieAndBasicAuthenticationSupport
 {
-  implicit def session: KoskiSpecificSession = koskiSessionOption.get
-
   before() {
     requireTodistusEnabled
     requireKansalainenOrTodistuksiaLataavaOphKäyttäjä
