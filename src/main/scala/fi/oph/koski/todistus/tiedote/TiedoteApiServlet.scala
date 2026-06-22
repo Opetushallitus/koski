@@ -2,7 +2,7 @@ package fi.oph.koski.todistus.tiedote
 
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.http.KoskiErrorCategory
-import fi.oph.koski.koskiuser.{KoskiCookieAndBasicAuthenticationSupport, KoskiSpecificSession}
+import fi.oph.koski.koskiuser.RequiresSession
 import fi.oph.koski.koskiuser.Rooli.OPHPAAKAYTTAJA
 import fi.oph.koski.log.KoskiAuditLogMessageField.{opiskeluoikeusOid => opiskeluoikeusOidField, oppijaHenkiloOid}
 import fi.oph.koski.log.KoskiOperation.TIEDOTE_RESETOITU
@@ -12,10 +12,8 @@ import fi.oph.koski.servlet.{KoskiSpecificApiServlet, NoCache}
 class TiedoteApiServlet(implicit val application: KoskiApplication)
   extends KoskiSpecificApiServlet
     with NoCache
-    with KoskiCookieAndBasicAuthenticationSupport
+    with RequiresSession
 {
-  implicit def session: KoskiSpecificSession = koskiSessionOption.get
-
   before() {
     if (!session.hasRole(OPHPAAKAYTTAJA)) {
       haltWithStatus(KoskiErrorCategory.forbidden("Sallittu vain OPH-pääkäyttäjälle"))

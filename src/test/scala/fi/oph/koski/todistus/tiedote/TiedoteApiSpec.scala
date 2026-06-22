@@ -1,6 +1,7 @@
 package fi.oph.koski.todistus.tiedote
 
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
+import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.koskiuser.MockUsers
 import fi.oph.koski.todistus.TodistusSpecHelpers
 import fi.oph.koski.util.Wait
@@ -33,6 +34,14 @@ class TiedoteApiSpec extends TodistusSpecHelpers {
       "Tavallinen käyttäjä saa 403" in {
         get("api/tiedote/jobs", headers = authHeaders(MockUsers.stadinAmmattiopistoKatselija) ++ jsonContent) {
           verifyResponseStatus(403)
+        }
+      }
+
+      "Tunnistautumaton kutsu palauttaa 401:n eikä kaadu 500:aan" in {
+        // Regressiotesti: aiemmin tunnistautumaton kutsu kaatui 500-virheeseen (None.get),
+        // koska before() luki session-arvon ennen tunnistautumistarkistusta. Nyt vastauksena tulee 401.
+        get("api/tiedote/jobs", headers = jsonContent) {
+          verifyResponseStatus(401, KoskiErrorCategory.unauthorized.notAuthenticated())
         }
       }
 
