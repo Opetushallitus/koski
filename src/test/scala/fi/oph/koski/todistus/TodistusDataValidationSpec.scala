@@ -198,6 +198,12 @@ class TodistusDataValidationSpec extends AnyFreeSpec with Matchers {
       }
 
       "Järjestäjän nimi" - {
+        "hyväksyy lyhyen mutta validin nimen (esim. 'OSAO')" in {
+          val data = createValidTodistusData().copy(järjestäjäNimi = "OSAO")
+          val result = TodistusDataValidation.validateYleinenKielitutkintoData(data, "test-id")
+          result shouldBe Right(())
+        }
+
         "hylkää tyhjän nimen" in {
           val data = createValidTodistusData().copy(järjestäjäNimi = "")
           val result = TodistusDataValidation.validateYleinenKielitutkintoData(data, "test-id")
