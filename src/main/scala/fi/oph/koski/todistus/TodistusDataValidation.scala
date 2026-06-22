@@ -79,7 +79,7 @@ object TodistusDataValidation {
     validateNonEmptyNonWhitespace(järjestäjäNimi, "Järjestäjän nimi", todistusId)
       .flatMap(_ => validateNotLocalizationKey(järjestäjäNimi, "Järjestäjän nimi", todistusId))
       .flatMap(_ => validateNotMissingString(järjestäjäNimi, "Järjestäjän nimi", todistusId))
-      .flatMap(_ => validateReasonableLength(järjestäjäNimi, "Järjestäjän nimi", todistusId, minLength = 5, maxLength = 200))
+      .flatMap(_ => validateReasonableLength(järjestäjäNimi, "Järjestäjän nimi", todistusId, minLength = 2, maxLength = 200))
   }
 
   private def validateAllekirjoitusPäivämäärä(päivämäärä: String, todistusId: String): Either[HttpStatus, Unit] = {
