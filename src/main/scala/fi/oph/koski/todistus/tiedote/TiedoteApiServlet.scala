@@ -17,8 +17,12 @@ class TiedoteApiServlet(implicit val application: KoskiApplication)
   implicit def session: KoskiSpecificSession = koskiSessionOption.get
 
   before() {
-    if (!session.hasRole(OPHPAAKAYTTAJA)) {
-      haltWithStatus(KoskiErrorCategory.forbidden("Sallittu vain OPH-pääkäyttäjälle"))
+    // Tunnistautuminen getUserilla ennen sessionin lukemista, jottei sessioton pyyntö kaadu None.get:iin.
+    getUser match {
+      case Left(error) => haltWithStatus(error)
+      case Right(_) if !session.hasRole(OPHPAAKAYTTAJA) =>
+        haltWithStatus(KoskiErrorCategory.forbidden("Sallittu vain OPH-pääkäyttäjälle"))
+      case Right(_) =>
     }
   }
 

@@ -766,4 +766,34 @@ class TodistusKayttoOikeudetSpec extends TodistusSpecHelpers {
     }
   }
 
+  "Tunnistautumaton pyyntö ei kaadu 500:aan" - {
+    val oid = "1.2.246.562.15.12345678901"
+    val id = "123e4567-e89b-42d3-a456-426614174000"
+
+    // API-endpointit palauttavat 401, selainendpointit (KoskiHtmlServlet) ohjaavat kirjautumiseen (302).
+    "generate-endpoint palauttaa 401" in {
+      get(s"api/todistus/generate/fi/$oid", headers = jsonContent) {
+        verifyResponseStatus(401)
+      }
+    }
+
+    "status-endpoint palauttaa 401" in {
+      get(s"api/todistus/status/$id", headers = jsonContent) {
+        verifyResponseStatus(401)
+      }
+    }
+
+    "download-endpoint ohjaa kirjautumiseen (302)" in {
+      get(s"todistus/download/$id", headers = jsonContent) {
+        verifyResponseStatus(302)
+      }
+    }
+
+    "preview-endpoint ohjaa kirjautumiseen (302)" in {
+      get(s"todistus/preview/fi/$oid", headers = jsonContent) {
+        verifyResponseStatus(302)
+      }
+    }
+  }
+
 }

@@ -22,8 +22,10 @@ class TodistusPreviewServlet(implicit val application: KoskiApplication)
   val frontendValvontaMode: FrontendValvontaMode.FrontendValvontaMode = FrontendValvontaMode.ENABLED
 
   before() {
-    requireTodistusEnabled
+    // Tunnistautuminen ensin: requireOphPääkäyttäjä käsittelee sessiottoman pyynnön (401),
+    // requireTodistusEnabled taas lukee session, joten se ei saa ajaa ennen tunnistautumista.
     requireOphPääkäyttäjä
+    requireTodistusEnabled
   }
 
   get("/:templateVariant/:opiskeluoikeusOid")(nonce => {

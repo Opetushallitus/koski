@@ -20,7 +20,9 @@ trait TodistusServlet extends ScalatraServlet with HasKoskiSpecificSession with 
   private val featureFlags: TodistusFeatureFlags = application.todistusFeatureFlags
 
   protected def requireTodistusEnabled: Unit = {
-    if (!featureFlags.isEnabledForUser(session)) {
+    // koskiSessionOption.exists eikä session, jottei tunnistautumaton pyyntö kaadu None.get:iin.
+    // Tunnistautuminen tarkistetaan ennen tätä, joten ilman sessiota tänne ei normaalisti päädytä.
+    if (!koskiSessionOption.exists(featureFlags.isEnabledForUser)) {
       haltWithStatus(KoskiErrorCategory.notImplemented("Todistuspalvelu ei ole käytössä"))
     }
   }
@@ -34,8 +36,11 @@ trait TodistusServlet extends ScalatraServlet with HasKoskiSpecificSession with 
   }
 
   protected def requireOphPääkäyttäjä: Unit = {
-    if (!session.hasRole(OPHPAAKAYTTAJA)) {
-      haltWithStatus(KoskiErrorCategory.forbidden("Sallittu vain OPH-pääkäyttäjälle"))
+    getUser match {
+      case Left(error) => haltWithStatus(error)
+      case Right(_) if !session.hasRole(OPHPAAKAYTTAJA) =>
+        haltWithStatus(KoskiErrorCategory.forbidden("Sallittu vain OPH-pääkäyttäjälle"))
+      case Right(_) =>
     }
   }
 

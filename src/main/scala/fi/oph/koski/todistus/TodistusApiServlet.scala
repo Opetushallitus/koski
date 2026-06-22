@@ -16,8 +16,10 @@ class TodistusApiServlet(implicit val application: KoskiApplication)
   implicit def session: KoskiSpecificSession = koskiSessionOption.get
 
   before() {
-    requireTodistusEnabled
+    // Tunnistautuminen ensin: requireKansalainenOr... käsittelee sessiottoman pyynnön (401),
+    // requireTodistusEnabled taas lukee session, joten se ei saa ajaa ennen tunnistautumista.
     requireKansalainenOrTodistuksiaLataavaOphKäyttäjä
+    requireTodistusEnabled
   }
 
   get("/status/:id") {

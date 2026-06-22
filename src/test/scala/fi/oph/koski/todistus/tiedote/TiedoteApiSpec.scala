@@ -36,6 +36,12 @@ class TiedoteApiSpec extends TodistusSpecHelpers {
         }
       }
 
+      "Tunnistautumaton pyyntö palauttaa 401 (eikä kaadu 500:aan)" in {
+        get("api/tiedote/jobs", headers = jsonContent) {
+          verifyResponseStatus(401)
+        }
+      }
+
       "Tukee state-suodatusta" in {
         withoutRunningTiedoteScheduler {
           app.kielitutkintotodistusTiedoteService.processAll()
