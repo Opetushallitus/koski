@@ -42,16 +42,6 @@ export const YleinenKielitutkintoEditor: React.FC<
   const path = päätasonSuoritus.path
   const suoritus = getValue(path)(form.state)
 
-  const isNonProdEnvironment =
-    window.environment === 'local' ||
-    window.environment === 'unittest' ||
-    window.environment === 'OPHKoskiDev' ||
-    window.environment === 'OPHKoskiOpintopolku-QA'
-  const hasFeatureFlagPdfTodistus =
-    isNonProdEnvironment ||
-    localStorage.getItem('pdf-todistus') !== null ||
-    new URLSearchParams(window.location.search).has('pdf-todistus')
-
   // Todistus on saatavilla vain rajapäivänä tai sen jälkeen suoritetuille
   // tutkinnoille (YKI:ssä opiskeluoikeuden alkamispäivä on tutkintopäivä).
   // ISO-muotoiset päivämäärät voi vertailla merkkijonoina.
@@ -86,7 +76,6 @@ export const YleinenKielitutkintoEditor: React.FC<
 
       {isKansalainenTaiVirkailija &&
         form.state.oid &&
-        hasFeatureFlagPdfTodistus &&
         onAikaisintaanTodistusrajapäivänä && (
           <YleinenKielitutkintoTodistusLataus
             opiskeluoikeusOid={form.state.oid}
