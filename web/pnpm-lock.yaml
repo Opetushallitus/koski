@@ -142,8 +142,8 @@ importers:
         specifier: ^22.15.32
         version: 22.19.19
       '@types/ramda':
-        specifier: ^0.31.0
-        version: 0.31.1
+        specifier: ^0.32.0
+        version: 0.32.0
       '@types/react':
         specifier: 16.14.70
         version: 16.14.70
@@ -1447,8 +1447,8 @@ packages:
   '@types/prop-types@15.7.15':
     resolution: {integrity: sha512-F6bEyamV9jKGAFBEmlQnesRPGOQqS2+Uwi0Em15xenOxHaf2hv6L8YCVn3rPdPJOiJfPiCnLIRyvwVaqMY3MIw==}
 
-  '@types/ramda@0.31.1':
-    resolution: {integrity: sha512-Vt6sFXnuRpzaEj+yeutA0q3bcAsK7wdPuASIzR9LXqL4gJPyFw8im9qchlbp4ltuf3kDEIRmPJTD/Fkg60dn7g==}
+  '@types/ramda@0.32.0':
+    resolution: {integrity: sha512-eTRIFYUxjVvZimlPNpXzXc3j4tnSYc7lBsD7X3zwtRvJML3qXclM4+m8vvmAZAHhBASKPmZAp6qu2C/DwJpBGQ==}
 
   '@types/react-dom@16.9.25':
     resolution: {integrity: sha512-ZK//eAPhwft9Ul2/Zj+6O11YR6L4JX0J2sVeBC9Ft7x7HFN7xk7yUV/zDxqV6rjvqgl6r8Dq7oQImxtyf/Mzcw==}
@@ -4293,8 +4293,8 @@ packages:
   typed-query-selector@2.12.2:
     resolution: {integrity: sha512-EOPFbyIub4ngnEdqi2yOcNeDLaX/0jcE1JoAXQDDMIthap7FoN795lc/SHfIq2d416VufXpM8z/lD+WRm2gfOQ==}
 
-  types-ramda@0.31.0:
-    resolution: {integrity: sha512-vaoC35CRC3xvL8Z6HkshDbi6KWM1ezK0LHN0YyxXWUn9HKzBNg/T3xSGlJZjCYspnOD3jE7bcizsp0bUXZDxnQ==}
+  types-ramda@0.32.0:
+    resolution: {integrity: sha512-iZtriSUdsDqOlip/wUaDNcoiskbVf5RdcqLNpQdUcOM1JKFClochCvPZCDjn/cc9HzoBzi4DEB4iPr1PbrhN1w==}
 
   typescript-eslint@8.59.3:
     resolution: {integrity: sha512-KgusgyDgG4LI8Ih/sWaCtZ06tckLAS5CvT5A4D1Q7bYVoAAyzwiZvE4BmwDHkhRVkvhRBepKeASoFzQetha7Fg==}
@@ -5907,9 +5907,9 @@ snapshots:
 
   '@types/prop-types@15.7.15': {}
 
-  '@types/ramda@0.31.1':
+  '@types/ramda@0.32.0':
     dependencies:
-      types-ramda: 0.31.0
+      types-ramda: 0.32.0
 
   '@types/react-dom@16.9.25(@types/react@16.14.70)':
     dependencies:
@@ -9113,7 +9113,7 @@ snapshots:
 
   typed-query-selector@2.12.2: {}
 
-  types-ramda@0.31.0:
+  types-ramda@0.32.0:
     dependencies:
       ts-toolbelt: 9.6.0
 
