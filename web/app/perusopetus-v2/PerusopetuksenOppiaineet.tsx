@@ -81,7 +81,11 @@ import {
   KeyValueTable
 } from '../components-v2/containers/KeyValueTable'
 import { IconButton } from '../components-v2/controls/IconButton'
-import { CHARCODE_REMOVE } from '../components-v2/texts/Icon'
+import {
+  CHARCODE_ADD,
+  CHARCODE_REMOVE,
+  Icon
+} from '../components-v2/texts/Icon'
 import { FlatButton } from '../components-v2/controls/FlatButton'
 import { NumberField } from '../components-v2/controls/NumberField'
 import { LaajuusVuosiviikkotunneissa } from '../types/fi/oph/koski/schema/LaajuusVuosiviikkotunneissa'
@@ -807,16 +811,17 @@ const UusiPerusopetuksenOppiaine: React.FC<UusiPerusopetuksenOppiaineProps> = ({
       removable: true
     }))
 
-    const uusiPaikallinenLabel = t('Lisää')
+    const uusiPaikallinenLabel = t('Lisää') + '...'
     const uusiPaikallinen = {
       key: UUSI_PAIKALLINEN_OPPIAINE_KEY,
       label: uusiPaikallinenLabel,
       display: (
         <>
-          <span className="plus">{''}</span>
+          <Icon charCode={CHARCODE_ADD} />
           {uusiPaikallinenLabel}
         </>
       ),
+      isAddNew: true,
       value: undefined as any
     }
 
