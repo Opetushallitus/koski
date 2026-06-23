@@ -752,7 +752,7 @@ class OppijaValidationPerusopetusSpec extends TutkinnonPerusteetTest[Perusopetuk
 
         setupOppijaWithOpiskeluoikeus(oo2) {
           verifyResponseStatus(400,
-            KoskiErrorCategory.badRequest.validation.date("Erityisen tuen päätöksen (1.9.2026-) viimeinen mahdollinen alkamispäivä on 31.7.2026."),
+            KoskiErrorCategory.badRequest.validation.date("Erityisen tuen päätöksen (1.9.2026-) viimeinen mahdollinen alkamispäivä on 31.8.2026."),
             KoskiErrorCategory.badRequest.validation.date("Erityisen tuen päätöksen (1.9.2026-) viimeinen mahdollinen päättymispäivä on 31.8.2026."),
           )
         }
@@ -1987,11 +1987,11 @@ class OppijaValidationPerusopetusSpec extends TutkinnonPerusteetTest[Perusopetuk
           ))),
         )) {
           verifyResponseStatus(400,
-            KoskiErrorCategory.badRequest.validation.date.pidennettyOppivelvollisuus("Pidennetyn oppivelvollisuuden (1.8.2027-30.6.2028) viimeinen mahdollinen alkamispäivä on 31.7.2026."),
+            KoskiErrorCategory.badRequest.validation.date.pidennettyOppivelvollisuus("Pidennetyn oppivelvollisuuden (1.8.2027-30.6.2028) viimeinen mahdollinen alkamispäivä on 31.8.2026."),
             KoskiErrorCategory.badRequest.validation.date.pidennettyOppivelvollisuus("Pidennetyn oppivelvollisuuden (1.8.2027-30.6.2028) viimeinen mahdollinen päättymispäivä on 31.8.2026."),
-            KoskiErrorCategory.badRequest.validation.date.vammaisuusjakso("Vammaisuuden jakson (1.8.2027-30.6.2028) viimeinen mahdollinen alkamispäivä on 31.7.2026."),
+            KoskiErrorCategory.badRequest.validation.date.vammaisuusjakso("Vammaisuuden jakson (1.8.2027-30.6.2028) viimeinen mahdollinen alkamispäivä on 31.8.2026."),
             KoskiErrorCategory.badRequest.validation.date.vammaisuusjakso("Vammaisuuden jakson (1.8.2027-30.6.2028) viimeinen mahdollinen päättymispäivä on 31.8.2026."),
-            KoskiErrorCategory.badRequest.validation.date("Erityisen tuen päätöksen (1.8.2027-30.6.2028) viimeinen mahdollinen alkamispäivä on 31.7.2026."),
+            KoskiErrorCategory.badRequest.validation.date("Erityisen tuen päätöksen (1.8.2027-30.6.2028) viimeinen mahdollinen alkamispäivä on 31.8.2026."),
             KoskiErrorCategory.badRequest.validation.date("Erityisen tuen päätöksen (1.8.2027-30.6.2028) viimeinen mahdollinen päättymispäivä on 31.8.2026."),
             KoskiErrorCategory.badRequest.validation.date ("Tietoa yksilöllistettyOppimäärä ei saa siirtää 2026-08-31 jälkeen alkaneelle suoritukselle")
           )
@@ -2015,11 +2015,11 @@ class OppijaValidationPerusopetusSpec extends TutkinnonPerusteetTest[Perusopetuk
           ))),
         )) {
           verifyResponseStatus(400,
-            KoskiErrorCategory.badRequest.validation.date.pidennettyOppivelvollisuus("Pidennetyn oppivelvollisuuden (1.8.2027-) viimeinen mahdollinen alkamispäivä on 31.7.2026."),
+            KoskiErrorCategory.badRequest.validation.date.pidennettyOppivelvollisuus("Pidennetyn oppivelvollisuuden (1.8.2027-) viimeinen mahdollinen alkamispäivä on 31.8.2026."),
             KoskiErrorCategory.badRequest.validation.date.pidennettyOppivelvollisuus("Pidennetyn oppivelvollisuuden (1.8.2027-) viimeinen mahdollinen päättymispäivä on 31.8.2026."),
-            KoskiErrorCategory.badRequest.validation.date.vammaisuusjakso("Vaikeasti vammaisuuden jakson (1.8.2027-) viimeinen mahdollinen alkamispäivä on 31.7.2026."),
+            KoskiErrorCategory.badRequest.validation.date.vammaisuusjakso("Vaikeasti vammaisuuden jakson (1.8.2027-) viimeinen mahdollinen alkamispäivä on 31.8.2026."),
             KoskiErrorCategory.badRequest.validation.date.vammaisuusjakso("Vaikeasti vammaisuuden jakson (1.8.2027-) viimeinen mahdollinen päättymispäivä on 31.8.2026."),
-            KoskiErrorCategory.badRequest.validation.date("Erityisen tuen päätöksen (1.8.2027-) viimeinen mahdollinen alkamispäivä on 31.7.2026."),
+            KoskiErrorCategory.badRequest.validation.date("Erityisen tuen päätöksen (1.8.2027-) viimeinen mahdollinen alkamispäivä on 31.8.2026."),
             KoskiErrorCategory.badRequest.validation.date("Erityisen tuen päätöksen (1.8.2027-) viimeinen mahdollinen päättymispäivä on 31.8.2026."),
             KoskiErrorCategory.badRequest.validation.date ("Tietoa yksilöllistettyOppimäärä ei saa siirtää 2026-08-31 jälkeen alkaneelle suoritukselle")
           )
@@ -2130,31 +2130,40 @@ class OppijaValidationPerusopetusSpec extends TutkinnonPerusteetTest[Perusopetuk
       }
     }
 
-    "Pidennettyä oppivelvollisuutta ei voi merkitä alkamaan 1.8.2026 tai sen jälkeen" - {
+    "Pidennettyä oppivelvollisuutta ei voi merkitä alkamaan 1.9.2026 tai sen jälkeen" - {
       "Suljettu aikajakso" in {
         setupOppijaWithOpiskeluoikeus(makeOpiskeluoikeus(
           pidennettyOppivelvollisuus = Some(Aikajakso(
-            alku = Some(date(2026, 8, 1)),
-            loppu = Some(date(2026, 8, 31)),
+            alku = Some(date(2026, 9, 1)),
+            loppu = Some(date(2026, 9, 30)),
           )),
           vammainen = Some(List(Aikajakso(
-            alku = Some(date(2026, 8, 1)),
-            loppu = Some(date(2026, 8, 31)),
+            alku = Some(date(2026, 9, 1)),
+            loppu = Some(date(2026, 9, 30)),
           ))),
           erityisenTuenPäätökset = Some(List(ErityisenTuenPäätös(
-            alku = Some(date(2026, 8, 1)),
-            loppu = Some(date(2026, 8, 31)),
+            alku = Some(date(2026, 9, 1)),
+            loppu = Some(date(2026, 9, 30)),
           ))),
         )) {
           verifyResponseStatus(400,
             KoskiErrorCategory.badRequest.validation.date.pidennettyOppivelvollisuus(
-              "Pidennetyn oppivelvollisuuden (1.8.2026-31.8.2026) viimeinen mahdollinen alkamispäivä on 31.7.2026."
+              "Pidennetyn oppivelvollisuuden (1.9.2026-30.9.2026) viimeinen mahdollinen alkamispäivä on 31.8.2026."
+            ),
+            KoskiErrorCategory.badRequest.validation.date.pidennettyOppivelvollisuus(
+              "Pidennetyn oppivelvollisuuden (1.9.2026-30.9.2026) viimeinen mahdollinen päättymispäivä on 31.8.2026."
             ),
             KoskiErrorCategory.badRequest.validation.date.vammaisuusjakso(
-              "Vammaisuuden jakson (1.8.2026-31.8.2026) viimeinen mahdollinen alkamispäivä on 31.7.2026."
+              "Vammaisuuden jakson (1.9.2026-30.9.2026) viimeinen mahdollinen alkamispäivä on 31.8.2026."
+            ),
+            KoskiErrorCategory.badRequest.validation.date.vammaisuusjakso(
+              "Vammaisuuden jakson (1.9.2026-30.9.2026) viimeinen mahdollinen päättymispäivä on 31.8.2026."
             ),
             KoskiErrorCategory.badRequest.validation.date(
-              "Erityisen tuen päätöksen (1.8.2026-31.8.2026) viimeinen mahdollinen alkamispäivä on 31.7.2026."
+              "Erityisen tuen päätöksen (1.9.2026-30.9.2026) viimeinen mahdollinen alkamispäivä on 31.8.2026."
+            ),
+            KoskiErrorCategory.badRequest.validation.date(
+              "Erityisen tuen päätöksen (1.9.2026-30.9.2026) viimeinen mahdollinen päättymispäivä on 31.8.2026."
             ),
           )
         }
@@ -2163,54 +2172,54 @@ class OppijaValidationPerusopetusSpec extends TutkinnonPerusteetTest[Perusopetuk
       "Avoin aikajakso" in {
         setupOppijaWithOpiskeluoikeus(makeOpiskeluoikeus(
           pidennettyOppivelvollisuus = Some(Aikajakso(
-            alku = Some(date(2026, 8, 1)),
+            alku = Some(date(2026, 9, 1)),
             loppu = None,
           )),
           vaikeastiVammainen = Some(List(Aikajakso(
-            alku = Some(date(2026, 8, 1)),
+            alku = Some(date(2026, 9, 1)),
             loppu = None,
           ))),
           erityisenTuenPäätökset = Some(List(ErityisenTuenPäätös(
-            alku = Some(date(2026, 8, 1)),
+            alku = Some(date(2026, 9, 1)),
             loppu = None,
           ))),
         )) {
           verifyResponseStatus(400,
             KoskiErrorCategory.badRequest.validation.date.pidennettyOppivelvollisuus(
-              "Pidennetyn oppivelvollisuuden (1.8.2026-) viimeinen mahdollinen alkamispäivä on 31.7.2026."
+              "Pidennetyn oppivelvollisuuden (1.9.2026-) viimeinen mahdollinen alkamispäivä on 31.8.2026."
             ),
             KoskiErrorCategory.badRequest.validation.date.pidennettyOppivelvollisuus(
-              "Pidennetyn oppivelvollisuuden (1.8.2026-) viimeinen mahdollinen päättymispäivä on 31.8.2026."
+              "Pidennetyn oppivelvollisuuden (1.9.2026-) viimeinen mahdollinen päättymispäivä on 31.8.2026."
             ),
             KoskiErrorCategory.badRequest.validation.date.vammaisuusjakso(
-              "Vaikeasti vammaisuuden jakson (1.8.2026-) viimeinen mahdollinen alkamispäivä on 31.7.2026."
+              "Vaikeasti vammaisuuden jakson (1.9.2026-) viimeinen mahdollinen alkamispäivä on 31.8.2026."
             ),
             KoskiErrorCategory.badRequest.validation.date.vammaisuusjakso(
-              "Vaikeasti vammaisuuden jakson (1.8.2026-) viimeinen mahdollinen päättymispäivä on 31.8.2026."
+              "Vaikeasti vammaisuuden jakson (1.9.2026-) viimeinen mahdollinen päättymispäivä on 31.8.2026."
             ),
             KoskiErrorCategory.badRequest.validation.date(
-              "Erityisen tuen päätöksen (1.8.2026-) viimeinen mahdollinen alkamispäivä on 31.7.2026."
+              "Erityisen tuen päätöksen (1.9.2026-) viimeinen mahdollinen alkamispäivä on 31.8.2026."
             ),
             KoskiErrorCategory.badRequest.validation.date(
-              "Erityisen tuen päätöksen (1.8.2026-) viimeinen mahdollinen päättymispäivä on 31.8.2026."
+              "Erityisen tuen päätöksen (1.9.2026-) viimeinen mahdollinen päättymispäivä on 31.8.2026."
             ),
           )
         }
       }
     }
 
-    "Pidennetty oppivelvollisuus sallittu, kun jakso alkaa ennen 1.8.2026" in {
+    "Pidennetty oppivelvollisuus sallittu, kun jakso alkaa viimeistään 31.8.2026" in {
       setupOppijaWithOpiskeluoikeus(makeOpiskeluoikeus(
         pidennettyOppivelvollisuus = Some(Aikajakso(
-          alku = Some(date(2026, 7, 31)),
+          alku = Some(date(2026, 8, 31)),
           loppu = Some(date(2026, 8, 31)),
         )),
         vammainen = Some(List(Aikajakso(
-          alku = Some(date(2026, 7, 31)),
+          alku = Some(date(2026, 8, 31)),
           loppu = Some(date(2026, 8, 31)),
         ))),
         erityisenTuenPäätökset = Some(List(ErityisenTuenPäätös(
-          alku = Some(date(2026, 7, 31)),
+          alku = Some(date(2026, 8, 31)),
           loppu = Some(date(2026, 8, 31)),
         ))),
       )) {
