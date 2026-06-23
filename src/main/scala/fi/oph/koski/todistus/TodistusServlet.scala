@@ -3,18 +3,17 @@ package fi.oph.koski.todistus
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.koskiuser.Rooli.OPHPAAKAYTTAJA
-import fi.oph.koski.koskiuser.{HasKoskiSpecificSession, KoskiCookieAndBasicAuthenticationSupport, KoskiSpecificSession, Rooli, UserLanguage}
+import fi.oph.koski.koskiuser._
 import fi.oph.koski.log.KoskiOperation.{KoskiOperation, TODISTUKSEN_ESIKATSELU, TODISTUKSEN_LATAAMINEN}
-import fi.oph.koski.log.{AuditLog, AuditLogMessage, KoskiAuditLogMessage, KoskiAuditLogMessageField, Logging}
+import fi.oph.koski.log._
 import fi.oph.koski.schema.Opiskeluoikeus
 import org.scalatra.ScalatraServlet
 
 import java.util.UUID
 import scala.util.Try
 
-trait TodistusServlet extends ScalatraServlet with HasKoskiSpecificSession with KoskiCookieAndBasicAuthenticationSupport with Logging {
+trait TodistusServlet extends ScalatraServlet with RequiresSession with Logging {
   def application: KoskiApplication
-  implicit def session: KoskiSpecificSession
 
   val service: TodistusService = application.todistusService
   private val featureFlags: TodistusFeatureFlags = application.todistusFeatureFlags
