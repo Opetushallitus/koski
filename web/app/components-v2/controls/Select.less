@@ -101,6 +101,17 @@
         &.Select__optionLabel--hover {
           background: #f0f0f0;
         }
+
+        // "Lisää uusi" -toiminto näytetään sinisenä ja plus-ikonilla (vrt. vanhan
+        // UI:n new-item). Plus-ikoni perii saman sinisen kuin teksti.
+        &.Select__optionLabel--addNew {
+          color: @color-link-blue;
+
+          .Icon {
+            color: inherit;
+            margin-right: 6px;
+          }
+        }
       }
     }
 

@@ -44,7 +44,11 @@ import {
   OsasuoritusTable,
   OsasuoritusTableColumn
 } from '../components-v2/opiskeluoikeus/OsasuoritusTable'
-import { CHARCODE_REMOVE } from '../components-v2/texts/Icon'
+import {
+  CHARCODE_ADD,
+  CHARCODE_REMOVE,
+  Icon
+} from '../components-v2/texts/Icon'
 import { FootnoteDescriptions } from '../components/footnote'
 import { finnish, t } from '../i18n/i18n'
 import { shouldShowLaajuusColumn } from '../perusopetus-v2/oppiaineLaajuus'
@@ -706,16 +710,17 @@ const UusiAhvenanmaanOppiaine: React.FC<UusiAhvenanmaanOppiaineProps> = ({
           k.koodiviite as Koodistokoodiviite<'ahvenanmaankoskioppiaineetyleissivistava'>
       }))
 
-    const uusiPaikallinenLabel = t('Lisää')
+    const uusiPaikallinenLabel = t('Lisää') + '...'
     const uusiPaikallinen = {
       key: UUSI_PAIKALLINEN_OPPIAINE_KEY,
       label: uusiPaikallinenLabel,
       display: (
         <>
-          <span className="plus">{''}</span>
+          <Icon charCode={CHARCODE_ADD} />
           {uusiPaikallinenLabel}
         </>
       ),
+      isAddNew: true,
       value: undefined as any
     }
 

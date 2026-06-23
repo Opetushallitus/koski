@@ -66,6 +66,8 @@ export type FlatOption<T> = {
   isGroup?: boolean
   // Jos tosi, näytetään poistosymboli nimen vieressä, jonka klikkaaminen kutsuu Selectin callbackia onRemove
   removable?: boolean
+  // Jos tosi, vaihtoehto tyylitellään "lisää uusi" -toiminnoksi (sininen teksti, vrt. vanhan UI:n new-item)
+  isAddNew?: boolean
 }
 
 export const LoadingOptions: OptionList<any> = []
@@ -244,7 +246,8 @@ const OptionList = <T,>(props: OptionListProps<T>): React.ReactElement => {
                   'Select__optionLabel',
                   props.hoveredOption?.key === opt.key &&
                     'Select__optionLabel--hover',
-                  opt.isGroup && 'Select__optionGroup'
+                  opt.isGroup && 'Select__optionGroup',
+                  opt.isAddNew && 'Select__optionLabel--addNew'
                 )}
                 onMouseOver={
                   opt.isGroup
