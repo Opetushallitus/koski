@@ -17,7 +17,7 @@ jobs:
     name: Build Koski app
     runs-on: ${{ inputs.runs-on }}
     steps:
-      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7
       - uses: ./.github/actions/build_koski
         with:
           commithash: ${{ github.sha }}
@@ -25,7 +25,7 @@ jobs:
     name: Lint Koski
     runs-on: ${{ inputs.runs-on }}
     steps:
-      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7
 
       - uses: ./.github/actions/setup_java_17
 
@@ -48,7 +48,7 @@ jobs:
     runs-on: ${{ inputs.runs-on }}
     if: ${{ !contains(github.event.head_commit.message, '[skip-tests]') }}
     steps:
-      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7
         with: { fetch-depth: 0 }
 
       - name: Check validation and documentation changes
@@ -60,7 +60,7 @@ jobs:
     runs-on: ${{ inputs.runs-on }}
     if: ${{ !contains(github.event.head_commit.message, '[skip-tests]') }}
     steps:
-      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7
         with: { fetch-depth: 0 }
 
       - name: Check schema and documentation changes
@@ -72,7 +72,7 @@ jobs:
     runs-on: ${{ inputs.runs-on }}
     if: ${{ !contains(github.event.head_commit.message, '[skip-tests]') }}
     steps:
-      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7
         with: { fetch-depth: 0 }
 
       - name: Check migration and database documentation changes
@@ -85,7 +85,7 @@ jobs:
     if: ${{ !contains(github.event.head_commit.message, '[skip-tests]') }}
     needs: [build_koski]
     steps:
-      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7
       - uses: ./.github/actions/koski_backend_test
         with:
           suites: |
@@ -97,7 +97,7 @@ jobs:
     if: ${{ !contains(github.event.head_commit.message, '[skip-tests]') }}
     needs: [build_koski]
     steps:
-      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7
       - uses: ./.github/actions/koski_backend_test
         with:
           suites: |
@@ -110,7 +110,7 @@ jobs:
     if: ${{ !contains(github.event.head_commit.message, '[skip-tests]') }}
     needs: [build_koski]
     steps:
-      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7
       - uses: ./.github/actions/koski_backend_test
         with:
           suites: |
@@ -123,7 +123,7 @@ jobs:
     if: ${{ !contains(github.event.head_commit.message, '[skip-tests]') }}
     needs: [build_koski]
     steps:
-      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7
       - uses: ./.github/actions/koski_backend_test
         with:
           suites: |
@@ -135,7 +135,7 @@ jobs:
     if: ${{ !contains(github.event.head_commit.message, '[skip-tests]') }}
     needs: [build_koski]
     steps:
-      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7
       - uses: ./.github/actions/koski_backend_test
         with:
           suites: |
@@ -174,7 +174,7 @@ jobs:
     if: ${{ !contains(github.event.head_commit.message, '[skip-tests]') }}
     needs: [build_koski]
     steps:
-      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7
       - uses: ./.github/actions/koski_backend_test
         with:
           suites: |
@@ -191,7 +191,7 @@ jobs:
     if: ${{ !contains(github.event.head_commit.message, '[skip-tests]') }}
     needs: [build_koski]
     steps:
-      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7
       - uses: ./.github/actions/koski_backend_test
         with:
           suites: |
@@ -203,7 +203,7 @@ jobs:
     if: ${{ !contains(github.event.head_commit.message, '[skip-tests]') }}
     needs: [build_koski]
     steps:
-      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7
       - uses: ./.github/actions/koski_backend_test
         with:
           suites: |
@@ -226,7 +226,7 @@ jobs:
     if: ${{ !contains(github.event.head_commit.message, '[skip-tests]') }}
     needs: [build_koski]
     steps:
-      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7
       - uses: ./.github/actions/koski_backend_test
         with:
           suites: |
@@ -238,7 +238,7 @@ jobs:
     if: ${{ !contains(github.event.head_commit.message, '[skip-tests]') }}
     needs: [build_koski]
     steps:
-      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7
       - uses: ./.github/actions/koski_backend_test
         with:
           suites: |
@@ -271,7 +271,7 @@ jobs:
     if: ${{ !contains(github.event.head_commit.message, '[skip-tests]') }}
     needs: [build_koski]
     steps:
-      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7
       - uses: ./.github/actions/koski_frontend_test
         with:
           shardIndex: ${{ matrix.shardIndex }}
@@ -281,7 +281,7 @@ jobs:
     name: Frontend unit tests
     runs-on: ${{ inputs.runs-on }}
     steps:
-      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7
       - uses: ./.github/actions/setup_pnpm_cache
       - name: Setup Node
         uses: actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f # v6
@@ -304,7 +304,7 @@ jobs:
     if: ${{ !contains(github.event.head_commit.message, '[skip-tests]') }}
     needs: [build_koski]
     steps:
-      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7
       - uses: ./.github/actions/koski_frontend_playwright_test
         with:
           shardIndex: ${{ matrix.shardIndex }}
@@ -321,7 +321,7 @@ jobs:
     if: ${{ !contains(github.event.head_commit.message, '[skip-tests]') }}
     needs: [build_koski]
     steps:
-      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7
       - uses: ./.github/actions/valpas_integration_test
         with:
           index: ${{ matrix.shardIndex }}
@@ -331,7 +331,7 @@ jobs:
     runs-on: ${{ inputs.runs-on }}
     if: ${{ !contains(github.event.head_commit.message, '[skip-tests]') }}
     steps:
-      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7
 
       - uses: ./.github/actions/setup_pnpm_cache
 
