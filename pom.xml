@@ -31,7 +31,7 @@
     <bouncycastle.version>1.84</bouncycastle.version>
     <finalName>${project.artifactId}-${project.version}</finalName>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <verapdf.version>1.30.1</verapdf.version>
+    <verapdf.version>1.30.2</verapdf.version>
     <netty.version>4.2.15.Final</netty.version>
   </properties>
 
