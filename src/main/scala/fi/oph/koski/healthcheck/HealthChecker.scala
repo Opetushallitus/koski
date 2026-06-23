@@ -44,7 +44,10 @@ class HealthChecker(val application: KoskiApplication) extends Logging with Timi
     application.config.getBoolean("healthcheck.includeOpensearchSubsystems")
 
   val internalSystems: Seq[Subsystem] = (
-    List[Subsystem](KoskiDatabase, RaportointiDatabase, ValpasDatabase) ++
+    // TEMP: RaportointiDatabase poistettu healthcheckista raportointikannan version
+    // päivityksen ajaksi, jolloin odotettavissa olevat katkokset eivät kaada Koskea.
+    // Palauta listaan päivityksen jälkeen.
+    List[Subsystem](KoskiDatabase, ValpasDatabase) ++
       (if (includeOpensearchSubsystems) List[Subsystem](PerustiedotIndex, TiedonsiirtoIndex) else List.empty)
   ) ++ (
     if (Environment.isUnitTestEnvironment(application.config)) {
