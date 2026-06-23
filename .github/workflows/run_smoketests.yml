@@ -20,7 +20,7 @@ jobs:
           # Pinned to 24.15.0 because 24.16.0 has a bug in extract-zip
           # that silently truncates Chrome extraction, breaking
           # `puppeteer browsers install chrome`. See nodejs/node#63487.
-          node-version: "24.15.0"
+          node-version: "24.17.0"
 
       - uses: ./.github/actions/setup_pnpm_cache
 

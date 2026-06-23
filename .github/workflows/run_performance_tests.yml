@@ -27,7 +27,7 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f # v6
         with:
-          node-version: "24.16.0"
+          node-version: "24.17.0"
 
       - name: Build
         run: mvn test-compile
@@ -60,7 +60,7 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f # v6
         with:
-          node-version: "24.16.0"
+          node-version: "24.17.0"
 
       - name: Build
         run: mvn test-compile
@@ -93,7 +93,7 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f # v6
         with:
-          node-version: "24.16.0"
+          node-version: "24.17.0"
 
       - name: Build
         run: mvn test-compile
@@ -126,7 +126,7 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f # v6
         with:
-          node-version: "24.16.0"
+          node-version: "24.17.0"
 
       - name: Build
         run: mvn test-compile
