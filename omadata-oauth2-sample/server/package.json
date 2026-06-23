@@ -39,7 +39,7 @@
     "express-rate-limit": "^8.2.1",
     "helmet": "^8.1.0",
     "openid-client": "^6.8.1",
-    "undici": "^7.18.2",
+    "undici": "^7.28.0",
     "uuid": "^14.0.0"
   },
   "devDependencies": {
