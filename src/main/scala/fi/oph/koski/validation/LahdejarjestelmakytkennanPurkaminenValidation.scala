@@ -3,7 +3,7 @@ package fi.oph.koski.validation
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.koskiuser.KoskiSpecificSession
 import fi.oph.koski.opiskeluoikeus.CompositeOpiskeluoikeusRepository
-import fi.oph.koski.schema.{KoskeenTallennettavaOpiskeluoikeus, LähdejärjestelmäkytkennänPurkaminen, LähdejärjestelmäkytkentäPurettavissa}
+import fi.oph.koski.schema.{KoskeenTallennettavaOpiskeluoikeus, LähdejärjestelmäkytkennänPurkaminen, LähdejärjestelmäkytkentäPurettavissa, OpiskeluoikeudenTyyppi}
 
 object LahdejarjestelmakytkennanPurkaminenValidation {
   def validateTiedonsiirto(
@@ -25,6 +25,9 @@ object LahdejarjestelmakytkennanPurkaminenValidation {
 
   def validatePurkaminen(oo: KoskeenTallennettavaOpiskeluoikeus): HttpStatus =
     HttpStatus.fold(
+      HttpStatus.validate(oo.tyyppi.koodiarvo != OpiskeluoikeudenTyyppi.kielitutkinto.koodiarvo) {
+        KoskiErrorCategory.forbidden.lähdejärjestelmäkytkennänPurkaminenEiSallittu("Lähdejärjestelmäkytkentää ei voi purkaa kielitutkinto-opiskeluoikeuksilta")
+      },
       HttpStatus.validate(oo.lähdejärjestelmänId.isDefined) {
         KoskiErrorCategory.forbidden.lähdejärjestelmäkytkennänPurkaminenEiSallittu("Opiskeluoikeudella ei ole lähdejärjestelmätunnistetta")
       },

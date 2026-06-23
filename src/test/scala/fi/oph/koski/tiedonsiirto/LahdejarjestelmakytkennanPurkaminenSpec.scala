@@ -3,11 +3,11 @@ package fi.oph.koski.tiedonsiirto
 import fi.oph.koski.api.misc.PutOpiskeluoikeusTestMethods
 import fi.oph.koski.documentation.ExamplesLukio2019.oppimääränSuoritus
 import fi.oph.koski.documentation.LukioExampleData.{katsotaanEronneeksi, opiskeluoikeusAktiivinen}
-import fi.oph.koski.documentation.{ExampleData, ExamplesLukio2019, VapaaSivistystyöExample}
+import fi.oph.koski.documentation.{ExampleData, ExamplesKielitutkinto, ExamplesLukio2019, VapaaSivistystyöExample}
 import fi.oph.koski.henkilo.{KoskiSpecificMockOppijat, LaajatOppijaHenkilöTiedot, UnverifiedHenkilöOid}
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.koskiuser.{KoskiMockUser, KoskiSpecificSession, MockUsers}
-import fi.oph.koski.schema.{Koodistokoodiviite, LukionOpiskeluoikeudenTila, LukionOpiskeluoikeus, LukionOpiskeluoikeusjakso, LähdejärjestelmäId, LähdejärjestelmäkytkennänPurkaminen, VapaanSivistystyönOpiskeluoikeus}
+import fi.oph.koski.schema.{KielitutkinnonOpiskeluoikeus, Koodistokoodiviite, LukionOpiskeluoikeudenTila, LukionOpiskeluoikeus, LukionOpiskeluoikeusjakso, LähdejärjestelmäId, LähdejärjestelmäkytkennänPurkaminen, VapaanSivistystyönOpiskeluoikeus}
 import fi.oph.koski.{KoskiApplicationForTests, KoskiHttpSpec}
 import org.scalatest.BeforeAndAfterAll
 import org.scalatest.freespec.AnyFreeSpec
@@ -95,6 +95,18 @@ class LahdejarjestelmakytkennanPurkaminenSpec
       puraKytkentä(opiskeluoikeusOid, MockUsers.paakayttaja) should equal(Left(
         KoskiErrorCategory.forbidden.lähdejärjestelmäkytkennänPurkaminenEiSallittu("Lähdejärjestelmäkytkentää ei voi purkaa aktiiviselta opiskeluoikeudelta")
       ))
+    }
+
+    "Lähdejärjestelmäkytkentää ei voi purkaa yleisen kielitutkinnon opiskeluoikeudelta" in {
+      assertKielitutkinnonPurkaminenEstetty(
+        ExamplesKielitutkinto.YleisetKielitutkinnot.lähdejärjestelmällinenOpiskeluoikeus
+      )
+    }
+
+    "Lähdejärjestelmäkytkentää ei voi purkaa valtionhallinnon kielitutkinnon opiskeluoikeudelta" in {
+      assertKielitutkinnonPurkaminenEstetty(
+        ExamplesKielitutkinto.ValtionhallinnonKielitutkinnot.Opiskeluoikeus.lähdejärjestelmällinenOpiskeluoikeus
+      )
     }
   }
 
@@ -195,6 +207,18 @@ class LahdejarjestelmakytkennanPurkaminenSpec
     app.opiskeluoikeusRepository
       .puraLähdejärjestelmäkytkentä(opiskeluoikeusOid, app.henkilöRepository)
       .map { _ => true }
+  }
+
+  private def assertKielitutkinnonPurkaminenEstetty(opiskeluoikeus: KielitutkinnonOpiskeluoikeus): Unit = {
+    val opiskeluoikeusOid = setupOppijaWithAndGetOpiskeluoikeus(
+      opiskeluoikeus,
+      oppija,
+      MockUsers.paakayttaja,
+    ).oid.get
+
+    puraKytkentä(opiskeluoikeusOid, MockUsers.paakayttaja) should equal(Left(
+      KoskiErrorCategory.forbidden.lähdejärjestelmäkytkennänPurkaminenEiSallittu("Lähdejärjestelmäkytkentää ei voi purkaa kielitutkinto-opiskeluoikeuksilta")
+    ))
   }
 
   private def oppijanEnsimmäsenOpiskeluoikeudenOid(henkilö: LaajatOppijaHenkilöTiedot): String =
