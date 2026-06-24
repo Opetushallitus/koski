@@ -105,6 +105,8 @@ case class KorkeakoulututkinnonSuoritus(
   override val osasuoritukset: Option[List[KorkeakoulunOpintojaksonSuoritus]],
   @Description("Päivämäärä, jolloin suoritus on hyväksiluettu")
   hyväksilukupäivä: Option[LocalDate] = None,
+  @Description("Virrasta saatu julkinen lisätieto suorituksesta")
+  lisätieto: Option[LocalizedString] = None,
   @KoodistoKoodiarvo("korkeakoulututkinto")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("korkeakoulututkinto", koodistoUri = "suorituksentyyppi")
 ) extends KorkeakouluSuoritus {
@@ -125,6 +127,10 @@ case class KorkeakoulunOpintojaksonSuoritus(
   override val osasuoritukset: Option[List[KorkeakoulunOpintojaksonSuoritus]] = None,
   @Description("Päivämäärä, jolloin suoritus on hyväksiluettu")
   hyväksilukupäivä: Option[LocalDate] = None,
+  @Description("Virrasta saatu julkinen lisätieto suorituksesta")
+  lisätieto: Option[LocalizedString] = None,
+  @Description("Onko suoritus opinnäytetyö")
+  opinnäytetyö: Option[Boolean] = None,
   @KoodistoKoodiarvo("korkeakoulunopintojakso")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("korkeakoulunopintojakso", koodistoUri = "suorituksentyyppi")
 ) extends KorkeakouluSuoritus {
@@ -140,6 +146,8 @@ case class MuuKorkeakoulunSuoritus (
    vahvistus: Option[Päivämäärävahvistus],
    suorituskieli: Option[Koodistokoodiviite],
    override val osasuoritukset: Option[List[KorkeakoulunOpintojaksonSuoritus]],
+   @Description("Virrasta saatu julkinen lisätieto suorituksesta")
+   lisätieto: Option[LocalizedString] = None,
    @KoodistoKoodiarvo("muukorkeakoulunsuoritus")
    tyyppi: Koodistokoodiviite = Koodistokoodiviite("muukorkeakoulunsuoritus", koodistoUri = "suorituksentyyppi")
  ) extends KorkeakouluSuoritus with Arvioinniton {
