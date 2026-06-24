@@ -94,11 +94,15 @@ class MockOpintopolkuHenkilöFacade(val hetu: Hetu, fixtures: => FixtureCreator)
   }
 
   def modifyMock(oppija: OppijaHenkilöWithMasterInfo): Unit = synchronized {
-    oppijat = new MockOppijat(oppijat.getOppijat.map { o =>
-      if (o.henkilö.oid == oppija.henkilö.oid)
-        o.copy(henkilö = toLaajat(o.henkilö, findSlaveOids(o.henkilö.oid)).copy(etunimet = oppija.henkilö.etunimet, kutsumanimi = oppija.henkilö.kutsumanimi, sukunimi = oppija.henkilö.sukunimi), master = oppija.master)
-      else o
-    })
+    oppijat = new MockOppijat(
+      oppijat.getOppijat.map { o =>
+        if (o.henkilö.oid == oppija.henkilö.oid)
+          o.copy(henkilö = toLaajat(o.henkilö, findSlaveOids(o.henkilö.oid)).copy(etunimet = oppija.henkilö.etunimet, kutsumanimi = oppija.henkilö.kutsumanimi, sukunimi = oppija.henkilö.sukunimi), master = oppija.master)
+        else o
+      },
+      oppijat.getKuntahistoriat,
+      oppijat.getTurvakieltoKuntahistoriat,
+    )
   }
 
   override def findOppijaByHetu(hetu: String): Option[LaajatOppijaHenkilöTiedot] = synchronized {
