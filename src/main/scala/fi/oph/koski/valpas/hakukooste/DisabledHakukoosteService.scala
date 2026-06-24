@@ -14,7 +14,7 @@ class DisabledHakukoosteService(application: KoskiApplication) extends ValpasHak
   def getHakukoosteet
     (oppijaOids: Set[ValpasHenkilö.Oid], ainoastaanAktiivisetHaut: Boolean = false, errorClue: String = "")
   : Either[HttpStatus, Seq[Hakukooste]] =
-    Left(ValpasErrorCategory.unavailable.sure(
-      "Hakukoosteita ei toistaiseksi saada haettua suoritusrekisteristä."
+    Left(ValpasErrorCategory.unavailable.ovara(
+      "Hakukoosteita ei toistaiseksi saada haettua."
     ))
 }

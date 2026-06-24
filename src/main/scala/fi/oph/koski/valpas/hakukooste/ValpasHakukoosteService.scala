@@ -102,19 +102,11 @@ object ValpasHakukoosteService {
       new DisabledHakukoosteService(application)
     } else if (Environment.isMockEnvironment(config)) {
       new MockHakukoosteService(application)
-    } else if (config.getString("valpas.hakukoosteService") == "ovara") {
+    } else {
       new OvaraHakukoosteService(
         application.valpasLocalizationRepository,
         application.opintopolkuHenkilöFacade,
         application.koodistoViitePalvelu,
-        config,
-        application.healthMonitoring,
-      )
-    } else {
-      new SureHakukoosteService(
-        application.valpasLocalizationRepository,
-        application.opintopolkuHenkilöFacade,
-        application.validatingAndResolvingExtractor,
         config,
         application.healthMonitoring,
       )
