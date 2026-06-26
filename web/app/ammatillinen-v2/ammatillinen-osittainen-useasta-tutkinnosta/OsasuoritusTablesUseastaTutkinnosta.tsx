@@ -369,6 +369,7 @@ const NewYhteinenTutkinnonOsaTutkinnolla = ({
   return (
     <>
       <FlatButton
+        withAddIcon
         testId="lisaa-yhteinen-tutkinnon-osa"
         onClick={() => setShowModal(true)}
       >
@@ -415,6 +416,7 @@ const NewMuuTutkinnonOsaTutkinnolla = ({
   return (
     <>
       <FlatButton
+        withAddIcon
         testId="lisaa-ammatillisen-tutkinnon-osa"
         onClick={() => setShowModal(true)}
       >
@@ -460,6 +462,7 @@ const NewPaikallinenOsaTutkinnolla = ({
   return (
     <>
       <FlatButton
+        withAddIcon
         testId="lisaa-paikallinen-osa"
         onClick={() => setShowModal(true)}
       >
