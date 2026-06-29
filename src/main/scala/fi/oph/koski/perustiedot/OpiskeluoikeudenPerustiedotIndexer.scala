@@ -139,10 +139,18 @@ class OpiskeluoikeudenPerustiedotIndexer(
       .toSeq
     if (itemsToSync.nonEmpty) {
       logger.debug(s"Manually syncing ${itemsToSync.length} rows")
-      itemsToSync.groupBy(_._2.upsert) foreach { case (upsert, syncRows) =>
+      // Poistetuilla opiskeluoikeuksilla (mitätöity/suostumus peruttu) data-sarake on tyhjä, eikä niitä voi
+      // deserialisoida. Käsitellään ne indeksistä poistoina samaan tapaan kuin tavallisessa synkronoinnissa,
+      // jottei manuaalisynkronointi jää jumiin deserialisointivirheeseen.
+      val (poistetut, voimassaolevat) = itemsToSync.partition(_._1._1.poistettu)
+
+      voimassaolevat.groupBy(_._2.upsert) foreach { case (upsert, syncRows) =>
         perustiedotSyncRepository.addToSyncQueueRaw(syncRows.map({
           case ((ooRow, henkRow), _) => perustiedotManualSyncRepository.makeSyncRow(ooRow, henkRow)
         }).flatten, upsert)
+      }
+      if (poistetut.nonEmpty) {
+        perustiedotSyncRepository.addDeletesToSyncQueue(poistetut.map(_._1._1.id).toList)
       }
       perustiedotManualSyncRepository.deleteFromQueue(allRows.map(_._2.id))
       logger.debug(s"Done manually syncing ${allRows.length} rows")
