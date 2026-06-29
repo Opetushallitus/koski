@@ -46,6 +46,11 @@ object ExamplesKielitutkinto {
       )
     }
 
+    def lähdejärjestelmällinenOpiskeluoikeus: KielitutkinnonOpiskeluoikeus =
+      opiskeluoikeus(LocalDate.of(2011, 1, 3), "FI", "kt").copy(
+        lähdejärjestelmänId = Some(AmmatillinenExampleData.primusLähdejärjestelmäId("l-0707071"))
+      )
+
     def päätasonSuoritus(tutkintotaso: String, kieli: String, arviointipäivä: LocalDate): YleisenKielitutkinnonSuoritus = {
       val arvosana = tutkintotaso match {
         case "pt" => 1
@@ -138,6 +143,16 @@ object ExamplesKielitutkinto {
           suoritukset = List(suoritus)
         )
       }
+
+      def lähdejärjestelmällinenOpiskeluoikeus: KielitutkinnonOpiskeluoikeus =
+        valmis(
+          LocalDate.of(2011, 1, 3),
+          "FI",
+          List("kirjallinen", "suullinen"),
+          "erinomainen"
+        ).copy(
+          lähdejärjestelmänId = Some(AmmatillinenExampleData.primusLähdejärjestelmäId("l-0707072"))
+        )
 
       def epäonnistuneestiUusittu(tutkintopäivä: LocalDate, kieli: String, kielitaidot: List[String], tutkintotaso: String): KielitutkinnonOpiskeluoikeus = {
         val arviointipäivä = tutkintopäivä.plusDays(60)
@@ -353,4 +368,5 @@ object ExamplesKielitutkinto {
         tila = Koodistokoodiviite("paattynyt", "koskiopiskeluoikeudentila"),
       )
   }
+
 }

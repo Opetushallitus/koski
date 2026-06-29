@@ -1,5 +1,9 @@
 # Koskeen tallennettavien tietojen validaatiosäännöt
 
+## 23.6.2026
+
+- Lisättiin validaatio, että lähdejärjestelmäkytkentää ei voi purkaa kielitutkinto-opiskeluoikeuksilta.
+
 ## 17.6.2026
 
 - Poistettiin validaatio, joka vaati varhennetun oppivelvollisuuden jaksolle voimassa olevan tuen päätöksen jakson.
