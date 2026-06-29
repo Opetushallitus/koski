@@ -1,3 +1,7 @@
+# 7.7.2026
+
+- Lisätty OmaData OAuth2 -rajapinnan opiskeluoikeuspakettien `oppilaitos`-rakenteeseen `oppilaitostyyppi`-kenttä. Kenttä palautetaan rajapinnan vastauksissa oppilaitoksille ja tieto haetaan Organisaatiopalvelusta; kenttää ei siirretä Koskeen syöttörajapinnoissa eikä sitä palauteta toimipisteille.
+
 # 3.6.2026
 
 - Lisätty uusi rahoitusmuoto tilauskoulutus ammatillisen koulutuksen opiskeluoikeuksille.

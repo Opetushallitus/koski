@@ -3,8 +3,8 @@ package fi.oph.koski.suoritetuttutkinnot
 import fi.oph.koski.henkilo.LaajatOppijaHenkilöTiedot
 import fi.oph.koski.koodisto.KoodistoViitePalvelu
 import fi.oph.koski.schema
-import fi.oph.koski.schema.annotation.{Deprecated, KoodistoUri}
-import fi.oph.scalaschema.annotation.{Description, Discriminator}
+import fi.oph.koski.schema.annotation.{Deprecated, KoodistoUri, ReadOnly}
+import fi.oph.scalaschema.annotation.{ComputedProperty, Description, Discriminator}
 
 import java.time.LocalDate
 
@@ -122,7 +122,14 @@ case class Oppilaitos(
   oppilaitosnumero: Option[SuoritetutTutkinnotKoodistokoodiviite],
   nimi: Option[schema.LocalizedString],
   kotipaikka: Option[SuoritetutTutkinnotKoodistokoodiviite]
-)
+) {
+  @ComputedProperty
+  @Description("Oppilaitoksen tyyppi")
+  @ReadOnly("Tiedon syötössä oppilaitostyyppiä ei tarvita; tieto haetaan Organisaatiopalvelusta")
+  @KoodistoUri("oppilaitostyyppi")
+  def oppilaitostyyppi: Option[SuoritetutTutkinnotKoodistokoodiviite] =
+    schema.ComputedPropertyContext.oppilaitostyyppi(oid).map(SuoritetutTutkinnotKoodistokoodiviite.fromKoskiSchema)
+}
 
 case class Koulutustoimija(
   oid: String,

@@ -3,8 +3,8 @@ package fi.oph.koski.aktiivisetjapaattyneetopinnot
 import fi.oph.koski.henkilo.LaajatOppijaHenkilöTiedot
 import fi.oph.koski.koodisto.KoodistoViitePalvelu
 import fi.oph.koski.schema
-import fi.oph.koski.schema.annotation.{Deprecated, KoodistoUri, Representative}
-import fi.oph.scalaschema.annotation.{Description, Discriminator, ReadFlattened, SyntheticProperty, Title}
+import fi.oph.koski.schema.annotation.{Deprecated, KoodistoUri, ReadOnly, Representative}
+import fi.oph.scalaschema.annotation.{ComputedProperty, Description, Discriminator, ReadFlattened, SyntheticProperty, Title}
 
 import java.time.LocalDate
 
@@ -138,7 +138,14 @@ case class Oppilaitos(
   oppilaitosnumero: Option[AktiivisetJaPäättyneetOpinnotKoodistokoodiviite],
   nimi: Option[schema.LocalizedString],
   kotipaikka: Option[AktiivisetJaPäättyneetOpinnotKoodistokoodiviite]
-)
+) {
+  @ComputedProperty
+  @Description("Oppilaitoksen tyyppi")
+  @ReadOnly("Tiedon syötössä oppilaitostyyppiä ei tarvita; tieto haetaan Organisaatiopalvelusta")
+  @KoodistoUri("oppilaitostyyppi")
+  def oppilaitostyyppi: Option[AktiivisetJaPäättyneetOpinnotKoodistokoodiviite] =
+    schema.ComputedPropertyContext.oppilaitostyyppi(oid).map(AktiivisetJaPäättyneetOpinnotKoodistokoodiviite.fromKoskiSchema)
+}
 
 case class Koulutustoimija(
   oid: String,

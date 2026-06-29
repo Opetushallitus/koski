@@ -61,4 +61,3 @@ object JsonSerializer {
     SchemaValidatingExtractor.extract(j)
   }
 }
-

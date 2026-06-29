@@ -2,10 +2,10 @@ package fi.oph.koski.servlet
 
 import fi.oph.koski.db.SuoritusjakoRow
 import fi.oph.koski.http.HttpStatus
-import fi.oph.koski.json.JsonSerializer
+import fi.oph.koski.json.{JsonSerializer, SensitiveDataAllowed}
 import fi.oph.koski.koskiuser.KoskiSpecificSession
 import fi.oph.koski.log.Logging
-import fi.oph.koski.schema.KoskiSchema
+import fi.oph.koski.schema.{ComputedPropertyContext, KoskiSchema}
 import fi.oph.koski.util.PaginatedResponse
 import org.json4s._
 import org.json4s.jackson.JsonMethods
@@ -71,6 +71,7 @@ trait ApiServlet extends BaseServlet with Logging with TimedServlet with Content
   def includeClassReferences: Boolean =
     Option(request.getParameter("class_refs")).contains("true")
 
+  protected def computedPropertyContext: Option[ComputedPropertyContext] = None
 }
 
 trait KoskiSpecificApiServlet extends ApiServlet with KoskiSpecificBaseServlet {
@@ -96,23 +97,45 @@ trait KoskiSpecificApiServlet extends ApiServlet with KoskiSpecificBaseServlet {
     implicit val session = koskiSessionOption getOrElse sessionOverride
     // Ajax request won't have "text/html" in Accept header, clicking "JSON" button will
     val pretty = Option(request.getHeader("accept")).exists(_.contains("text/html"))
+    ComputedPropertyContext.withOptionalContext(computedPropertyContext) {
+      serializeResponse(x, pretty, includeClassReferences)
+    }
+  }
+
+  private def serializeResponse[T: TypeTag](
+    x: T,
+    pretty: Boolean,
+    includeClassReferences: Boolean
+  )(implicit user: SensitiveDataAllowed): String = {
     val tag = implicitly[TypeTag[T]]
     tag.tpe match {
       case t: TypeRefApi if (t.typeSymbol.asClass.fullName == classOf[RawJsonResponse].getName) =>
         x.asInstanceOf[RawJsonResponse].response
       case t: TypeRefApi if (t.typeSymbol.asClass.fullName == classOf[PaginatedResponse[_]].getName) =>
-        // Here's some special handling for PaginatedResponse (scala-schema doesn't support parameterized case classes yet)
-        val typeArg = t.args.head
-        val paginated = x.asInstanceOf[PaginatedResponse[_]]
-        val subSchema = KoskiSchema.schemaFactory.createSchema(typeArg)
-        JsonMethods.compact(JObject(
-          "result" -> JsonSerializer.serialize(paginated.result, subSchema),
-          "paginationSettings" -> JsonSerializer.serialize(paginated.paginationSettings),
-          "mayHaveMore" -> JBool(paginated.mayHaveMore)
-        ))
-      case t: Any =>
-        JsonSerializer.write(x, pretty, includeClassReferences)
+        serializePaginatedResponse(t, x.asInstanceOf[PaginatedResponse[_]])
+      case _ =>
+        JsonSerializer.write(
+          x,
+          pretty,
+          includeClassReferences
+        )
     }
+  }
+
+  private def serializePaginatedResponse(
+    typeRef: TypeRefApi,
+    paginated: PaginatedResponse[_]
+  )(implicit user: SensitiveDataAllowed): String = {
+    // Here's some special handling for PaginatedResponse (scala-schema doesn't support parameterized case classes yet)
+    val subSchema = KoskiSchema.schemaFactory.createSchema(typeRef.args.head)
+    JsonMethods.compact(JObject(
+      "result" -> JsonSerializer.serialize(
+        paginated.result,
+        subSchema
+      ),
+      "paginationSettings" -> JsonSerializer.serialize(paginated.paginationSettings),
+      "mayHaveMore" -> JBool(paginated.mayHaveMore)
+    ))
   }
 }
 

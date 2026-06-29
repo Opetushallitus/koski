@@ -6,6 +6,7 @@ import fi.oph.koski.koskiuser.{KoskiSpecificSession, RequiresOmaDataOAuth2}
 import fi.oph.koski.log.KoskiAuditLogMessageField.{omaDataKumppani, omaDataOAuth2Scope, oppijaHenkiloOid}
 import fi.oph.koski.log.KoskiOperation.{OAUTH2_KATSOMINEN_KAIKKI_TIEDOT_JA_VALINTATIEDOT, OAUTH2_KATSOMINEN_AKTIIVISET_JA_PAATTYNEET_OPINNOT, OAUTH2_KATSOMINEN_KAIKKI_TIEDOT, OAUTH2_KATSOMINEN_SUORITETUT_TUTKINNOT}
 import fi.oph.koski.log.{AuditLog, KoskiAuditLogMessage, KoskiOperation, Logging}
+import fi.oph.koski.schema.ComputedPropertyContext
 import fi.oph.koski.servlet.{KoskiSpecificApiServlet, NoCache}
 import org.scalatra.ContentEncodingSupport
 
@@ -15,6 +16,10 @@ import scala.reflect.runtime.universe.TypeTag
 
 class OmaDataOAuth2ResourceServerServlet(implicit val application: KoskiApplication) extends KoskiSpecificApiServlet
   with Logging with ContentEncodingSupport with NoCache with RequiresOmaDataOAuth2 with ConvertErrorsToOAuth2Format {
+
+  override protected lazy val computedPropertyContext: Option[ComputedPropertyContext] =
+    Some(new ComputedPropertyContext(application.organisaatioRepository))
+
   // in: access token
   // out: data, jos käyttäjällä oikeudet kyseiseen access tokeniin.
   //      TAI OAuth2-protokollan mukainen virheilmoitus

@@ -2,9 +2,9 @@ package fi.oph.koski.omadataoauth2.unit
 
 import fi.oph.koski.aktiivisetjapaattyneetopinnot.AktiivisetJaPäättyneetOpinnotMuunKuinSäännellynKoulutuksenOpiskeluoikeus
 import fi.oph.koski.api.misc.{OpiskeluoikeusTestMethods, OpiskeluoikeusTestMethodsPerusopetus, PutOpiskeluoikeusTestMethods}
-import fi.oph.koski.db.KoskiTables.OAuth2JakoKaikki
+import fi.oph.koski.db.KoskiTables.{KoskiOpiskeluoikeusTable, OAuth2JakoKaikki}
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
-import fi.oph.koski.documentation.PerusopetusExampleData
+import fi.oph.koski.documentation.{AmmatillinenExampleData, KoskiSchemaDocumentHtml, PerusopetusExampleData}
 import fi.oph.koski.fixture.FixtureCreator
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
 import fi.oph.koski.json.JsonSerializer
@@ -12,12 +12,17 @@ import fi.oph.koski.koskiuser.{KoskiMockUser, MockUsers}
 import fi.oph.koski.log.AuditLogTester
 import fi.oph.koski.omadataoauth2.OmaDataOAuth2Security.{createChallengeAndVerifier, sha256}
 import fi.oph.koski.omadataoauth2._
-import fi.oph.koski.schema.{AmmatillinenOpiskeluoikeus, PerusopetuksenOpiskeluoikeudenLisätiedot, PerusopetuksenOpiskeluoikeus}
+import fi.oph.koski.organisaatio.MockOrganisaatioRepository
+import fi.oph.koski.schema.{AmmatillinenOpiskeluoikeus, ComputedPropertyContext, Koodistokoodiviite, KoskiSchema, Organisaatio, PerusopetuksenOpiskeluoikeudenLisätiedot, PerusopetuksenOpiskeluoikeus}
 import fi.oph.koski.suoritetuttutkinnot.SuoritetutTutkinnotAmmatillinenOpiskeluoikeus
+import fi.oph.koski.suoritusjako.{AktiivisetJaPäättyneetOpinnotOppijaJakolinkillä, SuoritetutTutkinnotOppijaJakolinkillä}
 import fi.oph.koski.suoritusjako.aktiivisetjapaattyneetopinnot.AktiivisetJaPäättyneetOpinnotVerifiers
 import fi.oph.koski.suoritusjako.suoritetuttutkinnot.SuoritetutTutkinnotVerifiers
 import fi.oph.koski.{DatabaseTestMethods, KoskiApplicationForTests, schema}
-import org.json4s.{DefaultFormats, Formats}
+import fi.oph.scalaschema.extraction.UnexpectedProperty
+import fi.oph.scalaschema.{ClassSchema, ExtractionContext, SchemaValidatingExtractor, SerializationContext, Serializer}
+import org.json4s.JsonAST.{JArray, JField, JObject, JString}
+import org.json4s.{DefaultFormats, Formats, JValue}
 import org.json4s.jackson.JsonMethods
 
 import java.sql.Timestamp
@@ -834,6 +839,7 @@ class OmaDataOAuth2BackendSpec
 
         postResourceServer(token, MockUsers.omadataOAuth2KaikkiOikeudetPalvelukäyttäjä) {
           verifyResponseStatusOk()
+          verifyOppilaitostyyppiInResponse(response.body)
           val data = JsonSerializer.parse[OmaDataOAuth2SuoritetutTutkinnot](response.body)
 
           data.opiskeluoikeudet should have length 1
@@ -883,6 +889,7 @@ class OmaDataOAuth2BackendSpec
 
         postResourceServer(token, MockUsers.omadataOAuth2KaikkiOikeudetPalvelukäyttäjä) {
           verifyResponseStatusOk()
+          verifyOppilaitostyyppiInResponse(response.body)
           val data = JsonSerializer.parse[OmaDataOAuth2AktiivisetJaPäättyneetOpiskeluoikeudet](response.body)
 
           data.opiskeluoikeudet should have length 1
@@ -933,6 +940,7 @@ class OmaDataOAuth2BackendSpec
 
         postResourceServer(token, MockUsers.omadataOAuth2KaikkiOikeudetPalvelukäyttäjä) {
           verifyResponseStatusOk()
+          verifyOppilaitostyyppiInResponse(response.body)
           val data = JsonSerializer.parse[OmaDataOAuth2KaikkiOpiskeluoikeudet](response.body)
 
           data.opiskeluoikeudet should have length 1
@@ -1017,6 +1025,7 @@ class OmaDataOAuth2BackendSpec
 
         postResourceServer(token, MockUsers.omadataOAuth2KaikkiOikeudetPalvelukäyttäjä) {
           verifyResponseStatusOk()
+          verifyOppilaitostyyppiInResponse(response.body)
           val data = JsonSerializer.parse[OmaDataOAuth2KaikkiOpiskeluoikeudetJaValintatiedot](response.body)
 
           data.henkilö.hetu.isDefined shouldBe true
@@ -1300,6 +1309,114 @@ class OmaDataOAuth2BackendSpec
     })
   }
 
+  "oppilaitostyyppi" - {
+    "ei ole mukana yleisessä Koski-skeemassa" in {
+      KoskiSchema.schemaJsonString should not include "oppilaitostyyppi"
+    }
+
+    "on mukana kaikkien OmaData OAuth2 -pakettien oppilaitoksessa mutta ei toimipisteessä" in {
+      val schemas = List(
+        classOf[OmaDataOAuth2SuoritetutTutkinnot] -> OmaDataOAuth2SuoritetutTutkinnot.schemaJson,
+        classOf[OmaDataOAuth2AktiivisetJaPäättyneetOpiskeluoikeudet] -> OmaDataOAuth2AktiivisetJaPäättyneetOpiskeluoikeudet.schemaJson,
+        classOf[OmaDataOAuth2KaikkiOpiskeluoikeudet] -> OmaDataOAuth2KaikkiOpiskeluoikeudet.schemaJson,
+        classOf[OmaDataOAuth2KaikkiOpiskeluoikeudetJaValintatiedot] -> OmaDataOAuth2KaikkiOpiskeluoikeudetJaValintatiedot.schemaJson,
+      )
+
+      schemas.foreach { case (schemaClass, schemaJson) =>
+        withClue(schemaClass.getSimpleName) {
+          val oppilaitokset = classSchemasWithId(schemaJson, "#oppilaitos")
+          oppilaitokset should not be empty
+          oppilaitokset.forall(hasProperty(_, "oppilaitostyyppi")) shouldBe true
+
+          val toimipisteet = classSchemasWithId(schemaJson, "#toimipiste")
+          toimipisteet.exists(hasProperty(_, "oppilaitostyyppi")) shouldBe false
+        }
+      }
+    }
+
+    "ei ole mukana muissa suoritusjako-skeemoissa" in {
+      val schemas = List(
+        classOf[SuoritetutTutkinnotOppijaJakolinkillä] -> SuoritetutTutkinnotOppijaJakolinkillä.schemaJson,
+        classOf[AktiivisetJaPäättyneetOpinnotOppijaJakolinkillä] -> AktiivisetJaPäättyneetOpinnotOppijaJakolinkillä.schemaJson,
+      )
+
+      schemas.foreach { case (schemaClass, schemaJson) =>
+        withClue(schemaClass.getSimpleName) {
+          val oppilaitokset = classSchemasWithId(schemaJson, "#oppilaitos")
+          oppilaitokset should not be empty
+          oppilaitokset.exists(hasProperty(_, "oppilaitostyyppi")) shouldBe false
+        }
+      }
+    }
+
+    "on mukana tulostettavassa HTML-skeemassa OmaData OAuth2 -skeemoissa" in {
+      implicit val rootSchema: ClassSchema =
+        KoskiSchema.createSchema(classOf[OmaDataOAuth2KaikkiOpiskeluoikeudet]).asInstanceOf[ClassSchema]
+
+      val html = KoskiSchemaDocumentHtml.html(
+        focusEntities = _.simpleName == "oppilaitos",
+        expandEntities = _.fullClassName == classOf[AmmatillinenOpiskeluoikeus].getName,
+        shallowEntities = _ => false,
+        lang = "fi",
+        nonce = "test"
+      ).toString()
+
+      html should include("oppilaitostyyppi")
+    }
+
+    "tietokantaserialisointi ei evaluoi eikä kirjoita oppilaitostyyppiä" in {
+      val failingContext = new ComputedPropertyContext(MockOrganisaatioRepository) {
+        override def oppilaitostyyppi(oid: Organisaatio.Oid): Option[Koodistokoodiviite] =
+          fail(s"DB serialization evaluated oppilaitostyyppi for $oid")
+      }
+
+      val json = ComputedPropertyContext.withOptionalContext(Some(failingContext)) {
+        KoskiOpiskeluoikeusTable.serialize(AmmatillinenExampleData.perustutkintoOpiskeluoikeusValmis())
+      }
+
+      JsonMethods.compact(json) should not include "oppilaitostyyppi"
+    }
+
+    "OmaData OAuth2 -serialisointi evaluoi oppilaitostyypin, kun konteksti on annettu" in {
+      val json = ComputedPropertyContext.withOptionalContext(Some(new ComputedPropertyContext(MockOrganisaatioRepository))) {
+        Serializer.serialize(omaDataKaikkiOpiskeluoikeudet, SerializationContext(KoskiSchema.schemaFactory))
+      }
+      val oppilaitosOid = AmmatillinenExampleData.perustutkintoOpiskeluoikeusValmis().oppilaitos.get.oid
+      val oppilaitos = findObjectByField(json, "oppilaitos", "oid", JString(oppilaitosOid))
+        .getOrElse(fail(s"Oppilaitos $oppilaitosOid not found from ${JsonMethods.compact(json)}"))
+
+      findObjectField(oppilaitos, "oppilaitostyyppi", "koodistoUri") shouldBe Some(JString("oppilaitostyyppi"))
+      findObjectField(oppilaitos, "oppilaitostyyppi", "koodiarvo") shouldBe Some(JString("21"))
+    }
+
+    "Koski-skeemalla sisään luettaessa oppilaitostyyppi hylätään odottamattomana" in {
+      implicit val context: ExtractionContext = KoskiSchema.strictDeserialization
+      val json = withOppilaitostyyppiInjected(JsonSerializer.serializeWithRoot(AmmatillinenExampleData.perustutkintoOpiskeluoikeusValmis()))
+
+      SchemaValidatingExtractor.extract[AmmatillinenOpiskeluoikeus](json) match {
+        case Left(errors) =>
+          errors.exists(error =>
+            error.path.endsWith("oppilaitos.oppilaitostyyppi") && error.error == UnexpectedProperty()
+          ) shouldBe true
+        case Right(_) =>
+          fail("Extraction should reject oppilaitostyyppi in normal Koski input")
+      }
+    }
+
+    "OmaData-skeemalla sisään luettaessa oppilaitostyyppiä ei huomioida" in {
+      implicit val context: ExtractionContext = ExtractionContext(KoskiSchema.schemaFactory)
+      val json = withOppilaitostyyppiInjected(JsonSerializer.serializeWithRoot(omaDataKaikkiOpiskeluoikeudet))
+
+      SchemaValidatingExtractor.extract[OmaDataOAuth2KaikkiOpiskeluoikeudet](json) match {
+        case Right(result) =>
+          val opiskeluoikeus = result.opiskeluoikeudet.head.asInstanceOf[AmmatillinenOpiskeluoikeus]
+          opiskeluoikeus.oppilaitos.flatMap(_.oppilaitostyyppi) shouldBe None
+        case Left(errors) =>
+          fail(s"Extraction should ignore included computed properties, got $errors")
+      }
+    }
+  }
+
   "suostumusten hallinta" - {
     "kirjautumaton palauttaa 401" in {
       get(uri = "api/omadata-oauth2/resource-owner/active-consents", params = Nil) {
@@ -1450,5 +1567,72 @@ class OmaDataOAuth2BackendSpec
   private def postResourceServer[T](token: String, user: KoskiMockUser = validPalvelukäyttäjä)(f: => T): T = {
     val tokenHeaders = Map("Authorization" -> s"Bearer ${token}")
     post(uri = "api/omadata-oauth2/resource-server", headers = certificateHeaders(user) ++ tokenHeaders)(f)
+  }
+
+  private def verifyOppilaitostyyppiInResponse(responseBody: String): Unit = {
+    val json = JsonMethods.parse(responseBody)
+
+    findObjectField(json, "oppilaitos", "oppilaitostyyppi").isDefined shouldBe true
+    findObjectField(json, "toimipiste", "oppilaitostyyppi") shouldBe None
+  }
+
+  private def omaDataKaikkiOpiskeluoikeudet: OmaDataOAuth2KaikkiOpiskeluoikeudet =
+    OmaDataOAuth2KaikkiOpiskeluoikeudet(
+      henkilö = OmaDataOAuth2Henkilötiedot(),
+      opiskeluoikeudet = List(AmmatillinenExampleData.perustutkintoOpiskeluoikeusValmis()),
+      tokenInfo = OmaDataOAuth2TokenInfo(
+        scope = "OPISKELUOIKEUDET_KAIKKI_TIEDOT",
+        expirationTime = "2026-07-03T00:00:00Z"
+      )
+    )
+
+  private def withOppilaitostyyppiInjected(json: JValue): JValue =
+    json.transformField {
+      case JField("oppilaitos", JObject(fields)) =>
+        JField(
+          "oppilaitos",
+          JObject(
+            fields.filterNot(_._1 == "oppilaitostyyppi") ::: List(
+              JField("oppilaitostyyppi", JObject(
+                "koodiarvo" -> JString("21"),
+                "koodistoUri" -> JString("oppilaitostyyppi")
+              ))
+            )
+          )
+        )
+    }
+
+  private def findObjectField(json: JValue, objectFieldName: String, fieldName: String): Option[JValue] =
+    json.findField {
+      case JField(name, JObject(fields)) if name == objectFieldName => fields.exists(_._1 == fieldName)
+      case _ => false
+    }.flatMap {
+      case JField(_, JObject(fields)) => fields.collectFirst {
+        case JField(name, value) if name == fieldName => value
+      }
+      case _ => None
+    }
+
+  private def findObjectByField(json: JValue, objectFieldName: String, fieldName: String, fieldValue: JValue): Option[JObject] =
+    json.findField {
+      case JField(name, obj: JObject) if name == objectFieldName => (obj \ fieldName) == fieldValue
+      case _ => false
+    }.collect {
+      case JField(_, obj: JObject) => obj
+    }
+
+  private def classSchemasWithId(json: JValue, id: String): List[JObject] =
+    objects(json).filter(schema => (schema \ "id") == JString(id))
+
+  private def hasProperty(schema: JObject, propertyName: String): Boolean =
+    (schema \ "properties") match {
+      case JObject(fields) => fields.exists(_._1 == propertyName)
+      case _ => false
+    }
+
+  private def objects(json: JValue): List[JObject] = json match {
+    case obj@JObject(fields) => obj :: fields.flatMap { case JField(_, value) => objects(value) }
+    case JArray(values) => values.flatMap(objects)
+    case _ => Nil
   }
 }

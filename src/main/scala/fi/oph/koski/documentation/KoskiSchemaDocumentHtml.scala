@@ -16,11 +16,11 @@ import fi.oph.koski.xml.NodeSeqImplicits._
 
 object KoskiSchemaDocumentHtml {
   def mainSchema = KoskiSchema.schema
-  def html(shallowEntities: ClassSchema => Boolean = const(false), focusEntities: ClassSchema => Boolean = const(false), expandEntities: ClassSchema => Boolean = const(true), lang: String, nonce: String) = {
-    val backlog: List[(String, Option[List[Breadcrumb]])] = buildBacklog(mainSchema, Some(Nil), new ArrayBuffer[(String, Option[List[Breadcrumb]])], shallowEntities, focusEntities, expandEntities).toList
+  def html(shallowEntities: ClassSchema => Boolean = const(false), focusEntities: ClassSchema => Boolean = const(false), expandEntities: ClassSchema => Boolean = const(true), lang: String, nonce: String)(implicit rootSchema: ClassSchema = mainSchema) = {
+    val backlog: List[(String, Option[List[Breadcrumb]])] = buildBacklog(rootSchema, Some(Nil), new ArrayBuffer[(String, Option[List[Breadcrumb]])], shallowEntities, focusEntities, expandEntities).toList
       .sortBy(-_._2.toList.length) // Nones last
     val schemaBacklog = backlog.map {
-      case (name, breadcrumbs) => (KoskiSchema.schemaFactory.createSchema(name).asInstanceOf[ClassSchema], breadcrumbs)
+      case (name, breadcrumbs) => (resolveSchema(ClassRefSchema(name, Nil)).asInstanceOf[ClassSchema], breadcrumbs)
     }
 
     val focusSchema = schemaBacklog.map(_._1).find(focusEntities)
@@ -42,7 +42,7 @@ object KoskiSchemaDocumentHtml {
     </html>
   }
 
-  private def buildBacklog(x: ClassSchema, breadcrumbs: Option[List[Breadcrumb]], backlog: ArrayBuffer[(String, Option[List[Breadcrumb]])], shallowEntities: ClassSchema => Boolean, focusEntities: ClassSchema => Boolean, expandEntities: ClassSchema => Boolean): ArrayBuffer[(String, Option[List[Breadcrumb]])] = {
+  private def buildBacklog(x: ClassSchema, breadcrumbs: Option[List[Breadcrumb]], backlog: ArrayBuffer[(String, Option[List[Breadcrumb]])], shallowEntities: ClassSchema => Boolean, focusEntities: ClassSchema => Boolean, expandEntities: ClassSchema => Boolean)(implicit rootSchema: ClassSchema): ArrayBuffer[(String, Option[List[Breadcrumb]])] = {
     val name = x.fullClassName
     val index = backlog.indexWhere(_._1 == name)
     if (index < 0) {
@@ -63,7 +63,7 @@ object KoskiSchemaDocumentHtml {
 
   case class Breadcrumb(schema: ClassSchema, property: Property)
 
-  private def classSchemasIn(schema: Schema): List[ClassSchema] = schema match {
+  private def classSchemasIn(schema: Schema)(implicit rootSchema: ClassSchema): List[ClassSchema] = schema match {
     case s: ClassSchema => List(s)
     case s: AnyOfSchema => s.alternatives.map {
       case s: ClassSchema => s
@@ -73,7 +73,7 @@ object KoskiSchemaDocumentHtml {
     case _ => Nil
   }
 
-  private def classHtml(schema: ClassSchema, breadcrumbs: Option[List[Breadcrumb]], includedEntities: List[String], shallowEntities: ClassSchema => Boolean) = <div class="entity">
+  private def classHtml(schema: ClassSchema, breadcrumbs: Option[List[Breadcrumb]], includedEntities: List[String], shallowEntities: ClassSchema => Boolean)(implicit rootSchema: ClassSchema) = <div class="entity">
     <h3 id={schema.simpleName}>{breadcrumbs.toList.flatten.map(bc => <span class="breadcrum"><a href={"#" + urlEncode(bc.schema.simpleName)}>{bc.schema.title}</a> &gt; </span>)}{schema.title}</h3>
     {descriptionHtml(schema)}
     <table>
@@ -113,7 +113,7 @@ object KoskiSchemaDocumentHtml {
 
   private def urlEncode(s: String) = URLEncoder.encode(s, "UTF-8")
 
-  private def schemaTypeHtml(parentSchema: ClassSchema, itemSchema: Schema, includedEntities: List[String], shallowEntities: ClassSchema => Boolean): Elem = itemSchema match {
+  private def schemaTypeHtml(parentSchema: ClassSchema, itemSchema: Schema, includedEntities: List[String], shallowEntities: ClassSchema => Boolean)(implicit rootSchema: ClassSchema): Elem = itemSchema match {
     case s: ClassSchema => <a href={(if (includedEntities.contains(s.fullClassName)) {""} else { "?entity=" + urlEncode(getEntity(parentSchema, s, shallowEntities)) }) + "#" + urlEncode(s.simpleName)}>{s.title}</a>
     case s: AnyOfSchema => <span class={"alternatives " + s.simpleName}>{s.alternatives.map(a => schemaTypeHtml(parentSchema, resolveSchema(a), includedEntities, shallowEntities))}</span>
     case s: StringSchema => <span>merkkijono</span> // TODO: schemarajoitukset annotaatioista jne
@@ -123,12 +123,12 @@ object KoskiSchemaDocumentHtml {
     case _ => ???
   }
 
-  private def resolveSchema(schema: Schema): Schema = schema match {
-    case s: ClassRefSchema => s.resolve(KoskiSchema.schemaFactory)
+  private def resolveSchema(schema: Schema)(implicit rootSchema: ClassSchema): Schema = schema match {
+    case s: ClassRefSchema => s.resolve(KoskiSchema.schemaFactory, rootSchema)
     case _ => schema
   }
 
-  private def resolveSchemas(x: ClassSchema): Seq[(ClassSchema, Breadcrumb)] = x.properties.flatMap { p =>
+  private def resolveSchemas(x: ClassSchema)(implicit rootSchema: ClassSchema): Seq[(ClassSchema, Breadcrumb)] = x.properties.flatMap { p =>
     val (itemSchema, _) = cardinalityAndItemSchema(p.schema, p.metadata)
     val resolvedItemSchema: Schema = resolveSchema(itemSchema)
     classSchemasIn(resolvedItemSchema).map(s => (s, Breadcrumb(x, p)))
@@ -219,7 +219,7 @@ object KoskiSchemaDocumentHtml {
   }
 
   private val cachedEntities: collection.mutable.Map[Schema, Option[String]] = collection.mutable.Map.empty
-  private def getEntity(parentSchema: ClassSchema, schema: ClassSchema, shallowEntities: ClassSchema => Boolean) = if (shallowEntities(parentSchema)) {
+  private def getEntity(parentSchema: ClassSchema, schema: ClassSchema, shallowEntities: ClassSchema => Boolean)(implicit rootSchema: ClassSchema) = if (shallowEntities(parentSchema)) {
     synchronized {
       cachedEntities.getOrElseUpdate(schema, OpiskeluoikeusSchemaFinder(schema, shallowEntities).findOpiskeluoikeusSchema.map(_.simpleName)).getOrElse(schema.simpleName)
     }
@@ -227,7 +227,7 @@ object KoskiSchemaDocumentHtml {
     schema.simpleName
   }
 
-  case class OpiskeluoikeusSchemaFinder(itemSchema: ClassSchema, shallowEntities: ClassSchema => Boolean) {
+  case class OpiskeluoikeusSchemaFinder(itemSchema: ClassSchema, shallowEntities: ClassSchema => Boolean)(implicit rootSchema: ClassSchema) {
     def findOpiskeluoikeusSchema: Option[ClassSchema] =
       opiskeluoikeusSchemas.find(ooSchema => containsItem(nonShallowItemsFrom(ooSchema)))
 
@@ -245,7 +245,7 @@ object KoskiSchemaDocumentHtml {
     }
   }
 
-  private lazy val opiskeluoikeusSchemas = resolveSchemas(mainSchema).map(_._1).filter(isOpiskeluoikeusSchema)
+  private lazy val opiskeluoikeusSchemas = resolveSchemas(mainSchema)(mainSchema).map(_._1).filter(isOpiskeluoikeusSchema)
   private def isOpiskeluoikeusSchema(s: ClassSchema) =
     classOf[Opiskeluoikeus].isAssignableFrom(Class.forName(s.fullClassName))
 }

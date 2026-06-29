@@ -1,12 +1,12 @@
 package fi.oph.koski.omadataoauth2
 
-import fi.oph.koski.aktiivisetjapaattyneetopinnot.AktiivisetJaPäättyneetOpinnotOpiskeluoikeus
+import fi.oph.koski.aktiivisetjapaattyneetopinnot.{AktiivisetJaPäättyneetOpinnotOpiskeluoikeus, Oppilaitos => AktiivisetJaPäättyneetOpinnotOppilaitos}
 import fi.oph.koski.henkilo.LaajatOppijaHenkilöTiedot
 import fi.oph.koski.schema
 import fi.oph.koski.schema.annotation.KoodistoUri
-import fi.oph.koski.schema.{Koodistokoodiviite, LocalizedString, Opiskeluoikeus, TäydellisetHenkilötiedot}
-import fi.oph.koski.suoritetuttutkinnot.SuoritetutTutkinnotOpiskeluoikeus
-import fi.oph.scalaschema.annotation.{Description, Title}
+import fi.oph.koski.schema.{Koodistokoodiviite, LocalizedString, Opiskeluoikeus, Oppilaitos, TäydellisetHenkilötiedot}
+import fi.oph.koski.suoritetuttutkinnot.{Oppilaitos => SuoritetutTutkinnotOppilaitos, SuoritetutTutkinnotOpiskeluoikeus}
+import fi.oph.scalaschema.annotation.{Description, IncludeComputedProperty, Title}
 import fi.oph.scalaschema.{ClassSchema, SchemaToJson}
 import org.json4s.JValue
 
@@ -18,6 +18,7 @@ object OmaDataOAuth2KaikkiOpiskeluoikeudetJaValintatiedot {
     SchemaToJson.toJsonSchema(schema.KoskiSchema.createSchema(classOf[OmaDataOAuth2KaikkiOpiskeluoikeudetJaValintatiedot]).asInstanceOf[ClassSchema])
 }
 
+@IncludeComputedProperty(classOf[Oppilaitos], "oppilaitostyyppi")
 case class OmaDataOAuth2KaikkiOpiskeluoikeudetJaValintatiedot(
   henkilö: OmaDataOAuth2Henkilötiedot,
   opiskeluoikeudet: List[Opiskeluoikeus],
@@ -30,6 +31,7 @@ object OmaDataOAuth2KaikkiOpiskeluoikeudet {
     SchemaToJson.toJsonSchema(schema.KoskiSchema.createSchema(classOf[OmaDataOAuth2KaikkiOpiskeluoikeudet]).asInstanceOf[ClassSchema])
 }
 
+@IncludeComputedProperty(classOf[Oppilaitos], "oppilaitostyyppi")
 case class OmaDataOAuth2KaikkiOpiskeluoikeudet(
   henkilö: OmaDataOAuth2Henkilötiedot,
   opiskeluoikeudet: List[Opiskeluoikeus],
@@ -42,6 +44,7 @@ object OmaDataOAuth2SuoritetutTutkinnot {
 }
 
 @Title("Omadata OAuth2 suoritetut tutkinnot")
+@IncludeComputedProperty(classOf[SuoritetutTutkinnotOppilaitos], "oppilaitostyyppi")
 case class OmaDataOAuth2SuoritetutTutkinnot(
   henkilö: OmaDataOAuth2Henkilötiedot,
   opiskeluoikeudet: List[SuoritetutTutkinnotOpiskeluoikeus],
@@ -54,6 +57,7 @@ object OmaDataOAuth2AktiivisetJaPäättyneetOpiskeluoikeudet {
 }
 
 @Title("Omadata OAuth2 aktiiviset ja päättyneet opiskeluoikeudet")
+@IncludeComputedProperty(classOf[AktiivisetJaPäättyneetOpinnotOppilaitos], "oppilaitostyyppi")
 case class OmaDataOAuth2AktiivisetJaPäättyneetOpiskeluoikeudet(
   henkilö: OmaDataOAuth2Henkilötiedot,
   opiskeluoikeudet: List[AktiivisetJaPäättyneetOpinnotOpiskeluoikeus],
@@ -220,4 +224,3 @@ case class OmaDataOAuth2HakutoiveOrganisaatio(
   oid: String,
   nimi: LocalizedString
 )
-
