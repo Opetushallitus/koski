@@ -63,6 +63,13 @@ case class Oppilaitos(
   @Description("Oppilaitoksen kotipaikka")
   kotipaikka: Option[Koodistokoodiviite] = None
 ) extends OrganisaatioWithOid with DefaultDescription {
+  @SyntheticProperty
+  @Description("Oppilaitoksen tyyppi")
+  @ReadOnly("Tiedon syötössä oppilaitostyyppiä ei tarvita; tieto haetaan Organisaatiopalvelusta")
+  @KoodistoUri("oppilaitostyyppi")
+  def oppilaitostyyppi: Option[Koodistokoodiviite] =
+    ComputedPropertyContext.oppilaitostyyppi(oid)
+
   def toOppilaitos = Some(this)
 }
 

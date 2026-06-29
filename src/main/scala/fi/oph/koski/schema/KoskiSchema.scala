@@ -24,4 +24,11 @@ object KoskiSchema {
   }
 
   def skipSyntheticProperties(s: ClassSchema, p: Property): List[Property] = if (p.synthetic) Nil else List(p)
+
+  // Väliaikainen spike-toteutus ennen kuin scala-scheman ComputedProperty-annotaatio on käytössä.
+  def isComputedProperty(s: ClassSchema, p: Property): Boolean =
+    p.synthetic && s.fullClassName == classOf[Oppilaitos].getName && p.key == "oppilaitostyyppi"
+
+  def skipComputedProperties(s: ClassSchema, p: Property): List[Property] =
+    if (isComputedProperty(s, p)) Nil else List(p)
 }
