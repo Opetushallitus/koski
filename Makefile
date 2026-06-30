@@ -87,7 +87,7 @@ backtest:
 	fi.oph.koski.luovutuspalvelu,fi.oph.koski.migration,fi.oph.koski.migri,\
 	fi.oph.koski.mocha,fi.oph.koski.mydata,fi.oph.koski.omaopintopolkuloki,fi.oph.koski.opensearch,\
 	fi.oph.koski.opiskeluoikeus,fi.oph.koski.oppilaitos,fi.oph.koski.oppivelvollisuustieto,\
-	fi.oph.koski.organisaatio,fi.oph.koski.perftest,fi.oph.koski.raportit,\
+	fi.oph.koski.organisaatio,fi.oph.koski.perftest,fi.oph.koski.perustiedot,fi.oph.koski.raportit,\
 	fi.oph.koski.raportointikanta,fi.oph.koski.schedule,fi.oph.koski.schema,\
 	fi.oph.koski.sso,fi.oph.koski.sure,fi.oph.koski.supa,fi.oph.koski.tools,fi.oph.koski.turvakielto,fi.oph.koski.userdirectory,fi.oph.koski.util,\
 	fi.oph.koski.valpas,fi.oph.koski.valpas.hakeutumisvalvonta,fi.oph.koski.valpas.kuntailmoitus,\
