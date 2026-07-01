@@ -69,6 +69,25 @@ jobs:
           docker build -f omadata-oauth2-sample/Dockerfile -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG omadata-oauth2-sample
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
 
+      # Siirrä liikkuva deploy-<env> -tagi osoittamaan tähän buildiin. CDK
+      # viittaa tähän tagiin, joten stackin deploy ei enää palauta vanhaa imagea.
+      # Tehdään ECR:n manifestin uudelleentägäyksellä (ei tarvitse pull/push:ia),
+      # jotta tagi päivittyy myös kun buildi ohitettiin imagen jo ollessa ECR:ssä.
+      - name: Move moving deploy-<env> tag to this image
+        env:
+          IMAGE_TAG: ${{ inputs.commithash }}
+          MOVING_TAG: deploy-${{ inputs.environment }}
+        run: |
+          MANIFEST=$(aws ecr batch-get-image \
+            --repository-name "$ECR_REPOSITORY" \
+            --image-ids imageTag="$IMAGE_TAG" \
+            --query 'images[0].imageManifest' --output text)
+          aws ecr put-image \
+            --repository-name "$ECR_REPOSITORY" \
+            --image-tag "$MOVING_TAG" \
+            --image-manifest "$MANIFEST" \
+          || echo "Tag $MOVING_TAG already points at $IMAGE_TAG, nothing to do"
+
   deploy:
     name: Deploy
     runs-on: ubuntu-latest
