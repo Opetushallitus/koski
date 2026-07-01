@@ -231,7 +231,8 @@ jobs:
       - uses: ./.github/actions/koski_backend_test
         with:
           suites: |
-            fi.oph.koski.massaluovutus
+            fi.oph.koski.massaluovutus, \
+            fi.oph.koski.massaluovutus.suorituspalvelu
 
   run_backend_tests_other_4:
     name: Backend (other 4/4)
