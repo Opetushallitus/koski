@@ -105,8 +105,8 @@
     "overrides": {
       "brace-expansion@^1": "1.1.15",
       "brace-expansion@^2": "5.0.6",
-      "js-yaml@^3": "4.2.0",
-      "js-yaml@^4": "4.2.0",
+      "js-yaml@^3": "4.3.0",
+      "js-yaml@^4": "4.3.0",
       "@eslint/plugin-kit": "^0.7.0",
       "flatted": "^3.4.2"
     }
