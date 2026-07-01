@@ -14,9 +14,7 @@ import {
  * @see `fi.oph.koski.schema.PreIBKurssi2015`
  */
 export type PreIBKurssi2015 =
-  | IBKurssi
-  | PaikallinenLukionKurssi2015
-  | ValtakunnallinenLukionKurssi2015
+  IBKurssi | PaikallinenLukionKurssi2015 | ValtakunnallinenLukionKurssi2015
 
 export const isPreIBKurssi2015 = (a: any): a is PreIBKurssi2015 =>
   isIBKurssi(a) ||

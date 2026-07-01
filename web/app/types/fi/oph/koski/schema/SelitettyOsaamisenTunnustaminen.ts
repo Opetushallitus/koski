@@ -13,8 +13,7 @@ import {
  * @see `fi.oph.koski.schema.SelitettyOsaamisenTunnustaminen`
  */
 export type SelitettyOsaamisenTunnustaminen =
-  | OsaamisenTunnustaminen
-  | TaiteenPerusopetuksenOsasuorituksenTunnustus
+  OsaamisenTunnustaminen | TaiteenPerusopetuksenOsasuorituksenTunnustus
 
 export const isSelitettyOsaamisenTunnustaminen = (
   a: any

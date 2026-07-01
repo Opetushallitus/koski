@@ -48,10 +48,7 @@ declare module 'baconjs' {
 declare module 'partial.lenses' {
   type Lens<T, S> = { _tag: 'Lens' } | string
   type Traversal<T, S> =
-    | string
-    | { _tag: 'Traversal' }
-    | Traversal<T, S>[]
-    | Lens<T, S>
+    string | { _tag: 'Traversal' } | Traversal<T, S>[] | Lens<T, S>
   type Optic<T, S> = Traversal<T, S>
 
   function index<T, S>(i: number): Lens<T, S>

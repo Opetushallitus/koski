@@ -43,8 +43,7 @@ export type PreIB2019ModuuliOppiaineenTunniste = PermissiveKoodiviite<
 >
 
 export type PreIB2019OsasuoritusTunniste =
-  | Koodistokoodiviite<'moduulikoodistolops2021'>
-  | PaikallinenKoodi
+  Koodistokoodiviite<'moduulikoodistolops2021'> | PaikallinenKoodi
 
 export const createPreIBLukionModuulinTaiPaikallisenOpintojaksonSuoritus2019 = (
   props: PreIB2019ModuuliProps

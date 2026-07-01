@@ -175,8 +175,7 @@ const MuuAmmatillinenKoulutusFields = (props: SuoritusFieldsProps) => {
 }
 
 type MuuAmmatillinenKoulutusmoduuliKey =
-  | 'paikallinen'
-  | 'ammatilliseentehtavaanvalmistavakoulutus'
+  'paikallinen' | 'ammatilliseentehtavaanvalmistavakoulutus'
 
 const muuAmmatillinenKoulutusOptions: SelectOption<MuuAmmatillinenKoulutusmoduuliKey>[] =
   [

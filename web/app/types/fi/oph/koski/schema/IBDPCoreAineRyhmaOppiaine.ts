@@ -13,8 +13,7 @@ import {
  * @see `fi.oph.koski.schema.IBDPCoreAineRyhmäOppiaine`
  */
 export type IBDPCoreAineRyhmäOppiaine =
-  | IBDPCoreOppiaineLanguage
-  | IBDPCoreOppiaineMuu
+  IBDPCoreOppiaineLanguage | IBDPCoreOppiaineMuu
 
 export const isIBDPCoreAineRyhmäOppiaine = (
   a: any

@@ -13,8 +13,7 @@ import {
  * @see `fi.oph.koski.schema.Järjestämismuoto`
  */
 export type Järjestämismuoto =
-  | JärjestämismuotoIlmanLisätietoja
-  | OppisopimuksellinenJärjestämismuoto
+  JärjestämismuotoIlmanLisätietoja | OppisopimuksellinenJärjestämismuoto
 
 export const isJärjestämismuoto = (a: any): a is Järjestämismuoto =>
   isJärjestämismuotoIlmanLisätietoja(a) ||

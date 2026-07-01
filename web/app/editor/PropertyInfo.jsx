@@ -4,13 +4,11 @@ import Text from '../i18n/Text'
 import { t } from '../i18n/i18n'
 
 export const PropertyInfo = ({ property }) => {
-  if (
-    !(
-      property.model &&
-      (property.model.infoDescription ||
-        (property.model.infoLinkTitle && property.model.infoLinkUrl))
-    )
-  ) {
+  if (!(
+    property.model &&
+    (property.model.infoDescription ||
+      (property.model.infoLinkTitle && property.model.infoLinkUrl))
+  )) {
     return null
   }
   return (

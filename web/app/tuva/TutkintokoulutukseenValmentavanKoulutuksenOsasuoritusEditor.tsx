@@ -15,9 +15,7 @@ export type TuvaOsasuoritusModel = SuoritusModel &
   Contextualized<ChangeBusContext>
 
 export type TuvaOsasuoritusColumn =
-  | SuoritusColumn
-  | LaajuusColumn
-  | ArvosanaColumn
+  SuoritusColumn | LaajuusColumn | ArvosanaColumn
 
 export type TutkintokoulutukseenValmentavanKoulutuksenOsasuoritusEditorProps = {
   model: TuvaOsasuoritusModel

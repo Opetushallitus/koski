@@ -14,9 +14,7 @@ import {
  * @see `fi.oph.koski.schema.MuutSuorituksetTaiVastaavat2019`
  */
 export type MuutSuorituksetTaiVastaavat2019 =
-  | Lukiodiplomit2019
-  | MuutLukionSuoritukset2019
-  | TemaattisetOpinnot2019
+  Lukiodiplomit2019 | MuutLukionSuoritukset2019 | TemaattisetOpinnot2019
 
 export const isMuutSuorituksetTaiVastaavat2019 = (
   a: any

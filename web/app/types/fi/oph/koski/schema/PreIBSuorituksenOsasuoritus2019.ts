@@ -13,8 +13,7 @@ import {
  * @see `fi.oph.koski.schema.PreIBSuorituksenOsasuoritus2019`
  */
 export type PreIBSuorituksenOsasuoritus2019 =
-  | LukionOppiaineenPreIBSuoritus2019
-  | MuidenLukioOpintojenPreIBSuoritus2019
+  LukionOppiaineenPreIBSuoritus2019 | MuidenLukioOpintojenPreIBSuoritus2019
 
 export const isPreIBSuorituksenOsasuoritus2019 = (
   a: any

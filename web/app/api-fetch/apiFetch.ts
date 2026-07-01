@@ -9,9 +9,7 @@ export type ApiSuccess<T> = {
 }
 
 export type ApiErrorKey =
-  | 'invalid.json'
-  | 'unauthorized.loginFail'
-  | 'badRequest.validation.jsonSchema'
+  'invalid.json' | 'unauthorized.loginFail' | 'badRequest.validation.jsonSchema'
 
 export type ApiError = {
   key?: ApiErrorKey

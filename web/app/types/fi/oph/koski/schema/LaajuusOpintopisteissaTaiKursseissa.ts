@@ -10,8 +10,7 @@ import {
  * @see `fi.oph.koski.schema.LaajuusOpintopisteissäTaiKursseissa`
  */
 export type LaajuusOpintopisteissäTaiKursseissa =
-  | LaajuusKursseissa
-  | LaajuusOpintopisteissä
+  LaajuusKursseissa | LaajuusOpintopisteissä
 
 export const isLaajuusOpintopisteissäTaiKursseissa = (
   a: any

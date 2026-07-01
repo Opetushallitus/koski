@@ -13,8 +13,7 @@ import {
  * @see `fi.oph.koski.schema.DiplomaIBOppiaineenSuoritus`
  */
 export type DiplomaIBOppiaineenSuoritus =
-  | DiplomaCoreRequirementsOppiaineenSuoritus
-  | DiplomaOppiaineenSuoritus
+  DiplomaCoreRequirementsOppiaineenSuoritus | DiplomaOppiaineenSuoritus
 
 export const isDiplomaIBOppiaineenSuoritus = (
   a: any

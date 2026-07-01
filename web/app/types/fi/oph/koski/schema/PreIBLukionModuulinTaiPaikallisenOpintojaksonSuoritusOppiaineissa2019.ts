@@ -13,9 +13,8 @@ import {
  * @see `fi.oph.koski.schema.PreIBLukionModuulinTaiPaikallisenOpintojaksonSuoritusOppiaineissa2019`
  */
 export type PreIBLukionModuulinTaiPaikallisenOpintojaksonSuoritusOppiaineissa2019 =
-
-    | PreIBLukionModuulinSuoritusOppiaineissa2019
-    | PreIBLukionPaikallisenOpintojaksonSuoritus2019
+  | PreIBLukionModuulinSuoritusOppiaineissa2019
+  | PreIBLukionPaikallisenOpintojaksonSuoritus2019
 
 export const isPreIBLukionModuulinTaiPaikallisenOpintojaksonSuoritusOppiaineissa2019 =
   (

@@ -183,8 +183,7 @@ export const fetchConstraint = (
   )
 
 export type OrgTypesToShow =
-  | 'vainOmatOrganisaatiot'
-  | 'vainVarhaiskasvatusToimipisteet'
+  'vainOmatOrganisaatiot' | 'vainVarhaiskasvatusToimipisteet'
 
 export const fetchOrganisaatioHierarkia = (orgTypesToShow?: OrgTypesToShow) =>
   handleExpiredSession(

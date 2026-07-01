@@ -50,9 +50,7 @@ export type YleinenKielitutkintoTodistusLatausProps = {
 }
 
 type TodistusPdfTemplate =
-  | 'digitaalinen'
-  | 'tulostettava_uusi'
-  | 'tulostettava_paivitys'
+  'digitaalinen' | 'tulostettava_uusi' | 'tulostettava_paivitys'
 
 const languageOptions: OptionList<TodistusLanguage> = [
   { key: 'fi', value: 'fi', label: t('todistus:language:fi') },

@@ -72,8 +72,7 @@ export type OppiaineTablePäätasonSuoritus =
   PäätasonSuoritusOf<OppiaineTableOpiskeluoikeus>
 
 export type Oppiaine =
-  | OsasuoritusOf<OppiaineTablePäätasonSuoritus>
-  | IBTheoryOfKnowledgeSuoritus
+  OsasuoritusOf<OppiaineTablePäätasonSuoritus> | IBTheoryOfKnowledgeSuoritus
 export type OppiaineenOsasuoritus = OsasuoritusOf<Oppiaine>
 
 export type OppiaineTableProps<T extends OppiaineTablePäätasonSuoritus> = {

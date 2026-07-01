@@ -13,8 +13,7 @@ import {
  * @see `fi.oph.koski.schema.MYPArviointi`
  */
 export type MYPArviointi =
-  | NumeerinenInternationalSchoolOppiaineenArviointi
-  | PassFailOppiaineenArviointi
+  NumeerinenInternationalSchoolOppiaineenArviointi | PassFailOppiaineenArviointi
 
 export const isMYPArviointi = (a: any): a is MYPArviointi =>
   isNumeerinenInternationalSchoolOppiaineenArviointi(a) ||

@@ -13,9 +13,8 @@ import {
  * @see `fi.oph.koski.schema.LukionModuulinTaiPaikallisenOpintojaksonSuoritusMuissaOpinnoissa2019`
  */
 export type LukionModuulinTaiPaikallisenOpintojaksonSuoritusMuissaOpinnoissa2019 =
-
-    | LukionModuulinSuoritusMuissaOpinnoissa2019
-    | LukionPaikallisenOpintojaksonSuoritus2019
+  | LukionModuulinSuoritusMuissaOpinnoissa2019
+  | LukionPaikallisenOpintojaksonSuoritus2019
 
 export const isLukionModuulinTaiPaikallisenOpintojaksonSuoritusMuissaOpinnoissa2019 =
   (

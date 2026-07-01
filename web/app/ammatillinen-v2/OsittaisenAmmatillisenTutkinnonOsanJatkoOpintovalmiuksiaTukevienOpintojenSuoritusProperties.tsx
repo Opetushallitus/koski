@@ -440,8 +440,7 @@ const OsasuoritusProperties = ({
 }
 
 type LukioTaiMuuOsasuoritus =
-  | LukioOpintojenSuoritus
-  | MuidenOpintovalmiuksiaTukevienOpintojenSuoritus
+  LukioOpintojenSuoritus | MuidenOpintovalmiuksiaTukevienOpintojenSuoritus
 const isLukioTaiMuuOsasuoritus = (a: unknown): a is LukioTaiMuuOsasuoritus =>
   isLukioOpintojenSuoritus(a) ||
   isMuidenOpintovalmiuksiaTukevienOpintojenSuoritus(a)

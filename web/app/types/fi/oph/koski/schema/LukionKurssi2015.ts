@@ -13,8 +13,7 @@ import {
  * @see `fi.oph.koski.schema.LukionKurssi2015`
  */
 export type LukionKurssi2015 =
-  | PaikallinenLukionKurssi2015
-  | ValtakunnallinenLukionKurssi2015
+  PaikallinenLukionKurssi2015 | ValtakunnallinenLukionKurssi2015
 
 export const isLukionKurssi2015 = (a: any): a is LukionKurssi2015 =>
   isPaikallinenLukionKurssi2015(a) || isValtakunnallinenLukionKurssi2015(a)

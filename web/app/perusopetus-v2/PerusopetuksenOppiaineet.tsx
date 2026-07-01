@@ -116,8 +116,7 @@ const ParasArvosanaKoodiarvoView = <T extends Arviointi>(
 }
 
 type SuoritusWithOsasuoritukset =
-  | NuortenPerusopetuksenOppimääränSuoritus
-  | PerusopetuksenVuosiluokanSuoritus
+  NuortenPerusopetuksenOppimääränSuoritus | PerusopetuksenVuosiluokanSuoritus
 
 type PerusopetuksenOppiaineetProps = {
   form: FormModel<PerusopetuksenOpiskeluoikeus>
@@ -269,8 +268,7 @@ const Oppiainetaulukko: React.FC<OppiainetaulukkoProps> = ({
   showArvosana
 }) => {
   const suoritus = form.state.suoritukset[suoritusIndex] as
-    | SuoritusWithOsasuoritukset
-    | undefined
+    SuoritusWithOsasuoritukset | undefined
   const allOsasuoritukset = suoritus?.osasuoritukset || []
   const showLaajuus = shouldShowLaajuusColumn({
     editMode: form.editMode,

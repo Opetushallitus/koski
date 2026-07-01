@@ -13,8 +13,7 @@ import {
  * @see `fi.oph.koski.schema.ValmaKoulutuksenOsanTaiOsanOsaAlueenSuoritus`
  */
 export type ValmaKoulutuksenOsanTaiOsanOsaAlueenSuoritus =
-  | ValmaKoulutuksenOsanSuoritus
-  | YhteisenTutkinnonOsanOsaAlueenSuoritus
+  ValmaKoulutuksenOsanSuoritus | YhteisenTutkinnonOsanOsaAlueenSuoritus
 
 export const isValmaKoulutuksenOsanTaiOsanOsaAlueenSuoritus = (
   a: any

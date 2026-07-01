@@ -13,8 +13,7 @@ import {
  * @see `fi.oph.koski.schema.SecondaryLowerArviointi`
  */
 export type SecondaryLowerArviointi =
-  | SecondaryGradeArviointi
-  | SecondaryNumericalMarkArviointi
+  SecondaryGradeArviointi | SecondaryNumericalMarkArviointi
 
 export const isSecondaryLowerArviointi = (
   a: any
