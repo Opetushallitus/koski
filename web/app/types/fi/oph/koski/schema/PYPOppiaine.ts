@@ -14,9 +14,7 @@ import { PYPOppiaineMuu, isPYPOppiaineMuu } from './PYPOppiaineMuu'
  * @see `fi.oph.koski.schema.PYPOppiaine`
  */
 export type PYPOppiaine =
-  | LanguageAcquisition
-  | LanguageAndLiterature
-  | PYPOppiaineMuu
+  LanguageAcquisition | LanguageAndLiterature | PYPOppiaineMuu
 
 export const isPYPOppiaine = (a: any): a is PYPOppiaine =>
   isLanguageAcquisition(a) || isLanguageAndLiterature(a) || isPYPOppiaineMuu(a)

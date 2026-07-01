@@ -42,7 +42,9 @@ export type AdaptedOpiskeluoikeusEditor<T extends Opiskeluoikeus> = React.FC<
 >
 
 export type AdaptedOpiskeluoikeusEditorCollection = Partial<{
-  [OO in Opiskeluoikeus as OpiskeluoikeudenTyyppiOf<OO>]: AdaptedOpiskeluoikeusEditor<OO>
+  [
+    OO in Opiskeluoikeus as OpiskeluoikeudenTyyppiOf<OO>
+  ]: AdaptedOpiskeluoikeusEditor<OO>
 }>
 
 export type UiAdapter = {

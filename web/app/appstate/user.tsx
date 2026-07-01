@@ -2,8 +2,7 @@ import React, { useContext, useMemo } from 'react'
 import { UserWithAccessRights } from '../types/fi/oph/koski/koskiuser/UserWithAccessRights'
 
 export type UserContext =
-  | (UserWithAccessRights & { isKansalainen: boolean })
-  | null
+  (UserWithAccessRights & { isKansalainen: boolean }) | null
 
 const UserContext = React.createContext<UserContext>(null)
 

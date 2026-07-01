@@ -13,8 +13,7 @@ import {
  * @see `fi.oph.koski.schema.PreIBSuorituksenOsasuoritus2015`
  */
 export type PreIBSuorituksenOsasuoritus2015 =
-  | MuidenLukioOpintojenSuoritus2015
-  | PreIBOppiaineenSuoritus2015
+  MuidenLukioOpintojenSuoritus2015 | PreIBOppiaineenSuoritus2015
 
 export const isPreIBSuorituksenOsasuoritus2015 = (
   a: any

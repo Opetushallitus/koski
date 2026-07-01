@@ -13,8 +13,7 @@ import {
  * @see `fi.oph.koski.schema.DIAPäätasonSuoritus`
  */
 export type DIAPäätasonSuoritus =
-  | DIATutkinnonSuoritus
-  | DIAValmistavanVaiheenSuoritus
+  DIATutkinnonSuoritus | DIAValmistavanVaiheenSuoritus
 
 export const isDIAPäätasonSuoritus = (a: any): a is DIAPäätasonSuoritus =>
   isDIATutkinnonSuoritus(a) || isDIAValmistavanVaiheenSuoritus(a)

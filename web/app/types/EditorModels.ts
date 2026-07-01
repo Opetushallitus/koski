@@ -179,11 +179,7 @@ export type ValueModelValue<T extends ValueModelValueType> = {
 }
 
 export type ValueModel =
-  | NumberModel
-  | BooleanModel
-  | DateModel
-  | DateTimeModel
-  | StringModel
+  NumberModel | BooleanModel | DateModel | DateTimeModel | StringModel
 
 export type NumberModel = GenericValueModel<'number', number>
 export type BooleanModel = GenericValueModel<'boolean', boolean>

@@ -30,8 +30,7 @@ export type PreIB2015KurssiOppiaineenTunniste = PermissiveKoodiviite<
 >
 
 export type PreIB2015OsasuoritusTunniste =
-  | Koodistokoodiviite<LukiokurssiTunnisteUri>
-  | PaikallinenKoodi
+  Koodistokoodiviite<LukiokurssiTunnisteUri> | PaikallinenKoodi
 
 export const lukiokurssiTunnisteUrit: LukiokurssiTunnisteUri[] = [
   'lukionkurssit',

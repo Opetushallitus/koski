@@ -11,9 +11,7 @@ import { DIAPäättökoe, isDIAPäättökoe } from './DIAPaattokoe'
  * @see `fi.oph.koski.schema.DIAOppiaineenTutkintovaiheenOsasuoritus`
  */
 export type DIAOppiaineenTutkintovaiheenOsasuoritus =
-  | DIANäyttötutkinto
-  | DIAOppiaineenTutkintovaiheenLukukausi
-  | DIAPäättökoe
+  DIANäyttötutkinto | DIAOppiaineenTutkintovaiheenLukukausi | DIAPäättökoe
 
 export const isDIAOppiaineenTutkintovaiheenOsasuoritus = (
   a: any

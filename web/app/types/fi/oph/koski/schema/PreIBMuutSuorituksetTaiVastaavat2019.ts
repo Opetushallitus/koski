@@ -14,9 +14,7 @@ import {
  * @see `fi.oph.koski.schema.PreIBMuutSuorituksetTaiVastaavat2019`
  */
 export type PreIBMuutSuorituksetTaiVastaavat2019 =
-  | Lukiodiplomit2019
-  | MuutLukionSuoritukset2019
-  | TemaattisetOpinnot2019
+  Lukiodiplomit2019 | MuutLukionSuoritukset2019 | TemaattisetOpinnot2019
 
 export const isPreIBMuutSuorituksetTaiVastaavat2019 = (
   a: any

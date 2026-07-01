@@ -17,9 +17,7 @@ import {
  * @see `fi.oph.koski.schema.InternationalSchoolVuosiluokanSuoritus`
  */
 export type InternationalSchoolVuosiluokanSuoritus =
-  | DiplomaVuosiluokanSuoritus
-  | MYPVuosiluokanSuoritus
-  | PYPVuosiluokanSuoritus
+  DiplomaVuosiluokanSuoritus | MYPVuosiluokanSuoritus | PYPVuosiluokanSuoritus
 
 export const isInternationalSchoolVuosiluokanSuoritus = (
   a: any

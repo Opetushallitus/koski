@@ -17,10 +17,9 @@ import {
  * @see `fi.oph.koski.schema.YhteistenTutkinnonOsienOsaAlueidenTaiLukioOpintojenTaiMuidenOpintovalmiuksiaTukevienOpintojenOsasuoritus`
  */
 export type YhteistenTutkinnonOsienOsaAlueidenTaiLukioOpintojenTaiMuidenOpintovalmiuksiaTukevienOpintojenOsasuoritus =
-
-    | LukioOpintojenSuoritus
-    | MuidenOpintovalmiuksiaTukevienOpintojenSuoritus
-    | YhteisenTutkinnonOsanOsaAlueenSuoritus
+  | LukioOpintojenSuoritus
+  | MuidenOpintovalmiuksiaTukevienOpintojenSuoritus
+  | YhteisenTutkinnonOsanOsaAlueenSuoritus
 
 export const isYhteistenTutkinnonOsienOsaAlueidenTaiLukioOpintojenTaiMuidenOpintovalmiuksiaTukevienOpintojenOsasuoritus =
   (

@@ -13,8 +13,7 @@ import {
  * @see `fi.oph.koski.schema.KielitutkinnonPäätasonSuoritus`
  */
 export type KielitutkinnonPäätasonSuoritus =
-  | ValtionhallinnonKielitutkinnonSuoritus
-  | YleisenKielitutkinnonSuoritus
+  ValtionhallinnonKielitutkinnonSuoritus | YleisenKielitutkinnonSuoritus
 
 export const isKielitutkinnonPäätasonSuoritus = (
   a: any

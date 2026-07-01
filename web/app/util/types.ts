@@ -13,9 +13,7 @@ export type ClassOf<T> = T extends ObjWithClass ? T['$class'] : never
 export type LegacyClass<T extends ObjWithClass> = Omit<T, '$class'>
 
 export type CollectableOptic<S, A> =
-  | $.Prism<S, any, A>
-  | $.Traversal<S, any, A>
-  | $.Fold<S, A>
+  $.Prism<S, any, A> | $.Traversal<S, any, A> | $.Fold<S, A>
 
 export type ItemOf<S extends readonly any[]> = S[0]
 

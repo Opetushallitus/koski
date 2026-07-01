@@ -10,8 +10,7 @@ import {
  * @see `fi.oph.koski.schema.LaajuusVuosiviikkotunneissaTaiTunneissa`
  */
 export type LaajuusVuosiviikkotunneissaTaiTunneissa =
-  | LaajuusTunneissa
-  | LaajuusVuosiviikkotunneissa
+  LaajuusTunneissa | LaajuusVuosiviikkotunneissa
 
 export const isLaajuusVuosiviikkotunneissaTaiTunneissa = (
   a: any

@@ -256,8 +256,7 @@ const Oppiainetaulukko: React.FC<OppiainetaulukkoProps> = ({
   showArvosana
 }) => {
   const suoritus = form.state.suoritukset[suoritusIndex] as
-    | SuoritusWithOsasuoritukset
-    | undefined
+    SuoritusWithOsasuoritukset | undefined
   const allOsasuoritukset = suoritus?.osasuoritukset || []
   const showLaajuus = shouldShowLaajuusColumn({
     editMode: form.editMode,

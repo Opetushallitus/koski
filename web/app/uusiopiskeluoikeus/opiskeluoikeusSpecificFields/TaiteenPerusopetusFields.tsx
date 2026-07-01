@@ -121,8 +121,7 @@ const useTpoSuorituksetJaPerusteenDiaarinumero = (
   const suoritustyypit = usePäätasonSuoritustyypit(state)
   const result = useMemo(() => {
     const oppimäärä = state.tpoOppimäärä.value?.koodiarvo as
-      | keyof typeof tpoSuoritustyypit
-      | undefined
+      keyof typeof tpoSuoritustyypit | undefined
     const op = oppimäärä ? tpoSuoritustyypit[oppimäärä] : undefined
 
     return {

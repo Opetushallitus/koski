@@ -31,14 +31,12 @@ export type PreIBOppiaineProps = {
 }
 
 export type PreIBOppiaineTunnisteKoodistoUri =
-  | 'oppiaineetib'
-  | 'koskioppiaineetyleissivistava'
+  'oppiaineetib' | 'koskioppiaineetyleissivistava'
 
 export type ValtakunnallinenPreIBOppiaineTunniste =
   Koodistokoodiviite<PreIBOppiaineTunnisteKoodistoUri>
 export type PreIBOppiaineTunniste =
-  | ValtakunnallinenPreIBOppiaineTunniste
-  | PaikallinenKoodi
+  ValtakunnallinenPreIBOppiaineTunniste | PaikallinenKoodi
 
 export type UusiPreIBOppiaineState<T> = {
   tunniste: DialogField<PreIBOppiaineTunniste>

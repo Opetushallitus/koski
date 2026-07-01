@@ -30,8 +30,7 @@ export type FieldEditorProps<FieldValue, EditorProps> = EditorProps & {
 }
 
 type ComponentType<T> =
-  | React.FunctionComponent<T>
-  | ((props: T) => React.ReactElement | null)
+  React.FunctionComponent<T> | ((props: T) => React.ReactElement | null)
 
 type ExtractComponentProps<T> = T extends ComponentType<infer P> ? P : never
 

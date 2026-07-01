@@ -13,8 +13,7 @@ import {
  * @see `fi.oph.koski.schema.MuuAmmatillinenKoulutus`
  */
 export type MuuAmmatillinenKoulutus =
-  | AmmatilliseenTehtäväänValmistavaKoulutus
-  | PaikallinenMuuAmmatillinenKoulutus
+  AmmatilliseenTehtäväänValmistavaKoulutus | PaikallinenMuuAmmatillinenKoulutus
 
 export const isMuuAmmatillinenKoulutus = (
   a: any

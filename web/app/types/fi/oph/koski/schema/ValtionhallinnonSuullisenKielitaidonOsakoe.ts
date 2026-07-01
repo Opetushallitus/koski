@@ -13,8 +13,7 @@ import {
  * @see `fi.oph.koski.schema.ValtionhallinnonSuullisenKielitaidonOsakoe`
  */
 export type ValtionhallinnonSuullisenKielitaidonOsakoe =
-  | ValtionhallinnonPuheenYmmärtämisenOsakoe
-  | ValtionhallinnonPuhumisenOsakoe
+  ValtionhallinnonPuheenYmmärtämisenOsakoe | ValtionhallinnonPuhumisenOsakoe
 
 export const isValtionhallinnonSuullisenKielitaidonOsakoe = (
   a: any

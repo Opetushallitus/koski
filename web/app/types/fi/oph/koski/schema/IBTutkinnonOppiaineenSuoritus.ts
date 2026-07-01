@@ -10,8 +10,7 @@ import {
  * @see `fi.oph.koski.schema.IBTutkinnonOppiaineenSuoritus`
  */
 export type IBTutkinnonOppiaineenSuoritus =
-  | IBDPCoreSuoritus
-  | IBOppiaineenSuoritus
+  IBDPCoreSuoritus | IBOppiaineenSuoritus
 
 export const isIBTutkinnonOppiaineenSuoritus = (
   a: any

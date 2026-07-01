@@ -208,9 +208,7 @@ export type KoodistoProviderProps = PropsWithOnlyChildren
 
 export type KoodistoRecord = {
   [URI in string]:
-    | KoodistokoodiviiteKoodistonNimellä<URI>[]
-    | typeof Loading
-    | typeof Failed
+    KoodistokoodiviiteKoodistonNimellä<URI>[] | typeof Loading | typeof Failed
 }
 
 export type KoodistokoodiviiteKoodistonNimellä<T extends string = string> = {

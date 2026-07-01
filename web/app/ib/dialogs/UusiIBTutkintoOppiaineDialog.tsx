@@ -94,8 +94,7 @@ export const UusiIBTutkintoOppiaineDialog: React.FC<
 
 type IBTutkintoOppiaineFormProps = {
   state:
-    | UusiIBTutkintoOppiaineState
-    | UusiIBTutkintoOppiaineState['extendedEssay']
+    UusiIBTutkintoOppiaineState | UusiIBTutkintoOppiaineState['extendedEssay']
   tunnisteet: SelectOption<Koodistokoodiviite<'oppiaineetib'>>[]
   kielet: SelectOption<Koodistokoodiviite<'kielivalikoima'>>[] | null
   ryhmät: SelectOption<Koodistokoodiviite<'aineryhmaib'>>[] | null

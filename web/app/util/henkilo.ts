@@ -13,8 +13,7 @@ import { getOrganisaatioId, OrganisaatioEq } from './organisaatiot'
 import { ClassOf } from './types'
 
 export type AnyOrganisaatiohenkilö =
-  | Organisaatiohenkilö
-  | OrganisaatiohenkilöValinnaisellaTittelillä
+  Organisaatiohenkilö | OrganisaatiohenkilöValinnaisellaTittelillä
 
 export const createOrganisaatiohenkilö = (
   henkilöClass: ClassOf<AnyOrganisaatiohenkilö>,

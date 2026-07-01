@@ -34,8 +34,7 @@ export type VSTPäätasonSuoritusEditorProps<
 }>
 
 export type VSTSuoritus =
-  | VSTKoulutuksenSuoritus
-  | VapaanSivistystyönOsaamismerkinSuoritus
+  VSTKoulutuksenSuoritus | VapaanSivistystyönOsaamismerkinSuoritus
 
 export type VSTKoulutuksenSuoritus =
   | VapaanSivistystyönKoulutuksenPäätasonSuoritus

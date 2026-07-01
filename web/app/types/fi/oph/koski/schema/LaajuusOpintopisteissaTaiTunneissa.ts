@@ -10,8 +10,7 @@ import { LaajuusTunneissa, isLaajuusTunneissa } from './LaajuusTunneissa'
  * @see `fi.oph.koski.schema.LaajuusOpintopisteissäTaiTunneissa`
  */
 export type LaajuusOpintopisteissäTaiTunneissa =
-  | LaajuusOpintopisteissä
-  | LaajuusTunneissa
+  LaajuusOpintopisteissä | LaajuusTunneissa
 
 export const isLaajuusOpintopisteissäTaiTunneissa = (
   a: any

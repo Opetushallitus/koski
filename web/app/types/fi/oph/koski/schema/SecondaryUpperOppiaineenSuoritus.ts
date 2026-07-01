@@ -13,8 +13,7 @@ import {
  * @see `fi.oph.koski.schema.SecondaryUpperOppiaineenSuoritus`
  */
 export type SecondaryUpperOppiaineenSuoritus =
-  | SecondaryUpperOppiaineenSuoritusS6
-  | SecondaryUpperOppiaineenSuoritusS7
+  SecondaryUpperOppiaineenSuoritusS6 | SecondaryUpperOppiaineenSuoritusS7
 
 export const isSecondaryUpperOppiaineenSuoritus = (
   a: any

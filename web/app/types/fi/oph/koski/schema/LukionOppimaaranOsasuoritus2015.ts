@@ -13,8 +13,7 @@ import {
  * @see `fi.oph.koski.schema.LukionOppimääränOsasuoritus2015`
  */
 export type LukionOppimääränOsasuoritus2015 =
-  | LukionOppiaineenSuoritus2015
-  | MuidenLukioOpintojenSuoritus2015
+  LukionOppiaineenSuoritus2015 | MuidenLukioOpintojenSuoritus2015
 
 export const isLukionOppimääränOsasuoritus2015 = (
   a: any

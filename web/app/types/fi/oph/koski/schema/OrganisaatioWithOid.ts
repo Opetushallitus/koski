@@ -9,10 +9,7 @@ import { Toimipiste, isToimipiste } from './Toimipiste'
  * @see `fi.oph.koski.schema.OrganisaatioWithOid`
  */
 export type OrganisaatioWithOid =
-  | Koulutustoimija
-  | OidOrganisaatio
-  | Oppilaitos
-  | Toimipiste
+  Koulutustoimija | OidOrganisaatio | Oppilaitos | Toimipiste
 
 export const isOrganisaatioWithOid = (a: any): a is OrganisaatioWithOid =>
   isKoulutustoimija(a) ||

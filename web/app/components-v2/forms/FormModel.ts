@@ -342,12 +342,7 @@ type Validate = {
 type SetEditMode = { type: 'setEditMode'; editMode: EditMode }
 
 type Action<O> =
-  | StartEdit
-  | ModifyData<O>
-  | Cancel
-  | EndEdit<O>
-  | Validate
-  | SetEditMode
+  StartEdit | ModifyData<O> | Cancel | EndEdit<O> | Validate | SetEditMode
 
 const reducer = <O>(
   state: InternalFormState<O>,
@@ -425,9 +420,7 @@ const reducer = <O>(
 }
 
 export type FormOptic<S, A> =
-  | $.Equivalence<S, any, A>
-  | $.Lens<S, any, A>
-  | $.Prism<S, any, A>
+  $.Equivalence<S, any, A> | $.Lens<S, any, A> | $.Prism<S, any, A>
 
 export const getValue =
   <S, A>(optic: FormOptic<S, A>) =>
