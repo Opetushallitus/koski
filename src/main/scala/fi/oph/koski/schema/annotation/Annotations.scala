@@ -3,7 +3,7 @@ package fi.oph.koski.schema.annotation
 import fi.oph.koski.koskiuser.Rooli.Role
 import fi.oph.scalaschema._
 import org.json4s.JsonAST
-import org.json4s.JsonAST.JObject
+import org.json4s.JsonAST.{JBool, JObject}
 
 /* This property can be used to represent the whole entity */
 case class Representative() extends RepresentationalMetadata
@@ -32,7 +32,12 @@ case class UnitOfMeasure(unit: String) extends RepresentationalMetadata
 /* An example of the data */
 case class Example(text: String) extends RepresentationalMetadata
 
-case class SensitiveData(roles: Set[Role]) extends RepresentationalMetadata
+// Marked in the schema JSON (like RedundantData) so the schema viewer can highlight it; data is filtered at runtime based on roles.
+case class SensitiveData(roles: Set[Role]) extends RepresentationalMetadata {
+  def descriptionWithStyle: String = "<b>Erityinen henkilötieto + salassa pidettävä tieto.</b>"
+  def wrapInParentheses(description: String) = s"($description)"
+  override def appendMetadataToJsonSchema(obj: JObject) = appendToDescription(obj.merge(JObject("sensitive" -> JBool(true))), wrapInParentheses(descriptionWithStyle))
+}
 
 case class Tooltip(text: String) extends RepresentationalMetadata
 
