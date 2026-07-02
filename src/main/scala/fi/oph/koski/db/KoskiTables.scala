@@ -41,11 +41,14 @@ object KoskiTables {
   }
 
   trait OpiskeluoikeusTableCompanion[OOROW <: OpiskeluoikeusRow] {
-    protected val serializationContext: SerializationContext = SerializationContext(KoskiSchema.schemaFactory)
+    // skipEiTallennettavatKentät suodattaa pois @EiTallennetaOpiskeluoikeudenDataan-kentät (esim. lukuhetkellä täydennetty
+    // oppilaitostyyppi), jotta niitä ei tallenneta opiskeluoikeuden dataan eikä versiohistorian diffeihin.
+    protected val serializationContext: SerializationContext = SerializationContext(KoskiSchema.schemaFactory, KoskiSchema.skipEiTallennettavatKentät)
     protected val fieldsToExcludeInJson = Set("oid", "versionumero", "aikaleima")
     protected implicit val deserializationContext: ExtractionContext = ExtractionContext(KoskiSchema.schemaFactory).copy(validate = false)
 
-    protected def serialize(opiskeluoikeus: Opiskeluoikeus, ctx: SerializationContext = serializationContext) = removeFields(Serializer.serialize(opiskeluoikeus, ctx), fieldsToExcludeInJson)
+    protected def serialize(opiskeluoikeus: Opiskeluoikeus, ctx: SerializationContext = serializationContext): JObject =
+      removeFields(Serializer.serialize(opiskeluoikeus, ctx), fieldsToExcludeInJson)
 
     def readAsJValue(data: JValue, oid: String, versionumero: Int, aikaleima: Timestamp): JValue = {
       // note: for historical reasons, Opiskeluoikeus.aikaleima is Option[LocalDateTime], instead of Option[DateTime].

@@ -4,7 +4,7 @@ import fi.oph.koski.henkilo.LaajatOppijaHenkilöTiedot
 import fi.oph.koski.koodisto.KoodistoViitePalvelu
 import fi.oph.koski.schema
 import fi.oph.koski.schema.annotation.{Deprecated, KoodistoUri}
-import fi.oph.scalaschema.annotation.{Description, Discriminator}
+import fi.oph.scalaschema.annotation.{Description, Discriminator, SyntheticProperty}
 
 import java.time.LocalDate
 
@@ -122,7 +122,12 @@ case class Oppilaitos(
   oppilaitosnumero: Option[SuoritetutTutkinnotKoodistokoodiviite],
   nimi: Option[schema.LocalizedString],
   kotipaikka: Option[SuoritetutTutkinnotKoodistokoodiviite]
-)
+) {
+  @Description("Oppilaitoksen tyyppi")
+  @SyntheticProperty
+  def oppilaitostyyppi: Option[SuoritetutTutkinnotKoodistokoodiviite] =
+    schema.OppilaitostyyppiLookup.lookup(oid).map(SuoritetutTutkinnotKoodistokoodiviite.fromKoskiSchema)
+}
 
 case class Koulutustoimija(
   oid: String,

@@ -2,7 +2,7 @@ package fi.oph.koski.schema
 
 import java.time.LocalDate
 
-import fi.oph.koski.schema.annotation.{Example, KoodistoUri, ReadOnly, Tooltip}
+import fi.oph.koski.schema.annotation.{EiTallennetaOpiskeluoikeudenDataan, Example, KoodistoUri, ReadOnly, Tooltip}
 import fi.oph.scalaschema.annotation._
 
 sealed trait Organisaatio extends Localized
@@ -14,6 +14,12 @@ object Organisaatio {
     // 99, 199 käytössä testiopintopolussa/untuvassa testidatalle
     """^1\.2\.246\.562\.(10|99|199)\.\d{11,24}$""".r.findFirstIn(oid).isDefined
   }
+}
+
+// Oppilaitoksen tämänhetkinen tyyppi täydennetään lukuhetkellä Oppilaitos.oppilaitostyyppi-synteettisessä kentässä.
+// KoskiApplication asettaa lookup-funktion käynnistyessä; ilman sovellusta (esim. puhtaat skeematestit) arvo on None.
+object OppilaitostyyppiLookup {
+  @volatile var lookup: Organisaatio.Oid => Option[Koodistokoodiviite] = _ => None
 }
 
 @Title("Organisaatio-OID")
@@ -64,6 +70,13 @@ case class Oppilaitos(
   kotipaikka: Option[Koodistokoodiviite] = None
 ) extends OrganisaatioWithOid with DefaultDescription {
   def toOppilaitos = Some(this)
+
+  @Description("Oppilaitoksen tyyppi")
+  @ReadOnly("Tiedon syötössä oppilaitostyyppiä ei tarvita; tieto täydennetään lukuhetkellä Organisaatiopalvelusta")
+  @KoodistoUri("oppilaitostyyppi")
+  @SyntheticProperty
+  @EiTallennetaOpiskeluoikeudenDataan
+  def oppilaitostyyppi: Option[Koodistokoodiviite] = OppilaitostyyppiLookup.lookup(oid)
 }
 
 @Description("Opintopolun organisaatiopalvelusta löytyvä toimipiste-tyyppinen organisaatio")
