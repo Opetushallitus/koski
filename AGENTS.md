@@ -254,6 +254,9 @@ Skip what is already obvious from the code, commit history, or other documentati
 - **Digital certificates**, digitaaliset todistukset, digitodistukset, see: `documentation/todistus.md`.
   - When adding new major features to certificates, also update the `documentation/todistus.md` file.
 
+- **JSON Schema Viewer** (the `/koski/json-schema-viewer/` schema browser, a vendored & Koski-patched library), see: `documentation/json-schema-viewer.md`.
+  - The vendored assets in `web/static/json-schema-viewer/` carry Koski-local patches not present upstream; edits require `make front` to take effect.
+
 ## GenAI tool usage guidelines
 
 These guidelines apply to all GenAI tools (e.g. ChatGPT, Claude, IntelliJ IDEA GenAI features, Microsoft Copilot, Cursor) used in this project. AI assistants acting on behalf of the user must follow them.
