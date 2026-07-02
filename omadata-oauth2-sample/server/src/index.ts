@@ -1,10 +1,11 @@
-import express, { Application, Request, Response } from 'express'
+import express, { Application, NextFunction, Request, Response } from 'express'
 import path from 'node:path'
 import helmet from 'helmet'
 import RateLimit from 'express-rate-limit'
 import openidApiTest from './apiroutes/openid-api-test.js'
 import healthCheck from './apiroutes/healthcheck.js'
 import bodyParser from 'body-parser'
+import { log } from './util/log.js'
 
 const app: Application = express()
 app.set('trust proxy', 1)
@@ -36,6 +37,19 @@ app.get('/{*splat}', (req: Request, res: Response) => {
   res.sendFile(indexFilePath)
 })
 
+app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
+  log('error', err.message, {
+    name: err.name,
+    stack: err.stack,
+    method: req.method,
+    path: req.originalUrl
+  })
+  if (res.headersSent) {
+    return next(err)
+  }
+  res.status(500).json({ error: 'internal_server_error' })
+})
+
 app.listen(port, () => {
-  console.log(`Running at http://localhost:${port}`)
+  log('info', 'Server started', { port })
 })
