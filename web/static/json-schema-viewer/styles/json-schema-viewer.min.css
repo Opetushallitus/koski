@@ -111,19 +111,18 @@ p.ui-content.error-message {
 .focus circle:hover {
   stroke-width: 3px;
 }
-.deprecated,
-.redundantData {
-  text-decoration: line-through;
-}
 .deprecated text,
 .redundantData text {
+  fill: #777;
   text-decoration: line-through;
-}
-.sensitive {
-  color: crimson;
 }
 .sensitive text {
   fill: crimson;
+}
+/* Drop jQuery Mobile's letterpress text-shadow that blurs the schema tree/info text */
+.ui-page-theme-a,
+.node text {
+  text-shadow: none;
 }
 .link {
   fill: none;
@@ -131,7 +130,9 @@ p.ui-content.error-message {
   stroke-width: 1.5px;
 }
 #info-panel .ui-title {
-  margin: 0 20%;
+  margin: 0;
+  overflow: visible;
+  white-space: normal;
 }
 #info-panel .info-tab {
   overflow: hidden;
