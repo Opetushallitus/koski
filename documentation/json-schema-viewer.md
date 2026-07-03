@@ -26,14 +26,21 @@ re-apply them**:
 
 - **`redundantData`** — highlights fields tagged `@RedundantData`.
 - **`sensitive`** (TOR-2621) — highlights fields tagged `@SensitiveData`: node
-  flag propagation, `.classed("sensitive")`, legend entry, info-title toggle,
-  crimson CSS.
-- **Lifecycle as strikethrough** — deprecated/redundant fields render struck
-  through instead of orange, so a field that is both sensitive and
-  deprecated/redundant shows crimson + strikethrough (both signals). The two
-  lifecycle legend rows are merged into one "Deprecated / unused".
+  flag propagation, `.classed("sensitive")`, legend entry, and darksalmon tree
+  text (`fill`).
+- **Lifecycle de-emphasis** — deprecated/redundant fields render dimmed to gray
+  (`fill: #777`) with a strikethrough, instead of the previous orange. Colour
+  and strikethrough are independent channels, so a field that is both sensitive
+  and deprecated/redundant keeps its darksalmon colour and gains the strike
+  (both signals; sensitive wins the `fill`). Note: on SVG text the strike line
+  follows `fill` and ignores `text-decoration-color`. The two lifecycle legend
+  rows are merged into one "Deprecated / unused".
 - **Info-panel clause spacing** — each appended annotation clause (`(Oksa: …)`,
   `(Vanhentunut kenttä: …)`, sensitive label, …) is shown on its own line.
+- **Info-panel title readability** — the title is not given field styling, the
+  inherited jQuery Mobile letterpress `text-shadow` is removed (it blurred the
+  tree/info text), and the title shows long property names in full (`margin: 0`,
+  `overflow: visible`, `white-space: normal`).
 
 The `deprecated` / `redundantData` / `sensitive` booleans the viewer reads come
 from the schema JSON, emitted by the matching annotations in
