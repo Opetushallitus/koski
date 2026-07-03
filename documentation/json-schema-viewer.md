@@ -41,6 +41,10 @@ re-apply them**:
   inherited jQuery Mobile letterpress `text-shadow` is removed (it blurred the
   tree/info text), and the title shows long property names in full (`margin: 0`,
   `overflow: visible`, `white-space: normal`).
+- **Selected-node highlight** — each node gets a `.focus-box` `<rect>` (sized
+  from the label length, since the tree font is monospace) shown only on the
+  focused node as a rounded green outline around the label. Replaces the plain
+  bold, which was hard to see.
 
 The `deprecated` / `redundantData` / `sensitive` booleans the viewer reads come
 from the schema JSON, emitted by the matching annotations in

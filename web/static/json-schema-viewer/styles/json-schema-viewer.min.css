@@ -98,7 +98,6 @@ p.ui-content.error-message {
 .node.label text:hover {
   text-decoration: none;
 }
-.node.focus,
 #legend .focus {
   font-weight: bold;
 }
@@ -110,6 +109,16 @@ p.ui-content.error-message {
 .node circle:hover,
 .focus circle:hover {
   stroke-width: 3px;
+}
+/* Selected-node highlight: rounded outline box around the label (shown only on .focus) */
+.node .focus-box {
+  display: none;
+}
+.node.focus .focus-box {
+  display: inline;
+  fill: none;
+  stroke: #0ecc43;
+  stroke-width: 1.5px;
 }
 .deprecated text,
 .redundantData text {
