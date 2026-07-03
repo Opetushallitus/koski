@@ -117,7 +117,7 @@ p.ui-content.error-message {
   text-decoration: line-through;
 }
 .sensitive text {
-  fill: crimson;
+  fill: darksalmon;
 }
 /* Drop jQuery Mobile's letterpress text-shadow that blurs the schema tree/info text */
 .ui-page-theme-a,
