@@ -25,7 +25,7 @@
     <jetty.version>12.1.10</jetty.version>
     <prometheus.client.version>0.16.0</prometheus.client.version>
     <scoverage.plugin.version>1.4.11</scoverage.plugin.version>
-    <log4j.version>2.26.0</log4j.version>
+    <log4j.version>2.26.1</log4j.version>
     <pdfbox.version>3.0.7</pdfbox.version>
     <openhtmltopdf.version>1.1.37</openhtmltopdf.version>
     <bouncycastle.version>1.84</bouncycastle.version>
