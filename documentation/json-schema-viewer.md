@@ -53,14 +53,14 @@ from the schema JSON, emitted by the matching annotations in
 
 ## Editing / build
 
-- `json-schema-viewer.min.js` is **pretty-printed source** (despite the `.min`
-  name) — edit it directly. Terser re-minifies it during the frontend build.
-- `json-schema-viewer.min.css` is **un-minified source** (the `.min` name is
-  historical) — edit it directly. It is served verbatim (webpack does not minify
-  copied static CSS); a ~15 KB dev-tool stylesheet, so size is not a concern.
+- `json-schema-viewer.js` is **pretty-printed source** — edit it directly.
+  Terser minifies it during the frontend build.
+- `json-schema-viewer.css` is **un-minified source** — edit it directly. It is
+  served verbatim (webpack does not minify copied static CSS); a ~15 KB dev-tool
+  stylesheet, so size is not a concern.
 - Assets are served from `target/webapp/`, produced by webpack's
   `CopyWebpackPlugin` copying `web/static/`. **After editing, run `make front`**
   to regenerate `target/webapp`, then hard-refresh the browser — editing
   `web/static` alone has no effect on the running app until rebuilt.
 - Verify what is actually served (bypassing browser cache) with e.g.
-  `curl -s http://localhost:7021/koski/json-schema-viewer/styles/json-schema-viewer.min.css`.
+  `curl -s http://localhost:7021/koski/json-schema-viewer/styles/json-schema-viewer.css`.
