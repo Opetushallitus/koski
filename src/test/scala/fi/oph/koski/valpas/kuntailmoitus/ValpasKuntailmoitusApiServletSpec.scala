@@ -420,6 +420,51 @@ class ValpasKuntailmoitusApiServletSpec extends ValpasTestBase with BeforeAndAft
     }
   }
 
+  "Kuntailmoituksen tekijän yhteystiedoissa kulmasulkeet (esim. skriptitagi) palauttaa schema-virheen" in {
+    val ilmoitus = teeKuntailmoitusInputTekijänYhteystiedoilla(kutsumanimi = "<script>alert(0)</script>")
+
+    post("/valpas/api/kuntailmoitus", body = ilmoitus, headers = authHeaders() ++ jsonContent) {
+      verifyResponseStatus(
+        400,
+        ErrorMatcher.regex(
+          KoskiErrorCategory.badRequest.validation.jsonSchema,
+          ".*kutsumanimi.*regularExpressionMismatch.*".r
+        )
+      )
+    }
+  }
+
+  "Kuntailmoituksen oppijan yhteystiedoissa epäkelpo postinumero palauttaa schema-virheen" in {
+    val ilmoitus =
+      s"""
+         |{
+         |  "oppijaOid": "${ValpasMockOppijat.oppivelvollinenYsiluokkaKeskenKeväällä2021.oid}",
+         |  "tekijä" : {
+         |    "organisaatio" : {
+         |      "oid" : "${MockOrganisaatiot.jyväskylänNormaalikoulu}"
+         |    }
+         |  },
+         |  "kunta" : {
+         |    "oid" : "${MockOrganisaatiot.helsinginKaupunki}"
+         |  },
+         |  "oppijanYhteystiedot" : {
+         |    "postinumero" : "00100!<script>"
+         |  },
+         |  "hakenutMuualle" : false
+         |}
+         |""".stripMargin
+
+    post("/valpas/api/kuntailmoitus", body = ilmoitus, headers = authHeaders() ++ jsonContent) {
+      verifyResponseStatus(
+        400,
+        ErrorMatcher.regex(
+          KoskiErrorCategory.badRequest.validation.jsonSchema,
+          ".*postinumero.*regularExpressionMismatch.*".r
+        )
+      )
+    }
+  }
+
   "Kuntailmoituksen tekeminen ilman oikeuksia tekijäorganisaatioon palauttaa virheen" in {
     val minimikuntailmoitus = teeMinimiKuntailmoitusInput()
 
