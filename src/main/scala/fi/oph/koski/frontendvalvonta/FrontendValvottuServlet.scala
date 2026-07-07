@@ -25,6 +25,8 @@ trait FrontendValvottuServlet extends ScalatraBase {
     FrontendValvontaHeaders.headers(allowFrameAncestors, allowFrameSrcSelf, frontendValvontaMode, unsafeAllowInlineStyles, unsafeAllowBaseUri, nonce, formActionSources).foreach {
       case (h, v) => response.setHeader(h, v)
     }
+    response.setHeader("Cache-Control", "no-store, no-cache, must-revalidate")
+    response.setHeader("Pragma", "no-cache")
     nonce
   }
 }
