@@ -138,7 +138,7 @@ const NewKorkeakouluopintokokonaisuus = ({
   return (
     <ColumnRow indent={2}>
       <Column span={12}>
-        <FlatButton onClick={() => setShowModal(true)}>
+        <FlatButton withAddIcon onClick={() => setShowModal(true)}>
           {t('Lisää korkeakouluopintokokonaisuus')}
         </FlatButton>
         {showModal && (
@@ -149,6 +149,7 @@ const NewKorkeakouluopintokokonaisuus = ({
                 suoritusPath.prop('osasuoritukset').valueOr([]),
                 (o) => [...o, newKorkeakouluopintokokonaisuus(nimi)]
               )
+              setShowModal(false)
             }}
           />
         )}

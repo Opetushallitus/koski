@@ -442,7 +442,7 @@ const OsaAikaisuusView = <T extends OsaAikaisuusJakso>({
           {': '}
         </span>
         <TestIdText id="osaAikaisuus">{value?.osaAikaisuus}</TestIdText>
-        {'%'}
+        {' %'}
       </span>
     </span>
   )
@@ -489,7 +489,7 @@ const OsaAikaisuusEdit = ({
         }}
         hasErrors={hasErrors && !value?.osaAikaisuus}
       />
-      <span>{'%'}</span>
+      <span>{' %'}</span>
     </div>
   )
 }

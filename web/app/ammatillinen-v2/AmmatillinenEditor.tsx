@@ -478,6 +478,7 @@ const AmmatillinenTutkintoOsittainenEditor: React.FC<
         )}
         <OsasuoritusTables
           form={props.form}
+          oppilaitosOid={organisaatio?.oid}
           osittainenPäätasonSuoritus={osittainenPäätasonSuoritus}
         />
         <AmisLaajuudetYhteensä suoritus={osittainenPäätasonSuoritus.suoritus} />
@@ -941,19 +942,21 @@ export const TyössäoppimisjaksoView = <T extends Työssäoppimisjakso>({
       <TestIdText id="loppu">
         {value?.loppu && ISO2FinnishDate(value.loppu)}
       </TestIdText>
-      <KeyValueRow localizableLabel="Paikkakunta">
-        {t(value?.paikkakunta.nimi)}
-      </KeyValueRow>
-      <KeyValueRow localizableLabel="Maa">{t(value?.maa.nimi)}</KeyValueRow>
-      <KeyValueRow localizableLabel="Työssäoppimispaikka">
-        {t(value?.työssäoppimispaikka)}
-      </KeyValueRow>
-      <KeyValueRow localizableLabel="Työtehtävät">
-        {t(value?.työtehtävät)}
-      </KeyValueRow>
-      <KeyValueRow localizableLabel="Laajuus">
-        <LaajuusView value={value?.laajuus} />
-      </KeyValueRow>
+      <KeyValueTable>
+        <KeyValueRow localizableLabel="Paikkakunta">
+          {t(value?.paikkakunta.nimi)}
+        </KeyValueRow>
+        <KeyValueRow localizableLabel="Maa">{t(value?.maa.nimi)}</KeyValueRow>
+        <KeyValueRow localizableLabel="Työssäoppimispaikka">
+          {t(value?.työssäoppimispaikka)}
+        </KeyValueRow>
+        <KeyValueRow localizableLabel="Työtehtävät">
+          {t(value?.työtehtävät)}
+        </KeyValueRow>
+        <KeyValueRow localizableLabel="Laajuus">
+          <LaajuusView value={value?.laajuus} />
+        </KeyValueRow>
+      </KeyValueTable>
     </>
   )
 }
@@ -994,68 +997,70 @@ export const TyössäoppimisjaksoEdit = ({
           testId="loppu"
         />
       </div>
-      <KeyValueRow localizableLabel="Paikkakunta">
-        <KoodistoSelect
-          koodistoUri="kunta"
-          value={value?.paikkakunta.koodiarvo}
-          onSelect={(paikkakunta) =>
-            paikkakunta &&
-            onChange({ ...emptyTyössäoppimisjakso, ...value, paikkakunta })
-          }
-          testId={'paikkakunta'}
-        />
-      </KeyValueRow>
+      <KeyValueTable>
+        <KeyValueRow localizableLabel="Paikkakunta">
+          <KoodistoSelect
+            koodistoUri="kunta"
+            value={value?.paikkakunta.koodiarvo}
+            onSelect={(paikkakunta) =>
+              paikkakunta &&
+              onChange({ ...emptyTyössäoppimisjakso, ...value, paikkakunta })
+            }
+            testId={'paikkakunta'}
+          />
+        </KeyValueRow>
 
-      <KeyValueRow localizableLabel="Maa">
-        <KoodistoSelect
-          koodistoUri="maatjavaltiot2"
-          value={value?.maa.koodiarvo}
-          onSelect={(maa) =>
-            maa && onChange({ ...emptyTyössäoppimisjakso, ...value, maa })
-          }
-          testId={'maa'}
-        />
-      </KeyValueRow>
-      <KeyValueRow localizableLabel="Työssäoppimispaikka">
-        <LocalizedTextEdit
-          large
-          value={value?.työssäoppimispaikka}
-          onChange={(työssäoppimispaikka) =>
-            onChange({
-              ...emptyTyössäoppimisjakso,
-              ...value,
-              työssäoppimispaikka
-            })
-          }
-        />
-      </KeyValueRow>
-      <KeyValueRow localizableLabel="Työtehtävät">
-        <LocalizedTextEdit
-          large
-          value={value?.työtehtävät}
-          onChange={(työtehtävät) =>
-            onChange({
-              ...emptyTyössäoppimisjakso,
-              ...value,
-              työtehtävät
-            })
-          }
-        />
-      </KeyValueRow>
-      <KeyValueRow localizableLabel="Laajuus">
-        <LaajuusEdit
-          value={value?.laajuus}
-          createLaajuus={(arvo) => LaajuusOsaamispisteissä({ arvo })}
-          onChange={(laajuus) =>
-            laajuus &&
-            onChange({
-              ...emptyTyössäoppimisjakso,
-              ...value,
-              laajuus
-            })
-          }
-        />
-      </KeyValueRow>
+        <KeyValueRow localizableLabel="Maa">
+          <KoodistoSelect
+            koodistoUri="maatjavaltiot2"
+            value={value?.maa.koodiarvo}
+            onSelect={(maa) =>
+              maa && onChange({ ...emptyTyössäoppimisjakso, ...value, maa })
+            }
+            testId={'maa'}
+          />
+        </KeyValueRow>
+        <KeyValueRow localizableLabel="Työssäoppimispaikka">
+          <LocalizedTextEdit
+            large
+            value={value?.työssäoppimispaikka}
+            onChange={(työssäoppimispaikka) =>
+              onChange({
+                ...emptyTyössäoppimisjakso,
+                ...value,
+                työssäoppimispaikka
+              })
+            }
+          />
+        </KeyValueRow>
+        <KeyValueRow localizableLabel="Työtehtävät">
+          <LocalizedTextEdit
+            large
+            value={value?.työtehtävät}
+            onChange={(työtehtävät) =>
+              onChange({
+                ...emptyTyössäoppimisjakso,
+                ...value,
+                työtehtävät
+              })
+            }
+          />
+        </KeyValueRow>
+        <KeyValueRow localizableLabel="Laajuus">
+          <LaajuusEdit
+            value={value?.laajuus}
+            createLaajuus={(arvo) => LaajuusOsaamispisteissä({ arvo })}
+            onChange={(laajuus) =>
+              laajuus &&
+              onChange({
+                ...emptyTyössäoppimisjakso,
+                ...value,
+                laajuus
+              })
+            }
+          />
+        </KeyValueRow>
+      </KeyValueTable>
     </>
   )
 }
@@ -1072,19 +1077,21 @@ export const KoulutussopimusView = <T extends Koulutussopimusjakso>({
       <TestIdText id="loppu">
         {value?.loppu && ISO2FinnishDate(value.loppu)}
       </TestIdText>
-      <KeyValueRow localizableLabel="Paikkakunta">
-        {t(value?.paikkakunta.nimi)}
-      </KeyValueRow>
-      <KeyValueRow localizableLabel="Maa">{t(value?.maa.nimi)}</KeyValueRow>
-      <KeyValueRow localizableLabel="Työssäoppimispaikka">
-        {t(value?.työssäoppimispaikka)}
-      </KeyValueRow>
-      <KeyValueRow localizableLabel="Työssäoppimispaikan Y-tunnus">
-        {t(value?.työssäoppimispaikanYTunnus)}
-      </KeyValueRow>
-      <KeyValueRow localizableLabel="Työtehtävät">
-        {t(value?.työtehtävät)}
-      </KeyValueRow>
+      <KeyValueTable>
+        <KeyValueRow localizableLabel="Paikkakunta">
+          {t(value?.paikkakunta.nimi)}
+        </KeyValueRow>
+        <KeyValueRow localizableLabel="Maa">{t(value?.maa.nimi)}</KeyValueRow>
+        <KeyValueRow localizableLabel="Työssäoppimispaikka">
+          {t(value?.työssäoppimispaikka)}
+        </KeyValueRow>
+        <KeyValueRow localizableLabel="Työssäoppimispaikan Y-tunnus">
+          {t(value?.työssäoppimispaikanYTunnus)}
+        </KeyValueRow>
+        <KeyValueRow localizableLabel="Työtehtävät">
+          {t(value?.työtehtävät)}
+        </KeyValueRow>
+      </KeyValueTable>
     </>
   )
 }
@@ -1124,66 +1131,68 @@ export const KoulutussopimusEdit = ({
           testId="loppu"
         />
       </div>
-      <KeyValueRow localizableLabel="Paikkakunta">
-        <KoodistoSelect
-          koodistoUri="kunta"
-          value={value?.paikkakunta.koodiarvo}
-          onSelect={(paikkakunta) =>
-            paikkakunta &&
-            onChange({ ...emptyKoulutussopimus, ...value, paikkakunta })
-          }
-          testId={'paikkakunta'}
-        />
-      </KeyValueRow>
+      <KeyValueTable>
+        <KeyValueRow localizableLabel="Paikkakunta">
+          <KoodistoSelect
+            koodistoUri="kunta"
+            value={value?.paikkakunta.koodiarvo}
+            onSelect={(paikkakunta) =>
+              paikkakunta &&
+              onChange({ ...emptyKoulutussopimus, ...value, paikkakunta })
+            }
+            testId={'paikkakunta'}
+          />
+        </KeyValueRow>
 
-      <KeyValueRow localizableLabel="Maa">
-        <KoodistoSelect
-          koodistoUri="maatjavaltiot2"
-          value={value?.maa.koodiarvo}
-          onSelect={(maa) =>
-            maa && onChange({ ...emptyKoulutussopimus, ...value, maa })
-          }
-          testId={'maa'}
-        />
-      </KeyValueRow>
-      <KeyValueRow localizableLabel="Työssäoppimispaikka">
-        <LocalizedTextEdit
-          large
-          value={value?.työssäoppimispaikka}
-          onChange={(työssäoppimispaikka) =>
-            onChange({
-              ...emptyKoulutussopimus,
-              ...value,
-              työssäoppimispaikka
-            })
-          }
-        />
-      </KeyValueRow>
-      <KeyValueRow localizableLabel="Työssäoppimispaikan Y-tunnus">
-        <TextEdit
-          value={value?.työssäoppimispaikanYTunnus}
-          onChange={(työssäoppimispaikanYTunnus) =>
-            onChange({
-              ...emptyKoulutussopimus,
-              ...value,
-              työssäoppimispaikanYTunnus
-            })
-          }
-        />
-      </KeyValueRow>
-      <KeyValueRow localizableLabel="Työtehtävät">
-        <LocalizedTextEdit
-          large
-          value={value?.työtehtävät}
-          onChange={(työtehtävät) =>
-            onChange({
-              ...emptyKoulutussopimus,
-              ...value,
-              työtehtävät
-            })
-          }
-        />
-      </KeyValueRow>
+        <KeyValueRow localizableLabel="Maa">
+          <KoodistoSelect
+            koodistoUri="maatjavaltiot2"
+            value={value?.maa.koodiarvo}
+            onSelect={(maa) =>
+              maa && onChange({ ...emptyKoulutussopimus, ...value, maa })
+            }
+            testId={'maa'}
+          />
+        </KeyValueRow>
+        <KeyValueRow localizableLabel="Työssäoppimispaikka">
+          <LocalizedTextEdit
+            large
+            value={value?.työssäoppimispaikka}
+            onChange={(työssäoppimispaikka) =>
+              onChange({
+                ...emptyKoulutussopimus,
+                ...value,
+                työssäoppimispaikka
+              })
+            }
+          />
+        </KeyValueRow>
+        <KeyValueRow localizableLabel="Työssäoppimispaikan Y-tunnus">
+          <TextEdit
+            value={value?.työssäoppimispaikanYTunnus}
+            onChange={(työssäoppimispaikanYTunnus) =>
+              onChange({
+                ...emptyKoulutussopimus,
+                ...value,
+                työssäoppimispaikanYTunnus
+              })
+            }
+          />
+        </KeyValueRow>
+        <KeyValueRow localizableLabel="Työtehtävät">
+          <LocalizedTextEdit
+            large
+            value={value?.työtehtävät}
+            onChange={(työtehtävät) =>
+              onChange({
+                ...emptyKoulutussopimus,
+                ...value,
+                työtehtävät
+              })
+            }
+          />
+        </KeyValueRow>
+      </KeyValueTable>
     </>
   )
 }

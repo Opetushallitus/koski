@@ -3,6 +3,29 @@
   margin: 0;
   padding: 0;
   line-height: 2 * @baseline;
+
+  // Nimisarake auto-sovittuu pisimmän nimen mukaan; loput 23 saraketta vastaavat
+  // ColumnRow:n 24-sarakkeista ruudukkoa, jotta Column-span-N -luokat toimivat
+  // (esim. KeyColumnedValuesRown päivä+selitys -rivi).
+  display: grid;
+  grid-template-columns: max-content repeat(23, 1fr);
+  column-gap: @Columns-gutter;
+
+  @media screen and (max-width: @Columns-phone-breakpoint) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.KeyValueTable > .KeyValueRow.ColumnRow {
+  // Ohita ColumnRow:n 24-sarakkeinen ruudukko ja peri KeyValueTablen sarakkeet,
+  // jotta sarake 1 (nimi) on yhtenäisen levyinen koko taulukossa.
+  grid-column: 1 / -1;
+  grid-template-columns: subgrid;
+  column-gap: @Columns-gutter;
+
+  @media screen and (max-width: @Columns-phone-breakpoint) {
+    grid-template-columns: 1fr;
+  }
 }
 
 .KeyValueRow {
@@ -10,6 +33,17 @@
 
   .KeyValueRow__name {
     color: rgba(0, 0, 0, 0.6);
+    padding-right: 16px;
+  }
+
+  // Arvosarakkeet käyttävät Column-luokkien grid-column: span N -arvoja, jotka
+  // sijoittuvat automaattisesti sarakkeen 1 jälkeen riville. Tämä mahdollistaa
+  // KeyColumnedValuesRown monisarakkeiset rivit (esim. päivä + selitys).
+
+  @media screen and (max-width: @Columns-phone-breakpoint) {
+    .KeyValueRow__value {
+      grid-column: 1 / -1;
+    }
   }
 
   .FlatButton {
@@ -23,6 +57,20 @@
   }
 
   &:has(> .KeyValueRow__value:empty) {
+    display: none;
+  }
+}
+
+// KeyValueTablen rivillä nimi vie ensimmäisen ruudukon sarakkeen ja
+// sisennys-placeholder Columnit piilotetaan, koska niillä ei ole sijaa
+// 2-sarakkeisessa ruudukossa.
+.KeyValueTable .KeyValueRow {
+  .KeyValueRow__name {
+    grid-column: 1 / 2;
+    white-space: nowrap;
+  }
+
+  > .Column:not(.KeyValueRow__name):not(.KeyValueRow__value) {
     display: none;
   }
 }
