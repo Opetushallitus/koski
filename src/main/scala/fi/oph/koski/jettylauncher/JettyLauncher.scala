@@ -102,6 +102,8 @@ class JettyLauncher(val port: Int, val application: KoskiApplication) extends Lo
   private def setupConnector(): Unit = {
     val httpConfig = new HttpConfiguration()
     httpConfig.addCustomizer( new ForwardedRequestCustomizer() )
+    httpConfig.setSendServerVersion(false)
+    httpConfig.setSendXPoweredBy(false)
     // Allow encoded slashes (%2F) and non-ASCII bytes in path segments. Required by
     // ePerusteet 3-part diaarinumero IDs ("104%2F011%2F2014" = "104/011/2014") and
     // Finnish-character schema class names exposed via /api/types/constraints and
