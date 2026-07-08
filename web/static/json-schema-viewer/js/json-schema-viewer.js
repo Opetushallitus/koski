@@ -14274,16 +14274,23 @@ if (typeof window.JSV === "undefined") {
             $("#info-definition").html((node.description || "No definition provided.").replace(/\. \(/g, ".<br>("));
             $("#info-type").html(node.displayType.toString());
             if (node.translation) {
-                var trans = $("<ul></ul>");
-                $.each(node.translation, function(p, v) {
-                    var li = $("<li>" + p + "</li>");
-                    var ul = $("<ul></ul>");
-                    $.each(v, function(i, e) {
-                        ul.append("<li>" + e + "</li>");
-                    });
-                    trans.append(li.append(ul));
+                var languageNames = { sv: "Ruotsi", en: "Englanti" };
+                var trans = $('<div class="translation-list"></div>');
+                $.each([ "sv", "en" ], function(i, lang) {
+                    var t = node.translation[lang];
+                    if (t) {
+                        var block = $('<div class="translation-lang-block"></div>');
+                        block.append($('<div class="translation-lang"></div>').text(languageNames[lang] || lang));
+                        if (t.title) {
+                            block.append($('<div class="translation-title"></div>').text(t.title));
+                        }
+                        if (t.description) {
+                            block.append($('<div class="translation-description"></div>').text(t.description));
+                        }
+                        trans.append(block);
+                    }
                 });
-                $("#info-translation").html(trans);
+                $("#info-translation").html(trans.children().length ? trans : "No translations available.");
             } else {
                 $("#info-translation").html("No translations available.");
             }

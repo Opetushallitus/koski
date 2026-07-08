@@ -2,7 +2,7 @@ package fi.oph.koski.localization
 
 import fi.oph.koski.schema.LocalizedString
 import fi.oph.scalaschema.ClassSchema
-import org.json4s.JsonAST.{JArray, JObject, JString, JValue}
+import org.json4s.JsonAST.{JObject, JString, JValue}
 
 class SchemaLocalizationEnricher(localizations: Map[String, LocalizedString]) {
   import SchemaLocalizationEnricher.KeyAndText
@@ -42,21 +42,22 @@ class SchemaLocalizationEnricher(localizations: Map[String, LocalizedString]) {
     JObject(node.obj :+ ("translation", translation: JValue))
 
   def translationFor(titleParts: List[KeyAndText], descriptionParts: List[KeyAndText]): Option[JObject] = {
-    val entries = List(
-      "Otsikko" -> lines(titleParts),
-      "Kuvaus" -> lines(descriptionParts)
-    ).collect { case (label, ls) if ls.nonEmpty => label -> JArray(ls.map(JString)) }
-    if (entries.isEmpty) None else Some(JObject(entries: _*))
+    val byLanguage = SchemaLocalizationEnricher.translatedLanguages.flatMap { lang =>
+      val fields = List(
+        "title" -> textFor(titleParts, lang),
+        "description" -> textFor(descriptionParts, lang)
+      ).collect { case (key, Some(text)) => key -> (JString(text): JValue) }
+      if (fields.isEmpty) None else Some(lang -> (JObject(fields: _*): JValue))
+    }
+    if (byLanguage.isEmpty) None else Some(JObject(byLanguage: _*))
   }
 
-  private def lines(parts: List[KeyAndText]): List[String] =
-    parts.flatMap { case (key, _) =>
-      localizations.get(key).toList.flatMap { localized =>
-        LocalizedString.languages.flatMap(lang => localized.getOptional(lang).map(text => s"$lang: $text"))
-      }
-    }
+  private def textFor(parts: List[KeyAndText], lang: String): Option[String] =
+    parts.flatMap { case (key, _) => localizations.get(key).flatMap(_.getOptional(lang)) }.headOption
 }
 
 object SchemaLocalizationEnricher {
   type KeyAndText = (String, String)
+
+  val translatedLanguages: List[String] = List("sv", "en")
 }

@@ -154,6 +154,21 @@ div#info-tab-def.info-tab,
   color: green;
   font-weight: 900;
 }
+#info-translation .translation-lang-block {
+  margin-top: 0.8em;
+}
+#info-translation .translation-lang-block:first-child {
+  margin-top: 0;
+}
+#info-translation .translation-lang {
+  font-size: 0.8em;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #777;
+}
+#info-translation .translation-title {
+  font-weight: 700;
+}
 #textarea-json {
   height: auto !important;
   overflow-y: auto;

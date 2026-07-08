@@ -2,7 +2,7 @@ package fi.oph.koski.documentation
 
 import fi.oph.koski.{KoskiApplicationForTests, TestEnvironment}
 import org.json4s.JValue
-import org.json4s.JsonAST.{JArray, JObject, JString}
+import org.json4s.JsonAST.{JArray, JNothing, JObject}
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.should.Matchers
 
@@ -10,11 +10,12 @@ class LocalizedSchemasSpec extends AnyFreeSpec with TestEnvironment with Matcher
   private val localizedSchemas =
     new LocalizedSchemas(KoskiApplicationForTests.koskiLocalizationRepository)(KoskiApplicationForTests.cacheManager)
 
-  "koski-oppija-schema.json is enriched with fi/sv/en translations on many nodes" in {
-    val lines = translationLines(localizedSchemas("koski-oppija-schema.json"))
-    lines.count(_.startsWith("fi: ")) should be > 50
-    lines.exists(_.startsWith("sv: ")) shouldBe true
-    lines.exists(_.startsWith("en: ")) shouldBe true
+  "koski-oppija-schema.json is enriched with sv/en translations on many nodes, excluding fi" in {
+    val ts = translations(localizedSchemas("koski-oppija-schema.json"))
+    ts.size should be > 50
+    ts.exists(t => (t \ "sv" \ "title") != JNothing || (t \ "sv" \ "description") != JNothing) shouldBe true
+    ts.exists(t => (t \ "en" \ "title") != JNothing || (t \ "en" \ "description") != JNothing) shouldBe true
+    ts.forall(t => (t \ "fi") == JNothing) shouldBe true
   }
 
   "all registered viewer schemas are enriched with translations" - {
@@ -27,25 +28,18 @@ class LocalizedSchemasSpec extends AnyFreeSpec with TestEnvironment with Matcher
     schemaNames.foreach { name =>
       name in {
         localizedSchemas.contains(name) shouldBe true
-        translationLines(localizedSchemas(name)).count(_.startsWith("fi: ")) should be > 10
+        translations(localizedSchemas(name)).size should be > 10
       }
     }
   }
 
-  private def translationLines(json: JValue): List[String] = json match {
+  private def translations(json: JValue): List[JValue] = json match {
     case JObject(fields) =>
       fields.flatMap {
-        case ("translation", t) => collectStrings(t)
-        case (_, v) => translationLines(v)
+        case ("translation", t) => t :: translations(t)
+        case (_, v) => translations(v)
       }
-    case JArray(items) => items.flatMap(translationLines)
-    case _ => Nil
-  }
-
-  private def collectStrings(json: JValue): List[String] = json match {
-    case JString(s) => List(s)
-    case JObject(fields) => fields.flatMap { case (_, v) => collectStrings(v) }
-    case JArray(items) => items.flatMap(collectStrings)
+    case JArray(items) => items.flatMap(translations)
     case _ => Nil
   }
 }
