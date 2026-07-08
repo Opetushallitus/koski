@@ -1,6 +1,7 @@
 package fi.oph.koski.localization
 
-import fi.oph.koski.schema.{Finnish, LocalizedString}
+import fi.oph.koski.schema.{Finnish, KoskiSchema, LocalizedString}
+import fi.oph.scalaschema.{ClassSchema, SchemaToJson}
 import org.json4s.JsonAST.{JArray, JObject, JString}
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.should.Matchers
@@ -34,4 +35,15 @@ class SchemaLocalizationEnricherSpec extends AnyFreeSpec with Matchers {
       enricher.translationFor(List(("Unknown", "Unknown")), Nil) shouldBe None
     }
   }
+
+  "enrich" - {
+    "injects translation into matching property nodes" in {
+      val schema = KoskiSchema.createSchema(classOf[EnricherTestOppija]).asInstanceOf[ClassSchema]
+      val enriched = enricher.enrich(schema, SchemaToJson.toJsonSchema(schema))
+      (enriched \ "properties" \ "tila" \ "translation" \ "Otsikko") shouldBe
+        JArray(List(JString("fi: Tila"), JString("sv: Status"), JString("en: State")))
+    }
+  }
 }
+
+case class EnricherTestOppija(tila: String)
