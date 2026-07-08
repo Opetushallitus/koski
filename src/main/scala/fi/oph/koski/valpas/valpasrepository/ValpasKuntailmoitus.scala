@@ -2,6 +2,7 @@ package fi.oph.koski.valpas.valpasrepository
 
 import fi.oph.koski.schema.annotation.{KoodistoKoodiarvo, KoodistoUri}
 import fi.oph.koski.schema.{Koodistokoodiviite, OrganisaatioWithOid}
+import fi.oph.scalaschema.annotation.RegularExpression
 import fi.oph.koski.valpas.yhteystiedot.ValpasYhteystietojenAlkuperä
 
 import java.time.LocalDateTime
@@ -53,10 +54,15 @@ case class ValpasKuntailmoituksenTekijäLaajatTiedot(
 
 case class ValpasKuntailmoituksenTekijäHenkilö(
   oid: Option[ValpasKuntailmoituksenTekijäHenkilö.Oid], // Option, koska create-operaatiossa bäkkäri lukee tekijän oidin sessiosta
+  @RegularExpression("""^[^<>\r\n\t]{0,255}$""")
   etunimet: Option[String], // Option, koska kuntailmoitusta tehdessä tieto täytetään käyttäjän tiedoista
+  @RegularExpression("""^[^<>\r\n\t]{0,255}$""")
   sukunimi: Option[String], // Option, koska kuntailmoitusta tehdessä tieto täytetään käyttäjän tiedoista
+  @RegularExpression("""^[^<>\r\n\t]{0,255}$""")
   kutsumanimi: Option[String],
+  @RegularExpression("""^[^<>\r\n\t]{0,255}$""")
   email: Option[String],
+  @RegularExpression("""^[^<>\r\n\t]{0,255}$""")
   puhelinnumero: Option[String]
 )
 
@@ -65,10 +71,15 @@ object ValpasKuntailmoituksenTekijäHenkilö {
 }
 
 case class ValpasKuntailmoituksenOppijanYhteystiedot(
+  @RegularExpression("""^[^<>\r\n\t]{0,255}$""")
   puhelinnumero: Option[String] = None,
+  @RegularExpression("""^[^<>\r\n\t]{0,255}$""")
   email: Option[String] = None,
+  @RegularExpression("""^[^<>\r\n\t]{0,255}$""")
   lähiosoite: Option[String] = None,
+  @RegularExpression("""^[A-Za-z0-9 -]{0,10}$""")
   postinumero: Option[String] = None,
+  @RegularExpression("""^[^<>\r\n\t]{0,255}$""")
   postitoimipaikka: Option[String] = None,
   @KoodistoUri("maatjavaltiot2")
   maa: Option[Koodistokoodiviite] = None
