@@ -34,7 +34,8 @@ class SchemaLocalizationEnricher(localizations: Map[String, LocalizedString]) {
         })
       case other => other
     })
-    translationFor(Nil, KoskiSpecificSchemaLocalization.description(schema))
+    val classTitle = List((schema.title, schema.title))
+    translationFor(classTitle, KoskiSpecificSchemaLocalization.description(schema))
       .fold(withProperties)(withTranslation(withProperties, _))
   }
 
@@ -42,7 +43,7 @@ class SchemaLocalizationEnricher(localizations: Map[String, LocalizedString]) {
     JObject(node.obj :+ ("translation", translation: JValue))
 
   def translationFor(titleParts: List[KeyAndText], descriptionParts: List[KeyAndText]): Option[JObject] = {
-    val byLanguage = SchemaLocalizationEnricher.translatedLanguages.flatMap { lang =>
+    val byLanguage = SchemaLocalizationEnricher.displayedLanguages.flatMap { lang =>
       val fields = List(
         "title" -> textFor(titleParts, lang),
         "description" -> textFor(descriptionParts, lang)
@@ -59,5 +60,5 @@ class SchemaLocalizationEnricher(localizations: Map[String, LocalizedString]) {
 object SchemaLocalizationEnricher {
   type KeyAndText = (String, String)
 
-  val translatedLanguages: List[String] = List("sv", "en")
+  val displayedLanguages: List[String] = List("fi", "sv", "en")
 }

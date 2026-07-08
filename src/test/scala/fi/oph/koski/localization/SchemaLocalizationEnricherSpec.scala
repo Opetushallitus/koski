@@ -1,8 +1,9 @@
 package fi.oph.koski.localization
 
 import fi.oph.koski.schema.{Finnish, KoskiSchema, LocalizedString}
+import fi.oph.scalaschema.annotation.Title
 import fi.oph.scalaschema.{ClassSchema, SchemaToJson}
-import org.json4s.JsonAST.{JNothing, JObject, JString}
+import org.json4s.JsonAST.{JObject, JString}
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.should.Matchers
 
@@ -13,9 +14,10 @@ class SchemaLocalizationEnricherSpec extends AnyFreeSpec with Matchers {
   )
   private val enricher = new SchemaLocalizationEnricher(localizations)
 
-  "translationFor groups by language and excludes Finnish" - {
-    "builds a title entry for each non-Finnish language" in {
+  "translationFor groups by language, fi included" - {
+    "builds a title entry for each language" in {
       enricher.translationFor(List(("Tila", "Tila")), Nil) shouldBe Some(JObject(
+        "fi" -> JObject("title" -> JString("Tila")),
         "sv" -> JObject("title" -> JString("Status")),
         "en" -> JObject("title" -> JString("State"))
       ))
@@ -26,6 +28,7 @@ class SchemaLocalizationEnricherSpec extends AnyFreeSpec with Matchers {
         List(("Tila", "Tila")),
         List(("description:Opiskeluoikeuden voimassaolo", "Opiskeluoikeuden voimassaolo"))
       ) shouldBe Some(JObject(
+        "fi" -> JObject("title" -> JString("Tila"), "description" -> JString("Opiskeluoikeuden voimassaolo")),
         "sv" -> JObject("title" -> JString("Status"), "description" -> JString("Studierättens giltighet")),
         "en" -> JObject("title" -> JString("State"))
       ))
@@ -38,13 +41,23 @@ class SchemaLocalizationEnricherSpec extends AnyFreeSpec with Matchers {
 
   "enrich" - {
     "injects language-grouped translations into matching property nodes" in {
-      val schema = KoskiSchema.createSchema(classOf[EnricherTestOppija]).asInstanceOf[ClassSchema]
-      val enriched = enricher.enrich(schema, SchemaToJson.toJsonSchema(schema))
+      val enriched = enrichedTestSchema
+      (enriched \ "properties" \ "tila" \ "translation" \ "fi" \ "title") shouldBe JString("Tila")
       (enriched \ "properties" \ "tila" \ "translation" \ "sv" \ "title") shouldBe JString("Status")
       (enriched \ "properties" \ "tila" \ "translation" \ "en" \ "title") shouldBe JString("State")
-      (enriched \ "properties" \ "tila" \ "translation" \ "fi") shouldBe JNothing
     }
+
+    "translates the class title on the class node" in {
+      val enriched = enrichedTestSchema
+      (enriched \ "translation" \ "fi" \ "title") shouldBe JString("Tila")
+      (enriched \ "translation" \ "sv" \ "title") shouldBe JString("Status")
+    }
+  }
+
+  private def enrichedTestSchema = {
+    val schema = KoskiSchema.createSchema(classOf[EnricherTestOppija]).asInstanceOf[ClassSchema]
+    enricher.enrich(schema, SchemaToJson.toJsonSchema(schema))
   }
 }
 
-case class EnricherTestOppija(tila: String)
+@Title("Tila") case class EnricherTestOppija(tila: String)
