@@ -154,20 +154,153 @@ div#info-tab-def.info-tab,
   color: green;
   font-weight: 900;
 }
-#info-translation .translation-lang-block {
-  margin-top: 0.8em;
+/* === TOR-2464 info-panel redesign (design direction 1a) === */
+/* Remove jQuery Mobile panel/tab insets so the header + tabs span full width
+   and the body controls its own padding (keeps left edges aligned). */
+#info-panel .ui-panel-inner {
+  padding: 0;
 }
-#info-translation .translation-lang-block:first-child {
-  margin-top: 0;
+#info-panel #info-tabs {
+  padding: 0;
+  margin: 0;
 }
-#info-translation .translation-lang {
-  font-size: 0.8em;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  color: #777;
+/* Dark header bar */
+#info-panel .ui-header {
+  background: #1c1c1c;
+  border: none;
+  margin: 0;
 }
-#info-translation .translation-title {
+#info-panel #info-title {
+  color: #fff;
   font-weight: 700;
+  font-size: 15px;
+  text-align: center;
+  text-shadow: none;
+}
+/* Body */
+#info-tab-def {
+  padding: 20px 22px 24px;
+  font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif;
+}
+/* Section eyebrows */
+#info-tab-def .jsv-eyebrow {
+  font: 600 10.5px ui-monospace, Menlo, monospace;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: #9a9a9a;
+}
+#info-tab-def #info-technical-header {
+  margin-bottom: 11px;
+}
+#info-tab-def #info-description-header {
+  margin-bottom: 14px;
+}
+/* Technical definition-list table */
+#info-technical {
+  margin: 0 0 14px;
+  border: 1px solid #e6e6e6;
+  border-radius: 5px;
+  overflow: hidden;
+}
+#info-technical .jsv-tech-row {
+  display: grid;
+  grid-template-columns: 96px 1fr;
+  border-bottom: 1px solid #eee;
+}
+#info-technical .jsv-tech-row:last-child {
+  border-bottom: none;
+}
+#info-technical .jsv-tech-label {
+  margin: 0;
+  padding: 9px 12px;
+  background: #fafafa;
+  font-size: 12.5px;
+  color: #6a6a6a;
+  border-right: 1px solid #eee;
+}
+#info-technical .jsv-tech-value {
+  margin: 0;
+  padding: 9px 12px;
+}
+#info-technical .jsv-mono {
+  font: 13px ui-monospace, Menlo, monospace;
+  color: #1a1a1a;
+}
+/* Chips */
+.jsv-chip {
+  display: inline-block;
+  font: 12px ui-monospace, Menlo, monospace;
+  background: #f0f0f0;
+  border: 1px solid #e0e0e0;
+  border-radius: 4px;
+  padding: 2px 6px;
+  color: #1a1a1a;
+}
+.jsv-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+.jsv-chips .jsv-chip {
+  font-size: 11.5px;
+}
+/* Behavior badges */
+#info-badges:empty {
+  margin-bottom: 8px;
+}
+#info-badges .jsv-badge {
+  display: flex;
+  align-items: flex-start;
+  gap: 9px;
+  padding: 10px 12px;
+  border: 1px solid #cdcdcd;
+  background: #f4f4f4;
+  border-radius: 6px;
+  margin-bottom: 22px;
+}
+#info-badges .jsv-badge-icon {
+  flex: none;
+  margin-top: 1px;
+}
+#info-badges .jsv-badge-text {
+  font-size: 12.5px;
+  line-height: 1.4;
+  color: #2a2a2a;
+}
+#info-badges .jsv-badge-text strong {
+  font-weight: 600;
+}
+/* Description language blocks */
+#info-localized .jsv-lang-block {
+  margin-bottom: 18px;
+}
+#info-localized .jsv-lang-block:last-child {
+  margin-bottom: 0;
+}
+#info-localized .jsv-lang-tag {
+  display: inline-block;
+  font: 600 10px ui-monospace, Menlo, monospace;
+  letter-spacing: 0.06em;
+  border-radius: 3px;
+  padding: 2px 6px;
+  margin-bottom: 7px;
+  color: #8a8a8a;
+  background: #f2f2f2;
+}
+#info-localized .jsv-lang-fi {
+  color: #5a5a5a;
+  background: #ececec;
+}
+#info-localized .jsv-term {
+  font-weight: 700;
+  font-size: 15px;
+  color: #1a1a1a;
+  margin-bottom: 4px;
+}
+#info-localized .jsv-prose {
+  font-size: 14px;
+  line-height: 1.5;
+  color: #333;
 }
 #textarea-json {
   height: auto !important;

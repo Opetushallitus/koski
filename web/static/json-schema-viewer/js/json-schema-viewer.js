@@ -14271,29 +14271,64 @@ if (typeof window.JSV === "undefined") {
             $.each([ schema, def, ex ], function(i, e) {
                 e.height(height);
             });
-            $("#info-definition").html((node.description || "No definition provided.").replace(/\. \(/g, ".<br>("));
-            $("#info-type").html(node.displayType.toString());
-            if (node.translation) {
-                var languageNames = { sv: "Ruotsi", en: "Englanti" };
-                var trans = $('<div class="translation-list"></div>');
-                $.each([ "sv", "en" ], function(i, lang) {
-                    var t = node.translation[lang];
-                    if (t) {
-                        var block = $('<div class="translation-lang-block"></div>');
-                        block.append($('<div class="translation-lang"></div>').text(languageNames[lang] || lang));
-                        if (t.title) {
-                            block.append($('<div class="translation-title"></div>').text(t.title));
-                        }
-                        if (t.description) {
-                            block.append($('<div class="translation-description"></div>').text(t.description));
-                        }
-                        trans.append(block);
-                    }
-                });
-                $("#info-translation").html(trans.children().length ? trans : "No translations available.");
-            } else {
-                $("#info-translation").html("No translations available.");
+            // Technical: definition-list table from structured schema fields
+            var mono = function(text) { return $('<span class="jsv-mono"></span>').text(text); };
+            var chip = function(text) { return $('<span class="jsv-chip"></span>').text(text); };
+            var chips = function(values) {
+                var el = $('<div class="jsv-chips"></div>');
+                $.each(values, function(i, v) { el.append(chip(v)); });
+                return el;
+            };
+            var techTable = $("#info-technical").empty();
+            var addRow = function(label, valueEl) {
+                techTable.append($('<div class="jsv-tech-row"></div>')
+                    .append($('<dt class="jsv-tech-label"></dt>').text(label))
+                    .append($('<dd class="jsv-tech-value"></dd>').append(valueEl)));
+            };
+
+            addRow("Type", mono(node.displayType.toString()));
+            if (node.type === "array") {
+                addRow("Cardinality", mono((node.minItems || 0) + ".." + (node.maxItems != null ? node.maxItems : "*")));
+            } else if (node.type === "object") {
+                addRow("Cardinality", mono(node.require ? "1..1" : "0..1"));
             }
+            if (node.minimum != null) { addRow("Minimum", mono(node.minimum + (node.exclusiveMinimum ? " (exclusive)" : ""))); }
+            if (node.maximum != null) { addRow("Maximum", mono(node.maximum + (node.exclusiveMaximum ? " (exclusive)" : ""))); }
+            if (node.pattern) { addRow("Format", mono(node.pattern)); }
+            if (node.enumValues && node.enumValues.length) { addRow("Allowed", chips(node.enumValues)); }
+            var annotationTokens = [];
+            if (node.sensitive) { annotationTokens.push("@SensitiveData"); }
+            if (node.redundantData) { annotationTokens.push("@RedundantData"); }
+            if (node.deprecated) { annotationTokens.push("@Deprecated"); }
+            if (annotationTokens.length) { addRow("Annotation", chips(annotationTokens)); }
+
+            // Behaviour badges: annotations that change how the field behaves
+            var badges = $("#info-badges").empty();
+            var lockIcon = '<svg class="jsv-badge-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#2a2a2a" stroke-width="2"><rect x="4" y="10.5" width="16" height="10.5" rx="2"></rect><path d="M8 10.5V7a4 4 0 0 1 8 0v3.5"></path></svg>';
+            var slashIcon = '<svg class="jsv-badge-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#2a2a2a" stroke-width="2"><circle cx="12" cy="12" r="9"></circle><path d="M5.6 5.6l12.8 12.8"></path></svg>';
+            var addBadge = function(iconHtml, textHtml) {
+                badges.append($('<div class="jsv-badge"></div>').html(iconHtml + '<span class="jsv-badge-text">' + textHtml + '</span>'));
+            };
+            if (node.sensitive) { addBadge(lockIcon, '<strong>Erityinen henkilötieto + salassa pidettävä tieto</strong>'); }
+            if (node.redundantData) { addBadge(slashIcon, '<strong>Kenttä ei ole käytössä.</strong> Koski ei ota vastaan kentässä siirrettyä tietoa.'); }
+
+            // === Description: yksi lohko per kieli (FI ensin, sitten SV, EN) ===
+            var languageBlock = function(lang, title, description) {
+                var block = $('<div class="jsv-lang-block"></div>');
+                block.append($('<span class="jsv-lang-tag jsv-lang-' + lang + '"></span>').text(lang.toUpperCase()));
+                if (title) { block.append($('<div class="jsv-term"></div>').text(title)); }
+                if (description) { block.append($('<div class="jsv-prose"></div>').text(description)); }
+                return block;
+            };
+            var blocks = [];
+            $.each([ "fi", "sv", "en" ], function(i, lang) {
+                var t = node.translation && node.translation[lang];
+                if (t && (t.title || t.description)) { blocks.push(languageBlock(lang, t.title, t.description)); }
+            });
+            if (blocks.length === 0 && node.title) { blocks.push(languageBlock("fi", node.title, "")); }
+            var localized = $("#info-localized").empty();
+            $.each(blocks, function(i, block) { localized.append(block); });
+            $("#info-description-header").toggle(blocks.length > 0);
             JSV.createPre(schema, tv4.getSchema(node.schema), false, node.plainName);
             var example = !node.example && node.parent && node.parent.example && node.parent.type === "object" ? node.parent.example : node.example;
             if (example) {
@@ -14470,7 +14505,15 @@ if (typeof window.JSV === "undefined") {
                 parentSchema: parent,
                 deprecated: schema.deprecated || s.deprecated,
                 redundantData: schema.redundantData || s.redundantData,
-                sensitive: schema.sensitive || s.sensitive
+                sensitive: schema.sensitive || s.sensitive,
+                minItems: s.minItems,
+                maxItems: s.maxItems,
+                minimum: s.minimum,
+                maximum: s.maximum,
+                exclusiveMinimum: s.exclusiveMinimum,
+                exclusiveMaximum: s.exclusiveMaximum,
+                pattern: s.pattern,
+                enumValues: s["enum"]
             };
             node.require = parent && parent.required ? parent.required.indexOf(node.name) > -1 : false;
             if (parent) {
@@ -14488,6 +14531,7 @@ if (typeof window.JSV === "undefined") {
             } else {
                 JSV.treeData = node;
             }
+            node.title = node.name;
             if (node.type === "array") {
                 node.name += "[" + (s.minItems || " ") + "]";
                 node.minItems = s.minItems;
