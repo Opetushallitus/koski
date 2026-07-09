@@ -14338,10 +14338,12 @@ if (typeof window.JSV === "undefined") {
             if (node.deprecated) { addBadge(clockIcon, '<strong>Vanhentunut kenttä.</strong> ' + esc(node.deprecatedMessage)); }
 
             // === Description: yksi lohko per kieli (FI ensin, sitten SV, EN) ===
+            var fiTitle = node.translation && node.translation.fi && node.translation.fi.title;
             var languageBlock = function(lang, title, description) {
                 var block = $('<div class="jsv-lang-block"></div>');
                 block.append($('<span class="jsv-lang-tag jsv-lang-' + lang + '"></span>').text(lang.toUpperCase()));
-                if (title) { block.append($('<div class="jsv-term"></div>').text(title)); }
+                var term = title || fiTitle || node.plainName || node.title || node.name;
+                if (term) { block.append($('<div class="jsv-term"></div>').text(term)); }
                 if (description) { block.append($('<div class="jsv-prose"></div>').text(description)); }
                 return block;
             };
