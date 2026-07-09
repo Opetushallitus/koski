@@ -3,7 +3,7 @@ package fi.oph.koski.schema.annotation
 import fi.oph.koski.koskiuser.Rooli.Role
 import fi.oph.scalaschema._
 import org.json4s.JsonAST
-import org.json4s.JsonAST.{JBool, JObject}
+import org.json4s.JsonAST.{JBool, JObject, JString}
 
 /* This property can be used to represent the whole entity */
 case class Representative() extends RepresentationalMetadata
@@ -18,7 +18,8 @@ case class FlattenInUI() extends RepresentationalMetadata
 case class Tabular() extends RepresentationalMetadata
 
 case class ReadOnly(why: String) extends Metadata {
-  override def appendMetadataToJsonSchema(obj: JsonAST.JObject) = appendToDescription(obj, why)
+  override def appendMetadataToJsonSchema(obj: JsonAST.JObject) =
+    appendToDescription(obj.merge(JObject("readOnly" -> JBool(true), "readOnlyText" -> JString(why))), why)
 }
 
 case class ClassName(classname: String) extends RepresentationalMetadata
@@ -27,7 +28,9 @@ case class ClassName(classname: String) extends RepresentationalMetadata
 case class MultiLineString(lineCount: Int) extends RepresentationalMetadata
 
 /* Tags a numeric field with a unit of measure */
-case class UnitOfMeasure(unit: String) extends RepresentationalMetadata
+case class UnitOfMeasure(unit: String) extends RepresentationalMetadata {
+  override def appendMetadataToJsonSchema(obj: JObject): JObject = obj.merge(JObject("unit" -> JString(unit)))
+}
 
 /* An example of the data */
 case class Example(text: String) extends RepresentationalMetadata

@@ -176,6 +176,7 @@ div#info-tab-def.info-tab,
   font-size: 15px;
   text-align: center;
   text-shadow: none;
+  overflow-wrap: anywhere;
 }
 /* Body */
 #info-tab-def {
@@ -225,6 +226,15 @@ div#info-tab-def.info-tab,
 #info-technical .jsv-mono {
   font: 13px ui-monospace, Menlo, monospace;
   color: #1a1a1a;
+}
+#info-technical .jsv-koodisto-link,
+#info-technical .jsv-oksa-link {
+  text-decoration: underline;
+}
+#info-technical .jsv-plain {
+  font-size: 12.5px;
+  line-height: 1.4;
+  color: #333;
 }
 /* Chips */
 .jsv-chip {

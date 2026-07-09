@@ -99,11 +99,15 @@ Notes:
 - The `translation` keyword is non-standard and ignored by JSON Schema
   validators, so it is a safe additive change to the documentation schemas
   (which external integrators may also consume).
-- The technical block reads only structured JSON fields, so it does **not** show
-  facts that live only in the `description` string — e.g. the `@KoodistoUri`
-  reference (`(Koodisto: …)`), the `@Deprecated` message/date, `@DefaultValue`,
-  the `osaamispiste`-style unit, or Oksa links. Making those show would require
-  emitting them as structured fields.
+- The technical block reads only **structured** JSON fields, never the
+  `description` string. Several Koski annotations were given structured fields so
+  they can be shown as their own row/chip: `KoodistoUri` → `koodisto` (Koodisto
+  row, linked), `KoodistoKoodiarvo` → `koodiarvot` (Allowed row), `OksaUri` →
+  `oksa` (Oksa row, linked), `Deprecated` → `deprecatedMessage` (badge),
+  `UnitOfMeasure` → `unit` (Format row), `ReadOnly` → `readOnly`/`readOnlyText`
+  (Read-only row). These are additive keywords, ignored by JSON Schema validators.
+- Still **not** shown, because it only lives in the `description` string:
+  `@DefaultValue` (it's a scala-schema annotation, not Koski).
 - To cover a new schema, register it in `LocalizedSchemas`.
 
 ## Editing / build

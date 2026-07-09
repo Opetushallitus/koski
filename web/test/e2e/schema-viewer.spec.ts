@@ -17,10 +17,7 @@ test.describe('Schema viewer', () => {
 
     await page.locator('a[href="#info-panel"]').click()
 
-    const infoDefinition = page.locator('#info-definition')
-    await expect(infoDefinition).toBeVisible({ timeout: 10000 })
-
-    const oksaLink = infoDefinition.locator('a[href*="wiki.eduuni.fi"]')
+    const oksaLink = page.locator('#info-technical a[href*="wiki.eduuni.fi"]')
     await expect(oksaLink).toBeVisible({ timeout: 10000 })
     const oksaHref = await oksaLink.getAttribute('href')
     expect(oksaHref).toContain('#tmpOKSAID')

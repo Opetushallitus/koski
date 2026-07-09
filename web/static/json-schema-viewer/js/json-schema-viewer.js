@@ -14289,13 +14289,28 @@ if (typeof window.JSV === "undefined") {
             addRow("Type", mono(node.displayType.toString()));
             if (node.type === "array") {
                 addRow("Cardinality", mono((node.minItems || 0) + ".." + (node.maxItems != null ? node.maxItems : "*")));
-            } else if (node.type === "object") {
+            } else {
                 addRow("Cardinality", mono(node.require ? "1..1" : "0..1"));
             }
             if (node.minimum != null) { addRow("Minimum", mono(node.minimum + (node.exclusiveMinimum ? " (exclusive)" : ""))); }
             if (node.maximum != null) { addRow("Maximum", mono(node.maximum + (node.exclusiveMaximum ? " (exclusive)" : ""))); }
             if (node.pattern) { addRow("Format", mono(node.pattern)); }
-            if (node.enumValues && node.enumValues.length) { addRow("Allowed", chips(node.enumValues)); }
+            if (node.unit) { addRow("Format", mono(node.unit)); }
+            if (node.koodisto) {
+                var koodistoLink = $('<a class="jsv-mono jsv-koodisto-link" target="_blank"></a>')
+                    .attr("href", "/koski/dokumentaatio/koodisto/" + node.koodisto + "/latest")
+                    .text(node.koodisto);
+                addRow("Koodisto", koodistoLink);
+            }
+            if (node.oksa) {
+                var oksaLink = $('<a class="jsv-mono jsv-oksa-link" target="_blank"></a>')
+                    .attr("href", node.oksa.url)
+                    .text(node.oksa["käsite"] || node.oksa.url);
+                addRow("Oksa", oksaLink);
+            }
+            var allowedValues = (node.enumValues || []).concat(node.koodiarvot || []);
+            if (allowedValues.length) { addRow("Allowed", chips(allowedValues)); }
+            if (node.readOnly) { addRow("Read-only", $('<span class="jsv-plain"></span>').text(node.readOnlyText || "Vain luettava kenttä.")); }
             var annotationTokens = [];
             if (node.sensitive) { annotationTokens.push("@SensitiveData"); }
             if (node.redundantData) { annotationTokens.push("@RedundantData"); }
@@ -14303,14 +14318,17 @@ if (typeof window.JSV === "undefined") {
             if (annotationTokens.length) { addRow("Annotation", chips(annotationTokens)); }
 
             // Behaviour badges: annotations that change how the field behaves
+            var esc = function(s) { return $("<div></div>").text(s || "").html(); };
             var badges = $("#info-badges").empty();
             var lockIcon = '<svg class="jsv-badge-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#2a2a2a" stroke-width="2"><rect x="4" y="10.5" width="16" height="10.5" rx="2"></rect><path d="M8 10.5V7a4 4 0 0 1 8 0v3.5"></path></svg>';
             var slashIcon = '<svg class="jsv-badge-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#2a2a2a" stroke-width="2"><circle cx="12" cy="12" r="9"></circle><path d="M5.6 5.6l12.8 12.8"></path></svg>';
+            var clockIcon = '<svg class="jsv-badge-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#2a2a2a" stroke-width="2"><circle cx="12" cy="12" r="9"></circle><path d="M12 7v5l3 2"></path></svg>';
             var addBadge = function(iconHtml, textHtml) {
                 badges.append($('<div class="jsv-badge"></div>').html(iconHtml + '<span class="jsv-badge-text">' + textHtml + '</span>'));
             };
             if (node.sensitive) { addBadge(lockIcon, '<strong>Erityinen henkilötieto + salassa pidettävä tieto</strong>'); }
             if (node.redundantData) { addBadge(slashIcon, '<strong>Kenttä ei ole käytössä.</strong> Koski ei ota vastaan kentässä siirrettyä tietoa.'); }
+            if (node.deprecated) { addBadge(clockIcon, '<strong>Vanhentunut kenttä.</strong> ' + esc(node.deprecatedMessage)); }
 
             // === Description: yksi lohko per kieli (FI ensin, sitten SV, EN) ===
             var languageBlock = function(lang, title, description) {
@@ -14513,7 +14531,14 @@ if (typeof window.JSV === "undefined") {
                 exclusiveMinimum: s.exclusiveMinimum,
                 exclusiveMaximum: s.exclusiveMaximum,
                 pattern: s.pattern,
-                enumValues: s["enum"]
+                enumValues: s["enum"],
+                koodisto: schema.koodisto || s.koodisto,
+                unit: schema.unit || s.unit,
+                deprecatedMessage: schema.deprecatedMessage || s.deprecatedMessage,
+                readOnly: schema.readOnly || s.readOnly,
+                readOnlyText: schema.readOnlyText || s.readOnlyText,
+                koodiarvot: schema.koodiarvot || s.koodiarvot,
+                oksa: schema.oksa || s.oksa
             };
             node.require = parent && parent.required ? parent.required.indexOf(node.name) > -1 : false;
             if (parent) {
@@ -14673,7 +14698,10 @@ if (typeof window.JSV === "undefined") {
                 d3.select("#n-" + d.id).classed("focus", true);
                 if (!JSV.plain) {
                     JSV.setPermalink(d);
-                    $("#info-title").text("Info: " + d.name);
+                    var titleText = "Info: " + d.name;
+                    // Shrink the font for long field names so the whole name stays visible.
+                    var titleSize = Math.max(10, 15 - Math.max(0, titleText.length - 24) * 0.15);
+                    $("#info-title").text(titleText).css("font-size", titleSize + "px");
                     JSV.setInfo(d);
                     panel.panel("open");
                 }

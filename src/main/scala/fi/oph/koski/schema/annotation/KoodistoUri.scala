@@ -9,7 +9,7 @@ case class KoodistoUri(koodistoUri: String) extends Metadata {
   def asLink = <a href={url} target="_blank">{koodistoUri}</a>
 
   override def appendMetadataToJsonSchema(obj: JsonAST.JObject) = {
-    appendToDescription(obj, s"(Koodisto: $asLink)")
+    appendToDescription(obj.merge(JsonAST.JObject("koodisto" -> JsonAST.JString(koodistoUri))), s"(Koodisto: $asLink)")
   }
 
   override def applyMetadata(x: ObjectWithMetadata[_], schemaFactory: SchemaFactory) = {
