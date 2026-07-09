@@ -14292,6 +14292,7 @@ if (typeof window.JSV === "undefined") {
             } else {
                 addRow("Cardinality", mono(node.require ? "1..1" : "0..1"));
             }
+            if (node["default"] != null) { addRow("Default", mono(node["default"])); }
             if (node.minimum != null) { addRow("Minimum", mono(node.minimum + (node.exclusiveMinimum ? " (exclusive)" : ""))); }
             if (node.maximum != null) { addRow("Maximum", mono(node.maximum + (node.exclusiveMaximum ? " (exclusive)" : ""))); }
             if (node.pattern) { addRow("Format", mono(node.pattern)); }
@@ -14311,6 +14312,12 @@ if (typeof window.JSV === "undefined") {
             var allowedValues = (node.enumValues || []).concat(node.koodiarvot || []);
             if (allowedValues.length) { addRow("Allowed", chips(allowedValues)); }
             if (node.readOnly) { addRow("Read-only", $('<span class="jsv-plain"></span>').text(node.readOnlyText || "Vain luettava kenttä.")); }
+            if (node.conditions && node.conditions.length) {
+                var condEl = $('<div class="jsv-plain"></div>');
+                $.each(node.conditions, function(i, c) { condEl.append($('<div></div>').text(c)); });
+                addRow("Condition", condEl);
+            }
+            if (node.acceptsSingleValue) { addRow("Input", $('<span class="jsv-plain"></span>').text("Accepts also a single value")); }
             var annotationTokens = [];
             if (node.sensitive) { annotationTokens.push("@SensitiveData"); }
             if (node.redundantData) { annotationTokens.push("@RedundantData"); }
@@ -14538,7 +14545,10 @@ if (typeof window.JSV === "undefined") {
                 readOnly: schema.readOnly || s.readOnly,
                 readOnlyText: schema.readOnlyText || s.readOnlyText,
                 koodiarvot: schema.koodiarvot || s.koodiarvot,
-                oksa: schema.oksa || s.oksa
+                oksa: schema.oksa || s.oksa,
+                "default": schema["default"] || s["default"],
+                conditions: schema.conditions || s.conditions,
+                acceptsSingleValue: schema.acceptsSingleValue || s.acceptsSingleValue
             };
             node.require = parent && parent.required ? parent.required.indexOf(node.name) > -1 : false;
             if (parent) {
