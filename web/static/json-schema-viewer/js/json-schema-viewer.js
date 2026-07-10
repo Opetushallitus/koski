@@ -14162,6 +14162,8 @@ if (typeof window.JSV === "undefined") {
             $("#sharelink").on("click", function() {
                 $(this).select();
             });
+            $(document).on("keydown", JSV.keyNav);
+            $(window).on("throttledresize", JSV.pinPanel);
             JSV.viewerInit = true;
         },
         contentHeight: function() {
@@ -14311,6 +14313,7 @@ if (typeof window.JSV === "undefined") {
             }
             var allowedValues = (node.enumValues || []).concat(node.koodiarvot || []);
             if (allowedValues.length) { addRow("Allowed", chips(allowedValues)); }
+            if (node.synthetic) { addRow("Computed", $('<span class="jsv-plain"></span>').text("Derived value, not set on input")); }
             if (node.readOnly) { addRow("Read-only", $('<span class="jsv-plain"></span>').text(node.readOnlyText || "Vain luettava kenttä.")); }
             if (node.conditions && node.conditions.length) {
                 var condEl = $('<div class="jsv-plain"></div>');
@@ -14550,7 +14553,8 @@ if (typeof window.JSV === "undefined") {
                 oksa: schema.oksa || s.oksa,
                 "default": schema["default"] || s["default"],
                 conditions: schema.conditions || s.conditions,
-                acceptsSingleValue: schema.acceptsSingleValue || s.acceptsSingleValue
+                acceptsSingleValue: schema.acceptsSingleValue || s.acceptsSingleValue,
+                synthetic: schema.synthetic || s.synthetic
             };
             node.require = parent && parent.required ? parent.required.indexOf(node.name) > -1 : false;
             if (parent) {
@@ -14719,6 +14723,95 @@ if (typeof window.JSV === "undefined") {
                 }
             }
         },
+        visibleNodes: function() {
+            var out = [];
+            (function walk(node) {
+                if (!node) {
+                    return;
+                }
+                if (!JSV.labels[node.name]) {
+                    out.push(node);
+                }
+                if (node.children) {
+                    node.children.forEach(walk);
+                }
+            })(JSV.treeData);
+            return out;
+        },
+        firstSelectableChild: function(d) {
+            var kids = d.children || [], i, deep;
+            for (i = 0; i < kids.length; i++) {
+                if (!JSV.labels[kids[i].name]) {
+                    return kids[i];
+                }
+                deep = JSV.firstSelectableChild(kids[i]);
+                if (deep) {
+                    return deep;
+                }
+            }
+            return null;
+        },
+        keyNav: function(e) {
+            var keys = {
+                ArrowUp: 1,
+                ArrowDown: 1,
+                ArrowLeft: 1,
+                ArrowRight: 1,
+                Enter: 1
+            };
+            if (!keys[e.key]) {
+                return;
+            }
+            var tag = document.activeElement && document.activeElement.tagName;
+            if (tag === "INPUT" || tag === "TEXTAREA") {
+                return;
+            }
+            if (!$.mobile.activePage || $.mobile.activePage.attr("id") !== "viewer-page") {
+                return;
+            }
+            if (!JSV.treeData) {
+                return;
+            }
+            e.preventDefault();
+            var current = JSV.focusNode || JSV.treeData;
+            if (e.key === "Enter") {
+                JSV.clickTitle(current);
+            } else if (e.key === "ArrowDown" || e.key === "ArrowUp") {
+                var list = JSV.visibleNodes(), i = list.indexOf(current);
+                if (i < 0) {
+                    JSV.clickTitle(list[0]);
+                } else {
+                    var next = e.key === "ArrowDown" ? list[Math.min(i + 1, list.length - 1)] : list[Math.max(i - 1, 0)];
+                    JSV.clickTitle(next);
+                }
+            } else if (e.key === "ArrowRight") {
+                if (current._children) {
+                    JSV.click(current);
+                } else if (current.children && current.children.length) {
+                    var child = JSV.firstSelectableChild(current);
+                    if (child) {
+                        JSV.clickTitle(child);
+                    }
+                }
+            } else if (e.key === "ArrowLeft") {
+                if (current.children && current.children.length) {
+                    JSV.click(current);
+                } else if (current.parent) {
+                    JSV.clickTitle(current.parent);
+                }
+            }
+        },
+        pinPanel: function() {
+            if (JSV.plain) {
+                return;
+            }
+            if (!$.mobile.activePage || $.mobile.activePage.attr("id") !== "viewer-page") {
+                return;
+            }
+            if (window.matchMedia && window.matchMedia("(min-width: 48em)").matches) {
+                $("#info-panel").panel("open");
+            }
+        },
         zoom: function() {
             JSV.svgGroup.attr("transform", "translate(" + JSV.zoomListener.translate() + ")" + "scale(" + JSV.zoomListener.scale() + ")");
         },
@@ -14882,6 +14975,7 @@ if (typeof window.JSV === "undefined") {
                 JSV.svgGroup = JSV.baseSvg.append("g").attr("id", "node-group");
                 JSV.resetViewer();
                 JSV.centerNode(JSV.treeData, 4);
+                JSV.pinPanel();
                 var legendData = [ {
                     text: "Expanded",
                     y: 20
