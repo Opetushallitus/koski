@@ -41,7 +41,7 @@ object KoskiTables {
   }
 
   trait OpiskeluoikeusTableCompanion[OOROW <: OpiskeluoikeusRow] {
-    protected val serializationContext: SerializationContext = SerializationContext(KoskiSchema.schemaFactory)
+    protected val serializationContext: SerializationContext = SerializationContext(KoskiSchema.schemaFactory, KoskiSchema.skipComputedProperties)
     protected val fieldsToExcludeInJson = Set("oid", "versionumero", "aikaleima")
     protected implicit val deserializationContext: ExtractionContext = ExtractionContext(KoskiSchema.schemaFactory).copy(validate = false)
 

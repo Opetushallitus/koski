@@ -24,4 +24,7 @@ object KoskiSchema {
   }
 
   def skipSyntheticProperties(s: ClassSchema, p: Property): List[Property] = if (p.synthetic) Nil else List(p)
+
+  def skipComputedProperties(s: ClassSchema, p: Property): List[Property] =
+    if (p.computed) Nil else List(p)
 }

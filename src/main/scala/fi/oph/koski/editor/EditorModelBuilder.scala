@@ -20,12 +20,15 @@ import org.json4s.{JArray, JValue}
 
 object EditorModelBuilder {
   def buildModel(deserializationContext: ExtractionContext, value: AnyRef, editable: Boolean)(implicit user: KoskiSpecificSession, koodisto: KoodistoViitePalvelu, localizations: LocalizationRepository): EditorModel = {
-    implicit val context = ModelBuilderContext(deserializationContext, editable = editable, invalidatable = editable)
-    builder(deserializationContext.schemaFactory.createSchema(value.getClass.getName)).buildModelForObject(value, Nil)
+    val rootSchema = deserializationContext.schemaFactory.createSchema(value.getClass.getName)
+    implicit val context = ModelBuilderContext(deserializationContext, editable = editable, invalidatable = editable, rootSchema = Some(rootSchema))
+    builder(rootSchema).buildModelForObject(value, Nil)
   }
 
   def buildPrototype(className: String)(implicit context: ModelBuilderContext) = {
-    builder(context.deserializationContext.schemaFactory.createSchema(className)).buildPrototype(Nil)
+    val rootSchema = context.deserializationContext.schemaFactory.createSchema(className)
+    val contextWithRootSchema = context.copy(rootSchema = Some(rootSchema))(context.user, context.koodisto, context.localizationRepository)
+    builder(rootSchema)(contextWithRootSchema).buildPrototype(Nil)
   }
 
   def builder(schema: Schema)(implicit context: ModelBuilderContext): EditorModelBuilder[Any] = (schema match {
@@ -57,7 +60,10 @@ object EditorModelBuilder {
   def organisaatioEnumValue(localization: LocalizedHtml)(o: OrganisaatioWithOid): EnumValue =
     EnumValue(o.oid, localization.i(o), JsonSerializer.serializeWithRoot(o), None)
   def resolveSchema(schema: SchemaWithClassName)(implicit context: ModelBuilderContext): SchemaWithClassName = schema match {
-    case s: ClassRefSchema => context.deserializationContext.schemaFactory.createSchema(s.fullClassName)
+    case s: ClassRefSchema =>
+      context.rootSchema
+        .map(context.deserializationContext.schemaFactory.createSchema(s, _))
+        .getOrElse(context.deserializationContext.schemaFactory.createSchema(s.fullClassName))
     case _ => schema
   }
 }
@@ -79,7 +85,8 @@ case class ModelBuilderContext(
   invalidatable: Boolean,
   root: Boolean = true,
   var prototypesRequested: SchemaSet = SchemaSet.empty,
-  prototypesBeingCreated: SchemaSet = SchemaSet.empty
+  prototypesBeingCreated: SchemaSet = SchemaSet.empty,
+  rootSchema: Option[Schema] = None
 )(
   implicit val user: KoskiSpecificSession,
   val koodisto: KoodistoViitePalvelu,

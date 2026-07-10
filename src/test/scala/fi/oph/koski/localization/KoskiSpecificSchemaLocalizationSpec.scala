@@ -27,7 +27,8 @@ class KoskiSpecificSchemaLocalizationSpec extends AnyFreeSpec with TestEnvironme
   }
 
   private def findMissingLocalizedTextsInSchema: Set[(ClassSchema, String, String)] = {
-    val propertyTitles: Set[(ClassSchema, String, String)] = allSchemas(EditorSchema.schema)(KoskiSchema.schemaFactory, collection.mutable.Set.empty[String]).collect {
+    val rootSchema = EditorSchema.schema
+    val propertyTitles: Set[(ClassSchema, String, String)] = allSchemas(rootSchema)(KoskiSchema.schemaFactory, rootSchema, collection.mutable.Set.empty[String]).collect {
       case s: ClassSchema => KoskiSpecificSchemaLocalization.allLocalizableParts(s).map{ case (key, text) => (s, key, text)}
     }.flatten.toSet
     val existingKeys = new DefaultLocalizations(new KoskiLocalizationConfig().defaultFinnishTextsResourceFilename).defaultFinnishTexts.keys.toSet
@@ -35,8 +36,8 @@ class KoskiSpecificSchemaLocalizationSpec extends AnyFreeSpec with TestEnvironme
     propertyTitles.filterNot{ case (schema, key, title) => existingKeys.contains(key) }
   }
 
-  private def allSchemas(schema: Schema)(implicit factory: SchemaFactory, classesCovered: collection.mutable.Set[String]): List[Schema] = schema match {
-    case s: ClassRefSchema => allSchemas(s.resolve(factory))
+  private def allSchemas(schema: Schema)(implicit factory: SchemaFactory, rootSchema: Schema, classesCovered: collection.mutable.Set[String]): List[Schema] = schema match {
+    case s: ClassRefSchema => allSchemas(s.resolve(factory, rootSchema))
     case s: SchemaWithClassName if classesCovered.contains(s.fullClassName) =>
       Nil
     case s: SchemaWithClassName =>
