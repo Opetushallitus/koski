@@ -14338,7 +14338,7 @@ if (typeof window.JSV === "undefined") {
             };
             if (node.sensitive) { addBadge(lockIcon, '<strong>Erityinen henkilötieto + salassa pidettävä tieto</strong>'); }
             if (node.redundantData) { addBadge(slashIcon, '<strong>Kenttä ei ole käytössä.</strong> Koski ei ota vastaan kentässä siirrettyä tietoa.'); }
-            if (node.deprecated) { addBadge(clockIcon, '<strong>Vanhentunut kenttä.</strong> ' + esc(node.deprecatedMessage)); }
+            if (node.deprecated) { addBadge(clockIcon, '<strong>Vanhentunut kenttä.</strong> ' + esc(node.deprecatedText || node.deprecatedMessage)); }
 
             // === Description: yksi lohko per kieli (FI ensin, sitten SV, EN) ===
             var fiTitle = node.translation && node.translation.fi && node.translation.fi.title;
@@ -14547,6 +14547,7 @@ if (typeof window.JSV === "undefined") {
                 koodisto: schema.koodisto || s.koodisto,
                 unit: schema.unit || s.unit,
                 deprecatedMessage: schema.deprecatedMessage || s.deprecatedMessage,
+                deprecatedText: schema.deprecatedText || s.deprecatedText,
                 readOnly: schema.readOnly || s.readOnly,
                 readOnlyText: schema.readOnlyText || s.readOnlyText,
                 koodiarvot: schema.koodiarvot || s.koodiarvot,
