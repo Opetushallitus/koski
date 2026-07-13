@@ -91,6 +91,18 @@ jobs:
           suites: |
             fi.oph.koski.api.oppijavalidation
 
+  run_scala_schema_tests:
+    name: Backend (scala-schema)
+    runs-on: ${{ inputs.runs-on }}
+    if: ${{ !contains(github.event.head_commit.message, '[skip-tests]') }}
+    needs: [build_koski]
+    steps:
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7
+      - uses: ./.github/actions/koski_backend_test
+        with:
+          suites: |
+            fi.oph.scalaschema
+
   run_backend_tests_api_misc_1:
     name: Backend (api misc 1/2)
     runs-on: ${{ inputs.runs-on }}

@@ -100,6 +100,10 @@ backtest:
 	fi.oph.koski.massaluovutus,fi.oph.koski.massaluovutus.suorituspalvelu,fi.oph.koski.omadataoauth2.unit,fi.oph.koski.omadataoauth2.e2e,\
 	fi.oph.koski.kielitutkinto,fi.oph.koski.todistus,fi.oph.koski.todistus.tiedote,fi.oph.koski.ovara"
 
+.PHONY: schematest
+schematest:
+	mvn $(mvn_opts) -DargLine="$(mvn_argline)" test -DmembersOnlySuites="fi.oph.scalaschema"
+
 .PHONY: backtestnonmock
 backtestnonmock:
 	mvn $(mvn_opts) -DargLine="$(mvn_argline)" test -DmembersOnlySuites="fi.oph.koski.nonmockloginsecurity"
