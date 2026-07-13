@@ -79,12 +79,9 @@ test.describe('Schema viewer', () => {
     await expect(page.locator('#info-badges')).toContainText('Vanhentunut')
   })
 
-  // Default/Computed rows come from the scala-schema change (DefaultValue emitting a
-  // `default` field, SyntheticProperty emitting `synthetic`). Enable once scala-schema
-  // is released and the Koski dependency bumped past 2.40.0.
-  test.skip('Default- ja Computed-rivit (odottaa scala-schema-julkaisua)', async ({
-    page
-  }) => {
+  // Default/Computed rows come from the scala-schema structured fields (DefaultValue
+  // emitting `default`, SyntheticProperty emitting `synthetic`), available since 2.45.0_2.13.
+  test('Default- ja Computed-rivit', async ({ page }) => {
     await openNode(page, '1-0-2-11-0', 'oikeusMaksuttomaanAsuntolapaikkaan')
     await expect(page.locator('#info-technical')).toContainText('Default')
     await openNode(page, '1-0-16-9-0-2-13-0-0-9', 'tila')
