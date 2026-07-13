@@ -45,11 +45,49 @@ re-apply them**:
   from the label length, since the tree font is monospace) shown only on the
   focused node as a rounded green outline around the label. Replaces the plain
   bold, which was hard to see.
+- **Translation panel rendering** (TOR-2464) — the info panel's "Translation"
+  tab reads `node.translation` and renders one block per language (quiet
+  language label, bold title, plain description), using `.text()` so the
+  strings are escaped. See "Translation tab" below for how the data is
+  produced.
 
 The `deprecated` / `redundantData` / `sensitive` booleans the viewer reads come
 from the schema JSON, emitted by the matching annotations in
 `src/main/scala/fi/oph/koski/schema/annotation/` (`Deprecated`, `RedundantData`,
 `Annotations.scala` → `SensitiveData`).
+
+## Translation tab (TOR-2464)
+
+The info panel's "Translation" tab is populated server-side. Each viewer
+schema is served through `LocalizedSchemas` (`fi.oph.koski.documentation`),
+which:
+
+- builds the same `ClassSchema` as the corresponding `*Schema` object
+  (`KoskiSchema.createSchema`),
+- runs `SchemaLocalizationEnricher` (`fi.oph.koski.localization`) to attach a
+  `translation` field to each property and class node, resolved from
+  `koskiLocalizationRepository` using the same keys as
+  `KoskiSpecificSchemaLocalization` — **title + description only**,
+- caches the enriched JSON ~1 min (matching the localization cache refresh),
+  so translation edits appear without a restart.
+
+The emitted shape is language-keyed and **excludes Finnish** (the Finnish
+title is the node name and the Finnish description is already in the
+Definition box):
+
+```json
+"translation": { "sv": { "title": "…", "description": "…" }, "en": { … } }
+```
+
+Notes:
+
+- Tooltip/info-link annotations aren't emitted into the schema JSON, so they
+  aren't shown; missing keys/languages are skipped, and a node with no sv/en
+  translation gets no `translation` field.
+- The `translation` keyword is non-standard and ignored by JSON Schema
+  validators, so it is a safe additive change to the documentation schemas
+  (which external integrators may also consume).
+- To cover a new schema, register it in `LocalizedSchemas`.
 
 ## Editing / build
 

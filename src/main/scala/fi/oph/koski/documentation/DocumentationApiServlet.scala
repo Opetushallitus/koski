@@ -1,35 +1,25 @@
 package fi.oph.koski.documentation
 
 import fi.oph.koski.config.KoskiApplication
-import fi.oph.koski.hakemuspalvelu.HakemuspalveluSchema
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.json.JsonSerializer
-import fi.oph.koski.kela.KelaSchema
 import fi.oph.koski.koodisto.Koodistot
 import fi.oph.koski.koskiuser.Unauthenticated
-import fi.oph.koski.luovutuspalvelu.HslResponse
 import fi.oph.koski.massaluovutus.luokallejaaneet.MassaluovutusQueryLuokalleJaaneetResult
 import fi.oph.koski.massaluovutus.suorituspalvelu.SupaResponse
 import fi.oph.koski.massaluovutus.valintalaskenta.ValintalaskentaResult
-import fi.oph.koski.migri.MigriSchema
 import fi.oph.koski.massaluovutus.{QueryDocumentation, QueryResponse}
-import fi.oph.koski.omadataoauth2.{OmaDataOAuth2AktiivisetJaPäättyneetOpiskeluoikeudet, OmaDataOAuth2Documentation, OmaDataOAuth2KaikkiOpiskeluoikeudet, OmaDataOAuth2KaikkiOpiskeluoikeudetJaValintatiedot, OmaDataOAuth2SuoritetutTutkinnot}
-import fi.oph.koski.schema.KoskiSchema
-import fi.oph.koski.sdg.SdgSchema
+import fi.oph.koski.omadataoauth2.OmaDataOAuth2Documentation
 import fi.oph.koski.servlet.{KoskiSpecificApiServlet, NoCache}
-import fi.oph.koski.suoritusjako.{AktiivisetJaPäättyneetOpinnotOppijaJakolinkillä, SuoritetutTutkinnotOppijaJakolinkillä}
 import fi.oph.koski.supa.SupaOpiskeluoikeudenVersioResponse
-import fi.oph.koski.valpas.kela.ValpasKelaSchema
 import fi.oph.koski.valpas.massaluovutus.{ValpasEiOppivelvollisuuttaSuorittavatMassaluovutusResult, ValpasOppivelvollisetMassaluovutusResult}
-import fi.oph.koski.valpas.oppija.ValpasInternalSchema
-import fi.oph.koski.valpas.ytl.ValpasYtlSchema
-import fi.oph.koski.valvira.ValviraSchema
-import fi.oph.koski.kios.KiosSchema
-import fi.oph.koski.ytl.YtlSchema
 
 import scala.reflect.runtime.{universe => ru}
 
 class DocumentationApiServlet(application: KoskiApplication) extends KoskiSpecificApiServlet with Unauthenticated with NoCache {
+  private lazy val localizedSchemas =
+    new LocalizedSchemas(application.koskiLocalizationRepository)(application.cacheManager)
+
   get("/categoryNames.json") {
     KoskiTiedonSiirtoHtml.categoryNames
   }
@@ -54,75 +44,75 @@ class DocumentationApiServlet(application: KoskiApplication) extends KoskiSpecif
     renderOption(KoskiErrorCategory.notFound)(Examples.oppijaExamples.find(_.name == params("name")).map(_.data))
   }
   get("/koski-oppija-schema.json") {
-    KoskiSchema.schemaJson
+    localizedSchemas("koski-oppija-schema.json")
   }
 
   get("/valvira-oppija-schema.json") {
-    ValviraSchema.schemaJson
+    localizedSchemas("valvira-oppija-schema.json")
   }
 
   get("/hakemuspalvelu-oppija-schema.json") {
-    HakemuspalveluSchema.schemaJson
+    localizedSchemas("hakemuspalvelu-oppija-schema.json")
   }
 
   get("/hsl-oppija-schema.json") {
-    HslResponse.schemaJson
+    localizedSchemas("hsl-oppija-schema.json")
   }
 
   get("/kela-oppija-schema.json") {
-    KelaSchema.schemaJson
+    localizedSchemas("kela-oppija-schema.json")
   }
 
   get("/suoritetut-tutkinnot-oppija-schema.json") {
-    SuoritetutTutkinnotOppijaJakolinkillä.schemaJson
+    localizedSchemas("suoritetut-tutkinnot-oppija-schema.json")
   }
 
   get("/aktiiviset-ja-paattyneet-opinnot-oppija-schema.json") {
-    AktiivisetJaPäättyneetOpinnotOppijaJakolinkillä.schemaJson
+    localizedSchemas("aktiiviset-ja-paattyneet-opinnot-oppija-schema.json")
   }
 
   get("/kios-oppija-schema.json") {
-    KiosSchema.schemaJson
+    localizedSchemas("kios-oppija-schema.json")
   }
 
   get("/sdg-oppija-schema.json") {
-    SdgSchema.schemaJson
+    localizedSchemas("sdg-oppija-schema.json")
   }
 
   get("/ytl-oppija-schema.json") {
-    YtlSchema.schemaJson
+    localizedSchemas("ytl-oppija-schema.json")
   }
 
   get("/ytl-valpas-oppija-schema.json") {
-    ValpasYtlSchema.schemaJson
+    localizedSchemas("ytl-valpas-oppija-schema.json")
   }
 
   get("/valpas-kela-oppija-schema.json") {
-    ValpasKelaSchema.schemaJson
+    localizedSchemas("valpas-kela-oppija-schema.json")
   }
 
   get("/valpas-internal-laaja-schema.json") {
-    ValpasInternalSchema.laajaSchemaJson
+    localizedSchemas("valpas-internal-laaja-schema.json")
   }
 
   get("/valpas-internal-suppea-schema.json") {
-    ValpasInternalSchema.suppeaSchemaJson
+    localizedSchemas("valpas-internal-suppea-schema.json")
   }
 
   get("/valpas-internal-kunta-suppea-schema.json") {
-    ValpasInternalSchema.kuntaSuppeaSchemaJson
+    localizedSchemas("valpas-internal-kunta-suppea-schema.json")
   }
 
   get("/valpas-internal-heturouhinta-schema.json") {
-    ValpasInternalSchema.heturouhintaSchemaJson
+    localizedSchemas("valpas-internal-heturouhinta-schema.json")
   }
 
   get("/valpas-internal-kuntarouhinta-schema.json") {
-    ValpasInternalSchema.kuntarouhintaSchemaJson
+    localizedSchemas("valpas-internal-kuntarouhinta-schema.json")
   }
 
   get("/migri-oppija-schema.json") {
-    MigriSchema.schemaJson
+    localizedSchemas("migri-oppija-schema.json")
   }
 
   get("/koodistot.json") {
@@ -170,19 +160,19 @@ class DocumentationApiServlet(application: KoskiApplication) extends KoskiSpecif
   }
 
   get("/omadata-oauth2-suoritetut-tutkinnot-oppija-schema.json") {
-    OmaDataOAuth2SuoritetutTutkinnot.schemaJson
+    localizedSchemas("omadata-oauth2-suoritetut-tutkinnot-oppija-schema.json")
   }
 
   get("/omadata-oauth2-aktiiviset-ja-paattyneet-opinnot-oppija-schema.json") {
-    OmaDataOAuth2AktiivisetJaPäättyneetOpiskeluoikeudet.schemaJson
+    localizedSchemas("omadata-oauth2-aktiiviset-ja-paattyneet-opinnot-oppija-schema.json")
   }
 
   get("/omadata-oauth2-kaikki-tiedot-oppija-schema.json") {
-    OmaDataOAuth2KaikkiOpiskeluoikeudet.schemaJson
+    localizedSchemas("omadata-oauth2-kaikki-tiedot-oppija-schema.json")
   }
 
   get("/omadata-oauth2-kaikki-tiedot-ja-valintatiedot-oppija-schema.json") {
-    OmaDataOAuth2KaikkiOpiskeluoikeudetJaValintatiedot.schemaJson
+    localizedSchemas("omadata-oauth2-kaikki-tiedot-ja-valintatiedot-oppija-schema.json")
   }
 
   override def toJsonString[T: ru.TypeTag](x: T): String = JsonSerializer.writeWithRoot(x)
