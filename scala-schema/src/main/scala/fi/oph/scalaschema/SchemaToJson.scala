@@ -5,6 +5,14 @@ import org.json4s.ext.JodaTimeSerializers
 import org.json4s.{DefaultFormats, Extraction, Formats}
 import org.json4s.JsonAST._
 
+trait SchemaJsonDecorator {
+  def decorateClass(schema: ClassSchema, json: JObject): JObject = json
+  def decorateProperty(property: Property, json: JObject): JObject = json
+}
+object SchemaJsonDecorator {
+  object Noop extends SchemaJsonDecorator
+}
+
 object SchemaFilters {
   def stripSkipSerialization(schema: Schema): Schema =
     schema.mapItems {
@@ -27,12 +35,16 @@ object SchemaToJson {
     }
   } ++ JodaTimeSerializers.all
 
-  def toJsonSchema(t: Schema): JObject = {
+  def toJsonSchema(t: Schema)(implicit decorator: SchemaJsonDecorator = SchemaJsonDecorator.Noop): JObject = {
     val cleaned = SchemaFilters.stripSkipSerialization(t)
-    appendMetadata(toJsonSchemaWithoutMetadata(cleaned), t.metadata)
+    val json = appendMetadata(toJsonSchemaWithoutMetadata(cleaned), t.metadata)
+    cleaned match {
+      case c: ClassSchema => decorator.decorateClass(c, json)
+      case _ => json
+    }
   }
 
-  private def toJsonSchemaWithoutMetadata(t: Schema): JObject = t match {
+  private def toJsonSchemaWithoutMetadata(t: Schema)(implicit decorator: SchemaJsonDecorator): JObject = t match {
     case DateSchema(_) => JObject(List("type" -> JString("string"), "format" -> JString("date")))
     case StringSchema(enumValues) => withMinLength(simpleObjectToJson("string", enumValues), Some(1))
     case BooleanSchema(enumValues) => simpleObjectToJson("boolean", enumValues)
@@ -80,11 +92,11 @@ object SchemaToJson {
     enumValues.map(enumValues => ("enum", Extraction.decompose(enumValues)))
   }
 
-  private def toJsonProperties(properties: List[Property]): JValue = {
+  private def toJsonProperties(properties: List[Property])(implicit decorator: SchemaJsonDecorator): JValue = {
     JObject(properties.map { property =>
         val json = appendMetadata(appendMetadata(toJsonSchemaWithoutMetadata(property.schema), property.metadata), property.schema.metadata)
         val withSynthetic = if (property.synthetic || property.computed) json.merge(JObject("synthetic" -> JBool(true))) else json
-        (property.key, withSynthetic)
+        (property.key, decorator.decorateProperty(property, withSynthetic))
     })
   }
 
@@ -96,7 +108,7 @@ object SchemaToJson {
     }
   }
 
-  private def toDefinitionProperty(definitions: List[SchemaWithClassName]): Option[(String, JValue)] = definitions.flatMap {
+  private def toDefinitionProperty(definitions: List[SchemaWithClassName])(implicit decorator: SchemaJsonDecorator): Option[(String, JValue)] = definitions.flatMap {
     case x: ClassSchema => List(x)
     case _ => Nil
   } match {

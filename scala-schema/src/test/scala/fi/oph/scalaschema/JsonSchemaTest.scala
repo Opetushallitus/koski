@@ -5,7 +5,7 @@ import com.github.fge.jsonschema.core.report.LogLevel.{ERROR, FATAL}
 import com.github.fge.jsonschema.main.{JsonSchemaFactory, JsonValidator}
 import fi.oph.scalaschema.TestHelpers.schemaOf
 import fi.oph.scalaschema.annotation.{Description, EnumValue, SkipSerialization}
-import org.json4s.JsonAST.{JObject, JString}
+import org.json4s.JsonAST.{JBool, JObject, JString}
 import org.json4s.jackson.JsonMethods.asJsonNode
 import org.json4s.jackson._
 import org.json4s.{JArray, JValue}
@@ -409,6 +409,30 @@ class JsonSchemaTest extends AnyFreeSpec with Matchers {
       }
     }
   }
+
+  "SchemaJsonDecorator hook" - {
+    object TestDecorator extends SchemaJsonDecorator {
+      override def decorateClass(schema: ClassSchema, json: JObject): JObject =
+        JObject(json.obj :+ ("x-test-class" -> (JBool(true): JValue)))
+      override def decorateProperty(property: Property, json: JObject): JObject =
+        JObject(json.obj :+ ("x-test-prop" -> (JBool(true): JValue)))
+    }
+
+    "decorates the root class, nested definitions, and properties of both" in {
+      val schema = SchemaFactory.default.createSchema(classOf[Objects])
+      val json = SchemaToJson.toJsonSchema(schema)(TestDecorator)
+      (json \ "x-test-class") should equal(JBool(true))
+      (json \ "properties" \ "x" \ "x-test-prop") should equal(JBool(true))
+      (json \ "definitions" \ "strings" \ "x-test-class") should equal(JBool(true))
+      (json \ "definitions" \ "strings" \ "properties" \ "s" \ "x-test-prop") should equal(JBool(true))
+    }
+
+    "with no decorator produces JSON identical to the Noop default (regression)" in {
+      val schema = SchemaFactory.default.createSchema(classOf[Objects])
+      JsonMethods.compact(SchemaToJson.toJsonSchema(schema)) should equal("""{"type":"object","properties":{"x":{"$ref":"#/definitions/strings"}},"id":"#objects","additionalProperties":false,"title":"Objects","required":["x"],"definitions":{"strings":{"type":"object","properties":{"s":{"type":"string","minLength":1}},"id":"#strings","additionalProperties":false,"title":"Strings","required":["s"]}}}""")
+    }
+  }
+
   def jsonSchemaOf[T : TypeTag]: String = jsonSchemaOf(SchemaFactory.default.createSchema[T])
   def jsonSchemaOf(c: Class[_]): String = jsonSchemaOf(schemaOf(c))
   def jsonSchemaOf(s: Schema): String = {
