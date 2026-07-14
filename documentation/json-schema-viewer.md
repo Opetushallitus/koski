@@ -72,11 +72,16 @@ populated server-side. Each viewer schema is served through `LocalizedSchemas`
 
 - builds the same `ClassSchema` as the corresponding `*Schema` object
   (`KoskiSchema.createSchema`),
-- runs `SchemaLocalizationEnricher` (`fi.oph.koski.localization`) to attach a
-  `translation` field to each property and class node, resolved from
+- attaches a `translation` field to each property and class node via
+  `SchemaLocalizationEnricher` (`fi.oph.koski.localization`), a
+  `SchemaJsonDecorator` (TOR-2646) that scala-schema calls during its single
+  `SchemaToJson.toJsonSchema` traversal. Content is resolved from
   `koskiLocalizationRepository` using the same keys as
   `KoskiSpecificSchemaLocalization` — **title + description only**. Class nodes
-  use the class title as the key, so class/object titles are translated too,
+  use the class title as the key, so class/object titles are translated too.
+  Because the decorator sees every emitted node, it also translates the
+  specialized koodisto definitions (e.g. `Koodistokoodiviite[opiskeluoikeudentyyppi]`)
+  that the previous by-`simpleName` re-walk silently skipped,
 - caches the enriched JSON ~1 min (matching the localization cache refresh),
   so translation edits appear without a restart.
 
@@ -99,6 +104,10 @@ Notes:
 - The `translation` keyword is non-standard and ignored by JSON Schema
   validators, so it is a safe additive change to the documentation schemas
   (which external integrators may also consume).
+- The per-language **prose** renders markdown links `[teksti](url)` in the
+  description as real anchors (client-side, in `renderProse`). Only `http`/`https`
+  URLs are linkified and the text is HTML-escaped first, so other schemes and
+  markup are inert. The bold **term** is still plain text.
 - The technical block reads only **structured** JSON fields, never the
   `description` string. Several Koski annotations were given structured fields so
   they can be shown as their own row/chip: `KoodistoUri` → `koodisto` (Koodisto

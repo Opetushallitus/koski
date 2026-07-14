@@ -14342,12 +14342,20 @@ if (typeof window.JSV === "undefined") {
 
             // === Description: yksi lohko per kieli (FI ensin, sitten SV, EN) ===
             var fiTitle = node.translation && node.translation.fi && node.translation.fi.title;
+            // Localized descriptions may contain markdown links [teksti](url). Escape the
+            // text first, then turn http/https links into anchors (muut skeemat torjutaan
+            // XSS:n varalta). URL cannot contain " because esc() has already encoded it.
+            var renderProse = function(text) {
+                return esc(text).replace(/\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)/g, function(match, label, url) {
+                    return '<a href="' + url + '" target="_blank" rel="noopener noreferrer">' + label + '</a>';
+                });
+            };
             var languageBlock = function(lang, title, description) {
                 var block = $('<div class="jsv-lang-block"></div>');
                 block.append($('<span class="jsv-lang-tag jsv-lang-' + lang + '"></span>').text(lang.toUpperCase()));
                 var term = title || fiTitle || node.plainName || node.title || node.name;
                 if (term) { block.append($('<div class="jsv-term"></div>').text(term)); }
-                if (description) { block.append($('<div class="jsv-prose"></div>').text(description)); }
+                if (description) { block.append($('<div class="jsv-prose"></div>').html(renderProse(description))); }
                 return block;
             };
             var blocks = [];
