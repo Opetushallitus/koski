@@ -1,48 +1,24 @@
 package fi.oph.koski.localization
 
 import fi.oph.koski.schema.LocalizedString
-import fi.oph.scalaschema.{ClassSchema, Property}
+import fi.oph.scalaschema.{ClassSchema, Property, SchemaJsonDecorator}
 import org.json4s.JsonAST.{JObject, JString, JValue}
 
-class SchemaLocalizationEnricher(localizations: Map[String, LocalizedString]) {
+class SchemaLocalizationEnricher(localizations: Map[String, LocalizedString]) extends SchemaJsonDecorator {
   import SchemaLocalizationEnricher.KeyAndText
 
-  def enrich(schema: ClassSchema, json: JObject): JObject = {
-    val definitionsBySimpleName = schema.definitions.collect { case c: ClassSchema => c.simpleName -> c }.toMap
-    val withDefinitions = JObject(json.obj.map {
-      case ("definitions", JObject(defs)) =>
-        "definitions" -> JObject(defs.map {
-          case (name, defJson: JObject) =>
-            name -> definitionsBySimpleName.get(name).fold(defJson: JValue)(injectClassBody(_, defJson))
-          case other => other
-        })
-      case other => other
-    })
-    injectClassBody(schema, withDefinitions)
+  override def decorateProperty(property: Property, json: JObject): JObject = {
+    val translated = translationFor(
+      List(KoskiSpecificSchemaLocalization.title(property)),
+      KoskiSpecificSchemaLocalization.description(property)
+    ).fold(json)(withTranslation(json, _))
+    deprecatedTextFor(property).fold(translated)(text =>
+      JObject(translated.obj :+ ("deprecatedText", JString(text): JValue)))
   }
 
-  private def injectClassBody(schema: ClassSchema, classJson: JObject): JObject = {
-    val propertiesByKey = schema.properties.map(p => p.key -> p).toMap
-    val withProperties = JObject(classJson.obj.map {
-      case ("properties", JObject(props)) =>
-        "properties" -> JObject(props.map {
-          case (key, node: JObject) =>
-            val property = propertiesByKey.get(key)
-            val translated = property
-              .flatMap(p => translationFor(List(KoskiSpecificSchemaLocalization.title(p)), KoskiSpecificSchemaLocalization.description(p)))
-              .fold(node)(withTranslation(node, _))
-            val enriched = property
-              .flatMap(deprecatedTextFor)
-              .fold(translated)(text => JObject(translated.obj :+ ("deprecatedText", JString(text): JValue)))
-            key -> (enriched: JValue)
-          case other => other
-        })
-      case other => other
-    })
-    val classTitle = List((schema.title, schema.title))
-    translationFor(classTitle, KoskiSpecificSchemaLocalization.description(schema))
-      .fold(withProperties)(withTranslation(withProperties, _))
-  }
+  override def decorateClass(schema: ClassSchema, json: JObject): JObject =
+    translationFor(List((schema.title, schema.title)), KoskiSpecificSchemaLocalization.description(schema))
+      .fold(json)(withTranslation(json, _))
 
   private def withTranslation(node: JObject, translation: JObject): JObject =
     JObject(node.obj :+ ("translation", translation: JValue))
