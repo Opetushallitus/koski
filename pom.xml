@@ -76,10 +76,26 @@
       <artifactId>oid-generator</artifactId>
       <version>f324e2c5168ef4cd68d08520294300a707adb833</version>
     </dependency>
+    <!-- Deps required by the vendored scala-schema sources (scala-schema/src), formerly transitive via the scala-schema jar -->
     <dependency>
-      <artifactId>scala-schema</artifactId>
-      <groupId>com.github.Opetushallitus</groupId>
-      <version>2.45.0_2.13</version>
+      <groupId>org.scala-lang</groupId>
+      <artifactId>scala-reflect</artifactId>
+      <version>${scala.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.scala-lang</groupId>
+      <artifactId>scala-compiler</artifactId>
+      <version>${scala.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.commons</groupId>
+      <artifactId>commons-text</artifactId>
+      <version>1.15.0</version>
+    </dependency>
+    <dependency>
+      <groupId>joda-time</groupId>
+      <artifactId>joda-time</artifactId>
+      <version>2.10.14</version>
     </dependency>
     <dependency>
       <groupId>org.apache.commons</groupId>
@@ -532,6 +548,38 @@
                   <version>[17,)</version>
                 </requireJavaVersion>
               </rules>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>build-helper-maven-plugin</artifactId>
+        <version>3.6.0</version>
+        <executions>
+          <execution>
+            <id>add-scala-schema-sources</id>
+            <phase>generate-sources</phase>
+            <goals>
+              <goal>add-source</goal>
+            </goals>
+            <configuration>
+              <sources>
+                <source>scala-schema/src/main/scala</source>
+              </sources>
+            </configuration>
+          </execution>
+          <execution>
+            <id>add-scala-schema-test-sources</id>
+            <phase>generate-test-sources</phase>
+            <goals>
+              <goal>add-test-source</goal>
+            </goals>
+            <configuration>
+              <sources>
+                <source>scala-schema/src/test/scala</source>
+                <source>scala-schema/src/test/java</source>
+              </sources>
             </configuration>
           </execution>
         </executions>

@@ -1,0 +1,209 @@
+package fi.oph.scalaschema
+
+import java.sql.Timestamp
+import java.time.{LocalDate, LocalDateTime, ZonedDateTime}
+import java.util.Date
+import fi.oph.scalaschema.annotation._
+import org.joda.time.DateTime
+import org.json4s.{JArray, JValue}
+
+case class RequiredFields(field: Boolean)
+case class OptionalFields(field: Option[Boolean])
+case class OptionalFieldsWithDefault(@DefaultValue(Some(false)) field: Option[Boolean])
+case class SomeFields(field: Some[Boolean])
+case class Booleans(field: Boolean)
+case class BooleansWithDefault(@DefaultValue(true) field: Boolean)
+case class StringsWithDefault(@DefaultValue("hello") field: String)
+case class NumbersWithDefault(@DefaultValue(1) field: Int)
+case class Numbers(a: Int, b: Long, c: Float, d: Double)
+case class StringOptions(value: Option[String])
+case class Strings(s: String)
+case class Dates(a: LocalDate, b: ZonedDateTime, c: Date, d: Timestamp, e: DateTime, f: LocalDateTime)
+case class Lists(things: List[Int])
+case class ListsWithSingleValueAsArray(@DeserializeSingleValueAsArray things: List[Int])
+case class Seqs(things: Seq[Int])
+case class Arrays(things: Array[Int])
+case class Objects(x: Strings)
+case class NestedDefinitions(x: Objects)
+case class Maps(things: Map[String, Int])
+case class ScalaNameEncoding(`@Foo`: String, `type`: String)
+
+@Description("Boom boom boom")
+case class WithDescription()
+@Title("Custom title")
+case class WithTitle()
+case class FieldWithDescription(@Description("Pow pow pow") field: WithDescription)
+case class OptionalFieldWithDescription(@Description("Pow pow pow") field: Option[WithDescription])
+case class ListFieldWithDescription(@Description("Pow pow pow") field: List[WithDescription])
+case class OptionalListFieldWithDescription(@Description("Pow pow pow") field: Option[List[WithDescription]])
+@Description("Trait description")
+trait TraitWithFieldWithDescription { @Description("Boom boom boom") def field: String }
+@Description("Class description")
+case class WithTraitWithFieldWithDescription(field: String) extends TraitWithFieldWithDescription
+@Description("Trait description")
+trait TraitWithDescription
+@Description("Class description")
+case class ClassWithDescription() extends TraitWithDescription
+case class WithClassWithDescription(field: ClassWithDescription)
+case class WithMaxMinItems(@MinItems(1) @MaxItems(2) stuff: List[Int])
+case class WithMaxMinValue(@MinValue(1) @MaxValue(2) value: Int)
+case class WithMaxMinValueExclusive(@MinValueExclusive(1) @MaxValueExclusive(2) value: Int)
+case class WithRegEx(@RegularExpression("^(19|20)\\d\\d[- /.](0[1-9]|1[012])[- /.](0[1-9]|[12][0-9]|3[01])$") date: String)
+case class WithSyntheticProperties() {
+  @SyntheticProperty
+  def field1: Boolean = true
+  @SyntheticProperty
+  def field2: List[Boolean] = List(true)
+}
+
+case class WithTraitWithSyntheticProperties() extends TraitWithSyntheticProperties with OtherTraitWithSyntheticProperties
+case class WithComplexHierarchyOfTraitsWithSyntheticProperties() extends SomeSubTrait with OtherSubTrait
+case class WithOverriddenSyntheticProperties(override val field: Boolean) extends TraitWithSyntheticProperties with OtherTraitWithSyntheticProperties
+
+case class LeafComputedProperty(value: String) {
+  @ComputedProperty
+  def leafComputedValue: String = "leaf-computed-value"
+}
+
+case class MiddleComputedProperty(leaf: LeafComputedProperty) {
+  @ComputedProperty
+  def middleComputedValue: String = "middle-computed-value"
+}
+
+@IncludeComputedProperty(classOf[RootWithRootAndLeafComputedProperties], "rootComputedValue")
+@IncludeComputedProperty(classOf[LeafComputedProperty], "leafComputedValue")
+case class RootWithRootAndLeafComputedProperties(middle: MiddleComputedProperty) {
+  @ComputedProperty
+  def rootComputedValue: String = "root-computed-value"
+}
+
+@IncludeComputedProperty(classOf[MiddleComputedProperty], "middleComputedValue")
+case class RootWithMiddleComputedProperty(middle: MiddleComputedProperty) {
+  @ComputedProperty
+  def rootComputedValue: String = "root-computed-value"
+}
+
+case class ComputedOwner(value: String) {
+  @ComputedProperty
+  def computedValue: String = "computed-value"
+}
+
+@IncludeComputedProperty(classOf[ComputedOwner], "included.computedValue")
+case class RootWithTwoComputedOwnerPaths(included: ComputedOwner, notIncluded: ComputedOwner)
+
+@IncludeComputedProperty(classOf[LeafComputedProperty], "included.leaf.leafComputedValue")
+case class RootWithPathSpecificComputedLeaf(included: MiddleComputedProperty, notIncluded: MiddleComputedProperty)
+
+@IncludeComputedProperty(classOf[LeafComputedProperty], "a.leaf.leafComputedValue")
+case class RootWithComputedLeafOnPathA(a: MiddleComputedProperty, b: MiddleComputedProperty)
+
+@IncludeComputedProperty(classOf[LeafComputedProperty], "b.leaf.leafComputedValue")
+case class RootWithComputedLeafOnPathB(a: MiddleComputedProperty, b: MiddleComputedProperty)
+
+case class RecursiveComputedOwner(child: RecursiveComputedOwner) {
+  @ComputedProperty
+  def computedValue: String = "computed-value"
+}
+
+@IncludeComputedProperty(classOf[RecursiveComputedOwner], "child.computedValue")
+case class RootWithRecursiveComputedOwner(child: RecursiveComputedOwner)
+
+trait TraitComputedOwner {
+  @ComputedProperty
+  def computedFromTrait: String = "computed-from-trait"
+}
+
+case class TraitComputedOwnerImpl(value: String) extends TraitComputedOwner
+
+@IncludeComputedProperty(classOf[TraitComputedOwner], "computedFromTrait")
+case class RootWithTraitComputedOwner(owner: TraitComputedOwnerImpl)
+
+trait TraitWithSyntheticProperties {
+  @SyntheticProperty
+  @Description("synthetic field")
+  def field: Boolean = true
+}
+trait OtherTraitWithSyntheticProperties {
+  @SyntheticProperty
+  def field: Boolean
+}
+trait OtherSubTrait extends TraitWithSyntheticProperties {
+  def field: Boolean
+}
+trait SomeSubTrait extends TraitWithSyntheticProperties {
+}
+
+sealed trait Traits
+case class ImplA() extends Traits
+case class ImplB() extends Traits
+
+case class TraitsInFields(field: Traits)
+
+@Description("common description")
+sealed trait TraitsWithDescription
+case class ImplC() extends TraitsWithDescription
+case class ImplD() extends TraitsWithDescription
+case class WithTraitFieldWithDescription(field: TraitsWithDescription)
+
+case class TestClass(name: String, stuff: List[Int])
+
+trait TestTrait {
+  def name: String
+}
+case class WithOptionalDiscriminator(
+  name: String,
+  @Discriminator
+  id: Option[String]
+) extends TestTrait
+
+trait WithEnumerableFieldsAB {
+  @EnumValue("a") def a: String
+  @EnumValue("b") def b: Option[String]
+}
+case class WithEnumValue(@EnumValue("a") a: String, b: Option[String], @EnumValue("c") c: List[String]) extends WithEnumerableFieldsAB
+case class WithJValue(x: JValue)
+
+trait MaybeFlattened
+@Flatten
+case class FlattenedNumber(value: Int) extends MaybeFlattened
+@Flatten
+case class FlattenedString(value: String) extends MaybeFlattened
+@Flatten
+case class FlattenedDate(value: LocalDate) extends MaybeFlattened
+@Flatten
+case class FlattenedBoolean(value: Boolean) extends MaybeFlattened
+@Flatten
+case class FlattenedObject(value: RequiredFields) extends MaybeFlattened
+@Flatten
+case class FlattenedList(values: List[Int]) extends MaybeFlattened
+case class WithMoreData(value: Int, description: String) extends MaybeFlattened
+
+@Flatten
+case class Flattened2Fields(a: Int, b: Int)
+
+@ReadFlattened
+case class ReadableFromString(
+  @EnumValue("hello")
+  value: String,
+  description: Option[String]
+) extends MaybeReadableFromString
+
+@ReadFlattened
+case class ReadableFromTwoStrings(value: String, value2: String)
+
+trait MaybeReadableFromString
+case class OtherCase(number: Int) extends MaybeReadableFromString
+
+case class StringAsArray(
+  @DeserializeSingleValueAsArray
+  value: List[String]
+)
+
+case class StringNotAsArray(
+  value: List[String]
+)
+
+case class ObjectAsArray(
+  @DeserializeSingleValueAsArray
+  value: List[Booleans]
+)
