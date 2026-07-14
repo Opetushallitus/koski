@@ -10,12 +10,12 @@ class LocalizedSchemasSpec extends AnyFreeSpec with TestEnvironment with Matcher
   private val localizedSchemas =
     new LocalizedSchemas(KoskiApplicationForTests.koskiLocalizationRepository)(KoskiApplicationForTests.cacheManager)
 
-  "koski-oppija-schema.json is enriched with sv/en translations on many nodes, excluding fi" in {
+  "koski-oppija-schema.json is enriched with fi/sv/en translations on many nodes" in {
     val ts = translations(localizedSchemas("koski-oppija-schema.json"))
     ts.size should be > 50
+    ts.exists(t => (t \ "fi" \ "title") != JNothing) shouldBe true
     ts.exists(t => (t \ "sv" \ "title") != JNothing || (t \ "sv" \ "description") != JNothing) shouldBe true
     ts.exists(t => (t \ "en" \ "title") != JNothing || (t \ "en" \ "description") != JNothing) shouldBe true
-    ts.forall(t => (t \ "fi") == JNothing) shouldBe true
   }
 
   "all registered viewer schemas are enriched with translations" - {

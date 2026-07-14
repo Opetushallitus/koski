@@ -126,20 +126,13 @@ class JsonSchemaViewerHtmlServlet(implicit val application: KoskiApplication) ex
                   </ul>
                 </div>
                 <div class="ui-body-d ui-content info-tab" id="info-tab-def">
-                  <h4>Type:</h4>
-                  <p id="info-type">
-                    Select a node to view the type.
-                  </p>
-                  <hr />
-                  <h4>Definition:</h4>
-                  <p id="info-definition">
+                  <div class="jsv-eyebrow" id="info-technical-header">Technical</div>
+                  <dl id="info-technical"></dl>
+                  <div id="info-badges"></div>
+                  <div class="jsv-eyebrow" id="info-description-header">Description</div>
+                  <div id="info-localized">
                     Select a node to view the definition.
-                  </p>
-                  <hr />
-                  <h4>Translation:</h4>
-                  <p id="info-translation">
-                    Select a node to view the translation.
-                  </p>
+                  </div>
                 </div>
                 <div class="ui-body-d ui-content info-tab"  id="info-tab-example">
                   <p>

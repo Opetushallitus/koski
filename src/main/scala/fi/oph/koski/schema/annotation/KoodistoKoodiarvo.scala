@@ -16,7 +16,12 @@ case class KoodistoKoodiarvo(arvo: String) extends Metadata {
   )
 
   override def appendMetadataToJsonSchema(obj: JObject) = {
-    appendToDescription(obj, "(Hyväksytty koodiarvo: " + arvo + ")")
+    val existing = (obj \ "koodiarvot") match {
+      case JArray(arr) => arr
+      case _ => Nil
+    }
+    val withKoodiarvot = JObject(obj.obj.filterNot(_._1 == "koodiarvot") :+ ("koodiarvot" -> JArray(existing :+ JString(arvo))))
+    appendToDescription(withKoodiarvot, "(Hyväksytty koodiarvo: " + arvo + ")")
   }
 
   override def applyMetadata(x: ObjectWithMetadata[_], schemaFactory: SchemaFactory) = {

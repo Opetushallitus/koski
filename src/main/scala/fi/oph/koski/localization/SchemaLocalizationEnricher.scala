@@ -1,7 +1,7 @@
 package fi.oph.koski.localization
 
 import fi.oph.koski.schema.LocalizedString
-import fi.oph.scalaschema.ClassSchema
+import fi.oph.scalaschema.{ClassSchema, Property}
 import org.json4s.JsonAST.{JObject, JString, JValue}
 
 class SchemaLocalizationEnricher(localizations: Map[String, LocalizedString]) {
@@ -27,22 +27,33 @@ class SchemaLocalizationEnricher(localizations: Map[String, LocalizedString]) {
       case ("properties", JObject(props)) =>
         "properties" -> JObject(props.map {
           case (key, node: JObject) =>
-            val translation = propertiesByKey.get(key)
+            val property = propertiesByKey.get(key)
+            val translated = property
               .flatMap(p => translationFor(List(KoskiSpecificSchemaLocalization.title(p)), KoskiSpecificSchemaLocalization.description(p)))
-            key -> translation.fold(node: JValue)(withTranslation(node, _))
+              .fold(node)(withTranslation(node, _))
+            val enriched = property
+              .flatMap(deprecatedTextFor)
+              .fold(translated)(text => JObject(translated.obj :+ ("deprecatedText", JString(text): JValue)))
+            key -> (enriched: JValue)
           case other => other
         })
       case other => other
     })
-    translationFor(Nil, KoskiSpecificSchemaLocalization.description(schema))
+    val classTitle = List((schema.title, schema.title))
+    translationFor(classTitle, KoskiSpecificSchemaLocalization.description(schema))
       .fold(withProperties)(withTranslation(withProperties, _))
   }
 
   private def withTranslation(node: JObject, translation: JObject): JObject =
     JObject(node.obj :+ ("translation", translation: JValue))
 
+  private def deprecatedTextFor(property: Property): Option[String] =
+    KoskiSpecificSchemaLocalization.deprecated(property).flatMap {
+      case (key, _) => localizations.get(key).flatMap(_.getOptional("fi"))
+    }
+
   def translationFor(titleParts: List[KeyAndText], descriptionParts: List[KeyAndText]): Option[JObject] = {
-    val byLanguage = SchemaLocalizationEnricher.translatedLanguages.flatMap { lang =>
+    val byLanguage = SchemaLocalizationEnricher.displayedLanguages.flatMap { lang =>
       val fields = List(
         "title" -> textFor(titleParts, lang),
         "description" -> textFor(descriptionParts, lang)
@@ -59,5 +70,5 @@ class SchemaLocalizationEnricher(localizations: Map[String, LocalizedString]) {
 object SchemaLocalizationEnricher {
   type KeyAndText = (String, String)
 
-  val translatedLanguages: List[String] = List("sv", "en")
+  val displayedLanguages: List[String] = List("fi", "sv", "en")
 }

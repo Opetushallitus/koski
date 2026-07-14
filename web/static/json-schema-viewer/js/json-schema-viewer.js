@@ -14162,6 +14162,8 @@ if (typeof window.JSV === "undefined") {
             $("#sharelink").on("click", function() {
                 $(this).select();
             });
+            $(document).on("keydown", JSV.keyNav);
+            $(window).on("throttledresize", JSV.pinPanel);
             JSV.viewerInit = true;
         },
         contentHeight: function() {
@@ -14271,29 +14273,92 @@ if (typeof window.JSV === "undefined") {
             $.each([ schema, def, ex ], function(i, e) {
                 e.height(height);
             });
-            $("#info-definition").html((node.description || "No definition provided.").replace(/\. \(/g, ".<br>("));
-            $("#info-type").html(node.displayType.toString());
-            if (node.translation) {
-                var languageNames = { sv: "Ruotsi", en: "Englanti" };
-                var trans = $('<div class="translation-list"></div>');
-                $.each([ "sv", "en" ], function(i, lang) {
-                    var t = node.translation[lang];
-                    if (t) {
-                        var block = $('<div class="translation-lang-block"></div>');
-                        block.append($('<div class="translation-lang"></div>').text(languageNames[lang] || lang));
-                        if (t.title) {
-                            block.append($('<div class="translation-title"></div>').text(t.title));
-                        }
-                        if (t.description) {
-                            block.append($('<div class="translation-description"></div>').text(t.description));
-                        }
-                        trans.append(block);
-                    }
-                });
-                $("#info-translation").html(trans.children().length ? trans : "No translations available.");
+            // Technical: definition-list table from structured schema fields
+            var mono = function(text) { return $('<span class="jsv-mono"></span>').text(text); };
+            var chip = function(text) { return $('<span class="jsv-chip"></span>').text(text); };
+            var chips = function(values) {
+                var el = $('<div class="jsv-chips"></div>');
+                $.each(values, function(i, v) { el.append(chip(v)); });
+                return el;
+            };
+            var techTable = $("#info-technical").empty();
+            var addRow = function(label, valueEl) {
+                techTable.append($('<div class="jsv-tech-row"></div>')
+                    .append($('<dt class="jsv-tech-label"></dt>').text(label))
+                    .append($('<dd class="jsv-tech-value"></dd>').append(valueEl)));
+            };
+
+            addRow("Type", mono(node.displayType.toString()));
+            if (node.type === "array") {
+                addRow("Cardinality", mono((node.minItems || 0) + ".." + (node.maxItems != null ? node.maxItems : "*")));
             } else {
-                $("#info-translation").html("No translations available.");
+                addRow("Cardinality", mono(node.require ? "1..1" : "0..1"));
             }
+            if (node["default"] != null) { addRow("Default", mono(node["default"])); }
+            if (node.minimum != null) { addRow("Minimum", mono(node.minimum + (node.exclusiveMinimum ? " (exclusive)" : ""))); }
+            if (node.maximum != null) { addRow("Maximum", mono(node.maximum + (node.exclusiveMaximum ? " (exclusive)" : ""))); }
+            if (node.pattern) { addRow("Format", mono(node.pattern)); }
+            if (node.unit) { addRow("Format", mono(node.unit)); }
+            if (node.koodisto) {
+                var koodistoLink = $('<a class="jsv-mono jsv-koodisto-link" target="_blank"></a>')
+                    .attr("href", "/koski/dokumentaatio/koodisto/" + node.koodisto + "/latest")
+                    .text(node.koodisto);
+                addRow("Koodisto", koodistoLink);
+            }
+            if (node.oksa) {
+                var oksaLink = $('<a class="jsv-mono jsv-oksa-link" target="_blank"></a>')
+                    .attr("href", node.oksa.url)
+                    .text(node.oksa["käsite"] || node.oksa.url);
+                addRow("Oksa", oksaLink);
+            }
+            var allowedValues = (node.enumValues || []).concat(node.koodiarvot || []);
+            if (allowedValues.length) { addRow("Allowed", chips(allowedValues)); }
+            if (node.synthetic) { addRow("Computed", $('<span class="jsv-plain"></span>').text("Derived value, not set on input")); }
+            if (node.readOnly) { addRow("Read-only", $('<span class="jsv-plain"></span>').text(node.readOnlyText || "Vain luettava kenttä.")); }
+            if (node.conditions && node.conditions.length) {
+                var condEl = $('<div class="jsv-plain"></div>');
+                $.each(node.conditions, function(i, c) { condEl.append($('<div></div>').text(c)); });
+                addRow("Condition", condEl);
+            }
+            if (node.acceptsSingleValue) { addRow("Input", $('<span class="jsv-plain"></span>').text("Accepts also a single value")); }
+            var annotationTokens = [];
+            if (node.sensitive) { annotationTokens.push("@SensitiveData"); }
+            if (node.redundantData) { annotationTokens.push("@RedundantData"); }
+            if (node.deprecated) { annotationTokens.push("@Deprecated"); }
+            if (annotationTokens.length) { addRow("Annotation", chips(annotationTokens)); }
+
+            // Behaviour badges: annotations that change how the field behaves
+            var esc = function(s) { return $("<div></div>").text(s || "").html(); };
+            var badges = $("#info-badges").empty();
+            var lockIcon = '<svg class="jsv-badge-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#2a2a2a" stroke-width="2"><rect x="4" y="10.5" width="16" height="10.5" rx="2"></rect><path d="M8 10.5V7a4 4 0 0 1 8 0v3.5"></path></svg>';
+            var slashIcon = '<svg class="jsv-badge-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#2a2a2a" stroke-width="2"><circle cx="12" cy="12" r="9"></circle><path d="M5.6 5.6l12.8 12.8"></path></svg>';
+            var clockIcon = '<svg class="jsv-badge-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#2a2a2a" stroke-width="2"><circle cx="12" cy="12" r="9"></circle><path d="M12 7v5l3 2"></path></svg>';
+            var addBadge = function(iconHtml, textHtml) {
+                badges.append($('<div class="jsv-badge"></div>').html(iconHtml + '<span class="jsv-badge-text">' + textHtml + '</span>'));
+            };
+            if (node.sensitive) { addBadge(lockIcon, '<strong>Erityinen henkilötieto + salassa pidettävä tieto</strong>'); }
+            if (node.redundantData) { addBadge(slashIcon, '<strong>Kenttä ei ole käytössä.</strong> Koski ei ota vastaan kentässä siirrettyä tietoa.'); }
+            if (node.deprecated) { addBadge(clockIcon, '<strong>Vanhentunut kenttä.</strong> ' + esc(node.deprecatedText || node.deprecatedMessage)); }
+
+            // === Description: yksi lohko per kieli (FI ensin, sitten SV, EN) ===
+            var fiTitle = node.translation && node.translation.fi && node.translation.fi.title;
+            var languageBlock = function(lang, title, description) {
+                var block = $('<div class="jsv-lang-block"></div>');
+                block.append($('<span class="jsv-lang-tag jsv-lang-' + lang + '"></span>').text(lang.toUpperCase()));
+                var term = title || fiTitle || node.plainName || node.title || node.name;
+                if (term) { block.append($('<div class="jsv-term"></div>').text(term)); }
+                if (description) { block.append($('<div class="jsv-prose"></div>').text(description)); }
+                return block;
+            };
+            var blocks = [];
+            $.each([ "fi", "sv", "en" ], function(i, lang) {
+                var t = node.translation && node.translation[lang];
+                if (t && (t.title || t.description)) { blocks.push(languageBlock(lang, t.title, t.description)); }
+            });
+            if (blocks.length === 0 && node.title) { blocks.push(languageBlock("fi", node.title, "")); }
+            var localized = $("#info-localized").empty();
+            $.each(blocks, function(i, block) { localized.append(block); });
+            $("#info-description-header").toggle(blocks.length > 0);
             JSV.createPre(schema, tv4.getSchema(node.schema), false, node.plainName);
             var example = !node.example && node.parent && node.parent.example && node.parent.type === "object" ? node.parent.example : node.example;
             if (example) {
@@ -14470,7 +14535,27 @@ if (typeof window.JSV === "undefined") {
                 parentSchema: parent,
                 deprecated: schema.deprecated || s.deprecated,
                 redundantData: schema.redundantData || s.redundantData,
-                sensitive: schema.sensitive || s.sensitive
+                sensitive: schema.sensitive || s.sensitive,
+                minItems: s.minItems,
+                maxItems: s.maxItems,
+                minimum: s.minimum,
+                maximum: s.maximum,
+                exclusiveMinimum: s.exclusiveMinimum,
+                exclusiveMaximum: s.exclusiveMaximum,
+                pattern: s.pattern,
+                enumValues: s["enum"],
+                koodisto: schema.koodisto || s.koodisto,
+                unit: schema.unit || s.unit,
+                deprecatedMessage: schema.deprecatedMessage || s.deprecatedMessage,
+                deprecatedText: schema.deprecatedText || s.deprecatedText,
+                readOnly: schema.readOnly || s.readOnly,
+                readOnlyText: schema.readOnlyText || s.readOnlyText,
+                koodiarvot: schema.koodiarvot || s.koodiarvot,
+                oksa: schema.oksa || s.oksa,
+                "default": schema["default"] || s["default"],
+                conditions: schema.conditions || s.conditions,
+                acceptsSingleValue: schema.acceptsSingleValue || s.acceptsSingleValue,
+                synthetic: schema.synthetic || s.synthetic
             };
             node.require = parent && parent.required ? parent.required.indexOf(node.name) > -1 : false;
             if (parent) {
@@ -14488,6 +14573,7 @@ if (typeof window.JSV === "undefined") {
             } else {
                 JSV.treeData = node;
             }
+            node.title = node.name;
             if (node.type === "array") {
                 node.name += "[" + (s.minItems || " ") + "]";
                 node.minItems = s.minItems;
@@ -14629,10 +14715,102 @@ if (typeof window.JSV === "undefined") {
                 d3.select("#n-" + d.id).classed("focus", true);
                 if (!JSV.plain) {
                     JSV.setPermalink(d);
-                    $("#info-title").text("Info: " + d.name);
+                    var titleText = "Info: " + d.name;
+                    // Shrink the font for long field names so the whole name stays visible.
+                    var titleSize = Math.max(10, 15 - Math.max(0, titleText.length - 24) * 0.15);
+                    $("#info-title").text(titleText).css("font-size", titleSize + "px");
                     JSV.setInfo(d);
                     panel.panel("open");
                 }
+            }
+        },
+        visibleNodes: function() {
+            var out = [];
+            (function walk(node) {
+                if (!node) {
+                    return;
+                }
+                if (!JSV.labels[node.name]) {
+                    out.push(node);
+                }
+                if (node.children) {
+                    node.children.forEach(walk);
+                }
+            })(JSV.treeData);
+            return out;
+        },
+        firstSelectableChild: function(d) {
+            var kids = d.children || [], i, deep;
+            for (i = 0; i < kids.length; i++) {
+                if (!JSV.labels[kids[i].name]) {
+                    return kids[i];
+                }
+                deep = JSV.firstSelectableChild(kids[i]);
+                if (deep) {
+                    return deep;
+                }
+            }
+            return null;
+        },
+        keyNav: function(e) {
+            var keys = {
+                ArrowUp: 1,
+                ArrowDown: 1,
+                ArrowLeft: 1,
+                ArrowRight: 1,
+                Enter: 1
+            };
+            if (!keys[e.key]) {
+                return;
+            }
+            var tag = document.activeElement && document.activeElement.tagName;
+            if (tag === "INPUT" || tag === "TEXTAREA") {
+                return;
+            }
+            if (!$.mobile.activePage || $.mobile.activePage.attr("id") !== "viewer-page") {
+                return;
+            }
+            if (!JSV.treeData) {
+                return;
+            }
+            e.preventDefault();
+            var current = JSV.focusNode || JSV.treeData;
+            if (e.key === "Enter") {
+                JSV.clickTitle(current);
+            } else if (e.key === "ArrowDown" || e.key === "ArrowUp") {
+                var list = JSV.visibleNodes(), i = list.indexOf(current);
+                if (i < 0) {
+                    JSV.clickTitle(list[0]);
+                } else {
+                    var next = e.key === "ArrowDown" ? list[Math.min(i + 1, list.length - 1)] : list[Math.max(i - 1, 0)];
+                    JSV.clickTitle(next);
+                }
+            } else if (e.key === "ArrowRight") {
+                if (current._children) {
+                    JSV.click(current);
+                } else if (current.children && current.children.length) {
+                    var child = JSV.firstSelectableChild(current);
+                    if (child) {
+                        JSV.clickTitle(child);
+                    }
+                }
+            } else if (e.key === "ArrowLeft") {
+                if (current.children && current.children.length) {
+                    JSV.click(current);
+                } else if (current.parent) {
+                    JSV.clickTitle(current.parent);
+                }
+            }
+        },
+        pinPanel: function() {
+            if (JSV.plain) {
+                return;
+            }
+            if (!$.mobile.activePage || $.mobile.activePage.attr("id") !== "viewer-page") {
+                return;
+            }
+            if (window.matchMedia && window.matchMedia("(min-width: 48em)").matches) {
+                $("#info-panel").panel("open");
             }
         },
         zoom: function() {
@@ -14798,6 +14976,7 @@ if (typeof window.JSV === "undefined") {
                 JSV.svgGroup = JSV.baseSvg.append("g").attr("id", "node-group");
                 JSV.resetViewer();
                 JSV.centerNode(JSV.treeData, 4);
+                JSV.pinPanel();
                 var legendData = [ {
                     text: "Expanded",
                     y: 20
