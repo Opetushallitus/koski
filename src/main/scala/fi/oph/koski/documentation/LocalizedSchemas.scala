@@ -61,6 +61,5 @@ class LocalizedSchemas(localizationRepository: LocalizationRepository)(implicit 
   def apply(name: String): JValue = cache(name)
 
   private def localize(schema: ClassSchema): JValue =
-    new SchemaLocalizationEnricher(localizationRepository.localizations)
-      .enrich(schema, SchemaToJson.toJsonSchema(schema))
+    SchemaToJson.toJsonSchema(schema)(new SchemaLocalizationEnricher(localizationRepository.localizations))
 }

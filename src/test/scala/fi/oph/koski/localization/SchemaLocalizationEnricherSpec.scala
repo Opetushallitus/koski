@@ -56,7 +56,7 @@ class SchemaLocalizationEnricherSpec extends AnyFreeSpec with Matchers {
 
   private def enrichedTestSchema = {
     val schema = KoskiSchema.createSchema(classOf[EnricherTestOppija]).asInstanceOf[ClassSchema]
-    enricher.enrich(schema, SchemaToJson.toJsonSchema(schema))
+    SchemaToJson.toJsonSchema(schema)(enricher)
   }
 }
 
