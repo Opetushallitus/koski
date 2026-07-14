@@ -14343,10 +14343,12 @@ if (typeof window.JSV === "undefined") {
             // === Description: yksi lohko per kieli (FI ensin, sitten SV, EN) ===
             var fiTitle = node.translation && node.translation.fi && node.translation.fi.title;
             // Localized descriptions may contain markdown links [teksti](url). Escape the
-            // text first, then turn http/https links into anchors (muut skeemat torjutaan
-            // XSS:n varalta). URL cannot contain " because esc() has already encoded it.
+            // text first — esc() encodes & < > but NOT quotes — then linkify only http/https
+            // URLs. The URL charset excludes whitespace, ) and ", so a crafted URL cannot
+            // break out of the double-quoted href attribute (XSS); other schemes and markup
+            // stay inert escaped text. A URL or label containing ) or ] is left unlinkified.
             var renderProse = function(text) {
-                return esc(text).replace(/\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)/g, function(match, label, url) {
+                return esc(text).replace(/\[([^\]]+)\]\((https?:\/\/[^\s)"]+)\)/g, function(match, label, url) {
                     return '<a href="' + url + '" target="_blank" rel="noopener noreferrer">' + label + '</a>';
                 });
             };

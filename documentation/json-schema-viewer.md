@@ -105,9 +105,12 @@ Notes:
   validators, so it is a safe additive change to the documentation schemas
   (which external integrators may also consume).
 - The per-language **prose** renders markdown links `[teksti](url)` in the
-  description as real anchors (client-side, in `renderProse`). Only `http`/`https`
-  URLs are linkified and the text is HTML-escaped first, so other schemes and
-  markup are inert. The bold **term** is still plain text.
+  description as real anchors (client-side, in `renderProse`). The text is
+  HTML-escaped first (`esc()` encodes `& < >` but **not** quotes), then only
+  `http`/`https` links are linkified, with the URL charset excluding whitespace,
+  `)` and `"` so a crafted URL cannot break out of the `href` attribute. Other
+  schemes (`javascript:`) and markup stay inert. The bold **term** is plain text.
+  A URL or label containing `)`/`]` is left unlinkified (not full CommonMark).
 - The technical block reads only **structured** JSON fields, never the
   `description` string. Several Koski annotations were given structured fields so
   they can be shown as their own row/chip: `KoodistoUri` → `koodisto` (Koodisto

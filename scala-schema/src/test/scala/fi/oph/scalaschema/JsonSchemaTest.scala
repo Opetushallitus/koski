@@ -5,7 +5,7 @@ import com.github.fge.jsonschema.core.report.LogLevel.{ERROR, FATAL}
 import com.github.fge.jsonschema.main.{JsonSchemaFactory, JsonValidator}
 import fi.oph.scalaschema.TestHelpers.schemaOf
 import fi.oph.scalaschema.annotation.{Description, EnumValue, SkipSerialization}
-import org.json4s.JsonAST.{JBool, JObject, JString}
+import org.json4s.JsonAST.{JBool, JNothing, JObject, JString}
 import org.json4s.jackson.JsonMethods.asJsonNode
 import org.json4s.jackson._
 import org.json4s.{JArray, JValue}
@@ -430,6 +430,13 @@ class JsonSchemaTest extends AnyFreeSpec with Matchers {
     "with no decorator produces JSON identical to the Noop default (regression)" in {
       val schema = SchemaFactory.default.createSchema(classOf[Objects])
       JsonMethods.compact(SchemaToJson.toJsonSchema(schema)) should equal("""{"type":"object","properties":{"x":{"$ref":"#/definitions/strings"}},"id":"#objects","additionalProperties":false,"title":"Objects","required":["x"],"definitions":{"strings":{"type":"object","properties":{"s":{"type":"string","minLength":1}},"id":"#strings","additionalProperties":false,"title":"Strings","required":["s"]}}}""")
+    }
+
+    "decorateClass is not applied to a non-class root schema, but still reaches class items" in {
+      val schema = SchemaFactory.default.createSchema[List[TestClass]]
+      val json = SchemaToJson.toJsonSchema(schema)(TestDecorator)
+      (json \ "x-test-class") should equal(JNothing)
+      (json \ "items" \ "x-test-class") should equal(JBool(true))
     }
   }
 
