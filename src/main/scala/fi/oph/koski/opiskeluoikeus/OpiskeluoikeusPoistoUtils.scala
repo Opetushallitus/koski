@@ -5,7 +5,7 @@ import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.db.{DatabaseExecutionContext, KoskiTables, PoistettuOpiskeluoikeusRow}
 import fi.oph.koski.history.KoskiOpiskeluoikeusHistoryRepository
 import fi.oph.koski.koskiuser.KoskiSpecificSession
-import fi.oph.koski.schema.{KoskeenTallennettavaOpiskeluoikeus, Opiskeluoikeus}
+import fi.oph.koski.schema.{KoskeenTallennettavaOpiskeluoikeus, Opiskeluoikeus, TaiteenPerusopetuksenOpiskeluoikeus}
 import fi.oph.koski.schema.Opiskeluoikeus.Versionumero
 import org.json4s.{JArray, JObject, JString}
 import slick.dbio
@@ -82,11 +82,21 @@ object OpiskeluoikeusPoistoUtils extends DatabaseExecutionContext {
     val timestamp = Timestamp.from(Instant.now())
     val aiemminPoistetutSuoritukset = aiemminPoistettuRivi.map(_.suoritustyypit).getOrElse(List.empty)
 
+    // Hankintakoulutuksena järjestetyssä TPO-opiskeluoikeudessa koulutuksen järjestäjä (koulutustoimija) on eri
+    // organisaatio kuin oppilaitos, eikä sitä voi enää poiston jälkeen päätellä oppilaitoksesta, joten se talletetaan tähän.
+    val (koulutuksenJärjestäjäOid, koulutuksenJärjestäjäNimi) = opiskeluoikeus match {
+      case tpo: TaiteenPerusopetuksenOpiskeluoikeus if tpo.onHankintakoulutus =>
+        (tpo.koulutustoimija.map(_.oid), tpo.koulutustoimija.flatMap(_.nimi.map(_.get("fi"))))
+      case _ => (None, None)
+    }
+
     KoskiTables.PoistetutOpiskeluoikeudet.insertOrUpdate(PoistettuOpiskeluoikeusRow(
       opiskeluoikeusOid,
       oppijaOid,
       opiskeluoikeus.oppilaitos.flatMap(_.nimi.map(_.get("fi"))),
       opiskeluoikeus.oppilaitos.map(_.oid),
+      koulutuksenJärjestäjäOid,
+      koulutuksenJärjestäjäNimi,
       opiskeluoikeus.päättymispäivä.map(Date.valueOf),
       opiskeluoikeus.lähdejärjestelmänId.map(_.lähdejärjestelmä.koodiarvo),
       opiskeluoikeus.lähdejärjestelmänId.flatMap(_.id),

@@ -28,13 +28,13 @@ case class SuostumuksenPeruutusService(protected val application: KoskiApplicati
   def listaaPerututSuostumukset(palautaMyösMitätöidyt: Boolean) = {
     implicit val getResult: GetResult[PoistettuOpiskeluoikeusRow] = {
       GetResult[PoistettuOpiskeluoikeusRow](r =>
-        PoistettuOpiskeluoikeusRow(r.<<,r.<<,r.<<,r.<<,r.<<,r.<<,r.<<,r.<<,r.<<,r.<<,r.nextArray[String]().toList,r.<<)
+        PoistettuOpiskeluoikeusRow(r.<<,r.<<,r.<<,r.<<,r.<<,r.<<,r.<<,r.<<,r.<<,r.<<,r.<<,r.<<,r.nextArray[String]().toList,r.<<)
       )
     }
 
     runDbSync(SQLHelpers.concatMany(
         Some(sql"""
-           select oid, oppija_oid, oppilaitos_nimi, oppilaitos_oid, paattymispaiva, lahdejarjestelma_koodi, lahdejarjestelma_id, mitatoity_aikaleima, suostumus_peruttu_aikaleima, koulutusmuoto, suoritustyypit, versio
+           select oid, oppija_oid, oppilaitos_nimi, oppilaitos_oid, koulutustoimija_oid, koulutustoimija_nimi, paattymispaiva, lahdejarjestelma_koodi, lahdejarjestelma_id, mitatoity_aikaleima, suostumus_peruttu_aikaleima, koulutusmuoto, suoritustyypit, versio
            from poistettu_opiskeluoikeus """),
         if (palautaMyösMitätöidyt) None else Some(sql" where suostumus_peruttu_aikaleima is not null "),
         Some(sql" order by coalesce(mitatoity_aikaleima, suostumus_peruttu_aikaleima) desc")

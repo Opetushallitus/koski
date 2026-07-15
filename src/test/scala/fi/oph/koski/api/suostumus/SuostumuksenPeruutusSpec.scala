@@ -6,6 +6,7 @@ import fi.oph.koski.documentation.AmmatillinenExampleData.winnovaLähdejärjeste
 import fi.oph.koski.documentation.ExampleData.opiskeluoikeusMitätöity
 import fi.oph.koski.documentation.VapaaSivistystyöExample
 import fi.oph.koski.documentation.VapaaSivistystyöExample.opiskeluoikeusVapaatavoitteinen
+import fi.oph.koski.documentation.{ExamplesTaiteenPerusopetus => TPO}
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.koskiuser.MockUsers.{paakayttajaMitatoidytJaPoistetutOpiskeluoikeudet, varsinaisSuomiPalvelukäyttäjä}
@@ -757,6 +758,49 @@ class SuostumuksenPeruutusSpec extends AnyFreeSpec with Matchers with Opiskeluoi
     }
 
   }
+
+  "TPO-hankintakoulutuksen koulutuksen järjestäjä peruutettujen suostumusten listalla" - {
+    "Hankintakoulutuksena järjestetyn TPO-opiskeluoikeuden koulutuksen järjestäjä näkyy listalla" in {
+      val oo = setupOppijaWithAndGetOpiskeluoikeus(
+        TPO.Opiskeluoikeus.hankintakoulutuksenaHyväksytystiSuoritettuLaajaOppimäärä,
+        KoskiSpecificMockOppijat.taiteenPerusopetusHankintakoulutus,
+        authHeaders(MockUsers.paakayttaja) ++ jsonContent
+      )
+      val ooOid = oo.oid.get
+
+      mitätöiOpiskeluoikeus(ooOid, MockUsers.paakayttaja)
+
+      get(s"/api/opiskeluoikeus/suostumuksenperuutus", headers = authHeaders(MockUsers.paakayttaja)) {
+        verifyResponseStatusOk()
+        val rivi = peruutettujenSuostumustenRivi(ooOid)
+        (rivi \\ "Koulutuksen järjestäjän oid") shouldBe JString(oo.koulutustoimija.get.oid)
+        (rivi \\ "Koulutuksen järjestäjän nimi") shouldBe JString(oo.koulutustoimija.get.nimi.get.get("fi"))
+      }
+    }
+
+    "Itse järjestetyn TPO-opiskeluoikeuden koulutuksen järjestäjä ei näy listalla" in {
+      val oo = setupOppijaWithAndGetOpiskeluoikeus(
+        TPO.Opiskeluoikeus.hyväksytystiSuoritettuLaajaOppimäärä,
+        KoskiSpecificMockOppijat.taiteenPerusopetusValmis,
+        authHeaders(MockUsers.paakayttaja) ++ jsonContent
+      )
+      val ooOid = oo.oid.get
+
+      mitätöiOpiskeluoikeus(ooOid, MockUsers.paakayttaja)
+
+      get(s"/api/opiskeluoikeus/suostumuksenperuutus", headers = authHeaders(MockUsers.paakayttaja)) {
+        verifyResponseStatusOk()
+        val rivi = peruutettujenSuostumustenRivi(ooOid)
+        (rivi \\ "Koulutuksen järjestäjän oid") should not be a[JString]
+        (rivi \\ "Koulutuksen järjestäjän nimi") should not be a[JString]
+      }
+    }
+  }
+
+  private def peruutettujenSuostumustenRivi(ooOid: String) =
+    parse(body).children
+      .find(rivi => (rivi \\ "Opiskeluoikeuden oid") == JString(ooOid))
+      .getOrElse(throw new Exception(s"Opiskeluoikeutta $ooOid ei löytynyt peruutettujen suostumusten listalta"))
 
   private def sessio(oid: String) = {
     new KoskiSpecificSession(

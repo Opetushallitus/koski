@@ -407,6 +407,8 @@ object KoskiTables {
     val oppija_oid = column[String]("oppija_oid")
     val oppilaitos_nimi = column[Option[String]]("oppilaitos_nimi")
     val oppilaitos_oid = column[Option[String]]("oppilaitos_oid")
+    val koulutustoimija_oid = column[Option[String]]("koulutustoimija_oid")
+    val koulutustoimija_nimi = column[Option[String]]("koulutustoimija_nimi")
     val päättymispäivä = column[Option[Date]]("paattymispaiva")
     val lähdejärjestelmäKoodi = column[Option[String]]("lahdejarjestelma_koodi")
     val lähdejärjestelmäId = column[Option[String]]("lahdejarjestelma_id")
@@ -416,7 +418,7 @@ object KoskiTables {
     val suoritustyypit = column[List[String]]("suoritustyypit")
     val versio = column[Option[Int]]("versio")
 
-    def * = (oid, oppija_oid, oppilaitos_nimi, oppilaitos_oid, päättymispäivä, lähdejärjestelmäKoodi, lähdejärjestelmäId, mitätöityAikaleima, suostumusPeruttuAikaleima, koulutusmuoto, suoritustyypit, versio) <> (PoistettuOpiskeluoikeusRow.tupled, PoistettuOpiskeluoikeusRow.unapply)
+    def * = (oid, oppija_oid, oppilaitos_nimi, oppilaitos_oid, koulutustoimija_oid, koulutustoimija_nimi, päättymispäivä, lähdejärjestelmäKoodi, lähdejärjestelmäId, mitätöityAikaleima, suostumusPeruttuAikaleima, koulutusmuoto, suoritustyypit, versio) <> (PoistettuOpiskeluoikeusRow.tupled, PoistettuOpiskeluoikeusRow.unapply)
   }
 
   class PäivitettyOpiskeluoikeusTable(tag: Tag) extends Table[PäivitettyOpiskeluoikeusRow] (tag, "paivitetty_opiskeluoikeus") {
@@ -747,6 +749,8 @@ case class PoistettuOpiskeluoikeusRow(
   oppijaOid: String,
   oppilaitosNimi: Option[String],
   oppilaitosOid: Option[String],
+  koulutustoimijaOid: Option[String],
+  koulutustoimijaNimi: Option[String],
   päättymispäivä: Option[Date],
   lähdejärjestelmäKoodi: Option[String],
   lähdejärjestelmäId: Option[String],
