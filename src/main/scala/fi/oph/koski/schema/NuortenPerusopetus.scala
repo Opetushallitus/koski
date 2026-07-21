@@ -106,6 +106,10 @@ case class PerusopetuksenOpiskeluoikeudenLisätiedot(
   @Title("Opiskelee tavoitekokonaisuuksittain")
   @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT))
   tavoitekokonaisuuksittainOpiskelu: Option[List[Aikajakso]] = None,
+  @Title("Yhdysluokka")
+  @Description("Aikajaksot, joina oppilas opiskelee yhdysluokassa. Yhdysluokassa oppilas voi opiskella oppiaineita eri vuosiluokan luokka-asteella kuin oma vuosiluokkansa.")
+  @Tooltip("Aikajaksot, joina oppilas opiskelee yhdysluokassa (eri vuosiluokkien yhdistetty opetusryhmä).")
+  yhdysluokka: Option[List[Aikajakso]] = None,
   @KoodistoUri("perusopetuksentukimuoto")
   @Description("Oppilaan saamat laissa säädetyt tukimuodot.")
   @Tooltip("Oppilaan saamat laissa säädetyt tukimuodot. Voi olla useita.")

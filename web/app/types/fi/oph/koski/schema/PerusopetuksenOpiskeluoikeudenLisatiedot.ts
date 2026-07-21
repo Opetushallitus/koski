@@ -19,6 +19,7 @@ export type PerusopetuksenOpiskeluoikeudenLisätiedot = {
   kotiopetus?: Aikajakso
   koulukoti?: Array<Aikajakso>
   tehostetunTuenPäätös?: TehostetunTuenPäätös
+  yhdysluokka?: Array<Aikajakso>
   tukimuodot?: Array<Koodistokoodiviite<'perusopetuksentukimuoto', string>>
   vuosiluokkiinSitoutumatonOpetus?: boolean
   sisäoppilaitosmainenMajoitus?: Array<Aikajakso>
@@ -49,6 +50,7 @@ export const PerusopetuksenOpiskeluoikeudenLisätiedot = (
     kotiopetus?: Aikajakso
     koulukoti?: Array<Aikajakso>
     tehostetunTuenPäätös?: TehostetunTuenPäätös
+    yhdysluokka?: Array<Aikajakso>
     tukimuodot?: Array<Koodistokoodiviite<'perusopetuksentukimuoto', string>>
     vuosiluokkiinSitoutumatonOpetus?: boolean
     sisäoppilaitosmainenMajoitus?: Array<Aikajakso>
