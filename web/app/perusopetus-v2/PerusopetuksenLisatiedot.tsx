@@ -94,6 +94,12 @@ export const PerusopetuksenLisatiedot: React.FC<
         fieldName="tavoitekokonaisuuksittainOpiskelu"
         label="Tavoitekokonaisuuksittain opiskelu"
       />
+      <AikajaksoArrayRow
+        form={form}
+        lisatiedotPath={lisatiedotPath}
+        fieldName="yhdysluokka"
+        label="Yhdysluokka"
+      />
 
       <ErityisenTuenPäätöksetRow
         form={form}
