@@ -1062,13 +1062,13 @@ class OppijaValidationPerusopetusSpec extends TutkinnonPerusteetTest[Perusopetuk
       }
 
       "Yhdysluokka" - {
-        val yhdysluokkaVoimaan = LocalDate.parse(KoskiApplicationForTests.config.getString("validaatiot.yhdysluokkaVoimaan"))
+        val jaksonAlku = date(2026, 8, 1)
         val arviointiPvm = date(2026, 9, 1)
 
         "Eri luokka-aste on sallittu pelkän yhdysluokka-jakson perusteella ilman tavoitekokonaisuuksittain opiskelua" in {
           setupOppijaWithOpiskeluoikeus(
             TuenPäätöksellinenBuilder(
-              yhdysluokka = Some(List(Aikajakso(alku = yhdysluokkaVoimaan, loppu = None)))
+              yhdysluokka = Some(List(Aikajakso(alku = jaksonAlku, loppu = None)))
             ).withLuokkaAsteSuoritus("7", arviointiPvm).build
           ) {
             verifyResponseStatusOk()
@@ -1091,26 +1091,12 @@ class OppijaValidationPerusopetusSpec extends TutkinnonPerusteetTest[Perusopetuk
         "Yhdysluokka-jakso ei kata vahvistuspäivää -> HTTP 400" in {
           setupOppijaWithOpiskeluoikeus(
             TuenPäätöksellinenBuilder(
-              yhdysluokka = Some(List(Aikajakso(alku = yhdysluokkaVoimaan, loppu = Some(arviointiPvm.minusDays(1)))))
+              yhdysluokka = Some(List(Aikajakso(alku = jaksonAlku, loppu = Some(arviointiPvm.minusDays(1)))))
             ).withLuokkaAsteSuoritus("7", arviointiPvm).build
           ) {
             verifyResponseStatus(400,
               KoskiErrorCategory.badRequest.validation.date(
                 "Perusopetuksen oppiaineen HI suorituksella on tavoitekokonaisuuksittain opiskeluun tai yhdysluokkaan liittyvä tieto luokkaAste (7) mutta ei tavoitekokonaisuuksittain opiskelun tai yhdysluokan aikajaksoa, joka kattaisi vuosiluokan vahvistuspäivän tai suorituksen arviointipäivän."
-              )
-            )
-          }
-        }
-
-        "Yhdysluokka-jakso ei saa alkaa ennen voimaantulopäivää -> HTTP 400" in {
-          setupOppijaWithOpiskeluoikeus(
-            TuenPäätöksellinenBuilder(
-              yhdysluokka = Some(List(Aikajakso(alku = yhdysluokkaVoimaan.minusDays(1), loppu = None)))
-            ).build
-          ) {
-            verifyResponseStatus(400,
-              KoskiErrorCategory.badRequest.validation.date(
-                "Yhdysluokka-lisätiedon varhaisin sallittu voimassaolopäivä on 2026-08-01"
               )
             )
           }

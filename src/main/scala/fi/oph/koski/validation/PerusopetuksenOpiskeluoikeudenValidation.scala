@@ -27,7 +27,6 @@ object PerusopetuksenOpiskeluoikeusValidation extends Logging {
           validatePäätasonSuoritus(poo),
           validateVanhojenJaksokenttienPäättyminenSiirryttäessäUusiin(config, poo.päättymispäivä, poo.lisätiedot),
           validateTavoitekokonaisuuksittainOpiskeleva(config,poo),
-          validateYhdysluokka(config, poo),
           validateVuosiluokkiinSitoutumatonOpetusEiSallittu(config,poo)
         ) ++ poo.lisätiedot.toList.flatMap(lisätiedot => List(
           validateTuenJaksojenPäällekkäisyys(lisätiedot),
@@ -108,16 +107,6 @@ object PerusopetuksenOpiskeluoikeusValidation extends Logging {
         }
     }.flatten
     HttpStatus.fold(errors)
-  }
-
-  private def validateYhdysluokka(config: Config, oo: PerusopetuksenOpiskeluoikeus): HttpStatus = {
-    val yhdysluokkaVoimaan = LocalDate.parse(config.getString("validaatiot.yhdysluokkaVoimaan"))
-    val jaksot = oo.lisätiedot.flatMap(_.yhdysluokka).getOrElse(Nil)
-    HttpStatus.validate(!jaksot.exists(_.alku.isBefore(yhdysluokkaVoimaan)))(
-      KoskiErrorCategory.badRequest.validation.date(
-        s"Yhdysluokka-lisätiedon varhaisin sallittu voimassaolopäivä on $yhdysluokkaVoimaan"
-      )
-    )
   }
 
   private def validateNuortenPerusopetuksenOpiskeluoikeudenTila(oo: PerusopetuksenOpiskeluoikeus) = {
