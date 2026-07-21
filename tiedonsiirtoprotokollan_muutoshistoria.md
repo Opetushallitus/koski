@@ -1,3 +1,8 @@
+# 17.7.2026
+
+- DIA-tutkinnon opiskeluoikeudessa laajuusyksikkönä voi käyttää opintopistettä 1.8.2026 tai myöhemmin alkaneissa opiskeluoikeuksissa. Aiemmin alkaneissa opiskeluoikeuksissa käytetään vuosiviikkotuntia.
+- DIA-tutkinnon tutkintovaiheen osasuorituksen osasuoritukselle lisätty vapaaehtoinen `tunnustettu`-kenttä, jolla voidaan ilmaista, että osasuorituksen osasuoritus on tunnustettu.
+
 # 7.7.2026
 
 - Lisätty OmaData OAuth2 -rajapinnan opiskeluoikeuspakettien `oppilaitos`-rakenteeseen `oppilaitostyyppi`-kenttä. Kenttä palautetaan rajapinnan vastauksissa oppilaitoksille ja tieto haetaan Organisaatiopalvelusta; kenttää ei siirretä Koskeen syöttörajapinnoissa eikä sitä palauteta toimipisteille.
