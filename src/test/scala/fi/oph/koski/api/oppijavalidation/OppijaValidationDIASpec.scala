@@ -7,14 +7,14 @@ import fi.oph.koski.documentation.DIAExampleData._
 import fi.oph.koski.documentation.ExampleData._
 import fi.oph.koski.documentation.ExamplesDIA
 import fi.oph.koski.http.{ErrorMatcher, KoskiErrorCategory}
-import fi.oph.koski.schema.{DIAOpiskeluoikeudenTila, DIAOpiskeluoikeusjakso, Koodistokoodiviite}
+import fi.oph.koski.schema.{DIAOpiskeluoikeudenTila, DIAOpiskeluoikeusjakso, DIAOppiaineenTutkintovaiheenOsasuorituksenSuoritus, DIAOppiaineenTutkintovaiheenSuoritus, Koodistokoodiviite, LocalizedString, OsaamisenTunnustaminen}
 import org.scalatest.freespec.AnyFreeSpec
 
 import java.time.LocalDate
 
 class OppijaValidationDIASpec extends AnyFreeSpec with KoskiHttpSpec with OpiskeluoikeusTestMethodsDIA {
   "Laajuudet" - {
-    """Lukukauden laajuusyksikkö muu kuin "vuosiviikkotuntia" -> HTTP 400""" in {
+    """Lukukauden laajuusyksikkö muu kuin "vuosiviikkotuntia" tai "opintopistettä" -> HTTP 400""" in {
       val laajuudenYksikköKurssia = "4"
       val oo = defaultOpiskeluoikeus.copy(suoritukset = List(tutkintoSuoritus.copy(
         osasuoritukset = Some(List(diaTutkintoAineSuoritus(diaOppiaineMuu("MA", osaAlue = "2", laajuus(8)), Some(List(
@@ -23,7 +23,7 @@ class OppijaValidationDIASpec extends AnyFreeSpec with KoskiHttpSpec with Opiske
       )))
 
       setupOppijaWithOpiskeluoikeus(oo) {
-        verifyResponseStatus(400, ErrorMatcher.regex(KoskiErrorCategory.badRequest.validation.jsonSchema, ".*enumValueMismatch.*".r))
+        verifyResponseStatus(400, ErrorMatcher.regex(KoskiErrorCategory.badRequest.validation.jsonSchema, ".*notAnyOf.*".r))
       }
     }
 
@@ -107,6 +107,62 @@ class OppijaValidationDIASpec extends AnyFreeSpec with KoskiHttpSpec with Opiske
     }
   }
 
+  "Laajuusyksikkö alkamispäivän mukaan" - {
+    val ennenRajapäivää = LocalDate.of(2026, 7, 31)
+    val rajapäivä = LocalDate.of(2026, 8, 1)
+
+    def opiskeluoikeusAlkaen(alkamispäivä: LocalDate, aineSuoritus: DIAOppiaineenTutkintovaiheenSuoritus) =
+      defaultOpiskeluoikeus.copy(
+        tila = DIAOpiskeluoikeudenTila(List(
+          DIAOpiskeluoikeusjakso(alkamispäivä, opiskeluoikeusLäsnä, Some(valtionosuusRahoitteinen))
+        )),
+        suoritukset = List(tutkintoSuoritus.copy(osasuoritukset = Some(List(aineSuoritus))))
+      )
+
+    "1.8.2026 tai myöhemmin alkaneessa opiskeluoikeudessa opintopistelaajuus -> HTTP 200" in {
+      val oo = opiskeluoikeusAlkaen(rajapäivä, diaTutkintoAineSuoritus(
+        diaOppiaineMuu("MA", osaAlue = "2", laajuusOpintopisteinä(8)),
+        Some(List((diaTutkintoLukukausi("3", laajuusOpintopisteinä(8)), "2")))
+      ))
+      setupOppijaWithOpiskeluoikeus(oo) {
+        verifyResponseStatusOk()
+      }
+    }
+
+    "1.8.2026 tai myöhemmin alkaneessa opiskeluoikeudessa oppiaineen vuosiviikkotuntilaajuus -> HTTP 400" in {
+      val oo = opiskeluoikeusAlkaen(rajapäivä, diaTutkintoAineSuoritus(
+        diaOppiaineMuu("MA", osaAlue = "2", laajuus(8))
+      ))
+      setupOppijaWithOpiskeluoikeus(oo) {
+        verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.laajuudet.osauoritusVääräLaajuus(
+          "DIA-tutkinnon laajuus on ilmoitettava opintopisteissä 1.8.2026 tai myöhemmin alkaneille opiskeluoikeuksille"
+        ))
+      }
+    }
+
+    "ennen 1.8.2026 alkaneessa opiskeluoikeudessa vuosiviikkotuntilaajuus -> HTTP 200" in {
+      val oo = opiskeluoikeusAlkaen(ennenRajapäivää, diaTutkintoAineSuoritus(
+        diaOppiaineMuu("MA", osaAlue = "2", laajuus(8)),
+        Some(List((diaTutkintoLukukausi("3", laajuus(8f)), "2")))
+      ))
+      setupOppijaWithOpiskeluoikeus(oo) {
+        verifyResponseStatusOk()
+      }
+    }
+
+    "ennen 1.8.2026 alkaneessa opiskeluoikeudessa lukukauden opintopistelaajuus -> HTTP 400" in {
+      val oo = opiskeluoikeusAlkaen(ennenRajapäivää, diaTutkintoAineSuoritus(
+        diaOppiaineMuu("MA", osaAlue = "2"),
+        Some(List((diaTutkintoLukukausi("3", laajuusOpintopisteinä(8)), "2")))
+      ))
+      setupOppijaWithOpiskeluoikeus(oo) {
+        verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.laajuudet.osauoritusVääräLaajuus(
+          "DIA-tutkinnon laajuuden voi ilmoittaa opintopisteissä vain 1.8.2026 tai myöhemmin alkaneille opiskeluoikeuksille"
+        ))
+      }
+    }
+  }
+
   "Kaksi äidinkieltä" - {
     "Samalla kielivalinnalla -> HTTP 400" in {
       val oo = defaultOpiskeluoikeus.copy(suoritukset = List(tutkintoSuoritus.copy(
@@ -136,6 +192,27 @@ class OppijaValidationDIASpec extends AnyFreeSpec with KoskiHttpSpec with Opiske
           )))
         ))
       )))
+
+      setupOppijaWithOpiskeluoikeus(oo) {
+        verifyResponseStatusOk()
+      }
+    }
+  }
+
+  "Tunnustettu" - {
+    "Suoritus kesken, tutkintovaiheen osasuorituksen osasuoritus tunnustettu -> HTTP 200" in {
+      val oo = defaultOpiskeluoikeus.copy(suoritukset = List(tutkintoSuoritus.copy(
+        osasuoritukset = Some(List(diaTutkintoAineSuoritus(diaOppiaineMuu("MA", osaAlue = "2", laajuus(1))).copy(
+          osasuoritukset = Some(List(DIAOppiaineenTutkintovaiheenOsasuorituksenSuoritus(
+            koulutusmoduuli = diaTutkintoLukukausi("3", laajuus(1.0f)),
+            arviointi = diaTutkintovaiheenArviointi("2"),
+            tunnustettu = Some(OsaamisenTunnustaminen(
+              osaaminen = None,
+              selite = LocalizedString.finnish("Tunnustettu aiemman osaamisen perusteella")
+            ))
+          )))
+        ))))
+      ))
 
       setupOppijaWithOpiskeluoikeus(oo) {
         verifyResponseStatusOk()

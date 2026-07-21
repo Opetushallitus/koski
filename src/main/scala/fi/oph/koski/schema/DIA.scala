@@ -186,9 +186,10 @@ case class DIAOppiaineenValmistavanVaiheenLukukaudenSuoritus(
 case class DIAOppiaineenTutkintovaiheenOsasuorituksenSuoritus(
   koulutusmoduuli: DIAOppiaineenTutkintovaiheenOsasuoritus,
   arviointi: Option[List[DIATutkintovaiheenArviointi]] = None,
+  tunnustettu: Option[OsaamisenTunnustaminen] = None,
   @KoodistoKoodiarvo("diaoppiaineentutkintovaiheenosasuorituksensuoritus")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "diaoppiaineentutkintovaiheenosasuorituksensuoritus", koodistoUri = "suorituksentyyppi")
-) extends DIASuoritus
+) extends DIASuoritus with MahdollisestiTunnustettu
 
 trait DIAOppiaineenOsasuoritus extends KoodistostaLöytyväKoulutusmoduuli
 
@@ -205,7 +206,7 @@ case class DIAOppiaineenValmistavanVaiheenLukukausi(
   @KoodistoKoodiarvo("1")
   @KoodistoKoodiarvo("2")
   tunniste: Koodistokoodiviite,
-  laajuus: Option[LaajuusVuosiviikkotunneissa]
+  laajuus: Option[LaajuusVuosiviikkotunneissaTaiOpintopisteissä]
 ) extends DIAOppiaineenLukukausi
 
 @Title("DIA-oppiaineen tutkintovaiheen lukukausi")
@@ -216,7 +217,7 @@ case class DIAOppiaineenTutkintovaiheenLukukausi(
   @KoodistoKoodiarvo("5")
   @KoodistoKoodiarvo("6")
   tunniste: Koodistokoodiviite,
-  laajuus: Option[LaajuusVuosiviikkotunneissa]
+  laajuus: Option[LaajuusVuosiviikkotunneissaTaiOpintopisteissä]
 ) extends DIAOppiaineenLukukausi with DIAOppiaineenTutkintovaiheenOsasuoritus
 
 @Title("DIA-tutkinnon päättökoe")
@@ -303,7 +304,7 @@ trait DIAOppiaine extends KoodistostaLöytyväKoulutusmoduuliValinnainenLaajuus 
   @KoodistoUri("oppiaineetdia")
   @OksaUri("tmpOKSAID256", "oppiaine")
   def tunniste: Koodistokoodiviite
-  def laajuus: Option[LaajuusVuosiviikkotunneissa]
+  def laajuus: Option[LaajuusVuosiviikkotunneissaTaiOpintopisteissä]
 }
 
 trait DIAOsaAlueOppiaine extends DIAOppiaine {
@@ -330,7 +331,7 @@ case class DIAOppiaineMuu(
   @KoodistoKoodiarvo("FI")
   @KoodistoKoodiarvo("ET")
   tunniste: Koodistokoodiviite,
-  laajuus: Option[LaajuusVuosiviikkotunneissa],
+  laajuus: Option[LaajuusVuosiviikkotunneissaTaiOpintopisteissä],
   @Description("Oppiaineen osa-alue (1-3)")
   osaAlue: Koodistokoodiviite,
   pakollinen: Boolean = true
@@ -343,7 +344,7 @@ case class DIAOppiaineKieli(
   @KoodistoKoodiarvo("B1")
   @KoodistoKoodiarvo("B3")
   tunniste: Koodistokoodiviite,
-  laajuus: Option[LaajuusVuosiviikkotunneissa],
+  laajuus: Option[LaajuusVuosiviikkotunneissaTaiOpintopisteissä],
   @KoodistoUri("kielivalikoima")
   @KoodistoKoodiarvo("EN")
   @KoodistoKoodiarvo("FR")
@@ -364,7 +365,7 @@ case class DIAOppiaineKieli(
 case class DIAOppiaineÄidinkieli(
   @KoodistoKoodiarvo("AI")
   tunniste: Koodistokoodiviite,
-  laajuus: Option[LaajuusVuosiviikkotunneissa],
+  laajuus: Option[LaajuusVuosiviikkotunneissaTaiOpintopisteissä],
   @KoodistoUri("oppiainediaaidinkieli")
   @KoodistoKoodiarvo("FI")
   @KoodistoKoodiarvo("S2")
@@ -391,13 +392,13 @@ case class DIAOppiaineLisäaine(
   @KoodistoKoodiarvo("RALI")
   @KoodistoKoodiarvo("VT")
   tunniste: Koodistokoodiviite,
-  laajuus: Option[LaajuusVuosiviikkotunneissa]
+  laajuus: Option[LaajuusVuosiviikkotunneissaTaiOpintopisteissä]
 ) extends DIAOppiaine
 
 case class DIAOppiaineLisäaineKieli(
   @KoodistoKoodiarvo("B2")
   tunniste: Koodistokoodiviite,
-  laajuus: Option[LaajuusVuosiviikkotunneissa],
+  laajuus: Option[LaajuusVuosiviikkotunneissaTaiOpintopisteissä],
   @KoodistoUri("kielivalikoima")
   @KoodistoKoodiarvo("LA")
   @Discriminator
