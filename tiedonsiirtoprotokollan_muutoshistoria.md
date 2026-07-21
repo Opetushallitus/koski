@@ -1,3 +1,7 @@
+# 21.7.2026
+
+- Nuorten perusopetuksen opiskeluoikeuden lisätietoihin lisätty vapaaehtoinen `yhdysluokka`-kenttä (aikajaksojen lista), jolla ilmaistaan ajanjaksot, joina oppilas opiskelee yhdysluokassa.
+
 # 17.7.2026
 
 - DIA-tutkinnon opiskeluoikeudessa laajuusyksikkönä voi käyttää opintopistettä 1.8.2026 tai myöhemmin alkaneissa opiskeluoikeuksissa. Aiemmin alkaneissa opiskeluoikeuksissa käytetään vuosiviikkotuntia.
