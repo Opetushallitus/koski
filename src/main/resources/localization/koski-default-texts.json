@@ -2168,6 +2168,7 @@
   "raportti-excel-kolumni-suoritutettujenOsasuoritustenLkm": "Suoritettujen osasuoritusten lukumäärä",
   "raportti-excel-kolumni-tavoitekokonaisuuksittainOpiskelu": "Tavoitekokonaisuuksittain opiskelu",
   "raportti-excel-kolumni-tavoitekokonaisuuksittainOpiskelu-comment": "Oppilaat, joille löytyy opiskeluoikeuden lisätiedoista raportin tulostusparametreissa määritellylle päivälle osuva tavoitekokonaisuuksittain opiskelun jakso.",
+  "raportti-excel-kolumni-yhdysluokka": "Yhdysluokka",
   "raportti-excel-kolumni-terveystieto": "Terveystieto",
   "raportti-excel-kolumni-tilaHakupaivalla": "Opiskeluoikeuden tila tulostuspäivänä",
   "raportti-excel-kolumni-tilaHakupaivalla-comment": "Se opiskeluoikeuden tila, joka opiskeluoikeudella oli raportin tulostusparametrin \"Päivä\"- kenttään syötettynä päivämääränä",

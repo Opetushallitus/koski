@@ -431,7 +431,8 @@ class PerusopetuksenVuosiluokkaRaporttiSpec
     tuenPäätöksenJakso = false,
     opetuksenJärjestäminenVammanSairaudenTaiRajoitteenPerusteella = false,
     toimintaAlueittainOpiskelu = false,
-    tavoitekokonaisuuksittainOpiskelu = false
+    tavoitekokonaisuuksittainOpiskelu = false,
+    yhdysluokka = false
   )
 
   val ynjevinExpectedKasiLuokkaRowWithLisätiedot = defaultYnjeviExpectedKasiLuokkaRow.copy(

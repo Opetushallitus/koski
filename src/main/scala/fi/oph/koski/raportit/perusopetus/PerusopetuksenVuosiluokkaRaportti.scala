@@ -150,7 +150,8 @@ object PerusopetuksenVuosiluokkaRaportti extends VuosiluokkaRaporttiPaivalta wit
       tuenPäätöksenJakso = opiskeluoikeudenLisätiedot.exists(_.tuenPäätöksenJaksot.exists(_.exists(mahdollisestiAlkupäivällinenJaksoVoimassaPäivällä(_, hakupaiva)))),
       opetuksenJärjestäminenVammanSairaudenTaiRajoitteenPerusteella = opiskeluoikeudenLisätiedot.exists(_.opetuksenJärjestäminenVammanSairaudenTaiRajoitteenPerusteella.exists(_.exists(aikajaksoVoimassaHakuPaivalla(_, hakupaiva)))),
       toimintaAlueittainOpiskelu = opiskeluoikeudenLisätiedot.exists(_.toimintaAlueittainOpiskelu.exists(_.exists(aikajaksoVoimassaHakuPaivalla(_, hakupaiva)))),
-      tavoitekokonaisuuksittainOpiskelu = opiskeluoikeudenLisätiedot.exists(_.tavoitekokonaisuuksittainOpiskelu.exists(_.exists(aikajaksoVoimassaHakuPaivalla(_, hakupaiva))))
+      tavoitekokonaisuuksittainOpiskelu = opiskeluoikeudenLisätiedot.exists(_.tavoitekokonaisuuksittainOpiskelu.exists(_.exists(aikajaksoVoimassaHakuPaivalla(_, hakupaiva)))),
+      yhdysluokka = opiskeluoikeudenLisätiedot.exists(_.yhdysluokka.exists(_.exists(aikajaksoVoimassaHakuPaivalla(_, hakupaiva))))
     )
   }
 
@@ -398,6 +399,7 @@ object PerusopetuksenVuosiluokkaRaportti extends VuosiluokkaRaporttiPaivalta wit
     "opetuksenJärjestäminenVammanSairaudenTaiRajoitteenPerusteella" -> compactLisätiedotColumn(t.get("raportti-excel-kolumni-opetuksenJärjestäminenVammanSairaudenTaiRajoitteenPerusteella"), t),
     "toimintaAlueittainOpiskelu" -> compactLisätiedotColumn(t.get("raportti-excel-kolumni-toimintaAlueittainOpiskelu"), t),
     "tavoitekokonaisuuksittainOpiskelu" -> compactLisätiedotColumn(t.get("raportti-excel-kolumni-tavoitekokonaisuuksittainOpiskelu"), t),
+    "yhdysluokka" -> compactLisätiedotColumn(t.get("raportti-excel-kolumni-yhdysluokka"), t),
   )
 }
 
@@ -483,4 +485,5 @@ private[raportit] case class PerusopetusRow(
   opetuksenJärjestäminenVammanSairaudenTaiRajoitteenPerusteella: Boolean,
   toimintaAlueittainOpiskelu: Boolean,
   tavoitekokonaisuuksittainOpiskelu: Boolean,
+  yhdysluokka: Boolean,
 )
