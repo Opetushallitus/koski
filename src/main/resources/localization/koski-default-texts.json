@@ -2978,6 +2978,8 @@
   "warning:unavailable.virta": "Korkeakoulujen opintoja ei juuri nyt saada haettua. Yritä myöhemmin uudestaan.",
   "warning:unavailable.ytr": "Ylioppilastutkinnon tietoja ei juuri nyt saada haettua. Yritä myöhemmin uudestaan.",
   "Yhdysluokka": "Yhdysluokka",
+  "description:Aikajaksot, joina oppilas opiskelee yhdysluokassa....": "Aikajaksot, joina oppilas opiskelee yhdysluokassa. Yhdysluokassa oppilas voi opiskella oppiaineita eri vuosiluokan luokka-asteella kuin oma vuosiluokkansa.",
+  "tooltip:Aikajaksot, joina oppilas opiskelee yhdysluokassa...": "Aikajaksot, joina oppilas opiskelee yhdysluokassa (eri vuosiluokkien yhdistetty opetusryhmä).",
   "Yhteensä": "Yhteensä",
   "Yhteenveto": "Yhteenveto",
   "Yhteenveto siirretyistä oppilaitoksittain": "Yhteenveto KOSKI-palveluun siirretyistä opiskelijatiedoista oppilaitoksittain.",
