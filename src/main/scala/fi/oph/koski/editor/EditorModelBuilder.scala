@@ -244,9 +244,25 @@ case class OneOfModelBuilder(t: AnyOfSchema)(implicit context: ModelBuilderConte
     if (clazz == classOf[LocalizedString]) {
       buildModelForObject(LocalizedString.finnish(""), metadata)
     } else {
-      buildModel(modelBuilderForClass(t.alternatives.head).buildPrototype(metadata), metadata)
+      buildModel(modelBuilderForClass(oletusvaihtoehto).buildPrototype(metadata), metadata)
     }
   }
+
+  // Unionin oletusvaihtoehto on aakkosjärjestyksessä ensimmäinen. DIA-tutkinnon
+  // laajuusyksikkö on unioni (vuosiviikkotunti/opintopiste), jossa oletukseksi
+  // haluamme vuosiviikkotunnin: ennen 1.8.2026 alkaneet DIA-opiskeluoikeudet
+  // ilmoitetaan vuosiviikkotunteina, ja niitä on valtaosa. 1.8.2026 tai myöhemmin
+  // alkaneille validointi vaatii opintopisteen, jonka käyttäjä valitsee itse.
+  // Prototyypit rakennetaan globaalisti ilman opiskeluoikeuskohtaista tietoa, joten
+  // oletus on kiinteä.
+  private def oletusvaihtoehto: SchemaWithClassName =
+    if (sanitizeName(t.simpleName) == "laajuusvuosiviikkotunneissataiopintopisteissa") {
+      t.alternatives
+        .find(a => sanitizeName(a.simpleName) == "laajuusvuosiviikkotunneissa")
+        .getOrElse(t.alternatives.head)
+    } else {
+      t.alternatives.head
+    }
 }
 
 case class ObjectModelBuilder(schema: ClassSchema)(implicit context: ModelBuilderContext) extends ModelBuilderForClass {
