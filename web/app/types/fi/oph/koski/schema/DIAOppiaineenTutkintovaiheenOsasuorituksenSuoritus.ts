@@ -1,7 +1,8 @@
-import { DIAOppiaineenTutkintovaiheenOsasuoritus } from './DIAOppiaineenTutkintovaiheenOsasuoritus'
 import { DIATutkintovaiheenArviointi } from './DIATutkintovaiheenArviointi'
 import { Koodistokoodiviite } from './Koodistokoodiviite'
 import { LocalizedString } from './LocalizedString'
+import { DIAOppiaineenTutkintovaiheenOsasuoritus } from './DIAOppiaineenTutkintovaiheenOsasuoritus'
+import { OsaamisenTunnustaminen } from './OsaamisenTunnustaminen'
 
 /**
  * DIAOppiaineenTutkintovaiheenOsasuorituksenSuoritus
@@ -10,30 +11,32 @@ import { LocalizedString } from './LocalizedString'
  */
 export type DIAOppiaineenTutkintovaiheenOsasuorituksenSuoritus = {
   $class: 'fi.oph.koski.schema.DIAOppiaineenTutkintovaiheenOsasuorituksenSuoritus'
-  koulutusmoduuli: DIAOppiaineenTutkintovaiheenOsasuoritus
   arviointi?: Array<DIATutkintovaiheenArviointi>
   tyyppi: Koodistokoodiviite<
     'suorituksentyyppi',
     'diaoppiaineentutkintovaiheenosasuorituksensuoritus'
   >
   tila?: Koodistokoodiviite<'suorituksentila', string>
+  koulutusmoduuli: DIAOppiaineenTutkintovaiheenOsasuoritus
+  tunnustettu?: OsaamisenTunnustaminen
 }
 
 export const DIAOppiaineenTutkintovaiheenOsasuorituksenSuoritus = (o: {
-  koulutusmoduuli: DIAOppiaineenTutkintovaiheenOsasuoritus
   arviointi?: Array<DIATutkintovaiheenArviointi>
   tyyppi?: Koodistokoodiviite<
     'suorituksentyyppi',
     'diaoppiaineentutkintovaiheenosasuorituksensuoritus'
   >
   tila?: Koodistokoodiviite<'suorituksentila', string>
+  koulutusmoduuli: DIAOppiaineenTutkintovaiheenOsasuoritus
+  tunnustettu?: OsaamisenTunnustaminen
 }): DIAOppiaineenTutkintovaiheenOsasuorituksenSuoritus => ({
-  $class:
-    'fi.oph.koski.schema.DIAOppiaineenTutkintovaiheenOsasuorituksenSuoritus',
   tyyppi: Koodistokoodiviite({
     koodiarvo: 'diaoppiaineentutkintovaiheenosasuorituksensuoritus',
     koodistoUri: 'suorituksentyyppi'
   }),
+  $class:
+    'fi.oph.koski.schema.DIAOppiaineenTutkintovaiheenOsasuorituksenSuoritus',
   ...o
 })
 

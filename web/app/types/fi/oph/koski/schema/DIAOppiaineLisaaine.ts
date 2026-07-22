@@ -1,6 +1,6 @@
 import { Koodistokoodiviite } from './Koodistokoodiviite'
 import { LocalizedString } from './LocalizedString'
-import { LaajuusVuosiviikkotunneissa } from './LaajuusVuosiviikkotunneissa'
+import { LaajuusVuosiviikkotunneissaTaiOpintopisteissä } from './LaajuusVuosiviikkotunneissaTaiOpintopisteissa'
 
 /**
  * DIA-oppiaineen tunnistetiedot
@@ -22,7 +22,7 @@ export type DIAOppiaineLisäaine = {
     | 'RALI'
     | 'VT'
   >
-  laajuus?: LaajuusVuosiviikkotunneissa
+  laajuus?: LaajuusVuosiviikkotunneissaTaiOpintopisteissä
 }
 
 export const DIAOppiaineLisäaine = (o: {
@@ -39,7 +39,7 @@ export const DIAOppiaineLisäaine = (o: {
     | 'RALI'
     | 'VT'
   >
-  laajuus?: LaajuusVuosiviikkotunneissa
+  laajuus?: LaajuusVuosiviikkotunneissaTaiOpintopisteissä
 }): DIAOppiaineLisäaine => ({
   $class: 'fi.oph.koski.schema.DIAOppiaineLisäaine',
   ...o

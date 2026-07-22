@@ -1,6 +1,6 @@
 import { Koodistokoodiviite } from './Koodistokoodiviite'
 import { LocalizedString } from './LocalizedString'
-import { LaajuusVuosiviikkotunneissa } from './LaajuusVuosiviikkotunneissa'
+import { LaajuusVuosiviikkotunneissaTaiOpintopisteissä } from './LaajuusVuosiviikkotunneissaTaiOpintopisteissa'
 
 /**
  * DIA-oppiaineen tunnistetiedot
@@ -26,7 +26,7 @@ export type DIAOppiaineMuu = {
     | 'FI'
     | 'ET'
   >
-  laajuus?: LaajuusVuosiviikkotunneissa
+  laajuus?: LaajuusVuosiviikkotunneissaTaiOpintopisteissä
   osaAlue: Koodistokoodiviite<'diaosaalue', string>
   pakollinen: boolean
 }
@@ -49,7 +49,7 @@ export const DIAOppiaineMuu = (o: {
     | 'FI'
     | 'ET'
   >
-  laajuus?: LaajuusVuosiviikkotunneissa
+  laajuus?: LaajuusVuosiviikkotunneissaTaiOpintopisteissä
   osaAlue: Koodistokoodiviite<'diaosaalue', string>
   pakollinen: boolean
 }): DIAOppiaineMuu => ({ $class: 'fi.oph.koski.schema.DIAOppiaineMuu', ...o })

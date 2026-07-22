@@ -1,5 +1,9 @@
 # Koskeen tallennettavien tietojen validaatiosäännöt
 
+## 17.7.2026
+
+- DIA-tutkinnon opiskeluoikeuksissa laajuusyksikkönä pakotetaan opintopiste 1.8.2026 tai myöhemmin alkaneissa opiskeluoikeuksissa. Sitä ennen alkaneissa opiskeluoikeuksissa pakotetaan edelleen vuosiviikkotunti.
+
 ## 23.6.2026
 
 - Lisättiin validaatio, että lähdejärjestelmäkytkentää ei voi purkaa kielitutkinto-opiskeluoikeuksilta.
