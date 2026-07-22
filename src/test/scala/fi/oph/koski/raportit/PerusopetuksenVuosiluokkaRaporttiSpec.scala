@@ -85,7 +85,8 @@ class PerusopetuksenVuosiluokkaRaporttiSpec
         lisätiedot = Some(PerusopetuksenOpiskeluoikeudenLisätiedot(
           tuenPäätöksenJaksot = Some(List(Tukijakso(Some(hakupäivä), None))),
           opetuksenJärjestäminenVammanSairaudenTaiRajoitteenPerusteella = Some(List(Aikajakso(hakupäivä, None))),
-          tavoitekokonaisuuksittainOpiskelu = Some(List(Aikajakso(Some(hakupäivä), None)))
+          tavoitekokonaisuuksittainOpiskelu = Some(List(Aikajakso(Some(hakupäivä), None))),
+          yhdysluokka = Some(List(Aikajakso(Some(hakupäivä), None)))
       )))
       putOpiskeluoikeus(
         opiskeluoikeus,
@@ -577,6 +578,7 @@ class PerusopetuksenVuosiluokkaRaporttiSpec
     tuenPäätöksenJakso = true,
     opetuksenJärjestäminenVammanSairaudenTaiRajoitteenPerusteella = true,
     tavoitekokonaisuuksittainOpiskelu = true,
+    yhdysluokka = true,
   )
 
   private def insertTestData = {

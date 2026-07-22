@@ -41954,22 +41954,6 @@
   {
     "id": null,
     "namespace": "koski",
-    "key": "raportti-excel-kolumni-yhdysluokka",
-    "locale": "fi",
-    "value": "Yhdysluokka",
-    "category": "koski",
-    "accessed": null,
-    "created": null,
-    "modified": null,
-    "force": null,
-    "accesscount": null,
-    "modifiedBy": "anonymousUser",
-    "createdBy": "anonymousUser",
-    "description": null
-  },
-  {
-    "id": null,
-    "namespace": "koski",
     "key": "raportti-excel-kolumni-terveystieto",
     "locale": "fi",
     "value": "Terveystieto",
