@@ -618,6 +618,7 @@ class OppijaValidationPerusopetusSpec extends TutkinnonPerusteetTest[Perusopetuk
         erityisenTuenPäätökset: Option[List[ErityisenTuenPäätös]] = None,
         opetuksenJärjestäminenVammanSairaudenTaiRajoitteenPerusteella: Option[List[Aikajakso]] = None,
         tavoitekokonaisuuksittainOpiskelu: Option[List[Aikajakso]] = None,
+        yhdysluokka: Option[List[Aikajakso]] = None,
         suoritukset: List[PerusopetuksenPäätasonSuoritus] = List(yhdeksännenLuokanSuoritus)
       ) {
         def withSuorituksetAlkaen(pvm: LocalDate) = copy(
@@ -658,6 +659,7 @@ class OppijaValidationPerusopetusSpec extends TutkinnonPerusteetTest[Perusopetuk
             lisätiedot = Some(PerusopetuksenOpiskeluoikeudenLisätiedot(
               tuenPäätöksenJaksot = tuenPäätöksenJaksot,
               tavoitekokonaisuuksittainOpiskelu = tavoitekokonaisuuksittainOpiskelu,
+              yhdysluokka = yhdysluokka,
               opetuksenJärjestäminenVammanSairaudenTaiRajoitteenPerusteella = opetuksenJärjestäminenVammanSairaudenTaiRajoitteenPerusteella,
               erityisenTuenPäätökset = erityisenTuenPäätökset
             ))
@@ -1026,7 +1028,7 @@ class OppijaValidationPerusopetusSpec extends TutkinnonPerusteetTest[Perusopetuk
           setupOppijaWithOpiskeluoikeus(withLuokkaAste.build) {
             verifyResponseStatus(400,
               KoskiErrorCategory.badRequest.validation.date(
-                "Perusopetuksen oppiaineen HI suorituksella on tavoitekokonaisuuksittain opiskeluun liittyvä tieto luokkaAste (8) mutta ei tavoitekokonaisuuksittain opiskelun aikajaksoa, joka kattaisi vuosiluokan vahvistuspäivän tai suorituksen arviointipäivän."
+                "Perusopetuksen oppiaineen HI suorituksella on tavoitekokonaisuuksittain opiskeluun tai yhdysluokkaan liittyvä tieto luokkaAste (8) mutta ei tavoitekokonaisuuksittain opiskelun tai yhdysluokan aikajaksoa, joka kattaisi vuosiluokan vahvistuspäivän tai suorituksen arviointipäivän."
               )
             )
           }
@@ -1055,6 +1057,48 @@ class OppijaValidationPerusopetusSpec extends TutkinnonPerusteetTest[Perusopetuk
           val withLuokkaAste = TuenPäätöksellinenBuilder().withLuokkaAsteSuoritusWithoutVahvistus("8")
           setupOppijaWithOpiskeluoikeus(withLuokkaAste.build) {
             verifyResponseStatusOk()
+          }
+        }
+      }
+
+      "Yhdysluokka" - {
+        val jaksonAlku = date(2026, 8, 1)
+        val arviointiPvm = date(2026, 9, 1)
+
+        "Eri luokka-aste on sallittu pelkän yhdysluokka-jakson perusteella ilman tavoitekokonaisuuksittain opiskelua" in {
+          setupOppijaWithOpiskeluoikeus(
+            TuenPäätöksellinenBuilder(
+              yhdysluokka = Some(List(Aikajakso(alku = jaksonAlku, loppu = None)))
+            ).withLuokkaAsteSuoritus("7", arviointiPvm).build
+          ) {
+            verifyResponseStatusOk()
+          }
+        }
+
+        "Eri luokka-aste ilman tavoitekokonaisuuksittain opiskelua tai yhdysluokkaa -> HTTP 400" in {
+          setupOppijaWithOpiskeluoikeus(
+            TuenPäätöksellinenBuilder()
+              .withLuokkaAsteSuoritus("7", arviointiPvm).build
+          ) {
+            verifyResponseStatus(400,
+              KoskiErrorCategory.badRequest.validation.date(
+                "Perusopetuksen oppiaineen HI suorituksella on tavoitekokonaisuuksittain opiskeluun tai yhdysluokkaan liittyvä tieto luokkaAste (7) mutta ei tavoitekokonaisuuksittain opiskelun tai yhdysluokan aikajaksoa, joka kattaisi vuosiluokan vahvistuspäivän tai suorituksen arviointipäivän."
+              )
+            )
+          }
+        }
+
+        "Yhdysluokka-jakso ei kata vahvistuspäivää -> HTTP 400" in {
+          setupOppijaWithOpiskeluoikeus(
+            TuenPäätöksellinenBuilder(
+              yhdysluokka = Some(List(Aikajakso(alku = jaksonAlku, loppu = Some(arviointiPvm.minusDays(1)))))
+            ).withLuokkaAsteSuoritus("7", arviointiPvm).build
+          ) {
+            verifyResponseStatus(400,
+              KoskiErrorCategory.badRequest.validation.date(
+                "Perusopetuksen oppiaineen HI suorituksella on tavoitekokonaisuuksittain opiskeluun tai yhdysluokkaan liittyvä tieto luokkaAste (7) mutta ei tavoitekokonaisuuksittain opiskelun tai yhdysluokan aikajaksoa, joka kattaisi vuosiluokan vahvistuspäivän tai suorituksen arviointipäivän."
+              )
+            )
           }
         }
       }

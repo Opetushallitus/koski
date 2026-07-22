@@ -60,6 +60,12 @@ object PerusopetuksenOpiskeluoikeusValidation extends Logging {
       oo.lisätiedot.flatMap(_.tavoitekokonaisuuksittainOpiskelu).getOrElse(Seq.empty).exists(_.contains(pvm))
   }
 
+  def yhdysluokkaVoimassa(oo: KoskeenTallennettavaOpiskeluoikeus, pvm: LocalDate): Boolean = oo match {
+    case oo: PerusopetuksenOpiskeluoikeus =>
+      oo.lisätiedot.flatMap(_.yhdysluokka).getOrElse(Seq.empty).exists(_.contains(pvm))
+    case _ => false
+  }
+
   def fillPerusopetuksenVuosiluokkiinSitoutumatonOpetus(config: Config)(oo: KoskeenTallennettavaOpiskeluoikeus): KoskeenTallennettavaOpiskeluoikeus = {
     val lastAllowed = LocalDate.parse(config.getString("validaatiot.VSOPKentänViimeinenKäyttöpäivä"))
     oo match {
@@ -88,10 +94,10 @@ object PerusopetuksenOpiskeluoikeusValidation extends Logging {
             os.luokkaAste match {
               case Some(la) =>
                 val vahvistuksenpäiväys = Seq(vahvistuspäivä, os.ensimmäinenArviointiPäivä).flatten
-                val tavoitekokonaisuusosuujaksolle = vahvistuspäivä.exists(d => tavoitekokonaisuuksittainOpiskeluVoimassa(oo, d))
+                val tavoitekokonaisuusTaiYhdysluokkaJaksolla = vahvistuspäivä.exists(d => tavoitekokonaisuuksittainOpiskeluVoimassa(oo, d) || yhdysluokkaVoimassa(oo, d))
                 if (vahvistuspäivä.isEmpty || (vsopOn && vahvistuspäivä.exists(p => !p.isAfter(cutoff)))) { None }
-                else if (!tavoitekokonaisuusosuujaksolle ) {
-                  Some(KoskiErrorCategory.badRequest.validation.date(s"Perusopetuksen oppiaineen ${os.koulutusmoduuli.tunniste.koodiarvo} suorituksella on tavoitekokonaisuuksittain opiskeluun liittyvä tieto luokkaAste (${la.koodiarvo}) mutta ei tavoitekokonaisuuksittain opiskelun aikajaksoa, joka kattaisi vuosiluokan vahvistuspäivän tai suorituksen arviointipäivän."))
+                else if (!tavoitekokonaisuusTaiYhdysluokkaJaksolla) {
+                  Some(KoskiErrorCategory.badRequest.validation.date(s"Perusopetuksen oppiaineen ${os.koulutusmoduuli.tunniste.koodiarvo} suorituksella on tavoitekokonaisuuksittain opiskeluun tai yhdysluokkaan liittyvä tieto luokkaAste (${la.koodiarvo}) mutta ei tavoitekokonaisuuksittain opiskelun tai yhdysluokan aikajaksoa, joka kattaisi vuosiluokan vahvistuspäivän tai suorituksen arviointipäivän."))
                 } else if (la == vuosiluokka) {
                   Some(KoskiErrorCategory.badRequest.validation.date(s"Perusopetuksen oppiaineen ${os.koulutusmoduuli.tunniste.koodiarvo} suorituksen tavoitekokonaisuuksittain opiskeluun liittyvä kenttä luokkaAste ei saa olla sama kuin vuosiluokka (${vuosiluokka.koodiarvo})"))
                 } else{ None }
