@@ -94,9 +94,9 @@ object PerusopetuksenOpiskeluoikeusValidation extends Logging {
             os.luokkaAste match {
               case Some(la) =>
                 val vahvistuksenpäiväys = Seq(vahvistuspäivä, os.ensimmäinenArviointiPäivä).flatten
-                val justifioituJaksolle = vahvistuspäivä.exists(d => tavoitekokonaisuuksittainOpiskeluVoimassa(oo, d) || yhdysluokkaVoimassa(oo, d))
+                val tavoitekokonaisuusTaiYhdysluokkaJaksolla = vahvistuspäivä.exists(d => tavoitekokonaisuuksittainOpiskeluVoimassa(oo, d) || yhdysluokkaVoimassa(oo, d))
                 if (vahvistuspäivä.isEmpty || (vsopOn && vahvistuspäivä.exists(p => !p.isAfter(cutoff)))) { None }
-                else if (!justifioituJaksolle) {
+                else if (!tavoitekokonaisuusTaiYhdysluokkaJaksolla) {
                   Some(KoskiErrorCategory.badRequest.validation.date(s"Perusopetuksen oppiaineen ${os.koulutusmoduuli.tunniste.koodiarvo} suorituksella on tavoitekokonaisuuksittain opiskeluun tai yhdysluokkaan liittyvä tieto luokkaAste (${la.koodiarvo}) mutta ei tavoitekokonaisuuksittain opiskelun tai yhdysluokan aikajaksoa, joka kattaisi vuosiluokan vahvistuspäivän tai suorituksen arviointipäivän."))
                 } else if (la == vuosiluokka) {
                   Some(KoskiErrorCategory.badRequest.validation.date(s"Perusopetuksen oppiaineen ${os.koulutusmoduuli.tunniste.koodiarvo} suorituksen tavoitekokonaisuuksittain opiskeluun liittyvä kenttä luokkaAste ei saa olla sama kuin vuosiluokka (${vuosiluokka.koodiarvo})"))
