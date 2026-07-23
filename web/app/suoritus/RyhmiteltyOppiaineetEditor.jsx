@@ -11,6 +11,7 @@ import {
   diaLukukausiAlternativesCompletionFn,
   diaRyhmät
 } from '../dia/DIA'
+import { diaLaajuusOpintopisteinä } from '../dia/diaLaajuus'
 import Text from '../i18n/Text'
 
 const diaCustomizations = {
@@ -118,6 +119,16 @@ export default ({
     customKurssitSortFn
   } = resolvePropertiesByType(päätasonSuorituksenTyyppi)
 
+  // DIA-tutkinnon laajuus ilmoitetaan opintopisteinä 1.8.2026 tai myöhemmin alkaneille
+  // opiskeluoikeuksille, joten sarakeotsikon yksikkö määräytyy alkamispäivän perusteella.
+  const alkamispäivä = modelData(
+    suorituksetModel.context.opiskeluoikeus,
+    'alkamispäivä'
+  )
+  const efektiivinenLaajuusyksikkö = diaLaajuusOpintopisteinä(alkamispäivä)
+    ? 'opintopistettä'
+    : laajuusyksikkö
+
   const { aineryhmät, muutAineet, footnotes } = groupAineet(
     oppiaineet,
     päätasonSuoritusModel,
@@ -140,7 +151,7 @@ export default ({
     <div>
       <table className="suoritukset oppiaineet">
         <LukionOppiaineetTableHead
-          laajuusyksikkö={laajuusyksikkö}
+          laajuusyksikkö={efektiivinenLaajuusyksikkö}
           showArviointi={showArviointi}
         />
         <tbody>

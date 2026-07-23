@@ -6,11 +6,13 @@
 export type Rajapäivät = {
   $class: 'fi.oph.koski.config.Rajapäivät'
   ibLaajuusOpintopisteinäAlkaen: string
+  diaLaajuusOpintopisteinäAlkaen: string
   kielitutkintotodistusAikaisinAlkamispäivä: string
 }
 
 export const Rajapäivät = (o: {
   ibLaajuusOpintopisteinäAlkaen: string
+  diaLaajuusOpintopisteinäAlkaen: string
   kielitutkintotodistusAikaisinAlkamispäivä: string
 }): Rajapäivät => ({ $class: 'fi.oph.koski.config.Rajapäivät', ...o })
 
