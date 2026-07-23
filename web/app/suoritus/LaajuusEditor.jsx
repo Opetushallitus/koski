@@ -65,12 +65,13 @@ const DiaLaajuudenArvoEditor = ({ model, disabled }) => {
       : diaLaajuudenOletusprototyyppi(model)
     pushModel(modelSetValue(base, { data: parseNumber(raw) }, 'arvo'))
   }
+  const error = !modelValid(model)
   return (
     <input
       type="text"
       defaultValue={numberToString(data)}
       onChange={onChange}
-      className="editor-input inline number"
+      className={'editor-input inline number' + (error ? ' error' : '')}
       data-testid="number-editor"
     />
   )

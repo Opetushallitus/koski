@@ -500,16 +500,23 @@ export const optionalPrototypeModel = <
   return R.mergeRight(prototype, createOptionalEmpty(model)) as P // Ensure that the prototype model has optional flag and optionalPrototype
 }
 
-// Tunnistaa DIA-tutkinnon laajuuskentän (unioni vuosiviikkotunti/opintopiste), sekä tyhjän
-// (optionalPrototype) että täytetyn (value.classes) tapauksen.
+// Tunnistaa DIA-tutkinnon laajuuskentän, joka on unioni (vuosiviikkotunti/opintopiste).
+// Tunnistus tehdään unionin oneOfClass-kentästä — EI value.classes-listasta: unionin trait
+// `LaajuusVuosiviikkotunneissaTaiOpintopisteissä` on periytetty myös tavallisiin
+// LaajuusVuosiviikkotunneissa/LaajuusOpintopisteissä-luokkiin, joten sen nimi esiintyy myös
+// ei-unioni-laajuuksien (esim. ESH, lukio) classes-listassa. Vain aito unionikenttä on OneOfModel.
 export const onDiaLaajuusUnioni = (
   model?: EditorModel & OptionalModel & MaybeOneOfModel & Contextualized
 ): boolean => {
   if (!model) return false
-  if (hasValue(model)) {
-    return !!(model as any).value?.classes?.includes(diaLaajuusOneOfClass)
+  if (isOneOfModel(model as any)) {
+    return (model as any).oneOfClass === diaLaajuusOneOfClass
   }
-  if (isSomeOptionalModel(model) && (model as any).optionalPrototype) {
+  if (
+    isSomeOptionalModel(model) &&
+    !hasValue(model) &&
+    (model as any).optionalPrototype
+  ) {
     const proto = preparePrototypeModel((model as any).optionalPrototype, model)
     return (
       !!proto &&
