@@ -48,6 +48,7 @@ import {
 import { flatMapArray, notUndefined } from '../util/util'
 import { hashAdd, hashCode } from './hashcode'
 import { filterObjByKey } from '../util/fp/objects'
+import { diaLaajuusOpintopisteinä } from '../dia/diaLaajuus'
 
 export type EditorElement = JSX.Element & {
   isEmpty?: (model: EditorModel) => boolean
@@ -497,6 +498,87 @@ export const optionalPrototypeModel = <
     )!
   }
   return R.mergeRight(prototype, createOptionalEmpty(model)) as P // Ensure that the prototype model has optional flag and optionalPrototype
+}
+
+// Tunnistaa DIA-tutkinnon laajuuskentän (unioni vuosiviikkotunti/opintopiste), sekä tyhjän
+// (optionalPrototype) että täytetyn (value.classes) tapauksen.
+export const onDiaLaajuusUnioni = (
+  model?: EditorModel & OptionalModel & MaybeOneOfModel & Contextualized
+): boolean => {
+  if (!model) return false
+  if (hasValue(model)) {
+    return !!(model as any).value?.classes?.includes(diaLaajuusOneOfClass)
+  }
+  if (isSomeOptionalModel(model) && (model as any).optionalPrototype) {
+    const proto = preparePrototypeModel((model as any).optionalPrototype, model)
+    return (
+      !!proto &&
+      isOneOfModel(proto) &&
+      (proto as any).oneOfClass === diaLaajuusOneOfClass
+    )
+  }
+  return false
+}
+
+// Palauttaa tyhjälle DIA-laajuudelle opintopisteoletusta käyttävän prototyyppimallin (samalla
+// polulla ja kontekstilla kuin alkuperäinen malli), kun opiskeluoikeus on alkanut 1.8.2026 tai
+// myöhemmin. Muutoin (esim. ennen rajapäivää) palautetaan tavallinen prototyyppi (vuosiviikkotunti).
+//
+// Tämä on tarpeen, koska laajuuden arvoa syötettäessä muutos sovelletaan juurimalliin ilman
+// opiskeluoikeuskontekstia (context.opiskeluoikeus lisätään vain renderöinnissä), jolloin yksikkö
+// ratkeaisi aina backendin globaaliksi oletukseksi (vuosiviikkotunti). Siksi LaajuusEditor
+// rakentaa ja työntää koko laajuusmallin oikealla yksiköllä jo renderöintikontekstissa.
+export const diaLaajuudenOletusprototyyppi = <
+  M extends EditorModel & OptionalModel & MaybeOneOfModel & Contextualized
+>(
+  model: M
+): M => {
+  if (isSomeOptionalModel(model) && !hasValue(model)) {
+    const proto = preparePrototypeModel(model.optionalPrototype as any, model)
+    if (proto && isOneOfModel(proto)) {
+      const opintopiste = diaLaajuusOpintopistePrototype(proto, model)
+      if (opintopiste) {
+        ;(model as any).optionalPrototype = opintopiste
+      }
+    }
+  }
+  return optionalPrototypeModel(model) as M
+}
+
+const diaLaajuusOneOfClass = 'laajuusvuosiviikkotunneissataiopintopisteissa'
+const diaLaajuusOpintopisteKey = 'laajuusopintopisteissa'
+
+// DIA-tutkinnon laajuusyksikkö on unioni (vuosiviikkotunti/opintopiste). Backendin globaali
+// oletus on vuosiviikkotunti, mutta 1.8.2026 tai myöhemmin alkaneille DIA-opiskeluoikeuksille
+// laajuus on ilmoitettava opintopisteinä, joten oletukseksi valitaan tällöin opintopiste-vaihtoehto.
+// Prototyypit rakennetaan backendissä globaalisti ilman opiskeluoikeuskohtaista tietoa, joten
+// oletus tarkennetaan tässä opiskeluoikeuden alkamispäivän perusteella.
+//
+// Vaihtoehto tunnistetaan ratkaistun mallin luokasta (value.classes), EI PrototypeModelin
+// key-kentästä: oneOfPrototypes on jaettu globaalisti kaikkien laajuuskenttien kesken, ja
+// prototyypin ratkaiseminen poistaa key-kentän — key-vertailu toimisi siis vain ensimmäisellä
+// kutsulla ja palaisi sen jälkeen vuosiviikkotuntiin.
+const diaLaajuusOpintopistePrototype = (
+  oneOfModel: OneOfModel & Contextualized,
+  forModel: EditorModel & Contextualized
+): (EditorModel & OneOfModel) | undefined => {
+  if (oneOfModel.oneOfClass !== diaLaajuusOneOfClass) return undefined
+  const alkamispäivä = modelData(
+    (forModel.context as any)?.opiskeluoikeus,
+    'alkamispäivä'
+  ) as string | undefined
+  if (!diaLaajuusOpintopisteinä(alkamispäivä)) return undefined
+  const opintopiste = oneOfModel.oneOfPrototypes
+    .map((proto) => preparePrototypeModel(proto, forModel))
+    .find(
+      (proto) =>
+        !!(proto as any)?.value?.classes?.includes(diaLaajuusOpintopisteKey)
+    )
+  if (!opintopiste) return undefined
+  return R.mergeRight(opintopiste as any, {
+    oneOfClass: oneOfModel.oneOfClass,
+    oneOfPrototypes: oneOfModel.oneOfPrototypes
+  }) as EditorModel & OneOfModel
 }
 
 export const createOptionalEmpty = <M extends EditorModel & OptionalModel>(
