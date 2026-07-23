@@ -823,6 +823,20 @@ object AmmatillinenExampleData {
     todistuksellaNäkyvätLisätiedot = Some("Suorittaa toista osaamisalaa")
   )
 
+  def ammatillisenTutkinnonOsittainenSuoritusLaaja = {
+    val pohja = ammatillisenTutkinnonOsittainenSuoritusRapsa
+    pohja.copy(
+      osasuoritukset = pohja.osasuoritukset.map(
+        _ ++ List(
+          osittaisenTutkinnonTutkinnonOsanSuoritus(k3, ammatillisetTutkinnonOsat, "100160", "Vesistöjen hoito", 15),
+          osittaisenTutkinnonTutkinnonOsanSuoritus(h2, ammatillisetTutkinnonOsat, "100165", "Vesistötutkimuksen näytteenotto", 10),
+          osittaisenTutkinnonTutkinnonOsanSuoritus(k3, ammatillisetTutkinnonOsat, "100339", "Ympäristöanalytiikka", 20),
+          osittaisenTutkinnonTutkinnonOsanSuoritus(h2, ammatillisetTutkinnonOsat, "100155", "Vesiviljely", 15)
+        )
+      )
+    )
+  }
+
   def ammatillisenTutkinnonOsittainenUseastaTutkinnostaSuoritus = AmmatillisenTutkinnonOsittainenUseastaTutkinnostaSuoritus(
     koulutusmoduuli = AmmatillinenOsiaUseastaTutkinnosta(Koodistokoodiviite("ammatillinentutkintoosittainenuseastatutkinnosta", "suorituksentyyppi")),
     suoritustapa = suoritustapaReformi,

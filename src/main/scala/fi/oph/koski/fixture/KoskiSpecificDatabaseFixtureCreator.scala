@@ -351,6 +351,10 @@ class KoskiSpecificDatabaseFixtureCreator(application: KoskiApplication) extends
         KoskiSpecificMockOppijat.lahdejarjestelmanPurku,
         ExamplesKielitutkinto.ValtionhallinnonKielitutkinnot.Opiskeluoikeus.lähdejärjestelmällinenOpiskeluoikeus
       ),
+      (
+        KoskiSpecificMockOppijat.ammatillinenOsittainenLaaja,
+        AmmatillinenOsittainenReformi.opiskeluoikeusLaaja
+      ),
     )
   }
 

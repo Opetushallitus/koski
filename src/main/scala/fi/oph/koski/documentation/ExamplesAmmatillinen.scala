@@ -780,6 +780,10 @@ object AmmatillinenOsittainenReformi {
       )
     )
   )
+
+  val opiskeluoikeusLaaja = opiskeluoikeusRapsa.copy(
+    suoritukset = List(AmmatillinenExampleData.ammatillisenTutkinnonOsittainenSuoritusLaaja)
+  )
 }
 
 object AmmatillinenOsittainenUseistaTutkinnoista {

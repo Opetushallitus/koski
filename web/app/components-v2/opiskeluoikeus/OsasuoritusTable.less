@@ -56,6 +56,18 @@
   width: 100%;
 }
 
+.OsasuoritusRow__cellContent--clickable {
+  cursor: pointer;
+  color: @color-link-blue;
+}
+
+// Completed-merkin sarake varaa kokonaisen ruudukkosarakkeen, vaikka itse
+// merkki on kapea. Vedetään nimisaraketta vasemmalle, jotta nimi asettuu
+// lähelle completed-merkkiä (joka puolestaan on kiinni laajennuspainikkeessa).
+.OsasuoritusRow__nameColumn--completedAdjacent {
+  margin-left: -(2 * @baseline);
+}
+
 .OsasuoritusPropertyLabel {
   opacity: 0.5;
 }

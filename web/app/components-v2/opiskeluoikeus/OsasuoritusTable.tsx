@@ -160,19 +160,24 @@ export const OsasuoritusHeader = <DATA_KEYS extends string>(
         {spans.indent > 0 && (
           <Column span={spans.indent} className="OsasuoritusHeader__indent" />
         )}
-        {/* Tyhjät sarakkeet laajennus- ja completed-painikkeille, jotta
-            ensimmäisen sarakkeen otsikko on rivien nimien yläpuolella. */}
-        {!props.skipExpandableColumn && <Column span={spans.leftIcons} />}
-        {spans.completed > 0 && <Column span={spans.completed} />}
-        {props.columns.map((column, index) => (
-          <Column
-            key={index}
-            span={index === 0 ? spans.name : spans.data[index - 1]}
-            align={column.align}
-          >
-            {getColumnLabel(column)}
-          </Column>
-        ))}
+        {props.columns.map((column, index) => {
+          const isNameColumn = index === 0
+          // Nimisarakkeen otsikko ("… tutkinnon osat") venytetään alkamaan rivin
+          // vasemmasta reunasta laajennus- ja completed-ikonisarakkeiden yli,
+          // jotta se on linjassa alapuolisen vaakaviivan ja muun vasempaan
+          // tasatun sisällön kanssa — ei sisennettynä osasuoritusten nimien
+          // yläpuolelle.
+          const leadingSpan =
+            (props.skipExpandableColumn ? 0 : spans.leftIcons) + spans.completed
+          const span = isNameColumn
+            ? mapResponsiveValue((w: number) => leadingSpan + w)(spans.name)
+            : spans.data[index - 1]
+          return (
+            <Column key={index} span={span} align={column.align}>
+              {getColumnLabel(column)}
+            </Column>
+          )
+        })}
         {spans.rightIcons > 0 && (
           <Column
             span={spans.rightIcons}
@@ -200,6 +205,9 @@ export const OsasuoritusRow = <DATA_KEYS extends string>(
 
   const { TreeNode, ...tree } = useTree(props.initiallyOpen)
   const isOpen = props.forceOpen || tree.isOpen
+
+  const nameTogglesRow =
+    expandable && Boolean(props.row.content) && !props.forceOpen
 
   return (
     <TreeNode>
@@ -239,22 +247,48 @@ export const OsasuoritusRow = <DATA_KEYS extends string>(
             )}
           </Column>
         )}
-        {props.columns.map((column, index) => (
-          <Column
-            key={index}
-            span={index === 0 ? spans.name : spans.data[index - 1]}
-            align={column.align}
-            className={
-              index === 0
-                ? 'OsasuoritusRow__nameColumn'
-                : 'OsasuoritusRow__dataColumn'
-            }
-          >
-            <div className="OsasuoritusRow__cellContent">
-              {props.row.columns[column.key]}
-            </div>
-          </Column>
-        ))}
+        {props.columns.map((column, index) => {
+          const isNameColumn = index === 0
+          const clickableName = isNameColumn && nameTogglesRow
+          return (
+            <Column
+              key={index}
+              span={isNameColumn ? spans.name : spans.data[index - 1]}
+              align={column.align}
+              className={
+                isNameColumn
+                  ? cx(
+                      'OsasuoritusRow__nameColumn',
+                      props.showCompleted &&
+                        'OsasuoritusRow__nameColumn--completedAdjacent'
+                    )
+                  : 'OsasuoritusRow__dataColumn'
+              }
+            >
+              <div
+                className={cx(
+                  'OsasuoritusRow__cellContent',
+                  clickableName && 'OsasuoritusRow__cellContent--clickable'
+                )}
+                onClick={
+                  clickableName
+                    ? (e) => {
+                        if (
+                          !(e.target as HTMLElement).closest(
+                            'input, button, a, select, textarea, label, .Select'
+                          )
+                        ) {
+                          tree.toggle()
+                        }
+                      }
+                    : undefined
+                }
+              >
+                {props.row.columns[column.key]}
+              </div>
+            </Column>
+          )
+        })}
         {props.editMode && props.onRemove && (
           <Column
             span={spans.rightIcons}

@@ -3,6 +3,12 @@
     display: flex;
     align-items: center;
     min-height: 1.5 * @baseline;
+    // Työpöytäleveyksillä pitkät kentän nimet (esim. "Kuullun ymmärtämisen
+    // taitotaso") eivät rivity vaan käyttävät nimisarakkeen ja arvon välissä
+    // olevan tyhjän tilan. min-width estää nimeä venyttämästä ruudukkosaraketta,
+    // jolloin arvot pysyvät linjassa. Kapeilla näytöillä rivitys sallitaan alla.
+    white-space: nowrap;
+    min-width: 0;
   }
   .OsasuoritusPropertyValue {
     display: block;
@@ -14,5 +20,13 @@
   // korkeuden, joka tekee rivistä tarpeettoman korkean. Tiivistä omiin rajoihin.
   .Column {
     min-height: 1.5 * @baseline;
+  }
+}
+
+// Kapeilla näytöillä (esim. kansalaisen mobiilinäkymä) nimisarake on niin kapea,
+// että rivittymätön pitkä nimi menisi arvon päälle. Sallitaan silloin rivitys.
+@media screen and (max-width: @Columns-phone-breakpoint) {
+  .OsasuoritusProperty .OsasuoritusPropertyLabel {
+    white-space: normal;
   }
 }
