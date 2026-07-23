@@ -105,6 +105,7 @@ describe('Oppijataulukko', function () {
         expect(page.oppijataulukko.names()).to.deep.equal([
           'Amis, Antti',
           'Ammatillinen-Osittainen, Raitsu',
+          'Ammatillinen-Osittainen-Laaja, Lassi',
           'Ammattilainen, Aarne',
           'Erityisoppilaitoksessa, Emppu',
           'Erityisoppilaitoksessa, Emppu',
@@ -116,7 +117,7 @@ describe('Oppijataulukko', function () {
           'Rikkinäinen, Kela',
           'Tuleva-ammattilainen, Tuure'
         ])
-        expect(page.opiskeluoikeudeTotal()).to.equal('12')
+        expect(page.opiskeluoikeudeTotal()).to.equal('13')
       })
     })
 
@@ -130,6 +131,7 @@ describe('Oppijataulukko', function () {
         expect(page.oppijataulukko.names()).to.deep.equal([
           'Amis, Antti',
           'Ammatillinen-Osittainen, Raitsu',
+          'Ammatillinen-Osittainen-Laaja, Lassi',
           'Ammattilainen, Aarne',
           'Erityisoppilaitoksessa, Emppu',
           'Erityisoppilaitoksessa, Emppu',
@@ -141,7 +143,7 @@ describe('Oppijataulukko', function () {
           'Rikkinäinen, Kela',
           'Tuleva-ammattilainen, Tuure'
         ])
-        expect(page.opiskeluoikeudeTotal()).to.equal('12')
+        expect(page.opiskeluoikeudeTotal()).to.equal('13')
       })
     })
 
@@ -155,6 +157,7 @@ describe('Oppijataulukko', function () {
         expect(page.oppijataulukko.names()).to.deep.equal([
           'Amikseenvalmistautuja, Anneli',
           'Ammatillinen-Osittainen, Raitsu',
+          'Ammatillinen-Osittainen-Laaja, Lassi',
           'Ammattilainen, Aarne',
           'Erikoinen, Erja',
           'Erityisoppilaitoksessa, Emppu',
@@ -170,7 +173,7 @@ describe('Oppijataulukko', function () {
           'Telmanen, Tuula',
           'Valviralle, Veera'
         ])
-        expect(page.opiskeluoikeudeTotal()).to.equal('16')
+        expect(page.opiskeluoikeudeTotal()).to.equal('17')
       })
     })
 
@@ -252,6 +255,7 @@ describe('Oppijataulukko', function () {
           'Amikseenvalmistautuja, Anneli',
           'Amis, Antti',
           'Ammatillinen-Osittainen, Raitsu',
+          'Ammatillinen-Osittainen-Laaja, Lassi',
           'Ammattilainen, Aarne',
           'Çelik-Eerola, Jouni',
           'Demo, Nordea',
@@ -340,10 +344,9 @@ describe('Oppijataulukko', function () {
           'Tehtävään-Valmistava-vahvistettu, Tauno',
           'Tekijä, Teija',
           'Telmanen, Tuula',
-          'Tiedonsiirto, Tiina',
-          'Toiminta, Tommi'
+          'Tiedonsiirto, Tiina'
         ])
-        expect(page.opiskeluoikeudeTotal()).to.equal('124')
+        expect(page.opiskeluoikeudeTotal()).to.equal('125')
       })
     })
 
