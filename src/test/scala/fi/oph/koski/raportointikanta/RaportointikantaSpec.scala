@@ -5,8 +5,8 @@ import fi.oph.koski.db.KoskiTables.{KoskiOpiskeluOikeudet, PoistetutOpiskeluoike
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.documentation.ExampleData.{helsinki, suomi}
 import fi.oph.koski.documentation.{AmmatillinenExampleData, ExampleData, YleissivistavakoulutusExampleData}
-import fi.oph.koski.henkilo.{KoskiSpecificMockOppijat, LaajatOppijaHenkilöTiedot}
-import fi.oph.koski.henkilo.KoskiSpecificMockOppijat.{master, masterEiKoskessa, turvakielto}
+import fi.oph.koski.henkilo.{KoskiSpecificMockOppijat, LaajatOppijaHenkilöTiedot, MockOpintopolkuHenkilöFacade, OppijaHenkilöWithMasterInfo}
+import fi.oph.koski.henkilo.KoskiSpecificMockOppijat.{eero, master, masterEiKoskessa, slaveMasterEiKoskessa, teija, turvakielto}
 import fi.oph.koski.json.{JsonFiles, JsonSerializer}
 import fi.oph.koski.koskiuser.MockUsers
 import fi.oph.koski.organisaatio.{MockOrganisaatiot, Organisaatiotyyppi}
@@ -1247,6 +1247,107 @@ class RaportointikantaSpec
     }
   }
 
+  "Inkrementaalinen henkilölataus" - {
+    "Säilyttää muuttumattomat henkilöt" in {
+      KoskiApplicationForTests.fixtureCreator.resetFixtures(reloadRaportointikanta = true, reloadYtrData = true)
+
+      val henkilötEnnen = mainRaportointiDb.runDbSync(mainRaportointiDb.RHenkilöt.result).toSet
+      val kuntahistoriaCountEnnen = mainRaportointiDb.runDbSync(mainRaportointiDb.RKotikuntahistoria.length.result)
+
+      päivitäRaportointikantaInkrementaalisesti()
+
+      mainRaportointiDb.runDbSync(mainRaportointiDb.RHenkilöt.result).toSet should equal(henkilötEnnen)
+      mainRaportointiDb.runDbSync(mainRaportointiDb.RKotikuntahistoria.length.result) should equal(kuntahistoriaCountEnnen)
+    }
+
+    "Päivittää muuttuneen henkilön tiedot" in {
+      KoskiApplicationForTests.fixtureCreator.resetFixtures(reloadRaportointikanta = true, reloadYtrData = true)
+
+      val alkuperäinenHenkilöCount = henkiloCount
+      val uusiSukunimi = "Uusisukunimi-" + System.currentTimeMillis()
+      henkilöFacade.modifyMock(OppijaHenkilöWithMasterInfo(eero.copy(sukunimi = uusiSukunimi), None))
+
+      päivitäRaportointikantaInkrementaalisesti()
+
+      val päivitetty = mainRaportointiDb.runDbSync(
+        mainRaportointiDb.RHenkilöt.filter(_.oppijaOid === eero.oid).result
+      )
+      päivitetty.map(_.sukunimi) should equal(Seq(uusiSukunimi))
+      henkiloCount should equal(alkuperäinenHenkilöCount)
+    }
+
+    "Päivittää muuttuneen henkilön kotikuntahistorian" in {
+      KoskiApplicationForTests.fixtureCreator.resetFixtures(reloadRaportointikanta = true, reloadYtrData = true)
+
+      val rivitEnnenPoistoa = mainRaportointiDb.runDbSync(
+        mainRaportointiDb.RKotikuntahistoria.filter(_.masterOppijaOid === teija.oid).result
+      )
+      rivitEnnenPoistoa should not be empty
+
+      mainRaportointiDb.runDbSync(
+        mainRaportointiDb.RKotikuntahistoria.filter(_.masterOppijaOid === teija.oid).delete
+      )
+      mainRaportointiDb.runDbSync(
+        mainRaportointiDb.RKotikuntahistoria.filter(_.masterOppijaOid === teija.oid).result
+      ) shouldBe empty
+
+      henkilöFacade.modifyMock(OppijaHenkilöWithMasterInfo(teija.copy(sukunimi = "Muutosta-" + System.currentTimeMillis()), None))
+
+      päivitäRaportointikantaInkrementaalisesti()
+
+      val rivitInkrementaalisenJälkeen = mainRaportointiDb.runDbSync(
+        mainRaportointiDb.RKotikuntahistoria.filter(_.masterOppijaOid === teija.oid).result
+      )
+      rivitInkrementaalisenJälkeen.toSet should equal(rivitEnnenPoistoa.toSet)
+    }
+
+    "Päivittää turvakiellollisen henkilön kotikuntahistorian myös confidential-skeemassa" in {
+      KoskiApplicationForTests.fixtureCreator.resetFixtures(reloadRaportointikanta = true, reloadYtrData = true)
+
+      val confidentialRivitEnnenPoistoa = confidentalRaportointiDb.runDbSync(
+        confidentalRaportointiDb.RKotikuntahistoria.filter(_.masterOppijaOid === turvakielto.oid).result
+      )
+      confidentialRivitEnnenPoistoa.exists(_.turvakielto) shouldBe true
+      confidentialRivitEnnenPoistoa.exists(!_.turvakielto) shouldBe true
+
+      confidentalRaportointiDb.runDbSync(
+        confidentalRaportointiDb.RKotikuntahistoria.filter(_.masterOppijaOid === turvakielto.oid).delete
+      )
+      confidentalRaportointiDb.runDbSync(
+        confidentalRaportointiDb.RKotikuntahistoria.filter(_.masterOppijaOid === turvakielto.oid).result
+      ) shouldBe empty
+
+      henkilöFacade.modifyMock(OppijaHenkilöWithMasterInfo(turvakielto.copy(sukunimi = "Turva-" + System.currentTimeMillis()), None))
+
+      päivitäRaportointikantaInkrementaalisesti()
+
+      val confidentialRivitInkrementaalisenJälkeen = confidentalRaportointiDb.runDbSync(
+        confidentalRaportointiDb.RKotikuntahistoria.filter(_.masterOppijaOid === turvakielto.oid).result
+      )
+      confidentialRivitInkrementaalisenJälkeen.toSet should equal(confidentialRivitEnnenPoistoa.toSet)
+    }
+
+    "Päivittää myös slave-oppijan rivit kun master muuttuu" in {
+      KoskiApplicationForTests.fixtureCreator.resetFixtures(reloadRaportointikanta = true, reloadYtrData = true)
+
+      val uusiSukunimi = "MuuttunutMaster-" + System.currentTimeMillis()
+      henkilöFacade.modifyMock(OppijaHenkilöWithMasterInfo(masterEiKoskessa.copy(sukunimi = uusiSukunimi), None))
+
+      päivitäRaportointikantaInkrementaalisesti()
+
+      val masterRivi = mainRaportointiDb.runDbSync(
+        mainRaportointiDb.RHenkilöt.filter(_.oppijaOid === masterEiKoskessa.oid).result
+      )
+      val slaveRivi = mainRaportointiDb.runDbSync(
+        mainRaportointiDb.RHenkilöt.filter(_.oppijaOid === slaveMasterEiKoskessa.henkilö.oid).result
+      )
+
+      masterRivi.map(_.sukunimi) should equal(Seq(uusiSukunimi))
+      slaveRivi.map(_.sukunimi) should equal(Seq(uusiSukunimi))
+      slaveRivi.map(_.masterOid) should equal(Seq(masterEiKoskessa.oid))
+    }
+  }
+
   "Inkrementaalinen lataus muutetaan täyslataukseksi jos päivitettäviä rivien määrä ylittää raja-arvon" in {
     KoskiApplicationForTests.fixtureCreator.resetFixtures(reloadRaportointikanta = true, reloadYtrData = true)
     val kaikkiOpiskeluoikeudet = runDbSync(KoskiOpiskeluOikeudet.filter(_.mitätöity === false).result).filter(isRaportointikantaanSiirrettäväOpiskeluoikeus)
@@ -1265,6 +1366,9 @@ class RaportointikantaSpec
 
     päivitetytRivit shouldBe kaikkiOpiskeluoikeudet.size + kaikkiYtrOpiskeluoikeudet.size
   }
+
+  private def henkilöFacade: MockOpintopolkuHenkilöFacade =
+    KoskiApplicationForTests.opintopolkuHenkilöFacade.asInstanceOf[MockOpintopolkuHenkilöFacade]
 
   private def opiskeluoikeusCount: Int = mainRaportointiDb.runDbSync(mainRaportointiDb.ROpiskeluoikeudet.length.result)
   private def mitätöityOpiskeluoikeusCount: Int = mainRaportointiDb.runDbSync(mainRaportointiDb.RMitätöidytOpiskeluoikeudet.length.result)

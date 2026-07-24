@@ -145,6 +145,28 @@ class RaportointikantaService(application: KoskiApplication) extends Logging {
     HenkilöLoader.loadHenkilöt(opintopolkuHenkilöFacade, db, application.koodistoPalvelu, application.opiskeluoikeusRepository, kuntakoodit)
   }
 
+  def loadHenkilötIncremental(previousDb: RaportointiDatabase, db: RaportointiDatabase): Int = {
+    val kuntakoodit = application.koodistoPalvelu.getLatestVersionOptional("kunta")
+      .map(application.koodistoPalvelu.getKoodistoKoodit)
+      .getOrElse(List.empty)
+    val opintopolkuHenkilöFacade = application.opintopolkuHenkilöFacade.withRetryStrategy(
+      OppijanumeroRekisteriClientRetryStrategy(
+        maxRetries = 10,
+        maxWaitBetweenRetries = 5.minutes,
+        retryTimeout = 3.minutes,
+      )
+    )
+    IncrementalHenkilöLoader.loadHenkilötIncremental(
+      opintopolkuHenkilöFacade,
+      previousDb,
+      db,
+      application.koodistoPalvelu,
+      application.opiskeluoikeusRepository,
+      application.henkilöCache,
+      kuntakoodit,
+    )
+  }
+
   def loadOrganisaatiot(db: RaportointiDatabase = raportointiDatabase): Int =
     OrganisaatioLoader.loadOrganisaatiot(application.organisaatioRepository, db)
 
@@ -227,7 +249,7 @@ class RaportointikantaService(application: KoskiApplication) extends Logging {
         onCompleted = () => {
           //Without try-catch, in case of an exception the process just silently halts, this is a feature of java.util.concurrent.Executors
           try {
-            loadRestAndSwap()
+            loadRestAndSwap(update)
             if (update.isDefined) {
               päivitetytOpiskeluoikeudetJonoService.poistaKäsitellyt()
             } else {
@@ -249,8 +271,11 @@ class RaportointikantaService(application: KoskiApplication) extends Logging {
 
   private val doNothing = (_: Any) => ()
 
-  private val loadRestAndSwap = () => {
-    loadHenkilöt(loadDatabase)
+  private def loadRestAndSwap(update: Option[RaportointiDatabaseUpdate]): Unit = {
+    update match {
+      case Some(u) => loadHenkilötIncremental(u.previousRaportointiDatabase, loadDatabase)
+      case None => loadHenkilöt(loadDatabase)
+    }
     loadOrganisaatiot(loadDatabase)
     loadKoodistot(loadDatabase)
     loadOppivelvollisuudestaVapautukset(loadDatabase)

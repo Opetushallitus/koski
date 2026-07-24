@@ -66,7 +66,7 @@ object HenkilöLoader extends Logging {
     total
   }
 
-  private def buildRHenkilöRow(
+  private[raportointikanta] def buildRHenkilöRow(
     oid: String,
     oppija: LaajatOppijaHenkilöTiedot,
     koodistoPalvelu: KoodistoPalvelu,
