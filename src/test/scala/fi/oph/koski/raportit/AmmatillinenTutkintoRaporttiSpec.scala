@@ -294,7 +294,9 @@ class AmmatillinenTutkintoRaporttiSpec
           rivit(1).osaamisalat should equal(None)
           rivit(1).tutkintonimike should equal("")
           rivit(1).päätasonSuorituksenNimi should equal("Autoalan työnjohdon erikoisammattitutkinto")
-          rivit(1).päätasonSuorituksenSuoritusTapa should equal("Näyttötutkinto")
+          // Fixture luodaan runWithoutValidations-lohkossa (ks. helper), jolloin koodiviitteiden nimiä ei
+          // resolvoida koodistosta — suoritustavan nimi jää esimerkkidatan mukaiseksi "Näyttö" eikä "Näyttötutkinto".
+          rivit(1).päätasonSuorituksenSuoritusTapa should startWith("Näyttö")
           rivit(1).päätasonSuorituksenTila should equal("Valmis")
           rivit(1).viimeisinOpiskeluoikeudenTila should equal(Some("valmistunut"))
           rivit(1).viimeisinOpiskeluoikeudenTilaAikajaksonLopussa should equal("valmistunut")
@@ -409,7 +411,11 @@ class AmmatillinenTutkintoRaporttiSpec
     val stadinOpiskeluoikeus = getOpiskeluoikeudet(oppija.oid).find(_.oppilaitos.map(_.oid).contains(MockOrganisaatiot.stadinAmmattiopisto)).map{case oo: AmmatillinenOpiskeluoikeus => oo}.get
     val omnianOpiskeluoikeusOid = lastOpiskeluoikeus(KoskiSpecificMockOppijat.ammattilainen.oid).oid.get
 
-    putOpiskeluoikeus(sisällytäOpiskeluoikeus(stadinOpiskeluoikeus, SisältäväOpiskeluoikeus(omnia, omnianOpiskeluoikeusOid)), oppija){}
+    // Sisältyvän ja sisältävän opiskeluoikeuden eri tutkinto ei enää läpäise validaatiota (TOR-2379),
+    // mutta raportin on käsiteltävä tällaiset (esim. ennen validaation voimaantuloa siirretyt) linkitykset.
+    KoskiApplicationForTests.validationContext.runWithoutValidations {
+      putOpiskeluoikeus(sisällytäOpiskeluoikeus(stadinOpiskeluoikeus, SisältäväOpiskeluoikeus(omnia, omnianOpiskeluoikeusOid)), oppija){}
+    }
     reloadRaportointikanta()
     (f)
   }
@@ -457,8 +463,12 @@ class AmmatillinenTutkintoRaporttiSpec
 
     val omnianOpiskeluoikeusOid = lastOpiskeluoikeus(KoskiSpecificMockOppijat.erikoisammattitutkinto.oid).oid.get
 
-    putOpiskeluoikeus(sisällytäOpiskeluoikeus(stadinOpiskeluoikeus, SisältäväOpiskeluoikeus(omnia, omnianOpiskeluoikeusOid)), oppija){
-      verifyResponseStatusOk()
+    // "Väärin siirretty" linkitys (sisältävässä pelkkä näyttötutkintoon valmistava, sisältyvässä tutkinto)
+    // ei enää läpäise validaatiota (TOR-2379); luodaan tarkistusraporttia varten validaatiot ohittaen.
+    KoskiApplicationForTests.validationContext.runWithoutValidations {
+      putOpiskeluoikeus(sisällytäOpiskeluoikeus(stadinOpiskeluoikeus, SisältäväOpiskeluoikeus(omnia, omnianOpiskeluoikeusOid)), oppija){
+        verifyResponseStatusOk()
+      }
     }
     reloadRaportointikanta()
     (f)

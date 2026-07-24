@@ -2,6 +2,7 @@ package fi.oph.koski.validation
 
 import com.typesafe.config.Config
 import fi.oph.koski.config.Environment
+import fi.oph.koski.db.KoskiOpiskeluoikeusRow
 import fi.oph.koski.documentation.ExamplesEsiopetus.{peruskoulunEsiopetuksenTunniste, päiväkodinEsiopetuksenTunniste}
 import fi.oph.koski.eperusteetvalidation.{EPerusteetFiller, EPerusteetLops2019Validator, EPerusteisiinPerustuvaValidator}
 import fi.oph.koski.fixture.ValidationTestContext
@@ -534,9 +535,38 @@ class KoskiValidator(
     )
   }
 
+  // Sisältyvän opiskeluoikeuden päätason suoritusten (suoritustyyppi + perusteen diaarinumero) on oltava
+  // sisältävän opiskeluoikeuden päätason suoritusten osajoukko; sisältävällä saa siis olla enemmän suorituksia.
+  // Esto otetaan tuotannossa käyttöön porrastetusti rajapäivällä; jos avainta ei ole asetettu, esto on aina voimassa.
+  private def eriTutkinnonLinkityksenEstoVoimassa: Boolean = {
+    val avain = "validaatiot.eriTutkinnonLinkitysEstettyAlkaen"
+    !config.hasPath(avain) || !LocalDate.now().isBefore(LocalDate.parse(config.getString(avain)))
+  }
+
+  // Kunkin päätason suorituksen tunniste linkityksen kannalta: suoritustyyppi ja perusteen diaarinumero.
+  private def linkityksenPäätasonSuoritustunnisteet(suoritukset: List[Suoritus]): Set[(String, Option[String])] =
+    suoritukset.map { s =>
+      val diaarinumero = s.koulutusmoduuli match {
+        case d: Diaarinumerollinen => d.perusteenDiaarinumero
+        case _ => None
+      }
+      (s.tyyppi.koodiarvo, diaarinumero)
+    }.toSet
+
+  private def sisältyvänSuorituksetSisältävänOsajoukko(sisältävä: KoskiOpiskeluoikeusRow, sisältyvä: Opiskeluoikeus): Boolean =
+    sisältävä.toOpiskeluoikeus(KoskiSpecificSession.systemUser) match {
+      case Right(emo) =>
+        val lapsi = linkityksenPäätasonSuoritustunnisteet(sisältyvä.suoritukset)
+        val emoTunnisteet = linkityksenPäätasonSuoritustunnisteet(emo.suoritukset)
+        lapsi.subsetOf(emoTunnisteet)
+      case Left(_) => true // Jos sisältävää ei saada dekoodattua, ei estetä linkitystä tällä perusteella.
+    }
+
   private def validateSisältyvyys(henkilö: Option[Henkilö], opiskeluoikeus: Opiskeluoikeus)(implicit user: KoskiSpecificSession, accessType: AccessType.Value): HttpStatus = opiskeluoikeus.sisältyyOpiskeluoikeuteen match {
     case Some(SisältäväOpiskeluoikeus(Oppilaitos(oppilaitosOid, _, _, _), oid)) if accessType == AccessType.write =>
       koskiOpiskeluoikeudet.findByOid(oid)(KoskiSpecificSession.systemUser) match {
+        case Right(sisältäväOpiskeluoikeus) if eriTutkinnonLinkityksenEstoVoimassa && !sisältyvänSuorituksetSisältävänOsajoukko(sisältäväOpiskeluoikeus, opiskeluoikeus) =>
+          KoskiErrorCategory.badRequest.validation.sisältäväOpiskeluoikeus.eriPäätasonSuoritus()
         case Right(sisältäväOpiskeluoikeus) if sisältäväOpiskeluoikeus.oppilaitosOid != oppilaitosOid =>
           KoskiErrorCategory.badRequest.validation.sisältäväOpiskeluoikeus.vääräOppilaitos()
         case Right(sisältäväOpiskeluoikeus) =>
