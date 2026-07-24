@@ -1,19 +1,25 @@
 package fi.oph.koski.api.misc
 
+import com.typesafe.config.Config
+import com.typesafe.config.ConfigValueFactory.fromAnyRef
 import fi.oph.koski.db.KoskiTables.KoskiOpiskeluOikeudetWithAccessCheck
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.documentation.AmmatillinenExampleData._
+import fi.oph.koski.documentation.{AmmattitutkintoExample, LukioExampleData}
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.koskiuser.KoskiSpecificSession.systemUser
-import fi.oph.koski.koskiuser.MockUsers
+import fi.oph.koski.koskiuser.{AccessType, KoskiSpecificSession, MockUsers}
 import fi.oph.koski.koskiuser.MockUsers.stadinAmmattiopistoJaOppisopimuskeskusTallentaja
 import fi.oph.koski.organisaatio.MockOrganisaatiot.{omnia, stadinAmmattiopisto}
-import fi.oph.koski.schema.{AmmatillinenOpiskeluoikeus, OidOrganisaatio, Oppilaitos, SisältäväOpiskeluoikeus}
+import fi.oph.koski.schema.{AmmatillinenOpiskeluoikeus, AmmatillisenTutkinnonSuoritus, LukionOpiskeluoikeus, OidOrganisaatio, Oppija, Oppilaitos, SisältäväOpiskeluoikeus}
 import fi.oph.koski.util.Wait
+import fi.oph.koski.validation.KoskiValidator
 import fi.oph.koski.{DatabaseTestMethods, KoskiApplicationForTests, KoskiHttpSpec}
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.should.Matchers
+
+import java.time.LocalDate
 
 import scala.language.reflectiveCalls
 
@@ -86,6 +92,71 @@ class SisältyväOpiskeluoikeusSpec extends AnyFreeSpec with Matchers with Opisk
       }
     }
 
+    "Eri tutkinnon tai koulutusmuodon linkitys" - {
+      // Sisältävät opiskeluoikeudet tyhjä-oppijalle; sisältyviä ei tallenneta (400), joten duplikaatteja ei synny.
+      lazy val lukioMaster: LukionOpiskeluoikeus =
+        createOpiskeluoikeus(KoskiSpecificMockOppijat.tyhjä, LukioExampleData.lukionOpiskeluoikeus(), user = MockUsers.paakayttaja)
+      lazy val ammatillinenAutoalaMaster: AmmatillinenOpiskeluoikeus =
+        createOpiskeluoikeus(KoskiSpecificMockOppijat.tyhjä, defaultOpiskeluoikeus, user = stadinAmmattiopistoJaOppisopimuskeskusTallentaja)
+
+      def sisältyväAmmatillinen(sisältävä: SisältäväOpiskeluoikeus, suoritus: AmmatillisenTutkinnonSuoritus): AmmatillinenOpiskeluoikeus =
+        defaultOpiskeluoikeus.copy(
+          oppilaitos = Some(Oppilaitos(omnia)),
+          sisältyyOpiskeluoikeuteen = Some(sisältävä),
+          suoritukset = List(suoritus)
+        )
+
+      "Eri koulutusmuodon opiskeluoikeuteen ei voi linkittää -> HTTP 400" in {
+        val sisältyvä = sisältyväAmmatillinen(
+          SisältäväOpiskeluoikeus(lukioMaster.oppilaitos.get, lukioMaster.oid.get),
+          autoalanPerustutkinnonSuoritus(OidOrganisaatio(omnia))
+        )
+        putOpiskeluoikeus(sisältyvä, henkilö = KoskiSpecificMockOppijat.tyhjä, headers = authHeaders(MockUsers.omniaTallentaja) ++ jsonContent) {
+          verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.sisältäväOpiskeluoikeus.eriPäätasonSuoritus())
+        }
+      }
+
+      "Eri tutkinnon opiskeluoikeuteen ei voi linkittää -> HTTP 400" in {
+        val sisältyvä = sisältyväAmmatillinen(
+          SisältäväOpiskeluoikeus(ammatillinenAutoalaMaster.oppilaitos.get, ammatillinenAutoalaMaster.oid.get),
+          puuteollisuudenPerustutkinnonSuoritus(OidOrganisaatio(omnia))
+        )
+        putOpiskeluoikeus(sisältyvä, henkilö = KoskiSpecificMockOppijat.tyhjä, headers = authHeaders(MockUsers.omniaTallentaja) ++ jsonContent) {
+          verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.sisältäväOpiskeluoikeus.eriPäätasonSuoritus())
+        }
+      }
+
+      "Kun validaatio ei ole vielä voimassa (rajapäivä tulevaisuudessa), linkitys sallitaan" in {
+        implicit val session: KoskiSpecificSession = KoskiSpecificSession.systemUser
+        implicit val accessType: AccessType.Value = AccessType.write
+        val sisältyvä = sisältyväAmmatillinen(
+          SisältäväOpiskeluoikeus(lukioMaster.oppilaitos.get, lukioMaster.oid.get),
+          autoalanPerustutkinnonSuoritus(OidOrganisaatio(omnia))
+        )
+        val config = KoskiApplicationForTests.config.withValue(
+          "validaatiot.eriTutkinnonLinkitysEstettyAlkaen",
+          fromAnyRef(LocalDate.now.plusDays(1).toString)
+        )
+        mockKoskiValidator(config)
+          .updateFieldsAndValidateAsJson(Oppija(KoskiSpecificMockOppijat.tyhjä, List(sisältyvä)))
+          .isRight should equal(true)
+      }
+
+      "Kun sisältyvän päätason suoritukset ovat sisältävän osajoukko (sisältävällä lisäksi näyttötutkintoon valmistava), linkitys sallitaan" in {
+        implicit val session: KoskiSpecificSession = KoskiSpecificSession.systemUser
+        implicit val accessType: AccessType.Value = AccessType.write
+        // Sisältävällä sama tutkinto + näyttötutkintoon valmistava; sisältyvällä pelkkä sama tutkinto -> osajoukko.
+        val sisältävä = createOpiskeluoikeus(KoskiSpecificMockOppijat.tyhjä, AmmattitutkintoExample.opiskeluoikeus, user = stadinAmmattiopistoJaOppisopimuskeskusTallentaja)
+        val sisältyvä = AmmattitutkintoExample.opiskeluoikeus.copy(
+          suoritukset = List(AmmattitutkintoExample.ammatillisenTutkinnonSuoritus),
+          sisältyyOpiskeluoikeuteen = Some(SisältäväOpiskeluoikeus(sisältävä.oppilaitos.get, sisältävä.oid.get))
+        )
+        mockKoskiValidator(KoskiApplicationForTests.config)
+          .updateFieldsAndValidateAsJson(Oppija(KoskiSpecificMockOppijat.tyhjä, List(sisältyvä)))
+          .isRight should equal(true)
+      }
+    }
+
     "Kun sisältävän opiskeluoikeuden henkilötieto on linkitetty -> HTTP 200" in {
       val original = createOpiskeluoikeus(KoskiSpecificMockOppijat.master, defaultOpiskeluoikeus, user = stadinAmmattiopistoJaOppisopimuskeskusTallentaja)
       val sisältyvä: AmmatillinenOpiskeluoikeus = defaultOpiskeluoikeus.copy(
@@ -99,6 +170,21 @@ class SisältyväOpiskeluoikeusSpec extends AnyFreeSpec with Matchers with Opisk
       }
     }
   }
+
+  def mockKoskiValidator(config: Config): KoskiValidator =
+    new KoskiValidator(
+      KoskiApplicationForTests.organisaatioRepository,
+      KoskiApplicationForTests.possu,
+      KoskiApplicationForTests.henkilöRepository,
+      KoskiApplicationForTests.ePerusteetValidator,
+      KoskiApplicationForTests.ePerusteetLops2019Validator,
+      KoskiApplicationForTests.ePerusteetFiller,
+      KoskiApplicationForTests.validatingAndResolvingExtractor,
+      KoskiApplicationForTests.suostumuksenPeruutusService,
+      KoskiApplicationForTests.koodistoViitePalvelu,
+      config,
+      KoskiApplicationForTests.validationContext,
+    )
 
   def opiskeluoikeusId(oo: AmmatillinenOpiskeluoikeus): Option[Int] =
     oo.oid.flatMap(oid => runDbSync(KoskiOpiskeluOikeudetWithAccessCheck(systemUser).filter(_.oid === oid).map(_.id).result).headOption)

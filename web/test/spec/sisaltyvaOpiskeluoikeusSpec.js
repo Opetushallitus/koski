@@ -23,8 +23,16 @@ describe('Opiskeluoikeuden sisältyvyys', function () {
       page.openPage,
       page.oppijaHaku.search('280618-402H', page.oppijaHaku.canAddNewOppija),
       page.oppijaHaku.addNewOppija,
-      addOppija.enterValidDataAmmatillinen({ oppilaitos: 'Omnia' }),
-      addOppija.submitAndExpectSuccess('280618-402H', 'Autoalan perustutkinto'),
+      // Sisältyvän ja sisältävän opiskeluoikeuden on oltava samaa tutkintoa (TOR-2379),
+      // joten luodaan sisältyvä samasta tutkinnosta kuin sisältävä (ammattilaisen fixture).
+      addOppija.enterValidDataAmmatillinen({
+        oppilaitos: 'Omnia',
+        tutkinto: 'Luonto- ja ympäristöalan perust'
+      }),
+      addOppija.submitAndExpectSuccess(
+        '280618-402H',
+        'Luonto- ja ympäristöalan perustutkinto'
+      ),
       editor.edit,
       editor.property('sisältyyOpiskeluoikeuteen').addValue,
       editor
@@ -89,7 +97,7 @@ describe('Opiskeluoikeuden sisältyvyys', function () {
             opinnot.opiskeluoikeudet.opiskeluoikeuksienOtsikot()
           ).to.have.members([
             'Stadin ammatti- ja aikuisopisto, Luonto- ja ympäristöalan perustutkinto (2012—2016, valmistunut)',
-            'Omnia, Autoalan perustutkinto (2018—, läsnä)'
+            'Omnia, Luonto- ja ympäristöalan perustutkinto (2018—, läsnä)'
           ])
         })
 

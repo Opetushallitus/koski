@@ -3,6 +3,7 @@
 ## 21.7.2026
 
 - Nuorten perusopetuksen opiskeluoikeudessa oppiaineen suorituksen luokka-aste voi poiketa vuosiluokasta, kun oppilaalla on vuosiluokan vahvistuspäivänä voimassa joko tavoitekokonaisuuksittain opiskelun tai yhdysluokan aikajakso. Aiemmin poikkeavan luokka-asteen salli vain tavoitekokonaisuuksittain opiskelun aikajakso.
+- Opiskeluoikeutta ei voi linkittää (`sisältyyOpiskeluoikeuteen`) eri tutkinnon opiskeluoikeuteen; sisältyvän opiskeluoikeuden päätason suoritusten (suoritustyyppi ja perusteen diaarinumero) on oltava sisältävän opiskeluoikeuden päätason suoritusten osajoukko. Validaatio otetaan tuotannossa käyttöön 1.9.2026.
 
 ## 17.7.2026
 
