@@ -500,11 +500,8 @@ export const optionalPrototypeModel = <
   return R.mergeRight(prototype, createOptionalEmpty(model)) as P // Ensure that the prototype model has optional flag and optionalPrototype
 }
 
-// Tunnistaa DIA-tutkinnon laajuuskentän, joka on unioni (vuosiviikkotunti/opintopiste).
-// Tunnistus tehdään unionin oneOfClass-kentästä — EI value.classes-listasta: unionin trait
-// `LaajuusVuosiviikkotunneissaTaiOpintopisteissä` on periytetty myös tavallisiin
-// LaajuusVuosiviikkotunneissa/LaajuusOpintopisteissä-luokkiin, joten sen nimi esiintyy myös
-// ei-unioni-laajuuksien (esim. ESH, lukio) classes-listassa. Vain aito unionikenttä on OneOfModel.
+// Tunnistus oneOfClassista, EI value.classesista: unionin trait on periytetty myös tavallisiin
+// laajuusluokkiin, joten vain aito unionikenttä on OneOfModel.
 export const onDiaLaajuusUnioni = (
   model?: EditorModel & OptionalModel & MaybeOneOfModel & Contextualized
 ): boolean => {
@@ -527,14 +524,7 @@ export const onDiaLaajuusUnioni = (
   return false
 }
 
-// Palauttaa tyhjälle DIA-laajuudelle opintopisteoletusta käyttävän prototyyppimallin (samalla
-// polulla ja kontekstilla kuin alkuperäinen malli), kun opiskeluoikeus on alkanut 1.8.2026 tai
-// myöhemmin. Muutoin (esim. ennen rajapäivää) palautetaan tavallinen prototyyppi (vuosiviikkotunti).
-//
-// Tämä on tarpeen, koska laajuuden arvoa syötettäessä muutos sovelletaan juurimalliin ilman
-// opiskeluoikeuskontekstia (context.opiskeluoikeus lisätään vain renderöinnissä), jolloin yksikkö
-// ratkeaisi aina backendin globaaliksi oletukseksi (vuosiviikkotunti). Siksi LaajuusEditor
-// rakentaa ja työntää koko laajuusmallin oikealla yksiköllä jo renderöintikontekstissa.
+// Tyhjän DIA-laajuuden prototyyppi opintopisteoletuksella (1.8.2026+), muuten vuosiviikkotunnein.
 export const diaLaajuudenOletusprototyyppi = <
   M extends EditorModel & OptionalModel & MaybeOneOfModel & Contextualized
 >(
@@ -555,16 +545,8 @@ export const diaLaajuudenOletusprototyyppi = <
 const diaLaajuusOneOfClass = 'laajuusvuosiviikkotunneissataiopintopisteissa'
 const diaLaajuusOpintopisteKey = 'laajuusopintopisteissa'
 
-// DIA-tutkinnon laajuusyksikkö on unioni (vuosiviikkotunti/opintopiste). Backendin globaali
-// oletus on vuosiviikkotunti, mutta 1.8.2026 tai myöhemmin alkaneille DIA-opiskeluoikeuksille
-// laajuus on ilmoitettava opintopisteinä, joten oletukseksi valitaan tällöin opintopiste-vaihtoehto.
-// Prototyypit rakennetaan backendissä globaalisti ilman opiskeluoikeuskohtaista tietoa, joten
-// oletus tarkennetaan tässä opiskeluoikeuden alkamispäivän perusteella.
-//
-// Vaihtoehto tunnistetaan ratkaistun mallin luokasta (value.classes), EI PrototypeModelin
-// key-kentästä: oneOfPrototypes on jaettu globaalisti kaikkien laajuuskenttien kesken, ja
-// prototyypin ratkaiseminen poistaa key-kentän — key-vertailu toimisi siis vain ensimmäisellä
-// kutsulla ja palaisi sen jälkeen vuosiviikkotuntiin.
+// Opintopistevaihtoehto rajapäivän jälkeen. Tunnistus value.classesista, ei keystä, koska
+// prototyypin ratkaisu poistaa keyn ja jaettu oneOfPrototypes-taulukko mutatoituu.
 const diaLaajuusOpintopistePrototype = (
   oneOfModel: OneOfModel & Contextualized,
   forModel: EditorModel & Contextualized

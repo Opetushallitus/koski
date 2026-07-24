@@ -119,8 +119,7 @@ export default ({
     customKurssitSortFn
   } = resolvePropertiesByType(päätasonSuorituksenTyyppi)
 
-  // DIA-tutkinnon laajuus ilmoitetaan opintopisteinä 1.8.2026 tai myöhemmin alkaneille
-  // opiskeluoikeuksille, joten sarakeotsikon yksikkö määräytyy alkamispäivän perusteella.
+  // Sarakeotsikon yksikkö alkamispäivän mukaan (opintopisteet 1.8.2026+).
   const alkamispäivä = modelData(
     suorituksetModel.context.opiskeluoikeus,
     'alkamispäivä'

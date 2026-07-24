@@ -44,11 +44,8 @@ export class LaajuusEditor extends React.Component {
   }
 }
 
-// DIA-tutkinnon laajuuden arvokenttä. Laajuuden yksikkö määräytyy opiskeluoikeuden alkamispäivän
-// mukaan (opintopisteet 1.8.2026 tai myöhemmin), mutta arvon syöttö sovelletaan juurimalliin ilman
-// opiskeluoikeuskontekstia. Siksi työnnetään koko laajuusmalli oikealla yksiköllä (opintopisteet
-// tyhjälle rajapäivän jälkeiselle laajuudelle, muutoin nykyinen/oletusyksikkö) laajuuden polkuun,
-// jotta yksikkö säilyy tallennettaessa.
+// Työntää koko laajuusmallin oikealla yksiköllä laajuuden polkuun (yksikkö valitaan
+// renderöinnissä alkamispäivän mukaan; changeBus ei näe opiskeluoikeuskontekstia).
 const DiaLaajuudenArvoEditor = ({ model, disabled }) => {
   const data = modelData(model, 'arvo')
   if (!model.context.edit || disabled) {
