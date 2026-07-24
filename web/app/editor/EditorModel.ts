@@ -48,6 +48,7 @@ import {
 import { flatMapArray, notUndefined } from '../util/util'
 import { hashAdd, hashCode } from './hashcode'
 import { filterObjByKey } from '../util/fp/objects'
+import { diaLaajuusOpintopisteinä } from '../dia/diaLaajuus'
 
 export type EditorElement = JSX.Element & {
   isEmpty?: (model: EditorModel) => boolean
@@ -497,6 +498,76 @@ export const optionalPrototypeModel = <
     )!
   }
   return R.mergeRight(prototype, createOptionalEmpty(model)) as P // Ensure that the prototype model has optional flag and optionalPrototype
+}
+
+// Tunnistus oneOfClassista, EI value.classesista: unionin trait on periytetty myös tavallisiin
+// laajuusluokkiin, joten vain aito unionikenttä on OneOfModel.
+export const onDiaLaajuusUnioni = (
+  model?: EditorModel & OptionalModel & MaybeOneOfModel & Contextualized
+): boolean => {
+  if (!model) return false
+  if (isOneOfModel(model as any)) {
+    return (model as any).oneOfClass === diaLaajuusOneOfClass
+  }
+  if (
+    isSomeOptionalModel(model) &&
+    !hasValue(model) &&
+    (model as any).optionalPrototype
+  ) {
+    const proto = preparePrototypeModel((model as any).optionalPrototype, model)
+    return (
+      !!proto &&
+      isOneOfModel(proto) &&
+      (proto as any).oneOfClass === diaLaajuusOneOfClass
+    )
+  }
+  return false
+}
+
+// Tyhjän DIA-laajuuden prototyyppi opintopisteoletuksella (1.8.2026+), muuten vuosiviikkotunnein.
+export const diaLaajuudenOletusprototyyppi = <
+  M extends EditorModel & OptionalModel & MaybeOneOfModel & Contextualized
+>(
+  model: M
+): M => {
+  if (isSomeOptionalModel(model) && !hasValue(model)) {
+    const proto = preparePrototypeModel(model.optionalPrototype as any, model)
+    if (proto && isOneOfModel(proto)) {
+      const opintopiste = diaLaajuusOpintopistePrototype(proto, model)
+      if (opintopiste) {
+        ;(model as any).optionalPrototype = opintopiste
+      }
+    }
+  }
+  return optionalPrototypeModel(model) as M
+}
+
+const diaLaajuusOneOfClass = 'laajuusvuosiviikkotunneissataiopintopisteissa'
+const diaLaajuusOpintopisteKey = 'laajuusopintopisteissa'
+
+// Opintopistevaihtoehto rajapäivän jälkeen. Tunnistus value.classesista, ei keystä, koska
+// prototyypin ratkaisu poistaa keyn ja jaettu oneOfPrototypes-taulukko mutatoituu.
+const diaLaajuusOpintopistePrototype = (
+  oneOfModel: OneOfModel & Contextualized,
+  forModel: EditorModel & Contextualized
+): (EditorModel & OneOfModel) | undefined => {
+  if (oneOfModel.oneOfClass !== diaLaajuusOneOfClass) return undefined
+  const alkamispäivä = modelData(
+    (forModel.context as any)?.opiskeluoikeus,
+    'alkamispäivä'
+  ) as string | undefined
+  if (!diaLaajuusOpintopisteinä(alkamispäivä)) return undefined
+  const opintopiste = oneOfModel.oneOfPrototypes
+    .map((proto) => preparePrototypeModel(proto, forModel))
+    .find(
+      (proto) =>
+        !!(proto as any)?.value?.classes?.includes(diaLaajuusOpintopisteKey)
+    )
+  if (!opintopiste) return undefined
+  return R.mergeRight(opintopiste as any, {
+    oneOfClass: oneOfModel.oneOfClass,
+    oneOfPrototypes: oneOfModel.oneOfPrototypes
+  }) as EditorModel & OneOfModel
 }
 
 export const createOptionalEmpty = <M extends EditorModel & OptionalModel>(
