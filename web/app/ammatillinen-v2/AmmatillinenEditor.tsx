@@ -33,6 +33,7 @@ import {
 } from '../components-v2/opiskeluoikeus/KoodistoField'
 import { Spacer } from '../components-v2/layout/Spacer'
 import { SuorituksenVahvistusField } from '../components-v2/opiskeluoikeus/SuorituksenVahvistus'
+import { AmmatillinenTyyliContext } from '../components-v2/opiskeluoikeus/OsasuoritusTable'
 import { PerusteView } from '../components-v2/opiskeluoikeus/PerusteField'
 import { AmmatillisenTutkinnonOsittainenSuoritus } from '../types/fi/oph/koski/schema/AmmatillisenTutkinnonOsittainenSuoritus'
 import { FormListField } from '../components-v2/forms/FormListField'
@@ -99,7 +100,9 @@ const AmmatillinenEditor: React.FC<AmmatillinenEditorProps> = (props) => {
       opiskeluoikeus={form.state}
       opiskeluoikeudenNimi={suorituksenNimi(form.state)}
     >
-      <AmmatillinenPäätasonSuoritusEditor {...props} form={form} />
+      <AmmatillinenTyyliContext.Provider value={true}>
+        <AmmatillinenPäätasonSuoritusEditor {...props} form={form} />
+      </AmmatillinenTyyliContext.Provider>
     </VirkailijaKansalainenContainer>
   )
 }

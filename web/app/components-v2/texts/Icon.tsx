@@ -33,3 +33,5 @@ export const CHARCODE_ADD = 'f055'
 export const CHARCODE_REMOVE = 'f1f8'
 export const CHARCODE_OPEN = 'f0fe'
 export const CHARCODE_CLOSE = 'f146'
+export const CHARCODE_VALMIS = 'f00c' // check (valmis suoritus)
+export const CHARCODE_KESKEN = 'f252' // hourglass-half (keskeneräinen suoritus)

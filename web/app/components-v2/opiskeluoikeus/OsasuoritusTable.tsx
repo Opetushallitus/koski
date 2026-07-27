@@ -1,4 +1,4 @@
-import React, { ReactNode, useCallback } from 'react'
+import React, { createContext, ReactNode, useCallback, useContext } from 'react'
 import { useTree } from '../../appstate/tree'
 import { t } from '../../i18n/i18n'
 import { Opiskeluoikeus } from '../../types/fi/oph/koski/schema/Opiskeluoikeus'
@@ -19,11 +19,21 @@ import { ExpandButton } from '../controls/ExpandButton'
 import { IconButton } from '../controls/IconButton'
 import { FormModel, FormOptic } from '../forms/FormModel'
 import { Spacer } from '../layout/Spacer'
-import { CHARCODE_REMOVE } from '../texts/Icon'
+import {
+  CHARCODE_KESKEN,
+  CHARCODE_REMOVE,
+  CHARCODE_VALMIS,
+  Icon
+} from '../texts/Icon'
 import { useNewItems } from '../../appstate/newItems'
 import { TestIdLayer } from '../../appstate/useTestId'
 
 export const OSASUORITUSTABLE_DEPTH_KEY = 'OsasuoritusTable'
+
+// Ammatillinen-v2:n osasuoritustaulukon tyyli (klikattava nimi, otsikko
+// vasempaan reunaan, tiivis completed-merkki FontAwesome-ikonein). Muut
+// suoritustyypit käyttävät oletusarvoa (false) eli perinteistä asettelua.
+export const AmmatillinenTyyliContext = createContext(false)
 
 type Completed = (osasuoritusIndex: number) => boolean | undefined
 
@@ -147,6 +157,7 @@ export const OsasuoritusHeader = <DATA_KEYS extends string>(
   props: OsasuoritusHeaderProps<DATA_KEYS>
 ) => {
   const [indentation] = useLayout(OSASUORITUSTABLE_DEPTH_KEY)
+  const ammatillinenTyyli = useContext(AmmatillinenTyyliContext)
   const spans = getSpans(
     props.columns,
     indentation,
@@ -160,24 +171,42 @@ export const OsasuoritusHeader = <DATA_KEYS extends string>(
         {spans.indent > 0 && (
           <Column span={spans.indent} className="OsasuoritusHeader__indent" />
         )}
-        {props.columns.map((column, index) => {
-          const isNameColumn = index === 0
-          // Nimisarakkeen otsikko ("… tutkinnon osat") venytetään alkamaan rivin
-          // vasemmasta reunasta laajennus- ja completed-ikonisarakkeiden yli,
-          // jotta se on linjassa alapuolisen vaakaviivan ja muun vasempaan
-          // tasatun sisällön kanssa — ei sisennettynä osasuoritusten nimien
-          // yläpuolelle.
-          const leadingSpan =
-            (props.skipExpandableColumn ? 0 : spans.leftIcons) + spans.completed
-          const span = isNameColumn
-            ? mapResponsiveValue((w: number) => leadingSpan + w)(spans.name)
-            : spans.data[index - 1]
-          return (
-            <Column key={index} span={span} align={column.align}>
-              {getColumnLabel(column)}
-            </Column>
-          )
-        })}
+        {ammatillinenTyyli ? (
+          props.columns.map((column, index) => {
+            const isNameColumn = index === 0
+            // Nimisarakkeen otsikko ("… tutkinnon osat") venytetään alkamaan
+            // rivin vasemmasta reunasta laajennus- ja completed-ikonisarakkeiden
+            // yli, jotta se on linjassa alapuolisen vaakaviivan ja muun
+            // vasempaan tasatun sisällön kanssa.
+            const leadingSpan =
+              (props.skipExpandableColumn ? 0 : spans.leftIcons) +
+              spans.completed
+            const span = isNameColumn
+              ? mapResponsiveValue((w: number) => leadingSpan + w)(spans.name)
+              : spans.data[index - 1]
+            return (
+              <Column key={index} span={span} align={column.align}>
+                {getColumnLabel(column)}
+              </Column>
+            )
+          })
+        ) : (
+          <>
+            {/* Tyhjät sarakkeet laajennus- ja completed-painikkeille, jotta
+                ensimmäisen sarakkeen otsikko on rivien nimien yläpuolella. */}
+            {!props.skipExpandableColumn && <Column span={spans.leftIcons} />}
+            {spans.completed > 0 && <Column span={spans.completed} />}
+            {props.columns.map((column, index) => (
+              <Column
+                key={index}
+                span={index === 0 ? spans.name : spans.data[index - 1]}
+                align={column.align}
+              >
+                {getColumnLabel(column)}
+              </Column>
+            ))}
+          </>
+        )}
         {spans.rightIcons > 0 && (
           <Column
             span={spans.rightIcons}
@@ -193,6 +222,7 @@ export const OsasuoritusRow = <DATA_KEYS extends string>(
   props: OsasuoritusRowProps<DATA_KEYS>
 ) => {
   const [indentation, LayoutProvider] = useLayout(OSASUORITUSTABLE_DEPTH_KEY)
+  const ammatillinenTyyli = useContext(AmmatillinenTyyliContext)
   const spans = getSpans(
     props.columns,
     indentation,
@@ -207,7 +237,10 @@ export const OsasuoritusRow = <DATA_KEYS extends string>(
   const isOpen = props.forceOpen || tree.isOpen
 
   const nameTogglesRow =
-    expandable && Boolean(props.row.content) && !props.forceOpen
+    ammatillinenTyyli &&
+    expandable &&
+    Boolean(props.row.content) &&
+    !props.forceOpen
 
   return (
     <TreeNode>
@@ -237,14 +270,26 @@ export const OsasuoritusRow = <DATA_KEYS extends string>(
         )}
         {props.showCompleted && (
           <Column span={1} className="OsasuoritusRow__completedColumn">
-            {props.completed === true && (
-              // eslint-disable-next-line react/jsx-no-literals
-              <span aria-label={t('Suoritus valmis')}>&#x2713;</span>
-            )}
-            {props.completed === false && (
-              // eslint-disable-next-line react/jsx-no-literals
-              <span aria-label={t('Suoritus kesken')}>&#x29D6;</span>
-            )}
+            {props.completed === true &&
+              (ammatillinenTyyli ? (
+                // Vanhan käyttöliittymän valmis-ikoni (FontAwesome check)
+                <span aria-label={t('Suoritus valmis')}>
+                  <Icon charCode={CHARCODE_VALMIS} />
+                </span>
+              ) : (
+                // eslint-disable-next-line react/jsx-no-literals
+                <span aria-label={t('Suoritus valmis')}>&#x2713;</span>
+              ))}
+            {props.completed === false &&
+              (ammatillinenTyyli ? (
+                // Vanhan käyttöliittymän tiimalasi-ikoni (FontAwesome hourglass-half)
+                <span aria-label={t('Suoritus kesken')}>
+                  <Icon charCode={CHARCODE_KESKEN} />
+                </span>
+              ) : (
+                // eslint-disable-next-line react/jsx-no-literals
+                <span aria-label={t('Suoritus kesken')}>&#x29D6;</span>
+              ))}
           </Column>
         )}
         {props.columns.map((column, index) => {
@@ -260,6 +305,7 @@ export const OsasuoritusRow = <DATA_KEYS extends string>(
                   ? cx(
                       'OsasuoritusRow__nameColumn',
                       props.showCompleted &&
+                        ammatillinenTyyli &&
                         'OsasuoritusRow__nameColumn--completedAdjacent'
                     )
                   : 'OsasuoritusRow__dataColumn'

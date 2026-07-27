@@ -61,6 +61,12 @@
   color: @color-link-blue;
 }
 
+// Keskeneräisen osasuorituksen tiimalasi-ikoni (Icon = FontAwesome) näytetään
+// muun tekstin/valmis-merkin värissä sinisen sijaan.
+.OsasuoritusRow__completedColumn .Icon {
+  color: inherit;
+}
+
 // Completed-merkin sarake varaa kokonaisen ruudukkosarakkeen, vaikka itse
 // merkki on kapea. Vedetään nimisaraketta vasemmalle, jotta nimi asettuu
 // lähelle completed-merkkiä (joka puolestaan on kiinni laajennuspainikkeessa).
