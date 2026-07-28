@@ -70,6 +70,15 @@ case class OpiskeluoikeusJaksonPerustiedot(
 object OpiskeluoikeudenPerustiedot {
   val serializationContext = SerializationContext(KoskiSchema.schemaFactory, omitEmptyFields = false)
 
+  // Vuosiluokkien suorituksia ei näytetä opiskelijalistan Koulutus-sarakkeessa, vaan sarakkeessa
+  // näkyy pelkkä oppimäärän suoritus. Suodatus on rajattu perusopetuksen tyyppeihin: European
+  // School of Helsingin ja International Schoolin skeemat eivät salli päätason suorituksiksi
+  // muuta kuin vuosiluokkia, joten niiden suodattaminen tyhjentäisi sarakkeen kokonaan.
+  private val opiskelijalistaltaPiilotetutSuoritusTyypit = Set(
+    "perusopetuksenvuosiluokka",
+    "ahvenanmaanperusopetuksenvuosiluokka"
+  )
+
   def makePerustiedot(row: KoskiOpiskeluoikeusRow, henkilöRow: HenkilöRow, masterHenkilöRow: Option[HenkilöRow]): OpiskeluoikeudenPerustiedot = {
     makePerustiedot(
       row.id,
@@ -108,7 +117,7 @@ object OpiskeluoikeudenPerustiedot {
           extract[OidOrganisaatio](suoritus \ "toimipiste", ignoreExtras = true)
         )
       }
-      .filter(_.tyyppi.koodiarvo != "perusopetuksenvuosiluokka")
+      .filterNot(s => opiskelijalistaltaPiilotetutSuoritusTyypit.contains(s.tyyppi.koodiarvo))
     OpiskeluoikeudenPerustiedot(
       id,
       Some(henkilö.henkilö),
