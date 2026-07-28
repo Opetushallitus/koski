@@ -78,7 +78,6 @@ export const VSTLukutaitoKielitaitotasoEdit = (
   props: VSTLukutaitoKielitaitotasoEditProps
 ) => {
   const startRow = (props.index || 0) * 2
-  console.log('VSTLukutaitoKielitaitotasoEdit', props)
   return props.value ? (
     <>
       <OsasuoritusSubproperty rowNumber={startRow} label="Taitotaso">

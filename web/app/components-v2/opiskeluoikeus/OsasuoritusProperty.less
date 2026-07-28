@@ -21,6 +21,19 @@
   .Column {
     min-height: 1.5 * @baseline;
   }
+
+  // FormListField kääritään Removable-komponentin div-elementteihin. Suoraan
+  // OsasuoritusPropertyn ruudukossa nämä käärö-divit asettuisivat kapeaan
+  // sarakkeeseen, jolloin alikentät (esim. VST-lukutaidon Taitotaso/Arvosana/
+  // Päivämäärä) pinoutuisivat päällekkäin. display: contents poistaa kääröt
+  // asettelusta, jolloin alikentät asettuvat oikein nimi/arvo-sarakkeisiin.
+  > .NotRemovable {
+    display: contents;
+
+    > .NotRemovable__content {
+      display: contents;
+    }
+  }
 }
 
 // Kapeilla näytöillä (esim. kansalaisen mobiilinäkymä) nimisarake on niin kapea,
