@@ -49,7 +49,7 @@ export type VSTLukutaitoKielitaitotasoViewProps = CommonProps<
 export const VSTLukutaitoKielitaitotasoView = (
   props: VSTLukutaitoKielitaitotasoViewProps
 ) => {
-  const startRow = (props.index || 0) * 2
+  const startRow = (props.index || 0) * 3
   return props.value ? (
     <>
       <OsasuoritusSubproperty rowNumber={startRow} label="Taitotaso">
@@ -77,8 +77,7 @@ export type VSTLukutaitoKielitaitotasoEditProps = CommonProps<
 export const VSTLukutaitoKielitaitotasoEdit = (
   props: VSTLukutaitoKielitaitotasoEditProps
 ) => {
-  const startRow = (props.index || 0) * 2
-  console.log('VSTLukutaitoKielitaitotasoEdit', props)
+  const startRow = (props.index || 0) * 3
   return props.value ? (
     <>
       <OsasuoritusSubproperty rowNumber={startRow} label="Taitotaso">
