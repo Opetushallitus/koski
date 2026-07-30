@@ -76,6 +76,7 @@ export const PerusopetuksenSuorituksenTiedot: React.FC<
 > = ({ form, päätasonSuoritus }) => {
   const path = päätasonSuoritus.path
   const suoritus = päätasonSuoritus.suoritus
+  const isVuosiluokka = isPerusopetuksenVuosiluokanSuoritus(suoritus)
   const luokalleSiirtymisenTeksti = getLuokalleSiirtymisenTeksti(suoritus)
 
   return (
@@ -83,37 +84,15 @@ export const PerusopetuksenSuorituksenTiedot: React.FC<
       {/* labelWidth pitää pisimmätkin nimet yhdellä rivillä ja tasaa arvot
           samaan sarakkeeseen vanhan käyttöliittymän tapaan. */}
       <KeyValueTable labelWidth={6}>
-        <KeyColumnedValuesRow
-          localizableName={
-            isPerusopetuksenVuosiluokanSuoritus(suoritus)
-              ? 'Luokka-aste'
-              : 'Koulutus'
-          }
-          columnSpans={{ default: [3, '*'], phone: [24, '*'] }}
-        >
-          {[
-            <TestIdText key="tunniste" id="koulutus">
-              {t(suoritus.koulutusmoduuli.tunniste.nimi)}
-              {!isPerusopetuksenVuosiluokanSuoritus(suoritus) &&
-                ` ${suoritus.koulutusmoduuli.tunniste.koodiarvo}`}
-            </TestIdText>,
-            isNuortenPerusopetuksenOppimääränSuoritus(suoritus) ? (
-              <FormField
-                key="peruste"
-                form={form}
-                path={(
-                  path as unknown as FormOptic<
-                    PerusopetuksenOpiskeluoikeus,
-                    NuortenPerusopetuksenOppimääränSuoritus
-                  >
-                )
-                  .prop('koulutusmoduuli')
-                  .prop('perusteenDiaarinumero')}
-                view={PerusteView}
-                edit={PerusteEdit}
-                editProps={{ suorituksenTyyppi: suoritus.tyyppi.koodiarvo }}
-              />
-            ) : isPerusopetuksenVuosiluokanSuoritus(suoritus) ? (
+        {isVuosiluokka ? (
+          <KeyColumnedValuesRow
+            localizableName="Luokka-aste"
+            columnSpans={{ default: [3, '*'], phone: [24, 24] }}
+          >
+            {[
+              <TestIdText key="tunniste" id="koulutus">
+                {t(suoritus.koulutusmoduuli.tunniste.nimi)}
+              </TestIdText>,
               <FormField
                 key="peruste"
                 form={form}
@@ -129,11 +108,42 @@ export const PerusopetuksenSuorituksenTiedot: React.FC<
                 edit={PerusteEdit}
                 editProps={{ suorituksenTyyppi: suoritus.tyyppi.koodiarvo }}
               />
-            ) : (
-              <React.Fragment key="peruste" />
-            )
-          ]}
-        </KeyColumnedValuesRow>
+            ]}
+          </KeyColumnedValuesRow>
+        ) : (
+          <KeyColumnedValuesRow
+            localizableName="Koulutus"
+            columnSpans={{ default: [4, 2, '*'], phone: [24, 24, 24] }}
+          >
+            {[
+              <TestIdText key="tunniste" id="koulutus">
+                {t(suoritus.koulutusmoduuli.tunniste.nimi)}
+              </TestIdText>,
+              <TestIdText key="koodiarvo" id="koulutuskoodi">
+                {suoritus.koulutusmoduuli.tunniste.koodiarvo}
+              </TestIdText>,
+              isNuortenPerusopetuksenOppimääränSuoritus(suoritus) ? (
+                <FormField
+                  key="peruste"
+                  form={form}
+                  path={(
+                    path as unknown as FormOptic<
+                      PerusopetuksenOpiskeluoikeus,
+                      NuortenPerusopetuksenOppimääränSuoritus
+                    >
+                  )
+                    .prop('koulutusmoduuli')
+                    .prop('perusteenDiaarinumero')}
+                  view={PerusteView}
+                  edit={PerusteEdit}
+                  editProps={{ suorituksenTyyppi: suoritus.tyyppi.koodiarvo }}
+                />
+              ) : (
+                <React.Fragment key="peruste" />
+              )
+            ]}
+          </KeyColumnedValuesRow>
+        )}
 
         {isPerusopetuksenVuosiluokanSuoritus(suoritus) && (
           <VuosiluokanLuokkaRow form={form} path={path} />

@@ -36,8 +36,11 @@ test.describe('Perusopetuksen uusi käyttöliittymä', () => {
 
     // Suorituksen tiedot
     await expect(page.getByTestId('oo.0.suoritukset.0.koulutus')).toHaveText(
-      'Perusopetus 201101'
+      'Perusopetus'
     )
+    await expect(
+      page.getByTestId('oo.0.suoritukset.0.koulutuskoodi')
+    ).toHaveText('201101')
     await expect(
       page.getByTestId('oo.0.suoritukset.0.suoritustapa.value')
     ).toContainText('Koulutus')
@@ -286,8 +289,11 @@ test.describe('Perusopetuksen uusi käyttöliittymä', () => {
 
     // Suorituksen tiedot
     await expect(page.getByTestId('oo.0.suoritukset.0.koulutus')).toHaveText(
-      'Perusopetus 201101'
+      'Perusopetus'
     )
+    await expect(
+      page.getByTestId('oo.0.suoritukset.0.koulutuskoodi')
+    ).toHaveText('201101')
     await expect(
       page.getByTestId('oo.0.suoritukset.0.suoritustapa.value')
     ).toContainText('Erityinen tutkinto')
