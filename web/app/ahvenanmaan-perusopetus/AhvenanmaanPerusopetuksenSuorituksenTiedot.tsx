@@ -68,6 +68,8 @@ export const AhvenanmaanPerusopetuksenSuorituksenTiedot: React.FC<
           {[
             <TestIdText key="tunniste" id="koulutus">
               {t(suoritus.koulutusmoduuli.tunniste.nimi)}
+              {!isAhvenanmaanPerusopetuksenVuosiluokanSuoritus(suoritus) &&
+                ` ${suoritus.koulutusmoduuli.tunniste.koodiarvo}`}
             </TestIdText>,
             // Ahvenanmaan ops (ÅLp21) ei ole ePerusteissa, joten diaarinumero
             // linkitetään suoraan laroplan.ax-sivustolle (ei ePerusteet-hakua).

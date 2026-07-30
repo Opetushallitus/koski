@@ -83,6 +83,9 @@ test.describe('Ahvenanmaan perusopetuksen käyttöliittymä', () => {
 
     // Avgångsbetyg (oppimäärä) sisältää lopulliset arvosanat.
     await page.getByTestId(avgångsbetygTab).click()
+    await expect(page.getByTestId('oo.0.suoritukset.0.koulutus')).toHaveText(
+      'Perusopetus 201101'
+    )
     await expect(
       page.getByTestId('oo.0.suoritukset.0.suoritustapa.value')
     ).toContainText('Koulutus')
