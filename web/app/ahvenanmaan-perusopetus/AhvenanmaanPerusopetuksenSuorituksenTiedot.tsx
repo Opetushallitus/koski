@@ -50,6 +50,7 @@ export const AhvenanmaanPerusopetuksenSuorituksenTiedot: React.FC<
 > = ({ form, päätasonSuoritus }) => {
   const path = päätasonSuoritus.path
   const suoritus = päätasonSuoritus.suoritus
+  const isVuosiluokka = isAhvenanmaanPerusopetuksenVuosiluokanSuoritus(suoritus)
   const luokalleSiirtymisenTeksti = getLuokalleSiirtymisenTeksti(suoritus)
 
   return (
@@ -57,26 +58,42 @@ export const AhvenanmaanPerusopetuksenSuorituksenTiedot: React.FC<
       {/* labelWidth pitää pisimmätkin nimet yhdellä rivillä ja tasaa arvot
           samaan sarakkeeseen vanhan käyttöliittymän tapaan. */}
       <KeyValueTable labelWidth={6}>
-        <KeyColumnedValuesRow
-          localizableName={
-            isAhvenanmaanPerusopetuksenVuosiluokanSuoritus(suoritus)
-              ? 'Luokka-aste'
-              : 'Koulutus'
-          }
-          columnSpans={{ default: [3, '*'], phone: [24, '*'] }}
-        >
-          {[
-            <TestIdText key="tunniste" id="koulutus">
-              {t(suoritus.koulutusmoduuli.tunniste.nimi)}
-            </TestIdText>,
-            // Ahvenanmaan ops (ÅLp21) ei ole ePerusteissa, joten diaarinumero
-            // linkitetään suoraan laroplan.ax-sivustolle (ei ePerusteet-hakua).
-            <PerusteLinkki
-              key="peruste"
-              diaarinumero={suoritus.koulutusmoduuli.perusteenDiaarinumero}
-            />
-          ]}
-        </KeyColumnedValuesRow>
+        {isVuosiluokka ? (
+          <KeyColumnedValuesRow
+            localizableName="Luokka-aste"
+            columnSpans={{ default: [3, '*'], phone: [24, 24] }}
+          >
+            {[
+              <TestIdText key="tunniste" id="koulutus">
+                {t(suoritus.koulutusmoduuli.tunniste.nimi)}
+              </TestIdText>,
+              <PerusteLinkki
+                key="peruste"
+                diaarinumero={suoritus.koulutusmoduuli.perusteenDiaarinumero}
+              />
+            ]}
+          </KeyColumnedValuesRow>
+        ) : (
+          <KeyColumnedValuesRow
+            localizableName="Koulutus"
+            columnSpans={{ default: [4, 2, '*'], phone: [24, 24, 24] }}
+          >
+            {[
+              <TestIdText key="tunniste" id="koulutus">
+                {t(suoritus.koulutusmoduuli.tunniste.nimi)}
+              </TestIdText>,
+              <TestIdText key="koodiarvo" id="koulutuskoodi">
+                {suoritus.koulutusmoduuli.tunniste.koodiarvo}
+              </TestIdText>,
+              // Ahvenanmaan ops (ÅLp21) ei ole ePerusteissa, joten diaarinumero
+              // linkitetään suoraan laroplan.ax-sivustolle (ei ePerusteet-hakua).
+              <PerusteLinkki
+                key="peruste"
+                diaarinumero={suoritus.koulutusmoduuli.perusteenDiaarinumero}
+              />
+            ]}
+          </KeyColumnedValuesRow>
+        )}
 
         {isAhvenanmaanPerusopetuksenVuosiluokanSuoritus(suoritus) && (
           <VuosiluokanLuokkaRow form={form} path={path} />

@@ -35,9 +35,12 @@ test.describe('Perusopetuksen uusi käyttöliittymä', () => {
     ).toContainText('15.8.2008 — 4.6.2016')
 
     // Suorituksen tiedot
-    await expect(page.getByTestId('oo.0.suoritukset.0.koulutus')).toContainText(
+    await expect(page.getByTestId('oo.0.suoritukset.0.koulutus')).toHaveText(
       'Perusopetus'
     )
+    await expect(
+      page.getByTestId('oo.0.suoritukset.0.koulutuskoodi')
+    ).toHaveText('201101')
     await expect(
       page.getByTestId('oo.0.suoritukset.0.suoritustapa.value')
     ).toContainText('Koulutus')
@@ -285,9 +288,12 @@ test.describe('Perusopetuksen uusi käyttöliittymä', () => {
     ).toContainText('15.8.2017 — 18.10.2024')
 
     // Suorituksen tiedot
-    await expect(page.getByTestId('oo.0.suoritukset.0.koulutus')).toContainText(
+    await expect(page.getByTestId('oo.0.suoritukset.0.koulutus')).toHaveText(
       'Perusopetus'
     )
+    await expect(
+      page.getByTestId('oo.0.suoritukset.0.koulutuskoodi')
+    ).toHaveText('201101')
     await expect(
       page.getByTestId('oo.0.suoritukset.0.suoritustapa.value')
     ).toContainText('Erityinen tutkinto')
