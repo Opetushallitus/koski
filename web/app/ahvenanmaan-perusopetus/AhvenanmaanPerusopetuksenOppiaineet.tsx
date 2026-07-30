@@ -41,8 +41,7 @@ import {
 } from '../components-v2/opiskeluoikeus/OsasuoritusProperty'
 import {
   OsasuoritusRowData,
-  OsasuoritusTable,
-  OsasuoritusTableColumn
+  OsasuoritusTable
 } from '../components-v2/opiskeluoikeus/OsasuoritusTable'
 import {
   CHARCODE_ADD,
@@ -52,6 +51,7 @@ import {
 import { FootnoteDescriptions } from '../components/footnote'
 import { finnish, t } from '../i18n/i18n'
 import { shouldShowLaajuusColumn } from '../perusopetus-v2/oppiaineLaajuus'
+import { oppiaineSarakkeet } from '../perusopetus-v2/oppiaineSarakkeet'
 import { AhvenanmaanPerusopetuksenMuuOppiaine } from '../types/fi/oph/koski/schema/AhvenanmaanPerusopetuksenMuuOppiaine'
 import { AhvenanmaanOppiaineenTaiToimintaAlueenSuoritus } from '../types/fi/oph/koski/schema/AhvenanmaanOppiaineenTaiToimintaAlueenSuoritus'
 import { AhvenanmaanPerusopetuksenOpiskeluoikeus } from '../types/fi/oph/koski/schema/AhvenanmaanPerusopetuksenOpiskeluoikeus'
@@ -218,6 +218,7 @@ export const AhvenanmaanPerusopetuksenOppiaineet: React.FC<
             form={form}
             suoritusPath={suoritusPath}
             showArvosana={showArvosana}
+            täysleveä
           />
           {vastuuJaYhteistyöArvio}
         </>
@@ -229,6 +230,10 @@ export const AhvenanmaanPerusopetuksenOppiaineet: React.FC<
   )
 }
 
+// Nimisarakkeen leveys ruudukkosarakkeina (ks. oppiaineSarakkeet).
+const NIMI_SPAN = { default: 11, large: 7 }
+const NIMI_SPAN_TÄYSLEVEÄ = { default: 6, large: 7 }
+
 type OppiainetaulukkoProps = {
   osasuoritukset: AhvenanmaanOppiaineenTaiToimintaAlueenSuoritus[]
   suoritusIndex: number
@@ -236,6 +241,9 @@ type OppiainetaulukkoProps = {
   columnHeader: string
   title?: string
   pakollinen?: boolean
+  // Taulukko renderöidään koko sisältöalueen levyisenä (ei ryhmiteltynä
+  // puolikkaisiin sarakkeisiin).
+  täysleveä?: boolean
   form: FormModel<AhvenanmaanPerusopetuksenOpiskeluoikeus>
   suoritusPath: FormOptic<
     AhvenanmaanPerusopetuksenOpiskeluoikeus,
@@ -251,6 +259,7 @@ const Oppiainetaulukko: React.FC<OppiainetaulukkoProps> = ({
   columnHeader,
   title,
   pakollinen,
+  täysleveä,
   form,
   suoritusPath,
   showArvosana
@@ -278,28 +287,13 @@ const Oppiainetaulukko: React.FC<OppiainetaulukkoProps> = ({
       showArvosana
     )
   })
-  const columns: Array<OsasuoritusTableColumn<string>> = [
-    { key: columnHeader },
-    // Leveämpi arvosanasarake mahtuu sanallisille arvosanoille (esim. Godkänd);
-    // laajuussarake on kapeampi, koska siinä on vain pieni luku. Näkymässä
-    // arvosana tasataan oikealle (lyhyet arvot), mutta muokkaustilassa sarake
-    // venytetään täyteen leveyteen, jotta otsikko kohdistuu pudotusvalikon kanssa.
-    ...(showArvosana
-      ? [
-          {
-            key: 'Arvosana',
-            align: form.editMode ? undefined : ('right' as const),
-            span: 6
-          }
-        ]
-      : []),
-    // Laajuussarake on kapea vain muokkaustilassa (siinä on pelkkä numerokenttä
-    // ja arvosanapudotus tarvitsee tilan). Näkymässä käytetään oletusleveyttä,
-    // jotta yksikön nimi (esim. vuosiviikkotuntia) ei ylivuoda sarakkeen yli.
-    ...(showLaajuus
-      ? [{ key: 'Laajuus', span: form.editMode ? 2 : undefined }]
-      : [])
-  ]
+  const columns = oppiaineSarakkeet({
+    columnHeader,
+    editMode: form.editMode,
+    nimiSpan: täysleveä ? NIMI_SPAN_TÄYSLEVEÄ : NIMI_SPAN,
+    showArvosana,
+    showLaajuus
+  })
 
   return (
     <>
