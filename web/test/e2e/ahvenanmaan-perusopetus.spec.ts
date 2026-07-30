@@ -62,7 +62,7 @@ test.describe('Ahvenanmaan perusopetuksen käyttöliittymä', () => {
     // Oletustabi on 9. vuosiluokka. Sen oppiaineita ei näytetä, koska oppilas ei
     // jää luokalle: päättövuoden arvosanat ovat päättötodistuksella (kuten
     // manner-Suomessa).
-    await expect(page.getByTestId('oo.0.suoritukset.1.koulutus')).toContainText(
+    await expect(page.getByTestId('oo.0.suoritukset.1.koulutus')).toHaveText(
       '9. vuosiluokka'
     )
     await expect(page.locator('.oppiaineet')).toHaveCount(0)
@@ -70,6 +70,9 @@ test.describe('Ahvenanmaan perusopetuksen käyttöliittymä', () => {
     // 8. luokan läsårsbetyg sen sijaan sisältää oppiaineet arvosanoineen
     // (Ruotsi = 9).
     await page.getByTestId(vuosiluokkaTab).click()
+    await expect(page.getByTestId('oo.0.suoritukset.2.koulutus')).toHaveText(
+      '8. vuosiluokka'
+    )
     await expect(page.locator('.oppiaineet')).toBeVisible()
     await expect(
       page.locator('.perusopetuksen-arvosteluasteikko')

@@ -166,8 +166,8 @@ test.describe('Perusopetuksen uusi käyttöliittymä', () => {
     await page.getByTestId('oo.0.suoritusTabs.2.tab').click()
 
     // Suorituksen tiedot
-    await expect(page.getByTestId('oo.0.suoritukset.2.koulutus')).toContainText(
-      '8. vuosiluokka 8'
+    await expect(page.getByTestId('oo.0.suoritukset.2.koulutus')).toHaveText(
+      '8. vuosiluokka'
     )
     await expect(
       page.getByTestId('oo.0.suoritukset.2.luokka.value')
@@ -222,8 +222,8 @@ test.describe('Perusopetuksen uusi käyttöliittymä', () => {
     // 9. vuosiluokka on toinen tabi (oppimäärä, 9, 8, 7)
     await page.getByTestId('oo.0.suoritusTabs.1.tab').click()
 
-    await expect(page.getByTestId('oo.0.suoritukset.1.koulutus')).toContainText(
-      '9. vuosiluokka 9'
+    await expect(page.getByTestId('oo.0.suoritukset.1.koulutus')).toHaveText(
+      '9. vuosiluokka'
     )
     await expect(
       page.getByTestId('oo.0.suoritukset.1.luokka.value')
@@ -245,8 +245,8 @@ test.describe('Perusopetuksen uusi käyttöliittymä', () => {
     // 7. vuosiluokka on viimeinen tabi (oppimäärä, 9, 8, 7)
     await page.getByTestId('oo.0.suoritusTabs.3.tab').click()
 
-    await expect(page.getByTestId('oo.0.suoritukset.3.koulutus')).toContainText(
-      '7. vuosiluokka 7'
+    await expect(page.getByTestId('oo.0.suoritukset.3.koulutus')).toHaveText(
+      '7. vuosiluokka'
     )
     await expect(
       page.getByTestId('oo.0.suoritukset.3.luokka.value')
