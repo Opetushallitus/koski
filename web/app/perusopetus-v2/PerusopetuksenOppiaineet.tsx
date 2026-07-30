@@ -30,8 +30,7 @@ import { isNuortenPerusopetuksenOppiaineenOppimääränSuoritus } from '../types
 import { FootnoteDescriptions } from '../components/footnote'
 import {
   OsasuoritusRowData,
-  OsasuoritusTable,
-  OsasuoritusTableColumn
+  OsasuoritusTable
 } from '../components-v2/opiskeluoikeus/OsasuoritusTable'
 import {
   OsasuoritusProperty,
@@ -45,12 +44,7 @@ import {
 import { FormModel, FormOptic } from '../components-v2/forms/FormModel'
 import { FieldViewerProps, FormField } from '../components-v2/forms/FormField'
 import { EmptyObject } from '../util/objects'
-import {
-  COLUMN_COUNT,
-  Column,
-  ColumnRow,
-  mapResponsiveValue
-} from '../components-v2/containers/Columns'
+import { Column, ColumnRow } from '../components-v2/containers/Columns'
 import { ActivePäätasonSuoritus } from '../components-v2/containers/EditorContainer'
 import {
   ParasArvosanaViewProps,
@@ -108,6 +102,7 @@ import {
   isÄidinkielenOppiaine
 } from '../uusiopiskeluoikeus/opiskeluoikeusCreator/yleissivistavat'
 import { shouldShowLaajuusColumn } from './oppiaineLaajuus'
+import { oppiaineSarakkeet } from './oppiaineSarakkeet'
 
 const ParasArvosanaKoodiarvoView = <T extends Arviointi>(
   props: ParasArvosanaViewProps<T>
@@ -247,12 +242,8 @@ export const PerusopetuksenOppiaineet: React.FC<
   )
 }
 
-// Nimisarakkeen leveys ruudukkosarakkeina. Ilman kiinteää leveyttä
-// OsasuoritusTablen getSpans venyttää nimisarakkeen koko vapaan tilan levyiseksi,
-// jolloin arvosana valuu rivin oikeaan reunaan kauas oppiaineen nimestä. Loppu
-// leveydestä täytetään tyhjällä päätesarakkeella (ks. columns alla).
-// Ryhmitellyt taulukot ovat leveällä näytöllä puolikkaan levyisiä (Column span
-// 12) ja kapealla täysleveitä, joten sama pikselileveys vaatii eri span-arvon.
+// Nimisarakkeen leveys ruudukkosarakkeina (ks. oppiaineSarakkeet). Manner-Suomen
+// oppiaineiden nimet ovat pitkiä, joten sarake on leveämpi kuin Ahvenanmaalla.
 const NIMI_SPAN = { default: 13, large: 11 }
 const NIMI_SPAN_TÄYSLEVEÄ = { default: 6, large: 7 }
 
@@ -309,37 +300,13 @@ const Oppiainetaulukko: React.FC<OppiainetaulukkoProps> = ({
       showArvosana
     )
   })
-  // Laajuussarake on kapea muokkaustilassa (pelkkä numerokenttä); näkymässä
-  // tarvitaan tilaa yksikön nimelle (esim. vuosiviikkotuntia).
-  const laajuusSpan = form.editMode ? 2 : 5
-  // Näkymässä arvosana on lyhyt koodiarvo (esim. 9 tai S), muokkaustilassa
-  // pudotusvalikko tarvitsee enemmän tilaa. Kapea näkymäsarake jättää tilaa
-  // oppiaineen nimelle, joka pidetään yhdellä rivillä.
-  const arvosanaSpan = form.editMode ? 6 : 4
-  // OsasuoritusTable varaa aina laajennussarakkeen ja muokkaustilassa lisäksi
-  // poistopainikkeen sarakkeen; loput ruudukosta jaetaan sarakkeille.
-  const vapaatSarakkeet = COLUMN_COUNT - 1 - (form.editMode ? 1 : 0)
-  // Päätesarakkeelle annetaan vähintään yksi ruudukkosarake: span 0 ei tuota
-  // ruudukkoluokkaa, jolloin sarake jäisi automaattisesti mitoitetuksi ja voisi
-  // rikkoa rivityksen.
-  const täytesarake = mapResponsiveValue((nimi: number) =>
-    Math.max(
-      1,
-      vapaatSarakkeet -
-        nimi -
-        (showArvosana ? arvosanaSpan : 0) -
-        (showLaajuus ? laajuusSpan : 0)
-    )
-  )(täysleveä ? NIMI_SPAN_TÄYSLEVEÄ : NIMI_SPAN)
-  const columns: Array<OsasuoritusTableColumn<string>> = [
-    { key: columnHeader },
-    ...(showArvosana ? [{ key: 'Arvosana', span: arvosanaSpan }] : []),
-    ...(showLaajuus ? [{ key: 'Laajuus', span: laajuusSpan }] : []),
-    // Tyhjä päätesarake vie loput leveydestä, jolloin nimisarake jää kapeaksi ja
-    // arvosana asettuu heti oppiaineen nimen viereen. Sekä otsikko- että
-    // suoritusrivit saavat samat sarakeleveydet, joten ne pysyvät kohdakkain.
-    { key: ' ', label: '', span: täytesarake }
-  ]
+  const columns = oppiaineSarakkeet({
+    columnHeader,
+    editMode: form.editMode,
+    nimiSpan: täysleveä ? NIMI_SPAN_TÄYSLEVEÄ : NIMI_SPAN,
+    showArvosana,
+    showLaajuus
+  })
 
   return (
     <>
