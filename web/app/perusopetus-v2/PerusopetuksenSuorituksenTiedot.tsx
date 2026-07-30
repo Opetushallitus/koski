@@ -93,8 +93,7 @@ export const PerusopetuksenSuorituksenTiedot: React.FC<
         >
           {[
             <TestIdText key="tunniste" id="koulutus">
-              {t(suoritus.koulutusmoduuli.tunniste.nimi)}{' '}
-              {suoritus.koulutusmoduuli.tunniste.koodiarvo}
+              {t(suoritus.koulutusmoduuli.tunniste.nimi)}
             </TestIdText>,
             isNuortenPerusopetuksenOppimääränSuoritus(suoritus) ? (
               <FormField
