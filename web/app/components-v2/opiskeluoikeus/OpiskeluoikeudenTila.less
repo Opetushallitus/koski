@@ -1,3 +1,12 @@
+// Vanhassa kälissä nimisarake oli vähintään 100px leveä, joten "Tila"-nimen ja
+// arvosarakkeen alussa olevan nuolen väliin jäi ilmaa. Uudessa kälissä
+// nimisarake mitoittuu sisällön mukaan (max-content), jolloin lyhyt nimi jättää
+// nuolen kiinni tekstiin. Ruudukon sarakeväli tulee nimisarakkeen leveyden
+// päälle, joten se vähennetään minimileveydestä.
+.OpiskeluoikeudenTila > .KeyValueRow > .KeyValueRow__name {
+  min-width: 100px - @Columns-gutter;
+}
+
 .OpiskeluoikeudenTila-viimeisin {
   .KeyValueRow__value {
     font-weight: 600;
