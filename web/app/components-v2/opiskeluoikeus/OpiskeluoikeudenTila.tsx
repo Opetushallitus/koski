@@ -64,7 +64,7 @@ export const OpiskeluoikeudenTilaView = <T extends OpiskeluoikeudenTila>(
 
   return (
     <TestIdLayer id="tila.value">
-      <KeyValueTable>
+      <KeyValueTable className="OpiskeluoikeudenTila">
         <TestIdLayer id="items">
           {sortedJaksot.map((jakso, index) => (
             <TestIdLayer key={index} id={index}>
@@ -130,7 +130,7 @@ export const OpiskeluoikeudenTilaEdit = <T extends OpiskeluoikeudenTila>(
 
   return (
     <TestIdLayer id="tila.edit">
-      <KeyValueTable>
+      <KeyValueTable className="OpiskeluoikeudenTila">
         <TestIdLayer id="items">
           {oo.jaksot.map(
             ({ jakso, index, min, max, isLatest, isCurrent }, arrIndex) => (
