@@ -4,6 +4,7 @@ import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.koodisto.{Koodisto, KoodistoKoodi, KoodistoPalvelu, KoodistoViite}
 import fi.oph.koski.koskiuser.Unauthenticated
+import fi.oph.koski.perustiedot.OpiskeluoikeudenPerustiedot
 import fi.oph.koski.schema.Opiskeluoikeus
 import fi.oph.koski.servlet.{KoskiSpecificApiServlet, KoskiSpecificBaseServlet, NoCache}
 
@@ -24,7 +25,8 @@ class KoodistoServlet(implicit val application: KoskiApplication) extends KoskiS
     val opiskeluoikeudenTyyppi = params.get("opiskeluoikeudentyyppi").map(tyyppi => opiskeluoikeudet.filter(oo => oo.tyyppi.koodiarvo == tyyppi)).getOrElse(opiskeluoikeudet)
     koodistoPalvelu.getKoodistoKoodit(koodistoPalvelu.getLatestVersionRequired("suorituksentyyppi"))
       .filter(koodi => koodiarvot(opiskeluoikeudenTyyppi).contains(koodi.koodiArvo))
-      .filterNot(_.koodiArvo == "perusopetuksenvuosiluokka")
+      // Näillä tyypeillä hakeminen palauttaisi aina tyhjän tuloksen, ks. OpiskeluoikeudenPerustiedot.
+      .filterNot(koodi => OpiskeluoikeudenPerustiedot.opiskelijalistaltaPiilotetutSuoritusTyypit.contains(koodi.koodiArvo))
   }
 
   def koodistoPalvelu: KoodistoPalvelu = application.koodistoPalvelu

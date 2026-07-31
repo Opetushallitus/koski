@@ -74,7 +74,11 @@ object OpiskeluoikeudenPerustiedot {
   // näkyy pelkkä oppimäärän suoritus. Suodatus on rajattu perusopetuksen tyyppeihin: European
   // School of Helsingin ja International Schoolin skeemat eivät salli päätason suorituksiksi
   // muuta kuin vuosiluokkia, joten niiden suodattaminen tyhjentäisi sarakkeen kokonaan.
-  private val opiskelijalistaltaPiilotetutSuoritusTyypit = Set(
+  //
+  // Koska näitä tyyppejä ei indeksoida, niillä ei voi myöskään hakea: KoodistoServlet karsii saman
+  // joukon opiskelijalistan Koulutus-sarakkeen suodatinvalikosta, jottei valikossa ole vaihtoehtoja
+  // joilla hakutulos on aina tyhjä. Tästä syystä tämä on julkinen.
+  val opiskelijalistaltaPiilotetutSuoritusTyypit = Set(
     "perusopetuksenvuosiluokka",
     "ahvenanmaanperusopetuksenvuosiluokka"
   )
