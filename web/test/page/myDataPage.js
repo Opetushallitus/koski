@@ -40,6 +40,9 @@ function MyDataPage() {
     getMemberName: function () {
       return extractAsText(S('.acceptance-member-name'))
     },
+    isMemberNameVisible: function () {
+      return isElementVisible(S('.acceptance-member-name'))
+    },
     getMemberPurpose: function () {
       return extractAsText(S('.acceptance-member-purpose'))
     },

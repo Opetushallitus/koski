@@ -142,7 +142,13 @@ describe('MyData', function () {
   describe('Käyttäjä voi vaihtaa kielen ruotsiksi', function () {
     // eslint-disable-next-line prefer-spread
     before.apply(null, login('fi', '100869-192W', 'Dippainssi', 'Dilbert'))
-    before(mydata.clickChangeLangSwedish, wait.until(mydata.isInSwedish))
+    // Kielen vaihto lataa sivun uudelleen: otsikko ja kielivalinnat renderöityvät heti,
+    // mutta kumppanin nimi vasta kun /koski/api/omadata/kumppani-kutsu on valmis.
+    before(
+      mydata.clickChangeLangSwedish,
+      wait.until(mydata.isInSwedish),
+      wait.until(mydata.isMemberNameVisible)
+    )
 
     it('Otsikko näytetään ruotsiksi', function () {
       expect(extractAsText(S('.title > h1'))).equal('Min Studieinfo')
@@ -156,7 +162,11 @@ describe('MyData', function () {
   describe('Käyttäjä voi vaihtaa kielen englanniksi', function () {
     // eslint-disable-next-line prefer-spread
     before.apply(null, login('fi', '100869-192W', 'Dippainssi', 'Dilbert'))
-    before(mydata.clickChangeLangEnglish, wait.until(mydata.isInEnglish))
+    before(
+      mydata.clickChangeLangEnglish,
+      wait.until(mydata.isInEnglish),
+      wait.until(mydata.isMemberNameVisible)
+    )
 
     it('Otsikko näytetään englanniksi', function () {
       expect(extractAsText(S('.title > h1'))).equal('My Studyinfo')
