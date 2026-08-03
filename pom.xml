@@ -16,19 +16,19 @@
     <scala.version>2.13.18</scala.version>
     <slick.version>3.6.1</slick.version>
     <slick-pg.version>0.23.1</slick-pg.version>
-    <scalatra.version>3.1.2</scalatra.version>
+    <scalatra.version>3.2.0</scalatra.version>
     <http4s.version>0.23.34</http4s.version>
     <http4s-blaze-client.version>0.23.17</http4s-blaze-client.version>
     <http4s-scala-xml.version>0.24.1</http4s-scala-xml.version>
     <json4s.version>4.0.7</json4s.version>
-    <awssdk.version>2.46.21</awssdk.version>
+    <awssdk.version>2.50.1</awssdk.version>
     <jetty.version>12.1.11</jetty.version>
     <prometheus.client.version>0.16.0</prometheus.client.version>
     <scoverage.plugin.version>1.4.11</scoverage.plugin.version>
     <log4j.version>2.26.1</log4j.version>
     <pdfbox.version>3.0.7</pdfbox.version>
     <openhtmltopdf.version>1.1.40</openhtmltopdf.version>
-    <bouncycastle.version>1.84</bouncycastle.version>
+    <bouncycastle.version>1.85</bouncycastle.version>
     <finalName>${project.artifactId}-${project.version}</finalName>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <verapdf.version>1.30.2</verapdf.version>
@@ -95,7 +95,7 @@
     <dependency>
       <groupId>joda-time</groupId>
       <artifactId>joda-time</artifactId>
-      <version>2.10.14</version>
+      <version>2.14.3</version>
     </dependency>
     <dependency>
       <groupId>org.apache.commons</groupId>
