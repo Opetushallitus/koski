@@ -4,7 +4,8 @@ import fi.oph.koski.db.DatabaseConverters
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.plainAPI._
 import fi.oph.koski.localization.LocalizationReader
 import fi.oph.koski.raportit.{Column, DataSheet}
-import fi.oph.koski.raportointikanta.{RaportointiDatabase, Schema}
+import fi.oph.koski.raportointikanta.{OpiskeluoikeusPrecomputedTable, RaportointiDatabase, Schema}
+import slick.dbio.DBIO
 import slick.jdbc.GetResult
 
 import java.time.LocalDate
@@ -53,10 +54,13 @@ object Lukio2019RahoitusmuotoEiTiedossa {
   }
 }
 
-object Lukio2019OppiaineRahoitusmuodonMukaan extends DatabaseConverters {
-  def createPrecomputedTable(s: Schema) =
-    sqlu"""
-      create table #${s.name}.lukion_aineopintojen_moduulien_rahoitusmuodot as select
+object Lukio2019OppiaineRahoitusmuodonMukaan extends DatabaseConverters with OpiskeluoikeusPrecomputedTable {
+
+  val precomputedTableName = "lukion_aineopintojen_moduulien_rahoitusmuodot"
+
+  protected def precomputedTableSelectSql(schemaName: String): String =
+    s"""
+      select
         opiskeluoikeus.oppilaitos_oid,
         opiskeluoikeus.opiskeluoikeus_oid,
         opiskeluoikeus.oppija_oid,
@@ -68,10 +72,10 @@ object Lukio2019OppiaineRahoitusmuodonMukaan extends DatabaseConverters {
         aikajakso.opintojen_rahoitus,
         osasuoritus.koulutusmoduuli_laajuus_arvo,
         paatason_suoritus.oppimaara_koodiarvo
-      from #${s.name}.r_paatason_suoritus paatason_suoritus
-        join #${s.name}.r_osasuoritus osasuoritus on paatason_suoritus.paatason_suoritus_id = osasuoritus.paatason_suoritus_id
-        join #${s.name}.r_opiskeluoikeus opiskeluoikeus on paatason_suoritus.opiskeluoikeus_oid = opiskeluoikeus.opiskeluoikeus_oid
-        join #${s.name}.r_opiskeluoikeus_aikajakso aikajakso on paatason_suoritus.opiskeluoikeus_oid = aikajakso.opiskeluoikeus_oid
+      from $schemaName.r_paatason_suoritus paatason_suoritus
+        join $schemaName.r_osasuoritus osasuoritus on paatason_suoritus.paatason_suoritus_id = osasuoritus.paatason_suoritus_id
+        join $schemaName.r_opiskeluoikeus opiskeluoikeus on paatason_suoritus.opiskeluoikeus_oid = opiskeluoikeus.opiskeluoikeus_oid
+        join $schemaName.r_opiskeluoikeus_aikajakso aikajakso on paatason_suoritus.opiskeluoikeus_oid = aikajakso.opiskeluoikeus_oid
         where paatason_suoritus.suorituksen_tyyppi = 'lukionaineopinnot'
           and (osasuoritus.arviointi_paiva between aikajakso.alku and aikajakso.loppu)
           and osasuoritus.suorituksen_tyyppi in ('lukionvaltakunnallinenmoduuli', 'lukionpaikallinenopintojakso')
@@ -83,8 +87,11 @@ object Lukio2019OppiaineRahoitusmuodonMukaan extends DatabaseConverters {
           )
     """
 
-  def createIndex(s: Schema) =
-    sqlu"create index on #${s.name}.lukion_aineopintojen_moduulien_rahoitusmuodot(oppilaitos_oid)"
+  def createIndex(s: Schema): DBIO[Unit] =
+    DBIO.seq(
+      sqlu"create index on #${s.name}.#$precomputedTableName(oppilaitos_oid)",
+      sqlu"create index on #${s.name}.#$precomputedTableName(opiskeluoikeus_oid)",
+    )
 
   def queryMuutaKauttaRahoitetut(oppilaitosOids: List[String], aikaisintaan: LocalDate, viimeistaan: LocalDate, rahoitusmuoto: Option[String]) = {
     sql"""
