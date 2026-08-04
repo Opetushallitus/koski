@@ -199,6 +199,7 @@ class RaportointiDatabase(config: RaportointiDatabaseConfigBase) extends Logging
 
   def updateOpiskeluoikeusPrecomputedTables(opiskeluoikeusOids: Seq[String]): Unit = {
     if (opiskeluoikeusOids.nonEmpty) {
+      val started = System.currentTimeMillis
       try {
         val actions = OpiskeluoikeusPrecomputedTables.all.map(_.updatePrecomputedTable(schema, opiskeluoikeusOids))
         runDbSync(DBIO.seq(actions: _*), timeout = 15.minutes)
@@ -207,6 +208,8 @@ class RaportointiDatabase(config: RaportointiDatabaseConfigBase) extends Logging
           logger.error(e)("Opiskeluoikeuskohtaisten precomputed-taulujen inkrementaalinen päivitys epäonnistui")
           throw e
       }
+      val duration = (System.currentTimeMillis - started) / 1000
+      logger.info(s"Opiskeluoikeuskohtaisten precomputed-taulujen päivitys [${opiskeluoikeusOids.size} oo] kesti $duration s")
     }
   }
 
