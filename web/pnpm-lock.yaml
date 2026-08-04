@@ -235,8 +235,8 @@ importers:
         specifier: ^10.6.1
         version: 10.6.1(postcss@8.5.15)
       prettier:
-        specifier: 3.9.4
-        version: 3.9.4
+        specifier: 3.9.6
+        version: 3.9.6
       puppeteer:
         specifier: 24.43.1
         version: 24.43.1(typescript@5.9.3)
@@ -3229,7 +3229,7 @@ packages:
     hasBin: true
 
   mocha-chrome@https://codeload.github.com/opetushallitus/mocha-chrome/tar.gz/b5a822a65b719e648b1bbe73e86cfd2290a59cc3:
-    resolution: {gitHosted: true, integrity: sha512-3XaFn7Q8YKlSnI/iNrGzgiOu6DImE9RmxySUpIuIfBmykdU6T1mljH8Eud0sXmowl3MD9AAsXXanjXltpnQEEA==, tarball: https://codeload.github.com/opetushallitus/mocha-chrome/tar.gz/b5a822a65b719e648b1bbe73e86cfd2290a59cc3}
+    resolution: {gitHosted: true, tarball: https://codeload.github.com/opetushallitus/mocha-chrome/tar.gz/b5a822a65b719e648b1bbe73e86cfd2290a59cc3}
     version: 3.0.0
     engines: {node: '>=18.0.0'}
     hasBin: true
@@ -3686,8 +3686,8 @@ packages:
     resolution: {integrity: sha512-vkcDPrRZo1QZLbn5RLGPpg/WmIQ65qoWWhcGKf/b5eplkkarX0m9z8ppCat4mlOqUsWpyNuYgO3VRyrYHSzX5g==}
     engines: {node: '>= 0.8.0'}
 
-  prettier@3.9.4:
-    resolution: {integrity: sha512-yWG/o/4oJfo036EKAfK6ACAoDOfHeRHx4tuxkfBZiauURiaSmYwlpOr5LQqKtIkRD2z1PLteme2WoxEnj4tHTg==}
+  prettier@3.9.6:
+    resolution: {integrity: sha512-OpN0zzVdiaiAhxpuuj5efpIS4sY9j7bY6uR5mnj5yPzGkdkjNKSJeUThPb60Jw29QuAZgA4o+/iB49kFiaBX6g==}
     engines: {node: '>=14'}
     hasBin: true
 
@@ -8380,7 +8380,7 @@ snapshots:
 
   prelude-ls@1.2.1: {}
 
-  prettier@3.9.4: {}
+  prettier@3.9.6: {}
 
   proc-log@4.2.0: {}
 
