@@ -1,12 +1,15 @@
 package fi.oph.koski.raportointikanta
 
-import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
+import fi.oph.koski.db.PostgresDriverWithJsonSupport.plainAPI._
+import slick.dbio.DBIO
 
-object OpiskeluoikeudenUlkopuolellaArvioidutOsasuoritukset {
+object OpiskeluoikeudenUlkopuolellaArvioidutOsasuoritukset extends OpiskeluoikeusPrecomputedTable {
 
-  def createPrecomputedTable(s: Schema) =
-    sqlu"""
-      create table #${s.name}.osasuoritus_arvioitu_opiskeluoikeuden_ulkopuolella as select
+  val precomputedTableName = "osasuoritus_arvioitu_opiskeluoikeuden_ulkopuolella"
+
+  protected def precomputedTableSelectSql(schemaName: String): String =
+    s"""
+      select
         opiskeluoikeus.opiskeluoikeus_oid,
         opiskeluoikeus.oppilaitos_oid,
         osasuoritus.osasuoritus_id,
@@ -14,16 +17,19 @@ object OpiskeluoikeudenUlkopuolellaArvioidutOsasuoritukset {
         osasuoritus.suorituksen_tyyppi osasuorituksen_tyyppi,
         paatason_suoritus.suorituksen_tyyppi paatason_suorituksen_tyyppi,
         paatason_suoritus.oppimaara_koodiarvo
-      from #${s.name}.r_opiskeluoikeus opiskeluoikeus
-        join #${s.name}.r_osasuoritus osasuoritus on osasuoritus.opiskeluoikeus_oid = opiskeluoikeus.opiskeluoikeus_oid
+      from $schemaName.r_opiskeluoikeus opiskeluoikeus
+        join $schemaName.r_osasuoritus osasuoritus on osasuoritus.opiskeluoikeus_oid = opiskeluoikeus.opiskeluoikeus_oid
           and (
             osasuoritus.arviointi_paiva < opiskeluoikeus.alkamispaiva
             or
            (osasuoritus.arviointi_paiva > coalesce(opiskeluoikeus.paattymispaiva, '9999-12-31') and viimeisin_tila = 'valmistunut')
           )
-        join #${s.name}.r_paatason_suoritus paatason_suoritus on paatason_suoritus.paatason_suoritus_id = osasuoritus.paatason_suoritus_id
+        join $schemaName.r_paatason_suoritus paatason_suoritus on paatason_suoritus.paatason_suoritus_id = osasuoritus.paatason_suoritus_id
     """
 
-  def createIndex(s: Schema) =
-    sqlu"create index on #${s.name}.osasuoritus_arvioitu_opiskeluoikeuden_ulkopuolella(oppilaitos_oid)"
+  def createIndex(s: Schema): DBIO[Unit] =
+    DBIO.seq(
+      sqlu"create index on #${s.name}.#$precomputedTableName(oppilaitos_oid)",
+      sqlu"create index on #${s.name}.#$precomputedTableName(opiskeluoikeus_oid)",
+    )
 }
