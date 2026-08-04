@@ -15,8 +15,7 @@
   "platformAutomerge": false,
   "rangeStrategy": "replace",
   "ignoreDeps": [
-    "com.github.Opetushallitus.java-utils:oid-generator",
-    "brace-expansion"
+    "com.github.Opetushallitus.java-utils:oid-generator"
   ],
   "packageRules": [
     {
