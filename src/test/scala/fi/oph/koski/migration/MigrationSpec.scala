@@ -42,7 +42,7 @@ class MigrationSpec extends AnyFreeSpec with Matchers with RaportointikantaTestM
         "KoskiEventBridgeClient.scala"                              -> "2dab293a49a8500a68d52c4d2d510973",
         "LoaderUtils.scala"                                         -> "38d31b4d1cfa5e3892083bb39f7f0047",
         "MuuAmmatillinenRaporttiRowBuilder.scala"                   -> "31774fb0fbd06a775a07325e867a951f",
-        "OpiskeluoikeudenUlkopuolellaArvioidutOsasuoritukset.scala" -> "bd0a79bd9b9fa570226f26175e256d81",
+        "OpiskeluoikeudenUlkopuolellaArvioidutOsasuoritukset.scala" -> "389abf4b2f0c53a122b5c1cf1f55f470",
         "OpiskeluoikeusLoader.scala"                                -> "c7524a6b73eb89ef757845afe1713a6a",
         "OppivelvollisuudenVapautusLoader.scala"                    -> "2870707413fff5719b7cb7063dd424c4",
         "OrganisaatioHistoriaRowBuilder.scala"                      -> "7e586d9e273a5a4ee7beae257f22c7f4",
@@ -59,7 +59,7 @@ class MigrationSpec extends AnyFreeSpec with Matchers with RaportointikantaTestM
         "OpiskeluoikeusLoaderRowBuilder.scala"                      -> "cea96e3bef7b30c4e6448ba8117d480b",
         "IncrementalUpdateOpiskeluoikeusLoader.scala"               -> "cf0ce24b3e2a1c02c98f0db8c211a11",
         "FullReloadOpiskeluoikeusLoader.scala"                      -> "b7920c2257afaecf09f1212fbf393326",
-        "OpiskeluoikeusPrecomputedTable.scala"                      -> "8d17e7825c3e1bdbb2c2a65f60b414be",
+        "OpiskeluoikeusPrecomputedTable.scala"                      -> "c517c46fc7199efa72eb01b541b572f",
       )
 
       val errors = getListOfFiles(dir).flatMap(file => {
