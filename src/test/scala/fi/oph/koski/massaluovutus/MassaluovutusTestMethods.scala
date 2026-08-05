@@ -58,12 +58,23 @@ trait MassaluovutusTestMethods extends KoskiHttpSpec with Matchers {
     var lastResponse: Option[QueryResponse] = None
     Wait.until {
       getQuerySuccessfully(queryId, user) { response =>
-        states should contain(response.status)
+        verifyExpectedState(response, states)
         lastResponse = Some(response)
         response.status == states.last
       }
     }
     lastResponse.get
+  }
+
+  // Ilman virheviestiä odottamattomasta failed-tilasta ei näe testin tulosteessa mitään syytä.
+  private def verifyExpectedState(response: QueryResponse, states: Seq[String]): Unit = {
+    if (!states.contains(response.status)) {
+      val virhe = response match {
+        case failed: FailedQueryResponse => failed.error.orElse(failed.hint).getOrElse("-")
+        case _ => "-"
+      }
+      fail(s"Kysely ${response.queryId} päätyi odottamattomaan tilaan ${response.status} (odotettiin: ${states.mkString(", ")}), virhe: $virhe")
+    }
   }
 
   def waitForCompletion(queryId: String, user: UserWithPassword): CompleteQueryResponse =

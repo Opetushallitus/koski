@@ -199,7 +199,7 @@ class TodistusSpecHelpers extends AnyFreeSpec with KoskiHttpSpec with Matchers w
     var lastResponse: Option[TodistusJob] = None
     Wait.until {
       getStatusSuccessfully(id, hetu) { response =>
-        states should contain(response.state)
+        verifyExpectedState(response, states)
         lastResponse = Some(response)
         response.state == states.last
       }
@@ -211,12 +211,21 @@ class TodistusSpecHelpers extends AnyFreeSpec with KoskiHttpSpec with Matchers w
     var lastResponse: Option[TodistusJob] = None
     Wait.until {
       getStatusSuccessfullyAsVirkailijaPääkäyttäjä(id) { response =>
-        states should contain(response.state)
+        verifyExpectedState(response, states)
         lastResponse = Some(response)
         response.state == states.last
       }
     }
     lastResponse.get
+  }
+
+  // Statusrajapinta ei palauta jobin virheviestiä, joten haetaan se tietokannasta: ilman sitä
+  // odottamattomasta ERROR-tilasta ei näe testin tulosteessa mitään syytä.
+  private def verifyExpectedState(response: TodistusJob, states: Seq[String]): Unit = {
+    if (!states.contains(response.state)) {
+      val virhe = app.todistusRepository.getFromDbForUnitTests(response.id).flatMap(_.error).getOrElse("-")
+      fail(s"Todistus ${response.id} päätyi odottamattomaan tilaan ${response.state} (odotettiin: ${states.mkString(", ")}), virhe: $virhe")
+    }
   }
 
   def waitForCompletion(id: String, hetu: String): TodistusJob =
