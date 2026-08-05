@@ -16,8 +16,15 @@ runs:
       shell: bash
 
     - name: Start Postgres and OS containers
-      run: docker compose --progress quiet up -d
-      shell: bash
+      # Docker Hub ajoittain nihkeä vastaamaan, jolloin image-pull kaatuu
+      # ("context deadline exceeded"). up -d on idempotentti, joten uudelleenyritys
+      # on turvallinen: jo käynnistyneet kontit jätetään rauhaan.
+      uses: nick-fields/retry@ad984534de44a9489a53aefd81eb77f87c70dc60 # v4
+      with:
+        max_attempts: 3
+        timeout_minutes: 5
+        retry_wait_seconds: 30
+        command: docker compose --progress quiet up -d
 
     - name: Restore target dir
       uses: actions/cache/restore@2c8a9bd7457de244a408f35966fab2fb45fda9c8 # v6
