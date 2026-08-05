@@ -2,11 +2,12 @@ package fi.oph.koski.raportit.lukio
 
 import fi.oph.koski.db.DatabaseConverters
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.plainAPI._
+import fi.oph.koski.db.SQLHelpers
 import fi.oph.koski.localization.LocalizationReader
 import fi.oph.koski.raportit.{Column, DataSheet}
 import fi.oph.koski.raportointikanta.{OpiskeluoikeusPrecomputedTable, RaportointiDatabase, Schema}
 import slick.dbio.DBIO
-import slick.jdbc.GetResult
+import slick.jdbc.{GetResult, SQLActionBuilder}
 
 import java.time.LocalDate
 
@@ -60,37 +61,40 @@ object LukioOppiaineRahoitusmuodonMukaan extends DatabaseConverters with Opiskel
 
   val precomputedTableName = "lukion_oppiaineen_oppimaaran_kurssien_rahoitusmuodot"
 
-  protected def precomputedTableSelectSql(schemaName: String): String =
-    s"""
-      select
-        opiskeluoikeus.oppilaitos_oid,
-        opiskeluoikeus.opiskeluoikeus_oid,
-        opiskeluoikeus.oppija_oid,
-        opiskeluoikeus.oppija_master_oid,
-        osasuoritus.koulutusmoduuli_koodiarvo,
-        osasuoritus.koulutusmoduuli_nimi,
-        COALESCE(osasuoritus.data -> 'koulutusmoduuli' -> 'tunniste' -> 'nimi' ->> 'sv', osasuoritus.koulutusmoduuli_nimi) as koulutusmoduuli_nimi_sv,
-        osasuoritus.arviointi_paiva,
-        aikajakso.opintojen_rahoitus
-      from $schemaName.r_paatason_suoritus paatason_suoritus
-        join $schemaName.r_osasuoritus osasuoritus on paatason_suoritus.paatason_suoritus_id = osasuoritus.paatason_suoritus_id
-        join $schemaName.r_opiskeluoikeus opiskeluoikeus on paatason_suoritus.opiskeluoikeus_oid = opiskeluoikeus.opiskeluoikeus_oid
-        join $schemaName.r_opiskeluoikeus_aikajakso aikajakso on paatason_suoritus.opiskeluoikeus_oid = aikajakso.opiskeluoikeus_oid
-        where paatason_suoritus.suorituksen_tyyppi = 'lukionoppiaineenoppimaara'
-          and (osasuoritus.arviointi_paiva between aikajakso.alku and aikajakso.loppu)
-          and osasuoritus.suorituksen_tyyppi = 'lukionkurssi'
-          and osasuoritus.arviointi_arvosana_koodiarvo != 'O'
-          and (
-            osasuoritus.tunnustettu = false
-            or
-            tunnustettu_rahoituksen_piirissa
-          )
-          and (
-            osasuoritus.koulutusmoduuli_kurssin_tyyppi = 'pakollinen'
-            or
-            (koulutusmoduuli_kurssin_tyyppi = 'syventava' and koulutusmoduuli_paikallinen = false)
-          )
-    """
+  protected def precomputedTableSelectSql(schemaName: String, opiskeluoikeusRajaus: SQLActionBuilder): SQLActionBuilder =
+    SQLHelpers.concat(
+      sql"""
+        select
+          opiskeluoikeus.oppilaitos_oid,
+          opiskeluoikeus.opiskeluoikeus_oid,
+          opiskeluoikeus.oppija_oid,
+          opiskeluoikeus.oppija_master_oid,
+          osasuoritus.koulutusmoduuli_koodiarvo,
+          osasuoritus.koulutusmoduuli_nimi,
+          COALESCE(osasuoritus.data -> 'koulutusmoduuli' -> 'tunniste' -> 'nimi' ->> 'sv', osasuoritus.koulutusmoduuli_nimi) as koulutusmoduuli_nimi_sv,
+          osasuoritus.arviointi_paiva,
+          aikajakso.opintojen_rahoitus
+        from #$schemaName.r_paatason_suoritus paatason_suoritus
+          join #$schemaName.r_osasuoritus osasuoritus on paatason_suoritus.paatason_suoritus_id = osasuoritus.paatason_suoritus_id
+          join #$schemaName.r_opiskeluoikeus opiskeluoikeus on paatason_suoritus.opiskeluoikeus_oid = opiskeluoikeus.opiskeluoikeus_oid
+          join #$schemaName.r_opiskeluoikeus_aikajakso aikajakso on paatason_suoritus.opiskeluoikeus_oid = aikajakso.opiskeluoikeus_oid
+          where paatason_suoritus.suorituksen_tyyppi = 'lukionoppiaineenoppimaara'
+            and (osasuoritus.arviointi_paiva between aikajakso.alku and aikajakso.loppu)
+            and osasuoritus.suorituksen_tyyppi = 'lukionkurssi'
+            and osasuoritus.arviointi_arvosana_koodiarvo != 'O'
+            and (
+              osasuoritus.tunnustettu = false
+              or
+              tunnustettu_rahoituksen_piirissa
+            )
+            and (
+              osasuoritus.koulutusmoduuli_kurssin_tyyppi = 'pakollinen'
+              or
+              (koulutusmoduuli_kurssin_tyyppi = 'syventava' and koulutusmoduuli_paikallinen = false)
+            )
+      """,
+      opiskeluoikeusRajaus
+    )
 
   def createIndex(s: Schema): DBIO[Unit] =
     DBIO.seq(
