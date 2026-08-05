@@ -94,6 +94,10 @@ trait MassaluovutusTestMethods extends KoskiHttpSpec with Matchers {
   def withoutRunningQueryScheduler[T](f: => T): T =
     try {
       app.massaluovutusScheduler.schedulerInstance.foreach(_.suspend())
+      // suspend estää vain uusien ajojen käynnistymisen. Odota vielä, että käynnissä oleva
+      // kysely ehtii valmistua: muuten testin cleanup-kutsu voi uudelleenjonottaa sen kesken
+      // ajon ja lohkon lopun truncate poistaa rivin alta.
+      Wait.until(!app.massaluovutusScheduler.schedulerInstance.exists(_.isTaskRunning))
       f
     } finally {
       app.massaluovutusService.truncate()
