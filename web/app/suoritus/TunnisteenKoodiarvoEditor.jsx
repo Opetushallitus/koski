@@ -6,10 +6,22 @@ import Dropdown from '../components/Dropdown'
 export const TunnisteenKoodiarvoEditor = ({ model }) => {
   if (hideTunnisteenKoodiarvo(model)) return null
 
+  const tunnisteModel = modelLookup(model, 'tunniste')
+
+  // Katselutilassa koodiarvo luetaan suoraan mallista, joten sitä ei pidä
+  // viivyttää perusteen koulutuksien hakemisella: niitä tarvitaan vain
+  // muokkaustilan dropdownissa ja koodiarvon automaattisessa päivityksessä.
+  if (!model.context.edit) {
+    return (
+      <span>
+        <Koodiarvo model={tunnisteModel} />
+      </span>
+    )
+  }
+
   const koulutuksetDiaarinumerolleP = fetchKoulutuksetDiaarille(
     modelData(model, 'perusteenDiaarinumero')
   ).map((obs) => obs.map((k) => k.data))
-  const tunnisteModel = modelLookup(model, 'tunniste')
   const updateTunniste = (koulutus) =>
     pushModelValue(tunnisteModel, { data: koulutus })
   const automaticUpdatePossible = (koulutukset) =>
