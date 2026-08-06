@@ -10,7 +10,8 @@ describe('Muu ammatillinen koulutus', function () {
     before(
       resetFixtures,
       page.openPage,
-      page.oppijaHaku.searchAndSelect('130320-899Y')
+      page.oppijaHaku.searchAndSelect('130320-899Y'),
+      wait.forAjax
     )
 
     describe('Kaikki tiedot näkyvissä', function () {
