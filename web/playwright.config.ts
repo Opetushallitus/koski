@@ -13,6 +13,8 @@ import { devices } from '@playwright/test'
 const config: PlaywrightTestConfig = {
   globalSetup: require.resolve('./test/e2e/setup/global-setup'),
   testDir: './test/e2e',
+  testIgnore: '**/*.visual.spec.ts',
+  snapshotPathTemplate: './test/e2e/__screenshots__/{testFileName}/{arg}{ext}',
   /* Maximum time one test can run for. */
   timeout: 30 * 1000,
   expect: {
@@ -20,7 +22,15 @@ const config: PlaywrightTestConfig = {
      * Maximum time expect() should wait for the condition to be met.
      * For example in `await expect(locator).toHaveText();`
      */
-    timeout: 5000
+    timeout: 5000,
+    /* Screenshot-vertailun oletusasetukset (käytössä visuaalitesteissä). */
+    toHaveScreenshot: {
+      /* Maksimi poikkeama pikseleinä */
+      maxDiffPixels: 500,
+      /* Piilota animaatiot ja tekstikursori vakauden vuoksi. */
+      animations: 'disabled',
+      caret: 'hide'
+    }
   },
   /* Run tests in files in parallel */
   fullyParallel: true,

@@ -325,6 +325,15 @@ jobs:
           shardIndex: ${{ matrix.shardIndex }}
           shardTotal: ${{ matrix.shardTotal }}
 
+  run_frontend_visual_tests:
+    name: Visuaaliregressiot
+    runs-on: ${{ inputs.runs-on }}
+    if: ${{ !contains(github.event.head_commit.message, '[skip-tests]') }}
+    needs: [build_koski]
+    steps:
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7
+      - uses: ./.github/actions/koski_visual_test
+
   valpas_integration_tests:
     name: Valpas ${{matrix.shardIndex}}/${{matrix.shardTotal}}
     strategy:
