@@ -116,6 +116,18 @@ fronttest:
 integrationtest:
 		mvn $(mvn_opts) -DargLine="$(mvn_argline)" test -Dsuites="fi.oph.koski.e2e.KoskiFrontSpec"
 
+# Visuaaliset regressiotestit, ks. documentation/visual-testing.md
+#
+# Ajetaan aina Linux-kontissa - samoin kuin CI:ssä - jotta paikallisesti
+# nauhoitettu baseline-kuva kelpaa sellaisenaan CI:lle.
+.PHONY: visual-test
+visual-test:
+	scripts/koski-visual.sh test
+
+.PHONY: visual-update
+visual-update:
+	scripts/koski-visual.sh update
+
 .PHONY: omadataoauth2e2e
 omadataoauth2e2e:
 		mvn $(mvn_opts) -DargLine="$(mvn_argline)" test -Dsuites="fi.oph.koski.omadataoauth2.e2e.OmaDataOAuth2E2ESpec"

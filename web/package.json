@@ -112,6 +112,8 @@
     "playwright:test:debug": "pnpm exec playwright test --headed",
     "playwright:test:trace": "pnpm exec playwright test --trace on && npx playwright show-report",
     "playwright:codegen": "pnpm exec playwright codegen",
+    "playwright:visual": "pnpm exec playwright test --config playwright.visual.config.ts",
+    "playwright:visual:update": "pnpm exec playwright test --config playwright.visual.config.ts --update-snapshots",
     "typecheck": "tsc --noEmit --project tsconfig.json",
     "prettier:check": "prettier --check app",
     "prettier:fix": "prettier --write app",
