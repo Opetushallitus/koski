@@ -93,7 +93,6 @@ class SisältyväOpiskeluoikeusSpec extends AnyFreeSpec with Matchers with Opisk
     }
 
     "Eri tutkinnon tai koulutusmuodon linkitys" - {
-      // Sisältävät opiskeluoikeudet tyhjä-oppijalle; sisältyviä ei tallenneta (400), joten duplikaatteja ei synny.
       lazy val lukioMaster: LukionOpiskeluoikeus =
         createOpiskeluoikeus(KoskiSpecificMockOppijat.tyhjä, LukioExampleData.lukionOpiskeluoikeus(), user = MockUsers.paakayttaja)
       lazy val ammatillinenAutoalaMaster: AmmatillinenOpiskeluoikeus =
@@ -106,23 +105,27 @@ class SisältyväOpiskeluoikeusSpec extends AnyFreeSpec with Matchers with Opisk
           suoritukset = List(suoritus)
         )
 
-      "Eri koulutusmuodon opiskeluoikeuteen ei voi linkittää -> HTTP 400" in {
+      // Eri tutkinnon/koulutusmuodon linkitys ei toistaiseksi estä tallennusta, vaan esiintymät ainoastaan lokitetaan.
+      "Eri koulutusmuodon opiskeluoikeuteen linkitys sallitaan (vain lokitetaan) -> HTTP 200" in {
         val sisältyvä = sisältyväAmmatillinen(
           SisältäväOpiskeluoikeus(lukioMaster.oppilaitos.get, lukioMaster.oid.get),
           autoalanPerustutkinnonSuoritus(OidOrganisaatio(omnia))
         )
         putOpiskeluoikeus(sisältyvä, henkilö = KoskiSpecificMockOppijat.tyhjä, headers = authHeaders(MockUsers.omniaTallentaja) ++ jsonContent) {
-          verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.sisältäväOpiskeluoikeus.eriPäätasonSuoritus())
+          // verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.sisältäväOpiskeluoikeus.eriPäätasonSuoritus())
+          verifyResponseStatusOk()
         }
       }
 
-      "Eri tutkinnon opiskeluoikeuteen ei voi linkittää -> HTTP 400" in {
+      // Eri tutkinnon/koulutusmuodon linkitys ei toistaiseksi estä tallennusta, vaan esiintymät ainoastaan lokitetaan.
+      "Eri tutkinnon opiskeluoikeuteen linkitys sallitaan (vain lokitetaan) -> HTTP 200" in {
         val sisältyvä = sisältyväAmmatillinen(
           SisältäväOpiskeluoikeus(ammatillinenAutoalaMaster.oppilaitos.get, ammatillinenAutoalaMaster.oid.get),
           puuteollisuudenPerustutkinnonSuoritus(OidOrganisaatio(omnia))
         )
         putOpiskeluoikeus(sisältyvä, henkilö = KoskiSpecificMockOppijat.tyhjä, headers = authHeaders(MockUsers.omniaTallentaja) ++ jsonContent) {
-          verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.sisältäväOpiskeluoikeus.eriPäätasonSuoritus())
+          // verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.sisältäväOpiskeluoikeus.eriPäätasonSuoritus())
+          verifyResponseStatusOk()
         }
       }
 
