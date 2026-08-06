@@ -73,7 +73,7 @@ class RaportointikantaService(application: KoskiApplication) extends Logging {
   def loadRaportointikantaAndExit(fullReload: Boolean, forceReload: Boolean, enableYtr: Boolean, incrementalLoadMaxRows: Int): Unit = {
     leaseElector.start()
     if (!waitForLease(leaseAcquireTimeout)) {
-      logger.error(s"Raportointikannan generoinnin leasea ei saatu ${leaseAcquireTimeout} sisällä, keskeytetään.")
+      logger.warn(s"Raportointikannan generoinnin leasea ei saatu ${leaseAcquireTimeout} sisällä, keskeytetään.")
       leaseElector.shutdown()
       shutdown
     } else {
