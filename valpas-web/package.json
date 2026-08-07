@@ -101,15 +101,5 @@
   "alias": {
     "memoize": "./node_modules/.pnpm/memoize@10.2.0/node_modules/memoize/distribution/index.js"
   },
-  "pnpm": {
-    "overrides": {
-      "brace-expansion@^1": "1.1.18",
-      "brace-expansion@^5": "5.0.9",
-      "js-yaml@^3": "4.3.0",
-      "js-yaml@^4": "4.3.0",
-      "@eslint/plugin-kit": "^0.7.0",
-      "flatted": "^3.4.2"
-    }
-  },
   "packageManager": "pnpm@10.34.4"
 }
