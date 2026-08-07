@@ -50,7 +50,9 @@ class IncrementalUpdateOpiskeluoikeusLoader(
 
     update.service.alustaKaikkiKäsiteltäviksi()
     db.cloneUpdateableTables(update.previousRaportointiDatabase, enableYtr)
+    db.cloneOpiskeluoikeusPrecomputedTables(update.previousRaportointiDatabase)
     createIndexesForIncrementalUpdate()
+    db.analyzeCloneTablesForIncrementalUpdate()
     OpiskeluoikeusLoaderRowBuilder.suoritusIds.set(db.getLatestSuoritusId)
 
     val dataResult =
@@ -87,6 +89,8 @@ class IncrementalUpdateOpiskeluoikeusLoader(
     val resultOlemassaolevatOot = updateBatchOlemassaolevatOpiskeluoikeudet(olemassaolevatOot, mitätöidytOot.map(_.oid))
     val resultMitätöidyt = updateBatchMitätöidytOpiskeluoikeudet(mitätöidytEiPoistetutOot, olemassaolevatOot.map(_.oid))
     val resultPoistetut = updateBatchPoistetutOpiskeluoikeudet(poistetutOot)
+
+    db.updateOpiskeluoikeusPrecomputedTables(batch.map(_.oid))
 
     resultOlemassaolevatOot ++ resultMitätöidyt ++ resultPoistetut
   }

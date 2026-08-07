@@ -2,13 +2,12 @@ package fi.oph.koski.raportointikanta
 
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.db.{DB, DatabaseUtilQueries, QueryMethods, RaportointiDatabaseConfigBase}
-import fi.oph.koski.henkilo.Kotikuntahistoria
 import fi.oph.koski.db.DatabaseExecutionContext
 import fi.oph.koski.log.Logging
 import fi.oph.koski.oppivelvollisuustieto.Oppivelvollisuustiedot
 import fi.oph.koski.raportit.PaallekkaisetOpiskeluoikeudet
-import fi.oph.koski.raportit.lukio.lops2021.{Lukio2019AineopintojenOpintopistekertymat, Lukio2019OppiaineEriVuonnaKorotetutOpintopisteet, Lukio2019OppiaineRahoitusmuodonMukaan, Lukio2019OppimaaranOpintopistekertymat}
-import fi.oph.koski.raportit.lukio.{LukioOppiaineEriVuonnaKorotetutKurssit, LukioOppiaineRahoitusmuodonMukaan, LukioOppiaineenOppimaaranKurssikertymat, LukioOppimaaranKussikertymat}
+import fi.oph.koski.raportit.lukio.lops2021.{Lukio2019AineopintojenOpintopistekertymat, Lukio2019OppimaaranOpintopistekertymat}
+import fi.oph.koski.raportit.lukio.{LukioOppiaineenOppimaaranKurssikertymat, LukioOppimaaranKussikertymat}
 import fi.oph.koski.raportointikanta.RaportointiDatabaseSchema._
 import fi.oph.koski.schema.Opiskeluoikeus.Oid
 import fi.oph.koski.schema.{Henkilö, Opiskeluoikeus, Organisaatio}
@@ -137,6 +136,17 @@ class RaportointiDatabase(config: RaportointiDatabaseConfigBase) extends Logging
     confidential.foreach(_.createIndexesForIncrementalUpdate())
   }
 
+  def analyzeCloneTablesForIncrementalUpdate(): Unit = {
+    val startTime = System.currentTimeMillis
+    logger.info("Analysoidaan kloonatut taulut inkrementaalista päivitystä varten")
+    val analysoitavatTaulut = Seq("r_opiskeluoikeus", "r_osasuoritus", "r_paatason_suoritus", "r_opiskeluoikeus_aikajakso") ++ OpiskeluoikeusPrecomputedTables.all.map(_.precomputedTableName)
+    analysoitavatTaulut.foreach { taulu =>
+      runDbSync(sqlu"analyze #${schema.name}.#$taulu", timeout = 30.minutes)
+    }
+    val elapsedSeconds = (System.currentTimeMillis - startTime) / 1000
+    logger.info(s"Kloonatut taulut analysoitu, ${elapsedSeconds} s")
+  }
+
   def createOpiskeluoikeusIndexes(): Unit = {
     runDbSync(schema.createOpiskeluoikeusIndexes(), timeout = 120.minutes)
     confidential.foreach(_.createOpiskeluoikeusIndexes())
@@ -151,42 +161,67 @@ class RaportointiDatabase(config: RaportointiDatabaseConfigBase) extends Logging
     confidential.foreach(_.createOtherIndexes())
   }
 
-  def createPrecomputedTables(valpasRajapäivätService: ValpasRajapäivätService): Unit = {
+  def createPrecomputedTables(valpasRajapäivätService: ValpasRajapäivätService, incremental: Boolean = false): Unit = {
     logger.info("Creating precomputed tables (formerly materialized views)")
     val started = System.currentTimeMillis
     setStatusLoadStarted("materialized_views")
 
     val ConfidentialSchema = confidential.map(_.schema).getOrElse(schema)
-    val views = Seq(
+
+    val alwaysRebuiltViews = Seq(
       PaallekkaisetOpiskeluoikeudet.createPrecomputedTable(schema),
       PaallekkaisetOpiskeluoikeudet.createIndex(schema),
       LukioOppimaaranKussikertymat.createPrecomputedTable(schema),
       LukioOppimaaranKussikertymat.createIndex(schema),
       Lukio2019OppimaaranOpintopistekertymat.createPrecomputedTable(schema),
       Lukio2019OppimaaranOpintopistekertymat.createIndex(schema),
-      OpiskeluoikeudenUlkopuolellaArvioidutOsasuoritukset.createPrecomputedTable(schema),
-      OpiskeluoikeudenUlkopuolellaArvioidutOsasuoritukset.createIndex(schema),
       LukioOppiaineenOppimaaranKurssikertymat.createPrecomputedTable(schema),
       LukioOppiaineenOppimaaranKurssikertymat.createIndex(schema),
       Lukio2019AineopintojenOpintopistekertymat.createPrecomputedTable(schema),
       Lukio2019AineopintojenOpintopistekertymat.createIndex(schema),
-      LukioOppiaineRahoitusmuodonMukaan.createPrecomputedTable(schema),
-      LukioOppiaineRahoitusmuodonMukaan.createIndex(schema),
-      Lukio2019OppiaineRahoitusmuodonMukaan.createPrecomputedTable(schema),
-      Lukio2019OppiaineRahoitusmuodonMukaan.createIndex(schema),
-      LukioOppiaineEriVuonnaKorotetutKurssit.createPrecomputedTable(schema),
-      LukioOppiaineEriVuonnaKorotetutKurssit.createIndex(schema),
-      Lukio2019OppiaineEriVuonnaKorotetutOpintopisteet.createPrecomputedTable(schema),
-      Lukio2019OppiaineEriVuonnaKorotetutOpintopisteet.createIndex(schema),
       Oppivelvollisuustiedot.createPrecomputedTable(schema, ConfidentialSchema, valpasRajapäivätService, config.rootConfig),
       Oppivelvollisuustiedot.createIndexes(schema),
     )
+    val fullReloadRebuiltViews = OpiskeluoikeusPrecomputedTables.all.flatMap(t => Seq(t.createPrecomputedTable(schema), t.createIndex(schema)))
+    val views = if (incremental) alwaysRebuiltViews else alwaysRebuiltViews ++ fullReloadRebuiltViews
+
     runDbSync(DBIO.seq(views: _*), timeout = 120.minutes)
 
-    setStatusLoadCompletedAndCount("materialized_views", views.length)
+    setStatusLoadCompletedAndCount("materialized_views", (alwaysRebuiltViews ++ fullReloadRebuiltViews).length)
 
     val duration = (System.currentTimeMillis - started) / 1000
     logger.info(s"Precomputed tables created in $duration s")
+  }
+
+  def cloneOpiskeluoikeusPrecomputedTables(source: RaportointiDatabase): Unit = {
+    logger.info(s"Kloonataan opiskeluoikeuskohtaiset precomputed-taulut ${source.schema.name} --> ${schema.name}")
+    val started = System.currentTimeMillis
+    val actions = OpiskeluoikeusPrecomputedTables.all.flatMap { t =>
+      Seq(
+        sqlu"drop table if exists #${schema.name}.#${t.precomputedTableName}",
+        sqlu"create table #${schema.name}.#${t.precomputedTableName} as table #${source.schema.name}.#${t.precomputedTableName}",
+        t.createIndex(schema),
+      )
+    }
+    retryDbSync(DBIO.seq(actions: _*), timeout = 120.minutes)
+    val duration = (System.currentTimeMillis - started) / 1000
+    logger.info(s"Opiskeluoikeuskohtaiset precomputed-taulut kloonattu, $duration s")
+  }
+
+  def updateOpiskeluoikeusPrecomputedTables(opiskeluoikeusOids: Seq[String]): Unit = {
+    if (opiskeluoikeusOids.nonEmpty) {
+      val started = System.currentTimeMillis
+      try {
+        val actions = OpiskeluoikeusPrecomputedTables.all.map(_.updatePrecomputedTable(schema, opiskeluoikeusOids))
+        runDbSync(DBIO.seq(actions: _*), timeout = 15.minutes)
+      } catch {
+        case e: Throwable =>
+          logger.error(e)("Opiskeluoikeuskohtaisten precomputed-taulujen inkrementaalinen päivitys epäonnistui")
+          throw e
+      }
+      val duration = (System.currentTimeMillis - started) / 1000
+      logger.info(s"Opiskeluoikeuskohtaisten precomputed-taulujen päivitys [${opiskeluoikeusOids.size} oo] kesti $duration s")
+    }
   }
 
   def createCustomFunctions(): Unit = {

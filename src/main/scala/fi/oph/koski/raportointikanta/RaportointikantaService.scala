@@ -227,7 +227,7 @@ class RaportointikantaService(application: KoskiApplication) extends Logging {
         onCompleted = () => {
           //Without try-catch, in case of an exception the process just silently halts, this is a feature of java.util.concurrent.Executors
           try {
-            loadRestAndSwap()
+            loadRestAndSwap(incremental = update.isDefined)
             if (update.isDefined) {
               päivitetytOpiskeluoikeudetJonoService.poistaKäsitellyt()
             } else {
@@ -249,14 +249,14 @@ class RaportointikantaService(application: KoskiApplication) extends Logging {
 
   private val doNothing = (_: Any) => ()
 
-  private val loadRestAndSwap = () => {
+  private def loadRestAndSwap(incremental: Boolean): Unit = {
     loadHenkilöt(loadDatabase)
     loadOrganisaatiot(loadDatabase)
     loadKoodistot(loadDatabase)
     loadOppivelvollisuudestaVapautukset(loadDatabase)
     loadDatabase.createOtherIndexes()
     loadDatabase.createCustomFunctions()
-    loadDatabase.createPrecomputedTables(application.valpasRajapäivätService)
+    loadDatabase.createPrecomputedTables(application.valpasRajapäivätService, incremental = incremental)
     swapRaportointikanta()
     raportointiDatabase.vacuumAnalyze()
   }

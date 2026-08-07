@@ -2,15 +2,17 @@ package fi.oph.koski.raportit.lukio.lops2021
 
 import fi.oph.koski.db.DatabaseConverters
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.plainAPI._
+import fi.oph.koski.db.SQLHelpers
 import fi.oph.koski.localization.LocalizationReader
 import fi.oph.koski.raportit.{Column, DataSheet}
-import fi.oph.koski.raportointikanta.{RaportointiDatabase, Schema}
-import slick.jdbc.GetResult
+import fi.oph.koski.raportointikanta.{OpiskeluoikeusPrecomputedTable, RaportointiDatabase, Schema}
+import slick.dbio.DBIO
+import slick.jdbc.{GetResult, SQLActionBuilder}
 
 import java.sql.ResultSet
 import java.time.LocalDate
 
-object Lukio2019OppiaineEriVuonnaKorotetutOpintopisteet extends DatabaseConverters {
+object Lukio2019OppiaineEriVuonnaKorotetutOpintopisteet extends DatabaseConverters with OpiskeluoikeusPrecomputedTable {
 
   def dataSheet(
     oppilaitosOids: List[String],
@@ -26,29 +28,37 @@ object Lukio2019OppiaineEriVuonnaKorotetutOpintopisteet extends DatabaseConverte
     )
   }
 
-  def createPrecomputedTable(s: Schema) =
-    sqlu"""
-      create table #${s.name}.lukion_aineopintojen_eri_vuonna_korotetut as select
-        opiskeluoikeus.oppilaitos_oid,
-        opiskeluoikeus.opiskeluoikeus_oid,
-        opiskeluoikeus.oppija_oid,
-        opiskeluoikeus.oppija_master_oid,
-        osasuoritus.koulutusmoduuli_koodiarvo,
-        osasuoritus.koulutusmoduuli_nimi,
-        osasuoritus.arviointi_paiva,
-        osasuoritus.korotettu_eri_vuonna
-      from #${s.name}.r_paatason_suoritus paatason_suoritus
-        join #${s.name}.r_osasuoritus osasuoritus on paatason_suoritus.paatason_suoritus_id = osasuoritus.paatason_suoritus_id
-        join #${s.name}.r_opiskeluoikeus opiskeluoikeus on paatason_suoritus.opiskeluoikeus_oid = opiskeluoikeus.opiskeluoikeus_oid
-        join #${s.name}.r_opiskeluoikeus_aikajakso aikajakso on paatason_suoritus.opiskeluoikeus_oid = aikajakso.opiskeluoikeus_oid
-        where paatason_suoritus.suorituksen_tyyppi = 'lukionaineopinnot'
-          and (osasuoritus.arviointi_paiva between aikajakso.alku and aikajakso.loppu)
-          and osasuoritus.suorituksen_tyyppi in ('lukionvaltakunnallinenmoduuli', 'lukionpaikallinenopintojakso')
-          and osasuoritus.arviointi_arvosana_koodiarvo != 'O'
-    """
+  val precomputedTableName = "lukion_aineopintojen_eri_vuonna_korotetut"
 
-  def createIndex(s: Schema) =
-    sqlu"create index on #${s.name}.lukion_aineopintojen_eri_vuonna_korotetut(oppilaitos_oid)"
+  protected def precomputedTableSelectSql(schemaName: String, opiskeluoikeusRajaus: SQLActionBuilder): SQLActionBuilder =
+    SQLHelpers.concat(
+      sql"""
+        select
+          opiskeluoikeus.oppilaitos_oid,
+          opiskeluoikeus.opiskeluoikeus_oid,
+          opiskeluoikeus.oppija_oid,
+          opiskeluoikeus.oppija_master_oid,
+          osasuoritus.koulutusmoduuli_koodiarvo,
+          osasuoritus.koulutusmoduuli_nimi,
+          osasuoritus.arviointi_paiva,
+          osasuoritus.korotettu_eri_vuonna
+        from #$schemaName.r_paatason_suoritus paatason_suoritus
+          join #$schemaName.r_osasuoritus osasuoritus on paatason_suoritus.paatason_suoritus_id = osasuoritus.paatason_suoritus_id
+          join #$schemaName.r_opiskeluoikeus opiskeluoikeus on paatason_suoritus.opiskeluoikeus_oid = opiskeluoikeus.opiskeluoikeus_oid
+          join #$schemaName.r_opiskeluoikeus_aikajakso aikajakso on paatason_suoritus.opiskeluoikeus_oid = aikajakso.opiskeluoikeus_oid
+          where paatason_suoritus.suorituksen_tyyppi = 'lukionaineopinnot'
+            and (osasuoritus.arviointi_paiva between aikajakso.alku and aikajakso.loppu)
+            and osasuoritus.suorituksen_tyyppi in ('lukionvaltakunnallinenmoduuli', 'lukionpaikallinenopintojakso')
+            and osasuoritus.arviointi_arvosana_koodiarvo != 'O'
+      """,
+      opiskeluoikeusRajaus
+    )
+
+  def createIndex(s: Schema): DBIO[Unit] =
+    DBIO.seq(
+      sqlu"create index on #${s.name}.#$precomputedTableName(oppilaitos_oid)",
+      sqlu"create index on #${s.name}.#$precomputedTableName(opiskeluoikeus_oid)",
+    )
 
   def queryOppimaara(oppilaitosOids: List[String], aikaisintaan: LocalDate, viimeistaan: LocalDate) = {
     sql"""
