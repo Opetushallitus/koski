@@ -4,11 +4,19 @@
     "config:best-practices",
     ":preserveSemverRanges"
   ],
+  "timezone": "Europe/Helsinki",
   "osvVulnerabilityAlerts": true,
   "vulnerabilityAlerts": {
     "enabled": true,
     "labels": [
       "security"
+    ]
+  },
+  "lockFileMaintenance": {
+    "description": "Only mechanism that updates transitive dependencies absent from every package.json. Daily rather than the inherited schedule:weekly (Mon 00:00-03:59 UTC) to cut worst-case exposure from seven days to one; costs no extra PR noise since lockFileMaintenance maintains a single branch. Note: the narrow window is not why this job stopped running after 2026-06-08 — oppijanumerorekisteri runs the identical inherited schedule and has not missed a run. See the commit body.",
+    "enabled": true,
+    "schedule": [
+      "* 0-5 * * *"
     ]
   },
   "prConcurrentLimit": 8,
@@ -18,6 +26,13 @@
     "com.github.Opetushallitus.java-utils:oid-generator"
   ],
   "packageRules": [
+    {
+      "description": "Prioritise lock file maintenance so it does not lose the last concurrency slot to routine bumps",
+      "matchUpdateTypes": [
+        "lockFileMaintenance"
+      ],
+      "prPriority": 10
+    },
     {
       "description": "Disable major updates by default",
       "matchUpdateTypes": [

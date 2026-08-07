@@ -167,6 +167,20 @@ Migrations run automatically on application startup.
 psql -h localhost koski oph
 ```
 
+## Dependency vulnerabilities and pnpm overrides
+
+When Trivy or an advisory flags a transitive dependency, **do not reach for a `pnpm.overrides` entry first.** An override is permanent residue: it needs its own Renovate PRs forever, and an exact pin turns a self-healing transitive dep into one that can only be fixed by hand. In TOR-2696, three such pins (`"js-yaml": "4.3.0"`) were themselves holding a HIGH-severity version in place — the override *was* the vulnerability.
+
+Work through this order:
+
+1. **Is the lockfile just stale?** Check the parent's declared range (`npm view <parent>@<version> dependencies`). If it already permits a fixed version, the fix is a lockfile bump — `pnpm -C <dir> update <pkg> --lockfile-only --ignore-scripts` — with no manifest change. This covers the large majority of findings; 17 of the 18 overrides audited in TOR-2696 were this case.
+2. **Has the parent shipped a release that permits the fix?** Then bump the parent, not the child.
+3. **Only when the parent's range genuinely cannot reach a fixed version** does an override earn its place. Example: `copy-webpack-plugin@13.0.1` declares `serialize-javascript: ^6.0.2` and the fix is in 7.x — no resolution reaches it. Prefer a caret range (`^7.0.3`) over an exact pin, and never an unbounded `>=`.
+
+Removing an override is not enough on its own: pnpm keeps a lockfile resolution that still satisfies its parent, so the package also needs an explicit `pnpm update`.
+
+**If you are adding a third override in as many months, stop.** The question is not "which version do I pin" but "why is the lockfile never refreshed?" Renovate's `lockFileMaintenance` is the only mechanism that reaches dependencies absent from every `package.json` — Renovate will not create overrides for you, and the `transitiveRemediation` option that once did has been removed with no replacement. That job went silent between 2026-06-08 and 2026-08-07, which is what produced the override pile-up. Check the Dependency Dashboard (issue #3939) and the Mend job logs before adding a workaround.
+
 ## Key Patterns
 
 ### Data Model
@@ -279,3 +293,4 @@ GenAI tools are used to assist a human, not to act autonomously. Intended benefi
 - Act as an assistant to the human, never as an autonomous executor of tasks.
 - Ensure confidential content stays protected and IPR risks are minimized.
 - Treat all AI-generated output as work that must be reviewed by the user with the same scrutiny as code from a junior developer — do not assume it is correct or safe to apply without confirmation.
+- When a fix pattern repeats across tickets, question the pattern rather than applying it again — a recurring workaround usually means an upstream mechanism is broken.
