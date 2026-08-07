@@ -20,8 +20,10 @@ import { addContext } from './editor/EditorModel'
 import { locationP } from './util/location'
 import { ChangeLang } from './components/ChangeLang'
 import { SuoritusjakoHeader } from './components-v2/suoritusjako/SuoritusjakoHeader'
+import { loadStyles } from './util/loadStyles'
+
 __webpack_nonce__ = window.nonce
-import(/* webpackChunkName: "styles" */ './style/main.less')
+loadStyles(() => import(/* webpackChunkName: "styles" */ './style/main.less'))
 
 const secret = R.last(document.location.pathname.split('/'))
 

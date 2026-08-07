@@ -1,7 +1,9 @@
 import React from 'baret'
 import Text from '../i18n/Text'
 import { t } from '../i18n/i18n'
-import(/* webpackChunkName: "styles" */ '../style/main.less')
+import { loadStyles } from '../util/loadStyles'
+
+loadStyles(() => import(/* webpackChunkName: "styles" */ '../style/main.less'))
 
 export default ({ memberName, onAcceptClick, logoutURL }) => (
   <div>

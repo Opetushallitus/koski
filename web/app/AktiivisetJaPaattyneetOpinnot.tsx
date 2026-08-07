@@ -16,10 +16,12 @@ import { Trans } from './components-v2/texts/Trans'
 import { Flex } from './components-v2/containers/Flex'
 import ReactDOM from 'react-dom'
 import { fetchAktiivisetJaPäättyneetOpinnot } from './util/koskiApi'
+import { loadStyles } from './util/loadStyles'
+
 // @ts-ignore
 __webpack_nonce__ = window.nonce
 // @ts-ignore
-import(/* webpackChunkName: "styles" */ './style/main.less')
+loadStyles(() => import(/* webpackChunkName: "styles" */ './style/main.less'))
 
 const secret = R.last(document.location.pathname.split('/')) ?? ''
 const AktiivisetJaPäättyneetOpinnot = () => {
