@@ -24,9 +24,10 @@ import { Header } from './omattiedot/header/Header'
 import { EiSuorituksiaInfo } from './omattiedot/EiSuorituksiaInfo'
 import { patchSaavutettavuusLeima } from './saavutettavuusLeima'
 import { OmatTiedotAppStateProvider } from './appstate/OmatTiedotAppStateProvider'
+import { loadStyles } from './util/loadStyles'
 
 __webpack_nonce__ = window.nonce
-import(/* webpackChunkName: "styles" */ './style/main.less')
+loadStyles(() => import(/* webpackChunkName: "styles" */ './style/main.less'))
 
 const omatTiedotP = (oid) => {
   const url = oid

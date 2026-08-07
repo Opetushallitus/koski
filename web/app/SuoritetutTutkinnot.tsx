@@ -18,10 +18,12 @@ import { isSuoritetutTutkinnotOpiskeluoikeus } from './types/fi/oph/koski/suorit
 import { isSuoritetutTutkinnotKoskeenTallennettavaOpiskeluoikeus } from './types/fi/oph/koski/suoritetuttutkinnot/SuoritetutTutkinnotKoskeenTallennettavaOpiskeluoikeus'
 import Text from './i18n/Text'
 import { SuoritetutTutkinnotOppijaJakolinkillä } from './types/fi/oph/koski/suoritusjako/SuoritetutTutkinnotOppijaJakolinkilla'
+import { loadStyles } from './util/loadStyles'
+
 // @ts-ignore
 __webpack_nonce__ = window.nonce
 // @ts-ignore
-import(/* webpackChunkName: "styles" */ './style/main.less')
+loadStyles(() => import(/* webpackChunkName: "styles" */ './style/main.less'))
 
 const secret = R.last(document.location.pathname.split('/')) ?? ''
 

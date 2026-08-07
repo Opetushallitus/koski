@@ -153,6 +153,18 @@ class JettyLauncher(val port: Int, val application: KoskiApplication) extends Lo
     staticResourceHolder.setInitParameter("dirAllowed", "false")
     staticResourceHolder.setInitParameter("etags", "true")
     staticResourceHolder.setInitParameter("pathInfoOnly", "false")
+    // Ilman Cache-Control-otsaketta selain päättelee tuoreuden Last-Modifiedin
+    // perusteella (RFC 9111:n heuristinen tuoreus, ~10 % tiedoston iästä). Osalla
+    // staattisista tiedostoista ei ole nimessä sisältöhashia eikä osoitteessa
+    // versioparametria, joten julkaisun jälkeen käyttöön voi jäädä tunneiksi
+    // vanha versio. Lyhyen max-agen jälkeen ETag-vertailu palauttaa halvan 304:n.
+    // must-revalidate jätetään pois tarkoituksella: jos palvelin ei juuri silloin
+    // vastaa, vanhan tiedoston käyttäminen on parempi kuin virhesivu.
+    // Lokaalisti revalidoidaan aina, jotta make watch -käännökset näkyvät heti.
+    staticResourceHolder.setInitParameter(
+      "cacheControl",
+      if (Environment.isLocalDevelopmentEnvironment(config)) "no-cache" else "public, max-age=60"
+    )
     context.getServletHandler.addServlet(staticResourceHolder)
     val staticMapping = new ServletMapping()
     staticMapping.setServletName("static-resources")

@@ -3,8 +3,10 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import { EiSuorituksiaInfo } from './omattiedot/EiSuorituksiaInfo'
 import { t } from './i18n/i18n'
+import { loadStyles } from './util/loadStyles'
+
 __webpack_nonce__ = window.nonce
-import(/* webpackChunkName: "styles" */ './style/main.less')
+loadStyles(() => import(/* webpackChunkName: "styles" */ './style/main.less'))
 
 ReactDOM.render(
   <div>

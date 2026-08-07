@@ -10,8 +10,10 @@ import { TopBar } from './topbar/TopBar'
 import { t } from './i18n/i18n'
 import Text from './i18n/Text'
 import Input from './components/Input'
+import { loadStyles } from './util/loadStyles'
+
 __webpack_nonce__ = window.nonce
-import(/* webpackChunkName: "styles" */ './style/main.less')
+loadStyles(() => import(/* webpackChunkName: "styles" */ './style/main.less'))
 
 const Login = () => {
   const state = Atom({ username: '', password: '' })
