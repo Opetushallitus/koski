@@ -59,9 +59,11 @@ class IntervalSchedulerSpec extends AnyFreeSpec with TestEnvironment with Matche
           shouldFireCheckIntervalMillis = 1
         )
         val start = System.currentTimeMillis
-        Wait.until(sharedResource.get == 1, timeoutMs = 1000, retryIntervalMs = 10)
+        // >= eikä ==, jottei hidas pollaus voi ohittaa arvoa kokonaan ja jäädä odottamaan turhaan.
+        // Päällekkäisyyden puuttumisen varmistavat joka tapauksessa alla olevat aikaväitteet.
+        Wait.until(sharedResource.get >= 1, timeoutMs = 3000, retryIntervalMs = 10)
         (System.currentTimeMillis() - start >= 500) should be(true)
-        Wait.until(sharedResource.get == 2, timeoutMs = 1000, retryIntervalMs = 10)
+        Wait.until(sharedResource.get >= 2, timeoutMs = 3000, retryIntervalMs = 10)
         (System.currentTimeMillis() - start >= 1000) should be(true)
         scheduler.shutdown()
       }
@@ -74,9 +76,11 @@ class IntervalSchedulerSpec extends AnyFreeSpec with TestEnvironment with Matche
           shouldFireCheckIntervalMillis = 1, concurrency = 0
         )
         val start = System.currentTimeMillis
-        Wait.until(sharedResource.get == 1, timeoutMs = 1000, retryIntervalMs = 10)
+        // >= eikä ==, jottei hidas pollaus voi ohittaa arvoa kokonaan ja jäädä odottamaan turhaan.
+        // Päällekkäisyyden puuttumisen varmistavat joka tapauksessa alla olevat aikaväitteet.
+        Wait.until(sharedResource.get >= 1, timeoutMs = 3000, retryIntervalMs = 10)
         (System.currentTimeMillis() - start >= 500) should be(true)
-        Wait.until(sharedResource.get == 2, timeoutMs = 1000, retryIntervalMs = 10)
+        Wait.until(sharedResource.get >= 2, timeoutMs = 3000, retryIntervalMs = 10)
         (System.currentTimeMillis() - start >= 1000) should be(true)
         scheduler.shutdown()
       }
@@ -99,8 +103,9 @@ class IntervalSchedulerSpec extends AnyFreeSpec with TestEnvironment with Matche
           },
           shouldFireCheckIntervalMillis = 1
         )
-        Thread.sleep(50)
-        errorCount.get should be > 0
+        // Odota ensimmäistä epäonnistunutta ajoa: lease-hankinta, DB-kyselyt ja taskin
+        // oma sleep vievät hitaalla CI-agentilla helposti yli kiinteän odotuksen.
+        Wait.until(errorCount.get > 0, timeoutMs = 5000, retryIntervalMs = 10)
         successCount.set(1)
         Wait.until(successCount.get >= 2, timeoutMs = 1000, retryIntervalMs = 10)
         scheduler.shutdown()
@@ -118,8 +123,7 @@ class IntervalSchedulerSpec extends AnyFreeSpec with TestEnvironment with Matche
           },
           shouldFireCheckIntervalMillis = 1, concurrency = 0
         )
-        Thread.sleep(50)
-        errorCount.get should be > 0
+        Wait.until(errorCount.get > 0, timeoutMs = 5000, retryIntervalMs = 10)
         successCount.set(1)
         Wait.until(successCount.get >= 2, timeoutMs = 1000, retryIntervalMs = 10)
         scheduler.shutdown()
