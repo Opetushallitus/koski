@@ -52,6 +52,7 @@ class IncrementalUpdateOpiskeluoikeusLoader(
     db.cloneUpdateableTables(update.previousRaportointiDatabase, enableYtr)
     db.cloneOpiskeluoikeusPrecomputedTables(update.previousRaportointiDatabase)
     createIndexesForIncrementalUpdate()
+    db.analyzeCloneTablesForIncrementalUpdate()
     OpiskeluoikeusLoaderRowBuilder.suoritusIds.set(db.getLatestSuoritusId)
 
     val dataResult =
