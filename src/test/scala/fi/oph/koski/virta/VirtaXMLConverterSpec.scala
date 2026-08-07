@@ -415,6 +415,84 @@ class VirtaXMLConverterSpec extends AnyFreeSpec with TestEnvironment with Matche
       }
     }
 
+    "JulkinenLisätieto" - {
+      def opintojaksoWithLisätieto(lisätiedot: scala.xml.NodeSeq): Elem =
+        <virta:Opintosuoritus opiskeluoikeusAvain="avopH1O1" opiskelijaAvain="avopH1" koulutusmoduulitunniste="K-123" avain="lisatieto-oj-1">
+          <virta:SuoritusPvm>2017-12-04</virta:SuoritusPvm>
+          <virta:Laajuus><virta:Opintopiste>5</virta:Opintopiste></virta:Laajuus>
+          <virta:Arvosana><virta:Viisiportainen>5</virta:Viisiportainen></virta:Arvosana>
+          <virta:Myontaja>10076</virta:Myontaja>
+          <virta:Laji>2</virta:Laji>
+          <virta:Nimi kieli="fi">Opintojakso</virta:Nimi>
+          <virta:Kieli>fi</virta:Kieli>
+          {lisätiedot}
+        </virta:Opintosuoritus>
+
+      def tutkintoWithLisätieto(lisätiedot: scala.xml.NodeSeq): Elem =
+        <virta:Opintosuoritus opiskeluoikeusAvain="avopH1O1" opiskelijaAvain="avopH1" koulutusmoduulitunniste="tutkinto-123" avain="lisatieto-tutkinto-1">
+          <virta:SuoritusPvm>2017-12-04</virta:SuoritusPvm>
+          <virta:Laajuus><virta:Opintopiste>180</virta:Opintopiste></virta:Laajuus>
+          <virta:Arvosana><virta:Hyvaksytty>HYV</virta:Hyvaksytty></virta:Arvosana>
+          <virta:Myontaja>10076</virta:Myontaja>
+          <virta:Laji>1</virta:Laji>
+          <virta:Nimi kieli="fi">Tutkinto</virta:Nimi>
+          <virta:Kieli>fi</virta:Kieli>
+          <virta:Koulutuskoodi>612103</virta:Koulutuskoodi>
+          {lisätiedot}
+        </virta:Opintosuoritus>
+
+      "parsitaan opintojakson suoritukselta" in {
+        val suoritus = convertSuoritus(opintojaksoWithLisätieto(<virta:JulkinenLisatieto kieli="fi">Talouskriisit (ECOK-256)</virta:JulkinenLisatieto>))
+        suoritus.get shouldBe a[KorkeakoulunOpintojaksonSuoritus]
+        suoritus.get.asInstanceOf[KorkeakoulunOpintojaksonSuoritus].lisätieto.map(_.get("fi")) shouldBe Some("Talouskriisit (ECOK-256)")
+      }
+
+      "parsitaan tutkinnon suoritukselta" in {
+        val suoritus = convertSuoritus(tutkintoWithLisätieto(<virta:JulkinenLisatieto>Theory of Elasticity</virta:JulkinenLisatieto>))
+        suoritus.get shouldBe a[KorkeakoulututkinnonSuoritus]
+        suoritus.get.asInstanceOf[KorkeakoulututkinnonSuoritus].lisätieto.map(_.get("fi")) shouldBe Some("Theory of Elasticity")
+      }
+
+      "tukee monikielisyyttä" in {
+        val suoritus = convertSuoritus(opintojaksoWithLisätieto(
+          <virta:JulkinenLisatieto kieli="fi">Suomeksi</virta:JulkinenLisatieto>
+          <virta:JulkinenLisatieto kieli="sv">På svenska</virta:JulkinenLisatieto>
+          <virta:JulkinenLisatieto kieli="en">In English</virta:JulkinenLisatieto>
+        ))
+        val lisätieto = suoritus.get.asInstanceOf[KorkeakoulunOpintojaksonSuoritus].lisätieto.value
+        lisätieto.get("fi") shouldBe "Suomeksi"
+        lisätieto.get("sv") shouldBe "På svenska"
+        lisätieto.get("en") shouldBe "In English"
+      }
+
+      "on None jos JulkinenLisatieto puuttuu" in {
+        val suoritus = convertSuoritus(opintojaksoWithLisätieto(scala.xml.NodeSeq.Empty))
+        suoritus.get.asInstanceOf[KorkeakoulunOpintojaksonSuoritus].lisätieto shouldBe None
+      }
+    }
+
+    "Opinnäytetyö" - {
+      def opintojaksoWithOpinnäytetyö(opinnäytetyö: Option[String]): Elem =
+        <virta:Opintosuoritus opiskeluoikeusAvain="avopH1O1" opiskelijaAvain="avopH1" koulutusmoduulitunniste="K-123" avain="opinnaytetyo-1">
+          <virta:SuoritusPvm>2017-12-04</virta:SuoritusPvm>
+          <virta:Laajuus><virta:Opintopiste>5</virta:Opintopiste></virta:Laajuus>
+          <virta:Arvosana><virta:Viisiportainen>5</virta:Viisiportainen></virta:Arvosana>
+          <virta:Myontaja>10076</virta:Myontaja>
+          <virta:Laji>2</virta:Laji>
+          <virta:Nimi kieli="fi">Opinnäytetyö</virta:Nimi>
+          <virta:Kieli>fi</virta:Kieli>
+          {opinnäytetyö.map(arvo => <virta:Opinnaytetyo>{arvo}</virta:Opinnaytetyo>).getOrElse(scala.xml.NodeSeq.Empty)}
+        </virta:Opintosuoritus>
+
+      def opinnäytetyö(arvo: Option[String]): Option[Boolean] =
+        convertSuoritus(opintojaksoWithOpinnäytetyö(arvo)).get.asInstanceOf[KorkeakoulunOpintojaksonSuoritus].opinnäytetyö
+
+      "parsitaan kun arvo on 1" in { opinnäytetyö(Some("1")) shouldBe Some(true) }
+      "parsitaan kun arvo on true" in { opinnäytetyö(Some("true")) shouldBe Some(true) }
+      "parsitaan kun arvo on 0" in { opinnäytetyö(Some("0")) shouldBe Some(false) }
+      "on None jos Opinnaytetyo puuttuu" in { opinnäytetyö(None) shouldBe None }
+    }
+
     "Luokittelu" - {
       "parsitaan koodistoviitteeksi" in {
         val luokittelut = convertSuoritus(suoritusWithOrganisaatio(None, luokittelu=Some(1)))
