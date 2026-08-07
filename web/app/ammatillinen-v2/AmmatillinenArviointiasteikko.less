@@ -1,0 +1,14 @@
+// Arviointiasteikon otsikko on <h5>, johon ei osu yhtään sääntöä v2-editorissa:
+// style/opiskeluoikeus.less:n h5-sääntö on rajattu .opiskeluoikeus-content
+// -valitsimen sisään, eikä v2 renderöidy sen alle. Niinpä selain käyttää omaa
+// oletustaan (0.83em, bold + margin 1.67em), jolloin otsikko on ympäröivää
+// tekstiä pienempi ja sen alapuolelle jää 25 px rako ennen arvoa.
+// Palautetaan samat arvot kuin vanhassa käyttöliittymässä.
+.ammatillinenarviointiasteikko h5 {
+  font-size: 1em;
+  font-weight: 600;
+  // Selaimen oletus 1.67em jättää otsikon ja arvon väliin enemmän tilaa kuin
+  // otsikko ja arvo yhteensä vievät. margin-top jätetään oletukseksi, kuten
+  // vanhassakin käyttöliittymässä.
+  margin-bottom: 2px;
+}

@@ -19,6 +19,11 @@
     & + label {
       position: relative;
       display: flex;
+      // display: flex tekee labelista lohkotason elementin, joka venyy koko
+      // säiliön leveyteen. Koska label kytkeytyy htmlFor:lla ruutuun, klikkaus
+      // missä tahansa kohtaa riviä valitsi ruudun. Kutistetaan label sisältönsä
+      // levyiseksi, jotta klikkausalue vastaa sitä mitä käyttäjä näkee.
+      width: fit-content;
     }
 
     // Visible checkbox border
