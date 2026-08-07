@@ -58,12 +58,23 @@ trait MassaluovutusTestMethods extends KoskiHttpSpec with Matchers {
     var lastResponse: Option[QueryResponse] = None
     Wait.until {
       getQuerySuccessfully(queryId, user) { response =>
-        states should contain(response.status)
+        verifyExpectedState(response, states)
         lastResponse = Some(response)
         response.status == states.last
       }
     }
     lastResponse.get
+  }
+
+  // Ilman virheviestiä odottamattomasta failed-tilasta ei näe testin tulosteessa mitään syytä.
+  private def verifyExpectedState(response: QueryResponse, states: Seq[String]): Unit = {
+    if (!states.contains(response.status)) {
+      val virhe = response match {
+        case failed: FailedQueryResponse => failed.error.orElse(failed.hint).getOrElse("-")
+        case _ => "-"
+      }
+      fail(s"Kysely ${response.queryId} päätyi odottamattomaan tilaan ${response.status} (odotettiin: ${states.mkString(", ")}), virhe: $virhe")
+    }
   }
 
   def waitForCompletion(queryId: String, user: UserWithPassword): CompleteQueryResponse =
@@ -83,6 +94,10 @@ trait MassaluovutusTestMethods extends KoskiHttpSpec with Matchers {
   def withoutRunningQueryScheduler[T](f: => T): T =
     try {
       app.massaluovutusScheduler.schedulerInstance.foreach(_.suspend())
+      // suspend estää vain uusien ajojen käynnistymisen. Odota vielä, että käynnissä oleva
+      // kysely ehtii valmistua: muuten testin cleanup-kutsu voi uudelleenjonottaa sen kesken
+      // ajon ja lohkon lopun truncate poistaa rivin alta.
+      Wait.until(!app.massaluovutusScheduler.schedulerInstance.exists(_.isTaskRunning))
       f
     } finally {
       app.massaluovutusService.truncate()

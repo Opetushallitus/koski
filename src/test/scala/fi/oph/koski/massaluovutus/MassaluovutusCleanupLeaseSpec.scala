@@ -1,6 +1,5 @@
 package fi.oph.koski.massaluovutus
 
-import fi.oph.koski.KoskiApplicationForTests
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.plainAPI._
 import fi.oph.koski.db.QueryMethods
 import fi.oph.koski.koskiuser.MockUsers
@@ -14,101 +13,88 @@ import org.scalatest.matchers.should.Matchers
 import java.time.{Duration, LocalDateTime}
 import java.util.UUID
 
-class MassaluovutusCleanupLeaseSpec extends AnyFreeSpec with TestEnvironment with Matchers with BeforeAndAfterEach {
-  private val app = KoskiApplicationForTests
+/**
+ * Testaa MassaluovutusService.cleanupin orpojen kyselyiden käsittelyä. Aktiiviset workerit
+ * annetaan cleanupille suoraan parametrina — testi ei saa varata jaettua 'massaluovutus'-
+ * worker_leasea eikä poistaa sen rivejä, koska sovelluksen oma kyselyscheduler käyttää samoja
+ * slotteja. Varaus pysäyttäisi kyselyiden ajon lease-varauksen ajaksi, ja rivien poisto jättäisi
+ * sovelluksen hetkeksi tilaan, jossa se luulee omistavansa leasen mutta ei näy aktiivisena
+ * workerina — jolloin cleanup vapauttaa sen ajossa olevat kyselyt kesken kaiken.
+ */
+class MassaluovutusCleanupLeaseSpec extends AnyFreeSpec with MassaluovutusTestMethods with TestEnvironment with Matchers with BeforeAndAfterEach {
   private val db = app.masterDatabase.db
+
+  // Vain tämän testin käytössä oleva lease-nimi, jolla ei ole schedulereita.
+  private val testLeaseName = "massaluovutus-cleanup-lease-spec"
 
   override protected def beforeEach(): Unit = {
     QueryMethods.runDbSync(db, sql"TRUNCATE TABLE massaluovutus".asUpdate)
-    QueryMethods.runDbSync(db, sql"DELETE FROM worker_lease WHERE name = 'massaluovutus'".asUpdate)
+    QueryMethods.runDbSync(db, sql"DELETE FROM worker_lease WHERE name = $testLeaseName".asUpdate)
     super.beforeEach()
   }
 
-  "cleanup requeues orphaned running queries based on active leases" in {
-    val activeHolder = "active-worker"
-    app.workerLeaseRepository.tryAcquireOrRenew("massaluovutus", 1, activeHolder, Duration.ofSeconds(30)) should be(true)
-
-    val queryId = UUID.randomUUID().toString
-    val query = MassaluovutusQueryLuokalleJaaneetJson(organisaatioOid = Some(MockOrganisaatiot.helsinginKaupunki))
-    val session = StorableSession(MockUsers.helsinkiKatselija).toJson
-    val running = RunningQuery(
-      queryId = queryId,
+  private def createRunningQuery(worker: String): RunningQuery =
+    RunningQuery(
+      queryId = UUID.randomUUID().toString,
       userOid = MockUsers.helsinkiKatselija.oid,
-      query = query,
+      query = MassaluovutusQueryLuokalleJaaneetJson(organisaatioOid = Some(MockOrganisaatiot.helsinginKaupunki)),
       createdAt = LocalDateTime.now(),
       startedAt = LocalDateTime.now(),
-      worker = "orphan-worker",
+      worker = worker,
       resultFiles = Nil,
-      session = session,
+      session = StorableSession(MockUsers.helsinkiKatselija).toJson,
       meta = None,
       progress = None
     )
-    app.massaluovutusService.addRaw(running)
 
-    app.massaluovutusCleanupScheduler.trigger()
-
-    val state = QueryMethods
+  private def stateOf(queryId: String): String =
+    QueryMethods
       .runDbSync(db, sql"SELECT state FROM massaluovutus WHERE id = $queryId::uuid".as[String])
       .head
-    state should equal(QueryState.pending)
+
+  "cleanup requeues orphaned running queries based on active leases" in {
+    withoutRunningQueryScheduler {
+      val running = createRunningQuery("orphan-worker")
+      app.massaluovutusService.addRaw(running)
+
+      app.massaluovutusService.cleanup(Seq("active-worker"))
+
+      stateOf(running.queryId) should equal(QueryState.pending)
+    }
   }
 
   "cleanup requeues when lease has expired" in {
-    val expiringHolder = "expiring-worker"
-    app.workerLeaseRepository.tryAcquireOrRenew("massaluovutus", 1, expiringHolder, Duration.ofMillis(100)) should be(true)
+    withoutRunningQueryScheduler {
+      val expiringHolder = "expiring-worker"
+      app.workerLeaseRepository.tryAcquireOrRenew(testLeaseName, 1, expiringHolder, Duration.ofMillis(100)) should be(true)
 
-    val queryId = UUID.randomUUID().toString
-    val query = MassaluovutusQueryLuokalleJaaneetJson(organisaatioOid = Some(MockOrganisaatiot.helsinginKaupunki))
-    val session = StorableSession(MockUsers.helsinkiKatselija).toJson
-    val running = RunningQuery(
-      queryId = queryId,
-      userOid = MockUsers.helsinkiKatselija.oid,
-      query = query,
-      createdAt = LocalDateTime.now(),
-      startedAt = LocalDateTime.now(),
-      worker = expiringHolder,
-      resultFiles = Nil,
-      session = session,
-      meta = None,
-      progress = None
-    )
-    app.massaluovutusService.addRaw(running)
+      val running = createRunningQuery(expiringHolder)
+      app.massaluovutusService.addRaw(running)
 
-    Thread.sleep(150)
-    app.massaluovutusCleanupScheduler.trigger()
+      Thread.sleep(150)
+      val activeWorkers = app.workerLeaseRepository.activeHolders(testLeaseName)
+      activeWorkers should not contain expiringHolder
 
-    val state = QueryMethods
-      .runDbSync(db, sql"SELECT state FROM massaluovutus WHERE id = $queryId::uuid".as[String])
-      .head
-    state should equal(QueryState.pending)
+      app.massaluovutusService.cleanup(activeWorkers)
+
+      stateOf(running.queryId) should equal(QueryState.pending)
+    }
   }
 
   "cleanup does not requeue when lease is active for worker" in {
-    val activeHolder = "active-worker"
-    app.workerLeaseRepository.tryAcquireOrRenew("massaluovutus", 1, activeHolder, Duration.ofSeconds(30)) should be(true)
+    withoutRunningQueryScheduler {
+      val activeHolder = "active-worker"
+      app.workerLeaseRepository.tryAcquireOrRenew(testLeaseName, 1, activeHolder, Duration.ofSeconds(30)) should be(true)
 
-    val queryId = UUID.randomUUID().toString
-    val query = MassaluovutusQueryLuokalleJaaneetJson(organisaatioOid = Some(MockOrganisaatiot.helsinginKaupunki))
-    val session = StorableSession(MockUsers.helsinkiKatselija).toJson
-    val running = RunningQuery(
-      queryId = queryId,
-      userOid = MockUsers.helsinkiKatselija.oid,
-      query = query,
-      createdAt = LocalDateTime.now(),
-      startedAt = LocalDateTime.now(),
-      worker = activeHolder,
-      resultFiles = Nil,
-      session = session,
-      meta = None,
-      progress = None
-    )
-    app.massaluovutusService.addRaw(running)
+      val running = createRunningQuery(activeHolder)
+      app.massaluovutusService.addRaw(running)
 
-    app.massaluovutusCleanupScheduler.trigger()
+      val activeWorkers = app.workerLeaseRepository.activeHolders(testLeaseName)
+      activeWorkers should contain(activeHolder)
 
-    val state = QueryMethods
-      .runDbSync(db, sql"SELECT state FROM massaluovutus WHERE id = $queryId::uuid".as[String])
-      .head
-    state should equal(QueryState.running)
+      app.massaluovutusService.cleanup(activeWorkers)
+
+      stateOf(running.queryId) should equal(QueryState.running)
+    }
   }
 }

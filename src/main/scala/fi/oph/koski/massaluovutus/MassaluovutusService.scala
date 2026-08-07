@@ -80,18 +80,27 @@ class MassaluovutusService(application: KoskiApplication) extends GlobalExecutio
             query.query.run(application, writer)
           }.fold(
             { error =>
-              logFailedQuery(query, error)
-              queries.setFailed(query.queryId, error)
+              if (queries.setFailed(query.queryId, error)) {
+                logFailedQuery(query, error)
+              } else {
+                logQueryNoLongerOwned(query, s"failed: $error")
+              }
             },
             { _ =>
-              logCompletedQuery(query, writer.objectKeys.size)
-              queries.setComplete(query.queryId, writer.objectKeys.toList)
+              if (queries.setComplete(query.queryId, writer.objectKeys.toList)) {
+                logCompletedQuery(query, writer.objectKeys.size)
+              } else {
+                logQueryNoLongerOwned(query, "completed")
+              }
             }
           )
         } catch {
           case t: Throwable =>
-            logFailedQuery(query, t.getMessage, Some(t))
-            queries.setFailed(query.queryId, t.getMessage)
+            if (queries.setFailed(query.queryId, t.getMessage)) {
+              logFailedQuery(query, t.getMessage, Some(t))
+            } else {
+              logQueryNoLongerOwned(query, s"failed: ${t.getMessage}")
+            }
         }
       }
     }
@@ -107,7 +116,7 @@ class MassaluovutusService(application: KoskiApplication) extends GlobalExecutio
       .findOrphanedQueries(activeWorkers)
       .foreach { query =>
         if (query.restartCount >= 3) {
-          queries.setFailed(query.queryId, "Orphaned")
+          queries.setOrphanedFailed(query.queryId, "Orphaned")
           logger.warn(s"Orphaned query (${query.name}) detected and cancelled after ${query.restartCount} restarts")
         } else {
           if (queries.restart(query, s"Orphaned ${LocalDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME)}")) {
@@ -134,6 +143,11 @@ class MassaluovutusService(application: KoskiApplication) extends GlobalExecutio
     throwable.fold(logger.error(message))(t => logger.error(t)(message))
     metrics.putQueuedQueryMetric(QueryState.failed)
   }
+
+  // Kysely ei ole enää tämän workerin ajossa: cleanup on ehtinyt palauttaa sen jonoon tai
+  // toinen worker on ottanut sen. Uudelleenyritys hoitaa loput.
+  private def logQueryNoLongerOwned(query: RunningQuery, outcome: String): Unit =
+    logger.warn(s"${query.name} $outcome, but it is no longer running on this worker (restarted?): result discarded")
 
   private def logCompletedQuery(query: RunningQuery, fileCount: Int): Unit = {
     logger.info(s"${query.name} completed with $fileCount result files")

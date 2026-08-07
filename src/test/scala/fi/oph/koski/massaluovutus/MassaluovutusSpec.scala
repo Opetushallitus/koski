@@ -27,7 +27,7 @@ import org.scalatest.{BeforeAndAfterAll, BeforeAndAfterEach}
 
 import java.nio.charset.StandardCharsets
 import java.sql.Timestamp
-import java.time.{Duration, LocalDate, LocalDateTime}
+import java.time.{LocalDate, LocalDateTime}
 import java.util.UUID
 
 class MassaluovutusSpec extends AnyFreeSpec with MassaluovutusTestMethods with Matchers with BeforeAndAfterAll with BeforeAndAfterEach with OpiskeluoikeusTestMethodsAmmatillinen {
@@ -87,12 +87,13 @@ class MassaluovutusSpec extends AnyFreeSpec with MassaluovutusTestMethods with M
 
     "Ajossa olevaa kyselyä ei vapauteta takaisin jonoon" in {
       withoutRunningQueryScheduler {
+        // Huom! Aktiiviset workerit annetaan cleanupille suoraan: jaettua 'massaluovutus'-leasea
+        // ei saa varata testissä, koska sovelluksen oma kyselyscheduler käyttää samoja slotteja.
         val activeWorker = "active-worker"
-        app.workerLeaseRepository.tryAcquireOrRenew("massaluovutus", 1, activeWorker, Duration.ofSeconds(30))
         val runningQuery = createRunningQuery(activeWorker)
 
         app.massaluovutusService.addRaw(runningQuery)
-        app.massaluovutusCleanupScheduler.trigger()
+        app.massaluovutusService.cleanup(Seq(activeWorker))
 
         val query = app.massaluovutusService.get(UUID.fromString(runningQuery.queryId))
         query.map(_.state) should equal(Right(QueryState.running))

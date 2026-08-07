@@ -183,6 +183,9 @@ class TodistusJobRepository(val db: DB, val workerId: String, config: Config) ex
       """.as[TodistusJob]).headOption
   }
 
+  // Merkitsee jobin epäonnistuneeksi vain, jos se on yhä tämän workerin ajossa. Jos cleanup
+  // on ehtinyt palauttaa jobin jonoon (esim. lease-katkoksen takia) tai toinen worker on
+  // ottanut sen, tilaa ei saa ylikirjoittaa ERROR:iksi — muuten uudelleenyritys menetetään.
   def setJobFailed(id: String, error: String): Boolean =
     runDbSync(
       sql"""
@@ -192,7 +195,22 @@ class TodistusJobRepository(val db: DB, val workerId: String, config: Config) ex
         error = $error,
         completed_at = now()
       WHERE id = ${id}::uuid
+        AND worker = $workerId
+        AND state = any(${TodistusState.runningStates.toSeq})
       """.asUpdate) != 0
+
+  def setJobFailedForUnitTests(id: String, error: String): Boolean = {
+    require(Environment.isUnitTestEnvironment(config), "setJobFailedForUnitTests can only be used in unit test environment")
+    runDbSync(
+      sql"""
+      UPDATE todistus_job
+      SET
+        state = ${TodistusState.ERROR},
+        error = $error,
+        completed_at = now()
+      WHERE id = ${id}::uuid
+      """.asUpdate) != 0
+  }
 
   def markAllMyJobsInterrupted(): Boolean =
     runDbSync(

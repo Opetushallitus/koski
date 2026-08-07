@@ -169,6 +169,9 @@ class QueryRepository(
         WHERE id = ${id}::uuid
         """.asUpdate) != 0
 
+  // setComplete ja setFailed päättävät kyselyn, jota tämä worker ajaa. Jos cleanup on ehtinyt
+  // palauttaa kyselyn jonoon (esim. lease-katkoksen takia) tai toinen worker on ottanut sen,
+  // lopputulosta ei saa kirjoittaa — muuten uudelleenyritys menetetään.
   def setComplete(id: String, resultFiles: List[String]): Boolean =
     runDbSync(sql"""
       UPDATE massaluovutus
@@ -177,6 +180,8 @@ class QueryRepository(
         result_files = ${resultFiles},
         finished_at = now()
       WHERE id = ${id}::uuid
+        AND worker = $workerId
+        AND state = ${QueryState.running}
       """.asUpdate) != 0
 
   def setFailed(id: String, error: String): Boolean =
@@ -189,6 +194,23 @@ class QueryRepository(
         finished_at = now(),
         result_files = null
       WHERE id = ${id}::uuid
+        AND worker = $workerId
+        AND state = ${QueryState.running}
+      """.asUpdate) != 0
+
+  // Orpo kysely merkitään epäonnistuneeksi cleanupista käsin, jolloin sen omistaa jokin muu
+  // (kuollut) worker.
+  def setOrphanedFailed(id: String, error: String): Boolean =
+    runDbSync(
+      sql"""
+      UPDATE massaluovutus
+      SET
+        state = ${QueryState.failed},
+        error = $error,
+        finished_at = now(),
+        result_files = null
+      WHERE id = ${id}::uuid
+        AND state = ${QueryState.running}
       """.asUpdate) != 0
 
   def restart(query: Query, reason: String): Boolean = {

@@ -81,7 +81,7 @@ class TodistusWorkflowSpec extends TodistusSpecHelpers {
         }
 
         // Merkitse se epäonnistuneeksi
-        app.todistusRepository.setJobFailed(firstJob.id, "Testissä luotu virhe")
+        app.todistusRepository.setJobFailedForUnitTests(firstJob.id, "Testissä luotu virhe")
         val errorJob = app.todistusRepository.getFromDbForUnitTests(firstJob.id).get
         errorJob.state should equal(TodistusState.ERROR)
 
@@ -517,7 +517,7 @@ class TodistusWorkflowSpec extends TodistusSpecHelpers {
       withoutRunningSchedulers {
         // Luo todistus ja merkitse se epäonnistuneeksi
         val job = addGenerateJobSuccessfully(req, hetu) { todistusJob => todistusJob }
-        app.todistusRepository.setJobFailed(job.id, "Testi-virhe")
+        app.todistusRepository.setJobFailedForUnitTests(job.id, "Testi-virhe")
 
         // Kutsu status-endpointia
         checkStatusByParameters(req, hetu) {

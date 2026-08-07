@@ -483,8 +483,13 @@ class TodistusService(application: KoskiApplication) extends Logging with Timing
             case Right(todistus) =>
               logGenerointiValmis(todistus)
             case Left(error) =>
-              logGenerointiEpäonnistui(todistus, error.toString)
-              todistusRepository.setJobFailed(todistus.id, error.toString)
+              if (todistusRepository.setJobFailed(todistus.id, error.toString)) {
+                logGenerointiEpäonnistui(todistus, error.toString)
+              } else {
+                // Job ei ole enää tämän workerin ajossa: cleanup on ehtinyt palauttaa sen
+                // jonoon tai toinen worker on ottanut sen. Uudelleenyritys hoitaa loput.
+                logGenerointiKeskeytyi(todistus, error.toString)
+              }
           }
         }
       }
@@ -531,6 +536,11 @@ class TodistusService(application: KoskiApplication) extends Logging with Timing
   private def logGenerointiEpäonnistui(todistus: TodistusJob, error: String): Unit = {
     val konteksti = teeKonteksti(todistus.id, todistus.oppijaOid, todistus.opiskeluoikeusOid, todistus.templateVariant, todistus.userOid.getOrElse("EI TIEDOSSA"))
     logger.error(s"Generointi epäonnistui $error, $konteksti")
+  }
+
+  private def logGenerointiKeskeytyi(todistus: TodistusJob, error: String): Unit = {
+    val konteksti = teeKonteksti(todistus.id, todistus.oppijaOid, todistus.opiskeluoikeusOid, todistus.templateVariant, todistus.userOid.getOrElse("EI TIEDOSSA"))
+    logger.warn(s"Generointi keskeytyi $error, mutta jobi ei ole enää tämän workerin ajossa (uudelleenjonotettu?), $konteksti")
   }
 
   private def teeKonteksti(id: String, oppijaOid: String, opiskeluoikeusOid: String, templateVariant: String, user: String): String =
