@@ -1,8 +1,11 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { useLayout } from '../../util/useDepth'
 import { common, CommonPropsWithChildren } from '../CommonProps'
 import { Column, ColumnRow, COLUMN_COUNT } from '../containers/Columns'
-import { OSASUORITUSTABLE_DEPTH_KEY } from './OsasuoritusTable'
+import {
+  AmmatillinenTyyliContext,
+  OSASUORITUSTABLE_DEPTH_KEY
+} from './OsasuoritusTable'
 import { t } from '../../i18n/i18n'
 
 const LABEL_WIDTH_COLUMNS = 4
@@ -15,9 +18,13 @@ export const OsasuoritusProperty: React.FC<OsasuoritusPropertyProps> = (
   props
 ) => {
   const [indentation, LayoutProvider] = useLayout(OSASUORITUSTABLE_DEPTH_KEY)
+  const ammatillinenTyyli = useContext(AmmatillinenTyyliContext)
   return (
     <ColumnRow
-      {...common(props, ['OsasuoritusProperty'])}
+      {...common(props, [
+        'OsasuoritusProperty',
+        ammatillinenTyyli && 'OsasuoritusProperty--ammatillinen'
+      ])}
       valign="top"
       indent={indentation}
     >
