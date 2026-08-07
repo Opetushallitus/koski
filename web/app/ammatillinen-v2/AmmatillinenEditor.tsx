@@ -963,11 +963,17 @@ export const TyössäoppimisjaksoView = <T extends Työssäoppimisjakso>({
           {t(value?.paikkakunta.nimi)}
         </KeyValueRow>
         <KeyValueRow localizableLabel="Maa">{t(value?.maa.nimi)}</KeyValueRow>
-        <KeyValueRow localizableLabel="Työssäoppimispaikka">
-          {t(value?.työssäoppimispaikka)}
+        <KeyValueRow
+          localizableLabel="Työssäoppimispaikka"
+          hideIfEmpty={value?.työssäoppimispaikka}
+        >
+          <LocalizedTextView value={value?.työssäoppimispaikka} />
         </KeyValueRow>
-        <KeyValueRow localizableLabel="Työtehtävät">
-          {t(value?.työtehtävät)}
+        <KeyValueRow
+          localizableLabel="Työtehtävät"
+          hideIfEmpty={value?.työtehtävät}
+        >
+          <LocalizedTextView value={value?.työtehtävät} />
         </KeyValueRow>
         <KeyValueRow localizableLabel="Laajuus">
           <LaajuusView value={value?.laajuus} />
@@ -1098,14 +1104,20 @@ export const KoulutussopimusView = <T extends Koulutussopimusjakso>({
           {t(value?.paikkakunta.nimi)}
         </KeyValueRow>
         <KeyValueRow localizableLabel="Maa">{t(value?.maa.nimi)}</KeyValueRow>
-        <KeyValueRow localizableLabel="Työssäoppimispaikka">
-          {t(value?.työssäoppimispaikka)}
+        <KeyValueRow
+          localizableLabel="Työssäoppimispaikka"
+          hideIfEmpty={value?.työssäoppimispaikka}
+        >
+          <LocalizedTextView value={value?.työssäoppimispaikka} />
         </KeyValueRow>
         <KeyValueRow localizableLabel="Työssäoppimispaikan Y-tunnus">
           {t(value?.työssäoppimispaikanYTunnus)}
         </KeyValueRow>
-        <KeyValueRow localizableLabel="Työtehtävät">
-          {t(value?.työtehtävät)}
+        <KeyValueRow
+          localizableLabel="Työtehtävät"
+          hideIfEmpty={value?.työtehtävät}
+        >
+          <LocalizedTextView value={value?.työtehtävät} />
         </KeyValueRow>
       </KeyValueTable>
     </>
