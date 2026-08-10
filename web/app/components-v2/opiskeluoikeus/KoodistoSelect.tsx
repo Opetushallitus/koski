@@ -38,6 +38,11 @@ export type KoodistoSelectProps<T extends string> = CommonProps<{
    * järjestyksessä.
    */
   sort?: boolean
+  /**
+   * Estää modaalia kohdistamasta tähän kenttään automaattisesti. Ilman tätä
+   * modaalin ensimmäinen Select avaa vaihtoehtolistansa heti auetessaan.
+   */
+  skipAutoFocus?: boolean
 }>
 
 export function KoodistoSelect<T extends string>(
@@ -95,6 +100,7 @@ export function KoodistoSelect<T extends string>(
       testId={props.testId}
       value={props.value}
       hasErrors={props.hasErrors}
+      skipAutoFocus={props.skipAutoFocus}
     />
   )
 }

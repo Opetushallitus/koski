@@ -61,6 +61,7 @@ import {
 } from '../components-v2/controls/LocalizedTestField'
 import { Koodistokoodiviite } from '../types/fi/oph/koski/schema/Koodistokoodiviite'
 import { KoodistoSelect } from '../components-v2/opiskeluoikeus/KoodistoSelect'
+import { koodiarvoOnly } from '../components-v2/opiskeluoikeus/ArvosanaField'
 import { LaajuusVuosiviikkotunneissa } from '../types/fi/oph/koski/schema/LaajuusVuosiviikkotunneissa'
 import { OmanÄidinkielenOpinnotLaajuusVuosiviikkotunteina } from '../types/fi/oph/koski/schema/OmanAidinkielenOpinnotLaajuusVuosiviikkotunteina'
 import { UusiTäydentäväOmanÄidinkielenOpinnotModal } from './UusiTäydentäväOmanÄidinkielenOpinnotModal'
@@ -750,7 +751,8 @@ const TäydentävätOmanÄidinkielenOpinnotRow: React.FC<{
             {form.editMode ? (
               <KoodistoSelect
                 koodistoUri="arviointiasteikkoyleissivistava"
-                format={(k) => k.koodiarvo + ' ' + t(k.nimi)}
+                format={koodiarvoOnly}
+                sort
                 onSelect={(k) =>
                   k &&
                   form.updateAt(
