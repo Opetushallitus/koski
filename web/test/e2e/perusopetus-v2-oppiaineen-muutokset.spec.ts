@@ -175,7 +175,9 @@ test.describe('Perusopetuksen uusi käyttöliittymä: oppiainemuutokset', () => 
     // Merkitse päättötodistus keskeneräiseksi: poista valmistunut-tila ja
     // poista vahvistus
     await page.getByTestId('oo.0.opiskeluoikeus.edit').click()
-    await page.getByTestId('oo.0.opiskeluoikeus.tila.edit.items.1.remove').click()
+    await page
+      .getByTestId('oo.0.opiskeluoikeus.tila.edit.items.1.remove')
+      .click()
     await page
       .getByTestId(
         'oo.0.suoritukset.0.suorituksenVahvistus.edit.merkitseKeskeneräiseksi'
@@ -214,7 +216,9 @@ test.describe('Perusopetuksen uusi käyttöliittymä: oppiainemuutokset', () => 
 
     // 1. Merkitse päättötodistus keskeneräiseksi: arvosanat piilottuvat
     await page.getByTestId('oo.0.opiskeluoikeus.edit').click()
-    await page.getByTestId('oo.0.opiskeluoikeus.tila.edit.items.1.remove').click()
+    await page
+      .getByTestId('oo.0.opiskeluoikeus.tila.edit.items.1.remove')
+      .click()
     await page
       .getByTestId(
         'oo.0.suoritukset.0.suorituksenVahvistus.edit.merkitseKeskeneräiseksi'
@@ -257,14 +261,14 @@ test.describe('Perusopetuksen uusi käyttöliittymä: oppiainemuutokset', () => 
       .fill('rehtori')
 
     await page
-      .getByTestId(
-        'oo.0.suoritukset.0.suorituksenVahvistus.edit.modal.submit'
-      )
+      .getByTestId('oo.0.suoritukset.0.suorituksenVahvistus.edit.modal.submit')
       .click()
 
     // Poista Biologia (indeksi 11): sen yksilöllistetty oppimäärä ei ole
     // sallittu vahvistuksen jälkeen 31.8.2026. Muuten tallennus hylätään.
-    await page.getByTestId('oo.0.suoritukset.0.osasuoritukset.11.delete').click()
+    await page
+      .getByTestId('oo.0.suoritukset.0.osasuoritukset.11.delete')
+      .click()
 
     await page.getByTestId('oo.0.opiskeluoikeus.save').click()
     await expect(page.getByTestId('oo.0.opiskeluoikeus.edit')).toBeVisible({
@@ -293,13 +297,13 @@ test.describe('Perusopetuksen uusi käyttöliittymä: oppiainemuutokset', () => 
 
     await page.getByTestId('oo.0.opiskeluoikeus.edit').click()
 
-    // Vaihda käyttäytymisen arvosana 10:ksi (koodiston nimi "erinomainen")
+    // Vaihda käyttäytymisen arvosana 10:ksi
     await page
       .getByTestId('oo.0.suoritukset.2.kayttaytyminen.kayttaytyminen.input')
       .click()
     await page
       .locator('.Select__optionLabel')
-      .filter({ hasText: /^erinomainen$/ })
+      .filter({ hasText: /^10$/ })
       .first()
       .click()
 

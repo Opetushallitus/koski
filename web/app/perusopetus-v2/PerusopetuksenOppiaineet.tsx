@@ -1182,6 +1182,12 @@ const KäyttäytymisenArvioField: React.FC<{
                 <KoodistoSelect
                   koodistoUri="arviointiasteikkoyleissivistava"
                   addNewText={t('Lisää')}
+                  // Koodiarvo ilman kuvausta ja samassa järjestyksessä kuin
+                  // oppiainetaulukon arvosanat. Kuvaukset eivät myöskään
+                  // yksilöi arvosanaa: koodiarvoilla 4 ja H on sama nimi
+                  // "hylätty".
+                  format={koodiarvoOnly}
+                  sort
                   value={suoritus.käyttäytymisenArvio?.arvosana.koodiarvo}
                   onSelect={(tunniste) => {
                     if (tunniste) {

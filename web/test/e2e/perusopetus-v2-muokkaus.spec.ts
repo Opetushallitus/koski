@@ -223,12 +223,13 @@ test.describe('Perusopetuksen uusi käyttöliittymä: muokkaustila', () => {
         .getByTestId('oo.0.suoritukset.3.kayttaytyminen.kayttaytyminen.lisaa')
         .click()
 
-      // Oletusarvosana on S — Select näyttää koodiston nimen "hyväksytty"
+      // Oletusarvosana on S — Select näyttää koodiarvon, kuten
+      // oppiainetaulukon arvosanat
       await expect(
         page.getByTestId(
           'oo.0.suoritukset.3.kayttaytyminen.kayttaytyminen.input'
         )
-      ).toHaveValue('hyväksytty', { timeout: 10000 })
+      ).toHaveValue('S', { timeout: 10000 })
 
       // Tallenna oletusarvosanalla S
       await page.getByTestId('oo.0.opiskeluoikeus.save').click()
@@ -251,6 +252,41 @@ test.describe('Perusopetuksen uusi käyttöliittymä: muokkaustila', () => {
       await expect(
         page.getByTestId('oo.0.suoritukset.3.kayttaytyminen.arvosana')
       ).toContainText('S', { timeout: 10000 })
+    })
+
+    test('Käyttäytymisen arvosanavalikko näyttää samat koodiarvot kuin oppiainetaulukko', async ({
+      page,
+      oppijaPage
+    }) => {
+      await oppijaPage.goto(kaisaUrl)
+      await page.getByTestId('oo.0.suoritusTabs.2.tab').click()
+      await page.getByTestId('oo.0.opiskeluoikeus.edit').click()
+
+      const koodiarvot = ['4', '5', '6', '7', '8', '9', '10', 'H', 'O', 'S']
+
+      await page
+        .getByTestId('oo.0.suoritukset.2.kayttaytyminen.kayttaytyminen.input')
+        .click()
+      await expect(
+        page
+          .getByTestId(
+            'oo.0.suoritukset.2.kayttaytyminen.kayttaytyminen.options'
+          )
+          .locator('.Select__optionLabel')
+      ).toHaveText(koodiarvot)
+
+      // Sama lista kuin oppiaineen arvosanavalikossa
+      await page.keyboard.press('Escape')
+      await page
+        .getByTestId('oo.0.suoritukset.2.osasuoritukset.0.arvosana.edit.input')
+        .click()
+      await expect(
+        page
+          .getByTestId(
+            'oo.0.suoritukset.2.osasuoritukset.0.arvosana.edit.options'
+          )
+          .locator('.Select__optionLabel')
+      ).toHaveText(koodiarvot)
     })
 
     test('Käyttäytymisen arvioinnin poisto', async ({ page, oppijaPage }) => {

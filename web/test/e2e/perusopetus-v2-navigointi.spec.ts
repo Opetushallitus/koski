@@ -23,9 +23,9 @@ test.describe('Perusopetuksen uusi käyttöliittymä: navigointi pois sivulta', 
     await page.getByTestId('oo.0.opiskeluoikeus.edit').click()
 
     // hasChanged = false, joten ei tallentamattomia muutoksia
-    await expect(page.getByTestId('oo.0.opiskeluoikeus.editStatus')).toContainText(
-      'Ei tallentamattomia muutoksia'
-    )
+    await expect(
+      page.getByTestId('oo.0.opiskeluoikeus.editStatus')
+    ).toContainText('Ei tallentamattomia muutoksia')
 
     // Navigoi toiseen oppijaan — ei dialogia
     let dialogShown = false
@@ -58,15 +58,13 @@ test.describe('Perusopetuksen uusi käyttöliittymä: navigointi pois sivulta', 
       .click()
     await page
       .locator('.Select__optionLabel')
-      .filter({ hasText: /^erinomainen$/ })
+      .filter({ hasText: /^10$/ })
       .first()
       .click()
 
     // Tallentamattomat muutokset tunnistetaan: Tallenna on enabled, ei
     // "Ei tallentamattomia muutoksia" -tekstiä
-    await expect(
-      page.getByTestId('oo.0.opiskeluoikeus.save')
-    ).toBeEnabled()
+    await expect(page.getByTestId('oo.0.opiskeluoikeus.save')).toBeEnabled()
 
     // Simuloidaan navigointi: beforeunload pitäisi laueta Chromissa, ja
     // Playwrightin dialog-handler nappaa sen. Testi vahvistaa, että dialogi
