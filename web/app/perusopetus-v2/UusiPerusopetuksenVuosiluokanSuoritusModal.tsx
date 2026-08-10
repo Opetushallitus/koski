@@ -16,6 +16,7 @@ import { FlatButton } from '../components-v2/controls/FlatButton'
 import { RaisedButton } from '../components-v2/controls/RaisedButton'
 import { Select, SelectOption } from '../components-v2/controls/Select'
 import { TextEdit } from '../components-v2/controls/TextField'
+import { organisaatioOptionDisplay } from '../components-v2/opiskeluoikeus/OrganisaatioOption'
 import { t } from '../i18n/i18n'
 import { OrganisaatioHierarkia } from '../types/fi/oph/koski/organisaatio/OrganisaatioHierarkia'
 import { Koodistokoodiviite } from '../types/fi/oph/koski/schema/Koodistokoodiviite'
@@ -278,6 +279,7 @@ const hierarkiaToOptions = (
     return {
       key: h.oid,
       label: t(h.nimi),
+      display: organisaatioOptionDisplay(h),
       value: org,
       children:
         h.children && h.children.length > 0

@@ -2,6 +2,7 @@ import { isEmpty } from 'fp-ts/lib/Array'
 import React, { useCallback, useMemo } from 'react'
 import { useOrganisaatioHierarkia } from '../../appstate/organisaatioHierarkia'
 import { SelectOption } from '../../components-v2/controls/Select'
+import { organisaatioOptionDisplay } from '../../components-v2/opiskeluoikeus/OrganisaatioOption'
 import { t } from '../../i18n/i18n'
 import { OrganisaatioHierarkia } from '../../types/fi/oph/koski/organisaatio/OrganisaatioHierarkia'
 import { intersects } from '../../util/array'
@@ -69,11 +70,7 @@ export const organisaatiohierarkiaToOption =
   (org: OrganisaatioHierarkia): SelectOption<OrganisaatioHierarkia> => ({
     key: org.oid,
     label: t(org.nimi),
-    display: org.aktiivinen ? undefined : (
-      <span className="LakkautettuOrganisaatio">
-        {t(org.nimi)} {'(' + t('lakkautettu') + ')'}
-      </span>
-    ),
+    display: organisaatioOptionDisplay(org),
     value: org,
     children: isEmpty(org.children)
       ? undefined
