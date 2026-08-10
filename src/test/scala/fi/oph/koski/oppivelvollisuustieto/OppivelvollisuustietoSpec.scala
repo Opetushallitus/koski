@@ -803,7 +803,7 @@ class OppivelvollisuustietoSpec
       ),
       suoritukset = List(
         ExamplesIB.preIBSuoritus,
-        ExamplesIB.ibTutkinnonSuoritus(predicted = false).copy(
+        ExamplesIB.ibTutkinnonSuoritus().copy(
           vahvistus = ibTutkinnonVahvistus.flatMap(date => ExampleData.vahvistusPaikkakunnalla(päivä = date, org = YleissivistavakoulutusExampleData.ressunLukio, kunta = helsinki))
         )
       )

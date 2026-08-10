@@ -1,5 +1,9 @@
 # Koskeen tallennettavien tietojen validaatiosäännöt
 
+## 10.8.2026
+
+- IB-tutkinnon suorituksen suorituskielen on oltava englanti.
+
 ## 21.7.2026
 
 - Nuorten perusopetuksen opiskeluoikeudessa oppiaineen suorituksen luokka-aste voi poiketa vuosiluokasta, kun oppilaalla on vuosiluokan vahvistuspäivänä voimassa joko tavoitekokonaisuuksittain opiskelun tai yhdysluokan aikajakso. Aiemmin poikkeavan luokka-asteen salli vain tavoitekokonaisuuksittain opiskelun aikajakso.

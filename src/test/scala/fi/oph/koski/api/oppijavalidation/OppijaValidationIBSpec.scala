@@ -23,13 +23,26 @@ class OppijaValidationIBSpec extends AnyFreeSpec with KoskiHttpSpec with PutOpis
 
     "IB tutkinnon suoritus" - {
 
+      "Suorituskielen on oltava englanti" in {
+        val suoritusEn = ibTutkinnonSuoritus().copy(suorituskieli = ExampleData.englanti)
+        val suoritusFi = ibTutkinnonSuoritus().copy(suorituskieli = ExampleData.suomenKieli)
+
+        setupOppijaWithOpiskeluoikeus(defaultOpiskeluoikeus.copy(suoritukset = List(suoritusEn))) {
+          verifyResponseStatusOk()
+        }
+
+        setupOppijaWithOpiskeluoikeus(defaultOpiskeluoikeus.copy(suoritukset = List(suoritusFi))) {
+          verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.rakenne.virheellinenSuorituskieli("Suorituskielen tulee olla englanti"))
+        }
+      }
+
       "Core-kurssin lisäys" in {
         val opiskeluoikeus = defaultOpiskeluoikeus.copy(
           tila = LukionOpiskeluoikeudenTila(List(
             LukionOpiskeluoikeusjakso(LocalDate.of(2025, 8, 1), LukioExampleData.opiskeluoikeusAktiivinen, Some(ExampleData.valtionosuusRahoitteinen))
           )),
           suoritukset = List(
-            ibTutkinnonSuoritus(predicted = false).copy(
+            ibTutkinnonSuoritus().copy(
               vahvistus = None,
               theoryOfKnowledge = None,
               extendedEssay = None,
@@ -128,7 +141,7 @@ class OppijaValidationIBSpec extends AnyFreeSpec with KoskiHttpSpec with PutOpis
       }
 
       "Uusi oppiaine DIS sallittu IBOppiaineMuu" in {
-        val oo = defaultOpiskeluoikeus.copy(suoritukset = List(ibTutkinnonSuoritus(predicted = false).copy(
+        val oo = defaultOpiskeluoikeus.copy(suoritukset = List(ibTutkinnonSuoritus().copy(
           osasuoritukset = Some(List(
             IBOppiaineenSuoritus(
               koulutusmoduuli = ibOppiaine("DIS", higherLevel, 3),
@@ -145,7 +158,7 @@ class OppijaValidationIBSpec extends AnyFreeSpec with KoskiHttpSpec with PutOpis
       }
 
       "Uusi oppiaine WS sallittu IBOppiaineMuu" in {
-        val oo = defaultOpiskeluoikeus.copy(suoritukset = List(ibTutkinnonSuoritus(predicted = false).copy(
+        val oo = defaultOpiskeluoikeus.copy(suoritukset = List(ibTutkinnonSuoritus().copy(
           osasuoritukset = Some(List(
             IBOppiaineenSuoritus(
               koulutusmoduuli = ibOppiaine("WS", higherLevel, 3),
@@ -162,7 +175,7 @@ class OppijaValidationIBSpec extends AnyFreeSpec with KoskiHttpSpec with PutOpis
       }
 
       "IB-kurssin suoritukseen voi lisätä tunnustettu-rakenteen" in {
-        val oo = defaultOpiskeluoikeus.copy(suoritukset = List(ibTutkinnonSuoritus(predicted = false).copy(
+        val oo = defaultOpiskeluoikeus.copy(suoritukset = List(ibTutkinnonSuoritus().copy(
           osasuoritukset = Some(List(
             IBOppiaineenSuoritus(
               koulutusmoduuli = ibOppiaine("HIS", higherLevel, 3),
@@ -246,7 +259,6 @@ class OppijaValidationIBSpec extends AnyFreeSpec with KoskiHttpSpec with PutOpis
 
         "Ei onnistu, jos ei yhtään osasuoritusta" in {
           val suoritus = ibTutkinnonSuoritus(
-            predicted = false,
             vahvistus = ExampleData.vahvistusPaikkakunnalla(
               päivä = LocalDate.of(2024, 1, 1),
               org = ressunLukio,
@@ -273,7 +285,6 @@ class OppijaValidationIBSpec extends AnyFreeSpec with KoskiHttpSpec with PutOpis
 
         "Ei onnistu, jos millään osasuorituksella ei ole predicted-arvosanaa" in {
           val suoritus = ibTutkinnonSuoritus(
-            predicted = false,
             vahvistus = ExampleData.vahvistusPaikkakunnalla(
               päivä = LocalDate.of(2024, 1, 1),
               org = ressunLukio,
@@ -303,7 +314,6 @@ class OppijaValidationIBSpec extends AnyFreeSpec with KoskiHttpSpec with PutOpis
 
         "Ei onnistu, jos joltain osasuoritukselta puuttuu päättöarvosana" in {
           val suoritus = ibTutkinnonSuoritus(
-            predicted = false,
             vahvistus = ExampleData.vahvistusPaikkakunnalla(
               päivä = LocalDate.of(2024, 1, 1),
               org = ressunLukio,
@@ -331,7 +341,7 @@ class OppijaValidationIBSpec extends AnyFreeSpec with KoskiHttpSpec with PutOpis
         }
 
         "Onnistuu, kun kaikilla osasuorituksilla on päättöarvosana ja osalla niistä predicted-arvosana" in {
-          val suoritus = ibTutkinnonSuoritus(predicted = false)
+          val suoritus = ibTutkinnonSuoritus()
           val osasuoritukset = modifyIBOppiaineenSuoritus(suoritus, os => os.copy(
             arviointi = ibArviointi("5"),
             predictedArviointi = if (os.koulutusmoduuli.tunniste.koodiarvo != "A2") None else ibPredictedArviointi("4"),
@@ -343,7 +353,7 @@ class OppijaValidationIBSpec extends AnyFreeSpec with KoskiHttpSpec with PutOpis
         }
 
         "Onnistuu, kun molemmat arvosanat on annettu" in {
-          val suoritus = ibTutkinnonSuoritus(predicted = false)
+          val suoritus = ibTutkinnonSuoritus()
           val osasuoritukset = modifyIBOppiaineenSuoritus(suoritus, _.copy(
             arviointi = ibArviointi("5"),
             predictedArviointi = ibPredictedArviointi("4"),
@@ -359,7 +369,6 @@ class OppijaValidationIBSpec extends AnyFreeSpec with KoskiHttpSpec with PutOpis
 
         "Onnistuu, vaikka millään osasuorituksella ei ole predicted-arvosanaa" in {
           val suoritus = ibTutkinnonSuoritus(
-            predicted = false,
             vahvistus = ExampleData.vahvistusPaikkakunnalla(
               päivä = LocalDate.of(2023, 12, 31),
               org = ressunLukio,
@@ -401,7 +410,7 @@ class OppijaValidationIBSpec extends AnyFreeSpec with KoskiHttpSpec with PutOpis
           )
         ),
         suoritukset = List(
-          modifyPts(ibTutkinnonSuoritus(predicted = false, vahvistus = None).copy(
+          modifyPts(ibTutkinnonSuoritus(vahvistus = None).copy(
             osasuoritukset = Some(List(
               ibAineSuoritus(
                 ibKieli("A", "FI", standardLevel, 1),
@@ -591,7 +600,7 @@ class OppijaValidationIBSpec extends AnyFreeSpec with KoskiHttpSpec with PutOpis
           List(LukionOpiskeluoikeusjakso(alkamispäivä, LukioExampleData.opiskeluoikeusAktiivinen, Some(ExampleData.valtionosuusRahoitteinen)))
         ),
         suoritukset = List(
-          ibTutkinnonSuoritus(predicted = false).copy(
+          ibTutkinnonSuoritus().copy(
             vahvistus = None,
             theoryOfKnowledge = None,
             extendedEssay = None,
@@ -673,7 +682,7 @@ class OppijaValidationIBSpec extends AnyFreeSpec with KoskiHttpSpec with PutOpis
 
   private def opiskeluoikeusIBTutkinnollaWithOppiaineet(oppiaineet: List[IBOppiaineenSuoritus]) = {
     defaultOpiskeluoikeus.copy(
-      suoritukset = List(ibTutkinnonSuoritus(predicted = false).copy(
+      suoritukset = List(ibTutkinnonSuoritus().copy(
         osasuoritukset = Some(oppiaineet)
       ))
     )
@@ -681,7 +690,7 @@ class OppijaValidationIBSpec extends AnyFreeSpec with KoskiHttpSpec with PutOpis
 
   private def opiskeluoikeusIBTutkinnollaWithCASArvosana(arvosana: String) = {
     defaultOpiskeluoikeus.copy(
-      suoritukset = List(ibTutkinnonSuoritus(predicted = false).copy(
+      suoritukset = List(ibTutkinnonSuoritus().copy(
         creativityActionService = Some(IBCASSuoritus(
           IBOppiaineCAS(laajuus = Some(LaajuusTunneissa(267))), ibCASArviointi(arvosana)
         ))

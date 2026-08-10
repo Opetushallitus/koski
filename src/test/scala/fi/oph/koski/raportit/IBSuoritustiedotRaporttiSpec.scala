@@ -67,7 +67,7 @@ class IBSuoritustiedotRaporttiSpec extends
           List(LukionOpiskeluoikeusjakso(LocalDate.of(2024, 8, 1), LukioExampleData.opiskeluoikeusAktiivinen, Some(ExampleData.valtionosuusRahoitteinen)))
         ),
         suoritukset = List(
-          ibTutkinnonSuoritus(predicted = false).copy(
+          ibTutkinnonSuoritus().copy(
             vahvistus = None,
             theoryOfKnowledge = None,
             extendedEssay = None,
@@ -99,7 +99,7 @@ class IBSuoritustiedotRaporttiSpec extends
           List(LukionOpiskeluoikeusjakso(LocalDate.of(2014, 8, 1), LukioExampleData.opiskeluoikeusAktiivinen, Some(ExampleData.valtionosuusRahoitteinen)))
         ),
         suoritukset = List(
-          ibTutkinnonSuoritus(predicted = false).copy(
+          ibTutkinnonSuoritus().copy(
             vahvistus = None,
             theoryOfKnowledge = None,
             extendedEssay = None,
