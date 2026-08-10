@@ -11,6 +11,10 @@ import { DateInput } from '../components-v2/controls/DateInput'
 import { Checkbox } from '../components-v2/controls/Checkbox'
 import { t } from '../i18n/i18n'
 import { BooleanView } from '../components-v2/opiskeluoikeus/BooleanField'
+import {
+  KeyValueRow,
+  KeyValueTable
+} from '../components-v2/containers/KeyValueTable'
 
 const emptyPäätös = ErityisenTuenPäätös({ opiskeleeToimintaAlueittain: false })
 
@@ -30,18 +34,20 @@ export const ErityisenTuenPäätösView: React.FC<
       <TestIdText id="loppu">
         {value.loppu && ISO2FinnishDate(value.loppu)}
       </TestIdText>
-      <BooleanValue
-        label="Opiskelee toiminta-alueittain"
-        value={value.opiskeleeToimintaAlueittain}
-        testId="opiskeleeToimintaAlueittain"
-      />
-      {hasDeprecatedBooleanValue(value.erityisryhmässä) && (
+      <KeyValueTable className="ErityisenTuenPäätösView__tiedot">
         <BooleanValue
-          label="Opiskelee erityisryhmässä"
-          value={value.erityisryhmässä}
-          testId="erityisryhmässä"
+          label="Opiskelee toiminta-alueittain"
+          value={value.opiskeleeToimintaAlueittain}
+          testId="opiskeleeToimintaAlueittain"
         />
-      )}
+        {hasDeprecatedBooleanValue(value.erityisryhmässä) && (
+          <BooleanValue
+            label="Opiskelee erityisryhmässä"
+            value={value.erityisryhmässä}
+            testId="erityisryhmässä"
+          />
+        )}
+      </KeyValueTable>
     </div>
   )
 }
@@ -51,15 +57,14 @@ const BooleanValue: React.FC<{
   value: boolean
   testId: string
 }> = ({ label, value, testId }) => (
-  <div>
-    <span>{t(label)} </span>
+  <KeyValueRow localizableLabel={label}>
     <BooleanView
       value={value}
       testId={testId}
       trueText={t('kyllä')}
       falseText={t('ei')}
     />
-  </div>
+  </KeyValueRow>
 )
 
 export const ErityisenTuenPäätösEdit: React.FC<

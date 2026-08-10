@@ -251,13 +251,21 @@ test.describe('Perusopetuksen uusi käyttöliittymä: opiskeluoikeuden lisätied
     await expect(
       page.getByTestId(`${lisatieto('ulkomailla')}.alku`)
     ).toContainText('1.1.2019')
+    // Kentän nimi ja arvo ovat omissa elementeissään, joten arvot tarkistetaan
+    // testId:llä ja nimet erikseen.
     const erityisenTuenJaksot = lisatiedotRow(page, 'Erityisen tuen jaksot')
     await expect(erityisenTuenJaksot).toContainText(
-      'Opiskelee toiminta-alueittain ei'
+      'Opiskelee toiminta-alueittain'
     )
-    await expect(erityisenTuenJaksot).toContainText(
-      'Opiskelee erityisryhmässä ei'
-    )
+    await expect(erityisenTuenJaksot).toContainText('Opiskelee erityisryhmässä')
+    await expect(
+      page.getByTestId(
+        `${lisatieto('erityisenTuenPäätös')}.opiskeleeToimintaAlueittain`
+      )
+    ).toHaveText('ei')
+    await expect(
+      page.getByTestId(`${lisatieto('erityisenTuenPäätös')}.erityisryhmässä`)
+    ).toHaveText('ei')
 
     await page.getByTestId(editButton).click()
 
