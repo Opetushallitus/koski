@@ -1,7 +1,6 @@
 import * as A from 'fp-ts/Array'
 import * as $ from 'optics-ts'
-import { useMemo } from 'react'
-import { FormOptic, getValue } from '../components-v2/forms/FormModel'
+import { FormOptic, modifyValue } from '../components-v2/forms/FormModel'
 import { localize, t } from '../i18n/i18n'
 import { Finnish } from '../types/fi/oph/koski/schema/Finnish'
 import { LocalizedString } from '../types/fi/oph/koski/schema/LocalizedString'
@@ -12,40 +11,94 @@ import { Arviointi } from '../types/fi/oph/koski/schema/Arviointi'
 import { deleteAt, updateAt } from './array'
 
 /**
- * Palauttaa polun, johon optiikka osoittaa annetussa datassa. Polku on muotoa esimerkiksi "lapset.0.nimi.fi".
- * Paluuarvo on undefined, jos optiikka ei osoita mihinkään annetussa datassa. Ainoastaan objekteihin tarkentuvat
- * optiikat ovat sallittuja, koska primitiivien yksilöllisyyttä ei voida varmentaa.
+ * Yksilöllinen merkkiarvo, jota ei voi esiintyä lomakedatassa.
+ */
+const probeMarker = Symbol('parsePath')
+
+/**
+ * Kirjoittaa merkkiarvon optiikan osoittamaan paikkaan. Palauttaa undefined, jos optiikka on viallinen.
+ */
+const writeProbe = <S, A>(optic: FormOptic<S, A>, s: S): unknown => {
+  try {
+    return modifyValue(optic as unknown as FormOptic<S, unknown>)(
+      () => probeMarker
+    )(s)
+  } catch {
+    console.error('An invalid optic detected')
+    return undefined
+  }
+}
+
+/**
+ * Etsii merkkiarvon sijainnit muokatusta datasta. Optics-ts jakaa koskemattomat haarat
+ * rakenteellisesti alkuperäisen datan kanssa, joten viittausvertailu rajaa haun optiikan
+ * koskettamaan haaraan koko datarakenteen läpikäynnin sijaan.
+ */
+const findProbe = (
+  original: unknown,
+  probed: unknown,
+  path: string[],
+  found: string[][]
+): string[][] => {
+  if (probed === probeMarker) {
+    found.push(path)
+  } else if (
+    probed !== original &&
+    probed !== null &&
+    typeof probed === 'object'
+  ) {
+    const originalObj =
+      original !== null && typeof original === 'object'
+        ? (original as Record<string, unknown>)
+        : undefined
+    Object.entries(probed).forEach(([key, value]) => {
+      findProbe(originalObj?.[key], value, [...path, key], found)
+    })
+  }
+  return found
+}
+
+const commonPrefix = (a: string[], b: string[]): string[] => {
+  const shared: string[] = []
+  const len = Math.min(a.length, b.length)
+  for (let i = 0; i < len && a[i] === b[i]; i++) {
+    shared.push(a[i])
+  }
+  return shared
+}
+
+/**
+ * Palauttaa polun, johon optiikka osoittaa annetussa datassa. Polku on muotoa esimerkiksi "lapset.0.nimi".
+ *
+ * Polku selvitetään kirjoittamalla optiikan läpi yksilöllinen merkkiarvo ja etsimällä se tuloksesta.
+ * Näin polku löytyy myös silloin, kun kentän arvo on tyhjä, undefined tai avain puuttuu objektista
+ * kokonaan — eli juuri silloin, kun kentän validointivirheet pitäisi näyttää. (Aiempi toteutus etsi
+ * kentän *arvoa* datasta, jolloin tyhjä arvo jäi aina osoitteettomaksi.)
+ *
+ * Jos optiikka levittää arvon useaan paikkaan (esim. allLanguages kirjoittaa fi/sv/en), palautetaan
+ * osumien yhteinen alkuosa, jolloin polku osoittaa yhteiseen isäntäobjektiin.
+ *
+ * Paluuarvo on undefined, jos optiikka ei osoita mihinkään annetussa datassa (esim. .optional()
+ * puuttuvan arvon päällä tai .at() taulukon ulkopuolella) tai jos optiikka osoittaa datan juureen.
  *
  * @param optic
  * @param s
  * @returns
  */
-export const parsePath = <S, A extends object>(
+export const parsePath = <S, A>(
   optic: FormOptic<S, A>,
   s: S
 ): string | undefined => {
-  const walk = (haystack: any, needle: any): string[] | undefined => {
-    if (haystack === needle) {
-      return []
-    }
-    if (haystack === null || haystack === undefined) {
-      return undefined
-    }
-    if (typeof haystack === 'object') {
-      const entries = Object.entries(haystack).map(([key, value]) => ({
-        // TODO: perffioptimointi
-        key,
-        path: walk(value, needle)
-      }))
-      const entry = entries.find((e) => e.path)
-      return entry?.path ? [entry.key, ...entry.path] : undefined
-    }
+  const probed = writeProbe(optic, s)
+  if (probed === undefined) {
     return undefined
   }
-
-  const needle = getValue(optic)(s)
-  const path = needle && walk(s, needle)
-  return path ? path.join('.') : undefined
+  const paths = findProbe(s, probed, [], [])
+  if (A.isEmpty(paths)) {
+    return undefined
+  }
+  const path = paths.reduce(commonPrefix)
+  return A.isEmpty(path) ? undefined : path.join('.')
 }
 
 /**

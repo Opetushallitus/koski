@@ -119,6 +119,8 @@ export type FormModel<O extends object> = {
  * @param initialState Tyhjä tai tietokannasta ladattu tila
  * @param startWithEditMode Jos tosi, muokkaustila on päällä välittömästi
  * @param constraint Constraint (skeema) jota vasten tiedot validoidaan
+ * @param validationRules Skeeman ulkopuoliset lisävalidoinnit, jotka ajetaan skeemavalidoinnin
+ *                        läpikäymissä kohdissa (kts. ValidationRule)
  * @returns FormModel
  */
 export const useForm = <O extends object>(
@@ -135,7 +137,8 @@ export const useForm = <O extends object>(
       internalInitialState(
         initialState,
         user?.hasWriteAccess ? startWithEditMode : false,
-        constraint
+        constraint,
+        validationRules
       ),
     // eslint-disable-next-line react-hooks/exhaustive-deps
     []
@@ -159,8 +162,9 @@ export const useForm = <O extends object>(
 
   const startEdit: FormModelProp<'startEdit'> = useCallback(() => {
     if (user?.hasWriteAccess) {
-      dispatch({ type: 'startEdit', constraint })
+      dispatch({ type: 'startEdit', constraint, rules: validationRules || [] })
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [constraint, user?.hasWriteAccess])
 
   const cancel: FormModelProp<'cancel'> = useCallback(() => {
@@ -172,7 +176,7 @@ export const useForm = <O extends object>(
   }, [])
 
   const validate: FormModelProp<'validate'> = useCallback(() => {
-    if (constraint && editMode) {
+    if (editMode) {
       dispatch({ type: 'validate', constraint, rules: validationRules || [] })
     }
   }, [constraint, editMode, validationRules])
@@ -311,7 +315,8 @@ type InternalFormState<O> = {
 const internalInitialState = <O>(
   initialState: O,
   startWithEditMode: boolean,
-  constraint?: Constraint | null
+  constraint?: Constraint | null,
+  rules: ValidationRule[] = []
 ): InternalFormState<O> => ({
   originalData: initialState,
   initialData: initialState,
@@ -320,13 +325,14 @@ const internalInitialState = <O>(
   hasChanged: false,
   pending: false,
   isSaved: false,
-  errors:
-    constraint && startWithEditMode
-      ? validateData(initialState, constraint)
-      : []
+  errors: startWithEditMode ? validateData(initialState, constraint, rules) : []
 })
 
-type StartEdit = { type: 'startEdit'; constraint?: Constraint | null }
+type StartEdit = {
+  type: 'startEdit'
+  constraint?: Constraint | null
+  rules: ValidationRule[]
+}
 type ModifyData<O> = {
   type: 'modify'
   modify: (o: O) => O
@@ -336,7 +342,7 @@ type Cancel = { type: 'cancel' }
 type EndEdit<O> = { type: 'endEdit'; value: O }
 type Validate = {
   type: 'validate'
-  constraint?: Constraint
+  constraint?: Constraint | null
   rules: ValidationRule[]
 }
 type SetEditMode = { type: 'setEditMode'; editMode: EditMode }
@@ -372,9 +378,7 @@ const reducer = <O>(
         editMode: EditMode.Edit,
         isSaved: false,
         hasChanged: false,
-        errors: action.constraint
-          ? validateData(state.data, action.constraint)
-          : []
+        errors: validateData(state.data, action.constraint, action.rules)
       }
     case 'cancel':
       return {
@@ -400,13 +404,7 @@ const reducer = <O>(
         editMode: action.editMode
       }
     case 'validate': {
-      const schemaErrors = action.constraint
-        ? validateData(state.data, action.constraint)
-        : []
-      const ruleErrors = action.rules.flatMap((rule) =>
-        validateData(state.data, rule)
-      )
-      const errors = [...schemaErrors, ...ruleErrors]
+      const errors = validateData(state.data, action.constraint, action.rules)
       return deepEqual(errors, state.errors)
         ? state
         : {
@@ -442,7 +440,7 @@ export const getValue =
     }
   }
 
-const modifyValue =
+export const modifyValue =
   <S, A>(optic: FormOptic<S, A>) =>
   (fn: (a: A) => A) =>
   (source: S): S => {

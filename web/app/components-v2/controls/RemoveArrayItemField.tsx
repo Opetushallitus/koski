@@ -36,6 +36,9 @@ export const RemoveArrayItemField = <S extends object, A extends any[]>(
     view={NullView}
     edit={RemoveArrayItemButton}
     editProps={props}
+    // Kenttä on kytketty koko taulukkoon vain sen muokkaamista varten. Taulukon alkioiden
+    // virheet kuuluvat niiden omille kentille, ei poistopainikkeelle.
+    hideErrors
   />
 )
 

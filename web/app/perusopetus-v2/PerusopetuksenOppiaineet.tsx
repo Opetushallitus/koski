@@ -103,7 +103,6 @@ import {
 } from '../uusiopiskeluoikeus/opiskeluoikeusCreator/yleissivistavat'
 import { shouldShowLaajuusColumn } from './oppiaineLaajuus'
 import { oppiaineSarakkeet } from './oppiaineSarakkeet'
-import { arviointiErrorPath } from './validointi'
 
 const ParasArvosanaKoodiarvoView = <T extends Arviointi>(
   props: ParasArvosanaViewProps<T>
@@ -563,9 +562,6 @@ const oppiaineToRow = <T extends string>(
             suoritusClassName: suoritus.$class,
             format: koodiarvoOnly
           }}
-          // parsePath ei osaa muodostaa polkua puuttuvalle arvolle, joten
-          // puuttuvan arvosanan virhe haetaan osasuorituksen polun kautta.
-          errorsFromPath={arviointiErrorPath(osasuoritusPath, form.state)}
         />
         {footnoteEl}
       </>

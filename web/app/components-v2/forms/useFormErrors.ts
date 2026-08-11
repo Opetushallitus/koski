@@ -3,7 +3,7 @@ import { parsePath } from '../../util/optics'
 import { FormModel, FormOptic } from './FormModel'
 import { errorPathIs } from './validator'
 
-export const useFormErrors = <S extends object, A extends object>(
+export const useFormErrors = <S extends object, A>(
   form: FormModel<S>,
   path: FormOptic<S, A> | string
 ) => {

@@ -145,7 +145,6 @@ export const UusiOsasuoritusModal: React.FC<UusiOsasuoritusModalProps> = (
           form={form}
           path={koodiarvoPath}
           updateAlso={[updateOsasuoritusNimi]}
-          errorsFromPath="nimi"
           view={TextView}
           edit={TextEdit}
           editProps={{

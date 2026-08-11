@@ -49,7 +49,7 @@ import {
   UnionConstraint
 } from '../../types/fi/oph/koski/typemodel/UnionConstraint'
 import { nonFalsy } from '../../util/fp/arrays'
-import { isValidationRule, ValidationRule } from './ValidationRule'
+import { ValidationRule } from './ValidationRule'
 
 export type ValidationError =
   | InvalidTypeError
@@ -150,26 +150,64 @@ export type NoClassNameError = {
   path: string
 }
 
+/**
+ * Validoi datan skeemaa (constraint) vasten ja ajaa lisäksi annetut säännöt.
+ *
+ * Säännöt ajetaan *jokaisessa solmussa*, jonka läpi skeemavalidointi kulkee, eli sääntö saa
+ * isMatch- ja validate-funktioihinsa kyseisen kohdan datan ja polun. Näin sääntö voi kohdistaa
+ * virheensä suoraan oikeaan kenttään ilman että sen tarvitsee kävellä koko datarakennetta itse.
+ *
+ * @param data Validoitava data
+ * @param constraint Skeema, tai null jos validoidaan pelkillä säännöillä
+ * @param rules Skeeman ulkopuoliset lisävalidoinnit
+ */
 export const validateData = (
   data: unknown,
-  constraint: Constraint | ValidationRule<any>
-): ValidationError[] => validate(data, constraint, [])
+  constraint?: Constraint | null,
+  rules: ValidationRule<any>[] = []
+): ValidationError[] => validate(data, constraint, [], rules)
 
 const validate = (
   data: unknown,
-  constraint: Constraint | ValidationRule<any>,
-  path: string[]
+  constraint: Constraint | null | undefined,
+  path: string[],
+  rules: ValidationRule<any>[]
+): ValidationError[] => {
+  // Ei sääntöjä: vältetään turha allokointi jokaisessa solmussa.
+  if (A.isEmpty(rules)) {
+    return validateConstraint(data, constraint, path, rules)
+  }
+  const ruleErrors = rules.flatMap((rule) =>
+    rule.isMatch(data, path) ? rule.validate(data, path) : []
+  )
+  const constraintErrors = validateConstraint(data, constraint, path, rules)
+  return A.isEmpty(ruleErrors)
+    ? constraintErrors
+    : [...ruleErrors, ...constraintErrors]
+}
+
+const validateConstraint = (
+  data: unknown,
+  constraint: Constraint | null | undefined,
+  path: string[],
+  rules: ValidationRule<any>[]
 ): ValidationError[] => {
   if (isLocalizedString(data)) {
     return validateLocalizationString(data, constraint, path)
-  } else if (isObjectConstraint(constraint)) {
-    return validateObject(data, constraint, path)
-  } else if (isArrayConstraint(constraint)) {
-    return validateArray(data, constraint, path)
-  } else if (isUnionConstraint(constraint)) {
-    return validateUnion(data, constraint, path)
   } else if (isOptionalConstraint(constraint)) {
-    return validateOptional(data, constraint, path)
+    return validateOptional(data, constraint, path, rules)
+  } else if (!constraint) {
+    return []
+  } else if (data === null || data === undefined) {
+    // Pakollinen arvo puuttuu. Tämä on tyypillisin syöttökentän virhe, joten sitä ei raportoida
+    // tyyppivirheenä vaan tyhjänä arvona.
+    return [emptyValue(path)]
+  } else if (isObjectConstraint(constraint)) {
+    return validateObject(data, constraint, path, rules)
+  } else if (isArrayConstraint(constraint)) {
+    return validateArray(data, constraint, path, rules)
+  } else if (isUnionConstraint(constraint)) {
+    return validateUnion(data, constraint, path, rules)
   } else if (isNumberConstraint(constraint)) {
     return validateNumber(data, constraint, path)
   } else if (isStringConstraint(constraint)) {
@@ -181,9 +219,7 @@ const validate = (
   } else if (isLiteralConstraint(constraint)) {
     return validateLiteral(data, constraint, path)
   } else if (isRecordConstraint(constraint)) {
-    return validateRecord(data, constraint, path)
-  } else if (isValidationRule(constraint)) {
-    return constraint.isMatch(data, path) ? constraint.validate(data, path) : []
+    return validateRecord(data, constraint, path, rules)
   }
   return []
 }
@@ -192,15 +228,14 @@ const validate = (
 const validateObject = (
   data: unknown,
   constraint: ObjectConstraint,
-  path: string[]
+  path: string[],
+  rules: ValidationRule<any>[]
 ): ValidationError[] => {
-  if (data === null || data === undefined) {
-    return [emptyValue(path)]
-  } else if (typeof data !== 'object') {
+  if (typeof data !== 'object') {
     return [invalidType('object', data, path)]
   } else {
     return Object.entries(constraint.properties).flatMap(([key, child]) =>
-      validate((data as any)[key], child, [...path, key])
+      validate((data as any)[key], child, [...path, key], rules)
     )
   }
 }
@@ -209,13 +244,14 @@ const validateObject = (
 const validateArray = (
   data: unknown,
   constraint: ArrayConstraint,
-  path: string[]
+  path: string[],
+  rules: ValidationRule<any>[]
 ): ValidationError[] => {
   if (!Array.isArray(data)) {
     return [invalidType('array', data, path)]
   } else {
     return data.flatMap((e, i) =>
-      validate(e, constraint.items, [...path, i.toString()])
+      validate(e, constraint.items, [...path, i.toString()], rules)
     )
   }
 }
@@ -224,7 +260,8 @@ const validateArray = (
 const validateUnion = (
   data: unknown,
   constraint: UnionConstraint,
-  path: string[]
+  path: string[],
+  rules: ValidationRule<any>[]
 ): ValidationError[] => {
   const className = (data as any)?.$class as string
   if (!className) {
@@ -238,19 +275,20 @@ const validateUnion = (
       noMatchingClass(Object.keys(constraint.anyOf), className, data, path)
     ]
   }
-  return validate(data, childC, path)
+  return validateConstraint(data, childC, path, rules)
 }
 
 // OptionalConstraint
 const validateOptional = (
   data: unknown,
   constraint: OptionalConstraint,
-  path: string[]
+  path: string[],
+  rules: ValidationRule<any>[]
 ): ValidationError[] => {
   if (data === null || data === undefined) {
     return []
   }
-  return validate(data, constraint.optional, path)
+  return validateConstraint(data, constraint.optional, path, rules)
 }
 
 // NumberConstraint
@@ -354,15 +392,14 @@ const validateLiteral = (
 const validateRecord = (
   data: unknown,
   constraint: RecordConstraint,
-  path: string[]
+  path: string[],
+  rules: ValidationRule<any>[]
 ): ValidationError[] => {
   if (typeof data !== 'object') {
     return [invalidType('object', data, path)]
-  } else if (data === null || data === undefined) {
-    return [invalidType('object', data, path)]
   } else {
-    return Object.entries(data).flatMap(([key, value]) =>
-      validate(value, constraint.items, [...path, key])
+    return Object.entries(data as object).flatMap(([key, value]) =>
+      validate(value, constraint.items, [...path, key], rules)
     )
   }
 }
@@ -382,7 +419,11 @@ const validateLocalizationString = (
 
 // Error builders
 
-const pathToString = (path: string[]) => path.join('.')
+/**
+ * Virhepolun esitysmuoto. ValidationRule-toteutusten kannattaa muodostaa virhepolkunsa tällä
+ * saamastaan polusta, jotta useFormErrors löytää virheen oikealle kentälle.
+ */
+export const pathToString = (path: string[]): string => path.join('.')
 
 const invalidType = (
   expected: string,
