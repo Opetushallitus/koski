@@ -63,6 +63,7 @@ export type ValidationError =
   | MustBeAtMostError
   | NoMatchingClassError
   | NoClassNameError
+  | ArviointiPuuttuuValmiiltaSuoritukseltaError
 
 export const isValidationError = (a: any): a is ValidationError =>
   typeof a === 'object' && typeof a.type === 'string'
@@ -81,6 +82,16 @@ export type EmptyStringError = {
 
 export type EmptyValueError = {
   type: 'emptyValue'
+  path: string
+}
+
+/**
+ * Osasuoritukselta puuttuu arviointi, vaikka päätason suoritus on vahvistettu.
+ * Vastaa palvelimen validaatiota "Valmiiksi merkityllä suorituksella on
+ * keskeneräinen osasuoritus", mutta kohdistuu suoraan puuttuvaan kenttään.
+ */
+export type ArviointiPuuttuuValmiiltaSuoritukseltaError = {
+  type: 'arviointiPuuttuuValmiiltaSuoritukselta'
   path: string
 }
 

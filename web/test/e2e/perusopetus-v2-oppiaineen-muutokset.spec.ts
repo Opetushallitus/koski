@@ -383,4 +383,48 @@ test.describe('Perusopetuksen uusi käyttöliittymä: oppiainemuutokset', () => 
       page.getByTestId('oo.0.suoritukset.0.osasuoritukset.20.laajuus.value')
     ).toContainText('1.5')
   })
+
+  test('Vahvistetulle suoritukselle lisätty arvioimaton oppiaine estää tallennuksen ja merkitään virheelliseksi', async ({
+    page,
+    oppijaPage,
+    fixtures
+  }) => {
+    await fixtures.reset()
+    await oppijaPage.goto(kaisaUrl)
+    // Päättötodistus (tab 0) on vahvistettu.
+    await page.getByTestId('oo.0.suoritusTabs.0.tab').click()
+    await page.getByTestId('oo.0.opiskeluoikeus.edit').click()
+
+    // Lisää pakollinen oppiaine, jolle ei anneta arvosanaa
+    await page.getByPlaceholder('Lisää pakollinen oppiaine').click()
+    await page
+      .locator('.Select__optionLabel')
+      .filter({ hasText: /^A2-kieli$/ })
+      .first()
+      .click()
+
+    // Osasuorituksen kohdalla näytetään virhe, eikä tallennus ole mahdollista.
+    // Virheteksti tulee lokalisointipalvelusta, joten tarkistetaan virheen
+    // olemassaolo ja sijainti eikä tekstiä.
+    const arvosanaErrors = page.locator(
+      '[data-testid^="oo.0.suoritukset.0.osasuoritukset."][data-testid$=".errors"]'
+    )
+    await expect(arvosanaErrors).toHaveCount(1)
+    await expect(page.getByTestId('oo.0.opiskeluoikeus.save')).toBeDisabled()
+    await expect(
+      page.getByTestId('oo.0.opiskeluoikeus.editStatus')
+    ).toContainText('Korjaa virheelliset tiedot.')
+
+    // Arvosanan antaminen poistaa virheen ja sallii tallennuksen
+    const errorTestId = await arvosanaErrors.getAttribute('data-testid')
+    const osasuoritus = errorTestId!.replace(/\.errors$/, '')
+    await page.getByTestId(`${osasuoritus}.arvosana.edit.input`).click()
+    await page
+      .locator('.Select__optionLabel')
+      .filter({ hasText: /^8$/ })
+      .first()
+      .click()
+    await expect(arvosanaErrors).toHaveCount(0)
+    await expect(page.getByTestId('oo.0.opiskeluoikeus.save')).toBeEnabled()
+  })
 })

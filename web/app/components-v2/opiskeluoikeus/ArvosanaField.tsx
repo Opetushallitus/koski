@@ -1,3 +1,4 @@
+import * as A from 'fp-ts/Array'
 import { flow, pipe } from 'fp-ts/lib/function'
 import React, { useCallback, useMemo } from 'react'
 import { useChildSchema } from '../../appstate/constraints'
@@ -125,6 +126,7 @@ export const ArvosanaEdit = <T extends Arviointi>(
         options={groupedKoodisto as OptionList<ArvosanaOf<T>>}
         onChange={onChange}
         disabled={props.disabled}
+        hasErrors={A.isNonEmpty(props.errors || [])}
         testId={`${props.testId || 'arvosana'}.edit`}
       />
     )
@@ -200,6 +202,7 @@ export const ParasArvosanaEdit = <T extends Arviointi>(
       suoritusClassName={props.suoritusClassName}
       format={props.format}
       disabled={disabled}
+      errors={props.errors}
     />
   )
 }

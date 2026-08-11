@@ -2893,6 +2893,7 @@
   "Vahvistus": "Vahvistus",
   "Vaikeasti vammainen": "Vaikeimmin kehitysvammainen",
   "Vaikeasti vammaisille järjestetty opetus": "Vaikeasti vammaisille järjestetty opetus",
+  "validation:arviointiPuuttuuValmiiltaSuoritukselta": "Arvosana vaaditaan, koska päätason suoritus on merkitty valmiiksi.",
   "validation:emptyString": "Kenttä ei voi olla tyhjä",
   "validation:emptyValue": "Kenttä ei voi olla tyhjä",
   "validation:invalidDate": "Virheellinen päivämäärä",
