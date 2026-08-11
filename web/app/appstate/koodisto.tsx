@@ -223,22 +223,42 @@ const RETRY_DELAY_MS = 5000
 class KoodistoLoader {
   koodistot: KoodistoRecord = {}
   onChange?: () => void
+  /**
+   * Käynnissä olevat haut koodisto-URIttain. Ilman tätä rinnakkainen kutsuja, jonka tarvitsemat
+   * koodistot ovat jo latautumassa, palaisi heti kesken latauksen — jolloin sitä seuraava
+   * findKoodi heittäisi virheen "loading of koodisto ... hasn't finished".
+   */
+  private pending: Record<string, Promise<void>> = {}
 
   async loadKoodistot(koodistoUris: string[]): Promise<boolean> {
-    const unfetchedKoodistoUris = uniqueKoodistoUris(koodistoUris).filter(
+    const uris = uniqueKoodistoUris(koodistoUris)
+    const unfetchedKoodistoUris = uris.filter(
       (uri) =>
         this.koodistot[uri] !== Loading && !Array.isArray(this.koodistot[uri])
     )
-    if (!A.isNonEmpty(unfetchedKoodistoUris)) {
-      return false
+
+    if (A.isNonEmpty(unfetchedKoodistoUris)) {
+      const fetching = this.fetchKoodistotWithRetry(unfetchedKoodistoUris)
+      unfetchedKoodistoUris.forEach((uri) => {
+        this.koodistot[uri] = Loading
+        this.pending[uri] = fetching
+      })
     }
 
-    unfetchedKoodistoUris.forEach((uri) => {
-      this.koodistot[uri] = Loading
-    })
+    // Odotetaan myös muiden aloittamat haut, jotta paluun jälkeen koodistot ovat käytettävissä.
+    const inFlight = uris.map((uri) => this.pending[uri]).filter(nonNull)
+    if (A.isEmpty(inFlight)) {
+      return false
+    }
+    await Promise.all(inFlight)
+    return true
+  }
 
+  private async fetchKoodistotWithRetry(
+    koodistoUris: NEA.NonEmptyArray<string>
+  ): Promise<void> {
     for (let attempt = 0; attempt < MAX_RETRY_ATTEMPTS; attempt++) {
-      const result = await fetchKoodistot(unfetchedKoodistoUris)
+      const result = await fetchKoodistot(koodistoUris)
 
       if (E.isRight(result)) {
         const k: KoodistoRecord = pipe(
@@ -253,7 +273,8 @@ class KoodistoLoader {
           NEA.groupBy((koodi) => koodi.koodiviite.koodistoUri)
         )
         this.koodistot = { ...this.koodistot, ...k }
-        return true
+        this.clearPending(koodistoUris)
+        return
       }
 
       console.error('Koodistojen haku epäonnistui:', result.left)
@@ -262,10 +283,16 @@ class KoodistoLoader {
       }
     }
 
-    unfetchedKoodistoUris.forEach((uri) => {
+    koodistoUris.forEach((uri) => {
       this.koodistot[uri] = Failed
     })
-    return true
+    this.clearPending(koodistoUris)
+  }
+
+  private clearPending(koodistoUris: string[]): void {
+    koodistoUris.forEach((uri) => {
+      delete this.pending[uri]
+    })
   }
 
   findKoodi<T extends string>(
