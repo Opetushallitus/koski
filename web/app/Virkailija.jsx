@@ -17,9 +17,10 @@ import { locationP } from './util/location.js'
 import LocalizationEditBar from './i18n/LocalizationEditBar'
 import { t } from './i18n/i18n'
 import { VirkailijaAppStateProvider } from './appstate/VirkailijaAppStateProvider'
+import { loadStyles } from './util/loadStyles'
 
 __webpack_nonce__ = window.nonce
-import(/* webpackChunkName: "styles" */ './style/main.less')
+loadStyles(() => import(/* webpackChunkName: "styles" */ './style/main.less'))
 
 const noAccessControlPaths = ['/koski/dokumentaatio']
 

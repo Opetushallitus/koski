@@ -23,6 +23,17 @@ module.exports = (_, argv = {}) => ({
   output: {
     path: path.join(__dirname, '..', 'target/webapp/koski'),
     filename: 'js/koski-[name].js',
+    // Entry-bundlet saavat välimuistin ohituksen HtmlNodes.scala:n
+    // ?buildVersion-parametrista, mutta async-chunkkien osoitteen muodostaa
+    // webpackin oma runtime, joten niiden nimeen tarvitaan sisältöhash. Ilman
+    // sitä selain voi julkaisun jälkeen käyttää välimuistista vanhaa chunkkia,
+    // jonka tunniste ei enää vastaa uutta runtimea, jolloin sivu jää kokonaan
+    // ilman tyylejä. Kehitystilassa hash jätetään pois: target-hakemistoa ei
+    // siivota, joten jokainen käännös jättäisi vanhat tiedostot jäljelle.
+    chunkFilename:
+      argv.mode === 'production'
+        ? 'js/koski-[name].[contenthash:8].js'
+        : 'js/koski-[name].js',
     publicPath: '/koski/'
   },
   stats: 'normal',

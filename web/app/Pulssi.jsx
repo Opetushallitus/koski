@@ -6,8 +6,12 @@ import ReactDOM from 'react-dom'
 import Http from './util/http'
 import Text from './i18n/Text'
 import * as R from 'ramda'
+import { loadStyles } from './util/loadStyles'
+
 __webpack_nonce__ = window.nonce
-import(/* webpackChunkName: "pulssi-styles" */ './style/pulssi.less')
+loadStyles(
+  () => import(/* webpackChunkName: "pulssi-styles" */ './style/pulssi.less')
+)
 
 class Pulssi extends React.Component {
   constructor(props) {

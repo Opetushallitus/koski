@@ -3,8 +3,9 @@ import Text from '../i18n/Text'
 import { useKoodisto } from '../appstate/koodisto'
 import { t, tExists } from '../i18n/i18n'
 import { buildLocalizedPaattymisajankohtaText } from './expirationTime'
+import { loadStyles } from '../util/loadStyles'
 
-import(/* webpackChunkName: "styles" */ '../style/main.less')
+loadStyles(() => import(/* webpackChunkName: "styles" */ '../style/main.less'))
 
 export default ({
   clientId,

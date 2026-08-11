@@ -5,8 +5,10 @@ import ReactDOM from 'react-dom'
 import HetuLogin from './korhopankki/HetuLogin'
 import Text from './i18n/Text'
 import { currentLocation } from './util/location'
+import { loadStyles } from './util/loadStyles'
+
 __webpack_nonce__ = window.nonce
-import(/* webpackChunkName: "styles" */ './style/main.less')
+loadStyles(() => import(/* webpackChunkName: "styles" */ './style/main.less'))
 
 const getParam = (parameter) => {
   return currentLocation().params

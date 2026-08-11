@@ -5,8 +5,10 @@ import Text from './i18n/Text'
 import { t } from './i18n/i18n'
 import { patchSaavutettavuusLeima } from './saavutettavuusLeima'
 import ReactDOM from 'react-dom'
+import { loadStyles } from './util/loadStyles'
+
 __webpack_nonce__ = window.nonce
-import(/* webpackChunkName: "styles" */ './style/main.less')
+loadStyles(() => import(/* webpackChunkName: "styles" */ './style/main.less'))
 
 const LanderInfo = () => (
   <div>
