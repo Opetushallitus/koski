@@ -17,22 +17,34 @@ import {
 } from './Columns'
 
 /**
- * Nimisarakkeen leveys (ruudukon sarakkeissa) jaetaan taulukon riveille
- * contextin kautta. Sisäkkäinen KeyValueTable nollaa arvon, joten leveys ei
- * vuoda sisätauluihin.
+ * Nimisarakkeen leveys (ruudukon sarakkeissa) ja muokkaustila jaetaan taulukon
+ * riveille contextin kautta. Sisäkkäinen KeyValueTable nollaa arvot, joten
+ * leveys ei vuoda sisätauluihin. Sama koskee muokkaustilaa: jos sisätaulussa
+ * käytetään `hideIfEmpty`ä, sille on annettava oma `editMode`-prop.
  */
-const KeyValueTableContext = createContext<{ labelWidth?: number }>({})
+const KeyValueTableContext = createContext<{
+  labelWidth?: number
+  editMode?: boolean
+}>({})
 
 export type KeyValueTableProps = CommonPropsWithChildren<{
   /** Pakottaa kaikkien rivien nimisarakkeen tähän leveyteen (ruudukon sarakkeissa). */
   labelWidth?: number
+  /** Välitetään riveille, jotta hideIfEmpty osaa näyttää rivin muokattaessa. */
+  editMode?: boolean
 }>
 
-export const KeyValueTable = (props: KeyValueTableProps) => (
-  <KeyValueTableContext.Provider value={{ labelWidth: props.labelWidth }}>
-    <ul {...common(props, ['KeyValueTable'])}>{props.children}</ul>
-  </KeyValueTableContext.Provider>
-)
+export const KeyValueTable = (props: KeyValueTableProps) => {
+  const context = useMemo(
+    () => ({ labelWidth: props.labelWidth, editMode: props.editMode }),
+    [props.labelWidth, props.editMode]
+  )
+  return (
+    <KeyValueTableContext.Provider value={context}>
+      <ul {...common(props, ['KeyValueTable'])}>{props.children}</ul>
+    </KeyValueTableContext.Provider>
+  )
+}
 
 export type KeyValueRowProps = CommonPropsWithChildren<{
   localizableLabel?: string | LocalizedString
@@ -40,11 +52,20 @@ export type KeyValueRowProps = CommonPropsWithChildren<{
   indent?: number
   innerKeyValueTable?: boolean
   largeLabel?: boolean
+  /**
+   * Kentän arvo. Kun se on tyhjä, rivi piilotetaan katselutilassa kokonaan
+   * nimiötä myöten. Muokkaustilassa rivi näytetään aina, jotta tyhjä kenttä on
+   * edelleen asetettavissa; se edellyttää `editMode`-propia KeyValueTablella.
+   * Ilman tätä propia rivi käyttäytyy kuten ennenkin.
+   */
+  hideIfEmpty?: unknown
 }>
 
 export const KeyValueRow = (props: KeyValueRowProps) => {
   const indent = props.indent || 0
-  const { labelWidth } = useContext(KeyValueTableContext)
+  const { labelWidth, editMode } = useContext(KeyValueTableContext)
+  const hiddenAsEmpty =
+    'hideIfEmpty' in props && !props.hideIfEmpty && !editMode
   const nameSpans = props.innerKeyValueTable
     ? { default: 8, small: 12, phone: 16 }
     : props.largeLabel
@@ -58,7 +79,7 @@ export const KeyValueRow = (props: KeyValueRowProps) => {
     phone: 24 - nameSpans.phone - indent
   }
 
-  return props.children ? (
+  return props.children && !hiddenAsEmpty ? (
     <ColumnRow component="li" {...common(props, ['KeyValueRow'])}>
       {indent > 0 && <Column span={indent} />}
       <Column
