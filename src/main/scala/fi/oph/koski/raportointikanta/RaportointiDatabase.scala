@@ -137,6 +137,17 @@ class RaportointiDatabase(config: RaportointiDatabaseConfigBase) extends Logging
     confidential.foreach(_.createIndexesForIncrementalUpdate())
   }
 
+  def analyzeCloneTablesForIncrementalUpdate(): Unit = {
+    val startTime = System.currentTimeMillis
+    logger.info("Analysoidaan kloonatut taulut inkrementaalista päivitystä varten")
+    val analysoitavatTaulut = Seq("r_opiskeluoikeus", "r_osasuoritus", "r_paatason_suoritus", "r_opiskeluoikeus_aikajakso")
+    analysoitavatTaulut.foreach { taulu =>
+      runDbSync(sqlu"analyze #${schema.name}.#$taulu", timeout = 30.minutes)
+    }
+    val elapsedSeconds = (System.currentTimeMillis - startTime) / 1000
+    logger.info(s"Kloonatut taulut analysoitu, ${elapsedSeconds} s")
+  }
+
   def createOpiskeluoikeusIndexes(): Unit = {
     runDbSync(schema.createOpiskeluoikeusIndexes(), timeout = 120.minutes)
     confidential.foreach(_.createOpiskeluoikeusIndexes())
