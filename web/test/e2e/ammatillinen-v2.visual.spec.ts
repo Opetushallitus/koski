@@ -9,9 +9,10 @@ import { otaVakaaKuvakaappaus } from './fragments/visualScreenshot'
  * katselunäkymästä ja muokkaustilasta.
  */
 
-// Osittainen ammatillinen tutkinto (renderöityy v2:na ?ammatillinen-v2=true -lipulla)
+// Osittainen ammatillinen tutkinto. Vain osittainen renderöityy v2-editorilla;
+// koko tutkinto ja muu ammatillinen käyttävät yhä vanhaa (ks. useUiAdapter).
 const osittainenTutkinto = '1.2.246.562.24.00000000055'
-// Ammatillisen tutkinnon osia useasta tutkinnosta (renderöityy v2:na oletuksena)
+// Ammatillisen tutkinnon osia useasta tutkinnosta (myös osittainen -> v2)
 const useastaTutkinnosta = '1.2.246.562.24.00000000182'
 
 // Avaa kaikki osasuoritukset, jotta myös alikentät näkyvät kuvassa.
@@ -41,7 +42,7 @@ test.describe('Ammatillinen v2 – visuaaliset regressiot', () => {
     page,
     oppijaPage
   }) => {
-    await oppijaPage.goto(`${osittainenTutkinto}?ammatillinen-v2=true`)
+    await oppijaPage.goto(osittainenTutkinto)
     await expect(page.getByTestId('oo.0.opiskeluoikeus.nimi')).toBeVisible()
     await avaaKaikki(page)
     await expect(
@@ -56,7 +57,7 @@ test.describe('Ammatillinen v2 – visuaaliset regressiot', () => {
   })
 
   test('Osittainen tutkinto, muokkaustila', async ({ page, oppijaPage }) => {
-    await oppijaPage.goto(`${osittainenTutkinto}?ammatillinen-v2=true`)
+    await oppijaPage.goto(osittainenTutkinto)
     await page.getByTestId('oo.0.opiskeluoikeus.edit').click()
     await expect(
       page.getByTestId('oo.0.suoritukset.0.uusi-yhteinen-tutkinnonosa.input')

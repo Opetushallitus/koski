@@ -22,7 +22,6 @@ import {
   emptyJärjestämismuoto,
   emptyKoulutussopimus,
   emptyOsaamisenHankkimistapa,
-  emptyTyössäoppimisjakso,
   JärjestämismouotoEdit,
   JärjestämismouotoView,
   KoulutussopimusEdit,
@@ -30,9 +29,7 @@ import {
   OsaamisalaEdit,
   OsaamisalaView,
   OsaamisenHankkimistapaEdit,
-  OsaamisenHankkimistapaView,
-  TyössäoppimisjaksoEdit,
-  TyössäoppimisjaksoView
+  OsaamisenHankkimistapaView
 } from '../AmmatillinenEditor'
 import {
   KeyValueRow,

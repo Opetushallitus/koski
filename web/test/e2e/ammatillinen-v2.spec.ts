@@ -10,7 +10,7 @@ test.describe('Osittaisen ammatillisen tutkinnon uusi käyttöliittymä', () => 
   })
 
   test('Renderöi osittaisen tutkinnon tiedot', async ({ page, oppijaPage }) => {
-    await oppijaPage.goto('1.2.246.562.24.00000000055?ammatillinen-v2=true')
+    await oppijaPage.goto('1.2.246.562.24.00000000055')
     await expect(page.getByTestId('oo.0.opiskeluoikeus.nimi')).toContainText(
       'Stadin ammatti- ja aikuisopisto, luonto- ja ympäristöalan perustutkinto, osittainen'
     )
@@ -29,8 +29,25 @@ test.describe('Osittaisen ammatillisen tutkinnon uusi käyttöliittymä', () => 
     await expect(page.getByTestId('oo.0.opiskeluoikeus.tila.value.items.1.rahoitus')).toContainText('Valtionosuusrahoitteinen koulutus')
   })
 
+  test('Mukautettujen arvosanojen rivit näkyvät katselutilassa vain kun arvo on tosi', async ({ page, oppijaPage }) => {
+    await oppijaPage.goto('1.2.246.562.24.00000000055')
+
+    // keskiarvoSisältääMukautettujaArvosanoja = true -> rivi näkyy
+    await expect(page.getByTestId('oo.0.suoritukset.0.keskiarvo-sisaltaa-mukautettuja.value')).toContainText('Kyllä')
+
+    // korotettuKeskiarvoSisältääMukautettujaArvosanoja puuttuu -> koko rivi
+    // piilotetaan nimiötä myöten, ei jätetä tyhjää riviä
+    await expect(page.getByTestId('oo.0.suoritukset.0.korotus-sisaltaa-mukautettuja.value')).toHaveCount(0)
+    await expect(page.getByText('Korotus sisältää mukautettuja arvosanoja')).toHaveCount(0)
+
+    // Muokkaustilassa molemmat ovat edelleen asetettavissa
+    await page.getByTestId('oo.0.opiskeluoikeus.edit').click()
+    await expect(page.getByTestId('oo.0.suoritukset.0.keskiarvo-sisaltaa-mukautettuja.edit')).toBeVisible()
+    await expect(page.getByTestId('oo.0.suoritukset.0.korotus-sisaltaa-mukautettuja.edit')).toBeVisible()
+  })
+
   test('Yhteisen osan lisääminen arvosanalla onnistuu', async ({ page, oppijaPage, oppijaPageV2 }) => {
-    await oppijaPage.goto('1.2.246.562.24.00000000055?ammatillinen-v2=true')
+    await oppijaPage.goto('1.2.246.562.24.00000000055')
 
     await page.getByTestId('oo.0.opiskeluoikeus.edit').click();
     await page.getByTestId('oo.0.suoritukset.0.uusi-yhteinen-tutkinnonosa.input').click();
@@ -42,14 +59,14 @@ test.describe('Osittaisen ammatillisen tutkinnon uusi käyttöliittymä', () => 
   })
 
   test('Keskiarvon poistaminen onnistuuu', async ({page, oppijaPage, oppijaPageV2}) => {
-    await oppijaPage.goto('1.2.246.562.24.00000000056?ammatillinen-v2=true')
+    await oppijaPage.goto('1.2.246.562.24.00000000056')
     await page.getByTestId('oo.0.opiskeluoikeus.edit').click();
     await page.getByTestId('oo.0.suoritukset.0.painotettu-keskiarvo.edit.input').clear()
     await oppijaPageV2.tallenna()
   })
 
   test('Opintojakson poistaminen ja lisääminen rahoituksella onnistuu', async ({ page, oppijaPage, oppijaPageV2 }) => {
-    await oppijaPage.goto('1.2.246.562.24.00000000055?ammatillinen-v2=true')
+    await oppijaPage.goto('1.2.246.562.24.00000000055')
 
     await page.getByTestId('oo.0.opiskeluoikeus.edit').click();
     await page.getByTestId('oo.0.opiskeluoikeus.tila.edit.items.1.remove').click();

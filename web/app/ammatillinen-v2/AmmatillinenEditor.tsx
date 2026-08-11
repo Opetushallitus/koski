@@ -144,7 +144,7 @@ const AmmatillisenOsittaisenSuorituksenTiedot: React.FC<{
 }> = ({ form, päätasonSuoritus }) => {
   const path = päätasonSuoritus.path
   return (
-    <KeyValueTable>
+    <KeyValueTable editMode={form.editMode}>
       <KeyValueRow localizableLabel="Koulutus">
         <TestIdText id="koulutus">
           {t(päätasonSuoritus.suoritus.koulutusmoduuli.perusteenNimi)}
@@ -382,8 +382,14 @@ const AmmatillisenOsittaisenSuorituksenTiedot: React.FC<{
           path={path.prop('keskiarvo')}
         />
       </KeyValueRow>
-      <KeyValueRow localizableLabel="Sisältää mukautettuja arvosanoja">
+      <KeyValueRow
+        localizableLabel="Sisältää mukautettuja arvosanoja"
+        hideIfEmpty={
+          päätasonSuoritus.suoritus.keskiarvoSisältääMukautettujaArvosanoja
+        }
+      >
         <FormField
+          testId={'keskiarvo-sisaltaa-mukautettuja'}
           form={form}
           view={BooleanView}
           edit={BooleanEdit}
@@ -406,8 +412,15 @@ const AmmatillisenOsittaisenSuorituksenTiedot: React.FC<{
           path={path.prop('korotettuKeskiarvo')}
         />
       </KeyValueRow>
-      <KeyValueRow localizableLabel="Korotus sisältää mukautettuja arvosanoja">
+      <KeyValueRow
+        localizableLabel="Korotus sisältää mukautettuja arvosanoja"
+        hideIfEmpty={
+          päätasonSuoritus.suoritus
+            .korotettuKeskiarvoSisältääMukautettujaArvosanoja
+        }
+      >
         <FormField
+          testId={'korotus-sisaltaa-mukautettuja'}
           form={form}
           view={BooleanView}
           edit={BooleanEdit}
@@ -950,11 +963,17 @@ export const TyössäoppimisjaksoView = <T extends Työssäoppimisjakso>({
           {t(value?.paikkakunta.nimi)}
         </KeyValueRow>
         <KeyValueRow localizableLabel="Maa">{t(value?.maa.nimi)}</KeyValueRow>
-        <KeyValueRow localizableLabel="Työssäoppimispaikka">
-          {t(value?.työssäoppimispaikka)}
+        <KeyValueRow
+          localizableLabel="Työssäoppimispaikka"
+          hideIfEmpty={value?.työssäoppimispaikka}
+        >
+          <LocalizedTextView value={value?.työssäoppimispaikka} />
         </KeyValueRow>
-        <KeyValueRow localizableLabel="Työtehtävät">
-          {t(value?.työtehtävät)}
+        <KeyValueRow
+          localizableLabel="Työtehtävät"
+          hideIfEmpty={value?.työtehtävät}
+        >
+          <LocalizedTextView value={value?.työtehtävät} />
         </KeyValueRow>
         <KeyValueRow localizableLabel="Laajuus">
           <LaajuusView value={value?.laajuus} />
@@ -1085,14 +1104,20 @@ export const KoulutussopimusView = <T extends Koulutussopimusjakso>({
           {t(value?.paikkakunta.nimi)}
         </KeyValueRow>
         <KeyValueRow localizableLabel="Maa">{t(value?.maa.nimi)}</KeyValueRow>
-        <KeyValueRow localizableLabel="Työssäoppimispaikka">
-          {t(value?.työssäoppimispaikka)}
+        <KeyValueRow
+          localizableLabel="Työssäoppimispaikka"
+          hideIfEmpty={value?.työssäoppimispaikka}
+        >
+          <LocalizedTextView value={value?.työssäoppimispaikka} />
         </KeyValueRow>
         <KeyValueRow localizableLabel="Työssäoppimispaikan Y-tunnus">
           {t(value?.työssäoppimispaikanYTunnus)}
         </KeyValueRow>
-        <KeyValueRow localizableLabel="Työtehtävät">
-          {t(value?.työtehtävät)}
+        <KeyValueRow
+          localizableLabel="Työtehtävät"
+          hideIfEmpty={value?.työtehtävät}
+        >
+          <LocalizedTextView value={value?.työtehtävät} />
         </KeyValueRow>
       </KeyValueTable>
     </>

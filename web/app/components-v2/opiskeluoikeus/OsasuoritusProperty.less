@@ -36,6 +36,15 @@
   }
 }
 
+// Laajennetun osasuorituksen ominaisuusrivit (Pakollinen, Arviointi,
+// Tunnustettu, ...) ovat 18 px korkeita ja kiinni toisissaan, jolloin näkymä on
+// liian tiivis. Erotellaan rivit toisistaan vain ammatillisessa (luokan lisää
+// AmmatillinenTyyliContext), jotta muut koulutusmuodot eivät muutu. Väli tulee
+// riviväliin eikä riviin itseensä, joten monirivisten kenttien korkeus säilyy.
+.OsasuoritusProperty--ammatillinen + .OsasuoritusProperty--ammatillinen {
+  margin-top: (@baseline / 2);
+}
+
 // Kapeilla näytöillä (esim. kansalaisen mobiilinäkymä) nimisarake on niin kapea,
 // että rivittymätön pitkä nimi menisi arvon päälle. Sallitaan silloin rivitys.
 @media screen and (max-width: @Columns-phone-breakpoint) {
