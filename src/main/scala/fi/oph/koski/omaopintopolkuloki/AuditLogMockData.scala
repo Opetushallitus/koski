@@ -210,6 +210,12 @@ object AuditLogMockData extends Logging {
       raw = rawAuditlog("OAUTH2_KATSOMINEN_AKTIIVISET_JA_PAATTYNEET_OPINNOT")
     ),
     MockData(
+      studentOid = KoskiSpecificMockOppijat.ylioppilasLukiolainen.oid,
+      time = "2000-01-18T20:31:32.104+03",
+      organizationOid = List(MockOrganisaatiot.dvv),
+      raw = rawAuditlog("OAUTH2_KATSOMINEN_KAIKKI_TIEDOT_JA_VALINTATIEDOT")
+    ),
+    MockData(
       studentOid = KoskiSpecificMockOppijat.master.oid,
       time = "2018-07-20T21:38:35.104+03",
       organizationOid = List(MockOrganisaatiot.stadinAmmattiopisto),
