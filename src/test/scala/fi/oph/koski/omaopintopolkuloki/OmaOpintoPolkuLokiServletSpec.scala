@@ -46,6 +46,17 @@ class OmaOpintoPolkuLokiServletSpec extends AnyFreeSpec with Matchers with Koski
         List(MockOrganisaatiot.dvv)
       ))
     }
+    "Näytetään Valpaksen oppija- ja kuntailmoituskatselut sekä oppivelvollisuusrekisterin luovutukset" in {
+      auditlogs(KoskiSpecificMockOppijat.ysiluokkalainen).map(_.organizations.map(_.oid)) should contain theSameElementsAs(List(
+        List(MockOrganisaatiot.jyväskylänNormaalikoulu),
+        List(MockOrganisaatiot.kuopionKaupunki),
+        List(MockOrganisaatiot.ylioppilastutkintolautakunta)
+      ))
+    }
+    "Ei näytetä Valpas-auditlogeja joissa operaationa on ollut tietojen muokkaus" in {
+      val orgs = auditlogs(KoskiSpecificMockOppijat.ysiluokkalainen).flatMap(_.organizations.map(_.oid)).toSet
+      orgs should not contain (MockOrganisaatiot.tornionKaupunki)
+    }
     "Näytetään sivoppijaoidien auditlokit kysyttäessä pääoidilla" in {
       auditlogs(KoskiSpecificMockOppijat.master).map(_.organizations.map(_.oid)) should contain theSameElementsAs(List(
         List(MockOrganisaatiot.stadinAmmattiopisto),

@@ -50,6 +50,9 @@ class AuditLogService(val application: KoskiApplication) extends Logging with My
           |  contains (#rawEntry, :suoritusjako_katsominen) or
           |  contains (#rawEntry, :suoritusjako_katsominen_suoritetut_tutkinnot) or
           |  contains (#rawEntry, :suoritusjako_katsominen_aktiiviset_ja_paattyneet_opinnot) or
+          |  contains (#rawEntry, :valpas_oppija_katsominen) or
+          |  contains (#rawEntry, :valpas_kuntailmoituksen_katsominen) or
+          |  contains (#rawEntry, :oppivelvollisuusrekisteri_luovutus) or
           |  contains (#rawEntry, :varda_service) or
           |  contains (#rawEntry, :kitu_service))
           |  """.stripMargin)
@@ -67,6 +70,9 @@ class AuditLogService(val application: KoskiApplication) extends Logging with My
         valueMap.put(":oauth2_katsominen_kaikki_tiedot", AttributeValue.builder.s("\"OAUTH2_KATSOMINEN_KAIKKI_TIEDOT\"").build)
         valueMap.put(":oauth2_katsominen_suoritetut_tutkinnot", AttributeValue.builder.s("\"OAUTH2_KATSOMINEN_SUORITETUT_TUTKINNOT\"").build)
         valueMap.put(":oauth2_katsominen_aktiiviset_ja_paattyneet_opinnot", AttributeValue.builder.s("\"OAUTH2_KATSOMINEN_AKTIIVISET_JA_PAATTYNEET_OPINNOT\"").build)
+        valueMap.put(":valpas_oppija_katsominen", AttributeValue.builder.s("\"VALPAS_OPPIJA_KATSOMINEN\"").build)
+        valueMap.put(":valpas_kuntailmoituksen_katsominen", AttributeValue.builder.s("\"VALPAS_OPPIJA_KUNTAILMOITUKSEN_KATSOMINEN\"").build)
+        valueMap.put(":oppivelvollisuusrekisteri_luovutus", AttributeValue.builder.s("\"OPPIVELVOLLISUUSREKISTERI_LUOVUTUS\"").build)
         valueMap.put(":varda_service", AttributeValue.builder.s("\"varda\"").build)
         valueMap.put(":kitu_service", AttributeValue.builder.s("\"kitu\"").build)
         valueMap

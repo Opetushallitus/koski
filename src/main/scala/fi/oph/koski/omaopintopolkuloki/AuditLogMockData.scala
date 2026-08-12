@@ -322,6 +322,32 @@ object AuditLogMockData extends Logging {
       raw = rawAuditlog("OPISKELUOIKEUS_KATSOMINEN")
     ),
 
+    // Valpas-rivit
+    MockData(
+      studentOid = KoskiSpecificMockOppijat.ysiluokkalainen.oid,
+      time = "2026-02-10T09:00:00.000+03",
+      organizationOid = List(MockOrganisaatiot.jyväskylänNormaalikoulu),
+      raw = rawAuditlog("VALPAS_OPPIJA_KATSOMINEN")
+    ),
+    MockData(
+      studentOid = KoskiSpecificMockOppijat.ysiluokkalainen.oid,
+      time = "2026-02-11T09:00:00.000+03",
+      organizationOid = List(MockOrganisaatiot.kuopionKaupunki),
+      raw = rawAuditlog("VALPAS_OPPIJA_KUNTAILMOITUKSEN_KATSOMINEN")
+    ),
+    MockData(
+      studentOid = KoskiSpecificMockOppijat.ysiluokkalainen.oid,
+      time = "2026-02-12T09:00:00.000+03",
+      organizationOid = List(MockOrganisaatiot.ylioppilastutkintolautakunta),
+      raw = rawAuditlog("OPPIVELVOLLISUUSREKISTERI_LUOVUTUS")
+    ),
+    // Muokkausoperaatio, jota ei näytetä kansalaiselle
+    MockData(
+      studentOid = KoskiSpecificMockOppijat.ysiluokkalainen.oid,
+      time = "2026-02-13T09:00:00.000+03",
+      organizationOid = List(MockOrganisaatiot.tornionKaupunki),
+      raw = rawAuditlog("VALPAS_OPPIVELVOLLISUUDEN_KESKEYTYS")
+    ),
   )
 
   private case class MockData(
