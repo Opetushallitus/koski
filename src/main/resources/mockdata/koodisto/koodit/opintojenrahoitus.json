@@ -190,6 +190,61 @@
   {
     "metadata": [
       {
+        "nimi": "Lukuvuosimaksu",
+        "kuvaus": "Käytetään vain kolmannen maan kansalaisilla, jotka oleskelevat Suomessa opiskelutarkoituksessa ja ovat lukuvuosimaksuvelvollisia toisen asteen koulutuksessa 1.8.2026 voimaan tulleiden lakimuutosten myötä.",
+        "lyhytNimi": "",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Läsårsavgift",
+        "kuvaus": "Används endast för tredjelandsmedborgare som vistas i Finland i studiesyfte och som är skyldiga att betala läsårsavgift inom utbildning på andra stadiet till följd av lagändringarna som träder i kraft den 1 augusti 2026.",
+        "lyhytNimi": "",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Tuition fee",
+        "kuvaus": null,
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "opintojenrahoitus_16",
+    "versio": 1,
+    "koodiArvo": "16"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "Tilauskoulutus",
+        "kuvaus": "Käytössä 1.8.2026 alkaen.",
+        "lyhytNimi": "",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Uppdragsutbildning",
+        "kuvaus": "I bruk från och med den 1 augusti 2026.",
+        "lyhytNimi": "",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Commissioned education",
+        "kuvaus": "",
+        "lyhytNimi": "",
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "opintojenrahoitus_17",
+    "versio": 1,
+    "koodiArvo": "17"
+  },
+  {
+    "metadata": [
+      {
         "nimi": "Työvoimakoulutus ely-keskukset ja työ- ja elinkeinotoimistot (kansallinen rahoitus)",
         "kuvaus": "",
         "lyhytNimi": "",
@@ -375,60 +430,5 @@
     "koodiUri": "opintojenrahoitus_9",
     "versio": 1,
     "koodiArvo": "9"
-  },
-  {
-    "metadata": [
-      {
-        "nimi": "Lukuvuosimaksu",
-        "kuvaus": "",
-        "lyhytNimi": "",
-        "kieli": "FI"
-      },
-      {
-        "nimi": "Lukuvuosimaksu",
-        "kuvaus": "",
-        "lyhytNimi": "",
-        "kieli": "SV"
-      },
-      {
-        "nimi": "Lukuvuosimaksu",
-        "kuvaus": null,
-        "kieli": "EN"
-      }
-    ],
-    "withinCodeElements": [],
-    "includesCodeElements": [],
-    "levelsWithCodeElements": [],
-    "koodiUri": "opintojenrahoitus_16",
-    "versio": 1,
-    "koodiArvo": "16"
-  },
-  {
-    "metadata": [
-      {
-        "nimi": "Tilauskoulutus",
-        "kuvaus": "",
-        "lyhytNimi": "",
-        "kieli": "FI"
-      },
-      {
-        "nimi": "Tilauskoulutus",
-        "kuvaus": "",
-        "lyhytNimi": "",
-        "kieli": "SV"
-      },
-      {
-        "nimi": "Tilauskoulutus",
-        "kuvaus": "",
-        "lyhytNimi": "",
-        "kieli": "EN"
-      }
-    ],
-    "withinCodeElements": [],
-    "includesCodeElements": [],
-    "levelsWithCodeElements": [],
-    "koodiUri": "opintojenrahoitus_17",
-    "versio": 1,
-    "koodiArvo": "17"
   }
 ]

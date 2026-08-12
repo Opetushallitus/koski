@@ -1,11 +1,8 @@
 {
-  "koodistoUri": "kieli",
-  "resourceUri": "https://virkailija.opintopolku.fi/koodisto-service/rest/codes/kieli",
-  "omistaja": "Opetushallitus",
-  "organisaatioOid": "1.2.246.562.10.00000000001",
-  "lukittu": null,
-  "withinCodes": [],
+  "codesGroupUri": "henkilokoodistot",
+  "codesVersions": [],
   "includesCodes": [],
+  "koodistoUri": "kieli",
   "levelsWithCodes": [
     {
       "codesUri": "oppilaitoksenopetuskieli",
@@ -23,14 +20,7 @@
       }
     }
   ],
-  "codesGroupUri": "henkilokoodistot",
-  "version": 16,
-  "versio": 1,
-  "paivitysPvm": "2022-11-25",
-  "paivittajaOid": "1.2.246.562.24.25909319372",
-  "voimassaAlkuPvm": "2013-01-01",
-  "voimassaLoppuPvm": null,
-  "tila": "LUONNOS",
+  "lukittu": null,
   "metadata": [
     {
       "kieli": "SV",
@@ -75,5 +65,15 @@
       "koodistonLahde": null
     }
   ],
-  "codesVersions": []
+  "omistaja": "Opetushallitus",
+  "organisaatioOid": "1.2.246.562.10.00000000001",
+  "paivittajaOid": "1.2.246.562.24.25909319372",
+  "paivitysPvm": "2022-11-25",
+  "resourceUri": "https://virkailija.opintopolku.fi/koodisto-service/rest/codes/kieli",
+  "tila": "LUONNOS",
+  "versio": 1,
+  "version": 16,
+  "voimassaAlkuPvm": "2013-01-01",
+  "voimassaLoppuPvm": null,
+  "withinCodes": []
 }

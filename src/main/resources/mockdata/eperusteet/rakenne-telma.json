@@ -24,8 +24,8 @@
     }
   ],
   "kielet": [
-    "fi",
-    "sv"
+    "sv",
+    "fi"
   ],
   "kuvaus": {
     "_id": "4314846",
@@ -432,7 +432,7 @@
         {
           "id": 2988470,
           "laajuus": 0,
-          "laajuusMaksimi": 20,
+          "laajuusMaksimi": 20.0,
           "jarjestys": 3,
           "_tutkinnonOsa": "3018112"
         }
@@ -1071,7 +1071,7 @@
       "koodiArvo": "400007",
       "laajuus": 0,
       "tutkinnonosaViiteId": 2988470,
-      "laajuusMaksimi": 20,
+      "laajuusMaksimi": 20.0,
       "osaAlueet": [],
       "tyyppi": "normaali",
       "valmaTelmaSisalto": {

@@ -1,20 +1,10 @@
 {
-  "koodistoUri": "hakutyyppi",
-  "resourceUri": "https://virkailija.opintopolku.fi/koodisto-service/rest/codes/hakutyyppi",
-  "omistaja": "Opetushallitus",
-  "organisaatioOid": "1.2.246.562.10.00000000001",
-  "lukittu": null,
-  "withinCodes": [],
-  "includesCodes": [],
-  "levelsWithCodes": [],
   "codesGroupUri": "haunkoodistot",
-  "version": 0,
-  "versio": 1,
-  "paivitysPvm": "2013-10-28",
-  "paivittajaOid": null,
-  "voimassaAlkuPvm": "2013-01-01",
-  "voimassaLoppuPvm": null,
-  "tila": "LUONNOS",
+  "codesVersions": [],
+  "includesCodes": [],
+  "koodistoUri": "hakutyyppi",
+  "levelsWithCodes": [],
+  "lukittu": null,
   "metadata": [
     {
       "kieli": "FI",
@@ -59,5 +49,15 @@
       "koodistonLahde": null
     }
   ],
-  "codesVersions": []
+  "omistaja": "Opetushallitus",
+  "organisaatioOid": "1.2.246.562.10.00000000001",
+  "paivittajaOid": null,
+  "paivitysPvm": "2013-10-28",
+  "resourceUri": "https://virkailija.opintopolku.fi/koodisto-service/rest/codes/hakutyyppi",
+  "tila": "LUONNOS",
+  "versio": 1,
+  "version": 0,
+  "voimassaAlkuPvm": "2013-01-01",
+  "voimassaLoppuPvm": null,
+  "withinCodes": []
 }

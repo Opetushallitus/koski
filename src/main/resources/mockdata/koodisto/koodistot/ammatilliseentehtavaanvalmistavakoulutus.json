@@ -1,20 +1,10 @@
 {
-  "koodistoUri": "ammatilliseentehtavaanvalmistavakoulutus",
-  "resourceUri": "https://virkailija.opintopolku.fi/koodisto-service/rest/codes/ammatilliseentehtavaanvalmistavakoulutus",
-  "omistaja": null,
-  "organisaatioOid": "1.2.246.562.10.2013112012294919827487",
-  "lukittu": null,
-  "withinCodes": [],
-  "includesCodes": [],
-  "levelsWithCodes": [],
   "codesGroupUri": "koute",
-  "version": 1,
-  "versio": 1,
-  "paivitysPvm": "2017-06-19",
-  "paivittajaOid": null,
-  "voimassaAlkuPvm": "2017-01-01",
-  "voimassaLoppuPvm": null,
-  "tila": "LUONNOS",
+  "codesVersions": [],
+  "includesCodes": [],
+  "koodistoUri": "ammatilliseentehtavaanvalmistavakoulutus",
+  "levelsWithCodes": [],
+  "lukittu": null,
   "metadata": [
     {
       "kieli": "FI",
@@ -31,5 +21,15 @@
       "koodistonLahde": null
     }
   ],
-  "codesVersions": []
+  "omistaja": null,
+  "organisaatioOid": "1.2.246.562.10.2013112012294919827487",
+  "paivittajaOid": null,
+  "paivitysPvm": "2017-06-19",
+  "resourceUri": "https://virkailija.opintopolku.fi/koodisto-service/rest/codes/ammatilliseentehtavaanvalmistavakoulutus",
+  "tila": "LUONNOS",
+  "versio": 1,
+  "version": 1,
+  "voimassaAlkuPvm": "2017-01-01",
+  "voimassaLoppuPvm": null,
+  "withinCodes": []
 }

@@ -1,11 +1,8 @@
 {
-  "koodistoUri": "opiskeluoikeudentyyppi",
-  "resourceUri": "https://virkailija.opintopolku.fi/koodisto-service/rest/codes/opiskeluoikeudentyyppi",
-  "omistaja": null,
-  "organisaatioOid": "1.2.246.562.10.00000000001",
-  "lukittu": null,
-  "withinCodes": [],
+  "codesGroupUri": "koski",
+  "codesVersions": [],
   "includesCodes": [],
+  "koodistoUri": "opiskeluoikeudentyyppi",
   "levelsWithCodes": [
     {
       "codesUri": "koulutustyyppikouta",
@@ -23,14 +20,7 @@
       }
     }
   ],
-  "codesGroupUri": "koski",
-  "version": 0,
-  "versio": 1,
-  "paivitysPvm": "2016-10-28",
-  "paivittajaOid": null,
-  "voimassaAlkuPvm": "2016-04-04",
-  "voimassaLoppuPvm": null,
-  "tila": "LUONNOS",
+  "lukittu": null,
   "metadata": [
     {
       "kieli": "SV",
@@ -75,5 +65,15 @@
       "koodistonLahde": null
     }
   ],
-  "codesVersions": []
+  "omistaja": null,
+  "organisaatioOid": "1.2.246.562.10.00000000001",
+  "paivittajaOid": null,
+  "paivitysPvm": "2016-10-28",
+  "resourceUri": "https://virkailija.opintopolku.fi/koodisto-service/rest/codes/opiskeluoikeudentyyppi",
+  "tila": "LUONNOS",
+  "versio": 1,
+  "version": 0,
+  "voimassaAlkuPvm": "2016-04-04",
+  "voimassaLoppuPvm": null,
+  "withinCodes": []
 }

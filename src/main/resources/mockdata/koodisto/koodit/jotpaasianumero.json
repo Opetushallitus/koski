@@ -11652,17 +11652,18 @@
   {
     "metadata": [
       {
-        "nimi": "70/4814/2024 - Axxell Utbildning Ab - DiDu & DiDu",
+        "nimi": "70/4814/2024 - Axxell Utbildning Ab - DiDu &amp",
         "kuvaus": null,
+        "lyhytNimi": " DiDu",
         "kieli": "FI"
       },
       {
-        "nimi": "70/4814/2024 - Axxell Utbildning Ab - DiDu & DiDu",
+        "nimi": null,
         "kuvaus": null,
         "kieli": "SV"
       },
       {
-        "nimi": "70/4814/2024 - Axxell Utbildning Ab - DiDu & DiDu",
+        "nimi": null,
         "kuvaus": null,
         "kieli": "EN"
       }
@@ -15927,17 +15928,18 @@
   {
     "metadata": [
       {
-        "nimi": "va-jotpa-2025-2-20 - Haaga-Helia ammattikorkeakoulu Oy - Work & Study Valintakurssin työnantajayhteistyön kehittäminen Haaga-Helia ammattikorkeakoulussa",
+        "nimi": "va-jotpa-2025-2-20 - Haaga-Helia ammattikorkeakoulu Oy - Work &amp",
         "kuvaus": null,
+        "lyhytNimi": " Study Valintakurssin työnantajayhteistyön kehittäminen Haaga-Helia ammattikorkeakoulussa",
         "kieli": "FI"
       },
       {
-        "nimi": "va-jotpa-2025-2-20 - Haaga-Helia ammattikorkeakoulu Oy - Work & Study Valintakurssin työnantajayhteistyön kehittäminen Haaga-Helia ammattikorkeakoulussa",
+        "nimi": null,
         "kuvaus": null,
         "kieli": "SV"
       },
       {
-        "nimi": "va-jotpa-2025-2-20 - Haaga-Helia ammattikorkeakoulu Oy - Work & Study Valintakurssin työnantajayhteistyön kehittäminen Haaga-Helia ammattikorkeakoulussa",
+        "nimi": null,
         "kuvaus": null,
         "kieli": "EN"
       }
@@ -17427,6 +17429,306 @@
   {
     "metadata": [
       {
+        "nimi": "va-jotpa-2025-7-10 - Suomen Diakoniaopisto - SDO Oy - SDO - Opiskele työn ohessa!",
+        "kuvaus": null,
+        "kieli": "FI"
+      },
+      {
+        "nimi": "va-jotpa-2025-7-10 - Suomen Diakoniaopisto - SDO Oy - SDO - Opiskele työn ohessa!",
+        "kuvaus": null,
+        "kieli": "SV"
+      },
+      {
+        "nimi": "va-jotpa-2025-7-10 - Suomen Diakoniaopisto - SDO Oy - SDO - Opiskele työn ohessa!",
+        "kuvaus": null,
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "jotpaasianumero_vajotpa2025710",
+    "versio": 1,
+    "koodiArvo": "va-jotpa-2025-7-10"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "va-jotpa-2025-7-11 - Rovaniemen Koulutuskuntayhtymä - SotePro - Joustavaa oppimista työhön",
+        "kuvaus": null,
+        "kieli": "FI"
+      },
+      {
+        "nimi": "va-jotpa-2025-7-11 - Rovaniemen Koulutuskuntayhtymä - SotePro - Joustavaa oppimista työhön",
+        "kuvaus": null,
+        "kieli": "SV"
+      },
+      {
+        "nimi": "va-jotpa-2025-7-11 - Rovaniemen Koulutuskuntayhtymä - SotePro - Joustavaa oppimista työhön",
+        "kuvaus": null,
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "jotpaasianumero_vajotpa2025711",
+    "versio": 1,
+    "koodiArvo": "va-jotpa-2025-7-11"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "va-jotpa-2025-7-12 - Oy Vaasan ammattikorkeakoulu Ab - Osaamista varhaiskasvatukseen! -Vaka-sosionomiksi työn ohessa (OSAVO) -hanke",
+        "kuvaus": null,
+        "kieli": "FI"
+      },
+      {
+        "nimi": "va-jotpa-2025-7-12 - Oy Vaasan ammattikorkeakoulu Ab - Osaamista varhaiskasvatukseen! -Vaka-sosionomiksi työn ohessa (OSAVO) -hanke",
+        "kuvaus": null,
+        "kieli": "SV"
+      },
+      {
+        "nimi": "va-jotpa-2025-7-12 - Oy Vaasan ammattikorkeakoulu Ab - Osaamista varhaiskasvatukseen! -Vaka-sosionomiksi työn ohessa (OSAVO) -hanke",
+        "kuvaus": null,
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "jotpaasianumero_vajotpa2025712",
+    "versio": 1,
+    "koodiArvo": "va-jotpa-2025-7-12"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "va-jotpa-2025-7-13 - Laurea-ammattikorkeakoulu Oy - Työn ohessa opiskelun vahvistaminen/vakasosionomi 3",
+        "kuvaus": null,
+        "kieli": "FI"
+      },
+      {
+        "nimi": "va-jotpa-2025-7-13 - Laurea-ammattikorkeakoulu Oy - Työn ohessa opiskelun vahvistaminen/vakasosionomi 3",
+        "kuvaus": null,
+        "kieli": "SV"
+      },
+      {
+        "nimi": "va-jotpa-2025-7-13 - Laurea-ammattikorkeakoulu Oy - Työn ohessa opiskelun vahvistaminen/vakasosionomi 3",
+        "kuvaus": null,
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "jotpaasianumero_vajotpa2025713",
+    "versio": 1,
+    "koodiArvo": "va-jotpa-2025-7-13"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "va-jotpa-2025-7-14 - Centria-ammattikorkeakoulu Oy - Joustavuutta opiskeluun - Vodcastit opintojen ja harjoittelun tukena",
+        "kuvaus": null,
+        "kieli": "FI"
+      },
+      {
+        "nimi": "va-jotpa-2025-7-14 - Centria-ammattikorkeakoulu Oy - Joustavuutta opiskeluun - Vodcastit opintojen ja harjoittelun tukena",
+        "kuvaus": null,
+        "kieli": "SV"
+      },
+      {
+        "nimi": "va-jotpa-2025-7-14 - Centria-ammattikorkeakoulu Oy - Joustavuutta opiskeluun - Vodcastit opintojen ja harjoittelun tukena",
+        "kuvaus": null,
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "jotpaasianumero_vajotpa2025714",
+    "versio": 1,
+    "koodiArvo": "va-jotpa-2025-7-14"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "va-jotpa-2025-7-17 - Oulun Ammattikorkeakoulu Oy - Sosionomiksi päiväkodissa",
+        "kuvaus": null,
+        "kieli": "FI"
+      },
+      {
+        "nimi": "va-jotpa-2025-7-17 - Oulun Ammattikorkeakoulu Oy - Sosionomiksi päiväkodissa",
+        "kuvaus": null,
+        "kieli": "SV"
+      },
+      {
+        "nimi": "va-jotpa-2025-7-17 - Oulun Ammattikorkeakoulu Oy - Sosionomiksi päiväkodissa",
+        "kuvaus": null,
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "jotpaasianumero_vajotpa2025717",
+    "versio": 1,
+    "koodiArvo": "va-jotpa-2025-7-17"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "va-jotpa-2025-7-18 - Oulun Ammattikorkeakoulu Oy - OTO III - Opi Työssä Osaajaksi",
+        "kuvaus": null,
+        "kieli": "FI"
+      },
+      {
+        "nimi": "va-jotpa-2025-7-18 - Oulun Ammattikorkeakoulu Oy - OTO III - Opi Työssä Osaajaksi",
+        "kuvaus": null,
+        "kieli": "SV"
+      },
+      {
+        "nimi": "va-jotpa-2025-7-18 - Oulun Ammattikorkeakoulu Oy - OTO III - Opi Työssä Osaajaksi",
+        "kuvaus": null,
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "jotpaasianumero_vajotpa2025718",
+    "versio": 1,
+    "koodiArvo": "va-jotpa-2025-7-18"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "va-jotpa-2025-7-19 - Hämeen ammattikorkeakoulu Oy - Ammatillinen erityisopettaja 2 – työnohessa opiskelun vahvistaminen",
+        "kuvaus": null,
+        "kieli": "FI"
+      },
+      {
+        "nimi": "va-jotpa-2025-7-19 - Hämeen ammattikorkeakoulu Oy - Ammatillinen erityisopettaja 2 – työnohessa opiskelun vahvistaminen",
+        "kuvaus": null,
+        "kieli": "SV"
+      },
+      {
+        "nimi": "va-jotpa-2025-7-19 - Hämeen ammattikorkeakoulu Oy - Ammatillinen erityisopettaja 2 – työnohessa opiskelun vahvistaminen",
+        "kuvaus": null,
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "jotpaasianumero_vajotpa2025719",
+    "versio": 1,
+    "koodiArvo": "va-jotpa-2025-7-19"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "va-jotpa-2025-7-20 - Tampereen korkeakoulusäätiö sr - ERKKA/VAKA työn ohessa opiskelun vahvistaminen",
+        "kuvaus": null,
+        "kieli": "FI"
+      },
+      {
+        "nimi": "va-jotpa-2025-7-20 - Tampereen korkeakoulusäätiö sr - ERKKA/VAKA työn ohessa opiskelun vahvistaminen",
+        "kuvaus": null,
+        "kieli": "SV"
+      },
+      {
+        "nimi": "va-jotpa-2025-7-20 - Tampereen korkeakoulusäätiö sr - ERKKA/VAKA työn ohessa opiskelun vahvistaminen",
+        "kuvaus": null,
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "jotpaasianumero_vajotpa2025720",
+    "versio": 1,
+    "koodiArvo": "va-jotpa-2025-7-20"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "va-jotpa-2025-7-22 - Laurea-ammattikorkeakoulu Oy - Lähihoitajasta sairaanhoitajaksi työssä oppien 3.0",
+        "kuvaus": null,
+        "kieli": "FI"
+      },
+      {
+        "nimi": "va-jotpa-2025-7-22 - Laurea-ammattikorkeakoulu Oy - Lähihoitajasta sairaanhoitajaksi työssä oppien 3.0",
+        "kuvaus": null,
+        "kieli": "SV"
+      },
+      {
+        "nimi": "va-jotpa-2025-7-22 - Laurea-ammattikorkeakoulu Oy - Lähihoitajasta sairaanhoitajaksi työssä oppien 3.0",
+        "kuvaus": null,
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "jotpaasianumero_vajotpa2025722",
+    "versio": 1,
+    "koodiArvo": "va-jotpa-2025-7-22"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "va-jotpa-2025-7-23 - Jyväskylän Ammattikorkeakoulu Oy - Työelämälähtöisen opiskelijapolun kehittäminen ammatillisessa erityisopettajankoulutuksessa",
+        "kuvaus": null,
+        "kieli": "FI"
+      },
+      {
+        "nimi": "va-jotpa-2025-7-23 - Jyväskylän Ammattikorkeakoulu Oy - Työelämälähtöisen opiskelijapolun kehittäminen ammatillisessa erityisopettajankoulutuksessa",
+        "kuvaus": null,
+        "kieli": "SV"
+      },
+      {
+        "nimi": "va-jotpa-2025-7-23 - Jyväskylän Ammattikorkeakoulu Oy - Työelämälähtöisen opiskelijapolun kehittäminen ammatillisessa erityisopettajankoulutuksessa",
+        "kuvaus": null,
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "jotpaasianumero_vajotpa2025723",
+    "versio": 1,
+    "koodiArvo": "va-jotpa-2025-7-23"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "va-jotpa-2025-7-25 - Turun kaupunki - Työn ohessa joustavasti ammattiin ja urapoluille Varhassa II",
+        "kuvaus": null,
+        "kieli": "FI"
+      },
+      {
+        "nimi": "va-jotpa-2025-7-25 - Turun kaupunki - Työn ohessa joustavasti ammattiin ja urapoluille Varhassa II",
+        "kuvaus": null,
+        "kieli": "SV"
+      },
+      {
+        "nimi": "va-jotpa-2025-7-25 - Turun kaupunki - Työn ohessa joustavasti ammattiin ja urapoluille Varhassa II",
+        "kuvaus": null,
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "jotpaasianumero_vajotpa2025725",
+    "versio": 1,
+    "koodiArvo": "va-jotpa-2025-7-25"
+  },
+  {
+    "metadata": [
+      {
         "nimi": "va-jotpa-2025-7-5 - Itä-Suomen yliopisto - Itä-Suomen yliopiston varhaiskasvatuksen koulutus",
         "kuvaus": null,
         "kieli": "FI"
@@ -17523,5 +17825,655 @@
     "koodiUri": "jotpaasianumero_vajotpa202579",
     "versio": 1,
     "koodiArvo": "va-jotpa-2025-7-9"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "va-jotpa-2026-1-11 - Kajaanin Ammattikorkeakoulu Oy - Luovan alan hankeavustus",
+        "kuvaus": null,
+        "kieli": "FI"
+      },
+      {
+        "nimi": "va-jotpa-2026-1-11 - Kajaanin Ammattikorkeakoulu Oy - Luovan alan hankeavustus",
+        "kuvaus": null,
+        "kieli": "SV"
+      },
+      {
+        "nimi": "va-jotpa-2026-1-11 - Kajaanin Ammattikorkeakoulu Oy - Luovan alan hankeavustus",
+        "kuvaus": null,
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "jotpaasianumero_vajotpa2026111",
+    "versio": 1,
+    "koodiArvo": "va-jotpa-2026-1-11"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "va-jotpa-2026-1-16 - Aalto-korkeakoulusäätiö sr - Future Competencies for Architects and Landscape Architects",
+        "kuvaus": null,
+        "kieli": "FI"
+      },
+      {
+        "nimi": "va-jotpa-2026-1-16 - Aalto-korkeakoulusäätiö sr - Future Competencies for Architects and Landscape Architects",
+        "kuvaus": null,
+        "kieli": "SV"
+      },
+      {
+        "nimi": "va-jotpa-2026-1-16 - Aalto-korkeakoulusäätiö sr - Future Competencies for Architects and Landscape Architects",
+        "kuvaus": null,
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "jotpaasianumero_vajotpa2026116",
+    "versio": 1,
+    "koodiArvo": "va-jotpa-2026-1-16"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "va-jotpa-2026-1-2 - Savonia-ammattikorkeakoulu oy - LUMO- Lumovoimaa monialaisesti",
+        "kuvaus": null,
+        "kieli": "FI"
+      },
+      {
+        "nimi": "va-jotpa-2026-1-2 - Savonia-ammattikorkeakoulu oy - LUMO- Lumovoimaa monialaisesti",
+        "kuvaus": null,
+        "kieli": "SV"
+      },
+      {
+        "nimi": "va-jotpa-2026-1-2 - Savonia-ammattikorkeakoulu oy - LUMO- Lumovoimaa monialaisesti",
+        "kuvaus": null,
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "jotpaasianumero_vajotpa202612",
+    "versio": 1,
+    "koodiArvo": "va-jotpa-2026-1-2"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "va-jotpa-2026-1-20 - Hämeen ammattikorkeakoulu Oy - Luovan talouden kasvustrategia",
+        "kuvaus": null,
+        "kieli": "FI"
+      },
+      {
+        "nimi": "va-jotpa-2026-1-20 - Hämeen ammattikorkeakoulu Oy - Luovan talouden kasvustrategia",
+        "kuvaus": null,
+        "kieli": "SV"
+      },
+      {
+        "nimi": "va-jotpa-2026-1-20 - Hämeen ammattikorkeakoulu Oy - Luovan talouden kasvustrategia",
+        "kuvaus": null,
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "jotpaasianumero_vajotpa2026120",
+    "versio": 1,
+    "koodiArvo": "va-jotpa-2026-1-20"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "va-jotpa-2026-1-22 - Laurea-ammattikorkeakoulu Oy - LUOVA KASVU – Yrittäjyys, liiketoiminta ja resilienssi luovilla aloilla",
+        "kuvaus": null,
+        "kieli": "FI"
+      },
+      {
+        "nimi": "va-jotpa-2026-1-22 - Laurea-ammattikorkeakoulu Oy - LUOVA KASVU – Yrittäjyys, liiketoiminta ja resilienssi luovilla aloilla",
+        "kuvaus": null,
+        "kieli": "SV"
+      },
+      {
+        "nimi": "va-jotpa-2026-1-22 - Laurea-ammattikorkeakoulu Oy - LUOVA KASVU – Yrittäjyys, liiketoiminta ja resilienssi luovilla aloilla",
+        "kuvaus": null,
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "jotpaasianumero_vajotpa2026122",
+    "versio": 1,
+    "koodiArvo": "va-jotpa-2026-1-22"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "va-jotpa-2026-1-25 - Kaakkois-Suomen Ammattikorkeakoulu - Virtuaalituotantojen ja virtuaalitoteutusten hyödyntäminen luovilla aloilla",
+        "kuvaus": null,
+        "kieli": "FI"
+      },
+      {
+        "nimi": "va-jotpa-2026-1-25 - Kaakkois-Suomen Ammattikorkeakoulu - Virtuaalituotantojen ja virtuaalitoteutusten hyödyntäminen luovilla aloilla",
+        "kuvaus": null,
+        "kieli": "SV"
+      },
+      {
+        "nimi": "va-jotpa-2026-1-25 - Kaakkois-Suomen Ammattikorkeakoulu - Virtuaalituotantojen ja virtuaalitoteutusten hyödyntäminen luovilla aloilla",
+        "kuvaus": null,
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "jotpaasianumero_vajotpa2026125",
+    "versio": 1,
+    "koodiArvo": "va-jotpa-2026-1-25"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "va-jotpa-2026-1-27 - Metropolia Ammattikorkeakoulu Oy - IndiExport - AI-avusteisen vientiosaamisen koulutusmalli",
+        "kuvaus": null,
+        "kieli": "FI"
+      },
+      {
+        "nimi": "va-jotpa-2026-1-27 - Metropolia Ammattikorkeakoulu Oy - IndiExport - AI-avusteisen vientiosaamisen koulutusmalli",
+        "kuvaus": null,
+        "kieli": "SV"
+      },
+      {
+        "nimi": "va-jotpa-2026-1-27 - Metropolia Ammattikorkeakoulu Oy - IndiExport - AI-avusteisen vientiosaamisen koulutusmalli",
+        "kuvaus": null,
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "jotpaasianumero_vajotpa2026127",
+    "versio": 1,
+    "koodiArvo": "va-jotpa-2026-1-27"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "va-jotpa-2026-1-29 - Hyria koulutus Oy - Luova luova! Jatkuvan oppimisen palvelukokonaisuus",
+        "kuvaus": null,
+        "kieli": "FI"
+      },
+      {
+        "nimi": "va-jotpa-2026-1-29 - Hyria koulutus Oy - Luova luova! Jatkuvan oppimisen palvelukokonaisuus",
+        "kuvaus": null,
+        "kieli": "SV"
+      },
+      {
+        "nimi": "va-jotpa-2026-1-29 - Hyria koulutus Oy - Luova luova! Jatkuvan oppimisen palvelukokonaisuus",
+        "kuvaus": null,
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "jotpaasianumero_vajotpa2026129",
+    "versio": 1,
+    "koodiArvo": "va-jotpa-2026-1-29"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "va-jotpa-2026-1-33 - Taideyliopisto - LUOVAKAS – Jatkuva oppiminen luovan alan kasvun moottorina",
+        "kuvaus": null,
+        "kieli": "FI"
+      },
+      {
+        "nimi": "va-jotpa-2026-1-33 - Taideyliopisto - LUOVAKAS – Jatkuva oppiminen luovan alan kasvun moottorina",
+        "kuvaus": null,
+        "kieli": "SV"
+      },
+      {
+        "nimi": "va-jotpa-2026-1-33 - Taideyliopisto - LUOVAKAS – Jatkuva oppiminen luovan alan kasvun moottorina",
+        "kuvaus": null,
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "jotpaasianumero_vajotpa2026133",
+    "versio": 1,
+    "koodiArvo": "va-jotpa-2026-1-33"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "va-jotpa-2026-1-6 - Turun ammattikorkeakoulu Oy - Arkkitehtuurin ja luovan suunnittelun tekoälypohjainen osaamisloikka jatkuvassa oppimisessa",
+        "kuvaus": null,
+        "kieli": "FI"
+      },
+      {
+        "nimi": "va-jotpa-2026-1-6 - Turun ammattikorkeakoulu Oy - Arkkitehtuurin ja luovan suunnittelun tekoälypohjainen osaamisloikka jatkuvassa oppimisessa",
+        "kuvaus": null,
+        "kieli": "SV"
+      },
+      {
+        "nimi": "va-jotpa-2026-1-6 - Turun ammattikorkeakoulu Oy - Arkkitehtuurin ja luovan suunnittelun tekoälypohjainen osaamisloikka jatkuvassa oppimisessa",
+        "kuvaus": null,
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "jotpaasianumero_vajotpa202616",
+    "versio": 1,
+    "koodiArvo": "va-jotpa-2026-1-6"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "va-jotpa-2026-3-11 - Savonia-ammattikorkeakoulu oy - SUMU- Suuret muovitulosteet",
+        "kuvaus": null,
+        "kieli": "FI"
+      },
+      {
+        "nimi": "va-jotpa-2026-3-11 - Savonia-ammattikorkeakoulu oy - SUMU- Suuret muovitulosteet",
+        "kuvaus": null,
+        "kieli": "SV"
+      },
+      {
+        "nimi": "va-jotpa-2026-3-11 - Savonia-ammattikorkeakoulu oy - SUMU- Suuret muovitulosteet",
+        "kuvaus": null,
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "jotpaasianumero_vajotpa2026311",
+    "versio": 1,
+    "koodiArvo": "va-jotpa-2026-3-11"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "va-jotpa-2026-3-12 - Savonia-ammattikorkeakoulu oy - CTOC - Kestävä digitaalinen suunnittelu ja valmistus",
+        "kuvaus": null,
+        "kieli": "FI"
+      },
+      {
+        "nimi": "va-jotpa-2026-3-12 - Savonia-ammattikorkeakoulu oy - CTOC - Kestävä digitaalinen suunnittelu ja valmistus",
+        "kuvaus": null,
+        "kieli": "SV"
+      },
+      {
+        "nimi": "va-jotpa-2026-3-12 - Savonia-ammattikorkeakoulu oy - CTOC - Kestävä digitaalinen suunnittelu ja valmistus",
+        "kuvaus": null,
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "jotpaasianumero_vajotpa2026312",
+    "versio": 1,
+    "koodiArvo": "va-jotpa-2026-3-12"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "va-jotpa-2026-3-13 - Länsirannikon Koulutus Oy - WinNova WorkCAM – Käytännön CAD/CAM-osaamista metallialan tekijöille",
+        "kuvaus": null,
+        "kieli": "FI"
+      },
+      {
+        "nimi": "va-jotpa-2026-3-13 - Länsirannikon Koulutus Oy - WinNova WorkCAM – Käytännön CAD/CAM-osaamista metallialan tekijöille",
+        "kuvaus": null,
+        "kieli": "SV"
+      },
+      {
+        "nimi": "va-jotpa-2026-3-13 - Länsirannikon Koulutus Oy - WinNova WorkCAM – Käytännön CAD/CAM-osaamista metallialan tekijöille",
+        "kuvaus": null,
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "jotpaasianumero_vajotpa2026313",
+    "versio": 1,
+    "koodiArvo": "va-jotpa-2026-3-13"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "va-jotpa-2026-3-18 - AEL-Amiedu Oy - Kestävän tuotannon digitalisaatio ja energiadataan perustuva optimointi",
+        "kuvaus": null,
+        "kieli": "FI"
+      },
+      {
+        "nimi": "va-jotpa-2026-3-18 - AEL-Amiedu Oy - Kestävän tuotannon digitalisaatio ja energiadataan perustuva optimointi",
+        "kuvaus": null,
+        "kieli": "SV"
+      },
+      {
+        "nimi": "va-jotpa-2026-3-18 - AEL-Amiedu Oy - Kestävän tuotannon digitalisaatio ja energiadataan perustuva optimointi",
+        "kuvaus": null,
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "jotpaasianumero_vajotpa2026318",
+    "versio": 1,
+    "koodiArvo": "va-jotpa-2026-3-18"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "va-jotpa-2026-3-2 - Suomen Yrittäjäopisto Oy - Digitaalinen tuotanto ja valmistus",
+        "kuvaus": null,
+        "kieli": "FI"
+      },
+      {
+        "nimi": "va-jotpa-2026-3-2 - Suomen Yrittäjäopisto Oy - Digitaalinen tuotanto ja valmistus",
+        "kuvaus": null,
+        "kieli": "SV"
+      },
+      {
+        "nimi": "va-jotpa-2026-3-2 - Suomen Yrittäjäopisto Oy - Digitaalinen tuotanto ja valmistus",
+        "kuvaus": null,
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "jotpaasianumero_vajotpa202632",
+    "versio": 1,
+    "koodiArvo": "va-jotpa-2026-3-2"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "va-jotpa-2026-3-20 - Metropolia Ammattikorkeakoulu Oy - Digitaalinen TuotantoPolku - osaamista teollisuuden digitaalisiin tuotantoprosesseihin",
+        "kuvaus": null,
+        "kieli": "FI"
+      },
+      {
+        "nimi": "va-jotpa-2026-3-20 - Metropolia Ammattikorkeakoulu Oy - Digitaalinen TuotantoPolku - osaamista teollisuuden digitaalisiin tuotantoprosesseihin",
+        "kuvaus": null,
+        "kieli": "SV"
+      },
+      {
+        "nimi": "va-jotpa-2026-3-20 - Metropolia Ammattikorkeakoulu Oy - Digitaalinen TuotantoPolku - osaamista teollisuuden digitaalisiin tuotantoprosesseihin",
+        "kuvaus": null,
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "jotpaasianumero_vajotpa2026320",
+    "versio": 1,
+    "koodiArvo": "va-jotpa-2026-3-20"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "va-jotpa-2026-3-21 - Tampereen Aikuiskoulutussäätiö sr - Modernien teknologioiden taitaja",
+        "kuvaus": null,
+        "kieli": "FI"
+      },
+      {
+        "nimi": "va-jotpa-2026-3-21 - Tampereen Aikuiskoulutussäätiö sr - Modernien teknologioiden taitaja",
+        "kuvaus": null,
+        "kieli": "SV"
+      },
+      {
+        "nimi": "va-jotpa-2026-3-21 - Tampereen Aikuiskoulutussäätiö sr - Modernien teknologioiden taitaja",
+        "kuvaus": null,
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "jotpaasianumero_vajotpa2026321",
+    "versio": 1,
+    "koodiArvo": "va-jotpa-2026-3-21"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "va-jotpa-2026-3-23 - Hyria koulutus Oy - Suunnitelmasta sorville - koulutusmalli tuotannon digitalisaation kehittämiseen",
+        "kuvaus": null,
+        "kieli": "FI"
+      },
+      {
+        "nimi": "va-jotpa-2026-3-23 - Hyria koulutus Oy - Suunnitelmasta sorville - koulutusmalli tuotannon digitalisaation kehittämiseen",
+        "kuvaus": null,
+        "kieli": "SV"
+      },
+      {
+        "nimi": "va-jotpa-2026-3-23 - Hyria koulutus Oy - Suunnitelmasta sorville - koulutusmalli tuotannon digitalisaation kehittämiseen",
+        "kuvaus": null,
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "jotpaasianumero_vajotpa2026323",
+    "versio": 1,
+    "koodiArvo": "va-jotpa-2026-3-23"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "va-jotpa-2026-3-26 - Lab-ammattikorkeakoulu Oy - Digitaalisen valmistuksen osaamispolku pk-teollisuudelle",
+        "kuvaus": null,
+        "kieli": "FI"
+      },
+      {
+        "nimi": "va-jotpa-2026-3-26 - Lab-ammattikorkeakoulu Oy - Digitaalisen valmistuksen osaamispolku pk-teollisuudelle",
+        "kuvaus": null,
+        "kieli": "SV"
+      },
+      {
+        "nimi": "va-jotpa-2026-3-26 - Lab-ammattikorkeakoulu Oy - Digitaalisen valmistuksen osaamispolku pk-teollisuudelle",
+        "kuvaus": null,
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "jotpaasianumero_vajotpa2026326",
+    "versio": 1,
+    "koodiArvo": "va-jotpa-2026-3-26"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "va-jotpa-2026-3-3 - Jyväskylän Ammattikorkeakoulu Oy - Digital Lean – Kun data muuttuu tuottavuudeksi",
+        "kuvaus": null,
+        "kieli": "FI"
+      },
+      {
+        "nimi": "va-jotpa-2026-3-3 - Jyväskylän Ammattikorkeakoulu Oy - Digital Lean – Kun data muuttuu tuottavuudeksi",
+        "kuvaus": null,
+        "kieli": "SV"
+      },
+      {
+        "nimi": "va-jotpa-2026-3-3 - Jyväskylän Ammattikorkeakoulu Oy - Digital Lean – Kun data muuttuu tuottavuudeksi",
+        "kuvaus": null,
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "jotpaasianumero_vajotpa202633",
+    "versio": 1,
+    "koodiArvo": "va-jotpa-2026-3-3"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "va-jotpa-2026-3-4 - Koulutuskuntayhtymä OSAO - Joustavat osaamispolut digitaaliseen valmistukseen",
+        "kuvaus": null,
+        "kieli": "FI"
+      },
+      {
+        "nimi": "va-jotpa-2026-3-4 - Koulutuskuntayhtymä OSAO - Joustavat osaamispolut digitaaliseen valmistukseen",
+        "kuvaus": null,
+        "kieli": "SV"
+      },
+      {
+        "nimi": "va-jotpa-2026-3-4 - Koulutuskuntayhtymä OSAO - Joustavat osaamispolut digitaaliseen valmistukseen",
+        "kuvaus": null,
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "jotpaasianumero_vajotpa202634",
+    "versio": 1,
+    "koodiArvo": "va-jotpa-2026-3-4"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "va-jotpa-2026-3-5 - Koulutuskuntayhtymä Tavastia - Modernit valmistusmenetelmät Kanta-Hämeessä",
+        "kuvaus": null,
+        "kieli": "FI"
+      },
+      {
+        "nimi": "va-jotpa-2026-3-5 - Koulutuskuntayhtymä Tavastia - Modernit valmistusmenetelmät Kanta-Hämeessä",
+        "kuvaus": null,
+        "kieli": "SV"
+      },
+      {
+        "nimi": "va-jotpa-2026-3-5 - Koulutuskuntayhtymä Tavastia - Modernit valmistusmenetelmät Kanta-Hämeessä",
+        "kuvaus": null,
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "jotpaasianumero_vajotpa202635",
+    "versio": 1,
+    "koodiArvo": "va-jotpa-2026-3-5"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "va-jotpa-2026-3-6 - Oulun Ammattikorkeakoulu Oy - Digitaalinen ja kestävä valmistus",
+        "kuvaus": null,
+        "kieli": "FI"
+      },
+      {
+        "nimi": "va-jotpa-2026-3-6 - Oulun Ammattikorkeakoulu Oy - Digitaalinen ja kestävä valmistus",
+        "kuvaus": null,
+        "kieli": "SV"
+      },
+      {
+        "nimi": "va-jotpa-2026-3-6 - Oulun Ammattikorkeakoulu Oy - Digitaalinen ja kestävä valmistus",
+        "kuvaus": null,
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "jotpaasianumero_vajotpa202636",
+    "versio": 1,
+    "koodiArvo": "va-jotpa-2026-3-6"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "va-jotpa-2026-3-7 - Vaasan kaupunki - Vamia Smart Manufacturing – osaamista digitaaliseen valmistukseen",
+        "kuvaus": null,
+        "kieli": "FI"
+      },
+      {
+        "nimi": "va-jotpa-2026-3-7 - Vaasan kaupunki - Vamia Smart Manufacturing – osaamista digitaaliseen valmistukseen",
+        "kuvaus": null,
+        "kieli": "SV"
+      },
+      {
+        "nimi": "va-jotpa-2026-3-7 - Vaasan kaupunki - Vamia Smart Manufacturing – osaamista digitaaliseen valmistukseen",
+        "kuvaus": null,
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "jotpaasianumero_vajotpa202637",
+    "versio": 1,
+    "koodiArvo": "va-jotpa-2026-3-7"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "va-jotpa-2026-3-8 - Seinäjoen koulutuskuntayhtymä Sedu - DITUVA - Digitaalisia valmiuksia tuotantoon ja valmistukseen",
+        "kuvaus": null,
+        "kieli": "FI"
+      },
+      {
+        "nimi": "va-jotpa-2026-3-8 - Seinäjoen koulutuskuntayhtymä Sedu - DITUVA - Digitaalisia valmiuksia tuotantoon ja valmistukseen",
+        "kuvaus": null,
+        "kieli": "SV"
+      },
+      {
+        "nimi": "va-jotpa-2026-3-8 - Seinäjoen koulutuskuntayhtymä Sedu - DITUVA - Digitaalisia valmiuksia tuotantoon ja valmistukseen",
+        "kuvaus": null,
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "jotpaasianumero_vajotpa202638",
+    "versio": 1,
+    "koodiArvo": "va-jotpa-2026-3-8"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "va-jotpa-2026-3-9 - Tampereen ammattikorkeakoulu Oy - 3D4ALL",
+        "kuvaus": null,
+        "kieli": "FI"
+      },
+      {
+        "nimi": "va-jotpa-2026-3-9 - Tampereen ammattikorkeakoulu Oy - 3D4ALL",
+        "kuvaus": null,
+        "kieli": "SV"
+      },
+      {
+        "nimi": "va-jotpa-2026-3-9 - Tampereen ammattikorkeakoulu Oy - 3D4ALL",
+        "kuvaus": null,
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "jotpaasianumero_vajotpa202639",
+    "versio": 1,
+    "koodiArvo": "va-jotpa-2026-3-9"
   }
 ]

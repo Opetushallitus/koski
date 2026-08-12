@@ -1,35 +1,11 @@
 {
-  "koodistoUri": "ahvenanmaankoskioppiaineetyleissivistava",
-  "resourceUri": "https://virkailija.opintopolku.fi/koodisto-service/rest/codes/ahvenanmaankoskioppiaineetyleissivistava",
-  "omistaja": null,
-  "organisaatioOid": "1.2.246.562.10.00000000001",
-  "lukittu": null,
-  "withinCodes": [],
-  "includesCodes": [],
-  "levelsWithCodes": [],
   "codesGroupUri": "koski",
-  "version": 1,
-  "versio": 1,
-  "paivitysPvm": "2026-05-05",
-  "paivittajaOid": null,
-  "voimassaAlkuPvm": "2026-05-05",
-  "voimassaLoppuPvm": null,
-  "tila": "LUONNOS",
+  "codesVersions": [],
+  "includesCodes": [],
+  "koodistoUri": "ahvenanmaankoskioppiaineetyleissivistava",
+  "levelsWithCodes": [],
+  "lukittu": null,
   "metadata": [
-    {
-      "kieli": "SV",
-      "nimi": "Ahvenanmaan KOSKI oppiaineet yleissivistävä",
-      "kuvaus": null,
-      "kayttoohje": null,
-      "kasite": null,
-      "kohdealue": null,
-      "sitovuustaso": null,
-      "kohdealueenOsaAlue": null,
-      "toimintaymparisto": null,
-      "tarkentaaKoodistoa": null,
-      "huomioitavaKoodisto": null,
-      "koodistonLahde": null
-    },
     {
       "kieli": "FI",
       "nimi": "Ahvenanmaan KOSKI oppiaineet yleissivistävä",
@@ -43,7 +19,31 @@
       "tarkentaaKoodistoa": null,
       "huomioitavaKoodisto": null,
       "koodistonLahde": null
+    },
+    {
+      "kieli": "SV",
+      "nimi": "Ahvenanmaan KOSKI oppiaineet yleissivistävä",
+      "kuvaus": null,
+      "kayttoohje": null,
+      "kasite": null,
+      "kohdealue": null,
+      "sitovuustaso": null,
+      "kohdealueenOsaAlue": null,
+      "toimintaymparisto": null,
+      "tarkentaaKoodistoa": null,
+      "huomioitavaKoodisto": null,
+      "koodistonLahde": null
     }
   ],
-  "codesVersions": []
+  "omistaja": null,
+  "organisaatioOid": "1.2.246.562.10.00000000001",
+  "paivittajaOid": "1.2.246.562.24.98063222086",
+  "paivitysPvm": "2026-06-03",
+  "resourceUri": "https://virkailija.opintopolku.fi/koodisto-service/rest/codes/ahvenanmaankoskioppiaineetyleissivistava",
+  "tila": "LUONNOS",
+  "versio": 1,
+  "version": 0,
+  "voimassaAlkuPvm": "2026-05-05",
+  "voimassaLoppuPvm": null,
+  "withinCodes": []
 }

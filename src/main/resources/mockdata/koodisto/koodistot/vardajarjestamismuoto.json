@@ -1,20 +1,10 @@
 {
-  "koodistoUri": "vardajarjestamismuoto",
-  "resourceUri": "https://virkailija.opintopolku.fi/koodisto-service/rest/codes/vardajarjestamismuoto",
-  "omistaja": "Opetushallitus",
-  "organisaatioOid": "1.2.246.562.10.00000000001",
-  "lukittu": null,
-  "withinCodes": [],
-  "includesCodes": [],
-  "levelsWithCodes": [],
   "codesGroupUri": "varda",
-  "version": 2,
-  "versio": 1,
-  "paivitysPvm": "2021-05-14",
-  "paivittajaOid": "1.2.246.562.24.21543894150",
-  "voimassaAlkuPvm": "2019-01-01",
-  "voimassaLoppuPvm": null,
-  "tila": "LUONNOS",
+  "codesVersions": [],
+  "includesCodes": [],
+  "koodistoUri": "vardajarjestamismuoto",
+  "levelsWithCodes": [],
+  "lukittu": null,
   "metadata": [
     {
       "kieli": "FI",
@@ -45,5 +35,15 @@
       "koodistonLahde": null
     }
   ],
-  "codesVersions": []
+  "omistaja": "Opetushallitus",
+  "organisaatioOid": "1.2.246.562.10.00000000001",
+  "paivittajaOid": "1.2.246.562.24.21543894150",
+  "paivitysPvm": "2021-05-14",
+  "resourceUri": "https://virkailija.opintopolku.fi/koodisto-service/rest/codes/vardajarjestamismuoto",
+  "tila": "LUONNOS",
+  "versio": 1,
+  "version": 2,
+  "voimassaAlkuPvm": "2019-01-01",
+  "voimassaLoppuPvm": null,
+  "withinCodes": []
 }

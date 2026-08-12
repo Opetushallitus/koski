@@ -1,9 +1,64 @@
 {
+  "codesGroupUri": "koulutuskoodistot",
+  "codesVersions": [],
+  "includesCodes": [],
   "koodistoUri": "opintojenlaajuusyksikko",
-  "resourceUri": "https://virkailija.opintopolku.fi/koodisto-service/rest/codes/opintojenlaajuusyksikko",
+  "levelsWithCodes": [],
+  "lukittu": null,
+  "metadata": [
+    {
+      "kieli": "SV",
+      "nimi": "opintojen laajuusyksikko",
+      "kuvaus": "opintojen laajuusyksikko",
+      "kayttoohje": null,
+      "kasite": null,
+      "kohdealue": null,
+      "sitovuustaso": null,
+      "kohdealueenOsaAlue": null,
+      "toimintaymparisto": null,
+      "tarkentaaKoodistoa": null,
+      "huomioitavaKoodisto": null,
+      "koodistonLahde": null
+    },
+    {
+      "kieli": "FI",
+      "nimi": "opintojen laajuusyksikko",
+      "kuvaus": "opintojen laajuusyksikko",
+      "kayttoohje": null,
+      "kasite": null,
+      "kohdealue": null,
+      "sitovuustaso": null,
+      "kohdealueenOsaAlue": null,
+      "toimintaymparisto": null,
+      "tarkentaaKoodistoa": null,
+      "huomioitavaKoodisto": null,
+      "koodistonLahde": null
+    },
+    {
+      "kieli": "EN",
+      "nimi": "opintojen laajuusyksikko",
+      "kuvaus": "opintojen laajuusyksikko",
+      "kayttoohje": null,
+      "kasite": null,
+      "kohdealue": null,
+      "sitovuustaso": null,
+      "kohdealueenOsaAlue": null,
+      "toimintaymparisto": null,
+      "tarkentaaKoodistoa": null,
+      "huomioitavaKoodisto": null,
+      "koodistonLahde": null
+    }
+  ],
   "omistaja": "Opetushallitus",
   "organisaatioOid": "1.2.246.562.10.00000000001",
-  "lukittu": null,
+  "paivittajaOid": null,
+  "paivitysPvm": "2013-10-28",
+  "resourceUri": "https://virkailija.opintopolku.fi/koodisto-service/rest/codes/opintojenlaajuusyksikko",
+  "tila": "LUONNOS",
+  "versio": 1,
+  "version": 0,
+  "voimassaAlkuPvm": "2013-01-01",
+  "voimassaLoppuPvm": null,
   "withinCodes": [
     {
       "codesUri": "lukiolinjat",
@@ -215,60 +270,5 @@
         "EN": "koulutus"
       }
     }
-  ],
-  "includesCodes": [],
-  "levelsWithCodes": [],
-  "codesGroupUri": "koulutuskoodistot",
-  "version": 0,
-  "versio": 1,
-  "paivitysPvm": "2013-10-28",
-  "paivittajaOid": null,
-  "voimassaAlkuPvm": "2013-01-01",
-  "voimassaLoppuPvm": null,
-  "tila": "LUONNOS",
-  "metadata": [
-    {
-      "kieli": "SV",
-      "nimi": "opintojen laajuusyksikko",
-      "kuvaus": "opintojen laajuusyksikko",
-      "kayttoohje": null,
-      "kasite": null,
-      "kohdealue": null,
-      "sitovuustaso": null,
-      "kohdealueenOsaAlue": null,
-      "toimintaymparisto": null,
-      "tarkentaaKoodistoa": null,
-      "huomioitavaKoodisto": null,
-      "koodistonLahde": null
-    },
-    {
-      "kieli": "FI",
-      "nimi": "opintojen laajuusyksikko",
-      "kuvaus": "opintojen laajuusyksikko",
-      "kayttoohje": null,
-      "kasite": null,
-      "kohdealue": null,
-      "sitovuustaso": null,
-      "kohdealueenOsaAlue": null,
-      "toimintaymparisto": null,
-      "tarkentaaKoodistoa": null,
-      "huomioitavaKoodisto": null,
-      "koodistonLahde": null
-    },
-    {
-      "kieli": "EN",
-      "nimi": "opintojen laajuusyksikko",
-      "kuvaus": "opintojen laajuusyksikko",
-      "kayttoohje": null,
-      "kasite": null,
-      "kohdealue": null,
-      "sitovuustaso": null,
-      "kohdealueenOsaAlue": null,
-      "toimintaymparisto": null,
-      "tarkentaaKoodistoa": null,
-      "huomioitavaKoodisto": null,
-      "koodistonLahde": null
-    }
-  ],
-  "codesVersions": []
+  ]
 }

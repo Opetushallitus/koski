@@ -114,19 +114,19 @@
   {
     "metadata": [
       {
-        "nimi": "luopunut",
-        "kuvaus": "Opiskeluoikeuden tila on luopunut, mikäli oppija on pysyvästi tai väliaikaisesti luopunut oikeudestaan opiskella siten, että opiskelu ei korkeakoulun sääntöjen mukaan ole mahdollista ilman erillisiä toimenpiteitä opiskeluoikeuden uudelleen aktivoimiseksi.",
+        "nimi": "luopunut tai pysyvästi päättynyt",
+        "kuvaus": "Opiskeluoikeuden tila on luopunut tai pysyvästi päättynyt, mikäli oppija on itse luopunut oikeudestaan opiskella tai korkeakoulu katsoo opiskeluoikeuden päättyneen pysyvästti muutoin kuin valmistumiseen,  määräaikaisen opiskeluoikeuden päättymiseen tai yhden opiskeluoikuden säädöksen pohjalta. Luopunut tai pysyvästi päättynyt- tilassa olevaa opiskeluoikeutta ei voi missään tilanteessa palauttaa takaisin aktiiviseksi. \n\nLisäksi, mikäli opiskeluoikeuden pysyvän päättymisen syytä ei voi luokitella tilaan 3 = valmistuminen, tilaan 7 =päättynyt  (YOS) tai 6=määräaika päättynyt, voi opiskeluoikeuden kategorisoida tähän tilaan.  Esimerkkejä käyttötapauksista: opiskelija luopuu omalla tahdonilmaisullaan opiskelupaikastaan.",
         "lyhytNimi": "",
         "kieli": "FI"
       },
       {
-        "nimi": "avstått",
-        "kuvaus": "Personen har aktivt avstått från sin studierätt, tillfälligt eller permanent.",
+        "nimi": "avstått eller permanent avslutad",
+        "kuvaus": "Studierättens status är har avstått eller permanent avslutad, ifall den studerande själv har avstått från sin rätt att studera eller om högskolan anser att studierätten har upphört permanent av andra skäl än examen, utgång av en tidsbegränsad studierätt eller på basis av bestämmelsen om en studierätt. En studierätt som har status har avstått eller permanent avslutad kan inte återaktiveras.\n\nDessutom, om orsaken till studierättens permanenta upphörande inte kan klassificeras som status 3 = slutförd studierna, status 7 = Avslutad på grund av bestämmelsen om en studierätt eller 6 = Begränsad tid tagit slut, kan studierätten kategoriseras i denna status. Exempel på användningsfall: studerande har själv meddelat att hen avstår från sin studierätt ",
         "lyhytNimi": "",
         "kieli": "SV"
       },
       {
-        "nimi": "discontinued",
+        "nimi": "rescinded or permanently expired",
         "kuvaus": "",
         "lyhytNimi": "",
         "kieli": "EN"
@@ -142,17 +142,17 @@
   {
     "metadata": [
       {
-        "nimi": "päättynyt",
-        "kuvaus": "",
+        "nimi": "määräaika päättynyt",
+        "kuvaus": "Opiskeluoikeuden tila on määräaikaisen opiskeluoikeuden päättyminen, kun opiskeluoikeuden voimassaolo on päättynyt.\n\nLisäksi, mikäli korkeakoulu ei pysty erottelemaan, onko tutkintoonjohtamaton koulutus saatu päätökseen tarkoitetulla tavalla vai ei kun määräaikaisen opiskeluoikeuden määräaika on tullut vastaan, nämä opiskeluoikeudet kategorisoidaan päättynyt tilaan. ",
         "kieli": "FI"
       },
       {
-        "nimi": "avslutade",
-        "kuvaus": "",
+        "nimi": "begränsad tid tagit slut",
+        "kuvaus": "Studierättens status begränsad tid tagit slut  används när studierättens giltighetstid har löpt ut.\nSamt i fall där högskolan inte kan avgöra om en icke-examensinriktad utbildning har slutförts på avsett sätt eller när tidsfristen för den tidsbegränsade studierätten har nåtts, kategoriseras dessa studierätter som begränsad tid tagit slut.",
         "kieli": "SV"
       },
       {
-        "nimi": "ended",
+        "nimi": "time limit expired",
         "kuvaus": "",
         "kieli": "EN"
       }
@@ -163,5 +163,30 @@
     "koodiUri": "virtaopiskeluoikeudentila_6",
     "versio": 1,
     "koodiArvo": "6"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "päättynyt yhden opiskeluoikeuden säännöksen johdosta",
+        "kuvaus": "Yhden opiskeluoikeuden säännöksen myötä päätetty opiskeluoikeus, joka ei ole palautettavissa. Koskee ammattikorkeakoululain 31a pykälän sekä yliopistolain 42a pykälän mukaisia tilanteita. ",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "avslutad på grund av bestämmelsen om en studierätt",
+        "kuvaus": "Studierätt som har avslutats med stöd av bestämmelsen om en enda studierätt och kan inte återställas. \nGäller situationer i enlighet med 31 a § i yrkeshögskolelagen samt 42 a § i universitetslagen.",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "expired due to a regulation concerning a single study right",
+        "kuvaus": null,
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "virtaopiskeluoikeudentila_7",
+    "versio": 1,
+    "koodiArvo": "7"
   }
 ]

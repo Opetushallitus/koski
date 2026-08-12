@@ -1,9 +1,64 @@
 {
+  "codesGroupUri": "koulutuskoodistot",
+  "codesVersions": [],
+  "includesCodes": [],
   "koodistoUri": "nqf",
-  "resourceUri": "https://virkailija.opintopolku.fi/koodisto-service/rest/codes/nqf",
+  "levelsWithCodes": [],
+  "lukittu": null,
+  "metadata": [
+    {
+      "kieli": "SV",
+      "nimi": "nqf",
+      "kuvaus": "Nationell referensram för examina (nqf)",
+      "kayttoohje": null,
+      "kasite": null,
+      "kohdealue": null,
+      "sitovuustaso": null,
+      "kohdealueenOsaAlue": null,
+      "toimintaymparisto": null,
+      "tarkentaaKoodistoa": null,
+      "huomioitavaKoodisto": null,
+      "koodistonLahde": null
+    },
+    {
+      "kieli": "FI",
+      "nimi": "nqf",
+      "kuvaus": "Kansallinen tutkintojen viitekehys (nqf)",
+      "kayttoohje": null,
+      "kasite": null,
+      "kohdealue": null,
+      "sitovuustaso": null,
+      "kohdealueenOsaAlue": null,
+      "toimintaymparisto": null,
+      "tarkentaaKoodistoa": null,
+      "huomioitavaKoodisto": null,
+      "koodistonLahde": null
+    },
+    {
+      "kieli": "EN",
+      "nimi": "nqf",
+      "kuvaus": "National Qualifications Framework (nqf)",
+      "kayttoohje": null,
+      "kasite": null,
+      "kohdealue": null,
+      "sitovuustaso": null,
+      "kohdealueenOsaAlue": null,
+      "toimintaymparisto": null,
+      "tarkentaaKoodistoa": null,
+      "huomioitavaKoodisto": null,
+      "koodistonLahde": null
+    }
+  ],
   "omistaja": null,
   "organisaatioOid": "1.2.246.562.10.00000000001",
-  "lukittu": null,
+  "paivittajaOid": null,
+  "paivitysPvm": "2017-08-03",
+  "resourceUri": "https://virkailija.opintopolku.fi/koodisto-service/rest/codes/nqf",
+  "tila": "LUONNOS",
+  "versio": 1,
+  "version": 2,
+  "voimassaAlkuPvm": "2017-07-18",
+  "voimassaLoppuPvm": null,
   "withinCodes": [
     {
       "codesUri": "koulutus",
@@ -110,60 +165,5 @@
         "EN": "koulutus"
       }
     }
-  ],
-  "includesCodes": [],
-  "levelsWithCodes": [],
-  "codesGroupUri": "koulutuskoodistot",
-  "version": 2,
-  "versio": 1,
-  "paivitysPvm": "2017-08-03",
-  "paivittajaOid": null,
-  "voimassaAlkuPvm": "2017-07-18",
-  "voimassaLoppuPvm": null,
-  "tila": "LUONNOS",
-  "metadata": [
-    {
-      "kieli": "SV",
-      "nimi": "nqf",
-      "kuvaus": "Nationell referensram för examina (nqf)",
-      "kayttoohje": null,
-      "kasite": null,
-      "kohdealue": null,
-      "sitovuustaso": null,
-      "kohdealueenOsaAlue": null,
-      "toimintaymparisto": null,
-      "tarkentaaKoodistoa": null,
-      "huomioitavaKoodisto": null,
-      "koodistonLahde": null
-    },
-    {
-      "kieli": "FI",
-      "nimi": "nqf",
-      "kuvaus": "Kansallinen tutkintojen viitekehys (nqf)",
-      "kayttoohje": null,
-      "kasite": null,
-      "kohdealue": null,
-      "sitovuustaso": null,
-      "kohdealueenOsaAlue": null,
-      "toimintaymparisto": null,
-      "tarkentaaKoodistoa": null,
-      "huomioitavaKoodisto": null,
-      "koodistonLahde": null
-    },
-    {
-      "kieli": "EN",
-      "nimi": "nqf",
-      "kuvaus": "National Qualifications Framework (nqf)",
-      "kayttoohje": null,
-      "kasite": null,
-      "kohdealue": null,
-      "sitovuustaso": null,
-      "kohdealueenOsaAlue": null,
-      "toimintaymparisto": null,
-      "tarkentaaKoodistoa": null,
-      "huomioitavaKoodisto": null,
-      "koodistonLahde": null
-    }
-  ],
-  "codesVersions": []
+  ]
 }

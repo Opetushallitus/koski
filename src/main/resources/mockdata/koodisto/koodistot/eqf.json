@@ -1,9 +1,64 @@
 {
+  "codesGroupUri": "koulutuskoodistot",
+  "codesVersions": [],
+  "includesCodes": [],
   "koodistoUri": "eqf",
-  "resourceUri": "https://virkailija.opintopolku.fi/koodisto-service/rest/codes/eqf",
+  "levelsWithCodes": [],
+  "lukittu": null,
+  "metadata": [
+    {
+      "kieli": "SV",
+      "nimi": "eqf",
+      "kuvaus": "Europeiska referensramen för kvalifikationer (eqf)",
+      "kayttoohje": null,
+      "kasite": null,
+      "kohdealue": null,
+      "sitovuustaso": null,
+      "kohdealueenOsaAlue": null,
+      "toimintaymparisto": null,
+      "tarkentaaKoodistoa": null,
+      "huomioitavaKoodisto": null,
+      "koodistonLahde": null
+    },
+    {
+      "kieli": "FI",
+      "nimi": "eqf",
+      "kuvaus": "Eurooppalainen tutkintojen viitekehys (eqf)",
+      "kayttoohje": null,
+      "kasite": null,
+      "kohdealue": null,
+      "sitovuustaso": null,
+      "kohdealueenOsaAlue": null,
+      "toimintaymparisto": null,
+      "tarkentaaKoodistoa": null,
+      "huomioitavaKoodisto": null,
+      "koodistonLahde": null
+    },
+    {
+      "kieli": "EN",
+      "nimi": "eqf",
+      "kuvaus": "European Qualifications Framework (eqf)",
+      "kayttoohje": null,
+      "kasite": null,
+      "kohdealue": null,
+      "sitovuustaso": null,
+      "kohdealueenOsaAlue": null,
+      "toimintaymparisto": null,
+      "tarkentaaKoodistoa": null,
+      "huomioitavaKoodisto": null,
+      "koodistonLahde": null
+    }
+  ],
   "omistaja": "Opetushallitus",
   "organisaatioOid": "1.2.246.562.10.00000000001",
-  "lukittu": null,
+  "paivittajaOid": null,
+  "paivitysPvm": "2017-08-03",
+  "resourceUri": "https://virkailija.opintopolku.fi/koodisto-service/rest/codes/eqf",
+  "tila": "LUONNOS",
+  "versio": 1,
+  "version": 2,
+  "voimassaAlkuPvm": "2013-01-01",
+  "voimassaLoppuPvm": null,
   "withinCodes": [
     {
       "codesUri": "koulutus",
@@ -185,60 +240,5 @@
         "EN": "koulutus"
       }
     }
-  ],
-  "includesCodes": [],
-  "levelsWithCodes": [],
-  "codesGroupUri": "koulutuskoodistot",
-  "version": 2,
-  "versio": 1,
-  "paivitysPvm": "2017-08-03",
-  "paivittajaOid": null,
-  "voimassaAlkuPvm": "2013-01-01",
-  "voimassaLoppuPvm": null,
-  "tila": "LUONNOS",
-  "metadata": [
-    {
-      "kieli": "SV",
-      "nimi": "eqf",
-      "kuvaus": "Europeiska referensramen för kvalifikationer (eqf)",
-      "kayttoohje": null,
-      "kasite": null,
-      "kohdealue": null,
-      "sitovuustaso": null,
-      "kohdealueenOsaAlue": null,
-      "toimintaymparisto": null,
-      "tarkentaaKoodistoa": null,
-      "huomioitavaKoodisto": null,
-      "koodistonLahde": null
-    },
-    {
-      "kieli": "FI",
-      "nimi": "eqf",
-      "kuvaus": "Eurooppalainen tutkintojen viitekehys (eqf)",
-      "kayttoohje": null,
-      "kasite": null,
-      "kohdealue": null,
-      "sitovuustaso": null,
-      "kohdealueenOsaAlue": null,
-      "toimintaymparisto": null,
-      "tarkentaaKoodistoa": null,
-      "huomioitavaKoodisto": null,
-      "koodistonLahde": null
-    },
-    {
-      "kieli": "EN",
-      "nimi": "eqf",
-      "kuvaus": "European Qualifications Framework (eqf)",
-      "kayttoohje": null,
-      "kasite": null,
-      "kohdealue": null,
-      "sitovuustaso": null,
-      "kohdealueenOsaAlue": null,
-      "toimintaymparisto": null,
-      "tarkentaaKoodistoa": null,
-      "huomioitavaKoodisto": null,
-      "koodistonLahde": null
-    }
-  ],
-  "codesVersions": []
+  ]
 }

@@ -1,20 +1,10 @@
 {
-  "koodistoUri": "vstmaahanmuuttajienkotoutumiskoulutuksenkokonaisuus",
-  "resourceUri": "https://virkailija.opintopolku.fi/koodisto-service/rest/codes/vstmaahanmuuttajienkotoutumiskoulutuksenkokonaisuus",
-  "omistaja": null,
-  "organisaatioOid": "1.2.246.562.10.00000000001",
-  "lukittu": null,
-  "withinCodes": [],
-  "includesCodes": [],
-  "levelsWithCodes": [],
   "codesGroupUri": "koski",
-  "version": 0,
-  "versio": 1,
-  "paivitysPvm": "2021-03-23",
-  "paivittajaOid": "1.2.246.562.24.98063222086",
-  "voimassaAlkuPvm": "2020-01-01",
-  "voimassaLoppuPvm": null,
-  "tila": "LUONNOS",
+  "codesVersions": [],
+  "includesCodes": [],
+  "koodistoUri": "vstmaahanmuuttajienkotoutumiskoulutuksenkokonaisuus",
+  "levelsWithCodes": [],
+  "lukittu": null,
   "metadata": [
     {
       "kieli": "SV",
@@ -59,5 +49,15 @@
       "koodistonLahde": null
     }
   ],
-  "codesVersions": []
+  "omistaja": null,
+  "organisaatioOid": "1.2.246.562.10.00000000001",
+  "paivittajaOid": "1.2.246.562.24.98063222086",
+  "paivitysPvm": "2021-03-23",
+  "resourceUri": "https://virkailija.opintopolku.fi/koodisto-service/rest/codes/vstmaahanmuuttajienkotoutumiskoulutuksenkokonaisuus",
+  "tila": "LUONNOS",
+  "versio": 1,
+  "version": 0,
+  "voimassaAlkuPvm": "2020-01-01",
+  "voimassaLoppuPvm": null,
+  "withinCodes": []
 }

@@ -1,8 +1,21 @@
 [
   {
     "metadata": [
-      { "nimi": "motoriset taidot", "kuvaus": null, "kieli": "FI" },
-      { "nimi": "motoriska färdigheter", "kuvaus": null, "kieli": "SV" }
+      {
+        "nimi": "motoriset taidot",
+        "kuvaus": null,
+        "kieli": "FI"
+      },
+      {
+        "nimi": "motoriska färdigheter",
+        "kuvaus": null,
+        "kieli": "SV"
+      },
+      {
+        "nimi": null,
+        "kuvaus": null,
+        "kieli": "EN"
+      }
     ],
     "withinCodeElements": [],
     "includesCodeElements": [],
@@ -13,8 +26,21 @@
   },
   {
     "metadata": [
-      { "nimi": "kieli ja kommunikaatio", "kuvaus": null, "kieli": "FI" },
-      { "nimi": "språkliga och kommunikativa färdigheter", "kuvaus": null, "kieli": "SV" }
+      {
+        "nimi": "kieli ja kommunikaatio",
+        "kuvaus": null,
+        "kieli": "FI"
+      },
+      {
+        "nimi": "språkliga och kommunikativa färdigheter",
+        "kuvaus": null,
+        "kieli": "SV"
+      },
+      {
+        "nimi": null,
+        "kuvaus": null,
+        "kieli": "EN"
+      }
     ],
     "withinCodeElements": [],
     "includesCodeElements": [],
@@ -25,8 +51,21 @@
   },
   {
     "metadata": [
-      { "nimi": "sosiaaliset taidot", "kuvaus": null, "kieli": "FI" },
-      { "nimi": "sociala färdigheter", "kuvaus": null, "kieli": "SV" }
+      {
+        "nimi": "sosiaaliset taidot",
+        "kuvaus": null,
+        "kieli": "FI"
+      },
+      {
+        "nimi": "sociala färdigheter",
+        "kuvaus": null,
+        "kieli": "SV"
+      },
+      {
+        "nimi": null,
+        "kuvaus": null,
+        "kieli": "EN"
+      }
     ],
     "withinCodeElements": [],
     "includesCodeElements": [],
@@ -37,8 +76,21 @@
   },
   {
     "metadata": [
-      { "nimi": "päivittäisten toimintojen taidot", "kuvaus": null, "kieli": "FI" },
-      { "nimi": "vardagsfärdigheter", "kuvaus": null, "kieli": "SV" }
+      {
+        "nimi": "päivittäisten toimintojen taidot",
+        "kuvaus": null,
+        "kieli": "FI"
+      },
+      {
+        "nimi": "vardagsfärdigheter",
+        "kuvaus": null,
+        "kieli": "SV"
+      },
+      {
+        "nimi": null,
+        "kuvaus": null,
+        "kieli": "EN"
+      }
     ],
     "withinCodeElements": [],
     "includesCodeElements": [],
@@ -49,8 +101,21 @@
   },
   {
     "metadata": [
-      { "nimi": "kognitiiviset taidot", "kuvaus": null, "kieli": "FI" },
-      { "nimi": "kognitiva färdigheter", "kuvaus": null, "kieli": "SV" }
+      {
+        "nimi": "kognitiiviset taidot",
+        "kuvaus": null,
+        "kieli": "FI"
+      },
+      {
+        "nimi": "kognitiva färdigheter",
+        "kuvaus": null,
+        "kieli": "SV"
+      },
+      {
+        "nimi": null,
+        "kuvaus": null,
+        "kieli": "EN"
+      }
     ],
     "withinCodeElements": [],
     "includesCodeElements": [],
