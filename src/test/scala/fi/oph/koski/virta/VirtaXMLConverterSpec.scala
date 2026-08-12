@@ -326,7 +326,7 @@ class VirtaXMLConverterSpec extends AnyFreeSpec with TestEnvironment with Matche
       opiskeluoikeus.suoritukset.head.toimipiste.nimi.get should be(Finnish("Aalto-yliopisto -vanha", Some("Aalto-universitetet -vanha"), Some("Aalto University -vanha")))
       opiskeluoikeus.tila.opiskeluoikeusjaksot.last.opiskeluoikeusPäättynyt shouldBe true
       opiskeluoikeus.tila.opiskeluoikeusjaksot.last.tila.koodiarvo shouldBe "6"
-      opiskeluoikeus.tila.opiskeluoikeusjaksot.last.tila.nimi.get.get("fi") shouldBe "päättynyt"
+      opiskeluoikeus.tila.opiskeluoikeusjaksot.last.tila.nimi.get.get("fi") shouldBe "määräaika päättynyt"
     }
 
   }

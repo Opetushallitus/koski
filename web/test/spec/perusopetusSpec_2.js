@@ -946,9 +946,9 @@ describe('Perusopetus 2', function () {
               'ukraina',
               'unkari',
               'urdu',
+              'uzbekki',
               'venäjä',
               'vietnam',
-              'viittomakieli',
               'Tarkenna hakua nähdäksesi lisää vaihtoehtoja'
             ])
           })
