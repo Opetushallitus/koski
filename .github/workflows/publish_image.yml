@@ -51,12 +51,6 @@ jobs:
       - if: steps.check-image.outputs.image-exists != '0'
         uses: ./.github/actions/setup_java_17
 
-      - name: Setup settings.xml
-        uses: s4u/maven-settings-action@894661b3ddae382f1ae8edbeab60987e08cf0788 # v4.0.0
-        if: steps.check-image.outputs.image-exists != '0'
-        with:
-          servers: '[{"id": "github","configuration": {"httpHeaders": {"property": {"name": "Authorization","value": "Bearer ${{ secrets.GITHUB_TOKEN }}"}}}}]'
-
       - name: Restore target dir
         uses: actions/cache/restore@2c8a9bd7457de244a408f35966fab2fb45fda9c8 # v6
         if: steps.check-image.outputs.image-exists != '0'
@@ -69,7 +63,6 @@ jobs:
         if: steps.check-image.outputs.image-exists != '0'
         env:
           version: ${{ inputs.commithash }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           mvn versions:set -DnewVersion="$version" --batch-mode
           mvn war:war deploy:deploy --batch-mode -Dmaven.skip.install=true -DaltDeploymentRepository=github::default::https://maven.pkg.github.com/Opetushallitus/koski

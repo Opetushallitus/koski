@@ -22,6 +22,13 @@ help:
 logdir:
 	@mkdir -p log
 
+.PHONY: check-github-packages-token
+check-github-packages-token:
+	@if [ -z "$$KOSKI_GITHUB_PACKAGES_TOKEN" ]; then \
+		echo "Environment variable KOSKI_GITHUB_PACKAGES_TOKEN not set. Check README." >&2; \
+		exit 1; \
+	fi
+
 .PHONY: clean
 clean:
 	mvn clean
@@ -30,7 +37,7 @@ clean:
 ### Building the application
 
 .PHONY: build
-build: logdir
+build: check-github-packages-token logdir
 	mvn compile
 	# Built the whole application, ready for running or testing
 

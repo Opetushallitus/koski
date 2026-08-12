@@ -130,6 +130,20 @@ Esim. IntelliJ IDEAn Scala-kääntäjän konfiguraatio kannattaa asettaa seuraav
 
 Kosken buildiin kuuluu frontin buildaus (pnpm ja webpack) ja serverin buildaus Mavenilla. Tätä helpottamaan on otettu käyttöön `make`, jonka avulla eri taskit on helppo suorittaa. Katso [Makefile](Makefile)-tiedosto.
 
+### GitHub Packages -token
+
+Maven-buildi tarvitsee ympäristömuuttujan Github Packagesia varten:
+
+```shell
+export KOSKI_GITHUB_PACKAGES_TOKEN=<token>
+```
+
+Token on mikä tahansa GitHub-token, jolla on `read:packages`-oikeus.
+Luo token valikosta Settings → Developer settings → Personal access tokens → Tokens (classic) → Generate new tokens (classic),
+tai jos käytät `gh`-työkalua: `gh auth refresh -s read:packages && export KOSKI_GITHUB_PACKAGES_TOKEN=$(gh auth token)`.
+
+### Buildikomennot
+
 Buildaa koko systeemi
 
 ```shell

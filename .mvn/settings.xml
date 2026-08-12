@@ -1,0 +1,13 @@
+<settings xmlns="http://maven.apache.org/SETTINGS/1.0.0"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0 http://maven.apache.org/xsd/settings-1.0.0.xsd">
+  <servers>
+    <server>
+      <!-- Both `github` at <repositories> and <distributionManagement> use this -->
+      <id>github</id>
+      <!-- Github Packages ignores the username with token auth but it must be not be empty -->
+      <username>koski</username>
+      <password>${env.KOSKI_GITHUB_PACKAGES_TOKEN}</password>
+    </server>
+  </servers>
+</settings>
