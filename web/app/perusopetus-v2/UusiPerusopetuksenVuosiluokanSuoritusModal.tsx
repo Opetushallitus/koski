@@ -166,6 +166,13 @@ export const UusiPerusopetuksenVuosiluokanSuoritusModal: React.FC<
       <TestIdLayer id="uusiVuosiluokanSuoritus">
         <ModalTitle>{t('Suorituksen lisäys')}</ModalTitle>
         <ModalBody>
+          {/*
+            Modaali kohdistaa auetessaan ensimmäiseen kenttään, ja Select avaa
+            vaihtoehtolistansa onFocusissa myös ohjelmallisesta fokusoinnista.
+            Valikkokentät ohitetaan siksi kohdistuksessa, jolloin fokus menee
+            Luokka-kenttään — ensimmäiseen kenttään joka oikeasti odottaa
+            syötettä — eikä yksikään lista aukea lomakkeen päälle.
+          */}
           <Label label="Peruste">
             <Select
               options={perusteOptions}
@@ -182,6 +189,7 @@ export const UusiPerusopetuksenVuosiluokanSuoritusModal: React.FC<
               value={luokkaAste}
               onChange={(o) => setLuokkaAste(o?.key)}
               inlineOptions
+              skipAutoFocus
               testId="tunniste"
             />
           </Label>
