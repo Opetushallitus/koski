@@ -62,14 +62,16 @@
   // menevät päällekkäin. Käytännössä osasuorituksella on kerrallaan yksi.
   &:has(.OsasuoritusRow__dataColumn .FieldErrors) {
     position: relative;
-    padding-bottom: 1.5 * @baseline;
+    padding-bottom: 2 * @baseline;
   }
 
   .OsasuoritusRow__dataColumn .FieldErrors {
     position: absolute;
     left: 0;
     right: 0;
-    bottom: 0;
+    // Sama väli tekstin ala- ja yläpuolella: rivin padding (2 * @baseline) on
+    // tekstin rivikorkeus (@baseline) + puolikas väli molemmin puolin.
+    bottom: 0.5 * @baseline;
     margin-bottom: 0;
   }
 }
