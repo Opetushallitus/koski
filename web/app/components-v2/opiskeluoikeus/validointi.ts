@@ -1,5 +1,5 @@
-import { pathPatternValidationRule } from '../components-v2/forms/ValidationRule'
-import { pathToString } from '../components-v2/forms/validator'
+import { pathPatternValidationRule } from '../forms/ValidationRule'
+import { pathToString } from '../forms/validator'
 
 /**
  * Vahvistetun päätason suorituksen osasuorituksilta vaaditaan arviointi.
@@ -12,6 +12,22 @@ import { pathToString } from '../components-v2/forms/validator'
  *
  * Sääntö kohdistuu päätason suoritukseen eikä suoraan osasuoritukseen, koska ehto
  * (onko päätason suoritus vahvistettu) luetaan osasuorituksen yläpuolelta.
+ *
+ * Sääntö annetaan useForm:lle editorikohtaisesti eikä oletuksena kaikille, koska
+ * palvelin ei sovella samaa sääntöä kaikkiin opiskeluoikeuksiin. Ennen kuin lisäät
+ * säännön uuteen editoriin, tarkista että:
+ *
+ *  - palvelin ei vapauta suoritustyyppiä (validatePäätasonSuorituksenStatus ohittaa
+ *    ammatillisen tutkinnon osittaisen suorituksen, VST:n ja ylioppilastutkinnon),
+ *  - osasuoritukset ovat arvioitavia (Arvioinniton- ja MahdollisestiArvioinniton-
+ *    suoritukset eivät ole "kesken" ilman arviointia, joten sääntö varoittaisi
+ *    niistä turhaan),
+ *  - osasuoritukset eivät sisällä alaosasuorituksia. Palvelin tarkistaa
+ *    rekursiivisetOsasuoritukset, tämä sääntö vain päätason suorituksen suorat
+ *    osasuoritukset.
+ *
+ * Käytössä: perusopetus (PerusopetusEditor), Ahvenanmaan perusopetus
+ * (AhvenanmaanPerusopetusEditor).
  */
 export const arviointiVaaditaanVahvistetultaSuoritukselta =
   pathPatternValidationRule<PäätasonSuoritus>(
@@ -44,8 +60,8 @@ type PäätasonSuoritus = {
 
 type Osasuoritus = { arviointi?: Array<unknown> }
 
-// Kaikilla perusopetuksen päätason suorituksilla ei ole osasuorituksia
-// (esim. oppiaineen oppimäärän suoritus).
+// Kaikilla päätason suorituksilla ei ole osasuorituksia
+// (esim. perusopetuksen oppiaineen oppimäärän suoritus).
 const osasuoritukset = (suoritus: PäätasonSuoritus): Osasuoritus[] =>
   suoritus.osasuoritukset || []
 

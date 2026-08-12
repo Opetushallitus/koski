@@ -278,4 +278,48 @@ test.describe('Ahvenanmaan perusopetuksen käyttöliittymä', () => {
     await expect(page.getByTestId('oppiaineet-pakolliset')).toBeVisible()
     await expect(page.getByTestId('oppiaineet-valinnaiset')).toBeVisible()
   })
+
+  test('Arvioimaton oppiaine vahvistetulla suorituksella estää tallennuksen ja merkitään virheelliseksi', async ({
+    page,
+    oppijaPage,
+    fixtures
+  }) => {
+    await fixtures.reset()
+    await oppijaPage.goto(url)
+    // 8. vuosiluokan läsårsbetyg on vahvistettu, joten palvelin hylkää
+    // tallennuksen jos jokin oppiaine jää arvioimatta
+    // (KoskiValidator.validateValmiinSuorituksenStatus). Virhe näytetään jo
+    // ennen tallennusyritystä suoraan puuttuvan arvosanan kohdalla.
+    await page.getByTestId(vuosiluokkaTab).click()
+    await page.getByTestId(editButton).click()
+    await expect(page.locator('[data-testid$=".errors"]')).toHaveCount(0)
+
+    await page.getByPlaceholder('Lisää pakollinen oppiaine').click()
+    await page
+      .locator('.Select__optionLabel')
+      .filter({ hasText: /^Käsityö$/ })
+      .first()
+      .click()
+
+    const virheet = page.locator('[data-testid$=".errors"]')
+    await expect(virheet).toHaveCount(1)
+    await expect(virheet.first()).toHaveAttribute(
+      'data-testid',
+      /^oo\.0\.suoritukset\.2\.osasuoritukset\.\d+\.errors$/
+    )
+    await expect(page.getByTestId(saveButton)).toBeDisabled()
+
+    // Arvosanan antaminen poistaa virheen ja sallii tallennuksen.
+    const osasuoritus = (await virheet
+      .first()
+      .getAttribute('data-testid'))!.replace(/\.errors$/, '')
+    await page.getByTestId(`${osasuoritus}.arvosana.edit.input`).click()
+    await page
+      .locator('.Select__optionLabel')
+      .filter({ hasText: /^8$/ })
+      .first()
+      .click()
+    await expect(virheet).toHaveCount(0)
+    await expect(page.getByTestId(saveButton)).toBeEnabled()
+  })
 })

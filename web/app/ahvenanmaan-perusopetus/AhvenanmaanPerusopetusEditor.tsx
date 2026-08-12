@@ -10,6 +10,7 @@ import { VirkailijaKansalainenContainer } from '../components-v2/containers/Virk
 import { FormModel, useForm } from '../components-v2/forms/FormModel'
 import { RemovePaatasonSuoritus } from '../components-v2/opiskeluoikeus/RemovePaatasonSuoritus'
 import { UusiOpiskeluoikeusjakso } from '../components-v2/opiskeluoikeus/UusiOpiskeluoikeudenTilaModal'
+import { arviointiVaaditaanVahvistetultaSuoritukselta } from '../components-v2/opiskeluoikeus/validointi'
 import { Spacer } from '../components-v2/layout/Spacer'
 import { localize, t } from '../i18n/i18n'
 import { AhvenanmaanPerusopetuksenOpiskeluoikeus } from '../types/fi/oph/koski/schema/AhvenanmaanPerusopetuksenOpiskeluoikeus'
@@ -53,7 +54,9 @@ const AhvenanmaanPerusopetusEditor: React.FC<
     }),
     [props.opiskeluoikeus]
   )
-  const form = useForm(opiskeluoikeus, false, opiskeluoikeusSchema)
+  const form = useForm(opiskeluoikeus, false, opiskeluoikeusSchema, [
+    arviointiVaaditaanVahvistetultaSuoritukselta
+  ])
 
   const { setOrganisaatio } = React.useContext(OpiskeluoikeusContext)
   React.useEffect(() => {

@@ -3,7 +3,7 @@ import { AdaptedOpiskeluoikeusEditorProps } from '../components-v2/interoperabil
 import { PerusopetuksenOpiskeluoikeus } from '../types/fi/oph/koski/schema/PerusopetuksenOpiskeluoikeus'
 import { useSchema } from '../appstate/constraints'
 import { FormModel, useForm } from '../components-v2/forms/FormModel'
-import { arviointiVaaditaanVahvistetultaSuoritukselta } from './validointi'
+import { arviointiVaaditaanVahvistetultaSuoritukselta } from '../components-v2/opiskeluoikeus/validointi'
 import { VirkailijaKansalainenContainer } from '../components-v2/containers/VirkailijaKansalainenContainer'
 import {
   EditorContainer,
