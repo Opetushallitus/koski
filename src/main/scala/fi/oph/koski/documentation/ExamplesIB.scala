@@ -237,7 +237,7 @@ object ExamplesIB {
       ))
   )
 
-  def ibTutkinnonSuoritus(predicted: Boolean, vahvistus: Option[HenkilövahvistusPaikkakunnalla] = ExampleData.vahvistusPaikkakunnalla(org = ressunLukio, kunta = helsinki)) = IBTutkinnonSuoritus(
+  def ibTutkinnonSuoritus(predicted: Boolean = false, vahvistus: Option[HenkilövahvistusPaikkakunnalla] = ExampleData.vahvistusPaikkakunnalla(org = ressunLukio, kunta = helsinki)) = IBTutkinnonSuoritus(
     toimipiste = ressunLukio,
     suorituskieli = englanti,
     vahvistus = vahvistus,
@@ -386,7 +386,7 @@ object ExamplesIB {
         LukionOpiskeluoikeusjakso(date(2016, 6, 4), LukioExampleData.opiskeluoikeusPäättynyt, Some(ExampleData.valtionosuusRahoitteinen))
       )
     ),
-    suoritukset = List(preIBSuoritus, ibTutkinnonSuoritus(predicted = false)),
+    suoritukset = List(preIBSuoritus, ibTutkinnonSuoritus()),
     iboTunniste = Some("ABC123"),
   )
 
