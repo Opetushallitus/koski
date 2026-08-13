@@ -1,20 +1,10 @@
 {
-  "koodistoUri": "yhteystietotyypit",
-  "resourceUri": "https://virkailija.opintopolku.fi/koodisto-service/rest/codes/yhteystietotyypit",
-  "omistaja": "Opetushallitus",
-  "organisaatioOid": "1.2.246.562.10.00000000001",
-  "lukittu": null,
-  "withinCodes": [],
-  "includesCodes": [],
-  "levelsWithCodes": [],
   "codesGroupUri": "alueet",
-  "version": 4,
-  "versio": 1,
-  "paivitysPvm": "2022-11-23",
-  "paivittajaOid": "1.2.246.562.24.25909319372",
-  "voimassaAlkuPvm": "2014-04-07",
-  "voimassaLoppuPvm": null,
-  "tila": "LUONNOS",
+  "codesVersions": [],
+  "includesCodes": [],
+  "koodistoUri": "yhteystietotyypit",
+  "levelsWithCodes": [],
+  "lukittu": null,
   "metadata": [
     {
       "kieli": "EN",
@@ -59,5 +49,15 @@
       "koodistonLahde": null
     }
   ],
-  "codesVersions": []
+  "omistaja": "Opetushallitus",
+  "organisaatioOid": "1.2.246.562.10.00000000001",
+  "paivittajaOid": "1.2.246.562.24.25909319372",
+  "paivitysPvm": "2022-11-23",
+  "resourceUri": "https://virkailija.opintopolku.fi/koodisto-service/rest/codes/yhteystietotyypit",
+  "tila": "LUONNOS",
+  "versio": 1,
+  "version": 4,
+  "voimassaAlkuPvm": "2014-04-07",
+  "voimassaLoppuPvm": null,
+  "withinCodes": []
 }

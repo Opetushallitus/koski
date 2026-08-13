@@ -1,10 +1,6 @@
 {
-  "koodistoUri": "virtaarvosana",
-  "resourceUri": "https://virkailija.opintopolku.fi/koodisto-service/rest/codes/virtaarvosana",
-  "omistaja": null,
-  "organisaatioOid": "1.2.246.562.10.2013112012294919827487",
-  "lukittu": null,
-  "withinCodes": [],
+  "codesGroupUri": "virta",
+  "codesVersions": [],
   "includesCodes": [
     {
       "codesUri": "virtaarvosanaasteikko",
@@ -18,15 +14,9 @@
       }
     }
   ],
+  "koodistoUri": "virtaarvosana",
   "levelsWithCodes": [],
-  "codesGroupUri": "virta",
-  "version": 4,
-  "versio": 1,
-  "paivitysPvm": "2016-02-14",
-  "paivittajaOid": null,
-  "voimassaAlkuPvm": "2014-11-01",
-  "voimassaLoppuPvm": null,
-  "tila": "LUONNOS",
+  "lukittu": null,
   "metadata": [
     {
       "kieli": "FI",
@@ -43,5 +33,15 @@
       "koodistonLahde": null
     }
   ],
-  "codesVersions": []
+  "omistaja": null,
+  "organisaatioOid": "1.2.246.562.10.2013112012294919827487",
+  "paivittajaOid": null,
+  "paivitysPvm": "2016-02-14",
+  "resourceUri": "https://virkailija.opintopolku.fi/koodisto-service/rest/codes/virtaarvosana",
+  "tila": "LUONNOS",
+  "versio": 1,
+  "version": 4,
+  "voimassaAlkuPvm": "2014-11-01",
+  "voimassaLoppuPvm": null,
+  "withinCodes": []
 }

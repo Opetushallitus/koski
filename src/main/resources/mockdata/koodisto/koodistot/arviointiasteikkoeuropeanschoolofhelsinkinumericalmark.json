@@ -1,20 +1,10 @@
 {
-  "koodistoUri": "arviointiasteikkoeuropeanschoolofhelsinkinumericalmark",
-  "resourceUri": "https://virkailija.opintopolku.fi/koodisto-service/rest/codes/arviointiasteikkoeuropeanschoolofhelsinkinumericalmark",
-  "omistaja": null,
-  "organisaatioOid": "1.2.246.562.10.00000000001",
-  "lukittu": null,
-  "withinCodes": [],
-  "includesCodes": [],
-  "levelsWithCodes": [],
   "codesGroupUri": "koski",
-  "version": 0,
-  "versio": 1,
-  "paivitysPvm": "2022-12-02",
-  "paivittajaOid": "1.2.246.562.24.98063222086",
-  "voimassaAlkuPvm": "2023-01-01",
-  "voimassaLoppuPvm": null,
-  "tila": "LUONNOS",
+  "codesVersions": [],
+  "includesCodes": [],
+  "koodistoUri": "arviointiasteikkoeuropeanschoolofhelsinkinumericalmark",
+  "levelsWithCodes": [],
+  "lukittu": null,
   "metadata": [
     {
       "kieli": "FI",
@@ -31,5 +21,15 @@
       "koodistonLahde": null
     }
   ],
-  "codesVersions": []
+  "omistaja": null,
+  "organisaatioOid": "1.2.246.562.10.00000000001",
+  "paivittajaOid": "1.2.246.562.24.98063222086",
+  "paivitysPvm": "2022-12-02",
+  "resourceUri": "https://virkailija.opintopolku.fi/koodisto-service/rest/codes/arviointiasteikkoeuropeanschoolofhelsinkinumericalmark",
+  "tila": "LUONNOS",
+  "versio": 1,
+  "version": 0,
+  "voimassaAlkuPvm": "2023-01-01",
+  "voimassaLoppuPvm": null,
+  "withinCodes": []
 }

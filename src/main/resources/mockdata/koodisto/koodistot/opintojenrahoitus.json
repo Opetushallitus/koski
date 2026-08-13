@@ -1,20 +1,10 @@
 {
-  "koodistoUri": "opintojenrahoitus",
-  "resourceUri": "https://virkailija.opintopolku.fi/koodisto-service/rest/codes/opintojenrahoitus",
-  "omistaja": null,
-  "organisaatioOid": "1.2.246.562.10.00000000001",
-  "lukittu": null,
-  "withinCodes": [],
-  "includesCodes": [],
-  "levelsWithCodes": [],
   "codesGroupUri": "koski",
-  "version": 4,
-  "versio": 1,
-  "paivitysPvm": "2017-12-13",
-  "paivittajaOid": null,
-  "voimassaAlkuPvm": "2015-11-01",
-  "voimassaLoppuPvm": null,
-  "tila": "LUONNOS",
+  "codesVersions": [],
+  "includesCodes": [],
+  "koodistoUri": "opintojenrahoitus",
+  "levelsWithCodes": [],
+  "lukittu": null,
   "metadata": [
     {
       "kieli": "EN",
@@ -31,5 +21,15 @@
       "koodistonLahde": null
     }
   ],
-  "codesVersions": []
+  "omistaja": null,
+  "organisaatioOid": "1.2.246.562.10.00000000001",
+  "paivittajaOid": null,
+  "paivitysPvm": "2017-12-13",
+  "resourceUri": "https://virkailija.opintopolku.fi/koodisto-service/rest/codes/opintojenrahoitus",
+  "tila": "LUONNOS",
+  "versio": 1,
+  "version": 4,
+  "voimassaAlkuPvm": "2015-11-01",
+  "voimassaLoppuPvm": null,
+  "withinCodes": []
 }

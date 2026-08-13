@@ -23,8 +23,8 @@
     }
   ],
   "kielet": [
-    "fi",
-    "sv"
+    "sv",
+    "fi"
   ],
   "kuvaus": null,
   "maarayskirje": {
@@ -422,20 +422,20 @@
         },
         {
           "id": 1384924,
-          "laajuus": 10,
-          "laajuusMaksimi": 20,
+          "laajuus": 10.0,
+          "laajuusMaksimi": 20.0,
           "_tutkinnonOsa": "1389912"
         },
         {
           "id": 1384923,
-          "laajuus": 10,
-          "laajuusMaksimi": 30,
+          "laajuus": 10.0,
+          "laajuusMaksimi": 30.0,
           "_tutkinnonOsa": "1385357"
         },
         {
           "id": 1384925,
-          "laajuus": 10,
-          "laajuusMaksimi": 20,
+          "laajuus": 10.0,
+          "laajuusMaksimi": 20.0,
           "_tutkinnonOsa": "1389913"
         }
       ]
@@ -825,9 +825,9 @@
       },
       "koodiUri": "tutkinnonosat_300002",
       "koodiArvo": "300002",
-      "laajuus": 10,
+      "laajuus": 10.0,
       "tutkinnonosaViiteId": 1384923,
-      "laajuusMaksimi": 30,
+      "laajuusMaksimi": 30.0,
       "osaAlueet": [
         {
           "id": 1387610,
@@ -1174,9 +1174,9 @@
       },
       "koodiUri": "tutkinnonosat_300003",
       "koodiArvo": "300003",
-      "laajuus": 10,
+      "laajuus": 10.0,
       "tutkinnonosaViiteId": 1384924,
-      "laajuusMaksimi": 20,
+      "laajuusMaksimi": 20.0,
       "osaAlueet": [],
       "tyyppi": "normaali",
       "valmaTelmaSisalto": {
@@ -1351,9 +1351,9 @@
       },
       "koodiUri": "tutkinnonosat_300004",
       "koodiArvo": "300004",
-      "laajuus": 10,
+      "laajuus": 10.0,
       "tutkinnonosaViiteId": 1384925,
-      "laajuusMaksimi": 20,
+      "laajuusMaksimi": 20.0,
       "osaAlueet": [],
       "tyyppi": "normaali",
       "valmaTelmaSisalto": {

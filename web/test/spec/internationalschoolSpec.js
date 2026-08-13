@@ -263,8 +263,8 @@ describe('International school', function () {
         it('Vaihtoehtoina on lukion opintojenRahoitus-vaihtoehdot', function () {
           expect(addOppija.opintojenRahoitukset()).to.deep.equal([
             'Valtionosuusrahoitteinen koulutus',
-            'Muuta kautta rahoitettu',
-            'Lukuvuosimaksu'
+            'Lukuvuosimaksu',
+            'Muuta kautta rahoitettu'
           ])
         })
 

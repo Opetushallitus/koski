@@ -1,36 +1,10 @@
 {
-  "koodistoUri": "koskikoulutustendiaarinumerot",
-  "resourceUri": "https://virkailija.opintopolku.fi/koodisto-service/rest/codes/koskikoulutustendiaarinumerot",
-  "omistaja": "Opetushallitus",
-  "organisaatioOid": "1.2.246.562.10.00000000001",
-  "lukittu": null,
-  "withinCodes": [
-    {
-      "codesUri": "koulutustyyppi",
-      "codesVersion": 2,
-      "passive": false,
-      "nimi": {
-        "SV": "koulutustyyppi",
-        "FI": "koulutustyyppi",
-        "EN": "koulutustyyppi"
-      },
-      "kuvaus": {
-        "SV": "koulutustyyppi",
-        "FI": "Vanhan koulutustarjontapalvelun (tarjonta-service) käyttöliittymän käytössä oleva koodisto. Käytössä myös KOSKI-palvelussa",
-        "EN": "koulutustyyppi"
-      }
-    }
-  ],
-  "includesCodes": [],
-  "levelsWithCodes": [],
   "codesGroupUri": "koski",
-  "version": 2,
-  "versio": 1,
-  "paivitysPvm": "2022-10-19",
-  "paivittajaOid": "1.2.246.562.24.39880720348",
-  "voimassaAlkuPvm": "2017-03-23",
-  "voimassaLoppuPvm": null,
-  "tila": "LUONNOS",
+  "codesVersions": [],
+  "includesCodes": [],
+  "koodistoUri": "koskikoulutustendiaarinumerot",
+  "levelsWithCodes": [],
+  "lukittu": null,
   "metadata": [
     {
       "kieli": "SV",
@@ -75,5 +49,31 @@
       "koodistonLahde": null
     }
   ],
-  "codesVersions": []
+  "omistaja": "Opetushallitus",
+  "organisaatioOid": "1.2.246.562.10.00000000001",
+  "paivittajaOid": "1.2.246.562.24.39880720348",
+  "paivitysPvm": "2022-10-19",
+  "resourceUri": "https://virkailija.opintopolku.fi/koodisto-service/rest/codes/koskikoulutustendiaarinumerot",
+  "tila": "LUONNOS",
+  "versio": 1,
+  "version": 2,
+  "voimassaAlkuPvm": "2017-03-23",
+  "voimassaLoppuPvm": null,
+  "withinCodes": [
+    {
+      "codesUri": "koulutustyyppi",
+      "codesVersion": 2,
+      "passive": false,
+      "nimi": {
+        "SV": "koulutustyyppi",
+        "FI": "koulutustyyppi",
+        "EN": "koulutustyyppi"
+      },
+      "kuvaus": {
+        "SV": "koulutustyyppi",
+        "FI": "Vanhan koulutustarjontapalvelun (tarjonta-service) käyttöliittymän käytössä oleva koodisto. Käytössä myös KOSKI-palvelussa",
+        "EN": "koulutustyyppi"
+      }
+    }
+  ]
 }

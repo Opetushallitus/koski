@@ -1,10 +1,6 @@
 {
-  "koodistoUri": "aikuistenperusopetuksenalkuvaiheenoppiaineet",
-  "resourceUri": "https://virkailija.opintopolku.fi/koodisto-service/rest/codes/aikuistenperusopetuksenalkuvaiheenoppiaineet",
-  "omistaja": null,
-  "organisaatioOid": "1.2.246.562.10.00000000001",
-  "lukittu": null,
-  "withinCodes": [],
+  "codesGroupUri": "koski",
+  "codesVersions": [],
   "includesCodes": [
     {
       "codesUri": "aikuistenperusopetuksenalkuvaiheenkurssit2017",
@@ -18,15 +14,9 @@
       }
     }
   ],
+  "koodistoUri": "aikuistenperusopetuksenalkuvaiheenoppiaineet",
   "levelsWithCodes": [],
-  "codesGroupUri": "koski",
-  "version": 1,
-  "versio": 1,
-  "paivitysPvm": "2017-10-05",
-  "paivittajaOid": null,
-  "voimassaAlkuPvm": "2017-07-06",
-  "voimassaLoppuPvm": null,
-  "tila": "LUONNOS",
+  "lukittu": null,
   "metadata": [
     {
       "kieli": "FI",
@@ -43,5 +33,15 @@
       "koodistonLahde": null
     }
   ],
-  "codesVersions": []
+  "omistaja": null,
+  "organisaatioOid": "1.2.246.562.10.00000000001",
+  "paivittajaOid": null,
+  "paivitysPvm": "2017-10-05",
+  "resourceUri": "https://virkailija.opintopolku.fi/koodisto-service/rest/codes/aikuistenperusopetuksenalkuvaiheenoppiaineet",
+  "tila": "LUONNOS",
+  "versio": 1,
+  "version": 1,
+  "voimassaAlkuPvm": "2017-07-06",
+  "voimassaLoppuPvm": null,
+  "withinCodes": []
 }

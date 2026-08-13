@@ -320,6 +320,11 @@
         "codeElementUri": "oppilaitosnumero_09065",
         "codeElementVersion": 1,
         "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitosnumero_09044",
+        "codeElementVersion": 1,
+        "passive": false
       }
     ],
     "includesCodeElements": [],
@@ -22317,6 +22322,16 @@
       },
       {
         "codeElementUri": "oppilaitosnumero_03918",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitosnumero_03919",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitosnumero_03920",
         "codeElementVersion": 1,
         "passive": false
       }

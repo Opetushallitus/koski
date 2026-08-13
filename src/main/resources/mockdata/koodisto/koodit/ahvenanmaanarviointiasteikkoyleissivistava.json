@@ -1,8 +1,23 @@
 [
   {
     "metadata": [
-      { "nimi": "utmärkt", "kuvaus": null, "lyhytNimi": "10", "kieli": "SV" },
-      { "nimi": "erinomainen", "kuvaus": null, "lyhytNimi": "10", "kieli": "FI" }
+      {
+        "nimi": "erinomainen",
+        "kuvaus": null,
+        "lyhytNimi": "10",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "utmärkt",
+        "kuvaus": null,
+        "lyhytNimi": "10",
+        "kieli": "SV"
+      },
+      {
+        "nimi": null,
+        "kuvaus": null,
+        "kieli": "EN"
+      }
     ],
     "withinCodeElements": [],
     "includesCodeElements": [],
@@ -13,68 +28,23 @@
   },
   {
     "metadata": [
-      { "nimi": "berömlig", "kuvaus": null, "lyhytNimi": "9", "kieli": "SV" },
-      { "nimi": "kiitettävä", "kuvaus": null, "lyhytNimi": "9", "kieli": "FI" }
-    ],
-    "withinCodeElements": [],
-    "includesCodeElements": [],
-    "levelsWithCodeElements": [],
-    "koodiUri": "ahvenanmaanarviointiasteikkoyleissivistava_9",
-    "versio": 1,
-    "koodiArvo": "9"
-  },
-  {
-    "metadata": [
-      { "nimi": "god", "kuvaus": null, "lyhytNimi": "8", "kieli": "SV" },
-      { "nimi": "hyvä", "kuvaus": null, "lyhytNimi": "8", "kieli": "FI" }
-    ],
-    "withinCodeElements": [],
-    "includesCodeElements": [],
-    "levelsWithCodeElements": [],
-    "koodiUri": "ahvenanmaanarviointiasteikkoyleissivistava_8",
-    "versio": 1,
-    "koodiArvo": "8"
-  },
-  {
-    "metadata": [
-      { "nimi": "nöjaktig", "kuvaus": null, "lyhytNimi": "7", "kieli": "SV" },
-      { "nimi": "tyydyttävä", "kuvaus": null, "lyhytNimi": "7", "kieli": "FI" }
-    ],
-    "withinCodeElements": [],
-    "includesCodeElements": [],
-    "levelsWithCodeElements": [],
-    "koodiUri": "ahvenanmaanarviointiasteikkoyleissivistava_7",
-    "versio": 1,
-    "koodiArvo": "7"
-  },
-  {
-    "metadata": [
-      { "nimi": "försvarlig", "kuvaus": null, "lyhytNimi": "6", "kieli": "SV" },
-      { "nimi": "kohtalainen", "kuvaus": null, "lyhytNimi": "6", "kieli": "FI" }
-    ],
-    "withinCodeElements": [],
-    "includesCodeElements": [],
-    "levelsWithCodeElements": [],
-    "koodiUri": "ahvenanmaanarviointiasteikkoyleissivistava_6",
-    "versio": 1,
-    "koodiArvo": "6"
-  },
-  {
-    "metadata": [
-      { "nimi": "svag", "kuvaus": null, "lyhytNimi": "5", "kieli": "SV" },
-      { "nimi": "välttävä", "kuvaus": null, "lyhytNimi": "5", "kieli": "FI" }
-    ],
-    "withinCodeElements": [],
-    "includesCodeElements": [],
-    "levelsWithCodeElements": [],
-    "koodiUri": "ahvenanmaanarviointiasteikkoyleissivistava_5",
-    "versio": 1,
-    "koodiArvo": "5"
-  },
-  {
-    "metadata": [
-      { "nimi": "underkänd", "kuvaus": null, "lyhytNimi": "4", "kieli": "SV" },
-      { "nimi": "hylätty", "kuvaus": null, "lyhytNimi": "4", "kieli": "FI" }
+      {
+        "nimi": "hylätty",
+        "kuvaus": null,
+        "lyhytNimi": "4",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "underkänd",
+        "kuvaus": null,
+        "lyhytNimi": "4",
+        "kieli": "SV"
+      },
+      {
+        "nimi": null,
+        "kuvaus": null,
+        "kieli": "EN"
+      }
     ],
     "withinCodeElements": [],
     "includesCodeElements": [],
@@ -85,20 +55,158 @@
   },
   {
     "metadata": [
-      { "nimi": "godkänd", "kuvaus": null, "lyhytNimi": "G", "kieli": "SV" },
-      { "nimi": "hyväksytty", "kuvaus": null, "lyhytNimi": "G", "kieli": "FI" }
+      {
+        "nimi": "välttävä",
+        "kuvaus": null,
+        "lyhytNimi": "5",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "svag",
+        "kuvaus": null,
+        "lyhytNimi": "5",
+        "kieli": "SV"
+      },
+      {
+        "nimi": null,
+        "kuvaus": null,
+        "kieli": "EN"
+      }
     ],
     "withinCodeElements": [],
     "includesCodeElements": [],
     "levelsWithCodeElements": [],
-    "koodiUri": "ahvenanmaanarviointiasteikkoyleissivistava_g",
+    "koodiUri": "ahvenanmaanarviointiasteikkoyleissivistava_5",
     "versio": 1,
-    "koodiArvo": "G"
+    "koodiArvo": "5"
   },
   {
     "metadata": [
-      { "nimi": "deltagit", "kuvaus": null, "lyhytNimi": "D", "kieli": "SV" },
-      { "nimi": "osallistunut", "kuvaus": null, "lyhytNimi": "D", "kieli": "FI" }
+      {
+        "nimi": "kohtalainen",
+        "kuvaus": null,
+        "lyhytNimi": "6",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "försvarlig",
+        "kuvaus": null,
+        "lyhytNimi": "6",
+        "kieli": "SV"
+      },
+      {
+        "nimi": null,
+        "kuvaus": null,
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "ahvenanmaanarviointiasteikkoyleissivistava_6",
+    "versio": 1,
+    "koodiArvo": "6"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "tyydyttävä",
+        "kuvaus": null,
+        "lyhytNimi": "7",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "nöjaktig",
+        "kuvaus": null,
+        "lyhytNimi": "7",
+        "kieli": "SV"
+      },
+      {
+        "nimi": null,
+        "kuvaus": null,
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "ahvenanmaanarviointiasteikkoyleissivistava_7",
+    "versio": 1,
+    "koodiArvo": "7"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "hyvä",
+        "kuvaus": null,
+        "lyhytNimi": "8",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "god",
+        "kuvaus": null,
+        "lyhytNimi": "8",
+        "kieli": "SV"
+      },
+      {
+        "nimi": null,
+        "kuvaus": null,
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "ahvenanmaanarviointiasteikkoyleissivistava_8",
+    "versio": 1,
+    "koodiArvo": "8"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "kiitettävä",
+        "kuvaus": null,
+        "lyhytNimi": "9",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "berömlig",
+        "kuvaus": null,
+        "lyhytNimi": "9",
+        "kieli": "SV"
+      },
+      {
+        "nimi": null,
+        "kuvaus": null,
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "ahvenanmaanarviointiasteikkoyleissivistava_9",
+    "versio": 1,
+    "koodiArvo": "9"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "osallistunut",
+        "kuvaus": null,
+        "lyhytNimi": "D",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "deltagit",
+        "kuvaus": null,
+        "lyhytNimi": "D",
+        "kieli": "SV"
+      },
+      {
+        "nimi": null,
+        "kuvaus": null,
+        "kieli": "EN"
+      }
     ],
     "withinCodeElements": [],
     "includesCodeElements": [],
@@ -109,8 +217,50 @@
   },
   {
     "metadata": [
-      { "nimi": "underkänd", "kuvaus": null, "lyhytNimi": "U", "kieli": "SV" },
-      { "nimi": "hylätty", "kuvaus": null, "lyhytNimi": "U", "kieli": "FI" }
+      {
+        "nimi": "hyväksytty",
+        "kuvaus": null,
+        "lyhytNimi": "G",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "godkänd",
+        "kuvaus": null,
+        "lyhytNimi": "G",
+        "kieli": "SV"
+      },
+      {
+        "nimi": null,
+        "kuvaus": null,
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "ahvenanmaanarviointiasteikkoyleissivistava_g",
+    "versio": 1,
+    "koodiArvo": "G"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "hylätty",
+        "kuvaus": null,
+        "lyhytNimi": "U",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "underkänd",
+        "kuvaus": null,
+        "lyhytNimi": "U",
+        "kieli": "SV"
+      },
+      {
+        "nimi": null,
+        "kuvaus": null,
+        "kieli": "EN"
+      }
     ],
     "withinCodeElements": [],
     "includesCodeElements": [],

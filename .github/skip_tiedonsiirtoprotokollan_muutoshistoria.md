@@ -1,5 +1,6 @@
 Tee tähän tiedostoon jokin muutos, kun tiedonsiirtoprotokollan_muutoshistoria.md -testi valittaa mahdollisesta muutoksesta, mutta kyseessä on esimerkiksi refaktorointi tai muu validoinnin toimintaan vaikuttamaton muutos.
 
+TOR-2694 - päivitettiin mock dataa, lisättiin uusi koodistoarvo. ei toiminnallista vaikutusta
 TOR-2061 - ei oikeaa muutosta
 TOR-1732
 TOR-2040 - validaation refaktorointi, ei toiminnallisia muutoksia

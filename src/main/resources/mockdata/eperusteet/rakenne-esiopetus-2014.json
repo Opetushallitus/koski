@@ -1,7 +1,7 @@
 {
   "id": 419551,
   "globalVersion": {
-    "aikaleima": 1775820449029
+    "aikaleima": 1782478487574
   },
   "nimi": {
     "_id": "881328",
@@ -12,8 +12,8 @@
   "toteutus": "yksinkertainen",
   "koulutukset": [],
   "kielet": [
-    "fi",
-    "sv"
+    "sv",
+    "fi"
   ],
   "kuvaus": {
     "_id": "4653556",
@@ -41,9 +41,9 @@
   "siirtymaPaattyy": null,
   "voimassaoloLoppuu": null,
   "paatospvm": 1419199200000,
-  "viimeisinJulkaisuAika": 1775820449029,
+  "viimeisinJulkaisuAika": 1782478487574,
   "luotu": 1422024343692,
-  "muokattu": 1774618882829,
+  "muokattu": 1780565352075,
   "tila": "valmis",
   "tyyppi": "normaali",
   "koulutusvienti": false,
@@ -513,7 +513,7 @@
                   "perusteenOsa": {
                     "id": 10187016,
                     "luotu": 1775800621139,
-                    "muokattu": 1775801430793,
+                    "muokattu": 1782478380139,
                     "muokkaaja": "1.2.246.562.24.16958963306",
                     "nimi": {
                       "en": "Participation and agency",
@@ -522,9 +522,9 @@
                     },
                     "tila": "luonnos",
                     "teksti": {
-                      "_id": "10187386",
+                      "_id": "10287895",
                       "_tunniste": "d45a6459-62fd-45cb-aaa5-757c395ca890",
-                      "fi": "<p><strong><em>Osallistuminen ja vaikuttaminen</em></strong></p><p>Aktiivinen ja vastuullinen osallistuminen ja vaikuttaminen luovat perustaa demokraattiselle ja kestävälle tulevaisuudelle. Tämä edellyttää yksilöltä taitoa ja halua osallistua yhteisön toimintaan sekä luottamusta omiin vaikutusmahdollisuuksiinsa. <abbr data-viite=\"Viite1738593459455\">Lasten oikeuksiin </abbr>kuuluvat kuulluksi tuleminen ja osallisuus omaan elämäänsä vaikuttavissa asioissa. Esiopetuksessa kunnioitetaan näitä demokratian toteutumisen keskeisiä periaatteita. Esiopetuksen tehtävä on tukea lasten vähitellen kehittyviä osallistumisen ja vaikuttamisen taitoja.</p><p>Esiopetuksen toimintaa suunnitellaan, toteutetaan ja arvioidaan yhdessä lasten, esiopetuksen henkilöstön ja huoltajien kanssa. Kun lapset ovat mukana vaikuttamassa, he oppivat samalla hahmottamaan yhteisten sääntöjen, sopimusten ja luottamuksen merkitystä. Lasten arvostava kohtaaminen, heidän ajatustensa kuunteleminen ja yhdessä toisten lasten ja aikuisten kanssa toimiminen vahvistavat lasten osallistumisen ja vaikuttamisen taitoja. Lapsia kannustetaan auttamaan toisia ja pyytämään tarvittaessa apua. Lasten on tärkeä saada kokea ja tietää, että he lapsina ovat oikeutettuja aikuisten apuun ja suojeluun.</p>",
+                      "fi": "<p>Aktiivinen ja vastuullinen osallistuminen ja vaikuttaminen luovat perustaa demokraattiselle ja kestävälle tulevaisuudelle. Tämä edellyttää yksilöltä taitoa ja halua osallistua yhteisön toimintaan sekä luottamusta omiin vaikutusmahdollisuuksiinsa. <abbr data-viite=\"Viite1738593459455\">Lasten oikeuksiin </abbr>kuuluvat kuulluksi tuleminen ja osallisuus omaan elämäänsä vaikuttavissa asioissa. Esiopetuksessa kunnioitetaan näitä demokratian toteutumisen keskeisiä periaatteita. Esiopetuksen tehtävä on tukea lasten vähitellen kehittyviä osallistumisen ja vaikuttamisen taitoja.</p><p>Esiopetuksen toimintaa suunnitellaan, toteutetaan ja arvioidaan yhdessä lasten, esiopetuksen henkilöstön ja huoltajien kanssa. Kun lapset ovat mukana vaikuttamassa, he oppivat samalla hahmottamaan yhteisten sääntöjen, sopimusten ja luottamuksen merkitystä. Lasten arvostava kohtaaminen, heidän ajatustensa kuunteleminen ja yhdessä toisten lasten ja aikuisten kanssa toimiminen vahvistavat lasten osallistumisen ja vaikuttamisen taitoja. Lapsia kannustetaan auttamaan toisia ja pyytämään tarvittaessa apua. Lasten on tärkeä saada kokea ja tietää, että he lapsina ovat oikeutettuja aikuisten apuun ja suojeluun.</p>",
                       "sv": "<p>Aktiv och ansvarsfull delaktighet och påverkan lägger grunden för en demokratisk och hållbar framtid. Det förutsätter att individen har förmåga och vilja att delta i den gemensamma verksamheten och litar på sina möjligheter att påverka. <abbr data-viite=\"Viite411425387061250\">Barnen har rätt</abbr> att bli hörda och att vara delaktiga i frågor som påverkar deras liv. I förskoleundervisningen ska man respektera dessa centrala demokratiska principer. Förskoleundervisningen ska stödja barnens förmåga att delta och påverka.</p><p>Verksamheten i förskolan ska planeras, genomföras och utvärderas i samverkan med barnen, förskoleundervisningens personal och vårdnadshavarna. När barnen är med och påverkar lär de sig samtidigt att uppfatta betydelsen av gemensamma regler, överenskommelser och förtroende. Att bemöta barnen med respekt, ta hänsyn till deras tankar och ge dem möjlighet att vara tillsammans med andra barn och vuxna stärker barnens förmåga att delta och påverka. Barnen ska uppmuntras att hjälpa varandra och att vid behov be om hjälp. Det är viktigt att barnen upplever och vet att de som barn har rätt att få hjälp och skydd av vuxna.</p>"
                     },
                     "koodi": {
