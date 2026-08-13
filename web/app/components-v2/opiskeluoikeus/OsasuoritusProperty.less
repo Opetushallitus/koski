@@ -3,6 +3,7 @@
 // sarake samanlevyisiksi kuin osasuoritusrivillä.
 @Columns-gutters-total: (@Columns-count - 1) * @Columns-gutter;
 @Column-step: ~'calc((100% - @{Columns-gutters-total}) / @{Columns-count} + @{Columns-gutter})';
+@Osasuoritus-indent: ~'calc((100% - @{Columns-gutters-total}) / @{Columns-count} * var(--osasuoritus-indent, 0) + var(--osasuoritus-indent, 0) * @{Columns-gutter})';
 
 // Laajennetun osasuorituksen kenttien yhteinen ruudukko:
 //
@@ -18,10 +19,7 @@
 .OsasuoritusProperties {
   display: grid;
   grid-template-columns:
-    ~'calc((100% - @{Columns-gutters-total}) / @{Columns-count} * var(--osasuoritus-indent, 0) + var(--osasuoritus-indent, 0) * @{Columns-gutter})'
-    max-content
-    max-content
-    minmax(0, 1fr)
+    @Osasuoritus-indent max-content max-content minmax(0, 1fr)
     @Column-step;
   column-gap: 0;
 
@@ -33,10 +31,23 @@
   }
 }
 
+// Oletus: kenttärivi ei ole ruudukon suora lapsi, koska editori on käärinyt
+// rivinsä omaan elementtiinsä. Silloin subgrid ei löydä ylätason raitoja
+// (se laskee arvoon none) ja rivin sisältö sinkoutuisi väärille paikoille.
+// Annetaan riville sama ruudukko omanaan: asettelu on oikea, mutta
+// nimisarakkeen leveys on rivikohtainen eikä jaettu koko ryhmän kesken.
 .OsasuoritusProperty {
+  display: grid;
+  grid-template-columns:
+    @Osasuoritus-indent max-content max-content minmax(0, 1fr)
+    @Column-step;
+  column-gap: 0;
+}
+
+// Suora lapsi saa raidat ylätason ruudukosta, jolloin nimisarake on yhteinen.
+.OsasuoritusProperties > .OsasuoritusProperty {
   grid-column: 1 / -1;
   grid-template-columns: subgrid;
-  column-gap: 0;
 }
 
 // Nimi omaan sarakkeeseensa, arvo heti oman tasonsa nimisarakkeen jälkeen

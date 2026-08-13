@@ -37,8 +37,10 @@ export const VSTKoto2022ValinnaisetProperties: React.FC<
 > = (props) => {
   const osasuoritus = getValue(props.osasuoritusPath)(props.form.state)
 
+  // Ei omaa kääre-elementtiä: kenttärivien on oltava OsasuoritusProperties-
+  // ruudukon suoria lapsia, jotta nimisarake on yhteinen koko ryhmälle.
   return (
-    <div>
+    <>
       <ArviointiProperty
         form={props.form}
         path={props.osasuoritusPath}
@@ -68,7 +70,7 @@ export const VSTKoto2022ValinnaisetProperties: React.FC<
           }
         )}
       />
-    </div>
+    </>
   )
 }
 
