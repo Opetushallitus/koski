@@ -1,9 +1,17 @@
 import { expect, test } from './base'
 import { virkailija } from './setup/auth'
-import { otaVakaaKuvakaappaus } from './fragments/visualScreenshot'
+import {
+  avaaOsasuoritusrivit,
+  otaVakaaKuvakaappaus
+} from './fragments/visualScreenshot'
 
 // Toiminnalliset testit: ahvenanmaan-perusopetus.spec.ts
 // Ks. documentation/visual-testing.md
+//
+// Oppiaineen kentät (Mukautettu oppimäärä, Suorituskieli, Suoritustapa) ovat
+// tässä fixtuurissa tyhjiä, joten ne renderöityvät vain muokkaustilassa. Siksi
+// vain muokkaustilan kuva otetaan rivit avattuina; katselunäkymissä ei ole
+// laajennettavia rivejä.
 
 const oppija = '1.2.246.562.24.00000000190'
 const url = `${oppija}?opiskeluoikeudenTyyppi=ahvenanmaanperusopetus`
@@ -40,7 +48,10 @@ test.describe('Ahvenanmaan perusopetus – visuaaliset regressiot', () => {
     await otaVakaaKuvakaappaus(page, 'ahvenanmaa-vuosiluokka-katselu.png')
   })
 
-  test('8. vuosiluokka, muokkaustila', async ({ page, oppijaPage }) => {
+  test('8. vuosiluokka, laajennettu muokkaustila', async ({
+    page,
+    oppijaPage
+  }) => {
     await oppijaPage.goto(url)
     await page.getByTestId(vuosiluokkaTab).click()
     await page.getByTestId('oo.0.opiskeluoikeus.edit').click()
@@ -49,6 +60,7 @@ test.describe('Ahvenanmaan perusopetus – visuaaliset regressiot', () => {
         'oo.0.suoritukset.2.osasuoritukset.0.arvosana.edit.input'
       )
     ).toBeVisible()
+    await avaaOsasuoritusrivit(page)
     await otaVakaaKuvakaappaus(page, 'ahvenanmaa-vuosiluokka-muokkaus.png')
   })
 })
