@@ -1,25 +1,54 @@
 import React, { createContext, useContext } from 'react'
 import { useLayout } from '../../util/useDepth'
 import { common, CommonPropsWithChildren } from '../CommonProps'
-import { Column, ColumnRow, COLUMN_COUNT } from '../containers/Columns'
-import {
-  AmmatillinenTyyliContext,
-  OSASUORITUSTABLE_DEPTH_KEY
-} from './OsasuoritusTable'
+import { Column, ColumnRow } from '../containers/Columns'
+import { OSASUORITUSTABLE_DEPTH_KEY } from './OsasuoritusTable'
 import { t } from '../../i18n/i18n'
 
-const LABEL_WIDTH_COLUMNS = 4
+/**
+ * Kentän nimen sisennystaso laajennetun osasuorituksen ruudukossa.
+ *
+ * 0 = OsasuoritusPropertyn oma nimi, 1 = sen arvo tai OsasuoritusSubpropertyn
+ * nimi, 2 = alikentän arvo. Taso kertoo, monennessako ruudukkosarakkeessa
+ * elementti on: nimet saavat oman max-content-sarakkeensa ja arvo alkaa heti
+ * oman tasonsa nimisarakkeen jälkeen. Ks. OsasuoritusProperty.less.
+ */
+const PropertyLevelContext = createContext(0)
+
+/** Sisennys ruudukkosarakkeina; annetaan CSS:lle muuttujana. */
+type IndentStyle = React.CSSProperties & { '--osasuoritus-indent': number }
+
+export type OsasuoritusPropertiesProps = CommonPropsWithChildren<{
+  indent: number
+}>
 
 /**
- * Kertoo arvosarakkeelle, että ympäröivä OsasuoritusProperty on jo varannut
- * nimisarakkeen siirtämällä asettelukontekstia LABEL_WIDTH_COLUMNS:n verran.
- * Ilman tätä tietoa OsasuoritusPropertyValue varaa nimisarakkeen toistamiseen,
- * jolloin nimen ja arvon väliin jää neljä tyhjää saraketta (mitattuna 219 px).
+ * Laajennetun osasuorituksen kenttien yhteinen ruudukko. Nimisarakkeet ovat
+ * max-content-levyisiä ja jaettu kaikkien rivien kesken (rivit ovat subgrid),
+ * jotta nimi vie täsmälleen tarvitsemansa tilan ja arvot ovat silti linjassa —
+ * kuten vanhassa käyttöliittymässä, jossa kentät olivat taulukon soluja.
  *
- * OsasuoritusSubproperty nollaa lipun, koska se renderöi oman nimiönsä samaan
- * ruudukkoon: siellä arvon kuuluukin alkaa vasta nimisarakkeen jälkeen.
+ * Kiinteä sarakemäärä ei riitä, koska ruudukkosarakkeen leveys riippuu
+ * taulukon leveydestä: perusopetuksessa oppiainetaulukoita on kaksi rinnakkain,
+ * jolloin sama neljän sarakkeen nimikenttä on 95 px eikä 219 px kuten
+ * ammatillisen koko leveyden taulukossa.
  */
-const NimisarakeVarattuContext = createContext(false)
+export const OsasuoritusProperties: React.FC<OsasuoritusPropertiesProps> = (
+  props
+) => (
+  <section
+    {...common(props, ['OsasuoritusProperties'])}
+    style={{ '--osasuoritus-indent': props.indent } as IndentStyle}
+  >
+    {props.children}
+  </section>
+)
+
+/**
+ * Nimen viemä sisennys sellaiselle sisällölle, joka ei ole nimi tai arvo vaan
+ * oma asettelunsa (esim. sisäkkäinen osasuoritustaulukko kentän arvossa).
+ */
+const LABEL_INDENT_COLUMNS = 4
 
 export type OsasuoritusPropertyProps = CommonPropsWithChildren<{
   label: string
@@ -28,22 +57,14 @@ export type OsasuoritusPropertyProps = CommonPropsWithChildren<{
 export const OsasuoritusProperty: React.FC<OsasuoritusPropertyProps> = (
   props
 ) => {
-  const [indentation, LayoutProvider] = useLayout(OSASUORITUSTABLE_DEPTH_KEY)
-  const ammatillinenTyyli = useContext(AmmatillinenTyyliContext)
+  const [, LayoutProvider] = useLayout(OSASUORITUSTABLE_DEPTH_KEY)
   return (
-    <ColumnRow
-      {...common(props, [
-        'OsasuoritusProperty',
-        ammatillinenTyyli && 'OsasuoritusProperty--ammatillinen'
-      ])}
-      valign="top"
-      indent={indentation}
-    >
+    <ColumnRow {...common(props, ['OsasuoritusProperty'])} valign="top">
       <OsasuoritusPropertyLabel>{t(props.label)}</OsasuoritusPropertyLabel>
-      <LayoutProvider indent={LABEL_WIDTH_COLUMNS}>
-        <NimisarakeVarattuContext.Provider value={true}>
+      <LayoutProvider indent={LABEL_INDENT_COLUMNS}>
+        <PropertyLevelContext.Provider value={1}>
           {props.children}
-        </NimisarakeVarattuContext.Provider>
+        </PropertyLevelContext.Provider>
       </LayoutProvider>
     </ColumnRow>
   )
@@ -57,15 +78,18 @@ export type OsasuoritusSubpropertyProps = CommonPropsWithChildren<{
 export const OsasuoritusSubproperty: React.FC<OsasuoritusSubpropertyProps> = (
   props
 ) => {
+  const level = useContext(PropertyLevelContext)
   return (
-    <NimisarakeVarattuContext.Provider value={false}>
+    <>
       <OsasuoritusPropertyLabel row={props.rowNumber}>
         {t(props.label)}
       </OsasuoritusPropertyLabel>
-      <OsasuoritusPropertyValue row={props.rowNumber}>
-        {props.children}
-      </OsasuoritusPropertyValue>
-    </NimisarakeVarattuContext.Provider>
+      <PropertyLevelContext.Provider value={level + 1}>
+        <OsasuoritusPropertyValue row={props.rowNumber}>
+          {props.children}
+        </OsasuoritusPropertyValue>
+      </PropertyLevelContext.Provider>
+    </>
   )
 }
 
@@ -76,13 +100,14 @@ export type OsasuoritusPropertyLabel = CommonPropsWithChildren<{
 export const OsasuoritusPropertyLabel: React.FC<OsasuoritusPropertyLabel> = (
   props
 ) => {
-  const [indentation] = useLayout(OSASUORITUSTABLE_DEPTH_KEY)
+  const level = useContext(PropertyLevelContext)
   return (
     <Column
       row={props.row || 0}
-      start={indentation}
-      span={LABEL_WIDTH_COLUMNS}
-      {...common(props, ['OsasuoritusPropertyLabel'])}
+      {...common(props, [
+        'OsasuoritusPropertyLabel',
+        `OsasuoritusPropertyLabel--level-${level}`
+      ])}
     >
       {props.children}
     </Column>
@@ -96,21 +121,14 @@ export type OsasuoritusPropertyValueProps = CommonPropsWithChildren<{
 export const OsasuoritusPropertyValue: React.FC<
   OsasuoritusPropertyValueProps
 > = (props) => {
-  const [indentation] = useLayout(OSASUORITUSTABLE_DEPTH_KEY)
-  const ammatillinenTyyli = useContext(AmmatillinenTyyliContext)
-  const nimisarakeVarattu = useContext(NimisarakeVarattuContext)
-  // Rajataan korjaus toistaiseksi ammatilliseen; muissa koulutusmuodoissa rako
-  // säilyy ennallaan, koska niiden asettelua ei ole pyydetty muuttamaan.
-  const nimisarakeOffset =
-    nimisarakeVarattu && ammatillinenTyyli ? 0 : LABEL_WIDTH_COLUMNS
-  const span = COLUMN_COUNT - indentation - nimisarakeOffset - 1
-
+  const level = useContext(PropertyLevelContext)
   return (
     <Column
       row={props.row || 0}
-      start={indentation + nimisarakeOffset}
-      span={span}
-      {...common(props, ['OsasuoritusPropertyValue'])}
+      {...common(props, [
+        'OsasuoritusPropertyValue',
+        `OsasuoritusPropertyValue--level-${level}`
+      ])}
     >
       {props.children}
     </Column>
