@@ -55,6 +55,9 @@ class OmaOpintoPolkuLokiServletSpec extends AnyFreeSpec with Matchers with Koski
         List(MockOrganisaatiot.ylioppilastutkintolautakunta)
       ))
     }
+    "Valpas-auditlogien lähdepalveluksi päätellään valpas, vaikka ne on kirjoitettu koski-palvelun nimellä" in {
+      auditlogs(KoskiSpecificMockOppijat.ysiluokkalainen).map(_.serviceName).distinct should equal(List("valpas"))
+    }
     "Ei näytetä Valpas-auditlogeja joissa operaationa on ollut tietojen muokkaus" in {
       val orgs = auditlogs(KoskiSpecificMockOppijat.ysiluokkalainen).flatMap(_.organizations.map(_.oid)).toSet
       orgs should not contain (MockOrganisaatiot.tornionKaupunki)

@@ -11,6 +11,7 @@ import fi.oph.koski.mydata.MyDataConfig
 import fi.oph.koski.schema.{LocalizedString, Oppija}
 import fi.oph.koski.omaopintopolkuloki.AuditLogDynamoDB.AuditLogTableName
 import fi.oph.koski.schema.Henkilö.Oid
+import fi.oph.koski.valpas.log.ValpasOperation
 import software.amazon.awssdk.services.dynamodb.model.{AttributeValue, QueryRequest}
 
 import scala.jdk.CollectionConverters._
@@ -119,7 +120,7 @@ class AuditLogService(val application: KoskiApplication) extends Logging with My
           if (isKoskiLog) filteredOrganisaatiot.sortBy(oid => (allowedOrganisaatiot.priority(oid), oid))
           else filteredOrganisaatiot.sorted
         val timestampString = parsedRow.time
-        val serviceName = parsedRaw.serviceName
+        val serviceName = AuditLogService.resolveServiceName(parsedRaw.operation, parsedRaw.serviceName)
         val isMyDataUse = parsedRaw.operation.startsWith("OAUTH2_KATSOMINEN") || parsedRow.organizationOid.headOption.exists(isMyDataOrg)
         // TODO: Jakolinkkien käyttöjen palauttaminen frontille on toteutettu valmiiksi, mutta oma-opintopolku-lokin DynamoDB-parsinta skippaa näiden
         // entryjen käsittelyn, minkä vuoksi tuotantoympäristöissä näitä entryjä ei vielä käytännössä DynamoDB:ssä ole.
@@ -163,6 +164,13 @@ class AuditLogService(val application: KoskiApplication) extends Logging with My
 }
 
 object AuditLogService {
+  val ValpasServiceName = "valpas"
+
+  private val valpasOperaatiot: Set[String] = ValpasOperation.values.toSeq.map(_.toString).toSet
+
+  def resolveServiceName(operation: String, serviceName: String): String =
+    if (valpasOperaatiot.contains(operation)) ValpasServiceName else serviceName
+
   def allowedOrganisaatiot(oppija: Oppija): AllowedOrganisaatiot = {
     val koulutustoimijat = oppija.opiskeluoikeudet.flatMap(_.koulutustoimija.map(_.oid)).toSet
     val oppilaitokset = oppija.opiskeluoikeudet.flatMap(_.oppilaitos.map(_.oid)).toSet

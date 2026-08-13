@@ -4,6 +4,7 @@ import fi.oph.koski.documentation.AmmatillinenExampleData
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
 import fi.oph.koski.organisaatio.Opetushallitus
 import fi.oph.koski.schema.{Koulutustoimija, Oppija, Oppilaitos}
+import fi.oph.koski.valpas.log.ValpasOperation
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.should.Matchers
 
@@ -51,6 +52,22 @@ class AuditLogServiceSpec extends AnyFreeSpec with Matchers {
 
       val result = AuditLogService.allowedOrganisaatiot(oppija)
       result.isEmpty shouldBe true
+    }
+  }
+
+  "resolveServiceName" - {
+    "päättelee Valpas-operaatiot valpas-palveluksi" in {
+      AuditLogService.resolveServiceName("VALPAS_OPPIJA_KATSOMINEN", "koski") shouldBe "valpas"
+      AuditLogService.resolveServiceName("VALPAS_OPPIJA_KUNTAILMOITUKSEN_KATSOMINEN", "koski") shouldBe "valpas"
+      AuditLogService.resolveServiceName("OPPIVELVOLLISUUSREKISTERI_LUOVUTUS", "koski") shouldBe "valpas"
+    }
+    "ei muuta KOSKI-operaatioiden palvelua" in {
+      AuditLogService.resolveServiceName("OPISKELUOIKEUS_KATSOMINEN", "koski") shouldBe "koski"
+      AuditLogService.resolveServiceName("OAUTH2_KATSOMINEN_KAIKKI_TIEDOT_JA_VALINTATIEDOT", "koski") shouldBe "koski"
+    }
+    "ei muuta muiden palveluiden nimeä" in {
+      AuditLogService.resolveServiceName("dataAccess", "varda") shouldBe "varda"
+      AuditLogService.resolveServiceName("readData", "kitu") shouldBe "kitu"
     }
   }
 
