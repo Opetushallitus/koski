@@ -13,11 +13,9 @@
     ]
   },
   "lockFileMaintenance": {
-    "description": "Only mechanism that updates transitive dependencies absent from every package.json. Daily rather than the inherited schedule:weekly (Mon 00:00-03:59 UTC) to cut worst-case exposure from seven days to one; costs no extra PR noise since lockFileMaintenance maintains a single branch. Note: the narrow window is not why this job stopped running after 2026-06-08 — oppijanumerorekisteri runs the identical inherited schedule and has not missed a run. See the commit body.",
+    "description": "Only mechanism that updates transitive dependencies absent from every package.json. Do not delete the empty schedule: Renovate's built-in default for this block is ['before 4am on monday'], so removing the key restores a four-hour weekly window instead of removing the restriction. A repository schedule cannot start a Renovate run — isScheduledNow() only filters a run that is already in progress — so any window is a bet that Mend's scheduler happens to land inside it. That bet lost every week between 2026-06-08 and 2026-08-14. An empty schedule always passes the check, and costs no extra PR noise because lockFileMaintenance maintains a single branch.",
     "enabled": true,
-    "schedule": [
-      "* 0-5 * * *"
-    ]
+    "schedule": []
   },
   "prConcurrentLimit": 8,
   "platformAutomerge": false,
