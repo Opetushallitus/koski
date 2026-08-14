@@ -137,7 +137,7 @@ export const useKoodistotOfConstraints = <T extends string = string>(
                     s.koodiarvot.includes(k.koodiviite.koodiarvo))
               ) !== undefined
           ),
-          A.uniq(KoodistokoodiviiteKoodistonNimelläEq)
+          uniqueKoodistot
         ) as KoodistokoodiviiteKoodistonNimellä<T>[])
       : null
   }, [koodistoSchemas, koodistot])
