@@ -494,7 +494,7 @@ export const useKoodistoOptions = <T extends string>(
 ): SelectOption<Koodistokoodiviite<T>>[] => {
   const koodisto = useKoodistot(...koodistoUris)
   return useMemo(
-    () => (koodisto ? groupKoodistoToOptions(koodisto) : []),
+    () => (koodisto ? groupKoodistoToOptions(koodisto) : LoadingOptions),
     [koodisto]
   ) as SelectOption<Koodistokoodiviite<T>>[]
 }
@@ -505,7 +505,10 @@ export const useKoodistoOptionsWithFormat = <T extends string>(
 ): SelectOption<Koodistokoodiviite<T>>[] => {
   const koodisto = useKoodistot(...koodistoUris)
   return useMemo(
-    () => (koodisto ? groupKoodistoToOptions(koodisto, undefined, format) : []),
+    () =>
+      koodisto
+        ? groupKoodistoToOptions(koodisto, undefined, format)
+        : LoadingOptions,
     [koodisto, format]
   ) as SelectOption<Koodistokoodiviite<T>>[]
 }
