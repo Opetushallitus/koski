@@ -5,6 +5,9 @@
 @Column-step: ~'calc((100% - @{Columns-gutters-total}) / @{Columns-count} + @{Columns-gutter})';
 @Osasuoritus-indent: ~'calc((100% - @{Columns-gutters-total}) / @{Columns-count} * var(--osasuoritus-indent, 0) + var(--osasuoritus-indent, 0) * @{Columns-gutter})';
 
+// Sama raja kuin vanhassa käyttöliittymässä (style/opiskeluoikeus.less).
+@Osasuoritus-kentta-max-leveys: 300px;
+
 // Laajennetun osasuorituksen kenttien yhteinen ruudukko:
 //
 //   1. sisennys  2. nimi (taso 0)  3. alikentän nimi (taso 1)  4. arvo  5. varaus
@@ -82,6 +85,19 @@
     display: block;
     align-content: center;
     min-height: 1.5 * @baseline;
+
+    // Pudotusvalikko ja päivämääräkenttä ovat width: 100%, ja arvosarake
+    // ulottuu rivin loppuun asti, joten ne venyisivät koko taulukon levyisiksi
+    // (mitattuna VST:n arvosana- ja päivämääräkentät 951 px). Vanha
+    // käyttöliittymä rajaa suorituksen kentät 300 pikseliin
+    // (style/opiskeluoikeus.less), joten käytetään samaa rajaa. Tekstikentät
+    // jätetään ennalleen: ne mitoittavat itsensä eivätkä veny sarakkeen mukana.
+    // DateEditin oma juuri on inline-label, jolle max-width ei päde, joten
+    // raja asetetaan sen sisällä olevaan flex-laatikkoon.
+    .Select,
+    .DateEdit__field {
+      max-width: @Osasuoritus-kentta-max-leveys;
+    }
   }
 
   // Sisäkkäiset Column-elementit perivät Columns.less:n 2.5 * @baseline
