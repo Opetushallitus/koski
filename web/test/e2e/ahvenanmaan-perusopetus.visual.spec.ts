@@ -61,6 +61,9 @@ test.describe('Ahvenanmaan perusopetus – visuaaliset regressiot', () => {
       )
     ).toBeVisible()
     await avaaOsasuoritusrivit(page)
-    await otaVakaaKuvakaappaus(page, 'ahvenanmaa-vuosiluokka-muokkaus.png')
+    await otaVakaaKuvakaappaus(
+      page,
+      'ahvenanmaa-vuosiluokka-muokkaus-avattu.png'
+    )
   })
 })
