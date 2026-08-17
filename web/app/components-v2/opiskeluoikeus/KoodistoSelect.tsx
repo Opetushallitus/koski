@@ -5,6 +5,7 @@ import { Koodistokoodiviite } from '../../types/fi/oph/koski/schema/Koodistokood
 import { LocalizedString } from '../../types/fi/oph/koski/schema/LocalizedString'
 import { CommonProps } from '../CommonProps'
 import {
+  LoadingOptions,
   mapOptionLabels,
   OptionList,
   Select,
@@ -39,8 +40,14 @@ export function KoodistoSelect<T extends string>(
   const { filter, zeroValueOption, format } = props
 
   const options: OptionList<Koodistokoodiviite<T>> = useMemo(() => {
+    // Koodistoa vielä ladataan: kerrotaan siitä Selectille, jotta se näyttää
+    // spinnerin. Muuten kenttä olisi pelkästään lukittu ilman mitään selitystä.
+    if (koodisto === null) {
+      return LoadingOptions
+    }
+
     const koodistoOptions = pipe(
-      koodisto || [],
+      koodisto,
       A.map((tunniste) => ({
         key: tunniste.koodiviite.koodiarvo,
         label: t(tunniste.koodiviite.nimi),

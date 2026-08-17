@@ -59,9 +59,13 @@ test.describe('Ammatillinen v2 – visuaaliset regressiot', () => {
   test('Osittainen tutkinto, muokkaustila', async ({ page, oppijaPage }) => {
     await oppijaPage.goto(osittainenTutkinto)
     await page.getByTestId('oo.0.opiskeluoikeus.edit').click()
+    // Odotetaan enabled eikä pelkkää visible: Select renderöityy näkyviin heti,
+    // mutta pitää syötteensä disabloituna kunnes koodisto on ladattu ja
+    // vaihtoehdot laskettu. Pelkkä toBeVisible läpäisisi jo ennen sitä, jolloin
+    // kuva voitaisiin ottaa kesken renderöinnin.
     await expect(
       page.getByTestId('oo.0.suoritukset.0.uusi-yhteinen-tutkinnonosa.input')
-    ).toBeVisible()
+    ).toBeEnabled()
     await otaVakaaKuvakaappaus(page, 'ammatillinen-osittainen-muokkaus.png')
   })
 

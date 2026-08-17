@@ -1480,7 +1480,7 @@ test.describe('Vapaa sivistystyö', () => {
         const henkilö = myöntäjät.henkilö(0).newHenkilö
         await henkilö.nimi.set('Keijo')
 
-        expect(vahvistaminen.edit.modal.submit.isDisabled()).toBeTruthy()
+        await expect(vahvistaminen.edit.modal.submit.button).toBeDisabled()
       })
     })
 
