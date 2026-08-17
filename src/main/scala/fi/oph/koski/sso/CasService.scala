@@ -5,7 +5,7 @@ import fi.oph.koski.config.Environment
 import fi.oph.koski.http.{Http, OpintopolkuCallerId}
 import fi.oph.koski.log.Logging
 import fi.oph.koski.userdirectory.Password
-import fi.oph.koski.cas.CasClient.Username
+import fi.oph.koski.cas.CasClient.CasVirkailija
 import fi.oph.koski.cas.{CasAuthenticationException, CasClient, CasUser}
 import fi.oph.koski.sso.CasAttributes._
 
@@ -59,11 +59,11 @@ class CasService(config: Config) extends Logging {
     KansalaisenTunnisteet(hetuAttempt, oppijaOidAttempt, kokonimiAttempt)
   }
 
-  def validateVirkailijaServiceTicket(url: String, ticket: String): Username = {
-    mockUsernameForAllVirkailijaTickets.getOrElse({
+  def validateVirkailijaServiceTicket(url: String, ticket: String): CasVirkailija = {
+    mockUsernameForAllVirkailijaTickets.map(CasVirkailija(_, Some("VIRKAILIJA"))).getOrElse({
       Http.runIO(
         casVirkailijaClient
-          .validateServiceTicketWithVirkailijaUsername(url)(ticket)
+          .validateServiceTicketWithVirkailija(url)(ticket)
           .timeout(10.seconds)
       )
     })

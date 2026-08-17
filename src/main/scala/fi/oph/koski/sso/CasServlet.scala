@@ -1,5 +1,7 @@
 package fi.oph.koski.sso
 
+import fi.oph.koski.cas.CasClient.CasVirkailija
+import fi.oph.koski.cas.CasLogout
 import fi.oph.koski.config.{Environment, KoskiApplication}
 import fi.oph.koski.frontendvalvonta.FrontendValvontaMode
 import fi.oph.koski.http.KoskiErrorCategory
@@ -7,7 +9,6 @@ import fi.oph.koski.json.JsonSerializer.writeWithRoot
 import fi.oph.koski.koskiuser.{AuthenticationUser, DirectoryClientLogin, KoskiCookieAndBasicAuthenticationSupport, UserLanguage}
 import fi.oph.koski.log.LogUserContext
 import fi.oph.koski.servlet.{NoCache, VirkailijaHtmlServlet}
-import fi.oph.koski.cas.CasLogout
 import fi.oph.koski.huoltaja.HuollettavienHakuOnnistui
 import org.scalatra.{Cookie, CookieOptions}
 
@@ -81,18 +82,9 @@ class CasServlet()(implicit val application: KoskiApplication) extends Virkailij
     params.get("ticket") match {
       case Some(ticket) =>
         try {
-          val username = casService.validateVirkailijaServiceTicket(casVirkailijaServiceUrl, ticket)
-          DirectoryClientLogin.findUser(application.directoryClient, request, username) match {
-            case Some(user) =>
-              setUser(Right(user.copy(serviceTicket = Some(ticket))))
-              logger.info(s"Started session ${session.id} for ticket $ticket")
-              koskiSessions.store(ticket, user, LogUserContext.clientIpFromRequest(request), LogUserContext.userAgent(request))
-              UserLanguage.setLanguageCookie(UserLanguage.getLanguageFromLDAP(user, application.directoryClient).getOrElse(UserLanguage.getLanguageFromCookie(request)), response)
-              redirectAfterLogin
-            case None =>
-              logger.warn(s"User $username not found even though user logged in with valid ticket")
-              redirectToVirkailijaLogout
-          }
+          val casVirkailija = casService.validateVirkailijaServiceTicket(casVirkailijaServiceUrl, ticket)
+          logger.debug(s"CAS virkailija service ticket validated: username=${casVirkailija.username}, kayttajaTyyppi=${casVirkailija.kayttajaTyyppi}, ticket=$ticket")
+          handleVirkailijaLogin(ticket, casVirkailija)
         } catch {
           case e: Exception =>
             logger.warn(e)(s"Virkailija login ticket validation failed, ${e.toString}")
@@ -119,6 +111,39 @@ class CasServlet()(implicit val application: KoskiApplication) extends Virkailij
         logger.warn("Got CAS logout POST without logoutRequest parameter")
     }
   }
+
+  private def handleVirkailijaLogin(ticket: String, casVirkailija: CasVirkailija) = {
+    if (isPalvelukayttaja(casVirkailija.kayttajaTyyppi)) {
+      rejectVirkailijaLogin(s"Service account ${casVirkailija.username} attempted browser login and was rejected")
+    } else {
+      loginVirkailija(ticket, casVirkailija.username)
+    }
+  }
+
+  private def loginVirkailija(ticket: String, username: String) = {
+    DirectoryClientLogin.findUser(application.directoryClient, request, username) match {
+      case Some(user) =>
+        startVirkailijaSession(ticket, user)
+      case None =>
+        rejectVirkailijaLogin(s"User $username not found even though user logged in with valid ticket")
+    }
+  }
+
+  private def startVirkailijaSession(ticket: String, user: AuthenticationUser) = {
+    setUser(Right(user.copy(serviceTicket = Some(ticket))))
+    logger.info(s"Started session ${session.id} for ticket $ticket")
+    koskiSessions.store(ticket, user, LogUserContext.clientIpFromRequest(request), LogUserContext.userAgent(request))
+    UserLanguage.setLanguageCookie(UserLanguage.getLanguageFromLDAP(user, application.directoryClient).getOrElse(UserLanguage.getLanguageFromCookie(request)), response)
+    redirectAfterLogin
+  }
+
+  private def rejectVirkailijaLogin(warning: String) = {
+    logger.warn(warning)
+    redirectToVirkailijaLogout
+  }
+
+  private def isPalvelukayttaja(kayttajaTyyppi: Option[String]): Boolean =
+    kayttajaTyyppi.exists(_.trim.equalsIgnoreCase("PALVELU"))
 
   private def eiSuorituksia(kansalaisenTunnisteet: KansalaisenTunnisteet) = {
     setNimitiedotCookie(kansalaisenTunnisteet.nimi)

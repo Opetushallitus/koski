@@ -13,7 +13,7 @@ import scala.xml._
 
 object CasClient {
   type SessionCookie = String
-  type Username = String
+  case class CasVirkailija(username: String, kayttajaTyyppi: Option[String])
   type OppijaAttributes = Map[String, String]
   type TGTUrl = Uri
   type ServiceTicket = String
@@ -40,8 +40,8 @@ class CasClient(casBaseUrl: Uri, client: Client[IO], callerId: String) extends L
     validateServiceTicket[OppijaAttributes](casBaseUrl, client, service, decodeOppijaAttributes)(serviceTicket)
   }
 
-  def validateServiceTicketWithVirkailijaUsername(service: String)(serviceTicket: ServiceTicket): IO[Username] = {
-    validateServiceTicket[Username](casBaseUrl, client, service, decodeVirkailijaUsername)(serviceTicket)
+  def validateServiceTicketWithVirkailija(service: String)(serviceTicket: ServiceTicket): IO[CasVirkailija] = {
+    validateServiceTicket[CasVirkailija](casBaseUrl, client, service, decodeVirkailija)(serviceTicket)
   }
 
   private def validateServiceTicket[R](casBaseUrl: Uri, client: Client[IO], service: String, responseHandler: Response[IO] => IO[R])(serviceTicket: ServiceTicket): IO[R] = {
@@ -127,13 +127,17 @@ class CasClient(casBaseUrl: Uri, client: Client[IO], callerId: String) extends L
         }
       }}
 
-  private val virkailijaServiceTicketDecoder: EntityDecoder[IO, Username] =
+  private val virkailijaServiceTicketDecoder: EntityDecoder[IO, CasVirkailija] =
     textOrXmlDecoder
       .map(s => Utility.trim(scala.xml.XML.loadString(s)))
-      .flatMapR[Username] { serviceResponse => {
+      .flatMapR[CasVirkailija] { serviceResponse => {
           val user = (serviceResponse \ "authenticationSuccess" \ "user")
           user.length match {
-            case 1 => DecodeResult.successT(user.text)
+            case 1 =>
+              val kayttajaTyyppi = (serviceResponse \ "authenticationSuccess" \ "attributes" \ "kayttajaTyyppi")
+                .text
+                .trim
+              DecodeResult.successT(CasVirkailija(user.text, Option(kayttajaTyyppi).filter(_.nonEmpty)))
             case _ =>
               DecodeResult.failureT(InvalidMessageBodyFailure(
                 s"Virkailija Service Ticket validation response decoding failed: response body is of wrong form ($serviceResponse)"
@@ -161,10 +165,10 @@ class CasClient(casBaseUrl: Uri, client: Client[IO], callerId: String) extends L
   }
 
   /**
-   * Decode CAS Virkailija's service ticket validation response to username.
+   * Decode CAS Virkailija's service ticket validation response to username and user type.
    */
-  def decodeVirkailijaUsername: Response[IO] => IO[Username] = { response =>
-    decodeCASResponse[Username](response, "username", virkailijaServiceTicketDecoder)
+  def decodeVirkailija: Response[IO] => IO[CasVirkailija] = { response =>
+    decodeCASResponse[CasVirkailija](response, "virkailija", virkailijaServiceTicketDecoder)
   }
 
   private def decodeCASResponse[R](response: Response[IO], debugLabel: String, decoder: EntityDecoder[IO, R]): IO[R] = {
