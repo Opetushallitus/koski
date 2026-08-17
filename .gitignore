@@ -19,6 +19,9 @@ bundle.js
 web/dist
 web/node/
 src/main/resources/*.conf
+src/main/resources/log4j2-*
+!src/main/resources/log4j2-local.xml
+!src/main/resources/log4j2-test.xml
 src/test/scala/fi/oph/koski/ServiceTester.scala
 src/test/resources/opiskeluoikeudet.txt
 /ignore
