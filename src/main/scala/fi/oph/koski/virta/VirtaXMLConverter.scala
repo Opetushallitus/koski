@@ -283,7 +283,8 @@ case class VirtaXMLConverter(oppilaitosRepository: OppilaitosRepository, koodist
             suorituskieli = (suoritus \\ "Kieli").headOption.flatMap(kieli => koodistoViitePalvelu.validate(Koodistokoodiviite(kieli.text.toUpperCase, "kieli"))),
             toimipiste = oppilaitos(suoritus, päivämääräVahvistus.map(_.päivä)),
             osasuoritukset = optionalList(osasuoritukset),
-            hyväksilukupäivä = hyväksilukuPäivämäärä(suoritus)
+            hyväksilukupäivä = hyväksilukuPäivämäärä(suoritus),
+            lisätieto = julkinenLisätieto(suoritus)
           )
         }
         if (tutkinnonSuoritus.isEmpty) {
@@ -380,7 +381,8 @@ case class VirtaXMLConverter(oppilaitosRepository: OppilaitosRepository, koodist
       osasuoritukset = optionalList(osasuoritukset),
       luokittelu = noneIfEmpty(parseLuokittelu(suoritus, "virtaopsuorluokittelu")),
       hyväksilukupäivä = hyväksilukuPäivämäärä(suoritus),
-      opinnäytetyö = opinnäytetyö(suoritus)
+      opinnäytetyö = opinnäytetyö(suoritus),
+      lisätieto = julkinenLisätieto(suoritus)
     )
   }
 
@@ -512,6 +514,10 @@ case class VirtaXMLConverter(oppilaitosRepository: OppilaitosRepository, koodist
 
   private def nimi(node: Node): Option[LocalizedString] = {
     sanitize((node \ "Nimi" map { nimi => (nimi \ "@kieli").text -> nimi.text }).toMap)
+  }
+
+  private def julkinenLisätieto(suoritus: Node): Option[LocalizedString] = {
+    sanitize((suoritus \ "JulkinenLisatieto" map { l => (l \ "@kieli").text -> l.text }).toMap)
   }
 
   private def suorituksenNimi(suoritus: Node): LocalizedString = {

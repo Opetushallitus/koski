@@ -453,6 +453,62 @@ class VirtaXMLConverterSpec extends AnyFreeSpec with TestEnvironment with Matche
       }
     }
 
+    "Julkinen lisätieto" - {
+      def opintojaksoWithLisatieto(lisatiedot: Seq[Elem]): Elem =
+        <virta:Opintosuoritus opiskeluoikeusAvain="avopH1O1" opiskelijaAvain="avopH1" koulutusmoduulitunniste="K-125" avain="lisatieto-1">
+          <virta:SuoritusPvm>2017-12-04</virta:SuoritusPvm>
+          <virta:Laajuus>
+            <virta:Opintopiste>5</virta:Opintopiste>
+          </virta:Laajuus>
+          <virta:Arvosana>
+            <virta:Viisiportainen>5</virta:Viisiportainen>
+          </virta:Arvosana>
+          <virta:Myontaja>10076</virta:Myontaja>
+          <virta:Laji>2</virta:Laji>
+          <virta:Nimi kieli="fi">Opintojakso</virta:Nimi>
+          <virta:Kieli>fi</virta:Kieli>
+          {lisatiedot}
+        </virta:Opintosuoritus>
+
+      def lisätieto(lisatiedot: Seq[Elem]): Option[LocalizedString] =
+        convertSuoritus(opintojaksoWithLisatieto(lisatiedot))
+          .value.asInstanceOf[KorkeakoulunOpintojaksonSuoritus].lisätieto
+
+      "parsitaan kielitagittomasta elementistä" in {
+        lisätieto(Seq(<virta:JulkinenLisatieto>Theory of Elasticity</virta:JulkinenLisatieto>))
+          .map(_.get("fi")) shouldBe Some("Theory of Elasticity")
+      }
+
+      "parsitaan kielitagillisesta elementistä" in {
+        lisätieto(Seq(<virta:JulkinenLisatieto kieli="fi">Talouskriisit</virta:JulkinenLisatieto>))
+          .map(_.get("fi")) shouldBe Some("Talouskriisit")
+      }
+
+      "on None jos JulkinenLisatieto puuttuu" in {
+        lisätieto(Nil) shouldBe None
+      }
+
+      "SalainenLisatieto-elementtiä ei lueta" in {
+        lisätieto(Seq(<virta:SalainenLisatieto>Ei saa näkyä</virta:SalainenLisatieto>)) shouldBe None
+      }
+
+      "parsitaan myös tutkinnon suoritukselta" in {
+        val tutkinto =
+          <virta:Opintosuoritus opiskeluoikeusAvain="avopH1O1" opiskelijaAvain="avopH1" koulutusmoduulitunniste="tutkinto-125" avain="tutkinto-lisatieto-1">
+            <virta:SuoritusPvm>2017-12-04</virta:SuoritusPvm>
+            <virta:Laajuus><virta:Opintopiste>180</virta:Opintopiste></virta:Laajuus>
+            <virta:Arvosana><virta:Hyvaksytty>HYV</virta:Hyvaksytty></virta:Arvosana>
+            <virta:Myontaja>10076</virta:Myontaja>
+            <virta:Laji>1</virta:Laji>
+            <virta:Nimi kieli="fi">Tutkinto</virta:Nimi>
+            <virta:Koulutuskoodi>612103</virta:Koulutuskoodi>
+            <virta:JulkinenLisatieto kieli="fi">Yleistä lisätietoa</virta:JulkinenLisatieto>
+          </virta:Opintosuoritus>
+        convertSuoritus(tutkinto).value.asInstanceOf[KorkeakoulututkinnonSuoritus]
+          .lisätieto.map(_.get("fi")) shouldBe Some("Yleistä lisätietoa")
+      }
+    }
+
     "Luokittelu" - {
       "parsitaan koodistoviitteeksi" in {
         val luokittelut = convertSuoritus(suoritusWithOrganisaatio(None, luokittelu=Some(1)))
