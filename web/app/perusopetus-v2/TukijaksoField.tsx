@@ -1,6 +1,6 @@
 import React from 'react'
 import { TestIdText } from '../appstate/useTestId'
-import { ISO2FinnishDate, todayISODate } from '../date/date'
+import { ISO2FinnishDate } from '../date/date'
 import {
   FieldEditorProps,
   FieldViewerProps
@@ -38,9 +38,8 @@ export const TukijaksoEdit: React.FC<
     <DateInput
       value={value?.loppu}
       onChange={(loppu?: string) => {
-        onChange(
-          Tukijakso({ alku: value?.alku || todayISODate(), ...value, loppu })
-        )
+        // Tukijakso.alku on valinnainen, joten sitä ei täydennetä tässä.
+        onChange(Tukijakso({ ...value, loppu }))
       }}
       testId="loppu"
     />

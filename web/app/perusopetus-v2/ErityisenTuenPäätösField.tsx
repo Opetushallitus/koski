@@ -1,12 +1,13 @@
 import React from 'react'
 import { TestIdText } from '../appstate/useTestId'
-import { ISO2FinnishDate, todayISODate } from '../date/date'
+import { ISO2FinnishDate } from '../date/date'
 import {
   FieldEditorProps,
   FieldViewerProps
 } from '../components-v2/forms/FormField'
 import { EmptyObject } from '../util/objects'
 import { ErityisenTuenPäätös } from '../types/fi/oph/koski/schema/ErityisenTuenPaatos'
+import { uusiErityisenTuenPäätös } from '../components-v2/opiskeluoikeus/uusiJakso'
 import { DateInput } from '../components-v2/controls/DateInput'
 import { Checkbox } from '../components-v2/controls/Checkbox'
 import { t } from '../i18n/i18n'
@@ -16,7 +17,7 @@ import {
   KeyValueTable
 } from '../components-v2/containers/KeyValueTable'
 
-const emptyPäätös = ErityisenTuenPäätös({ opiskeleeToimintaAlueittain: false })
+const emptyPäätös = uusiErityisenTuenPäätös()
 
 const hasDeprecatedBooleanValue = (value?: boolean | null): value is boolean =>
   value !== undefined && value !== null

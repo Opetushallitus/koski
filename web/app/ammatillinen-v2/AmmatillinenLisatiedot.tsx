@@ -24,11 +24,12 @@ import {
   AikajaksoEdit,
   AikajaksoView
 } from '../components-v2/opiskeluoikeus/AikajaksoField'
+import { uusiTyhjäAikajakso } from '../components-v2/opiskeluoikeus/uusiJakso'
 import { Aikajakso } from '../types/fi/oph/koski/schema/Aikajakso'
 import { ButtonGroup } from '../components-v2/containers/ButtonGroup'
 import { FlatButton } from '../components-v2/controls/FlatButton'
 import { emptyLocalizedString, t } from '../i18n/i18n'
-import { ISO2FinnishDate, todayISODate } from '../date/date'
+import { ISO2FinnishDate } from '../date/date'
 import { append } from '../util/fp/arrays'
 import {
   emptyUlkomaanjakso,
@@ -95,7 +96,7 @@ export const AmmatillinenLisatiedot: React.FC<AmmatillinenLisatiedotProps> = ({
               onClick={() => {
                 form.updateAt(
                   aikajaksoPath.valueOr([]),
-                  append(Aikajakso({ alku: todayISODate() }))
+                  append(uusiTyhjäAikajakso())
                 )
               }}
             >
@@ -371,7 +372,7 @@ const emptyHojks: Hojks = Hojks({
     koodistoUri: 'opetusryhma',
     nimi: emptyLocalizedString
   }),
-  alku: todayISODate()
+  alku: ''
 })
 
 const HojksEdit = ({
@@ -449,7 +450,7 @@ const OsaAikaisuusView = <T extends OsaAikaisuusJakso>({
 }
 
 const emptyOsaAikausuus = OsaAikaisuusJakso({
-  alku: todayISODate(),
+  alku: '',
   osaAikaisuus: 0
 })
 
@@ -523,8 +524,8 @@ const OpiskeluvalmiuksiaTuvkevienOpintojenJaksoView = <
 
 const emptyOpiskeluvalmiuksiaTuvkevienOpintojenJakso =
   OpiskeluvalmiuksiaTukevienOpintojenJakso({
-    alku: todayISODate(),
-    loppu: todayISODate(),
+    alku: '',
+    loppu: '',
     kuvaus: emptyLocalizedString
   })
 

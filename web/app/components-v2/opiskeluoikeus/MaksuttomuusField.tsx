@@ -1,6 +1,6 @@
 import React from 'react'
 import { TestIdLayer, TestIdText } from '../../appstate/useTestId'
-import { ISO2FinnishDate, todayISODate } from '../../date/date'
+import { ISO2FinnishDate } from '../../date/date'
 import { Maksuttomuus } from '../../types/fi/oph/koski/schema/Maksuttomuus'
 import { CommonProps } from '../CommonProps'
 import { Checkbox } from '../controls/Checkbox'
@@ -38,7 +38,7 @@ export type MaksuttomuusEditProps = CommonProps<
 
 export const emptyMaksuttomuuus = Maksuttomuus({
   maksuton: false,
-  alku: todayISODate()
+  alku: ''
 })
 
 export const MaksuttomuusEdit: React.FC<MaksuttomuusEditProps> = ({

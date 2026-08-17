@@ -12,6 +12,7 @@ import {
   AikajaksoEdit,
   AikajaksoView
 } from '../components-v2/opiskeluoikeus/AikajaksoField'
+import { uusiTyhjäAikajakso } from '../components-v2/opiskeluoikeus/uusiJakso'
 import {
   BooleanEdit,
   BooleanView
@@ -21,7 +22,6 @@ import {
   MaksuttomuusEdit,
   MaksuttomuusView
 } from '../components-v2/opiskeluoikeus/MaksuttomuusField'
-import { todayISODate } from '../date/date'
 import { t } from '../i18n/i18n'
 import { Aikajakso } from '../types/fi/oph/koski/schema/Aikajakso'
 import { IBOpiskeluoikeus } from '../types/fi/oph/koski/schema/IBOpiskeluoikeus'
@@ -59,8 +59,8 @@ export const IBLisätiedot: React.FC<IBLisätiedotProps> = ({ form }) => {
       path.prop('oikeuttaMaksuttomuuteenPidennetty').valueOr([]),
       append(
         OikeuttaMaksuttomuuteenPidennetty({
-          alku: todayISODate(),
-          loppu: todayISODate()
+          alku: '',
+          loppu: ''
         })
       )
     )
@@ -76,7 +76,7 @@ export const IBLisätiedot: React.FC<IBLisätiedotProps> = ({ form }) => {
   const addSisäoppilaitosmainenMajoitus = () => {
     form.updateAt(
       path.prop('sisäoppilaitosmainenMajoitus').valueOr([]),
-      append(Aikajakso({ alku: todayISODate() }))
+      append(uusiTyhjäAikajakso())
     )
   }
 

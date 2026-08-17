@@ -364,6 +364,13 @@ const validateDate = (
   path: string[]
 ): ValidationError[] => {
   if (typeof data === 'string') {
+    // Tyhjä kenttä ei ole virheellinen päivämäärä vaan täyttämätön. Ero näkyy
+    // käyttäjälle: uusi jakso luodaan tyhjillä päivämäärillä (ks. uusiJakso.ts),
+    // jolloin "Virheellinen päivämäärä" syyttäisi kirjoitusvirheestä, jota ei
+    // ole tehty.
+    if (data === '') {
+      return [emptyString(path)]
+    }
     return [ISO2FinnishDate(data) ? null : invalidDate(data, path)].filter(
       nonFalsy
     )

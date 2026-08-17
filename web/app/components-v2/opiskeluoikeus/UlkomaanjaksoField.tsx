@@ -1,6 +1,6 @@
 import React from 'react'
 import { TestIdLayer, TestIdText } from '../../appstate/useTestId'
-import { ISO2FinnishDate, todayISODate } from '../../date/date'
+import { ISO2FinnishDate } from '../../date/date'
 import { emptyLocalizedString, t } from '../../i18n/i18n'
 import { Koodistokoodiviite } from '../../types/fi/oph/koski/schema/Koodistokoodiviite'
 import { LocalizedString } from '../../types/fi/oph/koski/schema/LocalizedString'
@@ -55,7 +55,7 @@ export type UlkomaanjaksoEditProps = CommonProps<
 >
 
 export const emptyUlkomaanjakso = Ulkomaanjakso({
-  alku: todayISODate(),
+  alku: '',
   maa: Koodistokoodiviite({
     koodistoUri: 'maatjavaltiot2',
     koodiarvo: '',

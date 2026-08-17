@@ -1,6 +1,6 @@
 import React from 'react'
 import { TestIdLayer, TestIdText } from '../../appstate/useTestId'
-import { ISO2FinnishDate, todayISODate } from '../../date/date'
+import { ISO2FinnishDate } from '../../date/date'
 import { t } from '../../i18n/i18n'
 import { ErityisenKoulutustehtävänJakso } from '../../types/fi/oph/koski/schema/ErityisenKoulutustehtavanJakso'
 import { Koodistokoodiviite } from '../../types/fi/oph/koski/schema/Koodistokoodiviite'
@@ -37,7 +37,7 @@ export type ErityisenKoulutustehtävänJaksoEditProps = CommonProps<
 
 export const emptyErityisenKoulutustehtävänJakso =
   ErityisenKoulutustehtävänJakso({
-    alku: todayISODate(),
+    alku: '',
     tehtävä: Koodistokoodiviite({
       koodistoUri: 'erityinenkoulutustehtava',
       koodiarvo: '101'

@@ -1,6 +1,6 @@
 import React from 'react'
 import { TestIdLayer, TestIdText } from '../../appstate/useTestId'
-import { ISO2FinnishDate, todayISODate } from '../../date/date'
+import { ISO2FinnishDate } from '../../date/date'
 import { CommonProps } from '../CommonProps'
 import { DateInput } from '../controls/DateInput'
 import { FieldEditorProps, FieldViewerProps } from '../forms/FormField'
@@ -51,12 +51,16 @@ export const AikajaksoEdit = <T extends AikajaksoLike>({
     aikajakso && onChange(aikajakso)
   }
 
+  // Alkupäivää ei keksitä täällä: jakso luodaan jo lisäyshetkellä kelvollisella
+  // alulla (ks. uusiJakso.ts), joten pelkän loppupäivän kirjoittaminen ei saa
+  // kirjata alkupäiväksi mitään käyttäjän huomaamatta.
   const setLoppu = (loppu?: string, rawLoppu?: string) => {
-    const aikajakso = createAikajakso({
-      alku: todayISODate(),
-      ...value,
-      loppu: loppu ?? (rawLoppu ? rawLoppu : undefined)
-    })
+    const aikajakso =
+      value &&
+      createAikajakso({
+        ...value,
+        loppu: loppu ?? (rawLoppu ? rawLoppu : undefined)
+      })
     aikajakso && onChange(aikajakso)
   }
 
