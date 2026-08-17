@@ -233,6 +233,8 @@ case class Lukukausi_Ilmoittautumisjakso(
   loppu: Option[LocalDate],
   @KoodistoUri("virtalukukausiilmtila")
   tila: Koodistokoodiviite,
+  @Description("Päivämäärä, jolloin ilmoittautuminen on tehty")
+  ilmoittautumispäivä: Option[LocalDate] = None,
   ylioppilaskunnanJäsen: Option[Boolean] = None,
   @SensitiveData(Set(Rooli.MIGRI, Rooli.HSL, Rooli.SUOMIFI))
   @Deprecated("ei kaytossa yths maksettu")

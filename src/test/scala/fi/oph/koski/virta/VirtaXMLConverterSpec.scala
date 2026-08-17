@@ -724,5 +724,17 @@ class VirtaXMLConverterSpec extends AnyFreeSpec with TestEnvironment with Matche
       hyväksiluetutOpintojaksot should not be empty
       hyväksiluetutOpintojaksot.exists(_.hyväksilukupäivä.contains(LocalDate.of(2014, 12, 16))) shouldBe true
     }
+
+    "ilmoittautumispäivä parsitaan oikein mock-datasta (170691-3962.xml)" in {
+      val xmlString = Files.asString("src/main/resources/mockdata/virta/opintotiedot/170691-3962.xml").get
+      val xml = scala.xml.XML.loadString(xmlString)
+      val jaksot = converter.convertToOpiskeluoikeudet(xml)
+        .flatMap(_.lisätiedot.toList)
+        .flatMap(_.lukukausiIlmoittautuminen.toList)
+        .flatMap(_.ilmoittautumisjaksot)
+
+      jaksot.map(_.ilmoittautumispäivä) shouldBe List(Some(LocalDate.of(2013, 7, 10)), Some(LocalDate.of(2013, 7, 10)))
+      jaksot.map(_.alku) shouldBe List(LocalDate.of(2013, 8, 1), LocalDate.of(2014, 1, 1))
+    }
   }
 }
