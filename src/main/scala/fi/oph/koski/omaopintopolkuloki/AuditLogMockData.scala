@@ -354,6 +354,13 @@ object AuditLogMockData extends Logging {
       organizationOid = List(MockOrganisaatiot.tornionKaupunki),
       raw = rawAuditlog("VALPAS_OPPIVELVOLLISUUDEN_KESKEYTYS")
     ),
+    // Takautuvasti täydennetty rivi, jolta organisaatiotieto puuttuu
+    MockData(
+      studentOid = KoskiSpecificMockOppijat.ysiluokkalainen.oid,
+      time = "2026-02-14T09:00:00.000+03",
+      organizationOid = List(AuditLogService.TuntematonOrganisaatioOid),
+      raw = rawAuditlog("VALPAS_OPPIJA_KATSOMINEN")
+    ),
   )
 
   private case class MockData(

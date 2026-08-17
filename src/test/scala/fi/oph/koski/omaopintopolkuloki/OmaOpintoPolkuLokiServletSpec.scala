@@ -48,12 +48,20 @@ class OmaOpintoPolkuLokiServletSpec extends AnyFreeSpec with Matchers with Koski
       timestamps(MockOrganisaatiot.helsinginKaupunki) should have length(3)
       timestamps(MockOrganisaatiot.dvv) should have length(4)
     }
-    "Näytetään Valpaksen oppija- ja kuntailmoituskatselut sekä oppivelvollisuusrekisterin luovutukset" in {
+    "Näytetään Valppaan oppija- ja kuntailmoituskatselut sekä oppivelvollisuusrekisterin luovutukset" in {
       auditlogs(KoskiSpecificMockOppijat.ysiluokkalainen).map(_.organizations.map(_.oid)) should contain theSameElementsAs(List(
         List(MockOrganisaatiot.jyväskylänNormaalikoulu),
         List(MockOrganisaatiot.kuopionKaupunki),
-        List(MockOrganisaatiot.ylioppilastutkintolautakunta)
+        List(MockOrganisaatiot.ylioppilastutkintolautakunta),
+        List(AuditLogService.TuntematonOrganisaatioOid)
       ))
+    }
+    "Takautuvasti täydennetylle riville täydennetään organisaatiotieto ei ole saatavilla" in {
+      val tuntematon = auditlogs(KoskiSpecificMockOppijat.ysiluokkalainen)
+        .flatMap(_.organizations)
+        .find(_.oid == AuditLogService.TuntematonOrganisaatioOid)
+      tuntematon shouldBe defined
+      tuntematon.get.name.get("fi") should equal("Organisaatiotieto ei saatavilla")
     }
     "Valpas-auditlogien lähdepalveluksi päätellään valpas, vaikka ne on kirjoitettu koski-palvelun nimellä" in {
       auditlogs(KoskiSpecificMockOppijat.ysiluokkalainen).map(_.serviceName).distinct should equal(List("valpas"))

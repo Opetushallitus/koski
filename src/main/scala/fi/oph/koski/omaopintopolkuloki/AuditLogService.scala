@@ -18,6 +18,7 @@ import scala.jdk.CollectionConverters._
 
 class AuditLogService(val application: KoskiApplication) extends Logging with MyDataConfig {
   private val organisaatioRepository = application.organisaatioRepository
+  private val localizationRepository = application.koskiLocalizationRepository
   private val dynamoDB = AuditLogDynamoDB.buildDb(application.config)
 
   def queryLogsFromDynamo(masterOppijaOid: String, allowedOrganisaatiot: AllowedOrganisaatiot): Either[HttpStatus, Seq[OrganisaationAuditLogit]] = {
@@ -149,6 +150,7 @@ class AuditLogService(val application: KoskiApplication) extends Logging with My
       .flatMap(_.nimi)
       .map(name => Organisaatio(oid, name))
       .orElse(isOpetushallitus(oid))
+      .orElse(tuntematonOrganisaatio(oid))
       .toRight(KoskiErrorCategory.internalError())
     nimi.left.foreach(_ => logger.error(s"AuditLogissa olevaa organisaatiota $oid ei löytynyt organisaatiopalvelusta. Ks. oletettava syy TOR-1050."))
     nimi
@@ -161,10 +163,20 @@ class AuditLogService(val application: KoskiApplication) extends Logging with My
       None
     }
   }
+
+  private def tuntematonOrganisaatio(oid: String) = {
+    if (oid == AuditLogService.TuntematonOrganisaatioOid) {
+      Some(Organisaatio(oid, localizationRepository.get("Organisaatiotieto ei saatavilla")))
+    } else {
+      None
+    }
+  }
 }
 
 object AuditLogService {
   val ValpasServiceName = "valpas"
+
+  val TuntematonOrganisaatioOid = "tuntematon"
 
   private val valpasOperaatiot: Set[String] = ValpasOperation.values.toSeq.map(_.toString).toSet
 
