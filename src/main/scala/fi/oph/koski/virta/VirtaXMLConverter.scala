@@ -357,6 +357,10 @@ case class VirtaXMLConverter(oppilaitosRepository: OppilaitosRepository, koodist
 
   private val virtaTruths = List("1", "true")
   private def toBoolean(n: Node) = virtaTruths.contains(n.text.toLowerCase)
+
+  private def opinnäytetyö(suoritus: Node): Option[Boolean] =
+    (suoritus \ "Opinnaytetyo").headOption.map(toBoolean)
+
   private lazy val lukukausiIlmottautuminenPuuttuu = koodistoViitePalvelu.validateRequired(Koodistokoodiviite("4", "virtalukukausiilmtila"))
 
   private def convertOpintojaksonSuoritus(suoritus: Node, allNodes: List[Node]): KorkeakoulunOpintojaksonSuoritus = {
@@ -375,7 +379,8 @@ case class VirtaXMLConverter(oppilaitosRepository: OppilaitosRepository, koodist
       toimipiste = oppilaitos(suoritus, päivämääräVahvistus.map(_.päivä)),
       osasuoritukset = optionalList(osasuoritukset),
       luokittelu = noneIfEmpty(parseLuokittelu(suoritus, "virtaopsuorluokittelu")),
-      hyväksilukupäivä = hyväksilukuPäivämäärä(suoritus)
+      hyväksilukupäivä = hyväksilukuPäivämäärä(suoritus),
+      opinnäytetyö = opinnäytetyö(suoritus)
     )
   }
 

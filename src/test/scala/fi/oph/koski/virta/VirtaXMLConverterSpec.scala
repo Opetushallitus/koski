@@ -415,6 +415,44 @@ class VirtaXMLConverterSpec extends AnyFreeSpec with TestEnvironment with Matche
       }
     }
 
+    "Opinnäytetyö" - {
+      def opintojaksoWithOpinnaytetyo(arvo: Option[String]): Elem =
+        <virta:Opintosuoritus opiskeluoikeusAvain="avopH1O1" opiskelijaAvain="avopH1" koulutusmoduulitunniste="K-124" avain="opinnayte-1">
+          <virta:SuoritusPvm>2017-12-04</virta:SuoritusPvm>
+          <virta:Laajuus>
+            <virta:Opintopiste>5</virta:Opintopiste>
+          </virta:Laajuus>
+          <virta:Arvosana>
+            <virta:Viisiportainen>5</virta:Viisiportainen>
+          </virta:Arvosana>
+          <virta:Myontaja>10076</virta:Myontaja>
+          <virta:Laji>2</virta:Laji>
+          <virta:Nimi kieli="fi">Diplomityö</virta:Nimi>
+          <virta:Kieli>fi</virta:Kieli>
+          {arvo.map(a => <virta:Opinnaytetyo>{a}</virta:Opinnaytetyo>).getOrElse(scala.xml.NodeSeq.Empty)}
+        </virta:Opintosuoritus>
+
+      def opinnäytetyö(arvo: Option[String]): Option[Boolean] =
+        convertSuoritus(opintojaksoWithOpinnaytetyo(arvo))
+          .value.asInstanceOf[KorkeakoulunOpintojaksonSuoritus].opinnäytetyö
+
+      "arvo 1 tulkitaan todeksi" in {
+        opinnäytetyö(Some("1")) shouldBe Some(true)
+      }
+
+      "arvo true tulkitaan todeksi" in {
+        opinnäytetyö(Some("true")) shouldBe Some(true)
+      }
+
+      "arvo 0 tulkitaan epätodeksi" in {
+        opinnäytetyö(Some("0")) shouldBe Some(false)
+      }
+
+      "on None jos Opinnaytetyo puuttuu" in {
+        opinnäytetyö(None) shouldBe None
+      }
+    }
+
     "Luokittelu" - {
       "parsitaan koodistoviitteeksi" in {
         val luokittelut = convertSuoritus(suoritusWithOrganisaatio(None, luokittelu=Some(1)))
