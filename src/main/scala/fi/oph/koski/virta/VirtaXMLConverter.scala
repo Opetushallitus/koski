@@ -345,6 +345,7 @@ case class VirtaXMLConverter(oppilaitosRepository: OppilaitosRepository, koodist
     alku = alkuPvm(n),
     loppu = loppuPvm(n),
     tila = koodistoViitePalvelu.validate(Koodistokoodiviite((n \ "Tila").text, "virtalukukausiilmtila")).getOrElse(lukukausiIlmottautuminenPuuttuu),
+    ilmoittautumispäivä = (n \ "IlmoittautumisPvm").headOption.map(d => date(d.text)),
     ylioppilaskunnanJäsen = (n \ "YlioppilaskuntaJasen").headOption.map(toBoolean),
     ythsMaksettu = (n \ "YTHSMaksu").headOption.map(toBoolean),
     maksetutLukuvuosimaksut = (n \ "LukuvuosiMaksu").headOption.map(lukukausiIlmoLukuvuosiMaksu)
