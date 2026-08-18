@@ -1,0 +1,571 @@
+<SOAP-ENV:Envelope xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/">
+  <SOAP-ENV:Header/>
+  <SOAP-ENV:Body>
+    <virtaluku:OpiskelijanKaikkiTiedotResponse xmlns:virtaluku="http://tietovaranto.csc.fi/luku">
+      <virta:Virta xmlns:virta="urn:mace:funet.fi:virta/2015/09/01">
+        <virta:Opiskelija avain="78999">
+          <virta:Henkilotunnus>200482-900A</virta:Henkilotunnus>
+          <virta:Opiskeluoikeudet>
+            <virta:Opiskeluoikeus avain="2106789" opiskelijaAvain="78999">
+              <virta:AlkuPvm>2021-08-26</virta:AlkuPvm>
+              <virta:LoppuPvm>2024-12-31</virta:LoppuPvm>
+              <virta:Tila>
+                <virta:AlkuPvm>2021-08-26</virta:AlkuPvm>
+                <virta:Koodi>1</virta:Koodi>
+              </virta:Tila>
+              <virta:Tyyppi>1</virta:Tyyppi>
+              <virta:Myontaja>02467</virta:Myontaja>
+              <virta:Jakso koulutusmoduulitunniste="LIK_3011 Liiketalouden tutkinto-ohjelma">
+                <virta:AlkuPvm>2021-08-26</virta:AlkuPvm>
+                <virta:Koulutuskoodi>631101</virta:Koulutuskoodi>
+                <virta:Koulutuskunta>109</virta:Koulutuskunta>
+                <virta:Koulutuskieli>fi</virta:Koulutuskieli>
+                <virta:Rahoituslahde>3</virta:Rahoituslahde>
+                <virta:Luokittelu>3</virta:Luokittelu>
+              </virta:Jakso>
+              <virta:Koulutusala versio="ohjausala">5</virta:Koulutusala>
+              <virta:Laajuus>
+                <virta:Opintopiste>210</virta:Opintopiste>
+              </virta:Laajuus>
+            </virta:Opiskeluoikeus>
+          </virta:Opiskeluoikeudet>
+          <virta:LukukausiIlmoittautumiset>
+            <virta:LukukausiIlmoittautuminen opiskelijaAvain="78999" opiskeluoikeusAvain="2106789">
+              <virta:Myontaja>02467</virta:Myontaja>
+              <virta:Tila>1</virta:Tila>
+              <virta:IlmoittautumisPvm>2021-08-01</virta:IlmoittautumisPvm>
+              <virta:AlkuPvm>2021-08-01</virta:AlkuPvm>
+              <virta:LoppuPvm>2021-12-31</virta:LoppuPvm>
+            </virta:LukukausiIlmoittautuminen>
+            <virta:LukukausiIlmoittautuminen opiskelijaAvain="78999" opiskeluoikeusAvain="2106789">
+              <virta:Myontaja>02467</virta:Myontaja>
+              <virta:Tila>1</virta:Tila>
+              <virta:IlmoittautumisPvm>2022-01-01</virta:IlmoittautumisPvm>
+              <virta:AlkuPvm>2022-01-01</virta:AlkuPvm>
+              <virta:LoppuPvm>2022-07-31</virta:LoppuPvm>
+            </virta:LukukausiIlmoittautuminen>
+          </virta:LukukausiIlmoittautumiset>
+          <virta:Opintosuoritukset>
+            <virta:Opintosuoritus avain="2794020" koulutusmoduulitunniste="LIK2020S-LII I-95347-AHOT-002" opiskelijaAvain="78999" opiskeluoikeusAvain="2106789">
+              <virta:SuoritusPvm>2001-02-21</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>4.5</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>3</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>02467</virta:Myontaja>
+              <virta:Organisaatio>
+                <virta:Rooli>3</virta:Rooli>
+                <virta:Koodi>02505</virta:Koodi>
+                <virta:Osuus>1</virta:Osuus>
+              </virta:Organisaatio>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Kansantalouden perusteet</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">5</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:HyvaksilukuPvm>2021-09-14</virta:HyvaksilukuPvm>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus avain="2794030" koulutusmoduulitunniste="LIK2020S-LII I-95347-AHOT-011" opiskelijaAvain="78999" opiskeluoikeusAvain="2106789">
+              <virta:SuoritusPvm>2000-03-20</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>3</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>5</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>02467</virta:Myontaja>
+              <virta:Organisaatio>
+                <virta:Rooli>3</virta:Rooli>
+                <virta:Koodi>02505</virta:Koodi>
+                <virta:Osuus>1</virta:Osuus>
+              </virta:Organisaatio>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Tietotekniikan perusteet</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">5</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:HyvaksilukuPvm>2021-09-14</virta:HyvaksilukuPvm>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus avain="2794040" koulutusmoduulitunniste="LIK2020S-LII I-95347-AHOT-016" opiskelijaAvain="78999" opiskeluoikeusAvain="2106789">
+              <virta:SuoritusPvm>2001-05-28</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>3</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>4</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>02467</virta:Myontaja>
+              <virta:Organisaatio>
+                <virta:Rooli>3</virta:Rooli>
+                <virta:Koodi>02505</virta:Koodi>
+                <virta:Osuus>1</virta:Osuus>
+              </virta:Organisaatio>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Englanti (Modern IT, Discussion)</virta:Nimi>
+              <virta:Kieli>en</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">5</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:HyvaksilukuPvm>2021-09-14</virta:HyvaksilukuPvm>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus avain="2794059" koulutusmoduulitunniste="LIK2020S-LII I-95347-AHOT-021" opiskelijaAvain="78999" opiskeluoikeusAvain="2106789">
+              <virta:SuoritusPvm>2003-01-07</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>3</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>4</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>02467</virta:Myontaja>
+              <virta:Organisaatio>
+                <virta:Rooli>3</virta:Rooli>
+                <virta:Koodi>02505</virta:Koodi>
+                <virta:Osuus>1</virta:Osuus>
+              </virta:Organisaatio>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Metodiopinnot</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">5</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:HyvaksilukuPvm>2021-09-14</virta:HyvaksilukuPvm>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus avain="2794022" koulutusmoduulitunniste="LIK2020S-LII I-95347-AHOT-004" opiskelijaAvain="78999" opiskeluoikeusAvain="2106789">
+              <virta:SuoritusPvm>2002-12-09</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>4.5</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>4</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>02467</virta:Myontaja>
+              <virta:Organisaatio>
+                <virta:Rooli>3</virta:Rooli>
+                <virta:Koodi>02505</virta:Koodi>
+                <virta:Osuus>1</virta:Osuus>
+              </virta:Organisaatio>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Markkinoinnin perusteet</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">5</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:HyvaksilukuPvm>2021-09-14</virta:HyvaksilukuPvm>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus avain="2794027" koulutusmoduulitunniste="LIK2020S-LII I-95347-AHOT-007" opiskelijaAvain="78999" opiskeluoikeusAvain="2106789">
+              <virta:SuoritusPvm>2000-06-07</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>3</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>4</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>02467</virta:Myontaja>
+              <virta:Organisaatio>
+                <virta:Rooli>3</virta:Rooli>
+                <virta:Koodi>02505</virta:Koodi>
+                <virta:Osuus>1</virta:Osuus>
+              </virta:Organisaatio>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Organisaation toiminta</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">5</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:HyvaksilukuPvm>2021-09-14</virta:HyvaksilukuPvm>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus avain="2794050" koulutusmoduulitunniste="LIK2020S-LII I-95347-AHOT-017" opiskelijaAvain="78999" opiskeluoikeusAvain="2106789">
+              <virta:SuoritusPvm>2000-06-08</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>3</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>5</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>02467</virta:Myontaja>
+              <virta:Organisaatio>
+                <virta:Rooli>3</virta:Rooli>
+                <virta:Koodi>02505</virta:Koodi>
+                <virta:Osuus>1</virta:Osuus>
+              </virta:Organisaatio>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Ruotsi 1</virta:Nimi>
+              <virta:Kieli>sv</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">5</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:HyvaksilukuPvm>2021-09-14</virta:HyvaksilukuPvm>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus avain="2777438" koulutusmoduulitunniste="LIK2020S-LII KL00BQ23-3028 2777438" opiskelijaAvain="78999" opiskeluoikeusAvain="2106789">
+              <virta:SuoritusPvm>2021-10-18</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>2</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>5</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>02467</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Strateginen liiketoiminnan suunnittelu</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">5</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus avain="2794055" koulutusmoduulitunniste="LIK2020S-LII I-95347-AHOT-019" opiskelijaAvain="78999" opiskeluoikeusAvain="2106789">
+              <virta:SuoritusPvm>2000-12-13</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>7.5</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>3</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>02467</virta:Myontaja>
+              <virta:Organisaatio>
+                <virta:Rooli>3</virta:Rooli>
+                <virta:Koodi>02505</virta:Koodi>
+                <virta:Osuus>1</virta:Osuus>
+              </virta:Organisaatio>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Aikuiskoulutus 2</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">5</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:HyvaksilukuPvm>2021-09-14</virta:HyvaksilukuPvm>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus avain="2794023" koulutusmoduulitunniste="LIK2020S-LII I-95347-AHOT-005" opiskelijaAvain="78999" opiskeluoikeusAvain="2106789">
+              <virta:SuoritusPvm>2003-06-04</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>4.5</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>2</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>02467</virta:Myontaja>
+              <virta:Organisaatio>
+                <virta:Rooli>3</virta:Rooli>
+                <virta:Koodi>02505</virta:Koodi>
+                <virta:Osuus>1</virta:Osuus>
+              </virta:Organisaatio>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Laskentatoimen perusteet</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">5</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:HyvaksilukuPvm>2021-09-14</virta:HyvaksilukuPvm>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus avain="2794028" koulutusmoduulitunniste="LIK2020S-LII I-95347-AHOT-010" opiskelijaAvain="78999" opiskeluoikeusAvain="2106789">
+              <virta:SuoritusPvm>2000-06-09</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>3</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>4</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>02467</virta:Myontaja>
+              <virta:Organisaatio>
+                <virta:Rooli>3</virta:Rooli>
+                <virta:Koodi>02505</virta:Koodi>
+                <virta:Osuus>1</virta:Osuus>
+              </virta:Organisaatio>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Muuttuva yhteiskunta, työelämä ja ammattitaito</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">5</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:HyvaksilukuPvm>2021-09-14</virta:HyvaksilukuPvm>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus avain="2794035" koulutusmoduulitunniste="LIK2020S-LII I-95347-AHOT-014" opiskelijaAvain="78999" opiskeluoikeusAvain="2106789">
+              <virta:SuoritusPvm>2000-05-22</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>3</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>3</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>02467</virta:Myontaja>
+              <virta:Organisaatio>
+                <virta:Rooli>3</virta:Rooli>
+                <virta:Koodi>02505</virta:Koodi>
+                <virta:Osuus>1</virta:Osuus>
+              </virta:Organisaatio>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Computing English</virta:Nimi>
+              <virta:Kieli>en</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">5</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:HyvaksilukuPvm>2021-09-14</virta:HyvaksilukuPvm>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus avain="2777440" koulutusmoduulitunniste="LIK2020S-LII KL00BQ23-3028 2777440" opiskelijaAvain="78999" opiskeluoikeusAvain="2106789">
+              <virta:SuoritusPvm>2021-11-09</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>3</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>5</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>02467</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Liiketoiminnan kannattavuus ja budjetointi</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">5</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus avain="2789722" koulutusmoduulitunniste="LIK2020S-LII KL00BW41" opiskelijaAvain="78999" opiskeluoikeusAvain="2106789">
+              <virta:SuoritusPvm>1999-12-31</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>5</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>HYV</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>02467</virta:Myontaja>
+              <virta:Organisaatio>
+                <virta:Rooli>3</virta:Rooli>
+                <virta:Koodi>99</virta:Koodi>
+                <virta:Osuus>1</virta:Osuus>
+              </virta:Organisaatio>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Johtamistaito</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">5</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:HyvaksilukuPvm>2021-09-07</virta:HyvaksilukuPvm>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus avain="2794024" koulutusmoduulitunniste="LIK2020S-LII I-95347-AHOT-006" opiskelijaAvain="78999" opiskeluoikeusAvain="2106789">
+              <virta:SuoritusPvm>2000-12-12</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>4.5</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>3</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>02467</virta:Myontaja>
+              <virta:Organisaatio>
+                <virta:Rooli>3</virta:Rooli>
+                <virta:Koodi>02505</virta:Koodi>
+                <virta:Osuus>1</virta:Osuus>
+              </virta:Organisaatio>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Oikeustieteen perusteet</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">5</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:HyvaksilukuPvm>2021-09-14</virta:HyvaksilukuPvm>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus avain="2794032" koulutusmoduulitunniste="LIK2020S-LII I-95347-AHOT-012" opiskelijaAvain="78999" opiskeluoikeusAvain="2106789">
+              <virta:SuoritusPvm>2001-03-11</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>7.5</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>4</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>02467</virta:Myontaja>
+              <virta:Organisaatio>
+                <virta:Rooli>3</virta:Rooli>
+                <virta:Koodi>02505</virta:Koodi>
+                <virta:Osuus>1</virta:Osuus>
+              </virta:Organisaatio>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Tietotekniikan hyödyntäminen</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">5</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:HyvaksilukuPvm>2021-09-14</virta:HyvaksilukuPvm>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus avain="2794021" koulutusmoduulitunniste="LIK2020S-LII I-95347-AHOT-003" opiskelijaAvain="78999" opiskeluoikeusAvain="2106789">
+              <virta:SuoritusPvm>2002-01-14</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>3</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>4</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>02467</virta:Myontaja>
+              <virta:Organisaatio>
+                <virta:Rooli>3</virta:Rooli>
+                <virta:Koodi>02505</virta:Koodi>
+                <virta:Osuus>1</virta:Osuus>
+              </virta:Organisaatio>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">AMK:n tutkimustoiminta</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">5</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:HyvaksilukuPvm>2021-09-14</virta:HyvaksilukuPvm>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus avain="2794056" koulutusmoduulitunniste="LIK2020S-LII I-95347-AHOT-020" opiskelijaAvain="78999" opiskeluoikeusAvain="2106789">
+              <virta:SuoritusPvm>2003-01-17</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>4.5</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>4</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>02467</virta:Myontaja>
+              <virta:Organisaatio>
+                <virta:Rooli>3</virta:Rooli>
+                <virta:Koodi>02505</virta:Koodi>
+                <virta:Osuus>1</virta:Osuus>
+              </virta:Organisaatio>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Aikuiskoulutuksen teoria</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">5</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:HyvaksilukuPvm>2021-09-14</virta:HyvaksilukuPvm>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus avain="2794029" koulutusmoduulitunniste="LIK2020S-LII I-95347-AHOT-009" opiskelijaAvain="78999" opiskeluoikeusAvain="2106789">
+              <virta:SuoritusPvm>2000-11-02</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>3</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>HYV</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>02467</virta:Myontaja>
+              <virta:Organisaatio>
+                <virta:Rooli>3</virta:Rooli>
+                <virta:Koodi>02505</virta:Koodi>
+                <virta:Osuus>1</virta:Osuus>
+              </virta:Organisaatio>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Johdatus amk-opintoihin</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">5</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:HyvaksilukuPvm>2021-09-14</virta:HyvaksilukuPvm>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus avain="2794025" koulutusmoduulitunniste="LIK2020S-LII I-95347-AHOT-008" opiskelijaAvain="78999" opiskeluoikeusAvain="2106789">
+              <virta:SuoritusPvm>2003-08-07</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>4.5</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>4</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>02467</virta:Myontaja>
+              <virta:Organisaatio>
+                <virta:Rooli>3</virta:Rooli>
+                <virta:Koodi>02505</virta:Koodi>
+                <virta:Osuus>1</virta:Osuus>
+              </virta:Organisaatio>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Suomen kieli ja viestintä</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">5</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:HyvaksilukuPvm>2021-09-14</virta:HyvaksilukuPvm>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus avain="2794038" koulutusmoduulitunniste="LIK2020S-LII I-95347-AHOT-015" opiskelijaAvain="78999" opiskeluoikeusAvain="2106789">
+              <virta:SuoritusPvm>2002-01-04</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>4.5</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>2</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>02467</virta:Myontaja>
+              <virta:Organisaatio>
+                <virta:Rooli>3</virta:Rooli>
+                <virta:Koodi>02505</virta:Koodi>
+                <virta:Osuus>1</virta:Osuus>
+              </virta:Organisaatio>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Matematiikka</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">5</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:HyvaksilukuPvm>2021-09-14</virta:HyvaksilukuPvm>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus avain="2794033" koulutusmoduulitunniste="LIK2020S-LII I-95347-AHOT-013" opiskelijaAvain="78999" opiskeluoikeusAvain="2106789">
+              <virta:SuoritusPvm>2001-03-02</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>3</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>5</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>02467</virta:Myontaja>
+              <virta:Organisaatio>
+                <virta:Rooli>3</virta:Rooli>
+                <virta:Koodi>02505</virta:Koodi>
+                <virta:Osuus>1</virta:Osuus>
+              </virta:Organisaatio>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Ruotsi 2</virta:Nimi>
+              <virta:Kieli>sv</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">5</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:HyvaksilukuPvm>2021-09-14</virta:HyvaksilukuPvm>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus avain="2794053" koulutusmoduulitunniste="LIK2020S-LII I-95347-AHOT-018" opiskelijaAvain="78999" opiskeluoikeusAvain="2106789">
+              <virta:SuoritusPvm>2002-01-29</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>4.5</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>2</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>02467</virta:Myontaja>
+              <virta:Organisaatio>
+                <virta:Rooli>3</virta:Rooli>
+                <virta:Koodi>02505</virta:Koodi>
+                <virta:Osuus>1</virta:Osuus>
+              </virta:Organisaatio>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Aikuiskoulutus 1</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">5</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:HyvaksilukuPvm>2021-09-14</virta:HyvaksilukuPvm>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+          </virta:Opintosuoritukset>
+        </virta:Opiskelija>
+      </virta:Virta>
+    </virtaluku:OpiskelijanKaikkiTiedotResponse>
+  </SOAP-ENV:Body>
+</SOAP-ENV:Envelope>

@@ -1,0 +1,1310 @@
+<SOAP-ENV:Envelope xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/">
+  <SOAP-ENV:Header/>
+  <SOAP-ENV:Body>
+    <virtaluku:OpiskelijanKaikkiTiedotResponse xmlns:virtaluku="http://tietovaranto.csc.fi/luku">
+      <virta:Virta xmlns:virta="urn:mace:funet.fi:virta/2015/09/01">
+        <virta:Opiskelija avain="54238">
+          <virta:Henkilotunnus>060180-9521</virta:Henkilotunnus>
+          <virta:Opiskeluoikeudet>
+            <virta:Opiskeluoikeus avain="1203130" opiskelijaAvain="54238">
+              <virta:AlkuPvm>2012-08-15</virta:AlkuPvm>
+              <virta:LoppuPvm>2015-12-18</virta:LoppuPvm>
+              <virta:Tila>
+                <virta:AlkuPvm>2012-08-15</virta:AlkuPvm>
+                <virta:LoppuPvm>2015-12-18</virta:LoppuPvm>
+                <virta:Koodi>1</virta:Koodi>
+              </virta:Tila>
+              <virta:Tila>
+                <virta:AlkuPvm>2015-12-19</virta:AlkuPvm>
+                <virta:Koodi>3</virta:Koodi>
+              </virta:Tila>
+              <virta:Tyyppi>1</virta:Tyyppi>
+              <virta:Myontaja>10065</virta:Myontaja>
+              <virta:Jakso koulutusmoduulitunniste="LIKO Liiketalouden tutkinto-ohjelma">
+                <virta:AlkuPvm>2012-08-15</virta:AlkuPvm>
+                <virta:LoppuPvm>2015-12-18</virta:LoppuPvm>
+                <virta:Koulutuskoodi>631101</virta:Koulutuskoodi>
+                <virta:Koulutuskunta>091</virta:Koulutuskunta>
+                <virta:Koulutuskieli>fi</virta:Koulutuskieli>
+                <virta:Rahoituslahde>1</virta:Rahoituslahde>
+                <virta:Nimi kieli="fi">Liiketalouden tutkinto-ohjelma</virta:Nimi>
+                <virta:Nimi kieli="en">Degree Programme in Business Administration</virta:Nimi>
+              </virta:Jakso>
+              <virta:Koulutusala versio="ohjausala">5</virta:Koulutusala>
+              <virta:Laajuus>
+                <virta:Opintopiste>210</virta:Opintopiste>
+              </virta:Laajuus>
+            </virta:Opiskeluoikeus>
+            <virta:Opiskeluoikeus avain="1902576" opiskelijaAvain="54238">
+              <virta:AlkuPvm>2019-08-22</virta:AlkuPvm>
+              <virta:LoppuPvm>2020-12-31</virta:LoppuPvm>
+              <virta:Tila>
+                <virta:AlkuPvm>2019-08-22</virta:AlkuPvm>
+                <virta:LoppuPvm>2020-12-31</virta:LoppuPvm>
+                <virta:Koodi>1</virta:Koodi>
+              </virta:Tila>
+              <virta:Tila>
+                <virta:AlkuPvm>2021-01-01</virta:AlkuPvm>
+                <virta:Koodi>3</virta:Koodi>
+              </virta:Tila>
+              <virta:Tyyppi>3</virta:Tyyppi>
+              <virta:Myontaja>10065</virta:Myontaja>
+              <virta:Jakso koulutusmoduulitunniste="YMYY Kansainvälisen myynnin ja myynnin johtamisen ylempi tutkinto-ohjelma">
+                <virta:AlkuPvm>2019-08-22</virta:AlkuPvm>
+                <virta:LoppuPvm>2020-12-31</virta:LoppuPvm>
+                <virta:Koulutuskoodi>731201</virta:Koulutuskoodi>
+                <virta:Koulutuskunta>091</virta:Koulutuskunta>
+                <virta:Koulutuskieli>fi</virta:Koulutuskieli>
+                <virta:Rahoituslahde>1</virta:Rahoituslahde>
+                <virta:Nimi kieli="fi">Kansainvälisen myynnin ja myynnin johtamisen ylempi tutkinto-ohjelma</virta:Nimi>
+                <virta:Nimi kieli="en">Master's Degree Programme in International Sales and Sales Management</virta:Nimi>
+              </virta:Jakso>
+              <virta:Koulutusala versio="ohjausala">5</virta:Koulutusala>
+              <virta:Laajuus>
+                <virta:Opintopiste>90</virta:Opintopiste>
+              </virta:Laajuus>
+            </virta:Opiskeluoikeus>
+          </virta:Opiskeluoikeudet>
+          <virta:LukukausiIlmoittautumiset>
+            <virta:LukukausiIlmoittautuminen opiskelijaAvain="54238" opiskeluoikeusAvain="1902576">
+              <virta:Myontaja>10065</virta:Myontaja>
+              <virta:Tila>1</virta:Tila>
+              <virta:IlmoittautumisPvm>2020-08-01</virta:IlmoittautumisPvm>
+              <virta:AlkuPvm>2020-08-01</virta:AlkuPvm>
+              <virta:LoppuPvm>2020-12-31</virta:LoppuPvm>
+            </virta:LukukausiIlmoittautuminen>
+            <virta:LukukausiIlmoittautuminen opiskelijaAvain="54238" opiskeluoikeusAvain="1203130">
+              <virta:Myontaja>10065</virta:Myontaja>
+              <virta:Tila>1</virta:Tila>
+              <virta:IlmoittautumisPvm>2013-01-01</virta:IlmoittautumisPvm>
+              <virta:AlkuPvm>2013-01-01</virta:AlkuPvm>
+              <virta:LoppuPvm>2013-07-31</virta:LoppuPvm>
+            </virta:LukukausiIlmoittautuminen>
+            <virta:LukukausiIlmoittautuminen opiskelijaAvain="54238" opiskeluoikeusAvain="1203130">
+              <virta:Myontaja>10065</virta:Myontaja>
+              <virta:Tila>1</virta:Tila>
+              <virta:IlmoittautumisPvm>2015-01-01</virta:IlmoittautumisPvm>
+              <virta:AlkuPvm>2015-01-01</virta:AlkuPvm>
+              <virta:LoppuPvm>2015-07-31</virta:LoppuPvm>
+            </virta:LukukausiIlmoittautuminen>
+            <virta:LukukausiIlmoittautuminen opiskelijaAvain="54238" opiskeluoikeusAvain="1203130">
+              <virta:Myontaja>10065</virta:Myontaja>
+              <virta:Tila>1</virta:Tila>
+              <virta:IlmoittautumisPvm>2014-01-01</virta:IlmoittautumisPvm>
+              <virta:AlkuPvm>2014-01-01</virta:AlkuPvm>
+              <virta:LoppuPvm>2014-07-31</virta:LoppuPvm>
+            </virta:LukukausiIlmoittautuminen>
+            <virta:LukukausiIlmoittautuminen opiskelijaAvain="54238" opiskeluoikeusAvain="1902576">
+              <virta:Myontaja>10065</virta:Myontaja>
+              <virta:Tila>1</virta:Tila>
+              <virta:IlmoittautumisPvm>2020-01-01</virta:IlmoittautumisPvm>
+              <virta:AlkuPvm>2020-01-01</virta:AlkuPvm>
+              <virta:LoppuPvm>2020-07-31</virta:LoppuPvm>
+            </virta:LukukausiIlmoittautuminen>
+            <virta:LukukausiIlmoittautuminen opiskelijaAvain="54238" opiskeluoikeusAvain="1203130">
+              <virta:Myontaja>10065</virta:Myontaja>
+              <virta:Tila>1</virta:Tila>
+              <virta:IlmoittautumisPvm>2013-08-01</virta:IlmoittautumisPvm>
+              <virta:AlkuPvm>2013-08-01</virta:AlkuPvm>
+              <virta:LoppuPvm>2013-12-31</virta:LoppuPvm>
+            </virta:LukukausiIlmoittautuminen>
+            <virta:LukukausiIlmoittautuminen opiskelijaAvain="54238" opiskeluoikeusAvain="1902576">
+              <virta:Myontaja>10065</virta:Myontaja>
+              <virta:Tila>1</virta:Tila>
+              <virta:IlmoittautumisPvm>2019-08-01</virta:IlmoittautumisPvm>
+              <virta:AlkuPvm>2019-08-01</virta:AlkuPvm>
+              <virta:LoppuPvm>2019-12-31</virta:LoppuPvm>
+            </virta:LukukausiIlmoittautuminen>
+            <virta:LukukausiIlmoittautuminen opiskelijaAvain="54238" opiskeluoikeusAvain="1203130">
+              <virta:Myontaja>10065</virta:Myontaja>
+              <virta:Tila>1</virta:Tila>
+              <virta:IlmoittautumisPvm>2012-08-15</virta:IlmoittautumisPvm>
+              <virta:AlkuPvm>2012-08-01</virta:AlkuPvm>
+              <virta:LoppuPvm>2012-12-31</virta:LoppuPvm>
+            </virta:LukukausiIlmoittautuminen>
+            <virta:LukukausiIlmoittautuminen opiskelijaAvain="54238" opiskeluoikeusAvain="1203130">
+              <virta:Myontaja>10065</virta:Myontaja>
+              <virta:Tila>1</virta:Tila>
+              <virta:IlmoittautumisPvm>2015-08-01</virta:IlmoittautumisPvm>
+              <virta:AlkuPvm>2015-08-01</virta:AlkuPvm>
+              <virta:LoppuPvm>2015-12-31</virta:LoppuPvm>
+            </virta:LukukausiIlmoittautuminen>
+            <virta:LukukausiIlmoittautuminen opiskelijaAvain="54238" opiskeluoikeusAvain="1203130">
+              <virta:Myontaja>10065</virta:Myontaja>
+              <virta:Tila>1</virta:Tila>
+              <virta:IlmoittautumisPvm>2014-08-01</virta:IlmoittautumisPvm>
+              <virta:AlkuPvm>2014-08-01</virta:AlkuPvm>
+              <virta:LoppuPvm>2014-12-31</virta:LoppuPvm>
+            </virta:LukukausiIlmoittautuminen>
+          </virta:LukukausiIlmoittautumiset>
+          <virta:Opintosuoritukset>
+            <virta:Opintosuoritus avain="290068" koulutusmoduulitunniste="XXX 3H00CA66-3001" opiskelijaAvain="54238" opiskeluoikeusAvain="1203130">
+              <virta:SuoritusPvm>2015-11-20</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>5</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>HYV</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>10065</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Markkinointiviestintä</virta:Nimi>
+              <virta:Nimi kieli="en">Marketing Communications</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">5</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus 
+            avain="TUTKINTO-102021" koulutusmoduulitunniste="YMYY Kansainvälisen myynnin ja myynnin johtamisen ylempi tutkinto-ohjelma" opiskelijaAvain="54238" opiskeluoikeusAvain="1902576">
+              <virta:SuoritusPvm>2020-12-31</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>90</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Hyvaksytty>HYV</virta:Hyvaksytty>
+              </virta:Arvosana>
+              <virta:Myontaja>10065</virta:Myontaja>
+              <virta:Laji>1</virta:Laji>
+              <virta:Nimi kieli="fi">Tradenomi (ylempi AMK)</virta:Nimi>
+              <virta:Nimi kieli="en">Master of Business Administration</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutuskoodi>731201</virta:Koulutuskoodi>
+              <virta:Sisaltyvyys sisaltyvaOpintosuoritusAvain="3647503">
+                <virta:Opintopiste>10</virta:Opintopiste>
+              </virta:Sisaltyvyys>
+              <virta:Sisaltyvyys sisaltyvaOpintosuoritusAvain="3729142">
+                <virta:Opintopiste>10</virta:Opintopiste>
+              </virta:Sisaltyvyys>
+              <virta:Sisaltyvyys sisaltyvaOpintosuoritusAvain="3798106">
+                <virta:Opintopiste>10</virta:Opintopiste>
+              </virta:Sisaltyvyys>
+              <virta:Sisaltyvyys sisaltyvaOpintosuoritusAvain="3741642">
+                <virta:Opintopiste>5</virta:Opintopiste>
+              </virta:Sisaltyvyys>
+              <virta:Sisaltyvyys sisaltyvaOpintosuoritusAvain="3913519">
+                <virta:Opintopiste>5</virta:Opintopiste>
+              </virta:Sisaltyvyys>
+              <virta:Sisaltyvyys sisaltyvaOpintosuoritusAvain="3807457">
+                <virta:Opintopiste>5</virta:Opintopiste>
+              </virta:Sisaltyvyys>
+              <virta:Sisaltyvyys sisaltyvaOpintosuoritusAvain="3907503">
+                <virta:Opintopiste>5</virta:Opintopiste>
+              </virta:Sisaltyvyys>
+              <virta:Sisaltyvyys sisaltyvaOpintosuoritusAvain="3708526">
+                <virta:Opintopiste>5</virta:Opintopiste>
+              </virta:Sisaltyvyys>
+              <virta:Sisaltyvyys sisaltyvaOpintosuoritusAvain="3707116">
+                <virta:Opintopiste>5</virta:Opintopiste>
+              </virta:Sisaltyvyys>
+              <virta:Sisaltyvyys sisaltyvaOpintosuoritusAvain="3923359">
+                <virta:Opintopiste>30</virta:Opintopiste>
+              </virta:Sisaltyvyys>
+              <virta:Sisaltyvyys sisaltyvaOpintosuoritusAvain="3923375">
+                <virta:Opintopiste>0</virta:Opintopiste>
+              </virta:Sisaltyvyys>
+</virta:Opintosuoritus>
+            <virta:Opintosuoritus avain="3907503" koulutusmoduulitunniste="19YMYY NY00EC65-3004" opiskelijaAvain="54238" opiskeluoikeusAvain="1902576">
+              <virta:SuoritusPvm>2020-11-21</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>5</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>5</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>10065</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Teknologiaosaamisen johtaminen</virta:Nimi>
+              <virta:Nimi kieli="en">Technology Know How Management</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">5</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:TKILaajuusMuu>
+                <virta:Opintopiste>3</virta:Opintopiste>
+              </virta:TKILaajuusMuu>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus avain="3913519" koulutusmoduulitunniste="19YMYY NY00EC57-3006" opiskelijaAvain="54238" opiskeluoikeusAvain="1902576">
+              <virta:SuoritusPvm>2020-11-27</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>5</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>5</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>10065</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Tulevaisuustutkimus, ennakointi ja innovointi</virta:Nimi>
+              <virta:Nimi kieli="en">Future Research, Foresight and Innovation</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">5</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:TKILaajuusMuu>
+                <virta:Opintopiste>3</virta:Opintopiste>
+              </virta:TKILaajuusMuu>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus avain="3729142" koulutusmoduulitunniste="19YMYY 1800EB14-3001" opiskelijaAvain="54238" opiskeluoikeusAvain="1902576">
+              <virta:SuoritusPvm>2020-03-18</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>10</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>3</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>10065</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Myynnin johtaminen ja asiakasyritysten liiketoiminnan kehittäminen</virta:Nimi>
+              <virta:Nimi kieli="en">Leading Sales and Developing the Business of Customers</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">5</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:TKILaajuusMuu>
+                <virta:Opintopiste>10</virta:Opintopiste>
+              </virta:TKILaajuusMuu>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus avain="459654" koulutusmoduulitunniste="XXX H-Y1210-3012" opiskelijaAvain="54238" opiskeluoikeusAvain="1203130">
+              <virta:SuoritusPvm>2015-03-16</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>5</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>HYV</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>10065</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Business Camp</virta:Nimi>
+              <virta:Nimi kieli="en">Business Camp</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">5</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:TKILaajuusMuu>
+                <virta:Opintopiste>5</virta:Opintopiste>
+              </virta:TKILaajuusMuu>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus avain="459645" koulutusmoduulitunniste="XXX @2-1203130" opiskelijaAvain="54238" opiskeluoikeusAvain="1203130">
+              <virta:SuoritusPvm>2015-01-12</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>5</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>HYV</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>10065</virta:Myontaja>
+              <virta:Organisaatio>
+                <virta:Rooli>3</virta:Rooli>
+                <virta:Koodi>UK</virta:Koodi>
+                <virta:Osuus>1</virta:Osuus>
+              </virta:Organisaatio>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Marketing Management</virta:Nimi>
+              <virta:Nimi kieli="en">Marketing Management</virta:Nimi>
+              <virta:Kieli>en</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">5</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:HyvaksilukuPvm>2015-02-02</virta:HyvaksilukuPvm>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus avain="459651" koulutusmoduulitunniste="XXX 3H00CK46-3003" opiskelijaAvain="54238" opiskeluoikeusAvain="1203130">
+              <virta:SuoritusPvm>2015-07-31</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>5</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>HYV</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>10065</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Opinnäytetyön käynnistäminen</virta:Nimi>
+              <virta:Nimi kieli="en">Getting Started on the Thesis</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">5</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus avain="290076" koulutusmoduulitunniste="XXX 3H-305-2000" opiskelijaAvain="54238" opiskeluoikeusAvain="1203130">
+              <virta:SuoritusPvm>2013-05-20</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>5</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>HYV</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>10065</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Hyvät työelämävalmiudet 1</virta:Nimi>
+              <virta:Nimi kieli="en">Skills and Competences for Working Life 1</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">5</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:TKILaajuusMuu>
+                <virta:Opintopiste>2</virta:Opintopiste>
+              </virta:TKILaajuusMuu>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus avain="290071" koulutusmoduulitunniste="XXX 3H00CA72-3001" opiskelijaAvain="54238" opiskeluoikeusAvain="1203130">
+              <virta:SuoritusPvm>2015-11-20</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>7</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>HYV</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>10065</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Erikoistuminen toimialalle</virta:Nimi>
+              <virta:Nimi kieli="en">Trade Specific Competence</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">5</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus avain="290062" koulutusmoduulitunniste="XXX 3H00CA58-3002" opiskelijaAvain="54238" opiskeluoikeusAvain="1203130">
+              <virta:SuoritusPvm>2014-06-04</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>6</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>HYV</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>10065</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Asiakasverkoston rakentaminen</virta:Nimi>
+              <virta:Nimi kieli="en">Building a Business Network</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">5</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus avain="290065" koulutusmoduulitunniste="XXX 3H00CA62-3001" opiskelijaAvain="54238" opiskeluoikeusAvain="1203130">
+              <virta:SuoritusPvm>2015-11-20</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>7</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>HYV</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>10065</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Oppiva organisaatio</virta:Nimi>
+              <virta:Nimi kieli="en">Learning Organisation</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">5</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus avain="3708526" koulutusmoduulitunniste="19YMYY I-102021-s2" opiskelijaAvain="54238" opiskeluoikeusAvain="1902576">
+              <virta:SuoritusPvm>2019-12-13</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>5</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>3</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>10065</virta:Myontaja>
+              <virta:Organisaatio>
+                <virta:Rooli>3</virta:Rooli>
+                <virta:Koodi>02537</virta:Koodi>
+                <virta:Osuus>1</virta:Osuus>
+              </virta:Organisaatio>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Lean-johtamisen perusteet</virta:Nimi>
+              <virta:Nimi kieli="en">Lean Management</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">5</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:HyvaksilukuPvm>2020-02-18</virta:HyvaksilukuPvm>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus avain="3741643" koulutusmoduulitunniste="19YMYY NY00EC55-3007 3741643" opiskelijaAvain="54238" opiskeluoikeusAvain="1902576">
+              <virta:SuoritusPvm>2020-04-09</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>5</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>HYV</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>10065</virta:Myontaja>
+              <virta:Laji>3</virta:Laji>
+              <virta:Nimi kieli="fi">raportti</virta:Nimi>
+              <virta:Nimi kieli="en">raportti</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">5</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus avain="3647503" koulutusmoduulitunniste="19YMYY 3Y00EB12-3001" opiskelijaAvain="54238" opiskeluoikeusAvain="1902576">
+              <virta:SuoritusPvm>2019-12-13</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>10</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>2</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>10065</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Asiantuntijamyyntityö ja modernit liiketoimintaympäristöt</virta:Nimi>
+              <virta:Nimi kieli="en">Professional Selling and Modern Business Environments</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">5</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:TKILaajuusMuu>
+                <virta:Opintopiste>10</virta:Opintopiste>
+              </virta:TKILaajuusMuu>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus avain="2808477" koulutusmoduulitunniste="XXX T-57494x" opiskelijaAvain="54238" opiskeluoikeusAvain="1203130">
+              <virta:SuoritusPvm>2015-11-21</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>0</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>3</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>10065</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Verkkokaupan tulevaisuuden trendit</virta:Nimi>
+              <virta:Nimi kieli="en">Future Trends in E-commerce</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">5</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:TKILaajuus>
+                <virta:Opintopiste>15</virta:Opintopiste>
+              </virta:TKILaajuus>
+              <virta:Opinnaytetyo>1</virta:Opinnaytetyo>
+              <virta:Hankkeistettu>0</virta:Hankkeistettu>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus avain="459648" koulutusmoduulitunniste="XXX @5-1203130" opiskelijaAvain="54238" opiskeluoikeusAvain="1203130">
+              <virta:SuoritusPvm>2015-01-12</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>5</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>HYV</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>10065</virta:Myontaja>
+              <virta:Organisaatio>
+                <virta:Rooli>3</virta:Rooli>
+                <virta:Koodi>UK</virta:Koodi>
+                <virta:Osuus>1</virta:Osuus>
+              </virta:Organisaatio>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Business Negotiations</virta:Nimi>
+              <virta:Nimi kieli="en">Business Negotiations</virta:Nimi>
+              <virta:Kieli>en</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">5</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:HyvaksilukuPvm>2015-02-02</virta:HyvaksilukuPvm>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus avain="290081" koulutusmoduulitunniste="XXX NK-4-3002" opiskelijaAvain="54238" opiskeluoikeusAvain="1203130">
+              <virta:SuoritusPvm>2014-03-24</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>5</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>2</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>10065</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Venäjän kielen alkeet</virta:Nimi>
+              <virta:Nimi kieli="en">Elementary Russian</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">5</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus avain="290077" koulutusmoduulitunniste="XXX 3H-307-2003" opiskelijaAvain="54238" opiskeluoikeusAvain="1203130">
+              <virta:SuoritusPvm>2013-04-24</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>2</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>3</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>10065</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Professionell svenska för handelsbranschen, muntlig</virta:Nimi>
+              <virta:Nimi kieli="en">Professional Swedish for BBA Studies, Spoken</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">5</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus avain="290073" koulutusmoduulitunniste="XXX 3H-302-2000" opiskelijaAvain="54238" opiskeluoikeusAvain="1203130">
+              <virta:SuoritusPvm>2013-04-24</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>15</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>3</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>10065</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Toimiva firma</virta:Nimi>
+              <virta:Nimi kieli="en">Running a Firm</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">5</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus avain="290064" koulutusmoduulitunniste="XXX 3H00CA61-3001" opiskelijaAvain="54238" opiskeluoikeusAvain="1203130">
+              <virta:SuoritusPvm>2015-11-20</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>6</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>HYV</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>10065</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Final Camp</virta:Nimi>
+              <virta:Nimi kieli="en">Final Camp</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">5</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus avain="290066" koulutusmoduulitunniste="XXX 3H00CA64-3001" opiskelijaAvain="54238" opiskeluoikeusAvain="1203130">
+              <virta:SuoritusPvm>2015-11-20</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>6</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>HYV</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>10065</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Myynti, asiakkuudet ja verkostot</virta:Nimi>
+              <virta:Nimi kieli="en">Sales, Customer Relations and Networking</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">5</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus avain="3923375" koulutusmoduulitunniste="19YMYY T-102021" opiskelijaAvain="54238" opiskeluoikeusAvain="1902576">
+              <virta:SuoritusPvm>2020-12-07</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>0</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>4</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>10065</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">WorkPower Oy:n digitaalisen myyntiprosessin kehittäminen</virta:Nimi>
+              <virta:Nimi kieli="en">WorkPower Oy Digital Sales Process Development</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">5</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:TKILaajuus>
+                <virta:Opintopiste>30</virta:Opintopiste>
+              </virta:TKILaajuus>
+              <virta:Opinnaytetyo>1</virta:Opinnaytetyo>
+              <virta:Hankkeistettu>1</virta:Hankkeistettu>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus avain="3807546" koulutusmoduulitunniste="19YMYY NY00EC63-3009 3807546" opiskelijaAvain="54238" opiskeluoikeusAvain="1902576">
+              <virta:SuoritusPvm>2020-08-14</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>1.25</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>3</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>10065</virta:Myontaja>
+              <virta:Laji>3</virta:Laji>
+              <virta:Nimi kieli="fi">Osio 1</virta:Nimi>
+              <virta:Nimi kieli="en">Osio 1</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">5</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus avain="3798106" koulutusmoduulitunniste="19YMYY 1800EB16-3001" opiskelijaAvain="54238" opiskeluoikeusAvain="1902576">
+              <virta:SuoritusPvm>2020-06-25</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>10</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>3</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>10065</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Asiantuntijamyynti kansainvälisessä liiketoiminnassa</virta:Nimi>
+              <virta:Nimi kieli="en">Professional Selling in International Context</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">5</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:TKILaajuusMuu>
+                <virta:Opintopiste>10</virta:Opintopiste>
+              </virta:TKILaajuusMuu>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus avain="459656" koulutusmoduulitunniste="XXX VR155-7-3002" opiskelijaAvain="54238" opiskeluoikeusAvain="1203130">
+              <virta:SuoritusPvm>2015-02-06</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>2</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>HYV</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>10065</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Orientation and Report for Studying / Training Abroad-5</virta:Nimi>
+              <virta:Nimi kieli="en">Orientation and Report for Studying / Training Abroad-5</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">5</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus avain="459650" koulutusmoduulitunniste="XXX 3H00CA74-3001" opiskelijaAvain="54238" opiskeluoikeusAvain="1203130">
+              <virta:SuoritusPvm>2015-11-20</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>30</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>HYV</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>10065</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Harjoittelu</virta:Nimi>
+              <virta:Nimi kieli="en">Practical Training</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">5</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:TKILaajuusHarjoittelu>
+                <virta:Opintopiste>30</virta:Opintopiste>
+              </virta:TKILaajuusHarjoittelu>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+              <virta:Luokittelu>7</virta:Luokittelu>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus avain="459644" koulutusmoduulitunniste="XXX @1-1203130" opiskelijaAvain="54238" opiskeluoikeusAvain="1203130">
+              <virta:SuoritusPvm>2014-05-08</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>2</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>HYV</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>10065</virta:Myontaja>
+              <virta:Organisaatio>
+                <virta:Rooli>3</virta:Rooli>
+                <virta:Koodi>UK</virta:Koodi>
+                <virta:Osuus>1</virta:Osuus>
+              </virta:Organisaatio>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Tutustuminen saksalaiseen yritys- ja liiketoimintaympäristöön ja sosiaalisen median hyödyntämiseen yrityksissä</virta:Nimi>
+              <virta:Nimi kieli="en">Introduction to German Business Environment and Use of Social Media in Enterprises</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">5</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:HyvaksilukuPvm>2014-05-26</virta:HyvaksilukuPvm>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus avain="290078" koulutusmoduulitunniste="XXX 3H-308-2003" opiskelijaAvain="54238" opiskeluoikeusAvain="1203130">
+              <virta:SuoritusPvm>2013-08-12</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>3</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>3</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>10065</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Professionell svenska för handelsbranschen, skriftlig</virta:Nimi>
+              <virta:Nimi kieli="en">Professional Swedish for BBA Studies, Written</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">5</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus avain="290072" koulutusmoduulitunniste="XXX 3H-301-2000" opiskelijaAvain="54238" opiskeluoikeusAvain="1203130">
+              <virta:SuoritusPvm>2013-01-31</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>10</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>3</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>10065</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Firman käynnistäminen</virta:Nimi>
+              <virta:Nimi kieli="en">Setting up a Firm</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">5</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:TKILaajuusMuu>
+                <virta:Opintopiste>5</virta:Opintopiste>
+              </virta:TKILaajuusMuu>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus avain="290063" koulutusmoduulitunniste="XXX 3H00CA60-3001" opiskelijaAvain="54238" opiskeluoikeusAvain="1203130">
+              <virta:SuoritusPvm>2015-05-29</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>6</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>HYV</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>10065</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Kannattava yritys</virta:Nimi>
+              <virta:Nimi kieli="en">Profitable Business</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">5</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus avain="290070" koulutusmoduulitunniste="XXX 3H00CA71-3001" opiskelijaAvain="54238" opiskeluoikeusAvain="1203130">
+              <virta:SuoritusPvm>2015-05-29</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>6</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>HYV</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>10065</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Vastuullinen ja kestävä yrittäjyys</virta:Nimi>
+              <virta:Nimi kieli="en">Sustainable and Responsible Business</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">5</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus avain="3923359" koulutusmoduulitunniste="19YMYY 1800EB30-3001" opiskelijaAvain="54238" opiskeluoikeusAvain="1902576">
+              <virta:SuoritusPvm>2020-12-07</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>30</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>HYV</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>10065</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Opinnäytetyö</virta:Nimi>
+              <virta:Nimi kieli="en">Master's Thesis</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">5</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus avain="3807630" koulutusmoduulitunniste="19YMYY NY00EC63-3009 3807630" opiskelijaAvain="54238" opiskeluoikeusAvain="1902576">
+              <virta:SuoritusPvm>2020-10-05</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>2.5</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>3</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>10065</virta:Myontaja>
+              <virta:Laji>3</virta:Laji>
+              <virta:Nimi kieli="fi">Osio 3</virta:Nimi>
+              <virta:Nimi kieli="en">Osio 3</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">5</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus avain="3741642" koulutusmoduulitunniste="19YMYY NY00EC55-3007" opiskelijaAvain="54238" opiskeluoikeusAvain="1902576">
+              <virta:SuoritusPvm>2020-04-09</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>5</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>HYV</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>10065</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Laadullinen ja toiminnallinen kehittämistutkimus</virta:Nimi>
+              <virta:Nimi kieli="en">Qualitative and Action-based Research and Development Methods</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">5</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Sisaltyvyys sisaltyvaOpintosuoritusAvain="3741643">
+                <virta:Opintopiste>5</virta:Opintopiste>
+              </virta:Sisaltyvyys>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus avain="459655" koulutusmoduulitunniste="XXX N-KV574-3007" opiskelijaAvain="54238" opiskeluoikeusAvain="1203130">
+              <virta:SuoritusPvm>2015-04-29</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>5</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>3</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>10065</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">English Grammar and Writing</virta:Nimi>
+              <virta:Nimi kieli="en">English Grammar and Writing</virta:Nimi>
+              <virta:Kieli>en</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">5</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus avain="459649" koulutusmoduulitunniste="XXX 3H00CA55-3001" opiskelijaAvain="54238" opiskeluoikeusAvain="1203130">
+              <virta:SuoritusPvm>2015-11-20</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>10</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>HYV</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>10065</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Projektiopinnot</virta:Nimi>
+              <virta:Nimi kieli="en">Projects</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">5</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:TKILaajuusMuu>
+                <virta:Opintopiste>10</virta:Opintopiste>
+              </virta:TKILaajuusMuu>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus avain="459647" koulutusmoduulitunniste="XXX @4-1203130" opiskelijaAvain="54238" opiskeluoikeusAvain="1203130">
+              <virta:SuoritusPvm>2015-01-12</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>5</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>HYV</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>10065</virta:Myontaja>
+              <virta:Organisaatio>
+                <virta:Rooli>3</virta:Rooli>
+                <virta:Koodi>UK</virta:Koodi>
+                <virta:Osuus>1</virta:Osuus>
+              </virta:Organisaatio>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">International Business</virta:Nimi>
+              <virta:Nimi kieli="en">International Business</virta:Nimi>
+              <virta:Kieli>en</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">5</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:HyvaksilukuPvm>2015-02-02</virta:HyvaksilukuPvm>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus avain="290079" koulutusmoduulitunniste="XXX 3H-309-2001" opiskelijaAvain="54238" opiskeluoikeusAvain="1203130">
+              <virta:SuoritusPvm>2013-04-02</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>5</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>3</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>10065</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Professional English for BBA Studies</virta:Nimi>
+              <virta:Nimi kieli="en">Professional English for BBA Studies</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">5</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus avain="290074" koulutusmoduulitunniste="XXX 3H-303-2000" opiskelijaAvain="54238" opiskeluoikeusAvain="1203130">
+              <virta:SuoritusPvm>2013-04-10</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>10</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>3</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>10065</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Kannattava firma</virta:Nimi>
+              <virta:Nimi kieli="en">The Profitable Firm</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">5</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus avain="290061" koulutusmoduulitunniste="XXX 3H00CA56-3001" opiskelijaAvain="54238" opiskeluoikeusAvain="1203130">
+              <virta:SuoritusPvm>2013-12-18</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>6</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>HYV</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>10065</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Tiimiyrityksen käynnistäminen</virta:Nimi>
+              <virta:Nimi kieli="en">Starting a Team Enterprise</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">5</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus avain="290069" koulutusmoduulitunniste="XXX 3H00CA69-3001" opiskelijaAvain="54238" opiskeluoikeusAvain="1203130">
+              <virta:SuoritusPvm>2015-05-29</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>3</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>HYV</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>10065</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Luovat tuotteet ja liiketoimintamallit</virta:Nimi>
+              <virta:Nimi kieli="en">Creative Products and Business Models</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">5</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus avain="3707116" koulutusmoduulitunniste="19YMYY I-102021-s1" opiskelijaAvain="54238" opiskeluoikeusAvain="1902576">
+              <virta:SuoritusPvm>2019-12-11</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>5</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>HYV</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>10065</virta:Myontaja>
+              <virta:Organisaatio>
+                <virta:Rooli>3</virta:Rooli>
+                <virta:Koodi>10118</virta:Koodi>
+                <virta:Osuus>1</virta:Osuus>
+              </virta:Organisaatio>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Palvelumuotoilu</virta:Nimi>
+              <virta:Nimi kieli="en">Service Design</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">5</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:HyvaksilukuPvm>2020-02-16</virta:HyvaksilukuPvm>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus avain="3807588" koulutusmoduulitunniste="19YMYY NY00EC63-3009 3807588" opiskelijaAvain="54238" opiskeluoikeusAvain="1902576">
+              <virta:SuoritusPvm>2020-08-27</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>1.25</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>3</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>10065</virta:Myontaja>
+              <virta:Laji>3</virta:Laji>
+              <virta:Nimi kieli="fi">Osio 2</virta:Nimi>
+              <virta:Nimi kieli="en">Osio 2</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">5</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus avain="3807457" koulutusmoduulitunniste="19YMYY NY00EC63-3009" opiskelijaAvain="54238" opiskeluoikeusAvain="1902576">
+              <virta:SuoritusPvm>2020-10-05</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>5</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>3</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>10065</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Strategian ja muutoksen johtaminen sekä viestintä</virta:Nimi>
+              <virta:Nimi kieli="en">Strategy and Change Management, as well as Communication</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">5</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Sisaltyvyys sisaltyvaOpintosuoritusAvain="3807546">
+                <virta:Opintopiste>1.25</virta:Opintopiste>
+              </virta:Sisaltyvyys>
+              <virta:Sisaltyvyys sisaltyvaOpintosuoritusAvain="3807588">
+                <virta:Opintopiste>1.25</virta:Opintopiste>
+              </virta:Sisaltyvyys>
+              <virta:Sisaltyvyys sisaltyvaOpintosuoritusAvain="3807630">
+                <virta:Opintopiste>2.5</virta:Opintopiste>
+              </virta:Sisaltyvyys>
+              <virta:TKILaajuusMuu>
+                <virta:Opintopiste>3</virta:Opintopiste>
+              </virta:TKILaajuusMuu>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus avain="TUTKINTO-57494" koulutusmoduulitunniste="LIKO Liiketalouden tutkinto-ohjelma" opiskelijaAvain="54238" opiskeluoikeusAvain="1203130">
+              <virta:SuoritusPvm>2015-12-18</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>222</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Hyvaksytty>HYV</virta:Hyvaksytty>
+              </virta:Arvosana>
+              <virta:Myontaja>10065</virta:Myontaja>
+              <virta:Laji>1</virta:Laji>
+              <virta:Nimi kieli="fi">Tradenomi (AMK), Yrittäjyys</virta:Nimi>
+              <virta:Nimi kieli="en">Bachelor of Business Administration, Entrepreneurship</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutuskoodi>631101</virta:Koulutuskoodi>
+              <virta:Sisaltyvyys sisaltyvaOpintosuoritusAvain="290061">
+                <virta:Opintopiste>6</virta:Opintopiste>
+              </virta:Sisaltyvyys>
+              <virta:Sisaltyvyys sisaltyvaOpintosuoritusAvain="290062">
+                <virta:Opintopiste>6</virta:Opintopiste>
+              </virta:Sisaltyvyys>
+              <virta:Sisaltyvyys sisaltyvaOpintosuoritusAvain="290063">
+                <virta:Opintopiste>6</virta:Opintopiste>
+              </virta:Sisaltyvyys>
+              <virta:Sisaltyvyys sisaltyvaOpintosuoritusAvain="290064">
+                <virta:Opintopiste>6</virta:Opintopiste>
+              </virta:Sisaltyvyys>
+              <virta:Sisaltyvyys sisaltyvaOpintosuoritusAvain="290065">
+                <virta:Opintopiste>7</virta:Opintopiste>
+              </virta:Sisaltyvyys>
+              <virta:Sisaltyvyys sisaltyvaOpintosuoritusAvain="290066">
+                <virta:Opintopiste>6</virta:Opintopiste>
+              </virta:Sisaltyvyys>
+              <virta:Sisaltyvyys sisaltyvaOpintosuoritusAvain="290067">
+                <virta:Opintopiste>5</virta:Opintopiste>
+              </virta:Sisaltyvyys>
+              <virta:Sisaltyvyys sisaltyvaOpintosuoritusAvain="290068">
+                <virta:Opintopiste>5</virta:Opintopiste>
+              </virta:Sisaltyvyys>
+              <virta:Sisaltyvyys sisaltyvaOpintosuoritusAvain="290069">
+                <virta:Opintopiste>3</virta:Opintopiste>
+              </virta:Sisaltyvyys>
+              <virta:Sisaltyvyys sisaltyvaOpintosuoritusAvain="290070">
+                <virta:Opintopiste>6</virta:Opintopiste>
+              </virta:Sisaltyvyys>
+              <virta:Sisaltyvyys sisaltyvaOpintosuoritusAvain="290071">
+                <virta:Opintopiste>7</virta:Opintopiste>
+              </virta:Sisaltyvyys>
+              <virta:Sisaltyvyys sisaltyvaOpintosuoritusAvain="290072">
+                <virta:Opintopiste>10</virta:Opintopiste>
+              </virta:Sisaltyvyys>
+              <virta:Sisaltyvyys sisaltyvaOpintosuoritusAvain="290073">
+                <virta:Opintopiste>15</virta:Opintopiste>
+              </virta:Sisaltyvyys>
+              <virta:Sisaltyvyys sisaltyvaOpintosuoritusAvain="290074">
+                <virta:Opintopiste>10</virta:Opintopiste>
+              </virta:Sisaltyvyys>
+              <virta:Sisaltyvyys sisaltyvaOpintosuoritusAvain="290075">
+                <virta:Opintopiste>10</virta:Opintopiste>
+              </virta:Sisaltyvyys>
+              <virta:Sisaltyvyys sisaltyvaOpintosuoritusAvain="290076">
+                <virta:Opintopiste>5</virta:Opintopiste>
+              </virta:Sisaltyvyys>
+              <virta:Sisaltyvyys sisaltyvaOpintosuoritusAvain="290077">
+                <virta:Opintopiste>2</virta:Opintopiste>
+              </virta:Sisaltyvyys>
+              <virta:Sisaltyvyys sisaltyvaOpintosuoritusAvain="290078">
+                <virta:Opintopiste>3</virta:Opintopiste>
+              </virta:Sisaltyvyys>
+              <virta:Sisaltyvyys sisaltyvaOpintosuoritusAvain="290079">
+                <virta:Opintopiste>5</virta:Opintopiste>
+              </virta:Sisaltyvyys>
+              <virta:Sisaltyvyys sisaltyvaOpintosuoritusAvain="459651">
+                <virta:Opintopiste>5</virta:Opintopiste>
+              </virta:Sisaltyvyys>
+              <virta:Sisaltyvyys sisaltyvaOpintosuoritusAvain="459652">
+                <virta:Opintopiste>10</virta:Opintopiste>
+              </virta:Sisaltyvyys>
+              <virta:Sisaltyvyys sisaltyvaOpintosuoritusAvain="290081">
+                <virta:Opintopiste>5</virta:Opintopiste>
+              </virta:Sisaltyvyys>
+              <virta:Sisaltyvyys sisaltyvaOpintosuoritusAvain="459644">
+                <virta:Opintopiste>2</virta:Opintopiste>
+              </virta:Sisaltyvyys>
+              <virta:Sisaltyvyys sisaltyvaOpintosuoritusAvain="459645">
+                <virta:Opintopiste>5</virta:Opintopiste>
+              </virta:Sisaltyvyys>
+              <virta:Sisaltyvyys sisaltyvaOpintosuoritusAvain="459646">
+                <virta:Opintopiste>5</virta:Opintopiste>
+              </virta:Sisaltyvyys>
+              <virta:Sisaltyvyys sisaltyvaOpintosuoritusAvain="459647">
+                <virta:Opintopiste>5</virta:Opintopiste>
+              </virta:Sisaltyvyys>
+              <virta:Sisaltyvyys sisaltyvaOpintosuoritusAvain="459648">
+                <virta:Opintopiste>5</virta:Opintopiste>
+              </virta:Sisaltyvyys>
+              <virta:Sisaltyvyys sisaltyvaOpintosuoritusAvain="459649">
+                <virta:Opintopiste>10</virta:Opintopiste>
+              </virta:Sisaltyvyys>
+              <virta:Sisaltyvyys sisaltyvaOpintosuoritusAvain="459650">
+                <virta:Opintopiste>30</virta:Opintopiste>
+              </virta:Sisaltyvyys>
+              <virta:Sisaltyvyys sisaltyvaOpintosuoritusAvain="459653">
+                <virta:Opintopiste>5</virta:Opintopiste>
+              </virta:Sisaltyvyys>
+              <virta:Sisaltyvyys sisaltyvaOpintosuoritusAvain="459654">
+                <virta:Opintopiste>5</virta:Opintopiste>
+              </virta:Sisaltyvyys>
+              <virta:Sisaltyvyys sisaltyvaOpintosuoritusAvain="459655">
+                <virta:Opintopiste>5</virta:Opintopiste>
+              </virta:Sisaltyvyys>
+              <virta:Sisaltyvyys sisaltyvaOpintosuoritusAvain="459656">
+                <virta:Opintopiste>2</virta:Opintopiste>
+              </virta:Sisaltyvyys>
+              <virta:Sisaltyvyys sisaltyvaOpintosuoritusAvain="2808477">
+                <virta:Opintopiste>0</virta:Opintopiste>
+              </virta:Sisaltyvyys>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus avain="459653" koulutusmoduulitunniste="XXX H-V1805-3001" opiskelijaAvain="54238" opiskeluoikeusAvain="1203130">
+              <virta:SuoritusPvm>2013-12-19</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>5</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>2</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>10065</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">International Marketing</virta:Nimi>
+              <virta:Nimi kieli="en">International Marketing</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">5</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus avain="459646" koulutusmoduulitunniste="XXX @3-1203130" opiskelijaAvain="54238" opiskeluoikeusAvain="1203130">
+              <virta:SuoritusPvm>2015-01-12</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>5</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>HYV</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>10065</virta:Myontaja>
+              <virta:Organisaatio>
+                <virta:Rooli>3</virta:Rooli>
+                <virta:Koodi>UK</virta:Koodi>
+                <virta:Osuus>1</virta:Osuus>
+              </virta:Organisaatio>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Organizational Behaviour</virta:Nimi>
+              <virta:Nimi kieli="en">Organizational Behaviour</virta:Nimi>
+              <virta:Kieli>en</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">5</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:HyvaksilukuPvm>2015-02-02</virta:HyvaksilukuPvm>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus avain="459652" koulutusmoduulitunniste="XXX 3H00CK47-3003" opiskelijaAvain="54238" opiskeluoikeusAvain="1203130">
+              <virta:SuoritusPvm>2015-11-21</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>10</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>3</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>10065</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Opinnäytetyön raportointi</virta:Nimi>
+              <virta:Nimi kieli="en">Writing up the Thesis</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">5</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus avain="290075" koulutusmoduulitunniste="XXX 3H-304-2000" opiskelijaAvain="54238" opiskeluoikeusAvain="1203130">
+              <virta:SuoritusPvm>2013-08-12</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>10</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>3</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>10065</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Firman kehittäminen</virta:Nimi>
+              <virta:Nimi kieli="en">Developing the Firm</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">5</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus avain="290067" koulutusmoduulitunniste="XXX 3H00CA65-3001" opiskelijaAvain="54238" opiskeluoikeusAvain="1203130">
+              <virta:SuoritusPvm>2015-11-20</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>5</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>HYV</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>10065</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Johtaminen</virta:Nimi>
+              <virta:Nimi kieli="en">Leadership and Management</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">5</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+          </virta:Opintosuoritukset>
+          <virta:Liikkuvuusjaksot>
+            <virta:Liikkuvuusjakso avain="2258" koulutusmoduulitunniste="LIKO Liiketalouden tutkinto-ohjelma" opiskelijaAvain="54238" opiskeluoikeusAvain="1203130">
+              <virta:Myontaja>10065</virta:Myontaja>
+              <virta:AlkuPvm>2014-05-04</virta:AlkuPvm>
+              <virta:LoppuPvm>2014-05-08</virta:LoppuPvm>
+              <virta:Suunta>1</virta:Suunta>
+              <virta:Maa>276</virta:Maa>
+              <virta:Tyyppi>1</virta:Tyyppi>
+              <virta:Liikkuvuusohjelma>106</virta:Liikkuvuusohjelma>
+            </virta:Liikkuvuusjakso>
+            <virta:Liikkuvuusjakso avain="2259" koulutusmoduulitunniste="LIKO Liiketalouden tutkinto-ohjelma" opiskelijaAvain="54238" opiskeluoikeusAvain="1203130">
+              <virta:Myontaja>10065</virta:Myontaja>
+              <virta:AlkuPvm>2014-09-01</virta:AlkuPvm>
+              <virta:LoppuPvm>2014-12-19</virta:LoppuPvm>
+              <virta:Suunta>1</virta:Suunta>
+              <virta:Maa>410</virta:Maa>
+              <virta:Tyyppi>1</virta:Tyyppi>
+              <virta:Liikkuvuusohjelma>106</virta:Liikkuvuusohjelma>
+            </virta:Liikkuvuusjakso>
+          </virta:Liikkuvuusjaksot>
+        </virta:Opiskelija>
+      </virta:Virta>
+    </virtaluku:OpiskelijanKaikkiTiedotResponse>
+  </SOAP-ENV:Body>
+</SOAP-ENV:Envelope>
