@@ -63,6 +63,8 @@ case class KorkeakoulunOpiskeluoikeudenLisätiedot(
   järjestäväOrganisaatio: Option[Oppilaitos] = None,
   @Title("Koulutuskunnat")
   koulutuskuntaJaksot: List[KoulutuskuntaJakso] = Nil,
+  @Title("Rahoituslähteet")
+  rahoituslähdeJaksot: Option[List[RahoituslähdeJakso]] = None,
   @Title("Opettajan pedagogiset opinnot")
   @InfoDescription("opettajan kelpoisuuden määritelmä")
   @KoodistoUri("virtapatevyys")
@@ -80,6 +82,13 @@ case class KoulutuskuntaJakso(
   loppu: Option[LocalDate],
   @KoodistoUri("kunta")
   koulutuskunta: Koodistokoodiviite
+) extends Jakso
+
+case class RahoituslähdeJakso(
+  alku: LocalDate,
+  loppu: Option[LocalDate],
+  @KoodistoUri("virtarahoituslahde")
+  rahoituslähde: Koodistokoodiviite
 ) extends Jakso
 
 @Description("Korkeakoulun opiskeluoikeuden lukuvuosimaksut")

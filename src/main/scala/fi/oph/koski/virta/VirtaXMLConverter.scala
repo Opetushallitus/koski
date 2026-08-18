@@ -81,6 +81,7 @@ case class VirtaXMLConverter(oppilaitosRepository: OppilaitosRepository, koodist
           järjestäväOrganisaatio = järjestäväOrganisaatio(opiskeluoikeusNode, oppilaitoksenNimiPäivä),
           maksettavatLukuvuosimaksut = Some(lukuvuosimaksut),
           koulutuskuntaJaksot = koulutuskuntajaksot(opiskeluoikeusNode),
+          rahoituslähdeJaksot = noneIfEmpty(rahoituslähdejaksot(opiskeluoikeusNode)),
           opettajanPedagogisetOpinnot = opettajanPatevyydet.map(
             _.distinct
               .filter(v => Set("ik","il","im","in","io","ip","iq","ir","is","it","iu","iv","iw","ix","iy","ja","jb","jc","jd","ke","oa","ob","oe","of","og","pv","rv","sv","va","vo","vs").contains(v.koodiarvo))
@@ -576,6 +577,18 @@ case class VirtaXMLConverter(oppilaitosRepository: OppilaitosRepository, koodist
       , loppu = loppuPvm(jakso)
       , koulutuskunta = requiredKoodi("kunta", (jakso \ "Koulutuskunta").text))).toList.sortBy(_.alku)
   }
+
+  // Tuntematon rahoituslähde ohitetaan, jottei yksittäinen jakso kaada koko oppijan konversiota
+  private def rahoituslähdejaksot(opiskeluoikeusNode: Node): List[RahoituslähdeJakso] =
+    (opiskeluoikeusNode \ "Jakso").toList.flatMap { jakso =>
+      koodistoViitePalvelu
+        .validate(Koodistokoodiviite((jakso \ "Rahoituslahde").text, "virtarahoituslahde"))
+        .map(rahoituslähde => RahoituslähdeJakso(
+          alku = alkuPvm(jakso),
+          loppu = loppuPvm(jakso),
+          rahoituslähde = rahoituslähde
+        ))
+    }.sortBy(_.alku)(DateOrdering.localDateOrdering)
 
 }
 
