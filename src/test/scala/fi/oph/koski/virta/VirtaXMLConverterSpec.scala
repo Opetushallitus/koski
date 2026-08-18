@@ -95,7 +95,8 @@ class VirtaXMLConverterSpec extends AnyFreeSpec with TestEnvironment with Matche
     luokittelu: Option[Int] = None,
     ilmanAinePätevyyksiä: Boolean = false,
     ilmanOpePätevyyksiä: Boolean = false,
-    laajuudellinen: Boolean = true
+    laajuudellinen: Boolean = true,
+    rahoituslähde: Option[String] = Some("1")
   ): Elem = <virta:Opiskeluoikeudet>
     <virta:Opiskeluoikeus opiskelijaAvain="avopH1" avain="avopH1O1">
       <virta:AlkuPvm>2008-08-01</virta:AlkuPvm>
@@ -124,7 +125,11 @@ class VirtaXMLConverterSpec extends AnyFreeSpec with TestEnvironment with Matche
         <virta:Koulutuskoodi>621702</virta:Koulutuskoodi>
         <virta:Koulutuskunta>091</virta:Koulutuskunta>
         <virta:Koulutuskieli>en</virta:Koulutuskieli>
-        <virta:Rahoituslahde>1</virta:Rahoituslahde>
+        {
+          if (rahoituslähde.isDefined) {
+            <virta:Rahoituslahde>{rahoituslähde.get}</virta:Rahoituslahde>
+          }
+        }
         {
           if (luokittelu.isDefined) {
             <virta:Luokittelu>{luokittelu.get}</virta:Luokittelu>
@@ -139,7 +144,11 @@ class VirtaXMLConverterSpec extends AnyFreeSpec with TestEnvironment with Matche
         <virta:Koulutuskoodi>621702</virta:Koulutuskoodi>
         <virta:Koulutuskunta>091</virta:Koulutuskunta>
         <virta:Koulutuskieli>en</virta:Koulutuskieli>
-        <virta:Rahoituslahde>1</virta:Rahoituslahde>
+        {
+          if (rahoituslähde.isDefined) {
+            <virta:Rahoituslahde>{rahoituslähde.get}</virta:Rahoituslahde>
+          }
+        }
         {
           if (luokittelu.isDefined) {
             <virta:Luokittelu>{luokittelu.get}</virta:Luokittelu>
@@ -276,6 +285,38 @@ class VirtaXMLConverterSpec extends AnyFreeSpec with TestEnvironment with Matche
         oo should have size (1)
         val opePatevyydet = oo.head.lisätiedot.get.opettajanPedagogisetOpinnot
         opePatevyydet should equal(None)
+      }
+    }
+
+    "Rahoituslähde" - {
+      def rahoituslähdeJaksot(rahoituslähde: Option[String]) =
+        converter
+          .convertToOpiskeluoikeudet(opiskeluoikeusWithOrganisaatio(None, rahoituslähde = rahoituslähde))
+          .head
+          .lisätiedot
+          .get
+          .rahoituslähdeJaksot
+
+      "parsitaan jaksoittain alkupäivän mukaan järjestettynä" in {
+        val jaksot = rahoituslähdeJaksot(Some("1")).get
+        jaksot should have length 2
+
+        jaksot.head.alku should be(LocalDate.of(2008, 8, 1))
+        jaksot.head.loppu should be(Some(LocalDate.of(2008, 8, 2)))
+        jaksot.head.rahoituslähde.koodiarvo should be("1")
+        jaksot.head.rahoituslähde.koodistoUri should be("virtarahoituslahde")
+
+        jaksot(1).alku should be(LocalDate.of(2008, 8, 3))
+        jaksot(1).loppu should be(None)
+        jaksot(1).rahoituslähde.koodiarvo should be("1")
+      }
+
+      "on None jos yhdelläkään jaksolla ei ole rahoituslähdettä" in {
+        rahoituslähdeJaksot(None) should be(None)
+      }
+
+      "tuntematon koodiarvo ohitetaan eikä konversio kaadu" in {
+        rahoituslähdeJaksot(Some("99")) should be(None)
       }
     }
 
