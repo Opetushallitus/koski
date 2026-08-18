@@ -153,6 +153,8 @@ object Koodistot {
     KoodistoAsetus("koulutus", koodistoVersio = Some(11)),
     KoodistoAsetus("koulutustyyppi"),
     KoodistoAsetus("kunta"),
+    // Huom: Virran liikkuvuuskoodistoista vain tämä on ilman virta-etuliitettä
+    KoodistoAsetus("liikkuvuudenluokittelu"),
     KoodistoAsetus("lukionkurssit"),
     KoodistoAsetus("maatjavaltiot1"),
     KoodistoAsetus("maatjavaltiot2"),
@@ -166,6 +168,9 @@ object Koodistot {
     KoodistoAsetus("tutkintonimikkeet", vaadiSuomenkielinenNimi = false, vaadiRuotsinkielinenNimi = false), // ks. EPerusteetLocalizationTest
     KoodistoAsetus("vardajarjestamismuoto"),
     KoodistoAsetus("virtaarvosana"),
+    KoodistoAsetus("virtaliikkuvuudensuunta"),
+    KoodistoAsetus("virtaliikkuvuudentyyppi"),
+    KoodistoAsetus("virtaliikkuvuusohjelma"),
     KoodistoAsetus("virtalukukausiilmtila"),
     KoodistoAsetus("virtaopiskeluoikeudentila"),
     KoodistoAsetus("virtaopiskeluoikeudenluokittelu"),

@@ -1,0 +1,35 @@
+{
+  "codesGroupUri": "virta",
+  "codesVersions": [],
+  "includesCodes": [],
+  "koodistoUri": "liikkuvuudenluokittelu",
+  "levelsWithCodes": [],
+  "lukittu": null,
+  "metadata": [
+    {
+      "kieli": "FI",
+      "nimi": "VIRTA Liikkuvuuden luokittelu",
+      "kuvaus": "",
+      "kayttoohje": null,
+      "kasite": null,
+      "kohdealue": null,
+      "sitovuustaso": null,
+      "kohdealueenOsaAlue": null,
+      "toimintaymparisto": null,
+      "tarkentaaKoodistoa": null,
+      "huomioitavaKoodisto": null,
+      "koodistonLahde": null
+    }
+  ],
+  "omistaja": null,
+  "organisaatioOid": "1.2.246.562.10.2013112012294919827487",
+  "paivittajaOid": null,
+  "paivitysPvm": "2017-02-02",
+  "resourceUri": "https://virkailija.opintopolku.fi/koodisto-service/rest/codes/liikkuvuudenluokittelu",
+  "tila": "LUONNOS",
+  "versio": 1,
+  "version": 1,
+  "voimassaAlkuPvm": "2016-01-01",
+  "voimassaLoppuPvm": null,
+  "withinCodes": []
+}
