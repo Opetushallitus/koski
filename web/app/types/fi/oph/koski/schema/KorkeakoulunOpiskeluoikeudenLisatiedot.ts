@@ -7,6 +7,7 @@ import { Koodistokoodiviite } from './Koodistokoodiviite'
 import { LocalizedString } from './LocalizedString'
 import { Lukukausi_Ilmoittautuminen } from './LukukausiIlmoittautuminen'
 import { Aikajakso } from './Aikajakso'
+import { RahoituslähdeJakso } from './RahoituslahdeJakso'
 
 /**
  * Korkeakoulun opiskeluoikeuden lisätiedot
@@ -23,13 +24,14 @@ export type KorkeakoulunOpiskeluoikeudenLisätiedot = {
   opettajanPedagogisetOpinnot?: Array<
     Koodistokoodiviite<'virtapatevyys', string>
   >
+  lukukausiIlmoittautuminen?: Lukukausi_Ilmoittautuminen
+  opetettavanAineenOpinnot?: Array<Koodistokoodiviite<'virtapatevyys', string>>
+  ensisijaisuus?: Array<Aikajakso>
   virtaOpiskeluoikeudenTyyppi?: Koodistokoodiviite<
     'virtaopiskeluoikeudentyyppi',
     string
   >
-  lukukausiIlmoittautuminen?: Lukukausi_Ilmoittautuminen
-  opetettavanAineenOpinnot?: Array<Koodistokoodiviite<'virtapatevyys', string>>
-  ensisijaisuus?: Array<Aikajakso>
+  rahoituslähdeJaksot?: Array<RahoituslähdeJakso>
 }
 
 export const KorkeakoulunOpiskeluoikeudenLisätiedot = (
@@ -42,15 +44,16 @@ export const KorkeakoulunOpiskeluoikeudenLisätiedot = (
     opettajanPedagogisetOpinnot?: Array<
       Koodistokoodiviite<'virtapatevyys', string>
     >
-    virtaOpiskeluoikeudenTyyppi?: Koodistokoodiviite<
-      'virtaopiskeluoikeudentyyppi',
-      string
-    >
     lukukausiIlmoittautuminen?: Lukukausi_Ilmoittautuminen
     opetettavanAineenOpinnot?: Array<
       Koodistokoodiviite<'virtapatevyys', string>
     >
     ensisijaisuus?: Array<Aikajakso>
+    virtaOpiskeluoikeudenTyyppi?: Koodistokoodiviite<
+      'virtaopiskeluoikeudentyyppi',
+      string
+    >
+    rahoituslähdeJaksot?: Array<RahoituslähdeJakso>
   } = {}
 ): KorkeakoulunOpiskeluoikeudenLisätiedot => ({
   koulutuskuntaJaksot: [],
