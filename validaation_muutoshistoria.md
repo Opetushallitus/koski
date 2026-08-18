@@ -1,5 +1,10 @@
 # Koskeen tallennettavien tietojen validaatiosäännöt
 
+## 27.8.2026
+
+- Ahvenanmaan perusopetuksen opiskeluoikeudella, jolla on muiden kuin oppivelvollisten oppimäärän suoritus (`ahvenanmaanperusopetuksenoppimaaraaikuiset`), ei saa olla vuosiluokan suorituksia.
+- Muiden kuin oppivelvollisten oppimäärän suoritukselle on merkittävä alkamispäivä.
+
 ## 24.8.2026
 
 - Korjattu esi- ja perusopetuksen pidennetyn oppivelvollisuuden päällekkäisyysvalidaatioita:

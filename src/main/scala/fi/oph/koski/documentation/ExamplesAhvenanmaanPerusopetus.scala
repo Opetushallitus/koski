@@ -116,6 +116,31 @@ object AhvenanmaanPerusopetusExampleData {
     osasuoritukset = Some(oppiaineet(date(2026, 6, 4))),
   )
 
+  // TOR-2587: Aikuisopiskelijan ("muut kuin oppivelvolliset") päättötodistus.
+  // Ei vuosiluokkasuorituksia, joten alkamispäivä kirjataan oppimäärän suoritukselle.
+  val aikuistenPäättötodistuksenSuoritus = AhvenanmaanAikuistenPerusopetuksenOppimääränSuoritus(
+    koulutusmoduuli = AhvenanmaanPerusopetus(
+      perusteenDiaarinumero = Some(ahvenanmaanDiaarinumero)
+    ),
+    toimipiste = jyväskylänNormaalikoulu,
+    alkamispäivä = Some(date(2024, 8, 15)),
+    suoritustapa = Koodistokoodiviite("koulutus", "perusopetuksensuoritustapa"),
+    suorituskieli = ruotsinKieli,
+    vahvistus = vahvistusPaikkakunnalla(date(2026, 6, 4)),
+    osasuoritukset = Some(oppiaineet(date(2026, 6, 4))),
+  )
+
+  val aikuistenOpiskeluoikeus = AhvenanmaanPerusopetuksenOpiskeluoikeus(
+    oppilaitos = Some(jyväskylänNormaalikoulu),
+    tila = AhvenanmaanPerusopetuksenOpiskeluoikeudenTila(
+      List(
+        AhvenanmaanPerusopetuksenOpiskeluoikeusjakso(date(2024, 8, 15), opiskeluoikeusLäsnä),
+        AhvenanmaanPerusopetuksenOpiskeluoikeusjakso(date(2026, 6, 4), opiskeluoikeusValmistunut)
+      )
+    ),
+    suoritukset = List(aikuistenPäättötodistuksenSuoritus),
+  )
+
   val opiskeluoikeus = AhvenanmaanPerusopetuksenOpiskeluoikeus(
     oppilaitos = Some(jyväskylänNormaalikoulu),
     tila = AhvenanmaanPerusopetuksenOpiskeluoikeudenTila(
@@ -136,7 +161,13 @@ object ExamplesAhvenanmaanPerusopetus {
     List(opiskeluoikeus)
   )
 
+  val ahvenanmaanAikuisopiskelija = Oppija(
+    asUusiOppija(KoskiSpecificMockOppijat.ahvenanmaanAikuisopiskelija),
+    List(aikuistenOpiskeluoikeus)
+  )
+
   val examples = List(
     Example("ahvenanmaan perusopetus - päättötodistus", "Ahvenanmaalainen oppilas on saanut perusopetuksen päättötodistuksen (avgångsbetyg)", ahvenanmaanPerusoppilas),
+    Example("ahvenanmaan perusopetus - päättötodistus muille kuin oppivelvollisille", "Ahvenanmaalainen aikuisopiskelija on saanut perusopetuksen päättötodistuksen (avgångsbetyg); opiskeluoikeudella ei ole vuosiluokkasuorituksia", ahvenanmaanAikuisopiskelija),
   )
 }
