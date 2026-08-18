@@ -94,7 +94,8 @@ class VirtaXMLConverterSpec extends AnyFreeSpec with TestEnvironment with Matche
     päättynyt: Boolean = false,
     luokittelu: Option[Int] = None,
     ilmanAinePätevyyksiä: Boolean = false,
-    ilmanOpePätevyyksiä: Boolean = false
+    ilmanOpePätevyyksiä: Boolean = false,
+    laajuudellinen: Boolean = true
   ): Elem = <virta:Opiskeluoikeudet>
     <virta:Opiskeluoikeus opiskelijaAvain="avopH1" avain="avopH1O1">
       <virta:AlkuPvm>2008-08-01</virta:AlkuPvm>
@@ -161,9 +162,13 @@ class VirtaXMLConverterSpec extends AnyFreeSpec with TestEnvironment with Matche
         <virta:Patevyys>far</virta:Patevyys>
         <virta:Patevyys>16</virta:Patevyys>
       </virta:Jakso>
-      <virta:Laajuus>
-        <virta:Opintopiste>240</virta:Opintopiste>
-      </virta:Laajuus>
+      {
+        if (laajuudellinen) {
+          <virta:Laajuus>
+            <virta:Opintopiste>240</virta:Opintopiste>
+          </virta:Laajuus>
+        }
+      }
     </virta:Opiskeluoikeus>
   </virta:Opiskeluoikeudet>
 
@@ -228,6 +233,24 @@ class VirtaXMLConverterSpec extends AnyFreeSpec with TestEnvironment with Matche
         val opiskeluoikeudet = converter.convertToOpiskeluoikeudet(opiskeluoikeusWithOrganisaatio(None, luokittelu=None))
         val luokittelut = opiskeluoikeudet.flatMap(_.luokittelu)
         luokittelut should be (empty)
+      }
+    }
+
+    "Vaadittu laajuus" - {
+      "parsitaan opiskeluoikeudelta" in {
+        convertOpiskeluoikeusWithOrganisaatio(None).lisätiedot.value
+          .vaadittuLaajuus.value.arvo shouldBe 240
+      }
+
+      "on None jos opiskeluoikeudella ei ole laajuutta" in {
+        converter.convertToOpiskeluoikeudet(opiskeluoikeusWithOrganisaatio(None, laajuudellinen = false))
+          .head.lisätiedot.value.vaadittuLaajuus shouldBe None
+      }
+    }
+
+    "Siirto-opiskelija" - {
+      "on None jos opiskeluoikeudella ei ole SiirtoOpiskelija-elementtiä" in {
+        convertOpiskeluoikeusWithOrganisaatio(None).lisätiedot.value.siirtoOpiskelija shouldBe None
       }
     }
 
@@ -749,6 +772,17 @@ class VirtaXMLConverterSpec extends AnyFreeSpec with TestEnvironment with Matche
 
       jaksot.map(_.ilmoittautumispäivä) shouldBe List(Some(LocalDate.of(2013, 7, 10)), Some(LocalDate.of(2013, 7, 10)))
       jaksot.map(_.alku) shouldBe List(LocalDate.of(2013, 8, 1), LocalDate.of(2014, 1, 1))
+    }
+
+    "siirto-opiskelijan tiedot parsitaan oikein mock-datasta (141199-418X.xml)" in {
+      val xmlString = Files.asString("src/main/resources/mockdata/virta/opintotiedot/141199-418X.xml").get
+      val xml = scala.xml.XML.loadString(xmlString)
+      val opiskeluoikeudet = converter.convertToOpiskeluoikeudet(xml)
+
+      val siirrot = opiskeluoikeudet.flatMap(_.lisätiedot).flatMap(_.siirtoOpiskelija)
+      siirrot should have length 1
+      siirrot.head.siirtoPäivä shouldBe LocalDate.of(2017, 1, 2)
+      siirrot.head.lähdeOrganisaatio shouldBe defined
     }
   }
 }
