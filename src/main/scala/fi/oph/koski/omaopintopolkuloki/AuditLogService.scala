@@ -11,12 +11,14 @@ import fi.oph.koski.mydata.MyDataConfig
 import fi.oph.koski.schema.{LocalizedString, Oppija}
 import fi.oph.koski.omaopintopolkuloki.AuditLogDynamoDB.AuditLogTableName
 import fi.oph.koski.schema.Henkilö.Oid
+import fi.oph.koski.valpas.log.ValpasOperation
 import software.amazon.awssdk.services.dynamodb.model.{AttributeValue, QueryRequest}
 
 import scala.jdk.CollectionConverters._
 
 class AuditLogService(val application: KoskiApplication) extends Logging with MyDataConfig {
   private val organisaatioRepository = application.organisaatioRepository
+  private val localizationRepository = application.koskiLocalizationRepository
   private val dynamoDB = AuditLogDynamoDB.buildDb(application.config)
 
   def queryLogsFromDynamo(masterOppijaOid: String, allowedOrganisaatiot: AllowedOrganisaatiot): Either[HttpStatus, Seq[OrganisaationAuditLogit]] = {
@@ -45,11 +47,15 @@ class AuditLogService(val application: KoskiApplication) extends Logging with My
           |  contains (#rawEntry, :muutoshistoria_katsominen) or
           |  contains (#rawEntry, :ytr_katsominen) or
           |  contains (#rawEntry, :oauth2_katsominen_kaikki_tiedot) or
+          |  contains (#rawEntry, :oauth2_katsominen_kaikki_tiedot_ja_valintatiedot) or
           |  contains (#rawEntry, :oauth2_katsominen_suoritetut_tutkinnot) or
           |  contains (#rawEntry, :oauth2_katsominen_aktiiviset_ja_paattyneet_opinnot) or
           |  contains (#rawEntry, :suoritusjako_katsominen) or
           |  contains (#rawEntry, :suoritusjako_katsominen_suoritetut_tutkinnot) or
           |  contains (#rawEntry, :suoritusjako_katsominen_aktiiviset_ja_paattyneet_opinnot) or
+          |  contains (#rawEntry, :valpas_oppija_katsominen) or
+          |  contains (#rawEntry, :valpas_kuntailmoituksen_katsominen) or
+          |  contains (#rawEntry, :oppivelvollisuusrekisteri_luovutus) or
           |  contains (#rawEntry, :varda_service) or
           |  contains (#rawEntry, :kitu_service))
           |  """.stripMargin)
@@ -65,8 +71,12 @@ class AuditLogService(val application: KoskiApplication) extends Logging with My
         valueMap.put(":suoritusjako_katsominen_suoritetut_tutkinnot", AttributeValue.builder.s("\"KANSALAINEN_SUORITUSJAKO_KATSOMINEN_SUORITETUT_TUTKINNOT\"").build)
         valueMap.put(":suoritusjako_katsominen_aktiiviset_ja_paattyneet_opinnot", AttributeValue.builder.s("\"KANSALAINEN_SUORITUSJAKO_KATSOMINEN_AKTIIVISET_JA_PAATTYNEET_OPINNOT\"").build)
         valueMap.put(":oauth2_katsominen_kaikki_tiedot", AttributeValue.builder.s("\"OAUTH2_KATSOMINEN_KAIKKI_TIEDOT\"").build)
+        valueMap.put(":oauth2_katsominen_kaikki_tiedot_ja_valintatiedot", AttributeValue.builder.s("\"OAUTH2_KATSOMINEN_KAIKKI_TIEDOT_JA_VALINTATIEDOT\"").build)
         valueMap.put(":oauth2_katsominen_suoritetut_tutkinnot", AttributeValue.builder.s("\"OAUTH2_KATSOMINEN_SUORITETUT_TUTKINNOT\"").build)
         valueMap.put(":oauth2_katsominen_aktiiviset_ja_paattyneet_opinnot", AttributeValue.builder.s("\"OAUTH2_KATSOMINEN_AKTIIVISET_JA_PAATTYNEET_OPINNOT\"").build)
+        valueMap.put(":valpas_oppija_katsominen", AttributeValue.builder.s("\"VALPAS_OPPIJA_KATSOMINEN\"").build)
+        valueMap.put(":valpas_kuntailmoituksen_katsominen", AttributeValue.builder.s("\"VALPAS_OPPIJA_KUNTAILMOITUKSEN_KATSOMINEN\"").build)
+        valueMap.put(":oppivelvollisuusrekisteri_luovutus", AttributeValue.builder.s("\"OPPIVELVOLLISUUSREKISTERI_LUOVUTUS\"").build)
         valueMap.put(":varda_service", AttributeValue.builder.s("\"varda\"").build)
         valueMap.put(":kitu_service", AttributeValue.builder.s("\"kitu\"").build)
         valueMap
@@ -111,7 +121,7 @@ class AuditLogService(val application: KoskiApplication) extends Logging with My
           if (isKoskiLog) filteredOrganisaatiot.sortBy(oid => (allowedOrganisaatiot.priority(oid), oid))
           else filteredOrganisaatiot.sorted
         val timestampString = parsedRow.time
-        val serviceName = parsedRaw.serviceName
+        val serviceName = AuditLogService.resolveServiceName(parsedRaw.operation, parsedRaw.serviceName)
         val isMyDataUse = parsedRaw.operation.startsWith("OAUTH2_KATSOMINEN") || parsedRow.organizationOid.headOption.exists(isMyDataOrg)
         // TODO: Jakolinkkien käyttöjen palauttaminen frontille on toteutettu valmiiksi, mutta oma-opintopolku-lokin DynamoDB-parsinta skippaa näiden
         // entryjen käsittelyn, minkä vuoksi tuotantoympäristöissä näitä entryjä ei vielä käytännössä DynamoDB:ssä ole.
@@ -140,6 +150,7 @@ class AuditLogService(val application: KoskiApplication) extends Logging with My
       .flatMap(_.nimi)
       .map(name => Organisaatio(oid, name))
       .orElse(isOpetushallitus(oid))
+      .orElse(tuntematonOrganisaatio(oid))
       .toRight(KoskiErrorCategory.internalError())
     nimi.left.foreach(_ => logger.error(s"AuditLogissa olevaa organisaatiota $oid ei löytynyt organisaatiopalvelusta. Ks. oletettava syy TOR-1050."))
     nimi
@@ -152,9 +163,26 @@ class AuditLogService(val application: KoskiApplication) extends Logging with My
       None
     }
   }
+
+  private def tuntematonOrganisaatio(oid: String) = {
+    if (oid == AuditLogService.TuntematonOrganisaatioOid) {
+      Some(Organisaatio(oid, localizationRepository.get("Organisaatiotieto ei saatavilla")))
+    } else {
+      None
+    }
+  }
 }
 
 object AuditLogService {
+  val ValpasServiceName = "valpas"
+
+  val TuntematonOrganisaatioOid = "tuntematon"
+
+  private val valpasOperaatiot: Set[String] = ValpasOperation.values.toSeq.map(_.toString).toSet
+
+  def resolveServiceName(operation: String, serviceName: String): String =
+    if (valpasOperaatiot.contains(operation)) ValpasServiceName else serviceName
+
   def allowedOrganisaatiot(oppija: Oppija): AllowedOrganisaatiot = {
     val koulutustoimijat = oppija.opiskeluoikeudet.flatMap(_.koulutustoimija.map(_.oid)).toSet
     val oppilaitokset = oppija.opiskeluoikeudet.flatMap(_.oppilaitos.map(_.oid)).toSet

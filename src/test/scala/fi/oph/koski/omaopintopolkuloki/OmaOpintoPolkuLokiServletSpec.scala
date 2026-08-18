@@ -40,11 +40,35 @@ class OmaOpintoPolkuLokiServletSpec extends AnyFreeSpec with Matchers with Koski
     "Näytetään KANSALAINEN_SUORITUSJAKO_KATSOMINEN_* - ja OAUTH2_KATSOMINEN_* -auditlogeja" in {
       val logs = auditlogs(KoskiSpecificMockOppijat.ylioppilasLukiolainen)
       logs should have length(2)
-      logs.foreach(_.timestamps should have length(3))
       logs.map(_.organizations.map(_.oid)) should contain theSameElementsAs(List(
         List(MockOrganisaatiot.helsinginKaupunki),
         List(MockOrganisaatiot.dvv)
       ))
+      def timestamps(oid: String) = logs.find(_.organizations.exists(_.oid == oid)).get.timestamps
+      timestamps(MockOrganisaatiot.helsinginKaupunki) should have length(3)
+      timestamps(MockOrganisaatiot.dvv) should have length(4)
+    }
+    "Näytetään Valppaan oppija- ja kuntailmoituskatselut sekä oppivelvollisuusrekisterin luovutukset" in {
+      auditlogs(KoskiSpecificMockOppijat.ysiluokkalainen).map(_.organizations.map(_.oid)) should contain theSameElementsAs(List(
+        List(MockOrganisaatiot.jyväskylänNormaalikoulu),
+        List(MockOrganisaatiot.kuopionKaupunki),
+        List(MockOrganisaatiot.ylioppilastutkintolautakunta),
+        List(AuditLogService.TuntematonOrganisaatioOid)
+      ))
+    }
+    "Takautuvasti täydennetylle riville täydennetään organisaatiotieto ei ole saatavilla" in {
+      val tuntematon = auditlogs(KoskiSpecificMockOppijat.ysiluokkalainen)
+        .flatMap(_.organizations)
+        .find(_.oid == AuditLogService.TuntematonOrganisaatioOid)
+      tuntematon shouldBe defined
+      tuntematon.get.name.get("fi") should equal("Organisaatiotieto ei saatavilla")
+    }
+    "Valpas-auditlogien lähdepalveluksi päätellään valpas, vaikka ne on kirjoitettu koski-palvelun nimellä" in {
+      auditlogs(KoskiSpecificMockOppijat.ysiluokkalainen).map(_.serviceName).distinct should equal(List("valpas"))
+    }
+    "Ei näytetä Valpas-auditlogeja joissa operaationa on ollut tietojen muokkaus" in {
+      val orgs = auditlogs(KoskiSpecificMockOppijat.ysiluokkalainen).flatMap(_.organizations.map(_.oid)).toSet
+      orgs should not contain (MockOrganisaatiot.tornionKaupunki)
     }
     "Näytetään sivoppijaoidien auditlokit kysyttäessä pääoidilla" in {
       auditlogs(KoskiSpecificMockOppijat.master).map(_.organizations.map(_.oid)) should contain theSameElementsAs(List(
