@@ -1,5 +1,10 @@
 # Koskeen tallennettavien tietojen validaatiosäännöt
 
+## 18.8.2026
+
+- Ahvenanmaan perusopetuksen opiskeluoikeudella, jolla on muiden kuin oppivelvollisten oppimäärän suoritus (`ahvenanmaanperusopetuksenoppimaaraaikuiset`), ei saa olla vuosiluokan suorituksia.
+- Muiden kuin oppivelvollisten oppimäärän suoritukselle on merkittävä alkamispäivä.
+
 ## 10.8.2026
 
 - IB-tutkinnon suorituksen suorituskielen on oltava englanti.

@@ -1,3 +1,7 @@
+# 18.8.2026
+
+- Ahvenanmaan perusopetuksen opiskeluoikeuteen lisätty uusi päätason suoritus `ahvenanmaanperusopetuksenoppimaaraaikuiset` (Ahvenanmaan perusopetuksen oppimäärän suoritus muille kuin oppivelvollisille). Suoritus vastaa rakenteeltaan oppivelvollisten oppimäärän suoritusta, mutta sillä on lisäksi `alkamispäivä`-kenttä, koska näillä opiskeluoikeuksilla ei ole vuosiluokan suorituksia.
+
 # 21.7.2026
 
 - Nuorten perusopetuksen opiskeluoikeuden lisätietoihin lisätty vapaaehtoinen `yhdysluokka`-kenttä (aikajaksojen lista), jolla ilmaistaan ajanjaksot, joina oppilas opiskelee yhdysluokassa.

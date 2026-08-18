@@ -343,6 +343,7 @@ class KoskiSpecificDatabaseFixtureCreator(application: KoskiApplication) extends
         lisätiedot = Some(AmmatillisenOpiskeluoikeudenLisätiedot(hojks = None)),
       )),
       (KoskiSpecificMockOppijat.ahvenanmaanPerusoppilas, AhvenanmaanPerusopetusExampleData.opiskeluoikeus),
+      (KoskiSpecificMockOppijat.ahvenanmaanAikuisopiskelija, AhvenanmaanPerusopetusExampleData.aikuistenOpiskeluoikeus),
       (
         KoskiSpecificMockOppijat.lahdejarjestelmanPurku,
         ExamplesKielitutkinto.YleisetKielitutkinnot.lähdejärjestelmällinenOpiskeluoikeus

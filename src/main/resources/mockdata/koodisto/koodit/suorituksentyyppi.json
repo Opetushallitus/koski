@@ -13,6 +13,18 @@
   },
   {
     "metadata": [
+      { "nimi": "Ahvenanmaan perusopetuksen oppimäärä, muut kuin oppivelvolliset", "kuvaus": "", "lyhytNimi": "", "kieli": "FI" },
+      { "nimi": "Grundskolans lärokurs på Åland, andra än läropliktiga", "kuvaus": "", "lyhytNimi": "", "kieli": "SV" }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "suorituksentyyppi_ahvenanmaanperusopetuksenoppimaaraaikuiset",
+    "versio": 1,
+    "koodiArvo": "ahvenanmaanperusopetuksenoppimaaraaikuiset"
+  },
+  {
+    "metadata": [
       { "nimi": "Ahvenanmaan perusopetuksen vuosiluokka", "kuvaus": "", "lyhytNimi": "", "kieli": "FI" },
       { "nimi": "Grundskolans årskurs på Åland", "kuvaus": "", "lyhytNimi": "", "kieli": "SV" }
     ],
