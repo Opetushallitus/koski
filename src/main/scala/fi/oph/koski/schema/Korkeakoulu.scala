@@ -71,9 +71,18 @@ case class KorkeakoulunOpiskeluoikeudenLisätiedot(
   @InfoDescription("opetettavan aineen kelpoisuuden määritelmä")
   @KoodistoUri("virtapatevyys")
   opetettavanAineenOpinnot: Option[List[Koodistokoodiviite]],
+  @Description("Tutkinnon tai opintojen vaadittu laajuus")
+  vaadittuLaajuus: Option[Laajuus] = None,
+  @Description("Siirto-opiskelijan siirtopäivä ja lähdeoppilaitos")
+  siirtoOpiskelija: Option[SiirtoOpiskelija] = None,
 ) extends OpiskeluoikeudenLisätiedot {
   def ensisijaisuusVoimassa(d: LocalDate): Boolean = ensisijaisuus.exists(_.exists((j: Aikajakso) => j.contains(d)))
 }
+
+case class SiirtoOpiskelija(
+  siirtoPäivä: LocalDate,
+  lähdeOrganisaatio: Option[Oppilaitos]
+)
 
 case class KoulutuskuntaJakso(
   alku: LocalDate,
