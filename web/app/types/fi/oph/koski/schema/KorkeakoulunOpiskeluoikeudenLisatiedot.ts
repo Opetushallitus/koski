@@ -1,5 +1,7 @@
+import { SiirtoOpiskelija } from './SiirtoOpiskelija'
 import { KorkeakoulunOpiskeluoikeudenLukuvuosimaksu } from './KorkeakoulunOpiskeluoikeudenLukuvuosimaksu'
 import { Oppilaitos } from './Oppilaitos'
+import { Laajuus } from './Laajuus'
 import { KoulutuskuntaJakso } from './KoulutuskuntaJakso'
 import { Koodistokoodiviite } from './Koodistokoodiviite'
 import { LocalizedString } from './LocalizedString'
@@ -13,8 +15,10 @@ import { Aikajakso } from './Aikajakso'
  */
 export type KorkeakoulunOpiskeluoikeudenLisätiedot = {
   $class: 'fi.oph.koski.schema.KorkeakoulunOpiskeluoikeudenLisätiedot'
+  siirtoOpiskelija?: SiirtoOpiskelija
   maksettavatLukuvuosimaksut?: Array<KorkeakoulunOpiskeluoikeudenLukuvuosimaksu>
   järjestäväOrganisaatio?: Oppilaitos
+  vaadittuLaajuus?: Laajuus
   koulutuskuntaJaksot: Array<KoulutuskuntaJakso>
   opettajanPedagogisetOpinnot?: Array<
     Koodistokoodiviite<'virtapatevyys', string>
@@ -30,8 +34,10 @@ export type KorkeakoulunOpiskeluoikeudenLisätiedot = {
 
 export const KorkeakoulunOpiskeluoikeudenLisätiedot = (
   o: {
+    siirtoOpiskelija?: SiirtoOpiskelija
     maksettavatLukuvuosimaksut?: Array<KorkeakoulunOpiskeluoikeudenLukuvuosimaksu>
     järjestäväOrganisaatio?: Oppilaitos
+    vaadittuLaajuus?: Laajuus
     koulutuskuntaJaksot?: Array<KoulutuskuntaJakso>
     opettajanPedagogisetOpinnot?: Array<
       Koodistokoodiviite<'virtapatevyys', string>

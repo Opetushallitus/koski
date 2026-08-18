@@ -90,7 +90,9 @@ case class VirtaXMLConverter(oppilaitosRepository: OppilaitosRepository, koodist
             _.distinct
               .filter(v => Set("aa","ab","ac","ad","ae","af","ag","ah","ai","aj","ak","al","am","an","ao","as","at","au","av","aw","ax","ay","az","ba","bb","bc","bd","be","bf","bg","bh","bi","bj","bk","bl","bm","bn","bo","bq","br","bs","bt","bu","bv","bw","bx","by","bz","ca","cb","cc","cd","ce","cf","cg","ch","ci","cj","ck","cl","cp","cq","cr","cs","ct","cu","cv","cx","cy","cz","da","db","dc","dd","de","df","dg","dh","di","dj","dk","dl","dm","dn","dr","ds","dt","du","dv","dw","dx","dy","dz","ed","ee","ef","eg","eh","ei","ej","ek","el","em","en","eo","ep","eq","er","es","et","eu","ev","ew","ex","ey","ez","fa","fb","fc","fd","fe","ff","fg","fh","fi","fj","fk","fl","fm","fn","fo","fp","fw","fx","fy","fz","ga","gb","gc","gd","ge","gf","gg","gh","gi","gj","gk","gl","gm","gn","go","gp","gq","gr","gs","gt","gu","gv","gw","gx","gy","gz","ha","hb","hc","hd","he","hf","hg","hh","hi","hj","hk","hl","hm","hn","ho","hp","hq","hr","hs","ht","hu","hv","hw","hx","hy","hz","ia","ib","ic","id","ie","if","ig","ij","je","jf","jg","jh","ji","jj","jk","jl","jm","jn","jo","jp","jq","jr","js","jt","ju","jv","jw","jx","jy","jz","ka","kb","kc","kd","kk","kl","km","kn","ko","kp","kq","ks","kt","ku","ms","ts","tt").contains(v.koodiarvo))
               .sortBy(_.koodiarvo)
-          ).filter(_.nonEmpty)
+          ).filter(_.nonEmpty),
+          vaadittuLaajuus = laajuus(opiskeluoikeusNode),
+          siirtoOpiskelija = siirtoOpiskelijanTiedot(opiskeluoikeusNode, oppilaitoksenNimiPäivä)
         )),
         virtaVirheet = virheet.toList,
         luokittelu = noneIfEmpty(opiskeluoikeudenLuokittelu(opiskeluoikeusNode))
@@ -340,6 +342,14 @@ case class VirtaXMLConverter(oppilaitosRepository: OppilaitosRepository, koodist
       None
     }
   }
+
+  private def siirtoOpiskelijanTiedot(node: Node, päivä: Option[LocalDate]): Option[SiirtoOpiskelija] =
+    (node \ "SiirtoOpiskelija" \ "SiirtoPvm").headOption.map { siirtoPvm =>
+      SiirtoOpiskelija(
+        siirtoPäivä = date(siirtoPvm.text),
+        lähdeOrganisaatio = findOppilaitos(oppilaitosnumero(node).lähde, päivä)
+      )
+    }
 
   private def lukukausiIlmo(n: Node) = Lukukausi_Ilmoittautumisjakso(
     alku = alkuPvm(n),
