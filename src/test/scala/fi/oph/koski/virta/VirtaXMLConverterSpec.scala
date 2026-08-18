@@ -825,5 +825,96 @@ class VirtaXMLConverterSpec extends AnyFreeSpec with TestEnvironment with Matche
       siirrot.head.siirtoPäivä shouldBe LocalDate.of(2017, 1, 2)
       siirrot.head.lähdeOrganisaatio shouldBe defined
     }
+
+    "liikkuvuusjaksot" - {
+      def opiskeluoikeudet(tiedosto: String): List[KorkeakoulunOpiskeluoikeus] = {
+        val xmlString = Files.asString(s"src/main/resources/mockdata/virta/opintotiedot/$tiedosto").get
+        converter.convertToOpiskeluoikeudet(scala.xml.XML.loadString(xmlString))
+      }
+
+      def liikkuvuusjaksot(oo: KorkeakoulunOpiskeluoikeus): List[Liikkuvuusjakso] =
+        oo.lisätiedot.toList.flatMap(_.liikkuvuusjaksot.toList.flatten)
+
+      "kohdistetaan opiskeluoikeusavaimella (090802A952F.xml)" in {
+        val oot = opiskeluoikeudet("090802A952F.xml")
+        oot should have length 1
+
+        val jaksot = liikkuvuusjaksot(oot.head)
+        jaksot.map(_.alku) shouldBe List(
+          LocalDate.of(2025, 3, 5),
+          LocalDate.of(2025, 11, 10),
+          LocalDate.of(2026, 3, 9)
+        )
+        jaksot.map(_.loppu) shouldBe List(
+          Some(LocalDate.of(2025, 5, 22)),
+          Some(LocalDate.of(2025, 11, 14)),
+          Some(LocalDate.of(2026, 3, 13))
+        )
+        jaksot.map(_.maa.koodiarvo) shouldBe List("620", "528", "056")
+        jaksot.map(_.liikkuvuusohjelma.koodiarvo) shouldBe List("108", "108", "101")
+        jaksot.map(_.suunta.koodiarvo).distinct shouldBe List("1")
+        jaksot.map(_.tyyppi.koodiarvo).distinct shouldBe List("1")
+
+        jaksot.map(_.luokittelu.toList.flatten.map(_.koodiarvo)) shouldBe List(Nil, Nil, List("b"))
+        jaksot.last.luokittelu.get.head.koodistoUri shouldBe "liikkuvuudenluokittelu"
+      }
+
+      "maakoodin etunollat säilyvät (090802A952F.xml)" in {
+        val maat = opiskeluoikeudet("090802A952F.xml").flatMap(liikkuvuusjaksot).map(_.maa.koodiarvo)
+        maat should contain("056")
+        maat should not contain "56"
+      }
+
+      "kohdistetaan oikealle opiskeluoikeudelle kun opiskeluoikeuksia on useita (060180-9521.xml)" in {
+        val oot = opiskeluoikeudet("060180-9521.xml")
+        oot should have length 2
+
+        val (avaimellinen, muut) = oot.partition(_.lähdejärjestelmänId.flatMap(_.id).contains("1203130"))
+        avaimellinen should have length 1
+        liikkuvuusjaksot(avaimellinen.head).map(j => (j.alku, j.maa.koodiarvo, j.liikkuvuusohjelma.koodiarvo)) shouldBe List(
+          (LocalDate.of(2014, 5, 4), "276", "106"),
+          (LocalDate.of(2014, 9, 1), "410", "106")
+        )
+        muut.flatMap(liikkuvuusjaksot) shouldBe Nil
+      }
+
+      "kohdistetaan myöntäjän ja voimassaolon perusteella kun opiskeluoikeusavain puuttuu (030199-3419.xml)" in {
+        val jaksot = opiskeluoikeudet("030199-3419.xml").flatMap(liikkuvuusjaksot)
+
+        jaksot should have length 1
+        jaksot.head.alku shouldBe LocalDate.of(2001, 7, 15)
+        jaksot.head.loppu shouldBe Some(LocalDate.of(2001, 8, 7))
+        jaksot.head.maa.koodiarvo shouldBe "752"
+        jaksot.head.liikkuvuusohjelma.koodiarvo shouldBe "107"
+      }
+
+      "fuusiosta syntyneet kaksoiskappaleet karsitaan (020276-901K.xml)" in {
+        val xmlString = Files.asString("src/main/resources/mockdata/virta/opintotiedot/020276-901K.xml").get
+        val xml = scala.xml.XML.loadString(xmlString)
+        val liikkuvuusjaksoNodet = (xml \\ "Liikkuvuusjakso").toList
+
+        // Neljä elementtiä, mutta vain kaksi eri avainta: sama jakso siirtyy sekä vanhan (01905) että
+        // uuden (10122) myöntäjän alla.
+        liikkuvuusjaksoNodet should have length 4
+        liikkuvuusjaksoNodet.map(n => (n \ "@avain").text).distinct should have length 2
+
+        val oot = converter.convertToOpiskeluoikeudet(xml)
+
+        // Yksikään opiskeluoikeus ei saa saada samaa jaksoa kahdesti: fuusioituneen korkeakoulun
+        // opiskeluoikeus täsmää sekä vanhaan että uuteen myöntäjään, jolloin molemmat kopiot osuisivat
+        // siihen ilman avaimeen perustuvaa karsintaa.
+        oot.foreach(oo => liikkuvuusjaksot(oo).distinct shouldBe liikkuvuusjaksot(oo))
+
+        // Fuusiodatassa myös opiskeluoikeudet itsessään siirtyvät kahteen kertaan (sama avain vanhan ja
+        // uuden myöntäjän alla). Ne yhdistää VirtaOpiskeluoikeusRepository.virtaHaku .distinctillä, joten
+        // oppijalle päätyvät liikkuvuusjaksot lasketaan samalla tavalla.
+        val jaksot = oot.distinct.flatMap(liikkuvuusjaksot)
+        jaksot should have length 2
+        jaksot.map(j => (j.alku, j.maa.koodiarvo)).sortBy(_._1.toString) shouldBe List(
+          (LocalDate.of(2011, 8, 23), "752"),
+          (LocalDate.of(2013, 9, 1), "724")
+        )
+      }
+    }
   }
 }

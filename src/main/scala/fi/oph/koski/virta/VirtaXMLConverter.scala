@@ -82,6 +82,7 @@ case class VirtaXMLConverter(oppilaitosRepository: OppilaitosRepository, koodist
           maksettavatLukuvuosimaksut = Some(lukuvuosimaksut),
           koulutuskuntaJaksot = koulutuskuntajaksot(opiskeluoikeusNode),
           rahoituslähdeJaksot = noneIfEmpty(rahoituslähdejaksot(opiskeluoikeusNode)),
+          liikkuvuusjaksot = liikkuvuusjaksot(opiskeluoikeudenTila, opiskeluoikeusNode, virtaXml),
           opettajanPedagogisetOpinnot = opettajanPatevyydet.map(
             _.distinct
               .filter(v => Set("ik","il","im","in","io","ip","iq","ir","is","it","iu","iv","iw","ix","iy","ja","jb","jc","jd","ke","oa","ob","oe","of","og","pv","rv","sv","va","vo","vs").contains(v.koodiarvo))
@@ -592,6 +593,61 @@ case class VirtaXMLConverter(oppilaitosRepository: OppilaitosRepository, koodist
       .toList
 
 
+  private def liikkuvuusjaksot(tila: KorkeakoulunOpiskeluoikeudenTila, opiskeluoikeusNode: Node, virtaXml: Node): Option[List[Liikkuvuusjakso]] = {
+    val liikkuvuus = Liikkuvuus(opiskeluoikeusNode, tila, avain(opiskeluoikeusNode))
+    val jaksot = poistaFuusioDuplikaatit((virtaXml \\ "Liikkuvuusjakso").toList.filter(liikkuvuus.kuuluuOpiskeluoikeuteen))
+      .flatMap(liikkuvuusjakso)
+      .sortBy(_.alku)(DateOrdering.localDateOrdering)
+
+    noneIfEmpty(jaksot)
+  }
+
+  // Fuusioituneella korkeakoululla sama liikkuvuusjakso siirtyy Virrasta kahteen kertaan: kerran vanhan
+  // ja kerran uuden myöntäjän alla. Kopiot jakavat avaimen (joka sisältää alkuperäisen myöntäjän myös
+  // kopiossa), joten karsinta tehdään avaimella eikä sisältöä vertailemalla. Avaimettomia jaksoja ei voi
+  // tunnistaa kaksoiskappaleiksi, joten ne säilytetään sellaisenaan.
+  private def poistaFuusioDuplikaatit(jaksot: List[Node]): List[Node] = {
+    val (avaimelliset, avaimettomat) = jaksot.partition(n => (n \ "@avain").text.nonEmpty)
+    avaimelliset.distinctBy(n => (n \ "@avain").text) ++ avaimettomat
+  }
+
+  private def liikkuvuusjakso(node: Node): Option[Liikkuvuusjakso] = {
+    def koodi(elementti: String, koodistoUri: String): Option[Koodistokoodiviite] =
+      (node \ elementti).headOption
+        .map(_.text)
+        .filter(_.nonEmpty)
+        .flatMap(koodiarvo => koodistoViitePalvelu.validate(koodistoUri, koodiarvo))
+
+    // Suunta, maa, tyyppi ja liikkuvuusohjelma ovat jakson tulkinnan kannalta välttämättömiä, joten jakso
+    // jätetään kokonaan pois jos jokin niistä ei ratkea. validate ei heitä poikkeusta, joten tuntematon
+    // koodiarvo ei kaada koko oppijan konversiota.
+    val jakso = for {
+      suunta <- koodi("Suunta", "virtaliikkuvuudensuunta")
+      maa <- koodi("Maa", "maatjavaltiot2")
+      tyyppi <- koodi("Tyyppi", "virtaliikkuvuudentyyppi")
+      liikkuvuusohjelma <- koodi("Liikkuvuusohjelma", "virtaliikkuvuusohjelma")
+    } yield Liikkuvuusjakso(
+      alku = alkuPvm(node),
+      loppu = loppuPvm(node),
+      suunta = suunta,
+      maa = maa,
+      tyyppi = tyyppi,
+      liikkuvuusohjelma = liikkuvuusohjelma,
+      luokittelu = noneIfEmpty(parseLiikkuvuudenLuokittelu(node))
+    )
+
+    if (jakso.isEmpty) {
+      logger.warn(s"Liikkuvuusjaksoa ei voitu konvertoida tuntemattoman koodiarvon takia: avain '${(node \ "@avain").text}'")
+    }
+    jakso
+  }
+
+  // liikkuvuudenluokittelu-koodiston arvot ovat yksittäisiä kirjaimia, joten parseLuokittelua (joka
+  // hyväksyy vain numeeriset arvot) ei voi käyttää.
+  private def parseLiikkuvuudenLuokittelu(node: Node): List[Koodistokoodiviite] = (node \ "Luokittelu")
+    .map(_.text).filter(s => s.length == 1 && s.forall(_.isLetter)).toList
+    .flatMap(l => koodistoViitePalvelu.validate("liikkuvuudenluokittelu", l))
+
   private def koulutuskuntajaksot(opiskeluoikeusNode: Node): List[KoulutuskuntaJakso] = {
     val jaksot = opiskeluoikeusNode \ "Jakso"
     jaksot.map(jakso => KoulutuskuntaJakso(
@@ -635,6 +691,30 @@ case class Ilmoittautuminen(oppilaitos: Option[Oppilaitos], tila: KorkeakoulunOp
     oppilaitosNumero.contains(myöntäjä) && aktiivisetJaksot.exists(_.overlaps(ilmoittautuminen))
   }
 
+}
+
+// Liikkuvuusjaksot siirtyvät Virrasta opiskelijan alla, opiskeluoikeuksien sisarenaan, joten ne on
+// kohdistettava opiskeluoikeuteen jälkikäteen.
+case class Liikkuvuus(opiskeluoikeusNode: Node, tila: KorkeakoulunOpiskeluoikeudenTila, ooAvain: OpiskeluoikeusAvain) {
+  private lazy val jaksot = tila.opiskeluoikeusjaksot.map(Some.apply)
+  private lazy val aktiivisetJaksot = jaksot.zipAll(jaksot.drop(1), None, None).collect {
+    case (Some(a), b) if a.tila.koodiarvo == "1" => LoppupäivällinenOpiskeluoikeusJakso(a.alku, b.map(_.alku))
+  }
+  private lazy val opiskeluoikeudenMyöntäjät = oppilaitosnumero(opiskeluoikeusNode).asList
+
+  def kuuluuOpiskeluoikeuteen(n: Node): Boolean = {
+    val jaksonOpiskeluoikeusAvain = opiskeluoikeusAvain(n)
+    if (jaksonOpiskeluoikeusAvain.nonEmpty) {
+      ooAvain == jaksonOpiskeluoikeusAvain
+    } else {
+      // Virta ei aina siirrä liikkuvuusjaksolle opiskeluoikeusavainta. Silloin jakso kohdistetaan myöntäjän
+      // ja päällekkäisen voimassaolon perusteella. Myöntäjää verrataan opiskeluoikeusnoodin Virta-koodeihin
+      // eikä ratkaistuun Koski-organisaatioon, koska fuusiotapauksissa useampi Virta-koodi osoittaa samaan
+      // organisaatioon ja koodi voi jäädä kokonaan ratkeamatta.
+      oppilaitosnumero(n).asList.exists(opiskeluoikeudenMyöntäjät.contains) &&
+        aktiivisetJaksot.exists(_.overlaps(LoppupäivällinenOpiskeluoikeusJakso(alkuPvm(n), loppuPvm(n))))
+    }
+  }
 }
 
 case class LoppupäivällinenOpiskeluoikeusJakso(
