@@ -532,6 +532,20 @@ class VirtaXMLConverterSpec extends AnyFreeSpec with TestEnvironment with Matche
           }
         luokittelut should be (empty)
       }
+      "ei-numeerinen arvo sivuutetaan eikä kaadeta konversiota" in {
+        val suoritus =
+          <virta:Opintosuoritus opiskeluoikeusAvain="avopH1O1" opiskelijaAvain="avopH1" koulutusmoduulitunniste="K-126" avain="luokittelu-1">
+            <virta:SuoritusPvm>2017-12-04</virta:SuoritusPvm>
+            <virta:Laajuus><virta:Opintopiste>5</virta:Opintopiste></virta:Laajuus>
+            <virta:Arvosana><virta:Viisiportainen>5</virta:Viisiportainen></virta:Arvosana>
+            <virta:Myontaja>10076</virta:Myontaja>
+            <virta:Laji>2</virta:Laji>
+            <virta:Nimi kieli="fi">Opintojakso</virta:Nimi>
+            <virta:Luokittelu>b</virta:Luokittelu>
+          </virta:Opintosuoritus>
+        convertSuoritus(suoritus)
+          .value.asInstanceOf[KorkeakoulunOpintojaksonSuoritus].luokittelu shouldBe None
+      }
     }
 
     "Lähdeorganisaatio" - {
