@@ -174,8 +174,12 @@ eslint:
 prettier:
 	cd web && pnpm run prettier:check
 
+.PHONY: prettier-mock-data
+prettier-mock-data:
+	./scripts/prettier-format-koodistot.sh --check
+
 .PHONY: lint
-lint: eslint prettier
+lint: eslint prettier prettier-mock-data
 
 .PHONY: owasp
 owasp:
