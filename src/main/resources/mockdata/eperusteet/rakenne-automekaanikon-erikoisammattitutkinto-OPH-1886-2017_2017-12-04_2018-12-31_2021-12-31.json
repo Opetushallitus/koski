@@ -23,10 +23,7 @@
       "opintoalakoodi": "opintoalaoph2002_509"
     }
   ],
-  "kielet": [
-    "fi",
-    "sv"
-  ],
+  "kielet": ["fi", "sv"],
   "kuvaus": {
     "_id": "4386241",
     "_tunniste": "c8c2ac4d-d989-4e9c-bb4e-32ce0abbb6e3",
@@ -50,9 +47,7 @@
   "tila": "valmis",
   "tyyppi": "normaali",
   "koulutusvienti": false,
-  "korvattavatDiaarinumerot": [
-    "38/011/2001"
-  ],
+  "korvattavatDiaarinumerot": ["38/011/2001"],
   "osaamisalat": [
     {
       "id": 3211292,

@@ -11,10 +11,7 @@
   "koulutustyyppi": "koulutustyyppi_2",
   "toteutus": "lops",
   "koulutukset": [],
-  "kielet": [
-    "fi",
-    "sv"
-  ],
+  "kielet": ["fi", "sv"],
   "kuvaus": {
     "_id": "1431926",
     "fi": "<p>Nuorille tarkoitetun lukiokoulutuksen opetussuunnitelman perusteet</p>",

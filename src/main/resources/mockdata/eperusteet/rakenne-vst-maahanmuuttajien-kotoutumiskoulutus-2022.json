@@ -11,17 +11,12 @@
   },
   "koulutustyyppi": "koulutustyyppi_30",
   "toteutus": "kotoutumiskoulutus",
-  "koulutukset": [
-  ],
-  "kielet": [
-    "fi",
-    "sv"
-  ],
+  "koulutukset": [],
+  "kielet": ["fi", "sv"],
   "kuvaus": null,
   "maarayskirje": {
     "id": 8288462,
-    "url": {
-    },
+    "url": {},
     "liitteet": {
       "fi": {
         "id": "c8d84238-258b-4bcd-bc46-da57a8cf2259",
@@ -29,8 +24,7 @@
       }
     }
   },
-  "muutosmaaraykset": [
-  ],
+  "muutosmaaraykset": [],
   "diaarinumero": "OPH-649-2022",
   "voimassaoloAlkaa": 1646085600000,
   "siirtymaPaattyy": null,
@@ -42,11 +36,8 @@
   "tila": "valmis",
   "tyyppi": "normaali",
   "koulutusvienti": false,
-  "korvattavatDiaarinumerot": [
-    "1/011/2012"
-  ],
-  "osaamisalat": [
-  ],
+  "korvattavatDiaarinumerot": ["1/011/2012"],
+  "osaamisalat": [],
   "tyotehtavatJoissaVoiToimia": null,
   "suorittaneenOsaaminen": null,
   "perusteenAikataulut": [
@@ -165,8 +156,7 @@
                 "liite": false,
                 "osanTyyppi": "tekstikappale"
               },
-              "lapset": [
-              ],
+              "lapset": [],
               "_perusteenOsa": "8296851"
             },
             {
@@ -192,8 +182,7 @@
                 "liite": false,
                 "osanTyyppi": "tekstikappale"
               },
-              "lapset": [
-              ],
+              "lapset": [],
               "_perusteenOsa": "8296853"
             }
           ],
@@ -241,8 +230,7 @@
                 "liite": false,
                 "osanTyyppi": "tekstikappale"
               },
-              "lapset": [
-              ],
+              "lapset": [],
               "_perusteenOsa": "8296639"
             },
             {
@@ -268,8 +256,7 @@
                 "liite": false,
                 "osanTyyppi": "tekstikappale"
               },
-              "lapset": [
-              ],
+              "lapset": [],
               "_perusteenOsa": "8296855"
             }
           ],
@@ -322,8 +309,7 @@
                 "liite": false,
                 "osanTyyppi": "tekstikappale"
               },
-              "lapset": [
-              ],
+              "lapset": [],
               "_perusteenOsa": "8296856"
             },
             {
@@ -349,8 +335,7 @@
                 "liite": false,
                 "osanTyyppi": "tekstikappale"
               },
-              "lapset": [
-              ],
+              "lapset": [],
               "_perusteenOsa": "8296857"
             }
           ],
@@ -403,8 +388,7 @@
                 "liite": false,
                 "osanTyyppi": "tekstikappale"
               },
-              "lapset": [
-              ],
+              "lapset": [],
               "_perusteenOsa": "8296859"
             },
             {
@@ -430,8 +414,7 @@
                 "liite": false,
                 "osanTyyppi": "tekstikappale"
               },
-              "lapset": [
-              ],
+              "lapset": [],
               "_perusteenOsa": "8301773"
             }
           ],
@@ -484,8 +467,7 @@
                 "liite": false,
                 "osanTyyppi": "tekstikappale"
               },
-              "lapset": [
-              ],
+              "lapset": [],
               "_perusteenOsa": "8301774"
             },
             {
@@ -511,8 +493,7 @@
                 "liite": false,
                 "osanTyyppi": "tekstikappale"
               },
-              "lapset": [
-              ],
+              "lapset": [],
               "_perusteenOsa": "8301775"
             },
             {
@@ -538,8 +519,7 @@
                 "liite": false,
                 "osanTyyppi": "tekstikappale"
               },
-              "lapset": [
-              ],
+              "lapset": [],
               "_perusteenOsa": "8301776"
             },
             {
@@ -565,8 +545,7 @@
                 "liite": false,
                 "osanTyyppi": "tekstikappale"
               },
-              "lapset": [
-              ],
+              "lapset": [],
               "_perusteenOsa": "8301778"
             }
           ],
@@ -753,8 +732,7 @@
                 ],
                 "osanTyyppi": "koto_laajaalainenosaaminen"
               },
-              "lapset": [
-              ],
+              "lapset": [],
               "_perusteenOsa": "8312630"
             },
             {
@@ -804,8 +782,7 @@
                     "liite": false,
                     "osanTyyppi": "tekstikappale"
                   },
-                  "lapset": [
-                  ],
+                  "lapset": [],
                   "_perusteenOsa": "8296630"
                 },
                 {
@@ -978,8 +955,7 @@
                     ],
                     "osanTyyppi": "koto_kielitaitotaso"
                   },
-                  "lapset": [
-                  ],
+                  "lapset": [],
                   "_perusteenOsa": "8296631"
                 },
                 {
@@ -1005,8 +981,7 @@
                     "liite": false,
                     "osanTyyppi": "tekstikappale"
                   },
-                  "lapset": [
-                  ],
+                  "lapset": [],
                   "_perusteenOsa": "8296632"
                 },
                 {
@@ -1032,8 +1007,7 @@
                     "liite": false,
                     "osanTyyppi": "tekstikappale"
                   },
-                  "lapset": [
-                  ],
+                  "lapset": [],
                   "_perusteenOsa": "8296633"
                 }
               ],
@@ -1168,8 +1142,7 @@
                     ],
                     "osanTyyppi": "koto_opinto"
                   },
-                  "lapset": [
-                  ],
+                  "lapset": [],
                   "_perusteenOsa": "8296636"
                 },
                 {
@@ -1312,8 +1285,7 @@
                     ],
                     "osanTyyppi": "koto_opinto"
                   },
-                  "lapset": [
-                  ],
+                  "lapset": [],
                   "_perusteenOsa": "8296637"
                 },
                 {
@@ -1339,8 +1311,7 @@
                     "liite": false,
                     "osanTyyppi": "tekstikappale"
                   },
-                  "lapset": [
-                  ],
+                  "lapset": [],
                   "_perusteenOsa": "8296638"
                 }
               ],
@@ -1369,8 +1340,7 @@
                 "liite": false,
                 "osanTyyppi": "tekstikappale"
               },
-              "lapset": [
-              ],
+              "lapset": [],
               "_perusteenOsa": "8296858"
             }
           ],
@@ -1423,8 +1393,7 @@
                 "liite": false,
                 "osanTyyppi": "tekstikappale"
               },
-              "lapset": [
-              ],
+              "lapset": [],
               "_perusteenOsa": "8301779"
             },
             {
@@ -1450,8 +1419,7 @@
                 "liite": false,
                 "osanTyyppi": "tekstikappale"
               },
-              "lapset": [
-              ],
+              "lapset": [],
               "_perusteenOsa": "8302080"
             },
             {
@@ -1477,8 +1445,7 @@
                 "liite": false,
                 "osanTyyppi": "tekstikappale"
               },
-              "lapset": [
-              ],
+              "lapset": [],
               "_perusteenOsa": "8302081"
             },
             {
@@ -1504,8 +1471,7 @@
                 "liite": false,
                 "osanTyyppi": "tekstikappale"
               },
-              "lapset": [
-              ],
+              "lapset": [],
               "_perusteenOsa": "8302082"
             },
             {
@@ -1531,8 +1497,7 @@
                 "liite": false,
                 "osanTyyppi": "tekstikappale"
               },
-              "lapset": [
-              ],
+              "lapset": [],
               "_perusteenOsa": "8302083"
             }
           ],
@@ -1580,8 +1545,7 @@
                 "liite": false,
                 "osanTyyppi": "tekstikappale"
               },
-              "lapset": [
-              ],
+              "lapset": [],
               "_perusteenOsa": "8302084"
             },
             {
@@ -1607,8 +1571,7 @@
                 "liite": false,
                 "osanTyyppi": "tekstikappale"
               },
-              "lapset": [
-              ],
+              "lapset": [],
               "_perusteenOsa": "8302085"
             }
           ],

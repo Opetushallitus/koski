@@ -22,10 +22,7 @@
       "opintoalakoodi": "opintoalaoph2002_998"
     }
   ],
-  "kielet": [
-    "fi",
-    "sv"
-  ],
+  "kielet": ["fi", "sv"],
   "kuvaus": null,
   "maarayskirje": {
     "id": 1391576,

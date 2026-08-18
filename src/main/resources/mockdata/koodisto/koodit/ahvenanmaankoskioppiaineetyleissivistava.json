@@ -121,8 +121,16 @@
   },
   {
     "metadata": [
-      { "nimi": "Religions- och livsåskådningskunskap", "kuvaus": null, "kieli": "SV" },
-      { "nimi": "Uskonto ja elämänkatsomustieto", "kuvaus": null, "kieli": "FI" }
+      {
+        "nimi": "Religions- och livsåskådningskunskap",
+        "kuvaus": null,
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Uskonto ja elämänkatsomustieto",
+        "kuvaus": null,
+        "kieli": "FI"
+      }
     ],
     "withinCodeElements": [],
     "includesCodeElements": [],

@@ -12,10 +12,7 @@
   "koulutustyyppi": "koulutustyyppi_10",
   "toteutus": "vapaasivistystyo",
   "koulutukset": [],
-  "kielet": [
-    "fi",
-    "sv"
-  ],
+  "kielet": ["fi", "sv"],
   "kuvaus": {
     "_id": "7512279",
     "_tunniste": "8f25491d-0234-4c99-af30-2bc78b8a0a11",

@@ -11,10 +11,7 @@
   "koulutustyyppi": "koulutustyyppi_22",
   "toteutus": "yksinkertainen",
   "koulutukset": [],
-  "kielet": [
-    "fi",
-    "sv"
-  ],
+  "kielet": ["fi", "sv"],
   "kuvaus": null,
   "maarayskirje": {
     "id": 10048216,
@@ -42,10 +39,7 @@
   "tila": "valmis",
   "tyyppi": "normaali",
   "koulutusvienti": false,
-  "korvattavatDiaarinumerot": [
-    "19/011/2014",
-    "14/011/2009"
-  ],
+  "korvattavatDiaarinumerot": ["19/011/2014", "14/011/2009"],
   "osaamisalat": [],
   "tyotehtavatJoissaVoiToimia": null,
   "suorittaneenOsaaminen": null,

@@ -25,10 +25,7 @@
       "opintoalakoodi": null
     }
   ],
-  "kielet": [
-    "fi",
-    "sv"
-  ],
+  "kielet": ["fi", "sv"],
   "kuvaus": {
     "_id": "9548613",
     "_tunniste": "31c0f00a-6b7a-4665-97c4-d4cbbb3d4149",
@@ -60,9 +57,7 @@
   "tila": "valmis",
   "tyyppi": "normaali",
   "koulutusvienti": false,
-  "korvattavatDiaarinumerot": [
-    "OPH-1361-2018"
-  ],
+  "korvattavatDiaarinumerot": ["OPH-1361-2018"],
   "osaamisalat": [
     {
       "id": 9548944,

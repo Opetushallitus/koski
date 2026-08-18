@@ -23,10 +23,7 @@
       "opintoalakoodi": "opintoalaoph2002_998"
     }
   ],
-  "kielet": [
-    "fi",
-    "sv"
-  ],
+  "kielet": ["fi", "sv"],
   "kuvaus": {
     "_id": "4341092",
     "_tunniste": "8f42cc2b-cd7b-4530-a1a2-97c73fcc48f6",

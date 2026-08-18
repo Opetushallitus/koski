@@ -24,10 +24,7 @@
       "opintoalakoodi": null
     }
   ],
-  "kielet": [
-    "fi",
-    "sv"
-  ],
+  "kielet": ["fi", "sv"],
   "kuvaus": {
     "_id": "7534933",
     "_tunniste": "894d8090-fc1b-4550-b5d9-077fbb3c1f05",
@@ -75,11 +72,7 @@
   "tila": "valmis",
   "tyyppi": "normaali",
   "koulutusvienti": false,
-  "korvattavatDiaarinumerot": [
-    "OPH-2658-2017",
-    "105/011/2014",
-    "56/011/2015"
-  ],
+  "korvattavatDiaarinumerot": ["OPH-2658-2017", "105/011/2014", "56/011/2015"],
   "osaamisalat": [],
   "tyotehtavatJoissaVoiToimia": null,
   "suorittaneenOsaaminen": null,

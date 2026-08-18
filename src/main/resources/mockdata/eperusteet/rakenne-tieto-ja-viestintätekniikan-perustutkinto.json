@@ -25,9 +25,7 @@
       "opintoalakoodi": "opintoalaoph2002_402"
     }
   ],
-  "kielet": [
-    "fi"
-  ],
+  "kielet": ["fi"],
   "kuvaus": {
     "_id": "4934116",
     "_tunniste": "a78a8db5-a3bf-4ba4-b8d1-22fa6c0c914a",
