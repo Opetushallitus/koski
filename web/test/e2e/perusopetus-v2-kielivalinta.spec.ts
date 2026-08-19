@@ -13,6 +13,41 @@ const kaisaUrl = `${kaisaOid}?opiskeluoikeudenTyyppi=perusopetus&perusopetus-v2=
 test.describe('Perusopetuksen uusi käyttöliittymä: kielioppiaineen kielivalinta', () => {
   test.use({ storageState: virkailija('kalle') })
 
+  test('Valikon tyhjentäminen näppäimistöltä ei jätä kenttää ja mallia eri tilaan', async ({
+    page,
+    oppijaPage,
+    fixtures
+  }) => {
+    await fixtures.reset()
+    await oppijaPage.goto(kaisaUrl)
+    await page.getByTestId('oo.0.suoritusTabs.0.tab').click()
+    await page.getByTestId('oo.0.opiskeluoikeus.edit').click()
+
+    // Valikon syötekenttä toimii hakukenttänä: siihen kirjoitettu teksti
+    // suodattaa vaihtoehtoja eikä muuta valittua arvoa. Jos hakusanaa ei
+    // nollata valikon sulkeutuessa, backspacella tyhjennetty kenttä jää
+    // näyttämään tyhjää vaikka malliin jää edellinen arvo - lomake näyttäisi
+    // tyhjältä mutta olisi validi eikä virhettä näytettäisi.
+    const kieliInput = page.getByTestId(
+      'oo.0.suoritukset.0.osasuoritukset.2.kieli.edit.input'
+    )
+    await expect(kieliInput).toHaveValue('ruotsi')
+
+    await kieliInput.click()
+    await kieliInput.fill('')
+    await expect(kieliInput).toHaveValue('')
+
+    // Klikkaus valikon ulkopuolelle sulkee sen ja palauttaa näkyviin mallin
+    // arvon, koska valintaa ei tehty.
+    await page.getByTestId('oo.0.suoritukset.0.osasuoritukset.0.nimi').click()
+    await expect(kieliInput).toHaveValue('ruotsi')
+    await expect(
+      page
+        .locator('[data-testid^="oo.0.suoritukset.0.osasuoritukset.2"]')
+        .locator('.FieldErrors')
+    ).toHaveCount(0)
+  })
+
   test('Lisätyllä kieliaineella ei ole kieltä valmiiksi valittuna', async ({
     page,
     oppijaPage,

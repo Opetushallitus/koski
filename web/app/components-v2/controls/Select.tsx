@@ -317,18 +317,34 @@ const useSelectState = <T,>(props: SelectProps<T>) => {
 
   const blurTimeoutRef = useRef<number | null>(null)
 
-  const onBlur: React.FocusEventHandler = useCallback((event) => {
-    // Tarkistetaan, että fokus ei siirry komponentin sisälle
-    if (
-      !event.relatedTarget ||
-      !selectContainer.current?.contains(event.relatedTarget as Node)
-    ) {
-      // Lyhennetty timeout: riittää että ehditään käsitellä klikki
-      blurTimeoutRef.current = window.setTimeout(() => {
-        setDropdownVisible(false)
-      }, 150)
-    }
+  /**
+   * Sulje valikko ja unohda kirjoitettu hakusana.
+   *
+   * Syötekenttä näyttää hakusanan (filter) aina kun sellainen on, ja muuten
+   * valitun arvon (displayValue). Jos hakusanaa ei nollata valikon sulkeutuessa,
+   * kenttä jää näyttämään sitä vaikka valintaa ei tehty: esimerkiksi arvon
+   * pyyhkiminen backspacella jättää kentän tyhjän näköiseksi, vaikka malliin jää
+   * edellinen arvo. Tällöin lomake näyttää tyhjältä mutta on validi, eikä
+   * käyttäjä saa virheilmoitusta puuttuvasta tiedosta.
+   */
+  const closeDropdown = useCallback(() => {
+    setDropdownVisible(false)
+    setFilter(null)
   }, [])
+
+  const onBlur: React.FocusEventHandler = useCallback(
+    (event) => {
+      // Tarkistetaan, että fokus ei siirry komponentin sisälle
+      if (
+        !event.relatedTarget ||
+        !selectContainer.current?.contains(event.relatedTarget as Node)
+      ) {
+        // Lyhennetty timeout: riittää että ehditään käsitellä klikki
+        blurTimeoutRef.current = window.setTimeout(closeDropdown, 150)
+      }
+    },
+    [closeDropdown]
+  )
 
   const cancelBlur = useCallback(() => {
     if (blurTimeoutRef.current !== null) {
@@ -349,7 +365,7 @@ const useSelectState = <T,>(props: SelectProps<T>) => {
         setDropdownVisible(true)
       } else {
         // Jos klikataan ulkopuolella, sulje
-        setDropdownVisible(false)
+        closeDropdown()
       }
     }
     document.body.addEventListener('click', mouseHandler)
@@ -359,7 +375,7 @@ const useSelectState = <T,>(props: SelectProps<T>) => {
         clearTimeout(blurTimeoutRef.current)
       }
     }
-  }, [cancelBlur])
+  }, [cancelBlur, closeDropdown])
 
   // Changes
 
@@ -390,7 +406,7 @@ const useSelectState = <T,>(props: SelectProps<T>) => {
     (event) => {
       switch (event.key) {
         case 'Tab':
-          setDropdownVisible(false)
+          closeDropdown()
           return
         case 'ArrowDown':
           if (dropdownVisible) {
@@ -411,8 +427,7 @@ const useSelectState = <T,>(props: SelectProps<T>) => {
           scrollHoveredIntoView(selectContainer)
           return
         case 'Escape':
-          setDropdownVisible(false)
-          setFilter(null)
+          closeDropdown()
           event.preventDefault()
           event.stopPropagation()
           return
@@ -428,7 +443,7 @@ const useSelectState = <T,>(props: SelectProps<T>) => {
         // console.log(event.key)
       }
     },
-    [dropdownVisible, flatOptions, hoveredOption, onClickOption]
+    [closeDropdown, dropdownVisible, flatOptions, hoveredOption, onClickOption]
   )
 
   const { hideEmpty, onSearch } = props
