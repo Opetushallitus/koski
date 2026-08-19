@@ -689,12 +689,27 @@ const isSallittuValtakunnallinenNuortenPerusopetuksenOppiaine = (
   isÄidinkielenOppiaine(koodiarvo) ||
   MUUT_VALTAKUNNALLISET_NUORTEN_PERUSOPETUKSEN_OPPIAINEET.includes(koodiarvo)
 
-const oletuskieliKieliaineelle = (
-  tunniste: Koodistokoodiviite<'koskioppiaineetyleissivistava'>
-) =>
+/**
+ * Kieliainetta lisättäessä kieltä ei esitäytetä, vaan käyttäjä valitsee sen
+ * itse. Aiemmin uusi A2-kieli sai oletuksena englannin, jolloin väärä kieli jäi
+ * helposti voimaan huomaamatta (dia 4).
+ *
+ * Tyhjä koodiarvo näkyy valikossa tekstinä "Valitse...", värjää kentän
+ * punaiseksi ja validoituu virheeksi "Kenttä ei voi olla tyhjä", joten
+ * tallennus estyy kunnes kieli on valittu - kuten vanhassa käyttöliittymässä.
+ *
+ * Huom. luokka-asteen pakollisten oppiaineiden esitäyttö on eri asia: siellä A1
+ * on englanti ja B1 ruotsi, koska luokkaAsteenOppiaineet peilaa backendin
+ * NuortenPerusopetusPakollisetOppiaineet-listaa.
+ */
+const valitsemattomanKielenKoodi = () =>
   Koodistokoodiviite({
-    koodiarvo: tunniste.koodiarvo === 'B1' ? 'SV' : 'EN',
-    koodistoUri: 'kielivalikoima'
+    koodiarvo: '',
+    koodistoUri: 'kielivalikoima',
+    // nimi on annettava, vaikka se on tyhjä: useKoodistoFiller korvaa
+    // nimettömän koodiviitteen koodistohaun tuloksella, eikä tyhjä koodiarvo
+    // löydy koodistosta - jolloin koko kieli-kenttä katoaisi.
+    nimi: finnish('')
   })
 
 const uusiValtakunnallinenKoulutusmoduuli = (
@@ -713,7 +728,7 @@ const uusiValtakunnallinenKoulutusmoduuli = (
         'koskioppiaineetyleissivistava',
         'A1' | 'A2' | 'B1' | 'B2' | 'B3' | 'AOM'
       >,
-      kieli: oletuskieliKieliaineelle(tunniste)
+      kieli: valitsemattomanKielenKoodi()
     })
   }
   if (isÄidinkielenOppiaine(koodiarvo)) {

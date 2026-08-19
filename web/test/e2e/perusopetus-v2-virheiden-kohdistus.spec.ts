@@ -75,13 +75,17 @@ test.describe('Perusopetuksen uusi käyttöliittymä: virheiden kohdistus', () =
       .first()
       .click()
 
-    // Virhe kohdistuu lisätyn osasuorituksen arvosanaan eikä esim. päätason suoritukseen.
+    // Uudella kieliaineella on kaksi puutetta: valitsematon kieli ja puuttuva
+    // arvosana. Kieli näkyy vain punaisena valikkona, joten tekstirivejä on
+    // yksi, ja se kohdistuu lisätylle osasuoritukselle eikä päätason
+    // suoritukselle.
     const virheet = page.locator(kaikkiVirheet)
     await expect(virheet).toHaveCount(1)
     await expect(virheet.first()).toHaveAttribute(
       'data-testid',
       /^oo\.0\.suoritukset\.0\.osasuoritukset\.\d+\.errors$/
     )
+    await expect(page.locator('.Select--error')).not.toHaveCount(0)
     await expect(page.getByTestId('oo.0.opiskeluoikeus.save')).toBeDisabled()
   })
 })

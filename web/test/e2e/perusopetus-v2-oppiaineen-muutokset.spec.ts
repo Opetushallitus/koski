@@ -404,27 +404,43 @@ test.describe('Perusopetuksen uusi käyttöliittymä: oppiainemuutokset', () => 
       .click()
 
     // Osasuorituksen kohdalla näytetään virhe, eikä tallennus ole mahdollista.
-    // Virheteksti tulee lokalisointipalvelusta, joten tarkistetaan virheen
-    // olemassaolo ja sijainti eikä tekstiä.
-    const arvosanaErrors = page.locator(
+    // Valitsematon kieli näkyy vain punaisena valikkona (ks. FieldErrors),
+    // joten tekstirivejä on yksi: puuttuva arvosana. Virheteksti tulee
+    // lokalisointipalvelusta, joten tarkistetaan sen olemassaolo ja sijainti
+    // eikä tekstiä.
+    const osasuorituksenVirheet = page.locator(
       '[data-testid^="oo.0.suoritukset.0.osasuoritukset."][data-testid$=".errors"]'
     )
-    await expect(arvosanaErrors).toHaveCount(1)
+    await expect(osasuorituksenVirheet).toHaveCount(1)
     await expect(page.getByTestId('oo.0.opiskeluoikeus.save')).toBeDisabled()
     await expect(
       page.getByTestId('oo.0.opiskeluoikeus.editStatus')
     ).toContainText('Korjaa virheelliset tiedot.')
 
-    // Arvosanan antaminen poistaa virheen ja sallii tallennuksen
-    const errorTestId = await arvosanaErrors.getAttribute('data-testid')
+    const errorTestId = await osasuorituksenVirheet
+      .first()
+      .getAttribute('data-testid')
     const osasuoritus = errorTestId!.replace(/\.errors$/, '')
+
+    // Kieli on valittava itse; valitsematta se on merkitty punaisella.
+    const kieliInput = page.getByTestId(`${osasuoritus}.kieli.edit.input`)
+    await expect(kieliInput).toHaveValue('')
+    await expect(page.locator('.Select--error')).not.toHaveCount(0)
+    await kieliInput.click()
+    await page
+      .locator('.Select__optionLabel')
+      .filter({ hasText: /^espanja$/ })
+      .first()
+      .click()
+
+    // Arvosanan antaminen poistaa viimeisenkin virheen ja sallii tallennuksen
     await page.getByTestId(`${osasuoritus}.arvosana.edit.input`).click()
     await page
       .locator('.Select__optionLabel')
       .filter({ hasText: /^8$/ })
       .first()
       .click()
-    await expect(arvosanaErrors).toHaveCount(0)
+    await expect(osasuorituksenVirheet).toHaveCount(0)
     await expect(page.getByTestId('oo.0.opiskeluoikeus.save')).toBeEnabled()
   })
 })

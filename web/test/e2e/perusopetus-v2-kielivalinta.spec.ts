@@ -13,6 +13,38 @@ const kaisaUrl = `${kaisaOid}?opiskeluoikeudenTyyppi=perusopetus&perusopetus-v2=
 test.describe('Perusopetuksen uusi käyttöliittymä: kielioppiaineen kielivalinta', () => {
   test.use({ storageState: virkailija('kalle') })
 
+  test('Lisätyllä kieliaineella ei ole kieltä valmiiksi valittuna', async ({
+    page,
+    oppijaPage,
+    fixtures
+  }) => {
+    await fixtures.reset()
+    await oppijaPage.goto(kaisaUrl)
+    await page.getByTestId('oo.0.suoritusTabs.0.tab').click()
+    await page.getByTestId('oo.0.opiskeluoikeus.edit').click()
+
+    await page.getByPlaceholder('Lisää pakollinen oppiaine').click()
+    await page
+      .locator('.Select__optionLabel')
+      .filter({ hasText: /^A2-kieli$/ })
+      .first()
+      .click()
+
+    // Aiemmin uusi kieliaine sai oletuksena englannin, jolloin väärä kieli jäi
+    // helposti voimaan huomaamatta. Kentän on oltava tyhjä ja virheellinen,
+    // jotta käyttäjä joutuu valitsemaan kielen itse.
+    const rivinVirheet = page.locator(
+      '[data-testid^="oo.0.suoritukset.0.osasuoritukset."][data-testid$=".errors"]'
+    )
+    const errorTestId = await rivinVirheet.first().getAttribute('data-testid')
+    const osasuoritus = errorTestId!.replace(/\.errors$/, '')
+
+    const kieliInput = page.getByTestId(`${osasuoritus}.kieli.edit.input`)
+    await expect(kieliInput).toHaveValue('')
+    await expect(kieliInput).toHaveAttribute('placeholder', 'Valitse...')
+    await expect(page.getByTestId('oo.0.opiskeluoikeus.save')).toBeDisabled()
+  })
+
   test('B1-kielen kielivalinnan muuttaminen valinnaiselle oppiaineelle', async ({
     page,
     oppijaPage,
