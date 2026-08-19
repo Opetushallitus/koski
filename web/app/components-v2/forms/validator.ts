@@ -68,6 +68,19 @@ export type ValidationError =
 export const isValidationError = (a: any): a is ValidationError =>
   typeof a === 'object' && typeof a.type === 'string'
 
+/**
+ * Kohdistuuko jokin annetuista virheistä nimettyyn alikenttään?
+ *
+ * Kenttäeditori saa virheet koko olionsa alta, koska useFormErrors kerää
+ * kaikki polun alkuiset virheet. Esimerkiksi aikajakson editori näkee sekä
+ * alku- että loppupäivän virheet, joten oikean syötekentän värjäämiseksi ne on
+ * eroteltava polun viimeisen osan perusteella.
+ */
+export const hasErrorInField = (
+  errors: ValidationError[] | undefined,
+  field: string
+): boolean => (errors || []).some((e) => e.path.split('.').pop() === field)
+
 export type InvalidTypeError = {
   type: 'invalidType'
   expected: string

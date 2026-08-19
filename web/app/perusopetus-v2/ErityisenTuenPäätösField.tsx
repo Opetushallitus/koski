@@ -9,6 +9,7 @@ import { EmptyObject } from '../util/objects'
 import { ErityisenTuenPäätös } from '../types/fi/oph/koski/schema/ErityisenTuenPaatos'
 import { uusiErityisenTuenPäätös } from '../components-v2/opiskeluoikeus/uusiJakso'
 import { DateInput } from '../components-v2/controls/DateInput'
+import { hasErrorInField } from '../components-v2/forms/validator'
 import { Checkbox } from '../components-v2/controls/Checkbox'
 import { t } from '../i18n/i18n'
 import { BooleanView } from '../components-v2/opiskeluoikeus/BooleanField'
@@ -70,7 +71,7 @@ const BooleanValue: React.FC<{
 
 export const ErityisenTuenPäätösEdit: React.FC<
   FieldEditorProps<ErityisenTuenPäätös | undefined, EmptyObject>
-> = ({ value, onChange }) => {
+> = ({ value, onChange, errors }) => {
   const current = value || emptyPäätös
   return (
     <div className="ErityisenTuenPaatos">
@@ -78,12 +79,14 @@ export const ErityisenTuenPäätösEdit: React.FC<
         <DateInput
           value={current.alku}
           onChange={(alku?: string) => onChange({ ...current, alku })}
+          hasErrors={hasErrorInField(errors, 'alku')}
           testId="alku"
         />
         <span className="AikajaksoEdit__separator"> {' — '}</span>
         <DateInput
           value={current.loppu}
           onChange={(loppu?: string) => onChange({ ...current, loppu })}
+          hasErrors={hasErrorInField(errors, 'loppu')}
           testId="loppu"
         />
       </div>

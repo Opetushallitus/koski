@@ -13,6 +13,14 @@ const kaisaUrl = `${kaisaOid}?opiskeluoikeudenTyyppi=perusopetus&perusopetus-v2=
 
 const kaikkiVirheet = '[data-testid$=".errors"]'
 
+/**
+ * Kentät, jotka on merkitty virheelliseksi omalla tilallaan. Mekaanisista
+ * virheistä (tyhjä kenttä, kelvoton päivämäärä) ei näytetä tekstiä lainkaan,
+ * vaan pelkkä punainen kenttä - ks. components-v2/forms/FieldErrors.
+ */
+const virheellisetKentät =
+  '.TextEdit__input--error, .Select--error, .DateEdit__input--error, .NumberField__input--error'
+
 test.describe('Perusopetuksen uusi käyttöliittymä: virheiden kohdistus', () => {
   test.use({ storageState: virkailija('kalle') })
 
@@ -33,22 +41,19 @@ test.describe('Perusopetuksen uusi käyttöliittymä: virheiden kohdistus', () =
 
     await luokka.fill('')
 
-    // Virhe näytetään täsmälleen kerran, luokkakentän omassa virhelistassa, ja kenttä
-    // itse merkitään virheelliseksi.
-    const virheet = page.locator(kaikkiVirheet)
-    await expect(virheet).toHaveCount(1)
-    await expect(virheet.first()).toContainText('Kenttä ei voi olla tyhjä')
+    // Tyhjä pakollinen kenttä merkitään punaisella, ei tekstillä, joten
+    // kohdistus näkyy siinä että täsmälleen yksi kenttä - luokka - on
+    // merkitty virheelliseksi eikä tekstirivejä synny lainkaan.
     await expect(luokka).toHaveClass(/TextEdit__input--error/)
-    // Virhelista on luokkakentän sisällä, ei esim. poistopainikkeella.
-    await expect(
-      page.locator('label.TextEdit', { has: luokka }).locator('.FieldErrors')
-    ).toHaveCount(1)
+    await expect(page.locator(virheellisetKentät)).toHaveCount(1)
+    await expect(page.locator(kaikkiVirheet)).toHaveCount(0)
 
     await expect(page.getByTestId('oo.0.opiskeluoikeus.save')).toBeDisabled()
 
     // Arvon palautus poistaa virheen
     await luokka.fill('8A')
-    await expect(page.locator(kaikkiVirheet)).toHaveCount(0)
+    await expect(luokka).not.toHaveClass(/TextEdit__input--error/)
+    await expect(page.locator(virheellisetKentät)).toHaveCount(0)
     await expect(page.getByTestId('oo.0.opiskeluoikeus.save')).toBeEnabled()
   })
 

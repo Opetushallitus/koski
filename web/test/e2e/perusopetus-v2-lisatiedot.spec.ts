@@ -349,12 +349,12 @@ test.describe('Perusopetuksen uusi käyttöliittymä: opiskeluoikeuden lisätied
     await page.getByTestId(editButton).click()
 
     // Aikajakso.alku on pakollinen, joten tyhjänä lisätty rivi on
-    // epätäydellinen. Virheen pitää kertoa puuttuvasta tiedosta – ei
-    // virheellisestä päivämäärästä, jollaista käyttäjä ei ole kirjoittanut.
+    // epätäydellinen. Puuttuva pakollinen arvo näkyy kentän punaisena tilana
+    // eikä tekstirivinä, jottei ilmestyvä teksti siirrä sivun asettelua.
     await addAikajakso(page, 'Joustava perusopetus')
-    await expect(lisatiedotRow(page, 'Joustava perusopetus')).toContainText(
-      'Kenttä ei voi olla tyhjä'
-    )
+    await expect(
+      page.getByTestId(aikajaksoInput('joustavaPerusopetus', 'alku'))
+    ).toHaveClass(/DateEdit__input--error/)
     await expect(page.getByTestId(saveButton)).toBeDisabled()
 
     await page

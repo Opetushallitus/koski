@@ -4,6 +4,7 @@ import { ISO2FinnishDate } from '../../date/date'
 import { CommonProps } from '../CommonProps'
 import { DateInput } from '../controls/DateInput'
 import { FieldEditorProps, FieldViewerProps } from '../forms/FormField'
+import { hasErrorInField } from '../forms/validator'
 import { EmptyObject } from '../../util/objects'
 
 export type AikajaksoLike = { alku: string; loppu?: string }
@@ -41,6 +42,7 @@ export const AikajaksoEdit = <T extends AikajaksoLike>({
   value,
   onChange,
   createAikajakso,
+  errors,
   testId
 }: AikajaksoEditProps<T>) => {
   const setAlku = (alku?: string, rawAlku?: string) => {
@@ -67,9 +69,19 @@ export const AikajaksoEdit = <T extends AikajaksoLike>({
   return (
     <TestIdLayer id={testId || 'aikajakso'}>
       <div className="AikajaksoEdit">
-        <DateInput value={value?.alku} onChange={setAlku} testId="alku" />
+        <DateInput
+          value={value?.alku}
+          onChange={setAlku}
+          hasErrors={hasErrorInField(errors, 'alku')}
+          testId="alku"
+        />
         <span className="AikajaksoEdit__separator"> {' — '}</span>
-        <DateInput value={value?.loppu} onChange={setLoppu} testId="loppu" />
+        <DateInput
+          value={value?.loppu}
+          onChange={setLoppu}
+          hasErrors={hasErrorInField(errors, 'loppu')}
+          testId="loppu"
+        />
       </div>
     </TestIdLayer>
   )
