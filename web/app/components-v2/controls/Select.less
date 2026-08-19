@@ -27,18 +27,41 @@
     box-shadow: inset 0 2px 2px 0 rgba(0, 0, 0, 0.1);
   }
 
-  &::after {
-    content: '';
+  // Avauspainike piirtää saman kolmion samaan kohtaan kuin aiempi
+  // ::after-pseudoelementti. Painike tarvitaan omana elementtinään, jotta auki
+  // olevan valikon voi sulkea siitä (ks. Select.tsx).
+  //
+  // Kolmio on vain ~11x6 px, joten klikkausalueeksi otetaan koko kentän
+  // oikea reuna. Kolmiota ei piirretä painikkeen omalla clip-pathilla vaan
+  // ::after-elementillä: clip-path rajaisi myös osumatarkistuksen, jolloin
+  // klikkausalue kutistuisi takaisin kolmion kokoiseksi.
+  .Select__toggle {
     grid-area: select;
-    width: 0.7em;
-    height: 0.4em;
-    margin-right: 12px;
-    background-color: @color-dark-blue;
-    clip-path: polygon(100% 0%, 0 0%, 50% 100%);
     justify-self: end;
+    align-self: stretch;
+    width: 32px;
+    padding: 0 12px 0 0;
+    border: 0;
+    background: transparent;
+    cursor: pointer;
+    display: grid;
+    align-items: center;
+    justify-items: end;
+
+    &::after {
+      content: '';
+      width: 0.7em;
+      height: 0.4em;
+      background-color: @color-dark-blue;
+      clip-path: polygon(100% 0%, 0 0%, 50% 100%);
+    }
+
+    &:disabled {
+      cursor: default;
+    }
   }
 
-  &.search::after {
+  &.search .Select__toggle {
     display: none;
   }
 

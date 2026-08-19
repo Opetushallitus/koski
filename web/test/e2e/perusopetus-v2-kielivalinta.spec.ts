@@ -13,6 +13,42 @@ const kaisaUrl = `${kaisaOid}?opiskeluoikeudenTyyppi=perusopetus&perusopetus-v2=
 test.describe('Perusopetuksen uusi käyttöliittymä: kielioppiaineen kielivalinta', () => {
   test.use({ storageState: virkailija('kalle') })
 
+  test('Avausnuolesta voi sekä avata että sulkea valikon', async ({
+    page,
+    oppijaPage,
+    fixtures
+  }) => {
+    await fixtures.reset()
+    await oppijaPage.goto(kaisaUrl)
+    await page.getByTestId('oo.0.suoritusTabs.0.tab').click()
+    await page.getByTestId('oo.0.opiskeluoikeus.edit').click()
+
+    // Nuoli on disclosure-painike: sen aktivointi avaa ja sulkee listan, ja
+    // aria-expanded kertoo tilan. Aiemmin nuoli oli pelkkä ::after-kolmio ja
+    // jokainen klikkaus kentän sisällä pakotti valikon auki, joten avattua
+    // valikkoa ei saanut siitä kiinni.
+    const nuoli = page.getByTestId(
+      'oo.0.suoritukset.0.osasuoritukset.2.kieli.edit.toggle'
+    )
+    const vaihtoehdot = page.locator('.Select__optionList')
+
+    await expect(nuoli).toHaveAttribute('aria-expanded', 'false')
+    await expect(vaihtoehdot).toHaveCount(0)
+
+    await nuoli.click()
+    await expect(nuoli).toHaveAttribute('aria-expanded', 'true')
+    await expect(vaihtoehdot.first()).toBeVisible()
+
+    await nuoli.click()
+    await expect(nuoli).toHaveAttribute('aria-expanded', 'false')
+    await expect(vaihtoehdot).toHaveCount(0)
+
+    // Arvo ei muutu pelkästä avaamisesta ja sulkemisesta.
+    await expect(
+      page.getByTestId('oo.0.suoritukset.0.osasuoritukset.2.kieli.edit.input')
+    ).toHaveValue('ruotsi')
+  })
+
   test('Valikon tyhjentäminen näppäimistöltä ei jätä kenttää ja mallia eri tilaan', async ({
     page,
     oppijaPage,
