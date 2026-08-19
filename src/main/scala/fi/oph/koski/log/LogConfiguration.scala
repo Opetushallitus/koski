@@ -20,7 +20,12 @@ object LogConfiguration {
       })
 
     if (log4jConfig.getProtocol.equalsIgnoreCase("file")) {
-      System.setProperty("log4j2.configurationFile", log4jConfig.getFile)
+      // Optional override file, merged on top via log4j2's Composite Configuration.
+      // For example, enable some custom debug level logging for local development:
+      // export KOSKI_LOG4J_CONF_OVERRIDE_FILE=log4j2-debug.xml
+      val configOverride = Option(System.getenv("KOSKI_LOG4J_CONF_OVERRIDE_FILE"))
+      val configurationFiles = (log4jConfig.getFile +: configOverride.toList).mkString(",")
+      System.setProperty("log4j2.configurationFile", configurationFiles)
     }
 
     // Lisää logiviesteihin kentät file, line_number, class ja method
