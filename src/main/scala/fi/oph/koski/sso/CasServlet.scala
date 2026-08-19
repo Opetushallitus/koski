@@ -24,7 +24,7 @@ class CasServlet()(implicit val application: KoskiApplication) extends Virkailij
     FrontendValvontaMode(application.config.getString("frontend-valvonta.mode"))
 
   private val koskiSessions = application.koskiSessionRepository
-  private val casService = application.casService
+  protected val casService: CasService = application.casService
   private val oppijaCreation = application.casOppijaCreationService
 
   protected def onSuccess: String = params.get("onSuccess").getOrElse("/koski/omattiedot")
