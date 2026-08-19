@@ -14,9 +14,9 @@ import org.eclipse.jetty.compression.gzip.GzipCompression
 import org.eclipse.jetty.compression.server.{CompressionConfig, CompressionHandler}
 import org.eclipse.jetty.server._
 import org.eclipse.jetty.server.handler.StatisticsHandler
-import org.eclipse.jetty.ee10.servlet.{ResourceServlet, ServletContextHandler, ServletHolder, ServletMapping}
+import org.eclipse.jetty.ee11.servlet.{ResourceServlet, ServletContextHandler, ServletHolder, ServletMapping}
 import org.eclipse.jetty.util.thread.QueuedThreadPool
-import org.eclipse.jetty.ee10.webapp.WebAppContext
+import org.eclipse.jetty.ee11.webapp.WebAppContext
 
 object JettyLauncher extends App with Logging {
   LogConfiguration.configureLogging()
@@ -138,21 +138,20 @@ class JettyLauncher(val port: Int, val application: KoskiApplication) extends Lo
     context.setDefaultRequestCharacterEncoding("UTF-8")
     context.setDefaultResponseCharacterEncoding("UTF-8")
     context.setAttribute("org.eclipse.jetty.server.Request.queryEncoding", "UTF-8")
-    context.setInitParameter("org.eclipse.jetty.ee10.servlet.Default.dirAllowed", "false")
-    context.setInitParameter("org.eclipse.jetty.ee10.servlet.Default.etags", "true")
+    context.setInitParameter("org.eclipse.jetty.servlet.Default.dirAllowed", "false")
+    context.setInitParameter("org.eclipse.jetty.servlet.Default.etags", "true")
 
-    if (Environment.isLocalDevelopmentEnvironment(config)) {
-      // Avoid random SIGBUS errors when static files memory-mapped by Jetty (and being sent to client)
-      // are modified (by "make watch"). Can be reproduced somewhat reliably with Java 8 by editing
-      // a .less file and quickly doing a reload in the browser.
-      context.setInitParameter("org.eclipse.jetty.ee10.servlet.Default.useFileMappedBuffer", "false")
-    }
-
-    // Jetty 12 EE10: DefaultServlet cannot be mapped to sub-paths, use ResourceServlet instead
+    // Jetty 12: DefaultServlet cannot be mapped to sub-paths, use ResourceServlet instead
     val staticResourceHolder = new ServletHolder("static-resources", classOf[ResourceServlet])
     staticResourceHolder.setInitParameter("dirAllowed", "false")
     staticResourceHolder.setInitParameter("etags", "true")
     staticResourceHolder.setInitParameter("pathInfoOnly", "false")
+    if (Environment.isLocalDevelopmentEnvironment(config)) {
+      // Avoid random SIGBUS errors when static files memory-mapped by Jetty (and being sent to client)
+      // are modified by "make watch". In Jetty 12.1, set ResourceServlet's minMappedFileSize high enough
+      // to prevent ordinary JS and CSS files from being memory-mapped in local development.
+      staticResourceHolder.setInitParameter("minMappedFileSize", Int.MaxValue.toString)
+    }
     context.getServletHandler.addServlet(staticResourceHolder)
     val staticMapping = new ServletMapping()
     staticMapping.setServletName("static-resources")
