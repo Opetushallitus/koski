@@ -3701,9 +3701,7 @@
     {
       "alkuPvm": 284076000000,
       "children": [],
-      "kieletUris": [
-        "oppilaitoksenopetuskieli_1#1"
-      ],
+      "kieletUris": ["oppilaitoksenopetuskieli_1#1"],
       "kotipaikkaUri": "kunta_091",
       "lyhytNimi": {
         "fi": "Digi- ja väestötietovirasto",
@@ -3717,15 +3715,11 @@
         "en": "Digi- ja väestötietovirasto"
       },
       "oid": "1.2.246.562.10.69847666265",
-      "organisaatiotyypit": [
-        "organisaatiotyyppi_05"
-      ],
+      "organisaatiotyypit": ["organisaatiotyyppi_05"],
       "parentOid": "1.2.246.562.10.00000000001",
       "status": "AKTIIVINEN",
       "toimipistekoodi": "",
-      "tyypit": [
-        "organisaatiotyyppi_05"
-      ]
+      "tyypit": ["organisaatiotyyppi_05"]
     },
     {
       "oid": "1.2.246.562.10.77055527103",
@@ -3755,7 +3749,10 @@
             "fi": "Jyväskylän normaalikoulu",
             "en": "Jyväskylän normaalikoulu"
           },
-          "kieletUris": ["oppilaitoksenopetuskieli_1#1","oppilaitoksenopetuskieli_2#1"],
+          "kieletUris": [
+            "oppilaitoksenopetuskieli_1#1",
+            "oppilaitoksenopetuskieli_2#1"
+          ],
           "kotipaikkaUri": "kunta_179",
           "children": [
             {
@@ -5028,7 +5025,11 @@
             "fi": "Päiväkoti Majakka",
             "en": "Päiväkoti Majakka"
           },
-          "kieletUris": ["oppilaitoksenopetuskieli_1#1", "oppilaitoksenopetuskieli_2#1", "oppilaitoksenopetuskieli_3#1"],
+          "kieletUris": [
+            "oppilaitoksenopetuskieli_1#1",
+            "oppilaitoksenopetuskieli_2#1",
+            "oppilaitoksenopetuskieli_3#1"
+          ],
           "kotipaikkaUri": "kunta_624",
           "children": [],
           "aliOrganisaatioMaara": 0,

@@ -25,11 +25,7 @@
       "opintoalakoodi": null
     }
   ],
-  "kielet": [
-    "fi",
-    "sv",
-    "en"
-  ],
+  "kielet": ["fi", "sv", "en"],
   "kuvaus": null,
   "maarayskirje": {
     "id": 9580820,
@@ -77,11 +73,7 @@
   "tila": "valmis",
   "tyyppi": "normaali",
   "koulutusvienti": false,
-  "korvattavatDiaarinumerot": [
-    "OPH-887-2018",
-    "OPH-865-2017",
-    "60/011/2015"
-  ],
+  "korvattavatDiaarinumerot": ["OPH-887-2018", "OPH-865-2017", "60/011/2015"],
   "osaamisalat": [],
   "tyotehtavatJoissaVoiToimia": null,
   "suorittaneenOsaaminen": null,

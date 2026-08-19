@@ -2,7 +2,12 @@
   {
     "metadata": [
       { "nimi": "utmärkt", "kuvaus": null, "lyhytNimi": "10", "kieli": "SV" },
-      { "nimi": "erinomainen", "kuvaus": null, "lyhytNimi": "10", "kieli": "FI" }
+      {
+        "nimi": "erinomainen",
+        "kuvaus": null,
+        "lyhytNimi": "10",
+        "kieli": "FI"
+      }
     ],
     "withinCodeElements": [],
     "includesCodeElements": [],
@@ -98,7 +103,12 @@
   {
     "metadata": [
       { "nimi": "deltagit", "kuvaus": null, "lyhytNimi": "D", "kieli": "SV" },
-      { "nimi": "osallistunut", "kuvaus": null, "lyhytNimi": "D", "kieli": "FI" }
+      {
+        "nimi": "osallistunut",
+        "kuvaus": null,
+        "lyhytNimi": "D",
+        "kieli": "FI"
+      }
     ],
     "withinCodeElements": [],
     "includesCodeElements": [],

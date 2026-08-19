@@ -25,10 +25,7 @@
       "opintoalakoodi": null
     }
   ],
-  "kielet": [
-    "fi",
-    "sv"
-  ],
+  "kielet": ["fi", "sv"],
   "kuvaus": {
     "_id": "6061781",
     "_tunniste": "ad8b9b08-83a2-47b6-9548-238c066904e3",

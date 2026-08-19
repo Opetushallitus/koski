@@ -36,10 +36,7 @@
       "opintoalakoodi": "opintoalaoph2002_507"
     }
   ],
-  "kielet": [
-    "fi",
-    "sv"
-  ],
+  "kielet": ["fi", "sv"],
   "kuvaus": {
     "_id": "5988527",
     "_tunniste": "dfd8e8cf-c525-4620-83af-257c6ae16a1c",

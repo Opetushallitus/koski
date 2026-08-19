@@ -34,10 +34,7 @@
       "opintoalakoodi": null
     }
   ],
-  "kielet": [
-    "fi",
-    "sv"
-  ],
+  "kielet": ["fi", "sv"],
   "kuvaus": null,
   "maarayskirje": null,
   "muutosmaaraykset": [],
