@@ -140,9 +140,7 @@ class ScalatraBootstrap extends LifeCycle with Logging with Timing with GlobalEx
     mount("/koski/api/luovutuspalvelu/ytl", new YtlServlet)
     mount("/koski/api/luovutuspalvelu/keha/sdg", new SdgServlet)
     mount("/koski/api/palveluvayla", new PalveluvaylaServlet)
-    if (!Environment.isProdEnvironment(application.config)) {
-      mount("/koski/api/luovutuspalvelu/suomifi", new SuomiFiServlet)
-    }
+    mount("/koski/api/luovutuspalvelu/suomifi", new SuomiFiServlet)
     mount("/koski/api/omadata", new MyDataServlet)
     mount("/koski/api/omaopintopolkuloki", new OmaOpintoPolkuLokiServlet)
     mount("/koski/api/ytrkoesuoritukset", new YtrKoesuoritusApiServlet)
