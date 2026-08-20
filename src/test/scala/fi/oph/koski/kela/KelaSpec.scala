@@ -7,6 +7,8 @@ import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
 import fi.oph.koski.history.OpiskeluoikeusHistoryPatch
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.json.JsonSerializer
+import org.json4s.{JArray, JObject, JValue}
+import org.json4s.jackson.JsonMethods
 import fi.oph.koski.koskiuser.MockUsers
 import fi.oph.koski.log.{AccessLogTester, AuditLogTester}
 import fi.oph.koski.organisaatio.MockOrganisaatiot.{EuropeanSchoolOfHelsinki, MuuKuinSäänneltyKoulutusToimija}
@@ -61,8 +63,37 @@ class KelaSpec
         verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.henkilötiedot.hetu("Virheellinen tarkistusmerkki hetussa: 230305A015A"))
       }
     }
-    "Palautetaan 404 jos opiskelijalla ei ole ollenkaan Kelaa kiinnostavia opiskeluoikeuksia" in {
+    "Korkeakoulun opiskeluoikeudet haetaan Virrasta ja palautetaan Kelalle" in {
       postHetu(KoskiSpecificMockOppijat.monimutkainenKorkeakoululainen.hetu.get) {
+        verifyResponseStatusOk()
+        val oppija = JsonSerializer.parse[KelaOppija](body)
+
+        oppija.henkilö.hetu should equal(KoskiSpecificMockOppijat.monimutkainenKorkeakoululainen.hetu)
+
+        val korkeakoulut = oppija.opiskeluoikeudet.collect { case oo: KelaKorkeakoulunOpiskeluoikeus => oo }
+        korkeakoulut should not be empty
+        oppija.opiskeluoikeudet.map(_.tyyppi.koodiarvo).distinct should equal(
+          List(schema.OpiskeluoikeudenTyyppi.korkeakoulutus.koodiarvo)
+        )
+
+        korkeakoulut.flatMap(_.lähdejärjestelmänId) should contain("1927")
+
+        val ilmoittautumispäivät = korkeakoulut
+          .flatMap(_.lisätiedot)
+          .flatMap(_.lukukausiIlmoittautuminen)
+          .flatMap(_.ilmoittautumisjaksot)
+          .flatMap(_.ilmoittautumispäivä)
+        ilmoittautumispäivät should not be empty
+      }
+    }
+    "Virran katkoksesta palautetaan virhe eikä vaillinaista dataa" in {
+      postHetu(KoskiSpecificMockOppijat.virtaEiVastaa.hetu.get) {
+        verifyResponseStatus(503, KoskiErrorCategory.unavailable.virta())
+      }
+    }
+
+    "Palautetaan 404 jos opiskelijalla ei ole ollenkaan Kelaa kiinnostavia opiskeluoikeuksia" in {
+      postHetu(KoskiSpecificMockOppijat.taiteenPerusopetusAloitettu.hetu.get) {
         verifyResponseStatus(404, KoskiErrorCategory.notFound.oppijaaEiLöydyTaiEiOikeuksia("Oppijaa (hetu) ei löydy tai käyttäjällä ei ole oikeuksia tietojen katseluun."))
       }
     }
@@ -576,6 +607,18 @@ class KelaSpec
     }
   }
 
+  private def arvosanaanViittaavatKentät(json: JValue): List[String] = {
+    def kentät(j: JValue): List[String] = j match {
+      case JObject(fields) => fields.flatMap { case (nimi, arvo) => nimi :: kentät(arvo) }
+      case JArray(alkiot) => alkiot.flatMap(kentät)
+      case _ => Nil
+    }
+    kentät(json).filter { nimi =>
+      val n = nimi.toLowerCase
+      n.contains("arvosana") || n.contains("taitotaso")
+    }.distinct
+  }
+
   "Arvosanadataa sisältäviltä vaikuttavia kenttiä ei palauteta" in {
     var iteraatioLkm = 0
 
@@ -593,8 +636,7 @@ class KelaSpec
             val oppija = JsonSerializer.parse[KelaOppija](body)
             withClue(s"${hetu} ${oppija.henkilö.sukunimi} ${oppija.henkilö.etunimet} ${oppija.opiskeluoikeudet.map(_.tyyppi.koodiarvo).mkString(",")}") {
               iteraatioLkm = iteraatioLkm + 1
-              body.toLowerCase.contains("arvosana") should be(false)
-              body.toLowerCase.contains("taitotaso") should be(false)
+              arvosanaanViittaavatKentät(JsonMethods.parse(body)) should be(empty)
             }
           }
         }
