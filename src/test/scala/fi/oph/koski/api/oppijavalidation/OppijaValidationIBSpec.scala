@@ -32,7 +32,7 @@ class OppijaValidationIBSpec extends AnyFreeSpec with KoskiHttpSpec with PutOpis
         }
 
         setupOppijaWithOpiskeluoikeus(defaultOpiskeluoikeus.copy(suoritukset = List(suoritusFi))) {
-          verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.rakenne.virheellinenSuorituskieli("Suorituskielen tulee olla englanti"))
+          verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.rakenne.virheellinenSuorituskieli("IB-tutkinnon suorituksen suorituskielen tulee olla englanti"))
         }
       }
 

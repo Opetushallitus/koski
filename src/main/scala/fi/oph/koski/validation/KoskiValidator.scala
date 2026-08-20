@@ -2046,12 +2046,11 @@ class KoskiValidator(
     def validateSuomiTaiRuotsi(koodiarvo: String) = HttpStatus.validate(List("SV", "FI").contains(koodiarvo)) {
       KoskiErrorCategory.badRequest.validation.rakenne.virheellinenSuorituskieli("Suorituskielen tulee olla suomi tai ruotsi")
     }
-    def validateEnglanti(koodiarvo: String) = HttpStatus.validate(koodiarvo == "EN") {
-      KoskiErrorCategory.badRequest.validation.rakenne.virheellinenSuorituskieli("Suorituskielen tulee olla englanti")
-    }
     suoritus match {
       case k: PerusopetukseenValmistavanOpetuksenSuoritus => validateSuomiTaiRuotsi(k.suorituskieli.koodiarvo)
-      case k: IBTutkinnonSuoritus => validateEnglanti(k.suorituskieli.koodiarvo)
+      case k: IBTutkinnonSuoritus => HttpStatus.validate(k.suorituskieli.koodiarvo == "EN") {
+        KoskiErrorCategory.badRequest.validation.rakenne.virheellinenSuorituskieli("IB-tutkinnon suorituksen suorituskielen tulee olla englanti")
+      }
       case _ => HttpStatus.ok
     }
   }
