@@ -44,6 +44,16 @@ export type SelectProps<T> = CommonProps<{
   allowOpenUpwards?: boolean
   hasErrors?: boolean
   skipAutoFocus?: boolean
+  /**
+   * Kutsutaan kun käyttäjä tyhjentää syötekentän eikä valikossa ole
+   * "Ei valintaa" -vaihtoehtoa. Select ei tiedä, miten kentän tyhjä tila
+   * esitetään - esim. koodistokenttä palautuu koodiviitteeseen ilman
+   * koodiarvoa, ei arvoon undefined - joten päätös jää kutsujalle.
+   *
+   * Ilman tätä tyhjennys ei muuta arvoa lainkaan: kenttä palautuu entiseen
+   * arvoonsa kun valikko sulkeutuu.
+   */
+  onClear?: () => void
   testId: string | number
 }>
 
@@ -82,6 +92,20 @@ export type OptionKey = string
 // React 16:ssa ei ole useId:tä, joten aria-controlsin tarvitsema uniikki id
 // juoksutetaan itse. Selainpuolen renderöinti vain, joten laskuri riittää.
 let optionListIdCounter = 0
+
+/**
+ * "Ei valintaa" -vaihtoehto, jos kenttä sellaisen tarjoaa: ryhmittelemätön
+ * vaihtoehto ilman arvoa (ks. KoodistoField/KoodistoSelect zeroValueOption).
+ *
+ * Sen olemassaolo on ainoa merkki siitä, että kentän arvon saa ylipäätään
+ * poistaa. Ilman sitä tyhjentäminen ei saa nollata mallia: esimerkiksi
+ * kieliaineen kieli on skeemassa pakollinen, ja undefined saisi koko
+ * kielikentän katoamaan riviltä.
+ */
+const nollavalinta = <T,>(
+  options: FlatOptionList<T>
+): FlatOption<T> | undefined =>
+  options.arr.find((o) => !o.isGroup && !o.isAddNew && o.value === undefined)
 
 const optionExists = <T,>(options: OptionList<T>, key: string): boolean =>
   !!options.find(
@@ -499,11 +523,16 @@ const useSelectState = <T,>(props: SelectProps<T>) => {
           event.stopPropagation()
           return
         case 'Enter':
-          setDropdownVisible(false)
           event.preventDefault()
           event.stopPropagation()
-          if (dropdownVisible) {
+          // Enter vahvistaa korostetun vaihtoehdon. Ilman korostusta valikko
+          // vain suljetaan: aiemmin kutsuttiin onClickOption(undefined), joka
+          // nollasi arvon myös kentissä joissa tyhjä ei ole sallittu - esim.
+          // kieliaineen kieli katosi riviltä kokonaan.
+          if (dropdownVisible && hoveredOption) {
             onClickOption(hoveredOption)
+          } else {
+            closeDropdown()
           }
           return
         default:
@@ -513,11 +542,25 @@ const useSelectState = <T,>(props: SelectProps<T>) => {
     [closeDropdown, dropdownVisible, flatOptions, hoveredOption, onClickOption]
   )
 
-  const { hideEmpty, onSearch } = props
+  const { hideEmpty, onSearch, onClear: onClearProp } = props
   const onUserType: React.ChangeEventHandler<HTMLInputElement> = useCallback(
     (event) => {
       setFilter(event.target.value)
       setDropdownVisible(true)
+
+      // Kentän tyhjentäminen palauttaa sen valitsemattomaan tilaan: joko
+      // "Ei valintaa" -vaihtoehtoon tai kutsujan määrittelemään tyhjään
+      // arvoon (onClear). Jos kumpaakaan ei ole, arvo jää ennalleen ja kenttä
+      // palautuu siihen valikon sulkeutuessa.
+      if (event.target.value === '') {
+        const nolla = nollavalinta(flatOptions)
+        if (nolla) {
+          onChangeCb(nolla)
+        } else {
+          onClearProp?.()
+        }
+      }
+
       const needle = event.target.value.toLowerCase()
       if (needle && !hideEmpty) {
         const firstMatch = flatOptions.arr.find((o) =>
@@ -529,7 +572,7 @@ const useSelectState = <T,>(props: SelectProps<T>) => {
       }
       onSearch?.(event.target.value)
     },
-    [flatOptions.arr, hideEmpty, onSearch]
+    [flatOptions, hideEmpty, onChangeCb, onClearProp, onSearch]
   )
 
   return useMemo(

@@ -49,7 +49,7 @@ test.describe('Perusopetuksen uusi käyttöliittymä: kielioppiaineen kielivalin
     ).toHaveValue('ruotsi')
   })
 
-  test('Valikon tyhjentäminen näppäimistöltä ei jätä kenttää ja mallia eri tilaan', async ({
+  test('Kesken jäänyt hakusana ei jätä kenttää ja mallia eri tilaan', async ({
     page,
     oppijaPage,
     fixtures
@@ -61,20 +61,22 @@ test.describe('Perusopetuksen uusi käyttöliittymä: kielioppiaineen kielivalin
 
     // Valikon syötekenttä toimii hakukenttänä: siihen kirjoitettu teksti
     // suodattaa vaihtoehtoja eikä muuta valittua arvoa. Jos hakusanaa ei
-    // nollata valikon sulkeutuessa, backspacella tyhjennetty kenttä jää
-    // näyttämään tyhjää vaikka malliin jää edellinen arvo - lomake näyttäisi
-    // tyhjältä mutta olisi validi eikä virhettä näytettäisi.
+    // nollata valikon sulkeutuessa, kenttään jää roikkumaan kesken jäänyt
+    // hakusana vaikka mallissa on yhä entinen arvo - lomake näyttäisi
+    // muuttuneelta mutta olisi validi eikä virhettä näytettäisi.
     const kieliInput = page.getByTestId(
       'oo.0.suoritukset.0.osasuoritukset.2.kieli.edit.input'
     )
     await expect(kieliInput).toHaveValue('ruotsi')
 
     await kieliInput.click()
-    await kieliInput.fill('')
-    await expect(kieliInput).toHaveValue('')
+    await kieliInput.fill('sak')
+    await expect(kieliInput).toHaveValue('sak')
 
     // Klikkaus valikon ulkopuolelle sulkee sen ja palauttaa näkyviin mallin
-    // arvon, koska valintaa ei tehty.
+    // arvon, koska valintaa ei tehty. Hakusanan tyhjentäminen kokonaan on eri
+    // asia: se palauttaa kentän valitsemattomaan tilaan, ks.
+    // pudotusvalikko.spec.ts.
     await page.getByTestId('oo.0.suoritukset.0.osasuoritukset.0.nimi').click()
     await expect(kieliInput).toHaveValue('ruotsi')
     await expect(
