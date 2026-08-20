@@ -9,6 +9,14 @@ import java.net.URI
 import java.net.http.{HttpClient => JdkHttpClient, HttpRequest, HttpResponse}
 
 class JettyConfigurationSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers {
+  private val jdkClient = JdkHttpClient.newHttpClient()
+
+  private def fetchRaw(path: String, headers: (String, String)*): HttpResponse[Array[Byte]] = {
+    val builder = HttpRequest.newBuilder(URI.create(s"$baseUrl/$path"))
+    headers.foreach { case (name, value) => builder.header(name, value) }
+    jdkClient.send(builder.build(), HttpResponse.BodyHandlers.ofByteArray())
+  }
+
   "URL-polut" - {
     "OID polulla toimii" in {
       val oid = KoskiSpecificMockOppijat.eero.oid
@@ -36,34 +44,42 @@ class JettyConfigurationSpec extends AnyFreeSpec with KoskiHttpSpec with Matcher
     "Hakemistolistaus on estetty" in {
       get("js/") { verifyResponseStatusOk(403) }
     }
+
+    "Webapp-juuren hakemistolistaus on estetty" in {
+      val rootUri = URI.create(baseUrl).resolve("/")
+      val request = HttpRequest.newBuilder(rootUri).build()
+      jdkClient.send(request, HttpResponse.BodyHandlers.discarding()).statusCode should be(403)
+    }
+
+    "ETag palautetaan ja vastaava If-None-Match tuottaa 304-vastauksen" in {
+      val firstResponse = fetchRaw("js/koski-main.js")
+      firstResponse.statusCode should be(200)
+      val etag = firstResponse.headers.firstValue("ETag")
+      etag.isPresent should be(true)
+
+      val conditionalResponse = fetchRaw("js/koski-main.js", "If-None-Match" -> etag.get)
+      conditionalResponse.statusCode should be(304)
+    }
   }
 
   "Gzip-pakkaus" - {
     // Käytetään JDK:n HttpClientiä, koska Scalatra-testikehyksen alla oleva
     // Apache HttpComponents purkaa gzip-vastaukset läpinäkyvästi ja poistaa
     // Content-Encoding-headerin ennen kuin testi näkee vastauksen.
-    val jdkClient = JdkHttpClient.newHttpClient()
-
-    def fetchRaw(path: String, acceptEncoding: Option[String]): HttpResponse[Array[Byte]] = {
-      val builder = HttpRequest.newBuilder(URI.create(s"$baseUrl/$path"))
-      acceptEncoding.foreach(enc => builder.header("Accept-Encoding", enc))
-      jdkClient.send(builder.build(), HttpResponse.BodyHandlers.ofByteArray())
-    }
-
     "Staattisille resursseille palautetaan gzip-pakattu sisältö, kun client sitä pyytää" in {
-      val res = fetchRaw("js/koski-main.js", Some("gzip"))
+      val res = fetchRaw("js/koski-main.js", "Accept-Encoding" -> "gzip")
       res.statusCode should be(200)
       res.headers.firstValue("Content-Encoding").orElse("") should equal("gzip")
     }
 
     "Pakkausta ei tehdä, jos client ei sitä pyydä" in {
-      val res = fetchRaw("js/koski-main.js", None)
+      val res = fetchRaw("js/koski-main.js")
       res.statusCode should be(200)
       res.headers.firstValue("Content-Encoding").isPresent should be(false)
     }
 
     "Pakkausta ei tehdä konfiguroitujen polkujen ulkopuolella" in {
-      val res = fetchRaw("images/loader.svg", Some("gzip"))
+      val res = fetchRaw("images/loader.svg", "Accept-Encoding" -> "gzip")
       res.statusCode should be(200)
       res.headers.firstValue("Content-Encoding").isPresent should be(false)
     }
