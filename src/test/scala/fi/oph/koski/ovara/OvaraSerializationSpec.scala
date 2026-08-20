@@ -46,7 +46,8 @@ class OvaraSerializationSpec extends AnyFreeSpec with Matchers {
           |      "koulutuksenAlkamisvuosi" : "2024",
           |      "valinnanTila" : null,
           |      "vastaanotonTila" : null,
-          |      "ilmoittautumisenTila" : null
+          |      "ilmoittautumisenTila" : null,
+          |      "johtaaTutkintoon" : true
           |    }, {
           |      "hakukohde" : {
           |        "oid" : "1.2.246.562.20.00000000000000038548",
@@ -67,7 +68,8 @@ class OvaraSerializationSpec extends AnyFreeSpec with Matchers {
           |      "koulutuksenAlkamisvuosi" : "2024",
           |      "valinnanTila" : null,
           |      "vastaanotonTila" : null,
-          |      "ilmoittautumisenTila" : null
+          |      "ilmoittautumisenTila" : null,
+          |      "johtaaTutkintoon" : false
           |    }, {
           |      "hakukohde" : {
           |        "oid" : "1.2.246.562.20.00000000000000038252",
@@ -243,6 +245,10 @@ class OvaraSerializationSpec extends AnyFreeSpec with Matchers {
       hakutoive1.valinnanTila should be(None)
       hakutoive1.vastaanotonTila should be(None)
       hakutoive1.ilmoittautumisenTila should be(None)
+      hakutoive1.johtaaTutkintoon should be(Some(true))
+
+      hakemus1.hakutoiveet(1).johtaaTutkintoon should be(Some(false))
+      hakemus1.hakutoiveet(2).johtaaTutkintoon should be(None)
 
       val hakemus2 = valintatieto.hakemukset(1)
       hakemus2.hakemusOid should be("1.2.246.562.11.00000000000002730661")

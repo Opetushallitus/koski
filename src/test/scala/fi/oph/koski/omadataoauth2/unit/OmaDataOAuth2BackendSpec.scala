@@ -1067,6 +1067,7 @@ class OmaDataOAuth2BackendSpec
           hakutoive.vastaanotonTila.map(_.koodistoUri) shouldBe Some("omadatavastaanotontila")
           hakutoive.ilmoittautumisenTila.map(_.koodiarvo) shouldBe Some("lasna")
           hakutoive.ilmoittautumisenTila.map(_.koodistoUri) shouldBe Some("omadatailmoittautumisentila")
+          hakutoive.johtaaTutkintoon shouldBe Some(true)
 
           val actualOo = data.opiskeluoikeudet.head.asInstanceOf[AmmatillinenOpiskeluoikeus]
 

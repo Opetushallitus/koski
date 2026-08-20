@@ -28,7 +28,8 @@ case class OvaraHakutoive(
   koulutuksenAlkamisvuosi: Option[String],
   valinnanTila: Option[String],
   vastaanotonTila: Option[String],
-  ilmoittautumisenTila: Option[String]
+  ilmoittautumisenTila: Option[String],
+  johtaaTutkintoon: Option[Boolean]
 )
 
 case class OvaraOrganisaatio(oid: String, nimi: OvaraNimi)

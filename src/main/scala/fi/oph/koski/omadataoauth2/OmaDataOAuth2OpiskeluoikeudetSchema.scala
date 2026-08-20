@@ -217,7 +217,8 @@ case class OmaDataOAuth2Hakutoive(
   @KoodistoUri("omadatavastaanotontila")
   vastaanotonTila: Option[Koodistokoodiviite],
   @KoodistoUri("omadatailmoittautumisentila")
-  ilmoittautumisenTila: Option[Koodistokoodiviite]
+  ilmoittautumisenTila: Option[Koodistokoodiviite],
+  johtaaTutkintoon: Option[Boolean]
 )
 
 case class OmaDataOAuth2HakutoiveOrganisaatio(
