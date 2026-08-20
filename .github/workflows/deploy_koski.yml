@@ -50,7 +50,7 @@ jobs:
 
       - name: Render Amazon ECS task definition
         id: task-def
-        uses: aws-actions/amazon-ecs-render-task-definition@6b89923a897d41e9ad789181d8865b532ecf973c # v1
+        uses: aws-actions/amazon-ecs-render-task-definition@138c24f321fdbdf7edee4a685519d253cae2cdea # v1.9.0
         with:
           task-definition: task-definition.json
           container-name: KoskiContainer
@@ -88,7 +88,7 @@ jobs:
 
       - name: Render Amazon ECS task definition
         id: raportointikanta-loader-task-def
-        uses: aws-actions/amazon-ecs-render-task-definition@6b89923a897d41e9ad789181d8865b532ecf973c # v1
+        uses: aws-actions/amazon-ecs-render-task-definition@138c24f321fdbdf7edee4a685519d253cae2cdea # v1.9.0
         with:
           task-definition: raportointikanta-loader-task-definition.json
           container-name: RaportointikantaLoaderContainer
@@ -117,7 +117,7 @@ jobs:
 
       - name: Render Amazon ECS task definition
         id: ytr-data-loader-task-def
-        uses: aws-actions/amazon-ecs-render-task-definition@6b89923a897d41e9ad789181d8865b532ecf973c # v1
+        uses: aws-actions/amazon-ecs-render-task-definition@138c24f321fdbdf7edee4a685519d253cae2cdea # v1.9.0
         with:
           task-definition: ytr-data-loader-task-definition.json
           container-name: YtrDataLoaderContainer
@@ -135,14 +135,32 @@ jobs:
           TASKDEF_ARN: ${{ steps.ytr-data-loader-taskdef-deploy.outputs.task-definition-arn }}
         run: aws ssm put-parameter --overwrite --name /koski/ytr-data-loader/task-definition --type String --value ${TASKDEF_ARN}
 
-      - name: Report task ready
-        uses: ravsamhq/notify-slack-action@02b169fd81108a34dbb029df4a41dd27ad680290
+      - name: Get short commit SHA
+        id: commit
         if: always()
-        with:
-          status: ${{ job.status }}
-          notification_title: ${{ inputs.environment }} install {status_message}
         env:
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+          COMMIT_SHA: ${{ inputs.commithash }}
+        run: printf 'short_sha=%.7s\n' "$COMMIT_SHA" >> "$GITHUB_OUTPUT"
+
+      - name: Report task ready
+        uses: slackapi/slack-github-action@dcb1066f776dd043e64d0e8ba94ca15cc7e1875d # v4.0.0
+        if: always()
+        env:
+          SLACK_MESSAGE_TITLE: ":rocket: DEPLOY · ${{ job.status == 'success' && ':heavy_check_mark:' || job.status == 'failure' && ':x:' || ':no_entry_sign:' }} ${{ inputs.environment }} install ${{ job.status == 'success' && 'passed' || job.status == 'failure' && 'failed' || 'cancelled' }}"
+        with:
+          webhook: ${{ secrets.SLACK_WEBHOOK_URL }}
+          webhook-type: incoming-webhook
+          payload: |
+            {
+              "text": "${{ env.SLACK_MESSAGE_TITLE }}",
+              "blocks": [
+                {"type": "section", "text": {"type": "mrkdwn", "text": "*${{ env.SLACK_MESSAGE_TITLE }}*"}},
+                {"type": "context", "elements": [
+                  {"type": "mrkdwn", "text": "*Repo:* ${{ github.repository }} | *Workflow:* ${{ github.workflow }}\n*Workflow source:* <${{ github.server_url }}/${{ github.repository }}/tree/${{ github.ref_name }}|${{ github.ref_name }}> | *Commit:* <${{ github.server_url }}/${{ github.repository }}/commit/${{ inputs.commithash }}|${{ steps.commit.outputs.short_sha }}>\n*Triggered by:* ${{ github.triggering_actor }} via ${{ github.event_name }}${{ github.run_attempt > 1 && format(' | *Attempt:* {0}', github.run_attempt) || '' }}\n*<${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}/attempts/${{ github.run_attempt }}|View Run>*"}
+                ]},
+                {"type": "divider"}
+              ]
+            }
 
       - name: Tag deployed image
         env:

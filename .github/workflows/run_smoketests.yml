@@ -54,10 +54,9 @@ jobs:
         run: cd smoketests && pnpm run qa:tiedote
 
       - name: Report failure
-        uses: ravsamhq/notify-slack-action@02b169fd81108a34dbb029df4a41dd27ad680290
+        uses: ./.github/actions/report_slack_failure
         if: ${{ failure() }}
         with:
-          status: ${{ job.status }}
-          notification_title: "Run smoketests: failure in kansalainen/omadata/tiedote tests"
-        env:
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+          webhook: ${{ secrets.SLACK_WEBHOOK_URL }}
+          prefix: ":fire: SMOKETESTS"
+          title: "Run smoketests: failure in kansalainen/omadata/tiedote tests"

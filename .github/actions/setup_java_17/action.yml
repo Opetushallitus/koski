@@ -1,3 +1,6 @@
+name: Set up Java 17
+description: Set up Java 17, Maven caching, and GitHub Packages credentials
+
 runs:
   using: composite
   steps:

@@ -15,6 +15,8 @@ jobs:
   trivy:
     name: Trivy
     uses: ./.github/workflows/trivy_check.yml
+    with:
+      upload-report: true
 
   publish_image:
     name: Publish Koski Docker Image and package
@@ -68,4 +70,3 @@ jobs:
       environment: prod
       commithash: ${{ github.sha }}
     secrets: inherit
-
