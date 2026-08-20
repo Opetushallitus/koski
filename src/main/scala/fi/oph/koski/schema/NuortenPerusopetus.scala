@@ -100,7 +100,7 @@ case class PerusopetuksenOpiskeluoikeudenLisätiedot(
   @Description("toiminta alueittain opiskelu käyttöönotto")
   @Description("Oppilaalla päätös opiskelun järjestämisestä toiminta-alueittain. Tällöin oppilaalla on rajattu oppimäärä ja opetus järjestetty toiminta-alueittain. Oppilaalla on aina tukea koskeva päätös. Oppilaan opetussuunnitelmaan kuuluvat toiminta-alueet ovat motoriset taidot, kieli ja kommunikaatio, sosiaaliset taidot, päivittäisten toimintojen taidot ja kognitiiviset taidot. Huom: toiminta-alue arviointeineen on kuvattu oppiaineen suorituksessa.")
   @Tooltip("Opiskeleeko oppilas toiminta-alueittain? Toiminta-alueittain opiskelussa oppilaalla on yksilöllistetty oppimäärä ja opetus järjestetty toiminta-alueittain. Tuolloin oppilaalla on aina tukea koskeva päätös. Oppilaan opetussuunnitelmaan kuuluvat toiminta-alueet ovat motoriset taidot, kieli ja kommunikaatio, sosiaaliset taidot, päivittäisten toimintojen taidot ja kognitiiviset taidot.")
-  @Title("Opiskelee toiminta-alueittain")
+  @Title("Opetus toiminta-alueittain vamman sairauden tai rajoitteen perusteella")
   @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT))
   toimintaAlueittainOpiskelu: Option[List[Aikajakso]] = None,
   @Title("Opiskelee tavoitekokonaisuuksittain")
@@ -697,5 +697,4 @@ case class NuortenPerusopetuksenOpiskeluoikeusjakso(
   alku: LocalDate,
   tila: Koodistokoodiviite
 ) extends KoskiLaajaOpiskeluoikeusjakso
-
 
