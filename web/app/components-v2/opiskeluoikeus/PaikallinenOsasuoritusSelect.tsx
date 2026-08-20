@@ -1,5 +1,4 @@
 import React, { useCallback, useMemo, useState } from 'react'
-import { useSchema } from '../../appstate/constraints'
 import { localize, t } from '../../i18n/i18n'
 import { LocalizedString } from '../../types/fi/oph/koski/schema/LocalizedString'
 import { PaikallinenKoodi } from '../../types/fi/oph/koski/schema/PaikallinenKoodi'
@@ -117,8 +116,7 @@ export type UusiOsasuoritusModalProps = CommonProps<{
 export const UusiOsasuoritusModal: React.FC<UusiOsasuoritusModalProps> = (
   props
 ) => {
-  const paikallinenKoodiSchema = useSchema('PaikallinenKoodi')
-  const form = useForm(emptyPaikallinenKoodi, true, paikallinenKoodiSchema)
+  const form = useForm(emptyPaikallinenKoodi, true, null)
   const koodiarvoPath = form.root.prop('koodiarvo')
 
   const { onSubmit } = props
@@ -145,7 +143,6 @@ export const UusiOsasuoritusModal: React.FC<UusiOsasuoritusModalProps> = (
           form={form}
           path={koodiarvoPath}
           updateAlso={[updateOsasuoritusNimi]}
-          errorsFromPath="nimi"
           view={TextView}
           edit={TextEdit}
           editProps={{
@@ -161,7 +158,7 @@ export const UusiOsasuoritusModal: React.FC<UusiOsasuoritusModalProps> = (
           {t('Peruuta')}
         </FlatButton>
         <RaisedButton
-          disabled={!form.isValid}
+          disabled={form.state.koodiarvo.length === 0}
           onClick={onSubmitCB}
           testId="submit"
         >

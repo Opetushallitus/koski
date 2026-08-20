@@ -13,6 +13,8 @@ import { ValidationError } from './validator'
 // to prevent FormField from rendering a duplicate
 export const componentsWithBuiltInErrors = new Set<React.FC<any>>()
 
+const emptyErrors: ValidationError[] = []
+
 export type FieldViewerProps<FieldValue, ViewerProps> = ViewerProps & {
   value?: FieldValue | undefined
   index?: number
@@ -64,7 +66,14 @@ export type FormFieldProps<
   // Muut kohteet lomakedatassa, jotka päivitetään myös kentän arvoa muokatessa
   updateAlso?: Array<SideUpdate<FormState, FieldValue, any>>
   // Polku mitä käytetään virheiden hakemiseen, jos eri kuin mikä voidaan muodostaa path-propertysta.
+  // Käyttökohde on virheiden rajaaminen: kun kenttä on kytketty objektiin mutta näyttää siitä vain
+  // yhden alikentän, tällä estetään sisarkenttien virheiden näyttäminen. Puuttuvan arvon polun
+  // muodostamiseen tätä ei tarvita — sen osaa parsePath.
   errorsFromPath?: string
+  // Älä näytä kentän virheitä lainkaan. Käytä kun kenttä on kytketty lomakedataan vain muokkausta
+  // varten eikä sen arvon näyttämiseen: kenttä kerää kaikki polkunsa alta löytyvät virheet, joten
+  // esim. koko taulukkoon kytketty poistopainike näyttäisi muuten jokaisen alkion virheet.
+  hideErrors?: boolean
   // Komponenteille vietävä indeksi. Käytetään automaattiesti FormListFieldin kanssa.
   index?: number
   testId?: string | number
@@ -116,6 +125,7 @@ export const FormField = <
     editProps,
     auto,
     errorsFromPath,
+    hideErrors,
     optional
   } = props
   const fillKoodistot = useKoodistoFiller()
@@ -137,10 +147,11 @@ export const FormField = <
     [form.state, path]
   )
 
-  const errors = useFormErrors(
+  const allErrors = useFormErrors(
     form,
-    errorsFromPath || (path as any as FormOptic<FormState, object>)
+    errorsFromPath || (path as FormOptic<FormState, FieldValue | undefined>)
   )
+  const errors = hideErrors ? emptyErrors : allErrors
 
   const set = useCallback(
     async (newValue?: FieldValue) => {

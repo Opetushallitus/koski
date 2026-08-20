@@ -1,10 +1,11 @@
 import React from 'react'
 import { TestIdLayer, TestIdText } from '../../appstate/useTestId'
-import { ISO2FinnishDate, todayISODate } from '../../date/date'
+import { ISO2FinnishDate } from '../../date/date'
 import { Maksuttomuus } from '../../types/fi/oph/koski/schema/Maksuttomuus'
 import { CommonProps } from '../CommonProps'
 import { Checkbox } from '../controls/Checkbox'
 import { DateInput } from '../controls/DateInput'
+import { hasErrorInField } from '../forms/validator'
 import { FieldEditorProps, FieldViewerProps } from '../forms/FormField'
 import { t } from '../../i18n/i18n'
 import { EmptyObject } from '../../util/objects'
@@ -38,12 +39,13 @@ export type MaksuttomuusEditProps = CommonProps<
 
 export const emptyMaksuttomuuus = Maksuttomuus({
   maksuton: false,
-  alku: todayISODate()
+  alku: ''
 })
 
 export const MaksuttomuusEdit: React.FC<MaksuttomuusEditProps> = ({
   value,
-  onChange
+  onChange,
+  errors
 }) => {
   const setAlku = (alku?: string) => {
     alku && onChange({ ...emptyMaksuttomuuus, ...value, alku })
@@ -56,7 +58,12 @@ export const MaksuttomuusEdit: React.FC<MaksuttomuusEditProps> = ({
   return (
     <TestIdLayer id="maksuttomuus">
       <div className="AikajaksoEdit">
-        <DateInput value={value?.alku} onChange={setAlku} testId="alku" />
+        <DateInput
+          value={value?.alku}
+          onChange={setAlku}
+          hasErrors={hasErrorInField(errors, 'alku')}
+          testId="alku"
+        />
         <Checkbox
           checked={value?.maksuton || false}
           onChange={setMaksuton}

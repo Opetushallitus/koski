@@ -1,3 +1,4 @@
+import * as A from 'fp-ts/Array'
 import { flow, pipe } from 'fp-ts/lib/function'
 import React, { useCallback, useMemo } from 'react'
 import { useChildSchema } from '../../appstate/constraints'
@@ -117,6 +118,16 @@ export const ArvosanaEdit = <T extends Arviointi>(
     [createArviointi, props]
   )
 
+  /**
+   * Syötekentän tyhjentäminen poistaa koko arvioinnin, eli palauttaa
+   * osasuorituksen samaan tilaan kuin se oli juuri lisättynä: ilman arvosanaa.
+   * Arviointi on valinnainen kenttä, joten tyhjä tila on esitettävissä; jos
+   * suoritus on vahvistettu, puuttuva arvosana näkyy virheenä kuten ennenkin.
+   */
+  const onClear = useCallback(() => {
+    props.onChange(undefined)
+  }, [props])
+
   return (
     groupedKoodisto && (
       <Select
@@ -124,7 +135,9 @@ export const ArvosanaEdit = <T extends Arviointi>(
         value={selectedValue}
         options={groupedKoodisto as OptionList<ArvosanaOf<T>>}
         onChange={onChange}
+        onClear={onClear}
         disabled={props.disabled}
+        hasErrors={A.isNonEmpty(props.errors || [])}
         testId={`${props.testId || 'arvosana'}.edit`}
       />
     )
@@ -200,6 +213,7 @@ export const ParasArvosanaEdit = <T extends Arviointi>(
       suoritusClassName={props.suoritusClassName}
       format={props.format}
       disabled={disabled}
+      errors={props.errors}
     />
   )
 }

@@ -1,18 +1,24 @@
 import React from 'react'
 import { TestIdText } from '../appstate/useTestId'
-import { ISO2FinnishDate, todayISODate } from '../date/date'
+import { ISO2FinnishDate } from '../date/date'
 import {
   FieldEditorProps,
   FieldViewerProps
 } from '../components-v2/forms/FormField'
 import { EmptyObject } from '../util/objects'
 import { ErityisenTuenPäätös } from '../types/fi/oph/koski/schema/ErityisenTuenPaatos'
+import { uusiErityisenTuenPäätös } from '../components-v2/opiskeluoikeus/uusiJakso'
 import { DateInput } from '../components-v2/controls/DateInput'
+import { hasErrorInField } from '../components-v2/forms/validator'
 import { Checkbox } from '../components-v2/controls/Checkbox'
 import { t } from '../i18n/i18n'
 import { BooleanView } from '../components-v2/opiskeluoikeus/BooleanField'
+import {
+  KeyValueRow,
+  KeyValueTable
+} from '../components-v2/containers/KeyValueTable'
 
-const emptyPäätös = ErityisenTuenPäätös({ opiskeleeToimintaAlueittain: false })
+const emptyPäätös = uusiErityisenTuenPäätös()
 
 const hasDeprecatedBooleanValue = (value?: boolean | null): value is boolean =>
   value !== undefined && value !== null
@@ -30,18 +36,20 @@ export const ErityisenTuenPäätösView: React.FC<
       <TestIdText id="loppu">
         {value.loppu && ISO2FinnishDate(value.loppu)}
       </TestIdText>
-      <BooleanValue
-        label="Opiskelee toiminta-alueittain"
-        value={value.opiskeleeToimintaAlueittain}
-        testId="opiskeleeToimintaAlueittain"
-      />
-      {hasDeprecatedBooleanValue(value.erityisryhmässä) && (
+      <KeyValueTable className="ErityisenTuenPäätösView__tiedot">
         <BooleanValue
-          label="Opiskelee erityisryhmässä"
-          value={value.erityisryhmässä}
-          testId="erityisryhmässä"
+          label="Opiskelee toiminta-alueittain"
+          value={value.opiskeleeToimintaAlueittain}
+          testId="opiskeleeToimintaAlueittain"
         />
-      )}
+        {hasDeprecatedBooleanValue(value.erityisryhmässä) && (
+          <BooleanValue
+            label="Opiskelee erityisryhmässä"
+            value={value.erityisryhmässä}
+            testId="erityisryhmässä"
+          />
+        )}
+      </KeyValueTable>
     </div>
   )
 }
@@ -51,20 +59,19 @@ const BooleanValue: React.FC<{
   value: boolean
   testId: string
 }> = ({ label, value, testId }) => (
-  <div>
-    <span>{t(label)} </span>
+  <KeyValueRow localizableLabel={label}>
     <BooleanView
       value={value}
       testId={testId}
       trueText={t('kyllä')}
       falseText={t('ei')}
     />
-  </div>
+  </KeyValueRow>
 )
 
 export const ErityisenTuenPäätösEdit: React.FC<
   FieldEditorProps<ErityisenTuenPäätös | undefined, EmptyObject>
-> = ({ value, onChange }) => {
+> = ({ value, onChange, errors }) => {
   const current = value || emptyPäätös
   return (
     <div className="ErityisenTuenPaatos">
@@ -72,12 +79,14 @@ export const ErityisenTuenPäätösEdit: React.FC<
         <DateInput
           value={current.alku}
           onChange={(alku?: string) => onChange({ ...current, alku })}
+          hasErrors={hasErrorInField(errors, 'alku')}
           testId="alku"
         />
         <span className="AikajaksoEdit__separator"> {' — '}</span>
         <DateInput
           value={current.loppu}
           onChange={(loppu?: string) => onChange({ ...current, loppu })}
+          hasErrors={hasErrorInField(errors, 'loppu')}
           testId="loppu"
         />
       </div>

@@ -13,6 +13,111 @@ const kaisaUrl = `${kaisaOid}?opiskeluoikeudenTyyppi=perusopetus&perusopetus-v2=
 test.describe('Perusopetuksen uusi käyttöliittymä: kielioppiaineen kielivalinta', () => {
   test.use({ storageState: virkailija('kalle') })
 
+  test('Avausnuolesta voi sekä avata että sulkea valikon', async ({
+    page,
+    oppijaPage,
+    fixtures
+  }) => {
+    await fixtures.reset()
+    await oppijaPage.goto(kaisaUrl)
+    await page.getByTestId('oo.0.suoritusTabs.0.tab').click()
+    await page.getByTestId('oo.0.opiskeluoikeus.edit').click()
+
+    // Nuoli on disclosure-painike: sen aktivointi avaa ja sulkee listan, ja
+    // aria-expanded kertoo tilan. Aiemmin nuoli oli pelkkä ::after-kolmio ja
+    // jokainen klikkaus kentän sisällä pakotti valikon auki, joten avattua
+    // valikkoa ei saanut siitä kiinni.
+    const nuoli = page.getByTestId(
+      'oo.0.suoritukset.0.osasuoritukset.2.kieli.edit.toggle'
+    )
+    const vaihtoehdot = page.locator('.Select__optionList')
+
+    await expect(nuoli).toHaveAttribute('aria-expanded', 'false')
+    await expect(vaihtoehdot).toHaveCount(0)
+
+    await nuoli.click()
+    await expect(nuoli).toHaveAttribute('aria-expanded', 'true')
+    await expect(vaihtoehdot.first()).toBeVisible()
+
+    await nuoli.click()
+    await expect(nuoli).toHaveAttribute('aria-expanded', 'false')
+    await expect(vaihtoehdot).toHaveCount(0)
+
+    // Arvo ei muutu pelkästä avaamisesta ja sulkemisesta.
+    await expect(
+      page.getByTestId('oo.0.suoritukset.0.osasuoritukset.2.kieli.edit.input')
+    ).toHaveValue('ruotsi')
+  })
+
+  test('Kesken jäänyt hakusana ei jätä kenttää ja mallia eri tilaan', async ({
+    page,
+    oppijaPage,
+    fixtures
+  }) => {
+    await fixtures.reset()
+    await oppijaPage.goto(kaisaUrl)
+    await page.getByTestId('oo.0.suoritusTabs.0.tab').click()
+    await page.getByTestId('oo.0.opiskeluoikeus.edit').click()
+
+    // Valikon syötekenttä toimii hakukenttänä: siihen kirjoitettu teksti
+    // suodattaa vaihtoehtoja eikä muuta valittua arvoa. Jos hakusanaa ei
+    // nollata valikon sulkeutuessa, kenttään jää roikkumaan kesken jäänyt
+    // hakusana vaikka mallissa on yhä entinen arvo - lomake näyttäisi
+    // muuttuneelta mutta olisi validi eikä virhettä näytettäisi.
+    const kieliInput = page.getByTestId(
+      'oo.0.suoritukset.0.osasuoritukset.2.kieli.edit.input'
+    )
+    await expect(kieliInput).toHaveValue('ruotsi')
+
+    await kieliInput.click()
+    await kieliInput.fill('sak')
+    await expect(kieliInput).toHaveValue('sak')
+
+    // Klikkaus valikon ulkopuolelle sulkee sen ja palauttaa näkyviin mallin
+    // arvon, koska valintaa ei tehty. Hakusanan tyhjentäminen kokonaan on eri
+    // asia: se palauttaa kentän valitsemattomaan tilaan, ks.
+    // pudotusvalikko.spec.ts.
+    await page.getByTestId('oo.0.suoritukset.0.osasuoritukset.0.nimi').click()
+    await expect(kieliInput).toHaveValue('ruotsi')
+    await expect(
+      page
+        .locator('[data-testid^="oo.0.suoritukset.0.osasuoritukset.2"]')
+        .locator('.FieldErrors')
+    ).toHaveCount(0)
+  })
+
+  test('Lisätyllä kieliaineella ei ole kieltä valmiiksi valittuna', async ({
+    page,
+    oppijaPage,
+    fixtures
+  }) => {
+    await fixtures.reset()
+    await oppijaPage.goto(kaisaUrl)
+    await page.getByTestId('oo.0.suoritusTabs.0.tab').click()
+    await page.getByTestId('oo.0.opiskeluoikeus.edit').click()
+
+    await page.getByPlaceholder('Lisää pakollinen oppiaine').click()
+    await page
+      .locator('.Select__optionLabel')
+      .filter({ hasText: /^A2-kieli$/ })
+      .first()
+      .click()
+
+    // Aiemmin uusi kieliaine sai oletuksena englannin, jolloin väärä kieli jäi
+    // helposti voimaan huomaamatta. Kentän on oltava tyhjä ja virheellinen,
+    // jotta käyttäjä joutuu valitsemaan kielen itse.
+    const rivinVirheet = page.locator(
+      '[data-testid^="oo.0.suoritukset.0.osasuoritukset."][data-testid$=".errors"]'
+    )
+    const errorTestId = await rivinVirheet.first().getAttribute('data-testid')
+    const osasuoritus = errorTestId!.replace(/\.errors$/, '')
+
+    const kieliInput = page.getByTestId(`${osasuoritus}.kieli.edit.input`)
+    await expect(kieliInput).toHaveValue('')
+    await expect(kieliInput).toHaveAttribute('placeholder', 'Valitse...')
+    await expect(page.getByTestId('oo.0.opiskeluoikeus.save')).toBeDisabled()
+  })
+
   test('B1-kielen kielivalinnan muuttaminen valinnaiselle oppiaineelle', async ({
     page,
     oppijaPage,

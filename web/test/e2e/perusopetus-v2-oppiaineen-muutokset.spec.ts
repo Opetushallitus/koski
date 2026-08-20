@@ -175,7 +175,9 @@ test.describe('Perusopetuksen uusi käyttöliittymä: oppiainemuutokset', () => 
     // Merkitse päättötodistus keskeneräiseksi: poista valmistunut-tila ja
     // poista vahvistus
     await page.getByTestId('oo.0.opiskeluoikeus.edit').click()
-    await page.getByTestId('oo.0.opiskeluoikeus.tila.edit.items.1.remove').click()
+    await page
+      .getByTestId('oo.0.opiskeluoikeus.tila.edit.items.1.remove')
+      .click()
     await page
       .getByTestId(
         'oo.0.suoritukset.0.suorituksenVahvistus.edit.merkitseKeskeneräiseksi'
@@ -214,7 +216,9 @@ test.describe('Perusopetuksen uusi käyttöliittymä: oppiainemuutokset', () => 
 
     // 1. Merkitse päättötodistus keskeneräiseksi: arvosanat piilottuvat
     await page.getByTestId('oo.0.opiskeluoikeus.edit').click()
-    await page.getByTestId('oo.0.opiskeluoikeus.tila.edit.items.1.remove').click()
+    await page
+      .getByTestId('oo.0.opiskeluoikeus.tila.edit.items.1.remove')
+      .click()
     await page
       .getByTestId(
         'oo.0.suoritukset.0.suorituksenVahvistus.edit.merkitseKeskeneräiseksi'
@@ -257,14 +261,14 @@ test.describe('Perusopetuksen uusi käyttöliittymä: oppiainemuutokset', () => 
       .fill('rehtori')
 
     await page
-      .getByTestId(
-        'oo.0.suoritukset.0.suorituksenVahvistus.edit.modal.submit'
-      )
+      .getByTestId('oo.0.suoritukset.0.suorituksenVahvistus.edit.modal.submit')
       .click()
 
     // Poista Biologia (indeksi 11): sen yksilöllistetty oppimäärä ei ole
     // sallittu vahvistuksen jälkeen 31.8.2026. Muuten tallennus hylätään.
-    await page.getByTestId('oo.0.suoritukset.0.osasuoritukset.11.delete').click()
+    await page
+      .getByTestId('oo.0.suoritukset.0.osasuoritukset.11.delete')
+      .click()
 
     await page.getByTestId('oo.0.opiskeluoikeus.save').click()
     await expect(page.getByTestId('oo.0.opiskeluoikeus.edit')).toBeVisible({
@@ -293,13 +297,13 @@ test.describe('Perusopetuksen uusi käyttöliittymä: oppiainemuutokset', () => 
 
     await page.getByTestId('oo.0.opiskeluoikeus.edit').click()
 
-    // Vaihda käyttäytymisen arvosana 10:ksi (koodiston nimi "erinomainen")
+    // Vaihda käyttäytymisen arvosana 10:ksi
     await page
       .getByTestId('oo.0.suoritukset.2.kayttaytyminen.kayttaytyminen.input')
       .click()
     await page
       .locator('.Select__optionLabel')
-      .filter({ hasText: /^erinomainen$/ })
+      .filter({ hasText: /^10$/ })
       .first()
       .click()
 
@@ -378,5 +382,65 @@ test.describe('Perusopetuksen uusi käyttöliittymä: oppiainemuutokset', () => 
     await expect(
       page.getByTestId('oo.0.suoritukset.0.osasuoritukset.20.laajuus.value')
     ).toContainText('1.5')
+  })
+
+  test('Vahvistetulle suoritukselle lisätty arvioimaton oppiaine estää tallennuksen ja merkitään virheelliseksi', async ({
+    page,
+    oppijaPage,
+    fixtures
+  }) => {
+    await fixtures.reset()
+    await oppijaPage.goto(kaisaUrl)
+    // Päättötodistus (tab 0) on vahvistettu.
+    await page.getByTestId('oo.0.suoritusTabs.0.tab').click()
+    await page.getByTestId('oo.0.opiskeluoikeus.edit').click()
+
+    // Lisää pakollinen oppiaine, jolle ei anneta arvosanaa
+    await page.getByPlaceholder('Lisää pakollinen oppiaine').click()
+    await page
+      .locator('.Select__optionLabel')
+      .filter({ hasText: /^A2-kieli$/ })
+      .first()
+      .click()
+
+    // Osasuorituksen kohdalla näytetään virhe, eikä tallennus ole mahdollista.
+    // Valitsematon kieli näkyy vain punaisena valikkona (ks. FieldErrors),
+    // joten tekstirivejä on yksi: puuttuva arvosana. Virheteksti tulee
+    // lokalisointipalvelusta, joten tarkistetaan sen olemassaolo ja sijainti
+    // eikä tekstiä.
+    const osasuorituksenVirheet = page.locator(
+      '[data-testid^="oo.0.suoritukset.0.osasuoritukset."][data-testid$=".errors"]'
+    )
+    await expect(osasuorituksenVirheet).toHaveCount(1)
+    await expect(page.getByTestId('oo.0.opiskeluoikeus.save')).toBeDisabled()
+    await expect(
+      page.getByTestId('oo.0.opiskeluoikeus.editStatus')
+    ).toContainText('Korjaa virheelliset tiedot.')
+
+    const errorTestId = await osasuorituksenVirheet
+      .first()
+      .getAttribute('data-testid')
+    const osasuoritus = errorTestId!.replace(/\.errors$/, '')
+
+    // Kieli on valittava itse; valitsematta se on merkitty punaisella.
+    const kieliInput = page.getByTestId(`${osasuoritus}.kieli.edit.input`)
+    await expect(kieliInput).toHaveValue('')
+    await expect(page.locator('.Select--error')).not.toHaveCount(0)
+    await kieliInput.click()
+    await page
+      .locator('.Select__optionLabel')
+      .filter({ hasText: /^espanja$/ })
+      .first()
+      .click()
+
+    // Arvosanan antaminen poistaa viimeisenkin virheen ja sallii tallennuksen
+    await page.getByTestId(`${osasuoritus}.arvosana.edit.input`).click()
+    await page
+      .locator('.Select__optionLabel')
+      .filter({ hasText: /^8$/ })
+      .first()
+      .click()
+    await expect(osasuorituksenVirheet).toHaveCount(0)
+    await expect(page.getByTestId('oo.0.opiskeluoikeus.save')).toBeEnabled()
   })
 })

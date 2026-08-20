@@ -1,5 +1,5 @@
 import React, { useCallback, useMemo } from 'react'
-import { t } from '../../i18n/i18n'
+import { emptyLocalizedString, t } from '../../i18n/i18n'
 import { Koodistokoodiviite } from '../../types/fi/oph/koski/schema/Koodistokoodiviite'
 import { CommonProps, common } from '../CommonProps'
 import { FieldEditorProps, FieldViewerProps } from '../forms/FormField'
@@ -76,7 +76,7 @@ export const KoodistoEdit = <T extends string>(props: KoodistoEditProps<T>) => {
       : koodistoOptions
   }, [koodisto, props.zeroValueOption])
 
-  const { onChange } = props
+  const { onChange, optional, koodistoUri } = props
   const update = useCallback(
     (option?: SelectOption<Koodistokoodiviite<T>>) => {
       onChange(option?.value)
@@ -84,11 +84,36 @@ export const KoodistoEdit = <T extends string>(props: KoodistoEditProps<T>) => {
     [onChange]
   )
 
+  /**
+   * Syötekentän tyhjentäminen palauttaa kentän valitsemattomaan tilaan.
+   *
+   * Pakollisessa kentässä tyhjä tila ei ole undefined vaan koodiviite ilman
+   * koodiarvoa - sama tila, jossa kenttä on kun rivi juuri lisättiin. Arvon
+   * poistaminen kokonaan saisi kentän katoamaan riviltä, koska renderöinti
+   * tarkistaa onko arvo olemassa.
+   *
+   * nimi on annettava, vaikka se on tyhjä: useKoodistoFiller korvaa
+   * nimettömän koodiviitteen koodistohaun tuloksella, eikä tyhjä koodiarvo
+   * löydy koodistosta.
+   */
+  const onClear = useCallback(() => {
+    onChange(
+      optional
+        ? undefined
+        : Koodistokoodiviite({
+            koodiarvo: '',
+            koodistoUri,
+            nimi: emptyLocalizedString
+          })
+    )
+  }, [koodistoUri, onChange, optional])
+
   return (
     <Select
       value={props.value?.koodiarvo}
       options={options}
       onChange={update}
+      onClear={onClear}
       hasErrors={Boolean(props.errors)}
       testId={props.testId}
     />

@@ -16,7 +16,7 @@ import {
   AikajaksoEdit,
   AikajaksoView
 } from '../components-v2/opiskeluoikeus/AikajaksoField'
-import { todayISODate } from '../date/date'
+import { uusiTyhjäAikajakso } from '../components-v2/opiskeluoikeus/uusiJakso'
 import { t } from '../i18n/i18n'
 import { Aikajakso } from '../types/fi/oph/koski/schema/Aikajakso'
 import { AhvenanmaanPerusopetuksenOpiskeluoikeudenLisätiedot } from '../types/fi/oph/koski/schema/AhvenanmaanPerusopetuksenOpiskeluoikeudenLisatiedot'
@@ -82,10 +82,7 @@ const AikajaksoArrayRow: React.FC<{
           <ButtonGroup>
             <FlatButton
               onClick={() =>
-                form.updateAt(
-                  path.valueOr([]),
-                  append(Aikajakso({ alku: todayISODate() }))
-                )
+                form.updateAt(path.valueOr([]), append(uusiTyhjäAikajakso()))
               }
             >
               {t('Lisää')}

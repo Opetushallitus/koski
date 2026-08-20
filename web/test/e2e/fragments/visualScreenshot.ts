@@ -54,6 +54,25 @@ export const odotaAsettelunVakiintuminen = async (
 }
 
 /**
+ * Avaa kaikki näkymän laajennettavat osasuoritusrivit.
+ *
+ * Perusopetuksessa ja Ahvenanmaalla ei ole "Avaa kaikki" -painiketta, joten
+ * rivit avataan yksi kerrallaan. ExpandButtonin saavutettavuusnimi vaihtuu
+ * avattaessa "Pienennä"-muotoon, joten lokaattori kutistuu joka klikkauksella.
+ *
+ * Laajennetut rivit ovat visuaalitesteissä olennaisia: kentän nimen ja arvon
+ * asettelu näkyy vain avatussa osasuorituksessa.
+ */
+export const avaaOsasuoritusrivit = async (page: Page): Promise<void> => {
+  await odotaAsettelunVakiintuminen(page)
+  const laajenna = page.getByRole('button', { name: 'Laajenna Osasuoritus' })
+  for (let jäljellä = await laajenna.count(); jäljellä > 0; jäljellä--) {
+    await laajenna.first().click()
+  }
+  await expect(laajenna).toHaveCount(0)
+}
+
+/**
  * Suurenna selainikkuna koko sivun korkuiseksi.
  *
  * Ikkunan koon muutos voi kasvattaa sivua (kapeampi vieritysalue, korkeuteen

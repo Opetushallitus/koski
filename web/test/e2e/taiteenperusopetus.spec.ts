@@ -195,6 +195,34 @@ test.describe('Taiteen perusopetus', () => {
         expect(await page.osasuoritustieto('nimi')).toBe('Säveltapailu')
       })
 
+      test('Uuden osasuorituksen lomake ei tarvitse skeemahakua', async ({
+        page: browserPage,
+        taiteenPerusopetusPage: page
+      }) => {
+        let schemaRequested = false
+
+        await browserPage.route(
+          '**/koski/api/types/constraints/PaikallinenKoodi',
+          (route) => {
+            schemaRequested = true
+            return route.abort()
+          }
+        )
+
+        const addOsasuoritus = page.$.suoritukset(0).addOsasuoritus
+        await addOsasuoritus.select.set('__NEW__')
+
+        await expect(addOsasuoritus.modal.nimi.elem).toBeVisible()
+        await expect(addOsasuoritus.modal.submit.button).toBeDisabled()
+        await addOsasuoritus.modal.nimi.elem.fill('Säveltapailu')
+        await expect(addOsasuoritus.modal.nimi.elem).toHaveValue('Säveltapailu')
+        await expect(addOsasuoritus.modal.submit.button).toBeEnabled()
+        await addOsasuoritus.modal.submit.click()
+
+        expect(schemaRequested).toBe(false)
+        expect(await page.osasuoritustieto('nimi')).toBe('Säveltapailu')
+      })
+
       test('Luodut osasuoritukset tallentuvat uudelleenkäytettäväksi, osasuoritus on poistettavissa', async ({
         taiteenPerusopetusPage: page
       }) => {
@@ -377,9 +405,7 @@ test.describe('Taiteen perusopetus', () => {
         expect(await page.suorituksenVahvistus()).toEqual(
           'Vahvistus: 1.2.2021 Paimio'
         )
-        expect(await page.suorituksenVahvistushenkilö(0)).toEqual(
-          'Teemu Rex'
-        )
+        expect(await page.suorituksenVahvistushenkilö(0)).toEqual('Teemu Rex')
 
         await page.selectSuoritus(1)
         expect(await page.suorituksenTila()).toEqual('SUORITUS KESKEN')

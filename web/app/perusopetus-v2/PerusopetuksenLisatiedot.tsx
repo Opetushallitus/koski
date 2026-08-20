@@ -11,7 +11,6 @@ import {
   KeyValueTable
 } from '../components-v2/containers/KeyValueTable'
 import { t } from '../i18n/i18n'
-import { todayISODate } from '../date/date'
 import { Aikajakso } from '../types/fi/oph/koski/schema/Aikajakso'
 import { Tukijakso } from '../types/fi/oph/koski/schema/Tukijakso'
 import { FormField } from '../components-v2/forms/FormField'
@@ -20,6 +19,11 @@ import {
   AikajaksoView,
   AikajaksoEdit
 } from '../components-v2/opiskeluoikeus/AikajaksoField'
+import {
+  uusiErityisenTuenPäätös,
+  uusiTukijakso,
+  uusiTyhjäAikajakso
+} from '../components-v2/opiskeluoikeus/uusiJakso'
 import {
   BooleanView,
   BooleanEdit
@@ -298,7 +302,7 @@ const SingleAikajaksoRow: React.FC<{
         ) : form.editMode ? (
           <ButtonGroup>
             <FlatButton
-              onClick={() => form.updateAt(path, () => Aikajakso({ alku: '' }))}
+              onClick={() => form.updateAt(path, () => uusiTyhjäAikajakso())}
             >
               {t('Lisää')}
             </FlatButton>
@@ -339,10 +343,7 @@ const AikajaksoArrayRow: React.FC<{
           <ButtonGroup>
             <FlatButton
               onClick={() =>
-                form.updateAt(
-                  path.valueOr([]),
-                  append(Aikajakso({ alku: todayISODate() }))
-                )
+                form.updateAt(path.valueOr([]), append(uusiTyhjäAikajakso()))
               }
             >
               {t('Lisää')}
@@ -409,11 +410,7 @@ const ErityisenTuenPäätöksetRow: React.FC<{
               onClick={() =>
                 form.updateAt(
                   päätöksetPath.valueOr([]),
-                  append(
-                    ErityisenTuenPäätös({
-                      opiskeleeToimintaAlueittain: false
-                    })
-                  )
+                  append(uusiErityisenTuenPäätös())
                 )
               }
             >
@@ -475,7 +472,7 @@ const TuenPäätöksenJaksotRow: React.FC<{
         <ButtonGroup>
           <FlatButton
             onClick={() =>
-              form.updateAt(jaksotPath.valueOr([]), append(Tukijakso()))
+              form.updateAt(jaksotPath.valueOr([]), append(uusiTukijakso()))
             }
           >
             {t('Lisää')}

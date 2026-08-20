@@ -220,52 +220,98 @@ export type KoodistokoodiviiteKoodistonNimellä<T extends string = string> = {
 const MAX_RETRY_ATTEMPTS = 3
 const RETRY_DELAY_MS = 5000
 
-class KoodistoLoader {
+export class KoodistoLoader {
   koodistot: KoodistoRecord = {}
   onChange?: () => void
+  /**
+   * Käynnissä olevat haut koodisto-URIttain. Ilman tätä rinnakkainen kutsuja, jonka tarvitsemat
+   * koodistot ovat jo latautumassa, palaisi heti kesken latauksen — jolloin sitä seuraava
+   * findKoodi heittäisi virheen "loading of koodisto ... hasn't finished".
+   */
+  private pending: Record<string, Promise<void>> = {}
+
+  /** Haku on injektoitavissa yksikkötestejä varten. */
+  constructor(private readonly haeKoodistot = fetchKoodistot) {}
 
   async loadKoodistot(koodistoUris: string[]): Promise<boolean> {
-    const unfetchedKoodistoUris = uniqueKoodistoUris(koodistoUris).filter(
+    const uris = uniqueKoodistoUris(koodistoUris)
+    const unfetchedKoodistoUris = uris.filter(
       (uri) =>
         this.koodistot[uri] !== Loading && !Array.isArray(this.koodistot[uri])
     )
-    if (!A.isNonEmpty(unfetchedKoodistoUris)) {
+
+    if (A.isNonEmpty(unfetchedKoodistoUris)) {
+      const fetching = this.fetchKoodistotWithRetry(unfetchedKoodistoUris)
+      unfetchedKoodistoUris.forEach((uri) => {
+        this.koodistot[uri] = Loading
+        this.pending[uri] = fetching
+      })
+    }
+
+    // Odotetaan myös muiden aloittamat haut, jotta paluun jälkeen koodistot ovat käytettävissä.
+    const inFlight = uris.map((uri) => this.pending[uri]).filter(nonNull)
+    if (A.isEmpty(inFlight)) {
       return false
     }
+    await Promise.all(inFlight)
+    return true
+  }
 
-    unfetchedKoodistoUris.forEach((uri) => {
-      this.koodistot[uri] = Loading
-    })
+  private async fetchKoodistotWithRetry(
+    koodistoUris: NEA.NonEmptyArray<string>
+  ): Promise<void> {
+    try {
+      for (let attempt = 0; attempt < MAX_RETRY_ATTEMPTS; attempt++) {
+        const result = await this.haeKoodistot(koodistoUris)
 
-    for (let attempt = 0; attempt < MAX_RETRY_ATTEMPTS; attempt++) {
-      const result = await fetchKoodistot(unfetchedKoodistoUris)
+        if (E.isRight(result)) {
+          const k: KoodistoRecord = pipe(
+            Object.entries(result.right.data.koodistot),
+            A.chain(([koodistoNimi, koodiviitteet]) =>
+              koodiviitteet.map((koodiviite) => ({
+                id: `${koodiviite.koodistoUri}_${koodiviite.koodiarvo}`,
+                koodistoNimi,
+                koodiviite
+              }))
+            ),
+            NEA.groupBy((koodi) => koodi.koodiviite.koodistoUri)
+          )
+          this.koodistot = { ...this.koodistot, ...k }
+          return
+        }
 
-      if (E.isRight(result)) {
-        const k: KoodistoRecord = pipe(
-          Object.entries(result.right.data.koodistot),
-          A.chain(([koodistoNimi, koodiviitteet]) =>
-            koodiviitteet.map((koodiviite) => ({
-              id: `${koodiviite.koodistoUri}_${koodiviite.koodiarvo}`,
-              koodistoNimi,
-              koodiviite
-            }))
-          ),
-          NEA.groupBy((koodi) => koodi.koodiviite.koodistoUri)
-        )
-        this.koodistot = { ...this.koodistot, ...k }
-        return true
+        console.error('Koodistojen haku epäonnistui:', result.left)
+        if (attempt < MAX_RETRY_ATTEMPTS - 1) {
+          await new Promise((r) => setTimeout(r, RETRY_DELAY_MS))
+        }
       }
-
-      console.error('Koodistojen haku epäonnistui:', result.left)
-      if (attempt < MAX_RETRY_ATTEMPTS - 1) {
-        await new Promise((r) => setTimeout(r, RETRY_DELAY_MS))
-      }
+      this.merkitseEpäonnistuneiksi(koodistoUris)
+    } catch (error) {
+      // fetchKoodistot palauttaa virheet Eitherinä, mutta poikkeus on silti
+      // mahdollinen (esim. verkkovirhe tai vastauksen jäsennys). Ilman tätä
+      // käsittelyä koodistot jäisivät Loading-tilaan ja pending-lupaus
+      // hylätyksi, jolloin jokainen myöhempi loadKoodistot-kutsu hylkäytyisi
+      // heti: valikko ei enää koskaan täyttyisi vaan jäisi pysyvästi
+      // disabloiduksi. Käsitellään kuten uudelleenyritysten loppuminen.
+      console.error('Koodistojen haku heitti poikkeuksen:', error)
+      this.merkitseEpäonnistuneiksi(koodistoUris)
+    } finally {
+      // Kaikilla poluilla, myös onnistuneella: muuten seuraava kutsu odottaisi
+      // jo valmistunutta lupausta.
+      this.clearPending(koodistoUris)
     }
+  }
 
-    unfetchedKoodistoUris.forEach((uri) => {
+  private merkitseEpäonnistuneiksi(koodistoUris: NEA.NonEmptyArray<string>) {
+    koodistoUris.forEach((uri) => {
       this.koodistot[uri] = Failed
     })
-    return true
+  }
+
+  private clearPending(koodistoUris: string[]): void {
+    koodistoUris.forEach((uri) => {
+      delete this.pending[uri]
+    })
   }
 
   findKoodi<T extends string>(

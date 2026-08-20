@@ -49,8 +49,10 @@ export const TpoOsasuoritusProperties: React.FC<
   const arvioitu = Boolean(osasuoritus?.arviointi)
   const tunnustettu = Boolean(osasuoritus?.tunnustettu)
 
+  // Ei omaa kääre-elementtiä: kenttärivien on oltava OsasuoritusProperties-
+  // ruudukon suoria lapsia, jotta nimisarake on yhteinen koko ryhmälle.
   return (
-    <div>
+    <>
       {arvioitu && (
         <OsasuoritusProperty label="Arviointi">
           <OsasuoritusSubproperty label="Arvosana">
@@ -94,7 +96,7 @@ export const TpoOsasuoritusProperties: React.FC<
           </OsasuoritusPropertyValue>
         </OsasuoritusProperty>
       )}
-    </div>
+    </>
   )
 }
 

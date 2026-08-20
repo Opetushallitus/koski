@@ -148,6 +148,13 @@ const fillSingleAikajakso = async (
   await page.getByTestId(aikajaksoInput(field, 'loppu')).fill(loppu)
 }
 
+/**
+ * Kenttärivin syötekentät DOM:n kautta. Osalta lisätietoriveistä puuttuu
+ * TestIdLayer, jolloin testId:t eivät yksilöi riviä.
+ */
+const rowInputs = (page: Page, label: string) =>
+  lisatiedotRow(page, label).locator('input[type="text"]')
+
 const saveChanges = async (page: Page) => {
   await page.getByTestId(saveButton).click()
   await expect(page.getByTestId(editButton)).toBeVisible({ timeout: 15000 })
@@ -251,13 +258,21 @@ test.describe('Perusopetuksen uusi käyttöliittymä: opiskeluoikeuden lisätied
     await expect(
       page.getByTestId(`${lisatieto('ulkomailla')}.alku`)
     ).toContainText('1.1.2019')
+    // Kentän nimi ja arvo ovat omissa elementeissään, joten arvot tarkistetaan
+    // testId:llä ja nimet erikseen.
     const erityisenTuenJaksot = lisatiedotRow(page, 'Erityisen tuen jaksot')
     await expect(erityisenTuenJaksot).toContainText(
-      'Opiskelee toiminta-alueittain ei'
+      'Opiskelee toiminta-alueittain'
     )
-    await expect(erityisenTuenJaksot).toContainText(
-      'Opiskelee erityisryhmässä ei'
-    )
+    await expect(erityisenTuenJaksot).toContainText('Opiskelee erityisryhmässä')
+    await expect(
+      page.getByTestId(
+        `${lisatieto('erityisenTuenPäätös')}.opiskeleeToimintaAlueittain`
+      )
+    ).toHaveText('ei')
+    await expect(
+      page.getByTestId(`${lisatieto('erityisenTuenPäätös')}.erityisryhmässä`)
+    ).toHaveText('ei')
 
     await page.getByTestId(editButton).click()
 
@@ -284,6 +299,73 @@ test.describe('Perusopetuksen uusi käyttöliittymä: opiskeluoikeuden lisätied
     await expect(erityisryhmässä).not.toBeChecked()
     await erityisryhmässä.check()
     await expect(erityisryhmässä).toBeChecked()
+  })
+
+  test('Uuden jakson päivämääräkentät ovat tyhjiä', async ({
+    page,
+    oppijaPage,
+    fixtures
+  }) => {
+    await fixtures.reset()
+    await oppijaPage.goto(kaisaUrl)
+    await page.getByTestId(editButton).click()
+
+    // Käyttöliittymä ei keksi päivämäärää käyttäjän puolesta, olipa kenttä
+    // yksittäinen tai listamuotoinen ja alkupäivä pakollinen tai valinnainen.
+    await addAikajakso(page, 'Joustava perusopetus')
+    await expect(
+      page.getByTestId(aikajaksoInput('joustavaPerusopetus', 'alku'))
+    ).toHaveValue('')
+    await expect(
+      page.getByTestId(aikajaksoInput('joustavaPerusopetus', 'loppu'))
+    ).toHaveValue('')
+
+    await addAikajakso(page, 'Ulkomaanjaksot')
+    await expect(
+      page.getByTestId(aikajaksoInput('ulkomaanjaksot', 0, 'alku'))
+    ).toHaveValue('')
+    await expect(
+      page.getByTestId(aikajaksoInput('ulkomaanjaksot', 0, 'loppu'))
+    ).toHaveValue('')
+
+    await addAikajakso(page, 'Tuen päätöksen jaksot')
+    await expect(rowInputs(page, 'Tuen päätöksen jaksot').first()).toHaveValue(
+      ''
+    )
+
+    await addAikajakso(page, 'Erityisen tuen jaksot')
+    await expect(
+      page.getByTestId(`${lisatieto('erityisenTuenPäätökset')}.0.alku.input`)
+    ).toHaveValue('')
+  })
+
+  test('Tyhjä pakollinen alkupäivä estää tallennuksen kunnes se täytetään', async ({
+    page,
+    oppijaPage,
+    fixtures
+  }) => {
+    await fixtures.reset()
+    await oppijaPage.goto(kaisaUrl)
+    await page.getByTestId(editButton).click()
+
+    // Aikajakso.alku on pakollinen, joten tyhjänä lisätty rivi on
+    // epätäydellinen. Puuttuva pakollinen arvo näkyy kentän punaisena tilana
+    // eikä tekstirivinä, jottei ilmestyvä teksti siirrä sivun asettelua.
+    await addAikajakso(page, 'Joustava perusopetus')
+    await expect(
+      page.getByTestId(aikajaksoInput('joustavaPerusopetus', 'alku'))
+    ).toHaveClass(/DateEdit__input--error/)
+    await expect(page.getByTestId(saveButton)).toBeDisabled()
+
+    await page
+      .getByTestId(aikajaksoInput('joustavaPerusopetus', 'alku'))
+      .fill('1.1.2010')
+    await expect(page.getByTestId(saveButton)).toBeEnabled()
+    await saveChanges(page)
+
+    await expect(
+      page.getByTestId(`${lisatieto('joustavaPerusopetus')}.alku`)
+    ).toContainText('1.1.2010')
   })
 
   test('Joustava perusopetus: validi päivämääräväli tallentuu', async ({

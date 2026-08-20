@@ -1,11 +1,12 @@
 import React from 'react'
 import { TestIdLayer, TestIdText } from '../../appstate/useTestId'
-import { ISO2FinnishDate, todayISODate } from '../../date/date'
+import { ISO2FinnishDate } from '../../date/date'
 import { t } from '../../i18n/i18n'
 import { ErityisenKoulutustehtävänJakso } from '../../types/fi/oph/koski/schema/ErityisenKoulutustehtavanJakso'
 import { Koodistokoodiviite } from '../../types/fi/oph/koski/schema/Koodistokoodiviite'
 import { CommonProps } from '../CommonProps'
 import { DateInput } from '../controls/DateInput'
+import { hasErrorInField } from '../forms/validator'
 import { FieldEditorProps, FieldViewerProps } from '../forms/FormField'
 import { KoodistoSelect } from './KoodistoSelect'
 import { EmptyObject } from '../../util/objects'
@@ -37,7 +38,7 @@ export type ErityisenKoulutustehtävänJaksoEditProps = CommonProps<
 
 export const emptyErityisenKoulutustehtävänJakso =
   ErityisenKoulutustehtävänJakso({
-    alku: todayISODate(),
+    alku: '',
     tehtävä: Koodistokoodiviite({
       koodistoUri: 'erityinenkoulutustehtava',
       koodiarvo: '101'
@@ -46,7 +47,7 @@ export const emptyErityisenKoulutustehtävänJakso =
 
 export const ErityisenKoulutustehtävänJaksoEdit: React.FC<
   ErityisenKoulutustehtävänJaksoEditProps
-> = ({ value, onChange }) => {
+> = ({ value, onChange, errors }) => {
   const setAlku = (alku?: string) => {
     alku && onChange({ ...emptyErityisenKoulutustehtävänJakso, ...value, alku })
   }
@@ -65,9 +66,19 @@ export const ErityisenKoulutustehtävänJaksoEdit: React.FC<
   return (
     <TestIdLayer id="maksuttomuus">
       <div className="AikajaksoEdit">
-        <DateInput value={value?.alku} onChange={setAlku} testId="alku" />
+        <DateInput
+          value={value?.alku}
+          onChange={setAlku}
+          hasErrors={hasErrorInField(errors, 'alku')}
+          testId="alku"
+        />
         <span className="AikajaksoEdit__separator"> {' — '}</span>
-        <DateInput value={value?.loppu} onChange={setLoppu} testId="loppu" />
+        <DateInput
+          value={value?.loppu}
+          onChange={setLoppu}
+          hasErrors={hasErrorInField(errors, 'loppu')}
+          testId="loppu"
+        />
         <KoodistoSelect
           koodistoUri="erityinenkoulutustehtava"
           value={value?.tehtävä.koodiarvo}

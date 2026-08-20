@@ -14,7 +14,7 @@ import {
   isResponsiveValueObj,
   mapResponsiveValue
 } from '../containers/Columns'
-import { Section } from '../containers/Section'
+import { OsasuoritusProperties } from './OsasuoritusProperty'
 import { ExpandButton } from '../controls/ExpandButton'
 import { IconButton } from '../controls/IconButton'
 import { FormModel, FormOptic } from '../forms/FormModel'
@@ -352,13 +352,19 @@ export const OsasuoritusRow = <DATA_KEYS extends string>(
       </ColumnRow>
       {props.row.alwaysVisibleContent && (
         <LayoutProvider indent={3}>
-          {props.row.alwaysVisibleContent}
+          <OsasuoritusProperties indent={indentation + 3}>
+            {props.row.alwaysVisibleContent}
+          </OsasuoritusProperties>
         </LayoutProvider>
       )}
       {expandable && isOpen && props.row.content && (
         <LayoutProvider indent={props.expandedContentIndent ?? 2}>
           <TestIdLayer id="properties">
-            <Section>{props.row.content}</Section>
+            <OsasuoritusProperties
+              indent={indentation + (props.expandedContentIndent ?? 2)}
+            >
+              {props.row.content}
+            </OsasuoritusProperties>
           </TestIdLayer>
         </LayoutProvider>
       )}

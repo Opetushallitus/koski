@@ -617,12 +617,14 @@ const isVierasKieliKoodi = (koodiarvo: string): boolean =>
 const isKielimäinenKoodi = (koodiarvo: string): boolean =>
   /^[AB]\d+$/.test(koodiarvo)
 
-const oletuskieliKieliaineelle = (
-  tunniste: Koodistokoodiviite<'ahvenanmaankoskioppiaineetyleissivistava'>
-) =>
+// Kieltä ei esitäytetä, vaan käyttäjä valitsee sen itse; sama sääntö kuin
+// perusopetuksessa, ks. PerusopetuksenOppiaineet.valitsemattomanKielenKoodi.
+const valitsemattomanKielenKoodi = () =>
   Koodistokoodiviite({
-    koodiarvo: tunniste.koodiarvo.startsWith('A') ? 'EN' : 'FI',
-    koodistoUri: 'kielivalikoima'
+    koodiarvo: '',
+    koodistoUri: 'kielivalikoima',
+    // Tyhjä nimi on pakko antaa, ks. PerusopetuksenOppiaineet.
+    nimi: finnish('')
   })
 
 const uusiAhvenanmaanKoulutusmoduuli = (
@@ -633,7 +635,7 @@ const uusiAhvenanmaanKoulutusmoduuli = (
     return AhvenanmaanPerusopetuksenVierasKieli({
       pakollinen,
       tunniste: tunniste as AhvenanmaanPerusopetuksenVierasKieli['tunniste'],
-      kieli: oletuskieliKieliaineelle(tunniste)
+      kieli: valitsemattomanKielenKoodi()
     })
   }
   return AhvenanmaanPerusopetuksenMuuOppiaine({

@@ -44,6 +44,16 @@ export type SelectProps<T> = CommonProps<{
   allowOpenUpwards?: boolean
   hasErrors?: boolean
   skipAutoFocus?: boolean
+  /**
+   * Kutsutaan kun käyttäjä tyhjentää syötekentän eikä valikossa ole
+   * "Ei valintaa" -vaihtoehtoa. Select ei tiedä, miten kentän tyhjä tila
+   * esitetään - esim. koodistokenttä palautuu koodiviitteeseen ilman
+   * koodiarvoa, ei arvoon undefined - joten päätös jää kutsujalle.
+   *
+   * Ilman tätä tyhjennys ei muuta arvoa lainkaan: kenttä palautuu entiseen
+   * arvoonsa kun valikko sulkeutuu.
+   */
+  onClear?: () => void
   testId: string | number
 }>
 
@@ -79,6 +89,24 @@ export type SelectOption<T> = FlatOption<T> & {
 
 export type OptionKey = string
 
+// React 16:ssa ei ole useId:tä, joten aria-controlsin tarvitsema uniikki id
+// juoksutetaan itse. Selainpuolen renderöinti vain, joten laskuri riittää.
+let optionListIdCounter = 0
+
+/**
+ * "Ei valintaa" -vaihtoehto, jos kenttä sellaisen tarjoaa: ryhmittelemätön
+ * vaihtoehto ilman arvoa (ks. KoodistoField/KoodistoSelect zeroValueOption).
+ *
+ * Sen olemassaolo on ainoa merkki siitä, että kentän arvon saa ylipäätään
+ * poistaa. Ilman sitä tyhjentäminen ei saa nollata mallia: esimerkiksi
+ * kieliaineen kieli on skeemassa pakollinen, ja undefined saisi koko
+ * kielikentän katoamaan riviltä.
+ */
+const nollavalinta = <T,>(
+  options: FlatOptionList<T>
+): FlatOption<T> | undefined =>
+  options.arr.find((o) => !o.isGroup && !o.isAddNew && o.value === undefined)
+
 const optionExists = <T,>(options: OptionList<T>, key: string): boolean =>
   !!options.find(
     (o) =>
@@ -88,8 +116,13 @@ const optionExists = <T,>(options: OptionList<T>, key: string): boolean =>
 
 export const Select = <T,>(props: SelectProps<T>) => {
   const inputTestId = useTestId(props.testId, 'input')
+  const toggleTestId = useTestId(props.testId, 'toggle')
   const select = useSelectState(props)
   const input = useRef<HTMLInputElement>(null)
+  const optionListId = useMemo(
+    () => `Select__options-${(optionListIdCounter += 1)}`,
+    []
+  )
 
   const { options, onChange, value, initialValue, autoselect } = props
   useEffect(() => {
@@ -108,6 +141,24 @@ export const Select = <T,>(props: SelectProps<T>) => {
   }, [autoselect, initialValue, onChange, options, value])
 
   const isLoading = props.options === LoadingOptions
+  const disabled =
+    isLoading ||
+    props.disabled ||
+    (!props.onSearch && props.options.length === 0)
+
+  // Avauspainike on oma elementtinsä, jotta siitä voi sulkea auki olevan
+  // valikon (ARIA APG:n combobox-kuvio: painike kertoo tilan aria-expandedilla
+  // ja sen aktivointi sulkee avatun listan). Aiemmin kolmio oli pelkkä
+  // ::after-pseudoelementti, eikä siihen voinut kohdistaa klikkausta.
+  const onToggleClick = useCallback(() => {
+    const avataan = !select.dropdownVisible
+    select.toggleDropdown()
+    // Näppäimistökäyttö jatkuu syötekentästä, mutta vain avattaessa: suljettaessa
+    // fokusointi laukaisisi onFocusin, joka avaisi valikon heti uudelleen.
+    if (avataan) {
+      input.current?.focus()
+    }
+  }, [select])
 
   return (
     <TestIdLayer id={props.testId} wrap="div">
@@ -127,19 +178,39 @@ export const Select = <T,>(props: SelectProps<T>) => {
           value={select.filter === null ? select.displayValue : select.filter}
           type="search"
           autoComplete="off"
-          disabled={
-            isLoading ||
-            props.disabled ||
-            (!props.onSearch && props.options.length === 0)
-          }
+          disabled={disabled}
           data-skip-autofocus={props.skipAutoFocus ? '' : undefined}
           {...select.inputEventListeners}
           data-testid={inputTestId}
           ref={input}
         />
+        <button
+          type="button"
+          className="Select__toggle"
+          ref={select.toggleRef}
+          // Painike ei ole oma tabulaattorikohteensa: syötekenttä on kontrolli,
+          // jota näppäimistöllä käytetään.
+          tabIndex={-1}
+          aria-expanded={select.dropdownVisible}
+          aria-controls={optionListId}
+          aria-label={t('Näytä vaihtoehdot')}
+          disabled={disabled}
+          // Painike ei ole koskaan järkevä autofokuskohde: Modal fokusoi
+          // ensimmäisen merkitsemättömän painikkeen, ja ilman tätä dialogi
+          // avautuisi valikko auki (ks. containers/Modal.tsx).
+          data-skip-autofocus=""
+          // Fokus pysyy syötekentässä, jolloin klikkaus ei laukaise onFocusia
+          // eikä avaa valikkoa ohi toggle-logiikan.
+          onMouseDown={(event) => event.preventDefault()}
+          // Nuolen fokusoiminen ei saa avata listaa, vaikka fokus tulisi
+          // ohjelmallisesti: avaaminen kuuluu vain klikkaukselle.
+          onFocus={(event) => event.stopPropagation()}
+          onClick={onToggleClick}
+          data-testid={toggleTestId}
+        />
         {isLoading && <Spinner className="Select__spinner" />}
         {select.dropdownVisible && (
-          <div className="Select__optionListContainer">
+          <div className="Select__optionListContainer" id={optionListId}>
             <TestIdLayer wrap="div" id="options">
               <OptionList
                 inputRef={input}
@@ -288,6 +359,7 @@ const useSelectState = <T,>(props: SelectProps<T>) => {
 
   const [filter, setFilter] = useState<string | null>(null)
   const selectContainer = useRef<HTMLDivElement>(null)
+  const toggleRef = useRef<HTMLButtonElement>(null)
 
   const flatOptions = useMemo(
     () => flattenOptions(props.options),
@@ -306,29 +378,57 @@ const useSelectState = <T,>(props: SelectProps<T>) => {
     }
   }, [flatOptions.arr, props.hideEmpty])
 
+  const onSearchProp = props.onSearch
   const onFocus = useCallback(() => {
     setDropdownVisible(true)
-    if (props.onSearch) {
+    if (onSearchProp) {
       setFilter('')
     }
-  }, [props.onSearch])
+  }, [onSearchProp])
 
   // Losing the focus
 
   const blurTimeoutRef = useRef<number | null>(null)
 
-  const onBlur: React.FocusEventHandler = useCallback((event) => {
-    // Tarkistetaan, että fokus ei siirry komponentin sisälle
-    if (
-      !event.relatedTarget ||
-      !selectContainer.current?.contains(event.relatedTarget as Node)
-    ) {
-      // Lyhennetty timeout: riittää että ehditään käsitellä klikki
-      blurTimeoutRef.current = window.setTimeout(() => {
-        setDropdownVisible(false)
-      }, 150)
-    }
+  /**
+   * Sulje valikko ja unohda kirjoitettu hakusana.
+   *
+   * Syötekenttä näyttää hakusanan (filter) aina kun sellainen on, ja muuten
+   * valitun arvon (displayValue). Jos hakusanaa ei nollata valikon sulkeutuessa,
+   * kenttä jää näyttämään sitä vaikka valintaa ei tehty: esimerkiksi arvon
+   * pyyhkiminen backspacella jättää kentän tyhjän näköiseksi, vaikka malliin jää
+   * edellinen arvo. Tällöin lomake näyttää tyhjältä mutta on validi, eikä
+   * käyttäjä saa virheilmoitusta puuttuvasta tiedosta.
+   */
+  const closeDropdown = useCallback(() => {
+    setDropdownVisible(false)
+    setFilter(null)
   }, [])
+
+  const toggleDropdown = useCallback(() => {
+    if (dropdownVisible) {
+      closeDropdown()
+    } else {
+      setDropdownVisible(true)
+      if (onSearchProp) {
+        setFilter('')
+      }
+    }
+  }, [closeDropdown, dropdownVisible, onSearchProp])
+
+  const onBlur: React.FocusEventHandler = useCallback(
+    (event) => {
+      // Tarkistetaan, että fokus ei siirry komponentin sisälle
+      if (
+        !event.relatedTarget ||
+        !selectContainer.current?.contains(event.relatedTarget as Node)
+      ) {
+        // Lyhennetty timeout: riittää että ehditään käsitellä klikki
+        blurTimeoutRef.current = window.setTimeout(closeDropdown, 150)
+      }
+    },
+    [closeDropdown]
+  )
 
   const cancelBlur = useCallback(() => {
     if (blurTimeoutRef.current !== null) {
@@ -343,13 +443,20 @@ const useSelectState = <T,>(props: SelectProps<T>) => {
         event.target instanceof Element &&
         selectContainer.current?.contains(event.target)
 
-      if (isInside) {
+      const isToggle =
+        event.target instanceof Element &&
+        toggleRef.current?.contains(event.target)
+
+      if (isToggle) {
+        // Avauspainike vaihtaa tilan itse, joten täällä ei saa pakottaa auki.
+        cancelBlur()
+      } else if (isInside) {
         // Jos klikataan sisällä, peruuta blur ja pidä auki
         cancelBlur()
         setDropdownVisible(true)
       } else {
         // Jos klikataan ulkopuolella, sulje
-        setDropdownVisible(false)
+        closeDropdown()
       }
     }
     document.body.addEventListener('click', mouseHandler)
@@ -359,7 +466,7 @@ const useSelectState = <T,>(props: SelectProps<T>) => {
         clearTimeout(blurTimeoutRef.current)
       }
     }
-  }, [cancelBlur])
+  }, [cancelBlur, closeDropdown])
 
   // Changes
 
@@ -390,7 +497,7 @@ const useSelectState = <T,>(props: SelectProps<T>) => {
     (event) => {
       switch (event.key) {
         case 'Tab':
-          setDropdownVisible(false)
+          closeDropdown()
           return
         case 'ArrowDown':
           if (dropdownVisible) {
@@ -411,31 +518,49 @@ const useSelectState = <T,>(props: SelectProps<T>) => {
           scrollHoveredIntoView(selectContainer)
           return
         case 'Escape':
-          setDropdownVisible(false)
-          setFilter(null)
+          closeDropdown()
           event.preventDefault()
           event.stopPropagation()
           return
         case 'Enter':
-          setDropdownVisible(false)
           event.preventDefault()
           event.stopPropagation()
-          if (dropdownVisible) {
+          // Enter vahvistaa korostetun vaihtoehdon. Ilman korostusta valikko
+          // vain suljetaan: aiemmin kutsuttiin onClickOption(undefined), joka
+          // nollasi arvon myös kentissä joissa tyhjä ei ole sallittu - esim.
+          // kieliaineen kieli katosi riviltä kokonaan.
+          if (dropdownVisible && hoveredOption) {
             onClickOption(hoveredOption)
+          } else {
+            closeDropdown()
           }
           return
         default:
         // console.log(event.key)
       }
     },
-    [dropdownVisible, flatOptions, hoveredOption, onClickOption]
+    [closeDropdown, dropdownVisible, flatOptions, hoveredOption, onClickOption]
   )
 
-  const { hideEmpty, onSearch } = props
+  const { hideEmpty, onSearch, onClear: onClearProp } = props
   const onUserType: React.ChangeEventHandler<HTMLInputElement> = useCallback(
     (event) => {
       setFilter(event.target.value)
       setDropdownVisible(true)
+
+      // Kentän tyhjentäminen palauttaa sen valitsemattomaan tilaan: joko
+      // "Ei valintaa" -vaihtoehtoon tai kutsujan määrittelemään tyhjään
+      // arvoon (onClear). Jos kumpaakaan ei ole, arvo jää ennalleen ja kenttä
+      // palautuu siihen valikon sulkeutuessa.
+      if (event.target.value === '') {
+        const nolla = nollavalinta(flatOptions)
+        if (nolla) {
+          onChangeCb(nolla)
+        } else {
+          onClearProp?.()
+        }
+      }
+
       const needle = event.target.value.toLowerCase()
       if (needle && !hideEmpty) {
         const firstMatch = flatOptions.arr.find((o) =>
@@ -447,7 +572,7 @@ const useSelectState = <T,>(props: SelectProps<T>) => {
       }
       onSearch?.(event.target.value)
     },
-    [flatOptions.arr, hideEmpty, onSearch]
+    [flatOptions, hideEmpty, onChangeCb, onClearProp, onSearch]
   )
 
   return useMemo(
@@ -457,6 +582,8 @@ const useSelectState = <T,>(props: SelectProps<T>) => {
       hoveredOption,
       filter,
       dropdownVisible,
+      toggleDropdown,
+      toggleRef,
       containerEventListeners: {
         ref: selectContainer,
         onFocus,
@@ -482,7 +609,8 @@ const useSelectState = <T,>(props: SelectProps<T>) => {
       onFocus,
       onKeyDown,
       onUserType,
-      options
+      options,
+      toggleDropdown
     ]
   )
 }

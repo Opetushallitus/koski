@@ -1,19 +1,103 @@
+// Ruudukkosarakkeen ja sen jälkeisen välin muodostama askel Columns.less:n
+// 24-sarakkeisessa ruudukossa. Tällä lasketaan sisennys ja perässä varattava
+// sarake samanlevyisiksi kuin osasuoritusrivillä.
+@Columns-gutters-total: (@Columns-count - 1) * @Columns-gutter;
+@Column-step: ~'calc((100% - @{Columns-gutters-total}) / @{Columns-count} + @{Columns-gutter})';
+@Osasuoritus-indent: ~'calc((100% - @{Columns-gutters-total}) / @{Columns-count} * var(--osasuoritus-indent, 0) + var(--osasuoritus-indent, 0) * @{Columns-gutter})';
+
+// Sama raja kuin vanhassa käyttöliittymässä (style/opiskeluoikeus.less).
+@Osasuoritus-kentta-max-leveys: 300px;
+
+// Laajennetun osasuorituksen kenttien yhteinen ruudukko:
+//
+//   1. sisennys  2. nimi (taso 0)  3. alikentän nimi (taso 1)  4. arvo  5. varaus
+//
+// Nimisarakkeet ovat max-content-levyisiä, joten ne vievät täsmälleen pisimmän
+// nimen verran tilaa ja arvo alkaa heti perästä. Rivit ovat subgrid, jolloin
+// leveys on yhteinen koko ryhmälle ja arvot pysyvät linjassa.
+//
+// Sarakevälit ovat nollassa ja väli tulee nimen padding-rightista: muuten
+// tyhjäksi jäävä alikenttäsarake (taso 1) kasvattaisi nimen ja arvon väliä
+// yhdellä välillä niissä ryhmissä, joissa alikenttiä ei ole.
+.OsasuoritusProperties {
+  display: grid;
+  grid-template-columns:
+    @Osasuoritus-indent max-content max-content minmax(0, 1fr)
+    @Column-step;
+  column-gap: 0;
+
+  // Muu sisältö kuin kenttärivit (esim. sisäkkäinen osasuoritustaulukko tai
+  // väliotsikko) huolehtii sisennyksestään itse, joten se venytetään koko
+  // ruudukon yli sisennyssarakkeesta alkaen.
+  > *:not(.OsasuoritusProperty) {
+    grid-column: 1 / -1;
+  }
+}
+
+// Oletus: kenttärivi ei ole ruudukon suora lapsi, koska editori on käärinyt
+// rivinsä omaan elementtiinsä. Silloin subgrid ei löydä ylätason raitoja
+// (se laskee arvoon none) ja rivin sisältö sinkoutuisi väärille paikoille.
+// Annetaan riville sama ruudukko omanaan: asettelu on oikea, mutta
+// nimisarakkeen leveys on rivikohtainen eikä jaettu koko ryhmän kesken.
+.OsasuoritusProperty {
+  display: grid;
+  grid-template-columns:
+    @Osasuoritus-indent max-content max-content minmax(0, 1fr)
+    @Column-step;
+  column-gap: 0;
+}
+
+// Suora lapsi saa raidat ylätason ruudukosta, jolloin nimisarake on yhteinen.
+.OsasuoritusProperties > .OsasuoritusProperty {
+  grid-column: 1 / -1;
+  grid-template-columns: subgrid;
+}
+
+// Nimi omaan sarakkeeseensa, arvo heti oman tasonsa nimisarakkeen jälkeen
+// ruudukon loppuun (viimeinen sarake jää poistopainikkeen leveydeksi, jotta
+// kenttien leveys vastaa osasuoritusrivin datasarakkeita).
+.OsasuoritusProperties .OsasuoritusProperty {
+  .OsasuoritusPropertyLabel--level-0 {
+    grid-column: 2 / 3;
+  }
+  .OsasuoritusPropertyLabel--level-1 {
+    grid-column: 3 / 4;
+  }
+  .OsasuoritusPropertyValue--level-1 {
+    grid-column: 3 / -2;
+  }
+  .OsasuoritusPropertyValue--level-2 {
+    grid-column: 4 / -2;
+  }
+}
+
 .OsasuoritusProperty {
   .OsasuoritusPropertyLabel {
     display: flex;
     align-items: center;
     min-height: 1.5 * @baseline;
-    // Työpöytäleveyksillä pitkät kentän nimet (esim. "Kuullun ymmärtämisen
-    // taitotaso") eivät rivity vaan käyttävät nimisarakkeen ja arvon välissä
-    // olevan tyhjän tilan. min-width estää nimeä venyttämästä ruudukkosaraketta,
-    // jolloin arvot pysyvät linjassa. Kapeilla näytöillä rivitys sallitaan alla.
+    // Nimisarake on max-content-levyinen, joten nimi mahtuu aina yhdelle
+    // riville. Väli arvoon tulee tästä, ei ruudukon sarakevälistä.
     white-space: nowrap;
-    min-width: 0;
+    padding-right: @Columns-gutter;
   }
   .OsasuoritusPropertyValue {
     display: block;
     align-content: center;
     min-height: 1.5 * @baseline;
+
+    // Pudotusvalikko ja päivämääräkenttä ovat width: 100%, ja arvosarake
+    // ulottuu rivin loppuun asti, joten ne venyisivät koko taulukon levyisiksi
+    // (mitattuna VST:n arvosana- ja päivämääräkentät 951 px). Vanha
+    // käyttöliittymä rajaa suorituksen kentät 300 pikseliin
+    // (style/opiskeluoikeus.less), joten käytetään samaa rajaa. Tekstikentät
+    // jätetään ennalleen: ne mitoittavat itsensä eivätkä veny sarakkeen mukana.
+    // DateEditin oma juuri on inline-label, jolle max-width ei päde, joten
+    // raja asetetaan sen sisällä olevaan flex-laatikkoon.
+    .Select,
+    .DateEdit__field {
+      max-width: @Osasuoritus-kentta-max-leveys;
+    }
   }
 
   // Sisäkkäiset Column-elementit perivät Columns.less:n 2.5 * @baseline
@@ -38,17 +122,27 @@
 
 // Laajennetun osasuorituksen ominaisuusrivit (Pakollinen, Arviointi,
 // Tunnustettu, ...) ovat 18 px korkeita ja kiinni toisissaan, jolloin näkymä on
-// liian tiivis. Erotellaan rivit toisistaan vain ammatillisessa (luokan lisää
-// AmmatillinenTyyliContext), jotta muut koulutusmuodot eivät muutu. Väli tulee
-// riviväliin eikä riviin itseensä, joten monirivisten kenttien korkeus säilyy.
-.OsasuoritusProperty--ammatillinen + .OsasuoritusProperty--ammatillinen {
+// liian tiivis. Väli tulee riviväliin eikä riviin itseensä, joten monirivisten
+// kenttien korkeus säilyy.
+.OsasuoritusProperty + .OsasuoritusProperty {
   margin-top: (@baseline / 2);
 }
 
-// Kapeilla näytöillä (esim. kansalaisen mobiilinäkymä) nimisarake on niin kapea,
-// että rivittymätön pitkä nimi menisi arvon päälle. Sallitaan silloin rivitys.
+// Kapeilla näytöillä (esim. kansalaisen mobiilinäkymä) max-content-nimisarake
+// veisi liikaa tilaa, joten nimi ja arvo pinotaan allekkain kuten muissakin
+// v2-taulukoissa.
 @media screen and (max-width: @Columns-phone-breakpoint) {
-  .OsasuoritusProperty .OsasuoritusPropertyLabel {
-    white-space: normal;
+  .OsasuoritusProperties {
+    grid-template-columns: 1fr;
+
+    .OsasuoritusProperty {
+      grid-template-columns: 1fr;
+
+      .OsasuoritusPropertyLabel,
+      .OsasuoritusPropertyValue {
+        grid-column: 1 / -1;
+        white-space: normal;
+      }
+    }
   }
 }

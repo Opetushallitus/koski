@@ -1316,29 +1316,24 @@ test.describe('Vapaa sivistystyö', () => {
         const osasuoritus = vstOppijaPage.osasuoritus(0)
         await osasuoritus.clearLaajuus()
 
+        // Tyhjä pakollinen kenttä merkitään punaisella eikä tekstillä, ks.
+        // components-v2/forms/FieldErrors.
         await expect(
-          page.getByTestId(
-            'oo.0.suoritukset.0.osasuoritukset.0.errors'
-          )
-        ).toContainText('Kenttä ei voi olla tyhjä')
+          page.locator('.NumberField__input--error')
+        ).not.toHaveCount(0)
         expect(await vstOppijaPage.saveBtn.isDisabled()).toBe(true)
 
         await vstOppijaPage.cancelEdit()
       })
 
-      test('Laajuus 0 estää tallennuksen', async ({
-        page,
-        vstOppijaPage
-      }) => {
+      test('Laajuus 0 estää tallennuksen', async ({ page, vstOppijaPage }) => {
         const osasuoritus = vstOppijaPage.osasuoritus(0)
         await osasuoritus.setLaajuus(0)
 
         expect(await osasuoritus.laajuus()).toEqual('0')
 
         await expect(
-          page.getByTestId(
-            'oo.0.suoritukset.0.osasuoritukset.0.errors'
-          )
+          page.getByTestId('oo.0.suoritukset.0.osasuoritukset.0.errors')
         ).toContainText('Arvon pitää olla enemmän kuin 0')
         expect(await vstOppijaPage.saveBtn.isDisabled()).toBe(true)
 

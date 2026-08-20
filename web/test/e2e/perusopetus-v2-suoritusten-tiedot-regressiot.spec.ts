@@ -269,6 +269,13 @@ test.describe('Perusopetuksen uusi käyttöliittymä: suoritusten tiedot regress
     await page
       .getByTestId('oo.0.suoritukset.0.omanÄidinkielenOpinnot.lisää')
       .click()
+
+    // Modaali ei saa aueta arvosanalista auki, vaan lomakkeen muut kentät
+    // pitää näkyä
+    await expect(
+      page.getByTestId('oo.0.suoritukset.0.modal.arvosana.options')
+    ).toHaveCount(0)
+
     await page.getByTestId('oo.0.suoritukset.0.modal.arvosana.input').click()
 
     const arvosanaLabels = await page
@@ -278,8 +285,18 @@ test.describe('Perusopetuksen uusi käyttöliittymä: suoritusten tiedot regress
 
     expect(arvosanaLabels).toHaveLength(10)
     expect(new Set(arvosanaLabels).size).toBe(arvosanaLabels.length)
-    expect(arvosanaLabels).toContain('10 erinomainen')
-    expect(arvosanaLabels).toContain('S hyväksytty')
+    expect(arvosanaLabels).toEqual([
+      '4',
+      '5',
+      '6',
+      '7',
+      '8',
+      '9',
+      '10',
+      'H',
+      'O',
+      'S'
+    ])
   })
 
   test.describe('Organisaatiovalitsin pääkäyttäjänä', () => {

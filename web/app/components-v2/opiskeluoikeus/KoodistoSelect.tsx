@@ -9,7 +9,8 @@ import {
   mapOptionLabels,
   OptionList,
   Select,
-  SelectOption
+  SelectOption,
+  sortOptions
 } from '../controls/Select'
 import { TestIdLayer } from '../../appstate/useTestId'
 import * as A from 'fp-ts/Array'
@@ -31,13 +32,24 @@ export type KoodistoSelectProps<T extends string> = CommonProps<{
   inlineOptions?: boolean
   format?: (k: Koodistokoodiviite) => string
   hasErrors?: boolean
+  /**
+   * Järjestää vaihtoehdot näyttönimen mukaan (numerot luonnollisessa
+   * järjestyksessä). Oletuksena vaihtoehdot ovat koodiston omassa
+   * järjestyksessä.
+   */
+  sort?: boolean
+  /**
+   * Estää modaalia kohdistamasta tähän kenttään automaattisesti. Ilman tätä
+   * modaalin ensimmäinen Select avaa vaihtoehtolistansa heti auetessaan.
+   */
+  skipAutoFocus?: boolean
 }>
 
 export function KoodistoSelect<T extends string>(
   props: KoodistoSelectProps<T>
 ) {
   const koodisto = useKoodisto(props.koodistoUri, props.koodiarvot)
-  const { filter, zeroValueOption, format } = props
+  const { filter, zeroValueOption, format, sort } = props
 
   const options: OptionList<Koodistokoodiviite<T>> = useMemo(() => {
     // Koodistoa vielä ladataan: kerrotaan siitä Selectille, jotta se näyttää
@@ -57,7 +69,8 @@ export function KoodistoSelect<T extends string>(
       A.filter((entry) => (filter ? filter(entry.value) : true)),
       mapOptionLabels((option) =>
         option.value && format ? format(option.value) : option.label
-      )
+      ),
+      (opts) => (sort ? sortOptions(opts) : opts)
     )
 
     const zeroValue = {
@@ -67,7 +80,7 @@ export function KoodistoSelect<T extends string>(
     }
 
     return zeroValueOption ? [zeroValue, ...koodistoOptions] : koodistoOptions
-  }, [koodisto, zeroValueOption, filter, format])
+  }, [koodisto, zeroValueOption, filter, format, sort])
 
   const { onSelect } = props
   const onChangeCB = useCallback(
@@ -87,6 +100,7 @@ export function KoodistoSelect<T extends string>(
       testId={props.testId}
       value={props.value}
       hasErrors={props.hasErrors}
+      skipAutoFocus={props.skipAutoFocus}
     />
   )
 }

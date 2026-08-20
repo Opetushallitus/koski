@@ -10,6 +10,7 @@ import { FlatButton } from '../components-v2/controls/FlatButton'
 import { RaisedButton } from '../components-v2/controls/RaisedButton'
 import { LaajuusEdit } from '../components-v2/opiskeluoikeus/LaajuusField'
 import { KoodistoSelect } from '../components-v2/opiskeluoikeus/KoodistoSelect'
+import { koodiarvoOnly } from '../components-v2/opiskeluoikeus/ArvosanaField'
 import { Spacer } from '../components-v2/layout/Spacer'
 import { t } from '../i18n/i18n'
 import { Koodistokoodiviite } from '../types/fi/oph/koski/schema/Koodistokoodiviite'
@@ -48,7 +49,11 @@ export const UusiTäydentäväOmanÄidinkielenOpinnotModal: React.FC<
           {t('Arvosana')}
           <KoodistoSelect
             koodistoUri="arviointiasteikkoyleissivistava"
-            format={(k) => k.koodiarvo + ' ' + t(k.nimi)}
+            format={koodiarvoOnly}
+            sort
+            // Ilman tätä modaali kohdistaa ensimmäiseen kenttään ja
+            // arvosanalista aukeaa lomakkeen päälle heti modaalin auetessa.
+            skipAutoFocus
             onSelect={(k) => k && setArvosana(k as Arvosana)}
             value={arvosana?.koodiarvo}
             testId="arvosana"

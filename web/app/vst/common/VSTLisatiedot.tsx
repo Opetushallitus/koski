@@ -32,9 +32,8 @@ export const VSTLisatiedot: React.FC<VSTLisatiedotProps> = ({ form }) => {
   )
 
   const addKoulutuksenMaksuttomuus = useCallback(() => {
-    const currentDate = new Date()
     const newMaksuttomuus = Maksuttomuus({
-      alku: `${currentDate.getFullYear()}-01-01`,
+      alku: '',
       maksuton: false
     })
     form.updateAt(lisatiedotPath, (lisatiedot) => {
@@ -51,10 +50,9 @@ export const VSTLisatiedot: React.FC<VSTLisatiedotProps> = ({ form }) => {
   }, [form, lisatiedotPath, maksuttomuus])
 
   const addOikeuttaMaksuttomuuteenPidennetty = useCallback(() => {
-    const currentDate = new Date()
     const newOikeuttaMaksuttomuuteen = OikeuttaMaksuttomuuteenPidennetty({
-      alku: `${currentDate.getFullYear()}-01-01`,
-      loppu: `${currentDate.getFullYear()}-12-30`
+      alku: '',
+      loppu: ''
     })
     form.updateAt(lisatiedotPath, (lisatiedot) => {
       if (lisatiedot === undefined) {

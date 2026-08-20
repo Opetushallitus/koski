@@ -3,7 +3,12 @@ function AddOppijaPage() {
     return S('form.uusi-oppija, .UusiOpiskeluoikeusDialog')
   }
   function button() {
-    return form().find('button')
+    // Dialogin omat painikkeet, ei widgettien sisäisiä. jQueryn .is(':disabled')
+    // on tosi jos YKSIKIN joukon alkio täsmää, joten esim. Selectin
+    // avausnuoli - joka on disabloitu kun valikossa ei ole vaihtoehtoja -
+    // saisi isEnabled():n palauttamaan pysyvästi false ja lähetysnappia
+    // odottavat testit jumiin.
+    return form().find('button').not('.Select__toggle')
   }
   function modalButton() {
     return form().find('button.vahvista, .RaisedButton')

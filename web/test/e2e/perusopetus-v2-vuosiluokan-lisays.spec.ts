@@ -410,6 +410,41 @@ test.describe('Perusopetuksen uusi käyttöliittymä: vuosiluokan suorituksen li
     await expect(tunnisteInput).toHaveValue(/2\. vuosiluokka/)
   })
 
+  test('Toimipistevalikko merkitsee lakkautetut organisaatiot', async ({
+    page,
+    oppijaPage,
+    fixtures
+  }) => {
+    await fixtures.reset()
+    const oppija = await fixtures.putOppija(tyhjäTeroPerusopetus())
+    await oppijaPage.goto(v2Url(oppija.henkilö.oid))
+
+    await page.getByTestId('oo.0.opiskeluoikeus.edit').click()
+    await addNewTab(page).click()
+
+    const toimipisteInput = page.getByTestId(
+      'oo.0.modal.uusiVuosiluokanSuoritus.toimipiste.input'
+    )
+    const options = page.getByTestId(
+      'oo.0.modal.uusiVuosiluokanSuoritus.toimipiste.options'
+    )
+
+    // Aapajoen koulu on mockdatassa lakkautettu
+    await toimipisteInput.fill('Aapajoen koulu')
+    await expect(
+      options.locator('.LakkautettuOrganisaatio', {
+        hasText: 'Aapajoen koulu (lakkautettu)'
+      })
+    ).toBeVisible()
+
+    // Aktiivista organisaatiota ei merkitä
+    await toimipisteInput.fill('Jyväskylän normaalikoulu')
+    await expect(
+      options.getByText('Jyväskylän normaalikoulu', { exact: true })
+    ).toBeVisible()
+    await expect(options.locator('.LakkautettuOrganisaatio')).toHaveCount(0)
+  })
+
   test('Peräkkäiset lisäykset aktivoivat aina juuri lisätyn vuosiluokan tabin', async ({
     page,
     oppijaPage,

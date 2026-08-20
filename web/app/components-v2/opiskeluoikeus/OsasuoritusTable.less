@@ -50,6 +50,30 @@
       width: 100%;
     }
   }
+
+  // Virheilmoitus näytetään rivin levyisenä omalla rivillään vanhan
+  // käyttöliittymän tapaan. Sarakkeet ovat kapeita (arvosanasarake ~140px),
+  // joten sarakkeen sisällä teksti rivittyisi useille riveille ja kasvattaisi
+  // solun korkeutta — jolloin flex-end-kohdistus siirtäisi rivin muut
+  // syöttökentät pois linjasta. Absoluuttinen sijoitus pitää kentät linjassa
+  // ja rivin padding varaa tekstille tilan.
+  //
+  // Huom: jos samalla rivillä on virhe useammassa kentässä, ilmoitukset
+  // menevät päällekkäin. Käytännössä osasuorituksella on kerrallaan yksi.
+  &:has(.OsasuoritusRow__dataColumn .FieldErrors) {
+    position: relative;
+    padding-bottom: 2 * @baseline;
+  }
+
+  .OsasuoritusRow__dataColumn .FieldErrors {
+    position: absolute;
+    left: 0;
+    right: 0;
+    // Sama väli tekstin ala- ja yläpuolella: rivin padding (2 * @baseline) on
+    // tekstin rivikorkeus (@baseline) + puolikas väli molemmin puolin.
+    bottom: 0.5 * @baseline;
+    margin-bottom: 0;
+  }
 }
 
 .OsasuoritusRow__cellContent {

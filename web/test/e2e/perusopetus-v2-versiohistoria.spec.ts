@@ -61,7 +61,7 @@ test.describe('Perusopetuksen uusi käyttöliittymä: versiohistoria', () => {
       .click()
     await page
       .locator('.Select__optionLabel')
-      .filter({ hasText: /^erinomainen$/ })
+      .filter({ hasText: /^10$/ })
       .first()
       .click()
     await page.getByTestId('oo.0.opiskeluoikeus.save').click()
@@ -93,7 +93,8 @@ test.describe('Perusopetuksen uusi käyttöliittymä: versiohistoria', () => {
     })
     const notReloaded = () =>
       page.evaluate(
-        () => (window as unknown as { __noReload?: boolean }).__noReload === true
+        () =>
+          (window as unknown as { __noReload?: boolean }).__noReload === true
       )
 
     const button = page.getByTestId('oo.0.opiskeluoikeus.versiohistoria.button')
@@ -110,9 +111,7 @@ test.describe('Perusopetuksen uusi käyttöliittymä: versiohistoria', () => {
     // Suljetaan versiolista, jottei se jää muokkauspalkin poistumispainikkeen
     // päälle, ja poistutaan versiohistoriasta muokkauspalkin painikkeesta.
     await button.click()
-    await page
-      .getByRole('button', { name: 'Poistu versiohistoriasta' })
-      .click()
+    await page.getByRole('button', { name: 'Poistu versiohistoriasta' }).click()
     await expect(button).toContainText('Versiohistoria')
     await expect(page).not.toHaveURL(/versionumero=/)
     await expect(page.getByTestId('oo.0.opiskeluoikeus.edit')).toBeVisible()
@@ -133,7 +132,9 @@ test.describe('Perusopetuksen uusi käyttöliittymä: versiohistoria', () => {
     // Muokkaa todistuksella näkyviä lisätietoja ja tallenna -> syntyy uusi versio
     await page.getByTestId('oo.0.opiskeluoikeus.edit').click()
     await page
-      .getByTestId('oo.0.suoritukset.1.todistuksellaNäkyvätLisätiedot.edit.input')
+      .getByTestId(
+        'oo.0.suoritukset.1.todistuksellaNäkyvätLisätiedot.edit.input'
+      )
       .fill(marker)
     await page.getByTestId('oo.0.opiskeluoikeus.save').click()
     await expect(page.getByTestId('oo.0.opiskeluoikeus.edit')).toBeVisible({
@@ -157,9 +158,7 @@ test.describe('Perusopetuksen uusi käyttöliittymä: versiohistoria', () => {
     // testId-solmua), jottei poistumisen jälkeinen oletusvälilehden valinta
     // vaikuta siihen.
     await page.getByTestId('oo.0.opiskeluoikeus.versiohistoria.button').click()
-    await page
-      .getByRole('button', { name: 'Poistu versiohistoriasta' })
-      .click()
+    await page.getByRole('button', { name: 'Poistu versiohistoriasta' }).click()
     await expect(page).not.toHaveURL(/versionumero=/)
     await expect(page.getByText(marker)).toBeVisible({ timeout: 15000 })
   })
