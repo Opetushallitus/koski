@@ -1,0 +1,41 @@
+name: Report Slack failure
+description: Report a workflow failure to Slack using the standard Koski notification layout
+
+inputs:
+  prefix:
+    description: Optional notification category shown before the failure status
+    required: false
+    default: ""
+  title:
+    description: Failure notification title
+    required: true
+  webhook:
+    description: Slack incoming webhook URL
+    required: true
+
+runs:
+  using: composite
+  steps:
+    - name: Get short commit SHA
+      id: commit
+      shell: bash
+      env:
+        COMMIT_SHA: ${{ github.sha }}
+      run: printf 'short_sha=%.7s\n' "$COMMIT_SHA" >> "$GITHUB_OUTPUT"
+
+    - name: Report failure to Slack
+      uses: slackapi/slack-github-action@dcb1066f776dd043e64d0e8ba94ca15cc7e1875d # v4.0.0
+      with:
+        webhook: ${{ inputs.webhook }}
+        webhook-type: incoming-webhook
+        payload: |
+          {
+            "text": "${{ inputs.prefix != '' && format('{0} · ', inputs.prefix) || '' }}:x: ${{ inputs.title }}",
+            "blocks": [
+              {"type": "section", "text": {"type": "mrkdwn", "text": "*${{ inputs.prefix != '' && format('{0} · ', inputs.prefix) || '' }}:x: ${{ inputs.title }}*"}},
+              {"type": "context", "elements": [
+                {"type": "mrkdwn", "text": "*Repo:* <${{ github.server_url }}/${{ github.repository }}|${{ github.repository }}> | *Workflow:* ${{ github.workflow }}\n*Branch:* <${{ github.server_url }}/${{ github.repository }}/tree/${{ github.ref_name }}|${{ github.ref_name }}> | *Commit:* <${{ github.server_url }}/${{ github.repository }}/commit/${{ github.sha }}|${{ steps.commit.outputs.short_sha }}>\n*<${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|View Run>*"}
+              ]},
+              {"type": "divider"}
+            ]
+          }
