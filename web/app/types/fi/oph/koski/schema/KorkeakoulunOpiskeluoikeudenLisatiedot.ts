@@ -1,10 +1,12 @@
 import { SiirtoOpiskelija } from './SiirtoOpiskelija'
+import { KorkeakoulunKoulutusala } from './KorkeakoulunKoulutusala'
 import { KorkeakoulunOpiskeluoikeudenLukuvuosimaksu } from './KorkeakoulunOpiskeluoikeudenLukuvuosimaksu'
 import { Oppilaitos } from './Oppilaitos'
 import { Laajuus } from './Laajuus'
 import { KoulutuskuntaJakso } from './KoulutuskuntaJakso'
 import { Koodistokoodiviite } from './Koodistokoodiviite'
 import { LocalizedString } from './LocalizedString'
+import { LiittyväOpiskeluoikeus } from './LiittyvaOpiskeluoikeus'
 import { Lukukausi_Ilmoittautuminen } from './LukukausiIlmoittautuminen'
 import { Liikkuvuusjakso } from './Liikkuvuusjakso'
 import { Aikajakso } from './Aikajakso'
@@ -18,6 +20,7 @@ import { RahoituslähdeJakso } from './RahoituslahdeJakso'
 export type KorkeakoulunOpiskeluoikeudenLisätiedot = {
   $class: 'fi.oph.koski.schema.KorkeakoulunOpiskeluoikeudenLisätiedot'
   siirtoOpiskelija?: SiirtoOpiskelija
+  koulutusala?: KorkeakoulunKoulutusala
   maksettavatLukuvuosimaksut?: Array<KorkeakoulunOpiskeluoikeudenLukuvuosimaksu>
   järjestäväOrganisaatio?: Oppilaitos
   vaadittuLaajuus?: Laajuus
@@ -25,6 +28,7 @@ export type KorkeakoulunOpiskeluoikeudenLisätiedot = {
   opettajanPedagogisetOpinnot?: Array<
     Koodistokoodiviite<'virtapatevyys', string>
   >
+  liittyvätOpiskeluoikeudet?: Array<LiittyväOpiskeluoikeus>
   lukukausiIlmoittautuminen?: Lukukausi_Ilmoittautuminen
   liikkuvuusjaksot?: Array<Liikkuvuusjakso>
   opetettavanAineenOpinnot?: Array<Koodistokoodiviite<'virtapatevyys', string>>
@@ -39,6 +43,7 @@ export type KorkeakoulunOpiskeluoikeudenLisätiedot = {
 export const KorkeakoulunOpiskeluoikeudenLisätiedot = (
   o: {
     siirtoOpiskelija?: SiirtoOpiskelija
+    koulutusala?: KorkeakoulunKoulutusala
     maksettavatLukuvuosimaksut?: Array<KorkeakoulunOpiskeluoikeudenLukuvuosimaksu>
     järjestäväOrganisaatio?: Oppilaitos
     vaadittuLaajuus?: Laajuus
@@ -46,6 +51,7 @@ export const KorkeakoulunOpiskeluoikeudenLisätiedot = (
     opettajanPedagogisetOpinnot?: Array<
       Koodistokoodiviite<'virtapatevyys', string>
     >
+    liittyvätOpiskeluoikeudet?: Array<LiittyväOpiskeluoikeus>
     lukukausiIlmoittautuminen?: Lukukausi_Ilmoittautuminen
     liikkuvuusjaksot?: Array<Liikkuvuusjakso>
     opetettavanAineenOpinnot?: Array<

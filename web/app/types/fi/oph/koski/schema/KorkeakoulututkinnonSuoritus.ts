@@ -5,6 +5,7 @@ import { Korkeakoulututkinto } from './Korkeakoulututkinto'
 import { Oppilaitos } from './Oppilaitos'
 import { KorkeakoulunOpintojaksonSuoritus } from './KorkeakoulunOpintojaksonSuoritus'
 import { Päivämäärävahvistus } from './Paivamaaravahvistus'
+import { KorkeakoulunKoulutusala } from './KorkeakoulunKoulutusala'
 
 /**
  * KorkeakoulututkinnonSuoritus
@@ -17,12 +18,13 @@ export type KorkeakoulututkinnonSuoritus = {
   tyyppi: Koodistokoodiviite<'suorituksentyyppi', 'korkeakoulututkinto'>
   tila?: Koodistokoodiviite<'suorituksentila', string>
   hyväksilukupäivä?: string
-  suorituskieli?: Koodistokoodiviite<'kieli', string>
   lisätieto?: LocalizedString
   koulutusmoduuli: Korkeakoulututkinto
   toimipiste: Oppilaitos
   osasuoritukset?: Array<KorkeakoulunOpintojaksonSuoritus>
   vahvistus?: Päivämäärävahvistus
+  suorituskieli?: Koodistokoodiviite<'kieli', string>
+  koulutusala?: KorkeakoulunKoulutusala
 }
 
 export const KorkeakoulututkinnonSuoritus = (o: {
@@ -30,12 +32,13 @@ export const KorkeakoulututkinnonSuoritus = (o: {
   tyyppi?: Koodistokoodiviite<'suorituksentyyppi', 'korkeakoulututkinto'>
   tila?: Koodistokoodiviite<'suorituksentila', string>
   hyväksilukupäivä?: string
-  suorituskieli?: Koodistokoodiviite<'kieli', string>
   lisätieto?: LocalizedString
   koulutusmoduuli: Korkeakoulututkinto
   toimipiste: Oppilaitos
   osasuoritukset?: Array<KorkeakoulunOpintojaksonSuoritus>
   vahvistus?: Päivämäärävahvistus
+  suorituskieli?: Koodistokoodiviite<'kieli', string>
+  koulutusala?: KorkeakoulunKoulutusala
 }): KorkeakoulututkinnonSuoritus => ({
   tyyppi: Koodistokoodiviite({
     koodiarvo: 'korkeakoulututkinto',
