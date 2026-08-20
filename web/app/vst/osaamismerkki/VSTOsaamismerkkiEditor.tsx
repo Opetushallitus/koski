@@ -4,7 +4,7 @@ import { VSTPäätasonSuoritusEditorProps } from '../common/types'
 import { VapaanSivistystyönOsaamismerkinSuoritus } from '../../types/fi/oph/koski/schema/VapaanSivistystyonOsaamismerkinSuoritus'
 import { EditorContainer } from '../../components-v2/containers/EditorContainer'
 import { arviointienPuolestaVahvistettavissa } from '../common/arviointi'
-import { finnish } from '../../i18n/i18n'
+import { localize, t } from '../../i18n/i18n'
 import { UusiOpiskeluoikeusjakso } from '../../components-v2/opiskeluoikeus/UusiOpiskeluoikeudenTilaModal'
 import { VapaanSivistystyönOpiskeluoikeusjakso } from '../../types/fi/oph/koski/schema/VapaanSivistystyonOpiskeluoikeusjakso'
 import { VapaanSivistystyönOsaamismerkinOpiskeluoikeusjakso } from '../../types/fi/oph/koski/schema/VapaanSivistystyonOsaamismerkinOpiskeluoikeusjakso'
@@ -46,7 +46,7 @@ export const VSTOsaamismerkkiEditor: React.FC<VSTOsaamismerkkiEditor> = ({
         form={form}
         invalidatable={invalidatable}
         oppijaOid={oppijaOid}
-        suorituksenNimi={() => finnish('Vapaan sivistystyön osaamismerkki')}
+        suorituksenNimi={() => localize(t('Vapaan sivistystyön osaamismerkki'))}
         suorituksetVahvistettu={arviointienPuolestaVahvistettavissa(form.state)}
         createOpiskeluoikeusjakso={createVstOsaamismerkkiOpiskeluoikeusjakso}
         suoritusIndex={päätasonSuoritus.index}

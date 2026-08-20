@@ -76,7 +76,7 @@ export const TunnustusEdit = <
             <MultilineTextEdit
               value={value}
               onChange={onChange}
-              placeholder="Selite"
+              placeholder={t('Selite')}
               testId="selite"
             />
           </Removable>
@@ -113,7 +113,7 @@ export const OsaamisenTunnustusEdit = <T extends OsaamisenTunnustaminen>(
             <MultilineTextEdit
               value={value}
               onChange={onChange}
-              placeholder="Selite"
+              placeholder={t('Selite')}
               testId="selite"
             />
             <BooleanEdit

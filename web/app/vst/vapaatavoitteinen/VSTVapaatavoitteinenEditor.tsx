@@ -8,7 +8,7 @@ import { PäätasonSuorituksenSuostumuksenPeruminen } from '../../components-v2/
 import { OsasuoritusTable } from '../../components-v2/opiskeluoikeus/OsasuoritusTable'
 import { SuorituksenVahvistusField } from '../../components-v2/opiskeluoikeus/SuorituksenVahvistus'
 import { UusiOpiskeluoikeusjakso } from '../../components-v2/opiskeluoikeus/UusiOpiskeluoikeudenTilaModal'
-import { finnish } from '../../i18n/i18n'
+import { localize, t } from '../../i18n/i18n'
 import { VapaanSivistystyönOpiskeluoikeus } from '../../types/fi/oph/koski/schema/VapaanSivistystyonOpiskeluoikeus'
 import { VapaanSivistystyönOpiskeluoikeusjakso } from '../../types/fi/oph/koski/schema/VapaanSivistystyonOpiskeluoikeusjakso'
 import { VapaanSivistystyönVapaatavoitteisenKoulutuksenOpiskeluoikeusjakso } from '../../types/fi/oph/koski/schema/VapaanSivistystyonVapaatavoitteisenKoulutuksenOpiskeluoikeusjakso'
@@ -49,7 +49,7 @@ export const VSTVapaatavoitteinenEditor: React.FC<
         form={form}
         invalidatable={invalidatable}
         oppijaOid={oppijaOid}
-        suorituksenNimi={() => finnish('Vapaan sivistystyön koulutus')}
+        suorituksenNimi={() => localize(t('Vapaan sivistystyön koulutus'))}
         suorituksetVahvistettu={arviointienPuolestaVahvistettavissa(form.state)}
         createOpiskeluoikeusjakso={
           createVstVapaatavoitteinenOpiskeluoikeusjakso

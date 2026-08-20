@@ -6,7 +6,7 @@ import { Spacer } from '../../components-v2/layout/Spacer'
 import { OsasuoritusTable } from '../../components-v2/opiskeluoikeus/OsasuoritusTable'
 import { SuorituksenVahvistusField } from '../../components-v2/opiskeluoikeus/SuorituksenVahvistus'
 import { UusiOpiskeluoikeusjakso } from '../../components-v2/opiskeluoikeus/UusiOpiskeluoikeudenTilaModal'
-import { finnish } from '../../i18n/i18n'
+import { localize, t } from '../../i18n/i18n'
 import { OppivelvollisilleSuunnattuVapaanSivistystyönKoulutuksenSuoritus } from '../../types/fi/oph/koski/schema/OppivelvollisilleSuunnattuVapaanSivistystyonKoulutuksenSuoritus'
 import { OppivelvollisilleSuunnattuVapaanSivistystyönOpiskeluoikeusjakso } from '../../types/fi/oph/koski/schema/OppivelvollisilleSuunnattuVapaanSivistystyonOpiskeluoikeusjakso'
 import { VapaanSivistystyönOpiskeluoikeus } from '../../types/fi/oph/koski/schema/VapaanSivistystyonOpiskeluoikeus'
@@ -46,8 +46,8 @@ export const KOPSEditor: React.FC<KOPSEditorProps> = ({
         invalidatable={invalidatable}
         oppijaOid={oppijaOid}
         suorituksenNimi={() =>
-          finnish(
-            'Kansanopistojen vapaan sivistystyön koulutus oppivelvollisille'
+          localize(
+            t('Kansanopistojen vapaan sivistystyön koulutus oppivelvollisille')
           )
         }
         suorituksetVahvistettu={arviointienPuolestaVahvistettavissa(form.state)}

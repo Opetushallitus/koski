@@ -101,7 +101,9 @@ export const YoTodistus: React.FC<YoTodistusProps> = (props) => {
           blockingErrorText && 'Todistus--notAvailable'
         ])}
       >
-        <span className="Todistus__title">{'Ylioppilastodistus'}</span>
+        <span className="Todistus__title">
+          <Trans>{'Ylioppilastodistus'}</Trans>
+        </span>
         {blockingErrorText ? (
           <TestIdText id="error">
             <TextWithLinks className="Todistus__blocked">

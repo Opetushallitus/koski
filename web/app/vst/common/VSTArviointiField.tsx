@@ -1,5 +1,6 @@
 import React from 'react'
 import { CommonProps } from '../../components-v2/CommonProps'
+import { t } from '../../i18n/i18n'
 import { DateEdit, DateView } from '../../components-v2/controls/DateField'
 import {
   FieldEditorProps,
@@ -48,7 +49,7 @@ export const VSTArviointiEdit = <T extends VSTArviointi>(
   props: VSTArviointiEditProps<T>
 ) => {
   if (!isVSTSuoritusArvioinnilla(props.osasuoritus)) {
-    return <div>{'Ei arviointia'}</div>
+    return <div>{t('Ei arviointia')}</div>
   }
 
   const startRow = (props.index || 0) * 2
