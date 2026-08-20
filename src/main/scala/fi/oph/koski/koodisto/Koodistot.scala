@@ -151,6 +151,7 @@ object Koodistot {
     KoodistoAsetus("eqf"),
     KoodistoAsetus("nqf"),
     KoodistoAsetus("koulutus", koodistoVersio = Some(11)),
+    KoodistoAsetus("koulutusalaoph2002"),
     KoodistoAsetus("koulutustyyppi"),
     KoodistoAsetus("kunta"),
     // Huom: Virran liikkuvuuskoodistoista vain tämä on ilman virta-etuliitettä
@@ -158,6 +159,8 @@ object Koodistot {
     KoodistoAsetus("lukionkurssit"),
     KoodistoAsetus("maatjavaltiot1"),
     KoodistoAsetus("maatjavaltiot2"),
+    KoodistoAsetus("okmohjauksenala"),
+    KoodistoAsetus("opintoalaoph1995"),
     KoodistoAsetus("opintojenlaajuusyksikko"),
     KoodistoAsetus("oppilaitosnumero", vaadiSuomenkielinenNimi = false, vaadiRuotsinkielinenNimi = false),
     KoodistoAsetus("oppilaitostyyppi"),
