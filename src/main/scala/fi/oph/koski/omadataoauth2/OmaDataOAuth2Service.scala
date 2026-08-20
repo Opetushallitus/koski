@@ -208,7 +208,8 @@ class OmaDataOAuth2Service(oauth2Repository: OmaDataOAuth2Repository, val applic
                 koulutuksenAlkamisvuosi = hakutoive.koulutuksenAlkamisvuosi,
                 valinnanTila = hakutoive.valinnanTila.map(t => validateTila(t.toLowerCase.replace("_", ""), "omadatavalinnantila")),
                 vastaanotonTila = hakutoive.vastaanotonTila.map(t => validateTila(t.toLowerCase.replace("_", ""), "omadatavastaanotontila")),
-                ilmoittautumisenTila = hakutoive.ilmoittautumisenTila.map(t => validateTila(t.toLowerCase.replace("_", ""), "omadatailmoittautumisentila"))
+                ilmoittautumisenTila = hakutoive.ilmoittautumisenTila.map(t => validateTila(t.toLowerCase.replace("_", ""), "omadatailmoittautumisentila")),
+                johtaaTutkintoon = hakutoive.johtaaTutkintoon
               )
             }
           )

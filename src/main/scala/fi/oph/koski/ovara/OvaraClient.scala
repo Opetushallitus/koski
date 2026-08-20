@@ -65,7 +65,8 @@ object MockOvaraClient extends OvaraClient {
                 koulutuksenAlkamisvuosi = Some("2024"),
                 valinnanTila = Some("HYVAKSYTTY"),
                 vastaanotonTila = Some("VASTAANOTTANUT_SITOVASTI"),
-                ilmoittautumisenTila = Some("LASNA")
+                ilmoittautumisenTila = Some("LASNA"),
+                johtaaTutkintoon = Some(true)
               )
             )
           )
@@ -100,7 +101,8 @@ object MockOvaraClient extends OvaraClient {
                 koulutuksenAlkamisvuosi = None,
                 valinnanTila = None,
                 vastaanotonTila = None,
-                ilmoittautumisenTila = None
+                ilmoittautumisenTila = None,
+                johtaaTutkintoon = Some(false)
               )
             )
           )
@@ -134,7 +136,8 @@ object MockOvaraClient extends OvaraClient {
                 koulutuksenAlkamisvuosi = None,
                 valinnanTila = Some("TUNTEMATON_TILA"),
                 vastaanotonTila = None,
-                ilmoittautumisenTila = None
+                ilmoittautumisenTila = None,
+                johtaaTutkintoon = None
               )
             )
           )
@@ -168,7 +171,8 @@ object MockOvaraClient extends OvaraClient {
                 koulutuksenAlkamisvuosi = None,
                 valinnanTila = Some("HYVAKSYTTY"),
                 vastaanotonTila = None,
-                ilmoittautumisenTila = None
+                ilmoittautumisenTila = None,
+                johtaaTutkintoon = Some(true)
               )
             )
           )
