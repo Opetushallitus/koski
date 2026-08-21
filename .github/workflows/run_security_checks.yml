@@ -1,5 +1,8 @@
 name: Run security tests
 on:
+  push:
+    branches:
+      - "TOR-2707-paivita-github-actionit-pois-node-20"
   schedule:
     - cron: "0 0 * * *"
   workflow_dispatch:
@@ -26,7 +29,16 @@ jobs:
         run: pnpm install --recursive $PNPM_FROZEN_FLAG
         shell: bash
 
+      - name: Create vulnerable npm lockfile for Slack notification test
+        if: github.event_name == 'push'
+        run: |
+          mkdir -p trivy-slack-preview
+          cd trivy-slack-preview
+          npm init --yes
+          npm install --package-lock-only --ignore-scripts --save-exact lodash@4.17.15
+
       - name: Run Trivy on Koski
+        id: trivy_json
         uses: aquasecurity/trivy-action@ed142fd0673e97e23eac54620cfb913e5ce36c25 # v0.36.0
         with:
           scan-type: fs
@@ -36,13 +48,17 @@ jobs:
           trivyignores: .trivyignore
           format: json
           output: trivy-report.json
-          severity: 'CRITICAL,HIGH'
+          severity: ${{ github.event_name == 'push' && 'UNKNOWN,LOW,MEDIUM,HIGH,CRITICAL' || 'CRITICAL,HIGH' }}
           skip-dirs: 'src/main/resources/mockdata,src/test,target,omadata-oauth2-sample'
 
       - name: Summarize new CVEs
-        if: failure()
+        if: failure() && steps.trivy_json.outcome == 'failure' && hashFiles('trivy-report.json') != ''
         id: summarize
         run: |
+          if [ "${{ github.event_name }}" = "push" ]; then
+            jq -e '[.Results[]?.Vulnerabilities[]?] | length > 0' trivy-report.json
+          fi
+
           # Jokaisesta targetista tulostetaan otsikko ja sen alle uniikit
           # haavoittuvuusrivit. unique poistaa duplikaatit, joita syntyy kun sama
           # paketti löytyy monesta PkgPathista (esim. hoistattuna useaan workspaceen).
@@ -75,7 +91,7 @@ jobs:
     name: Notify Slack
     runs-on: ubuntu-24.04
     needs: [scan]
-    if: failure()
+    if: ${{ failure() && (github.event_name != 'push' || needs.scan.outputs.cves != '') }}
     steps:
       - name: Get short commit SHA
         id: commit
@@ -88,7 +104,7 @@ jobs:
         env:
           CVES: ${{ needs.scan.outputs.cves }}
         with:
-          webhook: ${{ secrets.SLACK_WEBHOOK_URL_PROD_ALERTS }}
+          webhook: ${{ github.event_name == 'push' && secrets.SLACK_WEBHOOK_URL || secrets.SLACK_WEBHOOK_URL_PROD_ALERTS }}
           webhook-type: incoming-webhook
           # payload-templated sijoittaa {{env.CVES}}:n vasta JSON-parsinnan jälkeen,
           # joten monirivistä CVE-listausta ei tarvitse escapetata käsin.
@@ -97,9 +113,9 @@ jobs:
           payload-templated: true
           payload: |
             {
-              "text": ":rotating_light: Run security tests failed: new vulnerabilities found",
+              "text": "${{ github.event_name == 'push' && '[JUHAHE-TESTAA] ' || '' }}:rotating_light: Run security tests failed: new vulnerabilities found",
               "blocks": [
-                {"type": "section", "text": {"type": "mrkdwn", "text": "*:rotating_light: Run security tests failed*\n\n*New vulnerabilities found* in <${{ github.server_url }}/${{ github.repository }}|${{ github.repository }}>\n\n{{env.CVES}}"}},
+                {"type": "section", "text": {"type": "mrkdwn", "text": "*${{ github.event_name == 'push' && '[JUHAHE-TESTAA] ' || '' }}:rotating_light: Run security tests failed*\n\n*New vulnerabilities found* in <${{ github.server_url }}/${{ github.repository }}|${{ github.repository }}>\n\n{{env.CVES}}"}},
                 {"type": "context", "elements": [
                   {"type": "mrkdwn", "text": "*Repo:* <${{ github.server_url }}/${{ github.repository }}|${{ github.repository }}> | *Workflow:* ${{ github.workflow }}\n*Branch:* <${{ github.server_url }}/${{ github.repository }}/tree/${{ github.ref_name }}|${{ github.ref_name }}> | *Commit:* <${{ github.server_url }}/${{ github.repository }}/commit/${{ github.sha }}|${{ steps.commit.outputs.short_sha }}>\n<${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|See full report in logs>\n<https://trivy.util.yleiskayttoiset.opintopolku.fi/koski.html|See current status (use vpn)>"}
                 ]},
