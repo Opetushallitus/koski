@@ -405,7 +405,7 @@ case class VirtaXMLConverter(oppilaitosRepository: OppilaitosRepository, koodist
   }
 
   private def parseLuokittelu(parentNode: Node, koodistoUri: String): List[Koodistokoodiviite] = (parentNode \ "Luokittelu")
-      .map(_.text).filter(s => s.nonEmpty && s.forall(_.isDigit) && s.toInt > 0).toList
+      .map(_.text).filter(s => s.toIntOption.exists(_ > 0)).toList
       .map(l => koodistoViitePalvelu.validateRequired(koodistoUri, l))
 
   private def parsePatevyys(parentNode: Node, koodistoUri: String): List[Koodistokoodiviite] = (parentNode \ "Patevyys")
@@ -664,8 +664,11 @@ case class VirtaXMLConverter(oppilaitosRepository: OppilaitosRepository, koodist
     opiskeluoikeusNodes: List[Node],
     opiskeluoikeusNode: Node
   ): Option[List[LiittyväOpiskeluoikeus]] = noneIfEmpty(
-    (opiskeluoikeusNode \ "Liittyvyys").toList.map { liittyvyys =>
-      val liittyväAvain = (liittyvyys \ "@liittyvaOpiskeluoikeusAvain").text
+    (opiskeluoikeusNode \ "Liittyvyys").toList
+      .map(liittyvyys => (liittyvyys \ "@liittyvaOpiskeluoikeusAvain").text)
+      // Avaimeton liittyvyys ohitetaan: siitä syntyisi viittaus, joka ei voi osua mihinkään.
+      .filter(_.nonEmpty)
+      .map { liittyväAvain =>
       LiittyväOpiskeluoikeus(
         lähdejärjestelmänId = taaksepäinYhteensopivaYksiselitteinenAvain(
           duplikaattiavaimet,
