@@ -82,7 +82,7 @@ export const OrganisaatioHenkilötEdit = <T extends AnyOrganisaatiohenkilö>(
                   <TestIdLayer id="newHenkilö">
                     <MultiField key={i}>
                       <TextEdit
-                        placeholder="Nimi"
+                        placeholder={t('Nimi')}
                         optional
                         value={hlö.nimi}
                         onChange={state.onChangeNimi(i)}
@@ -95,7 +95,7 @@ export const OrganisaatioHenkilötEdit = <T extends AnyOrganisaatiohenkilö>(
                         testId="nimi"
                       />
                       <TextEdit
-                        placeholder="Titteli"
+                        placeholder={t('Titteli')}
                         optional
                         value={t(hlö.titteli)}
                         onChange={state.onChangeTitteli(i)}
@@ -207,7 +207,7 @@ const useOrganisaatioHenkilöState = <T extends AnyOrganisaatiohenkilö>(
         ? [
             {
               key: ADD_NEW_KEY,
-              label: 'Lisää henkilö',
+              label: t('Lisää henkilö'),
               display: (
                 <IconLabel charCode={CHARCODE_ADD}>{'Lisää henkilö'}</IconLabel>
               ),

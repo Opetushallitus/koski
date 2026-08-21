@@ -25,7 +25,7 @@ import {
 } from '../../components-v2/opiskeluoikeus/OsasuoritusTable'
 import { SuorituksenVahvistusField } from '../../components-v2/opiskeluoikeus/SuorituksenVahvistus'
 import { UusiOpiskeluoikeusjakso } from '../../components-v2/opiskeluoikeus/UusiOpiskeluoikeudenTilaModal'
-import { finnish } from '../../i18n/i18n'
+import { localize, t } from '../../i18n/i18n'
 import { OppivelvollisilleSuunnattuMaahanmuuttajienKotoutumiskoulutuksenSuoritus2022 } from '../../types/fi/oph/koski/schema/OppivelvollisilleSuunnattuMaahanmuuttajienKotoutumiskoulutuksenSuoritus2022'
 import { OppivelvollisilleSuunnattuVapaanSivistystyönOpiskeluoikeusjakso } from '../../types/fi/oph/koski/schema/OppivelvollisilleSuunnattuVapaanSivistystyonOpiskeluoikeusjakso'
 import { isVSTKotoutumiskoulutuksenKieliJaViestintäosaamisenSuoritus2022 } from '../../types/fi/oph/koski/schema/VSTKotoutumiskoulutuksenKieliJaViestintaosaamisenSuoritus2022'
@@ -68,7 +68,9 @@ export const VSTKoto2022Editor: React.FC<VSTKoto2022EditorProps> = ({
         form={form}
         invalidatable={invalidatable}
         oppijaOid={oppijaOid}
-        suorituksenNimi={() => finnish('Kotoutumiskoulutus oppivelvollisille')}
+        suorituksenNimi={() =>
+          localize(t('Kotoutumiskoulutus oppivelvollisille'))
+        }
         suorituksetVahvistettu={arviointienPuolestaVahvistettavissa(form.state)}
         createOpiskeluoikeusjakso={createKoto2022Opiskeluoikeusjakso}
         lisätiedotContainer={VSTLisatiedot}

@@ -6,7 +6,7 @@ import { Spacer } from '../../components-v2/layout/Spacer'
 import { OsasuoritusTable } from '../../components-v2/opiskeluoikeus/OsasuoritusTable'
 import { SuorituksenVahvistusField } from '../../components-v2/opiskeluoikeus/SuorituksenVahvistus'
 import { UusiOpiskeluoikeusjakso } from '../../components-v2/opiskeluoikeus/UusiOpiskeluoikeudenTilaModal'
-import { finnish } from '../../i18n/i18n'
+import { localize, t } from '../../i18n/i18n'
 import { VapaanSivistystyönJotpaKoulutuksenOpiskeluoikeusjakso } from '../../types/fi/oph/koski/schema/VapaanSivistystyonJotpaKoulutuksenOpiskeluoikeusjakso'
 import { VapaanSivistystyönJotpaKoulutuksenSuoritus } from '../../types/fi/oph/koski/schema/VapaanSivistystyonJotpaKoulutuksenSuoritus'
 import { VapaanSivistystyönOpiskeluoikeus } from '../../types/fi/oph/koski/schema/VapaanSivistystyonOpiskeluoikeus'
@@ -46,7 +46,7 @@ export const VSTJotpaEditor: React.FC<VSTJotpaEditorProps> = ({
         form={form}
         invalidatable={invalidatable}
         oppijaOid={oppijaOid}
-        suorituksenNimi={() => finnish('Vapaan sivistystyön koulutus')}
+        suorituksenNimi={() => localize(t('Vapaan sivistystyön koulutus'))}
         suorituksetVahvistettu={arviointienPuolestaVahvistettavissa(form.state)}
         createOpiskeluoikeusjakso={createVstJotpaOpiskeluoikeusjakso}
         lisätiedotContainer={VSTLisatiedot}

@@ -1,4 +1,5 @@
 import React, { PropsWithChildren } from 'react'
+import { t } from '../../i18n/i18n'
 import { common, CommonProps } from '../CommonProps'
 import { CHARCODE_CLOSE, CHARCODE_OPEN, Icon } from '../texts/Icon'
 import { useTestId } from '../../appstate/useTestId'
@@ -25,9 +26,9 @@ export const ExpandButton: React.FC<ExpandButtonProps> = (props) => {
       onClick={() => props.onChange(!props.expanded)}
       role="button"
       aria-expanded={false}
-      aria-label={
-        props.expanded ? `Pienennä ${props.label}` : `Laajenna ${props.label}`
-      }
+      aria-label={`${
+        props.expanded ? t('Pienennä') : t('Laajenna')
+      } ${props.label}`}
       data-testid={testId}
     >
       {props.children ? (

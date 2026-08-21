@@ -764,10 +764,12 @@ const KurssiDetails: React.FC<KurssiTooltipProps> = ({ kurssi, id }) => (
       </KeyValueRow>
 
       <KeyValueRow localizableLabel="Kurssin tyyppi">
-        {!isValinnaisuus(kurssi.koulutusmoduuli) ||
-        kurssi.koulutusmoduuli.pakollinen
-          ? 'Pakollinen'
-          : 'Valinnainen'}
+        {t(
+          !isValinnaisuus(kurssi.koulutusmoduuli) ||
+            kurssi.koulutusmoduuli.pakollinen
+            ? 'Pakollinen'
+            : 'Valinnainen'
+        )}
       </KeyValueRow>
 
       <KeyValueRow localizableLabel="Suorituskieli">

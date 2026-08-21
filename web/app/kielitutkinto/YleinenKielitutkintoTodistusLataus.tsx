@@ -313,7 +313,9 @@ export const YleinenKielitutkintoTodistusLataus: React.FC<
     <TestIdLayer id="kielitutkintoTodistus">
       <Spacer />
       <div className="Todistus">
-        <span className="Todistus__title">{'TODISTUS'}</span>
+        <span className="Todistus__title">
+          <Trans>{'todistus:otsikko'}</Trans>
+        </span>
         <div className="Todistus__lang">
           <div className="Todistus__langLabel">
             <Trans>{'Todistuksen kieli'}</Trans>
