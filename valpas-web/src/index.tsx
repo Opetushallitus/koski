@@ -31,8 +31,11 @@ const loadWindowProperties = async (): Promise<void> =>
   )
 
 async function main() {
-  document.documentElement.lang = getLanguage()
   await loadWindowProperties()
+  // Kieli luetaan vasta konfiguraation haun jälkeen: haku täydentää puuttuvan lang-evästeen käyttäjän
+  // asiointikielestä, joten aiemmin luettuna attribuutti jäisi ensimmäisellä sivulatauksella suomeksi,
+  // vaikka käyttöliittymä renderöityisi oikealla kielellä.
+  document.documentElement.lang = getLanguage()
   const root = createRoot(document.getElementById("app")!)
   root.render(<ValpasApp />)
 }
