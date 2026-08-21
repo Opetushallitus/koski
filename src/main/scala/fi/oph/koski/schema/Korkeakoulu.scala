@@ -168,6 +168,7 @@ case class KorkeakoulututkinnonSuoritus(
   hyväksilukupäivä: Option[LocalDate] = None,
   @Description("Opintosuorituksen julkinen lisätieto")
   @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT))
+  @Hidden
   lisätieto: Option[LocalizedString] = None,
   koulutusala: Option[KorkeakoulunKoulutusala] = None,
   @KoodistoKoodiarvo("korkeakoulututkinto")
@@ -194,6 +195,7 @@ case class KorkeakoulunOpintojaksonSuoritus(
   opinnäytetyö: Option[Boolean] = None,
   @Description("Opintosuorituksen julkinen lisätieto")
   @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT))
+  @Hidden
   lisätieto: Option[LocalizedString] = None,
   koulutusala: Option[KorkeakoulunKoulutusala] = None,
   @KoodistoKoodiarvo("korkeakoulunopintojakso")
