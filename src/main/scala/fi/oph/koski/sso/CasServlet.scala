@@ -61,7 +61,7 @@ class CasServlet()(implicit val application: KoskiApplication) extends Virkailij
                   .map(application.huoltajaServiceVtj.getHuollettavat)
                 val user = AuthenticationUser(oppija.oid, oppija.oid, s"${oppija.etunimet} ${oppija.sukunimi}", serviceTicket = Some(ticket), kansalainen = true, huollettavat = huollettavat)
                 koskiSessions.store(ticket, user, LogUserContext.clientIpFromRequest(request), LogUserContext.userAgent(request))
-                UserLanguage.setLanguageCookie(UserLanguage.getLanguageFromLDAP(user, application.directoryClient).getOrElse(UserLanguage.getLanguageFromCookie(request)), response)
+                UserLanguage.setLanguageCookie(UserLanguage.getLanguageFromUserDirectory(user, application.directoryClient).getOrElse(UserLanguage.getLanguageFromCookie(request)), response)
                 setUser(Right(user))
                 redirect(onSuccess)
               case None =>
@@ -133,7 +133,7 @@ class CasServlet()(implicit val application: KoskiApplication) extends Virkailij
     setUser(Right(user.copy(serviceTicket = Some(ticket))))
     logger.info(s"Started session ${session.id} for ticket $ticket")
     koskiSessions.store(ticket, user, LogUserContext.clientIpFromRequest(request), LogUserContext.userAgent(request))
-    UserLanguage.setLanguageCookie(UserLanguage.getLanguageFromLDAP(user, application.directoryClient).getOrElse(UserLanguage.getLanguageFromCookie(request)), response)
+    UserLanguage.setLanguageCookie(UserLanguage.getLanguageFromUserDirectory(user, application.directoryClient).getOrElse(UserLanguage.getLanguageFromCookie(request)), response)
     redirectAfterLogin
   }
 
