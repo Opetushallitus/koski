@@ -118,6 +118,19 @@ export const otaVakaaKuvakaappaus = async (
   page: Page,
   nimi: string
 ): Promise<void> => {
+  // Opiskeluoikeuden oid generoidaan satunnaisesti jokaisella fixture-ajolla.
+  // Vakioidaan vain numero-osa, jotta se ei aiheuta satunnaisia kuvaeroja.
+  await page
+    .locator('[data-testid$=".opiskeluoikeus.oid"]')
+    .evaluateAll((elementit) => {
+      elementit.forEach((elementti) => {
+        elementti.textContent = elementti.textContent?.replace(
+          /1\.2\.246\.562\.15\.\d{11}/,
+          '1.2.246.562.15.00000000000'
+        )
+      })
+    })
+
   await suurennaIkkunaSivunKorkuiseksi(page)
   // Ikkuna kattaa nyt koko sivun, mutta varmistetaan vieritys alkuun: fixed-
   // elementit asemoituvat ikkunaan, ei dokumenttiin.
