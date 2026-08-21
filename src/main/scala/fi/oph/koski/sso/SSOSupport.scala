@@ -67,6 +67,7 @@ trait SSOSupport extends ScalatraBase with Logging {
     removeCookie("koskiUser")
     removeCookie("koskiEiSuorituksiaNimi")
     removeCookie("valpasEiTietojaNimi")
+    UserLanguage.removeLanguageCookie(response)
   }
 
   def casVirkailijaServiceUrl = {

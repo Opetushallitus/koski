@@ -20,6 +20,7 @@ class IndexServlet(implicit val application: KoskiApplication) extends ScalatraS
     if (!isAuthenticated && !request.pathInfo.endsWith(".js.map")) {
       redirectToVirkailijaLogin
     }
+    getUser.foreach(setLangCookieFromUserIfNecessary)
   }
 
   get("/")(nonce => {
