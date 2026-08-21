@@ -4,6 +4,7 @@ import { LocalizedString } from './LocalizedString'
 import { KorkeakoulunOpintojakso } from './KorkeakoulunOpintojakso'
 import { Oppilaitos } from './Oppilaitos'
 import { Päivämäärävahvistus } from './Paivamaaravahvistus'
+import { KorkeakoulunKoulutusala } from './KorkeakoulunKoulutusala'
 
 /**
  * KorkeakoulunOpintojaksonSuoritus
@@ -16,12 +17,15 @@ export type KorkeakoulunOpintojaksonSuoritus = {
   tyyppi: Koodistokoodiviite<'suorituksentyyppi', 'korkeakoulunopintojakso'>
   tila?: Koodistokoodiviite<'suorituksentila', string>
   hyväksilukupäivä?: string
-  suorituskieli?: Koodistokoodiviite<'kieli', string>
+  lisätieto?: LocalizedString
+  opinnäytetyö?: boolean
   luokittelu?: Array<Koodistokoodiviite<'virtaopsuorluokittelu', string>>
   koulutusmoduuli: KorkeakoulunOpintojakso
   toimipiste: Oppilaitos
   osasuoritukset?: Array<KorkeakoulunOpintojaksonSuoritus>
   vahvistus?: Päivämäärävahvistus
+  suorituskieli?: Koodistokoodiviite<'kieli', string>
+  koulutusala?: KorkeakoulunKoulutusala
 }
 
 export const KorkeakoulunOpintojaksonSuoritus = (o: {
@@ -29,12 +33,15 @@ export const KorkeakoulunOpintojaksonSuoritus = (o: {
   tyyppi?: Koodistokoodiviite<'suorituksentyyppi', 'korkeakoulunopintojakso'>
   tila?: Koodistokoodiviite<'suorituksentila', string>
   hyväksilukupäivä?: string
-  suorituskieli?: Koodistokoodiviite<'kieli', string>
+  lisätieto?: LocalizedString
+  opinnäytetyö?: boolean
   luokittelu?: Array<Koodistokoodiviite<'virtaopsuorluokittelu', string>>
   koulutusmoduuli: KorkeakoulunOpintojakso
   toimipiste: Oppilaitos
   osasuoritukset?: Array<KorkeakoulunOpintojaksonSuoritus>
   vahvistus?: Päivämäärävahvistus
+  suorituskieli?: Koodistokoodiviite<'kieli', string>
+  koulutusala?: KorkeakoulunKoulutusala
 }): KorkeakoulunOpintojaksonSuoritus => ({
   tyyppi: Koodistokoodiviite({
     koodiarvo: 'korkeakoulunopintojakso',

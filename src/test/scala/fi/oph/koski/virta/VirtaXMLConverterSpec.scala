@@ -26,7 +26,7 @@ class VirtaXMLConverterSpec extends AnyFreeSpec with TestEnvironment with Matche
 
   def baseSuoritus: Elem = suoritusWithOrganisaatio(None)
 
-  def tutkintoSuoritus(kieli: Option[String] = Some("fi")): Elem =
+  def tutkintoSuoritus(kieli: Option[String] = Some("fi"), koulutusala: Option[(String, String)] = None): Elem =
     <virta:Opintosuoritus opiskeluoikeusAvain="avopH1O1" opiskelijaAvain="avopH1" koulutusmoduulitunniste="tutkinto-123" avain="tutkinto-avain-1">
       <virta:SuoritusPvm>2014-05-30</virta:SuoritusPvm>
       <virta:Laajuus>
@@ -39,6 +39,11 @@ class VirtaXMLConverterSpec extends AnyFreeSpec with TestEnvironment with Matche
       <virta:Laji>1</virta:Laji>
       <virta:Nimi kieli="fi">Kauppatieteiden kandidaatti</virta:Nimi>
       {kieli.map(k => <virta:Kieli>{k}</virta:Kieli>).getOrElse(scala.xml.NodeSeq.Empty)}
+      {
+        koulutusala.map { case (versio, koodiarvo) =>
+          <virta:Koulutusala><virta:Koodi versio={versio}>{koodiarvo}</virta:Koodi><virta:Osuus>1.000000</virta:Osuus></virta:Koulutusala>
+        }.getOrElse(scala.xml.NodeSeq.Empty)
+      }
       <virta:Koulutuskoodi>612103</virta:Koulutuskoodi>
     </virta:Opintosuoritus>
 
@@ -94,7 +99,11 @@ class VirtaXMLConverterSpec extends AnyFreeSpec with TestEnvironment with Matche
     päättynyt: Boolean = false,
     luokittelu: Option[Int] = None,
     ilmanAinePätevyyksiä: Boolean = false,
-    ilmanOpePätevyyksiä: Boolean = false
+    ilmanOpePätevyyksiä: Boolean = false,
+    laajuudellinen: Boolean = true,
+    rahoituslähde: Option[String] = Some("1"),
+    koulutusala: Option[(String, String)] = None,
+    liittyvätAvaimet: List[String] = Nil
   ): Elem = <virta:Opiskeluoikeudet>
     <virta:Opiskeluoikeus opiskelijaAvain="avopH1" avain="avopH1O1">
       <virta:AlkuPvm>2008-08-01</virta:AlkuPvm>
@@ -116,14 +125,24 @@ class VirtaXMLConverterSpec extends AnyFreeSpec with TestEnvironment with Matche
       }
       <virta:Tyyppi>1</virta:Tyyppi>
       <virta:Myontaja>10076</virta:Myontaja>
+      {
+        koulutusala.map { case (versio, koodiarvo) =>
+          <virta:Koulutusala versio={versio}>{koodiarvo}</virta:Koulutusala>
+        }.getOrElse(scala.xml.NodeSeq.Empty)
+      }
       {if (organisaatio.isDefined) organisaatio.get}
+      {liittyvätAvaimet.map(a => <virta:Liittyvyys liittyvaOpiskeluoikeusAvain={a}/>)}
       <virta:Jakso koulutusmoduulitunniste="opiskeluoikeuden_kk_tunniste">
         <virta:AlkuPvm>2008-08-01</virta:AlkuPvm>
         <virta:LoppuPvm>2008-08-02</virta:LoppuPvm>
         <virta:Koulutuskoodi>621702</virta:Koulutuskoodi>
         <virta:Koulutuskunta>091</virta:Koulutuskunta>
         <virta:Koulutuskieli>en</virta:Koulutuskieli>
-        <virta:Rahoituslahde>1</virta:Rahoituslahde>
+        {
+          if (rahoituslähde.isDefined) {
+            <virta:Rahoituslahde>{rahoituslähde.get}</virta:Rahoituslahde>
+          }
+        }
         {
           if (luokittelu.isDefined) {
             <virta:Luokittelu>{luokittelu.get}</virta:Luokittelu>
@@ -138,7 +157,11 @@ class VirtaXMLConverterSpec extends AnyFreeSpec with TestEnvironment with Matche
         <virta:Koulutuskoodi>621702</virta:Koulutuskoodi>
         <virta:Koulutuskunta>091</virta:Koulutuskunta>
         <virta:Koulutuskieli>en</virta:Koulutuskieli>
-        <virta:Rahoituslahde>1</virta:Rahoituslahde>
+        {
+          if (rahoituslähde.isDefined) {
+            <virta:Rahoituslahde>{rahoituslähde.get}</virta:Rahoituslahde>
+          }
+        }
         {
           if (luokittelu.isDefined) {
             <virta:Luokittelu>{luokittelu.get}</virta:Luokittelu>
@@ -161,9 +184,13 @@ class VirtaXMLConverterSpec extends AnyFreeSpec with TestEnvironment with Matche
         <virta:Patevyys>far</virta:Patevyys>
         <virta:Patevyys>16</virta:Patevyys>
       </virta:Jakso>
-      <virta:Laajuus>
-        <virta:Opintopiste>240</virta:Opintopiste>
-      </virta:Laajuus>
+      {
+        if (laajuudellinen) {
+          <virta:Laajuus>
+            <virta:Opintopiste>240</virta:Opintopiste>
+          </virta:Laajuus>
+        }
+      }
     </virta:Opiskeluoikeus>
   </virta:Opiskeluoikeudet>
 
@@ -231,6 +258,24 @@ class VirtaXMLConverterSpec extends AnyFreeSpec with TestEnvironment with Matche
       }
     }
 
+    "Vaadittu laajuus" - {
+      "parsitaan opiskeluoikeudelta" in {
+        convertOpiskeluoikeusWithOrganisaatio(None).lisätiedot.value
+          .vaadittuLaajuus.value.arvo shouldBe 240
+      }
+
+      "on None jos opiskeluoikeudella ei ole laajuutta" in {
+        converter.convertToOpiskeluoikeudet(opiskeluoikeusWithOrganisaatio(None, laajuudellinen = false))
+          .head.lisätiedot.value.vaadittuLaajuus shouldBe None
+      }
+    }
+
+    "Siirto-opiskelija" - {
+      "on None jos opiskeluoikeudella ei ole SiirtoOpiskelija-elementtiä" in {
+        convertOpiskeluoikeusWithOrganisaatio(None).lisätiedot.value.siirtoOpiskelija shouldBe None
+      }
+    }
+
     "Patevyys" - {
       "parsitaan vain opintosuorituksilta ilman duplikaatteja ja vain kaksimerkkiset kirjainkoodit huomioidaan" in {
         val oo = converter.convertToOpiskeluoikeudet(opiskeluoikeusSuorituksella())
@@ -253,6 +298,110 @@ class VirtaXMLConverterSpec extends AnyFreeSpec with TestEnvironment with Matche
         oo should have size (1)
         val opePatevyydet = oo.head.lisätiedot.get.opettajanPedagogisetOpinnot
         opePatevyydet should equal(None)
+      }
+    }
+
+    "Rahoituslähde" - {
+      def rahoituslähdeJaksot(rahoituslähde: Option[String]) =
+        converter
+          .convertToOpiskeluoikeudet(opiskeluoikeusWithOrganisaatio(None, rahoituslähde = rahoituslähde))
+          .head
+          .lisätiedot
+          .get
+          .rahoituslähdeJaksot
+
+      "parsitaan jaksoittain alkupäivän mukaan järjestettynä" in {
+        val jaksot = rahoituslähdeJaksot(Some("1")).get
+        jaksot should have length 2
+
+        jaksot.head.alku should be(LocalDate.of(2008, 8, 1))
+        jaksot.head.loppu should be(Some(LocalDate.of(2008, 8, 2)))
+        jaksot.head.rahoituslähde.koodiarvo should be("1")
+        jaksot.head.rahoituslähde.koodistoUri should be("virtarahoituslahde")
+
+        jaksot(1).alku should be(LocalDate.of(2008, 8, 3))
+        jaksot(1).loppu should be(None)
+        jaksot(1).rahoituslähde.koodiarvo should be("1")
+      }
+
+      "on None jos yhdelläkään jaksolla ei ole rahoituslähdettä" in {
+        rahoituslähdeJaksot(None) should be(None)
+      }
+
+      "tuntematon koodiarvo ohitetaan eikä konversio kaadu" in {
+        rahoituslähdeJaksot(Some("99")) should be(None)
+      }
+    }
+
+    "Koulutusala" - {
+      def opiskeluoikeudenKoulutusala(versio: String, koodiarvo: String): Option[KorkeakoulunKoulutusala] =
+        converter
+          .convertToOpiskeluoikeudet(opiskeluoikeusWithOrganisaatio(None, koulutusala = Some((versio, koodiarvo))))
+          .head
+          .lisätiedot
+          .get
+          .koulutusala
+
+      "opiskeluoikeudella koodiarvo luetaan elementin tekstisisällöstä ja versio elementin attribuutista" in {
+        val koulutusala = opiskeluoikeudenKoulutusala("opm95opa", "90").value
+        koulutusala.opintoala1995.value.koodiarvo should be("90")
+        koulutusala.opintoala1995.value.koodistoUri should be("opintoalaoph1995")
+        koulutusala.okmOhjausala should be(None)
+        koulutusala.koulutusala2002 should be(None)
+        koulutusala.osuus should be(None)
+      }
+
+      "versio ohjausala luetaan okmohjauksenala-koodistosta" in {
+        val koulutusala = opiskeluoikeudenKoulutusala("ohjausala", "5").value
+        koulutusala.okmOhjausala.value.koodiarvo should be("5")
+        koulutusala.okmOhjausala.value.koodistoUri should be("okmohjauksenala")
+        koulutusala.opintoala1995 should be(None)
+        koulutusala.koulutusala2002 should be(None)
+      }
+
+      "versio opmala luetaan koulutusalaoph2002-koodistosta" in {
+        val koulutusala = opiskeluoikeudenKoulutusala("opmala", "5").value
+        koulutusala.koulutusala2002.value.koodiarvo should be("5")
+        koulutusala.koulutusala2002.value.koodistoUri should be("koulutusalaoph2002")
+        koulutusala.opintoala1995 should be(None)
+        koulutusala.okmOhjausala should be(None)
+      }
+
+      "etunollallinen koodiarvo säilyy sellaisenaan" in {
+        opiskeluoikeudenKoulutusala("opm95opa", "01").value.opintoala1995.value.koodiarvo should be("01")
+      }
+
+      "tuntematon versio ohitetaan eikä konversio kaadu" in {
+        opiskeluoikeudenKoulutusala("jokinmuu", "5") should be(None)
+      }
+
+      "tuntematon koodiarvo ohitetaan eikä konversio kaadu" in {
+        opiskeluoikeudenKoulutusala("opm95opa", "999") should be(None)
+      }
+
+      "opiskeluoikeudella ilman koulutusalaa arvo on None" in {
+        converter.convertToOpiskeluoikeudet(virtaOpiskeluoikeudet).head.lisätiedot.get.koulutusala should be(None)
+      }
+
+      "opintojakson suorituksella koodiarvo luetaan Koodi-lapsielementistä ja Osuus mukaan" in {
+        val suoritus = convertSuoritus(baseSuoritus).value.asInstanceOf[KorkeakoulunOpintojaksonSuoritus]
+        val koulutusala = suoritus.koulutusala.value
+        koulutusala.opintoala1995.value.koodiarvo should be("89")
+        koulutusala.opintoala1995.value.koodistoUri should be("opintoalaoph1995")
+        koulutusala.osuus should be(Some(1.0))
+      }
+
+      "tutkinnon suorituksella koulutusala parsitaan" in {
+        val suoritus = convertSuoritus(tutkintoSuoritus(koulutusala = Some(("ohjausala", "12"))))
+          .value.asInstanceOf[KorkeakoulututkinnonSuoritus]
+        suoritus.koulutusala.value.okmOhjausala.value.koodiarvo should be("12")
+        suoritus.koulutusala.value.okmOhjausala.value.koodistoUri should be("okmohjauksenala")
+        suoritus.koulutusala.value.osuus should be(Some(1.0))
+      }
+
+      "suorituksella ilman koulutusalaa arvo on None" in {
+        convertSuoritus(tutkintoSuoritus()).value
+          .asInstanceOf[KorkeakoulututkinnonSuoritus].koulutusala should be(None)
       }
     }
 
@@ -415,6 +564,100 @@ class VirtaXMLConverterSpec extends AnyFreeSpec with TestEnvironment with Matche
       }
     }
 
+    "Opinnäytetyö" - {
+      def opintojaksoWithOpinnaytetyo(arvo: Option[String]): Elem =
+        <virta:Opintosuoritus opiskeluoikeusAvain="avopH1O1" opiskelijaAvain="avopH1" koulutusmoduulitunniste="K-124" avain="opinnayte-1">
+          <virta:SuoritusPvm>2017-12-04</virta:SuoritusPvm>
+          <virta:Laajuus>
+            <virta:Opintopiste>5</virta:Opintopiste>
+          </virta:Laajuus>
+          <virta:Arvosana>
+            <virta:Viisiportainen>5</virta:Viisiportainen>
+          </virta:Arvosana>
+          <virta:Myontaja>10076</virta:Myontaja>
+          <virta:Laji>2</virta:Laji>
+          <virta:Nimi kieli="fi">Diplomityö</virta:Nimi>
+          <virta:Kieli>fi</virta:Kieli>
+          {arvo.map(a => <virta:Opinnaytetyo>{a}</virta:Opinnaytetyo>).getOrElse(scala.xml.NodeSeq.Empty)}
+        </virta:Opintosuoritus>
+
+      def opinnäytetyö(arvo: Option[String]): Option[Boolean] =
+        convertSuoritus(opintojaksoWithOpinnaytetyo(arvo))
+          .value.asInstanceOf[KorkeakoulunOpintojaksonSuoritus].opinnäytetyö
+
+      "arvo 1 tulkitaan todeksi" in {
+        opinnäytetyö(Some("1")) shouldBe Some(true)
+      }
+
+      "arvo true tulkitaan todeksi" in {
+        opinnäytetyö(Some("true")) shouldBe Some(true)
+      }
+
+      "arvo 0 tulkitaan epätodeksi" in {
+        opinnäytetyö(Some("0")) shouldBe Some(false)
+      }
+
+      "on None jos Opinnaytetyo puuttuu" in {
+        opinnäytetyö(None) shouldBe None
+      }
+    }
+
+    "Julkinen lisätieto" - {
+      def opintojaksoWithLisatieto(lisatiedot: Seq[Elem]): Elem =
+        <virta:Opintosuoritus opiskeluoikeusAvain="avopH1O1" opiskelijaAvain="avopH1" koulutusmoduulitunniste="K-125" avain="lisatieto-1">
+          <virta:SuoritusPvm>2017-12-04</virta:SuoritusPvm>
+          <virta:Laajuus>
+            <virta:Opintopiste>5</virta:Opintopiste>
+          </virta:Laajuus>
+          <virta:Arvosana>
+            <virta:Viisiportainen>5</virta:Viisiportainen>
+          </virta:Arvosana>
+          <virta:Myontaja>10076</virta:Myontaja>
+          <virta:Laji>2</virta:Laji>
+          <virta:Nimi kieli="fi">Opintojakso</virta:Nimi>
+          <virta:Kieli>fi</virta:Kieli>
+          {lisatiedot}
+        </virta:Opintosuoritus>
+
+      def lisätieto(lisatiedot: Seq[Elem]): Option[LocalizedString] =
+        convertSuoritus(opintojaksoWithLisatieto(lisatiedot))
+          .value.asInstanceOf[KorkeakoulunOpintojaksonSuoritus].lisätieto
+
+      "parsitaan kielitagittomasta elementistä" in {
+        lisätieto(Seq(<virta:JulkinenLisatieto>Theory of Elasticity</virta:JulkinenLisatieto>))
+          .map(_.get("fi")) shouldBe Some("Theory of Elasticity")
+      }
+
+      "parsitaan kielitagillisesta elementistä" in {
+        lisätieto(Seq(<virta:JulkinenLisatieto kieli="fi">Talouskriisit</virta:JulkinenLisatieto>))
+          .map(_.get("fi")) shouldBe Some("Talouskriisit")
+      }
+
+      "on None jos JulkinenLisatieto puuttuu" in {
+        lisätieto(Nil) shouldBe None
+      }
+
+      "SalainenLisatieto-elementtiä ei lueta" in {
+        lisätieto(Seq(<virta:SalainenLisatieto>Ei saa näkyä</virta:SalainenLisatieto>)) shouldBe None
+      }
+
+      "parsitaan myös tutkinnon suoritukselta" in {
+        val tutkinto =
+          <virta:Opintosuoritus opiskeluoikeusAvain="avopH1O1" opiskelijaAvain="avopH1" koulutusmoduulitunniste="tutkinto-125" avain="tutkinto-lisatieto-1">
+            <virta:SuoritusPvm>2017-12-04</virta:SuoritusPvm>
+            <virta:Laajuus><virta:Opintopiste>180</virta:Opintopiste></virta:Laajuus>
+            <virta:Arvosana><virta:Hyvaksytty>HYV</virta:Hyvaksytty></virta:Arvosana>
+            <virta:Myontaja>10076</virta:Myontaja>
+            <virta:Laji>1</virta:Laji>
+            <virta:Nimi kieli="fi">Tutkinto</virta:Nimi>
+            <virta:Koulutuskoodi>612103</virta:Koulutuskoodi>
+            <virta:JulkinenLisatieto kieli="fi">Yleistä lisätietoa</virta:JulkinenLisatieto>
+          </virta:Opintosuoritus>
+        convertSuoritus(tutkinto).value.asInstanceOf[KorkeakoulututkinnonSuoritus]
+          .lisätieto.map(_.get("fi")) shouldBe Some("Yleistä lisätietoa")
+      }
+    }
+
     "Luokittelu" - {
       "parsitaan koodistoviitteeksi" in {
         val luokittelut = convertSuoritus(suoritusWithOrganisaatio(None, luokittelu=Some(1)))
@@ -437,6 +680,20 @@ class VirtaXMLConverterSpec extends AnyFreeSpec with TestEnvironment with Matche
             case _ => None
           }
         luokittelut should be (empty)
+      }
+      "ei-numeerinen arvo sivuutetaan eikä kaadeta konversiota" in {
+        val suoritus =
+          <virta:Opintosuoritus opiskeluoikeusAvain="avopH1O1" opiskelijaAvain="avopH1" koulutusmoduulitunniste="K-126" avain="luokittelu-1">
+            <virta:SuoritusPvm>2017-12-04</virta:SuoritusPvm>
+            <virta:Laajuus><virta:Opintopiste>5</virta:Opintopiste></virta:Laajuus>
+            <virta:Arvosana><virta:Viisiportainen>5</virta:Viisiportainen></virta:Arvosana>
+            <virta:Myontaja>10076</virta:Myontaja>
+            <virta:Laji>2</virta:Laji>
+            <virta:Nimi kieli="fi">Opintojakso</virta:Nimi>
+            <virta:Luokittelu>b</virta:Luokittelu>
+          </virta:Opintosuoritus>
+        convertSuoritus(suoritus)
+          .value.asInstanceOf[KorkeakoulunOpintojaksonSuoritus].luokittelu shouldBe None
       }
     }
 
@@ -629,6 +886,210 @@ class VirtaXMLConverterSpec extends AnyFreeSpec with TestEnvironment with Matche
 
       hyväksiluetutOpintojaksot should not be empty
       hyväksiluetutOpintojaksot.exists(_.hyväksilukupäivä.contains(LocalDate.of(2014, 12, 16))) shouldBe true
+    }
+
+    "ilmoittautumispäivä parsitaan oikein mock-datasta (170691-3962.xml)" in {
+      val xmlString = Files.asString("src/main/resources/mockdata/virta/opintotiedot/170691-3962.xml").get
+      val xml = scala.xml.XML.loadString(xmlString)
+      val jaksot = converter.convertToOpiskeluoikeudet(xml)
+        .flatMap(_.lisätiedot.toList)
+        .flatMap(_.lukukausiIlmoittautuminen.toList)
+        .flatMap(_.ilmoittautumisjaksot)
+
+      jaksot.map(_.ilmoittautumispäivä) shouldBe List(Some(LocalDate.of(2013, 7, 10)), Some(LocalDate.of(2013, 7, 10)))
+      jaksot.map(_.alku) shouldBe List(LocalDate.of(2013, 8, 1), LocalDate.of(2014, 1, 1))
+    }
+
+    "siirto-opiskelijan tiedot parsitaan oikein mock-datasta (141199-418X.xml)" in {
+      val xmlString = Files.asString("src/main/resources/mockdata/virta/opintotiedot/141199-418X.xml").get
+      val xml = scala.xml.XML.loadString(xmlString)
+      val opiskeluoikeudet = converter.convertToOpiskeluoikeudet(xml)
+
+      val siirrot = opiskeluoikeudet.flatMap(_.lisätiedot).flatMap(_.siirtoOpiskelija)
+      siirrot should have length 1
+      siirrot.head.siirtoPäivä shouldBe LocalDate.of(2017, 1, 2)
+      siirrot.head.lähdeOrganisaatio shouldBe defined
+    }
+
+    "koulutusala parsitaan oikein mock-datasta" - {
+      def koulutusalat(tiedosto: String): List[KorkeakoulunKoulutusala] = {
+        val xmlString = Files.asString(s"src/main/resources/mockdata/virta/opintotiedot/$tiedosto").get
+        converter.convertToOpiskeluoikeudet(scala.xml.XML.loadString(xmlString))
+          .flatMap(_.lisätiedot)
+          .flatMap(_.koulutusala)
+      }
+
+      "opintoalaoph1995 (150113-4146.xml)" in {
+        val alat = koulutusalat("150113-4146.xml")
+        alat should have length 1
+        alat.head.opintoala1995.value.koodiarvo should be("90")
+        alat.head.opintoala1995.value.koodistoUri should be("opintoalaoph1995")
+      }
+
+      "okmohjauksenala (200482-900A.xml)" in {
+        val alat = koulutusalat("200482-900A.xml")
+        alat should have length 1
+        alat.head.okmOhjausala.value.koodiarvo should be("5")
+        alat.head.okmOhjausala.value.koodistoUri should be("okmohjauksenala")
+      }
+    }
+
+    "liikkuvuusjaksot" - {
+      def opiskeluoikeudet(tiedosto: String): List[KorkeakoulunOpiskeluoikeus] = {
+        val xmlString = Files.asString(s"src/main/resources/mockdata/virta/opintotiedot/$tiedosto").get
+        converter.convertToOpiskeluoikeudet(scala.xml.XML.loadString(xmlString))
+      }
+
+      def liikkuvuusjaksot(oo: KorkeakoulunOpiskeluoikeus): List[Liikkuvuusjakso] =
+        oo.lisätiedot.toList.flatMap(_.liikkuvuusjaksot.toList.flatten)
+
+      "kohdistetaan opiskeluoikeusavaimella (090802A952F.xml)" in {
+        val oot = opiskeluoikeudet("090802A952F.xml")
+        oot should have length 1
+
+        val jaksot = liikkuvuusjaksot(oot.head)
+        jaksot.map(_.alku) shouldBe List(
+          LocalDate.of(2025, 3, 5),
+          LocalDate.of(2025, 11, 10),
+          LocalDate.of(2026, 3, 9)
+        )
+        jaksot.map(_.loppu) shouldBe List(
+          Some(LocalDate.of(2025, 5, 22)),
+          Some(LocalDate.of(2025, 11, 14)),
+          Some(LocalDate.of(2026, 3, 13))
+        )
+        jaksot.map(_.maa.koodiarvo) shouldBe List("620", "528", "056")
+        jaksot.map(_.liikkuvuusohjelma.koodiarvo) shouldBe List("108", "108", "101")
+        jaksot.map(_.suunta.koodiarvo).distinct shouldBe List("1")
+        jaksot.map(_.tyyppi.koodiarvo).distinct shouldBe List("1")
+
+        jaksot.map(_.luokittelu.toList.flatten.map(_.koodiarvo)) shouldBe List(Nil, Nil, List("b"))
+        jaksot.last.luokittelu.get.head.koodistoUri shouldBe "liikkuvuudenluokittelu"
+      }
+
+      "maakoodin etunollat säilyvät (090802A952F.xml)" in {
+        val maat = opiskeluoikeudet("090802A952F.xml").flatMap(liikkuvuusjaksot).map(_.maa.koodiarvo)
+        maat should contain("056")
+        maat should not contain "56"
+      }
+
+      "kohdistetaan oikealle opiskeluoikeudelle kun opiskeluoikeuksia on useita (060180-9521.xml)" in {
+        val oot = opiskeluoikeudet("060180-9521.xml")
+        oot should have length 2
+
+        val (avaimellinen, muut) = oot.partition(_.lähdejärjestelmänId.flatMap(_.id).contains("1203130"))
+        avaimellinen should have length 1
+        liikkuvuusjaksot(avaimellinen.head).map(j => (j.alku, j.maa.koodiarvo, j.liikkuvuusohjelma.koodiarvo)) shouldBe List(
+          (LocalDate.of(2014, 5, 4), "276", "106"),
+          (LocalDate.of(2014, 9, 1), "410", "106")
+        )
+        muut.flatMap(liikkuvuusjaksot) shouldBe Nil
+      }
+
+      "kohdistetaan myöntäjän ja voimassaolon perusteella kun opiskeluoikeusavain puuttuu (030199-3419.xml)" in {
+        val jaksot = opiskeluoikeudet("030199-3419.xml").flatMap(liikkuvuusjaksot)
+
+        jaksot should have length 1
+        jaksot.head.alku shouldBe LocalDate.of(2001, 7, 15)
+        jaksot.head.loppu shouldBe Some(LocalDate.of(2001, 8, 7))
+        jaksot.head.maa.koodiarvo shouldBe "752"
+        jaksot.head.liikkuvuusohjelma.koodiarvo shouldBe "107"
+      }
+
+      "saapuva liikkuvuus, harjoittelu ja luokittelu parsitaan (070102A901W.xml)" in {
+        val jaksot = opiskeluoikeudet("070102A901W.xml").flatMap(liikkuvuusjaksot)
+        jaksot should have length 2
+
+        val saapuva = jaksot.find(_.suunta.koodiarvo == "2").value
+        saapuva.maa.koodiarvo shouldBe "250"
+        saapuva.tyyppi.koodiarvo shouldBe "1"
+        saapuva.alku shouldBe LocalDate.of(2025, 1, 7)
+
+        val harjoittelu = jaksot.find(_.tyyppi.koodiarvo == "2").value
+        harjoittelu.suunta.koodiarvo shouldBe "1"
+        harjoittelu.maa.koodiarvo shouldBe "840"
+        harjoittelu.liikkuvuusohjelma.koodiarvo shouldBe "106"
+        harjoittelu.luokittelu.toList.flatten.map(_.koodiarvo) shouldBe List("a")
+      }
+
+      "fuusiosta syntyneet kaksoiskappaleet karsitaan (020276-901K.xml)" in {
+        val xmlString = Files.asString("src/main/resources/mockdata/virta/opintotiedot/020276-901K.xml").get
+        val xml = scala.xml.XML.loadString(xmlString)
+        val liikkuvuusjaksoNodet = (xml \\ "Liikkuvuusjakso").toList
+
+        liikkuvuusjaksoNodet should have length 4
+        liikkuvuusjaksoNodet.map(n => (n \ "@avain").text).distinct should have length 2
+
+        val oot = converter.convertToOpiskeluoikeudet(xml)
+
+        oot.foreach(oo => liikkuvuusjaksot(oo).distinct shouldBe liikkuvuusjaksot(oo))
+
+        val jaksot = oot.distinct.flatMap(liikkuvuusjaksot)
+        jaksot should have length 2
+        jaksot.map(j => (j.alku, j.maa.koodiarvo)).sortBy(_._1.toString) shouldBe List(
+          (LocalDate.of(2011, 8, 23), "752"),
+          (LocalDate.of(2013, 9, 1), "724")
+        )
+      }
+    }
+
+    "liittyvät opiskeluoikeudet" - {
+      def opiskeluoikeudet(tiedosto: String): List[KorkeakoulunOpiskeluoikeus] = {
+        val xmlString = Files.asString(s"src/main/resources/mockdata/virta/opintotiedot/$tiedosto").get
+        converter.convertToOpiskeluoikeudet(scala.xml.XML.loadString(xmlString))
+      }
+
+      def liittyvät(oo: KorkeakoulunOpiskeluoikeus): List[LiittyväOpiskeluoikeus] =
+        oo.lisätiedot.toList.flatMap(_.liittyvätOpiskeluoikeudet.toList.flatten)
+
+      "kandidaatin opiskeluoikeudelta viitataan maisterin opiskeluoikeuteen (250668-293Y.xml)" in {
+        val viittaukset = opiskeluoikeudet("250668-293Y.xml").flatMap(liittyvät)
+
+        viittaukset.map(_.lähdejärjestelmänId) should contain theSameElementsAs List(
+          "34732586",
+          "73069559",
+          "10895924"
+        )
+        viittaukset.map(_.tyyppi.map(_.koodiarvo)).distinct shouldBe List(Some("4"))
+        viittaukset.flatMap(_.tyyppi).map(_.koodistoUri).distinct shouldBe List("virtaopiskeluoikeudentyyppi")
+      }
+
+      "yksi opiskeluoikeus voi viitata useaan opiskeluoikeuteen, ja viittaus osuu vastauksessa käytettyyn tunnisteeseen (020276-901K.xml)" in {
+        val oot = opiskeluoikeudet("020276-901K.xml")
+        val tunnisteet = oot.flatMap(_.lähdejärjestelmänId).flatMap(_.id).toSet
+
+        val lähteet = oot.filter(_.lähdejärjestelmänId.flatMap(_.id).contains("16049800.16048976"))
+        lähteet should have length 2
+        lähteet.map(liittyvät(_).size).distinct shouldBe List(4)
+
+        val vastauksessaOlevatKohteet = lähteet
+          .map(liittyvät(_).map(_.lähdejärjestelmänId))
+          .find(_.forall(tunnisteet.contains))
+          .value
+
+        vastauksessaOlevatKohteet shouldBe List(
+          "16049400.16048976",
+          "16049600.16048976",
+          "16049200.16048976",
+          "16049700.16048976"
+        )
+      }
+
+      "opiskeluoikeudelle ilman liittyvyyksiä ei tule kenttää" in {
+        val oo = convertOpiskeluoikeusWithOrganisaatio(None)
+        oo.lisätiedot.flatMap(_.liittyvätOpiskeluoikeudet) shouldBe None
+      }
+
+      "viittaus vastauksesta puuttuvaan opiskeluoikeuteen säilyy ilman tyyppiä" in {
+        val oo = converter.convertToOpiskeluoikeudet(
+          opiskeluoikeusWithOrganisaatio(None, liittyvätAvaimet = List("avopH1O1_PHASE2"))
+        ).head
+
+        val viittaukset = liittyvät(oo)
+        viittaukset should have length 1
+        viittaukset.head.lähdejärjestelmänId shouldBe "avopH1O1_PHASE2"
+        viittaukset.head.tyyppi shouldBe None
+      }
     }
   }
 }

@@ -63,6 +63,11 @@ case class KorkeakoulunOpiskeluoikeudenLisätiedot(
   järjestäväOrganisaatio: Option[Oppilaitos] = None,
   @Title("Koulutuskunnat")
   koulutuskuntaJaksot: List[KoulutuskuntaJakso] = Nil,
+  @Title("Rahoituslähteet")
+  @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT))
+  rahoituslähdeJaksot: Option[List[RahoituslähdeJakso]] = None,
+  @Title("Liikkuvuusjaksot")
+  liikkuvuusjaksot: Option[List[Liikkuvuusjakso]] = None,
   @Title("Opettajan pedagogiset opinnot")
   @InfoDescription("opettajan kelpoisuuden määritelmä")
   @KoodistoUri("virtapatevyys")
@@ -71,15 +76,71 @@ case class KorkeakoulunOpiskeluoikeudenLisätiedot(
   @InfoDescription("opetettavan aineen kelpoisuuden määritelmä")
   @KoodistoUri("virtapatevyys")
   opetettavanAineenOpinnot: Option[List[Koodistokoodiviite]],
+  @Description("Tutkinnon tai opintojen vaadittu laajuus")
+  vaadittuLaajuus: Option[Laajuus] = None,
+  @Description("Siirto-opiskelijan siirtopäivä ja lähdeoppilaitos")
+  siirtoOpiskelija: Option[SiirtoOpiskelija] = None,
+  koulutusala: Option[KorkeakoulunKoulutusala] = None,
+  liittyvätOpiskeluoikeudet: Option[List[LiittyväOpiskeluoikeus]] = None,
 ) extends OpiskeluoikeudenLisätiedot {
   def ensisijaisuusVoimassa(d: LocalDate): Boolean = ensisijaisuus.exists(_.exists((j: Aikajakso) => j.contains(d)))
 }
+
+case class SiirtoOpiskelija(
+  siirtoPäivä: LocalDate,
+  lähdeOrganisaatio: Option[Oppilaitos]
+)
+
+@Description("Opiskeluoikeus, johon tämä opiskeluoikeus antaa mahdollisuuden jatkaa")
+case class LiittyväOpiskeluoikeus(
+  @Description("Liittyvän opiskeluoikeuden lähdejärjestelmän id, sama tunniste jolla se esiintyy tässä vastauksessa")
+  lähdejärjestelmänId: String,
+  @KoodistoUri("virtaopiskeluoikeudentyyppi")
+  tyyppi: Option[Koodistokoodiviite] = None
+)
 
 case class KoulutuskuntaJakso(
   alku: LocalDate,
   loppu: Option[LocalDate],
   @KoodistoUri("kunta")
   koulutuskunta: Koodistokoodiviite
+) extends Jakso
+
+case class RahoituslähdeJakso(
+  alku: LocalDate,
+  loppu: Option[LocalDate],
+  @KoodistoUri("virtarahoituslahde")
+  rahoituslähde: Koodistokoodiviite
+) extends Jakso
+
+@Description("Koulutusala Virran luokituksen mukaan. Virrassa koodiarvo yksilöidään versio-attribuutilla, joten kullekin luokitukselle on oma kenttänsä.")
+case class KorkeakoulunKoulutusala(
+  @Title("Opintoala 1995")
+  @KoodistoUri("opintoalaoph1995")
+  opintoala1995: Option[Koodistokoodiviite] = None,
+  @Title("OKM:n ohjauksen ala")
+  @KoodistoUri("okmohjauksenala")
+  okmOhjausala: Option[Koodistokoodiviite] = None,
+  @Title("Koulutusala 2002")
+  @KoodistoUri("koulutusalaoph2002")
+  koulutusala2002: Option[Koodistokoodiviite] = None,
+  @Description("Koulutusalan osuus suorituksesta")
+  osuus: Option[Double] = None
+)
+
+case class Liikkuvuusjakso(
+  alku: LocalDate,
+  loppu: Option[LocalDate],
+  @KoodistoUri("virtaliikkuvuudensuunta")
+  suunta: Koodistokoodiviite,
+  @KoodistoUri("maatjavaltiot2")
+  maa: Koodistokoodiviite,
+  @KoodistoUri("virtaliikkuvuudentyyppi")
+  tyyppi: Koodistokoodiviite,
+  @KoodistoUri("virtaliikkuvuusohjelma")
+  liikkuvuusohjelma: Koodistokoodiviite,
+  @KoodistoUri("liikkuvuudenluokittelu")
+  luokittelu: Option[List[Koodistokoodiviite]] = None
 ) extends Jakso
 
 @Description("Korkeakoulun opiskeluoikeuden lukuvuosimaksut")
@@ -105,6 +166,11 @@ case class KorkeakoulututkinnonSuoritus(
   override val osasuoritukset: Option[List[KorkeakoulunOpintojaksonSuoritus]],
   @Description("Päivämäärä, jolloin suoritus on hyväksiluettu")
   hyväksilukupäivä: Option[LocalDate] = None,
+  @Description("Opintosuorituksen julkinen lisätieto")
+  @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT))
+  @Hidden
+  lisätieto: Option[LocalizedString] = None,
+  koulutusala: Option[KorkeakoulunKoulutusala] = None,
   @KoodistoKoodiarvo("korkeakoulututkinto")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("korkeakoulututkinto", koodistoUri = "suorituksentyyppi")
 ) extends KorkeakouluSuoritus {
@@ -125,6 +191,13 @@ case class KorkeakoulunOpintojaksonSuoritus(
   override val osasuoritukset: Option[List[KorkeakoulunOpintojaksonSuoritus]] = None,
   @Description("Päivämäärä, jolloin suoritus on hyväksiluettu")
   hyväksilukupäivä: Option[LocalDate] = None,
+  @Description("Tieto siitä, onko opintosuoritus opinnäytetyö")
+  opinnäytetyö: Option[Boolean] = None,
+  @Description("Opintosuorituksen julkinen lisätieto")
+  @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT))
+  @Hidden
+  lisätieto: Option[LocalizedString] = None,
+  koulutusala: Option[KorkeakoulunKoulutusala] = None,
   @KoodistoKoodiarvo("korkeakoulunopintojakso")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("korkeakoulunopintojakso", koodistoUri = "suorituksentyyppi")
 ) extends KorkeakouluSuoritus {
@@ -227,6 +300,8 @@ case class Lukukausi_Ilmoittautumisjakso(
   loppu: Option[LocalDate],
   @KoodistoUri("virtalukukausiilmtila")
   tila: Koodistokoodiviite,
+  @Description("Päivämäärä, jolloin ilmoittautuminen on tehty")
+  ilmoittautumispäivä: Option[LocalDate] = None,
   ylioppilaskunnanJäsen: Option[Boolean] = None,
   @SensitiveData(Set(Rooli.MIGRI, Rooli.HSL, Rooli.SUOMIFI))
   @Deprecated("ei kaytossa yths maksettu")

@@ -1,0 +1,865 @@
+<SOAP-ENV:Envelope xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/">
+  <SOAP-ENV:Header/>
+  <SOAP-ENV:Body>
+    <virtaluku:OpiskelijanKaikkiTiedotResponse xmlns:virtaluku="http://tietovaranto.csc.fi/luku">
+      <virta:Virta xmlns:virta="urn:mace:funet.fi:virta/2015/09/01">
+        <virta:Opiskelija avain="12345">
+          <virta:Henkilotunnus>090802A952F</virta:Henkilotunnus>
+          <virta:Opiskeluoikeudet>
+            <virta:Opiskeluoikeus avain="9988776" opiskelijaAvain="12345">
+              <virta:AlkuPvm>2024-08-01</virta:AlkuPvm>
+              <virta:LoppuPvm>2028-12-31</virta:LoppuPvm>
+              <virta:Tila>
+                <virta:AlkuPvm>2024-08-01</virta:AlkuPvm>
+                <virta:Koodi>1</virta:Koodi>
+              </virta:Tila>
+              <virta:Tyyppi>1</virta:Tyyppi>
+              <virta:Myontaja>10065</virta:Myontaja>
+              <virta:Jakso koulutusmoduulitunniste="631101IB International Business -koulutus">
+                <virta:AlkuPvm>2024-08-01</virta:AlkuPvm>
+                <virta:LoppuPvm>2028-12-31</virta:LoppuPvm>
+                <virta:Koulutuskoodi>631101</virta:Koulutuskoodi>
+                <virta:Koulutuskunta>908</virta:Koulutuskunta>
+                <virta:Koulutuskieli>en</virta:Koulutuskieli>
+                <virta:Rahoituslahde>1</virta:Rahoituslahde>
+                <virta:Nimi kieli="fi">International Business -koulutus</virta:Nimi>
+                <virta:Nimi kieli="sv">Degree Programme in International Business</virta:Nimi>
+                <virta:Nimi kieli="en">Degree Programme in International Business</virta:Nimi>
+              </virta:Jakso>
+              <virta:Koulutusala versio="ohjausala">5</virta:Koulutusala>
+              <virta:Laajuus>
+                <virta:Opintopiste>210</virta:Opintopiste>
+              </virta:Laajuus>
+            </virta:Opiskeluoikeus>
+          </virta:Opiskeluoikeudet>
+          <virta:LukukausiIlmoittautumiset>
+            <virta:LukukausiIlmoittautuminen opiskelijaAvain="12345" opiskeluoikeusAvain="9988776">
+              <virta:Myontaja>10065</virta:Myontaja>
+              <virta:Tila>1</virta:Tila>
+              <virta:IlmoittautumisPvm>2025-08-01</virta:IlmoittautumisPvm>
+              <virta:AlkuPvm>2025-08-01</virta:AlkuPvm>
+              <virta:LoppuPvm>2025-12-31</virta:LoppuPvm>
+            </virta:LukukausiIlmoittautuminen>
+            <virta:LukukausiIlmoittautuminen opiskelijaAvain="12345" opiskeluoikeusAvain="9988776">
+              <virta:Myontaja>10065</virta:Myontaja>
+              <virta:Tila>1</virta:Tila>
+              <virta:IlmoittautumisPvm>2026-01-01</virta:IlmoittautumisPvm>
+              <virta:AlkuPvm>2026-01-01</virta:AlkuPvm>
+              <virta:LoppuPvm>2026-07-31</virta:LoppuPvm>
+            </virta:LukukausiIlmoittautuminen>
+            <virta:LukukausiIlmoittautuminen opiskelijaAvain="12345" opiskeluoikeusAvain="9988776">
+              <virta:Myontaja>10065</virta:Myontaja>
+              <virta:Tila>1</virta:Tila>
+              <virta:IlmoittautumisPvm>2024-08-01</virta:IlmoittautumisPvm>
+              <virta:AlkuPvm>2024-08-01</virta:AlkuPvm>
+              <virta:LoppuPvm>2024-12-31</virta:LoppuPvm>
+            </virta:LukukausiIlmoittautuminen>
+            <virta:LukukausiIlmoittautuminen opiskelijaAvain="12345" opiskeluoikeusAvain="9988776">
+              <virta:Myontaja>10065</virta:Myontaja>
+              <virta:Tila>1</virta:Tila>
+              <virta:IlmoittautumisPvm>2027-01-01</virta:IlmoittautumisPvm>
+              <virta:AlkuPvm>2027-01-01</virta:AlkuPvm>
+              <virta:LoppuPvm>2027-07-31</virta:LoppuPvm>
+            </virta:LukukausiIlmoittautuminen>
+            <virta:LukukausiIlmoittautuminen opiskelijaAvain="12345" opiskeluoikeusAvain="9988776">
+              <virta:Myontaja>10065</virta:Myontaja>
+              <virta:Tila>1</virta:Tila>
+              <virta:IlmoittautumisPvm>2025-01-01</virta:IlmoittautumisPvm>
+              <virta:AlkuPvm>2025-01-01</virta:AlkuPvm>
+              <virta:LoppuPvm>2025-07-31</virta:LoppuPvm>
+            </virta:LukukausiIlmoittautuminen>
+            <virta:LukukausiIlmoittautuminen opiskelijaAvain="12345" opiskeluoikeusAvain="9988776">
+              <virta:Myontaja>10065</virta:Myontaja>
+              <virta:Tila>1</virta:Tila>
+              <virta:IlmoittautumisPvm>2026-08-01</virta:IlmoittautumisPvm>
+              <virta:AlkuPvm>2026-08-01</virta:AlkuPvm>
+              <virta:LoppuPvm>2026-12-31</virta:LoppuPvm>
+            </virta:LukukausiIlmoittautuminen>
+          </virta:LukukausiIlmoittautumiset>
+          <virta:Opintosuoritukset>
+            <virta:Opintosuoritus avain="2890129" koulutusmoduulitunniste="BBIB24A IB00EX45-3001" opiskelijaAvain="12345" opiskeluoikeusAvain="9988776">
+              <virta:SuoritusPvm>2024-11-08</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>5</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>4</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>10065</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Global Business Environment</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">5</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus avain="3051896" koulutusmoduulitunniste="BBIB24A IB00FR88-3001" opiskelijaAvain="12345" opiskeluoikeusAvain="9988776">
+              <virta:SuoritusPvm>2025-11-28</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>5</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>5</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>10065</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Finding Business Opportunities through Innovation</virta:Nimi>
+              <virta:Kieli>en</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">5</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus avain="2989598" koulutusmoduulitunniste="BBIB24A IB00DU85-3005" opiskelijaAvain="12345" opiskeluoikeusAvain="9988776">
+              <virta:SuoritusPvm>2025-05-23</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>3</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>4</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>10065</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Sales and Customer Service</virta:Nimi>
+              <virta:Kieli>en</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">5</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus avain="2970111" koulutusmoduulitunniste="BBIB24A IB00DU75-3005" opiskelijaAvain="12345" opiskeluoikeusAvain="9988776">
+              <virta:SuoritusPvm>2025-04-17</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>3</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>5</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>10065</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Organizational Communication</virta:Nimi>
+              <virta:Kieli>en</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">5</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus avain="3068039" koulutusmoduulitunniste="BBIB24A IB00FR93-3001" opiskelijaAvain="12345" opiskeluoikeusAvain="9988776">
+              <virta:SuoritusPvm>2025-12-23</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>3</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>4</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>10065</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Organizational Behavior</virta:Nimi>
+              <virta:Kieli>en</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">5</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus avain="3085328" koulutusmoduulitunniste="BBIB24A IB00FN74-3002" opiskelijaAvain="12345" opiskeluoikeusAvain="9988776">
+              <virta:SuoritusPvm>2025-12-19</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>4</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>4</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>10065</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Management Accounting</virta:Nimi>
+              <virta:Kieli>en</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">5</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:TKILaajuusMuu>
+                <virta:Opintopiste>1</virta:Opintopiste>
+              </virta:TKILaajuusMuu>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus avain="2977536" koulutusmoduulitunniste="BBIB24A IB00FD24-3001" opiskelijaAvain="12345" opiskeluoikeusAvain="9988776">
+              <virta:SuoritusPvm>2025-05-09</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>3</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>5</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>10065</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Building Networks for career development</virta:Nimi>
+              <virta:Kieli>en</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">5</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:TKILaajuusMuu>
+                <virta:Opintopiste>3</virta:Opintopiste>
+              </virta:TKILaajuusMuu>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus avain="3127135" koulutusmoduulitunniste="BBIB24A IB00FR99-3001" opiskelijaAvain="12345" opiskeluoikeusAvain="9988776">
+              <virta:SuoritusPvm>2026-05-08</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>3</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>5</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>10065</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Digital Marketing Expression</virta:Nimi>
+              <virta:Kieli>en</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">5</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:TKILaajuusMuu>
+                <virta:Opintopiste>1</virta:Opintopiste>
+              </virta:TKILaajuusMuu>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus avain="2938242" koulutusmoduulitunniste="BBIB24A IB00DU69-3005" opiskelijaAvain="12345" opiskeluoikeusAvain="9988776">
+              <virta:SuoritusPvm>2025-01-31</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>3</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>5</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>10065</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Introduction to Research</virta:Nimi>
+              <virta:Kieli>en</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">5</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:TKILaajuusMuu>
+                <virta:Opintopiste>3</virta:Opintopiste>
+              </virta:TKILaajuusMuu>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus avain="2896520" koulutusmoduulitunniste="BBIB24A IB00EX05-3001" opiskelijaAvain="12345" opiskeluoikeusAvain="9988776">
+              <virta:SuoritusPvm>2024-11-18</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>3</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>2</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>10065</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Business Mathematics</virta:Nimi>
+              <virta:Kieli>en</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">5</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:TKILaajuusMuu>
+                <virta:Opintopiste>3</virta:Opintopiste>
+              </virta:TKILaajuusMuu>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus avain="2999781" koulutusmoduulitunniste="BBIB24A IB00EZ96-3001" opiskelijaAvain="12345" opiskeluoikeusAvain="9988776">
+              <virta:SuoritusPvm>2025-06-06</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>3</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>4</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>10065</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Introduction to Business Information Management</virta:Nimi>
+              <virta:Kieli>en</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">5</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:TKILaajuusMuu>
+                <virta:Opintopiste>1</virta:Opintopiste>
+              </virta:TKILaajuusMuu>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus avain="2944092" koulutusmoduulitunniste="BBIB24A IB00EZ95-3001" opiskelijaAvain="12345" opiskeluoikeusAvain="9988776">
+              <virta:SuoritusPvm>2025-02-23</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>4</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>5</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>10065</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Management Essentials</virta:Nimi>
+              <virta:Kieli>en</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">5</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus avain="2936780" koulutusmoduulitunniste="BBIB24A IB00DU72-3005" opiskelijaAvain="12345" opiskeluoikeusAvain="9988776">
+              <virta:SuoritusPvm>2024-12-20</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>4</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>4</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>10065</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Marketing Essentials</virta:Nimi>
+              <virta:Kieli>en</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">5</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:TKILaajuusMuu>
+                <virta:Opintopiste>4</virta:Opintopiste>
+              </virta:TKILaajuusMuu>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus avain="3066013" koulutusmoduulitunniste="BBIB24A IB00FR90-3001" opiskelijaAvain="12345" opiskeluoikeusAvain="9988776">
+              <virta:SuoritusPvm>2025-12-19</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>3</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>4</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>10065</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Legal Environment of an Entrepreneur</virta:Nimi>
+              <virta:Kieli>en</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">5</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:TKILaajuusMuu>
+                <virta:Opintopiste>1</virta:Opintopiste>
+              </virta:TKILaajuusMuu>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus avain="3089938" koulutusmoduulitunniste="BBIB24A I-104786-AHOT-9988776-69634" opiskelijaAvain="12345" opiskeluoikeusAvain="9988776">
+              <virta:SuoritusPvm>2025-12-02</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>3</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>HYV</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>10065</virta:Myontaja>
+              <virta:Organisaatio>
+                <virta:Rooli>3</virta:Rooli>
+                <virta:Koodi>UK</virta:Koodi>
+                <virta:Osuus>1</virta:Osuus>
+              </virta:Organisaatio>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">How to Become a True Ambassador for RUN-EU - 3rd Edition.</virta:Nimi>
+              <virta:Kieli>en</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">5</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:HyvaksilukuPvm>2026-02-16</virta:HyvaksilukuPvm>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus avain="3141052" koulutusmoduulitunniste="BBIB24A IB00DV00-3007" opiskelijaAvain="12345" opiskeluoikeusAvain="9988776">
+              <virta:SuoritusPvm>2026-05-27</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>2</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>4</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>10065</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Developing Professional Profile</virta:Nimi>
+              <virta:Kieli>en</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">5</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus avain="2872459" koulutusmoduulitunniste="BBIB24A IB00EX44-3001" opiskelijaAvain="12345" opiskeluoikeusAvain="9988776">
+              <virta:SuoritusPvm>2024-09-24</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>2</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>HYV</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>10065</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Digital and Technological Skills</virta:Nimi>
+              <virta:Kieli>en</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">5</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus avain="3023652" koulutusmoduulitunniste="BBIB24A IB00DY45" opiskelijaAvain="12345" opiskeluoikeusAvain="9988776">
+              <virta:SuoritusPvm>2025-10-10</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>2</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>5</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>10065</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Finnish 4</virta:Nimi>
+              <virta:Kieli>en</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">5</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+              <virta:Luokittelu>14</virta:Luokittelu>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus avain="2989500" koulutusmoduulitunniste="BBIB24A IB00EX08-3001" opiskelijaAvain="12345" opiskeluoikeusAvain="9988776">
+              <virta:SuoritusPvm>2025-05-23</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>3</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>5</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>10065</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Project Management</virta:Nimi>
+              <virta:Kieli>en</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">5</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus avain="2975193" koulutusmoduulitunniste="BBIB24A IB00EX06-3001" opiskelijaAvain="12345" opiskeluoikeusAvain="9988776">
+              <virta:SuoritusPvm>2025-05-06</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>5</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>5</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>10065</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Principles of Accounting</virta:Nimi>
+              <virta:Kieli>en</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">5</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:TKILaajuusMuu>
+                <virta:Opintopiste>1</virta:Opintopiste>
+              </virta:TKILaajuusMuu>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus avain="3065870" koulutusmoduulitunniste="BBIB24A IB00FR92-3001" opiskelijaAvain="12345" opiskeluoikeusAvain="9988776">
+              <virta:SuoritusPvm>2025-12-19</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>3</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>4</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>10065</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Circular Economy</virta:Nimi>
+              <virta:Kieli>en</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">5</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:TKILaajuusMuu>
+                <virta:Opintopiste>1</virta:Opintopiste>
+              </virta:TKILaajuusMuu>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus avain="3083743" koulutusmoduulitunniste="BBIB24A IB00FR95-3001" opiskelijaAvain="12345" opiskeluoikeusAvain="9988776">
+              <virta:SuoritusPvm>2025-12-19</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>3</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>5</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>10065</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Cross Cultural Communication</virta:Nimi>
+              <virta:Kieli>en</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">5</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus avain="3149138" koulutusmoduulitunniste="BBIB24A IB00FN80-3001" opiskelijaAvain="12345" opiskeluoikeusAvain="9988776">
+              <virta:SuoritusPvm>2026-06-09</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>5</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>4</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>10065</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Practical Implementation of Analytics</virta:Nimi>
+              <virta:Kieli>en</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">5</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus avain="3132816" koulutusmoduulitunniste="BBIB24A IB00GF50-3001" opiskelijaAvain="12345" opiskeluoikeusAvain="9988776">
+              <virta:SuoritusPvm>2026-05-15</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>3</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>HYV</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>10065</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Nordplus Futures Studio</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">5</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus avain="2909200" koulutusmoduulitunniste="BBIB24A IB00EX46-3001" opiskelijaAvain="12345" opiskeluoikeusAvain="9988776">
+              <virta:SuoritusPvm>2024-12-09</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>3</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>5</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>10065</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">English in a Global Context</virta:Nimi>
+              <virta:Kieli>en</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">5</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus avain="3056509" koulutusmoduulitunniste="BBIB24A IB00FR89-3001" opiskelijaAvain="12345" opiskeluoikeusAvain="9988776">
+              <virta:SuoritusPvm>2025-12-09</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>5</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>4</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>10065</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Business Planning Process</virta:Nimi>
+              <virta:Kieli>en</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">5</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus avain="2986912" koulutusmoduulitunniste="BBIB24A IB00EX09-3001" opiskelijaAvain="12345" opiskeluoikeusAvain="9988776">
+              <virta:SuoritusPvm>2025-05-21</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>3</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>5</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>10065</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Sustainability Project and Communication</virta:Nimi>
+              <virta:Kieli>en</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">5</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus avain="2966155" koulutusmoduulitunniste="BBIB24A IB00EM12-3003" opiskelijaAvain="12345" opiskeluoikeusAvain="9988776">
+              <virta:SuoritusPvm>2025-04-09</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>3</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>5</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>10065</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Finnish 2</virta:Nimi>
+              <virta:Kieli>en</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">5</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus avain="2927550" koulutusmoduulitunniste="BBIB24A IB00DU71-3005" opiskelijaAvain="12345" opiskeluoikeusAvain="9988776">
+              <virta:SuoritusPvm>2024-12-31</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>3</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>4</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>10065</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Legal Environment</virta:Nimi>
+              <virta:Kieli>en</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">5</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus avain="3127015" koulutusmoduulitunniste="BBIB24A IB00FR98-3001" opiskelijaAvain="12345" opiskeluoikeusAvain="9988776">
+              <virta:SuoritusPvm>2026-05-08</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>4</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>5</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>10065</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Positioning and Branding</virta:Nimi>
+              <virta:Kieli>en</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">5</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:TKILaajuusMuu>
+                <virta:Opintopiste>1.5</virta:Opintopiste>
+              </virta:TKILaajuusMuu>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus avain="3046142" koulutusmoduulitunniste="BBIB24A I-104786-AHOT-9988776-65853" opiskelijaAvain="12345" opiskeluoikeusAvain="9988776">
+              <virta:SuoritusPvm>2025-05-22</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>3</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>HYV</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>10065</virta:Myontaja>
+              <virta:Organisaatio>
+                <virta:Rooli>3</virta:Rooli>
+                <virta:Koodi>UK</virta:Koodi>
+                <virta:Osuus>1</virta:Osuus>
+              </virta:Organisaatio>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">CELEBRATING DIVERSITY: INNOVATIONS FOR INCLUSIVITY AND EQUALITY IN HIGHER EDUCATION</virta:Nimi>
+              <virta:Kieli>en</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">5</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:HyvaksilukuPvm>2025-11-20</virta:HyvaksilukuPvm>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus avain="3099391" koulutusmoduulitunniste="BBIB24A IB00FS00-3001" opiskelijaAvain="12345" opiskeluoikeusAvain="9988776">
+              <virta:SuoritusPvm>2026-03-17</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>4</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>4</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>10065</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Marketing with Data</virta:Nimi>
+              <virta:Kieli>en</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">5</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:TKILaajuusMuu>
+                <virta:Opintopiste>3</virta:Opintopiste>
+              </virta:TKILaajuusMuu>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus avain="2906015" koulutusmoduulitunniste="BBIB24A IB00DU70-3005" opiskelijaAvain="12345" opiskeluoikeusAvain="9988776">
+              <virta:SuoritusPvm>2024-11-30</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>3</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>5</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>10065</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Foundations of Economics</virta:Nimi>
+              <virta:Kieli>en</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">5</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus avain="2915851" koulutusmoduulitunniste="BBIB24A IB00EX43-3001" opiskelijaAvain="12345" opiskeluoikeusAvain="9988776">
+              <virta:SuoritusPvm>2024-12-18</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>2</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>HYV</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>10065</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Study Essentials</virta:Nimi>
+              <virta:Kieli>en</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">5</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus avain="2969031" koulutusmoduulitunniste="BBIB24A IB00DL72-3007" opiskelijaAvain="12345" opiskeluoikeusAvain="9988776">
+              <virta:SuoritusPvm>2025-04-16</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>3</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>4</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>10065</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Finnish 3</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">5</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+              <virta:Luokittelu>14</virta:Luokittelu>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus avain="2989695" koulutusmoduulitunniste="BBIB24A IB00EX07-3001" opiskelijaAvain="12345" opiskeluoikeusAvain="9988776">
+              <virta:SuoritusPvm>2025-05-23</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>3</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>4</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>10065</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Principles of Sustainability</virta:Nimi>
+              <virta:Kieli>en</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">5</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus avain="2916037" koulutusmoduulitunniste="BBIB24A IB00EI85-3003" opiskelijaAvain="12345" opiskeluoikeusAvain="9988776">
+              <virta:SuoritusPvm>2024-12-18</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>2</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>HYV</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>10065</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Finnish 1</virta:Nimi>
+              <virta:Kieli>en</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">5</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus avain="3055233" koulutusmoduulitunniste="BBIB24A IB00FR91-3001" opiskelijaAvain="12345" opiskeluoikeusAvain="9988776">
+              <virta:SuoritusPvm>2025-12-05</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>2</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>5</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>10065</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Pitching Skills</virta:Nimi>
+              <virta:Kieli>en</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">5</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus avain="3085397" koulutusmoduulitunniste="BBIB24A IB00FR94-3001" opiskelijaAvain="12345" opiskeluoikeusAvain="9988776">
+              <virta:SuoritusPvm>2025-12-19</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>3</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>4</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>10065</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Supply Chain Management</virta:Nimi>
+              <virta:Kieli>en</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">5</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:TKILaajuusMuu>
+                <virta:Opintopiste>1</virta:Opintopiste>
+              </virta:TKILaajuusMuu>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus avain="3132525" koulutusmoduulitunniste="BBIB24A IB00FS01-3001" opiskelijaAvain="12345" opiskeluoikeusAvain="9988776">
+              <virta:SuoritusPvm>2026-05-15</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>3</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>5</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>10065</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Business Ethics</virta:Nimi>
+              <virta:Kieli>en</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">5</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus avain="3120547" koulutusmoduulitunniste="BBIB24A IB00FA47-3002" opiskelijaAvain="12345" opiskeluoikeusAvain="9988776">
+              <virta:SuoritusPvm>2026-04-23</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>3</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>5</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>10065</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Design Thinking Pressure Cooker: Diversity Equity and Inclusion</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">5</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+          </virta:Opintosuoritukset>
+          <virta:Liikkuvuusjaksot>
+            <virta:Liikkuvuusjakso avain="13420" koulutusmoduulitunniste="631101IB International Business -koulutus" opiskelijaAvain="12345" opiskeluoikeusAvain="9988776">
+              <virta:Myontaja>10065</virta:Myontaja>
+              <virta:AlkuPvm>2025-03-05</virta:AlkuPvm>
+              <virta:LoppuPvm>2025-05-22</virta:LoppuPvm>
+              <virta:Suunta>1</virta:Suunta>
+              <virta:Maa>620</virta:Maa>
+              <virta:Tyyppi>1</virta:Tyyppi>
+              <virta:Liikkuvuusohjelma>108</virta:Liikkuvuusohjelma>
+            </virta:Liikkuvuusjakso>
+            <virta:Liikkuvuusjakso avain="13887" koulutusmoduulitunniste="631101IB International Business -koulutus" opiskelijaAvain="12345" opiskeluoikeusAvain="9988776">
+              <virta:Myontaja>10065</virta:Myontaja>
+              <virta:AlkuPvm>2025-11-10</virta:AlkuPvm>
+              <virta:LoppuPvm>2025-11-14</virta:LoppuPvm>
+              <virta:Suunta>1</virta:Suunta>
+              <virta:Maa>528</virta:Maa>
+              <virta:Tyyppi>1</virta:Tyyppi>
+              <virta:Liikkuvuusohjelma>108</virta:Liikkuvuusohjelma>
+            </virta:Liikkuvuusjakso>
+            <virta:Liikkuvuusjakso avain="14047" koulutusmoduulitunniste="631101IB International Business -koulutus" opiskelijaAvain="12345" opiskeluoikeusAvain="9988776">
+              <virta:Myontaja>10065</virta:Myontaja>
+              <virta:AlkuPvm>2026-03-09</virta:AlkuPvm>
+              <virta:LoppuPvm>2026-03-13</virta:LoppuPvm>
+              <virta:Suunta>1</virta:Suunta>
+              <virta:Maa>056</virta:Maa>
+              <virta:Tyyppi>1</virta:Tyyppi>
+              <virta:Liikkuvuusohjelma>101</virta:Liikkuvuusohjelma>
+              <virta:Luokittelu>b</virta:Luokittelu>
+            </virta:Liikkuvuusjakso>
+          </virta:Liikkuvuusjaksot>
+        </virta:Opiskelija>
+      </virta:Virta>
+    </virtaluku:OpiskelijanKaikkiTiedotResponse>
+  </SOAP-ENV:Body>
+</SOAP-ENV:Envelope>

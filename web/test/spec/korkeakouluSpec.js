@@ -70,7 +70,7 @@ describe('Korkeakoulutus', function () {
   describe('Päättynyt-tila, korkeakoulututkinto', function () {
     before(page.openPage, page.oppijaHaku.searchAndSelect('010190-4473'))
     it('tulkitaan keskeneräiseksi suoritukseksi', function () {
-      expect(S('.suoritukset .tila-vahvistus').length).to.equal(1)
+      expect(S('.suoritukset .tila-vahvistus').length).to.equal(2)
     })
   })
 
