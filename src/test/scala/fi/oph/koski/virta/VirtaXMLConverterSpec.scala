@@ -998,6 +998,22 @@ class VirtaXMLConverterSpec extends AnyFreeSpec with TestEnvironment with Matche
         jaksot.head.liikkuvuusohjelma.koodiarvo shouldBe "107"
       }
 
+      "saapuva liikkuvuus, harjoittelu ja luokittelu parsitaan (070102A901W.xml)" in {
+        val jaksot = opiskeluoikeudet("070102A901W.xml").flatMap(liikkuvuusjaksot)
+        jaksot should have length 2
+
+        val saapuva = jaksot.find(_.suunta.koodiarvo == "2").value
+        saapuva.maa.koodiarvo shouldBe "250"
+        saapuva.tyyppi.koodiarvo shouldBe "1"
+        saapuva.alku shouldBe LocalDate.of(2025, 1, 7)
+
+        val harjoittelu = jaksot.find(_.tyyppi.koodiarvo == "2").value
+        harjoittelu.suunta.koodiarvo shouldBe "1"
+        harjoittelu.maa.koodiarvo shouldBe "840"
+        harjoittelu.liikkuvuusohjelma.koodiarvo shouldBe "106"
+        harjoittelu.luokittelu.toList.flatten.map(_.koodiarvo) shouldBe List("a")
+      }
+
       "fuusiosta syntyneet kaksoiskappaleet karsitaan (020276-901K.xml)" in {
         val xmlString = Files.asString("src/main/resources/mockdata/virta/opintotiedot/020276-901K.xml").get
         val xml = scala.xml.XML.loadString(xmlString)
