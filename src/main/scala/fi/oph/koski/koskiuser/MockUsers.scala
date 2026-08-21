@@ -210,6 +210,17 @@ object MockUsers {
     ))
   )
 
+  // Virkailija, jonka asiointikieli ONR:ssä on ruotsi. Muilla mockkäyttäjillä lang on oletusarvoinen "fi".
+  val ruotsinkielinenKatselija = KoskiMockUser(
+    "käyttäjä",
+    "ruotsinkielinen",
+    "1.2.246.562.24.99999999493",
+    Seq(OrganisaatioJaKäyttöoikeudet(Opetushallitus.organisaatioOid,
+      ophKatselija.kayttooikeudet
+    )),
+    lang = "sv"
+  )
+
   val viranomainen = KoskiMockUser(
     "käyttäjä",
     "viranomais",
@@ -797,6 +808,7 @@ object MockUsers {
     paakayttajaPlusYki,
     stadinTelma,
     kaksiTallentajaoikeutta,
+    ruotsinkielinenKatselija,
   )
 }
 

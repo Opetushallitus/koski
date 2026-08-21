@@ -258,6 +258,11 @@
     {
       "hetu": "251006-8837",
       "type": "kansalainen"
+    },
+    {
+      "username": "ruotsinkielinen",
+      "password": "ruotsinkielinen",
+      "type": "virkailija"
     }
   ]
 }
