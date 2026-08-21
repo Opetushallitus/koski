@@ -20,6 +20,27 @@
   .selitteet {
     color: @color-disabled-text;
   }
+
+  // Käyttäytymisen arvioinnilla (ja Ahvenanmaalla vastuun ja yhteistyön
+  // arvioinnilla) ei ole taulukkoa, joten otsikon alle tarvitaan erotinviiva
+  // vastaamaan viereisen oppiainetaulukon otsikkoriviä – vanhassa
+  // käyttöliittymässä viiva tuli säännöstä .kayttaytyminen h5
+  // (style/perusopetus.less), joka ei yllä v2-näkymään.
+  //
+  // Otsikon ja viivan väli on sama kuin oppiainetaulukossa: h5:n alamarginaali
+  // ja otsikkorivin sarakkeen korkeus (ks. OsasuoritusTable.less,
+  // .OsasuoritusHeader .Column). Kun valinnaisia oppiaineita ei ole, arviointi
+  // on sarakkeensa ainoa sisältö ja viiva osuu tällöin samalle korkeudelle
+  // yhteisten oppiaineiden taulukon otsikkorivin viivan kanssa. Väli pidetään
+  // samana myös taulukon alla, jotta lohkon sisäinen jaottelu ei muutu
+  // näkymästä toiseen. Väljempi alamarginaali kumoaa yllä olevan
+  // .oppiaineet h5 -tiivistyksen, joka on tarkoitettu taulukon päällä oleville
+  // otsikoille.
+  .kayttaytyminen h5 {
+    padding-bottom: ((@baseline / 2) + (2 * @baseline));
+    border-bottom: 1px solid @color-disabled;
+    margin-bottom: 16px;
+  }
 }
 
 .PerusopetuksenOppiaineet__laajuus {
