@@ -257,11 +257,13 @@ describe('International school', function () {
 
       describe('Käyttöliittymän tila', function () {
         it('Lisää-nappi on enabloitu', function () {
-          expect(addOppija.isEnabled()).to.equal(true)
+          return eventually(() =>
+            expect(addOppija.isEnabled()).to.equal(true)
+          )()
         })
 
-        it('Vaihtoehtoina on lukion opintojenRahoitus-vaihtoehdot', function () {
-          expect(addOppija.opintojenRahoitukset()).to.deep.equal([
+        it('Vaihtoehtoina on lukion opintojenRahoitus-vaihtoehdot', async function () {
+          expect(await addOppija.opintojenRahoitukset()).to.deep.equal([
             'Valtionosuusrahoitteinen koulutus',
             'Muuta kautta rahoitettu',
             'Lukuvuosimaksu'
@@ -272,8 +274,8 @@ describe('International school', function () {
           expect(addOppija.rahoitusIsVisible()).to.equal(true)
         })
 
-        it('Näytetään oikeat tilavaihtoehdot', function () {
-          expect(addOppija.opiskeluoikeudenTilat()).to.deep.equal([
+        it('Näytetään oikeat tilavaihtoehdot', async function () {
+          expect(await addOppija.opiskeluoikeudenTilat()).to.deep.equal([
             'Eronnut',
             'Läsnä',
             'Valmistunut',

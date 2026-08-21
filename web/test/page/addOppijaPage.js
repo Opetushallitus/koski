@@ -26,10 +26,12 @@ function AddOppijaPage() {
   function selectValue(field, value) {
     return Select(`uusiOpiskeluoikeus.modal.${field}`, form).select(value)
   }
+  // Palauttaa lupauksen: valikon vaihtoehdot ladataan asynkronisesti, ja Select
+  // pitää syötekenttänsä disabloituna kunnes lataus on valmis. Kutsujan on siis
+  // odotettava tulosta (`expect(await addOppija.oppiaineet())`).
   function selectOptions(field) {
     const select = Select(`uusiOpiskeluoikeus.modal.${field}`, form)
-    select.openSync()
-    return select.optionTexts()
+    return select.open().then(select.optionTexts)
   }
 
   var pageApi = Page(form)
@@ -859,18 +861,31 @@ function Select(testId, base) {
         }
       })
     },
+    isOpen: function () {
+      const b = baseElem()
+      return !!(b && b.querySelector(`[data-testid="${testId}.options"]`))
+    },
     open: async function () {
       return eventually(async () => {
         assertVisibility()
         await sleep()
-        const target = findByTestId(`${testId}.input`, baseElem())
-        target.click()
+        if (!api.isOpen()) {
+          const target = findByTestId(`${testId}.input`, baseElem())
+          target.click()
+          await sleep()
+        }
+        if (!api.isOpen()) {
+          // Select disabloi syötekenttänsä niin kauan kuin sen vaihtoehtoja
+          // ladataan (ks. components-v2/controls/Select.tsx), eikä disabloitu
+          // kenttä välitä klikkausta lainkaan. Ilman tätä tarkistusta valikko
+          // jäisi hiljaisesti avaamatta ja optionTexts() palauttaisi tyhjän
+          // listan - eli assertio joko kaatuisi hämäävästi tai menisi läpi
+          // tyhjänä.
+          throw new Error(
+            `${testId} ei avautunut: vaihtoehdot ovat todennäköisesti vielä latautumassa`
+          )
+        }
       })()
-    },
-    openSync: function () {
-      assertVisibility()
-      const target = findByTestId(`${testId}.input`, baseElem())
-      target.click()
     },
     options: function () {
       assertVisibility()

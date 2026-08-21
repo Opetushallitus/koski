@@ -360,8 +360,8 @@ describe('Perusopetus 4', function () {
         )
       )
       describe('Tietojen näyttäminen', function () {
-        it('Näytetään tilavaihtoehdoissa kaikki tilat paitsi mitätöity', function () {
-          expect(addOppija.opiskeluoikeudenTilat()).to.deep.equal([
+        it('Näytetään tilavaihtoehdoissa kaikki tilat paitsi mitätöity', async function () {
+          expect(await addOppija.opiskeluoikeudenTilat()).to.deep.equal([
             'Eronnut',
             'Katsotaan eronneeksi',
             'Loma',

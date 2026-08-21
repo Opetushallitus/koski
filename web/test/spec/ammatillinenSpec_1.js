@@ -58,41 +58,41 @@ describe('Ammatillinen koulutus 1', function () {
         )
 
         it('Näytetään opintojen rahoitus -kenttä', function () {
-          eventually(() => expect(addOppija.rahoitusIsVisible()).to.equal(true))
+          return eventually(() =>
+            expect(addOppija.rahoitusIsVisible()).to.equal(true)
+          )()
         })
 
-        it('Vaihtoehtoina on kaikki opintojenRahoitus-vaihtoehdot', function () {
-          eventually(() =>
-            expect(addOppija.opintojenRahoitukset()).to.deep.equal([
-              'Valtionosuusrahoitteinen koulutus',
-              'Työvoimakoulutus (OKM rahoitus)',
-              'Ammatillisen osaamisen pilotit 2019',
-              'Ammatillisen osaamisen pilotit 2019 (työvoimakoulutus)',
-              'Työvoimakoulutus (valtiosopimukseen perustuva rahoitus)',
-              'Jatkuvan oppimisen ja työllisyyden palvelukeskuksen rahoitus',
-              'Jatkuvan oppimisen ja työllisyyden palvelukeskuksen rahoitus (RRF)',
-              'Työvoimakoulutus ely-keskukset ja työ- ja elinkeinotoimistot (kansallinen rahoitus)',
-              'Työvoimakoulutus (ESR-rahoitteinen)',
-              'Työnantajan kokonaan rahoittama',
-              'Muuta kautta rahoitettu',
-              'Nuorten aikuisten osaamisohjelma',
-              'Aikuisten osaamisperustan vahvistaminen',
-              'Maahanmuuttajien ammatillinen koulutus (valtionavustus)'
-            ])
-          )
+        it('Vaihtoehtoina on kaikki opintojenRahoitus-vaihtoehdot', async function () {
+          expect(await addOppija.opintojenRahoitukset()).to.deep.equal([
+            'Valtionosuusrahoitteinen koulutus',
+            'Työvoimakoulutus (OKM rahoitus)',
+            'Ammatillisen osaamisen pilotit 2019',
+            'Ammatillisen osaamisen pilotit 2019 (työvoimakoulutus)',
+            'Työvoimakoulutus (valtiosopimukseen perustuva rahoitus)',
+            'Jatkuvan oppimisen ja työllisyyden palvelukeskuksen rahoitus',
+            'Jatkuvan oppimisen ja työllisyyden palvelukeskuksen rahoitus (RRF)',
+            'Työvoimakoulutus ely-keskukset ja työ- ja elinkeinotoimistot (kansallinen rahoitus)',
+            'Työvoimakoulutus (ESR-rahoitteinen)',
+            'Työnantajan kokonaan rahoittama',
+            'Muuta kautta rahoitettu',
+            'Nuorten aikuisten osaamisohjelma',
+            'Aikuisten osaamisperustan vahvistaminen',
+            'Maahanmuuttajien ammatillinen koulutus (valtionavustus)',
+            'Lukuvuosimaksu',
+            'Tilauskoulutus'
+          ])
         })
 
-        it('Näytetään tilavaihtoehdoissa loma-tila, mutta ei eronnut-tilaa', function () {
-          eventually(() =>
-            expect(addOppija.opiskeluoikeudenTilat()).to.deep.equal([
-              'Katsotaan eronneeksi',
-              'Loma',
-              'Läsnä',
-              'Peruutettu',
-              'Valmistunut',
-              'Väliaikaisesti keskeytynyt'
-            ])
-          )
+        it('Näytetään tilavaihtoehdoissa loma-tila, mutta ei eronnut-tilaa', async function () {
+          expect(await addOppija.opiskeluoikeudenTilat()).to.deep.equal([
+            'Katsotaan eronneeksi',
+            'Loma',
+            'Läsnä',
+            'Peruutettu',
+            'Valmistunut',
+            'Väliaikaisesti keskeytynyt'
+          ])
         })
 
         describe('Koulutusvienti', () => {
@@ -103,11 +103,24 @@ describe('Ammatillinen koulutus 1', function () {
               .then(done)
           })
           it('Näytetään myös koulutusviennin kautta tuodut tutkinnot', function () {
-            eventually(() =>
-              expect(addOppija.tutkinnot()).to.equal(
-                'Autoalan perustutkinto 39/011/2014 Autoalan työnjohdon erikoisammattitutkinto 40/011/2001 Auto- ja kuljetusalan työnjohdon ammattitutkinto 30/011/2015 Automaatioasentajan ammattitutkinto 3/011/2013 Automaatioyliasentajan erikoisammattitutkinto 9/011/2008 Puutavaran autokuljetuksen ammattitutkinto 27/011/2008 Sähkö- ja automaatiotekniikan perustutkinto 77/011/2014 Autoalan perustutkinto OPH-2762-2017 Automekaanikon erikoisammattitutkinto OPH-1886-2017 Autoalan perustutkinto, Koulutusvientikokeilu OPH-4792-2017'
-              )
-            )
+            // tutkinto-Select hakee vaihtoehtonsa syötteen perusteella, eikä se
+            // - toisin kuin koodistopohjaiset valikot - disabloi itseään haun
+            // ajaksi. Valikko voi siis olla auki mutta vielä tyhjä, joten
+            // sisältöä on odotettava erikseen.
+            return eventually(async () =>
+              expect(await addOppija.tutkinnot()).to.deep.equal([
+                '351301 Autoalan perustutkinto (39/011/2014)',
+                '351301 Autoalan perustutkinto (OPH-2762-2017)',
+                '351301 Autoalan perustutkinto, Koulutusvientikokeilu (OPH-4792-2017)',
+                '351407 Sähkö- ja automaatiotekniikan perustutkinto (77/011/2014)',
+                '354315 Auto- ja kuljetusalan työnjohdon ammattitutkinto (30/011/2015)',
+                '354401 Automaatioasentajan ammattitutkinto (3/011/2013)',
+                '357304 Automekaanikon erikoisammattitutkinto (OPH-1886-2017)',
+                '357401 Automaatioyliasentajan erikoisammattitutkinto (9/011/2008)',
+                '364307 Puutavaran autokuljetuksen ammattitutkinto (27/011/2008)',
+                '457305 Autoalan työnjohdon erikoisammattitutkinto (40/011/2001)'
+              ])
+            )()
           })
         })
       })
@@ -280,7 +293,9 @@ describe('Ammatillinen koulutus 1', function () {
           })
         )
         it('Lisää-nappi on enabloitu', function () {
-          expect(addOppija.isEnabled()).to.equal(true)
+          return eventually(() =>
+            expect(addOppija.isEnabled()).to.equal(true)
+          )()
         })
       })
       describe('Aloituspäivä', function () {
@@ -305,7 +320,9 @@ describe('Ammatillinen koulutus 1', function () {
             addOppija.selectAloituspäivä('1.1.2020')
           )
           it('Lisää-nappi on enabloitu', function () {
-            expect(addOppija.isEnabled()).to.equal(true)
+            return eventually(() =>
+              expect(addOppija.isEnabled()).to.equal(true)
+            )()
           })
         })
       })
@@ -313,7 +330,9 @@ describe('Ammatillinen koulutus 1', function () {
         before(addOppija.enterValidDataAmmatillinen())
         describe('Aluksi', function () {
           it('Lisää-nappi enabloitu', function () {
-            expect(addOppija.isEnabled()).to.equal(true)
+            return eventually(() =>
+              expect(addOppija.isEnabled()).to.equal(true)
+            )()
           })
         })
         describe('Kun tutkinto on virheellinen', function () {
@@ -340,7 +359,9 @@ describe('Ammatillinen koulutus 1', function () {
               expect(addOppija.oppilaitos()).to.deep.equal('Omnia')
             })
             it('Lisää-nappi on enabloitu', function () {
-              expect(addOppija.isEnabled()).to.equal(true)
+              return eventually(() =>
+                expect(addOppija.isEnabled()).to.equal(true)
+              )()
             })
           })
           describe('Kun useampia vaihtoehtoja', function () {
@@ -373,8 +394,10 @@ describe('Ammatillinen koulutus 1', function () {
         describe('Kun oppilaitos on valittu', function () {
           before(addOppija.enterValidDataAmmatillinen())
           it('voidaan valita tutkinto', function () {
-            expect(addOppija.tutkintoIsEnabled()).to.equal(true)
-            expect(addOppija.isEnabled()).to.equal(true)
+            return eventually(() => {
+              expect(addOppija.tutkintoIsEnabled()).to.equal(true)
+              expect(addOppija.isEnabled()).to.equal(true)
+            })()
           })
         })
         describe('Kun oppilaitos-valinta muutetaan', function () {
@@ -390,7 +413,9 @@ describe('Ammatillinen koulutus 1', function () {
               addOppija.selectMaksuttomuus(0)
             )
             it('Lisää-nappi on enabloitu', function () {
-              expect(addOppija.isEnabled()).to.equal(true)
+              return eventually(() =>
+                expect(addOppija.isEnabled()).to.equal(true)
+              )()
             })
           })
         })
