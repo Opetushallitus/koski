@@ -53,13 +53,12 @@ jobs:
           mvn exec:java -Dexec.mainClass="fi.oph.koski.perftest.ValpasRandomPerusopetuksenOppilaitoksetGetter"
 
       - name: Report failure
-        uses: ravsamhq/notify-slack-action@02b169fd81108a34dbb029df4a41dd27ad680290
+        uses: ./.github/actions/report_slack_failure
         if: ${{ failure() }}
         with:
-          status: ${{ job.status }}
-          notification_title: "Run Valpas performance tests: failure in valpas-organisaatio-listaus"
-        env:
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+          prefix: ":stopwatch: PERFORMANCE"
+          title: "Run Valpas performance tests: failure in valpas-organisaatio-listaus"
+          webhook: ${{ secrets.SLACK_WEBHOOK_URL }}
 
   valpas-oppija-detaalit:
     name: valpas-oppija-detaalit
@@ -100,10 +99,9 @@ jobs:
           mvn exec:java -Dexec.mainClass="fi.oph.koski.perftest.ValpasRandomPerusopetuksenOppijaGetter"
 
       - name: Report failure
-        uses: ravsamhq/notify-slack-action@02b169fd81108a34dbb029df4a41dd27ad680290
+        uses: ./.github/actions/report_slack_failure
         if: ${{ failure() }}
         with:
-          status: ${{ job.status }}
-          notification_title: "Run Valpas performance tests: failure in valpas-oppija-detaalit"
-        env:
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+          prefix: ":stopwatch: PERFORMANCE"
+          title: "Run Valpas performance tests: failure in valpas-oppija-detaalit"
+          webhook: ${{ secrets.SLACK_WEBHOOK_URL }}

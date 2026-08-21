@@ -1,0 +1,53 @@
+name: Test Slack notification formatting
+on:
+  push:
+    branches:
+      - "TOR-2707-paivita-github-actionit-pois-node-20"
+
+permissions:
+  contents: read
+
+jobs:
+  performance-failure:
+    name: Preview performance failure
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7
+
+      - name: Report failure
+        uses: ./.github/actions/report_slack_failure
+        with:
+          prefix: ":stopwatch: PERFORMANCE"
+          title: "[JUHAHE-TESTAA] Run performance tests: failure in randomget-light"
+          webhook: ${{ secrets.SLACK_WEBHOOK_URL }}
+
+  deploy-success:
+    name: Preview successful deployment
+    runs-on: ubuntu-24.04
+    env:
+      TEST_ENVIRONMENT: test
+    steps:
+      - name: Get short commit SHA
+        id: commit
+        env:
+          COMMIT_SHA: ${{ github.sha }}
+        run: printf 'short_sha=%.7s\n' "$COMMIT_SHA" >> "$GITHUB_OUTPUT"
+
+      - name: Report task ready
+        uses: slackapi/slack-github-action@dcb1066f776dd043e64d0e8ba94ca15cc7e1875d # v4.0.0
+        if: always()
+        with:
+          webhook: ${{ secrets.SLACK_WEBHOOK_URL }}
+          webhook-type: incoming-webhook
+          payload: |
+            {
+              "text": "[JUHAHE-TESTAA] :rocket: DEPLOY · ${{ job.status == 'success' && ':heavy_check_mark:' || job.status == 'failure' && ':x:' || ':no_entry_sign:' }} ${{ env.TEST_ENVIRONMENT }} install ${{ job.status == 'success' && 'passed' || job.status == 'failure' && 'failed' || 'cancelled' }}",
+              "blocks": [
+                {"type": "section", "text": {"type": "mrkdwn", "text": "*[JUHAHE-TESTAA] :rocket: DEPLOY · ${{ job.status == 'success' && ':heavy_check_mark:' || job.status == 'failure' && ':x:' || ':no_entry_sign:' }} ${{ env.TEST_ENVIRONMENT }} install ${{ job.status == 'success' && 'passed' || job.status == 'failure' && 'failed' || 'cancelled' }}*"}},
+                {"type": "context", "elements": [
+                  {"type": "mrkdwn", "text": "*Repo:* <${{ github.server_url }}/${{ github.repository }}|${{ github.repository }}> | *Workflow:* ${{ github.workflow }}\n*Branch:* <${{ github.server_url }}/${{ github.repository }}/tree/${{ github.ref_name }}|${{ github.ref_name }}> | *Commit:* <${{ github.server_url }}/${{ github.repository }}/commit/${{ github.sha }}|${{ steps.commit.outputs.short_sha }}>\n*<${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|View Run>*"}
+                ]},
+                {"type": "divider"}
+              ]
+            }

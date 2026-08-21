@@ -1,5 +1,8 @@
 name: Run security tests
 on:
+  push:
+    branches:
+      - "TOR-2707-paivita-github-actionit-pois-node-20"
   schedule:
     - cron: "0 0 * * *"
   workflow_dispatch:
@@ -26,7 +29,16 @@ jobs:
         run: pnpm install --recursive $PNPM_FROZEN_FLAG
         shell: bash
 
+      - name: Create vulnerable npm lockfile for Slack notification test
+        if: github.event_name == 'push'
+        run: |
+          mkdir -p trivy-slack-preview
+          cd trivy-slack-preview
+          npm init --yes
+          npm install --package-lock-only --ignore-scripts --save-exact lodash@4.17.15
+
       - name: Run Trivy on Koski
+        id: trivy_json
         uses: aquasecurity/trivy-action@ed142fd0673e97e23eac54620cfb913e5ce36c25 # v0.36.0
         with:
           scan-type: fs
@@ -36,27 +48,29 @@ jobs:
           trivyignores: .trivyignore
           format: json
           output: trivy-report.json
-          severity: 'CRITICAL,HIGH'
+          severity: ${{ github.event_name == 'push' && 'UNKNOWN,LOW,MEDIUM,HIGH,CRITICAL' || 'CRITICAL,HIGH' }}
           skip-dirs: 'src/main/resources/mockdata,src/test,target,omadata-oauth2-sample'
 
       - name: Summarize new CVEs
-        if: failure()
+        if: failure() && steps.trivy_json.outcome == 'failure' && hashFiles('trivy-report.json') != ''
         id: summarize
         run: |
+          if [ "${{ github.event_name }}" = "push" ]; then
+            jq -e '[.Results[]?.Vulnerabilities[]?] | length > 0' trivy-report.json
+          fi
+
+          # Jokaisesta targetista tulostetaan otsikko ja sen alle uniikit
+          # haavoittuvuusrivit. unique poistaa duplikaatit, joita syntyy kun sama
+          # paketti löytyy monesta PkgPathista (esim. hoistattuna useaan workspaceen).
           {
             echo 'cves<<EOF'
             jq -r '
-              [.Results[]
-               | select(.Vulnerabilities != null)
-               | {target: .Target, vulns: [
-                   .Vulnerabilities[]
-                   | "- <\(.PrimaryURL)|\(.VulnerabilityID)> [\(.Severity)] (\(.PkgName) \(.InstalledVersion))"
-                 ]}
-              ]
-              | group_by(.target)
-              | .[]
-              | (.[0].target),
-                (map(.vulns) | add | unique | join("\n")),
+              .Results[]
+              | select(.Vulnerabilities != null)
+              | .Target,
+                ([.Vulnerabilities[]
+                  | "- <\(.PrimaryURL)|\(.VulnerabilityID)> [\(.Severity)] (\(.PkgName) \(.InstalledVersion))"]
+                 | unique | join("\n")),
                 ""
             ' trivy-report.json
             echo 'EOF'
@@ -77,20 +91,34 @@ jobs:
     name: Notify Slack
     runs-on: ubuntu-24.04
     needs: [scan]
-    if: failure()
+    if: ${{ failure() && (github.event_name != 'push' || needs.scan.outputs.cves != '') }}
     steps:
-      - name: Report to Slack
-        uses: ravsamhq/notify-slack-action@02b169fd81108a34dbb029df4a41dd27ad680290
-        with:
-          status: failure
-          message_format: |
-            {emoji} *{workflow}* {status_message}
-
-            *New vulnerabilities found* in <{repo_url}|{repo}>
-
-            ${{ needs.scan.outputs.cves }}
-
-            <https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}|See full report in logs>
-            <https://trivy.util.yleiskayttoiset.opintopolku.fi/koski.html|See current status (use vpn)>
+      - name: Get short commit SHA
+        id: commit
         env:
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL_PROD_ALERTS }}
+          COMMIT_SHA: ${{ github.sha }}
+        run: printf 'short_sha=%.7s\n' "$COMMIT_SHA" >> "$GITHUB_OUTPUT"
+
+      - name: Report to Slack
+        uses: slackapi/slack-github-action@dcb1066f776dd043e64d0e8ba94ca15cc7e1875d # v4.0.0
+        env:
+          CVES: ${{ needs.scan.outputs.cves }}
+        with:
+          webhook: ${{ github.event_name == 'push' && secrets.SLACK_WEBHOOK_URL || secrets.SLACK_WEBHOOK_URL_PROD_ALERTS }}
+          webhook-type: incoming-webhook
+          # payload-templated sijoittaa {{env.CVES}}:n vasta JSON-parsinnan jälkeen,
+          # joten monirivistä CVE-listausta ei tarvitse escapetata käsin.
+          # Huom: {{env.CVES}} eikä ${{ env.CVES }} — jälkimmäisen laajentaisi
+          # GitHub Actions jo workflow'ta luettaessa, jolloin rivinvaihdot rikkoisivat JSONin.
+          payload-templated: true
+          payload: |
+            {
+              "text": "${{ github.event_name == 'push' && '[JUHAHE-TESTAA] ' || '' }}:rotating_light: Run security tests failed: new vulnerabilities found",
+              "blocks": [
+                {"type": "section", "text": {"type": "mrkdwn", "text": "*${{ github.event_name == 'push' && '[JUHAHE-TESTAA] ' || '' }}:rotating_light: Run security tests failed*\n\n*New vulnerabilities found* in <${{ github.server_url }}/${{ github.repository }}|${{ github.repository }}>\n\n{{env.CVES}}"}},
+                {"type": "context", "elements": [
+                  {"type": "mrkdwn", "text": "*Repo:* <${{ github.server_url }}/${{ github.repository }}|${{ github.repository }}> | *Workflow:* ${{ github.workflow }}\n*Branch:* <${{ github.server_url }}/${{ github.repository }}/tree/${{ github.ref_name }}|${{ github.ref_name }}> | *Commit:* <${{ github.server_url }}/${{ github.repository }}/commit/${{ github.sha }}|${{ steps.commit.outputs.short_sha }}>\n<${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|See full report in logs>\n<https://trivy.util.yleiskayttoiset.opintopolku.fi/koski.html|See current status (use vpn)>"}
+                ]},
+                {"type": "divider"}
+              ]
+            }
