@@ -334,8 +334,6 @@ class VirtaXMLConverterSpec extends AnyFreeSpec with TestEnvironment with Matche
     }
 
     "Koulutusala" - {
-      // Virrassa koodiarvon koodisto määräytyy versio-attribuutista; sama koodiarvo voi olla validi
-      // useassa koodistossa, joten testit varmistavat myös koodistoUri:n.
       def opiskeluoikeudenKoulutusala(versio: String, koodiarvo: String): Option[KorkeakoulunKoulutusala] =
         converter
           .convertToOpiskeluoikeudet(opiskeluoikeusWithOrganisaatio(None, koulutusala = Some((versio, koodiarvo))))
@@ -1019,21 +1017,13 @@ class VirtaXMLConverterSpec extends AnyFreeSpec with TestEnvironment with Matche
         val xml = scala.xml.XML.loadString(xmlString)
         val liikkuvuusjaksoNodet = (xml \\ "Liikkuvuusjakso").toList
 
-        // Neljä elementtiä, mutta vain kaksi eri avainta: sama jakso siirtyy sekä vanhan (01905) että
-        // uuden (10122) myöntäjän alla.
         liikkuvuusjaksoNodet should have length 4
         liikkuvuusjaksoNodet.map(n => (n \ "@avain").text).distinct should have length 2
 
         val oot = converter.convertToOpiskeluoikeudet(xml)
 
-        // Yksikään opiskeluoikeus ei saa saada samaa jaksoa kahdesti: fuusioituneen korkeakoulun
-        // opiskeluoikeus täsmää sekä vanhaan että uuteen myöntäjään, jolloin molemmat kopiot osuisivat
-        // siihen ilman avaimeen perustuvaa karsintaa.
         oot.foreach(oo => liikkuvuusjaksot(oo).distinct shouldBe liikkuvuusjaksot(oo))
 
-        // Fuusiodatassa myös opiskeluoikeudet itsessään siirtyvät kahteen kertaan (sama avain vanhan ja
-        // uuden myöntäjän alla). Ne yhdistää VirtaOpiskeluoikeusRepository.virtaHaku .distinctillä, joten
-        // oppijalle päätyvät liikkuvuusjaksot lasketaan samalla tavalla.
         val jaksot = oot.distinct.flatMap(liikkuvuusjaksot)
         jaksot should have length 2
         jaksot.map(j => (j.alku, j.maa.koodiarvo)).sortBy(_._1.toString) shouldBe List(
@@ -1068,15 +1058,10 @@ class VirtaXMLConverterSpec extends AnyFreeSpec with TestEnvironment with Matche
         val oot = opiskeluoikeudet("020276-901K.xml")
         val tunnisteet = oot.flatMap(_.lähdejärjestelmänId).flatMap(_.id).toSet
 
-        // Fuusiodatassa sama opiskeluoikeus tulee kahteen kertaan, eivätkä kappaleiden liittyvyydet ole
-        // identtiset: toisessa viitataan avaimiin, joita ei ole vastauksessa lainkaan.
         val lähteet = oot.filter(_.lähdejärjestelmänId.flatMap(_.id).contains("16049800.16048976"))
         lähteet should have length 2
         lähteet.map(liittyvät(_).size).distinct shouldBe List(4)
 
-        // Viittaus rakennetaan samalla yhdistelmäavainlogiikalla kuin opiskeluoikeuden oma
-        // lähdejärjestelmän id, joten se osuu tässä vastauksessa palautettuun opiskeluoikeuteen.
-        // Raaka Virta-avain (esim. "16049400") ei osuisi mihinkään.
         val vastauksessaOlevatKohteet = lähteet
           .map(liittyvät(_).map(_.lähdejärjestelmänId))
           .find(_.forall(tunnisteet.contains))

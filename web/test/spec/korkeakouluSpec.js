@@ -69,8 +69,6 @@ describe('Korkeakoulutus', function () {
 
   describe('Päättynyt-tila, korkeakoulututkinto', function () {
     before(page.openPage, page.oppijaHaku.searchAndSelect('010190-4473'))
-    // Oppijalla on kandin ja maisterin opiskeluoikeudet, kuten sisarfixtureilla
-    // 200990-228R ja 100295-026D, joten päätason suorituksia on kaksi.
     it('tulkitaan keskeneräiseksi suoritukseksi', function () {
       expect(S('.suoritukset .tila-vahvistus').length).to.equal(2)
     })
