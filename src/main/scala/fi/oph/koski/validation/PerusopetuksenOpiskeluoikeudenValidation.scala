@@ -282,7 +282,7 @@ object PerusopetuksenOpiskeluoikeusValidation extends Logging {
 
     if (pidennettyOppivelvollisuus.nonEmpty && jaksot.nonEmpty) {
       HttpStatus.validateNot(Aikajakso.overlap(pidennettyOppivelvollisuus, jaksot))(
-        KoskiErrorCategory.badRequest.validation.date.erityisenTuenPäätös(s"Pidennetyn oppivelvollisuus ja opetuksen järjestäminen vamman, sairauden tai rajoitteen perusteella eivät saa olla ajallisesti päällekkäin")
+        KoskiErrorCategory.badRequest.validation.date.erityisenTuenPäätös(s"Pidennetty oppivelvollisuus ja opetus oppiaineittain (vamman, sairauden tai rajoitteen perusteella) eivät saa olla ajallisesti päällekkäin")
       )
     } else {
       HttpStatus.ok
@@ -351,4 +351,3 @@ object PerusopetuksenOpiskeluoikeusValidation extends Logging {
     )
   }
 }
-

@@ -1,4 +1,4 @@
-import { expect, Page } from '@playwright/test'
+import { expect, Locator, Page } from '@playwright/test'
 
 /**
  * Apurit visuaalisille regressiotesteille.
@@ -102,6 +102,49 @@ const suurennaIkkunaSivunKorkuiseksi = async (
 }
 
 /**
+ * Wait until the final image has remained unchanged for long enough.
+ *
+ * Page height alone does not detect changes in a shorter column or changes
+ * that only affect color. Compare PNG screenshots taken with the same options
+ * used by the actual snapshot assertion.
+ */
+const waitForImageToStabilize = async (
+  page: Page,
+  mask: Locator[],
+  { stableDurationMs = 500, intervalMs = 100, timeoutMs = 10000 } = {}
+): Promise<void> => {
+  await page.evaluate(() => document.fonts.ready)
+
+  const startTime = Date.now()
+  let stableSince = startTime
+  let previousImage: Buffer | undefined
+
+  while (Date.now() - startTime < timeoutMs) {
+    const image = await page.screenshot({
+      animations: 'disabled',
+      caret: 'hide',
+      mask,
+      scale: 'css'
+    })
+    const now = Date.now()
+
+    if (previousImage?.equals(image)) {
+      if (now - stableSince >= stableDurationMs) return
+    } else {
+      stableSince = now
+      previousImage = image
+    }
+
+    await page.waitForTimeout(intervalMs)
+  }
+
+  throw new Error(
+    `The screenshot did not stabilize within ${timeoutMs} ms. ` +
+      `The view probably contains continuously changing content.`
+  )
+}
+
+/**
  * Ota koko sivun kuvakaappaus vasta kun asettelu on vakiintunut.
  * Käytä tätä kaikissa visuaalitesteissä suoran toHaveScreenshotin sijaan.
  *
@@ -118,12 +161,21 @@ export const otaVakaaKuvakaappaus = async (
   page: Page,
   nimi: string
 ): Promise<void> => {
+  // The study right OID is generated randomly on every fixture run. Mask it
+  // instead of changing the DOM. The visibility assertion ensures that a
+  // changed test ID cannot silently disable the mask.
+  const studyRightOids = page.locator('[data-testid$=".opiskeluoikeus.oid"]')
+  await expect(studyRightOids.first()).toBeVisible()
+  const mask = [studyRightOids]
+
   await suurennaIkkunaSivunKorkuiseksi(page)
   // Ikkuna kattaa nyt koko sivun, mutta varmistetaan vieritys alkuun: fixed-
   // elementit asemoituvat ikkunaan, ei dokumenttiin.
   await page.evaluate(() => window.scrollTo(0, 0))
+  await waitForImageToStabilize(page, mask)
   // expect.timeout (5 s) ei riitä pitkän sivun kaappaukseen.
   await expect(page).toHaveScreenshot(nimi, {
+    mask,
     timeout: 15000
   })
 }

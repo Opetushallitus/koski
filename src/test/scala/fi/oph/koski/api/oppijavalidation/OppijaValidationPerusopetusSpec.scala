@@ -589,11 +589,16 @@ class OppijaValidationPerusopetusSpec extends TutkinnonPerusteetTest[Perusopetuk
             ))
           }
         }
-        "Päätös opiskelun järjestämisestä toiminta-alueittain -lisätietoa ei siirtää liian aikaisin ja vaatii tukea koskevan päätöksen suorituksen alkamispäivän mukaan" in {
+        "Opetus toiminta-alueittain (vamman, sairauden tai rajoitteen perusteella) -lisätietoa ei voi siirtää liian aikaisin ja se vaatii tukea koskevan päätöksen suorituksen alkamispäivän mukaan" in {
           val toimintaAlueittainJärjestettyVoimaan = LocalDate.parse(KoskiApplicationForTests.config.getString("validaatiot.toimintaAlueittainJärjestettyVoimaan"))
           setupOppijaWithOpiskeluoikeus(makeOpiskeluoikeusWithPäätösToimintaAlueittainOpiskelusta(toimintaAlueittainJärjestettyVoimaan, toimintaAlueittainJärjestettyVoimaan.plusDays(1))) {
             verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.date(
-              "Toiminta-alueittain opiskelun (2026-08-01 – ) täytyy sisältyä tuen päätöksen jaksoon"
+              "Opetus toiminta-alueittain (vamman, sairauden tai rajoitteen perusteella) -lisätiedon (2026-08-01 – ) täytyy sisältyä tuen päätöksen jaksoon"
+            ))
+          }
+          setupOppijaWithOpiskeluoikeus(makeOpiskeluoikeusWithPäätösToimintaAlueittainOpiskelusta(toimintaAlueittainJärjestettyVoimaan.minusDays(1), toimintaAlueittainJärjestettyVoimaan.minusDays(1))) {
+            verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.date(
+              "Opetus toiminta-alueittain (vamman, sairauden tai rajoitteen perusteella) -lisätiedon varhaisin sallittu voimassaolopäivä on 2026-08-01"
             ))
           }
           setupOppijaWithOpiskeluoikeus(makeOpiskeluoikeusWithPäätösToimintaAlueittainOpiskelusta(toimintaAlueittainJärjestettyVoimaan, toimintaAlueittainJärjestettyVoimaan)) {
@@ -617,6 +622,7 @@ class OppijaValidationPerusopetusSpec extends TutkinnonPerusteetTest[Perusopetuk
         tuenPäätöksenJaksot: Option[List[Tukijakso]] = None,
         erityisenTuenPäätökset: Option[List[ErityisenTuenPäätös]] = None,
         opetuksenJärjestäminenVammanSairaudenTaiRajoitteenPerusteella: Option[List[Aikajakso]] = None,
+        toimintaAlueittainOpiskelu: Option[List[Aikajakso]] = None,
         tavoitekokonaisuuksittainOpiskelu: Option[List[Aikajakso]] = None,
         yhdysluokka: Option[List[Aikajakso]] = None,
         suoritukset: List[PerusopetuksenPäätasonSuoritus] = List(yhdeksännenLuokanSuoritus)
@@ -661,6 +667,7 @@ class OppijaValidationPerusopetusSpec extends TutkinnonPerusteetTest[Perusopetuk
               tavoitekokonaisuuksittainOpiskelu = tavoitekokonaisuuksittainOpiskelu,
               yhdysluokka = yhdysluokka,
               opetuksenJärjestäminenVammanSairaudenTaiRajoitteenPerusteella = opetuksenJärjestäminenVammanSairaudenTaiRajoitteenPerusteella,
+              toimintaAlueittainOpiskelu = toimintaAlueittainOpiskelu,
               erityisenTuenPäätökset = erityisenTuenPäätökset
             ))
           )
@@ -961,7 +968,7 @@ class OppijaValidationPerusopetusSpec extends TutkinnonPerusteetTest[Perusopetuk
         }
       }
 
-      "Opetuksen järjestäminen vamman, sairauden tai toimintakyvyn rajoitteen perusteella" - {
+      "Opetus oppiaineittain (vamman, sairauden tai rajoitteen perusteella)" - {
         val vammaSairausTaiRajoiteVoimaan = LocalDate.parse(KoskiApplicationForTests.config.getString("validaatiot.vammaSairausTaiRajoiteVoimaan"))
 
         "Vaatii tukijakson eikä saa alkaa ennen voimaantulopäivää" in {
@@ -970,10 +977,10 @@ class OppijaValidationPerusopetusSpec extends TutkinnonPerusteetTest[Perusopetuk
           ).build) {
             verifyResponseStatus(400,
               KoskiErrorCategory.badRequest.validation.date(
-                "Opetuksen järjestäminen vamman, sairauden tai rajoitteen perusteella (2026-07-31 – ) pitää sisältyä tuen päätöksen jaksoon"
+                "Opetus oppiaineittain (vamman, sairauden tai rajoitteen perusteella) -lisätiedon (2026-07-31 – ) täytyy sisältyä tuen päätöksen jaksoon"
               ),
               KoskiErrorCategory.badRequest.validation.date(
-                "Opetuksen järjestäminen vamman, sairauden tai rajoitteen perusteella -lisätiedon varhaisin sallittu voimassaolopäivä on 2026-08-01"
+                "Opetus oppiaineittain (vamman, sairauden tai rajoitteen perusteella) -lisätiedon varhaisin sallittu voimassaolopäivä on 2026-08-01"
               )
             )
           }
@@ -985,6 +992,19 @@ class OppijaValidationPerusopetusSpec extends TutkinnonPerusteetTest[Perusopetuk
             verifyResponseStatusOk()
           }
         }
+
+        "Opetus oppiaineittain ja toiminta-alueittain eivät saa olla päällekkäin" in {
+          setupOppijaWithOpiskeluoikeus(TuenPäätöksellinenBuilder(
+            opetuksenJärjestäminenVammanSairaudenTaiRajoitteenPerusteella = vammaSairausRajoiteJaksot(alku = vammaSairausTaiRajoiteVoimaan),
+            toimintaAlueittainOpiskelu = vammaSairausRajoiteJaksot(alku = vammaSairausTaiRajoiteVoimaan),
+            tuenPäätöksenJaksot = tuenPäätöksenJaksot(alku = vammaSairausTaiRajoiteVoimaan)
+          ).build) {
+            verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.date(
+              "Opetus oppiaineittain (vamman, sairauden tai rajoitteen perusteella) -lisätieto ei saa olla samaan aikaan kuin opetus toiminta-alueittain (vamman, sairauden tai rajoitteen perusteella): 2026-08-01 – "
+            ))
+          }
+        }
+
       }
 
       "Tavoitekokonaisuuksittain opiskelu" - {
