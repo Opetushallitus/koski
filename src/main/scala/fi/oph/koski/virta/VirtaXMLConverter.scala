@@ -607,10 +607,6 @@ case class VirtaXMLConverter(oppilaitosRepository: OppilaitosRepository, koodist
     noneIfEmpty(jaksot)
   }
 
-  // Fuusioituneella korkeakoululla sama liikkuvuusjakso siirtyy Virrasta kahteen kertaan: kerran vanhan
-  // ja kerran uuden myöntäjän alla. Kopiot jakavat avaimen (joka sisältää alkuperäisen myöntäjän myös
-  // kopiossa), joten karsinta tehdään avaimella eikä sisältöä vertailemalla. Avaimettomia jaksoja ei voi
-  // tunnistaa kaksoiskappaleiksi, joten ne säilytetään sellaisenaan.
   private def poistaFuusioDuplikaatit(jaksot: List[Node]): List[Node] = {
     val (avaimelliset, avaimettomat) = jaksot.partition(n => (n \ "@avain").text.nonEmpty)
     avaimelliset.distinctBy(n => (n \ "@avain").text) ++ avaimettomat
@@ -623,9 +619,6 @@ case class VirtaXMLConverter(oppilaitosRepository: OppilaitosRepository, koodist
         .filter(_.nonEmpty)
         .flatMap(koodiarvo => koodistoViitePalvelu.validate(koodistoUri, koodiarvo))
 
-    // Suunta, maa, tyyppi ja liikkuvuusohjelma ovat jakson tulkinnan kannalta välttämättömiä, joten jakso
-    // jätetään kokonaan pois jos jokin niistä ei ratkea. validate ei heitä poikkeusta, joten tuntematon
-    // koodiarvo ei kaada koko oppijan konversiota.
     val jakso = for {
       suunta <- koodi("Suunta", "virtaliikkuvuudensuunta")
       maa <- koodi("Maa", "maatjavaltiot2")
@@ -647,18 +640,10 @@ case class VirtaXMLConverter(oppilaitosRepository: OppilaitosRepository, koodist
     jakso
   }
 
-  // liikkuvuudenluokittelu-koodiston arvot ovat yksittäisiä kirjaimia, joten parseLuokittelua (joka
-  // hyväksyy vain numeeriset arvot) ei voi käyttää.
   private def parseLiikkuvuudenLuokittelu(node: Node): List[Koodistokoodiviite] = (node \ "Luokittelu")
     .map(_.text).filter(s => s.length == 1 && s.forall(_.isLetter)).toList
     .flatMap(l => koodistoViitePalvelu.validate("liikkuvuudenluokittelu", l))
 
-  // Liittyvyys viittaa toiseen opiskeluoikeuteen Virran omalla avaimella, mutta korkeakoulun
-  // opiskeluoikeudella ei ole oidia, joten sen tunniste Koskessa on lähdejärjestelmänId.id. Se ei aina
-  // ole sama kuin Virran avain: jos avain esiintyy vastauksessa useammin kuin kerran, tunnisteeksi tulee
-  // yhdistelmäavain. Viittaus muodostetaan siksi samalla logiikalla kuin viitatun opiskeluoikeuden oma
-  // tunniste, jotta se osuu johonkin samassa vastauksessa palautettavaan opiskeluoikeuteen.
-  // Liittyvyys on aina saman opiskelijan opiskeluoikeuksien välinen, joten opiskelijaAvain on sama.
   private def liittyvätOpiskeluoikeudet(
     duplikaattiavaimet: List[String],
     opiskeluoikeusNodes: List[Node],
@@ -666,7 +651,6 @@ case class VirtaXMLConverter(oppilaitosRepository: OppilaitosRepository, koodist
   ): Option[List[LiittyväOpiskeluoikeus]] = noneIfEmpty(
     (opiskeluoikeusNode \ "Liittyvyys").toList
       .map(liittyvyys => (liittyvyys \ "@liittyvaOpiskeluoikeusAvain").text)
-      // Avaimeton liittyvyys ohitetaan: siitä syntyisi viittaus, joka ei voi osua mihinkään.
       .filter(_.nonEmpty)
       .map { liittyväAvain =>
       LiittyväOpiskeluoikeus(
@@ -674,8 +658,6 @@ case class VirtaXMLConverter(oppilaitosRepository: OppilaitosRepository, koodist
           duplikaattiavaimet,
           OpiskeluoikeusAvain(avain = liittyväAvain, opiskelijaAvain = avain(opiskeluoikeusNode).opiskelijaAvain)
         ),
-        // Viitattu opiskeluoikeus ei aina ole mukana vastauksessa, ja tuntematon tyyppi ohitetaan,
-        // jottei yksittäinen arvo kaada koko oppijan konversiota.
         tyyppi = opiskeluoikeusNodes
           .find(n => avain(n).avain == liittyväAvain)
           .flatMap(n => koodistoViitePalvelu.validate("virtaopiskeluoikeudentyyppi", (n \ "Tyyppi").text))
@@ -683,12 +665,6 @@ case class VirtaXMLConverter(oppilaitosRepository: OppilaitosRepository, koodist
     }
   )
 
-  // Virran Koulutusala-elementin versio-attribuutti kertoo, minkä koodiston mukainen koodiarvo on.
-  // Koodiavaruudet menevät osin päällekkäin (esim. "2" on validi kaikissa kolmessa), joten koodistoa
-  // ei voi päätellä pelkästä koodiarvosta. Elementillä on kaksi muotoa: opiskeluoikeudella versio on
-  // elementissä itsessään ja koodiarvo on sen tekstisisältö, opintosuorituksella taas versio on
-  // Koodi-lapsielementissä ja mukana voi olla Osuus. Tuntematon versio tai koodiarvo ohitetaan,
-  // jottei yksittäinen arvo kaada koko oppijan konversiota.
   private def koulutusala(node: Node): Option[KorkeakoulunKoulutusala] =
     (node \ "Koulutusala").headOption.flatMap { ka =>
       val (versio, koodiarvo) = (ka \ "Koodi").headOption match {
@@ -715,7 +691,6 @@ case class VirtaXMLConverter(oppilaitosRepository: OppilaitosRepository, koodist
       , koulutuskunta = requiredKoodi("kunta", (jakso \ "Koulutuskunta").text))).toList.sortBy(_.alku)
   }
 
-  // Tuntematon rahoituslähde ohitetaan, jottei yksittäinen jakso kaada koko oppijan konversiota
   private def rahoituslähdejaksot(opiskeluoikeusNode: Node): List[RahoituslähdeJakso] =
     (opiskeluoikeusNode \ "Jakso").toList.flatMap { jakso =>
       koodistoViitePalvelu
@@ -752,8 +727,6 @@ case class Ilmoittautuminen(oppilaitos: Option[Oppilaitos], tila: KorkeakoulunOp
 
 }
 
-// Liikkuvuusjaksot siirtyvät Virrasta opiskelijan alla, opiskeluoikeuksien sisarenaan, joten ne on
-// kohdistettava opiskeluoikeuteen jälkikäteen.
 case class Liikkuvuus(opiskeluoikeusNode: Node, tila: KorkeakoulunOpiskeluoikeudenTila, ooAvain: OpiskeluoikeusAvain) {
   private lazy val jaksot = tila.opiskeluoikeusjaksot.map(Some.apply)
   private lazy val aktiivisetJaksot = jaksot.zipAll(jaksot.drop(1), None, None).collect {
@@ -766,10 +739,6 @@ case class Liikkuvuus(opiskeluoikeusNode: Node, tila: KorkeakoulunOpiskeluoikeud
     if (jaksonOpiskeluoikeusAvain.nonEmpty) {
       ooAvain == jaksonOpiskeluoikeusAvain
     } else {
-      // Virta ei aina siirrä liikkuvuusjaksolle opiskeluoikeusavainta. Silloin jakso kohdistetaan myöntäjän
-      // ja päällekkäisen voimassaolon perusteella. Myöntäjää verrataan opiskeluoikeusnoodin Virta-koodeihin
-      // eikä ratkaistuun Koski-organisaatioon, koska fuusiotapauksissa useampi Virta-koodi osoittaa samaan
-      // organisaatioon ja koodi voi jäädä kokonaan ratkeamatta.
       oppilaitosnumero(n).asList.exists(opiskeluoikeudenMyöntäjät.contains) &&
         aktiivisetJaksot.exists(_.overlaps(LoppupäivällinenOpiskeluoikeusJakso(alkuPvm(n), loppuPvm(n))))
     }

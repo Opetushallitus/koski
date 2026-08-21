@@ -154,7 +154,6 @@ object Koodistot {
     KoodistoAsetus("koulutusalaoph2002"),
     KoodistoAsetus("koulutustyyppi"),
     KoodistoAsetus("kunta"),
-    // Huom: Virran liikkuvuuskoodistoista vain tämä on ilman virta-etuliitettä
     KoodistoAsetus("liikkuvuudenluokittelu"),
     KoodistoAsetus("lukionkurssit"),
     KoodistoAsetus("maatjavaltiot1"),
