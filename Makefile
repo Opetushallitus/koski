@@ -92,7 +92,7 @@ backtest:
 	fi.oph.koski.integrationtest,fi.oph.koski.json,fi.oph.koski.kela,fi.oph.koski.koodisto,\
 	fi.oph.koski.koskiuser,fi.oph.koski.localization,fi.oph.koski.cas,fi.oph.koski.log,\
 	fi.oph.koski.luovutuspalvelu,fi.oph.koski.migration,fi.oph.koski.migri,\
-	fi.oph.koski.mocha,fi.oph.koski.mydata,fi.oph.koski.omaopintopolkuloki,fi.oph.koski.opensearch,\
+	fi.oph.koski.mydata,fi.oph.koski.omaopintopolkuloki,fi.oph.koski.opensearch,\
 	fi.oph.koski.opiskeluoikeus,fi.oph.koski.oppilaitos,fi.oph.koski.oppivelvollisuustieto,\
 	fi.oph.koski.organisaatio,fi.oph.koski.perftest,fi.oph.koski.perustiedot,fi.oph.koski.raportit,\
 	fi.oph.koski.raportointikanta,fi.oph.koski.schedule,fi.oph.koski.schema,\
@@ -117,7 +117,7 @@ backtestnonmock:
 
 .PHONY: fronttest
 fronttest:
-	mvn $(mvn_opts) -DargLine="$(mvn_argline)" test -DmembersOnlySuites="fi.oph.koski.mocha" -DtagsToExlude="parallelmocha"
+	mvn $(mvn_opts) -DargLine="$(mvn_argline)" test -Dsuites="fi.oph.koski.mocha.KoskiMochaSpec,fi.oph.koski.mocha.KoskiJsUnitSpec"
 
 .PHONY: integrationtest
 integrationtest:

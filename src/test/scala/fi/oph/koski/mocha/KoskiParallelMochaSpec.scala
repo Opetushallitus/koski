@@ -2,13 +2,12 @@ package fi.oph.koski.mocha
 
 import fi.oph.koski.{KoskiApplicationForTests, SharedJetty}
 import fi.oph.koski.util.Files
-import org.scalatest.Tag
 import org.scalatest.freespec.AnyFreeSpec
 
 class KoskiParallelMochaSpec extends AnyFreeSpec with KoskiCommandLineSpec {
   // Indeksointi lähtee nollasta
   def shardIndex: Int = Integer.parseInt(scala.util.Properties.envOrElse("MOCHA_SHARD_INDEX", "1")) - 1
-  "Mocha tests" taggedAs(Tag("parallelmocha")) in {
+  "Mocha tests" in {
     val specs = SplitMochaSpecs.takeSpecsForRunner(shardIndex)
     val sharedJetty = new SharedJetty(KoskiApplicationForTests)
     sharedJetty.start()
