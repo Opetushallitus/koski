@@ -1929,15 +1929,17 @@ describe('Perusopetus 2', function () {
 
         describe('Käyttöliittymän tila', function () {
           it('Lisää-nappi on enabloitu', function () {
-            eventually(() => expect(addOppija.isEnabled()).to.equal(true))
+            return eventually(() =>
+              expect(addOppija.isEnabled()).to.equal(true)
+            )()
           })
 
           it('Ei näytetä opintojen rahoitus -kenttää', function () {
             expect(addOppija.rahoitusIsVisible()).to.equal(false)
           })
 
-          it('Oikeat tilat tilavaihtoehtoina', function () {
-            expect(addOppija.opiskeluoikeudenTilat()).to.deep.equal([
+          it('Oikeat tilat tilavaihtoehtoina', async function () {
+            expect(await addOppija.opiskeluoikeudenTilat()).to.deep.equal([
               'Eronnut',
               'Katsotaan eronneeksi',
               'Läsnä',
@@ -2193,8 +2195,8 @@ describe('Perusopetus 2', function () {
       )
 
       describe('Käyttöliittymän tila', function () {
-        it('Näytetään oppimäärävaihtoehdot', function () {
-          expect(addOppija.oppimäärät()).to.deep.equal([
+        it('Näytetään oppimäärävaihtoehdot', async function () {
+          expect(await addOppija.oppimäärät()).to.deep.equal([
             'Nuorten perusopetuksen oppiaineen oppimäärä',
             'Perusopetuksen oppimäärä'
           ])
@@ -2208,8 +2210,8 @@ describe('Perusopetus 2', function () {
           )
         )
 
-        it('on valittavissa', function () {
-          expect(addOppija.oppiaineet()).to.contain('Ei tiedossa')
+        it('on valittavissa', async function () {
+          expect(await addOppija.oppiaineet()).to.contain('Ei tiedossa')
         })
       })
 
@@ -2539,8 +2541,8 @@ describe('Perusopetus 2', function () {
       )
 
       describe('Käyttöliittymän tila', function () {
-        it('Näytetään oppimäärävaihtoehdot', function () {
-          expect(addOppija.oppimäärät()).to.deep.equal([
+        it('Näytetään oppimäärävaihtoehdot', async function () {
+          expect(await addOppija.oppimäärät()).to.deep.equal([
             'Aikuisten perusopetuksen oppimäärän alkuvaihe',
             'Perusopetuksen oppiaineen oppimäärä',
             'Aikuisten perusopetuksen oppimäärä'
@@ -2551,8 +2553,8 @@ describe('Perusopetus 2', function () {
       describe('Ei-tiedossa oppiaine', function () {
         before(addOppija.selectOppimäärä('Perusopetuksen oppiaineen oppimäärä'))
 
-        it('on valittavissa', function () {
-          expect(addOppija.oppiaineet()).to.contain('Ei tiedossa')
+        it('on valittavissa', async function () {
+          expect(await addOppija.oppiaineet()).to.contain('Ei tiedossa')
         })
       })
 
@@ -2650,7 +2652,9 @@ describe('Perusopetus 2', function () {
             addOppija.enterValidDataPerusopetus()
           )
           it('Lisää-nappi on enabloitu', function () {
-            eventually(() => expect(addOppija.isEnabled()).to.equal(true))
+            return eventually(() =>
+              expect(addOppija.isEnabled()).to.equal(true)
+            )()
           })
         })
         describe('Back-nappi lisäyksen jälkeen', function () {
@@ -2665,7 +2669,9 @@ describe('Perusopetus 2', function () {
             addOppija.enterValidDataPerusopetus()
           )
           it('Uuden oppijan lisäys on mahdollista', function () {
-            expect(addOppija.isEnabled()).to.equal(true)
+            return eventually(() =>
+              expect(addOppija.isEnabled()).to.equal(true)
+            )()
           })
 
           describe('Lisättäessä uudelleen', function () {

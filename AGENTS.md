@@ -133,7 +133,7 @@ mvn test -Dsuites="fi.oph.koski.schema.SchemaSpec"
 
 ### Frontend Tests
 - **Mocha tests**: `web/test/` - run with `make fronttest`
-- **Playwright tests**: `web/test/playwright/` - run with `make integrationtest`
+- **Playwright tests**: `web/test/e2e/` - run with `make integrationtest`
 - **Valpas Jest tests**: `valpas-web/test/` - run with `make valpas-fronttest-*`
 
 ### Test Users

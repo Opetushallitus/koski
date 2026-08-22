@@ -699,13 +699,6 @@
             <artifactId>scoverage-maven-plugin</artifactId>
             <version>${scoverage.plugin.version}</version>
           </plugin>
-          <plugin>
-            <groupId>org.scalatest</groupId>
-            <artifactId>scalatest-maven-plugin</artifactId>
-            <configuration>
-              <tagsToExclude>koskidev</tagsToExclude>
-            </configuration>
-          </plugin>
         </plugins>
       </build>
     </profile>

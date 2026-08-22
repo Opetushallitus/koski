@@ -836,15 +836,16 @@ describe('Lukiokoulutus', function () {
           addOppija.selectOppimäärä('Lukion oppiaineen oppimäärä')
         )
 
-        it('Ei-tiedossa oppiaine on valittavissa', function () {
-          expect(addOppija.oppiaineet()).to.contain('Ei tiedossa')
+        it('Ei-tiedossa oppiaine on valittavissa', async function () {
+          expect(await addOppija.oppiaineet()).to.contain('Ei tiedossa')
         })
 
-        it('Ei näytä lukion 2019 OPS:n diaarinumeroita', function () {
-          expect(addOppija.perusteet()).to.not.contain(
+        it('Ei näytä lukion 2019 OPS:n diaarinumeroita', async function () {
+          const perusteet = await addOppija.perusteet()
+          expect(perusteet).to.not.contain(
             'OPH-2267-2019 Aikuisten lukiokoulutuksen opetussuunnitelman perusteet 2019'
           )
-          expect(addOppija.perusteet()).to.not.contain(
+          expect(perusteet).to.not.contain(
             'OPH-2263-2019 Lukion opetussuunnitelman perusteet 2019'
           )
         })
@@ -896,8 +897,8 @@ describe('Lukiokoulutus', function () {
           )
         )
 
-        it('Ei-tiedossa oppiaine on valittavissa', function () {
-          expect(addOppija.oppiaineet()[0]).to.equal('Ei tiedossa')
+        it('Ei-tiedossa oppiaine on valittavissa', async function () {
+          expect((await addOppija.oppiaineet())[0]).to.equal('Ei tiedossa')
         })
 
         describe('Lisäyksen jälkeen', function () {
@@ -1055,8 +1056,8 @@ describe('Lukiokoulutus', function () {
         expect(addOppija.rahoitusIsVisible()).to.equal(true)
       })
 
-      it('vaihtoehtoina on ainoastaan "valtionosuusrahoitteinen koulutus", "muuta kautta rahoitettu" ja "Lukuvuosimaksu"', function () {
-        expect(addOppija.opintojenRahoitukset()).to.deep.equal([
+      it('vaihtoehtoina on ainoastaan "valtionosuusrahoitteinen koulutus", "muuta kautta rahoitettu" ja "Lukuvuosimaksu"', async function () {
+        expect(await addOppija.opintojenRahoitukset()).to.deep.equal([
           'Valtionosuusrahoitteinen koulutus',
           'Muuta kautta rahoitettu',
           'Lukuvuosimaksu'
