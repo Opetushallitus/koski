@@ -50,9 +50,6 @@ class AuditLogService(val application: KoskiApplication) extends Logging with My
           |  contains (#rawEntry, :oauth2_katsominen_kaikki_tiedot_ja_valintatiedot) or
           |  contains (#rawEntry, :oauth2_katsominen_suoritetut_tutkinnot) or
           |  contains (#rawEntry, :oauth2_katsominen_aktiiviset_ja_paattyneet_opinnot) or
-          |  contains (#rawEntry, :suoritusjako_katsominen) or
-          |  contains (#rawEntry, :suoritusjako_katsominen_suoritetut_tutkinnot) or
-          |  contains (#rawEntry, :suoritusjako_katsominen_aktiiviset_ja_paattyneet_opinnot) or
           |  contains (#rawEntry, :valpas_oppija_katsominen) or
           |  contains (#rawEntry, :valpas_kuntailmoituksen_katsominen) or
           |  contains (#rawEntry, :oppivelvollisuusrekisteri_luovutus) or
@@ -67,9 +64,6 @@ class AuditLogService(val application: KoskiApplication) extends Logging with My
         valueMap.put(":katsominen", AttributeValue.builder.s("\"OPISKELUOIKEUS_KATSOMINEN\"").build)
         valueMap.put(":muutoshistoria_katsominen", AttributeValue.builder.s("\"MUUTOSHISTORIA_KATSOMINEN\"").build)
         valueMap.put(":ytr_katsominen", AttributeValue.builder.s("\"YTR_OPISKELUOIKEUS_KATSOMINEN\"").build)
-        valueMap.put(":suoritusjako_katsominen", AttributeValue.builder.s("\"KANSALAINEN_SUORITUSJAKO_KATSOMINEN\"").build)
-        valueMap.put(":suoritusjako_katsominen_suoritetut_tutkinnot", AttributeValue.builder.s("\"KANSALAINEN_SUORITUSJAKO_KATSOMINEN_SUORITETUT_TUTKINNOT\"").build)
-        valueMap.put(":suoritusjako_katsominen_aktiiviset_ja_paattyneet_opinnot", AttributeValue.builder.s("\"KANSALAINEN_SUORITUSJAKO_KATSOMINEN_AKTIIVISET_JA_PAATTYNEET_OPINNOT\"").build)
         valueMap.put(":oauth2_katsominen_kaikki_tiedot", AttributeValue.builder.s("\"OAUTH2_KATSOMINEN_KAIKKI_TIEDOT\"").build)
         valueMap.put(":oauth2_katsominen_kaikki_tiedot_ja_valintatiedot", AttributeValue.builder.s("\"OAUTH2_KATSOMINEN_KAIKKI_TIEDOT_JA_VALINTATIEDOT\"").build)
         valueMap.put(":oauth2_katsominen_suoritetut_tutkinnot", AttributeValue.builder.s("\"OAUTH2_KATSOMINEN_SUORITETUT_TUTKINNOT\"").build)
@@ -123,23 +117,20 @@ class AuditLogService(val application: KoskiApplication) extends Logging with My
         val timestampString = parsedRow.time
         val serviceName = AuditLogService.resolveServiceName(parsedRaw.operation, parsedRaw.serviceName)
         val isMyDataUse = parsedRaw.operation.startsWith("OAUTH2_KATSOMINEN") || parsedRow.organizationOid.headOption.exists(isMyDataOrg)
-        // TODO: Jakolinkkien käyttöjen palauttaminen frontille on toteutettu valmiiksi, mutta oma-opintopolku-lokin DynamoDB-parsinta skippaa näiden
-        // entryjen käsittelyn, minkä vuoksi tuotantoympäristöissä näitä entryjä ei vielä käytännössä DynamoDB:ssä ole.
-        val isJakolinkkiUse = parsedRaw.operation.startsWith("KANSALAINEN_SUORITUSJAKO_KATSOMINEN")
-        (organisaatioOidit, serviceName, isMyDataUse, isJakolinkkiUse, timestampString)
+        (organisaatioOidit, serviceName, isMyDataUse, timestampString)
       })
       .toSeq
-      .groupBy(x => (x._1, x._2, x._3, x._4))
+      .groupBy(x => (x._1, x._2, x._3))
       .view
-      .mapValues(_.map(_._5))
+      .mapValues(_.map(_._4))
       .toMap
 
     HttpStatus.foldEithers(
       timestampsGrouped
         .map {
-          case ((orgs, serviceName, isMyDataUse, isJakolinkkiUse), timestamps) =>
+          case ((orgs, serviceName, isMyDataUse), timestamps) =>
             HttpStatus.foldEithers(orgs.map(toOrganisaatio))
-              .map(orgs => OrganisaationAuditLogit(orgs, serviceName, isMyDataUse, isJakolinkkiUse, timestamps.sorted.reverse))
+              .map(orgs => OrganisaationAuditLogit(orgs, serviceName, isMyDataUse, timestamps.sorted.reverse))
         }
         .toSeq
     ).map(_.sortBy(_.timestamps.headOption)(Ordering[Option[String]].reverse))
@@ -218,7 +209,6 @@ case class OrganisaationAuditLogit(
   organizations: Seq[Organisaatio],
   serviceName: String,
   isMyDataUse: Boolean,
-  isJakolinkkiUse: Boolean,
   timestamps: Seq[String]
 )
 
