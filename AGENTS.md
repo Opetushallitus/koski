@@ -211,9 +211,25 @@ Removing an override is not enough on its own: pnpm keeps a lockfile resolution 
 4. Update validation if needed
 
 ### Updating localizations
-Localizations are managed through the Lokalisointipalvelu service.
-Add new localization keys for Koski in `src/main/resources/localization/koski-default-texts.json`
-Add new localization keys for Valpas in `src/main/resources/valpas/localization/valpas-default-texts.json`
+Localizations are served by the Lokalisointipalvelu service, which gets its data from Tolgee.
+The repo mirrors it in two files: `src/main/resources/mockdata/lokalisointi/koski.json` (all
+languages — what local dev and tests read) and
+`src/main/resources/localization/koski-default-texts.json` (Finnish only — the key list and the
+fallback). Valpas has the same pair under `src/main/resources/valpas/`.
+
+- **New key** → add it to `koski-default-texts.json`. On startup the app creates in the service
+  any key present there but missing from it — but only with the Finnish text, publishing `sv`
+  and `en` as empty strings. Swedish and English for a new key must therefore be added in Tolgee
+  as well; writing them straight into the mockdata file works locally and is dropped by the next
+  refresh.
+- **Changed text on an existing key** → do **both**: commit the new value to the repo *and* edit
+  it in Tolgee. Neither half is enough on its own. `LocalizationRepository.init` only *creates*
+  keys missing from the service (`localization.create`) and never updates the value of one that
+  already exists — so a repo-only edit never reaches production and the next
+  `scripts/fetch_prod_localizations.sh` run silently reverts it, while a Tolgee-only edit leaves
+  local dev and tests on the old text until someone refreshes.
+
+See the header comment in `scripts/fetch_prod_localizations.sh` for what a refresh overwrites.
 
 ### Generating database documentation
 ```bash
