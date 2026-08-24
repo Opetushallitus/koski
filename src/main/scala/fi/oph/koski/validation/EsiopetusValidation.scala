@@ -33,7 +33,7 @@ object EsiopetusValidation {
 
     if (erityisenTuenPäätökset.nonEmpty && tuenPäätöksenJaksot.nonEmpty) {
       HttpStatus.validateNot(MahdollisestiAlkupäivällinenJakso.overlap(erityisenTuenPäätökset, tuenPäätöksenJaksot))(
-        KoskiErrorCategory.badRequest.validation.date.erityisenTuenPäätös(s"Erityisen tuen päätöksen jakso ja tuen päätöksen jakso eivät saa olla päällekkäin")
+        KoskiErrorCategory.badRequest.validation.date.erityisenTuenPäätös(s"Erityisen tuen päätöksen jakso ja tuen päätöksen jakso eivät saa olla päivämääriltään päällekkäin")
       )
     } else {
       HttpStatus.ok
@@ -45,8 +45,8 @@ object EsiopetusValidation {
     val varhennetunOppivelvollisuudenJaksot = tiedot.varhennetunOppivelvollisuudenJaksot.toList.flatten
 
     if (pidennettyOppivelvollisuus.nonEmpty && varhennetunOppivelvollisuudenJaksot.nonEmpty) {
-      HttpStatus.validateNot(Aikajakso.overlap(pidennettyOppivelvollisuus, varhennetunOppivelvollisuudenJaksot))(
-        KoskiErrorCategory.badRequest.validation.date.erityisenTuenPäätös(s"Pidennetyn oppivelvollisuuden päivämääräväli ja varhennetun oppivelvollisuuden jakso eivät saa olla päällekkäin")
+      HttpStatus.validateNot(Aikajakso.overlaps(pidennettyOppivelvollisuus, varhennetunOppivelvollisuudenJaksot))(
+        KoskiErrorCategory.badRequest.validation.date.pidennettyOppivelvollisuus(s"Pidennetty oppivelvollisuus ja varhennettu oppivelvollisuus eivät saa olla päivämääriltään päällekkäin")
       )
     } else {
       HttpStatus.ok

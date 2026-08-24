@@ -64,6 +64,54 @@ class JaksoSpec extends AnyFreeSpec with TestEnvironment with Matchers {
     }
   }
 
+  "Aikajaksolistojen päällekkäisyys" - {
+    "Osittainen päällekkäisyys avoimen jakson kanssa" in {
+      val as =
+        List(Aikajakso(date(2026, 1, 1), Some(date(2026, 1, 31))))
+      val bs =
+        List(Aikajakso(date(2026, 1, 15), None))
+
+      Aikajakso.overlaps(as, bs) should equal(true)
+      Aikajakso.overlaps(bs, as) should equal(true)
+    }
+
+    "Yksi yhteinen rajapäivä" in {
+      val as =
+        List(Aikajakso(date(2026, 1, 1), Some(date(2026, 1, 15))))
+      val bs =
+        List(Aikajakso(date(2026, 1, 15), Some(date(2026, 1, 31))))
+
+      Aikajakso.overlaps(as, bs) should equal(true)
+      Aikajakso.overlaps(bs, as) should equal(true)
+    }
+
+    "Jaksot ovat peräkkäisiä ilman päällekkäisyyttä" in {
+      val as =
+        List(Aikajakso(date(2026, 1, 1), Some(date(2026, 1, 15))))
+      val bs =
+        List(Aikajakso(date(2026, 1, 16), None))
+
+      Aikajakso.overlaps(as, bs) should equal(false)
+      Aikajakso.overlaps(bs, as) should equal(false)
+    }
+
+    "Päällekkäisyys löytyy vasta listojen jälkimmäisistä jaksoista" in {
+      val as =
+        List(
+          Aikajakso(date(2026, 1, 1), Some(date(2026, 1, 10))),
+          Aikajakso(date(2026, 4, 1), Some(date(2026, 4, 10))),
+        )
+      val bs =
+        List(
+          Aikajakso(date(2026, 2, 1), Some(date(2026, 2, 10))),
+          Aikajakso(date(2026, 4, 5), Some(date(2026, 4, 15))),
+        )
+
+      Aikajakso.overlaps(as, bs) should equal(true)
+      Aikajakso.overlaps(bs, as) should equal(true)
+    }
+  }
+
 }
 
 case class J(

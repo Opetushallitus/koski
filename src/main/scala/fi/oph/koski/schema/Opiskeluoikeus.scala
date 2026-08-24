@@ -393,8 +393,8 @@ object Aikajakso {
     loppu = loppu,
   )
 
-  def overlap(as: List[Aikajakso], bs: List[Aikajakso]): Boolean =
-    as.exists(a => bs.exists(a.contains))
+  def overlaps(as: List[Aikajakso], bs: List[Aikajakso]): Boolean =
+    as.exists(a => bs.exists(a.overlaps))
 }
 
 trait Läsnäolojakso extends Alkupäivällinen {
