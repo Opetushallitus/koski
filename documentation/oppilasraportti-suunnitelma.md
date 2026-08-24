@@ -56,9 +56,11 @@ raportikseen).
 - Vuosiluokka
 - Lukuvuoden alkamispäivä (esiopetukselle: opiskeluoikeuden alkamispäivä)
 
-### Vielä auki / epävarma
+### Ikäryhmä — ratkennut aggregaattitasolla, yksilöidyllä tasolla vielä auki
 
-- Ikäryhmä (esim. 6, 7–12, 13–15 jne. — bucket-rajat eivät vielä lyötyjä lukkoon)
+Saaduissa esimerkkikyselyissä (8 §) bucket-rajat ovat: 6, 7–12, 13–15, 16 (jaettuna pidennetyn
+oppivelvollisuuden mukaan), yhteensä (6–16). Ks. 5 §, kohta 5 avoimesta kysymyksestä siitä, pitääkö
+16-vuotiaiden alaryhmä näkyä myös yksilöidyllä välilehdellä jäljitettävyyden vuoksi.
 
 ### Ei sisällytetä (yliviivattu muistiinpanoissa — päätetty jättää pois toistaiseksi)
 
@@ -78,10 +80,27 @@ raportikseen).
 ## 5. Tiedossa olevat ongelmat
 
 1. **Pidennetty oppivelvollisuus** -logiikka on muuttunut. Ari korjaa asiaa liittyvän tiketin.
-2. **Hetuttomat oppijat** eivät saa kotikuntaa → rikkoo ydin-ryhmittelyn (kotikunta-pohjaisuus).
-   Ratkaisematon, arkkitehtuurisesti estävä kysymys.
+   Saaduissa esimerkkikyselyissä (ks. 8 §) ikäryhmän 16 jako pidennettyyn oppivelvollisuuteen on
+   tehty kahdella eri tavalla kahdessa eri kyselyssä — toisessa suoraan
+   `d.pidennetty_oppivelvollisuus`-kentällä, toisessa johdettuna kentistä
+   `opetus_vamman_sairauden_tai_rajoitteen_perusteella` / `toiminta_alueittain_opiskelu`. Nämä
+   eivät välttämättä tarkoita samaa asiaa — pitää selvittää kumpi on oikea/kanoninen ennen kuin
+   logiikka päätyy raporttiin.
+2. **Hetuttomat oppijat**: saatu esimerkkikysely (8 §) käsittelee heidät omana erillisenä
+   tarkasteluna (`WHERE he.hetu IS NULL`), ei pudota heitä pois. Koska
+   `r_kotikuntahistoria` liittyy `master_oid`:n kautta (ei hetun), hetuttomilla oppijoilla *voi*
+   silti olla ratkeava kotikunta joissain tapauksissa — kysymys ei siis ole "ei koskaan kotikuntaa"
+   vaan "tarvitsee oman erittelyn sen suhteen, resolvautuuko kotikunta vai ei". Päätös siitä,
+   näytetäänkö hetuttomat omana rivinä/välilehtenä vai `'hetuton'`-fallback-ryhmänä pääraportissa,
+   on vielä auki.
 3. Välilehtien layout / datan esitystapa vaatii vielä suunnittelua.
-4. Ikäryhmä-bucketit eivät vielä lukkoon lyötyjä.
+4. ~~Ikäryhmä-bucketit eivät vielä lukkoon lyötyjä~~ — ratkennut, ks. 8 §: 6, 7–12, 13–15, 16
+   (jaettuna pidennetyn oppivelvollisuuden mukaan, ks. kohta 1 yllä), yhteensä (6–16).
+5. **Uusi kysymys**: ikäryhmän 16 jako pidennetyn oppivelvollisuuden mukaan on aggregaattitasolla
+   pelkkä COUNT-jako, mutta yksilöity välilehti vaatii jäljitettävyyden aggregaattilukuihin (3 §).
+   16-vuotiaalle oppijalle tämä tarkoittaisi käytännössä sen näyttämistä, kumpaan alaryhmään hän
+   kuuluu — mikä on juuri sitä erityisen tuen tason yksilöityä tietoa, joka 4 §:ssä päätettiin
+   jättää pois oppijakohtaisista sarakkeista. Tätä ristiriitaa ei ole vielä ratkaistu.
 
 ## 6. Reunaehdot
 
@@ -92,46 +111,307 @@ raportikseen).
 ## 7. Seuraavat askeleet
 
 - [x] Päätä otetaanko erityisen tuen -sarakkeet mukaan — **päätetty jättää pois toistaiseksi**,
-      ei siis vaadi tietosuoja-arviointia tässä vaiheessa.
-- [ ] Ratkaise hetuttomien oppijoiden kotikunta-ongelma (tai päätä miten heidät käsitellään
-      raportissa, esim. oma "tuntematon kotikunta" -ryhmä).
-- [ ] Lyö lukkoon ikäryhmä-bucketit.
+      ei siis vaadi tietosuoja-arviointia tässä vaiheessa (ks. kuitenkin 5 §, kohta 5 — uusi
+      ristiriita 16-vuotiaiden yksilöidyn välilehden jäljitettävyyden kanssa).
+- [x] Lyö lukkoon ikäryhmä-bucketit — saatu esimerkkikyselyistä (8 §): 6, 7–12, 13–15, 16
+      (jaettuna), yhteensä.
+- [ ] Selvitä kumpi pidennetyn oppivelvollisuuden kenttä on kanoninen:
+      `d.pidennetty_oppivelvollisuus` vai johdettu `toiminta_alueittain_opiskelu` /
+      `opetus_vamman_sairauden_tai_rajoitteen_perusteella` (ks. 8.4 §).
+- [ ] Päätä hetuttomien oppijoiden esitystapa: oma välilehti/rivi (8.2 §) vai `'hetuton'`-
+      fallback-ryhmä pääraportissa (8.1 §) — ja varmista ettei 8.2 §:n päivämäärärajaamaton
+      `kkh`-liitos tuota tuplalaskentaa.
+- [ ] Varmista 8.3 §:n `WHERE`-lausekkeeseen siirretyn kotikuntahistoria-aikarajauksen
+      tarkoituksenmukaisuus (LEFT JOIN muuttuu käytännössä INNER JOIN:ksi).
+- [ ] Ratkaise 16-vuotiaiden yksilöidyn välilehden jäljitettävyys-vs-erityisen tuen tieto
+      -ristiriita (5 §, kohta 5).
 - [ ] Suunnittele välilehtien tarkka layout / data-esitys.
 - [ ] Odota Arin korjaus pidennetyn oppivelvollisuuden logiikkaan ja arvioi vaikutus raporttiin.
+- [ ] Sovita 8 §:n kyselyt Koskin `RaportitService`/`Raportti`-traitiin ja
+      `RaportitAccessResolver`-oikeustarkistuksiin; kirjoita vastaava kysely yksilöidylle
+      välilehdelle (4 §:n sarakkeet, ei GROUP BY).
 
-## 8. Tekninen toteutus (luonnos — ei vielä validoitu)
+## 8. Tekninen toteutus
 
 Raportti lukisi raportointikannasta (ei live-Koski-transaktiodatasta), samaan tapaan kuin muut
-raportit (`RaportitService`/`Raportti`-trait). Karkea hahmotelma aggregaattikyselystä (ei
-todennettu skeeman sarakenimiä vasten):
+raportit (`RaportitService`/`Raportti`-trait). Alla kolme luonnoskyselyä, jotka on saatu
+analyytikolta/asiantuntijalta suoraan raportointikantaa vasten ajettuina — nämä siis käyttävät
+todellisia taulu-/sarakenimiä, toisin kuin aiempi arvaukseen perustuva luonnos. Kyselyt eivät ole
+vielä täysin yhdenmukaisia keskenään (ks. 8.4 § huomiot) eikä niitä ole vielä sovitettu Koskin
+Scala/Slick-raportointikerrokseen tai `RaportitAccessResolver`-oikeustarkistuksiin.
+
+### 8.1 Aggregaattikysely — kaikki oppijat, kotikunta coalesced 'hetuton'-ryhmään
 
 ```sql
--- Aggregaattivälilehti: oppilasmäärä opetuksen järjestäjän x kotikunnan x ikäryhmän mukaan
--- Huom: raportointikannan tarkat taulu-/sarakenimet pitää varmistaa ennen toteutusta.
-SELECT
-  jarjestaja.oid            AS opetuksen_jarjestaja_oid,
-  jarjestaja.nimi           AS opetuksen_jarjestaja_nimi,
-  henkilo.kotikunta         AS kotikunta,
-  -- ikäryhmä lasketaan valitun päivämäärän ja syntymäajan perusteella, bucket-rajat auki (ks. 4 §)
-  CASE
-    WHEN date_part('year', age(:paiva, henkilo.syntymaaika)) < 7 THEN '6'
-    WHEN date_part('year', age(:paiva, henkilo.syntymaaika)) BETWEEN 7 AND 12 THEN '7-12'
-    WHEN date_part('year', age(:paiva, henkilo.syntymaaika)) BETWEEN 13 AND 15 THEN '13-15'
-    ELSE 'muu'
-  END                        AS ikaryhma,
-  count(DISTINCT oppija.oppija_oid) AS oppilasmaara
-FROM r_opiskeluoikeus oo
-JOIN r_paatason_suoritus suoritus ON suoritus.opiskeluoikeus_id = oo.id
-JOIN r_henkilo henkilo          ON henkilo.oppija_oid = oo.oppija_oid
-JOIN r_organisaatio jarjestaja  ON jarjestaja.oid = oo.koulutustoimija_oid
-WHERE :paiva BETWEEN oo.alkamispaiva AND coalesce(oo.paattymispaiva, :paiva)
-  AND henkilo.kotikunta_paiva = :paiva  -- kotikunta ratkaistu samalta päivältä
-GROUP BY jarjestaja.oid, jarjestaja.nimi, henkilo.kotikunta, ikaryhma;
+SELECT DISTINCT
+    org.yritysmuoto,
+    e.y_tunnus AS Ytunnus,
+    a.koulutustoimija_nimi AS opetuksen_järjestäjä,
+    e.kotipaikka AS opetuksen_järjestäjän_kuntakoodi,
 
--- Yksilöity välilehti: sama WHERE-rajaus, ei GROUP BY — palauttaa 4 §:n "Varmat"-sarakkeet
--- rivi per oppija/opiskeluoikeus, jotta jäljitettävyys aggregaattiin säilyy.
+    kkh.kotikunta AS kotikunnan_koodi,
+    COALESCE(kkh.kotikunta_nimi_fi, 'hetuton') AS oppilaan_kotikunta,
+
+    COUNT(DISTINCT CASE
+        WHEN he.syntymaaika BETWEEN '2019-01-01' AND '2019-12-31'
+        THEN he.master_oid
+    END) AS kuusi,
+
+    COUNT(DISTINCT CASE
+        WHEN he.syntymaaika BETWEEN '2013-01-01' AND '2018-12-31'
+        THEN he.master_oid
+    END) AS seitsemän_kaksitoista,
+
+    COUNT(DISTINCT CASE
+        WHEN he.syntymaaika BETWEEN '2010-01-01' AND '2012-12-31'
+        THEN he.master_oid
+    END) AS kolmetoista_viisitoista,
+
+    COUNT(DISTINCT CASE
+        WHEN (
+            he.syntymaaika BETWEEN '2009-01-01' AND '2009-12-31'
+            AND (
+                (d.toiminta_alueittain_opiskelu = 'true'
+                 OR d.opetus_vamman_sairauden_tai_rajoitteen_perusteella = 'true')
+                AND d.alku <= '2025-12-15'
+                AND d.loppu >= '2025-12-15'
+            )
+        )
+        THEN he.master_oid
+    END) AS kuusitoista_opetus_vamman_sairauden_tai_rajoitteen_perusteella,
+
+    COUNT(DISTINCT CASE
+        WHEN (
+            he.syntymaaika BETWEEN '2009-01-01' AND '2009-12-31'
+            AND (
+                (d.toiminta_alueittain_opiskelu = 'false'
+                 OR d.opetus_vamman_sairauden_tai_rajoitteen_perusteella = 'false')
+                AND d.alku <= '2025-12-15'
+                AND d.loppu >= '2025-12-15'
+            )
+        )
+        THEN he.master_oid
+    END) AS kuusitoista_ei_opetus_vamman_sairauden_tai_rajoitteen_perusteella,
+
+    COUNT(DISTINCT CASE
+        WHEN he.syntymaaika BETWEEN '2009-01-01' AND '2019-12-31'
+        THEN he.master_oid
+    END) AS yhteensä
+
+FROM koski.r_henkilo AS he
+JOIN koski.r_opiskeluoikeus AS a ON he.oppija_oid = a.oppija_oid
+JOIN koski.r_paatason_suoritus AS b ON a.opiskeluoikeus_oid = b.opiskeluoikeus_oid
+LEFT JOIN koski.r_opiskeluoikeus_aikajakso AS d ON a.opiskeluoikeus_oid = d.opiskeluoikeus_oid
+LEFT JOIN koski.esiopetus_opiskeluoik_aikajakso AS dd ON a.opiskeluoikeus_oid = dd.opiskeluoikeus_oid
+JOIN koski.r_organisaatio AS e ON a.koulutustoimija_oid = e.organisaatio_oid
+LEFT JOIN koski_confidential.r_kotikuntahistoria AS kkh
+    ON kkh.master_oid = he.master_oid
+    AND kkh.muutto_pvm <= '2025-12-15'
+    AND (kkh.poismuutto_pvm >= '2025-12-15' OR kkh.poismuutto_pvm IS NULL)
+JOIN organisaatio.organisaatio AS org ON org.organisaatio_oid = e.organisaatio_oid
+
+WHERE
+(
+    (a.koulutusmuoto IN ('perusopetus', 'esiopetus')
+     AND b.suorituksen_tyyppi IN ('perusopetuksenvuosiluokka', 'perusopetuksenoppimaara', 'esiopetuksensuoritus'))
+    OR
+    (a.koulutusmuoto = 'internationalschool'
+     AND b.koulutusmoduuli_koodiarvo IN ('explorer','1','2','3','4','5','6','7','8','9')
+     AND b.alkamispaiva BETWEEN '2025-08-01' AND '2025-12-15')
+    OR
+    (a.koulutusmuoto = 'europeanschoolofhelsinki'
+     AND b.koulutusmoduuli_koodiarvo IN ('N1','N2','P1','P2','P3','P4','P5','S1','S2','S3','S4')
+     AND b.alkamispaiva BETWEEN '2025-08-01' AND '2025-12-15')
+)
+AND
+(
+    (d.alku <= '2025-12-15' AND d.loppu >= '2025-12-15'
+     AND d.tila IN ('lasna', 'eronnut', 'valmistunut')
+     AND d.kotiopetus = 'false')
+    OR
+    (dd.alku <= '2025-12-15' AND dd.loppu >= '2025-12-15'
+     AND dd.tila IN ('lasna', 'eronnut', 'valmistunut'))
+)
+AND he.syntymaaika BETWEEN '2009-01-01' AND '2019-12-31'
+
+GROUP BY
+    org.yritysmuoto, e.y_tunnus, a.koulutustoimija_nimi, e.kotipaikka,
+    kkh.kotikunta, COALESCE(kkh.kotikunta_nimi_fi, 'hetuton')
+
+ORDER BY a.koulutustoimija_nimi, kkh.kotikunta;
 ```
 
-Tämä on vasta luonnos ohjaamaan keskustelua siitä, mistä tauluista raportointikannassa data
-löytyy — ei valmis toteutus. Ennen toteutusta pitää katsoa muiden VOS-raporttien (esim.
-`AikuistenPerusopetuksenOppijamäärätRaportti`) todellinen SQL/Slick-kysely mallipohjaksi.
+### 8.2 Hetuttomien oppijoiden erillistarkastelu
+
+Sama perusrakenne, mutta rajattu `he.hetu IS NULL` -oppijoihin, ja ikäryhmän 16 jako tehdään
+suoraan `d.pidennetty_oppivelvollisuus`-kentällä (ei 8.1 §:n johdetulla logiikalla — ks. 8.4 §).
+
+```sql
+SELECT
+    org.yritysmuoto,
+    e.y_tunnus AS Ytunnus,
+    a.koulutustoimija_nimi AS opetuksen_järjestäjä,
+    e.kotipaikka AS opetuksen_järjestäjän_kuntakoodi,
+
+    kkh.kotikunta AS kotikunnan_koodi,
+    kkh.kotikunta_nimi_fi AS oppilaan_kotikunta,
+
+    COUNT(DISTINCT CASE WHEN he.syntymaaika BETWEEN '2019-01-01' AND '2019-12-31'
+        THEN he.master_oid END) AS kuusi,
+    COUNT(DISTINCT CASE WHEN he.syntymaaika BETWEEN '2013-01-01' AND '2018-12-31'
+        THEN he.master_oid END) AS seitsemän_kaksitoista,
+    COUNT(DISTINCT CASE WHEN he.syntymaaika BETWEEN '2010-01-01' AND '2012-12-31'
+        THEN he.master_oid END) AS kolmetoista_viisitoista,
+    COUNT(DISTINCT CASE
+        WHEN he.syntymaaika BETWEEN '2009-01-01' AND '2009-12-31'
+         AND d.pidennetty_oppivelvollisuus = 'true'
+         AND d.alku <= '2025-12-15' AND d.loppu >= '2025-12-15'
+        THEN he.master_oid END) AS kuusitoista_pidennetty,
+    COUNT(DISTINCT CASE
+        WHEN he.syntymaaika BETWEEN '2009-01-01' AND '2009-12-31'
+         AND d.pidennetty_oppivelvollisuus = 'false'
+         AND d.alku <= '2025-12-15' AND d.loppu >= '2025-12-15'
+        THEN he.master_oid END) AS kuusitoista_EIpidennetty,
+    COUNT(DISTINCT CASE WHEN he.syntymaaika BETWEEN '2009-01-01' AND '2019-12-31'
+        THEN he.master_oid END) AS yhteensä
+
+FROM koski.r_henkilo AS he
+JOIN koski.r_opiskeluoikeus AS a ON he.oppija_oid = a.oppija_oid
+JOIN koski.r_paatason_suoritus AS b ON a.opiskeluoikeus_oid = b.opiskeluoikeus_oid
+LEFT JOIN koski.r_opiskeluoikeus_aikajakso AS d ON a.opiskeluoikeus_oid = d.opiskeluoikeus_oid
+LEFT JOIN koski.esiopetus_opiskeluoik_aikajakso AS dd ON a.opiskeluoikeus_oid = dd.opiskeluoikeus_oid
+JOIN koski.r_organisaatio AS e ON a.koulutustoimija_oid = e.organisaatio_oid
+LEFT JOIN koski_confidential.r_kotikuntahistoria AS kkh ON kkh.master_oid = he.master_oid
+JOIN organisaatio.organisaatio AS org ON org.organisaatio_oid = e.organisaatio_oid
+
+WHERE
+(
+    (a.koulutusmuoto IN ('perusopetus', 'esiopetus')
+     AND b.suorituksen_tyyppi IN ('perusopetuksenvuosiluokka', 'perusopetuksenoppimaara', 'esiopetuksensuoritus'))
+    OR
+    (a.koulutusmuoto = 'internationalschool'
+     AND b.koulutusmoduuli_koodiarvo IN ('explorer','1','2','3','4','5','6','7','8','9')
+     AND b.alkamispaiva BETWEEN '2025-08-01' AND '2025-12-15')
+    OR
+    (a.koulutusmuoto = 'europeanschoolofhelsinki'
+     AND b.koulutusmoduuli_koodiarvo IN ('N1','N2','P1','P2','P3','P4','P5','S1','S2','S3','S4')
+     AND b.alkamispaiva BETWEEN '2025-08-01' AND '2025-12-15')
+)
+AND
+(
+    (d.alku <= '2025-12-15' AND d.loppu >= '2025-12-15'
+     AND d.tila IN ('lasna', 'eronnut', 'valmistunut')
+     AND d.kotiopetus = 'false')
+    OR
+    (dd.alku <= '2025-12-15' AND dd.loppu >= '2025-12-15'
+     AND dd.tila IN ('lasna', 'eronnut', 'valmistunut'))
+)
+AND he.hetu IS NULL
+AND he.syntymaaika BETWEEN '2009-01-01' AND '2019-12-31'
+
+GROUP BY
+    org.yritysmuoto, e.y_tunnus, a.koulutustoimija_nimi, e.kotipaikka,
+    kkh.kotikunta, kkh.kotikunta_nimi_fi
+
+ORDER BY a.koulutustoimija_nimi;
+```
+
+### 8.3 Aggregaattikysely — vaihtoehto, ei coalesce-fallbackia
+
+Sama kuin 8.1 §, mutta kotikunta ei coalesce'ta `'hetuton'`-arvoon, ikäryhmän 16 jako käyttää
+`d.pidennetty_oppivelvollisuus`-kenttää (kuten 8.2 §) ja kotikuntahistorian aikarajaus on siirretty
+`JOIN ... ON`-lausekkeesta `WHERE`-lausekkeeseen (ks. 8.4 § — tällä on merkitystä).
+
+```sql
+SELECT DISTINCT
+    org.yritysmuoto,
+    e.y_tunnus AS Ytunnus,
+    a.koulutustoimija_nimi AS opetuksen_järjestäjä,
+    e.kotipaikka AS opetuksen_järjestäjän_kuntakoodi,
+
+    kkh.kotikunta AS kotikunnan_koodi,
+    kkh.kotikunta_nimi_fi AS oppilaan_kotikunta,
+
+    COUNT(DISTINCT CASE WHEN he.syntymaaika BETWEEN '2019-01-01' AND '2019-12-31'
+        THEN he.master_oid END) AS kuusi,
+    COUNT(DISTINCT CASE WHEN he.syntymaaika BETWEEN '2013-01-01' AND '2018-12-31'
+        THEN he.master_oid END) AS seitsemän_kaksitoista,
+    COUNT(DISTINCT CASE WHEN he.syntymaaika BETWEEN '2010-01-01' AND '2012-12-31'
+        THEN he.master_oid END) AS kolmetoista_viisitoista,
+    COUNT(DISTINCT CASE
+        WHEN he.syntymaaika BETWEEN '2009-01-01' AND '2009-12-31'
+         AND d.pidennetty_oppivelvollisuus = 'true'
+         AND d.alku <= '2025-12-15' AND d.loppu >= '2025-12-15'
+        THEN he.master_oid END) AS kuusitoista_pidennetty,
+    COUNT(DISTINCT CASE
+        WHEN he.syntymaaika BETWEEN '2009-01-01' AND '2009-12-31'
+         AND d.pidennetty_oppivelvollisuus = 'false'
+         AND d.alku <= '2025-12-15' AND d.loppu >= '2025-12-15'
+        THEN he.master_oid END) AS kuusitoista_EIpidennetty,
+    COUNT(DISTINCT CASE WHEN he.syntymaaika BETWEEN '2009-01-01' AND '2019-12-31'
+        THEN he.master_oid END) AS yhteensä
+
+FROM koski.r_henkilo AS he
+JOIN koski.r_opiskeluoikeus AS a ON he.oppija_oid = a.oppija_oid
+JOIN koski.r_paatason_suoritus AS b ON a.opiskeluoikeus_oid = b.opiskeluoikeus_oid
+LEFT JOIN koski.r_opiskeluoikeus_aikajakso AS d ON a.opiskeluoikeus_oid = d.opiskeluoikeus_oid
+LEFT JOIN koski.esiopetus_opiskeluoik_aikajakso AS dd ON a.opiskeluoikeus_oid = dd.opiskeluoikeus_oid
+JOIN koski.r_organisaatio AS e ON a.koulutustoimija_oid = e.organisaatio_oid
+LEFT JOIN koski_confidential.r_kotikuntahistoria AS kkh ON kkh.master_oid = he.master_oid
+JOIN organisaatio.organisaatio AS org ON org.organisaatio_oid = e.organisaatio_oid
+
+WHERE
+(
+    (a.koulutusmuoto IN ('perusopetus', 'esiopetus')
+     AND b.suorituksen_tyyppi IN ('perusopetuksenvuosiluokka', 'perusopetuksenoppimaara', 'esiopetuksensuoritus'))
+    OR
+    (a.koulutusmuoto = 'internationalschool'
+     AND b.koulutusmoduuli_koodiarvo IN ('explorer','1','2','3','4','5','6','7','8','9')
+     AND b.alkamispaiva BETWEEN '2025-08-01' AND '2025-12-15')
+    OR
+    (a.koulutusmuoto = 'europeanschoolofhelsinki'
+     AND b.koulutusmoduuli_koodiarvo IN ('N1','N2','P1','P2','P3','P4','P5','S1','S2','S3','S4')
+     AND b.alkamispaiva BETWEEN '2025-08-01' AND '2025-12-15')
+)
+AND
+(
+    (d.alku <= '2025-12-15' AND d.loppu >= '2025-12-15'
+     AND d.tila IN ('lasna', 'eronnut', 'valmistunut')
+     AND d.kotiopetus = 'false')
+    OR
+    (dd.alku <= '2025-12-15' AND dd.loppu >= '2025-12-15'
+     AND dd.tila IN ('lasna', 'eronnut', 'valmistunut'))
+)
+AND (kkh.muutto_pvm <= '2025-12-15' AND (kkh.poismuutto_pvm >= '2025-12-15' OR kkh.poismuutto_pvm IS NULL))
+AND he.syntymaaika BETWEEN '2009-01-01' AND '2019-12-31'
+
+GROUP BY
+    org.yritysmuoto, e.y_tunnus, a.koulutustoimija_nimi, e.kotipaikka,
+    kkh.kotikunta, kkh.kotikunta_nimi_fi
+
+ORDER BY a.koulutustoimija_nimi, kkh.kotikunta;
+```
+
+### 8.4 Kyselyjen väliset ristiriidat — tarkistettava ennen kuin näistä valitaan yksi
+
+- **Pidennetty oppivelvollisuus, ikäryhmä 16**: 8.1 § johtaa jaon kentistä
+  `toiminta_alueittain_opiskelu` / `opetus_vamman_sairauden_tai_rajoitteen_perusteella`, kun taas
+  8.2 § ja 8.3 § käyttävät suoraan `d.pidennetty_oppivelvollisuus`-kenttää. Nämä eivät ole
+  taatusti sama asia — kumpi on kanoninen, pitää selvittää (ks. myös 5 §, kohta 1).
+- **8.2 §:n `kkh`-liitos ei rajaa aikaväliä** — LEFT JOIN kotikuntahistoriaan ilman
+  `muutto_pvm`/`poismuutto_pvm`-ehtoa voi tuottaa useamman historiarivin per `master_oid`, mikä
+  vääristäisi COUNT DISTINCT -lukuja jos/kun ehto puuttuu tarkoituksella tai vahingossa.
+- **8.3 §:ssä kotikuntahistorian aikarajaus on `WHERE`-lausekkeessa, ei `JOIN ... ON`:issa.**
+  Koska `kkh` on `LEFT JOIN`, tämä muuttaa sen käytännössä `INNER JOIN`:ksi — oppijat joilla ei
+  ole aikavälille osuvaa kotikuntahistoriariviä (esim. osa hetuttomista) pudotetaan kokonaan pois
+  tuloksesta sen sijaan että näkyisivät NULL-kotikunnalla. Tämä voi olla tarkoituksellista (8.3 §
+  ehkä ajateltu 8.2 §:n täydentäväksi "kotikunta löytyi" -näkymäksi), mutta pitää varmistaa
+  kyselyn kirjoittajalta.
+- Kyselyt on ajettu esimerkkipäivälle 2025-12-15 — tuotannossa päivämäärä olisi raportin
+  parametri (`:paiva`), ei kovakoodattu literaali.
+- Ei vielä sovitettu Koskin `RaportitService`/`Raportti`-traitiin, `RaportitAccessResolver`-
+  oikeustarkistuksiin, eikä yksilöidyn välilehden (3 §) kyselyä ole vielä kirjoitettu — nämä
+  aggregaattikyselyt eivät sellaisenaan tuota 4 §:n oppijakohtaisia sarakkeita riveittäin.
+- Ennen toteutusta kannattaa myös katsoa muiden VOS-raporttien (esim.
+  `AikuistenPerusopetuksenOppijamäärätRaportti`) todellinen Slick-kysely mallipohjaksi siitä,
+  miten raportointikantaa käytetään Koskin sisällä idiomaattisesti.
