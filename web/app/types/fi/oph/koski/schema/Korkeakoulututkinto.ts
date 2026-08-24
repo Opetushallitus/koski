@@ -1,5 +1,6 @@
 import { Koodistokoodiviite } from './Koodistokoodiviite'
 import { LocalizedString } from './LocalizedString'
+import { KorkeakoulunKoulutusala } from './KorkeakoulunKoulutusala'
 
 /**
  * Korkeakoulututkinnon tunnistetiedot
@@ -11,12 +12,14 @@ export type Korkeakoulututkinto = {
   tunniste: Koodistokoodiviite<'koulutus', string>
   koulutustyyppi?: Koodistokoodiviite<'koulutustyyppi', string>
   virtaNimi?: LocalizedString
+  koulutusala?: KorkeakoulunKoulutusala
 }
 
 export const Korkeakoulututkinto = (o: {
   tunniste: Koodistokoodiviite<'koulutus', string>
   koulutustyyppi?: Koodistokoodiviite<'koulutustyyppi', string>
   virtaNimi?: LocalizedString
+  koulutusala?: KorkeakoulunKoulutusala
 }): Korkeakoulututkinto => ({
   $class: 'fi.oph.koski.schema.Korkeakoulututkinto',
   ...o

@@ -259,14 +259,20 @@ class VirtaXMLConverterSpec extends AnyFreeSpec with TestEnvironment with Matche
     }
 
     "Vaadittu laajuus" - {
-      "parsitaan opiskeluoikeudelta" in {
-        convertOpiskeluoikeusWithOrganisaatio(None).lisätiedot.value
-          .vaadittuLaajuus.value.arvo shouldBe 240
+    def vaadittuLaajuus(oo: KorkeakoulunOpiskeluoikeus): Option[Laajuus] =
+      oo.suoritukset.collectFirst {
+        case s: KorkeakoulututkinnonSuoritus => s.vaadittuLaajuus
+        case s: MuuKorkeakoulunSuoritus => s.vaadittuLaajuus
+      }.flatten
+
+      "parsitaan opiskeluoikeudelta tutkinnon suoritukselle" in {
+        vaadittuLaajuus(convertOpiskeluoikeusWithOrganisaatio(None)).value.arvo shouldBe 240
       }
 
       "on None jos opiskeluoikeudella ei ole laajuutta" in {
-        converter.convertToOpiskeluoikeudet(opiskeluoikeusWithOrganisaatio(None, laajuudellinen = false))
-          .head.lisätiedot.value.vaadittuLaajuus shouldBe None
+        vaadittuLaajuus(
+          converter.convertToOpiskeluoikeudet(opiskeluoikeusWithOrganisaatio(None, laajuudellinen = false)).head
+        ) shouldBe None
       }
     }
 
@@ -385,23 +391,23 @@ class VirtaXMLConverterSpec extends AnyFreeSpec with TestEnvironment with Matche
 
       "opintojakson suorituksella koodiarvo luetaan Koodi-lapsielementistä ja Osuus mukaan" in {
         val suoritus = convertSuoritus(baseSuoritus).value.asInstanceOf[KorkeakoulunOpintojaksonSuoritus]
-        val koulutusala = suoritus.koulutusala.value
+        val koulutusala = suoritus.koulutusmoduuli.koulutusala.value
         koulutusala.opintoala1995.value.koodiarvo should be("89")
         koulutusala.opintoala1995.value.koodistoUri should be("opintoalaoph1995")
         koulutusala.osuus should be(Some(1.0))
       }
 
-      "tutkinnon suorituksella koulutusala parsitaan" in {
+      "tutkinnon suorituksella koulutusala parsitaan koulutusmoduulille" in {
         val suoritus = convertSuoritus(tutkintoSuoritus(koulutusala = Some(("ohjausala", "12"))))
           .value.asInstanceOf[KorkeakoulututkinnonSuoritus]
-        suoritus.koulutusala.value.okmOhjausala.value.koodiarvo should be("12")
-        suoritus.koulutusala.value.okmOhjausala.value.koodistoUri should be("okmohjauksenala")
-        suoritus.koulutusala.value.osuus should be(Some(1.0))
+        suoritus.koulutusmoduuli.koulutusala.value.okmOhjausala.value.koodiarvo should be("12")
+        suoritus.koulutusmoduuli.koulutusala.value.okmOhjausala.value.koodistoUri should be("okmohjauksenala")
+        suoritus.koulutusmoduuli.koulutusala.value.osuus should be(Some(1.0))
       }
 
       "suorituksella ilman koulutusalaa arvo on None" in {
         convertSuoritus(tutkintoSuoritus()).value
-          .asInstanceOf[KorkeakoulututkinnonSuoritus].koulutusala should be(None)
+          .asInstanceOf[KorkeakoulututkinnonSuoritus].koulutusmoduuli.koulutusala should be(None)
       }
     }
 
@@ -1040,7 +1046,9 @@ class VirtaXMLConverterSpec extends AnyFreeSpec with TestEnvironment with Matche
       }
 
       def liittyvät(oo: KorkeakoulunOpiskeluoikeus): List[LiittyväOpiskeluoikeus] =
-        oo.lisätiedot.toList.flatMap(_.liittyvätOpiskeluoikeudet.toList.flatten)
+        oo.suoritukset.collect {
+          case s: KorkeakoulututkinnonSuoritus => s.liittyvätOpiskeluoikeudet
+        }.flatten.flatten
 
       "kandidaatin opiskeluoikeudelta viitataan maisterin opiskeluoikeuteen (250668-293Y.xml)" in {
         val viittaukset = opiskeluoikeudet("250668-293Y.xml").flatMap(liittyvät)
@@ -1077,7 +1085,7 @@ class VirtaXMLConverterSpec extends AnyFreeSpec with TestEnvironment with Matche
 
       "opiskeluoikeudelle ilman liittyvyyksiä ei tule kenttää" in {
         val oo = convertOpiskeluoikeusWithOrganisaatio(None)
-        oo.lisätiedot.flatMap(_.liittyvätOpiskeluoikeudet) shouldBe None
+        liittyvät(oo) shouldBe Nil
       }
 
       "viittaus vastauksesta puuttuvaan opiskeluoikeuteen säilyy ilman tyyppiä" in {

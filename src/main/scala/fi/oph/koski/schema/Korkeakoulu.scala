@@ -76,12 +76,9 @@ case class KorkeakoulunOpiskeluoikeudenLisätiedot(
   @InfoDescription("opetettavan aineen kelpoisuuden määritelmä")
   @KoodistoUri("virtapatevyys")
   opetettavanAineenOpinnot: Option[List[Koodistokoodiviite]],
-  @Description("Tutkinnon tai opintojen vaadittu laajuus")
-  vaadittuLaajuus: Option[Laajuus] = None,
   @Description("Siirto-opiskelijan siirtopäivä ja lähdeoppilaitos")
   siirtoOpiskelija: Option[SiirtoOpiskelija] = None,
   koulutusala: Option[KorkeakoulunKoulutusala] = None,
-  liittyvätOpiskeluoikeudet: Option[List[LiittyväOpiskeluoikeus]] = None,
 ) extends OpiskeluoikeudenLisätiedot {
   def ensisijaisuusVoimassa(d: LocalDate): Boolean = ensisijaisuus.exists(_.exists((j: Aikajakso) => j.contains(d)))
 }
@@ -93,8 +90,10 @@ case class SiirtoOpiskelija(
 
 @Description("Opiskeluoikeus, johon tämä opiskeluoikeus antaa mahdollisuuden jatkaa")
 case class LiittyväOpiskeluoikeus(
-  @Description("Liittyvän opiskeluoikeuden lähdejärjestelmän id, sama tunniste jolla se esiintyy tässä vastauksessa")
+  @Description("Liittyvän opiskeluoikeuden lähdejärjestelmän id, sama tunniste jolla se esiintyy tässä vastauksessa. Korkeakoulun opiskeluoikeudella ei ole oidia, joten tämä on sen yksilöivä tunniste.")
   lähdejärjestelmänId: String,
+  @Description("Liittyvän opiskeluoikeuden oppilaitos, jos se on mukana samassa vastauksessa")
+  oppilaitos: Option[Oppilaitos] = None,
   @KoodistoUri("virtaopiskeluoikeudentyyppi")
   tyyppi: Option[Koodistokoodiviite] = None
 )
@@ -150,7 +149,7 @@ case class KorkeakoulunOpiskeluoikeudenLukuvuosimaksu(
   summa: Option[Int]
 ) extends Jakso
 
-trait KorkeakouluSuoritus extends PäätasonSuoritus with MahdollisestiSuorituskielellinen with Toimipisteellinen {
+sealed trait KorkeakouluSuoritus extends PäätasonSuoritus with MahdollisestiSuorituskielellinen with Toimipisteellinen {
   def toimipiste: Oppilaitos
 }
 
@@ -170,7 +169,9 @@ case class KorkeakoulututkinnonSuoritus(
   @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT))
   @Hidden
   lisätieto: Option[LocalizedString] = None,
-  koulutusala: Option[KorkeakoulunKoulutusala] = None,
+  @Description("Tutkinnon tai opintojen vaadittu laajuus")
+  vaadittuLaajuus: Option[Laajuus] = None,
+  liittyvätOpiskeluoikeudet: Option[List[LiittyväOpiskeluoikeus]] = None,
   @KoodistoKoodiarvo("korkeakoulututkinto")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("korkeakoulututkinto", koodistoUri = "suorituksentyyppi")
 ) extends KorkeakouluSuoritus {
@@ -197,7 +198,6 @@ case class KorkeakoulunOpintojaksonSuoritus(
   @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT))
   @Hidden
   lisätieto: Option[LocalizedString] = None,
-  koulutusala: Option[KorkeakoulunKoulutusala] = None,
   @KoodistoKoodiarvo("korkeakoulunopintojakso")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("korkeakoulunopintojakso", koodistoUri = "suorituksentyyppi")
 ) extends KorkeakouluSuoritus {
@@ -213,6 +213,8 @@ case class MuuKorkeakoulunSuoritus (
    vahvistus: Option[Päivämäärävahvistus],
    suorituskieli: Option[Koodistokoodiviite],
    override val osasuoritukset: Option[List[KorkeakoulunOpintojaksonSuoritus]],
+   @Description("Tutkinnon tai opintojen vaadittu laajuus")
+   vaadittuLaajuus: Option[Laajuus] = None,
    @KoodistoKoodiarvo("muukorkeakoulunsuoritus")
    tyyppi: Koodistokoodiviite = Koodistokoodiviite("muukorkeakoulunsuoritus", koodistoUri = "suorituksentyyppi")
  ) extends KorkeakouluSuoritus with Arvioinniton {
@@ -222,7 +224,8 @@ case class MuuKorkeakoulunSuoritus (
 case class Korkeakoulututkinto(
   tunniste: Koodistokoodiviite,
   koulutustyyppi: Option[Koodistokoodiviite] = None,
-  virtaNimi: Option[LocalizedString]
+  virtaNimi: Option[LocalizedString],
+  koulutusala: Option[KorkeakoulunKoulutusala] = None
 ) extends Koulutus with Tutkinto with Laajuudeton {
   override def nimi: LocalizedString = virtaNimi.getOrElse(tunniste.nimi.getOrElse(unlocalized(tunniste.koodiarvo)))
 }
@@ -231,7 +234,8 @@ case class Korkeakoulututkinto(
 case class KorkeakoulunOpintojakso(
   tunniste: PaikallinenKoodi,
   nimi: LocalizedString,
-  laajuus: Option[Laajuus]
+  laajuus: Option[Laajuus],
+  koulutusala: Option[KorkeakoulunKoulutusala] = None
 ) extends KoulutusmoduuliValinnainenLaajuus
 
 @Description("Muun korkeakoulun opinnon tunnistetiedot")

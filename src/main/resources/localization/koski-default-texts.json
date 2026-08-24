@@ -322,6 +322,7 @@
   "description:Liitetiedon tyyppi kooditettuna": "Liitetiedon tyyppi kooditettuna",
   "description:Liitetiedon tyyppi kooditettuna.": "Liitetiedon tyyppi kooditettuna.",
   "description:Liittyvän opiskeluoikeuden lähdejärjestelmän id, sama...": "Liittyvän opiskeluoikeuden lähdejärjestelmän id, sama tunniste jolla se esiintyy tässä vastauksessa",
+  "description:Liittyvän opiskeluoikeuden oppilaitos, jos se...": "Liittyvän opiskeluoikeuden oppilaitos, jos se on mukana samassa vastauksessa",
   "description:lisaa_alaosasuoritus": "Lisää alaosasuoritus",
   "description:Lisätiedon kuvaus": "Lisätiedon kuvaus",
   "description:Lisätiedon kuvaus siinä muodossa, kuin...": "Lisätiedon kuvaus siinä muodossa, kuin se näytetään todistuksella",

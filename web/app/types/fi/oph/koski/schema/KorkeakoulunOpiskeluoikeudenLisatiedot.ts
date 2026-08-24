@@ -2,11 +2,9 @@ import { SiirtoOpiskelija } from './SiirtoOpiskelija'
 import { KorkeakoulunKoulutusala } from './KorkeakoulunKoulutusala'
 import { KorkeakoulunOpiskeluoikeudenLukuvuosimaksu } from './KorkeakoulunOpiskeluoikeudenLukuvuosimaksu'
 import { Oppilaitos } from './Oppilaitos'
-import { Laajuus } from './Laajuus'
 import { KoulutuskuntaJakso } from './KoulutuskuntaJakso'
 import { Koodistokoodiviite } from './Koodistokoodiviite'
 import { LocalizedString } from './LocalizedString'
-import { LiittyväOpiskeluoikeus } from './LiittyvaOpiskeluoikeus'
 import { Lukukausi_Ilmoittautuminen } from './LukukausiIlmoittautuminen'
 import { Liikkuvuusjakso } from './Liikkuvuusjakso'
 import { Aikajakso } from './Aikajakso'
@@ -23,12 +21,10 @@ export type KorkeakoulunOpiskeluoikeudenLisätiedot = {
   koulutusala?: KorkeakoulunKoulutusala
   maksettavatLukuvuosimaksut?: Array<KorkeakoulunOpiskeluoikeudenLukuvuosimaksu>
   järjestäväOrganisaatio?: Oppilaitos
-  vaadittuLaajuus?: Laajuus
   koulutuskuntaJaksot: Array<KoulutuskuntaJakso>
   opettajanPedagogisetOpinnot?: Array<
     Koodistokoodiviite<'virtapatevyys', string>
   >
-  liittyvätOpiskeluoikeudet?: Array<LiittyväOpiskeluoikeus>
   lukukausiIlmoittautuminen?: Lukukausi_Ilmoittautuminen
   liikkuvuusjaksot?: Array<Liikkuvuusjakso>
   opetettavanAineenOpinnot?: Array<Koodistokoodiviite<'virtapatevyys', string>>
@@ -46,12 +42,10 @@ export const KorkeakoulunOpiskeluoikeudenLisätiedot = (
     koulutusala?: KorkeakoulunKoulutusala
     maksettavatLukuvuosimaksut?: Array<KorkeakoulunOpiskeluoikeudenLukuvuosimaksu>
     järjestäväOrganisaatio?: Oppilaitos
-    vaadittuLaajuus?: Laajuus
     koulutuskuntaJaksot?: Array<KoulutuskuntaJakso>
     opettajanPedagogisetOpinnot?: Array<
       Koodistokoodiviite<'virtapatevyys', string>
     >
-    liittyvätOpiskeluoikeudet?: Array<LiittyväOpiskeluoikeus>
     lukukausiIlmoittautuminen?: Lukukausi_Ilmoittautuminen
     liikkuvuusjaksot?: Array<Liikkuvuusjakso>
     opetettavanAineenOpinnot?: Array<

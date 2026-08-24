@@ -1,3 +1,4 @@
+import { Oppilaitos } from './Oppilaitos'
 import { Koodistokoodiviite } from './Koodistokoodiviite'
 import { LocalizedString } from './LocalizedString'
 
@@ -9,11 +10,13 @@ import { LocalizedString } from './LocalizedString'
 export type LiittyväOpiskeluoikeus = {
   $class: 'fi.oph.koski.schema.LiittyväOpiskeluoikeus'
   lähdejärjestelmänId: string
+  oppilaitos?: Oppilaitos
   tyyppi?: Koodistokoodiviite<'virtaopiskeluoikeudentyyppi', string>
 }
 
 export const LiittyväOpiskeluoikeus = (o: {
   lähdejärjestelmänId: string
+  oppilaitos?: Oppilaitos
   tyyppi?: Koodistokoodiviite<'virtaopiskeluoikeudentyyppi', string>
 }): LiittyväOpiskeluoikeus => ({
   $class: 'fi.oph.koski.schema.LiittyväOpiskeluoikeus',
