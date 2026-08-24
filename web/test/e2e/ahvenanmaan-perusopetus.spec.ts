@@ -76,7 +76,7 @@ test.describe('Ahvenanmaan perusopetuksen käyttöliittymä', () => {
     await expect(page.locator('.oppiaineet')).toBeVisible()
     await expect(
       page.locator('.perusopetuksen-arvosteluasteikko')
-    ).toContainText('G (godkänd)')
+    ).toContainText('Arvostelu 4–10, Hyväksytty, Osallistunut tai Hylätty')
     await expect(
       page.getByTestId(ensimmäisenOppiaineenArvosanaView)
     ).toContainText('9')
