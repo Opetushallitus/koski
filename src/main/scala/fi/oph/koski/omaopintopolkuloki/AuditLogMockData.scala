@@ -175,24 +175,6 @@ object AuditLogMockData extends Logging {
     ),
     MockData(
       studentOid = KoskiSpecificMockOppijat.ylioppilasLukiolainen.oid,
-      time = "2000-01-12T20:31:32.104+03",
-      organizationOid = List(MockOrganisaatiot.helsinginKaupunki),
-      raw = rawAuditlog("KANSALAINEN_SUORITUSJAKO_KATSOMINEN")
-    ),
-    MockData(
-      studentOid = KoskiSpecificMockOppijat.ylioppilasLukiolainen.oid,
-      time = "2000-01-13T20:31:32.104+03",
-      organizationOid = List(MockOrganisaatiot.helsinginKaupunki),
-      raw = rawAuditlog("KANSALAINEN_SUORITUSJAKO_KATSOMINEN_SUORITETUT_TUTKINNOT")
-    ),
-    MockData(
-      studentOid = KoskiSpecificMockOppijat.ylioppilasLukiolainen.oid,
-      time = "2000-01-14T20:31:32.104+03",
-      organizationOid = List(MockOrganisaatiot.helsinginKaupunki),
-      raw = rawAuditlog("KANSALAINEN_SUORITUSJAKO_KATSOMINEN_AKTIIVISET_JA_PAATTYNEET_OPINNOT")
-    ),
-    MockData(
-      studentOid = KoskiSpecificMockOppijat.ylioppilasLukiolainen.oid,
       time = "2000-01-15T20:31:32.104+03",
       organizationOid = List(MockOrganisaatiot.dvv),
       raw = rawAuditlog("OAUTH2_KATSOMINEN_KAIKKI_TIEDOT")

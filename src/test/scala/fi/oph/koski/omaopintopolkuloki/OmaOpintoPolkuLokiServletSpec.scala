@@ -37,16 +37,13 @@ class OmaOpintoPolkuLokiServletSpec extends AnyFreeSpec with Matchers with Koski
         List(MockOrganisaatiot.stadinAmmattiopisto)
       ))
     }
-    "Näytetään KANSALAINEN_SUORITUSJAKO_KATSOMINEN_* - ja OAUTH2_KATSOMINEN_* -auditlogeja" in {
+    "Näytetään OAUTH2_KATSOMINEN_* -auditlogeja" in {
       val logs = auditlogs(KoskiSpecificMockOppijat.ylioppilasLukiolainen)
-      logs should have length(2)
+      logs should have length(1)
       logs.map(_.organizations.map(_.oid)) should contain theSameElementsAs(List(
-        List(MockOrganisaatiot.helsinginKaupunki),
         List(MockOrganisaatiot.dvv)
       ))
-      def timestamps(oid: String) = logs.find(_.organizations.exists(_.oid == oid)).get.timestamps
-      timestamps(MockOrganisaatiot.helsinginKaupunki) should have length(3)
-      timestamps(MockOrganisaatiot.dvv) should have length(4)
+      logs.head.timestamps should have length(4)
     }
     "Näytetään Valppaan oppija- ja kuntailmoituskatselut sekä oppivelvollisuusrekisterin luovutukset" in {
       auditlogs(KoskiSpecificMockOppijat.ysiluokkalainen).map(_.organizations.map(_.oid)) should contain theSameElementsAs(List(
