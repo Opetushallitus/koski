@@ -65,10 +65,16 @@ object JettyLauncher extends App with Logging {
   }
 }
 
-class JettyLauncher(val port: Int, val application: KoskiApplication) extends Logging {
-  val hostUrl: String = "http://localhost:" + port
+class JettyLauncher(requestedPort: Int, val application: KoskiApplication) extends Logging {
+  // Portti luetaan connectorilta vasta käynnistyksen jälkeen, jotta requestedPort = 0
+  // toimii: silloin käyttöjärjestelmä varaa vapaan portin vasta bindissä, atomisesti.
+  // Ennen käynnistystä - ja ulkoista Jettyä käytettäessä, jolloin start() jää
+  // kutsumatta - getLocalPort palauttaa -1, ja käytetään pyydettyä porttia.
+  def port: Int = if (connector.getLocalPort > 0) connector.getLocalPort else requestedPort
 
-  val baseUrl: String = hostUrl + "/koski"
+  def hostUrl: String = "http://localhost:" + port
+
+  def baseUrl: String = hostUrl + "/koski"
 
   private val config = application.config
 
@@ -80,7 +86,7 @@ class JettyLauncher(val port: Int, val application: KoskiApplication) extends Lo
 
   application.masterDatabase // <- force evaluation to make sure DB is up
 
-  setupConnector()
+  private val connector: ServerConnector = setupConnector()
 
   private val metricsContext = setupPrometheusMetrics()
   private val appContext = setupKoskiApplicationContext()
@@ -99,7 +105,7 @@ class JettyLauncher(val port: Int, val application: KoskiApplication) extends Lo
     server
   }
 
-  private def setupConnector(): Unit = {
+  private def setupConnector(): ServerConnector = {
     val httpConfig = new HttpConfiguration()
     httpConfig.addCustomizer( new ForwardedRequestCustomizer() )
     httpConfig.setSendServerVersion(false)
@@ -116,11 +122,12 @@ class JettyLauncher(val port: Int, val application: KoskiApplication) extends Lo
     httpConfig.setUriCompliance(uriCompliance)
     val connectionFactory = new HttpConnectionFactory( httpConfig )
     val connector = new ServerConnector(server, connectionFactory)
-    connector.setPort(port)
+    connector.setPort(requestedPort)
     val idleTimeoutMs = config.getLong("jettyIdleTimeoutSeconds") * 1000
     logger.info(s"Setting Jetty idle connection timeout to $idleTimeoutMs ms")
     connector.setIdleTimeout(idleTimeoutMs)
     server.addConnector(connector)
+    connector
   }
 
   private def configureLogging(): Unit = {

@@ -48,9 +48,10 @@ object LocalJettyHttpSpec extends Logging {
 
   def baseUrl: String = jetty.baseUrl
 
-  // Vaikka satunnaiseksi portiksi yritetään valita avoin portti käynnistysvaiheessa, se ei aina onnistu luotettavasti,
-  // ja käynnistys epäonnistuu. Sellaisessa tapauksessa yritetään yksinkertaisesti luoda uusi instanssi ja toivotaan
-  // että uusi portti olisi vapaa.
+  // SharedJetty pyytää portin 0, jolloin käyttöjärjestelmä varaa vapaan portin vasta
+  // bindissä. Törmäystä ei siis pitäisi syntyä. Uudelleenyritys on jäänyt varmistukseksi
+  // muiden käynnistysvaiheen IO-virheiden varalle - halvempi pitää kuin selvittää
+  // satunnainen punainen buildi.
   def tryToStartSharedJetty(retries: Int): SharedJetty =
     try {
       val sharedJetty = new SharedJetty(defaultKoskiApplication)

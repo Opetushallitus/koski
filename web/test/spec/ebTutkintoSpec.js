@@ -39,15 +39,15 @@ describe('EB-tutkinto', function () {
       )
 
       it('Lisää-nappi on enabloitu', function () {
-        expect(addOppija.isEnabled()).to.equal(true)
+        return eventually(() => expect(addOppija.isEnabled()).to.equal(true))()
       })
 
       it('Ei näytetä opintojen rahoitus -kenttää', function () {
         expect(addOppija.rahoitusIsVisible()).to.equal(false)
       })
 
-      it('Näytetään oikeat tilavaihtoehdot', function () {
-        expect(addOppija.opiskeluoikeudenTilat()).to.deep.equal([
+      it('Näytetään oikeat tilavaihtoehdot', async function () {
+        expect(await addOppija.opiskeluoikeudenTilat()).to.deep.equal([
           'Eronnut',
           'Läsnä',
           'Valmistunut'

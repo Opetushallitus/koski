@@ -40,7 +40,9 @@ describe('Esiopetus', function () {
 
       describe('Käyttöliittymän tila', function () {
         it('Lisää-nappi on enabloitu', function () {
-          expect(addOppija.isEnabled()).to.equal(true)
+          return eventually(() =>
+            expect(addOppija.isEnabled()).to.equal(true)
+          )()
         })
 
         it('Ei näytetä opintojen rahoitus -kenttää', function () {
@@ -86,7 +88,9 @@ describe('Esiopetus', function () {
 
       describe('Käyttöliittymän tila', function () {
         it('Lisää-nappi on enabloitu', function () {
-          expect(addOppija.isEnabled()).to.equal(true)
+          return eventually(() =>
+            expect(addOppija.isEnabled()).to.equal(true)
+          )()
         })
 
         it('Ei näytetä opintojen rahoitus -kenttää', function () {
@@ -208,7 +212,9 @@ describe('Esiopetus', function () {
           )
 
           it('lisää nappi enabloituu', function () {
-            expect(addOppija.isEnabled()).to.equal(true)
+            return eventually(() =>
+              expect(addOppija.isEnabled()).to.equal(true)
+            )()
           })
 
           describe('Kun painetaan Lisää-nappia', function () {
@@ -339,9 +345,9 @@ describe('Esiopetus', function () {
           )
 
           it('lisää nappi enabloituu', function () {
-            return wait
-              .until(addOppija.isEnabled)()
-              .then(() => expect(addOppija.isEnabled()).to.equal(true))
+            return eventually(() =>
+              expect(addOppija.isEnabled()).to.equal(true)
+            )()
           })
 
           describe('Kun painetaan Lisää-nappia', function () {
