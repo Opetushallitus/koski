@@ -41,6 +41,12 @@ else
     C_BOLD=""; C_DIM=""; C_RED=""; C_YEL=""; C_GRN=""; C_CYA=""; C_BRED=""; C_OFF=""
 fi
 
+# Call the installed binary rather than "npx prettier": npx runs npm, which
+# reads web/.npmrc and warns about every pnpm-only setting in it, and would
+# download whatever version is newest instead of the one pinned in
+# web/package.json.
+PRETTIER="$ROOT_DIR/web/node_modules/.bin/prettier"
+
 ADDED_TOTAL=0
 CHANGED_TOTAL=0
 REWIND_TOTAL=0
@@ -348,12 +354,18 @@ function load_and_format() {
         "https://virkailija.opintopolku.fi/lokalisointi/cxf/rest/v1/localisation?category=$CATEGORY" \
         | jq -S 'map( . * { createdBy: "anonymousUser", modifiedBy: "anonymousUser" } )' \
         > "$LOCALIZATION_FILE"
-    npx prettier --config "$ROOT_DIR/web/.prettierrc.json" --write "$LOCALIZATION_FILE"
+    "$PRETTIER" --config "$ROOT_DIR/web/.prettierrc.json" --log-level warn --write "$LOCALIZATION_FILE"
     jq '[.[] | select(.locale | contains("fi"))] | map( { (.key): .value } ) | add' < "$LOCALIZATION_FILE" > "$DEFAULT_TEXTS_FILE"
 
     report_divergence "$CATEGORY" "$PREVIOUS" "$LOCALIZATION_FILE" "$LOCALIZATION_FILE"
 }
 
+
+if [ ! -x "$PRETTIER" ]; then
+    printf '%s\n' "${C_RED}prettier puuttuu polusta $PRETTIER${C_OFF}" >&2
+    printf '%s\n' "Aja ensin: ${C_CYA}cd web && pnpm install${C_OFF}" >&2
+    exit 1
+fi
 
 load_and_format koski \
     "src/main/resources/mockdata/lokalisointi/koski.json" \
