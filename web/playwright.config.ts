@@ -25,8 +25,6 @@ const config: PlaywrightTestConfig = {
     timeout: 5000,
     /* Screenshot-vertailun oletusasetukset (käytössä visuaalitesteissä). */
     toHaveScreenshot: {
-      /* Maksimi poikkeama pikseleinä */
-      maxDiffPixels: 500,
       /* Piilota animaatiot ja tekstikursori vakauden vuoksi. */
       animations: 'disabled',
       caret: 'hide'

@@ -28,7 +28,9 @@ export class KoskiOppijaPageV2<T extends IdNodeObject<string>> {
   }
 
   getByTestId(id?: string, ooIndex?: number) {
-    return this.page.getByTestId([`oo.${ooIndex || 0}`, id].filter(notUndefined).join('.'))
+    return this.page.getByTestId(
+      [`oo.${ooIndex || 0}`, id].filter(notUndefined).join('.')
+    )
   }
 
   opiskeluoikeus(index: number) {
@@ -83,6 +85,29 @@ export class KoskiOppijaPageV2<T extends IdNodeObject<string>> {
       .osasuoritukset(index)
       .expand.click()
     this.osasuoritusIndex = index
+  }
+
+  async openExpandableOsasuoritukset(expectedCount: number) {
+    const expandButtons = this.page.getByRole('button', {
+      name: 'Laajenna Osasuoritus'
+    })
+    await expect(expandButtons).toHaveCount(expectedCount)
+
+    for (let remaining = expectedCount; remaining > 0; remaining -= 1) {
+      await expect(expandButtons.first()).toBeVisible()
+      await expandButtons.first().click()
+    }
+
+    await expect(expandButtons).toHaveCount(0)
+  }
+
+  async openAllOsasuoritukset() {
+    const openAllButton = this.page.getByRole('button', { name: 'Avaa kaikki' })
+    await expect(openAllButton).toBeVisible()
+    await openAllButton.click()
+    await expect(
+      this.page.getByRole('button', { name: 'Sulje kaikki' })
+    ).toBeVisible()
   }
 
   async opiskeluoikeudenTila(index: number) {
