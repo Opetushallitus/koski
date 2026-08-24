@@ -21,7 +21,13 @@ const config: PlaywrightTestConfig = {
   // se mitä ajetaan.
   testIgnore: undefined,
   testMatch: '**/*.visual.spec.ts',
-  // Vakiintumisodotus (10 s) + kaappaus (15 s) ei mahdu 30 sekuntiin.
+  use: {
+    ...baseConfig.use,
+    // Kuvakaappauksen oma tyylitiedosto ei muuten läpäise Kosken CSP:tä.
+    // Ohitus rajataan visuaalitesteihin, jotta muut e2e-testit käyttävät oikeaa CSP:tä.
+    bypassCSP: true
+  },
+  // Pitkien sivujen valmistelu ja kaappaus eivät aina mahdu 30 sekuntiin.
   timeout: 60 * 1000
 }
 

@@ -1,6 +1,6 @@
 import { expect, test } from './base'
 import { virkailija } from './setup/auth'
-import { otaVakaaKuvakaappaus } from './fragments/visualScreenshot'
+import { takeFullPageScreenshot } from './fragments/fullPageScreenshot'
 
 // Toiminnalliset testit: ib.spec.ts
 // Ks. documentation/visual-testing.md
@@ -24,7 +24,7 @@ test.describe('IB – visuaaliset regressiot', () => {
   test('Pre-IB 2015, katselunäkymä', async ({ page, oppijaPage }) => {
     await oppijaPage.goto(preIB2015JaTutkinto)
     await expect(page.getByTestId('oo.0.opiskeluoikeus.nimi')).toBeVisible()
-    await otaVakaaKuvakaappaus(page, 'ib-pre-ib-2015-katselu.png')
+    await takeFullPageScreenshot(page, 'ib-pre-ib-2015-katselu.png')
   })
 
   test('Pre-IB 2015, muokkaustila', async ({
@@ -37,7 +37,7 @@ test.describe('IB – visuaaliset regressiot', () => {
     await expect(
       page.getByTestId('oo.0.opiskeluoikeus.cancelEdit')
     ).toBeVisible()
-    await otaVakaaKuvakaappaus(page, 'ib-pre-ib-2015-muokkaus.png')
+    await takeFullPageScreenshot(page, 'ib-pre-ib-2015-muokkaus.png')
   })
 
   test('IB-tutkinto, katselunäkymä', async ({
@@ -48,12 +48,12 @@ test.describe('IB – visuaaliset regressiot', () => {
     await oppijaPage.goto(preIB2015JaTutkinto)
     await ibOppijaPage.selectSuoritus(1)
     await expect(page.getByTestId('oo.0.suoritukset.1.koulutus')).toBeVisible()
-    await otaVakaaKuvakaappaus(page, 'ib-tutkinto-katselu.png')
+    await takeFullPageScreenshot(page, 'ib-tutkinto-katselu.png')
   })
 
   test('Pre-IB 2019, katselunäkymä', async ({ page, oppijaPage }) => {
     await oppijaPage.goto(preIB2019)
     await expect(page.getByTestId('oo.0.opiskeluoikeus.nimi')).toBeVisible()
-    await otaVakaaKuvakaappaus(page, 'ib-pre-ib-2019-katselu.png')
+    await takeFullPageScreenshot(page, 'ib-pre-ib-2019-katselu.png')
   })
 })

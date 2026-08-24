@@ -1,9 +1,6 @@
 import { expect, test } from './base'
 import { virkailija } from './setup/auth'
-import {
-  avaaOsasuoritusrivit,
-  otaVakaaKuvakaappaus
-} from './fragments/visualScreenshot'
+import { takeFullPageScreenshot } from './fragments/fullPageScreenshot'
 
 /**
  * Visuaaliset regressiotestit perusopetuksen uudelle (v2) käyttöliittymälle.
@@ -47,15 +44,16 @@ test.describe('Perusopetus v2 – visuaaliset regressiot', () => {
 
   test('Päättötodistus, laajennettu katselunäkymä', async ({
     page,
-    oppijaPage
+    oppijaPage,
+    oppijaPageV2
   }) => {
     await oppijaPage.goto(url)
     await page.getByTestId(päättötodistusTab).click()
     await expect(
       page.getByTestId('oo.0.suoritukset.0.osasuoritukset.0.arvosana.value')
     ).toBeVisible()
-    await avaaOsasuoritusrivit(page)
-    await otaVakaaKuvakaappaus(
+    await oppijaPageV2.openExpandableOsasuoritukset(2)
+    await takeFullPageScreenshot(
       page,
       'perusopetus-paattotodistus-katselu-avattu.png'
     )
@@ -63,7 +61,8 @@ test.describe('Perusopetus v2 – visuaaliset regressiot', () => {
 
   test('8. vuosiluokka, laajennettu muokkaustila', async ({
     page,
-    oppijaPage
+    oppijaPage,
+    oppijaPageV2
   }) => {
     await oppijaPage.goto(url)
     await page.getByTestId(vuosiluokkaTab).click()
@@ -73,8 +72,8 @@ test.describe('Perusopetus v2 – visuaaliset regressiot', () => {
         'oo.0.suoritukset.2.osasuoritukset.0.arvosana.edit.input'
       )
     ).toBeVisible()
-    await avaaOsasuoritusrivit(page)
-    await otaVakaaKuvakaappaus(
+    await oppijaPageV2.openExpandableOsasuoritukset(23)
+    await takeFullPageScreenshot(
       page,
       'perusopetus-vuosiluokka-muokkaus-avattu.png'
     )

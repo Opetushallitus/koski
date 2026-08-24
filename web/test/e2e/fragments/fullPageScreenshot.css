@@ -1,0 +1,11 @@
+#topbar.local {
+  position: absolute !important;
+}
+
+.FooterBar {
+  position: static !important;
+}
+
+body.FooterBar--visible {
+  padding-bottom: 0 !important;
+}
