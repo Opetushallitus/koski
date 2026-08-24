@@ -760,13 +760,13 @@ class KoskiValidator(
 
         HttpStatus.fold(
           HttpStatus.validate(toimintaAlueittainenPäällekkäin.isEmpty)(KoskiErrorCategory.badRequest.validation.date(
-            s"Opetuksen järjestäminen vamman, sairauden tai rajoitteen perusteella ei saa olla samaan aikaan kuin opiskelu toiminta-alueittain: ${toimintaAlueittainenPäällekkäin.get}"
+            s"Opetus oppiaineittain (vamman, sairauden tai rajoitteen perusteella) -lisätieto ei saa olla samaan aikaan kuin opetus toiminta-alueittain (vamman, sairauden tai rajoitteen perusteella): ${toimintaAlueittainenPäällekkäin.get.mkString(", ")}"
           )),
           HttpStatus.validate(sisältymättömätJaksot.isEmpty)(KoskiErrorCategory.badRequest.validation.date(
-            s"Opetuksen järjestäminen vamman, sairauden tai rajoitteen perusteella (${sisältymättömätJaksot.get.mkString(",")}) pitää sisältyä tuen päätöksen jaksoon"
+            s"Opetus oppiaineittain (vamman, sairauden tai rajoitteen perusteella) -lisätiedon (${sisältymättömätJaksot.get.mkString(", ")}) täytyy sisältyä tuen päätöksen jaksoon"
           )),
           HttpStatus.validate(!alkaaLiianVarhain)(KoskiErrorCategory.badRequest.validation.date(
-            s"Opetuksen järjestäminen vamman, sairauden tai rajoitteen perusteella -lisätiedon varhaisin sallittu voimassaolopäivä on $vammaSairausTaiRajoiteVoimaan"
+            s"Opetus oppiaineittain (vamman, sairauden tai rajoitteen perusteella) -lisätiedon varhaisin sallittu voimassaolopäivä on $vammaSairausTaiRajoiteVoimaan"
           ))
         )
 
@@ -817,11 +817,11 @@ class KoskiValidator(
         HttpStatus.fold(
           HttpStatus.validate(!toimintaAlueittainenAlkaaLiianAikaisin)(
             KoskiErrorCategory.badRequest.validation.date(
-              s"Toiminta-alueittain opiskelu -lisätiedon varhaisin sallittu voimassaolopäivä on $toimintaAlueittainJärjestettyVoimaan"
+              s"Opetus toiminta-alueittain (vamman, sairauden tai rajoitteen perusteella) -lisätiedon varhaisin sallittu voimassaolopäivä on $toimintaAlueittainJärjestettyVoimaan"
             )
           ),
           HttpStatus.validate(sisältymättömätJaksot.isEmpty)(KoskiErrorCategory.badRequest.validation.date(
-            s"Toiminta-alueittain opiskelun (${sisältymättömätJaksot.get.mkString(",")}) täytyy sisältyä tuen päätöksen jaksoon"
+            s"Opetus toiminta-alueittain (vamman, sairauden tai rajoitteen perusteella) -lisätiedon (${sisältymättömätJaksot.get.mkString(", ")}) täytyy sisältyä tuen päätöksen jaksoon"
           )),
         )
       case _ => HttpStatus.ok
@@ -848,7 +848,7 @@ class KoskiValidator(
             )
           ),
           HttpStatus.validate(tukijaksonUlkopuollaOlevat.isEmpty)(KoskiErrorCategory.badRequest.validation.date(
-            s"Tavoitekokonaisuuksittain opiskelun (${tukijaksonUlkopuollaOlevat.get.mkString(",")}) täytyy sisältyä tuen päätöksen jaksoon"
+            s"Tavoitekokonaisuuksittain opiskelun (${tukijaksonUlkopuollaOlevat.get.mkString(", ")}) täytyy sisältyä tuen päätöksen jaksoon"
           )),
         )
       case _ => HttpStatus.ok

@@ -9,3 +9,4 @@ OPHKOTO-28 - Käyttöoikeuksien hienojakoistaminen
 OPHKOTO-28 - Bugikorjaus
 OPHKOTO-130 - Ei validaatiomuutoksia
 TOR-2587 - Ahvenanmaan perusopetus: ePerusteet-validoinnin ohitus uudelle tyypille, ei vaikuta olemassaoleviin
+TOR-2704 - vain virheviestien sanamuotoja täsmennetty, validaatiologiikka ennallaan

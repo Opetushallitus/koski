@@ -84,13 +84,13 @@ export const PerusopetuksenLisatiedot: React.FC<
         form={form}
         lisatiedotPath={lisatiedotPath}
         fieldName="opetuksenJärjestäminenVammanSairaudenTaiRajoitteenPerusteella"
-        label="Opetuksen järjestäminen vamman, sairauden tai rajoitteen perusteella"
+        label="Opetuksen järjestäminen vamman sairauden tai rajoitteen perusteella"
       />
       <AikajaksoArrayRow
         form={form}
         lisatiedotPath={lisatiedotPath}
         fieldName="toimintaAlueittainOpiskelu"
-        label="Toiminta-alueittain opiskelu"
+        label="Opetus toiminta-alueittain vamman sairauden tai rajoitteen perusteella"
       />
       <AikajaksoArrayRow
         form={form}
