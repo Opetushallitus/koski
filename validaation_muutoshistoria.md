@@ -1,5 +1,11 @@
 # Koskeen tallennettavien tietojen validaatiosäännöt
 
+## 24.8.2026
+
+- Korjattu esi- ja perusopetuksen pidennetyn oppivelvollisuuden päällekkäisyysvalidaatioita:
+  - Osittain päällekkäiset aikajaksot ja aikajaksot, joilla on yksi yhteinen rajapäivä, tulkitaan päällekkäisiksi.
+  - Perusopetuksessa validaatio kattaa nyt myös pidennetyn oppivelvollisuuden ja toiminta-alueittain opiskelun päällekkäisyyden.
+
 ## 10.8.2026
 
 - IB-tutkinnon suorituksen suorituskielen on oltava englanti.

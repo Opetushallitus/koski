@@ -16,3 +16,4 @@ OPHKOTO-17 - muutos vaikuttaa validointiin
 OPHKOTO-17 - muutos vaikuttaa validointiin
 OPHKOTO-57 - lisätty synteettinen kenttä, ei vaikuta tiedonsiirtoon
 TOR-2704 - vain @Title-annotaation sanamuoto muuttunut, ei muutosta skeeman rakenteeseen tai tiedonsiirtoon
+TOR-2708 - korjattu skeematiedostossa olevan aikajaksojen päällekkäisyysfunktion toimintaa; ei muutosta tiedonsiirtoprotokollaan

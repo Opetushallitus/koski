@@ -269,7 +269,7 @@ object PerusopetuksenOpiskeluoikeusValidation extends Logging {
 
     if (erityisenTuenPäätökset.nonEmpty && tuenPäätöksenJaksot.nonEmpty) {
       HttpStatus.validateNot(MahdollisestiAlkupäivällinenJakso.overlap(erityisenTuenPäätökset, tuenPäätöksenJaksot))(
-        KoskiErrorCategory.badRequest.validation.date.erityisenTuenPäätös(s"Erityisen tuen päätöksen jakso ja tuen päätöksen jakso eivät saa olla päällekkäin")
+        KoskiErrorCategory.badRequest.validation.date.erityisenTuenPäätös(s"Erityisen tuen päätöksen jakso ja tuen päätöksen jakso eivät saa olla päivämääriltään päällekkäin")
       )
     } else {
       HttpStatus.ok
@@ -278,15 +278,17 @@ object PerusopetuksenOpiskeluoikeusValidation extends Logging {
 
   private def validateOppivelvollisuudenPidennysjaksojenPäällekkäisyys(tiedot: PerusopetuksenOpiskeluoikeudenLisätiedot): HttpStatus = {
     val pidennettyOppivelvollisuus = tiedot.pidennettyOppivelvollisuus.toList
-    val jaksot = tiedot.opetuksenJärjestäminenVammanSairaudenTaiRajoitteenPerusteella.toList.flatten
+    val oppiaineittainOpiskelunJaksot = tiedot.opetuksenJärjestäminenVammanSairaudenTaiRajoitteenPerusteella.toList.flatten
+    val toimintaAlueittainOpiskelunJaksot = tiedot.toimintaAlueittainOpiskelu.toList.flatten
 
-    if (pidennettyOppivelvollisuus.nonEmpty && jaksot.nonEmpty) {
-      HttpStatus.validateNot(Aikajakso.overlap(pidennettyOppivelvollisuus, jaksot))(
-        KoskiErrorCategory.badRequest.validation.date.erityisenTuenPäätös(s"Pidennetty oppivelvollisuus ja opetus oppiaineittain (vamman, sairauden tai rajoitteen perusteella) eivät saa olla ajallisesti päällekkäin")
-      )
-    } else {
-      HttpStatus.ok
-    }
+    HttpStatus.fold(
+      HttpStatus.validateNot(Aikajakso.overlaps(pidennettyOppivelvollisuus, oppiaineittainOpiskelunJaksot))(
+        KoskiErrorCategory.badRequest.validation.date.pidennettyOppivelvollisuus(s"Pidennetty oppivelvollisuus ja opetus oppiaineittain (vamman, sairauden tai rajoitteen perusteella) eivät saa olla päivämääriltään päällekkäin")
+      ),
+      HttpStatus.validateNot(Aikajakso.overlaps(pidennettyOppivelvollisuus, toimintaAlueittainOpiskelunJaksot))(
+        KoskiErrorCategory.badRequest.validation.date.pidennettyOppivelvollisuus(s"Pidennetty oppivelvollisuus ja opetus toiminta-alueittain (vamman, sairauden tai rajoitteen perusteella) eivät saa olla päivämääriltään päällekkäin")
+      ),
+    )
   }
 
   private def validateValmistavanLisäopetus(

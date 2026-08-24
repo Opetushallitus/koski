@@ -1832,6 +1832,7 @@ class OppijaValidationPerusopetusSpec extends TutkinnonPerusteetTest[Perusopetuk
       tuenPäätöksenJaksot: Option[List[Tukijakso]] = None,
       erityisenTuenPäätökset: Option[List[ErityisenTuenPäätös]] = None,
       opetuksenJärjestäminenVammanSairaudenTaiRajoitteenPerusteella: Option[List[Aikajakso]] = None,
+      toimintaAlueittainOpiskelu: Option[List[Aikajakso]] = None,
       pidennettyOppivelvollisuus: Option[Aikajakso] = None,
       vammainen: Option[List[Aikajakso]] = None,
       vaikeastiVammainen: Option[List[Aikajakso]] = None,
@@ -1857,6 +1858,7 @@ class OppijaValidationPerusopetusSpec extends TutkinnonPerusteetTest[Perusopetuk
           tuenPäätöksenJaksot = tuenPäätöksenJaksot,
           erityisenTuenPäätökset = erityisenTuenPäätökset,
           opetuksenJärjestäminenVammanSairaudenTaiRajoitteenPerusteella = opetuksenJärjestäminenVammanSairaudenTaiRajoitteenPerusteella,
+          toimintaAlueittainOpiskelu = toimintaAlueittainOpiskelu,
           pidennettyOppivelvollisuus = pidennettyOppivelvollisuus,
           vammainen = vammainen,
           vaikeastiVammainen = vaikeastiVammainen,
@@ -1876,12 +1878,12 @@ class OppijaValidationPerusopetusSpec extends TutkinnonPerusteetTest[Perusopetuk
         ))),
       )) {
         verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.date.erityisenTuenPäätös(
-          "Erityisen tuen päätöksen jakso ja tuen päätöksen jakso eivät saa olla päällekkäin"
+          "Erityisen tuen päätöksen jakso ja tuen päätöksen jakso eivät saa olla päivämääriltään päällekkäin"
         ))
       }
     }
 
-    "Oppivelvollisuuden pidennyksen ja varhennukset jaksot eivät saa olla päällekkäin" in {
+    "Pidennetty oppivelvollisuus ja opetus oppiaineittain eivät saa olla päällekkäin" in {
       setupOppijaWithOpiskeluoikeus(makeOpiskeluoikeus(
         pidennettyOppivelvollisuus = Some(Aikajakso(
           alku = Some(date(2025, 8, 13)),
@@ -1893,7 +1895,7 @@ class OppijaValidationPerusopetusSpec extends TutkinnonPerusteetTest[Perusopetuk
         ))),
         erityisenTuenPäätökset = Some(List(ErityisenTuenPäätös(
           alku = Some(date(2025, 8, 13)),
-          loppu = Some(date(2026, 8, 1)),
+          loppu = Some(date(2026, 7, 31)),
         ))),
         opetuksenJärjestäminenVammanSairaudenTaiRajoitteenPerusteella = Some(List(Aikajakso(
           alku = Some(date(2026, 8, 1)),
@@ -1905,10 +1907,24 @@ class OppijaValidationPerusopetusSpec extends TutkinnonPerusteetTest[Perusopetuk
         ))),
       )) {
         verifyResponseStatus(400,
-          KoskiErrorCategory.badRequest.validation.date.erityisenTuenPäätös(
-            "Erityisen tuen päätöksen jakso ja tuen päätöksen jakso eivät saa olla päällekkäin"
+          KoskiErrorCategory.badRequest.validation.date.pidennettyOppivelvollisuus(
+            "Pidennetty oppivelvollisuus ja opetus oppiaineittain (vamman, sairauden tai rajoitteen perusteella) eivät saa olla päivämääriltään päällekkäin"
           ),
         )
+      }
+    }
+
+    "Pidennetty oppivelvollisuus ja opetus toiminta-alueittain eivät saa olla päällekkäin" in {
+      setupOppijaWithOpiskeluoikeus(makeOpiskeluoikeus(
+        pidennettyOppivelvollisuus = Some(Aikajakso(date(2025, 8, 13), Some(date(2026, 8, 1)))),
+        vammainen = Some(List(Aikajakso(date(2025, 8, 13), Some(date(2026, 8, 1))))),
+        erityisenTuenPäätökset = Some(List(ErityisenTuenPäätös(Some(date(2025, 8, 13)), Some(date(2026, 7, 31))))),
+        toimintaAlueittainOpiskelu = Some(List(Aikajakso(date(2026, 8, 1), Some(date(2026, 8, 3))))),
+        tuenPäätöksenJaksot = Some(List(Tukijakso(Some(date(2026, 8, 1)), Some(date(2026, 8, 3))))),
+      )) {
+        verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.date.pidennettyOppivelvollisuus(
+          "Pidennetty oppivelvollisuus ja opetus toiminta-alueittain (vamman, sairauden tai rajoitteen perusteella) eivät saa olla päivämääriltään päällekkäin"
+        ))
       }
     }
 
