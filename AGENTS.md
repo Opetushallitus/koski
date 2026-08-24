@@ -218,7 +218,10 @@ languages — what local dev and tests read) and
 fallback). Valpas has the same pair under `src/main/resources/valpas/`.
 
 - **New key** → add it to `koski-default-texts.json`. On startup the app creates in the service
-  any key present there but missing from it.
+  any key present there but missing from it — but only with the Finnish text, publishing `sv`
+  and `en` as empty strings. Swedish and English for a new key must therefore be added in Tolgee
+  as well; writing them straight into the mockdata file works locally and is dropped by the next
+  refresh.
 - **Changed text on an existing key** → do **both**: commit the new value to the repo *and* edit
   it in Tolgee. Neither half is enough on its own. `LocalizationRepository.init` only *creates*
   keys missing from the service (`localization.create`) and never updates the value of one that
