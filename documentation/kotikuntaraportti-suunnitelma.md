@@ -520,3 +520,50 @@ näkyvyyspolku toimii sille aivan kuten muillekin raporteille.
 Ei vielä tehty: backend-endpoint (servlet-reitti, request-case-class, `RaportitService`-metodi),
 Excel-kirjoitus, yksilöidyn välilehden kysely, uusi `RaportinTyyppi`-case-object eikä sen
 koulutusmuoto-kytkentä.
+
+## 10. Backend-endpointin toteutus ja testifixtuurit
+
+Aggregaattivälilehden backend on nyt toteutettu (`Kotikuntaraportti.scala`, `RaportitService.
+kotikuntaraportti`, `RaportitServlet` `/kotikuntaraportti`-reitti) 8.1 §:n kyselyn pohjalta,
+korjattuna 5 §:n kohdan 6 mukaisesti (julkinen `r_kotikuntahistoria`, ei confidential-varianttia)
+ja ikäryhmät parametrisoitu (`extract(year from :paiva)` kovakoodattujen vuosilukujen sijaan).
+Manuaalisessa testauksessa löytyi ja korjattiin yksi SQL-bugi: `extract(year from $päivä)` on
+Postgresille moniselitteinen bind-parametrin kanssa (`function pg_catalog.extract(unknown,
+unknown) is not unique`) — korjattu eksplisiittisellä `::date`-castilla (`$päivä::date`).
+
+**Testifixtuurit puuttuivat käytännössä kokonaan.** Suurin osa `KoskiSpecificMockOppijat.scala`:n
+perusopetus-/esiopetusoppijoista käyttää vanhan muotoisia hetuja, jotka dekoodautuvat 1900-luvun
+syntymävuosiksi — eli ne ovat raportointikannassa "aikuisia", eivät raportin 6-16-vuotiaiden
+ikäikkunaan osuvia lapsia. Tämän vuoksi olemassa olevalla datalla raportti näytti käytännössä
+yhden rivin (`esikoululainen2025`, esiopetus, aktiivinen 13.8.2025-31.8.2026).
+
+Lisätty kuusi uutta testioppijaa `KoskiSpecificMockOppijat.scala`:n loppuun (ks. tiedoston
+kommentti, OID:t eivät siirry koska lisäys on listan lopussa) ja niiden opiskeluoikeudet
+`KoskiSpecificDatabaseFixtureCreator.defaultOpiskeluOikeudet`-listan loppuun, kaikki
+Jyväskylän normaalikoulussa, avoimin (päättymätön) perusopetuksen 1. luokan läsnä-jaksoin
+1.8.2022 alkaen, jotta ikä ratkeaa pelkästä syntymäajasta:
+
+- `kotikuntaraporttiKuusivuotias` (s. 2020, kotikunta Jyväskylä) — 6-vuotiaiden ryhmä
+- `kotikuntaraporttiSeitsemanKaksitoista` (s. 2017, Helsinki) — 7-12-vuotiaiden ryhmä
+- `kotikuntaraporttiKolmetoistaViisitoista` (s. 2012, Helsinki) — 13-15-vuotiaiden ryhmä
+- `kotikuntaraporttiKuusitoistaErityinen` (s. 2010, Jyväskylä) — 16 v., `toimintaAlueittainOpiskelu`
+  asetettu → testaa "erityisen tuen perusteella" -alaryhmää
+- `kotikuntaraporttiKuusitoistaEiErityista` (s. 2010, Helsinki) — 16 v., ei erityisen tuen lippuja
+- `kotikuntaraporttiHetuton` (s. 2015, ei hetua, ei kotikuntaa) — testaa "Ei tiedossa"-ryhmää
+  hetuttoman *lapsen* kautta (aiemmat hetuttomat fixturet olivat aikuisia)
+
+**Ei katettu tällä fixtuurilisäyksellä**: turvakiellon alaista oppijaa (5 §:n kohta 6:n toinen
+puoli — vaatisi oman `turvakielto = true` + kuntahistoria-fixtuurin), eikä `kotiopetus`-poisrajaus-
+tapausta (olemassa olevat kotiopetus-fixturet ovat samasta syystä liian vanhoja/väärän ikäisiä
+tälle raportille). Näiden lisääminen jää myöhemmäksi jos tarvitaan.
+
+**Tunnettu sivuvaikutus, tietoisesti hyväksytty**: uusien aktiivisten oppijoiden lisääminen
+Jyväskylän normaalikouluun — joka on erittäin paljon käytetty fixture-koulu muissa raporttitesteissä
+(mm. oppijamäärä-raporttien testeissä) — todennäköisesti muuttaa niiden raporttien odotettuja
+oppilasmääriä/snapshotteja tällä branchilla. Tietoinen päätös: fixturet pidetään branchilla
+Kotikuntaraportin kehitystä varten, ja mahdollisesti rikkoutuvat testit korjataan myöhemmin erikseen.
+**Riski**: kun testisviitta on jo osittain punainen tästä syystä, uusi, tästä muutoksesta
+riippumaton regressio voi hukkua joukkoon huomaamatta. Mitigaatio: aja koko backend-testisarja
+(`make backtest`) sekä ennen että heti fixtuurilisäyksen jälkeen ja vertaa diffiä — näin tiedetään
+tarkalleen mitkä epäonnistumiset johtuvat juuri tästä muutoksesta, eikä myöhempi uusi regressio
+pääse piiloutumaan jo-tiedettyjen joukkoon.
