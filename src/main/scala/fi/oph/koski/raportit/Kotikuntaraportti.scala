@@ -70,7 +70,7 @@ case class Kotikuntaraportti(db: DB, organisaatioService: OrganisaatioService) e
   private def query(oppilaitosOids: Seq[String], päivä: LocalDate) = {
     sql"""
     with v as (
-      select extract(year from $päivä)::int as vuosi
+      select extract(year from $päivä::date)::int as vuosi
     )
     select
       oo.koulutustoimija_oid as opetuksen_jarjestaja_oid,
