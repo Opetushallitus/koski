@@ -135,6 +135,11 @@ visual-test:
 visual-update:
 	scripts/koski-visual.sh update
 
+# koski-visual-pnpm-store ei enää luoda, mutta voi olla luotu aikaisemmalla versiolla
+.PHONY: visual-clean
+visual-clean:
+	docker volume rm -f koski-visual-node-modules koski-visual-pnpm-store
+
 .PHONY: omadataoauth2e2e
 omadataoauth2e2e:
 		mvn $(mvn_opts) -DargLine="$(mvn_argline)" test -Dsuites="fi.oph.koski.omadataoauth2.e2e.OmaDataOAuth2E2ESpec"

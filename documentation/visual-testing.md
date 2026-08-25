@@ -84,16 +84,16 @@ saa niitä poistettua ilman sudoa. macOS:llä Docker Desktopin uid-mappaus
 piilottaa tämän.
 
 **Tämä on hyväksytty haitta, älä "korjaa" sitä.** Suoraviivainen
-`--user $(id -u):$(id -g)` on kokeiltu ja se rikkoo ajon kokonaan: nimetyt
-volumet (`koski-visual-node-modules`, `koski-visual-pnpm-store`) syntyvät
-rootin omistamina, joten ei-root-käyttäjä ei voi kirjoittaa niihin eikä
-`corepack`/`pnpm install` käynnisty lainkaan.
+`--user $(id -u):$(id -g)` on kokeiltu ja se rikkoo ajon kokonaan: nimetty
+volume (`koski-visual-node-modules`) syntyy rootin omistamana, joten
+ei-root-käyttäjä ei voi kirjoittaa siihen eikä `corepack`/`pnpm install`
+käynnisty lainkaan.
 
-Toimiva versio vaatisi volumien chownaamisen erillisessä root-kontissa ennen
+Toimiva versio vaatisi volumen chownaamisen erillisessä root-kontissa ennen
 jokaista ajoa. Se lisäisi kontin käynnistyksen joka kertaan ja muuttaisi myös
 CI:n polkua, joka toimii nyt – kosmeettisen kiusan hinnaksi liikaa. Jos tämä
 joskus muuttuu oikeaksi ongelmaksi, lähde liikkeelle siitä että ongelma on
-volumien omistajuus, ei `--user` sinänsä.
+volumen omistajuus, ei `--user` sinänsä.
 
 ## Tiedostot
 
@@ -107,6 +107,7 @@ volumien omistajuus, ei `--user` sinänsä.
   suitenaan kontissa.
 - `scripts/koski-visual.sh` (`make visual-test` / `make visual-update`) –
   ajaa testit kontissa. Sama skripti sekä paikallisesti että CI:ssä.
+  `make visual-clean` poistaa kontin riippuvuusvolumen.
 - `src/test/scala/fi/oph/koski/e2e/KoskiVisualFrontSpec.scala` – käynnistää
   backendin ja kutsuu skriptiä. CI ajaa tämän omassa jobissaan
   (`.github/actions/koski_visual_test`).
@@ -116,8 +117,7 @@ volumien omistajuus, ei `--user` sinänsä.
 Linuxilla (myös CI) käytetään `--network host`ia. Docker Desktopilla
 (macOS/Windows) se ei toimi, joten siellä käytetään
 `host.docker.internal`-nimeä yhdessä `--add-host=…:host-gateway`-lipun
-kanssa. `node_modules` varjostetaan nimetyllä volumella, jottei kontin
-Linux-binäärit ylikirjoita hostin omia.
+kanssa.
 
 ## Kierre: nauhoitus voi tallentaa asettumattoman ruudun
 
