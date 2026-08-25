@@ -95,7 +95,11 @@ import {
 import { TestIdLayer, TestIdText } from '../appstate/useTestId'
 import { useKoodistoFiller } from '../appstate/koodisto'
 import { PerusopetuksenToiminta_Alue } from '../types/fi/oph/koski/schema/PerusopetuksenToimintaAlue'
-import { isToimintaAlueittainOpiskelu } from './toimintaAlueittain'
+import {
+  isSekamuotoinen,
+  isToimintaAlueittainSuoritus,
+  sisältääToimintaAlueita
+} from './toimintaAlueittain'
 import {
   isUskonnonOppiaine,
   isVieraanKielenOppiaine,
@@ -129,7 +133,6 @@ export const PerusopetuksenOppiaineet: React.FC<
   const opiskeluoikeus = form.state
   const suoritus = päätasonSuoritus.suoritus
   const suoritusIndex = päätasonSuoritus.index
-  const isToimintaAlueittain = isToimintaAlueittainOpiskelu(opiskeluoikeus)
 
   if (isNuortenPerusopetuksenOppiaineenOppimääränSuoritus(suoritus)) {
     return null
@@ -150,6 +153,15 @@ export const PerusopetuksenOppiaineet: React.FC<
   >
   const osasuoritukset = suoritus.osasuoritukset || []
 
+  // Taulukon tila päätellään sen omista osasuorituksista: otsikot, sarake ja
+  // lisäyspudotus seuraavat samaa arvoa, jottei taulukko voi väittää yhtä ja
+  // tarjota toista. Lisätietolippu ratkaisee vain tyhjällä listalla.
+  const isToimintaAlueittain = isToimintaAlueittainSuoritus(
+    opiskeluoikeus,
+    osasuoritukset
+  )
+  const sekamuotoinen = isSekamuotoinen(osasuoritukset)
+
   // Oppimäärän arvosanoja ei näytetä ennen vahvistusta ellei olla
   // muokkaustilassa. Vuosiluokan suoritusten arvosanat näytetään aina.
   const showArvosana =
@@ -160,8 +172,15 @@ export const PerusopetuksenOppiaineet: React.FC<
   // Ryhmittely yhteisiin (pakolliset) ja valinnaisiin oppiaineisiin. Näytetään
   // myös tyhjälle vuosiluokalle muokkaustilassa, jotta molemmat lisäyspudotukset
   // (pakollinen + valinnainen) ovat käytettävissä – ei vain valinnaisen.
+  // Toiminta-alueita sisältävää listaa ei ryhmitellä lainkaan: GroupedOppiaineet
+  // suodattaa molemmat taulukkonsa oppiainevartijalla, jolloin toiminta-alueet
+  // eivät osuisi kumpaankaan ryhmään ja katoaisivat näkyvistä jääden silti
+  // dataan. Ehto on sidottu listan sisältöön eikä sekamuotoisuuteen, koska myös
+  // pelkkiä toiminta-alueita sisältävä lista jää ilman lisätietolippua
+  // normaalitilaan - ja tyhjenisi tuolloin muokkaustilassa kokonaan.
   const hasGrouping =
     !isToimintaAlueittain &&
+    !sisältääToimintaAlueita(osasuoritukset) &&
     (form.editMode ||
       osasuoritukset.some(
         (s) =>
@@ -171,9 +190,18 @@ export const PerusopetuksenOppiaineet: React.FC<
 
   const footnotes = computeFootnotes(osasuoritukset)
 
-  const title = isToimintaAlueittain
-    ? 'Toiminta-alueiden arvosanat'
-    : 'Oppiaineiden arvosanat'
+  // Sekamuotoinen taulukko ei väitä olevansa kumpaakaan.
+  const title = sekamuotoinen
+    ? 'Arvosanat'
+    : isToimintaAlueittain
+      ? 'Toiminta-alueiden arvosanat'
+      : 'Oppiaineiden arvosanat'
+
+  const columnHeader = sekamuotoinen
+    ? 'Oppiaine tai toiminta-alue'
+    : isToimintaAlueittain
+      ? 'Toiminta-alue'
+      : 'Oppiaine'
 
   return (
     <div className="oppiaineet">
@@ -214,7 +242,8 @@ export const PerusopetuksenOppiaineet: React.FC<
             osasuoritukset={osasuoritukset}
             suoritusIndex={suoritusIndex}
             isToimintaAlueittain={isToimintaAlueittain}
-            columnHeader={isToimintaAlueittain ? 'Toiminta-alue' : 'Oppiaine'}
+            sekamuotoinen={sekamuotoinen}
+            columnHeader={columnHeader}
             form={form}
             suoritusPath={suoritusPath}
             showArvosana={showArvosana}
@@ -251,6 +280,9 @@ type OppiainetaulukkoProps = {
   osasuoritukset: OppiaineenTaiToiminta_AlueenSuoritus[]
   suoritusIndex: number
   isToimintaAlueittain: boolean
+  // Lista sisältää sekä oppiaineita että toiminta-alueita. Tuettu tila ei ole,
+  // joten taulukkoon ei tarjota lisäyspudotusta kummallekaan tyypille.
+  sekamuotoinen?: boolean
   columnHeader: string
   title?: string
   pakollinen?: boolean
@@ -269,6 +301,7 @@ const Oppiainetaulukko: React.FC<OppiainetaulukkoProps> = ({
   osasuoritukset,
   suoritusIndex,
   isToimintaAlueittain,
+  sekamuotoinen,
   columnHeader,
   title,
   pakollinen,
@@ -282,7 +315,7 @@ const Oppiainetaulukko: React.FC<OppiainetaulukkoProps> = ({
   const allOsasuoritukset = suoritus?.osasuoritukset || []
   const showLaajuus = shouldShowLaajuusColumn({
     editMode: form.editMode,
-    isToimintaAlueittain,
+    sisältääToimintaAlueita: sisältääToimintaAlueita(osasuoritukset),
     pakollinen,
     suoritus,
     osasuoritukset
@@ -326,9 +359,11 @@ const Oppiainetaulukko: React.FC<OppiainetaulukkoProps> = ({
           }
         }}
         addNewOsasuoritusView={
-          isToimintaAlueittain
-            ? UusiPerusopetuksenToimintaAlue
-            : UusiPerusopetuksenOppiaine
+          sekamuotoinen
+            ? undefined
+            : isToimintaAlueittain
+              ? UusiPerusopetuksenToimintaAlue
+              : UusiPerusopetuksenOppiaine
         }
         addNewOsasuoritusViewProps={{
           form,
