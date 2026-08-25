@@ -238,12 +238,32 @@ const kaikkiRaportitKategorioittain = [
   {
     id: 'muut',
     tab: 'raporttikategoria-tab-muut',
-    heading: 'raportti-tab-paallekkaisetopiskeluoikeudet',
+    heading: 'raporttikategoria-heading-muut',
     raportit: [
       {
         id: 'paallekkaisetopiskeluoikeudet',
         name: 'raportti-tab-paallekkaisetopiskeluoikeudet',
         component: PaallekkaisetOpiskeluoikeudet,
+        visibleForAllOrgs: true
+      },
+      {
+        id: 'kotikuntaraportti',
+        name: 'raportti-tab-kotikuntaraportti',
+        component: KotikuntaRaportti,
+        // TODO(TOR-2650): tämä on väliaikainen. Kotikuntaraportti on
+        // organisaatiokohtainen (kuten muutkin RaporttiPaivalta-raportit) —
+        // ei-hasGlobalReadAccess-käyttäjä näkee sen valitsemansa
+        // organisaation ja sen alipuun mukaan skoopattuna, aivan kuten
+        // esim. AikuistenPerusopetuksenOppijamäärätRaportti. Oikea tapa
+        // tehdä tämä näkyväksi on lisätä uusi RaportinTyyppi-case-object
+        // (ks. RaportitAccessResolver.raportinTyypitKoulutusmuodolle) niille
+        // koulutusmuodoille joita 8 §:n kyselyt kattavat (perusopetus,
+        // esiopetus, internationalschool, europeanschoolofhelsinki), ja
+        // rajata se tarvittaessa raportit.rajatut-listalla — ei
+        // visibleForAllOrgs, joka näyttäisi raportin kaikille joilla on
+        // mikä tahansa raportit-oikeus. visibleForAllOrgs on tässä
+        // väliaikainen näkyvyys-shimmi kunnes RaportinTyyppi-kytkentä on
+        // tehty backendissä.
         visibleForAllOrgs: true
       }
     ]
@@ -472,6 +492,13 @@ const RaportitContent = ({
 
   return (
     <div className="main-content">
+      {/* TODO(TOR-2650): tämä ehto olettaa, että jokaisella raportteja
+          näkevällä käyttäjällä on vähintään yksi organisaatio-oikeus.
+          Kotikuntaraportti on tarkoitus rajata raportit.rajatut-listan kautta
+          (ks. RaportitAccessResolver), joten pelkän rajatut-oikeuden saava
+          käyttäjä voisi päätyä tänne organisaatioita: [] ja pudota tähän
+          virheeseen, vaikka hänellä olisi oikeus Kotikuntaraporttiin. Pitää
+          ratkaista ennen kuin rajatut-pääsy oikeasti kytketään päälle. */}
       {stateP.map((state) =>
         state.organisaatiot.length > 0 ? (
           <Tabs
@@ -569,6 +596,27 @@ function PaallekkaisetOpiskeluoikeudet({ stateP }) {
         <Text name="paallekkaiset-opiskeluoikeudet-short-description" />
       }
       example={<Text name="paallekkaiset-opiskeluoikeudet-example" />}
+      lang={lang}
+    />
+  )
+}
+
+function KotikuntaRaportti({ stateP }) {
+  const titleText = <Text name="kotikuntaraportti-title" />
+  const shortDescriptionText = (
+    <Text name="kotikuntaraportti-short-description" />
+  )
+  const dateInputHelpText = <Text name="kotikuntaraportti-date-input-help" />
+  const exampleText = <Paragraphs name="kotikuntaraportti-example" />
+
+  return (
+    <RaporttiPaivalta
+      stateP={stateP}
+      apiEndpoint={'/kotikuntaraportti'}
+      title={titleText}
+      shortDescription={shortDescriptionText}
+      dateInputHelp={dateInputHelpText}
+      example={exampleText}
       lang={lang}
     />
   )

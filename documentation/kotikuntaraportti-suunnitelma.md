@@ -1,4 +1,4 @@
-# Oppilasraportti — suunnitelma
+# Kotikuntaraportti — suunnitelma
 
 *Alustava speksi, ehdollinen VM:n (Valtiovarainministeriö) rahoitukselle. Ei vielä toteutuspäätöstä.*
 
@@ -21,8 +21,24 @@ org-puun laajennusta ja yhtä `paiva`-parametria.
 
 ## 2. Nimi ja sijainti
 
-**Oppilasraportti**, sijoitetaan **Yleiset-raportti**-osioon (ei omaksi koulutusmuotokohtaiseksi
-raportikseen).
+**Kotikuntaraportti**, sijoitetaan **Yleiset-raportti**-osioon (ei omaksi koulutusmuotokohtaiseksi
+raportikseen). ("Oppilasraportti" oli vain kokouksessa käytetty työnimi — tiketin virallinen nimi
+on Kotikuntaraportti; koodi ja lokalisointiavaimet on nimetty sen mukaan.)
+
+Tiketin kuvausteksti (Jira) sellaisenaan, sisällöltään yhtenevä 3 §:n ja 4 §:n kanssa:
+
+> Yleiset-raportti osioon
+> valitaan päivämäärä ja kotikunta samalta päivältä
+>
+> Opetuksen järjestäjän mukaan yhteenlaskettu oppilasmäärä oppilaan kotikunnan ja iän mukaan
+>
+> oppilaskohtaiset sarakkeet:
+> Oppija oid, oppijan master oid, hetu, opiskeluoikeuden oid, yksilöity, etunimet, sukunimi,
+> kotikunta, suorituksen tyyppi, aikaleima, oppilaitos, vuosiluokka, lukuvuoden alkamispäivä
+> (esiopetukselle opiskeluoikeuden alkamispäivä), ikäryhmä ? (6, 7-12, 13-15 jne)
+
+Huom: tiketti itsessään ei mainitse erityisen tuen sarakkeita, 20 HTP:tä, pidennettyä
+oppivelvollisuutta eikä hetuttomia oppijoita — nämä nousivat esiin vasta kokouksessa (ks. 5 §, 6 §).
 
 ## 3. Kokouksessa päätetty rakenne
 
@@ -101,6 +117,21 @@ oppivelvollisuuden mukaan), yhteensä (6–16). Ks. 5 §, kohta 5 avoimesta kysy
    16-vuotiaalle oppijalle tämä tarkoittaisi käytännössä sen näyttämistä, kumpaan alaryhmään hän
    kuuluu — mikä on juuri sitä erityisen tuen tason yksilöityä tietoa, joka 4 §:ssä päätettiin
    jättää pois oppijakohtaisista sarakkeista. Tätä ristiriitaa ei ole vielä ratkaistu.
+6. **KORJATTU, turvallisuuskriittinen**: kaikki kolme 8 §:n esimerkkikyselyä käyttävät
+   `koski_confidential.r_kotikuntahistoria`-taulua (confidential-skeema), joka sisältää MYÖS
+   turvakielto-oppijoiden rivit (`RKotikuntahistoriaTable.turvakielto: Boolean`,
+   `RaportointiDatabaseSchema.scala:598`). Julkinen `r_kotikuntahistoria`-taulu (ilman
+   skeemaetuliitettä) on ladattu erikseen suodattaen turvakielto-rivit pois
+   (`RaportointiDatabase.scala:443`: `RKotikuntahistoria ++= historia.filterNot(_.turvakielto)`),
+   kun taas `koski_confidential`-varianttiin ladataan kaikki rivit turvakiellosta riippumatta
+   (`HenkiloLoader.scala:47`). Confidential-varianttia käyttämällä raportti paljastaisi
+   turvakiellon alaisten oppijoiden todellisen kotikunnan hetu/nimi-tason tiedon rinnalla — juuri
+   sitä mitä kyseinen skeemajako on olemassa estämässä. Olemassa oleva
+   `showKotikuntaPvmInput`-toteutus (`PerusopetuksenRaportitRepository.scala`) käyttää oikein
+   julkista taulua. **Kotikuntaraportin kysely tulee kirjoittaa julkista
+   `r_kotikuntahistoria`-taulua vasten, ei confidential-varianttia** — turvakiellon alaiset
+   oppijat eivät tällöin resolvoi kotikuntaa lainkaan ja putoavat samaan "ei resolvoitunutta
+   kotikuntaa" -koriin kuin hetuttomat (2 §), mikä on turvallinen lopputulos.
 
 ## 6. Reunaehdot
 
@@ -130,6 +161,10 @@ oppivelvollisuuden mukaan), yhteensä (6–16). Ks. 5 §, kohta 5 avoimesta kysy
 - [ ] Sovita 8 §:n kyselyt Koskin `RaportitService`/`Raportti`-traitiin ja
       `RaportitAccessResolver`-oikeustarkistuksiin; kirjoita vastaava kysely yksilöidylle
       välilehdelle (4 §:n sarakkeet, ei GROUP BY).
+- [ ] Toteuta uusi `RaportinTyyppi`-case-object ja liitä se koulutusmuotoihin perusopetus,
+      esiopetus, internationalschool, europeanschoolofhelsinki
+      (`RaportitAccessResolver.raportinTyypitKoulutusmuodolle`) — korvaa `visibleForAllOrgs`-
+      shimmin (ks. 9 §:n `TODO(TOR-2650)`-kommentti `web/app/raportit/Raportit.jsx`:ssä).
 
 ## 8. Tekninen toteutus
 
@@ -394,6 +429,9 @@ ORDER BY a.koulutustoimija_nimi, kkh.kotikunta;
 
 ### 8.4 Kyselyjen väliset ristiriidat — tarkistettava ennen kuin näistä valitaan yksi
 
+- **Turvallisuuskriittinen, ks. 5 §:n kohta 6**: kaikki kolme kyselyä käyttävät väärää
+  kotikuntahistoria-taulua (`koski_confidential.r_kotikuntahistoria` sisältää turvakielto-
+  oppijoiden rivit). Toteutus käyttää julkista `r_kotikuntahistoria`-taulua tämän vuoksi.
 - **Pidennetty oppivelvollisuus, ikäryhmä 16**: 8.1 § johtaa jaon kentistä
   `toiminta_alueittain_opiskelu` / `opetus_vamman_sairauden_tai_rajoitteen_perusteella`, kun taas
   8.2 § ja 8.3 § käyttävät suoraan `d.pidennetty_oppivelvollisuus`-kenttää. Nämä eivät ole
@@ -415,3 +453,70 @@ ORDER BY a.koulutustoimija_nimi, kkh.kotikunta;
 - Ennen toteutusta kannattaa myös katsoa muiden VOS-raporttien (esim.
   `AikuistenPerusopetuksenOppijamäärätRaportti`) todellinen Slick-kysely mallipohjaksi siitä,
   miten raportointikantaa käytetään Koskin sisällä idiomaattisesti.
+
+## 9. Pääsyoikeusmalli ja frontend: raportin avausnäkymä (aloitettu)
+
+### 9.1 Pääsyoikeusmalli — korjattu ymmärrys
+
+Ensimmäinen luonnos oletti raportin olevan "organisaatioton" (täysin valtakunnallinen, ei
+minkään organisaation skoopittama), mikä osoittautui vääräksi lähtökohdaksi. "Opetuksen
+järjestäjä" (koulutustoimija) ON organisaatio Koskin mallissa — 8 §:n kyselyt liittyvät
+`r_organisaatio`/`organisaatio.organisaatio`-tauluihin aivan tavalliseen tapaan, ja
+`RaportitAccessResolver` kohtelee `Koulutustoimija`a organisaatiopuun solmutyyppinä
+(`organisaatioHierarkia.toOrganisaatio.isInstanceOf[Koulutustoimija]`).
+
+Todellinen syy harkita uudelleen: **useimmilla raportin käyttäjillä ei todennäköisesti ole
+`hasGlobalReadAccess`-oikeutta** — he ovat oletettavasti yksittäisten oppilaitosten/koulutus-
+toimijoiden virkailijoita, eivät OPH:n pääkäyttäjiä. Ja myös ne, joilla globaali oikeus on,
+saattavat silti haluta rajata näkymän yhteen organisaatioon kerrallaan ison valtakunnallisen
+taulukon sijaan. Tämä tarkoittaa, että Kotikuntaraportti on rakenteeltaan **täsmälleen sama
+kuin muut VOS-oppijamäärä-raportit** (esim. `AikuistenPerusopetuksenOppijamäärätRaportti`):
+
+- Organisaatiovalitsin (`OrganisaatioDropdown`) valitsee `oppilaitosOid`/`organisaatioOid`:n,
+  joka laajennetaan `RaportitAccessResolver.kyselyOiditOrganisaatiolle`:lla alipuuksi.
+- SQL-kyselyn WHERE-lausekkeessa käytetään samaa kaavaa kuin muissakin raporteissa:
+  `#${if (u.hasGlobalReadAccess) "true" else "false"} or organisaatio_oid = any($käyttäjänOrganisaatioOidit)`
+  — eli `hasGlobalReadAccess`-oikeudella näkee kaiken, muuten vain valitun organisaation
+  alipuun. Tämä on olemassa oleva, valmiiksi määritelty `Session`-ominaisuus
+  (`hasGlobalReadAccess = globalAccess.contains(AccessType.read)`, `Session.scala:160`), ei
+  mitään uutta.
+- `raportit.rajatut`-lista (`RaportitAccessResolver.checkRaporttiAccessIfAccessIsLimited`) voi
+  edelleen kaventaa NÄKYVYYTTÄ tietyille käyttäjä-OIDeille, mutta se on aina lisäsuodin jo
+  muuten organisaationsa/koulutusmuotonsa kautta näkyvän raportin päällä — se ei itsessään
+  myönnä pääsyä ilman organisaatio-/koulutusmuoto-oikeutta. Oikea tapa tehdä raportti
+  ylipäätään näkyväksi on lisätä sille oma `RaportinTyyppi`-case-object
+  (`Raportti.scala:121`) ja liittää se `RaportitAccessResolver.raportinTyypitKoulutusmuodolle`
+  -funktiossa niihin koulutusmuotoihin joita 8 §:n kyselyt kattavat: `perusopetus`,
+  `esiopetus`, `internationalschool`, `europeanschoolofhelsinki` — sama malli kuin
+  `LukioDiaIbInternationalESHOpiskelijamaarat`, joka on liitetty viiteen eri
+  koulutusmuoto-caseen samalla tavalla.
+
+### 9.2 Frontend: raportin avausnäkymä
+
+Raportin avausnäkymä (organisaatiovalitsin + päivämäärän valinta + "Lataa Excel-tiedosto"
+-painike) käyttää suoraan olemassa olevaa `RaporttiPaivalta.jsx`-komponenttia — samaa jota
+kaikki muutkin yhden päivän VOS-raportit (esiopetus-vos, perusopetus-vos, tuva-perusopetus-vos,
+`AikuistenPerusopetuksenOppijamäärätRaportti`) käyttävät. Ensimmäisessä versiossa rakennettiin
+tätä varten oma `KotikuntaraporttiPaivalta.jsx`-komponentti ilman organisaatiovalitsinta — se on
+nyt poistettu 9.1 §:n korjauksen myötä, koska organisaatiovalitsin tarvitaan kuten muillakin
+raporteilla. Ei erillistä `kotikuntaPvm`-kenttää — kotikunta ratkaistaan samalta päivältä kuin
+muu data (3 §), joten `showKotikuntaPvmInput`-propsia ei käytetä.
+
+Kytketty "Yleiset"-kategoriaan (`web/app/raportit/Raportit.jsx`, kategoria `muut` — sen
+välilehden otsikko on jo valmiiksi "Yleiset") Päällekkäiset opiskeluoikeudet -raportin rinnalle.
+
+**Väliaikainen näkyvyys-shimmi, merkitty `TODO(TOR-2650)`-kommentilla
+`web/app/raportit/Raportit.jsx`:ssä:** raportin näkyvyys on toistaiseksi toteutettu
+`visibleForAllOrgs: true` -lipulla (sama mekanismi kuin Päällekkäiset opiskeluoikeudet
+-raportilla), eli se näkyy kaikille joilla on jokin organisaatio-oikeus raportteihin
+ylipäätään. Tämä on tarkoituksella väliaikainen — 9.1 §:n mukainen oikea ratkaisu (uusi
+`RaportinTyyppi` + koulutusmuoto-kytkentä + tarvittaessa `raportit.rajatut`) korvaa tämän kun
+backend-puoli toteutetaan. Aiempi, virheellinen TODO ("käytä `raportit.rajatut`-listaa suoraan
+ilman organisaatio-/koulutusmuoto-kytkentää") ja siihen liittyvä huoli
+`RaportitContent`-komponentin globaalista "ei organisaatiokäyttöoikeuksia" -virheestä eivät enää
+päde, koska raportti EI ole organisaatioton — tavallinen organisaatio-oikeuksien kautta kulkeva
+näkyvyyspolku toimii sille aivan kuten muillekin raporteille.
+
+Ei vielä tehty: backend-endpoint (servlet-reitti, request-case-class, `RaportitService`-metodi),
+Excel-kirjoitus, yksilöidyn välilehden kysely, uusi `RaportinTyyppi`-case-object eikä sen
+koulutusmuoto-kytkentä.
