@@ -3,14 +3,14 @@
   <SOAP-ENV:Body>
     <virtaluku:OpiskelijanTiedotResponse xmlns:virtaluku="http://tietovaranto.csc.fi/luku">
       <virta:Opiskelijat xmlns:virta="urn:mace:funet.fi:virta/2015/09/01">
-        <virta:Opiskelija avain="12345">
-          <virta:Henkilotunnus>090802A952F</virta:Henkilotunnus>
-          <virta:Sukunimi>Liikkuvuusjaksot</virta:Sukunimi>
-          <virta:Etunimet>Liisa</virta:Etunimet>
+        <virta:Opiskelija avain="582582">
+          <virta:Henkilotunnus>070102A801N</virta:Henkilotunnus>
+          <virta:Sukunimi>SaapuvaVaihto</virta:Sukunimi>
+          <virta:Etunimet>Sofia</virta:Etunimet>
           <virta:Sukupuoli>2</virta:Sukupuoli>
-          <virta:Kansalaisuus>246</virta:Kansalaisuus>
+          <virta:Kansalaisuus>250</virta:Kansalaisuus>
           <virta:Aidinkieli>fi</virta:Aidinkieli>
-          <virta:Asuinkunta>091</virta:Asuinkunta>
+          <virta:Asuinkunta>398</virta:Asuinkunta>
           <virta:KirjoihintuloPvm>2024-08-01</virta:KirjoihintuloPvm>
         </virta:Opiskelija>
       </virta:Opiskelijat>

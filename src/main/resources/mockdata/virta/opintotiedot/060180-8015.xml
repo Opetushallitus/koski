@@ -4,7 +4,7 @@
     <virtaluku:OpiskelijanKaikkiTiedotResponse xmlns:virtaluku="http://tietovaranto.csc.fi/luku">
       <virta:Virta xmlns:virta="urn:mace:funet.fi:virta/2015/09/01">
         <virta:Opiskelija avain="54238">
-          <virta:Henkilotunnus>060180-9521</virta:Henkilotunnus>
+          <virta:Henkilotunnus>060180-8015</virta:Henkilotunnus>
           <virta:Opiskeluoikeudet>
             <virta:Opiskeluoikeus avain="1203130" opiskelijaAvain="54238">
               <virta:AlkuPvm>2012-08-15</virta:AlkuPvm>

@@ -932,8 +932,8 @@ class VirtaXMLConverterSpec extends AnyFreeSpec with TestEnvironment with Matche
         alat.head.opintoala1995.value.koodistoUri should be("opintoalaoph1995")
       }
 
-      "okmohjauksenala (200482-900A.xml)" in {
-        val alat = koulutusalat("200482-900A.xml")
+      "okmohjauksenala (200482-8014.xml)" in {
+        val alat = koulutusalat("200482-8014.xml")
         alat should have length 1
         alat.head.okmOhjausala.value.koodiarvo should be("5")
         alat.head.okmOhjausala.value.koodistoUri should be("okmohjauksenala")
@@ -949,8 +949,8 @@ class VirtaXMLConverterSpec extends AnyFreeSpec with TestEnvironment with Matche
       def liikkuvuusjaksot(oo: KorkeakoulunOpiskeluoikeus): List[Liikkuvuusjakso] =
         oo.lisätiedot.toList.flatMap(_.liikkuvuusjaksot.toList.flatten)
 
-      "kohdistetaan opiskeluoikeusavaimella (090802A952F.xml)" in {
-        val oot = opiskeluoikeudet("090802A952F.xml")
+      "kohdistetaan opiskeluoikeusavaimella (090802A801L.xml)" in {
+        val oot = opiskeluoikeudet("090802A801L.xml")
         oot should have length 1
 
         val jaksot = liikkuvuusjaksot(oot.head)
@@ -973,14 +973,14 @@ class VirtaXMLConverterSpec extends AnyFreeSpec with TestEnvironment with Matche
         jaksot.last.luokittelu.get.head.koodistoUri shouldBe "liikkuvuudenluokittelu"
       }
 
-      "maakoodin etunollat säilyvät (090802A952F.xml)" in {
-        val maat = opiskeluoikeudet("090802A952F.xml").flatMap(liikkuvuusjaksot).map(_.maa.koodiarvo)
+      "maakoodin etunollat säilyvät (090802A801L.xml)" in {
+        val maat = opiskeluoikeudet("090802A801L.xml").flatMap(liikkuvuusjaksot).map(_.maa.koodiarvo)
         maat should contain("056")
         maat should not contain "56"
       }
 
-      "kohdistetaan oikealle opiskeluoikeudelle kun opiskeluoikeuksia on useita (060180-9521.xml)" in {
-        val oot = opiskeluoikeudet("060180-9521.xml")
+      "kohdistetaan oikealle opiskeluoikeudelle kun opiskeluoikeuksia on useita (060180-8015.xml)" in {
+        val oot = opiskeluoikeudet("060180-8015.xml")
         oot should have length 2
 
         val (avaimellinen, muut) = oot.partition(_.lähdejärjestelmänId.flatMap(_.id).contains("1203130"))
@@ -1002,8 +1002,8 @@ class VirtaXMLConverterSpec extends AnyFreeSpec with TestEnvironment with Matche
         jaksot.head.liikkuvuusohjelma.koodiarvo shouldBe "107"
       }
 
-      "saapuva liikkuvuus, harjoittelu ja luokittelu parsitaan (070102A901W.xml)" in {
-        val jaksot = opiskeluoikeudet("070102A901W.xml").flatMap(liikkuvuusjaksot)
+      "saapuva liikkuvuus, harjoittelu ja luokittelu parsitaan (070102A801N.xml)" in {
+        val jaksot = opiskeluoikeudet("070102A801N.xml").flatMap(liikkuvuusjaksot)
         jaksot should have length 2
 
         val saapuva = jaksot.find(_.suunta.koodiarvo == "2").value
@@ -1018,8 +1018,8 @@ class VirtaXMLConverterSpec extends AnyFreeSpec with TestEnvironment with Matche
         harjoittelu.luokittelu.toList.flatten.map(_.koodiarvo) shouldBe List("a")
       }
 
-      "fuusiosta syntyneet kaksoiskappaleet karsitaan (020276-901K.xml)" in {
-        val xmlString = Files.asString("src/main/resources/mockdata/virta/opintotiedot/020276-901K.xml").get
+      "fuusiosta syntyneet kaksoiskappaleet karsitaan (020276-801B.xml)" in {
+        val xmlString = Files.asString("src/main/resources/mockdata/virta/opintotiedot/020276-801B.xml").get
         val xml = scala.xml.XML.loadString(xmlString)
         val liikkuvuusjaksoNodet = (xml \\ "Liikkuvuusjakso").toList
 
@@ -1062,8 +1062,8 @@ class VirtaXMLConverterSpec extends AnyFreeSpec with TestEnvironment with Matche
         viittaukset.flatMap(_.tyyppi).map(_.koodistoUri).distinct shouldBe List("virtaopiskeluoikeudentyyppi")
       }
 
-      "yksi opiskeluoikeus voi viitata useaan opiskeluoikeuteen, ja viittaus osuu vastauksessa käytettyyn tunnisteeseen (020276-901K.xml)" in {
-        val oot = opiskeluoikeudet("020276-901K.xml")
+      "yksi opiskeluoikeus voi viitata useaan opiskeluoikeuteen, ja viittaus osuu vastauksessa käytettyyn tunnisteeseen (020276-801B.xml)" in {
+        val oot = opiskeluoikeudet("020276-801B.xml")
         val tunnisteet = oot.flatMap(_.lähdejärjestelmänId).flatMap(_.id).toSet
 
         val lähteet = oot.filter(_.lähdejärjestelmänId.flatMap(_.id).contains("16049800.16048976"))
