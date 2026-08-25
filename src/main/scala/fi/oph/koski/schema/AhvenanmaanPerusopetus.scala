@@ -67,6 +67,24 @@ import fi.oph.scalaschema.annotation._
 // 14. Oppiaine-luokan nimi: jääkö MuuOppiaine vai Oppiaine /
 //     AhvenanmaanOppiaine?
 //
+// ── Käyttöliittymä ───────────────────────────────────────────────────────
+//
+// 15. Toiminta-aluetilan päättely. Manner-Suomen v2-käyttöliittymä sai
+//     TOR-2587:ssä säännön, jossa yksikin tavallinen oppiaine pakottaa
+//     taulukon normaalitilaan ja lisätietolippu ratkaisee vain tyhjällä
+//     listalla (web/app/perusopetus-v2/toimintaAlueittain.ts). Ahvenanmaa
+//     jätettiin tietoisesti ennalleen: tuotannossa ei ole yhtään
+//     ahvenanmaanperusopetuksentoimintaalue-suoritusta eikä esimerkkejä,
+//     fikstuureja tai testejä, joita vasten muutoksen voisi todentaa.
+//     Ahvenanmaalla ei myöskään ole lisätietolippua, joten sääntö vaatii
+//     toisen muotoilun. Ratkaise yhdessä sen tiketin kanssa, joka tuo
+//     ensimmäisen Ahvenanmaan toiminta-alue-esimerkin.
+//     Huomaa lisäksi, että päättely on jo nyt kahdessa paikassa eri
+//     laajuudella: AhvenanmaanPerusopetuksenOppiaineet.tsx
+//     (suorituskohtainen) ja
+//     UusiAhvenanmaanPerusopetuksenVuosiluokanSuoritusModal.tsx
+//     (opiskeluoikeustasoinen).
+//
 // Tallennettavuus ja wiring-askeleet (tarvitaan ennen kuin tyyppi voidaan
 // aidosti tallentaa Koskeen — tätä ei tehty tässä ensimmäisessä vedoksessa):
 //

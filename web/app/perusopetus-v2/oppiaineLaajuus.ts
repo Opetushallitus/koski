@@ -14,13 +14,16 @@ const LAAJUUS_LEIKKURIPÄIVÄ = '2020-08-01'
 
 export const shouldShowLaajuusColumn = ({
   editMode,
-  isToimintaAlueittain,
+  sisältääToimintaAlueita,
   pakollinen,
   suoritus,
   osasuoritukset
 }: {
   editMode: boolean
-  isToimintaAlueittain: boolean
+  // Kytketty listan sisältöön, ei taulukon esitystilaan: leikkuri on olemassa
+  // epäluotettavien laajuuksien piilottamiseksi, eikä sen pidä avautua siksi,
+  // että sekamuotoinen taulukko esitetään oppiainetaulukkona (TOR-2587).
+  sisältääToimintaAlueita: boolean
   pakollinen?: boolean
   suoritus?: SuoritusWithOptionalVahvistus
   osasuoritukset: OsasuoritusWithKoulutusmoduuli[]
@@ -34,7 +37,7 @@ export const shouldShowLaajuusColumn = ({
     return false
   }
 
-  return pakollinen || isToimintaAlueittain
+  return pakollinen || sisältääToimintaAlueita
     ? vahvistusSalliiLaajuudenNäyttämisen(suoritus)
     : true
 }

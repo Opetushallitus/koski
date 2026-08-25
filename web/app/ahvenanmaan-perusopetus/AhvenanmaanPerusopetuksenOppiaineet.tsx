@@ -269,7 +269,9 @@ const Oppiainetaulukko: React.FC<OppiainetaulukkoProps> = ({
   const allOsasuoritukset = suoritus?.osasuoritukset || []
   const showLaajuus = shouldShowLaajuusColumn({
     editMode: form.editMode,
-    isToimintaAlueittain,
+    // Ahvenanmaalla lippu päätellään jo valmiiksi osasuoritusten tyypeistä,
+    // joten se vastaa sellaisenaan uutta parametrinimeä (TOR-2587).
+    sisältääToimintaAlueita: isToimintaAlueittain,
     pakollinen,
     suoritus,
     osasuoritukset
