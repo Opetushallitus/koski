@@ -402,6 +402,14 @@ object KoskiSpecificMockOppijat {
   // TOR-2587: Ahvenanmaan perusopetuksen oppimäärä muille kuin oppivelvollisille (aikuisopiskelija).
   val ahvenanmaanAikuisopiskelija = koskiSpecificOppijat.oppija("Åländsk", "Anders", "150488-2002", syntymäaika = Some(LocalDate.of(1988, 4, 15)))
 
+  // Virta QA:sta haetut korkeakoulun testioppijat. Löytyvät vain tämän listan kautta, koska niiden
+  // hetut ovat keinotekoisia eikä MockVirtaClient.henkilötiedot hyväksy niitä oletuskonfiguraatiolla.
+  val virtaLiikkuvuusjaksot = koskiSpecificOppijat.oppija("Liikkuvuusjaksot", "Liisa", "090802A952F")
+  val virtaLiikkuvuus = koskiSpecificOppijat.oppija("Liikkuvuus", "Lauri", "060180-9521")
+  val virtaTeRahoitus = koskiSpecificOppijat.oppija("TeRahoitus", "Teemu", "200482-900A")
+  val virtaFuusio = koskiSpecificOppijat.oppija("Fuusio", "Fanni", "020276-901K")
+  val virtaSaapuvaVaihto = koskiSpecificOppijat.oppija("SaapuvaVaihto", "Sofia", "070102A901W")
+
   def defaultOppijat = koskiSpecificOppijat.getOppijat
   def defaultKuntahistoriat: mutable.Map[String, Seq[OppijanumerorekisteriKotikuntahistoriaRow]] = koskiSpecificOppijat.getKuntahistoriat
   def defaultTurvakieltoKuntahistoriat: mutable.Map[String, Seq[OppijanumerorekisteriKotikuntahistoriaRow]] = koskiSpecificOppijat.getTurvakieltoKuntahistoriat
