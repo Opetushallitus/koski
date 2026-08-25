@@ -71,7 +71,7 @@ trait OrganisaatioRepository extends Logging {
 
   def findHierarkia(query: String): List[OrganisaatioHierarkia]
 
-  def findSähköpostiVirheidenRaportointiin(oid: String): Option[SähköpostiVirheidenRaportointiin]
+  def findSähköpostiVirheidenRaportointiin(oid: String, lang: String): Option[SähköpostiVirheidenRaportointiin]
 
   def findSähköpostiVirheidenRaportointiinSpecialCase(oid: String, loc: LocalizationRepository): Option[SähköpostiVirheidenRaportointiin] =
     oid match {
@@ -153,6 +153,21 @@ object OrganisaatioRepository {
         val http = VirkailijaHttpClient(ServiceConfig.apply(config, "opintopolku.virkailija"), "/organisaatio-service", sessionCookieName = "SESSION", true)
         new RemoteOrganisaatioRepository(http, koodisto)
     }
+  }
+}
+
+object YhteystiedonKieli {
+  private def kieliUriVastaaKieltä(kieliUri: Option[String], lang: String): Boolean =
+    kieliUri.map(_.trim.toLowerCase.takeWhile(_ != '#')).contains(s"kieli_$lang")
+
+  // Valintajärjestys: pyydetty kieli, suomi, ensimmäinen löytyvä fi-sv-en-järjestyksessä,
+  // ja viimeisenä yhteystieto jolle ei ole ilmoitettu kieltä.
+  def valitseYhteystietoKielellä(yhteystiedot: List[(Option[String], String)], lang: String): Option[String] = {
+    def ensimmäinenKielellä(l: String) = yhteystiedot.find { case (kieli, _) => kieliUriVastaaKieltä(kieli, l) }.map(_._2)
+    ensimmäinenKielellä(lang)
+      .orElse(ensimmäinenKielellä("fi"))
+      .orElse(LocalizedString.languages.flatMap(ensimmäinenKielellä).headOption)
+      .orElse(yhteystiedot.headOption.map(_._2))
   }
 }
 

@@ -28,7 +28,7 @@ class OrganisaatioServlet(implicit val application: KoskiApplication) extends Ko
       if (specialCase.isRight) specialCase else {
           oid
             .flatMap(OrganisaatioOid.validateOrganisaatioOid)
-            .map(application.organisaatioRepository.findSähköpostiVirheidenRaportointiin)
+            .map(application.organisaatioRepository.findSähköpostiVirheidenRaportointiin(_, session.lang))
             .flatMap(_.toRight(KoskiErrorCategory.notFound()))
       }
     })

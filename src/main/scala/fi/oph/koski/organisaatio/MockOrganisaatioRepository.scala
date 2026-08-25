@@ -148,13 +148,30 @@ object MockOrganisaatioRepository extends OrganisaatioRepository {
     }
   }
 
-  override def findSähköpostiVirheidenRaportointiin(oid: String): Option[SähköpostiVirheidenRaportointiin] = {
+  // Organisaatiopalvelu ei palauta yhteystietoja kielen mukaisessa järjestyksessä, joten
+  // englanninkielinen osoite on tarkoituksella ensimmäisenä.
+  private val sähköpostitVirheidenRaportointiin: Map[String, List[(Option[String], String)]] = Map(
+    MockOrganisaatiot.itäsuomenYliopisto -> List(
+      (Some("kieli_en#1"), "virheet.en@example.com"),
+      (Some("kieli_fi#1"), "virheet.fi@example.com"),
+      (Some("kieli_sv#1"), "virheet.sv@example.com")
+    ),
+    // Ruotsinkielinen oppilaitos, joka ei ole ilmoittanut suomenkielistä osoitetta
+    MockOrganisaatiot.yrkehögskolanArcada -> List(
+      (Some("kieli_sv#1"), "fel.sv@example.com"),
+      (Some("kieli_en#1"), "errors.en@example.com")
+    ),
+    MockOrganisaatiot.ytl -> List((None, "ytl.ytl@example.com"))
+  )
+
+  override def findSähköpostiVirheidenRaportointiin(oid: String, lang: String): Option[SähköpostiVirheidenRaportointiin] = {
     if (oid == MockOrganisaatiot.kulosaarenAlaAste) {
       None
-    } else if (oid == MockOrganisaatiot.ytl) {
-      getOrganisaatioHierarkia(oid).map(h => SähköpostiVirheidenRaportointiin(h.oid, h.nimi, "ytl.ytl@example.com"))
     } else {
-      getOrganisaatioHierarkia(oid).map(h => SähköpostiVirheidenRaportointiin(h.oid, h.nimi, "joku.osoite@example.com"))
+      val emailit = sähköpostitVirheidenRaportointiin.getOrElse(oid, List((None, "joku.osoite@example.com")))
+      YhteystiedonKieli.valitseYhteystietoKielellä(emailit, lang).flatMap(email =>
+        getOrganisaatioHierarkia(oid).map(h => SähköpostiVirheidenRaportointiin(h.oid, h.nimi, email))
+      )
     }
   }
 
