@@ -512,5 +512,96 @@ class KielitutkintotodistusTiedoteWorkflowSpec extends TodistusSpecHelpers {
 
       mockTiedotuspalveluClient.sentNotifications.exists(_.oppijanumero == oppijaOid) should be(true)
     }
+
+    "Merkitsee jobin virhetilaan kun tiedotuspalvelu ei vastaa" in {
+      withoutRunningTiedoteScheduler {
+        mockTiedotuspalveluClient.failNextN = 1
+
+        app.kielitutkintotodistusTiedoteService.processAll()
+
+        val errorJobs = app.kielitutkintotodistusTiedoteRepository
+          .findAll(100, 0, Some(KielitutkintotodistusTiedoteState.ERROR))
+        errorJobs should have length 1
+        errorJobs.head.attempts should equal(1)
+        errorJobs.head.error shouldBe defined
+        errorJobs.head.completedAt shouldBe empty
+
+        // Epäonnistunut yritys näkyy yrityksissä mutta ei onnistuneissa lähetyksissä
+        mockTiedotuspalveluClient.attemptedNotifications should have length
+          (mockTiedotuspalveluClient.sentNotifications.length + 1)
+      }
+    }
+
+    "Uudelleenyritys lähettää saman idempotencyKeyn kuin epäonnistunut yritys" in {
+      withoutRunningTiedoteScheduler {
+        val repository = app.kielitutkintotodistusTiedoteRepository
+        val eligibleRow = repository.findEligibleBatch(1).head
+        repository.add(KielitutkintotodistusTiedoteJob(
+          id = java.util.UUID.randomUUID().toString,
+          oppijaOid = eligibleRow.oppijaOid,
+          opiskeluoikeusOid = eligibleRow.opiskeluoikeusOid,
+          lähdejärjestelmänId = eligibleRow.lähdejärjestelmänId,
+          state = KielitutkintotodistusTiedoteState.ERROR,
+          worker = Some(repository.workerId),
+          attempts = 1,
+          error = Some("Tiedotuspalvelu ei vastaa"),
+          opiskeluoikeusVersio = eligibleRow.opiskeluoikeusVersio
+        ))
+
+        // Ensimmäinen uudelleenyritys epäonnistuu, toinen onnistuu
+        mockTiedotuspalveluClient.failNextN = 1
+        app.kielitutkintotodistusTiedoteService.retryAllFailed()
+
+        val afterFailedRetry = repository.findAll(10, 0).head
+        afterFailedRetry.state should equal(KielitutkintotodistusTiedoteState.ERROR)
+        afterFailedRetry.attempts should equal(2)
+
+        app.kielitutkintotodistusTiedoteService.retryAllFailed()
+
+        val afterSuccess = repository.findAll(10, 0).head
+        afterSuccess.state should equal(KielitutkintotodistusTiedoteState.COMPLETED)
+        afterSuccess.attempts should equal(3)
+
+        // Idempotencyn varassa on koko uudelleenyrityksen turvallisuus: avaimen on pysyttävä samana
+        val attempts = mockTiedotuspalveluClient.attemptedNotifications
+          .filter(_.opiskeluoikeusOid == eligibleRow.opiskeluoikeusOid)
+        attempts should have length 2
+        attempts.map(_.idempotencyKey).distinct should
+          equal(List(s"${eligibleRow.opiskeluoikeusOid}-initial"))
+      }
+    }
+
+    "Lakkaa yrittämästä uudelleen kun maxAttempts täyttyy" in {
+      withoutRunningTiedoteScheduler {
+        val repository = app.kielitutkintotodistusTiedoteRepository
+        val maxAttempts = app.config.getInt("tiedote.maxAttempts")
+        val eligibleRow = repository.findEligibleBatch(1).head
+        repository.add(KielitutkintotodistusTiedoteJob(
+          id = java.util.UUID.randomUUID().toString,
+          oppijaOid = eligibleRow.oppijaOid,
+          opiskeluoikeusOid = eligibleRow.opiskeluoikeusOid,
+          lähdejärjestelmänId = eligibleRow.lähdejärjestelmänId,
+          state = KielitutkintotodistusTiedoteState.ERROR,
+          worker = Some(repository.workerId),
+          attempts = 0,
+          error = Some("Tiedotuspalvelu ei vastaa"),
+          opiskeluoikeusVersio = eligibleRow.opiskeluoikeusVersio
+        ))
+
+        mockTiedotuspalveluClient.failNextN = maxAttempts + 5
+
+        val retriedPerRound = (1 to maxAttempts + 1)
+          .map(_ => app.kielitutkintotodistusTiedoteService.retryAllFailed())
+
+        // Jokainen kierros yrittää kerran kunnes maxAttempts täyttyy, sen jälkeen job ei enää nouse
+        retriedPerRound.take(maxAttempts) should equal(Seq.fill(maxAttempts)(1))
+        retriedPerRound.last should equal(0)
+
+        val job = repository.findAll(10, 0).head
+        job.state should equal(KielitutkintotodistusTiedoteState.ERROR)
+        job.attempts should equal(maxAttempts)
+        job.completedAt shouldBe empty
+      }
+    }
   }
 }
