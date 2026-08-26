@@ -1,9 +1,6 @@
 import { expect, test } from './base'
 import { virkailija } from './setup/auth'
-import {
-  avaaOsasuoritusrivit,
-  otaVakaaKuvakaappaus
-} from './fragments/visualScreenshot'
+import { takeFullPageScreenshot } from './fragments/fullPageScreenshot'
 
 // Toiminnalliset testit: ahvenanmaan-perusopetus.spec.ts
 // Ks. documentation/visual-testing.md
@@ -38,19 +35,20 @@ test.describe('Ahvenanmaan perusopetus – visuaaliset regressiot', () => {
     await expect(
       page.getByTestId('oo.0.suoritukset.0.osasuoritukset.0.arvosana.value')
     ).toBeVisible()
-    await otaVakaaKuvakaappaus(page, 'ahvenanmaa-paattotodistus-katselu.png')
+    await takeFullPageScreenshot(page, 'ahvenanmaa-paattotodistus-katselu.png')
   })
 
   test('8. vuosiluokka, katselunäkymä', async ({ page, oppijaPage }) => {
     await oppijaPage.goto(url)
     await page.getByTestId(vuosiluokkaTab).click()
     await expect(page.locator('.oppiaineet')).toBeVisible()
-    await otaVakaaKuvakaappaus(page, 'ahvenanmaa-vuosiluokka-katselu.png')
+    await takeFullPageScreenshot(page, 'ahvenanmaa-vuosiluokka-katselu.png')
   })
 
   test('8. vuosiluokka, laajennettu muokkaustila', async ({
     page,
-    oppijaPage
+    oppijaPage,
+    oppijaPageV2
   }) => {
     await oppijaPage.goto(url)
     await page.getByTestId(vuosiluokkaTab).click()
@@ -60,8 +58,8 @@ test.describe('Ahvenanmaan perusopetus – visuaaliset regressiot', () => {
         'oo.0.suoritukset.2.osasuoritukset.0.arvosana.edit.input'
       )
     ).toBeVisible()
-    await avaaOsasuoritusrivit(page)
-    await otaVakaaKuvakaappaus(
+    await oppijaPageV2.openExpandableOsasuoritukset(18)
+    await takeFullPageScreenshot(
       page,
       'ahvenanmaa-vuosiluokka-muokkaus-avattu.png'
     )

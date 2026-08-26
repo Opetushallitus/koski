@@ -16,9 +16,8 @@ if ! curl -sf -o /dev/null "$HOST_BACKEND/koski/virkailija"; then
   exit 1
 fi
 
-pw_version="$(grep -oE "@playwright/test@[0-9]+\.[0-9]+\.[0-9]+" \
-  "$REPO/web/pnpm-lock.yaml" 2>/dev/null \
-  | grep -oE "[0-9]+\.[0-9]+\.[0-9]+" | sort -u | head -1)"
+pw_version="$(sed -n 's/^  playwright@\([0-9][0-9.]*\):$/\1/p' \
+  "$REPO/web/pnpm-lock.yaml" 2>/dev/null | sort -u || true)"
 if [ -z "$pw_version" ]; then
   echo "VIRHE: Playwright-version luku epäonnistui (web/pnpm-lock.yaml)." >&2
   exit 1
@@ -66,7 +65,6 @@ docker run --rm \
   $NET_ARGS \
   -v "$REPO":/work \
   -v koski-visual-node-modules:/work/web/node_modules \
-  -v koski-visual-pnpm-store:/pnpm-store \
   -w /work/web \
   -e BACKEND_HOST="$CONTAINER_BACKEND" \
   -e CI="${CI:-}" \
@@ -77,8 +75,12 @@ docker run --rm \
   bash -lc "
     set -eu
     corepack enable >/dev/null 2>&1
-    pnpm config set store-dir /pnpm-store >/dev/null 2>&1
+    pnpm config set store-dir /work/web/node_modules/.pnpm-store >/dev/null 2>&1
     pnpm install --frozen-lockfile >/dev/null
+    # Store kasvaa muuten rajatta
+    if [ -z \"\${CI:-}\" ]; then
+      pnpm store prune >/dev/null 2>&1 || true
+    fi
     pnpm exec playwright test $PW_ARGS
   "
 
