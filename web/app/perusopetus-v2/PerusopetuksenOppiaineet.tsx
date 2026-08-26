@@ -1,4 +1,10 @@
-import React, { useContext, useMemo, useCallback } from 'react'
+import React, {
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+  useCallback
+} from 'react'
 import { OpiskeluoikeusContext } from '../appstate/opiskeluoikeus'
 import { useKoodisto } from '../appstate/koodisto'
 import { usePreferences } from '../appstate/preferences'
@@ -85,6 +91,7 @@ import {
   CHARCODE_REMOVE,
   Icon
 } from '../components-v2/texts/Icon'
+import { Checkbox } from '../components-v2/controls/Checkbox'
 import { FlatButton } from '../components-v2/controls/FlatButton'
 import { NumberField } from '../components-v2/controls/NumberField'
 import { LaajuusVuosiviikkotunneissa } from '../types/fi/oph/koski/schema/LaajuusVuosiviikkotunneissa'
@@ -97,8 +104,10 @@ import { useKoodistoFiller } from '../appstate/koodisto'
 import { PerusopetuksenToiminta_Alue } from '../types/fi/oph/koski/schema/PerusopetuksenToimintaAlue'
 import {
   isSekamuotoinen,
-  isToimintaAlueittainSuoritus,
-  sisältääToimintaAlueita
+  isToimintaAlueittainOpiskelu,
+  osasuoritustenSisältö,
+  sisältääToimintaAlueita,
+  toimintaAlueTaulukko
 } from './toimintaAlueittain'
 import {
   isUskonnonOppiaine,
@@ -134,6 +143,22 @@ export const PerusopetuksenOppiaineet: React.FC<
   const suoritus = päätasonSuoritus.suoritus
   const suoritusIndex = päätasonSuoritus.index
 
+  // Tyhjällä listalla ei ole mitään pääteltävää, joten käyttäjä saa valita
+  // kirjaustavan. Valinta on väliaikainen: se ohjaa vain sitä, mitä
+  // osasuorituksia voi lisätä, eikä sitä voi tallentaa mihinkään - skeemassa
+  // ei ole suorituskohtaista kenttää tälle. Oletus tulee lisätietolipusta.
+  const lisätietoLippu = isToimintaAlueittainOpiskelu(opiskeluoikeus)
+  const [kirjataanToimintaAlueittain, setKirjataanToimintaAlueittain] =
+    useState(lisätietoLippu)
+
+  // Komponenttia ei remountata välilehteä vaihdettaessa, joten valinta on
+  // nollattava - muuten se vuotaisi vuosiluokalta toiselle. Riippuvuutena on
+  // lipun arvo eikä koko opiskeluoikeus, joka vaihtuu jokaisesta muokkauksesta
+  // ja nollaisi valinnan kesken työskentelyn.
+  useEffect(() => {
+    setKirjataanToimintaAlueittain(lisätietoLippu)
+  }, [suoritusIndex, lisätietoLippu])
+
   if (isNuortenPerusopetuksenOppiaineenOppimääränSuoritus(suoritus)) {
     return null
   }
@@ -155,12 +180,14 @@ export const PerusopetuksenOppiaineet: React.FC<
 
   // Taulukon tila päätellään sen omista osasuorituksista: otsikot, sarake ja
   // lisäyspudotus seuraavat samaa arvoa, jottei taulukko voi väittää yhtä ja
-  // tarjota toista. Lisätietolippu ratkaisee vain tyhjällä listalla.
-  const isToimintaAlueittain = isToimintaAlueittainSuoritus(
-    opiskeluoikeus,
-    osasuoritukset
+  // tarjota toista. Tyhjällä listalla ratkaisee käyttäjän valinta.
+  const sisältö = osasuoritustenSisältö(osasuoritukset)
+  const isToimintaAlueittain = toimintaAlueTaulukko(
+    sisältö,
+    kirjataanToimintaAlueittain
   )
   const sekamuotoinen = isSekamuotoinen(osasuoritukset)
+  const näytäKirjaustapaValinta = sisältö === 'tyhjä' && form.editMode
 
   // Oppimäärän arvosanoja ei näytetä ennen vahvistusta ellei olla
   // muokkaustilassa. Vuosiluokan suoritusten arvosanat näytetään aina.
@@ -205,6 +232,16 @@ export const PerusopetuksenOppiaineet: React.FC<
 
   return (
     <div className="oppiaineet">
+      {näytäKirjaustapaValinta && (
+        <div className="oppiaineet__kirjaustapa">
+          <Checkbox
+            checked={kirjataanToimintaAlueittain}
+            onChange={setKirjataanToimintaAlueittain}
+            label="Kirjataan toiminta-alueittain"
+            testId="kirjaustapa"
+          />
+        </div>
+      )}
       <h5>{t(title)}</h5>
       <p
         className="perusopetuksen-arvosteluasteikko"

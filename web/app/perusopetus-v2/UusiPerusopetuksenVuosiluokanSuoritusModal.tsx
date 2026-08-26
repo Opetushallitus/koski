@@ -12,6 +12,7 @@ import {
   ModalTitle
 } from '../components-v2/containers/Modal'
 import { DateEdit } from '../components-v2/controls/DateField'
+import { Checkbox } from '../components-v2/controls/Checkbox'
 import { FlatButton } from '../components-v2/controls/FlatButton'
 import { RaisedButton } from '../components-v2/controls/RaisedButton'
 import { Select, SelectOption } from '../components-v2/controls/Select'
@@ -115,6 +116,12 @@ export const UusiPerusopetuksenVuosiluokanSuoritusModal: React.FC<
     !!alkamispäivä &&
     !!perusteenDiaarinumero
 
+  // Esitäytön kirjaustapa. Oletus lisätietolipusta, mutta käyttäjä voi vaihtaa:
+  // lippu on päivämäärätön, joten päättynytkin toiminta-aluepäätös ohjaisi
+  // muuten esitäytön yhä toiminta-alueisiin (TOR-2596).
+  const [kirjataanToimintaAlueittain, setKirjataanToimintaAlueittain] =
+    useState(() => isToimintaAlueittainOpiskelu(opiskeluoikeus))
+
   const pohjasuoritus = opiskeluoikeus.suoritukset[0]
 
   const onSubmit = useCallback(async () => {
@@ -126,7 +133,7 @@ export const UusiPerusopetuksenVuosiluokanSuoritusModal: React.FC<
 
     const osasuoritukset = createLuokkaAsteenOsasuoritukset(
       tunniste.koodiarvo,
-      isToimintaAlueittainOpiskelu(opiskeluoikeus),
+      kirjataanToimintaAlueittain,
       perusteenDiaarinumero
     )
 
@@ -152,7 +159,7 @@ export const UusiPerusopetuksenVuosiluokanSuoritusModal: React.FC<
     luokka,
     alkamispäivä,
     perusteenDiaarinumero,
-    opiskeluoikeus,
+    kirjataanToimintaAlueittain,
     pohjasuoritus?.suorituskieli,
     fillKoodistot,
     props
@@ -215,6 +222,16 @@ export const UusiPerusopetuksenVuosiluokanSuoritusModal: React.FC<
               testId="alkamispäivä"
             />
           </Label>
+
+          <Checkbox
+            checked={kirjataanToimintaAlueittain}
+            onChange={setKirjataanToimintaAlueittain}
+            label="Kirjataan toiminta-alueittain"
+            testId="kirjaustapa"
+          />
+          <p className="uusiVuosiluokka__kirjaustapa-ohje">
+            {t('Esitäyttää viisi toiminta-aluetta oppiaineiden sijaan.')}
+          </p>
         </ModalBody>
 
         <ModalFooter>
