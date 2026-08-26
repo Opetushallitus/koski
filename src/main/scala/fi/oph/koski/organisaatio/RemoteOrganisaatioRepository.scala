@@ -60,31 +60,34 @@ class RemoteOrganisaatioRepository(http: Http, val koodisto: KoodistoViitePalvel
       .flatMap(n => LocalizedString.sanitize(n.nimi))
   }
 
-  override def findSähköpostiVirheidenRaportointiin(oid: String): Option[SähköpostiVirheidenRaportointiin] = {
+  override def findSähköpostiVirheidenRaportointiin(oid: String, lang: String): Option[SähköpostiVirheidenRaportointiin] = {
     fetchV3(oid).flatMap(org => {
-      extractSähköpostiVirheidenRaportointiin(org)
-        .orElse { org.parentOid.flatMap(fetchV3).flatMap(extractSähköpostiVirheidenRaportointiin) }
+      extractSähköpostiVirheidenRaportointiin(org, lang)
+        .orElse { org.parentOid.flatMap(fetchV3).flatMap(extractSähköpostiVirheidenRaportointiin(_, lang)) }
     })
   }
 
   def fetchV3(oid: String): Option[OrganisaatioPalveluOrganisaatioV3] =
     runIO(http.get(uri"/organisaatio-service/rest/organisaatio/v3/${oid}")(Http.parseJsonOptional[OrganisaatioPalveluOrganisaatioV3]))
 
-  private def extractSähköpostiVirheidenRaportointiin(org: OrganisaatioPalveluOrganisaatioV3): Option[SähköpostiVirheidenRaportointiin] = {
+  private def extractSähköpostiVirheidenRaportointiin(org: OrganisaatioPalveluOrganisaatioV3, lang: String): Option[SähköpostiVirheidenRaportointiin] = {
     val YhteystietojenTyyppiKoski = "1.2.246.562.5.79385887983"
     val YhteystietoElementtiTyyppiEmail = "Email"
     if (org.status != "AKTIIVINEN") {
       None
     } else {
-      val koskiEmail = org.yhteystietoArvos
+      val koskiEmailit = org.yhteystietoArvos
         .filter(_.`YhteystietoElementti.kaytossa` == "true")
         .filter(_.`YhteystietojenTyyppi.oid` == YhteystietojenTyyppiKoski)
-        .find(_.`YhteystietoElementti.tyyppi` == YhteystietoElementtiTyyppiEmail)
-        .map(_.`YhteystietoArvo.arvoText`)
-      val defaultEmail = org.yhteystiedot
-        .find(_.email.nonEmpty)
-        .flatMap(_.email)
-      koskiEmail.orElse(defaultEmail).map(email => SähköpostiVirheidenRaportointiin(org.oid, LocalizedString.sanitizeRequired(org.nimi, org.oid), email))
+        .filter(_.`YhteystietoElementti.tyyppi` == YhteystietoElementtiTyyppiEmail)
+        .map(y => (y.`YhteystietoArvo.kieli`, y.`YhteystietoArvo.arvoText`.trim))
+        .filter { case (_, email) => email.nonEmpty }
+      val defaultEmailit = org.yhteystiedot
+        .flatMap(y => y.email.map(email => (y.kieli, email.trim)))
+        .filter { case (_, email) => email.nonEmpty }
+      YhteystiedonKieli.valitseYhteystietoKielellä(koskiEmailit, lang)
+        .orElse(YhteystiedonKieli.valitseYhteystietoKielellä(defaultEmailit, lang))
+        .map(email => SähköpostiVirheidenRaportointiin(org.oid, LocalizedString.sanitizeRequired(org.nimi, org.oid), email))
     }
   }
 
@@ -123,7 +126,7 @@ case class OrganisaatioPalveluOrganisaatioTyyppi(oid: String, nimi: Map[String, 
 case class OrganisaationNimihakuTulos(nimi: Map[String, String], alkuPvm: LocalDate)
 
 case class OrganisaatioPalveluOrganisaatioV3(oid: String, nimi: Map[String, String], parentOid: Option[String], status: String, yhteystiedot: List[YhteystietoV3], yhteystietoArvos: List[YhteystietoArvoV3])
-case class YhteystietoV3(email: Option[String])
-case class YhteystietoArvoV3(`YhteystietojenTyyppi.oid`: String, `YhteystietoElementti.tyyppi`: String, `YhteystietoElementti.kaytossa`: String, `YhteystietoArvo.arvoText`: String)
+case class YhteystietoV3(email: Option[String], kieli: Option[String])
+case class YhteystietoArvoV3(`YhteystietojenTyyppi.oid`: String, `YhteystietoElementti.tyyppi`: String, `YhteystietoElementti.kaytossa`: String, `YhteystietoArvo.arvoText`: String, `YhteystietoArvo.kieli`: Option[String])
 
 case class SähköpostiVirheidenRaportointiin(organisaatioOid: String, organisaationNimi: LocalizedString, email: String)
