@@ -168,6 +168,29 @@ const puhdasToimintaAlueIlmanLippua = (): Raw<Oppija> => {
   return oppija
 }
 
+/**
+ * Heidin raportoima tapaus: oppilas opiskeli toiminta-alueittain aiemmalla
+ * vuosiluokalla, mutta on siirtynyt oppiaineittain. Erityisen tuen päätös on
+ * päättynyt, mutta lisätietolippu on päivämäärätön, joten se ohjaisi yhä sekä
+ * esitäytön että lisäyspudotuksen toiminta-alueisiin.
+ */
+const siirtynytOppiaineittain = (): Raw<Oppija> => {
+  const oppija = sekamuotoinenTero()
+  const oo = oppija.opiskeluoikeudet[0] as Record<string, unknown>
+  oo.lisätiedot = {
+    erityisenTuenPäätökset: [
+      {
+        alku: '2017-01-01',
+        loppu: '2020-06-01',
+        opiskeleeToimintaAlueittain: true
+      }
+    ]
+  }
+  const vuosiluokka = (oo.suoritukset as Record<string, unknown>[])[1]
+  vuosiluokka.osasuoritukset = [toimintaAlue('1'), toimintaAlue('2')]
+  return oppija
+}
+
 const v2Url = (oid: string) =>
   `${oid}?opiskeluoikeudenTyyppi=perusopetus&perusopetus-v2=true`
 
@@ -191,7 +214,7 @@ test.describe('Perusopetuksen uusi käyttöliittymä: sekamuotoinen osasuoritusl
     await page.getByTestId('oo.0.suoritusTabs.1.tab').click()
 
     const oppiaineet = page.locator('.oppiaineet')
-    await expect(oppiaineet.locator('h5')).toHaveText('Arvosanat')
+    await expect(oppiaineet.locator('> h5')).toHaveText('Arvosanat')
     await expect(oppiaineet.locator('.OsasuoritusHeader')).toContainText(
       'Oppiaine tai toiminta-alue'
     )
@@ -244,7 +267,7 @@ test.describe('Perusopetuksen uusi käyttöliittymä: sekamuotoinen osasuoritusl
     await oppijaPage.goto(v2Url(oppija.henkilö.oid))
     await page.getByTestId('oo.0.suoritusTabs.0.tab').click()
 
-    await expect(page.locator('.oppiaineet h5')).toHaveText(
+    await expect(page.locator('.oppiaineet > h5')).toHaveText(
       'Toiminta-alueiden arvosanat'
     )
   })
@@ -263,7 +286,7 @@ test.describe('Perusopetuksen uusi käyttöliittymä: sekamuotoinen osasuoritusl
 
     // Otsikot johdetaan sisällöstä, eivät lipusta.
     const oppiaineet = page.locator('.oppiaineet')
-    await expect(oppiaineet.locator('h5')).toHaveText(
+    await expect(oppiaineet.locator('> h5')).toHaveText(
       'Toiminta-alueiden arvosanat'
     )
     await expect(oppiaineet.locator('.OsasuoritusHeader')).toContainText(
@@ -289,5 +312,80 @@ test.describe('Perusopetuksen uusi käyttöliittymä: sekamuotoinen osasuoritusl
         .locator('.Select__optionLabel')
         .filter({ hasText: /päivittäisten toimintojen taidot/i })
     ).toHaveCount(1)
+  })
+  test('Tyhjällä listalla kirjaustavan voi vaihtaa, jolloin oppiaineita voi lisätä', async ({
+    page,
+    oppijaPage,
+    fixtures
+  }) => {
+    await fixtures.reset()
+    const oppija = await fixtures.putOppija(siirtynytOppiaineittain())
+    await oppijaPage.goto(v2Url(oppija.henkilö.oid))
+    await page.getByTestId('oo.0.suoritusTabs.1.tab').click()
+    await page.getByTestId('oo.0.opiskeluoikeus.edit').click()
+
+    // Lista ei ole tyhjä, joten kirjaustapaa ei tarjota.
+    await expect(
+      page.getByTestId('oo.0.suoritukset.1.kirjaustapa')
+    ).toHaveCount(0)
+
+    await page.getByTestId('oo.0.suoritukset.1.osasuoritukset.1.delete').click()
+    await page.getByTestId('oo.0.suoritukset.1.osasuoritukset.0.delete').click()
+    await expect(vuosiluokkaRivit(page)).toHaveCount(0)
+
+    // Tyhjällä listalla valinta näkyy ja on oletuksena lipun mukainen.
+    const kirjaustapa = page.getByTestId('oo.0.suoritukset.1.kirjaustapa.input')
+    await expect(kirjaustapa).toBeChecked()
+
+    // Vaihto oppiaineittain: otsikko ja ryhmittely seuraavat valintaa.
+    await kirjaustapa.click()
+    // Avain on 'Oppiaineiden arvosanat', mutta lokalisoitu teksti on
+    // 'Arviointiasteikko' (koski-default-texts.json).
+    await expect(page.locator('.oppiaineet > h5')).toHaveText(
+      'Arviointiasteikko'
+    )
+    await expect(page.getByTestId('oppiaineet-pakolliset')).toHaveCount(1)
+  })
+  test('Uuden vuosiluokan kirjaustavan voi vaihtaa modaalissa, jolloin esitäyttö on oppiaineita', async ({
+    page,
+    oppijaPage,
+    fixtures
+  }) => {
+    await fixtures.reset()
+    const oppija = await fixtures.putOppija(siirtynytOppiaineittain())
+    await oppijaPage.goto(v2Url(oppija.henkilö.oid))
+    await page.getByTestId('oo.0.opiskeluoikeus.edit').click()
+    await page
+      .getByRole('button', { name: /lisää vuosiluokan suoritus/i })
+      .click()
+
+    const modal = page.locator('.Modal')
+    await modal.waitFor({ state: 'visible' })
+
+    // Päätös on päättynyt, mutta lippu on päivämäärätön: oletus on yhä
+    // toiminta-alueittain. Käyttäjä vaihtaa sen.
+    const kirjaustapa = page.getByTestId(
+      'oo.0.modal.uusiVuosiluokanSuoritus.kirjaustapa.input'
+    )
+    await expect(kirjaustapa).toBeChecked()
+    await kirjaustapa.click()
+
+    await page
+      .getByTestId('oo.0.modal.uusiVuosiluokanSuoritus.luokka.input')
+      .fill('8A')
+    const pvm = page.getByTestId(
+      'oo.0.modal.uusiVuosiluokanSuoritus.alkamispäivä.edit.input'
+    )
+    await pvm.fill('15.8.2024')
+    await pvm.blur()
+    await page.getByTestId('oo.0.modal.uusiVuosiluokanSuoritus.submit').click()
+    await modal.waitFor({ state: 'hidden' })
+
+    // Esitäyttö on oppiaineita, ei viittä toiminta-aluetta.
+    const rivit = page.locator(
+      '[data-testid^="oo.0.suoritukset.2.osasuoritukset."][data-testid$=".nimi"]'
+    )
+    await expect(rivit.filter({ hasText: /motoriset taidot/i })).toHaveCount(0)
+    await expect(rivit.filter({ hasText: /Matematiikka/i })).toHaveCount(1)
   })
 })

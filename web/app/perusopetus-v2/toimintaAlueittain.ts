@@ -93,21 +93,29 @@ export const osasuoritustenSisältö = (
 }
 
 /**
- * Onko päätason suoritus toiminta-aluetaulukko.
+ * Onko taulukko toiminta-aluetaulukko, kun sisältö ja tyhjän listan oletus
+ * tunnetaan.
  *
- * Sisältö ratkaisee, ei lisätietolippu: taulukon otsikoiden, sarakkeen ja
- * lisäyspudotuksen on kuvattava sitä, mitä listalla oikeasti on. Sekamuoto ei
- * ole tuettu tapaus (tuoteomistajan vahvistus), joten se ei ole
- * toiminta-aluetaulukko eikä oppiainetaulukko - kutsuja käsittelee sen
- * erikseen. Vain tyhjällä listalla ei ole mitään pääteltävää, jolloin
- * lisätietolippu ratkaisee; näin uuden vuosiluokan esitäyttö säilyy.
+ * Sisältö ratkaisee: taulukon otsikoiden, sarakkeen ja lisäyspudotuksen on
+ * kuvattava sitä, mitä listalla oikeasti on. Sekamuoto ei ole tuettu tapaus
+ * (tuoteomistajan vahvistus), joten se ei ole toiminta-aluetaulukko eikä
+ * oppiainetaulukko - kutsuja käsittelee sen erikseen.
+ *
+ * Tyhjällä listalla ei ole mitään pääteltävää, jolloin ratkaisee `tyhjänOletus`:
+ * lisätietolippu, tai käyttäjän valinta silloin kun käyttöliittymä tarjoaa sen.
  */
+export const toimintaAlueTaulukko = (
+  sisältö: OsasuoritustenSisältö,
+  tyhjänOletus: boolean
+): boolean =>
+  sisältö === 'toimintaAlueet' || (sisältö === 'tyhjä' && tyhjänOletus)
+
+/** Sama sääntö, kun tyhjän listan oletus otetaan lisätietolipusta. */
 export const isToimintaAlueittainSuoritus = (
   opiskeluoikeus: PerusopetuksenOpiskeluoikeus,
   osasuoritukset: TyypitettyOsasuoritus[]
-): boolean => {
-  const sisältö = osasuoritustenSisältö(osasuoritukset)
-  if (sisältö === 'toimintaAlueet') return true
-  if (sisältö === 'tyhjä') return isToimintaAlueittainOpiskelu(opiskeluoikeus)
-  return false
-}
+): boolean =>
+  toimintaAlueTaulukko(
+    osasuoritustenSisältö(osasuoritukset),
+    isToimintaAlueittainOpiskelu(opiskeluoikeus)
+  )
