@@ -70,8 +70,8 @@ class PerusopetuksenVuosiluokkaRaporttiSpec
       }
     }
 
-    "Tuottaa oikeat tiedot tuen päätöksen jaksolle" in {
-      val hakupäivä = LocalDate.of(2026, 8, 1)
+    "Tuottaa oikeat tiedot tuen päätöksen ja valmistavan lisäopetuksen jaksoille" in {
+      val hakupäivä = LocalDate.of(2027, 2, 1)
       val opiskeluoikeus = PerusopetusExampleData.opiskeluoikeus(suoritukset = List(
         createVuosiluokanSuoritus(Some(date(2026, 8, 1)), None)
           .copy(osasuoritukset = Some(List(
@@ -86,7 +86,12 @@ class PerusopetuksenVuosiluokkaRaporttiSpec
           tuenPäätöksenJaksot = Some(List(Tukijakso(Some(hakupäivä), None))),
           opetuksenJärjestäminenVammanSairaudenTaiRajoitteenPerusteella = Some(List(Aikajakso(hakupäivä, None))),
           tavoitekokonaisuuksittainOpiskelu = Some(List(Aikajakso(Some(hakupäivä), None))),
-          yhdysluokka = Some(List(Aikajakso(Some(hakupäivä), None)))
+          yhdysluokka = Some(List(Aikajakso(Some(hakupäivä), None))),
+          valmistavanLisäopetus = Some(List(
+            Aikajakso(date(2026, 8, 1), Some(date(2026, 12, 31))),
+            Aikajakso(date(2027, 1, 1), Some(date(2027, 3, 31))),
+            Aikajakso(date(2027, 4, 1), Some(date(2027, 6, 30)))
+          ))
       )))
       putOpiskeluoikeus(
         opiskeluoikeus,
@@ -101,7 +106,11 @@ class PerusopetuksenVuosiluokkaRaporttiSpec
       val opiskeluoikeusOid = lastOpiskeluoikeus(KoskiSpecificMockOppijat.lukioKesken.oid).oid.get
       val rivi = result.find(_.opiskeluoikeusOid == opiskeluoikeusOid)
 
-      rivi should equal(Some(leilanRow.copy(opiskeluoikeusOid = opiskeluoikeusOid, vuosiluokkiinSitoutumatonOpetus = None)))
+      rivi should equal(Some(leilanRow.copy(
+        opiskeluoikeusOid = opiskeluoikeusOid,
+        vuosiluokkiinSitoutumatonOpetus = None,
+        valmistavanLisäopetus = true
+      )))
     }
 
     "Ei näytetä laajuuksia kun päätason suorituksen arviointipäivä on 31.7.2020 tai ennen" in {
@@ -433,7 +442,8 @@ class PerusopetuksenVuosiluokkaRaporttiSpec
     opetuksenJärjestäminenVammanSairaudenTaiRajoitteenPerusteella = false,
     toimintaAlueittainOpiskelu = false,
     tavoitekokonaisuuksittainOpiskelu = false,
-    yhdysluokka = false
+    yhdysluokka = false,
+    valmistavanLisäopetus = false
   )
 
   val ynjevinExpectedKasiLuokkaRowWithLisätiedot = defaultYnjeviExpectedKasiLuokkaRow.copy(
@@ -642,8 +652,6 @@ class PerusopetuksenVuosiluokkaRaporttiSpec
 
   private val mennytAikajakso = Aikajakso(date(2000, 1, 1), Some(date(2001, 1, 1)))
   private val voimassaolevaAikajakso = Aikajakso(date(2008, 1, 1), None)
-  private val aikajakso = voimassaolevaAikajakso.copy(loppu = Some(date(2018, 1, 1)))
-  private val aikajaksot = Some(List(aikajakso))
   private val erityisenTuenPäätös = ErityisenTuenPäätös(
     alku = Some(date(2008, 1, 1)),
     loppu = Some(date(2018, 1, 1)),
@@ -671,8 +679,8 @@ class PerusopetuksenVuosiluokkaRaporttiSpec
     ))),
     majoitusetu = Some(voimassaolevaAikajakso),
     kuljetusetu = Some(mennytAikajakso),
-    oikeusMaksuttomaanAsuntolapaikkaan = Some(aikajakso),
-    sisäoppilaitosmainenMajoitus = aikajaksot,
-    koulukoti = aikajaksot
+    oikeusMaksuttomaanAsuntolapaikkaan = Some(Aikajakso(date(2008, 1, 1), Some(date(2018, 1, 1)))),
+    sisäoppilaitosmainenMajoitus = Some(List(Aikajakso(date(2008, 1, 1), Some(date(2014, 8, 15))))),
+    koulukoti = Some(List(Aikajakso(date(2008, 1, 1), Some(date(2018, 1, 1)))))
   )
 }

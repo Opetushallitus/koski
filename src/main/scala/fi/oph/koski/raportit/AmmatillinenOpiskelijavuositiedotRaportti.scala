@@ -237,9 +237,9 @@ object AmmatillinenOpiskalijavuositiedotRaportti extends AikajaksoRaportti {
       oppisopimusJossainPäätasonSuorituksessaPäivät = aikajaksoPäivät(aikajaksot, _.oppisopimusJossainPäätasonSuorituksessa),
       lisätiedotHenkilöstökoulutus = opiskeluoikeus.lisätiedotHenkilöstökoulutus,
       lisätiedotKoulutusvienti = opiskeluoikeus.lisätiedotKoulutusvienti,
-      maksuttomuus = lisätiedot.flatMap(_.maksuttomuus.map(ms => ms.filter(m => m.maksuton && m.overlaps(Aikajakso(alku, Some(loppu)))).map(_.toString).mkString(", "))).filter(_.nonEmpty),
-      maksullisuus = lisätiedot.flatMap(_.maksuttomuus.map(ms => ms.filter(m => !m.maksuton && m.overlaps(Aikajakso(alku, Some(loppu)))).map(_.toString).mkString(", "))).filter(_.nonEmpty),
-      oikeuttaMaksuttomuuteenPidennetty = lisätiedot.flatMap(_.oikeuttaMaksuttomuuteenPidennetty.map(omps => omps.map(_.toString).mkString(", "))).filter(_.nonEmpty),
+      maksuttomuus = RaporttiUtils.jaksotMerkkijonona(lisätiedot.flatMap(_.maksuttomuus).map(_.filter(_.maksuton)), Aikajakso(alku, Some(loppu))),
+      maksullisuus = RaporttiUtils.jaksotMerkkijonona(lisätiedot.flatMap(_.maksuttomuus).map(_.filter(!_.maksuton)), Aikajakso(alku, Some(loppu))),
+      oikeuttaMaksuttomuuteenPidennetty = RaporttiUtils.jaksotMerkkijonona(lisätiedot.flatMap(_.oikeuttaMaksuttomuuteenPidennetty)),
     )
   }
 }

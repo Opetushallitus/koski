@@ -151,7 +151,10 @@ object PerusopetuksenVuosiluokkaRaportti extends VuosiluokkaRaporttiPaivalta wit
       opetuksenJärjestäminenVammanSairaudenTaiRajoitteenPerusteella = opiskeluoikeudenLisätiedot.exists(_.opetuksenJärjestäminenVammanSairaudenTaiRajoitteenPerusteella.exists(_.exists(aikajaksoVoimassaHakuPaivalla(_, hakupaiva)))),
       toimintaAlueittainOpiskelu = opiskeluoikeudenLisätiedot.exists(_.toimintaAlueittainOpiskelu.exists(_.exists(aikajaksoVoimassaHakuPaivalla(_, hakupaiva)))),
       tavoitekokonaisuuksittainOpiskelu = opiskeluoikeudenLisätiedot.exists(_.tavoitekokonaisuuksittainOpiskelu.exists(_.exists(aikajaksoVoimassaHakuPaivalla(_, hakupaiva)))),
-      yhdysluokka = opiskeluoikeudenLisätiedot.exists(_.yhdysluokka.exists(_.exists(aikajaksoVoimassaHakuPaivalla(_, hakupaiva))))
+      yhdysluokka = opiskeluoikeudenLisätiedot.exists(_.yhdysluokka.exists(_.exists(aikajaksoVoimassaHakuPaivalla(_, hakupaiva)))),
+      valmistavanLisäopetus = opiskeluoikeudenLisätiedot.exists(
+        _.valmistavanLisäopetus.exists(_.exists(aikajaksoVoimassaHakuPaivalla(_, hakupaiva)))
+      )
     )
   }
 
@@ -400,6 +403,7 @@ object PerusopetuksenVuosiluokkaRaportti extends VuosiluokkaRaporttiPaivalta wit
     "toimintaAlueittainOpiskelu" -> compactLisätiedotColumn(t.get("raportti-excel-kolumni-toimintaAlueittainOpiskelu"), t),
     "tavoitekokonaisuuksittainOpiskelu" -> compactLisätiedotColumn(t.get("raportti-excel-kolumni-tavoitekokonaisuuksittainOpiskelu"), t),
     "yhdysluokka" -> compactLisätiedotColumn(t.get("raportti-excel-kolumni-yhdysluokka"), t),
+    "valmistavanLisäopetus" -> CompactColumn(t.get("raportti-excel-kolumni-valmistavanLisäopetus")),
   )
 }
 
@@ -486,4 +490,5 @@ private[raportit] case class PerusopetusRow(
   toimintaAlueittainOpiskelu: Boolean,
   tavoitekokonaisuuksittainOpiskelu: Boolean,
   yhdysluokka: Boolean,
+  valmistavanLisäopetus: Boolean,
 )

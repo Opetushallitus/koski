@@ -138,9 +138,9 @@ case class Lukio2019Raportti(repository: Lukio2019RaportitRepository, t: Localiz
        erityisen_koulutustehtävän_tehtävät = lisätiedot.flatMap(_.erityisenKoulutustehtävänJaksot.map(_.flatMap(_.tehtävä.nimi.map(_.get(t.language))).mkString(","))),
        erityisen_koulutustehtävän_jaksot = lisätiedot.flatMap(_.erityisenKoulutustehtävänJaksot.map(_.map(lengthInDaysInDateRange(_, alku, loppu)).sum)),
        sisäoppilaitosmainenMajoitus = lisätiedot.flatMap(_.sisäoppilaitosmainenMajoitus.map(_.map(lengthInDaysInDateRange(_, alku, loppu)).sum)),
-       maksuttomuus = lisätiedot.flatMap(_.maksuttomuus.map(ms => ms.filter(m => m.maksuton && m.overlaps(Aikajakso(alku, Some(loppu)))).map(_.toString).mkString(", "))).filter(_.nonEmpty),
-       maksullisuus = lisätiedot.flatMap(_.maksuttomuus.map(ms => ms.filter(m => !m.maksuton && m.overlaps(Aikajakso(alku, Some(loppu)))).map(_.toString).mkString(", "))).filter(_.nonEmpty),
-       oikeuttaMaksuttomuuteenPidennetty = lisätiedot.flatMap(_.oikeuttaMaksuttomuuteenPidennetty.map(omps => omps.map(_.toString).mkString(", "))).filter(_.nonEmpty),
+       maksuttomuus = RaporttiUtils.jaksotMerkkijonona(lisätiedot.flatMap(_.maksuttomuus).map(_.filter(_.maksuton)), Aikajakso(alku, Some(loppu))),
+       maksullisuus = RaporttiUtils.jaksotMerkkijonona(lisätiedot.flatMap(_.maksuttomuus).map(_.filter(!_.maksuton)), Aikajakso(alku, Some(loppu))),
+       oikeuttaMaksuttomuuteenPidennetty = RaporttiUtils.jaksotMerkkijonona(lisätiedot.flatMap(_.oikeuttaMaksuttomuuteenPidennetty)),
        yhteislaajuus = lukionOsasuoritukset.map(_.laajuus).sum,
        yhteislaajuusSuoritetut = lukionOsasuoritukset
          .filterNot(k => k.tunnustettu)
