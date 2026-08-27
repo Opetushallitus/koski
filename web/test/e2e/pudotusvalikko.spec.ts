@@ -83,6 +83,46 @@ test.describe('Pudotusvalikko', () => {
     await expect(kieli).toHaveValue('')
   })
 
+  test('Nuolinäppäimet liikkuvat suodatetussa listassa', async ({
+    page,
+    oppijaPage,
+    fixtures
+  }) => {
+    await fixtures.reset()
+    await avaaMuokkaus(page, oppijaPage, 0)
+
+    const kieli = page.getByTestId(`${KIELI}.input`)
+    const kentta = page.locator('.Select', {
+      has: page.getByTestId(`${KIELI}.input`)
+    })
+    const korostettu = kentta.locator('.Select__optionLabel--hover')
+
+    await kieli.click()
+    await kieli.fill('ma')
+
+    // Ryhmäotsikot eivät ole valittavissa, joten navigaatio ohittaa ne.
+    const valittavat = await kentta
+      .locator('.Select__optionLabel:not(.Select__optionGroup)')
+      .allInnerTexts()
+    expect(valittavat.length).toBeGreaterThan(3)
+
+    // Kirjoittaminen korostaa suodatetun listan ensimmäisen vaihtoehdon...
+    await expect(korostettu).toHaveText(valittavat[0])
+
+    // ...ja nuolet liikkuvat suodatetussa listassa. Aiemmin ne kulkivat
+    // suodattamattoman listan läpi, jolloin korostus katosi näkyvistä ja
+    // Enter valitsi vaihtoehdon, jota käyttäjä ei nähnyt.
+    await page.keyboard.press('ArrowDown')
+    await expect(korostettu).toHaveText(valittavat[1])
+    await page.keyboard.press('ArrowDown')
+    await expect(korostettu).toHaveText(valittavat[2])
+    await page.keyboard.press('ArrowUp')
+    await expect(korostettu).toHaveText(valittavat[1])
+
+    await page.keyboard.press('Enter')
+    await expect(kieli).toHaveValue(valittavat[1])
+  })
+
   test('Arvosanan tyhjentäminen poistaa arvioinnin', async ({
     page,
     oppijaPage,
