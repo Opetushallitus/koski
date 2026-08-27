@@ -64,7 +64,8 @@ class PerusopetuksenOppijamäärätRaporttiSpec extends AnyFreeSpec with Matcher
     tuenPäätöstenRaportilleOsuvaOpiskeluoikeus(
       PerusopetuksenOpiskeluoikeudenLisätiedot(
         tuenPäätöksenJaksot = Some(List(Tukijakso(Some(tuenPäätöksenJaksonRaportointipäivä), None))),
-        opetuksenJärjestäminenVammanSairaudenTaiRajoitteenPerusteella = Some(List(Aikajakso(tuenPäätöksenJaksonRaportointipäivä, None)))
+        opetuksenJärjestäminenVammanSairaudenTaiRajoitteenPerusteella = Some(List(Aikajakso(tuenPäätöksenJaksonRaportointipäivä, None))),
+        valmistavanLisäopetus = Some(List(Aikajakso(tuenPäätöksenJaksonRaportointipäivä, None)))
       )
     ),
     tuenPäätöstenRaportilleOsuvaOpiskeluoikeus(
@@ -334,7 +335,8 @@ class PerusopetuksenOppijamäärätRaporttiSpec extends AnyFreeSpec with Matcher
         kuljetusetu = 0,
         sisäoppilaitosmainenMajoitus = 0,
         koulukoti = 0,
-        joustavaPerusopetus = 0
+        joustavaPerusopetus = 0,
+        valmistavanLisäopetus = 0
       ),
       PerusopetuksenOppijamäärätRaporttiRow(
         oppilaitosNimi = "Jyväskylän normaalikoulu",
@@ -354,7 +356,8 @@ class PerusopetuksenOppijamäärätRaporttiSpec extends AnyFreeSpec with Matcher
         kuljetusetu = 0,
         sisäoppilaitosmainenMajoitus = 0,
         koulukoti = 0,
-        joustavaPerusopetus = 0
+        joustavaPerusopetus = 0,
+        valmistavanLisäopetus = 0
       ),
       PerusopetuksenOppijamäärätRaporttiRow(
         oppilaitosNimi = "Jyväskylän normaalikoulu",
@@ -375,6 +378,7 @@ class PerusopetuksenOppijamäärätRaporttiSpec extends AnyFreeSpec with Matcher
         sisäoppilaitosmainenMajoitus = 1,
         koulukoti = 1,
         joustavaPerusopetus = 1,
+        valmistavanLisäopetus = 0,
       ),
       PerusopetuksenOppijamäärätRaporttiRow(
         oppilaitosNimi = "Jyväskylän normaalikoulu",
@@ -395,6 +399,7 @@ class PerusopetuksenOppijamäärätRaporttiSpec extends AnyFreeSpec with Matcher
         sisäoppilaitosmainenMajoitus = 1,
         koulukoti = 1,
         joustavaPerusopetus = 1,
+        valmistavanLisäopetus = 0,
       ),
       PerusopetuksenOppijamäärätRaporttiRow(
         oppilaitosNimi = "Jyväskylän normaalikoulu",
@@ -415,6 +420,7 @@ class PerusopetuksenOppijamäärätRaporttiSpec extends AnyFreeSpec with Matcher
         sisäoppilaitosmainenMajoitus = 2,
         koulukoti = 2,
         joustavaPerusopetus = 2,
+        valmistavanLisäopetus = 0,
       )
     ))
   }
@@ -445,8 +451,11 @@ class PerusopetuksenOppijamäärätRaporttiSpec extends AnyFreeSpec with Matcher
         sisäoppilaitosmainenMajoitus = 0,
         koulukoti = 0,
         joustavaPerusopetus = 0,
+        valmistavanLisäopetus = 1,
       )
     )
+
+    rows.find(_.vuosiluokka == "Kaikki vuosiluokat yhteensä").map(_.valmistavanLisäopetus) should be(Some(1))
   }
 
   "Perusopetuksen oppijamäärien raportti - ei useita rivejä vaikka kieliä olisi useampi" in {
