@@ -3,9 +3,6 @@ on:
   schedule:
     - cron: "0 0 * * *"
   workflow_dispatch:
-env:
-  DOCKER_BUILDKIT: 1
-  PNPM_FROZEN_FLAG: ${{ github.event_name == 'pull_request' && github.event.pull_request.user.login == 'renovate[bot]' && '--no-frozen-lockfile' || '--frozen-lockfile' }}
 
 permissions:
   contents: read
@@ -13,84 +10,71 @@ permissions:
 jobs:
   scan:
     name: Trivy scan
-    runs-on: ubuntu-24.04
-    outputs:
-      cves: ${{ steps.summarize.outputs.cves }}
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7
-
-      - uses: ./.github/actions/setup_pnpm_cache
-
-      - name: Run pnpm install
-        run: pnpm install --recursive $PNPM_FROZEN_FLAG
-        shell: bash
-
-      - name: Run Trivy on Koski
-        uses: aquasecurity/trivy-action@ed142fd0673e97e23eac54620cfb913e5ce36c25 # v0.36.0
-        with:
-          scan-type: fs
-          scan-ref: .
-          exit-code: 1
-          scanners: vuln
-          trivyignores: .trivyignore
-          format: json
-          output: trivy-report.json
-          severity: 'CRITICAL,HIGH'
-          skip-dirs: 'src/main/resources/mockdata,src/test,target,omadata-oauth2-sample'
-
-      - name: Summarize new CVEs
-        if: failure()
-        id: summarize
-        run: |
-          {
-            echo 'cves<<EOF'
-            jq -r '
-              [.Results[]
-               | select(.Vulnerabilities != null)
-               | {target: .Target, vulns: [
-                   .Vulnerabilities[]
-                   | "- <\(.PrimaryURL)|\(.VulnerabilityID)> [\(.Severity)] (\(.PkgName) \(.InstalledVersion))"
-                 ]}
-              ]
-              | group_by(.target)
-              | .[]
-              | (.[0].target),
-                (map(.vulns) | add | unique | join("\n")),
-                ""
-            ' trivy-report.json
-            echo 'EOF'
-          } >> $GITHUB_OUTPUT
-
-      - name: Run Trivy (full table report)
-        if: always()
-        uses: aquasecurity/trivy-action@ed142fd0673e97e23eac54620cfb913e5ce36c25 # v0.36.0
-        with:
-          scan-type: fs
-          scan-ref: .
-          scanners: vuln
-          format: table
-          skip-dirs: 'src/main/resources/mockdata,src/test,target'
-          exit-code: 0
+    uses: ./.github/workflows/trivy_check.yml
+    with:
+      runs-on: ubuntu-24.04
+      upload-report: true
+      severity: CRITICAL,HIGH
 
   notify:
     name: Notify Slack
     runs-on: ubuntu-24.04
     needs: [scan]
-    if: failure()
+    if: always() && needs.scan.result == 'failure'
+    permissions: {}
+    timeout-minutes: 5
     steps:
-      - name: Report to Slack
-        uses: ravsamhq/notify-slack-action@02b169fd81108a34dbb029df4a41dd27ad680290
-        with:
-          status: failure
-          message_format: |
-            {emoji} *{workflow}* {status_message}
-
-            *New vulnerabilities found* in <{repo_url}|{repo}>
-
-            ${{ needs.scan.outputs.cves }}
-
-            <https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}|See full report in logs>
-            <https://trivy.util.yleiskayttoiset.opintopolku.fi/koski.html|See current status (use vpn)>
+      - name: Get short commit SHA
+        id: commit
         env:
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL_PROD_ALERTS }}
+          COMMIT_SHA: ${{ github.sha }}
+        run: printf 'short_sha=%.7s\n' "$COMMIT_SHA" >> "$GITHUB_OUTPUT"
+
+      - name: Format CVEs for Slack
+        id: format-cves
+        env:
+          CVES: ${{ needs.scan.outputs.cves || '[]' }}
+        run: |
+          {
+            echo 'cves<<EOF'
+            jq -r '
+              def severity_icon:
+                if . == "CRITICAL" then "🔺 "
+                elif . == "HIGH" then "🔸 "
+                else ""
+                end;
+              def severity_label:
+                if . == "CRITICAL" then "Critical"
+                elif . == "HIGH" then "High"
+                else .
+                end;
+
+              group_by(.target)[]
+              | "*\(.[0].target)*",
+                ([.[]
+                  | "\(.severity | severity_icon)\(.severity | severity_label) · <\(.primaryUrl)|\(.vulnerabilityId)> · `\(.packageName)@\(.installedVersion)`"]
+                 | join("\n")),
+                ""
+            ' <<< "$CVES"
+            echo 'EOF'
+          } >> "$GITHUB_OUTPUT"
+
+      - name: Report to Slack
+        uses: slackapi/slack-github-action@dcb1066f776dd043e64d0e8ba94ca15cc7e1875d # v4.0.0
+        env:
+          CVES: ${{ steps.format-cves.outputs.cves }}
+        with:
+          webhook: ${{ secrets.SLACK_WEBHOOK_URL_PROD_ALERTS }}
+          webhook-type: incoming-webhook
+          payload-templated: true
+          payload: |
+            {
+              "text": ":rotating_light: Trivy dependency scan failed",
+              "blocks": [
+                {"type": "section", "text": {"type": "mrkdwn", "text": "*:rotating_light: Trivy dependency scan failed*\n\n{{env.CVES}}"}},
+                {"type": "context", "elements": [
+                  {"type": "mrkdwn", "text": "*Repo:* ${{ github.repository }} | *Workflow:* ${{ github.workflow }}\n*Branch:* <${{ github.server_url }}/${{ github.repository }}/tree/${{ github.ref_name }}|${{ github.ref_name }}> | *Commit:* <${{ github.server_url }}/${{ github.repository }}/commit/${{ github.sha }}|${{ steps.commit.outputs.short_sha }}>\n*Triggered by:* ${{ github.triggering_actor }} via ${{ github.event_name }}${{ github.run_attempt > 1 && format(' | *Attempt:* {0}', github.run_attempt) || '' }}\n*<${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}/attempts/${{ github.run_attempt }}|View Run>*\n<https://trivy.util.yleiskayttoiset.opintopolku.fi/koski.html|See current status (use vpn)>"}
+                ]},
+                {"type": "divider"}
+              ]
+            }

@@ -15,3 +15,5 @@ jobs:
   trivy:
     name: Trivy
     uses: ./.github/workflows/trivy_check.yml
+    with:
+      upload-report: true

@@ -1,2 +1,0 @@
-# False positive: CVE-2024-6763 fixed in Jetty 9.4.57, we use 9.4.57.v20241219
-CVE-2024-6763

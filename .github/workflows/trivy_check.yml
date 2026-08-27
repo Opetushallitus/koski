@@ -5,39 +5,90 @@ on:
     inputs:
       runs-on:
         type: string
-        default: "ubuntu-22.04"
+        default: "ubuntu-24.04"
+      upload-report:
+        type: boolean
+        default: false
+      severity:
+        type: string
+        default: CRITICAL,HIGH
+    outputs:
+      cves:
+        description: Vulnerabilities as a JSON array
+        value: ${{ jobs.trivy_dependency_check.outputs.cves }}
 
 permissions:
   contents: read
-
-env:
-  PNPM_FROZEN_FLAG: ${{ github.event_name == 'pull_request' && github.event.pull_request.user.login == 'renovate[bot]' && '--no-frozen-lockfile' || '--frozen-lockfile' }}
 
 jobs:
   trivy_dependency_check:
     name: Trivy dependency check
     runs-on: ${{ inputs.runs-on }}
+    timeout-minutes: 20
+    outputs:
+      cves: ${{ steps.summarize.outputs.cves }}
     steps:
       - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7
-
-      - uses: ./.github/actions/setup_pnpm_cache
-
-      - name: Setup Node
-        uses: actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f # v6
         with:
-          node-version: "24.18.0"
+          persist-credentials: false
 
-      - name: Install JS deps
-        run: pnpm install --recursive $PNPM_FROZEN_FLAG
+      # Populate the Maven cache before Trivy to avoid Maven Central rate limiting during dependency analysis.
+      - uses: ./.github/actions/setup_java_17
+
+      - name: Resolve Maven dependencies
+        run: mvn --batch-mode --file pom.xml dependency:go-offline
 
       - name: Trivy vulnerability scan
         uses: aquasecurity/trivy-action@ed142fd0673e97e23eac54620cfb913e5ce36c25 # v0.36.0
         with:
+          version: v0.74.0
           scan-type: fs
           scan-ref: .
           exit-code: 1
           scanners: vuln
           trivyignores: .trivyignore
-          format: table
-          severity: 'CRITICAL,HIGH'
+          format: json
+          output: trivy-report.json
+          severity: ${{ inputs.severity }}
           skip-dirs: 'src/main/resources/mockdata,src/test,target,omadata-oauth2-sample'
+
+      - name: Summarize CVEs
+        if: always() && hashFiles('trivy-report.json') != ''
+        id: summarize
+        run: |
+          {
+            echo 'cves<<EOF'
+            jq -c '
+              [.Results[]
+               | select(.Vulnerabilities != null)
+               | .Target as $target
+               | .Vulnerabilities[]
+               | {
+                   target: $target,
+                   severity: .Severity,
+                   vulnerabilityId: .VulnerabilityID,
+                   primaryUrl: .PrimaryURL,
+                   packageName: .PkgName,
+                   installedVersion: .InstalledVersion
+                 }]
+              | unique_by([.target, .severity, .vulnerabilityId, .primaryUrl, .packageName, .installedVersion])
+            ' trivy-report.json
+            echo 'EOF'
+          } >> "$GITHUB_OUTPUT"
+
+      - name: Print Trivy report
+        if: always() && hashFiles('trivy-report.json') != ''
+        run: trivy convert --format table --scanners vuln trivy-report.json
+
+      - name: Upload Trivy report
+        if: >-
+          always() &&
+          inputs.upload-report &&
+          steps.summarize.outcome == 'success' &&
+          steps.summarize.outputs.cves != '[]' &&
+          hashFiles('trivy-report.json') != ''
+        uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7
+        with:
+          name: trivy-report
+          path: trivy-report.json
+          retention-days: 2
