@@ -205,9 +205,9 @@ class RaportitServlet(implicit val application: KoskiApplication) extends KoskiS
     writeExcel(raportitService.aikuistenperusopetuksenKurssikertymä(parsedRequest, t), t)
   }
 
-  get("/kotikuntaraportti") {
+  get("/kotikuntalaskelma") {
     // TODO(TOR-2650): raportti kattaa myös esiopetuksen, kansainväliset koulut ym. (ks.
-    // Kotikuntaraportti.scala), mutta tässä tarkistetaan käyttöoikeus vain perusopetukseen —
+    // Kotikuntalaskelma.scala), mutta tässä tarkistetaan käyttöoikeus vain perusopetukseen —
     // sama yksinkertaistus kuin esim. /lukiodiaibinternationaleshopiskelijamaarat-reitillä, joka
     // tarkistaa vain lukiokoulutus-oikeuden vaikka kattaa useita koulutusmuotoja. Pelkkä
     // esiopetus-/kv-koulu-oikeuden omaava käyttäjä torjutaan tässä virheellisesti — korjattava
@@ -215,8 +215,8 @@ class RaportitServlet(implicit val application: KoskiApplication) extends KoskiS
     requireOpiskeluoikeudenKayttooikeudet(OpiskeluoikeudenTyyppi.perusopetus)
     val parsedRequest = parseRaporttiPäivältäRequest
     val t = new LocalizationReader(application.koskiLocalizationRepository, parsedRequest.lang)
-    AuditLog.log(KoskiAuditLogMessage(OPISKELUOIKEUS_RAPORTTI, session, Map(hakuEhto -> s"raportti=kotikuntaraportti&oppilaitosOid=${parsedRequest.oppilaitosOid}&paiva=${parsedRequest.paiva}&lang=${parsedRequest.lang}")))
-    writeExcel(raportitService.kotikuntaraportti(parsedRequest, t), t)
+    AuditLog.log(KoskiAuditLogMessage(OPISKELUOIKEUS_RAPORTTI, session, Map(hakuEhto -> s"raportti=kotikuntalaskelma&oppilaitosOid=${parsedRequest.oppilaitosOid}&paiva=${parsedRequest.paiva}&lang=${parsedRequest.lang}")))
+    writeExcel(raportitService.kotikuntalaskelma(parsedRequest, t), t)
   }
 
   get("/perusopetuksenoppijamaaratraportti") {

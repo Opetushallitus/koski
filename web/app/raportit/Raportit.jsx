@@ -247,10 +247,10 @@ const kaikkiRaportitKategorioittain = [
         visibleForAllOrgs: true
       },
       {
-        id: 'kotikuntaraportti',
-        name: 'raportti-tab-kotikuntaraportti',
-        component: KotikuntaRaportti,
-        // TODO(TOR-2650): tämä on väliaikainen. Kotikuntaraportti on
+        id: 'kotikuntalaskelma',
+        name: 'raportti-tab-kotikuntalaskelma',
+        component: Kotikuntalaskelma,
+        // TODO(TOR-2650): tämä on väliaikainen. Kotikuntalaskelma on
         // organisaatiokohtainen (kuten muutkin RaporttiPaivalta-raportit) —
         // ei-hasGlobalReadAccess-käyttäjä näkee sen valitsemansa
         // organisaation ja sen alipuun mukaan skoopattuna, aivan kuten
@@ -494,10 +494,10 @@ const RaportitContent = ({
     <div className="main-content">
       {/* TODO(TOR-2650): tämä ehto olettaa, että jokaisella raportteja
           näkevällä käyttäjällä on vähintään yksi organisaatio-oikeus.
-          Kotikuntaraportti on tarkoitus rajata raportit.rajatut-listan kautta
+          Kotikuntalaskelma on tarkoitus rajata raportit.rajatut-listan kautta
           (ks. RaportitAccessResolver), joten pelkän rajatut-oikeuden saava
           käyttäjä voisi päätyä tänne organisaatioita: [] ja pudota tähän
-          virheeseen, vaikka hänellä olisi oikeus Kotikuntaraporttiin. Pitää
+          virheeseen, vaikka hänellä olisi oikeus Kotikuntalaskelmain. Pitää
           ratkaista ennen kuin rajatut-pääsy oikeasti kytketään päälle. */}
       {stateP.map((state) =>
         state.organisaatiot.length > 0 ? (
@@ -601,18 +601,18 @@ function PaallekkaisetOpiskeluoikeudet({ stateP }) {
   )
 }
 
-function KotikuntaRaportti({ stateP }) {
-  const titleText = <Text name="kotikuntaraportti-title" />
+function Kotikuntalaskelma({ stateP }) {
+  const titleText = <Text name="kotikuntalaskelma-title" />
   const shortDescriptionText = (
-    <Text name="kotikuntaraportti-short-description" />
+    <Text name="kotikuntalaskelma-short-description" />
   )
-  const dateInputHelpText = <Text name="kotikuntaraportti-date-input-help" />
-  const exampleText = <Paragraphs name="kotikuntaraportti-example" />
+  const dateInputHelpText = <Text name="kotikuntalaskelma-date-input-help" />
+  const exampleText = <Paragraphs name="kotikuntalaskelma-example" />
 
   return (
     <RaporttiPaivalta
       stateP={stateP}
-      apiEndpoint={'/kotikuntaraportti'}
+      apiEndpoint={'/kotikuntalaskelma'}
       title={titleText}
       shortDescription={shortDescriptionText}
       dateInputHelp={dateInputHelpText}
