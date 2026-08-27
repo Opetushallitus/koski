@@ -516,6 +516,28 @@ test.describe('Perusopetuksen uusi käyttöliittymä: vuosiluokan suorituksen li
       page.getByTestId('oo.0.suoritukset.2.luokka.edit.input')
     ).toHaveValue('8A')
   })
+
+  test('Lisätyn vuosiluokan peruminen ei kaada näkymää', async ({
+    page,
+    oppijaPage,
+    fixtures
+  }) => {
+    // Peruuta poistaa lisätyn suorituksen, mutta aktiivisen välilehden indeksi
+    // jäi osoittamaan poistettuun: usePäätasonSuoritus palautti undefinedin ja
+    // editori kaatui valkoiseen ruutuun.
+    const virheet: string[] = []
+    page.on('pageerror', (e) => virheet.push(e.message))
+
+    await fixtures.reset()
+    const oppija = await fixtures.putOppija(tyhjäTeroPerusopetus())
+    await oppijaPage.goto(v2Url(oppija.henkilö.oid))
+    await lisääVuosiluokka(page, '1', '1A', '1.1.2017')
+
+    await page.getByText('Peruuta', { exact: true }).first().click()
+
+    await expect(page.getByTestId('oo.0.opiskeluoikeus.edit')).toBeVisible()
+    expect(virheet).toEqual([])
+  })
 })
 
 /** Avaa dialogi, asettaa tunniste/luokka/alkamispäivä ja klikkaa Lisää. */
