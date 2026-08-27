@@ -96,9 +96,7 @@ const columns: Column[] = [
 ]
 
 const stringsToData = (values: string[]): Datum[] =>
-  values.map(
-    (value, index): Datum => ({
-      key: [(index + 1).toString(), value.toLowerCase()],
-      values: [{ value }],
-    }),
-  )
+  values.map((value, index): Datum => ({
+    key: [(index + 1).toString(), value.toLowerCase()],
+    values: [{ value }],
+  }))

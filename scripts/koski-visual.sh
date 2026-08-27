@@ -23,8 +23,8 @@ if [ -z "$pw_version" ]; then
   exit 1
 fi
 
-PINNED_PW_VERSION="1.61.0"
-PINNED_PW_DIGEST="sha256:264136758e43332108f6420f82c47f639f619ca65301065ceade677763f477ec"
+PINNED_PW_VERSION="1.62.1"
+PINNED_PW_DIGEST="sha256:b3251f7ff1a9fa559a28d1c67eaa15fc1a9800f7845e82756caea7842967f615"
 
 if [ "$pw_version" != "$PINNED_PW_VERSION" ]; then
   echo "VIRHE: Playwright on nostettu versioon $pw_version, mutta imagen" >&2
