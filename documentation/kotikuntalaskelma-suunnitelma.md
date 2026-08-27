@@ -1,4 +1,4 @@
-# Kotikuntaraportti — suunnitelma
+# Kotikuntalaskelma — suunnitelma
 
 *Alustava speksi, ehdollinen VM:n (Valtiovarainministeriö) rahoitukselle. Ei vielä toteutuspäätöstä.*
 
@@ -21,9 +21,9 @@ org-puun laajennusta ja yhtä `paiva`-parametria.
 
 ## 2. Nimi ja sijainti
 
-**Kotikuntaraportti**, sijoitetaan **Yleiset-raportti**-osioon (ei omaksi koulutusmuotokohtaiseksi
+**Kotikuntalaskelma**, sijoitetaan **Yleiset-raportti**-osioon (ei omaksi koulutusmuotokohtaiseksi
 raportikseen). ("Oppilasraportti" oli vain kokouksessa käytetty työnimi — tiketin virallinen nimi
-on Kotikuntaraportti; koodi ja lokalisointiavaimet on nimetty sen mukaan.)
+on Kotikuntalaskelma; koodi ja lokalisointiavaimet on nimetty sen mukaan.)
 
 Tiketin kuvausteksti (Jira) sellaisenaan, sisällöltään yhtenevä 3 §:n ja 4 §:n kanssa:
 
@@ -47,16 +47,22 @@ oppivelvollisuutta eikä hetuttomia oppijoita — nämä nousivat esiin vasta ko
 - Ydin-aggregaattinäkymä: **oppilasmäärä opetuksen järjestäjän × kotikunnan × iän mukaan**.
 - Vähintään **kaksi välilehteä**:
   1. Aggregaattivälilehti (yhteenlaskettu oppilasmäärä em. ryhmittelyillä)
-  2. Yksilöity välilehti — kaikki oppilaat yksilöity, näkyy myös mihin lukuihin kukin on laskettu
-     mukaan (jäljitettävyys aggregaattiin)
+  2. **"Oppijat"-välilehti** (päätetty myöhemmässä kokouksessa, ks. 4 §:n korvattu sisältö) —
+     rivi per oppija, sarakkeina oppijanumero + tosi/epätosi-liput jokaiselle
+     aggregaattivälilehden ikäryhmäsarakkeelle, jäljitettävyyttä varten.
 - Välilehtien tarkka asettelu / datan esitystapa on vielä auki, vaatii lisäsuunnittelua.
-- Yksilötasolla täytyy näkyä, missä oppilaitoksessa oppilas opiskelee.
 - **Data-only** — ei euromääräistä VOS-laskentakaavaa Koskessa. "Vossin muutokset" (varsinainen
   rahoituskaavan laskenta) käsitellään myöhemmin, erikseen.
 
 ## 4. Oppijakohtaiset sarakkeet
 
-### Varmat
+**KORVATTU** myöhemmässä kokouksessa (ks. 10.1 §): alkuperäinen, laajempi "Varmat"-sarakelista
+(oppija oid, hetu, etunimet, sukunimi, kotikunta, oppilaitos, jne.) ei ole enää yksilöidyn
+välilehden suunnitelma. Uusi, päätetty "Oppijat"-välilehti sisältää vain oppijanumeron ja
+tosi/epätosi-liput aggregaattivälilehden ikäryhmäsarakkeille — ks. 10.1 §. Alkuperäinen lista on
+jätetty tähän historiallisena kontekstina, koska osa 5 §:n avoimista kysymyksistä viittaa siihen.
+
+### Varmat (historiallinen, korvattu — ks. yllä)
 
 - Oppija oid
 - Oppijan master oid
@@ -76,7 +82,10 @@ oppivelvollisuutta eikä hetuttomia oppijoita — nämä nousivat esiin vasta ko
 
 Saaduissa esimerkkikyselyissä (8 §) bucket-rajat ovat: 6, 7–12, 13–15, 16 (jaettuna pidennetyn
 oppivelvollisuuden mukaan), yhteensä (6–16). Ks. 5 §, kohta 5 avoimesta kysymyksestä siitä, pitääkö
-16-vuotiaiden alaryhmä näkyä myös yksilöidyllä välilehdellä jäljitettävyyden vuoksi.
+16-vuotiaiden alaryhmä näkyä myös yksilöidyllä välilehdellä jäljitettävyyden vuoksi. **Päivitys
+10.1 §:ssä: kokous päätti Oppijat-välilehden, joka näyttää juuri tämän — ratkaisee kysymyksen
+näyttämällä sen, mutta jättää 5 §:n kohdan 5 (erityisen tuen tiedon yksilöllisyys) ratkaisematta —
+kokous päätti näyttää sen tietoisena ristiriidasta, ei ratkaissut sitä, ks. 10.1 §.**
 
 ### Ei sisällytetä (yliviivattu muistiinpanoissa — päätetty jättää pois toistaiseksi)
 
@@ -132,6 +141,28 @@ oppivelvollisuuden mukaan), yhteensä (6–16). Ks. 5 §, kohta 5 avoimesta kysy
    `r_kotikuntahistoria`-taulua vasten, ei confidential-varianttia** — turvakiellon alaiset
    oppijat eivät tällöin resolvoi kotikuntaa lainkaan ja putoavat samaan "ei resolvoitunutta
    kotikuntaa" -koriin kuin hetuttomat (2 §), mikä on turvallinen lopputulos.
+
+   **Toteutunut ratkaisu (`Kotikuntalaskelma.scala`, aggregaattikysely):** kaksitasoinen
+   fallback-ketju, joka estää turvakiellon vuotamisen kahdesta eri suunnasta:
+   1. Ensisijainen lähde on julkinen `r_kotikuntahistoria` — turvakiellon alaiset rivit eivät
+      koskaan päädy tähän tauluun (ks. yllä), joten `kkh`-liitos ei koskaan osu heille.
+   2. Varalähteenä käytetään `r_henkilo.kotikunta`/`kotikunta_nimi_fi` (nykyinen, ei
+      historiallinen kotikunta), mutta **vain jos `not he.turvakielto`**:
+      `case when he.turvakielto then null else he.kotikunta end`. `r_henkilo`-taulu EI ole
+      turvakielto-suodatettu, joten ilman tätä eksplisiittistä tarkistusta varalähde vuotaisi
+      turvakiellon alaisten oppijoiden osoitetiedon toista kautta.
+   3. Jos molemmat lähteet päätyvät NULL:iin (turvakielto AINA, tai hetuton/muu ei-resolvoituva
+      tapaus), nimisarake coalescetaan lopulta kirjaimelliseen `'Ei tiedossa'`-arvoon;
+      koodisarake jää NULL:ksi. Oppija lasketaan silti oikein mukaan ikäryhmä-/
+      järjestäjätotaaleihin — vain kotikunta-tieto piilotetaan.
+
+   **Ei-toivottu mutta hyväksyttävissä oleva sivuvaikutus, ei erikseen päätetty**: "Ei tiedossa"
+   -koriin päätyvät turvakielto, hetuttomat JA muut ilman muuta syytä resolvoitumattomat oppijat
+   samaan koriin erottamattomina — raportista ei voi päätellä, mistä syystä yksittäinen
+   oppijanumero on tässä korissa. Tämä on lievä yksityisyyshyöty (korin syytä ei voi arvata), mutta
+   ei ole muotoiltu tietoiseksi vaatimukseksi missään vaiheessa — kannattaa varmistaa että tämä on
+   hyväksyttävä lopputulos ennen tuotantoon vientiä. "Oppijat"-välilehti (10.1 §) ei koske
+   kotikuntaa lainkaan, joten sillä ei ole vastaavaa turvakielto-riskiä.
 
 ## 6. Reunaehdot
 
@@ -469,7 +500,7 @@ Todellinen syy harkita uudelleen: **useimmilla raportin käyttäjillä ei todenn
 `hasGlobalReadAccess`-oikeutta** — he ovat oletettavasti yksittäisten oppilaitosten/koulutus-
 toimijoiden virkailijoita, eivät OPH:n pääkäyttäjiä. Ja myös ne, joilla globaali oikeus on,
 saattavat silti haluta rajata näkymän yhteen organisaatioon kerrallaan ison valtakunnallisen
-taulukon sijaan. Tämä tarkoittaa, että Kotikuntaraportti on rakenteeltaan **täsmälleen sama
+taulukon sijaan. Tämä tarkoittaa, että Kotikuntalaskelma on rakenteeltaan **täsmälleen sama
 kuin muut VOS-oppijamäärä-raportit** (esim. `AikuistenPerusopetuksenOppijamäärätRaportti`):
 
 - Organisaatiovalitsin (`OrganisaatioDropdown`) valitsee `oppilaitosOid`/`organisaatioOid`:n,
@@ -497,7 +528,7 @@ Raportin avausnäkymä (organisaatiovalitsin + päivämäärän valinta + "Lataa
 -painike) käyttää suoraan olemassa olevaa `RaporttiPaivalta.jsx`-komponenttia — samaa jota
 kaikki muutkin yhden päivän VOS-raportit (esiopetus-vos, perusopetus-vos, tuva-perusopetus-vos,
 `AikuistenPerusopetuksenOppijamäärätRaportti`) käyttävät. Ensimmäisessä versiossa rakennettiin
-tätä varten oma `KotikuntaraporttiPaivalta.jsx`-komponentti ilman organisaatiovalitsinta — se on
+tätä varten oma `KotikuntalaskelmaPaivalta.jsx`-komponentti ilman organisaatiovalitsinta — se on
 nyt poistettu 9.1 §:n korjauksen myötä, koska organisaatiovalitsin tarvitaan kuten muillakin
 raporteilla. Ei erillistä `kotikuntaPvm`-kenttää — kotikunta ratkaistaan samalta päivältä kuin
 muu data (3 §), joten `showKotikuntaPvmInput`-propsia ei käytetä.
@@ -523,8 +554,36 @@ koulutusmuoto-kytkentä.
 
 ## 10. Backend-endpointin toteutus ja testifixtuurit
 
-Aggregaattivälilehden backend on nyt toteutettu (`Kotikuntaraportti.scala`, `RaportitService.
-kotikuntaraportti`, `RaportitServlet` `/kotikuntaraportti`-reitti) 8.1 §:n kyselyn pohjalta,
+### 10.1 Oppijat-välilehti (päätetty jatkokokouksessa, korvaa 4 §:n alkuperäisen sarakelistan)
+
+Toinen välilehti ("Oppijat") näyttää yhden rivin per oppija: sarakkeina **oppijanumero** (tässä
+`master_oid`, sama tunniste jolla aggregaattivälilehti laskee DISTINCT-oppilasmäärät) sekä
+tosi/epätosi-liput viidelle aggregaattivälilehden ikäryhmäsarakkeelle (kuusi,
+seitsemänKaksitoista, kolmetoistaViisitoista, kuusitoistaErityisenTuenPerusteella,
+kuusitoistaEiErityisenTuenPerusteella) — samalla suodatuslogiikalla kuin aggregaattikysely,
+ilman ryhmittelyä opetuksen järjestäjän tai kotikunnan mukaan. **Yhteensä-sarake jätetty pois
+tästä välilehdestä**: koska kyselyn WHERE-ehto jo rajaa tulosjoukon 6–16-vuotiaisiin, jokainen
+Oppijat-välilehdellä ylipäätään näkyvä rivi täyttää "yhteensä"-ehdon aina — sarake olisi
+tautologia (aina tosi), ei informaatiota. Aggregaattivälilehdellä "yhteensä" on edelleen
+mielekäs, koska se on oikea rivikohtainen summaluku (montako oppijaa juuri tässä
+järjestäjä×kotikunta-ryhmässä), ei per-oppija-lippu.
+
+**Huomio, ei ratkaistu, vain kirjattu (käyttäjän ohjeen mukaisesti toteutettu sellaisenaan):**
+tämä paljastaa yksilötasolla, onko 16-vuotias oppija laskettu "erityisen tuen perusteella"
+-sarakkeeseen — eli suoraan erityisen tuen statuksen tiettylle nimetylle
+oppijanumerolle (vaikkakin vain kahden aggregaattisarakkeen kautta johdettuna, ei raakana
+erityisen tuen tyyppitietona). Tämä on ristiriidassa 4 §:n "Ei sisällytetä"-päätöksen hengen
+kanssa (erityisen tuen tietoa ei yhdistetä yksilöitävissä olevaan oppijaan). Käyttäjä on
+tietoinen ristiriidasta ja käsittelee sitä myöhemmin erikseen; ei blokannut toteutusta.
+
+Ei sisällä hetua, nimeä, kotikuntaa eikä oppilaitosta — pelkkä oppijanumero + liput. Tämä
+tarkoittaa myös, ettei tästä välilehdestä voi jäljittää tarkasti MIHIN yksittäiseen
+aggregaattivälilehden riviin (mikä opetuksen järjestäjä × mikä kotikunta) oppija on laskettu —
+vain siihen MIHIN IKÄRYHMÄÄN. Tarkempi jäljitettävyys vaatisi järjestäjä-/kotikunta-sarakkeita,
+joita ei pyydetty.
+
+Aggregaattivälilehden backend on nyt toteutettu (`Kotikuntalaskelma.scala`, `RaportitService.
+kotikuntalaskelma`, `RaportitServlet` `/kotikuntalaskelma`-reitti) 8.1 §:n kyselyn pohjalta,
 korjattuna 5 §:n kohdan 6 mukaisesti (julkinen `r_kotikuntahistoria`, ei confidential-varianttia)
 ja ikäryhmät parametrisoitu (`extract(year from :paiva)` kovakoodattujen vuosilukujen sijaan).
 Manuaalisessa testauksessa löytyi ja korjattiin yksi SQL-bugi: `extract(year from $päivä)` on
@@ -543,13 +602,13 @@ kommentti, OID:t eivät siirry koska lisäys on listan lopussa) ja niiden opiske
 Jyväskylän normaalikoulussa, avoimin (päättymätön) perusopetuksen 1. luokan läsnä-jaksoin
 1.8.2022 alkaen, jotta ikä ratkeaa pelkästä syntymäajasta:
 
-- `kotikuntaraporttiKuusivuotias` (s. 2020, kotikunta Jyväskylä) — 6-vuotiaiden ryhmä
-- `kotikuntaraporttiSeitsemanKaksitoista` (s. 2017, Helsinki) — 7-12-vuotiaiden ryhmä
-- `kotikuntaraporttiKolmetoistaViisitoista` (s. 2012, Helsinki) — 13-15-vuotiaiden ryhmä
-- `kotikuntaraporttiKuusitoistaErityinen` (s. 2010, Jyväskylä) — 16 v., `toimintaAlueittainOpiskelu`
+- `kotikuntalaskelmaKuusivuotias` (s. 2020, kotikunta Jyväskylä) — 6-vuotiaiden ryhmä
+- `kotikuntalaskelmaSeitsemanKaksitoista` (s. 2017, Helsinki) — 7-12-vuotiaiden ryhmä
+- `kotikuntalaskelmaKolmetoistaViisitoista` (s. 2012, Helsinki) — 13-15-vuotiaiden ryhmä
+- `kotikuntalaskelmaKuusitoistaErityinen` (s. 2010, Jyväskylä) — 16 v., `toimintaAlueittainOpiskelu`
   asetettu → testaa "erityisen tuen perusteella" -alaryhmää
-- `kotikuntaraporttiKuusitoistaEiErityista` (s. 2010, Helsinki) — 16 v., ei erityisen tuen lippuja
-- `kotikuntaraporttiHetuton` (s. 2015, ei hetua, ei kotikuntaa) — testaa "Ei tiedossa"-ryhmää
+- `kotikuntalaskelmaKuusitoistaEiErityista` (s. 2010, Helsinki) — 16 v., ei erityisen tuen lippuja
+- `kotikuntalaskelmaHetuton` (s. 2015, ei hetua, ei kotikuntaa) — testaa "Ei tiedossa"-ryhmää
   hetuttoman *lapsen* kautta (aiemmat hetuttomat fixturet olivat aikuisia)
 
 **Ei katettu tällä fixtuurilisäyksellä**: turvakiellon alaista oppijaa (5 §:n kohta 6:n toinen
@@ -567,3 +626,155 @@ riippumaton regressio voi hukkua joukkoon huomaamatta. Mitigaatio: aja koko back
 (`make backtest`) sekä ennen että heti fixtuurilisäyksen jälkeen ja vertaa diffiä — näin tiedetään
 tarkalleen mitkä epäonnistumiset johtuvat juuri tästä muutoksesta, eikä myöhempi uusi regressio
 pääse piiloutumaan jo-tiedettyjen joukkoon.
+
+Fixturet päätettiin lopulta pitää pois committeista kokonaan (ks. keskustelu) — eivät siis mene
+CI:hin eivätkä vaikuta jaettuun testisviittaan. Yllä oleva riski/mitigaatio-kappale koskisi vain
+tilannetta jossa fixturet joskus committoidaan.
+
+## 11. Riippumattomat tarkistuskierrokset
+
+Kaksi erillistä agenttia tarkisti tämän session työn: yksi 10 §:n fixturet (compile-korrektius,
+törmäykset, tuottavatko oikeat rivit raportille), toinen committoidun backend/frontend-koodin
+(SQL-turvallisuus, confidential-taulun välttäminen, skeemanimien oikeellisuus, pääsyoikeusmalli,
+lokalisointiavainten yhtenäisyys). Molemmat löysivät yhden todellisen, korjatun bugin:
+
+- **Fixturet**: `KoskiSpecificDatabaseFixtureCreator.scala`:ssa `jyväskylänNormaalikoulu`
+  (tuotu `MockOrganisaatiot`:sta) on String-OID, ei `Oppilaitos`-olio — `oppilaitos`/`toimipiste`-
+  kentät vaativat jälkimmäisen. Korjattu kääräisemällä paikallisella `oppilaitos(oid): Oppilaitos`
+  -apufunktiolla (tuotu `YleissivistavakoulutusExampleData`:sta) kaikissa 6 uudessa tuplassa
+  (12 kohtaa). Sama tiedosto käyttää molempia `jyväskylänNormaalikoulu`-nimisiä identifiereitä
+  kahdesta eri paikasta — sekaannuksen lähde.
+- **Backend**: `Kotikuntalaskelma.scala`:n `r_kotikuntahistoria`-liitoksessa `muutto_pvm`
+  (`Option[Date]`, voi olla NULL tuotannossa) puuttui NULL-turvallinen käsittely — `poismuutto_pvm`
+  puolella oli jo `OR ... IS NULL`, mutta `muutto_pvm <= :paiva` puolella ei, jolloin oppija jolla
+  on NULL `muutto_pvm` mutta muuten resolvoituva kotikunta olisi pudonnut virheellisesti
+  "Ei tiedossa" -ryhmään. Korjattu `coalesce(kkh.muutto_pvm, '1900-01-01'::date) <= :paiva`
+  -muotoon, samaa kaavaa kuin `EsiopetusRaportti.scala` käyttää samalle ongelmalle.
+
+Muilta osin molemmat tarkistukset vahvistivat toteutuksen rakenteellisesti kunnossa olevaksi:
+SQL-injektiosuojaus (kaikki arvot `$muuttuja`-bind-parametreina, ei `#$`-raakasplicejä),
+julkinen-vs-confidential-taulu-valinta todennettu oikeaksi (ei vain kommentoitu sellaiseksi),
+kaikki viitatut taulu-/sarakenimet olemassa, `DataSheet`-kenttäjärjestyssopimus pätee,
+lokalisointiavaimet yhtenäiset molemmissa tiedostoissa, ja pääsyoikeusmallin/`visibleForAllOrgs`-
+puutteet vastaavat täsmälleen aiemmin dokumentoitua (ei uusia yllätyksiä).
+
+Kolmas, sovellusta ajettaessa (ei koodikatselmuksessa) löytynyt bugi, korjattu samana
+sessiona: `kotikuntalaskelmaKuusitoistaErityinen`-fikstuurin `toimintaAlueittainOpiskelu`-jakso
+alkoi `2022-08-01`, mikä rikkoo kaksi validaatiota `KoskiValidator.validatePäätösToimintaAlueittainOpiskelusta`-
+metodissa: (1) jakson alkupäivä ei saa olla ennen konfiguraatioarvoa
+`validaatiot.toimintaAlueittainJärjestettyVoimaan` (`reference.conf`, arvo `2026-08-01` —
+kiinteä käyttöönottopäivä, ei suhteessa järjestelmän tämänhetkiseen päivään), ja (2) jakson
+täytyy sisältyä samalle lisätiedolle asetettuun `tuenPäätöksenJaksot`-kenttään (uusi kenttä,
+ei sama asia kuin vanhentunut `erityisenTuenPäätös`/`tehostetunTuenPäätös`), jota fikstuurissa
+ei ollut lainkaan asetettu. Korjattu siirtämällä `toimintaAlueittainOpiskelu`-jakson alku
+`2026-08-01`:een ja lisäämällä `tuenPäätöksenJaksot = Some(List(Tukijakso(Some(date(2026, 8, 1)), None)))`
+samaan `PerusopetuksenOpiskeluoikeudenLisätiedot`-olioon, `PerusopetusExampleData.scala`:n
+`päättötodistusOpiskeluoikeusUusillaLisätiedoilla`-esimerkin mukaisesti.
+
+## 12. Muiden raportti-SQL:ien vertailu ja kotikuntahistorian parannus
+
+Verrattiin `Kotikuntalaskelma.scala`:n kyselyä sisarraportteihin (`EsiopetusRaportti.scala`,
+`PerusopetuksenOppijamäärätRaportti.scala`, `LukioDiaIbInternationalESHOpiskelijamaaratRaportti.scala`)
+ilman muutoksia, sitten toteutettiin yksi näistä havainnoista:
+
+- **Kotikuntahistorian aukkokäsittely (toteutettu).** Alkuperäinen kysely näytti "Ei tiedossa"
+  aina kun `r_kotikuntahistoria`-liitos ei löytänyt kysytyn päivän kattavaa jaksoa — myös silloin
+  kun oppijan nykyinen kotikunta (`r_henkilo.kotikunta`) oli täysin tiedossa, vain ei juuri sille
+  historialliselle päivälle (esim. historiatieto alkaa myöhemmin kuin kysytty `päivä`, tai
+  jaksoissa on aukko). `EsiopetusRaportti.scala` käyttää tässä tilanteessa `r_henkilo`:n
+  nykyistä kotikuntaa varakotikuntana. Ennen vastaavan lisäämistä täällä varmistettiin
+  eksplisiittisesti (uusi tarkistuskierros), ettei `r_henkilo.kotikunta`/`kotikunta_nimi_fi` ole
+  suodatettu turvakiellon alaisille julkisessa skeemassa — se **ei ole** (`HenkiloLoader.scala`:n
+  `buildRHenkilöRow` ei sisällä turvakielto-haaraa, toisin kuin `RaportointiDatabase.loadKotikuntahistoria`,
+  joka suodattaa `filterNot(_.turvakielto)`). Suora varakotikunnan käyttö olisi siis vuotanut
+  turvakiellon alaisten oppijoiden osoitetiedon takaisin — täsmälleen sama riski kuin 5 §:ssä
+  alun perin vältettiin confidential-taulun kohdalla. Korjattu lisäämällä eksplisiittinen
+  `case when he.turvakielto then null else he.kotikunta(_nimi_fi) end` -suoja varakotikunnan
+  ympärille: turvakiellon alaiset ja hetuttomat oppijat päätyvät edelleen "Ei tiedossa"
+  -ryhmään, mutta muut oppijat saavat nyt parhaan tiedossa olevan (nykyisen) kotikunnan sen
+  sijaan että putoaisivat turhaan "Ei tiedossa" -ryhmään.
+
+- **Avoin kysymys 1 (pidennetty oppivelvollisuus) — löytyi vahva vastaesimerkki, EI vielä
+  muutettu koodissa.** `PerusopetuksenOppijamäärätRaportti.scala` ja
+  `PerusopetuksenLisäopetusOppijamäärätRaportti.scala` käyttävät `pidennetty_oppivelvollisuus`-
+  kenttää suoraan omana, itsenäisenä totuusarvonaan — `toiminta_alueittain_opiskelu` ja
+  `opetus_vamman_sairauden_tai_rajoitteen_perusteella` ovat näissä raporteissa erilliset,
+  toisistaan riippumattomat sarakkeet, ei koskaan yhdistettynä "pidennetyksi
+  oppivelvollisuudeksi". Meidän kyselymme "kuusitoista erityisen tuen perusteella" -sarake
+  käyttää edelleen johdettua OR-logiikkaa — tämä on eri käsite kuin `pidennetty_oppivelvollisuus`
+  kaikkien sisarraporttien perusteella. Vaatii erillisen päätöksen ennen muuttamista, koska ei
+  tiedetä kumpaa ticket todella tarkoittaa "erityisen tuen perusteella" -sarakkeella.
+
+- **Avoin kysymys 2 (kv-koulujen lukuvuosirajaus) — löytyi vastaesimerkki, EI vielä muutettu
+  koodissa.** `LukioDiaIbInternationalESHOpiskelijamaaratRaportti.scala` ei rajaa
+  `internationalschool`/`europeanschoolofhelsinki`-suorituksia `alkamispäivä`/lukuvuosi-ehdolla
+  lainkaan — se nojaa yksin opiskeluoikeusjaksoon (`tila = 'lasna' and alku <= päivä and
+  loppu >= päivä`). Meidän `pts.alkamispaiva <= $päivä` -ehtomme ei siis ole kopioitu
+  mistään sisarraportista, vaan oma lisäyksemme. Voi olla tarpeeton — vaatii vahvistuksen
+  ennen poistoa/muuttamista.
+
+## 13. Yhteenveto: ratkaistut ja avoimet kysymykset
+
+Koottu kaikista edellisistä pykälistä yhteen paikkaan, koska ne ovat hajaantuneet moneen
+alaotsikkoon dokumentin kasvaessa. Tämä pykälä ei korvaa yksityiskohtia — vain kokoaa
+tilannekuvan yhdelle sivulle. Päivitä tätä listaa kun jokin kohta ratkeaa/muuttuu.
+
+### 13.1 Ratkaistut
+
+1. Nimi ja sijainti: **Kotikuntalaskelma**, "Yleiset"-osio (2 §).
+2. Rakenne: yhden päivän snapshot (ei aikaväli), data-only, ei VOS-laskentakaavaa (3 §).
+3. Ikäryhmä-bucketit: 6, 7–12, 13–15, 16 (jaettu), yhteensä (5 §, kohta 4).
+4. Erityisen tuen -sarakkeet (vamma, toiminta-alue, varhennettu ov, tuen päätöksen jakso,
+   tavoitekokonaisuuksittain, lähdejärjestelmä, -tunniste) jätetty pois oppijakohtaisista
+   sarakkeista — **mutta ks. 13.2, kohta 4**, tätä on osittain kierretty Oppijat-välilehdellä.
+5. Turvakielto/confidential-taulu-virhe korjattu: käytetään julkista `r_kotikuntahistoria`-taulua,
+   ei confidential-varianttia (5 §, kohta 6).
+6. Kotikuntahistorian aukkokäsittely: varakotikuntana `r_henkilo.kotikunta`, eksplisiittisesti
+   turvakielto-suojattuna (12 §).
+7. Pääsyoikeusmalli on organisaatioskoopattu kuten muutkin VOS-raportit — ei ole
+   "organisaatioton" raportti, `hasGlobalReadAccess` toimii samoin kuin sisarraporteissa (9 §).
+8. Backend-endpoint toteutettu: servlet-reitti, `RaportitService`-metodi, `Kotikuntalaskelma.scala`
+   (10 §). `extract()`-tyyppiepäselvyysbugi korjattu `::date`-castilla (10 §).
+9. "Oppijat"-välilehti päätetty ja toteutettu jatkokokouksessa: oppijanumero + tosi/epätosi-liput
+   ikäryhmäsarakkeille, korvaa 4 §:n alkuperäisen laajemman sarakelistan (10.1 §).
+10. Kaksi riippumatonta tarkistuskierrosta (fixturet + backend/frontend) tehty; kaksi löydettyä
+    bugia korjattu (fixturen tyyppivirhe, `muutto_pvm`-NULL-käsittely) (11 §).
+11. Kaksi fixture-validaatiobugia korjattu ajonaikaisesti (toimintaAlueittainOpiskelu-jakson
+    päivämäärä, puuttuva `tuenPäätöksenJaksot`) (11 §).
+12. Realistisen-ikäisiä testioppijoita puuttui käytännössä kokonaan — lisätty 6 uutta, tietoisesti
+    pidetty committoimattomina CI-vaikutuksen välttämiseksi (10 §).
+
+### 13.2 Avoimet — vaatii vielä päätöksen tai toteutuksen
+
+1. **Pidennetyn oppivelvollisuuden kanoninen kenttä.** Uutta, vahvaa evidenssiä 12 §:ssä: kaikki
+   kolme tarkistettua sisarraporttia käyttävät `pidennetty_oppivelvollisuus`-kenttää suoraan,
+   itsenäisenä — eivät koskaan yhdistä sitä `toiminta_alueittain_opiskelu`/
+   `opetus_vamman_sairauden_tai_rajoitteen_perusteella`-kenttiin, kuten meidän kyselymme tekee.
+   Vaatii päätöksen mitä ticket oikeasti tarkoittaa "erityisen tuen perusteella" -sarakkeella
+   (5 §, kohta 1; 12 §).
+2. **Hetuttomien esitystapa** on muodollisesti yhä auki — käytännössä toteutettu
+   `'Ei tiedossa'`-fallback-ryhmänä, mutta tätä ei ole erikseen vahvistettu kokouksessa
+   (5 §, kohta 2).
+3. **Välilehtien tarkka layout/muotoilu** — nyt tiedetään rakenne (2 välilehteä: aggregaatti +
+   Oppijat), mutta ei sarakejärjestystä, leveyksiä tms. hienosäätöä (3 §).
+4. **16-vuotiaiden erityisen tuen tiedon yksilöity paljastuminen Oppijat-välilehdellä** —
+   ristiriidassa 4 §:n erityisen tuen -poisjätön hengen kanssa. Nimenomaisesti kirjattu käyttäjälle
+   ennen toteutusta; käyttäjä päätti toteuttaa siitä huolimatta ja käsittelee asian myöhemmin
+   uudelleen (5 §, kohta 5; 10.1 §).
+5. **"Ei tiedossa" -korin erottamattomuus** (turvakielto, hetuttomat ja muut resolvoitumattomat
+   samassa korissa) — sivuvaikutus toteutuksesta, ei erikseen päätetty vaatimus (5 §, kohta 6).
+6. **Kansainvälisten koulujen lukuvuosirajaus** (`pts.alkamispaiva <= päivä`) on oma lisäyksemme,
+   ei löydy mistään sisarraportista (Lukio/ESH-raportti ei rajaa tätä ollenkaan) — voi olla
+   tarpeeton, vaatii vahvistuksen ennen poistoa/muuttamista (12 §).
+7. **Pääsyoikeusmallin loppuunvienti puuttuu**: uusi `RaportinTyyppi`-case-object +
+   koulutusmuoto-kytkentä (perusopetus/esiopetus/internationalschool/europeanschoolofhelsinki) +
+   mahdollinen `raportit.rajatut`-kytkentä. Nyt vain väliaikainen `visibleForAllOrgs`-näkyvyysshimmi
+   ja yksinkertaistettu, vain-perusopetus-tarkistava käyttöoikeustarkistus servlet-reitillä (9 §).
+8. **Kaksi testifixture-aukkoa**: realistisen-ikäistä (lapsi) turvakielto-oppijaa ja
+   kotiopetus-poisrajaus-tapausta ei ole — olemassa olevat vastaavat fixturet ovat aikuisia (10 §).
+9. **Testifixtuurien commit-status on tietoinen väliaikaisratkaisu**, ei pysyvä: fixturet pidetään
+   tarkoituksella committoimattomina CI-regressiopiilotuksen välttämiseksi. Pitääkö niitä joskus
+   committoida kunnolla (siivottuna, muiden testien kanssa yhteensopiviksi) on oma erillinen
+   päätös (10 §).
+10. **20 HTP -budjetin riittävyys** nykyisen laajuuden (kaksi välilehteä, useita koulutusmuotoja,
+    pääsyoikeusmalli) toteuttamiseen — ei arvioitu missään vaiheessa tätä dokumenttia (6 §).
