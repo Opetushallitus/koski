@@ -13,13 +13,7 @@ export type IconProps = {
 }
 
 export type IconColor =
-  | "warning"
-  | "error"
-  | "gray"
-  | "blue"
-  | "success"
-  | "white"
-  | "green"
+  "warning" | "error" | "gray" | "blue" | "success" | "white" | "green"
 
 const defineIcon = (name: string, color?: IconColor) => (props: IconProps) => (
   <MaterialDesignIcon name={name} color={color} {...props} />
