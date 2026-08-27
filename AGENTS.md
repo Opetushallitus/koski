@@ -144,6 +144,12 @@ Test students for Valpas local development are defined in `src/main/scala/fi/oph
 
 **Important:** New mock oppijat in `KoskiSpecificMockOppijat` and `ValpasMockOppijat` must be added at the **end** of the list, not in the middle. Oppija OIDs are generated sequentially, so inserting in the middle shifts all subsequent OIDs and breaks fixture data and UI tests.
 
+**Important:** A new mock oppija *with a fixture opiskeluoikeus* also breaks specs that have nothing to do with your change, because several assert exact counts or run every example end to end. Run at least these before considering the work done:
+
+- `OppijaExamplesTest` — PUTs every `Examples` entry through the real API, so it validates henkilötiedot too. `Hetu.scala` rejects a hetu whose yksilönumero starts with 9 (900–999 is the synthetic range), so generate from 002–899 and check the tunnus isn't already in use.
+- `MassaluovutusSpec` — asserts exact result-file counts (`complete.files should have length N`). A new opiskeluoikeus enters a query's results when its `alkamispäivä` falls after that query's `alkanutAikaisintaan`.
+- `BackwardCompatibilitySpec` — a mock oppija's henkilötiedot end up in the snapshot, so changing e.g. a hetu is a change to the `Example`'s data (see Backend Tests above).
+
 Because the OIDs are deterministic, Playwright/e2e tests can hardcode a fixture oppija's OID (the existing `perusopetus-v2-*.spec.ts` specs do this). To find the OID for an oppija that doesn't pin one explicitly, resolve it once against the running app, e.g. `curl -u pää:pää -X POST localhost:7021/koski/api/henkilo/search -H 'Content-Type: application/json' -d '{"query":"Sukunimi"}'`.
 
 ## Database
