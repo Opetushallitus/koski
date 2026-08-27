@@ -49,7 +49,7 @@ trait RaportointikantaTestMethods extends KoskiHttpSpec {
     val password = "password=dummy&downloadToken=test123"
     authGet(s"$apiUrl?$queryString&$password") {
       verifyResponseStatusOk()
-      response.headers("Content-Disposition").head should equal(s"""attachment; filename="${expectedFileNamePrefix}_${MockOrganisaatiot.jyväskylänNormaalikoulu}_${vuosiluokka}_${paiva.toString}.xlsx"""")
+      response.headers("Content-Disposition").head should equal(s"""attachment; filename="${expectedFileNamePrefix}_${vuosiluokka}_${MockOrganisaatiot.jyväskylänNormaalikoulu}_${paiva.toString}.xlsx"""")
       response.bodyBytes.take(ENCRYPTED_XLSX_PREFIX.length) should equal(ENCRYPTED_XLSX_PREFIX)
       AuditLogTester.verifyLastAuditLogMessageForOperation(Map("operation" -> "OPISKELUOIKEUS_RAPORTTI", "target" -> Map("hakuEhto" -> s"raportti=$expectedRaporttiNimi&$queryString")))
     }

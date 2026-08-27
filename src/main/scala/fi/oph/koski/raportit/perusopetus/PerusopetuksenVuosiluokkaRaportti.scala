@@ -305,7 +305,7 @@ object PerusopetuksenVuosiluokkaRaportti extends VuosiluokkaRaporttiPaivalta wit
   def documentation(t: LocalizationReader): String = t.get("raportti-excel-perusopetus-dokumentaatio")
 
   def filename(etuliite: String, oppilaitosOid: String, paiva: LocalDate, vuosiluokka: String): String = {
-    s"${etuliite}_${oppilaitosOid}_${vuosiluokka}_${paiva}.xlsx"
+    s"${etuliite}_${vuosiluokka}_${oppilaitosOid}_${paiva}.xlsx"
   }
 
   private def compactLisätiedotColumn(title: String, t: LocalizationReader) = CompactColumn(title, comment = Some(t.get("raportti-excel-kolumni-compactLisätiedotColumn-comment")))
