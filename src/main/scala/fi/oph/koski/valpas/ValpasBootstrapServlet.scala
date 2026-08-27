@@ -1,7 +1,7 @@
 package fi.oph.koski.valpas
 
 import fi.oph.koski.config.{Environment, KoskiApplication}
-import fi.oph.koski.koskiuser.AuthenticationUser
+import fi.oph.koski.koskiuser.{AuthenticationUser, UserLanguage}
 import fi.oph.koski.schema.LocalizedString
 import fi.oph.koski.servlet.NoCache
 import fi.oph.koski.valpas.servlet.ValpasApiServlet
@@ -11,6 +11,7 @@ import java.net.URLDecoder
 
 class ValpasBootstrapServlet(implicit val application: KoskiApplication) extends ValpasApiServlet with NoCache with ValpasCookieAndBasicAuthAuthenticationSupport {
   get("/window-properties") {
+    getUser.foreach(user => UserLanguage.setLanguageCookieFromUserIfNecessary(user, application.directoryClient, request, response))
     WindowProperties(
       valpasLocalizationMap = application.valpasLocalizationRepository.localizations,
       environment = Environment.currentEnvironment(application.config),
