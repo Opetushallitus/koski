@@ -1,4 +1,8 @@
 import {
+  AhvenanmaanAikuistenPerusopetuksenOppimääränSuoritus,
+  isAhvenanmaanAikuistenPerusopetuksenOppimääränSuoritus
+} from './AhvenanmaanAikuistenPerusopetuksenOppimaaranSuoritus'
+import {
   AhvenanmaanPerusopetuksenOppimääränSuoritus,
   isAhvenanmaanPerusopetuksenOppimääränSuoritus
 } from './AhvenanmaanPerusopetuksenOppimaaranSuoritus'
@@ -255,6 +259,7 @@ import {
  * @see `fi.oph.koski.schema.Arvioinniton`
  */
 export type Arvioinniton =
+  | AhvenanmaanAikuistenPerusopetuksenOppimääränSuoritus
   | AhvenanmaanPerusopetuksenOppimääränSuoritus
   | AhvenanmaanPerusopetuksenVuosiluokanSuoritus
   | AikuistenPerusopetuksenAlkuvaiheenSuoritus
@@ -321,6 +326,7 @@ export type Arvioinniton =
   | YlioppilastutkinnonSuoritus
 
 export const isArvioinniton = (a: any): a is Arvioinniton =>
+  isAhvenanmaanAikuistenPerusopetuksenOppimääränSuoritus(a) ||
   isAhvenanmaanPerusopetuksenOppimääränSuoritus(a) ||
   isAhvenanmaanPerusopetuksenVuosiluokanSuoritus(a) ||
   isAikuistenPerusopetuksenAlkuvaiheenSuoritus(a) ||
