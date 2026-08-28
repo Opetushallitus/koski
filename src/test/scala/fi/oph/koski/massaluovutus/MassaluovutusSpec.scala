@@ -176,7 +176,7 @@ class MassaluovutusSpec extends AnyFreeSpec with MassaluovutusTestMethods with M
         }
         val complete = waitForCompletion(queryId, user)
 
-        complete.files should have length 24
+        complete.files should have length 23
         complete.files.foreach(verifyResult(_, user))
 
         AuditLogTester.verifyLastAuditLogMessageForOperation(Map(

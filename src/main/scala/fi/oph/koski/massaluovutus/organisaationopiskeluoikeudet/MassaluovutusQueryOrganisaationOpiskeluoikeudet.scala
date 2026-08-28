@@ -124,10 +124,15 @@ trait MassaluovutusQueryOrganisaationOpiskeluoikeudet extends Koulutuksenjärjes
     päättynytViimeistään.map(l => sql" AND paattymispaiva <= $l"),
     eiPäättymispäivää.flatMap(b => if (b) Some(sql" AND paattymispaiva IS NULL ") else Some(sql" AND paattymispaiva IS NOT NULL ")),
     muuttunutJälkeen.map(Timestamp.valueOf).map(a => sql" AND aikaleima >= $a "),
-    if (hasAccessToAllKoulutusmuodot(session)) {
-      koulutusmuoto.map(t => sql" AND koulutusmuoto = $t ")
-    } else {
-      Some(sql" AND koulutusmuoto = any(${allowedKoulutusmuodotForUser(session)}) ")
+    // Koulutusmuotorajaus on tehtävä aina. Aiemmin se jätettiin kokonaan pois
+    // käyttäjiltä, joilla on oikeus kaikkiin allowedKoulutusmuodot-listan
+    // muotoihin, jolloin kyselyyn osuivat myös listan ulkopuoliset tyypit
+    // (ahvenanmaanperusopetus, kielitutkinto, ylioppilastutkinto).
+    // koulutusmuoto-parametri on @EnumValues-rajattu listaan, joten Some-haara
+    // ei voi osua listan ulkopuolelle.
+    koulutusmuoto match {
+      case Some(t) => Some(sql" AND koulutusmuoto = $t ")
+      case None => Some(sql" AND koulutusmuoto = any(${allowedKoulutusmuodotForUser(session)}) ")
     },
   )
 
@@ -177,9 +182,6 @@ trait MassaluovutusQueryOrganisaationOpiskeluoikeudet extends Koulutuksenjärjes
     }
 
   private def includeMitätöidyt(implicit session: KoskiSpecificSession): Boolean = mitätöidyt.contains(true)
-
-  protected def hasAccessToAllKoulutusmuodot(implicit session: KoskiSpecificSession) =
-    allowedKoulutusmuodotForUser(session).size == MassaluovutusQueryOrganisaationOpiskeluoikeudet.allowedKoulutusmuodot.size
 
   protected def allowedKoulutusmuodotForUser(session: KoskiSpecificSession): List[String] =
     MassaluovutusQueryOrganisaationOpiskeluoikeudet.allowedKoulutusmuodot.intersect(session.allowedOpiskeluoikeudetJaPäätasonSuoritukset.toOpiskeluoikeudenTyypit).toList
