@@ -366,6 +366,7 @@ class PerusopetuksenVuosiluokkaRaporttiSpec
     oppilaitosRaportointipäivänä = None,
     lähdejärjestelmä = None,
     lähdejärjestelmänId = None,
+    päivitetty = LocalDate.now(),
     yksiloity = true,
     oppijaOid = KoskiSpecificMockOppijat.ysiluokkalainen.oid,
     oppijaMasterOid = Some(KoskiSpecificMockOppijat.ysiluokkalainen.oid),
