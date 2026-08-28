@@ -3,7 +3,7 @@ package fi.oph.koski.massaluovutus.organisaationopiskeluoikeudet
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.db.{KoskiOpiskeluoikeusRow, KoskiTables, QueryMethods}
 import fi.oph.koski.koskiuser.KoskiSpecificSession
-import fi.oph.koski.organisaatio.MockOrganisaatiot
+import fi.oph.koski.organisaatio.{MockOrganisaatiot, OrganisaationAlaisetOrganisaatiot}
 import fi.oph.koski.massaluovutus.MassaluovutusUtils.QueryResourceManager
 import fi.oph.koski.massaluovutus.{MassaluovutusException, QueryFormat, QueryResultWriter}
 import fi.oph.koski.schema.Organisaatio.Oid
@@ -37,10 +37,10 @@ case class MassaluovutusQueryOrganisaationOpiskeluoikeudetJson(
   def fetchData(
     application: KoskiApplication,
     writer: QueryResultWriter,
-    oppilaitosOids: List[Organisaatio.Oid],
+    organisaatiot: OrganisaationAlaisetOrganisaatiot,
   )(implicit user: KoskiSpecificSession): Either[String, Unit] = QueryResourceManager(logger) { _ =>
     val db = getDb(application)
-    val filters = defaultBaseFilter(oppilaitosOids)
+    val filters = defaultBaseFilter(organisaatiot)
     val oppijaOids = getOppijaOids(db, filters).toList
     val masterHenkilöt = retryWithInterval(5, 5.seconds.toMillis) {
       application.opintopolkuHenkilöFacade.findMasterOppijatWithSlaveOids(oppijaOids).values.toList.distinctBy(_.oid)
