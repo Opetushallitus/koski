@@ -24,17 +24,18 @@ Generoi demoscript nykyisen branchin muutoksista. Demoscript on tarkoitettu viik
 ```
 ### [TOR-XXXX Tikettiotsikko](https://jira.eduuni.fi/browse/TOR-XXXX)
 
-[Askel-askeleelta ohjeet demoon.]
+[1–3 riviä: mitä muuttui ja mikä on konkreettinen ennen/jälkeen. Numerot, rajat ja rajaukset tähän — ei jokaisen bulletin sisään.]
 
-Näytä, että [jokin asia on muuttunut/lisätty].
+[Yksi rivi: mistä demo aloitetaan — URL ja millaista oppijaa tai näkymää se vaatii.]
 
-[Jos API-kutsu, näytä endpoint ja payload suoraan:]
+- **[Näkymä tai toimenpide]**: [mitä yleisön pitää huomata].
+- **[Näkymä tai toimenpide]**: [havainto — myös se mikä tarkoituksella ei muuttunut, jos se rajaa aihetta].
+
+[Jos API-kutsu, endpoint ja payload omana blokkinaan sen bulletin alla, jota se koskee:]
 POST https://virkailija.testiopintopolku.fi/koski/api/[endpoint]
 {
   [payload]
 }
-
-Huomaa, että [konkreettinen havainto].
 
 [Näytä odotettu vastaus tai oleellinen osa siitä kun mahdollista:]
 {
@@ -43,6 +44,17 @@ Huomaa, että [konkreettinen havainto].
 }
 ```
 
+## Pituus
+
+Demoscript on yksi aihe demopäivän listalla ("Demoon 12.8.2026"), joten se kilpailee ajasta muiden tikettien kanssa. Pituus seuraa muutosta, ei kiinteää budjettia:
+
+- Yksi bullet per demottava havainto. Kapea korjaus on 2–3 bullettia; laaja muutos voi olla kymmenenkin, jos jokainen kohta on oikeasti näytettävä asia.
+- Yksi bullet on 1–2 virkettä: mihin katsotaan ja mitä siitä pitäisi huomata. Kehittäjä osaa klikkailla itse — älä kirjoita jokaista välivaihetta auki, ellei polku ole epäilmeinen (esim. useampi peräkkäinen valinta esimerkkisovelluksessa tai skeemaselaimessa).
+- Ennen/jälkeen-kontrasti kuuluu johdantoriveille, ei jokaiseen bullettiin. Konkreettiset numerot ja rajat ("raja nousi 60k:sta 400k:een") ovat demon ydin — älä jätä niitä pois.
+- Karsi täytettä, älä sisältöä. Jos havaintoja on enemmän kuin ehtii näyttää, priorisoi näkyvimmät ja kerro lopuksi yhdellä rivillä mitä jätit pois.
+- Yhdistele saman näkymän tai komponentin havainnot yhdeksi bulletiksi sen sijaan että listaisit ne erikseen.
+- Sisäiset korjaukset (refaktoroinnit, testit, suorituskyky, lokalisointien siivous) eivät kuulu demoscriptiin, ellei niillä ole yleisölle näkyvää vaikutusta. Suorituskykymuutos on demottava vasta kun sen näkee jostain — statusrajapinnasta, ajoajasta tai vastaavasta.
+
 ## URL-käytännöt
 
 - Käytä aina täysiä URL-osoitteita, ei ympäristömuuttujia
@@ -50,12 +62,28 @@ Huomaa, että [konkreettinen havainto].
 - Kansalaisen puolen URL:t: `https://testiopintopolku.fi/koski/...`
 - Esimerkkioppija virkailijalle: `https://virkailija.testiopintopolku.fi/koski/oppija/[oid]` ([hetu])
 
-## JSON schema viewer
+## Demoympäristö ja testidata
 
-- Jos muutos koskee skeemaa, linkitä JSON schema vieweriin
-- Suoran node-linkin (esim. `#viewer-page?v=1-0-15-8-25-0`) muodostaminen koodista ei ole mahdollista
-- Kirjoita placeholder: `Näytä skeemasta: https://virkailija.testiopintopolku.fi/koski/json-schema-viewer#viewer-page?v=TODO ([kentän nimi])`
-- Kehittäjä täyttää oikean polun manuaalisesti
+Demot ajetaan ensisijaisesti QA-ympäristöä (testiopintopolku) vasten. Paikallinen ympäristö kelpaa, jos QA:n käyttö olisi kohtuuttoman hankalaa — esimerkiksi kun demo vaatii tarkkaan rakennetun tilanteen, jota QA:sta ei löydy eikä sinne saa vaivatta vietyä.
+
+Kirjoita siis oletuksena QA:ta vasten. Paikallista testidataa ei ole siellä olemassa:
+
+- **Fixture-oppijat** (`KoskiSpecificMockOppijat`, `ValpasMockOppijat`) ovat vain paikallisia ja yksikkötesteissä — `Fixtures.shouldUseFixtures` on epätosi kaikissa palvelinympäristöissä. Älä esitä niiden OIDeja tai hetuja demo-oppijoina, vaikka ne löytyisivät e2e-testeistä.
+- **Mockdata** (`src/main/resources/mockdata/`) korvautuu QA:ssa oikeilla palveluilla: organisaatiohierarkia, koodistot ja henkilötiedot ovat eri. Älä viittaa mockdatan organisaatioiden nimiin, oppilaitoksiin tai muihin arvoihin.
+
+Kirjoita sen sijaan mitä demo-oppijalta vaaditaan ja jätä OID ja hetu TODO-paikanpitäjiksi, jotka kehittäjä täyttää QA:sta demoa valmistellessaan:
+
+Avaa QA:sta perusopetuksen oppija, jolla on vahvistettu päättötodistus:
+https://virkailija.testiopintopolku.fi/koski/oppija/TODO (TODO hetu)
+
+Kuvaa vaatimus riittävän tarkasti, että oikean oppijan löytää haulla: opiskeluoikeuden tyyppi, päätason suorituksen tyyppi ja tila sekä ne kentät joita demo koskee. Jos jokin askel vaatii tietyn tilanteen (esim. lakkautettu toimipiste tai tietty koodiarvo), kirjoita se vaatimuksena äläkä paikallisesta datasta poimittuna esimerkkinä.
+
+Poikkeus: **dokumentoidut QA-testitunnistautujat** ovat käytettävissä sellaisenaan, koska ne tulevat testi-IdP:ltä eivätkä Kosken fixtuureista. Esimerkiksi Testitunnistajan hetu `210281-9988` (ks. `src/main/resources/documentation/omadata_oauth2.md`) toimii Oma Data -demoissa. Käytä tällaista vain kun se on dokumentaatiossa, älä päättele hetua fixtuureista.
+
+Jos demo tehdään paikallisesti, fixture-oppijat ja mockdata ovat käytettävissä normaalisti — silloin OIDit ja hetut kirjoitetaan sellaisenaan eikä TODO-paikanpitäjiä tarvita. Merkitse ympäristö scriptin alkuun, jotta lukija tietää ettei osoite toimi QA:ssa:
+
+Demo ajetaan paikallisesti (fixture-data). Avaa Kaisa Koululainen (220109-784L):
+http://localhost:7021/koski/oppija/1.2.246.562.24.00000000007
 
 ## Tyyliohje
 
@@ -66,21 +94,27 @@ Huomaa, että [konkreettinen havainto].
 - "Näytä" = kehittäjä näyttää jotain aktiivisesti
 - "Huomaa" = kehittäjän pitää kiinnittää yleisön huomio johonkin havaintoon
 - "Avaa" = navigoi johonkin URL:iin
-- Mainitse esimerkkioppijan OID ja hetu jos ne löytyvät testidatasta tai muutoksista
+- Kuvaa millainen demo-oppija tarvitaan; OID ja hetu jäävät TODO-paikanpitäjiksi (ks. Demoympäristö ja testidata)
 - Jokaiselle validaatiomuutokselle näytä sekä onnistuva että epäonnistuva tapaus
 - Näytä odotettu vastaus tai sen oleellinen osa JSON-muodossa kun mahdollista
-- Pidä script tiiviinä — ei johdantoja, vain askeleet
+- Lyhyt johdanto (1–3 riviä) siitä mitä muuttui on toivottu; domainin taustoitus ei ole (ks. Pituus)
+- Näytä myös se mikä tarkoituksella ei muuttunut, kun se rajaa aihetta — esim. missä uusi kenttä ei esiinny tai mikä esitäyttö jätettiin ennalleen
 
 ## Muotoilu
 
 - Älä rivitä tekstiä lyhyisiin riveihin (ei 80 merkin rivinvaihtoa) — anna kappaleiden olla yhdellä pitkällä rivillä
 - Älä sisennä tekstiä välilyönneillä
 - JSON-blokit ja URL:t omille riveilleen
-- Käytä tyhjää riviä erottamaan askeleet toisistaan
+- Bulletit peräkkäisinä riveinä; tyhjä rivi vain listan ja koodiblokin ympärille
 
-## Leikepöydälle Confluencea varten
+## Toimitus Confluencea varten
 
-Demoscriptin generoinnin jälkeen kopioi sama sisältö leikepöydälle `pbcopy`-komennolla (Bash-työkalulla, heredoc-syntaksilla). Käyttäjä liittää sisällön Confluenceen "Import markdown" -toiminnolla.
+Käyttäjä liittää sisällön Confluenceen "Import markdown" -toiminnolla, joten demoscript pitää saada ulos kopioitavassa muodossa. Tee molemmat:
+
+1. **Kirjoita demoscript aina tiedostoon** scratchpad-hakemistoon (esim. `demoscript-<branch>.md`) ja kerro polku vastauksessa. Tämä on varsinainen toimitustapa, ja siihen voi luottaa ympäristöstä riippumatta.
+2. **Yritä lisäksi kopioida leikepöydälle** `pbcopy`-komennolla. Jos komentoa ei ole tai se kaatuu, mainitse se ohimennen yhdellä rivillä äläkä yritä muita keinoja — tiedosto riittää toimitukseksi. Leikepöytä ei ole käytettävissä kaikissa kehitysympäristöissä, eikä sen puuttuminen ole vika jota pitäisi korjata.
+
+Kirjoita sama sisältö sekä vastaukseen että tiedostoon, jottei käyttäjän tarvitse avata tiedostoa nähdäkseen tuloksen.
 
 Markdown-muotoilusäännöt:
 - Otsikko `###`-tasolla, joka on samalla linkki Jira-tikettiin: `### [TOR-XXXX Tikettiotsikko](https://jira.eduuni.fi/browse/TOR-XXXX)`
@@ -113,6 +147,6 @@ Perus-URL kansalaiselle: `https://testiopintopolku.fi`
 - Jos branchilla ei ole muutoksia masteriin nähden, ilmoita siitä
 - Jos muutosten luonne on epäselvä, kysy tarkentavia kysymyksiä ennen scriptin generointia
 - Jos tikettinumero ei selviä branchin nimestä, kysy se käyttäjältä
-- Älä keksi testidataa (oppija OIDeja, hetuja) tyhjästä - käytä vain sellaisia jotka löytyvät koodista (fixture-tiedostot, testit, mock-oppijat)
+- Älä keksi testidataa (oppija OIDeja, hetuja) tyhjästä äläkä poimi sitä fixtuureista tai mockdatasta — jätä ne TODO-paikanpitäjiksi (ks. Demoympäristö ja testidata)
 
 $ARGUMENTS
