@@ -3,7 +3,7 @@ import { modelData, modelTitle } from '../../editor/EditorModel'
 import { ISO2FinnishDate } from '../../date/date'
 import Text from '../../i18n/Text'
 
-export const HeaderName = ({ henkilö }) => {
+export const HeaderName = ({ henkilö, showOppijanumero = false }) => {
   const nimi = (
     <p className="textstyle-like-h2">{`${modelData(
       henkilö,
@@ -16,11 +16,17 @@ export const HeaderName = ({ henkilö }) => {
       <span> {ISO2FinnishDate(modelTitle(henkilö, 'syntymäaika'))}</span>
     </p>
   )
+  const oppijanumero = showOppijanumero && (
+    <p className="oppijanumero textstyle-lead">
+      <Text name="Oppijanumero" />: {modelData(henkilö, 'oid')}
+    </p>
+  )
 
   return (
     <div className="header__name">
       {nimi}
       {syntymäaika}
+      {oppijanumero}
     </div>
   )
 }

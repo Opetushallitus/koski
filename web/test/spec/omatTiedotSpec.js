@@ -47,9 +47,9 @@ describe('Omat tiedot', function () {
           )
         })
 
-        it('Näytetään nimi ja syntymäaika', function () {
-          expect(omattiedot.headerNimi()).to.equal(
-            'Väinö Tõnis Kansalainen\n' + 's. 25.10.1929'
+        it('Näytetään nimi, syntymäaika ja oppijanumero', function () {
+          expect(omattiedot.headerNimi()).to.match(
+            /^Väinö Tõnis Kansalainen\ns\. 25\.10\.1929\nOppijanumero : 1\.2\.246\.562\.24\.\d{11}$/
           )
         })
 
@@ -122,9 +122,11 @@ describe('Omat tiedot', function () {
           wait.until(omattiedot.isVisible)
         )
 
-        it('Näytetään nimi ja syntymäaika', function () {
+        it('Näytetään nimi, syntymäaika ja oppijanumero', function () {
           expect(omattiedot.headerNimi()).to.equal(
-            'Sylvi Syntynyt\n' + 's. 1.1.1970'
+            'Sylvi Syntynyt\n' +
+              's. 1.1.1970\n' +
+              'Oppijanumero : 1.2.246.562.24.99999999124'
           )
         })
       })

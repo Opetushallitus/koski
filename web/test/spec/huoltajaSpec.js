@@ -20,7 +20,10 @@ describe('Huollettavien tiedot', function () {
     )
 
     it('näytetään omat tiedot', function () {
-      verifyOppijaEmpty('Opintoni', 'Faija EiOpintojaKoskessa\ns. 3.3.1900')
+      verifyOppijaEmpty(
+        'Opintoni',
+        /^Faija EiOpintojaKoskessa\ns\. 3\.3\.1900\nOppijanumero : 1\.2\.246\.562\.24\.\d{11}$/
+      )
     })
 
     it('on näkyvissä opiskelijan valinnan dropdown', function () {
@@ -48,7 +51,7 @@ describe('Huollettavien tiedot', function () {
       it('näytetään huollettavan tiedot', function () {
         verifyOppija(
           'Huollettavani opinnot',
-          'Essi Eskari\ns. 30.9.1996',
+          'Essi Eskari\ns. 30.9.1996\nOppijanumero : 1.2.246.562.24.00000000066',
           [
             'Jyväskylän normaalikoulu',
             'Päiväkoti Touhula',
@@ -75,7 +78,7 @@ describe('Huollettavien tiedot', function () {
       it('näytetään huollettavan tiedot', function () {
         verifyOppija(
           'Huollettavani opinnot',
-          'Tero Turvakielto\ns. 15.10.1967',
+          'Tero Turvakielto\ns. 15.10.1967\nOppijanumero : 1.2.246.562.24.00000000071',
           ['Oppilaitos'],
           ['Lukion oppimäärä (2012—2016, valmistunut)']
         )
@@ -88,7 +91,7 @@ describe('Huollettavien tiedot', function () {
         wait.until(function () {
           return (
             omattiedot.headerNimi() ===
-            'Ynjevi Ylioppilaslukiolainen\ns. 8.6.1998'
+            'Ynjevi Ylioppilaslukiolainen\ns. 8.6.1998\nOppijanumero : 1.2.246.562.24.00000000049'
           )
         })
       )
@@ -96,7 +99,7 @@ describe('Huollettavien tiedot', function () {
       it('näytetään huollettavan tiedot', function () {
         verifyOppija(
           'Huollettavani opinnot',
-          'Ynjevi Ylioppilaslukiolainen\ns. 8.6.1998',
+          'Ynjevi Ylioppilaslukiolainen\ns. 8.6.1998\nOppijanumero : 1.2.246.562.24.00000000049',
           ['Jyväskylän normaalikoulu'],
           ['Ylioppilastutkinto', 'Lukion oppimäärä (2012—2016, valmistunut)']
         )
@@ -184,7 +187,7 @@ describe('Huollettavien tiedot', function () {
     'Tiedoillasi ei löydy opintosuorituksia eikä opiskeluoikeuksia.'
   function verifyOppijaEmpty(expectedHeader, expectedName) {
     expect(omattiedot.oppija()).to.equal(expectedHeader)
-    expect(omattiedot.headerNimi()).to.equal(expectedName)
+    expect(omattiedot.headerNimi()).to.match(expectedName)
     expect(isElementVisible(S('.oppija-content .ei-suorituksia'))).to.equal(
       true
     )
