@@ -256,16 +256,24 @@ export const usePäätasonSuoritus = <T extends Opiskeluoikeus>(
   initialIndex = 0
 ): [ActivePäätasonSuoritus<T>, (suoritusIndex: number) => void] => {
   const [index, setIndex] = useState(initialIndex)
-  const state = useMemo(
-    () => ({
+  const state = useMemo(() => {
+    // Muokkausten peruminen voi poistaa suorituksia, jolloin talletettu indeksi
+    // jää listan ulkopuolelle: aiemmin `suoritus` oli tuolloin undefined ja
+    // editorikomponentit kaatuivat valkoiseen ruutuun. Rajataan indeksi
+    // olemassa olevaan suoritukseen. Kun indeksi on listan sisällä - eli aina
+    // muutoin - arvo on sama kuin ennen.
+    const safeIndex = Math.min(
       index,
-      suoritus: form.state.suoritukset[index],
-      path: päätasonSuoritusPath(index),
-      pathTokens: ['suoritukset', index],
-      testId: `suoritukset.${index}`
-    }),
-    [form.state.suoritukset, index]
-  )
+      Math.max(0, form.state.suoritukset.length - 1)
+    )
+    return {
+      index: safeIndex,
+      suoritus: form.state.suoritukset[safeIndex],
+      path: päätasonSuoritusPath(safeIndex),
+      pathTokens: ['suoritukset', safeIndex],
+      testId: `suoritukset.${safeIndex}`
+    }
+  }, [form.state.suoritukset, index])
   return [state, setIndex]
 }
 

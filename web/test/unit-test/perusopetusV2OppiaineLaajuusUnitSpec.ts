@@ -22,7 +22,7 @@ describe('perusopetus v2 oppiaineen laajuussarake', () => {
     assert.strictEqual(
       shouldShowLaajuusColumn({
         editMode: true,
-        isToimintaAlueittain: false,
+        sisältääToimintaAlueita: false,
         pakollinen: true,
         suoritus: suoritus(),
         osasuoritukset: []
@@ -35,7 +35,7 @@ describe('perusopetus v2 oppiaineen laajuussarake', () => {
     assert.strictEqual(
       shouldShowLaajuusColumn({
         editMode: false,
-        isToimintaAlueittain: false,
+        sisältääToimintaAlueita: false,
         pakollinen: true,
         suoritus: suoritus('2020-08-01'),
         osasuoritukset: [laajuudetonOppiaine]
@@ -48,7 +48,7 @@ describe('perusopetus v2 oppiaineen laajuussarake', () => {
     assert.strictEqual(
       shouldShowLaajuusColumn({
         editMode: false,
-        isToimintaAlueittain: false,
+        sisältääToimintaAlueita: false,
         pakollinen: true,
         suoritus: suoritus('2020-07-31'),
         osasuoritukset: [laajuudellinenOppiaine]
@@ -61,7 +61,7 @@ describe('perusopetus v2 oppiaineen laajuussarake', () => {
     assert.strictEqual(
       shouldShowLaajuusColumn({
         editMode: false,
-        isToimintaAlueittain: false,
+        sisältääToimintaAlueita: false,
         pakollinen: true,
         suoritus: suoritus('2020-08-01'),
         osasuoritukset: [laajuudellinenOppiaine]
@@ -74,7 +74,7 @@ describe('perusopetus v2 oppiaineen laajuussarake', () => {
     assert.strictEqual(
       shouldShowLaajuusColumn({
         editMode: false,
-        isToimintaAlueittain: true,
+        sisältääToimintaAlueita: true,
         pakollinen: undefined,
         suoritus: suoritus('2020-08-01'),
         osasuoritukset: [laajuudellinenOppiaine]
@@ -87,7 +87,7 @@ describe('perusopetus v2 oppiaineen laajuussarake', () => {
     assert.strictEqual(
       shouldShowLaajuusColumn({
         editMode: false,
-        isToimintaAlueittain: false,
+        sisältääToimintaAlueita: false,
         pakollinen: false,
         suoritus: suoritus(),
         osasuoritukset: [laajuudellinenOppiaine]
