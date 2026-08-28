@@ -672,6 +672,10 @@ class KoskiValidator(
       case p: IBOpiskeluoikeus
         if p.suoritukset.exists(_.isInstanceOf[PreIBSuoritus2019]) && p.suoritukset.exists(_.isInstanceOf[PreIBSuoritus2015]) =>
         KoskiErrorCategory.badRequest.validation.rakenne.epäsopiviaSuorituksia("Vanhan ja lukion opetussuunnitelman 2019 mukaisia Pre-IB-opintoja ei sallita samassa opiskeluoikeudessa")
+      case a: AhvenanmaanPerusopetuksenOpiskeluoikeus
+        if a.suoritukset.exists(_.isInstanceOf[AhvenanmaanAikuistenPerusopetuksenOppimääränSuoritus])
+          && a.suoritukset.exists(_.isInstanceOf[AhvenanmaanPerusopetuksenVuosiluokanSuoritus]) =>
+        KoskiErrorCategory.badRequest.validation.rakenne.epäsopiviaSuorituksia("Ahvenanmaan perusopetuksen opiskeluoikeudella, jolla on muiden kuin oppivelvollisten oppimäärän suoritus, ei voi olla vuosiluokan suorituksia")
       case _ => HttpStatus.ok
     }
   }
@@ -1399,6 +1403,9 @@ class KoskiValidator(
       case s: DiplomaVuosiluokanSuoritus => HttpStatus.validate(s.alkamispäivä.isDefined)(virhe)
       case s: MYPVuosiluokanSuoritus if s.koulutusmoduuli.tunniste.koodiarvo == "10" => HttpStatus.validate(s.alkamispäivä.isDefined)(virhe)
       case s: EuropeanSchoolOfHelsinkiVuosiluokanSuoritus => HttpStatus.validate(s.alkamispäivä.isDefined)(virhe)
+      // Aikuisten oppimäärän suorituksella ei ole vuosiluokkasuorituksia, joten alkamispäivä
+      // on kirjattava sille itselleen (TOR-2587).
+      case s: AhvenanmaanAikuistenPerusopetuksenOppimääränSuoritus => HttpStatus.validate(s.alkamispäivä.isDefined)(virhe)
       case _ => HttpStatus.ok
     }
   }

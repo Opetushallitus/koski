@@ -94,9 +94,9 @@ import fi.oph.scalaschema.annotation._
 //      maskeihin, tiedonsiirron defaulteihin jne.
 //   2. Koodistofixturet: opiskeluoikeudentyyppi-koodistoon "ahvenanmaan-
 //      perusopetus" ja suorituksentyyppi-koodistoon uudet suoritustyypit
-//      (ahvenanmaanperusopetuksenoppimaara, -vuosiluokka, -oppiaine,
-//      -toimintaalue). Lokaalisti mockdata/koodisto/ alla; tuotannossa
-//      Koodistopalvelu.
+//      (ahvenanmaanperusopetuksenoppimaara, -oppimaaraaikuiset, -vuosiluokka,
+//      -oppiaine, -toimintaalue). Lokaalisti mockdata/koodisto/ alla;
+//      tuotannossa Koodistopalvelu.
 //   3. KoskiValidator (ja muut Perusopetus*Validation-tiedostot) sisältävät
 //      case _: PerusopetuksenOpiskeluoikeus -haaroja jotka EIVÄT osu tähän
 //      luokkaan. Päätettävä onko manner-Suomen validointi tarkoitus uusio-
@@ -111,7 +111,8 @@ import fi.oph.scalaschema.annotation._
 // -konfiguraatiolla:
 //   features.disabledPäätasonSuoritusLuokat = [
 //     "AhvenanmaanPerusopetuksenVuosiluokanSuoritus",
-//     "AhvenanmaanPerusopetuksenOppimääränSuoritus"
+//     "AhvenanmaanPerusopetuksenOppimääränSuoritus",
+//     "AhvenanmaanAikuistenPerusopetuksenOppimääränSuoritus"
 //   ]
 // Kun Ahvenanmaa on valmis tuotantoon, poistetaan nämä tuotantokonfiguraatiosta.
 
@@ -207,6 +208,7 @@ case class AhvenanmaanPerusopetuksenVuosiluokanSuoritus(
     Koodistokoodiviite("ahvenanmaanperusopetuksenvuosiluokka", koodistoUri = "suorituksentyyppi"),
 ) extends AhvenanmaanPerusopetuksenPäätasonSuoritus with Arvioinniton
 
+@Title("Ahvenanmaan perusopetuksen oppimäärän suoritus")
 @Description("Ahvenanmaan perusopetuksen koko oppimäärän suoritus. Nämä suoritukset näkyvät päättötodistuksella.")
 case class AhvenanmaanPerusopetuksenOppimääränSuoritus(
   // TODO TOR-2587: peach – Ahvenanmaan koulutuskoodi / perusteenDiaarinumero varmistamatta.
@@ -223,6 +225,28 @@ case class AhvenanmaanPerusopetuksenOppimääränSuoritus(
   @KoodistoKoodiarvo("ahvenanmaanperusopetuksenoppimaara")
   tyyppi: Koodistokoodiviite =
     Koodistokoodiviite("ahvenanmaanperusopetuksenoppimaara", koodistoUri = "suorituksentyyppi"),
+) extends AhvenanmaanPerusopetuksenPäätasonSuoritus with Arvioinniton
+
+// TOR-2587: Aikuisopiskelijat ("muut kuin oppivelvolliset"). Erotetaan
+// oppivelvollisten oppimäärän suorituksesta tyyppi-kentän koodiarvolla.
+// Ainoa rakenteellinen ero: tällä on alkamispäivä, koska opiskeluoikeudella ei
+// ole vuosiluokkasuorituksia joilta alkamispäivä muuten löytyisi (ks.
+// KoskiValidator.validatePäätasonSuoritukset).
+@Title("Ahvenanmaan perusopetuksen oppimäärän suoritus (muut kuin oppivelvolliset)")
+@Description("Ahvenanmaan perusopetuksen oppimäärän suoritus muille kuin oppivelvollisille. Nämä suoritukset näkyvät päättötodistuksella.")
+case class AhvenanmaanAikuistenPerusopetuksenOppimääränSuoritus(
+  koulutusmoduuli: AhvenanmaanPerusopetus,
+  toimipiste: OrganisaatioWithOid,
+  override val alkamispäivä: Option[LocalDate] = None,
+  vahvistus: Option[HenkilövahvistusPaikkakunnalla] = None,
+  @KoodistoUri("perusopetuksensuoritustapa")
+  suoritustapa: Koodistokoodiviite,
+  suorituskieli: Koodistokoodiviite,
+  override val osasuoritukset: Option[List[AhvenanmaanOppiaineenTaiToimintaAlueenSuoritus]] = None,
+  todistuksellaNäkyvätLisätiedot: Option[LocalizedString] = None,
+  @KoodistoKoodiarvo("ahvenanmaanperusopetuksenoppimaaraaikuiset")
+  tyyppi: Koodistokoodiviite =
+    Koodistokoodiviite("ahvenanmaanperusopetuksenoppimaaraaikuiset", koodistoUri = "suorituksentyyppi"),
 ) extends AhvenanmaanPerusopetuksenPäätasonSuoritus with Arvioinniton
 
 // Aineopiskeluoikeuden suoritus (NuortenPerusopetuksenOppiaineenOppimääränSuoritus)
