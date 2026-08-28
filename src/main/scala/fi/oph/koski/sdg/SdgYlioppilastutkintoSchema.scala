@@ -7,7 +7,7 @@ import fi.oph.koski.ytr.YtrConversionUtils
 import fi.oph.scalaschema.annotation.{Description, Title}
 
 object SdgYlioppilastutkinnonOpiskeluoikeus {
-  def fromKoskiSchema(organisaatioRepository: OrganisaatioRepository)(yo: schema.YlioppilastutkinnonOpiskeluoikeus): Opiskeluoikeus = {
+  def fromKoskiSchema(organisaatioRepository: OrganisaatioRepository)(yo: schema.YlioppilastutkinnonOpiskeluoikeus): SdgOpiskeluoikeus = {
     SdgYlioppilastutkinnonOpiskeluoikeus(
       oid = yo.oid,
       oppilaitos = Some(YtrConversionUtils.ytlOppilaitos(organisaatioRepository)),
@@ -19,7 +19,7 @@ object SdgYlioppilastutkinnonOpiskeluoikeus {
           kt.kotipaikka
         )
       ),
-      tila = OpiskeluoikeudenTila(
+      tila = SdgOpiskeluoikeudenTila(
         opiskeluoikeusjaksot = yo.tila.opiskeluoikeusjaksot.map(j => SdgOpiskeluoikeusjakso(
           tila = j.tila,
           alku = j.alku
@@ -48,13 +48,13 @@ case class SdgYlioppilastutkinnonOpiskeluoikeus(
   oid: Option[String],
   oppilaitos: Option[schema.Oppilaitos],
   koulutustoimija: Option[schema.Koulutustoimija],
-  tila: OpiskeluoikeudenTila,
+  tila: SdgOpiskeluoikeudenTila,
   suoritukset: List[SdgYlioppilastutkinnonSuoritus],
   @KoodistoKoodiarvo(schema.OpiskeluoikeudenTyyppi.ylioppilastutkinto.koodiarvo)
   tyyppi: schema.Koodistokoodiviite,
   versionumero: Option[Int] = None
-) extends Opiskeluoikeus {
-  override def withSuoritukset(suoritukset: List[Suoritus]): Opiskeluoikeus =
+) extends SdgOpiskeluoikeus {
+  override def withSuoritukset(suoritukset: List[SdgSuoritus]): SdgOpiskeluoikeus =
     this.copy(
       suoritukset = suoritukset.collect { case s: SdgYlioppilastutkinnonSuoritus => s }
     )
@@ -68,7 +68,7 @@ case class SdgYlioppilastutkinnonSuoritus(
   tyyppi: schema.Koodistokoodiviite,
   koulusivistyskieli: Option[List[schema.Koodistokoodiviite]],
   osasuoritukset: Option[List[SdgYlioppilastutkinnonOsasuoritus]]
-) extends Suoritus {
+) extends SdgSuoritus {
   override def withOsasuoritukset(os: Option[List[Osasuoritus]]): SdgYlioppilastutkinnonSuoritus =
     this.copy(osasuoritukset = os.map(_.collect {
       case s: SdgYlioppilastutkinnonOsasuoritus => s

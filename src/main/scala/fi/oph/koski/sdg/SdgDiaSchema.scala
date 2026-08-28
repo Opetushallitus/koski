@@ -10,18 +10,18 @@ case class SdgDIAOpiskeluoikeus(
   versionumero: Option[Int],
   oppilaitos: Option[schema.Oppilaitos],
   koulutustoimija: Option[schema.Koulutustoimija],
-  tila: OpiskeluoikeudenTila,
+  tila: SdgOpiskeluoikeudenTila,
   suoritukset: List[DiaPäätasonSuoritus],
   @KoodistoKoodiarvo(schema.OpiskeluoikeudenTyyppi.diatutkinto.koodiarvo)
   tyyppi: schema.Koodistokoodiviite,
-) extends Opiskeluoikeus {
-  override def withSuoritukset(suoritukset: List[Suoritus]): SdgDIAOpiskeluoikeus =
+) extends SdgOpiskeluoikeus {
+  override def withSuoritukset(suoritukset: List[SdgSuoritus]): SdgDIAOpiskeluoikeus =
     this.copy(
       suoritukset = suoritukset.collect { case s: DiaPäätasonSuoritus => s }
     )
 }
 
-trait DiaPäätasonSuoritus extends Suoritus
+trait DiaPäätasonSuoritus extends SdgSuoritus
 
 @Title("DIA-tutkinnon suoritus")
 case class SdgDIATutkinnonSuoritus(

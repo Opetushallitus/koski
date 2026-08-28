@@ -10,18 +10,18 @@ case class SdgInternationalSchoolOpiskeluoikeus(
   oid: Option[String] = None,
   oppilaitos: Option[schema.Oppilaitos] = None,
   koulutustoimija: Option[schema.Koulutustoimija] = None,
-  tila: OpiskeluoikeudenTila,
-  suoritukset: List[InternationalSchoolVuosiluokanSuoritus],
+  tila: SdgOpiskeluoikeudenTila,
+  suoritukset: List[SdgInternationalSchoolVuosiluokanSuoritus],
   @KoodistoKoodiarvo(schema.OpiskeluoikeudenTyyppi.internationalschool.koodiarvo)
   tyyppi: schema.Koodistokoodiviite,
-) extends Opiskeluoikeus {
-  override def withSuoritukset(suoritukset: List[Suoritus]): Opiskeluoikeus =
+) extends SdgOpiskeluoikeus {
+  override def withSuoritukset(suoritukset: List[SdgSuoritus]): SdgOpiskeluoikeus =
     this.copy(
-      suoritukset = suoritukset.collect { case s: InternationalSchoolVuosiluokanSuoritus => s }
+      suoritukset = suoritukset.collect { case s: SdgInternationalSchoolVuosiluokanSuoritus => s }
     )
 }
 
-trait InternationalSchoolVuosiluokanSuoritus extends Suoritus
+trait SdgInternationalSchoolVuosiluokanSuoritus extends SdgSuoritus
 
 @Title("MYP vuosiluokan suoritus")
 case class SdgMYPVuosiluokanSuoritus(
@@ -34,7 +34,7 @@ case class SdgMYPVuosiluokanSuoritus(
   @KoodistoKoodiarvo("internationalschoolmypvuosiluokka")
   tyyppi: schema.Koodistokoodiviite,
   osasuoritukset: Option[List[SdgMYPOppiaineenSuoritus]] = None // vain 10 koodiarvolla mukaan
-) extends InternationalSchoolVuosiluokanSuoritus {
+) extends SdgInternationalSchoolVuosiluokanSuoritus {
   override def withOsasuoritukset(os: Option[List[Osasuoritus]]): SdgMYPVuosiluokanSuoritus =
     this.copy(
       osasuoritukset = os.map(_.collect{
@@ -62,17 +62,17 @@ case class SdgDiplomaVuosiluokanSuoritus(
   suorituskieli: schema.Koodistokoodiviite,
   @KoodistoKoodiarvo("internationalschooldiplomavuosiluokka")
   tyyppi: schema.Koodistokoodiviite,
-  osasuoritukset: Option[List[DiplomaIBOppiaineenSuoritus]] = None
-) extends InternationalSchoolVuosiluokanSuoritus {
+  osasuoritukset: Option[List[SdgDiplomaIBOppiaineenSuoritus]] = None
+) extends SdgInternationalSchoolVuosiluokanSuoritus {
   override def withOsasuoritukset(os: Option[List[Osasuoritus]]): SdgDiplomaVuosiluokanSuoritus =
     this.copy(
       osasuoritukset = os.map(_.collect{
-        case s: DiplomaIBOppiaineenSuoritus => s
+        case s: SdgDiplomaIBOppiaineenSuoritus => s
       })
     )
 }
 
-trait DiplomaIBOppiaineenSuoritus extends Osasuoritus
+trait SdgDiplomaIBOppiaineenSuoritus extends Osasuoritus
 
 @Title("Diploma oppiaineen suoritus")
 case class SdgDiplomaOppiaineenSuoritus(
@@ -81,7 +81,7 @@ case class SdgDiplomaOppiaineenSuoritus(
   suorituskieli: Option[schema.Koodistokoodiviite] = None,
   @KoodistoKoodiarvo("internationalschooldiplomaoppiaine")
   tyyppi: schema.Koodistokoodiviite
-) extends DiplomaIBOppiaineenSuoritus
+) extends SdgDiplomaIBOppiaineenSuoritus
 
 @Title("Diploma core requirements oppiaineen suoritus")
 case class SdgDiplomaCoreRequirementsOppiaineenSuoritus(
@@ -90,4 +90,4 @@ case class SdgDiplomaCoreRequirementsOppiaineenSuoritus(
   suorituskieli: Option[schema.Koodistokoodiviite] = None,
   @KoodistoKoodiarvo("internationalschoolcorerequirements")
   tyyppi: schema.Koodistokoodiviite
-) extends DiplomaIBOppiaineenSuoritus
+) extends SdgDiplomaIBOppiaineenSuoritus

@@ -12,12 +12,12 @@ case class SdgEBTutkinnonOpiskeluoikeus(
   versionumero: Option[Int],
   oppilaitos: Option[schema.Oppilaitos],
   koulutustoimija: Option[schema.Koulutustoimija],
-  tila: OpiskeluoikeudenTila,
+  tila: SdgOpiskeluoikeudenTila,
   suoritukset: List[SdgEBTutkinnonPäätasonSuoritus],
   @KoodistoKoodiarvo(schema.OpiskeluoikeudenTyyppi.ebtutkinto.koodiarvo)
   tyyppi: schema.Koodistokoodiviite,
-) extends Opiskeluoikeus {
-  override def withSuoritukset(suoritukset: List[Suoritus]): SdgEBTutkinnonOpiskeluoikeus =
+) extends SdgOpiskeluoikeus {
+  override def withSuoritukset(suoritukset: List[SdgSuoritus]): SdgEBTutkinnonOpiskeluoikeus =
     this.copy(
       suoritukset = suoritukset.collect { case s: SdgEBTutkinnonPäätasonSuoritus => s }
     )
@@ -32,7 +32,7 @@ case class SdgEBTutkinnonPäätasonSuoritus(
   tyyppi: schema.Koodistokoodiviite,
   osasuoritukset: Option[List[SdgEBTutkinnonOsasuoritus]],
   yleisarvosana: Option[Double]
-) extends Suoritus {
+) extends SdgSuoritus {
   override def withOsasuoritukset(os: Option[List[Osasuoritus]]): SdgEBTutkinnonPäätasonSuoritus =
     this.copy(osasuoritukset = os.map(_.collect { case s: SdgEBTutkinnonOsasuoritus => s }))
 }

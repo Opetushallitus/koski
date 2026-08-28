@@ -68,8 +68,8 @@ case class SdgKorkeakoulunOpiskeluoikeus(
   suoritukset: List[SdgKorkeakoulututkinnonSuoritus],
   @KoodistoKoodiarvo(schema.OpiskeluoikeudenTyyppi.korkeakoulutus.koodiarvo)
   tyyppi: schema.Koodistokoodiviite,
-) extends Opiskeluoikeus {
-  override def withSuoritukset(suoritukset: List[Suoritus]): Opiskeluoikeus =
+) extends SdgOpiskeluoikeus {
+  override def withSuoritukset(suoritukset: List[SdgSuoritus]): SdgOpiskeluoikeus =
     this.copy(
       suoritukset = suoritukset.collect { case s: SdgKorkeakoulututkinnonSuoritus => s }
     )
@@ -98,7 +98,7 @@ case class SdgKorkeakoulututkinnonSuoritus(
   vahvistus: Option[SdgVahvistus],
   toimipiste: Option[SdgToimipiste],
   osasuoritukset: Option[List[SdgKorkeakoulunOpintojaksonSuoritus]]
-) extends Suoritus {
+) extends SdgSuoritus {
   override def withOsasuoritukset(os: Option[List[Osasuoritus]]): SdgKorkeakoulututkinnonSuoritus =
     this.copy(osasuoritukset = os.map(_.collect {
       case s: SdgKorkeakoulunOpintojaksonSuoritus => s

@@ -29,7 +29,7 @@ object SdgSchema {
 @Title("Oppija")
 case class SdgOppija(
   henkilö: SdgHenkilo,
-  opiskeluoikeudet: List[Opiskeluoikeus]
+  opiskeluoikeudet: List[SdgOpiskeluoikeus]
 )
 
 @Title("Henkilo")
@@ -53,10 +53,10 @@ object SdgHenkilo {
   )
 }
 
-trait Opiskeluoikeus {
+trait SdgOpiskeluoikeus {
   def oppilaitos: Option[schema.Oppilaitos]
   def koulutustoimija: Option[schema.Koulutustoimija]
-  def suoritukset: List[Suoritus]
+  def suoritukset: List[SdgSuoritus]
 
   @KoodistoUri("opiskeluoikeudentyyppi")
   @Discriminator
@@ -70,7 +70,7 @@ trait Opiskeluoikeus {
   @SyntheticProperty
   def päättymispäivä: Option[LocalDate] = schema.Opiskeluoikeus.päättymispäivä(this.tyyppi.koodiarvo, this.tila.opiskeluoikeusjaksot.map(j => (j.alku, j.tila.koodiarvo)))
 
-  def withSuoritukset(suoritukset: List[Suoritus]): Opiskeluoikeus
+  def withSuoritukset(suoritukset: List[SdgSuoritus]): SdgOpiskeluoikeus
 }
 
 trait GenericOpiskeluoikeudenTila {
@@ -90,11 +90,11 @@ case class SdgOpiskeluoikeusjakso(
 ) extends GenericOpiskeluoikeusjakso
 
 @Title("Opiskeluoikeuden tila")
-case class OpiskeluoikeudenTila(
+case class SdgOpiskeluoikeudenTila(
   opiskeluoikeusjaksot: List[SdgOpiskeluoikeusjakso]
 ) extends GenericOpiskeluoikeudenTila
 
-trait Suoritus {
+trait SdgSuoritus {
   def koulutusmoduuli: schema.Koulutusmoduuli
 
   @Discriminator
@@ -106,7 +106,7 @@ trait Suoritus {
 
   def osasuoritukset: Option[List[Osasuoritus]]
 
-  def withOsasuoritukset(os: Option[List[Osasuoritus]]): Suoritus
+  def withOsasuoritukset(os: Option[List[Osasuoritus]]): SdgSuoritus
 }
 
 trait Osasuoritus
