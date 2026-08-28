@@ -309,7 +309,13 @@ class RaportitService(application: KoskiApplication) {
       case application.organisaatioService.ostopalveluRootOid =>
         application.organisaatioService.omatOstopalveluOrganisaatiot.map(_.oid)
       case oid =>
-        application.organisaatioService.organisaationAlaisetOrganisaatiot(oid)
+        // TODO: Tämä raportti on ainoa, joka laajentaa piirin ostopalveluyksiköihin; muut
+        // käyttävät accessResolver.kyselyOiditOrganisaatiolle-metodia ja ostopalvelu haetaan
+        // yllä olevalla ostopalveluRootOid-haaralla. Laajennus tuo mukaan ostopalveluyksiköiden
+        // vieraiden koulutustoimijoiden opiskeluoikeudet, mikä ilmeisesti kasvattaa raportin
+        // oppijamääriä virheellisesti. Korjataan erikseen, koska kyseessä on VOS-raportti.
+        val organisaatiot = application.organisaatioService.organisaationAlaisetOrganisaatiot(oid)
+        organisaatiot.hierarkia ++ organisaatiot.ostopalvelu
     }
     OppilaitosRaporttiResponse(
       sheets = Seq(aikuistenPerusopetuksenOppijamäärätRaportti.build(oppilaitosOids, request.paiva, t)),
