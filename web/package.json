@@ -125,5 +125,5 @@
       "serialize-javascript": "^7.0.3"
     }
   },
-  "packageManager": "pnpm@10.34.4"
+  "packageManager": "pnpm@10.34.5"
 }

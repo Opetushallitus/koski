@@ -101,5 +101,5 @@
   "alias": {
     "memoize": "./node_modules/.pnpm/memoize@10.2.0/node_modules/memoize/distribution/index.js"
   },
-  "packageManager": "pnpm@10.34.4"
+  "packageManager": "pnpm@10.34.5"
 }
