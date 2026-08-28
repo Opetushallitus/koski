@@ -482,14 +482,36 @@ const useSelectState = <T,>(props: SelectProps<T>) => {
 
   // Filter options
 
-  const options: OptionList<T> = useMemo(() => {
-    const opts =
-      filter === '' || filter === null
-        ? props.options
-        : queryOptions(props.options, filter)
-    // Remove one level of grouping if only one group is present
-    return opts.length === 1 && opts[0].isGroup ? opts[0].children || [] : opts
-  }, [filter, props.options])
+  const options: OptionList<T> = useMemo(
+    () => visibleOptions(props.options, filter),
+    [filter, props.options]
+  )
+
+  /**
+   * Näppäimistönavigaation lista: näkyvät, valittavissa olevat vaihtoehdot
+   * siinä järjestyksessä kuin ne renderöidään.
+   *
+   * Nuolinäppäimet kulkivat aiemmin suodattamattoman listan läpi, jolloin
+   * hakusanalla rajatussa valikossa korostus siirtyi vaihtoehtoihin joita ei
+   * näytetä: valikko näytti reagoimattomalta ja Enter valitsi jotain muuta
+   * kuin mitä käyttäjä näki.
+   */
+  const navigableOptions = useMemo(
+    () => selectableOptions(options, props.maxOptions),
+    [options, props.maxOptions]
+  )
+
+  // Hakutulosten vaihtuessa (esim. palvelinhaku onSearchilla) korostus voi
+  // jäädä osoittamaan vaihtoehtoa, jota ei enää näytetä. Enter ei saa valita
+  // näkymätöntä vaihtoehtoa.
+  useEffect(() => {
+    if (
+      hoveredOption &&
+      !navigableOptions.some((o) => o.key === hoveredOption.key)
+    ) {
+      onMouseOverOption(undefined)
+    }
+  }, [hoveredOption, navigableOptions])
 
   // Interaction
 
@@ -501,7 +523,7 @@ const useSelectState = <T,>(props: SelectProps<T>) => {
           return
         case 'ArrowDown':
           if (dropdownVisible) {
-            onMouseOverOption(selectOption(flatOptions, hoveredOption, 1))
+            onMouseOverOption(stepOption(navigableOptions, hoveredOption, 1))
           }
           setDropdownVisible(true)
           event.preventDefault()
@@ -510,7 +532,7 @@ const useSelectState = <T,>(props: SelectProps<T>) => {
           return
         case 'ArrowUp':
           if (dropdownVisible) {
-            onMouseOverOption(selectOption(flatOptions, hoveredOption, -1))
+            onMouseOverOption(stepOption(navigableOptions, hoveredOption, -1))
           }
           setDropdownVisible(true)
           event.preventDefault()
@@ -539,10 +561,22 @@ const useSelectState = <T,>(props: SelectProps<T>) => {
         // console.log(event.key)
       }
     },
-    [closeDropdown, dropdownVisible, flatOptions, hoveredOption, onClickOption]
+    [
+      closeDropdown,
+      dropdownVisible,
+      hoveredOption,
+      navigableOptions,
+      onClickOption
+    ]
   )
 
-  const { hideEmpty, onSearch, onClear: onClearProp } = props
+  const {
+    hideEmpty,
+    maxOptions,
+    options: allOptions,
+    onSearch,
+    onClear: onClearProp
+  } = props
   const onUserType: React.ChangeEventHandler<HTMLInputElement> = useCallback(
     (event) => {
       setFilter(event.target.value)
@@ -561,18 +595,27 @@ const useSelectState = <T,>(props: SelectProps<T>) => {
         }
       }
 
-      const needle = event.target.value.toLowerCase()
+      // Korostus seuraa suodatettua listaa. Suodatettu lista lasketaan tässä
+      // uudestaan, koska filter-tila päivittyy vasta seuraavassa renderissä.
+      const needle = event.target.value
       if (needle && !hideEmpty) {
-        const firstMatch = flatOptions.arr.find((o) =>
-          o.label.toLowerCase().includes(needle)
+        onMouseOverOption(
+          selectableOptions(visibleOptions(allOptions, needle), maxOptions)[0]
         )
-        onMouseOverOption(firstMatch)
       } else {
         onMouseOverOption(undefined)
       }
       onSearch?.(event.target.value)
     },
-    [flatOptions, hideEmpty, onChangeCb, onClearProp, onSearch]
+    [
+      allOptions,
+      flatOptions,
+      hideEmpty,
+      maxOptions,
+      onChangeCb,
+      onClearProp,
+      onSearch
+    ]
   )
 
   return useMemo(
@@ -743,17 +786,45 @@ export const filterOptions =
 
 // Internal utils
 
-const selectOption = <T,>(
-  flatOptions: FlatOptionList<T>,
+/**
+ * Vaihtoehdot siinä muodossa kuin valikko ne näyttää: hakusanalla
+ * suodatettuna ja yhden ryhmän tapauksessa ryhmittely purettuna.
+ */
+const visibleOptions = <T,>(
+  options: OptionList<T>,
+  filter: string | null
+): OptionList<T> => {
+  const opts =
+    filter === '' || filter === null ? options : queryOptions(options, filter)
+  // Remove one level of grouping if only one group is present
+  return opts.length === 1 && opts[0].isGroup ? opts[0].children || [] : opts
+}
+
+/**
+ * Näkyvistä vaihtoehdoista ne, jotka voi valita: ryhmäotsikot pois ja
+ * maxOptions-katkaisu samalla tavalla kuin OptionList renderöidessään tekee.
+ */
+const selectableOptions = <T,>(
+  options: OptionList<T>,
+  maxOptions?: number
+): OptionList<T> => {
+  const shown = maxOptions ? A.takeLeft(maxOptions)(options) : options
+  return shown.flatMap((o) => [
+    ...(o.isGroup ? [] : [o]),
+    ...(o.children ? selectableOptions(o.children, maxOptions) : [])
+  ])
+}
+
+const stepOption = <T,>(
+  options: OptionList<T>,
   current: SelectOption<T> | undefined,
   steps: number
 ): SelectOption<T> | undefined => {
   const currentIndex = current
-    ? flatOptions.arr.findIndex((o) => o.key === current.key)
+    ? options.findIndex((o) => o.key === current.key)
     : -1
-  const index = clamp(-1, flatOptions.arr.length - 1)(currentIndex + steps)
-  const option = index >= 0 ? flatOptions.arr[index] : undefined
-  return option?.isGroup ? selectOption(flatOptions, option, steps) : option
+  const index = clamp(-1, options.length - 1)(currentIndex + steps)
+  return index >= 0 ? options[index] : undefined
 }
 
 const flattenOptions = <T,>(options: OptionList<T>): FlatOptionList<T> => {
