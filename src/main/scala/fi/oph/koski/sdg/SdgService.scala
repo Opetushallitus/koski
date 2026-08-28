@@ -8,7 +8,7 @@ import fi.oph.koski.log._
 import fi.oph.koski.suoritusjako.common.{OpiskeluoikeusFacade}
 
 class SdgService(application: KoskiApplication) extends GlobalExecutionContext with Logging {
-  private val opiskeluoikeusFacade = new OpiskeluoikeusFacade[Opiskeluoikeus](
+  private val opiskeluoikeusFacade = new OpiskeluoikeusFacade[SdgOpiskeluoikeus](
     application,
     Some(SdgYlioppilastutkinnonOpiskeluoikeus.fromKoskiSchema(application.organisaatioRepository)),
     Some(SdgKorkeakoulunOpiskeluoikeus.fromKoskiSchema)
@@ -42,9 +42,9 @@ class SdgService(application: KoskiApplication) extends GlobalExecutionContext w
   }
 
   private def suodataPalautettavatSuoritukset(
-    opiskeluoikeudet: Seq[Opiskeluoikeus],
+    opiskeluoikeudet: Seq[SdgOpiskeluoikeus],
     queryParams: SdgQueryParams
-  ): Seq[Opiskeluoikeus] = {
+  ): Seq[SdgOpiskeluoikeus] = {
     opiskeluoikeudet
       .map { opiskeluoikeus =>
         val suoritukset = opiskeluoikeus.suoritukset
@@ -65,7 +65,7 @@ class SdgService(application: KoskiApplication) extends GlobalExecutionContext w
       .filter(_.suoritukset.nonEmpty)
   }
 
-  private def josYOTutkintoNiinVainTodistuksellaOlevatKoesuoritukset(s: Suoritus): Suoritus = {
+  private def josYOTutkintoNiinVainTodistuksellaOlevatKoesuoritukset(s: SdgSuoritus): SdgSuoritus = {
     s match {
       case s: SdgYlioppilastutkinnonSuoritus =>
         val filteredOsasuoritukset = s.osasuoritukset.map(_.filter { x =>
@@ -76,7 +76,7 @@ class SdgService(application: KoskiApplication) extends GlobalExecutionContext w
     }
   }
 
-  private def josYOTutkintoNiinVahvistettu(s: Suoritus): Boolean = {
+  private def josYOTutkintoNiinVahvistettu(s: SdgSuoritus): Boolean = {
     s match {
       case s: SdgYlioppilastutkinnonSuoritus
       => s.vahvistus.isDefined

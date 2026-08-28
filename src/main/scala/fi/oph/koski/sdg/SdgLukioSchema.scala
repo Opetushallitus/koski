@@ -11,19 +11,19 @@ case class SdgLukioOpiskeluoikeus(
   oid: Option[String] = None,
   oppilaitos: Option[schema.Oppilaitos],
   koulutustoimija: Option[schema.Koulutustoimija],
-  tila: OpiskeluoikeudenTila,
+  tila: SdgOpiskeluoikeudenTila,
   suoritukset: List[SdgLukionPäätasonSuoritus],
   @KoodistoKoodiarvo(schema.OpiskeluoikeudenTyyppi.lukiokoulutus.koodiarvo)
   tyyppi: schema.Koodistokoodiviite,
   oppimääräSuoritettu: Option[Boolean] = None,
-) extends Opiskeluoikeus {
-  override def withSuoritukset(suoritukset: List[Suoritus]): Opiskeluoikeus =
+) extends SdgOpiskeluoikeus {
+  override def withSuoritukset(suoritukset: List[SdgSuoritus]): SdgOpiskeluoikeus =
     this.copy(
       suoritukset = suoritukset.collect { case s: SdgLukionPäätasonSuoritus => s }
     )
 }
 
-trait SdgLukionPäätasonSuoritus extends Suoritus
+trait SdgLukionPäätasonSuoritus extends SdgSuoritus
 
 @Title("Lukion oppimäärän suoritus 2015")
 @NotWhen("koulutusmoduuli/perusteenDiaarinumero", List("OPH-2263-2019", "OPH-2267-2019"))
@@ -37,19 +37,19 @@ case class SdgLukionOppimääränSuoritus2015(
   suorituskieli: schema.Koodistokoodiviite,
   omanÄidinkielenOpinnot: Option[SdgLukionOmanÄidinkielenOpinnot],
   @Title("Oppiaineet")
-  osasuoritukset: Option[List[LukionOppimääränOsasuoritus2015]],
+  osasuoritukset: Option[List[SdgLukionOppimääränOsasuoritus2015]],
   @KoodistoKoodiarvo("lukionoppimaara")
   tyyppi: schema.Koodistokoodiviite
 ) extends SdgLukionPäätasonSuoritus {
   override def withOsasuoritukset(os: Option[List[Osasuoritus]]): SdgLukionOppimääränSuoritus2015 =
     this.copy(
       osasuoritukset = os.map(_.collect{
-        case s: LukionOppimääränOsasuoritus2015 => s
+        case s: SdgLukionOppimääränOsasuoritus2015 => s
       })
     )
 }
 
-trait LukionOppimääränOsasuoritus2015 extends Osasuoritus
+trait SdgLukionOppimääränOsasuoritus2015 extends Osasuoritus
 
 @Title("Lukion oppiaineen suoritus 2015")
 case class SdgLukionOppiaineenSuoritus2015(
@@ -60,7 +60,7 @@ case class SdgLukionOppiaineenSuoritus2015(
   osasuoritukset: Option[List[LukionOsasuoritus2015]],
   @KoodistoKoodiarvo("lukionoppiaine")
   tyyppi: schema.Koodistokoodiviite
-) extends LukionOppimääränOsasuoritus2015
+) extends SdgLukionOppimääränOsasuoritus2015
 
 @Title("Muiden lukio opintojen suoritus 2015")
 case class SdgMuidenLukioOpintojenSuoritus2015(
@@ -70,7 +70,7 @@ case class SdgMuidenLukioOpintojenSuoritus2015(
   koulutusmoduuli: schema.MuuLukioOpinto2015,
   @Title("Kurssit")
   osasuoritukset: Option[List[LukionOsasuoritus2015]]
-) extends LukionOppimääränOsasuoritus2015
+) extends SdgLukionOppimääränOsasuoritus2015
 
 trait LukionOsasuoritus2015 extends WithTunnustettuBoolean
 
@@ -102,19 +102,19 @@ case class SdgLukionOppimääränSuoritus2019(
   puhviKoe: Option[SdgLukionArviointi],
   suullisenKielitaidonKokeet: Option[List[SdgSuullisenKielitaidonKoe2019]],
   lukiodiplomit2019: Option[List[SdgLukionArviointi]],
-  osasuoritukset: Option[List[LukionOppimääränOsasuoritus2019]],
+  osasuoritukset: Option[List[SdgLukionOppimääränOsasuoritus2019]],
   @KoodistoKoodiarvo("lukionoppimaara")
   tyyppi: schema.Koodistokoodiviite,
 ) extends SdgLukionPäätasonSuoritus {
   override def withOsasuoritukset(os: Option[List[Osasuoritus]]): SdgLukionOppimääränSuoritus2019 =
     this.copy(
       osasuoritukset = os.map(_.collect{
-        case s: LukionOppimääränOsasuoritus2019 => s
+        case s: SdgLukionOppimääränOsasuoritus2019 => s
       })
     )
 }
 
-trait LukionOppimääränOsasuoritus2019 extends Osasuoritus
+trait SdgLukionOppimääränOsasuoritus2019 extends Osasuoritus
 
 @Title("Lukion oppiaineen suoritus 2019")
 case class SdgLukionOppiaineenSuoritus2019(
@@ -126,7 +126,7 @@ case class SdgLukionOppiaineenSuoritus2019(
   osasuoritukset: Option[List[LukionOppiaineenOsasuoritus2019]],
   @KoodistoKoodiarvo("lukionoppiaine")
   tyyppi: schema.Koodistokoodiviite
-) extends LukionOppimääränOsasuoritus2019
+) extends SdgLukionOppimääränOsasuoritus2019
 
 trait LukionOppiaineenOsasuoritus2019 extends WithTunnustettuBoolean
 
@@ -136,7 +136,7 @@ case class SdgMuidenLukioOpintojenSuoritus2019(
   tyyppi: schema.Koodistokoodiviite,
   koulutusmoduuli: schema.MuutSuorituksetTaiVastaavat2019,
   osasuoritukset: Option[List[MuidenLukioOpintojenOsasuoritus2019]]
-) extends LukionOppimääränOsasuoritus2019
+) extends SdgLukionOppimääränOsasuoritus2019
 
 trait MuidenLukioOpintojenOsasuoritus2019 extends WithTunnustettuBoolean
 

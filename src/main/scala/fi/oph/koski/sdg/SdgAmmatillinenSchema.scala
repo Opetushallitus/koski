@@ -12,19 +12,19 @@ case class SdgAmmatillinenOpiskeluoikeus(
   oid: Option[String],
   oppilaitos: Option[schema.Oppilaitos],
   koulutustoimija: Option[schema.Koulutustoimija],
-  tila: OpiskeluoikeudenTila,
-  suoritukset: List[AmmatillinenPäätasonSuoritus],
+  tila: SdgOpiskeluoikeudenTila,
+  suoritukset: List[SdgAmmatillinenPäätasonSuoritus],
   @KoodistoKoodiarvo("ammatillinenkoulutus")
   tyyppi: schema.Koodistokoodiviite,
-) extends Opiskeluoikeus {
-  override def withSuoritukset(suoritukset: List[Suoritus]): SdgAmmatillinenOpiskeluoikeus = {
+) extends SdgOpiskeluoikeus {
+  override def withSuoritukset(suoritukset: List[SdgSuoritus]): SdgAmmatillinenOpiskeluoikeus = {
     this.copy (
-      suoritukset = suoritukset.collect { case s: AmmatillinenPäätasonSuoritus => s }
+      suoritukset = suoritukset.collect { case s: SdgAmmatillinenPäätasonSuoritus => s }
     )
   }
 }
 
-trait AmmatillinenPäätasonSuoritus extends Suoritus
+trait SdgAmmatillinenPäätasonSuoritus extends SdgSuoritus
 
 @Title("Ammatillisen tutkinnon suoritus")
 case class SdgAmmatillisenTutkinnonSuoritus(
@@ -39,7 +39,7 @@ case class SdgAmmatillisenTutkinnonSuoritus(
   tutkintonimike: Option[List[schema.Koodistokoodiviite]],
   osasuoritukset: Option[List[AmmatillisenTutkinnonOsasuoritus]],
   keskiarvo: Option[Double]
-) extends AmmatillinenPäätasonSuoritus {
+) extends SdgAmmatillinenPäätasonSuoritus {
   override def withOsasuoritukset(os: Option[List[Osasuoritus]]): SdgAmmatillisenTutkinnonSuoritus = this.copy(osasuoritukset = os.map(_.collect {
     case s: AmmatillisenTutkinnonOsasuoritus => s
   }))
@@ -64,7 +64,7 @@ case class SdgAmmatillisenTutkinnonOsaTaiOsia(
   keskiarvo: Option[Double] = None,
   korotettuOpiskeluoikeusOid: Option[String] = None,
   korotettuKeskiarvo: Option[Double] = None,
-) extends AmmatillinenPäätasonSuoritus {
+) extends SdgAmmatillinenPäätasonSuoritus {
   override def withOsasuoritukset(os: Option[List[Osasuoritus]]): SdgAmmatillisenTutkinnonOsaTaiOsia = this.copy(osasuoritukset = os.map(_.collect {
     case s: AmmatillisenTutkinnonOsasuoritus => s
   }))
@@ -84,19 +84,19 @@ case class SdgAmmatillisenTutkinnonOsittainenUseastaTutkinnostaSuoritus(
   vahvistus: Option[SdgVahvistus],
   suorituskieli: schema.Koodistokoodiviite,
   @Title("Tutkinnon osat")
-  osasuoritukset: Option[List[OsittaisenAmmatillisenTutkinnonOsanUseastaTutkinnostaSuoritus]],
+  osasuoritukset: Option[List[SdgOsittaisenAmmatillisenTutkinnonOsanUseastaTutkinnostaSuoritus]],
   @KoodistoKoodiarvo("ammatillinentutkintoosittainen")
   tyyppi: schema.Koodistokoodiviite,
   keskiarvo: Option[Double] = None,
-) extends AmmatillinenPäätasonSuoritus {
+) extends SdgAmmatillinenPäätasonSuoritus {
   override def withOsasuoritukset(os: Option[List[Osasuoritus]]): SdgAmmatillisenTutkinnonOsittainenUseastaTutkinnostaSuoritus = this.copy(osasuoritukset = os.map(_.collect {
-    case s: OsittaisenAmmatillisenTutkinnonOsanUseastaTutkinnostaSuoritus => s
+    case s: SdgOsittaisenAmmatillisenTutkinnonOsanUseastaTutkinnostaSuoritus => s
   }))
 }
 
 trait AmmatillisenTutkinnonOsasuoritus extends Osasuoritus
 
-trait OsittaisenAmmatillisenTutkinnonOsanUseastaTutkinnostaSuoritus extends Osasuoritus with WithTunnustettuBoolean
+trait SdgOsittaisenAmmatillisenTutkinnonOsanUseastaTutkinnostaSuoritus extends Osasuoritus with WithTunnustettuBoolean
 
 @Title("Yhteisen tutkinnon osan suoritus")
 case class SdgYhteisenTutkinnonOsanSuoritus(
@@ -112,7 +112,7 @@ case class SdgYhteisenTutkinnonOsanSuoritus(
   @KoodistoKoodiarvo("ammatillisentutkinnonosa")
   tyyppi: schema.Koodistokoodiviite
 ) extends AmmatillisenTutkinnonOsasuoritus
-  with OsittaisenAmmatillisenTutkinnonOsanUseastaTutkinnostaSuoritus
+  with SdgOsittaisenAmmatillisenTutkinnonOsanUseastaTutkinnostaSuoritus
 
 @Title("Muun tutkinnon osan suoritus")
 case class SdgMuunTutkinnonOsanSuoritus(
@@ -127,7 +127,7 @@ case class SdgMuunTutkinnonOsanSuoritus(
   suorituskieli: Option[schema.Koodistokoodiviite],
   tyyppi: schema.Koodistokoodiviite
 ) extends AmmatillisenTutkinnonOsasuoritus
-  with OsittaisenAmmatillisenTutkinnonOsanUseastaTutkinnostaSuoritus
+  with SdgOsittaisenAmmatillisenTutkinnonOsanUseastaTutkinnostaSuoritus
 
 @Title("Korkeakouluopintoja")
 @OnlyWhen("../../suoritustapa/koodiarvo", "reformi")
@@ -143,7 +143,7 @@ case class SdgAmmatillinenKorkeakouluopintoja(
 case class SdgAmmatillisenTutkinnonOsanJatkoOpintovalmiuksiaTukevienOpintojenSuoritus(
   koulutusmoduuli: schema.JatkoOpintovalmiuksiaTukeviaOpintojaTutkinnonOsa,
   tutkinnonOsanRyhmä: Option[schema.Koodistokoodiviite],
-  osasuoritukset: Option[List[YhteistenTutkinnonOsienOsaAlueidenTaiLukioOpintojenTaiMuidenOpintovalmiuksiaTukevienOpintojenOsasuoritus]] = None,
+  osasuoritukset: Option[List[SdgYhteistenTutkinnonOsienOsaAlueidenTaiLukioOpintojenTaiMuidenOpintovalmiuksiaTukevienOpintojenOsasuoritus]] = None,
   tyyppi: schema.Koodistokoodiviite
 ) extends AmmatillisenTutkinnonOsasuoritus
 
@@ -164,7 +164,7 @@ case class SdgAmmatillinenKorkeakouluopintojenSuoritus(
   tyyppi: schema.Koodistokoodiviite
 ) extends WithTunnustettuBoolean
 
-trait YhteistenTutkinnonOsienOsaAlueidenTaiLukioOpintojenTaiMuidenOpintovalmiuksiaTukevienOpintojenOsasuoritus extends WithTunnustettuBoolean {
+trait SdgYhteistenTutkinnonOsienOsaAlueidenTaiLukioOpintojenTaiMuidenOpintovalmiuksiaTukevienOpintojenOsasuoritus extends WithTunnustettuBoolean {
   def koulutusmoduuli: schema.Koulutusmoduuli
   def arviointi: Option[List[SdgAmmatillinenArviointi]]
   def tunnustettu: Option[schema.OsaamisenTunnustaminen]
@@ -180,7 +180,7 @@ case class SdgYhteisenTutkinnonOsanOsaAlueenSuoritus (
   tunnustettu: Option[schema.OsaamisenTunnustaminen],
   suorituskieli: Option[schema.Koodistokoodiviite] = None,
   tyyppi: schema.Koodistokoodiviite,
-) extends YhteistenTutkinnonOsienOsaAlueidenTaiLukioOpintojenTaiMuidenOpintovalmiuksiaTukevienOpintojenOsasuoritus
+) extends SdgYhteistenTutkinnonOsienOsaAlueidenTaiLukioOpintojenTaiMuidenOpintovalmiuksiaTukevienOpintojenOsasuoritus
 
 @Title("Lukion oppiaineen tai lukion kurssin suoritus")
 case class SdgLukioOpintojenSuoritus(
@@ -189,7 +189,7 @@ case class SdgLukioOpintojenSuoritus(
   tunnustettu: Option[schema.OsaamisenTunnustaminen],
   suorituskieli: Option[schema.Koodistokoodiviite] = None,
   tyyppi: schema.Koodistokoodiviite
-) extends YhteistenTutkinnonOsienOsaAlueidenTaiLukioOpintojenTaiMuidenOpintovalmiuksiaTukevienOpintojenOsasuoritus
+) extends SdgYhteistenTutkinnonOsienOsaAlueidenTaiLukioOpintojenTaiMuidenOpintovalmiuksiaTukevienOpintojenOsasuoritus
 
 @Title("Muiden opintovalmiuksia tukevien opintojen suoritus")
 case class SdgMuidenOpintovalmiuksiaTukevienOpintojenSuoritus(
@@ -198,7 +198,7 @@ case class SdgMuidenOpintovalmiuksiaTukevienOpintojenSuoritus(
   tunnustettu: Option[schema.OsaamisenTunnustaminen],
   suorituskieli: Option[schema.Koodistokoodiviite] = None,
   tyyppi: schema.Koodistokoodiviite
-) extends YhteistenTutkinnonOsienOsaAlueidenTaiLukioOpintojenTaiMuidenOpintovalmiuksiaTukevienOpintojenOsasuoritus
+) extends SdgYhteistenTutkinnonOsienOsaAlueidenTaiLukioOpintojenTaiMuidenOpintovalmiuksiaTukevienOpintojenOsasuoritus
 
 @Title("Ammatillinen tutkintokoulutus")
 case class SdgAmmatillinenTutkintoKoulutus(

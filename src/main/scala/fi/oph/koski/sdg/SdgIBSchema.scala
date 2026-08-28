@@ -11,18 +11,18 @@ case class SdgIBOpiskeluoikeus(
   oid: Option[String] = None,
   oppilaitos: Option[schema.Oppilaitos],
   koulutustoimija: Option[schema.Koulutustoimija] = None,
-  tila: OpiskeluoikeudenTila,
-  suoritukset: List[IBPäätasonSuoritus],
+  tila: SdgOpiskeluoikeudenTila,
+  suoritukset: List[SdgIBPäätasonSuoritus],
   @KoodistoKoodiarvo(schema.OpiskeluoikeudenTyyppi.ibtutkinto.koodiarvo)
   tyyppi: schema.Koodistokoodiviite,
-) extends Opiskeluoikeus {
-  override def withSuoritukset(suoritukset: List[Suoritus]): SdgIBOpiskeluoikeus =
+) extends SdgOpiskeluoikeus {
+  override def withSuoritukset(suoritukset: List[SdgSuoritus]): SdgIBOpiskeluoikeus =
     this.copy(
-      suoritukset = suoritukset.collect { case s: IBPäätasonSuoritus => s }
+      suoritukset = suoritukset.collect { case s: SdgIBPäätasonSuoritus => s }
     )
 }
 
-trait IBPäätasonSuoritus extends Suoritus
+trait SdgIBPäätasonSuoritus extends SdgSuoritus
 
 @Title("IB tutkinnon suoritus")
 case class SdgIBTutkinnonSuoritus(
@@ -30,22 +30,22 @@ case class SdgIBTutkinnonSuoritus(
   toimipiste: Option[SdgToimipiste],
   vahvistus: Option[SdgVahvistus],
   suorituskieli: schema.Koodistokoodiviite,
-  osasuoritukset: Option[List[IBTutkinnonOppiaineenSuoritus]],
+  osasuoritukset: Option[List[SdgIBTutkinnonOppiaineenSuoritus]],
   theoryOfKnowledge: Option[schema.IBTheoryOfKnowledgeSuoritus],
   extendedEssay: Option[schema.IBExtendedEssaySuoritus],
   creativityActionService: Option[schema.IBCASSuoritus],
   @KoodistoKoodiarvo("ibtutkinto")
   tyyppi: schema.Koodistokoodiviite,
-) extends IBPäätasonSuoritus {
+) extends SdgIBPäätasonSuoritus {
   override def withOsasuoritukset(os: Option[List[Osasuoritus]]): SdgIBTutkinnonSuoritus =
     this.copy(
       osasuoritukset = os.map(_.collect{
-        case s: IBTutkinnonOppiaineenSuoritus => s
+        case s: SdgIBTutkinnonOppiaineenSuoritus => s
       })
     )
 }
 
-trait IBTutkinnonOppiaineenSuoritus extends Osasuoritus
+trait SdgIBTutkinnonOppiaineenSuoritus extends Osasuoritus
 
 @Title("IB-oppiaineen suoritus")
 case class SdgIBOppiaineenSuoritus(
@@ -57,7 +57,7 @@ case class SdgIBOppiaineenSuoritus(
   osasuoritukset: Option[List[SdgIBKurssinSuoritus]],
   @KoodistoKoodiarvo("iboppiaine")
   tyyppi: schema.Koodistokoodiviite
-) extends IBTutkinnonOppiaineenSuoritus
+) extends SdgIBTutkinnonOppiaineenSuoritus
 
 @Title("IB kurssin suoritus")
 case class SdgIBKurssinSuoritus(
@@ -76,7 +76,7 @@ case class SdgIBDPCoreSuoritus(
   osasuoritukset: Option[List[SdgIBCoreKurssinSuoritus]] = None,
   @KoodistoKoodiarvo("ibcore")
   tyyppi: schema.Koodistokoodiviite
-) extends IBTutkinnonOppiaineenSuoritus
+) extends SdgIBTutkinnonOppiaineenSuoritus
 
 @Title("IB Core kurssin suoritus")
 case class SdgIBCoreKurssinSuoritus(
@@ -94,19 +94,19 @@ case class SdgPreIBSuoritus2015(
   toimipiste: Option[SdgToimipiste],
   vahvistus: Option[SdgVahvistus],
   suorituskieli: schema.Koodistokoodiviite,
-  osasuoritukset: Option[List[PreIBSuorituksenOsasuoritus2015]],
+  osasuoritukset: Option[List[SdgPreIBSuorituksenOsasuoritus2015]],
   @KoodistoKoodiarvo("preiboppimaara")
   tyyppi: schema.Koodistokoodiviite
-) extends IBPäätasonSuoritus {
+) extends SdgIBPäätasonSuoritus {
   override def withOsasuoritukset(os: Option[List[Osasuoritus]]): SdgPreIBSuoritus2015 =
     this.copy(
       osasuoritukset = os.map(_.collect{
-        case s: PreIBSuorituksenOsasuoritus2015 => s
+        case s: SdgPreIBSuorituksenOsasuoritus2015 => s
       })
     )
 }
 
-trait PreIBSuorituksenOsasuoritus2015 extends Osasuoritus
+trait SdgPreIBSuorituksenOsasuoritus2015 extends Osasuoritus
 
 @Title("Pre IB oppiaineen suoritus 2015")
 case class SdgPreIBOppiaineenSuoritus2015(
@@ -118,7 +118,7 @@ case class SdgPreIBOppiaineenSuoritus2015(
   osasuoritukset: Option[List[SdgPreIBKurssinSuoritus2015]],
   @KoodistoKoodiarvo("preiboppiaine")
   tyyppi: schema.Koodistokoodiviite
-) extends PreIBSuorituksenOsasuoritus2015
+) extends SdgPreIBSuorituksenOsasuoritus2015
 
 @Title("Pre IB kurssin suoritus 2015")
 case class SdgPreIBKurssinSuoritus2015(
@@ -127,7 +127,7 @@ case class SdgPreIBKurssinSuoritus2015(
   suorituskieli: Option[schema.Koodistokoodiviite] = None,
   @KoodistoKoodiarvo("preibkurssi")
   tyyppi: schema.Koodistokoodiviite
-) extends PreIBSuorituksenOsasuoritus2015
+) extends SdgPreIBSuorituksenOsasuoritus2015
 
 @Title("Pre IB suoritus 2019")
 @OnlyWhen("koulutusmoduuli/tunniste/koodiarvo", "preiboppimaara2019")
@@ -140,14 +140,14 @@ case class SdgPreIBSuoritus2019(
   omanÄidinkielenOpinnot: Option[SdgLukionOmanÄidinkielenOpinnot] = None,
   puhviKoe: Option[SdgLukionArviointi],
   suullisenKielitaidonKokeet: Option[List[SdgSuullisenKielitaidonKoe2019]] = None,
-  osasuoritukset: Option[List[PreIBSuorituksenOsasuoritus2019]],
+  osasuoritukset: Option[List[SdgPreIBSuorituksenOsasuoritus2019]],
   @KoodistoKoodiarvo("preiboppimaara")
   tyyppi: schema.Koodistokoodiviite,
-)  extends IBPäätasonSuoritus {
+)  extends SdgIBPäätasonSuoritus {
   override def withOsasuoritukset(os: Option[List[Osasuoritus]]): SdgPreIBSuoritus2019 =
     this.copy(
       osasuoritukset = os.map(_.collect{
-        case s: PreIBSuorituksenOsasuoritus2019 => s
+        case s: SdgPreIBSuorituksenOsasuoritus2019 => s
       })
     )
 }
@@ -182,7 +182,7 @@ case class SdgSuullisenKielitaidonKoe2019(
   päivä: LocalDate
 )
 
-trait PreIBSuorituksenOsasuoritus2019 extends Osasuoritus
+trait SdgPreIBSuorituksenOsasuoritus2019 extends Osasuoritus
 
 @Title("Lukion oppiaineen Pre IB suoritus 2019")
 case class SdgLukionOppiaineenPreIBSuoritus2019(
@@ -194,7 +194,7 @@ case class SdgLukionOppiaineenPreIBSuoritus2019(
   osasuoritukset: Option[List[PreIBLukioOpintojenOsasuoritus]],
   @KoodistoKoodiarvo("lukionoppiaine")
   tyyppi: schema.Koodistokoodiviite
-) extends PreIBSuorituksenOsasuoritus2019
+) extends SdgPreIBSuorituksenOsasuoritus2019
 
 @Title("Muiden lukio opintojen Pre IB suoritus 2019")
 case class SdgMuidenLukioOpintojenPreIBSuoritus2019(
@@ -203,7 +203,7 @@ case class SdgMuidenLukioOpintojenPreIBSuoritus2019(
   osasuoritukset: Option[List[MuidenLukioOpintojenOsasuoritus2019]],
   @KoodistoKoodiarvo("lukionmuuopinto")
   tyyppi: schema.Koodistokoodiviite
-) extends PreIBSuorituksenOsasuoritus2019
+) extends SdgPreIBSuorituksenOsasuoritus2019
 
 trait PreIBLukioOpintojenOsasuoritus extends WithTunnustettuBoolean
 trait PreIBMuidenLukioOpintojenOsasuoritus2019 extends WithTunnustettuBoolean

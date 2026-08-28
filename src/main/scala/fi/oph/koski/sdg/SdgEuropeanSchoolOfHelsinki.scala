@@ -10,18 +10,18 @@ case class SdgEuropeanSchoolOfHelsinkiOpiskeluoikeus(
   oid: Option[String] = None,
   oppilaitos: Option[schema.Oppilaitos] = None,
   koulutustoimija: Option[schema.Koulutustoimija] = None,
-  tila: OpiskeluoikeudenTila,
-  suoritukset: List[EuropeanSchoolOfHelsinkiPäätasonSuoritus],
+  tila: SdgOpiskeluoikeudenTila,
+  suoritukset: List[SdgEuropeanSchoolOfHelsinkiPäätasonSuoritus],
   @KoodistoKoodiarvo(schema.OpiskeluoikeudenTyyppi.europeanschoolofhelsinki.koodiarvo)
   tyyppi: schema.Koodistokoodiviite = schema.OpiskeluoikeudenTyyppi.europeanschoolofhelsinki,
-) extends Opiskeluoikeus {
-  override def withSuoritukset(suoritukset: List[Suoritus]): Opiskeluoikeus =
+) extends SdgOpiskeluoikeus {
+  override def withSuoritukset(suoritukset: List[SdgSuoritus]): SdgOpiskeluoikeus =
     this.copy(
-      suoritukset = suoritukset.collect { case s: EuropeanSchoolOfHelsinkiPäätasonSuoritus => s }
+      suoritukset = suoritukset.collect { case s: SdgEuropeanSchoolOfHelsinkiPäätasonSuoritus => s }
     )
 }
 
-trait EuropeanSchoolOfHelsinkiPäätasonSuoritus extends Suoritus
+trait SdgEuropeanSchoolOfHelsinkiPäätasonSuoritus extends SdgSuoritus
 
 // VAIN S5 MUKAAN
 @Title("Secondary Lower -vuosiluokan suoritus")
@@ -33,7 +33,7 @@ case class SdgSecondaryLowerVuosiluokanSuoritus(
   @KoodistoKoodiarvo("europeanschoolofhelsinkivuosiluokkasecondarylower")
   tyyppi: schema.Koodistokoodiviite,
   osasuoritukset: Option[List[SdgSecondaryLowerOppiaineenSuoritus]] = None
-) extends EuropeanSchoolOfHelsinkiPäätasonSuoritus {
+) extends SdgEuropeanSchoolOfHelsinkiPäätasonSuoritus {
   override def withOsasuoritukset(os: Option[List[Osasuoritus]]): SdgSecondaryLowerVuosiluokanSuoritus =
     this.copy(
       osasuoritukset = os.map(_.collect{
@@ -50,12 +50,12 @@ case class SdgSecondaryUpperVuosiluokanSuoritus(
   vahvistus: Option[SdgVahvistus],
   @KoodistoKoodiarvo("europeanschoolofhelsinkivuosiluokkasecondaryupper")
   tyyppi: schema.Koodistokoodiviite,
-  osasuoritukset: Option[List[SecondaryUpperOppiaineenSuoritus]] = None
-) extends EuropeanSchoolOfHelsinkiPäätasonSuoritus {
+  osasuoritukset: Option[List[SdgSecondaryUpperOppiaineenSuoritus]] = None
+) extends SdgEuropeanSchoolOfHelsinkiPäätasonSuoritus {
   override def withOsasuoritukset(os: Option[List[Osasuoritus]]): SdgSecondaryUpperVuosiluokanSuoritus =
     this.copy(
       osasuoritukset = os.map(_.collect{
-        case s: SecondaryUpperOppiaineenSuoritus => s
+        case s: SdgSecondaryUpperOppiaineenSuoritus => s
       })
     )
 }
@@ -70,7 +70,7 @@ case class SdgSecondaryLowerOppiaineenSuoritus(
   suorituskieli: schema.Koodistokoodiviite
 ) extends Osasuoritus
 
-trait SecondaryUpperOppiaineenSuoritus extends Osasuoritus
+trait SdgSecondaryUpperOppiaineenSuoritus extends Osasuoritus
 
 @Title("Secondary upper oppiaineen suoritus S6")
 @OnlyWhen("../../koulutusmoduuli/tunniste/koodiarvo", "S6")
@@ -81,7 +81,7 @@ case class SdgSecondaryUpperOppiaineenSuoritusS6(
   @KoodistoKoodiarvo("europeanschoolofhelsinkiosasuorituss6")
   tyyppi: schema.Koodistokoodiviite,
   suorituskieli: schema.Koodistokoodiviite,
-) extends SecondaryUpperOppiaineenSuoritus
+) extends SdgSecondaryUpperOppiaineenSuoritus
 
 @Title("Secondary numerical mark arviointi")
 case class SdgSecondaryNumericalMarkArviointi(
@@ -99,7 +99,7 @@ case class SdgSecondaryUpperOppiaineenSuoritusS7(
   tyyppi: schema.Koodistokoodiviite,
   suorituskieli: schema.Koodistokoodiviite,
   osasuoritukset: Option[List[SdgS7OppiaineenAlaosasuoritus]] = None
-) extends SecondaryUpperOppiaineenSuoritus
+) extends SdgSecondaryUpperOppiaineenSuoritus
 
 @Title("S7 oppiaineen alaosasuoritus")
 case class SdgS7OppiaineenAlaosasuoritus(

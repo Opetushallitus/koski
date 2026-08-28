@@ -23,7 +23,8 @@ class LocalizedSchemasSpec extends AnyFreeSpec with TestEnvironment with Matcher
       "kela-oppija-schema.json",
       "migri-oppija-schema.json",
       "valpas-internal-laaja-schema.json",
-      "omadata-oauth2-kaikki-tiedot-oppija-schema.json"
+      "omadata-oauth2-kaikki-tiedot-oppija-schema.json",
+      "sdg-oppija-schema.json"
     )
     schemaNames.foreach { name =>
       name in {
