@@ -305,18 +305,11 @@ class RaportitService(application: KoskiApplication) {
   }
 
   def aikuistenperusopetuksenOppijamäärät(request: RaporttiPäivältäRequest, t: LocalizationReader)(implicit u: KoskiSpecificSession) = {
-    val oppilaitosOids = request.oppilaitosOid match {
-      case application.organisaatioService.ostopalveluRootOid =>
-        application.organisaatioService.omatOstopalveluOrganisaatiot.map(_.oid)
-      case oid =>
-        // TODO: Tämä raportti on ainoa, joka laajentaa piirin ostopalveluyksiköihin; muut
-        // käyttävät accessResolver.kyselyOiditOrganisaatiolle-metodia ja ostopalvelu haetaan
-        // yllä olevalla ostopalveluRootOid-haaralla. Laajennus tuo mukaan ostopalveluyksiköiden
-        // vieraiden koulutustoimijoiden opiskeluoikeudet, mikä ilmeisesti kasvattaa raportin
-        // oppijamääriä virheellisesti. Korjataan erikseen, koska kyseessä on VOS-raportti.
-        val organisaatiot = application.organisaatioService.organisaationAlaisetOrganisaatiot(oid)
-        organisaatiot.hierarkia ++ organisaatiot.ostopalvelu
-    }
+    // Kuten muutkin oppijamääräraportit: pelkkä organisaation oma hierarkia. Ostopalvelu on
+    // varhaiskasvatuksen mekanismi eikä tuo tähän raporttiin mitään, ja ostopalveluvalinta
+    // tarjotaan käyttöliittymässä vain esiopetuksen raporteille (ks.
+    // buildOrganisaatioJaRaporttiTyypit), joten erillistä ostopalveluhaaraa ei tarvita.
+    val oppilaitosOids = accessResolver.kyselyOiditOrganisaatiolle(request.oppilaitosOid).toList
     OppilaitosRaporttiResponse(
       sheets = Seq(aikuistenPerusopetuksenOppijamäärätRaportti.build(oppilaitosOids, request.paiva, t)),
       workbookSettings = WorkbookSettings(t.get("raportti-excel-aikuistenperusopetus-vos-title-etuliite"), Some(request.password)),
