@@ -18,7 +18,7 @@ case class KiosDIAOpiskeluoikeus(
 
   override def lisätiedot: Option[KiosOpiskeluoikeudenLisätiedot] = None
 
-  override def withSuoritukset(suoritukset: List[Suoritus]): KiosKoskeenTallennettavaOpiskeluoikeus =
+  override def withSuoritukset(suoritukset: List[KiosSuoritus]): KiosKoskeenTallennettavaOpiskeluoikeus =
     this.copy(
       suoritukset = suoritukset.collect { case s: KiosDIATutkinnonSuoritus => s }
     )
@@ -32,7 +32,7 @@ case class KiosDIATutkinnonSuoritus(
   vahvistus: Option[Vahvistus],
   @KoodistoKoodiarvo("diatutkintovaihe")
   tyyppi: schema.Koodistokoodiviite,
-) extends Suoritus
+) extends KiosSuoritus
 
 case class KiosDIATutkinto(
   tunniste: KiosKoodistokoodiviite

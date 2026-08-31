@@ -38,7 +38,7 @@ case class KelaEsiopetuksenOpiskeluoikeus(
 case class KelaEsiopetuksenOpiskeluoikeudenLisätiedot(
   @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KELA_LAAJA))
   varhennetunOppivelvollisuudenJaksot: Option[List[KelaAikajakso]]
-) extends OpiskeluoikeudenLisätiedot
+) extends KelaOpiskeluoikeudenLisätiedot
 
 @Title("Esiopetuksen suoritus")
 case class KelaEsiopetuksenSuoritus(
@@ -46,7 +46,7 @@ case class KelaEsiopetuksenSuoritus(
   toimipiste: Option[Toimipiste],
   vahvistus: Option[Vahvistus],
   tyyppi: schema.Koodistokoodiviite
-) extends Suoritus {
+) extends KelaSuoritus {
   override def osasuoritukset: Option[List[Osasuoritus]] = None
   def withHyväksyntämerkinnälläKorvattuArvosana: KelaEsiopetuksenSuoritus = this
 }

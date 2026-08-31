@@ -34,7 +34,7 @@ case class KelaESHOpiskeluoikeus(
 }
 
 @Title("European School of Helsingin päätason suoritus")
-trait KelaESHPäätasonSuoritus extends Suoritus {
+trait KelaESHPäätasonSuoritus extends KelaSuoritus {
   def withHyväksyntämerkinnälläKorvattuArvosana: KelaESHPäätasonSuoritus
 }
 
@@ -150,7 +150,7 @@ case class KelaESHS7OppiaineenAlaosasuoritus(
   arviointi: Option[List[KelaESHArviointi]],
   @KoodistoKoodiarvo("europeanschoolofhelsinkialaosasuorituss7")
   tyyppi: schema.Koodistokoodiviite,
-) extends Suoritus {
+) extends KelaSuoritus {
   def osasuoritukset: Option[List[Osasuoritus]] = None
   def withHyväksyntämerkinnälläKorvattuArvosana: KelaESHS7OppiaineenAlaosasuoritus = this.copy(
     arviointi = arviointi.map(_.map(_.withHyväksyntämerkinnälläKorvattuArvosana))
@@ -178,4 +178,4 @@ case class KelaESHOpiskeluoikeudenLisätiedot(
   ulkomaanjaksot: Option[List[Ulkomaanjakso]],
   maksuttomuus: Option[List[KelaMaksuttomuus]],
   oikeuttaMaksuttomuuteenPidennetty: Option[List[KelaOikeuttaMaksuttomuuteenPidennetty]],
-) extends OpiskeluoikeudenLisätiedot
+) extends KelaOpiskeluoikeudenLisätiedot

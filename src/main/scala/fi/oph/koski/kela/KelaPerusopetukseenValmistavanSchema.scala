@@ -26,7 +26,7 @@ case class KelaPerusopetukseenValmistavanOpiskeluoikeus(
   override def alkamispäivä: Option[LocalDate] = super.alkamispäivä
   override def päättymispäivä: Option[LocalDate] = super.päättymispäivä
   override def arvioituPäättymispäivä = None
-  override def lisätiedot: Option[OpiskeluoikeudenLisätiedot] = None
+  override def lisätiedot: Option[KelaOpiskeluoikeudenLisätiedot] = None
   def withHyväksyntämerkinnälläKorvattuArvosana: KelaPerusopetukseenValmistavanOpiskeluoikeus = copy(
     suoritukset = suoritukset.map(_.withHyväksyntämerkinnälläKorvattuArvosana)
   )
@@ -44,7 +44,7 @@ case class KelaPerusopetukseenValmistavanPäätasonSuoritus(
   osasuoritukset: Option[List[KelaPerusopetukseenValmistavanOsasuoritus]],
   tyyppi: schema.Koodistokoodiviite,
   kokonaislaajuus: Option[KelaLaajuus]
-) extends Suoritus {
+) extends KelaSuoritus {
   def withHyväksyntämerkinnälläKorvattuArvosana: KelaPerusopetukseenValmistavanPäätasonSuoritus = copy(
     osasuoritukset = osasuoritukset.map(_.map(_.withHyväksyntämerkinnälläKorvattuArvosana))
   )

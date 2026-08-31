@@ -94,8 +94,8 @@ case class KelaYlioppilastutkinnonPäätasonSuoritus(
   tyyppi: schema.Koodistokoodiviite,
   alkamispäivä: Option[LocalDate],
   pakollisetKokeetSuoritettu: Option[Boolean],
-) extends Suoritus {
-  override def withHyväksyntämerkinnälläKorvattuArvosana: Suoritus = this
+) extends KelaSuoritus {
+  override def withHyväksyntämerkinnälläKorvattuArvosana: KelaSuoritus = this
 }
 
 @Title("Ylioppilastutkinnon osasuoritus")

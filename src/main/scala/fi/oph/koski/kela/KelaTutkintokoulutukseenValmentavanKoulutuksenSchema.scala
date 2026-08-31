@@ -58,7 +58,7 @@ case class KelaTuvaOpiskeluoikeudenLisätiedot(
   majoitusetu: Option[KelaAikajakso],
   koulukoti: Option[List[KelaAikajakso]],
   koulutusvienti: Option[Boolean],
-) extends OpiskeluoikeudenLisätiedot
+) extends KelaOpiskeluoikeudenLisätiedot
 
 @Title("Tutkintokoulutukseen valmentavan koulutuksen suoritus")
 case class KelaTuvaPäätasonSuoritus(
@@ -67,7 +67,7 @@ case class KelaTuvaPäätasonSuoritus(
   koulutusmoduuli: KelaTuvaSuorituksenKoulutusmoduuli,
   vahvistus: Option[Vahvistus],
   override val osasuoritukset: Option[List[KelaTuvaOsasuoritus]],
-) extends Suoritus {
+) extends KelaSuoritus {
   def withHyväksyntämerkinnälläKorvattuArvosana: KelaTuvaPäätasonSuoritus = copy(
     osasuoritukset = osasuoritukset.map(_.map(_.withHyväksyntämerkinnälläKorvattuArvosana))
   )

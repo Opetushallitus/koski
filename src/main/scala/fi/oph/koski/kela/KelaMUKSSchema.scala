@@ -33,7 +33,7 @@ case class KelaMUKSOpiskeluoikeus(
   )
   override def sisältyyOpiskeluoikeuteen: Option[SisältäväOpiskeluoikeus] = None
 
-  override def lisätiedot: Option[OpiskeluoikeudenLisätiedot] = None
+  override def lisätiedot: Option[KelaOpiskeluoikeudenLisätiedot] = None
 }
 
 @Title("Muun kuin säännellyn koulutuksen päätason suoritus")
@@ -44,7 +44,7 @@ case class KelaMUKSPäätasonSuoritus(
   toimipiste: Toimipiste,
   osasuoritukset: Option[List[KelaMUKSOsasuoritus]],
   arviointi: Option[List[KelaMUKSArviointi]],
-) extends Suoritus  {
+) extends KelaSuoritus  {
   def withHyväksyntämerkinnälläKorvattuArvosana: KelaMUKSPäätasonSuoritus = copy(
     arviointi = arviointi.map(_.map(_.withHyväksyntämerkinnälläKorvattuArvosana)),
     osasuoritukset = osasuoritukset.map(_.map(_.withHyväksyntämerkinnälläKorvattuArvosana)),

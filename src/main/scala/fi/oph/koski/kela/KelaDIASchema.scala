@@ -50,7 +50,7 @@ case class KelaDIAOpiskeluoikeudenLisätiedot(
   ulkomainenVaihtoopiskelija: Option[Boolean],
   maksuttomuus: Option[List[KelaMaksuttomuus]],
   oikeuttaMaksuttomuuteenPidennetty: Option[List[KelaOikeuttaMaksuttomuuteenPidennetty]]
-) extends OpiskeluoikeudenLisätiedot
+) extends KelaOpiskeluoikeudenLisätiedot
 
 @Title("DIA-tutkinnon suoritus")
 case class KelaDIAPäätasonSuoritus(
@@ -59,7 +59,7 @@ case class KelaDIAPäätasonSuoritus(
   vahvistus: Option[Vahvistus],
   osasuoritukset: Option[List[KelaDIAOsasuoritus]],
   tyyppi: schema.Koodistokoodiviite,
-) extends Suoritus {
+) extends KelaSuoritus {
   def withOsasuorituksetVastaavuusKopioitu: KelaDIAPäätasonSuoritus = copy(
     osasuoritukset = osasuoritukset.map(os => os.map(_.withVastaavuusKopioitu))
   )
