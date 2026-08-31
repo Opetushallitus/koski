@@ -55,7 +55,7 @@ class KiosService(application: KoskiApplication) extends GlobalExecutionContext 
       }.filter(_.suoritukset.nonEmpty)
   }
 
-  private def josYOTutkintoNiinVahvistettu(s: Suoritus): Boolean = {
+  private def josYOTutkintoNiinVahvistettu(s: KiosSuoritus): Boolean = {
     s match {
       case s: KiosYlioppilastutkinnonPäätasonSuoritus
       => s.vahvistus.isDefined
@@ -64,7 +64,7 @@ class KiosService(application: KoskiApplication) extends GlobalExecutionContext 
     }
   }
 
-  private def josEBTutkintoNiinVahvistettu(s: Suoritus): Boolean = {
+  private def josEBTutkintoNiinVahvistettu(s: KiosSuoritus): Boolean = {
     s match {
       case s: KiosEBTutkinnonPäätasonSuoritus
       => s.vahvistus.isDefined
@@ -73,7 +73,7 @@ class KiosService(application: KoskiApplication) extends GlobalExecutionContext 
     }
   }
 
-  private def josDIATutkintoNiinVahvistettu(s: Suoritus): Boolean = {
+  private def josDIATutkintoNiinVahvistettu(s: KiosSuoritus): Boolean = {
     s match {
       case s: KiosDIATutkinnonSuoritus
       => s.vahvistus.isDefined

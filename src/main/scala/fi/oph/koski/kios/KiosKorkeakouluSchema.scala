@@ -92,7 +92,7 @@ case class KiosKorkeakoulunOpiskeluoikeus(
   luokittelu: Option[List[KiosKoodistokoodiviite]],
 ) extends KiosOpiskeluoikeus {
 
-  override def withSuoritukset(suoritukset: List[Suoritus]): KiosOpiskeluoikeus =
+  override def withSuoritukset(suoritukset: List[KiosSuoritus]): KiosOpiskeluoikeus =
     this.copy(
       suoritukset = suoritukset.collect { case s: KiosKorkeakoulututkinnonSuoritus => s }
     )
@@ -105,7 +105,7 @@ case class KiosKorkeakoulututkinnonSuoritus(
   tyyppi: schema.Koodistokoodiviite,
   vahvistus: Option[Vahvistus],
   toimipiste: Option[Toimipiste],
-) extends Suoritus
+) extends KiosSuoritus
 
 case class KiosKorkeakoulunOpiskeluoikeudenLisätiedot(
   virtaOpiskeluoikeudenTyyppi: Option[KiosKoodistokoodiviite],

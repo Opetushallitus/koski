@@ -48,7 +48,7 @@ trait KiosOpiskeluoikeus {
 
   def koulutustoimija: Option[Koulutustoimija]
 
-  def suoritukset: List[Suoritus]
+  def suoritukset: List[KiosSuoritus]
 
   @KoodistoUri("opiskeluoikeudentyyppi")
   @Discriminator
@@ -64,7 +64,7 @@ trait KiosOpiskeluoikeus {
 
   def lisätiedot: Option[KiosOpiskeluoikeudenLisätiedot]
 
-  def withSuoritukset(suoritukset: List[Suoritus]): KiosOpiskeluoikeus
+  def withSuoritukset(suoritukset: List[KiosSuoritus]): KiosOpiskeluoikeus
 }
 
 trait KiosKoskeenTallennettavaOpiskeluoikeus extends KiosOpiskeluoikeus {
@@ -78,7 +78,7 @@ case class SisältäväOpiskeluoikeus(
   oppilaitos: Oppilaitos
 )
 
-trait Suoritus {
+trait KiosSuoritus {
   def koulutusmoduuli: SuorituksenKoulutusmoduuli
 
   @Discriminator
@@ -173,7 +173,7 @@ case class KiosPäätasonSuoritus(
   tyyppi: schema.Koodistokoodiviite,
   vahvistus: Option[Vahvistus],
   toimipiste: Option[Toimipiste]
-) extends Suoritus
+) extends KiosSuoritus
 
 @Title("Päätason koulutusmoduuli")
 case class KiosPäätasonKoulutusmoduuli(

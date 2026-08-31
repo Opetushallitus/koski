@@ -56,7 +56,7 @@ case class KelaAmmatillisenOpiskeluoikeudenLisätiedot(
   maksuttomuus: Option[List[KelaMaksuttomuus]],
   oikeuttaMaksuttomuuteenPidennetty: Option[List[KelaOikeuttaMaksuttomuuteenPidennetty]],
   koulutusvienti: Option[Boolean],
-) extends OpiskeluoikeudenLisätiedot
+) extends KelaOpiskeluoikeudenLisätiedot
 
 @Title("Ammatillisen koulutuksen suoritus")
 case class KelaAmmatillinenPäätasonSuoritus(
@@ -78,7 +78,7 @@ case class KelaAmmatillinenPäätasonSuoritus(
   täydentääTutkintoa: Option[Tutkinto],     // Muu ammatillinen
   tutkinto: Option[Tutkinto],               // Näyttötutkintoon valmistava
   päättymispäivä: Option[LocalDate]         // Näyttötutkintoon valmistava
-) extends Suoritus {
+) extends KelaSuoritus {
   def withHyväksyntämerkinnälläKorvattuArvosana = copy(
     osasuoritukset = osasuoritukset.map(_.map(_.withHyväksyntämerkinnälläKorvattuArvosana))
   )
@@ -192,23 +192,23 @@ case class AmmatillisenTutkinnonOsanLisätieto(
   kuvaus: schema.LocalizedString
 )
 
-trait OsaamisenHankkimistapa {
+trait KelaOsaamisenHankkimistapa {
   def tunniste: KelaKoodistokoodiviite
 }
 
 case class OsaamisenHankkimistapaIlmanLisätietoja (
   tunniste: KelaKoodistokoodiviite
-) extends OsaamisenHankkimistapa
+) extends KelaOsaamisenHankkimistapa
 
 case class OppisopimuksellinenOsaamisenHankkimistapa (
   tunniste: KelaKoodistokoodiviite,
   oppisopimus: Oppisopimus
-) extends OsaamisenHankkimistapa
+) extends KelaOsaamisenHankkimistapa
 
 case class OsaamisenHankkimistapajakso(
   alku: LocalDate,
   loppu: Option[LocalDate],
-  osaamisenHankkimistapa: OsaamisenHankkimistapa
+  osaamisenHankkimistapa: KelaOsaamisenHankkimistapa
 )
 
 case class Työssäoppimisjakso(

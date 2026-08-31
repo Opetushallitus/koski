@@ -52,7 +52,7 @@ case class KelaPerusopetuksenLisäopetuksenOpiskeluoikeudenLisätiedot(
   joustavaPerusopetus: Option[KelaAikajakso],
   maksuttomuus: Option[List[KelaMaksuttomuus]],
   oikeuttaMaksuttomuuteenPidennetty: Option[List[KelaOikeuttaMaksuttomuuteenPidennetty]]
-) extends OpiskeluoikeudenLisätiedot
+) extends KelaOpiskeluoikeudenLisätiedot
 
 @Title("Perusopetuksen lisäopetuksen suoritus")
 case class KelaPerusopetuksenLisäopetuksenPäätasonSuoritus(
@@ -61,7 +61,7 @@ case class KelaPerusopetuksenLisäopetuksenPäätasonSuoritus(
   vahvistus: Option[Vahvistus],
   osasuoritukset: Option[List[KelaPerusopetuksenLisäopetuksenOsasuoritus]],
   tyyppi: schema.Koodistokoodiviite,
-) extends Suoritus {
+) extends KelaSuoritus {
   def withHyväksyntämerkinnälläKorvattuArvosana: KelaPerusopetuksenLisäopetuksenPäätasonSuoritus = copy(
     osasuoritukset = osasuoritukset.map(_.map(_.withHyväksyntämerkinnälläKorvattuArvosana))
   )

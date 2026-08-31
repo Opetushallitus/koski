@@ -46,9 +46,9 @@ trait KelaOpiskeluoikeus {
   def koulutustoimija: Option[Koulutustoimija]
   def sisältyyOpiskeluoikeuteen: Option[SisältäväOpiskeluoikeus]
   def arvioituPäättymispäivä: Option[LocalDate]
-  def tila: OpiskeluoikeudenTila
-  def suoritukset: List[Suoritus]
-  def lisätiedot: Option[OpiskeluoikeudenLisätiedot]
+  def tila: KelaOpiskeluoikeudenTilaTrait
+  def suoritukset: List[KelaSuoritus]
+  def lisätiedot: Option[KelaOpiskeluoikeudenLisätiedot]
   @KoodistoUri("opiskeluoikeudentyyppi")
   @Discriminator
   def tyyppi: schema.Koodistokoodiviite
@@ -73,28 +73,28 @@ case class SisältäväOpiskeluoikeus(
 
 case class KelaOpiskeluoikeudenTila(
   opiskeluoikeusjaksot: List[KelaOpiskeluoikeusjakso]
-) extends OpiskeluoikeudenTila
+) extends KelaOpiskeluoikeudenTilaTrait
 
 case class KelaOpiskeluoikeudenTilaRahoitustiedoilla(
   opiskeluoikeusjaksot: List[KelaOpiskeluoikeusjaksoRahoituksella]
-) extends OpiskeluoikeudenTila
+) extends KelaOpiskeluoikeudenTilaTrait
 
-trait OpiskeluoikeudenTila {
-  def opiskeluoikeusjaksot: List[Opiskeluoikeusjakso]
+trait KelaOpiskeluoikeudenTilaTrait {
+  def opiskeluoikeusjaksot: List[KelaOpiskeluoikeusjaksoTrait]
 }
 
 case class KelaOpiskeluoikeusjakso(
   alku: LocalDate,
   tila: KelaKoodistokoodiviite,
-) extends Opiskeluoikeusjakso
+) extends KelaOpiskeluoikeusjaksoTrait
 
 case class KelaOpiskeluoikeusjaksoRahoituksella(
   alku: LocalDate,
   tila: KelaKoodistokoodiviite,
   opintojenRahoitus: Option[KelaKoodistokoodiviite]
-) extends Opiskeluoikeusjakso
+) extends KelaOpiskeluoikeusjaksoTrait
 
-trait Opiskeluoikeusjakso {
+trait KelaOpiskeluoikeusjaksoTrait {
   def alku: LocalDate
   def tila: KelaKoodistokoodiviite
   def opiskeluoikeusPäättynyt = schema.Opiskeluoikeus.OpiskeluoikeudenPäättymistila.koski(tila.koodiarvo)
@@ -106,14 +106,14 @@ case class OrganisaatioHistoria(
   koulutustoimija: Option[Koulutustoimija]
 )
 
-trait OpiskeluoikeudenLisätiedot
+trait KelaOpiskeluoikeudenLisätiedot
 
-trait Suoritus{
+trait KelaSuoritus{
   def osasuoritukset: Option[List[Osasuoritus]]
   def koulutusmoduuli: SuorituksenKoulutusmoduuli
   @Discriminator
   def tyyppi: schema.Koodistokoodiviite
-  def withHyväksyntämerkinnälläKorvattuArvosana: Suoritus
+  def withHyväksyntämerkinnälläKorvattuArvosana: KelaSuoritus
 }
 
 trait Osasuoritus{

@@ -39,7 +39,7 @@ case class KelaVapaanSivistystyönOpiskeluoikeus(
 case class KelaVapaanSivistystyönOpiskeluoikeudenLisätiedot(
   maksuttomuus: Option[List[KelaMaksuttomuus]],
   oikeuttaMaksuttomuuteenPidennetty: Option[List[KelaOikeuttaMaksuttomuuteenPidennetty]]
-) extends OpiskeluoikeudenLisätiedot
+) extends KelaOpiskeluoikeudenLisätiedot
 
 @Title("Vapaan sivistystyön suoritus")
 case class KelaVapaanSivistystyönPäätasonSuoritus(
@@ -140,7 +140,7 @@ case class KelaVapaanSivistystyönJotpaOsasuoritus(
   )
 }
 
-trait VstSuoritus extends Suoritus {
+trait VstSuoritus extends KelaSuoritus {
   def withHyväksyntämerkinnälläKorvattuArvosana: VstSuoritus
 }
 

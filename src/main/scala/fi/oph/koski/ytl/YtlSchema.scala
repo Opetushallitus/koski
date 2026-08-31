@@ -62,7 +62,7 @@ trait YtlOpiskeluoikeus {
   def oppilaitos: Option[Oppilaitos]
   def koulutustoimija: Option[Koulutustoimija]
   def tila: OpiskeluoikeudenTila
-  def suoritukset: List[Suoritus]
+  def suoritukset: List[YtlGenericSuoritus]
   def lisätiedot: Option[OpiskeluoikeudenLisätiedot]
   def organisaatiohistoria: Option[List[OrganisaatioHistoria]]
   def alkamispäivä: Option[LocalDate]
@@ -91,20 +91,20 @@ trait LaajatSuoritustiedotSisältäväYtlOpiskeluoikeus extends YtlOpiskeluoikeu
 
   private def suoritustenVahvistustenOrganisaatiot =
     this.suoritukset.flatMap(_.vahvistus.flatMap(_.myöntäjäOrganisaatio.flatMap {
-    case o: OrganisaatioWithOid => Some(o.oid)
+    case o: YtlOrganisaatioWithOid => Some(o.oid)
     case _ => None
   }))
 }
 
-trait Suoritus {
+trait YtlGenericSuoritus {
   @KoodistoUri("suorituksentyyppi")
   @Discriminator
   def tyyppi: schema.Koodistokoodiviite
 }
 
-trait SuoritusLaajatTiedot extends Suoritus {
+trait SuoritusLaajatTiedot extends YtlGenericSuoritus {
   def koulutusmoduuli: SuorituksenKoulutusmoduuli
-  def toimipiste: Option[OrganisaatioWithOid]
+  def toimipiste: Option[YtlOrganisaatioWithOid]
   def vahvistus: Option[Vahvistus]
   @KoodistoUri("kieli")
   def suorituskieli: schema.Koodistokoodiviite
@@ -150,7 +150,7 @@ case class LukionSuoritus(
   @KoodistoKoodiarvo("lukionaineopinnot")
   @KoodistoKoodiarvo("lukionoppimaara")
   tyyppi: schema.Koodistokoodiviite
-) extends Suoritus
+) extends YtlGenericSuoritus
 
 @Title("Ammatillinen opiskeluoikeus")
 case class YtlAmmatillinenOpiskeluoikeus(
@@ -189,7 +189,7 @@ case class AmmatillinenSuoritus(
   @KoodistoKoodiarvo("ammatillinentutkinto")
   tyyppi: schema.Koodistokoodiviite,
   koulutusmoduuli: AmmatillinenTutkintoKoulutus,
-  toimipiste: Option[OrganisaatioWithOid],
+  toimipiste: Option[YtlOrganisaatioWithOid],
   vahvistus: Option[Vahvistus],
   suorituskieli: schema.Koodistokoodiviite
 ) extends SuoritusLaajatTiedot
@@ -240,7 +240,7 @@ case class IBSuoritus(
   @KoodistoKoodiarvo("ibtutkinto")
   tyyppi: schema.Koodistokoodiviite,
   koulutusmoduuli: IBTutkinto,
-  toimipiste: Option[OrganisaatioWithOid],
+  toimipiste: Option[YtlOrganisaatioWithOid],
   vahvistus: Option[Vahvistus],
   suorituskieli: schema.Koodistokoodiviite
 ) extends SuoritusLaajatTiedot
@@ -290,7 +290,7 @@ case class InternationalSchoolSuoritus(
   @KoodistoKoodiarvo("internationalschooldiplomavuosiluokka")
   tyyppi: schema.Koodistokoodiviite,
   koulutusmoduuli: InternationalSchoolLuokkaAste,
-  toimipiste: Option[OrganisaatioWithOid],
+  toimipiste: Option[YtlOrganisaatioWithOid],
   vahvistus: Option[Vahvistus],
   suorituskieli: schema.Koodistokoodiviite
 ) extends SuoritusLaajatTiedot
@@ -306,9 +306,9 @@ case class InternationalSchoolLuokkaAste(
   diplomaType: schema.Koodistokoodiviite
 ) extends SuorituksenKoulutusmoduuli
 
-trait Organisaatio
+trait YtlOrganisaatio
 
-trait OrganisaatioWithOid extends Organisaatio {
+trait YtlOrganisaatioWithOid extends YtlOrganisaatio {
   @Discriminator
   def oid: String
   def nimi: Option[schema.LocalizedString]
@@ -321,7 +321,7 @@ case class OidOrganisaatio(
   oid: String,
   nimi: Option[schema.LocalizedString],
   kotipaikka: Option[schema.Koodistokoodiviite]
-) extends OrganisaatioWithOid
+) extends YtlOrganisaatioWithOid
 
 case class Koulutustoimija(
   oid: String,
@@ -330,7 +330,7 @@ case class Koulutustoimija(
   @Title("Y-tunnus")
   yTunnus: Option[String],
   kotipaikka: Option[schema.Koodistokoodiviite]
-) extends OrganisaatioWithOid
+) extends YtlOrganisaatioWithOid
 
 case class Oppilaitos(
   oid: String,
@@ -339,27 +339,27 @@ case class Oppilaitos(
   oppilaitosnumero: Option[schema.Koodistokoodiviite],
   nimi: Option[schema.LocalizedString],
   kotipaikka: Option[schema.Koodistokoodiviite]
-) extends OrganisaatioWithOid
+) extends YtlOrganisaatioWithOid
 
 @IgnoreInAnyOfDeserialization
 case class Toimipiste(
   oid: String,
   nimi: Option[schema.LocalizedString],
   kotipaikka: Option[schema.Koodistokoodiviite]
-) extends OrganisaatioWithOid
+) extends YtlOrganisaatioWithOid
 
 case class Yritys(
   nimi: schema.LocalizedString,
   @Discriminator
   @Title("Y-tunnus")
   yTunnus: String
-) extends Organisaatio
+) extends YtlOrganisaatio
 
 case class Tutkintotoimikunta(
   nimi: schema.LocalizedString,
   @Discriminator
   tutkintotoimikunnanNumero: String
-) extends Organisaatio
+) extends YtlOrganisaatio
 
 case class OpiskeluoikeudenTila(
   opiskeluoikeusjaksot: List[Opiskeluoikeusjakso]
@@ -373,7 +373,7 @@ case class Opiskeluoikeusjakso(
 
 case class Vahvistus(
   päivä: LocalDate,
-  myöntäjäOrganisaatio: Option[Organisaatio]
+  myöntäjäOrganisaatio: Option[YtlOrganisaatio]
 )
 
 case class OpiskeluoikeudenLisätiedot(

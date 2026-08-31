@@ -21,6 +21,8 @@ class LocalizedSchemasSpec extends AnyFreeSpec with TestEnvironment with Matcher
   "all registered viewer schemas are enriched with translations" - {
     val schemaNames = List(
       "kela-oppija-schema.json",
+      "kios-oppija-schema.json",
+      "ytl-oppija-schema.json",
       "migri-oppija-schema.json",
       "valpas-internal-laaja-schema.json",
       "omadata-oauth2-kaikki-tiedot-oppija-schema.json",

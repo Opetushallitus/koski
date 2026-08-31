@@ -48,7 +48,7 @@ case class KelaIBPäätasonSuoritus(
   omanÄidinkielenOpinnot: Option[KelaLukionOmanÄidinkielenOpinnot],
   puhviKoe: Option[KelaPuhviKoe2019],
   suullisenKielitaidonKokeet: Option[List[KelaSuullisenKielitaidonKoe2019]],
-) extends Suoritus {
+) extends KelaSuoritus {
   def withHyväksyntämerkinnälläKorvattuArvosana: KelaIBPäätasonSuoritus = copy(
     osasuoritukset = osasuoritukset.map(_.map(_.withHyväksyntämerkinnälläKorvattuArvosana)),
     theoryOfKnowledge = theoryOfKnowledge.map(_.withHyväksyntämerkinnälläKorvattuArvosana),

@@ -48,7 +48,7 @@ case class KelaAikuistenPerusopetuksenOpiskeluoikeudenLisätiedot(
   tehostetunTuenPäätökset: Option[List[KelaTehostetunTuenPäätös]],
   maksuttomuus: Option[List[KelaMaksuttomuus]],
   oikeuttaMaksuttomuuteenPidennetty: Option[List[KelaOikeuttaMaksuttomuuteenPidennetty]]
-) extends OpiskeluoikeudenLisätiedot
+) extends KelaOpiskeluoikeudenLisätiedot
 
 @Title("Aikuisten perusopetuksen suoritus")
 case class KelaAikuistenPerusopetuksenSuoritus(
@@ -59,7 +59,7 @@ case class KelaAikuistenPerusopetuksenSuoritus(
   tyyppi: schema.Koodistokoodiviite,
   arviointi: Option[List[KelaYleissivistävänKoulutuksenArviointi]],
   omanÄidinkielenOpinnot: Option[KelaOmanÄidinkielenOpinnot]
-) extends Suoritus {
+) extends KelaSuoritus {
   def withHyväksyntämerkinnälläKorvattuArvosana: KelaAikuistenPerusopetuksenSuoritus = copy(
     osasuoritukset = osasuoritukset.map(_.map(_.withHyväksyntämerkinnälläKorvattuArvosana)),
     arviointi = arviointi.map(_.map(_.withHyväksyntämerkinnälläKorvattuArvosana)),

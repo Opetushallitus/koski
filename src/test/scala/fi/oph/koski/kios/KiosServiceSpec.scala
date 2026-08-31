@@ -285,7 +285,7 @@ class KiosServiceSpec
 
   private def verifyOpiskeluoikeusJaSuoritus(
     actualOo: KiosOpiskeluoikeus,
-    actualSuoritukset: Seq[Suoritus],
+    actualSuoritukset: Seq[KiosSuoritus],
     expectedOoData: schema.Opiskeluoikeus,
     expectedSuoritusDatat: Seq[schema.Suoritus]
   ): Unit = {

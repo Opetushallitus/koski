@@ -39,7 +39,7 @@ case class KelaInternationalSchoolOpiskeluoikeudenLisätiedot(
   ulkomaanjaksot: Option[List[Ulkomaanjakso]],
   maksuttomuus: Option[List[KelaMaksuttomuus]],
   oikeuttaMaksuttomuuteenPidennetty: Option[List[KelaOikeuttaMaksuttomuuteenPidennetty]]
-) extends OpiskeluoikeudenLisätiedot
+) extends KelaOpiskeluoikeudenLisätiedot
 
 @Title("International school suoritus")
 case class KelaInternationalSchoolPäätasonSuoritus(
@@ -49,7 +49,7 @@ case class KelaInternationalSchoolPäätasonSuoritus(
   osasuoritukset: Option[List[KelaInternationalSchoolOsasuoritus]],
   tyyppi: schema.Koodistokoodiviite,
   alkamispäivä: Option[LocalDate]
-) extends Suoritus {
+) extends KelaSuoritus {
   def withHyväksyntämerkinnälläKorvattuArvosana: KelaInternationalSchoolPäätasonSuoritus = copy(
     osasuoritukset = osasuoritukset.map(_.map(_.withHyväksyntämerkinnälläKorvattuArvosana))
   )

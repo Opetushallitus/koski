@@ -55,7 +55,7 @@ case class KelaPerusopetuksenOpiskeluoikeudenLisätiedot(
   opetuksenJärjestäminenVammanSairaudenTaiRajoitteenPerusteella: Option[List[KelaAikajakso]],
   @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KELA_LAAJA))
   toimintaAlueittainOpiskelu: Option[List[KelaAikajakso]]
-) extends OpiskeluoikeudenLisätiedot
+) extends KelaOpiskeluoikeudenLisätiedot
 
 @Title("Perusopetuksen suoritus")
 case class KelaPerusopetuksenSuoritus(
@@ -68,7 +68,7 @@ case class KelaPerusopetuksenSuoritus(
   jääLuokalle: Option[Boolean],
   arviointi: Option[List[KelaYleissivistävänKoulutuksenArviointi]],
   omanÄidinkielenOpinnot: Option[KelaOmanÄidinkielenOpinnot]
-) extends Suoritus {
+) extends KelaSuoritus {
   def withHyväksyntämerkinnälläKorvattuArvosana: KelaPerusopetuksenSuoritus = copy(
     osasuoritukset = osasuoritukset.map(_.map(_.withHyväksyntämerkinnälläKorvattuArvosana)),
     arviointi = arviointi.map(_.map(_.withHyväksyntämerkinnälläKorvattuArvosana)),

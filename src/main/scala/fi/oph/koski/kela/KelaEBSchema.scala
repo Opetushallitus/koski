@@ -29,7 +29,7 @@ case class KelaEBOpiskeluoikeus(
   )
 
   override def sisältyyOpiskeluoikeuteen: Option[SisältäväOpiskeluoikeus] = None
-  override def lisätiedot: Option[OpiskeluoikeudenLisätiedot] = None
+  override def lisätiedot: Option[KelaOpiskeluoikeudenLisätiedot] = None
 }
 
 @Title("EB-tutkinnon suoritus")
@@ -39,7 +39,7 @@ case class KelaEBTutkinnonSuoritus(
   vahvistus: Option[Vahvistus],
   tyyppi: schema.Koodistokoodiviite,
   override val osasuoritukset: Option[List[KelaEBTutkinnonOsasuoritus]]
-) extends Suoritus {
+) extends KelaSuoritus {
   override def withHyväksyntämerkinnälläKorvattuArvosana: KelaEBTutkinnonSuoritus = copy(
     osasuoritukset = osasuoritukset.map(_.map(_.withHyväksyntämerkinnälläKorvattuArvosana))
   )

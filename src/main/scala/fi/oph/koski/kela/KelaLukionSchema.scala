@@ -41,7 +41,7 @@ case class KelaLukionOpiskeluoikeudenLisätiedot(
   ulkomainenVaihtoopiskelija: Option[Boolean],
   maksuttomuus: Option[List[KelaMaksuttomuus]],
   oikeuttaMaksuttomuuteenPidennetty: Option[List[KelaOikeuttaMaksuttomuuteenPidennetty]]
-) extends OpiskeluoikeudenLisätiedot
+) extends KelaOpiskeluoikeudenLisätiedot
 
 @Title("Lukion suoritus")
 case class KelaLukionPäätasonSuoritus(
@@ -54,7 +54,7 @@ case class KelaLukionPäätasonSuoritus(
   puhviKoe: Option[KelaPuhviKoe2019],
   suullisenKielitaidonKokeet: Option[List[KelaSuullisenKielitaidonKoe2019]],
   tyyppi: schema.Koodistokoodiviite,
-) extends Suoritus {
+) extends KelaSuoritus {
   def withHyväksyntämerkinnälläKorvattuArvosana: KelaLukionPäätasonSuoritus = copy(
     osasuoritukset = osasuoritukset.map(_.map(_.withHyväksyntämerkinnälläKorvattuArvosana)),
     omanÄidinkielenOpinnot = omanÄidinkielenOpinnot.map(_.withHyväksyntämerkinnälläKorvattuArvosana),
