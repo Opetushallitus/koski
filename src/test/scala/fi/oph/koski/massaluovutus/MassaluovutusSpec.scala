@@ -176,7 +176,10 @@ class MassaluovutusSpec extends AnyFreeSpec with MassaluovutusTestMethods with M
         }
         val complete = waitForCompletion(queryId, user)
 
-        complete.files should have length 23
+        // 22, ei 23: Jyväskylän yliopiston esiopetus Jyväskylän normaalikoulussa ei kuulu
+        // Helsingin piiriin, vaikka koulu onkin Helsingin ostopalveluyksikkö.
+        // Ks. "Ostopalveluyksiköstä palautetaan vain ostajan omat opiskeluoikeudet".
+        complete.files should have length 22
         complete.files.foreach(verifyResult(_, user))
 
         AuditLogTester.verifyLastAuditLogMessageForOperation(Map(
@@ -185,6 +188,35 @@ class MassaluovutusSpec extends AnyFreeSpec with MassaluovutusTestMethods with M
             "hakuEhto" -> "alkanutAikaisintaan=2020-01-01&organisaatio=1.2.246.562.10.346830761110",
           ),
         ))
+      }
+
+      // Helsingillä on ostopalveluna hankittua esiopetusta Jyväskylän normaalikoulussa, joten
+      // koulu on mukana organisaationAlaisetOrganisaatiot-piirissä, vaikka se kuuluu Jyväskylän
+      // yliopistolle. Piiriin kuuluvat kuitenkin vain Helsingin omat opiskeluoikeudet: koulun
+      // oman koulutustoimijan tietueisiin ei ole lukuoikeutta.
+      "Ostopalveluyksiköstä palautetaan vain ostajan omat opiskeluoikeudet" in {
+        val user = MockUsers.helsinkiKatselija
+        val queryId = addQuerySuccessfully(query, user)(_.queryId)
+        val complete = waitForCompletion(queryId, user)
+
+        // Helsingin oma ostopalveluesiopetus samassa koulussa on edelleen mukana.
+        complete.files.find(_.contains(KoskiSpecificMockOppijat.eskari.oid)) shouldBe defined
+
+        // Jyväskylän yliopiston esiopetus samassa koulussa ei ole: oppijalla ei ole muita
+        // Helsingin piiriin kuuluvia opiskeluoikeuksia, joten tiedostoa ei synny lainkaan.
+        complete.files.find(_.contains(KoskiSpecificMockOppijat.esikoululainen2025.oid)) shouldBe None
+
+        // Oppija, jolla on sekä Helsingin ammatillinen että Jyväskylän yliopiston lukio-
+        // opiskeluoikeus samassa koulussa: tiedosto syntyy, mutta vain omasta tietueesta.
+        val osittain = complete.files.find(_.contains(KoskiSpecificMockOppijat.maksuttomuuttaPidennetty2.oid))
+        osittain shouldBe defined
+        verifyResultAndContent(osittain.get, user) {
+          val koulutusmuodot = (JsonMethods.parse(body) \ "opiskeluoikeudet")
+            .asInstanceOf[JArray].arr
+            .map(oo => (oo \ "tyyppi" \ "koodiarvo").extract[String])
+          koulutusmuodot should contain("ammatillinenkoulutus")
+          koulutusmuodot should not contain "lukiokoulutus"
+        }
       }
 
       "JSON-tulostiedostoihin sisältyy linkitetytOidit ja henkilö.oid on master oid" in {
@@ -251,7 +283,9 @@ class MassaluovutusSpec extends AnyFreeSpec with MassaluovutusTestMethods with M
         }
         val complete = waitForCompletion(queryId, user)
 
-        complete.files should have length 2
+        // Vain Helsingin oma ostopalveluesiopetus. Aiemmin tässä oli 2, koska mukaan tuli myös
+        // Jyväskylän yliopiston esiopetus Helsingin ostopalveluyksiköstä.
+        complete.files should have length 1
       }
     }
 
@@ -323,7 +357,9 @@ class MassaluovutusSpec extends AnyFreeSpec with MassaluovutusTestMethods with M
         }
         val complete = waitForCompletion(queryId, user)
 
-        complete.files should have length 21
+        // 20, ei 21: yksi partitiotiedosto vähemmän, kun ostopalveluyksikön vieras
+        // esiopetuksen opiskeluoikeus ei enää kuulu piiriin.
+        complete.files should have length 20
         complete.files.foreach(verifyResult(_, user))
       }
 

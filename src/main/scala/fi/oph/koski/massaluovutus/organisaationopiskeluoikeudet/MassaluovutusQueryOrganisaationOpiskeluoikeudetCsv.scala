@@ -2,7 +2,7 @@ package fi.oph.koski.massaluovutus.organisaationopiskeluoikeudet
 
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.koskiuser.KoskiSpecificSession
-import fi.oph.koski.organisaatio.MockOrganisaatiot
+import fi.oph.koski.organisaatio.{MockOrganisaatiot, OrganisaationAlaisetOrganisaatiot}
 import fi.oph.koski.massaluovutus.MassaluovutusUtils.QueryResourceManager
 import fi.oph.koski.massaluovutus.{CsvStream, PartitionSupport, QueryFormat, QueryResultWriter}
 import fi.oph.koski.raportointikanta._
@@ -51,12 +51,12 @@ case class MassaluovutusQueryOrganisaationOpiskeluoikeudetCsv(
   def fetchData(
     application: KoskiApplication,
     writer: QueryResultWriter,
-    oppilaitosOids: List[Organisaatio.Oid],
+    organisaatiot: OrganisaationAlaisetOrganisaatiot,
   )(implicit user: KoskiSpecificSession): Either[String, Unit] = QueryResourceManager(logger) { mgr =>
     implicit val manager: Using.Manager = mgr
 
     val db = getDb(application)
-    val filters = defaultBaseFilter(oppilaitosOids)
+    val filters = defaultBaseFilter(organisaatiot)
     val oppijaOids = getOppijaOids(db, filters)
 
     val partitionSize = if (format == QueryFormat.csvPartition) Some(QueryResultWriter.defaultPartitionSize(application.config)) else None

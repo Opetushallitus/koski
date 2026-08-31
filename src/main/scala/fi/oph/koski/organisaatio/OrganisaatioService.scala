@@ -37,17 +37,30 @@ class OrganisaatioService(application: KoskiApplication) {
     }
   }
 
-  def organisaationAlaisetOrganisaatiot(organisaatioOid: Oid)(implicit user: KoskiSpecificSession): List[Oid] = {
-    organisaatioRepository.getOrganisaatio(organisaatioOid).toList.flatMap { org =>
-      val children = organisaatioRepository.getChildOids(org.oid).toList.flatten
-      if (org.toKoulutustoimija.isDefined) {
-        val koulutustoimijat = user.varhaiskasvatusKoulutustoimijat + org.toKoulutustoimija.get.oid
-        children ++ koulutustoimijoidenOstopalveluOrganisaatiot(koulutustoimijat).map(_.oid)
-      } else {
-        children
+  /**
+   * Organisaatiot, joiden opiskeluoikeudet ovat annetun organisaation kyselyiden piirissä.
+   *
+   * Tulos on tarkoituksella kaksiosainen, eikä yhtä litteää oid-listaa tarjota: ostopalveluna
+   * hankitun varhaiskasvatuksen toimipisteet eivät ole organisaation omassa hierarkiassa, joten
+   * niiden opiskeluoikeuksista kuuluvat piiriin vain ostavan koulutustoimijan omat. Yksikössä on
+   * tyypillisesti myös sen oman koulutustoimijan sekä muiden ostajien opiskeluoikeuksia, eikä
+   * niihin ole lukuoikeutta — vrt. KoskiSpecificSession.hasVarhaiskasvatusAccess, joka vaatii
+   * sekä toimipisteen että koulutustoimijan täsmäävän.
+   */
+  def organisaationAlaisetOrganisaatiot(organisaatioOid: Oid)(implicit user: KoskiSpecificSession): OrganisaationAlaisetOrganisaatiot =
+    organisaatioRepository.getOrganisaatio(organisaatioOid).map { org =>
+      val hierarkia = organisaatioRepository.getChildOids(org.oid).toList.flatten
+      org.toKoulutustoimija match {
+        case Some(koulutustoimija) =>
+          OrganisaationAlaisetOrganisaatiot(
+            koulutustoimija = Some(koulutustoimija.oid),
+            hierarkia = hierarkia,
+            ostopalvelu = koulutustoimijoidenOstopalveluOrganisaatiot(Set(koulutustoimija.oid)).map(_.oid),
+          )
+        case None =>
+          OrganisaationAlaisetOrganisaatiot(koulutustoimija = None, hierarkia = hierarkia, ostopalvelu = Nil)
       }
-    }
-  }
+    }.getOrElse(OrganisaationAlaisetOrganisaatiot(koulutustoimija = None, hierarkia = Nil, ostopalvelu = Nil))
 
   def omatOstopalveluOrganisaatiot(implicit user: Session): List[OrganisaatioHierarkia] =
     koulutustoimijoidenOstopalveluOrganisaatiot(user.varhaiskasvatusKoulutustoimijat)
@@ -144,3 +157,17 @@ class OrganisaatioService(application: KoskiApplication) {
 
   private def organisaatioNimi(implicit user: Session): OrganisaatioHierarkia => String = _.nimi.get(user.lang)
 }
+
+/**
+ * @param koulutustoimija Kysytyn organisaation koulutustoimija, jos organisaatio on sellainen.
+ *                        Ostopalveluyksiköiden opiskeluoikeuksista piiriin kuuluvat vain tämän
+ *                        koulutustoimijan omat.
+ * @param hierarkia       Organisaation oma hierarkia. Näiden opiskeluoikeudet ovat piirissä
+ *                        sellaisenaan.
+ * @param ostopalvelu     Hierarkian ulkopuoliset varhaiskasvatuksen ostopalveluyksiköt.
+ */
+case class OrganisaationAlaisetOrganisaatiot(
+  koulutustoimija: Option[Oid],
+  hierarkia: List[Oid],
+  ostopalvelu: List[Oid],
+)
