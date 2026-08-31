@@ -54,6 +54,10 @@ OAuth2-rajapinnassa on käytössä:
     <br/>Tämä riippuu kumppanin käyttötapauksesta: esim. tarvitaanko kansalaisen tiedot vain yhden kerran, jolloin lyhyt voimassaoloaika riittää, vai tarvitseeko tietoihin päästä käsiksi pidemmän aikaa ilman,
     että kansalaiselta tarvitsee pyytää suostumusta uudestaan.
   </dd>
+  <dt>(8) Kirjautumistapa kumppanin palvelussa</dt>
+  <dd>
+    Tieto siitä, kirjaudutaanko kumppanin palveluun Suomi.fi-tunnistautumisella vai jollain muulla tavalla, ks. myöhempi Suomi.fi-tunnistautumisen rajoitukset -kappale.
+  </dd>
 </dl>
 
 ## Tiedot rajapinnasta
@@ -222,6 +226,23 @@ hyökkääjän toimesta, mikäli kansalainen on saatu käyttämään selainta jo
 Myös saadun datan sisällön kanssa tulee olla huolellinen. Kansalainen pystyy teknisesti muuttamaan kumppanin pyytämän scopen ennen suostumuksen antamista. Tässä tapauksessa kumppani saattaa
 saada kansalaisen tiedot eri scopella kuin itse pyysi. Esimerkiksi: jos kumppanin palvelulla on oikeudet sekä suoritettuihin tutkintoihin, että aktiivisiin ja päättyneisiin
 opintoihin, voi edellisiä pyytäessään saadakin jälkimmäiset, joiden tulkitseminen suoraviivaisesti suoritetuiksi tutkinnoiksi olisi virheellistä.
+
+## Suomi.fi-tunnistautumisen rajoitukset
+
+Omadata-pakettien kautta saatavien tietojen toteutuksessa on rajoituksia koskien Suomi.fi-tunnistautumista ja siitä uloskirjautumista.
+Tietojen vastaanottajan palvelulla on mahdollista toteuttaa kirjautuminen omaan palveluunsa seuraavilla kahdella tavalla:
+
+1. Tietojen vastaanottajan palveluun kirjaudutaan muulla tavoin kuin Suomi.fi-tunnistautumisella. Tällöin Opetushallituksen päässä
+tapahtuu vahva Suomi.fi-tunnistautuminen ja siitä automaattinen uloskirjautuminen, kun henkilö on antanut suostumuksen tietojen
+luovuttamiseen ja palaa takaisin Tietojen vastaanottajan palveluun.
+
+2. Tietojen vastaanottajan palveluun kirjaudutaan Suomi.fi-tunnistautumisella. Tällöin automaattinen uloskirjautuminen ohitetaan
+Opetushallituksen päässä sen jälkeen, kun henkilö on antanut suostumuksen tietojen luovuttamiseen ja siirtyy takaisin Tietojen
+vastaanottajan palveluun. Uloskirjautuminen Suomi.fi-palvelusta jää Tietojen vastaanottajan palvelun vastuulle.
+Tällöin Tietojen vastaanottajan palvelu ei voi jatkossakaan tarjota muita kirjautumistapoja KOSKI-dataa hyödyntäessään.
+Jos palvelussa on tarjolla muita kirjautumistapoja, niitä käyttäneiltä henkilöiltä on estettävä KOSKI-datan
+hakeminen kokonaan tai vaatia jo Tietojen vastaanottajan palvelussa Suomi.fi-tunnistautumista, ennen kuin henkilö lähtee
+antamaan suostumusta tietojen hakemiseksi Opetushallitukselta.
 
 ## Esimerkkiapplikaatio
 
