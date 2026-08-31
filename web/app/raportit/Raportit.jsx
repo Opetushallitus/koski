@@ -264,7 +264,15 @@ const kaikkiRaportitKategorioittain = [
         // mikä tahansa raportit-oikeus. visibleForAllOrgs on tässä
         // väliaikainen näkyvyys-shimmi kunnes RaportinTyyppi-kytkentä on
         // tehty backendissä.
-        visibleForAllOrgs: true
+        visibleForAllOrgs: true,
+        // Raportin tulostetaan opetuksen järjestäjän (koulutustoimija) mukaan, ei
+        // oppilaitoksittain, joten valittavissa vain koulutustoimija-/varhaiskasvatuksen
+        // järjestäjä -tyyppiset organisaatiot — muut näkyvät puussa navigointia varten,
+        // eivät valittavina.
+        selectableOrganisaatiotyypit: [
+          'KOULUTUSTOIMIJA',
+          'VARHAISKASVATUKSEN_JARJESTAJA'
+        ]
       }
     ]
   }
@@ -273,9 +281,15 @@ const kaikkiRaportitKategorioittain = [
 const getEnrichedRaportitKategorioittain = (organisaatiot) =>
   kaikkiRaportitKategorioittain.map((tab) => {
     const raportit = tab.raportit.map((raportti) => {
-      const visibleOrganisaatiot = raportti.visibleForAllOrgs
-        ? organisaatiot.map(organisaatioWithForcedVisibility)
-        : filterVisibleOrganisaatioTree(raportti.id, organisaatiot)
+      const visibleOrganisaatiot = raportti.selectableOrganisaatiotyypit
+        ? organisaatiot.map(
+            organisaatioWithForcedVisibilityRestrictedToTyypit(
+              raportti.selectableOrganisaatiotyypit
+            )
+          )
+        : raportti.visibleForAllOrgs
+          ? organisaatiot.map(organisaatioWithForcedVisibility)
+          : filterVisibleOrganisaatioTree(raportti.id, organisaatiot)
 
       return {
         ...raportti,
@@ -319,6 +333,22 @@ const organisaatioWithForcedVisibility = (organisaatio) => ({
   selectable: true,
   visible: true
 })
+
+// Näyttää koko organisaatiopuun (kuten organisaatioWithForcedVisibility), mutta rajaa
+// valittavissa olevat organisaatiot niihin joiden organisaatiotyypit osuu annettuun listaan
+// (esim. vain koulutustoimijat/varhaiskasvatuksen järjestäjät) — muut solmut näkyvät puussa
+// navigointia varten mutta eivät ole valittavissa.
+const organisaatioWithForcedVisibilityRestrictedToTyypit =
+  (tyypit) => (organisaatio) => ({
+    ...organisaatio,
+    children: organisaatio.children.map(
+      organisaatioWithForcedVisibilityRestrictedToTyypit(tyypit)
+    ),
+    selectable: organisaatio.organisaatiotyypit.some((tyyppi) =>
+      tyypit.includes(tyyppi)
+    ),
+    visible: true
+  })
 
 const organiaatiotTreeIncludes = (organisaatiot, oid) =>
   organisaatiot.some(
