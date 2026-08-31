@@ -1059,8 +1059,8 @@ describe('Lukiokoulutus', function () {
       it('vaihtoehtoina on ainoastaan "valtionosuusrahoitteinen koulutus", "muuta kautta rahoitettu" ja "Lukuvuosimaksu"', async function () {
         expect(await addOppija.opintojenRahoitukset()).to.deep.equal([
           'Valtionosuusrahoitteinen koulutus',
-          'Muuta kautta rahoitettu',
-          'Lukuvuosimaksu'
+          'Lukuvuosimaksu',
+          'Muuta kautta rahoitettu'
         ])
       })
 

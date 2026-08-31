@@ -72,15 +72,15 @@ describe('Ammatillinen koulutus 1', function () {
             'Työvoimakoulutus (valtiosopimukseen perustuva rahoitus)',
             'Jatkuvan oppimisen ja työllisyyden palvelukeskuksen rahoitus',
             'Jatkuvan oppimisen ja työllisyyden palvelukeskuksen rahoitus (RRF)',
+            'Lukuvuosimaksu',
+            'Tilauskoulutus',
             'Työvoimakoulutus ely-keskukset ja työ- ja elinkeinotoimistot (kansallinen rahoitus)',
             'Työvoimakoulutus (ESR-rahoitteinen)',
             'Työnantajan kokonaan rahoittama',
             'Muuta kautta rahoitettu',
             'Nuorten aikuisten osaamisohjelma',
             'Aikuisten osaamisperustan vahvistaminen',
-            'Maahanmuuttajien ammatillinen koulutus (valtionavustus)',
-            'Lukuvuosimaksu',
-            'Tilauskoulutus'
+            'Maahanmuuttajien ammatillinen koulutus (valtionavustus)'
           ])
         })
 
