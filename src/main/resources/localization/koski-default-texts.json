@@ -2270,6 +2270,7 @@
   "raportti-excel-kolumni-valmiitTutkintoaYksilöllisestiLaajentavatTutkinnonOsatLkm": "Valmiiden tutkintoa yksilöllisesti laajentavien tutkinnon osien lukumäärä, esim: 10 (joista 5 korotuksia)",
   "raportti-excel-kolumni-valmiitVapaaValintaisetTutkinnonOsatLkm": "Valmiiden vapaavalintaisten tutkinnon osien lukumäärä, esim: 10 (joista 5 korotuksia)",
   "raportti-excel-kolumni-valmiitYhteistenTutkinnonOsatLkm": "Valmiiden yhteisten tutkinnon osien lukumäärä, esim: 10 (joista 5 korotuksia)",
+  "raportti-excel-kolumni-valmistavanLisäopetus": "Valmistavan opetuksen lisäopetus",
   "raportti-excel-kolumni-valtakunnallinen": "valtakunnallinen",
   "raportti-excel-kolumni-valtakunnallinen-lyhenne": "v",
   "raportti-excel-kolumni-valtakunnallisestiOpintopisteita": "Valtakunnallisia opintopisteitä yhteensä",

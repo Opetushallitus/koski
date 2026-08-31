@@ -3,7 +3,7 @@ package fi.oph.koski.raportit.tuva
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.localization.LocalizationReader
 import fi.oph.koski.raportit.AmmatillinenRaporttiUtils.aikajaksoPäivät
-import fi.oph.koski.raportit.{AmmatillinenRaporttiUtils, Column, DynamicDataSheet}
+import fi.oph.koski.raportit.{AmmatillinenRaporttiUtils, Column, DynamicDataSheet, RaporttiUtils}
 import fi.oph.koski.raportit.YleissivistäväUtils.{lengthInDaysInDateRange, rahoitusmuodotOk, removeContinuousSameTila}
 import fi.oph.koski.raportointikanta._
 import fi.oph.koski.schema._
@@ -279,8 +279,8 @@ object TuvaSuoritustiedotRaportti {
       rahoitusmuodotOk = rahoitusmuodotOk(aikajaksot),
       järjestämislupa = järjestämislupa,
       järjestämislupaNimi = JsonSerializer.extract[Option[LocalizedString]](opiskeluoikeus.data \ "järjestämislupa" \ "nimi").map(_.get(t.language)),
-      maksuttomuus = lisätiedot.flatMap(_.maksuttomuus.map(ms => ms.filter(m => m.maksuton && m.overlaps(Aikajakso(alku, Some(loppu)))).map(_.toString).mkString(", "))).filter(_.nonEmpty),
-      oikeuttaMaksuttomuuteenPidennetty = lisätiedot.flatMap(_.oikeuttaMaksuttomuuteenPidennetty.map(omps => omps.map(_.toString).mkString(", "))).filter(_.nonEmpty),
+      maksuttomuus = RaporttiUtils.jaksotMerkkijonona(lisätiedot.flatMap(_.maksuttomuus).map(_.filter(_.maksuton)), Aikajakso(alku, Some(loppu))),
+      oikeuttaMaksuttomuuteenPidennetty = RaporttiUtils.jaksotMerkkijonona(lisätiedot.flatMap(_.oikeuttaMaksuttomuuteenPidennetty)),
       opiskelijavuosikertymä = AmmatillinenRaporttiUtils.opiskelijavuosikertymä(aikajaksot),
       läsnäTaiValmistunutPäivät = aikajaksoPäivät(aikajaksot, a => (a.tila == "lasna" || a.tila == "valmistunut")),
       opiskelijavuosikertymä2026 = AmmatillinenRaporttiUtils.opiskelijavuosikertymä2026(aikajaksot, laskeHeinäkuunPäivät = false),

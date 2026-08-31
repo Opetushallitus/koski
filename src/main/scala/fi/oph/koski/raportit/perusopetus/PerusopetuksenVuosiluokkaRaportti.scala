@@ -70,6 +70,7 @@ object PerusopetuksenVuosiluokkaRaportti extends VuosiluokkaRaporttiPaivalta wit
       oppilaitosRaportointipäivänä = oppilaitosRaportointipäivänä(row),
       lähdejärjestelmä = lähdejärjestelmänId.map(_.lähdejärjestelmä.koodiarvo),
       lähdejärjestelmänId = lähdejärjestelmänId.flatMap(_.id),
+      päivitetty = row.opiskeluoikeus.aikaleima.toLocalDateTime.toLocalDate,
       yksiloity = row.henkilo.yksiloity,
       oppijaOid = row.opiskeluoikeus.oppijaOid,
       oppijaMasterOid = row.opiskeluoikeus.oppijaMasterOid,
@@ -151,7 +152,10 @@ object PerusopetuksenVuosiluokkaRaportti extends VuosiluokkaRaporttiPaivalta wit
       opetuksenJärjestäminenVammanSairaudenTaiRajoitteenPerusteella = opiskeluoikeudenLisätiedot.exists(_.opetuksenJärjestäminenVammanSairaudenTaiRajoitteenPerusteella.exists(_.exists(aikajaksoVoimassaHakuPaivalla(_, hakupaiva)))),
       toimintaAlueittainOpiskelu = opiskeluoikeudenLisätiedot.exists(_.toimintaAlueittainOpiskelu.exists(_.exists(aikajaksoVoimassaHakuPaivalla(_, hakupaiva)))),
       tavoitekokonaisuuksittainOpiskelu = opiskeluoikeudenLisätiedot.exists(_.tavoitekokonaisuuksittainOpiskelu.exists(_.exists(aikajaksoVoimassaHakuPaivalla(_, hakupaiva)))),
-      yhdysluokka = opiskeluoikeudenLisätiedot.exists(_.yhdysluokka.exists(_.exists(aikajaksoVoimassaHakuPaivalla(_, hakupaiva))))
+      yhdysluokka = opiskeluoikeudenLisätiedot.exists(_.yhdysluokka.exists(_.exists(aikajaksoVoimassaHakuPaivalla(_, hakupaiva)))),
+      valmistavanLisäopetus = opiskeluoikeudenLisätiedot.exists(
+        _.valmistavanLisäopetus.exists(_.exists(aikajaksoVoimassaHakuPaivalla(_, hakupaiva)))
+      )
     )
   }
 
@@ -305,7 +309,7 @@ object PerusopetuksenVuosiluokkaRaportti extends VuosiluokkaRaporttiPaivalta wit
   def documentation(t: LocalizationReader): String = t.get("raportti-excel-perusopetus-dokumentaatio")
 
   def filename(etuliite: String, oppilaitosOid: String, paiva: LocalDate, vuosiluokka: String): String = {
-    s"${etuliite}_${oppilaitosOid}_${vuosiluokka}_${paiva}.xlsx"
+    s"${etuliite}_${vuosiluokka}_${oppilaitosOid}_${paiva}.xlsx"
   }
 
   private def compactLisätiedotColumn(title: String, t: LocalizationReader) = CompactColumn(title, comment = Some(t.get("raportti-excel-kolumni-compactLisätiedotColumn-comment")))
@@ -321,6 +325,7 @@ object PerusopetuksenVuosiluokkaRaportti extends VuosiluokkaRaporttiPaivalta wit
     "oppilaitosRaportointipäivänä" -> Column(t.get("raportti-excel-kolumni-oppilaitosRaportointipäivänä"), comment = Some(t.get("raportti-excel-kolumni-oppilaitosRaportointipäivänä-comment"))),
     "lähdejärjestelmä" -> Column(t.get("raportti-excel-kolumni-lähdejärjestelmä")),
     "lähdejärjestelmänId" -> CompactColumn(t.get("raportti-excel-kolumni-lähdejärjestelmänId")),
+    "päivitetty" -> CompactColumn(t.get("raportti-excel-kolumni-päivitetty"), comment = Some(t.get("raportti-excel-kolumni-päivitetty-comment"))),
     "yksiloity" -> Column(t.get("raportti-excel-kolumni-yksiloity"), comment = Some(t.get("raportti-excel-kolumni-yksiloity-comment"))),
     "oppijaOid" -> Column(t.get("raportti-excel-kolumni-oppijaOid")),
     "oppijaMasterOid" -> Column(t.get("raportti-excel-kolumni-oppijaMasterOid")),
@@ -400,6 +405,7 @@ object PerusopetuksenVuosiluokkaRaportti extends VuosiluokkaRaporttiPaivalta wit
     "toimintaAlueittainOpiskelu" -> compactLisätiedotColumn(t.get("raportti-excel-kolumni-toimintaAlueittainOpiskelu"), t),
     "tavoitekokonaisuuksittainOpiskelu" -> compactLisätiedotColumn(t.get("raportti-excel-kolumni-tavoitekokonaisuuksittainOpiskelu"), t),
     "yhdysluokka" -> compactLisätiedotColumn(t.get("raportti-excel-kolumni-yhdysluokka"), t),
+    "valmistavanLisäopetus" -> CompactColumn(t.get("raportti-excel-kolumni-valmistavanLisäopetus")),
   )
 }
 
@@ -409,6 +415,7 @@ private[raportit] case class PerusopetusRow(
   oppilaitosRaportointipäivänä: Option[String],
   lähdejärjestelmä: Option[String],
   lähdejärjestelmänId: Option[String],
+  päivitetty: LocalDate,
   yksiloity: Boolean,
   oppijaOid: String,
   oppijaMasterOid: Option[String],
@@ -486,4 +493,5 @@ private[raportit] case class PerusopetusRow(
   toimintaAlueittainOpiskelu: Boolean,
   tavoitekokonaisuuksittainOpiskelu: Boolean,
   yhdysluokka: Boolean,
+  valmistavanLisäopetus: Boolean,
 )

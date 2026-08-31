@@ -31,7 +31,8 @@ case class PerusopetuksenOppijamäärätRaportti(db: DB, organisaatioService: Or
       kuljetusetu = r.rs.getInt("kuljetusetu"),
       sisäoppilaitosmainenMajoitus = r.rs.getInt("sisäoppilaitosmainenMajoitus"),
       koulukoti = r.rs.getInt("koulukoti"),
-      joustavaPerusopetus = r.rs.getInt("joustava_perusopetus")
+      joustavaPerusopetus = r.rs.getInt("joustava_perusopetus"),
+      valmistavanLisäopetus = r.rs.getInt("valmistavan_lisaopetus")
     )
   )
 
@@ -70,7 +71,8 @@ Some(sql"""
         count(distinct (case when not kotiopetus and kuljetusetu then oo.opiskeluoikeus_oid end)) as kuljetusetu,
         count(distinct (case when not kotiopetus and sisaoppilaitosmainen_majoitus then oo.opiskeluoikeus_oid end)) as sisäoppilaitosmainenMajoitus,
         count(distinct (case when not kotiopetus and koulukoti then oo.opiskeluoikeus_oid end)) as koulukoti,
-        count(distinct (case when not kotiopetus and joustava_perusopetus then oo.opiskeluoikeus_oid end)) as joustava_perusopetus
+        count(distinct (case when not kotiopetus and joustava_perusopetus then oo.opiskeluoikeus_oid end)) as joustava_perusopetus,
+        count(distinct (case when not kotiopetus and valmistavan_lisaopetus then oo.opiskeluoikeus_oid end)) as valmistavan_lisaopetus
 """),
 fromJoinWhereSqlPart(oppilaitosOids, date),
 Some(sql"""
@@ -96,7 +98,8 @@ Some(sql"""
         sum(kuljetusetu),
         sum(sisäoppilaitosmainenMajoitus),
         sum(koulukoti),
-        sum(joustava_perusopetus)
+        sum(joustava_perusopetus),
+        sum(valmistavan_lisaopetus)
       from q
       group by oppilaitos_nimi, oppilaitos_oid
     ) select *
@@ -124,6 +127,7 @@ Some(sql"""
     "sisäoppilaitosmainenMajoitus" -> Column(t.get("raportti-excel-kolumni-sisäoppilaitosmainenMajoitus"), comment = Some(t.get("raportti-excel-kolumni-sisäoppilaitosmainenMajoitus-comment"))),
     "koulukoti" -> Column(t.get("raportti-excel-kolumni-koulukoti"), comment = Some(t.get("raportti-excel-kolumni-koulukoti-comment"))),
     "joustavaPerusopetus" -> Column(t.get("raportti-excel-kolumni-joustavaPerusopetus"), comment = Some(t.get("raportti-excel-kolumni-joustavaPerusopetus-comment"))),
+    "valmistavanLisäopetus" -> Column(t.get("raportti-excel-kolumni-valmistavanLisäopetus")),
   )
 }
 
@@ -146,4 +150,5 @@ case class PerusopetuksenOppijamäärätRaporttiRow(
   sisäoppilaitosmainenMajoitus: Int,
   koulukoti: Int,
   joustavaPerusopetus: Int,
+  valmistavanLisäopetus: Int,
 )
