@@ -75,13 +75,15 @@ object Opiskeluoikeus {
       "valiaikaisestikeskeytynyt" -> false
     )
 
+    // Koodiarvot vastaavat koodistoa "virtaopiskeluoikeudentila" - pidä nämä synkassa keskenään
     private val onVirtaPäättymistila = Map(
       "1" -> false,
       "2" -> false,
       "3" -> true,
       "4" -> true,
       "5" -> true,
-      "6" -> true
+      "6" -> true,
+      "7" -> true
     )
   }
 }
