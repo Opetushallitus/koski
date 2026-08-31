@@ -1,3 +1,7 @@
+# 31.8.2026
+
+- Korjattu korkeakoulun opiskeluoikeuden tilan käsittely Virta-datassa: tilakoodi 7 ("päättynyt yhden opiskeluoikeuden säännöksen johdosta") aiheutti aiemmin virheen, jonka seurauksena oppijan Virta-tiedot puuttuivat kokonaan Koskesta saatavista tiedoista.
+
 # 27.8.2026
 
 - Ahvenanmaan perusopetuksen opiskeluoikeuteen lisätty uusi päätason suoritus `ahvenanmaanperusopetuksenoppimaaraaikuiset` (Ahvenanmaan perusopetuksen oppimäärän suoritus muille kuin oppivelvollisille). Suoritus vastaa rakenteeltaan oppivelvollisten oppimäärän suoritusta, mutta sillä on lisäksi `alkamispäivä`-kenttä, koska näillä opiskeluoikeuksilla ei ole vuosiluokan suorituksia.
