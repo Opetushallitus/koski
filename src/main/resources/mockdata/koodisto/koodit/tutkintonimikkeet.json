@@ -16705,6 +16705,381 @@
   {
     "metadata": [
       {
+        "nimi": "Mielenterveys- ja riippuvuustyön ohjaaja",
+        "kuvaus": "Mielenterveys- ja riippuvuustyön ohjaaja",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Handledare i arbete med mental hälsa och beroende",
+        "kuvaus": "Handledare i arbete med mental hälsa och beroende",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Mental health and addiction services instructor",
+        "kuvaus": "Mental health and addiction services instructor",
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "tutkintonimikkeet_10179",
+    "versio": 1,
+    "koodiArvo": "10179"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "Vammaistyön ja erityisen tuen ohjaaja",
+        "kuvaus": "Vammaistyön ja erityisen tuen ohjaaja",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Handledare i funktionshinderarbete och särskilt stöd",
+        "kuvaus": "Handledare i funktionshinderarbete och särskilt stöd",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Disability services and special support instructor",
+        "kuvaus": "Disability services and special support instructor",
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "tutkintonimikkeet_10180",
+    "versio": 1,
+    "koodiArvo": "10180"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "Saattohoitaja",
+        "kuvaus": "Saattohoitaja",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Vårdare i livets slutskede",
+        "kuvaus": "Vårdare i livets slutskede",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Palliative care nurse",
+        "kuvaus": "Palliative care nurse",
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "tutkintonimikkeet_10181",
+    "versio": 1,
+    "koodiArvo": "10181"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "Jalkojen perushoidon erikoisosaaja",
+        "kuvaus": "Jalkojen perushoidon erikoisosaaja",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Specialkunnig i grundläggande fotvård",
+        "kuvaus": "Specialkunnig i grundläggande fotvård",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Specialist in basic foot care",
+        "kuvaus": "Specialist in basic foot care",
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "tutkintonimikkeet_10182",
+    "versio": 1,
+    "koodiArvo": "10182"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "Ikävalmentaja",
+        "kuvaus": "Ikävalmentaja",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Handledare för äldre",
+        "kuvaus": "Handledare för äldre",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Senior coach",
+        "kuvaus": "Senior coach",
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "tutkintonimikkeet_10183",
+    "versio": 1,
+    "koodiArvo": "10183"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "Vammaisalan ja erityisen tuen erikoisosaaja",
+        "kuvaus": "Vammaisalan ja erityisen tuen erikoisosaaja",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Specialkunnig inom funktionshinderområdet och särskilt stöd",
+        "kuvaus": "Specialkunnig inom funktionshinderområdet och särskilt stöd",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Assistant in disability services and special support",
+        "kuvaus": "Assistant in disability services and special support",
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "tutkintonimikkeet_10184",
+    "versio": 1,
+    "koodiArvo": "10184"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "Obduktiotoiminnan erikoisosaaja",
+        "kuvaus": "Obduktiotoiminnan erikoisosaaja",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Specialkunnig i obduktionsverksamhet",
+        "kuvaus": "Specialkunnig i obduktionsverksamhet",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Specialist in autopsy services",
+        "kuvaus": "Specialist in autopsy services",
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "tutkintonimikkeet_10185",
+    "versio": 1,
+    "koodiArvo": "10185"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "Näkövammaistaitojen ohjauksen erikoisosaaja",
+        "kuvaus": "Näkövammaistaitojen ohjauksen erikoisosaaja",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Specialkunnig i handledning inom synrehabilitering",
+        "kuvaus": "Specialkunnig i handledning inom synrehabilitering",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Assistant in guiding skills for the visually impaired",
+        "kuvaus": "Assistant in guiding skills for the visually impaired",
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "tutkintonimikkeet_10186",
+    "versio": 1,
+    "koodiArvo": "10186"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "Ikääntyneen palveluohjauksen erikoisosaaja",
+        "kuvaus": "Ikääntyneen palveluohjauksen erikoisosaaja",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Specialkunnig i servicehandledning av äldre",
+        "kuvaus": "Specialkunnig i servicehandledning av äldre",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Assistant in service guidance for the elderly",
+        "kuvaus": "Assistant in service guidance for the elderly",
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "tutkintonimikkeet_10187",
+    "versio": 1,
+    "koodiArvo": "10187"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "Immobilisaatiohoitotyön erikoisosaaja",
+        "kuvaus": "Immobilisaatiohoitotyön erikoisosaaja",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Specialkunnig i vårdarbete inom immobilisering",
+        "kuvaus": "Specialkunnig i vårdarbete inom immobilisering",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Specialist in immobilization care",
+        "kuvaus": "Specialist in immobilization care",
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "tutkintonimikkeet_10188",
+    "versio": 1,
+    "koodiArvo": "10188"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "Muistihoitaja",
+        "kuvaus": "Muistihoitaja",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Minnesskötare",
+        "kuvaus": "Minnesskötare",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Memory nurse",
+        "kuvaus": "Memory nurse",
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "tutkintonimikkeet_10189",
+    "versio": 1,
+    "koodiArvo": "10189"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "Kumityöntekijä (AT)",
+        "kuvaus": "Kumityöntekijä (AT)",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Tillverkare av gummiprodukter (YE)",
+        "kuvaus": "Tillverkare av gummiprodukter (YE)",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Rubber Product Manufacturer (FQ)",
+        "kuvaus": "Rubber Product Manufacturer (FQ)",
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "tutkintonimikkeet_10190",
+    "versio": 1,
+    "koodiArvo": "10190"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "Muovityöntekijä (AT)",
+        "kuvaus": "Muovityöntekijä (AT)",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Tillverkare av plastprodukter (YE)",
+        "kuvaus": "Tillverkare av plastprodukter (YE)",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Plastic Product Manufacturer (FQ)",
+        "kuvaus": "Plastic Product Manufacturer (FQ)",
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "tutkintonimikkeet_10191",
+    "versio": 1,
+    "koodiArvo": "10191"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "Koneistaja (AT)",
+        "kuvaus": "Koneistaja (AT)",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Verkstadsmekaniker (YE)",
+        "kuvaus": "Verkstadsmekaniker (YE)",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Machinist (FQ)",
+        "kuvaus": "Machinist (FQ)",
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "tutkintonimikkeet_10192",
+    "versio": 1,
+    "koodiArvo": "10192"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "Levyseppähitsaaja (AT)",
+        "kuvaus": "Levyseppähitsaaja (AT)",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Plåtslagare-svetsare (YE)",
+        "kuvaus": "Plåtslagare-svetsare (YE)",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Plater-welder (FQ)",
+        "kuvaus": "Plater-welder (FQ)",
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "tutkintonimikkeet_10193",
+    "versio": 1,
+    "koodiArvo": "10193"
+  },
+  {
+    "metadata": [
+      {
         "nimi": "Nuoriso- ja yhteisöohjaaja",
         "kuvaus": "Nuoriso- ja yhteisöohjaaja",
         "lyhytNimi": "Nuoriso- ja yhteisöohjaaja",
@@ -24757,8 +25132,9 @@
         "kieli": "SV"
       },
       {
-        "nimi": null,
-        "kuvaus": null,
+        "nimi": "Personal assistant ",
+        "kuvaus": "Personal assistant ",
+        "lyhytNimi": "Personal assistant ",
         "kieli": "EN"
       }
     ],

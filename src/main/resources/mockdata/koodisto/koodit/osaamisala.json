@@ -1411,6 +1411,331 @@
   {
     "metadata": [
       {
+        "nimi": "Yritystoiminnan kehittämisen ja kestävän kasvun osaamisala",
+        "kuvaus": "Yritystoiminnan kehittämisen ja kestävän kasvun osaamisala",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Kompetensområdet för utveckling av företagsverksamhet och hållbar tillväxt",
+        "kuvaus": "Kompetensområdet för utveckling av företagsverksamhet och hållbar tillväxt",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Competence area of Business Development and Sustainable Growth",
+        "kuvaus": "Competence area of Business Development and Sustainable Growth",
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "osaamisala_1020",
+    "versio": 1,
+    "koodiArvo": "1020"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "Mielenterveys-, päihde- ja riippuvuustyön osaamisala",
+        "kuvaus": "Mielenterveys-, päihde- ja riippuvuustyön osaamisala",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Kompetensområdet för arbete med mental hälsa, missbruk och beroende",
+        "kuvaus": "Kompetensområdet för arbete med mental hälsa, missbruk och beroende",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Competence area of Mental Health, Substance Abuse and Addiction Services",
+        "kuvaus": "Competence area of Mental Health, Substance Abuse and Addiction Services",
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "osaamisala_1021",
+    "versio": 1,
+    "koodiArvo": "1021"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "Vammaistyön osaamisala",
+        "kuvaus": "Vammaistyön osaamisala",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Kompetensområdet för funktionshinderarbete",
+        "kuvaus": "Kompetensområdet för funktionshinderarbete",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Competence area of Disability Services",
+        "kuvaus": "Competence area of Disability Services",
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "osaamisala_1022",
+    "versio": 1,
+    "koodiArvo": "1022"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "Jalkojen perushoidon osaamisala",
+        "kuvaus": "Jalkojen perushoidon osaamisala",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Kompetensområdet för grundläggande fotvård",
+        "kuvaus": "Kompetensområdet för grundläggande fotvård",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Competence area of basic foot care",
+        "kuvaus": "Competence area of basic foot care",
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "osaamisala_1023",
+    "versio": 1,
+    "koodiArvo": "1023"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "Kuntoutus-, tuki- ja ohjauspalvelujen osaamisala",
+        "kuvaus": "Kuntoutus-, tuki- ja ohjauspalvelujen osaamisala",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Kompetensområdet för rehabiliterings-, stöd- och handledningstjänster",
+        "kuvaus": "Kompetensområdet för rehabiliterings-, stöd- och handledningstjänster",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Competence area of rehabilitation, support and guidance services",
+        "kuvaus": "Competence area of rehabilitation, support and guidance services",
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "osaamisala_1024",
+    "versio": 1,
+    "koodiArvo": "1024"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "Kestävän terveyden osaamisala",
+        "kuvaus": "Kestävän terveyden osaamisala",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Kompetensområdet för hållbar hälsa",
+        "kuvaus": "Kompetensområdet för hållbar hälsa",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Competence area of sustainable health",
+        "kuvaus": "Competence area of sustainable health",
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "osaamisala_1025",
+    "versio": 1,
+    "koodiArvo": "1025"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "Mielenterveys- ja riippuvuustyön osaamisala",
+        "kuvaus": "Mielenterveys- ja riippuvuustyön osaamisala",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Kompetensområdet för arbete med mental hälsa och beroende",
+        "kuvaus": "Kompetensområdet för arbete med mental hälsa och beroende",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Competence area of mental health and addiction work",
+        "kuvaus": "Competence area of mental health and addiction work",
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "osaamisala_1026",
+    "versio": 1,
+    "koodiArvo": "1026"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "Välinehuollon osaamisala",
+        "kuvaus": "Välinehuollon osaamisala",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Kompetensområdet för instrumentvård",
+        "kuvaus": "Kompetensområdet för instrumentvård",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Competence area in sterile services",
+        "kuvaus": "Competence area in sterile services",
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "osaamisala_1027",
+    "versio": 1,
+    "koodiArvo": "1027"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "Ikääntyneiden hyvinvoinnin edistämisen osaamisala",
+        "kuvaus": "Ikääntyneiden hyvinvoinnin edistämisen osaamisala",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Kompetensområdet för främjande av äldres välbefinnande",
+        "kuvaus": "Kompetensområdet för främjande av äldres välbefinnande",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Competence area of promoting the well-being of elderly",
+        "kuvaus": "Competence area of promoting the well-being of elderly",
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "osaamisala_1028",
+    "versio": 1,
+    "koodiArvo": "1028"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "Immobilisaatiohoitotyön osaamisala",
+        "kuvaus": "Immobilisaatiohoitotyön osaamisala",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Kompetensområdet för vårdarbete inom immobilisering",
+        "kuvaus": "Kompetensområdet för vårdarbete inom immobilisering",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Competence area of immobilization care",
+        "kuvaus": "Competence area of immobilization care",
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "osaamisala_1029",
+    "versio": 1,
+    "koodiArvo": "1029"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "Akuuttihoitotyön osaamisala",
+        "kuvaus": "Akuuttihoitotyön osaamisala",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Kompetensområdet för arbete med akutvård",
+        "kuvaus": "Kompetensområdet för arbete med akutvård",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Competence area in acute care nursing",
+        "kuvaus": "Competence area in acute care nursing",
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "osaamisala_1030",
+    "versio": 1,
+    "koodiArvo": "1030"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "Infektioiden ehkäisyn ja torjunnan osaamisala",
+        "kuvaus": "Infektioiden ehkäisyn ja torjunnan osaamisala",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Kompetensområdet för förebyggande och bekämpning av infektioner",
+        "kuvaus": "Kompetensområdet för förebyggande och bekämpning av infektioner",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Competence area of infection prevention and control",
+        "kuvaus": "Competence area of infection prevention and control",
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "osaamisala_1031",
+    "versio": 1,
+    "koodiArvo": "1031"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "Elämän loppuvaiheen hoitotyön osaamisala",
+        "kuvaus": "Elämän loppuvaiheen hoitotyön osaamisala",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Kompetensområdet för vårdarbete i livets slutskede",
+        "kuvaus": "Kompetensområdet för vårdarbete i livets slutskede",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Competence area of end-of-life care",
+        "kuvaus": "Competence area of end-of-life care",
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "osaamisala_1032",
+    "versio": 1,
+    "koodiArvo": "1032"
+  },
+  {
+    "metadata": [
+      {
         "nimi": "Jalometallialan osaamisala",
         "kuvaus": "Jalometallialan osaamisala",
         "kieli": "FI"
@@ -73637,8 +73962,9 @@
         "kieli": "SV"
       },
       {
-        "nimi": null,
-        "kuvaus": null,
+        "nimi": "Competence area of Autopsy Services",
+        "kuvaus": "Competence area of Autopsy Services",
+        "lyhytNimi": "Competence area of Autopsy Services",
         "kieli": "EN"
       }
     ],
@@ -78123,8 +78449,9 @@
         "kieli": "SV"
       },
       {
-        "nimi": null,
-        "kuvaus": null,
+        "nimi": "Competence area of personal assistance ",
+        "kuvaus": "Competence area of personal assistance",
+        "lyhytNimi": "Competence area of personal assistance ",
         "kieli": "EN"
       }
     ],

@@ -1,10 +1,6 @@
 {
-  "koodistoUri": "kielivalikoima",
-  "resourceUri": "https://virkailija.opintopolku.fi/koodisto-service/rest/codes/kielivalikoima",
-  "omistaja": "Opetushallitus",
-  "organisaatioOid": "1.2.246.562.10.00000000001",
-  "lukittu": null,
-  "withinCodes": [],
+  "codesGroupUri": "koulutuskoodistot",
+  "codesVersions": [],
   "includesCodes": [
     {
       "codesUri": "aikuistenperusopetuksenkurssit2015",
@@ -40,15 +36,9 @@
       }
     }
   ],
+  "koodistoUri": "kielivalikoima",
   "levelsWithCodes": [],
-  "codesGroupUri": "koulutuskoodistot",
-  "version": 1,
-  "versio": 1,
-  "paivitysPvm": "2021-08-12",
-  "paivittajaOid": "1.2.246.562.24.50832216012",
-  "voimassaAlkuPvm": "2013-01-01",
-  "voimassaLoppuPvm": null,
-  "tila": "LUONNOS",
+  "lukittu": null,
   "metadata": [
     {
       "kieli": "FI",
@@ -93,5 +83,15 @@
       "koodistonLahde": null
     }
   ],
-  "codesVersions": []
+  "omistaja": "Opetushallitus",
+  "organisaatioOid": "1.2.246.562.10.00000000001",
+  "paivittajaOid": "1.2.246.562.24.50832216012",
+  "paivitysPvm": "2021-08-12",
+  "resourceUri": "https://virkailija.opintopolku.fi/koodisto-service/rest/codes/kielivalikoima",
+  "tila": "LUONNOS",
+  "versio": 1,
+  "version": 1,
+  "voimassaAlkuPvm": "2013-01-01",
+  "voimassaLoppuPvm": null,
+  "withinCodes": []
 }

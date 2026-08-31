@@ -78,35 +78,6 @@
   "suorittaneenOsaaminen": null,
   "perusteenAikataulut": [
     {
-      "id": 7534991,
-      "peruste": {
-        "id": 7534950,
-        "nimi": {
-          "_id": "7788280",
-          "_tunniste": "65bbd2eb-4e10-4ed8-b258-11d0b3003c8f",
-          "fi": "Tutkintokoulutukseen valmentava koulutus",
-          "sv": "Utbildning som handleder för examensutbildning"
-        },
-        "tila": "valmis",
-        "tyyppi": "normaali",
-        "koulutustyyppi": "koulutustyyppi_40",
-        "esikatseltavissa": false,
-        "voimassaoloAlkaa": 1659301200000,
-        "voimassaoloLoppuu": null,
-        "_perusteprojekti": "7534980",
-        "julkisivuJarjestysNro": 0,
-        "piilotaJulkisivulta": false
-      },
-      "tavoite": {
-        "_id": "7534935",
-        "_tunniste": "e2ae199a-9e87-46db-9e8a-ffe55c9f365e",
-        "fi": "Peruste astuu voimaan"
-      },
-      "tapahtuma": "tavoite",
-      "tapahtumapaiva": 1659301200000,
-      "julkinen": false
-    },
-    {
       "id": 7534990,
       "peruste": {
         "id": 7534950,
@@ -133,6 +104,35 @@
       },
       "tapahtuma": "luominen",
       "tapahtumapaiva": 1610688369525,
+      "julkinen": false
+    },
+    {
+      "id": 7534991,
+      "peruste": {
+        "id": 7534950,
+        "nimi": {
+          "_id": "7788280",
+          "_tunniste": "65bbd2eb-4e10-4ed8-b258-11d0b3003c8f",
+          "fi": "Tutkintokoulutukseen valmentava koulutus",
+          "sv": "Utbildning som handleder för examensutbildning"
+        },
+        "tila": "valmis",
+        "tyyppi": "normaali",
+        "koulutustyyppi": "koulutustyyppi_40",
+        "esikatseltavissa": false,
+        "voimassaoloAlkaa": 1659301200000,
+        "voimassaoloLoppuu": null,
+        "_perusteprojekti": "7534980",
+        "julkisivuJarjestysNro": 0,
+        "piilotaJulkisivulta": false
+      },
+      "tavoite": {
+        "_id": "7534935",
+        "_tunniste": "e2ae199a-9e87-46db-9e8a-ffe55c9f365e",
+        "fi": "Peruste astuu voimaan"
+      },
+      "tapahtuma": "tavoite",
+      "tapahtumapaiva": 1659301200000,
       "julkinen": false
     },
     {

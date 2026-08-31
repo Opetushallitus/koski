@@ -3586,6 +3586,34 @@
   {
     "metadata": [
       {
+        "nimi": "uzbekki",
+        "kuvaus": null,
+        "lyhytNimi": "uzbekki",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "uzbekiska",
+        "kuvaus": null,
+        "lyhytNimi": "uzbekiska",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Uzbek",
+        "kuvaus": null,
+        "lyhytNimi": "Uzbek",
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "kielivalikoima_uz",
+    "versio": 1,
+    "koodiArvo": "UZ"
+  },
+  {
+    "metadata": [
+      {
         "nimi": "vietnam",
         "kuvaus": "vietnam",
         "lyhytNimi": "vietnam",

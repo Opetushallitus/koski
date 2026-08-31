@@ -1,11 +1,8 @@
 {
-  "koodistoUri": "suorituksentyyppi",
-  "resourceUri": "https://virkailija.opintopolku.fi/koodisto-service/rest/codes/suorituksentyyppi",
-  "omistaja": null,
-  "organisaatioOid": "1.2.246.562.10.00000000001",
-  "lukittu": null,
-  "withinCodes": [],
+  "codesGroupUri": "koski",
+  "codesVersions": [],
   "includesCodes": [],
+  "koodistoUri": "suorituksentyyppi",
   "levelsWithCodes": [
     {
       "codesUri": "koulutustyyppikouta",
@@ -23,14 +20,7 @@
       }
     }
   ],
-  "codesGroupUri": "koski",
-  "version": 1,
-  "versio": 1,
-  "paivitysPvm": "2018-12-17",
-  "paivittajaOid": null,
-  "voimassaAlkuPvm": "2014-11-01",
-  "voimassaLoppuPvm": null,
-  "tila": "LUONNOS",
+  "lukittu": null,
   "metadata": [
     {
       "kieli": "FI",
@@ -47,5 +37,15 @@
       "koodistonLahde": null
     }
   ],
-  "codesVersions": []
+  "omistaja": null,
+  "organisaatioOid": "1.2.246.562.10.00000000001",
+  "paivittajaOid": null,
+  "paivitysPvm": "2018-12-17",
+  "resourceUri": "https://virkailija.opintopolku.fi/koodisto-service/rest/codes/suorituksentyyppi",
+  "tila": "LUONNOS",
+  "versio": 1,
+  "version": 1,
+  "voimassaAlkuPvm": "2014-11-01",
+  "voimassaLoppuPvm": null,
+  "withinCodes": []
 }

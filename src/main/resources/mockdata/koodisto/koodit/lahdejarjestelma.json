@@ -393,6 +393,34 @@
   {
     "metadata": [
       {
+        "nimi": "Gradua",
+        "kuvaus": null,
+        "lyhytNimi": "Gradua",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Gradua",
+        "kuvaus": null,
+        "lyhytNimi": "Gradua",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Gradua",
+        "kuvaus": null,
+        "lyhytNimi": "Gradua",
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "lahdejarjestelma_gradua",
+    "versio": 1,
+    "koodiArvo": "Gradua"
+  },
+  {
+    "metadata": [
+      {
         "nimi": "Hailer",
         "kuvaus": null,
         "kieli": "FI"
@@ -568,6 +596,32 @@
   {
     "metadata": [
       {
+        "nimi": "Kurssihallinta TL",
+        "kuvaus": null,
+        "lyhytNimi": "Kurssihallinta TL",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Kurssihallinta TL",
+        "kuvaus": null,
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Kurssihallinta TL",
+        "kuvaus": null,
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "lahdejarjestelma_kurssihallintatl",
+    "versio": 1,
+    "koodiArvo": "Kurssihallinta TL"
+  },
+  {
+    "metadata": [
+      {
         "nimi": "MS Dynamics CRM Accountor Enterprise Solutions",
         "kuvaus": null,
         "kieli": "FI"
@@ -639,6 +693,34 @@
     "koodiUri": "lahdejarjestelma_nokiaedunldh",
     "versio": 1,
     "koodiArvo": "nokiaedu-nldh"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "Onni",
+        "kuvaus": null,
+        "lyhytNimi": "Onni",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Onni",
+        "kuvaus": null,
+        "lyhytNimi": "Onni",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Onni",
+        "kuvaus": null,
+        "lyhytNimi": "Onni",
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "lahdejarjestelma_onni",
+    "versio": 1,
+    "koodiArvo": "onni"
   },
   {
     "metadata": [

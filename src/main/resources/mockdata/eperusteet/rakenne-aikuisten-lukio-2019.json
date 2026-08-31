@@ -13,7 +13,7 @@
   "koulutustyyppi": "koulutustyyppi_14",
   "toteutus": "lops2019",
   "koulutukset": [],
-  "kielet": ["fi", "sv", "en"],
+  "kielet": ["en", "fi", "sv"],
   "kuvaus": null,
   "maarayskirje": {
     "id": 9580870,

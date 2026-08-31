@@ -16146,6 +16146,11 @@
         "codeElementUri": "koulutus_384102",
         "codeElementVersion": 11,
         "passive": true
+      },
+      {
+        "codeElementUri": "koulutus_374101",
+        "codeElementVersion": 1,
+        "passive": false
       }
     ],
     "includesCodeElements": [
@@ -30167,6 +30172,11 @@
         "codeElementUri": "koulutus_311101",
         "codeElementVersion": 11,
         "passive": true
+      },
+      {
+        "codeElementUri": "koulutus_477112",
+        "codeElementVersion": 1,
+        "passive": false
       }
     ],
     "includesCodeElements": [

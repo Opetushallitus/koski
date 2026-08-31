@@ -1,20 +1,10 @@
 {
-  "koodistoUri": "jotpaasianumero",
-  "resourceUri": "https://virkailija.opintopolku.fi/koodisto-service/rest/codes/jotpaasianumero",
-  "omistaja": "Mikko Mähönen",
-  "organisaatioOid": "1.2.246.562.10.91180885203",
-  "lukittu": null,
-  "withinCodes": [],
-  "includesCodes": [],
-  "levelsWithCodes": [],
   "codesGroupUri": "muutkoodistot",
-  "version": 6,
-  "versio": 1,
-  "paivitysPvm": "2026-03-25",
-  "paivittajaOid": "1.2.246.562.24.45354023031",
-  "voimassaAlkuPvm": "2024-04-29",
-  "voimassaLoppuPvm": null,
-  "tila": "LUONNOS",
+  "codesVersions": [],
+  "includesCodes": [],
+  "koodistoUri": "jotpaasianumero",
+  "levelsWithCodes": [],
+  "lukittu": null,
   "metadata": [
     {
       "kieli": "EN",
@@ -59,5 +49,15 @@
       "koodistonLahde": null
     }
   ],
-  "codesVersions": []
+  "omistaja": "Mikko Mähönen",
+  "organisaatioOid": "1.2.246.562.10.91180885203",
+  "paivittajaOid": "1.2.246.562.24.45354023031",
+  "paivitysPvm": "2026-08-21",
+  "resourceUri": "https://virkailija.opintopolku.fi/koodisto-service/rest/codes/jotpaasianumero",
+  "tila": "LUONNOS",
+  "versio": 1,
+  "version": 9,
+  "voimassaAlkuPvm": "2024-04-29",
+  "voimassaLoppuPvm": null,
+  "withinCodes": []
 }

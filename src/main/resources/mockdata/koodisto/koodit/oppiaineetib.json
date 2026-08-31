@@ -1020,20 +1020,18 @@
     "metadata": [
       {
         "nimi": "World studies",
-        "kuvaus": "",
+        "kuvaus": null,
         "lyhytNimi": "World studies",
         "kieli": "FI"
       },
       {
         "nimi": "World studies",
-        "kuvaus": "",
-        "lyhytNimi": "World studies",
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
         "nimi": "World studies",
-        "kuvaus": "",
-        "lyhytNimi": "World studies",
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],

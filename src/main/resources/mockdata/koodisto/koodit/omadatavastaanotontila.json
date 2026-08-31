@@ -30,34 +30,6 @@
   {
     "metadata": [
       {
-        "nimi": "Vastaanottanut sitovasti",
-        "kuvaus": "",
-        "lyhytNimi": "",
-        "kieli": "FI"
-      },
-      {
-        "nimi": "Vastaanottanut sitovasti",
-        "kuvaus": "",
-        "lyhytNimi": "",
-        "kieli": "SV"
-      },
-      {
-        "nimi": "Vastaanottanut sitovasti",
-        "kuvaus": "",
-        "lyhytNimi": "",
-        "kieli": "EN"
-      }
-    ],
-    "withinCodeElements": [],
-    "includesCodeElements": [],
-    "levelsWithCodeElements": [],
-    "koodiUri": "omadatavastaanotontila_vastaanottanutsitovasti",
-    "versio": 1,
-    "koodiArvo": "vastaanottanutsitovasti"
-  },
-  {
-    "metadata": [
-      {
         "nimi": "Ei vastaanotettu määräaikana",
         "kuvaus": "",
         "lyhytNimi": "",
@@ -85,29 +57,31 @@
   },
   {
     "metadata": [
-      { "nimi": "Perunut", "kuvaus": "", "lyhytNimi": "", "kieli": "FI" },
-      { "nimi": "Perunut", "kuvaus": "", "lyhytNimi": "", "kieli": "SV" },
-      { "nimi": "Perunut", "kuvaus": "", "lyhytNimi": "", "kieli": "EN" }
+      {
+        "nimi": "Kesken",
+        "kuvaus": "",
+        "lyhytNimi": "",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Kesken",
+        "kuvaus": "",
+        "lyhytNimi": "",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Kesken",
+        "kuvaus": "",
+        "lyhytNimi": "",
+        "kieli": "EN"
+      }
     ],
     "withinCodeElements": [],
     "includesCodeElements": [],
     "levelsWithCodeElements": [],
-    "koodiUri": "omadatavastaanotontila_perunut",
+    "koodiUri": "omadatavastaanotontila_kesken",
     "versio": 1,
-    "koodiArvo": "perunut"
-  },
-  {
-    "metadata": [
-      { "nimi": "Peruutettu", "kuvaus": "", "lyhytNimi": "", "kieli": "FI" },
-      { "nimi": "Peruutettu", "kuvaus": "", "lyhytNimi": "", "kieli": "SV" },
-      { "nimi": "Peruutettu", "kuvaus": "", "lyhytNimi": "", "kieli": "EN" }
-    ],
-    "withinCodeElements": [],
-    "includesCodeElements": [],
-    "levelsWithCodeElements": [],
-    "koodiUri": "omadatavastaanotontila_peruutettu",
-    "versio": 1,
-    "koodiArvo": "peruutettu"
+    "koodiArvo": "kesken"
   },
   {
     "metadata": [
@@ -139,15 +113,86 @@
   },
   {
     "metadata": [
-      { "nimi": "Kesken", "kuvaus": "", "lyhytNimi": "", "kieli": "FI" },
-      { "nimi": "Kesken", "kuvaus": "", "lyhytNimi": "", "kieli": "SV" },
-      { "nimi": "Kesken", "kuvaus": "", "lyhytNimi": "", "kieli": "EN" }
+      {
+        "nimi": "Perunut",
+        "kuvaus": "",
+        "lyhytNimi": "",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Perunut",
+        "kuvaus": "",
+        "lyhytNimi": "",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Perunut",
+        "kuvaus": "",
+        "lyhytNimi": "",
+        "kieli": "EN"
+      }
     ],
     "withinCodeElements": [],
     "includesCodeElements": [],
     "levelsWithCodeElements": [],
-    "koodiUri": "omadatavastaanotontila_kesken",
+    "koodiUri": "omadatavastaanotontila_perunut",
     "versio": 1,
-    "koodiArvo": "kesken"
+    "koodiArvo": "perunut"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "Peruutettu",
+        "kuvaus": "",
+        "lyhytNimi": "",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Peruutettu",
+        "kuvaus": "",
+        "lyhytNimi": "",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Peruutettu",
+        "kuvaus": "",
+        "lyhytNimi": "",
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "omadatavastaanotontila_peruutettu",
+    "versio": 1,
+    "koodiArvo": "peruutettu"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "Vastaanottanut sitovasti",
+        "kuvaus": "",
+        "lyhytNimi": "",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Vastaanottanut sitovasti",
+        "kuvaus": "",
+        "lyhytNimi": "",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Vastaanottanut sitovasti",
+        "kuvaus": "",
+        "lyhytNimi": "",
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "omadatavastaanotontila_vastaanottanutsitovasti",
+    "versio": 1,
+    "koodiArvo": "vastaanottanutsitovasti"
   }
 ]

@@ -1,9 +1,80 @@
 {
+  "codesGroupUri": "koulutuskoodistot",
+  "codesVersions": [1],
+  "includesCodes": [
+    {
+      "codesUri": "tutkinnonosat",
+      "codesVersion": 2,
+      "passive": false,
+      "nimi": {
+        "FI": "tutkinnon osat",
+        "SV": "examensdelar",
+        "EN": "tutkinnon osat"
+      },
+      "kuvaus": {
+        "FI": "tutkinnon osat",
+        "SV": "examensdelar",
+        "EN": "tutkinnon osat"
+      }
+    }
+  ],
   "koodistoUri": "tutkintonimikkeet",
-  "resourceUri": "https://virkailija.opintopolku.fi/koodisto-service/rest/codes/tutkintonimikkeet",
+  "levelsWithCodes": [],
+  "lukittu": null,
+  "metadata": [
+    {
+      "kieli": "EN",
+      "nimi": "tutkintonimikkeet",
+      "kuvaus": "tutkintonimikkeet",
+      "kayttoohje": null,
+      "kasite": null,
+      "kohdealue": null,
+      "sitovuustaso": null,
+      "kohdealueenOsaAlue": null,
+      "toimintaymparisto": null,
+      "tarkentaaKoodistoa": null,
+      "huomioitavaKoodisto": null,
+      "koodistonLahde": null
+    },
+    {
+      "kieli": "SV",
+      "nimi": "tutkintonimikkeet",
+      "kuvaus": "tutkintonimikkeet",
+      "kayttoohje": null,
+      "kasite": null,
+      "kohdealue": null,
+      "sitovuustaso": null,
+      "kohdealueenOsaAlue": null,
+      "toimintaymparisto": null,
+      "tarkentaaKoodistoa": null,
+      "huomioitavaKoodisto": null,
+      "koodistonLahde": null
+    },
+    {
+      "kieli": "FI",
+      "nimi": "tutkintonimikkeet",
+      "kuvaus": "tutkintonimikkeet",
+      "kayttoohje": null,
+      "kasite": null,
+      "kohdealue": null,
+      "sitovuustaso": null,
+      "kohdealueenOsaAlue": null,
+      "toimintaymparisto": null,
+      "tarkentaaKoodistoa": null,
+      "huomioitavaKoodisto": null,
+      "koodistonLahde": null
+    }
+  ],
   "omistaja": "Opetushallitus",
   "organisaatioOid": "1.2.246.562.10.00000000001",
-  "lukittu": null,
+  "paivittajaOid": "1.2.246.562.24.74973773005",
+  "paivitysPvm": "2020-06-29",
+  "resourceUri": "https://virkailija.opintopolku.fi/koodisto-service/rest/codes/tutkintonimikkeet",
+  "tila": "LUONNOS",
+  "versio": 2,
+  "version": 8,
+  "voimassaAlkuPvm": "2015-10-05",
+  "voimassaLoppuPvm": null,
   "withinCodes": [
     {
       "codesUri": "lukiolinjat",
@@ -60,7 +131,7 @@
         "EN": "koulutus"
       },
       "kuvaus": {
-        "FI": "Koodistoa ylläpitävät Perttu Venäläinen (ammatilliset koulutukset), Riku Hanhinen (korkeakoulutukset), Juho Helminen (yleissivistävä koulutus). Koodistoa käytetään mm. hakujen koulutustarjonnassa, KOSKI-palvelun tiedonsiirroissa, OIVAssa ja OKM Virta-palvelussa. Tilastokeskus vastaa koodiston koodituksesta (https://www2.tilastokeskus.fi/fi/luokitukset/koulutus/). Koodeja ylläpidetään käsin. Koodiston ja Tilastokeskuksen välillä ei ole integraatiota.",
+        "FI": "Koodistoa ylläpitävät Noora Vaukonen (ammatilliset koulutukset), Riku Hanhinen (korkeakoulutukset), Juho Helminen (yleissivistävä koulutus). Koodistoa käytetään mm. hakujen koulutustarjonnassa, KOSKI-palvelun tiedonsiirroissa, OIVAssa ja OKM Virta-palvelussa. Tilastokeskus vastaa koodiston koodituksesta (https://www2.tilastokeskus.fi/fi/luokitukset/koulutus/). Koodeja ylläpidetään käsin. Koodiston ja Tilastokeskuksen välillä ei ole integraatiota.",
         "SV": "koulutus",
         "EN": "koulutus"
       }
@@ -198,76 +269,5 @@
         "EN": "koulutus"
       }
     }
-  ],
-  "includesCodes": [
-    {
-      "codesUri": "tutkinnonosat",
-      "codesVersion": 2,
-      "passive": false,
-      "nimi": {
-        "FI": "tutkinnon osat",
-        "SV": "examensdelar",
-        "EN": "tutkinnon osat"
-      },
-      "kuvaus": {
-        "FI": "tutkinnon osat",
-        "SV": "examensdelar",
-        "EN": "tutkinnon osat"
-      }
-    }
-  ],
-  "levelsWithCodes": [],
-  "codesGroupUri": "koulutuskoodistot",
-  "version": 8,
-  "versio": 2,
-  "paivitysPvm": "2020-06-29",
-  "paivittajaOid": "1.2.246.562.24.74973773005",
-  "voimassaAlkuPvm": "2015-10-05",
-  "voimassaLoppuPvm": null,
-  "tila": "LUONNOS",
-  "metadata": [
-    {
-      "kieli": "EN",
-      "nimi": "tutkintonimikkeet",
-      "kuvaus": "tutkintonimikkeet",
-      "kayttoohje": null,
-      "kasite": null,
-      "kohdealue": null,
-      "sitovuustaso": null,
-      "kohdealueenOsaAlue": null,
-      "toimintaymparisto": null,
-      "tarkentaaKoodistoa": null,
-      "huomioitavaKoodisto": null,
-      "koodistonLahde": null
-    },
-    {
-      "kieli": "SV",
-      "nimi": "tutkintonimikkeet",
-      "kuvaus": "tutkintonimikkeet",
-      "kayttoohje": null,
-      "kasite": null,
-      "kohdealue": null,
-      "sitovuustaso": null,
-      "kohdealueenOsaAlue": null,
-      "toimintaymparisto": null,
-      "tarkentaaKoodistoa": null,
-      "huomioitavaKoodisto": null,
-      "koodistonLahde": null
-    },
-    {
-      "kieli": "FI",
-      "nimi": "tutkintonimikkeet",
-      "kuvaus": "tutkintonimikkeet",
-      "kayttoohje": null,
-      "kasite": null,
-      "kohdealue": null,
-      "sitovuustaso": null,
-      "kohdealueenOsaAlue": null,
-      "toimintaymparisto": null,
-      "tarkentaaKoodistoa": null,
-      "huomioitavaKoodisto": null,
-      "koodistonLahde": null
-    }
-  ],
-  "codesVersions": [1]
+  ]
 }

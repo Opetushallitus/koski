@@ -1,22 +1,6 @@
 {
-  "koodistoUri": "maatjavaltiot2",
-  "resourceUri": "https://virkailija.opintopolku.fi/koodisto-service/rest/codes/maatjavaltiot2",
-  "omistaja": "Opetushallitus",
-  "organisaatioOid": "1.2.246.562.10.00000000001",
-  "lukittu": null,
-  "withinCodes": [
-    {
-      "codesUri": "maanosat",
-      "codesVersion": 1,
-      "passive": false,
-      "nimi": {
-        "FI": "Maanosat"
-      },
-      "kuvaus": {
-        "FI": ""
-      }
-    }
-  ],
+  "codesGroupUri": "alueet",
+  "codesVersions": [1],
   "includesCodes": [
     {
       "codesUri": "valtioryhmat",
@@ -34,6 +18,7 @@
       }
     }
   ],
+  "koodistoUri": "maatjavaltiot2",
   "levelsWithCodes": [
     {
       "codesUri": "maatjavaltiot1",
@@ -51,14 +36,7 @@
       }
     }
   ],
-  "codesGroupUri": "alueet",
-  "version": 10,
-  "versio": 2,
-  "paivitysPvm": "2022-11-25",
-  "paivittajaOid": "1.2.246.562.24.25909319372",
-  "voimassaAlkuPvm": "2019-01-18",
-  "voimassaLoppuPvm": null,
-  "tila": "LUONNOS",
+  "lukittu": null,
   "metadata": [
     {
       "kieli": "SV",
@@ -103,5 +81,27 @@
       "koodistonLahde": null
     }
   ],
-  "codesVersions": [1]
+  "omistaja": "Opetushallitus",
+  "organisaatioOid": "1.2.246.562.10.00000000001",
+  "paivittajaOid": "1.2.246.562.24.25909319372",
+  "paivitysPvm": "2022-11-25",
+  "resourceUri": "https://virkailija.opintopolku.fi/koodisto-service/rest/codes/maatjavaltiot2",
+  "tila": "LUONNOS",
+  "versio": 2,
+  "version": 10,
+  "voimassaAlkuPvm": "2019-01-18",
+  "voimassaLoppuPvm": null,
+  "withinCodes": [
+    {
+      "codesUri": "maanosat",
+      "codesVersion": 1,
+      "passive": false,
+      "nimi": {
+        "FI": "Maanosat"
+      },
+      "kuvaus": {
+        "FI": ""
+      }
+    }
+  ]
 }
