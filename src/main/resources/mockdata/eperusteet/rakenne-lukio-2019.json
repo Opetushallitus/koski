@@ -1,7 +1,7 @@
 {
   "id": 6828810,
   "globalVersion": {
-    "aikaleima": 1776169617887
+    "aikaleima": 1779433019269
   },
   "nimi": {
     "_id": "9578229",
@@ -25,7 +25,7 @@
       "opintoalakoodi": null
     }
   ],
-  "kielet": ["fi", "sv", "en"],
+  "kielet": ["en", "fi", "sv"],
   "kuvaus": null,
   "maarayskirje": {
     "id": 9580820,
@@ -67,7 +67,7 @@
   "siirtymaPaattyy": null,
   "voimassaoloLoppuu": null,
   "paatospvm": 1573077600000,
-  "viimeisinJulkaisuAika": 1776169617887,
+  "viimeisinJulkaisuAika": 1779433019269,
   "luotu": 1572509694541,
   "muokattu": 1776169356979,
   "tila": "valmis",

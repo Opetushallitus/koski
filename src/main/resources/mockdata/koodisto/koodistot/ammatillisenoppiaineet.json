@@ -1,41 +1,6 @@
 {
-  "koodistoUri": "ammatillisenoppiaineet",
-  "resourceUri": "https://virkailija.opintopolku.fi/koodisto-service/rest/codes/ammatillisenoppiaineet",
-  "omistaja": "Ammatillinen, ePerusteet",
-  "organisaatioOid": "1.2.246.562.10.00000000001",
-  "lukittu": null,
-  "withinCodes": [
-    {
-      "codesUri": "tutkinnonosat",
-      "codesVersion": 1,
-      "passive": true,
-      "nimi": {
-        "SV": "examensdeler",
-        "FI": "tutkinnon osat",
-        "EN": "tutkinnon osat"
-      },
-      "kuvaus": {
-        "SV": "examensdeler",
-        "FI": "tutkinnon osat",
-        "EN": "tutkinnon osat"
-      }
-    },
-    {
-      "codesUri": "tutkinnonosat",
-      "codesVersion": 2,
-      "passive": false,
-      "nimi": {
-        "FI": "tutkinnon osat",
-        "SV": "examensdelar",
-        "EN": "tutkinnon osat"
-      },
-      "kuvaus": {
-        "FI": "tutkinnon osat",
-        "SV": "examensdelar",
-        "EN": "tutkinnon osat"
-      }
-    }
-  ],
+  "codesGroupUri": "koulutuskoodistot",
+  "codesVersions": [],
   "includesCodes": [
     {
       "codesUri": "osaamistavoitteet",
@@ -49,15 +14,9 @@
       }
     }
   ],
+  "koodistoUri": "ammatillisenoppiaineet",
   "levelsWithCodes": [],
-  "codesGroupUri": "koulutuskoodistot",
-  "version": 6,
-  "versio": 1,
-  "paivitysPvm": "2023-09-27",
-  "paivittajaOid": "1.2.246.562.24.78186833301",
-  "voimassaAlkuPvm": "2015-01-01",
-  "voimassaLoppuPvm": null,
-  "tila": "LUONNOS",
+  "lukittu": null,
   "metadata": [
     {
       "kieli": "SV",
@@ -102,5 +61,46 @@
       "koodistonLahde": null
     }
   ],
-  "codesVersions": []
+  "omistaja": "Ammatillinen, ePerusteet",
+  "organisaatioOid": "1.2.246.562.10.00000000001",
+  "paivittajaOid": "1.2.246.562.24.78186833301",
+  "paivitysPvm": "2023-09-27",
+  "resourceUri": "https://virkailija.opintopolku.fi/koodisto-service/rest/codes/ammatillisenoppiaineet",
+  "tila": "LUONNOS",
+  "versio": 1,
+  "version": 6,
+  "voimassaAlkuPvm": "2015-01-01",
+  "voimassaLoppuPvm": null,
+  "withinCodes": [
+    {
+      "codesUri": "tutkinnonosat",
+      "codesVersion": 1,
+      "passive": true,
+      "nimi": {
+        "SV": "examensdeler",
+        "FI": "tutkinnon osat",
+        "EN": "tutkinnon osat"
+      },
+      "kuvaus": {
+        "SV": "examensdeler",
+        "FI": "tutkinnon osat",
+        "EN": "tutkinnon osat"
+      }
+    },
+    {
+      "codesUri": "tutkinnonosat",
+      "codesVersion": 2,
+      "passive": false,
+      "nimi": {
+        "FI": "tutkinnon osat",
+        "SV": "examensdelar",
+        "EN": "tutkinnon osat"
+      },
+      "kuvaus": {
+        "FI": "tutkinnon osat",
+        "SV": "examensdelar",
+        "EN": "tutkinnon osat"
+      }
+    }
+  ]
 }

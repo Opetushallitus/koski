@@ -1467,11 +1467,6 @@
       },
       {
         "codeElementUri": "kunta_051",
-        "codeElementVersion": 2,
-        "passive": false
-      },
-      {
-        "codeElementUri": "kunta_051",
         "codeElementVersion": 1,
         "passive": true
       },
@@ -1599,11 +1594,6 @@
         "codeElementUri": "oppilaitoksenopetuskieli_1",
         "codeElementVersion": 1,
         "passive": true
-      },
-      {
-        "codeElementUri": "kunta_052",
-        "codeElementVersion": 2,
-        "passive": false
       },
       {
         "codeElementUri": "kunta_052",
@@ -3094,6 +3084,11 @@
         "codeElementUri": "posti_18100",
         "codeElementVersion": 1,
         "passive": true
+      },
+      {
+        "codeElementUri": "oppilaitoksenopetuskieli_1",
+        "codeElementVersion": 2,
+        "passive": false
       }
     ],
     "levelsWithCodeElements": [
@@ -7370,11 +7365,6 @@
         "passive": true
       },
       {
-        "codeElementUri": "kunta_208",
-        "codeElementVersion": 2,
-        "passive": false
-      },
-      {
         "codeElementUri": "posti_85100",
         "codeElementVersion": 1,
         "passive": true
@@ -7638,11 +7628,6 @@
         "codeElementUri": "kunta_213",
         "codeElementVersion": 1,
         "passive": true
-      },
-      {
-        "codeElementUri": "kunta_213",
-        "codeElementVersion": 2,
-        "passive": false
       }
     ],
     "levelsWithCodeElements": [
@@ -10116,11 +10101,6 @@
       },
       {
         "codeElementUri": "opetuspisteet_0029506",
-        "codeElementVersion": 1,
-        "passive": false
-      },
-      {
-        "codeElementUri": "opetuspisteet_0029507",
         "codeElementVersion": 1,
         "passive": false
       },
@@ -14022,6 +14002,11 @@
         "codeElementUri": "kunta_420",
         "codeElementVersion": 1,
         "passive": true
+      },
+      {
+        "codeElementUri": "oppilaitoksenopetuskieli_1",
+        "codeElementVersion": 2,
+        "passive": false
       }
     ],
     "levelsWithCodeElements": [
@@ -20804,11 +20789,6 @@
         "passive": false
       },
       {
-        "codeElementUri": "opetuspisteet_0055202",
-        "codeElementVersion": 1,
-        "passive": false
-      },
-      {
         "codeElementUri": "oppilaitostyyppi_15",
         "codeElementVersion": 1,
         "passive": false
@@ -25296,6 +25276,11 @@
         "codeElementUri": "posti_50670",
         "codeElementVersion": 2,
         "passive": false
+      },
+      {
+        "codeElementUri": "opetuspisteet_0061801",
+        "codeElementVersion": 1,
+        "passive": false
       }
     ],
     "levelsWithCodeElements": [],
@@ -25515,11 +25500,6 @@
         "passive": false
       },
       {
-        "codeElementUri": "posti_00270",
-        "codeElementVersion": 2,
-        "passive": false
-      },
-      {
         "codeElementUri": "oppilaitostyyppi_19",
         "codeElementVersion": 1,
         "passive": false
@@ -25528,6 +25508,11 @@
         "codeElementUri": "oppilaitoksenopetuskieli_2",
         "codeElementVersion": 1,
         "passive": true
+      },
+      {
+        "codeElementUri": "posti_00280",
+        "codeElementVersion": 2,
+        "passive": false
       }
     ],
     "levelsWithCodeElements": [],
@@ -29821,9 +29806,9 @@
         "kieli": "FI"
       },
       {
-        "nimi": "Rudolf Steinerskolan i Helsingfors",
-        "kuvaus": "Rudolf Steinerskolan i Helsingfors",
-        "lyhytNimi": "Rudolf Steinerskolan i Helsingfors",
+        "nimi": "Helsingin Rudolf Steiner -koulu",
+        "kuvaus": "Helsingin Rudolf Steiner -koulu",
+        "lyhytNimi": "Helsingin Rudolf Steiner -koulu",
         "kieli": "SV"
       },
       {
@@ -29847,11 +29832,6 @@
       },
       {
         "codeElementUri": "opetuspisteet_0072901",
-        "codeElementVersion": 1,
-        "passive": false
-      },
-      {
-        "codeElementUri": "opetuspisteet_0072902",
         "codeElementVersion": 1,
         "passive": false
       },
@@ -29894,6 +29874,11 @@
         "codeElementUri": "posti_00270",
         "codeElementVersion": 1,
         "passive": true
+      },
+      {
+        "codeElementUri": "posti_00280",
+        "codeElementVersion": 2,
+        "passive": false
       }
     ],
     "levelsWithCodeElements": [
@@ -29969,6 +29954,11 @@
         "codeElementUri": "posti_34601",
         "codeElementVersion": 1,
         "passive": true
+      },
+      {
+        "codeElementUri": "posti_34600",
+        "codeElementVersion": 2,
+        "passive": false
       }
     ],
     "levelsWithCodeElements": [
@@ -37002,6 +36992,11 @@
         "codeElementUri": "posti_49901",
         "codeElementVersion": 1,
         "passive": true
+      },
+      {
+        "codeElementUri": "posti_49900",
+        "codeElementVersion": 2,
+        "passive": false
       }
     ],
     "levelsWithCodeElements": [
@@ -70199,11 +70194,6 @@
     "withinCodeElements": [],
     "includesCodeElements": [
       {
-        "codeElementUri": "opetuspisteet_0159510",
-        "codeElementVersion": 1,
-        "passive": false
-      },
-      {
         "codeElementUri": "oppilaitostyyppi_24",
         "codeElementVersion": 1,
         "passive": false
@@ -70229,11 +70219,6 @@
         "passive": true
       },
       {
-        "codeElementUri": "opetuspisteet_0159503",
-        "codeElementVersion": 1,
-        "passive": false
-      },
-      {
         "codeElementUri": "kunta_837",
         "codeElementVersion": 1,
         "passive": true
@@ -70242,11 +70227,6 @@
         "codeElementUri": "posti_33821",
         "codeElementVersion": 1,
         "passive": true
-      },
-      {
-        "codeElementUri": "opetuspisteet_0159504",
-        "codeElementVersion": 1,
-        "passive": false
       }
     ],
     "levelsWithCodeElements": [],
@@ -75075,6 +75055,11 @@
         "codeElementUri": "posti_50670",
         "codeElementVersion": 1,
         "passive": true
+      },
+      {
+        "codeElementUri": "oppilaitoksenopetuskieli_1",
+        "codeElementVersion": 2,
+        "passive": false
       }
     ],
     "levelsWithCodeElements": [
@@ -75688,21 +75673,21 @@
   {
     "metadata": [
       {
-        "nimi": "Raudaskylän kristillinen opisto",
-        "kuvaus": "Raudaskylän kristillinen opisto",
-        "lyhytNimi": "Raudaskylän kristillinen opisto",
+        "nimi": "Raudaskylän Opisto",
+        "kuvaus": "Raudaskylän Opisto",
+        "lyhytNimi": "Raudaskylän Opisto",
         "kieli": "FI"
       },
       {
-        "nimi": "Raudaskylän kristillinen opisto",
-        "kuvaus": "Raudaskylän kristillinen opisto",
-        "lyhytNimi": "Raudaskylän kristillinen opisto",
+        "nimi": "Raudaskylän Opisto",
+        "kuvaus": "Raudaskylän Opisto",
+        "lyhytNimi": "Raudaskylän Opisto",
         "kieli": "SV"
       },
       {
-        "nimi": "Raudaskylän kristillinen opisto",
-        "kuvaus": "Raudaskylän kristillinen opisto",
-        "lyhytNimi": "Raudaskylän kristillinen opisto",
+        "nimi": "Raudaskylän Opisto",
+        "kuvaus": "Raudaskylän Opisto",
+        "lyhytNimi": "Raudaskylän Opisto",
         "kieli": "EN"
       }
     ],
@@ -89855,21 +89840,21 @@
   {
     "metadata": [
       {
-        "nimi": "Kainuun musiikkiopisto",
-        "kuvaus": "Kainuun musiikkiopisto",
-        "lyhytNimi": "Kainuun musiikkiopisto",
+        "nimi": "Kainuun konservatorio",
+        "kuvaus": "Kainuun konservatorio",
+        "lyhytNimi": "Kainuun konservatorio",
         "kieli": "FI"
       },
       {
-        "nimi": "Kainuun musiikkiopisto",
-        "kuvaus": "Kainuun musiikkiopisto",
-        "lyhytNimi": "Kainuun musiikkiopisto",
+        "nimi": "Kainuun konservatorio",
+        "kuvaus": "Kainuun konservatorio",
+        "lyhytNimi": "Kainuun konservatorio",
         "kieli": "SV"
       },
       {
-        "nimi": "Kainuun musiikkiopisto",
-        "kuvaus": "Kainuun musiikkiopisto",
-        "lyhytNimi": "Kainuun musiikkiopisto",
+        "nimi": "Kainuun konservatorio",
+        "kuvaus": "Kainuun konservatorio",
+        "lyhytNimi": "Kainuun konservatorio",
         "kieli": "EN"
       }
     ],
@@ -94765,6 +94750,11 @@
         "codeElementUri": "posti_10211",
         "codeElementVersion": 1,
         "passive": true
+      },
+      {
+        "codeElementUri": "posti_10210",
+        "codeElementVersion": 2,
+        "passive": false
       }
     ],
     "levelsWithCodeElements": [],
@@ -100684,6 +100674,11 @@
         "codeElementUri": "posti_57100",
         "codeElementVersion": 1,
         "passive": true
+      },
+      {
+        "codeElementUri": "oppilaitoksenopetuskieli_1",
+        "codeElementVersion": 2,
+        "passive": false
       }
     ],
     "levelsWithCodeElements": [],
@@ -103408,21 +103403,21 @@
   {
     "metadata": [
       {
-        "nimi": "Viitaseudun opisto",
-        "kuvaus": "Viitaseudun opisto",
-        "lyhytNimi": "Viitaseudun opisto",
+        "nimi": "Pihtiputaan ja Viitasaaren kansalaisopisto",
+        "kuvaus": "Pihtiputaan ja Viitasaaren kansalaisopisto",
+        "lyhytNimi": "Pihtiputaan ja Viitasaaren kansalaisopisto",
         "kieli": "FI"
       },
       {
-        "nimi": "Viitaseudun opisto",
-        "kuvaus": "Viitaseudun opisto",
-        "lyhytNimi": "Viitaseudun opisto",
+        "nimi": "Pihtiputaan ja Viitasaaren kansalaisopisto",
+        "kuvaus": "Pihtiputaan ja Viitasaaren kansalaisopisto",
+        "lyhytNimi": "Pihtiputaan ja Viitasaaren kansalaisopisto",
         "kieli": "SV"
       },
       {
-        "nimi": "Viitaseudun opisto",
-        "kuvaus": "Viitaseudun opisto",
-        "lyhytNimi": "Viitaseudun opisto",
+        "nimi": "Pihtiputaan ja Viitasaaren kansalaisopisto",
+        "kuvaus": "Pihtiputaan ja Viitasaaren kansalaisopisto",
+        "lyhytNimi": "Pihtiputaan ja Viitasaaren kansalaisopisto",
         "kieli": "EN"
       }
     ],
@@ -107594,6 +107589,11 @@
         "codeElementUri": "posti_99800",
         "codeElementVersion": 1,
         "passive": true
+      },
+      {
+        "codeElementUri": "oppilaitoksenopetuskieli_1",
+        "codeElementVersion": 2,
+        "passive": false
       }
     ],
     "levelsWithCodeElements": [],
@@ -112996,6 +112996,11 @@
         "codeElementUri": "posti_44101",
         "codeElementVersion": 1,
         "passive": true
+      },
+      {
+        "codeElementUri": "posti_44100",
+        "codeElementVersion": 2,
+        "passive": false
       }
     ],
     "levelsWithCodeElements": [],
@@ -113269,11 +113274,6 @@
     "withinCodeElements": [],
     "includesCodeElements": [
       {
-        "codeElementUri": "opetuspisteet_0235901",
-        "codeElementVersion": 1,
-        "passive": false
-      },
-      {
         "codeElementUri": "yhteishaunkoulukoodi_0913",
         "codeElementVersion": 1,
         "passive": false
@@ -113285,16 +113285,6 @@
       },
       {
         "codeElementUri": "oppilaitostyyppi_21",
-        "codeElementVersion": 1,
-        "passive": false
-      },
-      {
-        "codeElementUri": "opetuspisteet_0235906",
-        "codeElementVersion": 1,
-        "passive": false
-      },
-      {
-        "codeElementUri": "opetuspisteet_0235904",
         "codeElementVersion": 1,
         "passive": false
       },
@@ -113314,11 +113304,6 @@
         "passive": false
       },
       {
-        "codeElementUri": "opetuspisteet_0235903",
-        "codeElementVersion": 1,
-        "passive": false
-      },
-      {
         "codeElementUri": "kunta_061",
         "codeElementVersion": 1,
         "passive": true
@@ -113327,11 +113312,6 @@
         "codeElementUri": "posti_30101",
         "codeElementVersion": 1,
         "passive": true
-      },
-      {
-        "codeElementUri": "opetuspisteet_0235902",
-        "codeElementVersion": 1,
-        "passive": false
       },
       {
         "codeElementUri": "opetuspisteet_0235907",
@@ -118802,11 +118782,6 @@
         "passive": false
       },
       {
-        "codeElementUri": "opetuspisteet_0244202",
-        "codeElementVersion": 1,
-        "passive": false
-      },
-      {
         "codeElementUri": "oppilaitoksenopetuskieli_1",
         "codeElementVersion": 2,
         "passive": false
@@ -118815,11 +118790,6 @@
         "codeElementUri": "oppilaitoksenopetuskieli_1",
         "codeElementVersion": 1,
         "passive": true
-      },
-      {
-        "codeElementUri": "opetuspisteet_0244204",
-        "codeElementVersion": 1,
-        "passive": false
       },
       {
         "codeElementUri": "kunta_232",
@@ -121460,17 +121430,7 @@
         "passive": false
       },
       {
-        "codeElementUri": "opetuspisteet_0247203",
-        "codeElementVersion": 1,
-        "passive": false
-      },
-      {
         "codeElementUri": "yhteishaunkoulukoodi_1720",
-        "codeElementVersion": 1,
-        "passive": false
-      },
-      {
-        "codeElementUri": "opetuspisteet_0247204",
         "codeElementVersion": 1,
         "passive": false
       },
@@ -121496,16 +121456,6 @@
       },
       {
         "codeElementUri": "oppilaitostyyppi_41",
-        "codeElementVersion": 1,
-        "passive": false
-      },
-      {
-        "codeElementUri": "opetuspisteet_0247221",
-        "codeElementVersion": 1,
-        "passive": false
-      },
-      {
-        "codeElementUri": "opetuspisteet_0247235",
         "codeElementVersion": 1,
         "passive": false
       },
@@ -130135,11 +130085,6 @@
         "passive": false
       },
       {
-        "codeElementUri": "opetuspisteet_0256308",
-        "codeElementVersion": 1,
-        "passive": false
-      },
-      {
         "codeElementUri": "opetuspisteet_0256305",
         "codeElementVersion": 1,
         "passive": false
@@ -132012,11 +131957,6 @@
       },
       {
         "codeElementUri": "yhteishaunkoulukoodi_0220",
-        "codeElementVersion": 1,
-        "passive": false
-      },
-      {
-        "codeElementUri": "opetuspisteet_0258403",
         "codeElementVersion": 1,
         "passive": false
       },
@@ -139735,6 +139675,11 @@
         "codeElementUri": "posti_00099",
         "codeElementVersion": 1,
         "passive": true
+      },
+      {
+        "codeElementUri": "oppilaitoksenopetuskieli_1",
+        "codeElementVersion": 2,
+        "passive": false
       }
     ],
     "levelsWithCodeElements": [
@@ -139919,21 +139864,21 @@
   {
     "metadata": [
       {
-        "nimi": "Puotilan ala-aste",
-        "kuvaus": "Puotilan ala-aste",
-        "lyhytNimi": "Puotilan ala-aste",
+        "nimi": "Puotilan ala-asteen koulu",
+        "kuvaus": "Puotilan ala-asteen koulu",
+        "lyhytNimi": "Puotilan ala-asteen koulu",
         "kieli": "FI"
       },
       {
-        "nimi": "Puotilan ala-aste",
-        "kuvaus": "Puotilan ala-aste",
-        "lyhytNimi": "Puotilan ala-aste",
+        "nimi": "Puotilan ala-asteen koulu",
+        "kuvaus": "Puotilan ala-asteen koulu",
+        "lyhytNimi": "Puotilan ala-asteen koulu",
         "kieli": "SV"
       },
       {
-        "nimi": "Puotilan ala-aste",
-        "kuvaus": "Puotilan ala-aste",
-        "lyhytNimi": "Puotilan ala-aste",
+        "nimi": "Puotilan ala-asteen koulu",
+        "kuvaus": "Puotilan ala-asteen koulu",
+        "lyhytNimi": "Puotilan ala-asteen koulu",
         "kieli": "EN"
       }
     ],
@@ -149135,6 +149080,16 @@
         "codeElementUri": "posti_01620",
         "codeElementVersion": 1,
         "passive": true
+      },
+      {
+        "codeElementUri": "opetuspisteet_0320702",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "opetuspisteet_0320703",
+        "codeElementVersion": 1,
+        "passive": false
       }
     ],
     "levelsWithCodeElements": [],
@@ -151075,6 +151030,11 @@
         "codeElementUri": "posti_70280",
         "codeElementVersion": 1,
         "passive": true
+      },
+      {
+        "codeElementUri": "oppilaitoksenopetuskieli_1",
+        "codeElementVersion": 2,
+        "passive": false
       }
     ],
     "levelsWithCodeElements": [],
@@ -151840,11 +151800,6 @@
     ],
     "withinCodeElements": [],
     "includesCodeElements": [
-      {
-        "codeElementUri": "opetuspisteet_0326201",
-        "codeElementVersion": 1,
-        "passive": false
-      },
       {
         "codeElementUri": "oppilaitostyyppi_11",
         "codeElementVersion": 1,
@@ -157695,21 +157650,21 @@
   {
     "metadata": [
       {
-        "nimi": "Annalan koulu",
-        "kuvaus": "Annalan koulu",
-        "lyhytNimi": "Annalan koulu",
+        "nimi": "Karosen koulu",
+        "kuvaus": "Karosen koulu",
+        "lyhytNimi": "Karosen koulu",
         "kieli": "FI"
       },
       {
-        "nimi": "Annalan koulu",
-        "kuvaus": "Annalan koulu",
-        "lyhytNimi": "Annalan koulu",
+        "nimi": "Karosen koulu",
+        "kuvaus": "Karosen koulu",
+        "lyhytNimi": "Karosen koulu",
         "kieli": "SV"
       },
       {
-        "nimi": "Annalan koulu",
-        "kuvaus": "Annalan koulu",
-        "lyhytNimi": "Annalan koulu",
+        "nimi": "Karosen koulu",
+        "kuvaus": "Karosen koulu",
+        "lyhytNimi": "Karosen koulu",
         "kieli": "EN"
       }
     ],
@@ -157717,11 +157672,6 @@
     "includesCodeElements": [
       {
         "codeElementUri": "oppilaitostyyppi_11",
-        "codeElementVersion": 1,
-        "passive": false
-      },
-      {
-        "codeElementUri": "opetuspisteet_0337902",
         "codeElementVersion": 1,
         "passive": false
       },
@@ -160443,16 +160393,6 @@
         "codeElementUri": "posti_90900",
         "codeElementVersion": 1,
         "passive": true
-      },
-      {
-        "codeElementUri": "opetuspisteet_0342303",
-        "codeElementVersion": 1,
-        "passive": false
-      },
-      {
-        "codeElementUri": "opetuspisteet_0342304",
-        "codeElementVersion": 1,
-        "passive": false
       }
     ],
     "levelsWithCodeElements": [
@@ -160669,33 +160609,8 @@
     "withinCodeElements": [],
     "includesCodeElements": [
       {
-        "codeElementUri": "opetuspisteet_0342701",
-        "codeElementVersion": 1,
-        "passive": false
-      },
-      {
         "codeElementUri": "oppilaitostyyppi_12",
         "codeElementVersion": 1,
-        "passive": false
-      },
-      {
-        "codeElementUri": "opetuspisteet_0342702",
-        "codeElementVersion": 1,
-        "passive": false
-      },
-      {
-        "codeElementUri": "opetuspisteet_0342703",
-        "codeElementVersion": 1,
-        "passive": false
-      },
-      {
-        "codeElementUri": "opetuspisteet_0342704",
-        "codeElementVersion": 1,
-        "passive": false
-      },
-      {
-        "codeElementUri": "oppilaitoksenopetuskieli_1",
-        "codeElementVersion": 2,
         "passive": false
       },
       {
@@ -173342,21 +173257,21 @@
   {
     "metadata": [
       {
-        "nimi": "Hakastaron koulu",
-        "kuvaus": "Hakastaron koulu",
-        "lyhytNimi": "Hakastaron koulu",
+        "nimi": "Ainonpuiston koulu",
+        "kuvaus": "Ainonpuiston koulu",
+        "lyhytNimi": "Ainonpuiston koulu",
         "kieli": "FI"
       },
       {
-        "nimi": "Hakastaron koulu",
-        "kuvaus": "Hakastaron koulu",
-        "lyhytNimi": "Hakastaron koulu",
+        "nimi": "Ainonpuiston koulu",
+        "kuvaus": "Ainonpuiston koulu",
+        "lyhytNimi": "Ainonpuiston koulu",
         "kieli": "SV"
       },
       {
-        "nimi": "Hakastaron koulu",
-        "kuvaus": "Hakastaron koulu",
-        "lyhytNimi": "Hakastaron koulu",
+        "nimi": "Ainonpuiston koulu",
+        "kuvaus": "Ainonpuiston koulu",
+        "lyhytNimi": "Ainonpuiston koulu",
         "kieli": "EN"
       }
     ],
@@ -174193,6 +174108,11 @@
         "codeElementUri": "posti_70820",
         "codeElementVersion": 1,
         "passive": true
+      },
+      {
+        "codeElementUri": "oppilaitoksenopetuskieli_1",
+        "codeElementVersion": 2,
+        "passive": false
       }
     ],
     "levelsWithCodeElements": [],
@@ -178272,6 +178192,11 @@
         "codeElementUri": "posti_20610",
         "codeElementVersion": 1,
         "passive": true
+      },
+      {
+        "codeElementUri": "opetuspisteet_0374902",
+        "codeElementVersion": 1,
+        "passive": false
       }
     ],
     "levelsWithCodeElements": [],
@@ -187800,6 +187725,217 @@
   {
     "metadata": [
       {
+        "nimi": "Jääkärinkankaan koulu",
+        "kuvaus": "Jääkärinkankaan koulu",
+        "lyhytNimi": "Jääkärinkankaan koulu",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Jääkärinkankaan koulu",
+        "kuvaus": "Jääkärinkankaan koulu",
+        "lyhytNimi": "Jääkärinkankaan koulu",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Jääkärinkankaan koulu",
+        "kuvaus": "Jääkärinkankaan koulu",
+        "lyhytNimi": "Jääkärinkankaan koulu",
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [
+      {
+        "codeElementUri": "posti_90650",
+        "codeElementVersion": 2,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitostyyppi_11",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "kunta_564",
+        "codeElementVersion": 2,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitoksenopetuskieli_1",
+        "codeElementVersion": 2,
+        "passive": false
+      }
+    ],
+    "levelsWithCodeElements": [],
+    "koodiUri": "oppilaitosnumero_03919",
+    "versio": 1,
+    "koodiArvo": "03919"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "Petäjäveden yhtenäiskoulu",
+        "kuvaus": "Petäjäveden yhtenäiskoulu",
+        "lyhytNimi": "Petäjäveden yhtenäiskoulu",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Petäjäveden yhtenäiskoulu",
+        "kuvaus": "Petäjäveden yhtenäiskoulu",
+        "lyhytNimi": "Petäjäveden yhtenäiskoulu",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Petäjäveden yhtenäiskoulu",
+        "kuvaus": "Petäjäveden yhtenäiskoulu",
+        "lyhytNimi": "Petäjäveden yhtenäiskoulu",
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [
+      {
+        "codeElementUri": "oppilaitostyyppi_11",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "kunta_592",
+        "codeElementVersion": 2,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitoksenopetuskieli_1",
+        "codeElementVersion": 2,
+        "passive": false
+      },
+      {
+        "codeElementUri": "posti_41900",
+        "codeElementVersion": 2,
+        "passive": false
+      },
+      {
+        "codeElementUri": "opetuspisteet_0392001",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "opetuspisteet_0392002",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "opetuspisteet_0392003",
+        "codeElementVersion": 1,
+        "passive": false
+      }
+    ],
+    "levelsWithCodeElements": [],
+    "koodiUri": "oppilaitosnumero_03920",
+    "versio": 1,
+    "koodiArvo": "03920"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "Hermannin peruskoulu",
+        "kuvaus": "Hermannin peruskoulu",
+        "lyhytNimi": "Hermannin peruskoulu",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Hermannin peruskoulu",
+        "kuvaus": "Hermannin peruskoulu",
+        "lyhytNimi": "Hermannin peruskoulu",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Hermannin peruskoulu",
+        "kuvaus": "Hermannin peruskoulu",
+        "lyhytNimi": "Hermannin peruskoulu",
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [
+      {
+        "codeElementUri": "kunta_091",
+        "codeElementVersion": 2,
+        "passive": false
+      },
+      {
+        "codeElementUri": "posti_00100",
+        "codeElementVersion": 2,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitostyyppi_11",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitoksenopetuskieli_1",
+        "codeElementVersion": 2,
+        "passive": false
+      }
+    ],
+    "levelsWithCodeElements": [],
+    "koodiUri": "oppilaitosnumero_03921",
+    "versio": 1,
+    "koodiArvo": "03921"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "Postipuiston peruskoulu",
+        "kuvaus": "Postipuiston peruskoulu",
+        "lyhytNimi": "Postipuiston peruskoulu",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Postipuiston peruskoulu",
+        "kuvaus": "Postipuiston peruskoulu",
+        "lyhytNimi": "Postipuiston peruskoulu",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Postipuiston peruskoulu",
+        "kuvaus": "Postipuiston peruskoulu",
+        "lyhytNimi": "Postipuiston peruskoulu",
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [
+      {
+        "codeElementUri": "kunta_091",
+        "codeElementVersion": 2,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitostyyppi_11",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitoksenopetuskieli_1",
+        "codeElementVersion": 2,
+        "passive": false
+      },
+      {
+        "codeElementUri": "posti_00240",
+        "codeElementVersion": 2,
+        "passive": false
+      }
+    ],
+    "levelsWithCodeElements": [],
+    "koodiUri": "oppilaitosnumero_03922",
+    "versio": 1,
+    "koodiArvo": "03922"
+  },
+  {
+    "metadata": [
+      {
         "nimi": "Arpelan koulu",
         "kuvaus": "Arpelan koulu",
         "lyhytNimi": "Arpelan koulu",
@@ -195932,6 +196068,11 @@
         "codeElementUri": "posti_97700",
         "codeElementVersion": 1,
         "passive": true
+      },
+      {
+        "codeElementUri": "oppilaitoksenopetuskieli_1",
+        "codeElementVersion": 2,
+        "passive": false
       }
     ],
     "levelsWithCodeElements": [],
@@ -207009,31 +207150,26 @@
   {
     "metadata": [
       {
-        "nimi": "Gananderin koulu",
-        "kuvaus": "Gananderin koulu",
-        "lyhytNimi": "Gananderin koulu",
+        "nimi": "Siikalatvan peruskoulu",
+        "kuvaus": "Siikalatvan peruskoulu",
+        "lyhytNimi": "Siikalatvan peruskoulu",
         "kieli": "FI"
       },
       {
-        "nimi": "Gananderin koulu",
-        "kuvaus": "Gananderin koulu",
-        "lyhytNimi": "Gananderin koulu",
+        "nimi": "Siikalatvan peruskoulu",
+        "kuvaus": "Siikalatvan peruskoulu",
+        "lyhytNimi": "Siikalatvan peruskoulu",
         "kieli": "SV"
       },
       {
-        "nimi": "Gananderin koulu",
-        "kuvaus": "Gananderin koulu",
-        "lyhytNimi": "Gananderin koulu",
+        "nimi": "Siikalatvan peruskoulu",
+        "kuvaus": "Siikalatvan peruskoulu",
+        "lyhytNimi": "Siikalatvan peruskoulu",
         "kieli": "EN"
       }
     ],
     "withinCodeElements": [],
     "includesCodeElements": [
-      {
-        "codeElementUri": "opetuspisteet_0450301",
-        "codeElementVersion": 1,
-        "passive": false
-      },
       {
         "codeElementUri": "oppilaitostyyppi_11",
         "codeElementVersion": 1,
@@ -207062,6 +207198,31 @@
       {
         "codeElementUri": "posti_92500",
         "codeElementVersion": 2,
+        "passive": false
+      },
+      {
+        "codeElementUri": "opetuspisteet_0450302",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "opetuspisteet_0450303",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "opetuspisteet_0450304",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "opetuspisteet_0450305",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "opetuspisteet_0450306",
+        "codeElementVersion": 1,
         "passive": false
       }
     ],
@@ -208532,6 +208693,11 @@
         "codeElementUri": "posti_41520",
         "codeElementVersion": 1,
         "passive": true
+      },
+      {
+        "codeElementUri": "oppilaitoksenopetuskieli_1",
+        "codeElementVersion": 2,
+        "passive": false
       }
     ],
     "levelsWithCodeElements": [
@@ -210881,6 +211047,11 @@
         "codeElementUri": "posti_52200",
         "codeElementVersion": 1,
         "passive": true
+      },
+      {
+        "codeElementUri": "oppilaitoksenopetuskieli_1",
+        "codeElementVersion": 2,
+        "passive": false
       }
     ],
     "levelsWithCodeElements": [
@@ -211891,6 +212062,11 @@
         "codeElementUri": "posti_25900",
         "codeElementVersion": 1,
         "passive": true
+      },
+      {
+        "codeElementUri": "oppilaitoksenopetuskieli_2",
+        "codeElementVersion": 2,
+        "passive": false
       }
     ],
     "levelsWithCodeElements": [],
@@ -227991,6 +228167,11 @@
         "codeElementUri": "posti_45410",
         "codeElementVersion": 1,
         "passive": true
+      },
+      {
+        "codeElementUri": "oppilaitoksenopetuskieli_1",
+        "codeElementVersion": 2,
+        "passive": false
       }
     ],
     "levelsWithCodeElements": [],
@@ -246363,6 +246544,11 @@
         "codeElementUri": "posti_82600",
         "codeElementVersion": 1,
         "passive": true
+      },
+      {
+        "codeElementUri": "oppilaitoksenopetuskieli_1",
+        "codeElementVersion": 2,
+        "passive": false
       }
     ],
     "levelsWithCodeElements": [
@@ -255396,21 +255582,21 @@
   {
     "metadata": [
       {
-        "nimi": "Kirkonkylän koulu",
-        "kuvaus": "Kirkonkylän koulu",
-        "lyhytNimi": "Kirkonkylän koulu",
+        "nimi": "Kyrönsillan koulu",
+        "kuvaus": "Kyrönsillan koulu",
+        "lyhytNimi": "Kyrönsillan koulu",
         "kieli": "FI"
       },
       {
-        "nimi": "Kirkonkylän koulu",
-        "kuvaus": "Kirkonkylän koulu",
-        "lyhytNimi": "Kirkonkylän koulu",
+        "nimi": "Kyrönsillan koulu",
+        "kuvaus": "Kyrönsillan koulu",
+        "lyhytNimi": "Kyrönsillan koulu",
         "kieli": "SV"
       },
       {
-        "nimi": "Kirkonkylän koulu",
-        "kuvaus": "Kirkonkylän koulu",
-        "lyhytNimi": "Kirkonkylän koulu",
+        "nimi": "Kyrönsillan koulu",
+        "kuvaus": "Kyrönsillan koulu",
+        "lyhytNimi": "Kyrönsillan koulu",
         "kieli": "EN"
       }
     ],
@@ -255440,6 +255626,16 @@
         "codeElementUri": "posti_39100",
         "codeElementVersion": 1,
         "passive": true
+      },
+      {
+        "codeElementUri": "opetuspisteet_0568902",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "opetuspisteet_0568903",
+        "codeElementVersion": 1,
+        "passive": false
       }
     ],
     "levelsWithCodeElements": [],
@@ -255666,6 +255862,16 @@
         "codeElementUri": "posti_39100",
         "codeElementVersion": 1,
         "passive": true
+      },
+      {
+        "codeElementUri": "opetuspisteet_0569302",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "opetuspisteet_0569303",
+        "codeElementVersion": 1,
+        "passive": false
       }
     ],
     "levelsWithCodeElements": [],
@@ -255887,21 +256093,21 @@
   {
     "metadata": [
       {
-        "nimi": "Ikaalisten yhteiskoulu",
-        "kuvaus": "Ikaalisten yhteiskoulu",
-        "lyhytNimi": "Ikaalisten yhteiskoulu",
+        "nimi": "Valkean ruusun koulu",
+        "kuvaus": "Valkean ruusun koulu",
+        "lyhytNimi": "Valkean ruusun koulu",
         "kieli": "FI"
       },
       {
-        "nimi": "Ikaalisten yhteiskoulu",
-        "kuvaus": "Ikaalisten yhteiskoulu",
-        "lyhytNimi": "Ikaalisten yhteiskoulu",
+        "nimi": "Valkean ruusun koulu",
+        "kuvaus": "Valkean ruusun koulu",
+        "lyhytNimi": "Valkean ruusun koulu",
         "kieli": "SV"
       },
       {
-        "nimi": "Ikaalisten yhteiskoulu",
-        "kuvaus": "Ikaalisten yhteiskoulu",
-        "lyhytNimi": "Ikaalisten yhteiskoulu",
+        "nimi": "Valkean ruusun koulu",
+        "kuvaus": "Valkean ruusun koulu",
+        "lyhytNimi": "Valkean ruusun koulu",
         "kieli": "EN"
       }
     ],
@@ -264135,11 +264341,6 @@
       {
         "codeElementUri": "oppilaitostyyppi_11",
         "codeElementVersion": 1,
-        "passive": false
-      },
-      {
-        "codeElementUri": "oppilaitoksenopetuskieli_1",
-        "codeElementVersion": 2,
         "passive": false
       },
       {
@@ -274817,21 +275018,21 @@
   {
     "metadata": [
       {
-        "nimi": "Kuhaniemen koulu",
-        "kuvaus": "Kuhaniemen koulu",
-        "lyhytNimi": "Kuhaniemen koulu",
+        "nimi": "Kuhankosken koulu",
+        "kuvaus": "Kuhankosken koulu",
+        "lyhytNimi": "Kuhankosken koulu",
         "kieli": "FI"
       },
       {
-        "nimi": "Kuhaniemen koulu",
-        "kuvaus": "Kuhaniemen koulu",
-        "lyhytNimi": "Kuhaniemen koulu",
+        "nimi": "Kuhankosken koulu",
+        "kuvaus": "Kuhankosken koulu",
+        "lyhytNimi": "Kuhankosken koulu",
         "kieli": "SV"
       },
       {
-        "nimi": "Kuhaniemen koulu",
-        "kuvaus": "Kuhaniemen koulu",
-        "lyhytNimi": "Kuhaniemen koulu",
+        "nimi": "Kuhankosken koulu",
+        "kuvaus": "Kuhankosken koulu",
+        "lyhytNimi": "Kuhankosken koulu",
         "kieli": "EN"
       }
     ],
@@ -274845,11 +275046,6 @@
       {
         "codeElementUri": "oppilaitostyyppi_11",
         "codeElementVersion": 1,
-        "passive": false
-      },
-      {
-        "codeElementUri": "oppilaitoksenopetuskieli_1",
-        "codeElementVersion": 2,
         "passive": false
       },
       {
@@ -276468,6 +276664,11 @@
         "codeElementUri": "posti_51901",
         "codeElementVersion": 1,
         "passive": true
+      },
+      {
+        "codeElementUri": "posti_51900",
+        "codeElementVersion": 2,
+        "passive": false
       }
     ],
     "levelsWithCodeElements": [],
@@ -285039,11 +285240,6 @@
     ],
     "withinCodeElements": [],
     "includesCodeElements": [
-      {
-        "codeElementUri": "opetuspisteet_0631801",
-        "codeElementVersion": 1,
-        "passive": false
-      },
       {
         "codeElementUri": "opetuspisteet_0631802",
         "codeElementVersion": 1,
@@ -308616,21 +308812,21 @@
   {
     "metadata": [
       {
-        "nimi": "Lehmon yhtenäiskoulu",
-        "kuvaus": "Lehmon yhtenäiskoulu",
-        "lyhytNimi": "Lehmon yhtenäiskoulu",
+        "nimi": "Lehmon koulu",
+        "kuvaus": "Lehmon koulu",
+        "lyhytNimi": "Lehmon koulu",
         "kieli": "FI"
       },
       {
-        "nimi": "Lehmon yhtenäiskoulu",
-        "kuvaus": "Lehmon yhtenäiskoulu",
-        "lyhytNimi": "Lehmon yhtenäiskoulu",
+        "nimi": "Lehmon koulu",
+        "kuvaus": "Lehmon koulu",
+        "lyhytNimi": "Lehmon koulu",
         "kieli": "SV"
       },
       {
-        "nimi": "Lehmon yhtenäiskoulu",
-        "kuvaus": "Lehmon yhtenäiskoulu",
-        "lyhytNimi": "Lehmon yhtenäiskoulu",
+        "nimi": "Lehmon koulu",
+        "kuvaus": "Lehmon koulu",
+        "lyhytNimi": "Lehmon koulu",
         "kieli": "EN"
       }
     ],
@@ -319950,6 +320146,11 @@
         "codeElementUri": "kunta_405",
         "codeElementVersion": 1,
         "passive": true
+      },
+      {
+        "codeElementUri": "opetuspisteet_0708102",
+        "codeElementVersion": 1,
+        "passive": false
       }
     ],
     "levelsWithCodeElements": [
@@ -320478,6 +320679,11 @@
         "codeElementUri": "posti_53600",
         "codeElementVersion": 1,
         "passive": true
+      },
+      {
+        "codeElementUri": "opetuspisteet_0709002",
+        "codeElementVersion": 1,
+        "passive": false
       }
     ],
     "levelsWithCodeElements": [],
@@ -321016,6 +321222,11 @@
         "codeElementUri": "kunta_405",
         "codeElementVersion": 1,
         "passive": true
+      },
+      {
+        "codeElementUri": "opetuspisteet_0709903",
+        "codeElementVersion": 1,
+        "passive": false
       }
     ],
     "levelsWithCodeElements": [
@@ -327883,6 +328094,11 @@
         "codeElementUri": "posti_58900",
         "codeElementVersion": 1,
         "passive": true
+      },
+      {
+        "codeElementUri": "oppilaitoksenopetuskieli_1",
+        "codeElementVersion": 2,
+        "passive": false
       }
     ],
     "levelsWithCodeElements": [],
@@ -334778,6 +334994,11 @@
         "codeElementUri": "posti_45720",
         "codeElementVersion": 1,
         "passive": true
+      },
+      {
+        "codeElementUri": "oppilaitoksenopetuskieli_1",
+        "codeElementVersion": 2,
+        "passive": false
       }
     ],
     "levelsWithCodeElements": [
@@ -335246,6 +335467,11 @@
         "codeElementUri": "posti_49901",
         "codeElementVersion": 1,
         "passive": true
+      },
+      {
+        "codeElementUri": "posti_49900",
+        "codeElementVersion": 2,
+        "passive": false
       }
     ],
     "levelsWithCodeElements": [],
@@ -336744,6 +336970,11 @@
         "codeElementUri": "posti_45610",
         "codeElementVersion": 1,
         "passive": true
+      },
+      {
+        "codeElementUri": "oppilaitoksenopetuskieli_1",
+        "codeElementVersion": 2,
+        "passive": false
       }
     ],
     "levelsWithCodeElements": [],
@@ -337528,6 +337759,11 @@
         "codeElementUri": "posti_45100",
         "codeElementVersion": 1,
         "passive": true
+      },
+      {
+        "codeElementUri": "oppilaitoksenopetuskieli_1",
+        "codeElementVersion": 2,
+        "passive": false
       }
     ],
     "levelsWithCodeElements": [],
@@ -337636,6 +337872,11 @@
         "codeElementUri": "posti_45200",
         "codeElementVersion": 1,
         "passive": true
+      },
+      {
+        "codeElementUri": "oppilaitoksenopetuskieli_1",
+        "codeElementVersion": 2,
+        "passive": false
       }
     ],
     "levelsWithCodeElements": [],
@@ -337750,6 +337991,11 @@
         "codeElementUri": "posti_45100",
         "codeElementVersion": 1,
         "passive": true
+      },
+      {
+        "codeElementUri": "oppilaitoksenopetuskieli_1",
+        "codeElementVersion": 2,
+        "passive": false
       }
     ],
     "levelsWithCodeElements": [
@@ -338838,6 +339084,16 @@
         "codeElementUri": "posti_54100",
         "codeElementVersion": 1,
         "passive": true
+      },
+      {
+        "codeElementUri": "opetuspisteet_0746502",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "opetuspisteet_0746503",
+        "codeElementVersion": 1,
+        "passive": false
       }
     ],
     "levelsWithCodeElements": [],
@@ -341294,6 +341550,11 @@
         "codeElementUri": "posti_35100",
         "codeElementVersion": 1,
         "passive": true
+      },
+      {
+        "codeElementUri": "oppilaitoksenopetuskieli_1",
+        "codeElementVersion": 2,
+        "passive": false
       }
     ],
     "levelsWithCodeElements": [],
@@ -341966,6 +342227,11 @@
         "codeElementUri": "posti_71160",
         "codeElementVersion": 1,
         "passive": true
+      },
+      {
+        "codeElementUri": "oppilaitoksenopetuskieli_1",
+        "codeElementVersion": 2,
+        "passive": false
       }
     ],
     "levelsWithCodeElements": [],
@@ -342849,6 +343115,11 @@
         "codeElementUri": "posti_70200",
         "codeElementVersion": 1,
         "passive": true
+      },
+      {
+        "codeElementUri": "oppilaitoksenopetuskieli_1",
+        "codeElementVersion": 2,
+        "passive": false
       }
     ],
     "levelsWithCodeElements": [],
@@ -342903,6 +343174,11 @@
         "codeElementUri": "posti_70100",
         "codeElementVersion": 1,
         "passive": true
+      },
+      {
+        "codeElementUri": "oppilaitoksenopetuskieli_1",
+        "codeElementVersion": 2,
+        "passive": false
       }
     ],
     "levelsWithCodeElements": [],
@@ -343925,6 +344201,11 @@
         "codeElementUri": "posti_72100",
         "codeElementVersion": 1,
         "passive": true
+      },
+      {
+        "codeElementUri": "oppilaitoksenopetuskieli_1",
+        "codeElementVersion": 2,
+        "passive": false
       }
     ],
     "levelsWithCodeElements": [],
@@ -355271,6 +355552,11 @@
         "codeElementUri": "posti_46900",
         "codeElementVersion": 1,
         "passive": true
+      },
+      {
+        "codeElementUri": "oppilaitoksenopetuskieli_1",
+        "codeElementVersion": 2,
+        "passive": false
       }
     ],
     "levelsWithCodeElements": [
@@ -356131,6 +356417,11 @@
         "codeElementUri": "posti_46800",
         "codeElementVersion": 1,
         "passive": true
+      },
+      {
+        "codeElementUri": "oppilaitoksenopetuskieli_1",
+        "codeElementVersion": 2,
+        "passive": false
       }
     ],
     "levelsWithCodeElements": [
@@ -356325,21 +356616,21 @@
   {
     "metadata": [
       {
-        "nimi": "Orimattilan yhteiskoulu ja Erkko-lukio",
-        "kuvaus": "Orimattilan yhteiskoulu ja Erkko-lukio",
-        "lyhytNimi": "Orimattilan yhteiskoulu ja Erkko-lukio",
+        "nimi": "Erkon yhteiskoulu",
+        "kuvaus": "Erkon yhteiskoulu",
+        "lyhytNimi": "Erkon yhteiskoulu",
         "kieli": "FI"
       },
       {
-        "nimi": "Orimattilan yhteiskoulu ja Erkko-lukio",
-        "kuvaus": "Orimattilan yhteiskoulu ja Erkko-lukio",
-        "lyhytNimi": "Orimattilan yhteiskoulu ja Erkko-lukio",
+        "nimi": "Erkon yhteiskoulu",
+        "kuvaus": "Erkon yhteiskoulu",
+        "lyhytNimi": "Erkon yhteiskoulu",
         "kieli": "SV"
       },
       {
-        "nimi": "Orimattilan yhteiskoulu ja Erkko-lukio",
-        "kuvaus": "Orimattilan yhteiskoulu ja Erkko-lukio",
-        "lyhytNimi": "Orimattilan yhteiskoulu ja Erkko-lukio",
+        "nimi": "Erkon yhteiskoulu",
+        "kuvaus": "Erkon yhteiskoulu",
+        "lyhytNimi": "Erkon yhteiskoulu",
         "kieli": "EN"
       }
     ],
@@ -358774,21 +359065,21 @@
   {
     "metadata": [
       {
-        "nimi": "Bonäs-Vestersundsby skola",
-        "kuvaus": "Bonäs-Vestersundsby skola",
-        "lyhytNimi": "Bonäs-Vestersundsby skola",
+        "nimi": "Bonäs skola",
+        "kuvaus": "Bonäs skola",
+        "lyhytNimi": "Bonäs skola",
         "kieli": "FI"
       },
       {
-        "nimi": "Bonäs-Vestersundsby skola",
-        "kuvaus": "Bonäs-Vestersundsby skola",
-        "lyhytNimi": "Bonäs-Vestersundsby skola",
+        "nimi": "Bonäs skola",
+        "kuvaus": "Bonäs skola",
+        "lyhytNimi": "Bonäs skola",
         "kieli": "SV"
       },
       {
-        "nimi": "Bonäs-Vestersundsby skola",
-        "kuvaus": "Bonäs-Vestersundsby skola",
-        "lyhytNimi": "Bonäs-Vestersundsby skola",
+        "nimi": "Bonäs skola",
+        "kuvaus": "Bonäs skola",
+        "lyhytNimi": "Bonäs skola",
         "kieli": "EN"
       }
     ],
@@ -359333,23 +359624,8 @@
         "passive": false
       },
       {
-        "codeElementUri": "opetuspisteet_0790302",
-        "codeElementVersion": 1,
-        "passive": false
-      },
-      {
         "codeElementUri": "opetuspisteet_0790303",
         "codeElementVersion": 1,
-        "passive": false
-      },
-      {
-        "codeElementUri": "opetuspisteet_0790304",
-        "codeElementVersion": 1,
-        "passive": false
-      },
-      {
-        "codeElementUri": "posti_15340",
-        "codeElementVersion": 2,
         "passive": false
       },
       {
@@ -359366,6 +359642,11 @@
         "codeElementUri": "posti_15300",
         "codeElementVersion": 1,
         "passive": true
+      },
+      {
+        "codeElementUri": "oppilaitoksenopetuskieli_1",
+        "codeElementVersion": 2,
+        "passive": false
       }
     ],
     "levelsWithCodeElements": [],
@@ -371285,21 +371566,21 @@
   {
     "metadata": [
       {
-        "nimi": "Hakkalan koulu",
-        "kuvaus": "Hakkalan koulu",
-        "lyhytNimi": "Hakkalan koulu",
+        "nimi": "Lammin yhtenäiskoulu",
+        "kuvaus": "Lammin yhtenäiskoulu",
+        "lyhytNimi": "Lammin yhtenäiskoulu",
         "kieli": "FI"
       },
       {
-        "nimi": "Hakkalan koulu",
-        "kuvaus": "Hakkalan koulu",
-        "lyhytNimi": "Hakkalan koulu",
+        "nimi": "Lammin yhtenäiskoulu",
+        "kuvaus": "Lammin yhtenäiskoulu",
+        "lyhytNimi": "Lammin yhtenäiskoulu",
         "kieli": "SV"
       },
       {
-        "nimi": "Hakkalan koulu",
-        "kuvaus": "Hakkalan koulu",
-        "lyhytNimi": "Hakkalan koulu",
+        "nimi": "Lammin yhtenäiskoulu",
+        "kuvaus": "Lammin yhtenäiskoulu",
+        "lyhytNimi": "Lammin yhtenäiskoulu",
         "kieli": "EN"
       }
     ],
@@ -375114,6 +375395,11 @@
         "codeElementUri": "posti_37800",
         "codeElementVersion": 1,
         "passive": true
+      },
+      {
+        "codeElementUri": "oppilaitoksenopetuskieli_1",
+        "codeElementVersion": 2,
+        "passive": false
       }
     ],
     "levelsWithCodeElements": [],
@@ -385750,21 +386036,21 @@
   {
     "metadata": [
       {
-        "nimi": "Merikarvian yhteiskoulu",
-        "kuvaus": "Merikarvian yhteiskoulu",
-        "lyhytNimi": "Merikarvian yhteiskoulu",
+        "nimi": "Merikarvian yhtenäiskoulu",
+        "kuvaus": "Merikarvian yhtenäiskoulu",
+        "lyhytNimi": "Merikarvian yhtenäiskoulu",
         "kieli": "FI"
       },
       {
-        "nimi": "Merikarvian yhteiskoulu",
-        "kuvaus": "Merikarvian yhteiskoulu",
-        "lyhytNimi": "Merikarvian yhteiskoulu",
+        "nimi": "Merikarvian yhtenäiskoulu",
+        "kuvaus": "Merikarvian yhtenäiskoulu",
+        "lyhytNimi": "Merikarvian yhtenäiskoulu",
         "kieli": "SV"
       },
       {
-        "nimi": "Merikarvian yhteiskoulu",
-        "kuvaus": "Merikarvian yhteiskoulu",
-        "lyhytNimi": "Merikarvian yhteiskoulu",
+        "nimi": "Merikarvian yhtenäiskoulu",
+        "kuvaus": "Merikarvian yhtenäiskoulu",
+        "lyhytNimi": "Merikarvian yhtenäiskoulu",
         "kieli": "EN"
       }
     ],
@@ -390879,11 +391165,6 @@
         "passive": false
       },
       {
-        "codeElementUri": "posti_20360",
-        "codeElementVersion": 2,
-        "passive": false
-      },
-      {
         "codeElementUri": "oppilaitoksenopetuskieli_1",
         "codeElementVersion": 2,
         "passive": false
@@ -392418,11 +392699,6 @@
     ],
     "withinCodeElements": [],
     "includesCodeElements": [
-      {
-        "codeElementUri": "opetuspisteet_0857801",
-        "codeElementVersion": 1,
-        "passive": false
-      },
       {
         "codeElementUri": "oppilaitostyyppi_11",
         "codeElementVersion": 1,
@@ -397576,11 +397852,6 @@
     "withinCodeElements": [],
     "includesCodeElements": [
       {
-        "codeElementUri": "opetuspisteet_0867101",
-        "codeElementVersion": 1,
-        "passive": false
-      },
-      {
         "codeElementUri": "oppilaitostyyppi_11",
         "codeElementVersion": 1,
         "passive": false
@@ -398149,6 +398420,21 @@
         "codeElementUri": "posti_33530",
         "codeElementVersion": 1,
         "passive": true
+      },
+      {
+        "codeElementUri": "opetuspisteet_0342705",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "opetuspisteet_0342706",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "opetuspisteet_0342707",
+        "codeElementVersion": 1,
+        "passive": false
       }
     ],
     "levelsWithCodeElements": [],
@@ -403080,11 +403366,6 @@
         "passive": false
       },
       {
-        "codeElementUri": "posti_10650",
-        "codeElementVersion": 2,
-        "passive": false
-      },
-      {
         "codeElementUri": "oppilaitoksenopetuskieli_2",
         "codeElementVersion": 1,
         "passive": true
@@ -403103,6 +403384,11 @@
         "codeElementUri": "posti_10600",
         "codeElementVersion": 1,
         "passive": true
+      },
+      {
+        "codeElementUri": "posti_10330",
+        "codeElementVersion": 2,
+        "passive": false
       }
     ],
     "levelsWithCodeElements": [],
@@ -407185,6 +407471,11 @@
         "codeElementUri": "posti_67300",
         "codeElementVersion": 1,
         "passive": true
+      },
+      {
+        "codeElementUri": "posti_67100",
+        "codeElementVersion": 2,
+        "passive": false
       }
     ],
     "levelsWithCodeElements": [],
@@ -411555,6 +411846,55 @@
   {
     "metadata": [
       {
+        "nimi": "Sydkustens ordkonstskola",
+        "kuvaus": "Sydkustens ordkonstskola",
+        "lyhytNimi": "Sydkustens ordkonstskola",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Sydkustens ordkonstskola",
+        "kuvaus": "Sydkustens ordkonstskola",
+        "lyhytNimi": "Sydkustens ordkonstskola",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Sydkustens ordkonstskola",
+        "kuvaus": "Sydkustens ordkonstskola",
+        "lyhytNimi": "Sydkustens ordkonstskola",
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [
+      {
+        "codeElementUri": "kunta_091",
+        "codeElementVersion": 2,
+        "passive": false
+      },
+      {
+        "codeElementUri": "posti_00220",
+        "codeElementVersion": 2,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitostyyppi_01",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitoksenopetuskieli_2",
+        "codeElementVersion": 2,
+        "passive": false
+      }
+    ],
+    "levelsWithCodeElements": [],
+    "koodiUri": "oppilaitosnumero_09044",
+    "versio": 1,
+    "koodiArvo": "09044"
+  },
+  {
+    "metadata": [
+      {
         "nimi": "Töölön musiikkiopisto",
         "kuvaus": "Töölön musiikkiopisto",
         "lyhytNimi": "Töölön musiikkiopisto",
@@ -413669,11 +414009,6 @@
         "passive": false
       },
       {
-        "codeElementUri": "opetuspisteet_0990103",
-        "codeElementVersion": 1,
-        "passive": false
-      },
-      {
         "codeElementUri": "oppilaitostyyppi_65",
         "codeElementVersion": 1,
         "passive": false
@@ -414235,6 +414570,11 @@
       },
       {
         "codeElementUri": "posti_00500",
+        "codeElementVersion": 2,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitoksenopetuskieli_1",
         "codeElementVersion": 2,
         "passive": false
       }
@@ -423562,11 +423902,6 @@
         "passive": false
       },
       {
-        "codeElementUri": "opetuspisteet_1007708",
-        "codeElementVersion": 1,
-        "passive": false
-      },
-      {
         "codeElementUri": "opetuspisteet_1007704",
         "codeElementVersion": 1,
         "passive": false
@@ -423592,22 +423927,12 @@
         "passive": false
       },
       {
-        "codeElementUri": "opetuspisteet_1007725",
-        "codeElementVersion": 1,
-        "passive": false
-      },
-      {
         "codeElementUri": "opetuspisteet_1007726",
         "codeElementVersion": 1,
         "passive": false
       },
       {
         "codeElementUri": "opetuspisteet_1007727",
-        "codeElementVersion": 1,
-        "passive": false
-      },
-      {
-        "codeElementUri": "opetuspisteet_1007728",
         "codeElementVersion": 1,
         "passive": false
       },
@@ -423637,59 +423962,19 @@
         "passive": false
       },
       {
-        "codeElementUri": "opetuspisteet_1007711",
-        "codeElementVersion": 1,
-        "passive": false
-      },
-      {
         "codeElementUri": "oppilaitoksenopetuskieli_1",
         "codeElementVersion": 2,
         "passive": false
       },
       {
-        "codeElementUri": "opetuspisteet_1007703",
-        "codeElementVersion": 1,
-        "passive": false
-      },
-      {
-        "codeElementUri": "opetuspisteet_1007716",
-        "codeElementVersion": 1,
-        "passive": false
-      },
-      {
-        "codeElementUri": "opetuspisteet_1007706",
-        "codeElementVersion": 1,
-        "passive": false
-      },
-      {
         "codeElementUri": "oppilaitoksenopetuskieli_1",
         "codeElementVersion": 1,
         "passive": true
       },
       {
-        "codeElementUri": "opetuspisteet_1007713",
-        "codeElementVersion": 1,
-        "passive": false
-      },
-      {
-        "codeElementUri": "opetuspisteet_1007707",
-        "codeElementVersion": 1,
-        "passive": false
-      },
-      {
-        "codeElementUri": "opetuspisteet_1007715",
-        "codeElementVersion": 1,
-        "passive": false
-      },
-      {
         "codeElementUri": "kunta_165",
         "codeElementVersion": 1,
         "passive": true
-      },
-      {
-        "codeElementUri": "opetuspisteet_1007710",
-        "codeElementVersion": 1,
-        "passive": false
       },
       {
         "codeElementUri": "opetuspisteet_1007719",
@@ -423702,27 +423987,22 @@
         "passive": false
       },
       {
-        "codeElementUri": "opetuspisteet_1007718",
-        "codeElementVersion": 1,
-        "passive": false
-      },
-      {
         "codeElementUri": "posti_14201",
         "codeElementVersion": 1,
         "passive": true
       },
       {
-        "codeElementUri": "opetuspisteet_1007722",
-        "codeElementVersion": 1,
-        "passive": false
-      },
-      {
-        "codeElementUri": "opetuspisteet_1007709",
-        "codeElementVersion": 1,
-        "passive": false
-      },
-      {
         "codeElementUri": "opetuspisteet_1007732",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "opetuspisteet_1007733",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "opetuspisteet_1007734",
         "codeElementVersion": 1,
         "passive": false
       }
@@ -426977,6 +427257,11 @@
         "codeElementUri": "kunta_698",
         "codeElementVersion": 1,
         "passive": true
+      },
+      {
+        "codeElementUri": "opetuspisteet_1010826",
+        "codeElementVersion": 1,
+        "passive": false
       }
     ],
     "levelsWithCodeElements": [],
@@ -427078,16 +427363,6 @@
       },
       {
         "codeElementUri": "opetuspisteet_1011001",
-        "codeElementVersion": 1,
-        "passive": false
-      },
-      {
-        "codeElementUri": "opetuspisteet_1011002",
-        "codeElementVersion": 1,
-        "passive": false
-      },
-      {
-        "codeElementUri": "opetuspisteet_1011003",
         "codeElementVersion": 1,
         "passive": false
       },
@@ -427764,11 +428039,6 @@
         "passive": false
       },
       {
-        "codeElementUri": "opetuspisteet_1012234",
-        "codeElementVersion": 1,
-        "passive": false
-      },
-      {
         "codeElementUri": "opetuspisteet_1012201",
         "codeElementVersion": 1,
         "passive": false
@@ -428181,6 +428451,11 @@
       {
         "codeElementUri": "posti_45100",
         "codeElementVersion": 2,
+        "passive": false
+      },
+      {
+        "codeElementUri": "opetuspisteet_1012705",
+        "codeElementVersion": 1,
         "passive": false
       }
     ],

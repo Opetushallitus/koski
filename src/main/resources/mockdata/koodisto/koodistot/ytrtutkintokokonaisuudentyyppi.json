@@ -1,20 +1,10 @@
 {
-  "koodistoUri": "ytrtutkintokokonaisuudentyyppi",
-  "resourceUri": "https://virkailija.opintopolku.fi/koodisto-service/rest/codes/ytrtutkintokokonaisuudentyyppi",
-  "omistaja": null,
-  "organisaatioOid": "1.2.246.562.10.00000000001",
-  "lukittu": null,
-  "withinCodes": [],
-  "includesCodes": [],
-  "levelsWithCodes": [],
   "codesGroupUri": "koski",
-  "version": 0,
-  "versio": 1,
-  "paivitysPvm": "2023-03-01",
-  "paivittajaOid": "1.2.246.562.24.98063222086",
-  "voimassaAlkuPvm": "2016-09-09",
-  "voimassaLoppuPvm": null,
-  "tila": "LUONNOS",
+  "codesVersions": [],
+  "includesCodes": [],
+  "koodistoUri": "ytrtutkintokokonaisuudentyyppi",
+  "levelsWithCodes": [],
+  "lukittu": null,
   "metadata": [
     {
       "kieli": "SV",
@@ -59,5 +49,15 @@
       "koodistonLahde": null
     }
   ],
-  "codesVersions": []
+  "omistaja": null,
+  "organisaatioOid": "1.2.246.562.10.00000000001",
+  "paivittajaOid": "1.2.246.562.24.98063222086",
+  "paivitysPvm": "2023-03-01",
+  "resourceUri": "https://virkailija.opintopolku.fi/koodisto-service/rest/codes/ytrtutkintokokonaisuudentyyppi",
+  "tila": "LUONNOS",
+  "versio": 1,
+  "version": 0,
+  "voimassaAlkuPvm": "2016-09-09",
+  "voimassaLoppuPvm": null,
+  "withinCodes": []
 }

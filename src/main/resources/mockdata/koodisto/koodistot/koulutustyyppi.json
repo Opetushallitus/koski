@@ -1,9 +1,156 @@
 {
+  "codesGroupUri": "koulutuskoodistot",
+  "codesVersions": [1],
+  "includesCodes": [
+    {
+      "codesUri": "koskikoulutustendiaarinumerot",
+      "codesVersion": 1,
+      "passive": false,
+      "nimi": {
+        "SV": "Koski - koulutusten diaarinumerot",
+        "FI": "Koski - koulutusten diaarinumerot",
+        "EN": "Koski - koulutusten diaarinumerot"
+      },
+      "kuvaus": {
+        "SV": "Koodisto sisältää diaarinumerot, joiden mukaisille perusteille ei Koskessa suoriteta validointeja. Perusteeseen liittyviä validointeja ei haluta suorittaa jos esimerkiksi diaarinumeron mukaista perustetta ei ole saatavilla ePerusteet rajapinnasta.",
+        "FI": "Koodisto sisältää diaarinumerot, joiden mukaisille perusteille ei Koskessa suoriteta validointeja. Perusteeseen liittyviä validointeja ei haluta suorittaa jos esimerkiksi diaarinumeron mukaista perustetta ei ole saatavilla ePerusteet rajapinnasta.",
+        "EN": "Koodisto sisältää diaarinumerot, joiden mukaisille perusteille ei Koskessa suoriteta validointeja. Perusteeseen liittyviä validointeja ei haluta suorittaa jos esimerkiksi diaarinumeron mukaista perustetta ei ole saatavilla ePerusteet rajapinnasta."
+      }
+    },
+    {
+      "codesUri": "pohjakoulutusvaatimustoinenaste",
+      "codesVersion": 1,
+      "passive": false,
+      "nimi": {
+        "SV": "pohjakoulutusvaatimus toinen aste",
+        "FI": "pohjakoulutusvaatimus toinen aste",
+        "EN": "pohjakoulutusvaatimus toinen aste"
+      },
+      "kuvaus": {
+        "SV": "pohjakoulutusvaatimus toinen aste",
+        "FI": "pohjakoulutusvaatimus toinen aste",
+        "EN": "pohjakoulutusvaatimus toinen aste"
+      }
+    },
+    {
+      "codesUri": "liitetyypitamm",
+      "codesVersion": 1,
+      "passive": false,
+      "nimi": {
+        "FI": "liitetyypit_amm",
+        "SV": "liitetyypit_amm",
+        "EN": "liitetyypit_amm"
+      },
+      "kuvaus": {
+        "FI": "liitetyypit_amm",
+        "SV": "liitetyypit_amm",
+        "EN": "liitetyypit_amm"
+      }
+    },
+    {
+      "codesUri": "koulutuslaji",
+      "codesVersion": 1,
+      "passive": false,
+      "nimi": {
+        "SV": "utbildningsslag",
+        "FI": "koulutuslaji",
+        "EN": "koulutuslaji"
+      },
+      "kuvaus": {
+        "SV": "utbildningsslag",
+        "FI": "koulutuslaji",
+        "EN": "koulutuslaji"
+      }
+    },
+    {
+      "codesUri": "valintakokeentyyppi",
+      "codesVersion": 1,
+      "passive": false,
+      "nimi": {
+        "FI": "valintakokeen tyyppi",
+        "SV": "valintakokeen tyyppi",
+        "EN": "valintakokeen tyyppi"
+      },
+      "kuvaus": {
+        "FI": "valintakokeen tyyppi",
+        "SV": "valintakokeen tyyppi",
+        "EN": "valintakokeen tyyppi"
+      }
+    }
+  ],
   "koodistoUri": "koulutustyyppi",
-  "resourceUri": "https://virkailija.opintopolku.fi/koodisto-service/rest/codes/koulutustyyppi",
+  "levelsWithCodes": [
+    {
+      "codesUri": "koulutustyyppikouta",
+      "codesVersion": 1,
+      "passive": false,
+      "nimi": {
+        "SV": "Koulutustyyppi (kouta)",
+        "FI": "Koulutustyyppi (kouta)",
+        "EN": "Koulutustyyppi (kouta)"
+      },
+      "kuvaus": {
+        "SV": "Koulutustarjontapalvelun (kouta) käytössä oleva koulutustyyppikoodisto. Koodiarvot ovat koodattuina suoraan koutan tietomallissa, eikä ole integraatiota koulutustyypin osalta tähän koodistoon, eli on vain dokumentaatiotarkoitusta varten.",
+        "FI": "Koulutustarjontapalvelun (kouta) käytössä oleva koulutustyyppikoodisto. Koodiarvot ovat koodattuina suoraan koutan tietomallissa, eikä ole integraatiota koulutustyypin osalta tähän koodistoon, eli on vain dokumentaatiotarkoitusta varten.",
+        "EN": "Koulutustarjontapalvelun (kouta) käytössä oleva koulutustyyppikoodisto. Koodiarvot ovat koodattuina suoraan koutan tietomallissa, eikä ole integraatiota koulutustyypin osalta tähän koodistoon, eli on vain dokumentaatiotarkoitusta varten."
+      }
+    }
+  ],
+  "lukittu": null,
+  "metadata": [
+    {
+      "kieli": "EN",
+      "nimi": "koulutustyyppi",
+      "kuvaus": "koulutustyyppi",
+      "kayttoohje": null,
+      "kasite": null,
+      "kohdealue": null,
+      "sitovuustaso": null,
+      "kohdealueenOsaAlue": null,
+      "toimintaymparisto": null,
+      "tarkentaaKoodistoa": null,
+      "huomioitavaKoodisto": null,
+      "koodistonLahde": null
+    },
+    {
+      "kieli": "SV",
+      "nimi": "koulutustyyppi",
+      "kuvaus": "koulutustyyppi",
+      "kayttoohje": null,
+      "kasite": null,
+      "kohdealue": null,
+      "sitovuustaso": null,
+      "kohdealueenOsaAlue": null,
+      "toimintaymparisto": null,
+      "tarkentaaKoodistoa": null,
+      "huomioitavaKoodisto": null,
+      "koodistonLahde": null
+    },
+    {
+      "kieli": "FI",
+      "nimi": "koulutustyyppi",
+      "kuvaus": "Vanhan koulutustarjontapalvelun (tarjonta-service) käyttöliittymän käytössä oleva koodisto. Käytössä myös KOSKI-palvelussa",
+      "kayttoohje": null,
+      "kasite": null,
+      "kohdealue": null,
+      "sitovuustaso": null,
+      "kohdealueenOsaAlue": null,
+      "toimintaymparisto": null,
+      "tarkentaaKoodistoa": null,
+      "huomioitavaKoodisto": null,
+      "koodistonLahde": null
+    }
+  ],
   "omistaja": "Opetushallitus",
   "organisaatioOid": "1.2.246.562.10.00000000001",
-  "lukittu": null,
+  "paivittajaOid": "1.2.246.562.24.42485718933",
+  "paivitysPvm": "2024-10-31",
+  "resourceUri": "https://virkailija.opintopolku.fi/koodisto-service/rest/codes/koulutustyyppi",
+  "tila": "LUONNOS",
+  "versio": 2,
+  "version": 8,
+  "voimassaAlkuPvm": "2015-03-27",
+  "voimassaLoppuPvm": null,
   "withinCodes": [
     {
       "codesUri": "koulutus",
@@ -75,7 +222,7 @@
         "EN": "koulutus"
       },
       "kuvaus": {
-        "FI": "Koodistoa ylläpitävät Perttu Venäläinen (ammatilliset koulutukset), Riku Hanhinen (korkeakoulutukset), Juho Helminen (yleissivistävä koulutus). Koodistoa käytetään mm. hakujen koulutustarjonnassa, KOSKI-palvelun tiedonsiirroissa, OIVAssa ja OKM Virta-palvelussa. Tilastokeskus vastaa koodiston koodituksesta (https://www2.tilastokeskus.fi/fi/luokitukset/koulutus/). Koodeja ylläpidetään käsin. Koodiston ja Tilastokeskuksen välillä ei ole integraatiota.",
+        "FI": "Koodistoa ylläpitävät Noora Vaukonen (ammatilliset koulutukset), Riku Hanhinen (korkeakoulutukset), Juho Helminen (yleissivistävä koulutus). Koodistoa käytetään mm. hakujen koulutustarjonnassa, KOSKI-palvelun tiedonsiirroissa, OIVAssa ja OKM Virta-palvelussa. Tilastokeskus vastaa koodiston koodituksesta (https://www2.tilastokeskus.fi/fi/luokitukset/koulutus/). Koodeja ylläpidetään käsin. Koodiston ja Tilastokeskuksen välillä ei ole integraatiota.",
         "SV": "koulutus",
         "EN": "koulutus"
       }
@@ -226,152 +373,5 @@
         "EN": "koulutus"
       }
     }
-  ],
-  "includesCodes": [
-    {
-      "codesUri": "koskikoulutustendiaarinumerot",
-      "codesVersion": 1,
-      "passive": false,
-      "nimi": {
-        "SV": "Koski - koulutusten diaarinumerot",
-        "FI": "Koski - koulutusten diaarinumerot",
-        "EN": "Koski - koulutusten diaarinumerot"
-      },
-      "kuvaus": {
-        "SV": "Koodisto sisältää diaarinumerot, joiden mukaisille perusteille ei Koskessa suoriteta validointeja. Perusteeseen liittyviä validointeja ei haluta suorittaa jos esimerkiksi diaarinumeron mukaista perustetta ei ole saatavilla ePerusteet rajapinnasta.",
-        "FI": "Koodisto sisältää diaarinumerot, joiden mukaisille perusteille ei Koskessa suoriteta validointeja. Perusteeseen liittyviä validointeja ei haluta suorittaa jos esimerkiksi diaarinumeron mukaista perustetta ei ole saatavilla ePerusteet rajapinnasta.",
-        "EN": "Koodisto sisältää diaarinumerot, joiden mukaisille perusteille ei Koskessa suoriteta validointeja. Perusteeseen liittyviä validointeja ei haluta suorittaa jos esimerkiksi diaarinumeron mukaista perustetta ei ole saatavilla ePerusteet rajapinnasta."
-      }
-    },
-    {
-      "codesUri": "pohjakoulutusvaatimustoinenaste",
-      "codesVersion": 1,
-      "passive": false,
-      "nimi": {
-        "SV": "pohjakoulutusvaatimus toinen aste",
-        "FI": "pohjakoulutusvaatimus toinen aste",
-        "EN": "pohjakoulutusvaatimus toinen aste"
-      },
-      "kuvaus": {
-        "SV": "pohjakoulutusvaatimus toinen aste",
-        "FI": "pohjakoulutusvaatimus toinen aste",
-        "EN": "pohjakoulutusvaatimus toinen aste"
-      }
-    },
-    {
-      "codesUri": "liitetyypitamm",
-      "codesVersion": 1,
-      "passive": false,
-      "nimi": {
-        "FI": "liitetyypit_amm",
-        "SV": "liitetyypit_amm",
-        "EN": "liitetyypit_amm"
-      },
-      "kuvaus": {
-        "FI": "liitetyypit_amm",
-        "SV": "liitetyypit_amm",
-        "EN": "liitetyypit_amm"
-      }
-    },
-    {
-      "codesUri": "koulutuslaji",
-      "codesVersion": 1,
-      "passive": false,
-      "nimi": {
-        "SV": "utbildningsslag",
-        "FI": "koulutuslaji",
-        "EN": "koulutuslaji"
-      },
-      "kuvaus": {
-        "SV": "utbildningsslag",
-        "FI": "koulutuslaji",
-        "EN": "koulutuslaji"
-      }
-    },
-    {
-      "codesUri": "valintakokeentyyppi",
-      "codesVersion": 1,
-      "passive": false,
-      "nimi": {
-        "FI": "valintakokeen tyyppi",
-        "SV": "valintakokeen tyyppi",
-        "EN": "valintakokeen tyyppi"
-      },
-      "kuvaus": {
-        "FI": "valintakokeen tyyppi",
-        "SV": "valintakokeen tyyppi",
-        "EN": "valintakokeen tyyppi"
-      }
-    }
-  ],
-  "levelsWithCodes": [
-    {
-      "codesUri": "koulutustyyppikouta",
-      "codesVersion": 1,
-      "passive": false,
-      "nimi": {
-        "SV": "Koulutustyyppi (kouta)",
-        "FI": "Koulutustyyppi (kouta)",
-        "EN": "Koulutustyyppi (kouta)"
-      },
-      "kuvaus": {
-        "SV": "Koulutustarjontapalvelun (kouta) käytössä oleva koulutustyyppikoodisto. Koodiarvot ovat koodattuina suoraan koutan tietomallissa, eikä ole integraatiota koulutustyypin osalta tähän koodistoon, eli on vain dokumentaatiotarkoitusta varten.",
-        "FI": "Koulutustarjontapalvelun (kouta) käytössä oleva koulutustyyppikoodisto. Koodiarvot ovat koodattuina suoraan koutan tietomallissa, eikä ole integraatiota koulutustyypin osalta tähän koodistoon, eli on vain dokumentaatiotarkoitusta varten.",
-        "EN": "Koulutustarjontapalvelun (kouta) käytössä oleva koulutustyyppikoodisto. Koodiarvot ovat koodattuina suoraan koutan tietomallissa, eikä ole integraatiota koulutustyypin osalta tähän koodistoon, eli on vain dokumentaatiotarkoitusta varten."
-      }
-    }
-  ],
-  "codesGroupUri": "koulutuskoodistot",
-  "version": 8,
-  "versio": 2,
-  "paivitysPvm": "2024-10-31",
-  "paivittajaOid": "1.2.246.562.24.42485718933",
-  "voimassaAlkuPvm": "2015-03-27",
-  "voimassaLoppuPvm": null,
-  "tila": "LUONNOS",
-  "metadata": [
-    {
-      "kieli": "EN",
-      "nimi": "koulutustyyppi",
-      "kuvaus": "koulutustyyppi",
-      "kayttoohje": null,
-      "kasite": null,
-      "kohdealue": null,
-      "sitovuustaso": null,
-      "kohdealueenOsaAlue": null,
-      "toimintaymparisto": null,
-      "tarkentaaKoodistoa": null,
-      "huomioitavaKoodisto": null,
-      "koodistonLahde": null
-    },
-    {
-      "kieli": "SV",
-      "nimi": "koulutustyyppi",
-      "kuvaus": "koulutustyyppi",
-      "kayttoohje": null,
-      "kasite": null,
-      "kohdealue": null,
-      "sitovuustaso": null,
-      "kohdealueenOsaAlue": null,
-      "toimintaymparisto": null,
-      "tarkentaaKoodistoa": null,
-      "huomioitavaKoodisto": null,
-      "koodistonLahde": null
-    },
-    {
-      "kieli": "FI",
-      "nimi": "koulutustyyppi",
-      "kuvaus": "Vanhan koulutustarjontapalvelun (tarjonta-service) käyttöliittymän käytössä oleva koodisto. Käytössä myös KOSKI-palvelussa",
-      "kayttoohje": null,
-      "kasite": null,
-      "kohdealue": null,
-      "sitovuustaso": null,
-      "kohdealueenOsaAlue": null,
-      "toimintaymparisto": null,
-      "tarkentaaKoodistoa": null,
-      "huomioitavaKoodisto": null,
-      "koodistonLahde": null
-    }
-  ],
-  "codesVersions": [1]
+  ]
 }

@@ -1,11 +1,8 @@
 {
-  "koodistoUri": "virtaopiskeluoikeudentyyppi",
-  "resourceUri": "https://virkailija.opintopolku.fi/koodisto-service/rest/codes/virtaopiskeluoikeudentyyppi",
-  "omistaja": "",
-  "organisaatioOid": "1.2.246.562.10.2013112012294919827487",
-  "lukittu": null,
-  "withinCodes": [],
+  "codesGroupUri": "virta",
+  "codesVersions": [],
   "includesCodes": [],
+  "koodistoUri": "virtaopiskeluoikeudentyyppi",
   "levelsWithCodes": [
     {
       "codesUri": "koulutustyyppikouta",
@@ -23,14 +20,7 @@
       }
     }
   ],
-  "codesGroupUri": "virta",
-  "version": 4,
-  "versio": 1,
-  "paivitysPvm": "2018-05-25",
-  "paivittajaOid": null,
-  "voimassaAlkuPvm": "2013-01-01",
-  "voimassaLoppuPvm": null,
-  "tila": "LUONNOS",
+  "lukittu": null,
   "metadata": [
     {
       "kieli": "FI",
@@ -47,5 +37,15 @@
       "koodistonLahde": null
     }
   ],
-  "codesVersions": []
+  "omistaja": "",
+  "organisaatioOid": "1.2.246.562.10.2013112012294919827487",
+  "paivittajaOid": null,
+  "paivitysPvm": "2018-05-25",
+  "resourceUri": "https://virkailija.opintopolku.fi/koodisto-service/rest/codes/virtaopiskeluoikeudentyyppi",
+  "tila": "LUONNOS",
+  "versio": 1,
+  "version": 4,
+  "voimassaAlkuPvm": "2013-01-01",
+  "voimassaLoppuPvm": null,
+  "withinCodes": []
 }

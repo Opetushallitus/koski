@@ -702,73 +702,73 @@
       "tutkinnonOsaViitteet": [
         {
           "id": 2947596,
-          "laajuus": 60,
+          "laajuus": 60.0,
           "jarjestys": 3,
           "_tutkinnonOsa": "2948783"
         },
         {
           "id": 2917837,
-          "laajuus": 30,
+          "laajuus": 30.0,
           "jarjestys": 1,
           "_tutkinnonOsa": "2918469"
         },
         {
           "id": 2947598,
-          "laajuus": 30,
+          "laajuus": 30.0,
           "jarjestys": 5,
           "_tutkinnonOsa": "2948785"
         },
         {
           "id": 2947599,
-          "laajuus": 30,
+          "laajuus": 30.0,
           "jarjestys": 6,
           "_tutkinnonOsa": "2948786"
         },
         {
           "id": 3328924,
-          "laajuus": 90,
+          "laajuus": 90.0,
           "jarjestys": 11,
           "_tutkinnonOsa": "3336411"
         },
         {
           "id": 2947595,
-          "laajuus": 60,
+          "laajuus": 60.0,
           "jarjestys": 2,
           "_tutkinnonOsa": "2948782"
         },
         {
           "id": 2997700,
-          "laajuus": 90,
+          "laajuus": 90.0,
           "jarjestys": 10,
           "_tutkinnonOsa": "2993752"
         },
         {
           "id": 2947597,
-          "laajuus": 60,
+          "laajuus": 60.0,
           "jarjestys": 4,
           "_tutkinnonOsa": "2948784"
         },
         {
           "id": 2983192,
-          "laajuus": 60,
+          "laajuus": 60.0,
           "jarjestys": 9,
           "_tutkinnonOsa": "2977077"
         },
         {
           "id": 3003121,
-          "laajuus": 90,
+          "laajuus": 90.0,
           "jarjestys": 12,
           "_tutkinnonOsa": "3003005"
         },
         {
           "id": 2949671,
-          "laajuus": 30,
+          "laajuus": 30.0,
           "jarjestys": 8,
           "_tutkinnonOsa": "2948788"
         },
         {
           "id": 2949670,
-          "laajuus": 30,
+          "laajuus": 30.0,
           "jarjestys": 7,
           "_tutkinnonOsa": "2948787"
         }
@@ -804,7 +804,7 @@
       },
       "koodiUri": "tutkinnonosat_200790",
       "koodiArvo": "200790",
-      "laajuus": 30,
+      "laajuus": 30.0,
       "tutkinnonosaViiteId": 2917837,
       "osaAlueet": [],
       "tyyppi": "normaali",
@@ -1472,7 +1472,7 @@
       },
       "koodiUri": "tutkinnonosat_200791",
       "koodiArvo": "200791",
-      "laajuus": 60,
+      "laajuus": 60.0,
       "tutkinnonosaViiteId": 2947595,
       "osaAlueet": [],
       "tyyppi": "normaali",
@@ -3310,7 +3310,7 @@
       },
       "koodiUri": "tutkinnonosat_200792",
       "koodiArvo": "200792",
-      "laajuus": 60,
+      "laajuus": 60.0,
       "tutkinnonosaViiteId": 2947596,
       "osaAlueet": [],
       "tyyppi": "normaali",
@@ -4737,7 +4737,7 @@
       },
       "koodiUri": "tutkinnonosat_200793",
       "koodiArvo": "200793",
-      "laajuus": 60,
+      "laajuus": 60.0,
       "tutkinnonosaViiteId": 2947597,
       "osaAlueet": [],
       "tyyppi": "normaali",
@@ -6056,7 +6056,7 @@
       },
       "koodiUri": "tutkinnonosat_200794",
       "koodiArvo": "200794",
-      "laajuus": 30,
+      "laajuus": 30.0,
       "tutkinnonosaViiteId": 2947598,
       "osaAlueet": [],
       "tyyppi": "normaali",
@@ -7093,7 +7093,7 @@
       },
       "koodiUri": "tutkinnonosat_200795",
       "koodiArvo": "200795",
-      "laajuus": 30,
+      "laajuus": 30.0,
       "tutkinnonosaViiteId": 2947599,
       "osaAlueet": [],
       "tyyppi": "normaali",
@@ -8544,7 +8544,7 @@
       },
       "koodiUri": "tutkinnonosat_200796",
       "koodiArvo": "200796",
-      "laajuus": 30,
+      "laajuus": 30.0,
       "tutkinnonosaViiteId": 2949670,
       "osaAlueet": [],
       "tyyppi": "normaali",
@@ -9348,7 +9348,7 @@
       },
       "koodiUri": "tutkinnonosat_200797",
       "koodiArvo": "200797",
-      "laajuus": 30,
+      "laajuus": 30.0,
       "tutkinnonosaViiteId": 2949671,
       "osaAlueet": [],
       "tyyppi": "normaali",
@@ -9974,7 +9974,7 @@
       },
       "koodiUri": "tutkinnonosat_200798",
       "koodiArvo": "200798",
-      "laajuus": 60,
+      "laajuus": 60.0,
       "tutkinnonosaViiteId": 2983192,
       "osaAlueet": [],
       "tyyppi": "normaali",
@@ -11174,7 +11174,7 @@
       },
       "koodiUri": "tutkinnonosat_200799",
       "koodiArvo": "200799",
-      "laajuus": 90,
+      "laajuus": 90.0,
       "tutkinnonosaViiteId": 2997700,
       "osaAlueet": [],
       "tyyppi": "normaali",
@@ -13456,7 +13456,7 @@
       },
       "koodiUri": "tutkinnonosat_200800",
       "koodiArvo": "200800",
-      "laajuus": 90,
+      "laajuus": 90.0,
       "tutkinnonosaViiteId": 3328924,
       "osaAlueet": [],
       "tyyppi": "normaali",
@@ -15556,7 +15556,7 @@
       },
       "koodiUri": "tutkinnonosat_200801",
       "koodiArvo": "200801",
-      "laajuus": 90,
+      "laajuus": 90.0,
       "tutkinnonosaViiteId": 3003121,
       "osaAlueet": [],
       "tyyppi": "normaali",

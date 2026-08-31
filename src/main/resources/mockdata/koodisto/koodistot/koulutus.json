@@ -1,10 +1,6 @@
 {
-  "koodistoUri": "koulutus",
-  "resourceUri": "https://virkailija.opintopolku.fi/koodisto-service/rest/codes/koulutus",
-  "omistaja": "Opetushallitus",
-  "organisaatioOid": "1.2.246.562.10.00000000001",
-  "lukittu": null,
-  "withinCodes": [],
+  "codesGroupUri": "koulutuskoodistot",
+  "codesVersions": [5, 1, 3, 7, 11, 4, 10, 9, 8, 2, 6],
   "includesCodes": [
     {
       "codesUri": "tutkintonimikekk",
@@ -805,15 +801,9 @@
       }
     }
   ],
+  "koodistoUri": "koulutus",
   "levelsWithCodes": [],
-  "codesGroupUri": "koulutuskoodistot",
-  "version": 23,
-  "versio": 12,
-  "paivitysPvm": "2026-02-02",
-  "paivittajaOid": "1.2.246.562.24.25909319372",
-  "voimassaAlkuPvm": "2019-06-06",
-  "voimassaLoppuPvm": null,
-  "tila": "LUONNOS",
+  "lukittu": null,
   "metadata": [
     {
       "kieli": "EN",
@@ -832,7 +822,7 @@
     {
       "kieli": "FI",
       "nimi": "koulutus",
-      "kuvaus": "Koodistoa ylläpitävät Perttu Venäläinen (ammatilliset koulutukset), Riku Hanhinen (korkeakoulutukset), Juho Helminen (yleissivistävä koulutus). Koodistoa käytetään mm. hakujen koulutustarjonnassa, KOSKI-palvelun tiedonsiirroissa, OIVAssa ja OKM Virta-palvelussa. Tilastokeskus vastaa koodiston koodituksesta (https://www2.tilastokeskus.fi/fi/luokitukset/koulutus/). Koodeja ylläpidetään käsin. Koodiston ja Tilastokeskuksen välillä ei ole integraatiota.",
+      "kuvaus": "Koodistoa ylläpitävät Noora Vaukonen (ammatilliset koulutukset), Riku Hanhinen (korkeakoulutukset), Juho Helminen (yleissivistävä koulutus). Koodistoa käytetään mm. hakujen koulutustarjonnassa, KOSKI-palvelun tiedonsiirroissa, OIVAssa ja OKM Virta-palvelussa. Tilastokeskus vastaa koodiston koodituksesta (https://www2.tilastokeskus.fi/fi/luokitukset/koulutus/). Koodeja ylläpidetään käsin. Koodiston ja Tilastokeskuksen välillä ei ole integraatiota.",
       "kayttoohje": null,
       "kasite": null,
       "kohdealue": null,
@@ -858,5 +848,15 @@
       "koodistonLahde": null
     }
   ],
-  "codesVersions": [5, 1, 3, 7, 11, 4, 10, 9, 8, 2, 6]
+  "omistaja": "Opetushallitus",
+  "organisaatioOid": "1.2.246.562.10.00000000001",
+  "paivittajaOid": "1.2.246.562.24.11570149943",
+  "paivitysPvm": "2026-08-31",
+  "resourceUri": "https://virkailija.opintopolku.fi/koodisto-service/rest/codes/koulutus",
+  "tila": "LUONNOS",
+  "versio": 12,
+  "version": 24,
+  "voimassaAlkuPvm": "2019-06-06",
+  "voimassaLoppuPvm": null,
+  "withinCodes": []
 }

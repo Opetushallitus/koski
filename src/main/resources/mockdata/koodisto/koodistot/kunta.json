@@ -1,56 +1,6 @@
 {
-  "koodistoUri": "kunta",
-  "resourceUri": "https://virkailija.opintopolku.fi/koodisto-service/rest/codes/kunta",
-  "omistaja": "Opetushallitus",
-  "organisaatioOid": "1.2.246.562.10.00000000001",
-  "lukittu": null,
-  "withinCodes": [
-    {
-      "codesUri": "aluehallintovirasto",
-      "codesVersion": 2,
-      "passive": false,
-      "nimi": {
-        "FI": "aluehallintovirasto (AVI)",
-        "SV": "regionförvaltningsverken (RFV)",
-        "EN": "regional State Administrative Agencies (AVI)"
-      },
-      "kuvaus": {
-        "FI": "Aluehallintovirastot (AVI)\nValtion aluehallintoyksikköinä toimivat aluehallintovirastot aloittivat toimintansa 1.1.2010. Aluehallintovirastojen lukumääristä, toimialueista, nimistä ja toimipaikoista säädetään valtioneuvoston asetuksella. Aluehallintovirastojen yleishallinnollinen ohjaus kuuluu valtiovarainministeriölle, ja niiden toiminnallisesta ohjauksesta vastaavat muut ministeriöt kukin omilla toimialoillaan. Aluehallintovirastoilla on viisi vastuualuetta: peruspalvelut, oikeusturvat ja luvat: työsuojelu; ympäristöluvat; pelastustoimi ja varautuminen; sekä poliisitoimi. Ahvenanmaan maakunnassa on vastaavana valtionhallinnon viranomaisena Ahvenanmaan valtionvirasto.\nKoodistoon liittyvät tiedustelut yhteisetpalvelut@opintopolku.fi\nOpetushallitus varaa oikeuden muuttaa Opintopolun koodistoja, niissä olevia koodeja sekä niiden selitteitä ja kuvauksia",
-        "SV": "regionförvaltningsverken (RFV)",
-        "EN": "regional State Administrative Agencies (AVI)"
-      }
-    },
-    {
-      "codesUri": "oppilaitosnumero",
-      "codesVersion": 1,
-      "passive": false,
-      "nimi": {
-        "FI": "oppilaitosnumero",
-        "SV": "oppilaitosnumero",
-        "EN": "oppilaitosnumero"
-      },
-      "kuvaus": {
-        "FI": "Tilastokeskus on antanut oppilaitoksille yksilöintitunnuksen. Tunnus on viisimerkkinen ja tunnukselle on varattu numerosarja 00000-99999. Tunnus on annettu ja annetaan ainoastaa pääkoululle. Samaa oppilaitostunnusta käytetään kaikissa oppilaitokseen liittyvissä toimintayksiköissä. Tietoa ylläpidetään organisaatiopalvelussa josta se kopioituu tähän koodistoon.\n\nKoodistoon liittyvät tiedustelut yhteisetpalvelut@opintopolku.fi\nOpetushallitus varaa oikeuden muuttaa Opintopolun koodistoja ja niissä olevia koodeja.",
-        "SV": "Tilastokeskus on antanut oppilaitoksille yksilöintitunnuksen. Tunnus on viisimerkkinen ja tunnukselle on varattu numerosarja 00000-99999. Tunnus on annettu ja annetaan ainoastaa pääkoululle. Samaa oppilaitostunnusta käytetään kaikissa oppilaitokseen liittyvissä toimintayksiköissä. Tietoa ylläpidetään organisaatiopalvelussa josta se kopioituu tähän koodistoon.\n\nKoodistoon liittyvät tiedustelut yhteisetpalvelut@opintopolku.fi\nOpetushallitus varaa oikeuden muuttaa Opintopolun koodistoja ja niissä olevia koodeja.",
-        "EN": "Tilastokeskus on antanut oppilaitoksille yksilöintitunnuksen. Tunnus on viisimerkkinen ja tunnukselle on varattu numerosarja 00000-99999. Tunnus on annettu ja annetaan ainoastaa pääkoululle. Samaa oppilaitostunnusta käytetään kaikissa oppilaitokseen liittyvissä toimintayksiköissä. Tietoa ylläpidetään organisaatiopalvelussa josta se kopioituu tähän koodistoon.\n\nKoodistoon liittyvät tiedustelut yhteisetpalvelut@opintopolku.fi\nOpetushallitus varaa oikeuden muuttaa Opintopolun koodistoja ja niissä olevia koodeja."
-      }
-    },
-    {
-      "codesUri": "aluehallintovirasto",
-      "codesVersion": 1,
-      "passive": true,
-      "nimi": {
-        "FI": "aluehallintovirasto (AVI)",
-        "SV": "regionförvaltningsverken (RFV)",
-        "EN": "regional State Administrative Agencies (AVI)"
-      },
-      "kuvaus": {
-        "FI": "Aluehallintovirastot (AVI)\nValtion aluehallintoyksikköinä toimivat aluehallintovirastot aloittivat toimintansa 1.1.2010. Aluehallintovirastojen lukumääristä, toimialueista, nimistä ja toimipaikoista säädetään valtioneuvoston asetuksella. Aluehallintovirastojen yleishallinnollinen ohjaus kuuluu valtiovarainministeriölle, ja niiden toiminnallisesta ohjauksesta vastaavat muut ministeriöt kukin omilla toimialoillaan. Aluehallintovirastoilla on viisi vastuualuetta: peruspalvelut, oikeusturvat ja luvat: työsuojelu; ympäristöluvat; pelastustoimi ja varautuminen; sekä poliisitoimi. Ahvenanmaan maakunnassa on vastaavana valtionhallinnon viranomaisena Ahvenanmaan valtionvirasto.Koodistoa ylläpitää Heidi Bergström",
-        "SV": "regionförvaltningsverken (RFV)",
-        "EN": "regional State Administrative Agencies (AVI)"
-      }
-    }
-  ],
+  "codesGroupUri": "alueet",
+  "codesVersions": [1],
   "includesCodes": [
     {
       "codesUri": "elykeskus",
@@ -218,15 +168,9 @@
       }
     }
   ],
+  "koodistoUri": "kunta",
   "levelsWithCodes": [],
-  "codesGroupUri": "alueet",
-  "version": 8,
-  "versio": 2,
-  "paivitysPvm": "2022-11-25",
-  "paivittajaOid": "1.2.246.562.24.25909319372",
-  "voimassaAlkuPvm": "2018-02-08",
-  "voimassaLoppuPvm": null,
-  "tila": "LUONNOS",
+  "lukittu": null,
   "metadata": [
     {
       "kieli": "SV",
@@ -271,5 +215,61 @@
       "koodistonLahde": null
     }
   ],
-  "codesVersions": [1]
+  "omistaja": "Opetushallitus",
+  "organisaatioOid": "1.2.246.562.10.00000000001",
+  "paivittajaOid": "1.2.246.562.24.25909319372",
+  "paivitysPvm": "2022-11-25",
+  "resourceUri": "https://virkailija.opintopolku.fi/koodisto-service/rest/codes/kunta",
+  "tila": "LUONNOS",
+  "versio": 2,
+  "version": 8,
+  "voimassaAlkuPvm": "2018-02-08",
+  "voimassaLoppuPvm": null,
+  "withinCodes": [
+    {
+      "codesUri": "aluehallintovirasto",
+      "codesVersion": 2,
+      "passive": false,
+      "nimi": {
+        "FI": "aluehallintovirasto (AVI)",
+        "SV": "regionförvaltningsverken (RFV)",
+        "EN": "regional State Administrative Agencies (AVI)"
+      },
+      "kuvaus": {
+        "FI": "Aluehallintovirastot (AVI)\nValtion aluehallintoyksikköinä toimivat aluehallintovirastot aloittivat toimintansa 1.1.2010. Aluehallintovirastojen lukumääristä, toimialueista, nimistä ja toimipaikoista säädetään valtioneuvoston asetuksella. Aluehallintovirastojen yleishallinnollinen ohjaus kuuluu valtiovarainministeriölle, ja niiden toiminnallisesta ohjauksesta vastaavat muut ministeriöt kukin omilla toimialoillaan. Aluehallintovirastoilla on viisi vastuualuetta: peruspalvelut, oikeusturvat ja luvat: työsuojelu; ympäristöluvat; pelastustoimi ja varautuminen; sekä poliisitoimi. Ahvenanmaan maakunnassa on vastaavana valtionhallinnon viranomaisena Ahvenanmaan valtionvirasto.\nKoodistoon liittyvät tiedustelut yhteisetpalvelut@opintopolku.fi\nOpetushallitus varaa oikeuden muuttaa Opintopolun koodistoja, niissä olevia koodeja sekä niiden selitteitä ja kuvauksia",
+        "SV": "regionförvaltningsverken (RFV)",
+        "EN": "regional State Administrative Agencies (AVI)"
+      }
+    },
+    {
+      "codesUri": "oppilaitosnumero",
+      "codesVersion": 1,
+      "passive": false,
+      "nimi": {
+        "FI": "oppilaitosnumero",
+        "SV": "oppilaitosnumero",
+        "EN": "oppilaitosnumero"
+      },
+      "kuvaus": {
+        "FI": "Tilastokeskus on antanut oppilaitoksille yksilöintitunnuksen. Tunnus on viisimerkkinen ja tunnukselle on varattu numerosarja 00000-99999. Tunnus on annettu ja annetaan ainoastaa pääkoululle. Samaa oppilaitostunnusta käytetään kaikissa oppilaitokseen liittyvissä toimintayksiköissä. Tietoa ylläpidetään organisaatiopalvelussa josta se kopioituu tähän koodistoon.\n\nKoodistoon liittyvät tiedustelut yhteisetpalvelut@opintopolku.fi\nOpetushallitus varaa oikeuden muuttaa Opintopolun koodistoja ja niissä olevia koodeja.",
+        "SV": "Tilastokeskus on antanut oppilaitoksille yksilöintitunnuksen. Tunnus on viisimerkkinen ja tunnukselle on varattu numerosarja 00000-99999. Tunnus on annettu ja annetaan ainoastaa pääkoululle. Samaa oppilaitostunnusta käytetään kaikissa oppilaitokseen liittyvissä toimintayksiköissä. Tietoa ylläpidetään organisaatiopalvelussa josta se kopioituu tähän koodistoon.\n\nKoodistoon liittyvät tiedustelut yhteisetpalvelut@opintopolku.fi\nOpetushallitus varaa oikeuden muuttaa Opintopolun koodistoja ja niissä olevia koodeja.",
+        "EN": "Tilastokeskus on antanut oppilaitoksille yksilöintitunnuksen. Tunnus on viisimerkkinen ja tunnukselle on varattu numerosarja 00000-99999. Tunnus on annettu ja annetaan ainoastaa pääkoululle. Samaa oppilaitostunnusta käytetään kaikissa oppilaitokseen liittyvissä toimintayksiköissä. Tietoa ylläpidetään organisaatiopalvelussa josta se kopioituu tähän koodistoon.\n\nKoodistoon liittyvät tiedustelut yhteisetpalvelut@opintopolku.fi\nOpetushallitus varaa oikeuden muuttaa Opintopolun koodistoja ja niissä olevia koodeja."
+      }
+    },
+    {
+      "codesUri": "aluehallintovirasto",
+      "codesVersion": 1,
+      "passive": true,
+      "nimi": {
+        "FI": "aluehallintovirasto (AVI)",
+        "SV": "regionförvaltningsverken (RFV)",
+        "EN": "regional State Administrative Agencies (AVI)"
+      },
+      "kuvaus": {
+        "FI": "Aluehallintovirastot (AVI)\nValtion aluehallintoyksikköinä toimivat aluehallintovirastot aloittivat toimintansa 1.1.2010. Aluehallintovirastojen lukumääristä, toimialueista, nimistä ja toimipaikoista säädetään valtioneuvoston asetuksella. Aluehallintovirastojen yleishallinnollinen ohjaus kuuluu valtiovarainministeriölle, ja niiden toiminnallisesta ohjauksesta vastaavat muut ministeriöt kukin omilla toimialoillaan. Aluehallintovirastoilla on viisi vastuualuetta: peruspalvelut, oikeusturvat ja luvat: työsuojelu; ympäristöluvat; pelastustoimi ja varautuminen; sekä poliisitoimi. Ahvenanmaan maakunnassa on vastaavana valtionhallinnon viranomaisena Ahvenanmaan valtionvirasto.Koodistoa ylläpitää Heidi Bergström",
+        "SV": "regionförvaltningsverken (RFV)",
+        "EN": "regional State Administrative Agencies (AVI)"
+      }
+    }
+  ]
 }

@@ -158668,7 +158668,123 @@
       }
     ],
     "withinCodeElements": [],
-    "includesCodeElements": [],
+    "includesCodeElements": [
+      {
+        "codeElementUri": "isced2011koulutusastetaso2_35",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "opintoalaoph1995_44",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "koulutusasteoph1995_1",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "isced2011koulutusaste_25",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "koulutusasteoph2002_32",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "opintoalaoph2002_703",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "kansallinenkoulutusluokitus2016koulutusastetaso2_33",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "kansallinenkoulutusluokitus2016koulutusalataso1_09",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "isced2011koulutusastetaso1_3",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "koulutusasteisced1997_30",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "koulutusalaoph1995_5",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "koulutusalaoph2002_7",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "isced2011koulutusastetaso2_33",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "kansallinenkoulutusluokitus2016koulutusastetaso1_3",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "nqf_4",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "kansallinenkoulutusluokitus2016koulutusalataso3_0900",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "kansallinenkoulutusluokitus2016koulutusalataso2_090",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "tutkintoonjohtavakoulutus_1",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "isced2011koulutusalataso2_090",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "okmohjauksenala_11",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "isced2011koulutusalataso3_0900",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "isced2011koulutusalataso1_09",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "koulutustyyppi_11",
+        "codeElementVersion": 2,
+        "passive": false
+      }
+    ],
     "levelsWithCodeElements": [],
     "koodiUri": "koulutus_374101",
     "versio": 1,
@@ -233773,7 +233889,98 @@
       }
     ],
     "withinCodeElements": [],
-    "includesCodeElements": [],
+    "includesCodeElements": [
+      {
+        "codeElementUri": "isced2011koulutusalataso3_0900",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "isced2011koulutusalataso2_090",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "koulutusasteoph1995_1",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "nqf_5",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "koulutusalaoph2002_7",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "tutkintotyyppi_20",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "koulutusasteisced1997_40",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "isced2011koulutusastetaso1_4",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "koulutusasteoph2002_32",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "opintoalaoph2002_703",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "opintoalaoph1995_44",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "tutkintoonjohtavakoulutus_1",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "koulutusalaoph1995_5",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "isced2011koulutusaste_45",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "isced2011koulutusalataso1_09",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "okmohjauksenala_11",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "isced2011koulutusastetaso2_45",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "koulutustyyppi_12",
+        "codeElementVersion": 2,
+        "passive": false
+      }
+    ],
     "levelsWithCodeElements": [],
     "koodiUri": "koulutus_477112",
     "versio": 1,
@@ -373521,6 +373728,168 @@
   {
     "metadata": [
       {
+        "nimi": "Insinööri (ylempi AMK) energiatekniikka",
+        "kuvaus": null,
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Ingenjör (högre YH), energiteknik",
+        "kuvaus": null,
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Master of Engineering (UAS), Energy Engineering",
+        "kuvaus": null,
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [
+      {
+        "codeElementUri": "kansallinenkoulutusluokitus2016koulutusalataso2_071",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "isced2011koulutusalataso2_071",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "kansallinenkoulutusluokitus2016koulutusalataso3_0713",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "isced2011koulutusalataso3_0713",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "eqf_7",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "nqf_7",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "okmohjauksenala_8",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "kansallinenkoulutusluokitus2016koulutusalataso1_07",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "isced2011koulutusalataso1_07",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "kansallinenkoulutusluokitus2016koulutusastetaso2_71",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "isced2011koulutusastetaso2_71",
+        "codeElementVersion": 1,
+        "passive": false
+      }
+    ],
+    "levelsWithCodeElements": [],
+    "koodiUri": "koulutus_750305",
+    "versio": 1,
+    "koodiArvo": "750305"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "Insinööri (ylempi AMK) sähkötekniikka",
+        "kuvaus": null,
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Ingenjör (högre YH), elektroteknik",
+        "kuvaus": null,
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Master of Engineering (UAS), Electrical Engineering",
+        "kuvaus": null,
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [
+      {
+        "codeElementUri": "isced2011koulutusalataso1_07",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "kansallinenkoulutusluokitus2016koulutusastetaso2_71",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "okmohjauksenala_8",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "kansallinenkoulutusluokitus2016koulutusalataso1_07",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "isced2011koulutusastetaso2_71",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "kansallinenkoulutusluokitus2016koulutusalataso2_071",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "isced2011koulutusalataso2_071",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "eqf_7",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "nqf_7",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "kansallinenkoulutusluokitus2016koulutusalataso3_0713",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "isced2011koulutusalataso3_0713",
+        "codeElementVersion": 1,
+        "passive": false
+      }
+    ],
+    "levelsWithCodeElements": [],
+    "koodiUri": "koulutus_750306",
+    "versio": 1,
+    "koodiArvo": "750306"
+  },
+  {
+    "metadata": [
+      {
         "nimi": "Insinööri (ylempi AMK), tietotekniikka ja tietoliikennetekniikka",
         "kuvaus": "Insinööri (ylempi AMK), tietotekniikka ja tietoliikennetekniikka",
         "lyhytNimi": "Ins. (AMK,yl), tietotekniikka",
@@ -380628,6 +380997,11 @@
       },
       {
         "codeElementUri": "tutkintonimikekk_863",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "tutkintotyyppi_12",
         "codeElementVersion": 1,
         "passive": false
       }
@@ -390955,11 +391329,6 @@
         "passive": true
       },
       {
-        "codeElementUri": "nqf_8",
-        "codeElementVersion": 1,
-        "passive": false
-      },
-      {
         "codeElementUri": "tutkintoonjohtavakoulutus_1",
         "codeElementVersion": 1,
         "passive": false
@@ -391097,6 +391466,11 @@
       {
         "codeElementUri": "tutkintonimikekk_022",
         "codeElementVersion": 2,
+        "passive": false
+      },
+      {
+        "codeElementUri": "nqf_7",
+        "codeElementVersion": 1,
         "passive": false
       }
     ],
@@ -392755,11 +393129,6 @@
         "passive": false
       },
       {
-        "codeElementUri": "eqf_7",
-        "codeElementVersion": 1,
-        "passive": false
-      },
-      {
         "codeElementUri": "isced2011koulutusalataso2_084",
         "codeElementVersion": 1,
         "passive": false
@@ -392832,6 +393201,11 @@
       {
         "codeElementUri": "tutkintonimikekk_728",
         "codeElementVersion": 2,
+        "passive": false
+      },
+      {
+        "codeElementUri": "eqf_8",
+        "codeElementVersion": 1,
         "passive": false
       }
     ],

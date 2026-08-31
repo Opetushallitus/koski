@@ -1,20 +1,10 @@
 {
-  "koodistoUri": "ahvenanmaanperusopetuksentoimintaalue",
-  "resourceUri": "https://virkailija.opintopolku.fi/koodisto-service/rest/codes/ahvenanmaanperusopetuksentoimintaalue",
-  "omistaja": null,
-  "organisaatioOid": "1.2.246.562.10.00000000001",
-  "lukittu": null,
-  "withinCodes": [],
-  "includesCodes": [],
-  "levelsWithCodes": [],
   "codesGroupUri": "koski",
-  "version": 1,
-  "versio": 1,
-  "paivitysPvm": "2026-06-02",
-  "paivittajaOid": null,
-  "voimassaAlkuPvm": "2026-06-02",
-  "voimassaLoppuPvm": null,
-  "tila": "LUONNOS",
+  "codesVersions": [],
+  "includesCodes": [],
+  "koodistoUri": "ahvenanmaanperusopetuksentoimintaalue",
+  "levelsWithCodes": [],
+  "lukittu": null,
   "metadata": [
     {
       "kieli": "SV",
@@ -45,5 +35,15 @@
       "koodistonLahde": null
     }
   ],
-  "codesVersions": []
+  "omistaja": null,
+  "organisaatioOid": "1.2.246.562.10.00000000001",
+  "paivittajaOid": "1.2.246.562.24.98063222086",
+  "paivitysPvm": "2026-06-03",
+  "resourceUri": "https://virkailija.opintopolku.fi/koodisto-service/rest/codes/ahvenanmaanperusopetuksentoimintaalue",
+  "tila": "LUONNOS",
+  "versio": 1,
+  "version": 0,
+  "voimassaAlkuPvm": "2026-06-02",
+  "voimassaLoppuPvm": null,
+  "withinCodes": []
 }

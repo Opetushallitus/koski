@@ -1,20 +1,10 @@
 {
-  "koodistoUri": "virtaopiskeluoikeudenluokittelu",
-  "resourceUri": "https://virkailija.opintopolku.fi/koodisto-service/rest/codes/virtaopiskeluoikeudenluokittelu",
-  "omistaja": null,
-  "organisaatioOid": "1.2.246.562.10.2013112012294919827487",
-  "lukittu": null,
-  "withinCodes": [],
-  "includesCodes": [],
-  "levelsWithCodes": [],
   "codesGroupUri": "virta",
-  "version": 2,
-  "versio": 1,
-  "paivitysPvm": "2016-04-10",
-  "paivittajaOid": null,
-  "voimassaAlkuPvm": "2016-04-27",
-  "voimassaLoppuPvm": null,
-  "tila": "LUONNOS",
+  "codesVersions": [],
+  "includesCodes": [],
+  "koodistoUri": "virtaopiskeluoikeudenluokittelu",
+  "levelsWithCodes": [],
+  "lukittu": null,
   "metadata": [
     {
       "kieli": "FI",
@@ -31,5 +21,15 @@
       "koodistonLahde": null
     }
   ],
-  "codesVersions": []
+  "omistaja": null,
+  "organisaatioOid": "1.2.246.562.10.2013112012294919827487",
+  "paivittajaOid": null,
+  "paivitysPvm": "2016-04-10",
+  "resourceUri": "https://virkailija.opintopolku.fi/koodisto-service/rest/codes/virtaopiskeluoikeudenluokittelu",
+  "tila": "LUONNOS",
+  "versio": 1,
+  "version": 2,
+  "voimassaAlkuPvm": "2016-04-27",
+  "voimassaLoppuPvm": null,
+  "withinCodes": []
 }

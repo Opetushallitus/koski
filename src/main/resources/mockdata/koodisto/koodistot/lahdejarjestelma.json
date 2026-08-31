@@ -1,20 +1,10 @@
 {
-  "koodistoUri": "lahdejarjestelma",
-  "resourceUri": "https://virkailija.opintopolku.fi/koodisto-service/rest/codes/lahdejarjestelma",
-  "omistaja": "KOSKI",
-  "organisaatioOid": "1.2.246.562.10.00000000001",
-  "lukittu": null,
-  "withinCodes": [],
-  "includesCodes": [],
-  "levelsWithCodes": [],
   "codesGroupUri": "koski",
-  "version": 1,
-  "versio": 1,
-  "paivitysPvm": "2024-02-26",
-  "paivittajaOid": "1.2.246.562.24.91377095207",
-  "voimassaAlkuPvm": "2015-11-01",
-  "voimassaLoppuPvm": null,
-  "tila": "LUONNOS",
+  "codesVersions": [],
+  "includesCodes": [],
+  "koodistoUri": "lahdejarjestelma",
+  "levelsWithCodes": [],
+  "lukittu": null,
   "metadata": [
     {
       "kieli": "SV",
@@ -59,5 +49,15 @@
       "koodistonLahde": null
     }
   ],
-  "codesVersions": []
+  "omistaja": "KOSKI",
+  "organisaatioOid": "1.2.246.562.10.00000000001",
+  "paivittajaOid": "1.2.246.562.24.91377095207",
+  "paivitysPvm": "2024-02-26",
+  "resourceUri": "https://virkailija.opintopolku.fi/koodisto-service/rest/codes/lahdejarjestelma",
+  "tila": "LUONNOS",
+  "versio": 1,
+  "version": 1,
+  "voimassaAlkuPvm": "2015-11-01",
+  "voimassaLoppuPvm": null,
+  "withinCodes": []
 }

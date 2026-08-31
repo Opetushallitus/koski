@@ -1,10 +1,6 @@
 {
-  "koodistoUri": "oppilaitosnumero",
-  "resourceUri": "https://virkailija.opintopolku.fi/koodisto-service/rest/codes/oppilaitosnumero",
-  "omistaja": "Opetushallitus",
-  "organisaatioOid": "1.2.246.562.10.00000000001",
-  "lukittu": null,
-  "withinCodes": [],
+  "codesGroupUri": "oppilaitoskoodistot",
+  "codesVersions": [],
   "includesCodes": [
     {
       "codesUri": "oppilaitoksenopetuskieli",
@@ -142,6 +138,7 @@
       }
     }
   ],
+  "koodistoUri": "oppilaitosnumero",
   "levelsWithCodes": [
     {
       "codesUri": "ytlnlukiokoodit",
@@ -159,14 +156,7 @@
       }
     }
   ],
-  "codesGroupUri": "oppilaitoskoodistot",
-  "version": 30,
-  "versio": 1,
-  "paivitysPvm": "2022-11-25",
-  "paivittajaOid": "1.2.246.562.24.25909319372",
-  "voimassaAlkuPvm": "2013-01-01",
-  "voimassaLoppuPvm": null,
-  "tila": "LUONNOS",
+  "lukittu": null,
   "metadata": [
     {
       "kieli": "FI",
@@ -211,5 +201,15 @@
       "koodistonLahde": null
     }
   ],
-  "codesVersions": []
+  "omistaja": "Opetushallitus",
+  "organisaatioOid": "1.2.246.562.10.00000000001",
+  "paivittajaOid": "1.2.246.562.24.25909319372",
+  "paivitysPvm": "2022-11-25",
+  "resourceUri": "https://virkailija.opintopolku.fi/koodisto-service/rest/codes/oppilaitosnumero",
+  "tila": "LUONNOS",
+  "versio": 1,
+  "version": 30,
+  "voimassaAlkuPvm": "2013-01-01",
+  "voimassaLoppuPvm": null,
+  "withinCodes": []
 }

@@ -1,41 +1,6 @@
 {
-  "koodistoUri": "tutkinnonosat",
-  "resourceUri": "https://virkailija.opintopolku.fi/koodisto-service/rest/codes/tutkinnonosat",
-  "omistaja": "Opetushallitus",
-  "organisaatioOid": "1.2.246.562.10.00000000001",
-  "lukittu": null,
-  "withinCodes": [
-    {
-      "codesUri": "tutkintonimikkeet",
-      "codesVersion": 2,
-      "passive": false,
-      "nimi": {
-        "SV": "tutkintonimikkeet",
-        "FI": "tutkintonimikkeet",
-        "EN": "tutkintonimikkeet"
-      },
-      "kuvaus": {
-        "SV": "tutkintonimikkeet",
-        "FI": "tutkintonimikkeet",
-        "EN": "tutkintonimikkeet"
-      }
-    },
-    {
-      "codesUri": "koulutus",
-      "codesVersion": 12,
-      "passive": false,
-      "nimi": {
-        "FI": "koulutus",
-        "SV": "koulutus",
-        "EN": "koulutus"
-      },
-      "kuvaus": {
-        "FI": "Koodistoa ylläpitävät Perttu Venäläinen (ammatilliset koulutukset), Riku Hanhinen (korkeakoulutukset), Juho Helminen (yleissivistävä koulutus). Koodistoa käytetään mm. hakujen koulutustarjonnassa, KOSKI-palvelun tiedonsiirroissa, OIVAssa ja OKM Virta-palvelussa. Tilastokeskus vastaa koodiston koodituksesta (https://www2.tilastokeskus.fi/fi/luokitukset/koulutus/). Koodeja ylläpidetään käsin. Koodiston ja Tilastokeskuksen välillä ei ole integraatiota.",
-        "SV": "koulutus",
-        "EN": "koulutus"
-      }
-    }
-  ],
+  "codesGroupUri": "koulutuskoodistot",
+  "codesVersions": [1],
   "includesCodes": [
     {
       "codesUri": "osaamistavoitteet",
@@ -75,6 +40,7 @@
       }
     }
   ],
+  "koodistoUri": "tutkinnonosat",
   "levelsWithCodes": [
     {
       "codesUri": "rautatiekalustonkunnossapidonjarjestys",
@@ -212,14 +178,7 @@
       }
     }
   ],
-  "codesGroupUri": "koulutuskoodistot",
-  "version": 63,
-  "versio": 2,
-  "paivitysPvm": "2023-09-27",
-  "paivittajaOid": "1.2.246.562.24.78186833301",
-  "voimassaAlkuPvm": "2018-03-02",
-  "voimassaLoppuPvm": null,
-  "tila": "LUONNOS",
+  "lukittu": null,
   "metadata": [
     {
       "kieli": "EN",
@@ -264,5 +223,46 @@
       "koodistonLahde": null
     }
   ],
-  "codesVersions": [1]
+  "omistaja": "Opetushallitus",
+  "organisaatioOid": "1.2.246.562.10.00000000001",
+  "paivittajaOid": "1.2.246.562.24.78186833301",
+  "paivitysPvm": "2023-09-27",
+  "resourceUri": "https://virkailija.opintopolku.fi/koodisto-service/rest/codes/tutkinnonosat",
+  "tila": "LUONNOS",
+  "versio": 2,
+  "version": 63,
+  "voimassaAlkuPvm": "2018-03-02",
+  "voimassaLoppuPvm": null,
+  "withinCodes": [
+    {
+      "codesUri": "tutkintonimikkeet",
+      "codesVersion": 2,
+      "passive": false,
+      "nimi": {
+        "SV": "tutkintonimikkeet",
+        "FI": "tutkintonimikkeet",
+        "EN": "tutkintonimikkeet"
+      },
+      "kuvaus": {
+        "SV": "tutkintonimikkeet",
+        "FI": "tutkintonimikkeet",
+        "EN": "tutkintonimikkeet"
+      }
+    },
+    {
+      "codesUri": "koulutus",
+      "codesVersion": 12,
+      "passive": false,
+      "nimi": {
+        "FI": "koulutus",
+        "SV": "koulutus",
+        "EN": "koulutus"
+      },
+      "kuvaus": {
+        "FI": "Koodistoa ylläpitävät Noora Vaukonen (ammatilliset koulutukset), Riku Hanhinen (korkeakoulutukset), Juho Helminen (yleissivistävä koulutus). Koodistoa käytetään mm. hakujen koulutustarjonnassa, KOSKI-palvelun tiedonsiirroissa, OIVAssa ja OKM Virta-palvelussa. Tilastokeskus vastaa koodiston koodituksesta (https://www2.tilastokeskus.fi/fi/luokitukset/koulutus/). Koodeja ylläpidetään käsin. Koodiston ja Tilastokeskuksen välillä ei ole integraatiota.",
+        "SV": "koulutus",
+        "EN": "koulutus"
+      }
+    }
+  ]
 }

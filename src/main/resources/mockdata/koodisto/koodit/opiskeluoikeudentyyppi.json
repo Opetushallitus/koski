@@ -12,6 +12,11 @@
         "kuvaus": "",
         "lyhytNimi": "",
         "kieli": "SV"
+      },
+      {
+        "nimi": null,
+        "kuvaus": null,
+        "kieli": "EN"
       }
     ],
     "withinCodeElements": [],
@@ -296,13 +301,13 @@
         "kieli": "FI"
       },
       {
-        "nimi": "Kielitutkinto",
+        "nimi": "Språkexamen",
         "kuvaus": "",
         "lyhytNimi": "",
         "kieli": "SV"
       },
       {
-        "nimi": "Kielitutkinto",
+        "nimi": "Language Proficiency Certificate",
         "kuvaus": null,
         "kieli": "EN"
       }

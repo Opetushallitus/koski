@@ -1,52 +1,6 @@
 {
-  "koodistoUri": "oppilaitostyyppi",
-  "resourceUri": "https://virkailija.opintopolku.fi/koodisto-service/rest/codes/oppilaitostyyppi",
-  "omistaja": "Opetushallitus",
-  "organisaatioOid": "1.2.246.562.10.00000000001",
-  "lukittu": null,
-  "withinCodes": [
-    {
-      "codesUri": "haunkohdejoukko",
-      "codesVersion": 1,
-      "passive": false,
-      "nimi": {
-        "SV": "haun kohdejoukko",
-        "FI": "haun kohdejoukko",
-        "EN": "haun kohdejoukko"
-      },
-      "kuvaus": {
-        "SV": "haun kohdejoukko",
-        "FI": "haun kohdejoukko",
-        "EN": "haun kohdejoukko"
-      }
-    },
-    {
-      "codesUri": "oppilaitostyyppifasetti",
-      "codesVersion": 1,
-      "passive": false,
-      "nimi": {
-        "FI": "Oppilaitostyyppifasetti"
-      },
-      "kuvaus": {
-        "FI": "Oppilaitostyyppifasetti"
-      }
-    },
-    {
-      "codesUri": "oppilaitosnumero",
-      "codesVersion": 1,
-      "passive": false,
-      "nimi": {
-        "FI": "oppilaitosnumero",
-        "SV": "oppilaitosnumero",
-        "EN": "oppilaitosnumero"
-      },
-      "kuvaus": {
-        "FI": "Tilastokeskus on antanut oppilaitoksille yksilöintitunnuksen. Tunnus on viisimerkkinen ja tunnukselle on varattu numerosarja 00000-99999. Tunnus on annettu ja annetaan ainoastaa pääkoululle. Samaa oppilaitostunnusta käytetään kaikissa oppilaitokseen liittyvissä toimintayksiköissä. Tietoa ylläpidetään organisaatiopalvelussa josta se kopioituu tähän koodistoon.\n\nKoodistoon liittyvät tiedustelut yhteisetpalvelut@opintopolku.fi\nOpetushallitus varaa oikeuden muuttaa Opintopolun koodistoja ja niissä olevia koodeja.",
-        "SV": "Tilastokeskus on antanut oppilaitoksille yksilöintitunnuksen. Tunnus on viisimerkkinen ja tunnukselle on varattu numerosarja 00000-99999. Tunnus on annettu ja annetaan ainoastaa pääkoululle. Samaa oppilaitostunnusta käytetään kaikissa oppilaitokseen liittyvissä toimintayksiköissä. Tietoa ylläpidetään organisaatiopalvelussa josta se kopioituu tähän koodistoon.\n\nKoodistoon liittyvät tiedustelut yhteisetpalvelut@opintopolku.fi\nOpetushallitus varaa oikeuden muuttaa Opintopolun koodistoja ja niissä olevia koodeja.",
-        "EN": "Tilastokeskus on antanut oppilaitoksille yksilöintitunnuksen. Tunnus on viisimerkkinen ja tunnukselle on varattu numerosarja 00000-99999. Tunnus on annettu ja annetaan ainoastaa pääkoululle. Samaa oppilaitostunnusta käytetään kaikissa oppilaitokseen liittyvissä toimintayksiköissä. Tietoa ylläpidetään organisaatiopalvelussa josta se kopioituu tähän koodistoon.\n\nKoodistoon liittyvät tiedustelut yhteisetpalvelut@opintopolku.fi\nOpetushallitus varaa oikeuden muuttaa Opintopolun koodistoja ja niissä olevia koodeja."
-      }
-    }
-  ],
+  "codesGroupUri": "oppilaitoskoodistot",
+  "codesVersions": [],
   "includesCodes": [
     {
       "codesUri": "koulutusasteoph2002",
@@ -94,15 +48,9 @@
       }
     }
   ],
+  "koodistoUri": "oppilaitostyyppi",
   "levelsWithCodes": [],
-  "codesGroupUri": "oppilaitoskoodistot",
-  "version": 12,
-  "versio": 1,
-  "paivitysPvm": "2025-04-25",
-  "paivittajaOid": "1.2.246.562.24.25909319372",
-  "voimassaAlkuPvm": "2013-01-01",
-  "voimassaLoppuPvm": null,
-  "tila": "LUONNOS",
+  "lukittu": null,
   "metadata": [
     {
       "kieli": "FI",
@@ -147,5 +95,57 @@
       "koodistonLahde": null
     }
   ],
-  "codesVersions": []
+  "omistaja": "Opetushallitus",
+  "organisaatioOid": "1.2.246.562.10.00000000001",
+  "paivittajaOid": "1.2.246.562.24.25909319372",
+  "paivitysPvm": "2025-04-25",
+  "resourceUri": "https://virkailija.opintopolku.fi/koodisto-service/rest/codes/oppilaitostyyppi",
+  "tila": "LUONNOS",
+  "versio": 1,
+  "version": 12,
+  "voimassaAlkuPvm": "2013-01-01",
+  "voimassaLoppuPvm": null,
+  "withinCodes": [
+    {
+      "codesUri": "haunkohdejoukko",
+      "codesVersion": 1,
+      "passive": false,
+      "nimi": {
+        "SV": "haun kohdejoukko",
+        "FI": "haun kohdejoukko",
+        "EN": "haun kohdejoukko"
+      },
+      "kuvaus": {
+        "SV": "haun kohdejoukko",
+        "FI": "haun kohdejoukko",
+        "EN": "haun kohdejoukko"
+      }
+    },
+    {
+      "codesUri": "oppilaitostyyppifasetti",
+      "codesVersion": 1,
+      "passive": false,
+      "nimi": {
+        "FI": "Oppilaitostyyppifasetti"
+      },
+      "kuvaus": {
+        "FI": "Oppilaitostyyppifasetti"
+      }
+    },
+    {
+      "codesUri": "oppilaitosnumero",
+      "codesVersion": 1,
+      "passive": false,
+      "nimi": {
+        "FI": "oppilaitosnumero",
+        "SV": "oppilaitosnumero",
+        "EN": "oppilaitosnumero"
+      },
+      "kuvaus": {
+        "FI": "Tilastokeskus on antanut oppilaitoksille yksilöintitunnuksen. Tunnus on viisimerkkinen ja tunnukselle on varattu numerosarja 00000-99999. Tunnus on annettu ja annetaan ainoastaa pääkoululle. Samaa oppilaitostunnusta käytetään kaikissa oppilaitokseen liittyvissä toimintayksiköissä. Tietoa ylläpidetään organisaatiopalvelussa josta se kopioituu tähän koodistoon.\n\nKoodistoon liittyvät tiedustelut yhteisetpalvelut@opintopolku.fi\nOpetushallitus varaa oikeuden muuttaa Opintopolun koodistoja ja niissä olevia koodeja.",
+        "SV": "Tilastokeskus on antanut oppilaitoksille yksilöintitunnuksen. Tunnus on viisimerkkinen ja tunnukselle on varattu numerosarja 00000-99999. Tunnus on annettu ja annetaan ainoastaa pääkoululle. Samaa oppilaitostunnusta käytetään kaikissa oppilaitokseen liittyvissä toimintayksiköissä. Tietoa ylläpidetään organisaatiopalvelussa josta se kopioituu tähän koodistoon.\n\nKoodistoon liittyvät tiedustelut yhteisetpalvelut@opintopolku.fi\nOpetushallitus varaa oikeuden muuttaa Opintopolun koodistoja ja niissä olevia koodeja.",
+        "EN": "Tilastokeskus on antanut oppilaitoksille yksilöintitunnuksen. Tunnus on viisimerkkinen ja tunnukselle on varattu numerosarja 00000-99999. Tunnus on annettu ja annetaan ainoastaa pääkoululle. Samaa oppilaitostunnusta käytetään kaikissa oppilaitokseen liittyvissä toimintayksiköissä. Tietoa ylläpidetään organisaatiopalvelussa josta se kopioituu tähän koodistoon.\n\nKoodistoon liittyvät tiedustelut yhteisetpalvelut@opintopolku.fi\nOpetushallitus varaa oikeuden muuttaa Opintopolun koodistoja ja niissä olevia koodeja."
+      }
+    }
+  ]
 }
