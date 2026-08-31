@@ -163,5 +163,33 @@
     "koodiUri": "virtaopiskeluoikeudentila_6",
     "versio": 1,
     "koodiArvo": "6"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "päättynyt yhden opiskeluoikeuden säännöksen johdosta",
+        "kuvaus": "",
+        "lyhytNimi": "",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "-",
+        "kuvaus": "",
+        "lyhytNimi": "",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "-",
+        "kuvaus": "",
+        "lyhytNimi": "",
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "virtaopiskeluoikeudentila_7",
+    "versio": 1,
+    "koodiArvo": "7"
   }
 ]
