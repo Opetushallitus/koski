@@ -35,10 +35,7 @@ import { OrganisaatioWithOid } from '../types/fi/oph/koski/schema/OrganisaatioWi
 import { Toimipiste } from '../types/fi/oph/koski/schema/Toimipiste'
 import { puuttuvatLuokkaAsteet } from '../perusopetus-v2/luokkaAsteenOppiaineet'
 import { ahvenanmaanLuokkaAsteenOppiaineet } from './ahvenanmaanLuokkaAsteenOppiaineet'
-
-// Ahvenanmaan opetussuunnitelman diaarinumero (ÅLp21). Käytetään oletuksena, jos
-// opiskeluoikeudessa ei vielä ole suoritusta jolta diaarinumeron voisi periä.
-const AHVENANMAAN_DIAARINUMERO = 'ÅLR2020/9841'
+import { AHVENANMAAN_PERUSOPETUKSEN_DIAARINUMERO } from './ahvenanmaanPeruste'
 
 export type UusiAhvenanmaanPerusopetuksenVuosiluokanSuoritusModalProps =
   CommonProps<{
@@ -99,7 +96,8 @@ export const UusiAhvenanmaanPerusopetuksenVuosiluokanSuoritusModal: React.FC<
   // Ahvenanmaan ops ei ole ePerusteissa, joten diaarinumeroa ei valita
   // pudotusvalikosta vaan se peritään olemassa olevasta suorituksesta.
   const perusteenDiaarinumero =
-    findPerusteenDiaarinumero(opiskeluoikeus) ?? AHVENANMAAN_DIAARINUMERO
+    findPerusteenDiaarinumero(opiskeluoikeus) ??
+    AHVENANMAAN_PERUSOPETUKSEN_DIAARINUMERO
 
   const valid =
     luokkaAste !== undefined &&

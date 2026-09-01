@@ -4,6 +4,7 @@ import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.koskiuser.{OoPtsMask, RequiresVirkailijaOrPalvelukäyttäjä}
 import fi.oph.koski.organisaatio.Oppilaitostyyppi._
 import fi.oph.koski.organisaatio.{OrganisaatioHierarkia, Organisaatiotyyppi}
+import fi.oph.koski.raportit.AhvenanmaanKunnat
 import fi.oph.koski.schema.{Koodistokoodiviite, OpiskeluoikeudenTyyppi}
 import fi.oph.koski.servlet.{KoskiSpecificApiServlet, NoCache}
 
@@ -13,6 +14,7 @@ class OppilaitosServlet(implicit val application: KoskiApplication) extends Kosk
   }
 
   val perusopetuksenTyypit = List(OpiskeluoikeudenTyyppi.perusopetus, OpiskeluoikeudenTyyppi.perusopetukseenvalmistavaopetus, OpiskeluoikeudenTyyppi.perusopetuksenlisaopetus, OpiskeluoikeudenTyyppi.aikuistenperusopetus)
+  val ahvenanmaanPerusopetuksenTyypit = List(OpiskeluoikeudenTyyppi.ahvenanmaanperusopetus)
   val esiopetuksenTyypit = List(OpiskeluoikeudenTyyppi.esiopetus, OpiskeluoikeudenTyyppi.perusopetukseenvalmistavaopetus)
   val ammatillisenTyypit = List(OpiskeluoikeudenTyyppi.ammatillinenkoulutus)
   val lukionTyypit = List(OpiskeluoikeudenTyyppi.lukiokoulutus, OpiskeluoikeudenTyyppi.ibtutkinto, OpiskeluoikeudenTyyppi.luva)
@@ -46,15 +48,25 @@ class OppilaitosServlet(implicit val application: KoskiApplication) extends Kosk
       .filter(t => OoPtsMask.fromKoodistokoodiviite(t).exists(session.allowedOpiskeluoikeudetJaPäätasonSuoritukset.intersects))
   }
 
-  private def byOppilaitosTyyppi(organisaatiot: List[OrganisaatioHierarkia]) =
+  private def byOppilaitosTyyppi(organisaatiot: List[OrganisaatioHierarkia]) = {
+    // Ahvenanmaalla perusopetus tallennetaan omalla opiskeluoikeuden tyypillään, joten
+    // ahvenanmaalaiselle organisaatiolle tarjotaan se manner-Suomen perusopetuksen tyyppien
+    // sijaan. Kotipaikka on ainoa organisaatiodatasta löytyvä tunnusmerkki: Ahvenanmaalle ei
+    // ole omaa oppilaitostyyppiä eikä erillistä käyttöoikeutta.
+    val perusopetus = if (onAhvenanmaalainenOrganisaatio(organisaatiot)) ahvenanmaanPerusopetuksenTyypit else perusopetuksenTyypit
+
     organisaatiot.flatMap(_.oppilaitostyyppi).flatMap {
-      case tyyppi if List(peruskoulut, peruskouluasteenErityiskoulut).contains(tyyppi) => perusopetuksenTyypit ++ esiopetuksenTyypit ++ tuvaTyypit
-      case tyyppi if List(ammatillisetOppilaitokset, ammatillisetErityisoppilaitokset, ammatillisetErikoisoppilaitokset, ammatillisetAikuiskoulutusKeskukset).contains(tyyppi) => perusopetuksenTyypit ++ ammatillisenTyypit ++ tuvaTyypit
-      case tyyppi if List(lukio).contains(tyyppi) => perusopetuksenTyypit ++ lukionTyypit ++ tuvaTyypit
-      case tyyppi if List(perusJaLukioasteenKoulut).contains(tyyppi) => perusopetuksenTyypit ++ esiopetuksenTyypit ++ lukionTyypit ++ saksalaisenKoulunTyypit ++ internationalSchoolTyypit ++ tuvaTyypit
+      case tyyppi if List(peruskoulut, peruskouluasteenErityiskoulut).contains(tyyppi) => perusopetus ++ esiopetuksenTyypit ++ tuvaTyypit
+      case tyyppi if List(ammatillisetOppilaitokset, ammatillisetErityisoppilaitokset, ammatillisetErikoisoppilaitokset, ammatillisetAikuiskoulutusKeskukset).contains(tyyppi) => perusopetus ++ ammatillisenTyypit ++ tuvaTyypit
+      case tyyppi if List(lukio).contains(tyyppi) => perusopetus ++ lukionTyypit ++ tuvaTyypit
+      case tyyppi if List(perusJaLukioasteenKoulut).contains(tyyppi) => perusopetus ++ esiopetuksenTyypit ++ lukionTyypit ++ saksalaisenKoulunTyypit ++ internationalSchoolTyypit ++ tuvaTyypit
       case tyyppi if List(eiTiedossaOppilaitokset).contains(tyyppi) => List.empty
-      case _ => perusopetuksenTyypit ++ ammatillisenTyypit ++ vapaanSivistysTyönTyypit ++ tuvaTyypit
+      case _ => perusopetus ++ ammatillisenTyypit ++ vapaanSivistysTyönTyypit ++ tuvaTyypit
     }
+  }
+
+  private def onAhvenanmaalainenOrganisaatio(organisaatiot: List[OrganisaatioHierarkia]): Boolean =
+    organisaatiot.flatMap(_.kotipaikka).exists(kotipaikka => AhvenanmaanKunnat.onAhvenanmaalainenKunta(kotipaikka.koodiarvo))
 
   private def byOrganisaatioTyyppi(organisaatiot: List[OrganisaatioHierarkia]) =
     if (organisaatiot.flatMap(_.organisaatiotyypit).contains(Organisaatiotyyppi.VARHAISKASVATUKSEN_TOIMIPAIKKA)) {

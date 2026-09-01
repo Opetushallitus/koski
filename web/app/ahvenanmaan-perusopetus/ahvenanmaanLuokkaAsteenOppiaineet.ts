@@ -176,26 +176,40 @@ export const ahvenanmaanLuokkaAsteenOppiaineet = (
   // Åk 7–8: FY ja KE eriytyvät, kotitalous (HEKO) alkaa. 9. luokka jää
   // tyhjäksi (arvosanat avgångsbetygiin, ks. moduulin kommentti).
   if (n >= 7 && n <= 8) {
-    return [
-      m('SV'),
-      m('MA'),
-      m('BI'),
-      m('GE'),
-      m('FY'),
-      m('KE'),
-      m('TE'),
-      m('RELI'),
-      m('HI'),
-      m('SA'),
-      m('MU'),
-      m('KU'),
-      m('TX'),
-      m('TN'),
-      m('ID'),
-      m('HEKO'),
-      engelska()
-    ]
+    return ahvenanmaanPäättötodistuksenOppiaineet(perusteenDiaarinumero)
   }
 
   return []
+}
+
+/**
+ * Palauttaa päättötodistuksen (avgångsbetyg) yhteiset oppiaineet. Aineisto on
+ * sama kuin åk 7–9 läsårsbetygillä, koska päättövuoden arvosanat kirjataan
+ * päättötodistukselle. Valinnaiset aineet (tillvalsämnen) lisätään käsin.
+ */
+export const ahvenanmaanPäättötodistuksenOppiaineet = (
+  perusteenDiaarinumero?: string
+): AhvenanmaanPerusopetuksenOppiaineenSuoritus[] => {
+  const m = (koodiarvo: MuuOppiaineKoodi) =>
+    muu(koodiarvo, perusteenDiaarinumero)
+
+  return [
+    m('SV'),
+    m('MA'),
+    m('BI'),
+    m('GE'),
+    m('FY'),
+    m('KE'),
+    m('TE'),
+    m('RELI'),
+    m('HI'),
+    m('SA'),
+    m('MU'),
+    m('KU'),
+    m('TX'),
+    m('TN'),
+    m('ID'),
+    m('HEKO'),
+    vierasKieli('A1', 'EN', perusteenDiaarinumero)
+  ]
 }

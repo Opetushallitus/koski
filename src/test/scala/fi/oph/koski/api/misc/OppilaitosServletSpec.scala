@@ -27,6 +27,35 @@ class OppilaitosServletSpec extends AnyFreeSpec with Matchers with KoskiHttpSpec
         )
       }
     }
+    "Ahvenanmaalaiselle peruskoululle palautetaan Ahvenanmaan perusopetus manner-Suomen perusopetuksen tyyppien sijaan" in {
+      authGet(
+        s"api/oppilaitos/opiskeluoikeustyypit/${MockOrganisaatiot.övernäsSkola}",
+        headers = authHeaders(MockUsers.paakayttaja)
+      ) {
+        verifyResponseStatusOk()
+        JsonSerializer.parse[List[Koodistokoodiviite]](body).map(_.koodiarvo).toSet should equal(
+          Set(
+            OpiskeluoikeudenTyyppi.ahvenanmaanperusopetus.koodiarvo,
+            OpiskeluoikeudenTyyppi.esiopetus.koodiarvo,
+            OpiskeluoikeudenTyyppi.perusopetukseenvalmistavaopetus.koodiarvo,
+            OpiskeluoikeudenTyyppi.tuva.koodiarvo,
+            OpiskeluoikeudenTyyppi.muukuinsaanneltykoulutus.koodiarvo,
+            OpiskeluoikeudenTyyppi.taiteenperusopetus.koodiarvo
+          )
+        )
+      }
+    }
+    "Manner-Suomen peruskoululle ei tarjota Ahvenanmaan perusopetusta" in {
+      authGet(
+        s"api/oppilaitos/opiskeluoikeustyypit/${MockOrganisaatiot.kulosaarenAlaAste}",
+        headers = authHeaders(MockUsers.paakayttaja)
+      ) {
+        verifyResponseStatusOk()
+        val tyypit = JsonSerializer.parse[List[Koodistokoodiviite]](body).map(_.koodiarvo)
+        tyypit should contain(OpiskeluoikeudenTyyppi.perusopetus.koodiarvo)
+        tyypit should not contain OpiskeluoikeudenTyyppi.ahvenanmaanperusopetus.koodiarvo
+      }
+    }
     "Muks-organisaatiolle palautetaan vain muks ja TPO" in {
       authGet(
         s"api/oppilaitos/opiskeluoikeustyypit/${MockOrganisaatiot.MuuKuinSäänneltyKoulutusToimija.oppilaitos}",
