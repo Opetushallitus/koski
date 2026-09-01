@@ -282,10 +282,8 @@ const getEnrichedRaportitKategorioittain = (organisaatiot) =>
   kaikkiRaportitKategorioittain.map((tab) => {
     const raportit = tab.raportit.map((raportti) => {
       const visibleOrganisaatiot = raportti.selectableOrganisaatiotyypit
-        ? organisaatiot.map(
-            organisaatioWithForcedVisibilityRestrictedToTyypit(
-              raportti.selectableOrganisaatiotyypit
-            )
+        ? filterOrganisaatioTreeByTyypit(raportti.selectableOrganisaatiotyypit)(
+            organisaatiot
           )
         : raportti.visibleForAllOrgs
           ? organisaatiot.map(organisaatioWithForcedVisibility)
@@ -334,20 +332,22 @@ const organisaatioWithForcedVisibility = (organisaatio) => ({
   visible: true
 })
 
-// Näyttää koko organisaatiopuun (kuten organisaatioWithForcedVisibility), mutta rajaa
-// valittavissa olevat organisaatiot niihin joiden organisaatiotyypit osuu annettuun listaan
-// (esim. vain koulutustoimijat/varhaiskasvatuksen järjestäjät) — muut solmut näkyvät puussa
-// navigointia varten mutta eivät ole valittavissa.
-const organisaatioWithForcedVisibilityRestrictedToTyypit =
-  (tyypit) => (organisaatio) => ({
-    ...organisaatio,
-    children: organisaatio.children.map(
-      organisaatioWithForcedVisibilityRestrictedToTyypit(tyypit)
-    ),
-    selectable: organisaatio.organisaatiotyypit.some((tyyppi) =>
+// Rajaa organisaatiopuun niihin solmuihin joiden organisaatiotyypit osuu annettuun
+// listaan (esim. vain koulutustoimijat/varhaiskasvatuksen järjestäjät) — muun
+// tyyppiset solmut (esim. oppilaitokset) eivät näy puussa lainkaan, ei edes
+// navigointia varten. Jos ei-osuva solmu sisältää osuvia jälkeläisiä (esim.
+// koulutustoimija oman puunsa syvemmällä), ne nostetaan sen tilalle.
+const filterOrganisaatioTreeByTyypit = (tyypit) => (organisaatiot) =>
+  organisaatiot.flatMap((organisaatio) => {
+    const children = filterOrganisaatioTreeByTyypit(tyypit)(
+      organisaatio.children
+    )
+    const matches = organisaatio.organisaatiotyypit.some((tyyppi) =>
       tyypit.includes(tyyppi)
-    ),
-    visible: true
+    )
+    return matches
+      ? [{ ...organisaatio, children, selectable: true, visible: true }]
+      : children
   })
 
 const organiaatiotTreeIncludes = (organisaatiot, oid) =>

@@ -163,13 +163,24 @@ case class Kotikuntalaskelma(db: DB, organisaatioService: OrganisaatioService) e
   }
 
   // "Oppijat"-välilehti (TOR-2650, päätetty jatkokokouksessa, ks. suunnitelman 10.1 §): rivi per
-  // oppija, oppijanumero + tosi/epätosi-liput samoille ikäryhmille kuin aggregaattivälilehdellä.
-  // HUOM (kirjattu, ei ratkaistu suunnitelman 10.1 §:n mukaisesti): kuusitoistaErityisenTuenPerusteella
-  // paljastaa erityisen tuen statuksen nimetylle oppijanumerolle — ristiriidassa 4 §:n
-  // "Ei sisällytetä" -päätöksen hengen kanssa. Toteutettu silti käyttäjän ohjeen mukaisesti.
+  // oppija. Tavalliselle oppijalle näytetään oid, nimet, oppilaitos ja luokka sekä
+  // tosi/epätosi-liput samoille ikäryhmille kuin aggregaattivälilehdellä. Turvakiellon alaiselle
+  // oppijalle nimet/oppilaitos/luokka piilotetaan (null) ja oid-sarakkeeseen kirjoitetaan
+  // "Turvakielto" tyhjän arvon sijaan, jotta rivi ei näytä virheeltä — vain ikäryhmäliput näytetään
+  // muuten, jotta koulutustoimija näkee mistä aggregaattivälilehden luku tulee ilman että
+  // turvakiellon alaisen oppijan henkilöllisyys paljastuu. Päätetty näin nimenomaisesti (ei
+  // kokonaan piilotettu eikä kokonaan näytetty).
+  // HUOM (kirjattu, ei ratkaistu suunnitelman 10.1 §:n mukaisesti): muille kuin turvakiellon
+  // alaisille oppijoille kuusitoistaErityisenTuenPerusteella paljastaa erityisen tuen statuksen
+  // nimetylle, tunnistettavalle oppijalle — ristiriidassa 4 §:n "Ei sisällytetä" -päätöksen hengen
+  // kanssa. Toteutettu silti käyttäjän ohjeen mukaisesti.
   implicit private val getOppijaResult: GetResult[KotikuntalaskelmaOppijaRow] = GetResult(r =>
     KotikuntalaskelmaOppijaRow(
-      oppijaNumero = r.rs.getString("oppija_numero"),
+      oppijaNumero = Option(r.rs.getString("oppija_numero")),
+      etunimet = Option(r.rs.getString("etunimet")),
+      sukunimi = Option(r.rs.getString("sukunimi")),
+      oppilaitos = Option(r.rs.getString("oppilaitos")),
+      luokka = Option(r.rs.getString("luokka")),
       kuusi = r.rs.getBoolean("kuusi"),
       seitsemänKaksitoista = r.rs.getBoolean("seitseman_kaksitoista"),
       kolmetoistaViisitoista = r.rs.getBoolean("kolmetoista_viisitoista"),
@@ -189,12 +200,20 @@ case class Kotikuntalaskelma(db: DB, organisaatioService: OrganisaatioService) e
   }
 
   private def oppijaQuery(oppilaitosOids: Seq[String], päivä: LocalDate) = {
+    // HUOM: etunimet/sukunimi/oppilaitos/luokka kerätään max()-aggregaatilla per oppija, koska
+    // rivit tulevat opiskeluoikeuskohtaisesti mutta tulos on yksi rivi per oppija. Oletus (käyttäjän
+    // vahvistama): oppijalla ei ole kahta samanaikaista kelpaavaa opiskeluoikeutta, joten max()
+    // palauttaa aina yksikäsitteisen arvon käytännössä — ei erillistä käsittelyä tälle tapaukselle.
     sql"""
     with v as (
       select extract(year from $päivä::date)::int as vuosi
     )
     select
-      he.master_oid as oppija_numero,
+      case when bool_or(he.turvakielto) then 'Turvakielto' else he.master_oid end as oppija_numero,
+      case when bool_or(he.turvakielto) then null else max(he.etunimet) end as etunimet,
+      case when bool_or(he.turvakielto) then null else max(he.sukunimi) end as sukunimi,
+      case when bool_or(he.turvakielto) then null else max(oo.oppilaitos_nimi) end as oppilaitos,
+      case when bool_or(he.turvakielto) then null else max(pts.luokka_tai_ryhma) end as luokka,
 
       bool_or(extract(year from he.syntymaaika) = v.vuosi - 6) as kuusi,
 
@@ -250,6 +269,10 @@ case class Kotikuntalaskelma(db: DB, organisaatioService: OrganisaatioService) e
 
   private def oppijaColumnSettings(t: LocalizationReader): Seq[(String, Column)] = Seq(
     "oppijaNumero" -> Column(t.get("raportti-excel-kolumni-oppijaNumero")),
+    "etunimet" -> Column(t.get("raportti-excel-kolumni-etunimet")),
+    "sukunimi" -> Column(t.get("raportti-excel-kolumni-sukunimi")),
+    "oppilaitos" -> Column(t.get("raportti-excel-kolumni-oppilaitoksenNimi")),
+    "luokka" -> Column(t.get("raportti-excel-kolumni-luokka")),
     "kuusi" -> Column(t.get("raportti-excel-kolumni-kotikuntalaskelma-kuusi")),
     "seitsemänKaksitoista" -> Column(t.get("raportti-excel-kolumni-kotikuntalaskelma-seitsemanKaksitoista")),
     "kolmetoistaViisitoista" -> Column(t.get("raportti-excel-kolumni-kotikuntalaskelma-kolmetoistaViisitoista")),
@@ -285,7 +308,11 @@ case class KotikuntalaskelmaRow(
 )
 
 case class KotikuntalaskelmaOppijaRow(
-  oppijaNumero: String,
+  oppijaNumero: Option[String],
+  etunimet: Option[String],
+  sukunimi: Option[String],
+  oppilaitos: Option[String],
+  luokka: Option[String],
   kuusi: Boolean,
   seitsemänKaksitoista: Boolean,
   kolmetoistaViisitoista: Boolean,
