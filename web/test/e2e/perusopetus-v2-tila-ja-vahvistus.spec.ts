@@ -3,6 +3,7 @@ import { virkailija } from './setup/auth'
 
 const kaisaOid = '1.2.246.562.24.00000000007'
 const kaisaUrl = `${kaisaOid}?opiskeluoikeudenTyyppi=perusopetus&perusopetus-v2=true`
+const vahvistuspäivä = '4.6.2016'
 
 // Opiskeluoikeuden tilan ja suorituksen vahvistuksen muutostestit. Jokainen
 // testi alustaa fixturet erikseen, koska ne olettavat valmis-tilan alussa
@@ -176,11 +177,12 @@ test.describe('Perusopetuksen uusi käyttöliittymä: tila ja vahvistus', () => 
     const modal = page.locator('.Modal')
     await expect(modal).toBeVisible()
 
-    // Päivämäärä on esitäytetty tämän päivän päivämäärällä
+    // Päivämäärä on esitäytetty
     const dateInput = modal.locator('[data-testid$="date.edit.input"]')
     await expect(dateInput).toBeVisible()
     const dateValue = await dateInput.inputValue()
     expect(dateValue).toBeTruthy()
+    await dateInput.fill(vahvistuspäivä)
 
     // Paikkakunta on esitäytetty organisaation kotipaikalla ("Jyväskylä")
     await expect(
@@ -223,7 +225,7 @@ test.describe('Perusopetuksen uusi käyttöliittymä: tila ja vahvistus', () => 
     ).toContainText('Suoritus valmis')
     await expect(
       page.getByTestId('oo.0.suoritukset.0.suorituksenVahvistus.value.details')
-    ).toContainText('Jyväskylä')
+    ).toContainText(`${vahvistuspäivä} Jyväskylä`)
     await expect(
       page.getByTestId(
         'oo.0.suoritukset.0.suorituksenVahvistus.value.henkilö.0'
@@ -378,6 +380,9 @@ test.describe('Perusopetuksen uusi käyttöliittymä: tila ja vahvistus', () => 
 
     const modal = page.locator('.Modal')
     await expect(modal).toBeVisible()
+    await modal
+      .locator('[data-testid$="date.edit.input"]')
+      .fill(vahvistuspäivä)
 
     // Lisää uusi myöntäjä
     await modal.locator('[data-testid$="organisaatiohenkilöt.edit.add.input"]').click()
@@ -409,6 +414,9 @@ test.describe('Perusopetuksen uusi käyttöliittymä: tila ja vahvistus', () => 
       'oo.0.suoritukset.0.suorituksenVahvistus.edit.merkitseValmiiksi'
     ).click()
     await expect(modal).toBeVisible()
+    await modal
+      .locator('[data-testid$="date.edit.input"]')
+      .fill(vahvistuspäivä)
 
     // Klikkaa myöntäjä-dropdownia
     await modal.locator('[data-testid$="organisaatiohenkilöt.edit.add.input"]').click()

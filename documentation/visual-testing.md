@@ -1,6 +1,6 @@
 # Visuaaliset regressiotestit
 
-Koski-frontendin v2-käyttöliittymien Playwright-testit vertaavat koko sivun
+Koski-frontendin käyttöliittymien Playwright-testit vertaavat koko sivun
 kuvakaappauksia versionhallinnassa oleviin baseline-kuviin.
 
 ## Ulkoasumuutoksen tarkistaminen

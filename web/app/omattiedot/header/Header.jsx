@@ -32,7 +32,7 @@ export const Header = ({ oppija, oppijaSelectionBus }) => {
       <HeaderInfo oppija={oppija} varoitukset={varoitukset} />
 
       <div className="header__bottom-row">
-        <HeaderName henkilö={henkilö} />
+        <HeaderName henkilö={henkilö} showOppijanumero />
         <HeaderButtons uiModeA={uiMode} stateType={FormState} oppija={oppija} />
         <HeaderVirheraportointiSection uiModeA={uiMode} oppija={oppija} />
         <HeaderSuoritusjakoSection
