@@ -19005,15 +19005,11 @@
             "sv": "Övernäs skola",
             "en": "Övernäs skola"
           },
-          "kieletUris": [
-            "oppilaitoksenopetuskieli_2#1"
-          ],
+          "kieletUris": ["oppilaitoksenopetuskieli_2#1"],
           "kotipaikkaUri": "kunta_478",
           "children": [],
           "aliOrganisaatioMaara": 0,
-          "organisaatiotyypit": [
-            "organisaatiotyyppi_02"
-          ],
+          "organisaatiotyypit": ["organisaatiotyyppi_02"],
           "status": "AKTIIVINEN"
         }
       ],

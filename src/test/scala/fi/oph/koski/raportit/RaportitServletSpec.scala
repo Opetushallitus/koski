@@ -150,7 +150,7 @@ class RaportitServletSpec extends AnyFreeSpec with RaportointikantaTestMethods w
 
     "Juuriorganisaatiot testikäyttäjälle kalle" in {
       verifyOrganisaatiohierarkia(kalle) { hierarkia => {
-        hierarkia.length shouldEqual 24
+        hierarkia.length shouldEqual 25
       }}
     }
 
