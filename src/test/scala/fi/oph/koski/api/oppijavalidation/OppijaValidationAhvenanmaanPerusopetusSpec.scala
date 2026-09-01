@@ -4,13 +4,17 @@ import com.typesafe.config.ConfigFactory
 import fi.oph.koski.{KoskiApplicationForTests, KoskiHttpSpec}
 import fi.oph.koski.api.misc.PutOpiskeluoikeusTestMethods
 import fi.oph.koski.documentation.AhvenanmaanPerusopetusExampleData
+import fi.oph.koski.documentation.ExampleData.{opiskeluoikeusLäsnä, ruotsinKieli}
 import fi.oph.koski.eperusteetvalidation.{EPerusteetFiller, EPerusteisiinPerustuvaValidator}
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.koskiuser.{AccessType, KoskiSpecificSession}
+import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.schema._
 import fi.oph.koski.validation.KoskiValidator
 import org.scalatest.freespec.AnyFreeSpec
+
+import java.time.LocalDate.{of => date}
 
 class OppijaValidationAhvenanmaanPerusopetusSpec
   extends AnyFreeSpec
@@ -24,6 +28,32 @@ class OppijaValidationAhvenanmaanPerusopetusSpec
   "Ahvenanmaan perusopetuksen opiskeluoikeus" - {
     "voidaan tallentaa paikallisesti" in {
       setupOppijaWithOpiskeluoikeus(defaultOpiskeluoikeus) {
+        verifyResponseStatusOk()
+      }
+    }
+
+    // Vastaa muodoltaan sitä, minkä uuden opiskeluoikeuden luontidialogi tuottaa:
+    // pelkkä oppimäärän suoritus ahvenanmaalaisessa oppilaitoksessa, ei vahvistusta.
+    // Ahvenanmaalainen oppilaitos on olennainen, koska tallennus meni läpi validoinnista
+    // ja kaatui vasta perustietojen serialisoinnissa, kun kunnan (koulutustoimijan)
+    // ytunnus oli mockdatassa tyhjä merkkijono.
+    "voidaan tallentaa ahvenanmaalaiseen oppilaitokseen" in {
+      val toimipiste = Oppilaitos(MockOrganisaatiot.övernäsSkola)
+      val opiskeluoikeus = AhvenanmaanPerusopetuksenOpiskeluoikeus(
+        oppilaitos = Some(toimipiste),
+        tila = AhvenanmaanPerusopetuksenOpiskeluoikeudenTila(
+          List(AhvenanmaanPerusopetuksenOpiskeluoikeusjakso(date(2026, 8, 15), opiskeluoikeusLäsnä))
+        ),
+        suoritukset = List(AhvenanmaanPerusopetuksenOppimääränSuoritus(
+          koulutusmoduuli = AhvenanmaanPerusopetus(
+            perusteenDiaarinumero = Some(AhvenanmaanPerusopetusExampleData.ahvenanmaanDiaarinumero)
+          ),
+          toimipiste = toimipiste,
+          suoritustapa = Koodistokoodiviite("koulutus", "perusopetuksensuoritustapa"),
+          suorituskieli = ruotsinKieli
+        ))
+      )
+      setupOppijaWithOpiskeluoikeus(opiskeluoikeus) {
         verifyResponseStatusOk()
       }
     }
