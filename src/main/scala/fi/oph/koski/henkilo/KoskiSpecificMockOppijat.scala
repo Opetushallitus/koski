@@ -402,6 +402,17 @@ object KoskiSpecificMockOppijat {
   // TOR-2587: Ahvenanmaan perusopetuksen oppimäärä muille kuin oppivelvollisille (aikuisopiskelija).
   val ahvenanmaanAikuisopiskelija = koskiSpecificOppijat.oppija("Åländsk", "Anders", "150488-2002", syntymäaika = Some(LocalDate.of(1988, 4, 15)))
 
+  // Virta QA:sta haetut korkeakoulun testioppijat. Hetut on vaihdettu ei-keinotekoisiksi, koska
+  // acceptSyntheticHetus on oletuksena false: keinotekoinen hetu kaatuu sekä oppijahaussa että
+  // Kelan rajapinnassa. QA:n alkuperäiset hetut suluissa.
+  //   090802A801L (QA 090802A952F), 060180-8015 (QA 060180-9521), 200482-8014 (QA 200482-900A),
+  //   020276-801B (QA 020276-901K). 070102A801N on rakennettu CSC:n esimerkkiaineistosta.
+  val virtaLiikkuvuusjaksot = koskiSpecificOppijat.oppija("Liikkuvuusjaksot", "Liisa", "090802A801L")
+  val virtaLiikkuvuus = koskiSpecificOppijat.oppija("Liikkuvuus", "Lauri", "060180-8015")
+  val virtaTeRahoitus = koskiSpecificOppijat.oppija("TeRahoitus", "Teemu", "200482-8014")
+  val virtaFuusio = koskiSpecificOppijat.oppija("Fuusio", "Fanni", "020276-801B")
+  val virtaSaapuvaVaihto = koskiSpecificOppijat.oppija("SaapuvaVaihto", "Sofia", "070102A801N")
+
   def defaultOppijat = koskiSpecificOppijat.getOppijat
   def defaultKuntahistoriat: mutable.Map[String, Seq[OppijanumerorekisteriKotikuntahistoriaRow]] = koskiSpecificOppijat.getKuntahistoriat
   def defaultTurvakieltoKuntahistoriat: mutable.Map[String, Seq[OppijanumerorekisteriKotikuntahistoriaRow]] = koskiSpecificOppijat.getTurvakieltoKuntahistoriat

@@ -1,10 +1,14 @@
+import { SiirtoOpiskelija } from './SiirtoOpiskelija'
+import { KorkeakoulunKoulutusala } from './KorkeakoulunKoulutusala'
 import { KorkeakoulunOpiskeluoikeudenLukuvuosimaksu } from './KorkeakoulunOpiskeluoikeudenLukuvuosimaksu'
 import { Oppilaitos } from './Oppilaitos'
 import { KoulutuskuntaJakso } from './KoulutuskuntaJakso'
 import { Koodistokoodiviite } from './Koodistokoodiviite'
 import { LocalizedString } from './LocalizedString'
 import { Lukukausi_Ilmoittautuminen } from './LukukausiIlmoittautuminen'
+import { Liikkuvuusjakso } from './Liikkuvuusjakso'
 import { Aikajakso } from './Aikajakso'
+import { RahoituslähdeJakso } from './RahoituslahdeJakso'
 
 /**
  * Korkeakoulun opiskeluoikeuden lisätiedot
@@ -13,38 +17,46 @@ import { Aikajakso } from './Aikajakso'
  */
 export type KorkeakoulunOpiskeluoikeudenLisätiedot = {
   $class: 'fi.oph.koski.schema.KorkeakoulunOpiskeluoikeudenLisätiedot'
+  siirtoOpiskelija?: SiirtoOpiskelija
+  koulutusala?: KorkeakoulunKoulutusala
   maksettavatLukuvuosimaksut?: Array<KorkeakoulunOpiskeluoikeudenLukuvuosimaksu>
   järjestäväOrganisaatio?: Oppilaitos
   koulutuskuntaJaksot: Array<KoulutuskuntaJakso>
   opettajanPedagogisetOpinnot?: Array<
     Koodistokoodiviite<'virtapatevyys', string>
   >
+  lukukausiIlmoittautuminen?: Lukukausi_Ilmoittautuminen
+  liikkuvuusjaksot?: Array<Liikkuvuusjakso>
+  opetettavanAineenOpinnot?: Array<Koodistokoodiviite<'virtapatevyys', string>>
+  ensisijaisuus?: Array<Aikajakso>
   virtaOpiskeluoikeudenTyyppi?: Koodistokoodiviite<
     'virtaopiskeluoikeudentyyppi',
     string
   >
-  lukukausiIlmoittautuminen?: Lukukausi_Ilmoittautuminen
-  opetettavanAineenOpinnot?: Array<Koodistokoodiviite<'virtapatevyys', string>>
-  ensisijaisuus?: Array<Aikajakso>
+  rahoituslähdeJaksot?: Array<RahoituslähdeJakso>
 }
 
 export const KorkeakoulunOpiskeluoikeudenLisätiedot = (
   o: {
+    siirtoOpiskelija?: SiirtoOpiskelija
+    koulutusala?: KorkeakoulunKoulutusala
     maksettavatLukuvuosimaksut?: Array<KorkeakoulunOpiskeluoikeudenLukuvuosimaksu>
     järjestäväOrganisaatio?: Oppilaitos
     koulutuskuntaJaksot?: Array<KoulutuskuntaJakso>
     opettajanPedagogisetOpinnot?: Array<
       Koodistokoodiviite<'virtapatevyys', string>
     >
-    virtaOpiskeluoikeudenTyyppi?: Koodistokoodiviite<
-      'virtaopiskeluoikeudentyyppi',
-      string
-    >
     lukukausiIlmoittautuminen?: Lukukausi_Ilmoittautuminen
+    liikkuvuusjaksot?: Array<Liikkuvuusjakso>
     opetettavanAineenOpinnot?: Array<
       Koodistokoodiviite<'virtapatevyys', string>
     >
     ensisijaisuus?: Array<Aikajakso>
+    virtaOpiskeluoikeudenTyyppi?: Koodistokoodiviite<
+      'virtaopiskeluoikeudentyyppi',
+      string
+    >
+    rahoituslähdeJaksot?: Array<RahoituslähdeJakso>
   } = {}
 ): KorkeakoulunOpiskeluoikeudenLisätiedot => ({
   koulutuskuntaJaksot: [],

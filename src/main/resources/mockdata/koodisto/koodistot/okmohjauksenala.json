@@ -1,0 +1,199 @@
+{
+  "codesGroupUri": "koulutuskoodistot",
+  "codesVersions": [],
+  "includesCodes": [],
+  "koodistoUri": "okmohjauksenala",
+  "levelsWithCodes": [],
+  "lukittu": null,
+  "metadata": [
+    {
+      "kieli": "SV",
+      "nimi": "UKM-styrningsområde, högskolor",
+      "kuvaus": "Opetus- ja kulttuuriministeriön korkeakoulu- ja tiedepolitiikan osasto käyttää korkeakoulujen tavoitteiden asettamisessa ja seurannassa ISCED-luokituksesta johdettua omaa luokitustaan, \"OKM ohjauksen ala, korkeakoulutus\".",
+      "kayttoohje": null,
+      "kasite": null,
+      "kohdealue": null,
+      "sitovuustaso": null,
+      "kohdealueenOsaAlue": null,
+      "toimintaymparisto": null,
+      "tarkentaaKoodistoa": null,
+      "huomioitavaKoodisto": null,
+      "koodistonLahde": null
+    },
+    {
+      "kieli": "FI",
+      "nimi": "OKM ohjauksen ala, korkeakoulutus",
+      "kuvaus": "Opetus- ja kulttuuriministeriön korkeakoulu- ja tiedepolitiikan osasto käyttää korkeakoulujen tavoitteiden asettamisessa ja seurannassa ISCED-luokituksesta johdettua omaa luokitustaan, \"OKM ohjauksen ala, korkeakoulutus\".",
+      "kayttoohje": null,
+      "kasite": null,
+      "kohdealue": null,
+      "sitovuustaso": null,
+      "kohdealueenOsaAlue": null,
+      "toimintaymparisto": null,
+      "tarkentaaKoodistoa": null,
+      "huomioitavaKoodisto": null,
+      "koodistonLahde": null
+    },
+    {
+      "kieli": "EN",
+      "nimi": "Field of education, HE steering",
+      "kuvaus": "Opetus- ja kulttuuriministeriön korkeakoulu- ja tiedepolitiikan osasto käyttää korkeakoulujen tavoitteiden asettamisessa ja seurannassa ISCED-luokituksesta johdettua omaa luokitustaan, \"OKM ohjauksen ala, korkeakoulutus\".",
+      "kayttoohje": null,
+      "kasite": null,
+      "kohdealue": null,
+      "sitovuustaso": null,
+      "kohdealueenOsaAlue": null,
+      "toimintaymparisto": null,
+      "tarkentaaKoodistoa": null,
+      "huomioitavaKoodisto": null,
+      "koodistonLahde": null
+    }
+  ],
+  "omistaja": null,
+  "organisaatioOid": "1.2.246.562.10.00000000001",
+  "paivittajaOid": null,
+  "paivitysPvm": "2016-09-16",
+  "resourceUri": "https://virkailija.opintopolku.fi/koodisto-service/rest/codes/okmohjauksenala",
+  "tila": "LUONNOS",
+  "versio": 1,
+  "version": 5,
+  "voimassaAlkuPvm": "2016-01-01",
+  "voimassaLoppuPvm": null,
+  "withinCodes": [
+    {
+      "codesUri": "koulutus",
+      "codesVersion": 6,
+      "passive": true,
+      "nimi": {
+        "FI": "koulutus",
+        "SV": "koulutus",
+        "EN": "koulutus"
+      },
+      "kuvaus": {
+        "FI": "koulutus",
+        "SV": "koulutus",
+        "EN": "koulutus"
+      }
+    },
+    {
+      "codesUri": "koulutus",
+      "codesVersion": 9,
+      "passive": true,
+      "nimi": {
+        "SV": "koulutus",
+        "FI": "koulutus",
+        "EN": "koulutus"
+      },
+      "kuvaus": {
+        "SV": "koulutus",
+        "FI": "koulutus",
+        "EN": "koulutus"
+      }
+    },
+    {
+      "codesUri": "koulutus",
+      "codesVersion": 11,
+      "passive": true,
+      "nimi": {
+        "SV": "koulutus",
+        "FI": "koulutus",
+        "EN": "koulutus"
+      },
+      "kuvaus": {
+        "SV": "koulutus",
+        "FI": "Koodistoa ylläpitävät Tuija Koskela (Opetushallitus,  Ammatillinen osaaminen yksikkö)  ja yhteishaun osalta Outi Kivipelto (Opetushallitus, Oppijanpalvelut yksikkö). Koodistoa käytetään mm. hakujen koulutustarjonnassa, KOSKEn tiedonsiirroissa ja OIVAssa.",
+        "EN": "koulutus"
+      }
+    },
+    {
+      "codesUri": "koulutus",
+      "codesVersion": 10,
+      "passive": true,
+      "nimi": {
+        "SV": "koulutus",
+        "FI": "koulutus",
+        "EN": "koulutus"
+      },
+      "kuvaus": {
+        "SV": "koulutus",
+        "FI": "koulutus",
+        "EN": "koulutus"
+      }
+    },
+    {
+      "codesUri": "koulutus",
+      "codesVersion": 12,
+      "passive": false,
+      "nimi": {
+        "FI": "koulutus",
+        "SV": "koulutus",
+        "EN": "koulutus"
+      },
+      "kuvaus": {
+        "FI": "Koodistoa ylläpitävät Perttu Venäläinen (ammatilliset koulutukset), Riku Hanhinen (korkeakoulutukset), Juho Helminen (yleissivistävä koulutus). Koodistoa käytetään mm. hakujen koulutustarjonnassa, KOSKI-palvelun tiedonsiirroissa, OIVAssa ja OKM Virta-palvelussa. Tilastokeskus vastaa koodiston koodituksesta (https://www2.tilastokeskus.fi/fi/luokitukset/koulutus/). Koodeja ylläpidetään käsin. Koodiston ja Tilastokeskuksen välillä ei ole integraatiota.",
+        "SV": "koulutus",
+        "EN": "koulutus"
+      }
+    },
+    {
+      "codesUri": "isced2011koulutusalataso3",
+      "codesVersion": 1,
+      "passive": false,
+      "nimi": {
+        "SV": "ISCED 2011 Utbildningsområde(nivå 3)",
+        "FI": "ISCED 2011, koulutusala (taso 3)",
+        "EN": "ISCED 2011 Field of education(level3)"
+      },
+      "kuvaus": {
+        "SV": "Kansainvälinen koulutusluokitus ISCED (Unesco International Standard Classification of Education) on tilastollisia tarkoituksia varten kehitetty koulutusluokitus, jota käytetään mm. Unescon, OECD:n ja Eurostatin kansainvälisissä tilastoissa ja indikaattoreissa verrattaessa koulutusta eri maissa. Luokituksen avulla voidaan luokittaa tutkintoon johtava ja tutkintoon johtamaton koulutus.\n\nISCED-koulutusluokitus uudistettiin ensimmäisen kerran vuonna 1997 ja uudelleen koulutusasteen osalta vuonna 2011 ja koulutusalan osalta vuonna 2013. ISCED 2011 -luokitus mahdollistaa edeltäjänsä tavoin\nkoulutusohjelmien luokittamisen esiopetuksesta tohtorikoulutukseen saakka. Se soveltuu myös erityisopetuksen ja aikuiskoulutuksen luokittamiseen sekä myös koulujärjestelmän ulkopuolisen koulutuksen luokittamiseen. Luokitus on tarkoitettu mm. oppilaiden, opettajien, väestön koulutusrakennetietojen, kustannusten luokittamiseen.\n\nISCED 2011 -luokituksen ja Tilastokeskuksen koulutusluokituksen välisen avaimen avulla koulutustilastoaineistot voidaan uudelleen ryhmitellä kansainvälisen koulutusluokituksen jaottelujen mukaisiksi. Luokitusavain päivitetään vuosittain ja se julkaistaan Tilastokeskuksen koulutusluokituksen yhteydessä.\n\nUnescon kansainvälinen koulutusluokitus ISCED uudistettiin koulutusasteen osalta vuonna 2011 ja koulutusalan osalta vuonna 2013. Kansallisesti ISCED-luokituksesta käytetään yksinkertaisuuden vuoksi yleisnimitystä ISCED 2011 -luokitus koulutusasteen uudistusvuoden mukaan, vaikkakin koulutusala uudistettiin kaksi vuotta koulutusastetta myöhemmin.",
+        "FI": "Kansainvälinen koulutusluokitus ISCED (Unesco International Standard Classification of Education) on tilastollisia tarkoituksia varten kehitetty koulutusluokitus, jota käytetään mm. Unescon, OECD:n ja Eurostatin kansainvälisissä tilastoissa ja indikaattoreissa verrattaessa koulutusta eri maissa. Luokituksen avulla voidaan luokittaa tutkintoon johtava ja tutkintoon johtamaton koulutus.\n\nISCED-koulutusluokitus uudistettiin ensimmäisen kerran vuonna 1997 ja uudelleen koulutusasteen osalta vuonna 2011 ja koulutusalan osalta vuonna 2013. ISCED 2011 -luokitus mahdollistaa edeltäjänsä tavoin\nkoulutusohjelmien luokittamisen esiopetuksesta tohtorikoulutukseen saakka. Se soveltuu myös erityisopetuksen ja aikuiskoulutuksen luokittamiseen sekä myös koulujärjestelmän ulkopuolisen koulutuksen luokittamiseen. Luokitus on tarkoitettu mm. oppilaiden, opettajien, väestön koulutusrakennetietojen, kustannusten luokittamiseen.\n\nISCED 2011 -luokituksen ja Tilastokeskuksen koulutusluokituksen välisen avaimen avulla koulutustilastoaineistot voidaan uudelleen ryhmitellä kansainvälisen koulutusluokituksen jaottelujen mukaisiksi. Luokitusavain päivitetään vuosittain ja se julkaistaan Tilastokeskuksen koulutusluokituksen yhteydessä.\n\nUnescon kansainvälinen koulutusluokitus ISCED uudistettiin koulutusasteen osalta vuonna 2011 ja koulutusalan osalta vuonna 2013. Kansallisesti ISCED-luokituksesta käytetään yksinkertaisuuden vuoksi yleisnimitystä ISCED 2011 -luokitus koulutusasteen uudistusvuoden mukaan, vaikkakin koulutusala uudistettiin kaksi vuotta koulutusastetta myöhemmin.",
+        "EN": "Kansainvälinen koulutusluokitus ISCED (Unesco International Standard Classification of Education) on tilastollisia tarkoituksia varten kehitetty koulutusluokitus, jota käytetään mm. Unescon, OECD:n ja Eurostatin kansainvälisissä tilastoissa ja indikaattoreissa verrattaessa koulutusta eri maissa. Luokituksen avulla voidaan luokittaa tutkintoon johtava ja tutkintoon johtamaton koulutus.\n\nISCED-koulutusluokitus uudistettiin ensimmäisen kerran vuonna 1997 ja uudelleen koulutusasteen osalta vuonna 2011 ja koulutusalan osalta vuonna 2013. ISCED 2011 -luokitus mahdollistaa edeltäjänsä tavoin\nkoulutusohjelmien luokittamisen esiopetuksesta tohtorikoulutukseen saakka. Se soveltuu myös erityisopetuksen ja aikuiskoulutuksen luokittamiseen sekä myös koulujärjestelmän ulkopuolisen koulutuksen luokittamiseen. Luokitus on tarkoitettu mm. oppilaiden, opettajien, väestön koulutusrakennetietojen, kustannusten luokittamiseen.\n\nISCED 2011 -luokituksen ja Tilastokeskuksen koulutusluokituksen välisen avaimen avulla koulutustilastoaineistot voidaan uudelleen ryhmitellä kansainvälisen koulutusluokituksen jaottelujen mukaisiksi. Luokitusavain päivitetään vuosittain ja se julkaistaan Tilastokeskuksen koulutusluokituksen yhteydessä.\n\nUnescon kansainvälinen koulutusluokitus ISCED uudistettiin koulutusasteen osalta vuonna 2011 ja koulutusalan osalta vuonna 2013. Kansallisesti ISCED-luokituksesta käytetään yksinkertaisuuden vuoksi yleisnimitystä ISCED 2011 -luokitus koulutusasteen uudistusvuoden mukaan, vaikkakin koulutusala uudistettiin kaksi vuotta koulutusastetta myöhemmin."
+      }
+    },
+    {
+      "codesUri": "kansallinenkoulutusluokitus2016koulutusalataso3",
+      "codesVersion": 1,
+      "passive": false,
+      "nimi": {
+        "SV": "Nationell Utbildningsklassificering 2016, utbildningsområde (nivå 3)",
+        "FI": "Kansallinen koulutusluokitus 2016, koulutusala (taso 3)",
+        "EN": "National classification of education 2016, field of education (detailed field)"
+      },
+      "kuvaus": {
+        "SV": "",
+        "FI": "",
+        "EN": ""
+      }
+    },
+    {
+      "codesUri": "koulutus",
+      "codesVersion": 7,
+      "passive": true,
+      "nimi": {
+        "FI": "koulutus",
+        "SV": "koulutus",
+        "EN": "koulutus"
+      },
+      "kuvaus": {
+        "FI": "koulutus",
+        "SV": "koulutus",
+        "EN": "koulutus"
+      }
+    },
+    {
+      "codesUri": "koulutus",
+      "codesVersion": 8,
+      "passive": true,
+      "nimi": {
+        "FI": "koulutus",
+        "SV": "koulutus",
+        "EN": "koulutus"
+      },
+      "kuvaus": {
+        "FI": "koulutus",
+        "SV": "koulutus",
+        "EN": "koulutus"
+      }
+    }
+  ]
+}
