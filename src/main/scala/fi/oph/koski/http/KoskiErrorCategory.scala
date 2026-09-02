@@ -351,7 +351,6 @@ object KoskiErrorCategory {
     val vainVirkailija = subcategory("vainVirkailija", "Sallittu vain virkailija-käyttäjille")
     val vainKansalainen = subcategory("vainKansalainen", "Sallittu vain kansalainen-käyttäjille")
     val vainOmaDataOAuth2 = subcategory("vainOmaDataOAuth2", "Sallittu vain Oma Data OAuth2 -rajapinnan käyttäjille")
-    val vainPalveluvayla = subcategory("vainPalveluvayla", "Sallittu vain palveluväylän kautta")
     val kiellettyKäyttöoikeus = subcategory("kiellettyKäyttöoikeus", "Ei sallittu näillä käyttöoikeuksilla")
     val liianMontaSuoritusjakoa = subcategory("liianMontaSuoritusjakoa", "Käyttäjällä on jo maksimimäärä suoritusjakoja")
     val forbiddenXRoadHeader = subcategory("vainSallittuKumppani", "X-ROAD-MEMBER:llä ei ole lupaa hakea opiskelijan tietoja")
