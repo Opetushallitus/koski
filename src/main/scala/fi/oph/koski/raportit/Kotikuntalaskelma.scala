@@ -167,16 +167,17 @@ case class Kotikuntalaskelma(db: DB, organisaatioService: OrganisaatioService) e
 
   // "Oppijat"-välilehti (TOR-2650, päätetty jatkokokouksessa, ks. suunnitelman 10.1 §): rivi per
   // oppija. Tavalliselle oppijalle näytetään oid, hetu, yksilöity-lippu (molemmat ennen nimiä),
-  // nimet, kotikunta (ennen oppilaitosta), oppilaitos ja luokka sekä tosi/epätosi-liput samoille
-  // ikäryhmille kuin aggregaattivälilehdellä. Hetu on hetuttomalle oppijalle luonnostaan NULL
-  // (r_henkilo.hetu on jo Option[String] skeemassa) — ei erillistä käsittelyä tarvita. Kotikunta
-  // resolvoidaan samalla tavalla kuin aggregaattivälilehdellä (r_kotikuntahistoria ensisijaisena,
-  // turvakielto-suojattu r_henkilo-varakotikunta toissijaisena). Turvakiellon alaiselle oppijalle
-  // hetu/yksilöity/nimet/kotikunta/oppilaitos/luokka piilotetaan (null) ja oid-sarakkeeseen
-  // kirjoitetaan "Turvakielto" tyhjän arvon sijaan, jotta rivi ei näytä virheeltä — vain
-  // ikäryhmäliput näytetään muuten, jotta koulutustoimija näkee mistä aggregaattivälilehden luku
-  // tulee ilman että turvakiellon alaisen oppijan henkilöllisyys paljastuu. Päätetty näin
-  // nimenomaisesti (ei kokonaan piilotettu eikä kokonaan näytetty).
+  // nimet, kotikunta (ennen oppilaitosta), oppilaitos, luokka-aste ja luokka (luokka-aste ennen
+  // luokkaa) sekä tosi/epätosi-liput samoille ikäryhmille kuin aggregaattivälilehdellä. Hetu on
+  // hetuttomalle oppijalle luonnostaan NULL (r_henkilo.hetu on jo Option[String] skeemassa) — ei
+  // erillistä käsittelyä tarvita. Kotikunta resolvoidaan samalla tavalla kuin
+  // aggregaattivälilehdellä (r_kotikuntahistoria ensisijaisena, turvakielto-suojattu
+  // r_henkilo-varakotikunta toissijaisena). Turvakiellon alaiselle oppijalle
+  // hetu/yksilöity/nimet/kotikunta/oppilaitos/luokka-aste/luokka piilotetaan (null) ja
+  // oid-sarakkeeseen kirjoitetaan "Turvakielto" tyhjän arvon sijaan, jotta rivi ei näytä
+  // virheeltä — vain ikäryhmäliput näytetään muuten, jotta koulutustoimija näkee mistä
+  // aggregaattivälilehden luku tulee ilman että turvakiellon alaisen oppijan henkilöllisyys
+  // paljastuu. Päätetty näin nimenomaisesti (ei kokonaan piilotettu eikä kokonaan näytetty).
   // HUOM (kirjattu, ei ratkaistu suunnitelman 10.1 §:n mukaisesti): muille kuin turvakiellon
   // alaisille oppijoille kuusitoistaErityisenTuenPerusteella paljastaa erityisen tuen statuksen
   // nimetylle, tunnistettavalle oppijalle — ristiriidassa 4 §:n "Ei sisällytetä" -päätöksen hengen
@@ -230,7 +231,10 @@ case class Kotikuntalaskelma(db: DB, organisaatioService: OrganisaatioService) e
       case when bool_or(he.turvakielto) then null else max(he.sukunimi) end as sukunimi,
       case when bool_or(he.turvakielto) then null else max(coalesce(kkh.kotikunta_nimi_fi, he.kotikunta_nimi_fi)) end as kotikunta,
       case when bool_or(he.turvakielto) then null else max(oo.oppilaitos_nimi) end as oppilaitos,
-      case when bool_or(he.turvakielto) then null else max(pts.luokka_aste) end as luokka_aste,
+      -- luokka-aste: pts.koulutusmoduuli_koodiarvo on perusopetuksenvuosiluokkasuoritukselle itse
+      -- luokka-asteen numero (esim. "1") — r_osasuoritus.luokka_aste on eri, kapeampi käsite
+      -- (yhdysluokkaopetuksessa oppiaineen luokka-aste, ei oppijan oma), eikä siksi tähän sovi.
+      case when bool_or(he.turvakielto) then null else max(pts.koulutusmoduuli_koodiarvo) end as luokka_aste,
       case when bool_or(he.turvakielto) then null else max(pts.luokka_tai_ryhma) end as luokka,
 
       bool_or(extract(year from he.syntymaaika) = v.vuosi - 6) as kuusi,

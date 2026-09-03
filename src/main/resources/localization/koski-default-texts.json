@@ -1914,6 +1914,7 @@
   "raportti-excel-kolumni-lukioNuortenOps": "Nuorten opetussuunnitelman mukaan lukion oppimäärää suorittavat",
   "raportti-excel-kolumni-lukioNuortenOps-comment": "\"Läsnä\"-tilaisista opiskeluoikeuksista ne, joissa päätason suorituksena lukion oppimäärän suoritus nuorten opetussuunnitelman mukaan. IB-, DIA- ja International School of Finland-opiskelijat lasketaan myös lukion oppimäärää nuorten oppimäärän mukaan suorittaviksi",
   "raportti-excel-kolumni-luokka": "Luokan tunniste",
+  "raportti-excel-kolumni-luokkaAste": "Luokka-aste",
   "raportti-excel-kolumni-luvaAikuistenOps": "Aikuisten opetussuunnitelman mukaan lukion oppimäärää suorittavat",
   "raportti-excel-kolumni-luvaAikuistenOps-comment": "\"Läsnä\"-tilaisista opiskeluoikeuksista ne, joissa päätason suorituksena lukion oppimäärän suoritus aikuisten opetussuunnitelman mukaan",
   "raportti-excel-kolumni-luvaAikuistenOpsEiKotikuntaa": "Aikuisten opetussuunnitelman mukaan opiskelevat - ei kotikuntaa",
