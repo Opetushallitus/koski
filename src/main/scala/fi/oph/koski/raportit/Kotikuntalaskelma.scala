@@ -18,10 +18,12 @@ import scala.concurrent.duration.DurationInt
 //   - Käyttää julkista r_kotikuntahistoria-taulua confidential-variantin sijaan, jotta
 //     turvakiellon alaisten oppijoiden kotikuntaa ei paljasteta (ks. suunnitelman 5 §, kohta 6).
 //     Turvakiellon alaiset oppijat eivät tämän vuoksi resolvoi kotikuntaa ja päätyvät samaan
-//     "Ei tiedossa" -ryhmään kuin hetuttomat oppijat.
+//     tyhjään (NULL) ryhmään kuin hetuttomat oppijat — kotikunnanKoodi- ja oppilaanKotikunta-
+//     sarakkeet ovat molemmat Option[String] eikä kumpaakaan täytetä millään korvaavalla
+//     tekstillä, jotta rivi ei näytä siltä kuin kotikunta olisi jotain tiettyä ("Ei tiedossa").
 //   - Jos r_kotikuntahistoria ei sisällä paivä-parametrin kattavaa jaksoa (esim. historiatieto
 //     alkaa myöhemmin kuin kysytty päivä, tai jaksoissa on aukko), pudotaan oppijan tämänhetkiseen
-//     (r_henkilo) kotikuntaan sen sijaan että aina näytettäisiin "Ei tiedossa" — sama malli kuin
+//     (r_henkilo) kotikuntaan sen sijaan että aina jätettäisiin tyhjäksi — sama malli kuin
 //     EsiopetusRaportti.scala käyttää. TÄRKEÄÄ: tämä varakotikunta haetaan vain, jos
 //     he.turvakielto = false — r_henkilo.kotikunta* EI ole suodatettu turvakiellon alaisille
 //     (toisin kuin r_kotikuntahistoria), joten suora käyttö ilman tätä tarkistusta vuotaisi
@@ -46,15 +48,16 @@ import scala.concurrent.duration.DurationInt
 //      analyytikon esimerkki rajasi suorituksen alkamispäivän kuluvaan lukuvuoteen
 //      (1.8.-tilastointipäivä). Tässä on yksinkertaisuuden vuoksi vain "alkamispaiva <= paiva" —
 //      lukuvuoden alkupäivän laskenta pitää lisätä ennen tuotantoon vientiä jos rajaus on tarpeen.
-//   3. Hetuttomien / turvakiellon alaisten oppijoiden esitystapa "Ei tiedossa" -ryhmänä on tämän
-//      toteutuksen valinta, ei suunnitelmassa erikseen päätetty asia.
+//   3. Hetuttomien / turvakiellon alaisten oppijoiden esitystapa tyhjänä (NULL) kotikunta-
+//      ryhmänä (yhdistettynä) on tämän toteutuksen valinta, ei suunnitelmassa erikseen
+//      päätetty asia.
 case class Kotikuntalaskelma(db: DB, organisaatioService: OrganisaatioService) extends QueryMethods {
   implicit private val getResult: GetResult[KotikuntalaskelmaRow] = GetResult(r =>
     KotikuntalaskelmaRow(
       opetuksenJärjestäjäOid = r.rs.getString("opetuksen_jarjestaja_oid"),
       opetuksenJärjestäjä = r.rs.getString("opetuksen_jarjestaja"),
       kotikunnanKoodi = Option(r.rs.getString("kotikunnan_koodi")),
-      oppilaanKotikunta = r.rs.getString("oppilaan_kotikunta"),
+      oppilaanKotikunta = Option(r.rs.getString("oppilaan_kotikunta")),
       kuusi = r.rs.getInt("kuusi"),
       seitsemänKaksitoista = r.rs.getInt("seitseman_kaksitoista"),
       kolmetoistaViisitoista = r.rs.getInt("kolmetoista_viisitoista"),
@@ -83,7 +86,7 @@ case class Kotikuntalaskelma(db: DB, organisaatioService: OrganisaatioService) e
       oo.koulutustoimija_oid as opetuksen_jarjestaja_oid,
       oo.koulutustoimija_nimi as opetuksen_jarjestaja,
       coalesce(kkh.kotikunta, case when he.turvakielto then null else he.kotikunta end) as kotikunnan_koodi,
-      coalesce(kkh.kotikunta_nimi_fi, case when he.turvakielto then null else he.kotikunta_nimi_fi end, 'Ei tiedossa') as oppilaan_kotikunta,
+      coalesce(kkh.kotikunta_nimi_fi, case when he.turvakielto then null else he.kotikunta_nimi_fi end) as oppilaan_kotikunta,
 
       count(distinct case
         when extract(year from he.syntymaaika) = v.vuosi - 6
@@ -157,19 +160,23 @@ case class Kotikuntalaskelma(db: DB, organisaatioService: OrganisaatioService) e
       oo.koulutustoimija_oid,
       oo.koulutustoimija_nimi,
       coalesce(kkh.kotikunta, case when he.turvakielto then null else he.kotikunta end),
-      coalesce(kkh.kotikunta_nimi_fi, case when he.turvakielto then null else he.kotikunta_nimi_fi end, 'Ei tiedossa')
+      coalesce(kkh.kotikunta_nimi_fi, case when he.turvakielto then null else he.kotikunta_nimi_fi end)
     order by oo.koulutustoimija_nimi, coalesce(kkh.kotikunta, case when he.turvakielto then null else he.kotikunta end)
   """
   }
 
   // "Oppijat"-välilehti (TOR-2650, päätetty jatkokokouksessa, ks. suunnitelman 10.1 §): rivi per
-  // oppija. Tavalliselle oppijalle näytetään oid, nimet, oppilaitos ja luokka sekä
-  // tosi/epätosi-liput samoille ikäryhmille kuin aggregaattivälilehdellä. Turvakiellon alaiselle
-  // oppijalle nimet/oppilaitos/luokka piilotetaan (null) ja oid-sarakkeeseen kirjoitetaan
-  // "Turvakielto" tyhjän arvon sijaan, jotta rivi ei näytä virheeltä — vain ikäryhmäliput näytetään
-  // muuten, jotta koulutustoimija näkee mistä aggregaattivälilehden luku tulee ilman että
-  // turvakiellon alaisen oppijan henkilöllisyys paljastuu. Päätetty näin nimenomaisesti (ei
-  // kokonaan piilotettu eikä kokonaan näytetty).
+  // oppija. Tavalliselle oppijalle näytetään oid, hetu, yksilöity-lippu (molemmat ennen nimiä),
+  // nimet, kotikunta (ennen oppilaitosta), oppilaitos ja luokka sekä tosi/epätosi-liput samoille
+  // ikäryhmille kuin aggregaattivälilehdellä. Hetu on hetuttomalle oppijalle luonnostaan NULL
+  // (r_henkilo.hetu on jo Option[String] skeemassa) — ei erillistä käsittelyä tarvita. Kotikunta
+  // resolvoidaan samalla tavalla kuin aggregaattivälilehdellä (r_kotikuntahistoria ensisijaisena,
+  // turvakielto-suojattu r_henkilo-varakotikunta toissijaisena). Turvakiellon alaiselle oppijalle
+  // hetu/yksilöity/nimet/kotikunta/oppilaitos/luokka piilotetaan (null) ja oid-sarakkeeseen
+  // kirjoitetaan "Turvakielto" tyhjän arvon sijaan, jotta rivi ei näytä virheeltä — vain
+  // ikäryhmäliput näytetään muuten, jotta koulutustoimija näkee mistä aggregaattivälilehden luku
+  // tulee ilman että turvakiellon alaisen oppijan henkilöllisyys paljastuu. Päätetty näin
+  // nimenomaisesti (ei kokonaan piilotettu eikä kokonaan näytetty).
   // HUOM (kirjattu, ei ratkaistu suunnitelman 10.1 §:n mukaisesti): muille kuin turvakiellon
   // alaisille oppijoille kuusitoistaErityisenTuenPerusteella paljastaa erityisen tuen statuksen
   // nimetylle, tunnistettavalle oppijalle — ristiriidassa 4 §:n "Ei sisällytetä" -päätöksen hengen
@@ -177,9 +184,16 @@ case class Kotikuntalaskelma(db: DB, organisaatioService: OrganisaatioService) e
   implicit private val getOppijaResult: GetResult[KotikuntalaskelmaOppijaRow] = GetResult(r =>
     KotikuntalaskelmaOppijaRow(
       oppijaNumero = Option(r.rs.getString("oppija_numero")),
+      hetu = Option(r.rs.getString("hetu")),
+      yksiloity = {
+        val value = r.rs.getBoolean("yksiloity")
+        if (r.rs.wasNull()) None else Some(value)
+      },
       etunimet = Option(r.rs.getString("etunimet")),
       sukunimi = Option(r.rs.getString("sukunimi")),
+      kotikunta = Option(r.rs.getString("kotikunta")),
       oppilaitos = Option(r.rs.getString("oppilaitos")),
+      luokkaAste = Option(r.rs.getString("luokka_aste")),
       luokka = Option(r.rs.getString("luokka")),
       kuusi = r.rs.getBoolean("kuusi"),
       seitsemänKaksitoista = r.rs.getBoolean("seitseman_kaksitoista"),
@@ -210,9 +224,13 @@ case class Kotikuntalaskelma(db: DB, organisaatioService: OrganisaatioService) e
     )
     select
       case when bool_or(he.turvakielto) then 'Turvakielto' else he.master_oid end as oppija_numero,
+      case when bool_or(he.turvakielto) then null else max(he.hetu) end as hetu,
+      case when bool_or(he.turvakielto) then null else bool_or(he.yksiloity) end as yksiloity,
       case when bool_or(he.turvakielto) then null else max(he.etunimet) end as etunimet,
       case when bool_or(he.turvakielto) then null else max(he.sukunimi) end as sukunimi,
+      case when bool_or(he.turvakielto) then null else max(coalesce(kkh.kotikunta_nimi_fi, he.kotikunta_nimi_fi)) end as kotikunta,
       case when bool_or(he.turvakielto) then null else max(oo.oppilaitos_nimi) end as oppilaitos,
+      case when bool_or(he.turvakielto) then null else max(pts.luokka_aste) end as luokka_aste,
       case when bool_or(he.turvakielto) then null else max(pts.luokka_tai_ryhma) end as luokka,
 
       bool_or(extract(year from he.syntymaaika) = v.vuosi - 6) as kuusi,
@@ -238,6 +256,11 @@ case class Kotikuntalaskelma(db: DB, organisaatioService: OrganisaatioService) e
     join r_paatason_suoritus pts on pts.opiskeluoikeus_oid = oo.opiskeluoikeus_oid
     left join r_opiskeluoikeus_aikajakso aj on aj.opiskeluoikeus_oid = oo.opiskeluoikeus_oid
     left join esiopetus_opiskeluoik_aikajakso eaj on eaj.opiskeluoikeus_oid = oo.opiskeluoikeus_oid
+    -- Julkinen r_kotikuntahistoria: EI koski_confidential-varianttia, ks. tiedoston alun kommentti.
+    left join r_kotikuntahistoria kkh
+      on kkh.master_oid = he.master_oid
+      and coalesce(kkh.muutto_pvm, '1900-01-01'::date) <= $päivä
+      and (kkh.poismuutto_pvm >= $päivä or kkh.poismuutto_pvm is null)
 
     where oo.oppilaitos_oid = any($oppilaitosOids)
       and (
@@ -269,9 +292,13 @@ case class Kotikuntalaskelma(db: DB, organisaatioService: OrganisaatioService) e
 
   private def oppijaColumnSettings(t: LocalizationReader): Seq[(String, Column)] = Seq(
     "oppijaNumero" -> Column(t.get("raportti-excel-kolumni-oppijaNumero")),
+    "hetu" -> Column(t.get("raportti-excel-kolumni-hetu")),
+    "yksiloity" -> Column(t.get("raportti-excel-kolumni-yksiloity"), comment = Some(t.get("raportti-excel-kolumni-yksiloity-comment"))),
     "etunimet" -> Column(t.get("raportti-excel-kolumni-etunimet")),
     "sukunimi" -> Column(t.get("raportti-excel-kolumni-sukunimi")),
+    "kotikunta" -> Column(t.get("raportti-excel-kolumni-kotikunta")),
     "oppilaitos" -> Column(t.get("raportti-excel-kolumni-oppilaitoksenNimi")),
+    "luokkaAste" -> Column(t.get("raportti-excel-kolumni-luokkaAste")),
     "luokka" -> Column(t.get("raportti-excel-kolumni-luokka")),
     "kuusi" -> Column(t.get("raportti-excel-kolumni-kotikuntalaskelma-kuusi")),
     "seitsemänKaksitoista" -> Column(t.get("raportti-excel-kolumni-kotikuntalaskelma-seitsemanKaksitoista")),
@@ -298,7 +325,7 @@ case class KotikuntalaskelmaRow(
   opetuksenJärjestäjäOid: String,
   opetuksenJärjestäjä: String,
   kotikunnanKoodi: Option[String],
-  oppilaanKotikunta: String,
+  oppilaanKotikunta: Option[String],
   kuusi: Int,
   seitsemänKaksitoista: Int,
   kolmetoistaViisitoista: Int,
@@ -309,9 +336,13 @@ case class KotikuntalaskelmaRow(
 
 case class KotikuntalaskelmaOppijaRow(
   oppijaNumero: Option[String],
+  hetu: Option[String],
+  yksiloity: Option[Boolean],
   etunimet: Option[String],
   sukunimi: Option[String],
+  kotikunta: Option[String],
   oppilaitos: Option[String],
+  luokkaAste: Option[String],
   luokka: Option[String],
   kuusi: Boolean,
   seitsemänKaksitoista: Boolean,
