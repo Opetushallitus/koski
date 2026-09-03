@@ -331,7 +331,7 @@ class RaportitService(application: KoskiApplication) {
         kotikuntalaskelmaBuilder.buildOppijat(oppilaitosOids, request.paiva, t)
       ),
       workbookSettings = WorkbookSettings(t.get("raportti-excel-kotikuntalaskelma-title"), Some(request.password)),
-      filename = s"${t.get("raportti-excel-kotikuntalaskelma-tiedoston-etuliite")}-${request.paiva}.xlsx",
+      filename = s"${t.get("raportti-excel-kotikuntalaskelma-tiedoston-etuliite")}_${request.oppilaitosOid}_${request.paiva}.xlsx",
       downloadToken = request.downloadToken
     )
   }
