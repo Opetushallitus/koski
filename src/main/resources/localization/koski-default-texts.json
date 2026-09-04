@@ -546,6 +546,7 @@
   "description:Osaamisen hankkimistavat eri ajanjaksoina. Reformin...": "Osaamisen hankkimistavat eri ajanjaksoina. Reformin mukaisten suoritusten välittämisessä käytetään tätä kenttää järjestämismuodon sijaan.",
   "description:Osaamisen tunnustamisen kautta saatavan tutkinnon...": "Osaamisen tunnustamisen kautta saatavan tutkinnon osan suorituksen selite",
   "description:Osallistuuko oppija vaikeasti vammaisille järjestettyyn...": "Osallistuuko oppija vaikeasti vammaisille järjestettyyn opetukseen. Lista alku-loppu päivämääräpareja. Rahoituksen laskennassa käytettävä tieto.",
+  "description:Osasuorituksen arvioinnissa tieto on pakollinen,...": "Osasuorituksen arvioinnissa tieto on pakollinen, kun opiskeluoikeus alkaa 1.1.2027 tai sen jälkeen. Päivämäärä, jolloin arviointi on annettu. Muoto YYYY-MM-DD.",
   "description:Osasuoritukseen liittyvän näytön tiedot": "Osasuoritukseen liittyvän näytön tiedot",
   "description:Osasuoritukseen sisältyvien osasuoritusten suoritukset": "Osasuoritukseen sisältyvien osasuoritusten suoritukset",
   "description:Ostopalvelu tai palveluseteli": "Ostopalvelu tai palveluseteli",
