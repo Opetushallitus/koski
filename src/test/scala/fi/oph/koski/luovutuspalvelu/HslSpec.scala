@@ -26,7 +26,7 @@ class HslSpec extends AnyFreeSpec with KoskiHttpSpec with OpiskeluoikeusTestMeth
     }
 
     "hylkää pyynnöt muilla kuin HSL X-Road clienteillä" in {
-      postHslWithSuomiFiXRoadClient(opiskelija.hetu.get) {
+      postHslWithOtherXRoadClient(opiskelija.hetu.get) {
         verifySOAPError("forbidden.kiellettyKäyttöoikeus", "Ei sallittu näillä käyttöoikeuksilla")
       }
     }
@@ -326,8 +326,8 @@ class HslSpec extends AnyFreeSpec with KoskiHttpSpec with OpiskeluoikeusTestMeth
     post("api/palveluvayla/hsl", body = soapRequest(hetu), headers = Map("Content-type" -> "text/xml"))(fn)
   }
 
-  private def postHslWithSuomiFiXRoadClient[A](hetu: String)(fn: => A): A = {
-    post("api/palveluvayla/hsl", body = soapRequestWithSuomiFiClient(hetu), headers = mockSecurityServerHeader)(fn)
+  private def postHslWithOtherXRoadClient[A](hetu: String)(fn: => A): A = {
+    post("api/palveluvayla/hsl", body = soapRequestWithOtherXRoadClient(hetu), headers = mockSecurityServerHeader)(fn)
   }
 
   private def verifySOAPError(faultstring: String, message: String): Unit = {
@@ -372,7 +372,7 @@ class HslSpec extends AnyFreeSpec with KoskiHttpSpec with OpiskeluoikeusTestMeth
       </soapenv:Body>
     </soapenv:Envelope>.toString()
 
-  private def soapRequestWithSuomiFiClient(hetu: String) =
+  private def soapRequestWithOtherXRoadClient(hetu: String) =
     <soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xro="http://x-road.eu/xsd/xroad.xsd" xmlns:id="http://x-road.eu/xsd/identifiers" xmlns:prod="http://docs.koski-xroad.fi/producer">
       <soapenv:Header>
         <xro:protocolVersion>4.0</xro:protocolVersion>
