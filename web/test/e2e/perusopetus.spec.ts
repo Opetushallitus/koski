@@ -51,7 +51,7 @@ test.describe('Perusopetus', () => {
         }) => {
           await expect(
             perusopetusOppijaPage.page.getByTestId(
-              'perusopetuksen-arvosteluasteikko'
+              'perusopetuksen-arviointiasteikko'
             )
           ).toContainText('Arvostelu 4-10, S (suoritettu) tai H (hylätty)')
           await expect(

@@ -9,6 +9,7 @@ import {
   isYsiluokka,
   jääLuokalle,
   pakollisetTitle,
+  perusopetuksenArviointiasteikko,
   valinnaisetTitle,
   valmiitaSuorituksia,
   isNuortenPerusopetuksenOppiaineenSuoritusValmistavassaOpetuksessa,
@@ -49,7 +50,7 @@ export default ({ model }) => {
 }
 
 const ArvosteluInfo = ({ model }) => (
-  <section className="arvostelu">
+  <section className="arvostelu" data-testid="arviointiasteikko">
     <h4>
       <Text
         name={
@@ -58,7 +59,10 @@ const ArvosteluInfo = ({ model }) => (
         }
       />
     </h4>
-    <Text name="Arvostelu 4-10, S (suoritettu) tai H (hylätty)" />
+    <Text
+      name={perusopetuksenArviointiasteikko(model)}
+      data-testid="arviointiasteikko-teksti"
+    />
   </section>
 )
 

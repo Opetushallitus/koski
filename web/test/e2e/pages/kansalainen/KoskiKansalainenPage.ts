@@ -12,6 +12,8 @@ export class KoskiKansalainenPage {
   $: BuiltIdNode<KansalainenUIV2TestIds>
   peruSuostumusLinkki: Locator
   opiskeluoikeusTitle: Locator
+  arviointiasteikkoOtsikko: Locator
+  arviointiasteikkoTeksti: Locator
 
   constructor(private readonly page: Page) {
     this.$ = build(page, KansalainenUIV2TestIds)
@@ -19,6 +21,11 @@ export class KoskiKansalainenPage {
     this.opiskeluoikeusTitle = page
       .locator('.OpiskeluoikeusTitle')
       .or(page.locator('.OsaamismerkkiTitle'))
+    const arviointiasteikko = page.getByTestId('arviointiasteikko')
+    this.arviointiasteikkoOtsikko = arviointiasteikko.getByRole('heading')
+    this.arviointiasteikkoTeksti = arviointiasteikko.getByTestId(
+      'arviointiasteikko-teksti'
+    )
   }
 
   static create(page: Page) {

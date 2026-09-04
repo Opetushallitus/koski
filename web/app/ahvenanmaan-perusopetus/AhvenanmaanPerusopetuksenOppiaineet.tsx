@@ -193,8 +193,8 @@ export const AhvenanmaanPerusopetuksenOppiaineet: React.FC<
     <div className="oppiaineet">
       <h5>{t(title)}</h5>
       <p
-        className="perusopetuksen-arvosteluasteikko"
-        data-testid="perusopetuksen-arvosteluasteikko"
+        className="perusopetuksen-arviointiasteikko"
+        data-testid="perusopetuksen-arviointiasteikko"
       >
         {t('Arvostelu 4-10, G (godkänd), D (deltagit) tai U (underkänd)')}
       </p>

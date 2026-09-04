@@ -244,8 +244,8 @@ export const PerusopetuksenOppiaineet: React.FC<
       )}
       <h5>{t(title)}</h5>
       <p
-        className="perusopetuksen-arvosteluasteikko"
-        data-testid="perusopetuksen-arvosteluasteikko"
+        className="perusopetuksen-arviointiasteikko"
+        data-testid="perusopetuksen-arviointiasteikko"
       >
         {t('Arvostelu 4-10, S (suoritettu) tai H (hylätty)')}
       </p>

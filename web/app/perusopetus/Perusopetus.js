@@ -112,3 +112,8 @@ export const isNuortenPerusopetuksenOppiaineenSuoritusValmistavassaOpetuksessa =
 
 export const isPerusopetukseenValmistavanKoulutuksenSuoritus = (model) =>
   model.value.classes.includes('perusopetukseenvalmistavanopetuksensuoritus')
+
+export const perusopetuksenArviointiasteikko = (model) =>
+  isPerusopetukseenValmistavanKoulutuksenSuoritus(model)
+    ? 'Arvostelu 4-10, S (suoritettu), H (hylätty) tai O (osallistunut)'
+    : 'Arvostelu 4-10, S (suoritettu) tai H (hylätty)'
