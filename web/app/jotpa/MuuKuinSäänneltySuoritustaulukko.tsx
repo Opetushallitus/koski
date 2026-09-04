@@ -66,7 +66,11 @@ export class MuuKuinSäänneltySuoritustaulukko extends React.Component<MuuKuinS
 
     return (
       <div className="suoritus-taulukko">
-        <table>
+        <table
+          data-testid={
+            nestedLevel === 0 ? 'muks-osasuoritukset' : 'muks-alaosasuoritukset'
+          }
+        >
           {nestedLevel === 0 && (
             <ExpandAllRows
               allExpandedP={allExpandedP}
@@ -95,7 +99,10 @@ export class MuuKuinSäänneltySuoritustaulukko extends React.Component<MuuKuinS
             />
           ))}
           {context.edit && (
-            <SingleColumnRowTable colSpan={4}>
+            <SingleColumnRowTable
+              colSpan={4}
+              testId="muks-osasuoritusten-lisäys"
+            >
               <UusiMuuKuinSäänneltyOsasuoritus
                 // @ts-expect-error TutkinnonOsa
                 suoritusPrototypes={
@@ -150,14 +157,16 @@ type SingleColumnRowTableProps = {
   children?: ReactNode
   className?: string
   colSpan?: number
+  testId?: string
 }
 
 const SingleColumnRowTable = ({
   children,
   className = '',
-  colSpan = 1
+  colSpan = 1,
+  testId
 }: SingleColumnRowTableProps) => (
-  <tbody className={className}>
+  <tbody className={className} data-testid={testId}>
     <tr>
       <td colSpan={colSpan}>{children}</td>
     </tr>

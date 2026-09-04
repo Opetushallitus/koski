@@ -4,6 +4,7 @@ import fi.oph.koski.KoskiHttpSpec
 import fi.oph.koski.api.misc.PutOpiskeluoikeusTestMethods
 import fi.oph.koski.documentation.ExampleData.{opiskeluoikeusKatsotaanEronneeksi, opiskeluoikeusLäsnä, opiskeluoikeusValmistunut}
 import fi.oph.koski.documentation.ExamplesMuuKuinSäänneltyKoulutus
+import fi.oph.koski.documentation.ExamplesMuuKuinSäänneltyKoulutus.PäätasonSuoritus.Osasuoritus.{Arviointi, Koulutusmoduuli}
 import fi.oph.koski.documentation.ExamplesVapaaSivistystyöJotpa.rahoitusJotpa
 import fi.oph.koski.documentation.VapaaSivistystyöExample._
 import fi.oph.koski.http.{ErrorMatcher, KoskiErrorCategory}
@@ -62,6 +63,49 @@ class OppijaValidationMuuKuinSäänneltySpec extends AnyFreeSpec with PutOpiskel
       }
     }
 
+    "Osasuorituksen arviointipäivä" - {
+      "Arviointipäivä vaaditaan 1.1.2027 alkavassa opiskeluoikeudessa" in {
+        setupOppijaWithOpiskeluoikeus(muksOpiskeluoikeusOsasuorituksella(
+          alkamispäivä = LocalDate.of(2027, 1, 1),
+          arviointipäivä = None,
+        )) {
+          verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.arviointi.arviointipäiväPuuttuu(
+            "Muun kuin säännellyn koulutuksen osasuoritukselta Maalaus puuttuu arviointipäivä"
+          ))
+        }
+      }
+
+      "Arviointipäivää ei vaadita ennen 1.1.2027 alkaneessa opiskeluoikeudessa" in {
+        setupOppijaWithOpiskeluoikeus(muksOpiskeluoikeusOsasuorituksella(
+          alkamispäivä = LocalDate.of(2026, 12, 31),
+          arviointipäivä = None,
+        )) {
+          verifyResponseStatusOk()
+        }
+      }
+
+      "Päivämäärällinen arviointi sallitaan 1.1.2027 alkavassa opiskeluoikeudessa" in {
+        setupOppijaWithOpiskeluoikeus(muksOpiskeluoikeusOsasuorituksella(
+          alkamispäivä = LocalDate.of(2027, 1, 1),
+          arviointipäivä = Some(LocalDate.of(2027, 2, 1)),
+        )) {
+          verifyResponseStatusOk()
+        }
+      }
+
+      "Arviointipäivä vaaditaan myös arvioidulta alaosasuoritukselta" in {
+        setupOppijaWithOpiskeluoikeus(muksOpiskeluoikeusOsasuorituksella(
+          alkamispäivä = LocalDate.of(2027, 1, 1),
+          arviointipäivä = None,
+          alaosasuorituksena = true,
+        )) {
+          verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.arviointi.arviointipäiväPuuttuu(
+            "Muun kuin säännellyn koulutuksen osasuoritukselta Maalaus puuttuu arviointipäivä"
+          ))
+        }
+      }
+    }
+
     "Duplikaatit opiskeluoikeudet" - {
       "Vastaavaa opiskeluoikeutta ei voi lisätä kahdesti" in {
         setupOppijaWithOpiskeluoikeus(ExamplesMuuKuinSäänneltyKoulutus.Opiskeluoikeus.kesken, defaultHenkilö){
@@ -109,6 +153,35 @@ class OppijaValidationMuuKuinSäänneltySpec extends AnyFreeSpec with PutOpiskel
   }
 
   override def defaultOpiskeluoikeus: MuunKuinSäännellynKoulutuksenOpiskeluoikeus = ExamplesMuuKuinSäänneltyKoulutus.Opiskeluoikeus.kesken
+
+  private def muksOpiskeluoikeusOsasuorituksella(
+    alkamispäivä: LocalDate,
+    arviointipäivä: Option[LocalDate],
+    alaosasuorituksena: Boolean = false,
+  ): MuunKuinSäännellynKoulutuksenOpiskeluoikeus = {
+    val arvioituOsasuoritus = MuunKuinSäännellynKoulutuksenOsasuoritus(
+      koulutusmoduuli = Koulutusmoduuli.maalaus(10.0),
+      arviointi = Some(List(
+        Arviointi.arvosana().copy(arviointipäivä = arviointipäivä)
+      )),
+    )
+    val osasuoritus = if (alaosasuorituksena) {
+      MuunKuinSäännellynKoulutuksenOsasuoritus(
+        koulutusmoduuli = Koulutusmoduuli.grafiikka(10.0),
+        osasuoritukset = Some(List(arvioituOsasuoritus)),
+      )
+    } else {
+      arvioituOsasuoritus
+    }
+
+    ExamplesMuuKuinSäänneltyKoulutus.Opiskeluoikeus.kesken.copy(
+      tila = opiskeluoikeudenTila(List(opiskeluoikeusLäsnä), aloitusPvm = alkamispäivä),
+      suoritukset = List(
+        ExamplesMuuKuinSäänneltyKoulutus.PäätasonSuoritus.suoritusIlmanOsasuorituksia
+          .copy(osasuoritukset = Some(List(osasuoritus)))
+      ),
+    )
+  }
 
   def opiskeluoikeudenTila(
     tilat: List[Koodistokoodiviite],

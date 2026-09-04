@@ -61,8 +61,8 @@ export class MuuKuinSäänneltyOsasuoritusEditor extends React.Component<
     const osasuoritukset = modelLookup(model, 'osasuoritukset')
 
     return (
-      <tbody className={'muks-osasuoritus'}>
-        <tr>
+      <tbody data-testid="muks-osasuoritus">
+        <tr data-testid="muks-osasuoritus-yhteenveto">
           {columns.map((column) =>
             column.renderData({
               model,
@@ -79,7 +79,11 @@ export class MuuKuinSäänneltyOsasuoritusEditor extends React.Component<
           )}
         </tr>
         {expanded && editableProperties.length > 0 && (
-          <tr className="details" key="details">
+          <tr
+            className="details"
+            key="details"
+            data-testid="muks-osasuoritus-tiedot"
+          >
             <td colSpan={4}>
               <PropertiesEditor model={model} properties={editableProperties} />
             </td>
