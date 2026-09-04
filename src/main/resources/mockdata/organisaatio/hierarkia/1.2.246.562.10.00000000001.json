@@ -18978,7 +18978,6 @@
       "alkuPvm": 258760800000,
       "parentOid": "1.2.246.562.10.00000000001",
       "parentOidPath": 18,
-      "ytunnus": "",
       "toimipistekoodi": "",
       "match": true,
       "nimi": {
@@ -18990,8 +18989,30 @@
         "oppilaitoksenopetuskieli_3#1"
       ],
       "kotipaikkaUri": "kunta_478",
-      "children": [],
-      "aliOrganisaatioMaara": 0,
+      "children": [
+        {
+          "oid": "1.2.246.562.10.31756453904",
+          "alkuPvm": 694216800000,
+          "parentOid": "1.2.246.562.10.58591019367",
+          "parentOidPath": "18/1.2.246.562.10.58591019367",
+          "oppilaitosKoodi": "06880",
+          "oppilaitostyyppi": "oppilaitostyyppi_11#1",
+          "toimipistekoodi": "06880",
+          "match": true,
+          "nimi": {
+            "fi": "Övernäs skola",
+            "sv": "Övernäs skola",
+            "en": "Övernäs skola"
+          },
+          "kieletUris": ["oppilaitoksenopetuskieli_2#1"],
+          "kotipaikkaUri": "kunta_478",
+          "children": [],
+          "aliOrganisaatioMaara": 0,
+          "organisaatiotyypit": ["organisaatiotyyppi_02"],
+          "status": "AKTIIVINEN"
+        }
+      ],
+      "aliOrganisaatioMaara": 1,
       "organisaatiotyypit": [
         "organisaatiotyyppi_01",
         "organisaatiotyyppi_07",

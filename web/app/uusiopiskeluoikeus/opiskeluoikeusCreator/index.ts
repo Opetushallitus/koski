@@ -11,6 +11,7 @@ import { TutkintoPeruste } from '../../types/fi/oph/koski/tutkinto/TutkintoPerus
 import { fetchSuoritusPrefill } from '../../util/koskiApi'
 import { memoize } from '../../util/util'
 import { Hankintakoulutus } from '../state/state'
+import { createAhvenanmaanPerusopetuksenOpiskeluoikeus } from './ahvenanmaanPerusopetus'
 import { createAikuistenPerusopetuksenOpiskeluoikeus } from './aikuistenPerusopetus'
 import { createAmmatillinenOpiskeluoikeus } from './ammatillinenTutkinto'
 import { createDIAOpiskeluoikeus } from './diaTutkinto'
@@ -102,6 +103,15 @@ export const createOpiskeluoikeus = (
         oppiaine,
         kieliaineenKieli,
         äidinkielenKieli
+      )
+
+    case 'ahvenanmaanperusopetus':
+      return createAhvenanmaanPerusopetuksenOpiskeluoikeus(
+        suorituksenTyyppi,
+        organisaatio,
+        alku,
+        tila,
+        suorituskieli
       )
 
     case 'esiopetus':

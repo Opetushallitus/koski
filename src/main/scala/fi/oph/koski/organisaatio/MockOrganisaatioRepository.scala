@@ -52,6 +52,9 @@ object MockOrganisaatiot {
   val lakkautettuOppilaitosHelsingissä = "1.2.246.562.10.56900408842"
   val lakkautettuKunta = "1.2.246.562.10.69417312937"
   val maarianhamina = "1.2.246.562.10.58591019367"
+  // Ahvenanmaalainen peruskoulu: kotipaikan (kunta_478) perusteella tarjotaan Ahvenanmaan
+  // perusopetusta manner-Suomen perusopetuksen tyyppien sijaan, ks. OppilaitosServlet.
+  val övernäsSkola = "1.2.246.562.10.31756453904"
   val kiipulasäätiö = "1.2.246.562.10.82016343103"
   val kiipulanAmmattiopisto = "1.2.246.562.10.78979122013"
   val kiipulanAmmattiopistoNokianToimipaikka = "1.2.246.562.10.28100171934"
@@ -113,7 +116,8 @@ object MockOrganisaatiot {
     kallavedenLukio,
     EuropeanSchoolOfHelsinki.oppilaitos,
     MuuKuinSäänneltyKoulutusToimija.oppilaitos,
-    oulunAikuislukio
+    oulunAikuislukio,
+    övernäsSkola
   )
 }
 

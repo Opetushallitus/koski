@@ -22,7 +22,8 @@ const kaikkiOrganisaatiot = [
   'Varsinais-Suomen kansanopisto',
   'WinNova',
   'Ylioppilastutkintolautakunta',
-  'Yrkeshögskolan Arcada'
+  'Yrkeshögskolan Arcada',
+  'Övernäs skola'
 ]
 
 const esiopetuksenRaportit = [

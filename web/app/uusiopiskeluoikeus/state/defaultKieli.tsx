@@ -3,7 +3,13 @@ import { UusiOpiskeluoikeusDialogState } from './state'
 export const useDefaultKieli = (
   state: UusiOpiskeluoikeusDialogState
 ): string => {
-  return state.opiskeluoikeus.value?.koodiarvo === 'diatutkinto'
-    ? 'kieli_DE'
-    : 'kieli_FI'
+  switch (state.opiskeluoikeus.value?.koodiarvo) {
+    case 'diatutkinto':
+      return 'kieli_DE'
+    // Ahvenanmaan perusopetus on ruotsinkielistä.
+    case 'ahvenanmaanperusopetus':
+      return 'kieli_SV'
+    default:
+      return 'kieli_FI'
+  }
 }
