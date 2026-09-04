@@ -1,5 +1,9 @@
 # Koskeen tallennettavien tietojen validaatiosäännöt
 
+## 4.9.2026
+
+- Muun kuin säännellyn koulutuksen osasuorituksen arvioinnilta vaaditaan arviointipäivä, kun opiskeluoikeus alkaa 1.1.2027 tai sen jälkeen.
+
 ## 27.8.2026
 
 - Ahvenanmaan perusopetuksen opiskeluoikeudella, jolla on muiden kuin oppivelvollisten oppimäärän suoritus (`ahvenanmaanperusopetuksenoppimaaraaikuiset`), ei saa olla vuosiluokan suorituksia.

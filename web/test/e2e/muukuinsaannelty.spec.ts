@@ -78,10 +78,12 @@ test.describe('Muu kuin säännelty koulutus', () => {
     test('Uuden osasuorituksen lisääminen', async ({ muksOppijaPage }) => {
       await muksOppijaPage.avaaMuokkausnäkymä()
 
-      const osasuoritus = 'Maalausvälineet'
-      await muksOppijaPage.lisääUusiOsasuoritus(0, osasuoritus)
-      await muksOppijaPage.setOsasuorituksenLaajuus(0, 6)
-      await muksOppijaPage.setOsasuorituksenArvosana(0, '5')
+      const osasuorituksenNimi = 'Maalausvälineet'
+      const osasuoritus =
+        await muksOppijaPage.lisääOsasuoritus(osasuorituksenNimi)
+      await osasuoritus.syötäLaajuus(6)
+      await osasuoritus.valitseArvosana('5')
+      await osasuoritus.syötäArviointipäivä('1.2.2027')
       await muksOppijaPage.tallenna()
     })
 
@@ -90,38 +92,88 @@ test.describe('Muu kuin säännelty koulutus', () => {
     }) => {
       await muksOppijaPage.avaaMuokkausnäkymä()
 
-      const osasuoritus = 'Laajuus puuttuu'
-      await muksOppijaPage.lisääUusiOsasuoritus(0, osasuoritus)
+      const osasuorituksenNimi = 'Laajuus puuttuu'
+      const osasuoritus =
+        await muksOppijaPage.lisääOsasuoritus(osasuorituksenNimi)
 
+      await osasuoritus.syötäLaajuus(6)
+      await expect(muksOppijaPage.tallennusBtn).toBeEnabled()
+      await osasuoritus.syötäLaajuus('')
       await expect(muksOppijaPage.tallennusBtn).toBeDisabled()
       await muksOppijaPage.peruuta()
     })
 
-    test('Alaosasuorituksen lisääminen onnistuu', async ({
+    test('Osasuoritustietojen lisääminen ja muokkaaminen kaikilla osasuoritustasoilla', async ({
       muksOppijaPage
     }) => {
       await muksOppijaPage.avaaMuokkausnäkymä()
 
-      await muksOppijaPage.lisääUusiOsasuoritus(0, 'Hedelmäasetelmat')
-      await muksOppijaPage.setOsasuorituksenLaajuus(0, 6)
+      const osasuorituksenNimi = 'Hedelmäasetelmat'
+      const alaosasuorituksenNimi = 'Fotorealistiset omenat'
+      const osasuoritus =
+        await muksOppijaPage.lisääOsasuoritus(osasuorituksenNimi)
+      await osasuoritus.syötäLaajuus(6)
+      await osasuoritus.valitseArvosana('5')
+      await expect(osasuoritus.arviointipäiväInput).toHaveValue('')
+      await osasuoritus.syötäArviointipäivä('1.2.2027')
 
-      await muksOppijaPage.lisääUusiOsasuoritus(0, 'Fotorealistiset omenat')
-      await muksOppijaPage.setOsasuorituksenLaajuus(1, 6)
+      const alaosasuoritus = await osasuoritus.lisääAlaosasuoritus(
+        alaosasuorituksenNimi
+      )
+      await alaosasuoritus.avaa()
+      await alaosasuoritus.syötäLaajuus(6)
+      await alaosasuoritus.valitseArvosana('4')
+      await expect(alaosasuoritus.arviointipäiväInput).toHaveValue('')
+      await alaosasuoritus.syötäArviointipäivä('2.2.2027')
 
       await muksOppijaPage.tallenna()
+      await osasuoritus.avaa()
+      await alaosasuoritus.avaa()
+      await expect(osasuoritus.laajuus).toHaveText('6 tuntia')
+      await expect(osasuoritus.arvosana).toHaveText('5')
+      await expect(osasuoritus.arviointipäivä).toHaveText('1.2.2027')
+      await expect(alaosasuoritus.laajuus).toHaveText('6 tuntia')
+      await expect(alaosasuoritus.arvosana).toHaveText('4')
+      await expect(alaosasuoritus.arviointipäivä).toHaveText('2.2.2027')
+
+      await muksOppijaPage.avaaMuokkausnäkymä()
+      await osasuoritus.avaa()
+      await osasuoritus.syötäLaajuus(7)
+      await osasuoritus.valitseArvosana('3')
+      await osasuoritus.syötäArviointipäivä('3.3.2027')
+
+      await alaosasuoritus.avaa()
+      await alaosasuoritus.syötäLaajuus(7)
+      await alaosasuoritus.valitseArvosana('2')
+      await alaosasuoritus.syötäArviointipäivä('4.4.2027')
+      await muksOppijaPage.tallenna()
+
+      await osasuoritus.avaa()
+      await alaosasuoritus.avaa()
+      await expect(osasuoritus.laajuus).toHaveText('7 tuntia')
+      await expect(osasuoritus.arvosana).toHaveText('3')
+      await expect(osasuoritus.arviointipäivä).toHaveText('3.3.2027')
+      await expect(alaosasuoritus.laajuus).toHaveText('7 tuntia')
+      await expect(alaosasuoritus.arvosana).toHaveText('2')
+      await expect(alaosasuoritus.arviointipäivä).toHaveText('4.4.2027')
     })
 
-    test('Tallennattessa virhe, jos alaosasuoritusten yhteislaajuus ei vastaa osasuorituksen laajuutta', async ({
+    test('Tallennettaessa virhe, jos alaosasuoritusten yhteislaajuus ei vastaa osasuorituksen laajuutta', async ({
       virkailijaPage,
       muksOppijaPage
     }) => {
       await muksOppijaPage.avaaMuokkausnäkymä()
 
-      await muksOppijaPage.lisääUusiOsasuoritus(0, 'Hedelmäasetelmat')
-      await muksOppijaPage.setOsasuorituksenLaajuus(0, 6)
+      const osasuorituksenNimi = 'Hedelmäasetelmat'
+      const osasuoritus =
+        await muksOppijaPage.lisääOsasuoritus(osasuorituksenNimi)
+      await osasuoritus.syötäLaajuus(6)
 
-      await muksOppijaPage.lisääUusiOsasuoritus(0, 'Fotorealistiset omenat')
-      await muksOppijaPage.setOsasuorituksenLaajuus(1, 3)
+      const alaosasuorituksenNimi = 'Fotorealistiset omenat'
+      const alaosasuoritus = await osasuoritus.lisääAlaosasuoritus(
+        alaosasuorituksenNimi
+      )
+      await alaosasuoritus.syötäLaajuus(3)
 
       await muksOppijaPage.tallenna()
       expect(await virkailijaPage.virheilmoitus()).toEqual(
@@ -135,19 +187,21 @@ test.describe('Muu kuin säännelty koulutus', () => {
     }) => {
       await muksOppijaPage.avaaMuokkausnäkymä()
 
-      const nimi = 'Maalaaminen'
-      await muksOppijaPage.lisääUusiOsasuoritus(0, nimi)
-      await muksOppijaPage.setOsasuorituksenLaajuus(0, 6)
+      const osasuorituksenNimi = 'Maalaaminen'
+      const osasuoritus =
+        await muksOppijaPage.lisääOsasuoritus(osasuorituksenNimi)
+      await osasuoritus.syötäLaajuus(6)
 
       await muksOppijaPage.tallenna()
 
       await muksOppijaPage.avaaMuokkausnäkymä()
-      await muksOppijaPage.lisääTallennettuOsasuoritus(0, nimi)
-      await muksOppijaPage.setOsasuorituksenLaajuus(1, 6)
+      const toinenOsasuoritus =
+        await muksOppijaPage.lisääOsasuoritus(osasuorituksenNimi)
+      await toinenOsasuoritus.syötäLaajuus(6)
 
       await muksOppijaPage.tallenna()
       expect(await virkailijaPage.virheilmoitus()).toEqual(
-        `Osasuoritus ${nimi} (${nimi}) esiintyy useammin kuin kerran`
+        `Osasuoritus ${osasuorituksenNimi} (${osasuorituksenNimi}) esiintyy useammin kuin kerran`
       )
     })
 

@@ -60,7 +60,11 @@ case class MuunKuinSäännellynKoulutuksenPäätasonSuoritus(
   arviointi: Option[List[MuunKuinSäännellynKoulutuksenArviointi]] = None,
 ) extends KoskeenTallennettavaPäätasonSuoritus
   with MahdollisestiArvioinniton
-  with Suorituskielellinen
+  with Suorituskielellinen {
+  override def osasuoritusLista: List[MuunKuinSäännellynKoulutuksenOsasuoritus] = osasuoritukset.toList.flatten
+  override def rekursiivisetOsasuoritukset: List[MuunKuinSäännellynKoulutuksenOsasuoritus] =
+    osasuoritusLista ++ osasuoritusLista.flatMap(_.rekursiivisetOsasuoritukset)
+}
 
 case class MuuKuinSäänneltyKoulutus(
   @KoodistoKoodiarvo("999951")
@@ -100,7 +104,11 @@ case class MuunKuinSäännellynKoulutuksenOsasuoritus(
   arviointi: Option[List[MuunKuinSäännellynKoulutuksenArviointi]] = None,
   override val osasuoritukset: Option[List[MuunKuinSäännellynKoulutuksenOsasuoritus]] = None,
 ) extends Suoritus
-  with MahdollisestiArvioinniton
+  with MahdollisestiArvioinniton {
+  override def osasuoritusLista: List[MuunKuinSäännellynKoulutuksenOsasuoritus] = osasuoritukset.toList.flatten
+  override def rekursiivisetOsasuoritukset: List[MuunKuinSäännellynKoulutuksenOsasuoritus] =
+    osasuoritusLista ++ osasuoritusLista.flatMap(_.rekursiivisetOsasuoritukset)
+}
 
 case class MuunKuinSäännellynKoulutuksenOsasuorituksenKoulutusmoduuli(
   kuvaus: LocalizedString,

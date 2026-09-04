@@ -222,7 +222,9 @@ export const suoritusProperties = (
     )
     const arviointipäivä = modelProperties(
       modelLookup(suoritus, 'arviointi.-1')!,
-      (p: ObjectModelProperty) => p.key === 'päivä'
+      (p: ObjectModelProperty) =>
+        p.key ===
+        (tyyppi === 'muukuinsaanneltykoulutus' ? 'arviointipäivä' : 'päivä')
     )
     const showPakollinen =
       tyyppi !== 'nayttotutkintoonvalmistavakoulutus' &&
@@ -622,6 +624,7 @@ export const ArvosanaColumn: ColumnIface<
     <td
       key="arvosana"
       className={`arvosana ${ylioppilastutkinto ? 'ylioppilas' : ''}`}
+      data-testid="arvosana-cell"
     >
       {/* @ts-expect-error */}
       <ArvosanaEditor model={model} />

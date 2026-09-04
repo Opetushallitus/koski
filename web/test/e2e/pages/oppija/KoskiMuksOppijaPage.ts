@@ -1,17 +1,18 @@
-import { Locator, Page } from '@playwright/test'
-import { OsasuoritusDialog } from './dialogs/OsasuoritusDialog'
+import type { Locator, Page } from '@playwright/test'
+import {
+  lisääMuksOsasuoritus,
+  MuksOsasuoritus
+} from '../../fragments/MuksOsasuoritus'
 import { KoskiOppijaPage } from './KoskiOppijaPage'
 
 export class KoskiMuksOppijaPage extends KoskiOppijaPage {
   readonly opintokokonaisuus: Locator
-  readonly osasuoritusDialog: OsasuoritusDialog
   readonly merkitseSuoritusValmiiksiBtn: Locator
   readonly merkitseValmiiksiDialogVahvistaBtn: Locator
 
   constructor(page: Page) {
     super(page)
 
-    this.osasuoritusDialog = new OsasuoritusDialog(page)
     this.opintokokonaisuus = page.getByTestId(
       'hyperlink-for-opintokokonaisuudet-enum-editor'
     )
@@ -22,37 +23,8 @@ export class KoskiMuksOppijaPage extends KoskiOppijaPage {
       page.getByTestId('dialog-vahvista')
   }
 
-  async lisääUusiOsasuoritus(dropdownIndex: number, nimi: string) {
-    await this.osasuoritusDialog.lisääUusiOsasuoritus(nimi, (x) =>
-      x.nth(dropdownIndex)
-    )
-  }
-
-  async lisääTallennettuOsasuoritus(dropdownIndex: number, nimi: string) {
-    await this.osasuoritusDialog.lisääTallennettuOsasuoritus(nimi, (x) =>
-      x.nth(dropdownIndex)
-    )
-  }
-
-  async setOsasuorituksenLaajuus(laajuusEditorIndex: number, arvo: number) {
-    await this.getLaajuusEditor(laajuusEditorIndex).fill(arvo.toString())
-  }
-
-  getLaajuusEditor(nthLaajuusEditor: number) {
-    return this.page
-      .locator('.osasuoritukset') // TODO: testid
-      .getByTestId('laajuus-editor')
-      .nth(nthLaajuusEditor)
-      .getByTestId('number-editor')
-  }
-
-  async setOsasuorituksenArvosana(index: number, arvo: string) {
-    await this.page
-      .getByTestId('arviointi-value')
-      .nth(index)
-      .getByTestId('koodisto-dropdown-multi-selection-input')
-      .click()
-    await this.page.getByRole('listitem', { name: arvo }).click()
+  async lisääOsasuoritus(nimi: string): Promise<MuksOsasuoritus> {
+    return lisääMuksOsasuoritus(this.page, nimi)
   }
 
   async merkitseSuoritusValmiiksi() {

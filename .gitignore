@@ -52,3 +52,4 @@ localstack-volume/
 test/.pw-state/
 .claude/settings.local.json
 .claude/agents
+dev-container/
