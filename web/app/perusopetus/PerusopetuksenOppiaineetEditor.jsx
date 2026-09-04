@@ -101,7 +101,13 @@ export const PerusopetuksenOppiaineetEditor = ({ model }) => {
             />
           </h5>
           <p data-testid="perusopetuksen-arvosteluasteikko">
-            <Text name="Arvostelu 4-10, S (suoritettu) tai H (hylätty)" />
+            <Text
+              name={
+                isPerusopetukseenValmistavanKoulutuksenSuoritus(model)
+                  ? 'Arvostelu 4-10, S (suoritettu), H (hylätty) tai O (osallistunut)'
+                  : 'Arvostelu 4-10, S (suoritettu) tai H (hylätty)'
+              }
+            />
           </p>
           {hasPakollisuus(model, uusiOppiaineenSuoritus) &&
           !isPerusopetukseenValmistava(model) ? (

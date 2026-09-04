@@ -228,7 +228,7 @@ describe('Perusopetus 4', function () {
       it('näyttää oppiaineiden arvosanat', function () {
         expect(extractAsText(S('.oppiaineet'))).to.equal(
           'Arviointiasteikko\n' +
-          'Arvostelu 4-10, S (suoritettu) tai H (hylätty)\n' +
+          'Arvostelu 4-10, S (suoritettu), H (hylätty) tai O (osallistunut)\n' +
           'Perusopetukseen valmistavan opetuksen opinnot Oppiaine Arvosana Laajuus\n' +
           'Äidinkieli S 10 vuosiviikkotuntia\n' +
           'Sanallinen arviointi Keskustelee sujuvasti suomeksi\n' +

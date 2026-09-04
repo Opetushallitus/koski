@@ -383,6 +383,31 @@ describe('Omat tiedot', function () {
         })
       })
 
+      describe('Perusopetukseen valmistava opetus', function () {
+        before(
+          authentication.logout,
+          etusivu.openPage,
+          etusivu.login(),
+          wait.until(korhopankki.isReady),
+          korhopankki.login('220109-784L'),
+          wait.until(omattiedot.isVisible),
+          opinnot.valitseOmatTiedotOpiskeluoikeus(
+            'Perusopetukseen valmistava opetus'
+          )
+        )
+
+        it('Näytetään valmistavan opetuksen arviointiasteikko', function () {
+          expect(
+            extractAsText(
+              S('.omattiedot-perusopetuksen-suoritukset .arvostelu')
+            )
+          ).to.equal(
+            'Oppiaineiden arvosanat\n' +
+              'Arvostelu 4-10, S (suoritettu), H (hylätty) tai O (osallistunut)'
+          )
+        })
+      })
+
       describe('Suoritusjako', function () {
         before(authentication.logout, etusivu.openPage)
         before(
