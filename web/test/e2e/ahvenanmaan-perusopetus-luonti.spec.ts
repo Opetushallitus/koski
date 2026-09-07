@@ -33,8 +33,10 @@ const aloituspäivä = new Date(2018, 7, 1)
 
 /**
  * Molempien oppimäärien päätason suoritus näkyy editorissa samalla nimellä
- * ("Perusopetus"), joten käyttöliittymästä ei voi päätellä kumpi tyyppi
- * tallentui. Tarkistetaan se tallennetusta opiskeluoikeudesta.
+ * ("Perusopetus"), ja käyttöliittymässä tyypit erottaa toisistaan vain
+ * "Perusopetus muille kuin oppivelvollisille" -rivi. Muut tallentuneet tiedot
+ * (alkamispäivä, osasuoritukset) tarkistetaan tallennetusta
+ * opiskeluoikeudesta.
  */
 const haeLuotuOpiskeluoikeus = async (page: Page) => {
   const oid = page.url().match(/oppija\/(1\.2\.[\d.]+)/)?.[1]
@@ -110,6 +112,10 @@ test.describe('Ahvenanmaan perusopetuksen opiskeluoikeuden luonti', () => {
     await expect(
       page.getByTestId('oo.0.suoritukset.0.suorituskieli.value')
     ).toContainText('ruotsi')
+    // Rivi näytetään vain muille kuin oppivelvollisille.
+    await expect(
+      page.getByTestId('oo.0.suoritukset.0.muutKuinOppivelvolliset')
+    ).toHaveCount(0)
 
     const opiskeluoikeus0 = await haeLuotuOpiskeluoikeus(page)
     expect(opiskeluoikeus0.tyyppi.koodiarvo).toEqual('ahvenanmaanperusopetus')
@@ -146,6 +152,9 @@ test.describe('Ahvenanmaan perusopetuksen opiskeluoikeuden luonti', () => {
     await expect(page.getByTestId('oo.0.suoritukset.0.koulutus')).toHaveText(
       'Perusopetus'
     )
+    await expect(
+      page.getByTestId('oo.0.suoritukset.0.muutKuinOppivelvolliset')
+    ).toHaveText('Kyllä')
 
     const opiskeluoikeus0 = await haeLuotuOpiskeluoikeus(page)
     expect(opiskeluoikeus0.tyyppi.koodiarvo).toEqual('ahvenanmaanperusopetus')
