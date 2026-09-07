@@ -100,7 +100,10 @@ import fi.oph.scalaschema.annotation._
 //   3. KoskiValidator (ja muut Perusopetus*Validation-tiedostot) sisältävät
 //      case _: PerusopetuksenOpiskeluoikeus -haaroja jotka EIVÄT osu tähän
 //      luokkaan. Päätettävä onko manner-Suomen validointi tarkoitus uusio-
-//      käyttää (laajenna haarat) vai kirjoittaa erilliset säännöt.
+//      käyttää (laajenna haarat) vai kirjoittaa erilliset säännöt. Ensimmäinen
+//      ratkaisu on erillinen sääntö: vahvistetun oppimäärän vaatima 9. vuosi-
+//      luokan suoritus on omassa AhvenanmaanPerusopetuksenValidation-
+//      objektissaan. Muut manner-Suomen säännöt ovat edelleen käymättä läpi.
 //   4. OpiskeluoikeusAccessChecker – uuden tyypin pääsyoikeudet rooleittain.
 //   5. Frontti (editor) + `make ts-types`; mahdolliset raportointikannan/
 //      luovutusskeemojen (Kela, HSL, Supa, Hakemuspalvelu, Migri,

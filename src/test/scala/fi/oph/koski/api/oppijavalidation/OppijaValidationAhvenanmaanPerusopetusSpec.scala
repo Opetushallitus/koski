@@ -5,6 +5,7 @@ import fi.oph.koski.{KoskiApplicationForTests, KoskiHttpSpec}
 import fi.oph.koski.api.misc.PutOpiskeluoikeusTestMethods
 import fi.oph.koski.documentation.AhvenanmaanPerusopetusExampleData
 import fi.oph.koski.documentation.ExampleData.{opiskeluoikeusLäsnä, ruotsinKieli}
+import fi.oph.koski.documentation.PerusopetusExampleData.suoritustapaErityinenTutkinto
 import fi.oph.koski.eperusteetvalidation.{EPerusteetFiller, EPerusteisiinPerustuvaValidator}
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
 import fi.oph.koski.http.KoskiErrorCategory
@@ -111,6 +112,89 @@ class OppijaValidationAhvenanmaanPerusopetusSpec
     }
   }
 
+  "Vahvistettu oppimäärän suoritus vaatii vahvistetun 9. vuosiluokan suorituksen" - {
+    val ilmanYsiluokkaa = defaultOpiskeluoikeus.copy(
+      suoritukset = List(
+        AhvenanmaanPerusopetusExampleData.kahdeksannenLuokanSuoritus,
+        AhvenanmaanPerusopetusExampleData.päättötodistuksenSuoritus
+      )
+    )
+
+    "9. vuosiluokan suoritus puuttuu" in {
+      setupOppijaWithOpiskeluoikeus(ilmanYsiluokkaa) {
+        verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.ahvenanmaanPerusopetuksenOppimääräIlmanYsiluokanSuoritusta())
+      }
+    }
+
+    // Opiskeluoikeus jätetään läsnä-tilaan, jotta vahvistamattomasta 9. vuosiluokasta ei
+    // tule päällekkäin myös vahvistusPuuttuu-virhettä.
+    "9. vuosiluokan suoritusta ei ole vahvistettu" in {
+      val opiskeluoikeus = defaultOpiskeluoikeus.copy(
+        tila = AhvenanmaanPerusopetuksenOpiskeluoikeudenTila(
+          List(AhvenanmaanPerusopetuksenOpiskeluoikeusjakso(date(2017, 8, 15), opiskeluoikeusLäsnä))
+        ),
+        suoritukset = List(
+          AhvenanmaanPerusopetusExampleData.kahdeksannenLuokanSuoritus,
+          AhvenanmaanPerusopetusExampleData.ysiluokanSuoritus.copy(vahvistus = None),
+          AhvenanmaanPerusopetusExampleData.päättötodistuksenSuoritus
+        )
+      )
+      setupOppijaWithOpiskeluoikeus(opiskeluoikeus) {
+        verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.ahvenanmaanPerusopetuksenOppimääräIlmanYsiluokanSuoritusta())
+      }
+    }
+
+    "oppimäärän suoritusta ei ole vahvistettu" in {
+      val opiskeluoikeus = ilmanYsiluokkaa.copy(
+        tila = AhvenanmaanPerusopetuksenOpiskeluoikeudenTila(
+          List(AhvenanmaanPerusopetuksenOpiskeluoikeusjakso(date(2017, 8, 15), opiskeluoikeusLäsnä))
+        ),
+        suoritukset = ilmanYsiluokkaa.suoritukset.map {
+          case s: AhvenanmaanPerusopetuksenOppimääränSuoritus => s.copy(vahvistus = None)
+          case s => s
+        }
+      )
+      setupOppijaWithOpiskeluoikeus(opiskeluoikeus) {
+        verifyResponseStatusOk()
+      }
+    }
+
+    "oppilas on kotiopetuksessa oppimäärän vahvistuspäivänä" in {
+      val opiskeluoikeus = ilmanYsiluokkaa.copy(
+        lisätiedot = Some(AhvenanmaanPerusopetuksenOpiskeluoikeudenLisätiedot(
+          kotiopetusjaksot = Some(List(Aikajakso(date(2025, 8, 15), Some(date(2026, 6, 4)))))
+        ))
+      )
+      setupOppijaWithOpiskeluoikeus(opiskeluoikeus) {
+        verifyResponseStatusOk()
+      }
+    }
+
+    "kotiopetusjakso on päättynyt ennen oppimäärän vahvistuspäivää" in {
+      val opiskeluoikeus = ilmanYsiluokkaa.copy(
+        lisätiedot = Some(AhvenanmaanPerusopetuksenOpiskeluoikeudenLisätiedot(
+          kotiopetusjaksot = Some(List(Aikajakso(date(2025, 8, 15), Some(date(2026, 6, 3)))))
+        ))
+      )
+      setupOppijaWithOpiskeluoikeus(opiskeluoikeus) {
+        verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.ahvenanmaanPerusopetuksenOppimääräIlmanYsiluokanSuoritusta())
+      }
+    }
+
+    "oppimäärän suoritustapa on erityinen tutkinto" in {
+      val opiskeluoikeus = ilmanYsiluokkaa.copy(
+        suoritukset = ilmanYsiluokkaa.suoritukset.map {
+          case s: AhvenanmaanPerusopetuksenOppimääränSuoritus =>
+            s.copy(suoritustapa = suoritustapaErityinenTutkinto)
+          case s => s
+        }
+      )
+      setupOppijaWithOpiskeluoikeus(opiskeluoikeus) {
+        verifyResponseStatusOk()
+      }
+    }
+  }
+
   "Ahvenanmaan perusopetuksen oppimäärä muille kuin oppivelvollisille" - {
     val aikuistenOpiskeluoikeus = AhvenanmaanPerusopetusExampleData.aikuistenOpiskeluoikeus
 
@@ -131,6 +215,14 @@ class OppijaValidationAhvenanmaanPerusopetusSpec
         verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.rakenne.epäsopiviaSuorituksia(
           "Ahvenanmaan perusopetuksen opiskeluoikeudella, jolla on muiden kuin oppivelvollisten oppimäärän suoritus, ei voi olla vuosiluokan suorituksia"
         ))
+      }
+    }
+
+    // Vahvistettu oppimäärän suoritus vaatii vahvistetun 9. vuosiluokan suorituksen vain
+    // oppivelvollisilta; muilla kuin oppivelvollisilla ei ole vuosiluokkasuorituksia lainkaan.
+    "ei vaadi vahvistettua 9. vuosiluokan suoritusta" in {
+      setupOppijaWithOpiskeluoikeus(aikuistenOpiskeluoikeus) {
+        verifyResponseStatusOk()
       }
     }
 
