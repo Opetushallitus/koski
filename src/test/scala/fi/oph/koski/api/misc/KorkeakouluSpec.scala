@@ -62,6 +62,13 @@ class KorkeakouluSpec extends AnyFreeSpec with Matchers with OpiskeluoikeusTestM
     }
 
     "Maksettavat lukuvuosimaksutiedot" - {
+      "Puuttuvat maksutiedot palautetaan puuttuvana valinnaisena kenttänä" in {
+        val oikeudet = getOpiskeluoikeudet(KoskiSpecificMockOppijat.dippainssi.oid)
+          .collect { case o: KorkeakoulunOpiskeluoikeus => o }
+        oikeudet should not be empty
+        oikeudet.foreach(_.lisätiedot.flatMap(_.maksettavatLukuvuosimaksut) shouldBe None)
+      }
+
       "Koski näyttää maksutiedot" in {
         val opiskeluoikeus = opiskeluoikeudet("250668-293Y", "02470").head
 

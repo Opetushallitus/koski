@@ -2,12 +2,16 @@ package fi.oph.koski.virta
 
 import fi.oph.koski.TestEnvironment
 import fi.oph.koski.documentation.ExampleData.{laajuusOpintopisteissä, laajuusOpintoviikoissa}
+import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.koodisto.MockKoodistoViitePalvelu
 import fi.oph.koski.localization.LocalizedStringImplicits._
+import fi.oph.koski.migri.ConvertMigriSchema
 import fi.oph.koski.oppilaitos.MockOppilaitosRepository
 import fi.oph.koski.organisaatio.MockOrganisaatioRepository
 import fi.oph.koski.schema._
 import fi.oph.koski.util.{Files, XML}
+import org.json4s.{JNothing, JValue}
+import org.json4s.jackson.JsonMethods.parse
 import org.scalatest.OptionValues
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.should.Matchers
@@ -214,6 +218,52 @@ class VirtaXMLConverterSpec extends AnyFreeSpec with TestEnvironment with Matche
     }
     "Virta-datasta saatu nimi valitaan oikein" in {
       opiskeluoikeudet.head.suoritukset.head.koulutusmoduuli.nimi.get("fi") shouldBe "Nimi 2"
+    }
+
+    "Maksettavat lukuvuosimaksut" - {
+      def tarkistaSerialisointi(opiskeluoikeus: KorkeakoulunOpiskeluoikeus, odotettu: JValue): Unit = {
+        (JsonSerializer.serializeWithRoot(opiskeluoikeus) \ "lisätiedot" \ "maksettavatLukuvuosimaksut") shouldBe odotettu
+        val henkilö = TäydellisetHenkilötiedot("1.2.246.562.24.12345678901", None, None, "Testi", "Testi", "Oppija", None, None)
+        val migri = ConvertMigriSchema.convert(Oppija(henkilö, List(opiskeluoikeus))).value
+        (JsonSerializer.serializeWithRoot(migri.opiskeluoikeudet.head) \ "lisätiedot" \ "maksettavatLukuvuosimaksut") shouldBe odotettu
+      }
+
+      "puuttuva maksutieto on None ja jätetään pois Kosken ja Migrin JSONista" in {
+        val opiskeluoikeus = opiskeluoikeudet.head
+        opiskeluoikeus.lisätiedot.value.maksettavatLukuvuosimaksut shouldBe None
+        tarkistaSerialisointi(opiskeluoikeus, JNothing)
+      }
+
+      "säilyttää maksujen järjestyksen, päivämäärät, nollasumman ja puuttuvat valinnaiset tiedot" in {
+        val maksut =
+          <virta:LukuvuosiMaksu>
+            <virta:AlkuPvm>2016-08-01</virta:AlkuPvm>
+            <virta:LoppuPvm>2017-07-31</virta:LoppuPvm>
+            <virta:Summa>4000</virta:Summa>
+          </virta:LukuvuosiMaksu>
+          <virta:LukuvuosiMaksu>
+            <virta:AlkuPvm>2015-08-01</virta:AlkuPvm>
+            <virta:Summa>0</virta:Summa>
+          </virta:LukuvuosiMaksu>
+          <virta:LukuvuosiMaksu>
+            <virta:AlkuPvm>2017-08-01</virta:AlkuPvm>
+          </virta:LukuvuosiMaksu>
+        val xml = XML.copyElem(virtaOpiskeluoikeudet, virtaOpiskeluoikeudet.child.map {
+          case oo: Elem if oo.label == "Opiskeluoikeus" => XML.copyElem(oo, oo.child ++ maksut)
+          case other => other
+        })
+        val opiskeluoikeus = converter.convertToOpiskeluoikeudet(xml).head
+        opiskeluoikeus.lisätiedot.value.maksettavatLukuvuosimaksut.value shouldBe Seq(
+          KorkeakoulunOpiskeluoikeudenLukuvuosimaksu(LocalDate.parse("2016-08-01"), Some(LocalDate.parse("2017-07-31")), Some(4000)),
+          KorkeakoulunOpiskeluoikeudenLukuvuosimaksu(LocalDate.parse("2015-08-01"), None, Some(0)),
+          KorkeakoulunOpiskeluoikeudenLukuvuosimaksu(LocalDate.parse("2017-08-01"), None, None)
+        )
+        tarkistaSerialisointi(opiskeluoikeus, parse("""[
+          {"alku":"2016-08-01","loppu":"2017-07-31","summa":4000},
+          {"alku":"2015-08-01","summa":0},
+          {"alku":"2017-08-01"}
+        ]"""))
+      }
     }
 
     "Luokittelu" - {
