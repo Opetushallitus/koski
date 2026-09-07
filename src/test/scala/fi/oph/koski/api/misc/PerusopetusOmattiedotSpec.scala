@@ -5,7 +5,7 @@ import fi.oph.koski.documentation.{ExamplesAikuistenPerusopetus, PerusopetusExam
 import fi.oph.koski.documentation.PerusopetusExampleData._
 import fi.oph.koski.documentation.YleissivistavakoulutusExampleData.jyväskylänNormaalikoulu
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
-import fi.oph.koski.schema.{AikuistenPerusopetuksenOpiskeluoikeudenTila, AikuistenPerusopetuksenOpiskeluoikeusjakso, NuortenPerusopetuksenOppiaineenOppimääränSuoritus, PerusopetuksenPäätasonSuoritus}
+import fi.oph.koski.schema.{AikuistenPerusopetuksenOpiskeluoikeudenTila, AikuistenPerusopetuksenOpiskeluoikeusjakso, NuortenPerusopetuksenOppiaineenOppimääränSuoritus, NuortenPerusopetuksenOppiaineenSuoritus, OppiaineenTaiToiminta_AlueenSuoritus, PerusopetuksenPäätasonSuoritus}
 import fi.oph.koski.{DirtiesFixtures, KoskiHttpSpec}
 import org.json4s.jackson.JsonMethods
 import org.json4s.{DefaultFormats, JObject}
@@ -17,6 +17,29 @@ import java.time.LocalDate.{of => date}
 class PerusopetusOmattiedotSpec extends AnyFreeSpec with KoskiHttpSpec with OpiskeluoikeusTestMethodsPerusopetus with DirtiesFixtures {
   implicit val formats: DefaultFormats = DefaultFormats
   val suoritustenLukumäärä = PerusopetusExampleData.kaikkiAineet.get.length
+
+  // Esimerkkiaineiston BI-oppiaineessa on yksilöllistetty oppimäärä, jota ei saa
+  // siirtää validaatiot.yksilöllistetynOppimääränViimeinenKäyttöpäivän jälkeen
+  // vahvistetulle suoritukselle. Vahvistuspäivä lasketaan alla kuluvasta
+  // päivästä, joten ilman lipun poistoa testit alkavat hylätä tallennuksen
+  // kyseisen päivämäärän mentyä. Muuhun testattavaan (arvosanojen näkyminen
+  // vahvistuksen iän perusteella) lipulla ei ole vaikutusta.
+  private def ilmanYksilöllistettyäOppimäärää(
+    osasuoritukset: Option[List[OppiaineenTaiToiminta_AlueenSuoritus]]
+  ): Option[List[OppiaineenTaiToiminta_AlueenSuoritus]] =
+    osasuoritukset.map(_.map {
+      case os: NuortenPerusopetuksenOppiaineenSuoritus =>
+        os.copy(yksilöllistettyOppimäärä = false)
+      case os => os
+    })
+
+  private val päättötodistusIlmanYksilöllistämistä = päättötodistusSuoritus.copy(
+    osasuoritukset = ilmanYksilöllistettyäOppimäärää(päättötodistusSuoritus.osasuoritukset)
+  )
+
+  private val kahdeksannenLuokanSuoritusIlmanYksilöllistämistä = kahdeksannenLuokanSuoritus.copy(
+    osasuoritukset = ilmanYksilöllistettyäOppimäärää(kahdeksannenLuokanSuoritus.osasuoritukset)
+  )
 
   "Perusopetuksen oppimäärän suoritus" - {
     "kun suoritus on valmis" - {
@@ -64,7 +87,7 @@ class PerusopetusOmattiedotSpec extends AnyFreeSpec with KoskiHttpSpec with Opis
       "piilotetaan arvosanat" in {
         val opiskeluoikeus = defaultOpiskeluoikeus.copy(suoritukset = List(
           yhdeksännenLuokanSuoritus.copy(vahvistus = vahvistus.map(_.copy(päivä = LocalDate.now().minusDays(4)))),
-          päättötodistusSuoritus.copy(vahvistus = vahvistus.map(_.copy(päivä = LocalDate.now().minusDays(4))))
+          päättötodistusIlmanYksilöllistämistä.copy(vahvistus = vahvistus.map(_.copy(päivä = LocalDate.now().minusDays(4))))
         ))
         setupOppijaWithOpiskeluoikeus(opiskeluoikeus = opiskeluoikeus, henkilö = defaultHenkilö.copy(hetu = "251014-5651")) {
           verifyResponseStatusOk()
@@ -77,7 +100,7 @@ class PerusopetusOmattiedotSpec extends AnyFreeSpec with KoskiHttpSpec with Opis
     "kun suoritus on valmistut vähintään 5 päivää sitten" - {
       val opiskeluoikeus = defaultOpiskeluoikeus.copy(suoritukset = List(
         yhdeksännenLuokanSuoritus.copy(vahvistus = vahvistus.map(_.copy(päivä = LocalDate.now().minusDays(5)))),
-        päättötodistusSuoritus.copy(vahvistus = vahvistus.map(_.copy(päivä = LocalDate.now().minusDays(5))))
+        päättötodistusIlmanYksilöllistämistä.copy(vahvistus = vahvistus.map(_.copy(päivä = LocalDate.now().minusDays(5))))
       ))
       "palautetaan arvosanat" in {
         setupOppijaWithOpiskeluoikeus(opiskeluoikeus = opiskeluoikeus, henkilö = defaultHenkilö.copy(hetu = "251014-5651")) {
@@ -114,7 +137,7 @@ class PerusopetusOmattiedotSpec extends AnyFreeSpec with KoskiHttpSpec with Opis
     }
     "kun suoritus on valmistunut alle 5 päivää sitten" - {
       "piilotetaan arvosanat" in {
-        val opiskeluoikeus = defaultOpiskeluoikeus.copy(suoritukset = List(kahdeksannenLuokanSuoritus.copy(vahvistus = vahvistus.map(_.copy(päivä = LocalDate.now().minusDays(4))))))
+        val opiskeluoikeus = defaultOpiskeluoikeus.copy(suoritukset = List(kahdeksannenLuokanSuoritusIlmanYksilöllistämistä.copy(vahvistus = vahvistus.map(_.copy(päivä = LocalDate.now().minusDays(4))))))
         setupOppijaWithOpiskeluoikeus(opiskeluoikeus = opiskeluoikeus, henkilö = defaultHenkilö.copy(hetu = "251014-5651")) {
           verifyResponseStatusOk()
         }
@@ -125,7 +148,7 @@ class PerusopetusOmattiedotSpec extends AnyFreeSpec with KoskiHttpSpec with Opis
       }
     }
     "kun suoritus on valmistut vähintään 5 päivää sitten" - {
-      val opiskeluoikeus = defaultOpiskeluoikeus.copy(suoritukset = List(kahdeksannenLuokanSuoritus.copy(vahvistus = vahvistus.map(_.copy(päivä = LocalDate.now().minusDays(5))))))
+      val opiskeluoikeus = defaultOpiskeluoikeus.copy(suoritukset = List(kahdeksannenLuokanSuoritusIlmanYksilöllistämistä.copy(vahvistus = vahvistus.map(_.copy(päivä = LocalDate.now().minusDays(5))))))
       "palautetaan arvosanat" in {
         setupOppijaWithOpiskeluoikeus(opiskeluoikeus = opiskeluoikeus, henkilö = defaultHenkilö.copy(hetu = "251014-5651")) {
           verifyResponseStatusOk()
