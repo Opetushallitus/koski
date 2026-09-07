@@ -15,7 +15,7 @@ import { virkailija } from './setup/auth'
  *
  * Editori on aina päällä (ei feature-flagia), joten URL:ssä ei ole
  * `perusopetus-v2`-parametria. Erot manner-Suomen perusopetukseen:
- *  - Arvosteluasteikko 4-10 / G-D-U (ahvenanmaanarviointiasteikkoyleissivistava),
+ *  - Arviointiasteikko 4-10 / G-D-U (ahvenanmaanarviointiasteikkoyleissivistava),
  *    sekä numeeriset että sanalliset arvosanat samassa pudotusvalikossa.
  *  - Käyttäytymisen sijaan "Ansvar och samarbete" (vastuuJaYhteistyöArvio),
  *    jonka ainoa sallittu arvo on G.
@@ -75,7 +75,7 @@ test.describe('Ahvenanmaan perusopetuksen käyttöliittymä', () => {
     )
     await expect(page.locator('.oppiaineet')).toBeVisible()
     await expect(
-      page.locator('.perusopetuksen-arvosteluasteikko')
+      page.locator('.perusopetuksen-arviointiasteikko')
     ).toContainText('Arvostelu 4–10, Hyväksytty, Osallistunut tai Hylätty')
     await expect(
       page.getByTestId(ensimmäisenOppiaineenArvosanaView)

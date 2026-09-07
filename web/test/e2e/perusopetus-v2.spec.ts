@@ -91,9 +91,9 @@ test.describe('Perusopetuksen uusi käyttöliittymä', () => {
     await oppijaPage.goto(kaisaUrl)
     await page.getByTestId('oo.0.suoritusTabs.0.tab').click()
 
-    // Arvosteluasteikko-kuvaus
+    // Arviointiasteikko-kuvaus
     await expect(
-      page.getByTestId('perusopetuksen-arvosteluasteikko')
+      page.getByTestId('perusopetuksen-arviointiasteikko')
     ).toContainText('Arvostelu 4-10, S (suoritettu) tai H (hylätty)')
 
     // Pakollinen oppiaine numeerisella arvosanalla (uskonto)

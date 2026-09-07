@@ -34,6 +34,7 @@ import {
   luokkaAsteenOsasuoritukset,
   oppimääränOsasuoritukset,
   pakollisetTitle,
+  perusopetuksenArviointiasteikko,
   valinnaisetTitle,
   valmiitaSuorituksia,
   isNuortenPerusopetuksenOppiaineenSuoritusValmistavassaOpetuksessa,
@@ -100,8 +101,8 @@ export const PerusopetuksenOppiaineetEditor = ({ model }) => {
               }
             />
           </h5>
-          <p data-testid="perusopetuksen-arvosteluasteikko">
-            <Text name="Arvostelu 4-10, S (suoritettu) tai H (hylätty)" />
+          <p data-testid="perusopetuksen-arviointiasteikko">
+            <Text name={perusopetuksenArviointiasteikko(model)} />
           </p>
           {hasPakollisuus(model, uusiOppiaineenSuoritus) &&
           !isPerusopetukseenValmistava(model) ? (
