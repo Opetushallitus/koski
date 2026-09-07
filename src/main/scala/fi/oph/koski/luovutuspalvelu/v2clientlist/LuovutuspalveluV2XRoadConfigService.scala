@@ -14,7 +14,7 @@ class MockLuovutuspalveluV2XRoadConfigService extends LuovutuspalveluV2XRoadConf
   )
 
   override def getXRoadClients: Map[String, String] = Map(
-    "SUBSYSTEM:FI-TEST/GOV/0245437-2/ServiceViewClient" -> "SuomiFi",
+    "SUBSYSTEM:FI-TEST/GOV/0245437-2/ServiceViewClient" -> "kalle",
     "SUBSYSTEM:FI-TEST/GOV/000000-1/TestSystem" -> "HSL"
   )
 }

@@ -533,7 +533,7 @@ object MockUsers {
   )
 
   val suomiFiKäyttäjä = KoskiMockUser(
-    "Palveluväylä",
+    "Luovutuspalvelu",
     "SuomiFi",
     "1.2.246.562.24.99999988889",
     Seq(OrganisaatioJaKäyttöoikeudet(MockOrganisaatiot.suomifi, List(
