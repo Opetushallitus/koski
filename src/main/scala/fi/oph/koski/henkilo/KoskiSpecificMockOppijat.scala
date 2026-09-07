@@ -402,6 +402,33 @@ object KoskiSpecificMockOppijat {
   // TOR-2587: Ahvenanmaan perusopetuksen oppimäärä muille kuin oppivelvollisille (aikuisopiskelija).
   val ahvenanmaanAikuisopiskelija = koskiSpecificOppijat.oppija("Åländsk", "Anders", "150488-2002", syntymäaika = Some(LocalDate.of(1988, 4, 15)))
 
+  // TOR-2650: Kotikuntalaskelma-testioppijat. Suurin osa olemassa olevista perusopetus-/
+  // esiopetusfixtuureista on aikuisia (vanhat hetut), joten ne eivät osu raportin 6-16-vuotiaiden
+  // ikäikkunaan. Nämä on lisätty erikseen kattamaan kaikki raportin ikäryhmät + hetuttoman
+  // oppijan "Ei tiedossa" -kotikunta-tapaus. Ks. documentation/kotikuntalaskelma-suunnitelma.md.
+  val kotikuntalaskelmaKuusivuotias = koskiSpecificOppijat.oppija("Kuusi", "Kaisa", "010320A9012", syntymäaika = Some(LocalDate.of(2020, 3, 1)), kotikunta = Some(Kunta.jyväskylä))
+  val kotikuntalaskelmaSeitsemanKaksitoista = koskiSpecificOppijat.oppija("SeitsemanKaksitoista", "Sami", "120517A9013", syntymäaika = Some(LocalDate.of(2017, 5, 12)), kotikunta = Some(Kunta.helsinki))
+  val kotikuntalaskelmaKolmetoistaViisitoista = koskiSpecificOppijat.oppija("KolmetoistaViisitoista", "Kalle", "200912A9014", syntymäaika = Some(LocalDate.of(2012, 9, 20)), kotikunta = Some(Kunta.helsinki))
+  val kotikuntalaskelmaKuusitoistaErityinen = koskiSpecificOppijat.oppija("KuusitoistaErityinen", "Essi", "140210A9015", syntymäaika = Some(LocalDate.of(2010, 2, 14)), kotikunta = Some(Kunta.jyväskylä))
+  val kotikuntalaskelmaKuusitoistaEiErityista = koskiSpecificOppijat.oppija("KuusitoistaEiErityista", "Ilmari", "031110A9016", syntymäaika = Some(LocalDate.of(2010, 11, 3)), kotikunta = Some(Kunta.helsinki))
+  val kotikuntalaskelmaHetuton = koskiSpecificOppijat.oppija("Hetuton", "Heikki-Lapsi", "", syntymäaika = Some(LocalDate.of(2015, 7, 7)), kotikunta = None)
+  // Turvakielto = true + oikea kotikunta (ei None): testaa että Kotikuntalaskelman
+  // turvakielto-suoja (ks. Kotikuntalaskelma.scala) todella piilottaa kotikunnan/nimet/oidin
+  // sen sijaan että kotikunta vain sattuisi puuttumaan muutenkin. kuntahistoriaDefault reitittää
+  // tämän automaattisesti turvakieltoKuntahistoriat-karttaan (confidential), koska turvakielto=true.
+  val kotikuntalaskelmaTurvakielto = koskiSpecificOppijat.oppija("Turvakielto", "Lapsi", "120416A9017", turvakielto = true, syntymäaika = Some(LocalDate.of(2016, 4, 12)), kotikunta = Some(Kunta.helsinki))
+  // Toinen turvakielto-oppija, samassa koulutustoimijassa (Jyväskylä) kuin muitakin
+  // testioppijoita, jotta demoissa näkyy ettei useampi "Turvakielto"-rivi samalla
+  // koulutustoimijalla ole virhe vaan tarkoituksellinen, toisistaan erottamaton naamiointi.
+  val kotikuntalaskelmaTurvakielto2 = koskiSpecificOppijat.oppija("Turvakielto", "Toinen-Lapsi", "090919A9011", turvakielto = true, syntymäaika = Some(LocalDate.of(2019, 9, 9)), kotikunta = Some(Kunta.jyväskylä))
+  // Kotiopetus-jaksollinen oppija: testaa että "not aj.kotiopetus" todella rajaa kotiopetuksessa
+  // olevat pois raportilta, vaikka muuten täyttäisivät kaikki muut ehdot (ikä, koulutusmuoto, tila).
+  val kotikuntalaskelmaKotiopetus = koskiSpecificOppijat.oppija("Kotiopetus", "Kerttu", "100316A9012", syntymäaika = Some(LocalDate.of(2016, 3, 10)), kotikunta = Some(Kunta.jyväskylä))
+  // Esiopetusoppija: testaa raportin esiopetus-haaraa (esiopetuksensuoritus + koulutusmuoto =
+  // 'esiopetus'), joka on täysin oma, perusopetuksesta erillinen kysely-/aikajaksopolkunsa
+  // (esiopetus_opiskeluoik_aikajakso).
+  val kotikuntalaskelmaEsiopetus = koskiSpecificOppijat.oppija("Esiopetus", "Elias", "200520A9015", syntymäaika = Some(LocalDate.of(2020, 5, 20)), kotikunta = Some(Kunta.helsinki))
+
   def defaultOppijat = koskiSpecificOppijat.getOppijat
   def defaultKuntahistoriat: mutable.Map[String, Seq[OppijanumerorekisteriKotikuntahistoriaRow]] = koskiSpecificOppijat.getKuntahistoriat
   def defaultTurvakieltoKuntahistoriat: mutable.Map[String, Seq[OppijanumerorekisteriKotikuntahistoriaRow]] = koskiSpecificOppijat.getTurvakieltoKuntahistoriat
