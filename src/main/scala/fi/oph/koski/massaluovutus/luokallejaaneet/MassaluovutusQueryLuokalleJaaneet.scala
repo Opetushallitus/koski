@@ -13,6 +13,7 @@ import fi.oph.koski.log.KoskiAuditLogMessageField.oppijaHenkiloOid
 import fi.oph.koski.log.KoskiOperation.OPISKELUOIKEUS_KATSOMINEN
 import fi.oph.koski.log.{AuditLog, KoskiAuditLogMessage, Logging}
 import fi.oph.koski.massaluovutus.KoulutuksenjärjestäjienMassaluovutusQueryParameters
+import fi.oph.koski.organisaatio.OrganisaationAlaisetOrganisaatiot
 import fi.oph.koski.schema.PerusopetuksenOpiskeluoikeus
 import fi.oph.koski.schema.annotation.EnumValues
 import fi.oph.scalaschema.annotation.{Description, Title}
@@ -33,8 +34,8 @@ trait MassaluovutusQueryLuokalleJaaneet extends KoulutuksenjärjestäjienMassalu
   def organisaatioOid: Option[String]
 
   def forEachResult(application: KoskiApplication)(f: MassaluovutusQueryLuokalleJaaneetResult => Unit)(implicit user: KoskiSpecificSession): Either[String, Unit] = {
-    val oppilaitosOids = application.organisaatioService.organisaationAlaisetOrganisaatiot(organisaatioOid.get)
-    val oids = haeOpiskeluoikeusOidit(application.raportointiDatabase.db, oppilaitosOids)
+    val organisaatiot = application.organisaatioService.organisaationAlaisetOrganisaatiot(organisaatioOid.get)
+    val oids = haeOpiskeluoikeusOidit(application.raportointiDatabase.db, organisaatiot)
 
     oids.foreach { case (oppijaOid, opiskeluoikeusOid) =>
       application.historyRepository
@@ -69,7 +70,9 @@ trait MassaluovutusQueryLuokalleJaaneet extends KoulutuksenjärjestäjienMassalu
     )
   }
 
-  private def haeOpiskeluoikeusOidit(raportointiDb: DB, oppilaitosOids: Seq[String]): Seq[(String, String)] =
+  // Ostopalveluyksiköistä vain ostavan koulutustoimijan omat opiskeluoikeudet, ks.
+  // OrganisaatioService.organisaationAlaisetOrganisaatiot.
+  private def haeOpiskeluoikeusOidit(raportointiDb: DB, organisaatiot: OrganisaationAlaisetOrganisaatiot): Seq[(String, String)] =
     QueryMethods.runDbSync(raportointiDb, sql"""
       SELECT
         r_opiskeluoikeus.oppija_oid,
@@ -77,7 +80,11 @@ trait MassaluovutusQueryLuokalleJaaneet extends KoulutuksenjärjestäjienMassalu
       FROM r_opiskeluoikeus
       JOIN r_paatason_suoritus ON r_paatason_suoritus.opiskeluoikeus_oid = r_opiskeluoikeus.opiskeluoikeus_oid
       WHERE koulutusmuoto = 'perusopetus'
-        AND oppilaitos_oid = any($oppilaitosOids)
+        AND (
+          oppilaitos_oid = any(${organisaatiot.hierarkia})
+          OR (oppilaitos_oid = any(${organisaatiot.ostopalvelu})
+              AND koulutustoimija_oid = ${organisaatiot.koulutustoimija.getOrElse("")})
+        )
       GROUP BY
         r_opiskeluoikeus.oppija_oid,
         r_opiskeluoikeus.opiskeluoikeus_oid

@@ -305,12 +305,11 @@ class RaportitService(application: KoskiApplication) {
   }
 
   def aikuistenperusopetuksenOppijamäärät(request: RaporttiPäivältäRequest, t: LocalizationReader)(implicit u: KoskiSpecificSession) = {
-    val oppilaitosOids = request.oppilaitosOid match {
-      case application.organisaatioService.ostopalveluRootOid =>
-        application.organisaatioService.omatOstopalveluOrganisaatiot.map(_.oid)
-      case oid =>
-        application.organisaatioService.organisaationAlaisetOrganisaatiot(oid)
-    }
+    // Kuten muutkin oppijamääräraportit: pelkkä organisaation oma hierarkia. Ostopalvelu on
+    // varhaiskasvatuksen mekanismi eikä tuo tähän raporttiin mitään, ja ostopalveluvalinta
+    // tarjotaan käyttöliittymässä vain esiopetuksen raporteille (ks.
+    // buildOrganisaatioJaRaporttiTyypit), joten erillistä ostopalveluhaaraa ei tarvita.
+    val oppilaitosOids = accessResolver.kyselyOiditOrganisaatiolle(request.oppilaitosOid).toList
     OppilaitosRaporttiResponse(
       sheets = Seq(aikuistenPerusopetuksenOppijamäärätRaportti.build(oppilaitosOids, request.paiva, t)),
       workbookSettings = WorkbookSettings(t.get("raportti-excel-aikuistenperusopetus-vos-title-etuliite"), Some(request.password)),
