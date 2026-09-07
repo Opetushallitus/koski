@@ -31,7 +31,7 @@ export const ExpandablePropertiesEditor = ({
   return !zeroVisibleProperties || wrappedModel.context.edit ? (
     <Expandable
       editor={
-        <div className="value">
+        <div className="value" data-testid={`${propertyName}-content`}>
           <PropertiesEditor
             model={wrappedModel}
             propertyFilter={propertyFilter}
@@ -57,7 +57,10 @@ export class Expandable extends React.Component {
     const { editor, expanded, setExpanded, propertyName, title } = this.props
     const toggleExpand = () => setExpanded(!expanded)
     return (
-      <div className={'expandable-container ' + propertyName}>
+      <div
+        className={'expandable-container ' + propertyName}
+        data-testid={propertyName}
+      >
         <a
           className={expanded ? 'open expandable' : 'expandable'}
           onClick={toggleExpand}

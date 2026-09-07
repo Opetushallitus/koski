@@ -1,4 +1,5 @@
 import { Page, Locator, expect } from '@playwright/test'
+import { KorkeakouluOpiskeluoikeus } from './components/KorkeakouluOpiskeluoikeus'
 import { OpiskeluoikeudenTilaDialog } from './dialogs/OpiskeluoikeudentilaDialog'
 
 export class KoskiOppijaPage {
@@ -94,6 +95,25 @@ export class KoskiOppijaPage {
     const params = new URLSearchParams(queryParams)
     await this.page.goto(`/koski/oppija/${oid}?${params.toString()}`)
     await expect(this.page).toHaveURL(/\/koski\/oppija\/1\.2\..*/)
+  }
+
+  getOpiskeluoikeus(otsikko: string | RegExp): Locator {
+    return this.page.locator('.opiskeluoikeus').filter({
+      has: this.page.getByRole('heading', { name: otsikko })
+    })
+  }
+
+  getKorkeakouluOpiskeluoikeus(
+    otsikko: string | RegExp
+  ): KorkeakouluOpiskeluoikeus {
+    return new KorkeakouluOpiskeluoikeus(this.getOpiskeluoikeus(otsikko))
+  }
+
+  getOppilaitosNimi(otsikko: string | RegExp): Locator {
+    return this.getOpiskeluoikeus(otsikko)
+      .getByRole('heading')
+      .first()
+      .locator('.oppilaitos')
   }
 
   async selectOpiskeluoikeus(tyyppi: string) {

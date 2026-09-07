@@ -185,7 +185,7 @@ class OpiskeluoikeudenLisätiedot extends React.Component {
     const { expanded } = this.state
 
     return (
-      <div className="expandable-container lisätiedot">
+      <div className="expandable-container lisätiedot" data-testid="lisätiedot">
         <button
           className={`inline-link-button ${expanded ? 'open' : ''}`}
           onClick={this.toggleExpand}
@@ -194,7 +194,7 @@ class OpiskeluoikeudenLisätiedot extends React.Component {
           <Text name="Lisätiedot" />
         </button>
         {expanded && (
-          <div className="value">
+          <div className="value" data-testid="lisätiedot-content">
             <PropertiesEditor
               model={modelLookup(model, 'lisätiedot')}
               propertyFilter={propertyFilter}

@@ -14,6 +14,8 @@ import fi.oph.koski.schema._
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.should.Matchers
 
+import java.time.LocalDate
+
 class MigriSpec extends AnyFreeSpec with KoskiHttpSpec with OpiskeluoikeusTestMethodsAmmatillinen with Matchers with DirtiesFixtures {
 
   val user = MockUsers.migriKäyttäjä
@@ -49,9 +51,23 @@ class MigriSpec extends AnyFreeSpec with KoskiHttpSpec with OpiskeluoikeusTestMe
     }
   }
 
-  "Opiskeluoikeus voidaan hakea" in {
+  "Ammatillinen opiskeluoikeus voidaan hakea" in {
     postOid(ammattilainen.oid, user) {
       verifyResponseStatusOk()
+    }
+  }
+
+  "Korkeakoulun opiskeluoikeus voidaan hakea ja maksettavat lukuvuosimaksut palautetaan" in {
+    postHetu(Some("250668-293Y"), user) {
+      verifyResponseStatusOk()
+      val oppija = JsonSerializer.parse[MigriOppija](body)
+      val maksettavatLukuvuosimaksut = oppija.opiskeluoikeudet.flatMap(_.lisätiedot).flatMap(_.maksettavatLukuvuosimaksut).flatten
+
+      maksettavatLukuvuosimaksut shouldBe List(KorkeakoulunOpiskeluoikeudenLukuvuosimaksu(
+        alku = LocalDate.of(2015, 10, 20),
+        loppu = Some(LocalDate.of(2016, 4, 12)),
+        summa = Some(4000)
+      ))
     }
   }
 
