@@ -29,6 +29,7 @@ import {
 import { SuorituksenVahvistusField } from '../components-v2/opiskeluoikeus/SuorituksenVahvistus'
 import { TestIdText } from '../appstate/useTestId'
 import { t } from '../i18n/i18n'
+import { isAhvenanmaanAikuistenPerusopetuksenOppimääränSuoritus } from '../types/fi/oph/koski/schema/AhvenanmaanAikuistenPerusopetuksenOppimaaranSuoritus'
 import { AhvenanmaanPerusopetuksenOpiskeluoikeus } from '../types/fi/oph/koski/schema/AhvenanmaanPerusopetuksenOpiskeluoikeus'
 import {
   AhvenanmaanPerusopetuksenOppimääränSuoritus,
@@ -93,6 +94,16 @@ export const AhvenanmaanPerusopetuksenSuorituksenTiedot: React.FC<
               />
             ]}
           </KeyColumnedValuesRow>
+        )}
+
+        {/* Muut kuin oppivelvolliset erottuvat oppivelvollisista vain päätason
+            suorituksen tyypillä, joka ei muuten näy käyttöliittymässä. Rivi ei
+            ole muokattava kenttä: se seuraa suorituksen tyyppiä, ja koska rivi
+            näytetään vain aikuisten suorituksella, arvo on aina "Kyllä". */}
+        {isAhvenanmaanAikuistenPerusopetuksenOppimääränSuoritus(suoritus) && (
+          <KeyValueRow localizableLabel="Perusopetus muille kuin oppivelvollisille">
+            <TestIdText id="muutKuinOppivelvolliset">{t('Kyllä')}</TestIdText>
+          </KeyValueRow>
         )}
 
         {isAhvenanmaanPerusopetuksenVuosiluokanSuoritus(suoritus) && (

@@ -25,6 +25,12 @@ import { virkailija } from './setup/auth'
 const oppijaOid = '1.2.246.562.24.00000000190'
 const url = `${oppijaOid}?opiskeluoikeudenTyyppi=ahvenanmaanperusopetus`
 
+// Åländsk Anders on muu kuin oppivelvollinen: opiskeluoikeudella on vain
+// päättötodistuksen suoritus (ahvenanmaanperusopetuksenoppimaaraaikuiset) eikä
+// yhtään vuosiluokkaa.
+const aikuisopiskelijaOid = '1.2.246.562.24.00000000193'
+const aikuisopiskelijaUrl = `${aikuisopiskelijaOid}?opiskeluoikeudenTyyppi=ahvenanmaanperusopetus`
+
 const editButton = 'oo.0.opiskeluoikeus.edit'
 const saveButton = 'oo.0.opiskeluoikeus.save'
 
@@ -100,6 +106,34 @@ test.describe('Ahvenanmaan perusopetuksen käyttöliittymä', () => {
     await expect(
       page.locator('a[href="https://www.laroplan.ax/laroplan-grundskolan"]')
     ).toContainText('ÅLR2020/9841')
+  })
+
+  test('Muun kuin oppivelvollisen suorituksella näytetään sitä koskeva rivi', async ({
+    page,
+    oppijaPage,
+    fixtures
+  }) => {
+    await fixtures.reset()
+    await oppijaPage.goto(aikuisopiskelijaUrl)
+
+    // Suorituksen tyyppi ei muuten näy käyttöliittymässä: koulutus, koodiarvo ja
+    // välilehden nimi ovat samat kuin oppivelvollisten päättötodistuksella.
+    await expect(page.getByTestId('oo.0.suoritukset.0.koulutus')).toHaveText(
+      'Perusopetus'
+    )
+    await expect(
+      page.getByTestId('oo.0.suoritukset.0.muutKuinOppivelvolliset')
+    ).toHaveText('Kyllä')
+    await expect(
+      page.getByText('Perusopetus muille kuin oppivelvollisille')
+    ).toBeVisible()
+
+    // Oppivelvollisen päättötodistuksella riviä ei näytetä.
+    await oppijaPage.goto(url)
+    await page.getByTestId(avgångsbetygTab).click()
+    await expect(
+      page.getByTestId('oo.0.suoritukset.0.muutKuinOppivelvolliset')
+    ).toHaveCount(0)
   })
 
   test('Arvosanavalikko tarjoaa sekä numeeriset (4-10) että sanalliset (G/D/U) arvosanat', async ({
