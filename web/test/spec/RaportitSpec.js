@@ -90,7 +90,9 @@ describe('Raporttien luominen', function () {
           'Jyväskylän normaalikoulu',
           'Pyhtään kunta',
           'Päiväkoti Majakka',
-          'Päiväkoti Touhula'
+          'Päiväkoti Touhula',
+          'Tornion kaupunki',
+          'Aapajoen koulu'
         ])
       })
     })
@@ -191,6 +193,7 @@ describe('Raporttien luominen', function () {
 
   describe('Organisaatiovalitsin', function () {
     const esiopetuksenOrganisaatiot = [
+      'Aapajoen koulu',
       'Jyväskylän normaalikoulu',
       'Kulosaaren ala-aste'
     ]
