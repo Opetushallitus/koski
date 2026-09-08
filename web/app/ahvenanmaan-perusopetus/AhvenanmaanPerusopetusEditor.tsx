@@ -36,6 +36,7 @@ import { AhvenanmaanPerusopetuksenLisatiedot } from './AhvenanmaanPerusopetuksen
 import { AhvenanmaanPerusopetuksenOppiaineet } from './AhvenanmaanPerusopetuksenOppiaineet'
 import { AhvenanmaanPerusopetuksenSuorituksenTiedot } from './AhvenanmaanPerusopetuksenSuorituksenTiedot'
 import { poistettavaPäätasonSuoritus } from './paatasonSuoritusPoisto'
+import { sortPäätasonSuoritukset } from '../perusopetus-v2/paatasonSuoritustenJarjestys'
 import { UusiAhvenanmaanPerusopetuksenVuosiluokanSuoritusModal } from './UusiAhvenanmaanPerusopetuksenVuosiluokanSuoritusModal'
 
 export type AhvenanmaanPerusopetusEditorProps =
@@ -263,15 +264,9 @@ const suorituksenNimi = (
 const sortSuoritukset = (
   suoritukset: AhvenanmaanPerusopetuksenPäätasonSuoritus[]
 ): AhvenanmaanPerusopetuksenPäätasonSuoritus[] =>
-  [...suoritukset].sort((a, b) => {
-    const aIsOppimäärä = isAhvenanmaanPerusopetuksenOppimääränSuoritus(a)
-    const bIsOppimäärä = isAhvenanmaanPerusopetuksenOppimääränSuoritus(b)
-    if (aIsOppimäärä && !bIsOppimäärä) return -1
-    if (!aIsOppimäärä && bIsOppimäärä) return 1
-    // Vuosiluokat laskevassa järjestyksessä (9, 8, 7...)
-    const aKoodi = Number(a.koulutusmoduuli.tunniste.koodiarvo) || 0
-    const bKoodi = Number(b.koulutusmoduuli.tunniste.koodiarvo) || 0
-    return bKoodi - aKoodi
-  })
+  sortPäätasonSuoritukset(
+    suoritukset,
+    isAhvenanmaanPerusopetuksenOppimääränSuoritus
+  )
 
 export default AhvenanmaanPerusopetusEditor

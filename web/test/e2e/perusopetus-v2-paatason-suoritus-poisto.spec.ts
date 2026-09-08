@@ -154,11 +154,13 @@ test.describe('Perusopetuksen uusi käyttöliittymä: päätason suorituksen poi
 
     await page.getByTestId('oo.0.opiskeluoikeus.edit').click()
 
-    // Tab 4 on jälkimmäinen 7. vuosiluokan suoritus (luokka 7C)
+    // Saman vuosiluokan suoritukset järjestetään alkamispäivän mukaan
+    // uusimmasta vanhimpaan, joten 7C (alkanut 16.8.2013) on tabissa 3 ja
+    // 7A (15.8.2013) tabissa 4.
     await page.getByTestId('oo.0.suoritusTabs.4.tab').click()
     await expect(
       page.getByTestId('oo.0.suoritukset.4.luokka.edit.input')
-    ).toHaveValue('7C')
+    ).toHaveValue('7A')
 
     const deleteRequestPromise = page.waitForRequest(
       (request) =>
@@ -180,14 +182,14 @@ test.describe('Perusopetuksen uusi käyttöliittymä: päätason suorituksen poi
       deleteRequest.postDataJSON() as DeletePäätasonSuoritusRequest
 
     expect(deleteBody.koulutusmoduuli?.tunniste?.koodiarvo).toBe('7')
-    expect(deleteBody.luokka).toBe('7C')
+    expect(deleteBody.luokka).toBe('7A')
     expect(deleteResponse.ok()).toBeTruthy()
 
     await oppijaPage.goto(lasseUrl)
     await page.getByTestId('oo.0.suoritusTabs.3.tab').click()
     await expect(
       page.getByTestId('oo.0.suoritukset.3.luokka.value')
-    ).toHaveText('7A')
+    ).toHaveText('7C')
     await expect(page.getByTestId('oo.0.suoritusTabs.4.tab')).not.toBeVisible()
   })
 

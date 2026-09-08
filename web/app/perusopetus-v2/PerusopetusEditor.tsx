@@ -43,6 +43,7 @@ import {
 } from '../types/fi/oph/koski/schema/NuortenPerusopetuksenPaikallinenOppiaine'
 import { isNuortenPerusopetuksenOppiaineenSuoritus } from '../types/fi/oph/koski/schema/NuortenPerusopetuksenOppiaineenSuoritus'
 import { poistettavaPäätasonSuoritus } from './paatasonSuoritusPoisto'
+import { sortPäätasonSuoritukset } from './paatasonSuoritustenJarjestys'
 import { deleteAt } from '../util/fp/arrays'
 
 export type PerusopetusEditorProps =
@@ -279,16 +280,10 @@ const perusopetuksenSuorituksenNimi = (
 const sortPerusopetuksenSuoritukset = (
   suoritukset: PerusopetuksenPäätasonSuoritus[]
 ): PerusopetuksenPäätasonSuoritus[] =>
-  [...suoritukset].sort((a, b) => {
-    const aIsOppimäärä = isNuortenPerusopetuksenOppimääränSuoritus(a)
-    const bIsOppimäärä = isNuortenPerusopetuksenOppimääränSuoritus(b)
-    if (aIsOppimäärä && !bIsOppimäärä) return -1
-    if (!aIsOppimäärä && bIsOppimäärä) return 1
-    // Vuosiluokat descending (9, 8, 7...)
-    const aKoodi = Number(a.koulutusmoduuli.tunniste.koodiarvo) || 0
-    const bKoodi = Number(b.koulutusmoduuli.tunniste.koodiarvo) || 0
-    return bKoodi - aKoodi
-  })
+  sortPäätasonSuoritukset(
+    suoritukset,
+    isNuortenPerusopetuksenOppimääränSuoritus
+  )
 
 /**
  * Tallentaa käyttäjän luomat paikalliset oppiaineet organisaation preferenceihin,
