@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import DayPickerInput, { DateUtils } from 'react-day-picker'
 import { useTestId } from '../../appstate/useTestId'
 import {
@@ -64,8 +64,7 @@ export const DateEdit: React.FC<DateEditProps> = (props) => {
     selectedDays,
     toggleDayPicker,
     onDayClick,
-    onChange,
-    inputKey
+    onChange
   } = useDateEditState(props)
   const testId = props.testId || 'date'
   const inputId = useTestId(`${testId}.edit.input`)
@@ -76,14 +75,13 @@ export const DateEdit: React.FC<DateEditProps> = (props) => {
       <div className="DateEdit__field">
         <input
           type="text"
-          defaultValue={displayDate}
+          value={displayDate}
           onChange={onChange}
           className={cx(
             'DateEdit__input',
             hasError && 'DateEdit__input--error'
           )}
           data-testid={inputId}
-          key={inputKey}
         />
         <PositionalPopupHolder>
           <IconButton
@@ -114,46 +112,56 @@ componentsWithBuiltInErrors.add(DateEdit)
 // Utils
 
 const useDateEditState = (props: DateEditProps) => {
-  const [inputKey, setInputKey] = useState('init')
-
   const [datePickerVisible, setDatePickerVisible] = useState(false)
   const toggleDayPicker = useCallback(
     () => setDatePickerVisible(!datePickerVisible),
     [datePickerVisible]
   )
 
-  const finnishDate = useMemo(() => ISO2FinnishDate(props.value), [props.value])
-  const [internalFinnishDate, setInternalFinnishDate] = useState(finnishDate)
+  // Kentän teksti pidetään omassa tilassaan, koska kirjoittamisen aikana se on
+  // väliaikaisesti kelvoton ("1.1.201") eikä sitä voi johtaa propsin arvosta.
+  const [internalFinnishDate, setInternalFinnishDate] = useState(
+    () => ISO2FinnishDate(props.value) || ''
+  )
+  const internalFinnishDateRef = useRef(internalFinnishDate)
+  internalFinnishDateRef.current = internalFinnishDate
+
+  const { onChange, min: _min, max: _max, value } = props
+
+  // Ulkopuolelta tullut arvo (esim. päätason suoritus vaihtui välilehteä
+  // vaihtaessa tai uusi vuosiluokka lisättiin) pitää saada kenttään näkyviin.
+  // Sitä ei tunnisteta tekstiä vertaamalla vaan vertaamalla päivää, jota kentän
+  // teksti tarkoittaa: jos se on jo sama kuin propsin arvo, muutos on peräisin
+  // kentästä itsestään eikä tekstiä saa korvata. Efektin ainoa riippuvuus on
+  // props.value — kentän teksti luetaan referenssistä — jottei kirjoittaminen
+  // pyyhi kesken jäänyttä syötettä.
   useEffect(() => {
-    if (finnishDate !== internalFinnishDate) {
-      setInternalFinnishDate(finnishDate)
+    if (finnishDateToISO(internalFinnishDateRef.current) !== value) {
+      setInternalFinnishDate(ISO2FinnishDate(value) || '')
     }
-  }, [finnishDate, internalFinnishDate])
+  }, [value])
+
   const internalDate = useMemo(
     () =>
       internalFinnishDate ? parseFinnishDate(internalFinnishDate) : undefined,
     [internalFinnishDate]
   )
 
-  const { onChange, min: _min, max: _max, value } = props
   const onChangeCB: React.ChangeEventHandler<HTMLInputElement> = useCallback(
     (event) => {
       const newFinnishDate = event.target.value
       setInternalFinnishDate(newFinnishDate)
-      const date = parseFinnishDate(newFinnishDate)
-      const isoDate = date && formatISODate(date)
-      onChange(isoDate)
+      onChange(finnishDateToISO(newFinnishDate))
     },
     [onChange]
   )
 
   const onDayClick = useCallback(
     (date: Date) => {
-      setInternalFinnishDate(formatFinnishDate(date))
+      setInternalFinnishDate(formatFinnishDate(date) || '')
       setDatePickerVisible(false)
       const isoDate = formatISODate(date)
       if (isoDate && isoDate !== value) {
-        setInputKey(`update-${new Date().getTime()}`)
         onChange(isoDate)
       }
     },
@@ -174,9 +182,14 @@ const useDateEditState = (props: DateEditProps) => {
     selectedDays,
     toggleDayPicker,
     onDayClick,
-    onChange: onChangeCB,
-    inputKey
+    onChange: onChangeCB
   }
+}
+
+/** Päivä, jota kenttään kirjoitettu teksti tarkoittaa, tai undefined jos teksti ei ole kelvollinen päivämäärä. */
+const finnishDateToISO = (finnishDate: string): string | undefined => {
+  const date = finnishDate ? parseFinnishDate(finnishDate) : undefined
+  return date && formatISODate(date)
 }
 
 const weekdaysShort = ['Su', 'Ma', 'Ti', 'Ke', 'To', 'Pe', 'La'].map((v) =>

@@ -281,8 +281,14 @@ test.describe('Ahvenanmaan perusopetuksen käyttöliittymä', () => {
       .fill('15.8.2016')
     await page.getByTestId('oo.0.modal.uusiVuosiluokanSuoritus.submit').click()
 
-    // Uusi 1. vuosiluokka lajitellaan viimeiseksi (indeksi 3). Oppiaineet on
-    // esitäytetty 1.–2. luokan mallilla (8 ainetta), arvosanoja ei vielä ole.
+    // Uusi 1. vuosiluokka lajitellaan viimeiseksi (indeksi 3) ja modaalissa
+    // syötetty alkamispäivä näkyy sen kentässä.
+    await expect(
+      page.getByTestId('oo.0.suoritukset.3.alkamispäivä.edit.edit.input')
+    ).toHaveValue('15.8.2016')
+
+    // Oppiaineet on esitäytetty 1.–2. luokan mallilla (8 ainetta), arvosanoja
+    // ei vielä ole.
     await expect(
       page.getByTestId('oo.0.suoritukset.3.osasuoritukset.0.nimi')
     ).toContainText('Ruotsi')
@@ -330,6 +336,41 @@ test.describe('Ahvenanmaan perusopetuksen käyttöliittymä', () => {
       options.getByText('Jyväskylän normaalikoulu', { exact: true })
     ).toBeVisible()
     await expect(options.locator('.LakkautettuOrganisaatio')).toHaveCount(0)
+  })
+
+  test('Peräkkäin lisättyjen vuosiluokkien alkamispäivä näkyy kentässä', async ({
+    page,
+    oppijaPage,
+    fixtures
+  }) => {
+    // Peräkkäiset lisäykset osuvat samaan välilehti-indeksiin, jolloin
+    // EditorContainerin `key={suoritusIndex}` ei pakota uudelleenrenderöintiä
+    // ja alkamispäiväkenttä on jo olemassa. Kenttä oli hallitsematon
+    // (defaultValue), joten siihen jäi edellisen vuosiluokan päivä.
+    test.setTimeout(60000)
+    await fixtures.reset()
+    await oppijaPage.goto(url)
+    await page.getByTestId(editButton).click()
+
+    // Esimerkkioppija on valmistunut (terminaalitila), jolloin vuosiluokkaa ei
+    // voi lisätä. Poistetaan valmistunut-jakso, jolloin lisäys tulee mahdolliseksi.
+    await page
+      .getByTestId('oo.0.opiskeluoikeus.tila.edit.items.1.remove')
+      .click()
+
+    // Uudet vuosiluokat lajitellaan 9. ja 8. luokan perään indeksiin 3.
+    await lisääVuosiluokka(page, '1', '1A', '15.8.2016')
+    await expect(
+      page.getByTestId('oo.0.suoritukset.3.alkamispäivä.edit.edit.input')
+    ).toHaveValue('15.8.2016')
+
+    await lisääVuosiluokka(page, '2', '2A', '15.8.2017')
+    await expect(
+      page.getByTestId('oo.0.suoritukset.3.luokka.edit.input')
+    ).toHaveValue('2A')
+    await expect(
+      page.getByTestId('oo.0.suoritukset.3.alkamispäivä.edit.edit.input')
+    ).toHaveValue('15.8.2017')
   })
 
   test('Tyhjän vuosiluokan muokkauksessa näytetään sekä pakolliset että valinnaiset oppiaineet', async ({
@@ -396,3 +437,39 @@ test.describe('Ahvenanmaan perusopetuksen käyttöliittymä', () => {
     await expect(page.getByTestId(saveButton)).toBeEnabled()
   })
 })
+
+/** Avaa vuosiluokan lisäysdialogin, täyttää kentät ja klikkaa Lisää. */
+async function lisääVuosiluokka(
+  page: import('@playwright/test').Page,
+  luokkaAste: string,
+  luokka: string,
+  alkamispäivä: string
+) {
+  await page
+    .getByRole('button', { name: /lisää vuosiluokan suoritus/i })
+    .click()
+
+  const modal = page.locator('.Modal')
+  await expect(modal).toBeVisible()
+
+  const tunnisteInput = page.getByTestId(
+    'oo.0.modal.uusiVuosiluokanSuoritus.tunniste.input'
+  )
+  if (!(await tunnisteInput.inputValue()).startsWith(`${luokkaAste}.`)) {
+    await tunnisteInput.click()
+    await modal
+      .locator('.Select__optionLabel')
+      .filter({ hasText: new RegExp(`^${luokkaAste}\\. vuosiluokka`) })
+      .first()
+      .click()
+  }
+
+  await page
+    .getByTestId('oo.0.modal.uusiVuosiluokanSuoritus.luokka.input')
+    .fill(luokka)
+  await page
+    .getByTestId('oo.0.modal.uusiVuosiluokanSuoritus.alkamispäivä.edit.input')
+    .fill(alkamispäivä)
+  await page.getByTestId('oo.0.modal.uusiVuosiluokanSuoritus.submit').click()
+  await expect(modal).not.toBeVisible()
+}
