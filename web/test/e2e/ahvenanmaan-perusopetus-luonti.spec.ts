@@ -84,7 +84,9 @@ test.describe('Ahvenanmaan perusopetuksen opiskeluoikeuden luonti', () => {
       opiskeluoikeus
     })
 
-    expect(await uusiOppijaPage.controls.suorituskieli.value()).toEqual(
+    // Oletus asettuu vasta kun kieli-koodisto on latautunut, joten arvoa on
+    // odotettava — kertaluontoinen luku ehtii nähdä kentän vielä tyhjänä.
+    await expect(uusiOppijaPage.controls.suorituskieli.input).toHaveValue(
       'ruotsi'
     )
   })
