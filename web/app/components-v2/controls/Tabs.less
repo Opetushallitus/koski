@@ -1,11 +1,21 @@
 .Tabs {
   @tab-border-color: @color-input-border;
 
+  // Täytteen ylivoimainen kasvukerroin välilehtiin (1) nähden: viimeisellä
+  // rivillä tyhjä tila menee käytännössä kokonaan täytteelle, jolloin sen
+  // välilehdet säilyttävät luonnollisen leveytensä. Täysillä riveillä täytettä
+  // ei ole, joten tila jakautuu välilehdille ja alaviiva jatkuu rivin loppuun.
+  @tab-filler-grow: 10000;
+
   margin: 0 -@h-padding;
 
   .Tabs__list {
     display: flex;
-    flex-wrap: nowrap;
+    // Välilehdet rivittyvät uudelle riville kun ne eivät mahdu yhdelle (esim.
+    // perusopetuksen vuosiluokat 1-9 + päättötodistus). Ilman rivitystä
+    // flex kutistaisi välilehdet, jolloin otsikot katkeaisivat kahdelle
+    // riville ja kapealla näytöllä viimeiset välilehdet jäisivät reunan taakse.
+    flex-wrap: wrap;
     align-items: stretch;
 
     list-style-type: none;
@@ -13,10 +23,25 @@
     margin: 0;
 
     .Tabs__item {
+      // Ei kutistuta otsikon alle, vaan siirrytään ennemmin uudelle riville.
+      // Kasvaa sen sijaan täyttämään rivin, jotta alaviiva ei katkea kesken
+      // rivin (ks. @tab-filler-grow). max-width pitää poikkeuksellisen pitkän
+      // otsikon rivin sisällä, jolloin se katkeaa välilehden sisällä kuten
+      // vanhassa käyttöliittymässä.
+      flex: 1 0 auto;
+      max-width: 100%;
+
       .Tabs__button {
         height: 100%;
+        // Painike täyttää venyneen listaelementin, koska alaviiva piirretään
+        // juuri painikkeen alareunasta: luonnollisen levyisenä viiva katkeaisi
+        // jokaisen välilehden kohdalla siihen tilaan, jonka venyminen lisäsi.
+        width: 100%;
         min-height: 3 * @baseline;
-        padding: @baseline (2 * @baseline);
+        // Vaakapadding pidetään tiukkana, jotta perusopetuksen tavallisin
+        // täysi välilehtirivi (vuosiluokat 1-9 + päättötodistus) mahtuu
+        // yhdelle riville aina 1280 px:n selainikkunaan asti.
+        padding: @baseline;
 
         background: none;
 
@@ -50,7 +75,7 @@
     }
 
     .Tabs__filler {
-      flex-grow: 1;
+      flex-grow: @tab-filler-grow;
       align-self: flex-end;
       border-bottom: 1px solid @tab-border-color;
     }
