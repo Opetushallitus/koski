@@ -15,6 +15,7 @@ target/
 postgres
 postgresql/data
 node_modules
+.pnpm-store/
 bundle.js
 web/dist
 web/node/

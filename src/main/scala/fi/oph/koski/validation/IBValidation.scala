@@ -70,11 +70,11 @@ object IBValidation {
         .flatMap(_.koulutusmoduuli.getLaajuus)
         .map {
           case _: LaajuusOpintopisteissä if alkamispäivä.isBefore(rajapäivä) =>
-            KoskiErrorCategory.badRequest.validation.laajuudet.osauoritusVääräLaajuus(
+            KoskiErrorCategory.badRequest.validation.laajuudet.osasuoritusVääräLaajuus(
               s"Oppiaineen laajuuden voi ilmoittaa opintopisteissä vain ${FinnishDateFormat.format(rajapäivä)} tai myöhemmin alkaneille IB-tutkinnon opiskeluoikeuksille"
             )
           case _: LaajuusTunneissa if alkamispäivä.isEqualOrAfter(rajapäivä) =>
-            KoskiErrorCategory.badRequest.validation.laajuudet.osauoritusVääräLaajuus(
+            KoskiErrorCategory.badRequest.validation.laajuudet.osasuoritusVääräLaajuus(
               s"Oppiaineen laajuus on ilmoitettava opintopisteissä ${FinnishDateFormat.format(rajapäivä)} tai myöhemmin alkaneille IB-tutkinnon opiskeluoikeuksille"
             )
           case _ => HttpStatus.ok
@@ -110,9 +110,9 @@ object IBValidation {
   private def validateIBKurssiLaajuusyksikkö(kurssi: KoulutusmoduuliValinnainenLaajuus, alkamispäivä: LocalDate, rajapäivä: LocalDate): HttpStatus =
     kurssi.laajuus.map {
       case _: LaajuusOpintopisteissä if alkamispäivä.isBefore(rajapäivä) =>
-        KoskiErrorCategory.badRequest.validation.laajuudet.osauoritusVääräLaajuus(s"Osasuorituksen laajuuden voi ilmoitettaa opintopisteissä vain ${FinnishDateFormat.format(rajapäivä)} tai myöhemmin alkaneille IB-tutkinnon opiskeluoikeuksille")
+        KoskiErrorCategory.badRequest.validation.laajuudet.osasuoritusVääräLaajuus(s"Osasuorituksen laajuuden voi ilmoitettaa opintopisteissä vain ${FinnishDateFormat.format(rajapäivä)} tai myöhemmin alkaneille IB-tutkinnon opiskeluoikeuksille")
       case _: LaajuusKursseissa if alkamispäivä.isEqualOrAfter(rajapäivä) =>
-        KoskiErrorCategory.badRequest.validation.laajuudet.osauoritusVääräLaajuus(s"Osasuorituksen laajuus on ilmoitettava opintopisteissä ${FinnishDateFormat.format(rajapäivä)} tai myöhemmin alkaneille IB-tutkinnon opiskeluoikeuksille")
+        KoskiErrorCategory.badRequest.validation.laajuudet.osasuoritusVääräLaajuus(s"Osasuorituksen laajuus on ilmoitettava opintopisteissä ${FinnishDateFormat.format(rajapäivä)} tai myöhemmin alkaneille IB-tutkinnon opiskeluoikeuksille")
       case _ => HttpStatus.ok
     }.getOrElse(HttpStatus.ok)
 

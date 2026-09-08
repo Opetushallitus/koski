@@ -388,7 +388,7 @@ class OppijaValidationAikuistenPerusopetusSpec
         tila = AikuistenPerusopetuksenOpiskeluoikeudenTila(List(
           AikuistenPerusopetuksenOpiskeluoikeusjakso(LocalDate.of(2020, 12, 1), opiskeluoikeusLäsnä, opintojenRahoitus = Some(valtionosuusRahoitteinen))
         )),
-        suoritukset = List(aikuistenPerusopetuksenAlkuvaiheenSuoritus())
+        suoritukset = List(aikuistenPerusopetuksenAlkuvaiheenSuoritus(osasuoritukset = ExamplesAikuistenPerusopetus.alkuvaiheenOppiaineetKursseina))
       )
       val opiskeluoikeusPäättynyt = defaultOpiskeluoikeus.copy(
         tila = AikuistenPerusopetuksenOpiskeluoikeudenTila(List(
@@ -403,6 +403,161 @@ class OppijaValidationAikuistenPerusopetusSpec
       }
       postOppija(makeOppija(defaultHenkilö, List(opiskeluoikeusPäättynyt))) {
         verifyResponseStatusOk()
+      }
+    }
+  }
+
+  "Laajuudet" - {
+    val ennenRajapäivääAlkanut = date(2019, 12, 31)
+    val rajapäivänäAlkanut = date(2020, 1, 1)
+
+    def opiskeluoikeus(alkamispäivä: LocalDate, suoritus: AikuistenPerusopetuksenPäätasonSuoritus) =
+      defaultOpiskeluoikeus.copy(
+        tila = AikuistenPerusopetuksenOpiskeluoikeudenTila(List(
+          AikuistenPerusopetuksenOpiskeluoikeusjakso(alkamispäivä, opiskeluoikeusLäsnä, Some(valtionosuusRahoitteinen))
+        )),
+        suoritukset = List(suoritus)
+      )
+
+    def oppimääränSuoritus(
+      oppiaineenLaajuus: Option[LaajuusVuosiviikkotunneissaTaiKursseissa] = None,
+      kurssit: Option[List[AikuistenPerusopetuksenKurssinSuoritus]] = None
+    ) = ExamplesAikuistenPerusopetus.aikuistenPerusopetukseOppimääränSuoritus(
+      AikuistenPerusopetus(Some("19/011/2015")),
+      Some(List(
+        ExamplesAikuistenPerusopetus.oppiaineenSuoritus(
+          ExamplesAikuistenPerusopetus.äidinkieli("AI1").copy(laajuus = oppiaineenLaajuus)
+        ).copy(
+          arviointi = arviointi(9),
+          osasuoritukset = kurssit
+        )
+      )),
+      vahvistus = None
+    )
+
+    def alkuvaiheenSuoritus(kurssinLaajuus: Option[LaajuusVuosiviikkotunneissaTaiKursseissa]) =
+      ExamplesAikuistenPerusopetus.aikuistenPerusopetuksenAlkuvaiheenSuoritus(
+        vahvistus = None,
+        osasuoritukset = Some(List(
+          ExamplesAikuistenPerusopetus.alkuvaiheenOppiaineenSuoritus(
+            ExamplesAikuistenPerusopetus.alkuvaiheenOppiaine("MA")
+          ).copy(
+            arviointi = arviointi(9),
+            osasuoritukset = Some(List(alkuvaiheenKurssi(kurssinLaajuus)))
+          )
+        ))
+      )
+
+    def kurssit(laajuus: Option[LaajuusVuosiviikkotunneissaTaiKursseissa]) = Some(List(
+      AikuistenPerusopetuksenKurssinSuoritus(
+        koulutusmoduuli = ValtakunnallinenAikuistenPerusopetuksenKurssi2015(
+          tunniste = Koodistokoodiviite("ÄI1", "aikuistenperusopetuksenkurssit2015"),
+          laajuus = laajuus
+        ),
+        arviointi = arviointi(9, Some(date(2016, 1, 9)))
+      )
+    ))
+
+    def alkuvaiheenKurssi(laajuus: Option[LaajuusVuosiviikkotunneissaTaiKursseissa]) = AikuistenPerusopetuksenAlkuvaiheenKurssinSuoritus(
+      koulutusmoduuli = ValtakunnallinenAikuistenPerusopetuksenAlkuvaiheenKurssi2017(
+        tunniste = Koodistokoodiviite("LMA1", "aikuistenperusopetuksenalkuvaiheenkurssit2017"),
+        laajuus = laajuus
+      ),
+      arviointi = arviointi(9, Some(date(2016, 1, 9)))
+    )
+
+    def vääräLaajuus(tunniste: String) = ErrorMatcher.regex(
+      KoskiErrorCategory.badRequest.validation.laajuudet.osasuoritusVääräLaajuus,
+      s".*$tunniste.*".r
+    )
+
+    "Ennen 1.1.2020 alkaneessa opiskeluoikeudessa" - {
+      "kurssin ja oppiaineen laajuus voi olla vuosiviikkotunteina" in {
+        setupOppijaWithOpiskeluoikeus(opiskeluoikeus(ennenRajapäivääAlkanut, oppimääränSuoritus(
+          oppiaineenLaajuus = Some(LaajuusVuosiviikkotunneissa(1)),
+          kurssit = kurssit(Some(LaajuusVuosiviikkotunneissa(1)))
+        ))) {
+          verifyResponseStatusOk()
+        }
+      }
+
+      "kurssin laajuus voi puuttua" in {
+        setupOppijaWithOpiskeluoikeus(opiskeluoikeus(ennenRajapäivääAlkanut, oppimääränSuoritus(
+          kurssit = kurssit(None)
+        ))) {
+          verifyResponseStatusOk()
+        }
+      }
+    }
+
+    "1.1.2020 tai sen jälkeen alkaneessa opiskeluoikeudessa" - {
+      "oppimäärän suorituksessa" - {
+        "kurssin laajuus vuosiviikkotunteina -> HTTP 400" in {
+          setupOppijaWithOpiskeluoikeus(opiskeluoikeus(rajapäivänäAlkanut, oppimääränSuoritus(
+            kurssit = kurssit(Some(LaajuusVuosiviikkotunneissa(1)))
+          ))) {
+            verifyResponseStatus(400, vääräLaajuus("ÄI1"))
+          }
+        }
+
+        "kurssin laajuus puuttuu -> HTTP 400" in {
+          setupOppijaWithOpiskeluoikeus(opiskeluoikeus(rajapäivänäAlkanut, oppimääränSuoritus(
+            kurssit = kurssit(None)
+          ))) {
+            verifyResponseStatus(400, vääräLaajuus("ÄI1"))
+          }
+        }
+
+        "oppiaineen laajuus vuosiviikkotunteina -> HTTP 400" in {
+          setupOppijaWithOpiskeluoikeus(opiskeluoikeus(rajapäivänäAlkanut, oppimääränSuoritus(
+            oppiaineenLaajuus = Some(LaajuusVuosiviikkotunneissa(1))
+          ))) {
+            verifyResponseStatus(400, vääräLaajuus("AI"))
+          }
+        }
+
+        "oppiaineen laajuus voi puuttua" in {
+          setupOppijaWithOpiskeluoikeus(opiskeluoikeus(rajapäivänäAlkanut, oppimääränSuoritus(
+            kurssit = kurssit(Some(LaajuusKursseissa(1)))
+          ))) {
+            verifyResponseStatusOk()
+          }
+        }
+
+        "laajuudet kursseina -> HTTP 200" in {
+          setupOppijaWithOpiskeluoikeus(opiskeluoikeus(rajapäivänäAlkanut, oppimääränSuoritus(
+            oppiaineenLaajuus = Some(LaajuusKursseissa(1)),
+            kurssit = kurssit(Some(LaajuusKursseissa(1)))
+          ))) {
+            verifyResponseStatusOk()
+          }
+        }
+      }
+
+      "alkuvaiheen suorituksessa" - {
+        "kurssin laajuus vuosiviikkotunteina -> HTTP 400" in {
+          setupOppijaWithOpiskeluoikeus(opiskeluoikeus(rajapäivänäAlkanut, alkuvaiheenSuoritus(
+            kurssinLaajuus = Some(LaajuusVuosiviikkotunneissa(1))
+          ))) {
+            verifyResponseStatus(400, vääräLaajuus("LMA1"))
+          }
+        }
+
+        "kurssin laajuus puuttuu -> HTTP 400" in {
+          setupOppijaWithOpiskeluoikeus(opiskeluoikeus(rajapäivänäAlkanut, alkuvaiheenSuoritus(
+            kurssinLaajuus = None
+          ))) {
+            verifyResponseStatus(400, vääräLaajuus("LMA1"))
+          }
+        }
+
+        "laajuudet kursseina -> HTTP 200" in {
+          setupOppijaWithOpiskeluoikeus(opiskeluoikeus(rajapäivänäAlkanut, alkuvaiheenSuoritus(
+            kurssinLaajuus = Some(LaajuusKursseissa(1))
+          ))) {
+            verifyResponseStatusOk()
+          }
+        }
       }
     }
   }

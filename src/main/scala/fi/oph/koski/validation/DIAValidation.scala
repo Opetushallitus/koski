@@ -31,11 +31,11 @@ object DIAValidation {
   private def validateLaajuusyksikkö(laajuus: Laajuus, alkamispäivä: LocalDate, rajapäivä: LocalDate): HttpStatus =
     laajuus match {
       case _: LaajuusVuosiviikkotunneissa if alkamispäivä.isEqualOrAfter(rajapäivä) =>
-        KoskiErrorCategory.badRequest.validation.laajuudet.osauoritusVääräLaajuus(
+        KoskiErrorCategory.badRequest.validation.laajuudet.osasuoritusVääräLaajuus(
           s"DIA-tutkinnon laajuus on ilmoitettava opintopisteissä ${FinnishDateFormat.format(rajapäivä)} tai myöhemmin alkaneille opiskeluoikeuksille"
         )
       case _: LaajuusOpintopisteissä if alkamispäivä.isBefore(rajapäivä) =>
-        KoskiErrorCategory.badRequest.validation.laajuudet.osauoritusVääräLaajuus(
+        KoskiErrorCategory.badRequest.validation.laajuudet.osasuoritusVääräLaajuus(
           s"DIA-tutkinnon laajuuden voi ilmoittaa opintopisteissä vain ${FinnishDateFormat.format(rajapäivä)} tai myöhemmin alkaneille opiskeluoikeuksille"
         )
       case _ => HttpStatus.ok

@@ -446,7 +446,7 @@ class OppijaValidationIBSpec extends AnyFreeSpec with KoskiHttpSpec with PutOpis
         "Laajuuden ilmoitus opintopisteinä ei ole ok" in {
           val oo = createOpiskeluoikeusYhdelläKurssilla(rajapäivä.minusDays(1), LaajuusOpintopisteissä(1))
           setupOppijaWithOpiskeluoikeus(oo) {
-            verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.laajuudet.osauoritusVääräLaajuus(
+            verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.laajuudet.osasuoritusVääräLaajuus(
               "Osasuorituksen laajuuden voi ilmoitettaa opintopisteissä vain 1.8.2024 tai myöhemmin alkaneille IB-tutkinnon opiskeluoikeuksille"
             ))
           }
@@ -514,7 +514,7 @@ class OppijaValidationIBSpec extends AnyFreeSpec with KoskiHttpSpec with PutOpis
         "Laajuuden ilmoitus kursseina ei ole ok" in {
           val oo = createOpiskeluoikeusYhdelläKurssilla(rajapäivä, LaajuusKursseissa(1))
           setupOppijaWithOpiskeluoikeus(oo) {
-            verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.laajuudet.osauoritusVääräLaajuus(
+            verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.laajuudet.osasuoritusVääräLaajuus(
               "Osasuorituksen laajuus on ilmoitettava opintopisteissä 1.8.2024 tai myöhemmin alkaneille IB-tutkinnon opiskeluoikeuksille"
             ))
           }
@@ -635,7 +635,7 @@ class OppijaValidationIBSpec extends AnyFreeSpec with KoskiHttpSpec with PutOpis
         "Oppiaine opintopisteissä EI ole OK" in {
           val oo = createOpiskeluoikeusYhdelläOppiaineella(rajapäiväOppiaine.minusDays(1), LaajuusOpintopisteissä(2))
           setupOppijaWithOpiskeluoikeus(oo) {
-            verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.laajuudet.osauoritusVääräLaajuus(
+            verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.laajuudet.osasuoritusVääräLaajuus(
               "Oppiaineen laajuuden voi ilmoittaa opintopisteissä vain 1.8.2024 tai myöhemmin alkaneille IB-tutkinnon opiskeluoikeuksille"
             ))
           }
@@ -646,7 +646,7 @@ class OppijaValidationIBSpec extends AnyFreeSpec with KoskiHttpSpec with PutOpis
         "Oppiaine tunneissa EI ole OK" in {
           val oo = createOpiskeluoikeusYhdelläOppiaineella(rajapäiväOppiaine, LaajuusTunneissa(100))
           setupOppijaWithOpiskeluoikeus(oo) {
-            verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.laajuudet.osauoritusVääräLaajuus(
+            verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.laajuudet.osasuoritusVääräLaajuus(
               "Oppiaineen laajuus on ilmoitettava opintopisteissä 1.8.2024 tai myöhemmin alkaneille IB-tutkinnon opiskeluoikeuksille"
             ))
           }
