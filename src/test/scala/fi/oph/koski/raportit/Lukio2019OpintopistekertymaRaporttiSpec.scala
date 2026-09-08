@@ -1,6 +1,6 @@
 package fi.oph.koski.raportit
 
-import fi.oph.koski.KoskiApplicationForTests
+import fi.oph.koski.{DirtiesFixtures, KoskiApplicationForTests}
 import fi.oph.koski.api.misc.{PutOpiskeluoikeusTestMethods, TestMethodsLukio}
 import fi.oph.koski.documentation.ExamplesLukio2019.lops2019AikuistenPerusteenDiaarinumero
 import fi.oph.koski.documentation.ExampleData
@@ -18,7 +18,7 @@ import org.scalatest.freespec.AnyFreeSpec
 import java.time.LocalDate.{of => date}
 import java.time.LocalDate
 
-class Lukio2019OpintopistekertymaRaporttiSpec extends AnyFreeSpec with RaportointikantaTestMethods with BeforeAndAfterAll with PutOpiskeluoikeusTestMethods[LukionOpiskeluoikeus] {
+class Lukio2019OpintopistekertymaRaporttiSpec extends AnyFreeSpec with RaportointikantaTestMethods with BeforeAndAfterAll with DirtiesFixtures with PutOpiskeluoikeusTestMethods[LukionOpiskeluoikeus] {
   def tag = implicitly[reflect.runtime.universe.TypeTag[LukionOpiskeluoikeus]]
 
   override def defaultOpiskeluoikeus = TestMethodsLukio.lukionOpiskeluoikeus
