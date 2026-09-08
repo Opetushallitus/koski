@@ -3,8 +3,11 @@ import { virkailija } from './setup/auth'
 
 const kaisaOid = '1.2.246.562.24.00000000007'
 const tommiOid = '1.2.246.562.24.00000000051'
+// Lasse Luokallejäänyt (170186-6520): kaksi 7. vuosiluokan suoritusta
+const lasseOid = '1.2.246.562.24.00000000009'
 const kaisaUrl = `${kaisaOid}?opiskeluoikeudenTyyppi=perusopetus&perusopetus-v2=true`
 const tommiUrl = `${tommiOid}?opiskeluoikeudenTyyppi=perusopetus&perusopetus-v2=true`
+const lasseUrl = `${lasseOid}?opiskeluoikeudenTyyppi=perusopetus&perusopetus-v2=true`
 
 test.describe('Perusopetuksen uusi käyttöliittymä', () => {
   test.use({ storageState: virkailija('kalle') })
@@ -268,6 +271,32 @@ test.describe('Perusopetuksen uusi käyttöliittymä', () => {
         'oo.0.suoritukset.3.suorituksenVahvistus.value.luokalleSiirtyminen'
       )
     ).toContainText('Ei siirretä seuraavalle luokalle')
+  })
+
+  test('Järjestää saman vuosiluokan suoritukset alkamispäivän mukaan uusimmasta vanhimpaan', async ({
+    page,
+    oppijaPage
+  }) => {
+    // Lassella on kaksi 7. vuosiluokan suoritusta: 7C alkanut 16.8.2013 ja
+    // 7A 15.8.2013. Välilehtijärjestys on oppimäärä, 9, 8, 7C, 7A — pelkkä
+    // luokka-aste ei riitä erottamaan toistettua vuosiluokkaa.
+    await oppijaPage.goto(lasseUrl)
+
+    await page.getByTestId('oo.0.suoritusTabs.3.tab').click()
+    await expect(
+      page.getByTestId('oo.0.suoritukset.3.luokka.value')
+    ).toContainText('7C')
+    await expect(
+      page.getByTestId('oo.0.suoritukset.3.alkamispäivä.value')
+    ).toContainText('16.8.2013')
+
+    await page.getByTestId('oo.0.suoritusTabs.4.tab').click()
+    await expect(
+      page.getByTestId('oo.0.suoritukset.4.luokka.value')
+    ).toContainText('7A')
+    await expect(
+      page.getByTestId('oo.0.suoritukset.4.alkamispäivä.value')
+    ).toContainText('15.8.2013')
   })
 
   test('Renderöi toiminta-alueittain opiskelleen oppijan päättötodistuksen', async ({
