@@ -1,5 +1,9 @@
 # Koskeen tallennettavien tietojen validaatiosäännöt
 
+## 8.9.2026
+
+- Ahvenanmaan perusopetuksen opiskeluoikeudesta, jossa on vahvistettu oppimäärän suoritus (`ahvenanmaanperusopetuksenoppimaara`), tulee löytyä myös vahvistettu 9. vuosiluokan suoritus. Vaatimusta ei sovelleta, jos oppilas on kotiopetuksessa oppimäärän vahvistuspäivänä tai jos oppimäärän suoritustapa on erityinen tutkinto. Validaatio ei koske muiden kuin oppivelvollisten oppimäärän suoritusta (`ahvenanmaanperusopetuksenoppimaaraaikuiset`).
+
 ## 4.9.2026
 
 - Muun kuin säännellyn koulutuksen osasuorituksen arvioinnilta vaaditaan arviointipäivä, kun opiskeluoikeus alkaa 1.1.2027 tai sen jälkeen.

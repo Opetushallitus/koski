@@ -18,3 +18,4 @@ OPHKOTO-57 - lisätty synteettinen kenttä, ei vaikuta tiedonsiirtoon
 TOR-2704 - vain @Title-annotaation sanamuoto muuttunut, ei muutosta skeeman rakenteeseen tai tiedonsiirtoon
 TOR-2708 - korjattu skeematiedostossa olevan aikajaksojen päällekkäisyysfunktion toimintaa; ei muutosta tiedonsiirtoprotokollaan
 TOR-2706 - lisätty MUKS-suorituksille osasuoritusLista- ja rekursiivisetOsasuoritukset-metodien tyyppitarkennukset validointia varten; ei muutosta skeeman rakenteeseen tai tiedonsiirtoprotokollaan
+TOR-2587 - lisätty Ahvenanmaan skeematiedostoon kommentti siitä, että validaatiosäännöt kirjoitetaan omikseen; ei muutosta skeeman rakenteeseen tai tiedonsiirtoprotokollaan
