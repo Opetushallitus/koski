@@ -1,0 +1,52 @@
+[
+  {
+    "metadata": [
+      {
+        "nimi": "Opiskelijavaihto",
+        "kuvaus": null,
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Studentutbyte",
+        "kuvaus": null,
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Student exchange",
+        "kuvaus": null,
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "virtaliikkuvuudentyyppi_1",
+    "versio": 1,
+    "koodiArvo": "1"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "Kansainvälinen harjoittelu",
+        "kuvaus": null,
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Internationell praktik",
+        "kuvaus": null,
+        "kieli": "SV"
+      },
+      {
+        "nimi": "International traineeship",
+        "kuvaus": null,
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "virtaliikkuvuudentyyppi_2",
+    "versio": 1,
+    "koodiArvo": "2"
+  }
+]

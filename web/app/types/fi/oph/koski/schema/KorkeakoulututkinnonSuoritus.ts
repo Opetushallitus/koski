@@ -1,6 +1,8 @@
 import { KorkeakoulunArviointi } from './KorkeakoulunArviointi'
 import { Koodistokoodiviite } from './Koodistokoodiviite'
 import { LocalizedString } from './LocalizedString'
+import { Laajuus } from './Laajuus'
+import { LiittyväOpiskeluoikeus } from './LiittyvaOpiskeluoikeus'
 import { Korkeakoulututkinto } from './Korkeakoulututkinto'
 import { Oppilaitos } from './Oppilaitos'
 import { KorkeakoulunOpintojaksonSuoritus } from './KorkeakoulunOpintojaksonSuoritus'
@@ -18,6 +20,9 @@ export type KorkeakoulututkinnonSuoritus = {
   tila?: Koodistokoodiviite<'suorituksentila', string>
   hyväksilukupäivä?: string
   suorituskieli?: Koodistokoodiviite<'kieli', string>
+  lisätieto?: LocalizedString
+  vaadittuLaajuus?: Laajuus
+  liittyvätOpiskeluoikeudet?: Array<LiittyväOpiskeluoikeus>
   koulutusmoduuli: Korkeakoulututkinto
   toimipiste: Oppilaitos
   osasuoritukset?: Array<KorkeakoulunOpintojaksonSuoritus>
@@ -30,6 +35,9 @@ export const KorkeakoulututkinnonSuoritus = (o: {
   tila?: Koodistokoodiviite<'suorituksentila', string>
   hyväksilukupäivä?: string
   suorituskieli?: Koodistokoodiviite<'kieli', string>
+  lisätieto?: LocalizedString
+  vaadittuLaajuus?: Laajuus
+  liittyvätOpiskeluoikeudet?: Array<LiittyväOpiskeluoikeus>
   koulutusmoduuli: Korkeakoulututkinto
   toimipiste: Oppilaitos
   osasuoritukset?: Array<KorkeakoulunOpintojaksonSuoritus>
