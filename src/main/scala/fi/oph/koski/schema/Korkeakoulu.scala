@@ -64,6 +64,7 @@ case class KorkeakoulunOpiskeluoikeudenLisätiedot(
   @Title("Koulutuskunnat")
   koulutuskuntaJaksot: List[KoulutuskuntaJakso] = Nil,
   @Title("Rahoituslähteet")
+  @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT))
   rahoituslähdeJaksot: Option[List[RahoituslähdeJakso]] = None,
   @Title("Liikkuvuusjaksot")
   liikkuvuusjaksot: Option[List[Liikkuvuusjakso]] = None,
@@ -173,6 +174,8 @@ case class KorkeakoulututkinnonSuoritus(
   @Description("Päivämäärä, jolloin suoritus on hyväksiluettu")
   hyväksilukupäivä: Option[LocalDate] = None,
   @Description("Opintosuorituksen julkinen lisätieto")
+  @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT))
+  @Hidden
   lisätieto: Option[LocalizedString] = None,
   @Description("Tutkinnon tai opintojen vaadittu laajuus")
   vaadittuLaajuus: Option[Laajuus] = None,
@@ -204,6 +207,8 @@ case class KorkeakoulunOpintojaksonSuoritus(
   laji: Option[Koodistokoodiviite] = None,
   lähdeorganisaatio: Option[KorkeakoulunLähdeorganisaatio] = None,
   @Description("Opintosuorituksen julkinen lisätieto")
+  @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT))
+  @Hidden
   lisätieto: Option[LocalizedString] = None,
   @KoodistoKoodiarvo("korkeakoulunopintojakso")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("korkeakoulunopintojakso", koodistoUri = "suorituksentyyppi")
