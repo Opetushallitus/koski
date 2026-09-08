@@ -1,0 +1,52 @@
+[
+  {
+    "metadata": [
+      {
+        "nimi": "Lähtevä",
+        "kuvaus": null,
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Utgående",
+        "kuvaus": null,
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Outgoing",
+        "kuvaus": null,
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "virtaliikkuvuudensuunta_1",
+    "versio": 1,
+    "koodiArvo": "1"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "Saapuva",
+        "kuvaus": null,
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Inkommande",
+        "kuvaus": null,
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Incoming",
+        "kuvaus": null,
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "virtaliikkuvuudensuunta_2",
+    "versio": 1,
+    "koodiArvo": "2"
+  }
+]

@@ -1,0 +1,35 @@
+{
+  "codesGroupUri": "virta",
+  "codesVersions": [],
+  "includesCodes": [],
+  "koodistoUri": "virtaliikkuvuusohjelma",
+  "levelsWithCodes": [],
+  "lukittu": null,
+  "metadata": [
+    {
+      "kieli": "FI",
+      "nimi": "VIRTA Liikkuvuusohjelma",
+      "kuvaus": "Liikkuvuusohjelma (ks. https://confluence.csc.fi/display/VIRTA/Tietovarannon+koodistot)",
+      "kayttoohje": null,
+      "kasite": null,
+      "kohdealue": null,
+      "sitovuustaso": null,
+      "kohdealueenOsaAlue": null,
+      "toimintaymparisto": null,
+      "tarkentaaKoodistoa": null,
+      "huomioitavaKoodisto": null,
+      "koodistonLahde": null
+    }
+  ],
+  "omistaja": null,
+  "organisaatioOid": "1.2.246.562.10.2013112012294919827487",
+  "paivittajaOid": null,
+  "paivitysPvm": "2017-01-19",
+  "resourceUri": "https://virkailija.opintopolku.fi/koodisto-service/rest/codes/virtaliikkuvuusohjelma",
+  "tila": "LUONNOS",
+  "versio": 1,
+  "version": 0,
+  "voimassaAlkuPvm": "2013-01-01",
+  "voimassaLoppuPvm": null,
+  "withinCodes": []
+}

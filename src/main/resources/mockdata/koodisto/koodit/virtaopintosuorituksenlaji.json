@@ -1,0 +1,110 @@
+[
+  {
+    "metadata": [
+      {
+        "nimi": "tutkinto",
+        "kuvaus": "Opintosuoritus on tutkinnon suoritus. Synonyymi: Degree programme, tutkinto. Tiedon perusteella päättyneestä opiskeluoikeudesta tiedetään, että opiskeluoikeus on päättynyt valmistumiseen.",
+        "lyhytNimi": "",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "examen",
+        "kuvaus": "",
+        "lyhytNimi": "",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "degree",
+        "kuvaus": null,
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "virtaopintosuorituksenlaji_1",
+    "versio": 1,
+    "koodiArvo": "1"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "muu opintosuoritus",
+        "kuvaus": "Synonyymi: opintojakso, kokonaisuus, moduuli, kurssi, Course Unit, jne.",
+        "lyhytNimi": "",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "annan studieprestation",
+        "kuvaus": "",
+        "lyhytNimi": "",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "other study attainment",
+        "kuvaus": null,
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "virtaopintosuorituksenlaji_2",
+    "versio": 1,
+    "koodiArvo": "2"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "ei huomioitava",
+        "kuvaus": "Väliaikainen suoritustieto joka ositettu tiedonkeruujaksolle myöhemmin syntyvästä suorituksesta, eli \"osasuoritus\" vain Kelaa varten; Ei huomioida Tilastokeskuksen tai OKM:n tiedonkeruissa.",
+        "lyhytNimi": "",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "ej beaktansvärd",
+        "kuvaus": "Temporär prestation, endast för FPA.",
+        "lyhytNimi": "",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "not to be considered",
+        "kuvaus": null,
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "virtaopintosuorituksenlaji_3",
+    "versio": 1,
+    "koodiArvo": "3"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "oppilaitoksen sisäinen",
+        "kuvaus": "Väliaikainen suoritustieto, jota voidaan käyttää opintosuorituksen sisäiseen tiedon tallentamiseen lähinnä opettajan tarpeisiin, jos opintosuoritustietorakennetta käytetään opettajan ”pöytälaatikon” tai ”muistivihon” tapaisena palveluna. Ei huomioida suoritusotteella. (eikä siis Kelan, Tilastokeskuksen tai OKM:n tiedonkeruissa, tai hyväksilukemisen lähteenä).",
+        "lyhytNimi": "",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "intern inom läroanstalten",
+        "kuvaus": "Temporär prestation som inte beaktats på studieutraget.",
+        "lyhytNimi": "",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "internal to the educational institution",
+        "kuvaus": null,
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "virtaopintosuorituksenlaji_4",
+    "versio": 1,
+    "koodiArvo": "4"
+  }
+]

@@ -1,0 +1,54 @@
+[
+  {
+    "metadata": [
+      {
+        "nimi": "Aikuiskoulutus",
+        "kuvaus": "Tarkentaa Opiskeluoikeuden tyyppi -koodiston arvoa 1 Ammattikorkeakoulututkinto (eli jos opiskeluoikeus on tyyppiä ammattikorkeakoulututkinto ja tätä arvoa A Aikuiskoulutus ei ole tuotu, on kyseessä nuorten koulutus.",
+        "lyhytNimi": "",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Vuxenutbildning",
+        "kuvaus": null,
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Adult education",
+        "kuvaus": null,
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "liikkuvuudenluokittelu_a",
+    "versio": 1,
+    "koodiArvo": "a"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "Blended",
+        "kuvaus": "Liikkuvuusjaksoon liittyy virtuaalista liikkuvuutta. Fyysiseen liikkuvuusjaksoon yhdistyy virtuaalinen osio.",
+        "lyhytNimi": "",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Blandat",
+        "kuvaus": null,
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Blended",
+        "kuvaus": null,
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "liikkuvuudenluokittelu_b",
+    "versio": 1,
+    "koodiArvo": "b"
+  }
+]
