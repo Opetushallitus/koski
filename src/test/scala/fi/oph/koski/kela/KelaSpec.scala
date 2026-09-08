@@ -11,7 +11,8 @@ import org.json4s.{JArray, JObject, JValue}
 import org.json4s.jackson.JsonMethods
 import fi.oph.koski.koskiuser.MockUsers
 import fi.oph.koski.log.{AccessLogTester, AuditLogTester}
-import fi.oph.koski.organisaatio.MockOrganisaatiot.{EuropeanSchoolOfHelsinki, MuuKuinSäänneltyKoulutusToimija}
+import fi.oph.koski.fixture.AmmatillinenOpiskeluoikeusTestData
+import fi.oph.koski.organisaatio.MockOrganisaatiot.{EuropeanSchoolOfHelsinki, MuuKuinSäänneltyKoulutusToimija, stadinAmmattiopisto}
 import fi.oph.koski.schema.LocalizedString.finnish
 import fi.oph.koski.schema
 import fi.oph.koski.ytr.MockYtrClient
@@ -388,6 +389,21 @@ class KelaSpec
         val oppija = JsonSerializer.parse[KelaOppija](body)
         val lisätiedot = oppija.opiskeluoikeudet.head.lisätiedot.get.asInstanceOf[KelaAmmatillisenOpiskeluoikeudenLisätiedot]
         lisätiedot.koulutusvienti shouldBe Some(true)
+      }
+    }
+    "Palauttaa tiedon siirtymisestä uusiin tutkinnon perusteisiin" in {
+      val opiskeluoikeus = AmmatillinenOpiskeluoikeusTestData.katsotaanEronneeksiOpiskeluoikeus(stadinAmmattiopisto)
+      setupOppijaWithOpiskeluoikeus(
+        opiskeluoikeus.copy(lisätiedot = opiskeluoikeus.lisätiedot.map(_.copy(siirtynytUusiinTutkinnonPerusteisiin = Some(true)))),
+        KoskiSpecificMockOppijat.eiKoskessa
+      ) {
+        verifyResponseStatusOk()
+      }
+      postHetu(KoskiSpecificMockOppijat.eiKoskessa.hetu.get) {
+        verifyResponseStatusOk()
+        val oppija = JsonSerializer.parse[KelaOppija](body)
+        val lisätiedot = oppija.opiskeluoikeudet.head.lisätiedot.get.asInstanceOf[KelaAmmatillisenOpiskeluoikeudenLisätiedot]
+        lisätiedot.siirtynytUusiinTutkinnonPerusteisiin shouldBe Some(true)
       }
     }
     "Palauttaa näytön arviointipäivän" in {
