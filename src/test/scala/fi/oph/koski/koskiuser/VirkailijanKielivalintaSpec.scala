@@ -13,9 +13,9 @@ import java.net.{InetAddress, URLEncoder}
 import java.util.UUID
 
 /**
- * Virkailijan asiointikieli haetaan vain CAS-tiketin validoinnin yhteydessä, joten selaimen sulkeminen hukkasi
+ * Virkailijan asiointikieli haettiin aiemmin vain CAS-tiketin validoinnin yhteydessä, joten selaimen sulkeminen hukkasi
  * istuntoevästeenä olevan lang-evästeen mutta säilytti pysyvän koskiUser-evästeen: istunto jatkui ilman uutta
- * tikettiä ja käyttöliittymä jäi suomeksi. Nämä testit kattavat puuttuvan evästeen täydentämisen.
+ * tikettiä ja käyttöliittymä jäi suomeksi. Nämä testit kattavat evästeen täydentämisen ja asiointikielen muutokset.
  */
 class VirkailijanKielivalintaSpec extends ScalatraFreeSpec with TestEnvironment {
 
@@ -67,21 +67,47 @@ class VirkailijanKielivalintaSpec extends ScalatraFreeSpec with TestEnvironment 
       }
     }
 
-    "olemassa olevaa lang-evästettä ei ylikirjoiteta" in {
+    "asiointikielen muutos päivittää olemassa olevan evästeen ja saman vastauksen HTML-kielen" in {
       withVirkailijaSession(ruotsinkielinen.ldapUser.oid, ruotsinkielinen.username) { koskiUser =>
         get("/koski/virkailija", headers = Map("Cookie" -> s"$koskiUser; lang=fi")) {
           status should equal(200)
-          langCookieValue should equal(None)
-          body should include("""<html lang="fi"""")
+          langCookieValue should equal(Some("sv"))
+          body should include("""<html lang="sv"""")
         }
+      }
+    }
+
+    "samanarvoista evästettä ei kirjoiteta uudelleen" in {
+      withVirkailijaSession(ruotsinkielinen.ldapUser.oid, ruotsinkielinen.username) { koskiUser =>
+        get("/koski/virkailija", headers = Map("Cookie" -> s"$koskiUser; lang=sv")) {
+          status should equal(200)
+          langCookieValue should equal(None)
+          body should include("""<html lang="sv"""")
+        }
+      }
+    }
+
+    "Valpas päivittää myös olemassa olevan evästeen" in {
+      withVirkailijaSession(ruotsinkielinen.ldapUser.oid, ruotsinkielinen.username) { koskiUser =>
+        get("/koski/valpas/localization/window-properties", headers = Map("Cookie" -> s"$koskiUser; lang=fi")) {
+          status should equal(200)
+          langCookieValue should equal(Some("sv"))
+        }
+      }
+    }
+
+    "olemassa oleva eväste säilyy, jos kielihaku epäonnistuu" in {
+      get("/testi/kieli", headers = Map("Cookie" -> "lang=sv")) {
+        status should equal(200)
+        body should equal("None")
+        langCookieValue should equal(None)
       }
     }
 
     "evästettä ei aseteta, jos asiointikieltä ei saada haettua" in {
       withVirkailijaSession("1.2.246.562.24.99999999494", "tuntematon-" + UUID.randomUUID()) { koskiUser =>
         get("/koski/virkailija", headers = Map("Cookie" -> koskiUser)) {
-          // Väärän arvon kirjoittaminen tekisi ohimenevästä virheestä pysyvän: eväste olisi jatkossa olemassa,
-          // eikä täydennys enää laukeaisi. Ks. UserLanguage.setLanguageCookieFromUserIfNecessary
+          // Puuttuva asiointikieli ei saa korvata selaimen kielivalintaa oletusarvolla.
           langCookieValue should equal(None)
         }
       }

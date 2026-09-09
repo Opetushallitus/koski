@@ -2,7 +2,7 @@ package fi.oph.koski.userdirectory
 
 import com.typesafe.config.Config
 import fi.oph.koski.cache.{CacheManager, Cached, CachingProxy, ExpiringCache}
-import fi.oph.koski.koskiuser.{Käyttöoikeus, KäyttöoikeusGlobal, KäyttöoikeusOrg, KäyttöoikeusViranomainen, Palvelurooli, Rooli}
+import fi.oph.koski.koskiuser.{AuthenticationUser, Käyttöoikeus, KäyttöoikeusGlobal, KäyttöoikeusOrg, KäyttöoikeusViranomainen, Palvelurooli, Rooli}
 import fi.oph.koski.log.NotLoggable
 import fi.oph.koski.organisaatio.Opetushallitus
 import fi.oph.koski.schema.OidOrganisaatio
@@ -15,16 +15,25 @@ case class Password(password: String) extends NotLoggable
 
 trait DirectoryClient {
   def findUser(username: String): Option[DirectoryUser]
+  def findAsiointikieli(user: AuthenticationUser): Option[String] = findUser(user.username).flatMap(_.asiointikieli)
   def authenticate(userid: String, wrappedPassword: Password): Boolean
 }
 
 object DirectoryClient {
   def apply(config: Config, casService: CasService)(implicit cacheInvalidator: CacheManager): DirectoryClient with Cached = {
     val cacheStrategy = ExpiringCache("DirectoryClient", 60.seconds, maxSize = 100)
-    CachingProxy[DirectoryClient](cacheStrategy, config.getString("opintopolku.virkailija.url") match {
+    val client = config.getString("opintopolku.virkailija.url") match {
       case "mock" => new MockDirectoryClient()
       case _ => new OpintopolkuDirectoryClient(config, casService)
-    })
+    }
+    val cached = CachingProxy[DirectoryClient](cacheStrategy, client)
+    new DirectoryClient with Cached {
+      def findUser(username: String): Option[DirectoryUser] = cached.findUser(username)
+      def authenticate(userid: String, wrappedPassword: Password): Boolean = cached.authenticate(userid, wrappedPassword)
+      // Asiointikielen muutos henkilo-ui/omattiedot-palvelussa näkyy heti seuraavalla sivulatauksella.
+      override def findAsiointikieli(user: AuthenticationUser): Option[String] = client.findAsiointikieli(user)
+      def invalidateCache(): Unit = cached.invalidateCache()
+    }
   }
 
   def resolveKäyttöoikeudet(käyttäjä: HenkilönKäyttöoikeudet): (String, List[Käyttöoikeus]) = {

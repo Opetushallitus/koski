@@ -9,7 +9,7 @@ import org.scalatra.{Cookie, CookieOptions}
 import scala.util.{Failure, Success, Try}
 
 object UserLanguage extends Logging {
-  // Request-attribuutti, johon tälle pyynnölle ratkaistu kieli talletetaan silloin, kun lang-evästettä ei vielä ollut.
+  // Request-attribuutti, johon tälle pyynnölle ratkaistu kieli talletetaan silloin, kun lang-eväste päivittyy.
   // Tarvitaan, koska vastaukseen asetettu eväste ei näy vielä saman pyynnön request.cookiesissa.
   val LangAttribute = "koskiResolvedLang"
 
@@ -37,14 +37,10 @@ object UserLanguage extends Logging {
   }
 
   /**
-   * Virkailijan asiointikieli ratkaistaan vain CAS-tiketin validoinnin yhteydessä. Koska lang on istuntoeväste ja
-   * koskiUser pysyvä eväste, selaimen sulkeminen hukkaa kielen mutta säilyttää istunnon. Tällöin istunto jatkuu
-   * ilman uutta tikettiä, jolloin kieltä ei haeta enää koskaan uudelleen ja käyttöliittymä jää suomeksi.
-   * Täydennetään puuttuva eväste tässä.
-   *
-   * Palauttaa ratkaistun kielen vain jos eväste puuttui ja haku onnistui. Jos haku epäonnistuu tai asiointikieltä
-   * ei ole, evästettä EI aseteta: muuten ohimenevästä virheestä tulisi pysyvä, koska eväste olisi jatkossa olemassa
-   * eikä tämä täydennys enää laukeaisi.
+   * Päivitetään virkailijan kieli myös olemassa olevan evästeen tapauksessa, jotta henkilo-ui/omattiedot-
+   * palvelussa tallennettu asiointikieli näkyy seuraavalla sivulatauksella. Kielihaku ohittaa käyttäjävälimuistin.
+   * Jos haku epäonnistuu tai kieli puuttuu, säilytetään nykyinen eväste ja yritetään seuraavalla latauksella.
+   * Palautetaan muuttunut kieli saman pyynnön HTML-renderöintiä varten.
    */
   def setLanguageCookieFromUserIfNecessary(
     user: AuthenticationUser,
@@ -53,14 +49,14 @@ object UserLanguage extends Logging {
     response: RichResponse
   ): Option[String] = {
     // Kansalaisen kieli päätellään domainista, ks. LanguageSupport.setLangCookieFromDomainIfNecessary
-    if (user.kansalainen || sanitizeLanguage(request.cookies.get("lang")).isDefined) {
+    if (user.kansalainen) {
       None
     } else {
-      Try(getLanguageFromUserDirectory(user, directoryClient)) match {
-        case Success(Some(lang)) =>
+      Try(sanitizeLanguage(directoryClient.findAsiointikieli(user))) match {
+        case Success(Some(lang)) if !sanitizeLanguage(request.cookies.get("lang")).contains(lang) =>
           setLanguageCookie(lang, response)
           Some(lang)
-        case Success(None) =>
+        case Success(_) =>
           None
         case Failure(e) =>
           logger.warn(e)(s"Käyttäjän ${user.username} asiointikielen haku epäonnistui, lang-evästettä ei aseteta")

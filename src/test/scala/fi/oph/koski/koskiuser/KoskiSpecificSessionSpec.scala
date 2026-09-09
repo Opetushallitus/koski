@@ -12,7 +12,7 @@ import fi.oph.koski.organisaatio.{MockOrganisaatioRepository, MockOrganisaatiot,
 import fi.oph.koski.schema.OpiskeluoikeudenTyyppi
 import fi.oph.koski.schema.OpiskeluoikeudenTyyppi._
 import fi.oph.koski.sso.CasService
-import fi.oph.koski.userdirectory.{DirectoryUser, OpintopolkuDirectoryClient}
+import fi.oph.koski.userdirectory.{DirectoryClient, DirectoryUser, OpintopolkuDirectoryClient}
 import org.json4s.{DefaultFormats, Formats}
 import org.json4s.jackson.Serialization.write
 import org.mockito.Mockito.{mock, when}
@@ -49,6 +49,31 @@ class KoskiSpecificSessionSpec
   private val wireMockServer = new WireMockServer(wireMockConfig().port(9877))
   private val directoryClient = new OpintopolkuDirectoryClient(config, new CasService(config))
   private val käyttöoikeusRepository = new KäyttöoikeusRepository(MockOrganisaatioRepository, directoryClient)
+
+  "Asiointikieli päivittyy heti, vaikka käyttäjätiedot ovat välimuistissa" in {
+    val client = DirectoryClient(config, new CasService(config))
+    val user = AuthenticationUser.fromDirectoryUser("kalle", MockUsers.kalle.ldapUser)
+    val henkilöUrl = s"/oppijanumerorekisteri-service/henkilo/${user.oid}"
+    val original = Responses.käyttäjäResponse(user.username)
+    val changed = write(Map(
+      "oidHenkilo" -> user.oid,
+      "sukunimi" -> "Testi",
+      "etunimet" -> "Testi",
+      "asiointiKieli" -> Map("kieliKoodi" -> "sv")
+    ))
+
+    try {
+      client.findUser(user.username).flatMap(_.asiointikieli) should equal(Some("fi"))
+      client.findAsiointikieli(user) should equal(Some("fi"))
+      wireMockServer.stubFor(get(urlPathEqualTo(henkilöUrl)).willReturn(ok(changed)))
+
+      client.findUser(user.username).flatMap(_.asiointikieli) should equal(Some("fi"))
+      client.findAsiointikieli(user) should equal(Some("sv"))
+    } finally {
+      wireMockServer.stubFor(get(urlPathEqualTo(henkilöUrl)).willReturn(ok(original)))
+      client.invalidateCache()
+    }
+  }
 
   "KoskiSession" - {
     "Client ip" - {

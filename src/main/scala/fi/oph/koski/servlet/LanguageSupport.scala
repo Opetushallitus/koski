@@ -24,7 +24,7 @@ trait LanguageSupport extends KoskiSpecificBaseServlet {
     setLanguageCookie(langFromDomain, response)
   }
 
-  // Virkailijalla ei ole kielivalitsinta eikä domainpäättelyä: kieli tulee asiointikielestä. Ks. UserLanguage.
+  // Virkailijan kieli päivitetään asiointikielestä jokaisella sivulatauksella. Ks. UserLanguage.
   def setLangCookieFromUserIfNecessary(user: AuthenticationUser): Unit =
     UserLanguage.setLanguageCookieFromUserIfNecessary(user, application.directoryClient, request, response)
       .foreach(request.setAttribute(UserLanguage.LangAttribute, _))
