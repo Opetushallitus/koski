@@ -79,7 +79,7 @@ case class VirtaXMLConverter(oppilaitosRepository: OppilaitosRepository, koodist
           virtaOpiskeluoikeudenTyyppi = Some(opiskeluoikeudenTyyppi(opiskeluoikeusNode)),
           lukukausiIlmoittautuminen = lukukausiIlmoittautuminen(oppilaitos, opiskeluoikeudenTila, avain(opiskeluoikeusNode), virtaXml),
           järjestäväOrganisaatio = järjestäväOrganisaatio(opiskeluoikeusNode, oppilaitoksenNimiPäivä),
-          maksettavatLukuvuosimaksut = Some(lukuvuosimaksut),
+          maksettavatLukuvuosimaksut = Some(lukuvuosimaksut).filter(_.nonEmpty),
           koulutuskuntaJaksot = koulutuskuntajaksot(opiskeluoikeusNode),
           opettajanPedagogisetOpinnot = opettajanPatevyydet.map(
             _.distinct

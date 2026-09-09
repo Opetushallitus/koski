@@ -1,4 +1,5 @@
 import { Locator, Page } from '@playwright/test'
+import { KorkeakouluOpiskeluoikeus } from '../oppija/components/KorkeakouluOpiskeluoikeus'
 import { YoTodistusLanguage } from '../../../../app/components-v2/yotutkinto/YoTodistus'
 import { expect } from '../../base'
 import { build, BuiltIdNode } from '../oppija/uiV2builder/builder'
@@ -41,7 +42,28 @@ export class KoskiKansalainenPage {
     this.page.getByTestId('oppijanvalitsin-dropdown').selectOption(oid)
   }
 
-  async openOpiskeluoikeus(name: string) {
+  getOpiskeluoikeus(otsikko: string | RegExp): Locator {
+    return this.page
+      .locator('.opiskeluoikeus-container')
+      .filter({ has: this.page.getByRole('button', { name: otsikko }) })
+      .locator('.opiskeluoikeus')
+  }
+
+  getKorkeakouluOpiskeluoikeus(
+    otsikko: string | RegExp
+  ): KorkeakouluOpiskeluoikeus {
+    return new KorkeakouluOpiskeluoikeus(this.getOpiskeluoikeus(otsikko))
+  }
+
+  getOppilaitosNimi(otsikko: string | RegExp): Locator {
+    return this.page
+      .locator('.oppilaitos-container')
+      .filter({ has: this.page.getByRole('button', { name: otsikko }) })
+      .getByRole('heading')
+      .first()
+  }
+
+  async openOpiskeluoikeus(name: string | RegExp) {
     await this.page.getByRole('button', { name }).click()
   }
 

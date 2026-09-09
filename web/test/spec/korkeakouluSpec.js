@@ -5,54 +5,6 @@ describe('Korkeakoulutus', function () {
 
   before(Authentication().login(), resetFixtures)
 
-  describe('Valmis diplomi-insinööri', function () {
-    before(page.openPage, page.oppijaHaku.searchAndSelect('100869-192W'))
-    describe('Oppilaitos ja tutkinto', function () {
-      it('näytetään', function () {
-        expect(opinnot.getTutkinto('konetekniikka')).to.equal(
-          'Dipl.ins., konetekniikka'
-        )
-        expect(opinnot.getOppilaitos('konetekniikka')).to.equal(
-          'Aalto-yliopisto'
-        )
-        expect(
-          opinnot.opiskeluoikeudet.valitunVälilehdenAlaotsikot()
-        ).to.deep.equal([
-          'korkeakoulututkinto 2013—2016, valmistunut',
-          'korkeakoulunopintojakso'
-        ])
-      })
-    })
-    describe('Kaikki tiedot näkyvissä', function () {
-      before(opinnot.expandAll)
-      it('toimii', function () {
-        expect(
-          S(
-            '.korkeakoulututkinnonsuoritus .tutkinnon-osa:eq(0) .suoritus:eq(0) .nimi'
-          ).text()
-        ).to.equal('Vapaasti valittavat opinnot (KON)')
-      })
-    })
-  })
-
-  describe('Maisteri, jolla ensisijainen opiskeluoikeus', function () {
-    before(
-      Authentication().login(),
-      page.openPage,
-      page.oppijaHaku.searchAndSelect('250668-293Y')
-    )
-    describe('Oppilaitos ja tutkinto', function () {
-      it('näytetään', function () {
-        expect(opinnot.getTutkinto('Dipl.ins., kemian tekniikka')).to.equal(
-          'Dipl.ins., kemian tekniikka'
-        )
-        expect(opinnot.getOppilaitos('Dipl.ins., kemian tekniikka')).to.equal(
-          'Aalto-yliopisto'
-        )
-      })
-    })
-  })
-
   describe('Keskeneräinen tutkinto', function () {
     before(page.openPage, page.oppijaHaku.searchAndSelect('150113-4146'))
 
