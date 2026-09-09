@@ -524,9 +524,10 @@ test.describe('Perusopetuksen uusi käyttöliittymä: vuosiluokan suorituksen li
   }) => {
     // Alkamispäiväkenttä oli hallitsematon (defaultValue), jolloin selain jätti
     // kenttään sen tekstin, joka siihen renderöitiin ensimmäisellä kerralla.
-    // Kun välilehti vaihtui jo renderöityyn kenttään — kuten uutta vuosiluokkaa
-    // lisättäessä — kentässä näkyi edellisen vuosiluokan päivä, vaikka
-    // lomakkeen data oli oikein.
+    // Vika ilmenee vain kun kenttä saa uuden arvon kiinnittymättä uudelleen:
+    // vuosiluokat lajitellaan laskevasti, joten uusin osuu samaan
+    // välilehti-indeksiin kuin edellinen, eikä EditorContainerin
+    // key={suoritusIndex} pakota uudelleenkiinnitystä.
     await fixtures.reset()
     const oppija = await fixtures.putOppija(tyhjäTeroPerusopetus())
     await oppijaPage.goto(v2Url(oppija.henkilö.oid))
@@ -539,7 +540,9 @@ test.describe('Perusopetuksen uusi käyttöliittymä: vuosiluokan suorituksen li
     await lisääVuosiluokka(page, '2', '2A', '1.8.2018')
     await expect(alkamispäiväInput(page, 1)).toHaveValue('1.8.2018')
 
-    // Sama koskee välilehden vaihtoa: kussakin vuosiluokassa näkyy sen oma päivä.
+    // Välilehteä vaihdettaessa suorituksen puu kiinnittyy uudelleen, joten tämä
+    // meni oikein jo ennen korjausta. Varmistetaan silti lopputulos: kussakin
+    // vuosiluokassa näkyy sen oma päivä.
     await page.getByTestId('oo.0.suoritusTabs.2.tab').click()
     await expect(alkamispäiväInput(page, 2)).toHaveValue('1.1.2017')
 

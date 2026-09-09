@@ -45,6 +45,10 @@ export const yearFromIsoDateString = (dateStr: string) =>
 export const ISO2FinnishDate = (dateStr?: string) =>
   dateStr && mapDate(parseISODate(dateStr), formatFinnishDate)
 
+/** Päivä, jota suomalaisittain kirjoitettu teksti tarkoittaa, tai undefined jos teksti ei ole kelvollinen päivämäärä. */
+export const finnishDate2ISO = (dateStr?: string): string | undefined =>
+  dateStr ? mapDate(parseFinnishDate(dateStr), formatISODate) : undefined
+
 export const formatRange =
   (formatter: (s: string) => string | undefined) =>
   (from?: string, to?: string) => {

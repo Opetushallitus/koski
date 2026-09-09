@@ -358,7 +358,10 @@ test.describe('Ahvenanmaan perusopetuksen käyttöliittymä', () => {
       .getByTestId('oo.0.opiskeluoikeus.tila.edit.items.1.remove')
       .click()
 
-    // Uudet vuosiluokat lajitellaan 9. ja 8. luokan perään indeksiin 3.
+    // Vuosiluokat lajitellaan laskevasti, joten uusin osuu aina indeksiin 3:
+    // ensin 1. vuosiluokka, ja toisen lisäyksen jälkeen 2. vuosiluokka, jolloin
+    // 1. siirtyy indeksiin 4. Juuri tästä kenttä saa uuden arvon kiinnittymättä
+    // uudelleen.
     await lisääVuosiluokka(page, '1', '1A', '15.8.2016')
     await expect(
       page.getByTestId('oo.0.suoritukset.3.alkamispäivä.edit.edit.input')
@@ -470,6 +473,10 @@ async function lisääVuosiluokka(
   await page
     .getByTestId('oo.0.modal.uusiVuosiluokanSuoritus.alkamispäivä.edit.input')
     .fill(alkamispäivä)
+  await page
+    .getByTestId('oo.0.modal.uusiVuosiluokanSuoritus.alkamispäivä.edit.input')
+    .blur()
+
   await page.getByTestId('oo.0.modal.uusiVuosiluokanSuoritus.submit').click()
   await expect(modal).not.toBeVisible()
 }
