@@ -1772,13 +1772,15 @@ object ValpasOpiskeluoikeusExampleData {
         tilat
       ),
       suoritukset = List(
-        ExamplesAikuistenPerusopetus.aikuistenPerusopetuksenAlkuvaiheenSuoritus().copy(
+        ExamplesAikuistenPerusopetus.aikuistenPerusopetuksenAlkuvaiheenSuoritus(
+          osasuoritukset = ExamplesAikuistenPerusopetus.alkuvaiheenOppiaineetKursseina
+        ).copy(
           toimipiste = ressunLukio,
           vahvistus = valmistumispäivä.flatMap(vp => vahvistusPaikkakunnalla(vp))
         ),
         ExamplesAikuistenPerusopetus.aikuistenPerusopetukseOppimääränSuoritus(
           ExamplesAikuistenPerusopetus.aikuistenPerusopetus2017,
-          ExamplesAikuistenPerusopetus.oppiaineidenSuoritukset2017
+          ExamplesAikuistenPerusopetus.oppiaineidenSuoritukset2017Kursseina
         ).copy(
           toimipiste = ressunLukio,
           vahvistus = valmistumispäivä.flatMap(vp => vahvistusPaikkakunnalla(vp))

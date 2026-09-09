@@ -1,5 +1,14 @@
 # Koskeen tallennettavien tietojen validaatiosäännöt
 
+## 9.9.2026
+
+Aikuisten perusopetuksen opiskeluoikeuksissa, jotka ovat alkaneet 1.1.2020 tai sen jälkeen:
+
+- Kurssin osasuorituksella on oltava laajuus.
+- Kurssin laajuutta ei voi ilmoittaa vuosiviikkotunteina.
+- Oppiaineen laajuutta ei voi ilmoittaa vuosiviikkotunteina. Oppiaineen laajuus saa edelleen puuttua.
+- Validaatiot koskevat kaikkia päätason suorituksia (oppimäärä, alkuvaihe ja oppiaineen oppimäärä).
+
 ## 8.9.2026
 
 - Ahvenanmaan perusopetuksen opiskeluoikeudesta, jossa on vahvistettu oppimäärän suoritus (`ahvenanmaanperusopetuksenoppimaara`), tulee löytyä myös vahvistettu 9. vuosiluokan suoritus. Vaatimusta ei sovelleta, jos oppilas on kotiopetuksessa oppimäärän vahvistuspäivänä tai jos oppimäärän suoritustapa on erityinen tutkinto. Validaatio ei koske muiden kuin oppivelvollisten oppimäärän suoritusta (`ahvenanmaanperusopetuksenoppimaaraaikuiset`).

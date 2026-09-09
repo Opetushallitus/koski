@@ -134,7 +134,7 @@ class OppijaValidationDIASpec extends AnyFreeSpec with KoskiHttpSpec with Opiske
         diaOppiaineMuu("MA", osaAlue = "2", laajuus(8))
       ))
       setupOppijaWithOpiskeluoikeus(oo) {
-        verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.laajuudet.osauoritusVääräLaajuus(
+        verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.laajuudet.osasuoritusVääräLaajuus(
           "DIA-tutkinnon laajuus on ilmoitettava opintopisteissä 1.8.2026 tai myöhemmin alkaneille opiskeluoikeuksille"
         ))
       }
@@ -156,7 +156,7 @@ class OppijaValidationDIASpec extends AnyFreeSpec with KoskiHttpSpec with Opiske
         Some(List((diaTutkintoLukukausi("3", laajuusOpintopisteinä(8)), "2")))
       ))
       setupOppijaWithOpiskeluoikeus(oo) {
-        verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.laajuudet.osauoritusVääräLaajuus(
+        verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.laajuudet.osasuoritusVääräLaajuus(
           "DIA-tutkinnon laajuuden voi ilmoittaa opintopisteissä vain 1.8.2026 tai myöhemmin alkaneille opiskeluoikeuksille"
         ))
       }

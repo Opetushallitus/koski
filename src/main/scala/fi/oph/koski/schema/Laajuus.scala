@@ -46,7 +46,6 @@ case class LaajuusKursseissa(
 
 trait LaajuusOpintopisteissäTaiKursseissa extends Laajuus
 
-// TODO: tarvitaan aikuisten perusopetuksessa jotta voidaan siirtymäaikana käyttää useita laajuusyksiköitä, poistetaan siirtymäajan jälkeen
 trait LaajuusVuosiviikkotunneissaTaiKursseissa extends Laajuus
 
 trait LaajuusVuosiviikkotunneissaTaiTunneissa extends Laajuus

@@ -150,7 +150,7 @@ class KoskiValidator(
           validatePäätasonSuoritustenStatus(opiskeluoikeus),
           validateOpiskeluoikeudenLisätiedot(opiskeluoikeus),
           PerusopetuksenOpiskeluoikeusValidation.validatePerusopetuksenOpiskeluoikeus(config)(opiskeluoikeus),
-          AikuistenPerusopetuksenOpiskeluoikeudenValidation.validateAikuistenPerusopetuksenOpiskeluoikeus(opiskeluoikeus),
+          AikuistenPerusopetuksenOpiskeluoikeudenValidation.validateAikuistenPerusopetuksenOpiskeluoikeus(config)(opiskeluoikeus),
           AhvenanmaanPerusopetuksenValidation.validateOpiskeluoikeus(opiskeluoikeus),
           MuunKuinSäännellynKoulutuksenValidation.validateOpiskeluoikeus(opiskeluoikeus),
           TiedonSiirrostaPuuttuvatSuorituksetValidation.validateEiSamaaAlkamispaivaa(opiskeluoikeus, koskiOpiskeluoikeudet),

@@ -26,6 +26,10 @@ export const isLukionMatematiikka = (m) =>
 export const koulutusModuuliprototypes = (suoritus) =>
   oneOfPrototypes(modelLookup(suoritus, 'koulutusmoduuli'))
 export const isIBKurssi = (m) => m && m.value.classes.includes('ibkurssi')
+export const isAikuistenPerusopetuksenKurssi = (m) =>
+  m &&
+  (m.value.classes.includes('aikuistenperusopetuksenkurssi') ||
+    m.value.classes.includes('aikuistenperusopetuksenalkuvaiheenkurssi'))
 export const isLukio2019ModuuliTaiOpintojakso = (m) =>
   m && m.value.classes.includes('lukionmoduulitaipaikallinenopintojakso2019')
 export const isLukio2019Oppiaine = (m) =>
