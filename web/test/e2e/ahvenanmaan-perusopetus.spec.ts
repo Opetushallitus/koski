@@ -293,6 +293,45 @@ test.describe('Ahvenanmaan perusopetuksen käyttöliittymä', () => {
     ).toHaveCount(8)
   })
 
+  test('Toimipistevalikko merkitsee lakkautetut organisaatiot', async ({
+    page,
+    oppijaPage,
+    fixtures
+  }) => {
+    test.setTimeout(60000)
+    await fixtures.reset()
+    await oppijaPage.goto(url)
+    await page.getByTestId(editButton).click()
+
+    // Valmistunut-jakso estää vuosiluokan lisäyksen, ks. edellinen testi.
+    await page
+      .getByTestId('oo.0.opiskeluoikeus.tila.edit.items.1.remove')
+      .click()
+    await page.getByTestId('oo.0.suoritusTabs.3.tab').click()
+
+    const toimipisteInput = page.getByTestId(
+      'oo.0.modal.uusiVuosiluokanSuoritus.toimipiste.input'
+    )
+    const options = page.getByTestId(
+      'oo.0.modal.uusiVuosiluokanSuoritus.toimipiste.options'
+    )
+
+    // Aapajoen koulu on mockdatassa lakkautettu
+    await toimipisteInput.fill('Aapajoen koulu')
+    await expect(
+      options.locator('.LakkautettuOrganisaatio', {
+        hasText: 'Aapajoen koulu (lakkautettu)'
+      })
+    ).toBeVisible()
+
+    // Aktiivista organisaatiota ei merkitä
+    await toimipisteInput.fill('Jyväskylän normaalikoulu')
+    await expect(
+      options.getByText('Jyväskylän normaalikoulu', { exact: true })
+    ).toBeVisible()
+    await expect(options.locator('.LakkautettuOrganisaatio')).toHaveCount(0)
+  })
+
   test('Tyhjän vuosiluokan muokkauksessa näytetään sekä pakolliset että valinnaiset oppiaineet', async ({
     page,
     oppijaPage,
