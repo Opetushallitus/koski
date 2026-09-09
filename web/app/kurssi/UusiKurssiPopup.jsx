@@ -5,8 +5,10 @@ import {
   accumulateModelState,
   modelItems,
   modelLookup,
+  modelSet,
   modelValid,
-  modelSetValue
+  modelSetValue,
+  optionalPrototypeModel
 } from '../editor/EditorModel'
 import Text from '../i18n/Text'
 import ModalDialog from '../editor/ModalDialog'
@@ -17,18 +19,21 @@ import {
   isLukio2019ModuuliTaiOpintojakso,
   isLukionKurssi,
   isPaikallinen,
-  isLukioonValmistavanKoulutuksenKurssi
+  isLukioonValmistavanKoulutuksenKurssi,
+  isAikuistenPerusopetuksenKurssi
 } from '../suoritus/Koulutusmoduuli'
 import { PropertiesEditor } from '../editor/PropertiesEditor'
 import { t } from '../i18n/i18n'
 
 const propertyFilterForPaikallinen = (p) => !['koodistoUri'].includes(p.key)
-const propertyFilterForLukio = (p) => !['tunniste'].includes(p.key)
+const propertyFilterWithoutTunniste = (p) => !['tunniste'].includes(p.key)
 const propertyFilterForModel = (model) =>
   isPaikallinen(model) || isIBKurssi(model)
     ? propertyFilterForPaikallinen
-    : isLukionKurssi(model) || isLukio2019ModuuliTaiOpintojakso(model)
-      ? propertyFilterForLukio
+    : isLukionKurssi(model) ||
+        isLukio2019ModuuliTaiOpintojakso(model) ||
+        isAikuistenPerusopetuksenKurssi(model)
+      ? propertyFilterWithoutTunniste
       : undefined
 
 export default ({
@@ -86,7 +91,9 @@ export default ({
             const suorituksenKoulutusmoduuli = isPaikallinen(selectedProto)
               ? modelSetValue(paikallinenKurssiProto, selectedProto.value)
               : selectedProto
-            const modelP = accumulateModelState(suorituksenKoulutusmoduuli)
+            const modelP = accumulateModelState(
+              withOletuslaajuus(suorituksenKoulutusmoduuli)
+            )
             modelP
               .map((model) => (modelValid(model) ? model : undefined))
               .forEach((model) => selectedAtom.set(model)) // set selected atom to non-empty only when valid data
@@ -104,8 +111,22 @@ export default ({
   )
 }
 
+const withOletuslaajuus = (koulutusmoduuli) => {
+  if (!isAikuistenPerusopetuksenKurssi(koulutusmoduuli)) return koulutusmoduuli
+  const laajuus = modelLookup(koulutusmoduuli, 'laajuus')
+  const oletuslaajuus = laajuus && optionalPrototypeModel(laajuus)
+  return oletuslaajuus
+    ? modelSet(
+        koulutusmoduuli,
+        modelSetValue(oletuslaajuus, { data: 1 }, 'arvo'),
+        'laajuus'
+      )
+    : koulutusmoduuli
+}
+
 const validKurssi = (proto) =>
   isPaikallinen(proto) ||
+  isAikuistenPerusopetuksenKurssi(proto) ||
   isLukionKurssi(proto) ||
   isIBKurssi(proto) ||
   isLukio2019ModuuliTaiOpintojakso(proto) ||
