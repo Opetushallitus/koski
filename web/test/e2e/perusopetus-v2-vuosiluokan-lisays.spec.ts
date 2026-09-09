@@ -517,6 +517,39 @@ test.describe('Perusopetuksen uusi käyttöliittymä: vuosiluokan suorituksen li
     ).toHaveValue('8A')
   })
 
+  test('Lisätyn vuosiluokan alkamispäivä näkyy kentässä myös peräkkäisillä lisäyksillä', async ({
+    page,
+    oppijaPage,
+    fixtures
+  }) => {
+    // Alkamispäiväkenttä oli hallitsematon (defaultValue), jolloin selain jätti
+    // kenttään sen tekstin, joka siihen renderöitiin ensimmäisellä kerralla.
+    // Vika ilmenee vain kun kenttä saa uuden arvon kiinnittymättä uudelleen:
+    // vuosiluokat lajitellaan laskevasti, joten uusin osuu samaan
+    // välilehti-indeksiin kuin edellinen, eikä EditorContainerin
+    // key={suoritusIndex} pakota uudelleenkiinnitystä.
+    await fixtures.reset()
+    const oppija = await fixtures.putOppija(tyhjäTeroPerusopetus())
+    await oppijaPage.goto(v2Url(oppija.henkilö.oid))
+
+    await lisääVuosiluokka(page, '1', '1A', '1.1.2017')
+    await expect(alkamispäiväInput(page, 1)).toHaveValue('1.1.2017')
+
+    // Toinen lisäys aktivoi saman välilehti-indeksin (vuosiluokat laskevassa
+    // järjestyksessä), jolloin alkamispäiväkenttä on jo olemassa.
+    await lisääVuosiluokka(page, '2', '2A', '1.8.2018')
+    await expect(alkamispäiväInput(page, 1)).toHaveValue('1.8.2018')
+
+    // Välilehteä vaihdettaessa suorituksen puu kiinnittyy uudelleen, joten tämä
+    // meni oikein jo ennen korjausta. Varmistetaan silti lopputulos: kussakin
+    // vuosiluokassa näkyy sen oma päivä.
+    await page.getByTestId('oo.0.suoritusTabs.2.tab').click()
+    await expect(alkamispäiväInput(page, 2)).toHaveValue('1.1.2017')
+
+    await page.getByTestId('oo.0.suoritusTabs.1.tab').click()
+    await expect(alkamispäiväInput(page, 1)).toHaveValue('1.8.2018')
+  })
+
   test('Lisätyn vuosiluokan peruminen ei kaada näkymää', async ({
     page,
     oppijaPage,
@@ -539,6 +572,18 @@ test.describe('Perusopetuksen uusi käyttöliittymä: vuosiluokan suorituksen li
     expect(virheet).toEqual([])
   })
 })
+
+/**
+ * Päätason suorituksen alkamispäiväkenttä muokkaustilassa. FormField lisää
+ * testId:hen `.edit` ja DateEdit toisen, mistä kaksinkertainen `.edit.edit`.
+ */
+const alkamispäiväInput = (
+  page: import('@playwright/test').Page,
+  suoritusIndex: number
+) =>
+  page.getByTestId(
+    `oo.0.suoritukset.${suoritusIndex}.alkamispäivä.edit.edit.input`
+  )
 
 /** Avaa dialogi, asettaa tunniste/luokka/alkamispäivä ja klikkaa Lisää. */
 async function lisääVuosiluokka(
