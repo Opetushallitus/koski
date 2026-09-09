@@ -103,6 +103,8 @@ valpas-web/src/                # Valpas frontend (separate React app)
 - Written in **Finnish**
 - Often reference ticket numbers (e.g., `TOR-2400`, `TOR-XXXX`), ask for it if not yet known
 - Format: Short description of what was done in the first line, more elaborate description and context below
+- Keep the body dense: only the *why* that isn't obvious from the diff, not a restatement of *what* changed. Cut narration and spelled-out inferences — aim to cut a first draft by half to two-thirds.
+- Skip AI-tool session/URL footers (e.g. a `Claude-Session:` line) — they rot and add no value to `git log`. A plain `Co-Authored-By: <tool>` line is enough.
 - Examples:
   - `Päivitä puppeteer-versio kansalaisen smoketesteissä`
   - `Lisää uudet esimerkkioppijat testeihin`
