@@ -85,6 +85,7 @@ case class MuuKuinSäänneltyKoulutus(
 case class MuunKuinSäännellynKoulutuksenArviointi(
   @KoodistoUri("arviointiasteikkomuks")
   arvosana: Koodistokoodiviite,
+  @Description("Muun kuin säännellyn koulutuksen arviointipäivä")
   arviointipäivä: Option[LocalDate],
 ) extends KoodistostaLöytyväArviointi {
   override def hyväksytty: Boolean = MuunKuinSäännellynKoulutuksenArviointi.hyväksytty(arvosana)
