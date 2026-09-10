@@ -123,6 +123,27 @@ class KoskiSpecificDatabaseFixtureCreator(application: KoskiApplication) extends
     )
   }
 
+  // TOR-2650: yhteinen pohja Kotikuntalaskelman testioppijoiden avoimille perusopetuksen
+  // vuosiluokan suorituksille Aapajoen koulussa — kaikki eroavat vain luokka-asteen/luokan ja
+  // (kahdella oppijalla) lisätietojen osalta.
+  private def kotikuntalaskelmaOpiskeluoikeus(
+    luokkaAste: Int,
+    luokka: String,
+    lisätiedot: Option[PerusopetuksenOpiskeluoikeudenLisätiedot] = None
+  ): PerusopetuksenOpiskeluoikeus =
+    PerusopetuksenOpiskeluoikeus(
+      oppilaitos = Some(oppilaitos(aapajoenKoulu)),
+      suoritukset = List(PerusopetuksenVuosiluokanSuoritus(
+        koulutusmoduuli = PerusopetuksenLuokkaAste(luokkaAste, PerusopetusExampleData.perusopetuksenDiaarinumero),
+        luokka = luokka,
+        toimipiste = oppilaitos(aapajoenKoulu),
+        suorituskieli = suomenKieli,
+        alkamispäivä = Some(date(2022, 8, 1))
+      )),
+      tila = NuortenPerusopetuksenOpiskeluoikeudenTila(List(NuortenPerusopetuksenOpiskeluoikeusjakso(date(2022, 8, 1), opiskeluoikeusLäsnä))),
+      lisätiedot = lisätiedot
+    )
+
   protected def defaultOpiskeluOikeudet: List[(OppijaHenkilö, KoskeenTallennettavaOpiskeluoikeus)] = {
     List(
       (KoskiSpecificMockOppijat.eero, AmmatillinenOpiskeluoikeusTestData.opiskeluoikeus(MockOrganisaatiot.stadinAmmattiopisto, versio = Some(11))),
@@ -370,142 +391,29 @@ class KoskiSpecificDatabaseFixtureCreator(application: KoskiApplication) extends
       // koulutusmuoto-/suodatinhaaroja: kotiopetusjaksollisen oppijan pitäisi pudota raportilta
       // kokonaan ("not aj.kotiopetus"), ja esiopetusoppija testaa raportin omaa, perusopetuksesta
       // erillistä esiopetus-suodatinhaaraansa.
-      (
-        KoskiSpecificMockOppijat.kotikuntalaskelmaKuusivuotias,
-        PerusopetuksenOpiskeluoikeus(
-          oppilaitos = Some(oppilaitos(aapajoenKoulu)),
-          suoritukset = List(PerusopetuksenVuosiluokanSuoritus(
-            koulutusmoduuli = PerusopetuksenLuokkaAste(1, PerusopetusExampleData.perusopetuksenDiaarinumero),
-            luokka = "1A",
-            toimipiste = oppilaitos(aapajoenKoulu),
-            suorituskieli = suomenKieli,
-            alkamispäivä = Some(date(2022, 8, 1))
-          )),
-          tila = NuortenPerusopetuksenOpiskeluoikeudenTila(List(NuortenPerusopetuksenOpiskeluoikeusjakso(date(2022, 8, 1), opiskeluoikeusLäsnä)))
-        )
-      ),
-      (
-        KoskiSpecificMockOppijat.kotikuntalaskelmaSeitsemanKaksitoista,
-        PerusopetuksenOpiskeluoikeus(
-          oppilaitos = Some(oppilaitos(aapajoenKoulu)),
-          suoritukset = List(PerusopetuksenVuosiluokanSuoritus(
-            koulutusmoduuli = PerusopetuksenLuokkaAste(3, PerusopetusExampleData.perusopetuksenDiaarinumero),
-            luokka = "3A",
-            toimipiste = oppilaitos(aapajoenKoulu),
-            suorituskieli = suomenKieli,
-            alkamispäivä = Some(date(2022, 8, 1))
-          )),
-          tila = NuortenPerusopetuksenOpiskeluoikeudenTila(List(NuortenPerusopetuksenOpiskeluoikeusjakso(date(2022, 8, 1), opiskeluoikeusLäsnä)))
-        )
-      ),
-      (
-        KoskiSpecificMockOppijat.kotikuntalaskelmaKolmetoistaViisitoista,
-        PerusopetuksenOpiskeluoikeus(
-          oppilaitos = Some(oppilaitos(aapajoenKoulu)),
-          suoritukset = List(PerusopetuksenVuosiluokanSuoritus(
-            koulutusmoduuli = PerusopetuksenLuokkaAste(8, PerusopetusExampleData.perusopetuksenDiaarinumero),
-            luokka = "8A",
-            toimipiste = oppilaitos(aapajoenKoulu),
-            suorituskieli = suomenKieli,
-            alkamispäivä = Some(date(2022, 8, 1))
-          )),
-          tila = NuortenPerusopetuksenOpiskeluoikeudenTila(List(NuortenPerusopetuksenOpiskeluoikeusjakso(date(2022, 8, 1), opiskeluoikeusLäsnä)))
-        )
-      ),
+      (KoskiSpecificMockOppijat.kotikuntalaskelmaKuusivuotias, kotikuntalaskelmaOpiskeluoikeus(1, "1A")),
+      (KoskiSpecificMockOppijat.kotikuntalaskelmaSeitsemanKaksitoista, kotikuntalaskelmaOpiskeluoikeus(3, "3A")),
+      (KoskiSpecificMockOppijat.kotikuntalaskelmaKolmetoistaViisitoista, kotikuntalaskelmaOpiskeluoikeus(8, "8A")),
       (
         KoskiSpecificMockOppijat.kotikuntalaskelmaKuusitoistaErityinen,
-        PerusopetuksenOpiskeluoikeus(
-          oppilaitos = Some(oppilaitos(aapajoenKoulu)),
-          suoritukset = List(PerusopetuksenVuosiluokanSuoritus(
-            koulutusmoduuli = PerusopetuksenLuokkaAste(9, PerusopetusExampleData.perusopetuksenDiaarinumero),
-            luokka = "9A",
-            toimipiste = oppilaitos(aapajoenKoulu),
-            suorituskieli = suomenKieli,
-            alkamispäivä = Some(date(2022, 8, 1))
-          )),
-          tila = NuortenPerusopetuksenOpiskeluoikeudenTila(List(NuortenPerusopetuksenOpiskeluoikeusjakso(date(2022, 8, 1), opiskeluoikeusLäsnä))),
-          lisätiedot = Some(PerusopetuksenOpiskeluoikeudenLisätiedot(
-            // TOR-2650: Kotikuntalaskelman 16v-jako perustuu nimenomaan tähän kenttään (vahvistettu
-            // tiketillä), ei toimintaAlueittainOpiskeluun. Sallitaan aikaisintaan 1.8.2026
-            // (validaatiot.vammaSairausTaiRajoiteVoimaan) ja jakson täytyy sisältyä
-            // tuenPäätöksenJaksot-jaksoon.
-            opetuksenJärjestäminenVammanSairaudenTaiRajoitteenPerusteella = Some(List(Aikajakso(date(2026, 8, 1), None))),
-            tuenPäätöksenJaksot = Some(List(Tukijakso(Some(date(2026, 8, 1)), None)))
-          ))
-        )
+        kotikuntalaskelmaOpiskeluoikeus(9, "9A", lisätiedot = Some(PerusopetuksenOpiskeluoikeudenLisätiedot(
+          // TOR-2650: Kotikuntalaskelman 16v-jako perustuu nimenomaan tähän kenttään (vahvistettu
+          // tiketillä), ei toimintaAlueittainOpiskeluun. Sallitaan aikaisintaan 1.8.2026
+          // (validaatiot.vammaSairausTaiRajoiteVoimaan) ja jakson täytyy sisältyä
+          // tuenPäätöksenJaksot-jaksoon.
+          opetuksenJärjestäminenVammanSairaudenTaiRajoitteenPerusteella = Some(List(Aikajakso(date(2026, 8, 1), None))),
+          tuenPäätöksenJaksot = Some(List(Tukijakso(Some(date(2026, 8, 1)), None)))
+        )))
       ),
-      (
-        KoskiSpecificMockOppijat.kotikuntalaskelmaKuusitoistaEiErityista,
-        PerusopetuksenOpiskeluoikeus(
-          oppilaitos = Some(oppilaitos(aapajoenKoulu)),
-          suoritukset = List(PerusopetuksenVuosiluokanSuoritus(
-            koulutusmoduuli = PerusopetuksenLuokkaAste(9, PerusopetusExampleData.perusopetuksenDiaarinumero),
-            luokka = "9A",
-            toimipiste = oppilaitos(aapajoenKoulu),
-            suorituskieli = suomenKieli,
-            alkamispäivä = Some(date(2022, 8, 1))
-          )),
-          tila = NuortenPerusopetuksenOpiskeluoikeudenTila(List(NuortenPerusopetuksenOpiskeluoikeusjakso(date(2022, 8, 1), opiskeluoikeusLäsnä)))
-        )
-      ),
-      (
-        KoskiSpecificMockOppijat.kotikuntalaskelmaHetuton,
-        PerusopetuksenOpiskeluoikeus(
-          oppilaitos = Some(oppilaitos(aapajoenKoulu)),
-          suoritukset = List(PerusopetuksenVuosiluokanSuoritus(
-            koulutusmoduuli = PerusopetuksenLuokkaAste(5, PerusopetusExampleData.perusopetuksenDiaarinumero),
-            luokka = "5A",
-            toimipiste = oppilaitos(aapajoenKoulu),
-            suorituskieli = suomenKieli,
-            alkamispäivä = Some(date(2022, 8, 1))
-          )),
-          tila = NuortenPerusopetuksenOpiskeluoikeudenTila(List(NuortenPerusopetuksenOpiskeluoikeusjakso(date(2022, 8, 1), opiskeluoikeusLäsnä)))
-        )
-      ),
-      (
-        KoskiSpecificMockOppijat.kotikuntalaskelmaTurvakielto,
-        PerusopetuksenOpiskeluoikeus(
-          oppilaitos = Some(oppilaitos(aapajoenKoulu)),
-          suoritukset = List(PerusopetuksenVuosiluokanSuoritus(
-            koulutusmoduuli = PerusopetuksenLuokkaAste(4, PerusopetusExampleData.perusopetuksenDiaarinumero),
-            luokka = "4A",
-            toimipiste = oppilaitos(aapajoenKoulu),
-            suorituskieli = suomenKieli,
-            alkamispäivä = Some(date(2022, 8, 1))
-          )),
-          tila = NuortenPerusopetuksenOpiskeluoikeudenTila(List(NuortenPerusopetuksenOpiskeluoikeusjakso(date(2022, 8, 1), opiskeluoikeusLäsnä)))
-        )
-      ),
-      (
-        KoskiSpecificMockOppijat.kotikuntalaskelmaTurvakielto2,
-        PerusopetuksenOpiskeluoikeus(
-          oppilaitos = Some(oppilaitos(aapajoenKoulu)),
-          suoritukset = List(PerusopetuksenVuosiluokanSuoritus(
-            koulutusmoduuli = PerusopetuksenLuokkaAste(1, PerusopetusExampleData.perusopetuksenDiaarinumero),
-            luokka = "1A",
-            toimipiste = oppilaitos(aapajoenKoulu),
-            suorituskieli = suomenKieli,
-            alkamispäivä = Some(date(2022, 8, 1))
-          )),
-          tila = NuortenPerusopetuksenOpiskeluoikeudenTila(List(NuortenPerusopetuksenOpiskeluoikeusjakso(date(2022, 8, 1), opiskeluoikeusLäsnä)))
-        )
-      ),
+      (KoskiSpecificMockOppijat.kotikuntalaskelmaKuusitoistaEiErityista, kotikuntalaskelmaOpiskeluoikeus(9, "9A")),
+      (KoskiSpecificMockOppijat.kotikuntalaskelmaHetuton, kotikuntalaskelmaOpiskeluoikeus(5, "5A")),
+      (KoskiSpecificMockOppijat.kotikuntalaskelmaTurvakielto, kotikuntalaskelmaOpiskeluoikeus(4, "4A")),
+      (KoskiSpecificMockOppijat.kotikuntalaskelmaTurvakielto2, kotikuntalaskelmaOpiskeluoikeus(1, "1A")),
       (
         KoskiSpecificMockOppijat.kotikuntalaskelmaKotiopetus,
-        PerusopetuksenOpiskeluoikeus(
-          oppilaitos = Some(oppilaitos(aapajoenKoulu)),
-          suoritukset = List(PerusopetuksenVuosiluokanSuoritus(
-            koulutusmoduuli = PerusopetuksenLuokkaAste(4, PerusopetusExampleData.perusopetuksenDiaarinumero),
-            luokka = "4A",
-            toimipiste = oppilaitos(aapajoenKoulu),
-            suorituskieli = suomenKieli,
-            alkamispäivä = Some(date(2022, 8, 1))
-          )),
-          tila = NuortenPerusopetuksenOpiskeluoikeudenTila(List(NuortenPerusopetuksenOpiskeluoikeusjakso(date(2022, 8, 1), opiskeluoikeusLäsnä))),
-          lisätiedot = Some(PerusopetuksenOpiskeluoikeudenLisätiedot(
-            kotiopetusjaksot = Some(List(Aikajakso(date(2022, 8, 1), None)))
-          ))
-        )
+        kotikuntalaskelmaOpiskeluoikeus(4, "4A", lisätiedot = Some(PerusopetuksenOpiskeluoikeudenLisätiedot(
+          kotiopetusjaksot = Some(List(Aikajakso(date(2022, 8, 1), None)))
+        )))
       ),
       (
         KoskiSpecificMockOppijat.kotikuntalaskelmaEsiopetus,
