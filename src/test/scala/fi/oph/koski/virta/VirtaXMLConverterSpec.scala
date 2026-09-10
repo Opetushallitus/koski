@@ -2,6 +2,7 @@ package fi.oph.koski.virta
 
 import fi.oph.koski.TestEnvironment
 import fi.oph.koski.documentation.ExampleData.{laajuusOpintopisteissä, laajuusOpintoviikoissa}
+import fi.oph.koski.json.{JsonSerializer, SensitiveDataAllowed}
 import fi.oph.koski.koodisto.MockKoodistoViitePalvelu
 import fi.oph.koski.localization.LocalizedStringImplicits._
 import fi.oph.koski.oppilaitos.MockOppilaitosRepository
@@ -661,6 +662,19 @@ class VirtaXMLConverterSpec extends AnyFreeSpec with TestEnvironment with Matche
           </virta:Opintosuoritus>
         convertSuoritus(tutkinto).value.asInstanceOf[KorkeakoulututkinnonSuoritus]
           .lisätieto.map(_.get("fi")) shouldBe Some("Yleistä lisätietoa")
+      }
+
+      "ei päädy Kosken serialisointiin edes täysillä oikeuksilla" in {
+        implicit val kaikkiSallittu: SensitiveDataAllowed = SensitiveDataAllowed.SystemUser
+        val suoritus = convertSuoritus(
+          opintojaksoWithLisatieto(Seq(<virta:JulkinenLisatieto kieli="fi">Ei saa vuotaa</virta:JulkinenLisatieto>))
+        ).value.asInstanceOf[KorkeakoulunOpintojaksonSuoritus]
+
+        suoritus.lisätieto.map(_.get("fi")) shouldBe Some("Ei saa vuotaa")
+
+        val json = JsonSerializer.write(suoritus)
+        json should not include "lisätieto"
+        json should not include "Ei saa vuotaa"
       }
     }
 

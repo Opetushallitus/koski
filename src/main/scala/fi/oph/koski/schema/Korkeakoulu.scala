@@ -4,7 +4,7 @@ import fi.oph.koski.schema.LocalizedString.unlocalized
 
 import java.time.LocalDate
 import fi.oph.koski.schema.annotation._
-import fi.oph.scalaschema.annotation.{Description, Discriminator, OnlyWhen, SyntheticProperty, Title}
+import fi.oph.scalaschema.annotation.{Description, Discriminator, OnlyWhen, SkipSerialization, SyntheticProperty, Title}
 import fi.oph.koski.koskiuser.Rooli
 import fi.oph.koski.schema.Opiskeluoikeus.OpiskeluoikeudenPäättymistila
 import fi.oph.koski.schema.annotation.SensitiveData
@@ -176,6 +176,7 @@ case class KorkeakoulututkinnonSuoritus(
   @Description("Opintosuorituksen julkinen lisätieto")
   @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT))
   @Hidden
+  @SkipSerialization
   lisätieto: Option[LocalizedString] = None,
   @Description("Tutkinnon tai opintojen vaadittu laajuus")
   vaadittuLaajuus: Option[Laajuus] = None,
@@ -209,6 +210,7 @@ case class KorkeakoulunOpintojaksonSuoritus(
   @Description("Opintosuorituksen julkinen lisätieto")
   @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT))
   @Hidden
+  @SkipSerialization
   lisätieto: Option[LocalizedString] = None,
   @KoodistoKoodiarvo("korkeakoulunopintojakso")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("korkeakoulunopintojakso", koodistoUri = "suorituksentyyppi")

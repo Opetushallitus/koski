@@ -12,7 +12,7 @@
   - Opintojakson suoritukselle `opinnäytetyö`, joka kertoo onko suoritus opinnäytetyö.
   - Opintojakson suoritukselle `laji` (Virran opintosuorituksen laji). Arvolla `3` ("ei huomioitava") merkitty suoritus on Virran väliaikainen kirjaus myöhemmin syntyvästä suorituksesta, ja sen laajuus sisältyy jo ylemmän tason suoritukseen. Kenttä on tarkoitettu siihen, ettei tällaisia suorituksia lasketa opintopisteisiin kahteen kertaan.
   - Opintojakson suoritukselle `lähdeorganisaatio`, eli organisaatio josta suoritus on hyväksiluettu. Sisältää Virran organisaatiokoodin ja, jos koodi on oppilaitosnumero, ratkaistun oppilaitoksen. Koodi voi olla myös `UK` (ulkomainen korkeakoulu), `UM` (ulkomainen muu oppilaitos) tai `99` (muu oppilaitos), jolloin oppilaitosta ei ole.
-  - Tutkinnon ja opintojakson suoritukselle `lisätieto` (Virran julkinen lisätieto). Kenttä on merkitty salassa pidettäväksi eikä sitä näytetä käyttöliittymässä.
+  - Tutkinnon ja opintojakson suoritukselle `lisätieto` (Virran julkinen lisätieto). Kenttää ei serialisoida Kosken vastauksiin lainkaan eikä se näy tietomallin skeemassa; se välitetään ainoastaan Kelan luovutusrajapinnan omassa skeemassa.
   - Tutkinnon ja opintojakson koulutusmoduuliin `koulutusala`. Koodisto määräytyy Virran versio-attribuutin mukaan, joten kentässä on erilliset alakentät luokituksille `opintoalaoph1995`, `okmohjauksenala` ja `koulutusalaoph2002`.
   - Lukukausi-ilmoittautumiselle `ilmoittautumispäivä`.
   - Tutkinnon ja muun korkeakoulun suoritukselle `vaadittuLaajuus`.
