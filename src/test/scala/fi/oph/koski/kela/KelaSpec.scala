@@ -131,6 +131,28 @@ class KelaSpec
         kaikki.find(_.koodi == "UK").get.oppilaitos shouldBe None
       }
     }
+    "Virran julkinen lisätieto palautetaan Kelalle, vaikka se ei näy muualla" in {
+      postHetu(KoskiSpecificMockOppijat.virtaFuusio.hetu.get) {
+        verifyResponseStatusOk()
+        val oppija = JsonSerializer.parse[KelaOppija](body)
+
+        def lisätiedot(osasuoritukset: List[KelaKorkeakoulunOpintojaksonOsasuoritus]): List[String] =
+          osasuoritukset.flatMap(o => o.lisätieto.map(_.get("fi")).toList ++ lisätiedot(o.osasuoritukset.getOrElse(Nil)))
+
+        val kaikki = oppija.opiskeluoikeudet
+          .collect { case oo: KelaKorkeakoulunOpiskeluoikeus => oo }
+          .flatMap(_.suoritukset)
+          .flatMap {
+            case s: KelaKorkeakoulunOpintojaksonSuoritus =>
+              s.lisätieto.map(_.get("fi")).toList ++ lisätiedot(s.osasuoritukset.getOrElse(Nil))
+            case s: KelaKorkeakoulututkinnonSuoritus =>
+              s.lisätieto.map(_.get("fi")).toList ++ lisätiedot(s.osasuoritukset.getOrElse(Nil))
+            case s: KelaMuuKorkeakoulunSuoritus => lisätiedot(s.osasuoritukset.getOrElse(Nil))
+          }
+
+        kaikki should contain("Täydennyskurssi I")
+      }
+    }
     "Virran katkoksesta palautetaan virhe eikä vaillinaista dataa" in {
       postHetu(KoskiSpecificMockOppijat.virtaEiVastaa.hetu.get) {
         verifyResponseStatus(503, KoskiErrorCategory.unavailable.virta())
