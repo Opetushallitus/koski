@@ -1,5 +1,5 @@
 # Server build
-FROM node:24.20.0-alpine3.23@sha256:0388af2af070cd4736a1567cfed02469ba117848845b4165d87a333edb53d2ca AS server-builder
+FROM node:24.21.0-alpine3.23@sha256:159fe64649038c30f8cc1ec4be3af3a6e93e3648678c31294e2c5058dbeb99f3 AS server-builder
 
 WORKDIR /app
 
@@ -13,7 +13,7 @@ RUN pnpm install --frozen-lockfile
 RUN pnpm run build
 
 # Server runtime
-FROM node:24.20.0-alpine3.23@sha256:0388af2af070cd4736a1567cfed02469ba117848845b4165d87a333edb53d2ca
+FROM node:24.21.0-alpine3.23@sha256:159fe64649038c30f8cc1ec4be3af3a6e93e3648678c31294e2c5058dbeb99f3
 
 ENV PORT=8080
 
