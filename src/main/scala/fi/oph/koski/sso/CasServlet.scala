@@ -6,7 +6,7 @@ import fi.oph.koski.config.{Environment, KoskiApplication}
 import fi.oph.koski.frontendvalvonta.FrontendValvontaMode
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.json.JsonSerializer.writeWithRoot
-import fi.oph.koski.koskiuser.{AuthenticationUser, DirectoryClientLogin, KoskiCookieAndBasicAuthenticationSupport, UserLanguage}
+import fi.oph.koski.koskiuser.{AuthenticationUser, DirectoryClientLogin, KoskiCookieAndBasicAuthenticationSupport}
 import fi.oph.koski.log.LogUserContext
 import fi.oph.koski.servlet.{NoCache, VirkailijaHtmlServlet}
 import fi.oph.koski.huoltaja.HuollettavienHakuOnnistui
@@ -39,7 +39,7 @@ class CasServlet()(implicit val application: KoskiApplication) extends Virkailij
             case Some(oppija) =>
               val huollettavat = application.huoltajaServiceVtj.getHuollettavat(oppija)
               val user = AuthenticationUser(oppija.oid, oppija.oid, s"${oppija.etunimet} ${oppija.sukunimi}", None, kansalainen = true, huollettavat = Some(huollettavat))
-              val mockAuthUser =  localLogin(user, Some(langFromCookie.getOrElse(langFromDomain)))
+              val mockAuthUser =  localLogin(user, Some(langFromDomain))
               setUser(Right(mockAuthUser))
               redirect(onSuccess)
             case None => redirect(onFailure)
@@ -61,7 +61,6 @@ class CasServlet()(implicit val application: KoskiApplication) extends Virkailij
                   .map(application.huoltajaServiceVtj.getHuollettavat)
                 val user = AuthenticationUser(oppija.oid, oppija.oid, s"${oppija.etunimet} ${oppija.sukunimi}", serviceTicket = Some(ticket), kansalainen = true, huollettavat = huollettavat)
                 koskiSessions.store(ticket, user, LogUserContext.clientIpFromRequest(request), LogUserContext.userAgent(request))
-                UserLanguage.setLanguageCookie(UserLanguage.getLanguageFromUserDirectory(user, application.directoryClient).getOrElse(UserLanguage.getLanguageFromCookie(request)), response)
                 setUser(Right(user))
                 redirect(onSuccess)
               case None =>
@@ -133,7 +132,6 @@ class CasServlet()(implicit val application: KoskiApplication) extends Virkailij
     setUser(Right(user.copy(serviceTicket = Some(ticket))))
     logger.info(s"Started session ${session.id} for ticket $ticket")
     koskiSessions.store(ticket, user, LogUserContext.clientIpFromRequest(request), LogUserContext.userAgent(request))
-    UserLanguage.setLanguageCookie(UserLanguage.getLanguageFromUserDirectory(user, application.directoryClient).getOrElse(UserLanguage.getLanguageFromCookie(request)), response)
     redirectAfterLogin
   }
 

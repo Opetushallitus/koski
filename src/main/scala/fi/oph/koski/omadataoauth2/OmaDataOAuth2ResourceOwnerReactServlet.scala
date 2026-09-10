@@ -14,13 +14,13 @@ class OmaDataOAuth2ResourceOwnerReactServlet(implicit val application: KoskiAppl
     FrontendValvontaMode(application.config.getString("frontend-valvonta.mode"))
 
   get("/authorize")(nonce => {
-    val lang = if (multiParams("locale").length > 0) {
+    val requestedLang = if (multiParams("locale").length > 0) {
       val langParam = params("locale")
       UserLanguage.setLanguageCookie(langParam, response)
       langParam
     } else {
       setLangCookieFromDomainIfNecessary
-      langFromCookie.getOrElse(langFromDomain)
+      lang
     }
 
     val uri = request.getRequestURI
@@ -42,7 +42,7 @@ class OmaDataOAuth2ResourceOwnerReactServlet(implicit val application: KoskiAppl
             case Left(validationError) =>
               sendErrorsInParamsToClient(isAuthenticated, clientInfo, validationError)
             case Right(paramInfo) if !isAuthenticated =>
-              loginAndRedirectToSelf(lang)
+              loginAndRedirectToSelf(requestedLang)
             case Right(paramInfo) if isAuthenticated =>
               landerHtml(nonce)
             case Right(_) =>

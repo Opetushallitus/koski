@@ -42,6 +42,13 @@ describe('Lokalisointi', function () {
         return triggerEvent(el, 'input')()
       }
     }
+    // Peruutus poistaa muokkauskielen ohituksen ja lataa sivun uudelleen, joten
+    // odotetaan uuden sivun renderöitymistä ennen tarkistuksia.
+    function waitUntilText(selector, text) {
+      return wait.until(function () {
+        return S(selector).text() === text
+      })
+    }
 
     describe('Tavallisella käyttäjällä', function () {
       before(Authentication().login(), resetFixtures, page.openPage)
@@ -69,8 +76,19 @@ describe('Lokalisointi', function () {
           expect(S('.oppija-haku h3').text()).to.equal('Hae juttuja')
         })
 
+        it('Muokkaustila ja kielivalinta säilyvät', function () {
+          expect(S('.localization-edit-bar.visible').length).to.equal(1)
+          expect(
+            S('.localization-edit-bar .languages .sv.selected').length
+          ).to.equal(1)
+        })
+
         describe('Vaihdettaessa takaisin suomen kieleen', function () {
-          before(startEdit, selectLanguage('fi'), cancelEdits)
+          before(
+            selectLanguage('fi'),
+            cancelEdits,
+            waitUntilText('.oppija-haku h3', 'Hae tai lisää opiskelija')
+          )
 
           it('Suomenkielinen teksti näytetään', function () {
             expect(S('.oppija-haku h3').text()).to.equal(
@@ -78,10 +96,13 @@ describe('Lokalisointi', function () {
             )
           })
 
-          describe('Vaihdettaessa vielä takaisin ruotsin kieleen', function () {
-            before(startEdit, selectLanguage('sv'), cancelEdits)
+          describe('Palattaessa ruotsin kieleen', function () {
+            before(startEdit, selectLanguage('sv'))
+            // Tallennus ei enää päätä muokkausta, joten kieliohitus siivotaan
+            // pois, jottei se jää voimaan seuraaviin testeihin.
+            after(cancelEdits)
 
-            it('Muokattu teksti näytetään', function () {
+            it('Tallennettu teksti näytetään', function () {
               expect(S('.oppija-haku h3').text()).to.equal('Hae juttuja')
             })
           })

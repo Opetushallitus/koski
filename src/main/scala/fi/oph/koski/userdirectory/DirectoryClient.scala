@@ -16,6 +16,8 @@ case class Password(password: String) extends NotLoggable
 trait DirectoryClient {
   def findUser(username: String): Option[DirectoryUser]
   def findAsiointikieli(user: AuthenticationUser): Option[String] = findUser(user.username).flatMap(_.asiointikieli)
+  /** Ohittaa välimuistin. Sivunlatauksessa kielen pitää olla tuore, ks. UserLanguage. */
+  def findAsiointikieliUncached(user: AuthenticationUser): Option[String] = findAsiointikieli(user)
   def authenticate(userid: String, wrappedPassword: Password): Boolean
 }
 
@@ -30,8 +32,11 @@ object DirectoryClient {
     new DirectoryClient with Cached {
       def findUser(username: String): Option[DirectoryUser] = cached.findUser(username)
       def authenticate(userid: String, wrappedPassword: Password): Boolean = cached.authenticate(userid, wrappedPassword)
-      // Asiointikielen muutos henkilo-ui/omattiedot-palvelussa näkyy heti seuraavalla sivulatauksella.
-      override def findAsiointikieli(user: AuthenticationUser): Option[String] = client.findAsiointikieli(user)
+      // Sessio luodaan joka pyynnössä, ja session kieltä käytetään mm. organisaatiohaun
+      // lajitteluun, joten se haetaan välimuistista. Sivunlataus taas ratkaisee kielen ohi
+      // välimuistin, jotta asiointikielen vaihto henkilo-ui:ssa näkyy heti.
+      override def findAsiointikieli(user: AuthenticationUser): Option[String] = cached.findAsiointikieli(user)
+      override def findAsiointikieliUncached(user: AuthenticationUser): Option[String] = client.findAsiointikieli(user)
       def invalidateCache(): Unit = cached.invalidateCache()
     }
   }

@@ -33,7 +33,7 @@ class OmatTiedotServlet(implicit val application: KoskiApplication) extends Edit
 
     // Näytetään suoritusjaoissa näkyvät tiedot myös kansalaisen omissa tiedoissa.
     implicit val sessionWithRole: KoskiSpecificSession =
-      new KoskiSpecificSession(session.user, UserLanguage.getLanguageFromCookie(request),
+      new KoskiSpecificSession(session.user, session.lang,
         LogUserContext.clientIpFromRequest(request), LogUserContext.userAgent(request),
         Set(KäyttöoikeusGlobal(List(Palvelurooli(SUORITUSJAKO_KATSELIJA)))))
 

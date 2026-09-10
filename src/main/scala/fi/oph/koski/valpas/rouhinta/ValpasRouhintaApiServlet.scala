@@ -24,7 +24,7 @@ class ValpasRouhintaApiServlet(implicit val application: KoskiApplication) exten
   post("/hetut") {
     withJsonBody { (body: JValue) =>
       val hetuList = extractHetuList(body)
-      val language = hetuList.map(_.lang.orElse(langFromCookie)) match {
+      val language = hetuList.map(_.lang.orElse(Some(session.lang))) match {
         case Left(_) => "fi"
         case Right(lang) => lang.getOrElse("fi")
       }
@@ -48,7 +48,7 @@ class ValpasRouhintaApiServlet(implicit val application: KoskiApplication) exten
   post("/kunta") {
     withJsonBody { (body: JValue) =>
       val kuntaInput = extractAndValidateKuntakoodi(body)
-      val language = kuntaInput.map(_.original.lang.orElse(langFromCookie)) match {
+      val language = kuntaInput.map(_.original.lang.orElse(Some(session.lang))) match {
         case Left(_) => "fi"
         case Right(lang) => lang.getOrElse("fi")
       }

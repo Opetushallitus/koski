@@ -6,7 +6,7 @@ import fi.oph.koski.koskiuser.KoskiCookieAndBasicAuthenticationSupport
 
 trait OmaOpintopolkuSupport extends KoskiCookieAndBasicAuthenticationSupport with LanguageSupport {
   private val oppijaRaamitSet: Boolean = Environment.isServerEnvironment(application.config)
-  private def loginUrl: String = application.config.getString("identification.url." + langFromCookie.getOrElse(langFromDomain))
+  private def loginUrl: String = application.config.getString("identification.url." + lang)
   private val useOppijaRaamitProxy = application.config.hasPath("oppijaRaamitProxy")
 
   protected def oppijaRaamit: Raamit =

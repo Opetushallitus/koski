@@ -15,12 +15,15 @@ import org.scalatra.servlet.RichRequest
 import java.net.InetAddress
 import scala.concurrent.Future
 
-abstract class Session(val user: AuthenticationUser, val lang: String, val clientIp: InetAddress, val userAgent: String)
+abstract class Session(val user: AuthenticationUser, langProvider: => String, val clientIp: InetAddress, val userAgent: String)
   extends LogUserContext
     with UserWithUsername
     with UserWithOid
     with Loggable
     with Logging {
+
+  // Kieli ratkaistaan vasta tarvittaessa: useimmat API-kutsut eivät tarvitse sitä lainkaan.
+  lazy val lang: String = langProvider
 
   def oid = user.oid
   def username = user.username
@@ -43,7 +46,7 @@ abstract class Session(val user: AuthenticationUser, val lang: String, val clien
 
 class KoskiSpecificSession(
   user: AuthenticationUser,
-  lang: String,
+  lang: => String,
   clientIp: InetAddress,
   userAgent: String,
   lähdeKäyttöoikeudet: => Set[Käyttöoikeus]
@@ -205,8 +208,8 @@ class KoskiSpecificSession(
 }
 
 object KoskiSpecificSession {
-  def apply(user: AuthenticationUser, request: RichRequest, käyttöoikeudet: KäyttöoikeusRepository): KoskiSpecificSession = {
-    new KoskiSpecificSession(user, UserLanguage.getLanguageFromCookie(request), LogUserContext.clientIpFromRequest(request), LogUserContext.userAgent(request), käyttöoikeudet.käyttäjänKäyttöoikeudet(user))
+  def apply(user: AuthenticationUser, request: RichRequest, käyttöoikeudet: KäyttöoikeusRepository, lang: => String): KoskiSpecificSession = {
+    new KoskiSpecificSession(user, lang, LogUserContext.clientIpFromRequest(request), LogUserContext.userAgent(request), käyttöoikeudet.käyttäjänKäyttöoikeudet(user))
   }
 
   def huollettavaSession(huoltajaSession: KoskiSpecificSession, huollettava: OppijaHenkilö): KoskiSpecificSession = {
@@ -275,8 +278,8 @@ object KoskiSpecificSession {
 
   val untrustedUser = new KoskiSpecificSession(AuthenticationUser(UNTRUSTED_SYSTEM_USER, UNTRUSTED_SYSTEM_USER, UNTRUSTED_SYSTEM_USER, None), "fi", InetAddress.getLoopbackAddress, "", Set())
 
-  def suoritusjakoKatsominenUser(request: RichRequest) = new KoskiSpecificSession(AuthenticationUser(SUORITUSJAKO_KATSOMINEN_USER, SUORITUSJAKO_KATSOMINEN_USER, SUORITUSJAKO_KATSOMINEN_USER, None), UserLanguage.getLanguageFromCookie(request), LogUserContext.clientIpFromRequest(request), LogUserContext.userAgent(request), Set(KäyttöoikeusGlobal(List(Palvelurooli(OPHKATSELIJA)))))
-  def suoritusjakoKatsominenErityisilläHenkilötiedoillaUser(request: RichRequest) = new KoskiSpecificSession(AuthenticationUser(SUORITUSJAKO_KATSOMINEN_USER, SUORITUSJAKO_KATSOMINEN_USER, SUORITUSJAKO_KATSOMINEN_USER, None), UserLanguage.getLanguageFromCookie(request), LogUserContext.clientIpFromRequest(request), LogUserContext.userAgent(request), Set(KäyttöoikeusGlobal(List(Palvelurooli(OPHKATSELIJA), Palvelurooli(SUORITUSJAKO_KATSELIJA)))))
-  def ophKatselijaUser(request: RichRequest) = new KoskiSpecificSession(AuthenticationUser(OPH_KATSELIJA_USER, OPH_KATSELIJA_USER, OPH_KATSELIJA_USER, None), UserLanguage.getLanguageFromCookie(request), LogUserContext.clientIpFromRequest(request), LogUserContext.userAgent(request), Set(KäyttöoikeusGlobal(List(Palvelurooli(OPHKATSELIJA)))))
-  def oauth2KatsominenUser(request: RichRequest) = new KoskiSpecificSession(AuthenticationUser(OAUTH2_KATSOMINEN_USER, OAUTH2_KATSOMINEN_USER, OAUTH2_KATSOMINEN_USER, None), UserLanguage.getLanguageFromCookie(request), LogUserContext.clientIpFromRequest(request), LogUserContext.userAgent(request), Set(KäyttöoikeusGlobal(List(Palvelurooli(OPHKATSELIJA)))))
+  def suoritusjakoKatsominenUser(request: RichRequest) = new KoskiSpecificSession(AuthenticationUser(SUORITUSJAKO_KATSOMINEN_USER, SUORITUSJAKO_KATSOMINEN_USER, SUORITUSJAKO_KATSOMINEN_USER, None), UserLanguage.languageFromCookie(request).getOrElse(UserLanguage.DefaultLanguage), LogUserContext.clientIpFromRequest(request), LogUserContext.userAgent(request), Set(KäyttöoikeusGlobal(List(Palvelurooli(OPHKATSELIJA)))))
+  def suoritusjakoKatsominenErityisilläHenkilötiedoillaUser(request: RichRequest) = new KoskiSpecificSession(AuthenticationUser(SUORITUSJAKO_KATSOMINEN_USER, SUORITUSJAKO_KATSOMINEN_USER, SUORITUSJAKO_KATSOMINEN_USER, None), UserLanguage.languageFromCookie(request).getOrElse(UserLanguage.DefaultLanguage), LogUserContext.clientIpFromRequest(request), LogUserContext.userAgent(request), Set(KäyttöoikeusGlobal(List(Palvelurooli(OPHKATSELIJA), Palvelurooli(SUORITUSJAKO_KATSELIJA)))))
+  def ophKatselijaUser(request: RichRequest) = new KoskiSpecificSession(AuthenticationUser(OPH_KATSELIJA_USER, OPH_KATSELIJA_USER, OPH_KATSELIJA_USER, None), UserLanguage.languageFromCookie(request).getOrElse(UserLanguage.DefaultLanguage), LogUserContext.clientIpFromRequest(request), LogUserContext.userAgent(request), Set(KäyttöoikeusGlobal(List(Palvelurooli(OPHKATSELIJA)))))
+  def oauth2KatsominenUser(request: RichRequest) = new KoskiSpecificSession(AuthenticationUser(OAUTH2_KATSOMINEN_USER, OAUTH2_KATSOMINEN_USER, OAUTH2_KATSOMINEN_USER, None), UserLanguage.languageFromCookie(request).getOrElse(UserLanguage.DefaultLanguage), LogUserContext.clientIpFromRequest(request), LogUserContext.userAgent(request), Set(KäyttöoikeusGlobal(List(Palvelurooli(OPHKATSELIJA)))))
 }

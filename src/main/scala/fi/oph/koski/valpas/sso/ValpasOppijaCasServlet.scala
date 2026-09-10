@@ -3,7 +3,7 @@ package fi.oph.koski.valpas.sso
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.henkilo.OppijaHenkilö
 import fi.oph.koski.huoltaja.HuollettavienHakuOnnistui
-import fi.oph.koski.koskiuser.{AuthenticationUser, UserLanguage}
+import fi.oph.koski.koskiuser.AuthenticationUser
 import fi.oph.koski.log.LogUserContext
 import fi.oph.koski.servlet.NoCache
 import fi.oph.koski.valpas.servlet.{ValpasApiServlet, ValpasBaseServlet}
@@ -38,7 +38,6 @@ class ValpasOppijaCasServlet(implicit val application: KoskiApplication) extends
             case Some(oppija) =>
               val user = toAuthenticationUser(oppija, oppija.hetu.orElse(kansalaisenTunnisteet.hetu), Some(ticket))
               koskiSessions.store(ticket, user, LogUserContext.clientIpFromRequest(request), LogUserContext.userAgent(request))
-              UserLanguage.setLanguageCookie(UserLanguage.getLanguageFromUserDirectory(user, directoryClient).getOrElse(UserLanguage.getLanguageFromCookie(request)), response)
               setUser(Right(user))
               redirectAfterLogin
 

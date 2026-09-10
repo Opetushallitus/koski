@@ -16,8 +16,9 @@ const getString = (id: TranslationId) =>
 const missing: Record<string, boolean> = {}
 let logMissingTranslationWarnings = true
 
+// Kieli tulee palvelimelta window-propertiesin mukana, ks. ValpasBootstrapServlet ja UserLanguage.
 export const getLanguage = (): Language => {
-  const maybeLanguage: unknown = Cookie.get("lang")
+  const maybeLanguage: unknown = window.valpasLang
   const language = supportedLanguages.find(
     (validLanguage) => validLanguage === maybeLanguage,
   )
@@ -25,6 +26,8 @@ export const getLanguage = (): Language => {
   return language || "fi"
 }
 
+// Kansalaisen oma kielivalinta säilyy evästeessä, jonka palvelin lukee seuraavalla latauksella.
+// Virkailijan kieli tulee asiointikielestä, joten tämä ei vaikuta siihen.
 export const setLanguage = (newLang: Language) => {
   Cookie.set("lang", newLang)
   window.location.reload()

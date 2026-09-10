@@ -50,7 +50,7 @@ class KoskiSpecificSessionSpec
   private val directoryClient = new OpintopolkuDirectoryClient(config, new CasService(config))
   private val käyttöoikeusRepository = new KäyttöoikeusRepository(MockOrganisaatioRepository, directoryClient)
 
-  "Asiointikieli päivittyy heti, vaikka käyttäjätiedot ovat välimuistissa" in {
+  "Asiointikielen vaihto näkyy sivunlatauksessa heti, vaikka käyttäjätiedot ovat välimuistissa" in {
     val client = DirectoryClient(config, new CasService(config))
     val user = AuthenticationUser.fromDirectoryUser("kalle", MockUsers.kalle.ldapUser)
     val henkilöUrl = s"/oppijanumerorekisteri-service/henkilo/${user.oid}"
@@ -67,7 +67,15 @@ class KoskiSpecificSessionSpec
       client.findAsiointikieli(user) should equal(Some("fi"))
       wireMockServer.stubFor(get(urlPathEqualTo(henkilöUrl)).willReturn(ok(changed)))
 
+      // Sivunlataus ohittaa välimuistin, joten henkilo-ui:ssa tehty vaihto näkyy heti.
+      client.findAsiointikieliUncached(user) should equal(Some("sv"))
+
+      // Sessio luodaan joka pyynnössä, joten sen kieli tulee välimuistista eikä ONR:ää kutsuta
+      // esimerkiksi jokaisessa organisaatiohaussa.
+      client.findAsiointikieli(user) should equal(Some("fi"))
       client.findUser(user.username).flatMap(_.asiointikieli) should equal(Some("fi"))
+
+      client.invalidateCache()
       client.findAsiointikieli(user) should equal(Some("sv"))
     } finally {
       wireMockServer.stubFor(get(urlPathEqualTo(henkilöUrl)).willReturn(ok(original)))
@@ -191,7 +199,7 @@ class KoskiSpecificSessionSpec
 
   private def createAndVerifySession(username: String, expected: DirectoryUser, isRoot: Boolean = false) = {
     val authUser = AuthenticationUser.fromDirectoryUser(username, expected)
-    val session = KoskiSpecificSession(authUser, req, käyttöoikeusRepository)
+    val session = KoskiSpecificSession(authUser, req, käyttöoikeusRepository, "fi")
 
     session.lang should be("fi")
     session.clientIp should be(InetAddress.getByName("10.1.2.3"))

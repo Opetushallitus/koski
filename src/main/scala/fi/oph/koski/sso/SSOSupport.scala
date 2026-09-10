@@ -96,7 +96,7 @@ trait SSOSupport extends ScalatraBase with Logging {
   def redirectToOppijaLogin = {
     response.addCookie(Cookie("koskiReturnUrl", currentUrl)(CookieOptions(secure = isHttps, path = "/", maxAge = 60, httpOnly = true)))
 
-    val lang = UserLanguage.getLanguageFromCookie(request)
+    val lang = UserLanguage.languageFromDomain(request, application.config)
 
     if (ssoConfig.isCasSsoUsed) {
       redirect(application.config.getString("opintopolku.oppija.url") + s"/cas-oppija/login?locale=${lang}&service=${casOppijaServiceUrl}&valtuudet=false")

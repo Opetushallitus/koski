@@ -4,6 +4,7 @@ import { Finnish } from '../types/fi/oph/koski/schema/Finnish'
 import { LocalizedString } from '../types/fi/oph/koski/schema/LocalizedString'
 import { Swedish } from '../types/fi/oph/koski/schema/Swedish'
 import { capitalize, uncapitalize } from '../util/strings'
+import { getLocalizationEditorLanguage } from './localizationEditorLanguage'
 
 export const supportedLanguages = ['fi', 'sv', 'en'] as const
 
@@ -16,14 +17,28 @@ export type LocalizationMap = Record<TranslationId, LanguageRecord>
 declare global {
   interface Window {
     koskiLocalizationMap: LanguageRecord
+    // Palvelimen tälle pyynnölle ratkaisema kieli, ks. HtmlNodes ja UserLanguage.
+    koskiLang?: string
   }
+}
+
+const isSupportedLanguage = (language?: string): language is Language =>
+  supportedLanguages.includes(language as Language)
+
+const resolveLanguage = (): Language => {
+  const preview = getLocalizationEditorLanguage()
+  if (isSupportedLanguage(preview)) {
+    return preview
+  }
+  return isSupportedLanguage(window.koskiLang) ? window.koskiLang : 'fi'
 }
 
 const texts = window.koskiLocalizationMap
 const missing: Record<string, boolean> = {}
 
-export const lang = (Cookie.get('lang') || 'fi') as Language
+export const lang: Language = resolveLanguage()
 
+// Kansalaisen oma kielivalinta; virkailijan kieli tulee asiointikielestä eikä sitä aseteta täältä.
 export const setLang = (newLang: Language) => {
   Cookie.set('lang', newLang)
   window.location.reload()
