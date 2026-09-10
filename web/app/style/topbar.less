@@ -160,6 +160,31 @@
     }
   }
 
+  // Vain paikallisessa kehitysympäristössä näkyvä kielenvaihto, ks. DevLanguageButtons.
+  .dev-languages {
+    display: inline-block;
+    margin-left: 20px;
+    vertical-align: middle;
+    line-height: 30px;
+
+    a {
+      color: white;
+      font-size: 13px;
+      text-transform: uppercase;
+      margin-right: 8px;
+      padding: 1px 5px;
+      border: 1px solid rgba(255, 255, 255, 0.6);
+      border-radius: 2px;
+      cursor: pointer;
+
+      &.selected {
+        background: white;
+        color: rgb(21, 158, 203);
+        border-color: white;
+      }
+    }
+  }
+
   .user-info {
     float: right;
     line-height: 47px;

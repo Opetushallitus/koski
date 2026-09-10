@@ -9,10 +9,11 @@ import {
   getMockStatus,
   loadRaportointikanta,
   resetMockDataToDate,
+  setMockAsiointikieli,
 } from "../../api/testApi"
 import { getLanguage, setLanguage, T } from "../../i18n/i18n"
 import { supportedLanguages } from "../../state/apitypes/appConfiguration"
-import { CurrentUser } from "../../state/auth"
+import { CurrentUser, isLoggedIn } from "../../state/auth"
 import { Language } from "../../state/common"
 import { useSafeState } from "../../state/useSafeState"
 import { joinClassNames } from "../../utils/classnames"
@@ -35,7 +36,11 @@ export default ({ user, kansalainen }: LocalRaamitProps) => {
         </a>
       </h1>
       <TestApiButtons />
-      <UserInfo user={user} currentLanguage={getLanguage()} />
+      <UserInfo
+        user={user}
+        kansalainen={kansalainen}
+        currentLanguage={getLanguage()}
+      />
     </div>
   )
 }
@@ -155,15 +160,19 @@ export const SimpleTextField = (props: SimpleTextFieldProps) => (
 
 type UserInfoProps = {
   user: CurrentUser
+  kansalainen?: boolean
   currentLanguage: Language
 }
 
-const UserInfo = ({ user, currentLanguage }: UserInfoProps) => (
+const UserInfo = ({ user, kansalainen, currentLanguage }: UserInfoProps) => (
   <div className={b("userinfo")}>
     {user !== "unauthorized" && user !== "forbidden" && (
       <span className={b("username")}>{user.name}</span>
     )}
-    <LanguageButtons currentLanguage={currentLanguage} />
+    <LanguageButtons
+      currentLanguage={currentLanguage}
+      asiointikieli={isLoggedIn(user) && !kansalainen}
+    />
     {user !== "unauthorized" && (
       <button
         className={b("logoutbutton")}
@@ -179,9 +188,15 @@ const UserInfo = ({ user, currentLanguage }: UserInfoProps) => (
 
 type LanguageButtonsProps = {
   currentLanguage: Language
+  // Kirjautuneen virkailijan kieli tulee asiointikielestä; kansalaisella ja kirjautumissivulla se on
+  // käyttäjän oma valinta, joka säilyy evästeessä.
+  asiointikieli: boolean
 }
 
-const LanguageButtons = ({ currentLanguage }: LanguageButtonsProps) => (
+const LanguageButtons = ({
+  currentLanguage,
+  asiointikieli,
+}: LanguageButtonsProps) => (
   <>
     {supportedLanguages.map((language) => (
       <button
@@ -191,7 +206,13 @@ const LanguageButtons = ({ currentLanguage }: LanguageButtonsProps) => (
         )}
         id={language}
         key={language}
-        onClick={() => setLanguage(language)}
+        onClick={() =>
+          asiointikieli
+            ? setMockAsiointikieli(language).then(() =>
+                window.location.reload(),
+              )
+            : setLanguage(language)
+        }
       >
         {language}
       </button>

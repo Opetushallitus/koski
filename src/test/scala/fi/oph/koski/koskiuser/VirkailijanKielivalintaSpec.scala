@@ -3,7 +3,8 @@ package fi.oph.koski.koskiuser
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.servlet.IndexServlet
 import fi.oph.koski.sso.KoskiUserCookie
-import fi.oph.koski.userdirectory.{DirectoryClient, DirectoryUser, Password}
+import fi.oph.koski.fixture.MockAsiointikieliServlet
+import fi.oph.koski.userdirectory.{DirectoryClient, DirectoryUser, MockDirectoryClient, Password}
 import fi.oph.koski.valpas.ValpasBootstrapServlet
 import fi.oph.koski.{KoskiApplicationForTests, TestEnvironment}
 import org.scalatra.ScalatraServlet
@@ -45,6 +46,9 @@ class VirkailijanKielivalintaSpec extends ScalatraFreeSpec with TestEnvironment 
       )
     }
   }, "/testi/*")
+
+  // Paikallisen kehitysympäristön kielenvaihto, ks. MockAsiointikieliServlet.
+  addServlet(new MockAsiointikieliServlet()(KoskiApplicationForTests), "/testi-kieli/*")
 
   private val ruotsinkielinen = MockUsers.ruotsinkielinenKatselija
 
@@ -96,6 +100,26 @@ class VirkailijanKielivalintaSpec extends ScalatraFreeSpec with TestEnvironment 
     }
 
     // Valppaan kirjautumissivu on kirjautumaton, joten ainoa signaali on kävijän oma kielivalinta.
+    "mock-käyttäjän asiointikielen vaihto näkyy heti sivunlatauksessa" in {
+      val kalle = MockUsers.kalle
+      withVirkailijaSession(kalle.ldapUser.oid, kalle.username) { koskiUser =>
+        try {
+          get("/koski/virkailija", headers = Map("Cookie" -> koskiUser)) {
+            body should include("""<html lang="fi"""")
+          }
+          post("/testi-kieli/sv", headers = Map("Cookie" -> koskiUser)) {
+            status should equal(200)
+          }
+          get("/koski/virkailija", headers = Map("Cookie" -> koskiUser)) {
+            body should include("""<html lang="sv"""")
+          }
+        } finally {
+          MockDirectoryClient.clearAsiointikieliOverrides()
+          KoskiApplicationForTests.directoryClient.invalidateCache()
+        }
+      }
+    }
+
     "kirjautumattoman Valpas-kävijän oma kielivalinta kelpaa" in {
       get("/koski/valpas/localization/window-properties", headers = Map("Cookie" -> "lang=sv")) {
         status should equal(200)

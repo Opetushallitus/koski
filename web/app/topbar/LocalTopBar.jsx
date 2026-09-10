@@ -4,6 +4,7 @@ import Link from '../components/Link'
 import Text from '../i18n/Text'
 import NavList from './NavList'
 import InvalidationNotification from '../components/InvalidationNotification'
+import { DevLanguageButtons } from './DevLanguageButtons'
 
 export default ({ location, user, titleKey }) => {
   return (
@@ -25,6 +26,7 @@ export default ({ location, user, titleKey }) => {
           </span>
         ) : null}
       </h1>
+      <DevLanguageButtons />
       <UserInfo user={user} />
       {user !== null && (
         <div className="topbarnav">

@@ -1,6 +1,6 @@
-import { ISODate } from "../state/common"
+import { Language, ISODate } from "../state/common"
 import { queryPath } from "../state/paths"
-import { apiGet } from "./apiFetch"
+import { apiGet, apiPost } from "./apiFetch"
 
 export type FixtureState = {
   fixture: string
@@ -20,6 +20,13 @@ export const resetMockDataToDate =
         },
       ),
     )
+
+/**
+ * Virkailijan kieli tulee asiointikielestä, joten sitä ei voi vaihtaa käyttöliittymästä. Paikallisesti
+ * vaihdetaan mock-käyttäjän asiointikieltä, jolloin kieli ratkeaa samaa reittiä kuin tuotannossa.
+ */
+export const setMockAsiointikieli = (kieli: Language) =>
+  apiPost<string>("api/test/asiointikieli/" + kieli)
 
 export const clearMockData = () =>
   apiGet<FixtureState>("valpas/test/clear-mock-data")
