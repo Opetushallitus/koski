@@ -425,9 +425,11 @@ class KoskiSpecificDatabaseFixtureCreator(application: KoskiApplication) extends
           )),
           tila = NuortenPerusopetuksenOpiskeluoikeudenTila(List(NuortenPerusopetuksenOpiskeluoikeusjakso(date(2022, 8, 1), opiskeluoikeusLäsnä))),
           lisätiedot = Some(PerusopetuksenOpiskeluoikeudenLisätiedot(
-            // toimintaAlueittainOpiskelu sallitaan aikaisintaan 1.8.2026 (validaatiot.toimintaAlueittainJärjestettyVoimaan)
-            // ja jakson täytyy sisältyä tuenPäätöksenJaksot-jaksoon.
-            toimintaAlueittainOpiskelu = Some(List(Aikajakso(date(2026, 8, 1), None))),
+            // TOR-2650: Kotikuntalaskelman 16v-jako perustuu nimenomaan tähän kenttään (vahvistettu
+            // tiketillä), ei toimintaAlueittainOpiskeluun. Sallitaan aikaisintaan 1.8.2026
+            // (validaatiot.vammaSairausTaiRajoiteVoimaan) ja jakson täytyy sisältyä
+            // tuenPäätöksenJaksot-jaksoon.
+            opetuksenJärjestäminenVammanSairaudenTaiRajoitteenPerusteella = Some(List(Aikajakso(date(2026, 8, 1), None))),
             tuenPäätöksenJaksot = Some(List(Tukijakso(Some(date(2026, 8, 1)), None)))
           ))
         )

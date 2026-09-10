@@ -45,8 +45,8 @@ case class Kotikuntalaskelma(db: DB, organisaatioService: OrganisaatioService) e
     select
       oo.koulutustoimija_oid as opetuksen_jarjestaja_oid,
       oo.koulutustoimija_nimi as opetuksen_jarjestaja,
-      coalesce(kkh.kotikunta, case when he.turvakielto then null else he.kotikunta end) as kotikunnan_koodi,
-      coalesce(kkh.kotikunta_nimi_fi, case when he.turvakielto then null else he.kotikunta_nimi_fi end) as oppilaan_kotikunta,
+      kkh.kotikunta as kotikunnan_koodi,
+      kkh.kotikunta_nimi_fi as oppilaan_kotikunta,
 
       count(distinct case
         when extract(year from he.syntymaaika) = v.vuosi - 6
@@ -63,17 +63,20 @@ case class Kotikuntalaskelma(db: DB, organisaatioService: OrganisaatioService) e
         then he.master_oid
       end) as kolmetoista_viisitoista,
 
+      -- Jako perustuu nimenomaan vamman/sairauden/toimintakyvyn rajoitteeseen (vahvistettu
+      -- tiketillä), ei toiminta-alueittaiseen opiskeluun eikä pidennettyyn oppivelvollisuuteen
+      -- yleensä — nämä kolme eivät ole sama asia.
       count(distinct case
         when extract(year from he.syntymaaika) = v.vuosi - 16
           and aj.alku <= $päivä and aj.loppu >= $päivä
-          and (aj.toiminta_alueittain_opiskelu or aj.opetus_vamman_sairauden_tai_rajoitteen_perusteella)
+          and aj.opetus_vamman_sairauden_tai_rajoitteen_perusteella
         then he.master_oid
       end) as kuusitoista_erityisen_tuen_perusteella,
 
       count(distinct case
         when extract(year from he.syntymaaika) = v.vuosi - 16
           and aj.alku <= $päivä and aj.loppu >= $päivä
-          and not (aj.toiminta_alueittain_opiskelu or aj.opetus_vamman_sairauden_tai_rajoitteen_perusteella)
+          and not aj.opetus_vamman_sairauden_tai_rajoitteen_perusteella
         then he.master_oid
       end) as kuusitoista_ei_erityisen_tuen_perusteella,
 
@@ -119,9 +122,9 @@ case class Kotikuntalaskelma(db: DB, organisaatioService: OrganisaatioService) e
     group by
       oo.koulutustoimija_oid,
       oo.koulutustoimija_nimi,
-      coalesce(kkh.kotikunta, case when he.turvakielto then null else he.kotikunta end),
-      coalesce(kkh.kotikunta_nimi_fi, case when he.turvakielto then null else he.kotikunta_nimi_fi end)
-    order by oo.koulutustoimija_nimi, coalesce(kkh.kotikunta, case when he.turvakielto then null else he.kotikunta end)
+      kkh.kotikunta,
+      kkh.kotikunta_nimi_fi
+    order by oo.koulutustoimija_nimi, kkh.kotikunta
   """
   }
 
@@ -131,8 +134,12 @@ case class Kotikuntalaskelma(db: DB, organisaatioService: OrganisaatioService) e
   // luokkaa) sekä tosi/epätosi-liput samoille ikäryhmille kuin aggregaattivälilehdellä. Hetu on
   // hetuttomalle oppijalle luonnostaan NULL (r_henkilo.hetu on jo Option[String] skeemassa) — ei
   // erillistä käsittelyä tarvita. Kotikunta resolvoidaan samalla tavalla kuin
-  // aggregaattivälilehdellä (r_kotikuntahistoria ensisijaisena, turvakielto-suojattu
-  // r_henkilo-varakotikunta toissijaisena). Turvakiellon alaiselle oppijalle
+  // aggregaattivälilehdellä (suoraan r_kotikuntahistoriasta, ei r_henkilo-varakotikuntaa —
+  // ks. 12 §:n päivitetty päätös: aukko jätetään mieluummin "Ei tiedossa" -tilaan kuin
+  // arvataan nykyisen kotikunnan perusteella, koska arvattu arvo näyttäisi raportilla
+  // täysin samalta kuin oikeasti kyseiselle päivälle vahvistettu tieto). Turvakielto ei
+  // vaadi enää erillistä suojausta tässä, koska r_kotikuntahistoria on jo rakenteellisesti
+  // turvakielto-suodatettu. Turvakiellon alaiselle oppijalle
   // hetu/yksilöity/nimet/kotikunta/oppilaitos/luokka-aste/luokka piilotetaan (null) ja
   // oid-sarakkeeseen kirjoitetaan "Turvakielto" tyhjän arvon sijaan, jotta rivi ei näytä
   // virheeltä — vain ikäryhmäliput näytetään muuten, jotta koulutustoimija näkee mistä
@@ -185,8 +192,14 @@ case class Kotikuntalaskelma(db: DB, organisaatioService: OrganisaatioService) e
       case when bool_or(he.turvakielto) then null else bool_or(he.yksiloity) end as yksiloity,
       case when bool_or(he.turvakielto) then null else max(he.etunimet) end as etunimet,
       case when bool_or(he.turvakielto) then null else max(he.sukunimi) end as sukunimi,
-      case when bool_or(he.turvakielto) then null else max(coalesce(kkh.kotikunta_nimi_fi, he.kotikunta_nimi_fi)) end as kotikunta,
+      case when bool_or(he.turvakielto) then null else max(kkh.kotikunta_nimi_fi) end as kotikunta,
       case when bool_or(he.turvakielto) then null else max(oo.oppilaitos_nimi) end as oppilaitos,
+      -- TODO(TOR-2650): luokka_aste/luokka valitaan max()-aggregaatilla kaikista oppijan
+      -- perusopetuksenvuosiluokka-suorituksista, ei vain päivälle $päivä voimassa olevasta —
+      -- toisin kuin internationalschool/europeanschoolofhelsinki-haaroissa, tässä ei ole
+      -- pts.alkamispaiva <= $päivä -rajausta. max() valitsee aakkosellisesti suurimman arvon,
+      -- ei kronologisesti viimeisintä, joten luokan uusinut oppija (esim. vanha "3C", nykyinen
+      -- "3A") voi näyttää raportilla väärän, jo korvatun luokan.
       case when bool_or(he.turvakielto) then null else max(pts.koulutusmoduuli_koodiarvo) end as luokka_aste,
       case when bool_or(he.turvakielto) then null else max(pts.luokka_tai_ryhma) end as luokka,
 
@@ -196,16 +209,19 @@ case class Kotikuntalaskelma(db: DB, organisaatioService: OrganisaatioService) e
 
       bool_or(extract(year from he.syntymaaika) between v.vuosi - 15 and v.vuosi - 13) as kolmetoista_viisitoista,
 
+      -- Jako perustuu nimenomaan vamman/sairauden/toimintakyvyn rajoitteeseen (vahvistettu
+      -- tiketillä), ei toiminta-alueittaiseen opiskeluun eikä pidennettyyn oppivelvollisuuteen
+      -- yleensä — nämä kolme eivät ole sama asia.
       bool_or(
         extract(year from he.syntymaaika) = v.vuosi - 16
         and aj.alku <= $päivä and aj.loppu >= $päivä
-        and (aj.toiminta_alueittain_opiskelu or aj.opetus_vamman_sairauden_tai_rajoitteen_perusteella)
+        and aj.opetus_vamman_sairauden_tai_rajoitteen_perusteella
       ) as kuusitoista_erityisen_tuen_perusteella,
 
       bool_or(
         extract(year from he.syntymaaika) = v.vuosi - 16
         and aj.alku <= $päivä and aj.loppu >= $päivä
-        and not (aj.toiminta_alueittain_opiskelu or aj.opetus_vamman_sairauden_tai_rajoitteen_perusteella)
+        and not aj.opetus_vamman_sairauden_tai_rajoitteen_perusteella
       ) as kuusitoista_ei_erityisen_tuen_perusteella
 
     from v, r_henkilo he
