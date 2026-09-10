@@ -11,6 +11,14 @@ import slick.jdbc.GetResult
 
 import scala.concurrent.duration.DurationInt
 
+// TODO(TOR-2650): build() ja buildOppijat() ajavat molemmat oman, lähes identtisen
+// viiden taulun (r_henkilo/r_opiskeluoikeus/r_paatason_suoritus/r_opiskeluoikeus_aikajakso/
+// r_kotikuntahistoria) liitoskyselynsä samalle oppilaitosOids-joukolle — sama rivijoukko
+// haetaan ja liitetään tietokannasta kahteen kertaan yhden Excelin tuottamiseksi, vaikka
+// aggregaattivälilehti voitaisiin periaatteessa johtaa jo haetuista oppija-riveistä Scalassa.
+// Ei kiireellinen: raportti on rajattu yhteen koulutustoimijaan kerrallaan, joten kyselyjen
+// koko pysynee pienenä eikä lähellä 5 minuutin timeout-budjettia — mutta jos tähän joskus
+// palataan muusta syystä, kannattaa harkita yhdistämistä.
 case class Kotikuntalaskelma(db: DB, organisaatioService: OrganisaatioService) extends QueryMethods {
   implicit private val getResult: GetResult[KotikuntalaskelmaRow] = GetResult(r =>
     KotikuntalaskelmaRow(
@@ -195,9 +203,9 @@ case class Kotikuntalaskelma(db: DB, organisaatioService: OrganisaatioService) e
       case when bool_or(he.turvakielto) then null else max(kkh.kotikunta_nimi_fi) end as kotikunta,
       case when bool_or(he.turvakielto) then null else max(oo.oppilaitos_nimi) end as oppilaitos,
       -- TODO(TOR-2650): luokka_aste/luokka valitaan max()-aggregaatilla kaikista oppijan
-      -- perusopetuksenvuosiluokka-suorituksista, ei vain päivälle $päivä voimassa olevasta —
+      -- perusopetuksenvuosiluokka-suorituksista, ei vain päivälle $$päivä voimassa olevasta —
       -- toisin kuin internationalschool/europeanschoolofhelsinki-haaroissa, tässä ei ole
-      -- pts.alkamispaiva <= $päivä -rajausta. max() valitsee aakkosellisesti suurimman arvon,
+      -- pts.alkamispaiva <= $$päivä -rajausta. max() valitsee aakkosellisesti suurimman arvon,
       -- ei kronologisesti viimeisintä, joten luokan uusinut oppija (esim. vanha "3C", nykyinen
       -- "3A") voi näyttää raportilla väärän, jo korvatun luokan.
       case when bool_or(he.turvakielto) then null else max(pts.koulutusmoduuli_koodiarvo) end as luokka_aste,
