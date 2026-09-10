@@ -1,7 +1,7 @@
 package fi.oph.koski.omadataoauth2
 
 import fi.oph.koski.config.KoskiApplication
-import fi.oph.koski.koskiuser.RequiresOmaDataOAuth2
+import fi.oph.koski.koskiuser.{KoskiSpecificSession, RequiresOmaDataOAuth2}
 import fi.oph.koski.log.Logging
 import fi.oph.koski.omadataoauth2.OmaDataOAuth2Security.challengeFromVerifier
 import fi.oph.koski.servlet.{KoskiSpecificApiServlet, NoCache}
@@ -34,14 +34,14 @@ class OmaDataOAuth2AuthorizationServerServlet(implicit val application: KoskiApp
 
             logger.warn(validationError.getLoggedErrorMessage)
             validationError.getAccessTokenErrorResponse
-          case _ =>
+          case Right(session) =>
             application.omaDataOAuth2Service.createAccessTokenForCode(
               code = accessTokenRequest.code,
               expectedClientId = accessTokenRequest.client_id,
               expectedCodeChallenge = challengeFromVerifier(accessTokenRequest.code_verifier),
               expectedRedirectUri = accessTokenRequest.redirect_uri,
-              koskiSession = koskiSession,
-              allowedScopes = koskiSession.omaDataOAuth2Scopes
+              koskiSession = session,
+              allowedScopes = session.omaDataOAuth2Scopes
             ) match {
               case Left(error) => error.getAccessTokenErrorResponse
               case Right(accessTokenInfo: AccessTokenInfo) => OAuth2AccessTokenSuccessResponse(
@@ -58,25 +58,19 @@ class OmaDataOAuth2AuthorizationServerServlet(implicit val application: KoskiApp
     renderObject(result)
   }
 
-  private def validateAccessTokenRequest(request: AccessTokenRequest): Either[OmaDataOAuth2Error, Unit] = {
+  private def validateAccessTokenRequest(request: AccessTokenRequest): Either[OmaDataOAuth2Error, KoskiSpecificSession] = {
     for {
-      _ <- validateClientId(request.client_id)
-    } yield ()
+      session <- validateClientId(request.client_id)
+    } yield session
   }
 
-  private def validateClientId(clientIdParam: String): Either[OmaDataOAuth2Error, String] = {
+  private def validateClientId(clientIdParam: String): Either[OmaDataOAuth2Error, KoskiSpecificSession] = {
     for {
       clientId <- validateClientIdRekisteröity(clientIdParam, OmaDataOAuth2ErrorType.invalid_client)
-      _ <- validateClientIdSamaKuinKäyttäjätunnus(clientId)
-    } yield clientId
-  }
-
-  private def validateClientIdSamaKuinKäyttäjätunnus(clientId: String): Either[OmaDataOAuth2Error, String] = {
-    if (koskiSession.user.username == clientId) {
-      Right(clientId)
-    } else {
-      Left(OmaDataOAuth2Error(OmaDataOAuth2ErrorType.invalid_client, s"Annettu client_id ${clientId} on eri kuin mTLS-käyttäjä ${koskiSession.user.username}"))
-    }
+      session <- pinOmaDataOAuth2Session(clientId).toRight(
+        OmaDataOAuth2Error(OmaDataOAuth2ErrorType.invalid_client, s"Annettu client_id ${clientId} ei vastaa mTLS-varmenteelle konfiguroitua käyttäjätunnusta")
+      )
+    } yield session
   }
 }
 object AccessTokenRequest {

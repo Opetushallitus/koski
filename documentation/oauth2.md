@@ -150,6 +150,10 @@ Hylätty vaihtoehto:
 
 Käyttäjätunnus on sidottu KOSKI-palvelun konfiguraatiossa Hyödyntäjä-backendin client certiin + sallittuihin ip-osoitteisiin.
 
+Samalle client certille voi olla konfiguroituna useita käyttäjätunnuksia, jolloin pyynnön client_id valitsee
+niistä käytettävän. Tätä tarvitaan käyttäjätunnuksen vaihdossa, ks.
+[oauth2toteutus.md](oauth2toteutus.md).
+
 Ei tarvitse toteuttaa erillistä client id -rekisteriä, kun käytetään samaa merkkijonoa kuin Opintopolun käyttäjähallinnassa.
 
 Pitää varmistaa, että käytetään vain käyttäjätunnuksia, jotka on helppo välittää query-parametreina URL:ssa.

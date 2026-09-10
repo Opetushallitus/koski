@@ -12,6 +12,9 @@ class MockLuovutuspalveluV2ClientListService extends LuovutuspalveluV2ClientList
   // Huom: omadataoauth2sample-käyttäjällä on kaksi sertifikaattia:
   // - CN=omadataoauth2sample: yksikkötestien käyttämä
   // - CN=client.example.com,O=Testi,C=FI: Java-esimerkkiclientin käyttämä (omadata-oauth2-sample/server/testca/generate-certs.sh)
+  //
+  // CN=oauth2vaihto ja CN=monitulkintainen ovat testejä varten: samalle sertifikaatille on
+  // konfiguroitu useita käyttäjätunnuksia.
   private val mockClientListJson =
     """[
       |{"subjectDn": "CN=oa2-dev.koski-luovutuspalvelu-test-certs.testiopintopolku.fi", "ips": ["0.0.0.0"],  "user": "koskioauth2sampledevpk"},
@@ -23,6 +26,11 @@ class MockLuovutuspalveluV2ClientListService extends LuovutuspalveluV2ClientList
       |{"subjectDn":"CN=oauth2client", "ips":["0.0.0.0"], "user": "oauth2client"},
       |{"subjectDn":"CN=oauth2kaikkiclient", "ips":["0.0.0.0"], "user": "oauth2kaikkiclient"},
       |{"subjectDn":"CN=oauth2clienteirek", "ips":["0.0.0.0"], "user": "oauth2clienteirek"},
+      |{"subjectDn":"CN=oauth2vaihto", "ips":["0.0.0.0"], "user": "oauth2vaihtovanha"},
+      |{"subjectDn":"CN=oauth2vaihto", "ips":["0.0.0.0"], "user": "oauth2vaihtouusi"},
+      |{"subjectDn":"CN=oauth2vaihto", "ips":["0.0.0.0"], "user": "oauth2vaihtoeioikeuksia"},
+      |{"subjectDn":"CN=monitulkintainen", "ips":["0.0.0.0"], "user": "Laaja"},
+      |{"subjectDn":"CN=monitulkintainen", "ips":["0.0.0.0"], "user": "Suppea"},
       |{"subjectDn":"CN=oauth2oph", "ips":["0.0.0.0"], "user": "oauth2oph"},
       |{"subjectDn":"CN=valpas-kela", "ips":["0.0.0.0"], "user": "valpas-kela"},
       |{"subjectDn":"CN=valpas-helsinki", "ips":["0.0.0.0"], "user": "valpas-helsinki"},

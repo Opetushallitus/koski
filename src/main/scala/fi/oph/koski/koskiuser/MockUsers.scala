@@ -127,6 +127,43 @@ object MockUsers {
     )))
   )
 
+  val omadataOAuth2VaihtuvaVanhaPalvelukäyttäjä = KoskiMockUser(
+    "oauth2vaihtovanha",
+    "oauth2vaihtovanha",
+    "1.2.246.562.24.99999984730",
+    Seq(OrganisaatioJaKäyttöoikeudet(MockOrganisaatiot.dvv, List(
+      PalveluJaOikeus("KOSKI", Rooli.OMADATAOAUTH2_OPISKELUOIKEUDET_SUORITETUT_TUTKINNOT),
+      PalveluJaOikeus("KOSKI", Rooli.OMADATAOAUTH2_HENKILOTIEDOT_NIMI),
+      PalveluJaOikeus("KOSKI", Rooli.OMADATAOAUTH2_HENKILOTIEDOT_SYNTYMAAIKA),
+    )))
+  )
+
+  val omadataOAuth2VaihtuvaUusiPalvelukäyttäjä = KoskiMockUser(
+    "oauth2vaihtouusi",
+    "oauth2vaihtouusi",
+    "1.2.246.562.24.99999984731",
+    Seq(OrganisaatioJaKäyttöoikeudet(MockOrganisaatiot.dvv, List(
+      PalveluJaOikeus("KOSKI", Rooli.OMADATAOAUTH2_HENKILOTIEDOT_NIMI),
+      PalveluJaOikeus("KOSKI", Rooli.OMADATAOAUTH2_HENKILOTIEDOT_SYNTYMAAIKA),
+      PalveluJaOikeus("KOSKI", Rooli.OMADATAOAUTH2_HENKILOTIEDOT_HETU),
+      PalveluJaOikeus("KOSKI", Rooli.OMADATAOAUTH2_HENKILOTIEDOT_OPPIJANUMERO),
+      PalveluJaOikeus("KOSKI", Rooli.OMADATAOAUTH2_HENKILOTIEDOT_KAIKKI_TIEDOT),
+      PalveluJaOikeus("KOSKI", Rooli.OMADATAOAUTH2_OPISKELUOIKEUDET_SUORITETUT_TUTKINNOT),
+      PalveluJaOikeus("KOSKI", Rooli.OMADATAOAUTH2_OPISKELUOIKEUDET_AKTIIVISET_JA_PAATTYNEET_OPINNOT),
+      PalveluJaOikeus("KOSKI", Rooli.OMADATAOAUTH2_OPISKELUOIKEUDET_KAIKKI_TIEDOT),
+      PalveluJaOikeus("KOSKI", Rooli.OMADATAOAUTH2_OPISKELUOIKEUDET_KAIKKI_TIEDOT_JA_VALINTATIEDOT)
+    )))
+  )
+
+  val omadataOAuth2VaihtuvaIlmanOikeuksiaPalvelukäyttäjä = KoskiMockUser(
+    "oauth2vaihtoeioikeuksia",
+    "oauth2vaihtoeioikeuksia",
+    "1.2.246.562.24.99999984732",
+    Seq(OrganisaatioJaKäyttöoikeudet(MockOrganisaatiot.dvv, List(
+      PalveluJaOikeus("KOSKI", Rooli.READ),
+    )))
+  )
+
   val omniaPalvelukäyttäjä = KoskiMockUser(
     "käyttäjä",
     "omnia-palvelukäyttäjä",
@@ -801,6 +838,9 @@ object MockUsers {
     omadataOAuth2SampleAppPalvelukäyttäjä,
     omadataOAuth2SampleAppPalvelukäyttäjäNoLogout,
     omadataOAuth2OphPalvelukäyttäjä,
+    omadataOAuth2VaihtuvaVanhaPalvelukäyttäjä,
+    omadataOAuth2VaihtuvaUusiPalvelukäyttäjä,
+    omadataOAuth2VaihtuvaIlmanOikeuksiaPalvelukäyttäjä,
     kielitutkintorekisteriKäyttäjä,
     yleisenKielitutkinnonKäyttäjä,
     valtionhallinnonKielitutkinnonKäyttäjä,

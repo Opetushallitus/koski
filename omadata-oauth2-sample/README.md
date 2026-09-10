@@ -56,7 +56,7 @@ pnpm install --frozen-lockfile
 
 # Käynnistä ALB-proxy ja Node.js -palvelin (kahdessa terminaalissa tai taustalle):
 pnpm run start:alb-proxy
-pnpm run start:start:node-sample
+pnpm run start:node-sample
 ```
 
 Node.js -esimerkki löytyy osoitteesta http://localhost:7051

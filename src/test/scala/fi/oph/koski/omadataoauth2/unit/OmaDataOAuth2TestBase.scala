@@ -21,8 +21,10 @@ class OmaDataOAuth2TestBase extends AnyFreeSpec with KoskiHttpSpec with Matchers
   protected def base64UrlEncode(str: String): String = Base64.getUrlEncoder().encodeToString(str.getBytes("UTF-8"))
   protected def base64UrlDecode(str: String): String = new String(Base64.getUrlDecoder().decode(str), "UTF-8")
 
-  protected def certificateHeaders(user: KoskiMockUser): Headers = Map(
-    "x-amzn-mtls-clientcert-subject" -> s"CN=${user.username}",
+  protected def certificateHeaders(user: KoskiMockUser): Headers = certificateHeaders(s"CN=${user.username}")
+
+  protected def certificateHeaders(subjectDn: String): Headers = Map(
+    "x-amzn-mtls-clientcert-subject" -> subjectDn,
     "x-amzn-mtls-clientcert-serial-number" -> "123",
     "x-amzn-mtls-clientcert-issuer" -> "CN=mock-issuer",
     "X-Forwarded-For" -> "0.0.0.0"
