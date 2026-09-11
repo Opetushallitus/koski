@@ -208,6 +208,12 @@ const PerusteLinkki: React.FC<{ diaarinumero?: string }> = ({
 const getLuokalleSiirtymisenTeksti = (suoritus: object): string | undefined => {
   if (!isAhvenanmaanPerusopetuksenVuosiluokanSuoritus(suoritus))
     return undefined
+
+  // Päättövuodelta ei siirrytä seuraavalle luokalle, kuten manner-Suomessa.
+  if (suoritus.koulutusmoduuli.tunniste.koodiarvo === '9') {
+    return suoritus.jääLuokalle ? 'Oppilas jää luokalle' : undefined
+  }
+
   return suoritus.jääLuokalle
     ? 'Ei siirretä seuraavalle luokalle'
     : 'Siirretään seuraavalle luokalle'
@@ -222,6 +228,7 @@ const LuokalleSiirtyminenModalCheckbox: React.FC<{
     AhvenanmaanPerusopetuksenOpiskeluoikeus,
     AhvenanmaanPerusopetuksenVuosiluokanSuoritus
   >
+  const isYsiluokka = suoritus.koulutusmoduuli.tunniste.koodiarvo === '9'
 
   const onChange = useCallback(
     (siirretäänSeuraavalleLuokalle: boolean) => {
@@ -233,7 +240,7 @@ const LuokalleSiirtyminenModalCheckbox: React.FC<{
     [form, vuosiluokkaPath]
   )
 
-  return (
+  return isYsiluokka ? null : (
     <Checkbox
       label="Siirretään seuraavalle luokalle"
       checked={!suoritus.jääLuokalle}
