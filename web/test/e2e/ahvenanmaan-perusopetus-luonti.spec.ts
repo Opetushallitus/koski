@@ -157,6 +157,12 @@ test.describe('Ahvenanmaan perusopetuksen opiskeluoikeuden luonti', () => {
     await expect(
       page.getByTestId('oo.0.suoritukset.0.muutKuinOppivelvolliset')
     ).toHaveText('Kyllä')
+    // Muiden kuin oppivelvollisten opiskeluoikeudella ei ole vuosiluokan
+    // suorituksia, joten alkamispäivä kirjataan oppimäärän suoritukselle.
+    // Dialogi esitäyttää sen opiskeluoikeuden alkamispäivällä.
+    await expect(
+      page.getByTestId('oo.0.suoritukset.0.alkamispäivä.value')
+    ).toHaveText('1.8.2018')
 
     const opiskeluoikeus0 = await haeLuotuOpiskeluoikeus(page)
     expect(opiskeluoikeus0.tyyppi.koodiarvo).toEqual('ahvenanmaanperusopetus')
@@ -165,9 +171,6 @@ test.describe('Ahvenanmaan perusopetuksen opiskeluoikeuden luonti', () => {
     expect(suoritus.tyyppi.koodiarvo).toEqual(
       'ahvenanmaanperusopetuksenoppimaaraaikuiset'
     )
-    // Muiden kuin oppivelvollisten opiskeluoikeudella ei ole vuosiluokan
-    // suorituksia, joten alkamispäivä kirjataan oppimäärän suoritukselle.
-    expect(suoritus.alkamispäivä).toEqual('2018-08-01')
     expect(suoritus.osasuoritukset).toHaveLength(17)
   })
 })

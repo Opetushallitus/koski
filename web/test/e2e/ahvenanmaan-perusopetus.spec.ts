@@ -213,6 +213,30 @@ test.describe('Ahvenanmaan perusopetuksen käyttöliittymä', () => {
     ).toHaveCount(0)
   })
 
+  test('Muun kuin oppivelvollisen päättötodistuksella näytetään alkamispäivä ja alkuvaihe', async ({
+    page,
+    oppijaPage,
+    fixtures
+  }) => {
+    await fixtures.reset()
+    await oppijaPage.goto(aikuisopiskelijaUrl)
+
+    // Alkamispäivä on päättövaiheen alku. Opiskelija aloitti alkuvaiheesta
+    // opiskeluoikeuden alkaessa, joten päivät eroavat.
+    await expect(
+      page.getByTestId('oo.0.suoritukset.0.alkamispäivä.value')
+    ).toHaveText('15.8.2025')
+    await expect(
+      page.getByTestId('oo.0.suoritukset.0.suoritustapa.value')
+    ).toContainText('Koulutus')
+    await expect(
+      page.getByTestId('oo.0.opiskeluoikeus.lisätiedot.alkuvaihe.alku')
+    ).toContainText('15.8.2024')
+    await expect(
+      page.getByTestId('oo.0.opiskeluoikeus.lisätiedot.alkuvaihe.loppu')
+    ).toContainText('4.6.2025')
+  })
+
   test('Arvosanavalikko tarjoaa sekä numeeriset (4-10) että sanalliset (G/D/U) arvosanat', async ({
     page,
     oppijaPage,
