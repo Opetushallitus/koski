@@ -1124,7 +1124,10 @@ const OppiaineExpandedContent: React.FC<OppiaineExpandedContentProps> = ({
           </OsasuoritusPropertyValue>
         </OsasuoritusProperty>
       )}
-      {isOppiaine && (form.editMode || suoritus.yksilöllistettyOppimäärä) && (
+      {/* Katselutilassa yksilöllistetty ja rajattu oppimäärä sekä painotettu
+          opetus näkyvät arvosanan alaviitteinä (* ja **), joten niitä ei
+          toisteta kenttäriveinä – kuten vanhassa käyttöliittymässä. */}
+      {isOppiaine && form.editMode && (
         <OsasuoritusProperty label="Yksilöllistetty oppimäärä">
           <OsasuoritusPropertyValue>
             <FormField
@@ -1137,7 +1140,7 @@ const OppiaineExpandedContent: React.FC<OppiaineExpandedContentProps> = ({
           </OsasuoritusPropertyValue>
         </OsasuoritusProperty>
       )}
-      {isOppiaine && (form.editMode || suoritus.rajattuOppimäärä) && (
+      {isOppiaine && form.editMode && (
         <OsasuoritusProperty label="Rajattu oppimäärä">
           <OsasuoritusPropertyValue>
             <FormField
@@ -1150,7 +1153,7 @@ const OppiaineExpandedContent: React.FC<OppiaineExpandedContentProps> = ({
           </OsasuoritusPropertyValue>
         </OsasuoritusProperty>
       )}
-      {isOppiaine && (form.editMode || suoritus.painotettuOpetus) && (
+      {isOppiaine && form.editMode && (
         <OsasuoritusProperty label="Painotettu opetus">
           <OsasuoritusPropertyValue>
             <FormField
