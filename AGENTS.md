@@ -128,8 +128,16 @@ Location: `src/test/scala/fi/oph/koski/`
 
 Run specific test suite:
 ```bash
-mvn test -Dsuites="fi.oph.koski.schema.SchemaSpec"
+mvn test -Dsuites="fi.oph.koski.schema.SerializationSpec"
 ```
+
+Several suites at once — **separate them with commas, never spaces**:
+```bash
+mvn test -Dsuites="fi.oph.koski.schema.SerializationSpec,fi.oph.koski.virta.VirtaXMLConverterSpec"
+```
+A space-separated list matches no suite, runs **zero tests, and still reports `BUILD SUCCESS`** — a green that verified nothing. Always check the `Tests: succeeded N` line, not just the build result.
+
+A misspelled or non-existent suite name fails differently: `*** RUN ABORTED ***` with `ClassNotFoundException`, **before any suite runs**, so the other suites in the same command are silently skipped too.
 
 **Important:** `BackwardCompatibilitySpec` compares each documentation `Example` against a stored JSON snapshot under `src/test/resources/backwardcompatibility/`, matched by sanitized example name. When you **rename or change the data of an `Example`** (e.g. in `documentation/Examples*.scala`), regenerate its snapshot: run `BackwardCompatibilitySpec` locally — it writes a new dated file — and commit it. CI fails if the snapshot is missing (it refuses to write on CI). If you renamed the example, also delete the now-orphaned old snapshot.
 
@@ -214,9 +222,11 @@ Removing an override is not enough on its own: pnpm keeps a lockfile resolution 
 
 ### Adding a new field to schema
 1. Update Scala case class in `schema/`
-2. Run `make ts-types` to regenerate TypeScript types
-3. Add database migration if persisted
-4. Update validation if needed
+2. Add localization keys (see *Updating localizations* below) — `KoskiSpecificSchemaLocalizationSpec`
+   fails without them
+3. Run `make ts-types` to regenerate TypeScript types
+4. Add database migration if persisted
+5. Update validation if needed
 
 ### Updating localizations
 Localizations are served by the Lokalisointipalvelu service, which gets its data from Tolgee.
@@ -236,6 +246,20 @@ fallback). Valpas has the same pair under `src/main/resources/valpas/`.
   already exists — so a repo-only edit never reaches production and the next
   `scripts/fetch_prod_localizations.sh` run silently reverts it, while a Tolgee-only edit leaves
   local dev and tests on the old text until someone refreshes.
+
+- **New schema field** → needs **two** separate things in `koski-default-texts.json`, or
+  `KoskiSpecificSchemaLocalizationSpec` fails: a plain title key for the field name
+  (`"Laji": "Laji"`) *and* a `description:` / `tooltip:` key for each `@Description` / `@Tooltip`.
+  The title key is easy to miss, because common field names are already in the file.
+
+  **The description key is truncated**: text longer than 5 words becomes the first 5 words plus
+  `"..."`; 5 words or fewer stays whole (`KoskiSpecificSchemaLocalization.shortKeyAndText`). The
+  value is always the full text. A full-text key for a long description therefore never matches,
+  and the spec reports the key as missing even though you added one — copy the key verbatim from
+  the failure message.
+
+  Splice new lines in next to their neighbours. The file is not in plain sort order (`ä` sorts as
+  `a`), so re-serialising it rewrites ~1500 lines of unrelated churn.
 
 See the header comment in `scripts/fetch_prod_localizations.sh` for what a refresh overwrites.
 

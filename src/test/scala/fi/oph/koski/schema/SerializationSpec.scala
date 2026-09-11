@@ -97,10 +97,22 @@ class SerializationSpec extends AnyFreeSpec with TestEnvironment with Matchers w
               case _ => false
             }
 
+          // Korkeakoulun lisätieto on merkitty @SkipSerialization-annotaatiolla, joten se ei palaudu
+          // serialisoinnista eikä edestakainen muunnos voi olla häviötön. Korkeakoulun
+          // opiskeluoikeuksia ei tallenneta Koskeen, joten muunnosta ei tuotannossa tehdä.
+          // Verrataan ilman kyseistä kenttää, jotta muu vertailu säilyy täytenä.
+          def ilmanLisätietoa(s: Suoritus): Suoritus = s match {
+            case t: KorkeakoulututkinnonSuoritus =>
+              t.copy(lisätieto = None, osasuoritukset = t.osasuoritukset.map(_.map(o => ilmanLisätietoa(o).asInstanceOf[KorkeakoulunOpintojaksonSuoritus])))
+            case o: KorkeakoulunOpintojaksonSuoritus =>
+              o.copy(lisätieto = None, osasuoritukset = o.osasuoritukset.map(_.map(x => ilmanLisätietoa(x).asInstanceOf[KorkeakoulunOpintojaksonSuoritus])))
+            case muu => muu
+          }
+
           kaikkiSuoritukset.foreach { s =>
             val jsonString = JsonSerializer.serializeWithRoot(s)
             SchemaValidatingExtractor.extract[Suoritus](jsonString) match {
-              case Right(suoritus) => suoritus should (equal(s))
+              case Right(suoritus) => suoritus should (equal(ilmanLisätietoa(s)))
               case Left(error) => fail(s"deserialization of $s failed: $error")
             }
           }

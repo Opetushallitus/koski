@@ -9,6 +9,7 @@ import { Lukuvuosi_IlmoittautumisjaksonLukuvuosiMaksu } from './LukuvuosiIlmoitt
  */
 export type Lukukausi_Ilmoittautumisjakso = {
   $class: 'fi.oph.koski.schema.Lukukausi_Ilmoittautumisjakso'
+  ilmoittautumispäivä?: string
   tila: Koodistokoodiviite<'virtalukukausiilmtila', string>
   maksetutLukuvuosimaksut?: Lukuvuosi_IlmoittautumisjaksonLukuvuosiMaksu
   ylioppilaskunnanJäsen?: boolean
@@ -18,6 +19,7 @@ export type Lukukausi_Ilmoittautumisjakso = {
 }
 
 export const Lukukausi_Ilmoittautumisjakso = (o: {
+  ilmoittautumispäivä?: string
   tila: Koodistokoodiviite<'virtalukukausiilmtila', string>
   maksetutLukuvuosimaksut?: Lukuvuosi_IlmoittautumisjaksonLukuvuosiMaksu
   ylioppilaskunnanJäsen?: boolean

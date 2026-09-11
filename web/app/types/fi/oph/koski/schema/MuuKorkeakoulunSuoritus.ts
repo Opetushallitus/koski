@@ -1,5 +1,6 @@
 import { Koodistokoodiviite } from './Koodistokoodiviite'
 import { LocalizedString } from './LocalizedString'
+import { Laajuus } from './Laajuus'
 import { MuuKorkeakoulunOpinto } from './MuuKorkeakoulunOpinto'
 import { Oppilaitos } from './Oppilaitos'
 import { KorkeakoulunOpintojaksonSuoritus } from './KorkeakoulunOpintojaksonSuoritus'
@@ -15,6 +16,7 @@ export type MuuKorkeakoulunSuoritus = {
   tyyppi: Koodistokoodiviite<'suorituksentyyppi', 'muukorkeakoulunsuoritus'>
   tila?: Koodistokoodiviite<'suorituksentila', string>
   suorituskieli?: Koodistokoodiviite<'kieli', string>
+  vaadittuLaajuus?: Laajuus
   koulutusmoduuli: MuuKorkeakoulunOpinto
   toimipiste: Oppilaitos
   osasuoritukset?: Array<KorkeakoulunOpintojaksonSuoritus>
@@ -25,6 +27,7 @@ export const MuuKorkeakoulunSuoritus = (o: {
   tyyppi?: Koodistokoodiviite<'suorituksentyyppi', 'muukorkeakoulunsuoritus'>
   tila?: Koodistokoodiviite<'suorituksentila', string>
   suorituskieli?: Koodistokoodiviite<'kieli', string>
+  vaadittuLaajuus?: Laajuus
   koulutusmoduuli: MuuKorkeakoulunOpinto
   toimipiste: Oppilaitos
   osasuoritukset?: Array<KorkeakoulunOpintojaksonSuoritus>

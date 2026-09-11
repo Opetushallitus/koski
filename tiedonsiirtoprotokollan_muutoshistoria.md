@@ -6,6 +6,20 @@
 
 - Ahvenanmaan perusopetuksen opiskeluoikeuteen lisätty uusi päätason suoritus `ahvenanmaanperusopetuksenoppimaaraaikuiset` (Ahvenanmaan perusopetuksen oppimäärän suoritus muille kuin oppivelvollisille). Suoritus vastaa rakenteeltaan oppivelvollisten oppimäärän suoritusta, mutta sillä on lisäksi `alkamispäivä`-kenttä, koska näillä opiskeluoikeuksilla ei ole vuosiluokan suorituksia.
 
+# 24.8.2026
+
+- Korkeakoulun opiskeluoikeuksiin luetaan Virta-datasta joukko uusia tietoja, joita ei aiemmin tuotu Koskeen. Kaikki kentät ovat vapaaehtoisia eikä niitä siirretä Koskeen, vaan ne luetaan Virrasta.
+  - Opintojakson suoritukselle `opinnäytetyö`, joka kertoo onko suoritus opinnäytetyö.
+  - Opintojakson suoritukselle `laji` (Virran opintosuorituksen laji). Arvolla `3` ("ei huomioitava") merkitty suoritus on Virran väliaikainen kirjaus myöhemmin syntyvästä suorituksesta, ja sen laajuus sisältyy jo ylemmän tason suoritukseen. Kenttä on tarkoitettu siihen, ettei tällaisia suorituksia lasketa opintopisteisiin kahteen kertaan.
+  - Opintojakson suoritukselle `lähdeorganisaatio`, eli organisaatio josta suoritus on hyväksiluettu. Sisältää Virran organisaatiokoodin ja, jos koodi on oppilaitosnumero, ratkaistun oppilaitoksen. Koodi voi olla myös `UK` (ulkomainen korkeakoulu), `UM` (ulkomainen muu oppilaitos) tai `99` (muu oppilaitos), jolloin oppilaitosta ei ole.
+  - Tutkinnon ja opintojakson suoritukselle `lisätieto` (Virran julkinen lisätieto). Kenttää ei serialisoida Kosken vastauksiin lainkaan eikä se näy tietomallin skeemassa; se välitetään ainoastaan Kelan luovutusrajapinnan omassa skeemassa.
+  - Tutkinnon ja opintojakson koulutusmoduuliin `koulutusala`. Koodisto määräytyy Virran versio-attribuutin mukaan, joten kentässä on erilliset alakentät luokituksille `opintoalaoph1995`, `okmohjauksenala` ja `koulutusalaoph2002`.
+  - Lukukausi-ilmoittautumiselle `ilmoittautumispäivä`.
+  - Tutkinnon ja muun korkeakoulun suoritukselle `vaadittuLaajuus`.
+  - Tutkinnon suoritukselle `liittyvätOpiskeluoikeudet`, joka viittaa opiskeluoikeuksiin joihin tämä opiskeluoikeus antaa mahdollisuuden jatkaa (esimerkiksi kandidaatin oikeudesta maisterin oikeuteen). Korkeakoulun opiskeluoikeudella ei ole oidia, joten viittaus käyttää tunnisteena lähdejärjestelmän id:tä.
+  - Opiskeluoikeuden lisätietoihin `koulutusala`, `siirtoOpiskelija`, `rahoituslähdeJaksot` ja `liikkuvuusjaksot`. Rahoituslähde on merkitty salassa pidettäväksi.
+- Korjattu virhe, jossa Virran opiskeluoikeuden tai opintosuorituksen ei-numeerinen luokittelutieto keskeytti koko oppijan tietojen konversion. Tuntematon arvo ohitetaan nyt.
+
 # 21.7.2026
 
 - Nuorten perusopetuksen opiskeluoikeuden lisätietoihin lisätty vapaaehtoinen `yhdysluokka`-kenttä (aikajaksojen lista), jolla ilmaistaan ajanjaksot, joina oppilas opiskelee yhdysluokassa.

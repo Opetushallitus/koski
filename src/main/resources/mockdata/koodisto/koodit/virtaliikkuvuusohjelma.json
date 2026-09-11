@@ -1,0 +1,236 @@
+[
+  {
+    "metadata": [
+      {
+        "nimi": "Erasmus+",
+        "kuvaus": "Kaikki Erasmus+-liikkuvuus",
+        "lyhytNimi": "",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Erasmus+",
+        "kuvaus": null,
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Erasmus+",
+        "kuvaus": null,
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "virtaliikkuvuusohjelma_101",
+    "versio": 1,
+    "koodiArvo": "101"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "Muu EU-ohjelma",
+        "kuvaus": "Muu EU-ohjelma tai EU-rahoitteinen liikkuvuus, joka ei kuulu Erasmus+:n piiriin",
+        "lyhytNimi": "",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Annat EU-program",
+        "kuvaus": null,
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Other EU program",
+        "kuvaus": null,
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "virtaliikkuvuusohjelma_102",
+    "versio": 1,
+    "koodiArvo": "102"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "Pohjoismaiden ministerineuvoston ohjelma",
+        "kuvaus": "Esim. Nordplus, Nordlys",
+        "lyhytNimi": "",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Nordiska ministerrådets program",
+        "kuvaus": null,
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Programme of the Nordic Council of Ministers",
+        "kuvaus": null,
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "virtaliikkuvuusohjelma_103",
+    "versio": 1,
+    "koodiArvo": "103"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "Muu kansainvälinen ohjelma",
+        "kuvaus": "Esim. Fulbright, ISEP, n2n",
+        "lyhytNimi": "",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Annat internationellt program",
+        "kuvaus": null,
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Other international program",
+        "kuvaus": null,
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "virtaliikkuvuusohjelma_104",
+    "versio": 1,
+    "koodiArvo": "104"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "Kansallinen ohjelma",
+        "kuvaus": "Esim. FIRST, HEI ICI, NoSoSo, CIMO Fellowship",
+        "lyhytNimi": "",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Nationellt program",
+        "kuvaus": null,
+        "kieli": "SV"
+      },
+      {
+        "nimi": "National program",
+        "kuvaus": null,
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "virtaliikkuvuusohjelma_105",
+    "versio": 1,
+    "koodiArvo": "105"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "Korkeakoulun oma sopimus",
+        "kuvaus": "Korkeakoulujen omat, kahden- tai monenkeskiset sopimukset",
+        "lyhytNimi": "",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Internt avtal inom högskolan",
+        "kuvaus": null,
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Internal agreement",
+        "kuvaus": null,
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "virtaliikkuvuusohjelma_106",
+    "versio": 1,
+    "koodiArvo": "106"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "Opiskelijan oma järjestely",
+        "kuvaus": "Liikkuvuusohjelmien ulkopuolella itsenäisesti liikkuvat opiskelijat, ns. free mover -vaihdot",
+        "lyhytNimi": "",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Studerandes egen arragemang",
+        "kuvaus": null,
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Student's own arragement",
+        "kuvaus": null,
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "virtaliikkuvuusohjelma_107",
+    "versio": 1,
+    "koodiArvo": "107"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "Muu",
+        "kuvaus": "Muu liikkuvuusohjelma",
+        "lyhytNimi": "",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "annan",
+        "kuvaus": null,
+        "kieli": "SV"
+      },
+      {
+        "nimi": "other",
+        "kuvaus": null,
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "virtaliikkuvuusohjelma_108",
+    "versio": 1,
+    "koodiArvo": "108"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "Tuntematon",
+        "kuvaus": "Liikkuvuusohjelma ei tiedossa",
+        "lyhytNimi": "",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Okänd",
+        "kuvaus": null,
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Unknown",
+        "kuvaus": null,
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "virtaliikkuvuusohjelma_999",
+    "versio": 1,
+    "koodiArvo": "999"
+  }
+]
