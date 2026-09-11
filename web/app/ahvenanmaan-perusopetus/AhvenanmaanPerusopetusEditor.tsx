@@ -16,7 +16,6 @@ import { localize, t } from '../i18n/i18n'
 import { AhvenanmaanPerusopetuksenOpiskeluoikeus } from '../types/fi/oph/koski/schema/AhvenanmaanPerusopetuksenOpiskeluoikeus'
 import { AhvenanmaanPerusopetuksenOpiskeluoikeusjakso } from '../types/fi/oph/koski/schema/AhvenanmaanPerusopetuksenOpiskeluoikeusjakso'
 import { AhvenanmaanPerusopetuksenPäätasonSuoritus } from '../types/fi/oph/koski/schema/AhvenanmaanPerusopetuksenPaatasonSuoritus'
-import { isAhvenanmaanPerusopetuksenOppimääränSuoritus } from '../types/fi/oph/koski/schema/AhvenanmaanPerusopetuksenOppimaaranSuoritus'
 import {
   AhvenanmaanPerusopetuksenVuosiluokanSuoritus,
   isAhvenanmaanPerusopetuksenVuosiluokanSuoritus
@@ -35,6 +34,7 @@ import { puuttuvatLuokkaAsteet } from '../perusopetus-v2/luokkaAsteenOppiaineet'
 import { AhvenanmaanPerusopetuksenLisatiedot } from './AhvenanmaanPerusopetuksenLisatiedot'
 import { AhvenanmaanPerusopetuksenOppiaineet } from './AhvenanmaanPerusopetuksenOppiaineet'
 import { AhvenanmaanPerusopetuksenSuorituksenTiedot } from './AhvenanmaanPerusopetuksenSuorituksenTiedot'
+import { isAhvenanmaanOppimääränSuoritus } from './oppimaaranSuoritus'
 import { poistettavaPäätasonSuoritus } from './paatasonSuoritusPoisto'
 import { sortPäätasonSuoritukset } from '../perusopetus-v2/paatasonSuoritustenJarjestys'
 import { UusiAhvenanmaanPerusopetuksenVuosiluokanSuoritusModal } from './UusiAhvenanmaanPerusopetuksenVuosiluokanSuoritusModal'
@@ -252,7 +252,7 @@ const useVuosiluokanSuorituksenLisäys = (
 const suorituksenNimi = (
   s: AhvenanmaanPerusopetuksenPäätasonSuoritus
 ): LocalizedString => {
-  if (isAhvenanmaanPerusopetuksenOppimääränSuoritus(s)) {
+  if (isAhvenanmaanOppimääränSuoritus(s)) {
     return localize(t('Päättötodistus'))
   }
   return (
@@ -264,9 +264,6 @@ const suorituksenNimi = (
 const sortSuoritukset = (
   suoritukset: AhvenanmaanPerusopetuksenPäätasonSuoritus[]
 ): AhvenanmaanPerusopetuksenPäätasonSuoritus[] =>
-  sortPäätasonSuoritukset(
-    suoritukset,
-    isAhvenanmaanPerusopetuksenOppimääränSuoritus
-  )
+  sortPäätasonSuoritukset(suoritukset, isAhvenanmaanOppimääränSuoritus)
 
 export default AhvenanmaanPerusopetusEditor
