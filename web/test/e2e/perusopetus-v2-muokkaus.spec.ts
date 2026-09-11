@@ -393,6 +393,20 @@ test.describe('Perusopetuksen uusi käyttöliittymä: muokkaustila', () => {
       await expect(
         page.getByTestId('oo.0.suoritukset.0.osasuoritukset.0.footnote')
       ).toHaveText('*')
+
+      // Alaviite riittää katselutilassa: avatulla rivillä yksilöllistetty
+      // oppimäärä ei näy omana kenttänään. Sivu ladataan uudelleen, jotta rivi
+      // on varmasti suljettu ennen avaamista.
+      await oppijaPage.goto(kaisaUrl)
+      await page.getByTestId('oo.0.suoritusTabs.0.tab').click()
+      await page
+        .getByTestId('oo.0.suoritukset.0.osasuoritukset.0.expand')
+        .click()
+      const kentät = page.locator('.OsasuoritusPropertyLabel')
+      await expect(kentät.filter({ hasText: /^Suoritustapa$/ })).toBeVisible()
+      await expect(
+        kentät.filter({ hasText: /^Yksilöllistetty oppimäärä$/ })
+      ).toHaveCount(0)
     })
 
     test('Painotettu opetus: footnote ** tulee näkyviin', async ({

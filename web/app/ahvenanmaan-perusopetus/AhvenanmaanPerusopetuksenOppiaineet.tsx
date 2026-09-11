@@ -881,7 +881,9 @@ const OppiaineExpandedContent: React.FC<OppiaineExpandedContentProps> = ({
           </OsasuoritusPropertyValue>
         </OsasuoritusProperty>
       )}
-      {isOppiaine && (form.editMode || suoritus.mukautettuOppimäärä) && (
+      {/* Katselutilassa mukautettu oppimäärä näkyy arvosanan alaviitteenä (*),
+          joten sitä ei toisteta kenttärivinä. */}
+      {isOppiaine && form.editMode && (
         <OsasuoritusProperty label="Mukautettu oppimäärä">
           <OsasuoritusPropertyValue>
             <FormField

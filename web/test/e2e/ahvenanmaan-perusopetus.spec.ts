@@ -513,6 +513,58 @@ test.describe('Ahvenanmaan perusopetuksen käyttöliittymä', () => {
     await expect(virheet).toHaveCount(0)
     await expect(page.getByTestId(saveButton)).toBeEnabled()
   })
+
+  test('Mukautettu oppimäärä näkyy katselutilassa vain alaviitteenä', async ({
+    page,
+    oppijaPage,
+    fixtures
+  }) => {
+    test.setTimeout(60000)
+    await fixtures.reset()
+    await oppijaPage.goto(url)
+    await page.getByTestId(vuosiluokkaTab).click()
+    await page.getByTestId(editButton).click()
+
+    // Ruotsi (osasuoritukset.0) merkitään mukautetuksi. Suorituskieli annetaan,
+    // jotta rivi on laajennettavissa myös katselutilassa.
+    await page.getByTestId('oo.0.suoritukset.2.osasuoritukset.0.expand').click()
+    await page
+      .getByTestId(
+        'oo.0.suoritukset.2.osasuoritukset.0.properties.mukautettuOppimäärä.edit.input'
+      )
+      .check()
+    const suorituskieliInput = page
+      .locator('.OsasuoritusProperty')
+      .filter({
+        has: page.locator('.OsasuoritusPropertyLabel', {
+          hasText: /^Suorituskieli$/
+        })
+      })
+      .locator('input')
+    await suorituskieliInput.click()
+    await suorituskieliInput.fill('ruotsi')
+    await page
+      .locator('.Select__optionLabel')
+      .filter({ hasText: /^ruotsi$/ })
+      .first()
+      .click()
+
+    await page.getByTestId(saveButton).click()
+    await expect(page.getByTestId(editButton)).toBeVisible({ timeout: 15000 })
+
+    // Sivu ladataan uudelleen, jotta rivi on varmasti suljettu ennen avaamista.
+    await oppijaPage.goto(url)
+    await page.getByTestId(vuosiluokkaTab).click()
+    await expect(
+      page.getByTestId('oo.0.suoritukset.2.osasuoritukset.0.footnote')
+    ).toHaveText('*')
+    await page.getByTestId('oo.0.suoritukset.2.osasuoritukset.0.expand').click()
+    const kentät = page.locator('.OsasuoritusPropertyLabel')
+    await expect(kentät.filter({ hasText: /^Suorituskieli$/ })).toBeVisible()
+    await expect(
+      kentät.filter({ hasText: /^Mukautettu oppimäärä$/ })
+    ).toHaveCount(0)
+  })
 })
 
 /** Avaa vuosiluokan lisäysdialogin, täyttää kentät ja klikkaa Lisää. */
