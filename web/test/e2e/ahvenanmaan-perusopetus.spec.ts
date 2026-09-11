@@ -108,6 +108,80 @@ test.describe('Ahvenanmaan perusopetuksen käyttöliittymä', () => {
     ).toContainText('ÅLR2020/9841')
   })
 
+  test('9. vuosiluokan vahvistuksella ei näytetä seuraavalle luokalle siirtymistä', async ({
+    page,
+    oppijaPage,
+    fixtures
+  }) => {
+    await fixtures.reset()
+    await oppijaPage.goto(url)
+
+    // Oletustabi on vahvistettu 9. vuosiluokka. Päättövuodelta ei siirrytä
+    // seuraavalle luokalle, kuten manner-Suomessa.
+    await expect(
+      page.getByTestId('oo.0.suoritukset.1.suorituksenVahvistus.value.details')
+    ).toContainText('Vahvistus: 4.6.2026')
+    await expect(
+      page.getByTestId(
+        'oo.0.suoritukset.1.suorituksenVahvistus.value.luokalleSiirtyminen'
+      )
+    ).toHaveCount(0)
+
+    // Muilla vuosiluokilla siirtyminen näytetään.
+    await page.getByTestId(vuosiluokkaTab).click()
+    await expect(
+      page.getByTestId(
+        'oo.0.suoritukset.2.suorituksenVahvistus.value.luokalleSiirtyminen'
+      )
+    ).toHaveText('Siirretään seuraavalle luokalle')
+  })
+
+  test('9. vuosiluokan merkitse valmiiksi -dialogissa ei ole siirtovalintaa', async ({
+    page,
+    oppijaPage,
+    fixtures
+  }) => {
+    await fixtures.reset()
+    await oppijaPage.goto(url)
+    await page.getByTestId(editButton).click()
+
+    const ysiluokanVahvistus = 'oo.0.suoritukset.1.suorituksenVahvistus.edit'
+    const kasiluokanVahvistus = 'oo.0.suoritukset.2.suorituksenVahvistus.edit'
+
+    // Luokalle jäänti näytetään 9. vuosiluokallakin.
+    await page.getByTestId('oo.0.suoritukset.1.jääLuokalle.edit.input').click()
+    await expect(
+      page.getByTestId(`${ysiluokanVahvistus}.luokalleSiirtyminen`)
+    ).toHaveText('Oppilas jää luokalle')
+
+    // Valmistunut-jakso estää vahvistuksen poiston.
+    await page
+      .getByTestId('oo.0.opiskeluoikeus.tila.edit.items.1.remove')
+      .click()
+
+    await page
+      .getByTestId(`${ysiluokanVahvistus}.merkitseKeskeneräiseksi`)
+      .click()
+    await page.getByTestId(`${ysiluokanVahvistus}.merkitseValmiiksi`).click()
+    await expect(
+      page.getByTestId(`${ysiluokanVahvistus}.modal.submit`)
+    ).toBeVisible()
+    await expect(
+      page.getByTestId(`${ysiluokanVahvistus}.modal.luokalleSiirtyminen`)
+    ).toHaveCount(0)
+    await page.getByTestId(`${ysiluokanVahvistus}.modal.cancel`).click()
+
+    // 8. vuosiluokan dialogissa valinta on.
+    await page.getByTestId(vuosiluokkaTab).click()
+    await page
+      .getByTestId(`${kasiluokanVahvistus}.merkitseKeskeneräiseksi`)
+      .click()
+    await page.getByTestId(`${kasiluokanVahvistus}.merkitseValmiiksi`).click()
+    await expect(
+      page.getByTestId(`${kasiluokanVahvistus}.modal.luokalleSiirtyminen`)
+    ).toContainText('Siirretään seuraavalle luokalle')
+  })
+
   test('Muun kuin oppivelvollisen suorituksella näytetään sitä koskeva rivi', async ({
     page,
     oppijaPage,
