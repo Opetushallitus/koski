@@ -6,47 +6,52 @@ const langCookie = async (context: BrowserContext) =>
   (await context.cookies()).find((c) => c.name === 'lang')
 
 /**
- * Virkailijan asiointikieli haettiin aiemmin vain CAS-tiketin validoinnin yhteydessä. lang on istuntoeväste ja
- * koskiUser pysyvä, joten selaimen sulkeminen hukkasi kielen mutta säilytti istunnon: istunto jatkui ilman uutta
- * tikettiä eikä kieltä haettu enää koskaan uudelleen.
+ * Virkailijan kieli on asiointikieli oppijanumerorekisteristä ja se ratkaistaan palvelimella
+ * jokaisella sivunlatauksella. Aiemmin kieli haettiin vain CAS-tiketin validoinnissa ja talletettiin
+ * istuntoevästeeseen: selaimen sulkeminen hukkasi lang-evästeen mutta säilytti pysyvän koskiUser-
+ * evästeen, jolloin istunto jatkui ilman uutta tikettiä ja käyttöliittymä jäi suomeksi. Nyt kieltä
+ * ei talleteta selaimeen lainkaan, joten sitä ei voi hukata eikä selaimeen jäänyt arvo voi jäädä
+ * ohittamaan asiointikieltä.
  */
 test.describe('Virkailijan kielivalinta', () => {
   test.use({ storageState: virkailija('ruotsinkielinen') })
 
-  test('kieli säilyy, kun istuntoeväste katoaa mutta istunto jatkuu', async ({
+  test('kieli tulee asiointikielestä eikä sitä talleteta evästeeseen', async ({
     page,
     context
   }) => {
+    await context.clearCookies({ name: 'lang' })
     await page.goto('/koski/virkailija')
+
     await expect(page.locator('html')).toHaveAttribute('lang', 'sv')
     await expect(page.locator('.oppijataulukko-header')).toContainText(
       'Studerande'
     )
-
-    // Vastaa selaimen sulkemista: istuntoeväste katoaa, pysyvä koskiUser jää voimaan
-    await context.clearCookies({ name: 'lang' })
     expect(await langCookie(context)).toBeUndefined()
 
+    // Vastaa selaimen sulkemista: aiemmin kieli katosi tässä, nyt ei ole mitään mitä hukata.
     await page.reload()
 
     await expect(page.locator('html')).toHaveAttribute('lang', 'sv')
     await expect(page.locator('.oppijataulukko-header')).toContainText(
       'Studerande'
     )
-    expect((await langCookie(context))?.value).toEqual('sv')
+    expect(await langCookie(context)).toBeUndefined()
   })
 
-  test('täydennetty lang-eväste on istuntoeväste', async ({
+  test('selaimeen jäänyt lang-eväste ei ohita asiointikieltä', async ({
     page,
     context
   }) => {
     await context.clearCookies({ name: 'lang' })
+    await context.addCookies([
+      { name: 'lang', value: 'fi', domain: 'localhost', path: '/' }
+    ])
     await page.goto('/koski/virkailija')
 
-    const lang = await langCookie(context)
-    expect(lang?.value).toEqual('sv')
-    // Istuntoevästeisyys on tietoinen valinta: pitkä voimassaoloaika jättäisi väärän kielen voimaan
-    // selaimen uudelleenkäynnistysten yli sen sijaan, että se korjaantuisi itsestään.
-    expect(lang?.expires).toEqual(-1)
+    await expect(page.locator('html')).toHaveAttribute('lang', 'sv')
+    await expect(page.locator('.oppijataulukko-header')).toContainText(
+      'Studerande'
+    )
   })
 })

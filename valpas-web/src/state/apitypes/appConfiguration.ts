@@ -18,6 +18,8 @@ export type OppijaRaamitUser = {
 
 export type AppConfiguration = {
   valpasLocalizationMap: LocalizationMap
+  // Palvelimen ratkaisema kieli: virkailijalla asiointikieli, kansalaisella oma valinta tai domain.
+  valpasLang: Language
   environment: string
   opintopolkuVirkailijaUrl: string
   opintopolkuOppijaUrl: string

@@ -11,9 +11,16 @@ import java.net.URLDecoder
 
 class ValpasBootstrapServlet(implicit val application: KoskiApplication) extends ValpasApiServlet with NoCache with ValpasCookieAndBasicAuthAuthenticationSupport {
   get("/window-properties") {
-    getUser.foreach(user => UserLanguage.setLanguageCookieFromUserIfNecessary(user, application.directoryClient, request, response))
     WindowProperties(
       valpasLocalizationMap = application.valpasLocalizationRepository.localizations,
+      // SPA:n käynnistys vastaa sivunlatausta, joten kieli haetaan ohi välimuistin.
+      valpasLang = getUser.toOption
+        .map(user => UserLanguage.resolveLanguageFresh(
+          user, application.directoryClient, request, application.config))
+        // Ilman sessiota asiointikieltä ei ole mistä ratkaista (esim. Valppaan kirjautumissivu),
+        // joten kieli on selaimen oma valinta ja oletuksena domain. Kirjautuneen virkailijan kieli
+        // ei tule koskaan evästeestä. Vrt. LanguageSupport.lang.
+        .getOrElse(UserLanguage.languageFromCookieOrDomain(request, application.config)),
       environment = Environment.currentEnvironment(application.config),
       opintopolkuVirkailijaUrl = application.config.getString("opintopolku.virkailija.url"),
       opintopolkuOppijaUrl = application.config.getString("opintopolku.oppija.url"),
@@ -29,6 +36,7 @@ class ValpasBootstrapServlet(implicit val application: KoskiApplication) extends
 
 case class WindowProperties(
   valpasLocalizationMap: Map[String, LocalizedString],
+  valpasLang: String,
   environment: String,
   opintopolkuVirkailijaUrl: String,
   opintopolkuOppijaUrl: String,

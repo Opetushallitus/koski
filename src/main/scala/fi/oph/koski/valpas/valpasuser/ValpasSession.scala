@@ -14,7 +14,7 @@ import scala.concurrent.Future
 
 class ValpasSession(
   user: AuthenticationUser,
-  lang: String,
+  lang: => String,
   clientIp: InetAddress,
   userAgent: String,
   lähdeKäyttöoikeudet: => Set[Käyttöoikeus]
@@ -56,11 +56,12 @@ object ValpasSession {
   def apply(
     user: AuthenticationUser,
     request: RichRequest,
-    käyttöoikeudet: KäyttöoikeusRepository
+    käyttöoikeudet: KäyttöoikeusRepository,
+    lang: => String
   ): ValpasSession = {
     new ValpasSession(
       user,
-      UserLanguage.getLanguageFromCookie(request),
+      lang,
       LogUserContext.clientIpFromRequest(request),
       LogUserContext.userAgent(request),
       käyttöoikeudet.käyttäjänKäyttöoikeudet(user)

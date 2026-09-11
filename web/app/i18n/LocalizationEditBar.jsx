@@ -6,7 +6,8 @@ import {
   hasChanges,
   languages
 } from './i18n-edit'
-import { lang, setLang } from './i18n'
+import { lang } from './i18n'
+import { setLocalizationEditorLanguage } from './localizationEditorLanguage'
 import Text from './Text'
 import * as R from 'ramda'
 import Atom from 'bacon.atom'
@@ -43,10 +44,7 @@ export default ({ user }) => {
                   <a
                     key={l}
                     className={l + (l === lang ? ' selected' : '')}
-                    onClick={() => {
-                      localStorage.editLocalizations = true
-                      setLang(l)
-                    }}
+                    onClick={() => setLocalizationEditorLanguage(l)}
                   >
                     {l}
                   </a>

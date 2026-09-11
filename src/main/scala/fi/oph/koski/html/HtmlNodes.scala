@@ -47,6 +47,7 @@ trait HtmlNodes extends KoskiSpecificBaseServlet with LanguageSupport {
         <div data-inraamit={raamit.toString} id="content" class="koski-content"></div>
         <script nonce={nonce} id="localization">
           {setWindowVar("koskiLocalizationMap", localizations.localizations)}
+          {setWindowVar("koskiLang", lang)}
         </script>
         <script nonce={nonce} >
           {setWindowVar("environment", Environment.currentEnvironment(application.config))}

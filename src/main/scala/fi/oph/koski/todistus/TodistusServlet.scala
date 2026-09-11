@@ -127,7 +127,7 @@ trait TodistusServlet extends ScalatraServlet with RequiresSession with Logging 
   }
 
   private def generateFilenameWithLocalizationFromKey(keyPart: String, todistusJob: TodistusJob): String = {
-    val uiLang = UserLanguage.getLanguageFromCookie(request)
+    val uiLang = session.lang
     val key = s"todistus_download_tiedostonimi:$keyPart"
     val localizations = application.koskiLocalizationRepository.localizations
 

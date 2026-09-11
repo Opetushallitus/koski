@@ -1,39 +1,33 @@
 package fi.oph.koski.servlet
 
 import fi.oph.koski.config.KoskiApplication
-import fi.oph.koski.koskiuser.{AuthenticationUser, UserLanguage}
-import fi.oph.koski.koskiuser.UserLanguage.{sanitizeLanguage, setLanguageCookie}
+import fi.oph.koski.koskiuser.UserLanguage
 
 trait LanguageSupport extends KoskiSpecificBaseServlet {
   def application: KoskiApplication
 
-  def lang: String = langFromRequestAttribute.orElse(langFromCookie).getOrElse("fi")
+  /**
+   * Sivunlatauksen kieli haetaan ohi käyttäjävälimuistin, jotta asiointikielen vaihto näkyy heti.
+   * Tulos muistetaan pyynnön ajaksi, koska sitä kysytään renderöinnin aikana monta kertaa.
+   * Ilman sessiota (lander, suoritusjako) käytetään kansalaisen omaa valintaa tai domainia.
+   */
+  def lang: String =
+    Option(request.getAttribute(UserLanguage.LangAttribute)).map(_.toString).getOrElse {
+      val resolved = koskiSessionOption
+        .map(session => UserLanguage.resolveLanguageFresh(
+          session.user, application.directoryClient, request, application.config))
+        .getOrElse(UserLanguage.languageFromCookieOrDomain(request, application.config))
+      request.setAttribute(UserLanguage.LangAttribute, resolved)
+      resolved
+    }
+
   def t(key: String): String = application.koskiLocalizationRepository.get(key).get(lang)
 
-  def langFromDomain: String = if (request.getServerName == swedishDomain) {
-    "sv"
-  } else if(request.getServerName == englishDomain) {
-    "en"
-  } else {
-    "fi"
-  }
+  def langFromDomain: String = UserLanguage.languageFromDomain(request, application.config)
 
-  def langFromCookie: Option[String] = sanitizeLanguage(request.cookies.get("lang"))
-
-  def setLangCookieFromDomainIfNecessary: Unit = if (langFromCookie.isEmpty) {
-    setLanguageCookie(langFromDomain, response)
-  }
-
-  // Virkailijalla ei ole kielivalitsinta eikä domainpäättelyä: kieli tulee asiointikielestä. Ks. UserLanguage.
-  def setLangCookieFromUserIfNecessary(user: AuthenticationUser): Unit =
-    UserLanguage.setLanguageCookieFromUserIfNecessary(user, application.directoryClient, request, response)
-      .foreach(request.setAttribute(UserLanguage.LangAttribute, _))
-
-  // Tälle pyynnölle juuri ratkaistu kieli voittaa evästeen, koska vastaukseen asetettu eväste ei näy vielä
-  // saman pyynnön request.cookiesissa.
-  private def langFromRequestAttribute: Option[String] =
-    Option(request.getAttribute(UserLanguage.LangAttribute)).map(_.toString)
-
-  private def swedishDomain = application.config.getString("koski.oppija.domain.sv")
-  private def englishDomain = application.config.getString("koski.oppija.domain.en")
+  // Kansalaisen kielivalinta säilyy evästeessä; oletus asetetaan vain jos valintaa ei vielä ole.
+  def setLangCookieFromDomainIfNecessary: Unit =
+    if (UserLanguage.languageFromCookie(request).isEmpty) {
+      UserLanguage.setLanguageCookie(langFromDomain, response)
+    }
 }

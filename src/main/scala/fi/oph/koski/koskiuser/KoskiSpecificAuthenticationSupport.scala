@@ -51,7 +51,11 @@ trait KoskiSpecificAuthenticationSupport extends AuthenticationSupport with Kosk
     }
   }
 
-  def createSession(user: AuthenticationUser): KoskiSpecificSession = KoskiSpecificSession(user, request, application.käyttöoikeusRepository)
+  def createSession(user: AuthenticationUser): KoskiSpecificSession =
+    KoskiSpecificSession(user, request, application.käyttöoikeusRepository, resolvedLanguage(user))
+
+  private def resolvedLanguage(user: AuthenticationUser): String =
+    UserLanguage.resolveLanguage(user, application.directoryClient, request, application.config)
 
   def requireMuokkausoikeus(): Unit = {
     if (!createSession(requireVirkailijaOrPalvelukäyttäjä).hasAnyWriteAccess) {

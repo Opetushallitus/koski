@@ -21,6 +21,9 @@ class OpintopolkuDirectoryClient(config: Config, casService: CasService) extends
       case _ => throw new RuntimeException(s"More than 1 user found with username $userid")
     }).flatMap { case (oid: String, käyttöoikeudet: List[Käyttöoikeus]) => findKäyttäjä(oid, käyttöoikeudet) }
 
+  override def findAsiointikieli(user: AuthenticationUser): Option[String] =
+    Http.runIO(oppijanumeroRekisteriClient.findKäyttäjäByOid(user.oid)).flatMap(_.asiointiKieli.map(_.kieliKoodi))
+
   override def authenticate(userid: String, wrappedPassword: Password): Boolean =
     casService.authenticateVirkailija(userid, wrappedPassword)
 

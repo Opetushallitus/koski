@@ -3,6 +3,7 @@ package fi.oph.koski.fixture
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.koskiuser.RequiresVirkailijaOrPalvelukäyttäjä
 import fi.oph.koski.servlet.{KoskiSpecificApiServlet, NoCache}
+import fi.oph.koski.userdirectory.MockDirectoryClient
 
 class FixtureServlet(implicit val application: KoskiApplication) extends KoskiSpecificApiServlet with RequiresVirkailijaOrPalvelukäyttäjä with NoCache {
   post("/reset") {
@@ -40,8 +41,10 @@ class FixtureServlet(implicit val application: KoskiApplication) extends KoskiSp
       case _: Exception => false
     }
     application.fixtureCreator.resetFixtures(reloadRaportointikanta = reloadRaportointikanta, reloadYtrData = reloadYtr, skipInvalidOpiskeluoikeudet = skipInvalidOpiskeluoikeudet)
+    MockDirectoryClient.clearAsiointikieliOverrides()
     "ok"
   }
+
 
   post("/clear-oppijan-opiskeluoikeudet") {
     application.fixtureCreator.clearOppijanOpiskeluoikeudet(params("oppija_oid"))

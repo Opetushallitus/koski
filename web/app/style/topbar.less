@@ -29,6 +29,27 @@
   }
 }
 
+// Kielenvaihto omissa tiedoissa. Tuotannossa kielinapit tulevat oppijan raameista ja koko tämä
+// palkki on piilotettu (ks. #content[data-inraamit='oppija']); tämä näkyy siis vain paikallisesti.
+#topbar.local.topbar-omattiedot {
+  .change-lang {
+    float: right;
+    line-height: 47px;
+    margin-right: 10px;
+
+    button {
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      color: white;
+      font-weight: 600;
+      font-family: inherit;
+      font-size: 1em;
+      padding-right: 5px;
+    }
+  }
+}
+
 #topbar.inraamit {
   background: #1e516d;
   position: relative;
@@ -157,6 +178,31 @@
     a {
       color: white;
       font-size: 1em;
+    }
+  }
+
+  // Vain paikallisessa kehitysympäristössä näkyvä kielenvaihto, ks. DevLanguageButtons.
+  .dev-languages {
+    display: inline-block;
+    margin-left: 20px;
+    vertical-align: middle;
+    line-height: 30px;
+
+    a {
+      color: white;
+      font-size: 13px;
+      text-transform: uppercase;
+      margin-right: 8px;
+      padding: 1px 5px;
+      border: 1px solid rgba(255, 255, 255, 0.6);
+      border-radius: 2px;
+      cursor: pointer;
+
+      &.selected {
+        background: white;
+        color: rgb(21, 158, 203);
+        border-color: white;
+      }
     }
   }
 

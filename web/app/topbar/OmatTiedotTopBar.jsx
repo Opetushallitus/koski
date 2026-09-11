@@ -2,6 +2,7 @@ import React from 'baret'
 import { UserInfo } from './UserInfo'
 import Link from '../components/Link'
 import Text from '../i18n/Text'
+import { ChangeLang } from '../components/ChangeLang'
 
 export default ({ user }) => {
   return (
@@ -20,6 +21,7 @@ export default ({ user }) => {
           </span>
         </h1>
         <UserInfo user={user} />
+        <ChangeLang />
       </div>
     </header>
   )
