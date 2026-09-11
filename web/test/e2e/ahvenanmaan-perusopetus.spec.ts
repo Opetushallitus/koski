@@ -192,6 +192,9 @@ test.describe('Ahvenanmaan perusopetuksen käyttöliittymä', () => {
 
     // Suorituksen tyyppi ei muuten näy käyttöliittymässä: koulutus, koodiarvo ja
     // välilehden nimi ovat samat kuin oppivelvollisten päättötodistuksella.
+    await expect(page.getByTestId('oo.0.suoritusTabs.0.tab')).toContainText(
+      'Päättötodistus'
+    )
     await expect(page.getByTestId('oo.0.suoritukset.0.koulutus')).toHaveText(
       'Perusopetus'
     )
