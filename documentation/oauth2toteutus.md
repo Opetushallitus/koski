@@ -37,6 +37,37 @@ Siksi uusia OAuth2-rajapinnan käyttäjiä lisättäessä tietoja pitää konfig
 (10) Testaa fronttia
   - ks. testi-URI-esimerkkejä tämän ohjeen lopusta, muodosta uuden kumppanin tiedoilla toimiva URL ja testaa.
 
+## Palveluntarjoajan käyttäjätunnuksen vaihtaminen
+
+Samalle mutual-TLS-varmenteelle voi konfiguroida useita käyttäjätunnuksia lisäämällä clientList:iin
+useamman merkinnän samalla `subjectDn`:llä. Pyynnön `client_id` valitsee näistä käytettävän tunnuksen,
+joten vanha ja uusi tunnus voivat olla yhtä aikaa käytössä ja palveluntarjoaja voi vaihtaa tunnusta
+omaan tahtiinsa. Tunnusten välillä ei siirretä mitään: vanhalle `client_id`:lle myönnetyt suostumukset
+ja access tokenit toimivat sellaisinaan niin kauan kuin vanha tunnus on konfiguroituna varmenteelle.
+
+(1) Perusta uusi palvelukäyttäjä ja sen käyttöoikeudet, koodistokoodi, lokalisaatiot ja paluuosoitteet
+    kuten uudelle palveluntarjoajalle (yllä olevan listan kohdat 1-6). Puuttuvat lokalisaatiot eivät
+    aiheuta virhettä vaan jäävät suostumusdialogista pois näkymättä.
+
+(2) Lisää clientList:iin toinen merkintä samalla `subjectDn`:llä ja uudella käyttäjätunnuksella.
+    Vanhaa merkintää ei poisteta.
+
+(3) Käynnistä KOSKI uudestaan. ClientList luetaan `val`:iin konstruktorissa, joten Secrets Managerin
+    välimuistin vanhentuminen ei riitä.
+
+(4) Palveluntarjoaja vaihtaa `client_id`:n. Yhden flown sisällä `client_id`:n pitää olla sama sekä
+    authorize- että token-pyynnössä, joten vaihdon hetkellä kesken oleva suostumus epäonnistuu
+    token-pyynnössä ("Code not found or it has expired") ja kansalainen joutuu aloittamaan alusta.
+    Tämän voi välttää lopettamalla uusien authorize-pyyntöjen tekemisen vanhalla tunnuksella 10
+    minuuttia ennen vaihtoa (authorization code:n voimassaoloaika).
+
+(5) Odota, että vanhalla `client_id`:llä myönnetyt suostumukset ovat vanhentuneet. Voimassaoloaika on
+    `token_duration_minutes` kyseisen clientin konfiguraatiossa.
+
+(6) Poista vanha merkintä clientList:istä ja vanha palvelukäyttäjä, ja käynnistä KOSKI uudestaan.
+    Huom: myös pelkkä käyttöoikeuksien poistaminen vanhalta tunnukselta katkaisee sillä myönnetyt
+    tokenit, joten sitä ei kannata tehdä ennen kohtaa 5.
+
 ## Sekvenssikaavio toteutuksen toiminnasta
 
 ![OAuth 2.0 servletit Koskessa](kuvat/png/oauth2sekvenssiservleteissa.png)

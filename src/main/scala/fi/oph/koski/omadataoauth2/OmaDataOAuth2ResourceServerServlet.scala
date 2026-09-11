@@ -35,36 +35,40 @@ class OmaDataOAuth2ResourceServerServlet(implicit val application: KoskiApplicat
   private def renderRequestedData(token: String): Unit = {
     application.omaDataOAuth2Service.getByAccessToken(
       accessToken = token,
-      expectedClientId = koskiSession.user.username,
-      allowedScopes = koskiSession.omaDataOAuth2Scopes
+      allowedScopesByClientId = omaDataOAuth2Sessions.map(session => session.user.username -> session.omaDataOAuth2Scopes).toMap
     ) match {
-      case Right(AccessTokenInfo(_, tokenExpirationTime, oppijaOid, scope)) =>
-        renderOpinnot(oppijaOid, scope, tokenExpirationTime.atZone(ZoneId.systemDefault()).format(DateTimeFormatter.ISO_OFFSET_DATE_TIME))
+      case Right(AccessTokenInfo(_, tokenExpirationTime, oppijaOid, scope, clientId)) =>
+        pinOmaDataOAuth2Session(clientId) match {
+          case Some(session) =>
+            renderOpinnot(session, clientId, oppijaOid, scope, tokenExpirationTime.atZone(ZoneId.systemDefault()).format(DateTimeFormatter.ISO_OFFSET_DATE_TIME))
+          case None =>
+            renderError(OmaDataOAuth2ErrorType.server_error, s"No session available for client ${clientId}", msg => logger.error(msg))
+        }
       case Left(error) =>
         val errorResult = error.getAccessTokenErrorResponse
         renderErrorWithStatus(errorResult, errorResult.httpStatus)
     }
   }
 
-  private def renderOpinnot(oppijaOid: String, scope: String, tokenExpirationTime: String): Unit = {
+  private def renderOpinnot(session: KoskiSpecificSession, clientId: String, oppijaOid: String, scope: String, tokenExpirationTime: String): Unit = {
     val overrideSession = KoskiSpecificSession.oauth2KatsominenUser(request)
 
     scope.split(" ").filter(_.startsWith("OPISKELUOIKEUDET_")).toSeq match {
       case Seq("OPISKELUOIKEUDET_SUORITETUT_TUTKINNOT") =>
         val oppija = application.omaDataOAuth2Service.findSuoritetutTutkinnot(oppijaOid, scope, overrideSession, tokenExpirationTime)
-        auditLogKatsominen(OAUTH2_KATSOMINEN_SUORITETUT_TUTKINNOT, koskiSession.user.username, koskiSession, oppijaOid, scope)
+        auditLogKatsominen(OAUTH2_KATSOMINEN_SUORITETUT_TUTKINNOT, clientId, session, oppijaOid, scope)
         renderOppijaData(oppija)
       case Seq("OPISKELUOIKEUDET_AKTIIVISET_JA_PAATTYNEET_OPINNOT") =>
         val oppija = application.omaDataOAuth2Service.findAktiivisetJaPäättyneetOpinnot(oppijaOid, scope, overrideSession, tokenExpirationTime)
-        auditLogKatsominen(OAUTH2_KATSOMINEN_AKTIIVISET_JA_PAATTYNEET_OPINNOT, koskiSession.user.username, koskiSession, oppijaOid, scope)
+        auditLogKatsominen(OAUTH2_KATSOMINEN_AKTIIVISET_JA_PAATTYNEET_OPINNOT, clientId, session, oppijaOid, scope)
         renderOppijaData(oppija)
       case Seq("OPISKELUOIKEUDET_KAIKKI_TIEDOT") =>
         val oppija = application.omaDataOAuth2Service.findKaikkiTiedot(oppijaOid, scope, overrideSession, tokenExpirationTime)
-        auditLogKatsominen(OAUTH2_KATSOMINEN_KAIKKI_TIEDOT, koskiSession.user.username, koskiSession, oppijaOid, scope)
+        auditLogKatsominen(OAUTH2_KATSOMINEN_KAIKKI_TIEDOT, clientId, session, oppijaOid, scope)
         renderOppijaData(oppija)
       case Seq("OPISKELUOIKEUDET_KAIKKI_TIEDOT_JA_VALINTATIEDOT") =>
         val oppija = application.omaDataOAuth2Service.findKaikkiTiedotJaValintatiedot(oppijaOid, scope, overrideSession, tokenExpirationTime)
-        auditLogKatsominen(OAUTH2_KATSOMINEN_KAIKKI_TIEDOT_JA_VALINTATIEDOT, koskiSession.user.username, koskiSession, oppijaOid, scope)
+        auditLogKatsominen(OAUTH2_KATSOMINEN_KAIKKI_TIEDOT_JA_VALINTATIEDOT, clientId, session, oppijaOid, scope)
         renderOppijaData(oppija)
       case _ =>
         renderError(OmaDataOAuth2ErrorType.server_error, s"Internal error, unable to handle OPISKELUOIKEUDET scope defined in ${scope}", msg => logger.error(msg))

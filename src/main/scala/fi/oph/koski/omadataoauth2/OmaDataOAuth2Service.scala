@@ -71,10 +71,9 @@ class OmaDataOAuth2Service(oauth2Repository: OmaDataOAuth2Repository, val applic
 
   def getByAccessToken(
     accessToken: String,
-    expectedClientId: String,
-    allowedScopes: Set[String]
+    allowedScopesByClientId: Map[String, Set[String]]
   ): Either[OmaDataOAuth2Error, AccessTokenInfo] = {
-    oauth2Repository.getByAccessToken(accessToken, expectedClientId, allowedScopes)
+    oauth2Repository.getByAccessToken(accessToken, allowedScopesByClientId)
   }
 
   def findSuoritetutTutkinnot(oppijaOid: String, scope: String, overrideSession: KoskiSpecificSession, tokenExpirationTime: String): Either[HttpStatus, OmaDataOAuth2SuoritetutTutkinnot] = {

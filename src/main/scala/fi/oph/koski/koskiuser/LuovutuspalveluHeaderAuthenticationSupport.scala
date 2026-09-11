@@ -6,7 +6,7 @@ trait LuovutuspalveluHeaderAuthenticationSupport extends AuthenticationSupport {
 
   private val clientList = application.luovutuspalveluV2ClientListService.getClientList
 
-  def authenticateUser: Either[HttpStatus, AuthenticationUser] = {
+  def authenticateUserCandidates: Either[HttpStatus, Seq[AuthenticationUser]] = {
     request.header("x-amzn-mtls-clientcert-subject").map(
       subjectDnHeader =>
         for {
@@ -16,23 +16,35 @@ trait LuovutuspalveluHeaderAuthenticationSupport extends AuthenticationSupport {
             defaultLogger.error(s"Luovutuspalvelu rejected certificate with disallowed issuer $issuer ($subjectDnHeader, $serial)")
             KoskiErrorCategory.unauthorized("Virheellinen varmenteen myöntäjä")
           })
-          client <- clientList.find(_.subjectDn == subjectDnHeader).toRight {
+          clients <- Some(clientList.filter(_.subjectDn == subjectDnHeader)).filter(_.nonEmpty).toRight {
             // Use defaultLogger to prevent recursion, since we don't have a user yet
             defaultLogger.warn(s"Luovutuspalvelu presented with unknown client certificate $subjectDnHeader ($serial)")
             KoskiErrorCategory.unauthorized("Tuntematon varmenne")
           }
-          _ <- Either.cond(client.ips.contains(request.remoteAddress), (), {
-            defaultLogger.warn(s"Luovutuspalvelu client ${client.user} connected with unauthorized IP ${request.remoteAddress}")
+          clientsWithAllowedIp <- Some(clients.filter(_.ips.contains(request.remoteAddress))).filter(_.nonEmpty).toRight {
+            defaultLogger.warn(s"Luovutuspalvelu client ${clients.map(_.user).mkString(", ")} connected with unauthorized IP ${request.remoteAddress}")
             KoskiErrorCategory.unauthorized("Tuntematon IP-osoite")
-          })
-          user <- DirectoryClientLogin
-            .findUser(application.directoryClient, request, client.user)
-            .toRight(KoskiErrorCategory.unauthorized.loginFail())
+          }
+          // Ratkeamaton käyttäjätunnus ei kaada koko pyyntöä, jotta se ei katkaise saman
+          // varmenteen muiden tunnusten liikennettä.
+          users <- Some(clientsWithAllowedIp.flatMap(client =>
+            DirectoryClientLogin.findUser(application.directoryClient, request, client.user)
+          ).distinctBy(_.username)).filter(_.nonEmpty).toRight(KoskiErrorCategory.unauthorized.loginFail())
         } yield {
-          defaultLogger.info(s"Luovutuspalvelu client certificate $subjectDnHeader ($serial) mapped to user ${user.username}")
-          user
+          defaultLogger.info(s"Luovutuspalvelu client certificate $subjectDnHeader ($serial) mapped to user ${users.map(_.username).mkString(", ")}")
+          users
         }
     ).getOrElse(Left(KoskiErrorCategory.unauthorized.notAuthenticated()))
   }
-}
 
+  def authenticateUser: Either[HttpStatus, AuthenticationUser] =
+    authenticateUserCandidates.flatMap {
+      case Seq(user) => Right(user)
+      case users =>
+        defaultLogger.error(
+          s"Luovutuspalvelu client certificate ${request.header("x-amzn-mtls-clientcert-subject").getOrElse("")} " +
+            s"maps to several users (${users.map(_.username).mkString(", ")}); only OmaData OAuth2 clients may have more than one"
+        )
+        Left(KoskiErrorCategory.unauthorized("Varmenteelle on konfiguroitu useita käyttäjätunnuksia"))
+    }
+}

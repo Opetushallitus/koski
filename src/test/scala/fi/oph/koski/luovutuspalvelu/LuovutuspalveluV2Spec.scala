@@ -43,6 +43,14 @@ class LuovutuspalveluV2Spec extends AnyFreeSpec with KoskiHttpSpec {
         verifyResponseStatus(401, KoskiErrorCategory.unauthorized("Virheellinen varmenteen myöntäjä"))
       }
     }
+
+    "Palauttaa virheen, jos varmenteelle on konfiguroitu useita käyttäjätunnuksia" in {
+      post("api/luovutuspalvelu/kela/hetu",
+        JsonSerializer.writeWithRoot(KelaRequest(KoskiSpecificMockOppijat.amis.hetu.get)),
+        headers = mockLuovutuspalveluV2MonitulkintainenHeader ++ jsonContent) {
+        verifyResponseStatus(401, KoskiErrorCategory.unauthorized("Varmenteelle on konfiguroitu useita käyttäjätunnuksia"))
+      }
+    }
   }
 
   def mockLuovutuspalveluV2KelaHeader: Headers = Map(
@@ -61,6 +69,13 @@ class LuovutuspalveluV2Spec extends AnyFreeSpec with KoskiHttpSpec {
 
   def mockLuovutuspalveluV2InvalidHeader: Headers = Map(
     "x-amzn-mtls-clientcert-subject" -> "CN=example.com",
+    "x-amzn-mtls-clientcert-serial-number" -> "123",
+    "x-amzn-mtls-clientcert-issuer" -> "CN=mock-issuer",
+    "X-Forwarded-For" -> "0.0.0.0"
+  )
+
+  def mockLuovutuspalveluV2MonitulkintainenHeader: Headers = Map(
+    "x-amzn-mtls-clientcert-subject" -> "CN=monitulkintainen",
     "x-amzn-mtls-clientcert-serial-number" -> "123",
     "x-amzn-mtls-clientcert-issuer" -> "CN=mock-issuer",
     "X-Forwarded-For" -> "0.0.0.0"

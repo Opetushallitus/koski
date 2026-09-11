@@ -99,7 +99,8 @@ class OmaDataOAuth2Repository(val application: KoskiApplication, val db: DB) ext
               accessToken = accessTokenAttempt,
               expirationTime = row.voimassaAsti.toInstant,
               oppijaOid = row.oppijaOid,
-              scope = row.scope
+              scope = row.scope,
+              clientId = row.clientId
             )
           ))
           case _ => {
@@ -116,8 +117,7 @@ class OmaDataOAuth2Repository(val application: KoskiApplication, val db: DB) ext
 
   def getByAccessToken(
     accessToken: String,
-    expectedClientId: String,
-    allowedScopes: Set[String]
+    allowedScopesByClientId: Map[String, Set[String]]
   ): Either[OmaDataOAuth2Error, AccessTokenInfo] = {
     val accessTokenSHA256 = sha256(accessToken)
 
@@ -125,7 +125,7 @@ class OmaDataOAuth2Repository(val application: KoskiApplication, val db: DB) ext
       OAuth2Jako.filter(
         row =>
           row.accessTokenSHA256 === accessTokenSHA256 &&
-            row.clientId === expectedClientId &&
+            row.clientId.inSet(allowedScopesByClientId.keySet) &&
             row.voimassaAsti >= Timestamp.valueOf(LocalDateTime.now)
       ).result.headOption
     )
@@ -137,8 +137,8 @@ class OmaDataOAuth2Repository(val application: KoskiApplication, val db: DB) ext
         Left(OmaDataOAuth2Error(OmaDataOAuth2ErrorType.invalid_request, "Access token not found or it has expired"))
       case Some(_) if validateError.isDefined =>
         Left(validateError.get)
-      case Some(row) if row.scope.split(" ").exists(scope => !allowedScopes.contains(scope)) =>
-        val tooWideScopes = row.scope.split(" ").filterNot(allowedScopes.contains)
+      case Some(row) if row.scope.split(" ").exists(scope => !allowedScopesByClientId(row.clientId).contains(scope)) =>
+        val tooWideScopes = row.scope.split(" ").filterNot(allowedScopesByClientId(row.clientId).contains)
         val warning = OmaDataOAuth2Error(OmaDataOAuth2ErrorType.invalid_scope, s"scope=${tooWideScopes.mkString(" ")} exceeds the rights granted to the client ${row.clientId}")
         logger.warn(warning.getLoggedErrorMessage)
         Left(warning)
@@ -148,7 +148,8 @@ class OmaDataOAuth2Repository(val application: KoskiApplication, val db: DB) ext
             accessToken = accessToken,
             expirationTime = row.voimassaAsti.toInstant,
             oppijaOid = row.oppijaOid,
-            scope = row.scope
+            scope = row.scope,
+            clientId = row.clientId
           )
         )
     }
@@ -210,4 +211,5 @@ case class AccessTokenInfo(
   expirationTime: Instant,
   oppijaOid: String,
   scope: String,
+  clientId: String,
 )
