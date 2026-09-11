@@ -84,7 +84,7 @@ class FullReloadOpiskeluoikeusLoader(
 
     val resultOlemassaolevatOot = loadYtrBatchOlemassaolevatOpiskeluoikeudet(olemassaolevatOot)
 
-    // Mitätöityjä ei (toistaiseksi) käsitellä, koska sellaisia ei YTR-datassa voi olla.
+    // Mitätöityjä ei viedä raportointikantaan, ei myöskään r_mitatoitu_opiskeluoikeus-tauluun.
 
     resultOlemassaolevatOot
   }

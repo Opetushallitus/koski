@@ -75,8 +75,43 @@ class PostgresYtrOpiskeluoikeusRepositoryActions(
     aiemmatOpiskeluoikeudet match {
       case List(vanhaOpiskeluoikeus) =>
         updateIfSameOppijaAction(oppijaOid, vanhaOpiskeluoikeus, opiskeluoikeus, allowDeleteCompleted, skipValidations)
-      case _ =>
-        DBIO.successful(Left(KoskiErrorCategory.conflict.löytyiEnemmänKuinYksiRivi(s"Löytyi enemmän kuin yksi rivi päivitettäväksi (${aiemmatOpiskeluoikeudet.map(_.oid)})")))
+      case Nil =>
+        // Ei pitäisi olla mahdollista: kutsuja käsittelee tyhjän tuloksen luontina
+        DBIO.successful(Left(KoskiErrorCategory.internalError("Päivitettävää YTR-opiskeluoikeutta ei löytynyt")))
+      case duplikaatit =>
+        mitätöiDuplikaatitJaPäivitäAction(oppijaOid, opiskeluoikeus, duplikaatit, allowDeleteCompleted, skipValidations)
+    }
+  }
+
+  // Oppijalla voi olla useampi YTR-opiskeluoikeus, jos kummallekin hänen oppijanumerolleen on ehditty tallentaa
+  // sellainen ennen oppijanumeroiden yhdistämistä oppijanumerorekisterissä. Ilman duplikaattien mitätöintiä päivitys
+  // jäisi pysyvästi jumiin, koska YTR-opiskeluoikeutta ei tunnisteta muulla kuin oppijan oidilla.
+  // Kutsutaan vain, kun duplikaatteja on vähintään kaksi.
+  private def mitätöiDuplikaatitJaPäivitäAction(
+    oppijaOid: PossiblyUnverifiedHenkilöOid,
+    opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus,
+    duplikaatit: List[YtrOpiskeluoikeusRow],
+    allowDeleteCompleted: Boolean,
+    skipValidations: Boolean,
+  )(implicit user: KoskiSpecificSession): DBIOAction[Either[HttpStatus, CreateOrUpdateResult], NoStream, Read with Write with Transactional] = {
+    // Säilytetään ensisijaisesti se rivi, jonka oppija-oidiin lataus tällä hetkellä ratkeaa, ja toissijaisesti vanhin
+    // rivi. Näin säilyvän opiskeluoikeuden oid pysyy samana niille palveluille, joille se on jo luovutettu.
+    val säilytettävä = duplikaatit
+      .find(_.oppijaOid == oppijaOid.oppijaOid)
+      .getOrElse(duplikaatit.minBy(_.id))
+    val mitätöitävät = duplikaatit.filterNot(_.id == säilytettävä.id)
+
+    logger.warn(
+      s"Oppijalla ${oppijaOid.oppijaOid} on ${duplikaatit.length} YTR-opiskeluoikeutta " +
+        s"(${duplikaatit.map(rivi => s"${rivi.oid} (oppija ${rivi.oppijaOid})").mkString(", ")}). " +
+        s"Todennäköinen syy: oppijanumerot on yhdistetty oppijanumerorekisterissä vasta opiskeluoikeuksien " +
+        s"tallentamisen jälkeen. Säilytetään ${säilytettävä.oid} ja mitätöidään ${mitätöitävät.map(_.oid).mkString(", ")}."
+    )
+
+    DBIO.sequence(
+      mitätöitävät.map(rivi => Opiskeluoikeudet.filter(_.id === rivi.id).map(_.mitätöity).update(true))
+    ).flatMap { _ =>
+      updateIfSameOppijaAction(oppijaOid, säilytettävä, opiskeluoikeus, allowDeleteCompleted, skipValidations)
     }
   }
 

@@ -58,7 +58,7 @@ class MigrationSpec extends AnyFreeSpec with Matchers with RaportointikantaTestM
         "TOPKSAmmatillinenRaporttiRowBuilder.scala"                 -> "a9c26a13385ff576810f3ef831240437",
         "OpiskeluoikeusLoaderRowBuilder.scala"                      -> "cea96e3bef7b30c4e6448ba8117d480b",
         "IncrementalUpdateOpiskeluoikeusLoader.scala"               -> "ad58afb81edd77fd935ddd1a4f5e0e9c",
-        "FullReloadOpiskeluoikeusLoader.scala"                      -> "b7920c2257afaecf09f1212fbf393326"
+        "FullReloadOpiskeluoikeusLoader.scala"                      -> "71e731a66fb2330a9b41d7a1193b5533"
       )
 
       val errors = getListOfFiles(dir).flatMap(file => {
