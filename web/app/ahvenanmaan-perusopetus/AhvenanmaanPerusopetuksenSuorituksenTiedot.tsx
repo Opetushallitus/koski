@@ -29,17 +29,21 @@ import {
 import { SuorituksenVahvistusField } from '../components-v2/opiskeluoikeus/SuorituksenVahvistus'
 import { TestIdText } from '../appstate/useTestId'
 import { t } from '../i18n/i18n'
-import { isAhvenanmaanAikuistenPerusopetuksenOppimääränSuoritus } from '../types/fi/oph/koski/schema/AhvenanmaanAikuistenPerusopetuksenOppimaaranSuoritus'
-import { AhvenanmaanPerusopetuksenOpiskeluoikeus } from '../types/fi/oph/koski/schema/AhvenanmaanPerusopetuksenOpiskeluoikeus'
 import {
-  AhvenanmaanPerusopetuksenOppimääränSuoritus,
-  isAhvenanmaanPerusopetuksenOppimääränSuoritus
-} from '../types/fi/oph/koski/schema/AhvenanmaanPerusopetuksenOppimaaranSuoritus'
+  AhvenanmaanAikuistenPerusopetuksenOppimääränSuoritus,
+  isAhvenanmaanAikuistenPerusopetuksenOppimääränSuoritus
+} from '../types/fi/oph/koski/schema/AhvenanmaanAikuistenPerusopetuksenOppimaaranSuoritus'
+import { AhvenanmaanPerusopetuksenOpiskeluoikeus } from '../types/fi/oph/koski/schema/AhvenanmaanPerusopetuksenOpiskeluoikeus'
+import { AhvenanmaanPerusopetuksenOppimääränSuoritus } from '../types/fi/oph/koski/schema/AhvenanmaanPerusopetuksenOppimaaranSuoritus'
 import {
   AhvenanmaanPerusopetuksenVuosiluokanSuoritus,
   isAhvenanmaanPerusopetuksenVuosiluokanSuoritus
 } from '../types/fi/oph/koski/schema/AhvenanmaanPerusopetuksenVuosiluokanSuoritus'
 import { HenkilövahvistusPaikkakunnalla } from '../types/fi/oph/koski/schema/HenkilovahvistusPaikkakunnalla'
+import {
+  AhvenanmaanOppimääränSuoritus,
+  isAhvenanmaanOppimääränSuoritus
+} from './oppimaaranSuoritus'
 
 type AhvenanmaanPerusopetuksenSuorituksenTiedotProps = {
   form: FormModel<AhvenanmaanPerusopetuksenOpiskeluoikeus>
@@ -127,8 +131,8 @@ export const AhvenanmaanPerusopetuksenSuorituksenTiedot: React.FC<
           />
         )}
 
-        {isAhvenanmaanPerusopetuksenOppimääränSuoritus(suoritus) && (
-          <OppimääränTiedot form={form} path={path} />
+        {isAhvenanmaanOppimääränSuoritus(suoritus) && (
+          <OppimääränTiedot form={form} path={path} suoritus={suoritus} />
         )}
 
         <KeyValueRow localizableLabel="Suorituskieli">
@@ -342,21 +346,43 @@ const VuosiluokanLisätiedot: React.FC<{
 const OppimääränTiedot: React.FC<{
   form: FormModel<AhvenanmaanPerusopetuksenOpiskeluoikeus>
   path: any
-}> = ({ form, path }) => {
+  suoritus: AhvenanmaanOppimääränSuoritus
+}> = ({ form, path, suoritus }) => {
   const oppimääräPath = path as unknown as FormOptic<
     AhvenanmaanPerusopetuksenOpiskeluoikeus,
     AhvenanmaanPerusopetuksenOppimääränSuoritus
   >
+  const aikuistenOppimääräPath = path as unknown as FormOptic<
+    AhvenanmaanPerusopetuksenOpiskeluoikeus,
+    AhvenanmaanAikuistenPerusopetuksenOppimääränSuoritus
+  >
   return (
-    <KeyValueRow localizableLabel="Suoritustapa">
-      <FormField
-        form={form}
-        path={oppimääräPath.prop('suoritustapa')}
-        view={KoodistoView}
-        edit={KoodistoEdit}
-        editProps={{ koodistoUri: 'perusopetuksensuoritustapa' }}
-        testId="suoritustapa"
-      />
-    </KeyValueRow>
+    <>
+      {/* Oppivelvollisilla alkamispäivä on vuosiluokkien suorituksilla. Muilla
+          kuin oppivelvollisilla se on päättövaiheen alku, joka voi olla
+          opiskeluoikeuden alkamispäivää myöhempi (alkuvaihe on lisätiedoissa). */}
+      {isAhvenanmaanAikuistenPerusopetuksenOppimääränSuoritus(suoritus) && (
+        <KeyValueRow localizableLabel="Alkamispäivä">
+          <FormField
+            form={form}
+            path={aikuistenOppimääräPath.prop('alkamispäivä')}
+            optional
+            view={DateView}
+            edit={DateEdit}
+            testId="alkamispäivä"
+          />
+        </KeyValueRow>
+      )}
+      <KeyValueRow localizableLabel="Suoritustapa">
+        <FormField
+          form={form}
+          path={oppimääräPath.prop('suoritustapa')}
+          view={KoodistoView}
+          edit={KoodistoEdit}
+          editProps={{ koodistoUri: 'perusopetuksensuoritustapa' }}
+          testId="suoritustapa"
+        />
+      </KeyValueRow>
+    </>
   )
 }
