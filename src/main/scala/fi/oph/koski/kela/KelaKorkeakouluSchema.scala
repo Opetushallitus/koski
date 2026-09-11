@@ -167,7 +167,7 @@ object KelaKorkeakoulunOpiskeluoikeus {
 }
 
 @Title("Korkeakoulun opiskeluoikeus")
-@Description("Korkeakoulun opiskeluoikeus. Tiedot haetaan Virrasta, eikä niitä tallenneta Koskeen.")
+@Description("Korkeakoulun opiskeluoikeus. Tiedot haetaan Virrasta, eikä niitä tallenneta Koskeen. Eivät siirry Kelalle toistaiseksi.")
 case class KelaKorkeakoulunOpiskeluoikeus(
   @Description("Opiskeluoikeuden tunniste Virrassa. Korkeakoulun opiskeluoikeudella ei ole Koski-oidia, joten tämä on ainoa yksilöivä tunniste.")
   lähdejärjestelmänId: Option[String],
