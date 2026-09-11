@@ -19,7 +19,7 @@ import { virkailija } from './setup/auth'
  *    sekä numeeriset että sanalliset arvosanat samassa pudotusvalikossa.
  *  - Käyttäytymisen sijaan "Ansvar och samarbete" (vastuuJaYhteistyöArvio),
  *    jonka ainoa sallittu arvo on G.
- *  - Lisätiedoissa vain kotiopetusjaksot.
+ *  - Lisätiedoissa kotiopetusjaksot ja muille kuin oppivelvollisille alkuvaihe.
  */
 
 const oppijaOid = '1.2.246.562.24.00000000190'
@@ -322,6 +322,60 @@ test.describe('Ahvenanmaan perusopetuksen käyttöliittymä', () => {
     await expect(
       page.getByTestId('oo.0.opiskeluoikeus.lisätiedot.kotiopetusjaksot.0.alku')
     ).toContainText('1.1.2020')
+  })
+
+  test('Lisätiedot: muun kuin oppivelvollisen alkuvaiheen poisto, lisäys ja tallennus', async ({
+    page,
+    oppijaPage,
+    fixtures
+  }) => {
+    test.setTimeout(60000)
+    await fixtures.reset()
+    await oppijaPage.goto(aikuisopiskelijaUrl)
+    await page.getByTestId(editButton).click()
+
+    const alkuvaiheRivi = page
+      .locator('.EditorContainer__lisatiedot .KeyValueRow')
+      .filter({ hasText: 'Alkuvaihe' })
+    await alkuvaiheRivi.getByRole('button', { name: 'Poista' }).click()
+    await alkuvaiheRivi
+      .getByRole('button', { name: 'Lisää', exact: true })
+      .click()
+
+    await page
+      .getByTestId(
+        'oo.0.opiskeluoikeus.lisätiedot.alkuvaihe.aikajakso.alku.input'
+      )
+      .fill('1.9.2024')
+    await page
+      .getByTestId(
+        'oo.0.opiskeluoikeus.lisätiedot.alkuvaihe.aikajakso.loppu.input'
+      )
+      .fill('31.5.2025')
+
+    await page.getByTestId(saveButton).click()
+    await expect(page.getByTestId(editButton)).toBeVisible({ timeout: 15000 })
+
+    await expect(
+      page.getByTestId('oo.0.opiskeluoikeus.lisätiedot.alkuvaihe.alku')
+    ).toContainText('1.9.2024')
+    await expect(
+      page.getByTestId('oo.0.opiskeluoikeus.lisätiedot.alkuvaihe.loppu')
+    ).toContainText('31.5.2025')
+  })
+
+  test('Lisätiedot: oppivelvolliselle ei tarjota alkuvaihetta', async ({
+    page,
+    oppijaPage,
+    fixtures
+  }) => {
+    await fixtures.reset()
+    await oppijaPage.goto(url)
+    await page.getByTestId(editButton).click()
+
+    const lisätiedot = page.locator('.EditorContainer__lisatiedot')
+    await expect(lisätiedot.getByText('Kotiopetusjaksot')).toBeVisible()
+    await expect(lisätiedot.getByText('Alkuvaihe')).toHaveCount(0)
   })
 
   test('Uuden vuosiluokan lisäys esitäyttää luokka-asteen oppiaineet', async ({

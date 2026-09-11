@@ -7,13 +7,23 @@ import fi.oph.koski.schema._
 object AhvenanmaanPerusopetuksenValidation {
   def validateOpiskeluoikeus(oo: KoskeenTallennettavaOpiskeluoikeus): HttpStatus = oo match {
     case ahvenanmaanOo: AhvenanmaanPerusopetuksenOpiskeluoikeus =>
-      HttpStatus.fold(ahvenanmaanOo.suoritukset.map {
+      HttpStatus.fold(validateAlkuvaihe(ahvenanmaanOo) :: ahvenanmaanOo.suoritukset.map {
         case oppimäärä: AhvenanmaanPerusopetuksenOppimääränSuoritus if oppimäärä.vahvistettu =>
           validateYsiluokanSuoritusTaiSitäEiTarvita(ahvenanmaanOo, oppimäärä)
         case _ => HttpStatus.ok
       })
     case _ => HttpStatus.ok
   }
+
+  // Alkuvaihe (Inledningsskedet) kuuluu vain muiden kuin oppivelvollisten opintoihin;
+  // oppivelvollisten opinnot kirjataan vuosiluokkina.
+  private def validateAlkuvaihe(oo: AhvenanmaanPerusopetuksenOpiskeluoikeus): HttpStatus =
+    HttpStatus.validate(
+      oo.lisätiedot.flatMap(_.alkuvaihe).isEmpty ||
+        oo.suoritukset.exists(_.isInstanceOf[AhvenanmaanAikuistenPerusopetuksenOppimääränSuoritus])
+    )(
+      KoskiErrorCategory.badRequest.validation.rakenne.ahvenanmaanAlkuvaiheVainMuilleKuinOppivelvollisille()
+    )
 
   // Koskee vain oppivelvollisia: muiden kuin oppivelvollisten oppimäärän suoritus
   // (AhvenanmaanAikuistenPerusopetuksenOppimääränSuoritus) on eri luokka, eikä sen

@@ -150,13 +150,15 @@ case class AhvenanmaanPerusopetuksenOpiskeluoikeus(
   }
 }
 
-// Lisätiedoista on pudotettu lähes kaikki manner-Suomen kentät; vain
-// kotiopetusjaksot säilyy vahvistettuna. Luokka on pidetty eteenpäin
-// laajennettavuuden vuoksi.
+// Lisätiedoista on pudotettu lähes kaikki manner-Suomen kentät; kotiopetusjaksot
+// säilyy vahvistettuna. Alkuvaihe on vain muille kuin oppivelvollisille (ks.
+// AhvenanmaanPerusopetuksenValidation).
 case class AhvenanmaanPerusopetuksenOpiskeluoikeudenLisätiedot(
   @Description("Kotiopetusjaksot huoltajan päätöksestä alkamis- ja päättymispäivineen.")
   @Tooltip("Kotiopetusjaksot huoltajan päätöksestä alkamis- ja päättymispäivineen.")
   kotiopetusjaksot: Option[List[Aikajakso]] = None,
+  @Description("Muiden kuin oppivelvollisten alkuvaiheen (Inledningsskedet) opintojen alkamis- ja päättymispäivä. Päättövaiheen alkamispäivä kirjataan oppimäärän suoritukselle.")
+  alkuvaihe: Option[Aikajakso] = None,
 ) extends OpiskeluoikeudenLisätiedot
 
 // Käytetään valtakunnallista koskiopiskeluoikeudentila-koodistoa, mutta
@@ -234,12 +236,14 @@ case class AhvenanmaanPerusopetuksenOppimääränSuoritus(
 // oppivelvollisten oppimäärän suorituksesta tyyppi-kentän koodiarvolla.
 // Ainoa rakenteellinen ero: tällä on alkamispäivä, koska opiskeluoikeudella ei
 // ole vuosiluokkasuorituksia joilta alkamispäivä muuten löytyisi (ks.
-// KoskiValidator.validatePäätasonSuoritukset).
+// KoskiValidator.validatePäätasonSuoritukset). Alkamispäivä on päättövaiheen
+// alku; alkuvaiheen jakso on opiskeluoikeuden lisätiedoissa.
 @Title("Ahvenanmaan perusopetuksen oppimäärän suoritus (muut kuin oppivelvolliset)")
 @Description("Ahvenanmaan perusopetuksen oppimäärän suoritus muille kuin oppivelvollisille. Nämä suoritukset näkyvät päättötodistuksella.")
 case class AhvenanmaanAikuistenPerusopetuksenOppimääränSuoritus(
   koulutusmoduuli: AhvenanmaanPerusopetus,
   toimipiste: OrganisaatioWithOid,
+  @Description("Päättövaiheen alkamispäivä. Voi olla opiskeluoikeuden alkamispäivää myöhempi, jos opiskelija on aloittanut alkuvaiheesta.")
   override val alkamispäivä: Option[LocalDate] = None,
   vahvistus: Option[HenkilövahvistusPaikkakunnalla] = None,
   @KoodistoUri("perusopetuksensuoritustapa")

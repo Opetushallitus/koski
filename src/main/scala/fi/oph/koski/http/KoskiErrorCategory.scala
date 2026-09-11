@@ -134,6 +134,7 @@ object KoskiErrorCategory {
         val yhteiselläOsuudellaEiOsasuorituksia = subcategory("yhteiselläOsuudellaEiOsasuorituksia", "Tutkinnon yhteisellä osalla tulee olla osasuorituksia")
         val vääränKoodinYhteinenOsasuoritus = subcategory("vääränKoodinYhteinenOsasuoritus", "Tutkinnon yhteisellä osalla on epäsopivan suoritustyypin alaisen suorituksen koodi")
         val epäsopiviaSuorituksia = subcategory("epäsopiviaSuorituksia", "Opiskeluoikeudella on epäsopiva lista suorituksia")
+        val ahvenanmaanAlkuvaiheVainMuilleKuinOppivelvollisille = subcategory("ahvenanmaanAlkuvaiheVainMuilleKuinOppivelvollisille", "Alkuvaiheen voi merkitä vain Ahvenanmaan perusopetuksen opiskeluoikeudelle, jolla on muiden kuin oppivelvollisten oppimäärän suoritus")
         val erityisenäTutkintonaSuoritettuSisältääOsasuorituksia = subcategory("erityisenäTutkintoaSuoritettuSisältääOsasuorituksia", "Osasuorituksella on osasuorituksia, vaikka se on suoritettu erityisenä tutkintona")
         val erityisenäTutkintonaSuoritettuNuortenOps = subcategory("erityisenäTutkintonaSuoritettuNuortenOps", "Nuorten opetussuunnitelman mukainen suoritus ei ole sallittu, koska tutkinto on suoritettu erityisenä tutkintona")
         val epäsopiviaOsasuorituksia = subcategory("epäsopiviaOsasuorituksia", "Suorituksella tai sen osasuorituksella on epäsopiva lista osasuorituksia")

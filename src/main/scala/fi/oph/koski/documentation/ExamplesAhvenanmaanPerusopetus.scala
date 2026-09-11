@@ -118,12 +118,14 @@ object AhvenanmaanPerusopetusExampleData {
 
   // TOR-2587: Aikuisopiskelijan ("muut kuin oppivelvolliset") päättötodistus.
   // Ei vuosiluokkasuorituksia, joten alkamispäivä kirjataan oppimäärän suoritukselle.
+  // Opiskelija aloitti alkuvaiheesta, joten alkamispäivä (päättövaiheen alku) on
+  // opiskeluoikeuden alkamispäivää myöhempi.
   val aikuistenPäättötodistuksenSuoritus = AhvenanmaanAikuistenPerusopetuksenOppimääränSuoritus(
     koulutusmoduuli = AhvenanmaanPerusopetus(
       perusteenDiaarinumero = Some(ahvenanmaanDiaarinumero)
     ),
     toimipiste = jyväskylänNormaalikoulu,
-    alkamispäivä = Some(date(2024, 8, 15)),
+    alkamispäivä = Some(date(2025, 8, 15)),
     suoritustapa = Koodistokoodiviite("koulutus", "perusopetuksensuoritustapa"),
     suorituskieli = ruotsinKieli,
     vahvistus = vahvistusPaikkakunnalla(date(2026, 6, 4)),
@@ -138,6 +140,9 @@ object AhvenanmaanPerusopetusExampleData {
         AhvenanmaanPerusopetuksenOpiskeluoikeusjakso(date(2026, 6, 4), opiskeluoikeusValmistunut)
       )
     ),
+    lisätiedot = Some(AhvenanmaanPerusopetuksenOpiskeluoikeudenLisätiedot(
+      alkuvaihe = Some(Aikajakso(date(2024, 8, 15), Some(date(2025, 6, 4))))
+    )),
     suoritukset = List(aikuistenPäättötodistuksenSuoritus),
   )
 

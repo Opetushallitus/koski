@@ -8,11 +8,13 @@ import { Aikajakso } from './Aikajakso'
 export type AhvenanmaanPerusopetuksenOpiskeluoikeudenLisätiedot = {
   $class: 'fi.oph.koski.schema.AhvenanmaanPerusopetuksenOpiskeluoikeudenLisätiedot'
   kotiopetusjaksot?: Array<Aikajakso>
+  alkuvaihe?: Aikajakso
 }
 
 export const AhvenanmaanPerusopetuksenOpiskeluoikeudenLisätiedot = (
   o: {
     kotiopetusjaksot?: Array<Aikajakso>
+    alkuvaihe?: Aikajakso
   } = {}
 ): AhvenanmaanPerusopetuksenOpiskeluoikeudenLisätiedot => ({
   $class:
