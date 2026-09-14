@@ -2,6 +2,7 @@ import React from 'baret'
 import { userP } from '../util/user'
 import Http from '../util/http'
 import Text from '../i18n/Text'
+import { t } from '../i18n/i18n'
 import AnnaHyvaksynta from './AnnaHyvaksynta'
 import HyvaksyntaAnnettu from './HyvaksyntaAnnettu'
 import { ISO2FinnishDate } from '../date/date'
@@ -33,7 +34,7 @@ export default ({
         {' '}
         {editorP.map((s) => {
           const birthDate = getBirthDate(s)
-          return birthDate && 's. ' + birthDate
+          return birthDate && `${t('syntynyt')} ${birthDate}`
         })}
       </div>
     </div>

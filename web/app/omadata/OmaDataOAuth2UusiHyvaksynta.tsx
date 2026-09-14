@@ -2,6 +2,7 @@ import React from 'react'
 import { mapSuccess, useApiOnce } from '../api-fetch'
 import { Trans } from '../components-v2/texts/Trans'
 import { ISO2FinnishDate } from '../date/date'
+import { t } from '../i18n/i18n'
 import { LocalizedString } from '../types/fi/oph/koski/schema/LocalizedString'
 import { isTäydellisetHenkilötiedot } from '../types/fi/oph/koski/schema/TaydellisetHenkilotiedot'
 import { fetchOmatTiedotOppija, fetchUser } from '../util/koskiApi'
@@ -43,7 +44,10 @@ const OmaDataOAuth2UusiHyvaksynta = ({
       </div>
       <div className="user">
         <div className="username">{mapSuccess(user, ({ name }) => name)}</div>
-        <div className="dateofbirth"> {birthDate && 's. ' + birthDate}</div>
+        <div className="dateofbirth">
+          {' '}
+          {birthDate && `${t('syntynyt')} ${birthDate}`}
+        </div>
       </div>
 
       <OmaDataOAuth2AnnaHyvaksynta

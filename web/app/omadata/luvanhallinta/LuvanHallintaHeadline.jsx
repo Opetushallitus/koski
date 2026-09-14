@@ -1,6 +1,7 @@
 import React from 'baret'
 import { userP } from '../../util/user'
 import Text from '../../i18n/Text'
+import { t } from '../../i18n/i18n'
 
 export const LuvanHallintaHeadline = ({ birthday }) => (
   <div className="kayttoluvat-headline" tabIndex={0}>
@@ -15,7 +16,9 @@ export const LuvanHallintaHeadline = ({ birthday }) => (
     </div>
     <h3 className="oppija-nimi">
       <span className="nimi">{userP.map((user) => user && user.name)}</span>
-      {birthday && <span className="pvm">{` s. ${birthday}`}</span>}
+      {birthday && (
+        <span className="pvm">{` ${t('syntynyt')} ${birthday}`}</span>
+      )}
     </h3>
   </div>
 )

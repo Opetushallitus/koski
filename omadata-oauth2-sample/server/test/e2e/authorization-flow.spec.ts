@@ -32,6 +32,21 @@ test('OAuth2 data access succeeds', async ({ page }) => {
   await expect(page.locator('html')).toContainText('280618-402H')
 })
 
+test('Consent page localizes birth date prefix', async ({ page }) => {
+  await page.goto(gotoSample('/api/openid-api-test'))
+
+  await loginKorhopankki(page, '280618-402H')
+
+  await page.waitForURL('**/koski/omadata-oauth2/authorize**')
+  await expect(page.locator('.dateofbirth')).toHaveText('s. 28.6.1918')
+
+  await page.getByRole('button', { name: 'Svenska' }).click()
+  await expect(page.locator('.dateofbirth')).toHaveText('f. 28.6.1918')
+
+  await page.getByRole('button', { name: 'English' }).click()
+  await expect(page.locator('.dateofbirth')).toHaveText('b. 28.6.1918')
+})
+
 test('Consent page omits birth date when fetching oppija fails', async ({
   page
 }) => {
