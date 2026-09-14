@@ -208,3 +208,12 @@ case object JatkuvanOppimisenVapaanSivistystyönRaportti extends RaportinTyyppi 
 case object MuunKuinSäännellynKoulutuksenRaportti extends RaportinTyyppi {
   val opiskeluoikeudenTyyppi = OpiskeluoikeudenTyyppi.muukuinsaanneltykoulutus.koodiarvo
 }
+
+// Kattaa perusopetuksen, esiopetuksen ja kansainvälisten koulujen (internationalschool,
+// europeanschoolofhelsinki) opiskeluoikeuksia (ks. Kotikuntalaskelma.query), mutta
+// opiskeluoikeudenTyyppi-kenttä (session-tasoinen pääsytarkistus, ei organisaatiokohtainen)
+// voi osoittaa vain yhteen niistä — sama yksinkertaistus kuin
+// LukioDiaIbInternationalESHOpiskelijamaarat-raportilla.
+case object KotikuntalaskelmaRaportti extends RaportinTyyppi {
+  val opiskeluoikeudenTyyppi = OpiskeluoikeudenTyyppi.perusopetus.koodiarvo
+}

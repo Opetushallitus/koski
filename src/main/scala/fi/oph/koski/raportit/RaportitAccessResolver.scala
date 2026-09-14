@@ -63,6 +63,10 @@ case class RaportitAccessResolver(organisaatioRepository: OrganisaatioRepository
       MuuAmmatillinenKoulutus,
       TOPKSAmmatillinen
     )
+    // Kotikuntalaskelma lasketaan koulutustoimijan (tai varhaiskasvatuksen järjestäjän)
+    // koko oppilaitosjoukolle kerrallaan, ei oppilaitoksittain (ks. selectableOrganisaatiotyypit
+    // Raportit.jsx:ssä), joten se tarjotaan vain isKoulutustoimija-solmuille.
+    case "perusopetus" if isKoulutustoimija => Seq(PerusopetuksenVuosiluokka, PerusopetuksenOppijaMääräRaportti, KotikuntalaskelmaRaportti)
     case "perusopetus" => Seq(PerusopetuksenVuosiluokka, PerusopetuksenOppijaMääräRaportti)
     case "perusopetuksenlisaopetus" => Seq(PerusopetuksenLisäopetuksenOppijaMääräRaportti)
     case "lukiokoulutus" if !isKoulutustoimija => Seq(LukionSuoritustietojenTarkistus, LukioDiaIbInternationalESHOpiskelijamaarat, LukioKurssikertyma, LukioOpintopistekertyma)
@@ -70,8 +74,11 @@ case class RaportitAccessResolver(organisaatioRepository: OrganisaatioRepository
     case "ibtutkinto" if !isKoulutustoimija => Seq(LukioDiaIbInternationalESHOpiskelijamaarat, IBSuoritustietojenTarkistus)
     case "ibtutkinto" => Seq(LukioDiaIbInternationalESHOpiskelijamaarat)
     case "diatutkinto" => Seq(LukioDiaIbInternationalESHOpiskelijamaarat)
+    case "internationalschool" if isKoulutustoimija => Seq(LukioDiaIbInternationalESHOpiskelijamaarat, KotikuntalaskelmaRaportti)
     case "internationalschool" => Seq(LukioDiaIbInternationalESHOpiskelijamaarat)
+    case "europeanschoolofhelsinki" if isKoulutustoimija => Seq(LukioDiaIbInternationalESHOpiskelijamaarat, KotikuntalaskelmaRaportti)
     case "europeanschoolofhelsinki" => Seq(LukioDiaIbInternationalESHOpiskelijamaarat)
+    case "esiopetus" if isKoulutustoimija => Seq(EsiopetuksenRaportti, EsiopetuksenOppijaMäärienRaportti, KotikuntalaskelmaRaportti)
     case "esiopetus" => Seq(EsiopetuksenRaportti, EsiopetuksenOppijaMäärienRaportti)
     case "aikuistenperusopetus" if !isKoulutustoimija => Seq(AikuistenPerusopetusSuoritustietojenTarkistus, AikuistenPerusopetusOppijaMäärienRaportti, AikuistenPerusopetusKurssikertymänRaportti)
     case "aikuistenperusopetus" => Seq(AikuistenPerusopetusOppijaMäärienRaportti, AikuistenPerusopetusKurssikertymänRaportti)

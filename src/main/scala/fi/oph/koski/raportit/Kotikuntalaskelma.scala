@@ -4,7 +4,6 @@ import java.time.LocalDate
 import fi.oph.koski.db.QueryMethods
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.plainAPI._
 import fi.oph.koski.koskiuser.KoskiSpecificSession
-import fi.oph.koski.organisaatio.OrganisaatioService
 import fi.oph.koski.db.DB
 import fi.oph.koski.localization.LocalizationReader
 import slick.jdbc.GetResult
@@ -19,7 +18,7 @@ import scala.concurrent.duration.DurationInt
 // Ei kiireellinen: raportti on rajattu yhteen koulutustoimijaan kerrallaan, joten kyselyjen
 // koko pysynee pienenä eikä lähellä 5 minuutin timeout-budjettia — mutta jos tähän joskus
 // palataan muusta syystä, kannattaa harkita yhdistämistä.
-case class Kotikuntalaskelma(db: DB, organisaatioService: OrganisaatioService) extends QueryMethods {
+case class Kotikuntalaskelma(db: DB) extends QueryMethods {
   implicit private val getResult: GetResult[KotikuntalaskelmaRow] = GetResult(r =>
     KotikuntalaskelmaRow(
       opetuksenJärjestäjäOid = r.rs.getString("opetuksen_jarjestaja_oid"),

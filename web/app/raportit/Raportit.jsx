@@ -247,32 +247,9 @@ const kaikkiRaportitKategorioittain = [
         visibleForAllOrgs: true
       },
       {
-        id: 'kotikuntalaskelma',
+        id: 'kotikuntalaskelmaraportti',
         name: 'raportti-tab-kotikuntalaskelma',
-        component: Kotikuntalaskelma,
-        // TODO(TOR-2650): tämä on väliaikainen. Kotikuntalaskelma on
-        // organisaatiokohtainen (kuten muutkin RaporttiPaivalta-raportit) —
-        // ei-hasGlobalReadAccess-käyttäjä näkee sen valitsemansa
-        // organisaation ja sen alipuun mukaan skoopattuna, aivan kuten
-        // esim. AikuistenPerusopetuksenOppijamäärätRaportti. Oikea tapa
-        // tehdä tämä näkyväksi on lisätä uusi RaportinTyyppi-case-object
-        // (ks. RaportitAccessResolver.raportinTyypitKoulutusmuodolle) niille
-        // koulutusmuodoille joita 8 §:n kyselyt kattavat (perusopetus,
-        // esiopetus, internationalschool, europeanschoolofhelsinki), ja
-        // rajata se tarvittaessa raportit.rajatut-listalla — ei
-        // visibleForAllOrgs, joka näyttäisi raportin kaikille joilla on
-        // mikä tahansa raportit-oikeus. visibleForAllOrgs on tässä
-        // väliaikainen näkyvyys-shimmi kunnes RaportinTyyppi-kytkentä on
-        // tehty backendissä.
-        visibleForAllOrgs: true,
-        // Raportin tulostetaan opetuksen järjestäjän (koulutustoimija) mukaan, ei
-        // oppilaitoksittain, joten valittavissa vain koulutustoimija-/varhaiskasvatuksen
-        // järjestäjä -tyyppiset organisaatiot — muut näkyvät puussa navigointia varten,
-        // eivät valittavina.
-        selectableOrganisaatiotyypit: [
-          'KOULUTUSTOIMIJA',
-          'VARHAISKASVATUKSEN_JARJESTAJA'
-        ]
+        component: Kotikuntalaskelma
       }
     ]
   }

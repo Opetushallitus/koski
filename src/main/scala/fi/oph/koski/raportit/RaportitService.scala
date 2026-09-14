@@ -42,7 +42,7 @@ class RaportitService(application: KoskiApplication) {
   private val aikuistenPerusopetuksenEiRahoitustietoaKurssitRaportti = AikuistenPerusopetuksenEiRahoitustietoaKurssit(raportointiDatabase.db)
   private val aikuistenPerusopetuksenOpiskeluoikeudenUlkopuolisetRaportti = AikuistenPerusopetuksenOpiskeluoikeudenUlkopuolisetKurssit(raportointiDatabase.db)
   private val aikuistenPerusopetuksenEriVuonnaKorotetutKurssitRaportti = AikuistenPerusopetuksenEriVuonnaKorotetutKurssit(raportointiDatabase.db)
-  private val kotikuntalaskelmaBuilder = Kotikuntalaskelma(raportointiDatabase.db, application.organisaatioService)
+  private val kotikuntalaskelmaBuilder = Kotikuntalaskelma(raportointiDatabase.db)
   private val perusopetuksenOppijamäärätRaportti = PerusopetuksenOppijamäärätRaportti(raportointiDatabase.db, application.organisaatioService)
   private val perusopetuksenLisäopetuksenOppijamäärätRaportti = PerusopetuksenLisäopetusOppijamäärätRaportti(raportointiDatabase.db, application.organisaatioService)
   private val ibSuoritustiedotRepository = IBSuoritustiedotRaporttiRepository(raportointiDatabase.db)
