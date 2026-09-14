@@ -1,3 +1,8 @@
+# 14.9.2026
+
+- Ahvenanmaan perusopetuksen opiskeluoikeuden lisätietoihin lisätty vapaaehtoinen `alkuvaihe`-kenttä (aikajakso), jolla ilmaistaan muiden kuin oppivelvollisten alkuvaiheen (Inledningsskedet) opintojen ajanjakso.
+- Muiden kuin oppivelvollisten oppimäärän suorituksen (`ahvenanmaanperusopetuksenoppimaaraaikuiset`) `alkamispäivä` kuvaa päättövaiheen alkamispäivää.
+
 # 31.8.2026
 
 - Korjattu korkeakoulun opiskeluoikeuden tilan käsittely Virta-datassa: tilakoodi 7 ("päättynyt yhden opiskeluoikeuden säännöksen johdosta") aiheutti aiemmin virheen, jonka seurauksena oppijan Virta-tiedot puuttuivat kokonaan Koskesta saatavista tiedoista.
