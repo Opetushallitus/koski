@@ -2,22 +2,19 @@ import React from 'baret'
 import { userP } from '../util/user'
 import Http from '../util/http'
 import Text from '../i18n/Text'
+import { t } from '../i18n/i18n'
 import AnnaHyvaksynta from './AnnaHyvaksynta'
 import HyvaksyntaAnnettu from './HyvaksyntaAnnettu'
-import { formatFinnishDate, parseISODate } from '../date/date'
+import { ISO2FinnishDate } from '../date/date'
 import { getBirthdayFromEditorRes } from '../util/util'
 
 const editorP = Http.cachedGet('/koski/api/omattiedot/editor', {
   errorMapper: () => undefined
 }).toProperty()
 
-const getBirthDate = (editorResponse) => {
-  if (!editorResponse) return
-
-  return formatFinnishDate(
-    parseISODate(getBirthdayFromEditorRes(editorResponse))
-  )
-}
+// Syntymäaika jätetään näyttämättä, jos editorin haku epäonnistui tai henkilöltä puuttuu syntymäaika
+const getBirthDate = (editorResponse) =>
+  editorResponse && ISO2FinnishDate(getBirthdayFromEditorRes(editorResponse))
 
 export default ({
   memberName,
@@ -35,7 +32,10 @@ export default ({
       <div className="username">{userP.map((user) => user && user.name)}</div>
       <div className="dateofbirth">
         {' '}
-        {editorP.map((s) => 's. ' + getBirthDate(s))}
+        {editorP.map((s) => {
+          const birthDate = getBirthDate(s)
+          return birthDate && `${t('syntynyt')} ${birthDate}`
+        })}
       </div>
     </div>
 

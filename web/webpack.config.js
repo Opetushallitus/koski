@@ -15,7 +15,7 @@ module.exports = (_, argv = {}) => ({
     pulssi: './app/Pulssi.jsx',
     lander: './app/Lander.jsx',
     omadata: './app/omadata/HyvaksyntaLanding.jsx',
-    omadataoauth2: './app/omadata/OmaDataOAuth2HyvaksyntaLanding.jsx',
+    omadataoauth2: './app/omadata/OmaDataOAuth2HyvaksyntaLanding.tsx',
     eisuorituksia: './app/EiSuorituksia.jsx',
     korhopankki: './app/Korhopankki.jsx',
     kayttooikeudet: './app/Kayttooikeudet.jsx'

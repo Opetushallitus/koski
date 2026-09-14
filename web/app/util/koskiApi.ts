@@ -1,10 +1,12 @@
 import { apiDelete, ApiFailure, apiGet, apiPost, apiPut } from '../api-fetch'
 import { lang } from '../i18n/i18n'
 import { OpiskeluoikeusHistoryPatch } from '../types/fi/oph/koski/history/OpiskeluoikeusHistoryPatch'
+import { UserWithAccessRights } from '../types/fi/oph/koski/koskiuser/UserWithAccessRights'
 import { HenkilönOpiskeluoikeusVersiot } from '../types/fi/oph/koski/oppija/HenkilonOpiskeluoikeusVersiot'
 import { OrganisaatioHierarkia } from '../types/fi/oph/koski/organisaatio/OrganisaatioHierarkia'
 import { KeyValue } from '../types/fi/oph/koski/preferences/KeyValue'
 import { Koodistokoodiviite } from '../types/fi/oph/koski/schema/Koodistokoodiviite'
+import { LocalizedString } from '../types/fi/oph/koski/schema/LocalizedString'
 import { OidHenkilö } from '../types/fi/oph/koski/schema/OidHenkilo'
 import { Opiskeluoikeus } from '../types/fi/oph/koski/schema/Opiskeluoikeus'
 import { Oppija } from '../types/fi/oph/koski/schema/Oppija'
@@ -265,6 +267,23 @@ export const fetchAktiivisetJaPäättyneetOpinnot = (id: string) =>
   handleExpiredSession(
     apiGet<AktiivisetJaPäättyneetOpinnotOppijaJakolinkillä>(
       apiUrl(`opinnot/aktiiviset-ja-paattyneet-opinnot/${id}`)
+    )
+  )
+
+export const fetchUser = () =>
+  handleExpiredSession(apiGet<UserWithAccessRights>('/koski/user'))
+
+// Vastaa backendin OmaDataOAuth2ResourceOwnerServletin ClientDetails-luokkaa, jolle ei generoida TypeScript-tyyppiä
+export type OmaDataOAuth2ClientDetails = {
+  id: string
+  name: LocalizedString
+  tokenDurationMinutes: number
+}
+
+export const fetchOmaDataOAuth2ClientDetails = (clientId: string) =>
+  handleExpiredSession(
+    apiGet<OmaDataOAuth2ClientDetails>(
+      apiUrl(`omadata-oauth2/resource-owner/client-details/${clientId}`)
     )
   )
 

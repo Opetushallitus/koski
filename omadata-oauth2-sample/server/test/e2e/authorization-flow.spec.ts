@@ -19,6 +19,8 @@ test('OAuth2 data access succeeds', async ({ page }) => {
   await loginKorhopankki(page, '280618-402H')
 
   await page.waitForURL('**/koski/omadata-oauth2/authorize**')
+  await expect(page.locator('.username')).toHaveText('Aarne Ammattilainen')
+  await expect(page.locator('.dateofbirth')).toHaveText('s. 28.6.1918')
   await expect(page.getByText('Nimi')).toBeVisible()
   await expect(page.getByText('Henkilötunnus')).toBeVisible()
   await expect(page.getByText('Suoritetut tutkinnot')).toBeVisible()
@@ -28,6 +30,44 @@ test('OAuth2 data access succeeds', async ({ page }) => {
 
   await page.waitForURL('**/api/openid-api-test/form-post-response-cb**')
   await expect(page.locator('html')).toContainText('280618-402H')
+})
+
+test('Consent page localizes birth date prefix', async ({ page }) => {
+  await page.goto(gotoSample('/api/openid-api-test'))
+
+  await loginKorhopankki(page, '280618-402H')
+
+  await page.waitForURL('**/koski/omadata-oauth2/authorize**')
+  await expect(page.locator('.dateofbirth')).toHaveText('s. 28.6.1918')
+
+  await page.getByRole('button', { name: 'Svenska' }).click()
+  await expect(page.locator('.dateofbirth')).toHaveText('f. 28.6.1918')
+
+  await page.getByRole('button', { name: 'English' }).click()
+  await expect(page.locator('.dateofbirth')).toHaveText('b. 28.6.1918')
+})
+
+test('Consent page omits birth date when fetching oppija fails', async ({
+  page
+}) => {
+  const oppijaUrl = '**/koski/api/omattiedotV2/oppija**'
+  await page.route(oppijaUrl, (route) =>
+    route.fulfill({
+      status: 500,
+      json: [{ key: 'internalError', message: 'Internal server error' }]
+    })
+  )
+  const oppijaResponse = page.waitForResponse(oppijaUrl)
+
+  await page.goto(gotoSample('/api/openid-api-test'))
+
+  await loginKorhopankki(page, '280618-402H')
+
+  await page.waitForURL('**/koski/omadata-oauth2/authorize**')
+  await oppijaResponse
+  await expect(page.locator('.username')).toHaveText('Aarne Ammattilainen')
+  await expect(page.locator('.dateofbirth')).not.toContainText('undefined')
+  await expect(page.locator('.dateofbirth')).not.toContainText('s.')
 })
 
 test('Declining authorization surfaces an access_denied error', async ({
@@ -52,10 +92,10 @@ test('Invalid redirect_uri shows client error page', async ({ page }) => {
 
   await expect(page.getByTestId('error')).toBeVisible()
   await expect(page.locator('#error')).toContainText('invalid_client_data')
-  await expect(page.getByLabel('Tapahtui virhe:')).toContainText(
+  await expect(page.getByText('Tapahtui virhe:')).toContainText(
     'omadataoauth2-error-'
   )
-  await expect(page.getByLabel('Tapahtui virhe:')).toContainText(
+  await expect(page.getByText('Tapahtui virhe:')).toContainText(
     'invalid_client_data'
   )
 })
