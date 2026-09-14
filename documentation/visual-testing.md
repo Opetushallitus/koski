@@ -39,8 +39,9 @@ Playwrightia päivitettäessä korjaa `scripts/koski-visual.sh`-tiedoston
 docker buildx imagetools inspect mcr.microsoft.com/playwright:vX.Y.Z-jammy
 ```
 
-Kontti ajaa tarkoituksella root-käyttäjänä. `--user` rikkoo nimetyn
-`koski-visual-node-modules`-volumen kirjoitusoikeudet.
+Kontti käyttää hostin `web/node_modules`-hakemistoa sellaisenaan (testit tarvitsevat
+vain `@playwright/test`in, selaimet tulevat imagesta) ja ajaa hostin käyttäjänä, jotta
+`web/test-results`, raportti ja baseline-kuvat eivät jää Linuxilla root-omisteisiksi.
 
 ## Ongelmatilanteet
 
@@ -50,7 +51,6 @@ Kontti ajaa tarkoituksella root-käyttäjänä. `--user` rikkoo nimetyn
   `make front`, jos frontend-koodi muuttui.
 - Yllättävä PNG-muutos: tarkista `web/test-results/` ja selvitä ero ennen
   baseline-kuvan päivittämistä.
-- Riippuvuusvolumeen liittyvä ongelma: `make visual-clean` poistaa visual-testien
-  node_modules-volumen.
+- `web/node_modules puuttuu`: aja `cd web && pnpm install` (tai `make front`).
 - Kontin yhteys backendiin: Linux käyttää host-verkkoa, Docker Desktop
   `host.docker.internal`-osoitetta.

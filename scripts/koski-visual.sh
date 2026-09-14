@@ -43,6 +43,13 @@ if ! docker info >/dev/null 2>&1; then
   exit 1
 fi
 
+# Kontti käyttää hostin web/node_modulesia sellaisenaan: testit tarvitsevat
+# vain @playwright/testin (puhdasta JS:ää), selaimet tulevat imagesta.
+if [ ! -x "$REPO/web/node_modules/.bin/playwright" ]; then
+  echo "VIRHE: web/node_modules puuttuu. Aja ensin: cd web && pnpm install" >&2
+  exit 1
+fi
+
 PW_ARGS="--config playwright.visual.config.ts"
 if [ "$MODE" = "update" ]; then
   PW_ARGS="$PW_ARGS --update-snapshots"
@@ -61,10 +68,12 @@ fi
 
 echo "Ajetaan visuaalitestit kontissa ($IMAGE), backend: $CONTAINER_BACKEND"
 
+# Ajetaan hostin käyttäjänä, jotta kontin kirjoittamat tiedostot (test-results,
+# raportti, baseline-kuvat) eivät jää Linuxilla root-omisteisiksi.
 docker run --rm \
   $NET_ARGS \
+  --user "$(id -u):$(id -g)" \
   -v "$REPO":/work \
-  -v koski-visual-node-modules:/work/web/node_modules \
   -w /work/web \
   -e BACKEND_HOST="$CONTAINER_BACKEND" \
   -e CI="${CI:-}" \
@@ -72,17 +81,7 @@ docker run --rm \
   `# eikä CI:n artifaktin lataus löytäisi mitään.` \
   -e PLAYWRIGHT_HTML_REPORT="${PLAYWRIGHT_HTML_REPORT:-}" \
   "$IMAGE" \
-  bash -lc "
-    set -eu
-    corepack enable >/dev/null 2>&1
-    pnpm config set store-dir /work/web/node_modules/.pnpm-store >/dev/null 2>&1
-    pnpm install --frozen-lockfile >/dev/null
-    # Store kasvaa muuten rajatta
-    if [ -z \"\${CI:-}\" ]; then
-      pnpm store prune >/dev/null 2>&1 || true
-    fi
-    pnpm exec playwright test $PW_ARGS
-  "
+  node_modules/.bin/playwright test $PW_ARGS
 
 if [ "$MODE" = "update" ]; then
   cat <<'OHJE'

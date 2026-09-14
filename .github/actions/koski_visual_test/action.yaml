@@ -7,6 +7,12 @@ runs:
       uses: ./.github/actions/setup_java_17
     - name: "🔨 Setup backend and databases"
       uses: ./.github/actions/setup_backend
+    - name: "Install web dependencies"
+      working-directory: web
+      env:
+        PNPM_FROZEN_FLAG: ${{ github.event_name == 'pull_request' && github.event.pull_request.user.login == 'renovate[bot]' && '--no-frozen-lockfile' || '--frozen-lockfile' }}
+      run: pnpm install $PNPM_FROZEN_FLAG
+      shell: bash
 
     - name: "Run visual regression tests"
       env:
