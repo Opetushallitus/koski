@@ -205,7 +205,9 @@ case class KorkeakoulunOpintojaksonSuoritus(
   opinnäytetyö: Option[Boolean] = None,
   @Description("Virran opintosuorituksen laji. Arvolla 3 (ei huomioitava) merkitty suoritus on väliaikainen kirjaus, jonka laajuus sisältyy jo ylemmän tason suoritukseen.")
   @KoodistoUri("virtaopintosuorituksenlaji")
+  @Hidden
   laji: Option[Koodistokoodiviite] = None,
+  @Hidden
   lähdeorganisaatio: Option[KorkeakoulunLähdeorganisaatio] = None,
   @Description("Opintosuorituksen julkinen lisätieto")
   @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT))
