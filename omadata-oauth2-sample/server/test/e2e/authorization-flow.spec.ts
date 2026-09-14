@@ -19,6 +19,8 @@ test('OAuth2 data access succeeds', async ({ page }) => {
   await loginKorhopankki(page, '280618-402H')
 
   await page.waitForURL('**/koski/omadata-oauth2/authorize**')
+  await expect(page.locator('.username')).toHaveText('Aarne Ammattilainen')
+  await expect(page.locator('.dateofbirth')).toHaveText('s. 28.6.1918')
   await expect(page.getByText('Nimi')).toBeVisible()
   await expect(page.getByText('Henkilötunnus')).toBeVisible()
   await expect(page.getByText('Suoritetut tutkinnot')).toBeVisible()
@@ -28,6 +30,28 @@ test('OAuth2 data access succeeds', async ({ page }) => {
 
   await page.waitForURL('**/api/openid-api-test/form-post-response-cb**')
   await expect(page.locator('html')).toContainText('280618-402H')
+})
+
+test('Consent page omits birth date when omattiedot editor fails', async ({
+  page
+}) => {
+  await page.route('**/koski/api/omattiedot/editor', (route) =>
+    route.fulfill({
+      status: 500,
+      json: [{ key: 'internalError', message: 'Internal server error' }]
+    })
+  )
+  const editorResponse = page.waitForResponse('**/koski/api/omattiedot/editor')
+
+  await page.goto(gotoSample('/api/openid-api-test'))
+
+  await loginKorhopankki(page, '280618-402H')
+
+  await page.waitForURL('**/koski/omadata-oauth2/authorize**')
+  await editorResponse
+  await expect(page.locator('.username')).toHaveText('Aarne Ammattilainen')
+  await expect(page.locator('.dateofbirth')).not.toContainText('undefined')
+  await expect(page.locator('.dateofbirth')).not.toContainText('s.')
 })
 
 test('Declining authorization surfaces an access_denied error', async ({
