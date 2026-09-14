@@ -32,23 +32,24 @@ test('OAuth2 data access succeeds', async ({ page }) => {
   await expect(page.locator('html')).toContainText('280618-402H')
 })
 
-test('Consent page omits birth date when omattiedot editor fails', async ({
+test('Consent page omits birth date when fetching oppija fails', async ({
   page
 }) => {
-  await page.route('**/koski/api/omattiedot/editor', (route) =>
+  const oppijaUrl = '**/koski/api/omattiedotV2/oppija**'
+  await page.route(oppijaUrl, (route) =>
     route.fulfill({
       status: 500,
       json: [{ key: 'internalError', message: 'Internal server error' }]
     })
   )
-  const editorResponse = page.waitForResponse('**/koski/api/omattiedot/editor')
+  const oppijaResponse = page.waitForResponse(oppijaUrl)
 
   await page.goto(gotoSample('/api/openid-api-test'))
 
   await loginKorhopankki(page, '280618-402H')
 
   await page.waitForURL('**/koski/omadata-oauth2/authorize**')
-  await editorResponse
+  await oppijaResponse
   await expect(page.locator('.username')).toHaveText('Aarne Ammattilainen')
   await expect(page.locator('.dateofbirth')).not.toContainText('undefined')
   await expect(page.locator('.dateofbirth')).not.toContainText('s.')
@@ -76,10 +77,10 @@ test('Invalid redirect_uri shows client error page', async ({ page }) => {
 
   await expect(page.getByTestId('error')).toBeVisible()
   await expect(page.locator('#error')).toContainText('invalid_client_data')
-  await expect(page.getByLabel('Tapahtui virhe:')).toContainText(
+  await expect(page.getByText('Tapahtui virhe:')).toContainText(
     'omadataoauth2-error-'
   )
-  await expect(page.getByLabel('Tapahtui virhe:')).toContainText(
+  await expect(page.getByText('Tapahtui virhe:')).toContainText(
     'invalid_client_data'
   )
 })

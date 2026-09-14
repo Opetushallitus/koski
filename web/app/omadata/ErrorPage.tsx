@@ -1,18 +1,25 @@
 import React from 'react'
-import Text from '../i18n/Text'
+import { Trans } from '../components-v2/texts/Trans'
 
-export default ({
+export type ErrorPageProps = {
+  title?: string
+  text?: string
+}
+
+const ErrorPage = ({
   title = 'Omadata virhe',
   text = 'Tapahtuman käsittelyssä tapahtui virhe'
-}) => (
+}: ErrorPageProps) => (
   <div className="error-container">
     <div className="heading">
       <h1>
-        <Text name={title} />
+        <Trans>{title}</Trans>
       </h1>
     </div>
     <div className="error-text">
-      <Text name={text} />
+      <Trans>{text}</Trans>
     </div>
   </div>
 )
+
+export default ErrorPage
