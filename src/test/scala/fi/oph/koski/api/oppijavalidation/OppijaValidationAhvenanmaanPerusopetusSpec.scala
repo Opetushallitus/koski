@@ -238,5 +238,35 @@ class OppijaValidationAhvenanmaanPerusopetusSpec
         ))
       }
     }
+
+    "alkuvaihe voidaan jättää pois" in {
+      setupOppijaWithOpiskeluoikeus(aikuistenOpiskeluoikeus.copy(lisätiedot = None)) {
+        verifyResponseStatusOk()
+      }
+    }
+
+    "alkuvaiheella ei tarvitse olla päättymispäivää" in {
+      val opiskeluoikeus = aikuistenOpiskeluoikeus.copy(
+        lisätiedot = Some(AhvenanmaanPerusopetuksenOpiskeluoikeudenLisätiedot(
+          alkuvaihe = Some(Aikajakso(date(2024, 8, 15), None))
+        ))
+      )
+      setupOppijaWithOpiskeluoikeus(opiskeluoikeus) {
+        verifyResponseStatusOk()
+      }
+    }
+  }
+
+  "Alkuvaihe" - {
+    "ei ole sallittu oppivelvollisen oppimäärän suorituksen opiskeluoikeudella" in {
+      val opiskeluoikeus = defaultOpiskeluoikeus.copy(
+        lisätiedot = Some(AhvenanmaanPerusopetuksenOpiskeluoikeudenLisätiedot(
+          alkuvaihe = Some(Aikajakso(date(2017, 8, 15), Some(date(2018, 6, 4))))
+        ))
+      )
+      setupOppijaWithOpiskeluoikeus(opiskeluoikeus) {
+        verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.rakenne.ahvenanmaanAlkuvaiheVainMuilleKuinOppivelvollisille())
+      }
+    }
   }
 }

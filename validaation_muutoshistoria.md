@@ -1,5 +1,9 @@
 # Koskeen tallennettavien tietojen validaatiosäännöt
 
+## 14.9.2026
+
+- Ahvenanmaan perusopetuksen opiskeluoikeuden lisätietojen `alkuvaihe` sallitaan vain opiskeluoikeudelle, jolla on muiden kuin oppivelvollisten oppimäärän suoritus (`ahvenanmaanperusopetuksenoppimaaraaikuiset`).
+
 ## 9.9.2026
 
 Aikuisten perusopetuksen opiskeluoikeuksissa, jotka ovat alkaneet 1.1.2020 tai sen jälkeen:

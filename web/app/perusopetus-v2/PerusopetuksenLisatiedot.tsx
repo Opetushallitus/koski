@@ -11,18 +11,13 @@ import {
   KeyValueTable
 } from '../components-v2/containers/KeyValueTable'
 import { t } from '../i18n/i18n'
-import { Aikajakso } from '../types/fi/oph/koski/schema/Aikajakso'
 import { Tukijakso } from '../types/fi/oph/koski/schema/Tukijakso'
 import { FormField } from '../components-v2/forms/FormField'
 import { FormListField } from '../components-v2/forms/FormListField'
-import {
-  AikajaksoView,
-  AikajaksoEdit
-} from '../components-v2/opiskeluoikeus/AikajaksoField'
+import { AikajaksoArrayRow } from '../components-v2/opiskeluoikeus/AikajaksoArrayRow'
 import {
   uusiErityisenTuenPäätös,
-  uusiTukijakso,
-  uusiTyhjäAikajakso
+  uusiTukijakso
 } from '../components-v2/opiskeluoikeus/uusiJakso'
 import {
   BooleanView,
@@ -30,7 +25,7 @@ import {
 } from '../components-v2/opiskeluoikeus/BooleanField'
 import { ButtonGroup } from '../components-v2/containers/ButtonGroup'
 import { FlatButton } from '../components-v2/controls/FlatButton'
-import { Removable } from '../components-v2/controls/Removable'
+import { SingleAikajaksoRow } from '../components-v2/opiskeluoikeus/SingleAikajaksoRow'
 import { append } from '../util/fp/arrays'
 import { ErityisenTuenPäätös } from '../types/fi/oph/koski/schema/ErityisenTuenPaatos'
 import { TukijaksoView, TukijaksoEdit } from './TukijaksoField'
@@ -74,35 +69,36 @@ export const PerusopetuksenLisatiedot: React.FC<
 
       <SingleAikajaksoRow
         form={form}
-        lisatiedotPath={lisatiedotPath}
-        fieldName="pidennettyOppivelvollisuus"
+        path={lisatiedotPath.prop('pidennettyOppivelvollisuus')}
         label="Pidennetty oppivelvollisuus"
-        value={lisätiedot.pidennettyOppivelvollisuus}
+        testId="pidennettyOppivelvollisuus"
       />
 
       <AikajaksoArrayRow
         form={form}
-        lisatiedotPath={lisatiedotPath}
-        fieldName="opetuksenJärjestäminenVammanSairaudenTaiRajoitteenPerusteella"
+        path={lisatiedotPath.prop(
+          'opetuksenJärjestäminenVammanSairaudenTaiRajoitteenPerusteella'
+        )}
         label="Opetuksen järjestäminen vamman sairauden tai rajoitteen perusteella"
+        testId="opetuksenJärjestäminenVammanSairaudenTaiRajoitteenPerusteella"
       />
       <AikajaksoArrayRow
         form={form}
-        lisatiedotPath={lisatiedotPath}
-        fieldName="toimintaAlueittainOpiskelu"
+        path={lisatiedotPath.prop('toimintaAlueittainOpiskelu')}
         label="Opetus toiminta-alueittain vamman sairauden tai rajoitteen perusteella"
+        testId="toimintaAlueittainOpiskelu"
       />
       <AikajaksoArrayRow
         form={form}
-        lisatiedotPath={lisatiedotPath}
-        fieldName="tavoitekokonaisuuksittainOpiskelu"
+        path={lisatiedotPath.prop('tavoitekokonaisuuksittainOpiskelu')}
         label="Tavoitekokonaisuuksittain opiskelu"
+        testId="tavoitekokonaisuuksittainOpiskelu"
       />
       <AikajaksoArrayRow
         form={form}
-        lisatiedotPath={lisatiedotPath}
-        fieldName="yhdysluokka"
+        path={lisatiedotPath.prop('yhdysluokka')}
         label="Yhdysluokka"
+        testId="yhdysluokka"
       />
 
       <ErityisenTuenPäätöksetRow
@@ -119,38 +115,35 @@ export const PerusopetuksenLisatiedot: React.FC<
 
       <SingleAikajaksoRow
         form={form}
-        lisatiedotPath={lisatiedotPath}
-        fieldName="joustavaPerusopetus"
+        path={lisatiedotPath.prop('joustavaPerusopetus')}
         label="Joustava perusopetus"
-        value={lisätiedot.joustavaPerusopetus}
+        testId="joustavaPerusopetus"
       />
       <SingleAikajaksoRow
         form={form}
-        lisatiedotPath={lisatiedotPath}
-        fieldName="kotiopetus"
+        path={lisatiedotPath.prop('kotiopetus')}
         label="Kotiopetus"
-        value={lisätiedot.kotiopetus}
+        testId="kotiopetus"
         deprecated
       />
       <AikajaksoArrayRow
         form={form}
-        lisatiedotPath={lisatiedotPath}
-        fieldName="kotiopetusjaksot"
+        path={lisatiedotPath.prop('kotiopetusjaksot')}
         label="Kotiopetusjaksot"
+        testId="kotiopetusjaksot"
       />
       <SingleAikajaksoRow
         form={form}
-        lisatiedotPath={lisatiedotPath}
-        fieldName="ulkomailla"
+        path={lisatiedotPath.prop('ulkomailla')}
         label="Ulkomailla"
-        value={lisätiedot.ulkomailla}
+        testId="ulkomailla"
         deprecated
       />
       <AikajaksoArrayRow
         form={form}
-        lisatiedotPath={lisatiedotPath}
-        fieldName="ulkomaanjaksot"
+        path={lisatiedotPath.prop('ulkomaanjaksot')}
         label="Ulkomaanjaksot"
+        testId="ulkomaanjaksot"
       />
 
       <BooleanRow
@@ -163,55 +156,51 @@ export const PerusopetuksenLisatiedot: React.FC<
 
       <AikajaksoArrayRow
         form={form}
-        lisatiedotPath={lisatiedotPath}
-        fieldName="vammainen"
+        path={lisatiedotPath.prop('vammainen')}
         label="Vammainen"
+        testId="vammainen"
       />
       <AikajaksoArrayRow
         form={form}
-        lisatiedotPath={lisatiedotPath}
-        fieldName="vaikeastiVammainen"
+        path={lisatiedotPath.prop('vaikeastiVammainen')}
         label="Vaikeasti vammainen"
+        testId="vaikeastiVammainen"
       />
 
       <SingleAikajaksoRow
         form={form}
-        lisatiedotPath={lisatiedotPath}
-        fieldName="majoitusetu"
+        path={lisatiedotPath.prop('majoitusetu')}
         label="Majoitusetu"
-        value={lisätiedot.majoitusetu}
+        testId="majoitusetu"
       />
       <SingleAikajaksoRow
         form={form}
-        lisatiedotPath={lisatiedotPath}
-        fieldName="kuljetusetu"
+        path={lisatiedotPath.prop('kuljetusetu')}
         label="Kuljetusetu"
-        value={lisätiedot.kuljetusetu}
+        testId="kuljetusetu"
       />
       <AikajaksoArrayRow
         form={form}
-        lisatiedotPath={lisatiedotPath}
-        fieldName="sisäoppilaitosmainenMajoitus"
+        path={lisatiedotPath.prop('sisäoppilaitosmainenMajoitus')}
         label="Sisäoppilaitosmainen majoitus"
+        testId="sisäoppilaitosmainenMajoitus"
       />
       <AikajaksoArrayRow
         form={form}
-        lisatiedotPath={lisatiedotPath}
-        fieldName="koulukoti"
+        path={lisatiedotPath.prop('koulukoti')}
         label="Koulukoti"
+        testId="koulukoti"
       />
 
       <AikajaksoArrayRow
         form={form}
-        lisatiedotPath={lisatiedotPath}
-        fieldName="valmistavanLisäopetus"
+        path={lisatiedotPath.prop('valmistavanLisäopetus')}
         label="Valmistavan lisäopetus"
+        testId="valmistavanLisäopetus"
       />
     </KeyValueTable>
   )
 }
-
-// --- Single aikajakso field (optional, not array) ---
 
 type LisätiedotPath = FormOptic<
   PerusopetuksenOpiskeluoikeus,
@@ -259,98 +248,6 @@ const BooleanRow: React.FC<{
         path={path}
         testId={fieldName}
       />
-    </KeyValueRow>
-  )
-}
-
-const SingleAikajaksoRow: React.FC<{
-  form: FormModel<PerusopetuksenOpiskeluoikeus>
-  lisatiedotPath: LisätiedotPath
-  fieldName: keyof PerusopetuksenOpiskeluoikeudenLisätiedot
-  label: string
-  value: Aikajakso | undefined
-  deprecated?: boolean
-}> = ({ form, lisatiedotPath, fieldName, label, value, deprecated }) => {
-  if (deprecated ? !hasOldUiValue(value) : !form.editMode && !value) return null
-  const path = lisatiedotPath.prop(fieldName) as FormOptic<
-    PerusopetuksenOpiskeluoikeus,
-    Aikajakso | undefined
-  >
-  return (
-    <KeyValueRow localizableLabel={label} largeLabel>
-      <TestIdLayer id={fieldName}>
-        {value ? (
-          form.editMode ? (
-            <Removable onClick={() => form.updateAt(path, () => undefined)}>
-              <FormField
-                form={form}
-                path={path}
-                view={AikajaksoView}
-                edit={AikajaksoEdit}
-                editProps={{ createAikajakso: Aikajakso }}
-              />
-            </Removable>
-          ) : (
-            <FormField
-              form={form}
-              path={path}
-              view={AikajaksoView}
-              edit={AikajaksoEdit}
-              editProps={{ createAikajakso: Aikajakso }}
-            />
-          )
-        ) : form.editMode ? (
-          <ButtonGroup>
-            <FlatButton
-              onClick={() => form.updateAt(path, () => uusiTyhjäAikajakso())}
-            >
-              {t('Lisää')}
-            </FlatButton>
-          </ButtonGroup>
-        ) : null}
-      </TestIdLayer>
-    </KeyValueRow>
-  )
-}
-
-// --- Aikajakso array field ---
-
-const AikajaksoArrayRow: React.FC<{
-  form: FormModel<PerusopetuksenOpiskeluoikeus>
-  lisatiedotPath: LisätiedotPath
-  fieldName: keyof PerusopetuksenOpiskeluoikeudenLisätiedot
-  label: string
-}> = ({ form, lisatiedotPath, fieldName, label }) => {
-  const path = lisatiedotPath.prop(fieldName) as FormOptic<
-    PerusopetuksenOpiskeluoikeus,
-    Aikajakso[] | undefined
-  >
-  const values = getValue(path)(form.state)
-  if (!form.editMode && (!values || values.length === 0)) return null
-
-  return (
-    <KeyValueRow localizableLabel={label} largeLabel>
-      <TestIdLayer id={fieldName}>
-        <FormListField
-          form={form}
-          view={AikajaksoView}
-          edit={AikajaksoEdit}
-          path={path}
-          editProps={{ createAikajakso: Aikajakso }}
-          removable
-        />
-        {form.editMode && (
-          <ButtonGroup>
-            <FlatButton
-              onClick={() =>
-                form.updateAt(path.valueOr([]), append(uusiTyhjäAikajakso()))
-              }
-            >
-              {t('Lisää')}
-            </FlatButton>
-          </ButtonGroup>
-        )}
-      </TestIdLayer>
     </KeyValueRow>
   )
 }
