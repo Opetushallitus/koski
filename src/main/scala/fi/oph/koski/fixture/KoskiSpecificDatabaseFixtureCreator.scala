@@ -423,6 +423,22 @@ class KoskiSpecificDatabaseFixtureCreator(application: KoskiApplication) extends
           tila = NuortenPerusopetuksenOpiskeluoikeudenTila(List(NuortenPerusopetuksenOpiskeluoikeusjakso(date(2022, 8, 1), opiskeluoikeusLäsnä)))
         )
       ),
+      (
+        // TOR-2650: koulutusmoduulin alkamispäivä on 15.8.2025 — edellisen, ei kuluvan
+        // (1.8.2026 alkaneen) lukuvuoden puolella. Testaa että Kotikuntalaskelma sulkee tämän
+        // pois (ks. Kotikuntalaskelma.scala:n v.edellinen_elokuu-rajaus) vaikka pelkkä
+        // "alkamispäivä <= päivä" -yläraja päästäisi sen mukaan.
+        KoskiSpecificMockOppijat.kotikuntalaskelmaKansainvalinenEdellinenLukuvuosi,
+        InternationalSchoolOpiskeluoikeus(
+          oppilaitos = Some(oppilaitos(aapajoenKoulu)),
+          tila = InternationalSchoolOpiskeluoikeudenTila(
+            List(InternationalSchoolOpiskeluoikeusjakso(date(2025, 8, 15), LukioExampleData.opiskeluoikeusAktiivinen, opintojenRahoitus = Some(ExampleData.valtionosuusRahoitteinen)))
+          ),
+          suoritukset = List(
+            ExamplesInternationalSchool.grade1.copy(alkamispäivä = Some(date(2025, 8, 15)), vahvistus = None, toimipiste = oppilaitos(aapajoenKoulu))
+          )
+        )
+      ),
     )
   }
 

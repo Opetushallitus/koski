@@ -178,5 +178,16 @@ class KotikuntalaskelmaSpec extends AnyFreeSpec with Matchers with Raportointika
       // Kuusi Kaisasta (joka on Jyväskylässä).
       aggregaattiRivit.find(_.oppilaanKotikunta.contains("Helsinki")).get.kuusi should be >= 1
     }
+
+    "Kansainvälisen koulun oppija, jonka koulutusmoduuli alkoi edellisenä lukuvuotena, ei näy raportilla" in {
+      val oid = KoskiSpecificMockOppijat.kotikuntalaskelmaKansainvalinenEdellinenLukuvuosi.oid
+
+      oppijatRivit.find(_.oppijaNumero.contains(oid)) shouldBe None
+
+      // Oppija (7v, Helsinki) osuisi muutoin Helsingin rivin 7-12v-ikäryhmään Sami
+      // SeitsemanKaksitoistan kanssa — sen pitäisi silti pysyä poissa, koska koulutusmoduulin
+      // alkamispäivä (15.8.2025) on edellisen, ei kuluvan (1.8.2026 alkaneen) lukuvuoden puolella.
+      aggregaattiRivit.find(_.oppilaanKotikunta.contains("Helsinki")).get.seitsemänKaksitoista should be(1)
+    }
   }
 }
