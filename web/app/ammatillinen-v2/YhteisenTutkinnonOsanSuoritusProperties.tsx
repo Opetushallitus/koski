@@ -66,7 +66,7 @@ import { TestIdLayer } from '../appstate/useTestId'
 import { useTutkinnonOsanOsat } from './useTutkinnonOsanOsat'
 import { AmmatillisenTutkinnonOsittainenSuoritus } from '../types/fi/oph/koski/schema/AmmatillisenTutkinnonOsittainenSuoritus'
 
-type YhteisenAmmatillisenTutkinnonOsasuoritusPropertiesProps = {
+type YhteisenTutkinnonOsanSuoritusPropertiesProps = {
   form: FormModel<AmmatillinenOpiskeluoikeus>
   osasuoritusPath: FormOptic<
     AmmatillinenOpiskeluoikeus,
@@ -74,11 +74,11 @@ type YhteisenAmmatillisenTutkinnonOsasuoritusPropertiesProps = {
   >
   osasuoritus: YhteisenOsittaisenAmmatillisenTutkinnonTutkinnonosanSuoritus
 }
-export const YhteisenOsittaisenAmmatillisenTutkinnonOsasuoritusProperties = ({
+export const YhteisenTutkinnonOsanSuoritusProperties = ({
   form,
   osasuoritusPath,
   osasuoritus
-}: YhteisenAmmatillisenTutkinnonOsasuoritusPropertiesProps) => {
+}: YhteisenTutkinnonOsanSuoritusPropertiesProps) => {
   return (
     <>
       {osasuoritus.suorituskieli && (

@@ -57,7 +57,7 @@ import { hasAmmatillinenArviointi } from '../OsasuoritusTables'
 import {
   newPaikallinenOsaAlueenSuoritus,
   NewPaikallinenOsaAlueModal
-} from '../YhteisenOsittaisenAmmatillisenTutkinnonOsasuoritusProperties'
+} from '../YhteisenTutkinnonOsanSuoritusProperties'
 import { TestIdLayer, TestIdText } from '../../appstate/useTestId'
 import { useTutkinnonOsanOsat } from '../useTutkinnonOsanOsat'
 import { AmmatillisenTutkinnonOsittainenSuoritus } from '../../types/fi/oph/koski/schema/AmmatillisenTutkinnonOsittainenSuoritus'

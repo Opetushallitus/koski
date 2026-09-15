@@ -60,7 +60,7 @@ import {
   newYhteisenOsanOsaAlueenSuoritus,
   newPaikallinenOsaAlueenSuoritus,
   NewPaikallinenOsaAlueModal
-} from './YhteisenOsittaisenAmmatillisenTutkinnonOsasuoritusProperties'
+} from './YhteisenTutkinnonOsanSuoritusProperties'
 import {
   Modal,
   ModalBody,
@@ -74,7 +74,7 @@ import { PaikallinenKoodi } from '../types/fi/oph/koski/schema/PaikallinenKoodi'
 import { PaikallinenOpintovalmiuksiaTukevaOpinto } from '../types/fi/oph/koski/schema/PaikallinenOpintovalmiuksiaTukevaOpinto'
 import { TestIdLayer } from '../appstate/useTestId'
 
-export type OsittaisenAmmatillisenTutkinnonOsanJatkoOpintovalmiuksiaTukevienOpintojenSuoritusPropertiesProps =
+export type TutkinnonOsanJatkoOpintovalmiuksiaTukevienOpintojenSuoritusPropertiesProps =
   {
     form: FormModel<AmmatillinenOpiskeluoikeus>
     osasuoritusPath: FormOptic<
@@ -84,12 +84,12 @@ export type OsittaisenAmmatillisenTutkinnonOsanJatkoOpintovalmiuksiaTukevienOpin
     osasuoritus: OsittaisenAmmatillisenTutkinnonOsanJatkoOpintovalmiuksiaTukevienOpintojenSuoritus
   }
 
-export const OsittaisenAmmatillisenTutkinnonOsanJatkoOpintovalmiuksiaTukevienOpintojenSuoritusProperties =
+export const TutkinnonOsanJatkoOpintovalmiuksiaTukevienOpintojenSuoritusProperties =
   ({
     form,
     osasuoritusPath,
     osasuoritus
-  }: OsittaisenAmmatillisenTutkinnonOsanJatkoOpintovalmiuksiaTukevienOpintojenSuoritusPropertiesProps) => {
+  }: TutkinnonOsanJatkoOpintovalmiuksiaTukevienOpintojenSuoritusPropertiesProps) => {
     return (
       <>
         <OsasuoritusTable

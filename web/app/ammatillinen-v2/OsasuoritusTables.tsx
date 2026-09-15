@@ -26,18 +26,18 @@ import {
   isMuunOsittaisenAmmatillisenTutkinnonTutkinnonosanSuoritus,
   MuunOsittaisenAmmatillisenTutkinnonTutkinnonosanSuoritus
 } from '../types/fi/oph/koski/schema/MuunOsittaisenAmmatillisenTutkinnonTutkinnonosanSuoritus'
-import { MuunOsittaisenAmmatillisenTutkinnonTutkinnonosanSuoritusProperties } from './MuunOsittaisenAmmatillisenTutkinnonTutkinnonosanSuoritusProperties'
-import { YhteisenOsittaisenAmmatillisenTutkinnonOsasuoritusProperties } from './YhteisenOsittaisenAmmatillisenTutkinnonOsasuoritusProperties'
+import { MuunTutkinnonOsanSuoritusProperties } from './MuunTutkinnonOsanSuoritusProperties'
+import { YhteisenTutkinnonOsanSuoritusProperties } from './YhteisenTutkinnonOsanSuoritusProperties'
 import {
   isOsittaisenAmmatillisenTutkinnonOsanKorkeakouluopintoSuoritus,
   OsittaisenAmmatillisenTutkinnonOsanKorkeakouluopintoSuoritus
 } from '../types/fi/oph/koski/schema/OsittaisenAmmatillisenTutkinnonOsanKorkeakouluopintoSuoritus'
-import { OsittaisenAmmatillisenTutkinnonOsanKorkeakouluopintoSuoritusProperties } from './OsittaisenAmmatillisenTutkinnonOsanKorkeakouluopintoSuoritusProperties'
+import { TutkinnonOsanKorkeakouluopintoSuoritusProperties } from './TutkinnonOsanKorkeakouluopintoSuoritusProperties'
 import {
   isOsittaisenAmmatillisenTutkinnonOsanJatkoOpintovalmiuksiaTukevienOpintojenSuoritus,
   OsittaisenAmmatillisenTutkinnonOsanJatkoOpintovalmiuksiaTukevienOpintojenSuoritus
 } from '../types/fi/oph/koski/schema/OsittaisenAmmatillisenTutkinnonOsanJatkoOpintovalmiuksiaTukevienOpintojenSuoritus'
-import { OsittaisenAmmatillisenTutkinnonOsanJatkoOpintovalmiuksiaTukevienOpintojenSuoritusProperties } from './OsittaisenAmmatillisenTutkinnonOsanJatkoOpintovalmiuksiaTukevienOpintojenSuoritusProperties'
+import { TutkinnonOsanJatkoOpintovalmiuksiaTukevienOpintojenSuoritusProperties } from './TutkinnonOsanJatkoOpintovalmiuksiaTukevienOpintojenSuoritusProperties'
 import { FormField } from '../components-v2/forms/FormField'
 import {
   LaajuusEdit,
@@ -862,7 +862,7 @@ const OsasuoritusProperties = ({
       YhteisenOsittaisenAmmatillisenTutkinnonTutkinnonosanSuoritus
     >
     return (
-      <YhteisenOsittaisenAmmatillisenTutkinnonOsasuoritusProperties
+      <YhteisenTutkinnonOsanSuoritusProperties
         form={form}
         osasuoritusPath={yhteinenPath}
         osasuoritus={osasuoritus}
@@ -876,7 +876,7 @@ const OsasuoritusProperties = ({
       MuunOsittaisenAmmatillisenTutkinnonTutkinnonosanSuoritus
     >
     return (
-      <MuunOsittaisenAmmatillisenTutkinnonTutkinnonosanSuoritusProperties
+      <MuunTutkinnonOsanSuoritusProperties
         form={form}
         osasuoritusPath={muunPath}
         osasuoritus={osasuoritus}
@@ -890,7 +890,7 @@ const OsasuoritusProperties = ({
       OsittaisenAmmatillisenTutkinnonOsanKorkeakouluopintoSuoritus
     >
     return (
-      <OsittaisenAmmatillisenTutkinnonOsanKorkeakouluopintoSuoritusProperties
+      <TutkinnonOsanKorkeakouluopintoSuoritusProperties
         form={form}
         osasuoritusPath={korkeakouluPath}
         osasuoritus={osasuoritus}
@@ -906,7 +906,7 @@ const OsasuoritusProperties = ({
       OsittaisenAmmatillisenTutkinnonOsanJatkoOpintovalmiuksiaTukevienOpintojenSuoritus
     >
     return (
-      <OsittaisenAmmatillisenTutkinnonOsanJatkoOpintovalmiuksiaTukevienOpintojenSuoritusProperties
+      <TutkinnonOsanJatkoOpintovalmiuksiaTukevienOpintojenSuoritusProperties
         form={form}
         osasuoritusPath={jatkoPath}
         osasuoritus={osasuoritus}
