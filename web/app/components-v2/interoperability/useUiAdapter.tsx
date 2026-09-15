@@ -14,6 +14,7 @@ import { modelData } from '../../editor/EditorModel'
 import { t } from '../../i18n/i18n'
 import { Contextualized } from '../../types/EditorModelContext'
 import { ObjectModel } from '../../types/EditorModels'
+import { isAmmatillisenTutkinnonSuoritus } from '../../types/fi/oph/koski/schema/AmmatillisenTutkinnonSuoritus'
 import { isNuortenPerusopetuksenOppimääränSuoritus } from '../../types/fi/oph/koski/schema/NuortenPerusopetuksenOppimaaranSuoritus'
 import { Opiskeluoikeus } from '../../types/fi/oph/koski/schema/Opiskeluoikeus'
 import { Oppija } from '../../types/fi/oph/koski/schema/Oppija'
@@ -170,6 +171,10 @@ export const useKansalainenUiAdapter = (
   )
 }
 
+const hasFeatureFlag = (flag: string): boolean =>
+  localStorage.getItem(flag) !== null ||
+  new URLSearchParams(window.location.search).has(flag)
+
 const useUiAdapterImpl = <T extends any[]>(
   opiskeluoikeustyypit: string[],
   oppijaDataNeeded: () => void,
@@ -180,9 +185,7 @@ const useUiAdapterImpl = <T extends any[]>(
   const versionumero = useVersionumero()
 
   const v2Mode = useMemo(() => {
-    const hasPerusopetusFeatureFlag =
-      localStorage.getItem('perusopetus-v2') !== null ||
-      new URLSearchParams(window.location.search).has('perusopetus-v2')
+    const hasPerusopetusFeatureFlag = hasFeatureFlag('perusopetus-v2')
     const v2OpiskeluoikeusTyypit = Object.keys(opiskeluoikeusEditors).filter(
       (tyyppi) => tyyppi !== 'perusopetus' || hasPerusopetusFeatureFlag
     )
@@ -225,21 +228,22 @@ const useUiAdapterImpl = <T extends any[]>(
           oo && opiskeluoikeusEditors[oo.tyyppi.koodiarvo]
 
         if (tyyppi === 'ammatillinenkoulutus') {
+          const suoritukset = oo?.suoritukset || []
           const isOsittainen =
-            oo?.suoritukset?.[0]?.tyyppi?.koodiarvo ===
+            suoritukset[0]?.tyyppi?.koodiarvo ===
             'ammatillinentutkintoosittainen'
+          const isTutkinto =
+            hasFeatureFlag('ammatillinen-tutkinto-v2') &&
+            suoritukset.length > 0 &&
+            suoritukset.every(isAmmatillisenTutkinnonSuoritus)
 
-          if (!isOsittainen) {
+          if (!isOsittainen && !isTutkinto) {
             return undefined
           }
         }
 
         if (tyyppi === 'perusopetus') {
-          const hasFeatureFlag =
-            localStorage.getItem('perusopetus-v2') !== null ||
-            new URLSearchParams(window.location.search).has('perusopetus-v2')
-
-          if (!hasFeatureFlag) {
+          if (!hasFeatureFlag('perusopetus-v2')) {
             return undefined
           }
 

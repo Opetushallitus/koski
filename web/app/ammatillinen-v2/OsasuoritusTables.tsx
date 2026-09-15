@@ -68,6 +68,7 @@ import { DialogSelect } from '../uusiopiskeluoikeus/components/DialogSelect'
 import { TutkintoPeruste } from '../types/fi/oph/koski/tutkinto/TutkintoPeruste'
 import { AmmatillinenTutkintoKoulutus } from '../types/fi/oph/koski/schema/AmmatillinenTutkintoKoulutus'
 import { Spacer } from '../components-v2/layout/Spacer'
+import { isAmmatillisenTutkinnonSuoritus } from '../types/fi/oph/koski/schema/AmmatillisenTutkinnonSuoritus'
 
 interface OsasuoritusTablesProps {
   form: FormModel<AmmatillinenOpiskeluoikeus>
@@ -448,6 +449,15 @@ const NewAmisOsasuoritus = ({
       koodistoUri: 'ammatillisentutkinnonosanryhma'
     }) // fallbackaa Ammatillisen tutkinnon osiin jos kuuluu "muuhun" ryhmään
 
+  // Koko tutkinnon osille ryhmä saa olla vain ammatillisessa perustutkinnossa,
+  // jonka perusteessa ryhmät ovat. Ryhmittelemättömän perusteen (esim.
+  // erikoisammattitutkinto) tutkinnon osille backend ei salli ryhmää.
+  const tutkinnonOsanRyhmä =
+    ryhmä === 'Tutkinnon osat' &&
+    isAmmatillisenTutkinnonSuoritus(getValue(suoritusPath)(form.state))
+      ? undefined
+      : ryhmäKoodi
+
   const lisättävätTutkinnonOsat = useTutkinnonOsat(
     getValue(
       suoritusPath.prop('koulutusmoduuli').prop('perusteenDiaarinumero')
@@ -500,7 +510,7 @@ const NewAmisOsasuoritus = ({
     getValue(suoritusPath.prop('suoritustapa').prop('koodiarvo'))(
       form.state
     ) === 'reformi'
-  const onAmmatillisetRyhmä = ryhmäKoodi.koodiarvo === '1'
+  const onAmmatillisetRyhmä = tutkinnonOsanRyhmä?.koodiarvo === '1'
   const showLisääKorkeakouluopinto =
     onAmmatillisetRyhmä &&
     onReformi &&
@@ -522,7 +532,7 @@ const NewAmisOsasuoritus = ({
             onSelect={(osa) => {
               osa &&
                 lisääOsasuoritus(form, suoritusPath, (pts) =>
-                  newMuuOsa(pts, osa, ryhmäKoodi)
+                  newMuuOsa(pts, osa, tutkinnonOsanRyhmä)
                 )
             }}
             testId={'uusi-muu-tutkinnonosa'}
@@ -531,7 +541,7 @@ const NewAmisOsasuoritus = ({
         <Column span={6}>
           <NewPaikallinen
             form={form}
-            ryhmäKoodi={ryhmäKoodi}
+            tutkinnonOsanRyhmä={tutkinnonOsanRyhmä}
             suoritusPath={suoritusPath}
           />
         </Column>
@@ -540,6 +550,7 @@ const NewAmisOsasuoritus = ({
             form={form}
             oppilaitosOid={oppilaitosOid}
             ryhmäKoodi={ryhmäKoodi}
+            tutkinnonOsanRyhmä={tutkinnonOsanRyhmä}
             suoritusPath={suoritusPath}
           />
         </Column>
@@ -589,7 +600,7 @@ const NewAmisOsasuoritus = ({
 const newMuuOsa = (
   päätasonSuoritus: AmisTutkinnonSuoritus,
   osa: Koodistokoodiviite<'tutkinnonosat', string>,
-  ryhmä: Koodistokoodiviite<'ammatillisentutkinnonosanryhma', '1' | '3' | '4'>
+  ryhmä?: Koodistokoodiviite<'ammatillisentutkinnonosanryhma', '1' | '3' | '4'>
 ) => {
   return newMuunTutkinnonOsanSuoritus(päätasonSuoritus, {
     koulutusmoduuli: MuuValtakunnallinenTutkinnonOsa({
@@ -603,7 +614,7 @@ const newMuuOsa = (
 const newPaikallinenOsa = (
   päätasonSuoritus: AmisTutkinnonSuoritus,
   osa: string,
-  ryhmä: Koodistokoodiviite<'ammatillisentutkinnonosanryhma', '1' | '3' | '4'>
+  ryhmä?: Koodistokoodiviite<'ammatillisentutkinnonosanryhma', '1' | '3' | '4'>
 ): AmisMuunTutkinnonOsanSuoritus => {
   return newMuunTutkinnonOsanSuoritus(päätasonSuoritus, {
     koulutusmoduuli: PaikallinenTutkinnonOsa({
@@ -617,7 +628,7 @@ const newPaikallinenOsa = (
 
 type NewPaikallinenProps = {
   form: FormModel<AmmatillinenOpiskeluoikeus>
-  ryhmäKoodi: Koodistokoodiviite<
+  tutkinnonOsanRyhmä?: Koodistokoodiviite<
     'ammatillisentutkinnonosanryhma',
     '1' | '3' | '4'
   >
@@ -626,7 +637,7 @@ type NewPaikallinenProps = {
 
 const NewPaikallinen = ({
   form,
-  ryhmäKoodi,
+  tutkinnonOsanRyhmä,
   suoritusPath
 }: NewPaikallinenProps) => {
   const [showModal, setShowModal] = useState(false)
@@ -641,7 +652,7 @@ const NewPaikallinen = ({
           onClose={() => setShowModal(false)}
           onSubmit={(osa) => {
             lisääOsasuoritus(form, suoritusPath, (pts) =>
-              newPaikallinenOsa(pts, osa, ryhmäKoodi)
+              newPaikallinenOsa(pts, osa, tutkinnonOsanRyhmä)
             )
             setShowModal(false)
           }}
@@ -687,7 +698,7 @@ const newMuuOsaToisestaTutkinnosta = (
   päätasonSuoritus: AmisTutkinnonSuoritus,
   tutkinto: TutkintoPeruste,
   osa: Koodistokoodiviite<'tutkinnonosat', string>,
-  ryhmä: Koodistokoodiviite<'ammatillisentutkinnonosanryhma', '1' | '3' | '4'>
+  ryhmä?: Koodistokoodiviite<'ammatillisentutkinnonosanryhma', '1' | '3' | '4'>
 ): AmisMuunTutkinnonOsanSuoritus => {
   return newMuunTutkinnonOsanSuoritus(päätasonSuoritus, {
     koulutusmoduuli: MuuValtakunnallinenTutkinnonOsa({
@@ -713,6 +724,10 @@ type NewToisestaTutkinnostaProps = {
     'ammatillisentutkinnonosanryhma',
     '1' | '3' | '4'
   >
+  tutkinnonOsanRyhmä?: Koodistokoodiviite<
+    'ammatillisentutkinnonosanryhma',
+    '1' | '3' | '4'
+  >
   suoritusPath: FormOptic<AmmatillinenOpiskeluoikeus, AmisTutkinnonSuoritus>
 }
 
@@ -720,6 +735,7 @@ const NewToisestaTutkinnosta = ({
   form,
   oppilaitosOid,
   ryhmäKoodi,
+  tutkinnonOsanRyhmä,
   suoritusPath
 }: NewToisestaTutkinnostaProps) => {
   const [showModal, setShowModal] = useState(false)
@@ -736,7 +752,12 @@ const NewToisestaTutkinnosta = ({
           onClose={() => setShowModal(false)}
           onSubmit={(tutkinto, osa) => {
             lisääOsasuoritus(form, suoritusPath, (pts) =>
-              newMuuOsaToisestaTutkinnosta(pts, tutkinto, osa, ryhmäKoodi)
+              newMuuOsaToisestaTutkinnosta(
+                pts,
+                tutkinto,
+                osa,
+                tutkinnonOsanRyhmä
+              )
             )
             setShowModal(false)
           }}
