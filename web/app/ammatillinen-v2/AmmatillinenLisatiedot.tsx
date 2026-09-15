@@ -5,6 +5,7 @@ import {
 } from '../components-v2/forms/FormModel'
 import { AmmatillinenOpiskeluoikeus } from '../types/fi/oph/koski/schema/AmmatillinenOpiskeluoikeus'
 import React from 'react'
+import { PäivämääräväliView } from '../components-v2/opiskeluoikeus/PaivamaaravaliView'
 import { AmmatillisenOpiskeluoikeudenLisätiedot } from '../types/fi/oph/koski/schema/AmmatillisenOpiskeluoikeudenLisatiedot'
 import {
   KeyValueRow,
@@ -29,7 +30,6 @@ import { Aikajakso } from '../types/fi/oph/koski/schema/Aikajakso'
 import { ButtonGroup } from '../components-v2/containers/ButtonGroup'
 import { FlatButton } from '../components-v2/controls/FlatButton'
 import { emptyLocalizedString, t } from '../i18n/i18n'
-import { ISO2FinnishDate } from '../date/date'
 import { append } from '../util/fp/arrays'
 import {
   emptyUlkomaanjakso,
@@ -354,14 +354,7 @@ const HojksView = <T extends Hojks>({
   return (
     <div>
       <TestIdText id="opetusryhmä">{t(value?.opetusryhmä.nimi)}</TestIdText>{' '}
-      {' — '}
-      <TestIdText id="alku">
-        {value?.alku && ISO2FinnishDate(value.alku)}
-      </TestIdText>{' '}
-      {' — '}
-      <TestIdText id="loppu">
-        {value?.loppu && ISO2FinnishDate(value.loppu)}
-      </TestIdText>
+      <PäivämääräväliView alku={value?.alku} loppu={value?.loppu} />
     </div>
   )
 }
@@ -429,13 +422,7 @@ const OsaAikaisuusView = <T extends OsaAikaisuusJakso>({
   return (
     <span className="InlineJaksoView">
       <span>
-        <TestIdText id="alku">
-          {value?.alku && ISO2FinnishDate(value.alku)}
-        </TestIdText>
-        {' — '}
-        <TestIdText id="loppu">
-          {value?.loppu && ISO2FinnishDate(value.loppu)}
-        </TestIdText>
+        <PäivämääräväliView alku={value?.alku} loppu={value?.loppu} />
       </span>
       <span>
         <span className="InlineJakso__label">
@@ -503,13 +490,7 @@ const OpiskeluvalmiuksiaTuvkevienOpintojenJaksoView = <
   return (
     <span className="InlineJaksoView">
       <span>
-        <TestIdText id="alku">
-          {value?.alku && ISO2FinnishDate(value.alku)}
-        </TestIdText>
-        {' — '}
-        <TestIdText id="loppu">
-          {value?.loppu && ISO2FinnishDate(value.loppu)}
-        </TestIdText>
+        <PäivämääräväliView alku={value?.alku} loppu={value?.loppu} />
       </span>
       <span>
         <span className="InlineJakso__label">

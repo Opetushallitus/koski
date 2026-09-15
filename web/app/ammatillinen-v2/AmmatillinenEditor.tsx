@@ -1,4 +1,5 @@
 import React, { useCallback } from 'react'
+import { PäivämääräväliView } from '../components-v2/opiskeluoikeus/PaivamaaravaliView'
 import { AdaptedOpiskeluoikeusEditorProps } from '../components-v2/interoperability/useUiAdapter'
 import { AmmatillinenOpiskeluoikeus } from '../types/fi/oph/koski/schema/AmmatillinenOpiskeluoikeus'
 import {
@@ -812,14 +813,8 @@ export const OsaamisalaView = <T extends Osaamisalajakso>({
   if (isOsaamisalajaksoReal(value)) {
     return (
       <>
-        <TestIdText id="osaamisala">{t(value.osaamisala.nimi)}</TestIdText>
-        <TestIdText id="alku">
-          {value?.alku && ISO2FinnishDate(value.alku)}
-        </TestIdText>{' '}
-        {' — '}
-        <TestIdText id="loppu">
-          {value?.loppu && ISO2FinnishDate(value.loppu)}
-        </TestIdText>
+        <TestIdText id="osaamisala">{t(value.osaamisala.nimi)}</TestIdText>{' '}
+        <PäivämääräväliView alku={value?.alku} loppu={value?.loppu} />
       </>
     )
   } else return <TestIdText id="osaamisala">{t(value?.nimi)}</TestIdText>
@@ -899,13 +894,7 @@ export const JärjestämismouotoView = <T extends Järjestämismuotojakso>({
 }: CommonProps<FieldViewerProps<T | undefined, EmptyObject>>) => {
   return (
     <>
-      <TestIdText id="alku">
-        {value?.alku && ISO2FinnishDate(value.alku)}
-      </TestIdText>
-      {' — '}
-      <TestIdText id="loppu">
-        {value?.loppu && ISO2FinnishDate(value.loppu)}
-      </TestIdText>{' '}
+      <PäivämääräväliView alku={value?.alku} loppu={value?.loppu} />{' '}
       <TestIdText id="järjestämismuoto">
         {t(value?.järjestämismuoto.tunniste.nimi)}
       </TestIdText>
@@ -1158,13 +1147,7 @@ export const OsaamisenHankkimistapaView = <
 }: CommonProps<FieldViewerProps<T | undefined, EmptyObject>>) => {
   return (
     <>
-      <TestIdText id="alku">
-        {value?.alku && ISO2FinnishDate(value.alku)}
-      </TestIdText>
-      {' — '}
-      <TestIdText id="loppu">
-        {value?.loppu && ISO2FinnishDate(value.loppu)}
-      </TestIdText>
+      <PäivämääräväliView alku={value?.alku} loppu={value?.loppu} />
       {' : '}
       <TestIdText id="osaamisenHankkimistapa">
         {t(value?.osaamisenHankkimistapa.tunniste.nimi)}
@@ -1267,13 +1250,7 @@ export const TyössäoppimisjaksoView = <T extends Työssäoppimisjakso>({
 }: CommonProps<FieldViewerProps<T | undefined, EmptyObject>>) => {
   return (
     <>
-      <TestIdText id="alku">
-        {value?.alku && ISO2FinnishDate(value.alku)}
-      </TestIdText>
-      {' — '}
-      <TestIdText id="loppu">
-        {value?.loppu && ISO2FinnishDate(value.loppu)}
-      </TestIdText>
+      <PäivämääräväliView alku={value?.alku} loppu={value?.loppu} />
       <KeyValueTable>
         <KeyValueRow localizableLabel="Paikkakunta">
           {t(value?.paikkakunta.nimi)}
@@ -1408,13 +1385,7 @@ export const KoulutussopimusView = <T extends Koulutussopimusjakso>({
 }: CommonProps<FieldViewerProps<T | undefined, EmptyObject>>) => {
   return (
     <>
-      <TestIdText id="alku">
-        {value?.alku && ISO2FinnishDate(value.alku)}
-      </TestIdText>
-      {' — '}
-      <TestIdText id="loppu">
-        {value?.loppu && ISO2FinnishDate(value.loppu)}
-      </TestIdText>
+      <PäivämääräväliView alku={value?.alku} loppu={value?.loppu} />
       <KeyValueTable>
         <KeyValueRow localizableLabel="Paikkakunta">
           {t(value?.paikkakunta.nimi)}

@@ -1,6 +1,6 @@
 import React from 'react'
+import { PäivämääräväliView } from './PaivamaaravaliView'
 import { TestIdLayer, TestIdText } from '../../appstate/useTestId'
-import { ISO2FinnishDate } from '../../date/date'
 import { Maksuttomuus } from '../../types/fi/oph/koski/schema/Maksuttomuus'
 import { CommonProps } from '../CommonProps'
 import { Checkbox } from '../controls/Checkbox'
@@ -19,13 +19,7 @@ export const MaksuttomuusView: React.FC<MaksuttomuusViewProps> = ({
 }) => {
   return (
     <div>
-      <TestIdText id="alku">
-        {value?.alku && ISO2FinnishDate(value.alku)}
-      </TestIdText>{' '}
-      {' — '}
-      <TestIdText id="loppu">
-        {value?.loppu && ISO2FinnishDate(value.loppu)}
-      </TestIdText>
+      <PäivämääräväliView alku={value?.alku} loppu={value?.loppu} />
       <TestIdText id="maksuton">
         {value?.maksuton ? t('Maksuton') : t('Maksullinen')}
       </TestIdText>

@@ -99,6 +99,30 @@ test.describe('Ammatillisen tutkinnon uusi käyttöliittymä', () => {
       ).toHaveText('3')
     })
 
+    test('Jakson päivämäärät näytetään vain annetuilta osin', async ({
+      page,
+      oppijaPage
+    }) => {
+      await oppijaPage.gotoWithQueryParams(amis, flag)
+
+      // Hojks ja osaamisala ilman päivämääriä: ei irrallisia viivoja
+      const hojks = page.getByTestId(
+        'oo.0.opiskeluoikeus.lisätiedot.opetusryhmä'
+      )
+      await expect(hojks.locator('..')).toHaveText('Yleinen opetusryhmä')
+      await expect(
+        page.getByTestId('oo.0.opiskeluoikeus.lisätiedot.alku')
+      ).toHaveCount(0)
+      await expect(suoritus(page, '0.osaamisala').locator('..')).toHaveText(
+        'Ympäristöalan osaamisala'
+      )
+
+      // Avoin jakso näytetään muodossa "alku —"
+      await expect(
+        page.locator('.KeyValueRow', { hasText: 'Vankilaopetuksessa' })
+      ).toHaveText(/Vankilaopetuksessa\s*2\.9\.2013 —\s*$/)
+    })
+
     test('Näyttötutkinnolla ei ole keskiarvoa eikä perusteen ryhmittelyä', async ({
       page,
       oppijaPage

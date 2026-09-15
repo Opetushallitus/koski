@@ -1,6 +1,6 @@
 import React from 'react'
+import { PäivämääräväliView } from './PaivamaaravaliView'
 import { TestIdLayer, TestIdText } from '../../appstate/useTestId'
-import { ISO2FinnishDate } from '../../date/date'
 import { t } from '../../i18n/i18n'
 import { ErityisenKoulutustehtävänJakso } from '../../types/fi/oph/koski/schema/ErityisenKoulutustehtavanJakso'
 import { Koodistokoodiviite } from '../../types/fi/oph/koski/schema/Koodistokoodiviite'
@@ -20,13 +20,7 @@ export const ErityisenKoulutustehtävänJaksoView: React.FC<
 > = ({ value }) => {
   return (
     <TestIdLayer id="erityisenKoulutustehtävänJakso">
-      <TestIdText id="alku">
-        {value?.alku && ISO2FinnishDate(value.alku)}
-      </TestIdText>{' '}
-      {' — '}
-      <TestIdText id="loppu">
-        {value?.loppu && ISO2FinnishDate(value.loppu)}
-      </TestIdText>{' '}
+      <PäivämääräväliView alku={value?.alku} loppu={value?.loppu} />{' '}
       <TestIdText id="tehtävä">{t(value?.tehtävä.nimi)}</TestIdText>
     </TestIdLayer>
   )
