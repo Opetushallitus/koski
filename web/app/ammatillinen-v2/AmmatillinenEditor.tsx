@@ -36,6 +36,7 @@ import { SuorituksenVahvistusField } from '../components-v2/opiskeluoikeus/Suori
 import { AmmatillinenTyyliContext } from '../components-v2/opiskeluoikeus/OsasuoritusTable'
 import { PerusteView } from '../components-v2/opiskeluoikeus/PerusteField'
 import { AmmatillisenTutkinnonOsittainenSuoritus } from '../types/fi/oph/koski/schema/AmmatillisenTutkinnonOsittainenSuoritus'
+import { AmisTutkinnonSuoritus } from './tutkinnonOsanSuoritukset'
 import { FormListField } from '../components-v2/forms/FormListField'
 import { ButtonGroup } from '../components-v2/containers/ButtonGroup'
 import { FlatButton } from '../components-v2/controls/FlatButton'
@@ -495,7 +496,12 @@ const AmmatillinenTutkintoOsittainenEditor: React.FC<
         <OsasuoritusTables
           form={props.form}
           oppilaitosOid={organisaatio?.oid}
-          osittainenPäätasonSuoritus={osittainenPäätasonSuoritus}
+          päätasonSuoritus={
+            päätasonSuoritus as ActivePäätasonSuoritus<
+              AmmatillinenOpiskeluoikeus,
+              AmisTutkinnonSuoritus
+            >
+          }
         />
         <AmisLaajuudetYhteensä suoritus={osittainenPäätasonSuoritus.suoritus} />
       </EditorContainer>

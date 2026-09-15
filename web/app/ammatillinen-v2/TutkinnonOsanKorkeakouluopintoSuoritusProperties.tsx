@@ -1,6 +1,6 @@
 import { FormModel, FormOptic } from '../components-v2/forms/FormModel'
 import { AmmatillinenOpiskeluoikeus } from '../types/fi/oph/koski/schema/AmmatillinenOpiskeluoikeus'
-import { OsittaisenAmmatillisenTutkinnonOsanKorkeakouluopintoSuoritus } from '../types/fi/oph/koski/schema/OsittaisenAmmatillisenTutkinnonOsanKorkeakouluopintoSuoritus'
+import { AmisKorkeakouluopintoSuoritus } from './tutkinnonOsanSuoritukset'
 import { finnish, t } from '../i18n/i18n'
 import { OsasuoritusTable } from '../components-v2/opiskeluoikeus/OsasuoritusTable'
 import React, { useState } from 'react'
@@ -32,9 +32,9 @@ export type TutkinnonOsanKorkeakouluopintoSuoritusPropertiesProps = {
   form: FormModel<AmmatillinenOpiskeluoikeus>
   osasuoritusPath: FormOptic<
     AmmatillinenOpiskeluoikeus,
-    OsittaisenAmmatillisenTutkinnonOsanKorkeakouluopintoSuoritus
+    AmisKorkeakouluopintoSuoritus
   >
-  osasuoritus: OsittaisenAmmatillisenTutkinnonOsanKorkeakouluopintoSuoritus
+  osasuoritus: AmisKorkeakouluopintoSuoritus
 }
 
 export const TutkinnonOsanKorkeakouluopintoSuoritusProperties = ({
@@ -122,7 +122,7 @@ type NewKorkeakouluopintokokonaisuusProps = {
   form: FormModel<AmmatillinenOpiskeluoikeus>
   suoritusPath: FormOptic<
     AmmatillinenOpiskeluoikeus,
-    OsittaisenAmmatillisenTutkinnonOsanKorkeakouluopintoSuoritus
+    AmisKorkeakouluopintoSuoritus
   >
 }
 

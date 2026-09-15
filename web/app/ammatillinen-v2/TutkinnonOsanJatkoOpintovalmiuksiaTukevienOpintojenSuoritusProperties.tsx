@@ -1,6 +1,6 @@
 import { FormModel, FormOptic } from '../components-v2/forms/FormModel'
 import { AmmatillinenOpiskeluoikeus } from '../types/fi/oph/koski/schema/AmmatillinenOpiskeluoikeus'
-import { OsittaisenAmmatillisenTutkinnonOsanJatkoOpintovalmiuksiaTukevienOpintojenSuoritus } from '../types/fi/oph/koski/schema/OsittaisenAmmatillisenTutkinnonOsanJatkoOpintovalmiuksiaTukevienOpintojenSuoritus'
+import { AmisJatkoOpintovalmiuksiaTukevienOpintojenSuoritus } from './tutkinnonOsanSuoritukset'
 import { localize, t } from '../i18n/i18n'
 import { OsasuoritusTable } from '../components-v2/opiskeluoikeus/OsasuoritusTable'
 import { YhteisenTutkinnonOsanOsaAlueenSuoritusProperties } from './YhteisenTutkinnonOsanOsaAlueenSuoritusProperties'
@@ -79,9 +79,9 @@ export type TutkinnonOsanJatkoOpintovalmiuksiaTukevienOpintojenSuoritusPropertie
     form: FormModel<AmmatillinenOpiskeluoikeus>
     osasuoritusPath: FormOptic<
       AmmatillinenOpiskeluoikeus,
-      OsittaisenAmmatillisenTutkinnonOsanJatkoOpintovalmiuksiaTukevienOpintojenSuoritus
+      AmisJatkoOpintovalmiuksiaTukevienOpintojenSuoritus
     >
-    osasuoritus: OsittaisenAmmatillisenTutkinnonOsanJatkoOpintovalmiuksiaTukevienOpintojenSuoritus
+    osasuoritus: AmisJatkoOpintovalmiuksiaTukevienOpintojenSuoritus
   }
 
 export const TutkinnonOsanJatkoOpintovalmiuksiaTukevienOpintojenSuoritusProperties =
@@ -174,7 +174,7 @@ type NewOsasuoritusProps = {
   form: FormModel<AmmatillinenOpiskeluoikeus>
   suoritusPath: FormOptic<
     AmmatillinenOpiskeluoikeus,
-    OsittaisenAmmatillisenTutkinnonOsanJatkoOpintovalmiuksiaTukevienOpintojenSuoritus
+    AmisJatkoOpintovalmiuksiaTukevienOpintojenSuoritus
   >
 }
 
@@ -204,7 +204,7 @@ type NewYhteisenTutkinnonOsanOsaAlueenSuoritusProps = {
   form: FormModel<AmmatillinenOpiskeluoikeus>
   suoritusPath: FormOptic<
     AmmatillinenOpiskeluoikeus,
-    OsittaisenAmmatillisenTutkinnonOsanJatkoOpintovalmiuksiaTukevienOpintojenSuoritus
+    AmisJatkoOpintovalmiuksiaTukevienOpintojenSuoritus
   >
 }
 

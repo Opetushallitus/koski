@@ -1,6 +1,10 @@
 import { FormModel, FormOptic } from '../components-v2/forms/FormModel'
 import { AmmatillinenOpiskeluoikeus } from '../types/fi/oph/koski/schema/AmmatillinenOpiskeluoikeus'
-import { MuunOsittaisenAmmatillisenTutkinnonTutkinnonosanSuoritus } from '../types/fi/oph/koski/schema/MuunOsittaisenAmmatillisenTutkinnonTutkinnonosanSuoritus'
+import { AmisMuunTutkinnonOsanSuoritus } from './tutkinnonOsanSuoritukset'
+import {
+  isMuunOsittaisenAmmatillisenTutkinnonTutkinnonosanSuoritus,
+  MuunOsittaisenAmmatillisenTutkinnonTutkinnonosanSuoritus
+} from '../types/fi/oph/koski/schema/MuunOsittaisenAmmatillisenTutkinnonTutkinnonosanSuoritus'
 import {
   OsasuoritusProperty,
   OsasuoritusPropertyValue
@@ -61,9 +65,9 @@ type MuunTutkinnonOsanSuoritusPropertiesProps = {
   form: FormModel<AmmatillinenOpiskeluoikeus>
   osasuoritusPath: FormOptic<
     AmmatillinenOpiskeluoikeus,
-    MuunOsittaisenAmmatillisenTutkinnonTutkinnonosanSuoritus
+    AmisMuunTutkinnonOsanSuoritus
   >
-  osasuoritus: MuunOsittaisenAmmatillisenTutkinnonTutkinnonosanSuoritus
+  osasuoritus: AmisMuunTutkinnonOsanSuoritus
 }
 export const MuunTutkinnonOsanSuoritusProperties = ({
   form,
@@ -223,22 +227,30 @@ export const MuunTutkinnonOsanSuoritusProperties = ({
           </OsasuoritusPropertyValue>
         </OsasuoritusProperty>
       )}
-      {(form.editMode || osasuoritus.korotettu !== undefined) && (
-        <OsasuoritusProperty label={'Korotettu suoritus'}>
-          <OsasuoritusPropertyValue>
-            <FormField
-              form={form}
-              view={KoodistoView}
-              edit={KoodistoEdit}
-              editProps={{
-                koodistoUri: 'ammatillisensuorituksenkorotus',
-                zeroValueOption: true
-              }}
-              path={osasuoritusPath.prop('korotettu')}
-            />
-          </OsasuoritusPropertyValue>
-        </OsasuoritusProperty>
-      )}
+      {isMuunOsittaisenAmmatillisenTutkinnonTutkinnonosanSuoritus(
+        osasuoritus
+      ) &&
+        (form.editMode || osasuoritus.korotettu !== undefined) && (
+          <OsasuoritusProperty label={'Korotettu suoritus'}>
+            <OsasuoritusPropertyValue>
+              <FormField
+                form={form}
+                view={KoodistoView}
+                edit={KoodistoEdit}
+                editProps={{
+                  koodistoUri: 'ammatillisensuorituksenkorotus',
+                  zeroValueOption: true
+                }}
+                path={(
+                  osasuoritusPath as FormOptic<
+                    AmmatillinenOpiskeluoikeus,
+                    MuunOsittaisenAmmatillisenTutkinnonTutkinnonosanSuoritus
+                  >
+                ).prop('korotettu')}
+              />
+            </OsasuoritusPropertyValue>
+          </OsasuoritusProperty>
+        )}
       <OsasuoritusTable
         editMode={form.editMode}
         rows={
