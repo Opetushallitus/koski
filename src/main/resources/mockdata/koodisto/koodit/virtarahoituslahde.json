@@ -1,0 +1,234 @@
+[
+  {
+    "metadata": [
+      {
+        "nimi": "Perusrahoitus",
+        "kuvaus": "Opetushallinnon (tai ammattikorkeakoulun) rahoittama koulutus",
+        "lyhytNimi": "",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Basfinansiering",
+        "kuvaus": null,
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Core funding",
+        "kuvaus": null,
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "virtarahoituslahde_1",
+    "versio": 1,
+    "koodiArvo": "1"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "ESR-rahoitus, vain ammattikorkeakoulukoulutus",
+        "kuvaus": "Kokonaan (ml. kansallinen osuus) ESR-rahoituksella tai muulla rakennerahastorahoituksella järjestettävä tutkintoon johtava koulutus",
+        "lyhytNimi": "ESR-rahoitus, AMK",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "ESF-finansiering",
+        "kuvaus": null,
+        "kieli": "SV"
+      },
+      {
+        "nimi": "ESF-finance",
+        "kuvaus": null,
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "virtarahoituslahde_2",
+    "versio": 1,
+    "koodiArvo": "2"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "TE-rahoitus, vain ammattikorkeakoulukoulutus",
+        "kuvaus": "Työvoimahallinnon ostama AMK-tutkintoon johtava koulutus",
+        "lyhytNimi": "TE-rahoitus, AMK",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "AN-finansiering",
+        "kuvaus": null,
+        "kieli": "SV"
+      },
+      {
+        "nimi": "TE-finance",
+        "kuvaus": null,
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "virtarahoituslahde_3",
+    "versio": 1,
+    "koodiArvo": "3"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "Maksullinen tilauskoulutus",
+        "kuvaus": "Yo-tiedonkeruussa \"2\"",
+        "lyhytNimi": "",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Uppdragsutbildning",
+        "kuvaus": null,
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Commissioned education",
+        "kuvaus": null,
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "virtarahoituslahde_4",
+    "versio": 1,
+    "koodiArvo": "4"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "Lukuvuosimaksu",
+        "kuvaus": "Tilastokeskus Yo-tiedonkeruussa vastaa arvoa \"1\"",
+        "lyhytNimi": "",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Läsårsavgift",
+        "kuvaus": "",
+        "lyhytNimi": "",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Tuition fee",
+        "kuvaus": "",
+        "lyhytNimi": "",
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "virtarahoituslahde_5",
+    "versio": 1,
+    "koodiArvo": "5"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "Jotpa Valtionavustus",
+        "kuvaus": "Koodia käytetään koulutukselle, jonka rahoituslähde on Jatkuvan oppimisen ja työllisyyden palvelukeskuksen-valtionavustuksena myönnetty",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Skols Statsunderstöd",
+        "kuvaus": "",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "SECLE Discretionary Government Grant",
+        "kuvaus": "",
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "virtarahoituslahde_6",
+    "versio": 1,
+    "koodiArvo": "6"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "Jotpa hankintakoulutus",
+        "kuvaus": "Koodia käytetään koulutukselle, joka on Jatkuvan oppimisen ja työllisyyden palvelukeskuksen (Jotpa) hankintakoulutuksena hankittu",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Skols Upphandlad utbildning",
+        "kuvaus": "",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "SECLE Education; Procurement",
+        "kuvaus": null,
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "virtarahoituslahde_7",
+    "versio": 1,
+    "koodiArvo": "7"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "Jotpan RRF - rahoituksen valtionavustuskoulutus",
+        "kuvaus": "Koodia käytetään Jatkuvan oppimisen ja työllisyyden palvelukeskuksen (Jotpa) RRF - rahoituksen valtionavustuskoulutukselle",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Skols RRF-finansierad utbildning (statsunderstöd)",
+        "kuvaus": null,
+        "kieli": "SV"
+      },
+      {
+        "nimi": "SECLE Education; RRF funding, Discretionary Government Grant",
+        "kuvaus": null,
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "virtarahoituslahde_8",
+    "versio": 1,
+    "koodiArvo": "8"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "Jotpan RRF-rahoituksen hankintakoulutus",
+        "kuvaus": "Koodia käytetään Jatkuvan oppimisen ja työllisyyden palvelukeskuksen (Jotpa) RRF-rahoituksen hankintakoulutukselle",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Skols RRF-finansierad utbildning (upphandling)",
+        "kuvaus": null,
+        "kieli": "SV"
+      },
+      {
+        "nimi": "SECLE Education; RRF funding, Procurement",
+        "kuvaus": null,
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "virtarahoituslahde_9",
+    "versio": 1,
+    "koodiArvo": "9"
+  }
+]

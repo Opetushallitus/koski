@@ -39,6 +39,39 @@
                 <virta:Opintopiste>180</virta:Opintopiste>
               </virta:Laajuus>
             </virta:Opiskeluoikeus>
+            <virta:Opiskeluoikeus avain="tuni-tut-xyz-347723-355883-357053_PHASE2" opiskelijaAvain="testi-opiskelija-avain-010190-4473">
+              <virta:AlkuPvm>2014-08-01</virta:AlkuPvm>
+              <virta:LoppuPvm>2016-06-01</virta:LoppuPvm>
+              <virta:Tila>
+                <virta:AlkuPvm>2014-08-01</virta:AlkuPvm>
+                <virta:LoppuPvm>2015-05-31</virta:LoppuPvm>
+                <virta:Koodi>2</virta:Koodi>
+              </virta:Tila>
+              <virta:Tila>
+                <virta:AlkuPvm>2015-06-01</virta:AlkuPvm>
+                <virta:LoppuPvm>2016-05-31</virta:LoppuPvm>
+                <virta:Koodi>1</virta:Koodi>
+              </virta:Tila>
+              <virta:Tila>
+                <virta:AlkuPvm>2016-06-01</virta:AlkuPvm>
+                <virta:Koodi>3</virta:Koodi>
+              </virta:Tila>
+              <virta:Tyyppi>4</virta:Tyyppi>
+              <virta:Myontaja>10122</virta:Myontaja>
+              <virta:Jakso koulutusmoduulitunniste="Tekniikan koulutus (UUSI2005)">
+                <virta:AlkuPvm>2015-06-01</virta:AlkuPvm>
+                <virta:LoppuPvm>2016-06-01</virta:LoppuPvm>
+                <virta:Koulutuskoodi>751101</virta:Koulutuskoodi>
+                <virta:Koulutuskunta>837</virta:Koulutuskunta>
+                <virta:Rahoituslahde>1</virta:Rahoituslahde>
+                <virta:Nimi kieli="fi">Tekniikan koulutus (UUSI2005), Diplomi-insinöörin tutkinto Konetekniikan koulutusohjelma</virta:Nimi>
+                <virta:Nimi kieli="sv">Tekniikan koulutus (UUSI2005), Diplomi-insinöörin tutkinto Konetekniikan koulutusohjelma</virta:Nimi>
+                <virta:Nimi kieli="en">Degree Education in Engineering (NEW2005), Master of Science (Tech) Degree Programme in Mechanical Engineering</virta:Nimi>
+              </virta:Jakso>
+              <virta:Laajuus>
+                <virta:Opintopiste>120</virta:Opintopiste>
+              </virta:Laajuus>
+            </virta:Opiskeluoikeus>
           </virta:Opiskeluoikeudet>
           <virta:LukukausiIlmoittautumiset>
             <virta:LukukausiIlmoittautuminen opiskelijaAvain="testi-opiskelija-avain-010190-4473" opiskeluoikeusAvain="tuni-tut-xyz-347723-355883-357053_PHASE2">

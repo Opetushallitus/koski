@@ -1,6 +1,7 @@
 import { PaikallinenKoodi } from './PaikallinenKoodi'
 import { LocalizedString } from './LocalizedString'
 import { Laajuus } from './Laajuus'
+import { KorkeakoulunKoulutusala } from './KorkeakoulunKoulutusala'
 
 /**
  * Korkeakoulun opintojakson tunnistetiedot
@@ -12,12 +13,14 @@ export type KorkeakoulunOpintojakso = {
   tunniste: PaikallinenKoodi
   nimi: LocalizedString
   laajuus?: Laajuus
+  koulutusala?: KorkeakoulunKoulutusala
 }
 
 export const KorkeakoulunOpintojakso = (o: {
   tunniste: PaikallinenKoodi
   nimi: LocalizedString
   laajuus?: Laajuus
+  koulutusala?: KorkeakoulunKoulutusala
 }): KorkeakoulunOpintojakso => ({
   $class: 'fi.oph.koski.schema.KorkeakoulunOpintojakso',
   ...o
