@@ -709,7 +709,7 @@ type NewPaikallinenModalProps = {
   onSubmit: (osa: string) => void
 }
 
-const NewPaikallinenModal = ({
+export const NewPaikallinenModal = ({
   onClose,
   onSubmit
 }: NewPaikallinenModalProps) => {
@@ -811,7 +811,7 @@ const NewToisestaTutkinnosta = ({
 
 type NewToisestaTutkinnostaModalProps = {
   oppilaitosOid?: string
-  ryhmäKoodiArvo: string
+  ryhmäKoodiArvo?: string
   onClose: () => void
   onSubmit: (
     tutkinto: TutkintoPeruste,
@@ -819,7 +819,7 @@ type NewToisestaTutkinnostaModalProps = {
   ) => void
 }
 
-const NewToisestaTutkinnostaModal = ({
+export const NewToisestaTutkinnostaModal = ({
   oppilaitosOid,
   ryhmäKoodiArvo,
   onClose,

@@ -15,6 +15,7 @@ import { t } from '../../i18n/i18n'
 import { Contextualized } from '../../types/EditorModelContext'
 import { ObjectModel } from '../../types/EditorModels'
 import { isAmmatillisenTutkinnonSuoritus } from '../../types/fi/oph/koski/schema/AmmatillisenTutkinnonSuoritus'
+import { isNäyttötutkintoonValmistavanKoulutuksenSuoritus } from '../../types/fi/oph/koski/schema/NayttotutkintoonValmistavanKoulutuksenSuoritus'
 import { isNuortenPerusopetuksenOppimääränSuoritus } from '../../types/fi/oph/koski/schema/NuortenPerusopetuksenOppimaaranSuoritus'
 import { Opiskeluoikeus } from '../../types/fi/oph/koski/schema/Opiskeluoikeus'
 import { Oppija } from '../../types/fi/oph/koski/schema/Oppija'
@@ -235,7 +236,11 @@ const useUiAdapterImpl = <T extends any[]>(
           const isTutkinto =
             hasFeatureFlag('ammatillinen-tutkinto-v2') &&
             suoritukset.length > 0 &&
-            suoritukset.every(isAmmatillisenTutkinnonSuoritus)
+            suoritukset.every(
+              (s) =>
+                isAmmatillisenTutkinnonSuoritus(s) ||
+                isNäyttötutkintoonValmistavanKoulutuksenSuoritus(s)
+            )
 
           if (!isOsittainen && !isTutkinto) {
             return undefined

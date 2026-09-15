@@ -132,7 +132,7 @@ export interface LisättävätTutkinnonOsat {
 
 export const fetchPerusteTutkinnonOsat = (
   diaarinumero: string,
-  tutkinnonOsanRyhmä: string
+  tutkinnonOsanRyhmä?: string
 ) =>
   handleExpiredSession(
     apiGet<LisättävätTutkinnonOsat>(

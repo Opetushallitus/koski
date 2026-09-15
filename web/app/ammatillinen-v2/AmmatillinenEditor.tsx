@@ -45,6 +45,25 @@ import {
   isAmisTutkinnonSuoritus
 } from './tutkinnonOsanSuoritukset'
 import { AmmatillinenPäätasonSuoritus } from '../types/fi/oph/koski/schema/AmmatillinenPaatasonSuoritus'
+import {
+  AmmatillisenTutkinnonSuoritus,
+  isAmmatillisenTutkinnonSuoritus
+} from '../types/fi/oph/koski/schema/AmmatillisenTutkinnonSuoritus'
+import {
+  isNäyttötutkintoonValmistavanKoulutuksenSuoritus,
+  NäyttötutkintoonValmistavanKoulutuksenSuoritus
+} from '../types/fi/oph/koski/schema/NayttotutkintoonValmistavanKoulutuksenSuoritus'
+import { NäyttötutkintoonValmistavanKoulutuksenOsat } from './NäyttötutkintoonValmistavanKoulutuksenOsat'
+import { RemovePaatasonSuoritus } from '../components-v2/opiskeluoikeus/RemovePaatasonSuoritus'
+import { useRemovePäätasonSuoritus } from '../components-v2/forms/useRemovePaatasonSuoritus'
+import { useKoodistoFiller } from '../appstate/koodisto'
+import {
+  createPreferLocalCache,
+  isSuccess,
+  useApiWithParams
+} from '../api-fetch'
+import { fetchTutkinnonPerusteenSuoritustavat } from '../util/koskiApi'
+import * as Eq from 'fp-ts/Eq'
 import { LocalizedString } from '../types/fi/oph/koski/schema/LocalizedString'
 import { FormListField } from '../components-v2/forms/FormListField'
 import { ButtonGroup } from '../components-v2/containers/ButtonGroup'
@@ -144,14 +163,45 @@ const AmmatillinenPäätasonSuoritusEditor: React.FC<
   }
 }
 
-const AmmatillisenTutkinnonSuorituksenTiedot: React.FC<{
+// Tutkinnon (osan/osien) ja näyttötutkintoon valmistavan koulutuksen
+// suorituksilla on pääosin samat kentät, joten ne näytetään samalla taulukolla.
+type TutkintoTaiValmistavaSuoritus =
+  AmisTutkinnonSuoritus | NäyttötutkintoonValmistavanKoulutuksenSuoritus
+
+const isTutkintoTaiValmistavaSuoritus = (
+  s: unknown
+): s is TutkintoTaiValmistavaSuoritus =>
+  isAmisTutkinnonSuoritus(s) ||
+  isNäyttötutkintoonValmistavanKoulutuksenSuoritus(s)
+
+const AmmatillisenPäätasonSuorituksenTiedot: React.FC<{
   form: FormModel<AmmatillinenOpiskeluoikeus>
   päätasonSuoritus: ActivePäätasonSuoritus<
     AmmatillinenOpiskeluoikeus,
-    AmisTutkinnonSuoritus
+    TutkintoTaiValmistavaSuoritus
   >
 }> = ({ form, päätasonSuoritus }) => {
   const path = päätasonSuoritus.path
+  const tutkinto = isAmisTutkinnonSuoritus(päätasonSuoritus.suoritus)
+    ? {
+        suoritus: päätasonSuoritus.suoritus,
+        path: path as FormOptic<
+          AmmatillinenOpiskeluoikeus,
+          AmisTutkinnonSuoritus
+        >
+      }
+    : undefined
+  const valmistava = isNäyttötutkintoonValmistavanKoulutuksenSuoritus(
+    päätasonSuoritus.suoritus
+  )
+    ? {
+        suoritus: päätasonSuoritus.suoritus,
+        path: path as FormOptic<
+          AmmatillinenOpiskeluoikeus,
+          NäyttötutkintoonValmistavanKoulutuksenSuoritus
+        >
+      }
+    : undefined
   // Toinen tutkintonimike/osaamisala ja korotustiedot ovat vain tutkinnon
   // osan/osien suorituksella.
   const osittainen = isAmmatillisenTutkinnonOsittainenSuoritus(
@@ -166,25 +216,58 @@ const AmmatillisenTutkinnonSuorituksenTiedot: React.FC<{
       }
     : undefined
   // Skeemassa keskiarvokentät ovat sallittuja vain ops- ja reformi-suoritustavoilla
-  const keskiarvollinen = ['ops', 'reformi'].includes(
-    päätasonSuoritus.suoritus.suoritustapa.koodiarvo
-  )
+  const keskiarvollinen =
+    tutkinto !== undefined &&
+    ['ops', 'reformi'].includes(tutkinto.suoritus.suoritustapa.koodiarvo)
   return (
     <KeyValueTable editMode={form.editMode}>
-      <KeyValueRow localizableLabel="Koulutus">
-        <TestIdText id="koulutus">
-          {t(päätasonSuoritus.suoritus.koulutusmoduuli.perusteenNimi)}
-        </TestIdText>{' '}
-        {päätasonSuoritus.suoritus.koulutusmoduuli.tunniste.koodiarvo}{' '}
-        <FormField
-          form={form}
-          path={path.prop('koulutusmoduuli').prop('perusteenDiaarinumero')}
-          view={PerusteView}
-        />
-      </KeyValueRow>
-      <KeyValueRow localizableLabel="Suoritustapa">
-        {t(päätasonSuoritus.suoritus.suoritustapa.nimi)}
-      </KeyValueRow>
+      {tutkinto && (
+        <KeyValueRow localizableLabel="Koulutus">
+          <TestIdText id="koulutus">
+            {t(tutkinto.suoritus.koulutusmoduuli.perusteenNimi)}
+          </TestIdText>{' '}
+          {tutkinto.suoritus.koulutusmoduuli.tunniste.koodiarvo}{' '}
+          <FormField
+            form={form}
+            path={tutkinto.path
+              .prop('koulutusmoduuli')
+              .prop('perusteenDiaarinumero')}
+            view={PerusteView}
+          />
+        </KeyValueRow>
+      )}
+      {valmistava && (
+        <KeyValueRow localizableLabel="Koulutus">
+          <TestIdText id="koulutus">
+            {t(valmistava.suoritus.koulutusmoduuli.tunniste.nimi)}
+          </TestIdText>
+        </KeyValueRow>
+      )}
+      {valmistava && (
+        <KeyValueRow localizableLabel="Tutkinto">
+          <TestIdText id="tutkinto">
+            {t(
+              valmistava.suoritus.tutkinto.perusteenNimi ||
+                valmistava.suoritus.tutkinto.tunniste.nimi
+            )}
+          </TestIdText>{' '}
+          {valmistava.suoritus.tutkinto.tunniste.koodiarvo}{' '}
+          <FormField
+            form={form}
+            path={valmistava.path
+              .prop('tutkinto')
+              .prop('perusteenDiaarinumero')}
+            view={PerusteView}
+          />
+        </KeyValueRow>
+      )}
+      {tutkinto && (
+        <KeyValueRow localizableLabel="Suoritustapa">
+          <TestIdText id="suoritustapa">
+            {t(tutkinto.suoritus.suoritustapa.nimi)}
+          </TestIdText>
+        </KeyValueRow>
+      )}
       <KeyValueRow localizableLabel="Tutkintonimike">
         <FormListField
           form={form}
@@ -281,6 +364,17 @@ const AmmatillisenTutkinnonSuorituksenTiedot: React.FC<{
             edit={DateEdit}
             editProps={{ align: 'right' }}
             path={path.prop('alkamispäivä')}
+          />
+        </KeyValueRow>
+      )}
+      {valmistava && (form.editMode || valmistava.suoritus.päättymispäivä) && (
+        <KeyValueRow localizableLabel="Päättymispäivä">
+          <FormField
+            form={form}
+            view={DateView}
+            edit={DateEdit}
+            editProps={{ align: 'right' }}
+            path={valmistava.path.prop('päättymispäivä')}
           />
         </KeyValueRow>
       )}
@@ -403,22 +497,22 @@ const AmmatillisenTutkinnonSuorituksenTiedot: React.FC<{
           path={path.prop('ryhmä')}
         />
       </KeyValueRow>
-      {keskiarvollinen && (
+      {tutkinto && keskiarvollinen && (
         <KeyValueRow localizableLabel="Painotettu keskiarvo">
           <FormField
             testId={'painotettu-keskiarvo'}
             form={form}
             view={TextView}
             edit={NumberField}
-            path={path.prop('keskiarvo')}
+            path={tutkinto.path.prop('keskiarvo')}
           />
         </KeyValueRow>
       )}
-      {keskiarvollinen && (
+      {tutkinto && keskiarvollinen && (
         <KeyValueRow
           localizableLabel="Sisältää mukautettuja arvosanoja"
           hideIfEmpty={
-            päätasonSuoritus.suoritus.keskiarvoSisältääMukautettujaArvosanoja
+            tutkinto.suoritus.keskiarvoSisältääMukautettujaArvosanoja
           }
         >
           <FormField
@@ -426,7 +520,7 @@ const AmmatillisenTutkinnonSuorituksenTiedot: React.FC<{
             form={form}
             view={BooleanView}
             edit={BooleanEdit}
-            path={path.prop('keskiarvoSisältääMukautettujaArvosanoja')}
+            path={tutkinto.path.prop('keskiarvoSisältääMukautettujaArvosanoja')}
           />
         </KeyValueRow>
       )}
@@ -477,9 +571,8 @@ const AmmatillinenTutkintoEditor: React.FC<
     form: FormModel<AmmatillinenOpiskeluoikeus>
   }
 > = (props) => {
-  const [päätasonSuoritus, setPäätasonSuoritus] = usePäätasonSuoritus(
-    props.form
-  )
+  const { form } = props
+  const [päätasonSuoritus, setPäätasonSuoritus] = usePäätasonSuoritus(form)
 
   const organisaatio =
     props.opiskeluoikeus.oppilaitos || props.opiskeluoikeus.koulutustoimija
@@ -490,10 +583,18 @@ const AmmatillinenTutkintoEditor: React.FC<
 
   const { TreeNode, ...tree } = useTree()
 
+  const suorituksenLisäys = useSuorituksenLisäys(form, setPäätasonSuoritus)
+  const removePäätasonSuoritus = useRemovePäätasonSuoritus(
+    form,
+    päätasonSuoritus.suoritus,
+    päätasonSuoritusEq,
+    () => setPäätasonSuoritus(0)
+  )
+
   return (
     <TreeNode>
       <EditorContainer
-        form={props.form}
+        form={form}
         oppijaOid={props.oppijaOid}
         invalidatable={props.invalidatable}
         suoritusIndex={päätasonSuoritus.index}
@@ -503,18 +604,30 @@ const AmmatillinenTutkintoEditor: React.FC<
         lisätiedotContainer={AmmatillinenLisatiedot}
         additionalOpiskeluoikeusFields={SisältyyOpiskeluoikeuteen}
         suorituksenNimi={päätasonSuorituksenNimi}
+        {...suorituksenLisäys}
       >
-        {hasPäätasonsuoritusOf(isAmisTutkinnonSuoritus, päätasonSuoritus) && (
+        {form.state.suoritukset.length > 1 && (
+          <RemovePaatasonSuoritus
+            form={form}
+            päätasonSuoritus={päätasonSuoritus}
+            removePäätasonSuoritus={removePäätasonSuoritus}
+          />
+        )}
+
+        {hasPäätasonsuoritusOf(
+          isTutkintoTaiValmistavaSuoritus,
+          päätasonSuoritus
+        ) && (
           <>
-            <AmmatillisenTutkinnonSuorituksenTiedot
-              form={props.form}
+            <AmmatillisenPäätasonSuorituksenTiedot
+              form={form}
               päätasonSuoritus={päätasonSuoritus}
             />
 
             <Spacer />
 
             <SuorituksenVahvistusField
-              form={props.form}
+              form={form}
               suoritusPath={päätasonSuoritus.path}
               organisaatio={organisaatio}
               disableAdd={false}
@@ -522,7 +635,11 @@ const AmmatillinenTutkintoEditor: React.FC<
                 HenkilövahvistusValinnaisellaPaikkakunnalla.className
               }
             />
+          </>
+        )}
 
+        {hasPäätasonsuoritusOf(isAmisTutkinnonSuoritus, päätasonSuoritus) && (
+          <>
             <AmmatillinenArviointiasteikko
               suoritus={päätasonSuoritus.suoritus}
             />
@@ -534,7 +651,27 @@ const AmmatillinenTutkintoEditor: React.FC<
               </>
             )}
             <OsasuoritusTables
-              form={props.form}
+              form={form}
+              oppilaitosOid={organisaatio?.oid}
+              päätasonSuoritus={päätasonSuoritus}
+            />
+          </>
+        )}
+
+        {hasPäätasonsuoritusOf(
+          isNäyttötutkintoonValmistavanKoulutuksenSuoritus,
+          päätasonSuoritus
+        ) && (
+          <>
+            <Spacer />
+            {(päätasonSuoritus.suoritus.osasuoritukset || []).length > 0 && (
+              <>
+                <OpenAllButton {...tree} />
+                <Spacer />
+              </>
+            )}
+            <NäyttötutkintoonValmistavanKoulutuksenOsat
+              form={form}
               oppilaitosOid={organisaatio?.oid}
               päätasonSuoritus={päätasonSuoritus}
             />
@@ -544,6 +681,87 @@ const AmmatillinenTutkintoEditor: React.FC<
     </TreeNode>
   )
 }
+
+const päätasonSuoritusEq: Eq.Eq<AmmatillinenPäätasonSuoritus> = {
+  equals: (a, b) => a.$class === b.$class
+}
+
+const NÄYTTÖTUTKINTO = Koodistokoodiviite({
+  koodistoUri: 'ammatillisentutkinnonsuoritustapa',
+  koodiarvo: 'naytto'
+})
+
+// Ammatilliseen opiskeluoikeuteen saa kuulua näyttötutkinnon lisäksi sen
+// näyttötutkintoon valmistavan koulutuksen suoritus (ks. backendin
+// AmmatillinenValidation.validateUseaPäätasonSuoritus). Puuttuva pari
+// tarjotaan lisättäväksi, kun parin muodostaminen on mahdollista.
+const useSuorituksenLisäys = (
+  form: FormModel<AmmatillinenOpiskeluoikeus>,
+  setPäätasonSuoritus: (index: number) => void
+): { suorituksenLisäys?: string; onCreateSuoritus?: () => void } => {
+  const fillNimet = useKoodistoFiller()
+  const suoritukset = form.state.suoritukset
+  const ainoa = suoritukset.length === 1 ? suoritukset[0] : undefined
+  const valmistava = isNäyttötutkintoonValmistavanKoulutuksenSuoritus(ainoa)
+    ? ainoa
+    : undefined
+  const suoritustavat = useApiWithParams(
+    fetchTutkinnonPerusteenSuoritustavat,
+    valmistava?.tutkinto.perusteenDiaarinumero
+      ? [valmistava.tutkinto.perusteenDiaarinumero]
+      : undefined,
+    suoritustapaCache
+  )
+
+  const lisää = async (uusiSuoritus: AmmatillinenPäätasonSuoritus) => {
+    const suoritus = await fillNimet(uusiSuoritus)
+    form.modify('suoritukset')(append(suoritus))
+    setPäätasonSuoritus(suoritukset.length)
+  }
+
+  if (
+    isAmmatillisenTutkinnonSuoritus(ainoa) &&
+    ainoa.suoritustapa.koodiarvo === NÄYTTÖTUTKINTO.koodiarvo
+  ) {
+    return {
+      suorituksenLisäys:
+        'lisää näyttötutkintoon valmistavan koulutuksen suoritus',
+      onCreateSuoritus: () =>
+        lisää(
+          NäyttötutkintoonValmistavanKoulutuksenSuoritus({
+            tutkinto: ainoa.koulutusmoduuli,
+            toimipiste: ainoa.toimipiste,
+            suorituskieli: ainoa.suorituskieli
+          })
+        )
+    }
+  }
+
+  if (
+    valmistava &&
+    isSuccess(suoritustavat) &&
+    suoritustavat.data.some((s) => s.koodiarvo === NÄYTTÖTUTKINTO.koodiarvo)
+  ) {
+    return {
+      suorituksenLisäys: 'lisää ammatillisen tutkinnon suoritus',
+      onCreateSuoritus: () =>
+        lisää(
+          AmmatillisenTutkinnonSuoritus({
+            koulutusmoduuli: valmistava.tutkinto,
+            suoritustapa: NÄYTTÖTUTKINTO,
+            toimipiste: valmistava.toimipiste,
+            suorituskieli: valmistava.suorituskieli
+          })
+        )
+    }
+  }
+
+  return {}
+}
+
+const suoritustapaCache = createPreferLocalCache(
+  fetchTutkinnonPerusteenSuoritustavat
+)
 
 // Tutkinnon osan/osien suorituksen välilehti nimetään suoritustyypin mukaan
 // kuten ennenkin, muut koulutuksen mukaan kuten vanhassa käyttöliittymässä.
