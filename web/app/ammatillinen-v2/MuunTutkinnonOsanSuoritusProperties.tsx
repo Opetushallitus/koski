@@ -32,6 +32,7 @@ import { append, deleteAt } from '../util/fp/arrays'
 import { NäyttöEdit, NäyttöView } from './Näyttö'
 import { OsasuoritusTable } from '../components-v2/opiskeluoikeus/OsasuoritusTable'
 import { AmmatillisenTutkinnonOsaaPienemmänKokonaisuudenSuoritusProperties } from './AmmatillisenTutkinnonOsaaPienemmänKokonaisuudenSuoritusProperties'
+import { TutkinnonOsanToimipisteJaVahvistus } from './TutkinnonOsanToimipisteJaVahvistus'
 import React from 'react'
 import {
   KoodistoEdit,
@@ -144,6 +145,10 @@ export const MuunTutkinnonOsanSuoritusProperties = ({
           />
         </OsasuoritusPropertyValue>
       </OsasuoritusProperty>
+      <TutkinnonOsanToimipisteJaVahvistus
+        toimipiste={osasuoritus.toimipiste}
+        vahvistus={osasuoritus.vahvistus}
+      />
       <OsasuoritusProperty label={'Arviointi'}>
         <OsasuoritusPropertyValue>
           <TestIdLayer id="arviointi">

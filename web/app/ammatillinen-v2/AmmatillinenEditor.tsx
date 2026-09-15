@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useCallback } from 'react'
 import { AdaptedOpiskeluoikeusEditorProps } from '../components-v2/interoperability/useUiAdapter'
 import { AmmatillinenOpiskeluoikeus } from '../types/fi/oph/koski/schema/AmmatillinenOpiskeluoikeus'
 import {
@@ -62,7 +62,10 @@ import {
   isSuccess,
   useApiWithParams
 } from '../api-fetch'
-import { fetchTutkinnonPerusteenSuoritustavat } from '../util/koskiApi'
+import {
+  fetchPerusteenOsaamisalat,
+  fetchTutkinnonPerusteenSuoritustavat
+} from '../util/koskiApi'
 import * as Eq from 'fp-ts/Eq'
 import { LocalizedString } from '../types/fi/oph/koski/schema/LocalizedString'
 import { FormListField } from '../components-v2/forms/FormListField'
@@ -313,6 +316,11 @@ const AmmatillisenPäätasonSuorituksenTiedot: React.FC<{
           form={form}
           view={OsaamisalaView}
           edit={OsaamisalaEdit}
+          editProps={{
+            perusteenDiaarinumero: tutkinto
+              ? tutkinto.suoritus.koulutusmoduuli.perusteenDiaarinumero
+              : valmistava?.suoritus.tutkinto.perusteenDiaarinumero
+          }}
           path={path.prop('osaamisala')}
           removable
         />
@@ -364,6 +372,7 @@ const AmmatillisenPäätasonSuorituksenTiedot: React.FC<{
             edit={DateEdit}
             editProps={{ align: 'right' }}
             path={path.prop('alkamispäivä')}
+            testId="alkamispäivä"
           />
         </KeyValueRow>
       )}
@@ -375,6 +384,7 @@ const AmmatillisenPäätasonSuorituksenTiedot: React.FC<{
             edit={DateEdit}
             editProps={{ align: 'right' }}
             path={valmistava.path.prop('päättymispäivä')}
+            testId="päättymispäivä"
           />
         </KeyValueRow>
       )}
@@ -502,7 +512,7 @@ const AmmatillisenPäätasonSuorituksenTiedot: React.FC<{
           <FormField
             testId={'painotettu-keskiarvo'}
             form={form}
-            view={TextView}
+            view={KeskiarvoView}
             edit={NumberField}
             path={tutkinto.path.prop('keskiarvo')}
           />
@@ -538,7 +548,7 @@ const AmmatillisenPäätasonSuorituksenTiedot: React.FC<{
         <KeyValueRow localizableLabel="Korotettu painotettu keskiarvo">
           <FormField
             form={form}
-            view={TextView}
+            view={KeskiarvoView}
             edit={NumberField}
             path={osittainen.path.prop('korotettuKeskiarvo')}
           />
@@ -773,6 +783,19 @@ const päätasonSuorituksenNimi = (
     : suoritus.koulutusmoduuli.tunniste.nimi ||
       localize(suoritus.koulutusmoduuli.tunniste.koodiarvo)
 
+const keskiarvoFormatter = new Intl.NumberFormat('fi-FI', {
+  minimumFractionDigits: 2,
+  maximumFractionDigits: 2
+})
+
+// Keskiarvo näytetään kahden desimaalin tarkkuudella kuten vanhassa käyttöliittymässä
+const KeskiarvoView: React.FC<
+  CommonProps<FieldViewerProps<number | undefined, EmptyObject>>
+> = ({ value, testId }) =>
+  value !== undefined ? (
+    <TestIdText id={testId}>{keskiarvoFormatter.format(value)}</TestIdText>
+  ) : null
+
 type OsaamisalajaksoReal = {
   $class: 'fi.oph.koski.schema.Osaamisalajakso'
   osaamisala: Koodistokoodiviite<'osaamisala', string>
@@ -802,15 +825,37 @@ export const OsaamisalaView = <T extends Osaamisalajakso>({
   } else return <TestIdText id="osaamisala">{t(value?.nimi)}</TestIdText>
 }
 
+const osaamisalaCache = createPreferLocalCache(fetchPerusteenOsaamisalat)
+
 export const OsaamisalaEdit = ({
   value,
-  onChange
-}: FieldEditorProps<Osaamisalajakso | undefined, EmptyObject>) => {
+  onChange,
+  perusteenDiaarinumero
+}: FieldEditorProps<
+  Osaamisalajakso | undefined,
+  { perusteenDiaarinumero?: string }
+>) => {
+  // Tarjotaan valittavaksi perusteen osaamisalat kuten vanhassa käyttöliittymässä
+  const perusteenOsaamisalat = useApiWithParams(
+    fetchPerusteenOsaamisalat,
+    perusteenDiaarinumero ? [perusteenDiaarinumero] : undefined,
+    osaamisalaCache
+  )
+  const filter = useCallback(
+    (koodi: Koodistokoodiviite<'osaamisala'>) =>
+      !isSuccess(perusteenOsaamisalat) ||
+      perusteenOsaamisalat.data.some(
+        (o) => o.data.koodiarvo === koodi.koodiarvo
+      ),
+    [perusteenOsaamisalat]
+  )
+
   if (isOsaamisalajaksoReal(value)) {
     return (
       <div className="AikajaksoEdit" data-testid="osaamisala">
         <KoodistoSelect
           koodistoUri={'osaamisala'}
+          filter={filter}
           onSelect={(koodiviite) => {
             koodiviite && onChange({ ...value, osaamisala: koodiviite })
           }}
@@ -839,6 +884,7 @@ export const OsaamisalaEdit = ({
     return (
       <KoodistoSelect
         koodistoUri={'osaamisala'}
+        filter={filter}
         onSelect={(koodiviite) => {
           koodiviite && onChange(koodiviite)
         }}

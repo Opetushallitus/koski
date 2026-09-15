@@ -126,6 +126,16 @@ export const fetchTutkinnonOsaRyhmienLaajuudet = (
     )
   )
 
+// Perusteen osaamisalat, tai kaikki osaamisalat, jos perustetta ei löydy
+export const fetchPerusteenOsaamisalat = (diaarinumero: string) =>
+  handleExpiredSession(
+    apiGet<Array<{ data: Koodistokoodiviite<'osaamisala'> }>>(
+      apiUrl(
+        `editor/koodit/osaamisalat/osaamisala/${encodeURIComponent(diaarinumero)}`
+      )
+    )
+  )
+
 export interface LisättävätTutkinnonOsat {
   osat: Koodistokoodiviite[]
 }

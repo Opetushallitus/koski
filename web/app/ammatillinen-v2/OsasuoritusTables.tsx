@@ -96,11 +96,13 @@ export const OsasuoritusTables = ({
   const ryhmienLaajuudet = useTutkinnonOsaRyhmienLaajuudet(
     päätasonSuoritus.suoritus.koulutusmoduuli.perusteenDiaarinumero,
     päätasonSuoritus.suoritus.suoritustapa.koodiarvo,
-    perusteenRyhmät.map((r) => r.koodiarvo)
+    perusteenRyhmät.length > 1 ? perusteenRyhmät.map((r) => r.koodiarvo) : []
   )
 
-  // Jos kyseessä esim. erikoisammattitutkinto, niin niputetaan kaikki ryhmät yhteen.
-  if (perusteenRyhmät.length === 0) {
+  // Jos perusteessa ei ole useampaa ryhmää (esim. erikoisammattitutkinto tai
+  // näyttönä suoritettava perustutkinto), niputetaan kaikki osat yhteen kuten
+  // vanhassa käyttöliittymässä.
+  if (perusteenRyhmät.length <= 1) {
     return (
       <TableForTutkinnonOsaRyhmä
         form={form}
@@ -224,7 +226,7 @@ const TableForTutkinnonOsaRyhmä = ({
     (r) => (r.nimi as Finnish).fi === ryhmä
   )
   const ryhmäPerusteessa =
-    perusteenRyhmä !== undefined || perusteenRyhmät.length === 0
+    perusteenRyhmä !== undefined || ryhmä === 'Tutkinnon osat'
 
   if (!ryhmäPerusteessa && (!rows || rows.length === 0)) {
     return null
@@ -292,7 +294,7 @@ const TableForTutkinnonOsaRyhmä = ({
               perusteenRyhmä && ryhmienLaajuudet[perusteenRyhmä.koodiarvo]
             }
             testId={
-              perusteenRyhmät.length === 0
+              ryhmä === 'Tutkinnon osat'
                 ? 'yhteensa'
                 : `yhteensa.${perusteenRyhmä?.koodiarvo || 'muut'}`
             }

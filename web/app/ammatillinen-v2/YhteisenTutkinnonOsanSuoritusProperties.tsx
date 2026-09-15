@@ -28,6 +28,7 @@ import { append, deleteAt } from '../util/fp/arrays'
 import { NäyttöEdit, NäyttöView } from './Näyttö'
 import { OsasuoritusTable } from '../components-v2/opiskeluoikeus/OsasuoritusTable'
 import { YhteisenTutkinnonOsanOsaAlueenSuoritusProperties } from './YhteisenTutkinnonOsanOsaAlueenSuoritusProperties'
+import { TutkinnonOsanToimipisteJaVahvistus } from './TutkinnonOsanToimipisteJaVahvistus'
 import React, { useState } from 'react'
 import {
   AmisArvosanaInTableEdit,
@@ -105,6 +106,10 @@ export const YhteisenTutkinnonOsanSuoritusProperties = ({
           />
         </OsasuoritusPropertyValue>
       </OsasuoritusProperty>
+      <TutkinnonOsanToimipisteJaVahvistus
+        toimipiste={osasuoritus.toimipiste}
+        vahvistus={osasuoritus.vahvistus}
+      />
       <OsasuoritusProperty label={'Arviointi'}>
         <OsasuoritusPropertyValue>
           <TestIdLayer id="arviointi">
