@@ -23,6 +23,29 @@
   "ignoreDeps": [
     "com.github.Opetushallitus.java-utils:oid-generator"
   ],
+  "customManagers": [
+    {
+      "customType": "regex",
+      "managerFilePatterns": [
+        "/^scripts/koski-visual\\.sh$/"
+      ],
+      "matchStrings": [
+        "(?<depName>mcr\\.microsoft\\.com/playwright):(?<currentValue>v[0-9]+\\.[0-9]+\\.[0-9]+(?:-[a-zA-Z0-9][a-zA-Z0-9_.-]*)?)@(?<currentDigest>sha256:[a-f0-9]{64})"
+      ],
+      "datasourceTemplate": "docker",
+      "versioningTemplate": "docker"
+    },
+    {
+      "customType": "regex",
+      "description": "Update the JMX exporter version and its SHA-256 in the same PR.",
+      "managerFilePatterns": ["docker-build/Dockerfile"],
+      "matchStrings": [
+        "ARG PROMETHEUS_JMX_EXPORTER_VERSION=\"(?<currentValue>[^\"]+)\"\\nARG PROMETHEUS_JMX_EXPORTER_JAR_HASH=\"(?<currentDigest>[^\"]+)\""
+      ],
+      "depNameTemplate": "prometheus/jmx_exporter",
+      "datasourceTemplate": "github-release-attachments"
+    }
+  ],
   "packageRules": [
     {
       "description": "Prioritise lock file maintenance so it does not lose the last concurrency slot to routine bumps",
@@ -75,6 +98,29 @@
       "groupName": "npm minor updates"
     },
     {
+      "description": "Keep Koski's Playwright version exact during lock file maintenance",
+      "matchFileNames": ["web/package.json"],
+      "matchManagers": [
+        "npm"
+      ],
+      "matchPackageNames": [
+        "@playwright/test"
+      ],
+      "rangeStrategy": "pin"
+    },
+    {
+      "description": "Update Koski's Playwright package and visual test image together",
+      "matchFileNames": ["web/package.json", "scripts/koski-visual.sh"],
+      "matchPackageNames": [
+        "@playwright/test",
+        "mcr.microsoft.com/playwright"
+      ],
+      "groupName": "playwright",
+      "separateMinorPatch": false,
+      "minimumGroupSize": 2,
+      "automerge": false
+    },
+    {
       "description": "fs2 minor updates need Hotswap->NonEmptyHotswap refactoring",
       "matchPackageNames": [
         "co.fs2:fs2-core_2.13",
@@ -115,18 +161,6 @@
       "matchFileNames": [".github/workflows/run_smoketests.yml"],
       "matchPackageNames": ["node"],
       "allowedVersions": "<24.16.0 || >=24.17.0"
-    }
-  ],
-  "customManagers": [
-    {
-      "customType": "regex",
-      "description": "Update the JMX exporter version and its SHA-256 in the same PR.",
-      "managerFilePatterns": ["docker-build/Dockerfile"],
-      "matchStrings": [
-        "ARG PROMETHEUS_JMX_EXPORTER_VERSION=\"(?<currentValue>[^\"]+)\"\\nARG PROMETHEUS_JMX_EXPORTER_JAR_HASH=\"(?<currentDigest>[^\"]+)\""
-      ],
-      "depNameTemplate": "prometheus/jmx_exporter",
-      "datasourceTemplate": "github-release-attachments"
     }
   ],
   "ignorePaths": [

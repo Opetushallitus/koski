@@ -10,12 +10,6 @@ case "$MODE" in
   *) echo "Käyttö: $0 [test|update] [backend-url]" >&2; exit 64 ;;
 esac
 
-if ! curl -sf -o /dev/null "$HOST_BACKEND/koski/virkailija"; then
-  echo "VIRHE: Koski ei vastaa osoitteessa $HOST_BACKEND" >&2
-  echo "       Käynnistä sovellus (make run) tai aseta BACKEND_HOST." >&2
-  exit 1
-fi
-
 pw_version="$(sed -n 's/^  playwright@\([0-9][0-9.]*\):$/\1/p' \
   "$REPO/web/pnpm-lock.yaml" 2>/dev/null | sort -u || true)"
 if [ -z "$pw_version" ]; then
@@ -23,19 +17,26 @@ if [ -z "$pw_version" ]; then
   exit 1
 fi
 
-PINNED_PW_VERSION="1.62.1"
-PINNED_PW_DIGEST="sha256:b3251f7ff1a9fa559a28d1c67eaa15fc1a9800f7845e82756caea7842967f615"
+IMAGE="mcr.microsoft.com/playwright:v1.62.1-jammy@sha256:b3251f7ff1a9fa559a28d1c67eaa15fc1a9800f7845e82756caea7842967f615"
+image_tag="${IMAGE#*:v}"                      # image:v1.2.3-variant@digest → 1.2.3-variant@digest
+image_tag="${image_tag%%@*}"                  # 1.2.3-variant@digest → 1.2.3-variant
+image_version="${image_tag%%-*}"              # 1.2.3-variant → 1.2.3
+image_variant="${image_tag#"$image_version"}" # 1.2.3-variant → -variant
 
-if [ "$pw_version" != "$PINNED_PW_VERSION" ]; then
+if [ "$pw_version" != "$image_version" ]; then
   echo "VIRHE: Playwright on nostettu versioon $pw_version, mutta imagen" >&2
-  echo "       digest on pinnattu versiolle $PINNED_PW_VERSION." >&2
-  echo "       Päivitä PINNED_PW_VERSION ja PINNED_PW_DIGEST tässä skriptissä:" >&2
+  echo "       digest on pinnattu versiolle $image_version." >&2
+  echo "       Päivitä IMAGE-määrityksen versio ja digest tässä skriptissä:" >&2
   echo "       docker buildx imagetools inspect \\" >&2
-  echo "         mcr.microsoft.com/playwright:v${pw_version}-jammy" >&2
+  echo "         mcr.microsoft.com/playwright:v${pw_version}${image_variant}" >&2
   exit 1
 fi
 
-IMAGE="mcr.microsoft.com/playwright:v${pw_version}-jammy@${PINNED_PW_DIGEST}"
+if ! curl -sf -o /dev/null "$HOST_BACKEND/koski/virkailija"; then
+  echo "VIRHE: Koski ei vastaa osoitteessa $HOST_BACKEND" >&2
+  echo "       Käynnistä sovellus (make run) tai aseta BACKEND_HOST." >&2
+  exit 1
+fi
 
 if ! docker info >/dev/null 2>&1; then
   echo "VIRHE: Docker ei ole käynnissä. Visuaalitestit ajetaan kontissa." >&2

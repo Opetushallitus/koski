@@ -121,7 +121,7 @@ importers:
         specifier: ^9.39.2
         version: 9.39.5
       '@playwright/test':
-        specifier: ^1.57.0
+        specifier: 1.62.1
         version: 1.62.1
       '@swc/core':
         specifier: ^1.11.21

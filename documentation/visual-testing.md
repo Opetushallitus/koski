@@ -33,7 +33,7 @@ yhdenmukaisina. Käytä aina `make visual-test`- ja `make visual-update`-komento
 äläkä aja Playwrightin visual-skriptiä suoraan.
 
 Playwrightia päivitettäessä korjaa `scripts/koski-visual.sh`-tiedoston
-`PINNED_PW_VERSION` ja `PINNED_PW_DIGEST`. Manifest list -digestin saa komennolla:
+`IMAGE`-määrityksen versio ja digest. Manifest list -digestin saa komennolla:
 
 ```sh
 docker buildx imagetools inspect mcr.microsoft.com/playwright:vX.Y.Z-jammy
