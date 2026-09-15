@@ -1,7 +1,10 @@
 package fi.oph.koski.jettylauncher
 
 import java.lang.management.ManagementFactory
+import java.net.{Socket, SocketOption}
 import java.nio.file.{Files, Paths}
+import java.util.concurrent.atomic.AtomicBoolean
+import jdk.net.ExtendedSocketOptions
 import com.typesafe.config.{Config, ConfigFactory}
 import fi.oph.koski.cache.JMXCacheManager
 import fi.oph.koski.config.{AppConfig, Environment, KoskiApplication}
@@ -121,7 +124,14 @@ class JettyLauncher(requestedPort: Int, val application: KoskiApplication) exten
     }
     httpConfig.setUriCompliance(uriCompliance)
     val connectionFactory = new HttpConnectionFactory( httpConfig )
-    val connector = new ServerConnector(server, connectionFactory)
+    val keepAliveIdleSeconds = config.getInt("jettyTcpKeepAliveIdleSeconds")
+    val keepAliveIntervalSeconds = config.getInt("jettyTcpKeepAliveIntervalSeconds")
+    val connector = if (keepAliveIdleSeconds > 0) {
+      logger.info(s"Enabling TCP keepalive on accepted connections: idle $keepAliveIdleSeconds s, interval $keepAliveIntervalSeconds s")
+      new KeepAliveServerConnector(server, connectionFactory, keepAliveIdleSeconds, keepAliveIntervalSeconds)
+    } else {
+      new ServerConnector(server, connectionFactory)
+    }
     connector.setPort(requestedPort)
     val idleTimeoutMs = config.getLong("jettyIdleTimeoutSeconds") * 1000
     logger.info(s"Setting Jetty idle connection timeout to $idleTimeoutMs ms")
@@ -208,6 +218,40 @@ class JettyLauncher(requestedPort: Int, val application: KoskiApplication) exten
     metricsServletContext.setContextPath("/metrics")
     metricsServletContext.addServlet(new ServletHolder(new MetricsServlet), "")
     metricsServletContext
+  }
+}
+
+class KeepAliveServerConnector(
+  server: Server,
+  connectionFactory: HttpConnectionFactory,
+  idleSeconds: Int,
+  intervalSeconds: Int
+) extends ServerConnector(server, connectionFactory) with Logging {
+
+  private val failureLogged = new AtomicBoolean(false)
+
+  override def configure(socket: Socket): Unit = {
+    super.configure(socket)
+    try {
+      socket.setKeepAlive(true)
+      setIfSupported(socket, ExtendedSocketOptions.TCP_KEEPIDLE, idleSeconds)
+      setIfSupported(socket, ExtendedSocketOptions.TCP_KEEPINTERVAL, intervalSeconds)
+    } catch {
+      // Lokitetaan kerran: configure ajetaan jokaiselle yhteydelle.
+      case e: Exception =>
+        if (failureLogged.compareAndSet(false, true)) {
+          logger.warn(e)("TCP keepalive -asetusten asettaminen epäonnistui, jatketaan ilman")
+        }
+    }
+  }
+
+  private def setIfSupported(socket: Socket, option: SocketOption[Integer], value: Int): Unit = {
+    if (socket.supportedOptions.contains(option)) {
+      socket.setOption(option, Integer.valueOf(value))
+      logger.info(s"Socket option ${option.name} = $value")
+    } else {
+      logger.warn(s"Socket option ${option.name} not supported")
+    }
   }
 }
 
