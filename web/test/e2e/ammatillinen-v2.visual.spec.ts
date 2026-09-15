@@ -8,11 +8,17 @@ import { takeFullPageScreenshot } from './fragments/fullPageScreenshot'
  * katselunäkymästä ja muokkaustilasta.
  */
 
-// Osittainen ammatillinen tutkinto. Vain osittainen renderöityy v2-editorilla;
-// koko tutkinto ja muu ammatillinen käyttävät yhä vanhaa (ks. useUiAdapter).
+// Osittainen ammatillinen tutkinto renderöityy aina v2-editorilla, koko
+// tutkinto vain feature flagin kanssa (ks. useUiAdapter). Muu ammatillinen
+// käyttää yhä vanhaa käyttöliittymää.
 const osittainenTutkinto = '1.2.246.562.24.00000000055'
 // Ammatillisen tutkinnon osia useasta tutkinnosta (myös osittainen -> v2)
 const useastaTutkinnosta = '1.2.246.562.24.00000000182'
+// Ammatillinen perustutkinto
+const kokoTutkinto = '1.2.246.562.24.00000000020'
+// Näyttötutkintoon valmistava koulutus + erikoisammattitutkinto
+const valmistavaKoulutus = '1.2.246.562.24.00000000053'
+const tutkintoFlag = { 'ammatillinen-tutkinto-v2': 'true' }
 
 test.describe('Ammatillinen v2 – visuaaliset regressiot', () => {
   // Baseline-kuvat ovat Linux-renderöityjä eivätkä kelpaa muilla
@@ -59,6 +65,40 @@ test.describe('Ammatillinen v2 – visuaaliset regressiot', () => {
       page.getByTestId('oo.0.suoritukset.0.uusi-yhteinen-tutkinnonosa.input')
     ).toBeEnabled()
     await takeFullPageScreenshot(page, 'ammatillinen-osittainen-muokkaus.png')
+  })
+
+  test('Koko tutkinto, laajennettu katselunäkymä', async ({
+    page,
+    oppijaPage,
+    oppijaPageV2
+  }) => {
+    await oppijaPage.gotoWithQueryParams(kokoTutkinto, tutkintoFlag)
+    await expect(page.getByTestId('oo.0.opiskeluoikeus.nimi')).toBeVisible()
+    await oppijaPageV2.openAllOsasuoritukset()
+    await expect(
+      page.getByTestId(
+        'oo.0.suoritukset.0.osasuoritukset.0.properties.arviointi.0.arvosana'
+      )
+    ).toBeVisible()
+    await expect(page.getByTestId('oo.0.suoritukset.0.yhteensa.1')).toHaveText(
+      '135 / 135 osp'
+    )
+    await takeFullPageScreenshot(page, 'ammatillinen-koko-katselu-avattu.png')
+  })
+
+  test('Näyttötutkintoon valmistava koulutus, muokkaustila', async ({
+    page,
+    oppijaPage
+  }) => {
+    await oppijaPage.gotoWithQueryParams(valmistavaKoulutus, tutkintoFlag)
+    await page.getByTestId('oo.0.opiskeluoikeus.edit').click()
+    await expect(
+      page.getByTestId('oo.0.suoritukset.0.uusi-muu-tutkinnonosa.input')
+    ).toBeEnabled()
+    await takeFullPageScreenshot(
+      page,
+      'ammatillinen-valmistava-koulutus-muokkaus.png'
+    )
   })
 
   test('Useasta tutkinnosta, laajennettu katselunäkymä', async ({
