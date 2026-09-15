@@ -40,13 +40,17 @@ export const useRemovePäätasonSuoritus = <T extends Opiskeluoikeus>(
           ? O.some(remove(oid, versio, suoritusAtBackend))
           : O.none
       }),
-      O.map(
-        TE.map((ooVersiot) => {
-          form.updateAt(
-            form.root,
-            mergeOpiskeluoikeusVersionumero(ooVersiot.data)
-          )
-        })
+      // TaskEither on laiska: poistokutsu lähtee vasta, kun tehtävä ajetaan
+      O.map((poisto) =>
+        pipe(
+          poisto,
+          TE.map((ooVersiot) => {
+            form.updateAt(
+              form.root,
+              mergeOpiskeluoikeusVersionumero(ooVersiot.data)
+            )
+          })
+        )()
       )
     )
   }, [form, onRemove, päätasonSuoritus, päätasonSuoritusEq])

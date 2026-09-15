@@ -19,10 +19,11 @@ export const AmmatillinenArviointiasteikko: React.FC<
 
   return (
     <div className="ammatillinenarviointiasteikko">
-      <h5>
+      {/* Ei otsikkoelementti: sivun otsikkohierarkiassa tämä ei ole oma osionsa */}
+      <div className="ammatillinenarviointiasteikko__otsikko">
         {t('Tutkinnon osien arviointiasteikko')}
         {':'}
-      </h5>
+      </div>
       {t(asteikko)}
     </div>
   )

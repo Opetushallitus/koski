@@ -1,6 +1,6 @@
 import React from 'react'
+import { PäivämääräväliView } from '../components-v2/opiskeluoikeus/PaivamaaravaliView'
 import { TestIdText } from '../appstate/useTestId'
-import { ISO2FinnishDate } from '../date/date'
 import {
   FieldEditorProps,
   FieldViewerProps
@@ -29,13 +29,7 @@ export const ErityisenTuenPäätösView: React.FC<
   if (!value) return null
   return (
     <div>
-      <TestIdText id="alku">
-        {value.alku && ISO2FinnishDate(value.alku)}
-      </TestIdText>
-      {' — '}
-      <TestIdText id="loppu">
-        {value.loppu && ISO2FinnishDate(value.loppu)}
-      </TestIdText>
+      <PäivämääräväliView alku={value.alku} loppu={value.loppu} />
       <KeyValueTable className="ErityisenTuenPäätösView__tiedot">
         <BooleanValue
           label="Opiskelee toiminta-alueittain"

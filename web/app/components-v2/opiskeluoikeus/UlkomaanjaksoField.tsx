@@ -1,6 +1,6 @@
 import React from 'react'
+import { PäivämääräväliView } from './PaivamaaravaliView'
 import { TestIdLayer, TestIdText } from '../../appstate/useTestId'
-import { ISO2FinnishDate } from '../../date/date'
 import { emptyLocalizedString, t } from '../../i18n/i18n'
 import { Koodistokoodiviite } from '../../types/fi/oph/koski/schema/Koodistokoodiviite'
 import { LocalizedString } from '../../types/fi/oph/koski/schema/LocalizedString'
@@ -23,13 +23,7 @@ export const UlkomaanjaksoView: React.FC<UlkomaanjaksoViewProps> = ({
     <TestIdLayer id="ulkomaanjakso">
       <span className="InlineJaksoView">
         <span>
-          <TestIdText id="alku">
-            {value?.alku && ISO2FinnishDate(value.alku)}
-          </TestIdText>
-          {' — '}
-          <TestIdText id="loppu">
-            {value?.loppu && ISO2FinnishDate(value.loppu)}
-          </TestIdText>
+          <PäivämääräväliView alku={value?.alku} loppu={value?.loppu} />
         </span>
         <span>
           <span className="InlineJakso__label">

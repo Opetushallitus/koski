@@ -1,6 +1,6 @@
 import { FormModel, FormOptic } from '../components-v2/forms/FormModel'
 import { AmmatillinenOpiskeluoikeus } from '../types/fi/oph/koski/schema/AmmatillinenOpiskeluoikeus'
-import { OsittaisenAmmatillisenTutkinnonOsanJatkoOpintovalmiuksiaTukevienOpintojenSuoritus } from '../types/fi/oph/koski/schema/OsittaisenAmmatillisenTutkinnonOsanJatkoOpintovalmiuksiaTukevienOpintojenSuoritus'
+import { AmisJatkoOpintovalmiuksiaTukevienOpintojenSuoritus } from './tutkinnonOsanSuoritukset'
 import { localize, t } from '../i18n/i18n'
 import { OsasuoritusTable } from '../components-v2/opiskeluoikeus/OsasuoritusTable'
 import { YhteisenTutkinnonOsanOsaAlueenSuoritusProperties } from './YhteisenTutkinnonOsanOsaAlueenSuoritusProperties'
@@ -60,7 +60,7 @@ import {
   newYhteisenOsanOsaAlueenSuoritus,
   newPaikallinenOsaAlueenSuoritus,
   NewPaikallinenOsaAlueModal
-} from './YhteisenOsittaisenAmmatillisenTutkinnonOsasuoritusProperties'
+} from './YhteisenTutkinnonOsanSuoritusProperties'
 import {
   Modal,
   ModalBody,
@@ -74,22 +74,22 @@ import { PaikallinenKoodi } from '../types/fi/oph/koski/schema/PaikallinenKoodi'
 import { PaikallinenOpintovalmiuksiaTukevaOpinto } from '../types/fi/oph/koski/schema/PaikallinenOpintovalmiuksiaTukevaOpinto'
 import { TestIdLayer } from '../appstate/useTestId'
 
-export type OsittaisenAmmatillisenTutkinnonOsanJatkoOpintovalmiuksiaTukevienOpintojenSuoritusPropertiesProps =
+export type TutkinnonOsanJatkoOpintovalmiuksiaTukevienOpintojenSuoritusPropertiesProps =
   {
     form: FormModel<AmmatillinenOpiskeluoikeus>
     osasuoritusPath: FormOptic<
       AmmatillinenOpiskeluoikeus,
-      OsittaisenAmmatillisenTutkinnonOsanJatkoOpintovalmiuksiaTukevienOpintojenSuoritus
+      AmisJatkoOpintovalmiuksiaTukevienOpintojenSuoritus
     >
-    osasuoritus: OsittaisenAmmatillisenTutkinnonOsanJatkoOpintovalmiuksiaTukevienOpintojenSuoritus
+    osasuoritus: AmisJatkoOpintovalmiuksiaTukevienOpintojenSuoritus
   }
 
-export const OsittaisenAmmatillisenTutkinnonOsanJatkoOpintovalmiuksiaTukevienOpintojenSuoritusProperties =
+export const TutkinnonOsanJatkoOpintovalmiuksiaTukevienOpintojenSuoritusProperties =
   ({
     form,
     osasuoritusPath,
     osasuoritus
-  }: OsittaisenAmmatillisenTutkinnonOsanJatkoOpintovalmiuksiaTukevienOpintojenSuoritusPropertiesProps) => {
+  }: TutkinnonOsanJatkoOpintovalmiuksiaTukevienOpintojenSuoritusPropertiesProps) => {
     return (
       <>
         <OsasuoritusTable
@@ -174,7 +174,7 @@ type NewOsasuoritusProps = {
   form: FormModel<AmmatillinenOpiskeluoikeus>
   suoritusPath: FormOptic<
     AmmatillinenOpiskeluoikeus,
-    OsittaisenAmmatillisenTutkinnonOsanJatkoOpintovalmiuksiaTukevienOpintojenSuoritus
+    AmisJatkoOpintovalmiuksiaTukevienOpintojenSuoritus
   >
 }
 
@@ -204,7 +204,7 @@ type NewYhteisenTutkinnonOsanOsaAlueenSuoritusProps = {
   form: FormModel<AmmatillinenOpiskeluoikeus>
   suoritusPath: FormOptic<
     AmmatillinenOpiskeluoikeus,
-    OsittaisenAmmatillisenTutkinnonOsanJatkoOpintovalmiuksiaTukevienOpintojenSuoritus
+    AmisJatkoOpintovalmiuksiaTukevienOpintojenSuoritus
   >
 }
 
