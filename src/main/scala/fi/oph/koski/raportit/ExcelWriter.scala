@@ -6,6 +6,7 @@ import java.io.OutputStream
 import java.time.{LocalDate, ZoneId}
 import java.util.Date
 import org.apache.poi.openxml4j.opc.OPCPackage
+import org.apache.poi.openxml4j.util.ZipInputStreamZipEntrySource
 import org.apache.poi.poifs.crypt.{EncryptionInfo, EncryptionMode, Encryptor}
 import org.apache.poi.poifs.crypt.temp.{EncryptedTempData, SXSSFWorkbookWithCustomZipEntrySource}
 import org.apache.poi.poifs.filesystem.POIFSFileSystem
@@ -18,6 +19,12 @@ import org.apache.poi.xssf.usermodel.XSSFSheet
 import scala.jdk.CollectionConverters._
 
 object ExcelWriter {
+
+  // Aseta globaalit asetukset kerran.
+  // Käytä salattuja temp-tiedostoja suurille entryille muistin sijaan, jossa on 100MB rajoitus entryä kohti.
+  // Myös entry, jonka kokoa ei tiedetä (-1), menee temp-tiedostoon kynnysarvosta riippumatta.
+  ZipInputStreamZipEntrySource.setThresholdBytesForTempFiles(90 * 1024 * 1024)
+  ZipInputStreamZipEntrySource.setEncryptTempFiles(true)
 
   case class BooleanCellStyleLocalizedValues(trueText: String, falseText: String)
 
@@ -54,15 +61,24 @@ object ExcelWriter {
           tempOut.close()
 
           val opc = OPCPackage.open(tempData.getInputStream)
-          val fs = new POIFSFileSystem
-          val enc = Encryptor.getInstance(new EncryptionInfo(EncryptionMode.agile))
-          enc.confirmPassword(workbookSettings.password.get)
-          val encOut = enc.getDataStream(fs)
-          opc.save(encOut)
-          encOut.close()
-          opc.close()
-          fs.writeFilesystem(out)
-          fs.close()
+          try {
+            val fs = new POIFSFileSystem
+            try {
+              val enc = Encryptor.getInstance(new EncryptionInfo(EncryptionMode.agile))
+              enc.confirmPassword(workbookSettings.password.get)
+              val encOut = enc.getDataStream(fs)
+              opc.save(encOut)
+              encOut.close()
+              // Vapauttaa temp-tiedostot ennen pitkää kirjoitusta.
+              opc.close()
+              fs.writeFilesystem(out)
+            } finally {
+              fs.close()
+            }
+          } finally {
+            // Poistaa temp-tiedostot, jos jokin aiheutti poikkeuksen.
+            opc.close()
+          }
         } finally {
           tempData.dispose()
         }
