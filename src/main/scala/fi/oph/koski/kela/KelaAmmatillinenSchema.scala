@@ -56,6 +56,7 @@ case class KelaAmmatillisenOpiskeluoikeudenLisätiedot(
   maksuttomuus: Option[List[KelaMaksuttomuus]],
   oikeuttaMaksuttomuuteenPidennetty: Option[List[KelaOikeuttaMaksuttomuuteenPidennetty]],
   koulutusvienti: Option[Boolean],
+  siirtynytUusiinTutkinnonPerusteisiin: Option[Boolean],
 ) extends KelaOpiskeluoikeudenLisätiedot
 
 @Title("Ammatillisen koulutuksen suoritus")

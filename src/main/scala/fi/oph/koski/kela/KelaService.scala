@@ -8,7 +8,7 @@ import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.koskiuser.KoskiSpecificSession
 import fi.oph.koski.log._
-import fi.oph.koski.schema.{KoskiSchema, YlioppilastutkinnonOpiskeluoikeus}
+import fi.oph.koski.schema.{KorkeakoulunOpiskeluoikeus, KoskiSchema, OpiskeluoikeudenTyyppi, YlioppilastutkinnonOpiskeluoikeus}
 import fi.oph.koski.util.Futures
 import org.json4s.JsonAST.JValue
 import rx.lang.scala.Observable
@@ -17,6 +17,7 @@ import java.time.LocalDateTime
 import scala.concurrent.Future
 import scala.concurrent.duration.DurationInt
 import scala.jdk.CollectionConverters._
+import scala.util.{Failure, Success, Try}
 
 class KelaService(application: KoskiApplication) extends GlobalExecutionContext with Logging {
   private val kelaOpiskeluoikeusRepository = new KelaOpiskeluoikeusRepository(
@@ -27,10 +28,11 @@ class KelaService(application: KoskiApplication) extends GlobalExecutionContext 
   def findKelaOppijaByHetu(hetu: String)
     (implicit koskiSession: KoskiSpecificSession): Either[HttpStatus, KelaOppija] = {
 
-    val (opiskeluoikeudet, ytrResult) = haeOpiskeluoikeudet(List(hetu), true)
+    val (opiskeluoikeudet, ytrResult, virtaResult) = haeOpiskeluoikeudet(List(hetu), haeUlkoisetJärjestelmät = true)
 
     val oppija = opiskeluoikeudet.headOption.map {
-      case (hlö, oos) => teePalautettavaKelaOppija(hlö, oos, ytrResult(hlö))
+      case (hlö, oos) => virtaResult.getOrElse(hlö, Right(Nil))
+        .flatMap(virta => teePalautettavaKelaOppija(hlö, oos, ytrResult(hlö), virta))
     }.toRight(
       KoskiErrorCategory.notFound.oppijaaEiLöydyTaiEiOikeuksia(
         "Oppijaa (hetu) ei löydy tai käyttäjällä ei ole oikeuksia tietojen katseluun."
@@ -41,7 +43,7 @@ class KelaService(application: KoskiApplication) extends GlobalExecutionContext 
   }
 
   def streamOppijatByHetu(hetut: Seq[String])(implicit koskiSession: KoskiSpecificSession): Observable[JValue] = {
-    val (opiskeluoikeudet, _) = haeOpiskeluoikeudet(hetut, false)
+    val (opiskeluoikeudet, _, _) = haeOpiskeluoikeudet(hetut, haeUlkoisetJärjestelmät = false)
 
     Observable
       .from(
@@ -49,6 +51,7 @@ class KelaService(application: KoskiApplication) extends GlobalExecutionContext 
           case (oppijaMasterOid, opiskeluoikeusRows) => teePalautettavaKelaOppija(
             oppijaMasterOid,
             opiskeluoikeusRows,
+            Seq.empty,
             Seq.empty
           )
         }
@@ -62,9 +65,13 @@ class KelaService(application: KoskiApplication) extends GlobalExecutionContext 
       .map(JsonSerializer.serializeWithUser(koskiSession))
   }
 
-  private def haeOpiskeluoikeudet(hetut: Seq[String], haeYtr: Boolean)(
+  private def haeOpiskeluoikeudet(hetut: Seq[String], haeUlkoisetJärjestelmät: Boolean)(
     implicit user: KoskiSpecificSession
-  ): (Map[LaajatOppijaHenkilöTiedot, Seq[RawOpiskeluoikeusData]], Map[LaajatOppijaHenkilöTiedot, Seq[KelaYlioppilastutkinnonOpiskeluoikeus]]) = {
+  ): (
+    Map[LaajatOppijaHenkilöTiedot, Seq[RawOpiskeluoikeusData]],
+    Map[LaajatOppijaHenkilöTiedot, Seq[KelaYlioppilastutkinnonOpiskeluoikeus]],
+    Map[LaajatOppijaHenkilöTiedot, Either[HttpStatus, Seq[KelaKorkeakoulunOpiskeluoikeus]]]
+  ) = {
     val masterHenkilötFut: Future[Map[String, LaajatOppijaHenkilöTiedot]] = Future(
       application.opintopolkuHenkilöFacade.findMasterOppijat(
         application.opintopolkuHenkilöFacade.findOppijatByHetusNoSlaveOids(hetut).map(_.oid).toList
@@ -72,7 +79,7 @@ class KelaService(application: KoskiApplication) extends GlobalExecutionContext 
     )
 
     val ytrResultFut: Future[Map[LaajatOppijaHenkilöTiedot, Seq[KelaYlioppilastutkinnonOpiskeluoikeus]]] = {
-      if (haeYtr) {
+      if (haeUlkoisetJärjestelmät) {
         masterHenkilötFut
           .map { masterHenkilöt =>
             masterHenkilöt.values
@@ -81,6 +88,15 @@ class KelaService(application: KoskiApplication) extends GlobalExecutionContext 
                   KelaYlioppilastutkinnonOpiskeluoikeus.fromKoskiSchema(yo)
               }
               ).toMap
+          }
+      } else Future.successful(Map.empty)
+    }
+
+    val virtaResultFut: Future[Map[LaajatOppijaHenkilöTiedot, Either[HttpStatus, Seq[KelaKorkeakoulunOpiskeluoikeus]]]] = {
+      if (haeUlkoisetJärjestelmät) {
+        masterHenkilötFut
+          .map { masterHenkilöt =>
+            masterHenkilöt.values.map(hlö => hlö -> haeVirranOpiskeluoikeudet(hlö)).toMap
           }
       } else Future.successful(Map.empty)
     }
@@ -95,15 +111,31 @@ class KelaService(application: KoskiApplication) extends GlobalExecutionContext 
           }.toMap
         }
 
-    val (opiskeluoikeudet, ytrResult) = Futures.await(
+    val (opiskeluoikeudet, ytrResult, virtaResult) = Futures.await(
       future = for {
         opiskeluoikeudet <- opiskeluoikeudetFut
         ytrResult <- ytrResultFut
-      } yield (opiskeluoikeudet, ytrResult),
+        virtaResult <- virtaResultFut
+      } yield (opiskeluoikeudet, ytrResult, virtaResult),
       atMost = if (Environment.isUnitTestEnvironment(application.config)) { 10.seconds } else { 20.minutes }
     )
-    (opiskeluoikeudet, ytrResult)
+    (opiskeluoikeudet, ytrResult, virtaResult)
   }
+
+  private def haeVirranOpiskeluoikeudet(hlö: LaajatOppijaHenkilöTiedot)(
+    implicit user: KoskiSpecificSession
+  ): Either[HttpStatus, Seq[KelaKorkeakoulunOpiskeluoikeus]] =
+    if (!kelallePalautettavaOpiskeluoikeusTyyppi(OpiskeluoikeudenTyyppi.korkeakoulutus.koodiarvo)) {
+      Right(Nil)
+    } else Try(application.virta.findByOppija(hlö)) match {
+      case Success(opiskeluoikeudet) => Right(opiskeluoikeudet
+        .collect { case kk: KorkeakoulunOpiskeluoikeus => kk }
+        .filter(kk => kelallePalautettavaOpiskeluoikeusTyyppi(kk.tyyppi.koodiarvo))
+        .map(KelaKorkeakoulunOpiskeluoikeus.fromKoskiSchema))
+      case Failure(e) =>
+        logger.error(e)(s"Virta-haku epäonnistui oppijalle ${hlö.oid}")
+        Left(KoskiErrorCategory.unavailable.virta())
+    }
 
   def opiskeluoikeudenHistoria(opiskeluoikeusOid: String)
     (implicit koskiSession: KoskiSpecificSession): Option[List[KelaOpiskeluoikeusHistoryPatch]] = {
@@ -139,6 +171,7 @@ class KelaService(application: KoskiApplication) extends GlobalExecutionContext 
       oppija <- teePalautettavaKelaOppija(
         hlö,
         Seq(opiskeluoikeusData),
+        Seq.empty,
         Seq.empty
       )
     } yield oppija
@@ -157,18 +190,19 @@ class KelaService(application: KoskiApplication) extends GlobalExecutionContext 
   private def teePalautettavaKelaOppija(
     oppijaHenkilö: LaajatOppijaHenkilöTiedot,
     rawOpiskeluoikeudet: Seq[RawOpiskeluoikeusData],
-    ytrOpiskeluoikeudet: Seq[KelaYlioppilastutkinnonOpiskeluoikeus]
+    ytrOpiskeluoikeudet: Seq[KelaYlioppilastutkinnonOpiskeluoikeus],
+    virtaOpiskeluoikeudet: Seq[KelaKorkeakoulunOpiskeluoikeus]
   ): Either[HttpStatus, KelaOppija] = {
     val opiskeluoikeudet =
       rawOpiskeluoikeudet
         .map(deserializeAndCleanKelaOpiskeluoikeus)
         .collect { case Right(oo) => oo }
 
-    if (opiskeluoikeudet.nonEmpty || ytrOpiskeluoikeudet.nonEmpty) {
+    if (opiskeluoikeudet.nonEmpty || ytrOpiskeluoikeudet.nonEmpty || virtaOpiskeluoikeudet.nonEmpty) {
       Right(
         KelaOppija(
           henkilö = Henkilo.fromOppijaHenkilö(oppijaHenkilö),
-          opiskeluoikeudet = opiskeluoikeudet.toList ++ ytrOpiskeluoikeudet
+          opiskeluoikeudet = opiskeluoikeudet.toList ++ ytrOpiskeluoikeudet ++ virtaOpiskeluoikeudet
         )
       )
     }
@@ -194,10 +228,10 @@ class KelaService(application: KoskiApplication) extends GlobalExecutionContext 
   }
 
   private def kelallePalautettavaOpiskeluoikeusTyyppi(opiskeluoikeusTyyppi: String): Boolean = {
-    val configKey = "kela.palautettavatOpiskeluoikeustyypit"
+    val configKey = "kela.eiPalautettavatOpiskeluoikeustyypit"
     if (application.config.hasPath(configKey)) {
-      val allowList = application.config.getList(configKey)
-      allowList.unwrapped().asScala.toList.contains(opiskeluoikeusTyyppi)
+      val estetyt = application.config.getList(configKey)
+      !estetyt.unwrapped().asScala.toList.contains(opiskeluoikeusTyyppi)
     } else {
       true
     }
