@@ -117,6 +117,18 @@
       "allowedVersions": "<24.16.0 || >=24.17.0"
     }
   ],
+  "customManagers": [
+    {
+      "customType": "regex",
+      "description": "Update the JMX exporter version and its SHA-256 in the same PR.",
+      "managerFilePatterns": ["docker-build/Dockerfile"],
+      "matchStrings": [
+        "ARG PROMETHEUS_JMX_EXPORTER_VERSION=\"(?<currentValue>[^\"]+)\"\\nARG PROMETHEUS_JMX_EXPORTER_JAR_HASH=\"(?<currentDigest>[^\"]+)\""
+      ],
+      "depNameTemplate": "prometheus/jmx_exporter",
+      "datasourceTemplate": "github-release-attachments"
+    }
+  ],
   "ignorePaths": [
     "web/app/types/fi/oph/koski/**"
   ]
