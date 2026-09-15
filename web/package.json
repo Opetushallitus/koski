@@ -50,7 +50,7 @@
     "@eslint/compat": "^1.2.8",
     "@eslint/eslintrc": "^3.3.3",
     "@eslint/js": "^9.39.2",
-    "@playwright/test": "^1.57.0",
+    "@playwright/test": "1.62.1",
     "@swc/core": "^1.11.21",
     "@types/downloadjs": "^1.4.6",
     "@types/js-cookie": "^3.0.6",
