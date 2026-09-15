@@ -16,6 +16,7 @@ import { Suoritus } from '../types/fi/oph/koski/schema/Suoritus'
 import { Osaamismerkkikuva } from '../types/fi/oph/koski/servlet/Osaamismerkkikuva'
 import { AktiivisetJaPäättyneetOpinnotOppijaJakolinkillä } from '../types/fi/oph/koski/suoritusjako/AktiivisetJaPaattyneetOpinnotOppijaJakolinkilla'
 import { SuoritetutTutkinnotOppijaJakolinkillä } from '../types/fi/oph/koski/suoritusjako/SuoritetutTutkinnotOppijaJakolinkilla'
+import { TutkinnonOsanLaajuus } from '../types/fi/oph/koski/tutkinto/TutkinnonOsanLaajuus'
 import { TutkintoPeruste } from '../types/fi/oph/koski/tutkinto/TutkintoPeruste'
 import { Constraint } from '../types/fi/oph/koski/typemodel/Constraint'
 import { GroupedKoodistot } from '../types/fi/oph/koski/typemodel/GroupedKoodistot'
@@ -108,6 +109,19 @@ export const fetchPerusteTutkinnonOsaRyhmät = (
     apiGet<Koodistokoodiviite<'tutkinnonosaryhmä'>[]>(
       apiUrl(
         `tutkinnonperusteet/tutkinnonosat/ryhmat/${encodeURIComponent(diaarinumero)}/${suoritustapa}`
+      )
+    )
+  )
+
+export const fetchTutkinnonOsaRyhmienLaajuudet = (
+  diaarinumero: string,
+  suoritustapa: string,
+  ryhmät: string[]
+) =>
+  handleExpiredSession(
+    apiGet<Record<string, TutkinnonOsanLaajuus>>(
+      apiUrl(
+        `tutkinnonperusteet/tutkinnonosaryhma/laajuus/${encodeURIComponent(diaarinumero)}/${encodeURIComponent(suoritustapa)}/${encodeURIComponent(ryhmät.join(','))}`
       )
     )
   )

@@ -69,6 +69,11 @@ import { TutkintoPeruste } from '../types/fi/oph/koski/tutkinto/TutkintoPeruste'
 import { AmmatillinenTutkintoKoulutus } from '../types/fi/oph/koski/schema/AmmatillinenTutkintoKoulutus'
 import { Spacer } from '../components-v2/layout/Spacer'
 import { isAmmatillisenTutkinnonSuoritus } from '../types/fi/oph/koski/schema/AmmatillisenTutkinnonSuoritus'
+import { TutkinnonOsanLaajuus } from '../types/fi/oph/koski/tutkinto/TutkinnonOsanLaajuus'
+import {
+  TutkinnonOsaRyhmänLaajuus,
+  useTutkinnonOsaRyhmienLaajuudet
+} from './TutkinnonOsaRyhmänLaajuus'
 
 interface OsasuoritusTablesProps {
   form: FormModel<AmmatillinenOpiskeluoikeus>
@@ -88,6 +93,11 @@ export const OsasuoritusTables = ({
     päätasonSuoritus.suoritus.koulutusmoduuli.perusteenDiaarinumero || '',
     päätasonSuoritus.suoritus.suoritustapa.koodiarvo
   )
+  const ryhmienLaajuudet = useTutkinnonOsaRyhmienLaajuudet(
+    päätasonSuoritus.suoritus.koulutusmoduuli.perusteenDiaarinumero,
+    päätasonSuoritus.suoritus.suoritustapa.koodiarvo,
+    perusteenRyhmät.map((r) => r.koodiarvo)
+  )
 
   // Jos kyseessä esim. erikoisammattitutkinto, niin niputetaan kaikki ryhmät yhteen.
   if (perusteenRyhmät.length === 0) {
@@ -98,6 +108,7 @@ export const OsasuoritusTables = ({
         päätasonSuoritus={päätasonSuoritus}
         ryhmä={'Tutkinnon osat'}
         perusteenRyhmät={perusteenRyhmät}
+        ryhmienLaajuudet={ryhmienLaajuudet}
       />
     )
   }
@@ -110,6 +121,7 @@ export const OsasuoritusTables = ({
         päätasonSuoritus={päätasonSuoritus}
         ryhmä="Ammatilliset tutkinnon osat"
         perusteenRyhmät={perusteenRyhmät}
+        ryhmienLaajuudet={ryhmienLaajuudet}
       />
       <TableForTutkinnonOsaRyhmä
         form={form}
@@ -117,6 +129,7 @@ export const OsasuoritusTables = ({
         päätasonSuoritus={päätasonSuoritus}
         ryhmä="Yhteiset tutkinnon osat"
         perusteenRyhmät={perusteenRyhmät}
+        ryhmienLaajuudet={ryhmienLaajuudet}
         forceOpen={form.editMode}
       />
       <TableForTutkinnonOsaRyhmä
@@ -125,6 +138,7 @@ export const OsasuoritusTables = ({
         päätasonSuoritus={päätasonSuoritus}
         ryhmä="Vapaasti valittavat tutkinnon osat"
         perusteenRyhmät={perusteenRyhmät}
+        ryhmienLaajuudet={ryhmienLaajuudet}
       />
       <TableForTutkinnonOsaRyhmä
         form={form}
@@ -132,6 +146,7 @@ export const OsasuoritusTables = ({
         päätasonSuoritus={päätasonSuoritus}
         ryhmä="Tutkintoa yksilöllisesti laajentavat tutkinnon osat"
         perusteenRyhmät={perusteenRyhmät}
+        ryhmienLaajuudet={ryhmienLaajuudet}
       />
       <TableForTutkinnonOsaRyhmä
         form={form}
@@ -139,6 +154,7 @@ export const OsasuoritusTables = ({
         päätasonSuoritus={päätasonSuoritus}
         ryhmä="Muut suoritukset"
         perusteenRyhmät={perusteenRyhmät}
+        ryhmienLaajuudet={ryhmienLaajuudet}
       />
     </>
   )
@@ -153,6 +169,7 @@ interface TableProps {
   >
   ryhmä: string
   perusteenRyhmät: Koodistokoodiviite<'tutkinnonosaryhmä'>[]
+  ryhmienLaajuudet: Record<string, TutkinnonOsanLaajuus>
   forceOpen?: boolean
 }
 
@@ -178,6 +195,7 @@ const TableForTutkinnonOsaRyhmä = ({
   päätasonSuoritus,
   ryhmä,
   perusteenRyhmät,
+  ryhmienLaajuudet,
   forceOpen
 }: TableProps) => {
   const originalIndexMap: Record<number, number> = {}
@@ -202,63 +220,87 @@ const TableForTutkinnonOsaRyhmä = ({
       })
     })
 
+  const perusteenRyhmä = perusteenRyhmät.find(
+    (r) => (r.nimi as Finnish).fi === ryhmä
+  )
   const ryhmäPerusteessa =
-    perusteenRyhmät.find((r) => (r.nimi as Finnish).fi === ryhmä) !==
-      undefined || perusteenRyhmät.length === 0
+    perusteenRyhmä !== undefined || perusteenRyhmät.length === 0
 
   if (!ryhmäPerusteessa && (!rows || rows.length === 0)) {
     return null
   }
 
+  const ryhmänOsasuoritukset = (
+    päätasonSuoritus.suoritus.osasuoritukset || []
+  ).filter(matchFilter) as AmisTutkinnonOsanSuoritus[]
+
   return (
-    <OsasuoritusTable
-      editMode={form.editMode}
-      forceOpen={forceOpen}
-      rows={
-        (!rows || rows?.length === 0) && form.editMode
-          ? [dummyRow(ryhmä)] // Saadaan headeri näkymään editointimoodissa kun osasuorituksia ei ole
-          : rows || []
-      }
-      addNewOsasuoritusView={NewAmisOsasuoritus}
-      addNewOsasuoritusViewProps={{
-        form,
-        oppilaitosOid,
-        ryhmä,
-        suoritusPath: päätasonSuoritus.path
-      }}
-      onRemove={
-        !rows || rows?.length === 0
-          ? undefined
-          : (rowIndex) =>
-              form.updateAt(
-                päätasonSuoritus.path,
-                (pts) =>
-                  ({
-                    ...pts,
-                    osasuoritukset: deleteAt<AmisTutkinnonOsanSuoritus>(
-                      pts.osasuoritukset || [],
-                      originalIndexMap[rowIndex]
-                    )
-                  }) as AmisTutkinnonSuoritus
-              )
-      }
-      completed={(rowIndex) => {
-        const osasuoritus = (päätasonSuoritus.suoritus.osasuoritukset || [])[
-          originalIndexMap[rowIndex]
-        ]
-        if (
-          osasuoritus === undefined ||
-          isAmisKorkeakouluopintoSuoritus(osasuoritus) ||
-          isAmisJatkoOpintovalmiuksiaTukevienOpintojenSuoritus(osasuoritus)
-        ) {
-          // Näiden tyyppien tila tulee niiden alaosasuorituksista, ei
-          // ylätason arvioinnista, joten päärivillä ei näytetä
-          // valmis/kesken-merkkiä.
-          return undefined
+    <>
+      <OsasuoritusTable
+        editMode={form.editMode}
+        forceOpen={forceOpen}
+        rows={
+          (!rows || rows?.length === 0) && form.editMode
+            ? [dummyRow(ryhmä)] // Saadaan headeri näkymään editointimoodissa kun osasuorituksia ei ole
+            : rows || []
         }
-        return hasAmmatillinenArviointi(osasuoritus)
-      }}
-    />
+        addNewOsasuoritusView={NewAmisOsasuoritus}
+        addNewOsasuoritusViewProps={{
+          form,
+          oppilaitosOid,
+          ryhmä,
+          suoritusPath: päätasonSuoritus.path
+        }}
+        onRemove={
+          !rows || rows?.length === 0
+            ? undefined
+            : (rowIndex) =>
+                form.updateAt(
+                  päätasonSuoritus.path,
+                  (pts) =>
+                    ({
+                      ...pts,
+                      osasuoritukset: deleteAt<AmisTutkinnonOsanSuoritus>(
+                        pts.osasuoritukset || [],
+                        originalIndexMap[rowIndex]
+                      )
+                    }) as AmisTutkinnonSuoritus
+                )
+        }
+        completed={(rowIndex) => {
+          const osasuoritus = (päätasonSuoritus.suoritus.osasuoritukset || [])[
+            originalIndexMap[rowIndex]
+          ]
+          if (
+            osasuoritus === undefined ||
+            isAmisKorkeakouluopintoSuoritus(osasuoritus) ||
+            isAmisJatkoOpintovalmiuksiaTukevienOpintojenSuoritus(osasuoritus)
+          ) {
+            // Näiden tyyppien tila tulee niiden alaosasuorituksista, ei
+            // ylätason arvioinnista, joten päärivillä ei näytetä
+            // valmis/kesken-merkkiä.
+            return undefined
+          }
+          return hasAmmatillinenArviointi(osasuoritus)
+        }}
+      />
+      {(form.editMode || ryhmänOsasuoritukset.length > 0) && (
+        <>
+          <TutkinnonOsaRyhmänLaajuus
+            suoritukset={ryhmänOsasuoritukset}
+            laajuus={
+              perusteenRyhmä && ryhmienLaajuudet[perusteenRyhmä.koodiarvo]
+            }
+            testId={
+              perusteenRyhmät.length === 0
+                ? 'yhteensa'
+                : `yhteensa.${perusteenRyhmä?.koodiarvo || 'muut'}`
+            }
+          />
+          <Spacer />
+        </>
+      )}
+    </>
   )
 }
 

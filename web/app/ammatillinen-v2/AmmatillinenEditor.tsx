@@ -92,7 +92,6 @@ import { NumberField } from '../components-v2/controls/NumberField'
 import { OsasuoritusTables } from './OsasuoritusTables'
 import { HenkilövahvistusValinnaisellaPaikkakunnalla } from '../types/fi/oph/koski/schema/HenkilovahvistusValinnaisellaPaikkakunnalla'
 import { OpenAllButton, useTree } from '../appstate/tree'
-import { AmisLaajuudetYhteensä } from './AmisLaajuudetYhteensä'
 import { SisältyyOpiskeluoikeuteen } from './SisältyyOpiskeluoikeuteen'
 import { AmmatillinenArviointiasteikko } from './AmmatillinenArviointiasteikko'
 import { isAmmatillisenTutkinnonOsittainenUseastaTutkinnostaSuoritus } from '../types/fi/oph/koski/schema/AmmatillisenTutkinnonOsittainenUseastaTutkinnostaSuoritus'
@@ -539,7 +538,6 @@ const AmmatillinenTutkintoEditor: React.FC<
               oppilaitosOid={organisaatio?.oid}
               päätasonSuoritus={päätasonSuoritus}
             />
-            <AmisLaajuudetYhteensä suoritus={päätasonSuoritus.suoritus} />
           </>
         )}
       </EditorContainer>

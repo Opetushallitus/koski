@@ -24,7 +24,8 @@ test.describe('Osittaisen ammatillisen tutkinnon uusi käyttöliittymä', () => 
 
     await expect(page.getByTestId('oo.0.suoritukset.0.osasuoritukset.0.properties.arviointi.0.arvosana')).toContainText('3');
 
-    await expect(page.getByTestId('oo.0.suoritukset.0.yhteensa')).toContainText('35 osp');
+    // Laajuus ryhmittäin: hyväksytysti arvioidut / perusteen vaatimus
+    await expect(page.getByTestId('oo.0.suoritukset.0.yhteensa.1')).toHaveText('35 / 135 osp');
 
     await expect(page.getByTestId('oo.0.opiskeluoikeus.tila.value.items.1.rahoitus')).toContainText('Valtionosuusrahoitteinen koulutus')
   })

@@ -6,12 +6,12 @@ import {
 import { TestIdText } from '../appstate/useTestId'
 import { formatNumber, sum } from '../util/numbers'
 import { t } from '../i18n/i18n'
-import { AmisTutkinnonSuoritus } from './tutkinnonOsanSuoritukset'
+import { AmmatillisenTutkinnonOsittainenSuoritus } from '../types/fi/oph/koski/schema/AmmatillisenTutkinnonOsittainenSuoritus'
 import { AmmatillisenTutkinnonOsittainenUseastaTutkinnostaSuoritus } from '../types/fi/oph/koski/schema/AmmatillisenTutkinnonOsittainenUseastaTutkinnostaSuoritus'
 
 type AmisLaajuudetYhteensäProps = {
   suoritus:
-    | AmisTutkinnonSuoritus
+    | AmmatillisenTutkinnonOsittainenSuoritus
     | AmmatillisenTutkinnonOsittainenUseastaTutkinnostaSuoritus
 }
 
@@ -31,7 +31,7 @@ export const AmisLaajuudetYhteensä: React.FC<AmisLaajuudetYhteensäProps> = ({
 
 const hasLaajuus = (
   pts:
-    | AmisTutkinnonSuoritus
+    | AmmatillisenTutkinnonOsittainenSuoritus
     | AmmatillisenTutkinnonOsittainenUseastaTutkinnostaSuoritus
 ): boolean =>
   sum(
@@ -42,7 +42,7 @@ const hasLaajuus = (
 
 const laajuudetYhteensä = (
   pts:
-    | AmisTutkinnonSuoritus
+    | AmmatillisenTutkinnonOsittainenSuoritus
     | AmmatillisenTutkinnonOsittainenUseastaTutkinnostaSuoritus
 ): string => {
   const n = formatNumber(
