@@ -439,6 +439,12 @@ object KoskiSpecificMockOppijat {
   // 'esiopetus'), joka on täysin oma, perusopetuksesta erillinen kysely-/aikajaksopolkunsa
   // (esiopetus_opiskeluoik_aikajakso).
   val kotikuntalaskelmaEsiopetus = koskiSpecificOppijat.oppija("Esiopetus", "Elias", "200520A802Y", syntymäaika = Some(LocalDate.of(2020, 5, 20)), kotikunta = Some(Kunta.helsinki))
+  // Kansainvälisen koulun oppija jonka koulutusmoduulin alkamispäivä on EDELLISELTÄ lukuvuodelta
+  // (ei kuluvalta 1.8. alkaneelta): testaa että internationalschool/europeanschoolofhelsinki-
+  // haarojen "alkamispäivä edellisen elokuun jälkeen" -rajaus todella sulkee vanhan lukuvuoden
+  // suorituksen pois, eikä pelkkä "alkamispäivä <= päivä" -yläraja riitä (se olisi päästänyt
+  // tämän oppijan mukaan raportille).
+  val kotikuntalaskelmaKansainvalinenEdellinenLukuvuosi = koskiSpecificOppijat.oppija("KansainvalinenEdellinenLukuvuosi", "Nea", "200819A8024", syntymäaika = Some(LocalDate.of(2019, 8, 20)), kotikunta = Some(Kunta.helsinki))
 
   def defaultOppijat = koskiSpecificOppijat.getOppijat
   def defaultKuntahistoriat: mutable.Map[String, Seq[OppijanumerorekisteriKotikuntahistoriaRow]] = koskiSpecificOppijat.getKuntahistoriat
