@@ -2,6 +2,7 @@ package fi.oph.koski.api.misc
 
 import fi.oph.koski.documentation.ExamplesTaiteenPerusopetus.PäätasonSuoritus.Koulutusmoduuli
 import fi.oph.koski.documentation.ExamplesTaiteenPerusopetus.varsinaisSuomenKansanopisto
+import fi.oph.koski.documentation.YleissivistavakoulutusExampleData.jyväskylänNormaalikoulu
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.log.{AccessLogTester, AuditLogTester}
@@ -104,6 +105,32 @@ class SuoritusjakoAPISpec extends AnyFreeSpec with SuoritusjakoTestMethods with 
         postSuoritusjakoV3(secrets("taiteen perusopetus")) {
           verifyResponseStatusOk()
           AuditLogTester.verifyLastAuditLogMessageForOperation(Map("operation" -> "KANSALAINEN_SUORITUSJAKO_KATSOMINEN"))
+        }
+      }
+
+      "sisältää tiedon Ahvenanmaan perusopetuksen mukautetusta oppimäärästä" - {
+        val ahvenanmaanOppilas = KoskiSpecificMockOppijat.ahvenanmaanPerusoppilas.hetu.get
+        lazy val secret = {
+          val json =
+            s"""[{"oppilaitosOid":"${jyväskylänNormaalikoulu.oid}","suorituksenTyyppi":"ahvenanmaanperusopetuksenoppimaara","koulutusmoduulinTunniste":"201101"}]"""
+          createSuoritusjako(json, ahvenanmaanOppilas) {
+            verifyResponseStatusOk()
+            JsonSerializer.parse[Suoritusjako](response.body).secret
+          }
+        }
+
+        "kirjautumattomalle katsojalle" in {
+          postSuoritusjakoV3(secret) {
+            verifyResponseStatusOk()
+            new String(response.bodyBytes, StandardCharsets.UTF_8) should include("mukautettuOppimäärä")
+          }
+        }
+
+        "kun katsoja on kirjautunut kansalaisena" in {
+          post("/api/suoritusjakoV3/", JsonSerializer.writeWithRoot(SuoritusjakoRequest(secret)), headers = kansalainenLoginHeaders(ahvenanmaanOppilas) ++ jsonContent) {
+            verifyResponseStatusOk()
+            new String(response.bodyBytes, StandardCharsets.UTF_8) should include("mukautettuOppimäärä")
+          }
         }
       }
     }
