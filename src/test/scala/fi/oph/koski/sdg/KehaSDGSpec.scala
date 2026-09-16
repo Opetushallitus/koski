@@ -248,13 +248,60 @@ class KehaSDGSpec
     }
   }
 
+  "Valintatiedot" - {
+    "palautetaan, kun valintatiedot=true" in {
+      postHetu(KoskiSpecificMockOppijat.ammattilainen.hetu.get, valintatiedot = true) {
+        verifyResponseStatusOk()
+        val response = JsonSerializer.parse[SdgOppija](body)
+        val valintatiedot = response.valintatiedot.getOrElse(fail("valintatiedot puuttuu vastauksesta"))
+        valintatiedot.hakemukset should have length 1
+
+        val hakemus = valintatiedot.hakemukset.head
+        hakemus.hakemusOid shouldBe "1.2.246.562.11.00000000000001049800"
+        hakemus.haunKohdejoukko.map(_.koodiarvo) shouldBe Some("12")
+        hakemus.hakutapa.map(_.koodiarvo) shouldBe Some("01")
+        hakemus.haku.oid shouldBe "1.2.246.562.29.00000000000000005467"
+        hakemus.haku.nimi.get("fi") shouldBe "Yhteishaku kevät 2024"
+        hakemus.hakutoiveet should have length 1
+
+        val hakutoive = hakemus.hakutoiveet.head
+        hakutoive.hakukohde.oid shouldBe "1.2.246.562.20.00000000000000005476"
+        hakutoive.hakukohde.nimi.get("fi") shouldBe "Tietotekniikan koulutusohjelma"
+        hakutoive.tarjoaja.map(_.oid) shouldBe Some("1.2.246.562.10.42160341923")
+        hakutoive.koulutuksenAlkamiskausi.map(_.koodiarvo) shouldBe Some("s")
+        hakutoive.koulutuksenAlkamisvuosi shouldBe Some("2024")
+        hakutoive.valinnanTila.map(_.koodiarvo) shouldBe Some("hyvaksytty")
+        hakutoive.vastaanotonTila.map(_.koodiarvo) shouldBe Some("vastaanottanutsitovasti")
+        hakutoive.ilmoittautumisenTila.map(_.koodiarvo) shouldBe Some("lasna")
+        hakutoive.johtaaTutkintoon shouldBe Some(true)
+      }
+    }
+
+    "palautetaan henkilö ja valintatiedot, vaikka oppijalla ei ole opiskeluoikeuksia" in {
+      postHetu(KoskiSpecificMockOppijat.eiKoskessa.hetu.get, valintatiedot = true) {
+        verifyResponseStatusOk()
+        val response = JsonSerializer.parse[SdgOppija](body)
+        response.henkilö.oid shouldBe KoskiSpecificMockOppijat.eiKoskessa.oid
+        response.opiskeluoikeudet shouldBe empty
+        response.valintatiedot.map(_.hakemukset.map(_.hakemusOid)) shouldBe Some(List("1.2.246.562.11.00000000000001234572"))
+      }
+    }
+
+    "oppijaa ilman opiskeluoikeuksia ei palauteta ilman valintatiedot-parametria" in {
+      postHetu(KoskiSpecificMockOppijat.eiKoskessa.hetu.get) {
+        verifyResponseStatus(404)
+      }
+    }
+  }
+
   private def postHetu[A](
     hetu: String,
     osasuorituksetMukaan: Boolean = true,
-    vainVahvistetut: Boolean = false
+    vainVahvistetut: Boolean = false,
+    valintatiedot: Boolean = false
   )(f: => A): A = {
     val url =
-      s"api/luovutuspalvelu/keha/sdg/hetu?osasuoritukset=$osasuorituksetMukaan&vainVahvistetut=$vainVahvistetut"
+      s"api/luovutuspalvelu/keha/sdg/hetu?osasuoritukset=$osasuorituksetMukaan&vainVahvistetut=$vainVahvistetut&valintatiedot=$valintatiedot"
 
     post(
       url,

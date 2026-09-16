@@ -11,7 +11,11 @@ import org.json4s.JValue
 
 case class HetuRequest(hetu: String)
 
-case class SdgQueryParams(withOsasuoritukset: Boolean = false, onlyVahvistetut: Boolean = false)
+case class SdgQueryParams(
+  withOsasuoritukset: Boolean = false,
+  onlyVahvistetut: Boolean = false,
+  withValintatiedot: Boolean = false
+)
 
 class SdgServlet(implicit val application: KoskiApplication) extends KoskiSpecificApiServlet with RequiresSdg with NoCache {
   post("/hetu") {
@@ -19,8 +23,9 @@ class SdgServlet(implicit val application: KoskiApplication) extends KoskiSpecif
 
     val withOsasuoritukset = params.getAs[Boolean]("osasuoritukset").getOrElse(false)
     val onlyVahvistetut = params.getAs[Boolean]("vainVahvistetut").getOrElse(false)
+    val withValintatiedot = params.getAs[Boolean]("valintatiedot").getOrElse(false)
 
-    val queryParams = SdgQueryParams(withOsasuoritukset, onlyVahvistetut)
+    val queryParams = SdgQueryParams(withOsasuoritukset, onlyVahvistetut, withValintatiedot)
 
     withJsonBody { json =>
       val result = for {
