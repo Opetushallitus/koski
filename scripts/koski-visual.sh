@@ -17,7 +17,7 @@ if [ -z "$pw_version" ]; then
   exit 1
 fi
 
-IMAGE="mcr.microsoft.com/playwright:v1.62.1-jammy@sha256:b3251f7ff1a9fa559a28d1c67eaa15fc1a9800f7845e82756caea7842967f615"
+IMAGE="mcr.microsoft.com/playwright:v1.63.0-jammy@sha256:167d0506cfbe3c294fb214b2d11737326eeee028aa611fa1ba538e5057675847"
 image_tag="${IMAGE#*:v}"                      # image:v1.2.3-variant@digest → 1.2.3-variant@digest
 image_tag="${image_tag%%@*}"                  # 1.2.3-variant@digest → 1.2.3-variant
 image_version="${image_tag%%-*}"              # 1.2.3-variant → 1.2.3
@@ -44,8 +44,8 @@ if ! docker info >/dev/null 2>&1; then
   exit 1
 fi
 
-# Kontti käyttää hostin web/node_modulesia sellaisenaan: testit tarvitsevat
-# vain @playwright/testin (puhdasta JS:ää), selaimet tulevat imagesta.
+# Kontti käyttää hostin web/node_modulesia: testit tarvitsevat Playwrightin
+# lisäksi sovelluksen riippuvuuksia. Selaimet tulevat imagesta.
 if [ ! -x "$REPO/web/node_modules/.bin/playwright" ]; then
   echo "VIRHE: web/node_modules puuttuu. Aja ensin: cd web && pnpm install" >&2
   exit 1
@@ -67,13 +67,23 @@ else
   CONTAINER_BACKEND="http://host.docker.internal:${HOST_BACKEND##*:}"
 fi
 
-echo "Ajetaan visuaalitestit kontissa ($IMAGE), backend: $CONTAINER_BACKEND"
-
 # Ajetaan hostin käyttäjänä, jotta kontin kirjoittamat tiedostot (test-results,
 # raportti, baseline-kuvat) eivät jää Linuxilla root-omisteisiksi.
+USER_ARGS=(--user "$(id -u):$(id -g)")
+runtime_version="$(docker --version)"
+if [[ "$runtime_version" == *[Pp]odman* ]]; then
+  podman_rootless="$(docker info --format '{{.Host.Security.Rootless}}')"
+  if [[ "$podman_rootless" == true ]]; then
+    # Rootless Podmanissa pelkkä --user ei säilytä hostin käyttäjätunnusta.
+    USER_ARGS+=(--userns=keep-id)
+  fi
+fi
+
+echo "Ajetaan visuaalitestit kontissa ($IMAGE), backend: $CONTAINER_BACKEND"
+
 docker run --rm \
   $NET_ARGS \
-  --user "$(id -u):$(id -g)" \
+  "${USER_ARGS[@]}" \
   -v "$REPO":/work \
   -w /work/web \
   -e BACKEND_HOST="$CONTAINER_BACKEND" \
