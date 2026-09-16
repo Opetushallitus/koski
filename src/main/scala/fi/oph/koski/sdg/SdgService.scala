@@ -7,6 +7,8 @@ import fi.oph.koski.koskiuser.KoskiSpecificSession
 import fi.oph.koski.log._
 import fi.oph.koski.suoritusjako.common.{OpiskeluoikeusFacade}
 
+import scala.util.control.NonFatal
+
 class SdgService(application: KoskiApplication) extends GlobalExecutionContext with Logging {
   private val opiskeluoikeusFacade = new OpiskeluoikeusFacade[SdgOpiskeluoikeus](
     application,
@@ -17,13 +19,43 @@ class SdgService(application: KoskiApplication) extends GlobalExecutionContext w
   def findOppijaByHetu(hetu: String, queryParams: SdgQueryParams)
     (implicit koskiSession: KoskiSpecificSession): Either[HttpStatus, SdgOppija] = {
 
-    val oppijaResult = application.opintopolkuHenkilöFacade.findOppijaByHetu(hetu)
-
-    oppijaResult match {
-      case Some(o) => findPalautettavaOppija(o.oid, queryParams)
+    application.opintopolkuHenkilöFacade.findOppijaByHetu(hetu) match {
+      case Some(o) =>
+        for {
+          oppija <- findPalautettavaOppija(o.oid, queryParams)
+            .left.flatMap(status => oppijaIlmanOpiskeluoikeuksia(o.oid, queryParams, status))
+          valintatiedot <- haeValintatiedot(oppija.henkilö.oid, queryParams)
+        } yield oppija.copy(valintatiedot = valintatiedot)
       case None => Left(KoskiErrorCategory.notFound.oppijaaEiLöydyHetulla())
     }
   }
+
+  private def oppijaIlmanOpiskeluoikeuksia(
+    oppijaOid: String,
+    queryParams: SdgQueryParams,
+    status: HttpStatus
+  ): Either[HttpStatus, SdgOppija] =
+    if (queryParams.withValintatiedot && status.statusCode == 404) {
+      application.opintopolkuHenkilöFacade.findMasterOppija(oppijaOid)
+        .map(henkilö => SdgOppija(henkilö = SdgHenkilo.fromOppijaHenkilö(henkilö), opiskeluoikeudet = Nil))
+        .toRight(status)
+    } else {
+      Left(status)
+    }
+
+  private def haeValintatiedot(oppijaOid: String, queryParams: SdgQueryParams): Either[HttpStatus, Option[SdgValintatieto]] =
+    if (!queryParams.withValintatiedot) {
+      Right(None)
+    } else {
+      try {
+        application.ovaraClient.fetchOpiskelijavalintatiedot(oppijaOid)
+          .map(raw => Some(SdgValintatieto.from(raw.map(application.opiskelijavalintatietoConverter.convert))))
+      } catch {
+        case NonFatal(e) =>
+          logger.error(e)("Valintatietojen käsittelyssä tapahtui odottamaton virhe")
+          Left(KoskiErrorCategory.internalError("Valintatietojen käsittelyssä tapahtui odottamaton virhe."))
+      }
+    }
 
   private def findPalautettavaOppija(
     oppijaOid: String,
