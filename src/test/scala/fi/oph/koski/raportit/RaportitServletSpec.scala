@@ -112,6 +112,7 @@ class RaportitServletSpec extends AnyFreeSpec with RaportointikantaTestMethods w
              LukioKurssikertyma.toString,
              LuvaOpiskelijamaarat.toString,
              LukioOpintopistekertyma.toString,
+             KotikuntalaskelmaRaportti.toString,
            ))
           }
         }

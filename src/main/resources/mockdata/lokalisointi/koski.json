@@ -105229,7 +105229,7 @@
     "modified": null,
     "modifiedBy": "anonymousUser",
     "namespace": "koski",
-    "value": "16-vuotiaat, pidennetty oppivelvollisuus"
+    "value": "16-vuotiaat, vamman, sairauden tai toimintakyvyn rajoitteen perusteella"
   },
   {
     "accesscount": null,
@@ -105245,7 +105245,7 @@
     "modified": null,
     "modifiedBy": "anonymousUser",
     "namespace": "koski",
-    "value": "16-vuotiaat, ei pidennettyä oppivelvollisuutta"
+    "value": "16-vuotiaat ilman vamman, sairauden tai toimintakyvyn rajoitteita"
   },
   {
     "accesscount": null,

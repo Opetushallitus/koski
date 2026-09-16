@@ -33,7 +33,7 @@ class KotikuntalaskelmaSpec extends AnyFreeSpec with Matchers with Raportointika
   private val application = KoskiApplicationForTests
   private val t = new LocalizationReader(KoskiApplicationForTests.koskiLocalizationRepository, "fi")
 
-  private val kotikuntalaskelmaBuilder = Kotikuntalaskelma(application.raportointiDatabase.db, application.organisaatioService)
+  private val kotikuntalaskelmaBuilder = Kotikuntalaskelma(application.raportointiDatabase.db)
 
   private lazy val aggregaattiRivit = kotikuntalaskelmaBuilder
     .build(Seq(aapajoenKoulu), raportointipäivä, t)(session(defaultUser))

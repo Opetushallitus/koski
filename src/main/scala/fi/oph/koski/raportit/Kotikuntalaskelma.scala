@@ -4,54 +4,21 @@ import java.time.LocalDate
 import fi.oph.koski.db.QueryMethods
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.plainAPI._
 import fi.oph.koski.koskiuser.KoskiSpecificSession
-import fi.oph.koski.organisaatio.OrganisaatioService
 import fi.oph.koski.db.DB
 import fi.oph.koski.localization.LocalizationReader
 import slick.jdbc.GetResult
 
 import scala.concurrent.duration.DurationInt
 
-// TOR-2650: alustava luonnos (ks. documentation/kotikuntalaskelma-suunnitelma.md).
-// Aggregaattivälilehti: oppilasmäärä opetuksen järjestäjän x oppilaan kotikunnan x ikäryhmän
-// mukaan valitulta päivältä. Perustuu analyytikolta saatuun esimerkkikyselyyn (suunnitelman
-// 8.1 §), mutta korjattu ja täydennetty seuraavasti:
-//   - Käyttää julkista r_kotikuntahistoria-taulua confidential-variantin sijaan, jotta
-//     turvakiellon alaisten oppijoiden kotikuntaa ei paljasteta (ks. suunnitelman 5 §, kohta 6).
-//     Turvakiellon alaiset oppijat eivät tämän vuoksi resolvoi kotikuntaa ja päätyvät samaan
-//     tyhjään (NULL) ryhmään kuin hetuttomat oppijat — kotikunnanKoodi- ja oppilaanKotikunta-
-//     sarakkeet ovat molemmat Option[String] eikä kumpaakaan täytetä millään korvaavalla
-//     tekstillä, jotta rivi ei näytä siltä kuin kotikunta olisi jotain tiettyä ("Ei tiedossa").
-//   - Jos r_kotikuntahistoria ei sisällä paivä-parametrin kattavaa jaksoa (esim. historiatieto
-//     alkaa myöhemmin kuin kysytty päivä, tai jaksoissa on aukko), pudotaan oppijan tämänhetkiseen
-//     (r_henkilo) kotikuntaan sen sijaan että aina jätettäisiin tyhjäksi — sama malli kuin
-//     EsiopetusRaportti.scala käyttää. TÄRKEÄÄ: tämä varakotikunta haetaan vain, jos
-//     he.turvakielto = false — r_henkilo.kotikunta* EI ole suodatettu turvakiellon alaisille
-//     (toisin kuin r_kotikuntahistoria), joten suora käyttö ilman tätä tarkistusta vuotaisi
-//     turvakiellon alaisten oppijoiden osoitetiedon.
-//   - Ikäryhmät lasketaan syntymävuoden ja parametrina saadun päivän perusteella (ei
-//     kovakoodattuja vuosilukuja kuten alkuperäisessä esimerkkikyselyssä).
-//   - Ei sisällä analyytikon kyselyn "yritysmuoto"/"y_tunnus"/"opetuksen_järjestäjän_kuntakoodi"
-//     -sarakkeita: niitä ei ole suunnitelman 3-4 §:ssä sovittu mukaan otettaviksi, ja ne olisivat
-//     tulleet organisaatio.organisaatio-taulusta, jota mikään muu Koskin raportti ei käytä eikä
-//     jota raportointikanta-skeema mallinna (ROrganisaatioTable ei sisällä yritysmuoto-saraketta).
-//     Opetuksen järjestäjän nimi/oid haetaan sen sijaan suoraan r_opiskeluoikeus-taulusta, kuten
-//     muissakin raporteissa.
-//
-// AVOIMET KYSYMYKSET (ks. suunnitelman 5 § ja 8.4 §) — ei vielä ratkaistu, päätökset tarvitaan
-// ennen tuotantoon vientiä:
-//   1. Pidennetyn oppivelvollisuuden kanoninen kenttä: tämä toteutus käyttää suunnitelman 8.1 §:n
-//      tapaan johdettua logiikkaa (toiminta_alueittain_opiskelu TAI
-//      opetus_vamman_sairauden_tai_rajoitteen_perusteella). Vaihtoehtoinen, suunnitelman 8.2/8.3
-//      §:ssä nähty tapa käyttää suoraan pidennetty_oppivelvollisuus-kenttää — nämä eivät
-//      taatusti tarkoita samaa asiaa.
-//   2. Kansainvälisten koulujen (internationalschool, europeanschoolofhelsinki) suoritusrajaus:
-//      analyytikon esimerkki rajasi suorituksen alkamispäivän kuluvaan lukuvuoteen
-//      (1.8.-tilastointipäivä). Tässä on yksinkertaisuuden vuoksi vain "alkamispaiva <= paiva" —
-//      lukuvuoden alkupäivän laskenta pitää lisätä ennen tuotantoon vientiä jos rajaus on tarpeen.
-//   3. Hetuttomien / turvakiellon alaisten oppijoiden esitystapa tyhjänä (NULL) kotikunta-
-//      ryhmänä (yhdistettynä) on tämän toteutuksen valinta, ei suunnitelmassa erikseen
-//      päätetty asia.
-case class Kotikuntalaskelma(db: DB, organisaatioService: OrganisaatioService) extends QueryMethods {
+// TODO(TOR-2650): build() ja buildOppijat() ajavat molemmat oman, lähes identtisen
+// viiden taulun (r_henkilo/r_opiskeluoikeus/r_paatason_suoritus/r_opiskeluoikeus_aikajakso/
+// r_kotikuntahistoria) liitoskyselynsä samalle oppilaitosOids-joukolle — sama rivijoukko
+// haetaan ja liitetään tietokannasta kahteen kertaan yhden Excelin tuottamiseksi, vaikka
+// aggregaattivälilehti voitaisiin periaatteessa johtaa jo haetuista oppija-riveistä Scalassa.
+// Ei kiireellinen: raportti on rajattu yhteen koulutustoimijaan kerrallaan, joten kyselyjen
+// koko pysynee pienenä eikä lähellä 5 minuutin timeout-budjettia — mutta jos tähän joskus
+// palataan muusta syystä, kannattaa harkita yhdistämistä.
+case class Kotikuntalaskelma(db: DB) extends QueryMethods {
   implicit private val getResult: GetResult[KotikuntalaskelmaRow] = GetResult(r =>
     KotikuntalaskelmaRow(
       opetuksenJärjestäjäOid = r.rs.getString("opetuksen_jarjestaja_oid"),
@@ -85,8 +52,8 @@ case class Kotikuntalaskelma(db: DB, organisaatioService: OrganisaatioService) e
     select
       oo.koulutustoimija_oid as opetuksen_jarjestaja_oid,
       oo.koulutustoimija_nimi as opetuksen_jarjestaja,
-      coalesce(kkh.kotikunta, case when he.turvakielto then null else he.kotikunta end) as kotikunnan_koodi,
-      coalesce(kkh.kotikunta_nimi_fi, case when he.turvakielto then null else he.kotikunta_nimi_fi end) as oppilaan_kotikunta,
+      kkh.kotikunta as kotikunnan_koodi,
+      kkh.kotikunta_nimi_fi as oppilaan_kotikunta,
 
       count(distinct case
         when extract(year from he.syntymaaika) = v.vuosi - 6
@@ -103,17 +70,20 @@ case class Kotikuntalaskelma(db: DB, organisaatioService: OrganisaatioService) e
         then he.master_oid
       end) as kolmetoista_viisitoista,
 
+      -- Jako perustuu nimenomaan vamman/sairauden/toimintakyvyn rajoitteeseen (vahvistettu
+      -- tiketillä), ei toiminta-alueittaiseen opiskeluun eikä pidennettyyn oppivelvollisuuteen
+      -- yleensä — nämä kolme eivät ole sama asia.
       count(distinct case
         when extract(year from he.syntymaaika) = v.vuosi - 16
           and aj.alku <= $päivä and aj.loppu >= $päivä
-          and (aj.toiminta_alueittain_opiskelu or aj.opetus_vamman_sairauden_tai_rajoitteen_perusteella)
+          and aj.opetus_vamman_sairauden_tai_rajoitteen_perusteella
         then he.master_oid
       end) as kuusitoista_erityisen_tuen_perusteella,
 
       count(distinct case
         when extract(year from he.syntymaaika) = v.vuosi - 16
           and aj.alku <= $päivä and aj.loppu >= $päivä
-          and not (aj.toiminta_alueittain_opiskelu or aj.opetus_vamman_sairauden_tai_rajoitteen_perusteella)
+          and not aj.opetus_vamman_sairauden_tai_rajoitteen_perusteella
         then he.master_oid
       end) as kuusitoista_ei_erityisen_tuen_perusteella,
 
@@ -159,9 +129,9 @@ case class Kotikuntalaskelma(db: DB, organisaatioService: OrganisaatioService) e
     group by
       oo.koulutustoimija_oid,
       oo.koulutustoimija_nimi,
-      coalesce(kkh.kotikunta, case when he.turvakielto then null else he.kotikunta end),
-      coalesce(kkh.kotikunta_nimi_fi, case when he.turvakielto then null else he.kotikunta_nimi_fi end)
-    order by oo.koulutustoimija_nimi, coalesce(kkh.kotikunta, case when he.turvakielto then null else he.kotikunta end)
+      kkh.kotikunta,
+      kkh.kotikunta_nimi_fi
+    order by oo.koulutustoimija_nimi, kkh.kotikunta
   """
   }
 
@@ -171,8 +141,12 @@ case class Kotikuntalaskelma(db: DB, organisaatioService: OrganisaatioService) e
   // luokkaa) sekä tosi/epätosi-liput samoille ikäryhmille kuin aggregaattivälilehdellä. Hetu on
   // hetuttomalle oppijalle luonnostaan NULL (r_henkilo.hetu on jo Option[String] skeemassa) — ei
   // erillistä käsittelyä tarvita. Kotikunta resolvoidaan samalla tavalla kuin
-  // aggregaattivälilehdellä (r_kotikuntahistoria ensisijaisena, turvakielto-suojattu
-  // r_henkilo-varakotikunta toissijaisena). Turvakiellon alaiselle oppijalle
+  // aggregaattivälilehdellä (suoraan r_kotikuntahistoriasta, ei r_henkilo-varakotikuntaa —
+  // ks. 12 §:n päivitetty päätös: aukko jätetään mieluummin "Ei tiedossa" -tilaan kuin
+  // arvataan nykyisen kotikunnan perusteella, koska arvattu arvo näyttäisi raportilla
+  // täysin samalta kuin oikeasti kyseiselle päivälle vahvistettu tieto). Turvakielto ei
+  // vaadi enää erillistä suojausta tässä, koska r_kotikuntahistoria on jo rakenteellisesti
+  // turvakielto-suodatettu. Turvakiellon alaiselle oppijalle
   // hetu/yksilöity/nimet/kotikunta/oppilaitos/luokka-aste/luokka piilotetaan (null) ja
   // oid-sarakkeeseen kirjoitetaan "Turvakielto" tyhjän arvon sijaan, jotta rivi ei näytä
   // virheeltä — vain ikäryhmäliput näytetään muuten, jotta koulutustoimija näkee mistä
@@ -215,10 +189,6 @@ case class Kotikuntalaskelma(db: DB, organisaatioService: OrganisaatioService) e
   }
 
   private def oppijaQuery(oppilaitosOids: Seq[String], päivä: LocalDate) = {
-    // HUOM: etunimet/sukunimi/oppilaitos/luokka kerätään max()-aggregaatilla per oppija, koska
-    // rivit tulevat opiskeluoikeuskohtaisesti mutta tulos on yksi rivi per oppija. Oletus (käyttäjän
-    // vahvistama): oppijalla ei ole kahta samanaikaista kelpaavaa opiskeluoikeutta, joten max()
-    // palauttaa aina yksikäsitteisen arvon käytännössä — ei erillistä käsittelyä tälle tapaukselle.
     sql"""
     with v as (
       select extract(year from $päivä::date)::int as vuosi
@@ -229,11 +199,14 @@ case class Kotikuntalaskelma(db: DB, organisaatioService: OrganisaatioService) e
       case when bool_or(he.turvakielto) then null else bool_or(he.yksiloity) end as yksiloity,
       case when bool_or(he.turvakielto) then null else max(he.etunimet) end as etunimet,
       case when bool_or(he.turvakielto) then null else max(he.sukunimi) end as sukunimi,
-      case when bool_or(he.turvakielto) then null else max(coalesce(kkh.kotikunta_nimi_fi, he.kotikunta_nimi_fi)) end as kotikunta,
+      case when bool_or(he.turvakielto) then null else max(kkh.kotikunta_nimi_fi) end as kotikunta,
       case when bool_or(he.turvakielto) then null else max(oo.oppilaitos_nimi) end as oppilaitos,
-      -- luokka-aste: pts.koulutusmoduuli_koodiarvo on perusopetuksenvuosiluokkasuoritukselle itse
-      -- luokka-asteen numero (esim. "1") — r_osasuoritus.luokka_aste on eri, kapeampi käsite
-      -- (yhdysluokkaopetuksessa oppiaineen luokka-aste, ei oppijan oma), eikä siksi tähän sovi.
+      -- TODO(TOR-2650): luokka_aste/luokka valitaan max()-aggregaatilla kaikista oppijan
+      -- perusopetuksenvuosiluokka-suorituksista, ei vain päivälle $$päivä voimassa olevasta —
+      -- toisin kuin internationalschool/europeanschoolofhelsinki-haaroissa, tässä ei ole
+      -- pts.alkamispaiva <= $$päivä -rajausta. max() valitsee aakkosellisesti suurimman arvon,
+      -- ei kronologisesti viimeisintä, joten luokan uusinut oppija (esim. vanha "3C", nykyinen
+      -- "3A") voi näyttää raportilla väärän, jo korvatun luokan.
       case when bool_or(he.turvakielto) then null else max(pts.koulutusmoduuli_koodiarvo) end as luokka_aste,
       case when bool_or(he.turvakielto) then null else max(pts.luokka_tai_ryhma) end as luokka,
 
@@ -243,16 +216,19 @@ case class Kotikuntalaskelma(db: DB, organisaatioService: OrganisaatioService) e
 
       bool_or(extract(year from he.syntymaaika) between v.vuosi - 15 and v.vuosi - 13) as kolmetoista_viisitoista,
 
+      -- Jako perustuu nimenomaan vamman/sairauden/toimintakyvyn rajoitteeseen (vahvistettu
+      -- tiketillä), ei toiminta-alueittaiseen opiskeluun eikä pidennettyyn oppivelvollisuuteen
+      -- yleensä — nämä kolme eivät ole sama asia.
       bool_or(
         extract(year from he.syntymaaika) = v.vuosi - 16
         and aj.alku <= $päivä and aj.loppu >= $päivä
-        and (aj.toiminta_alueittain_opiskelu or aj.opetus_vamman_sairauden_tai_rajoitteen_perusteella)
+        and aj.opetus_vamman_sairauden_tai_rajoitteen_perusteella
       ) as kuusitoista_erityisen_tuen_perusteella,
 
       bool_or(
         extract(year from he.syntymaaika) = v.vuosi - 16
         and aj.alku <= $päivä and aj.loppu >= $päivä
-        and not (aj.toiminta_alueittain_opiskelu or aj.opetus_vamman_sairauden_tai_rajoitteen_perusteella)
+        and not aj.opetus_vamman_sairauden_tai_rajoitteen_perusteella
       ) as kuusitoista_ei_erityisen_tuen_perusteella
 
     from v, r_henkilo he
@@ -260,7 +236,7 @@ case class Kotikuntalaskelma(db: DB, organisaatioService: OrganisaatioService) e
     join r_paatason_suoritus pts on pts.opiskeluoikeus_oid = oo.opiskeluoikeus_oid
     left join r_opiskeluoikeus_aikajakso aj on aj.opiskeluoikeus_oid = oo.opiskeluoikeus_oid
     left join esiopetus_opiskeluoik_aikajakso eaj on eaj.opiskeluoikeus_oid = oo.opiskeluoikeus_oid
-    -- Julkinen r_kotikuntahistoria: EI koski_confidential-varianttia, ks. tiedoston alun kommentti.
+    -- Julkinen r_kotikuntahistoria: EI koski_confidential
     left join r_kotikuntahistoria kkh
       on kkh.master_oid = he.master_oid
       and coalesce(kkh.muutto_pvm, '1900-01-01'::date) <= $päivä
