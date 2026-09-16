@@ -1,23 +1,15 @@
-import * as O from 'fp-ts/Option'
-import * as A from 'fp-ts/Array'
-import * as E from 'fp-ts/Either'
 import * as Eq from 'fp-ts/Eq'
-import * as TE from 'fp-ts/TaskEither'
-import { identity, pipe } from 'fp-ts/lib/function'
 import { useCallback } from 'react'
-import { useApiMethod } from '../../api-fetch'
 import { Opiskeluoikeus } from '../../types/fi/oph/koski/schema/Opiskeluoikeus'
+import { deleteAt } from '../../util/fp/arrays'
 import { deletePäätasonSuoritus } from '../../util/koskiApi'
 import {
   getOpiskeluoikeusOid,
   getVersionumero,
-  mergeOpiskeluoikeusVersionumero,
+  mergeOpiskeluoikeusVersionumeroAndRefetch,
   PäätasonSuoritusOf
 } from '../../util/opiskeluoikeus'
 import { FormModel } from './FormModel'
-import { taskifyApiCall } from '../../util/fp/either'
-
-const remove = taskifyApiCall(deletePäätasonSuoritus)
 
 export const useRemovePäätasonSuoritus = <T extends Opiskeluoikeus>(
   form: FormModel<T>,
@@ -28,30 +20,32 @@ export const useRemovePäätasonSuoritus = <T extends Opiskeluoikeus>(
   const removePäätasonSuoritus = useCallback(async () => {
     onRemove()
 
-    pipe(
-      A.findFirst((a: PäätasonSuoritusOf<T>) =>
-        päätasonSuoritusEq.equals(a, päätasonSuoritus)
-      )(form.initialState.suoritukset as PäätasonSuoritusOf<T>[]),
-      O.chain((suoritusAtBackend) => {
-        const oo = form.state
-        const oid = getOpiskeluoikeusOid(oo)
-        const versio = getVersionumero(oo)
-        return oid && versio
-          ? O.some(remove(oid, versio, suoritusAtBackend))
-          : O.none
-      }),
-      // TaskEither on laiska: poistokutsu lähtee vasta, kun tehtävä ajetaan
-      O.map((poisto) =>
-        pipe(
-          poisto,
-          TE.map((ooVersiot) => {
-            form.updateAt(
-              form.root,
-              mergeOpiskeluoikeusVersionumero(ooVersiot.data)
-            )
-          })
-        )()
-      )
+    // Backend poistaa vain täsmälleen tallennetun kaltaisen suorituksen, joten
+    // poistettava haetaan ladatusta tilasta. Jos suoritusta ei löydy, se on
+    // lisätty tässä muokkauksessa eikä sitä tarvitse poistaa backendiltä.
+    const tallennetut = form.originalState
+      .suoritukset as PäätasonSuoritusOf<T>[]
+    const index = tallennetut.findIndex((s) =>
+      päätasonSuoritusEq.equals(s, päätasonSuoritus)
+    )
+    const oid = getOpiskeluoikeusOid(form.state)
+    const versio = getVersionumero(form.state)
+    if (index < 0 || !oid || versio === undefined) {
+      return
+    }
+
+    // Poisto tallentuu heti, joten lomake viedään tallennuksen tavoin backendin
+    // tilaan. Muuten muokkauksen peruminen palauttaisi poistetun suorituksen.
+    const opiskeluoikeusPoistonJälkeen = {
+      ...form.originalState,
+      suoritukset: deleteAt(tallennetut, index)
+    }
+    form.save(
+      () => deletePäätasonSuoritus(oid, versio, tallennetut[index]),
+      (ooVersiot) => () =>
+        mergeOpiskeluoikeusVersionumeroAndRefetch<T>(ooVersiot)(
+          opiskeluoikeusPoistonJälkeen
+        )
     )
   }, [form, onRemove, päätasonSuoritus, päätasonSuoritusEq])
 
