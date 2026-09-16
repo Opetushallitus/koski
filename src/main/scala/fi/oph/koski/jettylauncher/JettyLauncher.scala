@@ -248,7 +248,6 @@ class KeepAliveServerConnector(
   private def setIfSupported(socket: Socket, option: SocketOption[Integer], value: Int): Unit = {
     if (socket.supportedOptions.contains(option)) {
       socket.setOption(option, Integer.valueOf(value))
-      logger.info(s"Socket option ${option.name} = $value")
     } else {
       logger.warn(s"Socket option ${option.name} not supported")
     }
