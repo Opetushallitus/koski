@@ -536,11 +536,17 @@ Hetu palautetaan vain oppijoille, jotka on haettu hetun avulla.
 
 Tällä kutsulla haetaan yhden henkilön tiedot henkilötunnuksen perusteella.
 
-Käytössä olevat parametrit: vainVahvistetut=false ja osasuoritukset=false
+Käytössä olevat parametrit (oletusarvo suluissa):
+
+- `osasuoritukset` (false): palautetaanko suoritusten osasuoritukset
+- `vainVahvistetut` (false): palautetaanko vain vahvistetut suoritukset
+- `valintatiedot` (false): palautetaanko henkilön opiskelijavalintatiedot eli hakemukset ja hakutoiveet sekä
+  valinnan, opiskelupaikan vastaanoton ja ilmoittautumisen tilat. Tiedot haetaan Opintopolun
+  opiskelijavalintapalveluista. Jos valintatietoja ei saada haettua, koko kutsu palauttaa virheen 503.
 
 ### Esimerkkipyyntö
 
-    POST /koski/api/luovutuspalvelu/keha/sdg/hetu?vainVahvistetut=false&osasuoritukset=false HTTP/1.1
+    POST /koski/api/luovutuspalvelu/keha/sdg/hetu?vainVahvistetut=false&osasuoritukset=false&valintatiedot=true HTTP/1.1
     Content-Type: application/json
 
     {
@@ -554,8 +560,15 @@ Käytössä olevat parametrit: vainVahvistetut=false ja osasuoritukset=false
 
     {
         "henkilö": ...,
-        "opiskeluoikeudet": [...]
+        "opiskeluoikeudet": [...],
+        "valintatiedot": {
+            "hakemukset": [...]
+        }
     }
+
+Kenttä `valintatiedot` palautetaan vain, kun parametri `valintatiedot=true` on annettu. Tällöin myös henkilö, jolla
+ei ole opiskeluoikeuksia, palautetaan kenttien `henkilö` ja `valintatiedot` sekä tyhjän `opiskeluoikeudet`-listan
+kanssa; ilman parametria tällaisen henkilön haku palauttaa virheen 404.
 
 Palautettavan JSON-rakenteen tietomallin dokumentaatio on
 <a href="/koski/json-schema-viewer/?schema=sdg-oppija-schema.json">täällä</a>.
