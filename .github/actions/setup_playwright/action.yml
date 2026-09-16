@@ -3,9 +3,7 @@ runs:
   steps:
     - name: Install project dependencies
       working-directory: web
-      env:
-        PNPM_FROZEN_FLAG: ${{ github.event_name == 'pull_request' && github.event.pull_request.user.login == 'renovate[bot]' && '--no-frozen-lockfile' || '--frozen-lockfile' }}
-      run: pnpm install $PNPM_FROZEN_FLAG
+      run: pnpm install --frozen-lockfile
       shell: bash
     - name: Get playwright version
       working-directory: web

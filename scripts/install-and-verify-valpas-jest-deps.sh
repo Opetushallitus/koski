@@ -12,10 +12,10 @@ fi
 
 echo "Verifying test environment..."
 cd valpas-web
-ppnpm install --frozen-lockfile
+pnpm install --frozen-lockfile
 pnpm run test:integration -- -t "Testiympäristön oikeellisuus"
 
 
 cd ../web
-ppnpm install --frozen-lockfile
+pnpm install --frozen-lockfile
 pnpm run build:prod

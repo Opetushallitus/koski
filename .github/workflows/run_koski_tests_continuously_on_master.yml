@@ -11,7 +11,7 @@ env:
 jobs:
   tests:
     name: "👀"
-    uses: ./.github/workflows/all_tests.yml
+    uses: ./.github/workflows/tests.yml
   trivy:
     name: Trivy
     uses: ./.github/workflows/trivy_check.yml

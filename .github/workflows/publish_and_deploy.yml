@@ -1,26 +1,14 @@
-name: Test, build and deploy master
+name: Publish and deploy
 on:
-  push:
-    branches:
-      - master
+  workflow_call:
 env:
   DOCKER_BUILDKIT: 1
   SSH_AUTH_SOCK: /tmp/ssh_agent.sock
   TZ: Europe/Helsinki
 
 jobs:
-  tests:
-    name: "👀 Tests"
-    uses: ./.github/workflows/all_tests.yml
-  trivy:
-    name: Trivy
-    uses: ./.github/workflows/trivy_check.yml
-    with:
-      upload-report: true
-
   publish_image:
     name: Publish Koski Docker Image and package
-    needs: [tests]
     uses: ./.github/workflows/publish_image.yml
     with:
       commithash: ${{ github.sha }}

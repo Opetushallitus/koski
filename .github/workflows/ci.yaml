@@ -1,0 +1,101 @@
+name: CI
+
+on:
+  pull_request:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  changes:
+    name: Detect changed paths
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: read
+      pull-requests: read
+    # PR-ajoissa testataan vain muutosten koskettamat osat.
+    # Valpas- ja OAuth2-integraatiotestit käyttävät myös Kosken kansalaiskäyttöliittymää.
+    outputs:
+      backend: ${{ steps.filter.outputs.all == 'true' || steps.filter.outputs.backend == 'true' }}
+      koski-ui: ${{ steps.filter.outputs.all == 'true' || steps.filter.outputs.backend == 'true' || steps.filter.outputs.koski-ui == 'true' }}
+      valpas-ui: ${{ steps.filter.outputs.all == 'true' || steps.filter.outputs.backend == 'true' || steps.filter.outputs.koski-ui == 'true' || steps.filter.outputs.valpas-ui == 'true' }}
+      oauth2: ${{ steps.filter.outputs.all == 'true' || steps.filter.outputs.backend == 'true' || steps.filter.outputs.koski-ui == 'true' || steps.filter.outputs.oauth2 == 'true' }}
+    steps:
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7
+      - name: Detect changed paths
+        id: filter
+        uses: dorny/paths-filter@ceb8a2b8f2d89434be7ff52d3de7ec3738c5cc9d # v4.0.3
+        with:
+          filters: |
+            # Yhteisen buildin ja testien ajotavan muutokset tarkistetaan kaikilla testeillä.
+            all:
+              - '.github/**'
+              - '.mvn/**'
+              - 'scripts/**'
+              - 'Makefile'
+              - 'pom.xml'
+              - '.npmrc'
+              - '.nvmrc'
+              - '.editorconfig'
+              - 'docker-compose*.yaml'
+              - 'docker-build/**'
+              - 'postgresql/**'
+              - 'opensearch/**'
+
+            backend:
+              - 'src/**'
+              - 'scala-schema/**'
+
+            koski-ui:
+              - 'web/**'
+              - '.browserslistrc'
+
+            valpas-ui:
+              - 'valpas-web/**'
+
+            oauth2:
+              - 'omadata-oauth2-sample/**'
+
+  tests:
+    name: "Tests"
+    needs: [changes]
+    uses: ./.github/workflows/tests.yml
+    permissions:
+      contents: read
+      packages: read
+    with:
+      run-backend-tests: ${{ needs.changes.outputs.backend == 'true' }}
+      run-koski-ui-tests: ${{ needs.changes.outputs.koski-ui == 'true' }}
+      run-valpas-ui-tests: ${{ needs.changes.outputs.valpas-ui == 'true' }}
+      run-oauth2-tests: ${{ needs.changes.outputs.oauth2 == 'true' }}
+
+  ci_passed:
+    name: CI passed
+    runs-on: ubuntu-24.04
+    needs: [changes, tests]
+    if: ${{ always() }}
+    steps:
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7
+
+      - name: Verify every check is gated
+        env:
+          RESULTS: ${{ toJSON(needs) }}
+        run: |
+          jobs=$(yq '.jobs | keys - ["ci_passed"] | .[]' .github/workflows/ci.yaml)
+          for job in $jobs; do
+            if ! echo "$RESULTS" | jq -e --arg job "$job" 'has($job)' > /dev/null; then
+              echo "::error::job '$job' is missing from the needs list of ci_passed"
+              exit 1
+            fi
+          done
+
+      - name: Verify CI results
+        env:
+          RESULTS: ${{ toJSON(needs) }}
+        run: |
+          echo "$RESULTS" | jq -r 'to_entries[] | "\(.key): \(.value.result)"'
+          echo "$RESULTS" | jq -e 'all(.[]; .result == "success" or .result == "skipped")' > /dev/null

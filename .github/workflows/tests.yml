@@ -3,27 +3,42 @@ name: "👀"
 on:
   workflow_call:
     inputs:
-      runs-on:
-        type: string
-        default: "ubuntu-22.04"
+      run-backend-tests:
+        description: Run Scala backend tests and mock-data formatting checks
+        type: boolean
+        default: true
+      run-koski-ui-tests:
+        description: Run Koski frontend lint, unit, browser and visual tests
+        type: boolean
+        default: true
+      run-valpas-ui-tests:
+        description: Run Valpas frontend lint, unit and browser tests
+        type: boolean
+        default: true
+      run-oauth2-tests:
+        description: Run OAuth2 sample server lint, build and browser tests
+        type: boolean
+        default: true
 
 env:
   DOCKER_BUILDKIT: 1
   TZ: Europe/Helsinki
-  PNPM_FROZEN_FLAG: ${{ github.event_name == 'pull_request' && github.event.pull_request.user.login == 'renovate[bot]' && '--no-frozen-lockfile' || '--frozen-lockfile' }}
 
 jobs:
   build_koski:
+    if: ${{ inputs.run-backend-tests || inputs.run-koski-ui-tests || inputs.run-valpas-ui-tests || inputs.run-oauth2-tests }}
     name: Build Koski app
-    runs-on: ${{ inputs.runs-on }}
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7
       - uses: ./.github/actions/build_koski
         with:
           commithash: ${{ github.sha }}
-  lint_koski:
-    name: Lint Koski
-    runs-on: ${{ inputs.runs-on }}
+
+  koski_frontend_lint:
+    if: ${{ inputs.run-koski-ui-tests }}
+    name: Koski frontend lint
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7
 
@@ -34,25 +49,44 @@ jobs:
           [ -n "$image_version" ] && [ "$package_version" = "$image_version" ] ||
             { echo "::error::Playwright-versiot eroavat: package.json=$package_version, image=$image_version. Päivitä ne yhdessä."; exit 1; }
 
-      - uses: ./.github/actions/setup_java_17
+      - uses: ./.github/actions/setup_pnpm_cache
+
+      - name: Setup Node
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
+        with:
+          node-version-file: ".nvmrc"
+
+      - name: Run linter
+        run: |
+          cd web
+          pnpm install --frozen-lockfile
+          cd ..
+          make eslint prettier
+
+  koski_mock_data_formatting:
+    if: ${{ inputs.run-backend-tests }}
+    name: Koski mock-data formatting
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7
 
       - uses: ./.github/actions/setup_pnpm_cache
 
       - name: Setup Node
         uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
         with:
-          node-version: "24.21.0"
+          node-version-file: ".nvmrc"
 
-      - name: Run linter
+      - name: Check mock-data formatting
         run: |
           cd web
-          pnpm install $PNPM_FROZEN_FLAG
+          pnpm install --frozen-lockfile
           cd ..
-          make lint
+          make prettier-mock-data
 
   checkdoc_koski_validation:
     name: validaation_muutoshistoria.md check
-    runs-on: ${{ inputs.runs-on }}
+    runs-on: ubuntu-24.04
     if: ${{ !contains(github.event.head_commit.message, '[skip-tests]') }}
     steps:
       - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7
@@ -64,7 +98,7 @@ jobs:
 
   checkdoc_koski_schema:
     name: tiedonsiirtoprotokollan_muutoshistoria.md check
-    runs-on: ${{ inputs.runs-on }}
+    runs-on: ubuntu-24.04
     if: ${{ !contains(github.event.head_commit.message, '[skip-tests]') }}
     steps:
       - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7
@@ -76,7 +110,7 @@ jobs:
 
   checkdoc_database_documentation:
     name: Database documentation check
-    runs-on: ${{ inputs.runs-on }}
+    runs-on: ubuntu-24.04
     if: ${{ !contains(github.event.head_commit.message, '[skip-tests]') }}
     steps:
       - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7
@@ -86,10 +120,10 @@ jobs:
         run: |
           make checkdoc_dbdocs
 
-  run_backend_tests_api_oppijavalidation:
+  backend_tests_api_oppijavalidation:
     name: Backend (api oppijavalidation)
-    runs-on: ${{ inputs.runs-on }}
-    if: ${{ !contains(github.event.head_commit.message, '[skip-tests]') }}
+    runs-on: ubuntu-24.04
+    if: ${{ inputs.run-backend-tests && !contains(github.event.head_commit.message, '[skip-tests]') }}
     needs: [build_koski]
     steps:
       - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7
@@ -98,10 +132,10 @@ jobs:
           suites: |
             fi.oph.koski.api.oppijavalidation
 
-  run_scala_schema_tests:
+  scala_schema_tests:
     name: Backend (scala-schema)
-    runs-on: ${{ inputs.runs-on }}
-    if: ${{ !contains(github.event.head_commit.message, '[skip-tests]') }}
+    runs-on: ubuntu-24.04
+    if: ${{ inputs.run-backend-tests && !contains(github.event.head_commit.message, '[skip-tests]') }}
     needs: [build_koski]
     steps:
       - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7
@@ -110,10 +144,10 @@ jobs:
           suites: |
             fi.oph.scalaschema
 
-  run_backend_tests_api_misc_1:
+  backend_tests_api_misc_1:
     name: Backend (api misc 1/2)
-    runs-on: ${{ inputs.runs-on }}
-    if: ${{ !contains(github.event.head_commit.message, '[skip-tests]') }}
+    runs-on: ubuntu-24.04
+    if: ${{ inputs.run-backend-tests && !contains(github.event.head_commit.message, '[skip-tests]') }}
     needs: [build_koski]
     steps:
       - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7
@@ -123,10 +157,10 @@ jobs:
             fi.oph.koski.api.oppijaupdate, \
             fi.oph.koski.api.suostumus
 
-  run_backend_tests_api_misc_2:
+  backend_tests_api_misc_2:
     name: Backend (api misc 2/2)
-    runs-on: ${{ inputs.runs-on }}
-    if: ${{ !contains(github.event.head_commit.message, '[skip-tests]') }}
+    runs-on: ubuntu-24.04
+    if: ${{ inputs.run-backend-tests && !contains(github.event.head_commit.message, '[skip-tests]') }}
     needs: [build_koski]
     steps:
       - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7
@@ -136,10 +170,10 @@ jobs:
             fi.oph.koski.api.misc, \
             fi.oph.koski.cache
 
-  run_backend_tests_nonmock:
+  backend_tests_nonmock:
     name: Backend (non-mock)
-    runs-on: ${{ inputs.runs-on }}
-    if: ${{ !contains(github.event.head_commit.message, '[skip-tests]') }}
+    runs-on: ubuntu-24.04
+    if: ${{ inputs.run-backend-tests && !contains(github.event.head_commit.message, '[skip-tests]') }}
     needs: [build_koski]
     steps:
       - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7
@@ -148,10 +182,10 @@ jobs:
           suites: |
             fi.oph.koski.nonmockloginsecurity
 
-  run_backend_tests_other_1:
+  backend_tests_other_1:
     name: Backend (other 1/4)
-    runs-on: ${{ inputs.runs-on }}
-    if: ${{ !contains(github.event.head_commit.message, '[skip-tests]') }}
+    runs-on: ubuntu-24.04
+    if: ${{ inputs.run-backend-tests && !contains(github.event.head_commit.message, '[skip-tests]') }}
     needs: [build_koski]
     steps:
       - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7
@@ -189,10 +223,10 @@ jobs:
             fi.oph.koski.todistus, \
             fi.oph.koski.todistus.tiedote
 
-  run_backend_tests_other_2:
+  backend_tests_other_2:
     name: Backend (other 2/4)
-    runs-on: ${{ inputs.runs-on }}
-    if: ${{ !contains(github.event.head_commit.message, '[skip-tests]') }}
+    runs-on: ubuntu-24.04
+    if: ${{ inputs.run-backend-tests && !contains(github.event.head_commit.message, '[skip-tests]') }}
     needs: [build_koski]
     steps:
       - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7
@@ -206,10 +240,10 @@ jobs:
             fi.oph.koski.valpas.oppivelvollisuudenkeskeytys, \
             fi.oph.koski.valpas.suorittamisenvalvonta
 
-  run_backend_tests_raportit:
+  backend_tests_raportit:
     name: Backend (raportit)
-    runs-on: ${{ inputs.runs-on }}
-    if: ${{ !contains(github.event.head_commit.message, '[skip-tests]') }}
+    runs-on: ubuntu-24.04
+    if: ${{ inputs.run-backend-tests && !contains(github.event.head_commit.message, '[skip-tests]') }}
     needs: [build_koski]
     steps:
       - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7
@@ -218,10 +252,10 @@ jobs:
           suites: |
             fi.oph.koski.raportit
 
-  run_backend_tests_other_3:
+  backend_tests_other_3:
     name: Backend (other 3/4)
-    runs-on: ${{ inputs.runs-on }}
-    if: ${{ !contains(github.event.head_commit.message, '[skip-tests]') }}
+    runs-on: ubuntu-24.04
+    if: ${{ inputs.run-backend-tests && !contains(github.event.head_commit.message, '[skip-tests]') }}
     needs: [build_koski]
     steps:
       - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7
@@ -241,10 +275,10 @@ jobs:
             fi.oph.koski.util, \
             fi.oph.koski.versioning
 
-  run_backend_tests_massaluovutus:
+  backend_tests_massaluovutus:
     name: Backend (massaluovutus)
-    runs-on: ${{ inputs.runs-on }}
-    if: ${{ !contains(github.event.head_commit.message, '[skip-tests]') }}
+    runs-on: ubuntu-24.04
+    if: ${{ inputs.run-backend-tests && !contains(github.event.head_commit.message, '[skip-tests]') }}
     needs: [build_koski]
     steps:
       - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7
@@ -254,10 +288,10 @@ jobs:
             fi.oph.koski.massaluovutus, \
             fi.oph.koski.massaluovutus.suorituspalvelu
 
-  run_backend_tests_other_4:
+  backend_tests_other_4:
     name: Backend (other 4/4)
-    runs-on: ${{ inputs.runs-on }}
-    if: ${{ !contains(github.event.head_commit.message, '[skip-tests]') }}
+    runs-on: ubuntu-24.04
+    if: ${{ inputs.run-backend-tests && !contains(github.event.head_commit.message, '[skip-tests]') }}
     needs: [build_koski]
     steps:
       - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7
@@ -282,74 +316,75 @@ jobs:
             fi.oph.koski.suoritusjako.aktiivisetjapaattyneetopinnot, \
             fi.oph.koski.suoritusjako.suoritetuttutkinnot
 
-  run_frontend_tests:
-    name: Frontend ${{matrix.shardIndex}}/${{matrix.shardTotal}}
+  koski_browser_tests_mocha:
+    name: Koski browser tests (Mocha) ${{matrix.shardIndex}}/${{matrix.shardTotal}}
     strategy:
       fail-fast: false
       matrix:
         shardIndex: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
         shardTotal: [12]
-    runs-on: ${{ inputs.runs-on }}
-    if: ${{ !contains(github.event.head_commit.message, '[skip-tests]') }}
+    runs-on: ubuntu-24.04
+    if: ${{ inputs.run-koski-ui-tests && !contains(github.event.head_commit.message, '[skip-tests]') }}
     needs: [build_koski]
     steps:
       - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7
-      - uses: ./.github/actions/koski_frontend_test
+      - uses: ./.github/actions/koski_mocha_browser_tests_shard
         with:
           shardIndex: ${{ matrix.shardIndex }}
           shardTotal: ${{ matrix.shardTotal }}
 
-  run_frontend_unit_tests:
-    name: Frontend unit tests
-    runs-on: ${{ inputs.runs-on }}
+  koski_frontend_unit_tests:
+    if: ${{ inputs.run-koski-ui-tests }}
+    name: Koski frontend unit tests
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7
       - uses: ./.github/actions/setup_pnpm_cache
       - name: Setup Node
         uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
         with:
-          node-version: "24.21.0"
+          node-version-file: ".nvmrc"
       - run: |
           cd web
-          pnpm install $PNPM_FROZEN_FLAG
+          pnpm install --frozen-lockfile
           cd ..
           make js-unit-test
 
-  run_frontend_playwright_tests:
-    name: Playwright ${{matrix.shardIndex}}/${{matrix.shardTotal}}
+  koski_browser_tests_playwright:
+    name: Koski browser tests (Playwright) ${{matrix.shardIndex}}/${{matrix.shardTotal}}
     strategy:
       fail-fast: false
       matrix:
         shardIndex: [1, 2, 3, 4, 5]
         shardTotal: [5]
-    runs-on: ${{ inputs.runs-on }}
-    if: ${{ !contains(github.event.head_commit.message, '[skip-tests]') }}
+    runs-on: ubuntu-24.04
+    if: ${{ inputs.run-koski-ui-tests && !contains(github.event.head_commit.message, '[skip-tests]') }}
     needs: [build_koski]
     steps:
       - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7
-      - uses: ./.github/actions/koski_frontend_playwright_test
+      - uses: ./.github/actions/koski_playwright_browser_tests_shard
         with:
           shardIndex: ${{ matrix.shardIndex }}
           shardTotal: ${{ matrix.shardTotal }}
 
-  run_frontend_visual_tests:
-    name: Visuaaliregressiot
-    runs-on: ${{ inputs.runs-on }}
-    if: ${{ !contains(github.event.head_commit.message, '[skip-tests]') }}
+  koski_frontend_visual_tests:
+    name: Koski visuaaliregressiot
+    runs-on: ubuntu-24.04
+    if: ${{ inputs.run-koski-ui-tests && !contains(github.event.head_commit.message, '[skip-tests]') }}
     needs: [build_koski]
     steps:
       - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7
       - uses: ./.github/actions/koski_visual_test
 
-  valpas_integration_tests:
-    name: Valpas ${{matrix.shardIndex}}/${{matrix.shardTotal}}
+  valpas_browser_tests_selenium:
+    name: Valpas browser tests (Selenium) ${{matrix.shardIndex}}/${{matrix.shardTotal}}
     strategy:
       fail-fast: false
       matrix:
         shardIndex: [1, 2, 3, 4, 5, 6]
         shardTotal: [6]
-    runs-on: ${{ inputs.runs-on }}
-    if: ${{ !contains(github.event.head_commit.message, '[skip-tests]') }}
+    runs-on: ubuntu-24.04
+    if: ${{ inputs.run-valpas-ui-tests && !contains(github.event.head_commit.message, '[skip-tests]') }}
     needs: [build_koski]
     steps:
       - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7
@@ -359,8 +394,8 @@ jobs:
 
   valpas_frontend_unit_tests:
     name: Valpas lint & unit
-    runs-on: ${{ inputs.runs-on }}
-    if: ${{ !contains(github.event.head_commit.message, '[skip-tests]') }}
+    runs-on: ubuntu-24.04
+    if: ${{ inputs.run-valpas-ui-tests && !contains(github.event.head_commit.message, '[skip-tests]') }}
     steps:
       - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7
 
@@ -369,17 +404,54 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
         with:
-          node-version: "24.21.0"
+          node-version-file: ".nvmrc"
 
 
       - name: Run linter and tests
         run: |
           cd valpas-web
-          pnpm install $PNPM_FROZEN_FLAG
+          pnpm install --frozen-lockfile
           pnpm run lint
           pnpm run test:unit
 
-  tests-oauth2:
-    name: "👀OAuth2"
+  oauth2_server_checks:
+    if: ${{ inputs.run-oauth2-tests }}
+    name: OAuth2 server lint & build
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7
+      - uses: ./.github/actions/setup_pnpm_cache
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
+        with:
+          node-version-file: "omadata-oauth2-sample/.nvmrc"
+          cache: "pnpm"
+          cache-dependency-path: "omadata-oauth2-sample/server/pnpm-lock.yaml"
+      - run: pnpm --dir omadata-oauth2-sample/server install --frozen-lockfile
+      - run: pnpm --dir omadata-oauth2-sample/server run lint
+      - run: pnpm --dir omadata-oauth2-sample/server run build
+
+  oauth2_browser_tests_playwright:
+    name: OAuth2 browser tests ${{matrix.shardIndex}}/${{matrix.shardTotal}}
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: read
+    strategy:
+      fail-fast: false
+      matrix:
+        shardIndex: [1]
+        shardTotal: [1]
+    if: ${{ inputs.run-oauth2-tests && !contains(github.event.head_commit.message, '[skip-tests]') }}
     needs: [build_koski]
-    uses: ./.github/workflows/omadataoauth2sample_test.yml
+    steps:
+      - name: Checkout
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7
+
+      - name: Generate  test certificates
+        run: bash omadata-oauth2-sample/server/testca/generate-certs.sh
+
+      - uses: ./.github/actions/omadataoauth2_playwright_browser_tests_shard
+        with:
+          shardIndex: ${{ matrix.shardIndex }}
+          shardTotal: ${{ matrix.shardTotal }}

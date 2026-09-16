@@ -1,11 +1,11 @@
 name: Trivy dependency check
 
 on:
+  push:
+    branches: [master]
+  pull_request:
   workflow_call:
     inputs:
-      runs-on:
-        type: string
-        default: "ubuntu-24.04"
       upload-report:
         type: boolean
         default: false
@@ -23,7 +23,7 @@ permissions:
 jobs:
   trivy_dependency_check:
     name: Trivy dependency check
-    runs-on: ${{ inputs.runs-on }}
+    runs-on: ubuntu-24.04
     timeout-minutes: 20
     outputs:
       cves: ${{ steps.summarize.outputs.cves }}
@@ -49,7 +49,7 @@ jobs:
           trivyignores: .trivyignore
           format: json
           output: trivy-report.json
-          severity: ${{ inputs.severity }}
+          severity: ${{ inputs.severity || 'CRITICAL,HIGH' }}
           skip-dirs: 'src/main/resources/mockdata,src/test,target,omadata-oauth2-sample'
 
       - name: Summarize CVEs
@@ -83,7 +83,7 @@ jobs:
       - name: Upload Trivy report
         if: >-
           always() &&
-          inputs.upload-report &&
+          (inputs.upload-report || github.event_name == 'push') &&
           steps.summarize.outcome == 'success' &&
           steps.summarize.outputs.cves != '[]' &&
           hashFiles('trivy-report.json') != ''

@@ -87,7 +87,7 @@ Siksi uusia OAuth2-rajapinnan käyttäjiä lisättäessä tietoja pitää konfig
     token_type        =Bearer
     expires_in
 
-## Integraatiotestit
+## Selaintestit
 
 Ks. [omadata-oauth2-sample/README.md](../omadata-oauth2-sample/README.md#e2e-testit)
 

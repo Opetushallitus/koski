@@ -16,7 +16,7 @@ if [ "${1:-}" = "--check" ]; then
   MODE="--check"
 fi
 
-npx prettier --config web/.prettierrc.json "$MODE" \
+npx prettier "$MODE" \
   "src/main/resources/mockdata/eperusteet/**/*.json" \
   "src/main/resources/mockdata/koodisto/**/*.json" \
   "src/main/resources/mockdata/lokalisointi/**/*.json" \

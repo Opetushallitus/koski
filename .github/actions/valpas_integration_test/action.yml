@@ -15,13 +15,11 @@ runs:
 
     - name: Run tests
       uses: nick-fields/retry@ad984534de44a9489a53aefd81eb77f87c70dc60 # v4
-      env:
-        PNPM_FROZEN_FLAG: ${{ github.event_name == 'pull_request' && github.event.pull_request.user.login == 'renovate[bot]' && '--no-frozen-lockfile' || '--frozen-lockfile' }}
       with:
         max_attempts: 2
         timeout_minutes: 45
         command: |
           cd valpas-web
-          pnpm install $PNPM_FROZEN_FLAG
+          pnpm install --frozen-lockfile
           cd ..
           make valpas-fronttest-${{ inputs.index }}
