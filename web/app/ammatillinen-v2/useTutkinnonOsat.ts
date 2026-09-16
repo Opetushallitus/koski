@@ -14,14 +14,18 @@ const emptyResult: LisättävätTutkinnonOsat = {
   osat: []
 }
 
+// Ilman ryhmää palautetaan kaikki perusteen tutkinnon osat
 export const useTutkinnonOsat = (
   perusteenDiaarinumero: string | undefined,
-  tutkinnonOsaRyhmä: string | undefined
+  tutkinnonOsaRyhmä?: string
 ): LisättävätTutkinnonOsat => {
   const params =
-    perusteenDiaarinumero === undefined || tutkinnonOsaRyhmä === undefined
+    perusteenDiaarinumero === undefined
       ? undefined
-      : ([perusteenDiaarinumero, tutkinnonOsaRyhmä] as [string, string])
+      : ([perusteenDiaarinumero, tutkinnonOsaRyhmä] as [
+          string,
+          string | undefined
+        ])
 
   const result = useApiWithParams(fetchPerusteTutkinnonOsat, params, cache)
 

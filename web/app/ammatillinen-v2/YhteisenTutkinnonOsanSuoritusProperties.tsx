@@ -1,6 +1,6 @@
 import { FormModel, FormOptic } from '../components-v2/forms/FormModel'
 import { AmmatillinenOpiskeluoikeus } from '../types/fi/oph/koski/schema/AmmatillinenOpiskeluoikeus'
-import { YhteisenOsittaisenAmmatillisenTutkinnonTutkinnonosanSuoritus } from '../types/fi/oph/koski/schema/YhteisenOsittaisenAmmatillisenTutkinnonTutkinnonosanSuoritus'
+import { AmisYhteisenTutkinnonOsanSuoritus } from './tutkinnonOsanSuoritukset'
 import {
   OsasuoritusProperty,
   OsasuoritusPropertyValue
@@ -28,6 +28,7 @@ import { append, deleteAt } from '../util/fp/arrays'
 import { NäyttöEdit, NäyttöView } from './Näyttö'
 import { OsasuoritusTable } from '../components-v2/opiskeluoikeus/OsasuoritusTable'
 import { YhteisenTutkinnonOsanOsaAlueenSuoritusProperties } from './YhteisenTutkinnonOsanOsaAlueenSuoritusProperties'
+import { TutkinnonOsanToimipisteJaVahvistus } from './TutkinnonOsanToimipisteJaVahvistus'
 import React, { useState } from 'react'
 import {
   AmisArvosanaInTableEdit,
@@ -64,21 +65,22 @@ import { Column, ColumnRow } from '../components-v2/containers/Columns'
 import { hasAmmatillinenArviointi } from './OsasuoritusTables'
 import { TestIdLayer } from '../appstate/useTestId'
 import { useTutkinnonOsanOsat } from './useTutkinnonOsanOsat'
-import { AmmatillisenTutkinnonOsittainenSuoritus } from '../types/fi/oph/koski/schema/AmmatillisenTutkinnonOsittainenSuoritus'
 
-type YhteisenAmmatillisenTutkinnonOsasuoritusPropertiesProps = {
+type YhteisenTutkinnonOsanSuoritusPropertiesProps = {
   form: FormModel<AmmatillinenOpiskeluoikeus>
   osasuoritusPath: FormOptic<
     AmmatillinenOpiskeluoikeus,
-    YhteisenOsittaisenAmmatillisenTutkinnonTutkinnonosanSuoritus
+    AmisYhteisenTutkinnonOsanSuoritus
   >
-  osasuoritus: YhteisenOsittaisenAmmatillisenTutkinnonTutkinnonosanSuoritus
+  osasuoritus: AmisYhteisenTutkinnonOsanSuoritus
+  perusteenDiaarinumero?: string
 }
-export const YhteisenOsittaisenAmmatillisenTutkinnonOsasuoritusProperties = ({
+export const YhteisenTutkinnonOsanSuoritusProperties = ({
   form,
   osasuoritusPath,
-  osasuoritus
-}: YhteisenAmmatillisenTutkinnonOsasuoritusPropertiesProps) => {
+  osasuoritus,
+  perusteenDiaarinumero
+}: YhteisenTutkinnonOsanSuoritusPropertiesProps) => {
   return (
     <>
       {osasuoritus.suorituskieli && (
@@ -104,6 +106,10 @@ export const YhteisenOsittaisenAmmatillisenTutkinnonOsasuoritusProperties = ({
           />
         </OsasuoritusPropertyValue>
       </OsasuoritusProperty>
+      <TutkinnonOsanToimipisteJaVahvistus
+        toimipiste={osasuoritus.toimipiste}
+        vahvistus={osasuoritus.vahvistus}
+      />
       <OsasuoritusProperty label={'Arviointi'}>
         <OsasuoritusPropertyValue>
           <TestIdLayer id="arviointi">
@@ -292,7 +298,8 @@ export const YhteisenOsittaisenAmmatillisenTutkinnonOsasuoritusProperties = ({
         addNewOsasuoritusViewProps={{
           form,
           suoritusPath: osasuoritusPath,
-          osasuoritus
+          osasuoritus,
+          perusteenDiaarinumero
         }}
       />
     </>
@@ -303,20 +310,21 @@ type NewYhteisenTutkinnonOsanOsaAlueenSuoritusProps = {
   form: FormModel<AmmatillinenOpiskeluoikeus>
   suoritusPath: FormOptic<
     AmmatillinenOpiskeluoikeus,
-    YhteisenOsittaisenAmmatillisenTutkinnonTutkinnonosanSuoritus
+    AmisYhteisenTutkinnonOsanSuoritus
   >
-  osasuoritus: YhteisenOsittaisenAmmatillisenTutkinnonTutkinnonosanSuoritus
+  osasuoritus: AmisYhteisenTutkinnonOsanSuoritus
+  perusteenDiaarinumero?: string
 }
 
 const NewYhteisenTutkinnonOsanOsaAlueenSuoritus = ({
   form,
   suoritusPath,
-  osasuoritus
+  osasuoritus,
+  perusteenDiaarinumero
 }: NewYhteisenTutkinnonOsanOsaAlueenSuoritusProps) => {
   const [showModal, setShowModal] = useState(false)
   const lisättävätOsat = useTutkinnonOsanOsat(
-    (form.state.suoritukset[0] as AmmatillisenTutkinnonOsittainenSuoritus)
-      .koulutusmoduuli.perusteenDiaarinumero || '',
+    perusteenDiaarinumero || '',
     osasuoritus.koulutusmoduuli.tunniste.koodiarvo
   ).map((k) => k.koodiarvo)
 

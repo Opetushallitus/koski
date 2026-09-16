@@ -1,6 +1,6 @@
 import { FormModel, FormOptic } from '../components-v2/forms/FormModel'
 import { AmmatillinenOpiskeluoikeus } from '../types/fi/oph/koski/schema/AmmatillinenOpiskeluoikeus'
-import { OsittaisenAmmatillisenTutkinnonOsanKorkeakouluopintoSuoritus } from '../types/fi/oph/koski/schema/OsittaisenAmmatillisenTutkinnonOsanKorkeakouluopintoSuoritus'
+import { AmisKorkeakouluopintoSuoritus } from './tutkinnonOsanSuoritukset'
 import { finnish, t } from '../i18n/i18n'
 import { OsasuoritusTable } from '../components-v2/opiskeluoikeus/OsasuoritusTable'
 import React, { useState } from 'react'
@@ -28,104 +28,101 @@ import { KorkeakouluopintojenTutkinnonOsaaPienempiKokonaisuus } from '../types/f
 import { KorkeakouluopintojenSuoritus } from '../types/fi/oph/koski/schema/KorkeakouluopintojenSuoritus'
 import { AmisArvosanaInTableEdit, AmisArvosanaInTableView } from './Arviointi'
 
-export type OsittaisenAmmatillisenTutkinnonOsanKorkeakouluopintoSuoritusPropertiesProps =
-  {
-    form: FormModel<AmmatillinenOpiskeluoikeus>
-    osasuoritusPath: FormOptic<
-      AmmatillinenOpiskeluoikeus,
-      OsittaisenAmmatillisenTutkinnonOsanKorkeakouluopintoSuoritus
-    >
-    osasuoritus: OsittaisenAmmatillisenTutkinnonOsanKorkeakouluopintoSuoritus
-  }
+export type TutkinnonOsanKorkeakouluopintoSuoritusPropertiesProps = {
+  form: FormModel<AmmatillinenOpiskeluoikeus>
+  osasuoritusPath: FormOptic<
+    AmmatillinenOpiskeluoikeus,
+    AmisKorkeakouluopintoSuoritus
+  >
+  osasuoritus: AmisKorkeakouluopintoSuoritus
+}
 
-export const OsittaisenAmmatillisenTutkinnonOsanKorkeakouluopintoSuoritusProperties =
-  ({
-    form,
-    osasuoritusPath,
-    osasuoritus
-  }: OsittaisenAmmatillisenTutkinnonOsanKorkeakouluopintoSuoritusPropertiesProps) => {
-    return (
-      <>
-        <OsasuoritusTable
-          editMode={form.editMode}
-          rows={
-            osasuoritus.osasuoritukset?.map((s, index) => {
-              return {
-                suoritusIndex: 1,
-                osasuoritusIndex: index,
-                columns: {
-                  Osasuoritus: t(s.koulutusmoduuli.tunniste.nimi),
-                  Laajuus: (
-                    <FormField
-                      form={form}
-                      view={LaajuusView}
-                      edit={LaajuusEdit}
-                      editProps={{
-                        createLaajuus: (arvo) =>
-                          LaajuusOsaamispisteissä({ arvo })
-                      }}
-                      path={osasuoritusPath
-                        .prop('osasuoritukset')
-                        .valueOr([])
-                        .at(index)
-                        .prop('koulutusmoduuli')
-                        .prop('laajuus')}
-                    />
-                  ),
-                  Arvosana: (
-                    <FormField
-                      form={form}
-                      view={AmisArvosanaInTableView}
-                      edit={AmisArvosanaInTableEdit}
-                      path={osasuoritusPath
-                        .prop('osasuoritukset')
-                        .valueOr([])
-                        .at(index)
-                        .prop('arviointi')}
-                    />
-                  )
-                },
-                content: (
-                  <KorkeakouluopintojenSuoritusProperties
+export const TutkinnonOsanKorkeakouluopintoSuoritusProperties = ({
+  form,
+  osasuoritusPath,
+  osasuoritus
+}: TutkinnonOsanKorkeakouluopintoSuoritusPropertiesProps) => {
+  return (
+    <>
+      <OsasuoritusTable
+        editMode={form.editMode}
+        rows={
+          osasuoritus.osasuoritukset?.map((s, index) => {
+            return {
+              suoritusIndex: 1,
+              osasuoritusIndex: index,
+              columns: {
+                Osasuoritus: t(s.koulutusmoduuli.tunniste.nimi),
+                Laajuus: (
+                  <FormField
                     form={form}
-                    osasuoritusPath={osasuoritusPath
+                    view={LaajuusView}
+                    edit={LaajuusEdit}
+                    editProps={{
+                      createLaajuus: (arvo) => LaajuusOsaamispisteissä({ arvo })
+                    }}
+                    path={osasuoritusPath
                       .prop('osasuoritukset')
                       .valueOr([])
-                      .at(index)}
-                    osasuoritus={s}
+                      .at(index)
+                      .prop('koulutusmoduuli')
+                      .prop('laajuus')}
                   />
                 ),
-                expandable: true
-              }
-            }) || []
-          }
-          onRemove={(rowIndex) => {
-            form.updateAt(osasuoritusPath, (os) => {
-              return {
-                ...os,
-                osasuoritukset: deleteAt(os.osasuoritukset || [], rowIndex)
-              }
-            })
-          }}
-          completed={(rowIndex) => {
-            const s = (osasuoritus.osasuoritukset || [])[rowIndex]
-            if (s === undefined) {
-              return undefined
+                Arvosana: (
+                  <FormField
+                    form={form}
+                    view={AmisArvosanaInTableView}
+                    edit={AmisArvosanaInTableEdit}
+                    path={osasuoritusPath
+                      .prop('osasuoritukset')
+                      .valueOr([])
+                      .at(index)
+                      .prop('arviointi')}
+                  />
+                )
+              },
+              content: (
+                <KorkeakouluopintojenSuoritusProperties
+                  form={form}
+                  osasuoritusPath={osasuoritusPath
+                    .prop('osasuoritukset')
+                    .valueOr([])
+                    .at(index)}
+                  osasuoritus={s}
+                />
+              ),
+              expandable: true
             }
-            return hasAmmatillinenArviointi(s)
-          }}
-          addNewOsasuoritusView={NewKorkeakouluopintokokonaisuus}
-          addNewOsasuoritusViewProps={{ form, suoritusPath: osasuoritusPath }}
-        />
-      </>
-    )
-  }
+          }) || []
+        }
+        onRemove={(rowIndex) => {
+          form.updateAt(osasuoritusPath, (os) => {
+            return {
+              ...os,
+              osasuoritukset: deleteAt(os.osasuoritukset || [], rowIndex)
+            }
+          })
+        }}
+        completed={(rowIndex) => {
+          const s = (osasuoritus.osasuoritukset || [])[rowIndex]
+          if (s === undefined) {
+            return undefined
+          }
+          return hasAmmatillinenArviointi(s)
+        }}
+        addNewOsasuoritusView={NewKorkeakouluopintokokonaisuus}
+        addNewOsasuoritusViewProps={{ form, suoritusPath: osasuoritusPath }}
+      />
+    </>
+  )
+}
 
 type NewKorkeakouluopintokokonaisuusProps = {
   form: FormModel<AmmatillinenOpiskeluoikeus>
   suoritusPath: FormOptic<
     AmmatillinenOpiskeluoikeus,
-    OsittaisenAmmatillisenTutkinnonOsanKorkeakouluopintoSuoritus
+    AmisKorkeakouluopintoSuoritus
   >
 }
 
