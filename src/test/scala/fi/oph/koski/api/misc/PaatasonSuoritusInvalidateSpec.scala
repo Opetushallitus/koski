@@ -5,7 +5,10 @@ import fi.oph.koski.documentation.ExampleData.{opiskeluoikeusLäsnä, opiskeluoi
 import fi.oph.koski.documentation.PerusopetusExampleData
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
 import fi.oph.koski.http.{ErrorMatcher, KoskiErrorCategory}
+import fi.oph.koski.koskiuser.MockUsers
 import fi.oph.koski.schema.{NuortenPerusopetuksenOpiskeluoikeudenTila, NuortenPerusopetuksenOpiskeluoikeusjakso, PerusopetuksenOpiskeluoikeus, PerusopetuksenVuosiluokanSuoritus}
+import org.json4s.{JInt, JNothing, JString}
+import org.json4s.jackson.JsonMethods
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.should.Matchers
 
@@ -50,6 +53,32 @@ class PaatasonSuoritusInvalidateSpec extends AnyFreeSpec with Matchers with Kosk
         assert(!suoritus.valmis)
 
         deletePäätasonSuoritus(oo.oid.get, 1, suoritus) {
+          verifyResponseStatusOk()
+        }
+      }
+
+      "kun käyttäjä ei näe suorituksen luottamuksellisia tietoja" in {
+        // Käyttöliittymä lähettää suorituksen sellaisena kuin se on sen palvelimelta saanut,
+        // eli ilman kenttiä, joita käyttäjä ei saa nähdä (esim. käyttäytymisen arvion kuvaus).
+        // Käyttöliittymäsiirron mitätöintioikeus riittää poistoon ilman luottamuksellisten
+        // tietojen oikeutta, joten käyttäjä ehtii vertailuvaiheeseen suodatetulla suorituksella.
+        val user = MockUsers.mitätöijäEiLuottamuksellinen
+        val oppijaJson = authGet("api/oppija/" + KoskiSpecificMockOppijat.ysiluokkalainen.oid, user) {
+          verifyResponseStatusOk()
+          JsonMethods.parse(body)
+        }
+        val oo = (oppijaJson \ "opiskeluoikeudet").children.find(oo => (oo \ "tyyppi" \ "koodiarvo") == JString("perusopetus")).get
+        val suoritus = (oo \ "suoritukset").children.find(s => (s \ "luokka") == JString("8C")).get
+        val versionumero = (oo \ "versionumero").asInstanceOf[JInt].num.toInt
+
+        assert(PerusopetusExampleData.kahdeksannenLuokanSuoritus.käyttäytymisenArvio.exists(_.kuvaus.isDefined))
+        (suoritus \ "käyttäytymisenArvio" \ "kuvaus") should equal(JNothing)
+
+        post(
+          s"api/opiskeluoikeus/${(oo \ "oid").asInstanceOf[JString].s}/$versionumero/delete-paatason-suoritus",
+          body = JsonMethods.compact(suoritus),
+          headers = authHeaders(user) ++ jsonContent
+        ) {
           verifyResponseStatusOk()
         }
       }

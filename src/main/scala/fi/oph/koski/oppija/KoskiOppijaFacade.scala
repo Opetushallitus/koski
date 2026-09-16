@@ -4,6 +4,7 @@ import com.typesafe.config.Config
 import fi.oph.koski.henkilo._
 import fi.oph.koski.history.{KoskiOpiskeluoikeusHistoryRepository, YtrOpiskeluoikeusHistoryRepository}
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
+import fi.oph.koski.json.{JsonSerializer, SensitiveDataAllowed}
 import fi.oph.koski.koskiuser.KoskiSpecificSession
 import fi.oph.koski.log.KoskiAuditLogMessageField.{opiskeluoikeusId, opiskeluoikeusVersio, oppijaHenkiloOid}
 import fi.oph.koski.log.KoskiOperation._
@@ -269,7 +270,7 @@ class KoskiOppijaFacade(
   : Either[HttpStatus, HenkilönOpiskeluoikeusVersiot] =
     invalidate(
       opiskeluoikeusOid,
-      cancelPäätasonSuoritus(opiskeluoikeusOid, päätasonSuoritus, versionumero),
+      cancelPäätasonSuoritus(opiskeluoikeusOid, päätasonSuoritus, versionumero, user),
       oppija => createOrUpdate(oppija, allowUpdate = true, allowDeleteCompleted = true, skipGlobaaliValidation = true, skipValidations = true)
     )
 
@@ -368,7 +369,7 @@ class KoskiOppijaFacade(
   }
 
   private def cancelPäätasonSuoritus
-    (opiskeluoikeusOid: String, päätasonSuoritus: PäätasonSuoritus, versionumero: Int)
+    (opiskeluoikeusOid: String, päätasonSuoritus: PäätasonSuoritus, versionumero: Int, user: SensitiveDataAllowed)
     (oppija: Oppija)
   : Either[HttpStatus, Oppija] = {
     oppija.tallennettavatOpiskeluoikeudet.find(_.oid.exists(_ == opiskeluoikeusOid))
@@ -378,12 +379,12 @@ class KoskiOppijaFacade(
         case Some(_) => Left(KoskiErrorCategory.conflict.versionumero())
         case _ => Left(KoskiErrorCategory.badRequest())
       })
-      .flatMap(withoutPäätasonSuoritus(päätasonSuoritus))
+      .flatMap(withoutPäätasonSuoritus(päätasonSuoritus, user))
       .map(oo => oppija.copy(opiskeluoikeudet = List(oo)))
   }
 
   private def withoutPäätasonSuoritus
-    (päätasonSuoritus: PäätasonSuoritus)
+    (päätasonSuoritus: PäätasonSuoritus, user: SensitiveDataAllowed)
     (oo: KoskeenTallennettavaOpiskeluoikeus)
   : Either[HttpStatus, Opiskeluoikeus] =
     if (oo.suoritukset.length == 1) {
@@ -397,15 +398,20 @@ class KoskiOppijaFacade(
               | _: EuropeanSchoolOfHelsinkiOpiskeluoikeus
               | _: IBOpiskeluoikeus
               | _: EsiopetuksenOpiskeluoikeus
-              | _: TaiteenPerusopetuksenOpiskeluoikeus, _) => delete(päätasonSuoritus, oo)
-        case (_, _: LukionOppiaineenOppimääränSuoritus2015) => delete(päätasonSuoritus, oo)
+              | _: TaiteenPerusopetuksenOpiskeluoikeus, _) => delete(päätasonSuoritus, oo, user)
+        case (_, _: LukionOppiaineenOppimääränSuoritus2015) => delete(päätasonSuoritus, oo, user)
         case _ => Left(KoskiErrorCategory.forbidden(s"Suoritusten tyyppiä ${päätasonSuoritus.tyyppi.koodiarvo} poisto ei ole sallittu"))
       }
     }
 
-  private def delete(poistettavaPäätasonSuoritus: PäätasonSuoritus, oo: KoskeenTallennettavaOpiskeluoikeus)
+  private def delete(poistettavaPäätasonSuoritus: PäätasonSuoritus, oo: KoskeenTallennettavaOpiskeluoikeus, user: SensitiveDataAllowed)
   : Either[HttpStatus, KoskeenTallennettavaOpiskeluoikeus] = {
-    oo.suoritukset.find(_ == poistettavaPäätasonSuoritus) match {
+    // Käyttöliittymä lähettää suorituksen sellaisena kuin se sen palvelimelta sai, eli ilman
+    // kenttiä joita käyttäjä ei näe (@SensitiveData). Tallennettu suoritus sisältää nämä kentät,
+    // joten suoraa case-class-vertailua ei voi käyttää. Verrataan suoritukset käyttäjän oikeuksin
+    // suodatettuna serialisoituina, jolloin vertailtava data vastaa käyttöliittymän saamaa.
+    val poistettavaJson = JsonSerializer.serializeWithUser(user)(poistettavaPäätasonSuoritus)
+    oo.suoritukset.find(s => JsonSerializer.serializeWithUser(user)(s) == poistettavaJson) match {
       case None => Left(KoskiErrorCategory.notFound())
       case Some(poistettavaSuoritus) =>
         val suorituksetIlmanPoistettavaaSuoritusta = oo.suoritukset diff List(poistettavaSuoritus)

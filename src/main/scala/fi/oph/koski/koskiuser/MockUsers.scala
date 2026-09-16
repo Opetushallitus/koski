@@ -731,7 +731,22 @@ object MockUsers {
     )))
   )
 
+  // Käyttäjä, jolla on oikeus mitätöidä käyttöliittymäsiirtoja mutta ei oikeutta
+  // luottamuksellisiin tietoihin. Näkee siis opiskeluoikeuden ilman @SensitiveData-kenttiä,
+  // mutta saa silti poistaa päätason suorituksen.
+  val mitätöijäEiLuottamuksellinen = KoskiMockUser(
+    "mitätöijä",
+    "mitätöijä",
+    "1.2.246.562.24.99999999996",
+    Seq(OrganisaatioJaKäyttöoikeudet(jyväskylänNormaalikoulu, List(
+      PalveluJaOikeus("KOSKI", Rooli.READ),
+      PalveluJaOikeus("KOSKI", Rooli.KAIKKI_OPISKELUOIKEUS_TYYPIT),
+      PalveluJaOikeus("KOSKI", Rooli.KAYTTOLIITTYMASIIRRON_MITATOINTI)
+    )))
+  )
+
   val users = List(
+    mitätöijäEiLuottamuksellinen,
     kalle,
     pärre,
     omniaPalvelukäyttäjä,
