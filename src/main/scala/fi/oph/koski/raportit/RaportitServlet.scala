@@ -206,7 +206,7 @@ class RaportitServlet(implicit val application: KoskiApplication) extends KoskiS
   }
 
   get("/kotikuntalaskelma") {
-    // TODO(TOR-2650): raportti kattaa myös esiopetuksen, kansainväliset koulut ym. (ks.
+    // TODO(TOR-2560): raportti kattaa myös esiopetuksen, kansainväliset koulut ym. (ks.
     // Kotikuntalaskelma.scala), mutta tässä tarkistetaan käyttöoikeus vain perusopetukseen —
     // sama yksinkertaistus kuin esim. /lukiodiaibinternationaleshopiskelijamaarat-reitillä, joka
     // tarkistaa vain lukiokoulutus-oikeuden vaikka kattaa useita koulutusmuotoja. Pelkkä

@@ -13,7 +13,7 @@ import org.scalatest.matchers.should.Matchers
 
 import java.time.LocalDate.{of => date}
 
-// TOR-2650: Perustuu KoskiSpecificMockOppijat.scala:n kotikuntalaskelma*-testioppijoihin, jotka
+// TOR-2560: Perustuu KoskiSpecificMockOppijat.scala:n kotikuntalaskelma*-testioppijoihin, jotka
 // ovat kaikki Aapajoen koulussa (valittu tarkoituksella Jyväskylän normaalikoulun sijaan — ks.
 // perustelu KoskiSpecificDatabaseFixtureCreator.scala:n kommentista). Nämä fixturet on
 // tietoisesti pidetty committoimattomina (ks. suunnitelman 13.2 §, kohta 9) — testit siis

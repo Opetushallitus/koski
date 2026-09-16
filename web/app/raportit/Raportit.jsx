@@ -499,7 +499,7 @@ const RaportitContent = ({
 
   return (
     <div className="main-content">
-      {/* TODO(TOR-2650): tämä ehto olettaa, että jokaisella raportteja
+      {/* TODO(TOR-2560): tämä ehto olettaa, että jokaisella raportteja
           näkevällä käyttäjällä on vähintään yksi organisaatio-oikeus.
           Kotikuntalaskelma on tarkoitus rajata raportit.rajatut-listan kautta
           (ks. RaportitAccessResolver), joten pelkän rajatut-oikeuden saava

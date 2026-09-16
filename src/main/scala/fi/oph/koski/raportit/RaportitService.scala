@@ -322,7 +322,7 @@ class RaportitService(application: KoskiApplication) {
   def kotikuntalaskelma(request: RaporttiPäivältäRequest, t: LocalizationReader)(implicit u: KoskiSpecificSession) = {
     // Raportti kattaa useita koulutusmuotoja (perusopetus, esiopetus, kansainväliset koulut),
     // joten organisaatioita ei rajata yhteen koulutusmuotoon tässä — Kotikuntalaskelma.query
-    // suodattaa koulutusmuodon SQL:n WHERE-lausekkeessa. TODO(TOR-2650): ks. suunnitelman 9 §.
+    // suodattaa koulutusmuodon SQL:n WHERE-lausekkeessa. TODO(TOR-2560): ks. suunnitelman 9 §.
     val oppilaitosOids = accessResolver.kyselyOiditOrganisaatiolle(request.oppilaitosOid).toSeq
     OppilaitosRaporttiResponse(
       sheets = Seq(

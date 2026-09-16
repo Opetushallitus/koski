@@ -412,8 +412,9 @@ object KoskiSpecificMockOppijat {
   val virtaTeRahoitus = koskiSpecificOppijat.oppija("TeRahoitus", "Teemu", "200482-8014")
   val virtaFuusio = koskiSpecificOppijat.oppija("Fuusio", "Fanni", "020276-801B")
   val virtaSaapuvaVaihto = koskiSpecificOppijat.oppija("SaapuvaVaihto", "Sofia", "070102A801N")
+  val virtaKorkeakouluVisuaalinenRegressio = koskiSpecificOppijat.oppijaSyntymäaikaHetusta("Koskinen", "Harri", "250668-293Y", oid = "1.2.246.562.24.00000000216")
 
-  // TOR-2650: Kotikuntalaskelma-testioppijat. Suurin osa olemassa olevista perusopetus-/
+  // TOR-2560: Kotikuntalaskelma-testioppijat. Suurin osa olemassa olevista perusopetus-/
   // esiopetusfixtuureista on aikuisia (vanhat hetut), joten ne eivät osu raportin 6-16-vuotiaiden
   // ikäikkunaan. Nämä on lisätty erikseen kattamaan kaikki raportin ikäryhmät + hetuttoman
   // oppijan "Ei tiedossa" -kotikunta-tapaus. Ks. documentation/kotikuntalaskelma-suunnitelma.md.

@@ -193,7 +193,7 @@ case class Kotikuntalaskelma(db: DB) extends QueryMethods {
       case when bool_or(he.turvakielto) then null else max(he.sukunimi) end as sukunimi,
       case when bool_or(he.turvakielto) then null else max(kkh.kotikunta_nimi_fi) end as kotikunta,
       case when bool_or(he.turvakielto) then null else max(oo.oppilaitos_nimi) end as oppilaitos,
-      -- TODO(TOR-2650): luokka_aste/luokka valitaan max()-aggregaatilla kaikista oppijan
+      -- TODO(TOR-2560): luokka_aste/luokka valitaan max()-aggregaatilla kaikista oppijan
       case when bool_or(he.turvakielto) then null else max(pts.koulutusmoduuli_koodiarvo) end as luokka_aste,
       case when bool_or(he.turvakielto) then null else max(pts.luokka_tai_ryhma) end as luokka,
 

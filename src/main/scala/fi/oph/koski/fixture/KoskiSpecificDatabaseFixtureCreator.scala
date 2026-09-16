@@ -123,7 +123,7 @@ class KoskiSpecificDatabaseFixtureCreator(application: KoskiApplication) extends
     )
   }
 
-  // TOR-2650: yhteinen pohja Kotikuntalaskelman testioppijoiden avoimille perusopetuksen
+  // TOR-2560: yhteinen pohja Kotikuntalaskelman testioppijoiden avoimille perusopetuksen
   // vuosiluokan suorituksille Aapajoen koulussa — kaikki eroavat vain luokka-asteen/luokan ja
   // (kahdella oppijalla) lisätietojen osalta.
   private def kotikuntalaskelmaOpiskeluoikeus(
@@ -377,7 +377,7 @@ class KoskiSpecificDatabaseFixtureCreator(application: KoskiApplication) extends
         KoskiSpecificMockOppijat.ammatillinenOsittainenLaaja,
         AmmatillinenOsittainenReformi.opiskeluoikeusLaaja
       ),
-      // TOR-2650: Kotikuntalaskelma-testioppijat, ks. KoskiSpecificMockOppijat.scala.
+      // TOR-2560: Kotikuntalaskelma-testioppijat, ks. KoskiSpecificMockOppijat.scala.
       // Kaikki avoimet (loppupäivä puuttuu) perusopetuksen vuosiluokan suoritukset. Luokka-aste on
       // valittu karkeasti oppijan iän mukaan (luokka-aste ~= ikä - 6), jotta luokka-aste-sarake
       // näyttää edes suunnilleen järkevältä demoissa — ei tarkka, koska raportin ikäryhmäjako
@@ -397,7 +397,7 @@ class KoskiSpecificDatabaseFixtureCreator(application: KoskiApplication) extends
       (
         KoskiSpecificMockOppijat.kotikuntalaskelmaKuusitoistaErityinen,
         kotikuntalaskelmaOpiskeluoikeus(9, "9A", lisätiedot = Some(PerusopetuksenOpiskeluoikeudenLisätiedot(
-          // TOR-2650: Kotikuntalaskelman 16v-jako perustuu nimenomaan tähän kenttään (vahvistettu
+          // TOR-2560: Kotikuntalaskelman 16v-jako perustuu nimenomaan tähän kenttään (vahvistettu
           // tiketillä), ei toimintaAlueittainOpiskeluun. Sallitaan aikaisintaan 1.8.2026
           // (validaatiot.vammaSairausTaiRajoiteVoimaan) ja jakson täytyy sisältyä
           // tuenPäätöksenJaksot-jaksoon.
@@ -424,7 +424,7 @@ class KoskiSpecificDatabaseFixtureCreator(application: KoskiApplication) extends
         )
       ),
       (
-        // TOR-2650: koulutusmoduulin alkamispäivä on 15.8.2025 — edellisen, ei kuluvan
+        // TOR-2560: koulutusmoduulin alkamispäivä on 15.8.2025 — edellisen, ei kuluvan
         // (1.8.2026 alkaneen) lukuvuoden puolella. Testaa että Kotikuntalaskelma sulkee tämän
         // pois (ks. Kotikuntalaskelma.scala:n v.edellinen_elokuu-rajaus) vaikka pelkkä
         // "alkamispäivä <= päivä" -yläraja päästäisi sen mukaan.
