@@ -567,8 +567,8 @@ Käytössä olevat parametrit (oletusarvo suluissa):
     }
 
 Kenttä `valintatiedot` palautetaan vain, kun parametri `valintatiedot=true` on annettu. Tällöin myös henkilö, jolla
-ei ole opiskeluoikeuksia, palautetaan kenttien `henkilö` ja `valintatiedot` sekä tyhjän `opiskeluoikeudet`-listan
-kanssa; ilman parametria tällaisen henkilön haku palauttaa virheen 404.
+ei ole lainkaan opiskeluoikeuksia KOSKI-tietovarannossa, palautetaan kenttien `henkilö` ja `valintatiedot` sekä
+tyhjän `opiskeluoikeudet`-listan kanssa; ilman parametria tällaisen henkilön haku palauttaa virheen 404.
 
 Palautettavan JSON-rakenteen tietomallin dokumentaatio on
 <a href="/koski/json-schema-viewer/?schema=sdg-oppija-schema.json">täällä</a>.

@@ -294,7 +294,7 @@ class KehaSdgSpec
       }
     }
 
-    "ei palauteta ilman valintatiedot-parametria" in {
+    "valintatiedot-kenttää ei palauteta ilman parametria" in {
       postHetu(KoskiSpecificMockOppijat.ammattilainen.hetu.get) {
         verifyResponseStatusOk()
         body should not include ("\"valintatiedot\"")
