@@ -1,7 +1,7 @@
 package fi.oph.koski.luovutuspalvelu
 
 import fi.oph.koski.KoskiHttpSpec
-import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
+import fi.oph.koski.henkilo.{KoskiSpecificMockOppijat, LaajatOppijaHenkilöTiedot}
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.log.AuditLogTester
@@ -87,6 +87,48 @@ class SuomiFiServletSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers wi
         verifyResponseStatus(400)
       }
     }
+
+    "Suorituksen nimi" - {
+      "Kun opiskeluoikeudessa on pelkkiä perusopetuksen vuosiluokkia käytetään sanaa 'Perusopetus'" in {
+        ensimmäisenSuorituksenNimiRekisteritiedoissa(KoskiSpecificMockOppijat.ysiluokkalainen) shouldEqual "Perusopetus"
+      }
+
+      "Kun opiskeluoikeudessa on perusopetuksen oppiaineen oppimääriä käytetään nimenä suorituksen tyyppiä" in {
+        ensimmäisenSuorituksenNimiRekisteritiedoissa(KoskiSpecificMockOppijat.montaOppiaineenOppimäärääOpiskeluoikeudessa) shouldEqual "Perusopetuksen oppiaineen oppimäärä"
+      }
+
+      "Kun opiskeluoikeudessa on lukion oppiaineen oppimääriä käytetään nimenä suorituksen tyyppiä" in {
+        ensimmäisenSuorituksenNimiRekisteritiedoissa(KoskiSpecificMockOppijat.lukionAineopiskelija) shouldEqual "Lukion oppiaineen oppimäärä"
+      }
+
+      "Kun opiskeluoikeudessa on opintojaksojen seassa korkeakoulututkinto käytetään tutkinnon nimeä" in {
+        ensimmäisenSuorituksenNimiRekisteritiedoissa(KoskiSpecificMockOppijat.opintojaksotSekaisin) shouldEqual "Fysioterapeutti (AMK)"
+      }
+
+      "Kun opiskeluoikeudessa on pelkkiä korkeakoulun opintojaksoja käytetään '<lkm> opintojaksoa'" in {
+        ensimmäisenSuorituksenNimiRekisteritiedoissa(KoskiSpecificMockOppijat.korkeakoululainen) shouldEqual "69 opintojaksoa"
+      }
+
+      "Aikuisten perusopetuksessa käytetään suorituksen tyypin nimeä" in {
+        ensimmäisenSuorituksenNimiRekisteritiedoissa(KoskiSpecificMockOppijat.aikuisOpiskelija) shouldEqual "Aikuisten perusopetuksen oppimäärä"
+      }
+
+      "Ammatillisen tutkinnon nimenä käytetään perusteen nimeä" in {
+        ensimmäisenSuorituksenNimiRekisteritiedoissa(KoskiSpecificMockOppijat.ammattilainen) shouldEqual "Luonto- ja ympäristöalan perustutkinto"
+      }
+
+      "Osittaisen ammatillisen tutkinnon nimen loppuun tulee sana 'osittainen'" in {
+        ensimmäisenSuorituksenNimiRekisteritiedoissa(KoskiSpecificMockOppijat.osittainenammattitutkinto) shouldEqual "Luonto- ja ympäristöalan perustutkinto, osittainen"
+      }
+
+      "Perustapauksessa käytetään suorituksen tunnisteen nimeä" in {
+        ensimmäisenSuorituksenNimiRekisteritiedoissa(KoskiSpecificMockOppijat.lukiolainen) shouldEqual "Lukion oppimäärä"
+        ensimmäisenSuorituksenNimiRekisteritiedoissa(KoskiSpecificMockOppijat.dippainssi) shouldEqual "Dipl.ins., konetekniikka"
+        ensimmäisenSuorituksenNimiRekisteritiedoissa(KoskiSpecificMockOppijat.amkValmistunut) shouldEqual "Fysioterapeutti (AMK)"
+        ensimmäisenSuorituksenNimiRekisteritiedoissa(KoskiSpecificMockOppijat.ylioppilas) shouldEqual "Ylioppilastutkinto"
+        ensimmäisenSuorituksenNimiRekisteritiedoissa(KoskiSpecificMockOppijat.koululainen) shouldEqual "Perusopetukseen valmistava opetus"
+      }
+    }
   }
 
   private val jsonHeaders: Map[String, String] = Map(
@@ -104,4 +146,10 @@ class SuomiFiServletSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers wi
   private def parseSuomiFiResponse: SuomiFiResponse = {
     JsonSerializer.parse[SuomiFiResponse](body)
   }
+
+  private def ensimmäisenSuorituksenNimiRekisteritiedoissa(oppija: LaajatOppijaHenkilöTiedot): String =
+    postRekisteritiedot(oppija.hetu.get) {
+      verifyResponseStatusOk()
+      parseSuomiFiResponse.oppilaitokset.head.opiskeluoikeudet.head.nimi.get("fi")
+    }
 }

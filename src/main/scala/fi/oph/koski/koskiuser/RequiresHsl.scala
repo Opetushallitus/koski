@@ -2,7 +2,7 @@ package fi.oph.koski.koskiuser
 
 import fi.oph.koski.http.KoskiErrorCategory
 
-trait RequiresHSL extends KoskiCookieAndBasicAuthenticationSupport {
+trait RequiresHsl extends KoskiSpecificAuthenticationSupport with LuovutuspalveluXroadAuthenticationSupport {
   implicit def koskiSession: KoskiSpecificSession = koskiSessionOption.get
 
   before() {
@@ -11,7 +11,7 @@ trait RequiresHSL extends KoskiCookieAndBasicAuthenticationSupport {
         haltWithStatus(status)
       case _ =>
         if (!koskiSessionOption.exists(_.hasHSLAccess)) {
-          haltWithStatus(KoskiErrorCategory.forbidden.vainHSL())
+          haltWithStatus(KoskiErrorCategory.forbidden.kiellettyKäyttöoikeus())
         }
     }
   }

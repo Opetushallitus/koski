@@ -1,7 +1,7 @@
 package fi.oph.koski.koskiuser
 
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
-import fi.oph.koski.luovutuspalvelu.{PalveluvaylaServlet, SoapServlet}
+import fi.oph.koski.luovutuspalvelu.{HslServlet, SoapServlet}
 import fi.oph.koski.luovutuspalvelu.v2clientlist.XRoadSecurityServer
 
 trait LuovutuspalveluXroadAuthenticationSupport extends AuthenticationSupport with SoapServlet {
@@ -23,7 +23,7 @@ trait LuovutuspalveluXroadAuthenticationSupport extends AuthenticationSupport wi
             KoskiErrorCategory.unauthorized("Tuntematon IP-osoite")
           })
           soap <- xmlBody
-          xroadClient <- PalveluvaylaServlet.extractXRoadClient(soap).toRight {
+          xroadClient <- HslServlet.extractXRoadClient(soap).toRight {
             defaultLogger.warn("Failed to parse client from X-Road security server request")
             KoskiErrorCategory.badRequest("X-Road clientin parsinta epäonnistui")
           }

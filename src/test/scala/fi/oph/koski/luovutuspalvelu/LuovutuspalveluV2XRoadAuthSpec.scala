@@ -5,16 +5,16 @@ import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.must.Matchers
 import fi.oph.koski.xml.NodeSeqImplicits._
 
-class LuovutuspalveluV2PalveluvaylaAuthSpec extends AnyFreeSpec with Matchers {
+class LuovutuspalveluV2XRoadAuthSpec extends AnyFreeSpec with Matchers {
 
-  "Luovutuspalvelu V2 Palveluväylä autentikointi" - {
+  "Luovutuspalvelu V2 X-Road autentikointi" - {
     "Parsii X-Road clientin SOAP sanomasta" in {
-      val xRoadClient = PalveluvaylaServlet.extractXRoadClient(exampleSoapRequest)
+      val xRoadClient = HslServlet.extractXRoadClient(exampleSoapRequest)
       xRoadClient should equal(Some("SUBSYSTEM:FI-TEST/GOV/0245437-2/ServiceViewClient"))
     }
 
     "Parsii X-Road clientin toisesta SOAP sanomasta" in {
-      val xRoadClient = PalveluvaylaServlet.extractXRoadClient(exampleSoapRequest2)
+      val xRoadClient = HslServlet.extractXRoadClient(exampleSoapRequest2)
       xRoadClient should equal(Some("SUBSYSTEM:FI-TEST/GOV/0245437-2/ServiceViewClient"))
     }
   }
@@ -33,7 +33,7 @@ class LuovutuspalveluV2PalveluvaylaAuthSpec extends AnyFreeSpec with Matchers {
         <id:memberClass xmlns:id="http://x-road.eu/xsd/identifiers">GOV</id:memberClass>
         <id:memberCode xmlns:id="http://x-road.eu/xsd/identifiers">2769790-1</id:memberCode>
         <id:subsystemCode xmlns:id="http://x-road.eu/xsd/identifiers">koski</id:subsystemCode>
-        <id:serviceCode xmlns:id="http://x-road.eu/xsd/identifiers">suomiFiRekisteritiedot</id:serviceCode>
+        <id:serviceCode xmlns:id="http://x-road.eu/xsd/identifiers">opintoOikeudetService</id:serviceCode>
         <id:serviceVersion xmlns:id="http://x-road.eu/xsd/identifiers">v1</id:serviceVersion>
       </xrd:service>
       <xrd:protocolVersion xmlns:xrd="http://x-road.eu/xsd/xroad.xsd">4.0</xrd:protocolVersion>
@@ -41,9 +41,9 @@ class LuovutuspalveluV2PalveluvaylaAuthSpec extends AnyFreeSpec with Matchers {
       <xrd:id xmlns:xrd="http://x-road.eu/xsd/xroad.xsd">38997cf6400edd85</xrd:id>
     </SOAP-ENV:Header>
     <SOAP-ENV:Body>
-      <ns1:suomiFiRekisteritiedot xmlns:ns1="http://docs.koski-xroad.fi/producer">
+      <ns1:opintoOikeudetService xmlns:ns1="http://docs.koski-xroad.fi/producer">
         <ns1:hetu xmlns:ns1="http://docs.koski-xroad.fi/producer">210281-9988</ns1:hetu>
-      </ns1:suomiFiRekisteritiedot>
+      </ns1:opintoOikeudetService>
     </SOAP-ENV:Body>
   </SOAP-ENV:Envelope>
 
@@ -60,7 +60,7 @@ class LuovutuspalveluV2PalveluvaylaAuthSpec extends AnyFreeSpec with Matchers {
         <id:memberClass>GOV</id:memberClass>
         <id:memberCode>2769790-1</id:memberCode>
         <id:subsystemCode>koski</id:subsystemCode>
-        <id:serviceCode>suomiFiRekisteritiedot</id:serviceCode>
+        <id:serviceCode>opintoOikeudetService</id:serviceCode>
         <id:serviceVersion>v1</id:serviceVersion>
       </xrd:service>
       <xrd:protocolVersion xmlns:xrd="http://x-road.eu/xsd/xroad.xsd">4.0</xrd:protocolVersion>
@@ -68,10 +68,10 @@ class LuovutuspalveluV2PalveluvaylaAuthSpec extends AnyFreeSpec with Matchers {
       <xrd:id xmlns:xrd="http://x-road.eu/xsd/xroad.xsd">38997cf6400edd85</xrd:id>
     </SOAP-ENV:Header>
     <SOAP-ENV:Body>
-      <ns1:suomiFiRekisteritiedot xmlns:ns1="http://docs.koski-xroad.fi/producer">
+      <ns1:opintoOikeudetService xmlns:ns1="http://docs.koski-xroad.fi/producer">
         <ns1:hetu xmlns:ns1="http://docs.koski-xroad.fi/producer">210281-9988</ns1:hetu>
         <!-- <ns1:hetu>210281-9988</ns1:hetu> -->
-      </ns1:suomiFiRekisteritiedot>
+      </ns1:opintoOikeudetService>
     </SOAP-ENV:Body>
   </SOAP-ENV:Envelope>
 }
