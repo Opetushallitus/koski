@@ -238,13 +238,41 @@ const kaikkiRaportitKategorioittain = [
   {
     id: 'muut',
     tab: 'raporttikategoria-tab-muut',
-    heading: 'raportti-tab-paallekkaisetopiskeluoikeudet',
+    heading: 'raporttikategoria-heading-muut',
     raportit: [
       {
         id: 'paallekkaisetopiskeluoikeudet',
         name: 'raportti-tab-paallekkaisetopiskeluoikeudet',
         component: PaallekkaisetOpiskeluoikeudet,
         visibleForAllOrgs: true
+      },
+      {
+        id: 'kotikuntalaskelma',
+        name: 'raportti-tab-kotikuntalaskelma',
+        component: Kotikuntalaskelma,
+        // TODO(TOR-2650): tämä on väliaikainen. Kotikuntalaskelma on
+        // organisaatiokohtainen (kuten muutkin RaporttiPaivalta-raportit) —
+        // ei-hasGlobalReadAccess-käyttäjä näkee sen valitsemansa
+        // organisaation ja sen alipuun mukaan skoopattuna, aivan kuten
+        // esim. AikuistenPerusopetuksenOppijamäärätRaportti. Oikea tapa
+        // tehdä tämä näkyväksi on lisätä uusi RaportinTyyppi-case-object
+        // (ks. RaportitAccessResolver.raportinTyypitKoulutusmuodolle) niille
+        // koulutusmuodoille joita 8 §:n kyselyt kattavat (perusopetus,
+        // esiopetus, internationalschool, europeanschoolofhelsinki), ja
+        // rajata se tarvittaessa raportit.rajatut-listalla — ei
+        // visibleForAllOrgs, joka näyttäisi raportin kaikille joilla on
+        // mikä tahansa raportit-oikeus. visibleForAllOrgs on tässä
+        // väliaikainen näkyvyys-shimmi kunnes RaportinTyyppi-kytkentä on
+        // tehty backendissä.
+        visibleForAllOrgs: true,
+        // Raportin tulostetaan opetuksen järjestäjän (koulutustoimija) mukaan, ei
+        // oppilaitoksittain, joten valittavissa vain koulutustoimija-/varhaiskasvatuksen
+        // järjestäjä -tyyppiset organisaatiot — muut näkyvät puussa navigointia varten,
+        // eivät valittavina.
+        selectableOrganisaatiotyypit: [
+          'KOULUTUSTOIMIJA',
+          'VARHAISKASVATUKSEN_JARJESTAJA'
+        ]
       }
     ]
   }
@@ -253,9 +281,13 @@ const kaikkiRaportitKategorioittain = [
 const getEnrichedRaportitKategorioittain = (organisaatiot) =>
   kaikkiRaportitKategorioittain.map((tab) => {
     const raportit = tab.raportit.map((raportti) => {
-      const visibleOrganisaatiot = raportti.visibleForAllOrgs
-        ? organisaatiot.map(organisaatioWithForcedVisibility)
-        : filterVisibleOrganisaatioTree(raportti.id, organisaatiot)
+      const visibleOrganisaatiot = raportti.selectableOrganisaatiotyypit
+        ? filterOrganisaatioTreeByTyypit(raportti.selectableOrganisaatiotyypit)(
+            organisaatiot
+          )
+        : raportti.visibleForAllOrgs
+          ? organisaatiot.map(organisaatioWithForcedVisibility)
+          : filterVisibleOrganisaatioTree(raportti.id, organisaatiot)
 
       return {
         ...raportti,
@@ -299,6 +331,24 @@ const organisaatioWithForcedVisibility = (organisaatio) => ({
   selectable: true,
   visible: true
 })
+
+// Rajaa organisaatiopuun niihin solmuihin joiden organisaatiotyypit osuu annettuun
+// listaan (esim. vain koulutustoimijat/varhaiskasvatuksen järjestäjät) — muun
+// tyyppiset solmut (esim. oppilaitokset) eivät näy puussa lainkaan, ei edes
+// navigointia varten. Jos ei-osuva solmu sisältää osuvia jälkeläisiä (esim.
+// koulutustoimija oman puunsa syvemmällä), ne nostetaan sen tilalle.
+const filterOrganisaatioTreeByTyypit = (tyypit) => (organisaatiot) =>
+  organisaatiot.flatMap((organisaatio) => {
+    const children = filterOrganisaatioTreeByTyypit(tyypit)(
+      organisaatio.children
+    )
+    const matches = organisaatio.organisaatiotyypit.some((tyyppi) =>
+      tyypit.includes(tyyppi)
+    )
+    return matches
+      ? [{ ...organisaatio, children, selectable: true, visible: true }]
+      : children
+  })
 
 const organiaatiotTreeIncludes = (organisaatiot, oid) =>
   organisaatiot.some(
@@ -472,6 +522,13 @@ const RaportitContent = ({
 
   return (
     <div className="main-content">
+      {/* TODO(TOR-2650): tämä ehto olettaa, että jokaisella raportteja
+          näkevällä käyttäjällä on vähintään yksi organisaatio-oikeus.
+          Kotikuntalaskelma on tarkoitus rajata raportit.rajatut-listan kautta
+          (ks. RaportitAccessResolver), joten pelkän rajatut-oikeuden saava
+          käyttäjä voisi päätyä tänne organisaatioita: [] ja pudota tähän
+          virheeseen, vaikka hänellä olisi oikeus Kotikuntalaskelmain. Pitää
+          ratkaista ennen kuin rajatut-pääsy oikeasti kytketään päälle. */}
       {stateP.map((state) =>
         state.organisaatiot.length > 0 ? (
           <Tabs
@@ -569,6 +626,27 @@ function PaallekkaisetOpiskeluoikeudet({ stateP }) {
         <Text name="paallekkaiset-opiskeluoikeudet-short-description" />
       }
       example={<Text name="paallekkaiset-opiskeluoikeudet-example" />}
+      lang={lang}
+    />
+  )
+}
+
+function Kotikuntalaskelma({ stateP }) {
+  const titleText = <Text name="kotikuntalaskelma-title" />
+  const shortDescriptionText = (
+    <Text name="kotikuntalaskelma-short-description" />
+  )
+  const dateInputHelpText = <Text name="kotikuntalaskelma-date-input-help" />
+  const exampleText = <Paragraphs name="kotikuntalaskelma-example" />
+
+  return (
+    <RaporttiPaivalta
+      stateP={stateP}
+      apiEndpoint={'/kotikuntalaskelma'}
+      title={titleText}
+      shortDescription={shortDescriptionText}
+      dateInputHelp={dateInputHelpText}
+      example={exampleText}
       lang={lang}
     />
   )
