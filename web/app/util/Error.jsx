@@ -41,7 +41,7 @@ export const handleError = (error) => {
   }
 }
 
-const extractValidationErrorText = (error) => {
+export const extractValidationErrorText = (error) => {
   if (typeof error === 'string') return error
   if (Array.isArray(error))
     return error.map((e) => extractValidationErrorText(e))
