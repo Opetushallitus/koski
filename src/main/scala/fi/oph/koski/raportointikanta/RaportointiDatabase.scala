@@ -534,18 +534,20 @@ class RaportointiDatabase(config: RaportointiDatabaseConfigBase) extends Logging
       .join(ROpiskeluoikeusAikajaksot.filterNot(_.alku > loppuDate).filterNot(_.loppu < alkuDate))
       .on(_.opiskeluoikeusOid === _.opiskeluoikeusOid)
       .sortBy(_._1.opiskeluoikeusOid)
-    val result1: Seq[(ROpiskeluoikeusRow, ROpiskeluoikeusAikajaksoRow)] = runDbSync(query1.result, timeout = 5.minutes)
+    val opiskeluoikeudetJaAikajaksot: Seq[(ROpiskeluoikeusRow, ROpiskeluoikeusAikajaksoRow)] = runDbSync(query1.result, timeout = 5.minutes)
 
-    val päätasonSuorituksetQuery = RPäätasonSuoritukset.filter(_.opiskeluoikeusOid inSet result1.map(_._1.opiskeluoikeusOid).distinct)
-    val päätasonSuoritukset: Map[String, Seq[RPäätasonSuoritusRow]] = runDbSync(päätasonSuorituksetQuery.result).groupBy(_.opiskeluoikeusOid)
-    val sisältyvätOpiskeluoikeudetQuery = ROpiskeluoikeudet.filter(_.sisältyyOpiskeluoikeuteenOid inSet result1.map(_._1.opiskeluoikeusOid).distinct)
-    val sisältyvätOpiskeluoikeudet: Map[String, Seq[ROpiskeluoikeusRow]] = retryDbSync(sisältyvätOpiskeluoikeudetQuery.result).groupBy(_.sisältyyOpiskeluoikeuteenOid.get)
+    val opiskeluoikeusOidit = opiskeluoikeudetJaAikajaksot.map(_._1.opiskeluoikeusOid).distinct
 
-    val henkilötQuery = RHenkilöt.filter(_.oppijaOid inSet result1.map(_._1.oppijaOid))
-    val henkilöt: Map[String, RHenkilöRow] = runDbSync(henkilötQuery.result).groupBy(_.oppijaOid).view.mapValues(_.head).toMap
+    val päätasonSuorituksetQuery = RPäätasonSuoritukset.filter(_.opiskeluoikeusOid inSet opiskeluoikeusOidit)
+    val päätasonSuoritukset: Map[String, Seq[RPäätasonSuoritusRow]] = runDbSync(päätasonSuorituksetQuery.result, timeout = 5.minutes).groupBy(_.opiskeluoikeusOid)
+    val sisältyvätOpiskeluoikeudetQuery = ROpiskeluoikeudet.filter(_.sisältyyOpiskeluoikeuteenOid inSet opiskeluoikeusOidit)
+    val sisältyvätOpiskeluoikeudet: Map[String, Seq[ROpiskeluoikeusRow]] = runDbSync(sisältyvätOpiskeluoikeudetQuery.result, timeout = 5.minutes).groupBy(_.sisältyyOpiskeluoikeuteenOid.get)
+
+    val henkilötQuery = RHenkilöt.filter(_.oppijaOid inSet opiskeluoikeudetJaAikajaksot.map(_._1.oppijaOid))
+    val henkilöt: Map[String, RHenkilöRow] = runDbSync(henkilötQuery.result, timeout = 5.minutes).groupBy(_.oppijaOid).view.mapValues(_.head).toMap
 
     // group rows belonging to same opiskeluoikeus
-    result1
+    opiskeluoikeudetJaAikajaksot
       .foldRight[List[(ROpiskeluoikeusRow, List[ROpiskeluoikeusAikajaksoRow])]](List.empty) {
         case (t, head :: tail) if t._1.opiskeluoikeusOid == head._1.opiskeluoikeusOid => (head._1, t._2 :: head._2) :: tail
         case (t, acc) => (t._1, List(t._2)) :: acc

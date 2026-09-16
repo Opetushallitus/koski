@@ -2,6 +2,7 @@ package fi.oph.koski.raportit
 
 import java.time.LocalDate
 import java.time.format.DateTimeParseException
+import java.util.concurrent.Semaphore
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.koskiuser.{OoPtsMask, RequiresVirkailijaOrPalvelukäyttäjä}
@@ -21,6 +22,7 @@ class RaportitServlet(implicit val application: KoskiApplication) extends KoskiS
   private lazy val organisaatioService = application.organisaatioService
   private lazy val esiopetusService = new EsiopetusRaporttiService(application)
   private lazy val accessResolver = RaportitAccessResolver(application)
+  private lazy val vapaatRaporttipaikat = new Semaphore(application.config.getInt("raportit.maxConcurrent"))
 
   before() {
     if (!application.raportointikantaService.isAvailable) {
@@ -267,16 +269,27 @@ class RaportitServlet(implicit val application: KoskiApplication) extends KoskiS
     }
   }
 
-  private def writeExcel(raportti: OppilaitosRaporttiResponse, t: LocalizationReader) = {
-    contentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-    response.setHeader("Content-Disposition", s"""attachment; filename="${raportti.filename}"""")
-    raportti.downloadToken.foreach { t => response.addCookie(Cookie("koskiDownloadToken", t)(CookieOptions(path = "/", maxAge = 600))) }
-    ExcelWriter.writeExcel(
-      raportti.workbookSettings,
-      raportti.sheets,
-      ExcelWriter.BooleanCellStyleLocalizedValues(t),
-      response.getOutputStream
-    )
+  private def writeExcel(tuotaRaportti: => OppilaitosRaporttiResponse, t: LocalizationReader) =
+    varaaRaporttipaikka {
+      val raportti = tuotaRaportti
+      contentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+      response.setHeader("Content-Disposition", s"""attachment; filename="${raportti.filename}"""")
+      raportti.downloadToken.foreach { t => response.addCookie(Cookie("koskiDownloadToken", t)(CookieOptions(path = "/", maxAge = 600))) }
+      ExcelWriter.writeExcel(
+        raportti.workbookSettings,
+        raportti.sheets,
+        ExcelWriter.BooleanCellStyleLocalizedValues(t),
+        response.getOutputStream
+      )
+    }
+
+  private def varaaRaporttipaikka[T](f: => T): T = {
+    if (!vapaatRaporttipaikat.tryAcquire()) {
+      haltWithStatus(KoskiErrorCategory.unavailable.raportit(
+        "Liian monta raporttia muodostetaan samanaikaisesti. Yritä hetken kuluttua uudelleen."
+      ))
+    }
+    try f finally vapaatRaporttipaikat.release()
   }
 
   private def parseAikajaksoRaporttiRequest: AikajaksoRaporttiRequest = {

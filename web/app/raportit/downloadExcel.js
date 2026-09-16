@@ -1,5 +1,17 @@
 import Bacon from 'baconjs'
 import { appendQueryParams } from '../util/location'
+import { extractValidationErrorText } from '../util/Error'
+
+const virheteksti = (body) => {
+  try {
+    const virheet = JSON.parse(body)
+    return extractValidationErrorText(
+      virheet.length === 1 ? virheet[0] : virheet
+    )
+  } catch (e) {
+    return body
+  }
+}
 
 export const downloadExcel = (params) => {
   let iframe = document.getElementById('raportti-iframe')
@@ -18,7 +30,7 @@ export const downloadExcel = (params) => {
     let response
     try {
       response = {
-        text: iframe.contentDocument.body.textContent,
+        text: virheteksti(iframe.contentDocument.body.textContent),
         httpStatus: 400
       }
     } catch (err) {

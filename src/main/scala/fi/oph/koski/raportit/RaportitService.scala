@@ -1,5 +1,6 @@
 package fi.oph.koski.raportit
 
+import fi.oph.koski.cache.{CacheManager, RefreshingCache, SingleValueCache}
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.plainAPI._
 import fi.oph.koski.koskiuser.KoskiSpecificSession
@@ -20,8 +21,10 @@ import fi.oph.koski.util.Retry
 
 import java.time.LocalDateTime
 import scala.collection.immutable
+import scala.concurrent.duration.DurationInt
 
 class RaportitService(application: KoskiApplication) {
+  private implicit val cacheManager: CacheManager = application.cacheManager
   private val raportointiDatabase = application.raportointiDatabase
   private val perusopetusRepository = PerusopetuksenRaportitRepository(raportointiDatabase.db)
   private val accessResolver = RaportitAccessResolver(application)
@@ -407,7 +410,16 @@ class RaportitService(application: KoskiApplication) {
     result
   }
 
-  def getKoulutusmuodot() = {
+  def getKoulutusmuodot(): Map[String, Seq[String]] = koulutusmuodotCache.apply
+
+  // lazy, koska RaportitServicestä voi olla monta instanssia eikä samannimisiä sallita
+  // Vain RaportitServlet kuitenkin käyttää tätä cachea
+  private lazy val koulutusmuodotCache = SingleValueCache[Map[String, Seq[String]]](
+    RefreshingCache("RaportitService.koulutusmuodot", 1.hour, maxSize = 2),
+    () => haeKoulutusmuodot()
+  )
+
+  private def haeKoulutusmuodot(): Map[String, Seq[String]] = {
     val query = sql"""
       SELECT
         oppilaitos_oid,
