@@ -45,6 +45,7 @@ class RaportitService(application: KoskiApplication) {
   private val aikuistenPerusopetuksenEiRahoitustietoaKurssitRaportti = AikuistenPerusopetuksenEiRahoitustietoaKurssit(raportointiDatabase.db)
   private val aikuistenPerusopetuksenOpiskeluoikeudenUlkopuolisetRaportti = AikuistenPerusopetuksenOpiskeluoikeudenUlkopuolisetKurssit(raportointiDatabase.db)
   private val aikuistenPerusopetuksenEriVuonnaKorotetutKurssitRaportti = AikuistenPerusopetuksenEriVuonnaKorotetutKurssit(raportointiDatabase.db)
+  private val kotikuntalaskelmaBuilder = Kotikuntalaskelma(raportointiDatabase.db, application.organisaatioService)
   private val perusopetuksenOppijamäärätRaportti = PerusopetuksenOppijamäärätRaportti(raportointiDatabase.db, application.organisaatioService)
   private val perusopetuksenLisäopetuksenOppijamäärätRaportti = PerusopetuksenLisäopetusOppijamäärätRaportti(raportointiDatabase.db, application.organisaatioService)
   private val ibSuoritustiedotRepository = IBSuoritustiedotRaporttiRepository(raportointiDatabase.db)
@@ -317,6 +318,22 @@ class RaportitService(application: KoskiApplication) {
       sheets = Seq(aikuistenPerusopetuksenOppijamäärätRaportti.build(oppilaitosOids, request.paiva, t)),
       workbookSettings = WorkbookSettings(t.get("raportti-excel-aikuistenperusopetus-vos-title-etuliite"), Some(request.password)),
       filename = s"${t.get("raportti-excel-aikuistenperusopetus-vos-tiedoston-etuliite")}-${request.paiva}.xlsx",
+      downloadToken = request.downloadToken
+    )
+  }
+
+  def kotikuntalaskelma(request: RaporttiPäivältäRequest, t: LocalizationReader)(implicit u: KoskiSpecificSession) = {
+    // Raportti kattaa useita koulutusmuotoja (perusopetus, esiopetus, kansainväliset koulut),
+    // joten organisaatioita ei rajata yhteen koulutusmuotoon tässä — Kotikuntalaskelma.query
+    // suodattaa koulutusmuodon SQL:n WHERE-lausekkeessa. TODO(TOR-2650): ks. suunnitelman 9 §.
+    val oppilaitosOids = accessResolver.kyselyOiditOrganisaatiolle(request.oppilaitosOid).toSeq
+    OppilaitosRaporttiResponse(
+      sheets = Seq(
+        kotikuntalaskelmaBuilder.build(oppilaitosOids, request.paiva, t),
+        kotikuntalaskelmaBuilder.buildOppijat(oppilaitosOids, request.paiva, t)
+      ),
+      workbookSettings = WorkbookSettings(t.get("raportti-excel-kotikuntalaskelma-title"), Some(request.password)),
+      filename = s"${t.get("raportti-excel-kotikuntalaskelma-tiedoston-etuliite")}_${request.oppilaitosOid}_${request.paiva}.xlsx",
       downloadToken = request.downloadToken
     )
   }
