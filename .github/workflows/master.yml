@@ -1,0 +1,26 @@
+name: Master
+
+on:
+  push:
+    branches: [master]
+
+permissions:
+  contents: read
+
+jobs:
+  tests:
+    name: "Tests"
+    uses: ./.github/workflows/tests.yml
+    permissions:
+      contents: read
+      packages: read
+
+  publish_and_deploy:
+    name: Publish and deploy
+    needs: [tests]
+    uses: ./.github/workflows/publish_and_deploy.yml
+    permissions:
+      contents: read
+      id-token: write
+      packages: write
+    secrets: inherit

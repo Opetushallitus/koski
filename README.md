@@ -316,16 +316,16 @@ Mocha-testit voi ajaa myös nopeasti komentoriviltä:
 make fronttest
 ```
 
-### Integraatiotestit
+### Selaintestit
 
-Integraatiotestejä varten pitää Koski-backendin olla pystyssä (oletuksena `localhost:7021`) tai testit pitää käynnistää ajamalla `KoskiFrontSpec.scala`.
+Selaintestejä varten pitää Koski-backendin olla pystyssä (oletuksena `localhost:7021`) tai testit pitää käynnistää ajamalla `KoskiFrontSpec.scala`.
 Jos backend on valmiiksi ajossa, voi testit ajaa komennolla `pnpm run playwright:test`.
 
 Testit ajetaan headless-selaimessa. Jos haluat selainikkunan näkyviin, aja testit komennolla `pnpm run playwright:test:debug`
 
-### Integraatiotestit OmaDataOAuth2
+### Selaintestit OmaDataOAuth2
 
-Ks. [documentation/oauth2toteutus.md#integraatiotestit](documentation/oauth2toteutus.md#integraatiotestit)
+Ks. [OAuth2-selaintestien ohjeet](documentation/oauth2toteutus.md#selaintestit)
 
 ## CI-palvelin
 
@@ -337,7 +337,7 @@ Myös staattinen analyysi [ESLint](http://eslint.org/) -työkalulla ajetaan joka
 
 Suorituskykytestit ajetaan joka aamuyö.
 
-Integraatiotestit jätetään ajamatta, jos commit-viestissä on teksti `[skip-tests]`. Tämä ominaisuus on tarkoitettu kiireisten hotfixien viemiseen suoraan master-haaraan.
+Kiireisen hotfixin vientiä master-haaraan voi nopeuttaa lisäämällä commit-viestiin tekstin `[skip-tests]`. Master-pushissa raskaat tarkistukset ohitetaan, mutta nopeiden tarkistusten on läpäistävä ennen asennusta. PR:iin merkintä ei vaikuta.
 
 ## Asennukset
 

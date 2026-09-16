@@ -1,4 +1,4 @@
-name: OmaDataOAuth2 Playwright E2E tests
+name: OmaDataOAuth2 browser tests (Playwright)
 
 inputs:
   shardIndex:

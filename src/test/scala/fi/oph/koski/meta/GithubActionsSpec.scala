@@ -31,8 +31,8 @@ class GithubActionsSpec extends AnyFreeSpec with Matchers {
   }
 
   "Github Actions" - {
-    "Tarkistetaan, että tiedostossa all_tests.yml on mainittu kaikki testipaketit" in {
-      checkTestIntegrity(".github/workflows/all_tests.yml")
+    "Tarkistetaan, että tiedostossa tests.yml on mainittu kaikki testipaketit" in {
+      checkTestIntegrity(".github/workflows/tests.yml")
     }
   }
 

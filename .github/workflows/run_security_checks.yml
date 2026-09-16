@@ -12,7 +12,6 @@ jobs:
     name: Trivy scan
     uses: ./.github/workflows/trivy_check.yml
     with:
-      runs-on: ubuntu-24.04
       upload-report: true
       severity: CRITICAL,HIGH
 
