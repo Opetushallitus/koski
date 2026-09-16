@@ -1311,7 +1311,9 @@ test.describe('IB', () => {
         }) => {
           await ibOppijaPage.getByTestId(`suoritukset.${ibOppijaPage.suoritusIndex}.button`).click()
           await ibOppijaPage.getByTestId(`suoritukset.${ibOppijaPage.suoritusIndex}.confirm`).click()
-          await ibOppijaPage.tallenna()
+          // Poisto tallentuu heti ja päättää muokkaustilan
+          await expect(ibOppijaPage.getByTestId('opiskeluoikeus.saved.snackbar')).toBeVisible()
+          await expect(ibOppijaPage.getByTestId('opiskeluoikeus.edit')).toBeVisible()
         })
       })
     })

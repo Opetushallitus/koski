@@ -487,16 +487,52 @@ test.describe('Ammatillisen tutkinnon uusi käyttöliittymä', () => {
       await page.getByTestId('oo.0.suoritukset.1.button').click()
       await page.getByTestId('oo.0.suoritukset.1.confirm').click()
 
-      // Poisto tallentuu heti, joten suoritus on poissa myös uudelleenlatauksen jälkeen
+      // Poisto tallentuu heti kuten tallennus ja päättää muokkaustilan
+      await expect(page.getByTestId('oo.0.opiskeluoikeus.edit')).toBeVisible()
+      await expect(page.getByTestId('oo.0.suoritusTabs.1.tab')).toHaveCount(0)
+
+      // Muokkauksen peruminen ei palauta poistettua suoritusta
+      await page.getByTestId('oo.0.opiskeluoikeus.edit').click()
+      await page.getByTestId('oo.0.opiskeluoikeus.cancelEdit').click()
+      await expect(page.getByTestId('oo.0.suoritusTabs.0.tab')).toHaveText(
+        'Autoalan perustutkinto'
+      )
       await expect(
         page.getByRole('button', {
           name: 'Näyttötutkintoon valmistava koulutus'
         })
       ).toHaveCount(0)
+
       await oppijaPage.gotoWithQueryParams(tunnustettu, flag)
       await expect(page.getByTestId('oo.0.suoritusTabs.0.tab')).toHaveText(
         'Autoalan perustutkinto'
       )
+      await expect(page.getByTestId('oo.0.suoritusTabs.1.tab')).toHaveCount(0)
+    })
+
+    test('Tallentamattoman päätason suorituksen poisto ei tallenna mitään', async ({
+      page,
+      oppijaPage,
+      oppijaPageV2
+    }) => {
+      await oppijaPage.gotoWithQueryParams(tunnustettu, flag)
+      await page.getByTestId('oo.0.opiskeluoikeus.edit').click()
+      await page
+        .getByText('lisää näyttötutkintoon valmistavan koulutuksen suoritus')
+        .click()
+      await page.getByTestId('oo.0.suoritukset.1.button').click()
+      await page.getByTestId('oo.0.suoritukset.1.confirm').click()
+
+      // Suoritusta ei ollut backendillä, joten muokkaustila jatkuu
+      await expect(
+        page.getByTestId('oo.0.suoritukset.0.suoritustapa')
+      ).toHaveText('Näyttötutkinto')
+      await expect(
+        page.getByRole('button', {
+          name: 'Näyttötutkintoon valmistava koulutus'
+        })
+      ).toHaveCount(0)
+      await page.getByTestId('oo.0.opiskeluoikeus.cancelEdit').click()
       await expect(page.getByTestId('oo.0.suoritusTabs.1.tab')).toHaveCount(0)
     })
 
