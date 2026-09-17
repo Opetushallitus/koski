@@ -63,9 +63,6 @@ case class RaportitAccessResolver(organisaatioRepository: OrganisaatioRepository
       MuuAmmatillinenKoulutus,
       TOPKSAmmatillinen
     )
-    // Kotikuntalaskelma lasketaan koulutustoimijan (tai varhaiskasvatuksen järjestäjän)
-    // koko oppilaitosjoukolle kerrallaan, ei oppilaitoksittain (ks. selectableOrganisaatiotyypit
-    // Raportit.jsx:ssä), joten se tarjotaan vain isKoulutustoimija-solmuille.
     case "perusopetus" if isKoulutustoimija => Seq(PerusopetuksenVuosiluokka, PerusopetuksenOppijaMääräRaportti, KotikuntalaskelmaRaportti)
     case "perusopetus" => Seq(PerusopetuksenVuosiluokka, PerusopetuksenOppijaMääräRaportti)
     case "perusopetuksenlisaopetus" => Seq(PerusopetuksenLisäopetuksenOppijaMääräRaportti)

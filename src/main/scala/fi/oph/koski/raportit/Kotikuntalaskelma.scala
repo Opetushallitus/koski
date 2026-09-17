@@ -43,9 +43,7 @@ case class Kotikuntalaskelma(db: DB) extends QueryMethods {
       select
         extract(year from $päivä::date)::int as vuosi,
         -- Kansainvälisten koulujen (internationalschool, europeanschoolofhelsinki) luokka-asteet
-        -- lasketaan vain kuluvalta lukuvuodelta: jos päivä osuu elokuun 1. päivään tai sen
-        -- jälkeen, lukuvuosi alkoi tänä vuonna; muuten (tammi-heinäkuu) lukuvuosi alkoi edellisenä
-        -- vuonna.
+        -- lasketaan vain kuluvalta lukuvuodelta
         case
           when extract(month from $päivä::date) >= 8
             then make_date(extract(year from $päivä::date)::int, 8, 1)
@@ -73,9 +71,6 @@ case class Kotikuntalaskelma(db: DB) extends QueryMethods {
         then he.master_oid
       end) as kolmetoista_viisitoista,
 
-      -- Jako perustuu nimenomaan vamman/sairauden/toimintakyvyn rajoitteeseen (vahvistettu
-      -- tiketillä), ei toiminta-alueittaiseen opiskeluun eikä pidennettyyn oppivelvollisuuteen
-      -- yleensä — nämä kolme eivät ole sama asia.
       count(distinct case
         when extract(year from he.syntymaaika) = v.vuosi - 16
           and aj.alku <= $päivä and aj.loppu >= $päivä
@@ -175,10 +170,6 @@ case class Kotikuntalaskelma(db: DB) extends QueryMethods {
     with v as (
       select
         extract(year from $päivä::date)::int as vuosi,
-        -- Kansainvälisten koulujen (internationalschool, europeanschoolofhelsinki) luokka-asteet
-        -- lasketaan vain kuluvalta lukuvuodelta: jos päivä osuu elokuun 1. päivään tai sen
-        -- jälkeen, lukuvuosi alkoi tänä vuonna; muuten (tammi-heinäkuu) lukuvuosi alkoi edellisenä
-        -- vuonna.
         case
           when extract(month from $päivä::date) >= 8
             then make_date(extract(year from $päivä::date)::int, 8, 1)
@@ -193,7 +184,6 @@ case class Kotikuntalaskelma(db: DB) extends QueryMethods {
       case when bool_or(he.turvakielto) then null else max(he.sukunimi) end as sukunimi,
       case when bool_or(he.turvakielto) then null else max(kkh.kotikunta_nimi_fi) end as kotikunta,
       case when bool_or(he.turvakielto) then null else max(oo.oppilaitos_nimi) end as oppilaitos,
-      -- TODO(TOR-2560): luokka_aste/luokka valitaan max()-aggregaatilla kaikista oppijan
       case when bool_or(he.turvakielto) then null else max(pts.koulutusmoduuli_koodiarvo) end as luokka_aste,
       case when bool_or(he.turvakielto) then null else max(pts.luokka_tai_ryhma) end as luokka,
 
@@ -203,9 +193,6 @@ case class Kotikuntalaskelma(db: DB) extends QueryMethods {
 
       bool_or(extract(year from he.syntymaaika) between v.vuosi - 15 and v.vuosi - 13) as kolmetoista_viisitoista,
 
-      -- Jako perustuu nimenomaan vamman/sairauden/toimintakyvyn rajoitteeseen (vahvistettu
-      -- tiketillä), ei toiminta-alueittaiseen opiskeluun eikä pidennettyyn oppivelvollisuuteen
-      -- yleensä — nämä kolme eivät ole sama asia.
       bool_or(
         extract(year from he.syntymaaika) = v.vuosi - 16
         and aj.alku <= $päivä and aj.loppu >= $päivä
@@ -223,7 +210,6 @@ case class Kotikuntalaskelma(db: DB) extends QueryMethods {
     join r_paatason_suoritus pts on pts.opiskeluoikeus_oid = oo.opiskeluoikeus_oid
     left join r_opiskeluoikeus_aikajakso aj on aj.opiskeluoikeus_oid = oo.opiskeluoikeus_oid
     left join esiopetus_opiskeluoik_aikajakso eaj on eaj.opiskeluoikeus_oid = oo.opiskeluoikeus_oid
-    -- Julkinen r_kotikuntahistoria: EI koski_confidential
     left join r_kotikuntahistoria kkh
       on kkh.master_oid = he.master_oid
       and coalesce(kkh.muutto_pvm, '1900-01-01'::date) <= $päivä
@@ -253,7 +239,11 @@ case class Kotikuntalaskelma(db: DB) extends QueryMethods {
       and extract(year from he.syntymaaika) between v.vuosi - 16 and v.vuosi - 6
 
     group by he.master_oid
-    order by he.master_oid
+    -- Turvakiellon alaiset oppijat aina listan loppuun (bool_or(turvakielto) järjestetään ensin:
+    -- false=0 ennen true=1), jotta niiden todellista sijaintia listassa ei voi päätellä
+    -- vertaamalla naapuririvien näkyviä oppijanumeroita — muuten piilotettu rivi istuisi tarkalleen
+    -- kahden näkyvän oidin välissä ja sen identiteetin voisi rajata näiden perusteella.
+    order by bool_or(he.turvakielto), he.master_oid
   """
   }
 

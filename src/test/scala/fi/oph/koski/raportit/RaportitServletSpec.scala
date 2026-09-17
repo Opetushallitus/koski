@@ -139,6 +139,11 @@ class RaportitServletSpec extends AnyFreeSpec with RaportointikantaTestMethods w
           verifyResponseStatus(403, KoskiErrorCategory.forbidden.organisaatio())
         }
       }
+      "ei voi ladata kotikuntalaskelmaa oppilaitokselle, joka kuuluu toiseen koulutustoimijaan kuin käyttäjän omaan" in {
+        authGet(s"api/raportit/kotikuntalaskelma?oppilaitosOid=${MockOrganisaatiot.aapajoenKoulu}&paiva=2026-09-01&lang=fi&password=dummy", user = helsinkiTallentaja) {
+          verifyResponseStatus(403, KoskiErrorCategory.forbidden.organisaatio())
+        }
+      }
     }
   }
 

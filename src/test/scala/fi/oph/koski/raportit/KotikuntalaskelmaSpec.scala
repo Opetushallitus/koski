@@ -13,15 +13,7 @@ import org.scalatest.matchers.should.Matchers
 
 import java.time.LocalDate.{of => date}
 
-// TOR-2560: Perustuu KoskiSpecificMockOppijat.scala:n kotikuntalaskelma*-testioppijoihin, jotka
-// ovat kaikki Aapajoen koulussa (valittu tarkoituksella Jyväskylän normaalikoulun sijaan — ks.
-// perustelu KoskiSpecificDatabaseFixtureCreator.scala:n kommentista). Nämä fixturet on
-// tietoisesti pidetty committoimattomina (ks. suunnitelman 13.2 §, kohta 9) — testit siis
-// nojaavat tällä hetkellä paikallisesti lisättyyn, ei vielä committoituun dataan.
 class KotikuntalaskelmaSpec extends AnyFreeSpec with Matchers with RaportointikantaTestMethods with BeforeAndAfterAll with DirtiesFixtures {
-  // Kaikki kotikuntalaskelma-testioppijat on syntymäajoitettu niin että ikäryhmä ratkeaa
-  // yksikäsitteisesti minä tahansa vuoden 2026 päivänä (ikäryhmäjako on kalenterivuosipohjainen,
-  // ei päivätarkka), joten mikä tahansa 2026-päivä kelpaa raportointipäiväksi.
   private val raportointipäivä = date(2026, 9, 1)
 
   override protected def alterFixture(): Unit = {
@@ -60,39 +52,27 @@ class KotikuntalaskelmaSpec extends AnyFreeSpec with Matchers with Raportointika
     }
 
     "Aggregaattivälilehti - eri-ikäiset ja eri kotikunnissa asuvat oppijat päätyvät oikeisiin ikäryhmä- ja kotikuntariveihin" in {
-      // Kuusi Kaisa (6v, Jyväskylä) ja KuusitoistaErityinen Essi (16v, erityisen tuen perusteella,
-      // Jyväskylä) ovat molemmat samalla kotikuntarivillä.
       val jyväskyläRivi = aggregaattiRivit.find(_.oppilaanKotikunta.contains("Jyväskylä"))
       jyväskyläRivi shouldBe defined
       jyväskyläRivi.get.kuusi should be >= 1
       jyväskyläRivi.get.kuusitoistaErityisenTuenPerusteella should be >= 1
 
-      // SeitsemanKaksitoista Sami (9v), KolmetoistaViisitoista Kalle (14v) ja
-      // KuusitoistaEiErityista Ilmari (16v, ei erityisen tuen perusteella) ovat kaikki Helsingissä.
       val helsinkiRivi = aggregaattiRivit.find(_.oppilaanKotikunta.contains("Helsinki"))
       helsinkiRivi shouldBe defined
       helsinkiRivi.get.seitsemänKaksitoista should be >= 1
       helsinkiRivi.get.kolmetoistaViisitoista should be >= 1
       helsinkiRivi.get.kuusitoistaEiErityisenTuenPerusteella should be >= 1
 
-      // Sama ikäryhmä ei saa näkyä väärällä kotikuntarivillä: Jyväskylän rivillä ei pidä olla
-      // "ei erityisen tuen perusteella" -tapauksia eikä Helsingin rivillä erityisen tuen tapauksia,
-      // koska nämä kaksi 16-vuotiasta testioppijaa on tarkoituksella sijoitettu eri kotikuntiin.
       jyväskyläRivi.get.kuusitoistaEiErityisenTuenPerusteella should be(0)
       helsinkiRivi.get.kuusitoistaErityisenTuenPerusteella should be(0)
     }
 
     "Aggregaattivälilehti - turvakiellon alaiset ja hetuttomat oppijat eivät paljasta kotikuntaansa" in {
-      // Hetuton Heikki-Lapsi (11v), Turvakielto Lapsi (10v, oikea kotikunta Helsinki) ja
-      // Turvakielto Toinen-Lapsi (7v, oikea kotikunta Jyväskylä) osuvat kaikki samaan
-      // ikäryhmään (7-12v) mutta eivät saa näkyä minkään nimetyn kotikunnan rivillä.
       val tyhjäKotikuntaRivi = aggregaattiRivit.find(_.oppilaanKotikunta.isEmpty)
       tyhjäKotikuntaRivi shouldBe defined
       tyhjäKotikuntaRivi.get.kotikunnanKoodi shouldBe empty
       tyhjäKotikuntaRivi.get.seitsemänKaksitoista should be >= 3
 
-      // Turvakielto Lapsen oikea kotikunta (Helsinki) ei saa vuotaa Helsingin riville: sillä
-      // rivillä pitäisi olla vain SeitsemanKaksitoista Sami (yksi oppija), ei kahta.
       aggregaattiRivit.find(_.oppilaanKotikunta.contains("Helsinki")).get.seitsemänKaksitoista should be(1)
     }
 
@@ -125,7 +105,6 @@ class KotikuntalaskelmaSpec extends AnyFreeSpec with Matchers with Raportointika
     "Oppijat-välilehti - turvakiellon alaisen oppijan tunnistetiedot piilotetaan mutta ikäryhmälippu näkyy" in {
       val turvakieltoRivit = oppijatRivit.filter(_.oppijaNumero.contains("Turvakielto"))
 
-      // Vähintään kotikuntalaskelmaTurvakielto ja kotikuntalaskelmaTurvakielto2 pitäisi löytyä.
       turvakieltoRivit.length should be >= 2
 
       turvakieltoRivit.foreach { rivi =>
@@ -139,10 +118,20 @@ class KotikuntalaskelmaSpec extends AnyFreeSpec with Matchers with Raportointika
         rivi.luokkaAste shouldBe None
         rivi.luokka shouldBe None
       }
-
-      // Ikäryhmälippu sen sijaan näkyy normaalisti myös turvakiellon alaiselle oppijalle, jotta
-      // koulutustoimija näkee mistä aggregaattivälilehden luku tulee (ks. suunnitelman 10.1 §).
       turvakieltoRivit.exists(_.seitsemänKaksitoista) shouldBe true
+    }
+
+    "Oppijat-välilehti - turvakiellon alaiset oppijat ovat listan lopussa" in {
+      // Jos turvakiellon alainen rivi olisi järjestetty todellisen (näkymättömän) oidin mukaan
+      // muiden rivien joukkoon, sen sijainti kahden näkyvän oidin välissä paljastaisi rajatun
+      // joukon mahdollisia identiteettejä. Kaikkien turvakieltorivien pitää siis olla listan
+      // hännässä, ei sekaisin muiden joukossa.
+      val ensimmäinenTurvakieltoIndeksi = oppijatRivit.indexWhere(_.oppijaNumero.contains("Turvakielto"))
+
+      ensimmäinenTurvakieltoIndeksi should be >= 0
+      oppijatRivit.drop(ensimmäinenTurvakieltoIndeksi).foreach { rivi =>
+        rivi.oppijaNumero shouldBe Some("Turvakielto")
+      }
     }
 
     "Oppijat-välilehti - hetuton oppija näkyy rivinä mutta ilman kotikuntaa" in {
@@ -159,9 +148,6 @@ class KotikuntalaskelmaSpec extends AnyFreeSpec with Matchers with Raportointika
       val kotiopetusOid = KoskiSpecificMockOppijat.kotikuntalaskelmaKotiopetus.oid
 
       oppijatRivit.find(_.oppijaNumero.contains(kotiopetusOid)) shouldBe None
-
-      // Muutoin tämä oppija (10v, Jyväskylä) osuisi Jyväskylän rivin 7-12v-ikäryhmään — sen
-      // pitäisi silti pysyä poissa "not aj.kotiopetus" -ehdon takia.
       aggregaattiRivit.find(_.oppilaanKotikunta.contains("Jyväskylä")).get.seitsemänKaksitoista should be(0)
     }
 
@@ -173,9 +159,6 @@ class KotikuntalaskelmaSpec extends AnyFreeSpec with Matchers with Raportointika
       rivi.get.etunimet shouldBe Some("Elias")
       rivi.get.kotikunta shouldBe Some("Helsinki")
       rivi.get.kuusi shouldBe true
-
-      // Aggregaattivälilehdellä esiopetusoppija näkyy Helsingin rivillä kuusivuotiaana, erillään
-      // Kuusi Kaisasta (joka on Jyväskylässä).
       aggregaattiRivit.find(_.oppilaanKotikunta.contains("Helsinki")).get.kuusi should be >= 1
     }
 
@@ -183,10 +166,6 @@ class KotikuntalaskelmaSpec extends AnyFreeSpec with Matchers with Raportointika
       val oid = KoskiSpecificMockOppijat.kotikuntalaskelmaKansainvalinenEdellinenLukuvuosi.oid
 
       oppijatRivit.find(_.oppijaNumero.contains(oid)) shouldBe None
-
-      // Oppija (7v, Helsinki) osuisi muutoin Helsingin rivin 7-12v-ikäryhmään Sami
-      // SeitsemanKaksitoistan kanssa — sen pitäisi silti pysyä poissa, koska koulutusmoduulin
-      // alkamispäivä (15.8.2025) on edellisen, ei kuluvan (1.8.2026 alkaneen) lukuvuoden puolella.
       aggregaattiRivit.find(_.oppilaanKotikunta.contains("Helsinki")).get.seitsemänKaksitoista should be(1)
     }
   }
