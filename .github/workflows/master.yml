@@ -1,4 +1,4 @@
-name: Master
+name: Publish and deploy master
 
 on:
   push:
