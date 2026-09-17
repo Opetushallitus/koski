@@ -4,6 +4,12 @@ on:
     - cron: "30 5-12 * * SUN-SAT"
   workflow_dispatch:
   workflow_call:
+    inputs:
+      expected_commithash:
+        description: Git commit expected in QA before smoke tests
+        type: string
+        required: false
+        default: ""
 
 jobs:
   smoketests:
@@ -12,7 +18,7 @@ jobs:
     timeout-minutes: 30
     concurrency:
       group: koski-qa-smoketests
-      cancel-in-progress: false
+      cancel-in-progress: true
     steps:
       - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7
 
@@ -32,6 +38,12 @@ jobs:
           command: |
             cd smoketests
             pnpm install --frozen-lockfile
+
+      - name: Verify QA deployment
+        if: ${{ inputs.expected_commithash != '' }}
+        env:
+          EXPECTED_COMMIT_HASH: ${{ inputs.expected_commithash }}
+        run: cd smoketests && pnpm run qa:deployment
 
       - name: Install Puppeteer browser
         run: |
@@ -54,8 +66,8 @@ jobs:
 
       - name: Report failure
         uses: ./.github/actions/report_slack_failure
-        if: ${{ failure() }}
+        if: ${{ failure() && !cancelled() }}
         with:
           webhook: ${{ secrets.SLACK_WEBHOOK_URL }}
           prefix: ":fire: SMOKETESTS"
-          title: "Run smoketests: failure in kansalainen/omadata/tiedote tests"
+          title: "Run smoketests: failure in QA deployment verification or smoke tests"

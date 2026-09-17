@@ -55,6 +55,8 @@ jobs:
     needs: [deploy_qa, deploy_omadataoauth2sample_qa]
     if: ${{ !cancelled() && needs.deploy_qa.result == 'success' }}
     uses: ./.github/workflows/run_smoketests.yml
+    with:
+      expected_commithash: ${{ github.sha }}
     secrets: inherit
 
   deploy_prod:
