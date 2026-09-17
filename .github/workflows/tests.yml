@@ -332,6 +332,7 @@ jobs:
             fi.oph.koski.raportointikanta, \
             fi.oph.koski.schedule, \
             fi.oph.koski.schema, \
+            fi.oph.koski.servlet, \
             fi.oph.koski.sso, \
             fi.oph.koski.sure, \
             fi.oph.koski.supa, \

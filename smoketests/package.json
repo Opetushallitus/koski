@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "typecheck": "tsc --noEmit --project tsconfig.json",
+    "qa:versio": "ts-node src/qa-versio.ts",
     "qa:kansalainen": "ts-node src/qa-kansalainen.ts",
     "qa:tiedote": "ts-node src/qa-tiedote.ts",
     "omadata:local": "ts-node src/omadata-oauth2-sample.ts local",

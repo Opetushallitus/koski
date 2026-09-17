@@ -22,7 +22,7 @@ class TimeZoneSpec extends AnyFreeSpec with Matchers with QueryMethods with Kosk
     "Palvelin on oikealla aikavyöhykkeellä" in {
       get("api/status/") {
         val status = JsonSerializer.parse[Map[String, String]](body)
-        status("server time") should include(expectedTimeZone)
+        status("serverTime") should include(expectedTimeZone)
       }
     }
 
