@@ -3,9 +3,7 @@ package fi.oph.koski.omattiedot
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.editor.{EditorApiServlet, EditorModel}
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
-import fi.oph.koski.koskiuser.Rooli.SUORITUSJAKO_KATSELIJA
 import fi.oph.koski.koskiuser._
-import fi.oph.koski.log.LogUserContext
 import fi.oph.koski.schema.Oppija
 import fi.oph.koski.servlet.NoCache
 import fi.oph.koski.util.WithWarnings
@@ -30,12 +28,7 @@ class OmatTiedotServlet(implicit val application: KoskiApplication) extends Edit
   }
 
   private def renderOmatTiedot: Unit = {
-
-    // Näytetään suoritusjaoissa näkyvät tiedot myös kansalaisen omissa tiedoissa.
-    implicit val sessionWithRole: KoskiSpecificSession =
-      new KoskiSpecificSession(session.user, session.lang,
-        LogUserContext.clientIpFromRequest(request), LogUserContext.userAgent(request),
-        Set(KäyttöoikeusGlobal(List(Palvelurooli(SUORITUSJAKO_KATSELIJA)))))
+    implicit val sessionWithRole: KoskiSpecificSession = KoskiSpecificSession.omatTiedotSession(session)
 
     val käyttäjäOppija = huoltajaService.findUserOppijaAllowEmpty(sessionWithRole)
     val editorModel = käyttäjäOppija.map(oppija => OmatTiedotEditorModel.toEditorModel(userOppija = oppija, näytettäväOppija = oppija)(application, sessionWithRole))
