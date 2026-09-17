@@ -3,11 +3,16 @@ on:
   schedule:
     - cron: "30 5-12 * * SUN-SAT"
   workflow_dispatch:
+  workflow_call:
 
 jobs:
   smoketests:
-    name:
+    name: Run QA smoketests
     runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    concurrency:
+      group: koski-qa-smoketests
+      cancel-in-progress: false
     steps:
       - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7
 
