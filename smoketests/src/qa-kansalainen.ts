@@ -71,15 +71,24 @@ const runTest = async (
       headless: true,
       args: ['--no-sandbox', '--disable-setuid-sandbox'],
     });
-    const page = await browser.newPage();
-    const resultOk = await tryToLogin(page);
-    await browser.close();
+    try {
+      const page = await browser.newPage();
+      const resultOk = await tryToLogin(page);
 
-    if (resultOk) {
-      console.log(`Success for ${testName}!`);
-      return;
+      if (resultOk) {
+        console.log(`Success for ${testName}!`);
+        return;
+      }
+      console.log(`Failed for ${testName}!`);
+    } catch (error) {
+      console.error(
+        `Attempt ${i + 1}/${retryCount} failed: ${
+          error instanceof Error ? error.message : String(error)
+        }`
+      );
+    } finally {
+      await browser.close();
     }
-    console.log(`Failed for ${testName}!`);
   }
   console.log(`Smoke test has failed for ${testName}.`);
   throw new Error(`Smoke test failed for ${testName}`);
@@ -90,4 +99,7 @@ const runTests = async (): Promise<void> => {
   await runTest(eIdasLogin, "eIDAS login test");
 }
 
-runTests();
+runTests().catch((error) => {
+  console.error(error instanceof Error ? error.message : String(error));
+  process.exit(1);
+});
