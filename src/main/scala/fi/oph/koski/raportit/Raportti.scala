@@ -208,3 +208,7 @@ case object JatkuvanOppimisenVapaanSivistystyönRaportti extends RaportinTyyppi 
 case object MuunKuinSäännellynKoulutuksenRaportti extends RaportinTyyppi {
   val opiskeluoikeudenTyyppi = OpiskeluoikeudenTyyppi.muukuinsaanneltykoulutus.koodiarvo
 }
+
+case object KotikuntalaskelmaRaportti extends RaportinTyyppi {
+  val opiskeluoikeudenTyyppi = OpiskeluoikeudenTyyppi.perusopetus.koodiarvo
+}

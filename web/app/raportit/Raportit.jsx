@@ -238,13 +238,18 @@ const kaikkiRaportitKategorioittain = [
   {
     id: 'muut',
     tab: 'raporttikategoria-tab-muut',
-    heading: 'raportti-tab-paallekkaisetopiskeluoikeudet',
+    heading: 'raporttikategoria-heading-muut',
     raportit: [
       {
         id: 'paallekkaisetopiskeluoikeudet',
         name: 'raportti-tab-paallekkaisetopiskeluoikeudet',
         component: PaallekkaisetOpiskeluoikeudet,
         visibleForAllOrgs: true
+      },
+      {
+        id: 'kotikuntalaskelmaraportti',
+        name: 'raportti-tab-kotikuntalaskelma',
+        component: Kotikuntalaskelma
       }
     ]
   }
@@ -472,6 +477,13 @@ const RaportitContent = ({
 
   return (
     <div className="main-content">
+      {/* TODO(TOR-2560): tämä ehto olettaa, että jokaisella raportteja
+          näkevällä käyttäjällä on vähintään yksi organisaatio-oikeus.
+          Kotikuntalaskelma on tarkoitus rajata raportit.rajatut-listan kautta
+          (ks. RaportitAccessResolver), joten pelkän rajatut-oikeuden saava
+          käyttäjä voisi päätyä tänne organisaatioita: [] ja pudota tähän
+          virheeseen, vaikka hänellä olisi oikeus Kotikuntalaskelmain. Pitää
+          ratkaista ennen kuin rajatut-pääsy oikeasti kytketään päälle. */}
       {stateP.map((state) =>
         state.organisaatiot.length > 0 ? (
           <Tabs
@@ -569,6 +581,27 @@ function PaallekkaisetOpiskeluoikeudet({ stateP }) {
         <Text name="paallekkaiset-opiskeluoikeudet-short-description" />
       }
       example={<Text name="paallekkaiset-opiskeluoikeudet-example" />}
+      lang={lang}
+    />
+  )
+}
+
+function Kotikuntalaskelma({ stateP }) {
+  const titleText = <Text name="kotikuntalaskelma-title" />
+  const shortDescriptionText = (
+    <Text name="kotikuntalaskelma-short-description" />
+  )
+  const dateInputHelpText = <Text name="kotikuntalaskelma-date-input-help" />
+  const exampleText = <Paragraphs name="kotikuntalaskelma-example" />
+
+  return (
+    <RaporttiPaivalta
+      stateP={stateP}
+      apiEndpoint={'/kotikuntalaskelma'}
+      title={titleText}
+      shortDescription={shortDescriptionText}
+      dateInputHelp={dateInputHelpText}
+      example={exampleText}
       lang={lang}
     />
   )
