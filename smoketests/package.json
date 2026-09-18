@@ -4,6 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "qa:versio": "ts-node src/qa-versio.ts",
+    "unit:versio": "ts-node src/qa-versio.test.ts",
     "qa:kansalainen": "ts-node src/qa-kansalainen.ts",
     "omadata:local": "ts-node src/omadata-oauth2-sample.ts local",
     "omadata:dev": "ts-node src/omadata-oauth2-sample.ts dev",
