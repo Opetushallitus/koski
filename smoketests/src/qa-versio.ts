@@ -4,7 +4,7 @@ import { setTimeout as sleep } from "node:timers/promises";
 
 const fullHash = /^[0-9a-fA-F]{40}$/;
 
-export async function verifyQaDeployment(
+export async function verifyQaVersion(
   expected: string,
   {
     url = "https://koski.testiopintopolku.fi/koski/api/status",
@@ -64,7 +64,7 @@ export async function verifyQaDeployment(
 }
 
 if (require.main === module) {
-  verifyQaDeployment(process.env.EXPECTED_COMMIT_HASH ?? "").catch((error) => {
+  verifyQaVersion(process.env.EXPECTED_COMMIT_HASH ?? "").catch((error) => {
     console.error(error);
     process.exitCode = 1;
   });

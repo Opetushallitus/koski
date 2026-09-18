@@ -39,11 +39,11 @@ jobs:
             cd smoketests
             pnpm install --frozen-lockfile
 
-      - name: Verify QA deployment
+      - name: Verify QA version
         if: ${{ inputs.expected_commithash != '' }}
         env:
           EXPECTED_COMMIT_HASH: ${{ inputs.expected_commithash }}
-        run: cd smoketests && pnpm run qa:deployment
+        run: cd smoketests && pnpm run qa:versio
 
       - name: Install Puppeteer browser
         run: |
@@ -70,4 +70,4 @@ jobs:
         with:
           webhook: ${{ secrets.SLACK_WEBHOOK_URL }}
           prefix: ":fire: SMOKETESTS"
-          title: "Run smoketests: failure in QA deployment verification or smoke tests"
+          title: "Run smoketests: failure in QA version verification or smoke tests"

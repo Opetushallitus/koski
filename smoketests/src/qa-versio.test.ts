@@ -2,7 +2,7 @@ import assert from "node:assert/strict";
 import { createServer, RequestListener } from "node:http";
 import { AddressInfo } from "node:net";
 import { test } from "node:test";
-import { verifyQaDeployment } from "./qa-deployment";
+import { verifyQaVersion } from "./qa-versio";
 
 const expected = "a".repeat(40);
 
@@ -41,7 +41,7 @@ test("immediate match uses cache bypass headers and query parameter", async () =
       );
       res.end(JSON.stringify({ gitCommitHash: expected }));
     },
-    (url) => verifyQaDeployment(expected, { ...options, url }),
+    (url) => verifyQaVersion(expected, { ...options, url }),
   );
 });
 
@@ -70,7 +70,7 @@ test("retries old, malformed, invalid, mismatching, HTTP and network responses",
       } else
         res.end(bodies.shift() ?? JSON.stringify({ gitCommitHash: expected }));
     },
-    (url) => verifyQaDeployment(expected, { ...options, url }),
+    (url) => verifyQaVersion(expected, { ...options, url }),
   );
   assert.equal(attempts, 11);
 });
@@ -84,7 +84,7 @@ test("retries a stalled response body", async () => {
         res.write("{");
       } else res.end(JSON.stringify({ gitCommitHash: expected }));
     },
-    (url) => verifyQaDeployment(expected, { ...options, url }),
+    (url) => verifyQaVersion(expected, { ...options, url }),
   );
   assert.equal(attempts, 2);
 });
@@ -98,7 +98,7 @@ for (const stalled of [false, true]) {
       },
       (url) =>
         assert.rejects(
-          verifyQaDeployment(expected, {
+          verifyQaVersion(expected, {
             ...options,
             url,
             timeoutMs: 150,
@@ -113,7 +113,7 @@ for (const stalled of [false, true]) {
 
 test("rejects invalid expected hashes", async () => {
   await assert.rejects(
-    verifyQaDeployment("short", options),
+    verifyQaVersion("short", options),
     /Invalid expected/,
   );
 });
