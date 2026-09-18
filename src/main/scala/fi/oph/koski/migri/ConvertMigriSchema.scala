@@ -83,7 +83,14 @@ object ConvertMigriSchema {
       },
       oppilaitos = opiskeluoikeus.oppilaitos.map(_.nimi).map(MigriOppilaitos),
       tila = MigriOpiskeluoikeudenTila(opiskeluoikeus.tila.opiskeluoikeusjaksot.map(jakso =>
-        MigriOpiskeluoikeusJakso(jakso.alku, jakso.tila)
+        MigriOpiskeluoikeusJakso(
+          alku = jakso.alku,
+          tila = jakso.tila,
+          opintojenRahoitus = jakso match {
+            case x: AmmatillinenOpiskeluoikeusjakso => x.opintojenRahoitus
+            case _ => None
+          }
+        )
       )),
       arvioituPäättymispäivä = opiskeluoikeus.arvioituPäättymispäivä,
       alkamispäivä = opiskeluoikeus.alkamispäivä,
@@ -138,6 +145,10 @@ object ConvertMigriSchema {
           },
           koulutusvienti = lisätiedot match {
             case x: AmmatillisenOpiskeluoikeudenLisätiedot => Some(x.koulutusvienti)
+            case _ => None
+          },
+          rahoituslähdeJaksot = lisätiedot match {
+            case x: KorkeakoulunOpiskeluoikeudenLisätiedot => x.rahoituslähdeJaksot
             case _ => None
           }
         )
