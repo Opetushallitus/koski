@@ -26,7 +26,7 @@ pnpm install --frozen-lockfile
   - `pnpm run test:unit` ajaa vain
   - `pnpm run test:integration` ajaa vain integraatiotestit (polun `test/integrationtests` alla olevat testit, jotka vaativan backendin)
   - `pnpm run test:integration:debug -- -t "Näyttää listan oppijoista European School of Helsingille"` ajaa vain hakuehtoon sopivat testit
-  - `env SHOW_BROWSER=true npx jest --config jest.integrationtests.config.js test/integrationtests/kansalainen.test.ts` ajaa yhden testitiedoston avoimessa selaimessa
+  - `env SHOW_BROWSER=true pnpm exec jest --config jest.integrationtests.config.js test/integrationtests/kansalainen.test.ts` ajaa yhden testitiedoston avoimessa selaimessa
 - `pnpm run build:local` kääntää lähdekoodit kansioon `./dist-nonce` asetuksilla, joissa backend löytyy localhostista, ja kopioi
   sisällön tarpeellisin muutoksin Koskessa hostaamista varten ../target/webapp/ -hakemistoon.
 - `pnpm run build:prod` kääntää tuotantoversion
@@ -96,3 +96,5 @@ OPINTOPOLKU_VIRKAILIJA_URL=https://virkailija.untuvaopintopolku.fi
 ```
 
 Parcel ei välttämättä tajua ympäristömuuttujien vaihtuneen. Korjaa ongelma ajamalla `pnpm run clean`, joka tyhjentää välimuistin.
+
+Muotoilu- ja lint-komennot tarvitsevat myös repon juurihakemiston Prettier-asennuksen: aja juurihakemistossa `pnpm install --frozen-lockfile`.

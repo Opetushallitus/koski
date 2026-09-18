@@ -1,0 +1,18 @@
+{
+  "overrides": [
+    {
+      "files": ["web/**", "omadata-oauth2-sample/server/**"],
+      "options": {
+        "singleQuote": true,
+        "semi": false,
+        "trailingComma": "none"
+      }
+    },
+    {
+      "files": "valpas-web/**",
+      "options": {
+        "semi": false
+      }
+    }
+  ]
+}

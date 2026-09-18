@@ -1,4 +1,4 @@
-import * as string from "fp-ts/String";
+import * as string from "fp-ts/string";
 import { pipe } from "fp-ts/lib/function";
 import * as R from "fp-ts/Record";
 import { ReprHost, ReprService, ReprState } from "../representationalState";

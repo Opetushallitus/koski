@@ -58,12 +58,8 @@ watch-prod:
 	NODE_ENV="'production'" make watch
 
 .PHONY: ts-types
-ts-types:
-	cd web && rm -rf app/types/fi && curl http://localhost:7021/types/update && npx prettier --write app/types
-
-.PHONY: prettier-format-mock-data
-prettier-format-mock-data:
-	./scripts/prettier-format-koodistot.sh
+ts-types: install-root-tools
+	cd web && rm -rf app/types/fi && curl http://localhost:7021/types/update && pnpm --dir .. exec prettier --write web/app/types
 
 
 ### Running tests
@@ -170,16 +166,28 @@ view-db-docs:
 eslint:
 	cd web && pnpm run lint
 
+.PHONY: install-root-tools
+install-root-tools:
+	@test -x node_modules/.bin/prettier || pnpm install --frozen-lockfile
+
 .PHONY: prettier
-prettier:
-	cd web && pnpm run prettier:check
+prettier: install-root-tools
+	pnpm run prettier
+
+.PHONY: prettier-check
+prettier-check: install-root-tools
+	pnpm run prettier:check
 
 .PHONY: prettier-mock-data
-prettier-mock-data:
-	./scripts/prettier-format-koodistot.sh --check
+prettier-mock-data: install-root-tools
+	pnpm run prettier:mock-data
+
+.PHONY: prettier-mock-data-check
+prettier-mock-data-check: install-root-tools
+	pnpm run prettier:mock-data:check
 
 .PHONY: lint
-lint: eslint prettier prettier-mock-data
+lint: eslint prettier-check
 
 .PHONY: owasp
 owasp:

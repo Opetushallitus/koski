@@ -1,0 +1,9 @@
+web/playwright-report/
+web/test-results/
+web/test/.pw-state/
+web/**/virkailijaState.json
+valpas-web/**/dist/
+valpas-web/dist-nonce/
+omadata-oauth2-sample/server/**/dist/
+omadata-oauth2-sample/server/playwright-report/
+omadata-oauth2-sample/server/test-results/

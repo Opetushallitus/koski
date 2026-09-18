@@ -17,48 +17,80 @@ jobs:
     permissions:
       contents: read
       pull-requests: read
-    # PR-ajoissa testataan vain muutosten koskettamat osat.
+    # PR-ajoissa testit valitaan muutettujen polkujen perusteella.
     # Valpas- ja OAuth2-integraatiotestit käyttävät myös Kosken kansalaiskäyttöliittymää.
     outputs:
       backend: ${{ steps.filter.outputs.all == 'true' || steps.filter.outputs.backend == 'true' }}
       koski-ui: ${{ steps.filter.outputs.all == 'true' || steps.filter.outputs.backend == 'true' || steps.filter.outputs.koski-ui == 'true' }}
       valpas-ui: ${{ steps.filter.outputs.all == 'true' || steps.filter.outputs.backend == 'true' || steps.filter.outputs.koski-ui == 'true' || steps.filter.outputs.valpas-ui == 'true' }}
       oauth2: ${{ steps.filter.outputs.all == 'true' || steps.filter.outputs.backend == 'true' || steps.filter.outputs.koski-ui == 'true' || steps.filter.outputs.oauth2 == 'true' }}
+      smoketests: ${{ steps.filter.outputs.all == 'true' || steps.filter.outputs.smoketests == 'true' }}
+      radiator: ${{ steps.filter.outputs.all == 'true' || steps.filter.outputs.radiator == 'true' }}
+      history-debug: ${{ steps.filter.outputs.all == 'true' || steps.filter.outputs.history-debug == 'true' }}
     steps:
       - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7
       - name: Detect changed paths
         id: filter
         uses: dorny/paths-filter@ceb8a2b8f2d89434be7ff52d3de7ec3738c5cc9d # v4.0.3
         with:
+          predicate-quantifier: some-with-excludes
           filters: |
-            # Yhteisen buildin ja testien ajotavan muutokset tarkistetaan kaikilla testeillä.
+            # Oletuksena ajetaan kaikki testit. Vain erikseen rajatut polut saavat suppeamman testiajon.
             all:
-              - '.github/**'
-              - '.mvn/**'
-              - 'scripts/**'
-              - 'Makefile'
-              - 'pom.xml'
-              - '.npmrc'
-              - '.nvmrc'
-              - '.editorconfig'
-              - 'docker-compose*.yaml'
-              - 'docker-build/**'
-              - 'postgresql/**'
-              - 'opensearch/**'
+              - '**'
+              - '!src/**'
+              - '!scala-schema/**'
+              - '!web/**'
+              - '!.browserslistrc'
+              - '!valpas-web/**'
+              - '!omadata-oauth2-sample/**'
+              - '!smoketests/**'
+              - '!radiator/**'
+              - '!scripts/opiskeluoikeushistoria-debug/**'
+              - '!.claude/**'
+              - '!sandbox/**'
+              - '!renovate.json'
+              - '!.gitignore'
+              - '!.git-blame-ignore-revs'
+              - '!.trivyignore'
+              - '!img.png'
+              - '!owasp-dependency-check-suppressions.xml'
+              - &documentation-exclusions
+                - '!documentation/**'
+                - '!*.md'
+                - '!**/README.md'
+                - '!LICENSE.txt'
 
             backend:
+              - *documentation-exclusions
               - 'src/**'
               - 'scala-schema/**'
 
             koski-ui:
+              - *documentation-exclusions
               - 'web/**'
               - '.browserslistrc'
 
             valpas-ui:
+              - *documentation-exclusions
               - 'valpas-web/**'
+              - '.browserslistrc'
 
             oauth2:
+              - *documentation-exclusions
               - 'omadata-oauth2-sample/**'
+
+            smoketests:
+              - *documentation-exclusions
+              - 'smoketests/**'
+
+            radiator:
+              - *documentation-exclusions
+              - 'radiator/**'
+
+            history-debug:
+              - *documentation-exclusions
+              - 'scripts/opiskeluoikeushistoria-debug/**'
 
   tests:
     name: "Tests"
@@ -72,6 +104,9 @@ jobs:
       run-koski-ui-tests: ${{ needs.changes.outputs.koski-ui == 'true' }}
       run-valpas-ui-tests: ${{ needs.changes.outputs.valpas-ui == 'true' }}
       run-oauth2-tests: ${{ needs.changes.outputs.oauth2 == 'true' }}
+      run-smoketests-tests: ${{ needs.changes.outputs.smoketests == 'true' }}
+      run-radiator-tests: ${{ needs.changes.outputs.radiator == 'true' }}
+      run-history-debug-tests: ${{ needs.changes.outputs.history-debug == 'true' }}
 
   ci_passed:
     name: CI passed

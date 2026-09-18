@@ -18,7 +18,8 @@ set -euo pipefail
 # attributed elsewhere came from a ticket and is about to be reverted.
 
 SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
-ROOT_DIR="$SCRIPT_DIR/.."
+ROOT_DIR=$( cd -- "$SCRIPT_DIR/.." && pwd )
+cd "$ROOT_DIR"
 
 # How far back to walk when attributing a value to the commit that set it.
 # Counted in commits that touched the localization file, not in commits overall.
@@ -41,11 +42,11 @@ else
     C_BOLD=""; C_DIM=""; C_RED=""; C_YEL=""; C_GRN=""; C_CYA=""; C_BRED=""; C_OFF=""
 fi
 
-# Call the installed binary rather than "npx prettier": npx runs npm, which
-# reads web/.npmrc and warns about every pnpm-only setting in it, and would
-# download whatever version is newest instead of the one pinned in
-# web/package.json.
-PRETTIER="$ROOT_DIR/web/node_modules/.bin/prettier"
+# Use the installed Prettier version pinned in the root package.json.
+PRETTIER="$ROOT_DIR/node_modules/.bin/prettier"
+if [ ! -x "$PRETTIER" ]; then
+    pnpm install --frozen-lockfile
+fi
 
 ADDED_TOTAL=0
 CHANGED_TOTAL=0
@@ -342,8 +343,6 @@ function load_and_format() {
     local -r LOCALIZATION_FILE="$2"
     local -r DEFAULT_TEXTS_FILE="$3"
 
-    cd "$ROOT_DIR" || exit
-
     local -r PREVIOUS="$WORK_DIR/$CATEGORY.previous.json"
     cp "$LOCALIZATION_FILE" "$PREVIOUS" 2>/dev/null || true
 
@@ -354,16 +353,16 @@ function load_and_format() {
         "https://virkailija.opintopolku.fi/lokalisointi/cxf/rest/v1/localisation?category=$CATEGORY" \
         | jq -S 'map( . * { createdBy: "anonymousUser", modifiedBy: "anonymousUser" } )' \
         > "$LOCALIZATION_FILE"
-    "$PRETTIER" --config "$ROOT_DIR/web/.prettierrc.json" --log-level warn --write "$LOCALIZATION_FILE"
+    "$PRETTIER" --log-level warn --write "$LOCALIZATION_FILE"
     jq '[.[] | select(.locale | contains("fi"))] | map( { (.key): .value } ) | add' < "$LOCALIZATION_FILE" > "$DEFAULT_TEXTS_FILE"
 
     report_divergence "$CATEGORY" "$PREVIOUS" "$LOCALIZATION_FILE" "$LOCALIZATION_FILE"
 }
 
 
-if [ ! -x "$PRETTIER" ]; then
-    printf '%s\n' "${C_RED}prettier puuttuu polusta $PRETTIER${C_OFF}" >&2
-    printf '%s\n' "Aja ensin: ${C_CYA}cd web && pnpm install${C_OFF}" >&2
+if ! "$PRETTIER" --version >/dev/null; then
+    printf '%s\n' "${C_RED}Komennon $PRETTIER suoritus epäonnistui${C_OFF}" >&2
+    printf '%s\n' "Aja ensin: ${C_CYA}cd \"$ROOT_DIR\" && pnpm install --frozen-lockfile${C_OFF}" >&2
     exit 1
 fi
 
