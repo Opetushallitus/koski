@@ -46,7 +46,9 @@ case class MigriOpiskeluoikeudenTila(
 
 case class MigriOpiskeluoikeusJakso(
   alku: LocalDate,
-  tila: Koodistokoodiviite
+  tila: Koodistokoodiviite,
+  @KoodistoUri("opintojenrahoitus")
+  opintojenRahoitus: Option[Koodistokoodiviite] = None
 )
 
 case class MigriOppilaitos(
@@ -61,7 +63,8 @@ case class MigriOpiskeluoikeudenLisätiedot(
   majoitus: Option[List[Aikajakso]],
   sisäoppilaitosmainenMajoitus: Option[List[Aikajakso]],
   ulkomaanjaksot: Option[List[Aikajakso]],
-  koulutusvienti: Option[Boolean]
+  koulutusvienti: Option[Boolean],
+  rahoituslähdeJaksot: Option[List[RahoituslähdeJakso]] = None
 )
 
 case class MigriLukukausi_Ilmoittautuminen(

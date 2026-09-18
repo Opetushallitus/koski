@@ -71,6 +71,35 @@ class MigriSpec extends AnyFreeSpec with KoskiHttpSpec with OpiskeluoikeusTestMe
     }
   }
 
+  "Ammatillisen opiskeluoikeuden jaksoilta palautetaan opintojen rahoitus" in {
+    verifyResponseContent(ammattilainen.oid, user) { migriOppija =>
+      val jaksot = migriOppija.opiskeluoikeudet.flatMap(_.tila.opiskeluoikeusjaksot)
+
+      jaksot should have length 2
+      jaksot.map(_.opintojenRahoitus.map(_.koodiarvo)) shouldBe List(Some("4"), Some("4"))
+    }
+  }
+
+  "Muiden kuin ammatillisten opiskeluoikeuksien jaksoilta ei palauteta opintojen rahoitusta" in {
+    verifyResponseContent(uusiLukio.oid, user) { migriOppija =>
+      val jaksot = migriOppija.opiskeluoikeudet.flatMap(_.tila.opiskeluoikeusjaksot)
+
+      jaksot should not be empty
+      jaksot.flatMap(_.opintojenRahoitus) shouldBe empty
+    }
+  }
+
+  "Korkeakoulun opiskeluoikeuden lisätiedoista palautetaan rahoituslähdejaksot" in {
+    verifyResponseContent(amkKesken.oid, user) { migriOppija =>
+      val rahoituslähdeJaksot = migriOppija.opiskeluoikeudet.flatMap(_.lisätiedot).flatMap(_.rahoituslähdeJaksot).flatten
+
+      rahoituslähdeJaksot.map(j => (j.alku, j.loppu, j.rahoituslähde.koodiarvo)) shouldBe List(
+        (LocalDate.of(2011, 8, 25), Some(LocalDate.of(2011, 7, 31)), "1"),
+        (LocalDate.of(2014, 8, 25), Some(LocalDate.of(2019, 7, 31)), "1")
+      )
+    }
+  }
+
   "Oppijan opiskeluoikeuksista ja suorituksista palautetaan vain migriä kiinnostavat" in {
     resetFixtures()
     putOpiskeluoikeus(MuunAmmatillisenKoulutuksenExample.muuAmmatillinenKoulutusOpiskeluoikeus, ammattilainen) {
