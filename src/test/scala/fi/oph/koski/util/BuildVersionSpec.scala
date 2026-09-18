@@ -5,9 +5,26 @@ import org.scalatest.matchers.should.Matchers
 
 import java.io.{ByteArrayInputStream, IOException, InputStream}
 import java.nio.charset.StandardCharsets.UTF_8
+import java.util.Properties
+import scala.util.Using
 
 class BuildVersionSpec extends AnyFreeSpec with Matchers {
   "BuildVersion" - {
+    "Lukee paketoidun classpath-resurssin kaikki metadatakentät" in {
+      val stream = getClass.getResourceAsStream("/buildversion.txt")
+      stream should not be null
+      val expected = Using.resource(stream) { resource =>
+        val properties = new Properties()
+        properties.load(resource)
+        BuildVersion(
+          Option(properties.getProperty("version")),
+          Option(properties.getProperty("vcsRevision")),
+          Option(properties.getProperty("buildDate"))
+        )
+      }
+      BuildVersion.read() should be(Some(expected))
+    }
+
     "Lukee eri metadatakentät ja sulkee resurssin" in {
       val stream = new TrackedStream("version=release\nvcsRevision=commit\nbuildDate=2026-09-18")
       var acquisitions = 0

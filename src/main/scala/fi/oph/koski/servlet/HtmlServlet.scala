@@ -10,7 +10,7 @@ import scala.reflect.runtime.{universe => ru}
 import scala.xml.Elem
 
 trait HtmlServlet extends KoskiSpecificBaseServlet with AuthenticationSupport with HtmlNodes with FrontendValvottuServlet {
-  protected lazy val buildMetadata: Option[BuildVersion] = BuildVersion.read(getServletContext.getResourceAsStream("/buildversion.txt"))
+  protected lazy val buildMetadata: Option[BuildVersion] = BuildVersion.read()
   lazy val buildVersion: Option[String] = buildMetadata.flatMap(_.vcsRevision)
 
   override def haltWithStatus(status: HttpStatus): Nothing = status.statusCode match {

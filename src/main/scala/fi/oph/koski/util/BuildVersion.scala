@@ -7,6 +7,8 @@ import scala.util.Using
 case class BuildVersion(version: Option[String], vcsRevision: Option[String], buildDate: Option[String])
 
 object BuildVersion {
+  def read(): Option[BuildVersion] = read(getClass.getResourceAsStream("/buildversion.txt"))
+
   def read(stream: => InputStream): Option[BuildVersion] =
     Option(stream).map { input =>
       Using.resource(input) { resource =>

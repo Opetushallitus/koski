@@ -39,7 +39,7 @@ class TodistusService(application: KoskiApplication) extends Logging with Timing
   private val vainLokitusAllekirjoitusValidoinneille = application.config.getBoolean("todistus.allekirjoitusvalidointi.vainLokitus")
   private val allekirjoitusvalidointiConfig = PdfSignatureAnalyzer.ValidationConfig.fromConfig(application.config)
 
-  private val commitHash: String = BuildVersion.read(getClass.getResourceAsStream("/buildversion.txt")).flatMap(_.version).getOrElse("local")
+  private val commitHash: String = BuildVersion.read().flatMap(_.version).getOrElse("local")
 
   def hasYleinenKielitutkintoViewerRole(implicit user: KoskiSpecificSession): Boolean = {
     user.hasRole(Rooli.rooliPäätasonSuoritukseen(KIELITUTKINTO, SuorituksenTyyppi.yleinenKielitutkinto)) && user.hasRole(OPHKATSELIJA)
