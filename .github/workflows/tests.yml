@@ -39,7 +39,7 @@ env:
 jobs:
   prettier_checks:
     name: Prettier checks
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     steps:
       - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7
 
@@ -57,7 +57,7 @@ jobs:
   smoketests_tests:
     if: ${{ inputs.run-smoketests-tests }}
     name: Smoketests tests
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     steps:
       - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7
 
@@ -76,7 +76,7 @@ jobs:
   radiator_tests:
     if: ${{ inputs.run-radiator-tests }}
     name: Radiator tests
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     steps:
       - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7
 
@@ -95,7 +95,7 @@ jobs:
   history_debug_tests:
     if: ${{ inputs.run-history-debug-tests }}
     name: History debug tests
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     steps:
       - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7
 
@@ -114,7 +114,7 @@ jobs:
   build_koski:
     if: ${{ inputs.run-backend-tests || inputs.run-koski-ui-tests || inputs.run-valpas-ui-tests || inputs.run-oauth2-tests }}
     name: Build Koski app
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     steps:
       - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7
       - uses: ./.github/actions/build_koski
@@ -124,7 +124,7 @@ jobs:
   koski_frontend_lint:
     if: ${{ inputs.run-koski-ui-tests }}
     name: Koski frontend lint & typecheck
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     steps:
       - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7
 
@@ -152,7 +152,7 @@ jobs:
 
   checkdoc_koski_validation:
     name: validaation_muutoshistoria.md check
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     if: ${{ !contains(github.event.head_commit.message, '[skip-tests]') }}
     steps:
       - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7
@@ -164,7 +164,7 @@ jobs:
 
   checkdoc_koski_schema:
     name: tiedonsiirtoprotokollan_muutoshistoria.md check
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     if: ${{ !contains(github.event.head_commit.message, '[skip-tests]') }}
     steps:
       - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7
@@ -176,7 +176,7 @@ jobs:
 
   checkdoc_database_documentation:
     name: Database documentation check
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     if: ${{ !contains(github.event.head_commit.message, '[skip-tests]') }}
     steps:
       - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7
@@ -188,7 +188,7 @@ jobs:
 
   backend_tests_api_oppijavalidation:
     name: Backend (api oppijavalidation)
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     if: ${{ inputs.run-backend-tests && !contains(github.event.head_commit.message, '[skip-tests]') }}
     needs: [build_koski]
     steps:
@@ -200,7 +200,7 @@ jobs:
 
   scala_schema_tests:
     name: Backend (scala-schema)
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     if: ${{ inputs.run-backend-tests && !contains(github.event.head_commit.message, '[skip-tests]') }}
     needs: [build_koski]
     steps:
@@ -212,7 +212,7 @@ jobs:
 
   backend_tests_api_misc_1:
     name: Backend (api misc 1/2)
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     if: ${{ inputs.run-backend-tests && !contains(github.event.head_commit.message, '[skip-tests]') }}
     needs: [build_koski]
     steps:
@@ -225,7 +225,7 @@ jobs:
 
   backend_tests_api_misc_2:
     name: Backend (api misc 2/2)
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     if: ${{ inputs.run-backend-tests && !contains(github.event.head_commit.message, '[skip-tests]') }}
     needs: [build_koski]
     steps:
@@ -238,7 +238,7 @@ jobs:
 
   backend_tests_nonmock:
     name: Backend (non-mock)
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     if: ${{ inputs.run-backend-tests && !contains(github.event.head_commit.message, '[skip-tests]') }}
     needs: [build_koski]
     steps:
@@ -250,7 +250,7 @@ jobs:
 
   backend_tests_other_1:
     name: Backend (other 1/4)
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     if: ${{ inputs.run-backend-tests && !contains(github.event.head_commit.message, '[skip-tests]') }}
     needs: [build_koski]
     steps:
@@ -291,7 +291,7 @@ jobs:
 
   backend_tests_other_2:
     name: Backend (other 2/4)
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     if: ${{ inputs.run-backend-tests && !contains(github.event.head_commit.message, '[skip-tests]') }}
     needs: [build_koski]
     steps:
@@ -308,7 +308,7 @@ jobs:
 
   backend_tests_raportit:
     name: Backend (raportit)
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     if: ${{ inputs.run-backend-tests && !contains(github.event.head_commit.message, '[skip-tests]') }}
     needs: [build_koski]
     steps:
@@ -320,7 +320,7 @@ jobs:
 
   backend_tests_other_3:
     name: Backend (other 3/4)
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     if: ${{ inputs.run-backend-tests && !contains(github.event.head_commit.message, '[skip-tests]') }}
     needs: [build_koski]
     steps:
@@ -343,7 +343,7 @@ jobs:
 
   backend_tests_massaluovutus:
     name: Backend (massaluovutus)
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     if: ${{ inputs.run-backend-tests && !contains(github.event.head_commit.message, '[skip-tests]') }}
     needs: [build_koski]
     steps:
@@ -356,7 +356,7 @@ jobs:
 
   backend_tests_other_4:
     name: Backend (other 4/4)
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     if: ${{ inputs.run-backend-tests && !contains(github.event.head_commit.message, '[skip-tests]') }}
     needs: [build_koski]
     steps:
@@ -389,7 +389,7 @@ jobs:
       matrix:
         shardIndex: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
         shardTotal: [12]
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     if: ${{ inputs.run-koski-ui-tests && !contains(github.event.head_commit.message, '[skip-tests]') }}
     needs: [build_koski]
     steps:
@@ -402,7 +402,7 @@ jobs:
   koski_frontend_unit_tests:
     if: ${{ inputs.run-koski-ui-tests }}
     name: Koski frontend unit tests
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     steps:
       - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7
 
@@ -425,7 +425,7 @@ jobs:
       matrix:
         shardIndex: [1, 2, 3, 4, 5]
         shardTotal: [5]
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     if: ${{ inputs.run-koski-ui-tests && !contains(github.event.head_commit.message, '[skip-tests]') }}
     needs: [build_koski]
     steps:
@@ -437,7 +437,7 @@ jobs:
 
   koski_frontend_visual_tests:
     name: Koski visuaaliregressiot
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     if: ${{ inputs.run-koski-ui-tests && !contains(github.event.head_commit.message, '[skip-tests]') }}
     needs: [build_koski]
     steps:
@@ -451,7 +451,7 @@ jobs:
       matrix:
         shardIndex: [1, 2, 3, 4, 5, 6]
         shardTotal: [6]
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     if: ${{ inputs.run-valpas-ui-tests && !contains(github.event.head_commit.message, '[skip-tests]') }}
     needs: [build_koski]
     steps:
@@ -462,7 +462,7 @@ jobs:
 
   valpas_frontend_unit_tests:
     name: Valpas lint & unit
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     if: ${{ inputs.run-valpas-ui-tests && !contains(github.event.head_commit.message, '[skip-tests]') }}
     steps:
       - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7
@@ -484,7 +484,7 @@ jobs:
   oauth2_server_checks:
     if: ${{ inputs.run-oauth2-tests }}
     name: OAuth2 server lint & build
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     permissions:
       contents: read
     steps:
@@ -505,7 +505,7 @@ jobs:
 
   oauth2_browser_tests_playwright:
     name: OAuth2 browser tests ${{matrix.shardIndex}}/${{matrix.shardTotal}}
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     permissions:
       contents: read
     strategy:
