@@ -178,6 +178,44 @@ object MockOvaraClient extends OvaraClient {
           )
         )
       )
+    )),
+    KoskiSpecificMockOppijat.eiKoskessa.oid -> Right(Some(
+      OvaraOpiskelijavalintatieto(
+        oppijanumero = KoskiSpecificMockOppijat.eiKoskessa.oid,
+        hetu = None,
+        syntymaaika = None,
+        sukunimi = None,
+        etunimet = None,
+        hakemukset = List(
+          OvaraHakemus(
+            hakemusOid = "1.2.246.562.11.00000000000001234572",
+            haku = OvaraHaku(
+              oid = "1.2.246.562.29.00000000000000005467",
+              nimi = OvaraNimi(fi = Some("Yhteishaku kevät 2024"), sv = None, en = None)
+            ),
+            haunKohdejoukko = Some("haunkohdejoukko_12#1"),
+            hakutapa = Some("hakutapa_01#1"),
+            hakutoiveet = List(
+              OvaraHakutoive(
+                hakukohde = OvaraOrganisaatio(
+                  oid = "1.2.246.562.20.00000000000000005476",
+                  nimi = OvaraNimi(fi = Some("Tietotekniikan koulutusohjelma"), sv = None, en = None)
+                ),
+                tarjoaja = Some(OvaraOrganisaatio(
+                  oid = "1.2.246.562.10.42160341923",
+                  nimi = OvaraNimi(fi = Some("Esimerkkioppilaitos"), sv = None, en = None)
+                )),
+                koulutuksenAlkamiskausiUri = Some("kausi_s#1"),
+                koulutuksenAlkamisvuosi = Some("2024"),
+                valinnanTila = Some("HYVAKSYTTY"),
+                vastaanotonTila = Some("VASTAANOTTANUT_SITOVASTI"),
+                ilmoittautumisenTila = None,
+                johtaaTutkintoon = Some(true)
+              )
+            )
+          )
+        )
+      )
     ))
   )
 
