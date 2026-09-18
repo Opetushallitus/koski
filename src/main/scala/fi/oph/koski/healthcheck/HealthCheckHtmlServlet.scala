@@ -14,8 +14,8 @@ class HealthCheckHtmlServlet(implicit val application: KoskiApplication) extends
 
   get("/")(nonce => {
     val healthcheck = application.healthCheck.healthcheckWithExternalSystems
-    val version = buildVersionProperties.map(_.getProperty("version", null)).filter(_ != null).getOrElse("local")
-    val buildDate = buildVersionProperties.map(_.getProperty("buildDate", null)).filter(_ != null).getOrElse("")
+    val version = buildMetadata.flatMap(_.version).getOrElse("local")
+    val buildDate = buildMetadata.flatMap(_.buildDate).getOrElse("")
 
     val style = <style nonce={nonce}>
       body {{

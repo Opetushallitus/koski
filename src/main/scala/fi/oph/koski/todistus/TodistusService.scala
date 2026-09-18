@@ -13,7 +13,7 @@ import fi.oph.koski.todistus.BucketType.BucketType
 import fi.oph.koski.todistus.pdfgenerator.{TodistusData, TodistusMetadata, TodistusPdfGenerator}
 import fi.oph.koski.todistus.swisscomclient.SwisscomClient
 import fi.oph.koski.todistus.yleinenkielitutkinto.YleinenKielitutkintoTodistusDataBuilder
-import fi.oph.koski.util.{Timing, TryWithLogging}
+import fi.oph.koski.util.{BuildVersion, Timing, TryWithLogging}
 import software.amazon.awssdk.http.ContentStreamProvider
 import org.apache.pdfbox.Loader
 
@@ -23,7 +23,7 @@ import scala.util.Using
 import fi.oph.koski.util.ChainingSyntax.eitherChainingOps
 
 import java.time.{LocalDate, LocalDateTime}
-import java.util.{Properties, UUID}
+import java.util.UUID
 
 class TodistusService(application: KoskiApplication) extends Logging with Timing {
   private val resultRepository = new TodistusResultRepository(application.config)
@@ -39,7 +39,7 @@ class TodistusService(application: KoskiApplication) extends Logging with Timing
   private val vainLokitusAllekirjoitusValidoinneille = application.config.getBoolean("todistus.allekirjoitusvalidointi.vainLokitus")
   private val allekirjoitusvalidointiConfig = PdfSignatureAnalyzer.ValidationConfig.fromConfig(application.config)
 
-  private val commitHash: String = getBuildVersion.getOrElse("local")
+  private val commitHash: String = BuildVersion.read(getClass.getResourceAsStream("/buildversion.txt")).flatMap(_.version).getOrElse("local")
 
   def hasYleinenKielitutkintoViewerRole(implicit user: KoskiSpecificSession): Boolean = {
     user.hasRole(Rooli.rooliPäätasonSuoritukseen(KIELITUTKINTO, SuorituksenTyyppi.yleinenKielitutkinto)) && user.hasRole(OPHKATSELIJA)
@@ -605,15 +605,6 @@ class TodistusService(application: KoskiApplication) extends Logging with Timing
       commitHash = commitHash,
       opiskeluoikeusJson = opiskeluoikeusJson
     )
-  }
-
-  private def getBuildVersion: Option[String] = {
-    Option(getClass.getResourceAsStream("/buildversion.txt")).flatMap { stream =>
-      val props = new Properties()
-      props.load(stream)
-      stream.close()
-      Option(props.getProperty("version", null))
-    }
   }
 }
 

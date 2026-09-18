@@ -32,13 +32,9 @@ class StatusApiServletSpec extends AnyFreeSpec with Matchers with KoskiHttpSpec 
   }
 
   "Buildversionin luku" - {
-    "Lukee vcsRevision-kentän ja sulkee resurssin" in {
-      var closed = false
-      val stream = new ByteArrayInputStream(s"version=local\nvcsRevision=${"a" * 40}\n".getBytes(UTF_8)) {
-        override def close(): Unit = { closed = true }
-      }
+    "Lukee vcsRevision-kentän ja poistaa ympäröivät välilyönnit" in {
+      val stream = new ByteArrayInputStream(s"version=local\nvcsRevision=  ${"a" * 40}  \n".getBytes(UTF_8))
       StatusApiServlet.readGitCommitHash(stream) should be("a" * 40)
-      closed should be(true)
     }
 
     "Puuttuva tai tyhjä metadata palauttaa unknown" in {
@@ -48,15 +44,26 @@ class StatusApiServletSpec extends AnyFreeSpec with Matchers with KoskiHttpSpec 
       }
     }
 
-    "Lukuvirhe sulkee resurssin ja palauttaa unknown" in {
-      var closed = false
+    "Lukuvirhe palauttaa unknown" in {
       val stream = new InputStream {
         override def read(): Int = throw new IOException("unreadable")
-        override def close(): Unit = { closed = true }
       }
       StatusApiServlet.readGitCommitHash(stream) should be("unknown")
-      closed should be(true)
+    }
+
+    "Resurssin hankintavirhe palauttaa unknown" in {
       StatusApiServlet.readGitCommitHash(throw new IOException("unavailable")) should be("unknown")
+    }
+
+    "Virheellinen properties-sisältö palauttaa unknown" in {
+      StatusApiServlet.readGitCommitHash(new ByteArrayInputStream("vcsRevision=\\uZZZZ".getBytes(UTF_8))) should be("unknown")
+    }
+
+    "Sulkemisvirhe palauttaa unknown" in {
+      val stream = new ByteArrayInputStream("vcsRevision=commit".getBytes(UTF_8)) {
+        override def close(): Unit = throw new IOException("close failed")
+      }
+      StatusApiServlet.readGitCommitHash(stream) should be("unknown")
     }
   }
 }
