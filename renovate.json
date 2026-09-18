@@ -18,8 +18,12 @@
     "schedule": []
   },
   "prConcurrentLimit": 8,
+  "automerge": false,
   "platformAutomerge": false,
   "rangeStrategy": "replace",
+  "constraints": {
+    "node": "24.21.0"
+  },
   "ignoreDeps": [
     "com.github.Opetushallitus.java-utils:oid-generator"
   ],
@@ -88,25 +92,52 @@
       ]
     },
     {
-      "description": "Group minor npm updates",
+      "description": "Separate minor and patch npm updates",
+      "matchManagers": ["npm"],
+      "separateMinorPatch": true
+    },
+    {
+      "description": "Group patch npm updates",
       "matchManagers": [
         "npm"
       ],
       "matchUpdateTypes": [
-        "minor"
+        "patch"
       ],
-      "groupName": "npm minor updates"
+      "groupName": "npm patch updates"
     },
     {
-      "description": "Keep Koski's Playwright version exact during lock file maintenance",
-      "matchFileNames": ["web/package.json"],
-      "matchManagers": [
-        "npm"
-      ],
-      "matchPackageNames": [
-        "@playwright/test"
-      ],
+      "description": "Pin direct npm dependencies",
+      "matchManagers": ["npm"],
+      "matchDepTypes": ["dependencies", "devDependencies", "optionalDependencies"],
       "rangeStrategy": "pin"
+    },
+    {
+      "description": "Use the same Node releases for Renovate's constraint and .nvmrc pins",
+      "matchManagers": ["renovate-config"],
+      "matchDepNames": ["node"],
+      "overrideDatasource": "node-version",
+      "overridePackageName": "node"
+    },
+    {
+      "description": "Update Node.js pins and Renovate's tool constraint together after three days",
+      "matchManagers": ["nvm", "renovate-config"],
+      "matchDepNames": ["node"],
+      "groupName": "Node.js",
+      "separateMinorPatch": false,
+      "minimumReleaseAge": "3 days",
+      "automerge": false
+    },
+    {
+      "description": "Update the shared pnpm toolchain together after three days",
+      "matchManagers": ["npm"],
+      "matchDepTypes": ["engines", "packageManager"],
+      "matchPackageNames": ["pnpm"],
+      "groupName": "pnpm toolchain",
+      "rangeStrategy": "pin",
+      "separateMinorPatch": false,
+      "minimumReleaseAge": "3 days",
+      "automerge": false
     },
     {
       "description": "Update Koski's Playwright package and visual test image together",

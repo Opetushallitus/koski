@@ -9,24 +9,24 @@
     "monitor:dev": "ts-node src/index.ts dev",
     "monitor:qa": "ts-node src/index.ts qa",
     "monitor:prod": "ts-node src/index.ts prod",
-    "types-check": "tsc --noEmit --project tsconfig.json",
-    "preinstall": "node -e \"if(!process.env.npm_execpath.includes(\\\"pnpm\\\")){console.error(\\\"❌ Please use pnpm\\\");process.exit(1)}\""
+    "typecheck": "tsc --noEmit --project tsconfig.json"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "dotenv": "^16.6.1",
-    "fp-ts": "^2.16.11",
-    "tail": "^2.2.6",
-    "ts-node": "^10.9.2"
+    "dotenv": "16.6.1",
+    "fp-ts": "2.16.11",
+    "tail": "2.2.6",
+    "ts-node": "10.9.2"
   },
   "devDependencies": {
-    "@types/node": "^22.15.32",
-    "@types/tail": "^2.2.3",
-    "typescript": "^5.9.3"
+    "@types/node": "22.20.2",
+    "@types/tail": "2.2.3",
+    "typescript": "5.9.3"
   },
   "engines": {
-    "pnpm": ">=10.28.2"
+    "pnpm": "10.34.5",
+    "node": ">=24"
   },
   "packageManager": "pnpm@10.34.5"
 }

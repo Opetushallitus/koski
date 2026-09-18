@@ -4,25 +4,26 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "typecheck": "tsc --noEmit --project tsconfig.json",
     "qa:kansalainen": "ts-node src/qa-kansalainen.ts",
+    "qa:tiedote": "ts-node src/qa-tiedote.ts",
     "omadata:local": "ts-node src/omadata-oauth2-sample.ts local",
     "omadata:dev": "ts-node src/omadata-oauth2-sample.ts dev",
-    "omadata:qa": "ts-node src/omadata-oauth2-sample.ts qa",
-    "qa:tiedote": "ts-node src/qa-tiedote.ts",
-    "preinstall": "node -e \"if(!process.env.npm_execpath.includes(\\\"pnpm\\\")){console.error(\\\"❌ Please use pnpm\\\");process.exit(1)}\""
+    "omadata:qa": "ts-node src/omadata-oauth2-sample.ts qa"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "puppeteer": "^25.7.0",
-    "ts-node": "^10.9.2",
-    "typescript": "^5.9.3"
+    "puppeteer": "25.10.0",
+    "ts-node": "10.9.2",
+    "typescript": "5.9.3"
   },
   "engines": {
-    "pnpm": ">=10.28.2"
+    "pnpm": "10.34.5",
+    "node": ">=24"
   },
   "packageManager": "pnpm@10.34.5+sha512.a4ee05f2f73658255bd6a89859c065a45c28a57daefae2c893a168ee2b73168c37b91e83e57ea67654ad03f03031746430e8bce38e362e042605fb8abc80192e",
   "devDependencies": {
-    "@types/node": "^25.5.0"
+    "@types/node": "25.9.6"
   }
 }

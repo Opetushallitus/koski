@@ -1,0 +1,18 @@
+{
+  "name": "koski-tools",
+  "private": true,
+  "packageManager": "pnpm@10.34.5",
+  "engines": {
+    "node": ">=24",
+    "pnpm": "10.34.5"
+  },
+  "devDependencies": {
+    "prettier": "3.9.6"
+  },
+  "scripts": {
+    "prettier": "pnpm --dir web run prettier && pnpm --dir valpas-web run prettier && pnpm --dir omadata-oauth2-sample/server run prettier && pnpm run prettier:mock-data",
+    "prettier:check": "pnpm --dir web run prettier:check && pnpm --dir valpas-web run prettier:check && pnpm --dir omadata-oauth2-sample/server run prettier:check && pnpm run prettier:mock-data:check",
+    "prettier:mock-data": "./scripts/prettier-format-koodistot.sh",
+    "prettier:mock-data:check": "./scripts/prettier-format-koodistot.sh --check"
+  }
+}

@@ -4,7 +4,6 @@ import js from '@eslint/js'
 import tseslint from '@typescript-eslint/eslint-plugin'
 import tsParser from '@typescript-eslint/parser'
 import { fixupConfigRules } from '@eslint/compat'
-import prettier from 'eslint-plugin-prettier'
 import eslintConfigPrettier from 'eslint-config-prettier'
 
 const tsconfigRootDir = path.dirname(fileURLToPath(import.meta.url))
@@ -20,13 +19,8 @@ const tsRules = tseslint.configs['flat/recommended'].map((config) => ({
       tsconfigRootDir
     }
   },
-  plugins: {
-    ...config.plugins,
-    prettier
-  },
   rules: {
     ...config.rules,
-    'prettier/prettier': 'error',
     'no-undef': 'off'
   }
 }))
@@ -34,5 +28,6 @@ const tsRules = tseslint.configs['flat/recommended'].map((config) => ({
 export default [
   { ignores: ['**/node_modules', '**/dist'] },
   ...fixupConfigRules([js.configs.recommended, eslintConfigPrettier]),
-  ...tsRules
+  ...tsRules,
+  { rules: { eqeqeq: 'warn' } }
 ]

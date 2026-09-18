@@ -1,0 +1,13 @@
+packages:
+  - .
+
+saveExact: true
+engineStrict: true
+strictPeerDependencies: true
+updateNotifier: false
+managePackageManagerVersions: true
+minimumReleaseAge: 4320
+ignoreScripts: true
+
+overrides:
+  serialize-javascript: ^7.0.3

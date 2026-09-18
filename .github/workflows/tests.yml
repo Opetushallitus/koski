@@ -4,7 +4,7 @@ on:
   workflow_call:
     inputs:
       run-backend-tests:
-        description: Run Scala backend tests and mock-data formatting checks
+        description: Run Scala backend tests
         type: boolean
         default: true
       run-koski-ui-tests:
@@ -19,12 +19,98 @@ on:
         description: Run OAuth2 sample server lint, build and browser tests
         type: boolean
         default: true
+      run-smoketests-tests:
+        description: Run Smoketests tests
+        type: boolean
+        default: true
+      run-radiator-tests:
+        description: Run Radiator tests
+        type: boolean
+        default: true
+      run-history-debug-tests:
+        description: Run History debug tests
+        type: boolean
+        default: true
 
 env:
   DOCKER_BUILDKIT: 1
   TZ: Europe/Helsinki
 
 jobs:
+  prettier_checks:
+    name: Prettier checks
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7
+
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
+        with:
+          node-version-file: ".nvmrc"
+
+      - uses: ./.github/actions/setup_pnpm_cache
+
+      - name: Check formatting
+        run: |
+          pnpm install --frozen-lockfile
+          pnpm run prettier:check
+
+  smoketests_tests:
+    if: ${{ inputs.run-smoketests-tests }}
+    name: Smoketests tests
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7
+
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
+        with:
+          node-version-file: ".nvmrc"
+
+      - uses: ./.github/actions/setup_pnpm_cache
+
+      - name: Check smoketests
+        working-directory: smoketests
+        run: |
+          pnpm install --frozen-lockfile
+          pnpm run typecheck
+
+  radiator_tests:
+    if: ${{ inputs.run-radiator-tests }}
+    name: Radiator tests
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7
+
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
+        with:
+          node-version-file: ".nvmrc"
+
+      - uses: ./.github/actions/setup_pnpm_cache
+
+      - name: Check radiator
+        working-directory: radiator
+        run: |
+          pnpm install --frozen-lockfile
+          pnpm run typecheck
+
+  history_debug_tests:
+    if: ${{ inputs.run-history-debug-tests }}
+    name: History debug tests
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7
+
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
+        with:
+          node-version-file: ".nvmrc"
+
+      - uses: ./.github/actions/setup_pnpm_cache
+
+      - name: Check history debug
+        working-directory: scripts/opiskeluoikeushistoria-debug
+        run: |
+          pnpm install --frozen-lockfile
+          pnpm run typecheck
+
   build_koski:
     if: ${{ inputs.run-backend-tests || inputs.run-koski-ui-tests || inputs.run-valpas-ui-tests || inputs.run-oauth2-tests }}
     name: Build Koski app
@@ -37,10 +123,22 @@ jobs:
 
   koski_frontend_lint:
     if: ${{ inputs.run-koski-ui-tests }}
-    name: Koski frontend lint
+    name: Koski frontend lint & typecheck
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7
+
+      - name: Setup Node
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
+        with:
+          node-version-file: ".nvmrc"
+
+      - uses: ./.github/actions/setup_pnpm_cache
+
+      - run: pnpm --dir web install --frozen-lockfile
+
+      - name: Typecheck Koski frontend
+        run: pnpm --dir web run typecheck
 
       - name: Check Koski Playwright and image versions
         run: |
@@ -49,40 +147,8 @@ jobs:
           [ -n "$image_version" ] && [ "$package_version" = "$image_version" ] ||
             { echo "::error::Playwright-versiot eroavat: package.json=$package_version, image=$image_version. Päivitä ne yhdessä."; exit 1; }
 
-      - uses: ./.github/actions/setup_pnpm_cache
-
-      - name: Setup Node
-        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
-        with:
-          node-version-file: ".nvmrc"
-
       - name: Run linter
-        run: |
-          cd web
-          pnpm install --frozen-lockfile
-          cd ..
-          make eslint prettier
-
-  koski_mock_data_formatting:
-    if: ${{ inputs.run-backend-tests }}
-    name: Koski mock-data formatting
-    runs-on: ubuntu-24.04
-    steps:
-      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7
-
-      - uses: ./.github/actions/setup_pnpm_cache
-
-      - name: Setup Node
-        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
-        with:
-          node-version-file: ".nvmrc"
-
-      - name: Check mock-data formatting
-        run: |
-          cd web
-          pnpm install --frozen-lockfile
-          cd ..
-          make prettier-mock-data
+        run: make eslint
 
   checkdoc_koski_validation:
     name: validaation_muutoshistoria.md check
@@ -339,15 +405,17 @@ jobs:
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7
-      - uses: ./.github/actions/setup_pnpm_cache
+
       - name: Setup Node
         uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
         with:
           node-version-file: ".nvmrc"
-      - run: |
-          cd web
-          pnpm install --frozen-lockfile
-          cd ..
+
+      - uses: ./.github/actions/setup_pnpm_cache
+
+      - name: Run unit tests
+        run: |
+          pnpm --dir web install --frozen-lockfile
           make js-unit-test
 
   koski_browser_tests_playwright:
@@ -399,17 +467,16 @@ jobs:
     steps:
       - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7
 
-      - uses: ./.github/actions/setup_pnpm_cache
-
       - name: Setup Node
         uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
         with:
           node-version-file: ".nvmrc"
 
+      - uses: ./.github/actions/setup_pnpm_cache
 
       - name: Run linter and tests
+        working-directory: valpas-web
         run: |
-          cd valpas-web
           pnpm install --frozen-lockfile
           pnpm run lint
           pnpm run test:unit
@@ -422,15 +489,19 @@ jobs:
       contents: read
     steps:
       - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7
-      - uses: ./.github/actions/setup_pnpm_cache
+
       - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
         with:
           node-version-file: "omadata-oauth2-sample/.nvmrc"
-          cache: "pnpm"
-          cache-dependency-path: "omadata-oauth2-sample/server/pnpm-lock.yaml"
-      - run: pnpm --dir omadata-oauth2-sample/server install --frozen-lockfile
-      - run: pnpm --dir omadata-oauth2-sample/server run lint
-      - run: pnpm --dir omadata-oauth2-sample/server run build
+
+      - uses: ./.github/actions/setup_pnpm_cache
+
+      - name: Run linter and build
+        working-directory: omadata-oauth2-sample/server
+        run: |
+          pnpm install --frozen-lockfile
+          pnpm run lint
+          pnpm run build
 
   oauth2_browser_tests_playwright:
     name: OAuth2 browser tests ${{matrix.shardIndex}}/${{matrix.shardTotal}}

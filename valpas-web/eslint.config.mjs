@@ -1,6 +1,5 @@
 import { fixupConfigRules } from "@eslint/compat";
 import typescriptEslint from "@typescript-eslint/eslint-plugin";
-import prettier from "eslint-plugin-prettier";
 import tsParser from "@typescript-eslint/parser";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
@@ -20,7 +19,6 @@ export default [{
 }, ...fixupConfigRules(compat.extends("plugin:react-hooks/recommended", "prettier")), {
     plugins: {
         "@typescript-eslint": typescriptEslint,
-        prettier,
     },
 
     languageOptions: {
@@ -28,7 +26,6 @@ export default [{
     },
 
     rules: {
-        "prettier/prettier": ["error"],
         eqeqeq: "warn",
     },
 

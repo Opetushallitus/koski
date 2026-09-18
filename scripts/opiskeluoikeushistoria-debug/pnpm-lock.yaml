@@ -9,15 +9,41 @@ importers:
   .:
     dependencies:
       jsonpatch:
-        specifier: ^3.1.0
+        specifier: 3.1.0
         version: 3.1.0
+    devDependencies:
+      '@types/node':
+        specifier: 22.20.2
+        version: 22.20.2
+      typescript:
+        specifier: 5.9.3
+        version: 5.9.3
 
 packages:
+
+  '@types/node@22.20.2':
+    resolution: {integrity: sha512-xlvWf4Vs9n1PEVYwP1n4vvG07M6y8WgvJ2t0vbrWTmijsIHp1cS+uJ2kMIRdY3nHZK0nCYKrPeD171+SzF4/zw==}
 
   jsonpatch@3.1.0:
     resolution: {integrity: sha512-rJa0FepwDzebgYAuT389AtziWfn3EZA4N5e/B8d50IC1glqlZ7njo7iAI/ph5MYw2GGH7lCE6DGqBGQ7TVa06w==}
     engines: {node: '>=0.4.0'}
 
+  typescript@5.9.3:
+    resolution: {integrity: sha512-jl1vZzPDinLr9eUt3J/t7V6FgNEw9QjvBPdysz9KfQDD41fQrC2Y4vKQdiaUpFT4bXlb1RHhLpp8wtm6M5TgSw==}
+    engines: {node: '>=14.17'}
+    hasBin: true
+
+  undici-types@6.21.0:
+    resolution: {integrity: sha512-iwDZqg0QAGrg9Rav5H4n0M64c3mkR59cJ6wQp+7C4nI0gsmExaedaYLNO44eT4AtBBwjbTiGPMlt2Md0T9H9JQ==}
+
 snapshots:
 
+  '@types/node@22.20.2':
+    dependencies:
+      undici-types: 6.21.0
+
   jsonpatch@3.1.0: {}
+
+  typescript@5.9.3: {}
+
+  undici-types@6.21.0: {}

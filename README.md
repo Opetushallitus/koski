@@ -97,7 +97,7 @@ tarpeen mukaan.
   - Bacon.js
   - LESS
   - Selainyhteensopivuus IE11-selaimesta moderneihin selaimiin
-- Koko järjestelmän buildaus Make-työkalulla, joka delegoi yksittäiset toiminnot eri työkaluille, kuten Maven ja npm
+- Koko järjestelmän buildaus Make-työkalulla, joka delegoi yksittäiset toiminnot eri työkaluille, kuten Maven ja pnpm
 
 ## Kehitystyökalut
 
@@ -108,9 +108,14 @@ Minimissään tarvitset nämä:
 - JDK 17
 - Maven 3 (osx: `brew install maven`)
 - Node.js (`.nvmrc`-tiedoston mukainen versio)
+- pnpm (`npm install --global pnpm`)
 - Docker PostgreSQL:n ja OpenSearchin ajamiseen konteissa
 - Docker compose (https://docs.docker.com/compose/install/)
 - Tekstieditori (kehitystiimi käyttää IntelliJ IDEA)
+
+pnpm lataa ja käyttää projektissa automaattisesti `package.json`-tiedostoon lukittua versiota. Tarkista versio projektin juurihakemistossa komennolla `pnpm --version`.
+
+Jos pnpm:n asennus epäonnistuu Corepackin aiheuttamaan `EEXIST`-virheeseen, aja `corepack disable pnpm` ja suorita yllä oleva pnpm:n asennuskomento uudelleen.
 
 ### Claude Code
 

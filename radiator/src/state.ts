@@ -2,7 +2,7 @@ import {pipe} from 'fp-ts/lib/function'
 import * as NEA from 'fp-ts/NonEmptyArray'
 import * as O from 'fp-ts/Option'
 import * as R from 'fp-ts/Record'
-import * as string from 'fp-ts/String'
+import * as string from 'fp-ts/string'
 import {HealthDataEntry} from './health/HealthSource'
 
 export interface ServiceError {

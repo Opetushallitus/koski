@@ -12,134 +12,134 @@ importers:
   .:
     dependencies:
       '@skidding/react-codemirror':
-        specifier: ^1.0.2
+        specifier: 1.0.2
         version: 1.0.2(react-dom@16.14.0(react@16.14.0))(react@16.14.0)
       bacon.atom:
-        specifier: ^5.0.6
+        specifier: 5.0.6
         version: 5.0.6(baconjs@1.0.1)
       baconjs:
-        specifier: ^1.0.1
+        specifier: 1.0.1
         version: 1.0.1
       baret:
-        specifier: ^1.2.0
+        specifier: 1.2.0
         version: 1.2.0(baconjs@1.0.1)(react@16.14.0)
       classnames:
-        specifier: ^2.5.1
+        specifier: 2.5.1
         version: 2.5.1
       codemirror:
-        specifier: ^5.65.19
+        specifier: 5.65.21
         version: 5.65.21
       core-js:
-        specifier: ^3.47.0
+        specifier: 3.50.0
         version: 3.50.0
       downloadjs:
-        specifier: ^1.4.7
+        specifier: 1.4.7
         version: 1.4.7
       element-closest:
-        specifier: ^3.0.2
+        specifier: 3.0.2
         version: 3.0.2
       es6-promise:
-        specifier: ^4.2.8
+        specifier: 4.2.8
         version: 4.2.8
       fecha:
-        specifier: ^4.2.3
+        specifier: 4.2.3
         version: 4.2.3
       fp-ts:
-        specifier: ^2.16.11
+        specifier: 2.16.11
         version: 2.16.11
       js-cookie:
-        specifier: ^3.0.5
+        specifier: 3.0.8
         version: 3.0.8
       optics-ts:
-        specifier: ^2.4.1
+        specifier: 2.4.1
         version: 2.4.1
       partial.lenses:
-        specifier: ^9.8.0
+        specifier: 9.8.0
         version: 9.8.0
       prop-types:
-        specifier: ^15.8.1
+        specifier: 15.8.1
         version: 15.8.1
       ramda:
-        specifier: ^0.32.0
+        specifier: 0.32.0
         version: 0.32.0
       react:
-        specifier: ^16.14.0
+        specifier: 16.14.0
         version: 16.14.0
       react-day-picker:
-        specifier: ^7.4.10
+        specifier: 7.4.10
         version: 7.4.10(react@16.14.0)
       react-dom:
-        specifier: ^16.14.0
+        specifier: 16.14.0
         version: 16.14.0(react@16.14.0)
       react-focus-lock:
-        specifier: ^2.13.7
+        specifier: 2.13.7
         version: 2.13.7(@types/react@16.14.70)(react@16.14.0)
       react-highlight:
-        specifier: ^0.15.0
+        specifier: 0.15.0
         version: 0.15.0
       react-highlighter:
         specifier: 0.4.3
         version: 0.4.3(react@16.14.0)
       smoothscroll-polyfill:
-        specifier: ^0.4.4
+        specifier: 0.4.4
         version: 0.4.4
       whatwg-fetch:
-        specifier: ^3.6.20
+        specifier: 3.6.20
         version: 3.6.20
     devDependencies:
       '@axe-core/playwright':
-        specifier: ^4.11.0
+        specifier: 4.13.0
         version: 4.13.0(playwright-core@1.63.0)
       '@babel/core':
-        specifier: ^7.28.6
+        specifier: 7.29.7
         version: 7.29.7
       '@babel/plugin-syntax-dynamic-import':
-        specifier: ^7.8.3
+        specifier: 7.8.3
         version: 7.8.3(@babel/core@7.29.7)
       '@babel/plugin-syntax-import-meta':
-        specifier: ^7.10.4
+        specifier: 7.10.4
         version: 7.10.4(@babel/core@7.29.7)
       '@babel/preset-env':
-        specifier: ^7.28.6
+        specifier: 7.29.7
         version: 7.29.7(@babel/core@7.29.7)
       '@babel/preset-react':
-        specifier: ^7.28.5
+        specifier: 7.29.7
         version: 7.29.7(@babel/core@7.29.7)
       '@babel/preset-typescript':
-        specifier: ^7.28.5
+        specifier: 7.29.7
         version: 7.29.7(@babel/core@7.29.7)
       '@babel/register':
-        specifier: ^7.28.6
+        specifier: 7.29.7
         version: 7.29.7(@babel/core@7.29.7)
       '@eslint/compat':
-        specifier: ^1.2.8
+        specifier: 1.4.1
         version: 1.4.1(eslint@9.39.5(jiti@2.7.0))
       '@eslint/eslintrc':
-        specifier: ^3.3.3
+        specifier: 3.3.7
         version: 3.3.7
       '@eslint/js':
-        specifier: ^9.39.2
+        specifier: 9.39.5
         version: 9.39.5
       '@playwright/test':
         specifier: 1.63.0
         version: 1.63.0
       '@swc/core':
-        specifier: ^1.11.21
+        specifier: 1.16.2
         version: 1.16.2
       '@types/downloadjs':
-        specifier: ^1.4.6
+        specifier: 1.4.6
         version: 1.4.6
       '@types/js-cookie':
-        specifier: ^3.0.6
+        specifier: 3.0.6
         version: 3.0.6
       '@types/mocha':
-        specifier: ^10.0.10
+        specifier: 10.0.10
         version: 10.0.10
       '@types/node':
-        specifier: ^22.15.32
+        specifier: 22.20.2
         version: 22.20.2
       '@types/ramda':
-        specifier: ^0.32.0
+        specifier: 0.32.0
         version: 0.32.0
       '@types/react':
         specifier: 16.14.70
@@ -148,118 +148,115 @@ importers:
         specifier: 16.9.25
         version: 16.9.25(@types/react@16.14.70)
       '@typescript-eslint/eslint-plugin':
-        specifier: ^8.53.1
+        specifier: 8.70.0
         version: 8.70.0(@typescript-eslint/parser@8.70.0(eslint@9.39.5(jiti@2.7.0))(typescript@5.9.3))(eslint@9.39.5(jiti@2.7.0))(typescript@5.9.3)
       '@typescript-eslint/parser':
-        specifier: ^8.53.1
+        specifier: 8.70.0
         version: 8.70.0(eslint@9.39.5(jiti@2.7.0))(typescript@5.9.3)
       babel-loader:
-        specifier: ^10.0.0
+        specifier: 10.1.1
         version: 10.1.1(@babel/core@7.29.7)(webpack@5.111.0)
       chai:
-        specifier: ^4.5.0
+        specifier: 4.5.0
         version: 4.5.0
       chrome-launcher:
-        specifier: ^1.2.1
+        specifier: 1.2.1
         version: 1.2.1
       copy-webpack-plugin:
-        specifier: ^13.0.1
+        specifier: 13.0.1
         version: 13.0.1(webpack@5.111.0)
       css-loader:
-        specifier: ^7.1.2
+        specifier: 7.1.5
         version: 7.1.5(webpack@5.111.0)
       eslint:
-        specifier: ^9.39.2
+        specifier: 9.39.5
         version: 9.39.5(jiti@2.7.0)
       eslint-plugin-import:
-        specifier: ^2.32.0
+        specifier: 2.32.0
         version: 2.32.0(@typescript-eslint/parser@8.70.0(eslint@9.39.5(jiti@2.7.0))(typescript@5.9.3))(eslint@9.39.5(jiti@2.7.0))
       eslint-plugin-mocha:
-        specifier: ^10.5.0
+        specifier: 10.5.0
         version: 10.5.0(eslint@9.39.5(jiti@2.7.0))
       eslint-plugin-n:
-        specifier: ^17.23.2
+        specifier: 17.24.0
         version: 17.24.0(eslint@9.39.5(jiti@2.7.0))(typescript@5.9.3)
       eslint-plugin-promise:
-        specifier: ^7.2.1
+        specifier: 7.3.0
         version: 7.3.0(eslint@9.39.5(jiti@2.7.0))
       eslint-plugin-react:
-        specifier: ^7.37.5
+        specifier: 7.37.5
         version: 7.37.5(eslint@9.39.5(jiti@2.7.0))
       eslint-plugin-react-hooks:
-        specifier: ^5.2.0
+        specifier: 5.2.0
         version: 5.2.0(eslint@9.39.5(jiti@2.7.0))
       fork-ts-checker-webpack-plugin:
-        specifier: ^9.1.0
+        specifier: 9.1.0
         version: 9.1.0(typescript@5.9.3)(webpack@5.111.0)
       globals:
-        specifier: ^16.0.0
+        specifier: 16.5.0
         version: 16.5.0
       html2canvas:
-        specifier: ^1.4.1
+        specifier: 1.4.1
         version: 1.4.1
       jquery:
-        specifier: ^3.7.1
+        specifier: 3.7.1
         version: 3.7.1
       less:
-        specifier: ^4.5.1
+        specifier: 4.9.1
         version: 4.9.1
       less-loader:
-        specifier: ^12.3.0
+        specifier: 12.3.3
         version: 12.3.3(less@4.9.1)(webpack@5.111.0)
       lodash:
-        specifier: ^4.17.23
+        specifier: 4.18.1
         version: 4.18.1
       mocha:
-        specifier: ^10.8.2
+        specifier: 10.8.2
         version: 10.8.2
       mocha-chrome:
-        specifier: github:opetushallitus/mocha-chrome#4.3.0
+        specifier: github:opetushallitus/mocha-chrome#b5a822a65b719e648b1bbe73e86cfd2290a59cc3
         version: https://codeload.github.com/opetushallitus/mocha-chrome/tar.gz/b5a822a65b719e648b1bbe73e86cfd2290a59cc3(mocha@10.8.2)
       moment:
-        specifier: ^2.30.1
+        specifier: 2.30.1
         version: 2.30.1
       node-gyp:
-        specifier: ^10.3.1
+        specifier: 10.3.1
         version: 10.3.1
       postcss:
-        specifier: ^8.5.6
+        specifier: 8.5.28
         version: 8.5.28
       postcss-loader:
-        specifier: ^8.2.0
+        specifier: 8.2.1
         version: 8.2.1(postcss@8.5.28)(typescript@5.9.3)(webpack@5.111.0)
       postcss-preset-env:
-        specifier: ^10.6.1
+        specifier: 10.6.1
         version: 10.6.1(postcss@8.5.28)
-      prettier:
-        specifier: 3.9.6
-        version: 3.9.6
       puppeteer:
         specifier: 24.43.1
         version: 24.43.1(typescript@5.9.3)
       style-loader:
-        specifier: ^4.0.0
+        specifier: 4.0.0
         version: 4.0.0(webpack@5.111.0)
       swc-loader:
-        specifier: ^0.2.7
+        specifier: 0.2.7
         version: 0.2.7(@swc/core@1.16.2)(webpack@5.111.0)
       ts-loader:
-        specifier: ^9.5.4
+        specifier: 9.6.2
         version: 9.6.2(typescript@5.9.3)(webpack@5.111.0)
       ts-node:
-        specifier: ^10.9.2
+        specifier: 10.9.2
         version: 10.9.2(@swc/core@1.16.2)(@types/node@22.20.2)(typescript@5.9.3)
       typescript:
-        specifier: ^5.8.3
+        specifier: 5.9.3
         version: 5.9.3
       typescript-eslint:
-        specifier: ^8.53.1
+        specifier: 8.70.0
         version: 8.70.0(eslint@9.39.5(jiti@2.7.0))(typescript@5.9.3)
       webpack:
-        specifier: ^5.104.1
+        specifier: 5.111.0
         version: 5.111.0(@swc/core@1.16.2)(postcss@8.5.28)(webpack-cli@6.0.1)
       webpack-cli:
-        specifier: ^6.0.1
+        specifier: 6.0.1
         version: 6.0.1(webpack@5.111.0)
 
 packages:
@@ -3732,11 +3729,6 @@ packages:
   prelude-ls@1.2.1:
     resolution: {integrity: sha512-vkcDPrRZo1QZLbn5RLGPpg/WmIQ65qoWWhcGKf/b5eplkkarX0m9z8ppCat4mlOqUsWpyNuYgO3VRyrYHSzX5g==}
     engines: {node: '>= 0.8.0'}
-
-  prettier@3.9.6:
-    resolution: {integrity: sha512-OpN0zzVdiaiAhxpuuj5efpIS4sY9j7bY6uR5mnj5yPzGkdkjNKSJeUThPb60Jw29QuAZgA4o+/iB49kFiaBX6g==}
-    engines: {node: '>=14'}
-    hasBin: true
 
   probe-image-size@7.4.0:
     resolution: {integrity: sha512-cdEprVtZxV+awMde9X+4jILBFYh4CARxVrQaMl4wY4YcPWbul9jntXrIW95NInBDyJwcVUP3U0T6yukN8rMBaQ==}
@@ -8409,8 +8401,6 @@ snapshots:
       source-map-js: 1.2.1
 
   prelude-ls@1.2.1: {}
-
-  prettier@3.9.6: {}
 
   probe-image-size@7.4.0:
     dependencies:
