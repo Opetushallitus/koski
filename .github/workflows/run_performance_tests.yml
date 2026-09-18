@@ -16,7 +16,7 @@ env:
 jobs:
   random_get_light:
     name: random-get-light
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     steps:
       - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7
 
@@ -48,7 +48,7 @@ jobs:
   insert_light:
     needs: [random_get_light]
     name: insert-light
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     steps:
       - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7
 
@@ -80,7 +80,7 @@ jobs:
   mixed-overload:
     needs: [insert_light]
     name: mixed-overload
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     steps:
       - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7
 
@@ -112,7 +112,7 @@ jobs:
   yki-todistus-generation:
     needs: [insert_light]
     name: yki-todistus-generation
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     steps:
       - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7
 

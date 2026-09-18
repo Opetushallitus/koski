@@ -17,7 +17,7 @@ jobs:
 
   notify:
     name: Notify Slack
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     needs: [scan]
     if: always() && needs.scan.result == 'failure'
     permissions: {}
