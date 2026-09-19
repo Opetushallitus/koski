@@ -20,7 +20,7 @@
     "ts-node": "10.9.2"
   },
   "devDependencies": {
-    "@types/node": "22.20.2",
+    "@types/node": "22.20.3",
     "@types/tail": "2.2.3",
     "typescript": "5.9.3"
   },

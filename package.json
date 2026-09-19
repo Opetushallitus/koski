@@ -7,7 +7,7 @@
     "pnpm": "10.34.5"
   },
   "devDependencies": {
-    "prettier": "3.9.6"
+    "prettier": "3.9.7"
   },
   "scripts": {
     "prettier": "pnpm --dir web run prettier && pnpm --dir valpas-web run prettier && pnpm --dir omadata-oauth2-sample/server run prettier && pnpm run prettier:mock-data",
