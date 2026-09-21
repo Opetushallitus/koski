@@ -13,7 +13,7 @@ permissions:
 jobs:
   changes:
     name: Detect changed paths
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     permissions:
       contents: read
       pull-requests: read
@@ -110,7 +110,7 @@ jobs:
 
   ci_passed:
     name: CI passed
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     needs: [changes, tests]
     if: ${{ always() }}
     steps:

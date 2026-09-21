@@ -23,7 +23,7 @@ permissions:
 jobs:
   trivy_dependency_check:
     name: Trivy dependency check
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     timeout-minutes: 20
     outputs:
       cves: ${{ steps.summarize.outputs.cves }}
