@@ -38,28 +38,70 @@ object KoskiSchemaDocumentHtml {
   }
 
   private def buildBacklog(x: ClassSchema, breadcrumbs: Option[List[Breadcrumb]], path: List[String], backlog: ArrayBuffer[BacklogItem], shallowEntities: ClassSchema => Boolean, focusEntities: ClassSchema => Boolean, expandEntities: ClassSchema => Boolean)(implicit rootSchema: ClassSchema): ArrayBuffer[BacklogItem] = {
-    val item = BacklogItem(x, breadcrumbs, path)
-    val index = backlog.indexWhere(_.schema == item.schema)
+    def addChildren(): Unit = if (!shallowEntities(x)) {
+      resolveSchemas(x)
+        .filter(child => focusEntities(child.schema) || expandEntities(child.schema))
+        .foreach { child =>
+          val childBreadcrumbs = breadcrumbs.map(_ ++ List(child.breadcrumb))
+          val childPath = path :+ child.breadcrumb.property.key
+          buildBacklog(child.schema, childBreadcrumbs, childPath, backlog, shallowEntities, const(false), const(true))
+        }
+    }
+
+    val structure = structureOf(x)
+    val index = backlog.indexWhere(_.structure == structure)
     if (index < 0) {
-      backlog += item
-      if (!shallowEntities(x)) {
-        resolveSchemas(x)
-          .filter(child => focusEntities(child.schema) || expandEntities(child.schema))
-          .foreach { child =>
-            val childBreadcrumbs = breadcrumbs.map(_ ++ List(child.breadcrumb))
-            val childPath = path :+ child.breadcrumb.property.key
-            buildBacklog(child.schema, childBreadcrumbs, childPath, backlog, shallowEntities, const(false), const(true))
-          }
+      backlog += BacklogItem(x, structure, List(x), breadcrumbs, path)
+      addChildren()
+    } else {
+      val existing = backlog(index)
+      val isNewVariant = !existing.variants.contains(x)
+      val updated = if (isNewVariant) existing.copy(variants = existing.variants :+ x) else existing
+      if (existing.breadcrumbs.nonEmpty) {
+        // remove breadcrumb from this one, because it's contained in multiple contexts
+        backlog.remove(index)
+        backlog += updated.copy(breadcrumbs = None)
+      } else {
+        backlog(index) = updated
       }
-    } else if (backlog(index).breadcrumbs.nonEmpty) {
-      // remove breadcrumb from this one, because it's contained in multiple contexts
-      backlog += backlog.remove(index).copy(breadcrumbs = None)
+      // The children of a new variant may be new variants too, even though they share the structure of already seen ones.
+      if (isNewVariant) {
+        addChildren()
+      }
     }
     backlog
   }
 
+  // Annotations such as @KoodistoUri specialize a class schema by restricting the allowed values of its properties.
+  // Those variants are documented as a single entity: only the structure (properties and their types) identifies it.
+  private def structureOf(schema: ClassSchema): ClassSchema =
+    withoutEnumValues(schema).asInstanceOf[ClassSchema].copy(definitions = Nil)
+
+  private def withoutEnumValues(schema: Schema): Schema = schema match {
+    case s: ClassSchema => s.copy(
+      properties = s.properties.map(p => p.copy(schema = withoutEnumValues(p.schema))),
+      specialized = false
+    )
+    case s: AnyOfSchema => s.copy(alternatives = s.alternatives.map(withoutEnumValues(_).asInstanceOf[SchemaWithClassName]))
+    case s: OptionalSchema => OptionalSchema(withoutEnumValues(s.itemSchema))
+    case s: ListSchema => ListSchema(withoutEnumValues(s.itemSchema))
+    case s: MapSchema => MapSchema(withoutEnumValues(s.itemSchema))
+    case s: StringSchema => s.copy(enumValues = None)
+    case s: BooleanSchema => s.copy(enumValues = None)
+    case s: NumberSchema => s.copy(enumValues = None)
+    case s => s
+  }
+
+  private def enumValues(schema: Schema): List[Any] = schema match {
+    case s: StringSchema => s.enumValues.toList.flatten
+    case s: BooleanSchema => s.enumValues.toList.flatten
+    case s: NumberSchema => s.enumValues.toList.flatten
+    case _ => Nil
+  }
+
   case class Breadcrumb(schema: ClassSchema, property: Property)
-  private case class BacklogItem(schema: ClassSchema, breadcrumbs: Option[List[Breadcrumb]], path: List[String])
+  // schema is the first encountered variant of the entity; variants contains every variant sharing the same structure.
+  private case class BacklogItem(schema: ClassSchema, structure: ClassSchema, variants: List[ClassSchema], breadcrumbs: Option[List[Breadcrumb]], path: List[String])
   private case class ResolvedSchema(schema: ClassSchema, breadcrumb: Breadcrumb)
 
   private def anchorsFor(backlog: List[BacklogItem]): Map[ClassSchema, String] = {
@@ -68,7 +110,7 @@ object KoskiSchemaDocumentHtml {
     val classNamesWithVariants = backlog
       .groupBy(_.schema.fullClassName)
       .collect {
-        case (className, items) if items.map(_.schema).distinct.size > 1 => className
+        case (className, items) if items.size > 1 => className
       }.toSet
 
     // Keep the first anchor stable for old links; disambiguate later variants with the schema path.
@@ -83,13 +125,17 @@ object KoskiSchemaDocumentHtml {
         }
         s"$pathAnchorPrefix-${item.schema.simpleName}"
       }
+      // Different variants can be reached through the same property path, e.g. via different anyOf alternatives.
+      val usedAnchors = classSchemaToAnchor.values.toSet
+      val uniqueAnchor = (anchor +: LazyList.from(2).map(n => s"$anchor-$n")).find(!usedAnchors(_)).get
 
-      (seenClassNames + className, classSchemaToAnchor + (item.schema -> anchor))
+      (seenClassNames + className, classSchemaToAnchor + (item.structure -> uniqueAnchor))
     }._2
   }
 
+  // classSchemaToAnchor is keyed by the structure of the schema, see structureOf
   private def anchorFor(schema: ClassSchema, classSchemaToAnchor: Map[ClassSchema, String]): String =
-    classSchemaToAnchor.getOrElse(schema, schema.simpleName)
+    classSchemaToAnchor.getOrElse(structureOf(schema), schema.simpleName)
 
   private def classSchemasIn(schema: Schema)(implicit rootSchema: ClassSchema): List[ClassSchema] = schema match {
     case s: ClassSchema => List(s)
@@ -136,6 +182,7 @@ object KoskiSchemaDocumentHtml {
               <td class="tyyppi">
                 {schemaTypeHtml(item.schema, resolvedItemSchema, classSchemaToAnchor, shallowEntities)}
                 {metadataHtml(metadatas)}
+                {enumValuesHtml(item, p)}
               </td>
               <td class="kuvaus">
                 {descriptionHtml(p)}
@@ -150,7 +197,7 @@ object KoskiSchemaDocumentHtml {
   private def urlEncode(s: String) = URLEncoder.encode(s, "UTF-8")
 
   private def schemaTypeHtml(parentSchema: ClassSchema, itemSchema: Schema, classSchemaToAnchor: Map[ClassSchema, String], shallowEntities: ClassSchema => Boolean)(implicit rootSchema: ClassSchema): Elem = itemSchema match {
-    case s: ClassSchema => <a href={(if (classSchemaToAnchor.contains(s)) {""} else { "?entity=" + urlEncode(getEntity(parentSchema, s, shallowEntities)) }) + "#" + urlEncode(anchorFor(s, classSchemaToAnchor))}>{s.title}</a>
+    case s: ClassSchema => <a href={(if (classSchemaToAnchor.contains(structureOf(s))) {""} else { "?entity=" + urlEncode(getEntity(parentSchema, s, shallowEntities)) }) + "#" + urlEncode(anchorFor(s, classSchemaToAnchor))}>{s.title}</a>
     case s: AnyOfSchema => <span class={"alternatives " + s.simpleName}>{s.alternatives.map(a => schemaTypeHtml(parentSchema, resolveSchema(a), classSchemaToAnchor, shallowEntities))}</span>
     case s: StringSchema => <span>merkkijono</span> // TODO: schemarajoitukset annotaatioista jne
     case s: NumberSchema => <span>numero</span>
@@ -197,6 +244,18 @@ object KoskiSchemaDocumentHtml {
         case o: OksaUri => Some(<div class="oksa">Oksa: {o.asLink}</div>)
         case _ => None
       }
+    }
+  }
+
+  private def enumValuesHtml(item: BacklogItem, property: Property): List[Elem] = {
+    val valuesByVariant = item.variants.map { variant =>
+      variant.properties.find(_.key == property.key).toList.flatMap(p => enumValues(cardinalityAndItemSchema(p.schema, p.metadata)._1))
+    }.distinct
+    valuesByVariant match {
+      case List(Nil) => Nil
+      case List(List(value)) => List(<div class="enum">Sallittu arvo: {value.toString}</div>)
+      case List(values) => List(<div class="enum">Sallitut arvot: {values.mkString(", ")}</div>)
+      case _ => List(<div class="enum">Sallitut arvot riippuvat käyttöpaikasta</div>)
     }
   }
 
