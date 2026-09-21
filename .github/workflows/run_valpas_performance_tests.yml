@@ -16,7 +16,7 @@ env:
 jobs:
   valpas-organisaatio-listaus:
     name: valpas-organisaatio-listaus
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     environment: qa
     permissions:
       id-token: write
@@ -62,7 +62,7 @@ jobs:
 
   valpas-oppija-detaalit:
     name: valpas-oppija-detaalit
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     environment: qa
     permissions:
       id-token: write
