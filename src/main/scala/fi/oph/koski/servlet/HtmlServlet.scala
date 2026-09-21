@@ -1,23 +1,17 @@
 package fi.oph.koski.servlet
 
 import fi.oph.koski.frontendvalvonta.FrontendValvottuServlet
-
-import java.util.Properties
 import fi.oph.koski.html.HtmlNodes
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.koskiuser.AuthenticationSupport
+import fi.oph.koski.util.BuildVersion
 
 import scala.reflect.runtime.{universe => ru}
 import scala.xml.Elem
 
 trait HtmlServlet extends KoskiSpecificBaseServlet with AuthenticationSupport with HtmlNodes with FrontendValvottuServlet {
-  lazy val buildVersionProperties = Option(getServletContext.getResourceAsStream("/buildversion.txt")).map { i =>
-    val p = new Properties()
-    p.load(i)
-    p
-  }
-
-  lazy val buildVersion: Option[String] = buildVersionProperties.map(_.getProperty("vcsRevision", null))
+  protected lazy val buildMetadata: Option[BuildVersion] = BuildVersion.read()
+  lazy val buildVersion: Option[String] = buildMetadata.flatMap(_.vcsRevision)
 
   override def haltWithStatus(status: HttpStatus): Nothing = status.statusCode match {
     case 401 => redirectToVirkailijaLogin

@@ -20,8 +20,7 @@ import java.util.UUID
  */
 class VirkailijanKielivalintaSpec extends ScalatraFreeSpec with TestEnvironment {
 
-  // Testiympäristö ei ole Local eikä servlet-kontekstista löydy buildversion.txt:tä, jolloin sivun renderöinti
-  // kaatuisi ScriptCacheBusterissa.
+  // Kiinteä build-versio pitää kielivalintatestit riippumattomina generoidusta build-metadatasta.
   addServlet(new IndexServlet()(KoskiApplicationForTests) {
     override lazy val buildVersion: Option[String] = Some("VirkailijanKielivalintaSpec")
   }, "/koski/*")
