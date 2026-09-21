@@ -101,7 +101,7 @@ test.describe('JSON Schema Viewer deep links', () => {
     page
   }) => {
     await page.goto(
-      viewer('mark=opiskeluoikeudet.oid', 'koski-oppija-schema.json')
+      viewer('mark=opiskeluoikeudet.oid', 'ytl-oppija-schema.json')
     )
 
     await expect(page.locator('#loading')).toBeHidden()
