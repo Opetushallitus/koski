@@ -160,6 +160,12 @@ export const useKansalainenUiAdapter = (
     isSuoritusjako ? fetchSuoritusjako : fetchOmatTiedotOppija
   )
 
+  // Huollettavan tietoja katsottaessa haetaan huollettavan – ei kirjautuneen
+  // kansalaisen – opiskeluoikeudet, jotta ne löytyvät editoreille.
+  // Tyhjä oid tarkoittaa kirjautuneen kansalaisen omia tietoja.
+  const katsottavaOppijaOid: string =
+    modelData(kansalainenModel, 'henkilö.oid') || ''
+
   const ooTyypit: string[] =
     modelData(kansalainenModel, 'opiskeluoikeudet')?.flatMap(
       (oppilaitos: any) =>
@@ -168,7 +174,8 @@ export const useKansalainenUiAdapter = (
 
   return useUiAdapterImpl(
     ooTyypit,
-    () => oppija.call(suoritusjakoId || ''),
+    () =>
+      oppija.call(isSuoritusjako ? suoritusjakoId || '' : katsottavaOppijaOid),
     oppija
   )
 }
