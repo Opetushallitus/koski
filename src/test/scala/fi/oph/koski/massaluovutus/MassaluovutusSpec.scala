@@ -6,7 +6,7 @@ import fi.oph.koski.db.QueryMethods
 import fi.oph.koski.documentation.ExamplesPerusopetus
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
 import fi.oph.koski.http.KoskiErrorCategory
-import fi.oph.koski.koskiuser.{KoskiSpecificSession, MockUsers}
+import fi.oph.koski.koskiuser.{KoskiSpecificSession, MockUser, MockUsers}
 import fi.oph.koski.log.AuditLogTester
 import fi.oph.koski.massaluovutus.luokallejaaneet.{MassaluovutusQueryLuokalleJaaneet, MassaluovutusQueryLuokalleJaaneetJson}
 import fi.oph.koski.massaluovutus.organisaationopiskeluoikeudet.{MassaluovutusQueryOrganisaationOpiskeluoikeudet, MassaluovutusQueryOrganisaationOpiskeluoikeudetCsv, MassaluovutusQueryOrganisaationOpiskeluoikeudetJson, QueryOrganisaationOpiskeluoikeudetCsvDocumentation}
@@ -137,6 +137,66 @@ class MassaluovutusSpec extends AnyFreeSpec with MassaluovutusTestMethods with M
         getQuerySuccessfully(failedQuery.queryId, MockUsers.paakayttaja) { response =>
           val failResponse = response.asInstanceOf[FailedQueryResponse]
           failResponse.error should equal(Some(failedQuery.error))
+        }
+      }
+    }
+
+    "Tuntemattomastakin virheestä annetaan käyttäjälle toimintaohje" in {
+      withoutRunningQueryScheduler {
+        val failedQuery = createFailedQuery.copy(error = "java.lang.RuntimeException: jokin meni pieleen")
+        KoskiApplicationForTests.massaluovutusService.addRaw(failedQuery)
+        getQuerySuccessfully(failedQuery.queryId, MockUsers.tornioTallentaja) { response =>
+          val failResponse = response.asInstanceOf[FailedQueryResponse]
+          failResponse.hint should equal(Some("Kyselyn suorittaminen epäonnistui, yritä uudelleen."))
+          failResponse.error should equal(None)
+        }
+      }
+    }
+  }
+
+  "Omien kyselyiden listaus" - {
+    def createPendingQuery(user: MockUser, createdAt: LocalDateTime = LocalDateTime.now()) =
+      PendingQuery(
+        queryId = UUID.randomUUID().toString,
+        userOid = user.oid,
+        query = MassaluovutusQueryOrganisaationOpiskeluoikeudetCsv(
+          alkanutAikaisintaan = LocalDate.of(2000, 1, 1),
+        ),
+        createdAt = createdAt,
+        session = JObject(),
+        meta = None,
+      )
+
+    "Palauttaa käyttäjän omat kyselyt" in {
+      withoutRunningQueryScheduler {
+        val query = createPendingQuery(MockUsers.tornioTallentaja)
+        app.massaluovutusService.addRaw(query)
+
+        getOmatKyselyt(MockUsers.tornioTallentaja) { kyselyt =>
+          kyselyt.map(_.queryId) should equal(List(query.queryId))
+        }
+      }
+    }
+
+    "Ei palauta toisen käyttäjän kyselyitä edes pääkäyttäjälle" in {
+      withoutRunningQueryScheduler {
+        app.massaluovutusService.addRaw(createPendingQuery(MockUsers.tornioTallentaja))
+
+        getOmatKyselyt(MockUsers.paakayttaja) { kyselyt =>
+          kyselyt shouldBe empty
+        }
+      }
+    }
+
+    "Ei palauta kyselyitä, joiden tulostiedostot ovat jo vanhentuneet" in {
+      withoutRunningQueryScheduler {
+        val tuore = createPendingQuery(MockUsers.tornioTallentaja)
+        val vanha = createPendingQuery(MockUsers.tornioTallentaja, LocalDateTime.now().minusDays(4))
+        app.massaluovutusService.addRaw(tuore)
+        app.massaluovutusService.addRaw(vanha)
+
+        getOmatKyselyt(MockUsers.tornioTallentaja) { kyselyt =>
+          kyselyt.map(_.queryId) should equal(List(tuore.queryId))
         }
       }
     }

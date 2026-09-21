@@ -83,6 +83,15 @@ trait MassaluovutusTestMethods extends KoskiHttpSpec with Matchers {
   def waitForFailure(queryId: String, user: UserWithPassword): FailedQueryResponse =
     waitForStateTransition(queryId, user)(QueryState.pending, QueryState.running, QueryState.failed).asInstanceOf[FailedQueryResponse]
 
+  def getOmatKyselyt[T](user: UserWithPassword)(f: List[QueryResponse] => T): T =
+    get("api/massaluovutus", headers = authHeaders(user) ++ jsonContent) {
+      verifyResponseStatusOk()
+      val json = JsonMethods.parse(body)
+      val result = KoskiApplicationForTests.validatingAndResolvingExtractor.extract[List[QueryResponse]](json, strictDeserialization)
+      result should not be Left
+      f(result.toOption.get)
+    }
+
   def parsedResponse: QueryResponse = {
     verifyResponseStatusOk()
     val json = JsonMethods.parse(body)

@@ -14,7 +14,8 @@ import {
   Vinkit,
   PaivaValinta
 } from './raporttiComponents'
-import { selectFromState, today } from './raporttiUtils'
+import { massaluovutusKaytossa, selectFromState, today } from './raporttiUtils'
+import { MassaluovutusRaportinLataus } from '../components-v2/raportit/MassaluovutusRaportinLataus'
 import { t } from '../i18n/i18n'
 
 export const osasuoritusTypes = {
@@ -73,7 +74,8 @@ export const AikajaksoRaporttiAikarajauksella = ({
   const kotikuntaPvmAtom = Atom(today())
   const osasuoritustenAikarajausAtom = Atom(false)
   const submitBus = Bacon.Bus()
-  const { selectedOrganisaatioP, dbUpdatedP } = selectFromState(stateP)
+  const { selectedOrganisaatioP, dbUpdatedP, organisaatioNimetP } =
+    selectFromState(stateP)
 
   const password = generateRandomPassword()
 
@@ -98,6 +100,23 @@ export const AikajaksoRaporttiAikarajauksella = ({
         password,
         baseUrl: `/koski/api/raportit${apiEndpoint}`
       }
+  )
+
+  const massaluovutusParametritP = Bacon.combineWith(
+    selectedOrganisaatioP,
+    alkuAtom,
+    loppuAtom,
+    osasuoritustenAikarajausAtom,
+    (o, a, l, r) =>
+      o && a && l && l.valueOf() >= a.valueOf()
+        ? {
+            organisaatioOid: o.oid,
+            alku: formatISODate(a),
+            loppu: formatISODate(l),
+            osasuoritustenAikarajaus: r,
+            language: lang
+          }
+        : null
   )
 
   const downloadExcelE = submitBus
@@ -146,13 +165,28 @@ export const AikajaksoRaporttiAikarajauksella = ({
         />
       )}
 
-      <RaportinLataus
-        password={password}
-        inProgressP={inProgressP}
-        submitEnabledP={submitEnabledP}
-        submitBus={submitBus}
-        dbUpdatedP={dbUpdatedP}
-      />
+      {massaluovutusKaytossa() ? (
+        Bacon.combineWith(
+          massaluovutusParametritP,
+          dbUpdatedP,
+          organisaatioNimetP,
+          (parametrit, dbUpdated, oppilaitosNimet) => (
+            <MassaluovutusRaportinLataus
+              parametrit={parametrit}
+              dbUpdated={dbUpdated}
+              oppilaitosNimet={oppilaitosNimet}
+            />
+          )
+        )
+      ) : (
+        <RaportinLataus
+          password={password}
+          inProgressP={inProgressP}
+          submitEnabledP={submitEnabledP}
+          submitBus={submitBus}
+          dbUpdatedP={dbUpdatedP}
+        />
+      )}
 
       <Vinkit>{example}</Vinkit>
     </section>

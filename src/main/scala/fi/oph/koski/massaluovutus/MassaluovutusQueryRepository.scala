@@ -43,6 +43,17 @@ class QueryRepository(
         AND (user_oid = $userOid OR $hasGlobalAccess)
       """
 
+  def getOwnQueries(userOid: String, maxAge: Duration): List[Query] = {
+    val vanhinPalautettava = Timestamp.valueOf(LocalDateTime.now().minus(maxAge))
+    runDbSync(sql"""
+      SELECT *
+      FROM massaluovutus
+      WHERE user_oid = $userOid
+        AND created_at > $vanhinPalautettava
+      ORDER BY created_at DESC
+      """.as[Query]).toList
+  }
+
   def getExistingKoskiQuery(query: MassaluovutusQueryParameters)(implicit user: KoskiSpecificSession): Option[Query] = {
     getExisting(query, user.oid, user.hasGlobalReadAccess)
   }

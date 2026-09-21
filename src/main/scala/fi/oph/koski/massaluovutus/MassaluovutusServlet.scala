@@ -38,6 +38,10 @@ class MassaluovutusServlet(implicit val application: KoskiApplication)
     } (parseErrorHandler = jsonErrorHandler)
   }
 
+  get("/") {
+    massaluovutukset.getOwnQueries.map(q => QueryResponse(rootUrl, q, session))
+  }
+
   get("/:id") {
     renderEither {
       UuidUtils.optionFromString(getStringParam("id"))
@@ -211,6 +215,6 @@ object QueryResponse {
       ).mkString("; ")
       Some(s"Kyselystä syntyneen tulostiedoston koko kasvoi liian suureksi. Ehdotuksia kyselyn korjaamiseksi: $suggestions")
     } else {
-      None
+      Some("Kyselyn suorittaminen epäonnistui, yritä uudelleen.")
     }
 }

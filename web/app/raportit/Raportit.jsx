@@ -16,7 +16,10 @@ import {
 } from './AikajaksoRaporttiTyyppivalinnalla'
 import { Tabs } from '../components/Tabs'
 import { OrganisaatioDropdown } from './OrganisaatioDropdown'
-import { filterOrgTreeByRaporttityyppi } from './raporttiUtils'
+import {
+  filterOrgTreeByRaporttityyppi,
+  massaluovutusKaytossa
+} from './raporttiUtils'
 import { contentWithLoadingIndicator } from '../components/AjaxLoadingIndicator'
 import { replaceLocation } from '../util/location'
 import { Paragraphs } from '../i18n/Paragraphs'
@@ -431,7 +434,9 @@ export const raportitContentP = (pathTokens) => {
       const tab = state.tabs[state.selectedTabIdx]
       const raportti = tab && tab.raportit[state.selectedRaporttiIdx]
       if (tab && raportti) {
-        replaceLocation(`/koski/raportit/${tab.id}/${raportti.id}`)
+        replaceLocation(
+          `/koski/raportit/${tab.id}/${raportti.id}${window.location.search}`
+        )
       }
     })
 
@@ -593,7 +598,9 @@ function SuoritustietojenTarkistus({ stateP }) {
   const titleText = (
     <Text name="Suoritustiedot (ammatillinen koulutus, koko tutkinto)" />
   )
-  const shortDescriptionText = (
+  const shortDescriptionText = massaluovutusKaytossa() ? (
+    <Text name="SuoritustietojenTarkistus-short-description-massaluovutus" />
+  ) : (
     <Text name="SuoritustietojenTarkistus-short-description" />
   )
   const exampleText = <Paragraphs name="SuoritustietojenTarkistus-example" />
