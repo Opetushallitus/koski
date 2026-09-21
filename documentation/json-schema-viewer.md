@@ -122,6 +122,34 @@ Notes:
   `@DefaultValue` (it's a scala-schema annotation, not Koski).
 - To cover a new schema, register it in `LocalizedSchemas`.
 
+## jQuery Mobile `<base>` vs. the info-panel tabs
+
+The info panel's tabs (jQuery UI tabs, bundled in jQM) decide whether a tab is
+local by comparing the anchor's base-resolved `href` with `location.href`, hash
+ignored. jQuery Mobile owns the `<base href>`: it starts as the document URL
+with its query, but when the URL has a hash jQM navigates to it at startup, and
+the page container's `load()` then runs, in order:
+
+1. `base.reset()` — base becomes the URL **without the query** (`hrefNoSearch`),
+2. page enhancement — the tabs widget is created here,
+3. `base.set(url)` — base becomes `…/viewer-page?…`.
+
+Created in step 2, the tabs resolve `#info-tab-def` against a base lacking
+`?schema=…`, find it differs from `location`, treat the tab as remote and
+AJAX-load the whole document — full-screen "Loading…" overlay included — into
+the panel, which then looks stuck and swallows clicks.
+
+So it needs **both** a real `?schema=` query and a hash, which is every deep
+link and every share link. No hash means no `load()` and no reset; no query
+(e.g. `…/json-schema-viewer#viewer-page?schema=x.json`) means the reset changes
+nothing — but that shape silently shows the default Koski schema, because the
+schema name is read from `location.search`.
+
+`JsonSchemaViewerHtmlServlet` therefore rewrites the three `#info-tab-*` anchors
+to absolute URLs before jQuery Mobile loads. `$.mobile.dynamicBaseEnabled = false`
+does **not** help: it guards `set()` but not `reset()`, so the base just stays
+query-less.
+
 ## Editing / build
 
 - `json-schema-viewer.js` is **pretty-printed source** — edit it directly.
