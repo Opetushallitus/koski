@@ -27,6 +27,7 @@ jobs:
       smoketests: ${{ steps.filter.outputs.all == 'true' || steps.filter.outputs.smoketests == 'true' }}
       radiator: ${{ steps.filter.outputs.all == 'true' || steps.filter.outputs.radiator == 'true' }}
       history-debug: ${{ steps.filter.outputs.all == 'true' || steps.filter.outputs.history-debug == 'true' }}
+      renovate: ${{ steps.filter.outputs.renovate == 'true' }}
     steps:
       - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7
       - name: Detect changed paths
@@ -92,6 +93,9 @@ jobs:
               - *documentation-exclusions
               - 'scripts/opiskeluoikeushistoria-debug/**'
 
+            renovate:
+              - 'renovate.json'
+
   tests:
     name: "Tests"
     needs: [changes]
@@ -108,10 +112,28 @@ jobs:
       run-radiator-tests: ${{ needs.changes.outputs.radiator == 'true' }}
       run-history-debug-tests: ${{ needs.changes.outputs.history-debug == 'true' }}
 
+  renovate_config:
+    name: Renovate config check
+    needs: [changes]
+    if: ${{ needs.changes.outputs.renovate == 'true' }}
+    runs-on: ubuntu-26.04
+    steps:
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7
+
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
+        with:
+          node-version-file: ".nvmrc"
+
+      # Renovate ajetaan Mendin ylläpitämänä sovelluksena, joka seuraa aina uusinta
+      # julkaisua, joten validaattoria ei pinnata. --strict kaatuu myös varoituksiin,
+      # esimerkiksi vanhentuneisiin asetuksiin.
+      - name: Validate renovate.json
+        run: npx --yes --package renovate renovate-config-validator --strict
+
   ci_passed:
     name: CI passed
     runs-on: ubuntu-26.04
-    needs: [changes, tests]
+    needs: [changes, tests, renovate_config]
     if: ${{ always() }}
     steps:
       - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7

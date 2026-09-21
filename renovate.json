@@ -18,9 +18,16 @@
     "schedule": []
   },
   "prConcurrentLimit": 8,
+  "description": [
+    "Automerge is off by default and opted into per rule, so every rule that wants it has to say so.",
+    "automergeType `pr` keeps the PR, and with it the CI run, mandatory; platformAutomerge lets GitHub merge the moment the required checks go green instead of at Renovate's next run.",
+    "Renovate's vulnerabilityAlerts defaults set minimumReleaseAge to null, so security fixes are not delayed by it."
+  ],
   "automerge": false,
-  "platformAutomerge": false,
+  "automergeType": "pr",
+  "platformAutomerge": true,
   "rangeStrategy": "replace",
+  "minimumReleaseAge": "3 days",
   "constraints": {
     "node": "24.21.0"
   },
@@ -107,6 +114,20 @@
       "groupName": "npm patch updates"
     },
     {
+      "description": "Automerge devDependency patch updates",
+      "matchManagers": [
+        "npm"
+      ],
+      "matchUpdateTypes": [
+        "patch"
+      ],
+      "matchDepTypes": [
+        "devDependencies"
+      ],
+      "groupName": "npm dev patch updates",
+      "automerge": true
+    },
+    {
       "description": "Pin direct npm dependencies",
       "matchManagers": ["npm"],
       "matchDepTypes": ["dependencies", "devDependencies", "optionalDependencies"],
@@ -120,23 +141,21 @@
       "overridePackageName": "node"
     },
     {
-      "description": "Update Node.js pins and Renovate's tool constraint together after three days",
+      "description": "Update Node.js pins and Renovate's tool constraint together",
       "matchManagers": ["nvm", "renovate-config"],
       "matchDepNames": ["node"],
       "groupName": "Node.js",
       "separateMinorPatch": false,
-      "minimumReleaseAge": "3 days",
       "automerge": false
     },
     {
-      "description": "Update the shared pnpm toolchain together after three days",
+      "description": "Update the shared pnpm toolchain together",
       "matchManagers": ["npm"],
       "matchDepTypes": ["engines", "packageManager"],
       "matchPackageNames": ["pnpm"],
       "groupName": "pnpm toolchain",
       "rangeStrategy": "pin",
       "separateMinorPatch": false,
-      "minimumReleaseAge": "3 days",
       "automerge": false
     },
     {
@@ -149,7 +168,7 @@
       "groupName": "playwright",
       "separateMinorPatch": false,
       "minimumGroupSize": 2,
-      "automerge": false
+      "automerge": true
     },
     {
       "description": "fs2 minor updates need Hotswap->NonEmptyHotswap refactoring",
@@ -175,11 +194,6 @@
         "minor"
       ],
       "groupName": "maven minor updates"
-    },
-    {
-      "description": "Wait 3 days before updating Maven dependencies",
-      "matchManagers": ["maven"],
-      "minimumReleaseAge": "3 days"
     },
     {
       "description": "Pin postgres Docker image to match RDS version (RDS upgrades to 15.17 on 2026-06-03; auto-minor-version-upgrade is enabled in RDS). Bump this constraint when RDS is upgraded further.",
