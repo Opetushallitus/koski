@@ -1,6 +1,17 @@
 name: Set up Java 17
 description: Set up Java 17, Maven caching, and GitHub Packages credentials
 
+inputs:
+  cache-read-only:
+    description: >
+      Jos true, ~/.m2-välimuistia ei tallenneta jobin lopuksi. Oletus on true,
+      koska setup-javan post-vaihe ajetaan myös epäonnistuneessa jobissa: kesken
+      jäänyt riippuvuuksien lataus tallentuisi vajaana pom-hashin mukaiselle
+      avaimelle, ja koska avaimet ovat muuttumattomia, vajaa välimuisti jäisi
+      voimaan seuraaviin ajoihin asti. Vain build_koski kirjoittaa välimuistin.
+    required: false
+    default: "true"
+
 runs:
   using: composite
   steps:
@@ -14,3 +25,4 @@ runs:
         architecture: "x64"
         distribution: "zulu"
         cache: "maven"
+        cache-read-only: ${{ inputs.cache-read-only }}

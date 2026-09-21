@@ -26,6 +26,9 @@ runs:
         node-version-file: ".nvmrc"
     - if: steps.lookup.outputs.cache-hit != 'true'
       uses: ./.github/actions/setup_java_17
+      with:
+        # Ainoa jobi, joka saa kirjoittaa ~/.m2-välimuistin.
+        cache-read-only: "false"
     - name: Build Koski app + tests
       if: steps.lookup.outputs.cache-hit != 'true'
       env:

@@ -22,7 +22,7 @@ runs:
       env:
         MOCHA_SHARD_INDEX: ${{inputs.shardIndex}}
         MOCHA_SHARD_TOTAL: ${{inputs.shardTotal}}
-      run: mvn scalatest:test -Dsuites="fi.oph.koski.mocha.KoskiParallelMochaSpec" --batch-mode
+      run: mvn scalatest:test -Dsuites="fi.oph.koski.mocha.KoskiParallelMochaSpec" --batch-mode --no-snapshot-updates
       shell: bash
 
     - name: Archive test screenshots
