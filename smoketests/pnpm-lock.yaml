@@ -13,11 +13,11 @@ importers:
         version: 25.11.0
     devDependencies:
       '@types/node':
-        specifier: 25.9.6
-        version: 25.9.6
+        specifier: 25.9.7
+        version: 25.9.7
       ts-node:
         specifier: 10.9.2
-        version: 10.9.2(@types/node@25.9.6)(typescript@5.9.3)
+        version: 10.9.2(@types/node@25.9.7)(typescript@5.9.3)
       typescript:
         specifier: 5.9.3
         version: 5.9.3
@@ -63,8 +63,8 @@ packages:
   '@tsconfig/node16@1.0.4':
     resolution: {integrity: sha512-vxhUy4J8lyeyinH7Azl1pdd43GJhZH/tP2weN8TntQblOY+A0XbT8DJk1/oCPuOOyg/Ja757rG0CgHcWC8OfMA==}
 
-  '@types/node@25.9.6':
-    resolution: {integrity: sha512-JR6Q/PV5DKFvjrGFVqQJdeG0qvsqQQLDa3TzFrqVwhqRXqwNaxPo2KYCtCQXpOdIulCouKwT7a6in9nFthBAzw==}
+  '@types/node@25.9.7':
+    resolution: {integrity: sha512-Y+axoNWOFLvDNFxNbDA+kqqV05imHwTu5bZWWO6tQM3Y2NX1jvzUJkYlf4nYnMCnvu4wQBKW6Nr+ok6yHWA9aQ==}
 
   acorn-walk@8.3.5:
     resolution: {integrity: sha512-HEHNfbars9v4pgpW6SO1KSPkfoS0xVOM/9UzkJltjlsHZmJasxg8aXkuZa7SMf8vKGIBhpUsPluQSqhJFCqebw==}
@@ -250,7 +250,7 @@ snapshots:
 
   '@tsconfig/node16@1.0.4': {}
 
-  '@types/node@25.9.6':
+  '@types/node@25.9.7':
     dependencies:
       undici-types: 7.24.6
 
@@ -343,14 +343,14 @@ snapshots:
     dependencies:
       ansi-regex: 6.3.0
 
-  ts-node@10.9.2(@types/node@25.9.6)(typescript@5.9.3):
+  ts-node@10.9.2(@types/node@25.9.7)(typescript@5.9.3):
     dependencies:
       '@cspotcode/source-map-support': 0.8.1
       '@tsconfig/node10': 1.0.13
       '@tsconfig/node12': 1.0.11
       '@tsconfig/node14': 1.0.3
       '@tsconfig/node16': 1.0.4
-      '@types/node': 25.9.6
+      '@types/node': 25.9.7
       acorn: 8.18.0
       acorn-walk: 8.3.5
       arg: 4.1.3
