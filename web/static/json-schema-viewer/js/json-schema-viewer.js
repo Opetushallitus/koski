@@ -14094,6 +14094,12 @@ if (typeof window.JSV === "undefined") {
                 $("#loading").fadeOut("slow");
             };
             JSV.createDiagram(cb);
+            $(window).on("hashchange", function() {
+                if (JSV.treeData && /^#viewer-page/.test(window.location.hash)) {
+                    JSV.resetDeepLinks();
+                    JSV.applyDeepLinks(window.location.hash);
+                }
+            });
             JSV.initValidator();
             $("#popup-error").enhanceWithin().popup();
             $.fn.highlight = function(str, className, quote) {
@@ -14439,8 +14445,8 @@ if (typeof window.JSV === "undefined") {
             });
         },
         setPermalink: function(node) {
-            var uri = new URI(), path = JSV.getNodePath(node).join("-");
-            uri.hash($.mobile.activePage.attr("id") + "?v=" + path);
+            var uri = new URI(), path = JSV.getNodeNamePath(node).map(encodeURIComponent).join(".");
+            uri.hash($.mobile.activePage.attr("id") + "?open=" + path);
             $("#permalink").html(JSV.compilePath(node));
             $("#sharelink").val(uri.toString());
         },
@@ -14454,17 +14460,161 @@ if (typeof window.JSV === "undefined") {
                 return p;
             }
         },
-        expandNodePath: function(path) {
-            var i, node = JSV.treeData;
-            for (i = 0; i < path.length; i++) {
-                if (node._children) {
-                    JSV.expand(node);
+        // Koski: deep links, see documentation/json-schema-viewer.md
+        getNodeNamePath: function(node, path) {
+            var p = path || [], parent = node.parent;
+            if (parent) {
+                var siblings = parent.children || parent._children;
+                if (node.isReal || siblings.length > 1) {
+                    p.unshift(node.isReal ? node.plainName : node.title);
                 }
-                node = node.children[path[i]];
+                return JSV.getNodeNamePath(parent, p);
+            } else {
+                return p;
             }
+        },
+        matchingChildren: function(children, segment) {
+            var s = segment.toLowerCase(), names = function(node) {
+                return [ (node.plainName || "").toLowerCase(), (node.title || "").toLowerCase() ];
+            }, exact = children.filter(function(c) {
+                return names(c).indexOf(s) >= 0;
+            });
+            return exact.length ? exact : children.filter(function(c) {
+                return names(c).some(function(n) {
+                    return n.indexOf(s) === 0;
+                });
+            });
+        },
+        findChildrenByName: function(node, segment) {
+            var children = node.children || node._children || [], direct = JSV.matchingChildren(children, segment);
+            if (direct.length) {
+                return direct;
+            }
+            return children.filter(function(c) {
+                return !c.isReal;
+            }).reduce(function(acc, c) {
+                return acc.concat(JSV.findChildrenByName(c, segment));
+            }, []);
+        },
+        // "." separates name segments because jQuery Mobile treats a hash containing "/" as a page path.
+        resolveNodePaths: function(path) {
+            var isIndexPath = /^[0-9]+(-[0-9]+)*$/.test(path), segments = isIndexPath ? path.split("-") : path.split("."), nodes = [ JSV.treeData ], i;
+            for (i = 0; i < segments.length && nodes.length; i++) {
+                nodes = nodes.reduce(function(acc, node) {
+                    if (isIndexPath) {
+                        var child = (node.children || node._children || [])[parseInt(segments[i], 10)];
+                        return child ? acc.concat([ child ]) : acc;
+                    }
+                    return acc.concat(JSV.findChildrenByName(node, decodeURIComponent(segments[i])));
+                }, []);
+            }
+            if (!nodes.length) {
+                console.warn("JSV: node path not found: " + path);
+            }
+            return nodes;
+        },
+        resolveNodePath: function(path) {
+            return JSV.resolveNodePaths(path)[0] || null;
+        },
+        expandAncestors: function(node) {
+            var p = node.parent;
+            while (p) {
+                if (p._children) {
+                    JSV.expand(p);
+                }
+                p = p.parent;
+            }
+        },
+        expandThroughWrappers: function(node) {
+            var children;
+            JSV.expand(node);
+            children = node.children || [];
+            if (children.length === 1 && !children[0].isReal) {
+                JSV.expandThroughWrappers(children[0]);
+            }
+        },
+        expandNodePath: function(path) {
+            var node = JSV.resolveNodePath(Array.isArray(path) ? path.join("-") : path);
+            if (!node) {
+                return null;
+            }
+            JSV.expandAncestors(node);
             JSV.update(JSV.treeData);
             JSV.centerNode(node);
             return node;
+        },
+        parseHashParams: function(hash) {
+            var params = {}, query = (hash || "").split("?")[1] || "";
+            query.split("&").forEach(function(pair) {
+                var eq = pair.indexOf("="), key = eq < 0 ? pair : pair.substring(0, eq), value = eq < 0 ? "" : pair.substring(eq + 1);
+                if (key) {
+                    params[key] = value;
+                }
+            });
+            return params;
+        },
+        resetDeepLinks: function() {
+            JSV.visit(JSV.treeData, function(d) {
+                d.marked = false;
+            }, function(d) {
+                return d.children || d._children;
+            });
+            if (JSV.focusNode) {
+                d3.select("#n-" + JSV.focusNode.id).classed("focus", false);
+                JSV.focusNode = null;
+            }
+            JSV.panelUnpinned = false;
+            JSV.deepLinkTarget = null;
+            JSV.resetTree(JSV.treeData, 1);
+        },
+        applyDeepLinks: function(hash) {
+            var params = JSV.parseHashParams(hash), selected = null, target = null, touched = false, marked = false, list = function(key) {
+                return params[key] ? params[key].split(",").filter(Boolean) : [];
+            };
+            list("open").forEach(function(path) {
+                JSV.resolveNodePaths(path).forEach(function(node) {
+                    JSV.expandAncestors(node);
+                    JSV.expandThroughWrappers(node);
+                    target = target || node;
+                    touched = true;
+                });
+            });
+            list("mark").forEach(function(path) {
+                JSV.resolveNodePaths(path).forEach(function(node) {
+                    JSV.expandAncestors(node);
+                    node.marked = true;
+                    target = target || node;
+                    touched = true;
+                    marked = true;
+                });
+            });
+            if (params.v) {
+                selected = JSV.resolveNodePath(params.v);
+                if (selected) {
+                    JSV.expandAncestors(selected);
+                    touched = true;
+                }
+            }
+            if (!touched) {
+                JSV.resetViewer();
+                return;
+            }
+            JSV.update(JSV.treeData);
+            JSV.deepLinkTarget = selected || target;
+            if (marked) {
+                // Closing the panel deselects (panelclose handler), so v= only centers here.
+                JSV.panelUnpinned = true;
+                $("#info-panel").panel("close");
+            }
+            if (selected) {
+                JSV.centerNode(selected);
+                JSV.flashNode(selected);
+                if (!marked) {
+                    JSV.selectNode(selected, true);
+                }
+            } else {
+                JSV.centerNode(target);
+            }
         },
         buildSearchList: function(items, init) {
             var ul = $("ul#search-result");
@@ -14634,8 +14784,8 @@ if (typeof window.JSV === "undefined") {
         resizeViewer: function() {
             JSV.viewerWidth = $("#main-body").width();
             JSV.viewerHeight = $("#main-body").height();
-            if (JSV.focusNode) {
-                JSV.centerNode(JSV.focusNode);
+            if (JSV.focusNode || JSV.deepLinkTarget) {
+                JSV.centerNode(JSV.focusNode || JSV.deepLinkTarget);
             }
         },
         resetTree: function(source, level) {
@@ -14716,21 +14866,25 @@ if (typeof window.JSV === "undefined") {
                 if (d3.event && d3.event.defaultPrevented) {
                     return;
                 }
-                var panel = $("#info-panel");
-                if (JSV.focusNode) {
-                    d3.select("#n-" + JSV.focusNode.id).classed("focus", false);
-                }
-                JSV.focusNode = d;
-                JSV.centerNode(d);
-                d3.select("#n-" + d.id).classed("focus", true);
-                if (!JSV.plain) {
-                    JSV.setPermalink(d);
-                    var titleText = "Info: " + d.name;
-                    // Shrink the font for long field names so the whole name stays visible.
-                    var titleSize = Math.max(10, 15 - Math.max(0, titleText.length - 24) * 0.15);
-                    $("#info-title").text(titleText).css("font-size", titleSize + "px");
-                    JSV.setInfo(d);
-                    panel.panel("open");
+                JSV.selectNode(d, true);
+            }
+        },
+        selectNode: function(d, openPanel) {
+            if (JSV.focusNode) {
+                d3.select("#n-" + JSV.focusNode.id).classed("focus", false);
+            }
+            JSV.focusNode = d;
+            JSV.centerNode(d);
+            d3.select("#n-" + d.id).classed("focus", true);
+            if (!JSV.plain) {
+                JSV.setPermalink(d);
+                var titleText = "Info: " + d.name;
+                // Shrink the font for long field names so the whole name stays visible.
+                var titleSize = Math.max(10, 15 - Math.max(0, titleText.length - 24) * 0.15);
+                $("#info-title").text(titleText).css("font-size", titleSize + "px");
+                JSV.setInfo(d);
+                if (openPanel) {
+                    $("#info-panel").panel("open");
                 }
             }
         },
@@ -14817,6 +14971,9 @@ if (typeof window.JSV === "undefined") {
                 return;
             }
             if (!$.mobile.activePage || $.mobile.activePage.attr("id") !== "viewer-page") {
+                return;
+            }
+            if (JSV.panelUnpinned) {
                 return;
             }
             if (window.matchMedia && window.matchMedia("(min-width: 48em)").matches) {
@@ -14916,6 +15073,9 @@ if (typeof window.JSV === "undefined") {
             }).on("click", JSV.click);
             nodeEnter.append("rect").attr("class", "focus-box").attr("x", 6).attr("y", -9).attr("height", 18).attr("rx", 3).attr("width", function(d) {
                 return (d.name.length + (d.require ? 1 : 0)) * 8.4 + 8;
+            });
+            node.classed("marked", function(d) {
+                return !!d.marked;
             });
             nodeEnter.append("text").attr("x", function(d) {
                 return 10;
@@ -15022,8 +15182,12 @@ if (typeof window.JSV === "undefined") {
                     text: "Sensitive",
                     itemCls: "sensitive",
                     y: 180
+                }, {
+                    text: "Highlighted",
+                    itemCls: "marked",
+                    y: 200
                 } ];
-                var legendSvg = d3.select("#legend-items").append("svg").attr("width", 170).attr("height", 200);
+                var legendSvg = d3.select("#legend-items").append("svg").attr("width", 170).attr("height", 220);
                 var legendItem = legendSvg.selectAll("g.item-group").data(legendData).enter().append("g").attr("class", function(d) {
                     var cls = "item-group ";
                     cls += d.itemCls || "";

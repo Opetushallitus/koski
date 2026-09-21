@@ -26,21 +26,13 @@ class JsonSchemaViewerHtmlServlet(implicit val application: KoskiApplication) ex
     (function($) {
       $('body').one('pagecontainershow', function(event, ui) {
       var schema = '/koski/api/documentation/' + schemaName()
-      var path = window.location.hash.match(/v=([^\&]+)/);
-      var selectedNode = path ? path[1] : null
 
       JSV.init({
         schema: schema,
         maxDepth: 15
       }, function() {
         JSV.setVersion(tv4.getSchema(JSV.treeData.schema).version);
-        if (selectedNode) {
-          var node = JSV.expandNodePath(selectedNode.split('-'));
-          JSV.flashNode(node);
-          JSV.clickTitle(node);
-        } else {
-          JSV.resetViewer();
-        }
+        JSV.applyDeepLinks(window.location.hash);
       });
     });
     })(jQuery);
