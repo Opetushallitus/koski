@@ -15,7 +15,7 @@ runs:
     - name: "Run visual regression tests"
       env:
         PLAYWRIGHT_HTML_REPORT: koski-visual-report
-      run: mvn scalatest:test -Pintegrationtest -Dsuites="fi.oph.koski.e2e.KoskiVisualFrontSpec" --batch-mode
+      run: mvn scalatest:test -Pintegrationtest -Dsuites="fi.oph.koski.e2e.KoskiVisualFrontSpec" --batch-mode --no-snapshot-updates
       shell: bash
 
     - name: "Upload HTML report"
