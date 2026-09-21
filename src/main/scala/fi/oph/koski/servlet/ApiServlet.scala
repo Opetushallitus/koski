@@ -91,10 +91,11 @@ trait KoskiSpecificApiServlet extends ApiServlet with KoskiSpecificBaseServlet {
     }
   }
 
-  def toJsonString[T: TypeTag](x: T): String = toJsonString(x, KoskiSpecificSession.untrustedUser)
+  def toJsonString[T: TypeTag](x: T): String = toJsonString(x, koskiSessionOption getOrElse KoskiSpecificSession.untrustedUser)
 
+  // sessionOverride ohittaa kirjautuneen käyttäjän session: esim. jakolinkin sisältö ei saa riippua katsojasta
   def toJsonString[T: TypeTag](x: T, sessionOverride: KoskiSpecificSession): String = {
-    implicit val session = koskiSessionOption getOrElse sessionOverride
+    implicit val session: KoskiSpecificSession = sessionOverride
     // Ajax request won't have "text/html" in Accept header, clicking "JSON" button will
     val pretty = Option(request.getHeader("accept")).exists(_.contains("text/html"))
     ComputedPropertyContext.withOptionalContext(computedPropertyContext) {
