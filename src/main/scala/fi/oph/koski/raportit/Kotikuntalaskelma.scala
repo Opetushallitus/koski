@@ -95,7 +95,6 @@ case class Kotikuntalaskelma(db: DB) extends QueryMethods {
     join r_paatason_suoritus pts on pts.opiskeluoikeus_oid = oo.opiskeluoikeus_oid
     left join r_opiskeluoikeus_aikajakso aj on aj.opiskeluoikeus_oid = oo.opiskeluoikeus_oid
     left join esiopetus_opiskeluoik_aikajakso eaj on eaj.opiskeluoikeus_oid = oo.opiskeluoikeus_oid
-    -- Julkinen r_kotikuntahistoria: EI koski_confidential-varianttia, ks. tiedoston alun kommentti.
     left join r_kotikuntahistoria kkh
       on kkh.master_oid = he.master_oid
       and coalesce(kkh.muutto_pvm, '1900-01-01'::date) <= $päivä
@@ -111,7 +110,7 @@ case class Kotikuntalaskelma(db: DB) extends QueryMethods {
           and pts.alkamispaiva between v.edellinen_elokuu and $päivä)
         or
         (oo.koulutusmuoto = 'europeanschoolofhelsinki'
-          and pts.koulutusmoduuli_koodiarvo in ('N1', 'N2', 'P1', 'P2', 'P3', 'P4', 'P5', 'S1', 'S2', 'S3', 'S4')
+          and pts.koulutusmoduuli_koodiarvo in ('N1', 'N2', 'P1', 'P2', 'P3', 'P4', 'P5', 'S1', 'S2', 'S3', 'S4', 'S5')
           and pts.alkamispaiva between v.edellinen_elokuu and $päivä)
       )
       and (
@@ -225,7 +224,7 @@ case class Kotikuntalaskelma(db: DB) extends QueryMethods {
           and pts.alkamispaiva between v.edellinen_elokuu and $päivä)
         or
         (oo.koulutusmuoto = 'europeanschoolofhelsinki'
-          and pts.koulutusmoduuli_koodiarvo in ('N1', 'N2', 'P1', 'P2', 'P3', 'P4', 'P5', 'S1', 'S2', 'S3', 'S4')
+          and pts.koulutusmoduuli_koodiarvo in ('N1', 'N2', 'P1', 'P2', 'P3', 'P4', 'P5', 'S1', 'S2', 'S3', 'S4', 'S5')
           and pts.alkamispaiva between v.edellinen_elokuu and $päivä)
       )
       and (

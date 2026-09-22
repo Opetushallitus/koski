@@ -24,6 +24,7 @@ import { contentWithLoadingIndicator } from '../components/AjaxLoadingIndicator'
 import { replaceLocation } from '../util/location'
 import { Paragraphs } from '../i18n/Paragraphs'
 import { lang } from '../i18n/i18n'
+import { hasFeatureFlag } from '../util/featureFlags'
 
 const kaikkiRaportitKategorioittain = [
   {
@@ -252,7 +253,8 @@ const kaikkiRaportitKategorioittain = [
       {
         id: 'kotikuntalaskelmaraportti',
         name: 'raportti-tab-kotikuntalaskelma',
-        component: Kotikuntalaskelma
+        component: Kotikuntalaskelma,
+        guard: () => hasFeatureFlag('kotikuntalaskelma')
       }
     ]
   }
@@ -482,13 +484,6 @@ const RaportitContent = ({
 
   return (
     <div className="main-content">
-      {/* TODO(TOR-2560): tämä ehto olettaa, että jokaisella raportteja
-          näkevällä käyttäjällä on vähintään yksi organisaatio-oikeus.
-          Kotikuntalaskelma on tarkoitus rajata raportit.rajatut-listan kautta
-          (ks. RaportitAccessResolver), joten pelkän rajatut-oikeuden saava
-          käyttäjä voisi päätyä tänne organisaatioita: [] ja pudota tähän
-          virheeseen, vaikka hänellä olisi oikeus Kotikuntalaskelmain. Pitää
-          ratkaista ennen kuin rajatut-pääsy oikeasti kytketään päälle. */}
       {stateP.map((state) =>
         state.organisaatiot.length > 0 ? (
           <Tabs
