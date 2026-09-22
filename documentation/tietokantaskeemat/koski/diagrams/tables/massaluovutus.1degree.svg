@@ -24,6 +24,7 @@
 <text text-anchor="start" x="30.5" y="-352.3" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000">id</text>
 <polygon fill="none" stroke="#000000" points="118.5,-345.2 118.5,-367.2 217.5,-367.2 217.5,-345.2 118.5,-345.2"/>
 <text text-anchor="start" x="121.5" y="-352.9" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000">uuid[2147483647]</text>
+<polygon fill="#ffffff" stroke="transparent" points="10.5,-323.2 10.5,-345.2 118.5,-345.2 118.5,-323.2 10.5,-323.2"/>
 <polygon fill="none" stroke="#000000" points="10.5,-323.2 10.5,-345.2 118.5,-345.2 118.5,-323.2 10.5,-323.2"/>
 <text text-anchor="start" x="30.5" y="-330.3" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000">user_oid</text>
 <polygon fill="none" stroke="#000000" points="118.5,-323.2 118.5,-345.2 217.5,-345.2 217.5,-323.2 118.5,-323.2"/>
@@ -41,6 +42,7 @@
 <text text-anchor="start" x="30.5" y="-264.3" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000">state</text>
 <polygon fill="none" stroke="#000000" points="118.5,-257.2 118.5,-279.2 217.5,-279.2 217.5,-257.2 118.5,-257.2"/>
 <text text-anchor="start" x="121.5" y="-264.9" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000">text[2147483647]</text>
+<polygon fill="#ffffff" stroke="transparent" points="10.5,-235.2 10.5,-257.2 118.5,-257.2 118.5,-235.2 10.5,-235.2"/>
 <polygon fill="none" stroke="#000000" points="10.5,-235.2 10.5,-257.2 118.5,-257.2 118.5,-235.2 10.5,-235.2"/>
 <text text-anchor="start" x="30.5" y="-242.3" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000">created_at</text>
 <polygon fill="none" stroke="#000000" points="118.5,-235.2 118.5,-257.2 217.5,-257.2 217.5,-235.2 118.5,-235.2"/>
