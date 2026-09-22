@@ -410,7 +410,7 @@ class KäyttöoikeusryhmätSpec
   "viranomainen jolla oikeudet vain perusopetukseen" - {
     "voi hakea perusopetuksen opiskeluoikeuksia" in {
       searchForNames("eero", perusopetusViranomainen) should be(empty)
-      searchForNames("kaisa", perusopetusViranomainen) should be(List("Kaisa Koululainen", "Kaisa Kymppiluokkalainen"))
+      searchForNames("kaisa", perusopetusViranomainen) should be(List("Kaisa Koululainen", "Kaisa Kuusi", "Kaisa Kymppiluokkalainen"))
     }
 
     "näkee vain perusopetuksen opiskeluoikeudet" in {

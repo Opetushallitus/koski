@@ -45,7 +45,7 @@ class RaportitService(application: KoskiApplication) {
   private val aikuistenPerusopetuksenEiRahoitustietoaKurssitRaportti = AikuistenPerusopetuksenEiRahoitustietoaKurssit(raportointiDatabase.db)
   private val aikuistenPerusopetuksenOpiskeluoikeudenUlkopuolisetRaportti = AikuistenPerusopetuksenOpiskeluoikeudenUlkopuolisetKurssit(raportointiDatabase.db)
   private val aikuistenPerusopetuksenEriVuonnaKorotetutKurssitRaportti = AikuistenPerusopetuksenEriVuonnaKorotetutKurssit(raportointiDatabase.db)
-  private val kotikuntalaskelmaBuilder = Kotikuntalaskelma(raportointiDatabase.db, application.organisaatioService)
+  private val kotikuntalaskelmaBuilder = Kotikuntalaskelma(raportointiDatabase.db)
   private val perusopetuksenOppijamäärätRaportti = PerusopetuksenOppijamäärätRaportti(raportointiDatabase.db, application.organisaatioService)
   private val perusopetuksenLisäopetuksenOppijamäärätRaportti = PerusopetuksenLisäopetusOppijamäärätRaportti(raportointiDatabase.db, application.organisaatioService)
   private val ibSuoritustiedotRepository = IBSuoritustiedotRaporttiRepository(raportointiDatabase.db)
@@ -323,9 +323,6 @@ class RaportitService(application: KoskiApplication) {
   }
 
   def kotikuntalaskelma(request: RaporttiPäivältäRequest, t: LocalizationReader)(implicit u: KoskiSpecificSession) = {
-    // Raportti kattaa useita koulutusmuotoja (perusopetus, esiopetus, kansainväliset koulut),
-    // joten organisaatioita ei rajata yhteen koulutusmuotoon tässä — Kotikuntalaskelma.query
-    // suodattaa koulutusmuodon SQL:n WHERE-lausekkeessa. TODO(TOR-2650): ks. suunnitelman 9 §.
     val oppilaitosOids = accessResolver.kyselyOiditOrganisaatiolle(request.oppilaitosOid).toSeq
     OppilaitosRaporttiResponse(
       sheets = Seq(

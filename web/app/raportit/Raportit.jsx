@@ -250,32 +250,9 @@ const kaikkiRaportitKategorioittain = [
         visibleForAllOrgs: true
       },
       {
-        id: 'kotikuntalaskelma',
+        id: 'kotikuntalaskelmaraportti',
         name: 'raportti-tab-kotikuntalaskelma',
-        component: Kotikuntalaskelma,
-        // TODO(TOR-2650): tämä on väliaikainen. Kotikuntalaskelma on
-        // organisaatiokohtainen (kuten muutkin RaporttiPaivalta-raportit) —
-        // ei-hasGlobalReadAccess-käyttäjä näkee sen valitsemansa
-        // organisaation ja sen alipuun mukaan skoopattuna, aivan kuten
-        // esim. AikuistenPerusopetuksenOppijamäärätRaportti. Oikea tapa
-        // tehdä tämä näkyväksi on lisätä uusi RaportinTyyppi-case-object
-        // (ks. RaportitAccessResolver.raportinTyypitKoulutusmuodolle) niille
-        // koulutusmuodoille joita 8 §:n kyselyt kattavat (perusopetus,
-        // esiopetus, internationalschool, europeanschoolofhelsinki), ja
-        // rajata se tarvittaessa raportit.rajatut-listalla — ei
-        // visibleForAllOrgs, joka näyttäisi raportin kaikille joilla on
-        // mikä tahansa raportit-oikeus. visibleForAllOrgs on tässä
-        // väliaikainen näkyvyys-shimmi kunnes RaportinTyyppi-kytkentä on
-        // tehty backendissä.
-        visibleForAllOrgs: true,
-        // Raportin tulostetaan opetuksen järjestäjän (koulutustoimija) mukaan, ei
-        // oppilaitoksittain, joten valittavissa vain koulutustoimija-/varhaiskasvatuksen
-        // järjestäjä -tyyppiset organisaatiot — muut näkyvät puussa navigointia varten,
-        // eivät valittavina.
-        selectableOrganisaatiotyypit: [
-          'KOULUTUSTOIMIJA',
-          'VARHAISKASVATUKSEN_JARJESTAJA'
-        ]
+        component: Kotikuntalaskelma
       }
     ]
   }
@@ -284,13 +261,9 @@ const kaikkiRaportitKategorioittain = [
 const getEnrichedRaportitKategorioittain = (organisaatiot) =>
   kaikkiRaportitKategorioittain.map((tab) => {
     const raportit = tab.raportit.map((raportti) => {
-      const visibleOrganisaatiot = raportti.selectableOrganisaatiotyypit
-        ? filterOrganisaatioTreeByTyypit(raportti.selectableOrganisaatiotyypit)(
-            organisaatiot
-          )
-        : raportti.visibleForAllOrgs
-          ? organisaatiot.map(organisaatioWithForcedVisibility)
-          : filterVisibleOrganisaatioTree(raportti.id, organisaatiot)
+      const visibleOrganisaatiot = raportti.visibleForAllOrgs
+        ? organisaatiot.map(organisaatioWithForcedVisibility)
+        : filterVisibleOrganisaatioTree(raportti.id, organisaatiot)
 
       return {
         ...raportti,
@@ -334,24 +307,6 @@ const organisaatioWithForcedVisibility = (organisaatio) => ({
   selectable: true,
   visible: true
 })
-
-// Rajaa organisaatiopuun niihin solmuihin joiden organisaatiotyypit osuu annettuun
-// listaan (esim. vain koulutustoimijat/varhaiskasvatuksen järjestäjät) — muun
-// tyyppiset solmut (esim. oppilaitokset) eivät näy puussa lainkaan, ei edes
-// navigointia varten. Jos ei-osuva solmu sisältää osuvia jälkeläisiä (esim.
-// koulutustoimija oman puunsa syvemmällä), ne nostetaan sen tilalle.
-const filterOrganisaatioTreeByTyypit = (tyypit) => (organisaatiot) =>
-  organisaatiot.flatMap((organisaatio) => {
-    const children = filterOrganisaatioTreeByTyypit(tyypit)(
-      organisaatio.children
-    )
-    const matches = organisaatio.organisaatiotyypit.some((tyyppi) =>
-      tyypit.includes(tyyppi)
-    )
-    return matches
-      ? [{ ...organisaatio, children, selectable: true, visible: true }]
-      : children
-  })
 
 const organiaatiotTreeIncludes = (organisaatiot, oid) =>
   organisaatiot.some(
@@ -527,7 +482,7 @@ const RaportitContent = ({
 
   return (
     <div className="main-content">
-      {/* TODO(TOR-2650): tämä ehto olettaa, että jokaisella raportteja
+      {/* TODO(TOR-2560): tämä ehto olettaa, että jokaisella raportteja
           näkevällä käyttäjällä on vähintään yksi organisaatio-oikeus.
           Kotikuntalaskelma on tarkoitus rajata raportit.rajatut-listan kautta
           (ks. RaportitAccessResolver), joten pelkän rajatut-oikeuden saava
