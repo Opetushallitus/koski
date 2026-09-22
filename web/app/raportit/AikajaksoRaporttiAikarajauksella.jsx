@@ -14,7 +14,7 @@ import {
   Vinkit,
   PaivaValinta
 } from './raporttiComponents'
-import { massaluovutusKaytossa, selectFromState, today } from './raporttiUtils'
+import { selectFromState, today } from './raporttiUtils'
 import { MassaluovutusRaportinLataus } from '../components-v2/raportit/MassaluovutusRaportinLataus'
 import { t } from '../i18n/i18n'
 
@@ -67,6 +67,7 @@ export const AikajaksoRaporttiAikarajauksella = ({
   example,
   osasuoritusType = osasuoritusTypes.TUTKINNON_OSA,
   hideOsasuoritustenAikarajaus,
+  useMassaluovutus,
   lang
 }) => {
   const alkuAtom = Atom()
@@ -165,7 +166,7 @@ export const AikajaksoRaporttiAikarajauksella = ({
         />
       )}
 
-      {massaluovutusKaytossa() ? (
+      {useMassaluovutus ? (
         Bacon.combineWith(
           massaluovutusParametritP,
           dbUpdatedP,

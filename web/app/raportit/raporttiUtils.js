@@ -13,7 +13,7 @@ export const today = () => new Date()
 
 // TODO: feature flag raporttien lataamiseen massaluovutus-rajapintojen kautta
 export const massaluovutusKaytossa = () =>
-  parseQuery(window.location.search).massaluovutus === 'true'
+  parseQuery(window.location.search).taustalataus === 'true'
 
 export const isEqualDate = (a, b) =>
   a.getYear() === b.getYear() &&

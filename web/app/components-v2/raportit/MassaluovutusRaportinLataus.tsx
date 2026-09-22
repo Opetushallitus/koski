@@ -111,7 +111,7 @@ export const MassaluovutusRaportinLataus: React.FC<
       </div>
       {omatRaportit.length > 0 && (
         <div className="massaluovutus-raportit">
-          <h3>{t('Omat raporttisi')}</h3>
+          <h3>{t('Omat raportit')}</h3>
           <table>
             <thead>
               <tr>

@@ -612,6 +612,7 @@ function SuoritustietojenTarkistus({ stateP }) {
       title={titleText}
       shortDescription={shortDescriptionText}
       example={exampleText}
+      useMassaluovutus={massaluovutusKaytossa()}
       lang={lang}
     />
   )
