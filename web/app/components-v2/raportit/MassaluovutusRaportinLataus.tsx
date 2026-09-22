@@ -143,7 +143,7 @@ const RaporttiRivi: React.FC<{
   kysely: QueryResponse
   oppilaitosNimet: Record<string, string>
 }> = ({ kysely, oppilaitosNimet }) => (
-  <tr data-testid={`massaluovutus.raportti.${kysely.status}`}>
+  <tr>
     <td className="luontiaika">
       {formatFinnishDateTime(new Date(kysely.createdAt))}
     </td>
@@ -152,9 +152,7 @@ const RaporttiRivi: React.FC<{
     <td className="osasuoritukset">{osasuoritustenRajaus(kysely)}</td>
     <td className="tiedosto">
       {isCompleteQueryResponse(kysely) && (
-        <a href={kysely.files[0]} data-testid="massaluovutus.download">
-          {t('Lataa Excel-tiedosto')}
-        </a>
+        <a href={kysely.files[0]}>{t('Lataa Excel-tiedosto')}</a>
       )}
       {onKesken(kysely) && (
         <span className="tila">
