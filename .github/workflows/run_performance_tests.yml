@@ -38,12 +38,12 @@ jobs:
           mvn exec:java -Dexec.mainClass="fi.oph.koski.perftest.RandomOpiskeluoikeusGetter"
 
       - name: Report failure
-        uses: ./.github/actions/report_slack_failure
+        uses: ./.github/actions/report-slack
         if: ${{ failure() }}
         with:
-          webhook: ${{ secrets.SLACK_WEBHOOK_URL }}
-          prefix: ":stopwatch: PERFORMANCE"
-          title: "Run performance tests: failure in randomget-light"
+          webhook: ${{ secrets.SLACK_CI_ALERTS_WEBHOOK }}
+          title: ":stopwatch: PERFORMANCE · :x: Run performance tests: failure in randomget-light"
+          include_context: repo workflow branch commit actor ci_run
 
   insert_light:
     needs: [random_get_light]
@@ -70,12 +70,12 @@ jobs:
           mvn exec:java -Dexec.mainClass="fi.oph.koski.perftest.MixedOpiskeluoikeusInserterUpdater"
 
       - name: Report failure
-        uses: ./.github/actions/report_slack_failure
+        uses: ./.github/actions/report-slack
         if: ${{ failure() }}
         with:
-          webhook: ${{ secrets.SLACK_WEBHOOK_URL }}
-          prefix: ":stopwatch: PERFORMANCE"
-          title: "Run performance tests: failure in insert-light"
+          webhook: ${{ secrets.SLACK_CI_ALERTS_WEBHOOK }}
+          title: ":stopwatch: PERFORMANCE · :x: Run performance tests: failure in insert-light"
+          include_context: repo workflow branch commit actor ci_run
 
   mixed-overload:
     needs: [insert_light]
@@ -102,12 +102,12 @@ jobs:
           mvn exec:java -Dexec.mainClass="fi.oph.koski.perftest.MixedPerfTester"
 
       - name: Report failure
-        uses: ./.github/actions/report_slack_failure
+        uses: ./.github/actions/report-slack
         if: ${{ failure() }}
         with:
-          webhook: ${{ secrets.SLACK_WEBHOOK_URL }}
-          prefix: ":stopwatch: PERFORMANCE"
-          title: "Run performance tests: failure in mixed-overload"
+          webhook: ${{ secrets.SLACK_CI_ALERTS_WEBHOOK }}
+          title: ":stopwatch: PERFORMANCE · :x: Run performance tests: failure in mixed-overload"
+          include_context: repo workflow branch commit actor ci_run
 
   yki-todistus-generation:
     needs: [insert_light]
@@ -158,9 +158,9 @@ jobs:
           mvn exec:java -Dexec.mainClass="fi.oph.koski.perftest.YleinenKielitutkintoTodistusGenerator"
 
       - name: Report failure
-        uses: ./.github/actions/report_slack_failure
+        uses: ./.github/actions/report-slack
         if: ${{ failure() }}
         with:
-          webhook: ${{ secrets.SLACK_WEBHOOK_URL }}
-          prefix: ":stopwatch: PERFORMANCE"
-          title: "Run performance tests: failure in yki-todistus-generation"
+          webhook: ${{ secrets.SLACK_CI_ALERTS_WEBHOOK }}
+          title: ":stopwatch: PERFORMANCE · :x: Run performance tests: failure in yki-todistus-generation"
+          include_context: repo workflow branch commit actor ci_run

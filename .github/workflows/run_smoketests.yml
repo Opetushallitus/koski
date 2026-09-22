@@ -66,9 +66,9 @@ jobs:
         run: cd smoketests && pnpm run qa:tiedote
 
       - name: Report failure
-        uses: ./.github/actions/report_slack_failure
+        uses: ./.github/actions/report-slack
         if: ${{ failure() && !cancelled() }}
         with:
-          webhook: ${{ secrets.SLACK_WEBHOOK_URL }}
-          prefix: ":fire: SMOKETESTS"
-          title: "Run smoketests: failure in QA version verification or smoke tests"
+          webhook: ${{ secrets.SLACK_CI_ALERTS_WEBHOOK }}
+          title: ":fire: SMOKETESTS · :x: Run smoketests: failure in QA version verification or smoke tests"
+          include_context: repo workflow branch commit actor ci_run

@@ -1,0 +1,60 @@
+name: Notify Slack of Renovate merges
+
+on:
+  push:
+    branches: [master]
+
+permissions:
+  actions: read
+  contents: read
+  pull-requests: read
+
+jobs:
+  notify:
+    runs-on: ubuntu-26.04
+
+    steps:
+      # GitHub attributes an auto-merge to whoever enabled it, so merged_by is the
+      # bot only when Renovate merged its own pull request. A pull request someone
+      # released by clicking auto-merge carries their name and is not reported.
+      - name: Resolve the Renovate automerge
+        id: resolve
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+
+          pull_request_number=$(gh api "repos/$GITHUB_REPOSITORY/commits/$GITHUB_SHA/pulls" --jq '
+            [.[] | select(.user.login == "renovate[bot]"
+                          and .merge_commit_sha == $ENV.GITHUB_SHA)][0].number // empty')
+
+          if [ -z "$pull_request_number" ]; then
+            exit 0
+          fi
+
+          # merged_by is absent from the listing above, so the full object is needed.
+          # The title is escaped because a bare > would close the Slack link early.
+          slack_title=$(gh api "repos/$GITHUB_REPOSITORY/pulls/$pull_request_number" --jq '
+            select(.merged_by.login == "renovate[bot]")
+            | ":robot_face: Renovate automerged <\(.html_url)|#\(.number) \(.title | gsub("&"; "&amp;") | gsub("<"; "&lt;") | gsub(">"; "&gt;"))>"')
+
+          ci_run_url=$(gh api "repos/$GITHUB_REPOSITORY/actions/runs?head_sha=$GITHUB_SHA&event=push" --jq '
+            [.workflow_runs[] | select(.path == ".github/workflows/master.yml")][0].html_url // empty')
+
+          echo "slack_title=$slack_title" >> "$GITHUB_OUTPUT"
+          echo "ci_run_url=$ci_run_url" >> "$GITHUB_OUTPUT"
+
+      - name: Checkout the Slack action
+        if: ${{ steps.resolve.outputs.slack_title != '' }}
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7
+        with:
+          sparse-checkout: .github/actions/report-slack
+
+      - name: Post to Slack
+        if: ${{ steps.resolve.outputs.slack_title != '' }}
+        uses: ./.github/actions/report-slack
+        with:
+          webhook: ${{ secrets.SLACK_CI_ALERTS_WEBHOOK }}
+          title: ${{ steps.resolve.outputs.slack_title }}
+          run_url: ${{ steps.resolve.outputs.ci_run_url }}
+          include_context: repo commit ci_run
