@@ -113,7 +113,7 @@ object ExamplesLukio2019 {
       tila = LukionOpiskeluoikeudenTila(
         List(
           LukionOpiskeluoikeusjakso(alku = date(2019, 8, 1), tila = opiskeluoikeusAktiivinen, opintojenRahoitus = Some(ExampleData.valtionosuusRahoitteinen)),
-          LukionOpiskeluoikeusjakso(alku = date(2021, 8, 1), tila = opiskeluoikeusPäättynyt, opintojenRahoitus = Some(ExampleData.valtionosuusRahoitteinen))
+          LukionOpiskeluoikeusjakso(alku = date(2021, 9, 5), tila = opiskeluoikeusPäättynyt, opintojenRahoitus = Some(ExampleData.valtionosuusRahoitteinen))
         )
       ),
       oppilaitos = Some(jyväskylänNormaalikoulu),
@@ -125,7 +125,7 @@ object ExamplesLukio2019 {
       tila = LukionOpiskeluoikeudenTila(
         List(
           LukionOpiskeluoikeusjakso(alku = date(2019, 8, 1), tila = opiskeluoikeusAktiivinen, opintojenRahoitus = Some(ExampleData.valtionosuusRahoitteinen)),
-          LukionOpiskeluoikeusjakso(alku = date(2020, 5, 15), tila = opiskeluoikeusPäättynyt, opintojenRahoitus = Some(ExampleData.valtionosuusRahoitteinen))
+          LukionOpiskeluoikeusjakso(alku = date(2021, 9, 5), tila = opiskeluoikeusPäättynyt, opintojenRahoitus = Some(ExampleData.valtionosuusRahoitteinen))
         )
       ),
       oppilaitos = Some(jyväskylänNormaalikoulu),
@@ -137,7 +137,7 @@ object ExamplesLukio2019 {
       tila = LukionOpiskeluoikeudenTila(
         List(
           LukionOpiskeluoikeusjakso(alku = date(2019, 8, 1), tila = opiskeluoikeusAktiivinen, opintojenRahoitus = Some(ExampleData.valtionosuusRahoitteinen)),
-          LukionOpiskeluoikeusjakso(alku = date(2020, 5, 15), tila = opiskeluoikeusPäättynyt, opintojenRahoitus = Some(ExampleData.valtionosuusRahoitteinen))
+          LukionOpiskeluoikeusjakso(alku = date(2021, 9, 5), tila = opiskeluoikeusPäättynyt, opintojenRahoitus = Some(ExampleData.valtionosuusRahoitteinen))
         )
       ),
       oppilaitos = Some(jyväskylänNormaalikoulu),
@@ -149,7 +149,7 @@ object ExamplesLukio2019 {
       tila = LukionOpiskeluoikeudenTila(
         List(
           LukionOpiskeluoikeusjakso(alku = date(2019, 8, 1), tila = opiskeluoikeusAktiivinen, opintojenRahoitus = Some(ExampleData.valtionosuusRahoitteinen)),
-          LukionOpiskeluoikeusjakso(alku = date(2020, 5, 15), tila = opiskeluoikeusPäättynyt, opintojenRahoitus = Some(ExampleData.valtionosuusRahoitteinen))
+          LukionOpiskeluoikeusjakso(alku = date(2021, 9, 5), tila = opiskeluoikeusPäättynyt, opintojenRahoitus = Some(ExampleData.valtionosuusRahoitteinen))
         )
       ),
       oppilaitos = Some(jyväskylänNormaalikoulu),

@@ -1262,7 +1262,7 @@ class KoskiValidator(
         :: validateÄidinkielenOmainenKieli(suoritus)
         :: validateSuorituskieli(suoritus)
         :: validateRajattuOppimäärä(suoritus, opiskeluoikeus)
-        :: Lukio2019OsasuoritusValidation.validate(suoritus, parent)
+        :: Lukio2019OsasuoritusValidation.validate(suoritus, parent, opiskeluoikeus)
         :: Lukio2019VieraatKieletValidation.validate(suoritus, parent)
         :: Lukio2019ArvosanaValidation.validateOsasuoritus(suoritus)
         :: LukionYhteisetValidaatiot.validateLukionPäätasonSuoritus(suoritus)

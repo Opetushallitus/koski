@@ -242,6 +242,87 @@ class OppijaValidationLukio2019Spec extends AnyFreeSpec with PutOpiskeluoikeusTe
     }
   }
 
+  "Moduulin ja paikallisen opintojakson arviointipäivä" - {
+    "Arviointipäivä ei voi olla ennen opiskeluoikeuden alkamispäivää" in {
+      val oo = defaultOpiskeluoikeus.copy(suoritukset = List(oppimääränSuoritus.copy(
+        osasuoritukset = Some(List(
+          oppiaineenSuoritus(Lukio2019ExampleData.lukionÄidinkieli("AI1", pakollinen = true)).copy(arviointi = numeerinenLukionOppiaineenArviointi(9)).copy(osasuoritukset = Some(List(
+            moduulinSuoritusOppiaineissa(muuModuuliOppiaineissa("ÄI1")).copy(arviointi = numeerinenArviointi(8, date(2019, 1, 1)))
+          )))
+        ) ::: oppiainesuorituksetRiittääValmistumiseenNuorilla.tail)
+      )))
+
+      setupOppijaWithOpiskeluoikeus(oo) {
+        verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.date.arviointiEnnenOpiskeluoikeudenAlkamispäivää(
+          "opiskeluoikeuden alkamispäivä (2019-08-01) oltava sama tai aiempi kuin suoritus.arviointi.päivä (2019-01-01)"
+        ))
+      }
+    }
+
+    "Arviointipäivä samana päivänä kuin opiskeluoikeuden alkamispäivä on sallittu" in {
+      val oo = defaultOpiskeluoikeus.copy(suoritukset = List(oppimääränSuoritus.copy(
+        osasuoritukset = Some(List(
+          oppiaineenSuoritus(Lukio2019ExampleData.lukionÄidinkieli("AI1", pakollinen = true)).copy(arviointi = numeerinenLukionOppiaineenArviointi(9)).copy(osasuoritukset = Some(List(
+            moduulinSuoritusOppiaineissa(muuModuuliOppiaineissa("ÄI1")).copy(arviointi = numeerinenArviointi(8, date(2019, 8, 1)))
+          )))
+        ) ::: oppiainesuorituksetRiittääValmistumiseenNuorilla.tail)
+      )))
+
+      setupOppijaWithOpiskeluoikeus(oo) {
+        verifyResponseStatusOk()
+      }
+    }
+
+    "Arviointipäivä ei voi olla opiskeluoikeuden päättymispäivää myöhempi, kun opiskeluoikeus on valmistunut" in {
+      val oo = defaultOpiskeluoikeus.copy(suoritukset = List(oppimääränSuoritus.copy(
+        osasuoritukset = Some(List(
+          oppiaineenSuoritus(Lukio2019ExampleData.lukionÄidinkieli("AI1", pakollinen = true)).copy(arviointi = numeerinenLukionOppiaineenArviointi(9)).copy(osasuoritukset = Some(List(
+            moduulinSuoritusOppiaineissa(muuModuuliOppiaineissa("ÄI1")).copy(arviointi = numeerinenArviointi(8, date(2021, 9, 6)))
+          )))
+        ) ::: oppiainesuorituksetRiittääValmistumiseenNuorilla.tail)
+      )))
+
+      setupOppijaWithOpiskeluoikeus(oo) {
+        verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.date.päättymispäiväEnnenArviointia(
+          "suoritus.arviointi.päivä (2021-09-06) oltava sama tai aiempi kuin opiskeluoikeuden päättymispäivä (2021-09-05)"
+        ))
+      }
+    }
+
+    "Arviointipäivä samana päivänä kuin opiskeluoikeuden päättymispäivä on sallittu, kun opiskeluoikeus on valmistunut" in {
+      val oo = defaultOpiskeluoikeus.copy(suoritukset = List(oppimääränSuoritus.copy(
+        osasuoritukset = Some(List(
+          oppiaineenSuoritus(Lukio2019ExampleData.lukionÄidinkieli("AI1", pakollinen = true)).copy(arviointi = numeerinenLukionOppiaineenArviointi(9)).copy(osasuoritukset = Some(List(
+            moduulinSuoritusOppiaineissa(muuModuuliOppiaineissa("ÄI1")).copy(arviointi = numeerinenArviointi(8, date(2021, 9, 5)))
+          )))
+        ) ::: oppiainesuorituksetRiittääValmistumiseenNuorilla.tail)
+      )))
+
+      setupOppijaWithOpiskeluoikeus(oo) {
+        verifyResponseStatusOk()
+      }
+    }
+
+    "Arviointipäivä voi olla opiskeluoikeuden päättymispäivää myöhempi, kun opiskeluoikeus ei ole valmistunut" in {
+      val oo = defaultOpiskeluoikeus.copy(
+        tila = LukionOpiskeluoikeudenTila(List(
+          LukionOpiskeluoikeusjakso(alku = date(2019, 8, 1), tila = opiskeluoikeusAktiivinen, opintojenRahoitus = Some(ExampleData.valtionosuusRahoitteinen))
+        )),
+        suoritukset = List(oppimääränSuoritus.copy(vahvistus = None,
+          osasuoritukset = Some(List(
+            oppiaineenSuoritus(Lukio2019ExampleData.lukionÄidinkieli("AI1", pakollinen = true)).copy(arviointi = numeerinenLukionOppiaineenArviointi(9)).copy(osasuoritukset = Some(List(
+              moduulinSuoritusOppiaineissa(muuModuuliOppiaineissa("ÄI1")).copy(arviointi = numeerinenArviointi(8, date(2021, 9, 6)))
+            )))
+          ) ::: oppiainesuorituksetRiittääValmistumiseenNuorilla.tail)
+        ))
+      )
+
+      setupOppijaWithOpiskeluoikeus(oo) {
+        verifyResponseStatusOk()
+      }
+    }
+  }
+
   "Vahvistus ja valmistuminen lukion oppimäärien suorituksessa" - {
     "Suorituksen vahvistus tyhjennetään tietojen siirrossa" in {
       val opiskeluoikeus: Opiskeluoikeus = setupOppijaWithAndGetOpiskeluoikeus(defaultOpiskeluoikeus.copy(suoritukset = List(oppiaineidenOppimäärienSuoritus.copy(vahvistus = vahvistusPaikkakunnalla(päivä = date(2020, 5, 15))))))
@@ -2331,7 +2412,7 @@ class OppijaValidationLukio2019Spec extends AnyFreeSpec with PutOpiskeluoikeusTe
       "kun päivämäärät ovat erilaiset eivätkä mene päällekkäin" in {
         val opiskeluoikeusMyöhemmin = defaultOpiskeluoikeus.copy(
           tila = LukionOpiskeluoikeudenTila(List(
-            LukionOpiskeluoikeusjakso(alku = date(2022, 8, 1), tila = opiskeluoikeusAktiivinen, opintojenRahoitus = Some(ExampleData.valtionosuusRahoitteinen)),
+            LukionOpiskeluoikeusjakso(alku = date(2021, 8, 2), tila = opiskeluoikeusAktiivinen, opintojenRahoitus = Some(ExampleData.valtionosuusRahoitteinen)),
             LukionOpiskeluoikeusjakso(alku = date(2024, 8, 1), tila = opiskeluoikeusPäättynyt, opintojenRahoitus = Some(ExampleData.valtionosuusRahoitteinen))
           ))
         )
