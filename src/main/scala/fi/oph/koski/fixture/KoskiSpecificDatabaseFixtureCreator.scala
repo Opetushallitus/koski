@@ -11,7 +11,7 @@ import fi.oph.koski.documentation.{ExamplesEsiopetus, _}
 import fi.oph.koski.henkilo.{KoskiSpecificMockOppijat, OppijaHenkilö}
 import fi.oph.koski.koskiuser.{AuthenticationUser, KoskiSpecificSession, MockUsers}
 import fi.oph.koski.organisaatio.MockOrganisaatiot
-import fi.oph.koski.organisaatio.MockOrganisaatiot.{jyväskylänNormaalikoulu, päiväkotiMajakka}
+import fi.oph.koski.organisaatio.MockOrganisaatiot.{aapajoenKoulu, jyväskylänNormaalikoulu, päiväkotiMajakka}
 import fi.oph.koski.schema._
 
 import java.net.InetAddress
@@ -122,6 +122,24 @@ class KoskiSpecificDatabaseFixtureCreator(application: KoskiApplication) extends
       )),
     )
   }
+
+  private def kotikuntalaskelmaOpiskeluoikeus(
+    luokkaAste: Int,
+    luokka: String,
+    lisätiedot: Option[PerusopetuksenOpiskeluoikeudenLisätiedot] = None
+  ): PerusopetuksenOpiskeluoikeus =
+    PerusopetuksenOpiskeluoikeus(
+      oppilaitos = Some(oppilaitos(aapajoenKoulu)),
+      suoritukset = List(PerusopetuksenVuosiluokanSuoritus(
+        koulutusmoduuli = PerusopetuksenLuokkaAste(luokkaAste, PerusopetusExampleData.perusopetuksenDiaarinumero),
+        luokka = luokka,
+        toimipiste = oppilaitos(aapajoenKoulu),
+        suorituskieli = suomenKieli,
+        alkamispäivä = Some(date(2022, 8, 1))
+      )),
+      tila = NuortenPerusopetuksenOpiskeluoikeudenTila(List(NuortenPerusopetuksenOpiskeluoikeusjakso(date(2022, 8, 1), opiskeluoikeusLäsnä))),
+      lisätiedot = lisätiedot
+    )
 
   protected def defaultOpiskeluOikeudet: List[(OppijaHenkilö, KoskeenTallennettavaOpiskeluoikeus)] = {
     List(
@@ -355,6 +373,50 @@ class KoskiSpecificDatabaseFixtureCreator(application: KoskiApplication) extends
       (
         KoskiSpecificMockOppijat.ammatillinenOsittainenLaaja,
         AmmatillinenOsittainenReformi.opiskeluoikeusLaaja
+      ),
+      (KoskiSpecificMockOppijat.kotikuntalaskelmaKuusivuotias, kotikuntalaskelmaOpiskeluoikeus(1, "1A")),
+      (KoskiSpecificMockOppijat.kotikuntalaskelmaSeitsemanKaksitoista, kotikuntalaskelmaOpiskeluoikeus(3, "3A")),
+      (KoskiSpecificMockOppijat.kotikuntalaskelmaKolmetoistaViisitoista, kotikuntalaskelmaOpiskeluoikeus(8, "8A")),
+      (
+        KoskiSpecificMockOppijat.kotikuntalaskelmaKuusitoistaErityinen,
+        kotikuntalaskelmaOpiskeluoikeus(9, "9A", lisätiedot = Some(PerusopetuksenOpiskeluoikeudenLisätiedot(
+          opetuksenJärjestäminenVammanSairaudenTaiRajoitteenPerusteella = Some(List(Aikajakso(date(2026, 8, 1), None))),
+          tuenPäätöksenJaksot = Some(List(Tukijakso(Some(date(2026, 8, 1)), None)))
+        )))
+      ),
+      (KoskiSpecificMockOppijat.kotikuntalaskelmaKuusitoistaEiErityista, kotikuntalaskelmaOpiskeluoikeus(9, "9A")),
+      (KoskiSpecificMockOppijat.kotikuntalaskelmaHetuton, kotikuntalaskelmaOpiskeluoikeus(5, "5A")),
+      (KoskiSpecificMockOppijat.kotikuntalaskelmaTurvakielto, kotikuntalaskelmaOpiskeluoikeus(4, "4A")),
+      (KoskiSpecificMockOppijat.kotikuntalaskelmaTurvakielto2, kotikuntalaskelmaOpiskeluoikeus(1, "1A")),
+      (
+        KoskiSpecificMockOppijat.kotikuntalaskelmaKotiopetus,
+        kotikuntalaskelmaOpiskeluoikeus(4, "4A", lisätiedot = Some(PerusopetuksenOpiskeluoikeudenLisätiedot(
+          kotiopetusjaksot = Some(List(Aikajakso(date(2022, 8, 1), None)))
+        )))
+      ),
+      (
+        KoskiSpecificMockOppijat.kotikuntalaskelmaEsiopetus,
+        EsiopetuksenOpiskeluoikeus(
+          oppilaitos = Some(oppilaitos(aapajoenKoulu)),
+          suoritukset = List(peruskoulusuoritus(oppilaitos(aapajoenKoulu)).copy(vahvistus = None)),
+          tila = NuortenPerusopetuksenOpiskeluoikeudenTila(List(NuortenPerusopetuksenOpiskeluoikeusjakso(date(2022, 8, 1), opiskeluoikeusLäsnä)))
+        )
+      ),
+      (
+        // TOR-2560: koulutusmoduulin alkamispäivä on 15.8.2025 — edellisen, ei kuluvan
+        // (1.8.2026 alkaneen) lukuvuoden puolella. Testaa että Kotikuntalaskelma sulkee tämän
+        // pois (ks. Kotikuntalaskelma.scala:n v.edellinen_elokuu-rajaus) vaikka pelkkä
+        // "alkamispäivä <= päivä" -yläraja päästäisi sen mukaan.
+        KoskiSpecificMockOppijat.kotikuntalaskelmaKansainvalinenEdellinenLukuvuosi,
+        InternationalSchoolOpiskeluoikeus(
+          oppilaitos = Some(oppilaitos(aapajoenKoulu)),
+          tila = InternationalSchoolOpiskeluoikeudenTila(
+            List(InternationalSchoolOpiskeluoikeusjakso(date(2025, 8, 15), LukioExampleData.opiskeluoikeusAktiivinen, opintojenRahoitus = Some(ExampleData.valtionosuusRahoitteinen)))
+          ),
+          suoritukset = List(
+            ExamplesInternationalSchool.grade1.copy(alkamispäivä = Some(date(2025, 8, 15)), vahvistus = None, toimipiste = oppilaitos(aapajoenKoulu))
+          )
+        )
       ),
     )
   }

@@ -207,6 +207,19 @@ class RaportitServlet(implicit val application: KoskiApplication) extends KoskiS
     writeExcel(raportitService.aikuistenperusopetuksenKurssikertymä(parsedRequest, t), t)
   }
 
+  get("/kotikuntalaskelma") {
+    requireOpiskeluoikeudenKayttooikeudet(
+      OpiskeluoikeudenTyyppi.perusopetus,
+      OpiskeluoikeudenTyyppi.esiopetus,
+      OpiskeluoikeudenTyyppi.internationalschool,
+      OpiskeluoikeudenTyyppi.europeanschoolofhelsinki
+    )
+    val parsedRequest = parseRaporttiPäivältäRequest
+    val t = new LocalizationReader(application.koskiLocalizationRepository, parsedRequest.lang)
+    AuditLog.log(KoskiAuditLogMessage(OPISKELUOIKEUS_RAPORTTI, session, Map(hakuEhto -> s"raportti=kotikuntalaskelma&oppilaitosOid=${parsedRequest.oppilaitosOid}&paiva=${parsedRequest.paiva}&lang=${parsedRequest.lang}")))
+    writeExcel(raportitService.kotikuntalaskelma(parsedRequest, t), t)
+  }
+
   get("/perusopetuksenoppijamaaratraportti") {
     requireOpiskeluoikeudenKayttooikeudet(OpiskeluoikeudenTyyppi.perusopetus)
     val parsedRequest = parseRaporttiPäivältäRequest
@@ -263,8 +276,11 @@ class RaportitServlet(implicit val application: KoskiApplication) extends KoskiS
     writeExcel(raportitService.muuKuinSäänneltyKoulutus(parsedRequest, t), t)
   }
 
-  private def requireOpiskeluoikeudenKayttooikeudet(opiskeluoikeudenTyyppiViite: Koodistokoodiviite) = {
-    if (!session.allowedOpiskeluoikeudetJaPäätasonSuoritukset.intersects(OoPtsMask(opiskeluoikeudenTyyppiViite.koodiarvo))) {
+  private def requireOpiskeluoikeudenKayttooikeudet(opiskeluoikeudenTyyppiViitteet: Koodistokoodiviite*) = {
+    val sallittu = opiskeluoikeudenTyyppiViitteet.exists(viite =>
+      session.allowedOpiskeluoikeudetJaPäätasonSuoritukset.intersects(OoPtsMask(viite.koodiarvo))
+    )
+    if (!sallittu) {
       haltWithStatus(KoskiErrorCategory.forbidden.opiskeluoikeudenTyyppi())
     }
   }

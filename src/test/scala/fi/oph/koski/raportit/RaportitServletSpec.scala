@@ -112,6 +112,7 @@ class RaportitServletSpec extends AnyFreeSpec with RaportointikantaTestMethods w
              LukioKurssikertyma.toString,
              LuvaOpiskelijamaarat.toString,
              LukioOpintopistekertyma.toString,
+             KotikuntalaskelmaRaportti.toString,
            ))
           }
         }
@@ -135,6 +136,11 @@ class RaportitServletSpec extends AnyFreeSpec with RaportointikantaTestMethods w
       }
       "koulutustoimijan oikeuksilla ei voi ladata perusopetuksen raporttia peruskoululle, joka on esiopetuksen ostopalvelun oppilaitos (eikä koulutustoimijan oma organisaatio)" in {
         authGet(s"api/raportit/perusopetuksenvuosiluokka?oppilaitosOid=${MockOrganisaatiot.jyväskylänNormaalikoulu}&paiva=2022-06-07&vuosiluokka=9&lang=fi&password=dummy", user = helsinkiTallentaja) {
+          verifyResponseStatus(403, KoskiErrorCategory.forbidden.organisaatio())
+        }
+      }
+      "ei voi ladata kotikuntalaskelmaa oppilaitokselle, joka kuuluu toiseen koulutustoimijaan kuin käyttäjän omaan" in {
+        authGet(s"api/raportit/kotikuntalaskelma?oppilaitosOid=${MockOrganisaatiot.aapajoenKoulu}&paiva=2026-09-01&lang=fi&password=dummy", user = helsinkiTallentaja) {
           verifyResponseStatus(403, KoskiErrorCategory.forbidden.organisaatio())
         }
       }

@@ -20,6 +20,7 @@ import { isNuortenPerusopetuksenOppimääränSuoritus } from '../../types/fi/oph
 import { Opiskeluoikeus } from '../../types/fi/oph/koski/schema/Opiskeluoikeus'
 import { Oppija } from '../../types/fi/oph/koski/schema/Oppija'
 import { isPerusopetuksenVuosiluokanSuoritus } from '../../types/fi/oph/koski/schema/PerusopetuksenVuosiluokanSuoritus'
+import { hasFeatureFlag } from '../../util/featureFlags'
 import { intersects, last } from '../../util/fp/arrays'
 import { getHenkilöOid } from '../../util/henkilo'
 import {
@@ -171,10 +172,6 @@ export const useKansalainenUiAdapter = (
     oppija
   )
 }
-
-const hasFeatureFlag = (flag: string): boolean =>
-  localStorage.getItem(flag) !== null ||
-  new URLSearchParams(window.location.search).has(flag)
 
 const useUiAdapterImpl = <T extends any[]>(
   opiskeluoikeustyypit: string[],

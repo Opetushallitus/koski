@@ -24,6 +24,7 @@ import { contentWithLoadingIndicator } from '../components/AjaxLoadingIndicator'
 import { replaceLocation } from '../util/location'
 import { Paragraphs } from '../i18n/Paragraphs'
 import { lang } from '../i18n/i18n'
+import { hasFeatureFlag } from '../util/featureFlags'
 
 const kaikkiRaportitKategorioittain = [
   {
@@ -241,13 +242,19 @@ const kaikkiRaportitKategorioittain = [
   {
     id: 'muut',
     tab: 'raporttikategoria-tab-muut',
-    heading: 'raportti-tab-paallekkaisetopiskeluoikeudet',
+    heading: 'raporttikategoria-heading-muut',
     raportit: [
       {
         id: 'paallekkaisetopiskeluoikeudet',
         name: 'raportti-tab-paallekkaisetopiskeluoikeudet',
         component: PaallekkaisetOpiskeluoikeudet,
         visibleForAllOrgs: true
+      },
+      {
+        id: 'kotikuntalaskelmaraportti',
+        name: 'raportti-tab-kotikuntalaskelma',
+        component: Kotikuntalaskelma,
+        guard: () => hasFeatureFlag('kotikuntalaskelma')
       }
     ]
   }
@@ -574,6 +581,27 @@ function PaallekkaisetOpiskeluoikeudet({ stateP }) {
         <Text name="paallekkaiset-opiskeluoikeudet-short-description" />
       }
       example={<Text name="paallekkaiset-opiskeluoikeudet-example" />}
+      lang={lang}
+    />
+  )
+}
+
+function Kotikuntalaskelma({ stateP }) {
+  const titleText = <Text name="kotikuntalaskelma-title" />
+  const shortDescriptionText = (
+    <Text name="kotikuntalaskelma-short-description" />
+  )
+  const dateInputHelpText = <Text name="kotikuntalaskelma-date-input-help" />
+  const exampleText = <Paragraphs name="kotikuntalaskelma-example" />
+
+  return (
+    <RaporttiPaivalta
+      stateP={stateP}
+      apiEndpoint={'/kotikuntalaskelma'}
+      title={titleText}
+      shortDescription={shortDescriptionText}
+      dateInputHelp={dateInputHelpText}
+      example={exampleText}
       lang={lang}
     />
   )
