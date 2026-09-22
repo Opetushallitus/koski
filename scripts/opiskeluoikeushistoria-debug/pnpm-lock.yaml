@@ -13,16 +13,16 @@ importers:
         version: 3.1.0
     devDependencies:
       '@types/node':
-        specifier: 22.20.3
-        version: 22.20.3
+        specifier: 22.20.4
+        version: 22.20.4
       typescript:
         specifier: 5.9.3
         version: 5.9.3
 
 packages:
 
-  '@types/node@22.20.3':
-    resolution: {integrity: sha512-DZmzkmwHzXrLPAXPyKNDzlIwMMUZCVacoD25ywdy5YTKGbOx/2ld+Q38Im2zJ0vBuZP5Prd3VZutKZyXwkOS8A==}
+  '@types/node@22.20.4':
+    resolution: {integrity: sha512-zJRE40jpHtKqE/C4fgHrAKQLJuSpzEnP9ff9Y7YtoR3Wd2pwqzlekDeEuUQXjRd+QCYnVnNwuJYmhdk9XV8gvA==}
 
   jsonpatch@3.1.0:
     resolution: {integrity: sha512-rJa0FepwDzebgYAuT389AtziWfn3EZA4N5e/B8d50IC1glqlZ7njo7iAI/ph5MYw2GGH7lCE6DGqBGQ7TVa06w==}
@@ -38,7 +38,7 @@ packages:
 
 snapshots:
 
-  '@types/node@22.20.3':
+  '@types/node@22.20.4':
     dependencies:
       undici-types: 6.21.0
 
