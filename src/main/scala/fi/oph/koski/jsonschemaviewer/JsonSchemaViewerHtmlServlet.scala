@@ -14,25 +14,25 @@ class JsonSchemaViewerHtmlServlet(implicit val application: KoskiApplication) ex
   override val unsafeAllowBaseUri: Boolean = true
   override val unsafeAllowInlineStyles: Boolean = true
 
+  // Without absolute hrefs jQuery Mobile's <base> makes the info panel tabs load the whole page into
+  // themselves, see documentation/json-schema-viewer.md
+  val absoluteTabLinks = scala.xml.Unparsed("""
+    $('#info-tabs-navbar a').each(function() {
+      this.href = window.location.href.replace(/#.*$/, '') + this.getAttribute('href');
+    });
+    """)
+
   val code = scala.xml.Unparsed("""
     (function($) {
       $('body').one('pagecontainershow', function(event, ui) {
       var schema = '/koski/api/documentation/' + schemaName()
-      var path = window.location.hash.match(/v=([^\&]+)/);
-      var selectedNode = path ? path[1] : null
 
       JSV.init({
         schema: schema,
         maxDepth: 15
       }, function() {
         JSV.setVersion(tv4.getSchema(JSV.treeData.schema).version);
-        if (selectedNode) {
-          var node = JSV.expandNodePath(selectedNode.split('-'));
-          JSV.flashNode(node);
-          JSV.clickTitle(node);
-        } else {
-          JSV.resetViewer();
-        }
+        JSV.applyDeepLinks(window.location.hash);
       });
     });
     })(jQuery);
@@ -194,6 +194,7 @@ class JsonSchemaViewerHtmlServlet(implicit val application: KoskiApplication) ex
           </div>,
 
           <script nonce={nonce} type='text/javascript' src="/koski/json-schema-viewer/jquery/2.1.1/jquery.min.js"></script>,
+          <script nonce={nonce} type='text/javascript'>{absoluteTabLinks}</script>,
           <script nonce={nonce} type='text/javascript' src="/koski/json-schema-viewer/jquery/1.4.5/jquery.mobile.min.js"></script>,
           <script nonce={nonce} type='text/javascript' src="/koski/json-schema-viewer/js/json-schema-viewer.js"></script>,
           <script nonce={nonce} type='text/javascript'>{code}</script>

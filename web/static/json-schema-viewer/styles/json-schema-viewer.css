@@ -102,7 +102,9 @@ p.ui-content.error-message {
   font-weight: bold;
 }
 .node.focus circle,
-#legend .focus circle {
+.node.marked circle,
+#legend .focus circle,
+#legend .marked circle {
   stroke: #0ecc43;
   stroke-width: 2px;
 }
@@ -110,11 +112,12 @@ p.ui-content.error-message {
 .focus circle:hover {
   stroke-width: 3px;
 }
-/* Selected-node highlight: rounded outline box around the label (shown only on .focus) */
+/* Selected-node highlight: rounded outline box around the label (shown on .focus and .marked) */
 .node .focus-box {
   display: none;
 }
-.node.focus .focus-box {
+.node.focus .focus-box,
+.node.marked .focus-box {
   display: inline;
   fill: none;
   stroke: #0ecc43;
