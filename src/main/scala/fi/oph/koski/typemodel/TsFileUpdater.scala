@@ -74,7 +74,6 @@ case class AdditionalExports(
   configForFrontend: ConfigForFrontend,
   todistusJob: TodistusJob,
   massaluovutusQueryResponse: QueryResponse,
-  massaluovutusQueryAmmatillinenTutkintoSuoritustiedot: MassaluovutusQueryAmmatillinenTutkintoSuoritustiedot,
 
   // Traitit jotka eivät automaattisesti exporttaudu skeemasta, koska ne eivät sellaisenaan
   // ole minkään tietomallin jäseniä (ainoastaan traitista periintyvät konkreettiset luokat exportataan automaattisesti).
