@@ -24,6 +24,10 @@ jobs:
       contents: read
       packages: write
     steps:
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7
+        with:
+          sparse-checkout: .github/actions/report-slack
+
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@ec61189d14ec14c8efccab744f656cffd0e33f37 # v6
         with:
@@ -135,32 +139,14 @@ jobs:
           TASKDEF_ARN: ${{ steps.ytr-data-loader-taskdef-deploy.outputs.task-definition-arn }}
         run: aws ssm put-parameter --overwrite --name /koski/ytr-data-loader/task-definition --type String --value ${TASKDEF_ARN}
 
-      - name: Get short commit SHA
-        id: commit
-        if: always()
-        env:
-          COMMIT_SHA: ${{ inputs.commithash }}
-        run: printf 'short_sha=%.7s\n' "$COMMIT_SHA" >> "$GITHUB_OUTPUT"
-
       - name: Report task ready
-        uses: slackapi/slack-github-action@dcb1066f776dd043e64d0e8ba94ca15cc7e1875d # v4.0.0
-        if: always()
-        env:
-          SLACK_MESSAGE_TITLE: ":rocket: DEPLOY · ${{ job.status == 'success' && ':heavy_check_mark:' || job.status == 'failure' && ':x:' || ':no_entry_sign:' }} ${{ inputs.environment }} install ${{ job.status == 'success' && 'passed' || job.status == 'failure' && 'failed' || 'cancelled' }}"
+        uses: ./.github/actions/report-slack
+        if: ${{ always() && !(job.status == 'success' && inputs.environment == 'dev') }}
         with:
-          webhook: ${{ secrets.SLACK_WEBHOOK_URL }}
-          webhook-type: incoming-webhook
-          payload: |
-            {
-              "text": "${{ env.SLACK_MESSAGE_TITLE }}",
-              "blocks": [
-                {"type": "section", "text": {"type": "mrkdwn", "text": "*${{ env.SLACK_MESSAGE_TITLE }}*"}},
-                {"type": "context", "elements": [
-                  {"type": "mrkdwn", "text": "*Repo:* ${{ github.repository }} | *Workflow:* ${{ github.workflow }}\n*Workflow source:* <${{ github.server_url }}/${{ github.repository }}/tree/${{ github.ref_name }}|${{ github.ref_name }}> | *Commit:* <${{ github.server_url }}/${{ github.repository }}/commit/${{ inputs.commithash }}|${{ steps.commit.outputs.short_sha }}>\n*Triggered by:* ${{ github.triggering_actor }} via ${{ github.event_name }}${{ github.run_attempt > 1 && format(' | *Attempt:* {0}', github.run_attempt) || '' }}\n*<${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}/attempts/${{ github.run_attempt }}|View Run>*"}
-                ]},
-                {"type": "divider"}
-              ]
-            }
+          webhook: ${{ secrets.SLACK_CI_ALERTS_WEBHOOK }}
+          title: ":rocket: DEPLOY · ${{ job.status == 'success' && ':heavy_check_mark:' || job.status == 'failure' && ':x:' || ':no_entry_sign:' }} ${{ inputs.environment }} install ${{ job.status == 'success' && 'passed' || job.status == 'failure' && 'failed' || 'cancelled' }}"
+          commit_sha: ${{ inputs.commithash }}
+          include_context: repo workflow workflow_source commit actor ci_run
 
       - name: Tag deployed image
         env:

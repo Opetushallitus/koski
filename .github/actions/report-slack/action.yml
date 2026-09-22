@@ -1,0 +1,103 @@
+name: Report to Slack
+description: Post a message to Slack
+
+inputs:
+  webhook:
+    description: Slack incoming webhook URL
+    required: true
+  title:
+    description: >-
+      Headline of the notification. Rendered as Slack mrkdwn, so the caller owns
+      escaping any & < > it interpolates.
+    required: true
+  include_context:
+    description: >-
+      Space-separated context fields to show beneath the title: repo, workflow,
+      branch, workflow_source, commit, actor, ci_run. They render in the order
+      given, two per line, except ci_run, which takes the trailing line of its own.
+      branch and workflow_source both show the ref; use workflow_source when the
+      commit reported alongside it is not that ref's head. Default is none.
+    required: false
+    default: ""
+  run_url:
+    description: >-
+      URL for the ci_run context field. Defaults to this run.
+    required: false
+    default: ""
+  commit_sha:
+    description: >-
+      Commit for the commit context field. Defaults to the commit this run started
+      from, which is wrong when the caller acts on some other commit.
+    required: false
+    default: ""
+
+runs:
+  using: composite
+  steps:
+    - name: Post to Slack
+      shell: bash
+      env:
+        WEBHOOK: ${{ inputs.webhook }}
+        TITLE: ${{ inputs.title }}
+        CONTEXT_FIELDS: ${{ inputs.include_context }}
+        RUN_URL: ${{ inputs.run_url }}
+        COMMIT_SHA: ${{ inputs.commit_sha }}
+      run: |
+        set -euo pipefail
+
+        run_url="${RUN_URL:-$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID/attempts/$GITHUB_RUN_ATTEMPT}"
+        commit_sha="${COMMIT_SHA:-$GITHUB_SHA}"
+
+        attempt=""
+        if [ "$GITHUB_RUN_ATTEMPT" -gt 1 ]; then
+          attempt=" | *Attempt:* $GITHUB_RUN_ATTEMPT"
+        fi
+
+        context=""
+        run_line=""
+        count=0
+        for field in $CONTEXT_FIELDS; do
+          case "$field" in
+            repo) segment="*Repo:* $GITHUB_REPOSITORY" ;;
+            workflow) segment="*Workflow:* $GITHUB_WORKFLOW" ;;
+            branch) segment="*Branch:* <$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/tree/$GITHUB_REF_NAME|$GITHUB_REF_NAME>" ;;
+            workflow_source) segment="*Workflow source:* <$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/tree/$GITHUB_REF_NAME|$GITHUB_REF_NAME>" ;;
+            commit) segment="*Commit:* <$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/commit/$commit_sha|${commit_sha:0:7}>" ;;
+            actor) segment="*Triggered by:* $GITHUB_TRIGGERING_ACTOR via $GITHUB_EVENT_NAME$attempt" ;;
+            ci_run)
+              run_line="*<$run_url|View CI run>*"
+              continue
+              ;;
+            *)
+              echo "::error::unknown context field '$field'"
+              exit 1
+              ;;
+          esac
+          if [ -z "$context" ]; then
+            context="$segment"
+          elif [ $((count % 2)) -eq 0 ]; then
+            context="$context"$'\n'"$segment"
+          else
+            context="$context | $segment"
+          fi
+          count=$((count + 1))
+        done
+        if [ -n "$run_line" ]; then
+          context="${context:+$context$'\n'}$run_line"
+        fi
+
+        # jq builds the payload so that a quote or backslash in the title cannot
+        # break the JSON.
+        payload=$(jq --null-input --arg title "$TITLE" --arg context "$context" '
+          {
+            text: $title,
+            blocks: [
+              {type: "section", text: {type: "mrkdwn", text: "*\($title)*"}},
+              (if $context == "" then empty
+               else {type: "context", elements: [{type: "mrkdwn", text: $context}]} end),
+              {type: "divider"}
+            ]
+          }')
+        curl --fail-with-body --max-time 30 --silent --show-error --request POST \
+          --header 'Content-type: application/json' \
+          --data "$payload" "$WEBHOOK"
