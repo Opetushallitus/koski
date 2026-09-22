@@ -1398,7 +1398,7 @@ export const KoulutussopimusView = <T extends Koulutussopimusjakso>({
           <LocalizedTextView value={value?.työssäoppimispaikka} />
         </KeyValueRow>
         <KeyValueRow localizableLabel="Työssäoppimispaikan Y-tunnus">
-          {t(value?.työssäoppimispaikanYTunnus)}
+          {value?.työssäoppimispaikanYTunnus}
         </KeyValueRow>
         <KeyValueRow
           localizableLabel="Työtehtävät"
