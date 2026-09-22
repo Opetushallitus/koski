@@ -26,6 +26,7 @@ class MassaluovutusService(application: KoskiApplication) extends GlobalExecutio
   private val readDatabaseId = MassaluovutusUtils.readDatabaseId(application.config)
   private val databaseLoadLimiter = new DatabaseLoadLimiter(application, metrics, readDatabaseId)
   private val queryMaxRunningTime = FiniteDuration(application.config.getDuration("kyselyt.timeout").getSeconds, TimeUnit.SECONDS)
+  private val ownQueriesMaxAge = Duration.ofDays(3)
 
   private val queries = new QueryRepository(
     db = application.masterDatabase.db,
@@ -60,6 +61,9 @@ class MassaluovutusService(application: KoskiApplication) extends GlobalExecutio
     }
     queryWithAccess.toRight(KoskiErrorCategory.notFound())
   }
+
+  def getOwnQueries(implicit user: Session): List[Query] =
+    queries.getOwnQueries(user.oid, ownQueriesMaxAge)
 
   def numberOfRunningQueries: Int = queries.numberOfRunningQueries
 

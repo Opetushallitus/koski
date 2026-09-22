@@ -27,14 +27,14 @@
 <text text-anchor="start" x="392.5" y="-220.3" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000">ov_keskeytys_uuid</text>
 <polygon fill="none" stroke="#000000" points="363.5,-194.2 363.5,-213.2 618.5,-213.2 618.5,-194.2 363.5,-194.2"/>
 <text text-anchor="start" x="366.5" y="-200.3" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000">...</text>
-<polygon fill="#ffffff" stroke="transparent" points="363.5,-175.2 363.5,-194.2 476.5,-194.2 476.5,-175.2 363.5,-175.2"/>
-<polygon fill="none" stroke="#000000" points="363.5,-175.2 363.5,-194.2 476.5,-194.2 476.5,-175.2 363.5,-175.2"/>
+<polygon fill="#ffffff" stroke="transparent" points="363.5,-175.2 363.5,-194.2 489.5,-194.2 489.5,-175.2 363.5,-175.2"/>
+<polygon fill="none" stroke="#000000" points="363.5,-175.2 363.5,-194.2 489.5,-194.2 489.5,-175.2 363.5,-175.2"/>
 <text text-anchor="start" x="366.5" y="-181.3" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000">&lt; 1</text>
-<polygon fill="#ffffff" stroke="transparent" points="476.5,-175.2 476.5,-194.2 560.5,-194.2 560.5,-175.2 476.5,-175.2"/>
-<polygon fill="none" stroke="#000000" points="476.5,-175.2 476.5,-194.2 560.5,-194.2 560.5,-175.2 476.5,-175.2"/>
-<text text-anchor="start" x="525.1105" y="-181.3" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000">0 rows</text>
-<polygon fill="#ffffff" stroke="transparent" points="560.5,-175.2 560.5,-194.2 618.5,-194.2 618.5,-175.2 560.5,-175.2"/>
-<polygon fill="none" stroke="#000000" points="560.5,-175.2 560.5,-194.2 618.5,-194.2 618.5,-175.2 560.5,-175.2"/>
+<polygon fill="#ffffff" stroke="transparent" points="489.5,-175.2 489.5,-194.2 553.5,-194.2 553.5,-175.2 489.5,-175.2"/>
+<polygon fill="none" stroke="#000000" points="489.5,-175.2 489.5,-194.2 553.5,-194.2 553.5,-175.2 489.5,-175.2"/>
+<text text-anchor="start" x="544.3862" y="-181.3" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000"> &#160;</text>
+<polygon fill="#ffffff" stroke="transparent" points="553.5,-175.2 553.5,-194.2 618.5,-194.2 618.5,-175.2 553.5,-175.2"/>
+<polygon fill="none" stroke="#000000" points="553.5,-175.2 553.5,-194.2 618.5,-194.2 618.5,-175.2 553.5,-175.2"/>
 <text text-anchor="start" x="609.3862" y="-181.3" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000"> &#160;</text>
 </a>
 </g>
@@ -81,12 +81,12 @@
 <text text-anchor="start" x="30" y="-66.3" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000">peruttu</text>
 <polygon fill="none" stroke="#000000" points="203,-59.2 203,-81.2 312,-81.2 312,-59.2 203,-59.2"/>
 <text text-anchor="start" x="206" y="-66.9" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000">bool[1]</text>
-<polygon fill="#ffffff" stroke="transparent" points="10,-40.2 10,-59.2 98,-59.2 98,-40.2 10,-40.2"/>
-<polygon fill="none" stroke="#000000" points="10,-40.2 10,-59.2 98,-59.2 98,-40.2 10,-40.2"/>
+<polygon fill="#ffffff" stroke="transparent" points="10,-40.2 10,-59.2 111,-59.2 111,-40.2 10,-40.2"/>
+<polygon fill="none" stroke="#000000" points="10,-40.2 10,-59.2 111,-59.2 111,-40.2 10,-40.2"/>
 <text text-anchor="start" x="13" y="-46.3" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000">&lt; 0</text>
-<polygon fill="#ffffff" stroke="transparent" points="98,-40.2 98,-59.2 203,-59.2 203,-40.2 98,-40.2"/>
-<polygon fill="none" stroke="#000000" points="98,-40.2 98,-59.2 203,-59.2 203,-40.2 98,-40.2"/>
-<text text-anchor="start" x="167.6105" y="-46.3" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000">8 rows</text>
+<polygon fill="#ffffff" stroke="transparent" points="111,-40.2 111,-59.2 203,-59.2 203,-40.2 111,-40.2"/>
+<polygon fill="none" stroke="#000000" points="111,-40.2 111,-59.2 203,-59.2 203,-40.2 111,-40.2"/>
+<text text-anchor="start" x="193.8862" y="-46.3" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000"> &#160;</text>
 <polygon fill="#ffffff" stroke="transparent" points="203,-40.2 203,-59.2 312,-59.2 312,-40.2 203,-40.2"/>
 <polygon fill="none" stroke="#000000" points="203,-40.2 203,-59.2 312,-59.2 312,-40.2 203,-40.2"/>
 <text text-anchor="start" x="293.4053" y="-46.3" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000">1 &gt;</text>

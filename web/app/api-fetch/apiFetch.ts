@@ -75,7 +75,7 @@ export const enrichJsonRequest = (
     Accept: accept,
     'Content-Type': 'application/json',
     CSRF: Cookies.get('CSRF') || '',
-    'Caller-id': '1.2.246.562.10.00000000001.valpas.frontend',
+    'Caller-id': '1.2.246.562.10.00000000001.koski.frontend',
     ...init?.headers
   },
   body: init?.body && JSON.stringify(init.body)

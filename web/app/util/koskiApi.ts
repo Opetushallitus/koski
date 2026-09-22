@@ -2,6 +2,8 @@ import { apiDelete, ApiFailure, apiGet, apiPost, apiPut } from '../api-fetch'
 import { lang } from '../i18n/i18n'
 import { OpiskeluoikeusHistoryPatch } from '../types/fi/oph/koski/history/OpiskeluoikeusHistoryPatch'
 import { UserWithAccessRights } from '../types/fi/oph/koski/koskiuser/UserWithAccessRights'
+import { QueryResponse } from '../types/fi/oph/koski/massaluovutus/QueryResponse'
+import { MassaluovutusQueryAmmatillinenTutkintoSuoritustiedot } from '../types/fi/oph/koski/massaluovutus/raportit/MassaluovutusQueryAmmatillinenTutkintoSuoritustiedot'
 import { HenkilönOpiskeluoikeusVersiot } from '../types/fi/oph/koski/oppija/HenkilonOpiskeluoikeusVersiot'
 import { OrganisaatioHierarkia } from '../types/fi/oph/koski/organisaatio/OrganisaatioHierarkia'
 import { KeyValue } from '../types/fi/oph/koski/preferences/KeyValue'
@@ -372,6 +374,16 @@ export const generateTodistus = (
       apiUrl(`todistus/generate/${templateVariant}/${opiskeluoikeusOid}`)
     )
   )
+
+export const createMassaluovutusKysely = (
+  query: MassaluovutusQueryAmmatillinenTutkintoSuoritustiedot
+) =>
+  handleExpiredSession(
+    apiPost<QueryResponse>(apiUrl('massaluovutus'), { body: query })
+  )
+
+export const fetchOmatMassaluovutusKyselyt = () =>
+  handleExpiredSession(apiGet<QueryResponse[]>(apiUrl('massaluovutus')))
 
 export const fetchOsaamismerkkikuva = (koodiarvo: string) =>
   handleExpiredSession(

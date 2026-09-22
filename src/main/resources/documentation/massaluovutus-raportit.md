@@ -4,7 +4,7 @@ Tämä dokumentaatio kuvaa raportit, jotka ovat saatavilla massaluovutusrajapinn
 Raportit palauttavat Excel-muotoisia (xlsx) tiedostoja.
 
 Raporttien käyttö tapahtuu samalla tavalla kuin muutkin massaluovutuskyselyt.
-Katso [massaluovutusrajapinnan yleinen dokumentaatio](/koski/dokumentaatio/massaluovutus-koulutuksenjarjestajille)
+Katso [massaluovutusrajapinnan yleinen dokumentaatio](/koski/dokumentaatio/rajapinnat/massaluovutus/koulutuksenjarjestajat)
 kyselyn luonnista ja tulosten hakemisesta.
 
 {{title:fi.oph.koski.massaluovutus.raportit.MassaluovutusQueryLukionSuoritustiedot}}
