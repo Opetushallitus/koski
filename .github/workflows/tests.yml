@@ -156,7 +156,12 @@ jobs:
     if: ${{ !contains(github.event.head_commit.message, '[skip-tests]') }}
     steps:
       - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7
-        with: { fetch-depth: 0 }
+        # Reads git history only, so the tree is unnecessary: blob:none keeps
+        # commits and trees while skipping file contents.
+        with:
+          fetch-depth: 0
+          filter: blob:none
+          sparse-checkout: scripts
 
       - name: Check validation and documentation changes
         run: |
@@ -168,7 +173,12 @@ jobs:
     if: ${{ !contains(github.event.head_commit.message, '[skip-tests]') }}
     steps:
       - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7
-        with: { fetch-depth: 0 }
+        # Reads git history only, so the tree is unnecessary: blob:none keeps
+        # commits and trees while skipping file contents.
+        with:
+          fetch-depth: 0
+          filter: blob:none
+          sparse-checkout: scripts
 
       - name: Check schema and documentation changes
         run: |
@@ -180,7 +190,12 @@ jobs:
     if: ${{ !contains(github.event.head_commit.message, '[skip-tests]') }}
     steps:
       - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7
-        with: { fetch-depth: 0 }
+        # Reads git history only, so the tree is unnecessary: blob:none keeps
+        # commits and trees while skipping file contents.
+        with:
+          fetch-depth: 0
+          filter: blob:none
+          sparse-checkout: scripts
 
       - name: Check migration and database documentation changes
         run: |
