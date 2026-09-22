@@ -66,6 +66,13 @@
       "prPriority": 10
     },
     {
+      "description": "Automerge npm lock maintenance after CI",
+      "matchManagers": ["npm"],
+      "matchUpdateTypes": ["lockFileMaintenance"],
+      "automerge": true,
+      "rebaseWhen": "behind-base-branch"
+    },
+    {
       "description": "Disable major updates by default",
       "matchUpdateTypes": [
         "major"
@@ -125,7 +132,8 @@
         "devDependencies"
       ],
       "groupName": "npm dev patch updates",
-      "automerge": true
+      "automerge": true,
+      "rebaseWhen": "behind-base-branch"
     },
     {
       "description": "Pin direct npm dependencies",
@@ -168,7 +176,8 @@
       "groupName": "playwright",
       "separateMinorPatch": false,
       "minimumGroupSize": 2,
-      "automerge": true
+      "automerge": true,
+      "rebaseWhen": "behind-base-branch"
     },
     {
       "description": "fs2 minor updates need Hotswap->NonEmptyHotswap refactoring",
