@@ -89,6 +89,10 @@ test.describe('JSON Schema Viewer deep links', () => {
       viewer('mark=opiskeluoikeudet.Aikuisten.oid', 'koski-oppija-schema.json')
     )
 
+    // Koko Koski-skeeman kylmä lataus kestää paikallisestikin ~3,5 s, joten
+    // CI:llä expectin 5 s:n oletusaikakatkaisu ei riitä.
+    await expect(page.locator('#loading')).toBeHidden({ timeout: 20_000 })
+
     const marked = page.locator('svg#jsv-tree g.node.marked')
     await expect(marked).toHaveCount(1)
     await expect(marked.locator('text')).toHaveText(/^oid/)

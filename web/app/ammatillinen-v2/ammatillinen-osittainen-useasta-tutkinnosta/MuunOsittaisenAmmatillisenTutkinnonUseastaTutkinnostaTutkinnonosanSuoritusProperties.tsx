@@ -233,7 +233,7 @@ export const MuunOsittaisenAmmatillisenTutkinnonUseastaTutkinnostaTutkinnonosanS
                 suoritusIndex: 1,
                 osasuoritusIndex: index,
                 columns: {
-                  'Osa-alue': t(s.koulutusmoduuli.tunniste.nimi),
+                  Kokonaisuus: t(s.koulutusmoduuli.tunniste.nimi),
                   Laajuus: (
                     <FormField
                       form={form}
