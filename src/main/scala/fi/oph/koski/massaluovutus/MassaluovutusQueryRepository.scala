@@ -160,7 +160,7 @@ class QueryRepository(
         SELECT id
         FROM massaluovutus
         WHERE state = ${QueryState.pending}
-        ORDER BY (now() - created_at) * priority
+        ORDER BY (now() - created_at) / GREATEST(priority, 1) DESC
         LIMIT 1
         FOR UPDATE SKIP LOCKED
       )
