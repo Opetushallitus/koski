@@ -24,7 +24,17 @@ describe('Lokalisointi', function () {
     var saveEdits = click(
       findSingle('.localization-edit-bar button:not(:disabled)')
     )
-    var cancelEdits = click(findSingle('.localization-edit-bar .cancel'))
+    // Odotetaan uusi sivu valmiiksi: vanhan sivun pyynnöt kulkevat edellisellä
+    // sessiolla, ja niiden vastaukset voisivat palauttaa sen evästeen seuraavan
+    // kirjautumisen jälkeen.
+    function cancelEdits() {
+      testFrame().peruutettavaSivu = true
+      return click(findSingle('.localization-edit-bar .cancel'))().then(
+        wait.until(function () {
+          return !testFrame().peruutettavaSivu && page.isReady()
+        })
+      )
+    }
 
     function selectLanguage(lang) {
       return function () {
@@ -41,13 +51,6 @@ describe('Lokalisointi', function () {
         el[0].textContent = value
         return triggerEvent(el, 'input')()
       }
-    }
-    // Peruutus poistaa muokkauskielen ohituksen ja lataa sivun uudelleen, joten
-    // odotetaan uuden sivun renderöitymistä ennen tarkistuksia.
-    function waitUntilText(selector, text) {
-      return wait.until(function () {
-        return S(selector).text() === text
-      })
     }
 
     describe('Tavallisella käyttäjällä', function () {
@@ -84,11 +87,7 @@ describe('Lokalisointi', function () {
         })
 
         describe('Vaihdettaessa takaisin suomen kieleen', function () {
-          before(
-            selectLanguage('fi'),
-            cancelEdits,
-            waitUntilText('.oppija-haku h3', 'Hae tai lisää opiskelija')
-          )
+          before(selectLanguage('fi'), cancelEdits)
 
           it('Suomenkielinen teksti näytetään', function () {
             expect(S('.oppija-haku h3').text()).to.equal(
