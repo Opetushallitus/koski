@@ -2,7 +2,7 @@ import * as A from "fp-ts/Array"
 import React, { useMemo } from "react"
 import { Link } from "react-router-dom"
 import {
-  OpiskeluhistoriaTapahtumaIcon,
+  KuntailmoitusTehtyIcon,
   WarningIcon,
 } from "../../../components/icons/Icon"
 import {
@@ -143,7 +143,7 @@ const oppijaToTableData =
         key: createSuorittaminenKey(oppija.oppija, opiskeluoikeus),
         values: [
           {
-            value: `${henkilö.sukunimi} ${henkilö.etunimet}${opiskeluoikeus.onTehtyIlmoitus}`,
+            value: `${henkilö.sukunimi} ${henkilö.etunimet}`,
             display: (
               <Link
                 to={oppijaPath.href(basePath, {
@@ -154,9 +154,6 @@ const oppijaToTableData =
                 {henkilö.sukunimi} {henkilö.etunimet}
               </Link>
             ),
-            icon: opiskeluoikeus.onTehtyIlmoitus ? (
-              <OpiskeluhistoriaTapahtumaIcon color="blue" />
-            ) : null,
           },
           {
             value: henkilö.syntymäaika,
@@ -169,7 +166,10 @@ const oppijaToTableData =
                 .tunniste.koodiarvo,
             ),
           },
-          tila(tiedot.tarkastelupäivänKoskiTila),
+          tila(
+            tiedot.tarkastelupäivänKoskiTila,
+            opiskeluoikeus.onTehtyIlmoitus,
+          ),
           toimipiste(opiskeluoikeus),
           fromNullableValue(päivä(tiedot.alkamispäivä)),
           fromNullableValue(päivä(tiedot.päättymispäivä)),
@@ -193,10 +193,20 @@ const koulutustyyppi = (
     ? ""
     : suorituksenTyyppiToKoulutustyyppi(tyyppi, koulutusmoduulinTunniste)
 
-const tila = (tila: KoskiOpiskeluoikeudenTila): Value => ({
+const tila = (
+  tila: KoskiOpiskeluoikeudenTila,
+  onTehtyIlmoitus?: boolean,
+): Value => ({
   value: tilaString(tila),
-  icon: isSuorittamisenValvonnassaIlmoitettavaTila(tila) ? (
-    <WarningIcon />
+  icon: onTehtyIlmoitus ? (
+    <KuntailmoitusTehtyIcon
+      color="blue"
+      title={t("suorittaminennäkymä__taulu_kuntailmoitus_tehty_tooltip")}
+    />
+  ) : isSuorittamisenValvonnassaIlmoitettavaTila(tila) ? (
+    <WarningIcon
+      title={t("suorittaminennäkymä__taulu_tila_ilmoitettava_tooltip")}
+    />
   ) : undefined,
 })
 

@@ -105,7 +105,10 @@ const ilmoitusToTableData =
             </Link>
           ),
           icon: !ainaNäytetävätIlmoitukset.includes(ilmoitus.id) ? (
-            <OpiskeluhistoriaTapahtumaIcon color="blue" />
+            <OpiskeluhistoriaTapahtumaIcon
+              color="blue"
+              title={t("kuntailmoitus__taulu_aiemmin_tehty_ilmoitus_tooltip")}
+            />
           ) : null,
         },
         {

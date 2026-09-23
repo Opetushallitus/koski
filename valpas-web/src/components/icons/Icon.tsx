@@ -39,6 +39,7 @@ export const FutureSuccessIcon = defineIcon("hourglass_empty", "success")
 export const IlmoitusIcon = defineIcon("error_outline")
 export const OpiskeluhistoriaTapahtumaIcon = defineIcon("schedule")
 export const EditIcon = defineIcon("mode_edit")
+export const KuntailmoitusTehtyIcon = defineIcon("forward_to_inbox")
 
 type MaterialDesignIconProps = IconProps & {
   name: string // Ikonien nimet löytyvät osoitteesta https://material.io/resources/icons/?style=baseline
