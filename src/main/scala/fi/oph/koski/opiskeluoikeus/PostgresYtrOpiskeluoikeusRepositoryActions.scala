@@ -48,9 +48,10 @@ class PostgresYtrOpiskeluoikeusRepositoryActions(
     opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus,
     allowUpdate: Boolean,
     allowDeleteCompleted: Boolean,
-    skipValidations: Boolean = false,
+    skipValidations: Boolean,
+    oppijanLinkitetytOidit: List[Henkilö.Oid]
   )(implicit user: KoskiSpecificSession): DBIOAction[Either[HttpStatus, CreateOrUpdateResult], NoStream, Read with Write with Transactional] = {
-    val identifier = OpiskeluoikeusIdentifier(oppijaOid.oppijaOid, opiskeluoikeus)
+    val identifier = OpiskeluoikeusIdentifier(oppijaOid.oppijaOid, opiskeluoikeus, oppijanLinkitetytOidit)
 
     findByIdentifierAction(identifier)
       .flatMap {
