@@ -24,7 +24,6 @@
     <awssdk.version>2.54.3</awssdk.version>
     <jetty.version>12.1.13</jetty.version>
     <prometheus.client.version>0.16.0</prometheus.client.version>
-    <scoverage.plugin.version>1.4.11</scoverage.plugin.version>
     <log4j.version>2.26.1</log4j.version>
     <pdfbox.version>3.0.8</pdfbox.version>
     <openhtmltopdf.version>1.1.40</openhtmltopdf.version>
@@ -51,6 +50,18 @@
         <groupId>io.netty</groupId>
         <artifactId>netty-codec-http2</artifactId>
         <version>${netty.version}</version>
+      </dependency>
+      <!-- Force a newer version of commons-io -->
+      <dependency>
+        <groupId>commons-io</groupId>
+        <artifactId>commons-io</artifactId>
+        <version>2.22.0</version>
+      </dependency>
+      <!-- Force a newer version of commons-lang3 (commons-text alone resolves 3.13.0) -->
+      <dependency>
+        <groupId>org.apache.commons</groupId>
+        <artifactId>commons-lang3</artifactId>
+        <version>3.20.0</version>
       </dependency>
     </dependencies>
   </dependencyManagement>
@@ -97,11 +108,6 @@
       <groupId>joda-time</groupId>
       <artifactId>joda-time</artifactId>
       <version>2.14.3</version>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.commons</groupId>
-      <artifactId>commons-lang3</artifactId>
-      <version>3.20.0</version>
     </dependency>
     <!-- external deps -->
     <dependency>
@@ -329,12 +335,6 @@
     </dependency>
     <dependency>
       <groupId>io.prometheus</groupId>
-      <artifactId>simpleclient_pushgateway</artifactId>
-      <version>${prometheus.client.version}</version>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>io.prometheus</groupId>
       <artifactId>simpleclient_log4j2</artifactId>
       <version>${prometheus.client.version}</version>
     </dependency>
@@ -449,12 +449,6 @@
       <groupId>io.github.openhtmltopdf</groupId>
       <artifactId>openhtmltopdf-pdfbox</artifactId>
       <version>${openhtmltopdf.version}</version>
-    </dependency>
-    <!-- Force a newer version of commons-io -->
-    <dependency>
-      <groupId>commons-io</groupId>
-      <artifactId>commons-io</artifactId>
-      <version>2.22.0</version>
     </dependency>
     <dependency>
       <groupId>io.github.openhtmltopdf</groupId>
@@ -675,33 +669,9 @@
           </webResources>
         </configuration>
       </plugin>
-      <plugin>
-        <groupId>org.honton.chas</groupId>
-        <artifactId>exists-maven-plugin</artifactId>
-        <version>0.15.2</version>
-        <executions>
-          <execution>
-            <goals>
-              <goal>remote</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
     </plugins>
   </build>
   <profiles>
-    <profile>
-      <id>coverage</id>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.scoverage</groupId>
-            <artifactId>scoverage-maven-plugin</artifactId>
-            <version>${scoverage.plugin.version}</version>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
     <profile>
       <id>frontend</id>
       <activation>

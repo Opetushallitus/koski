@@ -22,8 +22,10 @@
     "Automerge is off by default and opted into per rule, so every rule that wants it has to say so.",
     "automergeType `pr` keeps the PR, and with it the CI run, mandatory.",
     "platformAutomerge is off so that minimumReleaseAge holds automerges back. When no older candidate exists, Renovate opens the PR immediately and marks the branch with a pending `renovate/stability-days` check. GitHub's automerge is armed at PR creation and weighs only its required checks, so it merges past that pending check; Renovate's own automerge waits for CI green *and* its internal checks, and merges at its next run.",
-    "Renovate's vulnerabilityAlerts defaults set minimumReleaseAge to null, so security fixes are not delayed by it."
+    "Renovate's vulnerabilityAlerts defaults set minimumReleaseAge to null, so security fixes are not delayed by it.",
+    "The automerge label marks PRs that will be merged automatically by Renovate."
   ],
+  "addLabels": ["{{#if automerge}}automerge{{/if}}"],
   "automerge": false,
   "automergeType": "pr",
   "platformAutomerge": false,
@@ -196,14 +198,54 @@
       "groupName": "mockito"
     },
     {
-      "description": "Group minor Maven updates",
-      "matchManagers": [
-        "maven"
-      ],
-      "matchUpdateTypes": [
-        "minor"
-      ],
-      "groupName": "maven minor updates"
+      "description": "Propose Maven patch updates separately from minor ones, so that a minor that breaks does not hold back the patch. Minor updates are not grouped either: one that breaks would block the rest.",
+      "matchManagers": ["maven"],
+      "separateMinorPatch": true
+    },
+    {
+      "description": "Automerge Maven test-scope dependencies after CI. Scalatra's test kit shares scalatra.version with the runtime Scalatra artifacts, so it stays in their PR.",
+      "matchManagers": ["maven"],
+      "matchFileNames": ["pom.xml"],
+      "matchDepTypes": ["test"],
+      "matchUpdateTypes": ["minor", "patch"],
+      "matchPackageNames": ["!org.scalatra:**"],
+      "automerge": true,
+      "rebaseWhen": "behind-base-branch"
+    },
+    {
+      "description": "Automerge Maven build plugins that the PR build runs. The PR build never packages the WAR.",
+      "matchManagers": ["maven"],
+      "matchFileNames": ["pom.xml"],
+      "matchDepTypes": ["build"],
+      "matchUpdateTypes": ["minor", "patch"],
+      "matchPackageNames": ["!org.apache.maven.plugins:maven-war-plugin"],
+      "automerge": true,
+      "rebaseWhen": "behind-base-branch"
+    },
+    {
+      "description": "The Maven patch groups below take only updates that no earlier rule has grouped, so monorepo groups such as the AWS SDK and fs2 stay intact. Test and build groups come first so that the runtime group does not claim their updates.",
+      "matchManagers": ["maven"],
+      "matchDepTypes": ["test"],
+      "matchUpdateTypes": ["patch"],
+      "matchPackageNames": ["!org.scalatra:**"],
+      "matchJsonata": ["$not($exists(groupName)) or groupName = null"],
+      "groupName": "maven test patch updates"
+    },
+    {
+      "description": "Group Maven build plugin patch updates",
+      "matchManagers": ["maven"],
+      "matchDepTypes": ["build"],
+      "matchUpdateTypes": ["patch"],
+      "matchPackageNames": ["!org.apache.maven.plugins:maven-war-plugin"],
+      "matchJsonata": ["$not($exists(groupName)) or groupName = null"],
+      "groupName": "maven build plugin patch updates"
+    },
+    {
+      "description": "Group the remaining Maven patch updates",
+      "matchManagers": ["maven"],
+      "matchUpdateTypes": ["patch"],
+      "matchJsonata": ["$not($exists(groupName)) or groupName = null"],
+      "groupName": "maven patch updates"
     },
     {
       "description": "Pin postgres Docker image to match RDS version (RDS upgrades to 15.17 on 2026-06-03; auto-minor-version-upgrade is enabled in RDS). Bump this constraint when RDS is upgraded further.",
