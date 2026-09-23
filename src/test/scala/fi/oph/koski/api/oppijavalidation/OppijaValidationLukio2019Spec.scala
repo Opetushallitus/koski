@@ -2412,9 +2412,12 @@ class OppijaValidationLukio2019Spec extends AnyFreeSpec with PutOpiskeluoikeusTe
       "kun päivämäärät ovat erilaiset eivätkä mene päällekkäin" in {
         val opiskeluoikeusMyöhemmin = defaultOpiskeluoikeus.copy(
           tila = LukionOpiskeluoikeudenTila(List(
-            LukionOpiskeluoikeusjakso(alku = date(2021, 8, 2), tila = opiskeluoikeusAktiivinen, opintojenRahoitus = Some(ExampleData.valtionosuusRahoitteinen)),
-            LukionOpiskeluoikeusjakso(alku = date(2024, 8, 1), tila = opiskeluoikeusPäättynyt, opintojenRahoitus = Some(ExampleData.valtionosuusRahoitteinen))
-          ))
+            LukionOpiskeluoikeusjakso(alku = date(2021, 9, 6), tila = opiskeluoikeusAktiivinen, opintojenRahoitus = Some(ExampleData.valtionosuusRahoitteinen))
+          )),
+          suoritukset = defaultOpiskeluoikeus.suoritukset.map {
+            case s: LukionOppimääränSuoritus2019 => s.copy(osasuoritukset = None, vahvistus = None)
+            case s => s
+          }
         )
 
         setupOppijaWithOpiskeluoikeus(defaultOpiskeluoikeus, defaultHenkilö) {
