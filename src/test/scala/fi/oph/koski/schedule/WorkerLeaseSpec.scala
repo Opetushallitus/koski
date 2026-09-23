@@ -61,7 +61,7 @@ class WorkerLeaseSpec extends AnyFreeSpec with TestEnvironment with Matchers wit
         name = "multi",
         holderId = "holder-a",
         slots = 2,
-        leaseDuration = Duration.ofMillis(300),
+        leaseDuration = Duration.ofSeconds(5),
         heartbeatInterval = Duration.ofMillis(50)
       )
       val electorB = new WorkerLeaseElector(
@@ -69,7 +69,7 @@ class WorkerLeaseSpec extends AnyFreeSpec with TestEnvironment with Matchers wit
         name = "multi",
         holderId = "holder-b",
         slots = 2,
-        leaseDuration = Duration.ofMillis(300),
+        leaseDuration = Duration.ofSeconds(5),
         heartbeatInterval = Duration.ofMillis(50)
       )
       val electorC = new WorkerLeaseElector(
@@ -77,7 +77,7 @@ class WorkerLeaseSpec extends AnyFreeSpec with TestEnvironment with Matchers wit
         name = "multi",
         holderId = "holder-c",
         slots = 2,
-        leaseDuration = Duration.ofMillis(300),
+        leaseDuration = Duration.ofSeconds(5),
         heartbeatInterval = Duration.ofMillis(50)
       )
 
