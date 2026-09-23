@@ -274,8 +274,13 @@ export const puraLähdejärjestelmäkytkentä = (opiskeluoikeusOid: string) =>
     )
   )
 
-export const fetchOmatTiedotOppija = () =>
-  handleExpiredSession(apiGet<Oppija>(apiUrl('omattiedotV2/oppija')))
+// Ilman oidia palautetaan kirjautuneen kansalaisen omat tiedot, oidilla huollettavan tiedot.
+export const fetchOmatTiedotOppija = (oid?: string) =>
+  handleExpiredSession(
+    apiGet<Oppija>(
+      apiUrl(oid ? `omattiedotV2/oppija/${oid}` : 'omattiedotV2/oppija')
+    )
+  )
 
 export const fetchSuoritusjako = (id: string) =>
   handleExpiredSession(

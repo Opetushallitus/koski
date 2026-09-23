@@ -129,7 +129,13 @@ export const useVirkailijaUiAdapter = (oppijaModel: ObjectModel): UiAdapter => {
     replaceOppijanOpiskeluoikeus
   )
 
-  return useUiAdapterImpl(ooTyypit, loadOppija, oppija, loadValittuVersio)
+  return useUiAdapterImpl(
+    ooTyypit,
+    oppijaOid,
+    loadOppija,
+    oppija,
+    loadValittuVersio
+  )
 }
 
 const replaceOppijanOpiskeluoikeus = (
@@ -160,21 +166,34 @@ export const useKansalainenUiAdapter = (
     isSuoritusjako ? fetchSuoritusjako : fetchOmatTiedotOppija
   )
 
+  // Huollettavan tietoja katsottaessa haetaan huollettavan – ei kirjautuneen
+  // kansalaisen – opiskeluoikeudet, jotta ne löytyvät editoreille.
+  // Tyhjä oid tarkoittaa kirjautuneen kansalaisen omia tietoja.
+  const katsottavaOppijaOid: string =
+    modelData(kansalainenModel, 'henkilö.oid') || ''
+
   const ooTyypit: string[] =
     modelData(kansalainenModel, 'opiskeluoikeudet')?.flatMap(
       (oppilaitos: any) =>
         oppilaitos.opiskeluoikeudet?.map((o: any) => o.tyyppi.koodiarvo) || []
     ) || []
 
+  const haettavaTunniste = isSuoritusjako
+    ? suoritusjakoId || ''
+    : katsottavaOppijaOid
+
   return useUiAdapterImpl(
     ooTyypit,
-    () => oppija.call(suoritusjakoId || ''),
+    haettavaTunniste,
+    () => oppija.call(haettavaTunniste),
     oppija
   )
 }
 
 const useUiAdapterImpl = <T extends any[]>(
   opiskeluoikeustyypit: string[],
+  // Oppijan oid tai jakolinkin tunniste: kertoo, kenen tiedot on haettu.
+  haettavaTunniste: string,
   oppijaDataNeeded: () => void,
   oppija: ApiMethodHook<Oppija, T>,
   onVersionumeroChange?: () => void
@@ -190,13 +209,15 @@ const useUiAdapterImpl = <T extends any[]>(
     return intersects(string.Eq)(opiskeluoikeustyypit)(v2OpiskeluoikeusTyypit)
   }, [opiskeluoikeustyypit])
 
+  // Haku uusitaan myös katsottavan oppijan vaihtuessa (huoltaja vaihtaa
+  // huollettavaa): muuten editorit jäisivät edellisen oppijan tietojen varaan.
   useEffect(() => {
     if (v2Mode) {
       setAdapter(loadingUiAdapter)
       oppijaDataNeeded()
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [v2Mode])
+  }, [v2Mode, haettavaTunniste])
 
   // Versionumeron muuttuessa haetaan vain valittu versio (ei koko näkymää
   // uudelleen), jolloin versiohistoriassa liikkuminen ei lataa sivua uudelleen.
