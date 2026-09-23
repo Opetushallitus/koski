@@ -203,6 +203,16 @@
       "separateMinorPatch": true
     },
     {
+      "description": "openhtmltopdf and its pdfbox backend render the certificate PDFs, and even patch releases have changed their visual output. Keep them in their own PR, patches included, so that a layout regression does not hold back unrelated updates. Updating them together also keeps openhtmltopdf-pdfbox on a pdfbox it was built against. Automerge is safe because TodistusLatausSpec compares rendered regions against reference images pixel by pixel.",
+      "matchManagers": ["maven"],
+      "matchPackageNames": ["io.github.openhtmltopdf:**", "org.apache.pdfbox:**"],
+      "groupName": "PDF rendering",
+      "separateMinorPatch": false,
+      "automerge": true,
+      "rebaseWhen": "behind-base-branch",
+      "prBodyNotes": ["Renders the certificate PDFs (todistukset)."]
+    },
+    {
       "description": "Automerge Maven test-scope dependencies after CI. Scalatra's test kit shares scalatra.version with the runtime Scalatra artifacts, so it stays in their PR.",
       "matchManagers": ["maven"],
       "matchFileNames": ["pom.xml"],
