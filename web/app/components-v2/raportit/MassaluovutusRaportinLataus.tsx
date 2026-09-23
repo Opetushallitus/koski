@@ -110,7 +110,10 @@ export const MassaluovutusRaportinLataus: React.FC<
         )}
       </div>
       {omatRaportit.length > 0 && (
-        <div className="massaluovutus-raportit">
+        <div
+          className="massaluovutus-raportit"
+          data-testid="massaluovutus.raportit"
+        >
           <h3>{t('Omat raportit')}</h3>
           <table>
             <thead>

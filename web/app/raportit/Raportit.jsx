@@ -16,10 +16,7 @@ import {
 } from './AikajaksoRaporttiTyyppivalinnalla'
 import { Tabs } from '../components/Tabs'
 import { OrganisaatioDropdown } from './OrganisaatioDropdown'
-import {
-  filterOrgTreeByRaporttityyppi,
-  massaluovutusKaytossa
-} from './raporttiUtils'
+import { filterOrgTreeByRaporttityyppi } from './raporttiUtils'
 import { contentWithLoadingIndicator } from '../components/AjaxLoadingIndicator'
 import { replaceLocation } from '../util/location'
 import { Paragraphs } from '../i18n/Paragraphs'
@@ -626,10 +623,8 @@ function SuoritustietojenTarkistus({ stateP }) {
   const titleText = (
     <Text name="Suoritustiedot (ammatillinen koulutus, koko tutkinto)" />
   )
-  const shortDescriptionText = massaluovutusKaytossa() ? (
+  const shortDescriptionText = (
     <Text name="SuoritustietojenTarkistus-short-description-massaluovutus" />
-  ) : (
-    <Text name="SuoritustietojenTarkistus-short-description" />
   )
   const exampleText = <Paragraphs name="SuoritustietojenTarkistus-example" />
 
@@ -640,7 +635,7 @@ function SuoritustietojenTarkistus({ stateP }) {
       title={titleText}
       shortDescription={shortDescriptionText}
       example={exampleText}
-      useMassaluovutus={massaluovutusKaytossa()}
+      useMassaluovutus
       lang={lang}
     />
   )
