@@ -62,6 +62,45 @@ class MassaluovutusSpec extends AnyFreeSpec with MassaluovutusTestMethods with M
         progress = None,
       )
 
+    "Jonosta otetaan ensin tärkein kysely ja saman prioriteetin sisällä vanhin" in {
+      withoutRunningQueryScheduler {
+        val repository = new QueryRepository(
+          db = app.masterDatabase.db,
+          workerId = "test-worker",
+          extractor = app.validatingAndResolvingExtractor,
+        )
+
+        def lisääJonoon(query: MassaluovutusQueryParameters, ikäSekunteina: Long) = {
+          val pending = PendingQuery(
+            queryId = UUID.randomUUID().toString,
+            userOid = user.oid,
+            query = query,
+            createdAt = LocalDateTime.now().minusSeconds(ikäSekunteina),
+            session = StorableSession(user).toJson,
+            meta = None,
+          )
+          app.massaluovutusService.addRaw(pending)
+          pending
+        }
+
+        val normaaliKysely = MassaluovutusQueryOrganisaationOpiskeluoikeudetCsv(
+          alkanutAikaisintaan = LocalDate.of(2000, 1, 1),
+        )
+        val tärkeäKysely = ValintalaskentaQuery(
+          rajapäivä = LocalDate.now(),
+          oppijaOids = List(KoskiSpecificMockOppijat.ammattilainen.oid),
+        )
+
+        val normaaliVanha = lisääJonoon(normaaliKysely, 300)
+        val normaaliTuore = lisääJonoon(normaaliKysely, 60)
+        val tärkeäTuore = lisääJonoon(tärkeäKysely, 60)
+
+        repository.takeNext.map(_.queryId) should equal(Some(tärkeäTuore.queryId))
+        repository.takeNext.map(_.queryId) should equal(Some(normaaliVanha.queryId))
+        repository.takeNext.map(_.queryId) should equal(Some(normaaliTuore.queryId))
+      }
+    }
+
     "Orpo kysely vapautetaan takaisin jonoon" in {
       withoutRunningQueryScheduler {
         val orphanedQuery = createRunningQuery("dead-worker")
