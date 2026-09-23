@@ -17,3 +17,9 @@ runs:
     - name: Run backend tests
       run: mvn scalatest:test -DmembersOnlySuites="${{ inputs.suites }}" --batch-mode --no-snapshot-updates
       shell: bash
+
+    # ScalaTest reports BUILD SUCCESS even when the suite selection matches no tests.
+    - name: Verify that tests were run
+      run: |
+        grep --quiet --extended-regexp 'Tests: succeeded [1-9]' target/surefire-reports/koski-tests.txt || { echo "::error::No tests were executed"; exit 1; }
+      shell: bash
