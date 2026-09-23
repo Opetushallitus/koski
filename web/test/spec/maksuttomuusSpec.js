@@ -11,7 +11,7 @@ describe('Maksuttomuus', function () {
         addOppija.enterValidDataAmmatillinen(),
         addOppija.selectAloituspäivä('1.1.2021'),
         addOppija.selectMaksuttomuus(1),
-        addOppija.submit,
+        addOppija.submitAndExpectSuccess('010104A6094'),
         opinnot.expandAll
       )
 
@@ -69,7 +69,7 @@ describe('Maksuttomuus', function () {
         addOppija.enterValidDataAmmatillinen(),
         addOppija.selectAloituspäivä('1.8.2021'),
         addOppija.selectMaksuttomuus(2),
-        addOppija.submit,
+        addOppija.submitAndExpectSuccess('010104A6094'),
         opinnot.expandAll
       )
       it('Lisätiedot ovat tyhjät', function () {
@@ -84,7 +84,7 @@ describe('Maksuttomuus', function () {
         addOppija.enterValidDataAmmatillinen(),
         addOppija.selectAloituspäivä('1.8.2021'),
         addOppija.selectMaksuttomuus(0),
-        addOppija.submit,
+        addOppija.submitAndExpectSuccess('311203A1454'),
         opinnot.expandAll
       )
       it('Lisätiedot ovat tyhjät', function () {
