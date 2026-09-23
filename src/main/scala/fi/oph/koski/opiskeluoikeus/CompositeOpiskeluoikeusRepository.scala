@@ -50,10 +50,11 @@ class CompositeOpiskeluoikeusRepository(main: KoskiOpiskeluoikeusRepository, vir
     allowUpdate: Boolean,
     allowDeleteCompleted: Boolean = false,
     skipValidations: Boolean = false,
+    oppijanLinkitetytOidit: List[Oid] = Nil
   )(
     implicit user: KoskiSpecificSession
   ): Either[HttpStatus, CreateOrUpdateResult] =
-    withErrorLogging(() => main.createOrUpdate(oppijaOid, opiskeluoikeus, allowUpdate, allowDeleteCompleted, skipValidations))
+    withErrorLogging(() => main.createOrUpdate(oppijaOid, opiskeluoikeus, allowUpdate, allowDeleteCompleted, skipValidations, oppijanLinkitetytOidit))
 
   def mapFailureToVirtaUnavailable(result: Try[Seq[Opiskeluoikeus]], oid: String): Try[WithWarnings[Seq[Opiskeluoikeus]]] = {
     result match {
