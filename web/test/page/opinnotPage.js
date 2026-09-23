@@ -288,7 +288,7 @@ function OpinnotPage() {
     },
     expandAll: function () {
       var expand = function () {
-        return wait.forMilliseconds(50)().then(checkAndExpand)
+        return wait.until(isReadyToResolveOpiskeluoikeus)().then(checkAndExpand)
       }
       var checkAndExpand = function () {
         if (expanders().is(':visible')) {
