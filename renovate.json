@@ -23,9 +23,8 @@
     "automergeType `pr` keeps the PR, and with it the CI run, mandatory.",
     "platformAutomerge is off so that minimumReleaseAge holds automerges back. When no older candidate exists, Renovate opens the PR immediately and marks the branch with a pending `renovate/stability-days` check. GitHub's automerge is armed at PR creation and weighs only its required checks, so it merges past that pending check; Renovate's own automerge waits for CI green *and* its internal checks, and merges at its next run.",
     "Renovate's vulnerabilityAlerts defaults set minimumReleaseAge to null, so security fixes are not delayed by it.",
-    "The automerge label marks PRs that will be merged automatically by Renovate."
+    "The last package rule labels the PRs that Renovate will merge automatically."
   ],
-  "addLabels": ["{{#if automerge}}automerge{{/if}}"],
   "automerge": false,
   "automergeType": "pr",
   "platformAutomerge": false,
@@ -262,6 +261,11 @@
       "matchManagers": ["docker-compose"],
       "matchPackageNames": ["postgres"],
       "allowedVersions": "<=15.17"
+    },
+    {
+      "description": "Label PRs that Renovate will merge automatically. This must be the last rule, so that it sees the automerge value set by the rules above.",
+      "matchJsonata": ["automerge = true"],
+      "addLabels": ["automerge"]
     }
   ],
   "ignorePaths": [
