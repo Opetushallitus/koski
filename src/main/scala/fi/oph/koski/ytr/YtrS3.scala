@@ -4,7 +4,7 @@ import com.typesafe.config.Config
 import fi.oph.koski.config.{Environment, KoskiApplication, SecretsManager}
 import fi.oph.koski.log.NotLoggable
 import software.amazon.awssdk.auth.credentials.{AwsBasicCredentials, StaticCredentialsProvider}
-import software.amazon.awssdk.http.apache.ApacheHttpClient
+import software.amazon.awssdk.http.apache5.Apache5HttpClient
 import software.amazon.awssdk.regions.Region
 import software.amazon.awssdk.services.s3.S3Client
 import software.amazon.awssdk.services.sts.StsClient
@@ -24,12 +24,12 @@ class YtrS3(config: YtrS3Config) {
     .roleSessionName("koski-ytr-role")
     .build
 
-  private val httpClient = ApacheHttpClient.builder()
+  private val httpClient = Apache5HttpClient.builder()
     .maxConnections(150)
     .build()
 
   // Separate pool so STS token refresh doesn't compete with S3 downloads
-  private val stsHttpClient = ApacheHttpClient.builder()
+  private val stsHttpClient = Apache5HttpClient.builder()
     .maxConnections(10)
     .build()
 
