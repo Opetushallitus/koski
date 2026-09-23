@@ -16,15 +16,18 @@ Salausprotokollan on oltava TLS 1.2 tai 1.3.
 ### Asiakasvarmenteet
 
 Asiakasvarmenteen sekä tuotanto- että testiympäristöissä on oltava DVV:n myöntämä. Testiympäristössä hyväksytään DVV:n
-testivarmenteet. Aiemmin on hyväksytty muitakin juurivarmentajia, mutta käytäntö muuttui vuoden 2026 alussa. Tällä hetkellä
-DVV:n palveluvalikoimassa (https://dvv.fi/varmenteet) on kyseessä palvelinvarmenne-tyyppinen palveluvarmenne, jolle
-pyydetään käyttötarkoitukseksi asiakkaan tunnistaminen ("client authentication"). Tämä tulee luultavasti vuoden 2026
-kuluessa muuttumaan, kun DVV erottaa asiakasvarmenteet selkeämmin erilliseksi tuotteeksi.
+testivarmenteet. Aiemmin on hyväksytty muitakin juurivarmentajia, mutta käytäntö muuttui vuoden 2026 alussa.
 
-Jotta varmennetta voi käyttää, sen "extended key usage" -kentässä on sallittava "client authentication" -käyttötarkoitus.
-Varmenteen nimen pitää olla Subject distinguished name (subject dn, subject) -kentässä: Subject
-alternative name -kenttää ei toistaiseksi tueta. KOSKI-palvelussa asiakasvarmenteiden varmennus on toteutettu
-AWS:n työkaluilla. Tarkempia tietoja sen asettamista rajoituksista varmenteelle on sivulla
+Tilaa DVV:ltä tuote "asiakasvarmenne" (https://dvv.fi/palveluvarmenteet). Se on tarkoitettu rajapintojen
+asiakaskäyttöön, sen "extended key usage" -kentässä on "client authentication" ja varmenteen nimi on
+Subject distinguished name -kentän CN-attribuutissa. Asiakasvarmenteen voimassaoloaika on enintään 12 kuukautta.
+
+DVV:n palvelinvarmenne ei sovellu 1.10.2026 jälkeen tilattuna: siitä poistuu "client authentication"
+-käyttötarkoitus ja CN-kenttä, eikä KOSKI-palvelu tue nimen lukemista Subject alternative name -kentästä.
+Aiemmin tilatut palvelinvarmenteet, joissa on "client authentication", toimivat voimassaolonsa loppuun.
+
+KOSKI-palvelussa asiakasvarmenteiden varmennus on toteutettu AWS:n työkaluilla. AWS:n asettamat tekniset
+rajoitukset varmenteen avaimelle ja allekirjoitusalgoritmille löytyvät sivulta
 https://docs.aws.amazon.com/elasticloadbalancing/latest/application/mutual-authentication.html , otsikon
 "Requirements for certificates" alla.
 
