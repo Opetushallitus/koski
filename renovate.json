@@ -20,12 +20,13 @@
   "prConcurrentLimit": 8,
   "description": [
     "Automerge is off by default and opted into per rule, so every rule that wants it has to say so.",
-    "automergeType `pr` keeps the PR, and with it the CI run, mandatory; platformAutomerge lets GitHub merge the moment the required checks go green instead of at Renovate's next run.",
+    "automergeType `pr` keeps the PR, and with it the CI run, mandatory.",
+    "platformAutomerge is off so that minimumReleaseAge holds automerges back. When no older candidate exists, Renovate opens the PR immediately and marks the branch with a pending `renovate/stability-days` check. GitHub's automerge is armed at PR creation and weighs only its required checks, so it merges past that pending check; Renovate's own automerge waits for CI green *and* its internal checks, and merges at its next run.",
     "Renovate's vulnerabilityAlerts defaults set minimumReleaseAge to null, so security fixes are not delayed by it."
   ],
   "automerge": false,
   "automergeType": "pr",
-  "platformAutomerge": true,
+  "platformAutomerge": false,
   "rangeStrategy": "replace",
   "minimumReleaseAge": "3 days",
   "constraints": {
