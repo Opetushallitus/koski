@@ -1,7 +1,8 @@
 name: Run security tests
 on:
   schedule:
-    - cron: "0 0 * * *"
+    - cron: "0 8 * * *"
+      timezone: Europe/Helsinki
   workflow_dispatch:
 
 permissions:
