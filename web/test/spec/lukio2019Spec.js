@@ -331,6 +331,15 @@ describe('Lukiokoulutus2019', function () {
                       .oppiaine('PAI')
                       .kurssi('PA')
                       .arvosana.selectValue('9'),
+                    // Arviointipäivä on asetettava opiskeluoikeuden sisään: editori ehdottaa
+                    // oletuksena kuluvaa päivää, joka on opiskeluoikeuden päättymispäivän
+                    // jälkeen eikä läpäise Lukio2019OsasuoritusValidationia.
+                    opinnot.oppiaineet.oppiaine('PAI').kurssi('PA').toggleDetails,
+                    opinnot.oppiaineet
+                      .oppiaine('PAI')
+                      .kurssi('PA')
+                      .arviointipäivä.setValue('1.9.2021'),
+                    opinnot.oppiaineet.oppiaine('PAI').kurssi('PA').toggleDetails,
                     editor.saveChanges,
                     wait.until(page.isSavedLabelShown)
                   )
