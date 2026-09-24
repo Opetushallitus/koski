@@ -85,7 +85,7 @@ class PostgresKoskiOpiskeluoikeusRepositoryActions(
       case Right(Nil) =>
         createAction(oppijaOid, opiskeluoikeus)
       case Right(aiemmatSamaksiJonkinIdnPerusteellaTunnistetutOpiskeluoikeudet) if allowUpdate =>
-        updateIfUnambiguousAiempiOpiskeluoikeusAction(oppijaOid, opiskeluoikeus, identifier, aiemmatSamaksiJonkinIdnPerusteellaTunnistetutOpiskeluoikeudet, allowDeleteCompleted, skipValidations)
+        updateIfUnambiguousAiempiOpiskeluoikeusAction(oppijaOid, opiskeluoikeus, identifier, aiemmatSamaksiJonkinIdnPerusteellaTunnistetutOpiskeluoikeudet, allowDeleteCompleted, skipValidations, oppijanLinkitetytOidit)
       case Right(_) =>
         createAction(oppijaOid, opiskeluoikeus)
       case Left(err) =>
@@ -99,7 +99,8 @@ class PostgresKoskiOpiskeluoikeusRepositoryActions(
     identifier: OpiskeluoikeusIdentifier,
     aiemmatSamaksiJonkinIdnPerusteellaTunnistetutOpiskeluoikeudet: List[KoskiOpiskeluoikeusRow],
     allowDeleteCompleted: Boolean,
-    skipValidations: Boolean = false
+    skipValidations: Boolean,
+    oppijanLinkitetytOidit: List[Henkilö.Oid]
   )(implicit user: KoskiSpecificSession): DBIOAction[Either[HttpStatus, CreateOrUpdateResult], NoStream, Read with Write with Transactional] = {
     (identifier, aiemmatSamaksiJonkinIdnPerusteellaTunnistetutOpiskeluoikeudet) match {
       case (id: OppijaOidOrganisaatioJaTyyppi, _) =>
@@ -107,7 +108,7 @@ class PostgresKoskiOpiskeluoikeusRepositoryActions(
           s"Olemassaolevan opiskeluoikeuden päivitystä ilman tunnistetta ei tueta. Päivitettävä opiskeluoikeus-oid: ${aiemmatSamaksiJonkinIdnPerusteellaTunnistetutOpiskeluoikeudet.map(_.oid).mkString(", ")}. Päivittävä tunniste: ${id.copy(oppijaOid = "****")}"
         )))
       case (_, List(aiempiSamaksiJonkinIdnPerusteellaTunnistettuOpiskeluoikeus)) =>
-        updateIfSameOppijaAction(oppijaOid, aiempiSamaksiJonkinIdnPerusteellaTunnistettuOpiskeluoikeus, opiskeluoikeus, allowDeleteCompleted, skipValidations)
+        updateIfSameOppijaAction(oppijaOid, aiempiSamaksiJonkinIdnPerusteellaTunnistettuOpiskeluoikeus, opiskeluoikeus, allowDeleteCompleted, skipValidations, oppijanLinkitetytOidit)
       case _ =>
         DBIO.successful(Left(KoskiErrorCategory.conflict.löytyiEnemmänKuinYksiRivi(s"Löytyi enemmän kuin yksi rivi päivitettäväksi (${aiemmatSamaksiJonkinIdnPerusteellaTunnistetutOpiskeluoikeudet.map(_.oid)})")))
     }
