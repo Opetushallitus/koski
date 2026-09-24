@@ -49,8 +49,10 @@ export const urlIsEventually = async (
 export const pathToUrl = (path: string) =>
   `${process.env.BACKEND_HOST || "http://localhost:7021"}/valpas${path}`
 
-export const pathToApiUrl = (path: string) =>
-  `${process.env.BACKEND_HOST || "http://localhost:7021"}/koski/valpas${path}`
+export const pathToKoskiUrl = (path: string) =>
+  `${process.env.BACKEND_HOST || "http://localhost:7021"}/koski${path}`
+
+export const pathToApiUrl = (path: string) => pathToKoskiUrl(`/valpas${path}`)
 
 export const $ = async (selector: string, timeout = shortTimeout) => {
   try {
