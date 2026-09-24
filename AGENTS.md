@@ -95,6 +95,7 @@ valpas-web/src/                # Valpas frontend (separate React app)
 - Class names: PascalCase
 - Use `@Description`, `@KoodistoUri`, and other schema annotations for data models
 - When adding a new parameter with a default value to an existing function, check all call sites and evaluate whether they should pass the real value instead of relying on the default. The compiler won't warn about missing values.
+- Keep comments minimal. Prefer a clear function/val name over a comment restating what the code does; add a comment only when the *why* isn't obvious from the code itself (e.g. a non-obvious business rule or a gotcha).
 
 ### TypeScript/JavaScript
 - Use TypeScript for new code
