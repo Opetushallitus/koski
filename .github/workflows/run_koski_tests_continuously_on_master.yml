@@ -12,8 +12,3 @@ jobs:
   tests:
     name: "👀"
     uses: ./.github/workflows/tests.yml
-  trivy:
-    name: Trivy
-    uses: ./.github/workflows/trivy_check.yml
-    with:
-      upload-report: true

@@ -3,7 +3,6 @@ name: Trivy dependency check
 on:
   push:
     branches: [master]
-  pull_request:
   workflow_call:
     inputs:
       upload-report:
