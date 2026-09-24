@@ -20,7 +20,8 @@
         exception
       ) {
         window.uiError = arguments
-        console.log(arguments)
+        var source = `${url}:${lineNumber}:${columnNumber}`
+        console.log((exception && exception.stack) || `${errorMsg} ${source}`)
         return true
       }
     </script>
@@ -40,7 +41,7 @@
       var urlParams = new URLSearchParams(location.search)
       mocha.setup({
         ui: 'bdd',
-        reporter: 'html',
+        reporter: urlParams.get('reporter') || 'html',
         timeout: testTimeoutPageLoad,
         bail: urlParams.get('bail') === 'true'
       })

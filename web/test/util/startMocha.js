@@ -1,4 +1,5 @@
 console.log('Starting mocha')
+// test/runMocha.mts reads the global `runner` to wait for the results
 var runner = mocha.run()
 runner.errors = []
 if (window.callPhantom) {
@@ -6,7 +7,7 @@ if (window.callPhantom) {
 }
 
 function mapError(e) {
-  var logEntry = { title: e.title }
+  var logEntry = { title: e.title, fullTitle: e.fullTitle() }
   if (e.err) logEntry.message = e.err.message
   if (e.parent) logEntry.parent = mapError(e.parent)
   return logEntry
