@@ -2,6 +2,7 @@ import fs from "fs/promises"
 import { By, until, WebElement } from "selenium-webdriver"
 import { ISODate } from "../../../src/state/common"
 import { Feature } from "../../../src/state/featureFlags"
+import { koskiBackendHost } from "../../../src/utils/environment"
 import { driver } from "./driver"
 import { defaultSleepTime, defaultTimeout, shortTimeout } from "./timeouts"
 import { eventually, sleep, withMessage } from "./utils"
@@ -12,11 +13,11 @@ export const setBrowserDate = (date: ISODate) => {
   browserDate = date
 }
 
+export const locationUrl = (path: string) =>
+  `${koskiBackendHost}/valpas${path}?date=${browserDate}` + featureQuery()
+
 export const goToLocation = async (path: string) => {
-  await driver.get(
-    `${process.env.BACKEND_HOST || "http://localhost:7021"}/valpas${path}?date=${browserDate}` +
-      featureQuery(),
-  )
+  await driver.get(locationUrl(path))
 }
 
 export const deleteCookies = async () => {
@@ -47,11 +48,12 @@ export const urlIsEventually = async (
   }
 }
 
-export const pathToUrl = (path: string) =>
-  `${process.env.BACKEND_HOST || "http://localhost:7021"}/valpas${path}`
+export const pathToUrl = (path: string) => `${koskiBackendHost}/valpas${path}`
 
-export const pathToApiUrl = (path: string) =>
-  `${process.env.BACKEND_HOST || "http://localhost:7021"}/koski/valpas${path}`
+export const pathToKoskiUrl = (path: string) =>
+  `${koskiBackendHost}/koski${path}`
+
+export const pathToApiUrl = (path: string) => pathToKoskiUrl(`/valpas${path}`)
 
 export const $ = async (selector: string, timeout = shortTimeout) => {
   try {
