@@ -213,9 +213,10 @@ trait PostgresOpiskeluoikeusRepositoryActions[OOROW <: OpiskeluoikeusRow, OOTABL
     oldRow: OOROW,
     uusiOpiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus,
     allowDeleteCompletedSuoritukset: Boolean,
-    skipValidations: Boolean = false
+    skipValidations: Boolean,
+    oppijanLinkitetytOidit: List[Henkilö.Oid]
   )(implicit user: KoskiSpecificSession): DBIOAction[Either[HttpStatus, CreateOrUpdateResult], NoStream, Read with Write with Transactional] = {
-    if (oppijaOid.oppijaOid == oldRow.oppijaOid) {
+    if (oppijaOid.oppijaOid == oldRow.oppijaOid || oppijanLinkitetytOidit.contains(oldRow.oppijaOid)) {
       updateAction(oldRow, uusiOpiskeluoikeus, allowDeleteCompletedSuoritukset, skipValidations)
     } else { // Check if oppija oid belongs to master of slave oppija oids
       oppijaOidsByOppijaOid(oldRow.oppijaOid).flatMap { oids =>
