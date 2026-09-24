@@ -87,11 +87,26 @@
       "prConcurrentLimit": 2
     },
     {
-      "description": "Disable digest updates (dev/test infra images, limited value)",
+      "description": "Disable digest updates by default",
       "matchUpdateTypes": [
         "digest"
       ],
       "enabled": false
+    },
+    {
+      "description": "Update the Koski and OmaData OAuth2 sample base images when their tag is rebuilt",
+      "matchUpdateTypes": ["digest"],
+      "matchFileNames": ["docker-build/Dockerfile", "omadata-oauth2-sample/Dockerfile"],
+      "enabled": true,
+      "prPriority": 5
+    },
+    {
+      "description": "Automerge the development and test database images",
+      "matchFileNames": ["docker-compose.yaml", "docker-compose-arm64.yaml", "opensearch/Dockerfile"],
+      "matchUpdateTypes": ["minor", "patch", "digest"],
+      "enabled": true,
+      "automerge": true,
+      "rebaseWhen": "behind-base-branch"
     },
     {
       "description": "Automerge GitHub Actions minor and patch updates as one PR. Deploy and notification actions require manual review.",
