@@ -2,6 +2,7 @@
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": [
     "config:best-practices",
+    "helpers:pinGitHubActionDigestsToSemver",
     ":preserveSemverRanges"
   ],
   "timezone": "Europe/Helsinki",
@@ -17,7 +18,7 @@
     "enabled": true,
     "schedule": []
   },
-  "prConcurrentLimit": 8,
+  "prConcurrentLimit": 10,
   "description": [
     "Automerge is off by default and opted into per rule, so every rule that wants it has to say so.",
     "automergeType `pr` keeps the PR, and with it the CI run, mandatory.",
@@ -75,28 +76,46 @@
       "rebaseWhen": "behind-base-branch"
     },
     {
-      "description": "Disable major updates by default",
-      "matchUpdateTypes": [
-        "major"
-      ],
-      "enabled": false
+      "description": "Create minor updates only while fewer than 6 PRs are open, leaving the remaining slots to patch updates.",
+      "matchUpdateTypes": ["minor"],
+      "prConcurrentLimit": 6
     },
     {
-      "description": "Disable digest updates (dev/test infra images, limited value)",
+      "description": "Create major updates and package replacements last and only while fewer than 2 PRs are open.",
+      "matchUpdateTypes": ["major", "replacement"],
+      "prPriority": -1,
+      "prConcurrentLimit": 2
+    },
+    {
+      "description": "Disable digest updates by default",
       "matchUpdateTypes": [
         "digest"
       ],
       "enabled": false
     },
     {
-      "description": "Re-enable major updates for GitHub Actions to track upstream Node.js version migrations",
-      "matchManagers": [
-        "github-actions"
-      ],
-      "matchUpdateTypes": [
-        "major"
-      ],
-      "enabled": true
+      "description": "Update the Koski and OmaData OAuth2 sample base images when their tag is rebuilt",
+      "matchUpdateTypes": ["digest"],
+      "matchFileNames": ["docker-build/Dockerfile", "omadata-oauth2-sample/Dockerfile"],
+      "enabled": true,
+      "prPriority": 5
+    },
+    {
+      "description": "Automerge the development and test database images",
+      "matchFileNames": ["docker-compose.yaml", "docker-compose-arm64.yaml", "opensearch/Dockerfile"],
+      "matchUpdateTypes": ["minor", "patch", "digest"],
+      "enabled": true,
+      "automerge": true,
+      "rebaseWhen": "behind-base-branch"
+    },
+    {
+      "description": "Automerge GitHub Actions minor and patch updates as one PR. Deploy and notification actions require manual review.",
+      "matchManagers": ["github-actions"],
+      "matchUpdateTypes": ["minor", "patch"],
+      "matchPackageNames": ["!aws-actions/**", "!slackapi/**"],
+      "groupName": "github actions non-major",
+      "automerge": true,
+      "rebaseWhen": "behind-base-branch"
     },
     {
       "description": "Group all Parcel updates together (skip for now)",
@@ -263,9 +282,37 @@
       "allowedVersions": "<=15.17"
     },
     {
-      "description": "Label PRs that Renovate will merge automatically. This must be the last rule, so that it sees the automerge value set by the rules above.",
+      "description": "Stay on Scala 2.13",
+      "matchPackageNames": ["org.scala-lang:scala-library"],
+      "allowedVersions": "/^2\\.13\\./"
+    },
+    {
+      "description": "Skip http4s 1.0 milestone builds",
+      "matchPackageNames": ["org.http4s:**"],
+      "allowedVersions": "!/^1\\.0-\\d+-[0-9a-f]+$/"
+    },
+    {
+      "description": "Stay on OpenSearch 1",
+      "matchPackageNames": ["opensearchproject/opensearch"],
+      "allowedVersions": "<2"
+    },
+    {
+      "description": "Stay on mockito-core 2",
+      "matchPackageNames": ["org.mockito:mockito-core"],
+      "allowedVersions": "/^2\\./"
+    },
+    {
+      "description": "Keep Koski UI on React 16",
+      "matchFileNames": ["web/package.json"],
+      "matchPackageNames": ["react", "react-dom", "@types/react", "@types/react-dom"],
+      "allowedVersions": "<17"
+    },
+    {
+      "description": "Label PRs that Renovate will merge automatically and exempt them from the PR limits. This must be the last rule, so that it sees the automerge value set by the rules above.",
       "matchJsonata": ["automerge = true"],
-      "addLabels": ["automerge"]
+      "addLabels": ["automerge"],
+      "prConcurrentLimit": 0,
+      "prHourlyLimit": 0
     }
   ],
   "ignorePaths": [
