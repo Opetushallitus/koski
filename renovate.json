@@ -2,6 +2,7 @@
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": [
     "config:best-practices",
+    "helpers:pinGitHubActionDigestsToSemver",
     ":preserveSemverRanges"
   ],
   "timezone": "Europe/Helsinki",
@@ -97,6 +98,15 @@
         "major"
       ],
       "enabled": true
+    },
+    {
+      "description": "Automerge GitHub Actions minor and patch updates as one PR. Deploy and notification actions require manual review.",
+      "matchManagers": ["github-actions"],
+      "matchUpdateTypes": ["minor", "patch"],
+      "matchPackageNames": ["!aws-actions/**", "!slackapi/**"],
+      "groupName": "github actions non-major",
+      "automerge": true,
+      "rebaseWhen": "behind-base-branch"
     },
     {
       "description": "Group all Parcel updates together (skip for now)",
