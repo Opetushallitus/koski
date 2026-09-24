@@ -1,44 +1,49 @@
-import { By, Key, until } from "selenium-webdriver"
-import { expectElementEventuallyVisible } from "./content"
-import { $, deleteCookies, goToLocation } from "./core"
+import { By, until } from "selenium-webdriver"
+import { deleteCookies, goToLocation } from "./core"
 import { driver } from "./driver"
-import { allowNetworkError } from "./fail-on-console"
 import { resetMockData } from "./reset"
 import { defaultTimeout, longTimeout } from "./timeouts"
 import { eventually } from "./utils"
 
-const ignoreCalmmBaretErrors = () => {
-  allowNetworkError("webpack-internal", "componentWillMount has been renamed")
-  allowNetworkError(
-    "webpack-internal",
-    "componentWillReceiveProps has been renamed",
-  )
-}
-
 export const resetKansalainen = async (
-  initialPath: string,
   force: boolean = false,
   tarkastelupäivä?: string,
 ) => {
-  ignoreCalmmBaretErrors()
   await deleteCookies()
   await goToLocation("")
   await driver.wait(until.elementLocated(By.css("article")), defaultTimeout)
   await resetMockData(tarkastelupäivä, force)
-  await goToLocation(initialPath)
 }
 
+const mockLoginScript = `
+  const [hetu, done] = arguments
+  fetch("/koski/cas/oppija", {
+    credentials: "include",
+    redirect: "manual",
+    headers: { hetu, security: "mock" },
+  })
+    .then(() => fetch("/koski/valpas/api/kansalainen/user", { credentials: "include" }))
+    .then((response) => done(response.status), () => done(0))
+`
+
+// Kirjautuu samalla mock-kutsulla, jonka Kosken paikallinen kirjautumissivu tekisi.
+// Itse kirjautumissivu testataan Kosken puolella (web/test/e2e/valpas-kansalaisen-kirjautuminen.spec.ts).
 export const loginKansalainenAs = async (
   initialPath: string,
   hetu: string,
   forceReset: boolean = false,
   tarkastelupäivä?: string,
 ) => {
-  await eventually(async () => {
-    await resetKansalainen(initialPath, forceReset, tarkastelupäivä)
-    await expectElementEventuallyVisible("#hetu")
-  }, longTimeout)
-  ;(await $("#hetu")).sendKeys(hetu, Key.ENTER)
+  await eventually(
+    () => resetKansalainen(forceReset, tarkastelupäivä),
+    longTimeout,
+  )
+  const userStatus = await driver.executeAsyncScript<number>(
+    mockLoginScript,
+    hetu,
+  )
+  expect(userStatus, `Kansalaisen ${hetu} kirjautuminen epäonnistui`).toBe(200)
+  await goToLocation(initialPath)
   await driver.wait(
     until.elementLocated(By.css("article.kansalainenpage")),
     defaultTimeout,

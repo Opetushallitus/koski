@@ -18,11 +18,14 @@ jobs:
       contents: read
       pull-requests: read
     # PR-ajoissa testit valitaan muutettujen polkujen perusteella.
-    # Valpas- ja OAuth2-integraatiotestit käyttävät myös Kosken kansalaiskäyttöliittymää.
+    # OAuth2-integraatiotestit käyttävät myös Kosken kansalaiskäyttöliittymää.
+    # Valpaksen testejä ei ajeta Kosken käyttöliittymämuutoksista: Valpaksen käyttämä
+    # kansalaisen paikallinen kirjautuminen testataan Kosken Playwright-testeissä
+    # (web/test/e2e/valpas-kansalaisen-kirjautuminen.spec.ts).
     outputs:
       backend: ${{ steps.filter.outputs.all == 'true' || steps.filter.outputs.backend == 'true' }}
       koski-ui: ${{ steps.filter.outputs.all == 'true' || steps.filter.outputs.backend == 'true' || steps.filter.outputs.koski-ui == 'true' }}
-      valpas-ui: ${{ steps.filter.outputs.all == 'true' || steps.filter.outputs.backend == 'true' || steps.filter.outputs.koski-ui == 'true' || steps.filter.outputs.valpas-ui == 'true' }}
+      valpas-ui: ${{ steps.filter.outputs.all == 'true' || steps.filter.outputs.backend == 'true' || steps.filter.outputs.valpas-ui == 'true' }}
       oauth2: ${{ steps.filter.outputs.all == 'true' || steps.filter.outputs.backend == 'true' || steps.filter.outputs.koski-ui == 'true' || steps.filter.outputs.oauth2 == 'true' }}
       smoketests: ${{ steps.filter.outputs.all == 'true' || steps.filter.outputs.smoketests == 'true' }}
       radiator: ${{ steps.filter.outputs.all == 'true' || steps.filter.outputs.radiator == 'true' }}
