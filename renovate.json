@@ -282,6 +282,32 @@
       "allowedVersions": "<=15.17"
     },
     {
+      "description": "Stay on Scala 2.13",
+      "matchPackageNames": ["org.scala-lang:scala-library"],
+      "allowedVersions": "/^2\\.13\\./"
+    },
+    {
+      "description": "Skip http4s 1.0 milestone builds",
+      "matchPackageNames": ["org.http4s:**"],
+      "allowedVersions": "!/^1\\.0-\\d+-[0-9a-f]+$/"
+    },
+    {
+      "description": "Stay on OpenSearch 1",
+      "matchPackageNames": ["opensearchproject/opensearch"],
+      "allowedVersions": "<2"
+    },
+    {
+      "description": "Stay on mockito-core 2",
+      "matchPackageNames": ["org.mockito:mockito-core"],
+      "allowedVersions": "/^2\\./"
+    },
+    {
+      "description": "Keep Koski UI on React 16",
+      "matchFileNames": ["web/package.json"],
+      "matchPackageNames": ["react", "react-dom", "@types/react", "@types/react-dom"],
+      "allowedVersions": "<17"
+    },
+    {
       "description": "Label PRs that Renovate will merge automatically and exempt them from the PR limits. This must be the last rule, so that it sees the automerge value set by the rules above.",
       "matchJsonata": ["automerge = true"],
       "addLabels": ["automerge"],
