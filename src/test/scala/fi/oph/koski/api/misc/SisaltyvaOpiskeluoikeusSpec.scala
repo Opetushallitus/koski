@@ -5,6 +5,7 @@ import com.typesafe.config.ConfigValueFactory.fromAnyRef
 import fi.oph.koski.db.KoskiTables.KoskiOpiskeluOikeudetWithAccessCheck
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.documentation.AmmatillinenExampleData._
+import fi.oph.koski.documentation.ExampleData.longTimeAgo
 import fi.oph.koski.documentation.{AmmattitutkintoExample, LukioExampleData}
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
 import fi.oph.koski.http.KoskiErrorCategory
@@ -98,34 +99,31 @@ class SisältyväOpiskeluoikeusSpec extends AnyFreeSpec with Matchers with Opisk
       lazy val ammatillinenAutoalaMaster: AmmatillinenOpiskeluoikeus =
         createOpiskeluoikeus(KoskiSpecificMockOppijat.tyhjä, defaultOpiskeluoikeus, user = stadinAmmattiopistoJaOppisopimuskeskusTallentaja)
 
-      def sisältyväAmmatillinen(sisältävä: SisältäväOpiskeluoikeus, suoritus: AmmatillisenTutkinnonSuoritus): AmmatillinenOpiskeluoikeus =
-        defaultOpiskeluoikeus.copy(
-          oppilaitos = Some(Oppilaitos(omnia)),
+      val rajapäivänJälkeinenAlkamispäivä: LocalDate = LocalDate.of(2021, 1, 1)
+
+      def sisältyväAmmatillinen(sisältävä: SisältäväOpiskeluoikeus, suoritus: AmmatillisenTutkinnonSuoritus, alkamispäivä: LocalDate = rajapäivänJälkeinenAlkamispäivä): AmmatillinenOpiskeluoikeus =
+        makeOpiskeluoikeus(alkamispäivä = alkamispäivä, oppilaitos = omnia).copy(
           sisältyyOpiskeluoikeuteen = Some(sisältävä),
-          suoritukset = List(suoritus)
+          suoritukset = List(suoritus.copy(alkamispäivä = Some(alkamispäivä.plusDays(1))))
         )
 
-      // Eri tutkinnon/koulutusmuodon linkitys ei toistaiseksi estä tallennusta, vaan esiintymät ainoastaan lokitetaan.
-      "Eri koulutusmuodon opiskeluoikeuteen linkitys sallitaan (vain lokitetaan) -> HTTP 200" in {
+      "Eri koulutusmuodon opiskeluoikeuteen linkitys ei sallita -> HTTP 400" in {
         val sisältyvä = sisältyväAmmatillinen(
           SisältäväOpiskeluoikeus(lukioMaster.oppilaitos.get, lukioMaster.oid.get),
           autoalanPerustutkinnonSuoritus(OidOrganisaatio(omnia))
         )
         putOpiskeluoikeus(sisältyvä, henkilö = KoskiSpecificMockOppijat.tyhjä, headers = authHeaders(MockUsers.omniaTallentaja) ++ jsonContent) {
-          // verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.sisältäväOpiskeluoikeus.eriPäätasonSuoritus())
-          verifyResponseStatusOk()
+          verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.sisältäväOpiskeluoikeus.eriPäätasonSuoritus())
         }
       }
 
-      // Eri tutkinnon/koulutusmuodon linkitys ei toistaiseksi estä tallennusta, vaan esiintymät ainoastaan lokitetaan.
-      "Eri tutkinnon opiskeluoikeuteen linkitys sallitaan (vain lokitetaan) -> HTTP 200" in {
+      "Eri tutkinnon opiskeluoikeuteen linkitys ei sallita -> HTTP 400" in {
         val sisältyvä = sisältyväAmmatillinen(
           SisältäväOpiskeluoikeus(ammatillinenAutoalaMaster.oppilaitos.get, ammatillinenAutoalaMaster.oid.get),
           puuteollisuudenPerustutkinnonSuoritus(OidOrganisaatio(omnia))
         )
         putOpiskeluoikeus(sisältyvä, henkilö = KoskiSpecificMockOppijat.tyhjä, headers = authHeaders(MockUsers.omniaTallentaja) ++ jsonContent) {
-          // verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.sisältäväOpiskeluoikeus.eriPäätasonSuoritus())
-          verifyResponseStatusOk()
+          verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.sisältäväOpiskeluoikeus.eriPäätasonSuoritus())
         }
       }
 
@@ -141,6 +139,19 @@ class SisältyväOpiskeluoikeusSpec extends AnyFreeSpec with Matchers with Opisk
           fromAnyRef(LocalDate.now.plusDays(1).toString)
         )
         mockKoskiValidator(config)
+          .updateFieldsAndValidateAsJson(Oppija(KoskiSpecificMockOppijat.tyhjä, List(sisältyvä)))
+          .isRight should equal(true)
+      }
+
+      "Kun sisältyvä opiskeluoikeus on alkanut ennen rajapäivää, linkitys sallitaan vaikka päätason suoritukset eivät täsmää" in {
+        implicit val session: KoskiSpecificSession = KoskiSpecificSession.systemUser
+        implicit val accessType: AccessType.Value = AccessType.write
+        val sisältyvä = sisältyväAmmatillinen(
+          SisältäväOpiskeluoikeus(lukioMaster.oppilaitos.get, lukioMaster.oid.get),
+          autoalanPerustutkinnonSuoritus(OidOrganisaatio(omnia)),
+          alkamispäivä = longTimeAgo
+        )
+        mockKoskiValidator(KoskiApplicationForTests.config)
           .updateFieldsAndValidateAsJson(Oppija(KoskiSpecificMockOppijat.tyhjä, List(sisältyvä)))
           .isRight should equal(true)
       }
