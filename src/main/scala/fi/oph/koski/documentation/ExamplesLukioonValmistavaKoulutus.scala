@@ -112,7 +112,7 @@ object ExamplesLukioonValmistavaKoulutus {
   val lukioonValmistavanKoulutuksenOpiskeluoikeus2019 = lukioonValmistavanKoulutuksenOpiskeluoikeus.copy(
     tila = LukionOpiskeluoikeudenTila(List(
       LukionOpiskeluoikeusjakso(date(2016, 8, 15), opiskeluoikeusLäsnä, Some(ExampleData.valtionosuusRahoitteinen)),
-      LukionOpiskeluoikeusjakso(date(2021, 8, 1), opiskeluoikeusValmistunut, Some(ExampleData.valtionosuusRahoitteinen))
+      LukionOpiskeluoikeusjakso(date(2021, 9, 5), opiskeluoikeusValmistunut, Some(ExampleData.valtionosuusRahoitteinen))
     )),
     suoritukset = List(lukioonValmistavanKoulutuksenSuoritus2019),
   )

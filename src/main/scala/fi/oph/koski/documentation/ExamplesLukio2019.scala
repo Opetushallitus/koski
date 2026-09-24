@@ -11,6 +11,7 @@ import fi.oph.koski.henkilo.KoskiSpecificMockOppijat.{uusiLukio, uusiLukionAineo
 import fi.oph.koski.localization.LocalizedStringImplicits.str2localized
 import fi.oph.koski.schema.LocalizedString.finnish
 import fi.oph.koski.schema._
+import mojave.Traversal
 
 object ExamplesLukio2019 {
   val lops2019perusteenDiaarinumero = Some("OPH-2263-2019")
@@ -113,7 +114,7 @@ object ExamplesLukio2019 {
       tila = LukionOpiskeluoikeudenTila(
         List(
           LukionOpiskeluoikeusjakso(alku = date(2019, 8, 1), tila = opiskeluoikeusAktiivinen, opintojenRahoitus = Some(ExampleData.valtionosuusRahoitteinen)),
-          LukionOpiskeluoikeusjakso(alku = date(2021, 8, 1), tila = opiskeluoikeusPäättynyt, opintojenRahoitus = Some(ExampleData.valtionosuusRahoitteinen))
+          LukionOpiskeluoikeusjakso(alku = date(2021, 9, 5), tila = opiskeluoikeusPäättynyt, opintojenRahoitus = Some(ExampleData.valtionosuusRahoitteinen))
         )
       ),
       oppilaitos = Some(jyväskylänNormaalikoulu),
@@ -125,7 +126,7 @@ object ExamplesLukio2019 {
       tila = LukionOpiskeluoikeudenTila(
         List(
           LukionOpiskeluoikeusjakso(alku = date(2019, 8, 1), tila = opiskeluoikeusAktiivinen, opintojenRahoitus = Some(ExampleData.valtionosuusRahoitteinen)),
-          LukionOpiskeluoikeusjakso(alku = date(2020, 5, 15), tila = opiskeluoikeusPäättynyt, opintojenRahoitus = Some(ExampleData.valtionosuusRahoitteinen))
+          LukionOpiskeluoikeusjakso(alku = date(2021, 9, 5), tila = opiskeluoikeusPäättynyt, opintojenRahoitus = Some(ExampleData.valtionosuusRahoitteinen))
         )
       ),
       oppilaitos = Some(jyväskylänNormaalikoulu),
@@ -137,7 +138,7 @@ object ExamplesLukio2019 {
       tila = LukionOpiskeluoikeudenTila(
         List(
           LukionOpiskeluoikeusjakso(alku = date(2019, 8, 1), tila = opiskeluoikeusAktiivinen, opintojenRahoitus = Some(ExampleData.valtionosuusRahoitteinen)),
-          LukionOpiskeluoikeusjakso(alku = date(2020, 5, 15), tila = opiskeluoikeusPäättynyt, opintojenRahoitus = Some(ExampleData.valtionosuusRahoitteinen))
+          LukionOpiskeluoikeusjakso(alku = date(2021, 9, 5), tila = opiskeluoikeusPäättynyt, opintojenRahoitus = Some(ExampleData.valtionosuusRahoitteinen))
         )
       ),
       oppilaitos = Some(jyväskylänNormaalikoulu),
@@ -149,7 +150,7 @@ object ExamplesLukio2019 {
       tila = LukionOpiskeluoikeudenTila(
         List(
           LukionOpiskeluoikeusjakso(alku = date(2019, 8, 1), tila = opiskeluoikeusAktiivinen, opintojenRahoitus = Some(ExampleData.valtionosuusRahoitteinen)),
-          LukionOpiskeluoikeusjakso(alku = date(2020, 5, 15), tila = opiskeluoikeusPäättynyt, opintojenRahoitus = Some(ExampleData.valtionosuusRahoitteinen))
+          LukionOpiskeluoikeusjakso(alku = date(2021, 9, 5), tila = opiskeluoikeusPäättynyt, opintojenRahoitus = Some(ExampleData.valtionosuusRahoitteinen))
         )
       ),
       oppilaitos = Some(jyväskylänNormaalikoulu),
@@ -266,6 +267,46 @@ object Lukio2019ExampleData {
       case (Some(numero), None) => numeerinenArviointi(numero, päivä)
       case _ => Some(List(new SanallinenLukionModuulinTaiPaikallisenOpintojaksonArviointi2019(
         arvosana = Koodistokoodiviite(koodiarvo = arvosana, koodistoUri = "arviointiasteikkoyleissivistava"), kuvaus.map(LocalizedString.finnish), päivä)))
+    }
+
+  /**
+   * Siirtää opiskeluoikeuden kaikkien moduulien ja paikallisten opintojaksojen arviointipäivät
+   * annettuun päivään.
+   *
+   * Esimerkkisuoritusten arviointipäivät ovat kiinteitä (ks. numeerinenArviointi ja
+   * sanallinenArviointi), joten esimerkkejä uudelleenkäyttävä testi joutuu siirtämään myös
+   * arvioinnit, jos se muuttaa opiskeluoikeuden alkamis- tai päättymispäivää. Muuten
+   * Lukio2019OsasuoritusValidation hylkää opiskeluoikeuden (TOR-1585).
+   */
+  def siirräModuulienArviointipäivät(oo: LukionOpiskeluoikeus, päivä: LocalDate): LukionOpiskeluoikeus = {
+    import mojave._
+    moduulienArvioinnitTraversal
+      .compose(traversal[LukionOpiskeluoikeus].field[List[Suoritus]]("suoritukset").items)
+      .modify(oo) {
+        case a: NumeerinenLukionModuulinTaiPaikallisenOpintojaksonArviointi2019 => a.copy(päivä = päivä)
+        case a: SanallinenLukionModuulinTaiPaikallisenOpintojaksonArviointi2019 => a.copy(päivä = päivä)
+        case a => a
+      }
+  }
+
+  /** Osuu suorituspuun jokaisen moduulin ja paikallisen opintojakson arviointiin, miten syvällä tahansa. */
+  private def moduulienArvioinnitTraversal: Traversal[Suoritus, LukionModuulinTaiPaikallisenOpintojaksonArviointi2019] =
+    new Traversal[Suoritus, LukionModuulinTaiPaikallisenOpintojaksonArviointi2019] {
+      def modify(suoritus: Suoritus)(f: LukionModuulinTaiPaikallisenOpintojaksonArviointi2019 => LukionModuulinTaiPaikallisenOpintojaksonArviointi2019) = {
+        import mojave._
+        val arvioinnit = traversal[Suoritus]
+          .ifInstanceOf[LukionModuulinTaiPaikallisenOpintojaksonSuoritus2019]
+          .field[Option[List[LukionModuulinTaiPaikallisenOpintojaksonArviointi2019]]]("arviointi").items.items
+        val muokattu = arvioinnit.modify(suoritus)(f)
+        // withOsasuoritukset-tyylinen kenttäheijastus kaatuu lehtisuorituksiin, joilla ei ole
+        // osasuoritukset-kenttää, joten rekursio vain kun osasuorituksia oikeasti on.
+        if (muokattu.osasuoritusLista.nonEmpty) {
+          val osasuoritukset = traversal[Suoritus].field[Option[List[Suoritus]]]("osasuoritukset").items.items
+          moduulienArvioinnitTraversal.compose(osasuoritukset).modify(muokattu)(f)
+        } else {
+          muokattu
+        }
+      }
     }
 
   def numeerinenLukionOppiaineenArviointi(arvosana: Int): Some[List[NumeerinenLukionOppiaineenArviointi2019]] = {

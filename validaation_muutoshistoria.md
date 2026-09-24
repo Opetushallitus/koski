@@ -1,5 +1,14 @@
 # Koskeen tallennettavien tietojen validaatiosäännöt
 
+## 23.9.2026
+
+Lukion 2019 opetussuunnitelman mukaisissa opiskeluoikeuksissa:
+
+- Moduulin tai paikallisen opintojakson arviointipäivä ei saa olla ennen opiskeluoikeuden alkamispäivää.
+- Arviointipäivä ei saa olla opiskeluoikeuden päättymispäivän jälkeen, kun opiskeluoikeus on tilassa `valmistunut`.
+
+Validaatiot koskevat kaikkia opiskeluoikeuksia ilman aikarajausta, myös päättyneitä. Aikarajaus jätettiin tarkoituksella pois: virheelliset päivämäärät halutaan koulutuksen järjestäjien korjattaviksi, joten vanhan datan päivitys estyy kunnes päivämäärät on korjattu.
+
 ## 14.9.2026
 
 - Ahvenanmaan perusopetuksen opiskeluoikeuden lisätietojen `alkuvaihe` sallitaan vain opiskeluoikeudelle, jolla on muiden kuin oppivelvollisten oppimäärän suoritus (`ahvenanmaanperusopetuksenoppimaaraaikuiset`).
