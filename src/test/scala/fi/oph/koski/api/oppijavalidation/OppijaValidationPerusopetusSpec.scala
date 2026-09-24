@@ -968,6 +968,45 @@ class OppijaValidationPerusopetusSpec extends TutkinnonPerusteetTest[Perusopetuk
         }
       }
 
+      "Yksilöllistetty oppimäärä" - {
+        val viimeinenKäyttöpäivä = LocalDate.parse(KoskiApplicationForTests.config.getString("validaatiot.yksilöllistetynOppimääränViimeinenKäyttöpäivä"))
+
+        def vuosiluokkaYksilöllistetyllä(vahvistuspäivä: LocalDate) = defaultOpiskeluoikeus.copy(
+          suoritukset = List(seitsemännenLuokanSuoritus.copy(
+            alkamispäivä = Some(vahvistuspäivä.minusYears(1)),
+            vahvistus = vahvistusPaikkakunnalla(vahvistuspäivä),
+            osasuoritukset = Some(List(äidinkielenSuoritus.copy(yksilöllistettyOppimäärä = true)))
+          ))
+        )
+
+        def päättötodistusYksilöllistetyllä(vahvistuspäivä: LocalDate) = defaultOpiskeluoikeus.copy(
+          suoritukset = List(yhdeksännenLuokanSuoritus, päättötodistusSuoritus.copy(
+            vahvistus = vahvistusPaikkakunnalla(vahvistuspäivä),
+            osasuoritukset = Some(List(äidinkielenSuoritus.copy(yksilöllistettyOppimäärä = true)))
+          ))
+        )
+
+        "Sallittu päättötodistukselle, joka on vahvistettu viimeistään viimeisenä käyttöpäivänä" in {
+          setupOppijaWithOpiskeluoikeus(päättötodistusYksilöllistetyllä(viimeinenKäyttöpäivä)) {
+            verifyResponseStatusOk()
+          }
+        }
+
+        "Kielletty päättötodistukselle, joka on vahvistettu viimeisen käyttöpäivän jälkeen" in {
+          setupOppijaWithOpiskeluoikeus(päättötodistusYksilöllistetyllä(viimeinenKäyttöpäivä.plusDays(1))) {
+            verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.date(
+              "Tietoa yksilöllistettyOppimäärä ei saa siirtää perusopetuksen oppimäärän suoritukselle, jonka vahvistuspäivä on 2028-12-31 jälkeen"
+            ))
+          }
+        }
+
+        "Sallittu vuosiluokan suoritukselle vahvistuspäivästä riippumatta" in {
+          setupOppijaWithOpiskeluoikeus(vuosiluokkaYksilöllistetyllä(viimeinenKäyttöpäivä.plusDays(1))) {
+            verifyResponseStatusOk()
+          }
+        }
+      }
+
       "Opetus oppiaineittain (vamman, sairauden tai rajoitteen perusteella)" - {
         val vammaSairausTaiRajoiteVoimaan = LocalDate.parse(KoskiApplicationForTests.config.getString("validaatiot.vammaSairausTaiRajoiteVoimaan"))
 
@@ -2073,7 +2112,6 @@ class OppijaValidationPerusopetusSpec extends TutkinnonPerusteetTest[Perusopetuk
             KoskiErrorCategory.badRequest.validation.date.vammaisuusjakso("Vammaisuuden jakson (1.8.2027-30.6.2028) viimeinen mahdollinen päättymispäivä on 31.8.2026."),
             KoskiErrorCategory.badRequest.validation.date("Erityisen tuen päätöksen (1.8.2027-30.6.2028) viimeinen mahdollinen alkamispäivä on 31.8.2026."),
             KoskiErrorCategory.badRequest.validation.date("Erityisen tuen päätöksen (1.8.2027-30.6.2028) viimeinen mahdollinen päättymispäivä on 31.8.2026."),
-            KoskiErrorCategory.badRequest.validation.date ("Tietoa yksilöllistettyOppimäärä ei saa siirtää 2026-08-31 jälkeen alkaneelle suoritukselle")
           )
         }
       }
@@ -2101,7 +2139,6 @@ class OppijaValidationPerusopetusSpec extends TutkinnonPerusteetTest[Perusopetuk
             KoskiErrorCategory.badRequest.validation.date.vammaisuusjakso("Vaikeasti vammaisuuden jakson (1.8.2027-) viimeinen mahdollinen päättymispäivä on 31.8.2026."),
             KoskiErrorCategory.badRequest.validation.date("Erityisen tuen päätöksen (1.8.2027-) viimeinen mahdollinen alkamispäivä on 31.8.2026."),
             KoskiErrorCategory.badRequest.validation.date("Erityisen tuen päätöksen (1.8.2027-) viimeinen mahdollinen päättymispäivä on 31.8.2026."),
-            KoskiErrorCategory.badRequest.validation.date ("Tietoa yksilöllistettyOppimäärä ei saa siirtää 2026-08-31 jälkeen alkaneelle suoritukselle")
           )
         }
       }

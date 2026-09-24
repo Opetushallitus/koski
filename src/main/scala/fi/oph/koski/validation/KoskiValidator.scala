@@ -1321,8 +1321,8 @@ class KoskiValidator(
                 HttpStatus.validate(!vahvistuspvm.isBefore(oppiaineenRajattuOppimääräVoimaan))(KoskiErrorCategory.badRequest.validation.date(s"Tietoa rajattuOppimäärä ei saa siirtää ennen $oppiaineenRajattuOppimääräVoimaan alkaneelle suoritukselle")),
                 HttpStatus.validate(sisältyyTuenJaksoon(vahvistuspvm))(KoskiErrorCategory.badRequest.validation.date(s"Tieto rajattuOppimäärä vaatii tuen päätöksen jakson suorituksen vahvistuspäivälle: $vahvistuspvm")),
               )
-            case os: RajattavaOppimäärä if os.yksilöllistettyOppimäärä =>
-              HttpStatus.validate(vahvistuspvm.isBefore(yksilöllistettyOppimääräViimeinenKäyttöpäivä.plusDays(1)))(KoskiErrorCategory.badRequest.validation.date(s"Tietoa yksilöllistettyOppimäärä ei saa siirtää $yksilöllistettyOppimääräViimeinenKäyttöpäivä jälkeen alkaneelle suoritukselle"))
+            case os: RajattavaOppimäärä if os.yksilöllistettyOppimäärä && s.isInstanceOf[PerusopetuksenOppimääränSuoritus] =>
+              HttpStatus.validate(!vahvistuspvm.isAfter(yksilöllistettyOppimääräViimeinenKäyttöpäivä))(KoskiErrorCategory.badRequest.validation.date(s"Tietoa yksilöllistettyOppimäärä ei saa siirtää perusopetuksen oppimäärän suoritukselle, jonka vahvistuspäivä on $yksilöllistettyOppimääräViimeinenKäyttöpäivä jälkeen"))
             case _ => HttpStatus.ok
           }
         )
