@@ -18,7 +18,7 @@
     "enabled": true,
     "schedule": []
   },
-  "prConcurrentLimit": 8,
+  "prConcurrentLimit": 10,
   "description": [
     "Automerge is off by default and opted into per rule, so every rule that wants it has to say so.",
     "automergeType `pr` keeps the PR, and with it the CI run, mandatory.",
@@ -76,11 +76,15 @@
       "rebaseWhen": "behind-base-branch"
     },
     {
-      "description": "Disable major updates by default",
-      "matchUpdateTypes": [
-        "major"
-      ],
-      "enabled": false
+      "description": "Create minor updates only while fewer than 6 PRs are open, leaving the remaining slots to patch updates.",
+      "matchUpdateTypes": ["minor"],
+      "prConcurrentLimit": 6
+    },
+    {
+      "description": "Create major updates and package replacements last and only while fewer than 2 PRs are open.",
+      "matchUpdateTypes": ["major", "replacement"],
+      "prPriority": -1,
+      "prConcurrentLimit": 2
     },
     {
       "description": "Disable digest updates (dev/test infra images, limited value)",
@@ -88,16 +92,6 @@
         "digest"
       ],
       "enabled": false
-    },
-    {
-      "description": "Re-enable major updates for GitHub Actions to track upstream Node.js version migrations",
-      "matchManagers": [
-        "github-actions"
-      ],
-      "matchUpdateTypes": [
-        "major"
-      ],
-      "enabled": true
     },
     {
       "description": "Automerge GitHub Actions minor and patch updates as one PR. Deploy and notification actions require manual review.",
@@ -273,9 +267,11 @@
       "allowedVersions": "<=15.17"
     },
     {
-      "description": "Label PRs that Renovate will merge automatically. This must be the last rule, so that it sees the automerge value set by the rules above.",
+      "description": "Label PRs that Renovate will merge automatically and exempt them from the PR limits. This must be the last rule, so that it sees the automerge value set by the rules above.",
       "matchJsonata": ["automerge = true"],
-      "addLabels": ["automerge"]
+      "addLabels": ["automerge"],
+      "prConcurrentLimit": 0,
+      "prHourlyLimit": 0
     }
   ],
   "ignorePaths": [
