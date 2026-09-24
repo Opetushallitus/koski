@@ -1,5 +1,10 @@
 # Koskeen tallennettavien tietojen validaatiosäännöt
 
+## 24.9.2026
+
+- Perusopetuksen oppiaineen tietoa `yksilöllistettyOppimäärä` ei sallita enää perusopetuksen oppimäärän suoritukselle (päättötodistus), jonka vahvistuspäivä on 31.12.2028 jälkeen. Aiemmin raja oli 31.8.2026.
+- Vuosiluokan suorituksen `yksilöllistettyOppimäärä`-tietoa ei enää rajoiteta vahvistuspäivän perusteella.
+
 ## 14.9.2026
 
 - Ahvenanmaan perusopetuksen opiskeluoikeuden lisätietojen `alkuvaihe` sallitaan vain opiskeluoikeudelle, jolla on muiden kuin oppivelvollisten oppimäärän suoritus (`ahvenanmaanperusopetuksenoppimaaraaikuiset`).
