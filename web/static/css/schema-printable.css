@@ -17,7 +17,8 @@ table, th, td {
     text-align: left;
 }
 
-.onlywhen code {
+.onlywhen code,
+.virta code {
     background: #eeeeee;
     margin: 0 5px;
 }
@@ -78,4 +79,8 @@ td.kuvaus .description {
 .deprecated__message {
   font-weight: normal;
   display: block;
+}
+
+.virta-note {
+  font-style: italic;
 }

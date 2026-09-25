@@ -58,6 +58,18 @@ re-apply them**:
   `node.translation`. The panel never parses the `description` string. The dark
   header + tab row are styled over jQuery Mobile; the tab row is kept as the
   current product. See "Localized definition panel" below.
+- **Virta source row** (TOR-2749) — from the schema's `virta` keyword: the
+  Technical table shows a "Virta path" row for source fields only (`|`-separated
+  alternatives render one per line); the rule and note render as a final
+  "Virta: …" paragraph inside the FI description block (`.jsv-virta`,
+  `.jsv-virta-label`), and derived fields read "Virta: johdettu Koskessa, …"
+  there (their only appearance) — no separate section or servlet markup.
+  Re-apply the `virta` copy in the node builder, the Virta block in `setInfo`,
+  and the `.jsv-virta` / `.jsv-virta-label` CSS rules.
+- **Resizable info panel** (TOR-2749) — the `--jsv-panel-width` custom property
+  replaces the fixed `25em` in the `#viewer-page .ui-panel…` rules; the
+  `#info-panel-resizer` drag handle appended in the init code sets it, and the
+  width is remembered in `localStorage` (`jsv-panel-width`).
 
 - **Deep links** (TOR-2741) — see "Deep links" below. `JSV.applyDeepLinks`,
   `resolveNodePaths`, `getNodeNamePath`, the `.marked` class (reuses `.focus-box`) and
@@ -121,7 +133,8 @@ Notes:
   row, linked), `KoodistoKoodiarvo` → `koodiarvot` (Allowed row), `OksaUri` →
   `oksa` (Oksa row, linked), `Deprecated` → `deprecatedMessage` (badge),
   `UnitOfMeasure` → `unit` (Format row), `ReadOnly` → `readOnly`/`readOnlyText`
-  (Read-only row). These are additive keywords, ignored by JSON Schema validators.
+  (Read-only row), `VirtaSource`/`VirtaDerived`/`VirtaNote` → `virta` (Virta row).
+  These are additive keywords, ignored by JSON Schema validators.
 - Still **not** shown, because it only lives in the `description` string:
   `@DefaultValue` (it's a scala-schema annotation, not Koski).
 - To cover a new schema, register it in `LocalizedSchemas`.
@@ -210,9 +223,10 @@ query-less.
 
 - `json-schema-viewer.js` is **pretty-printed source** — edit it directly.
   Terser minifies it during the frontend build.
-- `json-schema-viewer.css` is **un-minified source** — edit it directly. It is
-  served verbatim (webpack does not minify copied static CSS); a ~15 KB dev-tool
-  stylesheet, so size is not a concern.
+- `json-schema-viewer.css` is **un-minified source** — edit it directly. Webpack
+  minifies the copied static CSS and JS (whitespace stripped, vendor-prefixed
+  transform lines dropped), so debug against the sources in `web/static/`, not
+  `target/webapp`.
 - Assets are served from `target/webapp/`, produced by webpack's
   `CopyWebpackPlugin` copying `web/static/`. **After editing, run `make front`**
   to regenerate `target/webapp`, then hard-refresh the browser — editing

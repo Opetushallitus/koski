@@ -14073,6 +14073,37 @@ if (typeof window.JSV === "undefined") {
             }
             JSV.contentHeight();
             JSV.resizeViewer();
+            var setPanelWidth = function(px) {
+                document.documentElement.style.setProperty("--jsv-panel-width", px + "px");
+            };
+            try {
+                var savedPanelWidth = localStorage.getItem("jsv-panel-width");
+                if (savedPanelWidth) {
+                    setPanelWidth(savedPanelWidth);
+                }
+            } catch (e) {}
+            $("#info-panel").append('<div id="info-panel-resizer"></div>');
+            $("#info-panel").on("mousedown", "#info-panel-resizer", function(event) {
+                event.preventDefault();
+                var panelWidth = null;
+                var onMove = function(e) {
+                    panelWidth = Math.min(Math.max(e.pageX, 240), window.innerWidth * 0.6);
+                    setPanelWidth(panelWidth);
+                };
+                var onUp = function() {
+                    $(document).off("mousemove", onMove).off("mouseup", onUp);
+                    $("body").removeClass("jsv-resizing");
+                    JSV.contentHeight();
+                    JSV.resizeViewer();
+                    if (panelWidth !== null) {
+                        try {
+                            localStorage.setItem("jsv-panel-width", panelWidth);
+                        } catch (e) {}
+                    }
+                };
+                $("body").addClass("jsv-resizing");
+                $(document).on("mousemove", onMove).on("mouseup", onUp);
+            });
             $(document).on("pagecontainertransition", this.contentHeight);
             $(window).on("throttledresize orientationchange", this.contentHeight);
             $(window).on("resize", this.contentHeight);
@@ -14317,6 +14348,11 @@ if (typeof window.JSV === "undefined") {
                     .text(node.oksa["käsite"] || node.oksa.url);
                 addRow("Oksa", oksaLink);
             }
+            if (node.virta && node.virta.path) {
+                var pathsEl = $('<div></div>');
+                $.each(node.virta.path.split(" | "), function(i, p) { pathsEl.append($('<div></div>').append(mono(p))); });
+                addRow("Virta path", pathsEl);
+            }
             var allowedValues = (node.enumValues || []).concat(node.koodiarvot || []);
             if (allowedValues.length) { addRow("Allowed", chips(allowedValues)); }
             if (node.synthetic) { addRow("Computed", $('<span class="jsv-plain"></span>').text("Derived value, not set on input")); }
@@ -14374,7 +14410,25 @@ if (typeof window.JSV === "undefined") {
             if (blocks.length === 0 && node.title) { blocks.push(languageBlock("fi", node.title, "")); }
             var localized = $("#info-localized").empty();
             $.each(blocks, function(i, block) { localized.append(block); });
-            $("#info-description-header").toggle(blocks.length > 0);
+            // === Virta: kenttäkohtainen sääntö ja selite (ei mahdu Technical-taulukkoon) ===
+            var virtaText = null;
+            if (node.virta) {
+                var main = node.virta.derived
+                    ? "johdettu Koskessa, " + node.virta.derived.charAt(0).toLowerCase() + node.virta.derived.slice(1)
+                    : node.virta.rule;
+                var parts = [];
+                if (main) { parts.push(main.replace(/\.?$/, ".")); }
+                if (node.virta.note) { parts.push(node.virta.note); }
+                if (parts.length) { virtaText = parts.join(" "); }
+            }
+            if (virtaText) {
+                var fiBlock = localized.children(".jsv-lang-block").has(".jsv-lang-fi").first();
+                if (!fiBlock.length) { fiBlock = languageBlock("fi", null, ""); localized.append(fiBlock); }
+                fiBlock.append($('<div class="jsv-prose jsv-virta"></div>')
+                    .append($('<span class="jsv-virta-label"></span>').text("Virta: "))
+                    .append(document.createTextNode(virtaText)));
+            }
+            $("#info-description-header").toggle(blocks.length > 0 || virtaText !== null);
             JSV.createPre(schema, tv4.getSchema(node.schema), false, node.plainName);
             var example = !node.example && node.parent && node.parent.example && node.parent.type === "object" ? node.parent.example : node.example;
             if (example) {
@@ -14712,6 +14766,7 @@ if (typeof window.JSV === "undefined") {
                 readOnlyText: schema.readOnlyText || s.readOnlyText,
                 koodiarvot: schema.koodiarvot || s.koodiarvot,
                 oksa: schema.oksa || s.oksa,
+                virta: schema.virta || s.virta,
                 "default": schema["default"] || s["default"],
                 conditions: schema.conditions || s.conditions,
                 acceptsSingleValue: schema.acceptsSingleValue || s.acceptsSingleValue,
