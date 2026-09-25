@@ -2,10 +2,11 @@ package fi.oph.koski.opiskeluoikeus
 
 import java.time.LocalDate
 
+import fi.oph.koski.log.Logging
 import fi.oph.koski.schema._
 
 
-object OpiskeluoikeusChangeMigrator {
+object OpiskeluoikeusChangeMigrator extends Logging {
   def migrate(vanhaOpiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus, uusiOpiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus, allowDeleteCompleted: Boolean): KoskeenTallennettavaOpiskeluoikeus = {
     uusiOpiskeluoikeus match {
       case _: YlioppilastutkinnonOpiskeluoikeus =>
@@ -14,7 +15,10 @@ object OpiskeluoikeusChangeMigrator {
         // Jos uusi opiskeluoikeus ollaan mitätöimässä, jätetään huomiotta kaikki muut muutokset, joita ollaan mahdollisesti tekemässä
         vanhaOpiskeluoikeus.invalidated(uusiOpiskeluoikeus.mitätöintiPäivä.get)
       case _ =>
-        val uusiOpiskeluoikeusSuorituksilla = if (allowDeleteCompleted) uusiOpiskeluoikeus else kopioiValmiitSuorituksetUuteen(vanhaOpiskeluoikeus, uusiOpiskeluoikeus)
+        val uusiOpiskeluoikeusSuorituksilla = if (allowDeleteCompleted) uusiOpiskeluoikeus else {
+          logOsittainenSiirto(vanhaOpiskeluoikeus, uusiOpiskeluoikeus)
+          kopioiValmiitSuorituksetUuteen(vanhaOpiskeluoikeus, uusiOpiskeluoikeus)
+        }
         organisaationMuutosHistoria(vanhaOpiskeluoikeus, uusiOpiskeluoikeusSuorituksilla)
     }
   }
@@ -31,6 +35,18 @@ object OpiskeluoikeusChangeMigrator {
       uusiOpiskeluoikeus.withSuoritukset(puuttuvatSuorituksetUudessa ++ uusiOpiskeluoikeus.suoritukset)
     }
   }
+
+  private def logOsittainenSiirto(vanhaOpiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus, uusiOpiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus): Unit = {
+    if (uusiOpiskeluoikeus.suoritukset.size < vanhaOpiskeluoikeus.suoritukset.size) {
+      logger.info(
+        s"Osittainen päätason suoritusten siirto opiskeluoikeuteen ${vanhaOpiskeluoikeus.oid.getOrElse("?")}: " +
+          s"siirrossa ${koulutusmoduulit(uusiOpiskeluoikeus)}, tallennettuna ${koulutusmoduulit(vanhaOpiskeluoikeus)}"
+      )
+    }
+  }
+
+  private def koulutusmoduulit(opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus): String =
+    opiskeluoikeus.suoritukset.map(s => s"${s.tyyppi.koodiarvo}/${s.koulutusmoduuli.tunniste.koodiarvo}").mkString(", ")
 
   private def organisaationMuutosHistoria(vanhaOpiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus, uusiOpiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus): KoskeenTallennettavaOpiskeluoikeus = {
     if (oppilaitoksenTaiKoulutustoimijanOidMuuttunut(vanhaOpiskeluoikeus, uusiOpiskeluoikeus)) {
