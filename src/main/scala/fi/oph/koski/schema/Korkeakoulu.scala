@@ -11,34 +11,36 @@ import fi.oph.koski.schema.annotation.SensitiveData
 import fi.oph.koski.schema.annotation.Deprecated
 
 case class KorkeakoulunOpiskeluoikeus(
-  @VirtaDerived("Aina tyhjä: Virran opiskeluoikeuksia ei tallenneta Koskeen")
+  @VirtaDerived("Aina tyhjä")
   oid: Option[String] = None,
   @VirtaSource("Opiskeluoikeus/@avain", "lähdejärjestelmä on aina virta")
-  @VirtaNote("Jos sama avain on vastauksessa usealla opiskeluoikeudella (linkitetyt opiskelijat), id on avain.opiskelijaAvain, jotta se yksilöi. Synteettisellä opiskeluoikeudella id puuttuu. Tämä on korkeakoulun opiskeluoikeuden ainoa pysyvä tunniste, jolla mm. suoritusjaot löytävät sen uudelleen.")
+  @VirtaNote("Jos sama avain on vastauksessa usealla opiskeluoikeudella, id on avain.opiskelijaAvain. Synteettisellä opiskeluoikeudella id puuttuu.")
   lähdejärjestelmänId: Option[LähdejärjestelmäId],
   @VirtaSource("Opiskeluoikeus/Organisaatio[Rooli=3]/Koodi | Organisaatio[Rooli=5]/Koodi | Myontaja", "ensimmäinen organisaatiopalvelusta löytyvä tässä järjestyksessä")
-  @VirtaNote("Siirto-opiskelijalla (SiirtoOpiskelija-elementti) lähdeorganisaatio (rooli 3) ohitetaan. Oppilaitoksen nimi haetaan viimeisen tilajakson AlkuPvm:n mukaisena, jos tila on päättävä; muuten käytetään nykyistä nimeä, ja tilajaksottomalla opiskeluoikeudella suoritusten viimeisimmän vahvistuspäivän mukaista. Jos mikään koodi ei löydy organisaatiopalvelusta (esim. ulkomainen korkeakoulu), oppilaitos jää tyhjäksi eikä Koski luo opiskeluoikeudelle päätason suoritusta; opiskeluoikeus jätetään pois, jos sille ei jää yhtään suoritusta.")
+  @VirtaNote("Siirto-opiskelijalla rooli 3 ohitetaan; jos mikään koodi ei löydy organisaatiopalvelusta, oppilaitos jää tyhjäksi. Nimi haetaan viimeisen tilajakson AlkuPvm:n mukaisena, jos tila on päättävä, muuten nykyinen nimi.")
   oppilaitos: Option[Oppilaitos],
   @VirtaDerived("Aina tyhjä")
   koulutustoimija: Option[Koulutustoimija] = None,
   @VirtaDerived("Aina tyhjä")
   arvioituPäättymispäivä: Option[LocalDate] = None,
-  @VirtaSource("Opiskeluoikeus/LoppuPvm", "arvo 2112-12-21 tulkitaan puuttuvaksi")
+  @VirtaSource("Opiskeluoikeus/LoppuPvm", "2112-12-21 = puuttuva")
   override val päättymispäivä: Option[LocalDate] = None,
   @VirtaSource("Opiskeluoikeus/Tila")
   tila: KorkeakoulunOpiskeluoikeudenTila,
   @VirtaSource("Opiskeluoikeus", "ks. lisätietojen kentät")
   lisätiedot: Option[KorkeakoulunOpiskeluoikeudenLisätiedot] = None,
   @VirtaSource("Opintosuoritus[Laji=1 tai 2]", "opiskeluoikeuteen kuuluvat juuritason suoritukset")
-  @VirtaNote("Suoritus kuuluu opiskeluoikeuteen, jos sen @opiskeluoikeusAvain (ja @opiskelijaAvain) on tämän opiskeluoikeuden avain tai, jos suorituksella ei ole omaa @opiskeluoikeusAvain-arvoa, jokin siihen sisältyvä suoritus kuuluu. Tutkintoon johtavalle opiskeluoikeudelle, jolla on Jakso/Koulutuskoodi mutta ei valmista tutkintosuoritusta, Koski luo päätason tutkintosuorituksen; muille kuin tutkintoon johtaville sekä tutkintoon johtaville ilman koulutuskoodia luodaan MuuKorkeakoulunSuoritus. Opintojaksot ovat omia päätason suorituksiaan, ellei niitä sijoiteta tutkinnon alle tai (Opiskeluoikeus/Tyyppi 8 ja 13) MuuKorkeakoulunSuorituksen alle.")
+  @VirtaNote("Suoritus kuuluu opiskeluoikeuteen, jos sen @opiskeluoikeusAvain (ja @opiskelijaAvain) on tämän opiskeluoikeuden avain tai, avaimen puuttuessa, jokin siihen sisältyvä suoritus kuuluu. Koski luo tarvittaessa päätason tutkintosuorituksen tai MuuKorkeakoulunSuorituksen, ks. niiden kentät.")
   suoritukset: List[KorkeakouluSuoritus],
   @KoodistoKoodiarvo(OpiskeluoikeudenTyyppi.korkeakoulutus.koodiarvo)
   @VirtaDerived("Aina korkeakoulutus")
   tyyppi: Koodistokoodiviite,
   @SyntheticProperty
-  @VirtaDerived("Konversiossa havaitut viittausvirheet Opintosuoritus/Sisaltyvyys-avaimissa; sama virhe voi toistua usealla saman vastauksen opiskeluoikeudella")
+  @VirtaDerived("Sisaltyvyys-viittausten virheet")
+  @VirtaNote("Virhe voi toistua usealla saman vastauksen opiskeluoikeudella.")
   virtaVirheet: List[VirtaVirhe] = List.empty,
-  @VirtaDerived("true, kun opiskeluoikeus on koottu suorituksista, joilla ei ole opiskeluoikeutta Virrassa; ryhmitelty toimipisteen mukaan")
+  @VirtaDerived("true, jos opiskeluoikeutta ei ole Virrassa")
+  @VirtaNote("Opiskeluoikeus on koottu toimipisteittäin suorituksista, joilla ei ole opiskeluoikeutta Virrassa.")
   synteettinen: Boolean = false,
   @KoodistoUri("virtaopiskeluoikeudenluokittelu")
   @VirtaSource("Opiskeluoikeus/Jakso/Luokittelu", "vain koodistosta virtaopiskeluoikeudenluokittelu löytyvät arvot")
@@ -79,7 +81,7 @@ case class KorkeakoulunOpiskeluoikeudenLisätiedot(
   @VirtaSource("Opiskeluoikeus/LukuvuosiMaksu")
   maksettavatLukuvuosimaksut: Option[Seq[KorkeakoulunOpiskeluoikeudenLukuvuosimaksu]] = None,
   @VirtaSource("LukukausiIlmoittautuminen", "tähän opiskeluoikeuteen kohdistuvat ilmoittautumiset")
-  @VirtaNote("Ilmoittautuminen kohdistuu opiskeluoikeuteen @opiskeluoikeusAvain-attribuutilla. Avaimeton ilmoittautuminen kohdistetaan, jos sen Myontaja on sama oppilaitos ja ilmoittautumisjakso osuu opiskeluoikeuden aktiiviseen (Tila/Koodi=1) tilajaksoon; tilajakso päättyy seuraavan alkaessa ja viimeinen on avoin.")
+  @VirtaNote("Kohdistus @opiskeluoikeusAvain-attribuutilla. Avaimeton ilmoittautuminen kohdistetaan, jos sen Myontaja on sama oppilaitos ja jakso osuu aktiiviseen (Tila/Koodi=1) tilajaksoon.")
   lukukausiIlmoittautuminen: Option[Lukukausi_Ilmoittautuminen] = None,
   @VirtaSource("Opiskeluoikeus/Organisaatio[Rooli=2]/Koodi", "vain kun eri kuin Myontaja")
   järjestäväOrganisaatio: Option[Oppilaitos] = None,
@@ -92,17 +94,17 @@ case class KorkeakoulunOpiskeluoikeudenLisätiedot(
   rahoituslähdeJaksot: Option[List[RahoituslähdeJakso]] = None,
   @Title("Liikkuvuusjaksot")
   @VirtaSource("Liikkuvuusjakso", "tähän opiskeluoikeuteen kohdistuvat jaksot")
-  @VirtaNote("Kohdistus kuten lukukausi-ilmoittautumisilla, mutta avaimettomassa tapauksessa Myontaja-koodia verrataan opiskeluoikeuden Virta-koodeihin (Myontaja, roolit 3 ja 5) eikä ratkaistuun oppilaitokseen, koska fuusiotapauksissa useampi koodi osoittaa samaan organisaatioon. Saman @avain-arvon toistuvat jaksot (fuusioduplikaatit) poistetaan.")
+  @VirtaNote("Kohdistus kuten lukukausi-ilmoittautumisilla, mutta avaimettomassa tapauksessa Myontaja-koodia verrataan opiskeluoikeuden Virta-koodeihin (Myontaja, roolit 3 ja 5). Saman @avain-arvon toistuvat jaksot poistetaan.")
   liikkuvuusjaksot: Option[List[Liikkuvuusjakso]] = None,
   @Title("Opettajan pedagogiset opinnot")
   @InfoDescription("opettajan kelpoisuuden määritelmä")
   @KoodistoUri("virtapatevyys")
-  @VirtaSource("Opintosuoritus/Patevyys", "opiskeluoikeuden juuritason suorituksilta, ei sisältyviltä; vain pedagogisten opintojen koodiarvot koodistosta virtapatevyys")
+  @VirtaSource("Opintosuoritus/Patevyys", "juuritason suorituksilta; vain pedagogisten opintojen koodiarvot")
   opettajanPedagogisetOpinnot: Option[List[Koodistokoodiviite]],
   @Title("Opetettavan aineen opinnot")
   @InfoDescription("opetettavan aineen kelpoisuuden määritelmä")
   @KoodistoUri("virtapatevyys")
-  @VirtaSource("Opintosuoritus/Patevyys", "opiskeluoikeuden juuritason suorituksilta, ei sisältyviltä; vain opetettavien aineiden koodiarvot koodistosta virtapatevyys")
+  @VirtaSource("Opintosuoritus/Patevyys", "juuritason suorituksilta; vain opetettavien aineiden koodiarvot")
   opetettavanAineenOpinnot: Option[List[Koodistokoodiviite]],
   @Description("Siirto-opiskelijan siirtopäivä ja lähdeoppilaitos")
   @VirtaSource("Opiskeluoikeus/SiirtoOpiskelija")
@@ -126,7 +128,8 @@ case class LiittyväOpiskeluoikeus(
   @VirtaSource("Opiskeluoikeus/Liittyvyys/@liittyvaOpiskeluoikeusAvain", "samalla duplikaattisäännöllä kuin opiskeluoikeuden lähdejärjestelmänId")
   lähdejärjestelmänId: String,
   @Description("Liittyvän opiskeluoikeuden oppilaitos, jos se on mukana samassa vastauksessa")
-  @VirtaSource("Opiskeluoikeus[@avain=liittyvä]/Myontaja", "liittyvän opiskeluoikeuden oppilaitos samalla hakujärjestyksellä kuin opiskeluoikeuden oppilaitos, nykyisellä nimellä, jos se on samassa vastauksessa")
+  @VirtaSource("Opiskeluoikeus[@avain=liittyvä]/Myontaja", "jos liittyvä opiskeluoikeus on samassa vastauksessa")
+  @VirtaNote("Haetaan samalla järjestyksellä kuin opiskeluoikeuden oppilaitos, nykyisellä nimellä.")
   oppilaitos: Option[Oppilaitos] = None,
   @KoodistoUri("virtaopiskeluoikeudentyyppi")
   @VirtaSource("Opiskeluoikeus[@avain=liittyvä]/Tyyppi", "jos liittyvä opiskeluoikeus on samassa vastauksessa")
@@ -136,7 +139,7 @@ case class LiittyväOpiskeluoikeus(
 case class KoulutuskuntaJakso(
   @VirtaSource("Opiskeluoikeus/Jakso/AlkuPvm")
   alku: LocalDate,
-  @VirtaSource("Opiskeluoikeus/Jakso/LoppuPvm")
+  @VirtaSource("Opiskeluoikeus/Jakso/LoppuPvm", "2112-12-21 = puuttuva")
   loppu: Option[LocalDate],
   @KoodistoUri("kunta")
   @VirtaSource("Opiskeluoikeus/Jakso/Koulutuskunta")
@@ -146,7 +149,7 @@ case class KoulutuskuntaJakso(
 case class RahoituslähdeJakso(
   @VirtaSource("Opiskeluoikeus/Jakso/AlkuPvm")
   alku: LocalDate,
-  @VirtaSource("Opiskeluoikeus/Jakso/LoppuPvm")
+  @VirtaSource("Opiskeluoikeus/Jakso/LoppuPvm", "2112-12-21 = puuttuva")
   loppu: Option[LocalDate],
   @KoodistoUri("virtarahoituslahde")
   @VirtaSource("Opiskeluoikeus/Jakso/Rahoituslahde")
@@ -157,7 +160,8 @@ case class RahoituslähdeJakso(
 case class KorkeakoulunKoulutusala(
   @Title("Opintoala 1995")
   @KoodistoUri("opintoalaoph1995")
-  @VirtaSource("Koulutusala/Koodi[@versio=opm95opa]", "Koulutusala on sekä Opiskeluoikeus- että Opintosuoritus-elementillä; vanhassa muodossa koodi ja @versio ovat suoraan Koulutusala-elementillä")
+  @VirtaSource("Koulutusala/Koodi[@versio=opm95opa]", "vanhassa muodossa koodi ja @versio suoraan Koulutusala-elementillä")
+  @VirtaNote("Koulutusala on sekä Opiskeluoikeus- että Opintosuoritus-elementillä.")
   opintoala1995: Option[Koodistokoodiviite] = None,
   @Title("OKM:n ohjauksen ala")
   @KoodistoUri("okmohjauksenala")
@@ -178,14 +182,14 @@ case class KorkeakoulunLähdeorganisaatio(
   @VirtaSource("Opintosuoritus/Organisaatio[Rooli=3]/Koodi")
   koodi: String,
   @Description("Oppilaitos, jos koodi on tunnistettava oppilaitosnumero")
-  @VirtaDerived("Haetaan organisaatiopalvelusta, jos koodi on viisinumeroinen oppilaitosnumero")
+  @VirtaDerived("Organisaatiopalvelusta, jos koodi on viisinumeroinen")
   oppilaitos: Option[Oppilaitos] = None
 )
 
 case class Liikkuvuusjakso(
   @VirtaSource("Liikkuvuusjakso/AlkuPvm")
   alku: LocalDate,
-  @VirtaSource("Liikkuvuusjakso/LoppuPvm")
+  @VirtaSource("Liikkuvuusjakso/LoppuPvm", "2112-12-21 = puuttuva")
   loppu: Option[LocalDate],
   @KoodistoUri("virtaliikkuvuudensuunta")
   @VirtaSource("Liikkuvuusjakso/Suunta", "jakso jätetään pois, jos Suunta, Maa, Tyyppi tai Liikkuvuusohjelma ei löydy koodistostaan")
@@ -208,7 +212,7 @@ case class Liikkuvuusjakso(
 case class KorkeakoulunOpiskeluoikeudenLukuvuosimaksu(
   @VirtaSource("Opiskeluoikeus/LukuvuosiMaksu/AlkuPvm")
   alku: LocalDate,
-  @VirtaSource("Opiskeluoikeus/LukuvuosiMaksu/LoppuPvm")
+  @VirtaSource("Opiskeluoikeus/LukuvuosiMaksu/LoppuPvm", "2112-12-21 = puuttuva")
   loppu: Option[LocalDate],
   @VirtaSource("Opiskeluoikeus/LukuvuosiMaksu/Summa")
   summa: Option[Int]
@@ -220,20 +224,23 @@ sealed trait KorkeakouluSuoritus extends PäätasonSuoritus with MahdollisestiSu
 
 case class KorkeakoulututkinnonSuoritus(
   @Title("Tutkinto")
-  @VirtaSource("Opintosuoritus[Laji=1]/Koulutuskoodi", "Koskessa luodulla päätason suorituksella (Virrassa ei vastaavaa tutkintosuoritusta) viimeisin Opiskeluoikeus/Jakso/Koulutuskoodi")
+  @VirtaSource("Opintosuoritus[Laji=1]/Koulutuskoodi", "Koskessa luodulla suorituksella viimeisin Opiskeluoikeus/Jakso/Koulutuskoodi")
+  @VirtaNote("Koski luo tutkintosuorituksen, jos Jakso/Koulutuskoodia vastaavaa suoritusta ei ole Virrassa.")
   koulutusmoduuli: Korkeakoulututkinto,
-  @VirtaSource("Opintosuoritus/Organisaatio[Rooli=3]/Koodi | Organisaatio[Rooli=5]/Koodi | Myontaja", "kuten opiskeluoikeuden oppilaitos; hyväksiluetulla suorituksella rooli 3 ohitetaan. Koskessa luodulla päätason suorituksella opiskeluoikeuden oppilaitos")
+  @VirtaSource("Opintosuoritus/Organisaatio[Rooli=3]/Koodi | Organisaatio[Rooli=5]/Koodi | Myontaja", "kuten opiskeluoikeuden oppilaitos; hyväksiluetulla suorituksella rooli 3 ohitetaan")
+  @VirtaNote("Koskessa luodulla suorituksella opiskeluoikeuden oppilaitos.")
   toimipiste: Oppilaitos,
-  @VirtaSource("Opintosuoritus/Arvosana", "ks. arvioinnin kentät; tyhjä, jos arvosanaa ei tunnisteta, jolloin myös vahvistus puuttuu")
+  @VirtaSource("Opintosuoritus/Arvosana", "ks. arvioinnin kentät; tyhjä, jos arvosanaa ei tunnisteta")
   arviointi: Option[List[KorkeakoulunArviointi]],
-  @VirtaDerived("Arvioinnin päivä (Opintosuoritus/SuoritusPvm) ja toimipiste; Koskessa luodulla päätason suorituksella viimeisen tilajakson AlkuPvm, jos sen Koodi on 3, muuten tyhjä")
+  @VirtaDerived("Arvioinnin päivä ja toimipiste")
+  @VirtaNote("Koskessa luodulla suorituksella viimeisen tilajakson AlkuPvm, jos sen Koodi on 3, muuten tyhjä.")
   vahvistus: Option[Päivämäärävahvistus],
   @VirtaSource("Opintosuoritus/Kieli", "vain koodistosta kieli löytyvät arvot")
   suorituskieli: Option[Koodistokoodiviite],
   @Description("Tutkintoon kuuluvien opintojaksojen suoritukset")
   @Title("Opintojaksot")
   @VirtaSource("Opintosuoritus/Sisaltyvyys/@sisaltyvaOpintosuoritusAvain", "sisältyvät suoritukset lajista riippumatta")
-  @VirtaNote("Jos opiskeluoikeudella on täsmälleen yksi tutkintosuoritus ilman sisältyvyyksiä ja lisäksi irrallisia opintojaksoja, opintojaksot siirretään tutkinnon osasuorituksiksi. Koskessa luodulle tutkintosuoritukselle opiskeluoikeuden opintojaksot ovat osasuorituksia vain, jos opiskeluoikeus ei ole päättynyt.")
+  @VirtaNote("Jos opiskeluoikeudella on vain yksi tutkintosuoritus eikä sillä ole sisältyvyyksiä, irralliset opintojaksot siirretään sen alle. Koskessa luodulle suoritukselle opintojaksot ovat osasuorituksia vain, jos opiskeluoikeus ei ole päättynyt.")
   override val osasuoritukset: Option[List[KorkeakoulunOpintojaksonSuoritus]],
   @Description("Päivämäärä, jolloin suoritus on hyväksiluettu")
   @VirtaSource("Opintosuoritus/HyvaksilukuPvm")
@@ -245,9 +252,9 @@ case class KorkeakoulututkinnonSuoritus(
   @VirtaSource("Opintosuoritus/JulkinenLisatieto", "@kieli-attribuutin mukaan kielistettynä")
   lisätieto: Option[LocalizedString] = None,
   @Description("Tutkinnon tai opintojen vaadittu laajuus")
-  @VirtaSource("Opiskeluoikeus/Laajuus", "Opintopiste, tai Opintoviikko jos Opintopiste puuttuu; opiskeluoikeuden arvo, sama kaikilla sen päätason suorituksilla")
+  @VirtaSource("Opiskeluoikeus/Laajuus", "Opintopiste, muuten Opintoviikko; sama kaikilla opiskeluoikeuden päätason suorituksilla")
   vaadittuLaajuus: Option[Laajuus] = None,
-  @VirtaSource("Opiskeluoikeus/Liittyvyys", "opiskeluoikeuden arvo, sama kaikilla sen päätason suorituksilla")
+  @VirtaSource("Opiskeluoikeus/Liittyvyys", "sama kaikilla opiskeluoikeuden päätason suorituksilla")
   liittyvätOpiskeluoikeudet: Option[List[LiittyväOpiskeluoikeus]] = None,
   @KoodistoKoodiarvo("korkeakoulututkinto")
   @VirtaDerived("Aina korkeakoulututkinto")
@@ -262,9 +269,9 @@ case class KorkeakoulunOpintojaksonSuoritus(
   koulutusmoduuli: KorkeakoulunOpintojakso,
   @VirtaSource("Opintosuoritus/Organisaatio[Rooli=3]/Koodi | Organisaatio[Rooli=5]/Koodi | Myontaja", "kuten opiskeluoikeuden oppilaitos; hyväksiluetulla suorituksella rooli 3 ohitetaan")
   toimipiste: Oppilaitos,
-  @VirtaSource("Opintosuoritus/Arvosana", "ks. arvioinnin kentät; tyhjä, jos arvosanaa ei tunnisteta, jolloin myös vahvistus puuttuu")
+  @VirtaSource("Opintosuoritus/Arvosana", "ks. arvioinnin kentät; tyhjä, jos arvosanaa ei tunnisteta")
   arviointi: Option[List[KorkeakoulunArviointi]],
-  @VirtaDerived("Arvioinnin päivä (Opintosuoritus/SuoritusPvm) ja toimipiste")
+  @VirtaDerived("Arvioinnin päivä ja toimipiste")
   vahvistus: Option[Päivämäärävahvistus],
   @VirtaSource("Opintosuoritus/Kieli", "vain koodistosta kieli löytyvät arvot")
   suorituskieli: Option[Koodistokoodiviite],
@@ -307,18 +314,20 @@ case class MuuKorkeakoulunSuoritus (
    @Title("Opiskeluoikeus")
    @FlattenInUI
    @VirtaSource("Opiskeluoikeus", "ks. kentät")
-   @VirtaNote("Koski luo tämän suorituksen opiskeluoikeudelle, jonka Tyyppi ei johda tutkintoon (muu kuin 1, 2, 3, 4, 6, 7), sekä tutkintoon johtavalle opiskeluoikeudelle, jonka millään Jakso-elementillä ei ole Koulutuskoodia, vaikka Virrassa olisi tutkintosuoritus. Edellyttää, että opiskeluoikeuden oppilaitos löytyy organisaatiopalvelusta.")
+   @VirtaNote("Luodaan opiskeluoikeudelle, jonka Tyyppi ei johda tutkintoon (muu kuin 1, 2, 3, 4, 6, 7) tai jonka millään Jakso-elementillä ei ole Koulutuskoodia, vaikka Virrassa olisi tutkintosuoritus. Edellyttää, että oppilaitos löytyy organisaatiopalvelusta.")
    koulutusmoduuli: MuuKorkeakoulunOpinto,
    @VirtaSource("Opiskeluoikeus/Organisaatio[Rooli=3]/Koodi | Organisaatio[Rooli=5]/Koodi | Myontaja", "opiskeluoikeuden oppilaitos")
    toimipiste: Oppilaitos,
-   @VirtaDerived("Viimeisen tilajakson (Opiskeluoikeus/Tila) AlkuPvm, jos sen Koodi on 3, muuten tyhjä; vahvistaja on toimipiste")
+   @VirtaDerived("Viimeisen tilajakson AlkuPvm, jos Koodi 3")
+   @VirtaNote("Muuten tyhjä. Vahvistaja on toimipiste.")
    vahvistus: Option[Päivämäärävahvistus],
    @VirtaDerived("Aina tyhjä")
    suorituskieli: Option[Koodistokoodiviite],
-   @VirtaSource("Opintosuoritus[Laji=2]", "opiskeluoikeuden opintojaksot, kun Opiskeluoikeus/Tyyppi on 8 (kotimainen liikkuvuus) tai 13 (avoimen opinnot); muuten ne ovat omia päätason suorituksiaan")
+   @VirtaSource("Opintosuoritus[Laji=2]", "opiskeluoikeuden opintojaksot, kun Opiskeluoikeus/Tyyppi on 8 tai 13")
+   @VirtaNote("Muilla tyypeillä opintojaksot ovat omia päätason suorituksiaan.")
    override val osasuoritukset: Option[List[KorkeakoulunOpintojaksonSuoritus]],
    @Description("Tutkinnon tai opintojen vaadittu laajuus")
-   @VirtaSource("Opiskeluoikeus/Laajuus", "Opintopiste, tai Opintoviikko jos Opintopiste puuttuu")
+   @VirtaSource("Opiskeluoikeus/Laajuus", "Opintopiste, muuten Opintoviikko")
    vaadittuLaajuus: Option[Laajuus] = None,
    @KoodistoKoodiarvo("muukorkeakoulunsuoritus")
    @VirtaDerived("Aina muukorkeakoulunsuoritus")
@@ -328,13 +337,13 @@ case class MuuKorkeakoulunSuoritus (
 
 @Description("Korkeakoulututkinnon tunnistetiedot")
 case class Korkeakoulututkinto(
-  @VirtaSource("Opintosuoritus/Koulutuskoodi", "koodisto koulutus; Koskessa luodulla päätason suorituksella viimeisin Opiskeluoikeus/Jakso/Koulutuskoodi")
+  @VirtaSource("Opintosuoritus/Koulutuskoodi", "Koskessa luodulla suorituksella viimeisin Opiskeluoikeus/Jakso/Koulutuskoodi")
   tunniste: Koodistokoodiviite,
-  @VirtaDerived("Ei täytetä Virta-konversiossa")
+  @VirtaDerived("Ei täytetä konversiossa")
   koulutustyyppi: Option[Koodistokoodiviite] = None,
   @VirtaSource("Opiskeluoikeus/Jakso/Nimi", "viimeisimmän nimellisen jakson nimi, @kieli-attribuutin mukaan kielistettynä")
   virtaNimi: Option[LocalizedString],
-  @VirtaSource("Opintosuoritus/Koulutusala", "Koskessa luodulla päätason suorituksella tyhjä")
+  @VirtaSource("Opintosuoritus/Koulutusala", "Koskessa luodulla suorituksella tyhjä")
   koulutusala: Option[KorkeakoulunKoulutusala] = None
 ) extends Koulutus with Tutkinto with Laajuudeton {
   override def nimi: LocalizedString = virtaNimi.getOrElse(tunniste.nimi.getOrElse(unlocalized(tunniste.koodiarvo)))
@@ -346,7 +355,7 @@ case class KorkeakoulunOpintojakso(
   tunniste: PaikallinenKoodi,
   @VirtaSource("Opintosuoritus/Nimi", "@kieli-attribuutin mukaan kielistettynä; puuttuessa 'Suoritus: <avain>'")
   nimi: LocalizedString,
-  @VirtaSource("Opintosuoritus/Laajuus", "Opintopiste, tai Opintoviikko jos Opintopiste puuttuu; puuttuessa sisältyvien suoritusten laajuuksien summa opintopisteinä")
+  @VirtaSource("Opintosuoritus/Laajuus", "Opintopiste, muuten Opintoviikko; puuttuessa sisältyvien laajuuksien summa opintopisteinä")
   laajuus: Option[Laajuus],
   @VirtaSource("Opintosuoritus/Koulutusala")
   koulutusala: Option[KorkeakoulunKoulutusala] = None
@@ -360,7 +369,7 @@ case class MuuKorkeakoulunOpinto(
   tunniste: Koodistokoodiviite,
   @VirtaSource("Opiskeluoikeus/Jakso/Nimi", "viimeisimmän nimellisen jakson nimi; puuttuessa Opiskeluoikeus/@koulutusmoduulitunniste tai tyypin nimi koodistosta")
   nimi: LocalizedString,
-  @VirtaSource("Opiskeluoikeus/Laajuus", "Opintopiste, tai Opintoviikko jos Opintopiste puuttuu")
+  @VirtaSource("Opiskeluoikeus/Laajuus", "Opintopiste, muuten Opintoviikko")
   laajuus: Option[Laajuus]
 ) extends KoulutusmoduuliValinnainenLaajuus
 
@@ -388,7 +397,7 @@ trait KorkeakoulunArviointi extends ArviointiPäivämäärällä {
 
 case class KorkeakoulunKoodistostaLöytyväArviointi(
   @KoodistoUri("virtaarvosana")
-  @VirtaSource("Opintosuoritus/Arvosana/*", "Arvosana-elementin ensimmäisen alielementin (esim. Viisiportainen, Hyvaksytty) arvo; vain koodistosta virtaarvosana löytyvät")
+  @VirtaSource("Opintosuoritus/Arvosana/*", "ensimmäisen alielementin (esim. Viisiportainen) arvo; vain koodistosta virtaarvosana löytyvät")
   arvosana: Koodistokoodiviite,
   @VirtaSource("Opintosuoritus/SuoritusPvm")
   päivä: LocalDate
@@ -398,7 +407,8 @@ case class KorkeakoulunKoodistostaLöytyväArviointi(
 
 case class KorkeakoulunPaikallinenArviointi(
   @Description("Paikallinen arvosana, jota ei löydy kansallisesta koodistosta")
-  @VirtaSource("Opintosuoritus/Arvosana/Muu", "kun arvosana on annettu oppilaitoksen omalla asteikolla; tyhjä, jos Muu/Koodi ei vastaa mitään AsteikkoArvosana/@avain-arvoa")
+  @VirtaSource("Opintosuoritus/Arvosana/Muu", "kun arvosana on oppilaitoksen omalla asteikolla")
+  @VirtaNote("Tyhjä, jos Muu/Koodi ei vastaa mitään AsteikkoArvosana/@avain-arvoa.")
   arvosana: KorkeakoulunPaikallinenArvosana,
   @VirtaSource("Opintosuoritus/SuoritusPvm")
   päivä: LocalDate
@@ -431,7 +441,7 @@ case class Lukukausi_Ilmoittautuminen(
 case class Lukukausi_Ilmoittautumisjakso(
   @VirtaSource("LukukausiIlmoittautuminen/AlkuPvm")
   alku: LocalDate,
-  @VirtaSource("LukukausiIlmoittautuminen/LoppuPvm", "arvo 2112-12-21 tulkitaan puuttuvaksi")
+  @VirtaSource("LukukausiIlmoittautuminen/LoppuPvm", "2112-12-21 = puuttuva")
   loppu: Option[LocalDate],
   @KoodistoUri("virtalukukausiilmtila")
   @VirtaSource("LukukausiIlmoittautuminen/Tila", "koodistosta puuttuva arvo tulkitaan koodiksi 4")
