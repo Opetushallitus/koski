@@ -14317,6 +14317,17 @@ if (typeof window.JSV === "undefined") {
                     .text(node.oksa["käsite"] || node.oksa.url);
                 addRow("Oksa", oksaLink);
             }
+            if (node.virta) {
+                var virtaEl = $('<div class="jsv-plain"></div>');
+                if (node.virta.derived) {
+                    virtaEl.append($('<span></span>').text("johdettu Koskessa — " + node.virta.derived));
+                } else if (node.virta.path) {
+                    virtaEl.append(mono(node.virta.path));
+                    if (node.virta.rule) { virtaEl.append($('<span></span>').text(" — " + node.virta.rule)); }
+                }
+                if (node.virta.note) { virtaEl.append($('<div class="jsv-virta-note"></div>').text(node.virta.note)); }
+                addRow("Virta", virtaEl);
+            }
             var allowedValues = (node.enumValues || []).concat(node.koodiarvot || []);
             if (allowedValues.length) { addRow("Allowed", chips(allowedValues)); }
             if (node.synthetic) { addRow("Computed", $('<span class="jsv-plain"></span>').text("Derived value, not set on input")); }
@@ -14712,6 +14723,7 @@ if (typeof window.JSV === "undefined") {
                 readOnlyText: schema.readOnlyText || s.readOnlyText,
                 koodiarvot: schema.koodiarvot || s.koodiarvot,
                 oksa: schema.oksa || s.oksa,
+                virta: schema.virta || s.virta,
                 "default": schema["default"] || s["default"],
                 conditions: schema.conditions || s.conditions,
                 acceptsSingleValue: schema.acceptsSingleValue || s.acceptsSingleValue,

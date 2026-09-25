@@ -58,6 +58,10 @@ re-apply them**:
   `node.translation`. The panel never parses the `description` string. The dark
   header + tab row are styled over jQuery Mobile; the tab row is kept as the
   current product. See "Localized definition panel" below.
+- **Virta source row** (TOR-2749) — the Technical table shows a "Virta" row from
+  the schema's `virta` keyword (path + rule, a "johdettu Koskessa — …" line for
+  derived fields, and an italic note): the `virta` copy in the node builder, the
+  `if (node.virta)` row block in `setInfo`, and the `.jsv-virta-note` rule.
 
 - **Deep links** (TOR-2741) — see "Deep links" below. `JSV.applyDeepLinks`,
   `resolveNodePaths`, `getNodeNamePath`, the `.marked` class (reuses `.focus-box`) and
@@ -121,7 +125,8 @@ Notes:
   row, linked), `KoodistoKoodiarvo` → `koodiarvot` (Allowed row), `OksaUri` →
   `oksa` (Oksa row, linked), `Deprecated` → `deprecatedMessage` (badge),
   `UnitOfMeasure` → `unit` (Format row), `ReadOnly` → `readOnly`/`readOnlyText`
-  (Read-only row). These are additive keywords, ignored by JSON Schema validators.
+  (Read-only row), `VirtaSource`/`VirtaDerived`/`VirtaNote` → `virta` (Virta row).
+  These are additive keywords, ignored by JSON Schema validators.
 - Still **not** shown, because it only lives in the `description` string:
   `@DefaultValue` (it's a scala-schema annotation, not Koski).
 - To cover a new schema, register it in `LocalizedSchemas`.

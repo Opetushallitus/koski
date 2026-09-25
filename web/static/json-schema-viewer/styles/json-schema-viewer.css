@@ -239,6 +239,10 @@ div#info-tab-def.info-tab,
   line-height: 1.4;
   color: #333;
 }
+#info-technical .jsv-virta-note {
+  margin-top: 4px;
+  font-style: italic;
+}
 /* Chips */
 .jsv-chip {
   display: inline-block;
