@@ -230,6 +230,9 @@ Removing an override is not enough on its own: pnpm keeps a lockfile resolution 
 3. Run `make ts-types` to regenerate TypeScript types
 4. Add database migration if persisted
 5. Update validation if needed
+6. Korkeakoulu fields also need `@VirtaSource("<Virta path>", "<rule>")` or
+   `@VirtaDerived("<how Koski sets it>")` — `VirtaSourceCoverageSpec` fails without one. Transcribe
+   from `VirtaXMLConverter`, not from the Virta XSD, and write `@Description` before `@Virta*`.
 
 ### Updating localizations
 Localizations are served by the Lokalisointipalvelu service, which gets its data from Tolgee.
