@@ -71,20 +71,22 @@ sealed trait CreateOrUpdateResult {
   def versionumero: Int
 
   def henkilötiedot: Option[OppijaHenkilöWithMasterInfo]
+
+  def tallennettuOpiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus
 }
 
-case class Created(id: Opiskeluoikeus.Id, oid: Opiskeluoikeus.Oid, lähdejärjestelmänId: Option[LähdejärjestelmäId], oppija: OppijaHenkilöWithMasterInfo, versionumero: Opiskeluoikeus.Versionumero) extends CreateOrUpdateResult {
+case class Created(id: Opiskeluoikeus.Id, oid: Opiskeluoikeus.Oid, lähdejärjestelmänId: Option[LähdejärjestelmäId], oppija: OppijaHenkilöWithMasterInfo, versionumero: Opiskeluoikeus.Versionumero, tallennettuOpiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus) extends CreateOrUpdateResult {
   def changed = true
   def created = true
   override def oppijaOid: Oid = oppija.henkilö.oid
   override def henkilötiedot: Option[OppijaHenkilöWithMasterInfo] = Some(oppija)
 }
-case class Updated(id: Opiskeluoikeus.Id, oid: Opiskeluoikeus.Oid, lähdejärjestelmänId: Option[LähdejärjestelmäId], oppijaOid: Henkilö.Oid, versionumero: Opiskeluoikeus.Versionumero, old: KoskeenTallennettavaOpiskeluoikeus) extends CreateOrUpdateResult {
+case class Updated(id: Opiskeluoikeus.Id, oid: Opiskeluoikeus.Oid, lähdejärjestelmänId: Option[LähdejärjestelmäId], oppijaOid: Henkilö.Oid, versionumero: Opiskeluoikeus.Versionumero, old: KoskeenTallennettavaOpiskeluoikeus, tallennettuOpiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus) extends CreateOrUpdateResult {
   def changed = true
   def created = false
   override def henkilötiedot = None
 }
-case class NotChanged(id: Opiskeluoikeus.Id, oid: Opiskeluoikeus.Oid, lähdejärjestelmänId: Option[LähdejärjestelmäId], oppijaOid: Henkilö.Oid, versionumero: Opiskeluoikeus.Versionumero) extends CreateOrUpdateResult {
+case class NotChanged(id: Opiskeluoikeus.Id, oid: Opiskeluoikeus.Oid, lähdejärjestelmänId: Option[LähdejärjestelmäId], oppijaOid: Henkilö.Oid, versionumero: Opiskeluoikeus.Versionumero, tallennettuOpiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus) extends CreateOrUpdateResult {
   def changed = false
   def created = false
   override def henkilötiedot = None

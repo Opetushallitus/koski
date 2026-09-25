@@ -185,7 +185,7 @@ trait PostgresOpiskeluoikeusRepositoryActions[OOROW <: OpiskeluoikeusRow, OOTABL
           diff = JArray(List(JObject("op" -> JString("add"), "path" -> JString(""), "value" -> row.data)))
           _ <- historyRepository.createAction(opiskeluoikeusId, VERSIO_1, user.oid, diff)
         } yield {
-          Right(Created(opiskeluoikeusId, oid, opiskeluoikeus.lähdejärjestelmänId, oppija, VERSIO_1))
+          Right(Created(opiskeluoikeusId, oid, opiskeluoikeus.lähdejärjestelmänId, oppija, VERSIO_1, tallennettavaOpiskeluoikeus))
         }
     }
   }
@@ -262,14 +262,15 @@ trait PostgresOpiskeluoikeusRepositoryActions[OOROW <: OpiskeluoikeusRow, OOTABL
                   uusiOpiskeluoikeus.lähdejärjestelmänId,
                   oldRow.oppijaOid,
                   nextVersionumero,
-                  vanhaOpiskeluoikeus
+                  vanhaOpiskeluoikeus,
+                  tallennettavaOpiskeluoikeus
                 )))
             } else {
               val updatedValues@(newData, _, _, _, _, _, _, _, _, _, _) = tableCompanion.updatedFieldValues(tallennettavaOpiskeluoikeus, nextVersionumero)
               val diff: JArray = jsonDiff(oldRow.data, newData)
               diff.values.length match {
                 case 0 =>
-                  DBIO.successful(Right(NotChanged(id, oid, uusiOpiskeluoikeus.lähdejärjestelmänId, oldRow.oppijaOid, versionumero)))
+                  DBIO.successful(Right(NotChanged(id, oid, uusiOpiskeluoikeus.lähdejärjestelmänId, oldRow.oppijaOid, versionumero, tallennettavaOpiskeluoikeus)))
                 case _ =>
                   for {
                     rowsUpdated <- OpiskeluOikeudetWithAccessCheck.filter(_.id === id).map(_.updateableFields).update(updatedValues)
@@ -279,7 +280,7 @@ trait PostgresOpiskeluoikeusRepositoryActions[OOROW <: OpiskeluoikeusRow, OOTABL
                     rowsUpdated match {
                       case 1 =>
                         verifyHistoria(newData, hist)
-                        Right(Updated(id, oid, uusiOpiskeluoikeus.lähdejärjestelmänId, oldRow.oppijaOid, nextVersionumero, vanhaOpiskeluoikeus))
+                        Right(Updated(id, oid, uusiOpiskeluoikeus.lähdejärjestelmänId, oldRow.oppijaOid, nextVersionumero, vanhaOpiskeluoikeus, tallennettavaOpiskeluoikeus))
                       case x: Int =>
                         throw new RuntimeException("Unexpected number of updated rows: " + x) // throw exception to cause rollback!
                     }
