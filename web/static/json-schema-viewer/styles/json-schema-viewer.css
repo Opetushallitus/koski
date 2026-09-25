@@ -199,10 +199,6 @@ div#info-tab-def.info-tab,
 #info-tab-def #info-description-header {
   margin-bottom: 14px;
 }
-#info-tab-def #info-virta-header {
-  margin-top: 18px;
-  margin-bottom: 14px;
-}
 /* Technical definition-list table */
 #info-technical {
   margin: 0 0 14px;
@@ -315,17 +311,16 @@ div#info-tab-def.info-tab,
   color: #1a1a1a;
   margin-bottom: 4px;
 }
-#info-localized .jsv-prose,
-#info-virta .jsv-prose {
+#info-localized .jsv-prose {
   font-size: 14px;
   line-height: 1.5;
   color: #333;
 }
-#info-virta .jsv-prose + .jsv-prose {
+#info-localized .jsv-virta {
   margin-top: 8px;
 }
-#info-virta .jsv-prose::first-letter {
-  text-transform: uppercase;
+#info-localized .jsv-virta-label {
+  font-weight: 600;
 }
 #textarea-json {
   height: auto !important;

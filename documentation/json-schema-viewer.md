@@ -59,13 +59,13 @@ re-apply them**:
   header + tab row are styled over jQuery Mobile; the tab row is kept as the
   current product. See "Localized definition panel" below.
 - **Virta source row** (TOR-2749) — from the schema's `virta` keyword: the
-  Technical table shows a "Virta path" row for source fields only; the rule and
-  note, and for derived fields a "Johdettu Koskessa: …" line (their only
-  appearance), render in a separate "Virta" section under Description
-  (`#info-virta-header` / `#info-virta` in `JsonSchemaViewerHtmlServlet`,
-  the `virta` copy in the node builder and the Virta block in `setInfo`, and the
-  `#info-virta` CSS rules, including a `::first-letter` uppercase so the
-  lowercase annotation strings read as sentences there).
+  Technical table shows a "Virta path" row for source fields only (`|`-separated
+  alternatives render one per line); the rule and note render as a final
+  "Virta: …" paragraph inside the FI description block (`.jsv-virta`,
+  `.jsv-virta-label`), and derived fields read "Virta: johdettu Koskessa, …"
+  there (their only appearance) — no separate section or servlet markup.
+  Re-apply the `virta` copy in the node builder, the Virta block in `setInfo`,
+  and the `.jsv-virta` / `.jsv-virta-label` CSS rules.
 - **Resizable info panel** (TOR-2749) — the `--jsv-panel-width` custom property
   replaces the fixed `25em` in the `#viewer-page .ui-panel…` rules; the
   `#info-panel-resizer` drag handle appended in the init code sets it, and the

@@ -14349,7 +14349,9 @@ if (typeof window.JSV === "undefined") {
                 addRow("Oksa", oksaLink);
             }
             if (node.virta && node.virta.path) {
-                addRow("Virta path", mono(node.virta.path));
+                var pathsEl = $('<div></div>');
+                $.each(node.virta.path.split(" | "), function(i, p) { pathsEl.append($('<div></div>').append(mono(p))); });
+                addRow("Virta path", pathsEl);
             }
             var allowedValues = (node.enumValues || []).concat(node.koodiarvot || []);
             if (allowedValues.length) { addRow("Allowed", chips(allowedValues)); }
@@ -14408,20 +14410,25 @@ if (typeof window.JSV === "undefined") {
             if (blocks.length === 0 && node.title) { blocks.push(languageBlock("fi", node.title, "")); }
             var localized = $("#info-localized").empty();
             $.each(blocks, function(i, block) { localized.append(block); });
-            $("#info-description-header").toggle(blocks.length > 0);
             // === Virta: kenttäkohtainen sääntö ja selite (ei mahdu Technical-taulukkoon) ===
-            var virtaTexts = [];
+            var virtaText = null;
             if (node.virta) {
-                if (node.virta.derived) {
-                    virtaTexts.push("Johdettu Koskessa: " + node.virta.derived.charAt(0).toLowerCase() + node.virta.derived.slice(1));
-                }
-                if (node.virta.rule) { virtaTexts.push(node.virta.rule); }
-                if (node.virta.note) { virtaTexts.push(node.virta.note); }
+                var main = node.virta.derived
+                    ? "johdettu Koskessa, " + node.virta.derived.charAt(0).toLowerCase() + node.virta.derived.slice(1)
+                    : node.virta.rule;
+                var parts = [];
+                if (main) { parts.push(main.replace(/\.?$/, ".")); }
+                if (node.virta.note) { parts.push(node.virta.note); }
+                if (parts.length) { virtaText = parts.join(" "); }
             }
-            var virtaEl = $("#info-virta").empty();
-            $.each(virtaTexts, function(i, text) { virtaEl.append($('<div class="jsv-prose"></div>').text(text)); });
-            $("#info-virta-header").toggle(virtaTexts.length > 0);
-            virtaEl.toggle(virtaTexts.length > 0);
+            if (virtaText) {
+                var fiBlock = localized.children(".jsv-lang-block").has(".jsv-lang-fi").first();
+                if (!fiBlock.length) { fiBlock = languageBlock("fi", null, ""); localized.append(fiBlock); }
+                fiBlock.append($('<div class="jsv-prose jsv-virta"></div>')
+                    .append($('<span class="jsv-virta-label"></span>').text("Virta: "))
+                    .append(document.createTextNode(virtaText)));
+            }
+            $("#info-description-header").toggle(blocks.length > 0 || virtaText !== null);
             JSV.createPre(schema, tv4.getSchema(node.schema), false, node.plainName);
             var example = !node.example && node.parent && node.parent.example && node.parent.type === "object" ? node.parent.example : node.example;
             if (example) {

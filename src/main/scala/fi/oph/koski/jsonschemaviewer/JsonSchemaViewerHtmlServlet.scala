@@ -133,8 +133,6 @@ class JsonSchemaViewerHtmlServlet(implicit val application: KoskiApplication) ex
                   <div id="info-localized">
                     Select a node to view the definition.
                   </div>
-                  <div class="jsv-eyebrow" id="info-virta-header" style="display: none">Virta</div>
-                  <div id="info-virta" style="display: none"></div>
                 </div>
                 <div class="ui-body-d ui-content info-tab"  id="info-tab-example">
                   <p>
