@@ -5,14 +5,18 @@
  */
 export type Duplikaatti = {
   $class: 'fi.oph.koski.schema.Duplikaatti'
-  tyyppi: string
+  tyyppi: 'Duplikaatti'
   arvo: string
 }
 
 export const Duplikaatti = (o: {
-  tyyppi: string
+  tyyppi?: 'Duplikaatti'
   arvo: string
-}): Duplikaatti => ({ $class: 'fi.oph.koski.schema.Duplikaatti', ...o })
+}): Duplikaatti => ({
+  $class: 'fi.oph.koski.schema.Duplikaatti',
+  tyyppi: 'Duplikaatti',
+  ...o
+})
 
 Duplikaatti.className = 'fi.oph.koski.schema.Duplikaatti' as const
 

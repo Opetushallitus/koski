@@ -5,15 +5,16 @@
  */
 export type OpiskeluoikeusAvaintaEiLöydy = {
   $class: 'fi.oph.koski.schema.OpiskeluoikeusAvaintaEiLöydy'
-  tyyppi: string
+  tyyppi: 'OpiskeluoikeusAvaintaEiLöydy'
   arvo: string
 }
 
 export const OpiskeluoikeusAvaintaEiLöydy = (o: {
-  tyyppi: string
+  tyyppi?: 'OpiskeluoikeusAvaintaEiLöydy'
   arvo: string
 }): OpiskeluoikeusAvaintaEiLöydy => ({
   $class: 'fi.oph.koski.schema.OpiskeluoikeusAvaintaEiLöydy',
+  tyyppi: 'OpiskeluoikeusAvaintaEiLöydy',
   ...o
 })
 

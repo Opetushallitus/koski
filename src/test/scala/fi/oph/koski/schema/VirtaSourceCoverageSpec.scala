@@ -1,8 +1,9 @@
 package fi.oph.koski.schema
 
 import fi.oph.koski.TestEnvironment
-import fi.oph.koski.schema.annotation.{VirtaDerived, VirtaNote, VirtaSource}
+import fi.oph.koski.schema.annotation.{KoodistoKoodiarvo, VirtaDerived, VirtaNote, VirtaSource}
 import fi.oph.scalaschema._
+import fi.oph.scalaschema.annotation.EnumValue
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.should.Matchers
 
@@ -49,8 +50,10 @@ class VirtaSourceCoverageSpec extends AnyFreeSpec with TestEnvironment with Matc
 
       // Synteettiset kentät (Opiskeluoikeus.alkamispäivä, Suoritus.tila, Arviointi.hyväksytty) periytyvät
       // yhteisistä traiteista ja lasketaan samoin kaikille koulutusmuodoille, joten ne eivät ole Virta-vastaavuuksia.
+      // Yhteen arvoon sidottu kenttä (@KoodistoKoodiarvo, @EnumValue) ei tarvitse Virta-merkintää: skeema kertoo arvon.
+      def vakio(p: Property): Boolean = p.metadata.exists(m => m.isInstanceOf[KoodistoKoodiarvo] || m.isInstanceOf[EnumValue])
       val violations = inScope.flatMap { s =>
-        s.properties.filterNot(_.synthetic).collect {
+        s.properties.filterNot(p => p.synthetic || vakio(p)).collect {
           case p if p.metadata.count(m => m.isInstanceOf[VirtaSource] || m.isInstanceOf[VirtaDerived]) != 1 =>
             s.simpleName + "." + p.key
           case p if p.metadata.count(_.isInstanceOf[VirtaNote]) > 1 =>

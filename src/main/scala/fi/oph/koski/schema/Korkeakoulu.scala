@@ -4,7 +4,7 @@ import fi.oph.koski.schema.LocalizedString.unlocalized
 
 import java.time.LocalDate
 import fi.oph.koski.schema.annotation._
-import fi.oph.scalaschema.annotation.{Description, Discriminator, OnlyWhen, SkipSerialization, SyntheticProperty, Title}
+import fi.oph.scalaschema.annotation.{Description, Discriminator, EnumValue, OnlyWhen, SkipSerialization, SyntheticProperty, Title}
 import fi.oph.koski.koskiuser.Rooli
 import fi.oph.koski.schema.Opiskeluoikeus.OpiskeluoikeudenPäättymistila
 import fi.oph.koski.schema.annotation.SensitiveData
@@ -33,7 +33,6 @@ case class KorkeakoulunOpiskeluoikeus(
   @VirtaNote("Suoritus kuuluu opiskeluoikeuteen, jos sen @opiskeluoikeusAvain (ja @opiskelijaAvain) on tämän opiskeluoikeuden avain tai, avaimen puuttuessa, jokin siihen sisältyvä suoritus kuuluu. Koski luo tarvittaessa päätason tutkintosuorituksen tai MuuKorkeakoulunSuorituksen, ks. niiden kentät.")
   suoritukset: List[KorkeakouluSuoritus],
   @KoodistoKoodiarvo(OpiskeluoikeudenTyyppi.korkeakoulutus.koodiarvo)
-  @VirtaDerived("Aina korkeakoulutus")
   tyyppi: Koodistokoodiviite,
   @SyntheticProperty
   @VirtaDerived("Sisaltyvyys-viittausten virheet")
@@ -257,7 +256,6 @@ case class KorkeakoulututkinnonSuoritus(
   @VirtaSource("Opiskeluoikeus/Liittyvyys", "sama kaikilla opiskeluoikeuden päätason suorituksilla")
   liittyvätOpiskeluoikeudet: Option[List[LiittyväOpiskeluoikeus]] = None,
   @KoodistoKoodiarvo("korkeakoulututkinto")
-  @VirtaDerived("Aina korkeakoulututkinto")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("korkeakoulututkinto", koodistoUri = "suorituksentyyppi")
 ) extends KorkeakouluSuoritus {
   override def tarvitseeVahvistuksen = false
@@ -303,7 +301,6 @@ case class KorkeakoulunOpintojaksonSuoritus(
   @VirtaSource("Opintosuoritus/JulkinenLisatieto", "@kieli-attribuutin mukaan kielistettynä")
   lisätieto: Option[LocalizedString] = None,
   @KoodistoKoodiarvo("korkeakoulunopintojakso")
-  @VirtaDerived("Aina korkeakoulunopintojakso")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("korkeakoulunopintojakso", koodistoUri = "suorituksentyyppi")
 ) extends KorkeakouluSuoritus {
   override def tarvitseeVahvistuksen = false
@@ -330,7 +327,6 @@ case class MuuKorkeakoulunSuoritus (
    @VirtaSource("Opiskeluoikeus/Laajuus", "Opintopiste, muuten Opintoviikko")
    vaadittuLaajuus: Option[Laajuus] = None,
    @KoodistoKoodiarvo("muukorkeakoulunsuoritus")
-   @VirtaDerived("Aina muukorkeakoulunsuoritus")
    tyyppi: Koodistokoodiviite = Koodistokoodiviite("muukorkeakoulunsuoritus", koodistoUri = "suorituksentyyppi")
  ) extends KorkeakouluSuoritus with Arvioinniton {
 }
@@ -477,7 +473,7 @@ trait VirtaVirhe {
 
 @OnlyWhen("tyyppi", "Duplikaatti")
 case class Duplikaatti (
-  @VirtaDerived("Aina Duplikaatti")
+  @EnumValue("Duplikaatti")
   tyyppi: String = "Duplikaatti",
   @VirtaSource("Opintosuoritus/Sisaltyvyys/@sisaltyvaOpintosuoritusAvain", "avain, joka esiintyy vastauksessa usealla suorituksella")
   arvo: String
@@ -485,7 +481,7 @@ case class Duplikaatti (
 
 @OnlyWhen("tyyppi", "OpiskeluoikeusAvaintaEiLöydy")
 case class OpiskeluoikeusAvaintaEiLöydy (
-  @VirtaDerived("Aina OpiskeluoikeusAvaintaEiLöydy")
+  @EnumValue("OpiskeluoikeusAvaintaEiLöydy")
   tyyppi: String = "OpiskeluoikeusAvaintaEiLöydy",
   @VirtaSource("Opintosuoritus/Sisaltyvyys/@sisaltyvaOpintosuoritusAvain", "avain, jota ei löydy vastauksesta")
   arvo: String
