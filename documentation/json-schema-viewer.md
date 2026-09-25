@@ -58,10 +58,12 @@ re-apply them**:
   `node.translation`. The panel never parses the `description` string. The dark
   header + tab row are styled over jQuery Mobile; the tab row is kept as the
   current product. See "Localized definition panel" below.
-- **Virta source row** (TOR-2749) — the Technical table shows a "Virta" row from
-  the schema's `virta` keyword (path + rule, a "johdettu Koskessa — …" line for
-  derived fields, and an italic note): the `virta` copy in the node builder, the
-  `if (node.virta)` row block in `setInfo`, and the `.jsv-virta-note` rule.
+- **Virta source row** (TOR-2749) — from the schema's `virta` keyword: the
+  Technical table shows a "Virta" row with the path (or "johdettu Koskessa"); the
+  rule, derived explanation and note render in a separate "Virta" section under
+  Description (`#info-virta-header` / `#info-virta` in `JsonSchemaViewerHtmlServlet`,
+  the `virta` copy in the node builder and the Virta block in `setInfo`, and the
+  `#info-virta` CSS rules).
 
 - **Deep links** (TOR-2741) — see "Deep links" below. `JSV.applyDeepLinks`,
   `resolveNodePaths`, `getNodeNamePath`, the `.marked` class (reuses `.focus-box`) and

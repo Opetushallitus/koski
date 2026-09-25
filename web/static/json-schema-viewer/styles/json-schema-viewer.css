@@ -199,6 +199,10 @@ div#info-tab-def.info-tab,
 #info-tab-def #info-description-header {
   margin-bottom: 14px;
 }
+#info-tab-def #info-virta-header {
+  margin-top: 18px;
+  margin-bottom: 14px;
+}
 /* Technical definition-list table */
 #info-technical {
   margin: 0 0 14px;
@@ -238,10 +242,6 @@ div#info-tab-def.info-tab,
   font-size: 12.5px;
   line-height: 1.4;
   color: #333;
-}
-#info-technical .jsv-virta-note {
-  margin-top: 4px;
-  font-style: italic;
 }
 /* Chips */
 .jsv-chip {
@@ -314,10 +314,14 @@ div#info-tab-def.info-tab,
   color: #1a1a1a;
   margin-bottom: 4px;
 }
-#info-localized .jsv-prose {
+#info-localized .jsv-prose,
+#info-virta .jsv-prose {
   font-size: 14px;
   line-height: 1.5;
   color: #333;
+}
+#info-virta .jsv-prose + .jsv-prose {
+  margin-top: 8px;
 }
 #textarea-json {
   height: auto !important;
