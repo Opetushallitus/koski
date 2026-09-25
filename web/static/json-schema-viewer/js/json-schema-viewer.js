@@ -14073,6 +14073,37 @@ if (typeof window.JSV === "undefined") {
             }
             JSV.contentHeight();
             JSV.resizeViewer();
+            var setPanelWidth = function(px) {
+                document.documentElement.style.setProperty("--jsv-panel-width", px + "px");
+            };
+            try {
+                var savedPanelWidth = localStorage.getItem("jsv-panel-width");
+                if (savedPanelWidth) {
+                    setPanelWidth(savedPanelWidth);
+                }
+            } catch (e) {}
+            $("#info-panel").append('<div id="info-panel-resizer"></div>');
+            $("#info-panel").on("mousedown", "#info-panel-resizer", function(event) {
+                event.preventDefault();
+                var panelWidth = null;
+                var onMove = function(e) {
+                    panelWidth = Math.min(Math.max(e.pageX, 240), window.innerWidth * 0.6);
+                    setPanelWidth(panelWidth);
+                };
+                var onUp = function() {
+                    $(document).off("mousemove", onMove).off("mouseup", onUp);
+                    $("body").removeClass("jsv-resizing");
+                    JSV.contentHeight();
+                    JSV.resizeViewer();
+                    if (panelWidth !== null) {
+                        try {
+                            localStorage.setItem("jsv-panel-width", panelWidth);
+                        } catch (e) {}
+                    }
+                };
+                $("body").addClass("jsv-resizing");
+                $(document).on("mousemove", onMove).on("mouseup", onUp);
+            });
             $(document).on("pagecontainertransition", this.contentHeight);
             $(window).on("throttledresize orientationchange", this.contentHeight);
             $(window).on("resize", this.contentHeight);
@@ -14319,7 +14350,7 @@ if (typeof window.JSV === "undefined") {
             }
             if (node.virta) {
                 if (node.virta.derived) {
-                    addRow("Virta", $('<span class="jsv-plain"></span>').text("johdettu Koskessa"));
+                    addRow("Virta", $('<span class="jsv-plain"></span>').text(node.virta.derived));
                 } else if (node.virta.path) {
                     addRow("Virta", mono(node.virta.path));
                 }
@@ -14385,7 +14416,9 @@ if (typeof window.JSV === "undefined") {
             // === Virta: kenttäkohtainen sääntö ja selite (ei mahdu Technical-taulukkoon) ===
             var virtaTexts = [];
             if (node.virta) {
-                if (node.virta.derived) { virtaTexts.push(node.virta.derived); }
+                if (node.virta.derived) {
+                    virtaTexts.push("Johdettu Koskessa: " + node.virta.derived.charAt(0).toLowerCase() + node.virta.derived.slice(1));
+                }
                 if (node.virta.rule) { virtaTexts.push(node.virta.rule); }
                 if (node.virta.note) { virtaTexts.push(node.virta.note); }
             }

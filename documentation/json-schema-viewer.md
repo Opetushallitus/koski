@@ -59,11 +59,17 @@ re-apply them**:
   header + tab row are styled over jQuery Mobile; the tab row is kept as the
   current product. See "Localized definition panel" below.
 - **Virta source row** (TOR-2749) — from the schema's `virta` keyword: the
-  Technical table shows a "Virta" row with the path (or "johdettu Koskessa"); the
-  rule, derived explanation and note render in a separate "Virta" section under
-  Description (`#info-virta-header` / `#info-virta` in `JsonSchemaViewerHtmlServlet`,
+  Technical table shows a "Virta" row with the path (or, for derived fields, the
+  derived rule); the rule, a "Johdettu Koskessa: …" line for derived fields and
+  the note render in a separate "Virta" section under Description
+  (`#info-virta-header` / `#info-virta` in `JsonSchemaViewerHtmlServlet`,
   the `virta` copy in the node builder and the Virta block in `setInfo`, and the
-  `#info-virta` CSS rules).
+  `#info-virta` CSS rules, including a `::first-letter` uppercase so the
+  lowercase annotation strings read as sentences there).
+- **Resizable info panel** (TOR-2749) — the `--jsv-panel-width` custom property
+  replaces the fixed `25em` in the `#viewer-page .ui-panel…` rules; the
+  `#info-panel-resizer` drag handle appended in the init code sets it, and the
+  width is remembered in `localStorage` (`jsv-panel-width`).
 
 - **Deep links** (TOR-2741) — see "Deep links" below. `JSV.applyDeepLinks`,
   `resolveNodePaths`, `getNodeNamePath`, the `.marked` class (reuses `.focus-box`) and
@@ -217,9 +223,10 @@ query-less.
 
 - `json-schema-viewer.js` is **pretty-printed source** — edit it directly.
   Terser minifies it during the frontend build.
-- `json-schema-viewer.css` is **un-minified source** — edit it directly. It is
-  served verbatim (webpack does not minify copied static CSS); a ~15 KB dev-tool
-  stylesheet, so size is not a concern.
+- `json-schema-viewer.css` is **un-minified source** — edit it directly. Webpack
+  minifies the copied static CSS and JS (whitespace stripped, vendor-prefixed
+  transform lines dropped), so debug against the sources in `web/static/`, not
+  `target/webapp`.
 - Assets are served from `target/webapp/`, produced by webpack's
   `CopyWebpackPlugin` copying `web/static/`. **After editing, run `make front`**
   to regenerate `target/webapp`, then hard-refresh the browser — editing
