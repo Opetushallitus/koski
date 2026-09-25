@@ -59,9 +59,9 @@ re-apply them**:
   header + tab row are styled over jQuery Mobile; the tab row is kept as the
   current product. See "Localized definition panel" below.
 - **Virta source row** (TOR-2749) — from the schema's `virta` keyword: the
-  Technical table shows a "Virta" row with the path (or, for derived fields, the
-  derived rule); the rule, a "Johdettu Koskessa: …" line for derived fields and
-  the note render in a separate "Virta" section under Description
+  Technical table shows a "Virta path" row for source fields only; the rule and
+  note, and for derived fields a "Johdettu Koskessa: …" line (their only
+  appearance), render in a separate "Virta" section under Description
   (`#info-virta-header` / `#info-virta` in `JsonSchemaViewerHtmlServlet`,
   the `virta` copy in the node builder and the Virta block in `setInfo`, and the
   `#info-virta` CSS rules, including a `::first-letter` uppercase so the

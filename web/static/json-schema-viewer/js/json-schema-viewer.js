@@ -14348,12 +14348,8 @@ if (typeof window.JSV === "undefined") {
                     .text(node.oksa["käsite"] || node.oksa.url);
                 addRow("Oksa", oksaLink);
             }
-            if (node.virta) {
-                if (node.virta.derived) {
-                    addRow("Virta", $('<span class="jsv-plain"></span>').text(node.virta.derived));
-                } else if (node.virta.path) {
-                    addRow("Virta", mono(node.virta.path));
-                }
+            if (node.virta && node.virta.path) {
+                addRow("Virta path", mono(node.virta.path));
             }
             var allowedValues = (node.enumValues || []).concat(node.koodiarvot || []);
             if (allowedValues.length) { addRow("Allowed", chips(allowedValues)); }
