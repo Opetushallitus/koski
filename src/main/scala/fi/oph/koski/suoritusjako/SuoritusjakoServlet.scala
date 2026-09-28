@@ -4,7 +4,6 @@ package fi.oph.koski.suoritusjako
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.editor.{EditorApiServlet, EditorModel}
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
-import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.koskiuser.{KoskiCookieAndBasicAuthenticationSupport, KoskiSpecificSession}
 import fi.oph.koski.log.Logging
 import fi.oph.koski.omattiedot.OmatTiedotEditorModel
@@ -19,7 +18,7 @@ class SuoritusjakoServlet(implicit val application: KoskiApplication) extends Ed
 
   post("/editor") {
     withJsonBody({ body =>
-      val json = JsonSerializer.extract[SuoritusjakoRequest](body)
+      val json = extractOrHalt[SuoritusjakoRequest](body)
       application.suoritusjakoService.getOppijaJakolinkilläAndSession(json.secret, request, application.config) match {
         case Left(status) => haltWithStatus(status)
         case Right((result, session)) =>
@@ -60,7 +59,7 @@ class SuoritusjakoServlet(implicit val application: KoskiApplication) extends Ed
   post("/delete") {
     requireKansalainen
     withJsonBody({ body =>
-      val request = JsonSerializer.extract[SuoritusjakoRequest](body)
+      val request = extractOrHalt[SuoritusjakoRequest](body)
       renderStatus(application.suoritusjakoService.delete(user.oid, request.secret))
     })()
   }
@@ -68,7 +67,7 @@ class SuoritusjakoServlet(implicit val application: KoskiApplication) extends Ed
   post("/update") {
     requireKansalainen
     withJsonBody({ body =>
-      val request = JsonSerializer.extract[SuoritusjakoUpdateRequest](body)
+      val request = extractOrHalt[SuoritusjakoUpdateRequest](body)
       val expirationDate = request.expirationDate
       application.suoritusjakoService.update(user.oid, request.secret, expirationDate) match {
         case status if status.isOk =>

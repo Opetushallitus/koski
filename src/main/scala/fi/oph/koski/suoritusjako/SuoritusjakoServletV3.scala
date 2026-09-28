@@ -1,7 +1,6 @@
 package fi.oph.koski.suoritusjako
 
 import fi.oph.koski.config.KoskiApplication
-import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.koskiuser.{KoskiCookieAndBasicAuthenticationSupport}
 import fi.oph.koski.log.Logging
 import fi.oph.koski.servlet.{KoskiSpecificApiServlet, NoCache}
@@ -15,7 +14,7 @@ class SuoritusjakoServletV3(implicit val application: KoskiApplication)
 
   post("/") {
     withJsonBody { (json: JValue) => {
-      val body = JsonSerializer.extract[SuoritusjakoRequest](json)
+      val body = extractOrHalt[SuoritusjakoRequest](json)
       application.suoritusjakoService.getOppijaJakolinkilläAndSession(body.secret, request, application.config) match {
         case Left(status) => haltWithStatus(status)
         case Right((result, session)) => renderObject[OppijaJakolinkillä](result.getIgnoringWarnings, session)

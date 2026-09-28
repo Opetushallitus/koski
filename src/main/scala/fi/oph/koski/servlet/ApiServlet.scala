@@ -1,7 +1,7 @@
 package fi.oph.koski.servlet
 
 import fi.oph.koski.db.SuoritusjakoRow
-import fi.oph.koski.http.HttpStatus
+import fi.oph.koski.http.{HttpStatus, JsonErrorMessage, KoskiErrorCategory}
 import fi.oph.koski.json.{JsonSerializer, SensitiveDataAllowed}
 import fi.oph.koski.koskiuser.KoskiSpecificSession
 import fi.oph.koski.log.Logging
@@ -21,6 +21,14 @@ trait ApiServlet extends BaseServlet with Logging with TimedServlet with Content
     JsonBodySnatcher.getJsonBody(request) match {
       case Right(x) => block(x)
       case Left(status: HttpStatus) => parseErrorHandler(status)
+    }
+  }
+
+  // Samat säännöt kuin JsonSerializer.extract, mutta virheellinen syöte palauttaa 400 eikä 500
+  def extractOrHalt[T: TypeTag](json: JValue): T = {
+    JsonSerializer.validateAndExtract[T](json, omitNullValues = true) match {
+      case Right(x) => x
+      case Left(errors) => haltWithStatus(KoskiErrorCategory.badRequest.validation.jsonSchema(JsonErrorMessage(errors)))
     }
   }
 
