@@ -1,6 +1,6 @@
 package fi.oph.koski.opiskeluoikeus
 
-import fi.oph.koski.config.KoskiApplication
+import fi.oph.koski.config.{Environment, KoskiApplication}
 import fi.oph.koski.db.KoskiOpiskeluoikeusRow
 import fi.oph.koski.henkilo.HenkilöRepository
 import fi.oph.koski.history.KoskiOpiskeluoikeusHistoryRepository
@@ -21,8 +21,11 @@ import scala.collection.parallel.CollectionConverters._
 
 class OpiskeluoikeusValidationServlet(implicit val application: KoskiApplication) extends KoskiSpecificApiServlet with RequiresVirkailijaOrPalvelukäyttäjä with Logging with NoCache with ObservableSupport with ContentEncodingSupport {
 
-  // Massavalidointi-API
-  get("/", request.getRemoteHost == "127.0.0.1") {
+  private val massavalidointiSallittu =
+    Environment.isLocalDevelopmentEnvironment(application.config) || Environment.isMockEnvironment(application.config)
+
+  // Massavalidointi-API, vain lokaali- ja mock-ympäristöissä
+  get("/", massavalidointiSallittu) {
     if (!session.hasGlobalReadAccess) {
       haltWithStatus(KoskiErrorCategory.forbidden())
     }
