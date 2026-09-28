@@ -38,7 +38,7 @@ import fi.oph.koski.raportointikanta.{RaportointikantaService, RaportointikantaS
 import fi.oph.koski.sdg.SdgServlet
 import fi.oph.koski.servlet._
 import fi.oph.koski.sso.{CasServlet, LocalLoginServlet, SSOConfig}
-import fi.oph.koski.suoritusjako.{SuoritusjakoServlet, SuoritusjakoServletV2, SuoritusjakoServletV3}
+import fi.oph.koski.suoritusjako.{SuoritusjakoServlet, SuoritusjakoServletV3}
 import fi.oph.koski.suostumus.SuostumuksenPeruutusServlet
 import fi.oph.koski.supa.SupaServlet
 import fi.oph.koski.sure.SureServlet
@@ -223,7 +223,6 @@ class ScalatraBootstrap extends LifeCycle with Logging with Timing with GlobalEx
       Environment.isMockEnvironment(application.config)
     ) {
       mount ("/koski/test/ytr", new YtrTestServlet())
-      mount("/koski/api/test/suoritusjakoV2", new SuoritusjakoServletV2)
       mount("/koski/api/test/raportointikanta", new RaportointikantaTestServlet)
       mount("/koski/api/test/opensearch", new OpenSearchServlet)
       mount("/koski/api/test/asiointikieli", new MockAsiointikieliServlet)

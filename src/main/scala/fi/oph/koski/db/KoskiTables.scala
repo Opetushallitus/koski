@@ -293,16 +293,6 @@ object KoskiTables {
     def * = (id, secret, oppijaOid, suoritusIds, kokonaisuudet, voimassaAsti, aikaleima) <> (SuoritusjakoRow.tupled, SuoritusjakoRow.unapply)
   }
 
-  class SuoritusjakoTableV2(tag: Tag) extends Table[SuoritusjakoRowV2] (tag, "suoritusjako_v2") {
-    val secret = column[String]("secret", O.Unique)
-    val oppijaOid = column[String]("oppija_oid")
-    val data = column[JValue]("data")
-    val voimassaAsti = column[Date]("voimassa_asti")
-    val aikaleima = column[Timestamp]("aikaleima")
-
-    def * = (secret, oppijaOid, data, voimassaAsti, aikaleima) <> (SuoritusjakoRowV2.tupled, SuoritusjakoRowV2.unapply)
-  }
-
   class MyDataJakoTable(tag: Tag) extends Table[MyDataJakoRow] (tag, "mydata_jako") {
     val asiakas = column[String]("asiakas")
     val oppijaOid = column[String]("oppija_oid")
@@ -468,8 +458,6 @@ object KoskiTables {
   val Preferences = TableQuery[PreferencesTable]
 
   val SuoritusJako = TableQuery[SuoritusjakoTable]
-
-  val SuoritusJakoV2 = TableQuery[SuoritusjakoTableV2]
 
   val MyDataJako = TableQuery[MyDataJakoTable]
 
@@ -721,8 +709,6 @@ case class SuoritusjakoRow(id: Long, secret: String, oppijaOid: String, suoritus
 case class JaonTyyppi(
   tyyppi: String
 )
-
-case class SuoritusjakoRowV2(secret: String, oppijaOid: String, data: JValue, voimassaAsti: Date, aikaleima: Timestamp)
 
 case class MyDataJakoRow(asiakas: String, oppijaOid: String, voimassaAsti: Date, aikaleima: Timestamp)
 

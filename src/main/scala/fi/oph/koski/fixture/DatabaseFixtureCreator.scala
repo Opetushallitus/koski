@@ -49,7 +49,6 @@ abstract class DatabaseFixtureCreator(application: KoskiApplication, opiskeluoik
       Preferences.delete,
       KoskiTables.PerustiedotSync.delete,
       KoskiTables.SuoritusJako.delete,
-      KoskiTables.SuoritusJakoV2.delete,
       KoskiTables.OAuth2JakoKaikki.delete
     ) ++ oppijat.map(application.henkilöCache.addHenkilöAction)))
 
