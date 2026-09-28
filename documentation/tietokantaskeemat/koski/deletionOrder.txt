@@ -4,6 +4,7 @@ ytr_download_status
 ytr_alkuperainen_data
 worker_lease
 todistus_job
+suoritusjako
 schema_version
 preferences
 poistettu_opiskeluoikeus
@@ -17,13 +18,11 @@ massaluovutus
 kielitutkintotodistus_tiedote_job
 casserviceticket
 ytr_opiskeluoikeushistoria
-suoritusjako
 perustiedot_sync
 perustiedot_manual_sync
 opiskeluoikeushistoria
 ytr_opiskeluoikeus
 opiskeluoikeus
 henkilo
-suoritusjako_v2
 scheduler
 oppilaitos_ip_osoite
