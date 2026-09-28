@@ -32,25 +32,16 @@ import { t } from '../i18n/i18n'
 import * as ytr from '../ytr/ytr'
 import { ammattillinenOsittainenTutkintoJaMuuAmmatillisenTutkinnonOsaPuuttuu } from '../ammatillinen/AmmatillinenOsittainenTutkinto'
 import { isLukionOppiaineidenOppimaarienSuoritus2019 } from '../lukio/lukio.js'
-const muussaKuinAktiivinenTaiValmistunutTilassa = (model) => {
-  return !['1', '3'].includes(
-    modelData(
-      model.context.opiskeluoikeus,
-      'tila.opiskeluoikeusjaksot.-1.tila.koodiarvo'
-    )
-  )
-}
+const KORKEAKOULUN_SUORITUSTYYPIT = [
+  'korkeakoulunopintojakso',
+  'korkeakoulututkinto',
+  'muukorkeakoulunsuoritus'
+]
 
 export const TilaJaVahvistusEditor = ({ model }) => {
   if (ytr.pakollisetKokeetSuoritettuEnnen1990(model)) return null
   if (isLukionOppiaineidenOppimaarienSuoritus2019(model)) return null
-  if (
-    ['korkeakoulunopintojakso', 'muukorkeakoulunsuoritus'].includes(
-      suorituksenTyyppi(model)
-    ) &&
-    muussaKuinAktiivinenTaiValmistunutTilassa(model) &&
-    !suoritusValmis(model)
-  )
+  if (KORKEAKOULUN_SUORITUSTYYPIT.includes(suorituksenTyyppi(model)))
     return null
 
   return (

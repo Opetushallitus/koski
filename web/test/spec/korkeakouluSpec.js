@@ -21,14 +21,14 @@ describe('Korkeakoulutus', function () {
 
   describe('Päättynyt-tila, korkeakoulututkinto', function () {
     before(page.openPage, page.oppijaHaku.searchAndSelect('010190-4473'))
-    it('tulkitaan keskeneräiseksi suoritukseksi', function () {
-      expect(S('.suoritukset .tila-vahvistus').length).to.equal(2)
+    it('ei näytetä suoritus kesken/valmis -tilaa', function () {
+      expect(S('.suoritukset .tila-vahvistus').length).to.equal(0)
     })
   })
 
   describe('Luopunut-tila, muu korkeakoulun suoritus', function () {
     before(page.openPage, page.oppijaHaku.searchAndSelect('260308-361W'))
-    it('ei tulkita keskeneräiseksi suoritukseksi', function () {
+    it('ei näytetä suoritus kesken/valmis -tilaa', function () {
       const luopunutOo = S('div.opiskeluoikeus').eq(2)
       expect(luopunutOo.find('.suoritukset .tila-vahvistus').length).to.equal(0)
     })
@@ -36,9 +36,9 @@ describe('Korkeakoulutus', function () {
 
   describe('Luopunut-tila, korkeakoulututkinto', function () {
     before(page.openPage, page.oppijaHaku.searchAndSelect('260308-361W'))
-    it('tulkitaan keskeneräiseksi suoritukseksi', function () {
+    it('ei näytetä suoritus kesken/valmis -tilaa', function () {
       const luopunutOo = S('div.opiskeluoikeus').eq(4)
-      expect(luopunutOo.find('.suoritukset .tila-vahvistus').length).to.equal(1)
+      expect(luopunutOo.find('.suoritukset .tila-vahvistus').length).to.equal(0)
     })
   })
 
