@@ -6,7 +6,7 @@ object OpiskeluoikeusIdentifier {
   def apply(
     oppijaOid: String,
     opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus,
-    oppijanLinkitetytOidit: List[Henkilö.Oid]
+    oppijanKaikkiOidit: List[Henkilö.Oid]
   ): OpiskeluoikeusIdentifier = {
     (opiskeluoikeus.oid, opiskeluoikeus.lähdejärjestelmänId, opiskeluoikeus.oppilaitos) match {
       case (Some(oid), _, _) => OpiskeluoikeusByOid(oid)
@@ -14,7 +14,7 @@ object OpiskeluoikeusIdentifier {
         oppijaOid,
         lähdejärjestelmäId,
         oppilaitos.map(_.oid),
-        oppijanLinkitetytOidit
+        oppijanKaikkiOidit
       )
       case _ => OppijaOidOrganisaatioJaTyyppi(
         oppijaOid,
@@ -31,8 +31,8 @@ object OpiskeluoikeusIdentifier {
 
 sealed trait OpiskeluoikeusIdentifier
 
-// oppijanLinkitetytOidit: oppijanumerorekisterin mukaiset oppijan master- ja slave-oidit. Jos tyhjä, linkitykset päätellään Kosken henkilo-taulusta.
-case class OppijaOidJaLähdejärjestelmänId(oppijaOid: String, lähdejärjestelmäId: LähdejärjestelmäId, oppilaitosOid: Option[Organisaatio.Oid], oppijanLinkitetytOidit: List[Henkilö.Oid]) extends OpiskeluoikeusIdentifier
+// oppijanKaikkiOidit tulee oppijanumerorekisteristä. Jos kutsuja ei anna sitä, linkitykset päätellään Kosken henkilo-taulusta, joka voi olla jäljessä.
+case class OppijaOidJaLähdejärjestelmänId(oppijaOid: String, lähdejärjestelmäId: LähdejärjestelmäId, oppilaitosOid: Option[Organisaatio.Oid], oppijanKaikkiOidit: List[Henkilö.Oid]) extends OpiskeluoikeusIdentifier
 case class OppijaOidOrganisaatioJaTyyppi(oppijaOid: String,
                                          oppilaitosOrganisaatio: String,
                                          koulutustoimija: Option[String],

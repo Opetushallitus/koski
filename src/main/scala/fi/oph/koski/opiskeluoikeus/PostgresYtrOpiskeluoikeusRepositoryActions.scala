@@ -49,16 +49,16 @@ class PostgresYtrOpiskeluoikeusRepositoryActions(
     allowUpdate: Boolean,
     allowDeleteCompleted: Boolean,
     skipValidations: Boolean,
-    oppijanLinkitetytOidit: List[Henkilö.Oid]
+    oppijanKaikkiOidit: List[Henkilö.Oid]
   )(implicit user: KoskiSpecificSession): DBIOAction[Either[HttpStatus, CreateOrUpdateResult], NoStream, Read with Write with Transactional] = {
-    val identifier = OpiskeluoikeusIdentifier(oppijaOid.oppijaOid, opiskeluoikeus, oppijanLinkitetytOidit)
+    val identifier = OpiskeluoikeusIdentifier(oppijaOid.oppijaOid, opiskeluoikeus, oppijanKaikkiOidit)
 
     findByIdentifierAction(identifier)
       .flatMap {
         case Right(Nil) =>
           createAction(oppijaOid, opiskeluoikeus)
         case Right(aiemmatOpiskeluoikeudet) if allowUpdate =>
-          updateIfUnambiguousAiempiOpiskeluoikeusAction(oppijaOid, opiskeluoikeus, aiemmatOpiskeluoikeudet, allowDeleteCompleted, skipValidations, oppijanLinkitetytOidit)
+          updateIfUnambiguousAiempiOpiskeluoikeusAction(oppijaOid, opiskeluoikeus, aiemmatOpiskeluoikeudet, allowDeleteCompleted, skipValidations, oppijanKaikkiOidit)
         case Right(_) =>
           DBIO.successful(Left(KoskiErrorCategory.conflict.exists())) // Ei tehdä uutta, koska vastaava vanha YO-opiskeluoikeus on olemassa
         case Left(err) =>
@@ -72,11 +72,11 @@ class PostgresYtrOpiskeluoikeusRepositoryActions(
     aiemmatOpiskeluoikeudet: List[YtrOpiskeluoikeusRow],
     allowDeleteCompleted: Boolean,
     skipValidations: Boolean,
-    oppijanLinkitetytOidit: List[Henkilö.Oid]
+    oppijanKaikkiOidit: List[Henkilö.Oid]
   )(implicit user: KoskiSpecificSession): DBIOAction[Either[HttpStatus, CreateOrUpdateResult], NoStream, Read with Write with Transactional] = {
     aiemmatOpiskeluoikeudet match {
       case List(vanhaOpiskeluoikeus) =>
-        updateIfSameOppijaAction(oppijaOid, vanhaOpiskeluoikeus, opiskeluoikeus, allowDeleteCompleted, skipValidations, oppijanLinkitetytOidit)
+        updateIfSameOppijaAction(oppijaOid, vanhaOpiskeluoikeus, opiskeluoikeus, allowDeleteCompleted, skipValidations, oppijanKaikkiOidit)
       case _ =>
         DBIO.successful(Left(KoskiErrorCategory.conflict.löytyiEnemmänKuinYksiRivi(s"Löytyi enemmän kuin yksi rivi päivitettäväksi (${aiemmatOpiskeluoikeudet.map(_.oid)})")))
     }
