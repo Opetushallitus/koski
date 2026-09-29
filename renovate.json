@@ -22,7 +22,7 @@
   "description": [
     "Automerge is off by default and opted into per rule, so every rule that wants it has to say so.",
     "automergeType `pr` keeps the PR, and with it the CI run, mandatory.",
-    "internalChecksFilter is strict, so Renovate creates no branch for a release younger than minimumReleaseAge. It proposes the newest release that is old enough, or nothing, and lists the young release under Pending Status Checks on the Dependency Dashboard.",
+    "internalChecksFilter is strict, so Renovate filters release candidates by minimumReleaseAge. It proposes the newest release that is old enough, or nothing, and lists the young release under Pending Status Checks on the Dependency Dashboard.",
     "GitHub runner images are exempt from minimumReleaseAge because their datasource provides no release timestamps. Their updates require manual review.",
     "platformAutomerge is off as a second guard. GitHub's automerge is armed at PR creation and weighs only the required checks, so it would merge past a pending `renovate/stability-days` check if a young release ever reached a branch. Renovate's own automerge waits for CI to pass *and* for its internal checks, and merges at its next run.",
     "Renovate's vulnerabilityAlerts defaults set minimumReleaseAge to null, so security fixes are not delayed by it.",
@@ -72,7 +72,8 @@
       "prPriority": 10
     },
     {
-      "description": "Automerge npm lock maintenance after CI",
+      "description": "Automerge npm lock maintenance after CI. Workaround for https://github.com/renovatebot/renovate/issues/45236: lock-file maintenance has no release timestamp, so Renovate’s branch check otherwise stays pending forever. The three-day delay is enforced during dependency resolution by minimumReleaseAge: 4320 in every pnpm-workspace.yaml, including transitive dependencies.",
+      "minimumReleaseAgeBehaviour": "timestamp-optional",
       "matchManagers": ["npm"],
       "matchUpdateTypes": ["lockFileMaintenance"],
       "automerge": true,
@@ -102,6 +103,15 @@
       "matchFileNames": ["docker-build/Dockerfile", "omadata-oauth2-sample/Dockerfile"],
       "enabled": true,
       "prPriority": 5
+    },
+    {
+      "description": "Renovate loses the image timestamp before its PR stability check, leaving digest updates blocked forever (https://github.com/renovatebot/renovate/issues/45236). Allow the missing timestamp only for these versioned Docker Hub tags after matchCurrentAge confirms they are at least three days old. Keep matchCurrentAge aligned with minimumReleaseAge.",
+      "minimumReleaseAgeBehaviour": "timestamp-optional",
+      "matchDatasources": ["docker"],
+      "matchUpdateTypes": ["digest"],
+      "matchPackageNames": ["node", "amazoncorretto", "postgres", "amazon/dynamodb-local", "opensearchproject/opensearch"],
+      "matchCurrentValue": "/^[0-9]+\\.[0-9]+\\.[0-9]+(?:[.-][a-zA-Z0-9.-]+)?$/",
+      "matchCurrentAge": ">= 3 days"
     },
     {
       "description": "Automerge the development and test database images",
@@ -187,6 +197,15 @@
       "groupName": "Node.js",
       "separateMinorPatch": false,
       "automerge": false
+    },
+    {
+      "description": "Automerge Node and Corretto base-image digest updates after CI.",
+      "matchDatasources": ["docker"],
+      "matchUpdateTypes": ["digest"],
+      "matchPackageNames": ["node", "amazoncorretto"],
+      "matchFileNames": ["docker-build/Dockerfile", "omadata-oauth2-sample/Dockerfile"],
+      "automerge": true,
+      "rebaseWhen": "behind-base-branch"
     },
     {
       "description": "Use Node LTS versioning for @types/node so its major updates follow the same stability policy as the runtime, rather than npm's latest tag.",
