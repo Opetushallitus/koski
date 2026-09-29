@@ -1,5 +1,10 @@
 # Koskeen tallennettavien tietojen validaatiosäännöt
 
+## 29.9.2026
+
+Lukion 2019 opetussuunnitelman mukaisissa opiskeluoikeuksissa moduulin tai paikallisen opintojakson arviointipäivä ei saa olla ennen opiskeluoikeuden alkamispäivää.
+Arviointipäivä ei saa olla opiskeluoikeuden päättymispäivän jälkeen, kun opiskeluoikeus on tilassa `valmistunut`.
+
 ## 24.9.2026
 
 - Perusopetuksen oppiaineen tietoa `yksilöllistettyOppimäärä` ei sallita enää perusopetuksen oppimäärän suoritukselle (päättötodistus), jonka vahvistuspäivä on 31.12.2028 jälkeen. Aiemmin raja oli 31.8.2026.
