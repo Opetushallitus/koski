@@ -23,6 +23,7 @@
     "Automerge is off by default and opted into per rule, so every rule that wants it has to say so.",
     "automergeType `pr` keeps the PR, and with it the CI run, mandatory.",
     "internalChecksFilter is strict, so Renovate creates no branch for a release younger than minimumReleaseAge. It proposes the newest release that is old enough, or nothing, and lists the young release under Pending Status Checks on the Dependency Dashboard.",
+    "GitHub runner images are exempt from minimumReleaseAge because their datasource provides no release timestamps. Their updates require manual review.",
     "platformAutomerge is off as a second guard. GitHub's automerge is armed at PR creation and weighs only the required checks, so it would merge past a pending `renovate/stability-days` check if a young release ever reached a branch. Renovate's own automerge waits for CI to pass *and* for its internal checks, and merges at its next run.",
     "Renovate's vulnerabilityAlerts defaults set minimumReleaseAge to null, so security fixes are not delayed by it.",
     "The last package rule labels the PRs that Renovate will merge automatically."
@@ -113,11 +114,19 @@
     {
       "description": "Automerge GitHub Actions minor and patch updates as one PR. Deploy and notification actions require manual review.",
       "matchManagers": ["github-actions"],
+      "matchDepTypes": ["action"],
       "matchUpdateTypes": ["minor", "patch"],
       "matchPackageNames": ["!aws-actions/**", "!slackapi/**"],
       "groupName": "github actions non-major",
       "automerge": true,
       "rebaseWhen": "behind-base-branch"
+    },
+    {
+      "description": "Raise runner image updates on their own. The github-runners datasource has no release dates, so the strict internalChecksFilter would hold these back forever unless minimumReleaseAge is lifted.",
+      "matchDatasources": ["github-runners"],
+      "groupName": "GitHub runner images",
+      "minimumReleaseAge": null,
+      "automerge": false
     },
     {
       "description": "Group all Parcel updates together (skip for now)",
@@ -173,10 +182,23 @@
     },
     {
       "description": "Update Node.js pins and Renovate's tool constraint together",
-      "matchManagers": ["nvm", "renovate-config"],
+      "matchManagers": ["nvm", "renovate-config", "dockerfile"],
       "matchDepNames": ["node"],
       "groupName": "Node.js",
       "separateMinorPatch": false,
+      "automerge": false
+    },
+    {
+      "description": "Use Node LTS versioning for @types/node so its major updates follow the same stability policy as the runtime, rather than npm's latest tag.",
+      "matchDatasources": ["npm"],
+      "matchPackageNames": ["@types/node"],
+      "versioning": "node"
+    },
+    {
+      "description": "Group @types/node major updates with the Node runtime for manual review. Minor and patch versions do not track the runtime's versions, so they stay on the ordinary npm rules.",
+      "matchPackageNames": ["@types/node"],
+      "matchUpdateTypes": ["major"],
+      "groupName": "Node.js",
       "automerge": false
     },
     {
