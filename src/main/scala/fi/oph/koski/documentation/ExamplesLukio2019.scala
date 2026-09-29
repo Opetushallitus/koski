@@ -113,7 +113,7 @@ object ExamplesLukio2019 {
       tila = LukionOpiskeluoikeudenTila(
         List(
           LukionOpiskeluoikeusjakso(alku = date(2019, 8, 1), tila = opiskeluoikeusAktiivinen, opintojenRahoitus = Some(ExampleData.valtionosuusRahoitteinen)),
-          LukionOpiskeluoikeusjakso(alku = date(2021, 8, 1), tila = opiskeluoikeusPäättynyt, opintojenRahoitus = Some(ExampleData.valtionosuusRahoitteinen))
+          LukionOpiskeluoikeusjakso(alku = date(2021, 9, 5), tila = opiskeluoikeusPäättynyt, opintojenRahoitus = Some(ExampleData.valtionosuusRahoitteinen))
         )
       ),
       oppilaitos = Some(jyväskylänNormaalikoulu),
@@ -125,7 +125,7 @@ object ExamplesLukio2019 {
       tila = LukionOpiskeluoikeudenTila(
         List(
           LukionOpiskeluoikeusjakso(alku = date(2019, 8, 1), tila = opiskeluoikeusAktiivinen, opintojenRahoitus = Some(ExampleData.valtionosuusRahoitteinen)),
-          LukionOpiskeluoikeusjakso(alku = date(2020, 5, 15), tila = opiskeluoikeusPäättynyt, opintojenRahoitus = Some(ExampleData.valtionosuusRahoitteinen))
+          LukionOpiskeluoikeusjakso(alku = date(2021, 9, 5), tila = opiskeluoikeusPäättynyt, opintojenRahoitus = Some(ExampleData.valtionosuusRahoitteinen))
         )
       ),
       oppilaitos = Some(jyväskylänNormaalikoulu),
@@ -137,7 +137,7 @@ object ExamplesLukio2019 {
       tila = LukionOpiskeluoikeudenTila(
         List(
           LukionOpiskeluoikeusjakso(alku = date(2019, 8, 1), tila = opiskeluoikeusAktiivinen, opintojenRahoitus = Some(ExampleData.valtionosuusRahoitteinen)),
-          LukionOpiskeluoikeusjakso(alku = date(2020, 5, 15), tila = opiskeluoikeusPäättynyt, opintojenRahoitus = Some(ExampleData.valtionosuusRahoitteinen))
+          LukionOpiskeluoikeusjakso(alku = date(2021, 9, 5), tila = opiskeluoikeusPäättynyt, opintojenRahoitus = Some(ExampleData.valtionosuusRahoitteinen))
         )
       ),
       oppilaitos = Some(jyväskylänNormaalikoulu),
@@ -149,7 +149,7 @@ object ExamplesLukio2019 {
       tila = LukionOpiskeluoikeudenTila(
         List(
           LukionOpiskeluoikeusjakso(alku = date(2019, 8, 1), tila = opiskeluoikeusAktiivinen, opintojenRahoitus = Some(ExampleData.valtionosuusRahoitteinen)),
-          LukionOpiskeluoikeusjakso(alku = date(2020, 5, 15), tila = opiskeluoikeusPäättynyt, opintojenRahoitus = Some(ExampleData.valtionosuusRahoitteinen))
+          LukionOpiskeluoikeusjakso(alku = date(2021, 9, 5), tila = opiskeluoikeusPäättynyt, opintojenRahoitus = Some(ExampleData.valtionosuusRahoitteinen))
         )
       ),
       oppilaitos = Some(jyväskylänNormaalikoulu),
@@ -267,6 +267,52 @@ object Lukio2019ExampleData {
       case _ => Some(List(new SanallinenLukionModuulinTaiPaikallisenOpintojaksonArviointi2019(
         arvosana = Koodistokoodiviite(koodiarvo = arvosana, koodistoUri = "arviointiasteikkoyleissivistava"), kuvaus.map(LocalizedString.finnish), päivä)))
     }
+
+  def siirräModuulienArviointipäivät(oo: LukionOpiskeluoikeus, päivä: LocalDate): LukionOpiskeluoikeus =
+    oo.copy(suoritukset = oo.suoritukset.map {
+      case s: LukionOppimääränSuoritus2019 =>
+        s.copy(
+          osasuoritukset = s.osasuoritukset.map(_.map(siirräOsasuorituksenArviointipäivät(_, päivä))),
+          omanÄidinkielenOpinnot = s.omanÄidinkielenOpinnot.map(siirräOmanÄidinkielenOpintojenArviointipäivät(_, päivä))
+        )
+      case s: LukionOppiaineidenOppimäärienSuoritus2019 =>
+        s.copy(osasuoritukset = s.osasuoritukset.map(_.map(siirräOsasuorituksenArviointipäivät(_, päivä))))
+      case s => s
+    })
+
+  private def siirräOsasuorituksenArviointipäivät(os: LukionOppimääränOsasuoritus2019, päivä: LocalDate): LukionOppimääränOsasuoritus2019 = os match {
+    case s: LukionOppiaineenSuoritus2019 =>
+      s.copy(osasuoritukset = s.osasuoritukset.map(_.map {
+        case m: LukionModuulinSuoritusOppiaineissa2019 => m.copy(arviointi = siirräArviointipäivät(m.arviointi, päivä))
+        case m: LukionPaikallisenOpintojaksonSuoritus2019 => m.copy(arviointi = siirräArviointipäivät(m.arviointi, päivä))
+        case m => m
+      }))
+    case s: MuidenLukioOpintojenSuoritus2019 =>
+      s.copy(osasuoritukset = s.osasuoritukset.map(_.map {
+        case m: LukionModuulinSuoritusMuissaOpinnoissa2019 => m.copy(arviointi = siirräArviointipäivät(m.arviointi, päivä))
+        case m: LukionPaikallisenOpintojaksonSuoritus2019 => m.copy(arviointi = siirräArviointipäivät(m.arviointi, päivä))
+        case m => m
+      }))
+    case s => s
+  }
+
+  private def siirräArviointipäivät(
+    arvioinnit: Option[List[LukionModuulinTaiPaikallisenOpintojaksonArviointi2019]],
+    päivä: LocalDate
+  ): Option[List[LukionModuulinTaiPaikallisenOpintojaksonArviointi2019]] =
+    arvioinnit.map(_.map {
+      case a: NumeerinenLukionModuulinTaiPaikallisenOpintojaksonArviointi2019 => a.copy(päivä = päivä)
+      case a: SanallinenLukionModuulinTaiPaikallisenOpintojaksonArviointi2019 => a.copy(päivä = päivä)
+      case a => a
+    })
+
+  private def siirräOmanÄidinkielenOpintojenArviointipäivät(o: LukionOmanÄidinkielenOpinnot, päivä: LocalDate): LukionOmanÄidinkielenOpinnot =
+    o.copy(
+      arviointipäivä = o.arviointipäivä.map(_ => päivä),
+      osasuoritukset = o.osasuoritukset.map(_.map(os =>
+        os.copy(arviointi = os.arviointi.map(_.map(_.copy(päivä = päivä))))
+      ))
+    )
 
   def numeerinenLukionOppiaineenArviointi(arvosana: Int): Some[List[NumeerinenLukionOppiaineenArviointi2019]] = {
     Some(List(NumeerinenLukionOppiaineenArviointi2019(arvosana.toString)))

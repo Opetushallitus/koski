@@ -13,7 +13,7 @@ import fi.oph.koski.documentation.LukioExampleData.{opiskeluoikeusAktiivinen, op
 import fi.oph.koski.documentation.PerusopetusExampleData.{kahdeksannenLuokanSuoritus, perusopetuksenOppimääränSuoritus, perusopetuksenOppimääränSuoritusKesken, seitsemännenLuokanSuoritus, suoritustapaErityinenTutkinto, yhdeksännenLuokanSuoritus}
 import fi.oph.koski.documentation.YleissivistavakoulutusExampleData.{jyväskylänNormaalikoulu, kulosaarenAlaAste, oppilaitos, ressunLukio}
 import fi.oph.koski.documentation._
-import fi.oph.koski.documentation.{AmmatillinenExampleData, AmmattitutkintoExample, ExampleData, ExamplesEsiopetus, ExamplesInternationalSchool, ExamplesLukio2019, ExamplesPerusopetuksenLisaopetus, ExamplesTelma, ExamplesValma, InternationalSchoolExampleData, LukioExampleData, VapaaSivistystyöExample}
+import fi.oph.koski.documentation.{AmmatillinenExampleData, AmmattitutkintoExample, ExampleData, ExamplesEsiopetus, ExamplesInternationalSchool, ExamplesLukio2019, Lukio2019ExampleData, ExamplesPerusopetuksenLisaopetus, ExamplesTelma, ExamplesValma, InternationalSchoolExampleData, LukioExampleData, VapaaSivistystyöExample}
 import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.schema._
 
@@ -586,6 +586,12 @@ object ValpasOpiskeluoikeusExampleData {
     )
   )
 
+  def poistaLukionModuulienOsasuoritukset(oo: LukionOpiskeluoikeus): LukionOpiskeluoikeus =
+    oo.copy(suoritukset = oo.suoritukset.map {
+      case s: LukionOppimääränSuoritus2019 => s.copy(osasuoritukset = None, omanÄidinkielenOpinnot = None)
+      case s => s
+    })
+
   def lukionOpiskeluoikeus(alku: LocalDate = date(2019, 8, 1)) = ExamplesLukio2019.aktiivinenOpiskeluoikeus.copy(
     tila = LukionOpiskeluoikeudenTila(
       List(
@@ -594,14 +600,16 @@ object ValpasOpiskeluoikeusExampleData {
     )
   )
 
-  def lukionOpiskeluoikeusValmistunut = ExamplesLukio2019.opiskeluoikeus.copy(
-    tila = LukionOpiskeluoikeudenTila(
-      List(
-        LukionOpiskeluoikeusjakso(alku = date(2019, 8, 1), tila = opiskeluoikeusAktiivinen, opintojenRahoitus = Some(ExampleData.valtionosuusRahoitteinen)),
-        LukionOpiskeluoikeusjakso(alku = date(2021, 9, 2), tila = opiskeluoikeusPäättynyt, opintojenRahoitus = Some(ExampleData.valtionosuusRahoitteinen))
-      )
-    ),
-  )
+  def lukionOpiskeluoikeusValmistunut = Lukio2019ExampleData
+    .siirräModuulienArviointipäivät(ExamplesLukio2019.opiskeluoikeus, date(2020, 5, 15))
+    .copy(
+      tila = LukionOpiskeluoikeudenTila(
+        List(
+          LukionOpiskeluoikeusjakso(alku = date(2019, 8, 1), tila = opiskeluoikeusAktiivinen, opintojenRahoitus = Some(ExampleData.valtionosuusRahoitteinen)),
+          LukionOpiskeluoikeusjakso(alku = date(2021, 9, 2), tila = opiskeluoikeusPäättynyt, opintojenRahoitus = Some(ExampleData.valtionosuusRahoitteinen))
+        )
+      ),
+    )
 
   def ammattikouluOpiskeluoikeus = ammattikouluValmistunutOpiskeluoikeus().copy(
     tila = AmmatillinenOpiskeluoikeudenTila(List(
@@ -909,7 +917,7 @@ object ValpasOpiskeluoikeusExampleData {
       Maksuttomuus(alku = date(2021, 8, 19), loppu = None, maksuton = true),
     ))
   ) = {
-    val oo = ExamplesLukio2019.aktiivinenOpiskeluoikeus
+    val oo = poistaLukionModuulienOsasuoritukset(ExamplesLukio2019.aktiivinenOpiskeluoikeus)
     val edellisetLisätiedot = oo.lisätiedot.getOrElse(LukionOpiskeluoikeudenLisätiedot())
 
     oo.copy(
@@ -927,7 +935,7 @@ object ValpasOpiskeluoikeusExampleData {
   def lukionOpiskeluoikeusAlkaaJaLoppuu2021Syksyllä(
     maksuttomuus: Option[List[Maksuttomuus]] = Some(List(Maksuttomuus(alku = date(2021, 8, 15), loppu = Some(date(2021, 9, 19)), maksuton = true)))
   ) = {
-    val oo = ExamplesLukio2019.aktiivinenOpiskeluoikeus
+    val oo = poistaLukionModuulienOsasuoritukset(ExamplesLukio2019.aktiivinenOpiskeluoikeus)
     val edellisetLisätiedot = oo.lisätiedot.getOrElse(LukionOpiskeluoikeudenLisätiedot())
 
     oo.copy(
@@ -964,7 +972,7 @@ object ValpasOpiskeluoikeusExampleData {
   def lukionOpiskeluoikeusAlkaa2021Lokakuussa(
     maksuttomuus: Option[List[Maksuttomuus]] = Some(List(Maksuttomuus(alku = date(2021, 10, 3), loppu = None, maksuton = true)))
   ) = {
-    val oo = ExamplesLukio2019.aktiivinenOpiskeluoikeus
+    val oo = poistaLukionModuulienOsasuoritukset(ExamplesLukio2019.aktiivinenOpiskeluoikeus)
     val edellisetLisätiedot = oo.lisätiedot.getOrElse(LukionOpiskeluoikeudenLisätiedot())
 
     oo.copy(
@@ -1268,7 +1276,7 @@ object ValpasOpiskeluoikeusExampleData {
     )
   )
 
-  def lukionVäliaikaisestiKeskeytettyOpiskeluoikeus = ExamplesLukio2019.opiskeluoikeus.copy(
+  def lukionVäliaikaisestiKeskeytettyOpiskeluoikeus = poistaLukionModuulienOsasuoritukset(ExamplesLukio2019.aktiivinenOpiskeluoikeus).copy(
     tila = LukionOpiskeluoikeudenTila(
       List(
         LukionOpiskeluoikeusjakso(alku = date(2021, 8, 1), tila = opiskeluoikeusAktiivinen, opintojenRahoitus = Some(ExampleData.valtionosuusRahoitteinen)),

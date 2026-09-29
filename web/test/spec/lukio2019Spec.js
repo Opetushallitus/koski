@@ -22,8 +22,8 @@ describe('Lukiokoulutus2019', function () {
       before(opinnot.expandAll)
       it('näyttää opiskeluoikeuden tiedot', function () {
         expect(extractAsText(S('.opiskeluoikeuden-tiedot'))).to.equal(
-          'Opiskeluoikeuden voimassaoloaika : 1.8.2019 — 1.8.2021\n' +
-            'Tila 1.8.2021 Valmistunut (valtionosuusrahoitteinen koulutus)\n' +
+          'Opiskeluoikeuden voimassaoloaika : 1.8.2019 — 5.9.2021\n' +
+            'Tila 5.9.2021 Valmistunut (valtionosuusrahoitteinen koulutus)\n' +
             '1.8.2019 Läsnä (valtionosuusrahoitteinen koulutus)\n' +
             'Lukion oppimäärä suoritettu kyllä'
         )
@@ -331,6 +331,11 @@ describe('Lukiokoulutus2019', function () {
                       .oppiaine('PAI')
                       .kurssi('PA')
                       .arvosana.selectValue('9'),
+                    opinnot.oppiaineet.oppiaine('PAI').kurssi('PA').showDetails,
+                    opinnot.oppiaineet
+                      .oppiaine('PAI')
+                      .kurssi('PA')
+                      .arviointipäivä.setValue('1.9.2021'),
                     editor.saveChanges,
                     wait.until(page.isSavedLabelShown)
                   )
@@ -545,8 +550,8 @@ describe('Lukiokoulutus2019', function () {
     describe('Kaikki tiedot näkyvissä', function () {
       it('näyttää opiskeluoikeuden tiedot', function () {
         expect(extractAsText(S('.opiskeluoikeuden-tiedot'))).to.equal(
-          'Opiskeluoikeuden voimassaoloaika : 1.8.2019 — 1.8.2021\n' +
-            'Tila 1.8.2021 Valmistunut (valtionosuusrahoitteinen koulutus)\n' +
+          'Opiskeluoikeuden voimassaoloaika : 1.8.2019 — 5.9.2021\n' +
+            'Tila 5.9.2021 Valmistunut (valtionosuusrahoitteinen koulutus)\n' +
             '1.8.2019 Läsnä (valtionosuusrahoitteinen koulutus)'
         )
       })
