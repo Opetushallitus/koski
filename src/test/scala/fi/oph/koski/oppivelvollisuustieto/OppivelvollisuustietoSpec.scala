@@ -853,7 +853,7 @@ class OppivelvollisuustietoSpec
   }
 
   private def lukionOppimäärä(vahvistus: Option[LocalDate], lisääMaksuttomuus: Boolean = true, alkamispäivä: LocalDate = date(2021, 8, 1)): LukionOpiskeluoikeus = {
-    ExamplesLukio2019.aktiivinenOpiskeluoikeus
+    val oo = ExamplesLukio2019.aktiivinenOpiskeluoikeus
       .copy(
         oppilaitos = None,
         tila = vahvistus.map(vahvistusDate => LukionOpiskeluoikeudenTila(
@@ -873,6 +873,7 @@ class OppivelvollisuustietoSpec
             None
           }
       )
+    Lukio2019ExampleData.siirräModuulienArviointipäivät(oo, alkamispäivä)
   }
 
   private def lukionOppimääräJaMaksuttomuus(vahvistus: Option[LocalDate],
@@ -890,7 +891,7 @@ class OppivelvollisuustietoSpec
   }
 
   private def lukionAineopinnot(vahvistus: Option[LocalDate], lisääMaksuttomuus: Boolean = false, alkamispäivä: LocalDate = date(2019, 8, 1)): LukionOpiskeluoikeus = {
-    ExamplesLukio2019.oppiaineenOppimääräOpiskeluoikeus
+    val oo = ExamplesLukio2019.oppiaineenOppimääräOpiskeluoikeus
       .copy(
         tila = LukionOpiskeluoikeudenTila(
           List(
@@ -908,6 +909,7 @@ class OppivelvollisuustietoSpec
           None
         }
       )
+    Lukio2019ExampleData.siirräModuulienArviointipäivät(oo, alkamispäivä)
   }
 
   def lisääTila(oo: LukionOpiskeluoikeus, päivä: LocalDate, tila: Koodistokoodiviite) = oo.copy(

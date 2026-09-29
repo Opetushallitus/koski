@@ -4,11 +4,15 @@ import fi.oph.koski.KoskiHttpSpec
 import fi.oph.koski.api.misc.OpiskeluoikeusTestMethodsLukio
 import fi.oph.koski.documentation.ExamplesLukio2019
 import fi.oph.koski.documentation.ExamplesLukio2019.{oppiaineenOppimääräOpiskeluoikeus, oppiaineidenOppimäärienLukioDiplominSuoritus, oppiaineidenOppimäärienSuoritus}
+import fi.oph.koski.documentation.Lukio2019ExampleData.numeerinenArviointi
 import fi.oph.koski.documentation.LukioExampleData.aikuistenOpetussuunnitelma
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat.uusiLukio
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.schema._
+
+import java.time.LocalDate
+import java.time.LocalDate.{of => date}
 
 class OppijaValidationLukionOppiaineidenOppimaarat2019Spec extends TutkinnonPerusteetTest[LukionOpiskeluoikeus] with KoskiHttpSpec with OpiskeluoikeusTestMethodsLukio {
   "Diaarinumerot" - {
@@ -105,6 +109,32 @@ class OppijaValidationLukionOppiaineidenOppimaarat2019Spec extends TutkinnonPeru
       }
     }
   }
+
+  "Moduulin arviointipäivä" - {
+    "Arviointipäivä voi olla aikaisintaan opiskeluoikeuden alkamispäivä" in {
+      setupOppijaWithOpiskeluoikeus(FY1ModuulinArviointipäivällä(date(2019, 7, 31))) {
+        verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.date.arviointiEnnenOpiskeluoikeudenAlkamispäivää(
+          "opiskeluoikeuden alkamispäivä (2019-08-01) oltava sama tai aiempi kuin osasuorituksen moduulikoodistolops2021/FY1 arviointipäivä (2019-07-31)"
+        ))
+      }
+      setupOppijaWithOpiskeluoikeus(FY1ModuulinArviointipäivällä(date(2019, 8, 1))) {
+        verifyResponseStatusOk()
+      }
+    }
+  }
+
+  private def FY1ModuulinArviointipäivällä(arviointipäivä: LocalDate): LukionOpiskeluoikeus =
+    defaultOpiskeluoikeus.copy(suoritukset = defaultOpiskeluoikeus.suoritukset.map {
+      case s: LukionOppiaineidenOppimäärienSuoritus2019 => s.copy(osasuoritukset = s.osasuoritukset.map(_.map {
+        case o: LukionOppiaineenSuoritus2019 => o.copy(osasuoritukset = o.osasuoritukset.map(_.map {
+          case m: LukionModuulinSuoritusOppiaineissa2019 if m.koulutusmoduuli.tunniste.koodiarvo == "FY1" =>
+            m.copy(arviointi = numeerinenArviointi(8, arviointipäivä))
+          case m => m
+        }))
+        case o => o
+      }))
+      case s => s
+    }).ensuring(_ != defaultOpiskeluoikeus, "FY1-moduulia ei löytynyt oletusopiskeluoikeudesta")
 
   override def defaultOpiskeluoikeus: LukionOpiskeluoikeus = oppiaineenOppimääräOpiskeluoikeus
   override def opiskeluoikeusWithPerusteenDiaarinumero(diaari: Option[String]): LukionOpiskeluoikeus =

@@ -242,6 +242,74 @@ class OppijaValidationLukio2019Spec extends AnyFreeSpec with PutOpiskeluoikeusTe
     }
   }
 
+  "Moduulin ja paikallisen opintojakson arviointipäivä" - {
+    "Arviointipäivä voi olla aikaisintaan opiskeluoikeuden alkamispäivä" in {
+      setupOppijaWithOpiskeluoikeus(oppimääräÄI1Arvioinnilla(date(2019, 7, 31))) {
+        verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.date.arviointiEnnenOpiskeluoikeudenAlkamispäivää(
+          "opiskeluoikeuden alkamispäivä (2019-08-01) oltava sama tai aiempi kuin osasuorituksen moduulikoodistolops2021/ÄI1 arviointipäivä (2019-07-31)"
+        ))
+      }
+      setupOppijaWithOpiskeluoikeus(oppimääräÄI1Arvioinnilla(date(2019, 8, 1))) {
+        verifyResponseStatusOk()
+      }
+    }
+
+    "Arviointipäivä voi olla enintään opiskeluoikeuden päättymispäivä, kun opiskeluoikeus on valmistunut" in {
+      setupOppijaWithOpiskeluoikeus(oppimääräÄI1Arvioinnilla(date(2021, 9, 6))) {
+        verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.date.päättymispäiväEnnenArviointia(
+          "osasuorituksen moduulikoodistolops2021/ÄI1 arviointipäivä (2021-09-06) oltava sama tai aiempi kuin opiskeluoikeuden päättymispäivä (2021-09-05)"
+        ))
+      }
+      setupOppijaWithOpiskeluoikeus(oppimääräÄI1Arvioinnilla(date(2021, 9, 5))) {
+        verifyResponseStatusOk()
+      }
+    }
+
+    "Arviointipäivä voi olla opiskeluoikeuden päättymispäivää myöhempi, kun opiskeluoikeus ei ole valmistunut" in {
+      val oo = oppimääräÄI1Arvioinnilla(date(2021, 9, 6))
+      val aktiivinen = oo.copy(
+        tila = LukionOpiskeluoikeudenTila(List(
+          LukionOpiskeluoikeusjakso(alku = date(2019, 8, 1), tila = opiskeluoikeusAktiivinen, opintojenRahoitus = Some(ExampleData.valtionosuusRahoitteinen))
+        )),
+        suoritukset = oo.suoritukset.map {
+          case s: LukionOppimääränSuoritus2019 => s.copy(vahvistus = None)
+          case s => s
+        }
+      )
+
+      setupOppijaWithOpiskeluoikeus(aktiivinen) {
+        verifyResponseStatusOk()
+      }
+    }
+
+    "Oman äidinkielen opintojen osasuorituksen arviointipäivä ei voi olla ennen opiskeluoikeuden alkamispäivää" in {
+      val omanÄidinkielenOpinnot = omanÄidinkielenOpinnotSaame().map(o => o.copy(osasuoritukset = o.osasuoritukset.map(_.map {
+        case os if os.koulutusmoduuli.tunniste.koodiarvo == "OÄI1" =>
+          os.copy(arviointi = Some(List(LukionOmanÄidinkielenOpinnonOsasuorituksenArviointi(Koodistokoodiviite("O", "arviointiasteikkoyleissivistava"), date(2019, 7, 31)))))
+        case os => os
+      })))
+      val oo = defaultOpiskeluoikeus.copy(suoritukset = List(oppimääränSuoritus.copy(omanÄidinkielenOpinnot = omanÄidinkielenOpinnot)))
+
+      setupOppijaWithOpiskeluoikeus(oo) {
+        verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.date.arviointiEnnenOpiskeluoikeudenAlkamispäivää(
+          "opiskeluoikeuden alkamispäivä (2019-08-01) oltava sama tai aiempi kuin oman äidinkielen opintojen osasuorituksen moduulikoodistolops2021/OÄI1 arviointipäivä (2019-07-31)"
+        ))
+      }
+    }
+
+    "Oman äidinkielen opintojen arviointipäivä ei voi olla opiskeluoikeuden päättymispäivää myöhempi, kun opiskeluoikeus on valmistunut" in {
+      val oo = defaultOpiskeluoikeus.copy(suoritukset = List(oppimääränSuoritus.copy(
+        omanÄidinkielenOpinnot = omanÄidinkielenOpinnotSaame().map(_.copy(arviointipäivä = Some(date(2021, 9, 6))))
+      )))
+
+      setupOppijaWithOpiskeluoikeus(oo) {
+        verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.date.päättymispäiväEnnenArviointia(
+          "oman äidinkielen opintojen arviointipäivä (2021-09-06) oltava sama tai aiempi kuin opiskeluoikeuden päättymispäivä (2021-09-05)"
+        ))
+      }
+    }
+  }
+
   "Vahvistus ja valmistuminen lukion oppimäärien suorituksessa" - {
     "Suorituksen vahvistus tyhjennetään tietojen siirrossa" in {
       val opiskeluoikeus: Opiskeluoikeus = setupOppijaWithAndGetOpiskeluoikeus(defaultOpiskeluoikeus.copy(suoritukset = List(oppiaineidenOppimäärienSuoritus.copy(vahvistus = vahvistusPaikkakunnalla(päivä = date(2020, 5, 15))))))
@@ -2331,9 +2399,12 @@ class OppijaValidationLukio2019Spec extends AnyFreeSpec with PutOpiskeluoikeusTe
       "kun päivämäärät ovat erilaiset eivätkä mene päällekkäin" in {
         val opiskeluoikeusMyöhemmin = defaultOpiskeluoikeus.copy(
           tila = LukionOpiskeluoikeudenTila(List(
-            LukionOpiskeluoikeusjakso(alku = date(2022, 8, 1), tila = opiskeluoikeusAktiivinen, opintojenRahoitus = Some(ExampleData.valtionosuusRahoitteinen)),
-            LukionOpiskeluoikeusjakso(alku = date(2024, 8, 1), tila = opiskeluoikeusPäättynyt, opintojenRahoitus = Some(ExampleData.valtionosuusRahoitteinen))
-          ))
+            LukionOpiskeluoikeusjakso(alku = date(2021, 9, 6), tila = opiskeluoikeusAktiivinen, opintojenRahoitus = Some(ExampleData.valtionosuusRahoitteinen))
+          )),
+          suoritukset = defaultOpiskeluoikeus.suoritukset.map {
+            case s: LukionOppimääränSuoritus2019 => s.copy(osasuoritukset = None, vahvistus = None)
+            case s => s
+          }
         )
 
         setupOppijaWithOpiskeluoikeus(defaultOpiskeluoikeus, defaultHenkilö) {
@@ -2358,4 +2429,13 @@ class OppijaValidationLukio2019Spec extends AnyFreeSpec with PutOpiskeluoikeusTe
     })
 
   override def defaultOpiskeluoikeus: LukionOpiskeluoikeus = poistaOmanÄidinkielenOpintojenSuoritukset(ExamplesLukio2019.opiskeluoikeus)
+
+  private def oppimääräÄI1Arvioinnilla(arviointipäivä: LocalDate): LukionOpiskeluoikeus =
+    defaultOpiskeluoikeus.copy(suoritukset = List(oppimääränSuoritus.copy(
+      osasuoritukset = Some(List(
+        oppiaineenSuoritus(Lukio2019ExampleData.lukionÄidinkieli("AI1", pakollinen = true)).copy(arviointi = numeerinenLukionOppiaineenArviointi(9)).copy(osasuoritukset = Some(List(
+          moduulinSuoritusOppiaineissa(muuModuuliOppiaineissa("ÄI1")).copy(arviointi = numeerinenArviointi(8, arviointipäivä))
+        )))
+      ) ::: oppiainesuorituksetRiittääValmistumiseenNuorilla.tail)
+    )))
 }

@@ -2,6 +2,7 @@ package fi.oph.koski.validation
 
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.schema._
+import fi.oph.koski.validation.DateValidation.{NamedDates, validateDateOrder}
 import fi.oph.koski.validation.Lukio2019VieraatKieletValidation.omanÄidinkielenOpinnotPrefixit
 
 object Lukio2019OsasuoritusValidation {
@@ -11,7 +12,7 @@ object Lukio2019OsasuoritusValidation {
   val äidinkielenSallitutModuulit = List("ÄI1", "ÄI2", "ÄI3", "ÄI4", "ÄI5", "ÄI6", "ÄI7", "ÄI8", "ÄI9", "ÄI10", "ÄI11", "MO1", "MO2", "MO3", "MO4", "MO5", "MO6", "MO7", "MO8", "MO9", "MO10", "MO11", "ÄIS1", "ÄIS2", "ÄIS3", "ÄIS4", "ÄIS5", "ÄIS6", "ÄIS7", "ÄIS8", "ÄIS9", "ÄIS10", "ÄIS11", "ÄIR1", "ÄIR2", "ÄIR3", "ÄIR4", "ÄIR5", "ÄIR6", "ÄIR7", "ÄIR8", "ÄIR9", "ÄIR10", "ÄIR11", "ÄIV1", "ÄIV2", "ÄIV3", "ÄIV4", "ÄIV5", "ÄIV6", "ÄIV7", "ÄIV8", "ÄIV9", "ÄIV10", "ÄIV11", "S21", "S22", "S23", "S24", "S25", "S26", "S27", "S28", "S29", "S210", "S211", "SV21", "SV22", "SV23", "SV24", "SV25", "SV26", "SV27", "SV28", "SV29", "SV210", "SV211", "MOS1", "MOS2", "MOS3", "MOS4", "MOS5", "MOS6", "MOS7", "MOS8", "MOS9", "MOS10", "MOS11", "MOR1", "MOR2", "MOR3", "MOR4", "MOR5", "MOR6", "MOR7", "MOR8", "MOR9", "MOR10", "MOR11", "MOT1", "MOT2", "MOT3", "MOT4", "MOT5", "MOT6", "MOT7", "MOT8", "MOT9", "MOT10", "MOT11")
   val nuortenOppimääräKoodiarvo = "nuortenops"
 
-  def validate(suoritus: Suoritus, parents: List[Suoritus]): HttpStatus = {
+  def validate(suoritus: Suoritus, parents: List[Suoritus], opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus): HttpStatus = {
     HttpStatus.fold(List(
       validateErityinenTutkinto(suoritus, parents),
       validateErityinenTutkintoOppiaineLaajuus(suoritus, parents),
@@ -21,6 +22,8 @@ object Lukio2019OsasuoritusValidation {
       validateModuulinJaPaikallisenOpintojaksonSuorituskieli(suoritus, parents),
       validateModuulitPaikallisessaOppiaineessa(suoritus, parents),
       validateModuulitÄidinkielessä(suoritus, parents),
+      validateArviointipäiväEiOpiskeluoikeudenAlkamispäivääAiemmin(suoritus, opiskeluoikeus),
+      validateArviointipäiväEiOpiskeluoikeudenPäättymispäivääMyöhemminKunValmistunut(suoritus, opiskeluoikeus),
     ))
   }
 
@@ -110,6 +113,57 @@ object Lukio2019OsasuoritusValidation {
   private def suorituksenTunniste(suoritus: Suoritus): KoodiViite = {
     suoritus.koulutusmoduuli.tunniste
   }
+
+  // omanÄidinkielenOpinnot on oma kenttänsä LukionOppimääränSuoritus2019:ssä, ei osa osasuoritukset-puuta,
+  // joten yleinen suorituspuun läpikäynti (KoskiValidator.validateSuoritus) ei koskaan kutsu tätä validaatiota
+  // LukionOmanÄidinkielenOpintojenOsasuoritus-oliolla — päivämäärät on siksi poimittava eksplisiittisesti,
+  // kun käsillä on LukionOppimääränSuoritus2019.
+  private def omanÄidinkielenOpintojenArviointipäivät(suoritus: LukionOppimääränSuoritus2019): List[NamedDates] =
+    suoritus.omanÄidinkielenOpinnot.toList.flatMap(o =>
+      ("oman äidinkielen opintojen arviointipäivä", o.arviointipäivä.toList) ::
+        o.osasuoritukset.toList.flatten.map(os =>
+          (s"oman äidinkielen opintojen osasuorituksen ${suorituksenTunniste(os)} arviointipäivä", os.sortedArviointi.flatMap(_.arviointipäivä))
+        )
+    )
+
+  private def osasuorituksenArviointipäivät(suoritus: LukionModuulinTaiPaikallisenOpintojaksonSuoritus2019): NamedDates =
+    (s"osasuorituksen ${suorituksenTunniste(suoritus)} arviointipäivä", suoritus.sortedArviointi.flatMap(_.arviointipäivä))
+
+  private def validateArviointipäiväEiOpiskeluoikeudenAlkamispäivääAiemmin(suoritus: Suoritus, opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus): HttpStatus = suoritus match {
+    case s: LukionModuulinTaiPaikallisenOpintojaksonSuoritus2019 =>
+      validateArviointipäivätAikaisintaanAlkamispäivänä(osasuorituksenArviointipäivät(s), opiskeluoikeus)
+    case s: LukionOppimääränSuoritus2019 =>
+      HttpStatus.fold(omanÄidinkielenOpintojenArviointipäivät(s).map(validateArviointipäivätAikaisintaanAlkamispäivänä(_, opiskeluoikeus)))
+    case _ =>
+      HttpStatus.ok
+  }
+
+  private def validateArviointipäiväEiOpiskeluoikeudenPäättymispäivääMyöhemminKunValmistunut(suoritus: Suoritus, opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus): HttpStatus = {
+    if (!opiskeluoikeus.tila.opiskeluoikeusjaksot.lastOption.exists(_.tila.koodiarvo == "valmistunut")) {
+      HttpStatus.ok
+    } else suoritus match {
+      case s: LukionModuulinTaiPaikallisenOpintojaksonSuoritus2019 =>
+        validateArviointipäivätViimeistäänPäättymispäivänä(osasuorituksenArviointipäivät(s), opiskeluoikeus)
+      case s: LukionOppimääränSuoritus2019 =>
+        HttpStatus.fold(omanÄidinkielenOpintojenArviointipäivät(s).map(validateArviointipäivätViimeistäänPäättymispäivänä(_, opiskeluoikeus)))
+      case _ =>
+        HttpStatus.ok
+    }
+  }
+
+  private def validateArviointipäivätAikaisintaanAlkamispäivänä(arviointipäivät: NamedDates, opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus): HttpStatus =
+    validateDateOrder(
+      ("opiskeluoikeuden alkamispäivä", opiskeluoikeus.alkamispäivä),
+      arviointipäivät,
+      KoskiErrorCategory.badRequest.validation.date.arviointiEnnenOpiskeluoikeudenAlkamispäivää
+    )
+
+  private def validateArviointipäivätViimeistäänPäättymispäivänä(arviointipäivät: NamedDates, opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus): HttpStatus =
+    validateDateOrder(
+      arviointipäivät,
+      ("opiskeluoikeuden päättymispäivä", opiskeluoikeus.päättymispäivä),
+      KoskiErrorCategory.badRequest.validation.date.päättymispäiväEnnenArviointia
+    )
 
   private def validateModuulitÄidinkielessä(suoritus: Suoritus, parents: List[Suoritus]): HttpStatus = (suoritus, parents) match {
     case (_: LukionModuulinSuoritus2019, (_ : LukionOppiaineenSuoritus2019) :: _)

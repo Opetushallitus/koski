@@ -52,7 +52,7 @@
           "koodistoUri" : "opintojenrahoitus"
         }
       }, {
-        "alku" : "2021-08-01",
+        "alku" : "2021-09-05",
         "tila" : {
           "koodiarvo" : "valmistunut",
           "nimi" : {
@@ -374,7 +374,6 @@
       } ]
     },
     "alkamispäivä" : "2016-08-15",
-    "päättymispäivä" : "2021-08-01"
-  } ],
-  "ignoreKoskiValidator" : true
+    "päättymispäivä" : "2021-09-05"
+  } ]
 }

@@ -49,7 +49,7 @@ object MaksuttomuusRaporttiFixtures {
       )
     ),
     oppilaitos = Some(jyväskylänNormaalikoulu),
-    suoritukset = List(vahvistamatonOppimääränSuoritus),
+    suoritukset = List(vahvistamatonOppimääränSuoritus.copy(omanÄidinkielenOpinnot = None)),
     lisätiedot = Some(lisätiedotLukio)
   )
 

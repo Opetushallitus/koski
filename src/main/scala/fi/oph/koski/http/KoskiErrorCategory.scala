@@ -83,6 +83,8 @@ object KoskiErrorCategory {
         val opiskeluoikeusjaksojenPäivämäärät = subcategory("opiskeluoikeusjaksojenPäivämäärät", "Opiskeluoikeusjaksojen on oltava päivämääräjärjestyksessä")
 
         val arviointiEnnenAlkamispäivää = subcategory("arviointiEnnenAlkamispäivää", "Suorituksen arviointipäivä on aiempi kuin sen alkamispäivä")
+        val arviointiEnnenOpiskeluoikeudenAlkamispäivää = subcategory("arviointiEnnenOpiskeluoikeudenAlkamispäivää", "Suorituksen arviointipäivä on aiempi kuin opiskeluoikeuden alkamispäivä")
+        val päättymispäiväEnnenArviointia = subcategory("päättymispäiväEnnenArviointia", "Opiskeluoikeuden päättymispäivä on aiempi kuin suorituksen arviointipäivä")
         val vahvistusEnnenAlkamispäivää = subcategory("vahvistusEnnenAlkamispäivää", "Suorituksen vahvistuksen päivämäärä on aiempi kuin suorituksen alkamispäivä")
         val vahvistusEnnenArviointia = subcategory("vahvistusEnnenArviointia", "Suorituksen vahvistuksen päivämäärä on aiempi kuin sen arviointipäivä")
         val päättymispäiväEnnenVahvistusta = subcategory("päättymispäiväEnnenVahvistusta", "Opiskeluoikeuden päättymispäivä on aiempi kuin suorituksen vahvistuksen päivämäärä")
