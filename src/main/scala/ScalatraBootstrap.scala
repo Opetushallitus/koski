@@ -1,4 +1,3 @@
-import fi.oph.koski.cache.CacheServlet
 import fi.oph.koski.config.{Environment, KoskiApplication, RunMode}
 import fi.oph.koski.documentation.{DocumentationApiServlet, DocumentationServlet, KoodistoServlet}
 import fi.oph.koski.editor.{EditorKooditServlet, EditorServlet}
@@ -165,7 +164,6 @@ class ScalatraBootstrap extends LifeCycle with Logging with Timing with GlobalEx
     mount("/koski/user/redirect", new LogoutRedirectServlet)
     mount("/koski/cas", new CasServlet)
     mount("/koski/cas/valpas", new ValpasOppijaCasServlet)
-    mount("/koski/cache", new CacheServlet)
 
     mount("/valpas", new ValpasStaticServlet())
     mount("/koski/valpas/localization", new ValpasBootstrapServlet)
