@@ -227,17 +227,19 @@ const AmmatillisenPäätasonSuorituksenTiedot: React.FC<{
     <KeyValueTable editMode={form.editMode}>
       {tutkinto && (
         <KeyValueRow localizableLabel="Koulutus">
-          <TestIdText id="koulutus">
-            {t(tutkinto.suoritus.koulutusmoduuli.perusteenNimi)}
-          </TestIdText>{' '}
-          {tutkinto.suoritus.koulutusmoduuli.tunniste.koodiarvo}{' '}
-          <FormField
-            form={form}
-            path={tutkinto.path
-              .prop('koulutusmoduuli')
-              .prop('perusteenDiaarinumero')}
-            view={PerusteView}
-          />
+          <span className="AmmatillinenTutkinto">
+            <TestIdText id="koulutus">
+              {t(tutkinto.suoritus.koulutusmoduuli.perusteenNimi)}
+            </TestIdText>
+            <span>{tutkinto.suoritus.koulutusmoduuli.tunniste.koodiarvo}</span>
+            <FormField
+              form={form}
+              path={tutkinto.path
+                .prop('koulutusmoduuli')
+                .prop('perusteenDiaarinumero')}
+              view={PerusteView}
+            />
+          </span>
         </KeyValueRow>
       )}
       {valmistava && (
@@ -249,20 +251,22 @@ const AmmatillisenPäätasonSuorituksenTiedot: React.FC<{
       )}
       {valmistava && (
         <KeyValueRow localizableLabel="Tutkinto">
-          <TestIdText id="tutkinto">
-            {t(
-              valmistava.suoritus.tutkinto.perusteenNimi ||
-                valmistava.suoritus.tutkinto.tunniste.nimi
-            )}
-          </TestIdText>{' '}
-          {valmistava.suoritus.tutkinto.tunniste.koodiarvo}{' '}
-          <FormField
-            form={form}
-            path={valmistava.path
-              .prop('tutkinto')
-              .prop('perusteenDiaarinumero')}
-            view={PerusteView}
-          />
+          <span className="AmmatillinenTutkinto">
+            <TestIdText id="tutkinto">
+              {t(
+                valmistava.suoritus.tutkinto.perusteenNimi ||
+                  valmistava.suoritus.tutkinto.tunniste.nimi
+              )}
+            </TestIdText>
+            <span>{valmistava.suoritus.tutkinto.tunniste.koodiarvo}</span>
+            <FormField
+              form={form}
+              path={valmistava.path
+                .prop('tutkinto')
+                .prop('perusteenDiaarinumero')}
+              view={PerusteView}
+            />
+          </span>
         </KeyValueRow>
       )}
       {tutkinto && (
@@ -1250,12 +1254,11 @@ export const TyössäoppimisjaksoView = <T extends Työssäoppimisjakso>({
 }: CommonProps<FieldViewerProps<T | undefined, EmptyObject>>) => {
   return (
     <>
-      <PäivämääräväliView alku={value?.alku} loppu={value?.loppu} />
+      <PäivämääräväliView alku={value?.alku} loppu={value?.loppu} />{' '}
+      <TestIdText id="paikkakunta">{t(value?.paikkakunta.nimi)}</TestIdText>
+      {', '}
+      <TestIdText id="maa">{t(value?.maa.nimi)}</TestIdText>
       <KeyValueTable>
-        <KeyValueRow localizableLabel="Paikkakunta">
-          {t(value?.paikkakunta.nimi)}
-        </KeyValueRow>
-        <KeyValueRow localizableLabel="Maa">{t(value?.maa.nimi)}</KeyValueRow>
         <KeyValueRow
           localizableLabel="Työssäoppimispaikka"
           hideIfEmpty={value?.työssäoppimispaikka}
