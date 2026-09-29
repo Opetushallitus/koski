@@ -69,13 +69,14 @@ trait PostgresOpiskeluoikeusRepositoryActions[OOROW <: OpiskeluoikeusRow, OOTABL
     opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus,
     allowUpdate: Boolean,
     allowDeleteCompleted: Boolean,
-    skipValidations: Boolean = false
+    skipValidations: Boolean = false,
+    oppijanKaikkiOidit: List[Henkilö.Oid] = Nil
   )(implicit user: KoskiSpecificSession): Either[HttpStatus, CreateOrUpdateResult] = {
     def createOrUpdateWithRetry: Either[HttpStatus, CreateOrUpdateResult] = {
       val result = try {
         runDbSync {
           (for {
-            result <- createOrUpdateAction(oppijaOid, opiskeluoikeus, allowUpdate, allowDeleteCompleted, skipValidations)
+            result <- createOrUpdateAction(oppijaOid, opiskeluoikeus, allowUpdate, allowDeleteCompleted, skipValidations, oppijanKaikkiOidit)
             syncAction <- syncAction(oppijaOid, opiskeluoikeus, result)
           } yield result).transactionally
         }
@@ -115,8 +116,9 @@ trait PostgresOpiskeluoikeusRepositoryActions[OOROW <: OpiskeluoikeusRow, OOTABL
     oppijaOid: PossiblyUnverifiedHenkilöOid,
     opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus,
     allowUpdate: Boolean,
-    allowDeleteCompleted: Boolean = false,
-    skipValidations: Boolean = false,
+    allowDeleteCompleted: Boolean,
+    skipValidations: Boolean,
+    oppijanKaikkiOidit: List[Henkilö.Oid]
   )(implicit user: KoskiSpecificSession): dbio.DBIOAction[Either[HttpStatus, CreateOrUpdateResult], NoStream, Read with Write with Transactional]
 
   protected def findByIdentifierAction(identifier: OpiskeluoikeusIdentifier)(implicit user: KoskiSpecificSession): dbio.DBIOAction[Either[HttpStatus, List[OOROW]], NoStream, Read] = {
@@ -128,8 +130,13 @@ trait PostgresOpiskeluoikeusRepositoryActions[OOROW <: OpiskeluoikeusRow, OOTABL
         }
       }
 
-      case OppijaOidJaLähdejärjestelmänId(oppijaOid, lähdejärjestelmäId, oppilaitosOid) =>
-        findOpiskeluoikeudetWithSlaves(oppijaOid).map(_.filter { row =>
+      case OppijaOidJaLähdejärjestelmänId(oppijaOid, lähdejärjestelmäId, oppilaitosOid, oppijanKaikkiOidit) =>
+        val oppijanOpiskeluoikeudet = if (oppijanKaikkiOidit.isEmpty) {
+          findOpiskeluoikeudetWithSlaves(oppijaOid)
+        } else {
+          findByOppijaOidsAction((oppijaOid :: oppijanKaikkiOidit).distinct)
+        }
+        oppijanOpiskeluoikeudet.map(_.filter { row =>
           row.toOpiskeluoikeusUnsafe.lähdejärjestelmänId.contains(lähdejärjestelmäId) && (oppilaitosOid.isEmpty || oppilaitosOid.contains(row.oppilaitosOid))
         }).map(_.toList).map(Right(_))
 
@@ -206,9 +213,10 @@ trait PostgresOpiskeluoikeusRepositoryActions[OOROW <: OpiskeluoikeusRow, OOTABL
     oldRow: OOROW,
     uusiOpiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus,
     allowDeleteCompletedSuoritukset: Boolean,
-    skipValidations: Boolean = false
+    skipValidations: Boolean,
+    oppijanKaikkiOidit: List[Henkilö.Oid]
   )(implicit user: KoskiSpecificSession): DBIOAction[Either[HttpStatus, CreateOrUpdateResult], NoStream, Read with Write with Transactional] = {
-    if (oppijaOid.oppijaOid == oldRow.oppijaOid) {
+    if (oppijaOid.oppijaOid == oldRow.oppijaOid || oppijanKaikkiOidit.contains(oldRow.oppijaOid)) {
       updateAction(oldRow, uusiOpiskeluoikeus, allowDeleteCompletedSuoritukset, skipValidations)
     } else { // Check if oppija oid belongs to master of slave oppija oids
       oppijaOidsByOppijaOid(oldRow.oppijaOid).flatMap { oids =>

@@ -189,11 +189,14 @@ class KoskiOppijaFacade(
           Right(UnverifiedHenkilöOid(h.oid, henkilöRepository))
       }
 
+      val henkilöMaster = oppijaOid.toOption.flatMap(_.verified)
+        .flatMap(h => henkilöRepository.findByOid(h.oid, findMasterIfSlaveOid = true))
+      val oppijanKaikkiOidit = henkilöMaster.map(_.kaikkiOidit).getOrElse(Nil)
+
       val globaaliValidatorCheck = oppijaOid.flatMap {
         case oid if skipGlobaaliValidation => Right(())
         case oid if oid.verified.isDefined =>
           val henkilö = oid.verified.get
-          val henkilöMaster = henkilöRepository.findByOid(henkilö.oid, findMasterIfSlaveOid = true)
           val validation = HttpStatus.fold(oppija.tallennettavatOpiskeluoikeudet.map(opiskeluoikeus => {
             globaaliValidator.validateOpiskeluoikeus(
               opiskeluoikeus,
@@ -220,7 +223,7 @@ class KoskiOppijaFacade(
               Left(KoskiErrorCategory.forbidden.omienTietojenMuokkaus())
             } else {
               val opiskeluoikeusCreationResults: Seq[Either[HttpStatus, OpiskeluoikeusVersio]] = opiskeluoikeudet.map { opiskeluoikeus =>
-                createOrUpdateOpiskeluoikeus(oppijaOid, opiskeluoikeus, allowUpdate, allowDeleteCompleted, skipValidations)
+                createOrUpdateOpiskeluoikeus(oppijaOid, opiskeluoikeus, allowUpdate, allowDeleteCompleted, skipValidations, oppijanKaikkiOidit)
               }
 
               opiskeluoikeusCreationResults.find(_.isLeft) match {
@@ -278,8 +281,9 @@ class KoskiOppijaFacade(
     oppijaOid: PossiblyUnverifiedHenkilöOid,
     opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus,
     allowUpdate: Boolean,
-    allowDeleteCompleted: Boolean = false,
-    skipValidations: Boolean = false,
+    allowDeleteCompleted: Boolean,
+    skipValidations: Boolean,
+    oppijanKaikkiOidit: List[Henkilö.Oid]
   )(implicit user: KoskiSpecificSession)
   : Either[HttpStatus, OpiskeluoikeusVersio] = {
     if (oppijaOid.oppijaOid == user.oid) {
@@ -289,7 +293,7 @@ class KoskiOppijaFacade(
         case ytrOo: YlioppilastutkinnonOpiskeluoikeus =>
           ytrDownloadedOpiskeluoikeusRepository.createOrUpdate(oppijaOid, ytrOo)
         case _ =>
-          opiskeluoikeusRepository.createOrUpdate(oppijaOid, opiskeluoikeus, allowUpdate, allowDeleteCompleted, skipValidations)
+          opiskeluoikeusRepository.createOrUpdate(oppijaOid, opiskeluoikeus, allowUpdate, allowDeleteCompleted, skipValidations, oppijanKaikkiOidit)
       }
       result.map { (result: CreateOrUpdateResult) =>
         applicationLog(oppijaOid, opiskeluoikeus, result)
