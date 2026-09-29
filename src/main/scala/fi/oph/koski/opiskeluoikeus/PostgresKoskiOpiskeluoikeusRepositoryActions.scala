@@ -46,7 +46,7 @@ class PostgresKoskiOpiskeluoikeusRepositoryActions(
   )(implicit user: KoskiSpecificSession): DBIOAction[Any, NoStream, Read with Write] = {
     result match {
       case Right(result) if result.changed =>
-        syncHenkilötiedotAction(result.id, oppijaOid.oppijaOid, opiskeluoikeus, result.henkilötiedot)
+        syncHenkilötiedotAction(result.id, oppijaOid.oppijaOid, result.tallennettuOpiskeluoikeus, result.henkilötiedot)
       case _ =>
         DBIO.successful(())
     }
