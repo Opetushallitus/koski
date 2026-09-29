@@ -43,6 +43,22 @@ jobs:
     steps:
       - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7
 
+      - name: Check Node versions match .nvmrc
+        shell: bash
+        run: |
+          node_version=$(cat .nvmrc)
+          node_major_version=${node_version%%.*}
+          renovate_node_version=$(jq -r '.constraints.node' renovate.json)
+          [ "$renovate_node_version" = "$node_version" ] ||
+            { echo "::error::renovate.json: Node $renovate_node_version, mutta .nvmrc: $node_version"; exit 1; }
+          while IFS= read -r -d '' manifest_file; do
+            if jq -e '.devDependencies.typescript' "$manifest_file" > /dev/null; then
+              types_version=$(jq -r '.devDependencies["@types/node"] // empty' "$manifest_file")
+              [ "${types_version%%.*}" = "$node_major_version" ] ||
+                { echo "::error::$manifest_file: @types/node ${types_version:-puuttuu devDependencies-kohdasta}, mutta .nvmrc: Node $node_version"; exit 1; }
+            fi
+          done < <(git ls-files -z '*package.json')
+
       - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
         with:
           node-version-file: ".nvmrc"
@@ -508,7 +524,7 @@ jobs:
 
       - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
         with:
-          node-version-file: "omadata-oauth2-sample/.nvmrc"
+          node-version-file: ".nvmrc"
 
       - uses: ./.github/actions/setup_pnpm_cache
 
