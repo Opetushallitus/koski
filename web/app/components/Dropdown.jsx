@@ -27,6 +27,7 @@ const MAX_VISIBLE_OPTIONS = 100
   enableFilter: boolean
   selectionText: shown when no option is selected
   inline: hide borders until hovered upon
+  showGroupHeaders: render option.groupName headers even when there is only one group
  */
 export default ({
   options,
@@ -37,6 +38,7 @@ export default ({
   selectionText = t('Valitse...'),
   inline = false,
   enableFilter = false,
+  showGroupHeaders = false,
   newItem,
   isRemovable = () => false,
   onRemoval,
@@ -171,10 +173,12 @@ export default ({
                 R.filter((o) => o.groupName, allOptions)
               )
             ).length > 1
+          const showHeaders = showGroupHeaders || grouped
           const className = buildClassNames([
             'dropdown',
             inline && 'inline',
-            grouped && 'grouped'
+            grouped && 'grouped',
+            showGroupHeaders && 'sectioned'
           ])
           return (
             <div
@@ -307,7 +311,7 @@ export default ({
                           </li>
                         )
                         const groupName =
-                          grouped &&
+                          showHeaders &&
                           (i === 0 ||
                             allOptions[i - 1].groupName !== o.groupName)
                             ? o.groupName

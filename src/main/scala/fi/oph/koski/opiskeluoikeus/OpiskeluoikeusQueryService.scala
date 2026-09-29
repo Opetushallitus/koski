@@ -135,6 +135,7 @@ class OpiskeluoikeusQueryService(val db: DB) extends QueryMethods {
       case (query, NotSuorituksenTyyppi(tyyppi)) => query.filter(!_._1.suoritustyypit.@>(List(tyyppi.koodiarvo)))
       case (query, Poistettu(poistettu)) => query.filter(d => d._1.poistettu === poistettu)
       case (query, OpiskeluoikeudenTila(tila)) => query.filter(_._1.data.#>>(List("tila", "opiskeluoikeusjaksot", "-1", "tila", "koodiarvo")) === tila.koodiarvo)
+      case (query, OneOfOpiskeluoikeudenTilat(tilat)) => query.filter(_._1.data.#>>(List("tila", "opiskeluoikeusjaksot", "-1", "tila", "koodiarvo")) inSet tilat.map(_.tila.koodiarvo))
       case (query, OpiskeluoikeusQueryFilter.Toimipiste(toimipisteet)) =>
         val matchers = toimipisteet.map { toimipiste =>
           parseJson(s"""[{"toimipiste":{"oid": "${toimipiste.oid}"}}]""")

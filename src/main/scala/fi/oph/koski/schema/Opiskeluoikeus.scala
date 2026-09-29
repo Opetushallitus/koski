@@ -58,6 +58,9 @@ object Opiskeluoikeus {
     def korkeakoulu(tilaKoodiarvo: String): Boolean =
       onPäättymistila(onVirtaPäättymistila, tilaKoodiarvo)
 
+    def aktiivisetKoskiTilat: List[String] =
+      onKoskiPäättymistila.collect { case (tilaKoodiarvo, false) => tilaKoodiarvo }.toList.sorted
+
     private def onPäättymistila(päättymistila: Map[String, Boolean], tilaKoodiarvo: String): Boolean =
       päättymistila.getOrElse(tilaKoodiarvo, throw new IllegalArgumentException(s"Tuntematon opiskeluoikeuden tila: $tilaKoodiarvo"))
 

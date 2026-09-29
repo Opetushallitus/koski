@@ -43,6 +43,14 @@ export class Oppijataulukko extends React.Component {
       this.state
     const näytettävätRivit = rivit || edellisetRivit
     const nullSelection = { value: t('Ei valintaa') }
+    const tilaValinnat = [
+      { key: 'aktiiviset', value: t('Aktiiviset opiskeluoikeudet') }
+    ].concat(
+      opiskeluoikeudenTila.map((tila) => ({
+        ...tila,
+        groupName: t('Yksittäinen tila')
+      }))
+    )
     sessionStorage.previousListViewPath = currentLocation().toString()
 
     return (
@@ -136,13 +144,14 @@ export class Oppijataulukko extends React.Component {
                     </span>
                     <Dropdown
                       id="tila-valinta"
-                      options={[nullSelection].concat(opiskeluoikeudenTila)}
+                      options={[nullSelection].concat(tilaValinnat)}
+                      showGroupHeaders={true}
                       onSelectionChanged={(option) =>
                         this.filterBus.push({
                           opiskeluoikeudenTila: option.key
                         })
                       }
-                      selected={opiskeluoikeudenTila.find(
+                      selected={tilaValinnat.find(
                         (o) => o.key === params.opiskeluoikeudenTila
                       )}
                     />

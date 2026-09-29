@@ -91,26 +91,8 @@ class OpiskeluoikeudenPerustiedotRepository(
         Map("prefix" -> Map("luokka.keyword" -> hakusana.trim.toLowerCase))
       )
       case OpiskeluoikeudenTyyppi(tyyppi) => List(Map("term" -> Map("tyyppi.koodiarvo" -> tyyppi.koodiarvo)))
-      case OpiskeluoikeudenTila(tila) =>
-        List(
-          OpenSearch.nestedFilter("tilat",
-            OpenSearch.allFilter(List(
-              Map("term" -> Map("tilat.tila.koodiarvo" -> tila.koodiarvo)),
-              Map("range" -> Map("tilat.alku" -> Map("lte" -> "now/d", "format" -> "yyyy-MM-dd"))),
-              OpenSearch.anyFilter(List(
-                Map("range" -> Map("tilat.loppu" -> Map("gte" -> "now/d", "format" -> "yyyy-MM-dd"))),
-                OpenSearch.noneFilter(List(
-                  Map(
-                    "exists" -> Map(
-                      "field" -> "tilat.loppu"
-                    )
-                  )
-                ))
-              ))
-            ))
-          )
-        )
-
+      case OpiskeluoikeudenTila(tila) => List(voimassaOlevaTilaFilter(List(tila.koodiarvo)))
+      case OneOfOpiskeluoikeudenTilat(tilat) => List(voimassaOlevaTilaFilter(tilat.map(_.tila.koodiarvo)))
       case OpiskeluoikeusAlkanutAikaisintaan(day) =>
         List(Map("range" -> Map("alkamispäivä" -> Map("gte" -> day, "format" -> "yyyy-MM-dd"))))
       case OpiskeluoikeusAlkanutViimeistään(day) =>
@@ -151,6 +133,24 @@ class OpiskeluoikeudenPerustiedotRepository(
       }
       .getOrElse(OpiskeluoikeudenPerustiedotResponse(None, Nil))
   }
+
+  private def voimassaOlevaTilaFilter(tilaKoodiarvot: List[String]): Map[String, Any] =
+    OpenSearch.nestedFilter("tilat",
+      OpenSearch.allFilter(List(
+        Map("terms" -> Map("tilat.tila.koodiarvo" -> tilaKoodiarvot)),
+        Map("range" -> Map("tilat.alku" -> Map("lte" -> "now/d", "format" -> "yyyy-MM-dd"))),
+        OpenSearch.anyFilter(List(
+          Map("range" -> Map("tilat.loppu" -> Map("gte" -> "now/d", "format" -> "yyyy-MM-dd"))),
+          OpenSearch.noneFilter(List(
+            Map(
+              "exists" -> Map(
+                "field" -> "tilat.loppu"
+              )
+            )
+          ))
+        ))
+      ))
+    )
 
   private def vainAktiivinen(tilat: List[OpiskeluoikeusJaksonPerustiedot]) = {
     tilat.reverse.find(!_.alku.isAfter(LocalDate.now)).toList
