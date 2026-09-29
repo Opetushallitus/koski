@@ -1,13 +1,11 @@
 oppilaitos_ip_osoite
 scheduler
-suoritusjako_v2
 henkilo
 opiskeluoikeus
 ytr_opiskeluoikeus
 opiskeluoikeushistoria
 perustiedot_manual_sync
 perustiedot_sync
-suoritusjako
 ytr_opiskeluoikeushistoria
 casserviceticket
 kielitutkintotodistus_tiedote_job
@@ -21,6 +19,7 @@ paivitetty_opiskeluoikeus
 poistettu_opiskeluoikeus
 preferences
 schema_version
+suoritusjako
 todistus_job
 worker_lease
 ytr_alkuperainen_data

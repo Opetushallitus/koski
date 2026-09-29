@@ -94,7 +94,6 @@ class FixtureCreator(application: KoskiApplication) extends Logging with QueryMe
 
       // Poista oppijan suoritusjaot
       application.suoritusjakoRepository.deleteAllForOppija(oppijaOid)
-      application.suoritusjakoRepositoryV2.deleteAllForOppija(oppijaOid)
 
       application.omaDataOAuth2Repository.deleteAllForOppija(oppijaOid)
 

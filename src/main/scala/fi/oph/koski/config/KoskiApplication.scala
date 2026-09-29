@@ -35,7 +35,7 @@ import fi.oph.koski.schedule.{KoskiScheduledTasks, PerustiedotManualSyncSchedule
 import fi.oph.koski.sdg.SdgService
 import fi.oph.koski.sso.{CasOppijaCreationService, CasService, KoskiSessionRepository}
 import fi.oph.koski.suoritetuttutkinnot.SuoritetutTutkinnotService
-import fi.oph.koski.suoritusjako.{SuoritusjakoRepository, SuoritusjakoRepositoryV2, SuoritusjakoService, SuoritusjakoServiceV2}
+import fi.oph.koski.suoritusjako.{SuoritusjakoRepository, SuoritusjakoService}
 import fi.oph.koski.suostumus.SuostumuksenPeruutusService
 import fi.oph.koski.tiedonsiirto.{IPService, TiedonsiirtoService}
 import fi.oph.koski.todistus.swisscomclient.{SwisscomClient, SwisscomConfig}
@@ -173,8 +173,6 @@ class KoskiApplication(
   lazy val oppijaFacade = new KoskiOppijaFacade(henkilöRepository, opiskeluoikeusRepository, ytrPossu, historyRepository, ytrHistoryRepository, globaaliValidator, config, hetu)
   lazy val suoritusjakoRepository = new SuoritusjakoRepository(masterDatabase.db)
   lazy val suoritusjakoService = new SuoritusjakoService(suoritusjakoRepository, oppijaFacade, suoritetutTutkinnotService, aktiivisetJaPäättyneetOpinnotService)
-  lazy val suoritusjakoRepositoryV2 = new SuoritusjakoRepositoryV2(masterDatabase.db)
-  lazy val suoritusjakoServiceV2 = new SuoritusjakoServiceV2(suoritusjakoRepositoryV2, oppijaFacade, henkilöRepository, opiskeluoikeusRepository, this)
   lazy val mydataRepository = new MyDataRepository(masterDatabase.db)
   lazy val mydataService = new MyDataService(mydataRepository, this)
   lazy val sessionTimeout = SessionTimeout(config)
