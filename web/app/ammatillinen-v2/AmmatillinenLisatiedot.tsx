@@ -377,17 +377,19 @@ const HojksEdit = ({
   return (
     <div className="Removable">
       <div className="AikajaksoEdit Removable__content">
-        <KoodistoSelect
-          koodistoUri={'opetusryhma'}
-          value={value?.opetusryhmä.koodiarvo}
-          onSelect={(
-            opetusryhmä: Koodistokoodiviite<'opetusryhma'> | undefined
-          ) => {
-            opetusryhmä && onChange({ ...emptyHojks, ...value, opetusryhmä })
-          }}
-          testId={'opetusryhmä'}
-          hasErrors={hasErrors && !value?.opetusryhmä.koodiarvo}
-        />
+        <div className="AikajaksoEdit__select">
+          <KoodistoSelect
+            koodistoUri={'opetusryhma'}
+            value={value?.opetusryhmä.koodiarvo}
+            onSelect={(
+              opetusryhmä: Koodistokoodiviite<'opetusryhma'> | undefined
+            ) => {
+              opetusryhmä && onChange({ ...emptyHojks, ...value, opetusryhmä })
+            }}
+            testId={'opetusryhmä'}
+            hasErrors={hasErrors && !value?.opetusryhmä.koodiarvo}
+          />
+        </div>
         <span className="AikajaksoEdit__separator"> {' — '}</span>
         <DateInput
           value={value?.alku}
