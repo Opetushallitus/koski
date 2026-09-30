@@ -2,7 +2,8 @@ package fi.oph.koski.validation
 
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.schema._
-import fi.oph.koski.validation.DateValidation.{NamedDates, validateDateOrder}
+import fi.oph.koski.util.FinnishDateFormat.format
+import fi.oph.koski.validation.DateValidation.NamedDates
 import fi.oph.koski.validation.Lukio2019VieraatKieletValidation.omanÄidinkielenOpinnotPrefixit
 
 object Lukio2019OsasuoritusValidation {
@@ -151,19 +152,29 @@ object Lukio2019OsasuoritusValidation {
     }
   }
 
-  private def validateArviointipäivätAikaisintaanAlkamispäivänä(arviointipäivät: NamedDates, opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus): HttpStatus =
-    validateDateOrder(
-      ("opiskeluoikeuden alkamispäivä", opiskeluoikeus.alkamispäivä),
-      arviointipäivät,
-      KoskiErrorCategory.badRequest.validation.date.arviointiEnnenOpiskeluoikeudenAlkamispäivää
-    )
+  private def validateArviointipäivätAikaisintaanAlkamispäivänä(arviointipäivät: NamedDates, opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus): HttpStatus = {
+    val (nimi, päivät) = arviointipäivät
+    HttpStatus.fold(for {
+      alkamispäivä <- opiskeluoikeus.alkamispäivä.toList
+      arviointipäivä <- päivät
+    } yield HttpStatus.validate(!arviointipäivä.isBefore(alkamispäivä))(
+      KoskiErrorCategory.badRequest.validation.date.arviointiEnnenOpiskeluoikeudenAlkamispäivää(
+        s"${nimi.capitalize} ${format(arviointipäivä)} on ennen opiskeluoikeuden alkamispäivää ${format(alkamispäivä)}."
+      )
+    ))
+  }
 
-  private def validateArviointipäivätViimeistäänPäättymispäivänä(arviointipäivät: NamedDates, opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus): HttpStatus =
-    validateDateOrder(
-      arviointipäivät,
-      ("opiskeluoikeuden päättymispäivä", opiskeluoikeus.päättymispäivä),
-      KoskiErrorCategory.badRequest.validation.date.päättymispäiväEnnenArviointia
-    )
+  private def validateArviointipäivätViimeistäänPäättymispäivänä(arviointipäivät: NamedDates, opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus): HttpStatus = {
+    val (nimi, päivät) = arviointipäivät
+    HttpStatus.fold(for {
+      päättymispäivä <- opiskeluoikeus.päättymispäivä.toList
+      arviointipäivä <- päivät
+    } yield HttpStatus.validate(!arviointipäivä.isAfter(päättymispäivä))(
+      KoskiErrorCategory.badRequest.validation.date.päättymispäiväEnnenArviointia(
+        s"${nimi.capitalize} ${format(arviointipäivä)} on valmistuneen opiskeluoikeuden päättymispäivän ${format(päättymispäivä)} jälkeen."
+      )
+    ))
+  }
 
   private def validateModuulitÄidinkielessä(suoritus: Suoritus, parents: List[Suoritus]): HttpStatus = (suoritus, parents) match {
     case (_: LukionModuulinSuoritus2019, (_ : LukionOppiaineenSuoritus2019) :: _)

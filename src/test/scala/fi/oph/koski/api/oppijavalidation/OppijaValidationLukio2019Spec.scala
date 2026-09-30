@@ -246,7 +246,7 @@ class OppijaValidationLukio2019Spec extends AnyFreeSpec with PutOpiskeluoikeusTe
     "Arviointipäivä voi olla aikaisintaan opiskeluoikeuden alkamispäivä" in {
       setupOppijaWithOpiskeluoikeus(oppimääräÄI1Arvioinnilla(date(2019, 7, 31))) {
         verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.date.arviointiEnnenOpiskeluoikeudenAlkamispäivää(
-          "opiskeluoikeuden alkamispäivä (2019-08-01) oltava sama tai aiempi kuin osasuorituksen moduulikoodistolops2021/ÄI1 arviointipäivä (2019-07-31)"
+          "Osasuorituksen moduulikoodistolops2021/ÄI1 arviointipäivä 31.7.2019 on ennen opiskeluoikeuden alkamispäivää 1.8.2019."
         ))
       }
       setupOppijaWithOpiskeluoikeus(oppimääräÄI1Arvioinnilla(date(2019, 8, 1))) {
@@ -257,7 +257,7 @@ class OppijaValidationLukio2019Spec extends AnyFreeSpec with PutOpiskeluoikeusTe
     "Arviointipäivä voi olla enintään opiskeluoikeuden päättymispäivä, kun opiskeluoikeus on valmistunut" in {
       setupOppijaWithOpiskeluoikeus(oppimääräÄI1Arvioinnilla(date(2021, 9, 6))) {
         verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.date.päättymispäiväEnnenArviointia(
-          "osasuorituksen moduulikoodistolops2021/ÄI1 arviointipäivä (2021-09-06) oltava sama tai aiempi kuin opiskeluoikeuden päättymispäivä (2021-09-05)"
+          "Osasuorituksen moduulikoodistolops2021/ÄI1 arviointipäivä 6.9.2021 on valmistuneen opiskeluoikeuden päättymispäivän 5.9.2021 jälkeen."
         ))
       }
       setupOppijaWithOpiskeluoikeus(oppimääräÄI1Arvioinnilla(date(2021, 9, 5))) {
@@ -292,7 +292,7 @@ class OppijaValidationLukio2019Spec extends AnyFreeSpec with PutOpiskeluoikeusTe
 
       setupOppijaWithOpiskeluoikeus(oo) {
         verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.date.arviointiEnnenOpiskeluoikeudenAlkamispäivää(
-          "opiskeluoikeuden alkamispäivä (2019-08-01) oltava sama tai aiempi kuin oman äidinkielen opintojen osasuorituksen moduulikoodistolops2021/OÄI1 arviointipäivä (2019-07-31)"
+          "Oman äidinkielen opintojen osasuorituksen moduulikoodistolops2021/OÄI1 arviointipäivä 31.7.2019 on ennen opiskeluoikeuden alkamispäivää 1.8.2019."
         ))
       }
     }
@@ -304,7 +304,7 @@ class OppijaValidationLukio2019Spec extends AnyFreeSpec with PutOpiskeluoikeusTe
 
       setupOppijaWithOpiskeluoikeus(oo) {
         verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.date.päättymispäiväEnnenArviointia(
-          "oman äidinkielen opintojen arviointipäivä (2021-09-06) oltava sama tai aiempi kuin opiskeluoikeuden päättymispäivä (2021-09-05)"
+          "Oman äidinkielen opintojen arviointipäivä 6.9.2021 on valmistuneen opiskeluoikeuden päättymispäivän 5.9.2021 jälkeen."
         ))
       }
     }
