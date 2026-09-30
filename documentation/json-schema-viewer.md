@@ -1,13 +1,13 @@
-# JSON Schema Viewer (vendored, Koski-patched)
+# JSON Schema Viewer (Koski-patched)
 
 The interactive JSON Schema viewer served at `/koski/json-schema-viewer/`
 (rendered by `JsonSchemaViewerHtmlServlet`). It powers the schema browsers linked
-from the API documentation, including the omadata packages. The vendored assets
-live in `web/static/json-schema-viewer/`.
+from the API documentation, including the omadata packages. The application and
+its independent pnpm package live in `json-schema-viewer/`.
 
 ## Provenance
 
-This is a vendored copy of the **`dist` output** (v0.3.4) of
+The application was extracted from the **`dist` output** (v0.3.4) of
 [Opetushallitus/json-schema-viewer](https://github.com/Opetushallitus/json-schema-viewer),
 a fork of the upstream [ADIwg/json-schema-viewer](https://github.com/adiwg/json-schema-viewer)
 ("mdJSON" viewer).
@@ -16,13 +16,12 @@ a fork of the upstream [ADIwg/json-schema-viewer](https://github.com/adiwg/json-
 2016 (only automated dependency-bump branches since). Only the built artifacts
 were imported; the fork's actual source (`json-schema-viewer.js`, LESS, Handlebars
 templates, Gruntfile) is **not** in this repo. In practice we own and maintain
-this copy directly.
+this copy directly; the extracted JavaScript and CSS retain the Koski patches.
 
 ## Koski-local patches (NOT present upstream)
 
-These are applied directly to the vendored `js`/`styles` files in
-`web/static/json-schema-viewer/`. A future re-vendor from upstream **must
-re-apply them**:
+These live in `json-schema-viewer/src/viewer.js` and `src/styles/`. A future
+re-vendor from upstream **must re-apply them**:
 
 - **`redundantData`** — highlights fields tagged `@RedundantData`.
 - **`sensitive`** (TOR-2621) — highlights fields tagged `@SensitiveData`: node
@@ -174,7 +173,7 @@ sliding open on wide screens pushes the tree sideways after the first centring).
 Editing the hash in place re-applies it (`hashchange` → `resetDeepLinks` +
 `applyDeepLinks`): previous marks, selection and expansion are cleared first.
 
-The parsing lives in the vendored JS (`JSV.applyDeepLinks`); the servlet's inline
+The parsing lives in the viewer JS (`JSV.applyDeepLinks`); the servlet's inline
 bootstrap only calls it, so tweaks need `make front` but not a backend restart.
 Covered by `web/test/e2e/json-schema-viewer-deep-links.spec.ts`.
 
@@ -208,14 +207,28 @@ query-less.
 
 ## Editing / build
 
-- `json-schema-viewer.js` is **pretty-printed source** — edit it directly.
-  Terser minifies it during the frontend build.
-- `json-schema-viewer.css` is **un-minified source** — edit it directly. It is
-  served verbatim (webpack does not minify copied static CSS); a ~15 KB dev-tool
-  stylesheet, so size is not a concern.
-- Assets are served from `target/webapp/`, produced by webpack's
-  `CopyWebpackPlugin` copying `web/static/`. **After editing, run `make front`**
-  to regenerate `target/webapp`, then hard-refresh the browser — editing
-  `web/static` alone has no effect on the running app until rebuilt.
-- Verify what is actually served (bypassing browser cache) with e.g.
+- `json-schema-viewer/` is an independent pnpm package. Install with
+  `pnpm --dir json-schema-viewer install --frozen-lockfile`, then run
+  `pnpm --dir json-schema-viewer run build:prod` (or `make front` for both
+  Koski UI and the viewer). Maven's frontend profile builds it too.
+- `make watch-schema-viewer` rebuilds the served assets on changes.
+  `pnpm --dir json-schema-viewer run typecheck` checks the TypeScript entry point;
+  the application remains JavaScript. Root formatting commands include the package.
+- Webpack bundles `src/index.ts`, the extracted application in `src/viewer.js`,
+  and npm dependencies. `src/tv4-async-load.js` retains the viewer's schema loader.
+  Edit `src/styles/json-schema-viewer.css` directly; CSS and images are copied
+  unchanged. Output goes only to `target/webapp/koski/json-schema-viewer/`.
+  The main UI build neither produces nor cleans these assets.
+- jQuery is copied from npm to `jquery/jquery.min.js`. The servlet loads it,
+  fixes the info-tab URLs, then loads jQuery Mobile and the viewer bundle.
+  The bundle exposes `JSV` and `tv4` for the servlet's bootstrap. The viewer URL
+  and deep links are unchanged.
+- **Vendor exceptions:** `vendor/jquery.mobile.min.js` and `.css` retain
+  jQuery Mobile 1.4.5; `vendor/filereader.js` retains the bundled FileReader.js
+  (its IIFE explicitly receives `window` when loaded as a module). Other libraries
+  use the existing versions from npm, locked in this package's `pnpm-lock.yaml`.
+  Renovate library updates and lockfile maintenance require manual review.
+- After a build, hard-refresh the browser. Verify the served output with e.g.
   `curl -s http://localhost:7021/koski/json-schema-viewer/styles/json-schema-viewer.css`.
+- Viewer tests use Koski's existing Playwright setup:
+  `pnpm --dir web exec playwright test schema-viewer` (requires a running Koski).

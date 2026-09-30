@@ -43,6 +43,7 @@ jobs:
               - '!src/**'
               - '!scala-schema/**'
               - '!web/**'
+              - '!json-schema-viewer/**'
               - '!.browserslistrc'
               - '!valpas-web/**'
               - '!omadata-oauth2-sample/**'
@@ -71,6 +72,7 @@ jobs:
             koski-ui:
               - *documentation-exclusions
               - 'web/**'
+              - 'json-schema-viewer/**'
               - '.browserslistrc'
 
             valpas-ui:

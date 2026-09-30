@@ -16,6 +16,7 @@ help:
 	@echo "make run	- Run previously built application in local environment"
 	@echo "make docker-dbs	- Start databases with docker compose"
 	@echo "make watch	- Watch for changes in webapp files"
+	@echo "make watch-schema-viewer - Watch for changes in the schema viewer"
 	@echo "make clean	- Remove generated build data"
 
 .PHONY: logdir
@@ -47,11 +48,16 @@ build-snapshot-image: build
 
 .PHONY: front
 front: logdir
+	cd json-schema-viewer && pnpm install --frozen-lockfile && pnpm run build:prod
 	cd web && pnpm install --frozen-lockfile && pnpm run build:prod
 
 .PHONY: watch
 watch:
 	cd web && pnpm run watch
+
+.PHONY: watch-schema-viewer
+watch-schema-viewer:
+	cd json-schema-viewer && pnpm run watch
 
 .PHONY: watch-prod
 watch-prod:
@@ -201,6 +207,7 @@ owaspresults:
 .PHONY: npm-audit
 npm-audit:
 	cd web && pnpm audit --audit-level high
+	cd json-schema-viewer && pnpm audit --audit-level high
 	cd valpas-web && pnpm audit --audit-level high
 	cd smoketests && pnpm audit --audit-level high
 	cd omadata-oauth2-sample/server && pnpm audit --audit-level high

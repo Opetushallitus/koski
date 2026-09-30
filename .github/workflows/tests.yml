@@ -153,6 +153,12 @@ jobs:
 
       - run: pnpm --dir web install --frozen-lockfile
 
+      - name: Typecheck schema viewer
+        working-directory: json-schema-viewer
+        run: |
+          pnpm install --frozen-lockfile
+          pnpm run typecheck
+
       - name: Typecheck Koski frontend
         run: pnpm --dir web run typecheck
 

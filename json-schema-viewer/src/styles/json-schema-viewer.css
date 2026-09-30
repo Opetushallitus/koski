@@ -184,11 +184,15 @@ div#info-tab-def.info-tab,
 /* Body */
 #info-tab-def {
   padding: 20px 22px 24px;
-  font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif;
+  font-family:
+    -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif;
 }
 /* Section eyebrows */
 #info-tab-def .jsv-eyebrow {
-  font: 600 10.5px ui-monospace, Menlo, monospace;
+  font:
+    600 10.5px ui-monospace,
+    Menlo,
+    monospace;
   letter-spacing: 0.09em;
   text-transform: uppercase;
   color: #9a9a9a;
@@ -227,7 +231,10 @@ div#info-tab-def.info-tab,
   padding: 9px 12px;
 }
 #info-technical .jsv-mono {
-  font: 13px ui-monospace, Menlo, monospace;
+  font:
+    13px ui-monospace,
+    Menlo,
+    monospace;
   color: #1a1a1a;
 }
 #info-technical .jsv-koodisto-link,
@@ -242,7 +249,10 @@ div#info-tab-def.info-tab,
 /* Chips */
 .jsv-chip {
   display: inline-block;
-  font: 12px ui-monospace, Menlo, monospace;
+  font:
+    12px ui-monospace,
+    Menlo,
+    monospace;
   background: #f0f0f0;
   border: 1px solid #e0e0e0;
   border-radius: 4px;
@@ -292,7 +302,10 @@ div#info-tab-def.info-tab,
 }
 #info-localized .jsv-lang-tag {
   display: inline-block;
-  font: 600 10px ui-monospace, Menlo, monospace;
+  font:
+    600 10px ui-monospace,
+    Menlo,
+    monospace;
   letter-spacing: 0.06em;
   border-radius: 3px;
   padding: 2px 6px;

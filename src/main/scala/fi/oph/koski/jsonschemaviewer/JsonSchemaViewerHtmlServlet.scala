@@ -48,6 +48,7 @@ class JsonSchemaViewerHtmlServlet(implicit val application: KoskiApplication) ex
     """)
 
   get("/")(nonce => {
+    val assetCacheVersion = if (Environment.isLocalDevelopmentEnvironment(application.config)) nonce else buildVersion.getOrElse(nonce)
 
     <html>
       <head>
@@ -61,8 +62,8 @@ class JsonSchemaViewerHtmlServlet(implicit val application: KoskiApplication) ex
           <title>JSON Schema Viewer 0.3.4</title>,
           <meta name="viewport" content="width=device-width, initial-scale=1"/>,
           <link rel="icon" type="image/gif" href="data:image/gif;base64,R0lGODlhEAAQAIAAAAAAAAAAACH5BAkAAAEALAAAAAAQABAAAAIgjI+py+0PEQiT1lkNpppnz4HfdoEH2W1nCJRfBMfyfBQAOw==" />,
-          <link nonce={nonce} rel="stylesheet" href="/koski/json-schema-viewer/jquery/1.4.5/jquery.mobile.min.css" />,
-          <link nonce={nonce} rel="stylesheet" href="/koski/json-schema-viewer/styles/json-schema-viewer.css" />
+          <link nonce={nonce} rel="stylesheet" href={s"/koski/json-schema-viewer/jquery/jquery.mobile.min.css?$assetCacheVersion"} />,
+          <link nonce={nonce} rel="stylesheet" href={s"/koski/json-schema-viewer/styles/json-schema-viewer.css?$assetCacheVersion"} />
         ))}
       </head>
       <body>
@@ -193,10 +194,10 @@ class JsonSchemaViewerHtmlServlet(implicit val application: KoskiApplication) ex
             </p>
           </div>,
 
-          <script nonce={nonce} type='text/javascript' src="/koski/json-schema-viewer/jquery/2.1.1/jquery.min.js"></script>,
+          <script nonce={nonce} type='text/javascript' src={s"/koski/json-schema-viewer/jquery/jquery.min.js?$assetCacheVersion"}></script>,
           <script nonce={nonce} type='text/javascript'>{absoluteTabLinks}</script>,
-          <script nonce={nonce} type='text/javascript' src="/koski/json-schema-viewer/jquery/1.4.5/jquery.mobile.min.js"></script>,
-          <script nonce={nonce} type='text/javascript' src="/koski/json-schema-viewer/js/json-schema-viewer.js"></script>,
+          <script nonce={nonce} type='text/javascript' src={s"/koski/json-schema-viewer/jquery/jquery.mobile.min.js?$assetCacheVersion"}></script>,
+          <script nonce={nonce} type='text/javascript' src={s"/koski/json-schema-viewer/js/json-schema-viewer.js?$assetCacheVersion"}></script>,
           <script nonce={nonce} type='text/javascript'>{code}</script>
         ))}
       </body>

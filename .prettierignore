@@ -7,3 +7,4 @@ valpas-web/dist-nonce/
 omadata-oauth2-sample/server/**/dist/
 omadata-oauth2-sample/server/playwright-report/
 omadata-oauth2-sample/server/test-results/
+json-schema-viewer/vendor/
