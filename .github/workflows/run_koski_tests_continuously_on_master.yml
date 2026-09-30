@@ -1,8 +1,12 @@
-name: Run tests 1 per 4 hours
+name: Run weekday tests on master
 on:
   schedule:
-    - cron: "0 */4 * * *"
+    - cron: "0 7 * * 1-5"
+      timezone: Europe/Helsinki
   workflow_dispatch:
+
+permissions:
+  contents: read
 
 env:
   DOCKER_BUILDKIT: 1
@@ -12,3 +16,22 @@ jobs:
   tests:
     name: "👀"
     uses: ./.github/workflows/tests.yml
+    permissions:
+      contents: read
+      packages: read
+
+  notify_failure:
+    name: Report CI failure to Slack
+    needs: [tests]
+    if: ${{ failure() && !cancelled() }}
+    runs-on: ubuntu-26.04
+    steps:
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7
+        with:
+          sparse-checkout: .github/actions/report-slack
+
+      - uses: ./.github/actions/report-slack
+        with:
+          webhook: ${{ secrets.SLACK_CI_ALERTS_WEBHOOK }}
+          title: ":rotating_light: Scheduled/manual master tests failed"
+          include_context: repo workflow commit ci_run

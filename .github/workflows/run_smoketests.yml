@@ -1,7 +1,8 @@
 name: Run smoketests
 on:
   schedule:
-    - cron: "30 5-12 * * SUN-SAT"
+    - cron: "30 8-15 * * SUN-SAT"
+      timezone: Europe/Helsinki
   workflow_dispatch:
   workflow_call:
     inputs:
