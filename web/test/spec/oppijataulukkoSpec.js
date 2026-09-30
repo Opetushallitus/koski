@@ -177,6 +177,26 @@ describe('Oppijataulukko', function () {
       })
     })
 
+    describe('aktiivisilla opiskeluoikeuksilla', function () {
+      before(
+        page.oppijataulukko.filterBy('tyyppi', 'Ammatillinen koulutus'),
+        page.oppijataulukko.filterBy('tutkinto'),
+        page.oppijataulukko.filterBy('tila', 'Aktiiviset opiskeluoikeudet')
+      )
+      it('näytetään vain opiskeluoikeudet, joiden tila ei ole päättävä', function () {
+        var aktiivisetTilat = ['Läsnä', 'Loma', 'Väliaikaisesti keskeytynyt']
+        var tilat = page.oppijataulukko.data().map(function (row) {
+          return row[4]
+        })
+        expect(tilat.length).to.be.above(0)
+        expect(
+          tilat.filter(function (tila) {
+            return !aktiivisetTilat.includes(tila)
+          })
+        ).to.deep.equal([])
+      })
+    })
+
     describe('luokkatiedolla', function () {
       describe('jossa väliviiva', function () {
         before(

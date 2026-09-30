@@ -9,6 +9,7 @@ import fi.oph.koski.log.Logging
 import fi.oph.koski.opiskeluoikeus.OpiskeluoikeusQueryFilter._
 import fi.oph.koski.organisaatio.{OrganisaatioHierarkia, OrganisaatioOid, OrganisaatioRepository, OrganisaatioService}
 import fi.oph.koski.perustiedot.ToimipistePerustiedot
+import fi.oph.koski.schema.Opiskeluoikeus.OpiskeluoikeudenPäättymistila
 import fi.oph.koski.schema.{Koodistokoodiviite, OrganisaatioWithOid}
 import org.json4s.JsonAST.JValue
 import org.json4s.jackson.JsonMethods
@@ -28,6 +29,7 @@ object OpiskeluoikeusQueryFilter {
   case class SuorituksenTyyppi(tyyppi: Koodistokoodiviite) extends OpiskeluoikeusQueryFilter
   case class NotSuorituksenTyyppi(tyyppi: Koodistokoodiviite) extends OpiskeluoikeusQueryFilter
   case class OpiskeluoikeudenTila(tila: Koodistokoodiviite) extends OpiskeluoikeusQueryFilter
+  case class OneOfOpiskeluoikeudenTilat(tilat: List[OpiskeluoikeudenTila]) extends OpiskeluoikeusQueryFilter
   case class Tutkintohaku(hakusana: String) extends OpiskeluoikeusQueryFilter
   case class Toimipiste(toimipiste: List[OrganisaatioWithOid]) extends OpiskeluoikeusQueryFilter
   case class VarhaiskasvatuksenToimipiste(toimipiste: List[OrganisaatioWithOid]) extends OpiskeluoikeusQueryFilter
@@ -40,6 +42,8 @@ object OpiskeluoikeusQueryFilter {
   case class MuuttunutEnnen(aikaleima: Instant) extends OpiskeluoikeusQueryFilter
   case class MuuttunutJälkeen(aikaleima: Instant) extends OpiskeluoikeusQueryFilter
   case class Poistettu(poistettu: Boolean) extends OpiskeluoikeusQueryFilter
+
+  val aktiivisetTilatHakuarvo = "aktiiviset"
 
   def parse(params: MultiParams)(implicit koodisto: KoodistoViitePalvelu, organisaatiot: OrganisaatioService, session: KoskiSpecificSession): Either[HttpStatus, List[OpiskeluoikeusQueryFilter]] =
     OpiskeluoikeusQueryFilterParser.parse(params)
@@ -76,6 +80,10 @@ private object OpiskeluoikeusQueryFilterParser extends Logging {
       case (p, v +: _) if p == "opiskeluoikeusAlkanutViimeistään" => dateParam((p, v)).map(OpiskeluoikeusAlkanutViimeistään)
       case ("opiskeluoikeudenTyyppi", Seq(tyyppi)) => Right(OpiskeluoikeudenTyyppi(koodisto.validateRequired("opiskeluoikeudentyyppi", tyyppi)))
       case ("opiskeluoikeudenTyyppi", tyypit) => Right(OneOfOpiskeluoikeudenTyypit(tyypit.toList.map(tyyppi => OpiskeluoikeudenTyyppi(koodisto.validateRequired("opiskeluoikeudentyyppi", tyyppi)))))
+      case ("opiskeluoikeudenTila", v +: _) if v == aktiivisetTilatHakuarvo =>
+        Right(OneOfOpiskeluoikeudenTilat(OpiskeluoikeudenPäättymistila.aktiivisetKoskiTilat.map(tila =>
+          OpiskeluoikeudenTila(koodisto.validateRequired("koskiopiskeluoikeudentila", tila))
+        )))
       case ("opiskeluoikeudenTila", v +: _) => Right(OpiskeluoikeudenTila(koodisto.validateRequired("koskiopiskeluoikeudentila", v)))
       case ("suorituksenTyyppi", v +: _) => Right(SuorituksenTyyppi(koodisto.validateRequired("suorituksentyyppi", v)))
       case ("tutkintohaku", hakusana +: _) if hakusana.length < 3 => Left(KoskiErrorCategory.badRequest.queryParam.searchTermTooShort())

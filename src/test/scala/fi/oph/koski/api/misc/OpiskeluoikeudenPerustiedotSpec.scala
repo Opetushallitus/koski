@@ -7,6 +7,7 @@ import fi.oph.koski.documentation.PerusopetusExampleData
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat.{eerola, koululainen, lukiolainen}
 import fi.oph.koski.henkilo.MockOppijat.asUusiOppija
 import fi.oph.koski.schema.LocalizedString.{english, finnish, swedish}
+import fi.oph.koski.schema.Opiskeluoikeus.OpiskeluoikeudenPäättymistila
 import fi.oph.koski.schema._
 import fi.oph.koski.util.Wait
 import fi.oph.koski.{DatabaseTestMethods, DirtiesFixtures, KoskiApplicationForTests, KoskiHttpSpec}
@@ -46,7 +47,18 @@ class OpiskeluoikeudenPerustiedotSpec
     "Ruotsinkielinen haku toimii koulutusmoduuleilla jotka on luotu vain suomenkielisellä nimellä" in {
       searchPerustiedot("kunnioitus", "sv") should equal(List("Kunnioitus: Auta meitä ylläpitämään häirinnätöntä työpaikkaa"))
     }
+
+    "Tilahaku arvolla 'aktiiviset' palauttaa vain opiskeluoikeudet, joiden voimassa oleva tila ei ole päättävä" in {
+      voimassaOlevatTilat(Map.empty).exists(OpiskeluoikeudenPäättymistila.koski) should equal(true)
+
+      val aktiiviset = voimassaOlevatTilat(Map("opiskeluoikeudenTila" -> "aktiiviset"))
+      aktiiviset should not be empty
+      aktiiviset.filter(OpiskeluoikeudenPäättymistila.koski) should equal(Nil)
+    }
   }
+
+  private def voimassaOlevatTilat(queryParams: Map[String, String]): List[String] =
+    searchForPerustiedot(queryParams).flatMap(_.tilat.toList.flatten).map(_.tila.koodiarvo).distinct
 
   "Luokka-sarake kun lähdejärjestelmä siirtää vain vanhemman vuosiluokan suorituksen" - {
     // Kaisa Koululaisella on fixtureissa vuosiluokat 7C, 8C ja 9C sekä päättötodistus.
