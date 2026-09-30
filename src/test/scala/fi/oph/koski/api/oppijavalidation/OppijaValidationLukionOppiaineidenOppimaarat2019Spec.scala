@@ -114,7 +114,7 @@ class OppijaValidationLukionOppiaineidenOppimaarat2019Spec extends TutkinnonPeru
     "Arviointipäivä voi olla aikaisintaan opiskeluoikeuden alkamispäivä" in {
       setupOppijaWithOpiskeluoikeus(FY1ModuulinArviointipäivällä(date(2019, 7, 31))) {
         verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.date.arviointiEnnenOpiskeluoikeudenAlkamispäivää(
-          "opiskeluoikeuden alkamispäivä (2019-08-01) oltava sama tai aiempi kuin osasuorituksen moduulikoodistolops2021/FY1 arviointipäivä (2019-07-31)"
+          "Osasuorituksen moduulikoodistolops2021/FY1 arviointipäivä 31.7.2019 on ennen opiskeluoikeuden alkamispäivää 1.8.2019."
         ))
       }
       setupOppijaWithOpiskeluoikeus(FY1ModuulinArviointipäivällä(date(2019, 8, 1))) {
