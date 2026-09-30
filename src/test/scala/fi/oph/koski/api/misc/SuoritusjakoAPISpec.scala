@@ -4,6 +4,7 @@ import fi.oph.koski.documentation.ExamplesTaiteenPerusopetus.PäätasonSuoritus.
 import fi.oph.koski.documentation.ExamplesTaiteenPerusopetus.varsinaisSuomenKansanopisto
 import fi.oph.koski.documentation.YleissivistavakoulutusExampleData.jyväskylänNormaalikoulu
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
+import fi.oph.koski.http.{ErrorMatcher, KoskiErrorCategory}
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.log.{AccessLogTester, AuditLogTester}
 import fi.oph.koski.schema.KoskiSchema.strictDeserialization
@@ -105,6 +106,12 @@ class SuoritusjakoAPISpec extends AnyFreeSpec with SuoritusjakoTestMethods with 
         postSuoritusjakoV3(secrets("taiteen perusopetus")) {
           verifyResponseStatusOk()
           AuditLogTester.verifyLastAuditLogMessageForOperation(Map("operation" -> "KANSALAINEN_SUORITUSJAKO_KATSOMINEN"))
+        }
+      }
+
+      "epäonnistuu ilman salaisuutta" in {
+        post("/api/suoritusjakoV3/", "{}", headers = jsonContent) {
+          verifyResponseStatus(400, ErrorMatcher.regex(KoskiErrorCategory.badRequest.validation.jsonSchema, ".*missingProperty.*".r))
         }
       }
 
@@ -276,6 +283,20 @@ class SuoritusjakoAPISpec extends AnyFreeSpec with SuoritusjakoTestMethods with 
       "ei onnistu suoritettujen API:sta aktiivisten ja päättyneiden secretillä" in {
         postSuoritetutTutkinnotPublicAPI(secrets("aktiiviset ja päättyneet opinnot")) {
           verifyResponseStatus(404)
+        }
+      }
+
+      "onnistuu post-requestilla, vaikka pyynnössä on null-arvoisia kenttiä" in {
+        post("/api/opinnot/", s"""{"secret": "${secrets("taiteen perusopetus")}", "lisätieto": null}""", headers = jsonContent) {
+          verifyResponseStatusOk()
+        }
+      }
+
+      List("/api/opinnot/", "/api/opinnot/suoritetut-tutkinnot", "/api/opinnot/aktiiviset-ja-paattyneet-opinnot").foreach { path =>
+        s"ei onnistu post-requestilla ilman salaisuutta: $path" in {
+          post(path, "{}", headers = jsonContent) {
+            verifyResponseStatus(400, ErrorMatcher.regex(KoskiErrorCategory.badRequest.validation.jsonSchema, ".*missingProperty.*".r))
+          }
         }
       }
 

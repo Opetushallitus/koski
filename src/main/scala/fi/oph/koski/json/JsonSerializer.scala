@@ -45,19 +45,18 @@ object JsonSerializer {
   }
 
   def extract[T: TypeTag](j: JValue, ignoreExtras: Boolean = false, omitNullValues: Boolean = true): T = {
-    implicit val extractionContext: ExtractionContext = ExtractionContext(schemaFactory).copy(
-      ignoreUnexpectedProperties = ignoreExtras,
-      omitNullFromInput = omitNullValues,
-    )
-    SchemaValidatingExtractor.extract(j) match {
+    validateAndExtract[T](j, ignoreExtras, omitNullValues) match {
       case Right(x) => x
       case Left(error) =>
         throw new RuntimeException(s"Validation error while de-serializing as ${implicitly[TypeTag[T]].tpe.toString}: " + error)
     }
   }
 
-  def validateAndExtract[T: TypeTag](j: JValue, ignoreExtras: Boolean = false): Either[List[ValidationError], T] = {
-    implicit val c = ExtractionContext(schemaFactory).copy(ignoreUnexpectedProperties = ignoreExtras)
+  def validateAndExtract[T: TypeTag](j: JValue, ignoreExtras: Boolean = false, omitNullValues: Boolean = false): Either[List[ValidationError], T] = {
+    implicit val extractionContext: ExtractionContext = ExtractionContext(schemaFactory).copy(
+      ignoreUnexpectedProperties = ignoreExtras,
+      omitNullFromInput = omitNullValues,
+    )
     SchemaValidatingExtractor.extract(j)
   }
 }

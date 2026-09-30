@@ -328,6 +328,12 @@ class SuoritusjakoSpec extends AnyFreeSpec with SuoritusjakoTestMethods with Mat
       }
     }
 
+    "epäonnistuu ilman salaisuutta" in {
+      post("api/suoritusjako/editor", "{}", headers = jsonContent) {
+        verifyResponseStatus(400, ErrorMatcher.regex(KoskiErrorCategory.badRequest.validation.jsonSchema, ".*missingProperty.*".r))
+      }
+    }
+
     "sisältää oikeat suoritukset" - {
       "yhden jaetun suorituksen salaisuudella" in {
         val oppija = getSuoritusjakoOppija(secrets("yksi suoritus"))
@@ -707,6 +713,18 @@ class SuoritusjakoSpec extends AnyFreeSpec with SuoritusjakoTestMethods with Mat
         }
       }
 
+      "ilman salaisuutta" in {
+        val expirationDate = LocalDate.now.plusMonths(1)
+        val json =
+          s"""{
+          "expirationDate": "${expirationDate.toString}"
+        }"""
+
+        updateSuoritusjako(json){
+          verifyResponseStatus(400, ErrorMatcher.regex(KoskiErrorCategory.badRequest.validation.jsonSchema, ".*missingProperty.*".r))
+        }
+      }
+
       "väärällä käyttäjällä" in {
         val expirationDate = LocalDate.now.plusMonths(1)
         val json =
@@ -758,6 +776,12 @@ class SuoritusjakoSpec extends AnyFreeSpec with SuoritusjakoTestMethods with Mat
 
         deleteSuoritusjako(json){
           verifyResponseStatus(404, KoskiErrorCategory.notFound())
+        }
+      }
+
+      "ilman salaisuutta" in {
+        deleteSuoritusjako("{}"){
+          verifyResponseStatus(400, ErrorMatcher.regex(KoskiErrorCategory.badRequest.validation.jsonSchema, ".*missingProperty.*".r))
         }
       }
 

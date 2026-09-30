@@ -1,7 +1,6 @@
 package fi.oph.koski.servlet
 
 import fi.oph.koski.config.KoskiApplication
-import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.koskiuser.{KoskiSpecificSession, Unauthenticated}
 import fi.oph.koski.log.KoskiAuditLogMessageField.oppijaHenkiloOid
 import fi.oph.koski.log.KoskiOperation.{KANSALAINEN_SUORITUSJAKO_KATSOMINEN_AKTIIVISET_JA_PAATTYNEET_OPINNOT, KANSALAINEN_SUORITUSJAKO_KATSOMINEN_SUORITETUT_TUTKINNOT}
@@ -25,7 +24,7 @@ class SuoritusjakoApiServlet(implicit application: KoskiApplication) extends Kos
     contentType = "application/json"
     implicit val suoritusjakoUser = KoskiSpecificSession.suoritusjakoKatsominenUser(request)
     withJsonBody({ json =>
-      val body = JsonSerializer.extract[SuoritusjakoReadRequest](json)
+      val body = extractOrHalt[SuoritusjakoReadRequest](json)
       val result = application.suoritusjakoService.getSuoritetutTutkinnot(body.secret)
         .tap(_.map(jakolinkki => AuditLog.log(KoskiAuditLogMessage(KANSALAINEN_SUORITUSJAKO_KATSOMINEN_SUORITETUT_TUTKINNOT, suoritusjakoUser, Map(oppijaHenkiloOid -> jakolinkki.henkilö.oid)))))
       renderEither[SuoritetutTutkinnotOppijaJakolinkillä](result)
@@ -44,7 +43,7 @@ class SuoritusjakoApiServlet(implicit application: KoskiApplication) extends Kos
     contentType = "application/json"
     implicit val suoritusjakoUser = KoskiSpecificSession.suoritusjakoKatsominenUser(request)
     withJsonBody({ json =>
-      val body = JsonSerializer.extract[SuoritusjakoReadRequest](json)
+      val body = extractOrHalt[SuoritusjakoReadRequest](json)
       val result = application.suoritusjakoService.getAktiivisetJaPäättyneetOpinnot(body.secret)
         .tap(_.map(jakolinkki => AuditLog.log(KoskiAuditLogMessage(KANSALAINEN_SUORITUSJAKO_KATSOMINEN_AKTIIVISET_JA_PAATTYNEET_OPINNOT, suoritusjakoUser, Map(oppijaHenkiloOid -> jakolinkki.henkilö.oid)))))
       renderEither[AktiivisetJaPäättyneetOpinnotOppijaJakolinkillä](result)
@@ -62,7 +61,7 @@ class SuoritusjakoApiServlet(implicit application: KoskiApplication) extends Kos
   post("/") {
     contentType = "application/json"
     withJsonBody({ json =>
-      val body = JsonSerializer.extract[SuoritusjakoReadRequest](json)
+      val body = extractOrHalt[SuoritusjakoReadRequest](json)
       application.suoritusjakoService.getOppijaJakolinkilläAndSession(body.secret, request, application.config) match {
         case Left(status) => haltWithStatus(status)
         case Right((result, session)) => renderObject[OppijaJakolinkillä](result.getIgnoringWarnings, session)
