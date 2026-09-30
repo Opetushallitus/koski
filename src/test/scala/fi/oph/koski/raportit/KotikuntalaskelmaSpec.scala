@@ -1,19 +1,25 @@
 package fi.oph.koski.raportit
 
-import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
+import fi.oph.koski.api.misc.OpiskeluoikeusTestMethodsPerusopetus
+import fi.oph.koski.documentation.ExampleData.{opiskeluoikeusEronnut, opiskeluoikeusLäsnä, suomenKieli, vahvistusPaikkakunnalla}
+import fi.oph.koski.documentation.PerusopetusExampleData
+import fi.oph.koski.documentation.YleissivistavakoulutusExampleData.oppilaitos
+import fi.oph.koski.henkilo.{KoskiSpecificMockOppijat, LaajatOppijaHenkilöTiedot}
 import fi.oph.koski.koskiuser.KoskiMockUser
 import fi.oph.koski.localization.LocalizationReader
 import fi.oph.koski.log.AuditLogTester
-import fi.oph.koski.organisaatio.MockOrganisaatiot.aapajoenKoulu
+import fi.oph.koski.organisaatio.MockOrganisaatiot.{aapajoenKoulu, jyväskylänNormaalikoulu}
 import fi.oph.koski.raportointikanta.RaportointikantaTestMethods
+import fi.oph.koski.schema._
 import fi.oph.koski.{DirtiesFixtures, KoskiApplicationForTests}
 import org.scalatest.BeforeAndAfterAll
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.should.Matchers
 
+import java.time.LocalDate
 import java.time.LocalDate.{of => date}
 
-class KotikuntalaskelmaSpec extends AnyFreeSpec with Matchers with RaportointikantaTestMethods with BeforeAndAfterAll with DirtiesFixtures {
+class KotikuntalaskelmaSpec extends AnyFreeSpec with Matchers with RaportointikantaTestMethods with OpiskeluoikeusTestMethodsPerusopetus with BeforeAndAfterAll with DirtiesFixtures {
   private val raportointipäivä = date(2026, 9, 1)
 
   override protected def alterFixture(): Unit = {
@@ -34,6 +40,39 @@ class KotikuntalaskelmaSpec extends AnyFreeSpec with Matchers with Raportointika
   private lazy val oppijatRivit = kotikuntalaskelmaBuilder
     .buildOppijat(Seq(aapajoenKoulu), raportointipäivä, t)(session(defaultUser))
     .rows.map(_.asInstanceOf[KotikuntalaskelmaOppijaRow])
+
+  private def uudetOppijatRivit = kotikuntalaskelmaBuilder
+    .buildOppijat(Seq(aapajoenKoulu), raportointipäivä, t)(session(defaultUser))
+    .rows.map(_.asInstanceOf[KotikuntalaskelmaOppijaRow])
+
+  private def perusopetuksenOpiskeluoikeus(oppija: LaajatOppijaHenkilöTiedot): PerusopetuksenOpiskeluoikeus =
+    getOpiskeluoikeudet(oppija.oid).collect { case oo: PerusopetuksenOpiskeluoikeus => oo }.head
+
+  private def vuosiluokka(luokkaAste: Int, luokka: String, alkamispäivä: LocalDate, vahvistuspäivä: Option[LocalDate] = None) =
+    PerusopetuksenVuosiluokanSuoritus(
+      koulutusmoduuli = PerusopetuksenLuokkaAste(luokkaAste, PerusopetusExampleData.perusopetuksenDiaarinumero),
+      luokka = luokka,
+      toimipiste = oppilaitos(aapajoenKoulu),
+      suorituskieli = suomenKieli,
+      alkamispäivä = Some(alkamispäivä),
+      vahvistus = vahvistuspäivä.flatMap(vahvistusPaikkakunnalla(_, oppilaitos(aapajoenKoulu))),
+      // Vahvistettu vuosiluokka vaatii vähintään yhden oppiaineen
+      osasuoritukset = vahvistuspäivä.map(_ => List(
+        PerusopetusExampleData.suoritus(PerusopetusExampleData.oppiaine("HI", PerusopetusExampleData.vuosiviikkotuntia(2)))
+          .copy(arviointi = PerusopetusExampleData.arviointi(8))
+      ))
+    )
+
+  private def korvaaSuoritukset(oppija: LaajatOppijaHenkilöTiedot)(muutos: List[PerusopetuksenPäätasonSuoritus] => List[PerusopetuksenPäätasonSuoritus]): Unit = {
+    val oo = perusopetuksenOpiskeluoikeus(oppija)
+    putOppija(Oppija(oppija, List(oo.copy(suoritukset = muutos(oo.suoritukset))))) {
+      verifyResponseStatusOk()
+    }
+    reloadRaportointikanta()
+  }
+
+  private def oppijanRivi(oppija: LaajatOppijaHenkilöTiedot): KotikuntalaskelmaOppijaRow =
+    uudetOppijatRivit.find(_.oppijaNumero.contains(oppija.oid)).get
 
   "Kotikuntalaskelma" - {
     "Raportti voidaan ladata ja lataaminen tuottaa auditlogin" in {
@@ -74,6 +113,17 @@ class KotikuntalaskelmaSpec extends AnyFreeSpec with Matchers with Raportointika
       tyhjäKotikuntaRivi.get.seitsemänKaksitoista should be >= 3
 
       aggregaattiRivit.find(_.oppilaanKotikunta.contains("Helsinki")).get.seitsemänKaksitoista should be(1)
+    }
+
+    "Oppijat-välilehdellä on yksi rivi jokaista aggregaattivälilehdellä laskettua oppijaa kohden" in {
+      oppijatRivit.length shouldBe aggregaattiRivit.map(_.yhteensä).sum
+    }
+
+    "Oppijat-välilehti - esiopetusoppijan luokka-asteena näytetään esiopetus eikä koulutuskoodia" in {
+      val rivi = oppijatRivit.find(_.oppijaNumero.contains(KoskiSpecificMockOppijat.kotikuntalaskelmaEsiopetus.oid))
+
+      rivi.get.luokkaAste shouldBe Some(t.get("raportti-excel-default-value-esiopetus"))
+      rivi.get.luokka shouldBe None
     }
 
     "Oppijat-välilehti - tavallisen oppijan tiedot näytetään sellaisenaan" in {
@@ -167,6 +217,72 @@ class KotikuntalaskelmaSpec extends AnyFreeSpec with Matchers with Raportointika
 
       oppijatRivit.find(_.oppijaNumero.contains(oid)) shouldBe None
       aggregaattiRivit.find(_.oppilaanKotikunta.contains("Helsinki")).get.seitsemänKaksitoista should be(1)
+    }
+
+    // Alla olevat testit muokkaavat fixtuurin oppijoiden opiskeluoikeuksia, joten ne ovat viimeisinä.
+    // Kukin muokkaa eri oppijaa, eivätkä ne siksi vaikuta toisiinsa.
+    "Oppijat-välilehden luokkatiedot valitaan samalta, raportointipäivänä ajankohtaiselta suoritukselta" - {
+      "Vuosiluokan rinnalla oleva perusopetuksen oppimäärä ei näy luokka-asteena" in {
+        val kaisa = KoskiSpecificMockOppijat.kotikuntalaskelmaKuusivuotias
+        korvaaSuoritukset(kaisa)(PerusopetusExampleData.perusopetuksenOppimääränSuoritusKesken.copy(toimipiste = oppilaitos(aapajoenKoulu)) :: _)
+
+        val rivi = oppijanRivi(kaisa)
+        rivi.luokkaAste shouldBe Some("1")
+        rivi.luokka shouldBe Some("1A")
+      }
+
+      "Raportointipäivän jälkeen alkava vuosiluokka ei ole vielä ajankohtainen" in {
+        val kalle = KoskiSpecificMockOppijat.kotikuntalaskelmaKolmetoistaViisitoista
+        korvaaSuoritukset(kalle)(_ => List(
+          vuosiluokka(8, "8A", date(2025, 8, 1), vahvistuspäivä = Some(date(2026, 5, 30))),
+          vuosiluokka(9, "9A", raportointipäivä.plusDays(14))
+        ))
+
+        val rivi = oppijanRivi(kalle)
+        rivi.luokkaAste shouldBe Some("8")
+        rivi.luokka shouldBe Some("8A")
+      }
+
+      "Luokka otetaan samalta vuosiluokalta kuin luokka-aste" in {
+        val ilmari = KoskiSpecificMockOppijat.kotikuntalaskelmaKuusitoistaEiErityista
+        korvaaSuoritukset(ilmari)(_ => List(
+          vuosiluokka(8, "Sininen", date(2022, 8, 1), vahvistuspäivä = Some(date(2023, 5, 30))),
+          vuosiluokka(9, "9A", date(2023, 8, 1))
+        ))
+
+        val rivi = oppijanRivi(ilmari)
+        rivi.luokkaAste shouldBe Some("9")
+        rivi.luokka shouldBe Some("9A")
+      }
+
+      "Raportointipäivänä koulua vaihtanut oppija näytetään läsnä-tilaisen opiskeluoikeutensa tiedoilla" in {
+        val sami = KoskiSpecificMockOppijat.kotikuntalaskelmaSeitsemanKaksitoista
+        val vanha = perusopetuksenOpiskeluoikeus(sami)
+        val eronnut = vanha.copy(
+          suoritukset = List(vuosiluokka(3, "3B", date(2022, 8, 1))),
+          tila = NuortenPerusopetuksenOpiskeluoikeudenTila(List(
+            NuortenPerusopetuksenOpiskeluoikeusjakso(date(2022, 8, 1), opiskeluoikeusLäsnä),
+            NuortenPerusopetuksenOpiskeluoikeusjakso(raportointipäivä, opiskeluoikeusEronnut)
+          ))
+        )
+        val uusi = PerusopetuksenOpiskeluoikeus(
+          oppilaitos = Some(oppilaitos(jyväskylänNormaalikoulu)),
+          suoritukset = List(vuosiluokka(3, "3A", raportointipäivä).copy(toimipiste = oppilaitos(jyväskylänNormaalikoulu))),
+          tila = NuortenPerusopetuksenOpiskeluoikeudenTila(List(NuortenPerusopetuksenOpiskeluoikeusjakso(raportointipäivä, opiskeluoikeusLäsnä)))
+        )
+        putOppija(Oppija(sami, List(eronnut, uusi))) {
+          verifyResponseStatusOk()
+        }
+        reloadRaportointikanta()
+
+        val rivi = kotikuntalaskelmaBuilder
+          .buildOppijat(Seq(aapajoenKoulu, jyväskylänNormaalikoulu), raportointipäivä, t)(session(defaultUser))
+          .rows.map(_.asInstanceOf[KotikuntalaskelmaOppijaRow])
+          .find(_.oppijaNumero.contains(sami.oid)).get
+        rivi.oppilaitos shouldBe Some("Jyväskylän normaalikoulu")
+        rivi.luokkaAste shouldBe Some("3")
+        rivi.luokka shouldBe Some("3A")
+      }
     }
   }
 }
