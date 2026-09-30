@@ -1,7 +1,11 @@
 {
   "overrides": [
     {
-      "files": ["web/**", "omadata-oauth2-sample/server/**"],
+      "files": [
+        "web/**",
+        "json-schema-viewer/**",
+        "omadata-oauth2-sample/server/**"
+      ],
       "options": {
         "singleQuote": true,
         "semi": false,

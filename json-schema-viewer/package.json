@@ -1,0 +1,32 @@
+{
+  "name": "koski-json-schema-viewer",
+  "private": true,
+  "packageManager": "pnpm@10.34.5",
+  "engines": {
+    "node": ">=24",
+    "pnpm": "10.34.5"
+  },
+  "scripts": {
+    "build:prod": "webpack --bail --mode production",
+    "watch": "webpack --watch --mode development",
+    "typecheck": "tsc --noEmit",
+    "prettier": "pnpm --dir .. exec prettier --write json-schema-viewer",
+    "prettier:check": "pnpm --dir .. exec prettier --check json-schema-viewer"
+  },
+  "dependencies": {
+    "URIjs": "1.14.2",
+    "d3": "3.5.17",
+    "highlight.js": "8.8.0",
+    "jquery": "2.1.1",
+    "jquery.scrollto": "1.4.14",
+    "jsonpointer.js": "0.4.0",
+    "tv4": "1.2.7"
+  },
+  "devDependencies": {
+    "@types/node": "24.19.0",
+    "ts-loader": "9.6.2",
+    "typescript": "5.9.3",
+    "webpack": "5.111.1",
+    "webpack-cli": "6.0.1"
+  }
+}
