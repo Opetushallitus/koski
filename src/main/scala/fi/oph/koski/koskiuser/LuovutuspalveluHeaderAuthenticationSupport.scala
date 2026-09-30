@@ -21,8 +21,9 @@ trait LuovutuspalveluHeaderAuthenticationSupport extends AuthenticationSupport {
             defaultLogger.warn(s"Luovutuspalvelu presented with unknown client certificate $subjectDnHeader ($serial)")
             KoskiErrorCategory.unauthorized("Tuntematon varmenne")
           }
-          _ <- Either.cond(client.ips.contains(request.remoteAddress), (), {
-            defaultLogger.warn(s"Luovutuspalvelu client ${client.user} connected with unauthorized IP ${request.remoteAddress}")
+          clientIp = LuovutuspalveluClientIp(request)
+          _ <- Either.cond(clientIp.exists(client.ips.contains), (), {
+            defaultLogger.warn(s"Luovutuspalvelu client ${client.user} connected with unauthorized IP ${clientIp.getOrElse("(none)")}")
             KoskiErrorCategory.unauthorized("Tuntematon IP-osoite")
           })
           user <- DirectoryClientLogin

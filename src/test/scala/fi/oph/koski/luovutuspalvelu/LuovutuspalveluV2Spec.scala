@@ -36,6 +36,30 @@ class LuovutuspalveluV2Spec extends AnyFreeSpec with KoskiHttpSpec {
       }
     }
 
+    "Palauttaa virheen, kun sallittu IP on vain X-Forwarded-For-headerin alussa" in {
+      post("api/luovutuspalvelu/kela/hetu",
+        JsonSerializer.writeWithRoot(KelaRequest(KoskiSpecificMockOppijat.amis.hetu.get)),
+        headers = mockLuovutuspalveluV2KelaHeader ++ Map("X-Forwarded-For" -> "0.0.0.0, 255.255.255.255") ++ jsonContent) {
+        verifyResponseStatus(401, KoskiErrorCategory.unauthorized("Tuntematon IP-osoite"))
+      }
+    }
+
+    "Palauttaa virheen ilman X-Forwarded-For-headeria" in {
+      post("api/luovutuspalvelu/kela/hetu",
+        JsonSerializer.writeWithRoot(KelaRequest(KoskiSpecificMockOppijat.amis.hetu.get)),
+        headers = (mockLuovutuspalveluV2KelaHeader - "X-Forwarded-For") ++ jsonContent) {
+        verifyResponseStatus(401, KoskiErrorCategory.unauthorized("Tuntematon IP-osoite"))
+      }
+    }
+
+    "Hyväksyy X-Forwarded-For-headerin, jonka oikeanpuoleisin IP on sallittu" in {
+      post("api/luovutuspalvelu/kela/hetu",
+        JsonSerializer.writeWithRoot(KelaRequest(KoskiSpecificMockOppijat.amis.hetu.get)),
+        headers = mockLuovutuspalveluV2KelaHeader ++ Map("X-Forwarded-For" -> "255.255.255.255, 0.0.0.0") ++ jsonContent) {
+        verifyResponseStatusOk()
+      }
+    }
+
     "Palauttaa virheen estetyllä varmenteen myöntäjällä" in {
       post("api/luovutuspalvelu/kela/hetu",
         JsonSerializer.writeWithRoot(KelaRequest(KoskiSpecificMockOppijat.amis.hetu.get)),

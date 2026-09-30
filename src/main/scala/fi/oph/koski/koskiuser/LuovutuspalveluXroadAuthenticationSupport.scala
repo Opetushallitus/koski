@@ -18,8 +18,9 @@ trait LuovutuspalveluXroadAuthenticationSupport extends AuthenticationSupport wi
             defaultLogger.warn(s"Luovutuspalvelu X-Road security server presented unknown client certificate ${subjectDnHeader}")
             KoskiErrorCategory.unauthorized("Tuntematon varmenne")
           }
-          _ <- Either.cond(xroadInstance.ips.contains(request.remoteAddress), (), {
-            defaultLogger.warn(s"Luovutuspalvelu X-Road security server connected with unauthorized IP ${request.remoteAddress}")
+          clientIp = LuovutuspalveluClientIp(request)
+          _ <- Either.cond(clientIp.exists(xroadInstance.ips.contains), (), {
+            defaultLogger.warn(s"Luovutuspalvelu X-Road security server connected with unauthorized IP ${clientIp.getOrElse("(none)")}")
             KoskiErrorCategory.unauthorized("Tuntematon IP-osoite")
           })
           soap <- xmlBody

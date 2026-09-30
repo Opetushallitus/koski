@@ -25,6 +25,12 @@ class HslSpec extends AnyFreeSpec with KoskiHttpSpec with OpiskeluoikeusTestMeth
       }
     }
 
+    "hylkää pyynnön, jossa sallittu IP on vain X-Forwarded-For-headerin alussa" in {
+      post("api/palveluvayla/hsl", body = soapRequest(opiskelija.hetu.get), headers = mockSecurityServerHeader ++ Map("X-Forwarded-For" -> "0.0.0.0, 255.255.255.255")) {
+        verifySOAPError("unauthorized", "Tuntematon IP-osoite")
+      }
+    }
+
     "hylkää pyynnöt muilla kuin HSL X-Road clienteillä" in {
       postHslWithOtherXRoadClient(opiskelija.hetu.get) {
         verifySOAPError("forbidden.kiellettyKäyttöoikeus", "Ei sallittu näillä käyttöoikeuksilla")
