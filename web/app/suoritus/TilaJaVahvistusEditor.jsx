@@ -17,7 +17,7 @@ import {
   arviointiPuuttuu,
   arvioituTaiVahvistettu,
   onKeskeneräisiäOsasuorituksia,
-  suorituksenTyyppi,
+  isKorkeakoulunSuoritus,
   suoritusKesken,
   suoritusValmis,
   tilaText
@@ -32,17 +32,11 @@ import { t } from '../i18n/i18n'
 import * as ytr from '../ytr/ytr'
 import { ammattillinenOsittainenTutkintoJaMuuAmmatillisenTutkinnonOsaPuuttuu } from '../ammatillinen/AmmatillinenOsittainenTutkinto'
 import { isLukionOppiaineidenOppimaarienSuoritus2019 } from '../lukio/lukio.js'
-const KORKEAKOULUN_SUORITUSTYYPIT = [
-  'korkeakoulunopintojakso',
-  'korkeakoulututkinto',
-  'muukorkeakoulunsuoritus'
-]
 
 export const TilaJaVahvistusEditor = ({ model }) => {
   if (ytr.pakollisetKokeetSuoritettuEnnen1990(model)) return null
   if (isLukionOppiaineidenOppimaarienSuoritus2019(model)) return null
-  if (KORKEAKOULUN_SUORITUSTYYPIT.includes(suorituksenTyyppi(model)))
-    return null
+  if (isKorkeakoulunSuoritus(model)) return null
 
   return (
     <div

@@ -17,6 +17,11 @@ describe('Korkeakoulutus', function () {
         'muukorkeakoulunsuoritus 2004—2004, aktiivinen'
       ])
     })
+
+    it('ei näytetä opintojaksojen suoritus kesken/valmis -tilaa', function () {
+      expect(S('.suoritus-taulukko td.suoritus').length).to.be.above(0)
+      expect(S('.suoritus-taulukko .tila').length).to.equal(0)
+    })
   })
 
   describe('Päättynyt-tila, korkeakoulututkinto', function () {

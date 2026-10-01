@@ -85,6 +85,12 @@ export const rekursiivisetOsasuoritukset = (suoritus) =>
   )
 export const suorituksenTyyppi = (suoritus) =>
   suoritus && modelData(suoritus, 'tyyppi').koodiarvo
+export const isKorkeakoulunSuoritus = (suoritus) =>
+  [
+    'korkeakoulunopintojakso',
+    'korkeakoulututkinto',
+    'muukorkeakoulunsuoritus'
+  ].includes(suorituksenTyyppi(suoritus))
 
 export const suoritusTitle = (suoritus) => {
   const title = modelTitle(

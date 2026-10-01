@@ -20,7 +20,7 @@ import {
 import { isYhteinenTutkinnonOsa } from '../ammatillinen/TutkinnonOsa'
 import { PropertiesEditor } from '../editor/PropertiesEditor'
 import { fetchLaajuudet, YhteensäSuoritettu } from './YhteensaSuoritettu'
-import { hasArvosana, suoritusValmis } from './Suoritus'
+import { hasArvosana, isKorkeakoulunSuoritus, suoritusValmis } from './Suoritus'
 import { t } from '../i18n/i18n'
 import { ArvosanaEditor } from './ArvosanaEditor'
 import Text from '../i18n/Text'
@@ -290,14 +290,15 @@ const SuoritusColumn = {
     </th>
   ),
   renderData: ({ model, onExpand, expandable, expanded }) => {
-    const suoritusTitle = suoritusValmis(model) ? (
-      modelTitle(model, 'koulutusmoduuli')
-    ) : (
-      <span>
-        {modelTitle(model, 'koulutusmoduuli')}{' '}
-        <span className="kesken">{`(${t('Suoritus kesken')})`}</span>
-      </span>
-    )
+    const suoritusTitle =
+      suoritusValmis(model) || isKorkeakoulunSuoritus(model) ? (
+        modelTitle(model, 'koulutusmoduuli')
+      ) : (
+        <span>
+          {modelTitle(model, 'koulutusmoduuli')}{' '}
+          <span className="kesken">{`(${t('Suoritus kesken')})`}</span>
+        </span>
+      )
     return (
       <td key="suoritus" className="suoritus">
         {expandable && (
