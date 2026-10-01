@@ -20,7 +20,7 @@ import {
 import { isYhteinenTutkinnonOsa } from '../ammatillinen/TutkinnonOsa'
 import { PropertiesEditor } from '../editor/PropertiesEditor'
 import { fetchLaajuudet, YhteensäSuoritettu } from './YhteensaSuoritettu'
-import { hasArvosana, isKorkeakoulunSuoritus, suoritusValmis } from './Suoritus'
+import { hasArvosana, isKorkeakouluSuoritus, suoritusValmis } from './Suoritus'
 import { t } from '../i18n/i18n'
 import { ArvosanaEditor } from './ArvosanaEditor'
 import Text from '../i18n/Text'
@@ -291,7 +291,7 @@ const SuoritusColumn = {
   ),
   renderData: ({ model, onExpand, expandable, expanded }) => {
     const suoritusTitle =
-      suoritusValmis(model) || isKorkeakoulunSuoritus(model) ? (
+      suoritusValmis(model) || isKorkeakouluSuoritus(model) ? (
         modelTitle(model, 'koulutusmoduuli')
       ) : (
         <span>

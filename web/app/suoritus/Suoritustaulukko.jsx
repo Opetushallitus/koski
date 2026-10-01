@@ -1,7 +1,7 @@
 import React from 'baret'
 import { modelData, modelItems } from '../editor/EditorModel'
 import { accumulateExpandedState } from '../editor/ExpandableItems'
-import { isKorkeakoulunSuoritus, suoritusValmis } from './Suoritus'
+import { isKorkeakouluSuoritus, suoritusValmis } from './Suoritus'
 import Text from '../i18n/Text'
 import { t } from '../i18n/i18n'
 import { fetchLaajuudet, YhteensäSuoritettu } from './YhteensaSuoritettu'
@@ -147,7 +147,7 @@ export class Suoritustaulukko extends React.Component {
                         key={i * 100 + j}
                         model={suoritus}
                         showScope={!samaLaajuusYksikkö}
-                        showTila={showTila && !isKorkeakoulunSuoritus(suoritus)}
+                        showTila={showTila && !isKorkeakouluSuoritus(suoritus)}
                         expanded={isExpandedP(suoritus)}
                         onExpand={setExpanded(suoritus)}
                         groupId={groupId}

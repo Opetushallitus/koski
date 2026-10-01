@@ -9,7 +9,7 @@ import {
 } from '../../editor/EditorModel'
 import SuoritusIdentifier from './SuoritusIdentifier'
 import { suoritusjakoSuoritusTitle } from './suoritusjako'
-import { suorituksenTyyppi } from '../../suoritus/Suoritus'
+import { isKorkeakouluSuoritus } from '../../suoritus/Suoritus'
 import { OpiskeluoikeudenTila } from '../fragments/OpiskeluoikeudenTila'
 import Text from '../../i18n/Text'
 import Checkbox from '../../components/Checkbox'
@@ -69,13 +69,6 @@ export const SelectableSuoritusList = ({
     </ul>
   )
 }
-
-export const isKorkeakouluSuoritus = (suoritus) =>
-  [
-    'korkeakoulututkinto',
-    'korkeakoulunopintojakso',
-    'muukorkeakoulunsuoritus'
-  ].includes(suorituksenTyyppi(suoritus))
 
 const withIdentifiers = (opiskeluoikeus) => (suoritukset) => {
   const [opintojaksot, muut] = R.partition(isOpintojakso, suoritukset)

@@ -17,7 +17,7 @@ import {
   arviointiPuuttuu,
   arvioituTaiVahvistettu,
   onKeskeneräisiäOsasuorituksia,
-  isKorkeakoulunSuoritus,
+  isKorkeakouluSuoritus,
   suoritusKesken,
   suoritusValmis,
   tilaText
@@ -36,7 +36,7 @@ import { isLukionOppiaineidenOppimaarienSuoritus2019 } from '../lukio/lukio.js'
 export const TilaJaVahvistusEditor = ({ model }) => {
   if (ytr.pakollisetKokeetSuoritettuEnnen1990(model)) return null
   if (isLukionOppiaineidenOppimaarienSuoritus2019(model)) return null
-  if (isKorkeakoulunSuoritus(model)) return null
+  if (isKorkeakouluSuoritus(model)) return null
 
   return (
     <div

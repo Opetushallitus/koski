@@ -85,7 +85,7 @@ export const rekursiivisetOsasuoritukset = (suoritus) =>
   )
 export const suorituksenTyyppi = (suoritus) =>
   suoritus && modelData(suoritus, 'tyyppi').koodiarvo
-export const isKorkeakoulunSuoritus = (suoritus) =>
+export const isKorkeakouluSuoritus = (suoritus) =>
   [
     'korkeakoulunopintojakso',
     'korkeakoulututkinto',
