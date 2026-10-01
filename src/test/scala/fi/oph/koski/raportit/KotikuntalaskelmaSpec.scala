@@ -105,13 +105,18 @@ class KotikuntalaskelmaSpec extends AnyFreeSpec with Matchers with Raportointika
       helsinkiRivi.get.kuusitoistaErityisenTuenPerusteella should be(0)
     }
 
-    "Aggregaattivälilehti - turvakiellon alaiset ja hetuttomat oppijat eivät paljasta kotikuntaansa" in {
-      val tyhjäKotikuntaRivi = aggregaattiRivit.find(_.oppilaanKotikunta.isEmpty)
-      tyhjäKotikuntaRivi shouldBe defined
-      tyhjäKotikuntaRivi.get.kotikunnanKoodi shouldBe empty
-      tyhjäKotikuntaRivi.get.seitsemänKaksitoista should be >= 3
+    "Aggregaattivälilehti - turvakiellon alaiset oppijat lasketaan todellisiin kotikuntiinsa" in {
+      aggregaattiRivit.find(_.oppilaanKotikunta.contains("Helsinki")).get.seitsemänKaksitoista should be(2)
+      aggregaattiRivit.find(_.oppilaanKotikunta.contains("Jyväskylä")).get.seitsemänKaksitoista should be(1)
+    }
 
-      aggregaattiRivit.find(_.oppilaanKotikunta.contains("Helsinki")).get.seitsemänKaksitoista should be(1)
+    "Aggregaattivälilehti - hetuttomat oppijat lasketaan omalle, nimetylle rivilleen" in {
+      val hetutonRivi = aggregaattiRivit.find(_.oppilaanKotikunta.contains(t.get("raportti-excel-default-value-hetuton")))
+
+      hetutonRivi shouldBe defined
+      hetutonRivi.get.kotikunnanKoodi shouldBe empty
+      hetutonRivi.get.seitsemänKaksitoista should be(1)
+      aggregaattiRivit.find(_.oppilaanKotikunta.isEmpty) shouldBe None
     }
 
     "Oppijat-välilehdellä on yksi rivi jokaista aggregaattivälilehdellä laskettua oppijaa kohden" in {
@@ -140,6 +145,14 @@ class KotikuntalaskelmaSpec extends AnyFreeSpec with Matchers with Raportointika
       rivi.get.kolmetoistaViisitoista shouldBe false
       rivi.get.kuusitoistaErityisenTuenPerusteella shouldBe false
       rivi.get.kuusitoistaEiErityisenTuenPerusteella shouldBe false
+    }
+
+    "Raportointipäivänä kotikuntaa vaihtanut oppija lasketaan vain uuteen kotikuntaansa" in {
+      aggregaattiRivit.find(_.oppilaanKotikunta.contains("Vantaa")) shouldBe None
+      aggregaattiRivit.find(_.oppilaanKotikunta.contains("Helsinki")).get.kolmetoistaViisitoista should be(1)
+
+      val kalle = oppijatRivit.find(_.oppijaNumero.contains(KoskiSpecificMockOppijat.kotikuntalaskelmaKolmetoistaViisitoista.oid))
+      kalle.get.kotikunta shouldBe Some("Helsinki")
     }
 
     "Oppijat-välilehti - luokka-aste vastaa suunnilleen oppijan ikää" in {
@@ -171,10 +184,6 @@ class KotikuntalaskelmaSpec extends AnyFreeSpec with Matchers with Raportointika
     }
 
     "Oppijat-välilehti - turvakiellon alaiset oppijat ovat listan lopussa" in {
-      // Jos turvakiellon alainen rivi olisi järjestetty todellisen (näkymättömän) oidin mukaan
-      // muiden rivien joukkoon, sen sijainti kahden näkyvän oidin välissä paljastaisi rajatun
-      // joukon mahdollisia identiteettejä. Kaikkien turvakieltorivien pitää siis olla listan
-      // hännässä, ei sekaisin muiden joukossa.
       val ensimmäinenTurvakieltoIndeksi = oppijatRivit.indexWhere(_.oppijaNumero.contains("Turvakielto"))
 
       ensimmäinenTurvakieltoIndeksi should be >= 0
@@ -197,7 +206,7 @@ class KotikuntalaskelmaSpec extends AnyFreeSpec with Matchers with Raportointika
       val kotiopetusOid = KoskiSpecificMockOppijat.kotikuntalaskelmaKotiopetus.oid
 
       oppijatRivit.find(_.oppijaNumero.contains(kotiopetusOid)) shouldBe None
-      aggregaattiRivit.find(_.oppilaanKotikunta.contains("Jyväskylä")).get.seitsemänKaksitoista should be(0)
+      aggregaattiRivit.find(_.oppilaanKotikunta.contains("Jyväskylä")).get.seitsemänKaksitoista should be(1)
     }
 
     "Esiopetusoppija näkyy raportilla omalla, perusopetuksesta erillisellä haarallaan" in {
@@ -215,7 +224,7 @@ class KotikuntalaskelmaSpec extends AnyFreeSpec with Matchers with Raportointika
       val oid = KoskiSpecificMockOppijat.kotikuntalaskelmaKansainvalinenEdellinenLukuvuosi.oid
 
       oppijatRivit.find(_.oppijaNumero.contains(oid)) shouldBe None
-      aggregaattiRivit.find(_.oppilaanKotikunta.contains("Helsinki")).get.seitsemänKaksitoista should be(1)
+      aggregaattiRivit.find(_.oppilaanKotikunta.contains("Helsinki")).get.seitsemänKaksitoista should be(2)
     }
 
     // Muokkaavat fixtuurin opiskeluoikeuksia, joten viimeisinä
