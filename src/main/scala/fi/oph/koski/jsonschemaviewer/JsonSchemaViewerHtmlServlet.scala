@@ -62,7 +62,7 @@ class JsonSchemaViewerHtmlServlet(implicit val application: KoskiApplication) ex
           <title>JSON Schema Viewer 0.3.4</title>,
           <meta name="viewport" content="width=device-width, initial-scale=1"/>,
           <link rel="icon" type="image/gif" href="data:image/gif;base64,R0lGODlhEAAQAIAAAAAAAAAAACH5BAkAAAEALAAAAAAQABAAAAIgjI+py+0PEQiT1lkNpppnz4HfdoEH2W1nCJRfBMfyfBQAOw==" />,
-          <link nonce={nonce} rel="stylesheet" href={s"/koski/json-schema-viewer/jquery/jquery.mobile.min.css?$assetCacheVersion"} />,
+          <link nonce={nonce} rel="stylesheet" href={s"/koski/json-schema-viewer/jquery/jquery.mobile.css?$assetCacheVersion"} />,
           <link nonce={nonce} rel="stylesheet" href={s"/koski/json-schema-viewer/styles/json-schema-viewer.css?$assetCacheVersion"} />
         ))}
       </head>
@@ -102,7 +102,8 @@ class JsonSchemaViewerHtmlServlet(implicit val application: KoskiApplication) ex
             <div data-role="footer">
               <div id="schema-path" class="ui-content">
                 <a href="#permalink-popup" id="permalink" data-rel="popup">Select a Node</a>
-                <div data-role="popup" id="permalink-popup" class="ui-content" data-arrow="true">
+                <!-- data-history="false" estää jQuery Mobilea muuttamasta hashia ja solmuvalintaa ponnahdusikkunaa avattaessa ja suljettaessa. -->
+                <div data-role="popup" id="permalink-popup" data-history="false" class="ui-content" data-arrow="true">
                   <label for="sharelink">Share:</label>
                   <input type="text" id="sharelink" placeholder="Select a Node to create a permalink." value="" data-theme="a"/>
                 </div>
@@ -197,7 +198,7 @@ class JsonSchemaViewerHtmlServlet(implicit val application: KoskiApplication) ex
           <script nonce={nonce} type='text/javascript' src={s"/koski/json-schema-viewer/jquery/jquery.min.js?$assetCacheVersion"}></script>,
           <script nonce={nonce} type='text/javascript' src={s"/koski/json-schema-viewer/jquery/jquery-migrate.min.js?$assetCacheVersion"}></script>,
           <script nonce={nonce} type='text/javascript'>{absoluteTabLinks}</script>,
-          <script nonce={nonce} type='text/javascript' src={s"/koski/json-schema-viewer/jquery/jquery.mobile.min.js?$assetCacheVersion"}></script>,
+          <script nonce={nonce} type='text/javascript' src={s"/koski/json-schema-viewer/jquery/jquery.mobile.js?$assetCacheVersion"}></script>,
           <script nonce={nonce} type='text/javascript' src={s"/koski/json-schema-viewer/js/json-schema-viewer.js?$assetCacheVersion"}></script>,
           <script nonce={nonce} type='text/javascript'>{code}</script>
         ))}

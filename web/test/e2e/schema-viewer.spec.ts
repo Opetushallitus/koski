@@ -163,6 +163,35 @@ test.describe('Schema viewer', () => {
       await expect(page.locator('#loading')).toBeHidden()
     })
 
+    test('jakolinkki päivittyy käsin valitun solmun mukaan ilman alkuhashia', async ({
+      page
+    }) => {
+      await page.goto(
+        '/koski/json-schema-viewer/?schema=viewer-smoke-schema.json'
+      )
+      await expect(page.locator('#loading')).toBeHidden()
+
+      const originalUrl = page.url()
+      expect(new URL(originalUrl).hash).toBe('')
+
+      for (const name of ['nimi', 'ikä']) {
+        const node = page.locator('#jsv-tree .node-text', {
+          hasText: new RegExp(`^${name}\\*?$`)
+        })
+        await node.click()
+
+        await page.locator('#permalink').click()
+        await expect(page.locator('#sharelink')).toBeVisible()
+        await expect(page.locator('#sharelink')).toHaveValue(
+          `${originalUrl}#viewer-page?open=${encodeURIComponent(name)}`
+        )
+        await expect(page).toHaveURL(originalUrl)
+
+        await page.keyboard.press('Escape')
+        await expect(page).toHaveURL(originalUrl)
+      }
+    })
+
     test('sulkee ja avaa info-paneelin painikkeesta', async ({ page }) => {
       const panel = page.locator('#info-panel')
       await expect(panel).toBeVisible()
@@ -246,10 +275,9 @@ test.describe('Schema viewer', () => {
         buffer: Buffer.from('{')
       })
 
-      await expect(page.locator('#popup-error')).toBeVisible()
-      await expect(page.locator('#popup-error')).toContainText(
-        'The file is not valid JSON.'
-      )
+      const popup = page.locator('#popup-error')
+      await expect(popup).toBeVisible()
+      await expect(popup).toContainText('The file is not valid JSON.')
     })
 
     test('validoi JSONin ja erillisestä tiedostosta ladatun viittauksen', async ({
