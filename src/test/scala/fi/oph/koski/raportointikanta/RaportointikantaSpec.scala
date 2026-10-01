@@ -1290,8 +1290,7 @@ class RaportointikantaSpec
     Wait.until(isLoading)
     Wait.until(loadComplete)
 
-    withClue("Päivitysjono on inkrementaalisen päivityksen jälkeen tyhjä") {
-      KoskiApplicationForTests.päivitetytOpiskeluoikeudetJono.kaikki.isEmpty should equal(true)
-    }
+    // Raportointikanta voi olla valmis ennen kuin päivitysjono on tyhjennetty.
+    Wait.until(KoskiApplicationForTests.päivitetytOpiskeluoikeudetJono.kaikki.isEmpty)
   }
 }
