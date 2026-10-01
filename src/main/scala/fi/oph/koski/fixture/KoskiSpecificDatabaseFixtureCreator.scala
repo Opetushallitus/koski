@@ -403,10 +403,6 @@ class KoskiSpecificDatabaseFixtureCreator(application: KoskiApplication) extends
         )
       ),
       (
-        // TOR-2560: koulutusmoduulin alkamispäivä on 15.8.2025 — edellisen, ei kuluvan
-        // (1.8.2026 alkaneen) lukuvuoden puolella. Testaa että Kotikuntalaskelma sulkee tämän
-        // pois (ks. Kotikuntalaskelma.scala:n v.edellinen_elokuu-rajaus) vaikka pelkkä
-        // "alkamispäivä <= päivä" -yläraja päästäisi sen mukaan.
         KoskiSpecificMockOppijat.kotikuntalaskelmaKansainvalinenEdellinenLukuvuosi,
         InternationalSchoolOpiskeluoikeus(
           oppilaitos = Some(oppilaitos(aapajoenKoulu)),

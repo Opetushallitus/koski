@@ -6,6 +6,7 @@ import fi.oph.koski.db.PostgresDriverWithJsonSupport.plainAPI._
 import fi.oph.koski.koskiuser.KoskiSpecificSession
 import fi.oph.koski.db.DB
 import fi.oph.koski.localization.LocalizationReader
+import fi.oph.koski.raportointikanta.Confidential
 import slick.jdbc.GetResult
 
 import scala.concurrent.duration.DurationInt
@@ -28,7 +29,7 @@ case class Kotikuntalaskelma(db: DB) extends QueryMethods {
   )
 
   def build(oppilaitosOids: Seq[String], päivä: LocalDate, t: LocalizationReader)(implicit u: KoskiSpecificSession): DataSheet = {
-    val raporttiQuery = query(oppilaitosOids, päivä).as[KotikuntalaskelmaRow]
+    val raporttiQuery = query(oppilaitosOids, päivä, t.get("raportti-excel-default-value-hetuton")).as[KotikuntalaskelmaRow]
     val rows = runDbSync(raporttiQuery, timeout = 5.minutes)
     DataSheet(
       title = t.get("raportti-excel-kotikuntalaskelma-sheet-name"),
@@ -37,13 +38,12 @@ case class Kotikuntalaskelma(db: DB) extends QueryMethods {
     )
   }
 
-  private def query(oppilaitosOids: Seq[String], päivä: LocalDate) = {
+  // Turvakiellollisten kotikunnat mukaan aggregaattiin
+  private def query(oppilaitosOids: Seq[String], päivä: LocalDate, hetutonTeksti: String) = {
     sql"""
     with v as (
       select
         extract(year from $päivä::date)::int as vuosi,
-        -- Kansainvälisten koulujen (internationalschool, europeanschoolofhelsinki) luokka-asteet
-        -- lasketaan vain kuluvalta lukuvuodelta
         case
           when extract(month from $päivä::date) >= 8
             then make_date(extract(year from $päivä::date)::int, 8, 1)
@@ -54,7 +54,10 @@ case class Kotikuntalaskelma(db: DB) extends QueryMethods {
       oo.koulutustoimija_oid as opetuksen_jarjestaja_oid,
       oo.koulutustoimija_nimi as opetuksen_jarjestaja,
       kkh.kotikunta as kotikunnan_koodi,
-      kkh.kotikunta_nimi_fi as oppilaan_kotikunta,
+      case
+        when kkh.kotikunta is null and he.hetu is null then $hetutonTeksti
+        else kkh.kotikunta_nimi_fi
+      end as oppilaan_kotikunta,
 
       count(distinct case
         when extract(year from he.syntymaaika) = v.vuosi - 6
@@ -95,10 +98,16 @@ case class Kotikuntalaskelma(db: DB) extends QueryMethods {
     join r_paatason_suoritus pts on pts.opiskeluoikeus_oid = oo.opiskeluoikeus_oid
     left join r_opiskeluoikeus_aikajakso aj on aj.opiskeluoikeus_oid = oo.opiskeluoikeus_oid
     left join esiopetus_opiskeluoik_aikajakso eaj on eaj.opiskeluoikeus_oid = oo.opiskeluoikeus_oid
-    left join r_kotikuntahistoria kkh
-      on kkh.master_oid = he.master_oid
-      and coalesce(kkh.muutto_pvm, '1900-01-01'::date) <= $päivä
-      and (kkh.poismuutto_pvm >= $päivä or kkh.poismuutto_pvm is null)
+    -- Muuttopäivänä voimassa kaksi kuntaa, viimeisin voittaa
+    left join lateral (
+      select k.kotikunta, k.kotikunta_nimi_fi
+      from #${Confidential.name}.r_kotikuntahistoria k
+      where k.master_oid = he.master_oid
+        and coalesce(k.muutto_pvm, '1900-01-01'::date) <= $päivä
+        and (k.poismuutto_pvm >= $päivä or k.poismuutto_pvm is null)
+      order by k.muutto_pvm desc nulls last
+      limit 1
+    ) kkh on true
 
     where oo.oppilaitos_oid = any($oppilaitosOids)
       and (
@@ -127,8 +136,9 @@ case class Kotikuntalaskelma(db: DB) extends QueryMethods {
       oo.koulutustoimija_oid,
       oo.koulutustoimija_nimi,
       kkh.kotikunta,
-      kkh.kotikunta_nimi_fi
-    order by oo.koulutustoimija_nimi, kkh.kotikunta
+      kkh.kotikunta_nimi_fi,
+      kkh.kotikunta is null and he.hetu is null
+    order by oo.koulutustoimija_nimi, kkh.kotikunta, kkh.kotikunta is null and he.hetu is null
   """
   }
 
@@ -209,10 +219,16 @@ case class Kotikuntalaskelma(db: DB) extends QueryMethods {
     join r_paatason_suoritus pts on pts.opiskeluoikeus_oid = oo.opiskeluoikeus_oid
     left join r_opiskeluoikeus_aikajakso aj on aj.opiskeluoikeus_oid = oo.opiskeluoikeus_oid
     left join esiopetus_opiskeluoik_aikajakso eaj on eaj.opiskeluoikeus_oid = oo.opiskeluoikeus_oid
-    left join r_kotikuntahistoria kkh
-      on kkh.master_oid = he.master_oid
-      and coalesce(kkh.muutto_pvm, '1900-01-01'::date) <= $päivä
-      and (kkh.poismuutto_pvm >= $päivä or kkh.poismuutto_pvm is null)
+    -- Muuttopäivänä voimassa kaksi kuntaa, viimeisin voittaa
+    left join lateral (
+      select k.kotikunta, k.kotikunta_nimi_fi
+      from r_kotikuntahistoria k
+      where k.master_oid = he.master_oid
+        and coalesce(k.muutto_pvm, '1900-01-01'::date) <= $päivä
+        and (k.poismuutto_pvm >= $päivä or k.poismuutto_pvm is null)
+      order by k.muutto_pvm desc nulls last
+      limit 1
+    ) kkh on true
 
     where oo.oppilaitos_oid = any($oppilaitosOids)
       and (
@@ -238,10 +254,7 @@ case class Kotikuntalaskelma(db: DB) extends QueryMethods {
       and extract(year from he.syntymaaika) between v.vuosi - 16 and v.vuosi - 6
 
     group by he.master_oid
-    -- Turvakiellon alaiset oppijat aina listan loppuun (bool_or(turvakielto) järjestetään ensin:
-    -- false=0 ennen true=1), jotta niiden todellista sijaintia listassa ei voi päätellä
-    -- vertaamalla naapuririvien näkyviä oppijanumeroita — muuten piilotettu rivi istuisi tarkalleen
-    -- kahden näkyvän oidin välissä ja sen identiteetin voisi rajata näiden perusteella.
+    -- Turvakieltorivit loppuun, ettei oidia voi rajata naapuririvien perusteella
     order by bool_or(he.turvakielto), he.master_oid
   """
   }
