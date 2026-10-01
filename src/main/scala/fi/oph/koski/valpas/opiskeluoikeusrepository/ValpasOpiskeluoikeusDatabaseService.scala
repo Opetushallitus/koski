@@ -50,7 +50,10 @@ object HakeutumisvalvontaTieto extends Enumeration {
   val Perusopetus, Nivelvaihe, Kaikki = Value
 }
 
-class ValpasOpiskeluoikeusDatabaseService(application: KoskiApplication) extends DatabaseConverters with Logging with Timing {
+class ValpasOpiskeluoikeusDatabaseService(
+  application: KoskiApplication,
+  oppijoitaEnintäänKyselyssä: Int = 10000,
+) extends DatabaseConverters with Logging with Timing {
   private val db = application.raportointiDatabase
   private val rajapäivätService = application.valpasRajapäivätService
   private val oppijanPoistoService = application.valpasOppivelvollisuudestaVapautusService
@@ -68,13 +71,14 @@ class ValpasOpiskeluoikeusDatabaseService(application: KoskiApplication) extends
     oppijaOids: Seq[String],
     rajaaOVKelpoisiinOpiskeluoikeuksiin: Boolean,
     haeMyösOppivelvollisuudestaVapautetut: Boolean,
-  ): Seq[ValpasOppijaRow] =
-    if (oppijaOids.nonEmpty) {
-      val kaikkiOppijat = queryOppijat(oppijaOids, None, rajaaOVKelpoisiinOpiskeluoikeuksiin, HakeutumisvalvontaTieto.Kaikki)
-      if (haeMyösOppivelvollisuudestaVapautetut) kaikkiOppijat else kaikkiOppijat.filterNot(_.vapautettuOppivelvollisuudesta)
-    } else {
-      Seq.empty
-    }
+  ): Seq[ValpasOppijaRow] = {
+    val kaikkiOppijat = oppijaOids
+      .grouped(oppijoitaEnintäänKyselyssä)
+      .flatMap(queryOppijat(_, None, rajaaOVKelpoisiinOpiskeluoikeuksiin, HakeutumisvalvontaTieto.Kaikki))
+      .toList
+      .distinctBy(_.oppijaOid)
+    if (haeMyösOppivelvollisuudestaVapautetut) kaikkiOppijat else kaikkiOppijat.filterNot(_.vapautettuOppivelvollisuudesta)
+  }
 
   def getOppijatByOppilaitos(oppilaitosOid: String, hakeutumisvalvontaTieto: HakeutumisvalvontaTieto.Value): Seq[ValpasOppijaRow] =
     queryOppijat(Seq.empty, Some(Seq(oppilaitosOid)), true, hakeutumisvalvontaTieto)

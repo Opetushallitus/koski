@@ -1,6 +1,8 @@
 package fi.oph.koski.valpas.oppija
 
+import fi.oph.koski.KoskiApplicationForTests
 import fi.oph.koski.valpas.opiskeluoikeusfixture.{ValpasMockOppijat, ValpasOpiskeluoikeusExampleData}
+import fi.oph.koski.valpas.opiskeluoikeusrepository.{ValpasOpiskeluoikeusDatabaseService, ValpasOppijaRow}
 import fi.oph.koski.valpas.oppija.ValpasOppijaTestData.hakeutumisvelvolliset
 import fi.oph.koski.valpas.valpasuser.ValpasMockUsers
 
@@ -159,4 +161,32 @@ class ValpasOppijaLaajatTiedotServiceSpec extends ValpasOppijaTestBase {
       result.left.map(_.statusCode) should be(Left(403))
     }
   }
+
+  "getOppijat eriin jaettuna" - {
+    "palauttaa samat oppijat kuin yhdellä kyselyllä" in {
+      val eräkoko = 25
+      val oppijaOids = ValpasMockOppijat.defaultOppijat.map(_.henkilö.oid)
+
+      val yhdelläKyselyllä = haeOppijat(KoskiApplicationForTests.valpasOpiskeluoikeusDatabaseService, oppijaOids)
+      val erissä = haeOppijat(new ValpasOpiskeluoikeusDatabaseService(KoskiApplicationForTests, eräkoko), oppijaOids)
+
+      yhdelläKyselyllä.size should be > eräkoko
+      erissä.sortBy(_.oppijaOid) should equal(yhdelläKyselyllä.sortBy(_.oppijaOid))
+    }
+
+    "palauttaa oppijan vain kerran, vaikka oppijan oidit päätyvät eri eriin" in {
+      val master = ValpasMockOppijat.oppivelvollinenMonellaOppijaOidillaMaster
+      val oppijaOids = Seq(
+        master,
+        ValpasMockOppijat.oppivelvollinenMonellaOppijaOidillaToinen,
+        ValpasMockOppijat.oppivelvollinenMonellaOppijaOidillaKolmas,
+      ).map(_.oid)
+
+      haeOppijat(new ValpasOpiskeluoikeusDatabaseService(KoskiApplicationForTests, 1), oppijaOids)
+        .map(_.oppijaOid) should equal(Seq(master.oid))
+    }
+  }
+
+  private def haeOppijat(service: ValpasOpiskeluoikeusDatabaseService, oppijaOids: Seq[String]): Seq[ValpasOppijaRow] =
+    service.getOppijat(oppijaOids, rajaaOVKelpoisiinOpiskeluoikeuksiin = false, haeMyösOppivelvollisuudestaVapautetut = true)
 }
