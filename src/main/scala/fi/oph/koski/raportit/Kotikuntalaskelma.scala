@@ -170,7 +170,7 @@ case class Kotikuntalaskelma(db: DB) extends QueryMethods {
   )
 
   def buildOppijat(oppilaitosOids: Seq[String], päivä: LocalDate, t: LocalizationReader)(implicit u: KoskiSpecificSession): DataSheet = {
-    val raporttiQuery = oppijaQuery(oppilaitosOids, päivä, t.get("raportti-excel-default-value-esiopetus")).as[KotikuntalaskelmaOppijaRow]
+    val raporttiQuery = oppijaQuery(oppilaitosOids, päivä, t.get("raportti-excel-default-value-esiopetus-lyhyt")).as[KotikuntalaskelmaOppijaRow]
     val rows = runDbSync(raporttiQuery, timeout = 5.minutes)
     DataSheet(
       title = t.get("raportti-excel-kotikuntalaskelma-oppijat-sheet-name"),

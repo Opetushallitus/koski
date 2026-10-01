@@ -122,7 +122,7 @@ class KotikuntalaskelmaSpec extends AnyFreeSpec with Matchers with Raportointika
     "Oppijat-välilehti - esiopetusoppijan luokka-asteena näytetään esiopetus eikä koulutuskoodia" in {
       val rivi = oppijatRivit.find(_.oppijaNumero.contains(KoskiSpecificMockOppijat.kotikuntalaskelmaEsiopetus.oid))
 
-      rivi.get.luokkaAste shouldBe Some(t.get("raportti-excel-default-value-esiopetus"))
+      rivi.get.luokkaAste shouldBe Some(t.get("raportti-excel-default-value-esiopetus-lyhyt"))
       rivi.get.luokka shouldBe None
     }
 
