@@ -9,13 +9,13 @@ module.exports = (_, argv = {}) => ({
     filename: 'js/json-schema-viewer.js',
     clean: true
   },
-  // JsonSchemaViewerHtmlServlet lataa alla tuotetun jquery/jquery.min.js:n
-  // script-tagilla ennen jQuery Mobilea ja viewer-bundlea.
+  // JsonSchemaViewerHtmlServlet lataa alla tuotetut jQuery-tiedostot
+  // script-tageilla ennen viewer-bundlea.
   externals: { jquery: 'jQuery' },
   module: {
     rules: [
       {
-        // Tuota jQuery ja jQuery Mobile erillisinä tiedostoina bundlaamisen sijaan;
+        // Tuota jQuery, Migrate ja jQuery Mobile erillisinä tiedostoina bundlaamisen sijaan;
         // servlet lataa ne script- ja link-tageilla.
         resourceQuery: /asset/,
         type: 'asset/resource',

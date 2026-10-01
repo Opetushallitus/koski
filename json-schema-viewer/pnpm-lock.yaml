@@ -14,8 +14,11 @@ importers:
         specifier: 8.8.0
         version: 8.8.0
       jquery:
-        specifier: 2.1.1
-        version: 2.1.1
+        specifier: 3.7.1
+        version: 3.7.1
+      jquery-migrate:
+        specifier: 3.6.0
+        version: 3.6.0(jquery@3.7.1)
       jquery.scrollto:
         specifier: 1.4.14
         version: 1.4.14
@@ -532,18 +535,25 @@ packages:
       }
     engines: { node: '>= 10.13.0' }
 
+  jquery-migrate@3.6.0:
+    resolution:
+      {
+        integrity: sha512-2k3GMQXXEellCOkj8tczgCd/Y0KMm7LErz4rE6CkHIZV1JTUDlgs7XFN+GpwGKXDQtw/HsjtJuE+CS8IfEOnPg==
+      }
+    peerDependencies:
+      jquery: '>=3 <4'
+
   jquery.scrollto@1.4.14:
     resolution:
       {
         integrity: sha512-HCebNshMQSH2sqJGj3i9NA59KgSJh6NvK4XSRjgGW1A6+DHeC8iE02rCmmRmEpNBmXzJhzr0c+I/7t1sYhvqlA==
       }
 
-  jquery@2.1.1:
+  jquery@3.7.1:
     resolution:
       {
-        integrity: sha512-y+iOyLV9My82vtN1cc96DLlklSv15h5Jjug52TK+vXmgtN/dE89WvmP1W/g7lL+RWFzdsTmBwJgX/yf4RY9mPA==
+        integrity: sha512-m4avr8yL8kmFN8psrbFFFmB/If14iN5o9nw/NgnnM+kybDJpRsAynV2BsfpTYrTRysYUdADVD7CkUUizgkpLfg==
       }
-    deprecated: This version is deprecated. Please upgrade to the latest version or find support at https://www.herodevs.com/support/jquery-nes or https://tuxcare.com/lp/click-jquery-support/.
 
   json-schema-traverse@1.0.0:
     resolution:
@@ -1206,11 +1216,15 @@ snapshots:
       merge-stream: 2.0.0
       supports-color: 8.1.1
 
+  jquery-migrate@3.6.0(jquery@3.7.1):
+    dependencies:
+      jquery: 3.7.1
+
   jquery.scrollto@1.4.14:
     dependencies:
-      jquery: 2.1.1
+      jquery: 3.7.1
 
-  jquery@2.1.1: {}
+  jquery@3.7.1: {}
 
   json-schema-traverse@1.0.0: {}
 
