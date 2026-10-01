@@ -1,5 +1,3 @@
-// eslint-disable-next-line no-undef
-import './polyfills/polyfills.js'
 import React from 'react'
 import ReactDOM from 'react-dom'
 import HetuLogin from './korhopankki/HetuLogin'

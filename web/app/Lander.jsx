@@ -1,5 +1,3 @@
-// eslint-disable-next-line no-undef
-import './polyfills/polyfills.js'
 import React from 'react'
 import Text from './i18n/Text'
 import { t } from './i18n/i18n'

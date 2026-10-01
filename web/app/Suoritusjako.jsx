@@ -1,5 +1,3 @@
-// eslint-disable-next-line no-undef
-import './polyfills/polyfills.js'
 import React from 'react'
 import * as R from 'ramda'
 import ReactDOM from 'react-dom'
