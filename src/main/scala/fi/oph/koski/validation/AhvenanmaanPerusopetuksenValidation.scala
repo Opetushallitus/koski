@@ -2,18 +2,26 @@ package fi.oph.koski.validation
 
 import fi.oph.koski.documentation.PerusopetusExampleData.suoritustapaErityinenTutkinto
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
+import fi.oph.koski.raportit.AhvenanmaanKunnat
 import fi.oph.koski.schema._
 
 object AhvenanmaanPerusopetuksenValidation {
   def validateOpiskeluoikeus(oo: KoskeenTallennettavaOpiskeluoikeus): HttpStatus = oo match {
     case ahvenanmaanOo: AhvenanmaanPerusopetuksenOpiskeluoikeus =>
-      HttpStatus.fold(validateAlkuvaihe(ahvenanmaanOo) :: ahvenanmaanOo.suoritukset.map {
+      HttpStatus.fold(validateOppilaitos(ahvenanmaanOo) :: validateAlkuvaihe(ahvenanmaanOo) :: ahvenanmaanOo.suoritukset.map {
         case oppimäärä: AhvenanmaanPerusopetuksenOppimääränSuoritus if oppimäärä.vahvistettu =>
           validateYsiluokanSuoritusTaiSitäEiTarvita(ahvenanmaanOo, oppimäärä)
         case _ => HttpStatus.ok
       })
     case _ => HttpStatus.ok
   }
+
+  // Kotipaikka on ainoa organisaatiodatasta löytyvä tunnusmerkki ahvenanmaalaiselle oppilaitokselle,
+  // ks. OppilaitosServlet, joka tarjoaa tyyppiä luontidialogissa samalla perusteella.
+  private def validateOppilaitos(oo: AhvenanmaanPerusopetuksenOpiskeluoikeus): HttpStatus =
+    HttpStatus.validate(oo.oppilaitos.exists(AhvenanmaanKunnat.onAhvenanmaalainenKunta))(
+      KoskiErrorCategory.badRequest.validation.organisaatio.eiAhvenanmaalainenOppilaitos()
+    )
 
   // Alkuvaihe (Inledningsskedet) kuuluu vain muiden kuin oppivelvollisten opintoihin;
   // oppivelvollisten opinnot kirjataan vuosiluokkina.

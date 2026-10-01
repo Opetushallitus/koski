@@ -6,10 +6,17 @@ import fi.oph.koski.documentation.ExampleData._
 import fi.oph.koski.documentation.YleissivistavakoulutusExampleData._
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
 import fi.oph.koski.henkilo.MockOppijat.asUusiOppija
+import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.schema._
 
 object AhvenanmaanPerusopetusExampleData {
   val ahvenanmaanDiaarinumero = "ÅLR2020/9841"
+
+  // Ahvenanmaan perusopetuksen voi tallentaa vain oppilaitokseen, jonka kotipaikka on Ahvenanmaalla.
+  lazy val övernäsSkola: Oppilaitos = oppilaitos(MockOrganisaatiot.övernäsSkola)
+  val maarianhamina = Koodistokoodiviite(koodistoUri = "kunta", koodiarvo = "478", nimi = Some(Finnish("Maarianhamina")))
+
+  def ahvenanmaanVahvistus(päivä: LocalDate) = vahvistusPaikkakunnalla(päivä, övernäsSkola, maarianhamina)
 
   val oppiaine = { (koodiarvo: String, nimi: String) =>
     AhvenanmaanPerusopetuksenMuuOppiaine(
@@ -82,10 +89,10 @@ object AhvenanmaanPerusopetusExampleData {
       perusteenDiaarinumero = Some(ahvenanmaanDiaarinumero)
     ),
     luokka = "8A",
-    toimipiste = jyväskylänNormaalikoulu,
+    toimipiste = övernäsSkola,
     suorituskieli = ruotsinKieli,
     alkamispäivä = Some(date(2024, 8, 15)),
-    vahvistus = vahvistusPaikkakunnalla(date(2025, 6, 4)),
+    vahvistus = ahvenanmaanVahvistus(date(2025, 6, 4)),
     osasuoritukset = Some(oppiaineet(date(2025, 6, 4))),
   )
 
@@ -98,10 +105,10 @@ object AhvenanmaanPerusopetusExampleData {
       perusteenDiaarinumero = Some(ahvenanmaanDiaarinumero)
     ),
     luokka = "9A",
-    toimipiste = jyväskylänNormaalikoulu,
+    toimipiste = övernäsSkola,
     suorituskieli = ruotsinKieli,
     alkamispäivä = Some(date(2025, 8, 15)),
-    vahvistus = vahvistusPaikkakunnalla(date(2026, 6, 4)),
+    vahvistus = ahvenanmaanVahvistus(date(2026, 6, 4)),
   )
 
   // Avgångsbetyg: perusopetuksen päättötodistuksen lopulliset arvosanat.
@@ -109,10 +116,10 @@ object AhvenanmaanPerusopetusExampleData {
     koulutusmoduuli = AhvenanmaanPerusopetus(
       perusteenDiaarinumero = Some(ahvenanmaanDiaarinumero)
     ),
-    toimipiste = jyväskylänNormaalikoulu,
+    toimipiste = övernäsSkola,
     suoritustapa = Koodistokoodiviite("koulutus", "perusopetuksensuoritustapa"),
     suorituskieli = ruotsinKieli,
-    vahvistus = vahvistusPaikkakunnalla(date(2026, 6, 4)),
+    vahvistus = ahvenanmaanVahvistus(date(2026, 6, 4)),
     osasuoritukset = Some(oppiaineet(date(2026, 6, 4))),
   )
 
@@ -124,16 +131,16 @@ object AhvenanmaanPerusopetusExampleData {
     koulutusmoduuli = AhvenanmaanPerusopetus(
       perusteenDiaarinumero = Some(ahvenanmaanDiaarinumero)
     ),
-    toimipiste = jyväskylänNormaalikoulu,
+    toimipiste = övernäsSkola,
     alkamispäivä = Some(date(2025, 8, 15)),
     suoritustapa = Koodistokoodiviite("koulutus", "perusopetuksensuoritustapa"),
     suorituskieli = ruotsinKieli,
-    vahvistus = vahvistusPaikkakunnalla(date(2026, 6, 4)),
+    vahvistus = ahvenanmaanVahvistus(date(2026, 6, 4)),
     osasuoritukset = Some(oppiaineet(date(2026, 6, 4))),
   )
 
   val aikuistenOpiskeluoikeus = AhvenanmaanPerusopetuksenOpiskeluoikeus(
-    oppilaitos = Some(jyväskylänNormaalikoulu),
+    oppilaitos = Some(övernäsSkola),
     tila = AhvenanmaanPerusopetuksenOpiskeluoikeudenTila(
       List(
         AhvenanmaanPerusopetuksenOpiskeluoikeusjakso(date(2024, 8, 15), opiskeluoikeusLäsnä),
@@ -147,7 +154,7 @@ object AhvenanmaanPerusopetusExampleData {
   )
 
   val opiskeluoikeus = AhvenanmaanPerusopetuksenOpiskeluoikeus(
-    oppilaitos = Some(jyväskylänNormaalikoulu),
+    oppilaitos = Some(övernäsSkola),
     tila = AhvenanmaanPerusopetuksenOpiskeluoikeudenTila(
       List(
         AhvenanmaanPerusopetuksenOpiskeluoikeusjakso(date(2017, 8, 15), opiskeluoikeusLäsnä),

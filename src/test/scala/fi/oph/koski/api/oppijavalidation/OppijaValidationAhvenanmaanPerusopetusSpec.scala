@@ -6,6 +6,7 @@ import fi.oph.koski.api.misc.PutOpiskeluoikeusTestMethods
 import fi.oph.koski.documentation.AhvenanmaanPerusopetusExampleData
 import fi.oph.koski.documentation.ExampleData.{opiskeluoikeusLäsnä, ruotsinKieli}
 import fi.oph.koski.documentation.PerusopetusExampleData.suoritustapaErityinenTutkinto
+import fi.oph.koski.documentation.YleissivistavakoulutusExampleData.jyväskylänNormaalikoulu
 import fi.oph.koski.eperusteetvalidation.{EPerusteetFiller, EPerusteisiinPerustuvaValidator}
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
 import fi.oph.koski.http.KoskiErrorCategory
@@ -109,6 +110,28 @@ class OppijaValidationAhvenanmaanPerusopetusSpec
       aikuistenResult.swap.toOption.get should equal(
         KoskiErrorCategory.notImplemented("Päätason suorituksen luokka AhvenanmaanAikuistenPerusopetuksenOppimääränSuoritus ei ole käytössä tässä ympäristössä")
       )
+    }
+  }
+
+  "Oppilaitoksen kotipaikan on oltava Ahvenanmaalla" - {
+    val mannersuomalaisellaToimipisteellä = defaultOpiskeluoikeus.copy(
+      suoritukset = defaultOpiskeluoikeus.suoritukset.map {
+        case s: AhvenanmaanPerusopetuksenVuosiluokanSuoritus => s.copy(toimipiste = jyväskylänNormaalikoulu)
+        case s: AhvenanmaanPerusopetuksenOppimääränSuoritus => s.copy(toimipiste = jyväskylänNormaalikoulu)
+        case s => s
+      }
+    )
+
+    "manner-suomalainen oppilaitos" in {
+      setupOppijaWithOpiskeluoikeus(mannersuomalaisellaToimipisteellä.copy(oppilaitos = Some(jyväskylänNormaalikoulu))) {
+        verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.organisaatio.eiAhvenanmaalainenOppilaitos())
+      }
+    }
+
+    "toimipisteestä päätelty manner-suomalainen oppilaitos" in {
+      setupOppijaWithOpiskeluoikeus(mannersuomalaisellaToimipisteellä.copy(oppilaitos = None)) {
+        verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.organisaatio.eiAhvenanmaalainenOppilaitos())
+      }
     }
   }
 

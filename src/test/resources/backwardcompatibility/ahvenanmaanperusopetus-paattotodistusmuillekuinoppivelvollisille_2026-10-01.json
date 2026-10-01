@@ -7,31 +7,31 @@
   },
   "opiskeluoikeudet" : [ {
     "oppilaitos" : {
-      "oid" : "1.2.246.562.10.14613773812",
+      "oid" : "1.2.246.562.10.31756453904",
       "oppilaitosnumero" : {
-        "koodiarvo" : "00204",
+        "koodiarvo" : "06880",
         "nimi" : {
-          "fi" : "Jyväskylän normaalikoulu",
-          "sv" : "Jyväskylän normaalikoulu",
-          "en" : "Jyväskylän normaalikoulu"
+          "fi" : "Övernäs skola",
+          "sv" : "Övernäs skola",
+          "en" : "Övernäs skola"
         },
         "lyhytNimi" : {
-          "fi" : "Jyväskylän normaalikoulu",
-          "sv" : "Jyväskylän normaalikoulu",
-          "en" : "Jyväskylän normaalikoulu"
+          "fi" : "Övernäs skola",
+          "sv" : "Övernäs skola",
+          "en" : "Övernäs skola"
         },
         "koodistoUri" : "oppilaitosnumero"
       },
       "nimi" : {
-        "fi" : "Jyväskylän normaalikoulu",
-        "sv" : "Jyväskylän normaalikoulu",
-        "en" : "Jyväskylän normaalikoulu"
+        "fi" : "Övernäs skola",
+        "sv" : "Övernäs skola",
+        "en" : "Övernäs skola"
       },
       "kotipaikka" : {
-        "koodiarvo" : "179",
+        "koodiarvo" : "478",
         "nimi" : {
-          "fi" : "Jyväskylä",
-          "sv" : "Jyväskylä"
+          "fi" : "Maarianhamina",
+          "sv" : "Mariehamn"
         },
         "koodistoUri" : "kunta"
       }
@@ -59,6 +59,12 @@
         }
       } ]
     },
+    "lisätiedot" : {
+      "alkuvaihe" : {
+        "alku" : "2024-08-15",
+        "loppu" : "2025-06-04"
+      }
+    },
     "suoritukset" : [ {
       "koulutusmoduuli" : {
         "perusteenDiaarinumero" : "ÅLR2020/9841",
@@ -68,71 +74,71 @@
         }
       },
       "toimipiste" : {
-        "oid" : "1.2.246.562.10.14613773812",
+        "oid" : "1.2.246.562.10.31756453904",
         "oppilaitosnumero" : {
-          "koodiarvo" : "00204",
+          "koodiarvo" : "06880",
           "nimi" : {
-            "fi" : "Jyväskylän normaalikoulu",
-            "sv" : "Jyväskylän normaalikoulu",
-            "en" : "Jyväskylän normaalikoulu"
+            "fi" : "Övernäs skola",
+            "sv" : "Övernäs skola",
+            "en" : "Övernäs skola"
           },
           "lyhytNimi" : {
-            "fi" : "Jyväskylän normaalikoulu",
-            "sv" : "Jyväskylän normaalikoulu",
-            "en" : "Jyväskylän normaalikoulu"
+            "fi" : "Övernäs skola",
+            "sv" : "Övernäs skola",
+            "en" : "Övernäs skola"
           },
           "koodistoUri" : "oppilaitosnumero"
         },
         "nimi" : {
-          "fi" : "Jyväskylän normaalikoulu",
-          "sv" : "Jyväskylän normaalikoulu",
-          "en" : "Jyväskylän normaalikoulu"
+          "fi" : "Övernäs skola",
+          "sv" : "Övernäs skola",
+          "en" : "Övernäs skola"
         },
         "kotipaikka" : {
-          "koodiarvo" : "179",
+          "koodiarvo" : "478",
           "nimi" : {
-            "fi" : "Jyväskylä",
-            "sv" : "Jyväskylä"
+            "fi" : "Maarianhamina",
+            "sv" : "Mariehamn"
           },
           "koodistoUri" : "kunta"
         }
       },
-      "alkamispäivä" : "2024-08-15",
+      "alkamispäivä" : "2025-08-15",
       "vahvistus" : {
         "päivä" : "2026-06-04",
         "paikkakunta" : {
-          "koodiarvo" : "179",
+          "koodiarvo" : "478",
           "nimi" : {
-            "fi" : "Jyväskylä"
+            "fi" : "Maarianhamina"
           },
           "koodistoUri" : "kunta"
         },
         "myöntäjäOrganisaatio" : {
-          "oid" : "1.2.246.562.10.14613773812",
+          "oid" : "1.2.246.562.10.31756453904",
           "oppilaitosnumero" : {
-            "koodiarvo" : "00204",
+            "koodiarvo" : "06880",
             "nimi" : {
-              "fi" : "Jyväskylän normaalikoulu",
-              "sv" : "Jyväskylän normaalikoulu",
-              "en" : "Jyväskylän normaalikoulu"
+              "fi" : "Övernäs skola",
+              "sv" : "Övernäs skola",
+              "en" : "Övernäs skola"
             },
             "lyhytNimi" : {
-              "fi" : "Jyväskylän normaalikoulu",
-              "sv" : "Jyväskylän normaalikoulu",
-              "en" : "Jyväskylän normaalikoulu"
+              "fi" : "Övernäs skola",
+              "sv" : "Övernäs skola",
+              "en" : "Övernäs skola"
             },
             "koodistoUri" : "oppilaitosnumero"
           },
           "nimi" : {
-            "fi" : "Jyväskylän normaalikoulu",
-            "sv" : "Jyväskylän normaalikoulu",
-            "en" : "Jyväskylän normaalikoulu"
+            "fi" : "Övernäs skola",
+            "sv" : "Övernäs skola",
+            "en" : "Övernäs skola"
           },
           "kotipaikka" : {
-            "koodiarvo" : "179",
+            "koodiarvo" : "478",
             "nimi" : {
-              "fi" : "Jyväskylä",
-              "sv" : "Jyväskylä"
+              "fi" : "Maarianhamina",
+              "sv" : "Mariehamn"
             },
             "koodistoUri" : "kunta"
           }
@@ -143,31 +149,31 @@
             "fi" : "rehtori"
           },
           "organisaatio" : {
-            "oid" : "1.2.246.562.10.14613773812",
+            "oid" : "1.2.246.562.10.31756453904",
             "oppilaitosnumero" : {
-              "koodiarvo" : "00204",
+              "koodiarvo" : "06880",
               "nimi" : {
-                "fi" : "Jyväskylän normaalikoulu",
-                "sv" : "Jyväskylän normaalikoulu",
-                "en" : "Jyväskylän normaalikoulu"
+                "fi" : "Övernäs skola",
+                "sv" : "Övernäs skola",
+                "en" : "Övernäs skola"
               },
               "lyhytNimi" : {
-                "fi" : "Jyväskylän normaalikoulu",
-                "sv" : "Jyväskylän normaalikoulu",
-                "en" : "Jyväskylän normaalikoulu"
+                "fi" : "Övernäs skola",
+                "sv" : "Övernäs skola",
+                "en" : "Övernäs skola"
               },
               "koodistoUri" : "oppilaitosnumero"
             },
             "nimi" : {
-              "fi" : "Jyväskylän normaalikoulu",
-              "sv" : "Jyväskylän normaalikoulu",
-              "en" : "Jyväskylän normaalikoulu"
+              "fi" : "Övernäs skola",
+              "sv" : "Övernäs skola",
+              "en" : "Övernäs skola"
             },
             "kotipaikka" : {
-              "koodiarvo" : "179",
+              "koodiarvo" : "478",
               "nimi" : {
-                "fi" : "Jyväskylä",
-                "sv" : "Jyväskylä"
+                "fi" : "Maarianhamina",
+                "sv" : "Mariehamn"
               },
               "koodistoUri" : "kunta"
             }
@@ -583,6 +589,5 @@
     },
     "alkamispäivä" : "2024-08-15",
     "päättymispäivä" : "2026-06-04"
-  } ],
-  "ignoreKoskiValidator" : true
+  } ]
 }
