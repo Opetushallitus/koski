@@ -1,5 +1,5 @@
 import { Page } from '@playwright/test'
-import { expect, test } from './base'
+import { expect, test } from './schema-viewer-base'
 
 const viewer = (hash: string, schema = 'migri-oppija-schema.json') =>
   `/koski/json-schema-viewer/?schema=${schema}#viewer-page?${hash}`
@@ -139,18 +139,6 @@ test.describe('JSON Schema Viewer deep links', () => {
     await expect(nodeText(page, 'koulutusvienti')).toHaveCount(0)
   })
 
-  test('info-paneelin välilehti ei lataa koko sivua uudelleen sisäänsä', async ({
-    page
-  }) => {
-    await page.goto(viewer('v=opiskeluoikeudet.lisätiedot.koulutusvienti'))
-
-    await expect(page.locator('#info-panel .jsv-term').first()).toHaveText(
-      /koulutusvienti/i
-    )
-    await expect(page.locator('#loading')).toHaveCount(1)
-    await expect(page.locator('[data-role=page]')).toHaveCount(2)
-  })
-
   test('open= keskittää näkymän avattuun solmuun myös hashin vaihtuessa', async ({
     page
   }) => {
@@ -199,8 +187,16 @@ test.describe('JSON Schema Viewer deep links', () => {
   }) => {
     await page.goto(viewer('v=opiskeluoikeudet.lisätiedot.koulutusvienti'))
 
-    await expect(page.locator('#sharelink')).toHaveValue(
+    const shareLink = page.locator('#sharelink')
+    await expect(shareLink).toHaveValue(
       /#viewer-page\?open=opiskeluoikeudet\.lis%C3%A4tiedot\.koulutusvienti$/
     )
+    await page.goto(await shareLink.inputValue())
+    await expect(page.locator('#loading')).toBeHidden()
+    await expect(nodeText(page, 'koulutusvienti')).toBeVisible()
+
+    await page.reload()
+    await expect(page.locator('#loading')).toBeHidden()
+    await expect(nodeText(page, 'koulutusvienti')).toBeVisible()
   })
 })

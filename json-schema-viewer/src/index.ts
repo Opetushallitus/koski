@@ -1,4 +1,5 @@
 import 'jquery/dist/jquery.min.js?asset'
+import 'jquery-migrate/dist/jquery-migrate.min.js?asset'
 import '../vendor/jquery.mobile.min.js?asset'
 import '../vendor/jquery.mobile.min.css?asset'
 import './styles/json-schema-viewer.css'

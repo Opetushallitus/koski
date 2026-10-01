@@ -1,4 +1,4 @@
-import { expect, test } from './base'
+import { expect, test } from './schema-viewer-base'
 import type { Page } from '@playwright/test'
 
 const openNode = async (page: Page, path: string) => {
@@ -156,6 +156,7 @@ test.describe('Schema viewer', () => {
       for (const [url, json] of Object.entries(routes)) {
         await page.route(url, (route) => route.fulfill({ json }))
       }
+
       await page.goto(
         '/koski/json-schema-viewer/?schema=viewer-smoke-schema.json#viewer-page?v=nimi'
       )
@@ -165,20 +166,101 @@ test.describe('Schema viewer', () => {
     test('sulkee ja avaa info-paneelin painikkeesta', async ({ page }) => {
       const panel = page.locator('#info-panel')
       await expect(panel).toBeVisible()
+
       const toggle = page.getByTitle('Toggle Info', { exact: true })
       await toggle.click()
       await expect(panel).toBeHidden()
+
       await toggle.click()
       await expect(panel).toBeVisible()
+    })
+
+    test('vaihtaa info-paneelin välilehtiä monistamatta sivuelementtejä', async ({
+      page
+    }) => {
+      for (const [name, id] of [
+        ['Example', 'example'],
+        ['Schema', 'schema'],
+        ['Definition', 'def']
+      ]) {
+        await page.getByRole('link', { name, exact: true }).click()
+        await expect(page.locator(`#info-tab-${id}`)).toBeVisible()
+        await expect(page.locator('[data-role=page]')).toHaveCount(2)
+      }
+    })
+
+    test('hakee solmun ja avaa sen puussa', async ({ page }) => {
+      const rootNodeToggle = page.locator('#jsv-tree circle').first()
+      // Juuri on aluksi avattu. Sen ympyrän klikkaaminen piilottaa lapsisolmut.
+      await rootNodeToggle.click()
+      const ageNode = page.locator('#jsv-tree .node-text', {
+        hasText: /^ikä/
+      })
+      await expect(ageNode).toBeHidden()
+
+      await page.getByPlaceholder('Search...').fill('ikä')
+      const searchResults = page.locator('#search-result a')
+      const result = searchResults.filter({ hasText: /^ikä$/ })
+      await expect(result).toBeVisible()
+      await expect(searchResults.filter({ hasText: /^nimi$/ })).toBeHidden()
+
+      await result.click()
+      await expect(ageNode).toBeVisible()
+    })
+
+    test('sulkee ja avaa selitteen', async ({ page }) => {
+      const legend = page.locator('#legend-items')
+      await expect(legend).toBeVisible()
+
+      const legendToggle = page.getByRole('link', { name: /^Legend\b/ })
+      await legendToggle.click()
+      await expect(legend).toBeHidden()
+
+      await legendToggle.click()
+      await expect(legend).toBeVisible()
+    })
+
+    test('zoomaa puuta sisään ja ulos', async ({ page }) => {
+      // SVG:n muunnosmatriisin a on vaakasuuntainen skaala, kun puuta ei kierretä.
+      const scale = () =>
+        page
+          .locator('#node-group')
+          .evaluate((g) => (g as SVGGElement).getCTM()!.a)
+      const initial = await scale()
+      await page.getByTitle('Zoom In', { exact: true }).click()
+      await expect.poll(scale).toBeGreaterThan(initial)
+
+      const zoomedIn = await scale()
+      await page.getByTitle('Zoom Out', { exact: true }).click()
+      await expect.poll(scale).toBeLessThan(zoomedIn)
+    })
+
+    test('näyttää virheikkunan virheellisestä JSON-tiedostosta', async ({
+      page
+    }) => {
+      await page.getByRole('link', { name: 'Validator', exact: true }).click()
+
+      await page.getByLabel('Upload File:').setInputFiles({
+        name: 'virhe.json',
+        mimeType: 'application/json',
+        buffer: Buffer.from('{')
+      })
+
+      await expect(page.locator('#popup-error')).toBeVisible()
+      await expect(page.locator('#popup-error')).toContainText(
+        'The file is not valid JSON.'
+      )
     })
 
     test('validoi JSONin ja erillisestä tiedostosta ladatun viittauksen', async ({
       page
     }) => {
       await page.getByRole('link', { name: 'Validator', exact: true }).click()
+
       const input = page.getByLabel('JSON to Validate:')
       await input.fill(JSON.stringify(validOppija))
       await page.getByRole('button', { name: 'Validate!' }).click()
+
       const results = page.locator('#validation-results')
       await expect(results).toHaveText('JSON is valid!')
 
@@ -190,12 +272,14 @@ test.describe('Schema viewer', () => {
 
     test('lukee ladatun JSON-tiedoston validaattoriin', async ({ page }) => {
       await page.getByRole('link', { name: 'Validator', exact: true }).click()
+
       const contents = JSON.stringify(validOppija)
       await page.getByLabel('Upload File:').setInputFiles({
         name: 'oppija.json',
         mimeType: 'application/json',
         buffer: Buffer.from(contents)
       })
+
       await expect(page.getByLabel('JSON to Validate:')).toHaveValue(contents)
     })
   })

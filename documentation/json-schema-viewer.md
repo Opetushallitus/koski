@@ -219,14 +219,17 @@ query-less.
   Edit `src/styles/json-schema-viewer.css` directly; CSS and images are copied
   unchanged. Output goes only to `target/webapp/koski/json-schema-viewer/`.
   The main UI build neither produces nor cleans these assets.
-- jQuery is copied from npm to `jquery/jquery.min.js`. The servlet loads it,
-  fixes the info-tab URLs, then loads jQuery Mobile and the viewer bundle.
+- jQuery is copied from npm to `jquery/jquery.min.js`. The servlet's load order
+  is **jQuery → Migrate → info-tab URL correction → jQuery Mobile → viewer bundle
+  → bootstrap**.
   The bundle exposes `JSV` and `tv4` for the servlet's bootstrap. The viewer URL
   and deep links are unchanged.
 - **Vendor exceptions:** `vendor/jquery.mobile.min.js` and `.css` retain
-  jQuery Mobile 1.4.5; `vendor/filereader.js` retains the bundled FileReader.js
-  (its IIFE explicitly receives `window` when loaded as a module). Other libraries
-  use the existing versions from npm, locked in this package's `pnpm-lock.yaml`.
+  jQuery Mobile 1.4.5, which requires Migrate with the current jQuery 3.7.1
+  integration; Migrate must load before Mobile. `vendor/filereader.js` retains
+  the bundled FileReader.js (its IIFE explicitly receives `window` when loaded
+  as a module). Other libraries use the existing versions from npm, locked in
+  this package's `pnpm-lock.yaml`.
   Renovate library updates and lockfile maintenance require manual review.
 - After a build, hard-refresh the browser. Verify the served output with e.g.
   `curl -s http://localhost:7021/koski/json-schema-viewer/styles/json-schema-viewer.css`.

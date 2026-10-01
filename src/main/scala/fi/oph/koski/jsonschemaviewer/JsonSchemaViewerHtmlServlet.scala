@@ -195,6 +195,7 @@ class JsonSchemaViewerHtmlServlet(implicit val application: KoskiApplication) ex
           </div>,
 
           <script nonce={nonce} type='text/javascript' src={s"/koski/json-schema-viewer/jquery/jquery.min.js?$assetCacheVersion"}></script>,
+          <script nonce={nonce} type='text/javascript' src={s"/koski/json-schema-viewer/jquery/jquery-migrate.min.js?$assetCacheVersion"}></script>,
           <script nonce={nonce} type='text/javascript'>{absoluteTabLinks}</script>,
           <script nonce={nonce} type='text/javascript' src={s"/koski/json-schema-viewer/jquery/jquery.mobile.min.js?$assetCacheVersion"}></script>,
           <script nonce={nonce} type='text/javascript' src={s"/koski/json-schema-viewer/js/json-schema-viewer.js?$assetCacheVersion"}></script>,
