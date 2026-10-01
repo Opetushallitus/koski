@@ -16,7 +16,7 @@
   "dependencies": {
     "d3": "3.5.17",
     "highlight.js": "8.8.0",
-    "jquery": "2.1.1",
+    "jquery": "3.5.0",
     "jquery.scrollto": "1.4.14",
     "jsonpointer.js": "0.4.0",
     "tv4": "1.2.7",

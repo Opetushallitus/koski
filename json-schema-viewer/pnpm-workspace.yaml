@@ -8,3 +8,6 @@ updateNotifier: false
 managePackageManagerVersions: true
 minimumReleaseAge: 4320
 ignoreScripts: true
+minimumReleaseAgeExclude:
+  # Renovate security update: jquery@3.5.0
+  - jquery@3.5.0
