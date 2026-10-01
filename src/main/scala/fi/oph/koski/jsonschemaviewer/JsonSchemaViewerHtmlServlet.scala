@@ -102,7 +102,8 @@ class JsonSchemaViewerHtmlServlet(implicit val application: KoskiApplication) ex
             <div data-role="footer">
               <div id="schema-path" class="ui-content">
                 <a href="#permalink-popup" id="permalink" data-rel="popup">Select a Node</a>
-                <div data-role="popup" id="permalink-popup" class="ui-content" data-arrow="true">
+                <!-- data-history="false" estää jQuery Mobilea muuttamasta hashia ja solmuvalintaa ponnahdusikkunaa avattaessa ja suljettaessa. -->
+                <div data-role="popup" id="permalink-popup" data-history="false" class="ui-content" data-arrow="true">
                   <label for="sharelink">Share:</label>
                   <input type="text" id="sharelink" placeholder="Select a Node to create a permalink." value="" data-theme="a"/>
                 </div>

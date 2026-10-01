@@ -10769,13 +10769,16 @@ $.widget( "mobile.popup", {
 			container: $.Deferred()
 		};
 
-		prerequisites.screen.then( function() {
+		// Koski: jQuery 3 runs .then() callbacks asynchronously. Use .done() so
+		// popup cleanup runs before the final callback clears self._prerequisites.
+		// Backport: https://github.com/jquery/jquery-mobile/blob/1.5.0-alpha.1/js/widgets/popup.js
+		prerequisites.screen.done( function() {
 			if ( prerequisites === self._prerequisites ) {
 				screenPrerequisite();
 			}
 		});
 
-		prerequisites.container.then( function() {
+		prerequisites.container.done( function() {
 			if ( prerequisites === self._prerequisites ) {
 				containerPrerequisite();
 			}

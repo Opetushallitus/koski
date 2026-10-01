@@ -22,7 +22,7 @@ test.describe('JSON Schema Viewer deep links', () => {
   test('v= vanhalla indeksipolulla toimii edelleen', async ({ page }) => {
     await page.goto(viewer('v=1-0'))
 
-    await expect(page.locator('svg#jsv-tree g.node.focus text')).toHaveText(
+    await expect(page.locator('.node.focus text')).toHaveText(
       /^Migri opiskeluoikeus/
     )
   })
@@ -182,21 +182,56 @@ test.describe('JSON Schema Viewer deep links', () => {
     await expect(nodeText(page, 'koulutusvienti')).toBeVisible()
   })
 
-  test('jakolinkki käyttää open=-parametria ja nimipolkua', async ({
+  test('jakolinkki näyttää kohdesolmun latauksessa ja uudelleenlatauksessa, ja popup säilyttää solmuvalinnan', async ({
     page
   }) => {
     await page.goto(viewer('v=opiskeluoikeudet.lisätiedot.koulutusvienti'))
 
+    const selectedNode = nodeText(page, 'koulutusvienti').locator('..')
+    await expect(selectedNode).toHaveClass(/focus/)
+
+    const originalUrl = page.url()
+    await page.locator('#permalink').click()
+
+    const popup = page.locator('#permalink-popup')
+    await expect(popup).toBeVisible()
+
     const shareLink = page.locator('#sharelink')
+    await expect(shareLink).toBeVisible()
+
+    const overlay = page.locator('#permalink-popup-screen')
+    await expect(overlay).toBeVisible()
+    await expect(page).toHaveURL(originalUrl)
+    await expect(selectedNode).toHaveClass(/focus/)
     await expect(shareLink).toHaveValue(
       /#viewer-page\?open=opiskeluoikeudet\.lis%C3%A4tiedot\.koulutusvienti$/
     )
-    await page.goto(await shareLink.inputValue())
+
+    const generatedUrl = await shareLink.inputValue()
+    expect(new URL(generatedUrl).search).toBe(
+      '?schema=migri-oppija-schema.json'
+    )
+
+    // Klikkaa taustakerroksen kulmaa, jotta klikkaus osuu popupin ulkopuolelle.
+    await overlay.click({ position: { x: 5, y: 5 } })
+    await expect(popup).toBeHidden()
+    await expect(overlay).toBeHidden()
+    await expect(page).toHaveURL(originalUrl)
+    await expect(selectedNode).toHaveClass(/focus/)
+
+    await page.locator('#permalink').click()
+    await expect(shareLink).toBeVisible()
+
+    // Avaa kopioitu linkki uutena sivuna, kuten linkin vastaanottaja.
+    await page.goto('about:blank')
+    await page.goto(generatedUrl)
     await expect(page.locator('#loading')).toBeHidden()
     await expect(nodeText(page, 'koulutusvienti')).toBeVisible()
+    await expect(page.locator('.node.focus')).toHaveCount(0)
 
     await page.reload()
     await expect(page.locator('#loading')).toBeHidden()
     await expect(nodeText(page, 'koulutusvienti')).toBeVisible()
+    await expect(page.locator('.node.focus')).toHaveCount(0)
   })
 })
