@@ -543,6 +543,7 @@ Käytössä olevat parametrit (oletusarvo suluissa):
 - `valintatiedot` (false): palautetaanko henkilön opiskelijavalintatiedot eli hakemukset ja hakutoiveet sekä
   valinnan, opiskelupaikan vastaanoton ja ilmoittautumisen tilat. Tiedot haetaan Opintopolun
   opiskelijavalintapalveluista. Jos valintatietoja ei saada haettua, koko kutsu palauttaa virheen 503.
+  Parametri ei ole vielä käytössä tuotantoympäristössä: siellä se jätetään huomiotta.
 
 ### Esimerkkipyyntö
 

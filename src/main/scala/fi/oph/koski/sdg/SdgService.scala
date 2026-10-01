@@ -1,6 +1,6 @@
 package fi.oph.koski.sdg
 
-import fi.oph.koski.config.KoskiApplication
+import fi.oph.koski.config.{Environment, KoskiApplication}
 import fi.oph.koski.executors.GlobalExecutionContext
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.koskiuser.KoskiSpecificSession
@@ -16,8 +16,15 @@ class SdgService(application: KoskiApplication) extends GlobalExecutionContext w
     Some(SdgKorkeakoulunOpiskeluoikeus.fromKoskiSchema)
   )
 
-  def findOppijaByHetu(hetu: String, queryParams: SdgQueryParams)
+  // Valintatietoja ei vielä luovuteta tuotannossa: valintatiedot-parametri jätetään siellä huomiotta.
+  protected def valintatiedotKäytössä: Boolean = !Environment.isProdEnvironment(application.config)
+
+  def findOppijaByHetu(hetu: String, requestedQueryParams: SdgQueryParams)
     (implicit koskiSession: KoskiSpecificSession): Either[HttpStatus, SdgOppija] = {
+
+    val queryParams = requestedQueryParams.copy(
+      withValintatiedot = requestedQueryParams.withValintatiedot && valintatiedotKäytössä
+    )
 
     application.opintopolkuHenkilöFacade.findOppijaByHetu(hetu) match {
       case Some(o) =>

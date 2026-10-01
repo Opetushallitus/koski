@@ -1,11 +1,11 @@
 package fi.oph.koski.sdg
 
-import fi.oph.koski.KoskiHttpSpec
+import fi.oph.koski.{KoskiApplicationForTests, KoskiHttpSpec}
 import fi.oph.koski.api.misc.OpiskeluoikeusTestMethodsAmmatillinen
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.json.JsonSerializer
-import fi.oph.koski.koskiuser.{MockUser, MockUsers}
+import fi.oph.koski.koskiuser.{KoskiSpecificSession, MockUser, MockUsers}
 import fi.oph.koski.ytr.YtrConversionUtils
 import fi.oph.koski.log.AuditLogTester
 import fi.oph.koski.schema.OpiskeluoikeudenTyyppi
@@ -342,6 +342,29 @@ class KehaSdgSpec
     "palauttaa 500, kun Ovara palauttaa tuntemattoman tila-arvon" in {
       postHetu(KoskiSpecificMockOppijat.lukiolainen.hetu.get, valintatiedot = true) {
         verifyResponseStatus(500, KoskiErrorCategory.internalError("Valintatietojen käsittelyssä tapahtui odottamaton virhe."))
+      }
+    }
+
+    "tuotannossa" - {
+      implicit val session: KoskiSpecificSession = KoskiSpecificSession.systemUser
+      val tuotannonSdgService = new SdgService(KoskiApplicationForTests) {
+        override protected def valintatiedotKäytössä: Boolean = false
+      }
+      val valintatiedotPyydetty = SdgQueryParams(withValintatiedot = true)
+
+      "ei palauteta, vaikka valintatiedot=true" in {
+        val oppija = tuotannonSdgService.findOppijaByHetu(KoskiSpecificMockOppijat.ammattilainen.hetu.get, valintatiedotPyydetty)
+        oppija.map(_.valintatiedot) shouldBe Right(None)
+      }
+
+      "ei kutsuta Ovaraa, vaikka valintatiedot=true" in {
+        val oppija = tuotannonSdgService.findOppijaByHetu(KoskiSpecificMockOppijat.koululainen.hetu.get, valintatiedotPyydetty)
+        oppija.map(_.valintatiedot) shouldBe Right(None)
+      }
+
+      "oppijaa ilman opiskeluoikeuksia ei palauteta, vaikka valintatiedot=true" in {
+        val oppija = tuotannonSdgService.findOppijaByHetu(KoskiSpecificMockOppijat.eiKoskessa.hetu.get, valintatiedotPyydetty)
+        oppija.left.map(_.statusCode) shouldBe Left(404)
       }
     }
   }
