@@ -14,13 +14,13 @@
     "prettier:check": "pnpm --dir .. exec prettier --check json-schema-viewer"
   },
   "dependencies": {
-    "URIjs": "1.14.2",
     "d3": "3.5.17",
     "highlight.js": "8.8.0",
     "jquery": "2.1.1",
     "jquery.scrollto": "1.4.14",
     "jsonpointer.js": "0.4.0",
-    "tv4": "1.2.7"
+    "tv4": "1.2.7",
+    "urijs": "1.19.11"
   },
   "devDependencies": {
     "@types/node": "24.19.0",

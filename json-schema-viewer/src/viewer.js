@@ -1,6 +1,6 @@
 /*! JSON Schema Viewer v0.3.4 | https://github.com/jlblcc/json-schema-viewer */
 const $ = require('jquery')
-const URI = require('URIjs')
+const URI = require('urijs')
 const d3 = require('d3')
 const jsonpointer = require('jsonpointer.js')
 const hljs = require('./highlight')
