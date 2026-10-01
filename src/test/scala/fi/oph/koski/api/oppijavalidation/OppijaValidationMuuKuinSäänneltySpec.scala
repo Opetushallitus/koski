@@ -63,6 +63,132 @@ class OppijaValidationMuuKuinSäänneltySpec extends AnyFreeSpec with PutOpiskel
       }
     }
 
+    "Osasuorituksen arviointi" - {
+      "Arviointi vaaditaan vahvistetun suorituksen osasuoritukselta läsnä-tilaisessa opiskeluoikeudessa" in {
+        setupOppijaWithOpiskeluoikeus(muksOpiskeluoikeusOsasuorituksella(
+          alkamispäivä = LocalDate.of(2027, 1, 1),
+          arvioitu = false,
+          vahvistettu = true,
+        )) {
+          verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.arviointi.arviointiPuuttuu(
+            "Muun kuin säännellyn koulutuksen osasuoritukselta Maalaus puuttuu arviointi"
+          ))
+        }
+      }
+
+      "Arviointi vaaditaan vahvistetun suorituksen osasuoritukselta suoritettu-tilaisessa opiskeluoikeudessa" in {
+        setupOppijaWithOpiskeluoikeus(muksOpiskeluoikeusOsasuorituksella(
+          alkamispäivä = LocalDate.of(2027, 1, 1),
+          arvioitu = false,
+          vahvistettu = true,
+          päättäväTila = Some(opiskeluoikeusHyväksytystiSuoritettu),
+        )) {
+          verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.arviointi.arviointiPuuttuu(
+            "Muun kuin säännellyn koulutuksen osasuoritukselta Maalaus puuttuu arviointi"
+          ))
+        }
+      }
+
+      "Arvioidut osa- ja alaosasuoritukset sallitaan vahvistetussa suorituksessa" in {
+        setupOppijaWithOpiskeluoikeus(muksOpiskeluoikeusOsasuorituksella(
+          alkamispäivä = LocalDate.of(2027, 1, 1),
+          alaosasuorituksena = true,
+          vahvistettu = true,
+          päättäväTila = Some(opiskeluoikeusHyväksytystiSuoritettu),
+        )) {
+          verifyResponseStatusOk()
+        }
+      }
+
+      "Arviointia ei vaadita, kun suoritusta ei ole vahvistettu" in {
+        setupOppijaWithOpiskeluoikeus(muksOpiskeluoikeusOsasuorituksella(
+          alkamispäivä = LocalDate.of(2027, 1, 1),
+          arvioitu = false,
+        )) {
+          verifyResponseStatusOk()
+        }
+      }
+
+      "Arviointia ei vaadita ennen 1.1.2027 alkaneessa opiskeluoikeudessa" in {
+        setupOppijaWithOpiskeluoikeus(muksOpiskeluoikeusOsasuorituksella(
+          alkamispäivä = LocalDate.of(2026, 12, 31),
+          arvioitu = false,
+          vahvistettu = true,
+        )) {
+          verifyResponseStatusOk()
+        }
+      }
+
+      "Arviointi vaaditaan myös alaosasuoritukselta" in {
+        setupOppijaWithOpiskeluoikeus(muksOpiskeluoikeusOsasuorituksella(
+          alkamispäivä = LocalDate.of(2027, 1, 1),
+          arvioitu = false,
+          alaosasuorituksena = true,
+          vahvistettu = true,
+          päättäväTila = Some(opiskeluoikeusHyväksytystiSuoritettu),
+        )) {
+          verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.arviointi.arviointiPuuttuu(
+            "Muun kuin säännellyn koulutuksen osasuoritukselta Maalaus puuttuu arviointi"
+          ))
+        }
+      }
+
+      "Arviointi vaaditaan myös osasuoritukselta, jolla on alaosasuorituksia" in {
+        setupOppijaWithOpiskeluoikeus(muksOpiskeluoikeusOsasuorituksella(
+          alkamispäivä = LocalDate.of(2027, 1, 1),
+          alaosasuorituksena = true,
+          ylempiOsasuoritusArvioitu = false,
+          vahvistettu = true,
+          päättäväTila = Some(opiskeluoikeusHyväksytystiSuoritettu),
+        )) {
+          verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.arviointi.arviointiPuuttuu(
+            "Muun kuin säännellyn koulutuksen osasuoritukselta Grafiikka puuttuu arviointi"
+          ))
+        }
+      }
+
+      "Keskeytyneessä opiskeluoikeudessa" - {
+        "Osasuoritus, jolla on alaosasuorituksia, voi olla ilman arviointia" in {
+          setupOppijaWithOpiskeluoikeus(muksOpiskeluoikeusOsasuorituksella(
+            alkamispäivä = LocalDate.of(2027, 1, 1),
+            alaosasuorituksena = true,
+            ylempiOsasuoritusArvioitu = false,
+            vahvistettu = true,
+            päättäväTila = Some(opiskeluoikeusKeskeytynyt),
+          )) {
+            verifyResponseStatusOk()
+          }
+        }
+
+        "Arviointi vaaditaan alaosasuoritukselta" in {
+          setupOppijaWithOpiskeluoikeus(muksOpiskeluoikeusOsasuorituksella(
+            alkamispäivä = LocalDate.of(2027, 1, 1),
+            arvioitu = false,
+            alaosasuorituksena = true,
+            vahvistettu = true,
+            päättäväTila = Some(opiskeluoikeusKeskeytynyt),
+          )) {
+            verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.arviointi.arviointiPuuttuu(
+              "Muun kuin säännellyn koulutuksen osasuoritukselta Maalaus puuttuu arviointi"
+            ))
+          }
+        }
+
+        "Arviointi vaaditaan osasuoritukselta, jolla ei ole alaosasuorituksia" in {
+          setupOppijaWithOpiskeluoikeus(muksOpiskeluoikeusOsasuorituksella(
+            alkamispäivä = LocalDate.of(2027, 1, 1),
+            arvioitu = false,
+            vahvistettu = true,
+            päättäväTila = Some(opiskeluoikeusKeskeytynyt),
+          )) {
+            verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.arviointi.arviointiPuuttuu(
+              "Muun kuin säännellyn koulutuksen osasuoritukselta Maalaus puuttuu arviointi"
+            ))
+          }
+        }
+      }
+    }
+
     "Osasuorituksen arviointipäivä" - {
       "Arviointipäivä vaaditaan 1.1.2027 alkavassa opiskeluoikeudessa" in {
         setupOppijaWithOpiskeluoikeus(muksOpiskeluoikeusOsasuorituksella(
@@ -156,29 +282,37 @@ class OppijaValidationMuuKuinSäänneltySpec extends AnyFreeSpec with PutOpiskel
 
   private def muksOpiskeluoikeusOsasuorituksella(
     alkamispäivä: LocalDate,
-    arviointipäivä: Option[LocalDate],
+    arviointipäivä: Option[LocalDate] = Some(LocalDate.of(2027, 2, 1)),
+    arvioitu: Boolean = true,
     alaosasuorituksena: Boolean = false,
+    ylempiOsasuoritusArvioitu: Boolean = true,
+    vahvistettu: Boolean = false,
+    päättäväTila: Option[Koodistokoodiviite] = None,
   ): MuunKuinSäännellynKoulutuksenOpiskeluoikeus = {
-    val arvioituOsasuoritus = MuunKuinSäännellynKoulutuksenOsasuoritus(
+    val maalaus = MuunKuinSäännellynKoulutuksenOsasuoritus(
       koulutusmoduuli = Koulutusmoduuli.maalaus(10.0),
-      arviointi = Some(List(
-        Arviointi.arvosana().copy(arviointipäivä = arviointipäivä)
-      )),
+      arviointi = if (arvioitu) Some(List(Arviointi.arvosana().copy(arviointipäivä = arviointipäivä))) else None,
     )
     val osasuoritus = if (alaosasuorituksena) {
       MuunKuinSäännellynKoulutuksenOsasuoritus(
         koulutusmoduuli = Koulutusmoduuli.grafiikka(10.0),
-        osasuoritukset = Some(List(arvioituOsasuoritus)),
+        arviointi = if (ylempiOsasuoritusArvioitu) Some(List(Arviointi.arvosana(pvm = LocalDate.of(2027, 2, 1)))) else None,
+        osasuoritukset = Some(List(maalaus)),
       )
     } else {
-      arvioituOsasuoritus
+      maalaus
     }
 
     ExamplesMuuKuinSäänneltyKoulutus.Opiskeluoikeus.kesken.copy(
-      tila = opiskeluoikeudenTila(List(opiskeluoikeusLäsnä), aloitusPvm = alkamispäivä),
+      tila = opiskeluoikeudenTila(opiskeluoikeusLäsnä :: päättäväTila.toList, aloitusPvm = alkamispäivä),
       suoritukset = List(
-        ExamplesMuuKuinSäänneltyKoulutus.PäätasonSuoritus.suoritusIlmanOsasuorituksia
-          .copy(osasuoritukset = Some(List(osasuoritus)))
+        ExamplesMuuKuinSäänneltyKoulutus.PäätasonSuoritus.suoritusIlmanOsasuorituksia.copy(
+          vahvistus = if (vahvistettu) Some(Päivämäärävahvistus(
+            päivä = alkamispäivä.plusMonths(1),
+            myöntäjäOrganisaatio = ExamplesMuuKuinSäänneltyKoulutus.jatkuvaKoulutusOyOppilaitos,
+          )) else None,
+          osasuoritukset = Some(List(osasuoritus)),
+        )
       ),
     )
   }
