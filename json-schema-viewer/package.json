@@ -24,6 +24,7 @@
     "urijs": "1.19.11"
   },
   "devDependencies": {
+    "css-minimizer-webpack-plugin": "8.0.0",
     "ts-loader": "9.6.2",
     "typescript": "5.9.3",
     "webpack": "5.111.1",

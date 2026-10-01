@@ -1,4 +1,5 @@
 const path = require('path')
+const CssMinimizerPlugin = require('css-minimizer-webpack-plugin')
 
 module.exports = (_, argv = {}) => ({
   context: path.join(__dirname, 'src'),
@@ -28,6 +29,13 @@ module.exports = (_, argv = {}) => ({
         generator: { filename: '[path][name][ext]' }
       },
       { test: /\.ts$/, use: 'ts-loader' }
+    ]
+  },
+  optimization: {
+    minimizer: [
+      // Webpack korvaa '...'-merkkijonon oletusminimoijilla, jotta myös JavaScript minifioidaan.
+      '...',
+      new CssMinimizerPlugin({ include: /jquery\.mobile\.css$/ })
     ]
   },
   watchOptions: { ignored: /node_modules/ }

@@ -62,7 +62,7 @@ class JsonSchemaViewerHtmlServlet(implicit val application: KoskiApplication) ex
           <title>JSON Schema Viewer 0.3.4</title>,
           <meta name="viewport" content="width=device-width, initial-scale=1"/>,
           <link rel="icon" type="image/gif" href="data:image/gif;base64,R0lGODlhEAAQAIAAAAAAAAAAACH5BAkAAAEALAAAAAAQABAAAAIgjI+py+0PEQiT1lkNpppnz4HfdoEH2W1nCJRfBMfyfBQAOw==" />,
-          <link nonce={nonce} rel="stylesheet" href={s"/koski/json-schema-viewer/jquery/jquery.mobile.min.css?$assetCacheVersion"} />,
+          <link nonce={nonce} rel="stylesheet" href={s"/koski/json-schema-viewer/jquery/jquery.mobile.css?$assetCacheVersion"} />,
           <link nonce={nonce} rel="stylesheet" href={s"/koski/json-schema-viewer/styles/json-schema-viewer.css?$assetCacheVersion"} />
         ))}
       </head>
