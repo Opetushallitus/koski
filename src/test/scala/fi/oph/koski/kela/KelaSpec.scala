@@ -154,6 +154,32 @@ class KelaSpec
         kaikki should contain("Täydennyskurssi I")
       }
     }
+    "Korkeakoulun suoritusten arviointi välitetään päivämäärällä ja hyväksytty-tiedolla" in {
+      postHetu(KoskiSpecificMockOppijat.dippainssi.hetu.get) {
+        verifyResponseStatusOk()
+        val oppija = JsonSerializer.parse[KelaOppija](body)
+
+        def arvioinnit(osasuoritukset: List[KelaKorkeakoulunOpintojaksonOsasuoritus]): List[(String, Option[List[KelaKorkeakoulunArviointi]])] =
+          osasuoritukset.flatMap(o =>
+            (o.koulutusmoduuli.tunniste.koodiarvo -> o.arviointi) :: arvioinnit(o.osasuoritukset.getOrElse(Nil))
+          )
+
+        val kaikki = oppija.opiskeluoikeudet
+          .collect { case oo: KelaKorkeakoulunOpiskeluoikeus => oo }
+          .flatMap(_.suoritukset)
+          .flatMap {
+            case s: KelaKorkeakoulunOpintojaksonSuoritus =>
+              (s.koulutusmoduuli.tunniste.koodiarvo -> s.arviointi) :: arvioinnit(s.osasuoritukset.getOrElse(Nil))
+            case s: KelaKorkeakoulututkinnonSuoritus =>
+              (s.koulutusmoduuli.tunniste.koodiarvo -> s.arviointi) :: arvioinnit(s.osasuoritukset.getOrElse(Nil))
+            case s: KelaMuuKorkeakoulunSuoritus => arvioinnit(s.osasuoritukset.getOrElse(Nil))
+          }
+          .toMap
+
+        kaikki("751101") should equal(Some(List(KelaKorkeakoulunArviointi(hyväksytty = true, päivä = LocalDate.of(2016, 3, 22)))))
+        kaikki("Kul-49.3400") should equal(Some(List(KelaKorkeakoulunArviointi(hyväksytty = true, päivä = LocalDate.of(2014, 5, 30)))))
+      }
+    }
     "Virran katkoksesta palautetaan virhe eikä vaillinaista dataa" in {
       postHetu(KoskiSpecificMockOppijat.virtaEiVastaa.hetu.get) {
         verifyResponseStatus(503, KoskiErrorCategory.unavailable.virta())

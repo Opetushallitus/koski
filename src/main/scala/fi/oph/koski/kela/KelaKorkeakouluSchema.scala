@@ -77,6 +77,7 @@ object KelaKorkeakoulunOpiskeluoikeus {
         koulutusala = t.koulutusmoduuli.koulutusala.map(koulutusala)
       ),
       toimipiste = toimipiste(t.toimipiste),
+      arviointi = t.arviointi.map(_.map(arviointi)),
       vahvistus = t.vahvistus.map(v => Vahvistus(v.päivä)),
       osasuoritukset = t.osasuoritukset.map(_.map(osasuoritus)),
       hyväksilukupäivä = t.hyväksilukupäivä,
@@ -88,6 +89,7 @@ object KelaKorkeakoulunOpiskeluoikeus {
     case o: schema.KorkeakoulunOpintojaksonSuoritus => KelaKorkeakoulunOpintojaksonSuoritus(
       koulutusmoduuli = opintojakso(o.koulutusmoduuli),
       toimipiste = toimipiste(o.toimipiste),
+      arviointi = o.arviointi.map(_.map(arviointi)),
       vahvistus = o.vahvistus.map(v => Vahvistus(v.päivä)),
       osasuoritukset = o.osasuoritukset.map(_.map(osasuoritus)),
       luokittelu = o.luokittelu.map(_.map(KelaKoodistokoodiviite.fromKoskiSchema)),
@@ -116,6 +118,7 @@ object KelaKorkeakoulunOpiskeluoikeus {
     KelaKorkeakoulunOpintojaksonOsasuoritus(
       koulutusmoduuli = opintojakso(o.koulutusmoduuli),
       toimipiste = toimipiste(o.toimipiste),
+      arviointi = o.arviointi.map(_.map(arviointi)),
       vahvistus = o.vahvistus.map(v => Vahvistus(v.päivä)),
       osasuoritukset = o.osasuoritukset.map(_.map(osasuoritus)),
       luokittelu = o.luokittelu.map(_.map(KelaKoodistokoodiviite.fromKoskiSchema)),
@@ -126,6 +129,9 @@ object KelaKorkeakoulunOpiskeluoikeus {
       lisätieto = o.lisätieto,
       tyyppi = o.tyyppi
     )
+
+  private def arviointi(a: schema.KorkeakoulunArviointi) =
+    KelaKorkeakoulunArviointi(hyväksytty = a.hyväksytty, päivä = a.päivä)
 
   private def opintojakso(k: schema.KorkeakoulunOpintojakso) = KelaKorkeakoulunOpintojakso(
     tunniste = KelaPaikallinenKoodiviite(k.tunniste.koodiarvo, Some(k.tunniste.nimi), k.tunniste.koodistoUri),
@@ -308,6 +314,7 @@ trait KelaKorkeakoulunPäätasonSuoritus extends KelaSuoritus {
 case class KelaKorkeakoulututkinnonSuoritus(
   koulutusmoduuli: KelaKorkeakoulututkinto,
   toimipiste: Toimipiste,
+  arviointi: Option[List[KelaKorkeakoulunArviointi]],
   vahvistus: Option[Vahvistus],
   @Title("Opintojaksot")
   osasuoritukset: Option[List[KelaKorkeakoulunOpintojaksonOsasuoritus]],
@@ -327,6 +334,7 @@ case class KelaKorkeakoulututkinnonSuoritus(
 case class KelaKorkeakoulunOpintojaksonSuoritus(
   koulutusmoduuli: KelaKorkeakoulunOpintojakso,
   toimipiste: Toimipiste,
+  arviointi: Option[List[KelaKorkeakoulunArviointi]],
   vahvistus: Option[Vahvistus],
   @Title("Sisältyvät opintojaksot")
   osasuoritukset: Option[List[KelaKorkeakoulunOpintojaksonOsasuoritus]],
@@ -363,6 +371,7 @@ case class KelaMuuKorkeakoulunSuoritus(
 case class KelaKorkeakoulunOpintojaksonOsasuoritus(
   koulutusmoduuli: KelaKorkeakoulunOpintojakso,
   toimipiste: Toimipiste,
+  arviointi: Option[List[KelaKorkeakoulunArviointi]],
   vahvistus: Option[Vahvistus],
   @Title("Sisältyvät opintojaksot")
   osasuoritukset: Option[List[KelaKorkeakoulunOpintojaksonOsasuoritus]],
@@ -384,6 +393,13 @@ case class KelaKorkeakoulunOpintojaksonOsasuoritus(
 ) extends Osasuoritus {
   override def withHyväksyntämerkinnälläKorvattuArvosana: Osasuoritus = this
 }
+
+@Title("Korkeakoulun arviointi")
+case class KelaKorkeakoulunArviointi(
+  @Description("Korkeakoulun suorituksilla aina true. Virran tiedoista ei tunnisteta hylättyjä arvosanoja.")
+  hyväksytty: Boolean,
+  päivä: LocalDate
+)
 
 @Description("Korkeakoulututkinnon tunnistetiedot")
 case class KelaKorkeakoulututkinto(
