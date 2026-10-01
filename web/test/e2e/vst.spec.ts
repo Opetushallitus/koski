@@ -1477,6 +1477,43 @@ test.describe('Vapaa sivistystyö', () => {
 
         await expect(vahvistaminen.edit.modal.submit.button).toBeDisabled()
       })
+
+      test('Toimipisteen vaihtaminen hakemalla', async ({
+        page,
+        vstOppijaPage
+      }) => {
+        const toimipiste = vstOppijaPage.$.suoritukset(0).toimipiste
+        await expect(toimipiste.edit.toimipiste.value.button).toHaveText(
+          'Varsinais-Suomen kansanopisto'
+        )
+        await toimipiste.edit.toimipiste.value.click()
+        const dialog = page.getByTestId('toimipiste-dialog')
+        await dialog.getByRole('textbox').fill('kirkkonummi')
+
+        const searchResults = dialog.getByRole('link')
+        await expect(searchResults).toHaveText(
+          [
+            'Omnia',
+            'Omnia, Kirkkonummi, Yhteishaku',
+            'Omnia, Kirkkonummi, jatkuva haku'
+          ],
+          { timeout: 5000 }
+        )
+        await dialog
+          .getByRole('link', {
+            name: 'Omnia, Kirkkonummi, jatkuva haku',
+            exact: true
+          })
+          .click()
+        await expect(dialog).toBeHidden()
+
+        await vstOppijaPage.tallenna()
+        await page.reload()
+        await expect(toimipiste.value.elem).toHaveText(
+          'Omnia, Kirkkonummi, jatkuva haku',
+          { timeout: 10000 }
+        )
+      })
     })
 
     test.describe('Lukutaitokoulutus', () => {
