@@ -140,7 +140,7 @@ test.describe('Schema viewer', () => {
       id: oppijaSchemaUrl,
       type: 'object',
       properties: {
-        nimi: { type: 'string' },
+        nimi: { type: 'string', description: '<b> & ääkköset' },
         ikä: { $ref: 'viewer-smoke-age.json' }
       }
     }
@@ -216,6 +216,22 @@ test.describe('Schema viewer', () => {
         await expect(page.locator(`#info-tab-${id}`)).toBeVisible()
         await expect(page.locator('[data-role=page]')).toHaveCount(2)
       }
+    })
+
+    test('näyttää JSONin tekstinä ja avaa sen uuteen välilehteen', async ({
+      page,
+      context
+    }) => {
+      await page.getByRole('link', { name: 'Schema', exact: true }).click()
+      const panel = page.locator('#info-tab-schema')
+      const json = await panel.locator('code').textContent()
+      expect(json).toContain('"description": "<b> & ääkköset"')
+
+      const popupPromise = context.waitForEvent('page')
+      await panel.getByRole('link', { name: 'Open in new window' }).click()
+      const popup = await popupPromise
+      await expect(popup).toHaveURL(/^blob:/)
+      expect(await popup.locator('pre').textContent()).toBe(json)
     })
 
     test('hakee solmun ja avaa sen puussa', async ({ page }) => {
