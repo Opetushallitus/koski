@@ -6,7 +6,9 @@ import fi.oph.koski.db.PostgresDriverWithJsonSupport.plainAPI._
 import fi.oph.koski.koskiuser.KoskiSpecificSession
 import fi.oph.koski.db.DB
 import fi.oph.koski.localization.LocalizationReader
-import slick.jdbc.GetResult
+import fi.oph.koski.raportointikanta.Confidential
+import fi.oph.koski.db.SQLHelpers.concatMany
+import slick.jdbc.{GetResult, SQLActionBuilder}
 
 import scala.concurrent.duration.DurationInt
 
@@ -28,7 +30,7 @@ case class Kotikuntalaskelma(db: DB) extends QueryMethods {
   )
 
   def build(oppilaitosOids: Seq[String], päivä: LocalDate, t: LocalizationReader)(implicit u: KoskiSpecificSession): DataSheet = {
-    val raporttiQuery = query(oppilaitosOids, päivä).as[KotikuntalaskelmaRow]
+    val raporttiQuery = query(oppilaitosOids, päivä, t.get("raportti-excel-default-value-hetuton")).as[KotikuntalaskelmaRow]
     val rows = runDbSync(raporttiQuery, timeout = 5.minutes)
     DataSheet(
       title = t.get("raportti-excel-kotikuntalaskelma-sheet-name"),
@@ -37,24 +39,77 @@ case class Kotikuntalaskelma(db: DB) extends QueryMethods {
     )
   }
 
-  private def query(oppilaitosOids: Seq[String], päivä: LocalDate) = {
-    sql"""
-    with v as (
+  private def vuosiJaLukuvuosi(päivä: LocalDate): SQLActionBuilder = sql"""
+    v as (
       select
         extract(year from $päivä::date)::int as vuosi,
-        -- Kansainvälisten koulujen (internationalschool, europeanschoolofhelsinki) luokka-asteet
-        -- lasketaan vain kuluvalta lukuvuodelta
         case
           when extract(month from $päivä::date) >= 8
             then make_date(extract(year from $päivä::date)::int, 8, 1)
           else make_date(extract(year from $päivä::date)::int - 1, 8, 1)
         end as edellinen_elokuu
     )
+  """
+
+  // Turvakiellollisten kotikunnat mukaan aggregaattiin
+  private val julkinenKotikuntahistoria = "r_kotikuntahistoria"
+  private val turvakiellollinenKotikuntahistoria = s"${Confidential.name}.r_kotikuntahistoria"
+
+  private def lähteet(päivä: LocalDate, kotikuntahistoria: String): SQLActionBuilder = sql"""
+    from v, r_henkilo he
+    join r_opiskeluoikeus oo on oo.oppija_oid = he.oppija_oid
+    join r_paatason_suoritus pts on pts.opiskeluoikeus_oid = oo.opiskeluoikeus_oid
+    left join r_opiskeluoikeus_aikajakso aj on aj.opiskeluoikeus_oid = oo.opiskeluoikeus_oid
+    left join esiopetus_opiskeluoik_aikajakso eaj on eaj.opiskeluoikeus_oid = oo.opiskeluoikeus_oid
+    -- Muuttopäivänä voimassa kaksi kuntaa, viimeisin voittaa
+    left join lateral (
+      select k.kotikunta, k.kotikunta_nimi_fi
+      from #$kotikuntahistoria k
+      where k.master_oid = he.master_oid
+        and coalesce(k.muutto_pvm, '1900-01-01'::date) <= $päivä
+        and (k.poismuutto_pvm >= $päivä or k.poismuutto_pvm is null)
+      order by k.muutto_pvm desc nulls last
+      limit 1
+    ) kkh on true
+  """
+
+  private def ehdot(oppilaitosOids: Seq[String], päivä: LocalDate): SQLActionBuilder = sql"""
+    where oo.oppilaitos_oid = any($oppilaitosOids)
+      and (
+        (oo.koulutusmuoto in ('perusopetus', 'esiopetus')
+          and pts.suorituksen_tyyppi in ('perusopetuksenvuosiluokka', 'perusopetuksenoppimaara', 'esiopetuksensuoritus'))
+        or
+        (oo.koulutusmuoto = 'internationalschool'
+          and pts.koulutusmoduuli_koodiarvo in ('explorer', '1', '2', '3', '4', '5', '6', '7', '8', '9')
+          and pts.alkamispaiva between v.edellinen_elokuu and $päivä)
+        or
+        (oo.koulutusmuoto = 'europeanschoolofhelsinki'
+          and pts.koulutusmoduuli_koodiarvo in ('N1', 'N2', 'P1', 'P2', 'P3', 'P4', 'P5', 'S1', 'S2', 'S3', 'S4', 'S5')
+          and pts.alkamispaiva between v.edellinen_elokuu and $päivä)
+      )
+      and (
+        (aj.alku <= $päivä and aj.loppu >= $päivä
+          and aj.tila in ('lasna', 'eronnut', 'valmistunut')
+          and not aj.kotiopetus)
+        or
+        (eaj.alku <= $päivä and eaj.loppu >= $päivä
+          and eaj.tila in ('lasna', 'eronnut', 'valmistunut'))
+      )
+      and extract(year from he.syntymaaika) between v.vuosi - 16 and v.vuosi - 6
+  """
+
+  private def query(oppilaitosOids: Seq[String], päivä: LocalDate, hetutonTeksti: String) = concatMany(
+    Some(sql"with "),
+    Some(vuosiJaLukuvuosi(päivä)),
+    Some(sql"""
     select
       oo.koulutustoimija_oid as opetuksen_jarjestaja_oid,
       oo.koulutustoimija_nimi as opetuksen_jarjestaja,
       kkh.kotikunta as kotikunnan_koodi,
-      kkh.kotikunta_nimi_fi as oppilaan_kotikunta,
+      case
+        when kkh.kotikunta is null and he.hetu is null then $hetutonTeksti
+        else kkh.kotikunta_nimi_fi
+      end as oppilaan_kotikunta,
 
       count(distinct case
         when extract(year from he.syntymaaika) = v.vuosi - 6
@@ -89,48 +144,19 @@ case class Kotikuntalaskelma(db: DB) extends QueryMethods {
         when extract(year from he.syntymaaika) between v.vuosi - 16 and v.vuosi - 6
         then he.master_oid
       end) as yhteensa
-
-    from v, r_henkilo he
-    join r_opiskeluoikeus oo on oo.oppija_oid = he.oppija_oid
-    join r_paatason_suoritus pts on pts.opiskeluoikeus_oid = oo.opiskeluoikeus_oid
-    left join r_opiskeluoikeus_aikajakso aj on aj.opiskeluoikeus_oid = oo.opiskeluoikeus_oid
-    left join esiopetus_opiskeluoik_aikajakso eaj on eaj.opiskeluoikeus_oid = oo.opiskeluoikeus_oid
-    left join r_kotikuntahistoria kkh
-      on kkh.master_oid = he.master_oid
-      and coalesce(kkh.muutto_pvm, '1900-01-01'::date) <= $päivä
-      and (kkh.poismuutto_pvm >= $päivä or kkh.poismuutto_pvm is null)
-
-    where oo.oppilaitos_oid = any($oppilaitosOids)
-      and (
-        (oo.koulutusmuoto in ('perusopetus', 'esiopetus')
-          and pts.suorituksen_tyyppi in ('perusopetuksenvuosiluokka', 'perusopetuksenoppimaara', 'esiopetuksensuoritus'))
-        or
-        (oo.koulutusmuoto = 'internationalschool'
-          and pts.koulutusmoduuli_koodiarvo in ('explorer', '1', '2', '3', '4', '5', '6', '7', '8', '9')
-          and pts.alkamispaiva between v.edellinen_elokuu and $päivä)
-        or
-        (oo.koulutusmuoto = 'europeanschoolofhelsinki'
-          and pts.koulutusmoduuli_koodiarvo in ('N1', 'N2', 'P1', 'P2', 'P3', 'P4', 'P5', 'S1', 'S2', 'S3', 'S4', 'S5')
-          and pts.alkamispaiva between v.edellinen_elokuu and $päivä)
-      )
-      and (
-        (aj.alku <= $päivä and aj.loppu >= $päivä
-          and aj.tila in ('lasna', 'eronnut', 'valmistunut')
-          and not aj.kotiopetus)
-        or
-        (eaj.alku <= $päivä and eaj.loppu >= $päivä
-          and eaj.tila in ('lasna', 'eronnut', 'valmistunut'))
-      )
-      and extract(year from he.syntymaaika) between v.vuosi - 16 and v.vuosi - 6
-
+    """),
+    Some(lähteet(päivä, turvakiellollinenKotikuntahistoria)),
+    Some(ehdot(oppilaitosOids, päivä)),
+    Some(sql"""
     group by
       oo.koulutustoimija_oid,
       oo.koulutustoimija_nimi,
       kkh.kotikunta,
-      kkh.kotikunta_nimi_fi
-    order by oo.koulutustoimija_nimi, kkh.kotikunta
-  """
-  }
+      kkh.kotikunta_nimi_fi,
+      kkh.kotikunta is null and he.hetu is null
+    order by oo.koulutustoimija_nimi, kkh.kotikunta, kkh.kotikunta is null and he.hetu is null
+    """)
+  )
 
   implicit private val getOppijaResult: GetResult[KotikuntalaskelmaOppijaRow] = GetResult(r =>
     KotikuntalaskelmaOppijaRow(
@@ -155,7 +181,7 @@ case class Kotikuntalaskelma(db: DB) extends QueryMethods {
   )
 
   def buildOppijat(oppilaitosOids: Seq[String], päivä: LocalDate, t: LocalizationReader)(implicit u: KoskiSpecificSession): DataSheet = {
-    val raporttiQuery = oppijaQuery(oppilaitosOids, päivä).as[KotikuntalaskelmaOppijaRow]
+    val raporttiQuery = oppijaQuery(oppilaitosOids, päivä, t.get("raportti-excel-default-value-esiopetus-lyhyt")).as[KotikuntalaskelmaOppijaRow]
     val rows = runDbSync(raporttiQuery, timeout = 5.minutes)
     DataSheet(
       title = t.get("raportti-excel-kotikuntalaskelma-oppijat-sheet-name"),
@@ -164,16 +190,31 @@ case class Kotikuntalaskelma(db: DB) extends QueryMethods {
     )
   }
 
-  private def oppijaQuery(oppilaitosOids: Seq[String], päivä: LocalDate) = {
-    sql"""
-    with v as (
-      select
-        extract(year from $päivä::date)::int as vuosi,
-        case
-          when extract(month from $päivä::date) >= 8
-            then make_date(extract(year from $päivä::date)::int, 8, 1)
-          else make_date(extract(year from $päivä::date)::int - 1, 8, 1)
-        end as edellinen_elokuu
+  private def oppijaQuery(oppilaitosOids: Seq[String], päivä: LocalDate, esiopetusLuokkaAste: String) = concatMany(
+    Some(sql"with "),
+    Some(vuosiJaLukuvuosi(päivä)),
+    Some(sql""",
+    valittu as (
+      select distinct on (he.master_oid)
+        he.master_oid,
+        oo.oppilaitos_nimi,
+        case pts.suorituksen_tyyppi
+          when 'perusopetuksenoppimaara' then null
+          when 'esiopetuksensuoritus' then $esiopetusLuokkaAste
+          else pts.koulutusmoduuli_koodiarvo
+        end as luokka_aste,
+        pts.luokka_tai_ryhma as luokka
+    """),
+    Some(lähteet(päivä, julkinenKotikuntahistoria)),
+    Some(ehdot(oppilaitosOids, päivä)),
+    Some(sql"""
+      order by
+        he.master_oid,
+        coalesce(aj.tila, eaj.tila) = 'lasna' desc,
+        pts.suorituksen_tyyppi in ('perusopetuksenoppimaara', 'esiopetuksensuoritus'),
+        coalesce(pts.alkamispaiva <= $päivä, true) desc,
+        pts.alkamispaiva desc nulls last,
+        pts.paatason_suoritus_id
     )
     select
       case when bool_or(he.turvakielto) then 'Turvakielto' else he.master_oid end as oppija_numero,
@@ -182,9 +223,9 @@ case class Kotikuntalaskelma(db: DB) extends QueryMethods {
       case when bool_or(he.turvakielto) then null else max(he.etunimet) end as etunimet,
       case when bool_or(he.turvakielto) then null else max(he.sukunimi) end as sukunimi,
       case when bool_or(he.turvakielto) then null else max(kkh.kotikunta_nimi_fi) end as kotikunta,
-      case when bool_or(he.turvakielto) then null else max(oo.oppilaitos_nimi) end as oppilaitos,
-      case when bool_or(he.turvakielto) then null else max(pts.koulutusmoduuli_koodiarvo) end as luokka_aste,
-      case when bool_or(he.turvakielto) then null else max(pts.luokka_tai_ryhma) end as luokka,
+      case when bool_or(he.turvakielto) then null else max(valittu.oppilaitos_nimi) end as oppilaitos,
+      case when bool_or(he.turvakielto) then null else max(valittu.luokka_aste) end as luokka_aste,
+      case when bool_or(he.turvakielto) then null else max(valittu.luokka) end as luokka,
 
       bool_or(extract(year from he.syntymaaika) = v.vuosi - 6) as kuusi,
 
@@ -203,48 +244,16 @@ case class Kotikuntalaskelma(db: DB) extends QueryMethods {
         and aj.alku <= $päivä and aj.loppu >= $päivä
         and not aj.opetus_vamman_sairauden_tai_rajoitteen_perusteella
       ) as kuusitoista_ei_erityisen_tuen_perusteella
-
-    from v, r_henkilo he
-    join r_opiskeluoikeus oo on oo.oppija_oid = he.oppija_oid
-    join r_paatason_suoritus pts on pts.opiskeluoikeus_oid = oo.opiskeluoikeus_oid
-    left join r_opiskeluoikeus_aikajakso aj on aj.opiskeluoikeus_oid = oo.opiskeluoikeus_oid
-    left join esiopetus_opiskeluoik_aikajakso eaj on eaj.opiskeluoikeus_oid = oo.opiskeluoikeus_oid
-    left join r_kotikuntahistoria kkh
-      on kkh.master_oid = he.master_oid
-      and coalesce(kkh.muutto_pvm, '1900-01-01'::date) <= $päivä
-      and (kkh.poismuutto_pvm >= $päivä or kkh.poismuutto_pvm is null)
-
-    where oo.oppilaitos_oid = any($oppilaitosOids)
-      and (
-        (oo.koulutusmuoto in ('perusopetus', 'esiopetus')
-          and pts.suorituksen_tyyppi in ('perusopetuksenvuosiluokka', 'perusopetuksenoppimaara', 'esiopetuksensuoritus'))
-        or
-        (oo.koulutusmuoto = 'internationalschool'
-          and pts.koulutusmoduuli_koodiarvo in ('explorer', '1', '2', '3', '4', '5', '6', '7', '8', '9')
-          and pts.alkamispaiva between v.edellinen_elokuu and $päivä)
-        or
-        (oo.koulutusmuoto = 'europeanschoolofhelsinki'
-          and pts.koulutusmoduuli_koodiarvo in ('N1', 'N2', 'P1', 'P2', 'P3', 'P4', 'P5', 'S1', 'S2', 'S3', 'S4', 'S5')
-          and pts.alkamispaiva between v.edellinen_elokuu and $päivä)
-      )
-      and (
-        (aj.alku <= $päivä and aj.loppu >= $päivä
-          and aj.tila in ('lasna', 'eronnut', 'valmistunut')
-          and not aj.kotiopetus)
-        or
-        (eaj.alku <= $päivä and eaj.loppu >= $päivä
-          and eaj.tila in ('lasna', 'eronnut', 'valmistunut'))
-      )
-      and extract(year from he.syntymaaika) between v.vuosi - 16 and v.vuosi - 6
-
+    """),
+    Some(lähteet(päivä, julkinenKotikuntahistoria)),
+    Some(sql"join valittu on valittu.master_oid = he.master_oid"),
+    Some(ehdot(oppilaitosOids, päivä)),
+    Some(sql"""
     group by he.master_oid
-    -- Turvakiellon alaiset oppijat aina listan loppuun (bool_or(turvakielto) järjestetään ensin:
-    -- false=0 ennen true=1), jotta niiden todellista sijaintia listassa ei voi päätellä
-    -- vertaamalla naapuririvien näkyviä oppijanumeroita — muuten piilotettu rivi istuisi tarkalleen
-    -- kahden näkyvän oidin välissä ja sen identiteetin voisi rajata näiden perusteella.
+    -- Turvakieltorivit loppuun, ettei oidia voi rajata naapuririvien perusteella
     order by bool_or(he.turvakielto), he.master_oid
-  """
-  }
+    """)
+  )
 
   private def oppijaColumnSettings(t: LocalizationReader): Seq[(String, Column)] = Seq(
     "oppijaNumero" -> Column(t.get("raportti-excel-kolumni-oppijaNumero")),
