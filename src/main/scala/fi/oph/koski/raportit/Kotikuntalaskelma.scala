@@ -52,8 +52,6 @@ case class Kotikuntalaskelma(db: DB) extends QueryMethods {
     )
   """
 
-  // Raportin oppijajoukon määrittävät liitokset ja ehdot. Yhteiset kaikille kyselyille, jotta
-  // aggregaatti- ja oppijat-välilehti laskevat täsmälleen samat oppijat.
   private def lähteet(päivä: LocalDate): SQLActionBuilder = sql"""
     from v, r_henkilo he
     join r_opiskeluoikeus oo on oo.oppija_oid = he.oppija_oid
@@ -182,13 +180,6 @@ case class Kotikuntalaskelma(db: DB) extends QueryMethods {
   private def oppijaQuery(oppilaitosOids: Seq[String], päivä: LocalDate, esiopetusLuokkaAste: String) = concatMany(
     Some(sql"with "),
     Some(vuosiJaLukuvuosi(päivä)),
-    // Oppija voi osua raportille usealla päätason suorituksella (esim. vuosiluokka ja oppimäärä, tai
-    // raportointipäivänä vaihdettu koulu). Oppilaitos, luokka-aste ja luokka otetaan kaikki samalta,
-    // raportointipäivänä ajankohtaisimmalta suoritukselta:
-    //   1. läsnä-tilainen opiskeluoikeus ennen eronnutta/valmistunutta
-    //   2. vuosiluokan suoritus ennen perusopetuksen oppimäärää ja esiopetusta
-    //   3. raportointipäivään mennessä alkanut ennen myöhemmin alkavaa
-    //   4. viimeisimpänä alkanut ensin; alkamispäivättömät (ennen v. 2019 tallennetut) viimeisinä
     Some(sql""",
     valittu as (
       select distinct on (he.master_oid)
@@ -219,7 +210,6 @@ case class Kotikuntalaskelma(db: DB) extends QueryMethods {
       case when bool_or(he.turvakielto) then null else max(he.etunimet) end as etunimet,
       case when bool_or(he.turvakielto) then null else max(he.sukunimi) end as sukunimi,
       case when bool_or(he.turvakielto) then null else max(kkh.kotikunta_nimi_fi) end as kotikunta,
-      -- valittu-rivejä on yksi oppijaa kohden, joten max() vain poimii sen arvon
       case when bool_or(he.turvakielto) then null else max(valittu.oppilaitos_nimi) end as oppilaitos,
       case when bool_or(he.turvakielto) then null else max(valittu.luokka_aste) end as luokka_aste,
       case when bool_or(he.turvakielto) then null else max(valittu.luokka) end as luokka,

@@ -56,7 +56,6 @@ class KotikuntalaskelmaSpec extends AnyFreeSpec with Matchers with Raportointika
       suorituskieli = suomenKieli,
       alkamispäivä = Some(alkamispäivä),
       vahvistus = vahvistuspäivä.flatMap(vahvistusPaikkakunnalla(_, oppilaitos(aapajoenKoulu))),
-      // Vahvistettu vuosiluokka vaatii vähintään yhden oppiaineen
       osasuoritukset = vahvistuspäivä.map(_ => List(
         PerusopetusExampleData.suoritus(PerusopetusExampleData.oppiaine("HI", PerusopetusExampleData.vuosiviikkotuntia(2)))
           .copy(arviointi = PerusopetusExampleData.arviointi(8))
@@ -219,8 +218,7 @@ class KotikuntalaskelmaSpec extends AnyFreeSpec with Matchers with Raportointika
       aggregaattiRivit.find(_.oppilaanKotikunta.contains("Helsinki")).get.seitsemänKaksitoista should be(1)
     }
 
-    // Alla olevat testit muokkaavat fixtuurin oppijoiden opiskeluoikeuksia, joten ne ovat viimeisinä.
-    // Kukin muokkaa eri oppijaa, eivätkä ne siksi vaikuta toisiinsa.
+    // Muokkaavat fixtuurin opiskeluoikeuksia, joten viimeisinä
     "Oppijat-välilehden luokkatiedot valitaan samalta, raportointipäivänä ajankohtaiselta suoritukselta" - {
       "Vuosiluokan rinnalla oleva perusopetuksen oppimäärä ei näy luokka-asteena" in {
         val kaisa = KoskiSpecificMockOppijat.kotikuntalaskelmaKuusivuotias
