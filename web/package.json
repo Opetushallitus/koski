@@ -18,10 +18,7 @@
     "baret": "1.2.0",
     "classnames": "2.5.1",
     "codemirror": "5.65.21",
-    "core-js": "3.50.0",
     "downloadjs": "1.4.7",
-    "element-closest": "3.0.2",
-    "es6-promise": "4.2.8",
     "fecha": "4.2.3",
     "fp-ts": "2.16.11",
     "js-cookie": "3.0.8",
@@ -34,9 +31,7 @@
     "react-dom": "16.14.0",
     "react-focus-lock": "2.13.7",
     "react-highlight": "0.15.0",
-    "react-highlighter": "0.4.3",
-    "smoothscroll-polyfill": "0.4.4",
-    "whatwg-fetch": "3.6.20"
+    "react-highlighter": "0.4.3"
   },
   "devDependencies": {
     "@axe-core/playwright": "4.13.0",

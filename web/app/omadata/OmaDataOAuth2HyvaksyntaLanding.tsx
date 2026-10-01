@@ -1,4 +1,3 @@
-import '../polyfills/polyfills.js'
 import Cookie from 'js-cookie'
 import React, { useState } from 'react'
 import ReactDOM from 'react-dom'

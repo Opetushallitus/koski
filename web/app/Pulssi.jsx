@@ -1,5 +1,3 @@
-// eslint-disable-next-line no-undef
-import './polyfills/polyfills.js'
 import Bacon from 'baconjs'
 import React from 'react'
 import ReactDOM from 'react-dom'

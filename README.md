@@ -96,7 +96,7 @@ tarpeen mukaan.
   - React
   - Bacon.js
   - LESS
-  - Selainyhteensopivuus IE11-selaimesta moderneihin selaimiin
+  - Selainyhteensopivuus moderneihin selaimiin (ks. `.browserslistrc`)
 - Koko järjestelmän buildaus Make-työkalulla, joka delegoi yksittäiset toiminnot eri työkaluille, kuten Maven ja pnpm
 
 ## Kehitystyökalut
