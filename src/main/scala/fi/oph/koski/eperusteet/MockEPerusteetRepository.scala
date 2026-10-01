@@ -25,6 +25,7 @@ object MockEPerusteetRepository extends EPerusteetRepository {
     "rakenne-autoalan-perustutkinto2017",
     "rakenne-autoalan-perustutkinto2017-koulutusvientikokeilu",
     "rakenne-ajoneuvoalan-perustutkinto",
+    "rakenne-ajoneuvoalan-perustutkinto2025",
     "rakenne-luonto-ja-ymparistoala",
     "rakenne-autoalan-tyonjohto",
     "rakenne-esiopetus-2014",

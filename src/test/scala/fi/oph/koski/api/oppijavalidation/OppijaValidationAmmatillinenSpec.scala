@@ -338,6 +338,35 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
                   setupTutkintoSuoritus(suoritus)(verifyResponseStatusOk())
                   )
               }
+              "On 35 1.8.2026 alkaen voimassa olevan perusteen yhteisillä tutkinnon osilla" - {
+                val arviointi2026 = Some(List(AmmatillinenArviointi(k3, date(2026, 9, 1))))
+                def yto(koodi: String, nimi: String, laajuus: Float) =
+                  yhteisenTutkinnonOsanSuoritus(koodi, nimi, k3, laajuus).copy(
+                    arviointi = arviointi2026,
+                    vahvistus = None,
+                    osasuoritukset = Some(List(
+                      YhteisenTutkinnonOsanOsaAlueenSuoritus(
+                        koulutusmoduuli = PaikallinenAmmatillisenTutkinnonOsanOsaAlue(PaikallinenKoodi("paikallinen", "paikallinen"), "paikallinen", pakollinen = true, Some(LaajuusOsaamispisteissä(laajuus))),
+                        arviointi = arviointi2026
+                      )
+                    ))
+                  )
+                val suoritus = ajoneuvoalanPerustutkinnonSuoritus().copy(
+                  koulutusmoduuli = ajoneuvoalanPerustutkinto.copy(perusteenDiaarinumero = Some("OPH-7918-2025")),
+                  alkamispäivä = Some(date(2026, 8, 1)),
+                  osasuoritukset = Some(List(
+                    yto("108357", "Viestintä- ja vuorovaikutusosaaminen", 14),
+                    yto("108356", "Matemaattis-luonnontieteellinen osaaminen", 9),
+                    yto("108358", "Yhteiskunta- ja työelämäosaaminen", 12)
+                  )),
+                  vahvistus = vahvistus(date(2026, 9, 15)),
+                  keskiarvo = Some(4.0)
+                )
+                "Palautetaan HTTP 200" in (
+                  setupOppijaWithOpiskeluoikeus(makeOpiskeluoikeus(alkamispäivä = date(2026, 8, 1)).copy(suoritukset = List(suoritus))) {
+                    verifyResponseStatusOk()
+                  })
+              }
             }
 
             "Samoja yhteisiä osuuksia" - {

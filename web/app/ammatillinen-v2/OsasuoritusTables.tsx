@@ -408,6 +408,9 @@ export const yhteisenTutkinnonOsat = [
   '106727',
   '106728',
   '106729',
+  '108356',
+  '108357',
+  '108358',
   '400012',
   '400013',
   '400014',
@@ -424,6 +427,9 @@ export type YhteisenTutkinnonOsatTunniste = Koodistokoodiviite<
   | '106727'
   | '106728'
   | '106729'
+  | '108356'
+  | '108357'
+  | '108358'
   | '400012'
   | '400013'
   | '400014'
