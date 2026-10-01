@@ -52,10 +52,10 @@ jobs:
           [ "$renovate_node_version" = "$node_version" ] ||
             { echo "::error::renovate.json: Node $renovate_node_version, mutta .nvmrc: $node_version"; exit 1; }
           while IFS= read -r -d '' manifest_file; do
-            if jq -e '.devDependencies.typescript' "$manifest_file" > /dev/null; then
+            if jq -e '.devDependencies["@types/node"]' "$manifest_file" > /dev/null; then
               types_version=$(jq -r '.devDependencies["@types/node"] // empty' "$manifest_file")
               [ "${types_version%%.*}" = "$node_major_version" ] ||
-                { echo "::error::$manifest_file: @types/node ${types_version:-puuttuu devDependencies-kohdasta}, mutta .nvmrc: Node $node_version"; exit 1; }
+                { echo "::error::$manifest_file: @types/node $types_version, mutta .nvmrc: Node $node_version"; exit 1; }
             fi
           done < <(git ls-files -z '*package.json')
 
