@@ -21,3 +21,4 @@ TOR-2706 - lisätty MUKS-suorituksille osasuoritusLista- ja rekursiivisetOsasuor
 TOR-2587 - lisätty Ahvenanmaan skeematiedostoon kommentti siitä, että validaatiosäännöt kirjoitetaan omikseen; ei muutosta skeeman rakenteeseen tai tiedonsiirtoprotokollaan
 TOR-2706 - muutettu vain skeeman kentän kuvausta; ei muutosta skeeman rakenteeseen tai tiedonsiirtoprotokollaan.
 TOR-1315 - lisätty funktio, ei muutoksia skeemaan
+TOR-2759 - korjattu kovakoodattua ammatillisen yhteisten tutkinnon osien listaa, ei muutoksia skeemaan

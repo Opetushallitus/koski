@@ -878,6 +878,8 @@ object AmmatillisenTutkinnonOsa {
     "400012", "400013", "400014",
     // Yhteiset tutkinnon osat 1.8.2022 alkaen
     "106727", "106728", "106729",
+    // Yhteiset tutkinnon osat 1.8.2026 alkaen
+    "108356", "108357", "108358",
     // Koulutusvientikokeilut
     "600001", "600002",
     ).map(Koodistokoodiviite(_, "tutkinnonosat"))
