@@ -7,9 +7,6 @@ settings:
 importers:
   .:
     dependencies:
-      URIjs:
-        specifier: 1.14.2
-        version: 1.14.2
       d3:
         specifier: 3.5.17
         version: 3.5.17
@@ -28,6 +25,9 @@ importers:
       tv4:
         specifier: 1.2.7
         version: 1.2.7
+      urijs:
+        specifier: 1.19.11
+        version: 1.19.11
     devDependencies:
       '@types/node':
         specifier: 24.19.0
@@ -237,13 +237,6 @@ packages:
       {
         integrity: sha512-NuHqBY1PB/D8xU6s/thBgOAiAP7HOYDQ32+BFZILJ8ivkUkAHQnWfn6WhL79Owj1qmUnoN/YPhktdIoucipkAQ==
       }
-
-  URIjs@1.14.2:
-    resolution:
-      {
-        integrity: sha512-Dk+PqgZfjUGFwuV/PMQ9ztdQWFxad/5dCJ2z390pXN5T5KIT6Mw0NrzcVlzY3y8W4WAxJZdv3qpV/y0cEZ56tA==
-      }
-    deprecated: package renamed to "urijs" (lower-case), please update accordingly
 
   acorn@8.18.0:
     resolution:
@@ -884,6 +877,12 @@ packages:
     peerDependencies:
       browserslist: '>= 4.21.0'
 
+  urijs@1.19.11:
+    resolution:
+      {
+        integrity: sha512-HXgFDgDommxn5/bIv0cnQZsPhHDA90NPHD6+c/v21U5+Sx5hoP8+dP9IZXBU1gIfvdRfhG8cel9QNPeionfcCQ==
+      }
+
   watchpack@2.5.2:
     resolution:
       {
@@ -1073,8 +1072,6 @@ snapshots:
   '@xtuc/ieee754@1.2.0': {}
 
   '@xtuc/long@4.2.2': {}
-
-  URIjs@1.14.2: {}
 
   acorn@8.18.0: {}
 
@@ -1349,6 +1346,8 @@ snapshots:
       browserslist: 4.29.1
       escalade: 3.2.0
       picocolors: 1.1.1
+
+  urijs@1.19.11: {}
 
   watchpack@2.5.2:
     dependencies:
