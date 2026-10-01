@@ -349,6 +349,7 @@
   "suorittaminennäkymä__oppivelvollisuus_voimassa_value": "{{date}} asti",
   "suorittaminennäkymä__taulu_alkamispäivä": "Opintojen alkupäivä",
   "suorittaminennäkymä__taulu_koulutustyyppi": "Koulutus",
+  "suorittaminennäkymä__taulu_kuntailmoitus_tehty_tooltip": "Oppijasta on tehty kuntailmoitus",
   "suorittaminennäkymä__taulu_nimi": "Nimi",
   "suorittaminennäkymä__taulu_oppivelvollisuus": "Oppivelvollisuus",
   "suorittaminennäkymä__taulu_päättymispäivä": "Opintojen päättymispäivä",
