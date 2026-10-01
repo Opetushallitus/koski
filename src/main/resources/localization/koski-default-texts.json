@@ -256,6 +256,7 @@
   "description:Kenttä käytössä 1.8.2026 alkaen.": "Kenttä käytössä 1.8.2026 alkaen.",
   "description:erityisen tuen päätökset poistuu": "Kenttä ei käytössä 1.8.2026 alkaen.",
   "description:Korkeakoulun opiskeluoikeus. Tiedot haetaan Virrasta,...": "Korkeakoulun opiskeluoikeus. Tiedot haetaan Virrasta, eikä niitä tallenneta Koskeen. Eivät siirry Kelalle toistaiseksi.",
+  "description:Korkeakoulun suorituksilla aina true. Virran...": "Korkeakoulun suorituksilla aina true. Virran tiedoista ei tunnisteta hylättyjä arvosanoja.",
   "description:Koulutusalan osuus suorituksesta": "Koulutusalan osuus suorituksesta",
   "description:Koulutusala Virran luokituksen mukaan. Virrassa...": "Koulutusala Virran luokituksen mukaan. Virrassa koodiarvo yksilöidään versio-attribuutilla, joten kullekin luokitukselle on oma kenttänsä.",
   "description:pidennetty oppivelvollisuus poistuu käytöstä": "Kenttä ei käytössä 1.9.2026 alkaen.",
