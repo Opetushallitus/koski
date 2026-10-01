@@ -1,6 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react'
-// @ts-expect-error
-import { debounce } from 'lodash'
+import React, { useCallback, useState } from 'react'
 import { useOrganisaatioHierarkia } from '../../appstate/organisaatioHierarkia'
 import { TestIdLayer, TestIdText } from '../../appstate/useTestId'
 import { t } from '../../i18n/i18n'
@@ -13,6 +11,7 @@ import { Oppilaitos } from '../../types/fi/oph/koski/schema/Oppilaitos'
 import { Toimipiste } from '../../types/fi/oph/koski/schema/Toimipiste'
 import { EmptyObject } from '../../util/objects'
 import { assertNever } from '../../util/selfcare'
+import { useDebounce } from '../../util/useDebounce'
 import { CommonProps } from '../CommonProps'
 import { useDialog } from '../containers/Dialog'
 import { FieldEditorProps, FieldViewerProps } from '../forms/FormField'
@@ -113,13 +112,7 @@ export const ToimipisteEdit: React.FC<ToimipisteEditProps> = (props) => {
 
   const { onChangeToimipiste } = props
 
-  const debouncedSearchQuery = useMemo(
-    () =>
-      debounce((input: string) => {
-        setDebounceQuery(input)
-      }, 200),
-    []
-  )
+  useDebounce(200, setDebounceQuery, [searchQuery])
 
   const onSelectData = useCallback(
     (data: KoskiToimipiste) => {
@@ -131,7 +124,6 @@ export const ToimipisteEdit: React.FC<ToimipisteEditProps> = (props) => {
         case Toimipiste.className:
           closeDialog()
           setSearchQuery('')
-          setDebounceQuery('')
           if (onChangeToimipiste !== undefined) {
             onChangeToimipiste(data)
           }
@@ -142,10 +134,6 @@ export const ToimipisteEdit: React.FC<ToimipisteEditProps> = (props) => {
     },
     [closeDialog, onChangeToimipiste]
   )
-
-  useEffect(() => {
-    debouncedSearchQuery(searchQuery)
-  }, [debouncedSearchQuery, searchQuery])
 
   return (
     <TestIdLayer id={`${props.testId || 'toimipiste'}.edit`}>
