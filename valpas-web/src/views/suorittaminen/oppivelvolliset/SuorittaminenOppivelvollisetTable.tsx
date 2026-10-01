@@ -143,7 +143,7 @@ const oppijaToTableData =
         key: createSuorittaminenKey(oppija.oppija, opiskeluoikeus),
         values: [
           {
-            value: `${henkilö.sukunimi} ${henkilö.etunimet}${opiskeluoikeus.onTehtyIlmoitus}`,
+            value: `${henkilö.sukunimi} ${henkilö.etunimet}`,
             display: (
               <Link
                 to={oppijaPath.href(basePath, {
@@ -155,7 +155,12 @@ const oppijaToTableData =
               </Link>
             ),
             icon: opiskeluoikeus.onTehtyIlmoitus ? (
-              <OpiskeluhistoriaTapahtumaIcon color="blue" />
+              <OpiskeluhistoriaTapahtumaIcon
+                color="blue"
+                title={t(
+                  "suorittaminennäkymä__taulu_kuntailmoitus_tehty_tooltip",
+                )}
+              />
             ) : null,
           },
           {
