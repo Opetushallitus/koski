@@ -11,6 +11,7 @@ import {
   deleteCookies,
   goToLocation,
   pathToApiUrl,
+  pathToKoskiUrl,
   pathToUrl,
   urlIsEventually,
 } from "../integrationtests-env/browser/core"
@@ -25,6 +26,7 @@ import { longTimeout } from "../integrationtests-env/browser/timeouts"
 import {
   kansalainenEiOpintopolussaPath,
   kansalainenLoginVirhePath,
+  kansalainenOmatTiedotPath,
 } from "../../src/state/kansalainenPaths"
 
 describe("Login / Logout / kirjautuminen", () => {
@@ -116,6 +118,19 @@ describe("Login / Logout / kirjautuminen", () => {
     await textEventuallyEquals(
       ".heading--primary",
       "Tietojasi ei löydy Opintopolusta",
+    )
+  })
+
+  it("Kirjautumaton kansalainen ohjataan Kosken paikalliseen kirjautumiseen", async () => {
+    // Kosken kirjautumissivu testataan Kosken puolella
+    // (web/test/e2e/valpas-kansalaisen-kirjautuminen.spec.ts), joten sen omat
+    // konsoliviestit eivät kuulu tähän testiin.
+    allowNetworkError(new RegExp("/koski/(?!valpas/)"), "")
+    await deleteCookies()
+    await goToLocation(kansalainenOmatTiedotPath.href())
+    await urlIsEventually(
+      pathToKoskiUrl("/login/oppija/local?redirect=") +
+        encodeURIComponent(pathToUrl(kansalainenOmatTiedotPath.href())),
     )
   })
 })
