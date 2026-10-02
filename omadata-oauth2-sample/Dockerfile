@@ -13,6 +13,8 @@ RUN pnpm install --prod --frozen-lockfile
 COPY ./server/src ./src
 COPY ./server/public ./public
 
+USER node
+
 CMD ["node", "src/index.ts"]
 
 EXPOSE ${PORT}

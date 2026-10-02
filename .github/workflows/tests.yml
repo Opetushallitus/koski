@@ -544,7 +544,7 @@ jobs:
         working-directory: omadata-oauth2-sample
         run: |
           docker build --tag omadataoauth2sample:ci .
-          docker run --detach --name omadataoauth2sample --publish 8080:8080 omadataoauth2sample:ci
+          docker run --detach --read-only --name omadataoauth2sample --publish 8080:8080 omadataoauth2sample:ci
           for _ in $(seq 1 30); do
             curl --fail --fail-early --silent --show-error --max-time 5 \
               --output /dev/null http://localhost:8080/api/healthcheck \
