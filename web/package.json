@@ -20,6 +20,7 @@
     "codemirror": "5.65.21",
     "downloadjs": "1.4.7",
     "fecha": "4.2.3",
+    "font-awesome": "4.7.0",
     "fp-ts": "2.16.11",
     "js-cookie": "3.0.8",
     "optics-ts": "2.4.1",

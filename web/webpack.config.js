@@ -70,6 +70,11 @@ module.exports = (_, argv = {}) => ({
         }
       },
       {
+        test: /\.woff2$/,
+        type: 'asset/resource',
+        generator: { filename: 'fonts/[name].[contenthash:8][ext]' }
+      },
+      {
         test: /\.less$/,
         use: [
           {
@@ -77,7 +82,12 @@ module.exports = (_, argv = {}) => ({
           },
           {
             loader: 'css-loader',
-            options: { url: false }
+            options: {
+              url: {
+                filter: (url) =>
+                  !url.startsWith('/') && !url.startsWith('data:')
+              }
+            }
           },
           {
             loader: 'postcss-loader',
