@@ -290,15 +290,15 @@ const SuoritusColumn = {
     </th>
   ),
   renderData: ({ model, onExpand, expandable, expanded }) => {
-    const suoritusTitle =
-      suoritusValmis(model) || isKorkeakouluSuoritus(model) ? (
-        modelTitle(model, 'koulutusmoduuli')
-      ) : (
-        <span>
-          {modelTitle(model, 'koulutusmoduuli')}{' '}
-          <span className="kesken">{`(${t('Suoritus kesken')})`}</span>
-        </span>
-      )
+    const näytäKesken = !suoritusValmis(model) && !isKorkeakouluSuoritus(model)
+    const suoritusTitle = (
+      <span>
+        {modelTitle(model, 'koulutusmoduuli')}
+        {näytäKesken && (
+          <span className="kesken">{` (${t('Suoritus kesken')})`}</span>
+        )}
+      </span>
+    )
     return (
       <td key="suoritus" className="suoritus">
         {expandable && (
