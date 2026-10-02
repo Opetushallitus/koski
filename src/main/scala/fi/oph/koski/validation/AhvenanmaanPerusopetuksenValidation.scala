@@ -13,8 +13,20 @@ object AhvenanmaanPerusopetuksenValidation {
           validateYsiluokanSuoritusTaiSitäEiTarvita(ahvenanmaanOo, oppimäärä)
         case _ => HttpStatus.ok
       })
+    case mannerSuomenOo if korvattavatMannerSuomenTyypit.contains(mannerSuomenOo.tyyppi.koodiarvo) =>
+      HttpStatus.validate(!mannerSuomenOo.oppilaitos.exists(AhvenanmaanKunnat.onAhvenanmaalainenKunta))(
+        KoskiErrorCategory.badRequest.validation.organisaatio.ahvenanmaalainenOppilaitos()
+      )
     case _ => HttpStatus.ok
   }
+
+  // Samat tyypit, jotka OppilaitosServlet korvaa luontidialogissa Ahvenanmaan perusopetuksella.
+  // Perusopetukseen valmistava opetus jää sallituksi, koska dialogi tarjoaa sitä esiopetuksen rinnalla.
+  private val korvattavatMannerSuomenTyypit = Set(
+    OpiskeluoikeudenTyyppi.perusopetus,
+    OpiskeluoikeudenTyyppi.perusopetuksenlisaopetus,
+    OpiskeluoikeudenTyyppi.aikuistenperusopetus
+  ).map(_.koodiarvo)
 
   // Kotipaikka on ainoa organisaatiodatasta löytyvä tunnusmerkki ahvenanmaalaiselle oppilaitokselle,
   // ks. OppilaitosServlet, joka tarjoaa tyyppiä luontidialogissa samalla perusteella.

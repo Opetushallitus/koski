@@ -6,6 +6,10 @@ Muutokset, joita ei ole vielä otettu käyttöön. Käyttöönoton yhteydessä m
 
 - Eri tutkinnon opiskeluoikeuteen linkittämisen esto (ks. 21.7.2026) ei tullut voimaan 1.9.2026, vaan sen käyttöönotto on lykätty toistaiseksi. Koski ei tällä hetkellä hylkää tällaisia linkityksiä. Kun esto otetaan käyttöön, se koskee vain rajapäivänä tai sen jälkeen alkaneita sisältyviä opiskeluoikeuksia. Rajapäivä ja käyttöönottopäivä ilmoitetaan myöhemmin.
 
+## 2.10.2026
+
+- Perusopetuksen, perusopetuksen lisäopetuksen ja aikuisten perusopetuksen opiskeluoikeutta ei voi tallentaa oppilaitokseen, jonka kotipaikka on ahvenanmaalainen kunta. Niissä perusopetus tallennetaan Ahvenanmaan perusopetuksen opiskeluoikeutena.
+
 ## 1.10.2026
 
 - Ahvenanmaan perusopetuksen opiskeluoikeuden voi tallentaa vain oppilaitokseen, jonka kotipaikka on ahvenanmaalainen kunta.
