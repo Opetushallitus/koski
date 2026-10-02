@@ -3,7 +3,6 @@ import { fileURLToPath } from 'node:url'
 import js from '@eslint/js'
 import tseslint from '@typescript-eslint/eslint-plugin'
 import tsParser from '@typescript-eslint/parser'
-import { fixupConfigRules } from '@eslint/compat'
 import eslintConfigPrettier from 'eslint-config-prettier'
 
 const tsconfigRootDir = path.dirname(fileURLToPath(import.meta.url))
@@ -27,7 +26,8 @@ const tsRules = tseslint.configs['flat/recommended'].map((config) => ({
 
 export default [
   { ignores: ['**/node_modules', '**/dist'] },
-  ...fixupConfigRules([js.configs.recommended, eslintConfigPrettier]),
+  js.configs.recommended,
+  eslintConfigPrettier,
   ...tsRules,
   { rules: { eqeqeq: 'warn' } }
 ]
