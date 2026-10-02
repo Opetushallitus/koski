@@ -1,4 +1,4 @@
-name: Publish and deploy
+name: Publish & deploy
 on:
   workflow_call:
 env:
@@ -7,43 +7,60 @@ env:
   TZ: Europe/Helsinki
 
 jobs:
+  check_master_head:
+    name: Check master HEAD
+    runs-on: ubuntu-26.04
+    outputs:
+      is_head: ${{ steps.check.outputs.is_head }}
+    steps:
+      - name: Compare commit to master HEAD
+        id: check
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          MASTER_SHA=$(gh api "repos/$GITHUB_REPOSITORY/git/ref/heads/master" --jq '.object.sha')
+          if [ "$MASTER_SHA" = "$GITHUB_SHA" ]; then
+            echo "is_head=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "::notice::Master has moved on to $MASTER_SHA, skipping publish and deploy of $GITHUB_SHA"
+            echo "is_head=false" >> "$GITHUB_OUTPUT"
+          fi
+
   publish_image:
-    name: Publish Koski Docker Image and package
+    name: Publish
+    needs: [check_master_head]
+    if: ${{ needs.check_master_head.outputs.is_head == 'true' }}
     uses: ./.github/workflows/publish_image.yml
     with:
       commithash: ${{ github.sha }}
     secrets: inherit
 
-  deploy_dev:
-    name: Deploy to dev environment
+  deploy_dev_qa:
+    name: Dev & QA
     needs: [publish_image]
-    uses: ./.github/workflows/deploy_koski.yml
-    with:
-      environment: dev
-      commithash: ${{ github.sha }}
+    # Ei cancel-in-progress: hitaampi vanhemman commitin ajo voisi keskeyttää uudemman ajon
+    # ja asentaa vanhemman version. Vanhentuneet ajot ohitetaan check_master_head-jobissa.
+    # queue: max, koska oletuksena uusi jonoon tuleva ajo peruisi jo jonossa odottavan.
+    concurrency:
+      group: master-deploy-dev-qa
+      cancel-in-progress: false
+      queue: max
+    uses: ./.github/workflows/deploy_dev_qa.yml
     secrets: inherit
 
   deploy_omadataoauth2sample_dev:
-    name: Deploy OmaData OAuth2 sample to dev environment
-    needs: [deploy_dev]
+    name: OmaData dev
+    needs: [deploy_dev_qa]
     uses: ./.github/workflows/omadataoauth2sample_deploy.yml
     with:
       environment: dev
       commithash: ${{ github.sha }}
     secrets: inherit
 
-  deploy_qa:
-    name: Deploy to qa environment
-    needs: [deploy_dev]
-    uses: ./.github/workflows/deploy_koski.yml
-    with:
-      environment: qa
-      commithash: ${{ github.sha }}
-    secrets: inherit
-
   deploy_omadataoauth2sample_qa:
-    name: Deploy OmaData OAuth2 sample to qa environment
-    needs: [deploy_qa]
+    name: OmaData QA
+    needs: [deploy_dev_qa]
     uses: ./.github/workflows/omadataoauth2sample_deploy.yml
     with:
       environment: qa
@@ -51,17 +68,17 @@ jobs:
     secrets: inherit
 
   smoketests_qa:
-    name: Run QA smoketests
-    needs: [deploy_qa, deploy_omadataoauth2sample_qa]
-    if: ${{ !cancelled() && needs.deploy_qa.result == 'success' }}
+    name: Smoketests
+    needs: [deploy_dev_qa, deploy_omadataoauth2sample_qa]
+    if: ${{ !cancelled() && needs.deploy_dev_qa.result == 'success' }}
     uses: ./.github/workflows/run_smoketests.yml
     with:
       expected_commithash: ${{ github.sha }}
     secrets: inherit
 
   deploy_prod:
-    name: Deploy to prod environment
-    needs: [ deploy_qa ]
+    name: Prod
+    needs: [deploy_dev_qa]
     uses: ./.github/workflows/deploy_koski.yml
     with:
       environment: prod
