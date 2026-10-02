@@ -32,7 +32,7 @@ jobs:
           include_context: repo commit actor ci_run
 
   publish_and_deploy:
-    name: Publish and deploy
+    name: Publish & deploy
     needs: [tests]
     uses: ./.github/workflows/publish_and_deploy.yml
     permissions:

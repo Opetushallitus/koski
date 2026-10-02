@@ -1,0 +1,21 @@
+name: Dev & QA
+on:
+  workflow_call:
+
+jobs:
+  deploy_dev:
+    name: Dev
+    uses: ./.github/workflows/deploy_koski.yml
+    with:
+      environment: dev
+      commithash: ${{ github.sha }}
+    secrets: inherit
+
+  deploy_qa:
+    name: QA
+    needs: [deploy_dev]
+    uses: ./.github/workflows/deploy_koski.yml
+    with:
+      environment: qa
+      commithash: ${{ github.sha }}
+    secrets: inherit
