@@ -23,8 +23,13 @@ module.exports = (_, argv = {}) => ({
         generator: { filename: 'jquery/[name][ext]' }
       },
       {
+        resourceQuery: /highlight-theme/,
+        type: 'asset/resource',
+        generator: { filename: 'styles/highlight-default.css' }
+      },
+      {
         test: /\.(css|png|gif)$/,
-        resourceQuery: { not: [/asset/] },
+        resourceQuery: { not: [/asset/, /highlight-theme/] },
         type: 'asset/resource',
         generator: { filename: '[path][name][ext]' }
       },

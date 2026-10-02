@@ -1,4 +1,4 @@
-const hljs = require('highlight.js/lib/highlight')
+const hljs = require('highlight.js/lib/core')
 
 hljs.registerLanguage('css', require('highlight.js/lib/languages/css'))
 hljs.registerLanguage(

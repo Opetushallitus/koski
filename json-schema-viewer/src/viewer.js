@@ -604,21 +604,35 @@ if (typeof window.JSV === 'undefined') {
       }
     },
     createPre: function (el, obj, title, exp) {
-      var pre = $(
-        '<pre><code class="language-json">' +
-          JSON.stringify(obj, null, '  ') +
-          '</code></pre>'
+      var pre = $('<pre>').append(
+        $('<code class="language-json">').text(JSON.stringify(obj, null, '  '))
       )
       var btn = $(
         '<a href="#" class="ui-btn ui-mini ui-icon-action ui-btn-icon-right">Open in new window</a>'
       ).click(function () {
         var w = window.open('', 'pre', null, true)
-        $(w.document.body).html(
-          $('<div>').append(pre.clone().height('95%')).html()
-        )
-        hljs.highlightBlock($(w.document.body).children('pre')[0])
+        var markedText = pre
+          .find('span.highlight')
+          .map(function () {
+            return $(this).text()
+          })
+          .get()
+        var popupPre = pre.clone().height('95%').addClass('jsv-json-popup')
+        var code = popupPre
+          .children('code')
+          .text(pre.children('code').text())[0]
+        $(w.document.body).empty().append(popupPre)
+        hljs.highlightElement(code)
+        $(code)
+          .find('.hljs-attr, .hljs-string')
+          .each(function () {
+            if (markedText.indexOf($(this).text()) !== -1) {
+              $(this).addClass('highlight')
+            }
+          })
         $(w.document.body).append(
-          '<link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.1/styles/default.min.css">'
+          '<link rel="stylesheet" href="/koski/json-schema-viewer/styles/highlight-default.css">' +
+            '<link rel="stylesheet" href="/koski/json-schema-viewer/styles/json-schema-popup.css">'
         )
         w.document.title = title || 'JSON Schema Viewer'
         w.document.close()
