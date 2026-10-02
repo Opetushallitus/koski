@@ -22,7 +22,7 @@ import org.json4s.JValue
 
 import scala.concurrent.duration.DurationInt
 
-class LocalizedSchemas(localizationRepository: LocalizationRepository)(implicit cacheManager: CacheManager) {
+class LocalizedSchemas(localizationRepository: LocalizationRepository, virtaSources: Boolean)(implicit cacheManager: CacheManager) {
   private def build(clazz: Class[_]): () => ClassSchema =
     () => KoskiSchema.createSchema(clazz).asInstanceOf[ClassSchema]
 
@@ -60,6 +60,8 @@ class LocalizedSchemas(localizationRepository: LocalizationRepository)(implicit 
 
   def apply(name: String): JValue = cache(name)
 
-  private def localize(schema: ClassSchema): JValue =
-    SchemaToJson.toJsonSchema(schema)(new SchemaLocalizationEnricher(localizationRepository.localizations))
+  private def localize(schema: ClassSchema): JValue = {
+    val enricher = new SchemaLocalizationEnricher(localizationRepository.localizations)
+    SchemaToJson.toJsonSchema(schema)(if (virtaSources) enricher else new VirtaKeywordStripper(enricher))
+  }
 }

@@ -65,6 +65,9 @@ re-vendor from upstream **must re-apply them**:
   there (their only appearance) — no separate section or servlet markup.
   Re-apply the `virta` copy in the node builder, the Virta block in `setInfo`,
   and the `.jsv-virta` / `.jsv-virta-label` CSS rules.
+  Gated by `features.virtaSchemaDocumentation`: when off, `VirtaKeywordStripper`
+  removes the `virta` keyword and the description clause from the served schemas
+  and the HTML docs skip the Virta lines; the annotations stay in the code.
 - **Resizable info panel** (TOR-2758) — the `--jsv-panel-width` custom property
   replaces the fixed `25em` in the `#viewer-page .ui-panel…` rules; the
   `#info-panel-resizer` drag handle appended in the init code sets it, and the
