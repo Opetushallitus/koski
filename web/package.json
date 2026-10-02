@@ -43,7 +43,7 @@
     "@eslint-react/eslint-plugin": "5.22.1",
     "@eslint/js": "10.0.1",
     "@playwright/test": "1.63.0",
-    "@swc/core": "1.16.2",
+    "@swc/core": "1.16.12",
     "@types/downloadjs": "1.4.6",
     "@types/js-cookie": "3.0.6",
     "@types/mocha": "10.0.10",
