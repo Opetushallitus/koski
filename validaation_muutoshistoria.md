@@ -1,5 +1,11 @@
 # Koskeen tallennettavien tietojen validaatiosäännöt
 
+## Suunnitellut
+
+Muutokset, joita ei ole vielä otettu käyttöön. Käyttöönoton yhteydessä merkintä siirretään käyttöönottopäivän alle.
+
+- Eri tutkinnon opiskeluoikeuteen linkittämisen esto (ks. 21.7.2026) ei tullut voimaan 1.9.2026, vaan sen käyttöönotto on lykätty toistaiseksi. Koski ei tällä hetkellä hylkää tällaisia linkityksiä. Kun esto otetaan käyttöön, se koskee vain rajapäivänä tai sen jälkeen alkaneita sisältyviä opiskeluoikeuksia. Rajapäivä ja käyttöönottopäivä ilmoitetaan myöhemmin.
+
 ## 29.9.2026
 
 Lukion 2019 opetussuunnitelman mukaisissa opiskeluoikeuksissa moduulin tai paikallisen opintojakson arviointipäivä ei saa olla ennen opiskeluoikeuden alkamispäivää.
@@ -49,7 +55,7 @@ Aikuisten perusopetuksen opiskeluoikeuksissa, jotka ovat alkaneet 1.1.2020 tai s
 ## 21.7.2026
 
 - Nuorten perusopetuksen opiskeluoikeudessa oppiaineen suorituksen luokka-aste voi poiketa vuosiluokasta, kun oppilaalla on vuosiluokan vahvistuspäivänä voimassa joko tavoitekokonaisuuksittain opiskelun tai yhdysluokan aikajakso. Aiemmin poikkeavan luokka-asteen salli vain tavoitekokonaisuuksittain opiskelun aikajakso.
-- Opiskeluoikeutta ei voi linkittää (`sisältyyOpiskeluoikeuteen`) eri tutkinnon opiskeluoikeuteen; sisältyvän opiskeluoikeuden päätason suoritusten (suoritustyyppi ja perusteen diaarinumero) on oltava sisältävän opiskeluoikeuden päätason suoritusten osajoukko. Validaatio otetaan tuotannossa käyttöön 1.9.2026.
+- Opiskeluoikeutta ei voi linkittää (`sisältyyOpiskeluoikeuteen`) eri tutkinnon opiskeluoikeuteen; sisältyvän opiskeluoikeuden päätason suoritusten (suoritustyyppi ja perusteen diaarinumero) on oltava sisältävän opiskeluoikeuden päätason suoritusten osajoukko. Validaatio otetaan tuotannossa käyttöön 1.9.2026. Käyttöönotto on lykätty, ks. Suunnitellut.
 
 ## 17.7.2026
 

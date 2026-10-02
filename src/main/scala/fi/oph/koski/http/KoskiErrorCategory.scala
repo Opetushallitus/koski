@@ -67,7 +67,7 @@ object KoskiErrorCategory {
         val eiLöydy = subcategory("eiLöydy", "Sisältävää opiskeluoikeutta ei löydy id-arvolla")
         val vääräOppilaitos = subcategory("vääräOppilaitos", "Sisältävän opiskeluoikeuden oppilaitos ei täsmää")
         val henkilöTiedot = subcategory("henkilöTiedot", "Sisältävän opiskeluoikeuden henkilö-oid ei vastaa syötettyjä henkilötietoja, tai henkilöä ei löydetty syötetyllä henkilötunnuksella")
-        val eriPäätasonSuoritus = subcategory("eriPäätasonSuoritus", "Opiskeluoikeutta ei voi linkittää eri tutkinnon opiskeluoikeuteen; sisältyvän opiskeluoikeuden päätason suoritusten (suoritustyyppi ja perusteen diaarinumero) on oltava sisältävän opiskeluoikeuden päätason suoritusten osajoukko")
+        val eriPäätasonSuoritus = subcategory("eriPäätasonSuoritus", "Suoritukset linkitettyjen opiskeluoikeuksien välillä eivät täsmää: sisältyvän opiskeluoikeuden päätason suoritus ei täsmää sisältävällä opiskeluoikeudella olevan päätason suorituksen kanssa")
       }
       val sisältäväOpiskeluoikeus = new SisältäväOpiskeluoikeus
 
