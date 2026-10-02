@@ -224,12 +224,10 @@ query-less.
   → bootstrap**.
   The bundle exposes `JSV` and `tv4` for the servlet's bootstrap. The viewer URL
   and deep links are unchanged.
-- **Vendor exceptions:** `vendor/jquery.mobile.min.js` and `.css` retain
+- **Vendor exception:** `vendor/jquery.mobile.js` and `.css` retain
   jQuery Mobile 1.4.5, which requires Migrate with the current jQuery 3.7.1
-  integration; Migrate must load before Mobile. `vendor/filereader.js` retains
-  the bundled FileReader.js (its IIFE explicitly receives `window` when loaded
-  as a module). Other libraries use the existing versions from npm, locked in
-  this package's `pnpm-lock.yaml`.
+  integration; Migrate must load before Mobile. Other libraries use the existing
+  versions from npm, locked in this package's `pnpm-lock.yaml`.
   Renovate library updates and lockfile maintenance require manual review.
 - After a build, hard-refresh the browser. Verify the served output with e.g.
   `curl -s http://localhost:7021/koski/json-schema-viewer/styles/json-schema-viewer.css`.
