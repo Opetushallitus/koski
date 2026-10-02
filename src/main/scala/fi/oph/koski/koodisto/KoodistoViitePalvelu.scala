@@ -73,6 +73,16 @@ case class KoodistoViitePalvelu(config: Config, koodistoPalvelu: KoodistoPalvelu
     validate(input).getOrElse(throw new InvalidRequestException(KoskiErrorCategory.badRequest.validation.koodisto.tuntematonKoodi("Koodia ei löydy koodistosta: " + input)))
   }
 
+  // Koodi-URI (esim. "kausi_s") on koodistopalvelun normalisoima tunniste, joka ei välttämättä vastaa
+  // koodiarvoa merkki merkiltä (koodiarvo "S"). Haetaan siksi koodin omalla URI:lla, ei koodiarvolla,
+  // ja kirjainkoosta riippumatta, jotta myös "kausi_S" täsmää.
+  def validateRequiredByKoodiUri(koodistoUri: String, koodiUri: String): Koodistokoodiviite = {
+    getLatestVersionOptional(koodistoUri)
+      .flatMap(koodisto => koodistoPalvelu.getKoodistoKoodit(koodisto).find(_.koodiUri.equalsIgnoreCase(koodiUri)))
+      .map(koodi => validateRequired(koodistoUri, koodi.koodiArvo))
+      .getOrElse(throw new InvalidRequestException(KoskiErrorCategory.badRequest.validation.koodisto.tuntematonKoodi(s"Koodia ei löydy koodistosta: $koodistoUri/$koodiUri")))
+  }
+
   private def toKoodiviite(koodisto: KoodistoViite)(koodi: KoodistoKoodi): Koodistokoodiviite =
     Koodistokoodiviite(koodi.koodiArvo, koodi.nimi, koodi.lyhytNimi, koodisto.koodistoUri, Some(koodisto.versio))
 }

@@ -2,7 +2,7 @@ package fi.oph.koski.sdg
 
 import fi.oph.koski.schema
 import fi.oph.koski.schema.annotation.{KoodistoUri}
-import fi.oph.scalaschema.annotation.{Discriminator, SkipSerialization, SyntheticProperty, Title}
+import fi.oph.scalaschema.annotation.{Description, Discriminator, SkipSerialization, SyntheticProperty, Title}
 import fi.oph.scalaschema.{ClassSchema, SchemaToJson}
 import org.json4s.JValue
 
@@ -29,7 +29,9 @@ object SdgSchema {
 @Title("Oppija")
 case class SdgOppija(
   henkilö: SdgHenkilo,
-  opiskeluoikeudet: List[SdgOpiskeluoikeus]
+  opiskeluoikeudet: List[SdgOpiskeluoikeus],
+  @Description("Opiskelijavalintatiedot. Palautetaan vain, kun kyselyparametri valintatiedot=true on annettu.")
+  valintatiedot: Option[SdgValintatieto] = None
 )
 
 @Title("Henkilo")

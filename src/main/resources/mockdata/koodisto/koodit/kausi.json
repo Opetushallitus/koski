@@ -1,0 +1,58 @@
+[
+  {
+    "metadata": [
+      {
+        "nimi": "Kevät",
+        "kuvaus": "Voi olla joko koulutuksen alkamiskausi tai hakukausi",
+        "lyhytNimi": "K",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Vår",
+        "kuvaus": "Vår",
+        "lyhytNimi": "V",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Spring",
+        "kuvaus": "Spring",
+        "lyhytNimi": "S",
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "kausi_k",
+    "versio": 1,
+    "koodiArvo": "K"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "Syksy",
+        "kuvaus": "Voi olla joko koulutuksen alkamiskausi tai hakukausi",
+        "lyhytNimi": "S",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Höst",
+        "kuvaus": "Höst",
+        "lyhytNimi": "H",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Autumn",
+        "kuvaus": "Autumn",
+        "lyhytNimi": "A",
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "kausi_s",
+    "versio": 1,
+    "koodiArvo": "S"
+  }
+]

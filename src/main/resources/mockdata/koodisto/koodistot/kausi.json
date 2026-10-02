@@ -1,0 +1,63 @@
+{
+  "codesGroupUri": "haunkoodistot",
+  "codesVersions": [],
+  "includesCodes": [],
+  "koodistoUri": "kausi",
+  "levelsWithCodes": [],
+  "lukittu": null,
+  "metadata": [
+    {
+      "kieli": "FI",
+      "nimi": "kausi",
+      "kuvaus": "kausi",
+      "kayttoohje": null,
+      "kasite": null,
+      "kohdealue": null,
+      "sitovuustaso": null,
+      "kohdealueenOsaAlue": null,
+      "toimintaymparisto": null,
+      "tarkentaaKoodistoa": null,
+      "huomioitavaKoodisto": null,
+      "koodistonLahde": null
+    },
+    {
+      "kieli": "SV",
+      "nimi": "kausi",
+      "kuvaus": "kausi",
+      "kayttoohje": null,
+      "kasite": null,
+      "kohdealue": null,
+      "sitovuustaso": null,
+      "kohdealueenOsaAlue": null,
+      "toimintaymparisto": null,
+      "tarkentaaKoodistoa": null,
+      "huomioitavaKoodisto": null,
+      "koodistonLahde": null
+    },
+    {
+      "kieli": "EN",
+      "nimi": "kausi",
+      "kuvaus": "kausi",
+      "kayttoohje": null,
+      "kasite": null,
+      "kohdealue": null,
+      "sitovuustaso": null,
+      "kohdealueenOsaAlue": null,
+      "toimintaymparisto": null,
+      "tarkentaaKoodistoa": null,
+      "huomioitavaKoodisto": null,
+      "koodistonLahde": null
+    }
+  ],
+  "omistaja": "Opetushallitus",
+  "organisaatioOid": "1.2.246.562.10.00000000001",
+  "paivittajaOid": null,
+  "paivitysPvm": "2013-10-28",
+  "resourceUri": "https://virkailija.opintopolku.fi/koodisto-service/rest/codes/kausi",
+  "tila": "LUONNOS",
+  "versio": 1,
+  "version": 0,
+  "voimassaAlkuPvm": "2013-01-01",
+  "voimassaLoppuPvm": null,
+  "withinCodes": []
+}
