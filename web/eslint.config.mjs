@@ -97,7 +97,6 @@ export default [
       'no-var': 'off', // Mochan takia
       camelcase: 'off',
       'no-shadow': 'warn', // Mochan takia
-      'no-extend-native': 'off', // Mochan takia
       'mocha/no-mocha-arrows': 'off',
       'mocha/max-top-level-suites': 'off',
       'mocha/consistent-spacing-between-blocks': 'off',
