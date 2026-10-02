@@ -1,4 +1,5 @@
 import eslintReact from '@eslint-react/eslint-plugin'
+import compatPlugin from 'eslint-plugin-compat'
 import mochaPlugin from 'eslint-plugin-mocha'
 import reactHooksPlugin from 'eslint-plugin-react-hooks'
 import globals from 'globals'
@@ -30,6 +31,7 @@ export default [
   },
   eslint.configs.recommended,
   { ...mochaPlugin.configs.recommended, files: ['test/**/*'] },
+  { ...compatPlugin.configs['flat/recommended'], files: ['app/**/*'] },
   ...tseslint.configs.recommended,
   {
     files: ['**/*.{js,jsx,ts,tsx}'],

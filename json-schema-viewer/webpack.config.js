@@ -1,5 +1,18 @@
-const path = require('path')
+const getTargets = require('@babel/helper-compilation-targets').default
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin')
+const path = require('path')
+
+// Kohdeselaimet luetaan Kosken .browserslistrc:stä samalla tavalla kuin web/webpack.config.js:ssä.
+const targets = getTargets({}, { configPath: __dirname })
+
+const swcRule = (test, syntax) => ({
+  test,
+  include: path.join(__dirname, 'src'),
+  use: {
+    loader: 'swc-loader',
+    options: { env: { targets }, jsc: { parser: { syntax } } }
+  }
+})
 
 module.exports = (_, argv = {}) => ({
   context: path.join(__dirname, 'src'),
@@ -28,7 +41,8 @@ module.exports = (_, argv = {}) => ({
         type: 'asset/resource',
         generator: { filename: '[path][name][ext]' }
       },
-      { test: /\.ts$/, use: 'ts-loader' }
+      swcRule(/\.ts$/, 'typescript'),
+      swcRule(/\.js$/, 'ecmascript')
     ]
   },
   optimization: {
