@@ -1,10 +1,10 @@
 {
   "name": "koski-json-schema-viewer",
   "private": true,
-  "packageManager": "pnpm@10.34.5",
+  "packageManager": "pnpm@10.34.6",
   "engines": {
     "node": ">=24",
-    "pnpm": "10.34.5"
+    "pnpm": "10.34.6"
   },
   "scripts": {
     "build:prod": "webpack --bail --mode production",
