@@ -2,7 +2,7 @@ import {
   GetSecretValueCommand,
   SecretsManagerClient
 } from '@aws-sdk/client-secrets-manager'
-import { memoize } from '../util/memoize.js'
+import { memoize } from '../util/memoize.ts'
 import { promises as fs } from 'fs'
 import path from 'node:path'
 

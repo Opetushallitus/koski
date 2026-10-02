@@ -1,0 +1,6 @@
+*
+!server/package.json
+!server/pnpm-lock.yaml
+!server/pnpm-workspace.yaml
+!server/src
+!server/public

@@ -1,11 +1,16 @@
-import express, { NextFunction, Request, Response, Router } from 'express'
+import express, {
+  type NextFunction,
+  type Request,
+  type Response,
+  type Router
+} from 'express'
 import * as client from 'openid-client'
-import { v4 as uuidv4 } from 'uuid'
+import { randomUUID } from 'node:crypto'
 import {
   buildAuthorizationUrl,
   fetchAccessToken,
   fetchData
-} from '../oauth2-client/oauth2-client.js'
+} from '../oauth2-client/oauth2-client.ts'
 import {
   AuthorizationResponseError,
   ClientError,
@@ -25,7 +30,7 @@ router.get('/', async (req: Request, res: Response, next: NextFunction) => {
   try {
     const scope = req.query.scope ? (req.query.scope as string) : defaultScope
 
-    const state = uuidv4()
+    const state = randomUUID()
     const code_verifier = client.randomPKCECodeVerifier()
     verifiers.set(state, code_verifier)
 
@@ -41,7 +46,7 @@ router.get(
   '/invalid-redirect-uri',
   async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const state = uuidv4()
+      const state = randomUUID()
       const code_verifier = client.randomPKCECodeVerifier()
 
       const redirectTo = await buildAuthorizationUrl(
@@ -84,23 +89,19 @@ router.post(
       // redirectata clientin näkymään (mikä vaatii CSP:n höllennyksen, tavan välittää dataa, yms.)
     } catch (err) {
       if (err instanceof AuthorizationResponseError) {
-        res.json(Object.fromEntries(err.cause))
-        res.status(400)
+        res.status(400).json(Object.fromEntries(err.cause))
       } else if (err instanceof ResponseBodyError) {
-        res.json(err.cause)
-        res.status(400)
+        res.status(400).json(err.cause)
       } else if (err instanceof ClientError) {
-        res.json({
+        // 500, koska tämä tarkoittaa yleensä, että jokin kohta stackkiämme ei toimi OAuth2 -virheilmoitusspeksien mukaisesti
+        res.status(500).json({
           message: err.message,
           name: err.name,
           cause: err.cause,
           code: err.code
         })
-        // 500, koska tämä tarkoittaa yleensä, että jokin kohta stackkiämme ei toimi OAuth2 -virheilmoitusspeksien mukaisesti
-        res.status(500)
       } else {
         next(err)
-        res.status(500)
       }
     }
   }

@@ -1,13 +1,12 @@
 import * as client from 'openid-client'
-import { Configuration } from 'openid-client'
-import { memoize } from '../util/memoize.js'
+import { memoize } from '../util/memoize.ts'
 import {
   enableLocalMTLS,
   getClientCertSecret,
   getLocalCACert
-} from './client-cert-config.js'
+} from './client-cert-config.ts'
 import * as undici from 'undici'
-import { koskiBackendHost } from './koski-backend-config.js'
+import { koskiBackendHost } from './koski-backend-config.ts'
 
 const clientId = process.env.CLIENT_ID || 'oauth2client'
 const clientMetadata: client.ClientMetadata = {
@@ -15,7 +14,7 @@ const clientMetadata: client.ClientMetadata = {
   use_mtls_endpoint_aliases: false
 }
 export const getOAuthClientConfig = memoize(
-  async (): Promise<Configuration> => {
+  async (): Promise<client.Configuration> => {
     const discoveryOptions = enableLocalMTLS
       ? {
           execute: [client.allowInsecureRequests]

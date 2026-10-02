@@ -1,9 +1,9 @@
-import { getOAuthClientConfig } from '../config/oauth2-client-config.js'
+import { getOAuthClientConfig } from '../config/oauth2-client-config.ts'
 import * as client from 'openid-client'
-import { resourceEndpointUrl } from '../config/koski-backend-config.js'
-import { Request } from 'express'
+import { resourceEndpointUrl } from '../config/koski-backend-config.ts'
+import type { Request } from 'express'
 import { URLSearchParams } from 'url'
-import { redirectUri } from '../apiroutes/openid-api-test.js'
+import { redirectUri } from '../apiroutes/openid-api-test.ts'
 
 export async function buildAuthorizationUrl(
   code_verifier: string,

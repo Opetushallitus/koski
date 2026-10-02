@@ -33,7 +33,7 @@ Lokaalisti ALB:n korvaa yksinkertainen, Node.js-pohjainen mock-toteutus.
 └─────────────────────────────────────────────────────────────────────────────┘
 ```
 
-Sertifikaatit ladataan oletuksena hakemistosta `../server/testca/`.
+Sertifikaatit ladataan oletuksena hakemistosta [server/testca/](server/testca/).
 
 ## Kehitys
 
@@ -56,7 +56,7 @@ pnpm install --frozen-lockfile
 
 # Käynnistä ALB-proxy ja Node.js -palvelin (kahdessa terminaalissa tai taustalle):
 pnpm run start:alb-proxy
-pnpm run start:start:node-sample
+pnpm run start:node-sample
 ```
 
 Node.js -esimerkki löytyy osoitteesta http://localhost:7051
@@ -72,7 +72,7 @@ Playwright-testit testaavat koko OAuth2-flown kummankin backendin osalta:
 ```bash
 cd omadata-oauth2-sample/server
 pnpm install --frozen-lockfile
-pnpm run test:e2e
+pnpm run playwright:test
 ```
 
 Testit käynnistävät automaattisesti ALB-proxyn, Node.js-palvelimen ja Java-esimerkin.
@@ -84,7 +84,7 @@ Tuotannossa mTLS-käsittely tapahtuu AWS ALB:ssä, joka:
 - Validoi sen AWS Certificate Managerin avulla
 - Lisää `x-amzn-mtls-clientcert-subject` ja `x-amzn-mtls-clientcert-serial-number` headerit
 
-Lokaali ALB-proxy (`server/scripts/alb-proxy.mjs`) emuloi tätä kehitysympäristössä.
+Lokaali ALB-proxy ([scripts/alb-proxy.mjs](scripts/alb-proxy.mjs)) emuloi tätä kehitysympäristössä.
 
 ## Dokumentaatio
 

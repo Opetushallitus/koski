@@ -15,4 +15,4 @@ export ENABLE_LOCAL_MTLS="${ENABLE_LOCAL_MTLS:-true}"
 export NODE_EXTRA_CA_CERTS="$ROOT_DIR/server/testca/certs/root-ca.crt"
 
 cd "$ROOT_DIR/server"
-tsx watch --clear-screen=false src/index.ts
+node --watch --watch-preserve-output src/index.ts

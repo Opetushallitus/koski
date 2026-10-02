@@ -8,7 +8,6 @@ set -euo pipefail
 projects=(
   "web"
   "valpas-web"
-  "omadata-oauth2-sample/client"
   "omadata-oauth2-sample/server"
   "radiator"
 )

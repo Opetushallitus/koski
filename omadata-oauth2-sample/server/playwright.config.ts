@@ -1,13 +1,4 @@
 import { defineConfig, devices } from "@playwright/test"
-import * as os from "os"
-
-/**
- * Read environment variables from file.
- * https://github.com/motdotla/dotenv
- */
-// import dotenv from 'dotenv';
-// import path from 'path';
-// dotenv.config({ path: path.resolve(__dirname, '.env') });
 
 /**
  * See https://playwright.dev/docs/test-configuration.
@@ -91,7 +82,7 @@ export default defineConfig({
       timeout: 60 * 1000,
     },
     {
-      command: `KOSKI_BACKEND_HOST=http://localhost:${process.env.KOSKI_BACKEND_PORT || "7021"} RESOURCE_ENDPOINT_URL=https://localhost:7022/koski/api/omadata-oauth2/resource-server ENABLE_LOCAL_MTLS=true CLIENT_ID=omadataoauth2sample pnpm exec tsx src/index.ts`,
+      command: `KOSKI_BACKEND_HOST=http://localhost:${process.env.KOSKI_BACKEND_PORT || "7021"} RESOURCE_ENDPOINT_URL=https://localhost:7022/koski/api/omadata-oauth2/resource-server ENABLE_LOCAL_MTLS=true CLIENT_ID=omadataoauth2sample node src/index.ts`,
       url: "http://localhost:7051/api/healthcheck",
       reuseExistingServer: !process.env.CI,
       stdout: "pipe",
@@ -108,15 +99,3 @@ export default defineConfig({
     },
   ],
 })
-
-function getMyIp(): string {
-  const addresses = Object.values(os.networkInterfaces())
-    .flatMap((iface) => iface ?? []) // drop undefined
-    .filter((a): a is os.NetworkInterfaceInfo => !!a) // type guard
-
-  const addr = addresses.find((a) => a.family === "IPv4" && !a.internal)
-  if (!addr) {
-    throw new Error("No external IPv4 address found")
-  }
-  return addr.address
-}
