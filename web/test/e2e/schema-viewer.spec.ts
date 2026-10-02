@@ -310,5 +310,20 @@ test.describe('Schema viewer', () => {
 
       await expect(page.getByLabel('JSON to Validate:')).toHaveValue(contents)
     })
+
+    test('lukee pudotetun JSON-tiedoston validaattoriin', async ({ page }) => {
+      await page.getByRole('link', { name: 'Validator', exact: true }).click()
+
+      const contents = JSON.stringify(validOppija)
+      const dataTransfer = await page.evaluateHandle((text) => {
+        const dt = new DataTransfer()
+        dt.items.add(new File([text], 'oppija.json'))
+        return dt
+      }, contents)
+      const textarea = page.getByLabel('JSON to Validate:')
+      await textarea.dispatchEvent('drop', { dataTransfer })
+
+      await expect(textarea).toHaveValue(contents)
+    })
   })
 })

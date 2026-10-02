@@ -6,7 +6,6 @@ const jsonpointer = require('jsonpointer.js')
 const hljs = require('./highlight')
 const tv4 = require('./tv4-async-load')
 require('jquery.scrollto')
-require('../vendor/filereader')
 
 if (!window.location.origin) {
   window.location.origin =
@@ -201,36 +200,57 @@ if (typeof window.JSV === 'undefined') {
       $('#popup-error').popup('open')
     },
     initValidator: function () {
-      var opts = {
-        readAsDefault: 'Text',
-        on: {
-          load: function (e, file) {
-            var data = e.currentTarget.result
-            try {
-              $.parseJSON(data)
-              $('#textarea-json').val(data)
-            } catch (err) {
-              JSV.showError(
-                'Failed to load ' +
-                  file.name +
-                  '. The file is not valid JSON. <br/>The error: <i>' +
-                  err +
-                  '</i>'
-              )
-            }
-          },
-          error: function (e, file) {
-            var msg =
+      var loadFile = function (file) {
+        var reader = new FileReader()
+        reader.onload = function () {
+          try {
+            JSON.parse(reader.result)
+            $('#textarea-json').val(reader.result)
+          } catch (err) {
+            JSV.showError(
               'Failed to load ' +
-              file.name +
-              '. ' +
-              e.currentTarget.error.message
-            JSV.showError(msg)
+                file.name +
+                '. The file is not valid JSON. <br/>The error: <i>' +
+                err +
+                '</i>'
+            )
           }
         }
+        reader.onerror = function () {
+          JSV.showError(
+            'Failed to load ' + file.name + '. ' + reader.error.message
+          )
+        }
+        reader.readAsText(file)
       }
-      $('#file-upload, #textarea-json').fileReaderJS(opts)
-      $('body').fileClipboard(opts)
+      $('#file-upload').on('change', function () {
+        if (this.files.length) {
+          loadFile(this.files[0])
+        }
+      })
+      $('#textarea-json')
+        .on('dragover', function (e) {
+          e.preventDefault()
+          $(this).addClass('drag')
+        })
+        .on('dragleave', function () {
+          $(this).removeClass('drag')
+        })
+        .on('drop', function (e) {
+          var files = e.originalEvent.dataTransfer.files
+          $(this).removeClass('drag')
+          if (files.length) {
+            e.preventDefault()
+            loadFile(files[0])
+          }
+        })
+      $('body').on('paste', function (e) {
+        var files = e.originalEvent.clipboardData.files
+        if (files.length) {
+          e.preventDefault()
+          loadFile(files[0])
+        }
+      })
       $('#button-validate').click(function () {
         var result = JSV.validate()
         if (result) {
@@ -241,7 +261,7 @@ if (typeof window.JSV === 'undefined') {
     validate: function () {
       var data
       try {
-        data = $.parseJSON($('#textarea-json').val())
+        data = JSON.parse($('#textarea-json').val())
       } catch (e) {
         JSV.showError('Unable to parse JSON: <br/>' + e)
       }
