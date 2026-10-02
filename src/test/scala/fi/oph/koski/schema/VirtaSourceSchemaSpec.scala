@@ -1,9 +1,10 @@
 package fi.oph.koski.schema
 
 import fi.oph.koski.TestEnvironment
+import fi.oph.koski.documentation.VirtaKeywordStripper
 import fi.oph.koski.schema.annotation.{VirtaDerived, VirtaNote, VirtaSource}
 import fi.oph.scalaschema.annotation.Description
-import fi.oph.scalaschema.{ClassSchema, SchemaToJson}
+import fi.oph.scalaschema.{ClassSchema, SchemaJsonDecorator, SchemaToJson}
 import org.json4s.JsonAST.{JNothing, JObject, JString}
 import org.json4s.JValue
 import org.scalatest.freespec.AnyFreeSpec
@@ -55,6 +56,27 @@ class VirtaSourceSchemaSpec extends AnyFreeSpec with TestEnvironment with Matche
   "Merkitsemätön kenttä ei saa virta-objektia" in {
     (property("merkitsemätön") \ "virta") should be(JNothing)
   }
+
+  "VirtaKeywordStripper (features.virtaSchemaDocumentation pois päältä)" - {
+    lazy val stripped: JValue = SchemaToJson.toJsonSchema(
+      KoskiSchema.createSchema(classOf[VirtaSourceTestClass]).asInstanceOf[ClassSchema]
+    )(new VirtaKeywordStripper(SchemaJsonDecorator.Noop))
+    def strippedProperty(name: String) = stripped \ "properties" \ name
+
+    "poistaa virta-objektin" in {
+      (strippedProperty("polullinen") \ "virta") should be(JNothing)
+      (strippedProperty("johdettu") \ "virta") should be(JNothing)
+      (strippedProperty("selitteellinen") \ "virta") should be(JNothing)
+    }
+    "poistaa Virta-lauseen ja säilyttää kuvauksen sellaisenaan" in {
+      (strippedProperty("kuvauksellinen") \ "description") should equal(JString("Kuvaus, joka päättyy pisteeseen."))
+      (strippedProperty("pisteetön") \ "description") should equal(JString("Kuvaus ilman pistettä"))
+    }
+    "poistaa kuvauksen kokonaan, jos se oli pelkkä Virta-lause" in {
+      (strippedProperty("pelkkäPolku") \ "description") should be(JNothing)
+      (strippedProperty("johdettu") \ "description") should be(JNothing)
+    }
+  }
 }
 
 case class VirtaSourceTestClass(
@@ -65,6 +87,9 @@ case class VirtaSourceTestClass(
   @Description("Kuvaus, joka päättyy pisteeseen.")
   @VirtaSource("Opiskeluoikeus/Jakso", "sääntö")
   kuvauksellinen: String,
+  @Description("Kuvaus ilman pistettä")
+  @VirtaSource("Opiskeluoikeus/Jakso", "sääntö")
+  pisteetön: String,
   @VirtaDerived("Aina korkeakoulutus")
   johdettu: String,
   @VirtaSource("Opiskeluoikeus/Tila")

@@ -26,6 +26,7 @@ class DocumentationServlet(implicit val application: KoskiApplication)
   val allowFrameAncestors: Boolean = !Environment.isServerEnvironment(application.config)
   val frontendValvontaMode: FrontendValvontaMode.FrontendValvontaMode =
     FrontendValvontaMode(application.config.getString("frontend-valvonta.mode"))
+  private val virtaSources: Boolean = application.config.getBoolean("features.virtaSchemaDocumentation")
 
   get("^/(|tietomalli|koodistot|valpas|rajapinnat/opintohallintojarjestelmat|rajapinnat/luovutuspalvelu|rajapinnat/palveluvayla-omadata|rajapinnat/massaluovutus/koulutuksenjarjestajat|rajapinnat/massaluovutus/oph|rajapinnat/massaluovutus/raportit|rajapinnat/massaluovutus/valpas|rajapinnat/oauth2/omadata)$".r)(nonce => {
     htmlIndex("koski-main.js", raamit = virkailijaRaamit, allowIndexing = true, nonce = nonce)
@@ -39,14 +40,16 @@ class DocumentationServlet(implicit val application: KoskiApplication)
         expandEntities = isHenkilöSchema,
         shallowEntities = const(true),
         lang = lang,
-        nonce = nonce
+        nonce = nonce,
+        virtaSources = virtaSources
       )
       case Some(focusEntityName) => KoskiSchemaDocumentHtml.html(
         focusEntities = { schema => schema.simpleName == focusEntityName },
         expandEntities = isHenkilöSchema,
         shallowEntities = { schema: ClassSchema => schema.fullClassName == classOf[OsaamisenTunnustaminen].getName },
         lang = lang,
-        nonce = nonce
+        nonce = nonce,
+        virtaSources = virtaSources
       )
     }
   })
