@@ -278,6 +278,14 @@ const VapaanSivistystyönTestIds = {
   suoritukset: arrayOf({
     tab: Button,
     oppilaitos: FormField(Label),
+    toimipiste: {
+      value: Label,
+      edit: {
+        toimipiste: {
+          value: Button
+        }
+      }
+    },
     koulutus: FormField(Label),
     opetuskieli: FormField(Label),
     lisatiedot: FormField(Label),
