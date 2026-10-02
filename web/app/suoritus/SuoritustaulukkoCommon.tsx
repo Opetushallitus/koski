@@ -1,5 +1,3 @@
-/* eslint-disable react/jsx-no-literals */
-
 import React from 'baret'
 import { tutkinnonOsanRyhmät } from '../koodisto/koodistot'
 import { t } from '../i18n/i18n'
@@ -414,6 +412,7 @@ export const SuoritusColumn: SuoritusColumn = {
               : `Laajenna suoritus ${t(koulutusmoduuliTunniste)}`
           }
         >
+          {/* eslint-disable-next-line no-restricted-syntax */}
           {expanded ? <>&#61766;</> : <>&#61694;</>}
         </a>
         {showTila && (

@@ -1,33 +1,32 @@
-import { fixupConfigRules } from "@eslint/compat";
-import typescriptEslint from "@typescript-eslint/eslint-plugin";
-import tsParser from "@typescript-eslint/parser";
-import path from "node:path";
-import { fileURLToPath } from "node:url";
-import js from "@eslint/js";
-import { FlatCompat } from "@eslint/eslintrc";
+import tseslint from "typescript-eslint"
+import eslintConfigPrettier from "eslint-config-prettier"
+import reactHooks from "eslint-plugin-react-hooks"
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-const compat = new FlatCompat({
-    baseDirectory: __dirname,
-    recommendedConfig: js.configs.recommended,
-    allConfig: js.configs.all
-});
-
-export default [{
+export default [
+  {
     ignores: ["**/node_modules", "**/dist", "**/.cache"],
-}, ...fixupConfigRules(compat.extends("plugin:react-hooks/recommended", "prettier")), {
+  },
+  {
+    plugins: { "react-hooks": reactHooks },
+    rules: {
+      "react-hooks/rules-of-hooks": "error",
+      "react-hooks/exhaustive-deps": "warn",
+    },
+  },
+  eslintConfigPrettier,
+  {
     plugins: {
-        "@typescript-eslint": typescriptEslint,
+      "@typescript-eslint": tseslint.plugin,
     },
 
     languageOptions: {
-        parser: tsParser,
+      parser: tseslint.parser,
     },
 
     rules: {
-        eqeqeq: "warn",
+      eqeqeq: "warn",
     },
 
-    files: ["**/*.ts", "**/*.tsx"]
-}];
+    files: ["**/*.ts", "**/*.tsx"],
+  },
+]

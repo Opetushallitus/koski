@@ -1,4 +1,3 @@
-/* eslint-disable react/jsx-no-literals */
 import React from 'baret'
 import * as L from 'partial.lenses'
 import { t } from '../i18n/i18n'
@@ -151,6 +150,7 @@ export const EshSuoritusColumn: ESHSuoritusColumn = {
               : `Laajenna suoritus ${t(koulutusmoduuliTunniste)}`
           }
         >
+          {/* eslint-disable-next-line no-restricted-syntax */}
           {expanded ? <>&#61766;</> : <>&#61694;</>}
         </a>
         {showTila && (

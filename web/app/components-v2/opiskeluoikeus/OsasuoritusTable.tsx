@@ -277,7 +277,7 @@ export const OsasuoritusRow = <DATA_KEYS extends string>(
                   <Icon charCode={CHARCODE_VALMIS} />
                 </span>
               ) : (
-                // eslint-disable-next-line react/jsx-no-literals
+                // eslint-disable-next-line no-restricted-syntax
                 <span aria-label={t('Suoritus valmis')}>&#x2713;</span>
               ))}
             {props.completed === false &&
@@ -287,7 +287,7 @@ export const OsasuoritusRow = <DATA_KEYS extends string>(
                   <Icon charCode={CHARCODE_KESKEN} />
                 </span>
               ) : (
-                // eslint-disable-next-line react/jsx-no-literals
+                // eslint-disable-next-line no-restricted-syntax
                 <span aria-label={t('Suoritus kesken')}>&#x29D6;</span>
               ))}
           </Column>
