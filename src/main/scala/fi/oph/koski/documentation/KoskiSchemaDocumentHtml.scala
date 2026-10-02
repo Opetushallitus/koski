@@ -242,6 +242,9 @@ object KoskiSchemaDocumentHtml {
         case k: KoodistoUri =>Some(<div class="koodisto">Koodisto: {k.asLink}</div>)
         case k: KoodistoKoodiarvo =>Some(<div class="koodiarvo">Hyväksytty koodiarvo: {k.arvo}</div>)
         case o: OksaUri => Some(<div class="oksa">Oksa: {o.asLink}</div>)
+        case v: VirtaSource => Some(<div class="virta">Virta: <code>{v.path}</code>{if (v.rule.nonEmpty) s" — ${v.rule}" else ""}</div>)
+        case v: VirtaDerived => Some(<div class="virta">Virta: johdettu Koskessa — {v.rule}</div>)
+        case v: VirtaNote => Some(<div class="virta virta-note">{v.text}</div>)
         case _ => None
       }
     }
