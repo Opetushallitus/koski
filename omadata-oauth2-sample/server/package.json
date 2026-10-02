@@ -38,8 +38,7 @@
     "express-rate-limit": "8.7.0",
     "helmet": "8.3.0",
     "openid-client": "6.8.8",
-    "undici": "7.30.0",
-    "uuid": "14.0.2"
+    "undici": "7.30.0"
   },
   "devDependencies": {
     "@eslint/js": "9.39.5",

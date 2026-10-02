@@ -1,6 +1,6 @@
 import express, { NextFunction, Request, Response, Router } from 'express'
 import * as client from 'openid-client'
-import { v4 as uuidv4 } from 'uuid'
+import { randomUUID } from 'node:crypto'
 import {
   buildAuthorizationUrl,
   fetchAccessToken,
@@ -25,7 +25,7 @@ router.get('/', async (req: Request, res: Response, next: NextFunction) => {
   try {
     const scope = req.query.scope ? (req.query.scope as string) : defaultScope
 
-    const state = uuidv4()
+    const state = randomUUID()
     const code_verifier = client.randomPKCECodeVerifier()
     verifiers.set(state, code_verifier)
 
@@ -41,7 +41,7 @@ router.get(
   '/invalid-redirect-uri',
   async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const state = uuidv4()
+      const state = randomUUID()
       const code_verifier = client.randomPKCECodeVerifier()
 
       const redirectTo = await buildAuthorizationUrl(
