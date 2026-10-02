@@ -209,9 +209,7 @@ export const suorituksenTilaSymbol = (suoritus) =>
   isValinnanMahdollisuus(suoritus) ? (
     <></>
   ) : suoritusValmis(suoritus) ? (
-    // eslint-disable-next-line react/jsx-no-literals
     <>&#61452;</>
   ) : (
-    // eslint-disable-next-line react/jsx-no-literals
     <>&#62034;</>
   )

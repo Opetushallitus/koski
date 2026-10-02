@@ -1,5 +1,3 @@
-/* eslint-disable react/jsx-no-literals */
-
 import React from 'baret'
 import { tutkinnonOsanRyhmät } from '../koodisto/koodistot'
 import { t } from '../i18n/i18n'

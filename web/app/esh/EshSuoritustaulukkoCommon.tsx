@@ -1,4 +1,3 @@
-/* eslint-disable react/jsx-no-literals */
 import React from 'baret'
 import * as L from 'partial.lenses'
 import { t } from '../i18n/i18n'

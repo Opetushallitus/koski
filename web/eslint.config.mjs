@@ -1,40 +1,46 @@
-import { fixupConfigRules, fixupPluginRules } from '@eslint/compat'
-import reactPlugin from 'eslint-plugin-react'
+import eslintReact from '@eslint-react/eslint-plugin'
 import mochaPlugin from 'eslint-plugin-mocha'
-import typescriptEslint from '@typescript-eslint/eslint-plugin'
+import reactHooksPlugin from 'eslint-plugin-react-hooks'
 import globals from 'globals'
-import tsParser from '@typescript-eslint/parser'
-import path from 'node:path'
-import { fileURLToPath } from 'node:url'
-import js from '@eslint/js'
-import { FlatCompat } from '@eslint/eslintrc'
 import eslint from '@eslint/js'
 import tseslint from 'typescript-eslint'
 
-const __filename = fileURLToPath(import.meta.url)
-const __dirname = path.dirname(__filename)
-const compat = new FlatCompat({
-  baseDirectory: __dirname,
-  recommendedConfig: js.configs.recommended,
-  allConfig: js.configs.all
-})
-
 export default [
-  ...fixupConfigRules(compat.extends('plugin:react-hooks/recommended')),
+  {
+    plugins: { 'react-hooks': reactHooksPlugin },
+    rules: {
+      'react-hooks/rules-of-hooks': 'error',
+      'react-hooks/exhaustive-deps': 'warn'
+    }
+  },
+  {
+    plugins: { '@eslint-react': eslintReact },
+    rules: {
+      '@eslint-react/jsx-no-comment-textnodes': 'error',
+      '@eslint-react/jsx-no-children-prop': 'error',
+      '@eslint-react/no-direct-mutation-state': 'error',
+      '@eslint-react/no-component-will-mount': 'error',
+      '@eslint-react/no-component-will-receive-props': 'error',
+      '@eslint-react/no-component-will-update': 'error',
+      '@eslint-react/dom-no-dangerously-set-innerhtml-with-children': 'error',
+      '@eslint-react/dom-no-find-dom-node': 'error',
+      '@eslint-react/dom-no-unsafe-target-blank': 'error',
+      '@eslint-react/dom-no-unknown-property': 'warn'
+    }
+  },
   eslint.configs.recommended,
-  reactPlugin.configs.flat.recommended,
-  mochaPlugin.configs.flat.recommended,
+  { ...mochaPlugin.configs.recommended, files: ['test/**/*'] },
   ...tseslint.configs.recommended,
   {
+    files: ['**/*.{js,jsx,ts,tsx}'],
     languageOptions: {
       globals: {
         ...globals.browser,
         ...globals.node,
-        ...globals.mocha,
         __webpack_nonce__: true
       },
 
-      parser: tsParser,
+      parser: tseslint.parser,
       ecmaVersion: 6,
       sourceType: 'module',
 
@@ -46,12 +52,6 @@ export default [
       }
     },
 
-    settings: {
-      react: {
-        version: 'detect'
-      }
-    },
-
     rules: {
       'no-undef': 'warn',
       'no-var': 'off',
@@ -59,28 +59,15 @@ export default [
       'no-console': 'off',
       'no-warning-comments': 'off',
       'no-unused-vars': 'off',
-      'react/jsx-no-undef': 'warn',
-      'react/jsx-uses-react': 'warn',
-      'react/jsx-uses-vars': 'warn',
-      'react/jsx-no-literals': 'warn',
-      'react/no-unknown-property': 'warn',
-      'react/react-in-jsx-scope': 'warn',
-
-      'react/self-closing-comp': [
+      'no-restricted-syntax': [
         'warn',
         {
-          component: true,
-          html: false
+          selector: 'JSXText[value=/[\\p{L}\\p{N}]/u]',
+          message:
+            'Käytä lokalisoitua tekstiä (t, Trans) JSX-literaalin sijaan.'
         }
       ],
-
-      'react/jsx-wrap-multilines': 'warn',
-      'react/prop-types': 'off',
-      'react/display-name': 'off',
-      'react/jsx-key': 'off',
-      'react/no-string-refs': 'off',
       'array-callback-return': 'off',
-      'react/no-render-return-value': 'off',
       'prefer-regex-literals': 'off',
       eqeqeq: 'warn',
       'no-shadow': 'off',
@@ -114,8 +101,7 @@ export default [
       'mocha/no-mocha-arrows': 'off',
       'mocha/max-top-level-suites': 'off',
       'mocha/consistent-spacing-between-blocks': 'off',
-      'mocha/no-setup-in-describe': 'off',
-      'mocha/no-sibling-hooks': 'off',
+      'mocha/consistent-structure': 'off',
       'mocha/no-identical-title': 'off'
     }
   }

@@ -92,7 +92,8 @@ export const path =
             return fn(acc)
           } catch (err) {
             throw new Error(
-              `Invalid ${toString(constraint)} path '${pathStr}' at ${key}: ${err}`
+              `Invalid ${toString(constraint)} path '${pathStr}' at ${key}: ${err}`,
+              { cause: err }
             )
           }
         }, asList(constraint))

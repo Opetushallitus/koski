@@ -121,7 +121,7 @@ const onOppilaitoksetonOpiskeluoikeus = (opiskeluoikeus) => {
   const koulutustoimijaOid = modelData(opiskeluoikeus, 'koulutustoimija.oid')
   return (
     !oppilaitosnumero?.match(/\d+/) &&
-    koulutustoimijaOid == '1.2.246.562.10.48587687889' // Opetushallitus
+    koulutustoimijaOid === '1.2.246.562.10.48587687889' // Opetushallitus
   )
 }
 

@@ -1,4 +1,3 @@
-// eslint-disable-next-line no-undef
 import React from 'react'
 import ReactDOM from 'react-dom'
 import { EiSuorituksiaInfo } from './omattiedot/EiSuorituksiaInfo'
