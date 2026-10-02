@@ -1,5 +1,5 @@
 # Voit päivittää imagen komennolla ./update-openjdk.sh
-FROM amazoncorretto:17.0.20-alpine@sha256:e1138bf0cca62e04692de650ffe8923f35c39fcb554458c7acd98efc2d135144
+FROM amazoncorretto:17.0.20-alpine@sha256:80d268d89c10861f33792c7845bbd7c8494678a600f031988e135fe27eae3b48
 
 ARG KOSKI_VERSION
 ARG PROMETHEUS_JMX_EXPORTER_VERSION="1.6.0"
