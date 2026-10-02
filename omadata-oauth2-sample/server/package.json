@@ -2,7 +2,6 @@
   "name": "omadata-oauth2-sample",
   "version": "0.0.2",
   "description": "Sample web application to use KOSKI OmaData with OAuth2",
-  "main": "index.ts",
   "engines": {
     "node": ">=24",
     "pnpm": "10.34.5"
@@ -16,7 +15,6 @@
     "start:alb-proxy": "../scripts/start-alb-proxy.sh",
     "start:node-sample": "../scripts/start-node-sample.sh",
     "start:java-sample": "../scripts/start-java-sample.sh",
-    "test": "echo \"Error: no test specified\" && exit 1",
     "test:e2e": "pnpm -C ../../smoketests run omadata:local",
     "playwright:test": "pnpm exec playwright test",
     "lint": "pnpm run typecheck && pnpm run lint:problems",

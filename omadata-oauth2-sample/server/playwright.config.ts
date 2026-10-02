@@ -1,13 +1,4 @@
 import { defineConfig, devices } from "@playwright/test"
-import * as os from "os"
-
-/**
- * Read environment variables from file.
- * https://github.com/motdotla/dotenv
- */
-// import dotenv from 'dotenv';
-// import path from 'path';
-// dotenv.config({ path: path.resolve(__dirname, '.env') });
 
 /**
  * See https://playwright.dev/docs/test-configuration.
@@ -108,15 +99,3 @@ export default defineConfig({
     },
   ],
 })
-
-function getMyIp(): string {
-  const addresses = Object.values(os.networkInterfaces())
-    .flatMap((iface) => iface ?? []) // drop undefined
-    .filter((a): a is os.NetworkInterfaceInfo => !!a) // type guard
-
-  const addr = addresses.find((a) => a.family === "IPv4" && !a.internal)
-  if (!addr) {
-    throw new Error("No external IPv4 address found")
-  }
-  return addr.address
-}
