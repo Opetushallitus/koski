@@ -45,7 +45,7 @@ export const useApiWithParams = <T, P extends any[]>(
   params?: P,
   cache?: ApiCache<T, P>,
 ) => {
-  const api = useApiMethod(fetchFn, cache)
+  const api = useApiMethod(fetchFn, cache, { ignoreStaleResponses: true })
   useEffect(() => {
     if (params) {
       api.call(...params)
@@ -186,16 +186,32 @@ export type ApiMethodHook<T, P extends any[]> = {
   clear: () => void
 } & ApiMethodState<T>
 
+export type ApiMethodOptions = {
+  /**
+   * Vanhemman kutsun myöhässä saapuva vastaus ei korvaa tilaa, jos sen jälkeen on tehty uudempi kutsu (tai clear).
+   */
+  ignoreStaleResponses?: boolean
+}
+
 export const useApiMethod = <T, P extends any[]>(
   fetchFn: (...args: P) => Promise<ApiResponse<T>>,
   cache?: ApiCache<T, P>,
+  { ignoreStaleResponses = false }: ApiMethodOptions = {},
 ): ApiMethodHook<T, P> => {
   const [state, setState] = useSafeState<ApiMethodState<T>>({
     state: "initial",
   })
+  const latestCallId = useRef(0)
 
   const call = useCallback(
     async (...args: P) => {
+      const callId = ++latestCallId.current
+      const setResultState = (result: ApiMethodState<T>) => {
+        if (!ignoreStaleResponses || callId === latestCallId.current) {
+          setState(result)
+        }
+      }
+
       const fresh = cache?.getOnlyFresh(args) || O.none
       if (O.isSome(fresh)) {
         setState({ state: "success", ...fresh.value })
@@ -209,7 +225,7 @@ export const useApiMethod = <T, P extends any[]>(
       return pipe(
         await fetchFn(...args),
         E.map((result) => {
-          setState({
+          setResultState({
             state: "success",
             ...result,
           })
@@ -217,7 +233,7 @@ export const useApiMethod = <T, P extends any[]>(
           return result
         }),
         E.mapLeft((error) => {
-          setState({
+          setResultState({
             state: "error",
             ...error,
           })
@@ -225,10 +241,13 @@ export const useApiMethod = <T, P extends any[]>(
         }),
       )
     },
-    [cache, fetchFn, setState],
+    [cache, fetchFn, setState, ignoreStaleResponses],
   )
 
-  const clear = useCallback(() => setState({ state: "initial" }), [setState])
+  const clear = useCallback(() => {
+    latestCallId.current++
+    setState({ state: "initial" })
+  }, [setState])
 
   return useMemo(
     () => ({
