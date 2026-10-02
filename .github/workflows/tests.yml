@@ -521,7 +521,7 @@ jobs:
 
   oauth2_server_checks:
     if: ${{ inputs.run-oauth2-tests }}
-    name: OAuth2 server lint
+    name: OAuth2 server lint & image
     runs-on: ubuntu-26.04
     permissions:
       contents: read
@@ -539,6 +539,20 @@ jobs:
         run: |
           pnpm install --frozen-lockfile
           pnpm run lint
+
+      - name: Build and smoke test image
+        working-directory: omadata-oauth2-sample
+        run: |
+          docker build --tag omadataoauth2sample:ci .
+          docker run --detach --name omadataoauth2sample --publish 8080:8080 omadataoauth2sample:ci
+          for _ in $(seq 1 30); do
+            curl --fail --fail-early --silent --show-error --max-time 5 \
+              --output /dev/null http://localhost:8080/api/healthcheck \
+              --output /dev/null http://localhost:8080/ && exit 0
+            sleep 1
+          done
+          docker logs omadataoauth2sample
+          exit 1
 
   oauth2_browser_tests_playwright:
     name: OAuth2 browser tests ${{matrix.shardIndex}}/${{matrix.shardTotal}}
