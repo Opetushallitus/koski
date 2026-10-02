@@ -1,0 +1,17 @@
+.source-sans-pro(@weight, @style, @file) {
+  @font-face {
+    font-family: 'Source Sans Pro';
+    font-weight: @weight;
+    font-style: @style;
+    src: url('../fonts/source-sans-pro/SourceSansPro-@{file}.ttf.woff2')
+      format('woff2');
+  }
+}
+
+.source-sans-pro(300, normal, Light);
+.source-sans-pro(400, normal, Regular);
+.source-sans-pro(400, italic, It);
+.source-sans-pro(600, normal, Semibold);
+.source-sans-pro(600, italic, SemiboldIt);
+.source-sans-pro(700, normal, Bold);
+.source-sans-pro(700, italic, BoldIt);
