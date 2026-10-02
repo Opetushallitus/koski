@@ -33,7 +33,7 @@ Lokaalisti ALB:n korvaa yksinkertainen, Node.js-pohjainen mock-toteutus.
 └─────────────────────────────────────────────────────────────────────────────┘
 ```
 
-Sertifikaatit ladataan oletuksena hakemistosta `../server/testca/`.
+Sertifikaatit ladataan oletuksena hakemistosta [server/testca/](server/testca/).
 
 ## Kehitys
 
