@@ -1,6 +1,12 @@
+const getTargets = require('@babel/helper-compilation-targets').default
 const CopyWebpackPlugin = require('copy-webpack-plugin')
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin')
 const path = require('path')
+
+// Kohdeselaimet määritetään .browserslistrc:stä Babelin avulla ja annetaan
+// samoina swc:lle. swc:n oma browserslist-toteutus käyttää swc-version
+// mukana tulevaa selaindataa, jolloin kääntäjät voisivat päätyä eri versioihin.
+const targets = getTargets({}, { configPath: __dirname })
 
 module.exports = (_, argv = {}) => ({
   context: __dirname,
@@ -60,7 +66,7 @@ module.exports = (_, argv = {}) => ({
           loader: 'babel-loader',
           options: {
             cacheDirectory: true,
-            presets: ['@babel/preset-env', '@babel/preset-react']
+            presets: [['@babel/preset-env', { targets }], '@babel/preset-react']
           }
         }
       },
@@ -71,6 +77,7 @@ module.exports = (_, argv = {}) => ({
         use: {
           loader: 'swc-loader',
           options: {
+            env: { targets },
             jsc: {
               parser: {
                 syntax: 'typescript',

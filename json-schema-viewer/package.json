@@ -24,8 +24,10 @@
     "urijs": "1.19.11"
   },
   "devDependencies": {
+    "@babel/helper-compilation-targets": "7.29.7",
+    "@swc/core": "1.16.12",
     "css-minimizer-webpack-plugin": "8.0.0",
-    "ts-loader": "9.6.2",
+    "swc-loader": "0.2.7",
     "typescript": "5.9.3",
     "webpack": "5.111.1",
     "webpack-cli": "6.0.1"
