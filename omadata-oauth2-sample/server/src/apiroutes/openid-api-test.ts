@@ -1,11 +1,16 @@
-import express, { NextFunction, Request, Response, Router } from 'express'
+import express, {
+  type NextFunction,
+  type Request,
+  type Response,
+  type Router
+} from 'express'
 import * as client from 'openid-client'
 import { randomUUID } from 'node:crypto'
 import {
   buildAuthorizationUrl,
   fetchAccessToken,
   fetchData
-} from '../oauth2-client/oauth2-client.js'
+} from '../oauth2-client/oauth2-client.ts'
 import {
   AuthorizationResponseError,
   ClientError,

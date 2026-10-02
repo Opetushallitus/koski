@@ -91,7 +91,7 @@ export default defineConfig({
       timeout: 60 * 1000,
     },
     {
-      command: `KOSKI_BACKEND_HOST=http://localhost:${process.env.KOSKI_BACKEND_PORT || "7021"} RESOURCE_ENDPOINT_URL=https://localhost:7022/koski/api/omadata-oauth2/resource-server ENABLE_LOCAL_MTLS=true CLIENT_ID=omadataoauth2sample pnpm exec tsx src/index.ts`,
+      command: `KOSKI_BACKEND_HOST=http://localhost:${process.env.KOSKI_BACKEND_PORT || "7021"} RESOURCE_ENDPOINT_URL=https://localhost:7022/koski/api/omadata-oauth2/resource-server ENABLE_LOCAL_MTLS=true CLIENT_ID=omadataoauth2sample node src/index.ts`,
       url: "http://localhost:7051/api/healthcheck",
       reuseExistingServer: !process.env.CI,
       stdout: "pipe",

@@ -1,10 +1,15 @@
-import express, { Application, NextFunction, Request, Response } from 'express'
+import express, {
+  type Application,
+  type NextFunction,
+  type Request,
+  type Response
+} from 'express'
 import path from 'node:path'
 import helmet from 'helmet'
 import RateLimit from 'express-rate-limit'
-import openidApiTest from './apiroutes/openid-api-test.js'
-import healthCheck from './apiroutes/healthcheck.js'
-import { log } from './util/log.js'
+import openidApiTest from './apiroutes/openid-api-test.ts'
+import healthCheck from './apiroutes/healthcheck.ts'
+import { log } from './util/log.ts'
 
 const app: Application = express()
 app.set('trust proxy', 1)
