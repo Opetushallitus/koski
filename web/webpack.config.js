@@ -38,7 +38,18 @@ module.exports = (_, argv = {}) => ({
   },
   stats: 'normal',
   resolve: {
-    extensions: ['.js', '.jsx', '.ts', '.tsx']
+    extensions: ['.js', '.jsx', '.ts', '.tsx'],
+    alias: {
+      // Teema samasta highlight.js-versiosta, jota react-highlight käyttää
+      'highlight.js/styles': path.join(
+        path.dirname(
+          require.resolve('highlight.js/package.json', {
+            paths: [path.dirname(require.resolve('react-highlight'))]
+          })
+        ),
+        'styles'
+      )
+    }
   },
   module: {
     rules: [

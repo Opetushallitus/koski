@@ -164,7 +164,7 @@ class JettyLauncher(requestedPort: Int, val application: KoskiApplication) exten
     staticMapping.setServletName("static-resources")
     staticMapping.setPathSpecs(Array(
       "/koski/buildversion.txt", "/koski/favicon.ico", "/koski/empty.js",
-      "/koski/js/*", "/koski/css/*", "/koski/external_css/*", "/koski/fonts/*",
+      "/koski/js/*", "/koski/css/*", "/koski/fonts/*",
       "/koski/images/*", "/koski/test/*",
       "/koski/json-schema-viewer/js/*", "/koski/json-schema-viewer/styles/*",
       "/koski/json-schema-viewer/images/*", "/koski/json-schema-viewer/jquery/*",
@@ -189,7 +189,6 @@ class JettyLauncher(requestedPort: Int, val application: KoskiApplication) exten
     val config = CompressionConfig.builder().defaults().build()
     Seq(
       "/koski/css/*",
-      "/koski/external_css/*",
       "/koski/js/*",
       "/koski/json-schema-viewer/*",
       "/valpas/assets/*",
