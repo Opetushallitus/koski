@@ -412,7 +412,6 @@ export const SuoritusColumn: SuoritusColumn = {
               : `Laajenna suoritus ${t(koulutusmoduuliTunniste)}`
           }
         >
-          {/* eslint-disable-next-line no-restricted-syntax */}
           {expanded ? <>&#61766;</> : <>&#61694;</>}
         </a>
         {showTila && (

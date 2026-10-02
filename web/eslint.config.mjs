@@ -62,7 +62,7 @@ export default [
       'no-restricted-syntax': [
         'warn',
         {
-          selector: 'JSXText[value=/\\S/]',
+          selector: 'JSXText[value=/[\\p{L}\\p{N}]/u]',
           message:
             'Käytä lokalisoitua tekstiä (t, Trans) JSX-literaalin sijaan.'
         }

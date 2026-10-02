@@ -18,7 +18,6 @@ export const HeaderName = ({ henkilö, showOppijanumero = false }) => {
   )
   const oppijanumero = showOppijanumero && (
     <p className="oppijanumero textstyle-lead">
-      {/* eslint-disable-next-line no-restricted-syntax */}
       <Text name="Oppijanumero" />: {modelData(henkilö, 'oid')}
     </p>
   )

@@ -667,10 +667,8 @@ export const SuorituksenTilaIcon: React.FC<SuorituksenTilaIconProps> = ({
   suoritus
 }) =>
   isValinnanMahdollisuus(suoritus) ? null : suoritusValmis(suoritus) ? (
-    // eslint-disable-next-line no-restricted-syntax
     <div title={t('Suoritus valmis')}>&#61452;</div>
   ) : (
-    // eslint-disable-next-line no-restricted-syntax
     <div title={t('Suoritus kesken')}>&#62034;</div>
   )
 
