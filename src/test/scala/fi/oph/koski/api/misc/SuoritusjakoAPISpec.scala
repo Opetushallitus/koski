@@ -2,11 +2,11 @@ package fi.oph.koski.api.misc
 
 import fi.oph.koski.documentation.ExamplesTaiteenPerusopetus.PäätasonSuoritus.Koulutusmoduuli
 import fi.oph.koski.documentation.ExamplesTaiteenPerusopetus.varsinaisSuomenKansanopisto
-import fi.oph.koski.documentation.YleissivistavakoulutusExampleData.jyväskylänNormaalikoulu
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
 import fi.oph.koski.http.{ErrorMatcher, KoskiErrorCategory}
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.log.{AccessLogTester, AuditLogTester}
+import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.schema.KoskiSchema.strictDeserialization
 import fi.oph.koski.schema._
 import fi.oph.koski.servlet.SuoritusjakoReadRequest
@@ -119,7 +119,7 @@ class SuoritusjakoAPISpec extends AnyFreeSpec with SuoritusjakoTestMethods with 
         val ahvenanmaanOppilas = KoskiSpecificMockOppijat.ahvenanmaanPerusoppilas.hetu.get
         lazy val secret = {
           val json =
-            s"""[{"oppilaitosOid":"${jyväskylänNormaalikoulu.oid}","suorituksenTyyppi":"ahvenanmaanperusopetuksenoppimaara","koulutusmoduulinTunniste":"201101"}]"""
+            s"""[{"oppilaitosOid":"${MockOrganisaatiot.övernäsSkola}","suorituksenTyyppi":"ahvenanmaanperusopetuksenoppimaara","koulutusmoduulinTunniste":"201101"}]"""
           createSuoritusjako(json, ahvenanmaanOppilas) {
             verifyResponseStatusOk()
             JsonSerializer.parse[Suoritusjako](response.body).secret

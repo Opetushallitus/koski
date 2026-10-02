@@ -3,9 +3,10 @@ package fi.oph.koski.api.oppijavalidation
 import com.typesafe.config.ConfigFactory
 import fi.oph.koski.{KoskiApplicationForTests, KoskiHttpSpec}
 import fi.oph.koski.api.misc.PutOpiskeluoikeusTestMethods
-import fi.oph.koski.documentation.AhvenanmaanPerusopetusExampleData
+import fi.oph.koski.documentation.{AhvenanmaanPerusopetusExampleData, ExamplesAikuistenPerusopetus, ExamplesPerusopetukseenValmistavaOpetus, ExamplesPerusopetuksenLisaopetus, PerusopetusExampleData}
 import fi.oph.koski.documentation.ExampleData.{opiskeluoikeusLäsnä, ruotsinKieli}
 import fi.oph.koski.documentation.PerusopetusExampleData.suoritustapaErityinenTutkinto
+import fi.oph.koski.documentation.YleissivistavakoulutusExampleData.jyväskylänNormaalikoulu
 import fi.oph.koski.eperusteetvalidation.{EPerusteetFiller, EPerusteisiinPerustuvaValidator}
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
 import fi.oph.koski.http.KoskiErrorCategory
@@ -109,6 +110,67 @@ class OppijaValidationAhvenanmaanPerusopetusSpec
       aikuistenResult.swap.toOption.get should equal(
         KoskiErrorCategory.notImplemented("Päätason suorituksen luokka AhvenanmaanAikuistenPerusopetuksenOppimääränSuoritus ei ole käytössä tässä ympäristössä")
       )
+    }
+  }
+
+  "Oppilaitoksen kotipaikan on oltava Ahvenanmaalla" - {
+    val mannersuomalaisellaToimipisteellä = defaultOpiskeluoikeus.copy(
+      suoritukset = defaultOpiskeluoikeus.suoritukset.map {
+        case s: AhvenanmaanPerusopetuksenVuosiluokanSuoritus => s.copy(toimipiste = jyväskylänNormaalikoulu)
+        case s: AhvenanmaanPerusopetuksenOppimääränSuoritus => s.copy(toimipiste = jyväskylänNormaalikoulu)
+        case s => s
+      }
+    )
+
+    "manner-suomalainen oppilaitos" in {
+      setupOppijaWithOpiskeluoikeus(mannersuomalaisellaToimipisteellä.copy(oppilaitos = Some(jyväskylänNormaalikoulu))) {
+        verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.organisaatio.eiAhvenanmaalainenOppilaitos())
+      }
+    }
+
+    "toimipisteestä päätelty manner-suomalainen oppilaitos" in {
+      setupOppijaWithOpiskeluoikeus(mannersuomalaisellaToimipisteellä.copy(oppilaitos = None)) {
+        verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.organisaatio.eiAhvenanmaalainenOppilaitos())
+      }
+    }
+  }
+
+  "Ahvenanmaalaiseen oppilaitokseen ei voi tallentaa manner-Suomen perusopetusta" - {
+    def ahvenanmaalaisessaOppilaitoksessa(oo: KoskeenTallennettavaOpiskeluoikeus): KoskeenTallennettavaOpiskeluoikeus = {
+      val övernäsSkola = AhvenanmaanPerusopetusExampleData.övernäsSkola
+      oo.withSuoritukset(oo.suoritukset.map(Suoritus.toimipisteetTraversal.modify(_)(_ => övernäsSkola)))
+        .withOppilaitos(övernäsSkola)
+    }
+
+    "perusopetus" in {
+      setupOppijaWithOpiskeluoikeus(ahvenanmaalaisessaOppilaitoksessa(PerusopetusExampleData.päättötodistusOpiskeluoikeus())) {
+        verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.organisaatio.ahvenanmaalainenOppilaitos())
+      }
+    }
+
+    "toimipisteestä päätelty ahvenanmaalainen oppilaitos" in {
+      val perusopetus = PerusopetusExampleData.päättötodistusOpiskeluoikeus(toimipiste = AhvenanmaanPerusopetusExampleData.övernäsSkola)
+      setupOppijaWithOpiskeluoikeus(perusopetus.copy(oppilaitos = None)) {
+        verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.organisaatio.ahvenanmaalainenOppilaitos())
+      }
+    }
+
+    "perusopetuksen lisäopetus" in {
+      setupOppijaWithOpiskeluoikeus(ahvenanmaalaisessaOppilaitoksessa(ExamplesPerusopetuksenLisaopetus.lisäopetuksenOpiskeluoikeus)) {
+        verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.organisaatio.ahvenanmaalainenOppilaitos())
+      }
+    }
+
+    "aikuisten perusopetus" in {
+      setupOppijaWithOpiskeluoikeus(ahvenanmaalaisessaOppilaitoksessa(ExamplesAikuistenPerusopetus.aikuistenPerusopetuksenOpiskeluoikeusAlkuvaiheineenValmistunutVanhanOppivelvollisuuslainAikana)) {
+        verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.organisaatio.ahvenanmaalainenOppilaitos())
+      }
+    }
+
+    "perusopetukseen valmistavan opetuksen voi tallentaa" in {
+      setupOppijaWithOpiskeluoikeus(ahvenanmaalaisessaOppilaitoksessa(ExamplesPerusopetukseenValmistavaOpetus.perusopetukseenValmistavaOpiskeluoikeus)) {
+        verifyResponseStatusOk()
+      }
     }
   }
 

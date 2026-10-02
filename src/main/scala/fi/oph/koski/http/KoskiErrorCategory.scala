@@ -60,6 +60,8 @@ object KoskiErrorCategory {
         val koulutustoimijaPakollinen = subcategory("koulutustoimijaPakollinen", "Koulutustoimijaa ei voi yksiselitteisesti päätellä.")
         val oppilaitosPuuttuu = subcategory("oppilaitosPuuttuu", "Oppilaitos puuttuu")
         val oppilaitoksenVaihto = subcategory("oppilaitoksenVaihto", "Oppilaitoksen vaihtaminen ei ole sallittua")
+        val eiAhvenanmaalainenOppilaitos = subcategory("eiAhvenanmaalainenOppilaitos", "Ahvenanmaan perusopetuksen opiskeluoikeuden voi tallentaa vain oppilaitokseen, jonka kotipaikka on ahvenanmaalainen kunta")
+        val ahvenanmaalainenOppilaitos = subcategory("ahvenanmaalainenOppilaitos", "Perusopetuksen, perusopetuksen lisäopetuksen tai aikuisten perusopetuksen opiskeluoikeutta ei voi tallentaa oppilaitokseen, jonka kotipaikka on ahvenanmaalainen kunta. Käytä Ahvenanmaan perusopetuksen opiskeluoikeutta.")
       }
       val organisaatio = new Organisaatio
 
