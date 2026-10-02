@@ -8,10 +8,7 @@
   },
   "type": "module",
   "scripts": {
-    "build": "tsc",
     "generate-certs": "./testca/generate-certs.sh",
-    "start": "../scripts/start-node-sample.sh",
-    "start:prod": "node dist/index.js",
     "start:alb-proxy": "../scripts/start-alb-proxy.sh",
     "start:node-sample": "../scripts/start-node-sample.sh",
     "start:java-sample": "../scripts/start-java-sample.sh",
