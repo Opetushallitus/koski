@@ -84,7 +84,7 @@ export const getExpectedRowCount = (displayValues: string) =>
 
 export const waitTableLoadingHasFinished = async (tableSelector: string) => {
   const selector = `${tableSelector} .spinner`
-  eventually(async () => {
+  await eventually(async () => {
     expect((await driver.findElements(By.css(selector))).length).toEqual(0)
   })
 }
