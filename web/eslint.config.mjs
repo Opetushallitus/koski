@@ -32,6 +32,7 @@ export default [
   { ...mochaPlugin.configs.recommended, files: ['test/**/*'] },
   ...tseslint.configs.recommended,
   {
+    files: ['**/*.{js,jsx,ts,tsx}'],
     languageOptions: {
       globals: {
         ...globals.browser,
