@@ -38,7 +38,18 @@ module.exports = (_, argv = {}) => ({
   },
   stats: 'normal',
   resolve: {
-    extensions: ['.js', '.jsx', '.ts', '.tsx']
+    extensions: ['.js', '.jsx', '.ts', '.tsx'],
+    alias: {
+      // Teema samasta highlight.js-versiosta, jota react-highlight käyttää
+      'highlight.js/styles': path.join(
+        path.dirname(
+          require.resolve('highlight.js/package.json', {
+            paths: [path.dirname(require.resolve('react-highlight'))]
+          })
+        ),
+        'styles'
+      )
+    }
   },
   module: {
     rules: [
@@ -70,6 +81,11 @@ module.exports = (_, argv = {}) => ({
         }
       },
       {
+        test: /\.woff2$/,
+        type: 'asset/resource',
+        generator: { filename: 'fonts/[name].[contenthash:8][ext]' }
+      },
+      {
         test: /\.less$/,
         use: [
           {
@@ -77,7 +93,12 @@ module.exports = (_, argv = {}) => ({
           },
           {
             loader: 'css-loader',
-            options: { url: false }
+            options: {
+              url: {
+                filter: (url) =>
+                  !url.startsWith('/') && !url.startsWith('data:')
+              }
+            }
           },
           {
             loader: 'postcss-loader',

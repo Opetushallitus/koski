@@ -32,10 +32,8 @@ class StaticPagesSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers {
   "No directory browsing" in {
     get("js/") { verifyResponseStatusOk(403) }
     get("css/") { verifyResponseStatusOk(403) }
-    get("external_css/") { verifyResponseStatusOk(403) }
     get("js") { verifyResponseStatusOk(302) }
     get("css") { verifyResponseStatusOk(302) }
-    get("external_css") { verifyResponseStatusOk(302) }
   }
 
   "Documentation" in {
