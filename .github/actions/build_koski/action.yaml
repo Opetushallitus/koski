@@ -9,12 +9,12 @@ runs:
   steps:
     - name: Lookup existing target dir cache
       id: lookup
-      uses: actions/cache/restore@2c8a9bd7457de244a408f35966fab2fb45fda9c8 # v6
+      uses: actions/cache/restore@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
       with:
         path: target/
         key: ${{ runner.os }}-target-${{ inputs.commithash }}
         lookup-only: "true"
-    - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7
+    - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       if: steps.lookup.outputs.cache-hit != 'true'
       with:
         ref: ${{ inputs.commithash }}
@@ -39,7 +39,7 @@ runs:
       shell: bash
     - name: Cache target dir
       if: steps.lookup.outputs.cache-hit != 'true'
-      uses: actions/cache/save@2c8a9bd7457de244a408f35966fab2fb45fda9c8 # v6
+      uses: actions/cache/save@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
       with:
         path: target/
         key: ${{ runner.os }}-target-${{ inputs.commithash }}
