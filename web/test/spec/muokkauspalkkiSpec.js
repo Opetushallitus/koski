@@ -10,8 +10,6 @@ describe('Muokkauspalkki', function () {
   var page = KoskiPage()
   var auth = Authentication()
   describe('Näkyvyys', function () {
-    beforeEach(auth.login())
-
     before(
       auth.login(),
       page.openPage,

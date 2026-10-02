@@ -156,7 +156,7 @@ describe('Koski', function () {
   })
 
   describe('Sivun latauksessa ei tapahdu virheitä', function () {
-    before(Authentication().login())
+    before(Authentication().login(), page.openPage)
 
     it('ok', function () {
       expect(page.getErrorMessage()).to.equal('')
