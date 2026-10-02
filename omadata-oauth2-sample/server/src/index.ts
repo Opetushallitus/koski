@@ -4,7 +4,6 @@ import helmet from 'helmet'
 import RateLimit from 'express-rate-limit'
 import openidApiTest from './apiroutes/openid-api-test.js'
 import healthCheck from './apiroutes/healthcheck.js'
-import bodyParser from 'body-parser'
 import { log } from './util/log.js'
 
 const app: Application = express()
@@ -22,7 +21,7 @@ app.use(limiter)
 
 app.use(helmet())
 
-app.use(bodyParser.urlencoded({ extended: false }))
+app.use(express.urlencoded({ extended: false }))
 
 const staticFilesPath = path.resolve('./public')
 const indexFilePath = path.join(staticFilesPath, 'index.html')
