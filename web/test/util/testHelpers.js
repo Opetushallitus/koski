@@ -187,6 +187,12 @@ function reloadTestFrame() {
   testFrame().document.location.reload()
 }
 
+function closeTestFrame() {
+  // The test frame cannot be removed, because openPage opens the page by replacing it.
+  // Replace it with an empty one instead.
+  $('#testframe').replaceWith("<iframe id='testframe'></iframe>")
+}
+
 function goBack() {
   testFrame().history.back()
 }
