@@ -290,11 +290,10 @@ const SuoritusColumn = {
     </th>
   ),
   renderData: ({ model, onExpand, expandable, expanded }) => {
-    const näytäKesken = !suoritusValmis(model) && !isKorkeakouluSuoritus(model)
     const suoritusTitle = (
       <span>
         {modelTitle(model, 'koulutusmoduuli')}
-        {näytäKesken && (
+        {!suoritusValmis(model) && !isKorkeakouluSuoritus(model) && (
           <span className="kesken">{` (${t('Suoritus kesken')})`}</span>
         )}
       </span>
