@@ -43,7 +43,6 @@
     "uuid": "14.0.2"
   },
   "devDependencies": {
-    "@aws-sdk/types": "3.974.6",
     "@eslint/compat": "2.1.1",
     "@eslint/js": "9.39.5",
     "@playwright/test": "1.63.0",

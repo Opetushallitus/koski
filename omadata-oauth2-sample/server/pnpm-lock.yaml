@@ -33,9 +33,6 @@ importers:
         specifier: 14.0.2
         version: 14.0.2
     devDependencies:
-      '@aws-sdk/types':
-        specifier: 3.974.6
-        version: 3.974.6
       '@eslint/compat':
         specifier: 2.1.1
         version: 2.1.1(eslint@9.39.5)
