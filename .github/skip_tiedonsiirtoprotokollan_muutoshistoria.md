@@ -22,3 +22,4 @@ TOR-2587 - lisätty Ahvenanmaan skeematiedostoon kommentti siitä, että validaa
 TOR-2706 - muutettu vain skeeman kentän kuvausta; ei muutosta skeeman rakenteeseen tai tiedonsiirtoprotokollaan.
 TOR-1315 - lisätty funktio, ei muutoksia skeemaan
 TOR-2759 - korjattu kovakoodattua ammatillisen yhteisten tutkinnon osien listaa, ei muutoksia skeemaan
+TOR-2758 - lisätty skeemaan Virta-lähdeannotaatiot (@VirtaSource/@VirtaDerived/@VirtaNote) ja VirtaVirhe.tyyppi-kenttien @EnumValue; dokumentaatiota, ei muutosta tiedonsiirtoprotokollaan
