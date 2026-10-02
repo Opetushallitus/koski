@@ -121,8 +121,6 @@ case class OrganisaatioPalveluOrganisaatio(
     }
 }
 
-case class OrganisaatioTyyppiHakuTulos(organisaatiot: List[OrganisaatioPalveluOrganisaatioTyyppi])
-case class OrganisaatioPalveluOrganisaatioTyyppi(oid: String, nimi: Map[String, String], organisaatiotyypit: List[String], oppilaitostyyppi: Option[String], children: List[OrganisaatioPalveluOrganisaatio])
 case class OrganisaationNimihakuTulos(nimi: Map[String, String], alkuPvm: LocalDate)
 
 case class OrganisaatioPalveluOrganisaatioV3(oid: String, nimi: Map[String, String], parentOid: Option[String], status: String, yhteystiedot: List[YhteystietoV3], yhteystietoArvos: List[YhteystietoArvoV3])

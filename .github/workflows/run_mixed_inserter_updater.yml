@@ -13,6 +13,7 @@ env:
   KOSKI_USER: ${{ secrets.KOSKI_USER_USERNAME }}
   KOSKI_PASS: ${{ secrets.KOSKI_USER_PASSWORD }}
   KOSKI_BASE_URL: https://koski.testiopintopolku.fi/koski
+  VIRKAILIJA: https://virkailija.testiopintopolku.fi
 
 jobs:
   run:
