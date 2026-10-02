@@ -1,33 +1,12 @@
-import path from 'node:path'
-import { fileURLToPath } from 'node:url'
 import js from '@eslint/js'
-import tseslint from '@typescript-eslint/eslint-plugin'
-import tsParser from '@typescript-eslint/parser'
+import { defineConfig } from 'eslint/config'
+import tseslint from 'typescript-eslint'
 import eslintConfigPrettier from 'eslint-config-prettier'
 
-const tsconfigRootDir = path.dirname(fileURLToPath(import.meta.url))
-
-const tsRules = tseslint.configs['flat/recommended'].map((config) => ({
-  ...config,
-  files: ['**/*.ts'],
-  languageOptions: {
-    ...config.languageOptions,
-    parser: tsParser,
-    parserOptions: {
-      ...config.languageOptions?.parserOptions,
-      tsconfigRootDir
-    }
-  },
-  rules: {
-    ...config.rules,
-    'no-undef': 'off'
-  }
-}))
-
-export default [
+export default defineConfig([
   { ignores: ['**/node_modules', '**/dist'] },
   js.configs.recommended,
-  eslintConfigPrettier,
-  ...tsRules,
-  { rules: { eqeqeq: 'warn' } }
-]
+  { files: ['**/*.ts'], extends: [tseslint.configs.recommended] },
+  { rules: { eqeqeq: 'warn' } },
+  eslintConfigPrettier
+])
