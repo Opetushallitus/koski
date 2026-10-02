@@ -9,8 +9,8 @@ importers:
   .:
     dependencies:
       '@aws-sdk/client-secrets-manager':
-        specifier: 3.1141.0
-        version: 3.1141.0
+        specifier: 3.1143.0
+        version: 3.1143.0
       express:
         specifier: 5.2.1
         version: 5.2.1
@@ -54,8 +54,8 @@ importers:
 
 packages:
 
-  '@aws-sdk/client-secrets-manager@3.1141.0':
-    resolution: {integrity: sha512-mFkLKLaFNLt0SqNMQEn3pPa6ZPkTgVeXegiQ+HxzIuTF4+UWtywuKykRAAZNf/xN0I4mYEdlp1ig1sv+oLfF5A==}
+  '@aws-sdk/client-secrets-manager@3.1143.0':
+    resolution: {integrity: sha512-xA6gSweqgSeYg8A0RQ2E5taCmhVxbuuVAXaJCiHRpuVsM/rj2apDJV3gBndlpBiPLwqlXbfZQj1MYLisrhDKZQ==}
     engines: {node: '>=20.0.0'}
 
   '@aws-sdk/core@3.978.1':
@@ -891,7 +891,7 @@ packages:
 
 snapshots:
 
-  '@aws-sdk/client-secrets-manager@3.1141.0':
+  '@aws-sdk/client-secrets-manager@3.1143.0':
     dependencies:
       '@aws-sdk/core': 3.978.1
       '@aws-sdk/credential-provider-node': 3.972.84
