@@ -1,0 +1,109 @@
+{
+  "codesGroupUri": "haunkoodistot",
+  "codesVersions": [],
+  "includesCodes": [
+    {
+      "codesUri": "koulutustyyppi",
+      "codesVersion": 1,
+      "passive": true,
+      "nimi": {
+        "FI": "koulutustyyppi",
+        "SV": "koulutustyyppi",
+        "EN": "koulutustyyppi"
+      },
+      "kuvaus": {
+        "FI": "koulutustyyppi",
+        "SV": "koulutustyyppi",
+        "EN": "koulutustyyppi"
+      }
+    },
+    {
+      "codesUri": "oppilaitostyyppi",
+      "codesVersion": 1,
+      "passive": false,
+      "nimi": {
+        "FI": "oppilaitostyyppi",
+        "SV": "läroanstaltstyp",
+        "EN": "Type of educational institution"
+      },
+      "kuvaus": {
+        "FI": "Koulutusta koskeva lainsäädäntö on uudistettu pääosin vuoden 1999 alusta. Oppilaitostyyppiluokituksen uudistuksessa on huomioitu lainsäädännön uudistus. Uudistetussa oppilaitostyyppiluokituksessa ryhmä 11 Peruskoulut sisältää aikaisemman luokituksen ryhmät: peruskoulun ala-asteen koulut, peruskoulun yläasteen koulut, peruskoulua korvaavat koulut sekä harjoittelukouluista ja muut peruskoulu-/tai lukioasteen käsittävistä kouluista vain perusopetusta antavat oppilaitokset. Uudistetun luokituksen ryhmä lukiot sisältää lukiokoulutuksen lainsäädännön muututtua lukiot ja aikuislukiot.\nAmmatillisten oppilaitosten osalta perinteiset eri alojen ammatilliset oppi-laitostyypit on yhdistetty yhdeksi ryhmäksi ammatilliset oppilaitokset. Am-matillisia erityisoppilaitoksia ovat oppilaitokset, jotka ovat tarkoitettuja opiskelijoille, joilla on vamman, sairauden tai muun syyn johdosta vaikeuk-sia selviytyä opinnoista ilman erityistoimenpiteitä. Ammatilliset erikoisoppilaitokset ovat elinkeinoelämän, useimmiten teollisuuden tai kaupan ylläpitämiä ammatillisia oppilaitoksia, joissa annetaan pääasiassa lisäkoulutusta tai tutkintoon valmentavaa koulutusta.\nMuilta osin on oppilaitostyyppiluokituksessa muutettu lähinnä vain oppilaitosten ryhmittelyn numerointia ja oppilaitostyyppien järjestystä. \nKoodistoon liittyvät tiedustelut yhteisetpalvelut@opintopolku.fi\nOpetushallitus varaa oikeuden muuttaa Opintopolun koodistoja, niissä olevia koodeja sekä niiden selitteitä ja kuvauksia.\n\nLuokitukseen on lisätty Opetushallituksen tarpeisiin oppilaitostyyppejä jota eivät ole virallisessa Tilastokeskuksen oppilaitostyyppiluokituksessa. Lisätttyjä oppilaitostyyppejä ovat 93 Muut koulutuksen järjestäjät, 91 Kirjeoppilaitokset, neuvontajärjestöt ja 67 taiteen perusopetuksen oppilaitokset (ei musiikki)",
+        "SV": "läroanstaltstyp",
+        "EN": "Type of educational institution"
+      }
+    },
+    {
+      "codesUri": "koulutustyyppi",
+      "codesVersion": 2,
+      "passive": false,
+      "nimi": {
+        "SV": "koulutustyyppi",
+        "FI": "koulutustyyppi",
+        "EN": "koulutustyyppi"
+      },
+      "kuvaus": {
+        "SV": "koulutustyyppi",
+        "FI": "Vanhan koulutustarjontapalvelun (tarjonta-service) käyttöliittymän käytössä oleva koodisto. Käytössä myös KOSKI-palvelussa",
+        "EN": "koulutustyyppi"
+      }
+    }
+  ],
+  "koodistoUri": "haunkohdejoukko",
+  "levelsWithCodes": [],
+  "lukittu": null,
+  "metadata": [
+    {
+      "kieli": "SV",
+      "nimi": "haun kohdejoukko",
+      "kuvaus": "haun kohdejoukko",
+      "kayttoohje": null,
+      "kasite": null,
+      "kohdealue": null,
+      "sitovuustaso": null,
+      "kohdealueenOsaAlue": null,
+      "toimintaymparisto": null,
+      "tarkentaaKoodistoa": null,
+      "huomioitavaKoodisto": null,
+      "koodistonLahde": null
+    },
+    {
+      "kieli": "EN",
+      "nimi": "haun kohdejoukko",
+      "kuvaus": "haun kohdejoukko",
+      "kayttoohje": null,
+      "kasite": null,
+      "kohdealue": null,
+      "sitovuustaso": null,
+      "kohdealueenOsaAlue": null,
+      "toimintaymparisto": null,
+      "tarkentaaKoodistoa": null,
+      "huomioitavaKoodisto": null,
+      "koodistonLahde": null
+    },
+    {
+      "kieli": "FI",
+      "nimi": "haun kohdejoukko",
+      "kuvaus": "haun kohdejoukko",
+      "kayttoohje": null,
+      "kasite": null,
+      "kohdealue": null,
+      "sitovuustaso": null,
+      "kohdealueenOsaAlue": null,
+      "toimintaymparisto": null,
+      "tarkentaaKoodistoa": null,
+      "huomioitavaKoodisto": null,
+      "koodistonLahde": null
+    }
+  ],
+  "omistaja": "Opetushallitus",
+  "organisaatioOid": "1.2.246.562.10.00000000001",
+  "paivittajaOid": null,
+  "paivitysPvm": "2015-06-11",
+  "resourceUri": "https://virkailija.opintopolku.fi/koodisto-service/rest/codes/haunkohdejoukko",
+  "tila": "LUONNOS",
+  "versio": 1,
+  "version": 2,
+  "voimassaAlkuPvm": "2013-01-01",
+  "voimassaLoppuPvm": null,
+  "withinCodes": []
+}

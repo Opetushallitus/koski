@@ -1,0 +1,1815 @@
+[
+  {
+    "metadata": [
+      {
+        "nimi": "Aikuiskoulutus",
+        "kuvaus": "Aikuiskoulutus",
+        "lyhytNimi": "Aikuiskoulutus",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Vuxenutbildning",
+        "kuvaus": "Vuxenutbildning",
+        "lyhytNimi": "Vuxenutbildning",
+        "kieli": "SV"
+      },
+      {
+        "nimi": null,
+        "kuvaus": null,
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [
+      {
+        "codeElementUri": "koulutustyyppi_11",
+        "codeElementVersion": 2,
+        "passive": false
+      },
+      {
+        "codeElementUri": "koulutustyyppi_11",
+        "codeElementVersion": 1,
+        "passive": true
+      },
+      {
+        "codeElementUri": "koulutustyyppi_13",
+        "codeElementVersion": 2,
+        "passive": false
+      },
+      {
+        "codeElementUri": "koulutustyyppi_13",
+        "codeElementVersion": 1,
+        "passive": true
+      },
+      {
+        "codeElementUri": "koulutustyyppi_14",
+        "codeElementVersion": 2,
+        "passive": false
+      },
+      {
+        "codeElementUri": "koulutustyyppi_14",
+        "codeElementVersion": 1,
+        "passive": true
+      },
+      {
+        "codeElementUri": "koulutustyyppi_12",
+        "codeElementVersion": 2,
+        "passive": false
+      },
+      {
+        "codeElementUri": "koulutustyyppi_12",
+        "codeElementVersion": 1,
+        "passive": true
+      },
+      {
+        "codeElementUri": "oppilaitostyyppi_11",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitostyyppi_12",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitostyyppi_15",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitostyyppi_19",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitostyyppi_21",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitostyyppi_22",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitostyyppi_23",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitostyyppi_24",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitostyyppi_28",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitostyyppi_29",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitostyyppi_45",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitostyyppi_46",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitostyyppi_61",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitostyyppi_62",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitostyyppi_63",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitostyyppi_64",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitostyyppi_66",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitostyyppi_99",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitostyyppi_xx",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitostyyppi_65",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitostyyppi_91",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitostyyppi_92",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitostyyppi_93",
+        "codeElementVersion": 1,
+        "passive": false
+      }
+    ],
+    "levelsWithCodeElements": [],
+    "koodiUri": "haunkohdejoukko_10",
+    "versio": 1,
+    "koodiArvo": "10"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "Perusopetuksen jälkeisen koulutuksen yhteishaku",
+        "kuvaus": "Käytetään perusopetuksen jälkeisessä yhteishaussa",
+        "lyhytNimi": "Perusopetuksen jälkeisen koulutuksen yhteishaku",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Gemensam ansökan till utbildning efter grundläggande utbildning",
+        "kuvaus": "Yrkes- och gymnasieuutbildning",
+        "lyhytNimi": "Gemensam ansökan till utbildning efter grundläggande utbildning",
+        "kieli": "SV"
+      },
+      {
+        "nimi": null,
+        "kuvaus": null,
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [
+      {
+        "codeElementUri": "koulutustyyppi_2",
+        "codeElementVersion": 2,
+        "passive": false
+      },
+      {
+        "codeElementUri": "koulutustyyppi_2",
+        "codeElementVersion": 1,
+        "passive": true
+      },
+      {
+        "codeElementUri": "koulutustyyppi_1",
+        "codeElementVersion": 2,
+        "passive": false
+      },
+      {
+        "codeElementUri": "koulutustyyppi_1",
+        "codeElementVersion": 1,
+        "passive": true
+      },
+      {
+        "codeElementUri": "koulutustyyppi_26",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitostyyppi_11",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitostyyppi_12",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitostyyppi_15",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitostyyppi_19",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitostyyppi_21",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitostyyppi_22",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitostyyppi_23",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitostyyppi_24",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitostyyppi_28",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitostyyppi_29",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitostyyppi_45",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitostyyppi_46",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitostyyppi_61",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitostyyppi_62",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitostyyppi_63",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitostyyppi_64",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitostyyppi_66",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitostyyppi_99",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitostyyppi_xx",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitostyyppi_65",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitostyyppi_91",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitostyyppi_92",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitostyyppi_93",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "koulutustyyppi_10",
+        "codeElementVersion": 2,
+        "passive": false
+      },
+      {
+        "codeElementUri": "koulutustyyppi_41",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "koulutustyyppi_40",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "koulutustyyppi_5",
+        "codeElementVersion": 2,
+        "passive": false
+      }
+    ],
+    "levelsWithCodeElements": [],
+    "koodiUri": "haunkohdejoukko_11",
+    "versio": 1,
+    "koodiArvo": "11"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "Korkeakoulutus",
+        "kuvaus": "Korkeakoulutus",
+        "lyhytNimi": "Korkeakoulutus",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Högskoleutbildning",
+        "kuvaus": "Högskoleutbildning",
+        "lyhytNimi": "Högskoleutbildning",
+        "kieli": "SV"
+      },
+      {
+        "nimi": null,
+        "kuvaus": null,
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [
+      {
+        "codeElementUri": "koulutustyyppi_3",
+        "codeElementVersion": 2,
+        "passive": false
+      },
+      {
+        "codeElementUri": "koulutustyyppi_3",
+        "codeElementVersion": 1,
+        "passive": true
+      },
+      {
+        "codeElementUri": "oppilaitostyyppi_62",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitostyyppi_41",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitostyyppi_42",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitostyyppi_43",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitostyyppi_63",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitostyyppi_64",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitostyyppi_66",
+        "codeElementVersion": 1,
+        "passive": false
+      }
+    ],
+    "levelsWithCodeElements": [],
+    "koodiUri": "haunkohdejoukko_12",
+    "versio": 1,
+    "koodiArvo": "12"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "Täydennyskoulutus",
+        "kuvaus": "Täydennyskoulutus",
+        "lyhytNimi": "Täydennyskoulutus",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Fortbildning",
+        "kuvaus": "Fortbildning",
+        "lyhytNimi": "Fortbildning",
+        "kieli": "SV"
+      },
+      {
+        "nimi": null,
+        "kuvaus": null,
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [
+      {
+        "codeElementUri": "oppilaitostyyppi_11",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitostyyppi_12",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitostyyppi_15",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitostyyppi_19",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitostyyppi_21",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitostyyppi_22",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitostyyppi_23",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitostyyppi_24",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitostyyppi_28",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitostyyppi_29",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitostyyppi_45",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitostyyppi_46",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitostyyppi_61",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitostyyppi_62",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitostyyppi_63",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitostyyppi_64",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitostyyppi_66",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitostyyppi_99",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitostyyppi_xx",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitostyyppi_65",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitostyyppi_91",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitostyyppi_92",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitostyyppi_93",
+        "codeElementVersion": 1,
+        "passive": false
+      }
+    ],
+    "levelsWithCodeElements": [],
+    "koodiUri": "haunkohdejoukko_13",
+    "versio": 1,
+    "koodiArvo": "13"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "Vapaa sivistyö",
+        "kuvaus": "Vapaa sivistyö",
+        "lyhytNimi": "Vapaa sivistyö",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Fritt bildningsarbete",
+        "kuvaus": "Fritt bildningsarbete",
+        "lyhytNimi": "Fritt bildningsarbete",
+        "kieli": "SV"
+      },
+      {
+        "nimi": null,
+        "kuvaus": null,
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [
+      {
+        "codeElementUri": "oppilaitostyyppi_11",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitostyyppi_12",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitostyyppi_15",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitostyyppi_19",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitostyyppi_21",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitostyyppi_22",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitostyyppi_23",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitostyyppi_24",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitostyyppi_28",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitostyyppi_29",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitostyyppi_45",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitostyyppi_46",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitostyyppi_61",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitostyyppi_62",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitostyyppi_63",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitostyyppi_64",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitostyyppi_66",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitostyyppi_99",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitostyyppi_xx",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitostyyppi_65",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitostyyppi_91",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitostyyppi_92",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitostyyppi_93",
+        "codeElementVersion": 1,
+        "passive": false
+      }
+    ],
+    "levelsWithCodeElements": [],
+    "koodiUri": "haunkohdejoukko_14",
+    "versio": 1,
+    "koodiArvo": "14"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "Ammatillinen peruskoulutus erityisopetuksena",
+        "kuvaus": "Ammatillinen peruskoulutus erityisopetuksena",
+        "lyhytNimi": "Ammatillinen peruskoulutus erityisopetuksena",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Yrkesinriktad grundexamen som ordnas som specialundervisning",
+        "kuvaus": "Yrkesinriktad grundexamen som ordnas som specialundervisning",
+        "lyhytNimi": "Yrkesinriktad grundexamen som ordnas som specialundervisning",
+        "kieli": "SV"
+      },
+      {
+        "nimi": null,
+        "kuvaus": null,
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [
+      {
+        "codeElementUri": "oppilaitostyyppi_11",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitostyyppi_12",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitostyyppi_15",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitostyyppi_19",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitostyyppi_21",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitostyyppi_22",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitostyyppi_23",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitostyyppi_24",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitostyyppi_28",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitostyyppi_29",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitostyyppi_45",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitostyyppi_46",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitostyyppi_61",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitostyyppi_62",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitostyyppi_63",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitostyyppi_64",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitostyyppi_66",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitostyyppi_99",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitostyyppi_xx",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitostyyppi_65",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitostyyppi_91",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitostyyppi_92",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitostyyppi_93",
+        "codeElementVersion": 1,
+        "passive": false
+      }
+    ],
+    "levelsWithCodeElements": [],
+    "koodiUri": "haunkohdejoukko_15",
+    "versio": 1,
+    "koodiArvo": "15"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "Valmentava ja kuntouttava koulutus",
+        "kuvaus": "Valmentava ja kuntouttava koulutus",
+        "lyhytNimi": "Valmentava ja kuntouttava koulutus",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Förberedande och rehabiliterande utbildning",
+        "kuvaus": "Förberedande och rehabiliterande utbildning",
+        "lyhytNimi": "Förberedande och rehabiliterande utbildning",
+        "kieli": "SV"
+      },
+      {
+        "nimi": null,
+        "kuvaus": null,
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [
+      {
+        "codeElementUri": "oppilaitostyyppi_11",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitostyyppi_12",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitostyyppi_15",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitostyyppi_19",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitostyyppi_21",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitostyyppi_22",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitostyyppi_23",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitostyyppi_24",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitostyyppi_28",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitostyyppi_29",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitostyyppi_45",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitostyyppi_46",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitostyyppi_61",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitostyyppi_62",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitostyyppi_63",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitostyyppi_64",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitostyyppi_66",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitostyyppi_99",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitostyyppi_xx",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitostyyppi_65",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitostyyppi_91",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitostyyppi_92",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitostyyppi_93",
+        "codeElementVersion": 1,
+        "passive": false
+      }
+    ],
+    "levelsWithCodeElements": [],
+    "koodiUri": "haunkohdejoukko_16",
+    "versio": 1,
+    "koodiArvo": "16"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "Perusopetuksen jälkeinen valmistava koulutus",
+        "kuvaus": "Perusopetuksen jälkeinen valmistava koulutus",
+        "lyhytNimi": "Perusopetuksen jälkeinen valmistava koulutus",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Handledande utbildning efter grundläggande utbildning",
+        "kuvaus": "",
+        "lyhytNimi": "Handledande utbildning efter grundläggande utbildning",
+        "kieli": "SV"
+      },
+      {
+        "nimi": null,
+        "kuvaus": null,
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [
+      {
+        "codeElementUri": "koulutustyyppi_6",
+        "codeElementVersion": 2,
+        "passive": false
+      },
+      {
+        "codeElementUri": "koulutustyyppi_6",
+        "codeElementVersion": 1,
+        "passive": true
+      },
+      {
+        "codeElementUri": "koulutustyyppi_7",
+        "codeElementVersion": 1,
+        "passive": true
+      },
+      {
+        "codeElementUri": "koulutustyyppi_8",
+        "codeElementVersion": 1,
+        "passive": true
+      },
+      {
+        "codeElementUri": "koulutustyyppi_18",
+        "codeElementVersion": 2,
+        "passive": false
+      },
+      {
+        "codeElementUri": "koulutustyyppi_18",
+        "codeElementVersion": 1,
+        "passive": true
+      },
+      {
+        "codeElementUri": "koulutustyyppi_9",
+        "codeElementVersion": 2,
+        "passive": false
+      },
+      {
+        "codeElementUri": "koulutustyyppi_9",
+        "codeElementVersion": 1,
+        "passive": true
+      },
+      {
+        "codeElementUri": "oppilaitostyyppi_11",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitostyyppi_12",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitostyyppi_15",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitostyyppi_19",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitostyyppi_21",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitostyyppi_22",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitostyyppi_23",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitostyyppi_24",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitostyyppi_28",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitostyyppi_29",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitostyyppi_45",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitostyyppi_46",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitostyyppi_61",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitostyyppi_62",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitostyyppi_63",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitostyyppi_64",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitostyyppi_66",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitostyyppi_99",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitostyyppi_xx",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitostyyppi_65",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitostyyppi_91",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitostyyppi_92",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitostyyppi_93",
+        "codeElementVersion": 1,
+        "passive": false
+      }
+    ],
+    "levelsWithCodeElements": [],
+    "koodiUri": "haunkohdejoukko_17",
+    "versio": 1,
+    "koodiArvo": "17"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "Vapaan sivistystyön koulutus",
+        "kuvaus": "Vapaan sivistystyön koulutus",
+        "lyhytNimi": "Vapaan sivistystyön koulutus",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Utbildning inom fritt bildningsarbete",
+        "kuvaus": "",
+        "lyhytNimi": "Utbildning inom fritt bildningsarbete",
+        "kieli": "SV"
+      },
+      {
+        "nimi": null,
+        "kuvaus": null,
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [
+      {
+        "codeElementUri": "koulutustyyppi_10",
+        "codeElementVersion": 2,
+        "passive": false
+      },
+      {
+        "codeElementUri": "koulutustyyppi_10",
+        "codeElementVersion": 1,
+        "passive": true
+      },
+      {
+        "codeElementUri": "oppilaitostyyppi_11",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitostyyppi_12",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitostyyppi_15",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitostyyppi_19",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitostyyppi_21",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitostyyppi_22",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitostyyppi_23",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitostyyppi_24",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitostyyppi_28",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitostyyppi_29",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitostyyppi_45",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitostyyppi_46",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitostyyppi_61",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitostyyppi_62",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitostyyppi_63",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitostyyppi_64",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitostyyppi_66",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitostyyppi_99",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitostyyppi_xx",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitostyyppi_65",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitostyyppi_91",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitostyyppi_92",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitostyyppi_93",
+        "codeElementVersion": 1,
+        "passive": false
+      }
+    ],
+    "levelsWithCodeElements": [],
+    "koodiUri": "haunkohdejoukko_18",
+    "versio": 1,
+    "koodiArvo": "18"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "Aikuisten perusopetus",
+        "kuvaus": "",
+        "lyhytNimi": "",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Grundläggande utbildning för vuxna",
+        "kuvaus": "",
+        "lyhytNimi": "",
+        "kieli": "SV"
+      },
+      {
+        "nimi": null,
+        "kuvaus": null,
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [
+      {
+        "codeElementUri": "koulutustyyppi_17",
+        "codeElementVersion": 2,
+        "passive": false
+      },
+      {
+        "codeElementUri": "koulutustyyppi_17",
+        "codeElementVersion": 1,
+        "passive": true
+      },
+      {
+        "codeElementUri": "oppilaitostyyppi_11",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitostyyppi_12",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitostyyppi_15",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitostyyppi_19",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitostyyppi_21",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitostyyppi_22",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitostyyppi_23",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitostyyppi_24",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitostyyppi_28",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitostyyppi_29",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitostyyppi_45",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitostyyppi_46",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitostyyppi_61",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitostyyppi_62",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitostyyppi_63",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitostyyppi_64",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitostyyppi_66",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitostyyppi_99",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitostyyppi_xx",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitostyyppi_65",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitostyyppi_91",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitostyyppi_92",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitostyyppi_93",
+        "codeElementVersion": 1,
+        "passive": false
+      }
+    ],
+    "levelsWithCodeElements": [],
+    "koodiUri": "haunkohdejoukko_19",
+    "versio": 1,
+    "koodiArvo": "19"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "Erityisopetuksena järjestettävä ammatillinen koulutus",
+        "kuvaus": "Erityisopetuksena järjestettävä ammatillinen koulutus",
+        "lyhytNimi": "Erityisopetuksena järjestettävä ammatillinen koulutus",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Yrkesutbildning med specialundervisning",
+        "kuvaus": "Yrkesutbildning med specialundervisning",
+        "lyhytNimi": "Yrkesutbildning med specialundervisning",
+        "kieli": "SV"
+      },
+      {
+        "nimi": null,
+        "kuvaus": null,
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [
+      {
+        "codeElementUri": "koulutustyyppi_5",
+        "codeElementVersion": 2,
+        "passive": false
+      },
+      {
+        "codeElementUri": "koulutustyyppi_5",
+        "codeElementVersion": 1,
+        "passive": true
+      },
+      {
+        "codeElementUri": "koulutustyyppi_19",
+        "codeElementVersion": 2,
+        "passive": false
+      },
+      {
+        "codeElementUri": "koulutustyyppi_19",
+        "codeElementVersion": 1,
+        "passive": true
+      },
+      {
+        "codeElementUri": "koulutustyyppi_4",
+        "codeElementVersion": 2,
+        "passive": false
+      },
+      {
+        "codeElementUri": "koulutustyyppi_4",
+        "codeElementVersion": 1,
+        "passive": true
+      },
+      {
+        "codeElementUri": "oppilaitostyyppi_11",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitostyyppi_12",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitostyyppi_15",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitostyyppi_19",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitostyyppi_21",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitostyyppi_22",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitostyyppi_23",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitostyyppi_24",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitostyyppi_28",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitostyyppi_29",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitostyyppi_45",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitostyyppi_46",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitostyyppi_61",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitostyyppi_62",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitostyyppi_63",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitostyyppi_64",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitostyyppi_66",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitostyyppi_99",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitostyyppi_xx",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitostyyppi_65",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitostyyppi_91",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitostyyppi_92",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitostyyppi_93",
+        "codeElementVersion": 1,
+        "passive": false
+      }
+    ],
+    "levelsWithCodeElements": [],
+    "koodiUri": "haunkohdejoukko_20",
+    "versio": 1,
+    "koodiArvo": "20"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "Yhteishaun ulkopuolinen lukiokoulutus",
+        "kuvaus": "Yhteishaun ulkopuolinen lukiokoulutus",
+        "lyhytNimi": "Yhteishaun ulkopuolinen lukiokoulutus",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Gymnasieutbildning utanför gemensamma ansökan",
+        "kuvaus": "",
+        "lyhytNimi": "",
+        "kieli": "SV"
+      },
+      {
+        "nimi": null,
+        "kuvaus": null,
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [
+      {
+        "codeElementUri": "koulutustyyppi_21",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitostyyppi_19",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitostyyppi_15",
+        "codeElementVersion": 1,
+        "passive": false
+      }
+    ],
+    "levelsWithCodeElements": [],
+    "koodiUri": "haunkohdejoukko_21",
+    "versio": 1,
+    "koodiArvo": "21"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "Pelastusalan koulutus",
+        "kuvaus": "",
+        "lyhytNimi": "",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Utbildning inom räddningsbranschen",
+        "kuvaus": "",
+        "lyhytNimi": "",
+        "kieli": "SV"
+      },
+      {
+        "nimi": null,
+        "kuvaus": null,
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [
+      {
+        "codeElementUri": "oppilaitostyyppi_28",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "koulutustyyppi_24",
+        "codeElementVersion": 1,
+        "passive": false
+      }
+    ],
+    "levelsWithCodeElements": [],
+    "koodiUri": "haunkohdejoukko_22",
+    "versio": 1,
+    "koodiArvo": "22"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "Ammatillinen koulutus",
+        "kuvaus": "Käytetään Kouta",
+        "lyhytNimi": "",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Yrkesinriktad utbildning",
+        "kuvaus": "",
+        "lyhytNimi": "",
+        "kieli": "SV"
+      },
+      {
+        "nimi": null,
+        "kuvaus": null,
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "haunkohdejoukko_23",
+    "versio": 1,
+    "koodiArvo": "23"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "Lukiokoulutus",
+        "kuvaus": "Käytetään kouta",
+        "lyhytNimi": "",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Gymnasieutbildning",
+        "kuvaus": "",
+        "lyhytNimi": "",
+        "kieli": "SV"
+      },
+      {
+        "nimi": null,
+        "kuvaus": null,
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "haunkohdejoukko_24",
+    "versio": 1,
+    "koodiArvo": "24"
+  }
+]

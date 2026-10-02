@@ -19,7 +19,9 @@ class OpiskelijavalintatietoConverterSpec extends AnyFreeSpec with TestEnvironme
     val hakemus = result.hakemukset.head
     hakemus.hakemusOid shouldBe "1.2.246.562.11.00000000000001049800"
     hakemus.haunKohdejoukko.map(k => (k.koodistoUri, k.koodiarvo)) shouldBe Some(("haunkohdejoukko", "12"))
+    hakemus.haunKohdejoukko.flatMap(_.nimi).map(_.get("fi")) shouldBe Some("Korkeakoulutus")
     hakemus.hakutapa.map(k => (k.koodistoUri, k.koodiarvo)) shouldBe Some(("hakutapa", "01"))
+    hakemus.hakutapa.flatMap(_.nimi).map(_.get("fi")) shouldBe Some("Yhteishaku")
     hakemus.haku.oid shouldBe "1.2.246.562.29.00000000000000005467"
     hakemus.haku.nimi.get("fi") shouldBe "Yhteishaku kevät 2024"
     hakemus.haku.nimi.get("sv") shouldBe "Gemensam ansökan våren 2024"
@@ -31,7 +33,8 @@ class OpiskelijavalintatietoConverterSpec extends AnyFreeSpec with TestEnvironme
     hakutoive.hakukohde.nimi.get("fi") shouldBe "Tietotekniikan koulutusohjelma"
     hakutoive.tarjoaja.map(_.oid) shouldBe Some("1.2.246.562.10.42160341923")
     hakutoive.tarjoaja.map(_.nimi.get("fi")) shouldBe Some("Esimerkkioppilaitos")
-    hakutoive.koulutuksenAlkamiskausi.map(k => (k.koodistoUri, k.koodiarvo)) shouldBe Some(("kausi", "s"))
+    hakutoive.koulutuksenAlkamiskausi.map(k => (k.koodistoUri, k.koodiarvo)) shouldBe Some(("kausi", "S"))
+    hakutoive.koulutuksenAlkamiskausi.flatMap(_.nimi).map(_.get("fi")) shouldBe Some("Syksy")
     hakutoive.koulutuksenAlkamisvuosi shouldBe Some("2024")
     hakutoive.valinnanTila.map(k => (k.koodistoUri, k.koodiarvo)) shouldBe Some(("omadatavalinnantila", "hyvaksytty"))
     hakutoive.vastaanotonTila.map(k => (k.koodistoUri, k.koodiarvo)) shouldBe Some(("omadatavastaanotontila", "vastaanottanutsitovasti"))
@@ -39,9 +42,19 @@ class OpiskelijavalintatietoConverterSpec extends AnyFreeSpec with TestEnvironme
     hakutoive.johtaaTutkintoon shouldBe Some(true)
   }
 
-  "Heittää poikkeuksen virheellisestä koodistokoodiviitteestä" in {
-    val e = the[IllegalArgumentException] thrownBy converter.convert(mockData(KoskiSpecificMockOppijat.amis.oid))
-    e.getMessage should include("INVALID")
+  "Täsmää koodi-URI:n kirjainkoosta riippumatta" in {
+    val data = mockData(KoskiSpecificMockOppijat.ammattilainen.oid)
+    val isollaKirjaimella = data.copy(hakemukset = data.hakemukset.map(h =>
+      h.copy(hakutoiveet = h.hakutoiveet.map(_.copy(koulutuksenAlkamiskausiUri = Some("kausi_S#1"))))
+    ))
+
+    val hakutoive = converter.convert(isollaKirjaimella).hakemukset.head.hakutoiveet.head
+    hakutoive.koulutuksenAlkamiskausi.map(k => (k.koodistoUri, k.koodiarvo)) shouldBe Some(("kausi", "S"))
+  }
+
+  "Heittää poikkeuksen koodista, jota ei löydy koodistosta" in {
+    val e = the[InvalidRequestException] thrownBy converter.convert(mockData(KoskiSpecificMockOppijat.amis.oid))
+    e.getMessage should include("haunkohdejoukko/INVALID")
   }
 
   "Heittää poikkeuksen tuntemattomasta tila-arvosta" in {

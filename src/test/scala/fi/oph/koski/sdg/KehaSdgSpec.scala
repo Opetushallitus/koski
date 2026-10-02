@@ -269,7 +269,7 @@ class KehaSdgSpec
         hakutoive.hakukohde.oid shouldBe "1.2.246.562.20.00000000000000005476"
         hakutoive.hakukohde.nimi.get("fi") shouldBe "Tietotekniikan koulutusohjelma"
         hakutoive.tarjoaja.map(_.oid) shouldBe Some("1.2.246.562.10.42160341923")
-        hakutoive.koulutuksenAlkamiskausi.map(_.koodiarvo) shouldBe Some("s")
+        hakutoive.koulutuksenAlkamiskausi.map(_.koodiarvo) shouldBe Some("S")
         hakutoive.koulutuksenAlkamisvuosi shouldBe Some("2024")
         hakutoive.valinnanTila.map(_.koodiarvo) shouldBe Some("hyvaksytty")
         hakutoive.vastaanotonTila.map(_.koodiarvo) shouldBe Some("vastaanottanutsitovasti")

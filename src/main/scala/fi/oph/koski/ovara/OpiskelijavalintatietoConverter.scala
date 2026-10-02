@@ -9,8 +9,8 @@ class OpiskelijavalintatietoConverter(koodistoViitePalvelu: KoodistoViitePalvelu
       hakemukset = valintatieto.hakemukset.map { hakemus =>
         OpiskelijavalintaHakemus(
           hakemusOid = hakemus.hakemusOid,
-          haunKohdejoukko = hakemus.haunKohdejoukko.map(parseKoodistokoodiviite),
-          hakutapa = hakemus.hakutapa.map(parseKoodistokoodiviite),
+          haunKohdejoukko = hakemus.haunKohdejoukko.map(validateKoodiUri("haunkohdejoukko", _)),
+          hakutapa = hakemus.hakutapa.map(validateKoodiUri("hakutapa", _)),
           haku = OpiskelijavalintaHaku(
             oid = hakemus.haku.oid,
             nimi = ovaraNimiToLocalizedString(hakemus.haku.nimi)
@@ -19,7 +19,7 @@ class OpiskelijavalintatietoConverter(koodistoViitePalvelu: KoodistoViitePalvelu
             OpiskelijavalintaHakutoive(
               hakukohde = toOrganisaatio(hakutoive.hakukohde),
               tarjoaja = hakutoive.tarjoaja.map(toOrganisaatio),
-              koulutuksenAlkamiskausi = hakutoive.koulutuksenAlkamiskausiUri.map(parseKoodistokoodiviite),
+              koulutuksenAlkamiskausi = hakutoive.koulutuksenAlkamiskausiUri.map(validateKoodiUri("kausi", _)),
               koulutuksenAlkamisvuosi = hakutoive.koulutuksenAlkamisvuosi,
               valinnanTila = hakutoive.valinnanTila.map(validateTila("omadatavalinnantila", _)),
               vastaanotonTila = hakutoive.vastaanotonTila.map(validateTila("omadatavastaanotontila", _)),
@@ -37,16 +37,9 @@ class OpiskelijavalintatietoConverter(koodistoViitePalvelu: KoodistoViitePalvelu
   private def validateTila(koodistoUri: String, ovaraTila: String): Koodistokoodiviite =
     koodistoViitePalvelu.validateRequired(koodistoUri, ovaraTila.toLowerCase.replace("_", ""))
 
-  private def parseKoodistokoodiviite(str: String): Koodistokoodiviite = {
-    val withoutVersion = str.split("#").head
-    val lastUnderscore = withoutVersion.lastIndexOf('_')
-    if (lastUnderscore < 0) {
-      throw new IllegalArgumentException(s"Valintatiedoissa palautui tuntematon koodistokoodiviite: $str")
-    }
-    val koodistoUri = withoutVersion.substring(0, lastUnderscore)
-    val koodiarvo = withoutVersion.substring(lastUnderscore + 1)
-    Koodistokoodiviite(koodiarvo, koodistoUri)
-  }
+  // Ovara palauttaa koodit versioidun koodi-URI:n muodossa, esim. "kausi_s#1"
+  private def validateKoodiUri(koodistoUri: String, ovaraKoodiUri: String): Koodistokoodiviite =
+    koodistoViitePalvelu.validateRequiredByKoodiUri(koodistoUri, ovaraKoodiUri.split("#").head)
 
   private def ovaraNimiToLocalizedString(nimi: OvaraNimi): LocalizedString =
     LocalizedString.sanitize(Map(

@@ -1058,7 +1058,7 @@ class OmaDataOAuth2BackendSpec
           hakutoive.hakukohde.nimi.valueList should contain ("fi" -> "Tietotekniikan koulutusohjelma")
           hakutoive.tarjoaja.map(_.oid) shouldBe Some("1.2.246.562.10.42160341923")
           hakutoive.tarjoaja.map(_.nimi.valueList) shouldBe Some(List("fi" -> "Esimerkkioppilaitos"))
-          hakutoive.koulutuksenAlkamiskausi.map(_.koodiarvo) shouldBe Some("s")
+          hakutoive.koulutuksenAlkamiskausi.map(_.koodiarvo) shouldBe Some("S")
           hakutoive.koulutuksenAlkamiskausi.map(_.koodistoUri) shouldBe Some("kausi")
           hakutoive.koulutuksenAlkamisvuosi shouldBe Some("2024")
           hakutoive.valinnanTila.map(_.koodiarvo) shouldBe Some("hyvaksytty")
