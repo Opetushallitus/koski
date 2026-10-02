@@ -27,7 +27,6 @@ class StaticPagesSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers {
     get("js/koski-main.js") { verifyResponseStatusOk()}
     get("js/koski-login.js") { verifyResponseStatusOk()}
     get("test/runner.html") { verifyResponseStatusOk()}
-    get("js/codemirror/codemirror.js") { verifyResponseStatusOk()}
   }
 
   "No directory browsing" in {

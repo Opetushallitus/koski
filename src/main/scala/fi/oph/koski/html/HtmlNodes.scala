@@ -77,7 +77,6 @@ trait HtmlNodes extends KoskiSpecificBaseServlet with LanguageSupport {
     <link nonce={nonce} href="/koski/external_css/SourceSansPro.css" rel="stylesheet"/> ++
     <link nonce={nonce} href="/koski/external_css/font-awesome.min.css" rel="stylesheet" type="text/css" /> ++
     <link nonce={nonce} rel="stylesheet" type="text/css" href="/koski/external_css/highlight-js.default.min.css"/> ++
-    <link nonce={nonce} rel="stylesheet" type="text/css" href="/koski/css/codemirror/codemirror.css"/>
     <link nonce={nonce} rel="stylesheet" type="text/css" href="/koski/css/koski-oppija-raamit.css"/>
   }
 
