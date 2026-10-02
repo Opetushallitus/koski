@@ -8,7 +8,8 @@ import fi.oph.koski.henkilo.{KoskiSpecificMockOppijat, LaajatOppijaHenkilöTiedo
 import fi.oph.koski.koskiuser.KoskiMockUser
 import fi.oph.koski.localization.LocalizationReader
 import fi.oph.koski.log.AuditLogTester
-import fi.oph.koski.organisaatio.MockOrganisaatiot.{aapajoenKoulu, jyväskylänNormaalikoulu}
+import fi.oph.koski.koodisto.Kunta
+import fi.oph.koski.organisaatio.MockOrganisaatiot.{aapajoenKoulu, helsinginKaupunki, jyväskylänNormaalikoulu}
 import fi.oph.koski.raportointikanta.RaportointikantaTestMethods
 import fi.oph.koski.schema._
 import fi.oph.koski.{DirtiesFixtures, KoskiApplicationForTests}
@@ -72,6 +73,40 @@ class KotikuntalaskelmaSpec extends AnyFreeSpec with Matchers with Raportointika
 
   private def oppijanRivi(oppija: LaajatOppijaHenkilöTiedot): KotikuntalaskelmaOppijaRow =
     uudetOppijatRivit.find(_.oppijaNumero.contains(oppija.oid)).get
+
+  "Kunnan kuntalaiset muualla" - {
+    lazy val helsinkiläiset = kotikuntalaskelmaBuilder.kunnanOppijat(Kunta.helsinki, raportointipäivä, "Esiopetus")
+
+    "Kunnan organisaatio-oidista saadaan kuntakoodi" in {
+      Kunta.validateAndGetKuntaKoodi(application.organisaatioService, application.koodistoPalvelu, helsinginKaupunki) shouldBe Right(Kunta.helsinki)
+    }
+
+    "Toisen kunnan koulussa opiskelevat kuntalaiset näkyvät opiskelupaikkoineen" in {
+      val oidit = Seq(
+        KoskiSpecificMockOppijat.kotikuntalaskelmaSeitsemanKaksitoista,
+        KoskiSpecificMockOppijat.kotikuntalaskelmaKolmetoistaViisitoista,
+        KoskiSpecificMockOppijat.kotikuntalaskelmaKuusitoistaEiErityista,
+        KoskiSpecificMockOppijat.kotikuntalaskelmaEsiopetus
+      ).map(_.oid)
+
+      oidit.foreach { oid =>
+        val rivi = helsinkiläiset.find(_.oppijaNumero.contains(oid))
+        rivi.map(_.oppilaitos) shouldBe Some(Some("Aapajoen koulu"))
+        rivi.get.kotikunta shouldBe Some("Helsinki")
+      }
+    }
+
+    "Muiden kuntien asukkaat eivät näy" in {
+      helsinkiläiset.find(_.oppijaNumero.contains(KoskiSpecificMockOppijat.kotikuntalaskelmaKuusivuotias.oid)) shouldBe None
+      kotikuntalaskelmaBuilder.kunnanOppijat("851", raportointipäivä, "Esiopetus")
+        .find(_.oppijaNumero.contains(KoskiSpecificMockOppijat.kotikuntalaskelmaSeitsemanKaksitoista.oid)) shouldBe None
+    }
+
+    "Turvakiellon alaiset kuntalaiset jäävät pois" in {
+      helsinkiläiset.find(_.oppijaNumero.contains(KoskiSpecificMockOppijat.kotikuntalaskelmaTurvakielto.oid)) shouldBe None
+      helsinkiläiset.exists(_.oppijaNumero.contains("Turvakielto")) shouldBe false
+    }
+  }
 
   "Kotikuntalaskelma" - {
     "Raportti voidaan ladata ja lataaminen tuottaa auditlogin" in {

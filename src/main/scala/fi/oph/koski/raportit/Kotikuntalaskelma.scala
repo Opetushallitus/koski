@@ -74,8 +74,16 @@ case class Kotikuntalaskelma(db: DB) extends QueryMethods {
     ) kkh on true
   """
 
-  private def ehdot(oppilaitosOids: Seq[String], päivä: LocalDate): SQLActionBuilder = sql"""
-    where oo.oppilaitos_oid = any($oppilaitosOids)
+  private def oppilaitoksissa(oppilaitosOids: Seq[String]): SQLActionBuilder = sql"oo.oppilaitos_oid = any($oppilaitosOids)"
+  private def kotikunnassa(kuntakoodi: String, päivä: LocalDate): SQLActionBuilder = sql"""kkh.kotikunta = $kuntakoodi
+      and he.master_oid in (
+        select k.master_oid from r_kotikuntahistoria k
+        where k.kotikunta = $kuntakoodi
+          and coalesce(k.muutto_pvm, '1900-01-01'::date) <= $päivä
+          and (k.poismuutto_pvm >= $päivä or k.poismuutto_pvm is null))"""
+
+  private def ehdot(rajaus: SQLActionBuilder, päivä: LocalDate): SQLActionBuilder = concatMany(Some(sql"""
+    where """), Some(rajaus), Some(sql"""
       and (
         (oo.koulutusmuoto in ('perusopetus', 'esiopetus')
           and pts.suorituksen_tyyppi in ('perusopetuksenvuosiluokka', 'perusopetuksenoppimaara', 'esiopetuksensuoritus'))
@@ -97,9 +105,11 @@ case class Kotikuntalaskelma(db: DB) extends QueryMethods {
           and eaj.tila in ('lasna', 'eronnut', 'valmistunut'))
       )
       and extract(year from he.syntymaaika) between v.vuosi - 16 and v.vuosi - 6
-  """
+  """))
 
-  private def query(oppilaitosOids: Seq[String], päivä: LocalDate, hetutonTeksti: String) = concatMany(
+  private def query(oppilaitosOids: Seq[String], päivä: LocalDate, hetutonTeksti: String) = {
+    val rajaus = oppilaitoksissa(oppilaitosOids)
+    concatMany(
     Some(sql"with "),
     Some(vuosiJaLukuvuosi(päivä)),
     Some(sql"""
@@ -147,7 +157,7 @@ case class Kotikuntalaskelma(db: DB) extends QueryMethods {
       end) as yhteensa
     """),
     Some(lähteet(päivä, turvakiellollinenKotikuntahistoria)),
-    Some(ehdot(oppilaitosOids, päivä)),
+    Some(ehdot(rajaus, päivä)),
     Some(sql"""
     group by
       oo.koulutustoimija_oid,
@@ -158,6 +168,7 @@ case class Kotikuntalaskelma(db: DB) extends QueryMethods {
     order by oo.koulutustoimija_nimi, kkh.kotikunta, kkh.kotikunta is null and he.hetu is null
     """)
   )
+  }
 
   implicit private val getOppijaResult: GetResult[KotikuntalaskelmaOppijaRow] = GetResult(r =>
     KotikuntalaskelmaOppijaRow(
@@ -182,7 +193,7 @@ case class Kotikuntalaskelma(db: DB) extends QueryMethods {
   )
 
   def buildOppijat(oppilaitosOids: Seq[String], päivä: LocalDate, t: LocalizationReader)(implicit u: KoskiSpecificSession): DataSheet = {
-    val raporttiQuery = oppijaQuery(oppilaitosOids, päivä, t.get("raportti-excel-default-value-esiopetus-lyhyt")).as[KotikuntalaskelmaOppijaRow]
+    val raporttiQuery = oppijaQuery(oppilaitoksissa(oppilaitosOids), päivä, t.get("raportti-excel-default-value-esiopetus-lyhyt")).as[KotikuntalaskelmaOppijaRow]
     val rows = runDbSync(raporttiQuery, timeout = 5.minutes)
     DataSheet(
       title = t.get("raportti-excel-kotikuntalaskelma-oppijat-sheet-name"),
@@ -191,7 +202,11 @@ case class Kotikuntalaskelma(db: DB) extends QueryMethods {
     )
   }
 
-  private def oppijaQuery(oppilaitosOids: Seq[String], päivä: LocalDate, esiopetusLuokkaAste: String) = concatMany(
+  // Turvakiellon alaiset jäävät pois: julkisesta kotikuntahistoriasta puuttuvat heidän kotikuntansa
+  def kunnanOppijat(kuntakoodi: String, päivä: LocalDate, esiopetusLuokkaAste: String): Seq[KotikuntalaskelmaOppijaRow] =
+    runDbSync(oppijaQuery(kotikunnassa(kuntakoodi, päivä), päivä, esiopetusLuokkaAste).as[KotikuntalaskelmaOppijaRow], timeout = 5.minutes)
+
+  private def oppijaQuery(rajaus: SQLActionBuilder, päivä: LocalDate, esiopetusLuokkaAste: String) = concatMany(
     Some(sql"with "),
     Some(vuosiJaLukuvuosi(päivä)),
     Some(sql""",
@@ -207,7 +222,7 @@ case class Kotikuntalaskelma(db: DB) extends QueryMethods {
         pts.luokka_tai_ryhma as luokka
     """),
     Some(lähteet(päivä, julkinenKotikuntahistoria)),
-    Some(ehdot(oppilaitosOids, päivä)),
+    Some(ehdot(rajaus, päivä)),
     Some(sql"""
       order by
         he.master_oid,
@@ -248,7 +263,7 @@ case class Kotikuntalaskelma(db: DB) extends QueryMethods {
     """),
     Some(lähteet(päivä, julkinenKotikuntahistoria)),
     Some(sql"join valittu on valittu.master_oid = he.master_oid"),
-    Some(ehdot(oppilaitosOids, päivä)),
+    Some(ehdot(rajaus, päivä)),
     Some(sql"""
     group by he.master_oid
     -- Turvakieltorivit loppuun, ettei oidia voi rajata naapuririvien perusteella
