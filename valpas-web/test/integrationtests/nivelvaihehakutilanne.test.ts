@@ -66,7 +66,7 @@ const saksalainenKouluHakutilannePath = nivelvaiheenHakutilannePathWithOrg.href(
 
 describe("Nivelvaiheen hakutilannenäkymä", () => {
   it("Näyttää listan oppijoista, syyskuu 2021", async () => {
-    await loginAs(ressunLukioHakutilannePath, "valpas-monta")
+    await loginAs(ressunLukioHakutilannePath, "valpas-monta", true)
     await urlIsEventually(pathToUrl(ressunLukioHakutilannePath))
 
     await textEventuallyEquals(
