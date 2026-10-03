@@ -17,12 +17,12 @@ if (typeof tv4.asyncLoad === 'undefined') {
           .done(function (fetchedSchema) {
             tv4.addSchema(schemaUri, fetchedSchema)
           })
-          .fail(function (jqXHR, textStatus, errorThrown) {
+          .fail(function () {
             tv4.addSchema(schemaUri, {})
           })
       })
       $.when.apply($, missingSchemas).done(function () {
-        var result = tv4.asyncLoad(false, callback, uriPrefix)
+        tv4.asyncLoad(false, callback, uriPrefix)
       })
     }
   }

@@ -15,13 +15,13 @@
     "test:e2e": "pnpm -C ../../smoketests run omadata:local",
     "playwright:test": "pnpm exec playwright test",
     "lint": "pnpm run typecheck && pnpm run eslint && pnpm run prettier",
-    "lint:check": "concurrently --group \"pnpm:typecheck\" \"pnpm:eslint:check\"",
+    "lint:check": "concurrently --group \"pnpm:typecheck\" \"pnpm:eslint:check\" \"pnpm:prettier:check\"",
     "eslint": "pnpm run eslint:check --fix",
     "eslint:check": "eslint \"{src,test}/**/*.{js,jsx,ts,tsx}\"",
     "typecheck": "tsc --noEmit",
     "typecheck:watch": "tsc --noEmit --watch --preserveWatchOutput",
-    "prettier": "../../node_modules/.bin/prettier --write --cache .",
-    "prettier:check": "../../node_modules/.bin/prettier --check --cache ."
+    "prettier": "prettier --write --cache .",
+    "prettier:check": "prettier --check --cache ."
   },
   "repository": {
     "type": "git",
@@ -44,6 +44,7 @@
     "concurrently": "9.2.4",
     "eslint": "10.11.0",
     "eslint-config-prettier": "10.1.8",
+    "prettier": "3.9.9",
     "typescript": "5.9.3",
     "typescript-eslint": "8.70.1"
   },

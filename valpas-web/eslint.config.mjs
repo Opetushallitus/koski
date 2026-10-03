@@ -16,6 +16,7 @@ export default [
   },
   { ...compat.configs["flat/recommended"], files: ["src/**/*"] },
   eslintConfigPrettier,
+  { rules: { "no-unexpected-multiline": "error" } },
   {
     plugins: {
       "@typescript-eslint": tseslint.plugin,

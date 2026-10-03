@@ -1,0 +1,7 @@
+*
+!*/
+!/src/main/resources/mockdata/eperusteet/**
+!/src/main/resources/mockdata/koodisto/**
+!/src/main/resources/mockdata/lokalisointi/**
+!/src/main/resources/mockdata/organisaatio/**
+!/src/main/resources/valpas/mockdata/lokalisointi/**

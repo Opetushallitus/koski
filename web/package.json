@@ -74,6 +74,7 @@
     "postcss-less": "6.0.0",
     "postcss-loader": "8.2.1",
     "postcss-preset-env": "10.6.1",
+    "prettier": "3.9.9",
     "puppeteer": "25.12.0",
     "style-loader": "4.0.0",
     "stylelint": "17.15.0",
@@ -87,7 +88,7 @@
   },
   "scripts": {
     "lint": "pnpm run typecheck && pnpm run eslint && pnpm run stylelint && pnpm run prettier",
-    "lint:check": "concurrently --group \"pnpm:typecheck\" \"pnpm:eslint:check\" \"pnpm:stylelint:check\"",
+    "lint:check": "concurrently --group \"pnpm:typecheck\" \"pnpm:eslint:check\" \"pnpm:stylelint:check\" \"pnpm:prettier:check\"",
     "eslint": "pnpm run eslint:check --fix",
     "eslint:check": "eslint \"{app,test}/**/*.{js,jsx,ts,tsx}\"",
     "stylelint": "pnpm run stylelint:check --fix",
@@ -105,8 +106,8 @@
     "playwright:visual:update": "pnpm exec playwright test --config playwright.visual.config.ts --update-snapshots",
     "typecheck": "tsc --noEmit --incremental --tsBuildInfoFile node_modules/.cache/tsc/tsconfig.tsbuildinfo --project tsconfig.json && tsc --project tsconfig.runMocha.json",
     "typecheck:watch": "tsc --noEmit --watch --preserveWatchOutput --project tsconfig.json",
-    "prettier": "../node_modules/.bin/prettier --write --cache .",
-    "prettier:check": "../node_modules/.bin/prettier --check --cache ."
+    "prettier": "prettier --write --cache .",
+    "prettier:check": "prettier --check --cache ."
   },
   "packageManager": "pnpm@10.34.5"
 }
