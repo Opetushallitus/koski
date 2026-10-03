@@ -72,7 +72,7 @@ export default [
       ],
       'array-callback-return': 'off',
       'prefer-regex-literals': 'off',
-      eqeqeq: 'warn',
+      eqeqeq: 'error',
       'no-shadow': 'off',
       'prefer-spread': 'warn',
       '@typescript-eslint/no-shadow': 'warn',

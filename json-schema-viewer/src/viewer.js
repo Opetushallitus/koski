@@ -369,25 +369,21 @@ if (typeof window.JSV === 'undefined') {
       if (node.type === 'array') {
         addRow(
           'Cardinality',
-          mono(
-            (node.minItems || 0) +
-              '..' +
-              (node.maxItems != null ? node.maxItems : '*')
-          )
+          mono((node.minItems || 0) + '..' + (node.maxItems ?? '*'))
         )
       } else {
         addRow('Cardinality', mono(node.require ? '1..1' : '0..1'))
       }
-      if (node['default'] != null) {
+      if (node['default'] !== undefined && node['default'] !== null) {
         addRow('Default', mono(node['default']))
       }
-      if (node.minimum != null) {
+      if (node.minimum !== undefined && node.minimum !== null) {
         addRow(
           'Minimum',
           mono(node.minimum + (node.exclusiveMinimum ? ' (exclusive)' : ''))
         )
       }
-      if (node.maximum != null) {
+      if (node.maximum !== undefined && node.maximum !== null) {
         addRow(
           'Maximum',
           mono(node.maximum + (node.exclusiveMaximum ? ' (exclusive)' : ''))
