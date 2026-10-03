@@ -18,7 +18,10 @@ import scala.reflect.runtime.{universe => ru}
 
 class DocumentationApiServlet(application: KoskiApplication) extends KoskiSpecificApiServlet with Unauthenticated with NoCache {
   private lazy val localizedSchemas =
-    new LocalizedSchemas(application.koskiLocalizationRepository)(application.cacheManager)
+    new LocalizedSchemas(
+      application.koskiLocalizationRepository,
+      virtaSources = application.config.getBoolean("features.virtaSchemaDocumentation")
+    )(application.cacheManager)
 
   get("/categoryNames.json") {
     KoskiTiedonSiirtoHtml.categoryNames
