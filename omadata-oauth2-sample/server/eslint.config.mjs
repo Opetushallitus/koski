@@ -8,7 +8,13 @@ export default defineConfig([
   js.configs.recommended,
   {
     files: ['**/*.ts'],
-    extends: [tseslint.configs.recommended],
+    extends: [tseslint.configs.recommendedTypeChecked],
+    languageOptions: {
+      parserOptions: {
+        projectService: true,
+        tsconfigRootDir: import.meta.dirname
+      }
+    },
     rules: {
       '@typescript-eslint/consistent-type-imports': [
         'error',

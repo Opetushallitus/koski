@@ -91,11 +91,8 @@ const clientCertSecretName =
   process.env.CLIENT_CERT_SECRET_NAME || 'omadataoauth2sample-client-cert'
 
 const getSecretsManagerClient = memoize(
-  async (): Promise<SecretsManagerClient> => {
-    return new SecretsManagerClient({
-      region: 'eu-west-1'
-    })
-  },
+  (): Promise<SecretsManagerClient> =>
+    Promise.resolve(new SecretsManagerClient({ region: 'eu-west-1' })),
   () => 'secretsManager'
 )
 async function getSecret(secretName: string): Promise<string> {

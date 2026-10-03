@@ -9,7 +9,8 @@ import { randomUUID } from 'node:crypto'
 import {
   buildAuthorizationUrl,
   fetchAccessToken,
-  fetchData
+  fetchData,
+  type FormPostRequest
 } from '../oauth2-client/oauth2-client.ts'
 import {
   AuthorizationResponseError,
@@ -70,7 +71,7 @@ export const redirectUri: string = `${sampleAppUrl}/api/openid-api-test/form-pos
 
 router.post(
   '/form-post-response-cb',
-  async (req: Request, res: Response, next: NextFunction) => {
+  async (req: FormPostRequest, res: Response, next: NextFunction) => {
     try {
       const params = new URLSearchParams(req.body)
       const state = params.get('state') || ''
