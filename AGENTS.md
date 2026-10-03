@@ -43,12 +43,10 @@ make fronttest           # Frontend (Mocha) tests only
 make integrationtest     # Playwright integration tests
 
 # Code quality
-make lint                # Run all checks (eslint + prettier-check)
-make eslint              # JavaScript/TypeScript linting
-make prettier            # Fix formatting (Web, Valpas, OAuth2, mock data)
-make prettier-check      # Check formatting without writing
-make prettier-mock-data  # Fix mock-data JSON formatting
-make prettier-mock-data-check # Check mock-data JSON formatting
+make lint                # Typecheck, lint and format; fix what can be fixed
+make lint-check          # Same checks without writing
+make format              # Fix formatting only (Web, Valpas, OAuth2, mock data)
+make format-check        # Check formatting only
 
 # Other useful commands
 make ts-types            # Regenerate TypeScript types from Scala schema

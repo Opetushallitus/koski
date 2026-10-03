@@ -65,7 +65,7 @@ watch-prod:
 
 .PHONY: ts-types
 ts-types: install-root-tools
-	cd web && rm -rf app/types/fi && curl http://localhost:7021/types/update && pnpm --dir .. exec prettier --write web/app/types
+	cd web && rm -rf app/types/fi && curl http://localhost:7021/types/update && pnpm --dir .. exec prettier --write --cache web/app/types
 
 
 ### Running tests
@@ -168,32 +168,32 @@ view-db-docs:
 
 ### Code checks
 
-.PHONY: eslint
-eslint:
-	cd web && pnpm run lint
+LINT_DIRS := web json-schema-viewer valpas-web omadata-oauth2-sample/server
 
 .PHONY: install-root-tools
 install-root-tools:
-	@test -x node_modules/.bin/prettier || pnpm install --frozen-lockfile
+	pnpm install --frozen-lockfile
 
-.PHONY: prettier
-prettier: install-root-tools
+.PHONY: install-lint-tools
+install-lint-tools: install-root-tools
+	@for dir in $(LINT_DIRS); do pnpm --dir $$dir install --frozen-lockfile || exit 1; done
+
+.PHONY: format
+format: install-root-tools
 	pnpm run prettier
 
-.PHONY: prettier-check
-prettier-check: install-root-tools
+.PHONY: format-check
+format-check: install-root-tools
 	pnpm run prettier:check
 
-.PHONY: prettier-mock-data
-prettier-mock-data: install-root-tools
-	pnpm run prettier:mock-data
-
-.PHONY: prettier-mock-data-check
-prettier-mock-data-check: install-root-tools
-	pnpm run prettier:mock-data:check
-
 .PHONY: lint
-lint: eslint prettier-check
+lint: install-lint-tools
+	@for dir in $(LINT_DIRS); do pnpm --dir $$dir run lint || exit 1; done
+	./scripts/prettier-format-koodistot.sh
+
+.PHONY: lint-check
+lint-check: install-lint-tools
+	pnpm run lint:check
 
 .PHONY: owasp
 owasp:

@@ -1,3 +1,5 @@
+@KeyValueTable-columns: max-content repeat(23, 1fr);
+
 .KeyValueTable {
   list-style-type: none;
   margin: 0;
@@ -8,7 +10,7 @@
   // ColumnRow:n 24-sarakkeista ruudukkoa, jotta Column-span-N -luokat toimivat
   // (esim. KeyColumnedValuesRown päivä+selitys -rivi).
   display: grid;
-  grid-template-columns: max-content repeat(23, 1fr);
+  grid-template-columns: @KeyValueTable-columns;
   column-gap: @Columns-gutter;
 
   @media screen and (max-width: @Columns-phone-breakpoint) {
@@ -20,6 +22,8 @@
   // Ohita ColumnRow:n 24-sarakkeinen ruudukko ja peri KeyValueTablen sarakkeet,
   // jotta sarake 1 (nimi) on yhtenäisen levyinen koko taulukossa.
   grid-column: 1 / -1;
+  grid-template-columns: @KeyValueTable-columns;
+  // stylelint-disable-next-line plugin/no-unsupported-browser-features -- ilman tukea kunkin rivin nimisarake on oman nimensä levyinen, jolloin arvot eivät ole linjassa keskenään; hyväksyttävä heikennys
   grid-template-columns: subgrid;
   column-gap: @Columns-gutter;
 
@@ -56,6 +60,7 @@
     margin-left: 0;
   }
 
+  // stylelint-disable-next-line plugin/no-unsupported-browser-features -- ilman tukea arvottomat rivit näkyvät pelkkänä nimenä; hyväksyttävä heikennys
   &:has(> .KeyValueRow__value:empty) {
     display: none;
   }

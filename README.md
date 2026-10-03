@@ -161,7 +161,7 @@ Buildaa frontti, ja päivitä automaattisesti kun tiedostoja muokataan:
 make watch
 ```
 
-Staattinen analyysi ([ESLint](http://eslint.org/)):
+Muotoilu ja staattinen analyysi (`make lint` korjaa korjattavat virheet, `make lint-check` vain tarkistaa):
 
 ```shell
 make lint
@@ -338,7 +338,7 @@ Koskessa on käytössä [Github Actions](https://github.com/Opetushallitus/koski
 
 CI-palvelimella sovellus testataan jokaisen commitin yhteydessä. Paikallisten testien lisäksi ajetaan pieni määrä integraatiotestejä testiympäristön REST-rajapintoja vasten.
 
-Myös staattinen analyysi [ESLint](http://eslint.org/) -työkalulla ajetaan joka commitille.
+Myös muotoilu ja staattinen analyysi tarkistetaan joka commitille.
 
 Suorituskykytestit ajetaan joka aamuyö.
 

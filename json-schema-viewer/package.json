@@ -10,8 +10,10 @@
     "build:prod": "webpack --bail --mode production",
     "watch": "webpack --watch --mode development",
     "typecheck": "tsc --noEmit",
-    "prettier": "pnpm --dir .. exec prettier --write json-schema-viewer",
-    "prettier:check": "pnpm --dir .. exec prettier --check json-schema-viewer"
+    "lint": "pnpm run typecheck && pnpm run prettier",
+    "lint:check": "pnpm run typecheck",
+    "prettier": "../node_modules/.bin/prettier --write --cache .",
+    "prettier:check": "../node_modules/.bin/prettier --check --cache ."
   },
   "dependencies": {
     "d3": "3.5.17",
