@@ -2,9 +2,6 @@ console.log('Starting mocha')
 // test/runMocha.mts reads the global `runner` to wait for the results
 var runner = mocha.run()
 runner.errors = []
-if (window.callPhantom) {
-  console.log('PhantomJS mode')
-}
 
 function mapError(e) {
   var logEntry = { title: e.title, fullTitle: e.fullTitle() }
