@@ -1,13 +1,15 @@
 import path from 'node:path'
-import {Tail} from 'tail'
-import {HealthSource, isHealthDataEntry} from './HealthSource'
+import { Tail } from 'tail'
+import { HealthSource, isHealthDataEntry } from './HealthSource'
 
 export class LocalHealthSource extends HealthSource {
   tail: Tail
 
   constructor(koskiDir: string) {
     super()
-    this.tail = new Tail(path.join(koskiDir, 'log', 'health.log'), {fromBeginning: true})
+    this.tail = new Tail(path.join(koskiDir, 'log', 'health.log'), {
+      fromBeginning: true
+    })
     this.tail.on('line', this.parseLine.bind(this))
   }
 

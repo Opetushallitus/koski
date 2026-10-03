@@ -1,6 +1,21 @@
+const getTargets = require('@babel/helper-compilation-targets').default
 const CopyWebpackPlugin = require('copy-webpack-plugin')
-const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin')
 const path = require('path')
+
+// Kohdeselaimet määritetään .browserslistrc:stä Babelin apukirjastolla ja
+// annetaan swc:lle. swc:n oma browserslist-toteutus käyttää swc-version
+// mukana tulevaa selaindataa, joka voi olla vanhempaa kuin projektin
+// caniuse-lite.
+const targets = getTargets({}, { configPath: __dirname })
+
+const swcRule = (test, parser) => ({
+  test,
+  include: path.join(__dirname, 'app'),
+  use: {
+    loader: 'swc-loader',
+    options: { env: { targets }, jsc: { parser } }
+  }
+})
 
 module.exports = (_, argv = {}) => ({
   context: __dirname,
@@ -53,33 +68,8 @@ module.exports = (_, argv = {}) => ({
   },
   module: {
     rules: [
-      {
-        test: /\.(js|jsx)$/,
-        include: [path.join(__dirname, 'app')],
-        use: {
-          loader: 'babel-loader',
-          options: {
-            cacheDirectory: true,
-            presets: ['@babel/preset-env', '@babel/preset-react']
-          }
-        }
-      },
-      {
-        test: /\.(ts|tsx)$/,
-        include: [path.join(__dirname, 'app')],
-        exclude: /(node_modules|bower_components)/,
-        use: {
-          loader: 'swc-loader',
-          options: {
-            jsc: {
-              parser: {
-                syntax: 'typescript',
-                jsx: true
-              }
-            }
-          }
-        }
-      },
+      swcRule(/\.(js|jsx)$/, { syntax: 'ecmascript', jsx: true }),
+      swcRule(/\.(ts|tsx)$/, { syntax: 'typescript' }),
       {
         test: /\.woff2$/,
         type: 'asset/resource',
@@ -116,9 +106,6 @@ module.exports = (_, argv = {}) => ({
     ]
   },
   plugins: [
-    new ForkTsCheckerWebpackPlugin({
-      typescript: { mode: 'write-tsbuildinfo', memoryLimit: 1000000000 }
-    }),
     new CopyWebpackPlugin({
       patterns: [
         { from: 'static' },

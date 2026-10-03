@@ -1,6 +1,5 @@
-/* eslint-disable @typescript-eslint/restrict-template-expressions */
-import {spawn} from 'child_process'
-import {HealthSource, isHealthDataEntry} from './HealthSource'
+import { spawn } from 'child_process'
+import { HealthSource, isHealthDataEntry } from './HealthSource'
 
 export type RemoteEnv = 'dev' | 'qa' | 'prod'
 
@@ -8,7 +7,7 @@ export class CloudWatchHealthSource extends HealthSource {
   constructor(environment: RemoteEnv) {
     super()
     tailLogs(environment)
-      .then(start => start(this.parseLine.bind(this)))
+      .then((start) => start(this.parseLine.bind(this)))
       .catch(console.error)
   }
 
@@ -27,7 +26,9 @@ export class CloudWatchHealthSource extends HealthSource {
             }
           ])
         }
-      } catch (_) {}
+      } catch {
+        // Lokissa on myös muita kuin terveystietorivejä.
+      }
     }
   }
 }
@@ -39,22 +40,26 @@ const tailLogs = async (environment: RemoteEnv) =>
     follow: true
   })
 
-const runAwsCli = async (command: string, params: object) => (onData: (data: any) => void) => {
-  const process = spawn('aws', [
-    ...command.split(' '),
-    ...Object.entries(params)
-      .flatMap(([key, value]) =>
-        value !== undefined && value !== false ? [`--${key}`, value === true ? '' : value] : []
-      )
-      .filter(x => x.length > 0)
-  ])
+const runAwsCli =
+  async (command: string, params: object) =>
+  (onData: (data: string) => void) => {
+    const process = spawn('aws', [
+      ...command.split(' '),
+      ...Object.entries(params)
+        .flatMap(([key, value]) =>
+          value !== undefined && value !== false
+            ? [`--${key}`, value === true ? '' : value]
+            : []
+        )
+        .filter((x) => x.length > 0)
+    ])
 
-  process.stdout.on('data', data => {
-    const entries = data.toString().split('\n')
-    entries.forEach(onData)
-  })
+    process.stdout.on('data', (data) => {
+      const entries = data.toString().split('\n')
+      entries.forEach(onData)
+    })
 
-  process.stderr.on('data', error => console.error(error.toString()))
-  process.on('error', error => console.error(error))
-  //   process.on('close', onClose)
-}
+    process.stderr.on('data', (error) => console.error(error.toString()))
+    process.on('error', (error) => console.error(error))
+    //   process.on('close', onClose)
+  }

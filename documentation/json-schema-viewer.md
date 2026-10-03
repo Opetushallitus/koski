@@ -212,8 +212,8 @@ query-less.
   `pnpm --dir json-schema-viewer run build:prod` (or `make front` for both
   Koski UI and the viewer). Maven's frontend profile builds it too.
 - `make watch-schema-viewer` rebuilds the served assets on changes.
-  `pnpm --dir json-schema-viewer run typecheck` checks the TypeScript entry point;
-  the application remains JavaScript. Root formatting commands include the package.
+  `pnpm --dir json-schema-viewer run lint` type-checks the TypeScript entry point,
+  lints the JavaScript and CSS, and formats; the application remains JavaScript.
 - Webpack bundles `src/index.ts`, the extracted application in `src/viewer.js`,
   and npm dependencies. `src/tv4-async-load.js` retains the viewer's schema loader.
   Edit `src/styles/json-schema-viewer.css` directly; CSS and images are copied

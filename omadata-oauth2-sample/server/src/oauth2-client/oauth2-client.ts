@@ -5,6 +5,12 @@ import type { Request } from 'express'
 import { URLSearchParams } from 'url'
 import { redirectUri } from '../apiroutes/openid-api-test.ts'
 
+export type FormPostRequest = Request<
+  Record<string, string>,
+  unknown,
+  Record<string, string | string[]> | undefined
+>
+
 export async function buildAuthorizationUrl(
   code_verifier: string,
   state: string,
@@ -31,7 +37,7 @@ export async function buildAuthorizationUrl(
 }
 
 export async function fetchAccessToken(
-  req: Request,
+  req: FormPostRequest,
   code_verifier: string,
   state: string
 ) {

@@ -19,9 +19,12 @@ export class HealthSource {
   }
 
   emit(data: HealthData) {
-    this.listeners.forEach(l => l(data))
+    this.listeners.forEach((l) => l(data))
   }
 }
 
-export const isHealthDataEntry = (a: any): a is HealthDataEntry =>
-  typeof a === 'object' && typeof a.subsystem === 'string'
+export const isHealthDataEntry = (a: unknown): a is HealthDataEntry =>
+  typeof a === 'object' &&
+  a !== null &&
+  'subsystem' in a &&
+  typeof a.subsystem === 'string'

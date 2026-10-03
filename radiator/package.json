@@ -9,7 +9,13 @@
     "monitor:dev": "ts-node src/index.ts dev",
     "monitor:qa": "ts-node src/index.ts qa",
     "monitor:prod": "ts-node src/index.ts prod",
-    "typecheck": "tsc --noEmit --project tsconfig.json"
+    "lint": "pnpm run typecheck && pnpm run eslint && pnpm run prettier",
+    "lint:check": "concurrently --group \"pnpm:typecheck\" \"pnpm:eslint:check\" \"pnpm:prettier:check\"",
+    "eslint": "pnpm run eslint:check --fix",
+    "eslint:check": "eslint \"src/**/*.ts\"",
+    "typecheck": "tsc --noEmit --project tsconfig.json",
+    "prettier": "prettier --write --cache .",
+    "prettier:check": "prettier --check --cache ."
   },
   "author": "",
   "license": "ISC",
@@ -20,9 +26,15 @@
     "ts-node": "10.9.2"
   },
   "devDependencies": {
+    "@eslint/js": "10.0.1",
     "@types/node": "24.19.0",
     "@types/tail": "2.2.3",
-    "typescript": "5.9.3"
+    "concurrently": "9.2.4",
+    "eslint": "10.11.0",
+    "eslint-config-prettier": "10.1.8",
+    "prettier": "3.9.9",
+    "typescript": "5.9.3",
+    "typescript-eslint": "8.70.1"
   },
   "engines": {
     "pnpm": "10.34.5",

@@ -66,9 +66,7 @@ jobs:
       - uses: ./.github/actions/setup_pnpm_cache
 
       - name: Check formatting
-        run: |
-          pnpm install --frozen-lockfile
-          pnpm run prettier:check
+        run: make format-check
 
   smoketests_tests:
     if: ${{ inputs.run-smoketests-tests }}
@@ -87,7 +85,7 @@ jobs:
         working-directory: smoketests
         run: |
           pnpm install --frozen-lockfile
-          pnpm run typecheck
+          pnpm run lint:check
 
   radiator_tests:
     if: ${{ inputs.run-radiator-tests }}
@@ -106,7 +104,7 @@ jobs:
         working-directory: radiator
         run: |
           pnpm install --frozen-lockfile
-          pnpm run typecheck
+          pnpm run lint:check
 
   history_debug_tests:
     if: ${{ inputs.run-history-debug-tests }}
@@ -125,7 +123,7 @@ jobs:
         working-directory: scripts/opiskeluoikeushistoria-debug
         run: |
           pnpm install --frozen-lockfile
-          pnpm run typecheck
+          pnpm run lint:check
 
   build_koski:
     if: ${{ inputs.run-backend-tests || inputs.run-koski-ui-tests || inputs.run-valpas-ui-tests || inputs.run-oauth2-tests }}
@@ -139,7 +137,7 @@ jobs:
 
   koski_frontend_lint:
     if: ${{ inputs.run-koski-ui-tests }}
-    name: Koski frontend lint & typecheck
+    name: Koski frontend static analysis
     runs-on: ubuntu-26.04
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -153,14 +151,11 @@ jobs:
 
       - run: pnpm --dir web install --frozen-lockfile
 
-      - name: Typecheck schema viewer
+      - name: Static analysis for schema viewer
         working-directory: json-schema-viewer
         run: |
           pnpm install --frozen-lockfile
-          pnpm run typecheck
-
-      - name: Typecheck Koski frontend
-        run: pnpm --dir web run typecheck
+          pnpm run lint:check
 
       - name: Check Koski Playwright and image versions
         run: |
@@ -169,8 +164,8 @@ jobs:
           [ -n "$image_version" ] && [ "$package_version" = "$image_version" ] ||
             { echo "::error::Playwright-versiot eroavat: package.json=$package_version, image=$image_version. Päivitä ne yhdessä."; exit 1; }
 
-      - name: Run linter
-        run: make eslint
+      - name: Static analysis
+        run: pnpm --dir web run lint:check
 
   checkdoc_koski_validation:
     name: validaation_muutoshistoria.md check
@@ -499,7 +494,7 @@ jobs:
           index: ${{ matrix.shardIndex }}
 
   valpas_frontend_unit_tests:
-    name: Valpas lint & unit
+    name: Valpas static analysis & unit
     runs-on: ubuntu-26.04
     if: ${{ inputs.run-valpas-ui-tests && !contains(github.event.head_commit.message, '[skip-tests]') }}
     steps:
@@ -512,16 +507,16 @@ jobs:
 
       - uses: ./.github/actions/setup_pnpm_cache
 
-      - name: Run linter and tests
+      - name: Static analysis and unit tests
         working-directory: valpas-web
         run: |
           pnpm install --frozen-lockfile
-          pnpm run lint
+          pnpm run lint:check
           pnpm run test:unit
 
   oauth2_server_checks:
     if: ${{ inputs.run-oauth2-tests }}
-    name: OAuth2 server lint & image
+    name: OAuth2 server static analysis & image
     runs-on: ubuntu-26.04
     permissions:
       contents: read
@@ -534,11 +529,11 @@ jobs:
 
       - uses: ./.github/actions/setup_pnpm_cache
 
-      - name: Run linter
+      - name: Static analysis
         working-directory: omadata-oauth2-sample/server
         run: |
           pnpm install --frozen-lockfile
-          pnpm run lint
+          pnpm run lint:check
 
       - name: Build and smoke test image
         working-directory: omadata-oauth2-sample

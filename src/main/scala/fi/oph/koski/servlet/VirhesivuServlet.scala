@@ -12,7 +12,6 @@ class VirhesivuServlet(implicit val application: KoskiApplication) extends Scala
     FrontendValvontaMode(application.config.getString("frontend-valvonta.mode"))
 
   get("/")(nonce => {
-    response.setHeader("X-Virhesivu", "1") // for korhopankki/HetuLogin.jsx
     <html lang={lang}>
       <head>
         <title>Koski - Virhe</title>

@@ -99,23 +99,16 @@ function Page(mainElement) {
           case 'PASSWORD':
           case 'TEXTAREA':
           case 'SEARCH':
-            if (window.callPhantom) {
-              input.val(value)
-            } else {
-              var domElem = inputElem()[0]
-              // Workaround for react-dom > 15.6
-              // React tracks input.value = 'foo' changes too, so when the event is dispatched, it doesn't see any changes in the value and thus the event is ignored
-              Object.getOwnPropertyDescriptor(
-                Object.getPrototypeOf(domElem),
-                'value'
-              ).set.call(domElem, value)
-            }
+            var domElem = inputElem()[0]
+            // Workaround for react-dom > 15.6
+            // React tracks input.value = 'foo' changes too, so when the event is dispatched, it doesn't see any changes in the value and thus the event is ignored
+            Object.getOwnPropertyDescriptor(
+              Object.getPrototypeOf(domElem),
+              'value'
+            ).set.call(domElem, value)
             return triggerEvent(input, 'input')()
           case 'CHECKBOX':
             if (value !== input.is(':checked')) {
-              if (window.callPhantom) {
-                input.prop('checked', value)
-              }
               return click(input)()
             }
             break

@@ -5,8 +5,14 @@
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "pnpm run typecheck && pnpm run eslint && pnpm run prettier",
+    "lint:check": "concurrently --group \"pnpm:typecheck\" \"pnpm:eslint:check\" \"pnpm:prettier:check\"",
+    "eslint": "pnpm run eslint:check --fix",
+    "eslint:check": "eslint index.js",
     "typecheck": "tsc --noEmit",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "prettier": "prettier --write --cache .",
+    "prettier:check": "prettier --check --cache ."
   },
   "author": "",
   "license": "ISC",
@@ -14,8 +20,15 @@
     "jsonpatch": "3.1.0"
   },
   "devDependencies": {
+    "@eslint/js": "10.0.1",
     "@types/node": "24.19.0",
-    "typescript": "5.9.3"
+    "concurrently": "9.2.4",
+    "eslint": "10.11.0",
+    "eslint-config-prettier": "10.1.8",
+    "globals": "17.12.0",
+    "prettier": "3.9.9",
+    "typescript": "5.9.3",
+    "typescript-eslint": "8.70.1"
   },
   "engines": {
     "pnpm": "10.34.5",

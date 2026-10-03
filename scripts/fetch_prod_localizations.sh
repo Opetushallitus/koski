@@ -353,7 +353,7 @@ function load_and_format() {
         "https://virkailija.opintopolku.fi/lokalisointi/cxf/rest/v1/localisation?category=$CATEGORY" \
         | jq -S 'map( . * { createdBy: "anonymousUser", modifiedBy: "anonymousUser" } )' \
         > "$LOCALIZATION_FILE"
-    "$PRETTIER" --log-level warn --write "$LOCALIZATION_FILE"
+    "$PRETTIER" --log-level warn --write --cache "$LOCALIZATION_FILE"
     jq '[.[] | select(.locale | contains("fi"))] | map( { (.key): .value } ) | add' < "$LOCALIZATION_FILE" > "$DEFAULT_TEXTS_FILE"
 
     report_divergence "$CATEGORY" "$PREVIOUS" "$LOCALIZATION_FILE" "$LOCALIZATION_FILE"

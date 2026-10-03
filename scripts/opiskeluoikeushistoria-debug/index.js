@@ -6,23 +6,27 @@ const { writeFileSync, existsSync, readFileSync } = require("fs");
  * @typedef {{ versionumero: number, muutos: Patch[] }} HistoryEntry
  */
 
-const run = async () => {
+/**
+ * @param {string} json
+ * @returns {unknown}
+ */
+const parseJson = (json) => JSON.parse(json);
+
+const run = () => {
   const file = readFileSync("historia.jsons");
-  /** @type {HistoryEntry[]} */
   const history = file
     .toString()
     .split("\n")
     .filter((s) => !!s)
-    .map((line) => JSON.parse(line));
+    .map((line) => /** @type {HistoryEntry} */ (parseJson(line)));
 
   history.sort((a, b) => a.versionumero - b.versionumero);
 
   history.reduce((/** @type {unknown} */ data, patch) => {
     const hotfix = `hotfix-${patch.versionumero}.json`;
-    /** @type {Patch[]} */
     const patchOrHotfix = existsSync(hotfix)
       ? (console.log(`Yliajetaan hotfix patchille ${patch.versionumero}`),
-        JSON.parse(readFileSync(hotfix, "utf8")))
+        /** @type {Patch[]} */ (parseJson(readFileSync(hotfix, "utf8"))))
       : patch.muutos;
 
     return patchOrHotfix.reduce((prevData, singlePatch, singlePatchIndex) => {
@@ -43,4 +47,4 @@ const run = async () => {
   console.log("Historia on kunnossa.");
 };
 
-run().catch(console.error);
+run();

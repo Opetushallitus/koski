@@ -34,10 +34,6 @@
       console.log('Setting up mocha')
       var testTimeoutPageLoad = 20000
       var testTimeoutDefault = 10000
-      if (window.initMochaPhantomJS) {
-        console.log('Calling window.initMochaPhantomJS')
-        window.initMochaPhantomJS()
-      }
       var urlParams = new URLSearchParams(location.search)
       mocha.setup({
         ui: 'bdd',
@@ -56,7 +52,6 @@
 
       console.log('Mocha setup done')
     </script>
-    <script src="util/polyfills.js"></script>
     <script src="util/testHelpers.js"></script>
     <script src="util/chaiEqualIgnoreNewlines.js"></script>
     <script src="page/pageApi.js"></script>

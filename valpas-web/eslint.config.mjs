@@ -1,5 +1,6 @@
 import tseslint from "typescript-eslint"
 import eslintConfigPrettier from "eslint-config-prettier"
+import compat from "eslint-plugin-compat"
 import reactHooks from "eslint-plugin-react-hooks"
 
 export default [
@@ -13,7 +14,9 @@ export default [
       "react-hooks/exhaustive-deps": "warn",
     },
   },
+  { ...compat.configs["flat/recommended"], files: ["src/**/*"] },
   eslintConfigPrettier,
+  { rules: { "no-unexpected-multiline": "error" } },
   {
     plugins: {
       "@typescript-eslint": tseslint.plugin,
@@ -24,7 +27,7 @@ export default [
     },
 
     rules: {
-      eqeqeq: "warn",
+      eqeqeq: "error",
     },
 
     files: ["**/*.ts", "**/*.tsx"],

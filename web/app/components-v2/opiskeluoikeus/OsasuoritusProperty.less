@@ -50,6 +50,7 @@
 // Suora lapsi saa raidat ylätason ruudukosta, jolloin nimisarake on yhteinen.
 .OsasuoritusProperties > .OsasuoritusProperty {
   grid-column: 1 / -1;
+  // stylelint-disable-next-line plugin/no-unsupported-browser-features -- ilman tukea kunkin kentän nimisarake on oman nimensä levyinen, jolloin arvot eivät ole linjassa keskenään; hyväksyttävä heikennys
   grid-template-columns: subgrid;
 }
 

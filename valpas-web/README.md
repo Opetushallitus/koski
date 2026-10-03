@@ -30,8 +30,7 @@ pnpm install --frozen-lockfile
 - `pnpm run build:local` kääntää lähdekoodit kansioon `./dist-nonce` asetuksilla, joissa backend löytyy localhostista, ja kopioi
   sisällön tarpeellisin muutoksin Koskessa hostaamista varten ../target/webapp/ -hakemistoon.
 - `pnpm run build:prod` kääntää tuotantoversion
-- `pnpm run lint` tarkastaa koodin tyypitykset ja formatoinnin
-- `pnpm run fix` korjaa formatointivirheet
+- `pnpm run lint` tarkistaa tyypitykset sekä korjaa lint- ja muotoiluvirheet; `pnpm run lint:check` vain tarkistaa
 - `pnpm run clean` tyhjentää Parcelin välimuistin ja käännöskansiot. Aja jos kääntäminen sekoilee esim. rebasen jälkeen.
 
 ### Hakemistorakenne
@@ -96,5 +95,3 @@ OPINTOPOLKU_VIRKAILIJA_URL=https://virkailija.untuvaopintopolku.fi
 ```
 
 Parcel ei välttämättä tajua ympäristömuuttujien vaihtuneen. Korjaa ongelma ajamalla `pnpm run clean`, joka tyhjentää välimuistin.
-
-Muotoilu- ja lint-komennot tarvitsevat myös repon juurihakemiston Prettier-asennuksen: aja juurihakemistossa `pnpm install --frozen-lockfile`.

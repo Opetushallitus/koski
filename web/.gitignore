@@ -4,3 +4,5 @@ node_modules/
 /playwright/.cache/
 virkailijaState.json
 test/.pw-state
+/dist
+/node/

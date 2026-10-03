@@ -1,4 +1,4 @@
-import {HealthData, HealthSource} from './HealthSource'
+import { type HealthData, HealthSource } from './HealthSource'
 
 export type ApiEnv = 'local' | 'dev' | 'qa' | 'prod'
 
@@ -19,7 +19,7 @@ type ApiResponse = {
 
 export class RadiatorApiHealthSource extends HealthSource {
   apiUrl: string
-  headers: object
+  headers: Record<string, string>
 
   constructor(env: ApiEnv, apiKey: string) {
     super()
@@ -38,7 +38,6 @@ export class RadiatorApiHealthSource extends HealthSource {
   private async fetchHealth() {
     try {
       const response = await fetch(this.apiUrl, {
-        // @ts-ignore
         headers: this.headers
       })
       if (response.status !== 200) {
