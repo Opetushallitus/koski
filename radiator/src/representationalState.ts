@@ -1,8 +1,8 @@
 import * as string from 'fp-ts/string'
-import {pipe} from 'fp-ts/lib/function'
+import { pipe } from 'fp-ts/lib/function'
 import * as R from 'fp-ts/Record'
 import * as O from 'fp-ts/Option'
-import {Host, Service, State} from './state'
+import type { Host, Service, State } from './state'
 
 export type ServiceStatus = 'ok' | 'degraded' | 'down' | 'lost'
 
@@ -35,7 +35,7 @@ const fromHost = (host: Host): O.Option<ReprHost> => {
     R.map(fromService),
     R.collect(string.Ord)((_, s) => s)
   )
-  const hasDegradedServices = services.some(s => s.status !== 'ok')
+  const hasDegradedServices = services.some((s) => s.status !== 'ok')
   const isLost = olderThan(1)(host.lastSeen)
 
   return O.some({
@@ -45,7 +45,9 @@ const fromHost = (host: Host): O.Option<ReprHost> => {
 }
 
 const fromService = (service: Service): ReprService => {
-  const hasError = Boolean(service.latestError && youngerThan(15)(service.latestError.timestamp))
+  const hasError = Boolean(
+    service.latestError && youngerThan(15)(service.latestError.timestamp)
+  )
 
   return {
     name: service.name,

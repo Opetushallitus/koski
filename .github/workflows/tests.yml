@@ -66,9 +66,7 @@ jobs:
       - uses: ./.github/actions/setup_pnpm_cache
 
       - name: Check formatting
-        run: |
-          pnpm install --frozen-lockfile
-          pnpm run prettier:check
+        run: make format-check
 
   smoketests_tests:
     if: ${{ inputs.run-smoketests-tests }}
@@ -87,7 +85,7 @@ jobs:
         working-directory: smoketests
         run: |
           pnpm install --frozen-lockfile
-          pnpm run typecheck
+          pnpm run lint:check
 
   radiator_tests:
     if: ${{ inputs.run-radiator-tests }}
@@ -106,7 +104,7 @@ jobs:
         working-directory: radiator
         run: |
           pnpm install --frozen-lockfile
-          pnpm run typecheck
+          pnpm run lint:check
 
   history_debug_tests:
     if: ${{ inputs.run-history-debug-tests }}
@@ -125,7 +123,7 @@ jobs:
         working-directory: scripts/opiskeluoikeushistoria-debug
         run: |
           pnpm install --frozen-lockfile
-          pnpm run typecheck
+          pnpm run lint:check
 
   build_koski:
     if: ${{ inputs.run-backend-tests || inputs.run-koski-ui-tests || inputs.run-valpas-ui-tests || inputs.run-oauth2-tests }}

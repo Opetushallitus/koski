@@ -90,5 +90,3 @@ Lokaali ALB-proxy ([scripts/alb-proxy.mjs](scripts/alb-proxy.mjs)) emuloi tätä
 
 - Rajapintadokumentaatio: https://testiopintopolku.fi/koski/dokumentaatio/rajapinnat/oauth2/omadata
 - Arkkitehtuuridokumentaatio: [documentation/oauth2.md](../documentation/oauth2.md)
-
-Muotoilu- ja lint-komennot tarvitsevat myös repon juurihakemiston Prettier-asennuksen: aja juurihakemistossa `pnpm install --frozen-lockfile`.

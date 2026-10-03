@@ -4,13 +4,19 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "typecheck": "tsc --noEmit --project tsconfig.json",
     "qa:versio": "ts-node src/qa-versio.ts",
     "qa:kansalainen": "ts-node src/qa-kansalainen.ts",
     "qa:tiedote": "ts-node src/qa-tiedote.ts",
     "omadata:local": "ts-node src/omadata-oauth2-sample.ts local",
     "omadata:dev": "ts-node src/omadata-oauth2-sample.ts dev",
-    "omadata:qa": "ts-node src/omadata-oauth2-sample.ts qa"
+    "omadata:qa": "ts-node src/omadata-oauth2-sample.ts qa",
+    "lint": "pnpm run typecheck && pnpm run eslint && pnpm run prettier",
+    "lint:check": "concurrently --group \"pnpm:typecheck\" \"pnpm:eslint:check\" \"pnpm:prettier:check\"",
+    "eslint": "pnpm run eslint:check --fix",
+    "eslint:check": "eslint \"src/**/*.ts\"",
+    "typecheck": "tsc --noEmit --project tsconfig.json",
+    "prettier": "prettier --write --cache .",
+    "prettier:check": "prettier --check --cache ."
   },
   "author": "",
   "license": "ISC",
@@ -23,8 +29,14 @@
   },
   "packageManager": "pnpm@10.34.5+sha512.a4ee05f2f73658255bd6a89859c065a45c28a57daefae2c893a168ee2b73168c37b91e83e57ea67654ad03f03031746430e8bce38e362e042605fb8abc80192e",
   "devDependencies": {
+    "@eslint/js": "10.0.1",
     "@types/node": "24.19.0",
+    "concurrently": "9.2.4",
+    "eslint": "10.11.0",
+    "eslint-config-prettier": "10.1.8",
+    "prettier": "3.9.9",
     "ts-node": "10.9.2",
-    "typescript": "5.9.3"
+    "typescript": "5.9.3",
+    "typescript-eslint": "8.70.1"
   }
 }

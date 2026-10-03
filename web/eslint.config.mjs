@@ -107,5 +107,6 @@ export default [
       'mocha/no-identical-title': 'off'
     }
   },
-  eslintConfigPrettier
+  eslintConfigPrettier,
+  { rules: { 'no-unexpected-multiline': 'error' } }
 ]

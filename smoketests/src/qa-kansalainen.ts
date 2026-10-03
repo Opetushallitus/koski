@@ -1,4 +1,4 @@
-import puppeteer, { Page } from "puppeteer";
+import puppeteer, { type Page } from "puppeteer";
 
 const retryCount = 5;
 const defaultTimeoutSecs = 60;
@@ -14,7 +14,7 @@ const click = async (page: Page, selector: string) => {
 
 const textContent = async (
   page: Page,
-  selector: string
+  selector: string,
 ): Promise<string | null | undefined> => {
   console.log(`Wait for ${selector}`);
   const textSelector = await page.waitForSelector(selector, { timeout });
@@ -62,14 +62,14 @@ const eIdasLogin = async (page: Page) => {
 
 const runTest = async (
   tryToLogin: (page: Page) => Promise<boolean | undefined>,
-  testName: string
+  testName: string,
 ): Promise<void> => {
   for (let i = 0; i < retryCount; i++) {
     console.log(`Attempt ${i + 1}/${retryCount} for ${testName}`);
 
     const browser = await puppeteer.launch({
       headless: true,
-      args: ['--no-sandbox', '--disable-setuid-sandbox'],
+      args: ["--no-sandbox", "--disable-setuid-sandbox"],
     });
     try {
       const page = await browser.newPage();
@@ -84,7 +84,7 @@ const runTest = async (
       console.error(
         `Attempt ${i + 1}/${retryCount} failed: ${
           error instanceof Error ? error.message : String(error)
-        }`
+        }`,
       );
     } finally {
       await browser.close();
@@ -97,7 +97,7 @@ const runTest = async (
 const runTests = async (): Promise<void> => {
   await runTest(suomiFiLogin, "suomi.fi login test");
   await runTest(eIdasLogin, "eIDAS login test");
-}
+};
 
 runTests().catch((error) => {
   console.error(error instanceof Error ? error.message : String(error));

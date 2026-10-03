@@ -19,7 +19,7 @@
     "build:local": "node autoclear.js && PUBLIC_URL=/valpas parcel build src/index.html --public-url /valpas/assets --dist-dir dist-nonce --no-scope-hoist && node postbuild-exec.mjs",
     "build:prod": "node autoclear.js --prod && PUBLIC_URL=/valpas parcel build src/index.html --public-url /valpas/assets --dist-dir dist-nonce --no-scope-hoist && node postbuild-exec.mjs",
     "lint": "pnpm run typecheck && pnpm run eslint && pnpm run stylelint && pnpm run prettier",
-    "lint:check": "concurrently --group \"pnpm:typecheck\" \"pnpm:eslint:check\" \"pnpm:stylelint:check\"",
+    "lint:check": "concurrently --group \"pnpm:typecheck\" \"pnpm:eslint:check\" \"pnpm:stylelint:check\" \"pnpm:prettier:check\"",
     "eslint": "pnpm run eslint:check --fix",
     "eslint:check": "eslint \"{src,test}/**/*.{js,jsx,ts,tsx}\"",
     "stylelint": "pnpm run stylelint:check --fix",
@@ -27,8 +27,8 @@
     "typecheck": "tsc --noEmit",
     "typecheck:watch": "tsc --noEmit --watch --preserveWatchOutput",
     "clean": "jest --clearCache && rm -rf dist && rm -rf dist-nonce && rm -rf ../target/webapp/koski/valpas && rm -rf .parcel-cache",
-    "prettier": "../node_modules/.bin/prettier --write --cache .",
-    "prettier:check": "../node_modules/.bin/prettier --check --cache ."
+    "prettier": "prettier --write --cache .",
+    "prettier:check": "prettier --check --cache ."
   },
   "repository": {
     "type": "git",
@@ -69,6 +69,7 @@
     "node-fetch": "3.3.2",
     "parcel": "2.14.4",
     "postcss-less": "6.0.0",
+    "prettier": "3.9.9",
     "selenium-webdriver": "4.49.0",
     "stylelint": "17.15.0",
     "stylelint-no-unsupported-browser-features": "8.1.2",
