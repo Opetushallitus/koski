@@ -1,3 +1,4 @@
+import type { JSX } from "react"
 import { pipe } from "fp-ts/lib/function"
 import * as O from "fp-ts/Option"
 
