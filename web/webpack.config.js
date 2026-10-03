@@ -1,6 +1,5 @@
 const getTargets = require('@babel/helper-compilation-targets').default
 const CopyWebpackPlugin = require('copy-webpack-plugin')
-const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin')
 const path = require('path')
 
 // Kohdeselaimet määritetään .browserslistrc:stä Babelin avulla ja annetaan
@@ -123,9 +122,6 @@ module.exports = (_, argv = {}) => ({
     ]
   },
   plugins: [
-    new ForkTsCheckerWebpackPlugin({
-      typescript: { mode: 'write-tsbuildinfo', memoryLimit: 1000000000 }
-    }),
     new CopyWebpackPlugin({
       patterns: [
         { from: 'static' },

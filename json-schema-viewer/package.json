@@ -10,6 +10,7 @@
     "build:prod": "webpack --bail --mode production",
     "watch": "webpack --watch --mode development",
     "typecheck": "tsc --noEmit",
+    "typecheck:watch": "tsc --noEmit --watch --preserveWatchOutput",
     "lint": "pnpm run typecheck && pnpm run prettier",
     "lint:check": "pnpm run typecheck",
     "prettier": "../node_modules/.bin/prettier --write --cache .",
