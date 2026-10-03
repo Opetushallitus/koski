@@ -12,7 +12,7 @@ export type OrganisatioAutoRedirectProps = {
   organisaatioHakuRooli: Kayttooikeusrooli | Kayttooikeusrooli[]
   organisaatioTyyppi: string
   redirectTo: (basePath: string, org: Oid) => string
-  renderError: () => JSX.Element
+  renderError: () => React.JSX.Element
 }
 
 export const OrganisaatioAutoRedirect = (

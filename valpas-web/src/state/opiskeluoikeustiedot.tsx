@@ -86,7 +86,7 @@ export const perusopetuksenJälkeistäPreferoivatOpiskeluoikeustiedot = (
       A.filter(
         (oo) =>
           oo.oid !== käsiteltäväOpiskeluoikeus.oid &&
-          oo.tarkasteltavaPäätasonSuoritus.suorituksenTyyppi.koodiarvo !==
+          oo.tarkasteltavaPäätasonSuoritus?.suorituksenTyyppi.koodiarvo !==
             "lukionaineopinnot",
       ), // lukion aineopiskelijat halutaan näyttää taulukossa mutta opintoja ei suorittamiseen kelpaavina
       A.chain(perusopetuksenJälkeistäPreferoivaNäytettäväOpiskeluoikeusTieto),
