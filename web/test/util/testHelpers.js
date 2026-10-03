@@ -211,13 +211,6 @@ function insertExample(name) {
   }
 }
 
-var isIE =
-  navigator.appName === 'Microsoft Internet Explorer' ||
-  !!(
-    navigator.userAgent.match(/Trident/) || navigator.userAgent.match(/rv:11/)
-  ) ||
-  (typeof $.browser !== 'undefined' && $.browser.msie === 1)
-
 function triggerEvent(selector, eventName) {
   return function () {
     var element = toElement(selector)
@@ -225,17 +218,11 @@ function triggerEvent(selector, eventName) {
       throw new Error('triggerEvent: element not visible')
     }
 
-    var evt
-    if (window.callPhantom || isIE) {
-      evt = testFrame().document.createEvent('HTMLEvents')
-      evt.initEvent(eventName, true, true)
-    } else {
-      evt = new MouseEvent(eventName, {
-        view: window,
-        bubbles: true,
-        cancelable: true
-      })
-    }
+    var evt = new MouseEvent(eventName, {
+      view: window,
+      bubbles: true,
+      cancelable: true
+    })
     element.toArray().forEach(function (elem) {
       elem.dispatchEvent(evt)
     })
@@ -308,19 +295,15 @@ function takeScreenshot(name) {
         .replace(/ö/g, 'o')
         .replace(/"/g, '') || date.getTime())
     console.log('Taking screenshot web/' + filename + '.png')
-    if (window.callPhantom) {
-      callPhantom({ screenshot: filename })
-    } else {
-      return Promise.resolve(
-        html2canvas(testFrame().document.body).then(function (canvas) {
-          $(document.body).append(
-            $('<div>')
-              .append($('<h4>').text('Screenshot: ' + filename))
-              .append($(canvas))
-          )
-        })
-      )
-    }
+    return Promise.resolve(
+      html2canvas(testFrame().document.body).then(function (canvas) {
+        $(document.body).append(
+          $('<div>')
+            .append($('<h4>').text('Screenshot: ' + filename))
+            .append($(canvas))
+        )
+      })
+    )
   }
 }
 

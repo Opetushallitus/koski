@@ -55,14 +55,7 @@ const HetuLogin = ({ loginUrl = '/koski/cas/oppija', redirectUrl = null }) => {
 
   login.onValue((x) => {
     Cookie.set('lang', x.lang)
-    if (
-      x.resp.headers &&
-      x.resp.headers.map &&
-      x.resp.headers.map['x-virhesivu']
-    ) {
-      // For PhantomJS - the fetch polyfill doesn't set "x.redirected"
-      document.location = '/koski/virhesivu'
-    } else if (redirectUrl) {
+    if (redirectUrl) {
       document.location = redirectUrl
     } else if (x.resp.redirected) {
       document.location = x.resp.url
