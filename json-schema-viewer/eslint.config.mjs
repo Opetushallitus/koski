@@ -24,8 +24,14 @@ export default defineConfig([
   },
   {
     files: ['**/*.ts'],
-    extends: [tseslint.configs.recommended],
-    languageOptions: { globals: globals.browser }
+    extends: [tseslint.configs.recommendedTypeChecked],
+    languageOptions: {
+      globals: globals.browser,
+      parserOptions: {
+        projectService: true,
+        tsconfigRootDir: import.meta.dirname
+      }
+    }
   },
   { ...compat.configs['flat/recommended'], files: ['src/**/*'] },
   { rules: { eqeqeq: 'error' } },

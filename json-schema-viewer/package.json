@@ -34,6 +34,7 @@
     "@babel/helper-compilation-targets": "7.29.7",
     "@eslint/js": "10.0.1",
     "@swc/core": "1.16.12",
+    "@types/tv4": "1.2.33",
     "concurrently": "9.2.4",
     "css-minimizer-webpack-plugin": "8.0.0",
     "eslint": "10.11.0",
