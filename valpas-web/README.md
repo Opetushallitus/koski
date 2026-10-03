@@ -30,8 +30,7 @@ pnpm install --frozen-lockfile
 - `pnpm run build:local` kääntää lähdekoodit kansioon `./dist-nonce` asetuksilla, joissa backend löytyy localhostista, ja kopioi
   sisällön tarpeellisin muutoksin Koskessa hostaamista varten ../target/webapp/ -hakemistoon.
 - `pnpm run build:prod` kääntää tuotantoversion
-- `pnpm run lint` tarkastaa koodin tyypitykset ja formatoinnin
-- `pnpm run fix` korjaa formatointivirheet
+- `pnpm run lint` tarkistaa tyypitykset sekä korjaa lint- ja muotoiluvirheet; `pnpm run lint:check` ja `pnpm run prettier:check` vain tarkistavat
 - `pnpm run clean` tyhjentää Parcelin välimuistin ja käännöskansiot. Aja jos kääntäminen sekoilee esim. rebasen jälkeen.
 
 ### Hakemistorakenne
