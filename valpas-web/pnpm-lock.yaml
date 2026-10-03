@@ -38,9 +38,6 @@ importers:
       react-router-dom:
         specifier: 5.3.4
         version: 5.3.4(react@19.3.0)
-      regenerator-runtime:
-        specifier: 0.14.1
-        version: 0.14.1
     devDependencies:
       '@jest/globals':
         specifier: 30.5.2

@@ -87,8 +87,7 @@
     "react-calendar": "6.0.1",
     "react-date-picker": "12.1.0",
     "react-dom": "19.3.0",
-    "react-router-dom": "5.3.4",
-    "regenerator-runtime": "0.14.1"
+    "react-router-dom": "5.3.4"
   },
   "alias": {
     "memoize": "./node_modules/.pnpm/memoize@10.2.0/node_modules/memoize/distribution/index.js"
