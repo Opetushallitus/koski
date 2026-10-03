@@ -17,6 +17,6 @@ export default defineConfig([
       "@typescript-eslint/no-import-type-side-effects": "error",
     },
   },
-  { rules: { eqeqeq: "warn" } },
+  { rules: { eqeqeq: "error" } },
   eslintConfigPrettier,
 ]);

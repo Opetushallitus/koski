@@ -27,7 +27,7 @@ export default [
     },
 
     rules: {
-      eqeqeq: "warn",
+      eqeqeq: "error",
     },
 
     files: ["**/*.ts", "**/*.tsx"],

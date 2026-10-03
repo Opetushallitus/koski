@@ -28,7 +28,7 @@ export default defineConfig([
     languageOptions: { globals: globals.browser }
   },
   { ...compat.configs['flat/recommended'], files: ['src/**/*'] },
-  { rules: { eqeqeq: 'warn' } },
+  { rules: { eqeqeq: 'error' } },
   eslintConfigPrettier,
   { rules: { 'no-unexpected-multiline': 'error' } }
 ])

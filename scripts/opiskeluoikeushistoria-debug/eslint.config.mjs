@@ -10,6 +10,6 @@ export default defineConfig([
     files: ["index.js"],
     languageOptions: { sourceType: "commonjs", globals: globals.node },
   },
-  { rules: { eqeqeq: "warn" } },
+  { rules: { eqeqeq: "error" } },
   eslintConfigPrettier,
 ]);
