@@ -31,8 +31,10 @@ export class RadiatorApiHealthSource extends HealthSource {
   }
 
   private startScheduling(intervalSeconds: number) {
-    this.fetchHealth()
-    setInterval(() => this.fetchHealth(), intervalSeconds * 1000)
+    this.fetchHealth().catch(console.error)
+    setInterval(() => {
+      this.fetchHealth().catch(console.error)
+    }, intervalSeconds * 1000)
   }
 
   private async fetchHealth() {
@@ -49,7 +51,7 @@ export class RadiatorApiHealthSource extends HealthSource {
       }
     } catch (err) {
       console.error(err)
-      this.emitError(`${err}`)
+      this.emitError(String(err))
     }
   }
 

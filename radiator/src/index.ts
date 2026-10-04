@@ -34,7 +34,7 @@ const getHealthSource = (env?: string, koskiDir?: string) => {
 const env = process.argv[2]
 const koskiDir = process.argv[3]
 const apiKey =
-  process.env.APIKEY || process.env[`${env.toUpperCase}_RADIATOR_KEY`] || ''
+  process.env.APIKEY || process.env[`${env.toUpperCase()}_RADIATOR_KEY`] || ''
 
 pipe(
   getHealthSource(env, koskiDir),
