@@ -42,6 +42,9 @@ importers:
       '@swc/core':
         specifier: 1.16.12
         version: 1.16.12
+      '@types/node':
+        specifier: 24.19.0
+        version: 24.19.0
       '@types/tv4':
         specifier: 1.2.33
         version: 1.2.33

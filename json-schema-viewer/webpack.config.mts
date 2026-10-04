@@ -1,25 +1,35 @@
-const getTargets = require('@babel/helper-compilation-targets').default
-const CssMinimizerPlugin = require('css-minimizer-webpack-plugin')
-const path = require('path')
+import compilationTargets from '@babel/helper-compilation-targets'
+import CssMinimizerPlugin from 'css-minimizer-webpack-plugin'
+import path from 'node:path'
+import type { Configuration } from 'webpack'
 
 // Kohdeselaimet luetaan Kosken .browserslistrc:stä samalla tavalla kuin web/webpack.config.mts:ssä.
-const targets = getTargets({}, { configPath: __dirname })
+const targets = compilationTargets.default(
+  {},
+  { configPath: import.meta.dirname }
+)
 
-const swcRule = (test, syntax) => ({
+const swcRule = (test: RegExp, syntax: 'typescript' | 'ecmascript') => ({
   test,
-  include: path.join(__dirname, 'src'),
+  include: path.join(import.meta.dirname, 'src'),
   use: {
     loader: 'swc-loader',
     options: { env: { targets }, jsc: { parser: { syntax } } }
   }
 })
 
-module.exports = (_, argv = {}) => ({
-  context: path.join(__dirname, 'src'),
+export default (
+  _: unknown,
+  argv: { mode?: Configuration['mode'] } = {}
+): Configuration => ({
+  context: path.join(import.meta.dirname, 'src'),
   entry: './index.ts',
   devtool: argv.mode === 'development' ? 'inline-source-map' : false,
   output: {
-    path: path.join(__dirname, '../target/webapp/koski/json-schema-viewer'),
+    path: path.join(
+      import.meta.dirname,
+      '../target/webapp/koski/json-schema-viewer'
+    ),
     filename: 'js/json-schema-viewer.js',
     clean: true
   },

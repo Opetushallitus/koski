@@ -16,11 +16,9 @@ export default defineConfig([
     }
   },
   {
-    files: ['webpack.config.js'],
-    languageOptions: {
-      sourceType: 'commonjs',
-      globals: globals.node
-    }
+    files: ['webpack.config.mts'],
+    extends: [tseslint.configs.recommended],
+    languageOptions: { globals: globals.node }
   },
   {
     files: ['**/*.ts'],
