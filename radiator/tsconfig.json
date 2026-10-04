@@ -1,9 +1,9 @@
 {
   "include": ["src"],
   "compilerOptions": {
-    "target": "ES2020",
-    "module": "nodenext",
-    "lib": ["es2020"],
+    "target": "ES2024",
+    "module": "node20",
+    "lib": ["ES2024"],
     "strict": true,
     "alwaysStrict": true,
     "noUnusedLocals": false,

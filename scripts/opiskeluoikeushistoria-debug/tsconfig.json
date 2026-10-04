@@ -5,9 +5,9 @@
     "strict": true,
     "noEmit": true,
     "skipLibCheck": true,
-    "module": "NodeNext",
-    "moduleResolution": "NodeNext",
-    "target": "ES2022"
+    "module": "node20",
+    "target": "ES2024",
+    "lib": ["ES2024"]
   },
   "include": ["index.js"]
 }
