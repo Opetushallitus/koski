@@ -1,6 +1,6 @@
 import path from 'node:path'
 import { Tail } from 'tail'
-import { HealthSource, isHealthDataEntry } from './HealthSource'
+import { HealthSource, isHealthDataEntry } from './HealthSource.ts'
 
 export class LocalHealthSource extends HealthSource {
   tail: Tail

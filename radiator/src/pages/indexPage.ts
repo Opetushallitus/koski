@@ -1,7 +1,11 @@
-import * as string from 'fp-ts/string'
-import { pipe } from 'fp-ts/lib/function'
-import * as R from 'fp-ts/Record'
-import type { ReprHost, ReprService, ReprState } from '../representationalState'
+import * as string from 'fp-ts/lib/string.js'
+import { pipe } from 'fp-ts/lib/function.js'
+import * as R from 'fp-ts/lib/Record.js'
+import type {
+  ReprHost,
+  ReprService,
+  ReprState
+} from '../representationalState.ts'
 
 function htmlEntities(str: string) {
   return String(str)

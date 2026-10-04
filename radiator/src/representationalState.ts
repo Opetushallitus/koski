@@ -1,8 +1,8 @@
-import * as string from 'fp-ts/string'
-import { pipe } from 'fp-ts/lib/function'
-import * as R from 'fp-ts/Record'
-import * as O from 'fp-ts/Option'
-import type { Host, Service, State } from './state'
+import * as string from 'fp-ts/lib/string.js'
+import { pipe } from 'fp-ts/lib/function.js'
+import * as R from 'fp-ts/lib/Record.js'
+import * as O from 'fp-ts/lib/Option.js'
+import type { Host, Service, State } from './state.ts'
 
 export type ServiceStatus = 'ok' | 'degraded' | 'down' | 'lost'
 

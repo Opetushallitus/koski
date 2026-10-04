@@ -1,4 +1,4 @@
-import { type HealthData, HealthSource } from './HealthSource'
+import { type HealthData, HealthSource } from './HealthSource.ts'
 
 export type ApiEnv = 'local' | 'dev' | 'qa' | 'prod'
 

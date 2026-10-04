@@ -1,9 +1,9 @@
-import { pipe } from 'fp-ts/lib/function'
-import * as NEA from 'fp-ts/NonEmptyArray'
-import * as O from 'fp-ts/Option'
-import * as R from 'fp-ts/Record'
-import * as string from 'fp-ts/string'
-import type { HealthDataEntry } from './health/HealthSource'
+import { pipe } from 'fp-ts/lib/function.js'
+import * as NEA from 'fp-ts/lib/NonEmptyArray.js'
+import * as O from 'fp-ts/lib/Option.js'
+import * as R from 'fp-ts/lib/Record.js'
+import * as string from 'fp-ts/lib/string.js'
+import type { HealthDataEntry } from './health/HealthSource.ts'
 
 export interface ServiceError {
   timestamp: Date

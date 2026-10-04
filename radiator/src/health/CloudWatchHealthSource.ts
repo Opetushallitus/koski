@@ -1,5 +1,5 @@
 import { spawn } from 'child_process'
-import { HealthSource, isHealthDataEntry } from './HealthSource'
+import { HealthSource, isHealthDataEntry } from './HealthSource.ts'
 
 export type RemoteEnv = 'dev' | 'qa' | 'prod'
 
