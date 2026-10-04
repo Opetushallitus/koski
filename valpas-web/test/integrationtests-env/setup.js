@@ -39,4 +39,5 @@ const serve = () =>
     parcel.on("close", () => console.log("Parcel process closed"))
   })
 
+/** @param {Buffer | Error} buffer */
 const log = (buffer) => console.log(buffer.toString())

@@ -37,6 +37,7 @@
   "homepage": "https://github.com/Opetushallitus/koski#readme",
   "devDependencies": {
     "@jest/globals": "30.5.2",
+    "@jest/test-sequencer": "30.5.2",
     "@parcel/config-default": "2.14.4",
     "@parcel/core": "2.14.4",
     "@parcel/transformer-less": "2.14.4",

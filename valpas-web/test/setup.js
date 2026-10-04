@@ -1,5 +1,5 @@
 const failOnConsole = require("jest-fail-on-console")
-const fetchMock = require("jest-fetch-mock")
+const fetchMock = require("jest-fetch-mock").default
 
 failOnConsole()
 
