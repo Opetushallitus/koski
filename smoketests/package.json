@@ -3,13 +3,14 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "type": "module",
   "scripts": {
-    "qa:versio": "ts-node src/qa-versio.ts",
-    "qa:kansalainen": "ts-node src/qa-kansalainen.ts",
-    "qa:tiedote": "ts-node src/qa-tiedote.ts",
-    "omadata:local": "ts-node src/omadata-oauth2-sample.ts local",
-    "omadata:dev": "ts-node src/omadata-oauth2-sample.ts dev",
-    "omadata:qa": "ts-node src/omadata-oauth2-sample.ts qa",
+    "qa:versio": "node src/qa-versio.ts",
+    "qa:kansalainen": "node src/qa-kansalainen.ts",
+    "qa:tiedote": "node src/qa-tiedote.ts",
+    "omadata:local": "node src/omadata-oauth2-sample.ts local",
+    "omadata:dev": "node src/omadata-oauth2-sample.ts dev",
+    "omadata:qa": "node src/omadata-oauth2-sample.ts qa",
     "lint": "pnpm run typecheck && pnpm run eslint && pnpm run prettier",
     "lint:check": "concurrently --group \"pnpm:typecheck\" \"pnpm:eslint:check\" \"pnpm:prettier:check\"",
     "eslint": "pnpm run eslint:check --fix",
@@ -35,7 +36,6 @@
     "eslint": "10.11.0",
     "eslint-config-prettier": "10.1.8",
     "prettier": "3.9.9",
-    "ts-node": "10.9.2",
     "typescript": "5.9.3",
     "typescript-eslint": "8.70.1"
   }

@@ -201,9 +201,7 @@ const runTest = async (environment: Environment) =>
 const environment = process.argv[2] as Environment | undefined;
 
 if (!environment || !ENVIRONMENTS[environment]) {
-  console.error(
-    "Usage: pnpm ts-node src/omadata-oauth2-sample.ts <local|dev|qa>",
-  );
+  console.error("Usage: node src/omadata-oauth2-sample.ts <local|dev|qa>");
   process.exit(1);
 }
 
