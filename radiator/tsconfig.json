@@ -1,8 +1,10 @@
 {
-  "include": ["src"],
+  "include": ["src", "eslint.config.mjs"],
   "compilerOptions": {
     "target": "ES2024",
     "module": "node20",
+    "allowJs": true,
+    "checkJs": true,
     "lib": ["ES2024"],
     "strict": true,
     "alwaysStrict": true,
