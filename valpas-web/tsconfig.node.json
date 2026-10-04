@@ -1,0 +1,23 @@
+{
+  "compilerOptions": {
+    "target": "ES2024",
+    "module": "node20",
+    "lib": ["ES2024"],
+    "types": ["node"],
+    "allowJs": true,
+    "checkJs": true,
+    "strict": true,
+    "noEmit": true,
+    "skipLibCheck": true
+  },
+  "files": [
+    "autoclear.js",
+    "eslint.config.mjs",
+    "jest.config.js",
+    "jest.integrationtests.config.js",
+    "postbuild-exec.mjs",
+    "postbuild.mjs",
+    "stylelint.config.mjs",
+    "watch.mjs"
+  ]
+}

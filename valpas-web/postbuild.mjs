@@ -23,6 +23,10 @@ const targetWebDistDir = targetDir
 const sourceIndexHtml = path.join(webDistDir, "index.html")
 const targetIndexHtml = path.resolve(targetDir, "..", "index.html.template")
 
+/**
+ * @param {string} source
+ * @param {string} dist
+ */
 async function copy(source, dist) {
   const elements = await fs.readdir(source)
   for (const element of elements) {

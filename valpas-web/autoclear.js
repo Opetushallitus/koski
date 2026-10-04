@@ -2,6 +2,7 @@ const { exec } = require("child_process")
 const { join } = require("path")
 const { readFile, writeFile } = require("fs/promises")
 
+/** @param {string} command */
 const run = (command) =>
   new Promise((resolve, reject) => {
     exec(command, (error, stdout, stderr) => {
@@ -13,6 +14,7 @@ const run = (command) =>
     })
   })
 
+/** @param {string} filepath */
 const readFileNeverFail = (filepath) => readFile(filepath).catch(() => "none")
 
 const getCurrentBranch = () => run("git rev-parse --abbrev-ref HEAD")
@@ -25,9 +27,11 @@ const getVersionPath = async () =>
 const getLastBuildVersion = async () =>
   (await readFileNeverFail(await getVersionPath())).toString()
 
+/** @param {string} version */
 const setLastBuildVersion = async (version) =>
   writeFile(await getVersionPath(), version)
 
+/** @param {string} variant */
 const autoclearCache = async (variant) => {
   const previous = await getLastBuildVersion()
   const next = `${await getCurrentBranch()}:${variant}`
