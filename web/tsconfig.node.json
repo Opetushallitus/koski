@@ -11,11 +11,6 @@
     "noEmit": true,
     "skipLibCheck": true
   },
-  "files": [
-    "node-libs.d.ts",
-    "test/runMocha.mts",
-    "webpack.config.mts",
-    "eslint.config.mjs",
-    "stylelint.config.mjs"
-  ]
+  "include": ["*", "test/runMocha.mts"],
+  "exclude": ["featureFlags.js"]
 }

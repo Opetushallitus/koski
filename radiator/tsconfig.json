@@ -1,5 +1,5 @@
 {
-  "include": ["src", "eslint.config.mjs"],
+  "include": ["src", "*"],
   "compilerOptions": {
     "target": "ES2024",
     "module": "node20",

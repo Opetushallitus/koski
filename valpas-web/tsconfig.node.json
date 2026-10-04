@@ -10,14 +10,5 @@
     "noEmit": true,
     "skipLibCheck": true
   },
-  "files": [
-    "autoclear.js",
-    "eslint.config.mjs",
-    "jest.config.js",
-    "jest.integrationtests.config.js",
-    "postbuild-exec.mjs",
-    "postbuild.mjs",
-    "stylelint.config.mjs",
-    "watch.mjs"
-  ]
+  "include": ["*"]
 }

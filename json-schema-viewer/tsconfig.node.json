@@ -11,10 +11,5 @@
     "noEmit": true,
     "skipLibCheck": true
   },
-  "files": [
-    "node-libs.d.ts",
-    "webpack.config.mts",
-    "eslint.config.mjs",
-    "stylelint.config.mjs"
-  ]
+  "include": ["*"]
 }

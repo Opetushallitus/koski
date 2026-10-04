@@ -9,5 +9,5 @@
     "target": "ES2024",
     "lib": ["ES2024"]
   },
-  "include": ["index.js", "eslint.config.mjs"]
+  "include": ["*"]
 }
