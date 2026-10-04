@@ -28,6 +28,7 @@ export default [
 
     rules: {
       eqeqeq: "error",
+      "@typescript-eslint/ban-ts-comment": "error",
     },
 
     files: ["**/*.ts", "**/*.tsx"],

@@ -76,7 +76,6 @@ const oppijatFetchHook =
     const oppijatFetch = useApiWithParams(
       fetchOppijatFn,
       organisaatioOid ? [organisaatioOid] : undefined,
-      // @ts-ignore
       oppijatCache,
     )
 
