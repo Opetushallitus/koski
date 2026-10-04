@@ -65,7 +65,7 @@ export const useDataTableState = (
 // Filtterit
 
 const initialFilterState = (length: number): FilterState =>
-  new Array(length).fill({ value: null, fn: null })
+  Array.from({ length }, () => ({ value: null, fn: null }))
 
 export const setFilters =
   (filters: FilterState) =>

@@ -40,6 +40,6 @@ async function main() {
   root.render(<ValpasApp />)
 }
 
-main()
+main().catch(console.error)
 
 window.enableFeature = enableFeature

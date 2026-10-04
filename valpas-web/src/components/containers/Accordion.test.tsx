@@ -8,7 +8,7 @@ describe("Accordion", () => {
     expectToMatchSnapshot(createAccordion(testContent))
   })
 
-  test("kaikki sivut avatutuvat klikkauksesta", async () => {
+  test("kaikki sivut avatutuvat klikkauksesta", () => {
     const accordion = createAccordion(testContent)
 
     testLabels.map((labelText) =>

@@ -42,7 +42,7 @@ export const reset = async (
   force: boolean = false,
   tarkastelupäivä?: string,
 ) => {
-  await setBrowserDate(tarkastelupäivä || defaultDate)
+  setBrowserDate(tarkastelupäivä || defaultDate)
   await deleteCookies()
   await goToLocation(initialPath)
   await driver.wait(until.elementLocated(By.css("article")), defaultTimeout)
@@ -53,7 +53,7 @@ export const resetMockData = async (
   tarkastelupäivä: string = defaultDate,
   force: boolean = false,
 ) => {
-  await setBrowserDate(tarkastelupäivä)
+  setBrowserDate(tarkastelupäivä)
   const inputSelector = "#tarkastelupäivä"
 
   await expectElementEventuallyVisible(inputSelector)

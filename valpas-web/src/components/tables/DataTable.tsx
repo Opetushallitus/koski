@@ -287,7 +287,7 @@ const useTableData = (props: DataTableProps) => {
       ? {
           ...column,
           indicatorSpace: filteredData.some(
-            (row) => row.values[colIndex]?.icon,
+            (row) => !!row.values[colIndex]?.icon,
           ),
         }
       : column,

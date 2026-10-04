@@ -119,7 +119,7 @@ const teeKuntailmoitusHakutilannenäkymästä = async (
 
   for (const form of forms) {
     // Tarkista että valitut oppijat ja lomakkeet mäppäytyvät toisiinsa
-    const oppija = oppijat.find((o) => form.subtitle.includes(o.oid))!!
+    const oppija = oppijat.find((o) => form.subtitle.includes(o.oid))!
     expect(
       oppija,
       `Lomakkeen oppija "${form.title}" "${form.subtitle}" on valittujen oppijoiden joukossa`,

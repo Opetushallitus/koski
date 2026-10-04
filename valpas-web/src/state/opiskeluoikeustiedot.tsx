@@ -62,7 +62,7 @@ export const perusopetuksenJälkeisetOpiskeluoikeustiedot = (
     case 0:
       return null
     case 1:
-      return { value: toValue(oos[0]!!), icon }
+      return { value: toValue(oos[0]!), icon }
     default:
       const filterValues = oos.map(toValue).filter(nonNull)
       return {
@@ -121,7 +121,7 @@ export const perusopetuksenJälkeistäPreferoivatOpiskeluoikeustiedot = (
     case 0:
       return null
     case 1:
-      return { value: toValue(ooTiedots[0]!!), icon }
+      return { value: toValue(ooTiedots[0]!), icon }
     default:
       const filterValues = ooTiedots.map(toValue).filter(nonNull)
       return {

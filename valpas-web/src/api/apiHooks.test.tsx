@@ -10,12 +10,14 @@ describe("apiHooks", () => {
   it("käsittele siististi tilanne, jossa api-kutsun tehnyt komponentti häviää ennen kuin kutsu on valmis", async () => {
     const { promise, resolve } = mockPromise()
     const container = render(<Container promise={promise} />)
+    const user = userEvent.setup({ advanceTimers: jest.advanceTimersByTime })
 
     // Mock-api-kutsun tekevä elementti tulee näkyville ja kutsu käynnistyy
-    userEvent.click(container.getByText("Show"))
+    await user.click(container.getByText("Show"))
+    expect(container.getByText("loading")).toBeTruthy()
 
     // Elementti piilotetaan, kutsun käsittely pitäisi siivoutua pois
-    userEvent.click(container.getByText("Hide"))
+    await user.click(container.getByText("Hide"))
 
     // Jos siivoaminen ei toimi oikein, resolven kutsuminen kirjoittaa konsoliin virheen
     // "Can't perform a React state update on an unmounted component" ja testi epäonnistuu

@@ -17,18 +17,30 @@ export default [
   { ...compat.configs["flat/recommended"], files: ["src/**/*"] },
   eslintConfigPrettier,
   { rules: { "no-unexpected-multiline": "error" } },
+  ...tseslint.configs.recommendedTypeCheckedOnly.map((config) => ({
+    ...config,
+    files: ["**/*.ts", "**/*.tsx"],
+  })),
   {
-    plugins: {
-      "@typescript-eslint": tseslint.plugin,
-    },
-
     languageOptions: {
-      parser: tseslint.parser,
+      parserOptions: {
+        projectService: true,
+        tsconfigRootDir: import.meta.dirname,
+      },
     },
 
     rules: {
       eqeqeq: "error",
       "@typescript-eslint/ban-ts-comment": "error",
+      "@typescript-eslint/no-duplicate-type-constituents": "off",
+      "@typescript-eslint/no-floating-promises": [
+        "error",
+        { ignoreVoid: false },
+      ],
+      "@typescript-eslint/no-misused-promises": [
+        "error",
+        { checksVoidReturn: { attributes: false } },
+      ],
     },
 
     files: ["**/*.ts", "**/*.tsx"],

@@ -12,7 +12,7 @@ export const stopPropagation = withoutDefaultAction(() => {})
 export const kbSwitch =
   (...handlers: Array<(e: React.KeyboardEvent) => boolean>) =>
   (e: React.KeyboardEvent): boolean => {
-    for (let handler of handlers) {
+    for (const handler of handlers) {
       if (handler(e)) {
         return true
       }

@@ -27,11 +27,13 @@ export const KuntaHetulistahaku = () => {
 
   const submit = () => {
     hetus.set(hetus.list.join("\n"))
-    download.call({
-      hetut: hetus.list,
-      password,
-      lang,
-    })
+    download
+      .call({
+        hetut: hetus.list,
+        password,
+        lang,
+      })
+      .catch(console.error)
   }
 
   return (

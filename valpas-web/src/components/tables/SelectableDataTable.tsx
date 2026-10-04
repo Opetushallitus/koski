@@ -61,7 +61,7 @@ export const SelectableDataTable = ({
 
   const forcedColumns: Column[] = [
     {
-      ...columns[0]!!,
+      ...columns[0]!,
       indicatorSpace: true,
     },
     ...columns.slice(1),

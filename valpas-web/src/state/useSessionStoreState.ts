@@ -21,7 +21,9 @@ export const sessionStateStorage = <S, T>(
   return {
     get() {
       const storedState = sessionStorage.getItem(name)
-      return storedState ? mapRestore(JSON.parse(storedState)) : initialState
+      return storedState
+        ? mapRestore(JSON.parse(storedState) as T)
+        : initialState
     },
     set(value) {
       sessionStorage.setItem(name, JSON.stringify(mapSave(value)))

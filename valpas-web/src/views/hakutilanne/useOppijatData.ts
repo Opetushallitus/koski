@@ -43,7 +43,7 @@ export type UseOppijatDataApi = {
     oppijaOid: Oid,
     opiskeluoikeus: OpiskeluoikeusSuppeatTiedot,
     value: boolean,
-  ) => void
+  ) => Promise<void>
   isLoading: boolean
   errors?: ApiError[]
 }
@@ -113,7 +113,7 @@ const oppijatFetchHook =
     const reload = useCallback(() => {
       if (organisaatioOid) {
         oppijatCache.clearAll()
-        oppijatFetch.call(organisaatioOid)
+        oppijatFetch.call(organisaatioOid).catch(console.error)
       }
     }, [oppijatFetch, organisaatioOid])
 
@@ -192,7 +192,7 @@ const useOppijatDataAPI = (
       opiskeluoikeus: OpiskeluoikeusSuppeatTiedot,
       value: boolean,
     ) => {
-      cache.clear([organisaatioOid!!])
+      cache.clear([organisaatioOid!])
 
       const response = await saveMuuHakuState.call(
         oppijaOid,

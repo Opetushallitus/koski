@@ -48,7 +48,7 @@ export const useApiWithParams = <T, P extends any[]>(
   const api = useApiMethod(fetchFn, cache, { ignoreStaleResponses: true })
   useEffect(() => {
     if (params) {
-      api.call(...params)
+      api.call(...params).catch(console.error)
     } else {
       api.clear()
     }
@@ -123,11 +123,13 @@ export const useApiSequence = <T, P extends any[], S>(
         const [params, nextState] = next
         await doFetch(...params)
         state = nextState
-        setTimeout(runNext)
+        setTimeout(() => {
+          runNext().catch(console.error)
+        })
       }
     }
 
-    runNext()
+    runNext().catch(console.error)
 
     return () => {
       cancelled = true

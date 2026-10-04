@@ -11,7 +11,7 @@ window.Service = {
   getUser() {
     return window.oppijaRaamitUser
       ? Promise.resolve(window.oppijaRaamitUser)
-      : Promise.reject()
+      : Promise.reject(new Error("Ei kirjautunutta käyttäjää"))
   },
 
   login() {

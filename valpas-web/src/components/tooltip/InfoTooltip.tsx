@@ -87,7 +87,7 @@ export const InfoTooltip = (props: InfoTooltipProps) => {
               <p key={index}>{text}</p>
             ))}
           </InfoTooltipPopup>,
-          document.getElementById("app")!!,
+          document.getElementById("app")!,
         )}
     </span>
   )

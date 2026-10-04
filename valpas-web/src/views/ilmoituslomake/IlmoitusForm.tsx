@@ -169,7 +169,7 @@ export const IlmoitusForm = withScroll((props: IlmoitusFormProps) => {
   const [isSubmitted, setSubmitted] = useState(false)
   const send = useApiMethod(createKuntailmoitus)
 
-  const submit = form.submitCallback(async (formData) => {
+  const submit = form.submitCallback((formData) => {
     const kuntailmoitus = toKuntailmoitusLaajatTiedot(
       formData,
       props.oppijaTiedot.oid,
@@ -178,7 +178,7 @@ export const IlmoitusForm = withScroll((props: IlmoitusFormProps) => {
     )
 
     if (kuntailmoitus) {
-      await send.call(kuntailmoitus)
+      send.call(kuntailmoitus).catch(console.error)
     }
   })
 

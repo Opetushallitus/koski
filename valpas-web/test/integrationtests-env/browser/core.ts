@@ -73,7 +73,7 @@ export const $$ = async (
       until.elementsLocated(By.css(selector)),
       timeout,
     )
-    return result as any as WebElement[] // elementsLocated palauttaa väärän tyypin
+    return result
   } catch (_err) {
     throw new Error(`Could not find elements by "${selector}"`)
   }

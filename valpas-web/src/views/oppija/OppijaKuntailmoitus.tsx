@@ -24,7 +24,6 @@ import {
 import { useApiMethod } from "../../api/apiHooks"
 import { mitätöiKuntailmoitus } from "../../api/api"
 import { usePrompt } from "../../components/containers/Prompt"
-import { pipe } from "fp-ts/lib/function"
 import * as E from "fp-ts/Either"
 import { FlatButton } from "../../components/buttons/FlatButton"
 
@@ -40,11 +39,11 @@ export const OppijaKuntailmoitus = (props: OppijaKuntailmoitusProps) => {
   const mitätöiImoitusApi = useApiMethod(mitätöiKuntailmoitus)
   const prompt = usePrompt()
   const onMitätöinti = useCallback(() => {
-    prompt.show(t("kuntailmoitus__mitätöinti_varmistus"), async () => {
-      pipe(
-        await mitätöiImoitusApi.call(props.kuntailmoitus.id as string),
-        E.map(() => location.reload()),
-      )
+    prompt.show(t("kuntailmoitus__mitätöinti_varmistus"), () => {
+      mitätöiImoitusApi
+        .call(props.kuntailmoitus.id as string)
+        .then(E.map(() => location.reload()))
+        .catch(console.error)
     })
   }, [mitätöiImoitusApi, prompt, props.kuntailmoitus.id])
 

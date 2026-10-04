@@ -16,7 +16,7 @@ export const queryString = (query: QueryParams) =>
     .filter(([_key, value]) => nonNull(value))
     .map(
       ([key, value]) =>
-        encodeURIComponent(key) + "=" + encodeURIComponent(value!!),
+        encodeURIComponent(key) + "=" + encodeURIComponent(value!),
     )
     .join("&")
 
@@ -41,7 +41,7 @@ export type PathDeclaration<A extends any[]> = {
 
 export const declarePath = <A extends any[] = never[]>(
   route: string,
-  mapParams: (...args: A) => object = () => ({}),
+  mapParams: (...args: A) => QueryParams = () => ({}),
 ): PathDeclaration<A> => {
   const getRoute = (basePath: string = "") =>
     `${basePath}/${route}`.replace(/\/\//g, "/")
@@ -49,14 +49,14 @@ export const declarePath = <A extends any[] = never[]>(
     route: getRoute,
     href: (basePath?: string | null, ...args: A) => {
       const params = mapParams(...args)
-      const [url, query] = Object.entries(params).reduce(
+      const [url, query] = Object.entries(params).reduce<[string, QueryParams]>(
         ([url, query], [key, value]) => {
           const paramPlace = `:${key}`
           return url.includes(paramPlace)
-            ? [url.replace(paramPlace, value), query]
+            ? [url.replace(paramPlace, String(value)), query]
             : [url, { ...query, [key]: value }]
         },
-        [getRoute(basePath || ""), {} as QueryParams],
+        [getRoute(basePath || ""), {}],
       )
       return isEmptyObject(query) ? url : queryPath(url, query)
     },

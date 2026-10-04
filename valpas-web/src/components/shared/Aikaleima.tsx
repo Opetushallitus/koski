@@ -14,7 +14,7 @@ export const Aikaleima = () => {
     })
       .then(async (res) => {
         if (res.ok) {
-          const data = await res.json()
+          const data = (await res.json()) as string
           try {
             setTime(parseISO(data))
           } catch (err) {

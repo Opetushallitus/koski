@@ -35,11 +35,13 @@ export const OppivelvollisuudenKeskeytyksenMuokkausModal = (
   const create = useApiMethod(updateOppivelvollisuudenKeskeytys)
   const submit = useCallback(
     (form: OppivelvollisuudenKeskeytysFormValues) => {
-      create.call({
-        id: props.keskeytys.id,
-        alku: form.alku,
-        loppu: form.loppu,
-      })
+      create
+        .call({
+          id: props.keskeytys.id,
+          alku: form.alku,
+          loppu: form.loppu,
+        })
+        .catch(console.error)
     },
     [create, props.keskeytys.id],
   )
@@ -61,7 +63,7 @@ export const OppivelvollisuudenKeskeytyksenMuokkausModal = (
         }),
       )
     ) {
-      remove.call(props.keskeytys.id)
+      remove.call(props.keskeytys.id).catch(console.error)
     }
   }, [
     remove,

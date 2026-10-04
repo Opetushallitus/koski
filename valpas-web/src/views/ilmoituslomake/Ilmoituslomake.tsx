@@ -71,7 +71,7 @@ export const Ilmoituslomake = (props: IlmoituslomakeProps) => {
       {props.pohjatiedot.oppijat.map((oppija, index) => {
         const oppijaTiedot = props.oppijat.find(
           (o) => o.henkilö.oid === oppija.oppijaOid,
-        )!!
+        )!
 
         return (
           <IlmoitusForm

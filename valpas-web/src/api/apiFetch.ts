@@ -34,11 +34,12 @@ const apiFetch = async <T>(
   try {
     const response = await fetch(prependUrl("/koski", input), init)
     try {
-      const data = response.status !== 204 ? await response.json() : null
+      const data: unknown =
+        response.status !== 204 ? await response.json() : null
       if (response.status < 400) {
         return E.right({
           status: response.status,
-          data,
+          data: data as T,
         })
       }
       return E.left({

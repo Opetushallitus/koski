@@ -149,7 +149,7 @@ const selectOption = async (
   const s = getInputContainer(form, labelText)
     ?.getElementsByTagName("select")
     .item(0)
-  await userEvent.selectOptions(s!!, index.toString())
+  await userEvent.selectOptions(s!, index.toString())
 }
 
 const fillTextField = async (
@@ -160,7 +160,7 @@ const fillTextField = async (
   const f = getInputContainer(form, labelText)
     ?.getElementsByTagName("input")
     .item(0)
-  await userEvent.type(f!!, text)
+  await userEvent.type(f!, text)
 }
 
 const toggleCheckbox = async (form: RenderResult, labelText: string) => {
@@ -168,7 +168,7 @@ const toggleCheckbox = async (form: RenderResult, labelText: string) => {
     .getByText(labelText)
     .parentElement?.getElementsByTagName("input")
     .item(0)
-  await userEvent.click(c!!)
+  await userEvent.click(c!)
 }
 
 const submit = async (form: RenderResult, onSubmitMock?: jest.Mock) => {
@@ -192,7 +192,7 @@ const getSubmitButton = (form: RenderResult) => {
     .getByText("ilmoituslomake__ilmoita_asuinkunnalle")
     .closest("button")
   expect(button).not.toBeNull()
-  return button!!
+  return button!
 }
 
 const expectFieldError = (
@@ -217,7 +217,7 @@ const getInputContainer = (
 ): HTMLElement => {
   const container = form.getByText(labelText).parentElement
   expect(container).not.toBeNull()
-  return container!!
+  return container!
 }
 
 const mockOppija: OppijaHakutilanteillaSuppeatTiedot = {
