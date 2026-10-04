@@ -100,7 +100,7 @@
     "playwright:codegen": "pnpm exec playwright codegen",
     "playwright:visual": "pnpm exec playwright test --config playwright.visual.config.ts",
     "playwright:visual:update": "pnpm exec playwright test --config playwright.visual.config.ts --update-snapshots",
-    "typecheck": "tsc --noEmit --incremental --tsBuildInfoFile node_modules/.cache/tsc/tsconfig.tsbuildinfo --project tsconfig.json && tsc --project tsconfig.runMocha.json",
+    "typecheck": "tsc --noEmit --incremental --tsBuildInfoFile node_modules/.cache/tsc/tsconfig.tsbuildinfo --project tsconfig.json && tsc --project tsconfig.node.json",
     "typecheck:watch": "tsc --noEmit --watch --preserveWatchOutput --project tsconfig.json",
     "prettier": "prettier --write --cache .",
     "prettier:check": "prettier --check --cache ."

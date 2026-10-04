@@ -1,3 +1,4 @@
+/** @type {import('stylelint').Config} */
 export default {
   customSyntax: 'postcss-less',
   plugins: ['stylelint-no-unsupported-browser-features'],

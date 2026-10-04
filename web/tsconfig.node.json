@@ -4,10 +4,18 @@
     "module": "node20",
     "lib": ["ES2024", "DOM"],
     "types": ["node", "mocha"],
+    "allowJs": true,
+    "checkJs": true,
     "strict": true,
     "erasableSyntaxOnly": true,
     "noEmit": true,
     "skipLibCheck": true
   },
-  "files": ["test/runMocha.mts"]
+  "files": [
+    "node-libs.d.ts",
+    "test/runMocha.mts",
+    "webpack.config.mts",
+    "eslint.config.mjs",
+    "stylelint.config.mjs"
+  ]
 }

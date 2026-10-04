@@ -1,24 +1,34 @@
-const getTargets = require('@babel/helper-compilation-targets').default
-const CopyWebpackPlugin = require('copy-webpack-plugin')
-const path = require('path')
+import compilationTargets from '@babel/helper-compilation-targets'
+import CopyWebpackPlugin from 'copy-webpack-plugin'
+import { createRequire } from 'node:module'
+import path from 'node:path'
+import type { Configuration } from 'webpack'
+
+const require = createRequire(import.meta.url)
 
 // Kohdeselaimet määritetään .browserslistrc:stä Babelin apukirjastolla ja
 // annetaan swc:lle. swc:n oma browserslist-toteutus käyttää swc-version
 // mukana tulevaa selaindataa, joka voi olla vanhempaa kuin projektin
 // caniuse-lite.
-const targets = getTargets({}, { configPath: __dirname })
+const targets = compilationTargets.default(
+  {},
+  { configPath: import.meta.dirname }
+)
 
-const swcRule = (test, parser) => ({
+const swcRule = (test: RegExp, parser: object) => ({
   test,
-  include: path.join(__dirname, 'app'),
+  include: path.join(import.meta.dirname, 'app'),
   use: {
     loader: 'swc-loader',
     options: { env: { targets }, jsc: { parser } }
   }
 })
 
-module.exports = (_, argv = {}) => ({
-  context: __dirname,
+export default (
+  _: unknown,
+  argv: { mode?: Configuration['mode'] } = {}
+): Configuration => ({
+  context: import.meta.dirname,
   devtool: argv.mode === 'development' ? 'inline-source-map' : false,
   entry: {
     main: './app/Virkailija.jsx',
@@ -36,7 +46,7 @@ module.exports = (_, argv = {}) => ({
     kayttooikeudet: './app/Kayttooikeudet.jsx'
   },
   output: {
-    path: path.join(__dirname, '..', 'target/webapp/koski'),
+    path: path.join(import.meta.dirname, '..', 'target/webapp/koski'),
     filename: 'js/koski-[name].js',
     // Entry-bundlet saavat välimuistin ohituksen HtmlNodes.scala:n
     // ?buildVersion-parametrista, mutta async-chunkkien osoitteen muodostaa
@@ -85,7 +95,7 @@ module.exports = (_, argv = {}) => ({
             loader: 'css-loader',
             options: {
               url: {
-                filter: (url) =>
+                filter: (url: string) =>
                   !url.startsWith('/') && !url.startsWith('data:')
               }
             }

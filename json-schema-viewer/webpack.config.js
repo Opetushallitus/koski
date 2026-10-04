@@ -2,7 +2,7 @@ const getTargets = require('@babel/helper-compilation-targets').default
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin')
 const path = require('path')
 
-// Kohdeselaimet luetaan Kosken .browserslistrc:stä samalla tavalla kuin web/webpack.config.js:ssä.
+// Kohdeselaimet luetaan Kosken .browserslistrc:stä samalla tavalla kuin web/webpack.config.mts:ssä.
 const targets = getTargets({}, { configPath: __dirname })
 
 const swcRule = (test, syntax) => ({

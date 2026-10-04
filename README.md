@@ -182,7 +182,7 @@ Avaa selaimessa [http://localhost:7021/koski/virkailija](http://localhost:7021/k
 
 Näin ajettuna sovellus käyttää paikallista PostgreSQL-kantaa ja OpenSearch-hakuindeksiä, jotka voi käynnistää `docker compose`:lla. Sovellus ei myöskään käytä mitään ulkoisia palveluja. Sillä on siis turvallista leikkiä.
 
-Paikallisesti ajettaessa Jetty lataa resurssit hakemistosta `target/webapp`, jonka sisältö luodaan webpack-buildilla ([webpack.config.js](web/webpack.config.js)). Webpack-build muun muassa kopioi staattisia resursseja paikoilleen
+Paikallisesti ajettaessa Jetty lataa resurssit hakemistosta `target/webapp`, jonka sisältö luodaan webpack-buildilla ([webpack.config.mts](web/webpack.config.mts)). Webpack-build muun muassa kopioi staattisia resursseja paikoilleen
 hakemistosta [`web/`](web/) ja sen alihakemistoista.
 
 Staattisista tiedostoista palvellaan vain `web.xml` -tiedostossa erikseen määritellyt polut.
