@@ -1,4 +1,9 @@
+import { MuuNuortenPerusopetuksenOppiaine } from '../../app/types/fi/oph/koski/schema/MuuNuortenPerusopetuksenOppiaine'
+import { NumeerinenPerusopetuksenOppiaineenArviointi } from '../../app/types/fi/oph/koski/schema/NumeerinenPerusopetuksenOppiaineenArviointi'
 import { Oppija } from '../../app/types/fi/oph/koski/schema/Oppija'
+import { NuortenPerusopetuksenOppiaineenSuoritus } from '../../app/types/fi/oph/koski/schema/NuortenPerusopetuksenOppiaineenSuoritus'
+import { Oppilaitos } from '../../app/types/fi/oph/koski/schema/Oppilaitos'
+import { PerusopetuksenToiminta_AlueenSuoritus } from '../../app/types/fi/oph/koski/schema/PerusopetuksenToimintaAlueenSuoritus'
 import { Raw } from '../../app/util/schema'
 import { expect, test } from './base'
 import { virkailija } from './setup/auth'
@@ -15,7 +20,7 @@ import { virkailija } from './setup/auth'
 
 const jynOid = '1.2.246.562.10.14613773812'
 const jynNimi = 'Jyväskylän normaalikoulu'
-const jynOppilaitos = {
+const jynOppilaitos: Raw<Oppilaitos> = {
   oid: jynOid,
   oppilaitosnumero: {
     koodiarvo: '00204',
@@ -30,17 +35,19 @@ const jynOppilaitos = {
   }
 }
 
-const arviointi = (koodiarvo: string) => [
+const arviointi = <K extends string>(koodiarvo: K) => [
   {
     arvosana: {
       koodiarvo,
-      koodistoUri: 'arviointiasteikkoyleissivistava'
+      koodistoUri: 'arviointiasteikkoyleissivistava' as const
     },
     päivä: '2025-06-01'
   }
 ]
 
-const toimintaAlue = (koodiarvo: string) => ({
+const toimintaAlue = (
+  koodiarvo: string
+): Raw<PerusopetuksenToiminta_AlueenSuoritus> => ({
   tyyppi: {
     koodiarvo: 'perusopetuksentoimintaalue',
     koodistoUri: 'suorituksentyyppi'
@@ -51,7 +58,10 @@ const toimintaAlue = (koodiarvo: string) => ({
   arviointi: arviointi('S')
 })
 
-const oppiaine = (koodiarvo: string, arvosana: string) => ({
+const oppiaine = (
+  koodiarvo: MuuNuortenPerusopetuksenOppiaine['tunniste']['koodiarvo'],
+  arvosana: NumeerinenPerusopetuksenOppiaineenArviointi['arvosana']['koodiarvo']
+): Raw<NuortenPerusopetuksenOppiaineenSuoritus> => ({
   tyyppi: {
     koodiarvo: 'perusopetuksenoppiaine',
     koodistoUri: 'suorituksentyyppi'
@@ -60,6 +70,8 @@ const oppiaine = (koodiarvo: string, arvosana: string) => ({
     tunniste: { koodiarvo, koodistoUri: 'koskioppiaineetyleissivistava' },
     pakollinen: true
   },
+  rajattuOppimäärä: false,
+  yksilöllistettyOppimäärä: false,
   painotettuOpetus: false,
   arviointi: arviointi(arvosana)
 })
@@ -84,6 +96,7 @@ const sekamuotoinenTero = (): Raw<Oppija> => ({
       },
       oppilaitos: jynOppilaitos,
       lisätiedot: {
+        aloittanutEnnenOppivelvollisuutta: false,
         erityisenTuenPäätökset: [
           {
             alku: '2017-01-01',
@@ -133,6 +146,7 @@ const sekamuotoinenTero = (): Raw<Oppija> => ({
             perusteenDiaarinumero: '104/011/2014'
           },
           luokka: '7A',
+          jääLuokalle: false,
           alkamispäivä: '2024-08-15',
           toimipiste: jynOppilaitos,
           suorituskieli: { koodiarvo: 'FI', koodistoUri: 'kieli' },
