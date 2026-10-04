@@ -1,4 +1,5 @@
 /*! JSON Schema Viewer v0.3.4 | https://github.com/jlblcc/json-schema-viewer */
+// @ts-nocheck
 const $ = require('jquery')
 const URI = require('urijs')
 const d3 = require('d3')
