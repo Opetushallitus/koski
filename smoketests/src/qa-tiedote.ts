@@ -87,7 +87,7 @@ async function pollForCompletion(): Promise<TiedoteJob> {
       );
     }
 
-    const jobs: TiedoteJob[] = await res.json();
+    const jobs = (await res.json()) as TiedoteJob[];
     const job = jobs.find((j) => j.opiskeluoikeusOid === opiskeluoikeusOid);
 
     if (job) {
@@ -99,7 +99,7 @@ async function pollForCompletion(): Promise<TiedoteJob> {
       headers,
     });
     if (errorRes.status === 200) {
-      const errorJobs: TiedoteJob[] = await errorRes.json();
+      const errorJobs = (await errorRes.json()) as TiedoteJob[];
       const errorJob = errorJobs.find(
         (j) => j.opiskeluoikeusOid === opiskeluoikeusOid,
       );
@@ -151,7 +151,7 @@ async function run(): Promise<void> {
   console.log("=== Smoke test passed! ===");
 }
 
-run().catch((err) => {
-  console.error(`\nSmoke test FAILED: ${err.message}`);
+run().catch((err: unknown) => {
+  console.error("\nSmoke test FAILED:", err);
   process.exit(1);
 });

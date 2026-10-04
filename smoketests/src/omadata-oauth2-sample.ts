@@ -81,11 +81,9 @@ const withRetries = async <T>(
       return await fn(i + 1);
     } catch (error) {
       lastError = error;
-      console.error(
-        `Attempt ${i + 1}/${attempts} failed: ${
-          error instanceof Error ? error.message : String(error)
-        }`,
-      );
+      if (i + 1 < attempts) {
+        console.error(`Attempt ${i + 1}/${attempts} failed, retrying`);
+      }
     }
   }
 
@@ -113,12 +111,12 @@ const suomiFiLogin = async (
 
 const expectPerson = (
   actual: Record<string, unknown>,
-  expected: Record<string, unknown>,
+  expected: TestPerson,
 ) => {
   for (const [key, value] of Object.entries(expected)) {
     if (actual[key] !== value) {
       throw new Error(
-        `Mismatch for "${key}": expected ${value}, got ${actual[key]}`,
+        `Mismatch for "${key}": expected ${JSON.stringify(value)}, got ${JSON.stringify(actual[key])}`,
       );
     }
   }
@@ -209,7 +207,7 @@ if (!environment || !ENVIRONMENTS[environment]) {
   process.exit(1);
 }
 
-runTest(environment).catch((error) => {
-  console.error(error instanceof Error ? error.message : JSON.stringify(error));
+runTest(environment).catch((error: unknown) => {
+  console.error(error);
   process.exit(1);
 });

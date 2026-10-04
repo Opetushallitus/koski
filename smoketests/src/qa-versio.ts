@@ -37,26 +37,30 @@ async function run(): Promise<void> {
 
   console.log(`Waiting for QA git commit ${expectedCommitHash}`);
   const deadlineMillis = Date.now() + timeoutMillis;
+  let lastError: unknown;
 
   while (Date.now() < deadlineMillis) {
     try {
       const observedCommitHash = await readCommitHash();
+      lastError = undefined;
       console.log(
         `Expected ${expectedCommitHash}, observed ${observedCommitHash}`,
       );
       if (observedCommitHash.toLowerCase() === expectedCommitHash) return;
     } catch (error) {
-      console.log(
-        `Expected ${expectedCommitHash}, status request failed: ${error}`,
-      );
+      lastError = error;
+      console.log(`Expected ${expectedCommitHash}, status request failed`);
     }
     await sleep(intervalMillis);
   }
 
-  throw new Error(`Timed out waiting for QA git commit ${expectedCommitHash}`);
+  throw new Error(
+    `Timed out waiting for QA git commit ${expectedCommitHash}`,
+    lastError === undefined ? undefined : { cause: lastError },
+  );
 }
 
-run().catch((error) => {
+run().catch((error: unknown) => {
   console.error(error);
   process.exit(1);
 });

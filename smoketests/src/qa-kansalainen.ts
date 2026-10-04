@@ -64,6 +64,8 @@ const runTest = async (
   tryToLogin: (page: Page) => Promise<boolean | undefined>,
   testName: string,
 ): Promise<void> => {
+  let lastError: unknown;
+
   for (let i = 0; i < retryCount; i++) {
     console.log(`Attempt ${i + 1}/${retryCount} for ${testName}`);
 
@@ -73,25 +75,19 @@ const runTest = async (
     });
     try {
       const page = await browser.newPage();
-      const resultOk = await tryToLogin(page);
-
-      if (resultOk) {
+      if (await tryToLogin(page)) {
         console.log(`Success for ${testName}!`);
         return;
       }
-      console.log(`Failed for ${testName}!`);
+      throw new Error("Login did not show the expected person");
     } catch (error) {
-      console.error(
-        `Attempt ${i + 1}/${retryCount} failed: ${
-          error instanceof Error ? error.message : String(error)
-        }`,
-      );
+      lastError = error;
+      console.log(`Failed for ${testName}!`);
     } finally {
       await browser.close();
     }
   }
-  console.log(`Smoke test has failed for ${testName}.`);
-  throw new Error(`Smoke test failed for ${testName}`);
+  throw new Error(`Smoke test failed for ${testName}`, { cause: lastError });
 };
 
 const runTests = async (): Promise<void> => {
@@ -99,7 +95,7 @@ const runTests = async (): Promise<void> => {
   await runTest(eIdasLogin, "eIDAS login test");
 };
 
-runTests().catch((error) => {
-  console.error(error instanceof Error ? error.message : String(error));
+runTests().catch((error: unknown) => {
+  console.error(error);
   process.exit(1);
 });
