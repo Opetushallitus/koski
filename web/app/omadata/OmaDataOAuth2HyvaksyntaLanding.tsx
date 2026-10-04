@@ -18,9 +18,7 @@ import Footer from './Footer'
 import OmaDataOAuth2UusiHyvaksynta from './OmaDataOAuth2UusiHyvaksynta'
 import Spinner from './Spinner'
 
-// @ts-ignore
 __webpack_nonce__ = window.nonce
-// @ts-ignore
 loadStyles(() => import(/* webpackChunkName: "styles" */ '../style/main.less'))
 
 const urlParams = new URLSearchParams(window.location.search)

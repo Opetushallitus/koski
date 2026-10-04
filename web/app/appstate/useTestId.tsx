@@ -70,7 +70,7 @@ export const TestIdRoot: React.FC<{
 export const TestIdLayer: React.FC<{
   children: React.ReactNode
   id: string | number
-  wrap?: string
+  wrap?: keyof React.JSX.IntrinsicElements
 }> = (props) => {
   const testId = useTestId(props.id)
   const passedTestId = testId ?? 'PARENT_MISSING'
@@ -78,7 +78,6 @@ export const TestIdLayer: React.FC<{
   return (
     <TestIdContext.Provider value={passedTestId} key={passedTestId}>
       {Wrap ? (
-        // @ts-ignore
         <Wrap data-testid={passedTestId}>{props.children}</Wrap>
       ) : (
         props.children

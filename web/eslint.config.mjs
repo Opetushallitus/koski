@@ -78,7 +78,10 @@ export default [
       '@typescript-eslint/no-shadow': 'warn',
       '@typescript-eslint/no-explicit-any': 'off',
       '@typescript-eslint/no-unused-vars': 'off',
-      '@typescript-eslint/ban-ts-comment': 'off',
+      '@typescript-eslint/ban-ts-comment': [
+        'error',
+        { 'ts-expect-error': false }
+      ],
       '@typescript-eslint/no-empty-function': 'off',
       '@typescript-eslint/no-unnecessary-type-constraint': 'warn',
       '@typescript-eslint/ban-types': 'off',

@@ -66,11 +66,11 @@ export function build(page: Page, node: IdNode, prefix?: string): any {
     )(node)
   }
   if (typeof node === 'function') {
+    const fn = node as (index: number | string | boolean) => any
     return (index: number | string | boolean) => {
       return build(
         page,
-        // @ts-ignore
-        node(index),
+        fn(index),
         mergeId(
           prefix,
           typeof index === 'boolean'
