@@ -73,7 +73,9 @@ import { MaksuttomuusView } from "./maksuttomuus/MaksuttomuusView"
 import { OppijaView } from "./oppija/OppijaView"
 import { Raamit } from "./Raamit"
 
-const redirects: Array<[PathDeclaration<any>, PathDeclaration<any>]> = [
+const redirects: Array<
+  [PathDeclaration<unknown[]>, PathDeclaration<unknown[]>]
+> = [
   [
     hakeutumisvalvonnanKunnalleIlmoitetutPathWithoutOrg,
     kunnalleIlmoitetutPathWithoutOrg,

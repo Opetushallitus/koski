@@ -38,8 +38,8 @@ describe("apiHooks", () => {
     )
     rerender(<ParamsComponent fetchFn={fetchFn} param="B" />)
 
-    await act(async () => resolvers.get("B")!())
-    await act(async () => resolvers.get("A")!())
+    await act(() => Promise.resolve(resolvers.get("B")!()))
+    await act(() => Promise.resolve(resolvers.get("A")!()))
 
     expect(getByTestId("data").textContent).toEqual("vastaus B")
   })
@@ -81,7 +81,7 @@ const mockPromise = () => {
 }
 
 type Props = {
-  promise: Promise<any>
+  promise: Promise<unknown>
 }
 
 const Container = (props: Props) => {

@@ -1,7 +1,7 @@
 import React from "react"
 
 export const withoutDefaultAction =
-  (f: () => void) => (e: React.MouseEvent<any, any> | React.KeyboardEvent) => {
+  (f: () => void) => (e: React.MouseEvent | React.KeyboardEvent) => {
     e.preventDefault()
     e.stopPropagation()
     f()

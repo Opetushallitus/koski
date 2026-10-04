@@ -88,7 +88,7 @@ describe("Login / Logout / kirjautuminen", () => {
     const linkSelector = ".hakutilanne tbody tr td:first-child a"
     try {
       await clickElement(linkSelector)
-    } catch (e) {
+    } catch (_e) {
       // Ignore stale elements
     }
 

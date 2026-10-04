@@ -12,7 +12,7 @@ const exists = async (p: string): Promise<boolean> => {
   try {
     await fs.stat(p)
     return true
-  } catch (e) {
+  } catch (_e) {
     return false
   }
 }

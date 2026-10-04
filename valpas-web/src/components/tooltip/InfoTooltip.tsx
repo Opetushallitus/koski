@@ -111,9 +111,3 @@ const InfoTooltipPopup = (props: InfoTooltipPopupProps) => (
     </div>
   </div>
 )
-
-const getParents = (
-  element: HTMLElement | null,
-  acc: HTMLElement[] = [],
-): HTMLElement[] =>
-  element ? getParents(element.parentElement, [...acc, element]) : acc

@@ -42,7 +42,7 @@ export const apiPostDownload = async (
         errors: await parseDownloadError(data),
       })
     }
-  } catch (e: any) {
+  } catch (e) {
     return E.left({
       errors: parseErrors(e),
     })

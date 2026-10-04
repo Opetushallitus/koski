@@ -99,6 +99,6 @@ export const organisaatiotToOptions = (
     display: organisaatioNimi(org),
   }))
 
-export const displayOrd = Ord.contramap((a: DropdownOption<any>) => a.display)(
-  string.Ord,
-)
+export const displayOrd = Ord.contramap(
+  (a: DropdownOption<unknown>) => a.display,
+)(string.Ord)

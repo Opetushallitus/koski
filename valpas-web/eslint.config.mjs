@@ -17,7 +17,7 @@ export default [
   { ...compat.configs["flat/recommended"], files: ["src/**/*"] },
   eslintConfigPrettier,
   { rules: { "no-unexpected-multiline": "error" } },
-  ...tseslint.configs.recommendedTypeCheckedOnly.map((config) => ({
+  ...tseslint.configs.recommendedTypeChecked.map((config) => ({
     ...config,
     files: ["**/*.ts", "**/*.tsx"],
   })),
@@ -33,6 +33,16 @@ export default [
       eqeqeq: "error",
       "@typescript-eslint/ban-ts-comment": "error",
       "@typescript-eslint/no-duplicate-type-constituents": "off",
+      "@typescript-eslint/no-unused-vars": [
+        "error",
+        {
+          argsIgnorePattern: "^_",
+          varsIgnorePattern: "^_",
+          caughtErrorsIgnorePattern: "^_",
+          destructuredArrayIgnorePattern: "^_",
+          ignoreRestSiblings: true,
+        },
+      ],
       "@typescript-eslint/no-floating-promises": [
         "error",
         { ignoreVoid: false },

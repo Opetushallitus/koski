@@ -39,7 +39,7 @@ export const urlIsEventually = async (
     await eventually(async () => {
       expect(await getCurrentUrl()).toMatch(expectedUrl)
     }, timeout)
-  } catch (error) {
+  } catch (_err) {
     throw new Error(
       `Expected URL eventually to be ${expectedUrl}. It is currently ${await getCurrentUrl()}`,
     )

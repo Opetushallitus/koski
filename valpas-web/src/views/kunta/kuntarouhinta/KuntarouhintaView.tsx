@@ -192,8 +192,8 @@ export const KuntarouhintaView = withRequiresKuntavalvonta(
 )
 
 type FetchDataButtonProps = {
-  rouhintaFetch: ApiMethodHook<any, any>
-  rouhintaDownload: ApiMethodHook<any, any>
+  rouhintaFetch: ApiMethodHook<unknown, never>
+  rouhintaDownload: ApiMethodHook<unknown, never>
   onFetchClick: () => void
   onDownloadClick: () => void
   password: string
