@@ -223,9 +223,7 @@ export const AhvenanmaanPerusopetuksenOppiaineet: React.FC<
           {vastuuJaYhteistyöArvio}
         </>
       )}
-      {!form.editMode && footnotes.length > 0 && (
-        <FootnoteDescriptions data={footnotes} />
-      )}
+      {footnotes.length > 0 && <FootnoteDescriptions data={footnotes} />}
     </div>
   )
 }
@@ -276,6 +274,11 @@ const Oppiainetaulukko: React.FC<OppiainetaulukkoProps> = ({
     suoritus,
     osasuoritukset
   })
+  // Muokkaustilassa alaviitemerkille varataan paikka vain taulukossa, jonka
+  // jollakin rivillä merkki on, jottei arvosanavalikko kapene turhaan.
+  const varaaAlaviitepaikka = osasuoritukset.some(
+    (s) => footnotesForSuoritus(s).length > 0
+  )
   const rows = osasuoritukset.map((s, i) => {
     const dataIndex = allOsasuoritukset.indexOf(s)
     return oppiaineToRow(
@@ -286,7 +289,8 @@ const Oppiainetaulukko: React.FC<OppiainetaulukkoProps> = ({
       form,
       suoritusPath,
       showLaajuus,
-      showArvosana
+      showArvosana,
+      varaaAlaviitepaikka
     )
   })
   const columns = oppiaineSarakkeet({
@@ -419,7 +423,8 @@ const oppiaineToRow = <T extends string>(
     SuoritusWithOsasuoritukset
   >,
   showLaajuus?: boolean,
-  showArvosana = true
+  showArvosana = true,
+  varaaAlaviitepaikka = false
 ): OsasuoritusRowData<T | 'Arvosana' | 'Laajuus' | ' '> => {
   const osasuoritusPath = suoritusPath
     .prop('osasuoritukset')
@@ -504,10 +509,12 @@ const oppiaineToRow = <T extends string>(
     ) : (
       <TestIdText id="nimi">{nimi}</TestIdText>
     )
-  // Alaviitemerkki (*) näytetään arvosanan perässä mukautetulle oppimäärälle.
+  // Alaviitemerkki (*) näytetään arvosanan perässä mukautetulle oppimäärälle
+  // myös muokkaustilassa. Muuten mukautettu oppimäärä jää helposti
+  // huomaamatta, koska se näkyy vasta rivin laajennusosiossa.
   const rowFootnotes = footnotesForSuoritus(suoritus)
   const footnoteEl =
-    !form.editMode && rowFootnotes.length > 0 ? (
+    rowFootnotes.length > 0 ? (
       <TestIdText id="footnote">
         {rowFootnotes.map((note) => (
           <sup key={note.hint} className="footnote-hint" title={t(note.title)}>
@@ -517,22 +524,36 @@ const oppiaineToRow = <T extends string>(
       </TestIdText>
     ) : null
   if (showArvosana) {
-    columns['Arvosana' as T | 'Arvosana' | ' '] = (
-      <>
-        <FormField
-          form={form}
-          path={osasuoritusPath.prop('arviointi')}
-          optional
-          view={AhvenanmaanArvosanaView}
-          edit={ParasArvosanaEdit}
-          editProps={{
-            suoritusClassName: suoritus.$class,
-            format: ahvenanmaanArvosananNimi
-          }}
-        />
-        {footnoteEl}
-      </>
+    const arvosana = (
+      <FormField
+        form={form}
+        path={osasuoritusPath.prop('arviointi')}
+        optional
+        view={AhvenanmaanArvosanaView}
+        edit={ParasArvosanaEdit}
+        editProps={{
+          suoritusClassName: suoritus.$class,
+          format: ahvenanmaanArvosananNimi
+        }}
+      />
     )
+    // Muokkaustilan merkkipaikan tyylit: ks. PerusopetuksenOppiaineet.less
+    columns['Arvosana' as T | 'Arvosana' | ' '] =
+      form.editMode && varaaAlaviitepaikka ? (
+        <div className="PerusopetuksenOppiaineet__arvosanaMuokkaus">
+          <div className="PerusopetuksenOppiaineet__arvosanaKenttä">
+            {arvosana}
+          </div>
+          <span className="PerusopetuksenOppiaineet__alaviitepaikka">
+            {footnoteEl}
+          </span>
+        </div>
+      ) : (
+        <>
+          {arvosana}
+          {footnoteEl}
+        </>
+      )
   }
   if (showLaajuus) {
     const laajuus =

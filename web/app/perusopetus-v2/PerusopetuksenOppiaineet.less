@@ -16,6 +16,36 @@
     white-space: nowrap;
   }
 
+  // Muokkaustilassa merkille varataan taulukon jokaisella rivillä oma paikka
+  // arvosanavalikon oikealta puolelta, jotta valikot pysyvät samanlevyisinä ja
+  // merkki erottuu sekä valikon että laajuuskentän reunasta. Käytössä myös
+  // Ahvenanmaan perusopetuksessa. Kääreet eivät saa
+  // olla position: relative, koska rivin virheilmoitus (FieldErrors)
+  // sijoitetaan absoluuttisesti rivin suhteen (ks. OsasuoritusTable.less).
+  .PerusopetuksenOppiaineet__arvosanaMuokkaus {
+    display: flex;
+    align-items: flex-start;
+  }
+
+  .PerusopetuksenOppiaineet__arvosanaKenttä {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .PerusopetuksenOppiaineet__alaviitepaikka {
+    flex: 0 0 2em;
+    padding-left: 0.5em;
+    padding-top: 0.4em;
+
+    .footnote-hint {
+      width: auto;
+      font-size: 1em;
+      font-weight: bold;
+      line-height: 1;
+      vertical-align: baseline;
+    }
+  }
+
   // Alaviitteiden selitteet harmaalla, jotta erottuvat muusta tekstistä.
   .selitteet {
     color: @color-disabled-text;

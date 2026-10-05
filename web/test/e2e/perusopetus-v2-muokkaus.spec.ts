@@ -383,6 +383,12 @@ test.describe('Perusopetuksen uusi käyttöliittymä: muokkaustila', () => {
         )
         .check()
 
+      // Merkintä näkyy jo muokkaustilassa, jottei se jää virkailijalta
+      // huomaamatta suljetulla rivillä
+      await expect(
+        page.getByTestId('oo.0.suoritukset.0.osasuoritukset.0.footnote')
+      ).toHaveText('*')
+
       // Tallenna
       await page.getByTestId('oo.0.opiskeluoikeus.save').click()
       await expect(page.getByTestId('oo.0.opiskeluoikeus.edit')).toBeVisible({
