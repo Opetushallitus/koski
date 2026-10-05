@@ -1,5 +1,4 @@
-import fetchMock from "jest-fetch-mock"
-import fetch from "node-fetch"
+import { get } from "node:http"
 import { hakutilannePathWithOrg, oppijaPath } from "../../src/state/paths"
 import {
   clickElement,
@@ -79,8 +78,11 @@ describe("Login / Logout / kirjautuminen", () => {
     await waitTableLoadingHasFinished(".hakutilanne")
 
     // Salavihkainen logout (ei poista selaimesta keksiä)
-    fetchMock.dontMock()
-    await fetch(pathToApiUrl("/test/logout/valpas-jkl-normaali"))
+    await new Promise((resolve, reject) =>
+      get(pathToApiUrl("/test/logout/valpas-jkl-normaali"), (res) =>
+        res.resume().on("end", resolve),
+      ).on("error", reject),
+    )
 
     // Yritä selailla eteenpäin ja päädy kirjautumiseen
     allowNetworkError("/valpas/api/", "401 (Unauthorized)")

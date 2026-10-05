@@ -1,6 +1,5 @@
 import { render, RenderResult, waitFor } from "@testing-library/react"
 import userEvent from "@testing-library/user-event"
-import fetchMock from "jest-fetch-mock"
 import React from "react"
 import { disableMissingTranslationWarnings } from "../../i18n/i18n"
 import { Kieli, KoodistoKoodiviite, Maa } from "../../state/apitypes/koodistot"
@@ -172,11 +171,11 @@ const toggleCheckbox = async (form: RenderResult, labelText: string) => {
 }
 
 const submit = async (form: RenderResult, onSubmitMock?: jest.Mock) => {
-  const numberOfCalls = fetchMock.mock.calls.length
+  const numberOfCalls = jest.mocked(fetch).mock.calls.length
   await waitFor(async () => await userEvent.click(getSubmitButton(form)))
   if (onSubmitMock) {
     await waitFor(() => expect(onSubmitMock).toHaveBeenCalledTimes(1))
-    expect(fetchMock).toHaveBeenCalledTimes(numberOfCalls + 1)
+    expect(fetch).toHaveBeenCalledTimes(numberOfCalls + 1)
   }
 }
 

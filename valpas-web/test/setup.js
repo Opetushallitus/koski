@@ -1,11 +1,16 @@
 const failOnConsole = require("jest-fail-on-console")
-const fetchMock = require("jest-fetch-mock").default
 
 failOnConsole()
 
-fetchMock.enableMocks()
-fetchMock.mockResponse(
-  '{"huom": "fetch-kutsut on mockailtu, kts. https://www.npmjs.com/package/jest-fetch-mock"}',
+globalThis.fetch = jest.fn(
+  async () =>
+    /** @type {Response} */ ({
+      ok: true,
+      status: 200,
+      json: async () => ({
+        huom: "fetch-kutsut on mockattu, kts. test/setup.js",
+      }),
+    }),
 )
 
 jest.setTimeout(5 * 60 * 1000)
