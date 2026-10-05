@@ -31,12 +31,12 @@
   "packageManager": "pnpm@10.34.5+sha512.a4ee05f2f73658255bd6a89859c065a45c28a57daefae2c893a168ee2b73168c37b91e83e57ea67654ad03f03031746430e8bce38e362e042605fb8abc80192e",
   "devDependencies": {
     "@eslint/js": "10.0.1",
-    "@types/node": "24.19.0",
+    "@types/node": "24.19.1",
     "concurrently": "9.2.4",
-    "eslint": "10.11.0",
+    "eslint": "10.12.0",
     "eslint-config-prettier": "10.1.8",
     "prettier": "3.9.9",
     "typescript": "5.9.3",
-    "typescript-eslint": "8.70.1"
+    "typescript-eslint": "8.71.0"
   }
 }
