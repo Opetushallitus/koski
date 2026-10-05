@@ -82,7 +82,7 @@ const withRetries = async <T>(
     } catch (error) {
       lastError = error;
       if (i + 1 < attempts) {
-        console.error(`Attempt ${i + 1}/${attempts} failed, retrying`);
+        console.error(`Attempt ${i + 1}/${attempts} failed, retrying:`, error);
       }
     }
   }
@@ -156,8 +156,12 @@ const authorizeAndVerifyData = async (page: Page, testPerson: TestPerson) => {
   const raw = await page.$eval("pre", (el) => el.textContent ?? "");
   const json = JSON.parse(raw) as { henkilö?: Record<string, unknown> };
 
+  if (!json.henkilö) {
+    throw new Error(`Response has no henkilö: ${raw}`);
+  }
+
   console.log("Check that assumed data is visible");
-  expectPerson(json.henkilö ?? {}, testPerson);
+  expectPerson(json.henkilö, testPerson);
 };
 
 const runTest = async (environment: Environment) =>
