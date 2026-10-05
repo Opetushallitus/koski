@@ -16,12 +16,13 @@
     white-space: nowrap;
   }
 
-  // Muokkaustilassa merkille varataan taulukon jokaisella rivillä oma paikka
-  // arvosanavalikon oikealta puolelta, jotta valikot pysyvät samanlevyisinä ja
-  // merkki erottuu sekä valikon että laajuuskentän reunasta. Käytössä myös
-  // Ahvenanmaan perusopetuksessa. Kääreet eivät saa
-  // olla position: relative, koska rivin virheilmoitus (FieldErrors)
-  // sijoitetaan absoluuttisesti rivin suhteen (ks. OsasuoritusTable.less).
+  // Muokkaustilassa merkille varataan jokaisella rivillä aina oma paikka
+  // arvosanavalikon oikealta puolelta, jotta valikot pysyvät samanlevyisinä
+  // eikä asettelu hyppää ominaisuutta valittaessa. Paikka mitoitetaan
+  // pisimmälle merkinnälle ("* **"); Ahvenanmaalla merkkejä on vain yksi (*).
+  // Kääreet eivät saa olla position: relative, koska rivin virheilmoitus
+  // (FieldErrors) sijoitetaan absoluuttisesti rivin suhteen (ks.
+  // OsasuoritusTable.less).
   .PerusopetuksenOppiaineet__arvosanaMuokkaus {
     display: flex;
     align-items: flex-start;
@@ -33,7 +34,7 @@
   }
 
   .PerusopetuksenOppiaineet__alaviitepaikka {
-    flex: 0 0 2em;
+    flex: 0 0 2.4em;
     padding-left: 0.5em;
     padding-top: 0.4em;
 
@@ -44,6 +45,10 @@
       line-height: 1;
       vertical-align: baseline;
     }
+  }
+
+  .PerusopetuksenOppiaineet__alaviitepaikka--yksiMerkki {
+    flex-basis: 1.3em;
   }
 
   // Alaviitteiden selitteet harmaalla, jotta erottuvat muusta tekstistä.

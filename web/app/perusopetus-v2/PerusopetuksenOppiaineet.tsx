@@ -355,11 +355,6 @@ const Oppiainetaulukko: React.FC<OppiainetaulukkoProps> = ({
     suoritus,
     osasuoritukset
   })
-  // Muokkaustilassa alaviitemerkille varataan paikka vain taulukossa, jonka
-  // jollakin rivillä merkki on, jottei arvosanavalikko kapene turhaan.
-  const varaaAlaviitepaikka = osasuoritukset.some(
-    (s) => footnotesForSuoritus(s).length > 0
-  )
   const rows = osasuoritukset.map((s, i) => {
     const dataIndex = allOsasuoritukset.indexOf(s)
     return oppiaineToRow(
@@ -370,8 +365,7 @@ const Oppiainetaulukko: React.FC<OppiainetaulukkoProps> = ({
       form,
       suoritusPath,
       showLaajuus,
-      showArvosana,
-      varaaAlaviitepaikka
+      showArvosana
     )
   })
   const columns = oppiaineSarakkeet({
@@ -506,8 +500,7 @@ const oppiaineToRow = <T extends string>(
     SuoritusWithOsasuoritukset
   >,
   showLaajuus?: boolean,
-  showArvosana: boolean = true,
-  varaaAlaviitepaikka: boolean = false
+  showArvosana: boolean = true
 ): OsasuoritusRowData<T | 'Arvosana' | 'Laajuus' | ' '> => {
   const osasuoritusPath = suoritusPath
     .prop('osasuoritukset')
@@ -615,16 +608,21 @@ const oppiaineToRow = <T extends string>(
   // Alaviitemerkit (* / **) näytetään arvosanan perässä (ks. CSS: sininen)
   // myös muokkaustilassa. Muuten yksilöllistetty, rajattu tai painotettu
   // oppiaine jää helposti huomaamatta, koska sen ominaisuudet näkyvät vasta
-  // rivin laajennusosiossa.
+  // rivin laajennusosiossa. Merkit ovat samassa sup-elementissä, koska
+  // erillisten inline-block-elementtien välinen välilyönti katoaa ja * ja **
+  // näkyisivät yhtenä ***-merkkinä.
   const rowFootnotes = footnotesForSuoritus(suoritus)
   const footnoteEl =
     rowFootnotes.length > 0 ? (
       <TestIdText id="footnote">
-        {rowFootnotes.map((note) => (
-          <sup key={note.hint} className="footnote-hint" title={t(note.title)}>
-            {` ${note.hint}`}
-          </sup>
-        ))}
+        <sup className="footnote-hint">
+          {rowFootnotes.map((note, i) => (
+            <React.Fragment key={note.hint}>
+              {i > 0 && ' '}
+              <span title={t(note.title)}>{note.hint}</span>
+            </React.Fragment>
+          ))}
+        </sup>
       </TestIdText>
     ) : null
   if (showArvosana) {
@@ -641,22 +639,21 @@ const oppiaineToRow = <T extends string>(
         }}
       />
     )
-    columns['Arvosana' as T | 'Arvosana' | ' '] =
-      form.editMode && varaaAlaviitepaikka ? (
-        <div className="PerusopetuksenOppiaineet__arvosanaMuokkaus">
-          <div className="PerusopetuksenOppiaineet__arvosanaKenttä">
-            {arvosana}
-          </div>
-          <span className="PerusopetuksenOppiaineet__alaviitepaikka">
-            {footnoteEl}
-          </span>
-        </div>
-      ) : (
-        <>
+    columns['Arvosana' as T | 'Arvosana' | ' '] = form.editMode ? (
+      <div className="PerusopetuksenOppiaineet__arvosanaMuokkaus">
+        <div className="PerusopetuksenOppiaineet__arvosanaKenttä">
           {arvosana}
+        </div>
+        <span className="PerusopetuksenOppiaineet__alaviitepaikka">
           {footnoteEl}
-        </>
-      )
+        </span>
+      </div>
+    ) : (
+      <>
+        {arvosana}
+        {footnoteEl}
+      </>
+    )
   }
   if (showLaajuus) {
     const laajuus =

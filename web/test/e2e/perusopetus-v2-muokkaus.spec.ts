@@ -453,6 +453,39 @@ test.describe('Perusopetuksen uusi käyttöliittymä: muokkaustila', () => {
       ).toHaveText('**')
     })
 
+    test('Yksilöllistetty ja painotettu: merkinnät * ja ** erikseen', async ({
+      page,
+      oppijaPage
+    }) => {
+      await oppijaPage.goto(kaisaUrl)
+      await page.getByTestId('oo.0.suoritusTabs.0.tab').click()
+
+      // Biologia (osasuoritukset.11) on fixturessa yksilöllistetty. innerText
+      // vertaa näkyvää tekstiä: textContent oli " * **" silloinkin, kun merkit
+      // näkyivät yhteen sulautuneena ***-merkkinä.
+      const merkinnät = page.getByTestId(
+        'oo.0.suoritukset.0.osasuoritukset.11.footnote'
+      )
+      await expect(merkinnät).toHaveText('*', { useInnerText: true })
+
+      await page.getByTestId('oo.0.opiskeluoikeus.edit').click()
+      await page
+        .getByTestId('oo.0.suoritukset.0.osasuoritukset.11.expand')
+        .click()
+      await page
+        .getByTestId(
+          'oo.0.suoritukset.0.osasuoritukset.11.properties.painotettuOpetus.edit.input'
+        )
+        .check()
+      await expect(merkinnät).toHaveText('* **', { useInnerText: true })
+
+      await page.getByTestId('oo.0.opiskeluoikeus.save').click()
+      await expect(page.getByTestId('oo.0.opiskeluoikeus.edit')).toBeVisible({
+        timeout: 15000
+      })
+      await expect(merkinnät).toHaveText('* **', { useInnerText: true })
+    })
+
     test('Todistuksella näkyvät lisätiedot: lisäys ja poisto', async ({
       page,
       oppijaPage
