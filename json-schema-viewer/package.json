@@ -9,9 +9,16 @@
   "scripts": {
     "build:prod": "webpack --bail --mode production",
     "watch": "webpack --watch --mode development",
-    "typecheck": "tsc --noEmit",
-    "prettier": "pnpm --dir .. exec prettier --write json-schema-viewer",
-    "prettier:check": "pnpm --dir .. exec prettier --check json-schema-viewer"
+    "typecheck": "tsc --noEmit && tsc --noEmit --project tsconfig.node.json",
+    "typecheck:watch": "tsc --noEmit --watch --preserveWatchOutput",
+    "lint": "pnpm run typecheck && pnpm run eslint && pnpm run stylelint && pnpm run prettier",
+    "lint:check": "concurrently --group \"pnpm:typecheck\" \"pnpm:eslint:check\" \"pnpm:stylelint:check\" \"pnpm:prettier:check\"",
+    "eslint": "pnpm run eslint:check --fix",
+    "eslint:check": "eslint \"src/**/*.{js,ts}\" \"*.{mjs,mts}\"",
+    "stylelint": "pnpm run stylelint:check --fix",
+    "stylelint:check": "stylelint \"src/**/*.css\"",
+    "prettier": "prettier --write --cache .",
+    "prettier:check": "prettier --check --cache ."
   },
   "dependencies": {
     "d3": "3.5.17",
@@ -24,9 +31,24 @@
     "urijs": "1.19.11"
   },
   "devDependencies": {
+    "@babel/helper-compilation-targets": "7.29.7",
+    "@eslint/js": "10.0.1",
+    "@swc/core": "1.16.12",
+    "@types/jquery": "3.5.34",
+    "@types/node": "24.19.0",
+    "@types/tv4": "1.2.33",
+    "concurrently": "9.2.4",
     "css-minimizer-webpack-plugin": "8.0.0",
-    "ts-loader": "9.6.2",
+    "eslint": "10.11.0",
+    "eslint-config-prettier": "10.1.8",
+    "eslint-plugin-compat": "7.0.2",
+    "globals": "17.12.0",
+    "prettier": "3.9.9",
+    "stylelint": "17.15.0",
+    "stylelint-no-unsupported-browser-features": "8.1.2",
+    "swc-loader": "0.2.7",
     "typescript": "5.9.3",
+    "typescript-eslint": "8.70.1",
     "webpack": "5.111.1",
     "webpack-cli": "6.0.1"
   }

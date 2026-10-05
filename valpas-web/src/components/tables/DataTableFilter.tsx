@@ -44,7 +44,7 @@ export const createFilter = (
     case "dropdown":
       return createDropdownFilter(needle)
     default:
-      throw new Error(`Unknown filter type: ${type}`)
+      throw new Error(`Unknown filter type: ${String(type)}`)
   }
 }
 

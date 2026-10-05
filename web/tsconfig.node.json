@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "target": "ES2024",
+    "module": "node20",
+    "lib": ["ES2024", "DOM"],
+    "types": ["node", "mocha"],
+    "allowJs": true,
+    "checkJs": true,
+    "strict": true,
+    "erasableSyntaxOnly": true,
+    "noEmit": true,
+    "skipLibCheck": true
+  },
+  "include": ["*", "test/runMocha.mts"],
+  "exclude": ["featureFlags.js"]
+}

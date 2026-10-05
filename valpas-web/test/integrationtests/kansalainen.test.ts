@@ -403,7 +403,7 @@ const expectHuollettavanTurvakiellollinenKuntailmoitus = async () => {
     ilmoitukset.length,
     "Aktiivisia ilmoituksia tulisi näkyä tasan yksi",
   ).toEqual(1)
-  const ilmoitus = ilmoitukset[0]!!
+  const ilmoitus = ilmoitukset[0]!
 
   expect(await ilmoitus.getText()).toEqual(
     "Tarkemmat tiedot näkyvät ainoastaan ilmoituksen vastaanottajalle ja tekijälle",

@@ -1,16 +1,16 @@
 {
   "compilerOptions": {
-    "target": "ES2015",
+    "target": "ES2022",
     "lib": ["ES2022", "DOM", "DOM.Iterable"],
     "module": "CommonJS",
     "moduleResolution": "node",
     "allowJs": true,
-    "outDir": "../target/webapp/koski/json-schema-viewer/",
+    "checkJs": true,
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "strict": true,
     "types": [],
     "skipLibCheck": true
   },
-  "include": ["src/**/*.ts"]
+  "include": ["src"]
 }

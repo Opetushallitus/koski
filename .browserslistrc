@@ -1,3 +1,23 @@
-last 2 versions and >0.01% in FI
+# Chromen, Edgen, Firefoxin ja Safarin noin 30 viime kuukauden versiot
+baseline widely available
+> 0.5% in FI
 firefox esr
+# Chrome 138 on viimeinen versio Android 8:lle ja 9:lle. Raja annetaan
+# chrome-kyselynä, koska and_chr tuntee vain Androidin uusimman Chromen.
+# Käyttöosuus Suomessa n. 0,6 % (StatCounter 9/2026)
+chrome >= 138
+# iOS 15 on viimeinen versio iPhone 6s:lle, 7:lle ja 1. sukupolven SE:lle
+# Käyttöosuus Suomessa n. 0,2 % (StatCounter 9/2026)
+ios_saf >= 15.6
+# Viimeiset versiot macOS 10.15 Catalinalle (Safari ja Chrome).
+# Firefox tukee Catalinaa yhä.
+# Käyttöosuus Suomessa n. 0,1 % (arvio Safari 15.6:n ja Chrome 128:n
+# osuudesta, caniuse-lite 1.0.30001812; StatCounter ei erota macOS-versioita)
+safari >= 15.6
+chrome >= 128
+# Viimeiset versiot Windows 7/8.1:lle (Chrome, Edge ja Firefox)
+# Käyttöosuus Suomessa n. 0,05 % (StatCounter 9/2026)
+chrome >= 109
+edge >= 109
+firefox >= 115
 not dead

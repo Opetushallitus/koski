@@ -1,7 +1,7 @@
 import React from "react"
 
 export const withoutDefaultAction =
-  (f: () => void) => (e: React.MouseEvent<any, any> | React.KeyboardEvent) => {
+  (f: () => void) => (e: React.MouseEvent | React.KeyboardEvent) => {
     e.preventDefault()
     e.stopPropagation()
     f()
@@ -12,7 +12,7 @@ export const stopPropagation = withoutDefaultAction(() => {})
 export const kbSwitch =
   (...handlers: Array<(e: React.KeyboardEvent) => boolean>) =>
   (e: React.KeyboardEvent): boolean => {
-    for (let handler of handlers) {
+    for (const handler of handlers) {
       if (handler(e)) {
         return true
       }

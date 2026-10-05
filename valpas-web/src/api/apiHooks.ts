@@ -40,7 +40,7 @@ export const useApiOnce = <T>(
  *
  * const oppija = useApiWithParams(fetchOppija, [oppijaOid])
  */
-export const useApiWithParams = <T, P extends any[]>(
+export const useApiWithParams = <T, P extends unknown[]>(
   fetchFn: (...fetchFnParams: P) => Promise<ApiResponse<T>>,
   params?: P,
   cache?: ApiCache<T, P>,
@@ -48,7 +48,7 @@ export const useApiWithParams = <T, P extends any[]>(
   const api = useApiMethod(fetchFn, cache, { ignoreStaleResponses: true })
   useEffect(() => {
     if (params) {
-      api.call(...params)
+      api.call(...params).catch(console.error)
     } else {
       api.clear()
     }
@@ -91,7 +91,7 @@ export const useApiWithParams = <T, P extends any[]>(
   
  *
  */
-export const useApiSequence = <T, P extends any[], S>(
+export const useApiSequence = <T, P extends unknown[], S>(
   fetchFn: (...params: P) => Promise<ApiResponse<T>>,
   initialState: S,
   getNext: (state: S) => [P, S] | null,
@@ -123,11 +123,13 @@ export const useApiSequence = <T, P extends any[], S>(
         const [params, nextState] = next
         await doFetch(...params)
         state = nextState
-        setTimeout(runNext)
+        setTimeout(() => {
+          runNext().catch(console.error)
+        })
       }
     }
 
-    runNext()
+    runNext().catch(console.error)
 
     return () => {
       cancelled = true
@@ -141,7 +143,7 @@ export const useApiSequence = <T, P extends any[], S>(
  * Get data from cache without ever triggering API calls.
  * The data is updated on both cache content and parameter changes.
  */
-export const useCacheWithParams = <T, P extends any[]>(
+export const useCacheWithParams = <T, P extends unknown[]>(
   cache: ApiCache<T, P>,
   params?: P,
 ) => {
@@ -181,7 +183,7 @@ export type ApiMethodStateReloading<T> = { state: "reloading" } & ApiSuccess<T>
 export type ApiMethodStateSuccess<T> = { state: "success" } & ApiSuccess<T>
 export type ApiMethodStateError = { state: "error" } & ApiFailure
 
-export type ApiMethodHook<T, P extends any[]> = {
+export type ApiMethodHook<T, P extends unknown[]> = {
   call: (...args: P) => Promise<ApiResponse<T>>
   clear: () => void
 } & ApiMethodState<T>
@@ -193,7 +195,7 @@ export type ApiMethodOptions = {
   ignoreStaleResponses?: boolean
 }
 
-export const useApiMethod = <T, P extends any[]>(
+export const useApiMethod = <T, P extends unknown[]>(
   fetchFn: (...args: P) => Promise<ApiResponse<T>>,
   cache?: ApiCache<T, P>,
   { ignoreStaleResponses = false }: ApiMethodOptions = {},
@@ -259,7 +261,7 @@ export const useApiMethod = <T, P extends any[]>(
   )
 }
 
-export const useOnApiSuccess = <T, P extends any[]>(
+export const useOnApiSuccess = <T, P extends unknown[]>(
   hook: ApiMethodHook<T, P>,
   handler: (hook: ApiMethodStateSuccess<T>) => void,
 ) => {
@@ -277,7 +279,7 @@ export const useOnApiSuccess = <T, P extends any[]>(
   }, [hook, handler])
 }
 
-export const useOnApiError = <T, P extends any[]>(
+export const useOnApiError = <T, P extends unknown[]>(
   hook: ApiMethodHook<T, P>,
   handler: (hook: ApiMethodStateError) => void,
 ) => {
@@ -295,7 +297,7 @@ export const useOnApiError = <T, P extends any[]>(
   }, [hook, handler])
 }
 
-export const useLocalDataCopy = <T, P extends any[]>(
+export const useLocalDataCopy = <T, P extends unknown[]>(
   hook: ApiMethodHook<T, P>,
 ): [T | null, Dispatch<SetStateAction<T | null>>] => {
   const [localData, setLocalData] = useSafeState<T | null>(null)

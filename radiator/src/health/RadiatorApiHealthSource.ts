@@ -1,4 +1,4 @@
-import {HealthData, HealthSource} from './HealthSource'
+import { type HealthData, HealthSource } from './HealthSource.ts'
 
 export type ApiEnv = 'local' | 'dev' | 'qa' | 'prod'
 
@@ -19,7 +19,7 @@ type ApiResponse = {
 
 export class RadiatorApiHealthSource extends HealthSource {
   apiUrl: string
-  headers: object
+  headers: Record<string, string>
 
   constructor(env: ApiEnv, apiKey: string) {
     super()
@@ -31,14 +31,15 @@ export class RadiatorApiHealthSource extends HealthSource {
   }
 
   private startScheduling(intervalSeconds: number) {
-    this.fetchHealth()
-    setInterval(() => this.fetchHealth(), intervalSeconds * 1000)
+    this.fetchHealth().catch(console.error)
+    setInterval(() => {
+      this.fetchHealth().catch(console.error)
+    }, intervalSeconds * 1000)
   }
 
   private async fetchHealth() {
     try {
       const response = await fetch(this.apiUrl, {
-        // @ts-ignore
         headers: this.headers
       })
       if (response.status !== 200) {
@@ -50,7 +51,7 @@ export class RadiatorApiHealthSource extends HealthSource {
       }
     } catch (err) {
       console.error(err)
-      this.emitError(`${err}`)
+      this.emitError(String(err))
     }
   }
 

@@ -139,7 +139,7 @@ export const teeKuntailmoitusOppijanäkymistä = async (
 
     const forms = await getIlmoitusForm()
     expect(forms.length, "Lomakkeita näkyy vain yksi").toBe(1)
-    const form = forms[0]!!
+    const form = forms[0]!
     expect(form.title).toBe(oppija.title)
 
     await täytäJaLähetäLomake(oppija, form)
@@ -245,7 +245,7 @@ export const getIlmoitusData = async (): Promise<DisplayedIlmoitusData> => {
     ilmoitukset.length,
     "Aktiivisia ilmoituksia tulisi näkyä tasan yksi",
   ).toEqual(1)
-  const ilmoitus = ilmoitukset[0]!!
+  const ilmoitus = ilmoitukset[0]!
 
   return Promise.all([
     ...requiredTestIds.map(async (id) =>
@@ -263,7 +263,7 @@ export const getIlmoitusData = async (): Promise<DisplayedIlmoitusData> => {
 export const täytäJaLähetäLomake = async (oppija: Oppija, form: Form) => {
   // Esitäytä lomake
   if (oppija.prefill !== undefined) {
-    await form.prefills[oppija.prefill]!!.click()
+    await form.prefills[oppija.prefill]!.click()
   }
 
   // Täytä lomake
@@ -309,7 +309,7 @@ const selectOption = async (select: WebElement, text: string) => {
   const optionTexts = await Promise.all(options.map((o) => o.getText()))
   const index = optionTexts.findIndex((o) => o === text)
   expect(index >= 0, `Valinta "${text}" löytyy valikosta`).toBeTruthy()
-  await options[index]!!.click()
+  await options[index]!.click()
 }
 
 export const getCloseButton = () => $(".modalbuttongroup button")
@@ -337,7 +337,7 @@ export const teeKuntailmoitusHakutilannenäkymästä = async (
 
   for (const form of forms) {
     // Tarkista että valitut oppijat ja lomakkeet mäppäytyvät toisiinsa
-    const oppija = oppijat.find((o) => form.subtitle.includes(o.oid))!!
+    const oppija = oppijat.find((o) => form.subtitle.includes(o.oid))!
     expect(
       oppija,
       `Lomakkeen oppija "${form.title}" "${form.subtitle}" on valittujen oppijoiden joukossa`,

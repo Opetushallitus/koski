@@ -17,12 +17,12 @@ export type OppivelvollisuudestaVapautuksenPohjatiedot = {
 export type UusiOppivelvollisuudestaVapautus = {
   oppijaOid: Oid
   vapautettu: ISODate
-  kuntakoodi: String
+  kuntakoodi: string
 }
 
 export type OppivelvollisuudestaVapautuksenMitätöinti = {
   oppijaOid: Oid
-  kuntakoodi: String
+  kuntakoodi: string
 }
 
 export const onOppivelvollisuudestaVapautettu = (

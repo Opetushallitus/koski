@@ -42,7 +42,6 @@ export const getOAuthClientConfig = memoize(
 
     const agent = new undici.Agent({ connect: options })
     config[client.customFetch] = (...args) =>
-      // @ts-expect-error dispatcher is supported but not in undici's fetch types here
       undici.fetch(args[0], { ...args[1], dispatcher: agent })
 
     if (enableLocalMTLS) {

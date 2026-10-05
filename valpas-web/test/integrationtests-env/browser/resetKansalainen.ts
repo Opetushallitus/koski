@@ -38,7 +38,7 @@ export const loginKansalainenAs = async (
     await resetKansalainen(initialPath, forceReset, tarkastelupäivä)
     await expectElementEventuallyVisible("#hetu")
   }, longTimeout)
-  ;(await $("#hetu")).sendKeys(hetu, Key.ENTER)
+  await (await $("#hetu")).sendKeys(hetu, Key.ENTER)
   await driver.wait(
     until.elementLocated(By.css("article.kansalainenpage")),
     defaultTimeout,

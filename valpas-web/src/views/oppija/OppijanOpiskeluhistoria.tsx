@@ -345,13 +345,14 @@ const tilaString = (opiskeluoikeus: MinimiOpiskeluoikeus): string => {
   }
 
   switch (koskiTila.koodiarvo) {
-    case "valiaikaisestikeskeytynyt":
+    case "valiaikaisestikeskeytynyt": {
       const tarkastelujaksonAlku = formatDate(
         myöhempienOpintojenKoskiTilanAlkamispäivä(opiskeluoikeus),
       )
       return t("oppija__tila_valiaikaisesti_keskeytynyt", {
         päivämäärä: tarkastelujaksonAlku,
       })
+    }
     default:
       return koodistonimi(koskiTila)
   }

@@ -172,12 +172,16 @@ export const OppivelvollisuudestaVapautusModal = (
                     ? () =>
                         prompt.show(
                           t("ovvapautus__mitätöinnin_varmistus"),
-                          submitMitätöinti,
+                          () => {
+                            submitMitätöinti().catch(console.error)
+                          },
                         )
                     : () =>
                         prompt.show(
                           t("ovvapautus__vapautuksen_varmistus"),
-                          submitUusiVapautus,
+                          () => {
+                            submitUusiVapautus().catch(console.error)
+                          },
                         )
                 }
                 disabled={!isValid && !props.mitätöinti}

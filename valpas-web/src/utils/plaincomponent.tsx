@@ -3,27 +3,28 @@ import { joinClassNames } from "./classnames"
 
 export type PlainComponentProps = React.HTMLAttributes<HTMLElement>
 
-export const plainComponent = (tag: string, baseClassName: string) => {
+export const plainComponent = (
+  tag: keyof HTMLElementTagNameMap,
+  baseClassName: string,
+) => {
   const Plain = tag
   return ({ className, ...rest }: PlainComponentProps) => (
-    // @ts-ignore
     <Plain className={joinClassNames(baseClassName, className)} {...rest} />
   )
 }
 
-export const forwardRefComponent = (tag: string, baseClassName: string) => {
-  const Plain = tag
-  return React.forwardRef(
+export const forwardRefComponent = <T extends keyof HTMLElementTagNameMap>(
+  tag: T,
+  baseClassName: string,
+) =>
+  React.forwardRef(
     (
       { className, ...rest }: PlainComponentProps,
-      ref: React.ForwardedRef<HTMLElement>,
-    ) => (
-      <Plain
-        className={joinClassNames(baseClassName, className)}
-        {...rest}
-        // @ts-ignore
-        ref={ref}
-      />
-    ),
+      ref: React.ForwardedRef<HTMLElementTagNameMap[T]>,
+    ) =>
+      React.createElement(tag, {
+        className: joinClassNames(baseClassName, className),
+        ...rest,
+        ref,
+      }),
   )
-}

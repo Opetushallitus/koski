@@ -1,5 +1,5 @@
 import bem from "bem-ts"
-import React, { FormEvent } from "react"
+import React, { SubmitEvent } from "react"
 import { joinClassNames } from "../../utils/classnames"
 import "./forms.less"
 
@@ -8,7 +8,7 @@ const b = bem("form")
 export type FormProps = React.HTMLAttributes<HTMLFormElement>
 
 export const Form = ({ className, onSubmit, ...props }: FormProps) => {
-  const submit = (event: FormEvent<HTMLFormElement>) => {
+  const submit = (event: SubmitEvent<HTMLFormElement>) => {
     event.preventDefault()
     onSubmit?.(event)
   }

@@ -19,7 +19,7 @@ export type OppijanPohjatiedot = {
   oppijaOid: string
   mahdollisetTekijäOrganisaatiot: Organisaatio[]
   yhteydenottokieli?: Kieli
-  turvakielto: Boolean
+  turvakielto: boolean
   yhteystiedot: PohjatietoYhteystieto[]
   hetu?: string
 }

@@ -13,7 +13,7 @@ export const useUserLogin = (
   const [user, setUser] = useState<CurrentUser | null>(null)
 
   useEffect(() => {
-    getUser().then(setUser)
+    getUser().then(setUser).catch(console.error)
   }, [getUser])
 
   if (!user) {

@@ -1,3 +1,4 @@
+import fetchMock from "jest-fetch-mock"
 import fetch from "node-fetch"
 import { hakutilannePathWithOrg, oppijaPath } from "../../src/state/paths"
 import {
@@ -78,7 +79,7 @@ describe("Login / Logout / kirjautuminen", () => {
     await waitTableLoadingHasFinished(".hakutilanne")
 
     // Salavihkainen logout (ei poista selaimesta keksiä)
-    require("jest-fetch-mock").dontMock()
+    fetchMock.dontMock()
     await fetch(pathToApiUrl("/test/logout/valpas-jkl-normaali"))
 
     // Yritä selailla eteenpäin ja päädy kirjautumiseen
@@ -87,7 +88,7 @@ describe("Login / Logout / kirjautuminen", () => {
     const linkSelector = ".hakutilanne tbody tr td:first-child a"
     try {
       await clickElement(linkSelector)
-    } catch (e) {
+    } catch (_e) {
       // Ignore stale elements
     }
 

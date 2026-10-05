@@ -1,13 +1,12 @@
-import path from "path";
-import puppeteer, { Page } from "puppeteer";
+import puppeteer, { type Page } from "puppeteer";
 
 type Environment = "local" | "dev" | "qa";
 
 type TestPerson = {
-  kutsumanimi: string,
-  hetu: string,
-  syntymäaika: string,
-}
+  kutsumanimi: string;
+  hetu: string;
+  syntymäaika: string;
+};
 
 const RETRIES = 3;
 const TIMEOUT_MS = 30000;
@@ -19,21 +18,29 @@ const ENVIRONMENTS: Record<Environment, string> = {
 };
 
 const TestPersons: Record<Environment, TestPerson> = {
-  dev: {hetu: "210281-9988", kutsumanimi: "Nordea", syntymäaika: "1981-02-21"},
-  qa: {hetu: "210281-9988", kutsumanimi: "Nordea", syntymäaika: "1981-02-21"},
-  local: {hetu: "210281-8715", kutsumanimi: "Nordea", syntymäaika: "1981-02-21"}
+  dev: {
+    hetu: "210281-9988",
+    kutsumanimi: "Nordea",
+    syntymäaika: "1981-02-21",
+  },
+  qa: { hetu: "210281-9988", kutsumanimi: "Nordea", syntymäaika: "1981-02-21" },
+  local: {
+    hetu: "210281-8715",
+    kutsumanimi: "Nordea",
+    syntymäaika: "1981-02-21",
+  },
 };
 
 const clickAndWait = async (
   page: Page,
   selector: string,
-  options: { navigation?: boolean } = {}
+  options: { navigation?: boolean } = {},
 ) => {
-  console.log(`Wait for ${selector}`)
+  console.log(`Wait for ${selector}`);
   await page.waitForSelector(selector);
 
   if (options.navigation) {
-    console.log(`Click for ${selector}`)
+    console.log(`Click for ${selector}`);
     await Promise.all([
       page.waitForNavigation({ waitUntil: "networkidle2" }),
       page.click(selector),
@@ -44,28 +51,28 @@ const clickAndWait = async (
 };
 
 const waitForUrlPart = async (page: Page, part: string) => {
-  console.log("Wait for url part", part)
+  console.log("Wait for url part", part);
   await page.waitForFunction(
-    expected => window.location.href.includes(expected),
+    (expected) => window.location.href.includes(expected),
     {},
-    part
+    part,
   );
 };
 
 const expectTexts = async (page: Page, texts: string[]) => {
   await page.waitForFunction(
-    expected => {
+    (expected) => {
       const content = document.documentElement?.innerText?.toLowerCase() || "";
-      return expected.every(t => content.includes(t.toLowerCase()));
+      return expected.every((t) => content.includes(t.toLowerCase()));
     },
     {},
-    texts
+    texts,
   );
 };
 
 const withRetries = async <T>(
   attempts: number,
-  fn: (attempt: number) => Promise<T>
+  fn: (attempt: number) => Promise<T>,
 ): Promise<T> => {
   let lastError: unknown;
 
@@ -74,18 +81,20 @@ const withRetries = async <T>(
       return await fn(i + 1);
     } catch (error) {
       lastError = error;
-      console.error(
-        `Attempt ${i + 1}/${attempts} failed: ${
-          error instanceof Error ? error.message : String(error)
-        }`
-      );
+      if (i + 1 < attempts) {
+        console.error(`Attempt ${i + 1}/${attempts} failed, retrying`);
+      }
     }
   }
 
   throw lastError;
 };
 
-const suomiFiLogin = async (page: Page, testPerson: TestPerson, opts: { local: boolean }) => {
+const suomiFiLogin = async (
+  page: Page,
+  testPerson: TestPerson,
+  opts: { local: boolean },
+) => {
   if (opts.local) {
     await page.waitForSelector("#hetu");
     await page.type("#hetu", testPerson.hetu);
@@ -102,12 +111,12 @@ const suomiFiLogin = async (page: Page, testPerson: TestPerson, opts: { local: b
 
 const expectPerson = (
   actual: Record<string, unknown>,
-  expected: Record<string, unknown>
+  expected: TestPerson,
 ) => {
   for (const [key, value] of Object.entries(expected)) {
     if (actual[key] !== value) {
       throw new Error(
-        `Mismatch for "${key}": expected ${value}, got ${actual[key]}`
+        `Mismatch for "${key}": expected ${JSON.stringify(value)}, got ${JSON.stringify(actual[key])}`,
       );
     }
   }
@@ -144,18 +153,17 @@ const authorizeAndVerifyData = async (page: Page, testPerson: TestPerson) => {
     }
   });
 
-  const raw = await page.$eval("pre", el => el.textContent ?? "");
+  const raw = await page.$eval("pre", (el) => el.textContent ?? "");
   const json = JSON.parse(raw) as { henkilö?: Record<string, unknown> };
 
-  console.log("Check that assumed data is visible")
+  console.log("Check that assumed data is visible");
   expectPerson(json.henkilö ?? {}, testPerson);
 };
 
-
 const runTest = async (environment: Environment) =>
-  withRetries(RETRIES, async attempt => {
+  withRetries(RETRIES, async (attempt) => {
     console.log(
-      `Running omadata-oauth2-sample smoke test (${environment}) – attempt ${attempt}/${RETRIES}`
+      `Running omadata-oauth2-sample smoke test (${environment}) – attempt ${attempt}/${RETRIES}`,
     );
 
     const browser = await puppeteer.launch({
@@ -176,10 +184,10 @@ const runTest = async (environment: Environment) =>
       await clickAndWait(
         page,
         'a[href="/api/openid-api-test?scope=HENKILOTIEDOT_KAIKKI_TIEDOT+OPISKELUOIKEUDET_SUORITETUT_TUTKINNOT"]',
-        { navigation: true }
+        { navigation: true },
       );
 
-      const testPerson = TestPersons[environment]
+      const testPerson = TestPersons[environment];
 
       await suomiFiLogin(page, testPerson, { local: isLocal });
       await authorizeAndVerifyData(page, testPerson);
@@ -193,15 +201,11 @@ const runTest = async (environment: Environment) =>
 const environment = process.argv[2] as Environment | undefined;
 
 if (!environment || !ENVIRONMENTS[environment]) {
-  console.error(
-    "Usage: pnpm ts-node src/omadata-oauth2-sample.ts <local|dev|qa>"
-  );
+  console.error("Usage: node src/omadata-oauth2-sample.ts <local|dev|qa>");
   process.exit(1);
 }
 
-runTest(environment).catch(error => {
-  console.error(
-    error instanceof Error ? error.message : JSON.stringify(error)
-  );
+runTest(environment).catch((error: unknown) => {
+  console.error(error);
   process.exit(1);
 });

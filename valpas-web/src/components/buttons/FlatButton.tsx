@@ -26,7 +26,7 @@ export const FlatButton = (props: FlatButtonProps) => {
   )
 }
 
-export const FlatLink = (props: LinkProps) => {
+export const FlatLink = (props: LinkProps & { to: string }) => {
   const { className, children, onClick, to, ...rest } = props
   const basePath = useBasePath()
 

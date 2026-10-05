@@ -1,5 +1,6 @@
 import type { Page } from '@playwright/test'
 import { Oppija } from '../../app/types/fi/oph/koski/schema/Oppija'
+import { Oppilaitos } from '../../app/types/fi/oph/koski/schema/Oppilaitos'
 import { Raw } from '../../app/util/schema'
 import { expect, test } from './base'
 import { virkailija } from './setup/auth'
@@ -43,7 +44,7 @@ const lisatiedotRow = (page: Page, label: string) =>
 
 const jynOid = '1.2.246.562.10.14613773812'
 const jynNimi = 'Jyväskylän normaalikoulu'
-const jynOppilaitos = {
+const jynOppilaitos: Raw<Oppilaitos> = {
   oid: jynOid,
   oppilaitosnumero: {
     koodiarvo: '00204',
@@ -91,6 +92,7 @@ const oppijaVanhentuneillaLisätiedoilla = (): OppijaWithTestFlags => ({
         ]
       },
       lisätiedot: {
+        aloittanutEnnenOppivelvollisuutta: false,
         perusopetuksenAloittamistaLykätty: false,
         erityisenTuenPäätös: {
           alku: '2017-01-01',

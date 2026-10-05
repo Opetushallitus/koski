@@ -192,7 +192,7 @@ export const OppijanOppivelvollisuustiedot = (
                     oppijat={[{ henkilö: props.henkilö }]}
                     pohjatiedot={pohjatiedot.data}
                     tekijäorganisaatio={
-                      pohjatiedot.data.mahdollisetTekijäOrganisaatiot[0]!!
+                      pohjatiedot.data.mahdollisetTekijäOrganisaatiot[0]!
                     }
                     onClose={() => {
                       pohjatiedot.clear()

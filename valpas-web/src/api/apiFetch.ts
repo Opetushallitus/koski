@@ -20,12 +20,12 @@ export type ApiError = {
 export type ApiFailure = {
   errors: ApiError[]
   status?: number
-  data?: any
+  data?: unknown
 }
 
 export type ApiResponse<T> = E.Either<ApiFailure, ApiSuccess<T>>
 
-export type JsonRequestInit = Omit<RequestInit, "body"> & { body: any }
+export type JsonRequestInit = Omit<RequestInit, "body"> & { body: unknown }
 
 const apiFetch = async <T>(
   input: RequestInfo,
@@ -34,18 +34,19 @@ const apiFetch = async <T>(
   try {
     const response = await fetch(prependUrl("/koski", input), init)
     try {
-      const data = response.status !== 204 ? await response.json() : null
+      const data: unknown =
+        response.status !== 204 ? await response.json() : null
       if (response.status < 400) {
         return E.right({
           status: response.status,
-          data,
+          data: data as T,
         })
       }
       return E.left({
         errors: apiErrorMessages(response.status, data),
         status: response.status,
       })
-    } catch (err) {
+    } catch (_err) {
       return E.left({
         errors: [
           {
@@ -67,7 +68,7 @@ export const enrichJsonRequest = (
   method: string,
   accept: string,
   init?: JsonRequestInit,
-): JsonRequestInit => ({
+): RequestInit => ({
   credentials: "include",
   method,
   ...init,
@@ -78,7 +79,7 @@ export const enrichJsonRequest = (
     "Caller-id": "1.2.246.562.10.00000000001.valpas.frontend",
     ...init?.headers,
   },
-  body: init?.body && JSON.stringify(init.body),
+  body: init?.body ? JSON.stringify(init.body) : undefined,
 })
 
 export const apiGet = async <T>(
@@ -117,7 +118,9 @@ export const prependUrl = (
       }
 
 export const mockApi =
-  <T, P extends any[]>(getResult: (...params: P) => E.Either<ApiError, T>) =>
+  <T, P extends unknown[]>(
+    getResult: (...params: P) => E.Either<ApiError, T>,
+  ) =>
   async (...params: P): Promise<ApiResponse<T>> => {
     await new Promise((resolve) =>
       setTimeout(resolve, 300 + Math.random() * 200),

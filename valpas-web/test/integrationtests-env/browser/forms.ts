@@ -30,7 +30,10 @@ export const clearTextInputElement = async (
 ) =>
   // Pitää tehdä silmukassa, koska tämä ei aina toimi, välillä BACK_SPACE poistaa vain viimeisen merkin
   eventually(async () => {
-    await driver.executeScript((element: any) => element.select(), element)
+    await driver.executeScript(
+      (element: HTMLInputElement) => element.select(),
+      element,
+    )
     await element.sendKeys(Key.BACK_SPACE)
     expect(await element.getAttribute("value")).toEqual("")
   }, timeout)
@@ -53,7 +56,10 @@ export const clearTextAreaElement = async (
 ) =>
   // Pitää tehdä silmukassa, koska tämä ei aina toimi, välillä BACK_SPACE poistaa vain viimeisen merkin
   eventually(async () => {
-    await driver.executeScript((element: any) => element.select(), element)
+    await driver.executeScript(
+      (element: HTMLTextAreaElement) => element.select(),
+      element,
+    )
     await element.sendKeys(Key.BACK_SPACE)
     expect(await element.getText()).toEqual("")
   }, timeout)
@@ -61,7 +67,7 @@ export const clearTextAreaElement = async (
 export const dropdownSelect = async (selector: string, index: number) => {
   const optionSelector = `${selector} > option[value='${index}']`
   const option = await $(optionSelector)
-  option.click()
+  await option.click()
 }
 
 export const dropdownSelectContains = async (

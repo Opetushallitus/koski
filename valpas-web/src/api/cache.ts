@@ -16,7 +16,7 @@ export type ApiCache<T, S> = {
 
 export type ApiCacheChangeListener = () => void
 
-export const createPreferLocalCache = <T, S extends any[]>(
+export const createPreferLocalCache = <T, S extends unknown[]>(
   _fn: (...args: S) => Promise<E.Either<ApiFailure, ApiSuccess<T>>>,
 ): ApiCache<T, S> => {
   const cachedValues: Record<string, ApiSuccess<T>> = {}
@@ -59,7 +59,7 @@ export const createPreferLocalCache = <T, S extends any[]>(
   }
 }
 
-export const createLocalThenApiCache = <T, S extends any[]>(
+export const createLocalThenApiCache = <T, S extends unknown[]>(
   fn: (...args: S) => Promise<E.Either<ApiFailure, ApiSuccess<T>>>,
 ): ApiCache<T, S> => ({
   ...createPreferLocalCache(fn),

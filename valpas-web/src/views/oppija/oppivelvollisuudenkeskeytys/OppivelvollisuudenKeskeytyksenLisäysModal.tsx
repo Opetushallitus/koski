@@ -28,10 +28,12 @@ export const OppivelvollisuudenKeskeytyksenLisäysModal = (
   const create = useApiMethod(createOppivelvollisuudenKeskeytys)
   const submit = useCallback(
     (form: OppivelvollisuudenKeskeytysFormValues) => {
-      create.call({
-        ...form,
-        oppijaOid: props.henkilö.oid,
-      })
+      create
+        .call({
+          ...form,
+          oppijaOid: props.henkilö.oid,
+        })
+        .catch(console.error)
     },
     [create, props.henkilö.oid],
   )

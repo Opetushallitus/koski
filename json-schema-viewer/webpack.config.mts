@@ -1,12 +1,35 @@
-const path = require('path')
-const CssMinimizerPlugin = require('css-minimizer-webpack-plugin')
+import compilationTargets from '@babel/helper-compilation-targets'
+import CssMinimizerPlugin from 'css-minimizer-webpack-plugin'
+import path from 'node:path'
+import type { Configuration } from 'webpack'
 
-module.exports = (_, argv = {}) => ({
-  context: path.join(__dirname, 'src'),
+// Kohdeselaimet luetaan Kosken .browserslistrc:stä samalla tavalla kuin web/webpack.config.mts:ssä.
+const targets = compilationTargets.default(
+  {},
+  { configPath: import.meta.dirname }
+)
+
+const swcRule = (test: RegExp, syntax: 'typescript' | 'ecmascript') => ({
+  test,
+  include: path.join(import.meta.dirname, 'src'),
+  use: {
+    loader: 'swc-loader',
+    options: { env: { targets }, jsc: { parser: { syntax } } }
+  }
+})
+
+export default (
+  _: unknown,
+  argv: { mode?: Configuration['mode'] } = {}
+): Configuration => ({
+  context: path.join(import.meta.dirname, 'src'),
   entry: './index.ts',
   devtool: argv.mode === 'development' ? 'inline-source-map' : false,
   output: {
-    path: path.join(__dirname, '../target/webapp/koski/json-schema-viewer'),
+    path: path.join(
+      import.meta.dirname,
+      '../target/webapp/koski/json-schema-viewer'
+    ),
     filename: 'js/json-schema-viewer.js',
     clean: true
   },
@@ -28,7 +51,8 @@ module.exports = (_, argv = {}) => ({
         type: 'asset/resource',
         generator: { filename: '[path][name][ext]' }
       },
-      { test: /\.ts$/, use: 'ts-loader' }
+      swcRule(/\.ts$/, 'typescript'),
+      swcRule(/\.js$/, 'ecmascript')
     ]
   },
   optimization: {

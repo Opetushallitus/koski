@@ -352,11 +352,12 @@ test.describe('Perusopetuksen uusi käyttöliittymä: tila ja vahvistus', () => 
     ).click()
   })
 
-  test('Merkitse valmiiksi: tallennettu myöntäjä löytyy listalta', { timeout: 60000 }, async ({
+  test('Merkitse valmiiksi: tallennettu myöntäjä löytyy listalta', async ({
     page,
     oppijaPage,
     fixtures
   }) => {
+    test.setTimeout(60000)
     await fixtures.reset()
     await oppijaPage.goto(kaisaUrl)
     await page.getByTestId('oo.0.suoritusTabs.0.tab').click()

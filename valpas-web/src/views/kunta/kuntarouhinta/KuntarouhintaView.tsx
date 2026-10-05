@@ -102,13 +102,15 @@ export const KuntarouhintaView = withRequiresKuntavalvonta(
     )
 
     const fetchTableData = useCallback(() => {
-      rouhintaFetch.call(createQuery(organisaatioOid))
+      rouhintaFetch.call(createQuery(organisaatioOid)).catch(console.error)
     }, [organisaatioOid, rouhintaFetch])
 
     const password = usePassword()
     const rouhintaDownload = useApiMethod(downloadKuntarouhinta)
     const downloadData = useCallback(() => {
-      rouhintaDownload.call(createQuery(organisaatioOid, password))
+      rouhintaDownload
+        .call(createQuery(organisaatioOid, password))
+        .catch(console.error)
     }, [organisaatioOid, password, rouhintaDownload])
 
     const kunta = useMemo(
@@ -190,8 +192,8 @@ export const KuntarouhintaView = withRequiresKuntavalvonta(
 )
 
 type FetchDataButtonProps = {
-  rouhintaFetch: ApiMethodHook<any, any>
-  rouhintaDownload: ApiMethodHook<any, any>
+  rouhintaFetch: ApiMethodHook<unknown, never>
+  rouhintaDownload: ApiMethodHook<unknown, never>
   onFetchClick: () => void
   onDownloadClick: () => void
   password: string

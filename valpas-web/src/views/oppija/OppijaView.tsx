@@ -45,7 +45,7 @@ export type OppijaViewProps = OppijaViewRouteProps
 
 export const OppijaView = withRequiresJokinOikeus((props: OppijaViewProps) => {
   const searchQuery = parseSearchQueryFromProps(props)
-  const queryOid = props.match.params.oppijaOid!!
+  const queryOid = props.match.params.oppijaOid!
   const oppija = useApiWithParams(fetchOppija, [queryOid], fetchOppijaCache)
   const oppijaData = isSuccess(oppija) ? oppija.data : null
 

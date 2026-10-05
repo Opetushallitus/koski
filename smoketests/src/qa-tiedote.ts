@@ -1,4 +1,5 @@
-const baseUrl = process.env.KOSKI_BASE_URL || "https://koski.testiopintopolku.fi/koski";
+const baseUrl =
+  process.env.KOSKI_BASE_URL || "https://koski.testiopintopolku.fi/koski";
 const user = process.env.KOSKI_USER;
 const pass = process.env.KOSKI_PASS;
 const opiskeluoikeusOid = process.env.TIEDOTE_SMOKETEST_OO_OID;
@@ -7,7 +8,9 @@ const pollIntervalMs = Number(process.env.TIEDOTE_POLL_INTERVAL_MS || "5000");
 const pollTimeoutMs = Number(process.env.TIEDOTE_POLL_TIMEOUT_MS || "300000");
 
 if (!user || !pass || !opiskeluoikeusOid) {
-  console.error("Required env vars: KOSKI_USER, KOSKI_PASS, TIEDOTE_SMOKETEST_OO_OID");
+  console.error(
+    "Required env vars: KOSKI_USER, KOSKI_PASS, TIEDOTE_SMOKETEST_OO_OID",
+  );
   process.exit(1);
 }
 
@@ -45,7 +48,9 @@ async function resetTiedoteJob(): Promise<void> {
   } else if (res.status === 404) {
     console.log("No existing tiedote job (404), proceeding");
   } else {
-    throw new Error(`Reset failed with status ${res.status}: ${await res.text()}`);
+    throw new Error(
+      `Reset failed with status ${res.status}: ${await res.text()}`,
+    );
   }
 }
 
@@ -59,25 +64,30 @@ async function triggerRun(): Promise<void> {
     console.log(`Tiedote run triggered successfully`);
     return;
   } else {
-    throw new Error(`Failed to trigger tiedote run. Last response: ${res.status} ${body}`);
+    throw new Error(
+      `Failed to trigger tiedote run. Last response: ${res.status} ${body}`,
+    );
   }
 }
 
 async function pollForCompletion(): Promise<TiedoteJob> {
-  console.log(`Polling for completed tiedote job (timeout ${pollTimeoutMs / 1000}s)...`);
+  console.log(
+    `Polling for completed tiedote job (timeout ${pollTimeoutMs / 1000}s)...`,
+  );
   const deadline = Date.now() + pollTimeoutMs;
 
   while (Date.now() < deadline) {
-    const res = await fetch(
-      `${baseUrl}/api/tiedote/jobs?state=COMPLETED`,
-      { headers }
-    );
+    const res = await fetch(`${baseUrl}/api/tiedote/jobs?state=COMPLETED`, {
+      headers,
+    });
 
     if (res.status !== 200) {
-      throw new Error(`Poll failed with status ${res.status}: ${await res.text()}`);
+      throw new Error(
+        `Poll failed with status ${res.status}: ${await res.text()}`,
+      );
     }
 
-    const jobs: TiedoteJob[] = await res.json();
+    const jobs = (await res.json()) as TiedoteJob[];
     const job = jobs.find((j) => j.opiskeluoikeusOid === opiskeluoikeusOid);
 
     if (job) {
@@ -85,16 +95,17 @@ async function pollForCompletion(): Promise<TiedoteJob> {
     }
 
     // Tarkista myös virhetila
-    const errorRes = await fetch(
-      `${baseUrl}/api/tiedote/jobs?state=ERROR`,
-      { headers }
-    );
+    const errorRes = await fetch(`${baseUrl}/api/tiedote/jobs?state=ERROR`, {
+      headers,
+    });
     if (errorRes.status === 200) {
-      const errorJobs: TiedoteJob[] = await errorRes.json();
-      const errorJob = errorJobs.find((j) => j.opiskeluoikeusOid === opiskeluoikeusOid);
+      const errorJobs = (await errorRes.json()) as TiedoteJob[];
+      const errorJob = errorJobs.find(
+        (j) => j.opiskeluoikeusOid === opiskeluoikeusOid,
+      );
       if (errorJob) {
         throw new Error(
-          `Tiedote job ended in ERROR state: ${errorJob.error || "unknown error"}`
+          `Tiedote job ended in ERROR state: ${errorJob.error || "unknown error"}`,
         );
       }
     }
@@ -104,19 +115,25 @@ async function pollForCompletion(): Promise<TiedoteJob> {
     await sleep(pollIntervalMs);
   }
 
-  throw new Error(`Tiedote job did not complete within ${pollTimeoutMs / 1000}s`);
+  throw new Error(
+    `Tiedote job did not complete within ${pollTimeoutMs / 1000}s`,
+  );
 }
 
 function assertJob(job: TiedoteJob): void {
-  console.log(`Job completed: id=${job.id}, versio=${job.opiskeluoikeusVersio}`);
+  console.log(
+    `Job completed: id=${job.id}, versio=${job.opiskeluoikeusVersio}`,
+  );
 
   if (job.opiskeluoikeusVersio <= 0) {
     throw new Error(
-      `opiskeluoikeusVersio is ${job.opiskeluoikeusVersio}, expected > 0 (Kitu may have failed)`
+      `opiskeluoikeusVersio is ${job.opiskeluoikeusVersio}, expected > 0 (Kitu may have failed)`,
     );
   }
 
-  console.log("Assertions passed: COMPLETED state + versio > 0 (Kitu OK + Tiedotuspalvelu OK)");
+  console.log(
+    "Assertions passed: COMPLETED state + versio > 0 (Kitu OK + Tiedotuspalvelu OK)",
+  );
 }
 
 async function run(): Promise<void> {
@@ -134,7 +151,7 @@ async function run(): Promise<void> {
   console.log("=== Smoke test passed! ===");
 }
 
-run().catch((err) => {
-  console.error(`\nSmoke test FAILED: ${err.message}`);
+run().catch((err: unknown) => {
+  console.error("\nSmoke test FAILED:", err);
   process.exit(1);
 });

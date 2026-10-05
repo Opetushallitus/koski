@@ -8,6 +8,7 @@
   }
 
   & > textarea {
+    // stylelint-disable-next-line plugin/no-unsupported-browser-features -- iOS ei tue resizea missään versiossa, mutta siellä tekstikenttää ei voi muutenkaan venyttää; ei vaikutusta
     resize: none;
     width: 100%;
     height: @copyable-text-height-multiline;

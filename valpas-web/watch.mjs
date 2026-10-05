@@ -17,12 +17,12 @@ await bundler.watch(async (err, event) => {
     throw err
   }
 
-  if (event.type === "buildSuccess") {
+  if (event?.type === "buildSuccess") {
     let bundles = event.bundleGraph.getBundles()
     console.log(`✨ Built ${bundles.length} bundles in ${event.buildTime}ms!`)
     // Postbuild-komento ajetaan aina, kun buildi onnistuu
     await postbuild()
-  } else if (event.type === "buildFailure") {
+  } else if (event?.type === "buildFailure") {
     console.log(event.diagnostics)
   }
 })

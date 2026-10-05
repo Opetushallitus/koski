@@ -1,4 +1,5 @@
 /*! JSON Schema Viewer v0.3.4 | https://github.com/jlblcc/json-schema-viewer */
+// @ts-nocheck
 const $ = require('jquery')
 const URI = require('urijs')
 const d3 = require('d3')
@@ -41,7 +42,7 @@ if (typeof window.JSV === 'undefined') {
     init: function (config, callback) {
       var i
       for (i in config) {
-        if (JSV.hasOwnProperty(i)) {
+        if (Object.hasOwn(JSV, i)) {
           JSV[i] = config[i]
         }
       }
@@ -369,25 +370,21 @@ if (typeof window.JSV === 'undefined') {
       if (node.type === 'array') {
         addRow(
           'Cardinality',
-          mono(
-            (node.minItems || 0) +
-              '..' +
-              (node.maxItems != null ? node.maxItems : '*')
-          )
+          mono((node.minItems || 0) + '..' + (node.maxItems ?? '*'))
         )
       } else {
         addRow('Cardinality', mono(node.require ? '1..1' : '0..1'))
       }
-      if (node['default'] != null) {
+      if (node['default'] !== undefined && node['default'] !== null) {
         addRow('Default', mono(node['default']))
       }
-      if (node.minimum != null) {
+      if (node.minimum !== undefined && node.minimum !== null) {
         addRow(
           'Minimum',
           mono(node.minimum + (node.exclusiveMinimum ? ' (exclusive)' : ''))
         )
       }
-      if (node.maximum != null) {
+      if (node.maximum !== undefined && node.maximum !== null) {
         addRow(
           'Maximum',
           mono(node.maximum + (node.exclusiveMaximum ? ' (exclusive)' : ''))
@@ -573,7 +570,7 @@ if (typeof window.JSV === 'undefined') {
       if (example) {
         if (example !== JSV.example) {
           $.getJSON(
-            node.schema.match(/^(.*?)(?=[^\/]*\.json)/g) + example,
+            node.schema.match(/^(.*?)(?=[^/]*\.json)/g) + example,
             function (data) {
               var pointer = example.split('#')[1]
               if (pointer) {
@@ -865,7 +862,7 @@ if (typeof window.JSV === 'undefined') {
     },
     buildSearchList: function (items, init) {
       var ul = $('ul#search-result')
-      texts = {}
+      var texts = {}
       $.each(items, function (i, v) {
         var data = v.split('|')
         if (!texts[data[0]]) {
@@ -1049,7 +1046,7 @@ if (typeof window.JSV === 'undefined') {
       if (Object.prototype.toString.call(items) === '[object Object]') {
         JSV.compileData(items, node, 'item', false, depth + 1)
       } else if (Object.prototype.toString.call(items) === '[object Array]') {
-        items.forEach(function (itm, idx, arr) {
+        items.forEach(function (itm, idx) {
           JSV.compileData(itm, node, idx.toString(), false, depth + 1)
         })
       }
@@ -1315,16 +1312,15 @@ if (typeof window.JSV === 'undefined') {
         })
     },
     zoomClick: function () {
-      var clicked = d3.event.target,
-        direction = 1,
+      var direction,
         factor = 0.2,
-        target_zoom = 1,
+        target_zoom,
         center = [JSV.viewerWidth / 2, JSV.viewerHeight / 2],
         zl = JSV.zoomListener,
         extent = zl.scaleExtent(),
         translate = zl.translate(),
-        translate0 = [],
-        l = [],
+        translate0,
+        l,
         view = {
           x: translate[0],
           y: translate[1],
@@ -1427,10 +1423,10 @@ if (typeof window.JSV === 'undefined') {
         .classed('sensitive', function (d) {
           return d.sensitive
         })
-        .attr('id', function (d, i) {
+        .attr('id', function (d) {
           return 'n-' + d.id
         })
-        .attr('transform', function (d) {
+        .attr('transform', function () {
           return 'translate(' + source.y0 + ',' + source.x0 + ')'
         })
       nodeEnter
@@ -1455,7 +1451,7 @@ if (typeof window.JSV === 'undefined') {
       })
       nodeEnter
         .append('text')
-        .attr('x', function (d) {
+        .attr('x', function () {
           return 10
         })
         .attr('dy', '.35em')
@@ -1467,7 +1463,7 @@ if (typeof window.JSV === 'undefined') {
         .classed('abstract', function (d) {
           return d.opacity < 1
         })
-        .attr('text-anchor', function (d) {
+        .attr('text-anchor', function () {
           return 'start'
         })
         .text(function (d) {
@@ -1499,7 +1495,7 @@ if (typeof window.JSV === 'undefined') {
         .exit()
         .transition()
         .duration(duration)
-        .attr('transform', function (d) {
+        .attr('transform', function () {
           return 'translate(' + source.y + ',' + source.x + ')'
         })
         .remove()
@@ -1512,7 +1508,7 @@ if (typeof window.JSV === 'undefined') {
         .enter()
         .insert('path', 'g')
         .attr('class', 'link')
-        .attr('d', function (d) {
+        .attr('d', function () {
           var o = {
             x: source.x0,
             y: source.y0
@@ -1527,7 +1523,7 @@ if (typeof window.JSV === 'undefined') {
         .exit()
         .transition()
         .duration(duration)
-        .attr('d', function (d) {
+        .attr('d', function () {
           var o = {
             x: source.x,
             y: source.y

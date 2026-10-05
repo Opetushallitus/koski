@@ -16,7 +16,7 @@ export type LocalizationMap = Record<TranslationId, LanguageRecord>
 
 declare global {
   interface Window {
-    koskiLocalizationMap: LanguageRecord
+    koskiLocalizationMap: LocalizationMap
     // Palvelimen tälle pyynnölle ratkaisema kieli, ks. HtmlNodes ja UserLanguage.
     koskiLang?: string
   }
@@ -58,23 +58,26 @@ export function t(
   const usedLanguage = languageOverride || lang
   if (!s) return ''
   if (typeof s === 'object') {
-    // @ts-ignore - assume it's a localized string
-    return s[usedLanguage] || s.fi || s.sv || s.en
+    const localized: Partial<LanguageRecord> = s
+    return (
+      localized[usedLanguage] ||
+      localized.fi ||
+      localized.sv ||
+      localized.en ||
+      ''
+    )
   }
   if (typeof s === 'string') {
-    // @ts-ignore try to find a localization from the bundle
     const attemptAsSuch = texts[s] || {}
     if (attemptAsSuch[usedLanguage]) {
       return attemptAsSuch[usedLanguage]
     }
 
-    // @ts-ignore try to find a localization from the bundle
     const attemptUncapitalized = texts[uncapitalize(s)] || {}
     if (attemptUncapitalized[usedLanguage]) {
       return capitalize(attemptUncapitalized[usedLanguage])
     }
 
-    // @ts-ignore try to find a localization from the bundle
     const attemptCapitalized = texts[capitalize(s)] || {}
     if (attemptCapitalized[usedLanguage]) {
       return uncapitalize(attemptCapitalized[usedLanguage])
@@ -92,7 +95,6 @@ export function t(
   return null
 }
 
-// @ts-ignore
 export const tExists = (s: string): boolean => texts[s] !== undefined
 
 export const tTemplate = (s: string, args: object): string =>

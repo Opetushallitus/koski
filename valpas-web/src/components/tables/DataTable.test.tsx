@@ -107,7 +107,7 @@ const fillTextFilter = async (
     `thead tr:nth-child(2) th:nth-child(${columnIndex}) input`,
   )
   expect(input).not.toBeNull()
-  await userEvent.type(input!!, text)
+  await userEvent.type(input!, text)
 }
 
 const selectDropdownOption = async (
@@ -119,7 +119,7 @@ const selectDropdownOption = async (
     `thead tr:nth-child(2) th:nth-child(${columnIndex}) select`,
   )
   expect(select).not.toBeNull()
-  await userEvent.selectOptions(select!!, optionIndex.toString())
+  await userEvent.selectOptions(select!, optionIndex.toString())
 }
 
 // Test data

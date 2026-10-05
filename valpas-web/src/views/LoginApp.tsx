@@ -18,9 +18,9 @@ export default () => {
 
   const submitDisabled = username === "" || password === ""
 
-  const doLogin = formSubmitHandler(async () => {
+  const doLogin = formSubmitHandler(() => {
     if (!submitDisabled && login.state !== "loading") {
-      login.call(username, password)
+      login.call(username, password).catch(console.error)
     }
   })
 

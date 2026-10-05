@@ -161,7 +161,7 @@ Buildaa frontti, ja päivitä automaattisesti kun tiedostoja muokataan:
 make watch
 ```
 
-Staattinen analyysi ([ESLint](http://eslint.org/)):
+Muotoilu ja staattinen analyysi (`make lint` korjaa korjattavat virheet, `make lint-check` vain tarkistaa):
 
 ```shell
 make lint
@@ -182,7 +182,7 @@ Avaa selaimessa [http://localhost:7021/koski/virkailija](http://localhost:7021/k
 
 Näin ajettuna sovellus käyttää paikallista PostgreSQL-kantaa ja OpenSearch-hakuindeksiä, jotka voi käynnistää `docker compose`:lla. Sovellus ei myöskään käytä mitään ulkoisia palveluja. Sillä on siis turvallista leikkiä.
 
-Paikallisesti ajettaessa Jetty lataa resurssit hakemistosta `target/webapp`, jonka sisältö luodaan webpack-buildilla ([webpack.config.js](web/webpack.config.js)). Webpack-build muun muassa kopioi staattisia resursseja paikoilleen
+Paikallisesti ajettaessa Jetty lataa resurssit hakemistosta `target/webapp`, jonka sisältö luodaan webpack-buildilla ([webpack.config.mts](web/webpack.config.mts)). Webpack-build muun muassa kopioi staattisia resursseja paikoilleen
 hakemistosta [`web/`](web/) ja sen alihakemistoista.
 
 Staattisista tiedostoista palvellaan vain `web.xml` -tiedostossa erikseen määritellyt polut.
@@ -338,7 +338,7 @@ Koskessa on käytössä [Github Actions](https://github.com/Opetushallitus/koski
 
 CI-palvelimella sovellus testataan jokaisen commitin yhteydessä. Paikallisten testien lisäksi ajetaan pieni määrä integraatiotestejä testiympäristön REST-rajapintoja vasten.
 
-Myös staattinen analyysi [ESLint](http://eslint.org/) -työkalulla ajetaan joka commitille.
+Myös muotoilu ja staattinen analyysi tarkistetaan joka commitille.
 
 Suorituskykytestit ajetaan joka aamuyö.
 

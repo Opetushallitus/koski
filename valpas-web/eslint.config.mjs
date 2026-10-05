@@ -1,11 +1,21 @@
+import js from "@eslint/js"
 import tseslint from "typescript-eslint"
 import eslintConfigPrettier from "eslint-config-prettier"
+import compat from "eslint-plugin-compat"
 import reactHooks from "eslint-plugin-react-hooks"
+import globals from "globals"
 
 export default [
   {
     ignores: ["**/node_modules", "**/dist", "**/.cache"],
   },
+  js.configs.recommended,
+  {
+    files: ["**/*.js"],
+    languageOptions: { sourceType: "commonjs", globals: globals.node },
+  },
+  { files: ["**/*.mjs"], languageOptions: { globals: globals.node } },
+  { files: ["test/**/*.js"], languageOptions: { globals: globals.jest } },
   {
     plugins: { "react-hooks": reactHooks },
     rules: {
@@ -13,18 +23,43 @@ export default [
       "react-hooks/exhaustive-deps": "warn",
     },
   },
+  { ...compat.configs["flat/recommended"], files: ["src/**/*"] },
   eslintConfigPrettier,
+  { rules: { "no-unexpected-multiline": "error" } },
+  ...tseslint.configs.recommendedTypeChecked.map((config) => ({
+    ...config,
+    files: ["**/*.ts", "**/*.tsx"],
+  })),
   {
-    plugins: {
-      "@typescript-eslint": tseslint.plugin,
-    },
-
     languageOptions: {
-      parser: tseslint.parser,
+      parserOptions: {
+        projectService: true,
+        tsconfigRootDir: import.meta.dirname,
+      },
     },
 
     rules: {
-      eqeqeq: "warn",
+      eqeqeq: "error",
+      "@typescript-eslint/ban-ts-comment": "error",
+      "@typescript-eslint/no-duplicate-type-constituents": "off",
+      "@typescript-eslint/no-unused-vars": [
+        "error",
+        {
+          argsIgnorePattern: "^_",
+          varsIgnorePattern: "^_",
+          caughtErrorsIgnorePattern: "^_",
+          destructuredArrayIgnorePattern: "^_",
+          ignoreRestSiblings: true,
+        },
+      ],
+      "@typescript-eslint/no-floating-promises": [
+        "error",
+        { ignoreVoid: false },
+      ],
+      "@typescript-eslint/no-misused-promises": [
+        "error",
+        { checksVoidReturn: { attributes: false } },
+      ],
     },
 
     files: ["**/*.ts", "**/*.tsx"],

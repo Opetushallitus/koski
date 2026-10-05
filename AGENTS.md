@@ -43,12 +43,10 @@ make fronttest           # Frontend (Mocha) tests only
 make integrationtest     # Playwright integration tests
 
 # Code quality
-make lint                # Run all checks (eslint + prettier-check)
-make eslint              # JavaScript/TypeScript linting
-make prettier            # Fix formatting (Web, Valpas, OAuth2, mock data)
-make prettier-check      # Check formatting without writing
-make prettier-mock-data  # Fix mock-data JSON formatting
-make prettier-mock-data-check # Check mock-data JSON formatting
+make lint                # Typecheck, lint and format; fix what can be fixed
+make lint-check          # Same checks without writing
+make format              # Fix formatting only (all packages and mock data)
+make format-check        # Check formatting only
 
 # Other useful commands
 make ts-types            # Regenerate TypeScript types from Scala schema
@@ -99,7 +97,7 @@ valpas-web/src/                # Valpas frontend (separate React app)
 
 ### TypeScript/JavaScript
 - Use TypeScript for new code
-- Prettier for formatting
+- Prettier for formatting: each package has its own; run it in the package directory (e.g. `pnpm --dir web exec prettier --write app/foo.tsx`), not from the repo root, where it silently skips package files
 - ESLint for linting
 - Don't edit files in `web/app/types/fi/oph/koski/` - these are generated
 
@@ -280,7 +278,7 @@ make view-db-docs
 - Any data from the repositories I'm working with or my usage of agent tooling must not be shared with anyone
 - Never commit files containing secrets (`.env`, credentials)
 - Always before making a commit, ask for me to confirm and review the changes
-- Always before making a commit, run Prettier if any frontend files have been modified
+- Always before making a commit, run `make format` if any frontend files have been modified
 - TypeScript types in `web/app/types/fi/oph/koski/` are auto-generated - don't edit manually
 - The application uses CAS for authentication in production
 - Audit logging is required for all user actions involving personal data

@@ -1,5 +1,7 @@
 import { Raw } from '../../app/util/schema'
 import { Oppija } from '../../app/types/fi/oph/koski/schema/Oppija'
+import { PerusopetuksenOpiskeluoikeudenLisätiedot } from '../../app/types/fi/oph/koski/schema/PerusopetuksenOpiskeluoikeudenLisatiedot'
+import { Oppilaitos } from '../../app/types/fi/oph/koski/schema/Oppilaitos'
 import { expect, test } from './base'
 import { virkailija } from './setup/auth'
 
@@ -10,7 +12,7 @@ import { virkailija } from './setup/auth'
 
 const jynOid = '1.2.246.562.10.14613773812'
 const jynNimi = 'Jyväskylän normaalikoulu'
-const jynOppilaitos = {
+const jynOppilaitos: Raw<Oppilaitos> = {
   oid: jynOid,
   oppilaitosnumero: {
     koodiarvo: '00204',
@@ -27,7 +29,9 @@ const jynOppilaitos = {
 
 // Rakentaa oppijan, jolla on yksi perusopetuksen oppimäärän suoritus mutta
 // ei yhtään vuosiluokan suoritusta. Oppija on Tyhjä, Tero (hetu 230872-7258).
-const tyhjäTeroPerusopetus = (): Raw<Oppija> => ({
+const tyhjäTeroPerusopetus = (
+  lisätiedot?: Raw<PerusopetuksenOpiskeluoikeudenLisätiedot>
+): Raw<Oppija> => ({
   henkilö: {
     hetu: '230872-7258',
     etunimet: 'Tero',
@@ -41,6 +45,7 @@ const tyhjäTeroPerusopetus = (): Raw<Oppija> => ({
         koodistoUri: 'opiskeluoikeudentyyppi'
       },
       oppilaitos: jynOppilaitos,
+      lisätiedot,
       tila: {
         opiskeluoikeusjaksot: [
           {
@@ -77,21 +82,17 @@ const tyhjäTeroPerusopetus = (): Raw<Oppija> => ({
   ]
 })
 
-const tyhjäTeroToimintaAlueittainPerusopetus = (): Raw<Oppija> => ({
-  ...tyhjäTeroPerusopetus(),
-  opiskeluoikeudet: tyhjäTeroPerusopetus().opiskeluoikeudet.map((oo) => ({
-    ...oo,
-    lisätiedot: {
-      erityisenTuenPäätökset: [
-        {
-          alku: '2017-01-01',
-          loppu: '2026-08-31',
-          opiskeleeToimintaAlueittain: true
-        }
-      ]
-    }
-  }))
-})
+const tyhjäTeroToimintaAlueittainPerusopetus = (): Raw<Oppija> =>
+  tyhjäTeroPerusopetus({
+    aloittanutEnnenOppivelvollisuutta: false,
+    erityisenTuenPäätökset: [
+      {
+        alku: '2017-01-01',
+        loppu: '2026-08-31',
+        opiskeleeToimintaAlueittain: true
+      }
+    ]
+  })
 
 const v2Url = (oid: string) =>
   `${oid}?opiskeluoikeudenTyyppi=perusopetus&perusopetus-v2=true`

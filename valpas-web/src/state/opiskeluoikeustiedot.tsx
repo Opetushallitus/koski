@@ -62,8 +62,8 @@ export const perusopetuksenJälkeisetOpiskeluoikeustiedot = (
     case 0:
       return null
     case 1:
-      return { value: toValue(oos[0]!!), icon }
-    default:
+      return { value: toValue(oos[0]!), icon }
+    default: {
       const filterValues = oos.map(toValue).filter(nonNull)
       return {
         value: t("opiskeluoikeudet__n_opiskeluoikeutta", {
@@ -73,6 +73,7 @@ export const perusopetuksenJälkeisetOpiskeluoikeustiedot = (
         tooltip: filterValues.join("\n"),
         icon,
       }
+    }
   }
 }
 
@@ -86,7 +87,7 @@ export const perusopetuksenJälkeistäPreferoivatOpiskeluoikeustiedot = (
       A.filter(
         (oo) =>
           oo.oid !== käsiteltäväOpiskeluoikeus.oid &&
-          oo.tarkasteltavaPäätasonSuoritus.suorituksenTyyppi.koodiarvo !==
+          oo.tarkasteltavaPäätasonSuoritus?.suorituksenTyyppi.koodiarvo !==
             "lukionaineopinnot",
       ), // lukion aineopiskelijat halutaan näyttää taulukossa mutta opintoja ei suorittamiseen kelpaavina
       A.chain(perusopetuksenJälkeistäPreferoivaNäytettäväOpiskeluoikeusTieto),
@@ -121,8 +122,8 @@ export const perusopetuksenJälkeistäPreferoivatOpiskeluoikeustiedot = (
     case 0:
       return null
     case 1:
-      return { value: toValue(ooTiedots[0]!!), icon }
-    default:
+      return { value: toValue(ooTiedots[0]!), icon }
+    default: {
       const filterValues = ooTiedots.map(toValue).filter(nonNull)
       return {
         value: t("opiskeluoikeudet__n_opiskeluoikeutta", {
@@ -132,6 +133,7 @@ export const perusopetuksenJälkeistäPreferoivatOpiskeluoikeustiedot = (
         tooltip: filterValues.join("\n"),
         icon,
       }
+    }
   }
 }
 

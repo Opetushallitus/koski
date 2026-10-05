@@ -18,14 +18,17 @@
     "test:integration:debug": "pnpm run build:local && SHOW_BROWSER=true jest --config jest.integrationtests.config.js --runInBand test/integrationtests",
     "build:local": "node autoclear.js && PUBLIC_URL=/valpas parcel build src/index.html --public-url /valpas/assets --dist-dir dist-nonce --no-scope-hoist && node postbuild-exec.mjs",
     "build:prod": "node autoclear.js --prod && PUBLIC_URL=/valpas parcel build src/index.html --public-url /valpas/assets --dist-dir dist-nonce --no-scope-hoist && node postbuild-exec.mjs",
-    "lint": "pnpm run typecheck && pnpm run lint:problems",
-    "lint:problems": "eslint \"{src,test}/**/*.{js,jsx,ts,tsx}\"",
-    "typecheck": "tsc --noEmit",
+    "lint": "pnpm run typecheck && pnpm run eslint && pnpm run stylelint && pnpm run prettier",
+    "lint:check": "concurrently --group \"pnpm:typecheck\" \"pnpm:eslint:check\" \"pnpm:stylelint:check\" \"pnpm:prettier:check\"",
+    "eslint": "pnpm run eslint:check --fix",
+    "eslint:check": "eslint \"{src,test}/**/*.{js,jsx,ts,tsx}\"",
+    "stylelint": "pnpm run stylelint:check --fix",
+    "stylelint:check": "stylelint \"src/**/*.less\"",
+    "typecheck": "tsc --noEmit && tsc --noEmit --project tsconfig.node.json",
     "typecheck:watch": "tsc --noEmit --watch --preserveWatchOutput",
-    "fix": "pnpm run prettier && eslint \"{src,test}/**/*.{js,jsx,ts,tsx}\" --fix",
     "clean": "jest --clearCache && rm -rf dist && rm -rf dist-nonce && rm -rf ../target/webapp/koski/valpas && rm -rf .parcel-cache",
-    "prettier": "pnpm --dir .. exec prettier --write \"valpas-web/{src,test}/**/*.{js,jsx,ts,tsx}\"",
-    "prettier:check": "pnpm --dir .. exec prettier --check \"valpas-web/{src,test}/**/*.{js,jsx,ts,tsx}\""
+    "prettier": "prettier --write --cache .",
+    "prettier:check": "prettier --check --cache ."
   },
   "repository": {
     "type": "git",
@@ -33,7 +36,9 @@
   },
   "homepage": "https://github.com/Opetushallitus/koski#readme",
   "devDependencies": {
+    "@eslint/js": "10.0.1",
     "@jest/globals": "30.5.2",
+    "@jest/test-sequencer": "30.5.2",
     "@parcel/config-default": "2.14.4",
     "@parcel/core": "2.14.4",
     "@parcel/transformer-less": "2.14.4",
@@ -53,9 +58,9 @@
     "dotenv": "16.6.1",
     "eslint": "10.11.0",
     "eslint-config-prettier": "10.1.8",
+    "eslint-plugin-compat": "7.0.2",
     "eslint-plugin-react-hooks": "7.1.1",
-    "express": "4.22.3",
-    "http-proxy-middleware": "3.0.7",
+    "globals": "17.12.0",
     "jest": "30.5.2",
     "jest-environment-jsdom": "30.5.2",
     "jest-expect-message": "1.1.3",
@@ -64,7 +69,11 @@
     "js-cookie": "3.0.8",
     "node-fetch": "3.3.2",
     "parcel": "2.14.4",
+    "postcss-less": "6.0.0",
+    "prettier": "3.9.9",
     "selenium-webdriver": "4.49.0",
+    "stylelint": "17.15.0",
+    "stylelint-no-unsupported-browser-features": "8.1.2",
     "tree-kill": "1.2.2",
     "ts-jest": "29.4.14",
     "typescript": "5.9.3",
@@ -80,8 +89,7 @@
     "react-calendar": "6.0.1",
     "react-date-picker": "12.1.0",
     "react-dom": "19.3.0",
-    "react-router-dom": "5.3.4",
-    "regenerator-runtime": "0.14.1"
+    "react-router-dom": "5.3.4"
   },
   "alias": {
     "memoize": "./node_modules/.pnpm/memoize@10.2.0/node_modules/memoize/distribution/index.js"

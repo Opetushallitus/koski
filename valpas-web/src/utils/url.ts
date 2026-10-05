@@ -1,12 +1,12 @@
-export const buildUrl = (host: string, params?: object) =>
+export const buildUrl = (host: string, params?: Record<string, string>) =>
   host + buildParamString(params)
 
-export const buildParamString = (params?: object) =>
+export const buildParamString = (params?: Record<string, string>) =>
   params
     ? "?" +
       Object.entries(params)
         .map((entry) =>
-          entry.map((token) => encodeURIComponent(token.toString())).join("="),
+          entry.map((token) => encodeURIComponent(token)).join("="),
         )
         .join("&")
     : ""

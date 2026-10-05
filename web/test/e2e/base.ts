@@ -97,7 +97,6 @@ export const test = base.extend<Fixtures>({
   },
   makeAxeBuilder: async ({ page }, use) => {
     const makeAxeBuilder = () =>
-      // @ts-ignore
       new AxeBuilder({ page }).disableRules([
         'color-contrast',
         'landmark-one-main',

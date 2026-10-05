@@ -25,7 +25,7 @@ module.exports = runWithServer
  *  - https://github.com/parcel-bundler/parcel/issues/6523
  */
 const serve = () =>
-  new Promise((resolve, _reject) => {
+  new Promise((resolve) => {
     const parcel = spawn("npm", ["run", "start:integration"])
     parcel.stdout.on("data", (stdout) => {
       log(stdout)
@@ -39,4 +39,5 @@ const serve = () =>
     parcel.on("close", () => console.log("Parcel process closed"))
   })
 
+/** @param {Buffer | Error} buffer */
 const log = (buffer) => console.log(buffer.toString())

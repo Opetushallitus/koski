@@ -1,15 +1,19 @@
-import * as string from "fp-ts/string";
-import { pipe } from "fp-ts/lib/function";
-import * as R from "fp-ts/Record";
-import { ReprHost, ReprService, ReprState } from "../representationalState";
+import * as string from 'fp-ts/lib/string.js'
+import { pipe } from 'fp-ts/lib/function.js'
+import * as R from 'fp-ts/lib/Record.js'
+import type {
+  ReprHost,
+  ReprService,
+  ReprState
+} from '../representationalState.ts'
 
 function htmlEntities(str: string) {
   return String(str)
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;")
-    .replace(/'/g, "&apos");
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&apos')
 }
 
 export const indexPage = (state: ReprState) => `
@@ -94,7 +98,7 @@ export const indexPage = (state: ReprState) => `
         ${renderHosts(state.env, state.hosts)}
     </body>
 </html>
-`;
+`
 
 const renderHosts = (env: string, hosts: Record<string, ReprHost>): string =>
   pipe(
@@ -105,23 +109,23 @@ const renderHosts = (env: string, hosts: Record<string, ReprHost>): string =>
             ${
               hostName
                 ? `<h2>${htmlEntities(hostName)} (${htmlEntities(env)})</h2>`
-                : ""
+                : ''
             }
             <div class="flex">
-                ${host.services.map(renderService).join("\n")}
+                ${host.services.map(renderService).join('\n')}
             </div>
         </div>
     `
     ),
     R.collect(string.Ord)((_, a) => a),
-    (as) => as.join("\n")
-  );
+    (as) => as.join('\n')
+  )
 
 const renderService = (instance: ReprService) => `
     <div class="service ${htmlEntities(instance.status)}">
-        <h3>${instance.status === "ok" ? "✓" : "⚠"} ${htmlEntities(
-  instance.name
-)}</h3>
-        ${instance.message ? `<p>${htmlEntities(instance.message)}</p>` : ""}
+        <h3>${instance.status === 'ok' ? '✓' : '⚠'} ${htmlEntities(
+          instance.name
+        )}</h3>
+        ${instance.message ? `<p>${htmlEntities(instance.message)}</p>` : ''}
     </div>
-`;
+`

@@ -1,9 +1,34 @@
-const CopyWebpackPlugin = require('copy-webpack-plugin')
-const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin')
-const path = require('path')
+import compilationTargets from '@babel/helper-compilation-targets'
+import CopyWebpackPlugin from 'copy-webpack-plugin'
+import { createRequire } from 'node:module'
+import path from 'node:path'
+import type { Configuration } from 'webpack'
 
-module.exports = (_, argv = {}) => ({
-  context: __dirname,
+const require = createRequire(import.meta.url)
+
+// Kohdeselaimet määritetään .browserslistrc:stä Babelin apukirjastolla ja
+// annetaan swc:lle. swc:n oma browserslist-toteutus käyttää swc-version
+// mukana tulevaa selaindataa, joka voi olla vanhempaa kuin projektin
+// caniuse-lite.
+const targets = compilationTargets.default(
+  {},
+  { configPath: import.meta.dirname }
+)
+
+const swcRule = (test: RegExp, parser: object) => ({
+  test,
+  include: path.join(import.meta.dirname, 'app'),
+  use: {
+    loader: 'swc-loader',
+    options: { env: { targets }, jsc: { parser } }
+  }
+})
+
+export default (
+  _: unknown,
+  argv: { mode?: Configuration['mode'] } = {}
+): Configuration => ({
+  context: import.meta.dirname,
   devtool: argv.mode === 'development' ? 'inline-source-map' : false,
   entry: {
     main: './app/Virkailija.jsx',
@@ -21,7 +46,7 @@ module.exports = (_, argv = {}) => ({
     kayttooikeudet: './app/Kayttooikeudet.jsx'
   },
   output: {
-    path: path.join(__dirname, '..', 'target/webapp/koski'),
+    path: path.join(import.meta.dirname, '..', 'target/webapp/koski'),
     filename: 'js/koski-[name].js',
     // Entry-bundlet saavat välimuistin ohituksen HtmlNodes.scala:n
     // ?buildVersion-parametrista, mutta async-chunkkien osoitteen muodostaa
@@ -53,33 +78,8 @@ module.exports = (_, argv = {}) => ({
   },
   module: {
     rules: [
-      {
-        test: /\.(js|jsx)$/,
-        include: [path.join(__dirname, 'app')],
-        use: {
-          loader: 'babel-loader',
-          options: {
-            cacheDirectory: true,
-            presets: ['@babel/preset-env', '@babel/preset-react']
-          }
-        }
-      },
-      {
-        test: /\.(ts|tsx)$/,
-        include: [path.join(__dirname, 'app')],
-        exclude: /(node_modules|bower_components)/,
-        use: {
-          loader: 'swc-loader',
-          options: {
-            jsc: {
-              parser: {
-                syntax: 'typescript',
-                jsx: true
-              }
-            }
-          }
-        }
-      },
+      swcRule(/\.(js|jsx)$/, { syntax: 'ecmascript', jsx: true }),
+      swcRule(/\.(ts|tsx)$/, { syntax: 'typescript' }),
       {
         test: /\.woff2$/,
         type: 'asset/resource',
@@ -95,7 +95,7 @@ module.exports = (_, argv = {}) => ({
             loader: 'css-loader',
             options: {
               url: {
-                filter: (url) =>
+                filter: (url: string) =>
                   !url.startsWith('/') && !url.startsWith('data:')
               }
             }
@@ -116,9 +116,6 @@ module.exports = (_, argv = {}) => ({
     ]
   },
   plugins: [
-    new ForkTsCheckerWebpackPlugin({
-      typescript: { mode: 'write-tsbuildinfo', memoryLimit: 1000000000 }
-    }),
     new CopyWebpackPlugin({
       patterns: [
         { from: 'static' },

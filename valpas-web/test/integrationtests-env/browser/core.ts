@@ -39,9 +39,10 @@ export const urlIsEventually = async (
     await eventually(async () => {
       expect(await getCurrentUrl()).toMatch(expectedUrl)
     }, timeout)
-  } catch (error) {
+  } catch (err) {
     throw new Error(
       `Expected URL eventually to be ${expectedUrl}. It is currently ${await getCurrentUrl()}`,
+      { cause: err },
     )
   }
 }
@@ -59,8 +60,10 @@ export const $ = async (selector: string, timeout = shortTimeout) => {
       timeout,
     )
     return await driver.wait(until.elementIsVisible(el), timeout)
-  } catch (_err) {
-    throw new Error(`Could not find a visible element by "${selector}"`)
+  } catch (err) {
+    throw new Error(`Could not find a visible element by "${selector}"`, {
+      cause: err,
+    })
   }
 }
 
@@ -73,9 +76,9 @@ export const $$ = async (
       until.elementsLocated(By.css(selector)),
       timeout,
     )
-    return result as any as WebElement[] // elementsLocated palauttaa väärän tyypin
-  } catch (_err) {
-    throw new Error(`Could not find elements by "${selector}"`)
+    return result
+  } catch (err) {
+    throw new Error(`Could not find elements by "${selector}"`, { cause: err })
   }
 }
 
@@ -89,8 +92,10 @@ export const findElementByText = async (
       timeout,
     )
     return await driver.wait(until.elementIsVisible(el), timeout)
-  } catch (_err) {
-    throw new Error(`Could not find a visible element by text "${text}"`)
+  } catch (err) {
+    throw new Error(`Could not find a visible element by text "${text}"`, {
+      cause: err,
+    })
   }
 }
 

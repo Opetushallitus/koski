@@ -31,15 +31,15 @@ afterEach(async () => {
 
 const buildChromeDriver = async (): Promise<WebDriver> => {
   const options = new chrome.Options()
-    .windowSize({ width: 1920, height: 1920 })
-    .setUserPreferences({
-      "download.default_directory": downloadDir,
-    })
+  options.windowSize({ width: 1920, height: 1920 })
+  options.setUserPreferences({
+    "download.default_directory": downloadDir,
+  })
   if (!process.env.SHOW_BROWSER) {
     options.addArguments("--headless=new")
   }
 
   const builder = new Builder().forBrowser("chrome")
-  builder.setChromeOptions(options as any)
+  builder.setChromeOptions(options)
   return builder.build()
 }

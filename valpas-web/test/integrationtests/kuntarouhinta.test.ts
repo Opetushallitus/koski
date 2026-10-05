@@ -141,12 +141,12 @@ describe("Kuntarouhinta", () => {
 
       await confirmDataFetch()
 
-      textEventuallyEquals(
+      await textEventuallyEquals(
         ".kuntarouhintaview__cardheaderlabel",
         pyhtäänKuntarouhinta2023CardHeader,
       )
 
-      dataTableEventuallyEquals(
+      await dataTableEventuallyEquals(
         ".kuntarouhintatable",
         pyhtäänKuntarouhinta2023TableContents,
         "|",

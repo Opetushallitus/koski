@@ -64,8 +64,8 @@ watch-prod:
 	NODE_ENV="'production'" make watch
 
 .PHONY: ts-types
-ts-types: install-root-tools
-	cd web && rm -rf app/types/fi && curl http://localhost:7021/types/update && pnpm --dir .. exec prettier --write web/app/types
+ts-types:
+	cd web && pnpm install --frozen-lockfile && rm -rf app/types/fi && curl http://localhost:7021/types/update && pnpm exec prettier --write --cache app/types
 
 
 ### Running tests
@@ -168,32 +168,32 @@ view-db-docs:
 
 ### Code checks
 
-.PHONY: eslint
-eslint:
-	cd web && pnpm run lint
+LINT_DIRS := web json-schema-viewer valpas-web omadata-oauth2-sample/server radiator smoketests scripts/opiskeluoikeushistoria-debug
 
 .PHONY: install-root-tools
 install-root-tools:
-	@test -x node_modules/.bin/prettier || pnpm install --frozen-lockfile
+	pnpm install --frozen-lockfile
 
-.PHONY: prettier
-prettier: install-root-tools
-	pnpm run prettier
+.PHONY: install-lint-tools
+install-lint-tools: install-root-tools
+	@pnpm exec concurrently --group --max-processes 4 $(foreach dir,$(LINT_DIRS),"pnpm --dir $(dir) install --frozen-lockfile")
 
-.PHONY: prettier-check
-prettier-check: install-root-tools
-	pnpm run prettier:check
+.PHONY: format
+format: install-lint-tools
+	@pnpm exec concurrently --group --max-processes 4 $(foreach dir,$(LINT_DIRS),"pnpm --dir $(dir) run prettier") "pnpm run prettier"
 
-.PHONY: prettier-mock-data
-prettier-mock-data: install-root-tools
-	pnpm run prettier:mock-data
-
-.PHONY: prettier-mock-data-check
-prettier-mock-data-check: install-root-tools
-	pnpm run prettier:mock-data:check
+.PHONY: format-check
+format-check: install-lint-tools
+	@pnpm exec concurrently --group --max-processes 4 $(foreach dir,$(LINT_DIRS),"pnpm --dir $(dir) run prettier:check") "pnpm run prettier:check"
 
 .PHONY: lint
-lint: eslint prettier-check
+lint: install-lint-tools
+	@for dir in $(LINT_DIRS); do pnpm --dir $$dir run lint || exit 1; done
+	pnpm run prettier
+
+.PHONY: lint-check
+lint-check: install-lint-tools
+	@pnpm exec concurrently --group --max-processes 4 $(foreach dir,$(LINT_DIRS),"pnpm --dir $(dir) run lint:check") "pnpm run prettier:check"
 
 .PHONY: owasp
 owasp:

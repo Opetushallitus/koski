@@ -14,13 +14,14 @@
     "start:java-sample": "../scripts/start-java-sample.sh",
     "test:e2e": "pnpm -C ../../smoketests run omadata:local",
     "playwright:test": "pnpm exec playwright test",
-    "lint": "pnpm run typecheck && pnpm run lint:problems",
-    "lint:problems": "eslint \"{src,test}/**/*.{js,jsx,ts,tsx}\"",
+    "lint": "pnpm run typecheck && pnpm run eslint && pnpm run prettier",
+    "lint:check": "concurrently --group \"pnpm:typecheck\" \"pnpm:eslint:check\" \"pnpm:prettier:check\"",
+    "eslint": "pnpm run eslint:check --fix",
+    "eslint:check": "eslint \"{src,test}/**/*.{js,jsx,ts,tsx}\"",
     "typecheck": "tsc --noEmit",
     "typecheck:watch": "tsc --noEmit --watch --preserveWatchOutput",
-    "fix": "pnpm run prettier && eslint \"{src,test}/**/*.{js,jsx,ts,tsx}\" --fix",
-    "prettier": "pnpm --dir ../.. exec prettier --write \"omadata-oauth2-sample/server/{src,test}/**/*.{js,jsx,ts,tsx}\"",
-    "prettier:check": "pnpm --dir ../.. exec prettier --check \"omadata-oauth2-sample/server/{src,test}/**/*.{js,jsx,ts,tsx}\""
+    "prettier": "prettier --write --cache .",
+    "prettier:check": "prettier --check --cache ."
   },
   "repository": {
     "type": "git",
@@ -40,8 +41,10 @@
     "@playwright/test": "1.63.0",
     "@types/express": "5.0.6",
     "@types/node": "24.19.0",
+    "concurrently": "9.2.4",
     "eslint": "10.11.0",
     "eslint-config-prettier": "10.1.8",
+    "prettier": "3.9.9",
     "typescript": "5.9.3",
     "typescript-eslint": "8.70.1"
   },

@@ -84,7 +84,7 @@ const clickRow = async (table: RenderResult, nthRow: number) => {
     `tbody tr:nth-child(${nthRow}) td:first-child input`,
   )
   expect(checkbox).not.toBeNull()
-  await userEvent.click(checkbox!!)
+  await userEvent.click(checkbox!)
 }
 
 // Test data

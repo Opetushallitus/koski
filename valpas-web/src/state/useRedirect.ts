@@ -4,7 +4,7 @@ import { useBasePath } from "./basePath"
 import { Oid } from "./common"
 import { OrganisaatioOidProps, PathDeclaration } from "./paths"
 
-export const useImperativeRedirect = <T, A extends any[]>(
+export const useImperativeRedirect = <T, A extends unknown[]>(
   pathDeclaration: PathDeclaration<A>,
   getArgs: (id: T) => A,
 ) => {

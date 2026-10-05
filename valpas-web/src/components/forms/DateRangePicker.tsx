@@ -30,13 +30,13 @@ export const DateRangePicker = (props: DateRangePickerProps) => {
   return (
     <div className={b()}>
       <DatePicker
-        value={values[0]!}
+        value={values[0]}
         onChange={(date) => setValuesSorted([date, values[1]!])}
         disabled={props.disabled}
       />
       <span className={b("separator")}>{" — "}</span>
       <DatePicker
-        value={values[1]!}
+        value={values[1]}
         onChange={(date) => setValuesSorted([values[0]!, date])}
         disabled={props.disabled}
       />

@@ -87,7 +87,7 @@ export const InfoTooltip = (props: InfoTooltipProps) => {
               <p key={index}>{text}</p>
             ))}
           </InfoTooltipPopup>,
-          document.getElementById("app")!!,
+          document.getElementById("app")!,
         )}
     </span>
   )
@@ -111,9 +111,3 @@ const InfoTooltipPopup = (props: InfoTooltipPopupProps) => (
     </div>
   </div>
 )
-
-const getParents = (
-  element: HTMLElement | null,
-  acc: HTMLElement[] = [],
-): HTMLElement[] =>
-  element ? getParents(element.parentElement, [...acc, element]) : acc

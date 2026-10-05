@@ -1,0 +1,6 @@
+/dist
+/dist-nonce
+/node/
+/.parcel-cache/
+/.last-build
+/test/download/

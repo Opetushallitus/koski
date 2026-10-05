@@ -306,5 +306,5 @@ export const hasPäätasonsuoritusOf = <
 >(
   guard: (s: any) => s is S,
   pts: ActivePäätasonSuoritus<T>
-  // @ts-ignore
-): pts is ActivePäätasonSuoritus<T, S> => guard(pts.suoritus)
+): pts is ActivePäätasonSuoritus<T> & ActivePäätasonSuoritus<T, S> =>
+  guard(pts.suoritus)

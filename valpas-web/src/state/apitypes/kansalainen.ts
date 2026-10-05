@@ -49,7 +49,7 @@ export type KansalainenOpiskeluoikeus = {
   oid: Oid
   tyyppi?: Opiskeluoikeudentyyppi
   oppilaitos?: Oppilaitos
-  oppivelvollisuudenSuorittamiseenKelpaava: Boolean
+  oppivelvollisuudenSuorittamiseenKelpaava: boolean
   perusopetusTiedot?: PerusopetusLaajatTiedot
   perusopetuksenJälkeinenTiedot?: PerusopetuksenJälkeinenLaajatTiedot
   muuOpetusTiedot?: MuuOpetusLaajatTiedot

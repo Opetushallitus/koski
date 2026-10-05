@@ -20,7 +20,9 @@ export const useComponentAppearDisappear = ({
 
   const hide = useCallback(() => {
     setHidden(true)
-    onHidden && setTimeout(onHidden, hideDuration)
+    if (onHidden) {
+      setTimeout(onHidden, hideDuration)
+    }
   }, [hideDuration, onHidden])
 
   const result: UseComponentAppearDisappearResult = useMemo(
