@@ -157,8 +157,8 @@ importers:
         specifier: 4.9.1
         version: 4.9.1
       less-loader:
-        specifier: 12.3.3
-        version: 12.3.3(less@4.9.1)(webpack@5.111.1)
+        specifier: 13.0.0
+        version: 13.0.0(less@4.9.1)(webpack@5.111.1)
       lodash:
         specifier: 4.18.1
         version: 4.18.1
@@ -975,6 +975,9 @@ packages:
 
   '@types/json-schema@7.0.15':
     resolution: {integrity: sha512-5+fP8P8MFNC+AyZCDxrB2pkZFPGzqQWUzpSeuuVLvm8VMcorNYavBqoFcxK8bQz4Qsbn4oUEEem4wDLfcysGHA==}
+
+  '@types/less@3.0.8':
+    resolution: {integrity: sha512-Gjm4+H9noDJgu5EdT3rUw5MhPBag46fiOy27BefvWkNL8mlZnKnCaVVVTLKj6RYXed9b62CPKnPav9govyQDzA==}
 
   '@types/minimatch@3.0.5':
     resolution: {integrity: sha512-Klz949h02Gz2uZCMGwDUSDS1YBlTdDDgbWHi+81l29tQALUtvz4rAYi5uoVhE5Lagoq6DeqAUlbrHvW/mXDgdQ==}
@@ -2046,9 +2049,9 @@ packages:
     resolution: {integrity: sha512-dcS1ul+9tmeD95T+x28/ehLgd9mENa3LsvDTtzm3vyBEO7RPptvAD+t44WVXaUjTBRcrpFeFlC8WCruUR456hw==}
     engines: {node: '>=0.10.0'}
 
-  less-loader@12.3.3:
-    resolution: {integrity: sha512-F0+ErFFDj3Pt+nVrCN6VlEGEzocv9s7x/aR9v2riI+WM83UAfTYBDBjGPJnT55lBLR6JSI4fmWblt+aA2JN6/w==}
-    engines: {node: '>= 18.12.0'}
+  less-loader@13.0.0:
+    resolution: {integrity: sha512-TIa8d6znKH634Mg+7OU3jevZT6KeOhh0amW+YeMPD0GM9buUn5Y7HvtyCR5pUDdLaFfqLA8AX5PTSIHMNSexEA==}
+    engines: {node: '>= 22.11.0'}
     peerDependencies:
       '@rspack/core': 0.x || ^1.0.0 || ^2.0.0-0
       less: ^3.5.0 || ^4.0.0
@@ -3907,6 +3910,8 @@ snapshots:
 
   '@types/json-schema@7.0.15': {}
 
+  '@types/less@3.0.8': {}
+
   '@types/minimatch@3.0.5': {}
 
   '@types/mocha@10.0.10': {}
@@ -5014,8 +5019,9 @@ snapshots:
 
   kind-of@6.0.3: {}
 
-  less-loader@12.3.3(less@4.9.1)(webpack@5.111.1):
+  less-loader@13.0.0(less@4.9.1)(webpack@5.111.1):
     dependencies:
+      '@types/less': 3.0.8
       less: 4.9.1
     optionalDependencies:
       webpack: 5.111.1(@swc/core@1.16.13)(postcss@8.5.28)(webpack-cli@7.2.3)
