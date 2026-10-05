@@ -6,6 +6,7 @@ import fi.oph.koski.util.EnvVariables
 import org.scalatest.matchers.should.Matchers
 
 import java.util.concurrent.atomic.AtomicInteger
+import scala.annotation.tailrec
 import scala.util.Random
 
 // Dokumentaatio: Katso /documentation/todistus.md
@@ -104,7 +105,19 @@ object YleinenKielitutkintoTodistusGenerator extends App with EnvVariables with 
   }
 }
 
+object YkiTodistusPerfTestScenario {
+  private sealed trait JobOutcome
+  private case object JobCompleted extends JobOutcome
+  private case class JobFailed(state: String, error: Option[String]) extends JobOutcome
+  private case class JobInUnexpectedState(state: String) extends JobOutcome
+  private case object JobTimedOut extends JobOutcome
+
+  private case class JobStatus(state: String, error: Option[String])
+}
+
 class YkiTodistusPerfTestScenario extends KoskidevHttpSpecification with Matchers with Logging with EnvVariables {
+  import YkiTodistusPerfTestScenario._
+
   implicit val formats: org.json4s.Formats = org.json4s.DefaultFormats
 
   private val pollIntervalMs = env("YKI_TODISTUS_POLL_INTERVAL_MS", "2000").toLong
@@ -131,31 +144,37 @@ class YkiTodistusPerfTestScenario extends KoskidevHttpSpecification with Matcher
     val opiskeluoikeusOid = oidProvider.next()
     val variant = selectVariant()
 
+    def elapsed = System.currentTimeMillis() - startTime
+
     try {
       // Step 1: Generate todistus
       val jobId = generateTodistus(variant, opiskeluoikeusOid)
+      val jobDescription = s"variant=$variant, oid=$opiskeluoikeusOid, jobId=$jobId"
 
       // Step 2: Poll until complete
-      val jobCompleted = pollUntilComplete(jobId)
-      if (!jobCompleted) {
-        logger.warn(s"Todistus generation timed out for variant=$variant, oid=$opiskeluoikeusOid, jobId=$jobId")
-        return (false, System.currentTimeMillis() - startTime, s"todistus/$variant/TIMEOUT")
-      }
-
-      // Step 3: Download PDF
-      val downloadSuccess = downloadPdf(jobId)
-      val duration = System.currentTimeMillis() - startTime
-
-      if (downloadSuccess) {
-        (true, duration, s"todistus/$variant")
-      } else {
-        logger.warn(s"Failed to download PDF for variant=$variant, oid=$opiskeluoikeusOid, jobId=$jobId")
-        (false, duration, s"todistus/$variant/DOWNLOAD_FAILED")
+      pollUntilComplete(jobId) match {
+        case JobCompleted =>
+          // Step 3: Download PDF
+          if (downloadPdf(jobId)) {
+            (true, elapsed, s"todistus/$variant")
+          } else {
+            logger.warn(s"Failed to download PDF for $jobDescription")
+            (false, elapsed, s"todistus/$variant/DOWNLOAD_FAILED")
+          }
+        case JobFailed(state, error) =>
+          logger.warn(s"Todistus job ended in state $state for $jobDescription: ${error.getOrElse("(no error message)")}")
+          (false, elapsed, s"todistus/$variant/$state")
+        case JobInUnexpectedState(state) =>
+          logger.warn(s"Unexpected job state $state for $jobDescription")
+          (false, elapsed, s"todistus/$variant/UNEXPECTED_STATE")
+        case JobTimedOut =>
+          logger.warn(s"Todistus generation timed out after $maxWaitMs ms for $jobDescription")
+          (false, elapsed, s"todistus/$variant/TIMEOUT")
       }
     } catch {
       case e: Exception =>
         logger.error(e)(s"Workflow failed for variant=$variant, oid=$opiskeluoikeusOid: ${e.getClass.getName}: ${e.getMessage}")
-        (false, System.currentTimeMillis() - startTime, s"todistus/$variant/ERROR")
+        (false, elapsed, s"todistus/$variant/EXCEPTION")
     }
   }
 
@@ -181,37 +200,40 @@ class YkiTodistusPerfTestScenario extends KoskidevHttpSpecification with Matcher
     }
   }
 
-  private def pollUntilComplete(jobId: String): Boolean = {
-    val startTime = System.currentTimeMillis()
+  private def pollUntilComplete(jobId: String): JobOutcome = {
+    val deadline = System.currentTimeMillis() + maxWaitMs
     val completedStates = Set("COMPLETED")
     val failedStates = Set("ERROR", "EXPIRED")
     val pollingStates = Set("QUEUED", "GATHERING_INPUT", "GENERATING_RAW_PDF", "SAVING_RAW_PDF", "STAMPING_PDF", "SAVING_STAMPED_PDF")
 
-    while (System.currentTimeMillis() - startTime < maxWaitMs) {
-      val state = getJobStatus(jobId)
-
-      if (completedStates.contains(state)) {
-        return true
-      } else if (failedStates.contains(state)) {
-        logger.warn(s"Job $jobId failed with state: $state")
-        return false
-      } else if (pollingStates.contains(state)) {
-        Thread.sleep(pollIntervalMs)
+    @tailrec
+    def poll(): JobOutcome = {
+      val jobStatus = getJobStatus(jobId)
+      if (completedStates.contains(jobStatus.state)) {
+        JobCompleted
+      } else if (failedStates.contains(jobStatus.state)) {
+        JobFailed(jobStatus.state, jobStatus.error)
+      } else if (pollingStates.contains(jobStatus.state)) {
+        if (System.currentTimeMillis() >= deadline) {
+          JobTimedOut
+        } else {
+          Thread.sleep(pollIntervalMs)
+          poll()
+        }
       } else {
-        logger.warn(s"Unexpected job state: $state for job $jobId")
-        return false
+        JobInUnexpectedState(jobStatus.state)
       }
     }
 
-    false // Timeout
+    poll()
   }
 
-  private def getJobStatus(jobId: String): String = {
+  private def getJobStatus(jobId: String): JobStatus = {
     get(s"api/todistus/status/$jobId", headers = authHeaders()) {
       status should be(200)
       val json = org.json4s.jackson.JsonMethods.parse(body)
       (json \ "state").extractOpt[String] match {
-        case Some(state) => state
+        case Some(state) => JobStatus(state, (json \ "error").extractOpt[String])
         case None => throw new RuntimeException(s"No state in response: $body")
       }
     }
