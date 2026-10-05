@@ -615,7 +615,7 @@ const oppiaineToRow = <T extends string>(
   const footnoteEl =
     rowFootnotes.length > 0 ? (
       <TestIdText id="footnote">
-        <sup className="footnote-hint">
+        <sup className="footnote-hint PerusopetuksenOppiaineet__alaviite">
           {rowFootnotes.map((note, i) => (
             <React.Fragment key={note.hint}>
               {i > 0 && ' '}
