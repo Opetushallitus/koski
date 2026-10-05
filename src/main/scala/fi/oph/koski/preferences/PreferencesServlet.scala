@@ -17,8 +17,9 @@ class PreferencesServlet(implicit val application: KoskiApplication) extends Kos
     })()
   }
 
-  delete("/:organisaatioOid/:type/:key") {
-    renderStatus(service.delete(organisaatioOid, koulutustoimijaOid, `type`, params("key"))(session))
+  // Avain kyselyparametrina, koska polussa /-merkki erottaa polun osat eikä päädy avaimeen.
+  delete("/:organisaatioOid/:type") {
+    renderStatus(service.delete(organisaatioOid, koulutustoimijaOid, `type`, getStringParam("key"))(session))
   }
 
   get("/:organisaatioOid/:type") {

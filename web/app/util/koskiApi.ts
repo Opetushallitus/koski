@@ -266,7 +266,8 @@ export const removePreference = (
 ) =>
   handleExpiredSession(
     apiDelete<void>(
-      apiUrl(`preferences/${organisaatioOid}/${type}/${key}`, {
+      apiUrl(`preferences/${organisaatioOid}/${type}`, {
+        key,
         koulutustoimijaOid
       })
     )
