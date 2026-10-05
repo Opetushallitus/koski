@@ -61,7 +61,6 @@ export default (
         : 'js/koski-[name].js',
     publicPath: '/koski/'
   },
-  stats: 'normal',
   resolve: {
     extensions: ['.js', '.jsx', '.ts', '.tsx'],
     alias: {

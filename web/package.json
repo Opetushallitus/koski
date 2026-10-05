@@ -90,7 +90,7 @@
     "stylelint": "pnpm run stylelint:check --fix",
     "stylelint:check": "stylelint \"app/**/*.less\"",
     "build:prod": "webpack --bail --mode production",
-    "watch": "webpack --devtool inline-source-map --progress --watch --mode development",
+    "watch": "webpack --progress --watch --mode development",
     "unit-test": "mocha --require ts-node/register --extension js,ts --reporter spec ./test/unit-test",
     "unit-test-watch": "mocha -w --require ts-node/register --extension js,ts --reporter spec ./test/unit-test",
     "test": "puppeteer browsers install chrome && node test/runMocha.mts \"${MOCHA_URL:-http://localhost:7021/koski/test/runner.html?bail=${MOCHA_BAIL:-false}&grep=${MOCHA_GREP:-}}\"",
