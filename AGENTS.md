@@ -143,6 +143,8 @@ A space-separated list matches no suite, runs **zero tests, and still reports `B
 
 A misspelled or non-existent suite name fails differently: `*** RUN ABORTED ***` with `ClassNotFoundException`, **before any suite runs**, so the other suites in the same command are silently skipped too.
 
+**New test package** (a spec in a directory with no tests yet): add the package to one of the backend job lists in `.github/workflows/tests.yml` and to the Makefile `backtest` list, or `GithubActionsSpec` fails in CI. Check locally with `-Dsuites="fi.oph.koski.migration.GithubActionsSpec"` (the file lives under `meta/` but declares package `migration`).
+
 **Important:** `BackwardCompatibilitySpec` compares each documentation `Example` against a stored JSON snapshot under `src/test/resources/backwardcompatibility/`, matched by sanitized example name. When you **rename or change the data of an `Example`** (e.g. in `documentation/Examples*.scala`), regenerate its snapshot: run `BackwardCompatibilitySpec` locally — it writes a new dated file — and commit it. CI fails if the snapshot is missing (it refuses to write on CI). If you renamed the example, also delete the now-orphaned old snapshot.
 
 Older dated snapshots are kept and still run through `KoskiValidator`, so a **new validation rule** can make them fail. Don't delete them: add `"ignoreKoskiValidator" : true` as a top-level field to each rejected file. Deserialization and the roundtrip check still run.
