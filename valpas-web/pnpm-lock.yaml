@@ -96,9 +96,6 @@ importers:
       concurrently:
         specifier: 10.0.5
         version: 10.0.5
-      dotenv:
-        specifier: 16.6.1
-        version: 16.6.1
       eslint:
         specifier: 10.12.0
         version: 10.12.0

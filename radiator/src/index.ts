@@ -1,13 +1,10 @@
 import * as E from 'fp-ts/lib/Either.js'
-import dotenv from 'dotenv'
 import { pipe } from 'fp-ts/lib/function.js'
 import { LocalHealthSource } from './health/LocalHealthSource.ts'
 import { CloudWatchHealthSource } from './health/CloudWatchHealthSource.ts'
 import { startServer } from './server.ts'
 import { updateWithHealthData } from './state.ts'
 import { RadiatorApiHealthSource } from './health/RadiatorApiHealthSource.ts'
-
-dotenv.config()
 
 const getHealthSource = (env?: string, koskiDir?: string) => {
   switch (env) {

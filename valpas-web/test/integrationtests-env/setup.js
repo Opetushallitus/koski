@@ -1,4 +1,3 @@
-require("dotenv")
 const { spawn } = require("child_process")
 
 const runWithServer = process.env.RUN_WITH_SERVER !== undefined

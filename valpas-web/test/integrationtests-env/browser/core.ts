@@ -14,10 +14,8 @@ export const setBrowserDate = (date: ISODate) => {
 
 export const goToLocation = async (path: string) => {
   await driver.get(
-    // TODO: Tutki miksi PUBLIC_URL ei asetu enää tänne
-    `${process.env.BACKEND_HOST || "http://localhost:7021"}${
-      process.env.PUBLIC_URL || "/valpas"
-    }${path}?date=${browserDate}` + featureQuery(),
+    `${process.env.BACKEND_HOST || "http://localhost:7021"}/valpas${path}?date=${browserDate}` +
+      featureQuery(),
   )
 }
 
