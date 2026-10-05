@@ -63,7 +63,7 @@ export const perusopetuksenJälkeisetOpiskeluoikeustiedot = (
       return null
     case 1:
       return { value: toValue(oos[0]!), icon }
-    default:
+    default: {
       const filterValues = oos.map(toValue).filter(nonNull)
       return {
         value: t("opiskeluoikeudet__n_opiskeluoikeutta", {
@@ -73,6 +73,7 @@ export const perusopetuksenJälkeisetOpiskeluoikeustiedot = (
         tooltip: filterValues.join("\n"),
         icon,
       }
+    }
   }
 }
 
@@ -122,7 +123,7 @@ export const perusopetuksenJälkeistäPreferoivatOpiskeluoikeustiedot = (
       return null
     case 1:
       return { value: toValue(ooTiedots[0]!), icon }
-    default:
+    default: {
       const filterValues = ooTiedots.map(toValue).filter(nonNull)
       return {
         value: t("opiskeluoikeudet__n_opiskeluoikeutta", {
@@ -132,6 +133,7 @@ export const perusopetuksenJälkeistäPreferoivatOpiskeluoikeustiedot = (
         tooltip: filterValues.join("\n"),
         icon,
       }
+    }
   }
 }
 

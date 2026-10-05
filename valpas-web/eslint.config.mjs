@@ -1,12 +1,21 @@
+import js from "@eslint/js"
 import tseslint from "typescript-eslint"
 import eslintConfigPrettier from "eslint-config-prettier"
 import compat from "eslint-plugin-compat"
 import reactHooks from "eslint-plugin-react-hooks"
+import globals from "globals"
 
 export default [
   {
     ignores: ["**/node_modules", "**/dist", "**/.cache"],
   },
+  js.configs.recommended,
+  {
+    files: ["**/*.js"],
+    languageOptions: { sourceType: "commonjs", globals: globals.node },
+  },
+  { files: ["**/*.mjs"], languageOptions: { globals: globals.node } },
+  { files: ["test/**/*.js"], languageOptions: { globals: globals.jest } },
   {
     plugins: { "react-hooks": reactHooks },
     rules: {

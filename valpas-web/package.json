@@ -36,6 +36,7 @@
   },
   "homepage": "https://github.com/Opetushallitus/koski#readme",
   "devDependencies": {
+    "@eslint/js": "10.0.1",
     "@jest/globals": "30.5.2",
     "@jest/test-sequencer": "30.5.2",
     "@parcel/config-default": "2.14.4",
@@ -59,6 +60,7 @@
     "eslint-config-prettier": "10.1.8",
     "eslint-plugin-compat": "7.0.2",
     "eslint-plugin-react-hooks": "7.1.1",
+    "globals": "17.12.0",
     "jest": "30.5.2",
     "jest-environment-jsdom": "30.5.2",
     "jest-expect-message": "1.1.3",

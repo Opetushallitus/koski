@@ -25,7 +25,7 @@ module.exports = runWithServer
  *  - https://github.com/parcel-bundler/parcel/issues/6523
  */
 const serve = () =>
-  new Promise((resolve, _reject) => {
+  new Promise((resolve) => {
     const parcel = spawn("npm", ["run", "start:integration"])
     parcel.stdout.on("data", (stdout) => {
       log(stdout)
