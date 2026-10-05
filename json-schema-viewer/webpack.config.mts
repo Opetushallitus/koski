@@ -25,6 +25,14 @@ export default (
   context: path.join(import.meta.dirname, 'src'),
   entry: './index.ts',
   devtool: argv.mode === 'development' ? 'inline-source-map' : false,
+  cache: process.env.CI
+    ? false
+    : {
+        type: 'filesystem',
+        buildDependencies: {
+          browserslist: [path.join(import.meta.dirname, '.browserslistrc')]
+        }
+      },
   output: {
     path: path.join(
       import.meta.dirname,
