@@ -445,4 +445,63 @@ test.describe('Perusopetuksen uusi käyttöliittymä: tila ja vahvistus', () => 
       )
     ).toContainText('Testi Testaaja')
   })
+
+  test('Merkitse valmiiksi: uuden myöntäjän voi lisätä tallennetun myöntäjän nimellä', async ({
+    page,
+    oppijaPage,
+    fixtures
+  }) => {
+    const vahvistus = 'oo.0.suoritukset.0.suorituksenVahvistus'
+    const modal = page.locator('.Modal')
+    const nimiInput = modal.locator('[data-testid$="newHenkilö.nimi.input"]')
+    const titteliInput = modal.locator(
+      '[data-testid$="newHenkilö.titteli.input"]'
+    )
+
+    const avaaVahvistusDialogi = async () => {
+      await page
+        .getByTestId(`${vahvistus}.edit.merkitseKeskeneräiseksi`)
+        .click()
+      await page.getByTestId(`${vahvistus}.edit.merkitseValmiiksi`).click()
+      await expect(modal).toBeVisible()
+      await modal
+        .locator('[data-testid$="organisaatiohenkilöt.edit.add.input"]')
+        .click()
+    }
+
+    const lisääUusiMyöntäjä = async (nimi: string, titteli: string) => {
+      await modal
+        .locator('.Select__optionLabel')
+        .filter({ hasText: 'Lisää henkilö' })
+        .click()
+      await nimiInput.fill(nimi)
+      // Nimen kirjoittaminen ei saa vaihtaa riviä tallennetun myöntäjän valintalistaksi
+      await expect(nimiInput).toHaveValue(nimi)
+      await titteliInput.fill(titteli)
+      await page.getByTestId(`${vahvistus}.edit.modal.submit`).click()
+      await expect(modal).not.toBeVisible()
+    }
+
+    await fixtures.reset()
+    await oppijaPage.goto(kaisaUrl)
+    await page.getByTestId('oo.0.suoritusTabs.0.tab').click()
+    await page.getByTestId('oo.0.opiskeluoikeus.edit').click()
+    await page.getByTestId('oo.0.opiskeluoikeus.tila.edit.items.1.remove').click()
+
+    // Tallentaa Maija Myöntäjän preferensseihin
+    await avaaVahvistusDialogi()
+    await lisääUusiMyöntäjä('Maija Myöntäjä', 'rehtori')
+
+    await avaaVahvistusDialogi()
+    await expect(
+      modal
+        .locator('.Select__optionLabel')
+        .filter({ hasText: 'Maija Myöntäjä (rehtori)' })
+    ).toBeVisible()
+    await lisääUusiMyöntäjä('Maija Myöntäjä', 'apulaisrehtori')
+
+    await expect(page.getByTestId(`${vahvistus}.edit.henkilö.0`)).toHaveText(
+      'Maija Myöntäjä (apulaisrehtori)'
+    )
+  })
 })
