@@ -56,10 +56,14 @@ const dataTableCellsEventuallyEquals = async (
   }, timeout)
 }
 
-export const getTableContents = async (selector: string) => {
-  const cells = await $$(`${selector}`)
-  return (await Promise.all(cells.map((cell) => cell.getText()))).map((value) =>
-    value.replace(/\n/g, ""),
+export const getTableContents = async (selector: string): Promise<string[]> => {
+  await $$(selector)
+  return driver.executeScript(
+    (cellSelector: string) =>
+      Array.from(document.querySelectorAll<HTMLElement>(cellSelector)).map(
+        (cell) => cell.innerText.replace(/\n/g, "").trim(),
+      ),
+    selector,
   )
 }
 
@@ -84,7 +88,7 @@ export const getExpectedRowCount = (displayValues: string) =>
 
 export const waitTableLoadingHasFinished = async (tableSelector: string) => {
   const selector = `${tableSelector} .spinner`
-  eventually(async () => {
+  await eventually(async () => {
     expect((await driver.findElements(By.css(selector))).length).toEqual(0)
   })
 }
