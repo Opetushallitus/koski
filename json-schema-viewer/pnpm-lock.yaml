@@ -11,8 +11,8 @@ importers:
         specifier: 3.5.17
         version: 3.5.17
       highlight.js:
-        specifier: 8.8.0
-        version: 8.8.0
+        specifier: 11.12.0
+        version: 11.12.0
       jquery:
         specifier: 3.7.1
         version: 3.7.1
@@ -715,12 +715,12 @@ packages:
       }
     engines: { node: '>= 0.4' }
 
-  highlight.js@8.8.0:
+  highlight.js@11.12.0:
     resolution:
       {
-        integrity: sha512-CCsdEPYmNANzZFbFaUWIpX5gqdr6r2OD1J26r/P2d4Hc4os//C1A+U6QGzDDuW0jGcT724ZiYz0KEmmHJykzcg==
+        integrity: sha512-nbfWpyRMcMrPMmDwJB+dhX/eiaPKtc2RB+0QZskqJ3WjRA/FDS0e9hZrx8EC/lbEv8gXy98FcDbNa/dspAaJMg==
       }
-    deprecated: Version no longer supported. Upgrade to @latest
+    engines: { node: '>=12.0.0' }
 
   import-local@3.2.0:
     resolution:
@@ -1956,7 +1956,7 @@ snapshots:
     dependencies:
       function-bind: 1.1.2
 
-  highlight.js@8.8.0: {}
+  highlight.js@11.12.0: {}
 
   import-local@3.2.0:
     dependencies:

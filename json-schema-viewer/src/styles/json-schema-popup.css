@@ -1,0 +1,21 @@
+/* Säilytä vanhan popupin default-teeman asettelu ja JSON-värit. */
+pre.jsv-json-popup {
+  overflow: auto;
+  padding: 0.5em;
+  background: #f0f0f0;
+}
+pre.jsv-json-popup code.hljs {
+  display: inline;
+  overflow: visible;
+  padding: 0;
+  background: transparent;
+  color: black;
+}
+.jsv-json-popup .hljs-attr,
+.jsv-json-popup .hljs-punctuation {
+  color: black;
+}
+.jsv-json-popup .hljs-number,
+.jsv-json-popup .hljs-literal {
+  color: #080;
+}

@@ -327,3 +327,154 @@ test.describe('Schema viewer', () => {
     })
   })
 })
+
+test.describe('JSON-paneeli ja popup', () => {
+  const literal =
+    '<b>ääkköset & "lainaus"</b></code><img src=x> ' + 'ö'.repeat(250)
+  const example = {
+    nimi: literal,
+    rivit: Array.from({ length: 80 }, (_, i) => ({ rivi: i, ok: true })),
+    loppu: 'valittu'
+  }
+  const schema = {
+    id: '/koski/api/documentation/viewer-popup-schema.json',
+    type: 'object',
+    example: 'viewer-popup-example.json',
+    properties: {
+      nimi: { type: 'string', description: literal },
+      rivit: { type: 'array', items: { type: 'object' } },
+      loppu: { type: 'string' }
+    }
+  }
+
+  test('säilyttää JSONin, valinnan, vierityksen ja nimetyn popupin ulkoasun', async ({
+    page,
+    context
+  }) => {
+    let exampleRequests = 0
+    page.on('request', (request) => {
+      if (request.url().endsWith('/viewer-popup-example.json'))
+        exampleRequests++
+    })
+    await page.route(
+      '**/viewer-popup-schema.json',
+      (route) => route.fulfill({ json: schema }),
+      { times: 1 }
+    )
+    await page.route(
+      '**/viewer-popup-example.json',
+      (route) => route.fulfill({ json: example }),
+      { times: 1 }
+    )
+    await page.goto(
+      '/koski/json-schema-viewer/?schema=viewer-popup-schema.json#viewer-page?v=nimi'
+    )
+    await expect(page.locator('#info-title')).toContainText('nimi')
+    await page.getByRole('link', { name: 'Example', exact: true }).click()
+    const panel = page.locator('#info-tab-example')
+    const code = panel.locator('code')
+    await expect(code).toHaveText(JSON.stringify(example, null, '  '), {
+      useInnerText: false
+    })
+    // textContent-vertailu tarkistaa myös sisennyksen ja rivinvaihdot.
+    expect(await code.textContent()).toBe(JSON.stringify(example, null, '  '))
+    await expect(code.locator('img, b')).toHaveCount(0)
+    await expect(code.locator('.highlight')).toHaveText('"nimi"')
+
+    const popupPromise = page.waitForEvent('popup')
+    await panel.getByRole('link', { name: 'Open in new window' }).click()
+    const popup = await popupPromise
+    await expect(popup).toHaveTitle('JSON Schema Viewer')
+    expect(await popup.evaluate(() => window.name)).toBe('pre')
+    const popupCode = popup.locator('pre > code.language-json.hljs')
+    await expect(popupCode).toBeVisible()
+    expect(await popupCode.textContent()).toBe(
+      JSON.stringify(example, null, '  ')
+    )
+    await expect(popupCode.locator('img, b')).toHaveCount(0)
+    await expect(popupCode.locator('.highlight')).toHaveText('"nimi"')
+    await expect(popupCode.locator('.hljs-number').first()).toHaveText('0')
+    await expect(popupCode.locator('.hljs-string').first()).toHaveText(
+      JSON.stringify(literal)
+    )
+
+    const themeUrl = '/koski/json-schema-viewer/styles/highlight-default.css'
+    await expect(popup.locator(`link[href="${themeUrl}"]`)).toHaveCount(1)
+    expect((await page.request.get(themeUrl)).ok()).toBe(true)
+    await expect(popup.locator('pre')).toHaveCSS(
+      'background-color',
+      'rgb(240, 240, 240)'
+    )
+    await expect(popup.locator('pre')).toHaveCSS('padding', '6.5px')
+    await expect(popup.locator('pre')).toHaveCSS('overflow-x', 'auto')
+    await expect(popupCode).toHaveCSS('font-family', 'monospace')
+    await expect(popupCode).toHaveCSS('font-size', '13px')
+    await expect(popupCode).toHaveCSS('padding', '0px')
+    await expect(popupCode.locator('.hljs-attr').first()).toHaveCSS(
+      'color',
+      'rgb(0, 0, 0)'
+    )
+    await expect(popupCode.locator('.hljs-string').first()).toHaveCSS(
+      'color',
+      'rgb(136, 0, 0)'
+    )
+    await expect(popupCode.locator('.hljs-number').first()).toHaveCSS(
+      'color',
+      'rgb(0, 136, 0)'
+    )
+    await expect(popupCode.locator('.hljs-literal').first()).toHaveCSS(
+      'color',
+      'rgb(0, 136, 0)'
+    )
+    expect(await popup.locator('pre').evaluate((el) => el.style.height)).toBe(
+      '95%'
+    )
+    expect(
+      await popup.locator('pre').evaluate((el) => {
+        el.scrollTop = 100
+        el.scrollLeft = 100
+        return el.scrollTop > 0 && el.scrollLeft > 0
+      })
+    ).toBe(true)
+
+    // Solmun vaihto käyttää samaa Example-paneelia ja sen avauspainiketta.
+    await page
+      .locator('#jsv-tree .node-text')
+      .filter({ hasText: /^loppu/ })
+      .click()
+    await expect(code.locator('.highlight')).toHaveText('"loppu"')
+    expect(exampleRequests).toBe(1)
+    await expect
+      .poll(() => panel.locator('pre').evaluate((el) => el.scrollTop))
+      .toBeGreaterThan(0)
+    const markerVisible = () =>
+      panel.locator('pre').evaluate((el) => {
+        const marker = el.querySelector('.highlight')!.getBoundingClientRect()
+        const bounds = el.getBoundingClientRect()
+        return marker.top >= bounds.top && marker.bottom <= bounds.bottom
+      })
+    await expect.poll(markerVisible).toBe(true)
+    await panel.getByRole('link', { name: 'Open in new window' }).click()
+    await expect(popupCode.locator('.highlight')).toHaveText('"loppu"')
+    expect(context.pages()).toHaveLength(2)
+    expect(await popupCode.textContent()).toBe(
+      JSON.stringify(example, null, '  ')
+    )
+
+    await page.getByRole('link', { name: 'Schema', exact: true }).click()
+    const schemaPanel = page.locator('#info-tab-schema')
+    const schemaText = await schemaPanel.locator('code').textContent()
+    expect(schemaText).toBe(JSON.stringify(schema, null, '  '))
+    await expect(schemaPanel.locator('code img, code b')).toHaveCount(0)
+    await schemaPanel.getByRole('link', { name: 'Open in new window' }).click()
+    await expect(popupCode).toHaveText(schemaText!)
+    expect(await popupCode.textContent()).toBe(schemaText)
+    await expect(popupCode.locator('.hljs-string').first()).toHaveText(
+      JSON.stringify(schema.id)
+    )
+    await expect(popupCode.locator('.highlight')).toHaveText('"loppu"')
+    await expect(popupCode.locator('img, b')).toHaveCount(0)
+    expect(context.pages()).toHaveLength(2)
+    await popup.close()
+  })
+})
