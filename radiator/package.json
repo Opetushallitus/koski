@@ -5,11 +5,11 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "start": "node src/index.ts prod",
-    "monitor:local": "node src/index.ts local",
-    "monitor:dev": "node src/index.ts dev",
-    "monitor:qa": "node src/index.ts qa",
-    "monitor:prod": "node src/index.ts prod",
+    "start": "node --env-file-if-exists=.env src/index.ts prod",
+    "monitor:local": "node --env-file-if-exists=.env src/index.ts local",
+    "monitor:dev": "node --env-file-if-exists=.env src/index.ts dev",
+    "monitor:qa": "node --env-file-if-exists=.env src/index.ts qa",
+    "monitor:prod": "node --env-file-if-exists=.env src/index.ts prod",
     "lint": "pnpm run typecheck && pnpm run eslint && pnpm run prettier",
     "lint:check": "concurrently --group \"pnpm:typecheck\" \"pnpm:eslint:check\" \"pnpm:prettier:check\"",
     "eslint": "pnpm run eslint:check --fix",
@@ -21,7 +21,6 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "dotenv": "16.6.1",
     "fp-ts": "2.16.11",
     "tail": "2.2.6"
   },
@@ -29,7 +28,7 @@
     "@eslint/js": "10.0.1",
     "@types/node": "24.19.1",
     "@types/tail": "2.2.3",
-    "concurrently": "9.2.4",
+    "concurrently": "10.0.5",
     "eslint": "10.12.0",
     "eslint-config-prettier": "10.1.8",
     "prettier": "3.9.9",

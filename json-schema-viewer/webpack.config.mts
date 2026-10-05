@@ -1,13 +1,10 @@
-import compilationTargets from '@babel/helper-compilation-targets'
+import getTargets from '@babel/helper-compilation-targets'
 import CssMinimizerPlugin from 'css-minimizer-webpack-plugin'
 import path from 'node:path'
 import type { Configuration } from 'webpack'
 
 // Kohdeselaimet luetaan Kosken .browserslistrc:stä samalla tavalla kuin web/webpack.config.mts:ssä.
-const targets = compilationTargets.default(
-  {},
-  { configPath: import.meta.dirname }
-)
+const targets = getTargets({}, { configPath: import.meta.dirname })
 
 const swcRule = (test: RegExp, syntax: 'typescript' | 'ecmascript') => ({
   test,
@@ -25,6 +22,14 @@ export default (
   context: path.join(import.meta.dirname, 'src'),
   entry: './index.ts',
   devtool: argv.mode === 'development' ? 'inline-source-map' : false,
+  cache: process.env.CI
+    ? false
+    : {
+        type: 'filesystem',
+        buildDependencies: {
+          browserslist: [path.join(import.meta.dirname, '.browserslistrc')]
+        }
+      },
   output: {
     path: path.join(
       import.meta.dirname,

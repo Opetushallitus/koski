@@ -1,4 +1,4 @@
-import compilationTargets from '@babel/helper-compilation-targets'
+import getTargets from '@babel/helper-compilation-targets'
 import CopyWebpackPlugin from 'copy-webpack-plugin'
 import { createRequire } from 'node:module'
 import path from 'node:path'
@@ -10,10 +10,7 @@ const require = createRequire(import.meta.url)
 // annetaan swc:lle. swc:n oma browserslist-toteutus käyttää swc-version
 // mukana tulevaa selaindataa, joka voi olla vanhempaa kuin projektin
 // caniuse-lite.
-const targets = compilationTargets.default(
-  {},
-  { configPath: import.meta.dirname }
-)
+const targets = getTargets({}, { configPath: import.meta.dirname })
 
 const swcRule = (test: RegExp, parser: object) => ({
   test,
@@ -30,6 +27,14 @@ export default (
 ): Configuration => ({
   context: import.meta.dirname,
   devtool: argv.mode === 'development' ? 'inline-source-map' : false,
+  cache: process.env.CI
+    ? false
+    : {
+        type: 'filesystem',
+        buildDependencies: {
+          browserslist: [path.join(import.meta.dirname, '.browserslistrc')]
+        }
+      },
   entry: {
     main: './app/Virkailija.jsx',
     omattiedot: './app/OmatTiedot.jsx',
@@ -61,7 +66,6 @@ export default (
         : 'js/koski-[name].js',
     publicPath: '/koski/'
   },
-  stats: 'normal',
   resolve: {
     extensions: ['.js', '.jsx', '.ts', '.tsx'],
     alias: {
