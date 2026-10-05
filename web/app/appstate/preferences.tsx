@@ -25,6 +25,11 @@ type OrganisaatioOid = string
 type PreferenceType = string
 type OrganisaatioPreferences = Record<PreferenceType, StorablePreference[]>
 
+// Koulutustoimijan rajaama lista on eri lista kuin rajaamaton, joten ne
+// pidetään välimuistissa erillään.
+const listKey = (type: PreferenceType, koulutustoimijaOid?: OrganisaatioOid) =>
+  koulutustoimijaOid ? `${type}:${koulutustoimijaOid}` : type
+
 export type PreferencesHook<T extends StorablePreference> = {
   // Lista ladatuista arvoista
   preferences: T[]
@@ -46,11 +51,14 @@ export type PreferencesHook<T extends StorablePreference> = {
  *
  * @param organisaatioOid Organisaation oid
  * @param type Preferencen tyyppi, kts. PreferencesService.scala
+ * @param koulutustoimijaOid Rajaa arvot koulutustoimijan omiin ja rajaamattomiin. Vanha käyttöliittymä
+ * rajaa näin vain myöntäjät, joten muiden tyyppien kanssa tätä ei pidä käyttää.
  * @returns
  */
 export const usePreferences = <T extends StorablePreference>(
   organisaatioOid?: OrganisaatioOid,
-  type?: PreferenceType
+  type?: PreferenceType,
+  koulutustoimijaOid?: OrganisaatioOid
 ): PreferencesHook<T> => {
   const {
     available,
@@ -63,21 +71,21 @@ export const usePreferences = <T extends StorablePreference>(
 
   useEffect(() => {
     if (organisaatioOid && type && available) {
-      load(organisaatioOid, type)
+      load(organisaatioOid, type, koulutustoimijaOid)
     }
-  }, [available, load, organisaatioOid, type])
+  }, [available, load, organisaatioOid, type, koulutustoimijaOid])
 
   const store = useCallback(
     (key: string, data: T) => {
       if (organisaatioOid && type) {
-        storePref(organisaatioOid, type, key, data)
+        storePref(organisaatioOid, type, key, data, koulutustoimijaOid)
       } else {
         console.error(
           `Cannot store a preference without organisaatioOid (${organisaatioOid}) and preference type (${type})`
         )
       }
     },
-    [organisaatioOid, storePref, type]
+    [organisaatioOid, storePref, type, koulutustoimijaOid]
   )
 
   const deferredUpdate = useCallback(
@@ -96,26 +104,35 @@ export const usePreferences = <T extends StorablePreference>(
   const remove = useCallback(
     (key: string) => {
       if (organisaatioOid && type) {
-        removePref(organisaatioOid, type, key)
+        removePref(organisaatioOid, type, key, koulutustoimijaOid)
       } else {
         console.error(
           `Cannot remove a preference without organisaatioOid (${organisaatioOid}) and preference type (${type})`
         )
       }
     },
-    [organisaatioOid, removePref, type]
+    [organisaatioOid, removePref, type, koulutustoimijaOid]
   )
 
   return useMemo(
     () => ({
       preferences: (organisaatioOid && type
-        ? preferences[organisaatioOid]?.[type] || []
+        ? preferences[organisaatioOid]?.[listKey(type, koulutustoimijaOid)] ||
+          []
         : emptyArray) as T[],
       store,
       deferredUpdate,
       remove
     }),
-    [organisaatioOid, type, preferences, store, deferredUpdate, remove]
+    [
+      organisaatioOid,
+      type,
+      koulutustoimijaOid,
+      preferences,
+      store,
+      deferredUpdate,
+      remove
+    ]
   )
 }
 
@@ -150,14 +167,20 @@ class PreferencesLoader {
 
   async load(
     organisaatioOid: OrganisaatioOid,
-    type: PreferenceType
+    type: PreferenceType,
+    koulutustoimijaOid?: OrganisaatioOid
   ): Promise<boolean> {
+    const key = listKey(type, koulutustoimijaOid)
     if (!this.preferences[organisaatioOid]) {
       this.preferences[organisaatioOid] = {}
     }
-    if (!this.preferences[organisaatioOid][type]) {
-      this.preferences[organisaatioOid][type] = []
-      this.set(organisaatioOid, type, await this.reload(organisaatioOid, type))
+    if (!this.preferences[organisaatioOid][key]) {
+      this.preferences[organisaatioOid][key] = []
+      this.set(
+        organisaatioOid,
+        key,
+        await this.reload(organisaatioOid, type, koulutustoimijaOid)
+      )
       return true
     }
     return false
@@ -167,19 +190,27 @@ class PreferencesLoader {
     organisaatioOid: OrganisaatioOid,
     type: PreferenceType,
     key: string,
-    data: StorablePreference
+    data: StorablePreference,
+    koulutustoimijaOid?: OrganisaatioOid
   ): Promise<void> {
+    const cacheKey = listKey(type, koulutustoimijaOid)
     if (!this.preferences[organisaatioOid]) {
       this.preferences[organisaatioOid] = {}
     }
-    if (!this.preferences[organisaatioOid][type]) {
-      this.preferences[organisaatioOid][type] = []
+    if (!this.preferences[organisaatioOid][cacheKey]) {
+      this.preferences[organisaatioOid][cacheKey] = []
     }
     pipe(
-      await storePreference(organisaatioOid, type, key, data),
+      await storePreference(
+        organisaatioOid,
+        type,
+        key,
+        data,
+        koulutustoimijaOid
+      ),
       tap(() => {
-        this.set(organisaatioOid, type, [
-          ...this.get(organisaatioOid, type),
+        this.set(organisaatioOid, cacheKey, [
+          ...this.get(organisaatioOid, cacheKey),
           data
         ])
       })
@@ -189,10 +220,15 @@ class PreferencesLoader {
   async remove(
     organisaatioOid: OrganisaatioOid,
     type: PreferenceType,
-    key: string
+    key: string,
+    koulutustoimijaOid?: OrganisaatioOid
   ): Promise<void> {
-    await removePreference(organisaatioOid, type, key)
-    this.set(organisaatioOid, type, await this.reload(organisaatioOid, type))
+    await removePreference(organisaatioOid, type, key, koulutustoimijaOid)
+    this.set(
+      organisaatioOid,
+      listKey(type, koulutustoimijaOid),
+      await this.reload(organisaatioOid, type, koulutustoimijaOid)
+    )
   }
 
   deferUpdate(
@@ -245,27 +281,31 @@ class PreferencesLoader {
     this.deferred = {}
   }
 
-  private get(organisaatioOid: string, type: string): StorablePreference[] {
-    return this.preferences[organisaatioOid]?.[type] || []
+  private get(organisaatioOid: string, key: string): StorablePreference[] {
+    return this.preferences[organisaatioOid]?.[key] || []
   }
 
   private set(
     organisaatioOid: string,
-    type: string,
+    key: string,
     data: StorablePreference[]
   ) {
     this.preferences = {
       ...this.preferences,
       [organisaatioOid]: {
         ...this.preferences[organisaatioOid],
-        [type]: data
+        [key]: data
       }
     }
   }
 
-  private async reload(organisaatioOid: string, type: string) {
+  private async reload(
+    organisaatioOid: string,
+    type: string,
+    koulutustoimijaOid?: string
+  ) {
     return pipe(
-      await fetchPreferences(organisaatioOid, type),
+      await fetchPreferences(organisaatioOid, type, koulutustoimijaOid),
       E.fold(constant([]), (response) => response.data)
     )
   }
@@ -276,12 +316,17 @@ const preferencesLoader = new PreferencesLoader()
 export type PreferencesContext = {
   available: boolean
   preferences: Record<OrganisaatioOid, OrganisaatioPreferences>
-  load: (organisaatioOid: OrganisaatioOid, type: PreferenceType) => void
+  load: (
+    organisaatioOid: OrganisaatioOid,
+    type: PreferenceType,
+    koulutustoimijaOid?: OrganisaatioOid
+  ) => void
   store: (
     organisaatioOid: OrganisaatioOid,
     type: PreferenceType,
     key: string,
-    data: StorablePreference
+    data: StorablePreference,
+    koulutustoimijaOid?: OrganisaatioOid
   ) => void
   deferredUpdate: (
     organisaatioOid: OrganisaatioOid,
@@ -293,7 +338,8 @@ export type PreferencesContext = {
   remove: (
     organisaatioOid: OrganisaatioOid,
     type: PreferenceType,
-    key: string
+    key: string,
+    koulutustoimijaOid?: OrganisaatioOid
   ) => void
 }
 
@@ -318,8 +364,12 @@ export const PreferencesProvider: React.FC<PropsWithOnlyChildren> = (props) => {
   >({})
 
   const load = useCallback(
-    async (organisaatioOid: OrganisaatioOid, type: PreferenceType) => {
-      await preferencesLoader.load(organisaatioOid, type)
+    async (
+      organisaatioOid: OrganisaatioOid,
+      type: PreferenceType,
+      koulutustoimijaOid?: OrganisaatioOid
+    ) => {
+      await preferencesLoader.load(organisaatioOid, type, koulutustoimijaOid)
       setPreferences(preferencesLoader.preferences)
     },
     []
@@ -330,9 +380,16 @@ export const PreferencesProvider: React.FC<PropsWithOnlyChildren> = (props) => {
       organisaatioOid: OrganisaatioOid,
       type: PreferenceType,
       key: string,
-      data: StorablePreference
+      data: StorablePreference,
+      koulutustoimijaOid?: OrganisaatioOid
     ) => {
-      await preferencesLoader.store(organisaatioOid, type, key, data)
+      await preferencesLoader.store(
+        organisaatioOid,
+        type,
+        key,
+        data,
+        koulutustoimijaOid
+      )
       setPreferences(preferencesLoader.preferences)
     },
     []
@@ -355,9 +412,15 @@ export const PreferencesProvider: React.FC<PropsWithOnlyChildren> = (props) => {
     async (
       organisaatioOid: OrganisaatioOid,
       type: PreferenceType,
-      key: string
+      key: string,
+      koulutustoimijaOid?: OrganisaatioOid
     ) => {
-      await preferencesLoader.remove(organisaatioOid, type, key)
+      await preferencesLoader.remove(
+        organisaatioOid,
+        type,
+        key,
+        koulutustoimijaOid
+      )
       setPreferences(preferencesLoader.preferences)
     },
     []

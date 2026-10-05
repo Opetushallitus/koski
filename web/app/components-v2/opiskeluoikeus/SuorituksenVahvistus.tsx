@@ -24,7 +24,7 @@ import {
   FieldViewerProps,
   FormField
 } from '../forms/FormField'
-import { FormModel, FormOptic } from '../forms/FormModel'
+import { FormModel, FormOptic, getValue } from '../forms/FormModel'
 import { Trans } from '../texts/Trans'
 import { SuorituksenVahvistusModal } from './SuorituksenVahvistusModal'
 
@@ -55,6 +55,7 @@ export const SuorituksenVahvistusField = <
   const tila = viimeisinOpiskelujaksonTila(props.form.state.tila)
   const disableRemoval =
     props.disableRemoval ?? Boolean(tila && isValmistuvaTerminaalitila(tila))
+  const suoritus = getValue(props.suoritusPath)(props.form.state)
 
   return (
     <FormField
@@ -68,6 +69,11 @@ export const SuorituksenVahvistusField = <
       }}
       editProps={{
         organisaatio: props.organisaatio,
+        toimipisteOid:
+          suoritus && 'toimipiste' in suoritus
+            ? suoritus.toimipiste?.oid
+            : undefined,
+        koulutustoimijaOid: props.form.state.koulutustoimija?.oid,
         vahvistusClass: props.vahvistusClass,
         disableAdd: props.disableAdd,
         disableRemoval,
@@ -102,6 +108,8 @@ export type SuorituksenVahvistusEditProps<T extends Vahvistus> = CommonProps<
     {
       vahvistusClass: ClassOf<T>
       organisaatio?: Organisaatio
+      toimipisteOid?: string
+      koulutustoimijaOid?: string
       disableAdd?: boolean
       disableRemoval?: boolean
       statusInfo?: React.ReactNode
@@ -115,6 +123,8 @@ export const SuorituksenVahvistusEdit = <T extends Vahvistus>({
   onChange,
   vahvistusClass,
   organisaatio,
+  toimipisteOid,
+  koulutustoimijaOid,
   disableAdd,
   disableRemoval,
   statusInfo,
@@ -164,6 +174,8 @@ export const SuorituksenVahvistusEdit = <T extends Vahvistus>({
         {modalVisible && (
           <SuorituksenVahvistusModal
             organisaatio={organisaatio}
+            toimipisteOid={toimipisteOid}
+            koulutustoimijaOid={koulutustoimijaOid}
             vahvistusClass={vahvistusClass}
             bodyExtra={modalBodyExtra}
             onSubmit={onSubmit}
