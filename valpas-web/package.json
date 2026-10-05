@@ -56,7 +56,7 @@
     "cheerio": "1.2.0",
     "concurrently": "9.2.4",
     "dotenv": "16.6.1",
-    "eslint": "10.11.0",
+    "eslint": "10.12.0",
     "eslint-config-prettier": "10.1.8",
     "eslint-plugin-compat": "7.0.2",
     "eslint-plugin-react-hooks": "7.1.1",
@@ -72,12 +72,12 @@
     "postcss-less": "6.0.0",
     "prettier": "3.9.9",
     "selenium-webdriver": "4.49.0",
-    "stylelint": "17.15.0",
+    "stylelint": "17.16.0",
     "stylelint-no-unsupported-browser-features": "8.1.2",
     "tree-kill": "1.2.2",
     "ts-jest": "29.4.14",
     "typescript": "5.9.3",
-    "typescript-eslint": "8.70.1"
+    "typescript-eslint": "8.71.0"
   },
   "dependencies": {
     "bem-ts": "0.15.1",
