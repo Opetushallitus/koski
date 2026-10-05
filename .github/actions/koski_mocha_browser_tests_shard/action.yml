@@ -20,7 +20,7 @@ runs:
 
     - name: Get Puppeteer version
       id: puppeteer-version
-      run: echo "VERSION=$(sed --quiet --regexp-extended 's/^  puppeteer@([^(:]+):$/\1/p' web/pnpm-lock.yaml)" >> $GITHUB_OUTPUT
+      run: echo "VERSION=$(jq --raw-output .version web/node_modules/puppeteer/package.json)" >> $GITHUB_OUTPUT
       shell: bash
 
     - name: Cache Puppeteer browser
