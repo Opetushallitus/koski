@@ -1,6 +1,7 @@
 package fi.oph.koski.kela
 
 import fi.oph.koski.config.{Environment, KoskiApplication}
+import fi.oph.koski.db.KoskiOpiskeluoikeusRow
 import fi.oph.koski.executors.GlobalExecutionContext
 import fi.oph.koski.henkilo.LaajatOppijaHenkilöTiedot
 import fi.oph.koski.history.{OpiskeluoikeusHistoryPatch, RawOpiskeluoikeusData}
@@ -25,8 +26,13 @@ class KelaService(application: KoskiApplication) extends GlobalExecutionContext 
     application.validatingAndResolvingExtractor
   )
 
+  // Palautettavat tiedot rajaa Kela-skeema ja estolista, eivät kutsujan lukuroolit: haut tehdään
+  // OPH-katselijan järjestelmäsessiolla, vastaavasti kuin SDG- ja KIOS-rajapinnoissa. Kutsujan omaa
+  // sessiota käytetään vain arkaluontoisten kenttien suodatukseen ja auditlokiin, siksi se ei ole implicit.
+  private implicit val katselija: KoskiSpecificSession = KoskiSpecificSession.systemKatselijaUser
+
   def findKelaOppijaByHetu(hetu: String)
-    (implicit koskiSession: KoskiSpecificSession): Either[HttpStatus, KelaOppija] = {
+    (koskiSession: KoskiSpecificSession): Either[HttpStatus, KelaOppija] = {
 
     val (opiskeluoikeudet, ytrResult, virtaResult) = haeOpiskeluoikeudet(List(hetu), haeUlkoisetJärjestelmät = true)
 
@@ -42,7 +48,7 @@ class KelaService(application: KoskiApplication) extends GlobalExecutionContext 
     oppija
   }
 
-  def streamOppijatByHetu(hetut: Seq[String])(implicit koskiSession: KoskiSpecificSession): Observable[JValue] = {
+  def streamOppijatByHetu(hetut: Seq[String])(koskiSession: KoskiSpecificSession): Observable[JValue] = {
     val (opiskeluoikeudet, _, _) = haeOpiskeluoikeudet(hetut, haeUlkoisetJärjestelmät = false)
 
     Observable
@@ -65,9 +71,7 @@ class KelaService(application: KoskiApplication) extends GlobalExecutionContext 
       .map(JsonSerializer.serializeWithUser(koskiSession))
   }
 
-  private def haeOpiskeluoikeudet(hetut: Seq[String], haeUlkoisetJärjestelmät: Boolean)(
-    implicit user: KoskiSpecificSession
-  ): (
+  private def haeOpiskeluoikeudet(hetut: Seq[String], haeUlkoisetJärjestelmät: Boolean): (
     Map[LaajatOppijaHenkilöTiedot, Seq[RawOpiskeluoikeusData]],
     Map[LaajatOppijaHenkilöTiedot, Seq[KelaYlioppilastutkinnonOpiskeluoikeus]],
     Map[LaajatOppijaHenkilöTiedot, Either[HttpStatus, Seq[KelaKorkeakoulunOpiskeluoikeus]]]
@@ -122,9 +126,7 @@ class KelaService(application: KoskiApplication) extends GlobalExecutionContext 
     (opiskeluoikeudet, ytrResult, virtaResult)
   }
 
-  private def haeVirranOpiskeluoikeudet(hlö: LaajatOppijaHenkilöTiedot)(
-    implicit user: KoskiSpecificSession
-  ): Either[HttpStatus, Seq[KelaKorkeakoulunOpiskeluoikeus]] =
+  private def haeVirranOpiskeluoikeudet(hlö: LaajatOppijaHenkilöTiedot): Either[HttpStatus, Seq[KelaKorkeakoulunOpiskeluoikeus]] =
     if (!kelallePalautettavaOpiskeluoikeusTyyppi(OpiskeluoikeudenTyyppi.korkeakoulutus.koodiarvo)) {
       Right(Nil)
     } else Try(application.virta.findByOppija(hlö)) match {
@@ -138,8 +140,8 @@ class KelaService(application: KoskiApplication) extends GlobalExecutionContext 
     }
 
   def opiskeluoikeudenHistoria(opiskeluoikeusOid: String)
-    (implicit koskiSession: KoskiSpecificSession): Option[List[KelaOpiskeluoikeusHistoryPatch]] = {
-    opiskeluoikeudenHistoriaLaajatTiedot(opiskeluoikeusOid).map(
+    (koskiSession: KoskiSpecificSession): Option[List[KelaOpiskeluoikeusHistoryPatch]] = {
+    opiskeluoikeudenHistoriaLaajatTiedot(opiskeluoikeusOid)(koskiSession).map(
       _.map(täysiHistoriaPatch =>
         KelaOpiskeluoikeusHistoryPatch(
           täysiHistoriaPatch.opiskeluoikeusOid,
@@ -151,16 +153,22 @@ class KelaService(application: KoskiApplication) extends GlobalExecutionContext 
   }
 
   def opiskeluoikeudenHistoriaLaajatTiedot(opiskeluoikeusOid: String)
-    (implicit koskiSession: KoskiSpecificSession): Option[List[OpiskeluoikeusHistoryPatch]] = {
+    (koskiSession: KoskiSpecificSession): Option[List[OpiskeluoikeusHistoryPatch]] = {
     val history: Option[List[OpiskeluoikeusHistoryPatch]] = application
-      .historyRepository
-      .findByOpiskeluoikeusOid(opiskeluoikeusOid)(koskiSession)
+      .opiskeluoikeusRepository
+      .findByOid(opiskeluoikeusOid)
+      .toOption
+      .filter(kelallePalautettava)
+      .flatMap(_ => application.historyRepository.findByOpiskeluoikeusOid(opiskeluoikeusOid))
     history.foreach { _ => auditLogHistoryView(opiskeluoikeusOid)(koskiSession) }
     history
   }
 
+  private def kelallePalautettava(rivi: KoskiOpiskeluoikeusRow): Boolean =
+    deserializeAndCleanKelaOpiskeluoikeus(RawOpiskeluoikeusData(rivi.data, rivi.oid, rivi.versionumero, rivi.aikaleima)).isRight
+
   def findKelaOppijaVersion(opiskeluoikeusOid: String, version: Int)
-    (implicit koskiSession: KoskiSpecificSession): Either[HttpStatus, KelaOppija] = {
+    (koskiSession: KoskiSpecificSession): Either[HttpStatus, KelaOppija] = {
     lazy val notFound = KoskiErrorCategory.notFound.opiskeluoikeuttaEiLöydyTaiEiOikeuksia("Opiskeluoikeutta " + opiskeluoikeusOid + " ei löydy tai käyttäjällä ei ole oikeutta sen katseluun")
 
     val result = for {

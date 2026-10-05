@@ -21,7 +21,7 @@ import scala.jdk.CollectionConverters._
  * käynnistetään lazynä: vain ensimmäisenä ajettu spec saa oman konfiguraationsa voimaan.
  */
 class KelaEstolistaSpec extends AnyFreeSpec with TestEnvironment with Matchers {
-  private implicit val session: KoskiSpecificSession = KoskiSpecificSession.systemUser
+  private val session: KoskiSpecificSession = KoskiSpecificSession.systemUser
 
   private def kelaService(estetytTyypit: List[String]): KelaService =
     new KelaService(KoskiApplication(
@@ -32,11 +32,20 @@ class KelaEstolistaSpec extends AnyFreeSpec with TestEnvironment with Matchers {
     ))
 
   private def opiskeluoikeustyypit(service: KelaService, hetu: String): List[String] =
-    service.findKelaOppijaByHetu(hetu)
+    service.findKelaOppijaByHetu(hetu)(session)
       .map(_.opiskeluoikeudet.map(_.tyyppi.koodiarvo).toList)
       .getOrElse(Nil)
 
   "Estolista" - {
+    "rajaa myös versiohistorian" in {
+      val amiksenOo = kelaService(Nil).findKelaOppijaByHetu(KoskiSpecificMockOppijat.amis.hetu.get)(session)
+        .toOption.flatMap(_.opiskeluoikeudet.collectFirst { case oo: KelaAmmatillinenOpiskeluoikeus => oo.oid.get })
+        .get
+
+      kelaService(Nil).opiskeluoikeudenHistoria(amiksenOo)(session) should not be empty
+      kelaService(List("ammatillinenkoulutus")).opiskeluoikeudenHistoria(amiksenOo)(session) shouldBe empty
+    }
+
     "rajaa määritellyn opiskeluoikeustyypin pois" in {
       opiskeluoikeustyypit(
         kelaService(List("korkeakoulutus")),
