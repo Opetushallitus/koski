@@ -71,7 +71,7 @@
     "parcel": "2.14.4",
     "postcss-less": "6.0.0",
     "prettier": "3.9.9",
-    "selenium-webdriver": "4.49.0",
+    "selenium-webdriver": "4.50.0",
     "stylelint": "17.16.0",
     "stylelint-no-unsupported-browser-features": "8.1.2",
     "tree-kill": "1.2.2",
