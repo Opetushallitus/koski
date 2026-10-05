@@ -45,7 +45,7 @@
     "@types/downloadjs": "1.4.6",
     "@types/js-cookie": "3.0.6",
     "@types/mocha": "10.0.10",
-    "@types/node": "24.19.0",
+    "@types/node": "24.19.1",
     "@types/ramda": "0.32.0",
     "@types/react": "16.14.70",
     "@types/react-dom": "16.9.25",
