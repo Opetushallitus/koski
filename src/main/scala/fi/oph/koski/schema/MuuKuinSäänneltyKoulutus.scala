@@ -102,6 +102,7 @@ case class MuunKuinSäännellynKoulutuksenOsasuoritus(
   @KoodistoKoodiarvo("muunkuinsaannellynkoulutuksenosasuoritus")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("muunkuinsaannellynkoulutuksenosasuoritus", "suorituksentyyppi"),
   vahvistus: Option[Vahvistus] = None,
+  @Description("MUKS-osasuorituksen arviointi")
   arviointi: Option[List[MuunKuinSäännellynKoulutuksenArviointi]] = None,
   override val osasuoritukset: Option[List[MuunKuinSäännellynKoulutuksenOsasuoritus]] = None,
 ) extends Suoritus

@@ -397,6 +397,7 @@
   "description:Muiden kuin yhteisten tutkinnon osien...": "Muiden kuin yhteisten tutkinnon osien osasuoritukset",
   "description:Muiden lukio-opintojen suoritus Pre IB...": "Muiden lukio-opintojen suoritus Pre IB -opinnoissa 2019",
   "description:Muiden lukio-opintojen suoritus Pre-IB-opinnoissa 2019": "Muiden lukio-opintojen suoritus Pre-IB-opinnoissa 2019",
+  "description:MUKS-osasuorituksen arviointi": "Arviointi. Jos listalla useampi arviointi, tulkitaan myöhemmät arvioinnit arvosanan korotuksiksi edellisiin samalla listalla oleviin arviointeihin. Jos aiempaa, esimerkiksi väärin kirjattua, arviota korjataan, ei listalle tule uutta arviota. Tieto on pakollinen vahvistetun suorituksen osasuorituksilla, kun opiskeluoikeus alkaa 1.1.2027 tai sen jälkeen.",
   "description:Muoto YYYY-MM-DD": "Muoto YYYY-MM-DD",
   "description:Muoto YYYY-MM-DD. Tiedon syötössä tietoa...": "Muoto YYYY-MM-DD. Tiedon syötössä tietoa ei tarvita; tieto poimitaan tila-kentän ensimmäisestä opiskeluoikeusjaksosta.",
   "description:Muun korkeakoulun opinnon tunnistetiedot": "Muun korkeakoulun opinnon tunnistetiedot",
