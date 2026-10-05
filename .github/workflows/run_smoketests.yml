@@ -13,8 +13,38 @@ on:
         default: ""
 
 jobs:
+  deploy_in_progress:
+    name: Check for QA deploy in progress
+    if: ${{ github.event_name == 'schedule' }}
+    runs-on: ubuntu-26.04
+    permissions:
+      actions: read
+    outputs:
+      in_progress: ${{ steps.check.outputs.in_progress }}
+    steps:
+      - name: Look for unfinished deploy runs
+        id: check
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+        run: |
+          # waiting = prod-asennus odottaa hyväksyntää, mahdollisesti ikuisesti
+          UNFINISHED_JOBS=$(
+            for RUN_ID in $(gh run list --workflow master.yml --json databaseId,status --jq '.[] | select(.status != "completed") | .databaseId'); do
+              gh api "repos/{owner}/{repo}/actions/runs/$RUN_ID/jobs?per_page=100" \
+                --jq '.jobs[] | select(.status != "completed" and .status != "waiting") | .name'
+            done
+          )
+          if [ -n "$UNFINISHED_JOBS" ]; then
+            echo "$UNFINISHED_JOBS"
+            echo "::notice::Deploy in progress, skipping scheduled smoketests"
+            echo "in_progress=true" >> "$GITHUB_OUTPUT"
+          fi
+
   smoketests:
     name: QA
+    needs: [deploy_in_progress]
+    if: ${{ !cancelled() && needs.deploy_in_progress.outputs.in_progress != 'true' }}
     runs-on: ubuntu-26.04
     timeout-minutes: 30
     concurrency:
