@@ -43,8 +43,8 @@ export const deleteOrganizationalPreference = (
   koulutustoimijaOid
 ) => {
   return Http.delete(
-    `/koski/api/preferences/${organisaatioOid}/${type}/${key}${
-      koulutustoimijaOid ? '?koulutustoimijaOid=' + koulutustoimijaOid : ''
+    `/koski/api/preferences/${organisaatioOid}/${type}?key=${encodeURIComponent(key)}${
+      koulutustoimijaOid ? '&koulutustoimijaOid=' + koulutustoimijaOid : ''
     }`
   ).flatMap(() =>
     Http.cachedGet(editorPath(organisaatioOid, type, koulutustoimijaOid), {

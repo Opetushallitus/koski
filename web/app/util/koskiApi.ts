@@ -233,31 +233,44 @@ export const queryOrganisaatioHierarkia = (
 
 export const fetchPreferences = <T extends StorablePreference>(
   organisaatioOid: string,
-  type: string
+  type: string,
+  koulutustoimijaOid?: string
 ) =>
   handleExpiredSession(
-    apiGet<T[]>(apiUrl(`preferences/${organisaatioOid}/${type}`))
+    apiGet<T[]>(
+      apiUrl(`preferences/${organisaatioOid}/${type}`, { koulutustoimijaOid })
+    )
   )
 
 export const storePreference = (
   organisaatioOid: string,
   type: string,
   key: string,
-  value: StorablePreference
+  value: StorablePreference,
+  koulutustoimijaOid?: string
 ) =>
   handleExpiredSession(
-    apiPut<void>(apiUrl(`preferences/${organisaatioOid}/${type}`), {
-      body: KeyValue({ key, value })
-    })
+    apiPut<void>(
+      apiUrl(`preferences/${organisaatioOid}/${type}`, { koulutustoimijaOid }),
+      {
+        body: KeyValue({ key, value })
+      }
+    )
   )
 
 export const removePreference = (
   organisaatioOid: string,
   type: string,
-  key: string
+  key: string,
+  koulutustoimijaOid?: string
 ) =>
   handleExpiredSession(
-    apiDelete<void>(apiUrl(`preferences/${organisaatioOid}/${type}/${key}`))
+    apiDelete<void>(
+      apiUrl(`preferences/${organisaatioOid}/${type}`, {
+        key,
+        koulutustoimijaOid
+      })
+    )
   )
 
 export const invalidateOpiskeluoikeus = (opiskeluoikeusOid: string) =>

@@ -44,6 +44,8 @@ import {
 export type SuorituksenVahvistusModalProps<T extends Vahvistus> = CommonProps<{
   vahvistusClass: ClassOf<T>
   organisaatio: Organisaatio
+  toimipisteOid?: string
+  koulutustoimijaOid?: string
   bodyExtra?: React.ReactNode
   onSubmit: (form: T) => void
   onCancel: () => void
@@ -78,13 +80,16 @@ export const SuorituksenVahvistusModal = <
     'myöntäjäHenkilöt.[]'
   )
 
+  // Sama lista kuin vanhassa käyttöliittymässä: suorituksen toimipiste ja
+  // opiskeluoikeuden koulutustoimija.
   const {
     preferences: storedMyöntäjät,
     store: storeMyöntäjä,
     remove: removeMyöntäjä
   } = usePreferences<Organisaatiohenkilö>(
-    getOrganisaatioOid(props.organisaatio),
-    'myöntäjät'
+    props.toimipisteOid || getOrganisaatioOid(props.organisaatio),
+    'myöntäjät',
+    props.koulutustoimijaOid
   )
 
   const castStoredMyöntäjät = organisaatiohenkilöClass

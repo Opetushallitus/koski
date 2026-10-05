@@ -76,9 +76,7 @@ export const OrganisaatioHenkilötEdit = <T extends AnyOrganisaatiohenkilö>(
           <TestIdLayer key={i} id={`henkilö.${i}`}>
             <li>
               <Removable onClick={state.removeAt(i)}>
-                {!props.storedHenkilöt?.find((h) =>
-                  OrganisaatiohenkilöEq.equals(hlö, h)
-                ) ? (
+                {!state.isStored(i, hlö) ? (
                   <TestIdLayer id="newHenkilö">
                     <MultiField key={i}>
                       <TextEdit
@@ -140,6 +138,14 @@ const useOrganisaatioHenkilöState = <T extends AnyOrganisaatiohenkilö>(
   props: OrganisaatioHenkilötEditProps<T>
 ) => {
   const [focusNew, setFocusNew] = useState(false)
+  // Valintalistana näytetään vain tallennetuista valitut rivit. Pelkkä nimen
+  // vertailu muuttaisi uuden henkilön valintalistaksi kesken kirjoittamisen.
+  const [pickedFromStored, setPickedFromStored] = useState<boolean[]>([])
+  const isStored = (index: number, henkilö: T) =>
+    pickedFromStored[index] === true &&
+    !!props.storedHenkilöt?.some((h) =>
+      OrganisaatiohenkilöEq.equals(henkilö, h)
+    )
 
   const onChangeNimi = (index: number) => (nimi?: string) => {
     pipe(
@@ -184,7 +190,10 @@ const useOrganisaatioHenkilöState = <T extends AnyOrganisaatiohenkilö>(
             `Could not remove at ${index}, original array:`,
             props.value
           ),
-        props.onChange
+        (henkilöt) => {
+          props.onChange(henkilöt)
+          setPickedFromStored((rows) => rows.filter((_, i) => i !== index))
+        }
       )
     )
   }
@@ -235,6 +244,7 @@ const useOrganisaatioHenkilöState = <T extends AnyOrganisaatiohenkilö>(
             ))
         if (newHenkilö) {
           onChange([...(value || []), newHenkilö])
+          setPickedFromStored((rows) => [...rows, !!option.value])
           setFocusNew(true)
         }
       }
@@ -265,6 +275,7 @@ const useOrganisaatioHenkilöState = <T extends AnyOrganisaatiohenkilö>(
     newOptions,
     addHenkilö,
     focusNew,
+    isStored,
     onChangeNimi,
     onChangeTitteli,
     updateHenkilö,

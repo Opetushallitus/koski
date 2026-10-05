@@ -242,6 +242,51 @@ test.describe('Osittaisen ammatillisen tutkinnon useasta tutkinnosta virkailijan
     await expect(page.getByTestId('oo.0.suoritukset.0.osasuoritukset.7.properties.peruste.value')).toContainText('39/011/2014')
     await expect(page.getByTestId('oo.0.suoritukset.0.osasuoritukset.7.properties.arviointi.0.arvosana')).toContainText('2')
   })
+
+  test('Tallennetut myöntäjät ovat samat kuin vanhassa käyttöliittymässä', async ({ fixtures, page, oppijaPage }) => {
+    // Vanha käyttöliittymä tallentaa myöntäjät suorituksen toimipisteelle
+    // (Lehtikuusentien toimipaikka, ei oppilaitos) koulutustoimijan rajaamana.
+    const vanhanKäyttöliittymänMyöntäjät =
+      '/koski/api/preferences/1.2.246.562.10.42456023292/myöntäjät?koulutustoimijaOid=1.2.246.562.10.346830761110'
+    const vahvistus = 'oo.0.suoritukset.0.suorituksenVahvistus'
+    const modal = page.locator('.Modal')
+
+    await fixtures.reset()
+    const tallennus = await page.request.put(vanhanKäyttöliittymänMyöntäjät, {
+      data: {
+        key: 'Ville Vanha',
+        value: {
+          nimi: 'Ville Vanha',
+          titteli: { fi: 'rehtori' },
+          organisaatio: { oid: '1.2.246.562.10.42456023292' }
+        }
+      }
+    })
+    expect(tallennus.ok()).toBeTruthy()
+
+    await oppijaPage.goto('1.2.246.562.24.00000000182')
+    await page.getByTestId('oo.0.opiskeluoikeus.edit').click()
+    await page.getByTestId('oo.0.opiskeluoikeus.tila.edit.items.1.remove').click()
+    await page.getByTestId(`${vahvistus}.edit.merkitseKeskeneräiseksi`).click()
+    await page.getByTestId(`${vahvistus}.edit.merkitseValmiiksi`).click()
+    await modal.locator('[data-testid$="organisaatiohenkilöt.edit.add.input"]').click()
+
+    await expect(
+      modal.locator('.Select__optionLabel').filter({ hasText: 'Ville Vanha (rehtori)' })
+    ).toBeVisible()
+
+    await modal.locator('.Select__optionLabel').filter({ hasText: 'Lisää henkilö' }).click()
+    await modal.locator('[data-testid$="newHenkilö.nimi.input"]').fill('Veera Uusi')
+    await modal.locator('[data-testid$="newHenkilö.titteli.input"]').fill('rehtori')
+    await page.getByTestId(`${vahvistus}.edit.modal.submit`).click()
+
+    await expect
+      .poll(async () => {
+        const response = await page.request.get(vanhanKäyttöliittymänMyöntäjät)
+        return ((await response.json()) as Array<{ nimi: string }>).map((h) => h.nimi)
+      })
+      .toContain('Veera Uusi')
+  })
 })
 
 test.describe('Osittaisen ammatillisen tutkinnon useasta tutkinnosta kansalaisen näkymä', () => {
