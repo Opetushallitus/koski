@@ -69,7 +69,7 @@
     "postcss": "8.5.28",
     "postcss-less": "6.0.0",
     "postcss-loader": "8.2.1",
-    "postcss-preset-env": "10.6.1",
+    "postcss-preset-env": "11.5.5",
     "prettier": "3.9.9",
     "puppeteer": "25.12.0",
     "style-loader": "4.0.0",
