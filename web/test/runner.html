@@ -26,7 +26,6 @@
       }
     </script>
     <script src="lib/mocha.js"></script>
-    <script src="lib/chai.js"></script>
     <script src="lib/lodash.js"></script>
     <script src="lib/jquery.js"></script>
     <script src="lib/moment.min.js"></script>
@@ -52,27 +51,33 @@
 
       console.log('Mocha setup done')
     </script>
-    <script src="util/testHelpers.js"></script>
-    <script src="util/chaiEqualIgnoreNewlines.js"></script>
-    <script src="page/pageApi.js"></script>
-    <script src="page/organisaatioHaku.js"></script>
-    <script src="page/authentication.js"></script>
-    <script src="page/loginPage.js"></script>
-    <script src="page/koskiPage.js"></script>
-    <script src="page/addOppijaPage.js"></script>
-    <script src="page/opinnotPage.js"></script>
-    <script src="page/documentationPage.js"></script>
-    <script src="page/tiedonsiirrotPage.js"></script>
-    <script src="page/omatTiedotPage.js"></script>
-    <script src="page/suoritusjakoPage.js"></script>
-    <script src="page/virhePage.js"></script>
-    <script src="page/pulssiPage.js"></script>
-    <script src="page/raporttiPage.js"></script>
-    <script src="page/landingPage.js"></script>
-    <script src="page/myDataPage.js"></script>
-    <script src="page/tietojenkayttoPage.js"></script>
-    <script src="page/raportitPage.js"></script>
-    <script>
+    <!-- chai is ESM-only. A module script runs after parsing, in document order
+         with the defer scripts, so everything below that needs chai is deferred. -->
+    <script type="module">
+      import * as chai from './lib/chai.js'
+      window.chai = chai
+    </script>
+    <script defer src="util/testHelpers.js"></script>
+    <script defer src="util/chaiEqualIgnoreNewlines.js"></script>
+    <script defer src="page/pageApi.js"></script>
+    <script defer src="page/organisaatioHaku.js"></script>
+    <script defer src="page/authentication.js"></script>
+    <script defer src="page/loginPage.js"></script>
+    <script defer src="page/koskiPage.js"></script>
+    <script defer src="page/addOppijaPage.js"></script>
+    <script defer src="page/opinnotPage.js"></script>
+    <script defer src="page/documentationPage.js"></script>
+    <script defer src="page/tiedonsiirrotPage.js"></script>
+    <script defer src="page/omatTiedotPage.js"></script>
+    <script defer src="page/suoritusjakoPage.js"></script>
+    <script defer src="page/virhePage.js"></script>
+    <script defer src="page/pulssiPage.js"></script>
+    <script defer src="page/raporttiPage.js"></script>
+    <script defer src="page/landingPage.js"></script>
+    <script defer src="page/myDataPage.js"></script>
+    <script defer src="page/tietojenkayttoPage.js"></script>
+    <script defer src="page/raportitPage.js"></script>
+    <script type="module">
       function loadScript(src) {
         var body = document.getElementsByTagName('body')[0]
         var script = document.createElement('script')

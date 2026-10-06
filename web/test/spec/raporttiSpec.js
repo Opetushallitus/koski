@@ -3,14 +3,14 @@ describe('Raportti', function () {
   var login = LoginPage()
 
   describe('Tietoturva', function () {
-    before(Authentication().logout, page.openPage())
+    before(Authentication().logout, page.openPage(login.isVisible))
 
     it('näytetään login, kun käyttäjä ei ole kirjautunut sisään', function () {
       expect(login.isVisible()).to.equal(true)
     })
 
     describe('Ei käyttöoikeuksia', function () {
-      before(Authentication().login('kalle'), page.openPage())
+      before(Authentication().login('kalle'), page.openPage(KoskiPage().is403))
 
       it('tulee forbidden', function () {
         expect(KoskiPage().is403()).to.equal(true)
@@ -18,7 +18,7 @@ describe('Raportti', function () {
     })
 
     describe('Pääkäyttäjälle', function () {
-      before(Authentication().login('pää'), page.openPage())
+      before(Authentication().login('pää'), page.openPage(page.isVisible))
 
       it('näytetään', function () {
         expect(page.isVisible()).to.equal(true)
