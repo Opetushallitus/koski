@@ -50,6 +50,10 @@ export type OsasuoritusTableProps<
   addNewOsasuoritusViewProps?: P
   forceOpen?: boolean
   expandedContentIndent?: number
+  // Ryhmän otsikko (esim. "Yhteiset oppiaineet") otsikkorivin nimisarakkeeseen,
+  // samalle riville muiden sarakkeiden otsikoiden kanssa. Ilman rivejä otsikko
+  // näytetään yksinään, koska sarakeotsikoille ei silloin ole sisältöä.
+  title?: ReactNode
 }>
 
 export type OsasuoritusTableColumn<DATA_KEYS extends string> = {
@@ -90,13 +94,16 @@ export const OsasuoritusTable = <DATA_KEYS extends string, P>(
 
   return (
     <>
-      {rows[0] && (
+      {rows[0] ? (
         <OsasuoritusHeader
           columns={tableColumns}
           canRemove={editMode && onRemove !== undefined}
           skipExpandableColumn={skipExpandableColumn}
           showCompleted={showCompleted}
+          title={props.title}
         />
+      ) : (
+        props.title
       )}
       <TestIdLayer id="osasuoritukset">
         {rows.map((row, index) => (
@@ -151,6 +158,7 @@ type OsasuoritusHeaderProps<DATA_KEYS extends string> = CommonProps<{
   canRemove?: boolean
   skipExpandableColumn?: boolean
   showCompleted?: boolean
+  title?: ReactNode
 }>
 
 export const OsasuoritusHeader = <DATA_KEYS extends string>(
@@ -158,6 +166,7 @@ export const OsasuoritusHeader = <DATA_KEYS extends string>(
 ) => {
   const [indentation] = useLayout(OSASUORITUSTABLE_DEPTH_KEY)
   const ammatillinenTyyli = useContext(AmmatillinenTyyliContext)
+  const nimiotsikkoReunaan = ammatillinenTyyli || props.title !== undefined
   const spans = getSpans(
     props.columns,
     indentation,
@@ -167,26 +176,37 @@ export const OsasuoritusHeader = <DATA_KEYS extends string>(
   )
   return (
     <>
-      <ColumnRow className="OsasuoritusHeader">
+      <ColumnRow
+        className={cx(
+          'OsasuoritusHeader',
+          props.title !== undefined && 'OsasuoritusHeader--title'
+        )}
+      >
         {spans.indent > 0 && (
           <Column span={spans.indent} className="OsasuoritusHeader__indent" />
         )}
-        {ammatillinenTyyli ? (
+        {nimiotsikkoReunaan ? (
           props.columns.map((column, index) => {
             const isNameColumn = index === 0
-            // Nimisarakkeen otsikko ("… tutkinnon osat") venytetään alkamaan
-            // rivin vasemmasta reunasta laajennus- ja completed-ikonisarakkeiden
-            // yli, jotta se on linjassa alapuolisen vaakaviivan ja muun
-            // vasempaan tasatun sisällön kanssa.
+            // Nimisarakkeen otsikko ("… tutkinnon osat" tai ryhmän otsikko)
+            // venytetään alkamaan rivin vasemmasta reunasta laajennus- ja
+            // completed-ikonisarakkeiden yli, jotta se on linjassa alapuolisen
+            // vaakaviivan ja muun vasempaan tasatun sisällön kanssa.
             const leadingSpan =
               (props.skipExpandableColumn ? 0 : spans.leftIcons) +
               spans.completed
             const span = isNameColumn
               ? mapResponsiveValue((w: number) => leadingSpan + w)(spans.name)
               : spans.data[index - 1]
+            const isTitle = isNameColumn && props.title !== undefined
             return (
-              <Column key={index} span={span} align={column.align}>
-                {getColumnLabel(column)}
+              <Column
+                key={index}
+                span={span}
+                align={column.align}
+                className={isTitle ? 'OsasuoritusHeader__title' : undefined}
+              >
+                {isTitle ? props.title : getColumnLabel(column)}
               </Column>
             )
           })
