@@ -614,6 +614,11 @@ test.describe('Ahvenanmaan perusopetuksen käyttöliittymä', () => {
         'oo.0.suoritukset.2.osasuoritukset.0.properties.mukautettuOppimäärä.edit.input'
       )
       .check()
+    // Merkintä näkyy jo muokkaustilassa, jottei se jää virkailijalta
+    // huomaamatta suljetulla rivillä
+    await expect(
+      page.getByTestId('oo.0.suoritukset.2.osasuoritukset.0.footnote')
+    ).toHaveText('*')
     const suorituskieliInput = page
       .locator('.OsasuoritusProperty')
       .filter({

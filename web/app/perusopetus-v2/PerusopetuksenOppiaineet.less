@@ -16,6 +16,54 @@
     white-space: nowrap;
   }
 
+  // v2-näkymissä merkit ovat tekstin kokoisia ja lihavoituja, jotta ne eivät
+  // jää huomaamatta. Oma luokka, koska .oppiaineet on käytössä myös vanhassa
+  // käyttöliittymässä (PerusopetuksenOppiaineetEditor). Siirto tehdään
+  // suhteellisella sijoituksella, jottei rivin korkeus tai arvosanan
+  // tasaus muutu.
+  .PerusopetuksenOppiaineet__alaviite {
+    font-size: 1em;
+    font-weight: bold;
+    line-height: 1;
+    vertical-align: baseline;
+    position: relative;
+    top: -0.2em;
+    left: 0.15em;
+  }
+
+  // Muokkaustilassa merkille varataan jokaisella rivillä aina oma paikka
+  // arvosanavalikon oikealta puolelta, jotta valikot pysyvät samanlevyisinä
+  // eikä asettelu hyppää ominaisuutta valittaessa. Paikka mitoitetaan
+  // pisimmälle merkinnälle ("* **"); Ahvenanmaalla merkkejä on vain yksi (*).
+  // Kääreet eivät saa olla position: relative, koska rivin virheilmoitus
+  // (FieldErrors) sijoitetaan absoluuttisesti rivin suhteen (ks.
+  // OsasuoritusTable.less).
+  .PerusopetuksenOppiaineet__arvosanaMuokkaus {
+    display: flex;
+    align-items: flex-start;
+  }
+
+  .PerusopetuksenOppiaineet__arvosanaKenttä {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .PerusopetuksenOppiaineet__alaviitepaikka {
+    flex: 0 0 2.4em;
+    padding-left: 0.5em;
+
+    // Merkki nostetaan valikon tekstin yläreunan tasolle.
+    .footnote-hint {
+      width: auto;
+      top: -0.1em;
+      left: 0;
+    }
+  }
+
+  .PerusopetuksenOppiaineet__alaviitepaikka--yksiMerkki {
+    flex-basis: 1.3em;
+  }
+
   // Alaviitteiden selitteet harmaalla, jotta erottuvat muusta tekstistä.
   .selitteet {
     color: @color-disabled-text;

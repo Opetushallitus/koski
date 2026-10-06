@@ -223,9 +223,7 @@ export const AhvenanmaanPerusopetuksenOppiaineet: React.FC<
           {vastuuJaYhteistyöArvio}
         </>
       )}
-      {!form.editMode && footnotes.length > 0 && (
-        <FootnoteDescriptions data={footnotes} />
-      )}
+      {footnotes.length > 0 && <FootnoteDescriptions data={footnotes} />}
     </div>
   )
 }
@@ -504,32 +502,50 @@ const oppiaineToRow = <T extends string>(
     ) : (
       <TestIdText id="nimi">{nimi}</TestIdText>
     )
-  // Alaviitemerkki (*) näytetään arvosanan perässä mukautetulle oppimäärälle.
+  // Alaviitemerkki (*) näytetään arvosanan perässä mukautetulle oppimäärälle
+  // myös muokkaustilassa. Muuten mukautettu oppimäärä jää helposti
+  // huomaamatta, koska se näkyy vasta rivin laajennusosiossa.
   const rowFootnotes = footnotesForSuoritus(suoritus)
   const footnoteEl =
-    !form.editMode && rowFootnotes.length > 0 ? (
+    rowFootnotes.length > 0 ? (
       <TestIdText id="footnote">
-        {rowFootnotes.map((note) => (
-          <sup key={note.hint} className="footnote-hint" title={t(note.title)}>
-            {` ${note.hint}`}
-          </sup>
-        ))}
+        <sup className="footnote-hint PerusopetuksenOppiaineet__alaviite">
+          {rowFootnotes.map((note, i) => (
+            <React.Fragment key={note.hint}>
+              {i > 0 && ' '}
+              <span title={t(note.title)}>{note.hint}</span>
+            </React.Fragment>
+          ))}
+        </sup>
       </TestIdText>
     ) : null
   if (showArvosana) {
-    columns['Arvosana' as T | 'Arvosana' | ' '] = (
+    const arvosana = (
+      <FormField
+        form={form}
+        path={osasuoritusPath.prop('arviointi')}
+        optional
+        view={AhvenanmaanArvosanaView}
+        edit={ParasArvosanaEdit}
+        editProps={{
+          suoritusClassName: suoritus.$class,
+          format: ahvenanmaanArvosananNimi
+        }}
+      />
+    )
+    // Muokkaustilan merkkipaikan tyylit: ks. PerusopetuksenOppiaineet.less
+    columns['Arvosana' as T | 'Arvosana' | ' '] = form.editMode ? (
+      <div className="PerusopetuksenOppiaineet__arvosanaMuokkaus">
+        <div className="PerusopetuksenOppiaineet__arvosanaKenttä">
+          {arvosana}
+        </div>
+        <span className="PerusopetuksenOppiaineet__alaviitepaikka PerusopetuksenOppiaineet__alaviitepaikka--yksiMerkki">
+          {footnoteEl}
+        </span>
+      </div>
+    ) : (
       <>
-        <FormField
-          form={form}
-          path={osasuoritusPath.prop('arviointi')}
-          optional
-          view={AhvenanmaanArvosanaView}
-          edit={ParasArvosanaEdit}
-          editProps={{
-            suoritusClassName: suoritus.$class,
-            format: ahvenanmaanArvosananNimi
-          }}
-        />
+        {arvosana}
         {footnoteEl}
       </>
     )
