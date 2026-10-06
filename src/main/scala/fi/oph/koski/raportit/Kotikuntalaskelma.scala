@@ -65,7 +65,8 @@ case class Kotikuntalaskelma(db: DB) extends QueryMethods {
     left join lateral (
       select k.kotikunta, k.kotikunta_nimi_fi
       from #$kotikuntahistoria k
-      where k.master_oid = he.master_oid
+      -- r_henkilo.master_oid on C-kollaatiolla, r_kotikuntahistorian indeksi ei: ilman tätä jokainen haku lukee koko taulun
+      where k.master_oid = he.master_oid collate "default"
         and coalesce(k.muutto_pvm, '1900-01-01'::date) <= $päivä
         and (k.poismuutto_pvm >= $päivä or k.poismuutto_pvm is null)
       order by k.muutto_pvm desc nulls last
