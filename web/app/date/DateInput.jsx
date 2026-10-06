@@ -2,7 +2,6 @@ import React from 'react'
 import { parseFinnishDate, formatFinnishDate } from './date'
 import DayPicker, { DateUtils } from 'react-day-picker'
 import { t } from '../i18n/i18n'
-import PropTypes from 'prop-types'
 import { HiddenDescription } from '../components/HiddenDescription'
 
 const months = [
@@ -141,10 +140,4 @@ class DateInput extends React.Component {
   }
 }
 
-DateInput.propTypes = {
-  isAllowedDate: PropTypes.func,
-  isPending: PropTypes.bool,
-  valueCallback: PropTypes.func,
-  validityCallback: PropTypes.func
-}
 export default DateInput

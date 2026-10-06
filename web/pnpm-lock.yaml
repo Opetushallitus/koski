@@ -53,9 +53,6 @@ importers:
       partial.lenses:
         specifier: 9.8.0
         version: 9.8.0
-      prop-types:
-        specifier: 15.8.1
-        version: 15.8.1
       ramda:
         specifier: 0.32.0
         version: 0.32.0
