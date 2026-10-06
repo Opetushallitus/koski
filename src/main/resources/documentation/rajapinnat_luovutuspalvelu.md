@@ -397,6 +397,13 @@ Palautettavan JSON-rakenteen tietomallin dokumentaatio on
 
 Näillä kutsuilla haetaan henkilön oppija-data hetun tai oppija-oidin perusteella.
 
+Käytössä olevat parametrit (oletusarvo suluissa):
+
+- `ykitiedot` (false): palautetaanko henkilön yleisen kielitutkinnon (YKI) tiedot Koski-tietojen sijaan. Tällöin
+  YKI-tiedot palautetaan kentässä `ykitiedot` ja `opiskeluoikeudet`-lista on tyhjä. Ilman parametria `ykitiedot`-kenttää
+  ei palauteta, eikä YKI-tietoja sisällytetä opiskeluoikeuksiin. Jos henkilöllä ei ole YKI-tietoja, kutsu palauttaa
+  virheen 404. Parametri ei ole vielä käytössä tuotantoympäristössä: siellä se jätetään huomiotta.
+
 Palautettavan JSON-rakenteen tietomallin dokumentaatio on <a href="/koski/json-schema-viewer/?schema=migri-oppija-schema.json">täällä</a>.
 
 ### Esimerkkipyynnöt
@@ -411,6 +418,20 @@ Palautettavan JSON-rakenteen tietomallin dokumentaatio on <a href="/koski/json-s
     Content-Type: application/json
     Body: {
       "oid": "1.2.246.562.24.82405337123"
+    }
+
+    POST /koski/api/luovutuspalvelu/migri/oid?ykitiedot=true HTTP/1.1
+    Content-Type: application/json
+    Body: {
+      "oid": "1.2.246.562.24.82405337123"
+    }
+
+### Esimerkkivastaus, kun ykitiedot=true
+
+    {
+        "henkilö": ...,
+        "opiskeluoikeudet": [],
+        "ykitiedot": [...]
     }
 
 ## /koski/api/luovutuspalvelu/migri/valinta/hetut
