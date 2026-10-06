@@ -11,7 +11,7 @@ import { virkailija } from './setup/auth'
  */
 
 const kaisaUrl =
-  '1.2.246.562.24.00000000007?opiskeluoikeudenTyyppi=perusopetus&perusopetus-v2=true'
+  '1.2.246.562.24.00000000007?opiskeluoikeudenTyyppi=perusopetus'
 
 // Kieliaineen kieli on skeemassa pakollinen eikä tarjoa "Ei valintaa" -
 // vaihtoehtoa, joten sen arvoa ei saa voida poistaa.

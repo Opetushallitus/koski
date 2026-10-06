@@ -9,7 +9,7 @@ import { virkailija } from './setup/auth'
  */
 
 const hetutonOid = '1.2.246.562.24.99999999123'
-const url = `${hetutonOid}?opiskeluoikeudenTyyppi=perusopetus&perusopetus-v2=true`
+const url = `${hetutonOid}?opiskeluoikeudenTyyppi=perusopetus`
 
 test.describe('Perusopetuksen uusi käyttöliittymä: hetuton oppija', () => {
   test.use({ storageState: virkailija('kalle') })

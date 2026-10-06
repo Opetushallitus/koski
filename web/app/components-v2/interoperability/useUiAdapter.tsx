@@ -202,10 +202,7 @@ const useUiAdapterImpl = <T extends any[]>(
   const versionumero = useVersionumero()
 
   const v2Mode = useMemo(() => {
-    const hasPerusopetusFeatureFlag = hasFeatureFlag('perusopetus-v2')
-    const v2OpiskeluoikeusTyypit = Object.keys(opiskeluoikeusEditors).filter(
-      (tyyppi) => tyyppi !== 'perusopetus' || hasPerusopetusFeatureFlag
-    )
+    const v2OpiskeluoikeusTyypit = Object.keys(opiskeluoikeusEditors)
     return intersects(string.Eq)(opiskeluoikeustyypit)(v2OpiskeluoikeusTyypit)
   }, [opiskeluoikeustyypit])
 
@@ -266,10 +263,6 @@ const useUiAdapterImpl = <T extends any[]>(
         }
 
         if (tyyppi === 'perusopetus') {
-          if (!hasFeatureFlag('perusopetus-v2')) {
-            return undefined
-          }
-
           const allSuorituksetSupported = oo?.suoritukset?.every(
             (s) =>
               isPerusopetuksenVuosiluokanSuoritus(s) ||

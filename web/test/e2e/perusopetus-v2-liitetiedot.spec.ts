@@ -9,7 +9,7 @@ import { virkailija } from './setup/auth'
  */
 
 const kaisaOid = '1.2.246.562.24.00000000007'
-const kaisaUrl = `${kaisaOid}?opiskeluoikeudenTyyppi=perusopetus&perusopetus-v2=true`
+const kaisaUrl = `${kaisaOid}?opiskeluoikeudenTyyppi=perusopetus`
 const liitetietoKuvausTestId = 'oo.0.suoritukset.3.liitetiedot.0.kuvaus.input'
 
 const fillLiitetietoKuvaus = async (page: Page, value: string) => {

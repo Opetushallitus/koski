@@ -15,19 +15,19 @@ import { virkailija } from './setup/auth'
  */
 
 const kaisaOid = '1.2.246.562.24.00000000007'
-const kaisaUrl = `${kaisaOid}?opiskeluoikeudenTyyppi=perusopetus&perusopetus-v2=true`
+const kaisaUrl = `${kaisaOid}?opiskeluoikeudenTyyppi=perusopetus`
 
 // Ville Vuosiluokkalainen (010100-325X) = 1.2.246.562.24.00000000011
 const villeOid = '1.2.246.562.24.00000000011'
-const villeUrl = `${villeOid}?opiskeluoikeudenTyyppi=perusopetus&perusopetus-v2=true`
+const villeUrl = `${villeOid}?opiskeluoikeudenTyyppi=perusopetus`
 
 // Lasse Luokallejäänyt (170186-6520) = kaksi 7. vuosiluokan suoritusta
 const lasseOid = '1.2.246.562.24.00000000009'
-const lasseUrl = `${lasseOid}?opiskeluoikeudenTyyppi=perusopetus&perusopetus-v2=true`
+const lasseUrl = `${lasseOid}?opiskeluoikeudenTyyppi=perusopetus`
 
 // Pertti Perusopetuksensiirto (010100-071R) = lähdejärjestelmästä tuotu perusopetus
 const perttiOid = '1.2.246.562.24.00000000059'
-const perttiUrl = `${perttiOid}?opiskeluoikeudenTyyppi=perusopetus&perusopetus-v2=true`
+const perttiUrl = `${perttiOid}?opiskeluoikeudenTyyppi=perusopetus`
 
 type DeletePäätasonSuoritusRequest = {
   luokka?: string

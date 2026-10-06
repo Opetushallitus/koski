@@ -10,7 +10,7 @@ import { virkailija } from './setup/auth'
  */
 
 const miiaOid = '1.2.246.562.24.00000000012'
-const miiaUrl = `${miiaOid}?opiskeluoikeudenTyyppi=perusopetus&perusopetus-v2=true`
+const miiaUrl = `${miiaOid}?opiskeluoikeudenTyyppi=perusopetus`
 
 test.describe('Perusopetuksen uusi käyttöliittymä: useita opiskeluoikeuksia', () => {
   test.use({ storageState: virkailija('kalle') })

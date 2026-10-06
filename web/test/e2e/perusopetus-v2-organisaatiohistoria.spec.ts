@@ -5,7 +5,7 @@ const organisaatiohistoriallinenOid = '1.2.246.562.24.00000000098'
 const kaisaOid = '1.2.246.562.24.00000000007'
 
 const perusopetusV2Url = (oid: string) =>
-  `${oid}?opiskeluoikeudenTyyppi=perusopetus&perusopetus-v2=true`
+  `${oid}?opiskeluoikeudenTyyppi=perusopetus`
 
 test.describe('Perusopetuksen uusi käyttöliittymä: organisaatiohistoria', () => {
   test.use({ storageState: virkailija('kalle') })
