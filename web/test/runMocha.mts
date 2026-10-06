@@ -6,8 +6,14 @@ const MOCHA_START_TIMEOUT_MILLIS = 60_000
 // CI runs one spec file at a time, locally the whole suite may run at once
 const RESULT_POLLING_TIMEOUT_MILLIS = process.env.CI ? 15 * 60 * 1000 : Infinity
 const RESULT_POLLING_INTERVAL_MILLIS = 1000
+// The app started locally with `make run`
+const LOCAL_TEST_RUNNER_URL = 'http://localhost:7021/koski/test/runner.html'
 
-type TestError = { fullTitle: string; message?: string }
+type TestError = {
+  fullTitle: string
+  message?: string
+  parent?: { fullTitle: string }
+}
 
 declare global {
   interface Window {
@@ -22,6 +28,15 @@ const toText = (arg: JSHandle) => {
 
 const escapeForGithub = (text: string) =>
   text.replaceAll('%', '%25').replaceAll('\r', '%0D').replaceAll('\n', '%0A')
+
+const localReproductionUrl = (testUrl: URL, suiteTitle?: string) => {
+  const url = new URL(LOCAL_TEST_RUNNER_URL)
+  const specFiles = testUrl.searchParams.get('specFiles')
+  if (specFiles) url.searchParams.set('specFiles', specFiles)
+  if (suiteTitle) url.searchParams.set('fgrep', suiteTitle)
+  url.searchParams.set('bail', 'true')
+  return url.href
+}
 
 async function main(url: string): Promise<number> {
   const browser = await puppeteer.launch({
@@ -72,10 +87,27 @@ async function main(url: string): Promise<number> {
       errors: window.runner?.errors ?? []
     }))
 
+    const failedTests = errors.map((error) => ({
+      ...error,
+      reproductionUrl: localReproductionUrl(testUrl, error.parent?.fullTitle)
+    }))
+
+    if (failedTests.length > 0) {
+      console.log(
+        '\nReproduce in a browser against the local app (make run):\n' +
+          failedTests
+            .map(
+              ({ fullTitle, reproductionUrl }) =>
+                `  ${fullTitle}\n  ${reproductionUrl}`
+            )
+            .join('\n')
+      )
+    }
+
     if (process.env.GITHUB_ACTIONS) {
-      for (const { fullTitle, message } of errors) {
+      for (const { fullTitle, message, reproductionUrl } of failedTests) {
         console.log(
-          `::error title=Mocha::${escapeForGithub(`${fullTitle}: ${message}`)}`
+          `::error title=Mocha::${escapeForGithub(`${fullTitle}: ${message}\n${reproductionUrl}`)}`
         )
       }
     }
