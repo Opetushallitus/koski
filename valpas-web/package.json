@@ -47,7 +47,6 @@
     "@testing-library/dom": "10.4.2",
     "@testing-library/react": "16.3.3",
     "@testing-library/user-event": "14.6.7",
-    "@types/downloadjs": "1.4.6",
     "@types/jest": "30.0.0",
     "@types/js-cookie": "3.0.6",
     "@types/node": "24.19.1",
@@ -80,7 +79,6 @@
   "dependencies": {
     "bem-ts": "0.15.1",
     "date-fns": "4.4.0",
-    "downloadjs": "1.4.7",
     "fp-ts": "2.16.11",
     "react": "19.3.0",
     "react-calendar": "6.0.1",
