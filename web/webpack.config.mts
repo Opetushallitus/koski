@@ -132,7 +132,6 @@ export default (
         },
         { from: 'node_modules/chai/index.js', to: 'test/lib/chai.js' },
         { from: 'node_modules/jquery/dist/jquery.js', to: 'test/lib' },
-        { from: 'node_modules/moment/min/moment.min.js', to: 'test/lib' },
         { from: 'node_modules/mocha/mocha.js', to: 'test/lib' },
         { from: 'node_modules/mocha/mocha.css', to: 'test/css' },
         { from: 'WEB-INF', to: '../WEB-INF' }

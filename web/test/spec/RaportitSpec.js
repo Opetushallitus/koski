@@ -354,7 +354,7 @@ describe('Raporttien luominen', function () {
     )
 
     it('Oletuksena tämä päivä', function () {
-      const todayStr = moment().format('D.M.YYYY')
+      const todayStr = finnishDateToday()
       expect(page.valitutPäivät()).to.deep.equal([todayStr, todayStr])
     })
 

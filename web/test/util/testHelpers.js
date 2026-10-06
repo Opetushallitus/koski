@@ -26,6 +26,13 @@ timeout = (function () {
   }
 })()
 
+// Today's date shifted by whole years, formatted as in the UI (e.g. 6.10.2026)
+function finnishDateToday(offsetYears) {
+  var date = new Date()
+  date.setFullYear(date.getFullYear() + (offsetYears || 0))
+  return date.toLocaleDateString('fi-FI')
+}
+
 function S(selector) {
   try {
     if (!testFrame() || !testFrame().jQuery) {

@@ -6,13 +6,7 @@ describe('Perusopetus 4', function () {
   var addOppija = AddOppijaPage()
   var opiskeluoikeus = OpiskeluoikeusDialog()
   var editor = opinnot.opiskeluoikeusEditor()
-  var currentMoment = moment()
-
-  function currentDatePlusYears(years) {
-    return currentMoment.clone().add(years, 'years').format('D.M.YYYY')
-  }
-
-  var currentDateStr = currentDatePlusYears(0)
+  var currentDateStr = finnishDateToday()
   var date2017Str = '1.1.2017'
   var date2018Str = '1.1.2018'
   var date2019Str = '1.1.2019'
