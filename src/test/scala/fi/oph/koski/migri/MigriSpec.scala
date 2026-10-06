@@ -1,7 +1,7 @@
 package fi.oph.koski.migri
 
 import fi.oph.koski.api.misc.OpiskeluoikeusTestMethodsAmmatillinen
-import fi.oph.koski.{DirtiesFixtures, KoskiHttpSpec}
+import fi.oph.koski.{DirtiesFixtures, KoskiApplicationForTests, KoskiHttpSpec}
 import fi.oph.koski.documentation.AmmatillinenExampleData.arviointiKiitettävä
 import fi.oph.koski.documentation.{AmmatillinenOldExamples, ExamplesLukio2019, MuunAmmatillisenKoulutuksenExample}
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
@@ -205,6 +205,91 @@ class MigriSpec extends AnyFreeSpec with KoskiHttpSpec with OpiskeluoikeusTestMe
     }
   }
 
+  "YKI-tiedot" - {
+    val ykiOppija = KoskiSpecificMockOppijat.kielitutkinnonSuorittaja
+
+    "palautetaan oidilla, kun ykitiedot=true, ja opiskeluoikeudet-lista on tyhjä" in {
+      postOid(ykiOppija.oid, user, ykitiedot = true) {
+        verifyResponseStatusOk()
+        val oppija = JsonSerializer.parse[MigriOppija](body)
+
+        oppija.henkilö.oid shouldBe ykiOppija.oid
+        oppija.opiskeluoikeudet shouldBe Nil
+
+        val ykitiedot = oppija.ykitiedot.getOrElse(fail("ykitiedot puuttuu vastauksesta"))
+        ykitiedot should have length 2
+        ykitiedot.flatMap(_.suoritukset).map(_.tyyppi.koodiarvo).distinct shouldBe List("yleinenkielitutkinto")
+        ykitiedot.flatMap(_.suoritukset).map(_.koulutusmoduuli.kieli.koodiarvo) should contain theSameElementsAs List("FI", "SV")
+        ykitiedot.flatMap(_.suoritukset).flatMap(_.osasuoritukset).flatten.flatMap(_.arviointi).flatten should not be empty
+        body should not include "lähdejärjestelmänId"
+      }
+    }
+
+    "palautetaan hetulla, kun ykitiedot=true" in {
+      postHetu(ykiOppija.hetu, user, ykitiedot = true) {
+        verifyResponseStatusOk()
+        val oppija = JsonSerializer.parse[MigriOppija](body)
+        oppija.opiskeluoikeudet shouldBe Nil
+        oppija.ykitiedot.map(_.length) shouldBe Some(2)
+      }
+    }
+
+    "ykitiedot-kenttää ei palauteta ilman parametria" in {
+      postOid(ammattilainen.oid, user) {
+        verifyResponseStatusOk()
+        body should not include "\"ykitiedot\""
+        JsonSerializer.parse[MigriOppija](body).ykitiedot shouldBe None
+      }
+    }
+
+    "kielitutkinnon suorittajalle palautetaan 404 ilman parametria" in {
+      postOid(ykiOppija.oid, user) {
+        verifyResponseStatus(404, ErrorMatcher.regex(KoskiErrorCategory.notFound.oppijaaEiLöydyTaiEiOikeuksia, ".*".r))
+      }
+    }
+
+    "oppijalle ilman YKI-suorituksia palautetaan 404, vaikka ykitiedot=true" in {
+      postOid(ammattilainen.oid, user, ykitiedot = true) {
+        verifyResponseStatus(404, ErrorMatcher.regex(KoskiErrorCategory.notFound.oppijaaEiLöydyTaiEiOikeuksia, ".*".r))
+      }
+    }
+
+    "tuntemattomalle oppijalle palautetaan 404, kun ykitiedot=true" in {
+      postOid(eiKoskessa.oid, user, ykitiedot = true) {
+        verifyResponseStatus(404, ErrorMatcher.regex(KoskiErrorCategory.notFound.oppijaaEiLöydyTaiEiOikeuksia, ".*".r))
+      }
+    }
+
+    "YKI-haku luo auditlogin kutsujan nimissä" in {
+      AuditLogTester.clearMessages()
+      postOid(ykiOppija.oid, user, ykitiedot = true) {
+        verifyResponseStatusOk()
+        AuditLogTester.verifyLastAuditLogMessageForOperation(Map(
+          "operation" -> "OPISKELUOIKEUS_KATSOMINEN",
+          "user" -> Map("oid" -> user.oid),
+          "target" -> Map("oppijaHenkiloOid" -> ykiOppija.oid)
+        ))
+      }
+    }
+
+    "tuotannossa parametri jätetään huomiotta" - {
+      val tuotannonService = new MigriOppijaService(KoskiApplicationForTests) {
+        override protected def ykitiedotKäytössä: Boolean = false
+      }
+      val session = user.toKoskiSpecificSession(KoskiApplicationForTests.käyttöoikeusRepository)
+
+      "kielitutkinnon suorittajalle palautetaan 404" in {
+        tuotannonService.findByOid(ykiOppija.oid, ykitiedot = true)(session).left.map(_.statusCode) shouldBe Left(404)
+      }
+
+      "Koski-tiedot palautetaan ilman ykitiedot-kenttää" in {
+        val oppija = tuotannonService.findByOid(ammattilainen.oid, ykitiedot = true)(session)
+        oppija.map(_.ykitiedot) shouldBe Right(None)
+        oppija.map(_.opiskeluoikeudet.map(_.tyyppi.koodiarvo)) shouldBe Right(List("ammatillinenkoulutus"))
+      }
+    }
+  }
+
   "Lisätiedot-rakenne palautetaan, jos osasuorituksen lisätietojen tunnisteen koodiarvo on 'mukautettu'" in {
     resetFixtures()
     val lisätiedot = Some(List(AmmatillisenTutkinnonOsanLisätieto(
@@ -347,17 +432,17 @@ class MigriSpec extends AnyFreeSpec with KoskiHttpSpec with OpiskeluoikeusTestMe
     }
   }
 
-  private def postOid[A](oid: String, user: MockUser)(f: => A): A = {
+  private def postOid[A](oid: String, user: MockUser, ykitiedot: Boolean = false)(f: => A): A = {
     post(
-      "api/luovutuspalvelu/migri/oid",
+      s"api/luovutuspalvelu/migri/oid?ykitiedot=$ykitiedot",
       JsonSerializer.writeWithRoot(MigriOidRequest(oid)),
       headers = migriCertificateHeaders ++ jsonContent
     )(f)
   }
 
-  private def postHetu[A](hetu: Option[String], user: MockUser)(f: => A): A = {
+  private def postHetu[A](hetu: Option[String], user: MockUser, ykitiedot: Boolean = false)(f: => A): A = {
     post(
-      "api/luovutuspalvelu/migri/hetu",
+      s"api/luovutuspalvelu/migri/hetu?ykitiedot=$ykitiedot",
       JsonSerializer.writeWithRoot(MigriHetuRequest(hetu.get)),
       headers = migriCertificateHeaders ++ jsonContent
     )(f)
