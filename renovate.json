@@ -312,7 +312,30 @@
       "rebaseWhen": "behind-base-branch"
     },
     {
-      "description": "The Maven patch groups below take only updates that no earlier rule has grouped, so monorepo groups such as the AWS SDK and fs2 stay intact. Test and build groups come first so that the runtime group does not claim their updates.",
+      "description": "Automerge patch updates of runtime libraries that every backend test run exercises. Integration clients (http4s, netty, AWS SDK), the PostgreSQL driver and aws-advanced-jdbc-wrapper (production connects through IAM and TLS), bouncycastle and log4j stay manual, because PR CI does not exercise them the way production uses them.",
+      "matchManagers": ["maven"],
+      "matchFileNames": ["pom.xml"],
+      "matchUpdateTypes": ["patch"],
+      "matchPackageNames": [
+        "org.eclipse.jetty.ee11:jetty-ee11-webapp",
+        "org.eclipse.jetty:jetty-jmx",
+        "org.eclipse.jetty:jetty-client",
+        "org.eclipse.jetty.compression:jetty-compression-server",
+        "org.eclipse.jetty.compression:jetty-compression-gzip",
+        "com.fasterxml.jackson.core:jackson-databind",
+        "com.typesafe:config",
+        "org.slf4j:slf4j-api",
+        "com.google.guava:guava",
+        "org.apache.commons:commons-lang3",
+        "joda-time:joda-time",
+        "org.scalaz:scalaz-core_2.13",
+        "org.scala-lang.modules:scala-xml_2.13"
+      ],
+      "automerge": true,
+      "rebaseWhen": "behind-base-branch"
+    },
+    {
+      "description": "The Maven patch groups below take only updates that no earlier rule has grouped, so monorepo groups such as the AWS SDK and fs2 stay intact. Test and build groups come first so that the remaining patch group does not claim their updates.",
       "matchManagers": ["maven"],
       "matchDepTypes": ["test"],
       "matchUpdateTypes": ["patch"],
@@ -328,6 +351,14 @@
       "matchPackageNames": ["!org.apache.maven.plugins:maven-war-plugin"],
       "matchJsonata": ["$not($exists(groupName)) or groupName = null"],
       "groupName": "maven build plugin patch updates"
+    },
+    {
+      "description": "Keep the automerged runtime patch updates out of the manual group below. Renovate automerges a group only when every update in it may be automerged.",
+      "matchManagers": ["maven"],
+      "matchFileNames": ["pom.xml"],
+      "matchUpdateTypes": ["patch"],
+      "matchJsonata": ["automerge = true and ($not($exists(groupName)) or groupName = null)"],
+      "groupName": "maven automerged patch updates"
     },
     {
       "description": "Group the remaining Maven patch updates",
