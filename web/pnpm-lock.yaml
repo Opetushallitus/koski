@@ -23,9 +23,6 @@ importers:
       baret:
         specifier: 1.2.0
         version: 1.2.0(baconjs@1.0.1)(react@16.14.0)
-      classnames:
-        specifier: 2.5.1
-        version: 2.5.1
       codemirror:
         specifier: 5.65.21
         version: 5.65.21

@@ -14,7 +14,7 @@ export type CommonPropsWithChildren<T extends object = object> =
 export type MaybeClassName = string | undefined | null | false | 0
 
 export const cx = (...args: MaybeClassName[]): string =>
-  args.filter(isString).join(' ')
+  args.filter((a): a is string => isString(a) && a !== '').join(' ')
 
 export const common = <T extends object>(
   props: CommonProps<T>,

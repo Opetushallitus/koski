@@ -14,7 +14,7 @@ import { KoulusivistyskieliPropertyTitle } from '../suoritus/Koulusivistyskieli'
 import { PuhviKoePropertyTitle } from '../suoritus/PuhviKoePropertyTitle'
 import { SuullisenKielitaidonKoePropertyTitle } from '../suoritus/SuullisenKielitaidonKoePropertyTitle'
 import { PropertyInfo } from './PropertyInfo'
-import classNames from 'classnames'
+import { cx } from '../components-v2/CommonProps'
 import { onEshPäätasonKoulutusmoduuliProperty } from '../esh/esh'
 import { EshPäätasonKoulutusmoduuliPropertyTitle } from '../esh/EshPaatasonKoulutusmoduuliPropertyTitle'
 
@@ -71,10 +71,8 @@ export class PropertiesEditor extends React.Component {
         })
       } else {
         const key = prefix + property.key + i
-        const propertyClassName = classNames('property', property.key)
-        const valueClass = classNames('value', {
-          empty: modelEmpty(property.model)
-        })
+        const propertyClassName = cx('property', property.key)
+        const valueClass = cx('value', modelEmpty(property.model) && 'empty')
         const valueEditor = (
           <ErrorDecorator
             model={property.model}

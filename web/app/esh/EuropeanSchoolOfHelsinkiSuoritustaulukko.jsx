@@ -1,5 +1,5 @@
 import React from 'baret'
-import classNames from 'classnames'
+import { cx } from '../components-v2/CommonProps'
 import { modelItems, modelProperty } from '../editor/EditorModel'
 import { accumulateExpandedState } from '../editor/ExpandableItems'
 import {
@@ -112,7 +112,7 @@ export class EuropeanSchoolOfHelsinkiSuoritustaulukko extends React.Component {
                   <React.Fragment key={`group-fragment-${i}`}>
                     <tbody
                       key={`group-${i}`}
-                      className={classNames('group-header', groupId)}
+                      className={cx('group-header', groupId)}
                     >
                       <tr>
                         {showColumns &&
@@ -141,7 +141,7 @@ export class EuropeanSchoolOfHelsinkiSuoritustaulukko extends React.Component {
                     {canAddNewOsasuoritus && (
                       <SingleColumnRowTable
                         key={`group-${i}-new`}
-                        className={classNames('uusi-tutkinnon-osa', groupId)}
+                        className={cx('uusi-tutkinnon-osa', groupId)}
                         colSpan={4}
                       >
                         <UusiEuropeanSchoolOfHelsinkiOsasuoritusDropdown

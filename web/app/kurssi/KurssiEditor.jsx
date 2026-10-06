@@ -1,5 +1,5 @@
 import React from 'react'
-import cx from 'classnames'
+import { cx } from '../components-v2/CommonProps'
 import {
   modelData,
   modelLookup,
@@ -39,9 +39,7 @@ export class KurssiEditor extends React.Component {
     const hideDetails = () => {
       this.setState({ open: false })
     }
-    const kurssinTyyppi = koulutusmoduuli.kurssinTyyppi
-      ? koulutusmoduuli.kurssinTyyppi.koodiarvo
-      : ''
+    const kurssinTyyppi = koulutusmoduuli.kurssinTyyppi?.koodiarvo
     const edit = kurssi.context.edit
     const paikallinenLukionKurssimainen =
       isLukionKurssimainen(koulutusmoduuliModel) &&
@@ -50,12 +48,17 @@ export class KurssiEditor extends React.Component {
       isLukio2019ModuuliTaiOpintojakso(koulutusmoduuliModel) &&
       isPaikallinen(koulutusmoduuliModel)
 
-    const className = cx('text-button-small', 'tunniste', kurssinTyyppi, {
-      hoverabe: !edit,
-      'ei-lasketa-kokonaispistemäärään': eiLasketaKokonaispistemäärään(kurssi),
-      paikallinen:
-        isPaikallinen(koulutusmoduuliModel) && !paikallinenLukionKurssimainen
-    })
+    const className = cx(
+      'text-button-small',
+      'tunniste',
+      kurssinTyyppi,
+      !edit && 'hoverabe',
+      eiLasketaKokonaispistemäärään(kurssi) &&
+        'ei-lasketa-kokonaispistemäärään',
+      isPaikallinen(koulutusmoduuliModel) &&
+        !paikallinenLukionKurssimainen &&
+        'paikallinen'
+    )
 
     const title = kurssi.value.classes.includes('diasuoritus')
       ? modelTitle(kurssi, 'koulutusmoduuli')

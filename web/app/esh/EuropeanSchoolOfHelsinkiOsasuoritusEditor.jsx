@@ -1,5 +1,5 @@
 import React from 'baret'
-import classNames from 'classnames'
+import { cx } from '../components-v2/CommonProps'
 import {
   modelLookup,
   modelErrorMessages,
@@ -51,7 +51,7 @@ export class EuropeanSchoolOfHelsinkiOsasuoritusEditor extends React.Component {
 
     return (
       <tbody
-        className={classNames('tutkinnon-osa', groupId, { expanded })}
+        className={cx('tutkinnon-osa', groupId, expanded && 'expanded')}
         data-testid={`tutkinnon-osa`}
         data-test-osasuoritus-class={model.value.classes[0]}
         data-test-expanded={!!expanded}
