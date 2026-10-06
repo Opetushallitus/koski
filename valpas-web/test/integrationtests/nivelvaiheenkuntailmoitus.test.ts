@@ -17,6 +17,7 @@ import {
 } from "../integrationtests-env/browser/core"
 import { dataTableEventuallyEquals } from "../integrationtests-env/browser/datatable"
 import { loginAs } from "../integrationtests-env/browser/reset"
+import { withMessage } from "../integrationtests-env/browser/utils"
 import {
   kuntailmoitusRowSelector,
   oppijaRowSelector,
@@ -112,18 +113,17 @@ const teeKuntailmoitusHakutilannenäkymästä = async (
   await fillTekijänTiedot(tekijä)
 
   const forms = await getIlmoitusForm()
-  expect(
-    forms.length,
-    "Lomakkeita näkyy yhtä monta kuin valittuja oppijoita",
-  ).toBe(oppijat.length)
+  withMessage("Lomakkeita näkyy yhtä monta kuin valittuja oppijoita", () =>
+    expect(forms.length).toBe(oppijat.length),
+  )
 
   for (const form of forms) {
     // Tarkista että valitut oppijat ja lomakkeet mäppäytyvät toisiinsa
     const oppija = oppijat.find((o) => form.subtitle.includes(o.oid))!
-    expect(
-      oppija,
+    withMessage(
       `Lomakkeen oppija "${form.title}" "${form.subtitle}" on valittujen oppijoiden joukossa`,
-    ).toBeDefined()
+      () => expect(oppija).toBeDefined(),
+    )
     expect(form.title).toBe(oppija.title)
 
     await täytäJaLähetäLomake(oppija, form)

@@ -1,4 +1,5 @@
 import { logging, WebDriver } from "selenium-webdriver"
+import { withMessage } from "./utils"
 
 export const UNAUTHORIZED = "401 (Unauthorized)"
 export const FORBIDDEN = "403 (Forbidden)"
@@ -48,7 +49,9 @@ export async function expectCleanConsoleLogs(driver: WebDriver) {
     )
     .map((entry) => entry.message)
 
-  expect(errors, "Expected no errors or warnings on console log").toEqual([])
+  withMessage("Expected no errors or warnings on console log", () =>
+    expect(errors).toEqual([]),
+  )
 }
 
 function isAllowedError(message: string) {

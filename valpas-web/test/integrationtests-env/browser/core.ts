@@ -4,7 +4,7 @@ import { ISODate } from "../../../src/state/common"
 import { Feature } from "../../../src/state/featureFlags"
 import { driver } from "./driver"
 import { defaultSleepTime, defaultTimeout, shortTimeout } from "./timeouts"
-import { eventually, sleep } from "./utils"
+import { eventually, sleep, withMessage } from "./utils"
 
 let browserDate = ""
 
@@ -23,7 +23,9 @@ export const deleteCookies = async () => {
   await eventually(async () => {
     await driver.manage().deleteAllCookies()
     const cookies = await driver.manage().getCookies()
-    expect(cookies.length, "Expected all cookies to be deleted").toBe(0)
+    withMessage("Expected all cookies to be deleted", () =>
+      expect(cookies).toEqual([]),
+    )
   })
 }
 

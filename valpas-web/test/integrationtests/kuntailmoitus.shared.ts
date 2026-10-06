@@ -29,7 +29,11 @@ import {
   defaultAnimationSleepTime,
   shortTimeout,
 } from "../integrationtests-env/browser/timeouts"
-import { eventually, sleep } from "../integrationtests-env/browser/utils"
+import {
+  eventually,
+  sleep,
+  withMessage,
+} from "../integrationtests-env/browser/utils"
 import {
   hakutilannePath,
   jklNormaalikouluTableContent,
@@ -138,7 +142,9 @@ export const teeKuntailmoitusOppijanäkymistä = async (
     await fillTekijänTiedot(tekijä)
 
     const forms = await getIlmoitusForm()
-    expect(forms.length, "Lomakkeita näkyy vain yksi").toBe(1)
+    withMessage("Lomakkeita näkyy vain yksi", () =>
+      expect(forms.length).toBe(1),
+    )
     const form = forms[0]!
     expect(form.title).toBe(oppija.title)
 
@@ -241,10 +247,9 @@ export const getIlmoitusData = async (): Promise<DisplayedIlmoitusData> => {
   ]
 
   const ilmoitukset = await $$(".kuntailmoitus__frame")
-  expect(
-    ilmoitukset.length,
-    "Aktiivisia ilmoituksia tulisi näkyä tasan yksi",
-  ).toEqual(1)
+  withMessage("Aktiivisia ilmoituksia tulisi näkyä tasan yksi", () =>
+    expect(ilmoitukset.length).toEqual(1),
+  )
   const ilmoitus = ilmoitukset[0]!
 
   return Promise.all([
@@ -307,8 +312,10 @@ export const täytäJaLähetäLomake = async (oppija: Oppija, form: Form) => {
 const selectOption = async (select: WebElement, text: string) => {
   const options = await select.findElements({ tagName: "option" })
   const optionTexts = await Promise.all(options.map((o) => o.getText()))
+  withMessage(`Valinta "${text}" löytyy valikosta`, () =>
+    expect(optionTexts).toContain(text),
+  )
   const index = optionTexts.findIndex((o) => o === text)
-  expect(index >= 0, `Valinta "${text}" löytyy valikosta`).toBeTruthy()
   await options[index]!.click()
 }
 
@@ -330,18 +337,17 @@ export const teeKuntailmoitusHakutilannenäkymästä = async (
   await fillTekijänTiedot(tekijä)
 
   const forms = await getIlmoitusForm()
-  expect(
-    forms.length,
-    "Lomakkeita näkyy yhtä monta kuin valittuja oppijoita",
-  ).toBe(oppijat.length)
+  withMessage("Lomakkeita näkyy yhtä monta kuin valittuja oppijoita", () =>
+    expect(forms.length).toBe(oppijat.length),
+  )
 
   for (const form of forms) {
     // Tarkista että valitut oppijat ja lomakkeet mäppäytyvät toisiinsa
     const oppija = oppijat.find((o) => form.subtitle.includes(o.oid))!
-    expect(
-      oppija,
+    withMessage(
       `Lomakkeen oppija "${form.title}" "${form.subtitle}" on valittujen oppijoiden joukossa`,
-    ).toBeDefined()
+      () => expect(oppija).toBeDefined(),
+    )
     expect(form.title).toBe(oppija.title)
 
     await täytäJaLähetäLomake(oppija, form)
