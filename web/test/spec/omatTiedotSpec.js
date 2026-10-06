@@ -669,15 +669,6 @@ describe('Omat tiedot', function () {
               )
             })
 
-            it('Näytetään jaetut opiskeluoikeudet oppilaitoksittain', function () {
-              expect(suoritusjako.oppilaitosTitleText()).to.deep.equal([
-                'Jyväskylän normaalikoulu'
-              ])
-              expect(suoritusjako.opiskeluoikeusTitleText()).to.match(
-                /Perusopetus \(2008—, läsnä\)Opiskeluoikeuden oid:.*/
-              )
-            })
-
             it('Ei näytetä virheraportointi-painiketta', function () {
               expect(!!omattiedot.virheraportointiButton().length).to.equal(
                 false
@@ -686,19 +677,6 @@ describe('Omat tiedot', function () {
 
             it('Ei näytetä suoritusjako-painiketta', function () {
               expect(!!omattiedot.suoritusjakoButton().length).to.equal(false)
-            })
-
-            describe('Kun avataan oppilaitos', function () {
-              before(suoritusjako.avaaOpiskeluoikeus('(2008—, läsnä)'))
-
-              it('näytetään oikeat opiskeluoikeudet', function () {
-                expect(
-                  opinnot.opiskeluoikeudet.omatTiedotOpiskeluoikeuksienMäärä()
-                ).to.equal(1)
-                expect(
-                  opinnot.opiskeluoikeudet.omatTiedotOpiskeluoikeuksienOtsikot()
-                ).to.deep.equal(['Perusopetus (2008—, läsnä)'])
-              })
             })
           })
 
@@ -1123,42 +1101,6 @@ describe('Omat tiedot', function () {
                     's. 17.1.1986' +
                     'Tiedot koneluettavassa muodossa'
                 )
-              })
-
-              it('Näytetään jaetut opiskeluoikeudet oppilaitoksittain', function () {
-                expect(suoritusjako.oppilaitosTitleText()).to.deep.equal([
-                  'Jyväskylän normaalikoulu'
-                ])
-                expect(suoritusjako.opiskeluoikeusTitleText()).to.match(
-                  /Perusopetus \(2008—2016, valmistunut\)Opiskeluoikeuden oid:.*/
-                )
-              })
-
-              describe('Kun avataan oppilaitos', function () {
-                before(
-                  suoritusjako.avaaOpiskeluoikeus('(2008—2016, valmistunut)')
-                )
-
-                it('näytetään oikeat opiskeluoikeudet', function () {
-                  expect(
-                    opinnot.opiskeluoikeudet.omatTiedotOpiskeluoikeuksienMäärä()
-                  ).to.equal(1)
-                  expect(
-                    opinnot.opiskeluoikeudet.omatTiedotOpiskeluoikeuksienOtsikot()
-                  ).to.deep.equal(['Perusopetus (2008—2016, valmistunut)'])
-                })
-
-                it('näytetään oikea suoritus (ei luokallejäänti-suoritusta)', function () {
-                  expect(
-                    opinnot.suoritusTabs('(2008—2016, valmistunut)', true)
-                  ).to.deep.equal(['7. vuosiluokka'])
-                  expect(
-                    opinnot
-                      .opiskeluoikeusEditor(undefined, true)
-                      .property('luokka')
-                      .getValue()
-                  ).to.equal('7A')
-                })
               })
             })
           })

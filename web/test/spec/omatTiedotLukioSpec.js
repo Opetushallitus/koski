@@ -14,7 +14,8 @@ describe('Omat tiedot - lukio', function () {
         etusivu.login(),
         wait.until(korhopankki.isReady),
         korhopankki.login('020655-2479'),
-        wait.until(omattiedot.isVisible)
+        wait.until(omattiedot.isVisible),
+        wait.until(isReadyToResolveOpiskeluoikeus)
       )
 
       describe('Kun opiskeluoikeus avataan', function () {
@@ -218,7 +219,8 @@ describe('Omat tiedot - lukio', function () {
         etusivu.login(),
         wait.until(korhopankki.isReady),
         korhopankki.login('020655-2479'),
-        wait.until(omattiedot.isVisible)
+        wait.until(omattiedot.isVisible),
+        wait.until(isReadyToResolveOpiskeluoikeus)
       )
 
       it('Opiskeluoikeus näytetään listassa', function () {
