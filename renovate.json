@@ -220,13 +220,22 @@
       "automerge": false
     },
     {
-      "description": "Update the shared pnpm toolchain together",
+      "description": "Update the shared pnpm toolchain together. Automerge minor and patch updates.",
       "matchManagers": ["npm"],
       "matchDepTypes": ["engines", "packageManager"],
       "matchPackageNames": ["pnpm"],
       "groupName": "pnpm toolchain",
       "rangeStrategy": "pin",
       "separateMinorPatch": false,
+      "automerge": true,
+      "rebaseWhen": "behind-base-branch"
+    },
+    {
+      "description": "pnpm majors can change the lockfile format and defaults; review them manually.",
+      "matchManagers": ["npm"],
+      "matchDepTypes": ["engines", "packageManager"],
+      "matchPackageNames": ["pnpm"],
+      "matchUpdateTypes": ["major"],
       "automerge": false
     },
     {
