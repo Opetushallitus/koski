@@ -387,11 +387,6 @@ object Responses {
       "organisaatiot" -> List(Map(
         "organisaatioOid" -> MockOrganisaatiot.kela,
         "kayttooikeudet" -> List(
-          Map("palvelu" -> "KOSKI", "oikeus" -> "GLOBAALI_LUKU_PERUSOPETUS"),
-          Map("palvelu" -> "KOSKI", "oikeus" -> "GLOBAALI_LUKU_TOINEN_ASTE"),
-          Map("palvelu" -> "KOSKI", "oikeus" -> "GLOBAALI_LUKU_KORKEAKOULU"),
-          Map("palvelu" -> "KOSKI", "oikeus" -> "GLOBAALI_LUKU_MUU_KUIN_SAANNELTY"),
-          Map("palvelu" -> "KOSKI", "oikeus" -> "GLOBAALI_LUKU_TAITEENPERUSOPETUS"),
           Map("palvelu" -> "KOSKI", "oikeus" -> "LUOTTAMUKSELLINEN_KELA_SUPPEA"))
       ))
     )),
@@ -400,11 +395,6 @@ object Responses {
       "organisaatiot" -> List(Map(
         "organisaatioOid" -> MockOrganisaatiot.kela,
         "kayttooikeudet" -> List(
-          Map("palvelu" -> "KOSKI", "oikeus" -> "GLOBAALI_LUKU_PERUSOPETUS"),
-          Map("palvelu" -> "KOSKI", "oikeus" -> "GLOBAALI_LUKU_TOINEN_ASTE"),
-          Map("palvelu" -> "KOSKI", "oikeus" -> "GLOBAALI_LUKU_KORKEAKOULU"),
-          Map("palvelu" -> "KOSKI", "oikeus" -> "GLOBAALI_LUKU_MUU_KUIN_SAANNELTY"),
-          Map("palvelu" -> "KOSKI", "oikeus" -> "GLOBAALI_LUKU_TAITEENPERUSOPETUS"),
           Map("palvelu" -> "KOSKI", "oikeus" -> "LUOTTAMUKSELLINEN_KELA_LAAJA"))
       ))
     )),

@@ -31,7 +31,7 @@ class KelaServlet(implicit val application: KoskiApplication) extends KoskiSpeci
           if (hetut.length != validitHetut.length) {
             logger.warn(s"Kelan pyynnöstä filtteröitiin pois ${hetut.length - validitHetut.length}/${hetut.length} epävalidia hetua")
           }
-          streamResponse[JValue](kelaService.streamOppijatByHetu(validitHetut), session)
+          streamResponse[JValue](kelaService.streamOppijatByHetu(validitHetut)(session), session)
         }
         case Left(status) =>
           haltWithStatus(status)
@@ -41,14 +41,14 @@ class KelaServlet(implicit val application: KoskiApplication) extends KoskiSpeci
 
   get("/versiohistoria/:opiskeluoikeusOid") {
     renderOption[List[KelaOpiskeluoikeusHistoryPatch]](KoskiErrorCategory.notFound.opiskeluoikeuttaEiLöydyTaiEiOikeuksia) {
-      kelaService.opiskeluoikeudenHistoria(getStringParam("opiskeluoikeusOid"))
+      kelaService.opiskeluoikeudenHistoria(getStringParam("opiskeluoikeusOid"))(session)
     }
   }
 
   get("/versiohistoria/:opiskeluoikeusOid/:version") {
     val oppija = for {
       opiskeluoikeusOid <- OpiskeluoikeusOid.validateOpiskeluoikeusOid(getStringParam("opiskeluoikeusOid"))
-      oppija <- kelaService.findKelaOppijaVersion(opiskeluoikeusOid, getIntegerParam("version"))
+      oppija <- kelaService.findKelaOppijaVersion(opiskeluoikeusOid, getIntegerParam("version"))(session)
     } yield oppija
 
     renderEither(oppija)

@@ -441,11 +441,6 @@ object MockUsers {
     "Suppea",
     "1.2.246.562.24.88888888111",
     Seq(OrganisaatioJaKäyttöoikeudet(MockOrganisaatiot.kela, List(
-      PalveluJaOikeus("KOSKI", Rooli.GLOBAALI_LUKU_PERUSOPETUS),
-      PalveluJaOikeus("KOSKI", Rooli.GLOBAALI_LUKU_TOINEN_ASTE),
-      PalveluJaOikeus("KOSKI", Rooli.GLOBAALI_LUKU_KORKEAKOULU),
-      PalveluJaOikeus("KOSKI", Rooli.GLOBAALI_LUKU_MUU_KUIN_SAANNELTY),
-      PalveluJaOikeus("KOSKI", Rooli.GLOBAALI_LUKU_TAITEENPERUSOPETUS),
       PalveluJaOikeus("KOSKI", Rooli.LUOTTAMUKSELLINEN_KELA_SUPPEA),
     )))
   )
@@ -455,11 +450,6 @@ object MockUsers {
     "Laaja",
     "1.2.246.562.24.88888888222",
     Seq(OrganisaatioJaKäyttöoikeudet(MockOrganisaatiot.kela, List(
-      PalveluJaOikeus("KOSKI", Rooli.GLOBAALI_LUKU_PERUSOPETUS),
-      PalveluJaOikeus("KOSKI", Rooli.GLOBAALI_LUKU_TOINEN_ASTE),
-      PalveluJaOikeus("KOSKI", Rooli.GLOBAALI_LUKU_KORKEAKOULU),
-      PalveluJaOikeus("KOSKI", Rooli.GLOBAALI_LUKU_MUU_KUIN_SAANNELTY),
-      PalveluJaOikeus("KOSKI", Rooli.GLOBAALI_LUKU_TAITEENPERUSOPETUS),
       PalveluJaOikeus("KOSKI", Rooli.LUOTTAMUKSELLINEN_KELA_LAAJA),
     )))
   )

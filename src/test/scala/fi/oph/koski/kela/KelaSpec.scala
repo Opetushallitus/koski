@@ -46,6 +46,13 @@ class KelaSpec
     "X-Forwarded-For" -> "0.0.0.0"
   )
 
+  private val viranomainenIlmanKelaRooliaCertificateHeaders: Headers = Map(
+    "x-amzn-mtls-clientcert-subject" -> "CN=viranomainen-ilman-kela-roolia",
+    "x-amzn-mtls-clientcert-serial-number" -> "123",
+    "x-amzn-mtls-clientcert-issuer" -> "CN=mock-issuer",
+    "X-Forwarded-For" -> "0.0.0.0"
+  )
+
   override def afterEach(): Unit = {
     super.afterEach()
     MockYtrClient.reset()
@@ -62,6 +69,15 @@ class KelaSpec
     "Palautetaan 400 jos pyyntö tehdään epävalidilla hetulla" in {
       postHetu("230305A015A") {
         verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.henkilötiedot.hetu("Virheellinen tarkistusmerkki hetussa: 230305A015A"))
+      }
+    }
+    "Palautetaan 403 viranomaiselle, jolla on lukuoikeuksia mutta ei Kela-roolia" in {
+      post(
+        "api/luovutuspalvelu/kela/hetu",
+        JsonSerializer.writeWithRoot(KelaRequest(KoskiSpecificMockOppijat.amis.hetu.get)),
+        headers = viranomainenIlmanKelaRooliaCertificateHeaders ++ jsonContent
+      ) {
+        verifyResponseStatus(403, KoskiErrorCategory.forbidden())
       }
     }
     "Korkeakoulun opiskeluoikeudet haetaan Virrasta ja palautetaan Kelalle" in {
@@ -860,6 +876,14 @@ class KelaSpec
           verifyResponseStatus(404, Nil)
         }
        }
+
+      "Ei palauta versiohistoriaa opiskeluoikeudesta, jonka tyyppi ei kuulu Kela-skeemaan" in {
+        val taiteenPerusopetus = lastOpiskeluoikeusByHetu(KoskiSpecificMockOppijat.taiteenPerusopetusAloitettu)
+
+        getVersiohistoria(taiteenPerusopetus.oid.get) {
+          verifyResponseStatus(404, Nil)
+        }
+      }
 
       "Jos opiskeluoikeus voidaan hakea hetulla, saadaan sama opiskeluoikeus myös historian kautta" in {
         var iteraatioLkm = 0
