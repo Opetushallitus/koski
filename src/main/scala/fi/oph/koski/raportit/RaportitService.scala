@@ -322,6 +322,14 @@ class RaportitService(application: KoskiApplication) {
     )
   }
 
+  def kunnanOppijat(request: RaporttiPäivältäRequest, kuntakoodi: String, t: LocalizationReader)(implicit u: KoskiSpecificSession) =
+    OppilaitosRaporttiResponse(
+      sheets = Seq(kotikuntalaskelmaBuilder.buildKunnanOppijat(kuntakoodi, request.paiva, t)),
+      workbookSettings = WorkbookSettings(t.get("raportti-excel-kunnanoppijat-title"), Some(request.password)),
+      filename = s"${t.get("raportti-excel-kunnanoppijat-tiedoston-etuliite")}_${request.oppilaitosOid}_${request.paiva}.xlsx",
+      downloadToken = request.downloadToken
+    )
+
   def kotikuntalaskelma(request: RaporttiPäivältäRequest, t: LocalizationReader)(implicit u: KoskiSpecificSession) = {
     val oppilaitosOids = accessResolver.kyselyOiditOrganisaatiolle(request.oppilaitosOid).toSeq
     OppilaitosRaporttiResponse(

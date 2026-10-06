@@ -5,9 +5,10 @@ import fi.oph.koski.documentation.ExampleData.{opiskeluoikeusEronnut, opiskeluoi
 import fi.oph.koski.documentation.PerusopetusExampleData
 import fi.oph.koski.documentation.YleissivistavakoulutusExampleData.oppilaitos
 import fi.oph.koski.henkilo.{KoskiSpecificMockOppijat, LaajatOppijaHenkilöTiedot}
-import fi.oph.koski.koskiuser.KoskiMockUser
+import fi.oph.koski.koskiuser.{KoskiMockUser, MockUsers}
 import fi.oph.koski.localization.LocalizationReader
 import fi.oph.koski.log.AuditLogTester
+import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.koodisto.Kunta
 import fi.oph.koski.organisaatio.MockOrganisaatiot.{aapajoenKoulu, helsinginKaupunki, jyväskylänNormaalikoulu}
 import fi.oph.koski.raportointikanta.RaportointikantaTestMethods
@@ -75,6 +76,27 @@ class KotikuntalaskelmaSpec extends AnyFreeSpec with Matchers with Raportointika
     uudetOppijatRivit.find(_.oppijaNumero.contains(oppija.oid)).get
 
   "Kunnan kuntalaiset muualla" - {
+    "Raportti voidaan ladata kunnalle ja lataaminen tuottaa auditlogin" in {
+      authGet(s"api/raportit/kunnanoppijat?oppilaitosOid=$helsinginKaupunki&paiva=$raportointipäivä&lang=fi&password=salasana", user = MockUsers.paakayttaja) {
+        verifyResponseStatusOk()
+        response.bodyBytes.take(ENCRYPTED_XLSX_PREFIX.length) should equal(ENCRYPTED_XLSX_PREFIX)
+        AuditLogTester.verifyLastAuditLogMessageForOperation(
+          Map(
+            "operation" -> "OPISKELUOIKEUS_RAPORTTI",
+            "target" -> Map(
+              "hakuEhto" -> s"raportti=kunnanoppijat&oppilaitosOid=$helsinginKaupunki&paiva=$raportointipäivä&lang=fi"
+            )
+          )
+        )
+      }
+    }
+
+    "Raporttia ei voi ladata organisaatiolle, joka ei ole kunta" in {
+      authGet(s"api/raportit/kunnanoppijat?oppilaitosOid=$aapajoenKoulu&paiva=$raportointipäivä&lang=fi&password=salasana") {
+        verifyResponseStatus(400, KoskiErrorCategory.badRequest.queryParam(s"Organisaatio $aapajoenKoulu ei ole kunta"))
+      }
+    }
+
     lazy val helsinkiläiset = kotikuntalaskelmaBuilder.kunnanOppijat(Kunta.helsinki, raportointipäivä, "Esiopetus")
 
     "Kunnan organisaatio-oidista saadaan kuntakoodi" in {

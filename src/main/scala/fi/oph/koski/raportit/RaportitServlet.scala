@@ -3,7 +3,8 @@ package fi.oph.koski.raportit
 import java.time.LocalDate
 import java.time.format.DateTimeParseException
 import java.util.concurrent.Semaphore
-import fi.oph.koski.config.KoskiApplication
+import fi.oph.koski.config.{Environment, KoskiApplication}
+import fi.oph.koski.koodisto.Kunta
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.koskiuser.{OoPtsMask, RequiresVirkailijaOrPalvelukäyttäjä}
 import fi.oph.koski.localization.LocalizationReader
@@ -218,6 +219,16 @@ class RaportitServlet(implicit val application: KoskiApplication) extends KoskiS
     val t = new LocalizationReader(application.koskiLocalizationRepository, parsedRequest.lang)
     AuditLog.log(KoskiAuditLogMessage(OPISKELUOIKEUS_RAPORTTI, session, Map(hakuEhto -> s"raportti=kotikuntalaskelma&oppilaitosOid=${parsedRequest.oppilaitosOid}&paiva=${parsedRequest.paiva}&lang=${parsedRequest.lang}")))
     writeExcel(raportitService.kotikuntalaskelma(parsedRequest, t), t)
+  }
+
+  // Ei vielä käyttöoikeusrajausta kuntalaisiin, joten vain lokaali- ja mock-ympäristöissä
+  get("/kunnanoppijat", Environment.isLocalDevelopmentEnvironment(application.config) || Environment.isMockEnvironment(application.config)) {
+    val parsedRequest = parseRaporttiPäivältäRequest
+    val kuntakoodi = Kunta.validateAndGetKuntaKoodi(organisaatioService, application.koodistoPalvelu, parsedRequest.oppilaitosOid)
+      .getOrElse(haltWithStatus(KoskiErrorCategory.badRequest.queryParam(s"Organisaatio ${parsedRequest.oppilaitosOid} ei ole kunta")))
+    val t = new LocalizationReader(application.koskiLocalizationRepository, parsedRequest.lang)
+    AuditLog.log(KoskiAuditLogMessage(OPISKELUOIKEUS_RAPORTTI, session, Map(hakuEhto -> s"raportti=kunnanoppijat&oppilaitosOid=${parsedRequest.oppilaitosOid}&paiva=${parsedRequest.paiva}&lang=${parsedRequest.lang}")))
+    writeExcel(raportitService.kunnanOppijat(parsedRequest, kuntakoodi, t), t)
   }
 
   get("/perusopetuksenoppijamaaratraportti") {

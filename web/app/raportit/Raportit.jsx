@@ -252,6 +252,12 @@ const kaikkiRaportitKategorioittain = [
         name: 'raportti-tab-kotikuntalaskelma',
         component: Kotikuntalaskelma,
         guard: () => hasFeatureFlag('kotikuntalaskelma')
+      },
+      {
+        id: 'kunnanoppijatraportti',
+        name: 'raportti-tab-kunnanoppijat',
+        component: KunnanOppijat,
+        guard: () => hasFeatureFlag('kunnanoppijat')
       }
     ]
   }
@@ -595,6 +601,25 @@ function Kotikuntalaskelma({ stateP }) {
     <RaporttiPaivalta
       stateP={stateP}
       apiEndpoint={'/kotikuntalaskelma'}
+      title={titleText}
+      shortDescription={shortDescriptionText}
+      dateInputHelp={dateInputHelpText}
+      example={exampleText}
+      lang={lang}
+    />
+  )
+}
+
+function KunnanOppijat({ stateP }) {
+  const titleText = <Text name="kunnanoppijat-title" />
+  const shortDescriptionText = <Text name="kunnanoppijat-short-description" />
+  const dateInputHelpText = <Text name="kunnanoppijat-date-input-help" />
+  const exampleText = <Paragraphs name="kunnanoppijat-example" />
+
+  return (
+    <RaporttiPaivalta
+      stateP={stateP}
+      apiEndpoint={'/kunnanoppijat'}
       title={titleText}
       shortDescription={shortDescriptionText}
       dateInputHelp={dateInputHelpText}

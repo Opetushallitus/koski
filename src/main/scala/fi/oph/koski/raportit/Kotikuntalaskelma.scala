@@ -202,6 +202,13 @@ case class Kotikuntalaskelma(db: DB) extends QueryMethods {
     )
   }
 
+  def buildKunnanOppijat(kuntakoodi: String, päivä: LocalDate, t: LocalizationReader)(implicit u: KoskiSpecificSession): DataSheet =
+    DataSheet(
+      title = t.get("raportti-excel-kunnanoppijat-sheet-name"),
+      rows = kunnanOppijat(kuntakoodi, päivä, t.get("raportti-excel-default-value-esiopetus-lyhyt")),
+      columnSettings = oppijaColumnSettings(t)
+    )
+
   // Turvakiellon alaiset jäävät pois: julkisesta kotikuntahistoriasta puuttuvat heidän kotikuntansa
   def kunnanOppijat(kuntakoodi: String, päivä: LocalDate, esiopetusLuokkaAste: String): Seq[KotikuntalaskelmaOppijaRow] =
     runDbSync(oppijaQuery(kotikunnassa(kuntakoodi, päivä), päivä, esiopetusLuokkaAste).as[KotikuntalaskelmaOppijaRow], timeout = 5.minutes)
