@@ -377,37 +377,35 @@ const Oppiainetaulukko: React.FC<OppiainetaulukkoProps> = ({
   })
 
   return (
-    <>
-      {title && <h5>{t(title)}</h5>}
-      <OsasuoritusTable
-        editMode={form.editMode}
-        columns={columns}
-        rows={rows}
-        expandedContentIndent={3}
-        onRemove={(rowIndex) => {
-          const dataIndex = allOsasuoritukset.indexOf(osasuoritukset[rowIndex])
-          if (dataIndex >= 0) {
-            form.updateAt(suoritusPath, (pts) => ({
-              ...pts,
-              osasuoritukset: deleteAt(pts.osasuoritukset || [], dataIndex)
-            }))
-          }
-        }}
-        addNewOsasuoritusView={
-          sekamuotoinen
-            ? undefined
-            : isToimintaAlueittain
-              ? UusiPerusopetuksenToimintaAlue
-              : UusiPerusopetuksenOppiaine
+    <OsasuoritusTable
+      title={title ? <h5>{t(title)}</h5> : undefined}
+      editMode={form.editMode}
+      columns={columns}
+      rows={rows}
+      expandedContentIndent={3}
+      onRemove={(rowIndex) => {
+        const dataIndex = allOsasuoritukset.indexOf(osasuoritukset[rowIndex])
+        if (dataIndex >= 0) {
+          form.updateAt(suoritusPath, (pts) => ({
+            ...pts,
+            osasuoritukset: deleteAt(pts.osasuoritukset || [], dataIndex)
+          }))
         }
-        addNewOsasuoritusViewProps={{
-          form,
-          suoritusPath,
-          pakollinen,
-          existingOsasuoritukset: allOsasuoritukset
-        }}
-      />
-    </>
+      }}
+      addNewOsasuoritusView={
+        sekamuotoinen
+          ? undefined
+          : isToimintaAlueittain
+            ? UusiPerusopetuksenToimintaAlue
+            : UusiPerusopetuksenOppiaine
+      }
+      addNewOsasuoritusViewProps={{
+        form,
+        suoritusPath,
+        pakollinen,
+        existingOsasuoritukset: allOsasuoritukset
+      }}
+    />
   )
 }
 
@@ -444,45 +442,48 @@ const GroupedOppiaineet: React.FC<GroupedOppiaineetProps> = ({
       !s.koulutusmoduuli.pakollinen
   )
 
+  // Käyttäytymisen arviointi on yhteisten oppiaineiden jatkeena eikä
+  // valinnaisten paikalla: ilman valinnaisia aineita se jäisi oikean sarakkeen
+  // ainoaksi sisällöksi ja näyttäisi oppiaineryhmän veroiselta.
   return (
     <ColumnRow valign="top">
-      {(pakolliset.length > 0 || form.editMode) && (
+      {(pakolliset.length > 0 || form.editMode || käyttäytymisenArvio) && (
         <Column
           span={{ default: 12, large: 24 }}
           data-testid="oppiaineet-pakolliset"
         >
-          <Oppiainetaulukko
-            osasuoritukset={pakolliset}
-            suoritusIndex={suoritusIndex}
-            isToimintaAlueittain={isToimintaAlueittain}
-            columnHeader="Oppiaine"
-            title="Pakolliset oppiaineet"
-            pakollinen={true}
-            form={form}
-            suoritusPath={suoritusPath}
-            showArvosana={showArvosana}
-          />
-        </Column>
-      )}
-      {(valinnaiset.length > 0 || form.editMode || käyttäytymisenArvio) && (
-        <Column
-          span={{ default: 12, large: 24 }}
-          data-testid="oppiaineet-valinnaiset"
-        >
-          {(valinnaiset.length > 0 || form.editMode) && (
+          {(pakolliset.length > 0 || form.editMode) && (
             <Oppiainetaulukko
-              osasuoritukset={valinnaiset}
+              osasuoritukset={pakolliset}
               suoritusIndex={suoritusIndex}
               isToimintaAlueittain={isToimintaAlueittain}
               columnHeader="Oppiaine"
-              title="Valinnaiset oppiaineet"
-              pakollinen={false}
+              title="Pakolliset oppiaineet"
+              pakollinen={true}
               form={form}
               suoritusPath={suoritusPath}
               showArvosana={showArvosana}
             />
           )}
           {käyttäytymisenArvio}
+        </Column>
+      )}
+      {(valinnaiset.length > 0 || form.editMode) && (
+        <Column
+          span={{ default: 12, large: 24 }}
+          data-testid="oppiaineet-valinnaiset"
+        >
+          <Oppiainetaulukko
+            osasuoritukset={valinnaiset}
+            suoritusIndex={suoritusIndex}
+            isToimintaAlueittain={isToimintaAlueittain}
+            columnHeader="Oppiaine"
+            title="Valinnaiset oppiaineet"
+            pakollinen={false}
+            form={form}
+            suoritusPath={suoritusPath}
+            showArvosana={showArvosana}
+          />
         </Column>
       )}
     </ColumnRow>
@@ -1247,7 +1248,7 @@ const KäyttäytymisenArvioField: React.FC<{
 
   return (
     <TestIdLayer id="kayttaytyminen">
-      <div className="kayttaytyminen">
+      <div className="PerusopetuksenOppiaineet__kayttaytyminen">
         <h5>
           {t('Käyttäytymisen arviointi')}
           {form.editMode && hasArvio && (

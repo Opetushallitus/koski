@@ -14,6 +14,17 @@
       padding-left: @h-padding;
     }
   }
+
+  // Ryhmän otsikko alkaa reunasta kuten taulukon yläpuolinen sisältö.
+  .Column.OsasuoritusHeader__title {
+    padding-left: 0;
+  }
+}
+
+// Samalla rivillä ryhmän otsikon kanssa sarakeotsikot ovat harmaita, jotta
+// otsikko erottuu niistä.
+.OsasuoritusHeader--title .Column:not(.OsasuoritusHeader__title) {
+  color: @color-label-darker;
 }
 
 .OsasuoritusProperty {
