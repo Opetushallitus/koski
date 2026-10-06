@@ -23,6 +23,8 @@ import scala.jdk.CollectionConverters._
 class KelaEstolistaSpec extends AnyFreeSpec with TestEnvironment with Matchers {
   private val session: KoskiSpecificSession = KoskiSpecificSession.systemUser
 
+  // Jokainen KoskiApplication avaa omat tietokantapoolinsa eikä sulje niitä, joten palvelut
+  // jaetaan testien kesken: yksi per estolista-konfiguraatio.
   private def kelaService(estetytTyypit: List[String]): KelaService =
     new KelaService(KoskiApplication(
       KoskiApplicationForTests.config.withValue(
@@ -31,6 +33,10 @@ class KelaEstolistaSpec extends AnyFreeSpec with TestEnvironment with Matchers {
       )
     ))
 
+  private lazy val estoton = kelaService(Nil)
+  private lazy val korkeakouluEstetty = kelaService(List("korkeakoulutus"))
+  private lazy val ammatillinenEstetty = kelaService(List("ammatillinenkoulutus"))
+
   private def opiskeluoikeustyypit(service: KelaService, hetu: String): List[String] =
     service.findKelaOppijaByHetu(hetu)(session)
       .map(_.opiskeluoikeudet.map(_.tyyppi.koodiarvo).toList)
@@ -38,31 +44,31 @@ class KelaEstolistaSpec extends AnyFreeSpec with TestEnvironment with Matchers {
 
   "Estolista" - {
     "rajaa myös versiohistorian" in {
-      val amiksenOo = kelaService(Nil).findKelaOppijaByHetu(KoskiSpecificMockOppijat.amis.hetu.get)(session)
+      val amiksenOo = estoton.findKelaOppijaByHetu(KoskiSpecificMockOppijat.amis.hetu.get)(session)
         .toOption.flatMap(_.opiskeluoikeudet.collectFirst { case oo: KelaAmmatillinenOpiskeluoikeus => oo.oid.get })
         .get
 
-      kelaService(Nil).opiskeluoikeudenHistoria(amiksenOo)(session) should not be empty
-      kelaService(List("ammatillinenkoulutus")).opiskeluoikeudenHistoria(amiksenOo)(session) shouldBe empty
+      estoton.opiskeluoikeudenHistoria(amiksenOo)(session) should not be empty
+      ammatillinenEstetty.opiskeluoikeudenHistoria(amiksenOo)(session) shouldBe empty
     }
 
     "rajaa määritellyn opiskeluoikeustyypin pois" in {
       opiskeluoikeustyypit(
-        kelaService(List("korkeakoulutus")),
+        korkeakouluEstetty,
         KoskiSpecificMockOppijat.dippainssi.hetu.get
       ) should not contain "korkeakoulutus"
     }
 
     "ei rajaa mitään kun sitä ei ole asetettu" in {
       opiskeluoikeustyypit(
-        kelaService(Nil),
+        estoton,
         KoskiSpecificMockOppijat.dippainssi.hetu.get
       ) should contain("korkeakoulutus")
     }
 
     "ei vaikuta muihin tyyppeihin" in {
       opiskeluoikeustyypit(
-        kelaService(List("korkeakoulutus")),
+        korkeakouluEstetty,
         KoskiSpecificMockOppijat.amis.hetu.get
       ) should not be empty
     }
