@@ -73,7 +73,7 @@
     "stylelint-no-unsupported-browser-features": "8.1.2",
     "tree-kill": "1.2.2",
     "ts-jest": "29.4.14",
-    "typescript": "5.9.3",
+    "typescript": "6.0.3",
     "typescript-eslint": "8.71.0"
   },
   "dependencies": {

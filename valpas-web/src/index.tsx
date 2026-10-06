@@ -8,7 +8,7 @@ import { getLanguage } from "./i18n/i18n"
 import { enableFeature } from "./state/featureFlags"
 import "./style/index.less"
 import { ValpasApp } from "./views/ValpasApp"
-import "./window.ts"
+import "./window"
 
 // Hack: Pakotetaan Parcel pitämään nämä mukana bundlessa
 // Kts. https://github.com/date-fns/date-fns/issues/3670#issuecomment-1899246376
