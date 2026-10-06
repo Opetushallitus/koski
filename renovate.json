@@ -359,15 +359,6 @@
       "additionalBranchPrefix": "schema-viewer-"
     },
     {
-      "description": "Maintain the schema viewer lockfile separately, with manual review of its legacy library stack.",
-      "matchManagers": ["npm"],
-      "matchFileNames": ["json-schema-viewer/package.json"],
-      "matchUpdateTypes": ["lockFileMaintenance"],
-      "groupName": "schema viewer lock file maintenance",
-      "automerge": false,
-      "additionalBranchPrefix": "schema-viewer-"
-    },
-    {
       "description": "Label PRs that Renovate will merge automatically and exempt them from the PR limits. This must be the last rule, so that it sees the automerge value set by the rules above.",
       "matchJsonata": ["automerge = true"],
       "addLabels": ["automerge"],

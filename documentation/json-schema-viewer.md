@@ -228,7 +228,9 @@ query-less.
   jQuery Mobile 1.4.5, which requires Migrate with the current jQuery 3.7.1
   integration; Migrate must load before Mobile. Other libraries use the existing
   versions from npm, locked in this package's `pnpm-lock.yaml`.
-  Renovate library updates and lockfile maintenance require manual review.
+  Renovate library updates require manual review. Lockfile maintenance
+  automerges with the other npm lockfiles: the runtime libraries are pinned and
+  have no transitive dependencies, so it only updates build tooling.
 - After a build, hard-refresh the browser. Verify the served output with e.g.
   `curl -s http://localhost:7021/koski/json-schema-viewer/styles/json-schema-viewer.css`.
 - Viewer tests use Koski's existing Playwright setup:
