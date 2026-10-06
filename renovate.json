@@ -132,6 +132,16 @@
       "rebaseWhen": "behind-base-branch"
     },
     {
+      "description": "Automerge the Trivy CLI version that trivy-action installs, together with the actions. Renovate extracts it as a uses-with dependency, which the rule above does not match.",
+      "matchManagers": ["github-actions"],
+      "matchDepTypes": ["uses-with"],
+      "matchPackageNames": ["aquasecurity/trivy"],
+      "matchUpdateTypes": ["minor", "patch"],
+      "groupName": "github actions non-major",
+      "automerge": true,
+      "rebaseWhen": "behind-base-branch"
+    },
+    {
       "description": "Raise runner image updates on their own. The github-runners datasource has no release dates, so the strict internalChecksFilter would hold these back forever unless minimumReleaseAge is lifted.",
       "matchDatasources": ["github-runners"],
       "groupName": "GitHub runner images",
