@@ -16,7 +16,7 @@ import fi.oph.koski.xml.NodeSeqImplicits._
 
 object KoskiSchemaDocumentHtml {
   def mainSchema = KoskiSchema.schema
-  def html(shallowEntities: ClassSchema => Boolean = const(false), focusEntities: ClassSchema => Boolean = const(false), expandEntities: ClassSchema => Boolean = const(true), lang: String, nonce: String)(implicit rootSchema: ClassSchema = mainSchema) = {
+  def html(shallowEntities: ClassSchema => Boolean = const(false), focusEntities: ClassSchema => Boolean = const(false), expandEntities: ClassSchema => Boolean = const(true), lang: String, nonce: String, virtaSources: Boolean = true)(implicit rootSchema: ClassSchema = mainSchema) = {
     val backlog: List[BacklogItem] = buildBacklog(rootSchema, Some(Nil), Nil, new ArrayBuffer[BacklogItem], shallowEntities, focusEntities, expandEntities).toList
       .sortBy(-_.breadcrumbs.toList.length) // Nones last
 
@@ -31,7 +31,7 @@ object KoskiSchemaDocumentHtml {
       <body>
         <h1>{title}</h1>
         {
-          backlogHtml(backlog, shallowEntities)
+          backlogHtml(backlog, shallowEntities, virtaSources)
         }
       </body>
     </html>
@@ -147,15 +147,15 @@ object KoskiSchemaDocumentHtml {
     case _ => Nil
   }
 
-  private def backlogHtml(backlog: List[BacklogItem], shallowEntities: ClassSchema => Boolean)(implicit rootSchema: ClassSchema): List[Elem] = {
+  private def backlogHtml(backlog: List[BacklogItem], shallowEntities: ClassSchema => Boolean, virtaSources: Boolean)(implicit rootSchema: ClassSchema): List[Elem] = {
     val classSchemaToAnchor = anchorsFor(backlog)
-    backlog.map(item => classHtml(item, classSchemaToAnchor, shallowEntities))
+    backlog.map(item => classHtml(item, classSchemaToAnchor, shallowEntities, virtaSources))
   }
 
   // item is the exact schema section to render, including path-specific schema variants and optional breadcrumbs.
   // classSchemaToAnchor contains every schema variant rendered in this document and maps each to its HTML id.
   // shallowEntities controls whether links to non-expanded schemas point to another generated entity page.
-  private def classHtml(item: BacklogItem, classSchemaToAnchor: Map[ClassSchema, String], shallowEntities: ClassSchema => Boolean)(implicit rootSchema: ClassSchema) = <div class="entity">
+  private def classHtml(item: BacklogItem, classSchemaToAnchor: Map[ClassSchema, String], shallowEntities: ClassSchema => Boolean, virtaSources: Boolean)(implicit rootSchema: ClassSchema) = <div class="entity">
     <h3 id={anchorFor(item.schema, classSchemaToAnchor)}>{item.breadcrumbs.toList.flatten.map(bc => <span class="breadcrum"><a href={"#" + urlEncode(anchorFor(bc.schema, classSchemaToAnchor))}>{bc.schema.title}</a> &gt; </span>)}{item.schema.title}</h3>
     {descriptionHtml(item.schema)}
     <table>
@@ -181,7 +181,7 @@ object KoskiSchemaDocumentHtml {
               <td class="lukumäärä">{cardinality}</td>
               <td class="tyyppi">
                 {schemaTypeHtml(item.schema, resolvedItemSchema, classSchemaToAnchor, shallowEntities)}
-                {metadataHtml(metadatas)}
+                {metadataHtml(metadatas, virtaSources)}
                 {enumValuesHtml(item, p)}
               </td>
               <td class="kuvaus">
@@ -236,12 +236,15 @@ object KoskiSchemaDocumentHtml {
     case MaxItems(max) => max
   }.headOption
 
-  private def metadataHtml(metadatas: List[Metadata]) = {
+  private def metadataHtml(metadatas: List[Metadata], virtaSources: Boolean) = {
     {
       metadatas.flatMap {
         case k: KoodistoUri =>Some(<div class="koodisto">Koodisto: {k.asLink}</div>)
         case k: KoodistoKoodiarvo =>Some(<div class="koodiarvo">Hyväksytty koodiarvo: {k.arvo}</div>)
         case o: OksaUri => Some(<div class="oksa">Oksa: {o.asLink}</div>)
+        case v: VirtaSource if virtaSources => Some(<div class="virta">Virta: <code>{v.path}</code>{if (v.rule.nonEmpty) s" — ${v.rule}" else ""}</div>)
+        case v: VirtaDerived if virtaSources => Some(<div class="virta">Virta: johdettu Koskessa — {v.rule}</div>)
+        case v: VirtaNote if virtaSources => Some(<div class="virta virta-note">{v.text}</div>)
         case _ => None
       }
     }

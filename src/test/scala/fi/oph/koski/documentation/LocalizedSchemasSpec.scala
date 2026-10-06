@@ -8,7 +8,7 @@ import org.scalatest.matchers.should.Matchers
 
 class LocalizedSchemasSpec extends AnyFreeSpec with TestEnvironment with Matchers {
   private val localizedSchemas =
-    new LocalizedSchemas(KoskiApplicationForTests.koskiLocalizationRepository)(KoskiApplicationForTests.cacheManager)
+    new LocalizedSchemas(KoskiApplicationForTests.koskiLocalizationRepository, virtaSources = true)(KoskiApplicationForTests.cacheManager)
 
   "koski-oppija-schema.json is enriched with fi/sv/en translations on many nodes" in {
     val ts = translations(localizedSchemas("koski-oppija-schema.json"))
