@@ -35,10 +35,3 @@ runs:
         MOCHA_SHARD_TOTAL: ${{inputs.shardTotal}}
       run: mvn scalatest:test -Dsuites="fi.oph.koski.mocha.KoskiParallelMochaSpec" --batch-mode --no-snapshot-updates
       shell: bash
-
-    - name: Archive test screenshots
-      if: ${{ failure() }}
-      uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
-      with:
-        name: screenshots
-        path: web/target/screenshots

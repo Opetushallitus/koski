@@ -141,10 +141,6 @@ visual-update:
 omadataoauth2e2e:
 		mvn $(mvn_opts) -DargLine="$(mvn_argline)" test -Dsuites="fi.oph.koski.omadataoauth2.e2e.OmaDataOAuth2E2ESpec"
 
-.PHONY: screenshot
-screenshot:
-	ls -t web/target/screenshots|head -1|xargs -I{} open web/target/screenshots/{}
-
 .PHONY: test
 test: backtest fronttest backtestnonmock
 

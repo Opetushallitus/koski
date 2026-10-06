@@ -282,31 +282,6 @@ function openPage(path, predicate, width) {
   }
 }
 
-function takeScreenshot(name) {
-  return function () {
-    var date = new Date()
-    var path = 'target/screenshots/'
-    var filename =
-      path +
-      (name
-        .toLowerCase()
-        .replace(/ /g, '_')
-        .replace(/ä/g, 'a')
-        .replace(/ö/g, 'o')
-        .replace(/"/g, '') || date.getTime())
-    console.log('Taking screenshot web/' + filename + '.png')
-    return Promise.resolve(
-      html2canvas(testFrame().document.body).then(function (canvas) {
-        $(document.body).append(
-          $('<div>')
-            .append($('<h4>').text('Screenshot: ' + filename))
-            .append($(canvas))
-        )
-      })
-    )
-  }
-}
-
 function textsOf(elements) {
   elements = evalFunc(elements)
   return toArray(elements).map(function (el) {
