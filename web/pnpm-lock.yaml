@@ -144,9 +144,6 @@ importers:
       less-loader:
         specifier: 13.0.0
         version: 13.0.0(less@4.9.1)(webpack@5.111.1)
-      lodash:
-        specifier: 4.18.1
-        version: 4.18.1
       mocha:
         specifier: 12.0.3
         version: 12.0.3
@@ -2161,9 +2158,6 @@ packages:
 
   lodash.truncate@4.4.2:
     resolution: {integrity: sha512-jttmRe7bRse52OsWIMDLaXxWqRAmtIUccAQ3garviCqJjafXOfNMO0yMfNpdD6zbGaTU0P5Nz7e7gAT6cKmJRw==}
-
-  lodash@4.18.1:
-    resolution: {integrity: sha512-dMInicTPVE8d1e5otfwmmjlxkZoUpiVLwyeTdUsi/Caj/gfzzblBcCE5sRHV/AsjuCmxWrte2TNGSYuCeCq+0Q==}
 
   loose-envify@1.4.0:
     resolution: {integrity: sha512-lyuxPGr/Wfhrlem2CL/UcnUc1zcqKAImBDzukY7Y5F/yQiNdko6+fRLevlw1HgMySw7f611UIY408EtxRSoK3Q==}
@@ -5115,8 +5109,6 @@ snapshots:
     optional: true
 
   lodash.truncate@4.4.2: {}
-
-  lodash@4.18.1: {}
 
   loose-envify@1.4.0:
     dependencies:

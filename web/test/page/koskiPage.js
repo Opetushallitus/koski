@@ -9,7 +9,13 @@ function KoskiPage() {
       if (expectedResults instanceof Array) {
         var resultList = expectedResults
         expectedResults = function () {
-          return _.isEqual(resultList, OppijaHaku.getSearchResults())
+          var results = OppijaHaku.getSearchResults()
+          return (
+            results.length === resultList.length &&
+            results.every(function (result, i) {
+              return result === resultList[i]
+            })
+          )
         }
       } else if (typeof expectedResults === 'string') {
         var expectedString = expectedResults

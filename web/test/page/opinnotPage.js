@@ -223,7 +223,7 @@ function OpinnotPage() {
       var elem = findSingle('.opiskeluoikeus-content', function () {
         return resolveOpiskeluoikeus(index, omatTiedot)
       })
-      return _.merge(Editor(elem), {
+      return Object.assign(Editor(elem), {
         päättymispäivä: function () {
           return elem().find('.päättymispäivä').text()
         }
@@ -414,7 +414,7 @@ function Oppiaineet() {
 
 function Oppiaine(oppiaineElem) {
   var editorApi = Editor(oppiaineElem)
-  var oppiaineApi = _.merge(
+  var oppiaineApi = Object.assign(
     {
       text: function () {
         return extractAsText(oppiaineElem)
@@ -531,7 +531,7 @@ function Oppiaine(oppiaineElem) {
       return api.propertyBySelector('.laajuus .arvo')
     }
 
-    var api = _.merge(
+    var api = Object.assign(
       {
         valitseKurssi: function (kurssi) {
           return kurssiDropdown().setValue(kurssi)
@@ -643,7 +643,7 @@ function TutkinnonOsat(groupId, base) {
         base
       )
 
-      var api = _.merge(
+      var api = Object.assign(
         {
           tila: function () {
             return findSingle('.tila', tutkinnonOsaElement)().attr('title')
@@ -1224,7 +1224,7 @@ function VSTSuoritukset(prev) {
       }
     }
   }
-  return _.merge(
+  return Object.assign(
     api,
     Editor(S(selectedOsasuoritus)),
     Property(function () {
@@ -1296,7 +1296,7 @@ function TUVASuoritukset(prev) {
       }
     }
   }
-  return _.merge(
+  return Object.assign(
     api,
     Editor(S(selectedOsasuoritus)),
     Property(function () {
@@ -1559,7 +1559,7 @@ function LisääSuoritusDialog() {
   function link(text) {
     return findSingle('.add-suoritus a:contains(' + (text || '') + ')')
   }
-  var api = _.merge(
+  var api = Object.assign(
     {
       isLinkVisible: function (text) {
         return isElementVisible(link(text))
@@ -1795,7 +1795,7 @@ function Editor(elem) {
 
 function Property(elem) {
   if (typeof elem !== 'function') throw new Error('elem has to be function')
-  return _.merge(
+  return Object.assign(
     {
       addValue: seq(
         click(findSingle('.add-value', elem)),
