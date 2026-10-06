@@ -1,5 +1,15 @@
 module.exports = {
-  preset: "ts-jest",
+  transform: {
+    "^.+\\.tsx?$": [
+      "@swc/jest",
+      {
+        jsc: {
+          parser: { syntax: "typescript", tsx: true },
+          target: "es2022",
+        },
+      },
+    ],
+  },
   moduleNameMapper: {
     ".*\\.less$": "<rootDir>/test/mocks/styleMock.js",
   },
