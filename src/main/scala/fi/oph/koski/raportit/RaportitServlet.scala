@@ -3,7 +3,7 @@ package fi.oph.koski.raportit
 import java.time.LocalDate
 import java.time.format.DateTimeParseException
 import java.util.concurrent.Semaphore
-import fi.oph.koski.config.{Environment, KoskiApplication}
+import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.koodisto.Kunta
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.koskiuser.{OoPtsMask, RequiresVirkailijaOrPalvelukäyttäjä}
@@ -221,8 +221,13 @@ class RaportitServlet(implicit val application: KoskiApplication) extends KoskiS
     writeExcel(raportitService.kotikuntalaskelma(parsedRequest, t), t)
   }
 
-  // Ei vielä käyttöoikeusrajausta kuntalaisiin, joten vain lokaali- ja mock-ympäristöissä
-  get("/kunnanoppijat", Environment.isLocalDevelopmentEnvironment(application.config) || Environment.isMockEnvironment(application.config)) {
+  get("/kunnanoppijat") {
+    requireOpiskeluoikeudenKayttooikeudet(
+      OpiskeluoikeudenTyyppi.perusopetus,
+      OpiskeluoikeudenTyyppi.esiopetus,
+      OpiskeluoikeudenTyyppi.internationalschool,
+      OpiskeluoikeudenTyyppi.europeanschoolofhelsinki
+    )
     val parsedRequest = parseRaporttiPäivältäRequest
     val kuntakoodi = Kunta.validateAndGetKuntaKoodi(organisaatioService, application.koodistoPalvelu, parsedRequest.oppilaitosOid)
       .getOrElse(haltWithStatus(KoskiErrorCategory.badRequest.queryParam(s"Organisaatio ${parsedRequest.oppilaitosOid} ei ole kunta")))
