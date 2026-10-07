@@ -170,7 +170,14 @@ case class Kotikuntalaskelma(db: DB) extends QueryMethods {
   )
   }
 
-  implicit private val getOppijaResult: GetResult[KotikuntalaskelmaOppijaRow] = GetResult(r =>
+  implicit private val getKunnanOppijaResult: GetResult[KunnanOppijaRow] = GetResult(r => {
+    val o = getOppijaResult(r)
+    KunnanOppijaRow(o.oppijaNumero, o.hetu, o.yksiloity, o.etunimet, o.sukunimi, o.kotikunta,
+      Option(r.rs.getString("opetuksen_jarjestaja")), o.oppilaitos, o.luokkaAste, o.luokka, o.kuusi,
+      o.seitsemänKaksitoista, o.kolmetoistaViisitoista, o.kuusitoistaErityisenTuenPerusteella, o.kuusitoistaEiErityisenTuenPerusteella)
+  })
+
+  implicit private lazy val getOppijaResult: GetResult[KotikuntalaskelmaOppijaRow] = GetResult(r =>
     KotikuntalaskelmaOppijaRow(
       oppijaNumero = Option(r.rs.getString("oppija_numero")),
       hetu = Option(r.rs.getString("hetu")),
@@ -207,12 +214,12 @@ case class Kotikuntalaskelma(db: DB) extends QueryMethods {
     DataSheet(
       title = t.get("raportti-excel-kunnanoppijat-sheet-name"),
       rows = kunnanOppijat(kuntakoodi, päivä, t.get("raportti-excel-default-value-esiopetus-lyhyt")),
-      columnSettings = oppijaColumnSettings(t)
+      columnSettings = kunnanOppijatColumnSettings(t)
     )
 
   // Turvakiellon alaiset jäävät pois: julkisesta kotikuntahistoriasta puuttuvat heidän kotikuntansa
-  def kunnanOppijat(kuntakoodi: String, päivä: LocalDate, esiopetusLuokkaAste: String): Seq[KotikuntalaskelmaOppijaRow] =
-    runDbSync(oppijaQuery(kotikunnassa(kuntakoodi, päivä), päivä, esiopetusLuokkaAste, julkinenKotikuntahistoria, piilotaTurvakielto = true).as[KotikuntalaskelmaOppijaRow], timeout = 5.minutes)
+  def kunnanOppijat(kuntakoodi: String, päivä: LocalDate, esiopetusLuokkaAste: String): Seq[KunnanOppijaRow] =
+    runDbSync(oppijaQuery(kotikunnassa(kuntakoodi, päivä), päivä, esiopetusLuokkaAste, julkinenKotikuntahistoria, piilotaTurvakielto = true).as[KunnanOppijaRow], timeout = 5.minutes)
 
   private def oppijaValitutKentät(piilotaTurvakielto: Boolean): SQLActionBuilder =
     if (piilotaTurvakielto) sql"""
@@ -222,6 +229,7 @@ case class Kotikuntalaskelma(db: DB) extends QueryMethods {
       case when bool_or(he.turvakielto) then null else max(he.etunimet) end as etunimet,
       case when bool_or(he.turvakielto) then null else max(he.sukunimi) end as sukunimi,
       case when bool_or(he.turvakielto) then null else max(kkh.kotikunta_nimi_fi) end as kotikunta,
+      case when bool_or(he.turvakielto) then null else max(valittu.koulutustoimija_nimi) end as opetuksen_jarjestaja,
       case when bool_or(he.turvakielto) then null else max(valittu.oppilaitos_nimi) end as oppilaitos,
       case when bool_or(he.turvakielto) then null else max(valittu.luokka_aste) end as luokka_aste,
       case when bool_or(he.turvakielto) then null else max(valittu.luokka) end as luokka,
@@ -233,6 +241,7 @@ case class Kotikuntalaskelma(db: DB) extends QueryMethods {
       max(he.etunimet) as etunimet,
       max(he.sukunimi) as sukunimi,
       max(kkh.kotikunta_nimi_fi) as kotikunta,
+      max(valittu.koulutustoimija_nimi) as opetuksen_jarjestaja,
       max(valittu.oppilaitos_nimi) as oppilaitos,
       max(valittu.luokka_aste) as luokka_aste,
       max(valittu.luokka) as luokka,
@@ -254,6 +263,7 @@ case class Kotikuntalaskelma(db: DB) extends QueryMethods {
     valittu as (
       select distinct on (he.master_oid)
         he.master_oid,
+        oo.koulutustoimija_nimi,
         oo.oppilaitos_nimi,
         case pts.suorituksen_tyyppi
           when 'perusopetuksenoppimaara' then null
@@ -302,6 +312,11 @@ case class Kotikuntalaskelma(db: DB) extends QueryMethods {
     Some(oppijaJärjestys(piilotaTurvakielto))
   )
 
+  private def kunnanOppijatColumnSettings(t: LocalizationReader): Seq[(String, Column)] = {
+    val (ennen, jälkeen) = oppijaColumnSettings(t).splitAt(oppijaColumnSettings(t).indexWhere(_._1 == "oppilaitos"))
+    ennen ++ Seq("opetuksenJärjestäjä" -> Column(t.get("raportti-excel-kolumni-opetuksenJarjestaja"))) ++ jälkeen
+  }
+
   private def oppijaColumnSettings(t: LocalizationReader): Seq[(String, Column)] = Seq(
     "oppijaNumero" -> Column(t.get("raportti-excel-kolumni-oppijaNumero")),
     "hetu" -> Column(t.get("raportti-excel-kolumni-hetu")),
@@ -344,6 +359,24 @@ case class KotikuntalaskelmaRow(
   kuusitoistaErityisenTuenPerusteella: Int,
   kuusitoistaEiErityisenTuenPerusteella: Int,
   yhteensä: Int
+)
+
+case class KunnanOppijaRow(
+  oppijaNumero: Option[String],
+  hetu: Option[String],
+  yksiloity: Option[Boolean],
+  etunimet: Option[String],
+  sukunimi: Option[String],
+  kotikunta: Option[String],
+  opetuksenJärjestäjä: Option[String],
+  oppilaitos: Option[String],
+  luokkaAste: Option[String],
+  luokka: Option[String],
+  kuusi: Boolean,
+  seitsemänKaksitoista: Boolean,
+  kolmetoistaViisitoista: Boolean,
+  kuusitoistaErityisenTuenPerusteella: Boolean,
+  kuusitoistaEiErityisenTuenPerusteella: Boolean
 )
 
 case class KotikuntalaskelmaOppijaRow(

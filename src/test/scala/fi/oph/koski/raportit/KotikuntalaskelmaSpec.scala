@@ -115,7 +115,13 @@ class KotikuntalaskelmaSpec extends AnyFreeSpec with Matchers with Raportointika
         val rivi = helsinkiläiset.find(_.oppijaNumero.contains(oid))
         rivi.map(_.oppilaitos) shouldBe Some(Some("Aapajoen koulu"))
         rivi.get.kotikunta shouldBe Some("Helsinki")
+        rivi.get.opetuksenJärjestäjä shouldBe Some("Tornion kaupunki")
       }
+    }
+
+    "Opetuksen järjestäjä on kotikunnan ja oppilaitoksen välissä" in {
+      val sarakkeet = kotikuntalaskelmaBuilder.buildKunnanOppijat(Kunta.helsinki, raportointipäivä, t)(session(defaultUser)).columnSettings.map(_._1)
+      sarakkeet.slice(sarakkeet.indexOf("kotikunta"), sarakkeet.indexOf("kotikunta") + 3) shouldBe Seq("kotikunta", "opetuksenJärjestäjä", "oppilaitos")
     }
 
     "Muiden kuntien asukkaat eivät näy" in {
