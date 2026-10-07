@@ -241,9 +241,11 @@ case class Kotikuntalaskelma(db: DB) extends QueryMethods {
   private def oppijaJärjestys(piilotaTurvakielto: Boolean): SQLActionBuilder =
     if (piilotaTurvakielto)
       // Turvakieltorivit loppuun, ettei oidia voi rajata naapuririvien perusteella
-      sql"order by bool_or(he.turvakielto), he.master_oid"
+      sql"""
+    order by bool_or(he.turvakielto), he.master_oid"""
     else
-      sql"order by he.master_oid"
+      sql"""
+    order by he.master_oid"""
 
   private def oppijaQuery(rajaus: SQLActionBuilder, päivä: LocalDate, esiopetusLuokkaAste: String, kotikuntahistoria: String, piilotaTurvakielto: Boolean) = concatMany(
     Some(sql"with "),
