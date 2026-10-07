@@ -33,7 +33,7 @@ import {
 } from '../types/EditorModels'
 import { BaseContext, Contextualized } from '../types/EditorModelContext'
 import { Bus, Observable } from 'baconjs'
-import classNames from 'classnames'
+import { cx } from '../components-v2/CommonProps'
 import {
   ebSuorituksenTyyppi,
   eshSuorituksenTyyppi
@@ -330,9 +330,11 @@ export const ExpandAllRows = ({
         <div>
           {allExpandedP.map((allExpanded) => (
             <button
-              className={classNames('expand-all', 'koski-button', {
-                expanded: allExpanded
-              })}
+              className={cx(
+                'expand-all',
+                'koski-button',
+                allExpanded && 'expanded'
+              )}
               role="button"
               aria-label={allExpanded ? 'Sulje kaikki' : 'Avaa kaikki'}
               // @ts-expect-error

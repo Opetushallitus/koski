@@ -2,8 +2,7 @@ import { By } from "selenium-webdriver"
 import { $ } from "./core"
 import { driver } from "./driver"
 import { defaultTimeout } from "./timeouts"
-import { eventually } from "./utils"
-import "jest-expect-message"
+import { eventually, withMessage } from "./utils"
 
 export const textEventuallyEquals = (
   selector: string,
@@ -51,28 +50,25 @@ export const expectElementEventuallyVisible = async (
 ) => {
   await eventually(async () => {
     const elements = await driver.findElements(By.css(selector))
-    expect(
-      elements.length > 0,
-      `Element ${selector} expected to exist`,
-    ).toBeTruthy()
+    withMessage(`Element ${selector} expected to exist`, () =>
+      expect(elements.length).toBeGreaterThan(0),
+    )
   }, timeout)
 }
 
 export const expectElementVisible = async (selector: string) => {
   const elements = await driver.findElements(By.css(selector))
-  expect(
-    elements.length > 0,
-    `Element ${selector} expected to exist`,
-  ).toBeTruthy()
+  withMessage(`Element ${selector} expected to exist`, () =>
+    expect(elements.length).toBeGreaterThan(0),
+  )
 }
 
 export const expectElementEventuallyNotVisible = async (selector: string) => {
   await eventually(async () => {
     const elements = await driver.findElements(By.css(selector))
-    expect(
-      elements.length === 0,
-      `Element ${selector} expected NOT to exist`,
-    ).toBeTruthy()
+    withMessage(`Element ${selector} expected NOT to exist`, () =>
+      expect(elements.length).toBe(0),
+    )
   })
 }
 
@@ -81,28 +77,21 @@ export const expectElementByTextEventuallyNotVisible = async (text: string) => {
     const elements = await driver.findElements(
       By.xpath(`//*[contains(text(), '${text}')]`),
     )
-    expect(
-      elements.length === 0,
-      `Element by text "${text}" expected NOT to exist`,
-    ).toBeTruthy()
+    withMessage(`Element by text "${text}" expected NOT to exist`, () =>
+      expect(elements.length).toBe(0),
+    )
   })
 }
 
 export const expectElementNotVisible = async (selector: string) => {
   const elements = await driver.findElements(By.css(selector))
-  expect(
-    elements.length === 0,
-    `Element ${selector} expected NOT to exist`,
-  ).toBeTruthy()
+  withMessage(`Element ${selector} expected NOT to exist`, () =>
+    expect(elements.length).toBe(0),
+  )
 }
 
 export const clickElement = async (selector: string) => {
   const element = await $(selector)
-
-  expect(
-    await element.isEnabled(),
-    `Element ${selector} expected to be enabled`,
-  )
 
   await element.click()
 }

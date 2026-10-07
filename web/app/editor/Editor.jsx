@@ -7,7 +7,6 @@ import {
   modelLookup
 } from './EditorModel'
 import { parseBool } from '../util/util'
-import PropTypes from 'prop-types'
 
 /*
  model: required model object
@@ -92,9 +91,6 @@ const pathHash = (m) => {
     hash += m.context.changeBus.id
   }
   return hash
-}
-Editor.propTypes = {
-  model: PropTypes.object.isRequired
 }
 Editor.canShowInline = (model) =>
   (getEditorFunction(model).canShowInline || (() => false))(model)

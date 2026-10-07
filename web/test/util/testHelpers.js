@@ -26,6 +26,13 @@ timeout = (function () {
   }
 })()
 
+// Today's date shifted by whole years, formatted as in the UI (e.g. 6.10.2026)
+function finnishDateToday(offsetYears) {
+  var date = new Date()
+  date.setFullYear(date.getFullYear() + (offsetYears || 0))
+  return date.toLocaleDateString('fi-FI')
+}
+
 function S(selector) {
   try {
     if (!testFrame() || !testFrame().jQuery) {
@@ -279,31 +286,6 @@ function openPage(path, predicate, width) {
           window.uiError = err
         } // Hack: force mocha to fail on unhandled exceptions
       })
-  }
-}
-
-function takeScreenshot(name) {
-  return function () {
-    var date = new Date()
-    var path = 'target/screenshots/'
-    var filename =
-      path +
-      (name
-        .toLowerCase()
-        .replace(/ /g, '_')
-        .replace(/ä/g, 'a')
-        .replace(/ö/g, 'o')
-        .replace(/"/g, '') || date.getTime())
-    console.log('Taking screenshot web/' + filename + '.png')
-    return Promise.resolve(
-      html2canvas(testFrame().document.body).then(function (canvas) {
-        $(document.body).append(
-          $('<div>')
-            .append($('<h4>').text('Screenshot: ' + filename))
-            .append($(canvas))
-        )
-      })
-    )
   }
 }
 

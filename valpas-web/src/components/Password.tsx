@@ -1,5 +1,4 @@
 import bem from "bem-ts"
-import copy from "copy-to-clipboard"
 import React, { useCallback, useState } from "react"
 import { T } from "../i18n/i18n"
 import { joinClassNames } from "../utils/classnames"
@@ -16,8 +15,10 @@ export type PasswordProps = {
 export const Password = (props: PasswordProps) => {
   const [copied, setCopied] = useState(false)
   const copyToClipboard = useCallback(() => {
-    copy(props.children)
-    setCopied(true)
+    navigator.clipboard
+      .writeText(props.children)
+      .then(() => setCopied(true))
+      .catch(console.error)
   }, [props.children])
 
   return (

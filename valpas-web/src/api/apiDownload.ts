@@ -1,4 +1,3 @@
-import download from "downloadjs"
 import * as E from "fp-ts/Either"
 import { pipe } from "fp-ts/lib/function"
 import * as O from "fp-ts/Option"
@@ -26,11 +25,10 @@ export const apiPostDownload = async (
     const data = await response.blob()
 
     if (response.status < 400) {
-      download(
+      saveFile(
         data,
         parseFilename(response.headers.get("content-disposition")) ||
           defaultFilename,
-        response.headers.get("content-type") || "application/octet-stream",
       )
       return E.right({
         status: response.status,
@@ -47,6 +45,17 @@ export const apiPostDownload = async (
       errors: parseErrors(e),
     })
   }
+}
+
+const saveFile = (blob: Blob, filename: string) => {
+  const url = URL.createObjectURL(blob)
+  const link = document.createElement("a")
+  link.href = url
+  link.download = filename
+  link.click()
+  // Vapauta muisti viiveellä, jotta lataus toimii myös joissain vanhemmissa
+  // selaimissa
+  setTimeout(() => URL.revokeObjectURL(url), 5000)
 }
 
 const parseDownloadError = async (blob: Blob): Promise<ApiError[]> =>

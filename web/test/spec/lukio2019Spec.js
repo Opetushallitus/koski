@@ -600,7 +600,7 @@ describe('Lukiokoulutus2019', function () {
       })
 
       describe('valmistumistieto poistettaessa', function () {
-        const currentDateStr = moment().format('D.M.YYYY')
+        const currentDateStr = finnishDateToday()
 
         before(editor.edit, editor.property('tila').removeItem(0))
 

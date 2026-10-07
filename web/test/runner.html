@@ -26,9 +26,7 @@
       }
     </script>
     <script src="lib/mocha.js"></script>
-    <script src="lib/lodash.js"></script>
     <script src="lib/jquery.js"></script>
-    <script src="lib/moment.min.js"></script>
     <script>
       console.log('Setting up mocha')
       var testTimeoutPageLoad = 20000
@@ -142,7 +140,7 @@
         ].forEach(loadScript)
       }
 
-      ;['lib/html2canvas.js', 'util/startMocha.js'].forEach(loadScript)
+      loadScript('util/startMocha.js')
     </script>
   </body>
 </html>

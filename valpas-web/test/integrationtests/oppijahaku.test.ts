@@ -18,6 +18,7 @@ import {
 } from "../integrationtests-env/browser/forms"
 import { loginAs } from "../integrationtests-env/browser/reset"
 import { defaultTimeout } from "../integrationtests-env/browser/timeouts"
+import { withMessage } from "../integrationtests-env/browser/utils"
 
 describe("Oppijahaku", () => {
   it("Maksuttomuus: Haku löytää henkilötunnuksen perusteella oppijan, jonka tietojen näkemiseen käyttäjällä on oikeus, ja linkkaa detaljisivulle", async () => {
@@ -495,10 +496,10 @@ const fillQueryField = async (
 
 const submit = async (className: string = "oppijasearch") => {
   const buttonSelector = `.${className}__submit`
-  expect(
-    await inputIsEnabled(buttonSelector),
-    "Expect submit button to be enabled",
-  ).toBeTruthy()
+  const enabled = await inputIsEnabled(buttonSelector)
+  withMessage("Expect submit button to be enabled", () =>
+    expect(enabled).toBeTruthy(),
+  )
   await clickElement(buttonSelector)
   await expectElementEventuallyVisible(`.${className}__resultvalue`)
 }

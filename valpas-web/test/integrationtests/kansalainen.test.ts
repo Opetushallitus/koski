@@ -3,6 +3,7 @@ import { contentEventuallyEquals } from "../integrationtests-env/browser/content
 import { $$ } from "../integrationtests-env/browser/core"
 import { dropdownSelectContains } from "../integrationtests-env/browser/forms"
 import { loginKansalainenAs } from "../integrationtests-env/browser/resetKansalainen"
+import { withMessage } from "../integrationtests-env/browser/utils"
 import { getIlmoitusData } from "./kuntailmoitus.shared"
 import {
   hautEquals,
@@ -399,10 +400,9 @@ const expectOmaTurvakiellollinenKuntailmoitus = async () => {
 
 const expectHuollettavanTurvakiellollinenKuntailmoitus = async () => {
   const ilmoitukset = await $$(".kuntailmoitus__body")
-  expect(
-    ilmoitukset.length,
-    "Aktiivisia ilmoituksia tulisi näkyä tasan yksi",
-  ).toEqual(1)
+  withMessage("Aktiivisia ilmoituksia tulisi näkyä tasan yksi", () =>
+    expect(ilmoitukset.length).toEqual(1),
+  )
   const ilmoitus = ilmoitukset[0]!
 
   expect(await ilmoitus.getText()).toEqual(

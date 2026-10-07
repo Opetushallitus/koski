@@ -63,17 +63,14 @@ function AddOppijaPage() {
       )
     },
     enterValidDataInternationalSchool: function (params) {
-      params = _.merge(
-        {
-          oppilaitos: 'International School of Helsinki',
-          opiskeluoikeudenTyyppi: 'International school',
-          grade: 'Grade explorer',
-          opintojenRahoitus: 'Valtionosuusrahoitteinen koulutus',
-          alkamispäivä: '1.1.2018'
-        },
-        {},
-        params
-      )
+      params = {
+        oppilaitos: 'International School of Helsinki',
+        opiskeluoikeudenTyyppi: 'International school',
+        grade: 'Grade explorer',
+        opintojenRahoitus: 'Valtionosuusrahoitteinen koulutus',
+        alkamispäivä: '1.1.2018',
+        ...params
+      }
       return function () {
         return api
           .enterData(params)()
@@ -89,16 +86,13 @@ function AddOppijaPage() {
       }
     },
     enterValidDataEsh: function (params) {
-      params = _.merge(
-        {
-          oppilaitos: 'Helsingin eurooppalainen koulu',
-          opiskeluoikeudenTyyppi: 'European School of Helsinki',
-          luokkaaste: 'N1',
-          alkamispäivä: '1.1.2022'
-        },
-        {},
-        params
-      )
+      params = {
+        oppilaitos: 'Helsingin eurooppalainen koulu',
+        opiskeluoikeudenTyyppi: 'European School of Helsinki',
+        luokkaaste: 'N1',
+        alkamispäivä: '1.1.2022',
+        ...params
+      }
       return function () {
         return api
           .enterData(params)()
@@ -108,14 +102,11 @@ function AddOppijaPage() {
       }
     },
     enterValidDataEbTutkinto: function (params) {
-      params = _.merge(
-        {
-          oppilaitos: 'Helsingin eurooppalainen koulu',
-          alkamispäivä: '1.1.2022'
-        },
-        {},
-        params
-      )
+      params = {
+        oppilaitos: 'Helsingin eurooppalainen koulu',
+        alkamispäivä: '1.1.2022',
+        ...params
+      }
       return function () {
         return api
           .enterData(params)()
@@ -125,15 +116,12 @@ function AddOppijaPage() {
       }
     },
     enterValidDataPerusopetus: function (params) {
-      params = _.merge(
-        {
-          oppilaitos: 'Jyväskylän normaalikoulu',
-          opiskeluoikeudenTyyppi: 'Perusopetus',
-          alkamispäivä: '1.1.2018'
-        },
-        {},
-        params
-      )
+      params = {
+        oppilaitos: 'Jyväskylän normaalikoulu',
+        opiskeluoikeudenTyyppi: 'Perusopetus',
+        alkamispäivä: '1.1.2018',
+        ...params
+      }
       return function () {
         return api
           .enterData(params)()
@@ -147,32 +135,26 @@ function AddOppijaPage() {
       }
     },
     enterValidDataEsiopetus: function (params) {
-      return api.enterData(
-        _.merge(
-          {
-            oppilaitos: 'Jyväskylän normaalikoulu',
-            opiskeluoikeudenTyyppi: 'Esiopetus'
-          },
-          {},
-          params
-        )
-      )
+      return api.enterData({
+        oppilaitos: 'Jyväskylän normaalikoulu',
+        opiskeluoikeudenTyyppi: 'Esiopetus',
+        ...params
+      })
     },
     enterValidDataPäiväkodinEsiopetus: function (params) {
-      return api.enterData(
-        _.merge(
-          { oppilaitos: 'PK Vironniemi', opiskeluoikeudenTyyppi: 'Esiopetus' },
-          {},
-          params
-        )
-      )
+      return api.enterData({
+        oppilaitos: 'PK Vironniemi',
+        opiskeluoikeudenTyyppi: 'Esiopetus',
+        ...params
+      })
     },
     enterHenkilötiedot: function (params) {
-      params = _.merge(
-        { etunimet: 'Tero', kutsumanimi: 'Tero', sukunimi: 'Tyhjä' },
-        {},
-        params
-      )
+      params = {
+        etunimet: 'Tero',
+        kutsumanimi: 'Tero',
+        sukunimi: 'Tyhjä',
+        ...params
+      }
       return function () {
         return pageApi
           .setInputValue('.etunimet input', params.etunimet)()
@@ -186,12 +168,12 @@ function AddOppijaPage() {
       }
     },
     enterValidDataVSTKOPS: function (params) {
-      params = _.merge({
+      params = {
         oppilaitos: 'Varsinais-Suomen kansanopisto',
         oppimäärä: 'Oppivelvollisille suunnattu vapaan sivistystyön koulutus',
         suorituskieli: 'suomi',
         alkamispäivä: '1.8.2021'
-      })
+      }
       return function () {
         return api
           .enterData(params)()
@@ -204,12 +186,12 @@ function AddOppijaPage() {
       }
     },
     enterValidDataVSTLukutaito: function (params) {
-      params = _.merge({
+      params = {
         oppilaitos: 'Varsinais-Suomen kansanopisto',
         oppimäärä: 'Vapaan sivistystyön lukutaitokoulutus',
         suorituskieli: 'suomi',
         alkamispäivä: '1.8.2021'
-      })
+      }
       return function () {
         return api
           .enterData(params)()
@@ -222,7 +204,7 @@ function AddOppijaPage() {
       }
     },
     enterValidDataVSTVapaatavoitteinen: function (params) {
-      params = _.merge({
+      params = {
         oppilaitos: 'Varsinais-Suomen kansanopisto',
         oppimäärä: 'Vapaan sivistystyön vapaatavoitteinen koulutus',
         suorituskieli: 'suomi',
@@ -234,7 +216,7 @@ function AddOppijaPage() {
           '.' +
           new Date().getFullYear(),
         opintokokonaisuus: '1138 Kuvallisen ilmaisun perusteet ja välineet'
-      })
+      }
       return function () {
         return api
           .enterData(params)()
@@ -248,17 +230,15 @@ function AddOppijaPage() {
       }
     },
     enterValidDataVSTJOTPA: function (params) {
-      params = _.merge(
-        {
-          oppilaitos: 'Varsinais-Suomen kansanopisto',
-          oppimäärä: 'Jatkuvaan oppimiseen suunnattu',
-          suorituskieli: 'suomi',
-          tila: 'Läsnä',
-          alkamispäivä: '1.1.2023',
-          opintokokonaisuus: '1138 Kuvallisen ilmaisun perusteet ja välineet'
-        },
-        params
-      )
+      params = {
+        oppilaitos: 'Varsinais-Suomen kansanopisto',
+        oppimäärä: 'Jatkuvaan oppimiseen suunnattu',
+        suorituskieli: 'suomi',
+        tila: 'Läsnä',
+        alkamispäivä: '1.1.2023',
+        opintokokonaisuus: '1138 Kuvallisen ilmaisun perusteet ja välineet',
+        ...params
+      }
       return function () {
         return api
           .enterData(params)()
@@ -272,21 +252,18 @@ function AddOppijaPage() {
       }
     },
     enterValidDataAmmatillinen: function (params) {
-      params = _.merge(
-        {
-          oppilaitos: 'Stadin',
-          opiskeluoikeudenTyyppi: 'Ammatillinen koulutus',
-          suoritustyyppi: 'Ammatillinen tutkinto',
-          suoritustapa: 'Ammatillinen perustutkinto',
-          tutkinto: 'Autoalan perust',
-          opintojenRahoitus: 'Valtionosuusrahoitteinen koulutus',
-          alkamispäivä: '1.1.2018',
-          suorituskieli: 'suomi',
-          maksuttomuus: 0
-        },
-        {},
-        params
-      )
+      params = {
+        oppilaitos: 'Stadin',
+        opiskeluoikeudenTyyppi: 'Ammatillinen koulutus',
+        suoritustyyppi: 'Ammatillinen tutkinto',
+        suoritustapa: 'Ammatillinen perustutkinto',
+        tutkinto: 'Autoalan perust',
+        opintojenRahoitus: 'Valtionosuusrahoitteinen koulutus',
+        alkamispäivä: '1.1.2018',
+        suorituskieli: 'suomi',
+        maksuttomuus: 0,
+        ...params
+      }
       return function () {
         return api
           .enterData({ ...params, suorituskieli: undefined })()
@@ -308,16 +285,13 @@ function AddOppijaPage() {
       }
     },
     enterValidDataMuuAmmatillinen: function (params) {
-      params = _.merge(
-        {
-          oppilaitos: 'Stadin',
-          opiskeluoikeudenTyyppi: 'Ammatillinen koulutus',
-          oppimäärä: 'Muun ammatillisen koulutuksen suoritus',
-          opintojenRahoitus: 'Valtionosuusrahoitteinen koulutus'
-        },
-        {},
-        params
-      )
+      params = {
+        oppilaitos: 'Stadin',
+        opiskeluoikeudenTyyppi: 'Ammatillinen koulutus',
+        oppimäärä: 'Muun ammatillisen koulutuksen suoritus',
+        opintojenRahoitus: 'Valtionosuusrahoitteinen koulutus',
+        ...params
+      }
       return function () {
         return api
           .enterData(params)()
@@ -331,17 +305,14 @@ function AddOppijaPage() {
       }
     },
     enterValidDataLukio: function (params) {
-      params = _.merge(
-        {
-          oppilaitos: 'Ressun',
-          oppimäärä: 'Lukion oppimäärä',
-          peruste: '60/011/2015 Lukion opetussuunnitelman perusteet 2015',
-          opintojenRahoitus: 'Valtionosuusrahoitteinen koulutus',
-          alkamispäivä: '1.1.2018'
-        },
-        {},
-        params
-      )
+      params = {
+        oppilaitos: 'Ressun',
+        oppimäärä: 'Lukion oppimäärä',
+        peruste: '60/011/2015 Lukion opetussuunnitelman perusteet 2015',
+        opintojenRahoitus: 'Valtionosuusrahoitteinen koulutus',
+        alkamispäivä: '1.1.2018',
+        ...params
+      }
       return function () {
         return api
           .enterData(params)()
@@ -353,16 +324,13 @@ function AddOppijaPage() {
       }
     },
     enterValidDataLuva: function (params) {
-      params = _.merge(
-        {
-          oppilaitos: 'Ressun',
-          peruste: '56/011/2015',
-          opintojenRahoitus: 'Valtionosuusrahoitteinen koulutus',
-          alkamispäivä: '1.1.2018'
-        },
-        {},
-        params
-      )
+      params = {
+        oppilaitos: 'Ressun',
+        peruste: '56/011/2015',
+        opintojenRahoitus: 'Valtionosuusrahoitteinen koulutus',
+        alkamispäivä: '1.1.2018',
+        ...params
+      }
       return function () {
         return api
           .enterData(params)()
@@ -376,16 +344,13 @@ function AddOppijaPage() {
       }
     },
     enterValidDataIB: function (params) {
-      params = _.merge(
-        {
-          oppilaitos: 'Ressun',
-          oppimäärä: 'IB-tutkinto',
-          opintojenRahoitus: 'Valtionosuusrahoitteinen koulutus',
-          alkamispäivä: '1.1.2018'
-        },
-        {},
-        params
-      )
+      params = {
+        oppilaitos: 'Ressun',
+        oppimäärä: 'IB-tutkinto',
+        opintojenRahoitus: 'Valtionosuusrahoitteinen koulutus',
+        alkamispäivä: '1.1.2018',
+        ...params
+      }
       return function () {
         return api
           .enterData(params)()
@@ -396,16 +361,13 @@ function AddOppijaPage() {
       }
     },
     enterValidDataPreIB: function (params) {
-      params = _.merge(
-        {
-          oppilaitos: 'Ressun',
-          oppimäärä: 'Pre-IB',
-          opintojenRahoitus: 'Valtionosuusrahoitteinen koulutus',
-          alkamispäivä: '1.1.2018'
-        },
-        {},
-        params
-      )
+      params = {
+        oppilaitos: 'Ressun',
+        oppimäärä: 'Pre-IB',
+        opintojenRahoitus: 'Valtionosuusrahoitteinen koulutus',
+        alkamispäivä: '1.1.2018',
+        ...params
+      }
       return function () {
         return api
           .enterData(params)()
@@ -416,16 +378,13 @@ function AddOppijaPage() {
       }
     },
     enterValidDataDIA: function (params) {
-      params = _.merge(
-        {
-          oppilaitos: 'Helsingin',
-          opiskeluoikeudenTyyppi: 'DIA-tutkinto',
-          oppimäärä: 'DIA-tutkintovaihe',
-          alkamispäivä: '1.1.2018'
-        },
-        {},
-        params
-      )
+      params = {
+        oppilaitos: 'Helsingin',
+        opiskeluoikeudenTyyppi: 'DIA-tutkinto',
+        oppimäärä: 'DIA-tutkintovaihe',
+        alkamispäivä: '1.1.2018',
+        ...params
+      }
       return function () {
         return api
           .enterData(params)()
@@ -435,15 +394,12 @@ function AddOppijaPage() {
       }
     },
     enterValidDataDIAValmistavaVaihe: function (params) {
-      params = _.merge(
-        {
-          oppilaitos: 'Helsingin',
-          oppimäärä: 'Valmistava DIA-vaihe',
-          alkamispäivä: '1.1.2018'
-        },
-        {},
-        params
-      )
+      params = {
+        oppilaitos: 'Helsingin',
+        oppimäärä: 'Valmistava DIA-vaihe',
+        alkamispäivä: '1.1.2018',
+        ...params
+      }
       return function () {
         return api
           .enterData(params)()
@@ -454,14 +410,14 @@ function AddOppijaPage() {
       }
     },
     enterValidDataTUVA: function (params) {
-      params = _.merge({
+      params = {
         oppilaitos: 'Ressun',
         opiskeluoikeudenTyyppi: 'Tutkintokoulutukseen valmentava koulutus',
         järjestämislupa: 'Perusopetuksen järjestämislupa (TUVA)',
         suorituskieli: 'suomi',
         alkamispäivä: '1.8.2021',
         opintojenRahoitus: 'Muuta kautta rahoitettu'
-      })
+      }
       return function () {
         return api
           .enterData(params)()
@@ -472,7 +428,7 @@ function AddOppijaPage() {
       }
     },
     enterValidDataTUVAAmmatillinen: function (params) {
-      params = _.merge({
+      params = {
         oppilaitos: 'Ressun',
         opiskeluoikeudenTyyppi: 'Tutkintokoulutukseen valmentava koulutus',
         järjestämislupa: 'Ammatillisen koulutuksen järjestämislupa (TUVA)',
@@ -480,7 +436,7 @@ function AddOppijaPage() {
         alkamispäivä: '1.8.2021',
         tila: 'Läsnä',
         opintojenRahoitus: 'Muuta kautta rahoitettu'
-      })
+      }
       return function () {
         return api
           .enterData(params)()
@@ -492,17 +448,14 @@ function AddOppijaPage() {
       }
     },
     enterPaikallinenKoulutusmoduuliData: function (params) {
-      params = _.merge(
-        {
-          koulutusmoduuli: 'Paikallinen koulutus',
-          nimi: 'Varaston täyttäminen',
-          koodi: 'vrs-t-2019-k',
-          kuvaus:
-            'Opiskelija osaa tehdä tilauksen vakiotoimittajilta sekä menettelytavat palavien ja vaarallisten aineiden varastoinnissa'
-        },
-        {},
-        params
-      )
+      params = {
+        koulutusmoduuli: 'Paikallinen koulutus',
+        nimi: 'Varaston täyttäminen',
+        koodi: 'vrs-t-2019-k',
+        kuvaus:
+          'Opiskelija osaa tehdä tilauksen vakiotoimittajilta sekä menettelytavat palavien ja vaarallisten aineiden varastoinnissa',
+        ...params
+      }
 
       return function () {
         return (

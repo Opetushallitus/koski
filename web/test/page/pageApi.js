@@ -113,14 +113,14 @@ function Page(mainElement) {
             }
             break
           case 'RADIO':
-            var radioOption = _(input).find(function (item) {
+            var radioOption = input.toArray().find(function (item) {
               return $(item).prop('value') === value
             })
             if (!option) throw new Error('Option ' + value + ' not found')
             S(radioOption).click()
             return click(S(radioOption))()
           case 'SELECT':
-            var option = _(input.children()).find(function (item) {
+            var option = input.children().toArray().find(function (item) {
               return $(item).prop('value') === value
             })
             if (!option)
