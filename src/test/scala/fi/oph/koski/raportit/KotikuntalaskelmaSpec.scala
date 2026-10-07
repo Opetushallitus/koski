@@ -103,8 +103,14 @@ class KotikuntalaskelmaSpec extends AnyFreeSpec with Matchers with Raportointika
       }
     }
 
-    "Kunnan esiopetuksen käyttöoikeuksilla voi ladata raportin" in {
+    "Kunnan esiopetuksen käyttöoikeuksilla ei voi ladata raporttia" in {
       authGet(s"api/raportit/kunnanoppijat?oppilaitosOid=$helsinginKaupunki&paiva=$raportointipäivä&lang=fi&password=salasana", user = MockUsers.esiopetusTallentaja) {
+        verifyResponseStatus(403, KoskiErrorCategory.forbidden.opiskeluoikeudenTyyppi())
+      }
+    }
+
+    "Kunnan kaikkien opiskeluoikeustyyppien katseluoikeuksilla voi ladata raportin" in {
+      authGet(s"api/raportit/kunnanoppijat?oppilaitosOid=$helsinginKaupunki&paiva=$raportointipäivä&lang=fi&password=salasana", user = MockUsers.helsinkiKatselija) {
         verifyResponseStatusOk()
       }
     }

@@ -222,13 +222,8 @@ class RaportitServlet(implicit val application: KoskiApplication) extends KoskiS
   }
 
   get("/kunnanoppijat") {
-    requireOpiskeluoikeudenKayttooikeudet(
-      OpiskeluoikeudenTyyppi.perusopetus,
-      OpiskeluoikeudenTyyppi.esiopetus,
-      OpiskeluoikeudenTyyppi.internationalschool,
-      OpiskeluoikeudenTyyppi.europeanschoolofhelsinki
-    )
     val parsedRequest = parseRaporttiPäivältäRequest
+    requireKaikkiOpiskeluoikeudenTyypit(parsedRequest.oppilaitosOid)
     val kuntakoodi = Kunta.validateAndGetKuntaKoodi(organisaatioService, application.koodistoPalvelu, parsedRequest.oppilaitosOid)
       .getOrElse(haltWithStatus(KoskiErrorCategory.badRequest.queryParam(s"Organisaatio ${parsedRequest.oppilaitosOid} ei ole kunta")))
     val t = new LocalizationReader(application.koskiLocalizationRepository, parsedRequest.lang)
@@ -297,6 +292,14 @@ class RaportitServlet(implicit val application: KoskiApplication) extends KoskiS
       session.allowedOpiskeluoikeudetJaPäätasonSuoritukset.intersects(OoPtsMask(viite.koodiarvo))
     )
     if (!sallittu) {
+      haltWithStatus(KoskiErrorCategory.forbidden.opiskeluoikeudenTyyppi())
+    }
+  }
+
+  // Raportti näyttää kuntalaiset kaikista koulutusmuodoista, joten oikeus vain osaan niistä ei riitä
+  private def requireKaikkiOpiskeluoikeudenTyypit(organisaatioOid: Organisaatio.Oid) = {
+    val organisaationTyypit = session.orgKäyttöoikeudet.filter(_.organisaatio.oid == organisaatioOid).flatMap(_.allowedOpiskeluoikeusTyypit)
+    if (!session.hasGlobalReadAccess && !organisaationTyypit.satisfiesAll(OpiskeluoikeudenTyyppi.kaikkiOpiskeluoikeudetJaPäätasonSuoritukset)) {
       haltWithStatus(KoskiErrorCategory.forbidden.opiskeluoikeudenTyyppi())
     }
   }
