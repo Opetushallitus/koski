@@ -1,5 +1,5 @@
 import * as string from 'fp-ts/string'
-import React, { useEffect, useMemo, useRef } from 'react'
+import React, { useContext, useEffect, useMemo, useRef } from 'react'
 import {
   ApiMethodHook,
   createPreferLocalCache,
@@ -29,7 +29,11 @@ import {
   fetchOppija,
   fetchSuoritusjako
 } from '../../util/koskiApi'
-import { getOpiskeluoikeusOid } from '../../util/opiskeluoikeus'
+import {
+  getOpiskeluoikeusOid,
+  getVersionumero
+} from '../../util/opiskeluoikeus'
+import { kuunteleTallennettujaOpiskeluoikeuksia } from '../../util/tallennetutOpiskeluoikeudet'
 import { OpiskeluoikeudenTyyppiOf } from '../../util/types'
 import { parseQuery } from '../../util/url'
 import { opiskeluoikeusEditors } from './uiAdapters'
@@ -80,7 +84,27 @@ export type OpiskeluoikeusEditorProps<T extends Opiskeluoikeus> = {
 // samaa versiota uudelleen, kuten vanhassa käyttöliittymässä (Http.cachedGet).
 const opiskeluoikeusVersioCache = createPreferLocalCache(fetchOpiskeluoikeus)
 
-export const useVirkailijaUiAdapter = (oppijaModel: ObjectModel): UiAdapter => {
+const VirkailijaUiAdapterContext =
+  React.createContext<UiAdapter>(disabledUiAdapter)
+
+// Virkailijan näkymä kiinnittää Editorin uudelleen aina osoitteen muuttuessa
+// (VirkailijaOppijaView: key={document.location}), esimerkiksi
+// opiskeluoikeustyypin välilehteä vaihdettaessa. Adapteri luodaan sen
+// yläpuolella, jotta oppijan tietoja ei haeta joka kerta uudelleen.
+export const VirkailijaUiAdapterProvider: React.FC<
+  React.PropsWithChildren<{ oppijaModel: ObjectModel }>
+> = (props) => (
+  <VirkailijaUiAdapterContext.Provider
+    value={useVirkailijaUiAdapter(props.oppijaModel)}
+  >
+    {props.children}
+  </VirkailijaUiAdapterContext.Provider>
+)
+
+export const useVirkailijaUiAdapterContext = (): UiAdapter =>
+  useContext(VirkailijaUiAdapterContext)
+
+const useVirkailijaUiAdapter = (oppijaModel: ObjectModel): UiAdapter => {
   const oppijaOid = modelData(oppijaModel, 'henkilö.oid')
   const oppijaFetch = useApiMethod(fetchOppija)
   const opiskeluoikeusFetch = useApiMethod(
@@ -201,6 +225,21 @@ const useUiAdapterImpl = <T extends any[]>(
   const [adapter, setAdapter] = useSafeState<UiAdapter>(loadingUiAdapter)
   const versionumero = useVersionumero()
 
+  // Ladatun datan jälkeen tallennetut opiskeluoikeudet. Ref eikä tila, jotta
+  // tallennus ei renderöi editoria uudelleen; ne otetaan käyttöön vasta, kun
+  // editori seuraavan kerran kiinnitetään.
+  const tallennetutRef = useRef(new Map<string, Opiskeluoikeus>())
+  useEffect(
+    () =>
+      kuunteleTallennettujaOpiskeluoikeuksia((opiskeluoikeus) => {
+        const oid = getOpiskeluoikeusOid(opiskeluoikeus)
+        if (oid) {
+          tallennetutRef.current.set(oid, opiskeluoikeus)
+        }
+      }),
+    []
+  )
+
   const v2Mode = useMemo(() => {
     const v2OpiskeluoikeusTyypit = Object.keys(opiskeluoikeusEditors)
     return intersects(string.Eq)(opiskeluoikeustyypit)(v2OpiskeluoikeusTyypit)
@@ -235,10 +274,24 @@ const useUiAdapterImpl = <T extends any[]>(
         const tyyppi = modelData(opiskeluoikeusModel, 'tyyppi.koodiarvo')
         const oid = modelData(opiskeluoikeusModel, 'oid')
 
-        const oo = opiskeluoikeudet.find(
+        const versionumeroParam = new URLSearchParams(
+          window.location.search
+        ).get('versionumero')
+
+        const ladattu = opiskeluoikeudet.find(
           (o) =>
             o.tyyppi.koodiarvo === tyyppi && getOpiskeluoikeusOid(o) === oid
         )
+        const tallennettu =
+          versionumeroParam === null
+            ? tallennetutRef.current.get(oid)
+            : undefined
+        const oo =
+          ladattu &&
+          tallennettu &&
+          (getVersionumero(tallennettu) ?? 0) > (getVersionumero(ladattu) ?? 0)
+            ? tallennettu
+            : ladattu
 
         const Editor: AdaptedOpiskeluoikeusEditor<any> | undefined =
           oo && opiskeluoikeusEditors[oo.tyyppi.koodiarvo]
@@ -289,9 +342,6 @@ const useUiAdapterImpl = <T extends any[]>(
         //    uudelleenkiinnitys tapahtuu vasta kun haettu data on saapunut.
         const ooVer = (oo as { versionumero?: number } | undefined)
           ?.versionumero
-        const versionumeroParam = new URLSearchParams(
-          window.location.search
-        ).get('versionumero')
         return Editor && oo ? (
           <Editor
             key={`${oid}:p${versionumeroParam ?? 'cur'}:d${ooVer ?? ''}`}
