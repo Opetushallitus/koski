@@ -192,8 +192,9 @@ case class Kotikuntalaskelma(db: DB) extends QueryMethods {
     )
   )
 
+  // TOR-2560: virkailijalla, jolla on oikeus kotikuntalaskelmaan, on oikeus nähdä myös turvakiellon alaisen oppijan tiedot
   def buildOppijat(oppilaitosOids: Seq[String], päivä: LocalDate, t: LocalizationReader)(implicit u: KoskiSpecificSession): DataSheet = {
-    val raporttiQuery = oppijaQuery(oppilaitoksissa(oppilaitosOids), päivä, t.get("raportti-excel-default-value-esiopetus-lyhyt")).as[KotikuntalaskelmaOppijaRow]
+    val raporttiQuery = oppijaQuery(oppilaitoksissa(oppilaitosOids), päivä, t.get("raportti-excel-default-value-esiopetus-lyhyt"), turvakiellollinenKotikuntahistoria, piilotaTurvakielto = false).as[KotikuntalaskelmaOppijaRow]
     val rows = runDbSync(raporttiQuery, timeout = 5.minutes)
     DataSheet(
       title = t.get("raportti-excel-kotikuntalaskelma-oppijat-sheet-name"),
@@ -211,9 +212,40 @@ case class Kotikuntalaskelma(db: DB) extends QueryMethods {
 
   // Turvakiellon alaiset jäävät pois: julkisesta kotikuntahistoriasta puuttuvat heidän kotikuntansa
   def kunnanOppijat(kuntakoodi: String, päivä: LocalDate, esiopetusLuokkaAste: String): Seq[KotikuntalaskelmaOppijaRow] =
-    runDbSync(oppijaQuery(kotikunnassa(kuntakoodi, päivä), päivä, esiopetusLuokkaAste).as[KotikuntalaskelmaOppijaRow], timeout = 5.minutes)
+    runDbSync(oppijaQuery(kotikunnassa(kuntakoodi, päivä), päivä, esiopetusLuokkaAste, julkinenKotikuntahistoria, piilotaTurvakielto = true).as[KotikuntalaskelmaOppijaRow], timeout = 5.minutes)
 
-  private def oppijaQuery(rajaus: SQLActionBuilder, päivä: LocalDate, esiopetusLuokkaAste: String) = concatMany(
+  private def oppijaValitutKentät(piilotaTurvakielto: Boolean): SQLActionBuilder =
+    if (piilotaTurvakielto) sql"""
+      case when bool_or(he.turvakielto) then 'Turvakielto' else he.master_oid end as oppija_numero,
+      case when bool_or(he.turvakielto) then null else max(he.hetu) end as hetu,
+      case when bool_or(he.turvakielto) then null else bool_or(he.yksiloity) end as yksiloity,
+      case when bool_or(he.turvakielto) then null else max(he.etunimet) end as etunimet,
+      case when bool_or(he.turvakielto) then null else max(he.sukunimi) end as sukunimi,
+      case when bool_or(he.turvakielto) then null else max(kkh.kotikunta_nimi_fi) end as kotikunta,
+      case when bool_or(he.turvakielto) then null else max(valittu.oppilaitos_nimi) end as oppilaitos,
+      case when bool_or(he.turvakielto) then null else max(valittu.luokka_aste) end as luokka_aste,
+      case when bool_or(he.turvakielto) then null else max(valittu.luokka) end as luokka,
+    """
+    else sql"""
+      he.master_oid as oppija_numero,
+      max(he.hetu) as hetu,
+      bool_or(he.yksiloity) as yksiloity,
+      max(he.etunimet) as etunimet,
+      max(he.sukunimi) as sukunimi,
+      max(kkh.kotikunta_nimi_fi) as kotikunta,
+      max(valittu.oppilaitos_nimi) as oppilaitos,
+      max(valittu.luokka_aste) as luokka_aste,
+      max(valittu.luokka) as luokka,
+    """
+
+  private def oppijaJärjestys(piilotaTurvakielto: Boolean): SQLActionBuilder =
+    if (piilotaTurvakielto)
+      // Turvakieltorivit loppuun, ettei oidia voi rajata naapuririvien perusteella
+      sql"order by bool_or(he.turvakielto), he.master_oid"
+    else
+      sql"order by he.master_oid"
+
+  private def oppijaQuery(rajaus: SQLActionBuilder, päivä: LocalDate, esiopetusLuokkaAste: String, kotikuntahistoria: String, piilotaTurvakielto: Boolean) = concatMany(
     Some(sql"with "),
     Some(vuosiJaLukuvuosi(päivä)),
     Some(sql""",
@@ -228,7 +260,7 @@ case class Kotikuntalaskelma(db: DB) extends QueryMethods {
         end as luokka_aste,
         pts.luokka_tai_ryhma as luokka
     """),
-    Some(lähteet(päivä, julkinenKotikuntahistoria)),
+    Some(lähteet(päivä, kotikuntahistoria)),
     Some(ehdot(rajaus, päivä)),
     Some(sql"""
       order by
@@ -240,16 +272,9 @@ case class Kotikuntalaskelma(db: DB) extends QueryMethods {
         pts.paatason_suoritus_id
     )
     select
-      case when bool_or(he.turvakielto) then 'Turvakielto' else he.master_oid end as oppija_numero,
-      case when bool_or(he.turvakielto) then null else max(he.hetu) end as hetu,
-      case when bool_or(he.turvakielto) then null else bool_or(he.yksiloity) end as yksiloity,
-      case when bool_or(he.turvakielto) then null else max(he.etunimet) end as etunimet,
-      case when bool_or(he.turvakielto) then null else max(he.sukunimi) end as sukunimi,
-      case when bool_or(he.turvakielto) then null else max(kkh.kotikunta_nimi_fi) end as kotikunta,
-      case when bool_or(he.turvakielto) then null else max(valittu.oppilaitos_nimi) end as oppilaitos,
-      case when bool_or(he.turvakielto) then null else max(valittu.luokka_aste) end as luokka_aste,
-      case when bool_or(he.turvakielto) then null else max(valittu.luokka) end as luokka,
-
+    """),
+    Some(oppijaValitutKentät(piilotaTurvakielto)),
+    Some(sql"""
       bool_or(extract(year from he.syntymaaika) = v.vuosi - 6) as kuusi,
 
       bool_or(extract(year from he.syntymaaika) between v.vuosi - 12 and v.vuosi - 7) as seitseman_kaksitoista,
@@ -268,14 +293,11 @@ case class Kotikuntalaskelma(db: DB) extends QueryMethods {
         and not aj.opetus_vamman_sairauden_tai_rajoitteen_perusteella
       ) as kuusitoista_ei_erityisen_tuen_perusteella
     """),
-    Some(lähteet(päivä, julkinenKotikuntahistoria)),
+    Some(lähteet(päivä, kotikuntahistoria)),
     Some(sql"join valittu on valittu.master_oid = he.master_oid"),
     Some(ehdot(rajaus, päivä)),
-    Some(sql"""
-    group by he.master_oid
-    -- Turvakieltorivit loppuun, ettei oidia voi rajata naapuririvien perusteella
-    order by bool_or(he.turvakielto), he.master_oid
-    """)
+    Some(sql"group by he.master_oid"),
+    Some(oppijaJärjestys(piilotaTurvakielto))
   )
 
   private def oppijaColumnSettings(t: LocalizationReader): Seq[(String, Column)] = Seq(

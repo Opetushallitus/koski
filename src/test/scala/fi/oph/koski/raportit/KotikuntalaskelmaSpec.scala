@@ -221,32 +221,16 @@ class KotikuntalaskelmaSpec extends AnyFreeSpec with Matchers with Raportointika
       rivi.get.luokka shouldBe Some("8A")
     }
 
-    "Oppijat-välilehti - turvakiellon alaisen oppijan tunnistetiedot piilotetaan mutta ikäryhmälippu näkyy" in {
-      val turvakieltoRivit = oppijatRivit.filter(_.oppijaNumero.contains("Turvakielto"))
+    // TOR-2560: virkailijalla, jolla on oikeus kotikuntalaskelmaan, on oikeus nähdä myös turvakiellon alaisen oppijan tiedot
+    "Oppijat-välilehti - turvakiellon alaisen oppijan tiedot näytetään sellaisenaan" in {
+      val turvakielto = oppijatRivit.find(_.oppijaNumero.contains(KoskiSpecificMockOppijat.kotikuntalaskelmaTurvakielto.oid))
 
-      turvakieltoRivit.length should be >= 2
-
-      turvakieltoRivit.foreach { rivi =>
-        rivi.oppijaNumero shouldBe Some("Turvakielto")
-        rivi.hetu shouldBe None
-        rivi.yksiloity shouldBe None
-        rivi.etunimet shouldBe None
-        rivi.sukunimi shouldBe None
-        rivi.kotikunta shouldBe None
-        rivi.oppilaitos shouldBe None
-        rivi.luokkaAste shouldBe None
-        rivi.luokka shouldBe None
-      }
-      turvakieltoRivit.exists(_.seitsemänKaksitoista) shouldBe true
-    }
-
-    "Oppijat-välilehti - turvakiellon alaiset oppijat ovat listan lopussa" in {
-      val ensimmäinenTurvakieltoIndeksi = oppijatRivit.indexWhere(_.oppijaNumero.contains("Turvakielto"))
-
-      ensimmäinenTurvakieltoIndeksi should be >= 0
-      oppijatRivit.drop(ensimmäinenTurvakieltoIndeksi).foreach { rivi =>
-        rivi.oppijaNumero shouldBe Some("Turvakielto")
-      }
+      turvakielto shouldBe defined
+      turvakielto.get.etunimet shouldBe Some("Lapsi")
+      turvakielto.get.sukunimi shouldBe Some("Turvakielto")
+      turvakielto.get.kotikunta shouldBe Some("Helsinki")
+      turvakielto.get.oppilaitos shouldBe Some("Aapajoen koulu")
+      turvakielto.get.seitsemänKaksitoista shouldBe true
     }
 
     "Oppijat-välilehti - hetuton oppija näkyy rivinä mutta ilman kotikuntaa" in {
