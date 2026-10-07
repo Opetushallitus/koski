@@ -14,6 +14,20 @@ const url = `${hetutonOid}?opiskeluoikeudenTyyppi=perusopetus`
 test.describe('Perusopetuksen uusi käyttöliittymä: hetuton oppija', () => {
   test.use({ storageState: virkailija('kalle') })
 
+  test('Otsikossa näytetään syntymäaika hetun sijaan', async ({
+    page,
+    oppijaPage
+  }) => {
+    await oppijaPage.goto(url)
+
+    await expect(page.getByTestId('oppija-heading')).toContainText(
+      'Hetuton, Heikki'
+    )
+    await expect(page.getByTestId('oppija-henkilotunnus')).toHaveText(
+      '(24.2.1977)'
+    )
+  })
+
   test('Näyttää opiskeluoikeuden tilan ja voimassaoloajan', async ({
     page,
     oppijaPage,
