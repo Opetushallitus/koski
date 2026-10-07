@@ -9,9 +9,12 @@ import { virkailija } from './setup/auth'
  *
  * Aikuisten perusopetus jää v2-porttauksen ulkopuolelle, koska
  * aikuistenperusopetus-opiskeluoikeudelle ei ole v2-editoriadapteria.
- * V1:n lähdejärjestelmällisen opiskeluoikeuden pääkäyttäjäpoistoa ei myöskään
- * portata näkyväksi kontrolliksi: v2 estää muokkaustilan kaikilta
- * lähdejärjestelmäkytkennällisiltä opiskeluoikeuksilta.
+ *
+ * Kuten vanhassa käyttöliittymässä, mitätöintioikeudellinen käyttäjä, joka ei
+ * voi muokata opiskeluoikeutta, poistaa suorituksen katselutilassa. Näin
+ * oppilaitoksen pääkäyttäjä voi poistaa suorituksen myös lähdejärjestelmästä
+ * siirretyltä opiskeluoikeudelta (tiedonsiirron mitätöintioikeus), jolla v2
+ * ei salli muokkaustilaa kenellekään.
  */
 
 const kaisaOid = '1.2.246.562.24.00000000007'
@@ -29,6 +32,11 @@ const lasseUrl = `${lasseOid}?opiskeluoikeudenTyyppi=perusopetus`
 const perttiOid = '1.2.246.562.24.00000000059'
 const perttiUrl = `${perttiOid}?opiskeluoikeudenTyyppi=perusopetus`
 
+// Miia Monikoululainen (180497-112F): stadin-pää näkee vain Kulosaaren ala-asteen
+// (Helsingin kaupunki) käyttöliittymästä tallennetun opiskeluoikeuden.
+const miiaOid = '1.2.246.562.24.00000000012'
+const miiaUrl = `${miiaOid}?opiskeluoikeudenTyyppi=perusopetus`
+
 type DeletePäätasonSuoritusRequest = {
   luokka?: string
   koulutusmoduuli?: {
@@ -40,6 +48,10 @@ type DeletePäätasonSuoritusRequest = {
 
 const poistaSuoritusButton = (page: Page) =>
   page.getByTestId('oo.0.suoritukset.0.button')
+
+// Katselutilan poistopainike on valitun suorituksen testId-polussa.
+const valitunSuorituksenPoisto = (page: Page, id: string) =>
+  page.getByTestId(new RegExp(`^oo\\.0\\.suoritukset\\.\\d+\\.${id}$`))
 
 const expectPerusopetusV2Loaded = async (page: Page) => {
   await expect(page.getByTestId('oo.0.suoritusTabs.0.tab')).toBeVisible()
@@ -70,6 +82,8 @@ test.describe('Perusopetuksen uusi käyttöliittymä: päätason suorituksen poi
     // Kaisalla on 4 päätason suoritusta. Näkymä avautuu viimeisimmälle
     // vuosiluokalle; valitaan oppimäärä (tab 0) ja aloitetaan muokkaus.
     await page.getByTestId('oo.0.suoritusTabs.0.tab').click()
+    // Muokkausoikeudellinen poistaa suorituksen vain muokkaustilassa.
+    await expect(poistaSuoritusButton(page)).toHaveCount(0)
     await page.getByTestId('oo.0.opiskeluoikeus.edit').click()
 
     // Poista suoritus -painike näkyy
@@ -233,7 +247,7 @@ test.describe('Perusopetuksen uusi käyttöliittymä: päätason suorituksen poi
     test.describe('oppilaitoksen pääkäyttäjä', () => {
       test.use({ storageState: virkailija('stadin-pää') })
 
-      test('näkee lähdejärjestelmäkontrollit muttei v2-päätason poistoa', async ({
+      test('näkee lähdejärjestelmäkontrollit ja voi poistaa suorituksen katselutilassa', async ({
         page,
         oppijaPage,
         fixtures
@@ -251,8 +265,81 @@ test.describe('Perusopetuksen uusi käyttöliittymä: päätason suorituksen poi
         await expect(page.getByTestId('oo.0.opiskeluoikeus.edit')).toHaveCount(
           0
         )
-        await expect(poistaSuoritusButton(page)).toHaveCount(0)
+
+        await suoritusTabs(page).filter({ hasText: '7. vuosiluokka' }).click()
+        await valitunSuorituksenPoisto(page, 'button').click()
+        await valitunSuorituksenPoisto(page, 'confirm').click()
+
+        await expect(page.getByText('Suoritus poistettu')).toBeVisible()
+        await expect(
+          suoritusTabs(page).filter({ hasText: '7. vuosiluokka' })
+        ).toHaveCount(0)
+        await expect(suoritusTabs(page)).toHaveCount(3)
       })
+    })
+  })
+
+  test.describe('Oppilaitoksen pääkäyttäjä käyttöliittymästä tallennetulla opiskeluoikeudella', () => {
+    test.use({ storageState: virkailija('stadin-pää') })
+
+    test('poistaa suorituksen katselutilassa ilman muokkausoikeutta', async ({
+      page,
+      oppijaPage,
+      fixtures
+    }) => {
+      await fixtures.reset()
+      await oppijaPage.goto(miiaUrl)
+      await expectPerusopetusV2Loaded(page)
+      await expect(page.getByTestId('oo.0.opiskeluoikeus.edit')).toHaveCount(0)
+
+      await suoritusTabs(page).filter({ hasText: '6. vuosiluokka' }).click()
+      await valitunSuorituksenPoisto(page, 'button').click()
+      await valitunSuorituksenPoisto(page, 'cancel').click()
+      await expect(valitunSuorituksenPoisto(page, 'confirm')).toHaveCount(0)
+
+      await valitunSuorituksenPoisto(page, 'button').click()
+      await valitunSuorituksenPoisto(page, 'confirm').click()
+
+      await expect(page.getByText('Suoritus poistettu')).toBeVisible()
+      await expect(suoritusTabs(page)).toHaveText([
+        'Päättötodistus',
+        '7. vuosiluokka'
+      ])
+    })
+
+    test('näyttää virheen, jos opiskeluoikeutta on muutettu sivun avaamisen jälkeen', async ({
+      page,
+      oppijaPage,
+      fixtures
+    }) => {
+      await fixtures.reset()
+      await oppijaPage.goto(miiaUrl)
+      await expectPerusopetusV2Loaded(page)
+
+      // Poistetaan 7. vuosiluokka suoraan rajapinnasta, jolloin näkymän
+      // versionumero vanhenee.
+      const vastaus = await page.request.get(
+        `/koski/api/oppija/${miiaOid}/uiv2?class_refs=true`
+      )
+      const opiskeluoikeus = (await vastaus.json()).opiskeluoikeudet[0]
+      const seitsemäs = opiskeluoikeus.suoritukset.find(
+        (s: DeletePäätasonSuoritusRequest) =>
+          s.koulutusmoduuli?.tunniste?.koodiarvo === '7'
+      )
+      const poisto = await page.request.post(
+        `/koski/api/opiskeluoikeus/${opiskeluoikeus.oid}/${opiskeluoikeus.versionumero}/delete-paatason-suoritus`,
+        { data: seitsemäs }
+      )
+      expect(poisto.ok()).toBeTruthy()
+
+      await suoritusTabs(page).filter({ hasText: '6. vuosiluokka' }).click()
+      await valitunSuorituksenPoisto(page, 'button').click()
+      await valitunSuorituksenPoisto(page, 'confirm').click()
+
+      await expect(page.getByTestId('globalErrors')).toContainText(
+        'Yritetty päivittää vanhan version päälle'
+      )
+      await expect(valitunSuorituksenPoisto(page, 'button')).toBeVisible()
     })
   })
 })

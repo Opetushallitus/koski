@@ -150,11 +150,12 @@ const PerusopetuksenPäätasonSuoritusEditor: React.FC<
         suorituksenNimi={perusopetuksenSuorituksenNimi}
         {...addSuoritusProps.editorContainerProps}
       >
-        {props.form.editMode && props.form.state.suoritukset.length > 1 && (
+        {props.form.state.suoritukset.length > 1 && (
           <RemovePaatasonSuoritus
             form={props.form}
             päätasonSuoritus={päätasonSuoritus}
             removePäätasonSuoritus={removePäätasonSuoritus}
+            invalidatable={props.invalidatable}
           />
         )}
         <PerusopetuksenSuorituksenTiedot
