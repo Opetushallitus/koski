@@ -179,6 +179,14 @@
       "rebaseWhen": "behind-base-branch"
     },
     {
+      "description": "Automerge devDependency minor updates after CI. Runtime code belongs in dependencies.",
+      "matchManagers": ["npm"],
+      "matchDepTypes": ["devDependencies"],
+      "matchUpdateTypes": ["minor"],
+      "automerge": true,
+      "rebaseWhen": "behind-base-branch"
+    },
+    {
       "description": "Group all Parcel updates together. Placed after the npm patch groups so that their groupName does not override this one.",
       "groupName": "parcel",
       "matchPackageNames": [
