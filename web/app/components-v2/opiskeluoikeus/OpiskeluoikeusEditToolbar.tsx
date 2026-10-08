@@ -33,7 +33,7 @@ export const OpiskeluoikeusEditToolbar = (
   const spans = props.editMode ? [12, 12] : [16, 8]
   const opiskeluoikeusOid = getOpiskeluoikeusOid(props.opiskeluoikeus)
   const hasAnyInvalidateAccess = useVirkailijaUser()?.hasAnyInvalidateAccess
-  const inVersiohistoria = useVersionumero() !== null
+  const inVersiohistoria = useVersionumero(opiskeluoikeusOid) !== null
 
   return (
     <ColumnRow>

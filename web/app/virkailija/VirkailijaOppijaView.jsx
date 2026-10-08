@@ -54,7 +54,10 @@ export const reloadOppija = () => {
 }
 
 export const oppijaContentP = (oppijaOid) => {
-  const version = currentLocation().params.versionumero
+  const { opiskeluoikeus, versionumero } = currentLocation().params
+  // Versio yksilöidään opiskeluoikeudella: eri opiskeluoikeuksien saman
+  // numeroiset versiot ovat eri näkymiä.
+  const version = versionumero && `${opiskeluoikeus}/${versionumero}`
   if (
     !currentState ||
     currentState.oppijaOid !== oppijaOid ||

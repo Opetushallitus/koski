@@ -9,7 +9,10 @@ import {
   useOnApiSuccess,
   useSafeState
 } from '../../api-fetch'
-import { useVersionumero } from '../../appstate/useSearchParam'
+import {
+  opiskeluoikeudenVersionumero,
+  useSearchParam
+} from '../../appstate/useSearchParam'
 import { modelData } from '../../editor/EditorModel'
 import { t } from '../../i18n/i18n'
 import { Contextualized } from '../../types/EditorModelContext'
@@ -223,7 +226,8 @@ const useUiAdapterImpl = <T extends any[]>(
   onVersionumeroChange?: () => void
 ): UiAdapter => {
   const [adapter, setAdapter] = useSafeState<UiAdapter>(loadingUiAdapter)
-  const versionumero = useVersionumero()
+  const versionumero = useSearchParam('versionumero')
+  const versioituOpiskeluoikeus = useSearchParam('opiskeluoikeus')
 
   // Ladatun datan jälkeen tallennetut opiskeluoikeudet. Ref eikä tila, jotta
   // tallennus ei renderöi editoria uudelleen; ne otetaan käyttöön vasta, kun
@@ -257,12 +261,14 @@ const useUiAdapterImpl = <T extends any[]>(
 
   // Versionumeron muuttuessa haetaan vain valittu versio (ei koko näkymää
   // uudelleen), jolloin versiohistoriassa liikkuminen ei lataa sivua uudelleen.
+  // Myös opiskeluoikeuden vaihtuminen laukaisee haun: toisen opiskeluoikeuden
+  // saman numeroinen versio ei muuta versionumeroa.
   useEffect(() => {
     if (v2Mode) {
       onVersionumeroChange?.()
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [v2Mode, versionumero])
+  }, [v2Mode, versionumero, versioituOpiskeluoikeus])
 
   useOnApiSuccess(oppija, (result) => {
     const opiskeluoikeudet = result.data.opiskeluoikeudet
@@ -274,9 +280,10 @@ const useUiAdapterImpl = <T extends any[]>(
         const tyyppi = modelData(opiskeluoikeusModel, 'tyyppi.koodiarvo')
         const oid = modelData(opiskeluoikeusModel, 'oid')
 
-        const versionumeroParam = new URLSearchParams(
-          window.location.search
-        ).get('versionumero')
+        const versionumeroParam = opiskeluoikeudenVersionumero(
+          window.location.search,
+          oid
+        )
 
         const ladattu = opiskeluoikeudet.find(
           (o) =>
@@ -333,7 +340,8 @@ const useUiAdapterImpl = <T extends any[]>(
         // vaihtuessa — jolloin lomake alustuu uudelleen versioidulla datalla.
         //
         // Key koostuu kahdesta osasta:
-        //  - p<param>: osoiterivin versionumero (tai 'cur' nykyiselle), jotta
+        //  - p<param>: osoiterivin versionumero, jos osoite viittaa tähän
+        //    opiskeluoikeuteen (muuten 'cur' nykyiselle), jotta
         //    "nykyinen versio" ja "versio N" eivät koskaan törmää vaikka
         //    ladattu versionumero olisi sama. Ilman tätä tallennuksen jälkeen
         //    vanhentunut oppijaFetch (versionumero=1) ja katseltava versio 1

@@ -1,3 +1,4 @@
+import type { Locator } from '@playwright/test'
 import { expect, test } from './base'
 import { virkailija } from './setup/auth'
 
@@ -10,6 +11,11 @@ import { virkailija } from './setup/auth'
 
 const kaisaOid = '1.2.246.562.24.00000000007'
 const kaisaUrl = `${kaisaOid}?opiskeluoikeudenTyyppi=perusopetus`
+
+// Miia Monikoululaisella on kaksi perusopetuksen opiskeluoikeutta eri
+// oppilaitoksissa, joten kummankin testId-polut alkavat oo.0.
+const miiaOid = '1.2.246.562.24.00000000012'
+const miiaUrl = `${miiaOid}?opiskeluoikeudenTyyppi=perusopetus`
 
 test.describe('Perusopetuksen uusi käyttöliittymä: versiohistoria', () => {
   test.use({ storageState: virkailija('kalle') })
@@ -161,5 +167,120 @@ test.describe('Perusopetuksen uusi käyttöliittymä: versiohistoria', () => {
     await page.getByRole('button', { name: 'Poistu versiohistoriasta' }).click()
     await expect(page).not.toHaveURL(/versionumero=/)
     await expect(page.getByText(marker)).toBeVisible({ timeout: 15000 })
+  })
+
+  test('Versiohistoria koskee vain valittua opiskeluoikeutta, kun sivulla on useita', async ({
+    page,
+    oppijaPage,
+    fixtures
+  }) => {
+    await fixtures.reset()
+    await oppijaPage.goto(miiaUrl)
+
+    const opiskeluoikeus = (oppilaitos: string) =>
+      page
+        .locator('[data-testid="opiskeluoikeuksientiedot"] > li')
+        .filter({ hasText: oppilaitos })
+    const jyvaskyla = opiskeluoikeus('Jyväskylän normaalikoulu')
+    const kulosaari = opiskeluoikeus('Kulosaaren ala-aste')
+
+    await jyvaskyla
+      .getByTestId('oo.0.opiskeluoikeus.versiohistoria.button')
+      .click()
+    await jyvaskyla
+      .getByTestId('oo.0.opiskeluoikeus.versiohistoria.list.1')
+      .click()
+
+    await expect(page).toHaveURL(/versionumero=1/)
+    await expect(
+      jyvaskyla.getByTestId('oo.0.opiskeluoikeus.versiohistoria.button')
+    ).toContainText('Versionumero: v1')
+    await expect(jyvaskyla.getByTestId('oo.0.opiskeluoikeus.edit')).toHaveCount(
+      0
+    )
+
+    // Toinen opiskeluoikeus pysyy nykyisessä versiossaan
+    await expect(
+      kulosaari.getByTestId('oo.0.opiskeluoikeus.versiohistoria.button')
+    ).toContainText('Versiohistoria')
+    await expect(
+      kulosaari.getByTestId('oo.0.opiskeluoikeus.versiohistoria.list.1')
+    ).toHaveCount(0)
+    await expect(kulosaari.getByTestId('oo.0.opiskeluoikeus.edit')).toBeVisible()
+    await expect(
+      kulosaari.getByRole('button', { name: 'Poistu versiohistoriasta' })
+    ).toHaveCount(0)
+  })
+
+  test('Toisen opiskeluoikeuden version selaus ei palauta tallennettua opiskeluoikeutta vanhaan versioon', async ({
+    page,
+    oppijaPage,
+    fixtures
+  }) => {
+    test.setTimeout(60000)
+    await fixtures.reset()
+    await oppijaPage.goto(miiaUrl)
+
+    const opiskeluoikeus = (oppilaitos: string) =>
+      page
+        .locator('[data-testid="opiskeluoikeuksientiedot"] > li')
+        .filter({ hasText: oppilaitos })
+    const jyvaskyla = opiskeluoikeus('Jyväskylän normaalikoulu')
+    const kulosaari = opiskeluoikeus('Kulosaaren ala-aste')
+
+    const tallennaLisätieto = async (oo: Locator, marker: string) => {
+      await oo.getByTestId('oo.0.opiskeluoikeus.edit').click()
+      await oo
+        .getByTestId(
+          'oo.0.suoritukset.1.todistuksellaNäkyvätLisätiedot.edit.input'
+        )
+        .fill(marker)
+      await oo.getByTestId('oo.0.opiskeluoikeus.save').click()
+      await expect(oo.getByTestId('oo.0.opiskeluoikeus.edit')).toBeVisible({
+        timeout: 15000
+      })
+      await expect(oo.getByText(marker)).toBeVisible()
+    }
+
+    // Kummallekin tallennetaan uusi versio, jolloin versio 1 erottuu
+    // nykyisestä
+    const jyvaskylaMarker = 'REGRESSIO_JYVASKYLAN_TALLENNUS'
+    const kulosaariMarker = 'REGRESSIO_KULOSAAREN_TALLENNUS'
+    await tallennaLisätieto(kulosaari, kulosaariMarker)
+    await tallennaLisätieto(jyvaskyla, jyvaskylaMarker)
+
+    // Jyväskylän version selaus ei vaihda Kulosaaren dataa tallennusta
+    // edeltävään (sivun avaushetken) versioon. Jyväskylän merkin
+    // katoaminen kertoo, että versio on ladattu ja editorit renderöity.
+    await jyvaskyla
+      .getByTestId('oo.0.opiskeluoikeus.versiohistoria.button')
+      .click()
+    await jyvaskyla
+      .getByTestId('oo.0.opiskeluoikeus.versiohistoria.list.1')
+      .click()
+    await expect(jyvaskyla.getByText(jyvaskylaMarker)).toHaveCount(0)
+    await expect(kulosaari.getByText(kulosaariMarker)).toBeVisible()
+
+    // Siirtyminen suoraan Kulosaaren saman numeroiseen versioon hakee sen,
+    // vaikka osoitteen versionumero ei muutu. Jyväskylä palaa uusimpaan
+    // tallennettuun versioonsa.
+    await jyvaskyla
+      .getByTestId('oo.0.opiskeluoikeus.versiohistoria.button')
+      .click()
+    await kulosaari
+      .getByTestId('oo.0.opiskeluoikeus.versiohistoria.button')
+      .click()
+    await kulosaari
+      .getByTestId('oo.0.opiskeluoikeus.versiohistoria.list.1')
+      .click()
+    await expect(kulosaari.getByText(kulosaariMarker)).toHaveCount(0)
+    await expect(
+      kulosaari.getByTestId('oo.0.opiskeluoikeus.versiohistoria.button')
+    ).toContainText('Versionumero: v1')
+    await expect(jyvaskyla.getByText(jyvaskylaMarker)).toBeVisible()
+    await expect(
+      jyvaskyla.getByTestId('oo.0.opiskeluoikeus.versiohistoria.button')
+    ).toContainText('Versiohistoria')
+    await expect(jyvaskyla.getByTestId('oo.0.opiskeluoikeus.edit')).toBeVisible()
   })
 })

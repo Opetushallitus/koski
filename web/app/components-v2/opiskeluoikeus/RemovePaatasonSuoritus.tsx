@@ -37,7 +37,8 @@ export const RemovePaatasonSuoritus = <S extends Opiskeluoikeus>(
   props: RemovePaatasonSuoritusProps<S>
 ) => {
   const voiMuokata = useWriteAccess(props.form.state)
-  const inVersiohistoria = useVersionumero() !== null
+  const inVersiohistoria =
+    useVersionumero(getOpiskeluoikeusOid(props.form.state)) !== null
 
   // Kuten vanhassa käyttöliittymässä: muokkausoikeudellinen poistaa
   // suorituksen muokkaustilassa, mutta mitätöintioikeudellinen, joka ei voi
