@@ -170,6 +170,18 @@ class KotikuntalaskelmaSpec extends AnyFreeSpec with Matchers with Raportointika
       }
     }
 
+    "Pelkillä esiopetuksen käyttöoikeuksilla ei voi ladata raporttia" in {
+      authGet(s"api/raportit/kotikuntalaskelma?oppilaitosOid=$helsinginKaupunki&paiva=$raportointipäivä&lang=fi&password=salasana", user = MockUsers.esiopetusTallentaja) {
+        verifyResponseStatus(403, KoskiErrorCategory.forbidden.opiskeluoikeudenTyyppi())
+      }
+    }
+
+    "Kaikkien raportin opiskeluoikeustyyppien katseluoikeuksilla voi ladata raportin" in {
+      authGet(s"api/raportit/kotikuntalaskelma?oppilaitosOid=$helsinginKaupunki&paiva=$raportointipäivä&lang=fi&password=salasana", user = MockUsers.helsinkiKatselija) {
+        verifyResponseStatusOk()
+      }
+    }
+
     "Aggregaattivälilehti - eri-ikäiset ja eri kotikunnissa asuvat oppijat päätyvät oikeisiin ikäryhmä- ja kotikuntariveihin" in {
       val jyväskyläRivi = aggregaattiRivit.find(_.oppilaanKotikunta.contains("Jyväskylä"))
       jyväskyläRivi shouldBe defined

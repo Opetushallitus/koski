@@ -216,8 +216,8 @@ class RaportitServlet(implicit val application: KoskiApplication) extends KoskiS
   )
 
   get("/kotikuntalaskelma") {
-    requireOpiskeluoikeudenKayttooikeudet(kotikuntalaskelmanOpiskeluoikeudenTyypit: _*)
     val parsedRequest = parseRaporttiPäivältäRequest
+    requireKaikkiOpiskeluoikeudenTyypit(parsedRequest.oppilaitosOid, kotikuntalaskelmanOpiskeluoikeudenTyypit)
     val t = new LocalizationReader(application.koskiLocalizationRepository, parsedRequest.lang)
     AuditLog.log(KoskiAuditLogMessage(OPISKELUOIKEUS_RAPORTTI, session, Map(hakuEhto -> s"raportti=kotikuntalaskelma&oppilaitosOid=${parsedRequest.oppilaitosOid}&paiva=${parsedRequest.paiva}&lang=${parsedRequest.lang}")))
     writeExcel(raportitService.kotikuntalaskelma(parsedRequest, t), t)
@@ -298,7 +298,7 @@ class RaportitServlet(implicit val application: KoskiApplication) extends KoskiS
     }
   }
 
-  // Raportti näyttää kuntalaiset kaikista sen koulutusmuodoista, joten oikeus vain osaan niistä ei riitä
+  // Raportti näyttää oppijat kaikista sen koulutusmuodoista, joten oikeus vain osaan niistä ei riitä
   private def requireKaikkiOpiskeluoikeudenTyypit(organisaatioOid: Organisaatio.Oid, tyypit: Seq[Koodistokoodiviite]) = {
     val organisaationTyypit = session.orgKäyttöoikeudet.filter(_.organisaatio.oid == organisaatioOid).flatMap(_.allowedOpiskeluoikeusTyypit)
     if (!session.hasGlobalReadAccess && !organisaationTyypit.satisfiesAll(tyypit.flatMap(OoPtsMask.fromKoodistokoodiviite))) {
