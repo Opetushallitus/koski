@@ -29,7 +29,7 @@ runs:
       shell: bash
 
     - name: Start Postgres and OS containers
-      run: docker compose --progress quiet up --detach
+      run: docker compose --progress quiet up --detach --wait
       shell: bash
 
     - name: Restore target dir
