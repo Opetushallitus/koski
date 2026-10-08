@@ -454,6 +454,7 @@ jobs:
 
   koski_browser_tests_playwright:
     name: Koski browser tests (Playwright) ${{matrix.shardIndex}}/${{matrix.shardTotal}}
+    timeout-minutes: 30
     strategy:
       fail-fast: false
       matrix:
@@ -552,6 +553,7 @@ jobs:
 
   oauth2_browser_tests_playwright:
     name: OAuth2 browser tests ${{matrix.shardIndex}}/${{matrix.shardTotal}}
+    timeout-minutes: 30
     runs-on: ubuntu-26.04
     permissions:
       contents: read
