@@ -27,22 +27,7 @@ import org.json4s.{JValue, _}
 import scala.util.Random
 
 object TiedonsiirtoService {
-  private val settings = Map(
-    "analysis" -> Map(
-      "filter" -> Map(
-        "finnish_folding" -> Map(
-          "type" -> "icu_folding",
-          "unicodeSetFilter" -> "[^åäöÅÄÖ]"
-        )
-      ),
-      "analyzer" -> Map(
-        "default" -> Map(
-          "tokenizer" -> "icu_tokenizer",
-          "filter" -> Array("finnish_folding", "lowercase")
-        )
-      )
-    )
-  )
+  private val settings = Map.empty[String, Any]
 
   private val mapping = Map(
     "properties" -> Map(
