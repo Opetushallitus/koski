@@ -12,6 +12,12 @@ services:
       - "5432:5432"
     volumes:
       - "./postgresql/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d"
+    healthcheck:
+      test: ["CMD", "pg_isready", "--host", "localhost", "--username", "oph"]
+      interval: 5s
+      timeout: 5s
+      retries: 3
+      start_period: 60s
 
   opensearch:
     build: "./opensearch"
@@ -23,6 +29,12 @@ services:
       - "9200:9200"
     volumes:
       - "./opensearch/opensearch-docker.yml:/usr/share/opensearch/config/opensearch.yml"
+    healthcheck:
+      test: ["CMD", "curl", "--silent", "--fail", "localhost:9200/_cluster/health?wait_for_status=yellow&timeout=5s"]
+      interval: 5s
+      timeout: 10s
+      retries: 3
+      start_period: 120s
 
   dynamodb:
     image: "amazon/dynamodb-local:2.6.1@sha256:1856c05cc66a0e49dc1099e483ad2851477eeebe2135250ac11a1d1227db54b1"
@@ -41,3 +53,9 @@ services:
     volumes:
       - "${LOCALSTACK_VOLUME_DIR:-./localstack-volume}:/var/lib/localstack"
       - "/var/run/docker.sock:/var/run/docker.sock"
+    healthcheck:
+      test: ["CMD", "curl", "--silent", "--fail", "localhost:4566/_localstack/health"]
+      interval: 5s
+      timeout: 5s
+      retries: 3
+      start_period: 60s
