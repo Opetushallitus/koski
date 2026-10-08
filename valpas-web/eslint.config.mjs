@@ -2,6 +2,7 @@ import js from "@eslint/js"
 import tseslint from "typescript-eslint"
 import eslintConfigPrettier from "eslint-config-prettier"
 import compat from "eslint-plugin-compat"
+import importX from "eslint-plugin-import-x"
 import reactHooks from "eslint-plugin-react-hooks"
 import globals from "globals"
 
@@ -24,6 +25,20 @@ export default [
     },
   },
   { ...compat.configs["flat/recommended"], files: ["src/**/*"] },
+  {
+    plugins: { "import-x": importX },
+    rules: { "import-x/no-extraneous-dependencies": "error" },
+  },
+  {
+    files: ["src/**/*"],
+    ignores: ["src/**/*.test.*", "src/utils/tests.ts"],
+    rules: {
+      "import-x/no-extraneous-dependencies": [
+        "error",
+        { devDependencies: false },
+      ],
+    },
+  },
   eslintConfigPrettier,
   { rules: { "no-unexpected-multiline": "error" } },
   ...tseslint.configs.recommendedTypeChecked.map((config) => ({
