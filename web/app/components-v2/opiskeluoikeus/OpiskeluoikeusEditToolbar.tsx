@@ -57,9 +57,12 @@ export const OpiskeluoikeusEditToolbar = (
         span={{ default: spans[1], phone: 24 }}
         align={{ default: 'right', phone: 'left' }}
       >
-        {hasAnyInvalidateAccess && props.invalidatable && opiskeluoikeusOid && (
-          <MitätöintiButton opiskeluoikeusOid={opiskeluoikeusOid} />
-        )}
+        {hasAnyInvalidateAccess &&
+          props.invalidatable &&
+          !inVersiohistoria &&
+          opiskeluoikeusOid && (
+            <MitätöintiButton opiskeluoikeusOid={opiskeluoikeusOid} />
+          )}
         {inVersiohistoria ? (
           // Versiohistoriasta poistuminen on pelkkä navigaatio (?versionumero
           // pois URL:sta), ei muokkaus, joten sitä ei saa rajata

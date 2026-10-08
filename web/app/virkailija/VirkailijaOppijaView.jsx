@@ -13,15 +13,20 @@ import {
 } from '../editor/EditorModel'
 import editorMapping from '../oppija/editors'
 import { Editor } from '../editor/Editor'
-import { VirkailijaUiAdapterProvider } from '../components-v2/interoperability/useUiAdapter'
+import {
+  näytetäänUudellaKäyttöliittymällä,
+  VirkailijaUiAdapterProvider
+} from '../components-v2/interoperability/useUiAdapter'
 import * as R from 'ramda'
 import {
   currentLocation,
   locationP,
   navigateToOppija,
   navigateWithQueryParams,
+  refreshLocation,
   showError
 } from '../util/location.js'
+import { LOCATION_CHANGE_EVENT } from '../util/url'
 import { OppijaHaku } from '../virkailija/OppijaHaku'
 import Link from '../components/Link'
 import { decreaseLoading, increaseLoading } from '../util/loadingFlag'
@@ -53,21 +58,50 @@ export const reloadOppija = () => {
   navigateToOppija({ oid: oppijaOid })
 }
 
-export const oppijaContentP = (oppijaOid) => {
+const vanhanKäyttöliittymänOpiskeluoikeudet = (oppijaModel) =>
+  new Set(
+    flatMapArray(modelData(oppijaModel, 'opiskeluoikeudet') || [], (tyyppi) =>
+      flatMapArray(tyyppi.opiskeluoikeudet, (o) => o.opiskeluoikeudet)
+    )
+      .filter((oo) => !näytetäänUudellaKäyttöliittymällä(oo))
+      .map((oo) => oo.oid)
+  )
+
+// Malli haetaan versiolle vain, kun katseltava opiskeluoikeus näkyy vanhalla
+// käyttöliittymällä. Uuden käyttöliittymän editori hakee versiot itse, joten
+// niitä selattaessa mallia ei haeta uudelleen. Versio yksilöidään
+// opiskeluoikeudella: eri opiskeluoikeuksien saman numeroiset versiot ovat eri
+// näkymiä.
+const malliinTarvittavaVersio = (malli) => {
   const { opiskeluoikeus, versionumero } = currentLocation().params
-  // Versio yksilöidään opiskeluoikeudella: eri opiskeluoikeuksien saman
-  // numeroiset versiot ovat eri näkymiä.
-  const version = versionumero && `${opiskeluoikeus}/${versionumero}`
+  return versionumero && malli.vanhanKäyttöliittymänOidit.has(opiskeluoikeus)
+    ? `${opiskeluoikeus}/${versionumero}`
+    : undefined
+}
+
+const malliVanhentunut = ({ malli }) =>
+  malli.vanhanKäyttöliittymänOidit !== undefined &&
+  malli.versio !== malliinTarvittavaVersio(malli)
+
+// Uuden käyttöliittymän navigointi (pushLocation) ohittaa locationBusin.
+window.addEventListener(LOCATION_CHANGE_EVENT, () => {
+  if (
+    currentState &&
+    currentLocation().path === `/koski/oppija/${currentState.oppijaOid}` &&
+    malliVanhentunut(currentState)
+  ) {
+    refreshLocation()
+  }
+})
+
+export const oppijaContentP = (oppijaOid) => {
   if (
     !currentState ||
     currentState.oppijaOid !== oppijaOid ||
-    currentState.version !== version
+    malliVanhentunut(currentState)
   ) {
-    currentState = {
-      oppijaOid,
-      version,
-      state: createState(oppijaOid)
-    }
+    const malli = {}
+    currentState = { oppijaOid, malli, state: createState(oppijaOid, malli) }
   }
   return stateToContent(currentState.state)
 }
@@ -128,7 +162,7 @@ const deletePäätasonSuoritusE = deletePäätasonSuoritusBus
       Bacon.once(R.mergeRight(oppija, { event: 'päätasonSuoritusDeleted' }))
   )
 
-const createState = (oppijaOid) => {
+const createState = (oppijaOid, malli) => {
   const changeBus = Bacon.Bus()
   const editBus = Bacon.Bus()
   const saveChangesBus = Bacon.Bus()
@@ -144,22 +178,36 @@ const createState = (oppijaOid) => {
     navigateWithQueryParams({ edit: opiskeluoikeusOid })
   )
 
-  const queryString = currentLocation().filterQueryParams((key) =>
-    ['opiskeluoikeus', 'versionumero', 'newVSTUI'].includes(key)
-  ).queryString
+  const editorUri = (params) =>
+    `/koski/api/editor/${oppijaOid}${
+      currentLocation().filterQueryParams((key) => params.includes(key))
+        .queryString
+    }`
 
-  const oppijaEditorUri = `/koski/api/editor/${oppijaOid}${queryString}`
+  // Nykyisestä mallista nähdään, tarvitaanko malli versiolle.
+  const haeMalli = (options) =>
+    Http.cachedGet(editorUri(['newVSTUI']), options)
+      .map(setupModelContext)
+      .flatMap((nykyinen) => {
+        malli.vanhanKäyttöliittymänOidit =
+          vanhanKäyttöliittymänOpiskeluoikeudet(nykyinen)
+        malli.versio = malliinTarvittavaVersio(malli)
+        return malli.versio
+          ? Http.cachedGet(
+              editorUri(['opiskeluoikeus', 'versionumero', 'newVSTUI']),
+              options
+            ).map(setupModelContext)
+          : Bacon.once(nykyinen)
+      })
 
   const cancelE = editingP.changes().filter(R.complement(R.identity)) // Use location instead of cancelBus, because you can also use the back button to cancel changes
   const loadOppijaE = Bacon.once(!!currentLocation().params.edit)
     .merge(cancelE.map(false))
     .map(
       (edit) => () =>
-        Http.cachedGet(oppijaEditorUri, { willHandleErrors: true })
-          .map(setupModelContext)
-          .map((oppija) =>
-            R.mergeRight(oppija, { event: edit ? 'edit' : 'view' })
-          )
+        haeMalli({ willHandleErrors: true }).map((oppija) =>
+          R.mergeRight(oppija, { event: edit ? 'edit' : 'view' })
+        )
     )
 
   let changeBuffer = null
@@ -257,8 +305,7 @@ const createState = (oppijaOid) => {
           '/koski/api/editor/' + oppijaOid
         ]
       })
-        .flatMap(() => Http.cachedGet(oppijaEditorUri, { errorHandler })) // loading after save fails -> rare, not easily recoverable error, show full screen
-        .map(setupModelContext)
+        .flatMap(() => haeMalli({ errorHandler })) // loading after save fails -> rare, not easily recoverable error, show full screen
         .map((oppija) => R.mergeRight(oppija, { event: 'saved' }))
     )
   })

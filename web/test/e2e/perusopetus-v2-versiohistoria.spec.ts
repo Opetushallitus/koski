@@ -17,6 +17,11 @@ const kaisaUrl = `${kaisaOid}?opiskeluoikeudenTyyppi=perusopetus`
 const miiaOid = '1.2.246.562.24.00000000012'
 const miiaUrl = `${miiaOid}?opiskeluoikeudenTyyppi=perusopetus`
 
+// Monia Useitan perusopetuksen välilehdellä aineopiskelijan opiskeluoikeus
+// näkyy vanhalla käyttöliittymällä ja kaksi muuta uudella.
+const moniaOid = '1.2.246.562.24.00000000165'
+const moniaUrl = `${moniaOid}?opiskeluoikeudenTyyppi=perusopetus`
+
 test.describe('Perusopetuksen uusi käyttöliittymä: versiohistoria', () => {
   test.use({ storageState: virkailija('kalle') })
 
@@ -282,5 +287,140 @@ test.describe('Perusopetuksen uusi käyttöliittymä: versiohistoria', () => {
       jyvaskyla.getByTestId('oo.0.opiskeluoikeus.versiohistoria.button')
     ).toContainText('Versiohistoria')
     await expect(jyvaskyla.getByTestId('oo.0.opiskeluoikeus.edit')).toBeVisible()
+  })
+
+  test('Uudelleenlataus ja selaimen historia näyttävät versiossa myös muut opiskeluoikeudet', async ({
+    page,
+    oppijaPage,
+    fixtures
+  }) => {
+    await fixtures.reset()
+    await oppijaPage.goto(miiaUrl)
+
+    const opiskeluoikeus = (oppilaitos: string) =>
+      page
+        .locator('[data-testid="opiskeluoikeuksientiedot"] > li')
+        .filter({ hasText: oppilaitos })
+    const jyvaskyla = opiskeluoikeus('Jyväskylän normaalikoulu')
+    const kulosaari = opiskeluoikeus('Kulosaaren ala-aste')
+    const versiohistoria = (oo: Locator) =>
+      oo.getByTestId('oo.0.opiskeluoikeus.versiohistoria.button')
+    const valitseVersio1 = async (oo: Locator) => {
+      await versiohistoria(oo).click()
+      await oo.getByTestId('oo.0.opiskeluoikeus.versiohistoria.list.1').click()
+      await expect(versiohistoria(oo)).toContainText('Versionumero: v1')
+    }
+    const odotaJyvaskylanVersio = async () => {
+      await expect(versiohistoria(jyvaskyla)).toContainText('Versionumero: v1')
+      await expect(versiohistoria(kulosaari)).toContainText('Versiohistoria')
+      await expect(kulosaari.getByTestId('oo.0.opiskeluoikeus.edit')).toBeVisible()
+    }
+
+    await valitseVersio1(jyvaskyla)
+    await page.reload()
+    await odotaJyvaskylanVersio()
+
+    // Selaimen historia lataa näkymän osoitteesta uudelleen
+    await versiohistoria(jyvaskyla).click()
+    await valitseVersio1(kulosaari)
+    await page.goBack()
+    await odotaJyvaskylanVersio()
+  })
+
+  test('Vanhan käyttöliittymän opiskeluoikeus poistuu versiosta, kun siirrytään uuden käyttöliittymän opiskeluoikeuden versioon', async ({
+    page,
+    oppijaPage,
+    fixtures
+  }) => {
+    await fixtures.reset()
+    await oppijaPage.goto(moniaUrl)
+
+    const opiskeluoikeudet = page.locator(
+      '[data-testid="opiskeluoikeuksientiedot"] > li'
+    )
+    const vanha = opiskeluoikeudet.filter({ has: page.locator('.versiohistoria') })
+    const uusi = opiskeluoikeudet
+      .filter({ hasText: 'Jyväskylän normaalikoulu' })
+      .filter({ hasNot: page.locator('.versiohistoria') })
+    const uudenVersiohistoria = uusi.getByTestId(
+      'oo.1.opiskeluoikeus.versiohistoria.button'
+    )
+
+    await vanha.locator('.versiohistoria > a').click()
+    await vanha
+      .locator('.versiohistoria .modal a')
+      .filter({ hasText: 'v1' })
+      .click()
+    await expect(vanha.locator('.versiohistoria.open')).toBeVisible()
+    await expect(uudenVersiohistoria).toContainText('Versiohistoria')
+
+    await uudenVersiohistoria.click()
+    await uusi.getByTestId('oo.1.opiskeluoikeus.versiohistoria.list.1').click()
+    await expect(uudenVersiohistoria).toContainText('Versionumero: v1')
+    await expect(vanha.locator('.versiohistoria.open')).toHaveCount(0)
+    await expect(vanha.locator('.toggle-edit')).toBeVisible()
+  })
+})
+
+test.describe('Perusopetuksen uusi käyttöliittymä: versiohistoria pääkäyttäjänä', () => {
+  test.use({ storageState: virkailija('pää') })
+
+  test('Versioiden selaus ei hae sivun tietoja uudelleen, ja Mitätöi piilotetaan vain katseltavalta opiskeluoikeudelta', async ({
+    page,
+    oppijaPage,
+    fixtures
+  }) => {
+    await fixtures.reset()
+    await oppijaPage.goto(miiaUrl)
+
+    const opiskeluoikeus = (oppilaitos: string) =>
+      page
+        .locator('[data-testid="opiskeluoikeuksientiedot"] > li')
+        .filter({ hasText: oppilaitos })
+    const jyvaskyla = opiskeluoikeus('Jyväskylän normaalikoulu')
+    const kulosaari = opiskeluoikeus('Kulosaaren ala-aste')
+    const versiohistoria = (oo: Locator) =>
+      oo.getByTestId('oo.0.opiskeluoikeus.versiohistoria.button')
+    const mitätöi = (oo: Locator) =>
+      oo.getByTestId('oo.0.opiskeluoikeus.invalidate.button')
+    const valitseVersio1 = async (oo: Locator) => {
+      await versiohistoria(oo).click()
+      await oo.getByTestId('oo.0.opiskeluoikeus.versiohistoria.list.1').click()
+      await expect(versiohistoria(oo)).toContainText('Versionumero: v1')
+    }
+
+    await valitseVersio1(jyvaskyla)
+    await expect(mitätöi(jyvaskyla)).toHaveCount(0)
+    await expect(mitätöi(kulosaari)).toBeVisible()
+
+    await page.reload()
+    await expect(versiohistoria(jyvaskyla)).toContainText('Versionumero: v1')
+    await expect(mitätöi(jyvaskyla)).toHaveCount(0)
+    await expect(mitätöi(kulosaari)).toBeVisible()
+
+    // Uudelleenlatauksen jälkeenkin versiot selataan hakematta vanhan
+    // käyttöliittymän mallia uudelleen
+    const sivunTietojenHaut: string[] = []
+    page.on('request', (request) => {
+      if (request.url().includes('/koski/api/editor/')) {
+        sivunTietojenHaut.push(request.url())
+      }
+    })
+
+    await versiohistoria(jyvaskyla).click()
+    await valitseVersio1(kulosaari)
+    await expect(mitätöi(kulosaari)).toHaveCount(0)
+    await expect(mitätöi(jyvaskyla)).toBeVisible()
+
+    await versiohistoria(kulosaari).click()
+    await kulosaari
+      .getByRole('button', { name: 'Poistu versiohistoriasta' })
+      .click()
+    await expect(versiohistoria(kulosaari)).toContainText('Versiohistoria')
+    await expect(mitätöi(kulosaari)).toBeVisible()
+
+    await page.goBack()
+    await expect(versiohistoria(kulosaari)).toContainText('Versionumero: v1')
+    expect(sivunTietojenHaut).toEqual([])
   })
 })

@@ -42,7 +42,7 @@ object OppijaEditorModel extends Timing {
     Ordering.by { ot: OpiskeluoikeudetTyypeittäin => ot.latestAlkamispäiväForOrdering }(localDateOptionOrdering).reverse
 
   // Note: even with editable=true, editability will be checked based on organizational access on the lower level
-  def toEditorModel(oppijaWithWarnings: WithWarnings[OppijaYksilöintitiedolla], editable: Boolean)(implicit application: KoskiApplication, koskiSession: KoskiSpecificSession): EditorModel = timed("createModel") {
+  def toEditorModel(oppijaWithWarnings: WithWarnings[OppijaYksilöintitiedolla], editable: Boolean, historiaversionOpiskeluoikeusOid: Option[String] = None)(implicit application: KoskiApplication, koskiSession: KoskiSpecificSession): EditorModel = timed("createModel") {
     val oppijaYksilöintitiedolla = oppijaWithWarnings.getIgnoringWarnings
     val oppija = oppijaYksilöintitiedolla.oppija
     val yksilöity = oppijaYksilöintitiedolla.yksilöity
@@ -53,11 +53,11 @@ object OppijaEditorModel extends Timing {
         }.toList.sorted(oppilaitoksenOpiskeluoikeudetOrdering)
         OpiskeluoikeudetTyypeittäin(tyyppi, oppilaitokset)
     }.toList.sorted(opiskeluoikeudetTyypeittäinOrdering)
-    buildModel(OppijaEditorView(oppija.henkilö.asInstanceOf[TäydellisetHenkilötiedot], tyypit, oppijaWithWarnings.warnings.flatMap(_.errors).map(_.key).toList, yksilöity), editable)
+    buildModel(OppijaEditorView(oppija.henkilö.asInstanceOf[TäydellisetHenkilötiedot], tyypit, oppijaWithWarnings.warnings.flatMap(_.errors).map(_.key).toList, yksilöity), editable, historiaversionOpiskeluoikeusOid)
   }
 
-  def buildModel(obj: AnyRef, editable: Boolean)(implicit application: KoskiApplication, koskiSession: KoskiSpecificSession): EditorModel = {
-    EditorModelBuilder.buildModel(EditorSchema.deserializationContext, obj, editable)(koskiSession, application.koodistoViitePalvelu, application.koskiLocalizationRepository)
+  def buildModel(obj: AnyRef, editable: Boolean, historiaversionOpiskeluoikeusOid: Option[String] = None)(implicit application: KoskiApplication, koskiSession: KoskiSpecificSession): EditorModel = {
+    EditorModelBuilder.buildModel(EditorSchema.deserializationContext, obj, editable, historiaversionOpiskeluoikeusOid)(koskiSession, application.koodistoViitePalvelu, application.koskiLocalizationRepository)
   }
 
   def toOppilaitoksenOpiskeluoikeus(oppilaitos: OrganisaatioWithOid, opiskeluoikeudet: Seq[Opiskeluoikeus]) = {

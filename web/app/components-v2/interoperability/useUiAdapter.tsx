@@ -17,12 +17,8 @@ import { modelData } from '../../editor/EditorModel'
 import { t } from '../../i18n/i18n'
 import { Contextualized } from '../../types/EditorModelContext'
 import { ObjectModel } from '../../types/EditorModels'
-import { isAmmatillisenTutkinnonSuoritus } from '../../types/fi/oph/koski/schema/AmmatillisenTutkinnonSuoritus'
-import { isNäyttötutkintoonValmistavanKoulutuksenSuoritus } from '../../types/fi/oph/koski/schema/NayttotutkintoonValmistavanKoulutuksenSuoritus'
-import { isNuortenPerusopetuksenOppimääränSuoritus } from '../../types/fi/oph/koski/schema/NuortenPerusopetuksenOppimaaranSuoritus'
 import { Opiskeluoikeus } from '../../types/fi/oph/koski/schema/Opiskeluoikeus'
 import { Oppija } from '../../types/fi/oph/koski/schema/Oppija'
-import { isPerusopetuksenVuosiluokanSuoritus } from '../../types/fi/oph/koski/schema/PerusopetuksenVuosiluokanSuoritus'
 import { hasFeatureFlag } from '../../util/featureFlags'
 import { intersects, last } from '../../util/fp/arrays'
 import { getHenkilöOid } from '../../util/henkilo'
@@ -79,6 +75,42 @@ export type AdaptedEditorElement = React.ReactElement
 
 export type OpiskeluoikeusEditorProps<T extends Opiskeluoikeus> = {
   opiskeluoikeus: T
+}
+
+type OpiskeluoikeudenTyypit = {
+  tyyppi: { koodiarvo: string }
+  suoritukset?: Array<{ tyyppi: { koodiarvo: string } }>
+}
+
+// Päätellään koodiarvoista eikä $class-kentästä, koska vanhan käyttöliittymän
+// editorimallin datassa ei ole $classia ja VirkailijaOppijaView tekee saman
+// tarkistuksen sille.
+export const näytetäänUudellaKäyttöliittymällä = (
+  oo: OpiskeluoikeudenTyypit
+): boolean => {
+  const tyyppi = oo.tyyppi.koodiarvo
+  const suoritustyypit = oo.suoritukset?.map((s) => s.tyyppi.koodiarvo)
+  switch (tyyppi) {
+    case 'ammatillinenkoulutus':
+      return (
+        suoritustyypit?.[0] === 'ammatillinentutkintoosittainen' ||
+        (hasFeatureFlag('ammatillinen-tutkinto-v2') &&
+          !!suoritustyypit?.length &&
+          suoritustyypit.every(
+            (suoritustyyppi) =>
+              suoritustyyppi === 'ammatillinentutkinto' ||
+              suoritustyyppi === 'nayttotutkintoonvalmistavakoulutus'
+          ))
+      )
+    case 'perusopetus':
+      return !!suoritustyypit?.every(
+        (suoritustyyppi) =>
+          suoritustyyppi === 'perusopetuksenvuosiluokka' ||
+          suoritustyyppi === 'perusopetuksenoppimaara'
+      )
+    default:
+      return Object.keys(opiskeluoikeusEditors).includes(tyyppi)
+  }
 }
 
 // Versioidun opiskeluoikeuden data on muuttumatonta (versio N ei koskaan
@@ -300,38 +332,11 @@ const useUiAdapterImpl = <T extends any[]>(
             ? tallennettu
             : ladattu
 
+        if (!oo || !näytetäänUudellaKäyttöliittymällä(oo)) {
+          return undefined
+        }
         const Editor: AdaptedOpiskeluoikeusEditor<any> | undefined =
-          oo && opiskeluoikeusEditors[oo.tyyppi.koodiarvo]
-
-        if (tyyppi === 'ammatillinenkoulutus') {
-          const suoritukset = oo?.suoritukset || []
-          const isOsittainen =
-            suoritukset[0]?.tyyppi?.koodiarvo ===
-            'ammatillinentutkintoosittainen'
-          const isTutkinto =
-            hasFeatureFlag('ammatillinen-tutkinto-v2') &&
-            suoritukset.length > 0 &&
-            suoritukset.every(
-              (s) =>
-                isAmmatillisenTutkinnonSuoritus(s) ||
-                isNäyttötutkintoonValmistavanKoulutuksenSuoritus(s)
-            )
-
-          if (!isOsittainen && !isTutkinto) {
-            return undefined
-          }
-        }
-
-        if (tyyppi === 'perusopetus') {
-          const allSuorituksetSupported = oo?.suoritukset?.every(
-            (s) =>
-              isPerusopetuksenVuosiluokanSuoritus(s) ||
-              isNuortenPerusopetuksenOppimääränSuoritus(s)
-          )
-          if (!allSuorituksetSupported) {
-            return undefined
-          }
-        }
+          opiskeluoikeusEditors[oo.tyyppi.koodiarvo]
 
         // Palautetaan valmis elementti (ei uutta komponenttifunktiota joka
         // renderillä), jolla on versioon sidottu key. Näin React säilyttää

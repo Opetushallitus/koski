@@ -8,17 +8,37 @@ import { flatMapArray } from '../util/util'
 import OpiskeluoikeudetNavBar from './OpiskeluoikeudetNavBar'
 import { TestIdRoot } from '../appstate/useTestId'
 
+const sisältääOpiskeluoikeuden = (opiskeluoikeudenTyyppi, oid) =>
+  modelData(opiskeluoikeudenTyyppi).opiskeluoikeudet.some((oppilaitos) =>
+    oppilaitos.opiskeluoikeudet.some((oo) => oo.oid === oid)
+  )
+
 export const OppijaEditor = ({ model }) => {
   const oppijaOid = modelData(model, 'henkilö.oid')
-  const selectedTyyppi = currentLocation().params.opiskeluoikeudenTyyppi
+  const {
+    opiskeluoikeudenTyyppi: selectedTyyppi,
+    opiskeluoikeus: katseltavaOpiskeluoikeus
+  } = currentLocation().params
   const opiskeluoikeusTyypit = modelItems(model, 'opiskeluoikeudet')
 
+  // Versiolinkissä ei ole opiskeluoikeuden tyyppiä, joten avataan välilehti,
+  // jolla katseltava opiskeluoikeus on.
   const selectedIndex = selectedTyyppi
     ? opiskeluoikeusTyypit.findIndex(
         (opiskeluoikeudenTyyppi) =>
           selectedTyyppi === modelData(opiskeluoikeudenTyyppi).tyyppi.koodiarvo
       )
-    : 0
+    : katseltavaOpiskeluoikeus
+      ? Math.max(
+          0,
+          opiskeluoikeusTyypit.findIndex((opiskeluoikeudenTyyppi) =>
+            sisältääOpiskeluoikeuden(
+              opiskeluoikeudenTyyppi,
+              katseltavaOpiskeluoikeus
+            )
+          )
+        )
+      : 0
 
   const uiAdapter = useVirkailijaUiAdapterContext()
 

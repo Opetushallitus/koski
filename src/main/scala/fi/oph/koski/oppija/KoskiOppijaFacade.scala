@@ -100,16 +100,7 @@ class KoskiOppijaFacade(
   : Either[HttpStatus, WithWarnings[OppijaYksilöintitiedolla]] = {
     henkilöRepository.findByOid(oid, findMasterIfSlaveOid)
       .toRight(notFound(oid))
-      .flatMap(henkilö => withOpiskeluoikeudet(henkilö, opiskeluoikeusRepository.findByOppija(henkilö, useVirta, useYtr)))
-      .map(_.map {
-        case (henkilö, opiskeluoikeudet) =>
-          OppijaYksilöintitiedolla(
-            piilotaOppijanTietojaTarvittaessa(
-              Oppija(henkilöRepository.oppijaHenkilöToTäydellisetHenkilötiedot(henkilö), opiskeluoikeudet)
-            ),
-            henkilö.yksilöity
-          )
-      })
+      .flatMap(henkilö => toOppijaYksilöintitiedolla(henkilö, opiskeluoikeusRepository.findByOppija(henkilö, useVirta, useYtr)))
   }
 
   def findUserOppija(implicit user: KoskiSpecificSession): Either[HttpStatus, WithWarnings[Oppija]] = {
@@ -144,26 +135,26 @@ class KoskiOppijaFacade(
       )
   }
 
+  // Vanhan käyttöliittymän versionäkymä (EditorServlet) näyttää version oppijan
+  // muiden opiskeluoikeuksien rinnalla, joten palautetaan nykyiset
+  // opiskeluoikeudet, joista pyydetty on korvattu historiaversiollaan. Korvaus
+  // tehdään täällä, koska editorimallin prototyypit, muokattavuus ja ryhmittely
+  // syntyvät vasta mallia rakennettaessa; käyttöliittymässä version liittäminen
+  // valmiiseen malliin vaatisi mallipuun muokkaamista käsin. Uusi
+  // käyttöliittymä hakee versiot rajapinnasta /api/opiskeluoikeus/historia.
   def findVersion
     (oppijaOid: String, opiskeluoikeusOid: String, versionumero: Int)
     (implicit user: KoskiSpecificSession)
-  : Either[HttpStatus, OppijaYksilöintitiedolla] = {
+  : Either[HttpStatus, WithWarnings[OppijaYksilöintitiedolla]] = {
     opiskeluoikeusRepository.getOppijaOidsForOpiskeluoikeus(opiskeluoikeusOid).flatMap {
       case oids: List[Henkilö.Oid] if oids.contains(oppijaOid) =>
-        historyRepository.findVersion(opiskeluoikeusOid, versionumero).flatMap { history =>
-          henkilöRepository.findByOid(oppijaOid)
+        historyRepository.findVersion(opiskeluoikeusOid, versionumero).flatMap { historiaversio =>
+          henkilöRepository.findByOid(oppijaOid, findMasterIfSlaveOid = true)
             .toRight(notFound(oppijaOid))
-            .flatMap(henkilö => withOpiskeluoikeudet(henkilö, WithWarnings(List(history), Nil)))
-            .flatMap(_.warningsToLeft)
-            .map {
-              case (henkilö, opiskeluoikeudet) =>
-                OppijaYksilöintitiedolla(
-                  piilotaOppijanTietojaTarvittaessa(
-                    Oppija(henkilöRepository.oppijaHenkilöToTäydellisetHenkilötiedot(henkilö), opiskeluoikeudet)
-                  ),
-                  henkilö.yksilöity
-                )
-            }
+            .flatMap(henkilö => toOppijaYksilöintitiedolla(
+              henkilö,
+              opiskeluoikeusRepository.findByOppija(henkilö, useVirta = true, useYtr = true).map(korvaaHistoriaversiolla(_, historiaversio))
+            ))
         }
       case _ =>
         logger(user).warn(s"Yritettiin hakea opiskeluoikeuden $opiskeluoikeusOid versiota $versionumero väärällä oppija-oidilla $oppijaOid")
@@ -437,6 +428,27 @@ class KoskiOppijaFacade(
     }
     oppija.map(piilotaOppijanTietojaTarvittaessa)
   }
+
+  private def korvaaHistoriaversiolla(
+    opiskeluoikeudet: Seq[Opiskeluoikeus],
+    historiaversio: KoskeenTallennettavaOpiskeluoikeus
+  ): Seq[Opiskeluoikeus] =
+    opiskeluoikeudet.map(oo => if (oo.oid == historiaversio.oid) historiaversio else oo)
+
+  private def toOppijaYksilöintitiedolla(
+    henkilö: LaajatOppijaHenkilöTiedot,
+    opiskeluoikeudet: => WithWarnings[Seq[Opiskeluoikeus]]
+  )(implicit user: KoskiSpecificSession)
+  : Either[HttpStatus, WithWarnings[OppijaYksilöintitiedolla]] =
+    withOpiskeluoikeudet(henkilö, opiskeluoikeudet).map(_.map {
+      case (henkilö, opiskeluoikeudet) =>
+        OppijaYksilöintitiedolla(
+          piilotaOppijanTietojaTarvittaessa(
+            Oppija(henkilöRepository.oppijaHenkilöToTäydellisetHenkilötiedot(henkilö), opiskeluoikeudet)
+          ),
+          henkilö.yksilöity
+        )
+    })
 
   private def withOpiskeluoikeudet(
     henkilö: LaajatOppijaHenkilöTiedot,

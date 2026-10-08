@@ -25,6 +25,12 @@ export const replaceLocation = (path) => {
   return nextLoc
 }
 
+// Ilmoittaa osoitteen muuttuneen ohi navigateTo:n (esim. history.pushState).
+export const refreshLocation = () => {
+  previousLocation = currentLocation()
+  locationBus.push(previousLocation)
+}
+
 export const redirectTo = (path) => {
   // Defer because redirects are likely to be triggered while handling the exported locationP
   // which is derived from the locationBus into which we push here.

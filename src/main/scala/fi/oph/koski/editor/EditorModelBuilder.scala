@@ -19,9 +19,9 @@ import org.json4s.JsonAST.{JBool, JString}
 import org.json4s.{JArray, JValue}
 
 object EditorModelBuilder {
-  def buildModel(deserializationContext: ExtractionContext, value: AnyRef, editable: Boolean)(implicit user: KoskiSpecificSession, koodisto: KoodistoViitePalvelu, localizations: LocalizationRepository): EditorModel = {
+  def buildModel(deserializationContext: ExtractionContext, value: AnyRef, editable: Boolean, historiaversionOpiskeluoikeusOid: Option[String] = None)(implicit user: KoskiSpecificSession, koodisto: KoodistoViitePalvelu, localizations: LocalizationRepository): EditorModel = {
     val rootSchema = deserializationContext.schemaFactory.createSchema(value.getClass.getName)
-    implicit val context = ModelBuilderContext(deserializationContext, editable = editable, invalidatable = editable, rootSchema = Some(rootSchema))
+    implicit val context = ModelBuilderContext(deserializationContext, editable = editable, invalidatable = editable, rootSchema = Some(rootSchema), historiaversionOpiskeluoikeusOid = historiaversionOpiskeluoikeusOid)
     builder(rootSchema).buildModelForObject(value, Nil)
   }
 
@@ -86,7 +86,11 @@ case class ModelBuilderContext(
   root: Boolean = true,
   var prototypesRequested: SchemaSet = SchemaSet.empty,
   prototypesBeingCreated: SchemaSet = SchemaSet.empty,
-  rootSchema: Option[Schema] = None
+  rootSchema: Option[Schema] = None,
+  // Versiohistoriassa katseltava opiskeluoikeus lukitaan muokkaukselta ja
+  // mitätöinniltä. Koko mallia ei rakenneta editable = false, koska sivun muut
+  // opiskeluoikeudet ovat nykyisiä ja niitä saa muokata ja mitätöidä.
+  historiaversionOpiskeluoikeusOid: Option[String] = None
 )(
   implicit val user: KoskiSpecificSession,
   val koodisto: KoodistoViitePalvelu,
@@ -386,11 +390,15 @@ case class ObjectModelBuilder(schema: ClassSchema)(implicit context: ModelBuilde
       case o: Lähdejärjestelmällinen => o.lähdejärjestelmänId.nonEmpty
       case _ => false
     }
+    def historiaversio = obj match {
+      case oo: Opiskeluoikeus => oo.oid.exists(context.historiaversionOpiskeluoikeusOid.contains)
+      case _ => false
+    }
     val readOnly: Boolean = metadata.exists(_.isInstanceOf[ReadOnly])
-    val editable = context.editable && !lähdejärjestelmällinen && orgWriteAccess && !readOnly
+    val editable = context.editable && !lähdejärjestelmällinen && orgWriteAccess && !readOnly && !historiaversio
 
     val invalidatable = obj match {
-      case o: Opiskeluoikeus => context.invalidatable && OpiskeluoikeusAccessChecker.isInvalidatable(o, context.user)
+      case o: Opiskeluoikeus => context.invalidatable && !historiaversio && OpiskeluoikeusAccessChecker.isInvalidatable(o, context.user)
       /*
       In case of properties (such as Päätason suoritukset), context is relative to containing object (Opiskeluoikeus, in this case).
       Here, we have already resolved invalidatability for Opiskeluoikeus, so we can 'inherit' the invalidatability for these Päätason suoritukset.
