@@ -270,13 +270,6 @@
       "groupName": "fs2"
     },
     {
-      "description": "mockito-core update breaks RichRequest mocking",
-      "matchPackageNames": [
-        "org.mockito:mockito-core"
-      ],
-      "groupName": "mockito"
-    },
-    {
       "description": "Propose Maven patch updates separately from minor ones, so that a minor that breaks does not hold back the patch. Minor updates are not grouped either: one that breaks would block the rest.",
       "matchManagers": ["maven"],
       "separateMinorPatch": true
@@ -395,11 +388,6 @@
       "description": "Stay on the OpenSearch version of AWS (koski-aws-infra src/ProductVersions.ts)",
       "matchPackageNames": ["opensearchproject/opensearch"],
       "allowedVersions": "/^3\\.5\\./"
-    },
-    {
-      "description": "Stay on mockito-core 2",
-      "matchPackageNames": ["org.mockito:mockito-core"],
-      "allowedVersions": "/^2\\./"
     },
     {
       "description": "Keep Koski UI on React 16",
