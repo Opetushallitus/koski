@@ -4,7 +4,6 @@ import java.time.LocalDate
 import java.time.format.DateTimeParseException
 import java.util.concurrent.Semaphore
 import fi.oph.koski.config.KoskiApplication
-import fi.oph.koski.koodisto.Kunta
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.koskiuser.{OoPtsMask, RequiresVirkailijaOrPalvelukäyttäjä}
 import fi.oph.koski.localization.LocalizationReader
@@ -208,16 +207,9 @@ class RaportitServlet(implicit val application: KoskiApplication) extends KoskiS
     writeExcel(raportitService.aikuistenperusopetuksenKurssikertymä(parsedRequest, t), t)
   }
 
-  private val kotikuntalaskelmanOpiskeluoikeudenTyypit = Seq(
-    OpiskeluoikeudenTyyppi.perusopetus,
-    OpiskeluoikeudenTyyppi.esiopetus,
-    OpiskeluoikeudenTyyppi.internationalschool,
-    OpiskeluoikeudenTyyppi.europeanschoolofhelsinki
-  )
-
   get("/kotikuntalaskelma") {
     val parsedRequest = parseRaporttiPäivältäRequest
-    requireKaikkiOpiskeluoikeudenTyypit(parsedRequest.oppilaitosOid, kotikuntalaskelmanOpiskeluoikeudenTyypit)
+    requireKotikuntalaskelmanOpiskeluoikeudenTyypit(parsedRequest.oppilaitosOid)
     val t = new LocalizationReader(application.koskiLocalizationRepository, parsedRequest.lang)
     AuditLog.log(KoskiAuditLogMessage(OPISKELUOIKEUS_RAPORTTI, session, Map(hakuEhto -> s"raportti=kotikuntalaskelma&oppilaitosOid=${parsedRequest.oppilaitosOid}&paiva=${parsedRequest.paiva}&lang=${parsedRequest.lang}")))
     writeExcel(raportitService.kotikuntalaskelma(parsedRequest, t), t)
@@ -225,8 +217,8 @@ class RaportitServlet(implicit val application: KoskiApplication) extends KoskiS
 
   get("/kunnanoppijat") {
     val parsedRequest = parseRaporttiPäivältäRequest
-    requireKaikkiOpiskeluoikeudenTyypit(parsedRequest.oppilaitosOid, kotikuntalaskelmanOpiskeluoikeudenTyypit)
-    val kuntakoodi = Kunta.validateAndGetKuntaKoodi(organisaatioService, application.koodistoPalvelu, parsedRequest.oppilaitosOid)
+    requireKotikuntalaskelmanOpiskeluoikeudenTyypit(parsedRequest.oppilaitosOid)
+    val kuntakoodi = accessResolver.kuntakoodi(parsedRequest.oppilaitosOid)
       .getOrElse(haltWithStatus(KoskiErrorCategory.badRequest.queryParam(s"Organisaatio ${parsedRequest.oppilaitosOid} ei ole kunta")))
     val t = new LocalizationReader(application.koskiLocalizationRepository, parsedRequest.lang)
     AuditLog.log(KoskiAuditLogMessage(OPISKELUOIKEUS_RAPORTTI, session, Map(hakuEhto -> s"raportti=kunnanoppijat&oppilaitosOid=${parsedRequest.oppilaitosOid}&paiva=${parsedRequest.paiva}&lang=${parsedRequest.lang}")))
@@ -299,9 +291,8 @@ class RaportitServlet(implicit val application: KoskiApplication) extends KoskiS
   }
 
   // Raportti näyttää oppijat kaikista sen koulutusmuodoista, joten oikeus vain osaan niistä ei riitä
-  private def requireKaikkiOpiskeluoikeudenTyypit(organisaatioOid: Organisaatio.Oid, tyypit: Seq[Koodistokoodiviite]) = {
-    val organisaationTyypit = session.orgKäyttöoikeudet.filter(_.organisaatio.oid == organisaatioOid).flatMap(_.allowedOpiskeluoikeusTyypit)
-    if (!session.hasGlobalReadAccess && !organisaationTyypit.satisfiesAll(tyypit.flatMap(OoPtsMask.fromKoodistokoodiviite))) {
+  private def requireKotikuntalaskelmanOpiskeluoikeudenTyypit(organisaatioOid: Organisaatio.Oid) = {
+    if (!accessResolver.hasKaikkiOpiskeluoikeudenTyypit(organisaatioOid, RaportitAccessResolver.kotikuntalaskelmanOpiskeluoikeudenTyypit)) {
       haltWithStatus(KoskiErrorCategory.forbidden.opiskeluoikeudenTyyppi())
     }
   }

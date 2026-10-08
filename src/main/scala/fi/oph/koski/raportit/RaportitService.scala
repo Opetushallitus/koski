@@ -523,6 +523,7 @@ class RaportitService(application: KoskiApplication) {
     "OPPILAITOS",
     "OPPISOPIMUSTOIMIPISTE",
     "KOULUTUSTOIMIJA",
+    "KUNTA",
     "VARHAISKASVATUKSEN_TOIMIPAIKKA",
     "OSTOPALVELUTAIPALVELUSETELI"
   )
