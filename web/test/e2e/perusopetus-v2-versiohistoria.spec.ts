@@ -360,6 +360,52 @@ test.describe('Perusopetuksen uusi käyttöliittymä: versiohistoria', () => {
     await expect(vanha.locator('.versiohistoria.open')).toHaveCount(0)
     await expect(vanha.locator('.toggle-edit')).toBeVisible()
   })
+
+  test('Välilehden vaihto versiosta palauttaa opiskeluoikeuden uusimpaan versioon', async ({
+    page,
+    oppijaPage,
+    fixtures
+  }) => {
+    test.setTimeout(60000)
+    await fixtures.reset()
+    await oppijaPage.goto(moniaUrl)
+
+    const uusi = page
+      .locator('[data-testid="opiskeluoikeuksientiedot"] > li')
+      .filter({ hasText: 'Jyväskylän normaalikoulu' })
+      .filter({ hasNot: page.locator('.versiohistoria') })
+    const marker = 'REGRESSIO_VALILEHDEN_VAIHTO'
+
+    await uusi.getByTestId('oo.1.opiskeluoikeus.edit').click()
+    await uusi
+      .getByTestId(
+        'oo.1.suoritukset.1.todistuksellaNäkyvätLisätiedot.edit.input'
+      )
+      .fill(marker)
+    await uusi.getByTestId('oo.1.opiskeluoikeus.save').click()
+    await expect(uusi.getByTestId('oo.1.opiskeluoikeus.edit')).toBeVisible({
+      timeout: 15000
+    })
+    // Uudelleenlataus: uusin versio tulee sivun latauksesta eikä istunnon
+    // tallennuksesta, joka peittäisi vanhentuneen datan
+    await page.reload()
+    await expect(uusi.getByText(marker)).toBeVisible()
+
+    await uusi.getByTestId('oo.1.opiskeluoikeus.versiohistoria.button').click()
+    await uusi.getByTestId('oo.1.opiskeluoikeus.versiohistoria.list.1').click()
+    await expect(uusi.getByText(marker)).toHaveCount(0)
+
+    // Välilehtien linkit poistavat versioparametrit osoitteesta
+    await page.getByTestId('opiskeluoikeustyyppi-esiopetus').locator('a').click()
+    await page
+      .getByTestId('opiskeluoikeustyyppi-perusopetus')
+      .locator('a')
+      .click()
+    await expect(
+      uusi.getByTestId('oo.1.opiskeluoikeus.versiohistoria.button')
+    ).toContainText('Versiohistoria')
+    await expect(uusi.getByText(marker)).toBeVisible()
+  })
 })
 
 test.describe('Perusopetuksen uusi käyttöliittymä: versiohistoria pääkäyttäjänä', () => {
