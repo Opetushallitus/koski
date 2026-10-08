@@ -175,18 +175,9 @@ function OpinnotPage() {
       )()
       return tab.hasClass('selected')
     },
-    suoritusTabs: function (indexOrName, omatTiedot) {
-      omatTiedot = omatTiedot || false
-      var opiskeluoikeus = resolveOpiskeluoikeus(indexOrName, omatTiedot)
-      return textsOf(subElement(opiskeluoikeus, '.suoritus-tabs > ul > li'))
-    },
-    suoritusTabIndex: function (indexOrName) {
+    suoritusTabs: function (indexOrName) {
       var opiskeluoikeus = resolveOpiskeluoikeus(indexOrName)
-      var tabs = toArray(subElement(opiskeluoikeus, '.suoritus-tabs > ul > li'))
-      for (var i in tabs) {
-        if (S(tabs[i]).hasClass('selected')) return parseInt(i)
-      }
-      return -1
+      return textsOf(subElement(opiskeluoikeus, '.suoritus-tabs > ul > li'))
     },
     onTallennettavissa: function () {
       return S('#edit-bar button:not(:disabled)').is(':visible')
@@ -218,10 +209,9 @@ function OpinnotPage() {
       return click(S('.expandable-container.lisätiedot span'))()
     },
     opiskeluoikeudet: Opiskeluoikeudet(),
-    opiskeluoikeusEditor: function (index, omatTiedot) {
-      omatTiedot = omatTiedot || false
+    opiskeluoikeusEditor: function (index) {
       var elem = findSingle('.opiskeluoikeus-content', function () {
-        return resolveOpiskeluoikeus(index, omatTiedot)
+        return resolveOpiskeluoikeus(index)
       })
       return Object.assign(Editor(elem), {
         päättymispäivä: function () {
@@ -307,24 +297,6 @@ function OpinnotPage() {
       function expanders() {
         return S(
           '.foldable.collapsed>.toggle-expand:not(.disabled), tbody:not(.expanded) > tr > td > .toggle-expand:not(.disabled), a.expandable:not(.open)'
-        )
-      }
-    },
-    collapseAll: function () {
-      var checkAndCollapse = function () {
-        if (collapsers().is(':visible')) {
-          return seq(
-            click(collapsers),
-            wait.forMilliseconds(10),
-            wait.forAjax,
-            checkAndCollapse
-          )()
-        }
-      }
-      return checkAndCollapse()
-      function collapsers() {
-        return S(
-          '.foldable:not(.collapsed)>.toggle-expand:not(.disabled), tbody.expanded .toggle-expand:not(.disabled), a.expandable.open'
         )
       }
     },
@@ -1416,9 +1388,6 @@ function Versiohistoria() {
   function elem() {
     return S('.versiohistoria')
   }
-  function versiot() {
-    return elem().find('.versionumero')
-  }
 
   var api = {
     avaa: function () {
@@ -1433,9 +1402,6 @@ function Versiohistoria() {
       if (S('.versiohistoria > .modal').is(':visible')) {
         return click(findSingle('> a', elem()))()
       }
-    },
-    listaa: function () {
-      return textsOf(versiot())
     },
     valittuVersio: function () {
       return elem().find('.selected').find('.versionumero').text()
@@ -1644,28 +1610,6 @@ function TutkintoSelector(elem) {
   return api
 }
 
-function Päivämääräväli(elem) {
-  var api = {
-    setAlku: function (value) {
-      return function () {
-        return Page(elem).setInputValue('.alku input', value)()
-      }
-    },
-    getAlku: function () {
-      return elem().find('.alku span.inline.date').text()
-    },
-    setLoppu: function (value) {
-      return function () {
-        return Page(elem).setInputValue('.loppu input', value)()
-      }
-    },
-    isValid: function () {
-      return !elem().find('.date-range').hasClass('error')
-    }
-  }
-  return api
-}
-
 function OpiskeluoikeusDialog() {
   var elem = findSingle('.lisaa-opiskeluoikeusjakso-modal')
   var button = findSingle('button.vahvista', elem)
@@ -1678,9 +1622,6 @@ function OpiskeluoikeusDialog() {
         return p.click('input[value="koskiopiskeluoikeudentila_' + tila + '"]')
       }
       return p
-    },
-    alkuPaiva: function () {
-      return Property(findSingle('.property.alku', elem))
     },
     tallenna: click(button),
     peruuta: click(findSingle('.peruuta', elem)),
@@ -1785,9 +1726,6 @@ function Editor(elem) {
     subEditors: function (selector) {
       return S(selector, elem).map(Editor)
     },
-    isEditBarVisible: function () {
-      return S('#edit-bar').hasClass('visible')
-    },
     elem
   }
   return api
@@ -1801,9 +1739,6 @@ function Property(elem) {
         click(findSingle('.add-value', elem)),
         KoskiPage().verifyNoError
       ),
-      isRemoveValueVisible: function () {
-        return elem().find('.remove-value').is(':visible')
-      },
       addItem: seq(
         click(findSingle('.add-item a', elem)),
         KoskiPage().verifyNoError
@@ -1812,17 +1747,6 @@ function Property(elem) {
         click(findSingle('.remove-value', elem)),
         KoskiPage().verifyNoError
       ),
-      removeFromDropdown: function (value) {
-        var dropdownElem = findSingle('.dropdown', elem)
-        return seq(
-          click(findSingle('.select', dropdownElem)),
-          wait.until(
-            Page(dropdownElem).getInput('li:contains(' + value + ')').isVisible
-          ),
-          triggerEvent(findSingle('a.remove-value', dropdownElem), 'mousedown'),
-          wait.forAjax
-        )
-      },
       removeItem: function (index) {
         return seq(
           click(findSingle('li:eq(' + index + ') .remove-item', elem)),
@@ -1858,9 +1782,6 @@ function Property(elem) {
           })
           .join(' ')
       },
-      toPäivämääräväli: function () {
-        return Päivämääräväli(elem)
-      },
       click: function (selector) {
         return seq(click(findSingle(selector, elem)), KoskiPage().verifyNoError)
       },
@@ -1875,24 +1796,12 @@ function Property(elem) {
           '.array > li:nth-child(' + (index + 1) + ')'
         )
       },
-      getItems: function () {
-        return toArray(elem().find('.value .array > li:not(.add-item)')).map(
-          function (e) {
-            return Property(function () {
-              return S(e)
-            })
-          }
-        )
-      },
       isVisible: function () {
         return (
           isElementVisible(findSingle('.value', elem)) ||
           isElementVisible(findSingle('.dropdown', elem)) ||
           isElementVisible(findSingle('input', elem))
         )
-      },
-      isValid: function () {
-        return !elem().find('.error').is(':visible')
       },
       organisaatioValitsin: function () {
         return OrganisaatioHaku(elem)

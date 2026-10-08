@@ -9,17 +9,6 @@ describe('EPerusteet', function () {
     page.oppijaHaku.searchAndSelect('220109-784L')
   )
 
-  describe('Kun peruste löytyy eperusteista', function () {
-    before(
-      opinnot.opiskeluoikeudet.valitseOpiskeluoikeudenTyyppi('perusopetus'),
-      wait.until(function () {
-        return isElementVisible(S('.diaarinumero a'))
-      })
-    )
-
-    it('linkki eperusteisiin näytetään', function () {})
-  })
-
   describe('Kun perustetta ei löydy eperusteista', function () {
     before(
       page.oppijaHaku.searchAndSelect('Aikuinen, AikuisopiskelijaMuuKuinVos')

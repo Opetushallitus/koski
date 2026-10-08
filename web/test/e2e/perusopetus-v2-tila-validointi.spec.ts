@@ -8,10 +8,10 @@ import { virkailija } from './setup/auth'
  */
 
 const ysiluokkalainenOid = '1.2.246.562.24.00000000010'
-const ysiluokkalainenUrl = `${ysiluokkalainenOid}?opiskeluoikeudenTyyppi=perusopetus&perusopetus-v2=true`
+const ysiluokkalainenUrl = `${ysiluokkalainenOid}?opiskeluoikeudenTyyppi=perusopetus`
 
 const kaisaOid = '1.2.246.562.24.00000000007'
-const kaisaUrl = `${kaisaOid}?opiskeluoikeudenTyyppi=perusopetus&perusopetus-v2=true`
+const kaisaUrl = `${kaisaOid}?opiskeluoikeudenTyyppi=perusopetus`
 
 const editButton = 'oo.0.opiskeluoikeus.edit'
 const saveButton = 'oo.0.opiskeluoikeus.save'

@@ -13,6 +13,7 @@ import {
 } from '../editor/EditorModel'
 import editorMapping from '../oppija/editors'
 import { Editor } from '../editor/Editor'
+import { VirkailijaUiAdapterProvider } from '../components-v2/interoperability/useUiAdapter'
 import * as R from 'ramda'
 import {
   currentLocation,
@@ -438,7 +439,9 @@ export class Oppija extends React.Component {
           {
             // Set location as key to ensure full re-render when context changes
             oppija ? (
-              <Editor key={document.location.toString()} model={oppija} />
+              <VirkailijaUiAdapterProvider oppijaModel={oppija}>
+                <Editor key={document.location.toString()} model={oppija} />
+              </VirkailijaUiAdapterProvider>
             ) : null
           }
         </div>

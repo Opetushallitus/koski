@@ -9,10 +9,24 @@ import { virkailija } from './setup/auth'
  */
 
 const hetutonOid = '1.2.246.562.24.99999999123'
-const url = `${hetutonOid}?opiskeluoikeudenTyyppi=perusopetus&perusopetus-v2=true`
+const url = `${hetutonOid}?opiskeluoikeudenTyyppi=perusopetus`
 
 test.describe('Perusopetuksen uusi käyttöliittymä: hetuton oppija', () => {
   test.use({ storageState: virkailija('kalle') })
+
+  test('Otsikossa näytetään syntymäaika hetun sijaan', async ({
+    page,
+    oppijaPage
+  }) => {
+    await oppijaPage.goto(url)
+
+    await expect(page.getByTestId('oppija-heading')).toContainText(
+      'Hetuton, Heikki'
+    )
+    await expect(page.getByTestId('oppija-henkilotunnus')).toHaveText(
+      '(24.2.1977)'
+    )
+  })
 
   test('Näyttää opiskeluoikeuden tilan ja voimassaoloajan', async ({
     page,

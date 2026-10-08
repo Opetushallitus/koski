@@ -13,8 +13,7 @@ import { virkailija } from './setup/auth'
  * Suoritukset lajitellaan: 0 = Avgångsbetyg (oppimäärä), 1 = 9. vuosiluokka
  * (tyhjä, oletustabi), 2 = 8. vuosiluokka (läsårsbetyg arvosanoineen).
  *
- * Editori on aina päällä (ei feature-flagia), joten URL:ssä ei ole
- * `perusopetus-v2`-parametria. Erot manner-Suomen perusopetukseen:
+ * Erot manner-Suomen perusopetukseen:
  *  - Arviointiasteikko 4-10 / G-D-U (ahvenanmaanarviointiasteikkoyleissivistava),
  *    sekä numeeriset että sanalliset arvosanat samassa pudotusvalikossa.
  *  - Käyttäytymisen sijaan "Ansvar och samarbete" (vastuuJaYhteistyöArvio),

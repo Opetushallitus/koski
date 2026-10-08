@@ -626,6 +626,7 @@ const AmmatillinenTutkintoEditor: React.FC<
             form={form}
             päätasonSuoritus={päätasonSuoritus}
             removePäätasonSuoritus={removePäätasonSuoritus}
+            invalidatable={props.invalidatable}
           />
         )}
 

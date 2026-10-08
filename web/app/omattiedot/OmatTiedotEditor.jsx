@@ -14,6 +14,7 @@ import ChevronUpIcon from '../icons/ChevronUpIcon'
 import ChevronDownIcon from '../icons/ChevronDownIcon'
 import { OmatTiedotOpiskeluoikeus } from './OmatTiedotOpiskeluoikeus'
 import { useKansalainenUiAdapter } from '../components-v2/interoperability/useUiAdapter'
+import { Spinner } from '../components-v2/texts/Spinner'
 import { t } from '../i18n/i18n'
 import { TestIdLayer, TestIdRoot } from '../appstate/useTestId'
 import { groupBy } from 'fp-ts/lib/ReadonlyNonEmptyArray'
@@ -41,6 +42,7 @@ export const OmatTiedotEditor = ({ model }) => {
 
   return (
     <div className="oppilaitos-list">
+      {uiAdapter.isLoadingV2 && <Spinner className="loading" />}
       {!uiAdapter.isLoadingV2 && (
         <>
           {oppilaitokset.map((oppilaitos, oppilaitosIndex) => (

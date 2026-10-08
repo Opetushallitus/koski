@@ -1,7 +1,6 @@
 import React from 'baret'
 import Atom from 'bacon.atom'
 import { onLopputilassa } from '../opiskeluoikeus/OpiskeluoikeudenTilaEditor'
-import UusiPerusopetuksenVuosiluokanSuoritus from './UusiPerusopetuksenVuosiluokanSuoritus'
 import UusiPerusopetuksenOppiaineenOppimääränSuoritus from './UusiPerusopetuksenOppiaineenOppimaaranSuoritus'
 import UusiAikuistenPerusopetuksenOppimaaranSuoritus from './UusiAikuistenPerusopetuksenOppimaaranSuoritus'
 import UusiAikuistenPerusopetuksenAlkuvaiheenSuoritus from './UusiAikuistenPerusopetuksenAlkuvaiheenSuoritus'
@@ -76,7 +75,6 @@ export default ({ opiskeluoikeus, callback }) => {
 
 const popups = [
   UusiPerusopetuksenOppiaineenOppimääränSuoritus,
-  UusiPerusopetuksenVuosiluokanSuoritus,
   UusiAikuistenPerusopetuksenOppimaaranSuoritus,
   UusiAikuistenPerusopetuksenAlkuvaiheenSuoritus,
   UusiAmmatillisenTutkinnonSuoritus,

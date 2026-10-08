@@ -206,7 +206,7 @@ const siirtynytOppiaineittain = (): Raw<Oppija> => {
 }
 
 const v2Url = (oid: string) =>
-  `${oid}?opiskeluoikeudenTyyppi=perusopetus&perusopetus-v2=true`
+  `${oid}?opiskeluoikeudenTyyppi=perusopetus`
 
 // Vuosiluokan suoritus on välilehti 1 (oppimäärä on 0).
 const vuosiluokkaRivit = (page: import('@playwright/test').Page) =>

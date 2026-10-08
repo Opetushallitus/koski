@@ -20,7 +20,7 @@ import { virkailija } from './setup/auth'
  */
 
 const ysiluokkalainenOid = '1.2.246.562.24.00000000010'
-const ysiluokkalainenUrl = `${ysiluokkalainenOid}?opiskeluoikeudenTyyppi=perusopetus&perusopetus-v2=true`
+const ysiluokkalainenUrl = `${ysiluokkalainenOid}?opiskeluoikeudenTyyppi=perusopetus`
 
 test.describe('Perusopetuksen uusi käyttöliittymä: 9. vuosiluokan oppilas', () => {
   test.use({ storageState: virkailija('kalle') })

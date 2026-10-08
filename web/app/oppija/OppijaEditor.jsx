@@ -1,7 +1,8 @@
 import React from 'baret'
 import { addContext, modelData, modelItems } from '../editor/EditorModel'
 import { OpiskeluoikeusEditor } from '../opiskeluoikeus/OpiskeluoikeusEditor'
-import { useVirkailijaUiAdapter } from '../components-v2/interoperability/useUiAdapter'
+import { useVirkailijaUiAdapterContext } from '../components-v2/interoperability/useUiAdapter'
+import { Spinner } from '../components-v2/texts/Spinner'
 import { currentLocation } from '../util/location.js'
 import { flatMapArray } from '../util/util'
 import OpiskeluoikeudetNavBar from './OpiskeluoikeudetNavBar'
@@ -19,13 +20,14 @@ export const OppijaEditor = ({ model }) => {
       )
     : 0
 
-  const uiAdapter = useVirkailijaUiAdapter(model)
+  const uiAdapter = useVirkailijaUiAdapterContext()
 
   return (
     <>
       <OpiskeluoikeudetNavBar
         {...{ oppijaOid, opiskeluoikeusTyypit, selectedIndex }}
       />
+      {uiAdapter.isLoadingV2 && <Spinner className="loading" />}
       {!uiAdapter.isLoadingV2 && (
         <div>
           <ul

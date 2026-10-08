@@ -9,7 +9,7 @@ import { virkailija } from './setup/auth'
  */
 
 const kaisaOid = '1.2.246.562.24.00000000007'
-const kaisaUrl = `${kaisaOid}?opiskeluoikeudenTyyppi=perusopetus&perusopetus-v2=true`
+const kaisaUrl = `${kaisaOid}?opiskeluoikeudenTyyppi=perusopetus`
 
 test.describe('Perusopetuksen uusi käyttöliittymä: versiohistoria', () => {
   test.use({ storageState: virkailija('kalle') })

@@ -16,7 +16,7 @@ import { virkailija } from './setup/auth'
  */
 
 const kaisaOid = '1.2.246.562.24.00000000007'
-const kaisaUrl = `${kaisaOid}?opiskeluoikeudenTyyppi=perusopetus&perusopetus-v2=true`
+const kaisaUrl = `${kaisaOid}?opiskeluoikeudenTyyppi=perusopetus`
 
 const editButton = 'oo.0.opiskeluoikeus.edit'
 const saveButton = 'oo.0.opiskeluoikeus.save'
@@ -248,7 +248,7 @@ test.describe('Perusopetuksen uusi käyttöliittymä: opiskeluoikeuden lisätied
     await fixtures.reset()
     const oppija = await fixtures.putOppija(oppijaVanhentuneillaLisätiedoilla())
     await oppijaPage.goto(
-      `${oppija.henkilö.oid}?opiskeluoikeudenTyyppi=perusopetus&perusopetus-v2=true`
+      `${oppija.henkilö.oid}?opiskeluoikeudenTyyppi=perusopetus`
     )
 
     await expect(

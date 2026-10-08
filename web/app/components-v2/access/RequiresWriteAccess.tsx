@@ -6,10 +6,10 @@ export type RequiresWriteAccessProps = React.PropsWithChildren<{
   opiskeluoikeus: Opiskeluoikeus
 }>
 
+export const useWriteAccess = (opiskeluoikeus: Opiskeluoikeus): boolean =>
+  Boolean(useVirkailijaUser()?.hasWriteAccess) &&
+  opiskeluoikeus.lähdejärjestelmänId === undefined
+
 export const RequiresWriteAccess: React.FC<RequiresWriteAccessProps> = (
   props
-) =>
-  useVirkailijaUser()?.hasWriteAccess &&
-  props.opiskeluoikeus.lähdejärjestelmänId === undefined ? (
-    <>{props.children}</>
-  ) : null
+) => (useWriteAccess(props.opiskeluoikeus) ? <>{props.children}</> : null)

@@ -167,6 +167,7 @@ const IBPäätasonSuoritusEditor: React.FC<
           form={form}
           päätasonSuoritus={päätasonSuoritus}
           removePäätasonSuoritus={removePäätasonSuoritus}
+          invalidatable={invalidatable}
         />
       )}
 

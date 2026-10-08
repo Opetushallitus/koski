@@ -14,7 +14,7 @@ import { virkailija } from './setup/auth'
  */
 
 const oid = '1.2.246.562.24.00000000133'
-const url = `${oid}?opiskeluoikeudenTyyppi=perusopetus&perusopetus-v2=true`
+const url = `${oid}?opiskeluoikeudenTyyppi=perusopetus`
 
 test.describe('Perusopetuksen v1-fallback oppiaineen oppimäärän suoritukselle', () => {
   test.use({ storageState: virkailija('kalle') })

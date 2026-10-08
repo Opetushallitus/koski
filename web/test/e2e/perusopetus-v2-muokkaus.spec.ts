@@ -3,8 +3,8 @@ import { virkailija } from './setup/auth'
 
 const kaisaOid = '1.2.246.562.24.00000000007'
 const tommiOid = '1.2.246.562.24.00000000051'
-const kaisaUrl = `${kaisaOid}?opiskeluoikeudenTyyppi=perusopetus&perusopetus-v2=true`
-const tommiUrl = `${tommiOid}?opiskeluoikeudenTyyppi=perusopetus&perusopetus-v2=true`
+const kaisaUrl = `${kaisaOid}?opiskeluoikeudenTyyppi=perusopetus`
+const tommiUrl = `${tommiOid}?opiskeluoikeudenTyyppi=perusopetus`
 
 test.describe('Perusopetuksen uusi käyttöliittymä: muokkaustila', () => {
   test.use({ storageState: virkailija('kalle') })

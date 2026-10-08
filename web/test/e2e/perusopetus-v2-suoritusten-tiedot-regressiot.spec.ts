@@ -3,10 +3,10 @@ import { expect, test } from './base'
 import { virkailija } from './setup/auth'
 
 const kaisaOid = '1.2.246.562.24.00000000007'
-const kaisaUrl = `${kaisaOid}?opiskeluoikeudenTyyppi=perusopetus&perusopetus-v2=true`
+const kaisaUrl = `${kaisaOid}?opiskeluoikeudenTyyppi=perusopetus`
 
 const ylermiOid = '1.2.246.562.24.00000000010'
-const ylermiUrl = `${ylermiOid}?opiskeluoikeudenTyyppi=perusopetus&perusopetus-v2=true`
+const ylermiUrl = `${ylermiOid}?opiskeluoikeudenTyyppi=perusopetus`
 
 const tallenna = async (page: Page) => {
   await page.getByTestId('oo.0.opiskeluoikeus.save').click()

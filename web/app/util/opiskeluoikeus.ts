@@ -4,6 +4,7 @@ import { isKorkeakoulunOpiskeluoikeus } from '../types/fi/oph/koski/schema/Korke
 import { Opiskeluoikeus } from '../types/fi/oph/koski/schema/Opiskeluoikeus'
 import { isYlioppilastutkinnonOpiskeluoikeus } from '../types/fi/oph/koski/schema/YlioppilastutkinnonOpiskeluoikeus'
 import { fetchOpiskeluoikeus } from './koskiApi'
+import { ilmoitaTallennettuOpiskeluoikeus } from './tallennetutOpiskeluoikeudet'
 import { invalidateVersiohistoriaCache } from './versiohistoriaCache'
 import { isRight } from 'fp-ts/Either'
 
@@ -38,16 +39,16 @@ export const mergeOpiskeluoikeusVersionumeroAndRefetch =
         ? await fetchOpiskeluoikeus(oid, versio.versionumero)
         : undefined
 
-    if (refetchedOo && isRight(refetchedOo)) {
-      return refetchedOo.right.data as T
+    if (!versio) {
+      return oo
     }
 
-    return versio
-      ? {
-          ...oo,
-          versionumero: versio.versionumero
-        }
-      : oo
+    const tallennettu =
+      refetchedOo && isRight(refetchedOo)
+        ? (refetchedOo.right.data as T)
+        : { ...oo, versionumero: versio.versionumero }
+    ilmoitaTallennettuOpiskeluoikeus(tallennettu)
+    return tallennettu
   }
 
 export const isTerminaalitila = (tila: Koodistokoodiviite): boolean =>

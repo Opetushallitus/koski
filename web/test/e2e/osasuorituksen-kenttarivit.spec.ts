@@ -70,7 +70,7 @@ const näkymät: Nakyma[] = [
   },
   {
     nimi: 'Perusopetus v2',
-    url: '1.2.246.562.24.00000000007?opiskeluoikeudenTyyppi=perusopetus&perusopetus-v2=true',
+    url: '1.2.246.562.24.00000000007?opiskeluoikeudenTyyppi=perusopetus',
     tila: 'muokkaus',
     tabi: 2
   }

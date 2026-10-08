@@ -95,7 +95,7 @@ const tyhjäTeroToimintaAlueittainPerusopetus = (): Raw<Oppija> =>
   })
 
 const v2Url = (oid: string) =>
-  `${oid}?opiskeluoikeudenTyyppi=perusopetus&perusopetus-v2=true`
+  `${oid}?opiskeluoikeudenTyyppi=perusopetus`
 
 const addNewTab = (page: import('@playwright/test').Page) =>
   page.getByRole('button', { name: /lisää vuosiluokan suoritus/i })

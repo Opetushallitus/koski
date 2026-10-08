@@ -19,7 +19,7 @@ import { takeFullPageScreenshot } from './fragments/fullPageScreenshot'
  */
 
 const kaisa = '1.2.246.562.24.00000000007'
-const url = `${kaisa}?opiskeluoikeudenTyyppi=perusopetus&perusopetus-v2=true`
+const url = `${kaisa}?opiskeluoikeudenTyyppi=perusopetus`
 
 const päättötodistusTab = 'oo.0.suoritusTabs.0.tab'
 const vuosiluokkaTab = 'oo.0.suoritusTabs.2.tab'

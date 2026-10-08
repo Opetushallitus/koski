@@ -5,9 +5,9 @@ const kaisaOid = '1.2.246.562.24.00000000007'
 const tommiOid = '1.2.246.562.24.00000000051'
 // Lasse Luokallejäänyt (170186-6520): kaksi 7. vuosiluokan suoritusta
 const lasseOid = '1.2.246.562.24.00000000009'
-const kaisaUrl = `${kaisaOid}?opiskeluoikeudenTyyppi=perusopetus&perusopetus-v2=true`
-const tommiUrl = `${tommiOid}?opiskeluoikeudenTyyppi=perusopetus&perusopetus-v2=true`
-const lasseUrl = `${lasseOid}?opiskeluoikeudenTyyppi=perusopetus&perusopetus-v2=true`
+const kaisaUrl = `${kaisaOid}?opiskeluoikeudenTyyppi=perusopetus`
+const tommiUrl = `${tommiOid}?opiskeluoikeudenTyyppi=perusopetus`
+const lasseUrl = `${lasseOid}?opiskeluoikeudenTyyppi=perusopetus`
 
 test.describe('Perusopetuksen uusi käyttöliittymä', () => {
   test.use({ storageState: virkailija('kalle') })

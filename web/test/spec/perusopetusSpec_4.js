@@ -1,15 +1,8 @@
 describe('Perusopetus 4', function () {
   var page = KoskiPage()
-  var login = LoginPage()
   var opinnot = OpinnotPage()
-  var tilaJaVahvistus = opinnot.tilaJaVahvistus
   var addOppija = AddOppijaPage()
-  var opiskeluoikeus = OpiskeluoikeusDialog()
   var editor = opinnot.opiskeluoikeusEditor()
-  var currentDateStr = finnishDateToday()
-  var date2017Str = '1.1.2017'
-  var date2018Str = '1.1.2018'
-  var date2019Str = '1.1.2019'
 
   before(Authentication().login(), resetFixtures)
 
@@ -382,60 +375,6 @@ describe('Perusopetus 4', function () {
               editor.propertyBySelector('.diaarinumero').getValue()
             ).to.equal('57/011/2015')
             expect(opinnot.getSuorituskieli()).to.equal('suomi')
-          })
-        })
-      })
-    })
-  })
-
-  describe('Pakollisen oppiaineen laajuus nuorten päättötodistuksella ja vuosiluokan suorituksella', function () {
-    before(
-      resetFixtures,
-      Authentication().login(),
-      page.openPage,
-      page.oppijaHaku.searchAndSelect('220109-784L'),
-      opinnot.opiskeluoikeudet.valitseOpiskeluoikeudenTyyppi('perusopetus'),
-      editor.edit,
-      editor.property('tila').removeItem(0),
-      opinnot.tilaJaVahvistus.merkitseKeskeneräiseksi,
-      editor.saveChanges
-    )
-
-    var matikka = opinnot.oppiaineet.oppiaine('pakollinen.MA')
-    var ennenLeikkuriPäivää = '31.7.2020'
-    var leikkuriPäivä = '1.8.2020'
-
-    describe('Asetetaan pakolliselle oppiaineelle laajuus', function () {
-      before(
-        editor.edit,
-        matikka.property('laajuus').setValue('4'),
-        editor.saveChanges
-      )
-      it('Laajuutta ei näytetä, koska päätason suorituksella ei ole vahvistusta', function () {
-        expect(matikka.property('laajuus').isVisible()).to.equal(false)
-      })
-
-      describe('Asetetaan päätason suoritukselle vahvistus ennen leikkuripäivää', function () {
-        before(
-          editor.edit,
-          tilaJaVahvistus.merkitseValmiiksi,
-          opinnot.tilaJaVahvistus.lisääVahvistus(ennenLeikkuriPäivää),
-          editor.saveChanges
-        )
-        it('Laajuutta ei näytetä, koska vahvistus on ennen leikkuripäivää', function () {
-          expect(matikka.property('laajuus').isVisible()).to.equal(false)
-        })
-
-        describe('Asetetaan päätason suoritukselle vahvistus leikkuripäivälle', function () {
-          before(
-            editor.edit,
-            tilaJaVahvistus.merkitseKeskeneräiseksi,
-            tilaJaVahvistus.merkitseValmiiksi,
-            opinnot.tilaJaVahvistus.lisääVahvistus(leikkuriPäivä),
-            editor.saveChanges
-          )
-          it('Laajuus näytetään', function () {
-            expect(matikka.property('laajuus').isVisible()).to.equal(true)
           })
         })
       })
