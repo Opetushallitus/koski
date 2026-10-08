@@ -1,6 +1,6 @@
 package fi.oph.koski.api.misc
 
-import fi.oph.koski.KoskiHttpSpec
+import fi.oph.koski.{DirtiesFixtures, KoskiHttpSpec}
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.log.AuditLogTester
@@ -8,7 +8,9 @@ import org.json4s.jackson.JsonMethods
 import org.json4s.{DefaultFormats, JObject}
 import org.scalatest.freespec.AnyFreeSpec
 
-class HuoltajaSpec extends AnyFreeSpec with KoskiHttpSpec with OpiskeluoikeusTestMethodsPerusopetus {
+import java.nio.charset.StandardCharsets
+
+class HuoltajaSpec extends AnyFreeSpec with KoskiHttpSpec with OpiskeluoikeusTestMethodsPerusopetus with DirtiesFixtures {
   private implicit val formats: DefaultFormats = DefaultFormats
 
   "Huollettavan tietojen katselu" - {
@@ -32,6 +34,20 @@ class HuoltajaSpec extends AnyFreeSpec with KoskiHttpSpec with OpiskeluoikeusTes
         verifyResponseStatusOk()
         val nimet = nimitiedot
         nimet("etunimet") should equal("Essi")
+      }
+    }
+
+    "Huollettavan tiedoissa näytetään samat erityiset henkilötiedot kuin huollettavalle itselleen" in {
+      setupOppijaWithOpiskeluoikeus(defaultOpiskeluoikeus, KoskiSpecificMockOppijat.eskari) {
+        verifyResponseStatusOk()
+      }
+      val loginHeaders = kansalainenLoginHeaders(KoskiSpecificMockOppijat.faija.hetu.get)
+
+      get(s"api/omattiedot/editor/" + KoskiSpecificMockOppijat.eskari.oid, headers = loginHeaders) {
+        verifyResponseStatusOk()
+        val bodyString = new String(response.bodyBytes, StandardCharsets.UTF_8)
+        bodyString should include("yksilöllistettyOppimäärä")
+        bodyString should not include("jääLuokalle")
       }
     }
 

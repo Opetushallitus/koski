@@ -45,20 +45,15 @@ class OmatTiedotV2Spec extends AnyFreeSpec with KoskiHttpSpec with Opiskeluoikeu
       }
     }
 
-    "palautetaan ilman kansalaisen omien tietojen erityisiä henkilötietoja" in {
+    "palautetaan samoine erityisine henkilötietoineen kuin huollettavalle itselleen" in {
       setupOppijaWithOpiskeluoikeus(defaultOpiskeluoikeus, huollettava) {
         verifyResponseStatusOk()
       }
 
-      // Huollettava itse näkee kentän, joten sen puuttuminen huoltajan vastauksesta on aito tulos
-      getOmatTiedot(huollettava.hetu.get) {
-        verifyResponseStatusOk()
-        bodyString should include("yksilöllistettyOppimäärä")
-      }
-
       getHuollettavanTiedot(huoltaja, huollettava.oid) {
         verifyResponseStatusOk()
-        bodyString should not include("yksilöllistettyOppimäärä")
+        bodyString should include("yksilöllistettyOppimäärä")
+        bodyString should not include("jääLuokalle")
       }
     }
 
