@@ -208,16 +208,21 @@ class RaportitServlet(implicit val application: KoskiApplication) extends KoskiS
   }
 
   get("/kotikuntalaskelma") {
-    requireOpiskeluoikeudenKayttooikeudet(
-      OpiskeluoikeudenTyyppi.perusopetus,
-      OpiskeluoikeudenTyyppi.esiopetus,
-      OpiskeluoikeudenTyyppi.internationalschool,
-      OpiskeluoikeudenTyyppi.europeanschoolofhelsinki
-    )
     val parsedRequest = parseRaporttiPäivältäRequest
+    requireKotikuntalaskelmanOpiskeluoikeudenTyypit(parsedRequest.oppilaitosOid)
     val t = new LocalizationReader(application.koskiLocalizationRepository, parsedRequest.lang)
     AuditLog.log(KoskiAuditLogMessage(OPISKELUOIKEUS_RAPORTTI, session, Map(hakuEhto -> s"raportti=kotikuntalaskelma&oppilaitosOid=${parsedRequest.oppilaitosOid}&paiva=${parsedRequest.paiva}&lang=${parsedRequest.lang}")))
     writeExcel(raportitService.kotikuntalaskelma(parsedRequest, t), t)
+  }
+
+  get("/kunnanoppijat") {
+    val parsedRequest = parseRaporttiPäivältäRequest
+    requireKotikuntalaskelmanOpiskeluoikeudenTyypit(parsedRequest.oppilaitosOid)
+    val kuntakoodi = accessResolver.kuntakoodi(parsedRequest.oppilaitosOid)
+      .getOrElse(haltWithStatus(KoskiErrorCategory.badRequest.queryParam(s"Organisaatio ${parsedRequest.oppilaitosOid} ei ole kunta")))
+    val t = new LocalizationReader(application.koskiLocalizationRepository, parsedRequest.lang)
+    AuditLog.log(KoskiAuditLogMessage(OPISKELUOIKEUS_RAPORTTI, session, Map(hakuEhto -> s"raportti=kunnanoppijat&oppilaitosOid=${parsedRequest.oppilaitosOid}&paiva=${parsedRequest.paiva}&lang=${parsedRequest.lang}")))
+    writeExcel(raportitService.kunnanOppijat(parsedRequest, kuntakoodi, t), t)
   }
 
   get("/perusopetuksenoppijamaaratraportti") {
@@ -281,6 +286,13 @@ class RaportitServlet(implicit val application: KoskiApplication) extends KoskiS
       session.allowedOpiskeluoikeudetJaPäätasonSuoritukset.intersects(OoPtsMask(viite.koodiarvo))
     )
     if (!sallittu) {
+      haltWithStatus(KoskiErrorCategory.forbidden.opiskeluoikeudenTyyppi())
+    }
+  }
+
+  // Raportti näyttää oppijat kaikista sen koulutusmuodoista, joten oikeus vain osaan niistä ei riitä
+  private def requireKotikuntalaskelmanOpiskeluoikeudenTyypit(organisaatioOid: Organisaatio.Oid) = {
+    if (!accessResolver.hasKaikkiOpiskeluoikeudenTyypit(organisaatioOid, RaportitAccessResolver.kotikuntalaskelmanOpiskeluoikeudenTyypit)) {
       haltWithStatus(KoskiErrorCategory.forbidden.opiskeluoikeudenTyyppi())
     }
   }

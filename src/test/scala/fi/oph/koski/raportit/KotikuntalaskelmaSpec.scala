@@ -5,10 +5,12 @@ import fi.oph.koski.documentation.ExampleData.{opiskeluoikeusEronnut, opiskeluoi
 import fi.oph.koski.documentation.PerusopetusExampleData
 import fi.oph.koski.documentation.YleissivistavakoulutusExampleData.oppilaitos
 import fi.oph.koski.henkilo.{KoskiSpecificMockOppijat, LaajatOppijaHenkilöTiedot}
-import fi.oph.koski.koskiuser.KoskiMockUser
+import fi.oph.koski.koskiuser.{KoskiMockUser, MockUsers}
 import fi.oph.koski.localization.LocalizationReader
 import fi.oph.koski.log.AuditLogTester
-import fi.oph.koski.organisaatio.MockOrganisaatiot.{aapajoenKoulu, jyväskylänNormaalikoulu}
+import fi.oph.koski.http.KoskiErrorCategory
+import fi.oph.koski.koodisto.Kunta
+import fi.oph.koski.organisaatio.MockOrganisaatiot.{aapajoenKoulu, helsinginKaupunki, jyväskylänNormaalikoulu}
 import fi.oph.koski.raportointikanta.RaportointikantaTestMethods
 import fi.oph.koski.schema._
 import fi.oph.koski.{DirtiesFixtures, KoskiApplicationForTests}
@@ -73,6 +75,85 @@ class KotikuntalaskelmaSpec extends AnyFreeSpec with Matchers with Raportointika
   private def oppijanRivi(oppija: LaajatOppijaHenkilöTiedot): KotikuntalaskelmaOppijaRow =
     uudetOppijatRivit.find(_.oppijaNumero.contains(oppija.oid)).get
 
+  "Kunnan kuntalaiset muualla" - {
+    "Raportti voidaan ladata kunnalle ja lataaminen tuottaa auditlogin" in {
+      authGet(s"api/raportit/kunnanoppijat?oppilaitosOid=$helsinginKaupunki&paiva=$raportointipäivä&lang=fi&password=salasana", user = MockUsers.paakayttaja) {
+        verifyResponseStatusOk()
+        response.bodyBytes.take(ENCRYPTED_XLSX_PREFIX.length) should equal(ENCRYPTED_XLSX_PREFIX)
+        AuditLogTester.verifyLastAuditLogMessageForOperation(
+          Map(
+            "operation" -> "OPISKELUOIKEUS_RAPORTTI",
+            "target" -> Map(
+              "hakuEhto" -> s"raportti=kunnanoppijat&oppilaitosOid=$helsinginKaupunki&paiva=$raportointipäivä&lang=fi"
+            )
+          )
+        )
+      }
+    }
+
+    "Raporttia ei voi ladata organisaatiolle, joka ei ole kunta" in {
+      authGet(s"api/raportit/kunnanoppijat?oppilaitosOid=$aapajoenKoulu&paiva=$raportointipäivä&lang=fi&password=salasana") {
+        verifyResponseStatus(400, KoskiErrorCategory.badRequest.queryParam(s"Organisaatio $aapajoenKoulu ei ole kunta"))
+      }
+    }
+
+    "Kunnan oppilaitoksen käyttöoikeuksilla ei voi ladata kunnan raporttia" in {
+      authGet(s"api/raportit/kunnanoppijat?oppilaitosOid=$helsinginKaupunki&paiva=$raportointipäivä&lang=fi&password=salasana", user = MockUsers.stadinAmmattiopistoKatselija) {
+        verifyResponseStatus(403, KoskiErrorCategory.forbidden.organisaatio())
+      }
+    }
+
+    "Kunnan esiopetuksen käyttöoikeuksilla ei voi ladata raporttia" in {
+      authGet(s"api/raportit/kunnanoppijat?oppilaitosOid=$helsinginKaupunki&paiva=$raportointipäivä&lang=fi&password=salasana", user = MockUsers.esiopetusTallentaja) {
+        verifyResponseStatus(403, KoskiErrorCategory.forbidden.opiskeluoikeudenTyyppi())
+      }
+    }
+
+    "Kunnan kaikkien opiskeluoikeustyyppien katseluoikeuksilla voi ladata raportin" in {
+      authGet(s"api/raportit/kunnanoppijat?oppilaitosOid=$helsinginKaupunki&paiva=$raportointipäivä&lang=fi&password=salasana", user = MockUsers.helsinkiKatselija) {
+        verifyResponseStatusOk()
+      }
+    }
+
+    lazy val helsinkiläiset = kotikuntalaskelmaBuilder.kunnanOppijat(Kunta.helsinki, raportointipäivä, "Esiopetus")
+
+    "Kunnan organisaatio-oidista saadaan kuntakoodi" in {
+      Kunta.validateAndGetKuntaKoodi(application.organisaatioService, application.koodistoPalvelu, helsinginKaupunki) shouldBe Right(Kunta.helsinki)
+    }
+
+    "Toisen kunnan koulussa opiskelevat kuntalaiset näkyvät opiskelupaikkoineen" in {
+      val oidit = Seq(
+        KoskiSpecificMockOppijat.kotikuntalaskelmaSeitsemanKaksitoista,
+        KoskiSpecificMockOppijat.kotikuntalaskelmaKolmetoistaViisitoista,
+        KoskiSpecificMockOppijat.kotikuntalaskelmaKuusitoistaEiErityista,
+        KoskiSpecificMockOppijat.kotikuntalaskelmaEsiopetus
+      ).map(_.oid)
+
+      oidit.foreach { oid =>
+        val rivi = helsinkiläiset.find(_.oppijaNumero.contains(oid))
+        rivi.map(_.oppilaitos) shouldBe Some(Some("Aapajoen koulu"))
+        rivi.get.kotikunta shouldBe Some("Helsinki")
+        rivi.get.opetuksenJärjestäjä shouldBe Some("Tornion kaupunki")
+      }
+    }
+
+    "Opetuksen järjestäjä on kotikunnan ja oppilaitoksen välissä" in {
+      val sarakkeet = kotikuntalaskelmaBuilder.buildKunnanOppijat(Kunta.helsinki, raportointipäivä, t)(session(defaultUser)).columnSettings.map(_._1)
+      sarakkeet.slice(sarakkeet.indexOf("kotikunta"), sarakkeet.indexOf("kotikunta") + 3) shouldBe Seq("kotikunta", "opetuksenJärjestäjä", "oppilaitos")
+    }
+
+    "Muiden kuntien asukkaat eivät näy" in {
+      helsinkiläiset.find(_.oppijaNumero.contains(KoskiSpecificMockOppijat.kotikuntalaskelmaKuusivuotias.oid)) shouldBe None
+      kotikuntalaskelmaBuilder.kunnanOppijat("851", raportointipäivä, "Esiopetus")
+        .find(_.oppijaNumero.contains(KoskiSpecificMockOppijat.kotikuntalaskelmaSeitsemanKaksitoista.oid)) shouldBe None
+    }
+
+    "Turvakiellon alaiset kuntalaiset jäävät pois" in {
+      helsinkiläiset.find(_.oppijaNumero.contains(KoskiSpecificMockOppijat.kotikuntalaskelmaTurvakielto.oid)) shouldBe None
+      helsinkiläiset.exists(_.oppijaNumero.contains("Turvakielto")) shouldBe false
+    }
+  }
+
   "Kotikuntalaskelma" - {
     "Raportti voidaan ladata ja lataaminen tuottaa auditlogin" in {
       authGet(s"api/raportit/kotikuntalaskelma?oppilaitosOid=$aapajoenKoulu&paiva=$raportointipäivä&lang=fi&password=salasana") {
@@ -86,6 +167,18 @@ class KotikuntalaskelmaSpec extends AnyFreeSpec with Matchers with Raportointika
             )
           )
         )
+      }
+    }
+
+    "Pelkillä esiopetuksen käyttöoikeuksilla ei voi ladata raporttia" in {
+      authGet(s"api/raportit/kotikuntalaskelma?oppilaitosOid=$helsinginKaupunki&paiva=$raportointipäivä&lang=fi&password=salasana", user = MockUsers.esiopetusTallentaja) {
+        verifyResponseStatus(403, KoskiErrorCategory.forbidden.opiskeluoikeudenTyyppi())
+      }
+    }
+
+    "Kaikkien raportin opiskeluoikeustyyppien katseluoikeuksilla voi ladata raportin" in {
+      authGet(s"api/raportit/kotikuntalaskelma?oppilaitosOid=$helsinginKaupunki&paiva=$raportointipäivä&lang=fi&password=salasana", user = MockUsers.helsinkiKatselija) {
+        verifyResponseStatusOk()
       }
     }
 
@@ -164,32 +257,16 @@ class KotikuntalaskelmaSpec extends AnyFreeSpec with Matchers with Raportointika
       rivi.get.luokka shouldBe Some("8A")
     }
 
-    "Oppijat-välilehti - turvakiellon alaisen oppijan tunnistetiedot piilotetaan mutta ikäryhmälippu näkyy" in {
-      val turvakieltoRivit = oppijatRivit.filter(_.oppijaNumero.contains("Turvakielto"))
+    // TOR-2560: virkailijalla, jolla on oikeus kotikuntalaskelmaan, on oikeus nähdä myös turvakiellon alaisen oppijan tiedot
+    "Oppijat-välilehti - turvakiellon alaisen oppijan tiedot näytetään sellaisenaan" in {
+      val turvakielto = oppijatRivit.find(_.oppijaNumero.contains(KoskiSpecificMockOppijat.kotikuntalaskelmaTurvakielto.oid))
 
-      turvakieltoRivit.length should be >= 2
-
-      turvakieltoRivit.foreach { rivi =>
-        rivi.oppijaNumero shouldBe Some("Turvakielto")
-        rivi.hetu shouldBe None
-        rivi.yksiloity shouldBe None
-        rivi.etunimet shouldBe None
-        rivi.sukunimi shouldBe None
-        rivi.kotikunta shouldBe None
-        rivi.oppilaitos shouldBe None
-        rivi.luokkaAste shouldBe None
-        rivi.luokka shouldBe None
-      }
-      turvakieltoRivit.exists(_.seitsemänKaksitoista) shouldBe true
-    }
-
-    "Oppijat-välilehti - turvakiellon alaiset oppijat ovat listan lopussa" in {
-      val ensimmäinenTurvakieltoIndeksi = oppijatRivit.indexWhere(_.oppijaNumero.contains("Turvakielto"))
-
-      ensimmäinenTurvakieltoIndeksi should be >= 0
-      oppijatRivit.drop(ensimmäinenTurvakieltoIndeksi).foreach { rivi =>
-        rivi.oppijaNumero shouldBe Some("Turvakielto")
-      }
+      turvakielto shouldBe defined
+      turvakielto.get.etunimet shouldBe Some("Lapsi")
+      turvakielto.get.sukunimi shouldBe Some("Turvakielto")
+      turvakielto.get.kotikunta shouldBe Some("Helsinki")
+      turvakielto.get.oppilaitos shouldBe Some("Aapajoen koulu")
+      turvakielto.get.seitsemänKaksitoista shouldBe true
     }
 
     "Oppijat-välilehti - hetuton oppija näkyy rivinä mutta ilman kotikuntaa" in {

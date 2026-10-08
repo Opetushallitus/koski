@@ -2,9 +2,10 @@ package fi.oph.koski.raportit
 
 import com.typesafe.config.Config
 import fi.oph.koski.config.KoskiApplication
+import fi.oph.koski.koodisto.{KoodistoPalvelu, Kunta}
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.plainAPI._
 import fi.oph.koski.koskiuser.{KoskiSpecificSession, OoPtsMask}
-import fi.oph.koski.organisaatio.{OrganisaatioHierarkia, OrganisaatioRepository}
+import fi.oph.koski.organisaatio.{OrganisaatioHierarkia, OrganisaatioRepository, OrganisaatioService, Organisaatiotyyppi}
 import fi.oph.koski.raportit.tuva.TuvaPerusopetuksenOppijamäärätRaportti
 import fi.oph.koski.raportointikanta.RaportointiDatabase
 import fi.oph.koski.schema.Organisaatio.Oid
@@ -14,11 +15,27 @@ import scala.jdk.CollectionConverters._
 
 object RaportitAccessResolver {
   def apply(application: KoskiApplication): RaportitAccessResolver = {
-    RaportitAccessResolver(application.organisaatioRepository, application.raportointiDatabase, application.config)
+    RaportitAccessResolver(application.organisaatioRepository, application.organisaatioService, application.koodistoPalvelu, application.raportointiDatabase, application.config)
   }
+
+  val kotikuntalaskelmanOpiskeluoikeudenTyypit: Seq[Koodistokoodiviite] = Seq(
+    OpiskeluoikeudenTyyppi.perusopetus,
+    OpiskeluoikeudenTyyppi.esiopetus,
+    OpiskeluoikeudenTyyppi.internationalschool,
+    OpiskeluoikeudenTyyppi.europeanschoolofhelsinki
+  )
+
+  private val kotikuntalaskelmanRaportit: Set[RaportinTyyppi] = Set(KotikuntalaskelmaRaportti, KunnanOppijatRaportti)
 }
 
-case class RaportitAccessResolver(organisaatioRepository: OrganisaatioRepository, raportointiDatabase: RaportointiDatabase, config: Config) {
+case class RaportitAccessResolver(
+  organisaatioRepository: OrganisaatioRepository,
+  organisaatioService: OrganisaatioService,
+  koodistoPalvelu: KoodistoPalvelu,
+  raportointiDatabase: RaportointiDatabase,
+  config: Config
+) {
+  import RaportitAccessResolver._
 
   def kyselyOiditOrganisaatiolle(organisaatioOid: Organisaatio.Oid): Set[Organisaatio.Oid] = {
     organisaatioRepository.getOrganisaatio(organisaatioOid)
@@ -33,15 +50,31 @@ case class RaportitAccessResolver(organisaatioRepository: OrganisaatioRepository
   def mahdollisetRaporttienTyypitOrganisaatiolle(organisaatioHierarkia: OrganisaatioHierarkia, koulutusmuodot: Map[String, Seq[String]])(implicit session: KoskiSpecificSession): Set[RaportinTyyppi] = {
     val isKoulutustoimija = organisaatioHierarkia.toOrganisaatio.isInstanceOf[Koulutustoimija]
 
-    OrganisaatioHierarkia.flatten(List(organisaatioHierarkia))
+    // Kunnan oppijat ei riipu kunnan omista oppilaitoksista, koska kuntalaiset voivat opiskella kaikki muualla
+    val kunnanRaportit: Set[RaportinTyyppi] =
+      if (onKunta(organisaatioHierarkia)) Set(KunnanOppijatRaportti) else Set.empty
+
+    (OrganisaatioHierarkia.flatten(List(organisaatioHierarkia))
       .map(_.oid)
       .flatMap(koulutusmuodot.get)
       .flatten
       .toSet
-      .flatMap(raportinTyypitKoulutusmuodolle(_, isKoulutustoimija))
+      .flatMap(raportinTyypitKoulutusmuodolle(_, isKoulutustoimija)) ++ kunnanRaportit)
       .filter(checkRaporttiAccessIfAccessIsLimited(_))
       .filter(raportti => session.allowedOpiskeluoikeudetJaPäätasonSuoritukset.intersects(OoPtsMask(raportti.opiskeluoikeudenTyyppi)))
+      .filter(raportti => !kotikuntalaskelmanRaportit.contains(raportti) || hasKaikkiOpiskeluoikeudenTyypit(organisaatioHierarkia.oid, kotikuntalaskelmanOpiskeluoikeudenTyypit))
   }
+
+  def hasKaikkiOpiskeluoikeudenTyypit(organisaatioOid: Organisaatio.Oid, tyypit: Seq[Koodistokoodiviite])(implicit session: KoskiSpecificSession): Boolean = {
+    val organisaationTyypit = session.orgKäyttöoikeudet.filter(_.organisaatio.oid == organisaatioOid).flatMap(_.allowedOpiskeluoikeusTyypit)
+    session.hasGlobalReadAccess || organisaationTyypit.satisfiesAll(tyypit.flatMap(OoPtsMask.fromKoodistokoodiviite))
+  }
+
+  def kuntakoodi(organisaatioOid: Organisaatio.Oid): Option[String] =
+    Kunta.validateAndGetKuntaKoodi(organisaatioService, koodistoPalvelu, organisaatioOid).toOption
+
+  private def onKunta(organisaatioHierarkia: OrganisaatioHierarkia): Boolean =
+    organisaatioHierarkia.organisaatiotyypit.contains(Organisaatiotyyppi.KUNTA) && kuntakoodi(organisaatioHierarkia.oid).isDefined
 
   private def filterOppilaitosOidsByKoulutusmuoto(oppilaitosOids: Seq[String], koulutusmuoto: String): Seq[String] = {
     val query =
