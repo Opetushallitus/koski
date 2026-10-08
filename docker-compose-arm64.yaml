@@ -53,3 +53,9 @@ services:
     volumes:
       - "${LOCALSTACK_VOLUME_DIR:-./localstack-volume}:/var/lib/localstack"
       - "/var/run/docker.sock:/var/run/docker.sock"
+    healthcheck:
+      test: ["CMD", "curl", "--silent", "--fail", "localhost:4566/_localstack/health"]
+      interval: 5s
+      timeout: 5s
+      retries: 3
+      start_period: 60s
