@@ -392,9 +392,9 @@
       "allowedVersions": "!/^1\\.0-\\d+-[0-9a-f]+$/"
     },
     {
-      "description": "Stay on OpenSearch 1",
+      "description": "Stay on the OpenSearch version of AWS (koski-aws-infra src/ProductVersions.ts)",
       "matchPackageNames": ["opensearchproject/opensearch"],
-      "allowedVersions": "<2"
+      "allowedVersions": "/^3\\.5\\./"
     },
     {
       "description": "Stay on mockito-core 2",
