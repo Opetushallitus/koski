@@ -470,8 +470,8 @@
     </dependency>
     <dependency>
       <groupId>org.scalamock</groupId>
-      <artifactId>scalamock_2.13</artifactId>
-      <version>5.2.0</version>
+      <artifactId>scalamock-scalatest_2.13</artifactId>
+      <version>7.6.0</version>
       <scope>test</scope>
     </dependency>
     <dependency>
