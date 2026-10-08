@@ -97,7 +97,10 @@ export const OpiskeluoikeusEditor = ({ model }) => {
                 opiskeluoikeusOid={modelData(mdl, 'oid')}
                 oppijaOid={context.oppijaOid}
               />
-              <OpiskeluoikeudenId opiskeluoikeus={mdl} />
+              <OpiskeluoikeudenId
+                opiskeluoikeus={mdl}
+                näytäLähdejärjestelmänId
+              />
             </h3>
             {modelData(model, 'virtaVirheet') &&
               modelData(model, 'virtaVirheet').length > 0 &&
@@ -204,7 +207,10 @@ const opiskeluoikeusPropertyFilter = (opiskeluoikeus, property) =>
   !excludedProperties.includes(property.key) &&
   (opiskeluoikeus.context.edit || modelData(property.model) !== false)
 
-export const OpiskeluoikeudenId = ({ opiskeluoikeus }) => {
+export const OpiskeluoikeudenId = ({
+  opiskeluoikeus,
+  näytäLähdejärjestelmänId = false
+}) => {
   const selectAllText = (e) => {
     e.stopPropagation()
     const el = e.target
@@ -216,6 +222,7 @@ export const OpiskeluoikeudenId = ({ opiskeluoikeus }) => {
   }
   const opiskeluoikeusOid = modelData(opiskeluoikeus, 'oid')
   const lähdejärjestelmänId =
+    näytäLähdejärjestelmänId &&
     modelData(opiskeluoikeus, 'tyyppi.koodiarvo') === 'korkeakoulutus'
       ? modelData(opiskeluoikeus, 'lähdejärjestelmänId.id')
       : undefined
