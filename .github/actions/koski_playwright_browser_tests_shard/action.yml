@@ -17,6 +17,8 @@ runs:
       uses: ./.github/actions/setup_backend
     - name: "🌍 Setup Playwright"
       uses: ./.github/actions/setup_playwright
+      with:
+        workingDirectory: web
 
     - name: Run Playwright tests
       env:

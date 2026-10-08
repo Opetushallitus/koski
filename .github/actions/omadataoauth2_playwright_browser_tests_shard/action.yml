@@ -16,7 +16,9 @@ runs:
     - name: "🔨 Setup backend and databases"
       uses: ./.github/actions/setup_backend
     - name: "🌍 Setup Playwright"
-      uses: ./.github/actions/omadataoauth2_setup_playwright
+      uses: ./.github/actions/setup_playwright
+      with:
+        workingDirectory: omadata-oauth2-sample/server
 
     - name: Run Playwright tests
       env:
