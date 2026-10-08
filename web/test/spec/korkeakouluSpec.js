@@ -22,6 +22,16 @@ describe('Korkeakoulutus', function () {
       expect(S('.suoritus-taulukko td.suoritus').length).to.be.above(0)
       expect(S('.suoritus-taulukko .tila').length).to.equal(0)
     })
+
+    it('näytetään lähdejärjestelmän id opiskeluoikeuden oidin paikalla', function () {
+      expect(opinnot.getOpiskeluoikeudenId(1)).to.equal(
+        'Lähdejärjestelmän id: 30855811'
+      )
+    })
+
+    it('ei näytetä lähdejärjestelmän id:tä synteettiselle opiskeluoikeudelle', function () {
+      expect(opinnot.getOpiskeluoikeudenId(0)).to.equal('')
+    })
   })
 
   describe('Päättynyt-tila, korkeakoulututkinto', function () {

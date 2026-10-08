@@ -215,12 +215,19 @@ export const OpiskeluoikeudenId = ({ opiskeluoikeus }) => {
     sel.addRange(range)
   }
   const opiskeluoikeusOid = modelData(opiskeluoikeus, 'oid')
-  return opiskeluoikeusOid ? (
+  const lähdejärjestelmänId =
+    modelData(opiskeluoikeus, 'tyyppi.koodiarvo') === 'korkeakoulutus'
+      ? modelData(opiskeluoikeus, 'lähdejärjestelmänId.id')
+      : undefined
+  const [label, id] = opiskeluoikeusOid
+    ? ['Opiskeluoikeuden oid', opiskeluoikeusOid]
+    : ['Lähdejärjestelmän id', lähdejärjestelmänId]
+  return id ? (
     <span className="id">
-      <Text name="Opiskeluoikeuden oid" />
+      <Text name={label} />
       {': '}
       <span className="value" onClick={selectAllText}>
-        {opiskeluoikeusOid}
+        {id}
       </span>
     </span>
   ) : null

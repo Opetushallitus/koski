@@ -148,6 +148,10 @@ function OpinnotPage() {
         .find('h3 .otsikkotiedot .oppilaitos', opiskeluoikeus)
         .text()
     },
+    getOpiskeluoikeudenId: function (indexOrName) {
+      var opiskeluoikeus = resolveOpiskeluoikeus(indexOrName)
+      return opiskeluoikeus.find('h3 .id').text()
+    },
     getSuorituskieli: function (indexOrName) {
       var opiskeluoikeus = resolveOpiskeluoikeus(indexOrName)
       return opiskeluoikeus
