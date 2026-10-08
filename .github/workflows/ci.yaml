@@ -105,6 +105,23 @@ jobs:
               - '.trivyignore'
               - '.github/workflows/trivy_check.yml'
 
+  no_merge_commits:
+    name: No merge commits
+    runs-on: ubuntu-26.04
+    permissions:
+      pull-requests: read
+    steps:
+      - name: Check PR commits for merge commits
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PR_COMMITS_URL: repos/${{ github.repository }}/pulls/${{ github.event.pull_request.number }}/commits
+        run: |
+          merge_commits=$(gh api --paginate "$PR_COMMITS_URL" --jq '.[] | select(.parents | length > 1) | .sha')
+          if [ -n "$merge_commits" ]; then
+            echo "::error::PR sisältää merge-committeja. Rebasea haara masterin päälle."
+            exit 1
+          fi
+
   tests:
     name: "Tests"
     needs: [changes]
@@ -155,7 +172,7 @@ jobs:
   ci_passed:
     name: CI passed
     runs-on: ubuntu-26.04
-    needs: [changes, tests, trivy, renovate_config]
+    needs: [changes, no_merge_commits, tests, trivy, renovate_config]
     if: ${{ always() }}
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
