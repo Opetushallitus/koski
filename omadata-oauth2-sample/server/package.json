@@ -4,7 +4,7 @@
   "description": "Sample web application to use KOSKI OmaData with OAuth2",
   "engines": {
     "node": ">=24",
-    "pnpm": "10.34.5"
+    "pnpm": "10.34.6"
   },
   "type": "module",
   "scripts": {
@@ -48,5 +48,5 @@
     "typescript": "6.0.3",
     "typescript-eslint": "8.71.0"
   },
-  "packageManager": "pnpm@10.34.5"
+  "packageManager": "pnpm@10.34.6"
 }
