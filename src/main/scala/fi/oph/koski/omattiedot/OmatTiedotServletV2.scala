@@ -35,17 +35,16 @@ class OmatTiedotServletV2(implicit val application: KoskiApplication) extends Ko
     )
   }
 
-  // Huollettavan tiedot näytetään kansalaisen omalla sessiolla, eli ilman omien tietojen
-  // erityisiä henkilötietoja – kuten vanhassa käyttöliittymässä (OmatTiedotServlet).
   private def renderHuollettavanTiedot(oid: String): Unit = {
     if (!session.isUsersHuollettava(oid)) {
       haltWithStatus(KoskiErrorCategory.forbidden.kiellettyKäyttöoikeus())
     }
+    val omatTiedotSession = KoskiSpecificSession.omatTiedotSession(session)
     renderEither[Oppija](
       huoltajaService
-        .findHuollettavaOppija(oid)(session)
+        .findHuollettavaOppija(oid)(omatTiedotSession)
         .map(_.getIgnoringWarnings),
-      session
+      omatTiedotSession
     )
   }
 }

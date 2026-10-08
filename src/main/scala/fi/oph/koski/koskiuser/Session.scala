@@ -217,7 +217,7 @@ object KoskiSpecificSession {
     new KoskiSpecificSession(user, huoltajaSession.lang, huoltajaSession.clientIp, huoltajaSession.userAgent, huoltajaSession.kaikkiKäyttöoikeudet)
   }
 
-  // Kansalaiselle näytetään omissa tiedoissaan samat erityiset henkilötiedot kuin hänen suoritusjaoissaan.
+  // Kansalaiselle näytetään omissa ja huollettaviensa tiedoissa samat erityiset henkilötiedot kuin suoritusjaoissa.
   def omatTiedotSession(kansalainenSession: KoskiSpecificSession): KoskiSpecificSession =
     new KoskiSpecificSession(kansalainenSession.user, kansalainenSession.lang, kansalainenSession.clientIp, kansalainenSession.userAgent, Set(KäyttöoikeusGlobal(List(Palvelurooli(SUORITUSJAKO_KATSELIJA)))))
 
