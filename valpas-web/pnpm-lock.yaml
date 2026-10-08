@@ -17,6 +17,9 @@ importers:
       fp-ts:
         specifier: 2.16.11
         version: 2.16.11
+      js-cookie:
+        specifier: 3.0.8
+        version: 3.0.8
       react:
         specifier: 19.3.0
         version: 19.3.0
@@ -117,9 +120,6 @@ importers:
       jest-fail-on-console:
         specifier: 3.3.4
         version: 3.3.4(@jest/globals@30.5.2)
-      js-cookie:
-        specifier: 3.0.8
-        version: 3.0.8
       parcel:
         specifier: 2.16.4
         version: 2.16.4(@swc/helpers@0.5.23)
