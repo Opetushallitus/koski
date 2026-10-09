@@ -11,3 +11,4 @@ OPHKOTO-130 - Ei validaatiomuutoksia
 TOR-2587 - Ahvenanmaan perusopetus: ePerusteet-validoinnin ohitus uudelle tyypille, ei vaikuta olemassaoleviin
 TOR-2704 - vain virheviestien sanamuotoja täsmennetty, validaatiologiikka ennallaan
 TOR-1585 - arviointipäivävalidaation virheviestien sanamuoto selkeytetty (suoritus lauseen subjektina, suomalaiset päivämäärät), validaatiologiikka ja virheavaimet ennallaan
+TOR-XXXX - poistettu käyttämätön PUT /api/oppija/batch -rajapinta ja sen erävalidointi, yksittäisen oppijan validointi ennallaan

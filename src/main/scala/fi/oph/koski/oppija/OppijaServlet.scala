@@ -16,9 +16,8 @@ import fi.oph.koski.virta.{VirtaHakuehtoHetu, VirtaHakuehtoKansallinenOppijanume
 import fi.oph.koski.ytr.YtrSsnWithPreviousSsns
 import fi.oph.koski.ytr.download.{YtrLaajaOppija, YtrSsnDataWithPreviousSsns}
 import org.json4s.JsonAST.{JObject, JString}
-import org.json4s.{JArray, JValue}
+import org.json4s.JValue
 import org.scalatra.ContentEncodingSupport
-import scala.collection.parallel.CollectionConverters._
 
 class OppijaServlet(implicit val application: KoskiApplication)
   extends KoskiSpecificApiServlet
@@ -38,25 +37,6 @@ class OppijaServlet(implicit val application: KoskiApplication)
   private def putSingle(allowUpdate: Boolean): Unit = {
     withTracking { withJsonBody { (oppijaJson: JValue) =>
       renderEither[HenkilönOpiskeluoikeusVersiot](oppijaAdder.add(session, oppijaJson, allowUpdate, logSafeDescription(request)))
-    }(parseErrorHandler = handleUnparseableJson)}
-  }
-
-  put("/batch") {
-    withTracking { withJsonBody { parsedJson =>
-      val putter = UpdateContext(session, application)
-
-      val validationResults: List[(Either[HttpStatus, Oppija], JValue)] = application.validator.extractUpdateFieldsAndValidateBatch(parsedJson.asInstanceOf[JArray])(session, AccessType.write)
-
-      val batchResults: List[Either[HttpStatus, HenkilönOpiskeluoikeusVersiot]] = validationResults.par.map { results =>
-        putter.putSingle(results._1, results._2, allowUpdate = true, logSafeDescription(request))
-      }.toList
-
-      response.setStatus(batchResults.map {
-        case Left(status) => status.statusCode
-        case _ => 200
-      }.max)
-
-      batchResults
     }(parseErrorHandler = handleUnparseableJson)}
   }
 
