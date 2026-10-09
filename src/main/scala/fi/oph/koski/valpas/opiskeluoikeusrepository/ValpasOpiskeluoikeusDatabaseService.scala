@@ -3,6 +3,7 @@ package fi.oph.koski.valpas.opiskeluoikeusrepository
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.plainAPI._
 import fi.oph.koski.db.{DatabaseConverters, SQLHelpers}
+import fi.oph.koski.localization.Locale
 import fi.oph.koski.log.Logging
 import fi.oph.koski.util.DateOrdering.localDateOrdering
 import org.json4s.{JArray, JNull, JValue}
@@ -35,6 +36,14 @@ case class ValpasOppijaRow(
   oppivelvollisuudestaVapautus: Option[OppivelvollisuudestaVapautus],
 ) {
   def vapautettuOppivelvollisuudesta: Boolean = oppivelvollisuudestaVapautus.exists(!_.tulevaisuudessa)
+}
+
+object ValpasOppijaRow {
+  // Sama järjestys kuin queryOppijat-kyselyn ORDER BY:ssä, jotta erissä haettu tulos pysyy aakkosjärjestyksessä erien yli
+  val nimijärjestys: Ordering[ValpasOppijaRow] =
+    Ordering.by[ValpasOppijaRow, (String, String, String)](o => (o.sukunimi, o.etunimet, o.oppijaOid))(
+      Ordering.Tuple3(Locale.finnishAlphabeticalOrdering, Locale.finnishAlphabeticalOrdering, Ordering.String)
+    )
 }
 
 case class ValpasOppivelvollisuustiedotRow(
@@ -77,6 +86,7 @@ class ValpasOpiskeluoikeusDatabaseService(
       .flatMap(queryOppijat(_, None, rajaaOVKelpoisiinOpiskeluoikeuksiin, HakeutumisvalvontaTieto.Kaikki))
       .toList
       .distinctBy(_.oppijaOid)
+      .sorted(ValpasOppijaRow.nimijärjestys)
     if (haeMyösOppivelvollisuudestaVapautetut) kaikkiOppijat else kaikkiOppijat.filterNot(_.vapautettuOppivelvollisuudesta)
   }
 
