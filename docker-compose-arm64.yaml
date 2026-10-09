@@ -37,7 +37,7 @@ services:
       start_period: 120s
 
   dynamodb:
-    image: "amazon/dynamodb-local:2.6.1@sha256:1856c05cc66a0e49dc1099e483ad2851477eeebe2135250ac11a1d1227db54b1"
+    image: "amazon/dynamodb-local:3.3.1@sha256:ff89bd48ff32cd8d9be5fee8873b65b8854dc408f1afe881be6eb00247bc0dab"
     ports:
       - "8000:8000"
 
