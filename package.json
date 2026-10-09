@@ -12,6 +12,8 @@
   },
   "scripts": {
     "prettier": "git ls-files -z --cached --others --exclude-standard | xargs -0 prettier --write --cache --ignore-unknown --no-error-on-unmatched-pattern",
-    "prettier:check": "git ls-files -z --cached --others --exclude-standard | xargs -0 prettier --check --cache --ignore-unknown --no-error-on-unmatched-pattern"
+    "prettier:check": "git ls-files -z --cached --others --exclude-standard | xargs -0 prettier --check --cache --ignore-unknown --no-error-on-unmatched-pattern",
+    "clean": "for dir in $(git ls-files '*/package.json' | xargs -n1 dirname); do pnpm --dir \"$dir\" run clean || exit 1; done && rm -rf node_modules/.cache",
+    "wipe": "for dir in $(git ls-files '*/package.json' | xargs -n1 dirname); do pnpm --dir \"$dir\" run wipe || exit 1; done && rm -rf node_modules/.cache && pnpm purge"
   }
 }

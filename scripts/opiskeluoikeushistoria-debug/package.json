@@ -11,7 +11,9 @@
     "eslint:check": "eslint index.js",
     "typecheck": "tsc --noEmit",
     "prettier": "prettier --write --cache .",
-    "prettier:check": "prettier --check --cache ."
+    "prettier:check": "prettier --check --cache .",
+    "clean": "rm -rf node_modules/.cache",
+    "wipe": "pnpm run clean && pnpm purge"
   },
   "author": "",
   "license": "ISC",
