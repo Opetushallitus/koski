@@ -1,6 +1,6 @@
 import React, { useCallback, useMemo, useRef, useState } from 'react'
 import { isSuccess, useApiWithParams } from '../../api-fetch'
-import { useVersionumero } from '../../appstate/useSearchParam'
+import { useVersionumero } from '../../appstate/sivunTila'
 import { TestIdLayer } from '../../appstate/useTestId'
 import { ISO2FinnishDateTime } from '../../date/date'
 import { t } from '../../i18n/i18n'

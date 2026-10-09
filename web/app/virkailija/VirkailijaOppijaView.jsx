@@ -26,6 +26,7 @@ import {
   showError
 } from '../util/location.js'
 import { lisääVaroitus, poistaVaroitus } from '../util/router'
+import { katseltavaVersio } from '../appstate/sivunTila'
 import { OppijaHaku } from '../virkailija/OppijaHaku'
 import Link from '../components/Link'
 import { decreaseLoading, increaseLoading } from '../util/loadingFlag'
@@ -71,9 +72,10 @@ const vanhanKäyttöliittymänOpiskeluoikeudet = (oppijaModel) =>
 // opiskeluoikeudella: eri opiskeluoikeuksien saman numeroiset versiot ovat eri
 // näkymiä.
 const malliinTarvittavaVersio = (malli) => {
-  const { opiskeluoikeus, versionumero } = currentLocation().params
-  return versionumero && malli.vanhanKäyttöliittymänOidit.has(opiskeluoikeus)
-    ? `${opiskeluoikeus}/${versionumero}`
+  const versio = katseltavaVersio()
+  return versio &&
+    malli.vanhanKäyttöliittymänOidit.has(versio.opiskeluoikeusOid)
+    ? `${versio.opiskeluoikeusOid}/${versio.versionumero}`
     : undefined
 }
 
@@ -179,11 +181,10 @@ const createState = (oppijaOid, malli) => {
   )
 
   const editorUri = `/koski/api/editor/${oppijaOid}`
-  const versionEditorUri = () =>
-    editorUri +
-    currentLocation().filterQueryParams((key) =>
-      ['opiskeluoikeus', 'versionumero'].includes(key)
-    ).queryString
+  const versionEditorUri = () => {
+    const { opiskeluoikeusOid, versionumero } = katseltavaVersio()
+    return `${editorUri}?opiskeluoikeus=${encodeURIComponent(opiskeluoikeusOid)}&versionumero=${versionumero}`
+  }
 
   // Nykyisestä mallista nähdään, tarvitaanko malli versiolle.
   const haeMalli = (options) =>

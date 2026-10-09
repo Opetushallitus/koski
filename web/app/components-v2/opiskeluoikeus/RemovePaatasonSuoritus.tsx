@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { useApiMethod, useOnApiError, useOnApiSuccess } from '../../api-fetch'
 import { useGlobalErrors } from '../../appstate/globalErrors'
-import { useVersionumero } from '../../appstate/useSearchParam'
+import { useVersionumero } from '../../appstate/sivunTila'
 import { setInvalidationNotification } from '../../components/InvalidationNotification'
 import { t } from '../../i18n/i18n'
 import { Opiskeluoikeus } from '../../types/fi/oph/koski/schema/Opiskeluoikeus'

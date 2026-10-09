@@ -7,6 +7,7 @@ import { currentLocation } from '../util/location.js'
 import { flatMapArray } from '../util/util'
 import OpiskeluoikeudetNavBar from './OpiskeluoikeudetNavBar'
 import { TestIdRoot } from '../appstate/useTestId'
+import { osoitteenOpiskeluoikeus } from '../appstate/sivunTila'
 
 const sisältääOpiskeluoikeuden = (opiskeluoikeudenTyyppi, oid) =>
   modelData(opiskeluoikeudenTyyppi).opiskeluoikeudet.some((oppilaitos) =>
@@ -15,10 +16,8 @@ const sisältääOpiskeluoikeuden = (opiskeluoikeudenTyyppi, oid) =>
 
 export const OppijaEditor = ({ model }) => {
   const oppijaOid = modelData(model, 'henkilö.oid')
-  const {
-    opiskeluoikeudenTyyppi: selectedTyyppi,
-    opiskeluoikeus: katseltavaOpiskeluoikeus
-  } = currentLocation().params
+  const selectedTyyppi = currentLocation().params.opiskeluoikeudenTyyppi
+  const katseltavaOpiskeluoikeus = osoitteenOpiskeluoikeus()
   const opiskeluoikeusTyypit = modelItems(model, 'opiskeluoikeudet')
 
   // Versiolinkissä ei ole opiskeluoikeuden tyyppiä, joten avataan välilehti,

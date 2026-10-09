@@ -15,8 +15,10 @@ import { FlatButton } from '../controls/FlatButton'
 import { RaisedButton } from '../controls/RaisedButton'
 import { Trans } from '../texts/Trans'
 import { useVirkailijaUser } from '../../appstate/user'
-import { useVersionumero } from '../../appstate/useSearchParam'
-import { useMuokattavaOpiskeluoikeus } from '../../appstate/muokkaustila'
+import {
+  useMuokattavaOpiskeluoikeus,
+  useVersionumero
+} from '../../appstate/sivunTila'
 import { PoistuVersiohistoriastaButton } from './VersiohistoriaButton'
 import { RequiresLahdejarjestelmakytkennanPurkaminenAccess } from '../access/RequiresLahdejarjestelmakytkennanPurkaminenAccess'
 import { setInvalidationNotification } from '../../components/InvalidationNotification'
