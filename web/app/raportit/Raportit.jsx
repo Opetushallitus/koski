@@ -229,7 +229,8 @@ const kaikkiRaportitKategorioittain = [
       {
         id: 'vapaansivistystyönvapaatavoitteisenkoulutuksenraportti',
         name: 'raportti-tab-vstvapaatavoitteinen',
-        component: VSTVapaatavoitteinen
+        component: VSTVapaatavoitteinen,
+        guard: () => hasFeatureFlag('vstvapaatavoitteinen')
       }
     ]
   },
