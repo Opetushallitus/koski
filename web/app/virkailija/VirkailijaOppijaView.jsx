@@ -178,25 +178,23 @@ const createState = (oppijaOid, malli) => {
     navigateWithQueryParams({ edit: opiskeluoikeusOid })
   )
 
-  const editorUri = (params) =>
-    `/koski/api/editor/${oppijaOid}${
-      currentLocation().filterQueryParams((key) => params.includes(key))
-        .queryString
-    }`
+  const editorUri = `/koski/api/editor/${oppijaOid}`
+  const versionEditorUri = () =>
+    editorUri +
+    currentLocation().filterQueryParams((key) =>
+      ['opiskeluoikeus', 'versionumero'].includes(key)
+    ).queryString
 
   // Nykyisestä mallista nähdään, tarvitaanko malli versiolle.
   const haeMalli = (options) =>
-    Http.cachedGet(editorUri(['newVSTUI']), options)
+    Http.cachedGet(editorUri, options)
       .map(setupModelContext)
       .flatMap((nykyinen) => {
         malli.vanhanKäyttöliittymänOidit =
           vanhanKäyttöliittymänOpiskeluoikeudet(nykyinen)
         malli.versio = malliinTarvittavaVersio(malli)
         return malli.versio
-          ? Http.cachedGet(
-              editorUri(['opiskeluoikeus', 'versionumero', 'newVSTUI']),
-              options
-            ).map(setupModelContext)
+          ? Http.cachedGet(versionEditorUri(), options).map(setupModelContext)
           : Bacon.once(nykyinen)
       })
 
