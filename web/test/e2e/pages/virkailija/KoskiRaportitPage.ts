@@ -21,6 +21,13 @@ export class KoskiRaportitPage {
     await expect(this.muodostaButton).toBeVisible()
   }
 
+  async gotoVstVapaatavoitteinen() {
+    await this.page.goto(
+      '/koski/raportit/vst/vapaansivistystyönvapaatavoitteisenkoulutuksenraportti?vstvapaatavoitteinen'
+    )
+    await expect(this.muodostaButton).toBeVisible()
+  }
+
   async syötäAikajakso(alku: string, loppu: string) {
     await this.page.locator('#dateinput-alku').fill(alku)
     await this.page.locator('#dateinput-loppu').fill(loppu)

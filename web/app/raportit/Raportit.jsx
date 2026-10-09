@@ -22,6 +22,10 @@ import { replaceLocation } from '../util/location'
 import { Paragraphs } from '../i18n/Paragraphs'
 import { lang } from '../i18n/i18n'
 import { hasFeatureFlag } from '../util/featureFlags'
+import {
+  ammatillinenTutkintoSuoritustiedotKyselymalli,
+  vstVapaatavoitteinenKyselymalli
+} from '../components-v2/raportit/massaluovutusRaporttiKyselyt'
 
 const kaikkiRaportitKategorioittain = [
   {
@@ -215,12 +219,18 @@ const kaikkiRaportitKategorioittain = [
   {
     id: 'vst',
     tab: 'raporttikategoria-tab-vst',
-    heading: 'raporttikategoria-heading-vst-jotpa',
+    heading: 'raporttikategoria-heading-vst',
     raportit: [
       {
         id: 'jatkuvanoppimisenvapaansivistystyönraportti',
         name: 'raportti-tab-vstjotpa',
         component: VSTJotpa
+      },
+      {
+        id: 'vapaansivistystyönvapaatavoitteisenkoulutuksenraportti',
+        name: 'raportti-tab-vstvapaatavoitteinen',
+        component: VSTVapaatavoitteinen,
+        guard: () => hasFeatureFlag('vstvapaatavoitteinen')
       }
     ]
   },
@@ -635,7 +645,7 @@ function SuoritustietojenTarkistus({ stateP }) {
       title={titleText}
       shortDescription={shortDescriptionText}
       example={exampleText}
-      useMassaluovutus
+      massaluovutusKyselymalli={ammatillinenTutkintoSuoritustiedotKyselymalli}
       lang={lang}
     />
   )
@@ -1160,6 +1170,23 @@ function VSTJotpa({ stateP }) {
       title={titleText}
       shortDescription={shortDescriptionText}
       example={exampleText}
+      lang={lang}
+    />
+  )
+}
+
+function VSTVapaatavoitteinen({ stateP }) {
+  const shortDescriptionText = (
+    <Text name="VstVapaatavoitteinenRaportti-short-description" />
+  )
+  const exampleText = <Paragraphs name="VstVapaatavoitteinenRaportti-example" />
+
+  return (
+    <AikajaksoRaportti
+      stateP={stateP}
+      shortDescription={shortDescriptionText}
+      example={exampleText}
+      massaluovutusKyselymalli={vstVapaatavoitteinenKyselymalli}
       lang={lang}
     />
   )
