@@ -21,7 +21,7 @@ export default [
     plugins: { "react-hooks": reactHooks },
     rules: {
       "react-hooks/rules-of-hooks": "error",
-      "react-hooks/exhaustive-deps": "warn",
+      "react-hooks/exhaustive-deps": "error",
     },
   },
   { ...compat.configs["flat/recommended"], files: ["src/**/*"] },

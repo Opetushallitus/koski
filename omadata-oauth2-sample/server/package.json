@@ -17,7 +17,7 @@
     "lint": "pnpm run typecheck && pnpm run eslint && pnpm run prettier",
     "lint:check": "concurrently --group \"pnpm:typecheck\" \"pnpm:eslint:check\" \"pnpm:prettier:check\"",
     "eslint": "pnpm run eslint:check --fix",
-    "eslint:check": "eslint \"{src,test}/**/*.{js,jsx,ts,tsx}\"",
+    "eslint:check": "eslint --max-warnings 0 \"{src,test}/**/*.{js,jsx,ts,tsx}\"",
     "typecheck": "tsc --noEmit",
     "typecheck:watch": "tsc --noEmit --watch --preserveWatchOutput",
     "prettier": "prettier --write --cache .",

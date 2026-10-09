@@ -1,6 +1,6 @@
 import React from 'baret'
 import * as R from 'ramda'
-import { modelData, modelItems } from '../editor/EditorModel'
+import { modelItems } from '../editor/EditorModel'
 import { t } from '../i18n/i18n'
 import { isMobileAtom } from '../util/isMobileAtom'
 import { OmatTiedotLukionOppiaineetTableHead } from '../lukio/fragments/LukionOppiaineetTableHead'
@@ -22,52 +22,26 @@ const OmatTiedotOppiaineryhmä = ({
     <table className="omattiedot-suoritukset">
       <OmatTiedotLukionOppiaineetTableHead
         arvosanaHeader={
-          aineet.some(
-            (aine) =>
-              resolveArvosanaModel(aine, 'arviointi') ||
-              resolveArvosanaModel(aine, 'predictedArviointi')
-          ) ? (
+          aineet.some((aine) => resolveArvosanaModel(aine)) ? (
             <Text name="Arvosana" />
           ) : null
         }
       />
       <tbody>
         {aineet &&
-          aineet.map((oppiaine, oppiaineIndex) => {
-            const predictedArviointi = modelData(
-              oppiaine,
-              'predictedArviointi.-1'
-            )
-            const arviointi = modelData(oppiaine, 'arviointi.-1')
-            const predictedArviointiVanhassaHaarassa = arviointi?.predicted
-            const arviointiField =
-              arviointi && !arviointi?.predicted
-                ? 'arviointi' // Vanhan tietomallin mukaisesti predicted löytyy arviointi-kentästä
-                : predictedArviointi
-                  ? 'predictedArviointi' // Predicted grade löytyy, mutta ei päättöarvosanaa
-                  : 'arviointi'
-
-            const footnote =
-              (predictedArviointiVanhassaHaarassa ||
-                (!arviointi && predictedArviointi)) &&
-              arvosanaFootnote
-
-            return (
-              <OmatTiedotLukionOppiaine
-                baret-lift
-                key={oppiaineIndex}
-                oppiaine={oppiaine}
-                isMobile={isMobileAtom}
-                arvosanaFootnote={footnote}
-                showKeskiarvo={false}
-                notFoundText={null}
-                useOppiaineLaajuus={useOppiaineLaajuus}
-                customOsasuoritusTitle={customOsasuoritusTitle}
-                customKurssitSortFn={customKurssitSortFn}
-                arviointiField={arviointiField}
-              />
-            )
-          })}
+          aineet.map((oppiaine, oppiaineIndex) => (
+            <OmatTiedotLukionOppiaine
+              baret-lift
+              key={oppiaineIndex}
+              oppiaine={oppiaine}
+              isMobile={isMobileAtom}
+              showKeskiarvo={false}
+              notFoundText={null}
+              useOppiaineLaajuus={useOppiaineLaajuus}
+              customOsasuoritusTitle={customOsasuoritusTitle}
+              customKurssitSortFn={customKurssitSortFn}
+            />
+          ))}
       </tbody>
     </table>
   </React.Fragment>

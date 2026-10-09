@@ -13,7 +13,7 @@ export default [
     plugins: { 'react-hooks': reactHooksPlugin },
     rules: {
       'react-hooks/rules-of-hooks': 'error',
-      'react-hooks/exhaustive-deps': 'warn'
+      'react-hooks/exhaustive-deps': 'error'
     }
   },
   {
@@ -28,7 +28,7 @@ export default [
       '@eslint-react/dom-no-dangerously-set-innerhtml-with-children': 'error',
       '@eslint-react/dom-no-find-dom-node': 'error',
       '@eslint-react/dom-no-unsafe-target-blank': 'error',
-      '@eslint-react/dom-no-unknown-property': 'warn'
+      '@eslint-react/dom-no-unknown-property': 'error'
     }
   },
   eslint.configs.recommended,
@@ -57,14 +57,14 @@ export default [
     },
 
     rules: {
-      'no-undef': 'warn',
+      'no-undef': 'error',
       'no-var': 'off',
       'no-unreachable': 'error',
       'no-console': 'off',
       'no-warning-comments': 'off',
       'no-unused-vars': 'off',
       'no-restricted-syntax': [
-        'warn',
+        'error',
         {
           selector: 'JSXText[value=/[\\p{L}\\p{N}]/u]',
           message:
@@ -75,8 +75,8 @@ export default [
       'prefer-regex-literals': 'off',
       eqeqeq: 'error',
       'no-shadow': 'off',
-      'prefer-spread': 'warn',
-      '@typescript-eslint/no-shadow': 'warn',
+      'prefer-spread': 'error',
+      '@typescript-eslint/no-shadow': 'error',
       '@typescript-eslint/no-explicit-any': 'off',
       '@typescript-eslint/no-unused-vars': 'off',
       '@typescript-eslint/ban-ts-comment': [
@@ -84,7 +84,7 @@ export default [
         { 'ts-expect-error': false }
       ],
       '@typescript-eslint/no-empty-function': 'off',
-      '@typescript-eslint/no-unnecessary-type-constraint': 'warn',
+      '@typescript-eslint/no-unnecessary-type-constraint': 'error',
       '@typescript-eslint/ban-types': 'off',
       '@typescript-eslint/no-unused-expressions': 'off'
     }
@@ -103,7 +103,9 @@ export default [
       'no-undef': 'off', // Mochan takia
       'no-var': 'off', // Mochan takia
       camelcase: 'off',
-      'no-shadow': 'warn', // Mochan takia
+      'no-shadow': 'error', // Mochan takia
+      'mocha/no-exclusive-tests': 'error',
+      'mocha/no-pending-tests': 'error',
       'mocha/no-mocha-arrows': 'off',
       'mocha/max-top-level-suites': 'off',
       'mocha/consistent-spacing-between-blocks': 'off',

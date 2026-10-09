@@ -8,7 +8,7 @@
     "lint": "pnpm run typecheck && pnpm run eslint && pnpm run prettier",
     "lint:check": "concurrently --group \"pnpm:typecheck\" \"pnpm:eslint:check\" \"pnpm:prettier:check\"",
     "eslint": "pnpm run eslint:check --fix",
-    "eslint:check": "eslint index.js",
+    "eslint:check": "eslint --max-warnings 0 index.js",
     "typecheck": "tsc --noEmit",
     "prettier": "prettier --write --cache .",
     "prettier:check": "prettier --check --cache .",
