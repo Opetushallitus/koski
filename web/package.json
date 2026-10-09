@@ -35,7 +35,7 @@
   "devDependencies": {
     "@axe-core/playwright": "4.13.0",
     "@babel/helper-compilation-targets": "8.0.6",
-    "@eslint-react/eslint-plugin": "5.23.5",
+    "@eslint-react/eslint-plugin": "5.24.6",
     "@eslint/js": "10.0.1",
     "@playwright/test": "1.63.0",
     "@swc/core": "1.16.13",
