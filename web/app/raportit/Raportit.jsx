@@ -22,6 +22,7 @@ import { replaceLocation } from '../util/location'
 import { Paragraphs } from '../i18n/Paragraphs'
 import { lang } from '../i18n/i18n'
 import { hasFeatureFlag } from '../util/featureFlags'
+import { ammatillinenTutkintoSuoritustiedotKyselymalli } from '../components-v2/raportit/massaluovutusRaporttiKyselyt'
 
 const kaikkiRaportitKategorioittain = [
   {
@@ -635,7 +636,7 @@ function SuoritustietojenTarkistus({ stateP }) {
       title={titleText}
       shortDescription={shortDescriptionText}
       example={exampleText}
-      useMassaluovutus
+      massaluovutusKyselymalli={ammatillinenTutkintoSuoritustiedotKyselymalli}
       lang={lang}
     />
   )
