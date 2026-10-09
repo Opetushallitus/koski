@@ -6,17 +6,26 @@ import { LOCATION_CHANGE_EVENT } from './url'
 const locationBus = new Bacon.Bus()
 let previousLocation = currentLocation()
 
+// Uuden käyttöliittymän editorit säilyvät, kun osoite muuttuu saman
+// välilehden sisällä (OppijaEditor). Ne poistuvat vasta, kun navigointi vaihtaa
+// sivun, opiskeluoikeuden tyypin välilehden tai katseltavan version.
+const vaihtaaNäkymän = (from, to) =>
+  from.path !== to.path ||
+  ['opiskeluoikeudenTyyppi', 'opiskeluoikeus', 'versionumero'].some(
+    (key) => from.params[key] !== to.params[key]
+  )
+
 export const navigateTo = function (path, event) {
   if (
     event &&
     (event.altKey || event.shiftKey || event.metaKey || event.ctrlKey)
   )
     return
-  if (!checkV2ExitHooks()) {
+  const nextLoc = parsePath(path)
+  if (vaihtaaNäkymän(currentLocation(), nextLoc) && !checkV2ExitHooks()) {
     if (event) event.preventDefault()
     return
   }
-  const nextLoc = parsePath(path)
   previousLocation = nextLoc
   history.pushState(null, null, path)
   locationBus.push(nextLoc)

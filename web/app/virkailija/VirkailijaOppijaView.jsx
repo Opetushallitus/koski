@@ -485,10 +485,17 @@ export class Oppija extends React.Component {
             {`: ${modelData(henkilö, 'oid')}`}
           </div>
           {
-            // Set location as key to ensure full re-render when context changes
+            // Editor ohittaa renderöinnin, kun malli ei muutu, mutta vanhan
+            // käyttöliittymän komponentit lukevat osoitteen renderöidessään.
+            // Siksi juuri piirretään uudelleen osoitteen muuttuessa, ja vanhat
+            // opiskeluoikeudet kiinnitetään silloin uudelleen (OppijaEditor).
+            // Uuden käyttöliittymän editorit säilyvät.
             oppija ? (
               <VirkailijaUiAdapterProvider oppijaModel={oppija}>
-                <Editor key={document.location.toString()} model={oppija} />
+                <Editor
+                  model={oppija}
+                  updateKey={document.location.toString()}
+                />
               </VirkailijaUiAdapterProvider>
             ) : null
           }

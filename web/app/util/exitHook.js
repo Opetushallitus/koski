@@ -33,11 +33,10 @@ const confirmExit = (owners) => {
 
 export const checkExitHook = () => confirmExit(Array.from(hooks.keys()))
 
-// Vanhan käyttöliittymän jokainen osoitteen muutos kiinnittää näkymän
-// uudelleen (VirkailijaOppijaView: key={document.location}), jolloin uuden
-// käyttöliittymän editorien tallentamattomat muutokset katoavat. Vanhan
-// käyttöliittymän omat muutokset säilyvät sen tilassa, joten sen varoitus
-// tarkistetaan vain linkeissä, jotka eivät ohita sitä (withExitHook).
+// Tarkistetaan navigoinnissa, joka poistaa uuden käyttöliittymän editorit
+// (navigateTo). Vanhan käyttöliittymän omat muutokset säilyvät sen tilassa,
+// joten sen varoitus tarkistetaan vain linkeissä, jotka eivät ohita sitä
+// (withExitHook).
 export const checkV2ExitHooks = () => {
   const owners = Array.from(hooks.keys()).filter((owner) => owner !== OLD_UI)
   if (!confirmExit(owners)) return false
