@@ -12,8 +12,8 @@ trait BlankableLocalizedString {
    */
   def getOptional(lang: String) = values.get(lang)
   def concat(x: LocalizedString) = {
-    val (fi :: sv :: en :: Nil) = LocalizedString.languages.map { lang => get(lang) + x.get(lang) }
-    Finnish(fi, Some(sv), Some(en))
+    def yhdistetty(lang: String) = get(lang) + x.get(lang)
+    Finnish(yhdistetty("fi"), Some(yhdistetty("sv")), Some(yhdistetty("en")))
   }
   def hasLanguage(lang: String): Boolean = valueList.map(_._1).contains(lang)
   def toLocalizedString: Option[LocalizedString]

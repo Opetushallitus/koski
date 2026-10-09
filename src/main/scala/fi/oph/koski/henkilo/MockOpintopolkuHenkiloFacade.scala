@@ -82,7 +82,7 @@ class MockOpintopolkuHenkilöFacade(val hetu: Hetu, fixtures: => FixtureCreator)
           Left(KoskiErrorCategory.internalError())
       }
     }
-    val UusiOppijaHenkilö(Some(hetu), sukunimi, etunimet, kutsumanimi, _) = createUserInfo
+    val hetu = createUserInfo.hetu.getOrElse(throw new IllegalArgumentException("Mock-oppijan luonti vaatii hetun"))
     val oid = this.hetu.validate(hetu).flatMap { validHetu =>
       create(createUserInfo) match {
         case Left(HttpStatus(409, _)) => oidFrom(findOppijaByHetu(validHetu))

@@ -305,11 +305,9 @@ case class OoPtsMask(
 
 object OoPtsMask {
   def fromPalvelurooli(palvelurooli: Palvelurooli): Option[OoPtsMask] = {
-    val oo :: pts = palvelurooli.rooli.toLowerCase.split(Käyttöoikeus.opiskeluoikeusPäätasonSuoritusErotin).toList
-    if (isOpiskeluoikeusrooli(oo)) {
-      Some(OoPtsMask(oo, pts.headOption.map(p => List(p))))
-    } else {
-      None
+    palvelurooli.rooli.toLowerCase.split(Käyttöoikeus.opiskeluoikeusPäätasonSuoritusErotin).toList match {
+      case oo :: pts if isOpiskeluoikeusrooli(oo) => Some(OoPtsMask(oo, pts.headOption.map(p => List(p))))
+      case _ => None
     }
   }
 
