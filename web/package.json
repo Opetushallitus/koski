@@ -9,7 +9,7 @@
   },
   "engines": {
     "node": ">=24",
-    "pnpm": "12.9.1"
+    "pnpm": "12.10.0"
   },
   "dependencies": {
     "@skidding/react-codemirror": "1.0.2",
@@ -101,5 +101,5 @@
     "clean": "if playwright --version >/dev/null 2>&1; then playwright clear-cache; fi && if [ -d ../target/webapp/koski ]; then find ../target/webapp/koski -mindepth 1 -maxdepth 1 ! -name json-schema-viewer -exec rm -rf {} +; fi && rm -rf ../target/webapp/WEB-INF node_modules/.cache test/.pw-state",
     "wipe": "pnpm run clean && pnpm purge && rm -rf test-results playwright-report"
   },
-  "packageManager": "pnpm@12.9.1"
+  "packageManager": "pnpm@12.10.0"
 }
