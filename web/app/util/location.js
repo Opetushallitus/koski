@@ -1,6 +1,6 @@
 import Bacon from 'baconjs'
 import * as R from 'ramda'
-import { checkExitHook, removeExitHook } from './exitHook'
+import { checkExitHook, checkV2ExitHooks, removeExitHook } from './exitHook'
 import { LOCATION_CHANGE_EVENT } from './url'
 
 const locationBus = new Bacon.Bus()
@@ -12,6 +12,10 @@ export const navigateTo = function (path, event) {
     (event.altKey || event.shiftKey || event.metaKey || event.ctrlKey)
   )
     return
+  if (!checkV2ExitHooks()) {
+    if (event) event.preventDefault()
+    return
+  }
   const nextLoc = parsePath(path)
   previousLocation = nextLoc
   history.pushState(null, null, path)
@@ -55,7 +59,9 @@ window.onpopstate = function () {
   locationBus.push(nextLoc)
 }
 
-locationBus.mapError().onValue(removeExitHook)
+// Poistaa vain vanhan käyttöliittymän varoituksen; uuden käyttöliittymän
+// editori poistaa omansa itse.
+locationBus.mapError().onValue(() => removeExitHook())
 
 const filteredLocation = currentLocation().filterQueryParams(
   (k) => k !== 'ticket'

@@ -16,6 +16,7 @@ import { RaisedButton } from '../controls/RaisedButton'
 import { Trans } from '../texts/Trans'
 import { useVirkailijaUser } from '../../appstate/user'
 import { useVersionumero } from '../../appstate/useSearchParam'
+import { useMuokattavaOpiskeluoikeus } from '../../appstate/muokkaustila'
 import { PoistuVersiohistoriastaButton } from './VersiohistoriaButton'
 import { RequiresLahdejarjestelmakytkennanPurkaminenAccess } from '../access/RequiresLahdejarjestelmakytkennanPurkaminenAccess'
 import { setInvalidationNotification } from '../../components/InvalidationNotification'
@@ -34,6 +35,7 @@ export const OpiskeluoikeusEditToolbar = (
   const opiskeluoikeusOid = getOpiskeluoikeusOid(props.opiskeluoikeus)
   const hasAnyInvalidateAccess = useVirkailijaUser()?.hasAnyInvalidateAccess
   const inVersiohistoria = useVersionumero(opiskeluoikeusOid) !== null
+  const muokkausKäynnissä = useMuokattavaOpiskeluoikeus() !== undefined
 
   return (
     <ColumnRow>
@@ -75,16 +77,16 @@ export const OpiskeluoikeusEditToolbar = (
           />
         ) : (
           <RequiresWriteAccess opiskeluoikeus={props.opiskeluoikeus}>
-            {!props.editMode ? (
-              <RaisedButton onClick={props.onStartEdit} testId="edit">
-                {t('Muokkaa')}
-              </RaisedButton>
-            ) : (
-              !hasAnyInvalidateAccess &&
-              opiskeluoikeusOid && (
-                <MitätöintiButton opiskeluoikeusOid={opiskeluoikeusOid} />
-              )
-            )}
+            {!props.editMode
+              ? !muokkausKäynnissä && (
+                  <RaisedButton onClick={props.onStartEdit} testId="edit">
+                    {t('Muokkaa')}
+                  </RaisedButton>
+                )
+              : !hasAnyInvalidateAccess &&
+                opiskeluoikeusOid && (
+                  <MitätöintiButton opiskeluoikeusOid={opiskeluoikeusOid} />
+                )}
           </RequiresWriteAccess>
         )}
         <RequiresLahdejarjestelmakytkennanPurkaminenAccess

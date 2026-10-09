@@ -1,13 +1,14 @@
 import { useEffect } from 'react'
+import { t } from '../i18n/i18n'
+import { addExitHook, removeExitHook } from './exitHook'
 
-export const useConfirmUnload = (enabled: boolean) => {
+// Varoittaa tallentamattomista muutoksista sivulta poistuttaessa ja vanhan
+// käyttöliittymän navigoinnissa, joka kiinnittäisi editorin uudelleen.
+export const useConfirmUnload = (enabled: boolean, owner: string) => {
   useEffect(() => {
     if (enabled) {
-      const prevent = (event: BeforeUnloadEvent) => {
-        event.preventDefault()
-      }
-      window.addEventListener('beforeunload', prevent)
-      return () => window.removeEventListener('beforeunload', prevent)
+      addExitHook(t('Haluatko varmasti poistua sivulta?'), owner)
+      return () => removeExitHook(owner)
     }
-  }, [enabled])
+  }, [enabled, owner])
 }
