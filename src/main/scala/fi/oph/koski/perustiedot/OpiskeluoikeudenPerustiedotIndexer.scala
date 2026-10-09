@@ -174,7 +174,7 @@ class OpiskeluoikeudenPerustiedotIndexer(
           }
         val toSyncAgain = failedOpiskeluoikeusIds.flatMap { id =>
           items.find{ doc => docId(doc) == id}.orElse{
-            logger.warn(s"OpenSearch reported failed id $id that was not found in ${items.map(docId)}");
+            logger.warn(s"OpenSearch reported failed id $id that was not found in ${items.map(docId)}")
             None
           }
         }

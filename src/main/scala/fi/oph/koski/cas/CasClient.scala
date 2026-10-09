@@ -70,10 +70,10 @@ class CasClient(casBaseUrl: Uri, client: Client[IO], callerId: String) extends L
   def fetchCasSession(params: CasParams, sessionCookieName: String): IO[SessionCookie] = {
     val serviceUri = Uri.resolve(casBaseUrl, params.service.securityUri)
 
-    for (
-      st <- getServiceTicketWithRetryOnce(params, serviceUri);
+    for {
+      st <- getServiceTicketWithRetryOnce(params, serviceUri)
       session <- SessionCookieClient.getSessionCookieValue(client, serviceUri, sessionCookieName, callerId)(st)
-    ) yield {
+    } yield {
       session
     }
   }
