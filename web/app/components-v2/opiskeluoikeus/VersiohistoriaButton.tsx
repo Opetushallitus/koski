@@ -21,7 +21,7 @@ export const VersiohistoriaButton: React.FC<VersiohistoriaButtonProps> = (
   props
 ) => {
   const buttonRef = useRef(null)
-  const currentVersion = useVersionumero()
+  const currentVersion = useVersionumero(props.opiskeluoikeusOid)
   const [versiohistoriaVisible, setVersiohistoriaVisible] = useState(
     currentVersion !== null
   )
@@ -74,7 +74,7 @@ const VersiohistoriaList: React.FC<VersiohistoriaListProps> = (props) => {
     versiohistoriaCache
   )
 
-  const versioParam = useVersionumero()
+  const versioParam = useVersionumero(props.opiskeluoikeusOid)
 
   const currentVersion = useMemo(() => {
     return versioParam

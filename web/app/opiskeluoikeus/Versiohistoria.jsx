@@ -83,7 +83,12 @@ export default class Versiohistoria extends BaconComponent {
     return { showHistory: !!this.versionumero(), history: [] }
   }
 
+  // Versiotila koskee vain osoitteen opiskeluoikeutta, ei muita samalla
+  // sivulla näkyviä.
   versionumero() {
-    return currentLocation().params.versionumero
+    const { opiskeluoikeus, versionumero } = currentLocation().params
+    return opiskeluoikeus === this.props.opiskeluoikeusOid
+      ? versionumero
+      : undefined
   }
 }

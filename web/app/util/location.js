@@ -1,6 +1,7 @@
 import Bacon from 'baconjs'
 import * as R from 'ramda'
 import { checkExitHook, removeExitHook } from './exitHook'
+import { LOCATION_CHANGE_EVENT } from './url'
 
 const locationBus = new Bacon.Bus()
 let previousLocation = currentLocation()
@@ -15,6 +16,10 @@ export const navigateTo = function (path, event) {
   previousLocation = nextLoc
   history.pushState(null, null, path)
   locationBus.push(nextLoc)
+  // Uuden käyttöliittymän osoitetta lukevat hookit (useSearchParam) eivät
+  // kuuntele locationBusia. Ilman ilmoitusta esim. välilehden vaihto jättäisi
+  // v2-editorit selatun version tilaan.
+  window.dispatchEvent(new Event(LOCATION_CHANGE_EVENT))
   if (event) event.preventDefault()
 }
 
@@ -23,6 +28,12 @@ export const replaceLocation = (path) => {
   previousLocation = nextLoc
   history.replaceState(null, null, path)
   return nextLoc
+}
+
+// Ilmoittaa osoitteen muuttuneen ohi navigateTo:n (esim. history.pushState).
+export const refreshLocation = () => {
+  previousLocation = currentLocation()
+  locationBus.push(previousLocation)
 }
 
 export const redirectTo = (path) => {

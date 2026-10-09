@@ -10,7 +10,6 @@ import fi.oph.koski.preferences.PreferencesService
 import fi.oph.koski.schema.KoskiSchema.strictDeserialization
 import fi.oph.koski.schema.{PäätasonSuoritus, OppivelvollisuudenSuorittamiseenKelpaava}
 import fi.oph.koski.servlet.NoCache
-import fi.oph.koski.util.WithWarnings
 
 /**
   *  Endpoints for the Koski UI
@@ -105,7 +104,7 @@ class   EditorServlet(implicit val application: KoskiApplication)
       oid <- HenkilöOid.validateHenkilöOid(henkilöOid)
       oppija <- application.oppijaFacade.findVersion(oid, opiskeluoikeusOid, versionumero)
     } yield {
-      toEditorModel(WithWarnings(oppija, Nil), editable = false)
+      toEditorModel(oppija, editable = true, historiaversionOpiskeluoikeusOid = Some(opiskeluoikeusOid))
     }
   }
 }
