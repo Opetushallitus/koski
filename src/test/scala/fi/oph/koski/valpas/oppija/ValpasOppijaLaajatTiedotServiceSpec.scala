@@ -1,6 +1,7 @@
 package fi.oph.koski.valpas.oppija
 
 import fi.oph.koski.KoskiApplicationForTests
+import fi.oph.koski.localization.Locale
 import fi.oph.koski.valpas.opiskeluoikeusfixture.{ValpasMockOppijat, ValpasOpiskeluoikeusExampleData}
 import fi.oph.koski.valpas.opiskeluoikeusrepository.{ValpasOpiskeluoikeusDatabaseService, ValpasOppijaRow}
 import fi.oph.koski.valpas.oppija.ValpasOppijaTestData.hakeutumisvelvolliset
@@ -171,7 +172,18 @@ class ValpasOppijaLaajatTiedotServiceSpec extends ValpasOppijaTestBase {
       val erissä = haeOppijat(new ValpasOpiskeluoikeusDatabaseService(KoskiApplicationForTests, eräkoko), oppijaOids)
 
       yhdelläKyselyllä.size should be > eräkoko
-      erissä.sortBy(_.oppijaOid) should equal(yhdelläKyselyllä.sortBy(_.oppijaOid))
+      erissä should equal(yhdelläKyselyllä)
+    }
+
+    "palauttaa oppijat sukunimen ja etunimien mukaisessa aakkosjärjestyksessä erien yli" in {
+      val eräkoko = 25
+      val oppijaOids = ValpasMockOppijat.defaultOppijat.map(_.henkilö.oid)
+
+      val nimet = haeOppijat(new ValpasOpiskeluoikeusDatabaseService(KoskiApplicationForTests, eräkoko), oppijaOids)
+        .map(o => (o.sukunimi, o.etunimet))
+
+      nimet.size should be > eräkoko
+      nimet should equal(nimet.sorted(Ordering.Tuple2(Locale.finnishAlphabeticalOrdering, Locale.finnishAlphabeticalOrdering)))
     }
 
     "palauttaa oppijan vain kerran, vaikka oppijan oidit päätyvät eri eriin" in {
