@@ -20,9 +20,6 @@ case class Lukio2019RaportitRepository(db: DB) extends QueryMethods with Raporto
   private type OppijaOid = String
   private type PäätasonSuoritusId = Long
   private type AikajaksoId = Long
-  private type Koulutusmooduuli_koodiarvo = String
-  private type OppiaineenNimi = String
-  private type Koulutusmoduuli_Paikallinen = Boolean
 
   def isOppiaine(osasuoritus: ROsasuoritusRow) = {
     List(

@@ -79,10 +79,7 @@ object YleinenKielitutkintoTodistusGenerator extends App with EnvVariables with 
     val threads = (1 to threadCount).map { threadId =>
       new Thread(new Runnable {
         override def run(): Unit = {
-          while (true) {
-            val round = counter.getAndIncrement()
-            if (round >= rounds) return
-
+          Iterator.continually(counter.getAndIncrement()).takeWhile(_ < rounds).foreach { round =>
             try {
               val (success, duration, operation) = scenario.executeTodistusWorkflow()
               if (!isWarmup) {

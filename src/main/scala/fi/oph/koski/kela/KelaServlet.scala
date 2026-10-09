@@ -1,8 +1,7 @@
 package fi.oph.koski.kela
 
 import fi.oph.koski.config.KoskiApplication
-import fi.oph.koski.henkilo.{HenkilöOid, Hetu}
-import fi.oph.koski.history.OpiskeluoikeusHistoryPatch
+import fi.oph.koski.henkilo.Hetu
 import fi.oph.koski.http.{HttpStatus, JsonErrorMessage, KoskiErrorCategory}
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.koskiuser._

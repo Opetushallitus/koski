@@ -5,7 +5,6 @@ import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat._
 import fi.oph.koski.log.AuditLogTester
 import fi.oph.koski.{KoskiApplicationForTests, KoskiHttpSpec}
-import fi.oph.koski.xml.NodeSeqImplicits._
 import fi.oph.scalaschema.Serializer.format
 import org.json4s.jackson.JsonMethods
 import org.json4s.{JNothing, JNull, JObject, JValue}
@@ -420,28 +419,6 @@ class HslSpec extends AnyFreeSpec with KoskiHttpSpec with OpiskeluoikeusTestMeth
     json \ "henkilö" should not be JNothing
     json \ "opiskeluoikeudet" should not be JNothing
     json \ "suostumuksenPaattymispaiva" should not be JNothing
-  }
-
-  private def validateOpiskeluoikeudenKeys(opiskeluoikeus: JValue) = {
-    val expectedKeys = Set("tyyppi", "oid", "tila", "oppilaitos", "suoritukset", "lisätiedot")
-    val actualKeys = opiskeluoikeus.asInstanceOf[JObject].obj.map(_._1).toSet
-    actualKeys should contain allElementsOf expectedKeys
-  }
-
-  private def validateJärjestämismuodot(opiskeluoikeus: JValue) = {
-    val suoritukset = (opiskeluoikeus \ "suoritukset").children
-    suoritukset should not be empty
-
-    val järjestämismuodot = (suoritukset.head \ "järjestämismuodot").children
-    järjestämismuodot should not be empty
-  }
-
-  private def validateOsaamisenHankkimistavat(opiskeluoikeus: JValue) = {
-    val suoritukset = (opiskeluoikeus \ "suoritukset").children
-    suoritukset should not be empty
-
-    val osaamisenHankkimistavat = (suoritukset.head \ "osaamisenHankkimistavat").children
-    osaamisenHankkimistavat should not be empty
   }
 
   private def validateKoulutussopimukset(opiskeluoikeus: JValue) = {

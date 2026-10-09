@@ -2,7 +2,7 @@ package fi.oph.koski.aktiivisetjapaattyneetopinnot
 
 import fi.oph.koski.schema
 import fi.oph.koski.schema.annotation.KoodistoKoodiarvo
-import fi.oph.scalaschema.annotation.{OnlyWhen, Title}
+import fi.oph.scalaschema.annotation.Title
 
 @Title("Vapaan sivistystyön opiskeluoikeus")
 case class AktiivisetJaPäättyneetOpinnotVapaanSivistystyönOpiskeluoikeus(

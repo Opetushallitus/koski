@@ -3,7 +3,6 @@ package fi.oph.koski.schema
 import java.time.{LocalDate, LocalDateTime}
 import fi.oph.koski.koskiuser.Rooli
 import fi.oph.koski.schema.annotation.{Deprecated, Hidden, KoodistoKoodiarvo, KoodistoUri, OksaUri, RedundantData, SensitiveData, Tooltip}
-import fi.oph.koski.schema.TukimuodollisetLisätiedot.tukimuodoissaOsaAikainenErityisopetus
 import fi.oph.scalaschema.annotation._
 
 @Description("Perusopetuksen lisäopetuksen opiskeluoikeus")

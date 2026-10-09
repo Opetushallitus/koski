@@ -1,17 +1,14 @@
 package fi.oph.koski.ytr.download
 
-import fi.oph.koski.api.misc.OpiskeluoikeusTestMethods
 import fi.oph.koski.{KoskiApplicationForTests, KoskiHttpSpec}
-import fi.oph.koski.http.{ErrorDetail, HttpStatus, KoskiErrorCategory}
-import fi.oph.koski.koskiuser.{AccessType, KoskiSpecificSession, MockUsers, UserWithPassword}
-import fi.oph.koski.log.AuditLogTester
-import fi.oph.koski.schema.{Oppija, UusiHenkilö, YlioppilastutkinnonOpiskeluoikeus}
+import fi.oph.koski.http.KoskiErrorCategory
+import fi.oph.koski.koskiuser.{AccessType, KoskiSpecificSession, MockUsers}
+import fi.oph.koski.schema.UusiHenkilö
 import fi.oph.koski.ytr.{MockYtrClient, YtrSsnWithPreviousSsns}
 import org.scalatest.BeforeAndAfterEach
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.should.Matchers
 
-import java.time.LocalDate
 
 class YtrDownloadKäyttöoikeudetSpec
   extends AnyFreeSpec

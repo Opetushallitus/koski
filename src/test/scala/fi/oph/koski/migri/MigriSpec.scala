@@ -371,12 +371,6 @@ class MigriSpec extends AnyFreeSpec with KoskiHttpSpec with OpiskeluoikeusTestMe
     }
   }
 
-  private def tunnustettuRakenteet(opiskeluoikeus: MigriOpiskeluoikeus): Seq[MigriOsaamisenTunnustaminen] = {
-    val osasuoritukset = opiskeluoikeus.suoritukset.flatMap(_.osasuoritukset).flatten
-    val osasuoritustenOsasuoritukset = osasuoritukset.flatMap(_.osasuoritukset).flatten
-    osasuoritukset.flatMap(_.tunnustettu) ++ osasuoritustenOsasuoritukset.flatMap(_.tunnustettu)
-  }
-
   private def lisätiedotRakenteet(opiskeluoikeus: MigriOpiskeluoikeus): Seq[AmmatillisenTutkinnonOsanLisätieto] = {
     val osasuoritukset = opiskeluoikeus.suoritukset.flatMap(_.osasuoritukset).flatten
     val osasuoritustenOsasuoritukset = osasuoritukset.flatMap(_.osasuoritukset).flatten

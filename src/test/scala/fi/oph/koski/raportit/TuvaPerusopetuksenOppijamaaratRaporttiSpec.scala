@@ -136,7 +136,6 @@ class TuvaPerusopetuksenOppijamäärätRaporttiSpec extends AnyFreeSpec with Mat
   }
 
   private def raportointipäiväänOsuvaVammaisuustieto = Some(List(raportointipäiväänOsuvaAikajakso))
-  private def raportointipäiväänOsuvaPidennettyOppivelvollisuus = Some(raportointipäiväänOsuvaAikajakso)
   private def raportointipäiväänOsuvaErityisenTuenPäätös =  Some(List(
     TuvaErityisenTuenPäätös(
       alku = Some(raportointipäiväänOsuvaAikajakso.alku),

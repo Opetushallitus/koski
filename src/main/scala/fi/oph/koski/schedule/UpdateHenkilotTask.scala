@@ -11,7 +11,6 @@ import fi.oph.koski.schema.Henkilö.Oid
 import fi.oph.koski.util.Timing
 import org.json4s.JValue
 
-import java.time.Duration
 
 class UpdateHenkilotTask(application: KoskiApplication) extends Timing {
   // Start by scanning 10 minutes to the past to take possible CPU time difference into account.

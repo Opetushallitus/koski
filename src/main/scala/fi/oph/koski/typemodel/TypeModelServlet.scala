@@ -4,8 +4,8 @@ import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.editor.{EuropeanSchoolOfHelsinkiOppiaineet, KoodistoEnumModelBuilder, LocalizedHtml, NuortenPerusopetusPakollisetOppiaineet}
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.koodisto.KoodistoViite
-import fi.oph.koski.koskiuser.{HasKoskiSpecificSession, RequiresSession, RequiresVirkailijaOrPalvelukäyttäjä}
-import fi.oph.koski.schema.{Koodistokoodiviite, Suoritus}
+import fi.oph.koski.koskiuser.RequiresSession
+import fi.oph.koski.schema.Koodistokoodiviite
 import fi.oph.koski.servlet.{KoskiSpecificApiServlet, NoCache}
 import org.scalatra.ContentEncodingSupport
 

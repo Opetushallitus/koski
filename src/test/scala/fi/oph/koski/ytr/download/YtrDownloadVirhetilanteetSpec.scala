@@ -3,7 +3,7 @@ package fi.oph.koski.ytr.download
 import fi.oph.koski.api.misc.OpiskeluoikeusTestMethods
 import fi.oph.koski.{KoskiApplicationForTests, KoskiHttpSpec}
 import fi.oph.koski.henkilo.{KoskiSpecificMockOppijat, VerifiedHenkilöOid}
-import fi.oph.koski.koskiuser.{AccessType, KoskiSpecificSession}
+import fi.oph.koski.koskiuser.KoskiSpecificSession
 import fi.oph.koski.ytr.YtrSsnWithPreviousSsns
 import org.scalatest.BeforeAndAfterEach
 import org.scalatest.freespec.AnyFreeSpec
@@ -36,7 +36,6 @@ class YtrDownloadVirhetilanteetSpec
     val opiskeluoikeus = luoYtrTestiOpiskeluoikeus()
 
     implicit val session: KoskiSpecificSession = KoskiSpecificSession.systemUserTallennetutYlioppilastutkinnonOpiskeluoikeudet
-    implicit val accessType: AccessType.Value = AccessType.write
 
     // Lisää YTR-opiskeluoikeus kahdelle samaan master-oppijaan liitetylle oppijalle ohi normaalin prosessin
     KoskiApplicationForTests.ytrPossu
@@ -73,7 +72,6 @@ class YtrDownloadVirhetilanteetSpec
     val opiskeluoikeus = luoYtrTestiOpiskeluoikeus()
 
     implicit val session: KoskiSpecificSession = KoskiSpecificSession.systemUserTallennetutYlioppilastutkinnonOpiskeluoikeudet
-    implicit val accessType: AccessType.Value = AccessType.write
 
     KoskiApplicationForTests.ytrPossu
       .createOrUpdate(VerifiedHenkilöOid(KoskiSpecificMockOppijat.opiskeluoikeudenOidKonflikti), opiskeluoikeus)

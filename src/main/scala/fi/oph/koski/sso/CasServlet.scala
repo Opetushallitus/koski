@@ -5,14 +5,10 @@ import fi.oph.koski.cas.CasLogout
 import fi.oph.koski.config.{Environment, KoskiApplication}
 import fi.oph.koski.frontendvalvonta.FrontendValvontaMode
 import fi.oph.koski.http.KoskiErrorCategory
-import fi.oph.koski.json.JsonSerializer.writeWithRoot
 import fi.oph.koski.koskiuser.{AuthenticationUser, DirectoryClientLogin, KoskiCookieAndBasicAuthenticationSupport}
 import fi.oph.koski.log.LogUserContext
 import fi.oph.koski.servlet.{NoCache, VirkailijaHtmlServlet}
-import fi.oph.koski.huoltaja.HuollettavienHakuOnnistui
-import org.scalatra.{Cookie, CookieOptions}
 
-import java.net.URLEncoder.encode
 
 /**
   *  This is where the user lands after a CAS login / logout

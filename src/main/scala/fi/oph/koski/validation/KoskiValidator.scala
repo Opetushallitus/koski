@@ -30,6 +30,8 @@ import org.json4s.JValue
 import java.lang.Character.isDigit
 import java.time.LocalDate
 
+import scala.annotation.nowarn
+
 class KoskiValidator(
   organisaatioRepository: OrganisaatioRepository,
   koskiOpiskeluoikeudet: KoskiOpiskeluoikeusRepository,
@@ -563,6 +565,7 @@ class KoskiValidator(
     eriTutkinnonLinkityksenEstoKoskeeTätäOpiskeluoikeutta(sisältyvä) &&
     !sisältyvänSuorituksetSisältävänOsajoukko(sisältävä, sisältyvä)
 
+  @nowarn("cat=unused-privates")
   private def eriTutkinnonLinkitysEstetty(sisältävä: KoskiOpiskeluoikeusRow, sisältyvä: Opiskeluoikeus): Boolean =
     eriTutkinnonLinkityksenEstoVoimassa && eriTutkinnonLinkitysEstettäisiin(sisältävä, sisältyvä)
 
@@ -1396,13 +1399,12 @@ class KoskiValidator(
   private def perusopetuksenOppiaineessaEiSamojaLuokkaAsteita(osasuoritukset: Seq[Suoritus]): Boolean = {
     val perusopetusOppiaineet = osasuoritukset.collect { case s: NuortenPerusopetuksenOppiaineenSuoritus => s}
     val (withLuokkaAste, withoutLuokkaAste) = perusopetusOppiaineet.partition(_.luokkaAste.isDefined)
-    if (withoutLuokkaAste.size > 1) return false
-
-    if (!osasuoritukset.forall(_.isInstanceOf[NuortenPerusopetuksenOppiaineenSuoritus])) return false
-    if (!perusopetusOppiaineet.forall(_.koulutusmoduuli.pakollinen == true)) return false
-
     val luokkaAsteKoodit = withLuokkaAste.flatMap(_.luokkaAste.map(_.koodiarvo))
-    luokkaAsteKoodit.distinct.size == luokkaAsteKoodit.size
+
+    withoutLuokkaAste.size <= 1 &&
+      osasuoritukset.forall(_.isInstanceOf[NuortenPerusopetuksenOppiaineenSuoritus]) &&
+      perusopetusOppiaineet.forall(_.koulutusmoduuli.pakollinen == true) &&
+      luokkaAsteKoodit.distinct.size == luokkaAsteKoodit.size
   }
 
   private def validateAlkamispäivä(suoritus: Suoritus): HttpStatus = {
@@ -1660,10 +1662,6 @@ class KoskiValidator(
     case s =>
       KoskiErrorCategory.badRequest.validation.tila.valmiiksiMerkityltäPuuttuuOsasuorituksia(s"Suoritus ${suorituksenTunniste(s)} on merkitty valmiiksi, mutta sillä on tyhjä osasuorituslista tai opiskeluoikeudelta puuttuu linkitys")
   }
-
-  private def linkitysTehty(opiskeluoikeusOid: String, oppilaitosOid: Oid, oppijaOids: List[Oid]) =
-    koskiOpiskeluoikeudet.findByOppijaOids(oppijaOids)(KoskiSpecificSession.systemUser)
-      .exists(_.sisältyyOpiskeluoikeuteen.exists(_.oid == opiskeluoikeusOid))
 
   private def validateValmiinSuorituksenStatus(suoritus: Suoritus) = {
     suoritus.rekursiivisetOsasuoritukset.find(_.kesken).fold(HttpStatus.ok) { keskeneräinenOsasuoritus =>

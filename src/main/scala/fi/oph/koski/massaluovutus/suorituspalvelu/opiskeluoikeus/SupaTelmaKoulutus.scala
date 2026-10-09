@@ -1,7 +1,7 @@
 package fi.oph.koski.massaluovutus.suorituspalvelu.opiskeluoikeus
 
 import fi.oph.koski.schema._
-import fi.oph.koski.schema.annotation.{ComplexObject, KoodistoKoodiarvo, Tooltip}
+import fi.oph.koski.schema.annotation.KoodistoKoodiarvo
 import fi.oph.scalaschema.annotation.{Description, Title}
 
 import java.time.LocalDate

@@ -1,6 +1,5 @@
 package fi.oph.koski.util
 
-import fi.oph.koski.json.JsonSerializer
 import org.json4s.JsonAST.JValue
 import org.json4s.jackson.JsonMethods
 

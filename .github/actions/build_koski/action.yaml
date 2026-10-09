@@ -35,7 +35,7 @@ runs:
         version: ${{ inputs.commithash }}
       run: |
         mvn versions:set -DnewVersion="$version" --batch-mode
-        mvn test -DskipTests=true --batch-mode
+        mvn test -DskipTests=true -Dscalac.fixableWarnings=e --batch-mode
       shell: bash
     - name: Cache target dir
       if: steps.lookup.outputs.cache-hit != 'true'

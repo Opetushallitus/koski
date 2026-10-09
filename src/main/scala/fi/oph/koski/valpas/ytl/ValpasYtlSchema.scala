@@ -1,6 +1,5 @@
 package fi.oph.koski.valpas.ytl
 
-import fi.oph.koski.henkilo.LaajatOppijaHenkilöTiedot
 import fi.oph.koski.oppivelvollisuustieto.OptionalOppivelvollisuustieto
 import fi.oph.koski.schema
 import fi.oph.koski.util.ChainingSyntax._

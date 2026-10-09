@@ -1,6 +1,6 @@
 package fi.oph.koski.luovutuspalvelu.opiskeluoikeus
 
-import fi.oph.koski.schema.{EuropeanSchoolOfHelsinkiOpiskeluoikeus, InternationalSchoolOpiskeluoikeus, Koodistokoodiviite, Oppilaitos, SisältäväOpiskeluoikeus}
+import fi.oph.koski.schema.{EuropeanSchoolOfHelsinkiOpiskeluoikeus, Koodistokoodiviite, Oppilaitos, SisältäväOpiskeluoikeus}
 import fi.oph.scalaschema.annotation.Title
 
 import java.time.{LocalDate, LocalDateTime}

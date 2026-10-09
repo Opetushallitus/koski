@@ -1,7 +1,7 @@
 package fi.oph.koski.schema
 
 import fi.oph.koski.schema.Opiskeluoikeus.OpiskeluoikeudenPäättymistila
-import fi.oph.scalaschema.annotation.{Description, MaxItems, MinItems, NotWhen, OnlyWhen, Title}
+import fi.oph.scalaschema.annotation.{Description, MaxItems, MinItems, OnlyWhen, Title}
 
 import java.time.{LocalDate, LocalDateTime}
 import fi.oph.koski.schema.annotation.{KoodistoKoodiarvo, KoodistoUri, MultiLineString, OksaUri, Representative, Tooltip}

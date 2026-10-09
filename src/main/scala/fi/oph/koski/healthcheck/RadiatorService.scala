@@ -4,7 +4,6 @@ import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.healthcheck.Subsystem.Subsystem
 import fi.oph.koski.log.Logging
 
-import java.net.InetAddress
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 

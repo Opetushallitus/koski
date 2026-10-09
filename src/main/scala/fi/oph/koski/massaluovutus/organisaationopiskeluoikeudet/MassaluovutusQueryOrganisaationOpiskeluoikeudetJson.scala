@@ -1,7 +1,7 @@
 package fi.oph.koski.massaluovutus.organisaationopiskeluoikeudet
 
 import fi.oph.koski.config.KoskiApplication
-import fi.oph.koski.db.{KoskiOpiskeluoikeusRow, KoskiTables, QueryMethods}
+import fi.oph.koski.db.{KoskiOpiskeluoikeusRow, KoskiTables}
 import fi.oph.koski.koskiuser.KoskiSpecificSession
 import fi.oph.koski.organisaatio.{MockOrganisaatiot, OrganisaationAlaisetOrganisaatiot}
 import fi.oph.koski.massaluovutus.MassaluovutusUtils.QueryResourceManager

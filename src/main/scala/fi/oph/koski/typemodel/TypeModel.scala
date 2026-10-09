@@ -2,9 +2,9 @@ package fi.oph.koski.typemodel
 
 import fi.oph.koski.schema.annotation.{InfoDescription, InfoLinkTitle, InfoLinkUrl}
 import fi.oph.koski.typemodel.DataTypes.DataType
-import fi.oph.koski.typemodel.ObjectType.{ObjectDefaultNode, ObjectDefaultsMap, ObjectDefaultsProperty}
+import fi.oph.koski.typemodel.ObjectType.{ObjectDefaultsMap, ObjectDefaultsProperty}
 import fi.oph.scalaschema.Metadata
-import fi.oph.scalaschema.annotation.{DefaultValue, Description, MaxValue, MaxValueExclusive, MinValue, MinValueExclusive, Title}
+import fi.oph.scalaschema.annotation.{DefaultValue, Description, MaxValue, MaxValueExclusive, MinValue, MinValueExclusive}
 
 object DataTypes extends Enumeration {
   type DataType = Value

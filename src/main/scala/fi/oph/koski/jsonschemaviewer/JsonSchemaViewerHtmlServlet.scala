@@ -3,7 +3,6 @@ package fi.oph.koski.jsonschemaviewer
 import fi.oph.koski.config.{Environment, KoskiApplication}
 import fi.oph.koski.frontendvalvonta.FrontendValvontaMode
 import fi.oph.koski.servlet.VirkailijaHtmlServlet
-import fi.oph.koski.xml.NodeSeqImplicits._
 
 class JsonSchemaViewerHtmlServlet(implicit val application: KoskiApplication) extends VirkailijaHtmlServlet {
 

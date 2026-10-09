@@ -7,7 +7,7 @@ import fi.oph.koski.documentation.EuropeanSchoolOfHelsinkiExampleData.suoritusVa
 
 import java.time.LocalDate
 import fi.oph.koski.documentation.ExampleData._
-import fi.oph.koski.documentation.ExamplesEuropeanSchoolOfHelsinki.{n1, n2, p1, p2, p2JääLuokalle, p3, p4, p5, s1, s2, s3, s4, s5, s6}
+import fi.oph.koski.documentation.ExamplesEuropeanSchoolOfHelsinki.{n1, n2, p1, p2, p2JääLuokalle, p3, p4, p5, s1, s2, s3, s4, s5}
 import fi.oph.koski.documentation.ExamplesIB._
 import fi.oph.koski.documentation.LukioExampleData.{opiskeluoikeusAktiivinen, opiskeluoikeusPäättynyt}
 import fi.oph.koski.documentation.PerusopetusExampleData.{kahdeksannenLuokanSuoritus, perusopetuksenOppimääränSuoritus, perusopetuksenOppimääränSuoritusKesken, seitsemännenLuokanSuoritus, suoritustapaErityinenTutkinto, yhdeksännenLuokanSuoritus}
@@ -18,7 +18,7 @@ import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.schema._
 
 import java.time.LocalDate.{of => date}
-import fi.oph.koski.documentation.ExamplesInternationalSchool.{grade1, grade10, grade11, grade12, grade2, grade3, grade4, grade5, grade6, grade7, grade8, grade9, gradeExplorer}
+import fi.oph.koski.documentation.ExamplesInternationalSchool.{grade1, grade10, grade11, grade2, grade3, grade4, grade5, grade6, grade7, grade8, grade9, gradeExplorer}
 import fi.oph.koski.documentation.ExamplesPerusopetuksenLisaopetus.lisäopetuksenSuoritus
 import fi.oph.koski.localization.LocalizedStringImplicits._
 

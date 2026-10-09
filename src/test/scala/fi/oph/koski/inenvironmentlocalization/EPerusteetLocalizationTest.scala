@@ -5,7 +5,6 @@ import fi.oph.koski.eperusteet.ETutkinnonOsa
 import fi.oph.koski.http.Http
 import fi.oph.koski.http.Http._
 import fi.oph.koski.koodisto.RemoteKoodistoPalvelu
-import org.json4s.DefaultFormats
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.should.Matchers
 
@@ -15,7 +14,6 @@ private case class EPerusteRakenneLocalization(tutkinnonOsat: Option[List[ETutki
 
 class EPerusteetLocalizationTest extends AnyFreeSpec with TestEnvironment with Matchers {
 
-  private implicit val formats: DefaultFormats = DefaultFormats
   private lazy val root = sys.env.getOrElse("VIRKAILIJA_ROOT", throw new RuntimeException("Environment variable VIRKAILIJA_ROOT missing"))
   private lazy val koodistoPalvelu = new RemoteKoodistoPalvelu(root)
 

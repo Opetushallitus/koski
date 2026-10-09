@@ -1667,13 +1667,6 @@ class OppijaValidationAmmatillisenTutkinnonOsittainenSuoritusSpec extends Tutkin
     tutkinnonOsanRyhmä = ammatillisetTutkinnonOsat
   )
 
-  private lazy val tutkinnonOsanSuoritus = MuunAmmatillisenTutkinnonOsanSuoritus(
-    koulutusmoduuli = tutkinnonOsa,
-    toimipiste = Some(OidOrganisaatio("1.2.246.562.10.42456023292", Some("Stadin ammatti- ja aikuisopisto, Lehtikuusentien toimipaikka"))),
-    arviointi = arviointiHyvä(),
-    tutkinnonOsanRyhmä = ammatillisetTutkinnonOsat
-  )
-
   private lazy val paikallinenTutkinnonOsa = PaikallinenTutkinnonOsa(
     PaikallinenKoodi("1", "paikallinen osa"), "Paikallinen tutkinnon osa", false, Some(laajuus)
   )

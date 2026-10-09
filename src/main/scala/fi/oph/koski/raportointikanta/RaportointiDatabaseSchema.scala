@@ -10,7 +10,6 @@ import fi.oph.koski.raportit.{YleissivistäväRaporttiKurssi, YleissivistäväRa
 import fi.oph.koski.schema.{Koodistokoodiviite, LocalizedString}
 import org.json4s.JValue
 import slick.collection.heterogeneous.HNil
-import slick.collection.heterogeneous.syntax._
 import slick.dbio.DBIO
 import slick.sql.SqlProfile.ColumnOption.SqlType
 

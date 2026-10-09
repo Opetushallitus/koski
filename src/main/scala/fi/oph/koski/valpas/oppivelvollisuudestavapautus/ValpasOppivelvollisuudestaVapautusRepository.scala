@@ -1,6 +1,5 @@
 package fi.oph.koski.valpas.oppivelvollisuudestavapautus
 
-import fi.oph.koski.db.PostgresDriverWithJsonSupport.api.actionBasedSQLInterpolation
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.plainAPI._
 import fi.oph.koski.db.{DB, QueryMethods}
 import fi.oph.koski.log.Logging

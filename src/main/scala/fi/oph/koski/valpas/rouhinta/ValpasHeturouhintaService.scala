@@ -2,7 +2,7 @@ package fi.oph.koski.valpas.rouhinta
 
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.db.DatabaseConverters
-import fi.oph.koski.henkilo.{Hetu, OppijaHenkilö}
+import fi.oph.koski.henkilo.OppijaHenkilö
 import fi.oph.koski.http.HttpStatus
 import fi.oph.koski.log.Logging
 import fi.oph.koski.schema.Henkilö

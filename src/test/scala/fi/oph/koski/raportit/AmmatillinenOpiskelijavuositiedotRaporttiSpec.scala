@@ -10,7 +10,7 @@ import fi.oph.koski.koskiuser.MockUsers._
 import fi.oph.koski.localization.LocalizationReader
 import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.raportointikanta.{ROpiskeluoikeusAikajaksoRow, RaportointikantaTestMethods}
-import fi.oph.koski.schema.{AmmatillinenOpiskeluoikeudenTila, AmmatillinenOpiskeluoikeusjakso, AmmatillisenOpiskeluoikeudenLisätiedot, Maksuttomuus, OikeuttaMaksuttomuuteenPidennetty, Oppija}
+import fi.oph.koski.schema.{AmmatillisenOpiskeluoikeudenLisätiedot, Maksuttomuus, OikeuttaMaksuttomuuteenPidennetty, Oppija}
 import org.scalatest.BeforeAndAfterAll
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.should.Matchers

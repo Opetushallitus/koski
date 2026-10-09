@@ -1,7 +1,7 @@
 package fi.oph.koski.schema
 
 import fi.oph.koski.schema.annotation.{KoodistoKoodiarvo, KoodistoUri, ReadOnly}
-import fi.oph.scalaschema.annotation.{DefaultValue, Description, OnlyWhen, Title}
+import fi.oph.scalaschema.annotation.{Description, OnlyWhen, Title}
 
 import java.time.LocalDate
 

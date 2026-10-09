@@ -4,7 +4,6 @@ import fi.oph.koski.cloudwatch.CloudWatchMetricsService
 import fi.oph.koski.config.{Environment, KoskiApplication}
 import fi.oph.koski.db.{OpiskeluoikeusRow, RaportointiGenerointiDatabaseConfig}
 import fi.oph.koski.henkilo.OppijanumeroRekisteriClientRetryStrategy
-import fi.oph.koski.koskiuser.KoskiSpecificSession
 import fi.oph.koski.log.Logging
 import fi.oph.koski.schedule.WorkerLeaseElector
 import rx.lang.scala.schedulers.NewThreadScheduler
@@ -12,7 +11,6 @@ import rx.lang.scala.{Observable, Scheduler}
 
 import java.time.{Duration, ZonedDateTime}
 import scala.concurrent.duration.{DurationInt, FiniteDuration}
-import scala.language.postfixOps
 
 class RaportointikantaService(application: KoskiApplication) extends Logging {
 
@@ -101,9 +99,6 @@ class RaportointikantaService(application: KoskiApplication) extends Logging {
     pageSize: Int,
     onAfterPage: (Int, Seq[OpiskeluoikeusRow]) => Unit
   ): Observable[LoadResult] = {
-    // Ensure that nobody uses koskiSession implicitely
-    implicit val systemUser = KoskiSpecificSession.systemUser
-
     val loader = update match {
       case Some(update) => new IncrementalUpdateOpiskeluoikeusLoader(
         application.suostumuksenPeruutusService,

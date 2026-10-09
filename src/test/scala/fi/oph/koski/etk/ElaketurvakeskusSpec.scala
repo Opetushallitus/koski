@@ -107,8 +107,6 @@ class ElaketurvakeskusSpec
         ))
       }
       "Hakee raportointkannasta datat jättäen alle 18 vuotiaana valmistuneet pois" in {
-        val opiskeluoikeudenOid = lastOpiskeluoikeus(etk18vSyntynytKesäkuunEnsimmäisenäPäivänä.oid).oid
-
         aineisto.tutkinnot.filter(_.henkilö.hetu.contains(etk18vSyntynytKesäkuunEnsimmäisenäPäivänä.hetu.get)).toSet should equal(Set())
       }
       "Hakee raportointkannasta datat ottaen 18 vuotissyntymäpäivänä valmistuneen mukaan" in {

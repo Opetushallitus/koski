@@ -6,9 +6,8 @@ import fi.oph.koski.documentation.ExampleData.opiskeluoikeusLäsnä
 import fi.oph.koski.documentation.VapaaSivistystyöExample._
 import fi.oph.koski.documentation.VapaaSivistystyöExampleData._
 import fi.oph.koski.documentation.{ExamplesVapaaSivistystyöKotoutuskoulutus2022 => Koto2022}
-import fi.oph.koski.http.{ErrorMatcher, HttpStatus, KoskiErrorCategory}
+import fi.oph.koski.http.{ErrorMatcher, KoskiErrorCategory}
 import fi.oph.koski.schema._
-import fi.oph.koski.validation.VSTKotoutumiskoulutus2022Validation
 import org.scalatest.freespec.AnyFreeSpec
 
 import java.time.LocalDate

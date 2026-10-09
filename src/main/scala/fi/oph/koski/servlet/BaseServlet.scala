@@ -93,7 +93,7 @@ trait BaseServlet extends ScalatraServlet with Logging {
     try {
       logger.error(e)("Error while processing request " + logSafeDescription(request))
     } catch {
-      case e: Throwable => println(s"Logging failed: $e")
+      case e: Throwable => println(s"Logging failed: $e") // scalafix:ok DisableSyntax.println
     }
     haltWithStatus(KoskiErrorCategory.internalError())
   }

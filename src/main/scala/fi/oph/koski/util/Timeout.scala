@@ -3,7 +3,6 @@ package fi.oph.koski.util
 import java.util.concurrent.atomic.AtomicReference
 import scala.concurrent.duration.Duration
 import scala.concurrent.{Await, CancellationException, ExecutionContext, Future, Promise}
-import scala.util.{Failure, Success, Try}
 
 object CancellableFuture {
   type CancelFn = () => Boolean

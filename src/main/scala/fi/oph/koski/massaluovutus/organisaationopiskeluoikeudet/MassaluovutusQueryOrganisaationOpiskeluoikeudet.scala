@@ -1,7 +1,6 @@
 package fi.oph.koski.massaluovutus.organisaationopiskeluoikeudet
 
 import fi.oph.koski.config.KoskiApplication
-import fi.oph.koski.db.PostgresDriverWithJsonSupport.api.actionBasedSQLInterpolation
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.plainAPI._
 import fi.oph.koski.db.KoskiOpiskeluoikeusRowImplicits._
 import fi.oph.koski.db._
@@ -18,15 +17,12 @@ import fi.oph.koski.massaluovutus.MassaluovutusUtils.defaultOrganisaatio
 import fi.oph.koski.massaluovutus.{KoulutuksenjärjestäjienMassaluovutusQueryParameters, QueryResultWriter}
 import fi.oph.koski.schema.Organisaatio
 import fi.oph.koski.schema.annotation.EnumValues
-import fi.oph.koski.util.ChainingSyntax.chainingOps
-import fi.oph.koski.util.Retry.retryWithInterval
 import fi.oph.scalaschema.annotation.{Description, Title}
 import slick.jdbc.SQLActionBuilder
 
 import java.sql.Timestamp
 import java.time.{LocalDate, LocalDateTime}
 import java.time.format.DateTimeFormatter
-import scala.concurrent.duration.DurationInt
 
 @Title("Organisaation opiskeluoikeudet")
 @Description("Palauttaa hakuehtojen mukaiset organisaation ja sen alaorganisaatioiden opiskeluoikeudet.")

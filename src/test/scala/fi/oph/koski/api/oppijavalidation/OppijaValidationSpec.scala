@@ -304,8 +304,8 @@ class OppijaValidationSpec extends AnyFreeSpec with KoskiHttpSpec with Opiskeluo
 
         "Päivämääräformaatti virheellinen -> palautetaan HTTP 400" in {
           def withAp(alkamispäivä: String) = {
-            val apMap: JObject = JsonMethods.render(Map("alkamispäivä" -> alkamispäivä)).asInstanceOf[JObject];
-            val suoritus = createOpiskeluoikeusWithMergedSuoritusJson(apMap).asInstanceOf[JObject];
+            val apMap: JObject = JsonMethods.render(Map("alkamispäivä" -> alkamispäivä)).asInstanceOf[JObject]
+            val suoritus = createOpiskeluoikeusWithMergedSuoritusJson(apMap).asInstanceOf[JObject]
             suoritus.merge(apMap)
           }
 
@@ -493,8 +493,8 @@ class OppijaValidationSpec extends AnyFreeSpec with KoskiHttpSpec with Opiskeluo
   }
 
   def createOpiskeluoikeusWithMergedSuoritusJson(suoritus: JValue): JValue = {
-    val opiskeluoikeus: JObject = JsonSerializer.serializeWithRoot(defaultOpiskeluoikeus).asInstanceOf[JObject];
-    val firstSuoritus: JObject = (opiskeluoikeus \ "suoritukset")(0).asInstanceOf[JObject];
+    val opiskeluoikeus: JObject = JsonSerializer.serializeWithRoot(defaultOpiskeluoikeus).asInstanceOf[JObject]
+    val firstSuoritus: JObject = (opiskeluoikeus \ "suoritukset")(0).asInstanceOf[JObject]
     opiskeluoikeus transformField {
       case JField("suoritukset", _) => ("suoritukset", List(firstSuoritus.merge(suoritus)))
     }

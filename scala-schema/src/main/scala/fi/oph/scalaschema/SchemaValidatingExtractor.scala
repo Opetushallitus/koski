@@ -1,13 +1,11 @@
 package fi.oph.scalaschema
 import fi.oph.scalaschema.extraction._
-import org.json4s.{JString, _}
+import org.json4s._
 import org.json4s.jackson.JsonMethods
 
 import scala.reflect.runtime.{universe => ru}
 
 object SchemaValidatingExtractor {
-  private val noErrors = Nil : List[ValidationError]
-
   def extract[T](json: JValue)(implicit context: ExtractionContext, tag: ru.TypeTag[T]): Either[List[ValidationError], T] = {
     val rootSchema = context.schemaFactory.createSchema[T]
     val dta = {

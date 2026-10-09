@@ -2,7 +2,6 @@ package fi.oph.koski.raportointikanta
 
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.db.{DB, DatabaseUtilQueries, QueryMethods, RaportointiDatabaseConfigBase}
-import fi.oph.koski.henkilo.Kotikuntahistoria
 import fi.oph.koski.db.DatabaseExecutionContext
 import fi.oph.koski.log.Logging
 import fi.oph.koski.oppivelvollisuustieto.Oppivelvollisuustiedot
@@ -223,7 +222,7 @@ class RaportointiDatabase(config: RaportointiDatabaseConfigBase) extends Logging
       taulu: String,
       primaryKeys: List[String] = List.empty,
       timeout: FiniteDuration = 120.minutes,
-    );
+    )
 
     val kloonattavatTaulut = List(
       Kloonaus("r_opiskeluoikeus", List("opiskeluoikeus_oid")),
@@ -772,7 +771,6 @@ case class RaportointikantaStatusResponse(schema: String, statuses: Seq[Raportoi
 }
 
 class ConfidentialRaportointiDatabase(config: RaportointiDatabaseConfigBase) extends RaportointiDatabase(config) {
-  import scala.language.existentials
   override val tables = List(
     RaportointikantaStatus,
     RKotikuntahistoria,

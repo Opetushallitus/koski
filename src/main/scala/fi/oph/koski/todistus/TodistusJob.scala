@@ -7,7 +7,6 @@ import fi.oph.koski.todistus.TodistusTemplateVariant.TodistusTemplateVariant
 import fi.oph.koski.todistus.TodistusState.TodistusState
 
 import java.time.LocalDateTime
-import java.util.UUID
 
 case class TodistusJob(
   id: String,

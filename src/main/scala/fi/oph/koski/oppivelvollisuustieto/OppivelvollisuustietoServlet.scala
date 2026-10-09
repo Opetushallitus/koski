@@ -1,6 +1,5 @@
 package fi.oph.koski.oppivelvollisuustieto
 
-import java.time.LocalDate
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.http.{HttpStatus, JsonErrorMessage, KoskiErrorCategory}
 import fi.oph.koski.json.JsonSerializer

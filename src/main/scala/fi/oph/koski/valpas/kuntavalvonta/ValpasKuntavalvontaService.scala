@@ -8,7 +8,6 @@ import fi.oph.koski.valpas.oppija.{OppijaHakutilanteillaLaajatTiedot, OppijaKunt
 import fi.oph.koski.valpas.rouhinta.ValpasRouhintaTiming
 import fi.oph.koski.valpas.valpasuser.{ValpasRooli, ValpasSession}
 import fi.oph.koski.util.Monoids._
-import fi.oph.koski.valpas.valpasrepository.ValpasKuntailmoitusLaajatTiedot
 
 class ValpasKuntavalvontaService(
   application: KoskiApplication

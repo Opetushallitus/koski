@@ -1,7 +1,6 @@
 package fi.oph.koski.todistus.pdfgenerator
 
 import com.openhtmltopdf.outputdevice.helper.BaseRendererBuilder
-import com.openhtmltopdf.outputdevice.helper.BaseRendererBuilder.FontStyle
 import com.openhtmltopdf.pdfboxout.{PDFCreationListener, PdfBoxRenderer, PdfRendererBuilder}
 import com.openhtmltopdf.svgsupport.BatikSVGDrawer
 import fi.oph.koski.log.Logging
@@ -118,18 +117,5 @@ class TodistusPdfGenerator extends Logging {
       renderer.close()
     }
     logger.info("END builder")
-  }
-
-  private def registerFont(builder: PdfRendererBuilder, fontUrl: String, weight: Int) = {
-    builder.useFont(() => {
-      val fontResourceName = "/todistus-templates/" + fontUrl
-      logger.info("Getting font " + fontResourceName)
-      getClass.getResourceAsStream(fontResourceName)
-    },
-      "Open Sans",
-      Integer.valueOf(weight),
-      FontStyle.NORMAL,
-      true
-    )
   }
 }

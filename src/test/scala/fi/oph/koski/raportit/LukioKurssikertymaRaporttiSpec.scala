@@ -5,7 +5,7 @@ import fi.oph.koski.api.misc.{PutOpiskeluoikeusTestMethods, TestMethodsLukio}
 import fi.oph.koski.documentation.ExamplesLukio.{aikuistenOpsinPerusteet2015, aineopiskelija}
 import fi.oph.koski.documentation.{AmmatillinenExampleData, ExampleData, YleissivistavakoulutusExampleData}
 import fi.oph.koski.documentation.ExampleData.suomenKieli
-import fi.oph.koski.documentation.LukioExampleData.{kurssisuoritus, lukionOppiaine, numeerinenArviointi, opiskeluoikeusAktiivinen, opiskeluoikeusPäättynyt, valtakunnallinenKurssi, valtakunnallinenVanhanOpsinKurssi}
+import fi.oph.koski.documentation.LukioExampleData.{kurssisuoritus, lukionOppiaine, numeerinenArviointi, opiskeluoikeusAktiivinen, valtakunnallinenVanhanOpsinKurssi}
 import fi.oph.koski.fixture.LukioKurssikertymaRaporttiFixtures
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
 import fi.oph.koski.koskiuser.MockUsers
@@ -14,7 +14,7 @@ import fi.oph.koski.log.AuditLogTester
 import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.raportit.lukio.{LukioKurssikertymaAineopiskelijaRow, LukioKurssikertymaOppimaaraRow, LukioKurssinRahoitusmuotoRow, LukioOppiaineEriVuonnaKorotetutKurssitRow, LukioOppiaineOpiskeluoikeudenUlkopuolisetRow}
 import fi.oph.koski.raportointikanta.RaportointikantaTestMethods
-import fi.oph.koski.schema.{LukionOpiskeluoikeudenTila, LukionOpiskeluoikeus, LukionOpiskeluoikeusjakso, LukionOppiaineenOppimääränSuoritus2015, LukionPäätasonSuoritus, Oppija}
+import fi.oph.koski.schema.{LukionOpiskeluoikeudenTila, LukionOpiskeluoikeus, LukionOpiskeluoikeusjakso, LukionOppiaineenOppimääränSuoritus2015, Oppija}
 import org.scalatest.BeforeAndAfterAll
 import org.scalatest.freespec.AnyFreeSpec
 

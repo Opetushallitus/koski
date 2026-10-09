@@ -43,17 +43,14 @@ object KoskiTiedonSiirtoHtml {
 
   def jsonTableHtmlContents(categoryName: String, exampleName: String): Option[String] = {
     val key = (categoryName, exampleName)
-    if (!jsonTableHtmlContentsCache.contains(key)) {
-      categoryExamples.get(categoryName).flatMap(_.find(_.name == exampleName)) match {
-        case Some(v) => {
-          val rows = SchemaToJsonHtml.buildHtml(KoskiSchema.schema.asInstanceOf[ClassSchema], v.data)
-          val result = rows.map(_.toString()).mkString("")
-          jsonTableHtmlContentsCache.update(key, result)
-        }
-        case None => return None
+    jsonTableHtmlContentsCache.get(key).orElse {
+      categoryExamples.get(categoryName).flatMap(_.find(_.name == exampleName)).map { v =>
+        val rows = SchemaToJsonHtml.buildHtml(KoskiSchema.schema.asInstanceOf[ClassSchema], v.data)
+        val result = rows.map(_.toString()).mkString("")
+        jsonTableHtmlContentsCache.update(key, result)
+        result
       }
     }
-    jsonTableHtmlContentsCache.get(key)
   }
 
   private def markdownResource(name: String): String = {

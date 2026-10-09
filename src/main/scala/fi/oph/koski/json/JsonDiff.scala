@@ -17,8 +17,8 @@ object JsonDiff {
 }
 
 object JsonManipulation {
-  def removeFields(o: JValue, fieldsToRemove: Set[String]) = {
-    val JObject(foundFields) = o
-    JObject(foundFields.filter(f => !fieldsToRemove.contains(f._1)))
+  def removeFields(o: JValue, fieldsToRemove: Set[String]) = o match {
+    case JObject(foundFields) => JObject(foundFields.filter(f => !fieldsToRemove.contains(f._1)))
+    case _ => throw new IllegalArgumentException(s"Kenttiä voi poistaa vain JSON-objektista, saatiin ${o.getClass.getSimpleName}")
   }
 }

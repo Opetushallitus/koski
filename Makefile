@@ -191,6 +191,14 @@ lint: install-lint-tools
 lint-check: install-lint-tools
 	@pnpm exec concurrently --group --max-processes 4 $(foreach dir,$(LINT_DIRS),"pnpm --dir $(dir) run lint:check") "pnpm run prettier:check"
 
+.PHONY: scalafix
+scalafix:
+	mvn --batch-mode --activate-profiles scalafix exec:java@scalafix-main exec:java@scalafix-test
+
+.PHONY: scalafix-check
+scalafix-check:
+	mvn --batch-mode --activate-profiles scalafix exec:java@scalafix-main-check exec:java@scalafix-test-check
+
 .PHONY: owasp
 owasp:
 	mvn dependency-check:check -P owasp --batch-mode

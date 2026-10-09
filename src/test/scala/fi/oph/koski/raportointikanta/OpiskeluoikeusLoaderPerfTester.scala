@@ -1,14 +1,12 @@
 package fi.oph.koski.raportointikanta
 
 import fi.oph.koski.config.KoskiApplication
-import fi.oph.koski.koskiuser.KoskiSpecificSession
 
 object OpiskeluoikeusLoaderPerfTester extends App {
 
   lazy val application = KoskiApplication.apply
 
   def doIt: Unit = {
-    implicit val systemUser = KoskiSpecificSession.systemUser
     val loader = new FullReloadOpiskeluoikeusLoader(
       application.opiskeluoikeusQueryRepository,
       application.suostumuksenPeruutusService,

@@ -14,7 +14,6 @@ import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.{BeforeAndAfterAll, BeforeAndAfterEach}
 
-import scala.language.reflectiveCalls
 
 class KehaSdgSpec
   extends AnyFreeSpec

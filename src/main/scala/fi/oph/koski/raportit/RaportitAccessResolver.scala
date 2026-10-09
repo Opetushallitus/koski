@@ -5,7 +5,6 @@ import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.plainAPI._
 import fi.oph.koski.koskiuser.{KoskiSpecificSession, OoPtsMask}
 import fi.oph.koski.organisaatio.{OrganisaatioHierarkia, OrganisaatioRepository}
-import fi.oph.koski.raportit.tuva.TuvaPerusopetuksenOppijamäärätRaportti
 import fi.oph.koski.raportointikanta.RaportointiDatabase
 import fi.oph.koski.schema.Organisaatio.Oid
 import fi.oph.koski.schema._

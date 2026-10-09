@@ -3,7 +3,6 @@ package fi.oph.koski.turvakielto
 import fi.oph.koski.organisaatio.Opetushallitus
 import fi.oph.koski.schema._
 import mojave._
-import scala.util.chaining._
 
 object TurvakieltoService {
   def poistaOpiskeluoikeudenTurvakiellonAlaisetTiedot(opiskeluoikeus: Opiskeluoikeus): Opiskeluoikeus =

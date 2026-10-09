@@ -164,11 +164,16 @@ class HealthChecker(val application: KoskiApplication) extends Logging with Timi
   }
 
   def casCheck: HttpStatus = {
-    val VirkailijaCredentials(username, password) = try {
-      VirkailijaCredentials(application.config, true)
+    val credentials = try {
+      Some(VirkailijaCredentials(application.config, true))
     } catch {
-      case _: Throwable => return KoskiErrorCategory.internalError("No CAS configuration")
+      case _: Throwable => None
     }
+    credentials.fold(KoskiErrorCategory.internalError("No CAS configuration"))(casLoginCheck)
+  }
+
+  private def casLoginCheck(credentials: VirkailijaCredentials): HttpStatus = {
+    val VirkailijaCredentials(username, password) = credentials
 
     def authenticate = try {
       Some(application.casService.authenticateVirkailija(username, Password(password)))

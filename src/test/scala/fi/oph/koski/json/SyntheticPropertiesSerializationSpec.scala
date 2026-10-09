@@ -40,7 +40,7 @@ class SyntheticPropertiesSerializationSpec extends AnyFreeSpec with TestEnvironm
         KoskiOpiskeluOikeudet.filter(_.oppijaOid === oppija.oid).result
       ).head
 
-      koskiRow.data.asInstanceOf[JObject].values should contain ("alkamispäivä", "2019-05-30")
+      koskiRow.data.asInstanceOf[JObject].values should contain (("alkamispäivä", "2019-05-30"))
     }
 
     "Synteettisen kentän arvo evaluoidaan deserialisoitaessa kohdeluokan mukaisesti ja edelleen serialisoituna kirjoittaa uuden arvon" in {
@@ -50,11 +50,11 @@ class SyntheticPropertiesSerializationSpec extends AnyFreeSpec with TestEnvironm
       val koskiRow = runDbSync(
         KoskiOpiskeluOikeudet.filter(_.oppijaOid === oppija.oid).result
       ).head
-      koskiRow.data.asInstanceOf[JObject].values should contain("alkamispäivä", "2019-05-30")
+      koskiRow.data.asInstanceOf[JObject].values should contain(("alkamispäivä", "2019-05-30"))
 
       val res = SchemaValidatingExtractor.extract[AlkamispäiväMuuttunut](koskiRow.data).toOption.get
       res.alkamispäivä shouldBe Some(LocalDate.of(2019, 5, 31))
-      Serializer.serialize(res, serializationContext).asInstanceOf[JObject].values should contain ("alkamispäivä", "2019-05-31")
+      Serializer.serialize(res, serializationContext).asInstanceOf[JObject].values should contain (("alkamispäivä", "2019-05-31"))
     }
   }
 
@@ -116,7 +116,7 @@ class SyntheticPropertiesSerializationSpec extends AnyFreeSpec with TestEnvironm
       val koskiRowUpdated = runDbSync(
         KoskiOpiskeluOikeudet.filter(_.oppijaOid === oppija.oid).result
       ).head
-      koskiRowUpdated.data.asInstanceOf[JObject].values should contain("alkamispäivä", "2019-05-30")
+      koskiRowUpdated.data.asInstanceOf[JObject].values should contain(("alkamispäivä", "2019-05-30"))
     }
 
     "Synteettisen kentän arvo evaluoidaan deserialisoitaessa kohdeluokan mukaisesti ja edelleen serialisoituna kirjoittaa uuden arvon" in {
@@ -138,11 +138,11 @@ class SyntheticPropertiesSerializationSpec extends AnyFreeSpec with TestEnvironm
         KoskiApplicationForTests.historyRepository.findByOpiskeluoikeusOidAction(oo.oid.get, 2)(KoskiSpecificSession.systemUser)
       ).get
       history.version shouldBe 2
-      history.asOpiskeluoikeusJson.asInstanceOf[JObject].values should contain("alkamispäivä", "2019-06-01")
+      history.asOpiskeluoikeusJson.asInstanceOf[JObject].values should contain(("alkamispäivä", "2019-06-01"))
 
       val res = SchemaValidatingExtractor.extract[AlkamispäiväMuuttunut](history.asOpiskeluoikeusJson).toOption.get
       res.alkamispäivä shouldBe Some(LocalDate.of(2019, 6, 2))
-      Serializer.serialize(res, serializationContext).asInstanceOf[JObject].values should contain("alkamispäivä", "2019-06-02")
+      Serializer.serialize(res, serializationContext).asInstanceOf[JObject].values should contain(("alkamispäivä", "2019-06-02"))
     }
   }
 

@@ -1,6 +1,5 @@
 package fi.oph.koski.log
 
-import org.apache.logging.log4j.core.LogEvent
 import org.scalatest.matchers.should.Matchers
 
 object AccessLogTester extends Matchers with LogTester {

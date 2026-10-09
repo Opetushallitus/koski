@@ -1,6 +1,5 @@
 package fi.oph.koski.schema
 
-import fi.oph.koski.documentation.ExampleData.laajuusOpintopisteissä
 
 import java.time.{LocalDate, LocalDateTime}
 import fi.oph.koski.koskiuser.Rooli

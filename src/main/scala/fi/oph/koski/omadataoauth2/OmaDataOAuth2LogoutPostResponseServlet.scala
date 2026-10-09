@@ -8,7 +8,6 @@ import fi.oph.koski.util.JsStringInterpolation._
 import org.http4s.Uri
 
 import scala.xml.NodeSeq
-import fi.oph.koski.xml.NodeSeqImplicits._
 
 class OmaDataOAuth2LogoutPostResponseServlet(implicit val application: KoskiApplication) extends ScalatraServlet with OppijaHtmlServlet with NoCache with OmaDataOAuth2ServletSupport {
 

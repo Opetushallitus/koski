@@ -9,7 +9,6 @@ import fi.oph.koski.valpas.db.ValpasSchema.{OppivelvollisuudenKeskeytysRow, Oppi
 import fi.oph.koski.valpas.valpasuser.ValpasSession
 import fi.oph.koski.util.ChainingSyntax._
 import fi.oph.koski.util.FinnishDateFormat.finnishDateFormat
-import fi.oph.koski.valpas.opiskeluoikeusrepository.ValpasRajapäivätService
 import fi.oph.koski.valpas.oppija.ValpasErrorCategory
 
 import java.time.{LocalDate, LocalDateTime}
@@ -75,10 +74,6 @@ class OppivelvollisuudenKeskeytysRepositoryService(application: KoskiApplication
 
   def toValpasOppivelvollisuudenKeskeytys(row: OppivelvollisuudenKeskeytysRow): ValpasOppivelvollisuudenKeskeytys =
     ValpasOppivelvollisuudenKeskeytys.apply(rajapäivät.tarkastelupäivä)(row)
-
-  private def isBetween(date: LocalDate)(start: LocalDate, end: Option[LocalDate]): Boolean = {
-    date.compareTo(start) >= 0 && end.forall(date.compareTo(_) <= 0)
-  }
 
   private def validateRow
     (row: OppivelvollisuudenKeskeytysRow)

@@ -5,7 +5,6 @@ import fi.oph.koski.api.misc.OpiskeluoikeusTestMethodsAikuistenPerusopetus
 import fi.oph.koski.documentation.ExampleData._
 import fi.oph.koski.documentation.{ExamplesAikuistenPerusopetus, PerusopetusExampleData}
 import fi.oph.koski.documentation.YleissivistavakoulutusExampleData.jyväskylänNormaalikoulu
-import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
 import fi.oph.koski.http.{ErrorMatcher, KoskiErrorCategory}
 import fi.oph.koski.koskiuser.MockUsers.paakayttaja
 import fi.oph.koski.schema.LocalizedString.finnish

@@ -7,7 +7,6 @@ import fi.oph.koski.documentation.{ExamplesAikuistenPerusopetus, PerusopetusExam
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat.tyhjä
 import fi.oph.koski.koskiuser.KoskiMockUser
 import fi.oph.koski.localization.LocalizationReader
-import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.organisaatio.MockOrganisaatiot.jyväskylänNormaalikoulu
 import fi.oph.koski.raportit.aikuistenperusopetus.{AikuistenPerusopetuksenOppimääräArvioinnit, AikuistenPerusopetuksenOppimääränArvioinnitRow}
 import fi.oph.koski.raportointikanta.RaportointikantaTestMethods

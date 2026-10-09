@@ -6,7 +6,7 @@ import fi.oph.koski.koskiuser.{KoskiCookieAndBasicAuthenticationSupport, KoskiSp
 import fi.oph.koski.log.KoskiAuditLogMessageField.{apply => _}
 import fi.oph.koski.log.Logging
 import fi.oph.koski.servlet.{KoskiSpecificApiServlet, NoCache}
-import org.json4s.JsonAST.{JBool, JNothing, JObject, JString}
+import org.json4s.JsonAST.{JBool, JObject, JString}
 import org.json4s.JField
 
 class SuostumuksenPeruutusServlet(implicit val application: KoskiApplication)

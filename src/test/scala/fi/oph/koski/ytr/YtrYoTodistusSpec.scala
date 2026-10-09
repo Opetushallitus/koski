@@ -11,7 +11,7 @@ import fi.oph.scalaschema.{ExtractionContext, SchemaValidatingExtractor}
 import org.json4s.{JNull, JObject, JString}
 import org.scalatest.freespec.AnyFreeSpec
 
-import java.time.{ZoneId, ZoneOffset, ZonedDateTime}
+import java.time.{ZoneOffset, ZonedDateTime}
 import scala.collection.Iterator.continually
 
 class YtrYoTodistusSpec extends AnyFreeSpec with KoskiHttpSpec with OpiskeluoikeusTestMethods {

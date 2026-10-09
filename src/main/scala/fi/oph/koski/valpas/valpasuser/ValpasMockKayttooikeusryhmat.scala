@@ -1,6 +1,5 @@
 package fi.oph.koski.valpas.valpasuser
 
-import fi.oph.koski.koskiuser.Rooli
 import fi.oph.koski.organisaatio.{MockOrganisaatiot, Opetushallitus}
 import fi.oph.koski.userdirectory.{OrganisaatioJaKäyttöoikeudet, PalveluJaOikeus}
 

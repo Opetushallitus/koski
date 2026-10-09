@@ -39,10 +39,10 @@ class CasAuthenticatingClientIntegrationTest extends AnyFreeSpec with Matchers {
       "JSESSIONID"
     )
     val request = Request[IO](uri = uriFromString(virkailijaUrl + "/kayttooikeus-service/henkilo/current/omattiedot"))
-    val result = casAuthenticatingClient.run(request).use {
+    casAuthenticatingClient.run(request).use {
       case Ok(response) => response.as[String]
       case other => throw new RuntimeException("Response code " + other)
-    }
+    }.unsafeRunSync()
   }
 }
 

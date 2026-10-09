@@ -47,6 +47,8 @@ make lint                # Typecheck, lint and format; fix what can be fixed
 make lint-check          # Same checks without writing
 make format              # Fix formatting only (all packages and mock data)
 make format-check        # Check formatting only
+make scalafix            # Lint Scala with Scalafix (.scalafix.conf); fix what can be fixed
+make scalafix-check      # Same checks without writing (run in CI)
 
 # Other useful commands
 make ts-types            # Regenerate TypeScript types from Scala schema
@@ -88,6 +90,8 @@ valpas-web/src/                # Valpas frontend (separate React app)
 - **Final newline**: Required
 
 ### Scala
+- Scalafix enforces the rules in `.scalafix.conf`; run `make scalafix` after changes. Silence a justified hit with `// scalafix:ok <Rule>` on that line
+- Compiling rewrites source files to fix some compiler warnings (`-quickfix` in `pom.xml`); CI fails on them instead
 - No `println` statements
 - No `return` statements (including mid-function early returns — use idiomatic control flow instead)
 - Class names: PascalCase

@@ -1,8 +1,8 @@
 package fi.oph.koski.massaluovutus.suorituspalvelu.opiskeluoikeus
 
 import fi.oph.koski.schema._
-import fi.oph.koski.schema.annotation.{KoodistoKoodiarvo, KoodistoUri, Scale, Tooltip}
-import fi.oph.scalaschema.annotation.{Description, MaxValue, MinValue, OnlyWhen, Title}
+import fi.oph.koski.schema.annotation.{KoodistoKoodiarvo, Scale}
+import fi.oph.scalaschema.annotation.{Description, MaxValue, MinValue, Title}
 
 import java.time.LocalDate
 

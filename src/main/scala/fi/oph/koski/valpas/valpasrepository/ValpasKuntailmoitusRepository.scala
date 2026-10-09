@@ -6,7 +6,7 @@ import fi.oph.koski.db.PostgresDriverWithJsonSupport.plainAPI._
 import fi.oph.koski.db.{DB, QueryMethods}
 import fi.oph.koski.http.HttpStatus
 import fi.oph.koski.log.Logging
-import fi.oph.koski.schema.KoskiSchema.{skipSyntheticProperties, strictDeserialization}
+import fi.oph.koski.schema.KoskiSchema.strictDeserialization
 import fi.oph.koski.schema.{Koodistokoodiviite, KoskiSchema, OidOrganisaatio, Organisaatio}
 import fi.oph.koski.validation.ValidatingAndResolvingExtractor
 import fi.oph.koski.valpas.db.ValpasSchema._

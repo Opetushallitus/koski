@@ -1,6 +1,6 @@
 package fi.oph.koski.api.oppijavalidation
 
-import fi.oph.koski.{DirtiesFixtures, KoskiHttpSpec}
+import fi.oph.koski.KoskiHttpSpec
 import fi.oph.koski.api.misc.PutOpiskeluoikeusTestMethods
 import fi.oph.koski.documentation.ExampleData._
 import fi.oph.koski.documentation.ExamplesIB._
@@ -8,7 +8,7 @@ import fi.oph.koski.documentation.YleissivistavakoulutusExampleData.ressunLukio
 import fi.oph.koski.documentation.{ExampleData, LukioExampleData}
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat.vuonna2004SyntynytPeruskouluValmis2021
 import fi.oph.koski.http.{ErrorMatcher, KoskiErrorCategory}
-import fi.oph.koski.schema.{IBDPCoreOppiaine, _}
+import fi.oph.koski.schema._
 import org.scalatest.freespec.AnyFreeSpec
 
 import java.time.LocalDate
@@ -78,8 +78,6 @@ class OppijaValidationIBSpec extends AnyFreeSpec with KoskiHttpSpec with PutOpis
       }
 
       "CAS-aine, arvosanan antaminen" - {
-        def historiaOppiaine(level: String, arvosana: String) = ibAineSuoritus(ibOppiaine("HIS", level, 3), ibArviointi(arvosana), ibPredictedArviointi(arvosana))
-
         "Arvosana S" - {
           "Palautetaan HTTP/200" in {
             val opiskeluoikeus = opiskeluoikeusIBTutkinnollaWithCASArvosana("S")

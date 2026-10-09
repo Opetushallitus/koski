@@ -42,7 +42,6 @@ class OppijanumeroRekisteriClientSpec
   private val oid = "1.2.246.562.24.99999999123"
   private val slaveOid = "1.2.246.562.24.99999999124"
   private val deserializationTestOid = "1.2.246.562.24.76912370865"
-  private val organisaatioOid = "1.2.246.562.10.85149969462"
 
   private val wireMockServer = new WireMockServer(wireMockConfig().port(9876))
 

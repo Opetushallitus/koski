@@ -2,13 +2,12 @@ package fi.oph.koski.raportit.aikuistenperusopetus
 
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.plainAPI._
 import fi.oph.koski.db.{DB, QueryMethods}
-import fi.oph.koski.koodisto.{KoodistoPalvelu, KoodistoViite, KoodistoViitePalvelu}
+import fi.oph.koski.koodisto.KoodistoViitePalvelu
 import fi.oph.koski.koskiuser.KoskiSpecificSession
 import fi.oph.koski.localization.LocalizationReader
 import fi.oph.koski.raportit.{Column, DataSheet}
 import slick.jdbc.GetResult
 
-import java.sql.Date
 import java.time.LocalDate
 import scala.concurrent.duration.DurationInt
 

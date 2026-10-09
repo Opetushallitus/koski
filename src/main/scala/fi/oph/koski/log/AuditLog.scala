@@ -1,6 +1,6 @@
 package fi.oph.koski.log
 
-import fi.oph.koski.koskiuser.{AuthenticationUser, KoskiSpecificSession, Session}
+import fi.oph.koski.koskiuser.{AuthenticationUser, Session}
 import fi.oph.koski.log.KoskiOperation.KoskiOperation
 import fi.vm.sade.auditlog._
 import io.prometheus.client.Counter

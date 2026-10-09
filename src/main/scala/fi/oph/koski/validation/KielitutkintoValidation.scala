@@ -1,7 +1,7 @@
 package fi.oph.koski.validation
 
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
-import fi.oph.koski.organisaatio.{MockOrganisaatiot, Opetushallitus}
+import fi.oph.koski.organisaatio.Opetushallitus
 import fi.oph.koski.schema._
 import fi.oph.koski.util.ChainingSyntax.symmetricalEitherChainingOps
 

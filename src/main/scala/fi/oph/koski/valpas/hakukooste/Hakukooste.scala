@@ -1,9 +1,8 @@
 package fi.oph.koski.valpas.hakukooste
 
-import fi.oph.koski.schema.annotation.{EnumValues, KoodistoKoodiarvo, KoodistoUri}
+import fi.oph.koski.schema.annotation.{EnumValues, KoodistoUri}
 import fi.oph.koski.schema.{BlankableLocalizedString, Koodistokoodiviite}
 import fi.oph.koski.valpas.opiskeluoikeusrepository.{ValpasHakutilanneLaajatTiedot, ValpasHakutoive, ValpasHenkilö}
-import fi.oph.scalaschema.annotation.SyntheticProperty
 
 import java.time.LocalDateTime
 
