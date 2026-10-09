@@ -7,8 +7,11 @@ import reactHooksPlugin from 'eslint-plugin-react-hooks'
 import globals from 'globals'
 import eslint from '@eslint/js'
 import tseslint from 'typescript-eslint'
+import { includeIgnoreFile } from 'eslint/config'
+import path from 'node:path'
 
 export default [
+  includeIgnoreFile(path.resolve(import.meta.dirname, '.gitignore')),
   {
     plugins: { 'react-hooks': reactHooksPlugin },
     rules: {

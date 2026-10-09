@@ -5,11 +5,11 @@ import compat from "eslint-plugin-compat"
 import importX from "eslint-plugin-import-x"
 import reactHooks from "eslint-plugin-react-hooks"
 import globals from "globals"
+import { includeIgnoreFile } from "eslint/config"
+import path from "node:path"
 
 export default [
-  {
-    ignores: ["**/node_modules", "**/dist", "**/.cache"],
-  },
+  includeIgnoreFile(path.resolve(import.meta.dirname, ".gitignore")),
   js.configs.recommended,
   {
     files: ["**/*.js"],

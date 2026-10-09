@@ -1,12 +1,13 @@
 import js from "@eslint/js";
-import { defineConfig } from "eslint/config";
+import { defineConfig, includeIgnoreFile } from "eslint/config";
+import path from "node:path";
 import eslintConfigPrettier from "eslint-config-prettier";
 import importX from "eslint-plugin-import-x";
 import globals from "globals";
 import tseslint from "typescript-eslint";
 
 export default defineConfig([
-  { ignores: ["**/node_modules"] },
+  includeIgnoreFile(path.resolve(import.meta.dirname, ".gitignore")),
   js.configs.recommended,
   {
     files: ["index.js"],
@@ -24,6 +25,10 @@ export default defineConfig([
   { rules: { eqeqeq: "error" } },
   {
     plugins: { "import-x": importX },
+    rules: { "import-x/no-extraneous-dependencies": "error" },
+  },
+  {
+    files: ["index.js"],
     rules: {
       "import-x/no-extraneous-dependencies": [
         "error",
