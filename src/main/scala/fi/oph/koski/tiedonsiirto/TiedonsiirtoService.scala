@@ -176,41 +176,39 @@ class TiedonsiirtoService(
   }
 
   def storeTiedonsiirtoResult(implicit koskiSession: KoskiSpecificSession, oppijaOid: Option[OidHenkilö], validatedOppija: Option[Oppija], data: Option[JValue], error: Option[TiedonsiirtoError]): Unit = {
-    if (!koskiSession.isPalvelukäyttäjä && !koskiSession.isRoot) {
-      return
-    }
+    if (koskiSession.isPalvelukäyttäjä || koskiSession.isRoot) {
+      val henkilö = data.flatMap(extractHenkilö(_, oppijaOid))
+      val lahdejarjestelma: Option[String] = data.flatMap(extractLahdejarjestelma)
 
-    val henkilö = data.flatMap(extractHenkilö(_, oppijaOid))
-    val lahdejarjestelma: Option[String] = data.flatMap(extractLahdejarjestelma)
+      val oppilaitokset = validatedOppija
+        .map(_.opiskeluoikeudet.toList.filter(_.oppilaitos.isDefined).map(_.oppilaitos.get.toOidOrganisaatio))
+        .filter(_.nonEmpty)
+        .orElse(data.flatMap(extractOppilaitos))
+        .orElse(data.flatMap(extractOppilaitosFromToimipiste))
+        .map(_.distinct)
 
-    val oppilaitokset = validatedOppija
-      .map(_.opiskeluoikeudet.toList.filter(_.oppilaitos.isDefined).map(_.oppilaitos.get.toOidOrganisaatio))
-      .filter(_.nonEmpty)
-      .orElse(data.flatMap(extractOppilaitos))
-      .orElse(data.flatMap(extractOppilaitosFromToimipiste))
-      .map(_.distinct)
-
-    val koulutustoimija: List[OidOrganisaatio] = validatedOppija.flatMap(_.opiskeluoikeudet.headOption.flatMap(_.koulutustoimija.map(_.toOidOrganisaatio))).toList match {
-      case Nil => oppilaitokset.toList.flatten.flatMap(organisaatioRepository.findKoulutustoimijaForOppilaitos).map(_.toOidOrganisaatio)
-      case kt => kt
-    }
-
-    val suoritustiedot: Option[List[TiedonsiirtoSuoritusTiedot]] = validatedOppija.map(toSuoritustiedot)
-    val koulutusmuoto = validatedOppija
-      .flatMap(_.opiskeluoikeudet.headOption.map(_.tyyppi.koodiarvo))
-      .orElse(data.flatMap(extractKoulutusmuoto))
-
-    val juuriOrganisaatiot = if (koskiSession.isRoot) koulutustoimija else koskiSession.juuriOrganisaatiot
-
-    juuriOrganisaatiot.foreach((org: OrganisaatioWithOid) => {
-      val (data: Option[JValue], virheet: Option[List[ErrorDetail]]) = error.map(e => (Some(e.data), Some(e.virheet))).getOrElse((None, None))
-
-      storeToOpenSearch(henkilö, org, oppilaitokset, koulutusmuoto, suoritustiedot, data, virheet, lahdejarjestelma, koskiSession.oid, Some(koskiSession.username), new Timestamp(System.currentTimeMillis))
-
-      if (error.isDefined) {
-        tiedonSiirtoVirheet.inc
+      val koulutustoimija: List[OidOrganisaatio] = validatedOppija.flatMap(_.opiskeluoikeudet.headOption.flatMap(_.koulutustoimija.map(_.toOidOrganisaatio))).toList match {
+        case Nil => oppilaitokset.toList.flatten.flatMap(organisaatioRepository.findKoulutustoimijaForOppilaitos).map(_.toOidOrganisaatio)
+        case kt => kt
       }
-    })
+
+      val suoritustiedot: Option[List[TiedonsiirtoSuoritusTiedot]] = validatedOppija.map(toSuoritustiedot)
+      val koulutusmuoto = validatedOppija
+        .flatMap(_.opiskeluoikeudet.headOption.map(_.tyyppi.koodiarvo))
+        .orElse(data.flatMap(extractKoulutusmuoto))
+
+      val juuriOrganisaatiot = if (koskiSession.isRoot) koulutustoimija else koskiSession.juuriOrganisaatiot
+
+      juuriOrganisaatiot.foreach((org: OrganisaatioWithOid) => {
+        val (data: Option[JValue], virheet: Option[List[ErrorDetail]]) = error.map(e => (Some(e.data), Some(e.virheet))).getOrElse((None, None))
+
+        storeToOpenSearch(henkilö, org, oppilaitokset, koulutusmuoto, suoritustiedot, data, virheet, lahdejarjestelma, koskiSession.oid, Some(koskiSession.username), new Timestamp(System.currentTimeMillis))
+
+        if (error.isDefined) {
+          tiedonSiirtoVirheet.inc
+        }
+      })
+    }
   }
 
   def storeToOpenSearch(

@@ -163,54 +163,55 @@ class OpiskeluoikeudenPerustiedotIndexer(
 
   private def updatePerustiedotRaw(items: Seq[JValue], upsert: Boolean, refresh: Boolean): Either[HttpStatus, Int] = {
     if (items.isEmpty) {
-      return Right(0)
-    }
-    val docsAndIds = items.flatMap(generateUpdate)
-    val (errors, response) = index.updateBulk(docsAndIds, upsert, refresh)
-    if (errors) {
-      val failedOpiskeluoikeusIds: List[Int] = extract[List[JValue]](response \ "items" \ "update")
-        .flatMap { item =>
-          if (item \ "error" != JNothing) List(extract[Int](item \ "_id")) else Nil
+      Right(0)
+    } else {
+      val docsAndIds = items.flatMap(generateUpdate)
+      val (errors, response) = index.updateBulk(docsAndIds, upsert, refresh)
+      if (errors) {
+        val failedOpiskeluoikeusIds: List[Int] = extract[List[JValue]](response \ "items" \ "update")
+          .flatMap { item =>
+            if (item \ "error" != JNothing) List(extract[Int](item \ "_id")) else Nil
+          }
+        val toSyncAgain = failedOpiskeluoikeusIds.flatMap { id =>
+          items.find{ doc => docId(doc) == id}.orElse{
+            logger.warn(s"OpenSearch reported failed id $id that was not found in ${items.map(docId)}");
+            None
+          }
         }
-      val toSyncAgain = failedOpiskeluoikeusIds.flatMap { id =>
-        items.find{ doc => docId(doc) == id}.orElse{
-          logger.warn(s"OpenSearch reported failed id $id that was not found in ${items.map(docId)}");
-          None
-        }
-      }
 
-      perustiedotSyncRepository.addToSyncQueueRaw(toSyncAgain, upsert) // FIXME: Sivuvaikutuksena timestamppi päivittyy, kun rivi lisätään uudestaan jonoon. Oikea korjaus olisi käyttää opiskeluoikeuden versionumeroa.
+        perustiedotSyncRepository.addToSyncQueueRaw(toSyncAgain, upsert) // FIXME: Sivuvaikutuksena timestamppi päivittyy, kun rivi lisätään uudestaan jonoon. Oikea korjaus olisi käyttää opiskeluoikeuden versionumeroa.
 
-      val msg = s"""OpenSearch indexing failed for ids ${failedOpiskeluoikeusIds.mkString(", ")}.
+        val msg = s"""OpenSearch indexing failed for ids ${failedOpiskeluoikeusIds.mkString(", ")}.
 Response from ES: ${JsonMethods.pretty(response)}.
 Will retry soon."""
-      logger.error(msg)
-      Left(KoskiErrorCategory.internalError(msg))
-    } else {
-      val itemResults = extract[List[JValue]](response \ "items")
-        .map(_ \ "update" \ "_shards" \ "successful")
-        .map(extract[Int](_))
-      Right(itemResults.sum)
+        logger.error(msg)
+        Left(KoskiErrorCategory.internalError(msg))
+      } else {
+        val itemResults = extract[List[JValue]](response \ "items")
+          .map(_ \ "update" \ "_shards" \ "successful")
+          .map(extract[Int](_))
+        Right(itemResults.sum)
+      }
     }
   }
 
   private def deletePerustiedot(itemIds: List[Int]): Either[HttpStatus, Int] = {
     if (itemIds.isEmpty) {
-      return Right(0)
-    }
-
-    Try(deleteByIds(itemIds, true)) match {
-      case Success(i) => Right(i)
-      case Failure(err) =>
-        perustiedotSyncRepository.addDeletesToSyncQueue(itemIds)
-        val msg =
-          s"""
+      Right(0)
+    } else {
+      Try(deleteByIds(itemIds, true)) match {
+        case Success(i) => Right(i)
+        case Failure(err) =>
+          perustiedotSyncRepository.addDeletesToSyncQueue(itemIds)
+          val msg =
+            s"""
               OpenSearch indexing failed for ids ${itemIds.mkString(", ")}.
               Exception from ES: ${err.getMessage}.
               Will retry soon.
               """
-        logger.error(msg)
-        Left(KoskiErrorCategory.internalError(msg))
+          logger.error(msg)
+          Left(KoskiErrorCategory.internalError(msg))
+      }
     }
   }
 

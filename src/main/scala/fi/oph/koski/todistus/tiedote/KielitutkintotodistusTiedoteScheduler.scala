@@ -11,16 +11,18 @@ class KielitutkintotodistusTiedoteScheduler(application: KoskiApplication) exten
   var schedulerInstance: Option[GlobalIntervalScheduler] = None
 
   def createScheduler: Option[GlobalIntervalScheduler] = {
-    if (!application.config.getBoolean("tiedote.enabled")) return None
-
-    schedulerInstance = Some(GlobalIntervalScheduler(
-      application,
-      schedulerName,
-      application.config.getDuration("tiedote.checkInterval"),
-      runBatch,
-      shouldFireCheckIntervalMillis = 1000
-    ))
-    schedulerInstance
+    if (application.config.getBoolean("tiedote.enabled")) {
+      schedulerInstance = Some(GlobalIntervalScheduler(
+        application,
+        schedulerName,
+        application.config.getDuration("tiedote.checkInterval"),
+        runBatch,
+        shouldFireCheckIntervalMillis = 1000
+      ))
+      schedulerInstance
+    } else {
+      None
+    }
   }
 
   def shutdown(): Unit = {

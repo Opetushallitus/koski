@@ -330,27 +330,30 @@ case class ObjectModelBuilder(schema: ClassSchema)(implicit context: ModelBuilde
   }
 
   private def createRequestedPrototypes: Map[String, EditorModel] = {
-    if (!context.root) return Map.empty
-    var newRequests: SchemaSet = context.prototypesRequested
-    var prototypesCreated: Map[String, EditorModel] = Map.empty
-    do {
-      val requestsFromPreviousRound = newRequests
-      newRequests = SchemaSet.empty
-      requestsFromPreviousRound.foreach { schema =>
-        val helperContext = context.copy(root = false, prototypesBeingCreated = SchemaSet(schema))(context.user, context.koodisto, context.localizationRepository)
-        val modelBuilderForProto = modelBuilderForClass(schema)(helperContext)
-        val (protoKey, model) = (modelBuilderForProto.prototypeKey, modelBuilderForProto.buildPrototype(Nil))
+    if (!context.root) {
+      Map.empty
+    } else {
+      var newRequests: SchemaSet = context.prototypesRequested
+      var prototypesCreated: Map[String, EditorModel] = Map.empty
+      do {
+        val requestsFromPreviousRound = newRequests
+        newRequests = SchemaSet.empty
+        requestsFromPreviousRound.foreach { schema =>
+          val helperContext = context.copy(root = false, prototypesBeingCreated = SchemaSet(schema))(context.user, context.koodisto, context.localizationRepository)
+          val modelBuilderForProto = modelBuilderForClass(schema)(helperContext)
+          val (protoKey, model) = (modelBuilderForProto.prototypeKey, modelBuilderForProto.buildPrototype(Nil))
 
-        if (model.isInstanceOf[PrototypeModel]) {
-          throw new IllegalStateException()
+          if (model.isInstanceOf[PrototypeModel]) {
+            throw new IllegalStateException()
+          }
+          val newRequestsForThisCreation = helperContext.prototypesRequested -- context.prototypesRequested
+          newRequests ++= newRequestsForThisCreation
+          context.prototypesRequested ++= newRequestsForThisCreation
+          prototypesCreated += (protoKey -> model)
         }
-        val newRequestsForThisCreation = helperContext.prototypesRequested -- context.prototypesRequested
-        newRequests ++= newRequestsForThisCreation
-        context.prototypesRequested ++= newRequestsForThisCreation
-        prototypesCreated += (protoKey -> model)
-      }
-    } while (newRequests.nonEmpty)
-    prototypesCreated
+      } while (newRequests.nonEmpty)
+      prototypesCreated
+    }
   }
 
 
@@ -424,11 +427,9 @@ case class ObjectModelBuilder(schema: ClassSchema)(implicit context: ModelBuilde
 object Prototypes {
   def getPrototypePlaceholder(schema: Schema, metadata: List[Metadata])(implicit context: ModelBuilderContext): Option[EditorModel] = if (context.editable) {
     schema match {
+      case s: SchemaWithClassName if classOf[Opiskeluoikeus].isAssignableFrom(forSchema(s)) =>
+        None // Cuts model build time and size by half
       case s: SchemaWithClassName =>
-        val clazz = forSchema(s)
-        if (classOf[Opiskeluoikeus].isAssignableFrom(clazz)) {
-          return None // Cuts model build time and size by half
-        }
         val classRefSchema = resolveSchema(s)
         context.prototypesRequested += classRefSchema
         Some(modelBuilderForClass(s).buildPrototypePlaceholder(metadata))
