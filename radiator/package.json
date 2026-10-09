@@ -13,7 +13,7 @@
     "lint": "pnpm run typecheck && pnpm run eslint && pnpm run prettier",
     "lint:check": "concurrently --group \"pnpm:typecheck\" \"pnpm:eslint:check\" \"pnpm:prettier:check\"",
     "eslint": "pnpm run eslint:check --fix",
-    "eslint:check": "eslint \"src/**/*.ts\"",
+    "eslint:check": "eslint --max-warnings 0 .",
     "typecheck": "tsc --noEmit --project tsconfig.json",
     "prettier": "prettier --write --cache .",
     "prettier:check": "prettier --check --cache .",

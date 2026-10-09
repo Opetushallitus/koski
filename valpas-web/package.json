@@ -20,7 +20,7 @@
     "lint": "pnpm run typecheck && pnpm run eslint && pnpm run stylelint && pnpm run prettier",
     "lint:check": "concurrently --group \"pnpm:typecheck\" \"pnpm:eslint:check\" \"pnpm:stylelint:check\" \"pnpm:prettier:check\"",
     "eslint": "pnpm run eslint:check --fix",
-    "eslint:check": "eslint \"{src,test}/**/*.{js,jsx,ts,tsx}\"",
+    "eslint:check": "eslint --max-warnings 0 .",
     "stylelint": "pnpm run stylelint:check --fix",
     "stylelint:check": "stylelint \"src/**/*.less\"",
     "typecheck": "tsc --noEmit && tsc --noEmit --project tsconfig.node.json",

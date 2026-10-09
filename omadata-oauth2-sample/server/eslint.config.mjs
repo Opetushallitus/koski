@@ -1,11 +1,12 @@
 import js from '@eslint/js'
-import { defineConfig } from 'eslint/config'
+import { defineConfig, includeIgnoreFile } from 'eslint/config'
+import path from 'node:path'
 import tseslint from 'typescript-eslint'
 import eslintConfigPrettier from 'eslint-config-prettier'
 import importX from 'eslint-plugin-import-x'
 
 export default defineConfig([
-  { ignores: ['**/node_modules', '**/dist'] },
+  includeIgnoreFile(path.resolve(import.meta.dirname, '.gitignore')),
   js.configs.recommended,
   {
     files: ['**/*.ts'],

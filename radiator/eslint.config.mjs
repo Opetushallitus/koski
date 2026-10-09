@@ -1,11 +1,12 @@
 import js from '@eslint/js'
-import { defineConfig } from 'eslint/config'
+import { defineConfig, includeIgnoreFile } from 'eslint/config'
+import path from 'node:path'
 import eslintConfigPrettier from 'eslint-config-prettier'
 import importX from 'eslint-plugin-import-x'
 import tseslint from 'typescript-eslint'
 
 export default defineConfig([
-  { ignores: ['**/node_modules'] },
+  includeIgnoreFile(path.resolve(import.meta.dirname, '.gitignore')),
   js.configs.recommended,
   {
     files: ['**/*.ts'],
@@ -27,6 +28,10 @@ export default defineConfig([
   { rules: { eqeqeq: 'error' } },
   {
     plugins: { 'import-x': importX },
+    rules: { 'import-x/no-extraneous-dependencies': 'error' }
+  },
+  {
+    files: ['src/**/*'],
     rules: {
       'import-x/no-extraneous-dependencies': [
         'error',

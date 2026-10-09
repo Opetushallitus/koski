@@ -40,7 +40,7 @@ export type DataTableProps = {
   onCountChange?: (event: DataTableCountChangeEvent) => void
 }
 
-export { Column } from "./useDataTableState"
+export type { Column } from "./useDataTableState"
 
 export type DataTableCountChangeEvent = {
   filteredRowCount: number

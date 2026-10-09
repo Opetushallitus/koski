@@ -5,7 +5,6 @@ import importX from "eslint-plugin-import-x";
 import tseslint from "typescript-eslint";
 
 export default defineConfig([
-  { ignores: ["**/node_modules"] },
   js.configs.recommended,
   {
     files: ["**/*.ts"],
@@ -27,6 +26,10 @@ export default defineConfig([
   { rules: { eqeqeq: "error" } },
   {
     plugins: { "import-x": importX },
+    rules: { "import-x/no-extraneous-dependencies": "error" },
+  },
+  {
+    files: ["src/**/*"],
     rules: {
       "import-x/no-extraneous-dependencies": [
         "error",
