@@ -72,7 +72,7 @@ object Http extends Logging {
 
   // This guys allows you to make URIs from your Strings as in uri"http://google.com/s=${searchTerm}"
   // Takes care of URI encoding the components. You can prevent encoding a part by wrapping into an Uri using this selfsame method.
-  implicit class UriInterpolator(val sc: StringContext) extends AnyVal {
+  implicit class UriInterpolator(private val sc: StringContext) extends AnyVal {
     def uri(args: Any*): ParameterizedUriWrapper = {
       val pairs: Seq[(String, Option[Any])] = sc.parts.zip(args.toList.map(Some(_)) ++ List(None))
 

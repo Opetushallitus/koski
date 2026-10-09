@@ -7,7 +7,7 @@ import org.json4s.jackson.Serialization.write
 import scala.xml.{Atom, Unparsed}
 
 object JsStringInterpolation {
-  implicit class JsStringInterpolation(val sc: StringContext) extends AnyVal {
+  implicit class JsStringInterpolation(private val sc: StringContext) extends AnyVal {
     def js(args: Any*): String = {
       val strings = sc.parts.iterator
       val expressions = args
