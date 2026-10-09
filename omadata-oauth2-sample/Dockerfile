@@ -4,7 +4,7 @@ WORKDIR /app/server
 
 COPY ./server/pnpm-lock.yaml ./server/package.json ./server/pnpm-workspace.yaml ./
 
-RUN npm install --global --ignore-scripts pnpm@10
+RUN npm install --global --ignore-scripts pnpm@12
 
 ENV PORT=8080
 
