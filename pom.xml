@@ -15,7 +15,7 @@
   <properties>
     <scala.version>2.13.18</scala.version>
     <scalafix.scala.version>2.13.18</scalafix.scala.version>
-    <scalac.unusedImports>i</scalac.unusedImports>
+    <scalac.fixableWarnings>i</scalac.fixableWarnings>
     <slick.version>3.6.1</slick.version>
     <slick-pg.version>0.23.1</slick-pg.version>
     <scalatra.version>3.2.1</scalatra.version>
@@ -597,8 +597,9 @@
             <arg>-Xlint:missing-interpolator</arg>
             <arg>-Xlint:valpattern</arg>
             <arg>-Wunused:imports</arg>
-            <arg>-Wconf:cat=unused-imports:${scalac.unusedImports}</arg>
-            <arg>-quickfix:cat=unused-imports</arg>
+            <arg>-Xlint:adapted-args</arg>
+            <arg>-Wconf:cat=unused-imports:${scalac.fixableWarnings},cat=lint-adapted-args:${scalac.fixableWarnings}</arg>
+            <arg>-quickfix:cat=unused-imports,cat=lint-adapted-args</arg>
             <arg>-Xfatal-warnings</arg>
           </args>
         </configuration>

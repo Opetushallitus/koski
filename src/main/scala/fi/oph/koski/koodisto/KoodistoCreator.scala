@@ -100,7 +100,7 @@ case class KoodistoCreator(application: KoskiApplication) extends Logging {
 
           // huom, olettaa että koodit prosessoitu sortKoodistoKoodiMetadata:lla
           if (uusiKoodiSamallaKoodiUrillaJaVersiolla != vanhaKoodi) {
-            Some(koodistoUri, vanhaKoodi, uusiKoodi)
+            Some((koodistoUri, vanhaKoodi, uusiKoodi))
           } else {
             None
           }

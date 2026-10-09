@@ -91,7 +91,7 @@ valpas-web/src/                # Valpas frontend (separate React app)
 
 ### Scala
 - Scalafix enforces the rules in `.scalafix.conf`; run `make scalafix` after changes. Silence a justified hit with `// scalafix:ok <Rule>` on that line
-- Compiling removes unused imports automatically; CI fails on them
+- Compiling rewrites source files to fix some compiler warnings (`-quickfix` in `pom.xml`); CI fails on them instead
 - No `println` statements
 - No `return` statements (including mid-function early returns — use idiomatic control flow instead)
 - Class names: PascalCase
