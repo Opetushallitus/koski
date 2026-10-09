@@ -73,7 +73,11 @@ export const OppijaEditor = ({ model }) => {
                           {editor}
                         </TestIdRoot>
                       ) : (
+                        // Vanhan käyttöliittymän komponentit lukevat
+                        // osoitteen vain renderöidessään, joten ne
+                        // kiinnitetään uudelleen osoitteen muuttuessa.
                         <OpiskeluoikeusEditor
+                          key={document.location.toString()}
                           model={addContext(opiskeluoikeus, {
                             oppijaOid,
                             opiskeluoikeusIndex
