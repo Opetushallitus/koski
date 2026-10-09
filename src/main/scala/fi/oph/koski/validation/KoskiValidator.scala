@@ -25,11 +25,10 @@ import fi.oph.koski.util.{FinnishDateFormat, Timing}
 import fi.oph.koski.validation.DateValidation._
 import fi.oph.scalaschema.ExtractionContext
 import mojave._
-import org.json4s.{JArray, JValue}
+import org.json4s.JValue
 
 import java.lang.Character.isDigit
 import java.time.LocalDate
-import scala.collection.parallel.CollectionConverters._
 
 class KoskiValidator(
   organisaatioRepository: OrganisaatioRepository,
@@ -49,14 +48,6 @@ class KoskiValidator(
       JsonSerializer.serialize(oppija)
     }
     extractUpdateFieldsAndValidateOppija(serialized)
-  }
-
-  def extractUpdateFieldsAndValidateBatch(oppijatJson: JArray)(implicit user: KoskiSpecificSession, accessType: AccessType.Value): List[(Either[HttpStatus, Oppija], JValue)] = {
-    timed("extractAndValidateBatch") {
-      oppijatJson.arr.par.map { oppijaJson =>
-        (extractUpdateFieldsAndValidateOppija(oppijaJson), oppijaJson)
-      }.toList
-    }
   }
 
   def extractUpdateFieldsAndValidateOppija(parsedJson: JValue)(implicit user: KoskiSpecificSession, accessType: AccessType.Value): Either[HttpStatus, Oppija] = {
