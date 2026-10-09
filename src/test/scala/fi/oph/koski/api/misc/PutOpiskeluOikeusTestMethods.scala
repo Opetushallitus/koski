@@ -4,7 +4,7 @@ import fi.oph.koski.KoskiApplicationForTests
 import fi.oph.koski.henkilo.OppijaHenkilö
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.koodisto.{KoodistoViitePalvelu, MockKoodistoViitePalvelu}
-import fi.oph.koski.koskiuser.{KoskiSpecificSession, MockUsers, UserWithPassword}
+import fi.oph.koski.koskiuser.{KoskiSpecificSession, UserWithPassword}
 import fi.oph.koski.schema.KoskiSchema.strictDeserialization
 import fi.oph.koski.schema._
 import fi.oph.scalaschema.{ExtractionContext, SchemaValidatingExtractor}

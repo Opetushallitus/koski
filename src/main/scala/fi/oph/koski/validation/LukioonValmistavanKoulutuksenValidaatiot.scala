@@ -2,7 +2,7 @@ package fi.oph.koski.validation
 
 import fi.oph.koski.documentation.ExampleData.{laajuusKursseissa, laajuusOpintopisteissä}
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
-import fi.oph.koski.schema.{Koodistokoodiviite, Laajuus, LukionOppiaineenOpintojenSuoritusLukioonValmistavassaKoulutuksessa, LukionOppiaineenOpintojenSuoritusLukioonValmistavassaKoulutuksessa2019, LukioonValmistavanKoulutuksenSuoritus, Suoritus}
+import fi.oph.koski.schema.{Koodistokoodiviite, Laajuus, LukioonValmistavanKoulutuksenSuoritus, Suoritus}
 
 import java.time.LocalDate
 

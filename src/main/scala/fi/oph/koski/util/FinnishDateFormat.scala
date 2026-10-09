@@ -1,6 +1,5 @@
 package fi.oph.koski.util
 
-import fi.oph.koski.schema.Aikajakso
 
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter

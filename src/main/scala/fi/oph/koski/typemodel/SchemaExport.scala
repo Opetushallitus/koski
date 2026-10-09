@@ -2,7 +2,6 @@ package fi.oph.koski.typemodel
 
 import fi.oph.scalaschema._
 
-import scala.language.implicitConversions
 
 object SchemaExport {
   case class Context(

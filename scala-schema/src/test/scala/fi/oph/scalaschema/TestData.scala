@@ -5,7 +5,7 @@ import java.time.{LocalDate, LocalDateTime, ZonedDateTime}
 import java.util.Date
 import fi.oph.scalaschema.annotation._
 import org.joda.time.DateTime
-import org.json4s.{JArray, JValue}
+import org.json4s.JValue
 
 case class RequiredFields(field: Boolean)
 case class OptionalFields(field: Option[Boolean])

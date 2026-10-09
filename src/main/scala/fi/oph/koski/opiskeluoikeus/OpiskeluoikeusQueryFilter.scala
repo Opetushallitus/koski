@@ -7,8 +7,7 @@ import fi.oph.koski.koodisto.KoodistoViitePalvelu
 import fi.oph.koski.koskiuser.KoskiSpecificSession
 import fi.oph.koski.log.Logging
 import fi.oph.koski.opiskeluoikeus.OpiskeluoikeusQueryFilter._
-import fi.oph.koski.organisaatio.{OrganisaatioHierarkia, OrganisaatioOid, OrganisaatioRepository, OrganisaatioService}
-import fi.oph.koski.perustiedot.ToimipistePerustiedot
+import fi.oph.koski.organisaatio.{OrganisaatioOid, OrganisaatioService}
 import fi.oph.koski.schema.Opiskeluoikeus.OpiskeluoikeudenPäättymistila
 import fi.oph.koski.schema.{Koodistokoodiviite, OrganisaatioWithOid}
 import org.json4s.JsonAST.JValue

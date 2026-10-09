@@ -1,13 +1,11 @@
 package fi.oph.koski.log
 
 import fi.oph.koski.json.GenericJsonFormats
-import fi.oph.koski.log.AuditLogTester.retryingTest
 import org.json4s.Formats
 import org.json4s.JsonAST.JObject
 import org.json4s.jackson.JsonMethods.parse
 import org.scalatest.matchers.should.Matchers
 
-import scala.annotation.tailrec
 
 object AuditLogTester extends Matchers with LogTester {
   override def appenderName: String = "Audit"

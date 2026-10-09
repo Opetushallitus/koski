@@ -2,9 +2,8 @@ package fi.oph.koski.valpas.db
 
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.log.Logging
-import fi.oph.koski.raportointikanta.OppivelvollisuudenVapautusLoader
 import fi.oph.koski.valpas.opiskeluoikeusrepository.MockValpasRajapäivätService
-import fi.oph.koski.valpas.valpasrepository.{OppivelvollisuudenKeskeytysRepository, ValpasExampleData}
+import fi.oph.koski.valpas.valpasrepository.ValpasExampleData
 
 class ValpasDatabaseFixtureLoader(app: KoskiApplication) extends Logging {
   private val kuntailmoitusRepository = app.valpasKuntailmoitusRepository

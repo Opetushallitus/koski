@@ -10,7 +10,6 @@ import fi.oph.koski.schema._
 import fi.oph.koski.util.FinnishDateFormat.finnishDateFormat
 import fi.oph.koski.util.Futures
 
-import java.sql.Date
 import java.time.LocalDate
 import scala.concurrent.Future
 import scala.concurrent.duration.DurationInt

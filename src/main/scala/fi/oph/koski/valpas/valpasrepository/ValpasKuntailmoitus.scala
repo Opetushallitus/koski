@@ -6,7 +6,7 @@ import fi.oph.scalaschema.annotation.RegularExpression
 import fi.oph.koski.valpas.yhteystiedot.ValpasYhteystietojenAlkuperä
 
 import java.time.LocalDateTime
-import fi.oph.koski.valpas.opiskeluoikeusrepository.{ValpasOpiskeluoikeus, ValpasOpiskeluoikeusLaajatTiedot, ValpasOppivelvollinenOppijaLaajatTiedot, ValpasRajapäivätService}
+import fi.oph.koski.valpas.opiskeluoikeusrepository.ValpasOpiskeluoikeus
 
 case class ValpasKuntailmoitusLaajatTiedot(
   oppijaOid: Option[String],

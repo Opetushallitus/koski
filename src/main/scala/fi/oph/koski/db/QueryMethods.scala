@@ -12,7 +12,6 @@ import slick.jdbc.SetParameter
 import slick.lifted.Query
 
 import scala.concurrent.duration.{Duration, DurationInt}
-import scala.language.higherKinds
 
 
 trait DatabaseConverters {

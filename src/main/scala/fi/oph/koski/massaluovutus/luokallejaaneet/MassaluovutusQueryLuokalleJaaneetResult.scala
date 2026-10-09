@@ -5,7 +5,6 @@ import fi.oph.scalaschema.{ClassSchema, SchemaToJson}
 import fi.oph.scalaschema.annotation.{Description, Title}
 import org.json4s.JValue
 
-import java.time.LocalDateTime
 
 @Title("Luokalle jääneet -kyselyn vastaus")
 case class MassaluovutusQueryLuokalleJaaneetResult(

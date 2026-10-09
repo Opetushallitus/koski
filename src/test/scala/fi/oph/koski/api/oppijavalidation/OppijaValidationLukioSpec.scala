@@ -1,6 +1,6 @@
 package fi.oph.koski.api.oppijavalidation
 
-import fi.oph.koski.{KoskiHttpSpec, schema}
+import fi.oph.koski.KoskiHttpSpec
 import fi.oph.koski.api.misc.TestMethodsLukio.päättötodistusSuoritus
 import fi.oph.koski.api.misc.OpiskeluoikeusTestMethodsLukio2015
 import fi.oph.koski.documentation.ExampleData._

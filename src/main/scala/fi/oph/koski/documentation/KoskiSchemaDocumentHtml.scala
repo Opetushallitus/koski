@@ -11,7 +11,6 @@ import scala.Function.const
 import scala.annotation.tailrec
 import scala.collection.mutable.ArrayBuffer
 import scala.xml.{Elem, Node}
-import fi.oph.koski.xml.NodeSeqImplicits._
 
 
 object KoskiSchemaDocumentHtml {

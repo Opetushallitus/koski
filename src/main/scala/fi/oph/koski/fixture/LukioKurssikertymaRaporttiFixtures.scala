@@ -5,7 +5,7 @@ import java.time.LocalDate
 import fi.oph.koski.documentation.ExampleData._
 import fi.oph.koski.documentation.LukioExampleData._
 import fi.oph.koski.documentation.YleissivistavakoulutusExampleData._
-import fi.oph.koski.documentation.{ExampleData, ExamplesDIA, ExamplesIB, ExamplesInternationalSchool}
+import fi.oph.koski.documentation.ExampleData
 import fi.oph.koski.schema._
 
 object LukioKurssikertymaRaporttiFixtures {

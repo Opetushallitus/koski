@@ -5,7 +5,6 @@ import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.koskiuser.RequiresHsl
 import fi.oph.koski.servlet.NoCache
-import fi.oph.koski.xml.NodeSeqImplicits._
 
 import scala.xml.{Elem, Node}
 

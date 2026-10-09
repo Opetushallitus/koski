@@ -9,7 +9,6 @@ import fi.oph.koski.util.DateOrdering.localDateOrdering
 import fi.oph.scalaschema.annotation._
 import mojave.{Traversal, traversal}
 
-import java.sql.Date
 
 trait Suoritus {
   @Description("Suorituksen tyyppi, jolla erotellaan eri koulutusmuotoihin (perusopetus, lukio, ammatillinen...) ja eri tasoihin (tutkinto, tutkinnon osa, kurssi, oppiaine...) liittyvät suoritukset")

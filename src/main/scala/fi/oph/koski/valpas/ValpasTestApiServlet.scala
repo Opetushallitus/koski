@@ -6,11 +6,9 @@ import fi.oph.koski.koskiuser.Unauthenticated
 import fi.oph.koski.raportointikanta.OpiskeluoikeusLoader
 import fi.oph.koski.servlet.NoCache
 import fi.oph.koski.util.Wait
-import fi.oph.koski.valpas.opiskeluoikeusfixture.{FixtureState, FixtureUtil, StatefulFixtureUtil}
+import fi.oph.koski.valpas.opiskeluoikeusfixture.{FixtureState, StatefulFixtureUtil}
 import fi.oph.koski.valpas.servlet.ValpasApiServlet
 
-import scala.concurrent.ExecutionContext.Implicits.global
-import scala.concurrent.{Future, blocking}
 
 class ValpasTestApiServlet(implicit val application: KoskiApplication) extends ValpasApiServlet with NoCache with Unauthenticated {
   private val fixtureReset = new StatefulFixtureUtil(application)

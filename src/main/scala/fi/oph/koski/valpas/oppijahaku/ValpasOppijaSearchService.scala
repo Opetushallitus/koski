@@ -5,14 +5,12 @@ import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.henkilo.{LaajatOppijaHenkilöTiedot, OppijaHenkilö}
 import fi.oph.koski.http.HttpStatus
 import fi.oph.koski.log.Logging
-import fi.oph.koski.oppivelvollisuustieto.Oppivelvollisuustiedot
 import fi.oph.koski.schema.Henkilö
 import fi.oph.koski.validation.MaksuttomuusValidation
-import fi.oph.koski.valpas.opiskeluoikeusrepository.{ValpasHenkilö, ValpasOppijaLaajatTiedot, ValpasOppivelvollinenOppijaLaajatTiedot, ValpasRajapäivätService}
+import fi.oph.koski.valpas.opiskeluoikeusrepository.{ValpasHenkilö, ValpasOppijaLaajatTiedot, ValpasRajapäivätService}
 import fi.oph.koski.valpas.oppija.{ValpasAccessResolver, ValpasErrorCategory}
 import fi.oph.koski.valpas.valpasuser.{ValpasRooli, ValpasSession}
 import fi.oph.scalaschema.annotation.SyntheticProperty
-import slick.jdbc.GetResult
 
 import java.time.LocalDate
 

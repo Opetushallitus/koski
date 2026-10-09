@@ -2,7 +2,6 @@ package fi.oph.koski.massaluovutus.suorituspalvelu
 
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.plainAPI._
 import fi.oph.koski.db.{DB, QueryMethods}
-import fi.oph.koski.log._
 import fi.oph.koski.massaluovutus.QueryFormat
 import fi.oph.koski.schema.annotation.EnumValues
 import fi.oph.scalaschema.annotation.{Description, Title}

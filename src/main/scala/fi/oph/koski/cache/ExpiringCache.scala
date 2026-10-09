@@ -6,7 +6,6 @@ import fi.oph.koski.log.Logging
 import fi.oph.koski.util.Invocation
 
 import java.time.{Duration => JDuration}
-import java.util.UUID
 import scala.concurrent.duration.Duration
 
 object ExpiringCache {

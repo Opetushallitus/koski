@@ -4,7 +4,7 @@ import fi.oph.koski.config.{Environment, KoskiApplication}
 import fi.oph.koski.frontendvalvonta.FrontendValvontaMode
 import fi.oph.koski.koskiuser.{KoskiCookieAndBasicAuthenticationSupport, UserLanguage}
 import fi.oph.koski.servlet.{OmaOpintopolkuSupport, OppijaHtmlServlet}
-import org.scalatra.{MatchedRoute, ScalatraServlet}
+import org.scalatra.ScalatraServlet
 
 class OmaDataOAuth2ResourceOwnerReactServlet(implicit val application: KoskiApplication) extends ScalatraServlet
   with OppijaHtmlServlet with KoskiCookieAndBasicAuthenticationSupport with OmaOpintopolkuSupport with OmaDataOAuth2ServletSupport with OmaDataOAuth2Config {

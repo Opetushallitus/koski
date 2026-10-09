@@ -2,7 +2,7 @@ package fi.oph.koski.hakemuspalvelu
 
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.executors.GlobalExecutionContext
-import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
+import fi.oph.koski.http.HttpStatus
 import fi.oph.koski.koskiuser.KoskiSpecificSession
 import fi.oph.koski.log._
 import fi.oph.koski.suoritusjako.common.{OpiskeluoikeusFacade, RawOppija}

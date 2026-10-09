@@ -12,7 +12,6 @@ import rx.lang.scala.{Observable, Scheduler}
 
 import java.time.{Duration, ZonedDateTime}
 import scala.concurrent.duration.{DurationInt, FiniteDuration}
-import scala.language.postfixOps
 
 class RaportointikantaService(application: KoskiApplication) extends Logging {
 

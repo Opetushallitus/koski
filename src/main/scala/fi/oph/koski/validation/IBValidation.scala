@@ -3,7 +3,7 @@ package fi.oph.koski.validation
 import com.typesafe.config.Config
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.opiskeluoikeus.CompositeOpiskeluoikeusRepository
-import fi.oph.koski.schema.{IBCASSuoritus, IBCoreKurssinSuoritus, IBCoreOppiaineenArviointi, IBDPCoreOppiaineCAS, IBDPCoreOppiaineExtendedEssay, IBDPCoreOppiaineTheoryOfKnowledge, IBDPCoreSuoritus, IBExtendedEssaySuoritus, IBKurssi, IBKurssinSuoritus, IBOpiskeluoikeus, IBOppiaineenArviointi, IBOppiaineenPredictedArviointi, IBOppiaineenSuoritus, IBPäätasonSuoritus, IBTheoryOfKnowledgeSuoritus, IBTutkinnonSuoritus, KoskeenTallennettavaOpiskeluoikeus, KoulutusmoduuliValinnainenLaajuus, LaajuusKursseissa, LaajuusOpintopisteissä, LaajuusOsaamispisteissä, LaajuusTunneissa, PreIBSuoritus2015}
+import fi.oph.koski.schema.{IBDPCoreSuoritus, IBKurssinSuoritus, IBOpiskeluoikeus, IBOppiaineenSuoritus, IBPäätasonSuoritus, IBTutkinnonSuoritus, KoskeenTallennettavaOpiskeluoikeus, KoulutusmoduuliValinnainenLaajuus, LaajuusKursseissa, LaajuusOpintopisteissä, LaajuusTunneissa, PreIBSuoritus2015}
 import fi.oph.koski.util.ChainingSyntax._
 import fi.oph.koski.util.DateOrdering.localDateOrdering
 import fi.oph.koski.util.FinnishDateFormat

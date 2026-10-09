@@ -4,7 +4,7 @@ import com.github.fge.jsonschema.core.report.ListReportProvider
 import com.github.fge.jsonschema.core.report.LogLevel.{ERROR, FATAL}
 import com.github.fge.jsonschema.main.{JsonSchemaFactory, JsonValidator}
 import fi.oph.scalaschema.TestHelpers.schemaOf
-import fi.oph.scalaschema.annotation.{Description, EnumValue, SkipSerialization}
+import fi.oph.scalaschema.annotation.{Description, EnumValue}
 import org.json4s.JsonAST.{JBool, JNothing, JObject, JString}
 import org.json4s.jackson.JsonMethods.asJsonNode
 import org.json4s.jackson._

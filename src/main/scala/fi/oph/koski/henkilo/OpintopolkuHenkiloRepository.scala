@@ -2,10 +2,8 @@ package fi.oph.koski.henkilo
 
 import java.time.LocalDate
 import fi.oph.koski.http.HttpStatus
-import fi.oph.koski.koodisto.{KoodistoViitePalvelu, MockKoodistoViitePalvelu}
+import fi.oph.koski.koodisto.KoodistoViitePalvelu
 import fi.oph.koski.log.Logging
-import fi.oph.koski.oppivelvollisuustieto.Oppivelvollisuustiedot.oppivelvollisuudenUlkopuolisetKunnatTaiKuntaVirheellinen
-import fi.oph.koski.raportit.AhvenanmaanKunnat.ahvenanmaanKunnat
 import fi.oph.koski.schema._
 import fi.oph.koski.schema.annotation.KoodistoUri
 import fi.oph.scalaschema.annotation.SyntheticProperty

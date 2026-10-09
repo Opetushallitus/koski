@@ -5,7 +5,6 @@ import java.time.{LocalDate, LocalDateTime, ZoneId, ZonedDateTime, OffsetDateTim
 import java.util.Date
 import fi.oph.scalaschema.SchemaPropertyProcessor.SchemaPropertyProcessor
 import fi.oph.scalaschema.annotation.SkipSerialization
-import fi.oph.scalaschema.extraction.SchemaNotFoundException
 import org.joda.time.DateTime
 import org.joda.time.format.ISODateTimeFormat
 import org.json4s.JsonAST.{JField, _}

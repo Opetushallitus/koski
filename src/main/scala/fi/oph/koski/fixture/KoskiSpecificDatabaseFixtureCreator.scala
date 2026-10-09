@@ -1,11 +1,10 @@
 package fi.oph.koski.fixture
 
 import fi.oph.koski.config.KoskiApplication
-import fi.oph.koski.documentation.AmmatillinenExampleData.{ammatillinenTutkintoSuoritus, ammatillisetTutkinnonOsat, k3, pakollinenTutkinnonOsanSuoritus, puuteollisuudenPerustutkinnonSuoritus, puuteollisuudenPerustutkinto, stadinAmmattiopisto, stadinToimipiste, tietoJaViestintäTekniikanPerustutkinnonSuoritus}
-import fi.oph.koski.documentation.ExampleData.{opiskeluoikeusLäsnä, opiskeluoikeusMitätöity, opiskeluoikeusValmistunut, suomenKieli}
+import fi.oph.koski.documentation.AmmatillinenExampleData.{ammatillisetTutkinnonOsat, k3, pakollinenTutkinnonOsanSuoritus, stadinToimipiste, tietoJaViestintäTekniikanPerustutkinnonSuoritus}
+import fi.oph.koski.documentation.ExampleData.{opiskeluoikeusLäsnä, opiskeluoikeusMitätöity, suomenKieli}
 import fi.oph.koski.documentation.ExamplesEsiopetus.{ostopalveluOpiskeluoikeus, peruskoulusuoritus, päiväkotisuoritus}
 import fi.oph.koski.documentation.ExamplesPerusopetus.ysinOpiskeluoikeusKesken
-import fi.oph.koski.documentation.VapaaSivistystyöExampleData.varsinaisSuomenKansanopisto
 import fi.oph.koski.documentation.YleissivistavakoulutusExampleData.{helsinki, oppilaitos}
 import fi.oph.koski.documentation.{ExamplesEsiopetus, _}
 import fi.oph.koski.henkilo.{KoskiSpecificMockOppijat, OppijaHenkilö}

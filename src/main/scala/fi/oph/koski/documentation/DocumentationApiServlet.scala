@@ -8,7 +8,7 @@ import fi.oph.koski.koskiuser.Unauthenticated
 import fi.oph.koski.massaluovutus.luokallejaaneet.MassaluovutusQueryLuokalleJaaneetResult
 import fi.oph.koski.massaluovutus.suorituspalvelu.SupaResponse
 import fi.oph.koski.massaluovutus.valintalaskenta.ValintalaskentaResult
-import fi.oph.koski.massaluovutus.{QueryDocumentation, QueryResponse}
+import fi.oph.koski.massaluovutus.QueryDocumentation
 import fi.oph.koski.omadataoauth2.OmaDataOAuth2Documentation
 import fi.oph.koski.servlet.{KoskiSpecificApiServlet, NoCache}
 import fi.oph.koski.supa.SupaOpiskeluoikeudenVersioResponse

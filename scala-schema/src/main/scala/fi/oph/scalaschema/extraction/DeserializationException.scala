@@ -1,7 +1,7 @@
 package fi.oph.scalaschema.extraction
 
 import fi.oph.scalaschema.SchemaWithClassName
-import fi.oph.scalaschema.extraction.AnyOfExtractor.{AllOfCriterion, DiscriminatorCriterion}
+import fi.oph.scalaschema.extraction.AnyOfExtractor.DiscriminatorCriterion
 import org.json4s._
 import org.json4s.jackson.JsonMethods
 

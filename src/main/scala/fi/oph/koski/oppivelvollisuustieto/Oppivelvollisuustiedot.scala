@@ -2,7 +2,7 @@ package fi.oph.koski.oppivelvollisuustieto
 
 import com.typesafe.config.Config
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.plainAPI._
-import fi.oph.koski.henkilo.{KotikuntahistoriaConfig, OpintopolkuHenkilöFacade}
+import fi.oph.koski.henkilo.OpintopolkuHenkilöFacade
 import fi.oph.koski.raportit.AhvenanmaanKunnat.ahvenanmaanKunnat
 import fi.oph.koski.raportointikanta.{RaportointiDatabase, Schema}
 import fi.oph.koski.valpas.opiskeluoikeusrepository.ValpasRajapäivätService

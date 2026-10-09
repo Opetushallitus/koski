@@ -13,7 +13,6 @@ import java.net.URLDecoder
 import java.nio.file.Paths
 import scala.xml.NodeSeq.Empty
 import scala.xml.{Elem, NodeSeq}
-import fi.oph.koski.xml.NodeSeqImplicits._
 
 
 trait HtmlNodes extends KoskiSpecificBaseServlet with LanguageSupport {

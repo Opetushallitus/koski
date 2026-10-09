@@ -30,7 +30,7 @@ import fi.oph.koski.oppilaitos.OppilaitosRepository
 import fi.oph.koski.organisaatio.{OrganisaatioRepository, OrganisaatioService}
 import fi.oph.koski.perustiedot.{OpiskeluoikeudenPerustiedotIndexer, OpiskeluoikeudenPerustiedotRepository, PerustiedotManualSyncRepository, PerustiedotSyncRepository}
 import fi.oph.koski.pulssi.{KoskiPulssi, PrometheusRepository}
-import fi.oph.koski.raportointikanta.{Confidential, Public, RaportointiDatabase, RaportointikantaService}
+import fi.oph.koski.raportointikanta.{Public, RaportointiDatabase, RaportointikantaService}
 import fi.oph.koski.schedule.{KoskiScheduledTasks, PerustiedotManualSyncScheduler, PerustiedotSyncScheduler, WorkerLeaseRepository}
 import fi.oph.koski.sdg.SdgService
 import fi.oph.koski.sso.{CasOppijaCreationService, CasService, KoskiSessionRepository}

@@ -4,7 +4,6 @@ import fi.oph.koski.api.misc.OpiskeluoikeusTestMethodsAmmatillinen
 import fi.oph.koski.documentation.ExampleData.opiskeluoikeusMitätöity
 import fi.oph.koski.documentation.{EuropeanSchoolOfHelsinkiExampleData, ExamplesIB, ExamplesPerusopetus, ExamplesVapaaSivistystyöKotoutuskoulutus2022}
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
-import fi.oph.koski.history.OpiskeluoikeusHistoryPatch
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.json.JsonSerializer
 import org.json4s.{JArray, JObject, JValue}

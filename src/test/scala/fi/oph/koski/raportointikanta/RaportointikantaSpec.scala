@@ -6,7 +6,7 @@ import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.documentation.ExampleData.{helsinki, suomi}
 import fi.oph.koski.documentation.{AmmatillinenExampleData, ExampleData, YleissivistavakoulutusExampleData}
 import fi.oph.koski.henkilo.{KoskiSpecificMockOppijat, LaajatOppijaHenkilöTiedot}
-import fi.oph.koski.henkilo.KoskiSpecificMockOppijat.{master, masterEiKoskessa, turvakielto}
+import fi.oph.koski.henkilo.KoskiSpecificMockOppijat.masterEiKoskessa
 import fi.oph.koski.json.{JsonFiles, JsonSerializer}
 import fi.oph.koski.koskiuser.MockUsers
 import fi.oph.koski.organisaatio.{MockOrganisaatiot, Organisaatiotyyppi}
@@ -21,7 +21,6 @@ import fi.oph.scalaschema.{ExtractionContext, SchemaValidatingExtractor}
 import org.json4s.{DefaultFormats, JNothing, JString}
 import org.json4s.JsonAST.{JBool, JObject}
 import org.json4s.jackson.JsonMethods
-import org.scalatest.Assertion
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.should.Matchers
 

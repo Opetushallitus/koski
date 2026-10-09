@@ -3,7 +3,6 @@ package fi.oph.koski.servlet
 import fi.oph.koski.config.{Environment, KoskiApplication}
 import fi.oph.koski.frontendvalvonta.FrontendValvontaMode
 import org.scalatra.ScalatraServlet
-import fi.oph.koski.xml.NodeSeqImplicits._
 
 class VirhesivuServlet(implicit val application: KoskiApplication) extends ScalatraServlet with OppijaHtmlServlet with OmaOpintopolkuSupport {
 

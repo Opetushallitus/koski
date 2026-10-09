@@ -4,7 +4,6 @@ import fi.oph.koski.db.PostgresDriverWithJsonSupport.plainAPI._
 import fi.oph.koski.db.{DB, QueryMethods, SQLHelpers}
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.koskiuser.Session
-import fi.oph.koski.log._
 import fi.oph.koski.massaluovutus.{MassaluovutusQueryParameters, QueryFormat}
 import fi.oph.koski.schema.annotation.EnumValues
 import fi.oph.scalaschema.annotation.{Description, Title}

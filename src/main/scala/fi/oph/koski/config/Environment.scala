@@ -1,7 +1,6 @@
 package fi.oph.koski.config
 
 import com.typesafe.config.{Config, ConfigException}
-import fi.oph.koski.db.DB
 
 import java.time.{DateTimeException, LocalDate, ZonedDateTime}
 import java.time.format.DateTimeParseException

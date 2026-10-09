@@ -1,6 +1,5 @@
 package fi.oph.koski.valpas.hakukooste
 
-import com.typesafe.config.Config
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.http._
 import fi.oph.koski.valpas.opiskeluoikeusrepository.ValpasHenkilö

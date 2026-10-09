@@ -1,6 +1,5 @@
 package fi.oph.koski.servlet
 
-import fi.oph.koski.db.SuoritusjakoRow
 import fi.oph.koski.http.{HttpStatus, JsonErrorMessage, KoskiErrorCategory}
 import fi.oph.koski.json.{JsonSerializer, SensitiveDataAllowed}
 import fi.oph.koski.koskiuser.KoskiSpecificSession
@@ -11,7 +10,6 @@ import org.json4s._
 import org.json4s.jackson.JsonMethods
 import org.scalatra._
 
-import java.time.LocalDate
 import scala.reflect.runtime.universe.{TypeRefApi, TypeTag}
 import scala.reflect.runtime.{universe => ru}
 import scala.runtime.BoxedUnit

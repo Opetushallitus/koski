@@ -4,7 +4,7 @@ import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.db.KoskiTables._
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.db._
-import fi.oph.koski.henkilo.{MockOpintopolkuHenkilöFacade, OppijaHenkilö, OppijaHenkilöWithMasterInfo, OppijanumerorekisteriKotikuntahistoriaRow}
+import fi.oph.koski.henkilo.{OppijaHenkilö, OppijaHenkilöWithMasterInfo, OppijanumerorekisteriKotikuntahistoriaRow}
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.json.JsonSerializer.serializeWithRoot
 import fi.oph.koski.koskiuser.{AccessType, KoskiSpecificSession}

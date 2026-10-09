@@ -3,18 +3,18 @@ package fi.oph.koski.api.oppijaupdate
 import fi.oph.koski.KoskiHttpSpec
 import fi.oph.koski.api.misc.{OpiskeluoikeusTestMethodsAmmatillinen, TestMethodsLukio}
 import fi.oph.koski.documentation.AmmatillinenExampleData._
-import fi.oph.koski.documentation.ExampleData.{jyväskylä, longTimeAgo, opiskeluoikeusLäsnä, vahvistusPaikkakunnalla, valtionosuusRahoitteinen}
+import fi.oph.koski.documentation.ExampleData.{longTimeAgo, opiskeluoikeusLäsnä, vahvistusPaikkakunnalla, valtionosuusRahoitteinen}
 import fi.oph.koski.documentation.ExamplesAikuistenPerusopetus.{aikuistenPerusopetukseOppimääränSuoritus, aikuistenPerusopetus2017, oppiaineidenSuoritukset2017}
 import fi.oph.koski.documentation.ExamplesEsiopetus.{päiväkodinEsiopetuksenTunniste, suoritus}
 import fi.oph.koski.documentation.ExamplesTutkintokoulutukseenValmentavaKoulutus.tuvaOpiskeluOikeusEiValmistunut
-import fi.oph.koski.documentation.PerusopetusExampleData.{perusopetuksenOppimääränSuoritus, perusopetus, päättötodistusOpiskeluoikeus, yhdeksännenLuokanSuoritus}
+import fi.oph.koski.documentation.PerusopetusExampleData.{perusopetuksenOppimääränSuoritus, päättötodistusOpiskeluoikeus, yhdeksännenLuokanSuoritus}
 import fi.oph.koski.documentation.YleissivistavakoulutusExampleData.jyväskylänNormaalikoulu
 import fi.oph.koski.documentation._
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
-import fi.oph.koski.henkilo.KoskiSpecificMockOppijat.{koululainen, uusiLukio}
+import fi.oph.koski.henkilo.KoskiSpecificMockOppijat.koululainen
 import fi.oph.koski.http.{ErrorMatcher, KoskiErrorCategory}
 import fi.oph.koski.json.JsonSerializer
-import fi.oph.koski.koskiuser.MockUsers.{helsinginKaupunkiPalvelukäyttäjä, helsinkiTallentaja, kalle, paakayttaja, varsinaisSuomiKoulutustoimija, varsinaisSuomiPalvelukäyttäjä}
+import fi.oph.koski.koskiuser.MockUsers.{helsinginKaupunkiPalvelukäyttäjä, helsinkiTallentaja, paakayttaja, varsinaisSuomiKoulutustoimija, varsinaisSuomiPalvelukäyttäjä}
 import fi.oph.koski.koskiuser.{MockUsers, UserWithPassword}
 import fi.oph.koski.oppija.HenkilönOpiskeluoikeusVersiot
 import fi.oph.koski.organisaatio.{MockOrganisaatioRepository, MockOrganisaatiot}

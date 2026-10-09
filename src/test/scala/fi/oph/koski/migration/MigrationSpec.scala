@@ -1,7 +1,7 @@
 package fi.oph.koski.migration
 
 import fi.oph.koski.KoskiApplicationForTests
-import fi.oph.koski.raportointikanta.{DelayedScheduler, RaportointiDatabase, RaportointikantaTestMethods}
+import fi.oph.koski.raportointikanta.{RaportointiDatabase, RaportointikantaTestMethods}
 import fi.oph.koski.util.Wait
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.should.Matchers

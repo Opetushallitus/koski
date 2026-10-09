@@ -5,7 +5,6 @@ import fi.oph.koski.config.ConfigForFrontend
 import fi.oph.koski.history.OpiskeluoikeusHistoryPatch
 import fi.oph.koski.koskiuser.UserWithAccessRights
 import fi.oph.koski.massaluovutus.QueryResponse
-import fi.oph.koski.massaluovutus.raportit.MassaluovutusQueryAmmatillinenTutkintoSuoritustiedot
 import fi.oph.koski.oppija.HenkilönOpiskeluoikeusVersiot
 import fi.oph.koski.organisaatio.OrganisaatioHierarkia
 import fi.oph.koski.preferences.KeyValue

@@ -6,9 +6,7 @@ import fi.oph.koski.koskiuser.MockUsers
 import fi.oph.koski.schema.KoskiSchema.strictDeserialization
 import fi.oph.koski.schema.{KielitutkinnonOpiskeluoikeus, Opiskeluoikeus, YleisenKielitutkinnonOsakokeenSuoritus}
 import org.apache.pdfbox.Loader
-import org.apache.pdfbox.cos.{COSArray, COSDictionary, COSName}
 import org.apache.pdfbox.pdmodel.PDDocument
-import org.apache.pdfbox.pdmodel.graphics.image.PDImageXObject
 import org.apache.pdfbox.rendering.PDFRenderer
 import org.apache.pdfbox.text.{PDFTextStripper, PDFTextStripperByArea}
 import org.json4s.jackson.JsonMethods
@@ -20,7 +18,6 @@ import org.verapdf.pdfa.{Foundries, PDFAParser, PDFAValidator}
 
 import java.awt.Rectangle
 import java.awt.image.BufferedImage
-import java.io.ByteArrayInputStream
 import javax.imageio.ImageIO
 import scala.jdk.CollectionConverters._
 

@@ -3,7 +3,7 @@ package fi.oph.koski.koskiuser
 import fi.oph.koski.koskiuser.Rooli._
 import fi.oph.koski.schema._
 
-import scala.language.{higherKinds, implicitConversions}
+import scala.language.implicitConversions
 
 object Rooli {
   type Role = String

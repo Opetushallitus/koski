@@ -3,14 +3,13 @@ package fi.oph.koski.henkilo
 import fi.oph.koski.db.KoskiTables.KoskiOpiskeluOikeudetWithAccessCheck
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.db.{DB, PostgresDriverWithJsonSupport, QueryMethods}
-import fi.oph.koski.fixture.{FixtureCreator, KoskiSpecificFixtureState}
+import fi.oph.koski.fixture.FixtureCreator
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.koskiuser.KoskiSpecificSession.systemUser
 import fi.oph.koski.log.Logging
 import fi.oph.koski.schema.Henkilö.Oid
 import fi.oph.koski.schema.Koodistokoodiviite
-import fi.oph.koski.valpas.opiskeluoikeusfixture.ValpasOpiskeluoikeusFixtureState
 import org.json4s.jackson.JsonMethods
 
 import java.time.LocalDate
