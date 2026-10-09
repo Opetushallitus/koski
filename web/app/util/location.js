@@ -1,10 +1,11 @@
 import Bacon from 'baconjs'
 import * as R from 'ramda'
-import { checkExitHook, removeExitHook } from './exitHook'
-import { LOCATION_CHANGE_EVENT } from './url'
+import { korvaaOsoiteHiljaa, kuunteleOsoitetta, siirry } from './router'
 
+// Vanhan käyttöliittymän näkymä osoitteesta. Osoitteen omistaa router, joten
+// tänne tulevat myös uuden käyttöliittymän navigoinnit.
 const locationBus = new Bacon.Bus()
-let previousLocation = currentLocation()
+kuunteleOsoitetta(() => locationBus.push(currentLocation()))
 
 export const navigateTo = function (path, event) {
   if (
@@ -12,55 +13,25 @@ export const navigateTo = function (path, event) {
     (event.altKey || event.shiftKey || event.metaKey || event.ctrlKey)
   )
     return
-  const nextLoc = parsePath(path)
-  previousLocation = nextLoc
-  history.pushState(null, null, path)
-  locationBus.push(nextLoc)
-  // Uuden käyttöliittymän osoitetta lukevat hookit (useSearchParam) eivät
-  // kuuntele locationBusia. Ilman ilmoitusta esim. välilehden vaihto jättäisi
-  // v2-editorit selatun version tilaan.
-  window.dispatchEvent(new Event(LOCATION_CHANGE_EVENT))
+  siirry(path)
   if (event) event.preventDefault()
 }
 
 export const replaceLocation = (path) => {
-  const nextLoc = parsePath(path)
-  previousLocation = nextLoc
-  history.replaceState(null, null, path)
-  return nextLoc
-}
-
-// Ilmoittaa osoitteen muuttuneen ohi navigateTo:n (esim. history.pushState).
-export const refreshLocation = () => {
-  previousLocation = currentLocation()
-  locationBus.push(previousLocation)
+  korvaaOsoiteHiljaa(path)
+  return parsePath(path)
 }
 
 export const redirectTo = (path) => {
   // Defer because redirects are likely to be triggered while handling the exported locationP
   // which is derived from the locationBus into which we push here.
-  setTimeout(() => {
-    locationBus.push(replaceLocation(path))
-  }, 0)
+  setTimeout(() => siirry(path, { korvaa: true }), 0)
 }
-
-window.onpopstate = function () {
-  if (!checkExitHook()) {
-    // Back-button navigation cancelled by exit hook
-    history.pushState(null, null, previousLocation.toString())
-    return
-  }
-  const nextLoc = currentLocation()
-  previousLocation = nextLoc
-  locationBus.push(nextLoc)
-}
-
-locationBus.mapError().onValue(removeExitHook)
 
 const filteredLocation = currentLocation().filterQueryParams(
   (k) => k !== 'ticket'
 )
-history.replaceState(null, null, filteredLocation.toString())
+korvaaOsoiteHiljaa(filteredLocation.toString())
 export const locationP = locationBus.toProperty(filteredLocation)
 
 export const navigateToOppija = (oppija, event) =>

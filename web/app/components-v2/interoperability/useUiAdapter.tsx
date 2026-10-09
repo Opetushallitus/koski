@@ -10,9 +10,10 @@ import {
   useSafeState
 } from '../../api-fetch'
 import {
+  katseltavaVersio,
   opiskeluoikeudenVersionumero,
-  useSearchParam
-} from '../../appstate/useSearchParam'
+  useKatseltavaVersio
+} from '../../appstate/sivunTila'
 import { modelData } from '../../editor/EditorModel'
 import { t } from '../../i18n/i18n'
 import { Contextualized } from '../../types/EditorModelContext'
@@ -34,7 +35,6 @@ import {
 } from '../../util/opiskeluoikeus'
 import { kuunteleTallennettujaOpiskeluoikeuksia } from '../../util/tallennetutOpiskeluoikeudet'
 import { OpiskeluoikeudenTyyppiOf } from '../../util/types'
-import { parseQuery } from '../../util/url'
 import { opiskeluoikeusEditors } from './uiAdapters'
 
 export type AdaptedOpiskeluoikeusEditorProps<T extends Opiskeluoikeus> = {
@@ -167,11 +167,11 @@ const useVirkailijaUiAdapter = (oppijaModel: ObjectModel): UiAdapter => {
   // laukaise uudelleenhakua, koska loadOppija on jo hakenut nykyiset tiedot.
   const edellinenVersionumeroRef = useRef<string | undefined>(undefined)
   const loadValittuVersio = () => {
-    const query = parseQuery(window.location.search)
-    if (query.opiskeluoikeus && query.versionumero) {
+    const versio = katseltavaVersio()
+    if (versio) {
       opiskeluoikeusFetch.call(
-        query.opiskeluoikeus,
-        parseInt(query.versionumero)
+        versio.opiskeluoikeusOid,
+        parseInt(versio.versionumero)
       )
     } else {
       opiskeluoikeusFetch.clear()
@@ -179,7 +179,7 @@ const useVirkailijaUiAdapter = (oppijaModel: ObjectModel): UiAdapter => {
         oppijaFetch.call(oppijaOid)
       }
     }
-    edellinenVersionumeroRef.current = query.versionumero
+    edellinenVersionumeroRef.current = versio?.versionumero
   }
 
   const oppija = useMergedApiData(
@@ -258,8 +258,7 @@ const useUiAdapterImpl = <T extends any[]>(
   onVersionumeroChange?: () => void
 ): UiAdapter => {
   const [adapter, setAdapter] = useSafeState<UiAdapter>(loadingUiAdapter)
-  const versionumero = useSearchParam('versionumero')
-  const versioituOpiskeluoikeus = useSearchParam('opiskeluoikeus')
+  const versio = useKatseltavaVersio()
 
   // Ladatun datan jälkeen tallennetut opiskeluoikeudet. Ref eikä tila, jotta
   // tallennus ei renderöi editoria uudelleen; ne otetaan käyttöön vasta, kun
@@ -300,7 +299,7 @@ const useUiAdapterImpl = <T extends any[]>(
       onVersionumeroChange?.()
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [v2Mode, versionumero, versioituOpiskeluoikeus])
+  }, [v2Mode, versio?.opiskeluoikeusOid, versio?.versionumero])
 
   useOnApiSuccess(oppija, (result) => {
     const opiskeluoikeudet = result.data.opiskeluoikeudet
@@ -312,10 +311,7 @@ const useUiAdapterImpl = <T extends any[]>(
         const tyyppi = modelData(opiskeluoikeusModel, 'tyyppi.koodiarvo')
         const oid = modelData(opiskeluoikeusModel, 'oid')
 
-        const versionumeroParam = opiskeluoikeudenVersionumero(
-          window.location.search,
-          oid
-        )
+        const versionumeroParam = opiskeluoikeudenVersionumero(oid)
 
         const ladattu = opiskeluoikeudet.find(
           (o) =>

@@ -8,6 +8,7 @@ import {
 } from '../editor/EditorModel'
 import Link from '../components/Link'
 import { currentLocation, navigateTo } from '../util/location.js'
+import { korvaaOsoiteHiljaa } from '../util/router'
 import { suorituksenTyyppi, suoritusTitle, suoritusValmis } from './Suoritus'
 import Text from '../i18n/Text'
 import { t } from '../i18n/i18n'
@@ -81,10 +82,7 @@ export const SuoritusTabs = ({ model, suoritukset }) => {
               {selected ? (
                 titleEditor
               ) : (
-                <Link href={urlForTab(suoritukset, i)} exitHook={false}>
-                  {' '}
-                  {titleEditor}{' '}
-                </Link>
+                <Link href={urlForTab(suoritukset, i)}> {titleEditor} </Link>
               )}
               {isNuortenPerusopetuksenOppiaineenOppimaara &&
                 isErityinenTutkinto && (
@@ -166,7 +164,7 @@ export const suoritusTabIndex = (suoritukset) => {
     const newLocation = currentLocation()
       .addQueryParams({ [paramName]: selectedTabName })
       .toString()
-    history.replaceState(null, null, newLocation)
+    korvaaOsoiteHiljaa(newLocation)
   }
   return index
 }

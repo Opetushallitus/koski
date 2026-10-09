@@ -5,13 +5,15 @@ import { yearFromIsoDateString } from '../date/date'
 import { modelData, modelItems, modelTitle } from '../editor/EditorModel'
 import Text from '../i18n/Text'
 import { t } from '../i18n/i18n'
-import { currentLocation, navigateTo } from '../util/location.js'
+import { navigateTo } from '../util/location.js'
 import { userP } from '../util/user'
 import { UusiOpiskeluoikeusDialog } from '../uusiopiskeluoikeus/UusiOpiskeluoikeusDialog'
 import { postNewOppija } from '../uusioppija/UusiOppija'
 import { reloadOppija } from '../virkailija/VirkailijaOppijaView'
+import { useMuokattavaOpiskeluoikeus } from '../appstate/sivunTila'
 
 export default ({ oppijaOid, opiskeluoikeusTyypit, selectedIndex }) => {
+  const muokkausKäynnissä = useMuokattavaOpiskeluoikeus() !== undefined
   const addingAtom = Atom(false)
   const toggleAdd = (event) => {
     addingAtom.modify((x) => !x)
@@ -127,8 +129,7 @@ export default ({ oppijaOid, opiskeluoikeusTyypit, selectedIndex }) => {
             <li
               key="new"
               className={
-                'add-opiskeluoikeus' +
-                (currentLocation().params.edit ? ' disabled' : '')
+                'add-opiskeluoikeus' + (muokkausKäynnissä ? ' disabled' : '')
               }
             >
               <span className="plus" onClick={toggleAdd}>

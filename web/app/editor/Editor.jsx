@@ -67,6 +67,7 @@ Editor.setupContext = (
 
 Editor.shouldComponentUpdate = function (nextProps) {
   if (parseBool(nextProps.alwaysUpdate)) return true
+  if (nextProps.updateKey !== this.props.updateKey) return true
   const next = nextProps.model
   const current = this.props.model
   let result = next.modelId !== current.modelId

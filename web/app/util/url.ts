@@ -1,4 +1,5 @@
 import { fromEntries, isEmptyObject, ObjectEntry } from './fp/objects'
+import { siirry } from './router'
 
 export type LocationQueryIn = Record<string, string | number | boolean | null>
 export type LocationQueryOut = Record<string, string>
@@ -41,13 +42,7 @@ export const currentQueryWith = (params: LocationQueryIn): string =>
 
 export const goto = (href: string) => window.location.assign(href)
 
-// Tapahtuma, jolla pushLocation ilmoittaa osoitteen muuttuneen ilman koko sivun
-// uudelleenlatausta. useSearchParam kuuntelee tätä (ja popstatea).
-export const LOCATION_CHANGE_EVENT = 'locationchange'
-
-// Asiakaspuolen navigointi: päivitä osoite selaimen historiaan lataamatta sivua
-// uudelleen ja ilmoita muutoksesta osoitetta lukeville hookeille.
+// Asiakaspuolen navigointi lataamatta sivua uudelleen.
 export const pushLocation = (href: string): void => {
-  window.history.pushState({}, '', href)
-  window.dispatchEvent(new Event(LOCATION_CHANGE_EVENT))
+  siirry(href)
 }
