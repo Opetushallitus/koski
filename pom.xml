@@ -831,23 +831,49 @@
               <includePluginDependencies>true</includePluginDependencies>
               <blockSystemExit>true</blockSystemExit>
               <arguments>
-                <argument>--config=${project.basedir}/.scalafix.conf</argument>
                 <argument>--scala-version=${scala.version}</argument>
                 <argument>--sourceroot=${project.basedir}</argument>
-                <argument>${project.basedir}/src/main/scala</argument>
-                <argument>${project.basedir}/src/test/scala</argument>
-                <argument>${project.basedir}/scala-schema/src/main/scala</argument>
-                <argument>${project.basedir}/scala-schema/src/test/scala</argument>
               </arguments>
             </configuration>
             <executions>
               <execution>
-                <id>scalafix</id>
-              </execution>
-              <execution>
-                <id>scalafix-check</id>
+                <id>scalafix-main</id>
                 <configuration>
                   <arguments combine.children="append">
+                    <argument>--config=${project.basedir}/.scalafix.conf</argument>
+                    <argument>${project.basedir}/src/main/scala</argument>
+                    <argument>${project.basedir}/scala-schema/src/main/scala</argument>
+                  </arguments>
+                </configuration>
+              </execution>
+              <execution>
+                <id>scalafix-test</id>
+                <configuration>
+                  <arguments combine.children="append">
+                    <argument>--config=${project.basedir}/.scalafix-test.conf</argument>
+                    <argument>${project.basedir}/src/test/scala</argument>
+                    <argument>${project.basedir}/scala-schema/src/test/scala</argument>
+                  </arguments>
+                </configuration>
+              </execution>
+              <execution>
+                <id>scalafix-main-check</id>
+                <configuration>
+                  <arguments combine.children="append">
+                    <argument>--config=${project.basedir}/.scalafix.conf</argument>
+                    <argument>${project.basedir}/src/main/scala</argument>
+                    <argument>${project.basedir}/scala-schema/src/main/scala</argument>
+                    <argument>--check</argument>
+                  </arguments>
+                </configuration>
+              </execution>
+              <execution>
+                <id>scalafix-test-check</id>
+                <configuration>
+                  <arguments combine.children="append">
+                    <argument>--config=${project.basedir}/.scalafix-test.conf</argument>
+                    <argument>${project.basedir}/src/test/scala</argument>
+                    <argument>${project.basedir}/scala-schema/src/test/scala</argument>
                     <argument>--check</argument>
                   </arguments>
                 </configuration>

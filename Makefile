@@ -193,11 +193,11 @@ lint-check: install-lint-tools
 
 .PHONY: scalafix
 scalafix:
-	mvn --batch-mode --activate-profiles scalafix exec:java@scalafix
+	mvn --batch-mode --activate-profiles scalafix exec:java@scalafix-main exec:java@scalafix-test
 
 .PHONY: scalafix-check
 scalafix-check:
-	mvn --batch-mode --activate-profiles scalafix exec:java@scalafix-check
+	mvn --batch-mode --activate-profiles scalafix exec:java@scalafix-main-check exec:java@scalafix-test-check
 
 .PHONY: owasp
 owasp:

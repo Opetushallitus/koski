@@ -531,7 +531,6 @@ object Annotations {
             .orElse(Try(parseAsBoolean(value.toString.toBoolean)))
             .getOrElse {
               val evaluated = tb.eval(tb.untypecheck(value))
-              //println("Expensive: " + annotationClass.getName + " / " + tyep.getName + " = " + value)
               evaluated.asInstanceOf[AnyRef]
             }
       }
