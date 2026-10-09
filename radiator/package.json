@@ -23,13 +23,11 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "fp-ts": "2.16.11",
-    "tail": "2.2.6"
+    "fp-ts": "2.16.11"
   },
   "devDependencies": {
     "@eslint/js": "10.0.1",
     "@types/node": "24.19.1",
-    "@types/tail": "2.2.3",
     "concurrently": "10.0.5",
     "eslint": "10.12.0",
     "eslint-config-prettier": "10.1.8",

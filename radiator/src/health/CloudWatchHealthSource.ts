@@ -1,4 +1,4 @@
-import { spawn } from 'child_process'
+import { followProcessOutput } from './followProcessOutput.ts'
 import { HealthSource, isHealthDataEntry } from './HealthSource.ts'
 
 export type RemoteEnv = 'dev' | 'qa' | 'prod'
@@ -11,7 +11,7 @@ type LogLine = {
 export class CloudWatchHealthSource extends HealthSource {
   constructor(environment: RemoteEnv) {
     super()
-    tailLogs(environment)(this.parseLine.bind(this))
+    tailLogs(environment, this.parseLine.bind(this))
   }
 
   parseLine(line: string) {
@@ -36,35 +36,18 @@ export class CloudWatchHealthSource extends HealthSource {
   }
 }
 
-const tailLogs = (environment: RemoteEnv) =>
-  runAwsCli('logs tail koski-health', {
-    profile: `oph-koski-${environment}`,
-    format: 'short',
-    follow: true
-  })
-
-const runAwsCli =
-  (command: string, params: Record<string, string | boolean>) =>
-  (onData: (data: string) => void) => {
-    const process = spawn('aws', [
-      ...command.split(' '),
-      ...Object.entries(params)
-        .flatMap(([key, value]) =>
-          value !== undefined && value !== false
-            ? [`--${key}`, value === true ? '' : value]
-            : []
-        )
-        .filter((x) => x.length > 0)
-    ])
-
-    process.stdout.on('data', (data: Buffer) => {
-      const entries = data.toString().split('\n')
-      entries.forEach(onData)
-    })
-
-    process.stderr.on('data', (error: Buffer) =>
-      console.error(error.toString())
-    )
-    process.on('error', (error) => console.error(error))
-    //   process.on('close', onClose)
-  }
+const tailLogs = (environment: RemoteEnv, onLine: (line: string) => void) =>
+  followProcessOutput(
+    'aws',
+    [
+      'logs',
+      'tail',
+      'koski-health',
+      '--profile',
+      `oph-koski-${environment}`,
+      '--format',
+      'short',
+      '--follow'
+    ],
+    onLine
+  )
