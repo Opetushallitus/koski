@@ -46,11 +46,11 @@ object VapaanSivistystyonVapaatavoitteisenKoulutuksenRaportti {
         "viimeisinTila" -> Column(t.get("raportti-excel-kolumni-viimeisinTila")),
         "opintokokonaisuusKoodiarvo" -> Column(t.get("raportti-excel-kolumni-opintokokonaisuusKoodiarvo")),
         "opintokokonaisuusNimi" -> Column(t.get("raportti-excel-kolumni-opintokokonaisuusNimi")),
-        "yhteislaajuus" -> Column(t.get("raportti-excel-kolumni-yhteislaajuusOpintopisteet")),
-        "osasuorituksiaYhteensä" -> Column(t.get("raportti-excel-kolumni-osasuorituksiaYhteensä")),
-        "arvioitujaOsasuorituksia" -> Column(t.get("raportti-excel-kolumni-arvioitujaOsasuorituksia")),
-        "arviointiPuuttuuOsasuorituksia" -> Column(t.get("raportti-excel-kolumni-arviointiPuuttuuOsasuorituksia")),
-        "suoritusVahvistettu" -> Column(t.get("raportti-excel-kolumni-suoritusVahvistettu")),
+        "yhteislaajuus" -> Column(t.get("raportti-excel-kolumni-yhteislaajuusOpintopisteet"), comment = Some(t.get("raportti-excel-kolumni-yhteislaajuusOpintopisteet-comment"))),
+        "osasuorituksiaYhteensä" -> Column(t.get("raportti-excel-kolumni-osasuorituksiaYhteensä"), comment = Some(t.get("raportti-excel-kolumni-osasuorituksiaYhteensä-comment"))),
+        "arvioitujaOsasuorituksia" -> Column(t.get("raportti-excel-kolumni-arvioitujaOsasuorituksia"), comment = Some(t.get("raportti-excel-kolumni-arvioitujaOsasuorituksia-comment"))),
+        "arviointiPuuttuuOsasuorituksia" -> Column(t.get("raportti-excel-kolumni-arviointiPuuttuuOsasuorituksia"), comment = Some(t.get("raportti-excel-kolumni-arviointiPuuttuuOsasuorituksia-comment"))),
+        "suoritusVahvistettu" -> Column(t.get("raportti-excel-kolumni-suoritusVahvistettu"), comment = Some(t.get("raportti-excel-kolumni-suoritusVahvistettu-comment"))),
         "suorituksenVahvistuspäivä" -> Column(t.get("raportti-excel-kolumni-suorituksenVahvistuspaiva")),
       )
     )
