@@ -9,7 +9,7 @@
   },
   "engines": {
     "node": ">=24",
-    "pnpm": "10.34.6"
+    "pnpm": "12.9.1"
   },
   "dependencies": {
     "@skidding/react-codemirror": "1.0.2",
@@ -99,5 +99,5 @@
     "prettier": "prettier --write --cache .",
     "prettier:check": "prettier --check --cache ."
   },
-  "packageManager": "pnpm@10.34.6"
+  "packageManager": "pnpm@12.9.1"
 }
