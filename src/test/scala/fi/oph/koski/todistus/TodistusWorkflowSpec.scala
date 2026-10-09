@@ -266,7 +266,6 @@ class TodistusWorkflowSpec extends TodistusSpecHelpers {
     }
 
     "Merkitsee useita vanhentuneita todistuksia kerralla" in {
-      val templateVariant = "fi"
       val hetu = KoskiSpecificMockOppijat.kielitutkinnonSuorittaja.hetu.get
       val oppijaOid = KoskiSpecificMockOppijat.kielitutkinnonSuorittaja.oid
       val opiskeluoikeusOid = getVahvistettuKielitutkinnonOpiskeluoikeus(oppijaOid).flatMap(_.oid).get
@@ -277,13 +276,13 @@ class TodistusWorkflowSpec extends TodistusSpecHelpers {
       val reqEn = TodistusGenerateRequest(opiskeluoikeusOid, "en")
 
       val jobFi = addGenerateJobSuccessfully(reqFi, hetu) { todistusJob => todistusJob }
-      val completedFi = waitForCompletion(jobFi.id, hetu)
+      waitForCompletion(jobFi.id, hetu)
 
       val jobSv = addGenerateJobSuccessfully(reqSv, hetu) { todistusJob => todistusJob }
-      val completedSv = waitForCompletion(jobSv.id, hetu)
+      waitForCompletion(jobSv.id, hetu)
 
       val jobEn = addGenerateJobSuccessfully(reqEn, hetu) { todistusJob => todistusJob }
-      val completedEn = waitForCompletion(jobEn.id, hetu)
+      waitForCompletion(jobEn.id, hetu)
 
       // Merkitse kaikki todistukset vanhoiksi
       val expirationDuration = app.config.getDuration("todistus.expirationDuration")
@@ -375,7 +374,6 @@ class TodistusWorkflowSpec extends TodistusSpecHelpers {
 
       val runningJob = withoutRunningSchedulers(truncate = false) {
         // Luo job joka on käynnissä toisella workerilla
-        val activeWorkerId = app.todistusRepository.workerId
         val job = TodistusJob(
           id = java.util.UUID.randomUUID().toString,
           userOid = Some(oppijaOid),

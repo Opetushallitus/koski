@@ -89,7 +89,6 @@ object PerusopetuksenOpiskeluoikeusValidation extends Logging {
           case os: NuortenPerusopetuksenOppiaineenSuoritus =>
             os.luokkaAste match {
               case Some(la) =>
-                val vahvistuksenpäiväys = Seq(vahvistuspäivä, os.ensimmäinenArviointiPäivä).flatten
                 val tavoitekokonaisuusTaiYhdysluokkaJaksolla = vahvistuspäivä.exists(d => tavoitekokonaisuuksittainOpiskeluVoimassa(oo, d) || yhdysluokkaVoimassa(oo, d))
                 if (vahvistuspäivä.isEmpty || (vsopOn && vahvistuspäivä.exists(p => !p.isAfter(cutoff)))) { None }
                 else if (!tavoitekokonaisuusTaiYhdysluokkaJaksolla) {

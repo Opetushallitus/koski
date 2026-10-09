@@ -596,9 +596,10 @@
             <arg>-Ywarn-dead-code</arg>
             <arg>-Xlint:missing-interpolator</arg>
             <arg>-Xlint:valpattern</arg>
-            <arg>-Wunused:imports</arg>
+            <arg>-Wunused:imports,privates,locals,nowarn</arg>
             <arg>-Xlint:adapted-args</arg>
             <arg>-Wconf:cat=unused-imports:${scalac.fixableWarnings},cat=lint-adapted-args:${scalac.fixableWarnings}</arg>
+            <arg>-Wconf:cat=unused-privates&amp;msg=default argument:s,cat=unused-locals&amp;msg=default argument:s</arg>
             <arg>-quickfix:cat=unused-imports,cat=lint-adapted-args</arg>
             <arg>-Xfatal-warnings</arg>
           </args>

@@ -13,7 +13,6 @@ class ValpasOppijaCasServlet(implicit val application: KoskiApplication) extends
   private val casService = application.casService
   private val oppijaCreation = application.casOppijaCreationService
   private val huoltajaServiceVtj = application.huoltajaServiceVtj
-  private val directoryClient = application.directoryClient
 
   def virhesivu: String = valpasRoot + "/virhe/login"
   def eiTietojaOpintopolussaSivu: String = valpasRoot + "/eitietoja"

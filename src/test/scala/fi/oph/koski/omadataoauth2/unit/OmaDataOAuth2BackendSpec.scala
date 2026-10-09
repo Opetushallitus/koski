@@ -318,7 +318,7 @@ class OmaDataOAuth2BackendSpec
     "code" - {
       "puuttuminen aiheuttaa virheen" in {
         val pkce = createChallengeAndVerifier()
-        val code = createAuthorization(validKansalainen, pkce.challenge)
+        createAuthorization(validKansalainen, pkce.challenge)
 
         postAuthorizationServerClientIdFromUsername(
           validPalvelukäyttäjä,

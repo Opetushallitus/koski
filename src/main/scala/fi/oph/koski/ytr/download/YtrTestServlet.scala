@@ -2,7 +2,7 @@ package fi.oph.koski.ytr.download
 
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.db.{KoskiTables, QueryMethods}
-import fi.oph.koski.koskiuser.{AccessType, KoskiCookieAndBasicAuthenticationSupport, KoskiSpecificSession, RequiresVirkailijaOrPalvelukäyttäjä}
+import fi.oph.koski.koskiuser.{KoskiCookieAndBasicAuthenticationSupport, RequiresVirkailijaOrPalvelukäyttäjä}
 import fi.oph.koski.servlet.{KoskiSpecificApiServlet, NoCache}
 import fi.oph.koski.sso.KoskiSpecificSSOSupport
 import slick.dbio.DBIO
@@ -17,9 +17,6 @@ class YtrTestServlet(implicit val application: KoskiApplication) extends KoskiSp
   private val downloadService = application.ytrDownloadService
 
   get("/clear") {
-    implicit val session: KoskiSpecificSession = KoskiSpecificSession.systemUserTallennetutYlioppilastutkinnonOpiskeluoikeudet
-    implicit val accessType: AccessType.Value = AccessType.write
-
     logger.info("Clearing YTR data")
 
     runDbSync(DBIO.sequence(Seq(

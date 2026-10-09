@@ -70,10 +70,6 @@ object FrontendValvontaHeaders {
 
   private val workerSrc = "worker-src 'none'"
 
-  // require-trusted-types-for olisi hyvä olla, mutta käyttö on selaimissa tuettu vasta Chromessa ja Edgessä.
-  // Käyttöönotto vaatisi myös muutoksia fronttikoodiin.
-  private val requireTrustedTypesFor = "require-trusted-types-for 'script'"
-
   def headers(
     allowFrameAncestors: Boolean,
     allowFrameSrcSelf: Boolean,

@@ -5,7 +5,6 @@ import fi.oph.koski.db.{DB, QueryMethods}
 import fi.oph.koski.raportit.RaporttiUtils.arvioituAikavälillä
 import fi.oph.koski.raportointikanta._
 import fi.oph.koski.schema.Organisaatio.Oid
-import slick.jdbc.GetResult
 
 import java.time.LocalDate
 import scala.concurrent.duration.{DurationInt, FiniteDuration}
@@ -53,8 +52,6 @@ case class PerusopetukseenValmistavanRaportitRepository(db: DB) extends QueryMet
   }
 
   private def queryOpiskeluoikeusOids(oppilaitokset: Seq[String], alku: LocalDate, loppu: LocalDate) = {
-    implicit val getResult = GetResult(rs => (rs.nextString(), rs.nextArray(), rs.nextArray()))
-
     val query =
       sql"""
      select

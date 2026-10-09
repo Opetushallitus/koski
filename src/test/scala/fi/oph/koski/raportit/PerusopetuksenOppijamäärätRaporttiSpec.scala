@@ -96,7 +96,6 @@ class PerusopetuksenOppijamäärätRaporttiSpec extends AnyFreeSpec with Matcher
   private val ylimääräisetErityiselläTuellaOpiskeluoikeudet = 4
   private val ylimääräisetVaikeastiVammaisetLkm = 0
   private val ylimääräisetMuuKuinVaikeastiVammaisetLkm = 1
-  private val rikkinäisetYlimääräisetLkm = 6
 
   private def ehjäPidennettyOppivelvollisuusTarvittavienTietojenKanssaOpiskeluoikeus: PerusopetuksenOpiskeluoikeus =
     raportin8LuokanRivilleOsuvaOpiskeluoikeus(

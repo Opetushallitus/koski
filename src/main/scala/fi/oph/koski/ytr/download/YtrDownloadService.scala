@@ -1,6 +1,5 @@
 package fi.oph.koski.ytr.download
 
-import fi.oph.koski.cloudwatch.CloudWatchMetricsService
 import fi.oph.koski.config.{Environment, KoskiApplication}
 import fi.oph.koski.db.{DB, QueryMethods}
 import fi.oph.koski.http.HttpStatus
@@ -41,8 +40,6 @@ class YtrDownloadService(
   private var extraSleepPerStudentInMs = defaultExtraSleepPerStudenInMs
 
   private lazy val defaultScheduler: Scheduler = NewThreadScheduler()
-
-  private val cloudWatchMetrics = CloudWatchMetricsService.apply(application.config)
 
   def adjustSleepPeriodicallyByReplayLag() = {
     val t = new java.util.Timer()

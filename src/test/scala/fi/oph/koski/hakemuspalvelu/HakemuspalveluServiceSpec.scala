@@ -671,23 +671,4 @@ class HakemuspalveluServiceSpec
     actualOo.tila.opiskeluoikeusjaksot.map(_.tila.koodiarvo) should equal(expectedOoData.tila.opiskeluoikeusjaksot.map(_.tila.koodiarvo))
     actualOo.tila.opiskeluoikeusjaksot.map(_.alku) should equal(expectedOoData.tila.opiskeluoikeusjaksot.map(_.alku))
   }
-
-  private def verifyEiOpiskeluoikeuksia(oppija: LaajatOppijaHenkilöTiedot) = {
-    val result = hakemuspalveluService.findOppija(oppija.oid)
-
-    result.isRight should be(true)
-
-    result.map(o => {
-      verifyOppija(oppija, o)
-
-      o.opiskeluoikeudet should have length 0
-    })
-  }
-
-  private def verifyEiLöydyTaiEiKäyttöoikeuksia(oppijaOid: String)(implicit user: KoskiSpecificSession): Unit = {
-    val result = hakemuspalveluService.findOppija(oppijaOid)(user)
-
-    result.isLeft should be(true)
-    result should equal(Left(KoskiErrorCategory.notFound.oppijaaEiLöydyTaiEiOikeuksia("Oppijaa ei löydy tai käyttäjällä ei ole oikeuksia tietojen katseluun.")))
-  }
 }

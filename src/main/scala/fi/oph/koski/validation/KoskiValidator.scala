@@ -30,6 +30,8 @@ import org.json4s.JValue
 import java.lang.Character.isDigit
 import java.time.LocalDate
 
+import scala.annotation.nowarn
+
 class KoskiValidator(
   organisaatioRepository: OrganisaatioRepository,
   koskiOpiskeluoikeudet: KoskiOpiskeluoikeusRepository,
@@ -563,6 +565,7 @@ class KoskiValidator(
     eriTutkinnonLinkityksenEstoKoskeeTätäOpiskeluoikeutta(sisältyvä) &&
     !sisältyvänSuorituksetSisältävänOsajoukko(sisältävä, sisältyvä)
 
+  @nowarn("cat=unused-privates")
   private def eriTutkinnonLinkitysEstetty(sisältävä: KoskiOpiskeluoikeusRow, sisältyvä: Opiskeluoikeus): Boolean =
     eriTutkinnonLinkityksenEstoVoimassa && eriTutkinnonLinkitysEstettäisiin(sisältävä, sisältyvä)
 
@@ -1659,10 +1662,6 @@ class KoskiValidator(
     case s =>
       KoskiErrorCategory.badRequest.validation.tila.valmiiksiMerkityltäPuuttuuOsasuorituksia(s"Suoritus ${suorituksenTunniste(s)} on merkitty valmiiksi, mutta sillä on tyhjä osasuorituslista tai opiskeluoikeudelta puuttuu linkitys")
   }
-
-  private def linkitysTehty(opiskeluoikeusOid: String, oppilaitosOid: Oid, oppijaOids: List[Oid]) =
-    koskiOpiskeluoikeudet.findByOppijaOids(oppijaOids)(KoskiSpecificSession.systemUser)
-      .exists(_.sisältyyOpiskeluoikeuteen.exists(_.oid == opiskeluoikeusOid))
 
   private def validateValmiinSuorituksenStatus(suoritus: Suoritus) = {
     suoritus.rekursiivisetOsasuoritukset.find(_.kesken).fold(HttpStatus.ok) { keskeneräinenOsasuoritus =>

@@ -9,7 +9,7 @@ import fi.oph.koski.schema.KoskiSchema.lenientDeserializationWithoutValidation
 import fi.oph.koski.schema.Oppija
 import fi.oph.koski.tiedonsiirto.TiedonsiirtoError
 import org.json4s.JsonAST.JBool
-import org.json4s.{DefaultFormats, JValue}
+import org.json4s.JValue
 
 class OppijaServletOppijaAdder(application: KoskiApplication) {
   def add(
@@ -35,7 +35,6 @@ class OppijaServletOppijaAdder(application: KoskiApplication) {
       })
 
       if (cleanForTesting) {
-        implicit val formats = DefaultFormats
         oppijaJson.replace(List("henkilö"), (oppijaJson \ "henkilö").removeField {
           case ("oid", _) => true
           case ("kansalaisuus", _) => true
