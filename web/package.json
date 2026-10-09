@@ -21,7 +21,7 @@
     "font-awesome": "4.7.0",
     "fp-ts": "2.16.11",
     "js-cookie": "3.0.8",
-    "normalize.css": "7.0.0",
+    "normalize.css": "8.0.1",
     "optics-ts": "2.4.1",
     "partial.lenses": "9.8.0",
     "ramda": "0.32.0",
