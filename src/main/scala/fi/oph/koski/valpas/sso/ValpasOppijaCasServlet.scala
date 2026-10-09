@@ -2,7 +2,6 @@ package fi.oph.koski.valpas.sso
 
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.henkilo.OppijaHenkilö
-import fi.oph.koski.huoltaja.HuollettavienHakuOnnistui
 import fi.oph.koski.koskiuser.AuthenticationUser
 import fi.oph.koski.log.LogUserContext
 import fi.oph.koski.servlet.NoCache

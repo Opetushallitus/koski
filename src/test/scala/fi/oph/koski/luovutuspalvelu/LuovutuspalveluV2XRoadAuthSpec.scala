@@ -3,7 +3,6 @@ package fi.oph.koski.luovutuspalvelu
 import fi.oph.koski.log.RootLogTester.convertToAnyShouldWrapper
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.must.Matchers
-import fi.oph.koski.xml.NodeSeqImplicits._
 
 class LuovutuspalveluV2XRoadAuthSpec extends AnyFreeSpec with Matchers {
 

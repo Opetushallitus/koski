@@ -14,7 +14,6 @@ import fi.oph.koski.valpas.valpasrepository.ValpasExampleData
 import fi.oph.koski.valpas.valpasuser.{ValpasMockUser, ValpasMockUsers}
 import org.scalatest.BeforeAndAfterEach
 
-import java.time.LocalDate
 
 class ValpasKelaServletSpec extends ValpasTestBase with BeforeAndAfterEach {
 

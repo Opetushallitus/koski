@@ -6,7 +6,7 @@ import fi.oph.koski.koskiuser.KoskiCookieAndBasicAuthenticationSupport
 import fi.oph.koski.log.Logging
 import fi.oph.koski.util.XML
 
-import java.net.{URI, URL}
+import java.net.URL
 import scala.xml.Elem
 
 trait KoskiHtmlServlet extends HtmlServlet with KoskiCookieAndBasicAuthenticationSupport with Logging {

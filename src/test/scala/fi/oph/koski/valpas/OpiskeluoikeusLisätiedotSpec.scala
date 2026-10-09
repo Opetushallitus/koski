@@ -6,7 +6,6 @@ import fi.oph.koski.valpas.db.ValpasSchema.OpiskeluoikeusLisätiedotKey
 import fi.oph.koski.valpas.opiskeluoikeusfixture.ValpasMockOppijat
 import fi.oph.koski.valpas.opiskeluoikeusrepository.ValpasOppivelvollinenOppijaLaajatTiedot
 import fi.oph.koski.valpas.oppija.OppijaHakutilanteillaLaajatTiedot
-import fi.oph.koski.valpas.valpasuser.ValpasRooli
 import org.scalatest.BeforeAndAfterAll
 
 

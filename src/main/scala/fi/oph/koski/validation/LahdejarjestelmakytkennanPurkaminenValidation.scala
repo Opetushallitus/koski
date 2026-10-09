@@ -3,7 +3,7 @@ package fi.oph.koski.validation
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.koskiuser.KoskiSpecificSession
 import fi.oph.koski.opiskeluoikeus.CompositeOpiskeluoikeusRepository
-import fi.oph.koski.schema.{KoskeenTallennettavaOpiskeluoikeus, LähdejärjestelmäkytkennänPurkaminen, LähdejärjestelmäkytkentäPurettavissa, OpiskeluoikeudenTyyppi}
+import fi.oph.koski.schema.{KoskeenTallennettavaOpiskeluoikeus, LähdejärjestelmäkytkentäPurettavissa, OpiskeluoikeudenTyyppi}
 
 object LahdejarjestelmakytkennanPurkaminenValidation {
   def validateTiedonsiirto(

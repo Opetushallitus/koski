@@ -4,7 +4,6 @@ import fi.oph.koski.http.Http.runIO
 import fi.oph.koski.log.Logging
 
 import scala.xml.Elem
-import fi.oph.koski.xml.NodeSeqImplicits._
 
 class VtjClient(runtimeCfg: VtjRuntimeConfig, httpClient: VtjHttpClient) extends Logging {
   logger.info(s"Using VTJ integration endpoint ${runtimeCfg.serviceUrl}")

@@ -1,7 +1,7 @@
 package fi.oph.koski.migration
 
 import fi.oph.koski.KoskiApplicationForTests
-import fi.oph.koski.raportointikanta.{DelayedScheduler, RaportointiDatabase, RaportointikantaTestMethods}
+import fi.oph.koski.raportointikanta.{RaportointiDatabase, RaportointikantaTestMethods}
 import fi.oph.koski.util.Wait
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.should.Matchers
@@ -46,17 +46,17 @@ class MigrationSpec extends AnyFreeSpec with Matchers with RaportointikantaTestM
         "OpiskeluoikeusLoader.scala"                                -> "c7524a6b73eb89ef757845afe1713a6a",
         "OppivelvollisuudenVapautusLoader.scala"                    -> "2870707413fff5719b7cb7063dd424c4",
         "OrganisaatioHistoriaRowBuilder.scala"                      -> "7e586d9e273a5a4ee7beae257f22c7f4",
-        "OrganisaatioLoader.scala"                                  -> "4f7ce51cb922dbc11e694ebe85ab3472",
+        "OrganisaatioLoader.scala"                                  -> "4e496d4d92442d078beaf59d9d37d83f",
         "PäivitettyOpiskeluoikeusLoader.scala"                      -> "500545bbe7ef47dedcfdc49580b536d2",
-        "RaportointiDatabase.scala"                                 -> "7f34b880cb8a9af46ffe336345f37b7b",
+        "RaportointiDatabase.scala"                                 -> "5eaca10e931dc82ba1b30b0c0ccc105c",
         "RaportointiDatabaseCustomFunctions.scala"                  -> "956f101d1219c49ac9134b72a30caf3a",
-        "RaportointiDatabaseSchema.scala"                           -> "b01cfed01583f64ab9b285b3a5e64675",
-        "RaportointikantaService.scala"                             -> "770421a82e67640436ee2d129de3af68",
+        "RaportointiDatabaseSchema.scala"                           -> "e6c360ad519e2e374051c10ebf2a5c94",
+        "RaportointikantaService.scala"                             -> "333faafad5e174831c135aae201eb89c",
         "RaportointikantaStatusServlet.scala"                       -> "bfb4d4d668ecbff866468ae2dc5c1e0b",
         "RaportointikantaTestServlet.scala"                         -> "ad92e33c2f816ed65c0693f5dc0143b4",
         "RaportointikantaTableQueries.scala"                        -> "f2f26c217992539c1e61dcbd031fc642",
         "TOPKSAmmatillinenRaporttiRowBuilder.scala"                 -> "a9c26a13385ff576810f3ef831240437",
-        "OpiskeluoikeusLoaderRowBuilder.scala"                      -> "cea96e3bef7b30c4e6448ba8117d480b",
+        "OpiskeluoikeusLoaderRowBuilder.scala"                      -> "82404dde2961a05137c6ada33d0a55a",
         "IncrementalUpdateOpiskeluoikeusLoader.scala"               -> "ad58afb81edd77fd935ddd1a4f5e0e9c",
         "FullReloadOpiskeluoikeusLoader.scala"                      -> "b7920c2257afaecf09f1212fbf393326"
       )

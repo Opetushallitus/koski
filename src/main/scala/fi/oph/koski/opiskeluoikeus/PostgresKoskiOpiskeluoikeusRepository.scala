@@ -12,7 +12,6 @@ import fi.oph.koski.schema._
 import slick.dbio.DBIOAction.sequence
 import slick.dbio.{DBIOAction, NoStream}
 import slick.jdbc.GetResult
-import slick.lifted.Query
 
 import java.sql.Timestamp
 import java.time.LocalDate

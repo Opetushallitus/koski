@@ -6,7 +6,6 @@ import fi.oph.koski.henkilo.Yhteystiedot
 import fi.oph.koski.schema.annotation.KoodistoUri
 import fi.oph.koski.schema.{BlankableLocalizedString, Koodistokoodiviite, LocalizedString}
 import fi.oph.koski.valpas.hakukooste.Hakukooste
-import fi.oph.scalaschema.annotation.SyntheticProperty
 
 case class ValpasYhteystiedot(
   alkuperä: ValpasYhteystietojenAlkuperä,

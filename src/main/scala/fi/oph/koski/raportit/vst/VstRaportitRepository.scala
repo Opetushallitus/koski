@@ -2,7 +2,6 @@ package fi.oph.koski.raportit.vst
 
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.plainAPI._
 import fi.oph.koski.db.{DB, QueryMethods}
-import fi.oph.koski.opiskeluoikeus.OpiskeluoikeusQueryFilter.SuorituksenTyyppi
 import fi.oph.koski.raportointikanta._
 import fi.oph.koski.schema.Organisaatio
 import fi.oph.koski.util.DateOrdering.sqlDateOrdering

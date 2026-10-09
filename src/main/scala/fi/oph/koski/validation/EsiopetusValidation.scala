@@ -1,15 +1,10 @@
 package fi.oph.koski.validation
 
 import com.typesafe.config.Config
-import fi.oph.koski.config.Environment
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.schema.{Aikajakso, EsiopetuksenOpiskeluoikeudenLisätiedot, EsiopetuksenOpiskeluoikeus, KoskeenTallennettavaOpiskeluoikeus, MahdollisestiAlkupäivällinenJakso}
-import fi.oph.koski.util.ChainingSyntax.localDateOps
-import fi.oph.koski.util.DateOrdering.localDateOrdering
-import fi.oph.koski.util.FinnishDateFormat
 import fi.oph.koski.validation.PidennetynOppivelvollisuudenMuutoksenValidaatio.validateVanhojenJaksokenttienPäättyminenSiirryttäessäUusiin
 
-import java.time.LocalDate
 
 object EsiopetusValidation {
   def validateOpiskeluoikeus(config: Config)(oo: KoskeenTallennettavaOpiskeluoikeus): HttpStatus =

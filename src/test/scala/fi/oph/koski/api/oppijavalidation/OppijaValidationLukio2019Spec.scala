@@ -6,7 +6,7 @@ import fi.oph.koski.documentation.AmmatillinenExampleData.primusLähdejärjestel
 import fi.oph.koski.documentation.ExampleData._
 import fi.oph.koski.documentation.ExamplesLukio2019._
 import fi.oph.koski.documentation.Lukio2019ExampleData._
-import fi.oph.koski.documentation.LukioExampleData.{lukionOpiskeluoikeus, opiskeluoikeusAktiivinen, opiskeluoikeusPäättynyt}
+import fi.oph.koski.documentation.LukioExampleData.{lukionOpiskeluoikeus, opiskeluoikeusAktiivinen}
 import fi.oph.koski.documentation.{ExampleData, ExamplesLukio2019, Lukio2019ExampleData, LukioExampleData}
 import fi.oph.koski.http.ErrorMatcher.exact
 import fi.oph.koski.http.{ErrorMatcher, KoskiErrorCategory}

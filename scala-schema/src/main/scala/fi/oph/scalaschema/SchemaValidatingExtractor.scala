@@ -1,6 +1,6 @@
 package fi.oph.scalaschema
 import fi.oph.scalaschema.extraction._
-import org.json4s.{JString, _}
+import org.json4s._
 import org.json4s.jackson.JsonMethods
 
 import scala.reflect.runtime.{universe => ru}

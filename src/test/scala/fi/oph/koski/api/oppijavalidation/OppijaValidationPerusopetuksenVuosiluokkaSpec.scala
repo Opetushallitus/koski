@@ -4,7 +4,7 @@ import fi.oph.koski.KoskiHttpSpec
 import fi.oph.koski.api.misc.OpiskeluoikeusTestMethodsPerusopetus
 import fi.oph.koski.documentation.ExampleData.vahvistusPaikkakunnalla
 import fi.oph.koski.documentation.PerusopetusExampleData
-import fi.oph.koski.documentation.PerusopetusExampleData.{kaikkiAineet, seitsemännenLuokanSuoritus}
+import fi.oph.koski.documentation.PerusopetusExampleData.kaikkiAineet
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.schema._
 

@@ -12,7 +12,6 @@ import fi.oph.koski.koskiuser.Rooli.OPHKATSELIJA
 import fi.oph.koski.koskiuser._
 import fi.oph.koski.log.AuditLogTester
 import fi.oph.koski.organisaatio.MockOrganisaatiot
-import fi.oph.koski.schema.{LukionOppimääränSuoritus2015, LukionOppimääränSuoritus2019}
 import fi.oph.koski.virta.MockVirtaClient
 import fi.oph.koski.ytr.MockYtrClient
 import fi.oph.koski.{KoskiApplicationForTests, KoskiHttpSpec, schema}

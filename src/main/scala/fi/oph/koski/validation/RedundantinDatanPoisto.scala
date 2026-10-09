@@ -1,6 +1,6 @@
 package fi.oph.koski.validation
 
-import fi.oph.koski.schema.{AikuistenPerusopetuksenOpiskeluoikeudenLisätiedot, KoskeenTallennettavaOpiskeluoikeus, OikeusmaksuttomaanAsuntolapaikkaanAikajaksona, OikeusmaksuttomaanAsuntolapaikkaanBooleanina}
+import fi.oph.koski.schema.{KoskeenTallennettavaOpiskeluoikeus, OikeusmaksuttomaanAsuntolapaikkaanAikajaksona, OikeusmaksuttomaanAsuntolapaikkaanBooleanina}
 
 object RedundantinDatanPoisto {
   def dropRedundantData(oo: KoskeenTallennettavaOpiskeluoikeus) = {

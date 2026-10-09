@@ -4,7 +4,6 @@ import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.documentation.Markdown
 import fi.oph.koski.log.Logging
 import fi.oph.koski.util.TryWithLogging
-import fi.oph.koski.xml.NodeSeqImplicits._
 
 import java.net.URL
 import scala.io.Source

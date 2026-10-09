@@ -3,11 +3,9 @@ package fi.oph.koski.api.misc
 import fi.oph.koski.KoskiHttpSpec
 import fi.oph.koski.documentation.Examples.oppijaExamples
 import fi.oph.koski.documentation.ExamplesKielitutkinto
-import fi.oph.koski.documentation.ExamplesVapaaSivistystyöJotpa.Examples
 import fi.oph.koski.json.JsonSerializer
-import fi.oph.koski.koskiuser.{KoskiMockUser, MockUsers}
+import fi.oph.koski.koskiuser.MockUsers
 import fi.oph.koski.log.Logging
-import fi.oph.koski.schema.{Henkilö, HenkilöWithOid, UusiHenkilö}
 import org.scalatest.BeforeAndAfterAll
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.should.Matchers

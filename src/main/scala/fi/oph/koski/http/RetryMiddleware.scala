@@ -6,7 +6,6 @@ import org.http4s.client.middleware.{Retry, RetryPolicy}
 import org.http4s.{Request, Response}
 
 import scala.concurrent.duration.{DurationInt, FiniteDuration}
-import scala.language.higherKinds
 
 object RetryMiddleware {
   type RetriableFilter[F[_]] = (Request[F], Either[Throwable, Response[F]]) => Boolean

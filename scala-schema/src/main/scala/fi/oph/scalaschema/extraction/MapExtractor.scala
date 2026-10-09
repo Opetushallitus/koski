@@ -1,7 +1,6 @@
 package fi.oph.scalaschema.extraction
 
 import fi.oph.scalaschema._
-import org.json4s.JValue
 import org.json4s.JsonAST.{JField, JObject}
 
 object MapExtractor {

@@ -3,7 +3,6 @@ package fi.oph.koski.http
 import fi.oph.koski.{KoskiApplicationForTests, TestEnvironment}
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.schema.KoskiSchema.strictDeserialization
-import fi.oph.scalaschema.extraction.ValidationError
 import org.json4s.JValue
 import org.json4s.JsonAST.JString
 import org.json4s.jackson.JsonMethods

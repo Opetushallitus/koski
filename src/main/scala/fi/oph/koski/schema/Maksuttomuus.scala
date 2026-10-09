@@ -5,7 +5,6 @@ import fi.oph.koski.util.FinnishDateFormat
 import java.time.LocalDate
 import fi.oph.scalaschema.annotation.Description
 
-import scala.collection.mutable
 
 case class Maksuttomuus(
   alku: LocalDate,

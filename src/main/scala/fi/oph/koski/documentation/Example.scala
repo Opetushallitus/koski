@@ -1,6 +1,6 @@
 package fi.oph.koski.documentation
 
-import fi.oph.koski.henkilo.{HenkilötiedotHetuRequest, HenkilötiedotSearchRequest}
+import fi.oph.koski.henkilo.HenkilötiedotHetuRequest
 import fi.oph.koski.schema._
 import fi.oph.scalaschema.annotation.SyntheticProperty
 

@@ -3,7 +3,7 @@ package fi.oph.koski.massaluovutus
 import com.typesafe.config.Config
 import fi.oph.koski.config.Environment
 import fi.oph.koski.json.{JsonSerializer, SensitiveDataAllowed}
-import fi.oph.koski.koskiuser.{KoskiSpecificSession, Session}
+import fi.oph.koski.koskiuser.Session
 import fi.oph.koski.localization.LocalizationReader
 import fi.oph.koski.raportit.{DataSheet, ExcelWriter, OppilaitosRaporttiResponse, Sheet}
 import fi.oph.koski.util.CsvFormatter

@@ -17,7 +17,7 @@ import fi.oph.koski.util.DateOrdering.localDateOrdering
 import fi.oph.koski.util.OptionalLists.optionalList
 import fi.oph.koski.virta.VirtaXMLConverterUtils._
 
-import scala.collection.mutable.{HashMap, HashSet, ListBuffer}
+import scala.collection.mutable.ListBuffer
 import scala.language.postfixOps
 
 case class VirtaXMLConverter(oppilaitosRepository: OppilaitosRepository, koodistoViitePalvelu: KoodistoViitePalvelu, organisaatioRepository: OrganisaatioRepository) extends Logging {

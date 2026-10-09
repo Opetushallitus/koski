@@ -20,7 +20,6 @@ import fi.oph.koski.schema.Organisaatio.isValidOrganisaatioOid
 import fi.oph.koski.util.Retry
 
 import java.time.LocalDateTime
-import scala.collection.immutable
 import scala.concurrent.duration.DurationInt
 
 class RaportitService(application: KoskiApplication) {

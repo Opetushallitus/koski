@@ -1,10 +1,8 @@
 package fi.oph.koski.opiskeluoikeus
 
-import fi.oph.koski.db.PostgresDriverWithJsonSupport.api.actionBasedSQLInterpolation
 import fi.oph.koski.db.{DB, DatabaseExecutionContext, QueryMethods}
 import fi.oph.koski.history.OpiskeluoikeusHistory
 import fi.oph.koski.log.Logging
-import fi.oph.koski.schema.Henkilö.Oid
 import org.json4s.jackson.JsonMethods
 import org.json4s.{JArray, JValue}
 import slick.jdbc.GetResult

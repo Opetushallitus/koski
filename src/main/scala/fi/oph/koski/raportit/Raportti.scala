@@ -1,6 +1,5 @@
 package fi.oph.koski.raportit
 
-import fi.oph.koski.koodisto.KoodistoPalvelu
 import fi.oph.koski.localization.LocalizationReader
 
 import java.time.{LocalDate, LocalDateTime}

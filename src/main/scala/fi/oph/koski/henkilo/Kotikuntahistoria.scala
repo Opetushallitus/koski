@@ -4,7 +4,6 @@ import com.typesafe.config.Config
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api.actionBasedSQLInterpolation
 import fi.oph.koski.koodisto.KoodistoKoodi
 import fi.oph.koski.raportointikanta.{RKotikuntahistoriaRow, Schema}
-import fi.oph.koski.schema.{Koodistokoodiviite, LocalizedString}
 import fi.oph.koski.util.Optional.coalesce
 import slick.dbio.{DBIO, DBIOAction, Effect, NoStream}
 

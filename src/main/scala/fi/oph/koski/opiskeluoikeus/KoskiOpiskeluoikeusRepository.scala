@@ -1,7 +1,7 @@
 package fi.oph.koski.opiskeluoikeus
 
 import java.time.LocalDate
-import fi.oph.koski.db.{KoskiOpiskeluoikeusRow, YtrOpiskeluoikeusRow}
+import fi.oph.koski.db.KoskiOpiskeluoikeusRow
 import fi.oph.koski.henkilo.{HenkilönTunnisteet, OppijaHenkilöWithMasterInfo, PossiblyUnverifiedHenkilöOid}
 import fi.oph.koski.http.HttpStatus
 import fi.oph.koski.koskiuser.KoskiSpecificSession

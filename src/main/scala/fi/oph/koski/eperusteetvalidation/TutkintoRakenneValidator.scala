@@ -5,7 +5,6 @@ import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.koodisto.KoodistoViitePalvelu
 import fi.oph.koski.log.Logging
 import fi.oph.koski.schema._
-import fi.oph.koski.schema
 import fi.oph.koski.tutkinto.Koulutustyyppi._
 import fi.oph.koski.tutkinto.{Koulutustyyppi, _}
 import fi.oph.koski.util.ChainingSyntax._

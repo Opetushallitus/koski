@@ -1,7 +1,6 @@
 package fi.oph.koski.suoritetuttutkinnot
 
 import fi.oph.koski.schema
-import fi.oph.koski.schema.Koodistokoodiviite
 import fi.oph.koski.schema.annotation.{Deprecated, KoodistoKoodiarvo}
 import fi.oph.koski.util.DateOrdering.localDateOptionOrdering
 import fi.oph.scalaschema.annotation.{Description, ReadFlattened, Title}

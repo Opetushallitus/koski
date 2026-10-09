@@ -1,7 +1,7 @@
 package fi.oph.scalaschema
 
 import org.json4s.{JArray, JValue}
-import org.json4s.JsonAST.{JNull, JSet, JString}
+import org.json4s.JsonAST.{JNull, JString}
 
 object ValueConversion {
   def anyToJValue(x: Any): JValue = x match {

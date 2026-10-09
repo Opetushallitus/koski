@@ -35,7 +35,7 @@ runs:
         version: ${{ inputs.commithash }}
       run: |
         mvn versions:set -DnewVersion="$version" --batch-mode
-        mvn test -DskipTests=true --batch-mode
+        mvn test -DskipTests=true -Dscalac.unusedImports=e --batch-mode
         # Lataa scalafix-cli ~/.m2-välimuistiin Scalafix-jobia varten
         mvn --activate-profiles scalafix exec:java@scalafix-main -Dexec.args=--version --batch-mode
       shell: bash

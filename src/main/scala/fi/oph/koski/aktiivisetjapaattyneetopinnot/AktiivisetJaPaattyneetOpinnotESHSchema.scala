@@ -4,7 +4,6 @@ import fi.oph.koski.schema
 import fi.oph.koski.schema.annotation.KoodistoKoodiarvo
 import fi.oph.scalaschema.annotation.Title
 
-import java.time.LocalDate
 
 @Title("European School of Helsinki -opiskeluoikeus")
 case class AktiivisetJaPäättyneetOpinnotEuropeanSchoolOfHelsinkiOpiskeluoikeus(

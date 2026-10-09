@@ -1,8 +1,8 @@
 package fi.oph.koski.suoritusjako
 
 import java.sql.{Date, Timestamp}
-import java.time.{Instant, LocalDate, LocalDateTime}
-import fi.oph.koski.db.{DB, KoskiTables, QueryMethods, SuoritusjakoRow}
+import java.time.{Instant, LocalDate}
+import fi.oph.koski.db.{DB, QueryMethods, SuoritusjakoRow}
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.db.KoskiTables.{SuoritusJako, SuoritusjakoTable}
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}

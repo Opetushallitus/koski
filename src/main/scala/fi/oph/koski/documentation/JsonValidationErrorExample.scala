@@ -1,6 +1,5 @@
 package fi.oph.koski.documentation
 
-import org.json4s._
 import org.json4s.jackson.JsonMethods.parse
 object JsonValidationErrorExample {
   val example = parse("""[

@@ -1,9 +1,9 @@
 package fi.oph.koski.raportit
 
 import fi.oph.koski.{KoskiApplicationForTests, TestEnvironment}
-import fi.oph.koski.localization.{LocalizationReader, LocalizationRepository}
+import fi.oph.koski.localization.LocalizationReader
 import org.apache.poi.EncryptedDocumentException
-import org.apache.poi.ss.usermodel.{Sheet => PoiSheet, _}
+import org.apache.poi.ss.usermodel.{Sheet => _, _}
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.should.Matchers
 

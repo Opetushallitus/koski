@@ -2,10 +2,7 @@ package fi.oph.koski.koskiuser
 
 import fi.oph.koski.cache.{CacheManager, ExpiringCache, KeyValueCache}
 import fi.oph.koski.executors.Pools
-import fi.oph.koski.organisaatio.OrganisaatioRepository.VarhaiskasvatusToimipisteResult
 import fi.oph.koski.organisaatio.{OrganisaatioHierarkia, OrganisaatioRepository}
-import fi.oph.koski.schema.Koulutustoimija
-import fi.oph.koski.schema.Organisaatio.Oid
 import fi.oph.koski.userdirectory.DirectoryClient
 import fi.oph.koski.util.Timing
 

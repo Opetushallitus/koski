@@ -7,7 +7,6 @@ import fi.oph.koski.db.{DB, DatabaseConverters, QueryMethods}
 import fi.oph.koski.log.Logging
 import slick.jdbc.GetResult
 
-import java.time.LocalDateTime
 
 class KielitutkintotodistusTiedoteRepository(val db: DB, val workerId: String, config: Config) extends QueryMethods with Logging with DatabaseConverters {
 

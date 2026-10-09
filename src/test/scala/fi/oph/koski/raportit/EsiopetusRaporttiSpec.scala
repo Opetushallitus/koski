@@ -3,7 +3,7 @@ package fi.oph.koski.raportit
 import java.time.LocalDate.{of => localDate}
 import fi.oph.koski.KoskiApplicationForTests
 import fi.oph.koski.henkilo.{KoskiSpecificMockOppijat, LaajatOppijaHenkilöTiedot}
-import fi.oph.koski.koskiuser.{KoskiMockUser, KoskiSpecificSession, MockUser, MockUsers}
+import fi.oph.koski.koskiuser.{KoskiMockUser, KoskiSpecificSession, MockUsers}
 import fi.oph.koski.koskiuser.MockUsers.{helsinkiTallentaja, tornioTallentaja}
 import fi.oph.koski.localization.LocalizationReader
 import fi.oph.koski.log.AuditLogTester

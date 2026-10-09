@@ -2,7 +2,6 @@ package fi.oph.koski.valpas.oppija
 
 import fi.oph.koski.KoskiApplicationForTests
 import fi.oph.koski.henkilo.LaajatOppijaHenkilöTiedot
-import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.util.FinnishDateFormat.finnishDateFormat
 import fi.oph.koski.valpas.ValpasTestBase
 import fi.oph.koski.valpas.db.ValpasDatabaseFixtureLoader
