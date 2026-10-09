@@ -223,7 +223,7 @@ class RaportointiDatabase(config: RaportointiDatabaseConfigBase) extends Logging
       taulu: String,
       primaryKeys: List[String] = List.empty,
       timeout: FiniteDuration = 120.minutes,
-    );
+    )
 
     val kloonattavatTaulut = List(
       Kloonaus("r_opiskeluoikeus", List("opiskeluoikeus_oid")),
