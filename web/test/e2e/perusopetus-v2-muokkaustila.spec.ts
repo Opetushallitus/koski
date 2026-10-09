@@ -114,4 +114,34 @@ test.describe('Vanhan ja uuden käyttöliittymän muokkaustila samalla sivulla',
     expect(osoite(page)).toContain('versionumero=1')
     await expect(lisätieto(page)).toHaveValue('Tallentamaton muutos')
   })
+
+  test('Vanhan käyttöliittymän varoitus säilyy saman välilehden navigoinnissa', async ({
+    page
+  }) => {
+    const vanha = vanhaOpiskeluoikeus(page)
+    await vanha.locator('.toggle-edit').click()
+    await vanha
+      .locator(
+        '.property.todistuksellaNäkyvätLisätiedot textarea, .property.todistuksellaNäkyvätLisätiedot input'
+      )
+      .first()
+      .fill('Tallentamaton muutos')
+    await expect(page.locator('#edit-bar-wrapper.dirty')).toBeVisible()
+
+    const kysymykset: string[] = []
+    page.on('dialog', (dialog) => {
+      kysymykset.push(dialog.message())
+      return dialog.dismiss()
+    })
+    await vanha.locator('a', { hasText: 'Lisätiedot' }).click()
+    await expect.poll(() => osoite(page)).toContain('lisätiedot-expanded=true')
+    expect(kysymykset).toHaveLength(0)
+
+    await page
+      .getByTestId('opiskeluoikeustyyppi-esiopetus')
+      .locator('a')
+      .click()
+    await expect.poll(() => kysymykset).toHaveLength(1)
+    expect(osoite(page)).toContain('opiskeluoikeudenTyyppi=perusopetus')
+  })
 })
