@@ -1,5 +1,5 @@
 import path from 'node:path'
-import { Tail } from 'tail'
+import { followProcessOutput } from './followProcessOutput.ts'
 import { HealthSource, isHealthDataEntry } from './HealthSource.ts'
 
 type LogLine = {
@@ -9,14 +9,13 @@ type LogLine = {
 }
 
 export class LocalHealthSource extends HealthSource {
-  tail: Tail
-
   constructor(koskiDir: string) {
     super()
-    this.tail = new Tail(path.join(koskiDir, 'log', 'health.log'), {
-      fromBeginning: true
-    })
-    this.tail.on('line', this.parseLine.bind(this))
+    followProcessOutput(
+      'tail',
+      ['-F', '-n', '+1', path.join(koskiDir, 'log', 'health.log')],
+      this.parseLine.bind(this)
+    )
   }
 
   parseLine(line: string) {
