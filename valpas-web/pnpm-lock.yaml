@@ -299,9 +299,6 @@ importers:
       stylelint-no-unsupported-browser-features:
         specifier: 8.1.2
         version: 8.1.2(stylelint@17.16.0(supports-color@10.2.2)(typescript@6.0.3))
-      tree-kill:
-        specifier: 1.2.2
-        version: 1.2.2
       typescript:
         specifier: 6.0.3
         version: 6.0.3
