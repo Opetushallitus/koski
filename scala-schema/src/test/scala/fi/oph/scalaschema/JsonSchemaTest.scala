@@ -2,7 +2,7 @@ package fi.oph.scalaschema
 
 import com.github.fge.jsonschema.core.report.ListReportProvider
 import com.github.fge.jsonschema.core.report.LogLevel.{ERROR, FATAL}
-import com.github.fge.jsonschema.main.{JsonSchemaFactory, JsonValidator}
+import com.github.fge.jsonschema.main.JsonSchemaFactory
 import fi.oph.scalaschema.TestHelpers.schemaOf
 import fi.oph.scalaschema.annotation.{Description, EnumValue}
 import org.json4s.JsonAST.{JBool, JNothing, JObject, JString}
@@ -492,7 +492,6 @@ class JsonSchemaTest extends AnyFreeSpec with Matchers {
   }
 
   private lazy val jsonSchemaFactory = JsonSchemaFactory.newBuilder.setReportProvider(new ListReportProvider(ERROR, FATAL)).freeze()
-  private lazy val validator: JsonValidator = JsonSchemaFactory.byDefault.getValidator
 }
 
 case class CustomAnnotation(numbers: List[Int]) extends Metadata {

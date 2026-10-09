@@ -75,10 +75,6 @@ class OppivelvollisuudenKeskeytysRepositoryService(application: KoskiApplication
   def toValpasOppivelvollisuudenKeskeytys(row: OppivelvollisuudenKeskeytysRow): ValpasOppivelvollisuudenKeskeytys =
     ValpasOppivelvollisuudenKeskeytys.apply(rajapäivät.tarkastelupäivä)(row)
 
-  private def isBetween(date: LocalDate)(start: LocalDate, end: Option[LocalDate]): Boolean = {
-    date.compareTo(start) >= 0 && end.forall(date.compareTo(_) <= 0)
-  }
-
   private def validateRow
     (row: OppivelvollisuudenKeskeytysRow)
     (implicit session: ValpasSession)

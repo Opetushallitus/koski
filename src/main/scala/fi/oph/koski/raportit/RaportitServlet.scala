@@ -20,7 +20,6 @@ class RaportitServlet(implicit val application: KoskiApplication) extends KoskiS
   private lazy val raportitService = new RaportitService(application)
   private lazy val organisaatioService = application.organisaatioService
   private lazy val esiopetusService = new EsiopetusRaporttiService(application)
-  private lazy val accessResolver = RaportitAccessResolver(application)
   private lazy val vapaatRaporttipaikat = new Semaphore(application.config.getInt("raportit.maxConcurrent"))
 
   before() {

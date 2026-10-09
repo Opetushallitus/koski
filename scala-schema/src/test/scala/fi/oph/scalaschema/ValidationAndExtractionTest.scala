@@ -13,6 +13,7 @@ import org.json4s.jackson.JsonMethods
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.should.Matchers
 
+import scala.annotation.unused
 import scala.reflect.runtime.{universe => ru}
 
 class ValidationAndExtractionTest extends AnyFreeSpec with Matchers {
@@ -153,22 +154,22 @@ class ValidationAndExtractionTest extends AnyFreeSpec with Matchers {
       "In lists" in {
         val result = verifyExtractionRoundTrip(MoreNumbersInLists(List(1), List(1), List(1), List(1), List(1), List(1)))
         // Force unboxing to make sure it works (didn't work before correct conversions in NumberExtractor)
-        val i: Int = result.i.head
-        val f: Float = result.f.head
-        val l: Long = result.l.head
-        val d: Double = result.d.head
-        val bi: BigInt = result.bi.head
-        val bd: BigDecimal = result.bd.head
+        @unused val i: Int = result.i.head
+        @unused val f: Float = result.f.head
+        @unused val l: Long = result.l.head
+        @unused val d: Double = result.d.head
+        @unused val bi: BigInt = result.bi.head
+        @unused val bd: BigDecimal = result.bd.head
       }
       "Optional" in {
         val result: OptionalNumbers = verifyExtractionRoundTrip(OptionalNumbers(Option(1), Option(1), Option(1), Option(1), Option(1), Option(1)))
         // Force unboxing to make sure it works (didn't work before correct conversions in NumberExtractor)
-        val i: Int = result.i.get
-        val f: Float = result.f.get
-        val l: Long = result.l.get
-        val d: Double = result.d.get
-        val bi: BigInt = result.bi.get
-        val bd: BigDecimal = result.bd.get
+        @unused val i: Int = result.i.get
+        @unused val f: Float = result.f.get
+        @unused val l: Long = result.l.get
+        @unused val d: Double = result.d.get
+        @unused val bi: BigInt = result.bi.get
+        @unused val bd: BigDecimal = result.bd.get
       }
       "Parsing from String value" - {
         "Valid value" in {
@@ -666,8 +667,7 @@ class ValidationAndExtractionTest extends AnyFreeSpec with Matchers {
     "Validation errors" - {
       "are serializable" in {
         // Verify this by constructing a Schema for ValidationError
-        val schema = JsonMethods.pretty(SchemaToJson.toJsonSchema(SchemaFactory.default.createSchema[ValidationError]))
-        //println(schema)
+        SchemaToJson.toJsonSchema(SchemaFactory.default.createSchema[ValidationError])
       }
 
       "case NotAnyOf" in {

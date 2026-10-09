@@ -172,8 +172,6 @@ case class LukioRaportti(repository: LukioRaportitRepository, t: LocalizationRea
     oppijoidenRivitJärjestettyKursseittain: Seq[Seq[YleissivistäväRaporttiKurssi]],
     kotikuntaPvm: Option[LocalDate],
   ): LukioRaportinOppiaineenKurssitRow = {
-    val kotikunta = if (t.language == "sv") row.henkilo.kotikuntaNimiSv else row.henkilo.kotikuntaNimiFi
-
     LukioRaportinOppiaineenKurssitRow(
       stattisetKolumnit = LukioOppiaineenKurssienVälilehtiStaattisetKolumnit(
         oppijanOid = row.opiskeluoikeus.oppijaOid,

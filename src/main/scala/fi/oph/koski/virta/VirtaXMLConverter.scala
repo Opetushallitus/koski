@@ -133,7 +133,6 @@ case class VirtaXMLConverter(oppilaitosRepository: OppilaitosRepository, koodist
   }
 
   private val LABAmmattikorkeaNumero = "10126"
-  private val vanhaLahdenAmmattiKorkeaNumero = "02470"
   private def filterLABDuplikaatit(osasuoritusNodes: List[Node]): List[Node] = {
     lazy val avaimet = osasuoritusNodes.filter(o => (o \ "Myontaja").text != LABAmmattikorkeaNumero).map(o => (o \ "@avain").text)
     osasuoritusNodes.filter(o => {

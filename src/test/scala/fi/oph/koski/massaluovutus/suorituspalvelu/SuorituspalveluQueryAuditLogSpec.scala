@@ -1,17 +1,14 @@
 package fi.oph.koski.massaluovutus.suorituspalvelu
 
-import fi.oph.koski.json.GenericJsonFormats
 import fi.oph.koski.koskiuser.{KoskiSpecificSession, MockUsers}
 import fi.oph.koski.log.{AuditLogTester, LogConfiguration}
 import fi.oph.koski.{KoskiApplicationForTests, TestEnvironment}
-import org.json4s.Formats
 import org.json4s.JsonAST.{JObject, JString}
 import org.json4s.jackson.JsonMethods.parse
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.should.Matchers
 
 class SuorituspalveluQueryAuditLogSpec extends AnyFreeSpec with TestEnvironment with Matchers {
-  private implicit val formats: Formats = GenericJsonFormats.genericFormats
   private lazy val käyttöoikeuspalvelu = KoskiApplicationForTests.käyttöoikeusRepository
   private implicit lazy val session: KoskiSpecificSession = MockUsers.paakayttaja.toKoskiSpecificSession(käyttöoikeuspalvelu)
 

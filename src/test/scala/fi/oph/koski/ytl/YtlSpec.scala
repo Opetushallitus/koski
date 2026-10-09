@@ -114,7 +114,7 @@ class YtlSpec
       }
 
       val uusiOo2 = AmmatillinenExampleData.perustutkintoOpiskeluoikeusValmisVahvistettuYrityksessä().withLisääPuuttuvaMaksuttomuustieto
-      putOpiskeluoikeus(uusiOo1, oppija2, authHeaders(MockUsers.paakayttaja) ++ jsonContent) {
+      putOpiskeluoikeus(uusiOo2, oppija2, authHeaders(MockUsers.paakayttaja) ++ jsonContent) {
         verifyResponseStatusOk()
       }
 

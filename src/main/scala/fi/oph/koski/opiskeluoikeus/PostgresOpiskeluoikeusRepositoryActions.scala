@@ -307,7 +307,7 @@ trait PostgresOpiskeluoikeusRepositoryActions[OOROW <: OpiskeluoikeusRow, OOTABL
   private def validateHistoria(opiskeluoikeusJson: JValue, historia: OpiskeluoikeusHistory): Option[String] = try {
     val opiskeluoikeusDiffHistoria = jsonDiff(opiskeluoikeusJson, historia.asOpiskeluoikeusJson)
     if (opiskeluoikeusDiffHistoria.values.nonEmpty) {
-      val id = saveHistoryError(
+      saveHistoryError(
         opiskeluoikeus = opiskeluoikeusJson,
         historia = historia,
         diff = opiskeluoikeusDiffHistoria,

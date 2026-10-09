@@ -21,7 +21,6 @@ class TiedoteApiServlet(implicit val application: KoskiApplication)
   }
 
   private val repository = application.kielitutkintotodistusTiedoteRepository
-  private val service = application.kielitutkintotodistusTiedoteService
 
   get("/jobs") {
     val state = params.get("state")

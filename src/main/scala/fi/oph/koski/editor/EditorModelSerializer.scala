@@ -127,8 +127,6 @@ object EditorModelSerializer extends Serializer[EditorModel] with Logging {
     } ++ onlyWhen ++ notWhen ++ hiddenWhen
   }
 
-  private def metadataToObject(metadata: List[Metadata]) = JObject(metadataToFields(metadata))
-
   private def flagsToFields(props: Map[String, JValue]): List[(String, JValue)] = props.toList.map { case (key, value) => JField(key, value) }
 
   private def determineEditability(fields: List[(String, JValue)]): List[(String, JValue)] = {

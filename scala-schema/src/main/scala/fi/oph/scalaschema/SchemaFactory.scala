@@ -496,7 +496,6 @@ object Annotations {
   }
 
   private def doParseAnnotation(annotationSymbol: ru.Symbol, params: List[ru.Tree]): StaticAnnotation = {
-    val StringClass = classOf[String]
     val DoubleClass = classOf[Double]
     val IntegerClass = classOf[Int]
     val BooleanClass = classOf[Boolean]

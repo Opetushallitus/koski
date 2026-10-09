@@ -78,8 +78,6 @@ class OppijaValidationIBSpec extends AnyFreeSpec with KoskiHttpSpec with PutOpis
       }
 
       "CAS-aine, arvosanan antaminen" - {
-        def historiaOppiaine(level: String, arvosana: String) = ibAineSuoritus(ibOppiaine("HIS", level, 3), ibArviointi(arvosana), ibPredictedArviointi(arvosana))
-
         "Arvosana S" - {
           "Palautetaan HTTP/200" in {
             val opiskeluoikeus = opiskeluoikeusIBTutkinnollaWithCASArvosana("S")

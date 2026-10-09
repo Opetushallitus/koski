@@ -24,7 +24,6 @@ object AuditLogTester extends Matchers with LogTester {
   }
 
   private def filteredMessagesByOperation(params: Map[String, Any]): Seq[JObject] = {
-    implicit val formats: Formats = GenericJsonFormats.genericFormats
     val messages = getLogMessages
       .map(m => parse(m))
       .collect { case msg: JObject if !isAliveMessage(msg) => msg }
@@ -45,7 +44,6 @@ object AuditLogTester extends Matchers with LogTester {
   }
 
   private def isAliveMessage(msg: JObject): Boolean = {
-    implicit val formats: Formats = GenericJsonFormats.genericFormats
     msg.values.get("type").contains("alive")
   }
 
