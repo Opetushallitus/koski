@@ -90,8 +90,8 @@ valpas-web/src/                # Valpas frontend (separate React app)
 - **Final newline**: Required
 
 ### Scala
-- Scalafix enforces the rules in `.scalafix.conf`; run `make scalafix` after changes. Silence a justified hit with `// scalafix:ok <Rule>` on that line
-- No `println` statements
+- Scalafix enforces the rules in `.scalafix.conf` (tests: `.scalafix-test.conf`, which extends it and allows `println`); run `make scalafix` after changes. Silence a justified hit with `// scalafix:ok <Rule>` on that line
+- No `println` statements in main code
 - No `return` statements (including mid-function early returns — use idiomatic control flow instead)
 - Class names: PascalCase
 - Use `@Description`, `@KoodistoUri`, and other schema annotations for data models
