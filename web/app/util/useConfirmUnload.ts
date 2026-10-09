@@ -1,14 +1,25 @@
 import { useEffect } from 'react'
 import { t } from '../i18n/i18n'
-import { addExitHook, removeExitHook } from './exitHook'
+import { lisääVaroitus, poistaVaroitus } from './router'
 
-// Varoittaa tallentamattomista muutoksista sivulta poistuttaessa ja vanhan
-// käyttöliittymän navigoinnissa, joka kiinnittäisi editorin uudelleen.
+// Uuden käyttöliittymän editori poistuu, kun navigointi vaihtaa sivun,
+// opiskeluoikeuden tyypin välilehden tai katseltavan version (OppijaEditor).
+const editoriPoistuu = (mistä: URL, mihin: URL) =>
+  mistä.pathname !== mihin.pathname ||
+  ['opiskeluoikeudenTyyppi', 'opiskeluoikeus', 'versionumero'].some(
+    (key) => mistä.searchParams.get(key) !== mihin.searchParams.get(key)
+  )
+
+// Varoittaa tallentamattomista muutoksista ennen navigointia, joka poistaa
+// editorin, ja sivulta poistuttaessa.
 export const useConfirmUnload = (enabled: boolean, owner: string) => {
   useEffect(() => {
     if (enabled) {
-      addExitHook(t('Haluatko varmasti poistua sivulta?'), owner)
-      return () => removeExitHook(owner)
+      lisääVaroitus(owner, {
+        viesti: t('Haluatko varmasti poistua sivulta?'),
+        hylkääMuutokset: editoriPoistuu
+      })
+      return () => poistaVaroitus(owner)
     }
   }, [enabled, owner])
 }

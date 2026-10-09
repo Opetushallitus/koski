@@ -1,19 +1,11 @@
 import Bacon from 'baconjs'
 import * as R from 'ramda'
-import { checkExitHook, checkV2ExitHooks, removeExitHook } from './exitHook'
-import { LOCATION_CHANGE_EVENT } from './url'
+import { korvaaOsoiteHiljaa, kuunteleOsoitetta, siirry } from './router'
 
+// Vanhan käyttöliittymän näkymä osoitteesta. Osoitteen omistaa router, joten
+// tänne tulevat myös uuden käyttöliittymän navigoinnit.
 const locationBus = new Bacon.Bus()
-let previousLocation = currentLocation()
-
-// Uuden käyttöliittymän editorit säilyvät, kun osoite muuttuu saman
-// välilehden sisällä (OppijaEditor). Ne poistuvat vasta, kun navigointi vaihtaa
-// sivun, opiskeluoikeuden tyypin välilehden tai katseltavan version.
-const vaihtaaNäkymän = (from, to) =>
-  from.path !== to.path ||
-  ['opiskeluoikeudenTyyppi', 'opiskeluoikeus', 'versionumero'].some(
-    (key) => from.params[key] !== to.params[key]
-  )
+kuunteleOsoitetta(() => locationBus.push(currentLocation()))
 
 export const navigateTo = function (path, event) {
   if (
@@ -21,61 +13,25 @@ export const navigateTo = function (path, event) {
     (event.altKey || event.shiftKey || event.metaKey || event.ctrlKey)
   )
     return
-  const nextLoc = parsePath(path)
-  if (vaihtaaNäkymän(currentLocation(), nextLoc) && !checkV2ExitHooks()) {
-    if (event) event.preventDefault()
-    return
-  }
-  previousLocation = nextLoc
-  history.pushState(null, null, path)
-  locationBus.push(nextLoc)
-  // Uuden käyttöliittymän osoitetta lukevat hookit (useSearchParam) eivät
-  // kuuntele locationBusia. Ilman ilmoitusta esim. välilehden vaihto jättäisi
-  // v2-editorit selatun version tilaan.
-  window.dispatchEvent(new Event(LOCATION_CHANGE_EVENT))
+  siirry(path)
   if (event) event.preventDefault()
 }
 
 export const replaceLocation = (path) => {
-  const nextLoc = parsePath(path)
-  previousLocation = nextLoc
-  history.replaceState(null, null, path)
-  return nextLoc
-}
-
-// Ilmoittaa osoitteen muuttuneen ohi navigateTo:n (esim. history.pushState).
-export const refreshLocation = () => {
-  previousLocation = currentLocation()
-  locationBus.push(previousLocation)
+  korvaaOsoiteHiljaa(path)
+  return parsePath(path)
 }
 
 export const redirectTo = (path) => {
   // Defer because redirects are likely to be triggered while handling the exported locationP
   // which is derived from the locationBus into which we push here.
-  setTimeout(() => {
-    locationBus.push(replaceLocation(path))
-  }, 0)
+  setTimeout(() => siirry(path, { korvaa: true }), 0)
 }
-
-window.onpopstate = function () {
-  if (!checkExitHook()) {
-    // Back-button navigation cancelled by exit hook
-    history.pushState(null, null, previousLocation.toString())
-    return
-  }
-  const nextLoc = currentLocation()
-  previousLocation = nextLoc
-  locationBus.push(nextLoc)
-}
-
-// Poistaa vain vanhan käyttöliittymän varoituksen; uuden käyttöliittymän
-// editori poistaa omansa itse.
-locationBus.mapError().onValue(() => removeExitHook())
 
 const filteredLocation = currentLocation().filterQueryParams(
   (k) => k !== 'ticket'
 )
-history.replaceState(null, null, filteredLocation.toString())
+korvaaOsoiteHiljaa(filteredLocation.toString())
 export const locationP = locationBus.toProperty(filteredLocation)
 
 export const navigateToOppija = (oppija, event) =>

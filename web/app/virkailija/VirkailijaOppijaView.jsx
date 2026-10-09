@@ -23,16 +23,14 @@ import {
   locationP,
   navigateToOppija,
   navigateWithQueryParams,
-  refreshLocation,
   showError
 } from '../util/location.js'
-import { LOCATION_CHANGE_EVENT } from '../util/url'
+import { lisääVaroitus, poistaVaroitus } from '../util/router'
 import { OppijaHaku } from '../virkailija/OppijaHaku'
 import Link from '../components/Link'
 import { decreaseLoading, increaseLoading } from '../util/loadingFlag'
 import delays from '../util/delays'
 import { buildClassNames } from '../components/classnames'
-import { addExitHook, removeExitHook } from '../util/exitHook'
 import { listviewPath } from './Oppijataulukko'
 import { ISO2FinnishDate } from '../date/date'
 import { doActionWhileMounted, flatMapArray } from '../util/util'
@@ -83,16 +81,14 @@ const malliVanhentunut = ({ malli }) =>
   malli.vanhanKäyttöliittymänOidit !== undefined &&
   malli.versio !== malliinTarvittavaVersio(malli)
 
-// Uuden käyttöliittymän navigointi (pushLocation) ohittaa locationBusin.
-window.addEventListener(LOCATION_CHANGE_EVENT, () => {
-  if (
-    currentState &&
-    currentLocation().path === `/koski/oppija/${currentState.oppijaOid}` &&
-    malliVanhentunut(currentState)
-  ) {
-    refreshLocation()
-  }
-})
+const VANHAN_KÄYTTÖLIITTYMÄN_VAROITUS = 'vanha-käyttöliittymä'
+
+// Muokkaus päättyy ja muutokset hylätään, kun edit-parametri poistuu tai sivu
+// vaihtuu. Muut osoitteen muutokset (esim. suorituksen välilehti) säilyttävät
+// muutokset.
+const muokkausPäättyy = (mistä, mihin) =>
+  mistä.pathname !== mihin.pathname ||
+  mistä.searchParams.get('edit') !== mihin.searchParams.get('edit')
 
 export const oppijaContentP = (oppijaOid) => {
   if (
@@ -173,7 +169,11 @@ const createState = (oppijaOid, malli) => {
     .map((loc) => !!loc.params.edit)
     .skipDuplicates()
 
-  cancelChangesBus.onValue(() => navigateWithQueryParams({ edit: false }))
+  // Peruuta hylkää muutokset tarkoituksella, joten siitä ei kysytä.
+  cancelChangesBus.onValue(() => {
+    poistaVaroitus(VANHAN_KÄYTTÖLIITTYMÄN_VAROITUS)
+    navigateWithQueryParams({ edit: false })
+  })
   editBus.onValue((opiskeluoikeusOid) =>
     navigateWithQueryParams({ edit: opiskeluoikeusOid })
   )
@@ -351,8 +351,11 @@ const createState = (oppijaOid, malli) => {
     .toProperty()
     .doAction((state) => {
       state === 'dirty'
-        ? addExitHook(t('Haluatko varmasti poistua sivulta?'))
-        : removeExitHook()
+        ? lisääVaroitus(VANHAN_KÄYTTÖLIITTYMÄN_VAROITUS, {
+            viesti: t('Haluatko varmasti poistua sivulta?'),
+            hylkääMuutokset: muokkausPäättyy
+          })
+        : poistaVaroitus(VANHAN_KÄYTTÖLIITTYMÄN_VAROITUS)
       if (state === 'saved') navigateWithQueryParams({ edit: undefined })
     })
   return {
