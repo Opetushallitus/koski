@@ -48,7 +48,7 @@ class SureServlet(implicit val application: KoskiApplication)
             paginationSettings = None,
             queryForAuditLog = "oids=" + oids.take(2).mkString(",") + ",...(" + oids.size + ")"
           )
-          streamResponse[JValue](observable.map(t => serialize(OidHenkilö(t._1), t._2)), session)
+          streamResponse[JValue](observable.map(t => serialize((OidHenkilö(t._1), t._2))), session)
         case Some(status) => haltWithStatus(status)
       }
     }()

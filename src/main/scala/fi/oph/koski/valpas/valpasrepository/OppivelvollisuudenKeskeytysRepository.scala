@@ -48,7 +48,7 @@ class OppivelvollisuudenKeskeytysRepository(database: ValpasDatabase, config: Co
       .toRight(ValpasErrorCategory.badRequest.validation.epävalidiUuid())
       .flatMap(uuid => {
         val query = for { l <- OppivelvollisuudenKeskeytys if l.uuid === uuid } yield (l.alku, l.loppu)
-        runDbSync(query.update(keskeytys.alku, keskeytys.loppu)) match {
+        runDbSync(query.update((keskeytys.alku, keskeytys.loppu))) match {
           case 0 => Left(ValpasErrorCategory.notFound.oppijaaEiLöydyTaiEiOikeuksia())
           case _ => getKeskeytys(uuid).toRight(ValpasErrorCategory.notFound.oppijaaEiLöydyTaiEiOikeuksia())
         }
