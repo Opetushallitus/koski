@@ -1,5 +1,5 @@
 import { NonEmptyArray } from 'fp-ts/lib/NonEmptyArray'
-import React, { useCallback, useMemo, useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { TestIdLayer, TestIdRoot, useTestId } from '../../appstate/useTestId'
 import { localize, t } from '../../i18n/i18n'
 import { LocalizedString } from '../../types/fi/oph/koski/schema/LocalizedString'
@@ -8,6 +8,7 @@ import { Suoritus } from '../../types/fi/oph/koski/schema/Suoritus'
 import { saveOpiskeluoikeus } from '../../util/koskiApi'
 import {
   PäätasonSuoritusOf,
+  getOpiskeluoikeusOid,
   mergeOpiskeluoikeusVersionumeroAndRefetch
 } from '../../util/opiskeluoikeus'
 import { päätasonSuoritusPath } from '../../util/optics'
@@ -34,6 +35,7 @@ import { Trans } from '../texts/Trans'
 import { isEmptyModelObject } from '../../util/objects'
 import { PathToken } from '../../util/laxModify'
 import { useVirkailijaUser } from '../../appstate/user'
+import { aloitaUudenKäyttöliittymänMuokkaus } from '../../appstate/muokkaustila'
 
 export type EditorContainerProps<T extends Opiskeluoikeus> =
   CommonPropsWithChildren<{
@@ -75,7 +77,16 @@ export const EditorContainer = <T extends Opiskeluoikeus>(
   props: EditorContainerProps<T>
 ) => {
   const virkailija = useVirkailijaUser()
-  useConfirmUnload(props.form.editMode && props.form.hasChanged)
+  const opiskeluoikeusOid = getOpiskeluoikeusOid(props.form.state)
+  useConfirmUnload(
+    props.form.editMode && props.form.hasChanged,
+    `opiskeluoikeus:${opiskeluoikeusOid}`
+  )
+  useEffect(() => {
+    if (props.form.editMode && opiskeluoikeusOid) {
+      return aloitaUudenKäyttöliittymänMuokkaus(opiskeluoikeusOid)
+    }
+  }, [props.form.editMode, opiskeluoikeusOid])
 
   const opiskeluoikeudenTilaPath = useMemo(
     () => props.form.root.prop('tila'),
