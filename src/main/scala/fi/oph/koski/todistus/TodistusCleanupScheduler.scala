@@ -11,16 +11,18 @@ class TodistusCleanupScheduler(application: KoskiApplication) extends Logging {
   var schedulerInstance: Option[GlobalIntervalScheduler] = None
 
   def createScheduler: Option[GlobalIntervalScheduler] = {
-    if (!application.todistusFeatureFlags.isServiceEnabled) return None
-
-    schedulerInstance = Some(GlobalIntervalScheduler(
-      application,
-      schedulerName,
-      application.config.getDuration("todistus.cleanupInterval"),
-      runNext,
-      shouldFireCheckIntervalMillis = 1000
-    ))
-    schedulerInstance
+    if (application.todistusFeatureFlags.isServiceEnabled) {
+      schedulerInstance = Some(GlobalIntervalScheduler(
+        application,
+        schedulerName,
+        application.config.getDuration("todistus.cleanupInterval"),
+        runNext,
+        shouldFireCheckIntervalMillis = 1000
+      ))
+      schedulerInstance
+    } else {
+      None
+    }
   }
 
   def shutdown(): Unit = {

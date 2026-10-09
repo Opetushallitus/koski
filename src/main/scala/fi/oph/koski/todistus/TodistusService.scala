@@ -193,10 +193,8 @@ class TodistusService(application: KoskiApplication) extends Logging with Timing
 
   private def tarkistaKäyttöoikeudetOpiskeluoikeuteen(rawOpiskeluoikeus: KoskiOpiskeluoikeusRow)(implicit user: KoskiSpecificSession): Either[HttpStatus, KoskiOpiskeluoikeusRow] = {
     if (rawOpiskeluoikeus.mitätöity) {
-      return Left(KoskiErrorCategory.notFound.opiskeluoikeuttaEiLöydyTaiEiOikeuksia())
-    }
-
-    if (user.hasRole(OPHPAAKAYTTAJA)) {
+      Left(KoskiErrorCategory.notFound.opiskeluoikeuttaEiLöydyTaiEiOikeuksia())
+    } else if (user.hasRole(OPHPAAKAYTTAJA)) {
       Right(rawOpiskeluoikeus)
     } else if (hasYleinenKielitutkintoViewerRole && rawOpiskeluoikeus.koulutusmuoto == "kielitutkinto" && rawOpiskeluoikeus.suoritustyypit.contains(SuorituksenTyyppi.yleinenKielitutkinto.koodiarvo)) {
       Right(rawOpiskeluoikeus)
@@ -575,19 +573,19 @@ class TodistusService(application: KoskiApplication) extends Logging with Timing
     if (Environment.isUsingLocalDevelopmentServices(application) &&
         oppijanHenkilö.hetu == KoskiSpecificMockOppijat.kielitutkintoTodistusVirhe.hetu &&
         todistus.templateVariant == "en") {
-      return Left(KoskiErrorCategory.internalError("Todistuksen luonti epäonnistui testitarkoitukseen."))
-    }
-
-    opiskeluoikeus match {
-      case ktOo: KielitutkinnonOpiskeluoikeus =>
-        ktOo.suoritukset.find(_.isInstanceOf[YleisenKielitutkinnonSuoritus]) match {
-          case Some(_: YleisenKielitutkinnonSuoritus) =>
-            yleinenKielitutkintoTodistusDataBuilder.createTodistusData(oppijanHenkilö, ktOo, todistus)
-          case _ =>
-            Left(KoskiErrorCategory.internalError(s"Yleisen kielitutkinnon suoritusta ei löytynyt todistukselle ${todistus.id}"))
-        }
-      case _ =>
-        Left(KoskiErrorCategory.internalError(s"Opiskeluoikeus ei ole kielitutkinnon opiskeluoikeus todistukselle ${todistus.id}"))
+      Left(KoskiErrorCategory.internalError("Todistuksen luonti epäonnistui testitarkoitukseen."))
+    } else {
+      opiskeluoikeus match {
+        case ktOo: KielitutkinnonOpiskeluoikeus =>
+          ktOo.suoritukset.find(_.isInstanceOf[YleisenKielitutkinnonSuoritus]) match {
+            case Some(_: YleisenKielitutkinnonSuoritus) =>
+              yleinenKielitutkintoTodistusDataBuilder.createTodistusData(oppijanHenkilö, ktOo, todistus)
+            case _ =>
+              Left(KoskiErrorCategory.internalError(s"Yleisen kielitutkinnon suoritusta ei löytynyt todistukselle ${todistus.id}"))
+          }
+        case _ =>
+          Left(KoskiErrorCategory.internalError(s"Opiskeluoikeus ei ole kielitutkinnon opiskeluoikeus todistukselle ${todistus.id}"))
+      }
     }
   }
 

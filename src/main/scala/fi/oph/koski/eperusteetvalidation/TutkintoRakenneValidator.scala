@@ -273,13 +273,13 @@ case class TutkintoRakenneValidator(tutkintoRepository: TutkintoRepository, kood
   private def toisestaTutkinnostaValidaatiotKoskevat(rakenne: TutkintoRakenne): Boolean = {
     val koulutustyyppi = rakenne.koulutustyyppi
     val rajapäivä = if (ammatillisenPerustutkinnonTyypit.contains(koulutustyyppi)) {
-      LocalDate.of(2026, 8, 1)
+      Some(LocalDate.of(2026, 8, 1))
     } else if (ammatillisetKoulutustyypit.contains(koulutustyyppi)) {
-      LocalDate.of(2025, 8, 1)
+      Some(LocalDate.of(2025, 8, 1))
     } else {
-      return false
+      None
     }
-    rakenne.voimassaoloAlkaa.exists(!_.isBefore(rajapäivä))
+    rajapäivä.exists(päivä => rakenne.voimassaoloAlkaa.exists(!_.isBefore(päivä)))
   }
 
   private def validatePaikallinenTutkinnonOsaToisestaTutkinnosta(

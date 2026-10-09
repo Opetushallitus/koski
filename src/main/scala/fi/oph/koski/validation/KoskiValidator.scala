@@ -1396,13 +1396,12 @@ class KoskiValidator(
   private def perusopetuksenOppiaineessaEiSamojaLuokkaAsteita(osasuoritukset: Seq[Suoritus]): Boolean = {
     val perusopetusOppiaineet = osasuoritukset.collect { case s: NuortenPerusopetuksenOppiaineenSuoritus => s}
     val (withLuokkaAste, withoutLuokkaAste) = perusopetusOppiaineet.partition(_.luokkaAste.isDefined)
-    if (withoutLuokkaAste.size > 1) return false
-
-    if (!osasuoritukset.forall(_.isInstanceOf[NuortenPerusopetuksenOppiaineenSuoritus])) return false
-    if (!perusopetusOppiaineet.forall(_.koulutusmoduuli.pakollinen == true)) return false
-
     val luokkaAsteKoodit = withLuokkaAste.flatMap(_.luokkaAste.map(_.koodiarvo))
-    luokkaAsteKoodit.distinct.size == luokkaAsteKoodit.size
+
+    withoutLuokkaAste.size <= 1 &&
+      osasuoritukset.forall(_.isInstanceOf[NuortenPerusopetuksenOppiaineenSuoritus]) &&
+      perusopetusOppiaineet.forall(_.koulutusmoduuli.pakollinen == true) &&
+      luokkaAsteKoodit.distinct.size == luokkaAsteKoodit.size
   }
 
   private def validateAlkamispäivä(suoritus: Suoritus): HttpStatus = {

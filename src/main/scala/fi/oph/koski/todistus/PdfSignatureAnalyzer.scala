@@ -177,7 +177,7 @@ object PdfSignatureAnalyzer extends Logging {
 
     if (signature == null) {
       val error = List("PDF does not contain a signature")
-      return AnalysisReport(
+      AnalysisReport(
         byteRange = ByteRangeInfo.invalid(pdfBytes.length, error),
         signatureContents = SignatureContentsInfo.invalid(error),
         pkcs7 = None,
@@ -185,48 +185,48 @@ object PdfSignatureAnalyzer extends Logging {
         overallValid = false,
         summary = "=== PDF SIGNATURE ANALYSIS ===\n\nPDF does not contain a digital signature.\n"
       )
-    }
-
-    val byteRange = signature.getByteRange
-
-    val byteRangeInfo = analyzeByteRange(byteRange, pdfBytes, validationConfig)
-
-    val signatureContentsInfo = analyzeSignatureContents(
-      pdfBytes,
-      byteRangeInfo.signatureStart,
-      byteRangeInfo.signatureEnd
-    )
-
-    // Extract signed content for cryptographic verification
-    val signedContent = if (byteRangeInfo.isValid) {
-      Some(getSignedContent(pdfBytes, byteRangeInfo))
     } else {
-      None
+      val byteRange = signature.getByteRange
+
+      val byteRangeInfo = analyzeByteRange(byteRange, pdfBytes, validationConfig)
+
+      val signatureContentsInfo = analyzeSignatureContents(
+        pdfBytes,
+        byteRangeInfo.signatureStart,
+        byteRangeInfo.signatureEnd
+      )
+
+      // Extract signed content for cryptographic verification
+      val signedContent = if (byteRangeInfo.isValid) {
+        Some(getSignedContent(pdfBytes, byteRangeInfo))
+      } else {
+        None
+      }
+
+      val pkcs7Info = if (signatureContentsInfo.isValid) {
+        analyzePKCS7(signatureContentsInfo.pkcs7Bytes, signedContent, validationConfig)
+      } else {
+        None
+      }
+
+      val dssInfo = analyzeDSS(document, pdfBytes, byteRangeInfo)
+
+      val overallValid = byteRangeInfo.isValid &&
+        signatureContentsInfo.isValid &&
+        pkcs7Info.forall(_.isValid) &&
+        dssInfo.isValid
+
+      val summary = generateSummary(byteRangeInfo, signatureContentsInfo, pkcs7Info, dssInfo, overallValid)
+
+      AnalysisReport(
+        byteRange = byteRangeInfo,
+        signatureContents = signatureContentsInfo,
+        pkcs7 = pkcs7Info,
+        dss = dssInfo,
+        overallValid = overallValid,
+        summary = summary
+      )
     }
-
-    val pkcs7Info = if (signatureContentsInfo.isValid) {
-      analyzePKCS7(signatureContentsInfo.pkcs7Bytes, signedContent, validationConfig)
-    } else {
-      None
-    }
-
-    val dssInfo = analyzeDSS(document, pdfBytes, byteRangeInfo)
-
-    val overallValid = byteRangeInfo.isValid &&
-      signatureContentsInfo.isValid &&
-      pkcs7Info.forall(_.isValid) &&
-      dssInfo.isValid
-
-    val summary = generateSummary(byteRangeInfo, signatureContentsInfo, pkcs7Info, dssInfo, overallValid)
-
-    AnalysisReport(
-      byteRange = byteRangeInfo,
-      signatureContents = signatureContentsInfo,
-      pkcs7 = pkcs7Info,
-      dss = dssInfo,
-      overallValid = overallValid,
-      summary = summary
-    )
   }
 
   private def analyzeByteRange(byteRange: Array[Int], pdfBytes: Array[Byte], validationConfig: ValidationConfig): ByteRangeInfo = {
@@ -333,62 +333,86 @@ object PdfSignatureAnalyzer extends Logging {
   ): Option[PKCS7Info] = {
     if (signatureBytes.length < 10) {
       logger.warn(s"PKCS#7 data on liian lyhyt (${signatureBytes.length} tavua)")
-      return None
-    }
-
-    val validationErrors = scala.collection.mutable.ListBuffer[String]()
-
-    // Parse ASN.1 length to find actual PKCS#7 structure size (may have padding at end)
-    val actualLength = parseASN1Length(signatureBytes)
-    val trimmedBytes = if (actualLength > 0 && actualLength < signatureBytes.length) {
-      signatureBytes.take(actualLength)
+      None
     } else {
-      signatureBytes
-    }
+      val validationErrors = scala.collection.mutable.ListBuffer[String]()
 
-    Try {
-      val contentInfo = ContentInfo.getInstance(trimmedBytes)
-      val cmsSignedData = new CMSSignedData(contentInfo)
+      // Parse ASN.1 length to find actual PKCS#7 structure size (may have padding at end)
+      val actualLength = parseASN1Length(signatureBytes)
+      val trimmedBytes = if (actualLength > 0 && actualLength < signatureBytes.length) {
+        signatureBytes.take(actualLength)
+      } else {
+        signatureBytes
+      }
 
-      val signers = cmsSignedData.getSignerInfos.getSigners.asScala.toList
+      Try {
+        val contentInfo = ContentInfo.getInstance(trimmedBytes)
+        val cmsSignedData = new CMSSignedData(contentInfo)
 
-      val signerInfos = signers.map { signer: SignerInformation =>
-        val digestAlg = signer.getDigestAlgOID
-        val encryptionAlg = signer.getEncryptionAlgOID
+        val signers = cmsSignedData.getSignerInfos.getSigners.asScala.toList
 
-        // Extract timestamp from signature timestamp token (TST)
-        val (hasTimestamp, timestampTime) = Try {
-          val unsignedAttrs = signer.getUnsignedAttributes
-          if (unsignedAttrs != null) {
-            // id-aa-signatureTimeStampToken OID: 1.2.840.113549.1.9.16.2.14
-            val timestampOID = new ASN1ObjectIdentifier("1.2.840.113549.1.9.16.2.14")
-            val timestampAttr = unsignedAttrs.get(timestampOID)
-            if (timestampAttr != null) {
-              Try {
-                val timestampToken = timestampAttr.getAttrValues.getObjectAt(0)
-                val tstInfo = ContentInfo.getInstance(timestampToken)
-                val tstData = new TimeStampToken(tstInfo)
-                val dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
-                (true, Some(dateFormat.format(tstData.getTimeStampInfo.getGenTime)))
-              }.getOrElse((true, None))
+        val signerInfos = signers.map { signer: SignerInformation =>
+          val digestAlg = signer.getDigestAlgOID
+          val encryptionAlg = signer.getEncryptionAlgOID
+
+          // Extract timestamp from signature timestamp token (TST)
+          val (hasTimestamp, timestampTime) = Try {
+            val unsignedAttrs = signer.getUnsignedAttributes
+            if (unsignedAttrs != null) {
+              // id-aa-signatureTimeStampToken OID: 1.2.840.113549.1.9.16.2.14
+              val timestampOID = new ASN1ObjectIdentifier("1.2.840.113549.1.9.16.2.14")
+              val timestampAttr = unsignedAttrs.get(timestampOID)
+              if (timestampAttr != null) {
+                Try {
+                  val timestampToken = timestampAttr.getAttrValues.getObjectAt(0)
+                  val tstInfo = ContentInfo.getInstance(timestampToken)
+                  val tstData = new TimeStampToken(tstInfo)
+                  val dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
+                  (true, Some(dateFormat.format(tstData.getTimeStampInfo.getGenTime)))
+                }.getOrElse((true, None))
+              } else {
+                (false, None)
+              }
             } else {
               (false, None)
             }
-          } else {
-            (false, None)
-          }
-        }.getOrElse((false, None))
+          }.getOrElse((false, None))
 
-        val signerId = signer.getSID
-        val signerCerts = cmsSignedData.getCertificates.getMatches(new org.bouncycastle.util.Selector[X509CertificateHolder] {
-          override def `match`(cert: X509CertificateHolder): Boolean = {
-            signerId.getSerialNumber == cert.getSerialNumber &&
-              signerId.getIssuer.toString == cert.getIssuer.toString
+          val signerId = signer.getSID
+          val signerCerts = cmsSignedData.getCertificates.getMatches(new org.bouncycastle.util.Selector[X509CertificateHolder] {
+            override def `match`(cert: X509CertificateHolder): Boolean = {
+              signerId.getSerialNumber == cert.getSerialNumber &&
+                signerId.getIssuer.toString == cert.getIssuer.toString
+            }
+            override def clone(): Object = this
+          }).asScala.toList
+
+          val certInfos = signerCerts.map { cert =>
+            val x509Cert = cert
+            CertificateInfo(
+              subject = x509Cert.getSubject.toString,
+              issuer = x509Cert.getIssuer.toString,
+              notBefore = x509Cert.getNotBefore.toString,
+              notAfter = x509Cert.getNotAfter.toString,
+              serialNumber = x509Cert.getSerialNumber.toString
+            )
           }
+
+          SignerInfo(
+            digestAlgorithm = digestAlg,
+            encryptionAlgorithm = encryptionAlg,
+            certificates = certInfos,
+            hasSignatureTimestamp = hasTimestamp,
+            signatureTimestampTime = timestampTime
+          )
+        }
+
+        val allCerts = cmsSignedData.getCertificates.getMatches(new org.bouncycastle.util.Selector[X509CertificateHolder] {
+          override def `match`(cert: X509CertificateHolder): Boolean = true
           override def clone(): Object = this
         }).asScala.toList
 
-        val certInfos = signerCerts.map { cert =>
+        val allCertInfos = allCerts.map { cert =>
           val x509Cert = cert
           CertificateInfo(
             subject = x509Cert.getSubject.toString,
@@ -399,82 +423,58 @@ object PdfSignatureAnalyzer extends Logging {
           )
         }
 
-        SignerInfo(
-          digestAlgorithm = digestAlg,
-          encryptionAlgorithm = encryptionAlg,
-          certificates = certInfos,
-          hasSignatureTimestamp = hasTimestamp,
-          signatureTimestampTime = timestampTime
-        )
-      }
-
-      val allCerts = cmsSignedData.getCertificates.getMatches(new org.bouncycastle.util.Selector[X509CertificateHolder] {
-        override def `match`(cert: X509CertificateHolder): Boolean = true
-        override def clone(): Object = this
-      }).asScala.toList
-
-      val allCertInfos = allCerts.map { cert =>
-        val x509Cert = cert
-        CertificateInfo(
-          subject = x509Cert.getSubject.toString,
-          issuer = x509Cert.getIssuer.toString,
-          notBefore = x509Cert.getNotBefore.toString,
-          notAfter = x509Cert.getNotAfter.toString,
-          serialNumber = x509Cert.getSerialNumber.toString
-        )
-      }
-
-      if (signers.isEmpty) {
-        validationErrors += "PKCS#7 does not contain any signers"
-      }
-
-      if (allCerts.size < validationConfig.minVarmenneketjunKoko) {
-        validationErrors += s"PKCS#7 does not contain a certificate chain (only ${allCerts.size} certificates, should be at least ${validationConfig.minVarmenneketjunKoko})"
-      }
-
-      // Validate first certificate's subject contains expected signer name
-      allCertInfos.headOption match {
-        case Some(firstCert) =>
-          if (!firstCert.subject.contains(validationConfig.odotettuAllekirjoittajanNimi)) {
-            validationErrors += s"First certificate's subject does not contain expected signer name '${validationConfig.odotettuAllekirjoittajanNimi}' (found: ${firstCert.subject})"
-          }
-        case None =>
-          validationErrors += "No certificates found in PKCS#7"
-      }
-
-      signerInfos.foreach { signer =>
-        if (!validationConfig.sallitutTiivistealgoritmit.contains(signer.digestAlgorithm)) {
-          validationErrors += s"PKCS#7 uses a weak digest algorithm: ${signer.digestAlgorithm}"
+        if (signers.isEmpty) {
+          validationErrors += "PKCS#7 does not contain any signers"
         }
-      }
 
-      val (signatureValid, signatureValidationError) = signedContent match {
-        case Some(content) if validationConfig.hashValidointi =>
-          verifyCryptographicSignature(trimmedBytes, content) match {
-            case Right(valid) => (Some(valid), None)
-            case Left(error) =>
-              validationErrors += error
-              (Some(false), Some(error))
+        if (allCerts.size < validationConfig.minVarmenneketjunKoko) {
+          validationErrors += s"PKCS#7 does not contain a certificate chain (only ${allCerts.size} certificates, should be at least ${validationConfig.minVarmenneketjunKoko})"
+        }
+
+        // Validate first certificate's subject contains expected signer name
+        allCertInfos.headOption match {
+          case Some(firstCert) =>
+            if (!firstCert.subject.contains(validationConfig.odotettuAllekirjoittajanNimi)) {
+              validationErrors += s"First certificate's subject does not contain expected signer name '${validationConfig.odotettuAllekirjoittajanNimi}' (found: ${firstCert.subject})"
+            }
+          case None =>
+            validationErrors += "No certificates found in PKCS#7"
+        }
+
+        signerInfos.foreach { signer =>
+          if (!validationConfig.sallitutTiivistealgoritmit.contains(signer.digestAlgorithm)) {
+            validationErrors += s"PKCS#7 uses a weak digest algorithm: ${signer.digestAlgorithm}"
           }
-        case _ =>
-          (None, None)
-      }
+        }
 
-      PKCS7Info(
-        signerCount = signers.size,
-        signers = signerInfos,
-        certificates = allCertInfos,
-        signatureValid = signatureValid,
-        signatureValidationError = signatureValidationError,
-        isValid = validationErrors.isEmpty,
-        validationErrors = validationErrors.toList
-      )
-    } match {
-      case Success(info) =>
-        Some(info)
-      case Failure(e) =>
-        logger.warn(s"PKCS#7 SignedData -rakenteen parserointi epäonnistui: ${e.getMessage}")
-        None
+        val (signatureValid, signatureValidationError) = signedContent match {
+          case Some(content) if validationConfig.hashValidointi =>
+            verifyCryptographicSignature(trimmedBytes, content) match {
+              case Right(valid) => (Some(valid), None)
+              case Left(error) =>
+                validationErrors += error
+                (Some(false), Some(error))
+            }
+          case _ =>
+            (None, None)
+        }
+
+        PKCS7Info(
+          signerCount = signers.size,
+          signers = signerInfos,
+          certificates = allCertInfos,
+          signatureValid = signatureValid,
+          signatureValidationError = signatureValidationError,
+          isValid = validationErrors.isEmpty,
+          validationErrors = validationErrors.toList
+        )
+      } match {
+        case Success(info) =>
+          Some(info)
+        case Failure(e) =>
+          logger.warn(s"PKCS#7 SignedData -rakenteen parserointi epäonnistui: ${e.getMessage}")
+          None
+      }
     }
   }
 
@@ -482,38 +482,37 @@ object PdfSignatureAnalyzer extends Logging {
    * Parsii ASN.1 DER-enkoodatun SEQUENCE-rakenteen todellisen pituuden.
    */
   private def parseASN1Length(bytes: Array[Byte]): Int = {
-    if (bytes.length < 2) return -1
-
-    // Tarkista että alkaa SEQUENCE tag:lla (0x30)
-    if (bytes(0) != 0x30) {
+    if (bytes.length < 2) {
+      -1
+    } else if (bytes(0) != 0x30) { // Tarkista että alkaa SEQUENCE tag:lla (0x30)
       logger.warn(f"ASN.1 ei ala SEQUENCE tag:lla (0x30), vaan: ${bytes(0) & 0xFF}%02X")
-      return -1
-    }
-
-    val lengthByte = bytes(1) & 0xFF
-
-    if (lengthByte < 0x80) {
-      // Lyhyt muoto: pituus on suoraan ensimmäisessä tavussa
-      val contentLength = lengthByte
-      val totalLength = 1 + 1 + contentLength  // tag + length-byte + content
-      totalLength
+      -1
     } else {
-      // Pitkä muoto: pituustiedon tavujen määrä on 0x7F:n takana
-      val numLengthBytes = lengthByte & 0x7F
+      val lengthByte = bytes(1) & 0xFF
 
-      if (bytes.length < 2 + numLengthBytes) {
-        logger.warn(f"ASN.1 length-tieto katkeaa: tarvitaan ${2 + numLengthBytes} tavua, saatavilla ${bytes.length}")
-        return -1
+      if (lengthByte < 0x80) {
+        // Lyhyt muoto: pituus on suoraan ensimmäisessä tavussa
+        val contentLength = lengthByte
+        val totalLength = 1 + 1 + contentLength  // tag + length-byte + content
+        totalLength
+      } else {
+        // Pitkä muoto: pituustiedon tavujen määrä on 0x7F:n takana
+        val numLengthBytes = lengthByte & 0x7F
+
+        if (bytes.length < 2 + numLengthBytes) {
+          logger.warn(f"ASN.1 length-tieto katkeaa: tarvitaan ${2 + numLengthBytes} tavua, saatavilla ${bytes.length}")
+          -1
+        } else {
+          // Lue pituus big-endian -muodossa
+          var contentLength = 0
+          for (i <- 0 until numLengthBytes) {
+            contentLength = (contentLength << 8) | (bytes(2 + i) & 0xFF)
+          }
+
+          val totalLength = 1 + 1 + numLengthBytes + contentLength  // tag + length-indicator + length-bytes + content
+          totalLength
+        }
       }
-
-      // Lue pituus big-endian -muodossa
-      var contentLength = 0
-      for (i <- 0 until numLengthBytes) {
-        contentLength = (contentLength << 8) | (bytes(2 + i) & 0xFF)
-      }
-
-      val totalLength = 1 + 1 + numLengthBytes + contentLength  // tag + length-indicator + length-bytes + content
-      totalLength
     }
   }
 
@@ -585,111 +584,111 @@ object PdfSignatureAnalyzer extends Logging {
 
       if (dssDictObj == null) {
         validationErrors += "DSS structure not found in PDF"
-        return DSSInfo.invalid(validationErrors.toList)
-      }
-
-      val dssDict = dssDictObj.asInstanceOf[COSDictionary]
-
-      val ocspsObj = dssDict.getDictionaryObject(COSName.getPDFName("OCSPs"))
-      val hasOCSPs = ocspsObj != null
-      val (ocspCount, ocsps) = if (hasOCSPs) {
-        val ocspArray = ocspsObj.asInstanceOf[COSArray]
-        val ocspList = (0 until ocspArray.size()).flatMap { i =>
-          Try {
-            val ocspStream = ocspArray.getObject(i).asInstanceOf[COSStream]
-            val inputStream = use(ocspStream.createInputStream())
-            val ocspBytes = inputStream.readAllBytes()
-            val ocspResp = new OCSPResp(ocspBytes)
-            val basicResp = ocspResp.getResponseObject.asInstanceOf[BasicOCSPResp]
-
-            val dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
-            val producedAt = dateFormat.format(basicResp.getProducedAt)
-
-            OCSPInfo(producedAt)
-          }.toOption
-        }.toList
-        (ocspArray.size(), ocspList)
+        DSSInfo.invalid(validationErrors.toList)
       } else {
-        (0, List.empty)
+        val dssDict = dssDictObj.asInstanceOf[COSDictionary]
+
+        val ocspsObj = dssDict.getDictionaryObject(COSName.getPDFName("OCSPs"))
+        val hasOCSPs = ocspsObj != null
+        val (ocspCount, ocsps) = if (hasOCSPs) {
+          val ocspArray = ocspsObj.asInstanceOf[COSArray]
+          val ocspList = (0 until ocspArray.size()).flatMap { i =>
+            Try {
+              val ocspStream = ocspArray.getObject(i).asInstanceOf[COSStream]
+              val inputStream = use(ocspStream.createInputStream())
+              val ocspBytes = inputStream.readAllBytes()
+              val ocspResp = new OCSPResp(ocspBytes)
+              val basicResp = ocspResp.getResponseObject.asInstanceOf[BasicOCSPResp]
+
+              val dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
+              val producedAt = dateFormat.format(basicResp.getProducedAt)
+
+              OCSPInfo(producedAt)
+            }.toOption
+          }.toList
+          (ocspArray.size(), ocspList)
+        } else {
+          (0, List.empty)
+        }
+
+        val crlsObj = dssDict.getDictionaryObject(COSName.getPDFName("CRLs"))
+        val hasCRLs = crlsObj != null
+        val (crlCount, crls) = if (hasCRLs) {
+          val crlArray = crlsObj.asInstanceOf[COSArray]
+          val crlList = (0 until crlArray.size()).flatMap { i =>
+            Try {
+              val crlStream = crlArray.getObject(i).asInstanceOf[COSStream]
+              val inputStream = crlStream.createInputStream()
+              val crlBytes = inputStream.readAllBytes()
+              inputStream.close()
+              val crlHolder = new X509CRLHolder(crlBytes)
+
+              val dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
+              val issuer = crlHolder.getIssuer.toString
+              val thisUpdate = dateFormat.format(crlHolder.getThisUpdate)
+              val nextUpdate = Option(crlHolder.getNextUpdate)
+                .map(dateFormat.format)
+                .getOrElse("N/A")
+
+              val revokedCertCount = crlHolder.getRevokedCertificates.size()
+
+              CRLInfo(issuer, thisUpdate, nextUpdate, revokedCertCount)
+            }.toOption
+          }.toList
+          (crlArray.size(), crlList)
+        } else {
+          (0, List.empty)
+        }
+
+        val vriObj = dssDict.getDictionaryObject(COSName.getPDFName("VRI"))
+        val hasVRI = vriObj != null
+        val (vriCount, vriKeys) = if (hasVRI) {
+          val vriDict = vriObj.asInstanceOf[COSDictionary]
+          val keys = vriDict.keySet().asScala.map(_.getName).toList
+          (vriDict.size(), keys)
+        } else {
+          (0, List.empty[String])
+        }
+
+        val certsObj = dssDict.getDictionaryObject(COSName.getPDFName("Certs"))
+        val hasCerts = certsObj != null
+        val certsCount = if (hasCerts) {
+          certsObj.asInstanceOf[COSArray].size()
+        } else {
+          0
+        }
+
+        if (!hasOCSPs && !hasCRLs) {
+          validationErrors += "DSS does not contain OCSP or CRL data"
+        }
+
+        if (!hasVRI) {
+          validationErrors += "DSS does not contain VRI structure"
+        }
+
+        val unsignedContent = pdfBytes.slice(byteRange.unsignedAfterSignatureStart, pdfBytes.length)
+        val unsignedContentStr = new String(unsignedContent, StandardCharsets.ISO_8859_1)
+
+        if (!unsignedContentStr.contains("/DSS")) {
+          validationErrors += "Unsigned portion does not contain /DSS reference"
+        }
+
+        DSSInfo(
+          hasOCSPs = hasOCSPs,
+          ocspCount = ocspCount,
+          ocsps = ocsps,
+          hasCRLs = hasCRLs,
+          crlCount = crlCount,
+          crls = crls,
+          hasVRI = hasVRI,
+          vriCount = vriCount,
+          vriKeys = vriKeys,
+          hasCerts = hasCerts,
+          certsCount = certsCount,
+          isValid = validationErrors.isEmpty,
+          validationErrors = validationErrors.toList
+        )
       }
-
-      val crlsObj = dssDict.getDictionaryObject(COSName.getPDFName("CRLs"))
-      val hasCRLs = crlsObj != null
-      val (crlCount, crls) = if (hasCRLs) {
-        val crlArray = crlsObj.asInstanceOf[COSArray]
-        val crlList = (0 until crlArray.size()).flatMap { i =>
-          Try {
-            val crlStream = crlArray.getObject(i).asInstanceOf[COSStream]
-            val inputStream = crlStream.createInputStream()
-            val crlBytes = inputStream.readAllBytes()
-            inputStream.close()
-            val crlHolder = new X509CRLHolder(crlBytes)
-
-            val dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
-            val issuer = crlHolder.getIssuer.toString
-            val thisUpdate = dateFormat.format(crlHolder.getThisUpdate)
-            val nextUpdate = Option(crlHolder.getNextUpdate)
-              .map(dateFormat.format)
-              .getOrElse("N/A")
-
-            val revokedCertCount = crlHolder.getRevokedCertificates.size()
-
-            CRLInfo(issuer, thisUpdate, nextUpdate, revokedCertCount)
-          }.toOption
-        }.toList
-        (crlArray.size(), crlList)
-      } else {
-        (0, List.empty)
-      }
-
-      val vriObj = dssDict.getDictionaryObject(COSName.getPDFName("VRI"))
-      val hasVRI = vriObj != null
-      val (vriCount, vriKeys) = if (hasVRI) {
-        val vriDict = vriObj.asInstanceOf[COSDictionary]
-        val keys = vriDict.keySet().asScala.map(_.getName).toList
-        (vriDict.size(), keys)
-      } else {
-        (0, List.empty[String])
-      }
-
-      val certsObj = dssDict.getDictionaryObject(COSName.getPDFName("Certs"))
-      val hasCerts = certsObj != null
-      val certsCount = if (hasCerts) {
-        certsObj.asInstanceOf[COSArray].size()
-      } else {
-        0
-      }
-
-      if (!hasOCSPs && !hasCRLs) {
-        validationErrors += "DSS does not contain OCSP or CRL data"
-      }
-
-      if (!hasVRI) {
-        validationErrors += "DSS does not contain VRI structure"
-      }
-
-      val unsignedContent = pdfBytes.slice(byteRange.unsignedAfterSignatureStart, pdfBytes.length)
-      val unsignedContentStr = new String(unsignedContent, StandardCharsets.ISO_8859_1)
-
-      if (!unsignedContentStr.contains("/DSS")) {
-        validationErrors += "Unsigned portion does not contain /DSS reference"
-      }
-
-      DSSInfo(
-        hasOCSPs = hasOCSPs,
-        ocspCount = ocspCount,
-        ocsps = ocsps,
-        hasCRLs = hasCRLs,
-        crlCount = crlCount,
-        crls = crls,
-        hasVRI = hasVRI,
-        vriCount = vriCount,
-        vriKeys = vriKeys,
-        hasCerts = hasCerts,
-        certsCount = certsCount,
-        isValid = validationErrors.isEmpty,
-        validationErrors = validationErrors.toList
-      )
     }.getOrElse(DSSInfo.invalid(List("Internal error generating DSS info")))
   }
 

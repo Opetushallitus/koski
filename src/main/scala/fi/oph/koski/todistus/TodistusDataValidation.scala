@@ -48,24 +48,24 @@ object TodistusDataValidation {
 
   private def validateSuorituksetJaArvosanat(suoritukset: List[YleinenKielitutkintoSuoritusJaArvosana], todistusId: String): Either[HttpStatus, Unit] = {
     if (suoritukset.isEmpty) {
-      return Left(KoskiErrorCategory.internalError(s"Suoritukset ja arvosanat -lista on tyhjä, todistus ${todistusId}"))
-    }
+      Left(KoskiErrorCategory.internalError(s"Suoritukset ja arvosanat -lista on tyhjä, todistus ${todistusId}"))
+    } else {
+      // Validoi jokainen suoritus ja arvosana
+      val validationResults = suoritukset.map { suoritusJaArvosana =>
+        for {
+          _ <- validateNonEmptyNonWhitespace(suoritusJaArvosana.suoritus, "Suorituksen nimi", todistusId)
+          _ <- validateNotLocalizationKey(suoritusJaArvosana.suoritus, "Suorituksen nimi", todistusId)
+          _ <- validateNotMissingString(suoritusJaArvosana.suoritus, "Suorituksen nimi", todistusId)
+          _ <- validateNonEmptyNonWhitespace(suoritusJaArvosana.arvosana, "Arvosana", todistusId)
+          _ <- validateNotLocalizationKey(suoritusJaArvosana.arvosana, "Arvosana", todistusId)
+          _ <- validateNotMissingString(suoritusJaArvosana.arvosana, "Arvosana", todistusId)
+          _ <- validateReasonableLength(suoritusJaArvosana.suoritus, "Suorituksen nimi", todistusId, minLength = 4, maxLength = 50)
+          _ <- validateReasonableLength(suoritusJaArvosana.arvosana, "Arvosana", todistusId, minLength = 1, maxLength = 50)
+        } yield ()
+      }
 
-    // Validoi jokainen suoritus ja arvosana
-    val validationResults = suoritukset.map { suoritusJaArvosana =>
-      for {
-        _ <- validateNonEmptyNonWhitespace(suoritusJaArvosana.suoritus, "Suorituksen nimi", todistusId)
-        _ <- validateNotLocalizationKey(suoritusJaArvosana.suoritus, "Suorituksen nimi", todistusId)
-        _ <- validateNotMissingString(suoritusJaArvosana.suoritus, "Suorituksen nimi", todistusId)
-        _ <- validateNonEmptyNonWhitespace(suoritusJaArvosana.arvosana, "Arvosana", todistusId)
-        _ <- validateNotLocalizationKey(suoritusJaArvosana.arvosana, "Arvosana", todistusId)
-        _ <- validateNotMissingString(suoritusJaArvosana.arvosana, "Arvosana", todistusId)
-        _ <- validateReasonableLength(suoritusJaArvosana.suoritus, "Suorituksen nimi", todistusId, minLength = 4, maxLength = 50)
-        _ <- validateReasonableLength(suoritusJaArvosana.arvosana, "Arvosana", todistusId, minLength = 1, maxLength = 50)
-      } yield ()
+      HttpStatus.foldEithers(validationResults).map(_ => ())
     }
-
-    HttpStatus.foldEithers(validationResults).map(_ => ())
   }
 
   private def validateTasonArvosanarajat(arvosanarajat: String, todistusId: String): Either[HttpStatus, Unit] = {
