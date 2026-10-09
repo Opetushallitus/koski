@@ -15,7 +15,7 @@ object LocalYtrKoesuoritusFetcher extends App {
 
 object LocalYtrFetchKoesuoritusScenario extends PerfTestScenario {
   private val pdfDir = Paths.get(requiredEnv("PDF_DIR"))
-  private val Some(hetu) = KoskiSpecificMockOppijat.ylioppilasLukiolainen.hetu
+  private val hetu = KoskiSpecificMockOppijat.ylioppilasLukiolainen.hetu.get
   private lazy val kansalainenAuthHeaders = kansalainenLoginHeaders(hetu).toMap
 
   override def operation(round: Int): List[Operation] = {

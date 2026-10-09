@@ -100,8 +100,10 @@ class OpiskeluoikeusHistorySpec
       "Onnistuu ja tuottaa auditlog-merkinnän" in {
         val opiskeluoikeus = setupOppijaWithAndGetOpiskeluoikeus(uusiOpiskeluoikeus, oppija)
         authGet("api/opiskeluoikeus/historia/" + opiskeluoikeus.oid.get) {
-          val JArray(muutokset) = readHistory.head.muutos
-          muutokset should not(be(empty))
+          readHistory.head.muutos match {
+            case JArray(muutokset) => muutokset should not(be(empty))
+            case muutos => fail(s"Muutos ei ole JSON-taulukko: $muutos")
+          }
           AuditLogTester.verifyLastAuditLogMessageForOperation(Map("operation" -> "MUUTOSHISTORIA_KATSOMINEN"))
         }
       }
