@@ -26,7 +26,8 @@
     "stylelint:check": "stylelint \"src/**/*.less\"",
     "typecheck": "tsc --noEmit && tsc --noEmit --project tsconfig.node.json",
     "typecheck:watch": "tsc --noEmit --watch --preserveWatchOutput",
-    "clean": "jest --clearCache && rm -rf dist && rm -rf dist-nonce && rm -rf ../target/webapp/koski/valpas && rm -rf .parcel-cache",
+    "clean": "if jest --version >/dev/null 2>&1; then jest --clearCache; fi && rm -rf dist dist-nonce .parcel-cache .last-build ../target/webapp/valpas node_modules/.cache",
+    "wipe": "pnpm run clean && pnpm purge && rm -rf test/download",
     "prettier": "prettier --write --cache .",
     "prettier:check": "prettier --check --cache ."
   },

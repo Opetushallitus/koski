@@ -17,7 +17,9 @@
     "eslint:check": "eslint \"src/**/*.ts\"",
     "typecheck": "tsc --noEmit --project tsconfig.json",
     "prettier": "prettier --write --cache .",
-    "prettier:check": "prettier --check --cache ."
+    "prettier:check": "prettier --check --cache .",
+    "clean": "rm -rf node_modules/.cache",
+    "wipe": "pnpm run clean && pnpm purge"
   },
   "author": "",
   "license": "ISC",

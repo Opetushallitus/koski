@@ -18,7 +18,9 @@
     "stylelint": "pnpm run stylelint:check --fix",
     "stylelint:check": "stylelint \"src/**/*.css\"",
     "prettier": "prettier --write --cache .",
-    "prettier:check": "prettier --check --cache ."
+    "prettier:check": "prettier --check --cache .",
+    "clean": "rm -rf ../target/webapp/koski/json-schema-viewer node_modules/.cache",
+    "wipe": "pnpm run clean && pnpm purge"
   },
   "dependencies": {
     "d3": "3.5.17",

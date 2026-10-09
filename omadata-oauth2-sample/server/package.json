@@ -21,7 +21,9 @@
     "typecheck": "tsc --noEmit",
     "typecheck:watch": "tsc --noEmit --watch --preserveWatchOutput",
     "prettier": "prettier --write --cache .",
-    "prettier:check": "prettier --check --cache ."
+    "prettier:check": "prettier --check --cache .",
+    "clean": "if playwright --version >/dev/null 2>&1; then playwright clear-cache; fi && rm -rf node_modules/.cache",
+    "wipe": "pnpm run clean && pnpm purge && rm -rf test-results playwright-report"
   },
   "repository": {
     "type": "git",

@@ -32,6 +32,7 @@ pnpm install --frozen-lockfile
 - `pnpm run build:prod` kääntää tuotantoversion
 - `pnpm run lint` tarkistaa tyypitykset sekä korjaa lint- ja muotoiluvirheet; `pnpm run lint:check` vain tarkistaa
 - `pnpm run clean` tyhjentää Parcelin välimuistin ja käännöskansiot. Aja jos kääntäminen sekoilee esim. rebasen jälkeen.
+- `pnpm run wipe` ajaa `clean`in ja poistaa lisäksi asennetut riippuvuudet (`node_modules`) ja testitulokset.
 
 ### Hakemistorakenne
 
