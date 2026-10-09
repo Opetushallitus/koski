@@ -35,7 +35,7 @@ import { Trans } from '../texts/Trans'
 import { isEmptyModelObject } from '../../util/objects'
 import { PathToken } from '../../util/laxModify'
 import { useVirkailijaUser } from '../../appstate/user'
-import { aloitaUudenKäyttöliittymänMuokkaus } from '../../appstate/muokkaustila'
+import { aloitaUudenKäyttöliittymänMuokkaus } from '../../appstate/sivunTila'
 
 export type EditorContainerProps<T extends Opiskeluoikeus> =
   CommonPropsWithChildren<{

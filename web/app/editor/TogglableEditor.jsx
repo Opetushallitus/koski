@@ -7,7 +7,7 @@ import { modelData } from './EditorModel'
 import InvalidateOpiskeluoikeusButton from '../opiskeluoikeus/InvalidateOpiskeluoikeusButton'
 import { RequiresLahdejarjestelmakytkennanPurkaminenAccess } from '../components-v2/access/RequiresLahdejarjestelmakytkennanPurkaminenAccess.tsx'
 import { useVirkailijaUser } from '../appstate/user.tsx'
-import { useMuokattavaOpiskeluoikeus } from '../appstate/muokkaustila.ts'
+import { useMuokattavaOpiskeluoikeus } from '../appstate/sivunTila.ts'
 import ButtonWithConfirmation from '../components/ButtonWithConfirmation'
 import { puraLähdejärjestelmänKytkentä } from '../virkailija/VirkailijaOppijaView.jsx'
 

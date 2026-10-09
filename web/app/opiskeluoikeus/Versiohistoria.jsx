@@ -2,7 +2,8 @@ import React from 'react'
 import BaconComponent from '../components/BaconComponent'
 import Http from '../util/http'
 import Link from '../components/Link'
-import { currentLocation, navigateTo } from '../util/location.js'
+import { navigateTo } from '../util/location.js'
+import { opiskeluoikeudenVersionumero } from '../appstate/sivunTila'
 import { ISO2FinnishDateTime } from '../date/date'
 import Text from '../i18n/Text'
 
@@ -86,9 +87,6 @@ export default class Versiohistoria extends BaconComponent {
   // Versiotila koskee vain osoitteen opiskeluoikeutta, ei muita samalla
   // sivulla näkyviä.
   versionumero() {
-    const { opiskeluoikeus, versionumero } = currentLocation().params
-    return opiskeluoikeus === this.props.opiskeluoikeusOid
-      ? versionumero
-      : undefined
+    return opiskeluoikeudenVersionumero(this.props.opiskeluoikeusOid)
   }
 }

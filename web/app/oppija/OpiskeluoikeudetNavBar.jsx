@@ -10,7 +10,7 @@ import { userP } from '../util/user'
 import { UusiOpiskeluoikeusDialog } from '../uusiopiskeluoikeus/UusiOpiskeluoikeusDialog'
 import { postNewOppija } from '../uusioppija/UusiOppija'
 import { reloadOppija } from '../virkailija/VirkailijaOppijaView'
-import { useMuokattavaOpiskeluoikeus } from '../appstate/muokkaustila'
+import { useMuokattavaOpiskeluoikeus } from '../appstate/sivunTila'
 
 export default ({ oppijaOid, opiskeluoikeusTyypit, selectedIndex }) => {
   const muokkausKäynnissä = useMuokattavaOpiskeluoikeus() !== undefined
