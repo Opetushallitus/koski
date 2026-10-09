@@ -23,7 +23,7 @@ export class KoskiRaportitPage {
 
   async gotoVstVapaatavoitteinen() {
     await this.page.goto(
-      '/koski/raportit/vst/vapaansivistystyönvapaatavoitteisenkoulutuksenraportti'
+      '/koski/raportit/vst/vapaansivistystyönvapaatavoitteisenkoulutuksenraportti?vstvapaatavoitteinen'
     )
     await expect(this.muodostaButton).toBeVisible()
   }
