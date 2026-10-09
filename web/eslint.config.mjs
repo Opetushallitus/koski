@@ -48,23 +48,18 @@ export default [
       },
 
       parser: tseslint.parser,
-      ecmaVersion: 6,
       sourceType: 'module',
 
       parserOptions: {
         ecmaFeatures: {
-          jsx: true,
-          experimentalObjectRestSpread: true
+          jsx: true
         }
       }
     },
 
     rules: {
       'no-undef': 'error',
-      'no-var': 'off',
       'no-unreachable': 'error',
-      'no-console': 'off',
-      'no-warning-comments': 'off',
       'no-unused-vars': 'off',
       'no-restricted-syntax': [
         'error',
@@ -74,8 +69,6 @@ export default [
             'Käytä lokalisoitua tekstiä (t, Trans) JSX-literaalin sijaan.'
         }
       ],
-      'array-callback-return': 'off',
-      'prefer-regex-literals': 'off',
       eqeqeq: 'error',
       'no-shadow': 'off',
       'prefer-spread': 'error',
@@ -88,7 +81,6 @@ export default [
       ],
       '@typescript-eslint/no-empty-function': 'off',
       '@typescript-eslint/no-unnecessary-type-constraint': 'error',
-      '@typescript-eslint/ban-types': 'off',
       '@typescript-eslint/no-unused-expressions': 'off'
     }
   },
@@ -102,10 +94,8 @@ export default [
   {
     files: ['test/**/*'],
     rules: {
-      'no-unused-vars': 'off', // Mochan takia
       'no-undef': 'off', // Mochan takia
       'no-var': 'off', // Mochan takia
-      camelcase: 'off',
       'no-shadow': 'error', // Mochan takia
       'mocha/no-exclusive-tests': 'error',
       'mocha/no-pending-tests': 'error',
