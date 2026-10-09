@@ -13,47 +13,49 @@ import { isPendingQueryResponse } from '../../types/fi/oph/koski/massaluovutus/P
 import { QueryResponse } from '../../types/fi/oph/koski/massaluovutus/QueryResponse'
 import { isRunningQueryResponse } from '../../types/fi/oph/koski/massaluovutus/RunningQueryResponse'
 import {
-  isMassaluovutusQueryAmmatillinenTutkintoSuoritustiedot,
-  MassaluovutusQueryAmmatillinenTutkintoSuoritustiedot
-} from '../../types/fi/oph/koski/massaluovutus/raportit/MassaluovutusQueryAmmatillinenTutkintoSuoritustiedot'
-import {
   createMassaluovutusKysely,
   fetchOmatMassaluovutusKyselyt
 } from '../../util/koskiApi'
 import { useInterval } from '../../util/useInterval'
+import {
+  MassaluovutusKyselymalli,
+  RaporttiKyselynParametrit,
+  RaporttiKyselynTiedot
+} from './massaluovutusRaporttiKyselyt'
 
 const pollausväliMs = 3000
 
-export type RaporttiKyselynParametrit = {
-  organisaatioOid: string
-  alku: string
-  loppu: string
-  osasuoritustenAikarajaus: boolean
-  language: 'fi' | 'sv' | 'en'
-}
-
 export type MassaluovutusRaportinLatausProps = {
+  kyselymalli: MassaluovutusKyselymalli
   parametrit: RaporttiKyselynParametrit | null
   dbUpdated?: string
   oppilaitosNimet: Record<string, string>
 }
 
+type OmaRaportti = {
+  kysely: QueryResponse
+  tiedot: RaporttiKyselynTiedot
+}
+
 export const MassaluovutusRaportinLataus: React.FC<
   MassaluovutusRaportinLatausProps
-> = ({ parametrit, dbUpdated, oppilaitosNimet }) => {
+> = ({ kyselymalli, parametrit, dbUpdated, oppilaitosNimet }) => {
   const kyselyt = useApiOnce(fetchOmatMassaluovutusKyselyt)
   const [kyselytData] = useLocalDataCopy(kyselyt)
   const luoKysely = useApiMethod(createMassaluovutusKysely)
 
   const omatRaportit = useMemo(
-    () => (kyselytData || []).filter(koskeeTätäRaporttia),
-    [kyselytData]
+    () =>
+      (kyselytData || [])
+        .map((kysely) => ({ kysely, tiedot: kyselymalli.lue(kysely.query) }))
+        .filter((r): r is OmaRaportti => r.tiedot !== null),
+    [kyselytData, kyselymalli]
   )
 
   const päivitäLista = kyselyt.call
   const pollaaja = useInterval(päivitäLista, pollausväliMs)
 
-  const keskeneräisiä = omatRaportit.some(onKesken)
+  const keskeneräisiä = omatRaportit.some((r) => onKesken(r.kysely))
   const muodostetaan = keskeneräisiä || luoKysely.state === 'loading'
 
   useEffect(() => {
@@ -70,17 +72,9 @@ export const MassaluovutusRaportinLataus: React.FC<
 
   const aloita = useCallback(() => {
     if (parametrit) {
-      luoKysely.call(
-        MassaluovutusQueryAmmatillinenTutkintoSuoritustiedot({
-          organisaatioOid: parametrit.organisaatioOid,
-          language: parametrit.language,
-          alku: parametrit.alku,
-          loppu: parametrit.loppu,
-          osasuoritustenAikarajaus: parametrit.osasuoritustenAikarajaus
-        })
-      )
+      luoKysely.call(kyselymalli.luo(parametrit))
     }
-  }, [luoKysely, parametrit])
+  }, [luoKysely, kyselymalli, parametrit])
 
   return (
     <>
@@ -121,16 +115,22 @@ export const MassaluovutusRaportinLataus: React.FC<
                 <th>{t('Muodostettu')}</th>
                 <th>{t('Oppilaitos')}</th>
                 <th>{t('Aikajakso')}</th>
-                <th>{t('Tutkinnon osat')}</th>
+                {kyselymalli.näytäOsasuoritustenRajaus && (
+                  <th>{t('Tutkinnon osat')}</th>
+                )}
                 <th>{t('Tiedosto')}</th>
                 <th>{t('Salasana')}</th>
               </tr>
             </thead>
             <tbody>
-              {omatRaportit.map((kysely) => (
+              {omatRaportit.map(({ kysely, tiedot }) => (
                 <RaporttiRivi
                   key={kysely.queryId}
                   kysely={kysely}
+                  tiedot={tiedot}
+                  näytäOsasuoritustenRajaus={
+                    kyselymalli.näytäOsasuoritustenRajaus
+                  }
                   oppilaitosNimet={oppilaitosNimet}
                 />
               ))}
@@ -144,15 +144,19 @@ export const MassaluovutusRaportinLataus: React.FC<
 
 const RaporttiRivi: React.FC<{
   kysely: QueryResponse
+  tiedot: RaporttiKyselynTiedot
+  näytäOsasuoritustenRajaus: boolean
   oppilaitosNimet: Record<string, string>
-}> = ({ kysely, oppilaitosNimet }) => (
+}> = ({ kysely, tiedot, näytäOsasuoritustenRajaus, oppilaitosNimet }) => (
   <tr>
     <td className="luontiaika">
       {formatFinnishDateTime(new Date(kysely.createdAt))}
     </td>
-    <td className="oppilaitos">{oppilaitos(kysely, oppilaitosNimet)}</td>
-    <td className="aikavali">{aikaväli(kysely)}</td>
-    <td className="osasuoritukset">{osasuoritustenRajaus(kysely)}</td>
+    <td className="oppilaitos">{oppilaitos(tiedot, oppilaitosNimet)}</td>
+    <td className="aikavali">{aikaväli(tiedot)}</td>
+    {näytäOsasuoritustenRajaus && (
+      <td className="osasuoritukset">{osasuoritustenRajaus(tiedot)}</td>
+    )}
     <td className="tiedosto">
       {isCompleteQueryResponse(kysely) && (
         <a href={kysely.files[0]}>{t('Lataa Excel-tiedosto')}</a>
@@ -192,31 +196,16 @@ const Päivitysaika: React.FC<{ aika: string }> = ({ aika }) => {
 const onKesken = (q: QueryResponse): boolean =>
   isPendingQueryResponse(q) || isRunningQueryResponse(q)
 
-const koskeeTätäRaporttia = (q: QueryResponse): boolean =>
-  isMassaluovutusQueryAmmatillinenTutkintoSuoritustiedot(q.query)
-
-const aikaväli = (q: QueryResponse): string => {
-  const kysely = q.query
-  return isMassaluovutusQueryAmmatillinenTutkintoSuoritustiedot(kysely)
-    ? `${ISO2FinnishDate(kysely.alku)} – ${ISO2FinnishDate(kysely.loppu)}`
-    : ''
-}
+const aikaväli = (tiedot: RaporttiKyselynTiedot): string =>
+  `${ISO2FinnishDate(tiedot.alku)} – ${ISO2FinnishDate(tiedot.loppu)}`
 
 const oppilaitos = (
-  q: QueryResponse,
+  tiedot: RaporttiKyselynTiedot,
   oppilaitosNimet: Record<string, string>
-): string => {
-  const kysely = q.query
-  const oid = isMassaluovutusQueryAmmatillinenTutkintoSuoritustiedot(kysely)
-    ? kysely.organisaatioOid
-    : undefined
-  return oid ? oppilaitosNimet[oid] || oid : ''
-}
+): string =>
+  tiedot.organisaatioOid
+    ? oppilaitosNimet[tiedot.organisaatioOid] || tiedot.organisaatioOid
+    : ''
 
-const osasuoritustenRajaus = (q: QueryResponse): string => {
-  const kysely = q.query
-  if (!isMassaluovutusQueryAmmatillinenTutkintoSuoritustiedot(kysely)) {
-    return ''
-  }
-  return kysely.osasuoritustenAikarajaus ? t('Aikajaksolta') : t('Kaikki')
-}
+const osasuoritustenRajaus = (tiedot: RaporttiKyselynTiedot): string =>
+  tiedot.osasuoritustenAikarajaus ? t('Aikajaksolta') : t('Kaikki')
