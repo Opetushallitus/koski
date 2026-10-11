@@ -22,7 +22,7 @@
     <http4s-scala-xml.version>0.24.1</http4s-scala-xml.version>
     <json4s.version>4.0.7</json4s.version>
     <awssdk.version>2.55.11</awssdk.version>
-    <jetty.version>12.1.13</jetty.version>
+    <jetty.version>12.1.14</jetty.version>
     <prometheus.client.version>0.16.0</prometheus.client.version>
     <log4j.version>2.26.1</log4j.version>
     <pdfbox.version>3.0.8</pdfbox.version>
