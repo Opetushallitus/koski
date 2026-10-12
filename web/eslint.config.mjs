@@ -132,6 +132,8 @@ export default [
       '@typescript-eslint/prefer-promise-reject-errors': 'error',
       '@typescript-eslint/no-unsafe-unary-minus': 'error',
       '@typescript-eslint/no-implied-eval': 'error',
+      '@typescript-eslint/no-redundant-type-constituents': 'error',
+      '@typescript-eslint/no-duplicate-type-constituents': 'error',
       '@typescript-eslint/return-await': [
         'error',
         'error-handling-correctness-only'
