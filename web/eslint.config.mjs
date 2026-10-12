@@ -228,7 +228,15 @@ export default defineConfig([
       '@typescript-eslint/no-array-delete': 'error',
       '@typescript-eslint/no-base-to-string': 'error',
       '@typescript-eslint/restrict-plus-operands': 'error',
-      '@typescript-eslint/restrict-template-expressions': 'error'
+      '@typescript-eslint/restrict-template-expressions': 'error',
+      '@typescript-eslint/only-throw-error': 'error',
+      '@typescript-eslint/prefer-promise-reject-errors': 'error',
+      '@typescript-eslint/no-unsafe-unary-minus': 'error',
+      '@typescript-eslint/no-implied-eval': 'error',
+      '@typescript-eslint/return-await': [
+        'error',
+        'error-handling-correctness-only'
+      ]
     }
   },
   {
