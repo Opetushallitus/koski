@@ -117,7 +117,10 @@ export default [
     rules: {
       '@typescript-eslint/no-floating-promises': 'error',
       '@typescript-eslint/no-for-in-array': 'error',
-      '@typescript-eslint/no-misused-promises': 'error'
+      '@typescript-eslint/no-misused-promises': 'error',
+      '@typescript-eslint/no-unused-expressions': 'error',
+      '@typescript-eslint/unbound-method': 'error',
+      '@typescript-eslint/no-array-delete': 'error'
     }
   },
   {
