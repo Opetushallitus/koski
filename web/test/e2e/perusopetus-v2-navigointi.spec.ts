@@ -29,9 +29,9 @@ test.describe('Perusopetuksen uusi käyttöliittymä: navigointi pois sivulta', 
 
     // Navigoi toiseen oppijaan — ei dialogia
     let dialogShown = false
-    page.on('dialog', (d) => {
+    page.on('dialog', async (d) => {
       dialogShown = true
-      d.dismiss()
+      await d.dismiss()
     })
     await oppijaPage.goto(
       '1.2.246.562.24.00000000001?opiskeluoikeudenTyyppi=perusopetus'
