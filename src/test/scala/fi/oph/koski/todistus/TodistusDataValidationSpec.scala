@@ -1,7 +1,6 @@
 package fi.oph.koski.todistus
 
 import fi.oph.koski.organisaatio.MockOrganisaatiot.YleinenKielitutkintoOrg
-import fi.oph.koski.organisaatio.Opetushallitus
 import fi.oph.koski.schema._
 import fi.oph.koski.todistus.yleinenkielitutkinto.{YleinenKielitutkintoSuoritusJaArvosana, YleinenKielitutkintoTodistusData}
 import org.scalatest.freespec.AnyFreeSpec

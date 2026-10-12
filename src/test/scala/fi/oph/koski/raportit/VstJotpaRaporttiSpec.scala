@@ -2,8 +2,7 @@ package fi.oph.koski.raportit
 
 import fi.oph.koski.KoskiApplicationForTests
 import fi.oph.koski.henkilo.{KoskiSpecificMockOppijat, LaajatOppijaHenkilöTiedot}
-import fi.oph.koski.http.{HttpTester, KoskiErrorCategory}
-import fi.oph.koski.koskiuser.{KoskiMockUser, MockUsers}
+import fi.oph.koski.http.HttpTester
 import fi.oph.koski.localization.LocalizationReader
 import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.raportit.vst.VSTJotpaRow

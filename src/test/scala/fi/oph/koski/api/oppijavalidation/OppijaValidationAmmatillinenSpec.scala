@@ -1618,7 +1618,7 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
               ))
             )
 
-            val res = AmmatillinenValidation.validateAmmatillinenOpiskeluoikeus(KoskiApplicationForTests.config)(oo, None, KoskiApplicationForTests.possu)(KoskiSpecificSession.systemUser)
+            val res = AmmatillinenValidation.validateAmmatillinenOpiskeluoikeus(config)(oo, None, KoskiApplicationForTests.possu)(KoskiSpecificSession.systemUser)
             res shouldBe HttpStatus.ok
           }
         }

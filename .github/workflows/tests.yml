@@ -135,6 +135,15 @@ jobs:
         with:
           commithash: ${{ github.sha }}
 
+  scalafix:
+    if: ${{ inputs.run-backend-tests }}
+    name: Scalafix
+    runs-on: ubuntu-26.04
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: ./.github/actions/setup_java_17
+      - run: make scalafix-check
+
   koski_frontend_lint:
     if: ${{ inputs.run-koski-ui-tests }}
     name: Koski frontend static analysis

@@ -10,7 +10,6 @@ import fi.oph.koski.schema._
 import fi.oph.koski.util.FinnishDateFormat.finnishDateFormat
 import fi.oph.koski.util.Futures
 
-import java.sql.Date
 import java.time.LocalDate
 import scala.concurrent.Future
 import scala.concurrent.duration.DurationInt
@@ -173,8 +172,6 @@ case class LukioRaportti(repository: LukioRaportitRepository, t: LocalizationRea
     oppijoidenRivitJärjestettyKursseittain: Seq[Seq[YleissivistäväRaporttiKurssi]],
     kotikuntaPvm: Option[LocalDate],
   ): LukioRaportinOppiaineenKurssitRow = {
-    val kotikunta = if (t.language == "sv") row.henkilo.kotikuntaNimiSv else row.henkilo.kotikuntaNimiFi
-
     LukioRaportinOppiaineenKurssitRow(
       stattisetKolumnit = LukioOppiaineenKurssienVälilehtiStaattisetKolumnit(
         oppijanOid = row.opiskeluoikeus.oppijaOid,

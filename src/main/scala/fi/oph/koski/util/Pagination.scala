@@ -2,7 +2,6 @@ package fi.oph.koski.util
 
 import fi.oph.koski.servlet.KoskiSpecificBaseServlet
 import slick.lifted.Query
-import scala.language.higherKinds
 
 trait Pagination extends KoskiSpecificBaseServlet {
   protected val maxNumberOfItemsPerPage = 10000

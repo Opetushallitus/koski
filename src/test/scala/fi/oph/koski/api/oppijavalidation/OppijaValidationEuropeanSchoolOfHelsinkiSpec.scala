@@ -16,9 +16,7 @@ import fi.oph.koski.{KoskiApplicationForTests, KoskiHttpSpec}
 import org.scalatest.freespec.AnyFreeSpec
 
 import java.time.LocalDate
-import fi.oph.koski.localization.LocalizedStringImplicits._
 
-import java.time.LocalDate.{of => date}
 
 class OppijaValidationEuropeanSchoolOfHelsinkiSpec
   extends AnyFreeSpec
@@ -401,17 +399,6 @@ class OppijaValidationEuropeanSchoolOfHelsinkiSpec
       KoskiApplicationForTests.koodistoViitePalvelu,
       config,
       KoskiApplicationForTests.validationContext,
-    )
-  }
-
-  private def mitätöityOpiskeluoikeus(oo: EuropeanSchoolOfHelsinkiOpiskeluoikeus): EuropeanSchoolOfHelsinkiOpiskeluoikeus = {
-    oo.copy(
-      tila = EuropeanSchoolOfHelsinkiOpiskeluoikeudenTila(
-        oo.tila.opiskeluoikeusjaksot ++
-          List(
-            EuropeanSchoolOfHelsinkiOpiskeluoikeusjakso(alku = date(2026, 5, 31), tila = Koodistokoodiviite("mitatoity", Some("Mitätöity"), "koskiopiskeluoikeudentila", Some(1)))
-          )
-      )
     )
   }
 }

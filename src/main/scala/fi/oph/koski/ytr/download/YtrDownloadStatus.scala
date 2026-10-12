@@ -8,7 +8,6 @@ import org.json4s.jackson.JsonMethods
 import java.sql.Timestamp
 import java.time.{LocalDate, LocalDateTime}
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
-import slick.jdbc.GetResult
 
 class YtrDownloadStatus(val db: DB) extends QueryMethods with Logging with DatabaseExecutionContext{
   implicit val formats: DefaultFormats = DefaultFormats

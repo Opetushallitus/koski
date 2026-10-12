@@ -496,7 +496,6 @@ object Annotations {
   }
 
   private def doParseAnnotation(annotationSymbol: ru.Symbol, params: List[ru.Tree]): StaticAnnotation = {
-    val StringClass = classOf[String]
     val DoubleClass = classOf[Double]
     val IntegerClass = classOf[Int]
     val BooleanClass = classOf[Boolean]
@@ -531,7 +530,6 @@ object Annotations {
             .orElse(Try(parseAsBoolean(value.toString.toBoolean)))
             .getOrElse {
               val evaluated = tb.eval(tb.untypecheck(value))
-              //println("Expensive: " + annotationClass.getName + " / " + tyep.getName + " = " + value)
               evaluated.asInstanceOf[AnyRef]
             }
       }

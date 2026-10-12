@@ -6,7 +6,7 @@ import java.lang.Character.isDigit
 import java.time.LocalDate
 import java.time.temporal.ChronoUnit
 import fi.oph.koski.raportointikanta._
-import fi.oph.koski.schema.{Aikajakso, Jakso, Koulutusmoduuli}
+import fi.oph.koski.schema.{Aikajakso, Jakso}
 
 
 case class YleissivistäväOppiaineenTiedot(suoritus: RSuoritusRow, osasuoritukset: Seq[ROsasuoritusRow]) {

@@ -6,9 +6,7 @@ import fi.oph.koski.koskiuser.MockUsers
 import fi.oph.koski.schema.KoskiSchema.strictDeserialization
 import fi.oph.koski.schema.{KielitutkinnonOpiskeluoikeus, Opiskeluoikeus, YleisenKielitutkinnonOsakokeenSuoritus}
 import org.apache.pdfbox.Loader
-import org.apache.pdfbox.cos.{COSArray, COSDictionary, COSName}
 import org.apache.pdfbox.pdmodel.PDDocument
-import org.apache.pdfbox.pdmodel.graphics.image.PDImageXObject
 import org.apache.pdfbox.rendering.PDFRenderer
 import org.apache.pdfbox.text.{PDFTextStripper, PDFTextStripperByArea}
 import org.json4s.jackson.JsonMethods
@@ -20,7 +18,6 @@ import org.verapdf.pdfa.{Foundries, PDFAParser, PDFAValidator}
 
 import java.awt.Rectangle
 import java.awt.image.BufferedImage
-import java.io.ByteArrayInputStream
 import javax.imageio.ImageIO
 import scala.jdk.CollectionConverters._
 
@@ -142,8 +139,6 @@ class TodistusLatausSpec extends TodistusSpecHelpers with BeforeAndAfterAll {
     doc
   }
 
-  private lazy val svPdfText: String = new PDFTextStripper().getText(svPdfDocument)
-
   private lazy val svPresignedPdfBytes: Array[Byte] = {
     var bytes: Array[Byte] = null
     verifyPresignedResultAndContent(s"/todistus/download/presigned/${svCompletedJob.id}") {
@@ -158,8 +153,6 @@ class TodistusLatausSpec extends TodistusSpecHelpers with BeforeAndAfterAll {
     _svPresignedPdfDocument = Some(doc)
     doc
   }
-
-  private lazy val svPresignedPdfText: String = new PDFTextStripper().getText(svPresignedPdfDocument)
 
   private val enTemplateVariant = "en"
 
@@ -188,8 +181,6 @@ class TodistusLatausSpec extends TodistusSpecHelpers with BeforeAndAfterAll {
     doc
   }
 
-  private lazy val enPdfText: String = new PDFTextStripper().getText(enPdfDocument)
-
   private lazy val enPresignedPdfBytes: Array[Byte] = {
     var bytes: Array[Byte] = null
     verifyPresignedResultAndContent(s"/todistus/download/presigned/${enCompletedJob.id}") {
@@ -204,8 +195,6 @@ class TodistusLatausSpec extends TodistusSpecHelpers with BeforeAndAfterAll {
     _enPresignedPdfDocument = Some(doc)
     doc
   }
-
-  private lazy val enPresignedPdfText: String = new PDFTextStripper().getText(enPresignedPdfDocument)
 
   // Printattava todistus: fi_tulostettava_paivitys (2 sivua, ei tiedotesivua)
   private val fiPaivitysTemplateVariant = "fi_tulostettava_paivitys"

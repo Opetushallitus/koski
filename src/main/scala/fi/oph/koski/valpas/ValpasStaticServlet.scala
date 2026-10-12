@@ -1,6 +1,6 @@
 package fi.oph.koski.valpas
 
-import fi.oph.koski.config.{Environment, KoskiApplication}
+import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.frontendvalvonta.FrontendValvontaMode.FrontendValvontaMode
 import fi.oph.koski.frontendvalvonta.{FrontendValvontaMode, FrontendValvottuServlet}
 import org.scalatra.ScalatraServlet

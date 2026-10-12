@@ -6,7 +6,7 @@ import fi.oph.koski.db.{DatabaseConverters, SQLHelpers}
 import fi.oph.koski.localization.Locale
 import fi.oph.koski.log.Logging
 import fi.oph.koski.util.DateOrdering.localDateOrdering
-import org.json4s.{JArray, JNull, JValue}
+import org.json4s.JValue
 import slick.jdbc.GetResult
 
 import java.time.LocalDate

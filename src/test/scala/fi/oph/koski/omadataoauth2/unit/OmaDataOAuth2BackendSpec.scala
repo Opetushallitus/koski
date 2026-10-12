@@ -1,7 +1,7 @@
 package fi.oph.koski.omadataoauth2.unit
 
 import fi.oph.koski.aktiivisetjapaattyneetopinnot.AktiivisetJaPäättyneetOpinnotMuunKuinSäännellynKoulutuksenOpiskeluoikeus
-import fi.oph.koski.api.misc.{OpiskeluoikeusTestMethods, OpiskeluoikeusTestMethodsPerusopetus, PutOpiskeluoikeusTestMethods}
+import fi.oph.koski.api.misc.{OpiskeluoikeusTestMethods, OpiskeluoikeusTestMethodsPerusopetus}
 import fi.oph.koski.db.KoskiTables.{KoskiOpiskeluoikeusTable, OAuth2JakoKaikki}
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.documentation.{AmmatillinenExampleData, PerusopetusExampleData}
@@ -318,7 +318,7 @@ class OmaDataOAuth2BackendSpec
     "code" - {
       "puuttuminen aiheuttaa virheen" in {
         val pkce = createChallengeAndVerifier()
-        val code = createAuthorization(validKansalainen, pkce.challenge)
+        createAuthorization(validKansalainen, pkce.challenge)
 
         postAuthorizationServerClientIdFromUsername(
           validPalvelukäyttäjä,

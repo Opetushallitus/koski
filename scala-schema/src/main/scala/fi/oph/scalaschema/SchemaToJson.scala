@@ -104,7 +104,7 @@ object SchemaToJson {
     val requiredProperties = properties.toList.filter(property => !property.schema.isInstanceOf[OptionalSchema] && !property.metadata.find{_.isInstanceOf[DefaultValue]}.isDefined)
     requiredProperties match {
       case Nil => None
-      case _ => Some("required", JArray(requiredProperties.map{property => JString(property.key)}))
+      case _ => Some(("required", JArray(requiredProperties.map{property => JString(property.key)})))
     }
   }
 
@@ -115,7 +115,7 @@ object SchemaToJson {
     case Nil => None
     case _ =>
       failOnDuplicateDefinitionName(definitions)
-      Some("definitions", JObject(definitions.map(definition => (definition.definitionName, toJsonSchema(definition)))))
+      Some(("definitions", JObject(definitions.map(definition => (definition.definitionName, toJsonSchema(definition))))))
   }
 
   private def failOnDuplicateDefinitionName(definitions: List[SchemaWithClassName]): Unit = {

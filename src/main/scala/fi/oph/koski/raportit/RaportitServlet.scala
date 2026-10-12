@@ -1,7 +1,6 @@
 package fi.oph.koski.raportit
 
 import java.time.LocalDate
-import java.time.format.DateTimeParseException
 import java.util.concurrent.Semaphore
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.http.KoskiErrorCategory
@@ -11,9 +10,9 @@ import fi.oph.koski.log.KoskiAuditLogMessageField.hakuEhto
 import fi.oph.koski.log.KoskiOperation.OPISKELUOIKEUS_RAPORTTI
 import fi.oph.koski.log.{AuditLog, KoskiAuditLogMessage, Logging}
 import fi.oph.koski.raportit.aikuistenperusopetus.AikuistenPerusopetusRaportti
-import fi.oph.koski.organisaatio.{Kaikki, OrganisaatioHierarkia, OrganisaatioOid}
+import fi.oph.koski.organisaatio.OrganisaatioOid
 import fi.oph.koski.raportit.esiopetus.EsiopetusRaporttiService
-import fi.oph.koski.schema.{Koodistokoodiviite, LocalizedString, OpiskeluoikeudenTyyppi, Organisaatio}
+import fi.oph.koski.schema.{Koodistokoodiviite, OpiskeluoikeudenTyyppi, Organisaatio}
 import fi.oph.koski.servlet.{KoskiSpecificApiServlet, NoCache}
 import org.scalatra.{ContentEncodingSupport, Cookie, CookieOptions}
 
@@ -21,7 +20,6 @@ class RaportitServlet(implicit val application: KoskiApplication) extends KoskiS
   private lazy val raportitService = new RaportitService(application)
   private lazy val organisaatioService = application.organisaatioService
   private lazy val esiopetusService = new EsiopetusRaporttiService(application)
-  private lazy val accessResolver = RaportitAccessResolver(application)
   private lazy val vapaatRaporttipaikat = new Semaphore(application.config.getInt("raportit.maxConcurrent"))
 
   before() {

@@ -1,13 +1,11 @@
 package fi.oph.koski.log
 
 import fi.oph.koski.json.GenericJsonFormats
-import fi.oph.koski.log.AuditLogTester.retryingTest
 import org.json4s.Formats
 import org.json4s.JsonAST.JObject
 import org.json4s.jackson.JsonMethods.parse
 import org.scalatest.matchers.should.Matchers
 
-import scala.annotation.tailrec
 
 object AuditLogTester extends Matchers with LogTester {
   override def appenderName: String = "Audit"
@@ -26,7 +24,6 @@ object AuditLogTester extends Matchers with LogTester {
   }
 
   private def filteredMessagesByOperation(params: Map[String, Any]): Seq[JObject] = {
-    implicit val formats: Formats = GenericJsonFormats.genericFormats
     val messages = getLogMessages
       .map(m => parse(m))
       .collect { case msg: JObject if !isAliveMessage(msg) => msg }
@@ -47,7 +44,6 @@ object AuditLogTester extends Matchers with LogTester {
   }
 
   private def isAliveMessage(msg: JObject): Boolean = {
-    implicit val formats: Formats = GenericJsonFormats.genericFormats
     msg.values.get("type").contains("alive")
   }
 

@@ -2,7 +2,6 @@ package fi.oph.koski.typemodel
 
 import fi.oph.scalaschema._
 
-import scala.language.implicitConversions
 
 object SchemaExport {
   case class Context(
@@ -74,10 +73,8 @@ object SchemaExport {
       case _ if ctx.isEnd => Seq.empty
       case classSchema: ClassSchema => classSchema.definitions.flatMap(clss => parse(clss, ctx.next()))
       case classRefSchema: ClassRefSchema if ctx.followClassRefs =>
-        // println(s"Parse associated schemas: ref ${classRefSchema.fullClassName}")
         TypeExport.getObjectModels(Class.forName(classRefSchema.fullClassName))
       case anyOfSchema: AnyOfSchema =>
-        // println(s"Parse associated schemas: anyOf ${anyOfSchema.fullClassName}")
         anyOfSchema.alternatives.flatMap(alt => parseAssociatedSchemas(alt, ctx.next()))
       case _ => Seq.empty
     }

@@ -5,7 +5,6 @@ import fi.oph.koski.koskiuser.{KoskiCookieAndBasicAuthenticationSupport, Require
 import fi.oph.koski.servlet.{KoskiSpecificApiServlet, NoCache}
 import fi.oph.koski.sso.KoskiSpecificSSOSupport
 
-import java.time.LocalDate
 
 class YtrStatusServlet(implicit val application: KoskiApplication) extends KoskiSpecificApiServlet with KoskiCookieAndBasicAuthenticationSupport with KoskiSpecificSSOSupport with RequiresVirkailijaOrPalvelukäyttäjä with NoCache {
   private val downloadService = application.ytrDownloadService

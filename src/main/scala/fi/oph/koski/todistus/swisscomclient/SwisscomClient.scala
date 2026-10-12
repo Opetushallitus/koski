@@ -6,7 +6,7 @@ import fi.oph.koski.todistus.TodistusJob
 import fi.oph.koski.todistus.swisscomclient.SwisscomConfigSecretsSource.MOCK_FROM_CONFIG
 import org.apache.pdfbox.Loader
 import org.apache.pdfbox.cos.COSDictionary
-import org.apache.pdfbox.io.{IOUtils, RandomAccessReadBuffer, RandomAccessReadBufferedFile}
+import org.apache.pdfbox.io.{IOUtils, RandomAccessReadBuffer}
 import org.apache.pdfbox.pdmodel.PDDocument
 import org.apache.pdfbox.pdmodel.interactive.digitalsignature.{ExternalSigningSupport, PDSeedValue, PDSeedValueMDP, PDSignature, SignatureOptions}
 import org.apache.pdfbox.pdmodel.interactive.form.PDSignatureField

@@ -344,6 +344,13 @@
       "rebaseWhen": "behind-base-branch"
     },
     {
+      "description": "scalafix-cli is published per Scala patch version, and each release only for the newest one. A release built for a newer Scala than scalafix.scala.version in pom.xml therefore never appears under the current artifact name. Look up versions from scalafix-interfaces, which has no Scala suffix, so that the update is still proposed instead of silently stopping.",
+      "matchManagers": ["maven"],
+      "matchPackageNames": ["ch.epfl.scala:scalafix-cli_*"],
+      "overridePackageName": "ch.epfl.scala:scalafix-interfaces",
+      "prBodyNotes": ["If the Scalafix check cannot resolve scalafix-cli, this release is not published for the current `scalafix.scala.version`. Set it in pom.xml to the Scala version the release is published for."]
+    },
+    {
       "description": "The Maven patch groups below take only updates that no earlier rule has grouped, so monorepo groups such as the AWS SDK and fs2 stay intact. Test and build groups come first so that the remaining patch group does not claim their updates.",
       "matchManagers": ["maven"],
       "matchDepTypes": ["test"],

@@ -21,7 +21,6 @@ trait Timing extends Logging {
    * Logs the time spent from creation of the Observable to first value
    */
   def timedObservable[R](blockname: String, thresholdMs: Int = 0)(observable: => Observable[R]): Observable[R] = {
-    val t0: Long = System.nanoTime()
     val timer = new Timer(blockname, thresholdMs, getClass)
     observable.doOnNext { x =>
       timer.complete(x)

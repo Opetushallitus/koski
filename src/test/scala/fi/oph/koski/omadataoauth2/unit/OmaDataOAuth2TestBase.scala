@@ -1,7 +1,7 @@
 package fi.oph.koski.omadataoauth2.unit
 
 import fi.oph.koski.KoskiHttpSpec
-import fi.oph.koski.henkilo.{KoskiSpecificMockOppijat, LaajatOppijaHenkilöTiedot, OppijaHenkilö}
+import fi.oph.koski.henkilo.{KoskiSpecificMockOppijat, OppijaHenkilö}
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.koskiuser.{KoskiMockUser, MockUsers}
 import fi.oph.koski.omadataoauth2.{ChallengeAndVerifier, OAuth2AccessTokenSuccessResponse, OmaDataOAuth2Security}

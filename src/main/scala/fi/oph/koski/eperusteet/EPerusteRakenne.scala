@@ -2,7 +2,6 @@ package fi.oph.koski.eperusteet
 
 import fi.oph.scalaschema.annotation.Discriminator
 import org.json4s.JValue
-import org.json4s.jackson.Json
 
 import java.time.{Instant, LocalDate, ZoneId, ZonedDateTime}
 

@@ -1,17 +1,15 @@
 package fi.oph.koski.henkilo
 
 import com.typesafe.config.Config
-import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.db.DB
 import fi.oph.koski.fixture.FixtureCreator
 import fi.oph.koski.http.Http._
-import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory, RetryMiddleware}
+import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.perustiedot.{OpiskeluoikeudenPerustiedotIndexer, OpiskeluoikeudenPerustiedotRepository}
 import fi.oph.koski.schema.Henkilö.Oid
 import fi.oph.koski.schema.TäydellisetHenkilötiedot
 import fi.oph.koski.util.Timing
 
-import scala.concurrent.duration.FiniteDuration
 
 trait OpintopolkuHenkilöFacade {
   def findOppijaByOid(oid: String): Option[LaajatOppijaHenkilöTiedot] =

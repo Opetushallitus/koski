@@ -17,17 +17,19 @@ class TodistusScheduler(application: KoskiApplication) extends Logging {
   var schedulerInstance: Option[IndependentIntervalScheduler] = None
 
   def createScheduler: Option[IndependentIntervalScheduler] = {
-    if (!application.todistusFeatureFlags.isServiceEnabled) return None
-
-    schedulerInstance = Some(IndependentIntervalScheduler(
-      application,
-      schedulerName,
-      application.config.getDuration("todistus.checkInterval"),
-      runNextTodistus,
-      shouldFireCheckIntervalMillis = 1000,
-      concurrency = application.config.getInt("todistus.concurrency")
-    ))
-    schedulerInstance
+    if (application.todistusFeatureFlags.isServiceEnabled) {
+      schedulerInstance = Some(IndependentIntervalScheduler(
+        application,
+        schedulerName,
+        application.config.getDuration("todistus.checkInterval"),
+        runNextTodistus,
+        shouldFireCheckIntervalMillis = 1000,
+        concurrency = application.config.getInt("todistus.concurrency")
+      ))
+      schedulerInstance
+    } else {
+      None
+    }
   }
 
   def shutdown(): Unit = {

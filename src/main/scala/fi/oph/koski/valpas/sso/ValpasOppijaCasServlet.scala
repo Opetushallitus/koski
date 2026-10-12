@@ -2,7 +2,6 @@ package fi.oph.koski.valpas.sso
 
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.henkilo.OppijaHenkilö
-import fi.oph.koski.huoltaja.HuollettavienHakuOnnistui
 import fi.oph.koski.koskiuser.AuthenticationUser
 import fi.oph.koski.log.LogUserContext
 import fi.oph.koski.servlet.NoCache
@@ -14,7 +13,6 @@ class ValpasOppijaCasServlet(implicit val application: KoskiApplication) extends
   private val casService = application.casService
   private val oppijaCreation = application.casOppijaCreationService
   private val huoltajaServiceVtj = application.huoltajaServiceVtj
-  private val directoryClient = application.directoryClient
 
   def virhesivu: String = valpasRoot + "/virhe/login"
   def eiTietojaOpintopolussaSivu: String = valpasRoot + "/eitietoja"

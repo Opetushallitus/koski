@@ -6,7 +6,7 @@ import fi.oph.koski.koskiuser.KoskiSpecificSession
 import fi.oph.koski.log.Logging
 import fi.oph.koski.organisaatio.OrganisaatioRepository
 import fi.oph.koski.raportointikanta.LoaderUtils.{convertKoodisto, convertLocalizedString}
-import fi.oph.koski.schema.{Koulutussopimuksellinen, _}
+import fi.oph.koski.schema._
 import fi.oph.koski.validation.MaksuttomuusValidation
 import org.json4s.JValue
 

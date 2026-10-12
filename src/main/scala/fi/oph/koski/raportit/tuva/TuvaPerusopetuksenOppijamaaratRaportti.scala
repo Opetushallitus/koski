@@ -1,7 +1,7 @@
 package fi.oph.koski.raportit.tuva
 
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.plainAPI._
-import fi.oph.koski.db.{DB, QueryMethods, SQLHelpers}
+import fi.oph.koski.db.{DB, SQLHelpers}
 import fi.oph.koski.koskiuser.KoskiSpecificSession
 import fi.oph.koski.localization.LocalizationReader
 import fi.oph.koski.organisaatio.OrganisaatioService

@@ -17,10 +17,8 @@ case class AmmatillisenRaportitRepository(db: DB) extends QueryMethods with Rapo
   private val defaultTimeout = 10.minutes
 
   private type OpiskeluoikeusOid = String
-  private type SisältyvOpiskeluoikeuteenOid = String
   private type AikajaksoId = Long
   private type PäätasonSuoritusId = Long
-  private type OppijaOid = String
 
   def suoritustiedot(oppilaitos: Organisaatio.Oid, koulutusmuoto: String, suorituksenTyyppi: String, alku: LocalDate, loppu: LocalDate) = {
     val opiskeluoikeusAikajaksotVarsinaisetPäätasonSuoritukset = opiskeluoikeusAikajaksotPäätasonSuorituksetQuery(oppilaitos, koulutusmuoto, suorituksenTyyppi, alku, loppu)

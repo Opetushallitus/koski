@@ -3,7 +3,7 @@ package fi.oph.koski.koskiuser
 import fi.oph.koski.koskiuser.Rooli._
 import fi.oph.koski.schema._
 
-import scala.language.{higherKinds, implicitConversions}
+import scala.language.implicitConversions
 
 object Rooli {
   type Role = String
@@ -305,11 +305,9 @@ case class OoPtsMask(
 
 object OoPtsMask {
   def fromPalvelurooli(palvelurooli: Palvelurooli): Option[OoPtsMask] = {
-    val oo :: pts = palvelurooli.rooli.toLowerCase.split(Käyttöoikeus.opiskeluoikeusPäätasonSuoritusErotin).toList
-    if (isOpiskeluoikeusrooli(oo)) {
-      Some(OoPtsMask(oo, pts.headOption.map(p => List(p))))
-    } else {
-      None
+    palvelurooli.rooli.toLowerCase.split(Käyttöoikeus.opiskeluoikeusPäätasonSuoritusErotin).toList match {
+      case oo :: pts if isOpiskeluoikeusrooli(oo) => Some(OoPtsMask(oo, pts.headOption.map(p => List(p))))
+      case _ => None
     }
   }
 

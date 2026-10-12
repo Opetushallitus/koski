@@ -2,7 +2,6 @@ package fi.oph.koski.omadataoauth2
 
 import fi.oph.koski.config.{Environment, KoskiApplication}
 import fi.oph.koski.frontendvalvonta.FrontendValvontaMode
-import fi.oph.koski.koodisto.{KoodistoKoodi, KoodistoViite}
 import fi.oph.koski.koskiuser.{Unauthenticated}
 import fi.oph.koski.log.Logging
 import fi.oph.koski.servlet.{KoskiSpecificApiServlet, NoCache}

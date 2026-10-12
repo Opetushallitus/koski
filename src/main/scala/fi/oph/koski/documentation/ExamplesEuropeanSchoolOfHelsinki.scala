@@ -5,7 +5,6 @@ import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
 import fi.oph.koski.henkilo.MockOppijat.asUusiOppija
 import fi.oph.koski.schema._
 
-import java.time.LocalDate
 import java.time.LocalDate.{of => date}
 
 

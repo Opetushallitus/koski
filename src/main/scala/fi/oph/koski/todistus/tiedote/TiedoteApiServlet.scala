@@ -9,6 +9,8 @@ import fi.oph.koski.log.KoskiOperation.TIEDOTE_RESETOITU
 import fi.oph.koski.log.{AuditLog, KoskiAuditLogMessage}
 import fi.oph.koski.servlet.{KoskiSpecificApiServlet, NoCache}
 
+import scala.annotation.nowarn
+
 class TiedoteApiServlet(implicit val application: KoskiApplication)
   extends KoskiSpecificApiServlet
     with NoCache
@@ -21,6 +23,8 @@ class TiedoteApiServlet(implicit val application: KoskiApplication)
   }
 
   private val repository = application.kielitutkintotodistusTiedoteRepository
+  // Constructing the service creates its clients, which fails startup if a mock client is configured in a server environment
+  @nowarn("cat=unused-privates")
   private val service = application.kielitutkintotodistusTiedoteService
 
   get("/jobs") {

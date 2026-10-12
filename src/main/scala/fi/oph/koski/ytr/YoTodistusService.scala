@@ -7,7 +7,7 @@ import fi.oph.koski.util.Streams
 import fi.oph.koski.ytr.MockYtrClient.yoTodistusResource
 import software.amazon.awssdk.core.exception.SdkClientException
 import software.amazon.awssdk.core.sync.ResponseTransformer
-import software.amazon.awssdk.services.s3.{S3Client, S3Utilities}
+import software.amazon.awssdk.services.s3.S3Client
 import software.amazon.awssdk.services.s3.model.{GetObjectRequest, GetObjectResponse}
 
 import java.io.OutputStream

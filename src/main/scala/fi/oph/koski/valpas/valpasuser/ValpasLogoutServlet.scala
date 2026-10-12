@@ -1,6 +1,5 @@
 package fi.oph.koski.valpas.valpasuser
 
-import java.net.URLEncoder
 
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.koskiuser.SessionStatusExpiredVirkailija
@@ -31,6 +30,4 @@ class ValpasLogoutServlet(implicit val application: KoskiApplication) extends Va
       }
     }
   }
-
-  private def encode(param: String) = URLEncoder.encode(param, "UTF-8")
 }

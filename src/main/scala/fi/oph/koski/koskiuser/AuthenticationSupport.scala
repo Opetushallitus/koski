@@ -1,6 +1,5 @@
 package fi.oph.koski.koskiuser
 
-import fi.oph.koski.config.Environment
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.json.JsonSerializer.writeWithRoot
 import fi.oph.koski.log._

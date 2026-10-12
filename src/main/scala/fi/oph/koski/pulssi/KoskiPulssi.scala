@@ -1,6 +1,5 @@
 package fi.oph.koski.pulssi
 
-import cats.effect.IO
 import fi.oph.koski.cache._
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.http.Http

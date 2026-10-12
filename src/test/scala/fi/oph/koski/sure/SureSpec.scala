@@ -296,19 +296,9 @@ class SureSpec extends AnyFreeSpec with KoskiHttpSpec with OpiskeluoikeusTestMet
     }
   }
 
-  private def muuttuneetKursorillaIteroi(firstCursor: String): Seq[MuuttuneetOppijatResponse] = {
-    val responses = collection.mutable.ArrayBuffer[MuuttuneetOppijatResponse]()
-    var cursor = firstCursor
-    while (true) {
-      val res = muuttuneetKursorilla(cursor)
-      responses += res
-      if (res.mayHaveMore) {
-        cursor = res.nextCursor
-      } else {
-        return responses.toSeq
-      }
-    }
-    responses.toSeq
+  private def muuttuneetKursorillaIteroi(cursor: String): Seq[MuuttuneetOppijatResponse] = {
+    val res = muuttuneetKursorilla(cursor)
+    if (res.mayHaveMore) res +: muuttuneetKursorillaIteroi(res.nextCursor) else Seq(res)
   }
 
   private def extractCursor = {

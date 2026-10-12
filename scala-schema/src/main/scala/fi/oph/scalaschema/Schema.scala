@@ -1,6 +1,6 @@
 package fi.oph.scalaschema
 
-import fi.oph.scalaschema.annotation.{EnumValue, ReadFlattened, Title}
+import fi.oph.scalaschema.annotation.{EnumValue, Title}
 import org.json4s.JsonAST.JValue
 
 import java.util.Locale

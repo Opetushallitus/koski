@@ -7,7 +7,6 @@ import java.time.LocalDate
 import fi.oph.koski.{KoskiApplicationForTests, KoskiHttpSpec, TestEnvironment}
 import fi.oph.koski.documentation.Example
 import fi.oph.koski.documentation.Examples.oppijaExamples
-import fi.oph.koski.http.DefaultHttpTester
 import fi.oph.koski.json.{JsonFiles, JsonSerializer}
 import fi.oph.koski.koskiuser.{AccessType, KoskiSpecificSession}
 import fi.oph.koski.log.Logging

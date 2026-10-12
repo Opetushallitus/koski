@@ -5,7 +5,6 @@ import fi.oph.koski.api.misc.{OpiskeluoikeusTestMethods, PutOpiskeluoikeusTestMe
 import fi.oph.koski.documentation.AmmatillinenExampleData._
 import fi.oph.koski.documentation.ExampleData.{longTimeAgo, opiskeluoikeusLäsnä, opiskeluoikeusMitätöity, valtionosuusRahoitteinen}
 import fi.oph.koski.henkilo.{KoskiSpecificMockOppijat, LaajatOppijaHenkilöTiedot}
-import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.koskiuser.KoskiSpecificSession.SUORITUSJAKO_KATSOMINEN_USER
 import fi.oph.koski.koskiuser.Rooli.OPHKATSELIJA
 import fi.oph.koski.koskiuser._
@@ -87,8 +86,6 @@ class AktiivisetJaPäättyneetOpinnotServiceSpec
 
   "Palautetaan EQF- ja NQF-tietoja" in {
     val oppija = KoskiSpecificMockOppijat.ammattilainen
-
-    val expectedOoData = getOpiskeluoikeus(oppija.oid, schema.OpiskeluoikeudenTyyppi.ammatillinenkoulutus.koodiarvo)
 
     val result = suoritusjakoService.findAktiivisetJaPäättyneetOpinnotOppija(oppija.oid)
 
@@ -783,12 +780,5 @@ class AktiivisetJaPäättyneetOpinnotServiceSpec
 
       o.opiskeluoikeudet should have length 0
     })
-  }
-
-  private def verifyEiLöydyTaiEiKäyttöoikeuksia(oppijaOid: String)(implicit user: KoskiSpecificSession): Unit = {
-    val result = suoritusjakoService.findAktiivisetJaPäättyneetOpinnotOppija(oppijaOid)(user)
-
-    result.isLeft should be(true)
-    result should equal(Left(KoskiErrorCategory.notFound.oppijaaEiLöydyTaiEiOikeuksia("Oppijaa ei löydy tai käyttäjällä ei ole oikeuksia tietojen katseluun.")))
   }
 }

@@ -2,7 +2,6 @@ package fi.oph.koski.editor
 
 import java.time.LocalDate
 import fi.oph.koski.config.KoskiApplication
-import fi.oph.koski.henkilo.LaajatOppijaHenkilöTiedot
 import fi.oph.koski.koskiuser.KoskiSpecificSession
 import fi.oph.koski.oppija.OppijaYksilöintitiedolla
 import fi.oph.koski.schema._
@@ -10,7 +9,6 @@ import fi.oph.koski.schema.annotation.{Hidden, KoodistoUri}
 import fi.oph.koski.util.{Timing, WithWarnings}
 import fi.oph.scalaschema.{ClassSchema, ExtractionContext}
 import fi.oph.koski.util.DateOrdering.{localDateOptionOrdering, localDateOrdering}
-import fi.oph.koski.util.OptionalLists.optionalList
 
 object OppijaEditorModel extends Timing {
   val opiskeluoikeusOrdering: Ordering[Opiskeluoikeus] = Ordering.by(suoritusJaAlkamispäiväKriteeri)(Ordering.Tuple2(Ordering.Int, localDateOptionOrdering.reverse))

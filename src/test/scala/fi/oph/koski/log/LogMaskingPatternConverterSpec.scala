@@ -2,7 +2,7 @@ package fi.oph.koski.log
 
 import fi.oph.koski.TestEnvironment
 import fi.oph.koski.log.LogUtils.{HETU_MASK, OPPIJA_OID_MASK}
-import org.json4s.{JObject, JValue}
+import org.json4s.JObject
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.should.Matchers
 import org.json4s.jackson.JsonMethods.parse

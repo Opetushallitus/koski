@@ -21,8 +21,8 @@ class OidGenerator {
   // Generates oids of format 1.2.246.562.15.*
   def generateKoskiOid(oppijaOid: String): String = generateOID(15)
 
-  private val ytrMin = 1000000000L;
-  private val ytrMax = 4000000000L;
+  private val ytrMin = 1000000000L
+  private val ytrMax = 4000000000L
 
   // Generates oids of format 1.2.246.562.51.* , with * in range [10000000000, 40000000000)
   def generateYtrOid(oppijaOid: String): String = {

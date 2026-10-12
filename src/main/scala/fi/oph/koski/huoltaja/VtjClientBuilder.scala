@@ -13,7 +13,6 @@ import javax.net.ssl.{KeyManagerFactory, SSLContext, TrustManagerFactory}
 // 1. VtjClientBuilder
 // ---------------------------
 object VtjClientBuilder extends Logging {
-  import cats.effect.unsafe.implicits.global
   def build(config: Config): VtjClient = {
     val runtimeCfg =
       if (Environment.usesAwsSecretsManager)

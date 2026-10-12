@@ -1,10 +1,10 @@
 package fi.oph.koski.documentation
 
-import fi.oph.koski.documentation.ExampleData.{englanti, helsinki, laajuusVuosiviikkotunneissa, sloveeni}
+import fi.oph.koski.documentation.ExampleData.helsinki
 import fi.oph.koski.localization.LocalizedStringImplicits._
 import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.organisaatio.MockOrganisaatiot.EuropeanSchoolOfHelsinki
-import fi.oph.koski.schema.{PrimaryOsasuoritus, _}
+import fi.oph.koski.schema._
 
 import java.time.LocalDate
 

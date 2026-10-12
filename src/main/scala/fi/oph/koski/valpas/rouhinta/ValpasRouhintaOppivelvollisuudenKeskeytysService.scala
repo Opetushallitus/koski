@@ -1,7 +1,6 @@
 package fi.oph.koski.valpas.rouhinta
 
 import fi.oph.koski.config.KoskiApplication
-import fi.oph.koski.log.Logging
 import fi.oph.koski.valpas.db.ValpasSchema.OppivelvollisuudenKeskeytysRow
 import fi.oph.koski.valpas.valpasrepository.ValpasOppivelvollisuudenKeskeytys
 

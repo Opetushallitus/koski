@@ -17,7 +17,7 @@ import fi.oph.koski.util.DateOrdering.localDateOrdering
 import fi.oph.koski.util.OptionalLists.optionalList
 import fi.oph.koski.virta.VirtaXMLConverterUtils._
 
-import scala.collection.mutable.{HashMap, HashSet, ListBuffer}
+import scala.collection.mutable.ListBuffer
 import scala.language.postfixOps
 
 case class VirtaXMLConverter(oppilaitosRepository: OppilaitosRepository, koodistoViitePalvelu: KoodistoViitePalvelu, organisaatioRepository: OrganisaatioRepository) extends Logging {
@@ -133,7 +133,6 @@ case class VirtaXMLConverter(oppilaitosRepository: OppilaitosRepository, koodist
   }
 
   private val LABAmmattikorkeaNumero = "10126"
-  private val vanhaLahdenAmmattiKorkeaNumero = "02470"
   private def filterLABDuplikaatit(osasuoritusNodes: List[Node]): List[Node] = {
     lazy val avaimet = osasuoritusNodes.filter(o => (o \ "Myontaja").text != LABAmmattikorkeaNumero).map(o => (o \ "@avain").text)
     osasuoritusNodes.filter(o => {

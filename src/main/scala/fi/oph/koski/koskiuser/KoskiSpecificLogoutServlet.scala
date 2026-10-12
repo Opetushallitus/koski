@@ -1,6 +1,5 @@
 package fi.oph.koski.koskiuser
 
-import java.net.URLEncoder
 import fi.oph.koski.config.{Environment, KoskiApplication}
 import fi.oph.koski.frontendvalvonta.FrontendValvontaMode
 import fi.oph.koski.servlet.VirkailijaHtmlServlet
@@ -35,8 +34,6 @@ class KoskiSpecificLogoutServlet(implicit val application: KoskiApplication) ext
       }
     }
   })
-
-  private def encode(param: String) = URLEncoder.encode(param, "UTF-8")
 }
 
 object LogoutServerConfiguration {

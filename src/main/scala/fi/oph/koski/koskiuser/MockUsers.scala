@@ -2,7 +2,7 @@ package fi.oph.koski.koskiuser
 
 import fi.oph.koski.koskiuser.AuthenticationUser.fromDirectoryUser
 import fi.oph.koski.koskiuser.MockKäyttöoikeusryhmät._
-import fi.oph.koski.koskiuser.Rooli.{AMMATILLINENKOULUTUS, GLOBAALI_LUKU_KIELITUTKINTO, KIELITUTKINTO, OPHKATSELIJA}
+import fi.oph.koski.koskiuser.Rooli.{AMMATILLINENKOULUTUS, KIELITUTKINTO}
 import fi.oph.koski.organisaatio.MockOrganisaatiot._
 import fi.oph.koski.organisaatio.{MockOrganisaatiot, Opetushallitus}
 import fi.oph.koski.schema.SuorituksenTyyppi.{telma, valtionhallinnonKielitutkinto, yleinenKielitutkinto}

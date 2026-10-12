@@ -1,14 +1,10 @@
 package fi.oph.koski.validation
 
 import com.typesafe.config.Config
-import fi.oph.koski.config.Environment
 import fi.oph.koski.documentation.PerusopetusExampleData.suoritustapaErityinenTutkinto
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.log.Logging
 import fi.oph.koski.schema._
-import fi.oph.koski.util.ChainingSyntax.localDateOps
-import fi.oph.koski.util.DateOrdering.localDateOrdering
-import fi.oph.koski.util.FinnishDateFormat
 import fi.oph.koski.validation.PidennetynOppivelvollisuudenMuutoksenValidaatio.validateVanhojenJaksokenttienPäättyminenSiirryttäessäUusiin
 
 import java.time.LocalDate
@@ -93,7 +89,6 @@ object PerusopetuksenOpiskeluoikeusValidation extends Logging {
           case os: NuortenPerusopetuksenOppiaineenSuoritus =>
             os.luokkaAste match {
               case Some(la) =>
-                val vahvistuksenpäiväys = Seq(vahvistuspäivä, os.ensimmäinenArviointiPäivä).flatten
                 val tavoitekokonaisuusTaiYhdysluokkaJaksolla = vahvistuspäivä.exists(d => tavoitekokonaisuuksittainOpiskeluVoimassa(oo, d) || yhdysluokkaVoimassa(oo, d))
                 if (vahvistuspäivä.isEmpty || (vsopOn && vahvistuspäivä.exists(p => !p.isAfter(cutoff)))) { None }
                 else if (!tavoitekokonaisuusTaiYhdysluokkaJaksolla) {

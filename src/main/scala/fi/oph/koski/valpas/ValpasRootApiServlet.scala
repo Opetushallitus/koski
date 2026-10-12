@@ -4,7 +4,6 @@ import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.http.HttpStatus
 import fi.oph.koski.organisaatio.{Opetushallitus, OrganisaatioHierarkia, OrganisaatioHierarkiaJaKayttooikeusrooli}
 import fi.oph.koski.raportit.RaportitService
-import fi.oph.koski.schema.Henkilö
 import fi.oph.koski.schema.KoskiSchema.strictDeserialization
 import fi.oph.koski.servlet.NoCache
 import fi.oph.koski.util.ChainingSyntax._
@@ -26,7 +25,6 @@ class ValpasRootApiServlet(implicit val application: KoskiApplication) extends V
   private lazy val oppijaSearchService = application.valpasOppijaSearchService
   private lazy val oppivelvollisuudenKeskeytysService = application.valpasOppivelvollisuudenKeskeytysService
   private lazy val raportitService = new RaportitService(application)
-  private lazy val kuntailmoitusService = application.valpasKuntailmoitusService
 
   private val hakeutumisvalvontaService = new ValpasHakeutumisvalvontaService(application)
   private val suorittamisenValvontaService = new ValpasSuorittamisenValvontaService(application)

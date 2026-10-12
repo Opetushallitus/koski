@@ -10,11 +10,10 @@ import org.apache.poi.openxml4j.util.ZipInputStreamZipEntrySource
 import org.apache.poi.poifs.crypt.{EncryptionInfo, EncryptionMode, Encryptor}
 import org.apache.poi.poifs.crypt.temp.{EncryptedTempData, SXSSFWorkbookWithCustomZipEntrySource}
 import org.apache.poi.poifs.filesystem.POIFSFileSystem
-import org.apache.poi.ss.usermodel.{Sheet => PoiSheet, _}
+import org.apache.poi.ss.usermodel.{Sheet => _, _}
 import org.apache.poi.ss.util.{CellRangeAddress, CellUtil, RegionUtil}
 import org.apache.poi.ss.util.WorkbookUtil.createSafeSheetName
 import org.apache.poi.xssf.streaming.{SXSSFCell, SXSSFDrawing, SXSSFSheet, SXSSFWorkbook}
-import org.apache.poi.xssf.usermodel.XSSFSheet
 
 import scala.jdk.CollectionConverters._
 

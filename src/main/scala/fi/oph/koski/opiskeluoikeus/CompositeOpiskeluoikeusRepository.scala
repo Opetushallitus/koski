@@ -1,11 +1,10 @@
 package fi.oph.koski.opiskeluoikeus
 
-import com.typesafe.config.Config
 
 import java.time.{LocalDate, LocalDateTime}
 import fi.oph.koski.db.KoskiOpiskeluoikeusRow
 import fi.oph.koski.executors.GlobalExecutionContext
-import fi.oph.koski.henkilo.{HenkilöRepository, HenkilönTunnisteet, Hetu, LaajatOppijaHenkilöTiedot, PossiblyUnverifiedHenkilöOid, UnverifiedHenkilöOid, VerifiedHenkilöOid}
+import fi.oph.koski.henkilo.{HenkilöRepository, HenkilönTunnisteet, Hetu, LaajatOppijaHenkilöTiedot, PossiblyUnverifiedHenkilöOid, UnverifiedHenkilöOid}
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.koskiuser.KoskiSpecificSession
 import fi.oph.koski.log.Logging

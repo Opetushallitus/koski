@@ -21,9 +21,6 @@ case class LukioRaportitRepository(db: DB) extends QueryMethods with Raportointi
   private type OppijaOid = String
   private type PäätasonSuoritusId = Long
   private type AikajaksoId = Long
-  private type Koulutusmooduuli_koodiarvo = String
-  private type OppiaineenNimi = String
-  private type Koulutusmoduuli_Paikallinen = Boolean
 
   def suoritustiedot(
     oppilaitosOid: Organisaatio.Oid,

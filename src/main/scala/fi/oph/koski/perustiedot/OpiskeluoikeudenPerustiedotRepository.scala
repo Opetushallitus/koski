@@ -4,7 +4,6 @@ import java.time.LocalDate
 import fi.oph.koski.opensearch.OpenSearch
 import fi.oph.koski.henkilo.TestingException
 import fi.oph.koski.http.KoskiErrorCategory
-import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.json.JsonSerializer.extract
 import fi.oph.koski.json.LegacyJsonSerialization.toJValue
 import fi.oph.koski.koskiuser.{AccessType, KoskiSpecificSession}

@@ -507,7 +507,7 @@ class ValpasKuntailmoitusService(
     haeOppijoidenTekijäOrganisaatiot(oppijaTiedot).flatMap { organisaatiot =>
       val all = organisaatiot ++ haeKuntaTekijäOrganisaatiot(oppijaTiedot)
       if (all.isEmpty) {
-		Left(ValpasErrorCategory.forbidden.oppija())
+        Left(ValpasErrorCategory.forbidden.oppija())
       } else {
         tekijäOrganisaatio match {
           case None => Right(all)

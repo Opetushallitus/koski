@@ -82,7 +82,6 @@ class EsiopetuksenOppijamäärätRaporttiSpec
   private val ylimääräisetErityiselläTuellaOpiskeluoikeudet = 6
   private val ylimääräisetVaikeastiVammaisetLkm = 1
   private val ylimääräisetMuuKuinVaikeastiVammaisetLkm = 2
-  private val rikkinäisetYlimääräisetLkm = 6
 
   private def ehjäPidennettyOppivelvollisuusTarvittavienTietojenKanssaOpiskeluoikeus: EsiopetuksenOpiskeluoikeus =
     raportilleOsuvaOpiskeluoikeus(

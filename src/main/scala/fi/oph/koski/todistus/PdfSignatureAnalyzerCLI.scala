@@ -4,6 +4,8 @@ import com.typesafe.config.ConfigFactory
 
 import java.io.File
 
+// scalafix:off DisableSyntax.println
+
 /**
  * Command-line tool for analyzing PDF signatures.
  *

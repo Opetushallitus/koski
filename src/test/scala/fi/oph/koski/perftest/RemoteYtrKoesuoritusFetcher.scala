@@ -1,8 +1,6 @@
 package fi.oph.koski.perftest
 
-import java.nio.file.Paths
 
-import fi.oph.koski.henkilo.MockOppijat
 import fi.oph.koski.koskiuser.UserWithPassword
 
 object RemoteYtrKoesuoritusFetcher extends App {
