@@ -182,7 +182,7 @@ export default class DateRangeSelection extends React.Component {
   handleFocus(e) {
     const focusInside =
       e.target === window ? false : !!this.root.contains(e.target)
-    this.setState({ open: this.state.open && focusInside })
+    this.setState((state) => ({ open: state.open && focusInside }))
   }
 
   handleClickOutside(e) {
@@ -190,7 +190,7 @@ export default class DateRangeSelection extends React.Component {
   }
 
   toggleOpen() {
-    this.setState({ open: !this.state.open })
+    this.setState((state) => ({ open: !state.open }))
   }
 
   onKeyDown(e) {

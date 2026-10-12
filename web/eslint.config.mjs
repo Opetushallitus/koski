@@ -87,12 +87,32 @@ export default [
   {
     files: ['app/**/*.{js,jsx}'],
     rules: {
+      'accessor-pairs': 'error',
       'no-constructor-return': 'error',
+      'no-eval': 'error',
+      'no-extend-native': 'error',
+      'no-implied-eval': 'error',
+      'no-loop-func': 'error',
+      'no-new-func': 'error',
+      'no-new-wrappers': 'error',
       'no-promise-executor-return': 'error',
       'no-self-compare': 'error',
+      'no-throw-literal': 'error',
       'no-unmodified-loop-condition': 'error',
       'no-unreachable-loop': 'error',
+      'no-unused-expressions': [
+        'error',
+        {
+          allowShortCircuit: true,
+          allowTernary: true,
+          enforceForJSX: true
+        }
+      ],
       'no-template-curly-in-string': 'error',
+      'require-atomic-updates': 'error',
+      '@eslint-react/no-access-state-in-setstate': 'error',
+      '@eslint-react/jsx-no-leaked-dollar': 'error',
+      '@eslint-react/jsx-no-leaked-semicolon': 'error',
       '@eslint-react/jsx-no-namespace': 'error',
       '@eslint-react/dom-no-script-url': 'error',
       '@eslint-react/dom-no-string-style-prop': 'error',
