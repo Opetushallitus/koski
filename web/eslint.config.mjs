@@ -7,13 +7,17 @@ import reactHooksPlugin from 'eslint-plugin-react-hooks'
 import globals from 'globals'
 import eslint from '@eslint/js'
 import tseslint from 'typescript-eslint'
-import { includeIgnoreFile } from 'eslint/config'
+import { defineConfig, includeIgnoreFile } from 'eslint/config'
 import path from 'node:path'
 
-export default [
+export default defineConfig([
   includeIgnoreFile(path.resolve(import.meta.dirname, '.gitignore')),
   {
-    plugins: { 'react-hooks': reactHooksPlugin },
+    plugins: {
+      'react-hooks': /** @type {import('eslint').ESLint.Plugin} */ (
+        reactHooksPlugin
+      )
+    },
     rules: {
       'react-hooks/rules-of-hooks': 'error',
       'react-hooks/exhaustive-deps': 'error'
@@ -86,7 +90,53 @@ export default [
   },
   {
     files: ['app/**/*.{js,jsx}'],
+    extends: [
+      eslintReact.configs.recommended,
+      reactHooksPlugin.configs.flat.recommended,
+      importXPlugin.configs['flat/recommended']
+    ],
+    settings: {
+      'import-x/resolver': {
+        node: { extensions: ['.js', '.jsx', '.ts', '.tsx', '.json'] }
+      },
+      'import-x/extensions': ['.js', '.jsx', '.ts', '.tsx'],
+      'import-x/parsers': {
+        '@typescript-eslint/parser': ['.ts', '.tsx']
+      }
+    },
     rules: {
+      '@eslint-react/exhaustive-deps': 'off',
+      '@eslint-react/no-array-index-key': 'off',
+      '@eslint-react/no-missing-key': 'off',
+      '@eslint-react/no-nested-component-definitions': 'off',
+      '@eslint-react/no-set-state-in-component-did-mount': 'off',
+      '@eslint-react/no-unsafe-component-will-mount': 'off',
+      '@eslint-react/no-unsafe-component-will-receive-props': 'off',
+      '@eslint-react/purity': 'off',
+      '@eslint-react/rules-of-hooks': 'off',
+      '@eslint-react/set-state-in-effect': 'off',
+      '@eslint-react/set-state-in-render': 'off',
+      '@eslint-react/static-components': 'off',
+      '@eslint-react/unsupported-syntax': 'off',
+      '@eslint-react/jsx-no-children-prop-with-children': 'off',
+      '@eslint-react/rsc-function-definition': 'off',
+      '@eslint-react/dom-no-dangerously-set-innerhtml': 'off',
+      '@eslint-react/dom-no-render-return-value': 'off',
+      '@eslint-react/web-api-no-leaked-fetch': 'off',
+      '@eslint-react/no-unused-class-component-members': 'error',
+      '@eslint-react/jsx-no-children-prop': 'error',
+      '@eslint-react/jsx-no-comment-textnodes': 'error',
+      '@eslint-react/jsx-no-leaked-dollar': 'error',
+      '@eslint-react/jsx-no-leaked-semicolon': 'error',
+      '@eslint-react/dom-no-script-url': 'error',
+      '@eslint-react/dom-no-string-style-prop': 'error',
+      'react-hooks/error-boundaries': 'off',
+      'react-hooks/immutability': 'off',
+      'react-hooks/use-memo': 'off',
+      'react-hooks/exhaustive-deps': 'error',
+      'import-x/no-duplicates': 'off',
+      'import-x/no-named-as-default': 'off',
+      'import-x/no-self-import': 'error',
       'accessor-pairs': 'error',
       'array-callback-return': 'error',
       'no-constructor-return': 'error',
@@ -137,21 +187,7 @@ export default [
         }
       ],
       'no-template-curly-in-string': 'error',
-      'require-atomic-updates': 'error',
-      'react-hooks/set-state-in-render': 'error',
-      'import-x/no-self-import': 'error',
-      '@eslint-react/error-boundaries': 'error',
-      '@eslint-react/no-access-state-in-setstate': 'error',
-      '@eslint-react/no-create-ref': 'error',
-      '@eslint-react/no-nested-lazy-component-declarations': 'error',
-      '@eslint-react/no-unused-class-component-members': 'error',
-      '@eslint-react/use-memo': 'error',
-      '@eslint-react/jsx-no-leaked-dollar': 'error',
-      '@eslint-react/jsx-no-leaked-semicolon': 'error',
-      '@eslint-react/jsx-no-namespace': 'error',
-      '@eslint-react/dom-no-script-url': 'error',
-      '@eslint-react/dom-no-string-style-prop': 'error',
-      '@eslint-react/dom-no-void-elements-with-children': 'error'
+      'require-atomic-updates': 'error'
     }
   },
   {
@@ -189,24 +225,6 @@ export default [
       ]
     }
   },
-  {
-    ...importXPlugin.configs['flat/recommended'],
-    files: ['app/**/*.{js,jsx}'],
-    settings: {
-      'import-x/resolver': {
-        node: { extensions: ['.js', '.jsx', '.ts', '.tsx', '.json'] }
-      },
-      'import-x/extensions': ['.js', '.jsx', '.ts', '.tsx'],
-      'import-x/parsers': {
-        '@typescript-eslint/parser': ['.ts', '.tsx']
-      }
-    },
-    rules: {
-      ...importXPlugin.configs['flat/recommended'].rules,
-      'import-x/no-duplicates': 'off',
-      'import-x/no-named-as-default': 'off'
-    }
-  },
   eslintConfigPrettier,
   { rules: { 'no-unexpected-multiline': 'error' } }
-]
+])
