@@ -85,6 +85,21 @@ export default [
     }
   },
   {
+    files: ['app/**/*.{js,jsx}'],
+    rules: {
+      'no-constructor-return': 'error',
+      'no-promise-executor-return': 'error',
+      'no-self-compare': 'error',
+      'no-unmodified-loop-condition': 'error',
+      'no-unreachable-loop': 'error',
+      'no-template-curly-in-string': 'error',
+      '@eslint-react/jsx-no-namespace': 'error',
+      '@eslint-react/dom-no-script-url': 'error',
+      '@eslint-react/dom-no-string-style-prop': 'error',
+      '@eslint-react/dom-no-void-elements-with-children': 'error'
+    }
+  },
+  {
     files: ['**/*.ts', '**/*.tsx'],
 
     rules: {
