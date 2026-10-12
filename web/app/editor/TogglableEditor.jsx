@@ -32,37 +32,26 @@ export const TogglableEditor = ({ model, renderChild, ...rest }) => {
     !muokataanToista &&
     (!showEditLink || hasAnyInvalidateAccess)
 
-  const editButton = (
-    <button
-      className="koski-button toggle-edit"
-      onClick={() => context.editBus.push(opiskeluoikeusOid)}
-      {...rest}
-    >
-      <Text name="muokkaa" />
-    </button>
-  )
-  const invalidateButton = (
-    <InvalidateOpiskeluoikeusButton
-      opiskeluoikeus={model.context.opiskeluoikeus}
-    />
-  )
-
-  const editLink = showEditLink ? (
-    showDeleteLink ? (
-      <div className="edit-and-invalidate-buttons">
-        {invalidateButton}
-        {editButton}
-      </div>
-    ) : (
-      editButton
-    )
-  ) : (
-    <div className="invalidate-etc-buttons">
-      {showDeleteLink && <div>{invalidateButton}</div>}
-      {!muokataanToista && (
+  const editLink = (
+    <div className="opiskeluoikeus-buttons">
+      {showDeleteLink && (
+        <InvalidateOpiskeluoikeusButton
+          opiskeluoikeus={model.context.opiskeluoikeus}
+        />
+      )}
+      {!showEditLink && !muokataanToista && (
         <PuraLähdejärjestelmänKytkentäButton
           opiskeluoikeus={modelData(model)}
         />
+      )}
+      {showEditLink && (
+        <button
+          className="koski-button toggle-edit"
+          onClick={() => context.editBus.push(opiskeluoikeusOid)}
+          {...rest}
+        >
+          <Text name="muokkaa" />
+        </button>
       )}
     </div>
   )

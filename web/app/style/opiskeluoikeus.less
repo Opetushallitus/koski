@@ -890,18 +890,12 @@
       }
     }
 
-    .toggle-edit,
-    .invalidate-etc-buttons,
-    .edit-and-invalidate-buttons {
+    .opiskeluoikeus-buttons {
       .OverlayElem;
-    }
-
-    .edit-and-invalidate-buttons {
       display: flex;
       align-items: center;
 
-      .toggle-edit {
-        position: static;
+      > * + * {
         margin-left: 15px;
       }
     }
