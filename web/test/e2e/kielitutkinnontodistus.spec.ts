@@ -204,7 +204,7 @@ test.describe('Digitaalinen kielitutkintotodistus', () => {
       expect(await openButton.isVisible()).toBeTruthy()
 
       // Tarkista että linkki osoittaa oikeaan paikkaan
-      const link = await page.getByTestId(
+      const link = page.getByTestId(
         'oo.0.suoritukset.0.kielitutkintoTodistus.open'
       )
       const href = await link.getAttribute('href')

@@ -27,7 +27,7 @@ test.describe('Muu kuin säännelty koulutus', () => {
     test('Vain oikeat opiskeluoikeuden tilat valittavissa', async ({
       uusiOppijaPage
     }) => {
-      await expect(await uusiOppijaPage.controls.tila.options()).toEqual([
+      expect(await uusiOppijaPage.controls.tila.options()).toEqual([
         'Hyväksytysti suoritettu',
         'Keskeytynyt',
         'Läsnä'
@@ -35,12 +35,12 @@ test.describe('Muu kuin säännelty koulutus', () => {
     })
 
     test('Vain jotpa-rahoitukset valittavissa', async ({ uusiOppijaPage }) => {
-      await expect(
-        await uusiOppijaPage.controls.opintojenRahoitus.options()
-      ).toEqual([
-        'Jatkuvan oppimisen ja työllisyyden palvelukeskuksen rahoitus',
-        'Jatkuvan oppimisen ja työllisyyden palvelukeskuksen rahoitus (RRF)'
-      ])
+      expect(await uusiOppijaPage.controls.opintojenRahoitus.options()).toEqual(
+        [
+          'Jatkuvan oppimisen ja työllisyyden palvelukeskuksen rahoitus',
+          'Jatkuvan oppimisen ja työllisyyden palvelukeskuksen rahoitus (RRF)'
+        ]
+      )
     })
 
     test('Opiskeluoikeuden luonti onnistuu', async ({ uusiOppijaPage }) => {

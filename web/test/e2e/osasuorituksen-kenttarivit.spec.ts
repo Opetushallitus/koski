@@ -104,7 +104,7 @@ const ruudukonUlkopuolisetRivit = (page: Page) =>
       )
       .map(
         (rivi) =>
-          `"${rivi.textContent!.slice(0, 40)}" vanhempana ` +
+          `"${rivi.textContent.slice(0, 40)}" vanhempana ` +
           `<${rivi.parentElement!.tagName.toLowerCase()} class="${rivi.parentElement!.className}">`
       )
   )
