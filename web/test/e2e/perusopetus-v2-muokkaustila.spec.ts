@@ -200,7 +200,8 @@ test.describe('Mitätöinti, suorituksen poisto ja lähdejärjestelmäkytkennän
       await fixtures.reset()
       await oppijaPage.goto(moniaUrl)
       await expect(uusiMitätöinti(page)).toHaveCount(2)
-      await expect(vanhaMitätöinti(page)).toHaveCount(0)
+      await expect(vanhaMitätöinti(page)).toBeVisible()
+      await expect(page.locator('.toggle-edit')).toBeVisible()
 
       await page.getByTestId('oo.0.opiskeluoikeus.edit').click()
       await expect(
@@ -211,6 +212,7 @@ test.describe('Mitätöinti, suorituksen poisto ja lähdejärjestelmäkytkennän
 
       await page.getByTestId('oo.0.opiskeluoikeus.cancelEdit').click()
       await expect(uusiMitätöinti(page)).toHaveCount(2)
+      await expect(vanhaMitätöinti(page)).toBeVisible()
     })
 
     test('Katselutilan toiminnot piilotetaan toisen opiskeluoikeuden muokkauksen ajaksi', async ({
@@ -250,7 +252,7 @@ test.describe('Mitätöinti, suorituksen poisto ja lähdejärjestelmäkytkennän
       await expectKatselutilanToiminnot(true)
     })
 
-    test('Vanhassa käyttöliittymässä mitätöinti ja suorituksen poisto tarjotaan vain muokattavalla opiskeluoikeudella', async ({
+    test('Vanhassa käyttöliittymässä mitätöinti ja suorituksen poisto piilotetaan muilta opiskeluoikeuksilta muokkauksen ajaksi', async ({
       page,
       fixtures,
       oppijaPage
@@ -260,7 +262,7 @@ test.describe('Mitätöinti, suorituksen poisto ja lähdejärjestelmäkytkennän
         `${pekkaOid}?opiskeluoikeudenTyyppi=ammatillinenkoulutus`
       )
       await expect(page.locator('.toggle-edit')).toHaveCount(3)
-      await expect(vanhaMitätöinti(page)).toHaveCount(0)
+      await expect(vanhaMitätöinti(page)).toHaveCount(3)
 
       // Stadin oppisopimuskeskuksen opiskeluoikeudella on kaksi päätason
       // suoritusta, joten sillä voisi näkyä myös suorituksen poisto.

@@ -16,6 +16,7 @@ import { puraLähdejärjestelmänKytkentä } from '../virkailija/VirkailijaOppij
 
 export const TogglableEditor = ({ model, renderChild, ...rest }) => {
   const muokattava = useMuokattavaOpiskeluoikeus()
+  const hasAnyInvalidateAccess = useVirkailijaUser()?.hasAnyInvalidateAccess
   const context = model.context
   const opiskeluoikeusOid = modelData(model.context.opiskeluoikeus, 'oid')
   const muokataanToista = useMuokataanToistaOpiskeluoikeutta(opiskeluoikeusOid)
@@ -24,10 +25,14 @@ export const TogglableEditor = ({ model, renderChild, ...rest }) => {
   const editingAny = !!currentLocation().params.edit || !!muokattava
   const modifiedContext = R.mergeRight(context, { edit })
   const showEditLink = model.editable && !editingAny
+  // Mitätöintioikeudellinen (esim. pääkäyttäjä) mitätöi myös katselutilassa,
+  // muut muokkaustilassa.
   const showDeleteLink =
-    model.invalidatable && !showEditLink && !muokataanToista
+    model.invalidatable &&
+    !muokataanToista &&
+    (!showEditLink || hasAnyInvalidateAccess)
 
-  const editLink = showEditLink ? (
+  const editButton = (
     <button
       className="koski-button toggle-edit"
       onClick={() => context.editBus.push(opiskeluoikeusOid)}
@@ -35,15 +40,25 @@ export const TogglableEditor = ({ model, renderChild, ...rest }) => {
     >
       <Text name="muokkaa" />
     </button>
+  )
+  const invalidateButton = (
+    <InvalidateOpiskeluoikeusButton
+      opiskeluoikeus={model.context.opiskeluoikeus}
+    />
+  )
+
+  const editLink = showEditLink ? (
+    showDeleteLink ? (
+      <div className="edit-and-invalidate-buttons">
+        {invalidateButton}
+        {editButton}
+      </div>
+    ) : (
+      editButton
+    )
   ) : (
     <div className="invalidate-etc-buttons">
-      {showDeleteLink && (
-        <div>
-          <InvalidateOpiskeluoikeusButton
-            opiskeluoikeus={model.context.opiskeluoikeus}
-          />
-        </div>
-      )}
+      {showDeleteLink && <div>{invalidateButton}</div>}
       {!muokataanToista && (
         <PuraLähdejärjestelmänKytkentäButton
           opiskeluoikeus={modelData(model)}
