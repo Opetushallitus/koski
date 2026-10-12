@@ -138,6 +138,7 @@ export default [
       ],
       'no-template-curly-in-string': 'error',
       'require-atomic-updates': 'error',
+      'react-hooks/set-state-in-render': 'error',
       'import-x/no-self-import': 'error',
       '@eslint-react/error-boundaries': 'error',
       '@eslint-react/no-access-state-in-setstate': 'error',
