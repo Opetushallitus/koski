@@ -14,7 +14,7 @@ import fi.oph.koski.log.{AuditLog, KoskiAuditLogMessage, Logging}
 import fi.oph.koski.opiskeluoikeus.OpiskeluoikeusQueryContext
 import fi.oph.koski.organisaatio.OrganisaationAlaisetOrganisaatiot
 import fi.oph.koski.massaluovutus.MassaluovutusUtils.defaultOrganisaatio
-import fi.oph.koski.massaluovutus.{KoulutuksenjärjestäjienMassaluovutusQueryParameters, QueryResultWriter}
+import fi.oph.koski.massaluovutus.{KoulutuksenjärjestäjienMassaluovutusQueryParameters, MassaluovutusUtils, QueryResultWriter}
 import fi.oph.koski.schema.Organisaatio
 import fi.oph.koski.schema.annotation.EnumValues
 import fi.oph.scalaschema.annotation.{Description, Title}
@@ -112,18 +112,8 @@ trait MassaluovutusQueryOrganisaationOpiskeluoikeudet extends Koulutuksenjärjes
 
   protected def getDb(application: KoskiApplication): DB = application.replicaDatabase.db
 
-  // Oman hierarkian opiskeluoikeudet ovat piirissä sellaisenaan, mutta ostopalveluyksiköistä
-  // vain ostavan koulutustoimijan omat. Ilman koulutustoimijaehtoa kyselyyn osuisivat yksikön
-  // kaikki opiskeluoikeudet, myös sen oman koulutustoimijan ja muiden ostajien, joihin ei ole
-  // lukuoikeutta — vrt. KoskiSpecificSession.hasVarhaiskasvatusAccess.
   protected def organisaatioFilter(organisaatiot: OrganisaationAlaisetOrganisaatiot): SQLActionBuilder =
-    SQLHelpers.concatMany(
-      Some(sql" AND (oppilaitos_oid = ANY(${organisaatiot.hierarkia}) "),
-      organisaatiot.koulutustoimija
-        .filter(_ => organisaatiot.ostopalvelu.nonEmpty)
-        .map(kt => sql" OR (oppilaitos_oid = ANY(${organisaatiot.ostopalvelu}) AND koulutustoimija_oid = $kt) "),
-      Some(sql") "),
-    )
+    SQLHelpers.concat(sql" AND ", MassaluovutusUtils.organisaatioFilter(organisaatiot))
 
   protected def defaultBaseFilter(organisaatiot: OrganisaationAlaisetOrganisaatiot)(implicit session: KoskiSpecificSession): SQLActionBuilder = SQLHelpers.concatMany(
     Some(sql"WHERE NOT poistettu "),
