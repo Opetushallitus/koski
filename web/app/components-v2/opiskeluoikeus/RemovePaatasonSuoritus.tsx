@@ -1,7 +1,10 @@
 import React, { useState } from 'react'
 import { useApiMethod, useOnApiError, useOnApiSuccess } from '../../api-fetch'
 import { useGlobalErrors } from '../../appstate/globalErrors'
-import { useVersionumero } from '../../appstate/useSearchParam'
+import {
+  useMuokataanToistaOpiskeluoikeutta,
+  useVersionumero
+} from '../../appstate/sivunTila'
 import { setInvalidationNotification } from '../../components/InvalidationNotification'
 import { t } from '../../i18n/i18n'
 import { Opiskeluoikeus } from '../../types/fi/oph/koski/schema/Opiskeluoikeus'
@@ -37,8 +40,9 @@ export const RemovePaatasonSuoritus = <S extends Opiskeluoikeus>(
   props: RemovePaatasonSuoritusProps<S>
 ) => {
   const voiMuokata = useWriteAccess(props.form.state)
-  const inVersiohistoria =
-    useVersionumero(getOpiskeluoikeusOid(props.form.state)) !== null
+  const opiskeluoikeusOid = getOpiskeluoikeusOid(props.form.state)
+  const inVersiohistoria = useVersionumero(opiskeluoikeusOid) !== null
+  const muokataanToista = useMuokataanToistaOpiskeluoikeutta(opiskeluoikeusOid)
 
   // Kuten vanhassa käyttöliittymässä: muokkausoikeudellinen poistaa
   // suorituksen muokkaustilassa, mutta mitätöintioikeudellinen, joka ei voi
@@ -47,6 +51,7 @@ export const RemovePaatasonSuoritus = <S extends Opiskeluoikeus>(
   const katselutilassa =
     !props.form.editMode &&
     !inVersiohistoria &&
+    !muokataanToista &&
     props.invalidatable &&
     !voiMuokata
 

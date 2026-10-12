@@ -382,6 +382,12 @@ case class ObjectModelBuilder(schema: ClassSchema)(implicit context: ModelBuilde
     def orgWriteAccess = obj match {
       case e: EsiopetuksenOpiskeluoikeus if e.järjestämismuoto.isDefined && e.oppilaitos.isDefined && e.koulutustoimija.isDefined =>
         context.user.hasVarhaiskasvatusAccess(e.koulutustoimija.get.oid, e.getOppilaitos.oid, AccessType.write)
+      // Hankintakoulutuksen saa tallentaa myös hankkivan koulutustoimijan käyttäjä (KoskiValidator.validateOrganisaatioAccess)
+      case t: TaiteenPerusopetuksenOpiskeluoikeus =>
+        t.omistajaOrganisaatio match {
+          case Some(o) => context.user.hasTaiteenPerusopetusAccess(o.oid, t.koulutustoimija.map(_.oid), AccessType.write)
+          case None => true
+        }
       case oo: Opiskeluoikeus =>
         oo.omistajaOrganisaatio match {
           case Some(o) => context.user.hasWriteAccess(o.oid, oo.koulutustoimija.map(_.oid))

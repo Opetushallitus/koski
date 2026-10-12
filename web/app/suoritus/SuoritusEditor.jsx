@@ -28,6 +28,7 @@ import {
 import { flatMapArray } from '../util/util'
 import DeletePaatasonSuoritusButton from './DeletePaatasonSuoritusButton'
 import { currentLocation } from '../util/location'
+import { useMuokataanToistaOpiskeluoikeutta } from '../appstate/sivunTila.ts'
 import {
   isOsittaisenAmmatillisenTutkinnonYhteisenTutkinnonOsanSuoritus,
   isVälisuoritus
@@ -40,27 +41,31 @@ import { AmmatillinenArviointiasteikko } from '../ammatillinen/AmmatillinenArvio
 import { isEshAlaosasuoritus } from '../esh/esh'
 import { isPerusopetuksenOppiaineenOppimäärä } from '../opiskeluoikeus/OpiskeluoikeusEditor'
 
+const DeleteButtonIfAllowed = ({ model }) => {
+  const opiskeluoikeus = model.context.opiskeluoikeus
+  const muokataanToista = useMuokataanToistaOpiskeluoikeutta(
+    modelData(opiskeluoikeus, 'oid')
+  )
+
+  const editingAny = !!currentLocation().params.edit
+  const showEditLink = opiskeluoikeus.editable && !editingAny
+  const isSingleSuoritus =
+    modelItems(opiskeluoikeus, 'suoritukset').length === 1
+  const showDeleteLink =
+    model.invalidatable &&
+    !showEditLink &&
+    !isSingleSuoritus &&
+    !muokataanToista
+
+  return showDeleteLink ? (
+    <DeletePaatasonSuoritusButton
+      opiskeluoikeus={opiskeluoikeus}
+      päätasonSuoritus={model}
+    />
+  ) : null
+}
+
 export class SuoritusEditor extends React.Component {
-  showDeleteButtonIfAllowed() {
-    const { model } = this.props
-
-    const editingAny = !!currentLocation().params.edit
-    const showEditLink = model.context.opiskeluoikeus.editable && !editingAny
-    const isSingleSuoritus =
-      modelItems(model.context.opiskeluoikeus, 'suoritukset').length === 1
-    const showDeleteLink =
-      model.invalidatable && !showEditLink && !isSingleSuoritus
-
-    return (
-      showDeleteLink && (
-        <DeletePaatasonSuoritusButton
-          opiskeluoikeus={model.context.opiskeluoikeus}
-          päätasonSuoritus={model}
-        />
-      )
-    )
-  }
-
   render() {
     let { model } = this.props
     const excludedProperties = [
@@ -105,7 +110,7 @@ export class SuoritusEditor extends React.Component {
 
     return (
       <div className={className}>
-        {this.showDeleteButtonIfAllowed()}
+        <DeleteButtonIfAllowed model={this.props.model} />
         <PropertiesEditor
           model={model}
           properties={properties}

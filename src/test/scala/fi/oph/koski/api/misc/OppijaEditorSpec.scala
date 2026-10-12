@@ -3,7 +3,7 @@ package fi.oph.koski.api.misc
 import fi.oph.koski.KoskiHttpSpec
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
 import fi.oph.koski.http.KoskiErrorCategory
-import fi.oph.koski.koskiuser.MockUsers
+import fi.oph.koski.koskiuser.{MockUsers, UserWithPassword}
 import fi.oph.koski.log.AuditLogTester
 import fi.oph.koski.schema.AmmatillinenOpiskeluoikeus
 import org.json4s.jackson.JsonMethods
@@ -47,6 +47,12 @@ class OppijaEditorSpec extends AnyFreeSpec with Matchers with KoskiHttpSpec with
       versioitu.map(muokattavuus) should equal(List((ammatillinenOid, JBool(false), JBool(false))))
       muut.map(muokattavuus) should contain theSameElementsAs nykyiset.filterNot(oid(_) == ammatillinenOid).map(muokattavuus)
     }
+    "marks taiteen perusopetus hankintakoulutus as editable for the purchasing koulutustoimija too" in {
+      val oppija = KoskiSpecificMockOppijat.taiteenPerusopetusHankintakoulutus
+      List(MockUsers.helsinkiTallentaja, MockUsers.varsinaisSuomiOppilaitosTallentaja).foreach { user =>
+        opiskeluoikeusModels(oppija.oid, user = user).map(_ \ "editable") should equal(List(JBool(true)))
+      }
+    }
     "with invalid oid" in {
       get("api/editor/blerg", headers = authHeaders()) {
         verifyResponseStatus(400, KoskiErrorCategory.badRequest.queryParam.virheellinenHenkilöOid("Virheellinen oid: blerg. Esimerkki oikeasta muodosta: 1.2.246.562.24.00000000001."))
@@ -87,8 +93,8 @@ class OppijaEditorSpec extends AnyFreeSpec with Matchers with KoskiHttpSpec with
     }
   }
 
-  private def opiskeluoikeusModels(oppijaOid: String, params: List[(String, String)] = Nil): List[JValue] =
-    get("api/editor/" + oppijaOid, params = params, headers = authHeaders()) {
+  private def opiskeluoikeusModels(oppijaOid: String, params: List[(String, String)] = Nil, user: UserWithPassword = defaultUser): List[JValue] =
+    get("api/editor/" + oppijaOid, params = params, headers = authHeaders(user)) {
       verifyResponseStatusOk()
       def items(model: JValue, key: String): List[JValue] =
         (model \ "value" \ "properties").children

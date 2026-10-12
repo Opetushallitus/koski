@@ -890,9 +890,14 @@
       }
     }
 
-    .toggle-edit,
-    .invalidate-etc-buttons {
+    .opiskeluoikeus-buttons {
       .OverlayElem;
+      display: flex;
+      align-items: center;
+
+      > * + * {
+        margin-left: 15px;
+      }
     }
 
     button.confirm-invalidate,

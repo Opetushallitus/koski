@@ -15,7 +15,11 @@ import { FlatButton } from '../controls/FlatButton'
 import { RaisedButton } from '../controls/RaisedButton'
 import { Trans } from '../texts/Trans'
 import { useVirkailijaUser } from '../../appstate/user'
-import { useVersionumero } from '../../appstate/useSearchParam'
+import {
+  useMuokataanToistaOpiskeluoikeutta,
+  useMuokattavaOpiskeluoikeus,
+  useVersionumero
+} from '../../appstate/sivunTila'
 import { PoistuVersiohistoriastaButton } from './VersiohistoriaButton'
 import { RequiresLahdejarjestelmakytkennanPurkaminenAccess } from '../access/RequiresLahdejarjestelmakytkennanPurkaminenAccess'
 import { setInvalidationNotification } from '../../components/InvalidationNotification'
@@ -34,6 +38,15 @@ export const OpiskeluoikeusEditToolbar = (
   const opiskeluoikeusOid = getOpiskeluoikeusOid(props.opiskeluoikeus)
   const hasAnyInvalidateAccess = useVirkailijaUser()?.hasAnyInvalidateAccess
   const inVersiohistoria = useVersionumero(opiskeluoikeusOid) !== null
+  const muokkausKäynnissä = useMuokattavaOpiskeluoikeus() !== undefined
+  const muokataanToista = useMuokataanToistaOpiskeluoikeutta(opiskeluoikeusOid)
+  // Mitätöintioikeudellinen (esim. pääkäyttäjä) mitätöi myös katselutilassa,
+  // muut muokkaustilassa.
+  const mitätöintiTarjolla =
+    props.invalidatable &&
+    !inVersiohistoria &&
+    !muokataanToista &&
+    (props.editMode || hasAnyInvalidateAccess)
 
   return (
     <ColumnRow>
@@ -57,12 +70,9 @@ export const OpiskeluoikeusEditToolbar = (
         span={{ default: spans[1], phone: 24 }}
         align={{ default: 'right', phone: 'left' }}
       >
-        {hasAnyInvalidateAccess &&
-          props.invalidatable &&
-          !inVersiohistoria &&
-          opiskeluoikeusOid && (
-            <MitätöintiButton opiskeluoikeusOid={opiskeluoikeusOid} />
-          )}
+        {mitätöintiTarjolla && opiskeluoikeusOid && (
+          <MitätöintiButton opiskeluoikeusOid={opiskeluoikeusOid} />
+        )}
         {inVersiohistoria ? (
           // Versiohistoriasta poistuminen on pelkkä navigaatio (?versionumero
           // pois URL:sta), ei muokkaus, joten sitä ei saa rajata
@@ -75,27 +85,24 @@ export const OpiskeluoikeusEditToolbar = (
           />
         ) : (
           <RequiresWriteAccess opiskeluoikeus={props.opiskeluoikeus}>
-            {!props.editMode ? (
+            {!props.editMode && !muokkausKäynnissä && (
               <RaisedButton onClick={props.onStartEdit} testId="edit">
                 {t('Muokkaa')}
               </RaisedButton>
-            ) : (
-              !hasAnyInvalidateAccess &&
-              opiskeluoikeusOid && (
-                <MitätöintiButton opiskeluoikeusOid={opiskeluoikeusOid} />
-              )
             )}
           </RequiresWriteAccess>
         )}
-        <RequiresLahdejarjestelmakytkennanPurkaminenAccess
-          opiskeluoikeus={props.opiskeluoikeus}
-        >
-          {opiskeluoikeusOid && (
-            <LähdejärjestelmäkytkennänPurkaminenButton
-              opiskeluoikeusOid={opiskeluoikeusOid}
-            />
-          )}
-        </RequiresLahdejarjestelmakytkennanPurkaminenAccess>
+        {!muokataanToista && (
+          <RequiresLahdejarjestelmakytkennanPurkaminenAccess
+            opiskeluoikeus={props.opiskeluoikeus}
+          >
+            {opiskeluoikeusOid && (
+              <LähdejärjestelmäkytkennänPurkaminenButton
+                opiskeluoikeusOid={opiskeluoikeusOid}
+              />
+            )}
+          </RequiresLahdejarjestelmakytkennanPurkaminenAccess>
+        )}
       </Column>
     </ColumnRow>
   )
