@@ -1,7 +1,7 @@
 import React from 'baret'
 import { Editor } from '../editor/Editor'
 import { modelLookup } from '../editor/EditorModel'
-import { fixArviointi } from './Suoritus'
+import { fixArviointi } from '../suoritus/Suoritus'
 
 export const EuropeanSchoolOfHelsinkiArvosanaEditor = ({
   model,

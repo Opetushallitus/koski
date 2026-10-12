@@ -154,6 +154,24 @@ export default [
       ]
     }
   },
+  {
+    ...importXPlugin.configs['flat/recommended'],
+    files: ['app/**/*.{js,jsx}'],
+    settings: {
+      'import-x/resolver': {
+        node: { extensions: ['.js', '.jsx', '.ts', '.tsx', '.json'] }
+      },
+      'import-x/extensions': ['.js', '.jsx', '.ts', '.tsx'],
+      'import-x/parsers': {
+        '@typescript-eslint/parser': ['.ts', '.tsx']
+      }
+    },
+    rules: {
+      ...importXPlugin.configs['flat/recommended'].rules,
+      'import-x/no-duplicates': 'off',
+      'import-x/no-named-as-default': 'off'
+    }
+  },
   eslintConfigPrettier,
   { rules: { 'no-unexpected-multiline': 'error' } }
 ]
