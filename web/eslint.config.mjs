@@ -30,6 +30,7 @@ export default defineConfig([
       '@eslint-react/jsx-no-comment-textnodes': 'error',
       '@eslint-react/jsx-no-children-prop': 'error',
       '@eslint-react/no-direct-mutation-state': 'error',
+      '@eslint-react/no-access-state-in-setstate': 'error',
       '@eslint-react/no-component-will-mount': 'error',
       '@eslint-react/no-component-will-receive-props': 'error',
       '@eslint-react/no-component-will-update': 'error',
@@ -234,6 +235,16 @@ export default defineConfig([
       'import-x/no-extraneous-dependencies': [
         'error',
         { devDependencies: false }
+      ]
+    }
+  },
+  {
+    files: ['app/**/*.{ts,tsx}'],
+    ignores: ['app/types/fi/oph/koski/**'],
+    rules: {
+      '@typescript-eslint/no-unused-expressions': [
+        'error',
+        { allowShortCircuit: true, allowTernary: true, enforceForJSX: true }
       ]
     }
   },
