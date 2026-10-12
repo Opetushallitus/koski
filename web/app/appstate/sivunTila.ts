@@ -104,3 +104,14 @@ export const useMuokattavaOpiskeluoikeus = (): string | undefined => {
   }, [])
   return vanhanKäyttöliittymänMuokattava || uudenMuokattava
 }
+
+// Mitätöinti, päätason suorituksen poisto ja lähdejärjestelmäkytkennän purku
+// lataavat sivun uudelleen tai poistuvat siltä, jolloin muokattavan
+// opiskeluoikeuden tallentamattomat muutokset katoaisivat. Siksi niitä ei
+// tarjota muilla opiskeluoikeuksilla muokkauksen aikana.
+export const useMuokataanToistaOpiskeluoikeutta = (
+  opiskeluoikeusOid: string | undefined
+): boolean => {
+  const muokattava = useMuokattavaOpiskeluoikeus()
+  return muokattava !== undefined && muokattava !== opiskeluoikeusOid
+}

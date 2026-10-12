@@ -7,7 +7,10 @@ import { modelData } from './EditorModel'
 import InvalidateOpiskeluoikeusButton from '../opiskeluoikeus/InvalidateOpiskeluoikeusButton'
 import { RequiresLahdejarjestelmakytkennanPurkaminenAccess } from '../components-v2/access/RequiresLahdejarjestelmakytkennanPurkaminenAccess.tsx'
 import { useVirkailijaUser } from '../appstate/user.tsx'
-import { useMuokattavaOpiskeluoikeus } from '../appstate/sivunTila.ts'
+import {
+  useMuokataanToistaOpiskeluoikeutta,
+  useMuokattavaOpiskeluoikeus
+} from '../appstate/sivunTila.ts'
 import ButtonWithConfirmation from '../components/ButtonWithConfirmation'
 import { puraLähdejärjestelmänKytkentä } from '../virkailija/VirkailijaOppijaView.jsx'
 
@@ -15,12 +18,14 @@ export const TogglableEditor = ({ model, renderChild, ...rest }) => {
   const muokattava = useMuokattavaOpiskeluoikeus()
   const context = model.context
   const opiskeluoikeusOid = modelData(model.context.opiskeluoikeus, 'oid')
+  const muokataanToista = useMuokataanToistaOpiskeluoikeutta(opiskeluoikeusOid)
   const edit =
     opiskeluoikeusOid && currentLocation().params.edit === opiskeluoikeusOid
   const editingAny = !!currentLocation().params.edit || !!muokattava
   const modifiedContext = R.mergeRight(context, { edit })
   const showEditLink = model.editable && !editingAny
-  const showDeleteLink = model.invalidatable && !showEditLink
+  const showDeleteLink =
+    model.invalidatable && !showEditLink && !muokataanToista
 
   const editLink = showEditLink ? (
     <button
@@ -39,7 +44,11 @@ export const TogglableEditor = ({ model, renderChild, ...rest }) => {
           />
         </div>
       )}
-      <PuraLähdejärjestelmänKytkentäButton opiskeluoikeus={modelData(model)} />
+      {!muokataanToista && (
+        <PuraLähdejärjestelmänKytkentäButton
+          opiskeluoikeus={modelData(model)}
+        />
+      )}
     </div>
   )
 

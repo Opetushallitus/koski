@@ -1,4 +1,6 @@
-import type { Page } from '@playwright/test'
+import type { Locator, Page } from '@playwright/test'
+import { Oppija } from '../../app/types/fi/oph/koski/schema/Oppija'
+import { Raw } from '../../app/util/schema'
 import { expect, test } from './base'
 import { virkailija } from './setup/auth'
 
@@ -144,4 +146,189 @@ test.describe('Vanhan ja uuden käyttöliittymän muokkaustila samalla sivulla',
     await expect.poll(() => kysymykset).toHaveLength(1)
     expect(osoite(page)).toContain('opiskeluoikeudenTyyppi=perusopetus')
   })
+})
+
+// Mitätöinti, päätason suorituksen poisto ja lähdejärjestelmäkytkennän purku
+// lataavat sivun uudelleen, joten muokkauksen aikana ne tarjotaan vain
+// muokattavalla opiskeluoikeudella.
+test.describe('Mitätöinti, suorituksen poisto ja lähdejärjestelmäkytkennän purku muokkauksen aikana', () => {
+  const opiskeluoikeus = (page: Page, oppilaitos: string) =>
+    page
+      .locator('[data-testid="opiskeluoikeuksientiedot"] > li')
+      .filter({ hasText: oppilaitos })
+  const vanhaMitätöinti = (kohde: Page | Locator) =>
+    kohde.locator('.invalidate.invalidate-opiskeluoikeus')
+  const uusiMitätöinti = (kohde: Page | Locator) =>
+    kohde.getByTestId(/^oo\.\d+\.opiskeluoikeus\.invalidate\.button$/)
+
+  test.describe('Tallentaja', () => {
+    test.use({ storageState: virkailija('kalle') })
+
+    test('Mitätöinti tarjotaan vain muokattavalla opiskeluoikeudella', async ({
+      page,
+      fixtures,
+      oppijaPage
+    }) => {
+      await fixtures.reset()
+      await oppijaPage.goto(moniaUrl)
+      await expect(page.getByTestId('oo.0.opiskeluoikeus.edit')).toBeVisible()
+      await expect(uusiMitätöinti(page)).toHaveCount(0)
+      await expect(vanhaMitätöinti(page)).toHaveCount(0)
+
+      await page.getByTestId('oo.0.opiskeluoikeus.edit').click()
+      await expect(
+        page.getByTestId('oo.0.opiskeluoikeus.invalidate.button')
+      ).toBeVisible()
+      await expect(uusiMitätöinti(page)).toHaveCount(1)
+      await expect(vanhaMitätöinti(page)).toHaveCount(0)
+
+      await page.getByTestId('oo.0.opiskeluoikeus.cancelEdit').click()
+      await page.locator('.toggle-edit').click()
+      await expect(vanhaMitätöinti(page)).toBeVisible()
+      await expect(uusiMitätöinti(page)).toHaveCount(0)
+    })
+  })
+
+  test.describe('Pääkäyttäjä', () => {
+    test.use({ storageState: virkailija('pää') })
+
+    test('Mitätöintioikeudellisen katselutilan mitätöinti piilotetaan toisen opiskeluoikeuden muokkauksen ajaksi', async ({
+      page,
+      fixtures,
+      oppijaPage
+    }) => {
+      await fixtures.reset()
+      await oppijaPage.goto(moniaUrl)
+      await expect(uusiMitätöinti(page)).toHaveCount(2)
+      await expect(vanhaMitätöinti(page)).toHaveCount(0)
+
+      await page.getByTestId('oo.0.opiskeluoikeus.edit').click()
+      await expect(
+        page.getByTestId('oo.0.opiskeluoikeus.invalidate.button')
+      ).toBeVisible()
+      await expect(uusiMitätöinti(page)).toHaveCount(1)
+      await expect(vanhaMitätöinti(page)).toHaveCount(0)
+
+      await page.getByTestId('oo.0.opiskeluoikeus.cancelEdit').click()
+      await expect(uusiMitätöinti(page)).toHaveCount(2)
+    })
+
+    test('Katselutilan toiminnot piilotetaan toisen opiskeluoikeuden muokkauksen ajaksi', async ({
+      page,
+      fixtures,
+      oppijaPage
+    }) => {
+      await fixtures.reset()
+      await fixtures.putOppija(käyttöliittymästäTallennettuPerusopetus(perttiOid))
+      await oppijaPage.goto(`${perttiOid}?opiskeluoikeudenTyyppi=perusopetus`)
+
+      // Lähdejärjestelmästä siirrettyä opiskeluoikeutta ei voi muokata, joten
+      // sen toiminnot ovat katselutilassa.
+      const siirretty = opiskeluoikeus(page, 'Stadin ammatti- ja aikuisopisto')
+      const tallennettu = page
+        .locator('[data-testid="opiskeluoikeuksientiedot"] > li')
+        .filter({ hasNotText: 'Stadin ammatti- ja aikuisopisto' })
+      const katselutilanToiminnot = [
+        uusiMitätöinti(siirretty),
+        siirretty.getByTestId(/^oo\.\d+\.suoritukset\.\d+\.button$/),
+        siirretty.getByTestId(/^oo\.\d+\.opiskeluoikeus\.puraKytkenta\.button$/)
+      ]
+      const expectKatselutilanToiminnot = async (näkyvissä: boolean) => {
+        for (const toiminto of katselutilanToiminnot) {
+          await expect(toiminto).toHaveCount(näkyvissä ? 1 : 0)
+        }
+      }
+      await expectKatselutilanToiminnot(true)
+
+      await tallennettu.getByTestId(/^oo\.\d+\.opiskeluoikeus\.edit$/).click()
+      await expect(uusiMitätöinti(tallennettu)).toBeVisible()
+      await expectKatselutilanToiminnot(false)
+
+      await tallennettu
+        .getByTestId(/^oo\.\d+\.opiskeluoikeus\.cancelEdit$/)
+        .click()
+      await expectKatselutilanToiminnot(true)
+    })
+
+    test('Vanhassa käyttöliittymässä mitätöinti ja suorituksen poisto tarjotaan vain muokattavalla opiskeluoikeudella', async ({
+      page,
+      fixtures,
+      oppijaPage
+    }) => {
+      await fixtures.reset()
+      await oppijaPage.goto(
+        `${pekkaOid}?opiskeluoikeudenTyyppi=ammatillinenkoulutus`
+      )
+      await expect(page.locator('.toggle-edit')).toHaveCount(3)
+      await expect(vanhaMitätöinti(page)).toHaveCount(0)
+
+      // Stadin oppisopimuskeskuksen opiskeluoikeudella on kaksi päätason
+      // suoritusta, joten sillä voisi näkyä myös suorituksen poisto.
+      const muokattava = opiskeluoikeus(page, 'Omnia')
+      await muokattava.locator('.toggle-edit').click()
+      await expect(vanhaMitätöinti(muokattava)).toBeVisible()
+      await expect(vanhaMitätöinti(page)).toHaveCount(1)
+      await expect(
+        page.locator('.invalidate.delete-paatason-suoritus')
+      ).toHaveCount(0)
+    })
+  })
+})
+
+// Pertti Perusopetuksensiirto: lähdejärjestelmästä siirretty perusopetuksen
+// opiskeluoikeus Stadin ammatti- ja aikuisopistossa.
+const perttiOid = '1.2.246.562.24.00000000059'
+
+// Paallekkaisia Pekka: kolme ammatillisen koulutuksen opiskeluoikeutta, jotka
+// kaikki näkyvät vanhalla käyttöliittymällä.
+const pekkaOid = '1.2.246.562.24.00000000104'
+
+const jynNimi = 'Jyväskylän normaalikoulu'
+const jynOppilaitos = {
+  oid: '1.2.246.562.10.14613773812',
+  nimi: { fi: jynNimi, sv: jynNimi, en: jynNimi }
+}
+
+const käyttöliittymästäTallennettuPerusopetus = (
+  oppijaOid: string
+): Raw<Oppija> => ({
+  henkilö: { oid: oppijaOid },
+  opiskeluoikeudet: [
+    {
+      tyyppi: {
+        koodiarvo: 'perusopetus',
+        koodistoUri: 'opiskeluoikeudentyyppi'
+      },
+      oppilaitos: jynOppilaitos,
+      tila: {
+        opiskeluoikeusjaksot: [
+          {
+            alku: '2017-01-01',
+            tila: {
+              koodiarvo: 'lasna',
+              koodistoUri: 'koskiopiskeluoikeudentila'
+            }
+          }
+        ]
+      },
+      suoritukset: [
+        {
+          tyyppi: {
+            koodiarvo: 'perusopetuksenoppimaara',
+            koodistoUri: 'suorituksentyyppi'
+          },
+          koulutusmoduuli: {
+            tunniste: { koodiarvo: '201101', koodistoUri: 'koulutus' },
+            perusteenDiaarinumero: '104/011/2014'
+          },
+          toimipiste: jynOppilaitos,
+          suorituskieli: { koodiarvo: 'FI', koodistoUri: 'kieli' },
+          suoritustapa: {
+            koodiarvo: 'koulutus',
+            koodistoUri: 'perusopetuksensuoritustapa'
+          }
+        }
+      ]
+    }
+  ]
 })
