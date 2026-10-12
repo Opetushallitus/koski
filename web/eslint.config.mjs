@@ -104,6 +104,20 @@ export default [
       'no-throw-literal': 'error',
       'no-unmodified-loop-condition': 'error',
       'no-unreachable-loop': 'error',
+      'no-unsafe-negation': ['error', { enforceForOrderingRelations: true }],
+      'no-unsafe-optional-chaining': [
+        'error',
+        { disallowArithmeticOperators: true }
+      ],
+      'no-unused-vars': [
+        'error',
+        {
+          vars: 'all',
+          args: 'none',
+          caughtErrors: 'none',
+          ignoreRestSiblings: true
+        }
+      ],
       // Salli myöhemmin määritellyt apurit sisäkkäisissä funktioissa.
       'no-use-before-define': [
         'error',

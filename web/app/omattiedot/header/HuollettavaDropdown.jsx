@@ -1,5 +1,4 @@
 import React from 'baret'
-import Dropdown from '../../components/Dropdown'
 import { modelData } from '../../editor/EditorModel'
 import { t } from '../../i18n/i18n'
 import { Infobox } from '../../components/Infobox'
