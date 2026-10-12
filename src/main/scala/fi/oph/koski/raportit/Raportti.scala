@@ -107,6 +107,7 @@ case class IBSuoritustiedotRaporttiRequest(
   loppu: LocalDate,
   osasuoritustenAikarajaus: Boolean,
   raportinTyyppi: IBSuoritustiedotRaporttiType,
+  kotikuntaPvm: Option[LocalDate],
   lang: String
 ) extends RaporttiAikajaksoltaRequest
 

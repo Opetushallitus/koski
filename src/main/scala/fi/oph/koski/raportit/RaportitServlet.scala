@@ -248,7 +248,7 @@ class RaportitServlet(implicit val application: KoskiApplication) extends KoskiS
     requireOpiskeluoikeudenKayttooikeudet(OpiskeluoikeudenTyyppi.ibtutkinto)
     val parsedRequest = parseIBSuoritusRaporttiRequest
     val t = new LocalizationReader(application.koskiLocalizationRepository, parsedRequest.lang)
-    AuditLog.log(KoskiAuditLogMessage(OPISKELUOIKEUS_RAPORTTI, session, Map(hakuEhto -> s"raportti=ibsuoritustietojentarkistus&oppilaitosOid=${parsedRequest.oppilaitosOid}&alku=${parsedRequest.alku}&loppu=${parsedRequest.loppu}&raportinTyyppi=${parsedRequest.raportinTyyppi.typeName}&osasuoritustenAikarajaus=${parsedRequest.osasuoritustenAikarajaus}&lang=${parsedRequest.lang}")))
+    AuditLog.log(KoskiAuditLogMessage(OPISKELUOIKEUS_RAPORTTI, session, Map(hakuEhto -> s"raportti=ibsuoritustietojentarkistus&oppilaitosOid=${parsedRequest.oppilaitosOid}&alku=${parsedRequest.alku}&loppu=${parsedRequest.loppu}&raportinTyyppi=${parsedRequest.raportinTyyppi.typeName}&osasuoritustenAikarajaus=${parsedRequest.osasuoritustenAikarajaus}&lang=${parsedRequest.lang}${parsedRequest.kotikuntaPvm.fold("")(p => s"&kotikuntaPvm=$p")}")))
     writeExcel(raportitService.ibSuoritustiedot(parsedRequest, t), t)
   }
 
@@ -356,6 +356,7 @@ class RaportitServlet(implicit val application: KoskiApplication) extends KoskiS
       loppu = loppu,
       osasuoritustenAikarajaus = getOptionalBooleanParam("osasuoritustenAikarajaus").getOrElse(false),
       raportinTyyppi = raportinTyyppi,
+      kotikuntaPvm = getKotikuntaDate,
       lang = getStringParam("lang")
     )
   }
