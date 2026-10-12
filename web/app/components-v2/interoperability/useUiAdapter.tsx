@@ -35,6 +35,7 @@ import {
 } from '../../util/opiskeluoikeus'
 import { kuunteleTallennettujaOpiskeluoikeuksia } from '../../util/tallennetutOpiskeluoikeudet'
 import { OpiskeluoikeudenTyyppiOf } from '../../util/types'
+import { OpiskeluoikeusEditableContext } from '../access/RequiresWriteAccess'
 import { opiskeluoikeusEditors } from './uiAdapters'
 
 export type AdaptedOpiskeluoikeusEditorProps<T extends Opiskeluoikeus> = {
@@ -352,12 +353,16 @@ const useUiAdapterImpl = <T extends any[]>(
         const ooVer = (oo as { versionumero?: number } | undefined)
           ?.versionumero
         return Editor && oo ? (
-          <Editor
+          <OpiskeluoikeusEditableContext.Provider
             key={`${oid}:p${versionumeroParam ?? 'cur'}:d${ooVer ?? ''}`}
-            oppijaOid={oppijaOid}
-            opiskeluoikeus={oo}
-            invalidatable={opiskeluoikeusModel.invalidatable}
-          />
+            value={opiskeluoikeusModel.editable}
+          >
+            <Editor
+              oppijaOid={oppijaOid}
+              opiskeluoikeus={oo}
+              invalidatable={opiskeluoikeusModel.invalidatable}
+            />
+          </OpiskeluoikeusEditableContext.Provider>
         ) : undefined
       }
     })

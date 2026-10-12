@@ -2,7 +2,7 @@ import type { Locator, Page } from '@playwright/test'
 import { Oppija } from '../../app/types/fi/oph/koski/schema/Oppija'
 import { Raw } from '../../app/util/schema'
 import { expect, test } from './base'
-import { virkailija } from './setup/auth'
+import { getVirkailijaSession, virkailija } from './setup/auth'
 
 // Monia Useitan perusopetuksen välilehdellä aineopiskelijan opiskeluoikeus
 // näkyy vanhalla käyttöliittymällä ja kaksi muuta uudella (oo.0 ja oo.1).
@@ -276,6 +276,71 @@ test.describe('Mitätöinti, suorituksen poisto ja lähdejärjestelmäkytkennän
     })
   })
 })
+
+// Käyttäjä voi nähdä opiskeluoikeuden, jota hän ei saa muokata, vaikka hänellä
+// on muokkausoikeus toisessa oppilaitoksessa.
+test.describe('Muokkausoikeus on opiskeluoikeuskohtainen', () => {
+  test.use({ storageState: virkailija('hki-tallentaja') })
+
+  test('Muokkaa ei näy toisen oppilaitoksen sisältyvällä opiskeluoikeudella', async ({
+    browser,
+    page,
+    fixtures,
+    oppijaPage
+  }, testInfo) => {
+    await fixtures.reset()
+
+    // Miia Monikoululaisen Jyväskylän normaalikoulun opiskeluoikeus merkitään
+    // sisältyväksi Kulosaaren ala-asteen opiskeluoikeuteen. Helsingin kaupungin
+    // tallentaja näkee sen silloin, mutta ei saa muokata sitä.
+    const pääkäyttäjä = await browser.newContext({
+      storageState: await getVirkailijaSession(testInfo, 'pää', 'pää')
+    })
+    const haku = await pääkäyttäjä.request.get(`/koski/api/oppija/${miiaOid}`)
+    const miia = (await haku.json()) as {
+      opiskeluoikeudet: Array<{
+        oid: string
+        oppilaitos: { oid: string; nimi: { fi: string } }
+      }>
+    }
+    const tallennettu = (oppilaitos: string) =>
+      miia.opiskeluoikeudet.find((oo) => oo.oppilaitos.nimi.fi === oppilaitos)!
+    const kulosaari = tallennettu('Kulosaaren ala-aste')
+    const tallennus = await pääkäyttäjä.request.put('/koski/api/oppija', {
+      data: {
+        henkilö: { oid: miiaOid },
+        opiskeluoikeudet: [
+          {
+            ...tallennettu('Jyväskylän normaalikoulu'),
+            sisältyyOpiskeluoikeuteen: {
+              oppilaitos: { oid: kulosaari.oppilaitos.oid },
+              oid: kulosaari.oid
+            }
+          }
+        ]
+      }
+    })
+    expect(tallennus.ok(), await tallennus.text()).toBeTruthy()
+    await pääkäyttäjä.close()
+
+    await oppijaPage.goto(`${miiaOid}?opiskeluoikeudenTyyppi=perusopetus`)
+    const muokkaa = (oppilaitos: string) =>
+      page
+        .locator('[data-testid="opiskeluoikeuksientiedot"] > li')
+        .filter({
+          has: page
+            .getByTestId(/^oo\.\d+\.opiskeluoikeus\.nimi$/)
+            .filter({ hasText: oppilaitos })
+        })
+        .getByTestId(/^oo\.\d+\.opiskeluoikeus\.edit$/)
+    await expect(muokkaa('Kulosaaren ala-aste')).toBeVisible()
+    await expect(muokkaa('Jyväskylän normaalikoulu')).toHaveCount(0)
+  })
+})
+
+// Miia Monikoululainen: perusopetuksen opiskeluoikeus sekä Jyväskylän
+// normaalikoulussa että Kulosaaren ala-asteella (Helsingin kaupunki).
+const miiaOid = '1.2.246.562.24.00000000012'
 
 // Pertti Perusopetuksensiirto: lähdejärjestelmästä siirretty perusopetuksen
 // opiskeluoikeus Stadin ammatti- ja aikuisopistossa.

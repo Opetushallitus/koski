@@ -3,6 +3,7 @@ import { virkailija } from './setup/auth'
 
 const keskeneräinenOpiskelija = '1.2.246.562.24.00000000142'
 const hyväksytystiSuorittanutOpiskelija = '1.2.246.562.24.00000000143'
+const hankintakoulutuksenOpiskelija = '1.2.246.562.24.00000000144'
 
 test.describe('Taiteen perusopetus', () => {
   test.beforeEach(async ({ fixtures, page }) => {
@@ -128,6 +129,19 @@ test.describe('Taiteen perusopetus', () => {
         })
         await uusiOppijaPage.submitAndExpectSuccess()
       })
+    })
+
+    // Opiskeluoikeuden oppilaitos on koulutuksen toteuttaja, mutta myös
+    // hankkivan koulutustoimijan käyttäjä saa muokata opiskeluoikeutta.
+    test('Hankkivan koulutustoimijan käyttäjä voi muokata opiskeluoikeutta', async ({
+      page,
+      taiteenPerusopetusPage
+    }) => {
+      await taiteenPerusopetusPage.goto(hankintakoulutuksenOpiskelija)
+      await page.getByTestId('oo.0.opiskeluoikeus.edit').click()
+      await expect(
+        page.getByTestId('oo.0.opiskeluoikeus.cancelEdit')
+      ).toBeVisible()
     })
   })
 
