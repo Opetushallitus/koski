@@ -38,9 +38,9 @@ test.describe('IB', () => {
     test('Suorituksen tiedot näkyvissä', async ({ ibOppijaPage }) => {
       const suoritus = ibOppijaPage.$.suoritukset(0)
       await expect(suoritus.koulutus.elem).toHaveText('Pre-IB')
-      await expect(await suoritus.organisaatio.value()).toEqual('Ressun lukio')
-      await expect(await suoritus.ryhmä.value()).toEqual('AH')
-      await expect(await suoritus.suorituskieli.value()).toEqual('englanti')
+      expect(await suoritus.organisaatio.value()).toEqual('Ressun lukio')
+      expect(await suoritus.ryhmä.value()).toEqual('AH')
+      expect(await suoritus.suorituskieli.value()).toEqual('englanti')
 
       const vahvistus = suoritus.suorituksenVahvistus.value
       await expect(vahvistus.status.elem).toHaveText('Suoritus valmis')
@@ -497,14 +497,12 @@ test.describe('IB', () => {
       }) => {
         const suoritus = ibOppijaPage.$.suoritukset(0)
         await expect(suoritus.koulutus.elem).toHaveText('Pre-IB 2019')
-        await expect(await suoritus.organisaatio.value()).toEqual(
-          'Ressun lukio'
+        expect(await suoritus.organisaatio.value()).toEqual('Ressun lukio')
+        expect(await suoritus.ryhmä.value()).toEqual('AH')
+        expect(await suoritus.suorituskieli.value()).toEqual('englanti')
+        expect(await suoritus.todistuksellaNäkyvätLisätiedot.value()).toEqual(
+          'Suorittanut etäopetuskokeiluna'
         )
-        await expect(await suoritus.ryhmä.value()).toEqual('AH')
-        await expect(await suoritus.suorituskieli.value()).toEqual('englanti')
-        await expect(
-          await suoritus.todistuksellaNäkyvätLisätiedot.value()
-        ).toEqual('Suorittanut etäopetuskokeiluna')
 
         const vahvistus = suoritus.suorituksenVahvistus.value
         await expect(vahvistus.status.elem).toHaveText('Suoritus valmis')
@@ -991,11 +989,9 @@ test.describe('IB', () => {
         await expect(suoritus.koulutus.elem).toHaveText(
           'IB-tutkinto (International Baccalaureate)'
         )
-        await expect(await suoritus.organisaatio.value()).toEqual(
-          'Ressun lukio'
-        )
-        await expect(await suoritus.ryhmä.value()).toEqual('AH')
-        await expect(await suoritus.suorituskieli.value()).toEqual('englanti')
+        expect(await suoritus.organisaatio.value()).toEqual('Ressun lukio')
+        expect(await suoritus.ryhmä.value()).toEqual('AH')
+        expect(await suoritus.suorituskieli.value()).toEqual('englanti')
         await expect(suoritus.theoryOfKnowledge.arvosana.viewer).toHaveText(
           'Excellent'
         )
@@ -1373,7 +1369,7 @@ test.describe('IB', () => {
       }) => {
         await ibOppijaPage.$.suoritukset(0).ryhmä.set('foo')
         await ibOppijaPage.tallenna()
-        await expect(await ibOppijaPage.$.suoritukset(0).ryhmä.value()).toEqual('foo')
+        expect(await ibOppijaPage.$.suoritukset(0).ryhmä.value()).toEqual('foo')
       })
 
       test('Voi tyhjentää ryhmän', async ({
@@ -1381,7 +1377,7 @@ test.describe('IB', () => {
       }) => {
         await ibOppijaPage.$.suoritukset(0).ryhmä.set('')
         await ibOppijaPage.tallenna()
-        await expect(
+        expect(
           await ibOppijaPage.$.suoritukset(0).ryhmä.elem.isHidden()
         ).toBeTruthy()
       })
@@ -1401,8 +1397,10 @@ test.describe('IB', () => {
       }) => {
         await ibOppijaPage.$.suoritukset(0).todistuksellaNäkyvätLisätiedot.set('foo')
         await ibOppijaPage.tallenna()
-        await expect(
-          await ibOppijaPage.$.suoritukset(0).todistuksellaNäkyvätLisätiedot.value()
+        expect(
+          await ibOppijaPage.$.suoritukset(
+            0
+          ).todistuksellaNäkyvätLisätiedot.value()
         ).toEqual('foo')
       })
 
@@ -1411,8 +1409,10 @@ test.describe('IB', () => {
       }) => {
         await ibOppijaPage.$.suoritukset(0).todistuksellaNäkyvätLisätiedot.set('')
         await ibOppijaPage.tallenna()
-        await expect(
-          await ibOppijaPage.$.suoritukset(0).todistuksellaNäkyvätLisätiedot.elem.isHidden()
+        expect(
+          await ibOppijaPage.$.suoritukset(
+            0
+          ).todistuksellaNäkyvätLisätiedot.elem.isHidden()
         ).toBeTruthy()
       })
     })

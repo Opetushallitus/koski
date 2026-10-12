@@ -1361,7 +1361,7 @@ test.describe('Vapaa sivistystyö', () => {
           'Lisää osasuoritus',
           nimi
         ])
-        await expect(await osasuoritus.alaosasuoritus(1).nimi()).toEqual(nimi)
+        expect(await osasuoritus.alaosasuoritus(1).nimi()).toEqual(nimi)
 
         await vstOppijaPage.tallennaVirheellisenä(
           'Valmiiksi merkityllä suorituksella SK-K (Sienestämisen kokonaisuus) on keskeneräinen osasuoritus Sienien tunnistaminen 2 (Sienien tunnistaminen 2)',
@@ -2338,7 +2338,7 @@ test.describe('Vapaa sivistystyö', () => {
         await tarkistaTiedot(page, kansalainenPage)
 
         // Tarkista ettei oppilaitoksen otsikko näy sivulla
-        const title = await page.locator('.oppilaitos-title')
+        const title = page.locator('.oppilaitos-title')
         await expect(title).toContainText('Osaamismerkit')
 
         // Tee suoritusjako, ja tarkista, että sen sisällössä on sama sisältö
