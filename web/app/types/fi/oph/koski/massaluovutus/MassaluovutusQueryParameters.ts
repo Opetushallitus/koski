@@ -1,4 +1,8 @@
 import {
+  MassaluovutusQueryAiemmatOpiskeluoikeudet,
+  isMassaluovutusQueryAiemmatOpiskeluoikeudet
+} from './aiemmatopiskeluoikeudet/MassaluovutusQueryAiemmatOpiskeluoikeudet'
+import {
   MassaluovutusQueryLuokalleJaaneetCsv,
   isMassaluovutusQueryLuokalleJaaneetCsv
 } from './luokallejaaneet/MassaluovutusQueryLuokalleJaaneetCsv'
@@ -157,6 +161,7 @@ import {
  * @see `fi.oph.koski.massaluovutus.MassaluovutusQueryParameters`
  */
 export type MassaluovutusQueryParameters =
+  | MassaluovutusQueryAiemmatOpiskeluoikeudet
   | MassaluovutusQueryLuokalleJaaneetCsv
   | MassaluovutusQueryLuokalleJaaneetJson
   | MassaluovutusQueryOrganisaationOpiskeluoikeudetCsv
@@ -199,6 +204,7 @@ export type MassaluovutusQueryParameters =
 export const isMassaluovutusQueryParameters = (
   a: any
 ): a is MassaluovutusQueryParameters =>
+  isMassaluovutusQueryAiemmatOpiskeluoikeudet(a) ||
   isMassaluovutusQueryLuokalleJaaneetCsv(a) ||
   isMassaluovutusQueryLuokalleJaaneetJson(a) ||
   isMassaluovutusQueryOrganisaationOpiskeluoikeudetCsv(a) ||
