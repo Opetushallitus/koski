@@ -774,10 +774,18 @@ test.describe('Perusopetuksen uusi käyttöliittymä: muokkaustila', () => {
       // Siirry muokkaustilaan
       await page.getByTestId('oo.0.opiskeluoikeus.edit').click()
 
-      // Vaihda jääLuokalle pois päältä (Checkbox: testId input = jääLuokalle.edit.input)
-      await page
-        .getByTestId('oo.0.suoritukset.3.jääLuokalle.edit.input')
-        .uncheck()
+      // Näppäimistöllä vaihtaminen säilyttää kohdistuksen ja kentän tunnisteen.
+      const jääLuokalle = page.getByTestId(
+        'oo.0.suoritukset.3.jääLuokalle.edit.input'
+      )
+      await expect(jääLuokalle).toBeChecked()
+      const inputId = await jääLuokalle.getAttribute('id')
+      expect(inputId).not.toBeNull()
+      await jääLuokalle.focus()
+      await jääLuokalle.press('Space')
+      await expect(jääLuokalle).not.toBeChecked()
+      await expect(jääLuokalle).toBeFocused()
+      expect(await jääLuokalle.getAttribute('id')).toBe(inputId)
 
       // Tallenna
       await page.getByTestId('oo.0.opiskeluoikeus.save').click()

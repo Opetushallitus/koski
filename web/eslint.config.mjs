@@ -16,7 +16,8 @@ export default [
     plugins: { 'react-hooks': reactHooksPlugin },
     rules: {
       'react-hooks/rules-of-hooks': 'error',
-      'react-hooks/exhaustive-deps': 'error'
+      'react-hooks/exhaustive-deps': 'error',
+      'react-hooks/purity': 'error'
     }
   },
   {
@@ -29,10 +30,12 @@ export default [
       '@eslint-react/no-component-will-mount': 'error',
       '@eslint-react/no-component-will-receive-props': 'error',
       '@eslint-react/no-component-will-update': 'error',
+      '@eslint-react/no-nested-lazy-component-declarations': 'error',
       '@eslint-react/dom-no-dangerously-set-innerhtml-with-children': 'error',
       '@eslint-react/dom-no-find-dom-node': 'error',
       '@eslint-react/dom-no-unsafe-target-blank': 'error',
-      '@eslint-react/dom-no-unknown-property': 'error'
+      '@eslint-react/dom-no-unknown-property': 'error',
+      '@eslint-react/dom-no-void-elements-with-children': 'error'
     }
   },
   eslint.configs.recommended,
@@ -121,7 +124,10 @@ export default [
       '@typescript-eslint/no-misused-promises': 'error',
       '@typescript-eslint/no-unused-expressions': 'error',
       '@typescript-eslint/unbound-method': 'error',
-      '@typescript-eslint/no-array-delete': 'error'
+      '@typescript-eslint/no-array-delete': 'error',
+      '@typescript-eslint/no-base-to-string': 'error',
+      '@typescript-eslint/restrict-plus-operands': 'error',
+      '@typescript-eslint/restrict-template-expressions': 'error'
     }
   },
   {
