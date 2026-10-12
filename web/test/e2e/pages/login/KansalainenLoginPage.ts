@@ -33,6 +33,7 @@ export class KansalainenLoginPage {
    * Kirjautuu Koski-palvelun kansalaisnäkymään käyttämällä henkilötunnusta.
    * @param hetu Henkilötunnus
    */
+  // eslint-disable-next-line @typescript-eslint/require-await -- async palauttaa virheen hylättynä promisena.
   async apiLoginWithHetu(_hetu: string) {
     throw new Error('Not implemented')
   }
@@ -40,6 +41,7 @@ export class KansalainenLoginPage {
   /**
    * Kirjautuu Koski-palvelun kansalaisnäkymästä.
    */
+  // eslint-disable-next-line @typescript-eslint/require-await -- async palauttaa virheen hylättynä promisena.
   async apiLogout() {
     throw new Error('Not implemented')
   }

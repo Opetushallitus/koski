@@ -16,6 +16,7 @@ import { Koodistokoodiviite } from '../../app/types/fi/oph/koski/schema/Koodisto
 describe('KoodistoLoader', () => {
   it('ei jää jumiin, jos haku heittää poikkeuksen', async () => {
     let kutsuja = 0
+    // eslint-disable-next-line @typescript-eslint/require-await -- Mock jäljittelee asynkronisen haun hylkäämää promisea.
     const loader = new KoodistoLoader(async () => {
       kutsuja++
       throw new Error('verkkovirhe')
@@ -32,6 +33,7 @@ describe('KoodistoLoader', () => {
   })
 
   it('täyttää koodistot onnistuneen haun jälkeen', async () => {
+    // eslint-disable-next-line @typescript-eslint/require-await -- Mock palauttaa haun tuloksen promisena.
     const loader = new KoodistoLoader(async () =>
       E.right({
         status: 200,

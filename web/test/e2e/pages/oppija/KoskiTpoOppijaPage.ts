@@ -31,18 +31,20 @@ export class KoskiTpoOppijaPage extends KoskiOppijaPageV2<
       | 'oppimäärä'
       | 'taiteenala'
   ) {
-    return this.$.suoritukset(this.suoritusIndex)[key].value(this.editMode)
+    return await this.$.suoritukset(this.suoritusIndex)[key].value(
+      this.editMode
+    )
   }
 
   async osasuoritustieto(key: 'nimi' | 'laajuus' | 'arvosana') {
     const oo = this.$.suoritukset(this.suoritusIndex).osasuoritukset(
       this.osasuoritusIndex
     )[key]
-    return oo.value(this.editMode)
+    return await oo.value(this.editMode)
   }
 
   async osasuoritusProperty(key: 'arvosana' | 'arvostelunPvm' | 'tunnustettu') {
-    return this.$.suoritukset(this.suoritusIndex)
+    return await this.$.suoritukset(this.suoritusIndex)
       .osasuoritukset(this.osasuoritusIndex)
       .properties[key].value(this.editMode)
   }
