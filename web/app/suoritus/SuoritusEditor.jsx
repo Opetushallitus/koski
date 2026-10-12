@@ -253,6 +253,7 @@ SuoritusEditor.validateModel = (model) => {
           }
           return []
         }
+        return undefined
       })
     }
     return []

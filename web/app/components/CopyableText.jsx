@@ -58,6 +58,7 @@ export const CopyableText = ({
       case CopyState.ERROR:
         return { isDisabled: true, style: '--error', text: buttonTextFailure }
     }
+    return undefined
   })
 
   const textAreaSize = {}

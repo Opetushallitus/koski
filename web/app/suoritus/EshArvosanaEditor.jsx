@@ -113,7 +113,7 @@ const parasArviointi = (suoritus) => {
     ? modelLookup(suoritus, 'arviointi.-1.arvosana')
     : null
 
-  modelItems(suoritus, 'arviointi').map((item) => {
+  modelItems(suoritus, 'arviointi').forEach((item) => {
     const nthArvosana = modelLookup(item, 'arvosana')
     if (
       nthArvosana.value.data !== undefined &&
