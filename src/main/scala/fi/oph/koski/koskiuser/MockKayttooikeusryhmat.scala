@@ -11,6 +11,12 @@ object MockKäyttöoikeusryhmät {
   def oppilaitosKatselija(organisaatioOid: String): OrganisaatioJaKäyttöoikeudet =
     organisaatioKäyttäjä(organisaatioOid, List(Rooli.READ, Rooli.KAIKKI_OPISKELUOIKEUS_TYYPIT, Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT))
 
+  def oppilaitosAiempienOpiskeluoikeuksienKatselija(organisaatioOid: String): OrganisaatioJaKäyttöoikeudet =
+    organisaatioKäyttäjä(organisaatioOid, List(Rooli.READ, Rooli.KAIKKI_OPISKELUOIKEUS_TYYPIT, Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT, Rooli.AIEMMAT_OPISKELUOIKEUDET))
+
+  def oppilaitosAiempienOpiskeluoikeuksienKatselijaEiLuottamuksellinen(organisaatioOid: String): OrganisaatioJaKäyttöoikeudet =
+    organisaatioKäyttäjä(organisaatioOid, List(Rooli.READ, Rooli.KAIKKI_OPISKELUOIKEUS_TYYPIT, Rooli.AIEMMAT_OPISKELUOIKEUDET))
+
   def oppilaitosTodistuksenMyöntäjä(organisaatioOid: String): OrganisaatioJaKäyttöoikeudet =
     organisaatioKäyttäjä(organisaatioOid, List(Rooli.READ))
 
