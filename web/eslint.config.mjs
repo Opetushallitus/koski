@@ -48,6 +48,10 @@ export default defineConfig([
   { ...mochaPlugin.configs.recommended, files: ['test/**/*'] },
   { ...compatPlugin.configs['flat/recommended'], files: ['app/**/*'] },
   ...tseslint.configs.recommended,
+  ...defineConfig({
+    files: ['test/**/*.{ts,tsx}'],
+    extends: [tseslint.configs.recommendedTypeCheckedOnly]
+  }),
   {
     files: ['**/*.{js,jsx,ts,tsx}'],
     languageOptions: {
@@ -220,26 +224,11 @@ export default defineConfig([
       }
     },
     rules: {
-      '@typescript-eslint/no-floating-promises': 'error',
-      '@typescript-eslint/no-for-in-array': 'error',
-      '@typescript-eslint/no-misused-promises': 'error',
+      '@typescript-eslint/no-unsafe-assignment': 'off',
+      '@typescript-eslint/no-unsafe-call': 'off',
+      '@typescript-eslint/no-unsafe-member-access': 'off',
+      '@typescript-eslint/no-unsafe-return': 'off',
       '@typescript-eslint/no-unused-expressions': 'error',
-      '@typescript-eslint/unbound-method': 'error',
-      '@typescript-eslint/no-array-delete': 'error',
-      '@typescript-eslint/no-base-to-string': 'error',
-      '@typescript-eslint/restrict-plus-operands': 'error',
-      '@typescript-eslint/restrict-template-expressions': 'error',
-      '@typescript-eslint/only-throw-error': 'error',
-      '@typescript-eslint/prefer-promise-reject-errors': 'error',
-      '@typescript-eslint/no-unsafe-unary-minus': 'error',
-      '@typescript-eslint/no-implied-eval': 'error',
-      '@typescript-eslint/no-redundant-type-constituents': 'error',
-      '@typescript-eslint/no-duplicate-type-constituents': 'error',
-      '@typescript-eslint/await-thenable': 'error',
-      '@typescript-eslint/no-unnecessary-type-assertion': 'error',
-      '@typescript-eslint/no-unsafe-enum-comparison': 'error',
-      '@typescript-eslint/no-unsafe-argument': 'error',
-      '@typescript-eslint/require-await': 'error',
       '@typescript-eslint/return-await': [
         'error',
         'error-handling-correctness-only'
