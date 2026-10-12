@@ -100,9 +100,20 @@ export default [
       'no-promise-executor-return': 'error',
       'no-return-assign': ['error', 'except-parens'],
       'no-self-compare': 'error',
+      'no-sequences': ['error', { allowInParentheses: false }],
       'no-throw-literal': 'error',
       'no-unmodified-loop-condition': 'error',
       'no-unreachable-loop': 'error',
+      // Salli myöhemmin määritellyt apurit sisäkkäisissä funktioissa.
+      'no-use-before-define': [
+        'error',
+        {
+          functions: false,
+          classes: false,
+          variables: false,
+          allowNamedExports: true
+        }
+      ],
       'no-unused-expressions': [
         'error',
         {
@@ -114,6 +125,7 @@ export default [
       'no-template-curly-in-string': 'error',
       'require-atomic-updates': 'error',
       '@eslint-react/no-access-state-in-setstate': 'error',
+      '@eslint-react/no-unused-class-component-members': 'error',
       '@eslint-react/jsx-no-leaked-dollar': 'error',
       '@eslint-react/jsx-no-leaked-semicolon': 'error',
       '@eslint-react/jsx-no-namespace': 'error',

@@ -153,16 +153,6 @@ export default class DateRangeSelection extends React.Component {
     this.setState({ open: false })
   }
 
-  getInitialState() {
-    return {
-      from:
-        this.props.selectedStartDay &&
-        parseFinnishDate(this.props.selectedStartDay),
-      to:
-        this.props.selectedEndDay && parseFinnishDate(this.props.selectedEndDay)
-    }
-  }
-
   componentDidUpdate(prevProps, prevState) {
     if (this.state.open && !prevState.open) {
       this.startDateInput.focus()
