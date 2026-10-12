@@ -238,6 +238,7 @@ export default defineConfig([
       '@typescript-eslint/await-thenable': 'error',
       '@typescript-eslint/no-unnecessary-type-assertion': 'error',
       '@typescript-eslint/no-unsafe-enum-comparison': 'error',
+      '@typescript-eslint/no-unsafe-argument': 'error',
       '@typescript-eslint/require-await': 'error',
       '@typescript-eslint/return-await': [
         'error',

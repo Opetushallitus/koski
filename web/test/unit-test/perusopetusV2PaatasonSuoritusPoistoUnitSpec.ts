@@ -23,7 +23,12 @@ describe('perusopetus v2 päätason suorituksen poisto', () => {
       suoritukset: [ensimmäinenSeiska, toinenSeiska]
     }
 
-    const poistettava = poistettavaPäätasonSuoritus(opiskeluoikeus as any, 1)
+    const poistettava = poistettavaPäätasonSuoritus(
+      opiskeluoikeus as unknown as Parameters<
+        typeof poistettavaPäätasonSuoritus
+      >[0],
+      1
+    )
 
     assert.strictEqual(poistettava, toinenSeiska)
     assert.notStrictEqual(poistettava, ensimmäinenSeiska)

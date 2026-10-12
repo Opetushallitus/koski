@@ -109,7 +109,7 @@ test.describe('JSON Schema Viewer deep links', () => {
     )
 
     await expect(page.locator('#loading')).toBeHidden()
-    const branchCount = await page.evaluate(() => {
+    const branchCount = await page.evaluate((): number => {
       const n = (window as any).JSV.resolveNodePath('opiskeluoikeudet')
       let kids = n.children || n._children
       while (kids.length === 1 && !kids[0].isReal) {
