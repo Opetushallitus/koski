@@ -23,7 +23,7 @@ export class KoskiTpoOppijaPage extends KoskiOppijaPageV2<
     super(page, TaiteenPerusopetusTestIds)
   }
 
-  async suoritustieto(
+  suoritustieto(
     key:
       | 'koulutuksenToteutustapa'
       | 'laajuus'
@@ -34,14 +34,14 @@ export class KoskiTpoOppijaPage extends KoskiOppijaPageV2<
     return this.$.suoritukset(this.suoritusIndex)[key].value(this.editMode)
   }
 
-  async osasuoritustieto(key: 'nimi' | 'laajuus' | 'arvosana') {
+  osasuoritustieto(key: 'nimi' | 'laajuus' | 'arvosana') {
     const oo = this.$.suoritukset(this.suoritusIndex).osasuoritukset(
       this.osasuoritusIndex
     )[key]
     return oo.value(this.editMode)
   }
 
-  async osasuoritusProperty(key: 'arvosana' | 'arvostelunPvm' | 'tunnustettu') {
+  osasuoritusProperty(key: 'arvosana' | 'arvostelunPvm' | 'tunnustettu') {
     return this.$.suoritukset(this.suoritusIndex)
       .osasuoritukset(this.osasuoritusIndex)
       .properties[key].value(this.editMode)

@@ -60,12 +60,12 @@ export class KoskiOppijaPageV2<T extends IdNodeObject<string>> {
     await expect(opiskeluoikeusTab).toHaveAttribute('data-selected', 'true')
   }
 
-  async edit() {
+  edit() {
     this.editMode = true
     return this.$.opiskeluoikeus.edit.click()
   }
 
-  async cancelEdit() {
+  cancelEdit() {
     this.editMode = false
     return this.$.opiskeluoikeus.cancelEdit.click()
   }
@@ -120,19 +120,19 @@ export class KoskiOppijaPageV2<T extends IdNodeObject<string>> {
     await this.$.opiskeluoikeus.tila.edit.items(index).remove.click()
   }
 
-  async suorituksenTila() {
+  suorituksenTila() {
     return this.$.suoritukset(this.suoritusIndex).suorituksenVahvistus[
       this.editMode ? 'edit' : 'value'
     ].status.value()
   }
 
-  async suorituksenVahvistus() {
+  suorituksenVahvistus() {
     return this.$.suoritukset(this.suoritusIndex).suorituksenVahvistus[
       this.editMode ? 'edit' : 'value'
     ].details.value()
   }
 
-  async suorituksenVahvistushenkilö(index: number) {
+  suorituksenVahvistushenkilö(index: number) {
     return this.$.suoritukset(this.suoritusIndex)
       .suorituksenVahvistus[this.editMode ? 'edit' : 'value'].henkilö(index)
       .value()
