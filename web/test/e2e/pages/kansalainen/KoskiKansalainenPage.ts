@@ -39,7 +39,7 @@ export class KoskiKansalainenPage {
   }
 
   async openOppija(oid: string) {
-    this.page.getByTestId('oppijanvalitsin-dropdown').selectOption(oid)
+    await this.page.getByTestId('oppijanvalitsin-dropdown').selectOption(oid)
   }
 
   getOpiskeluoikeus(otsikko: string | RegExp): Locator {

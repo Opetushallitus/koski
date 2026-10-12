@@ -171,8 +171,8 @@ export class ESHOsasuoritus {
   }
 
   async syötäArviointipäivä(value: string) {
-    this.arviointiPäiväInput.click()
-    this.arviointiPäiväInput.fill(value)
+    await this.arviointiPäiväInput.click()
+    await this.arviointiPäiväInput.fill(value)
   }
 
   async lisääArvioija(value: string) {

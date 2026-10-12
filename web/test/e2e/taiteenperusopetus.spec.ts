@@ -7,8 +7,8 @@ const hankintakoulutuksenOpiskelija = '1.2.246.562.24.00000000144'
 
 test.describe('Taiteen perusopetus', () => {
   test.beforeEach(async ({ fixtures, page }) => {
-    page.once('dialog', (dialog) => {
-      dialog.accept()
+    page.once('dialog', async (dialog) => {
+      await dialog.accept()
     })
     await fixtures.reset()
   })

@@ -503,8 +503,7 @@ test.describe('Vapaa sivistystyö', () => {
                   )
                 ).toHaveText(alaosasuoritus.nimi)
                 if (alaosasuoritus.extra !== undefined) {
-                  await page
-                  getByTestId(
+                  await getByTestId(
                     `suoritukset.0.osasuoritukset.${i}.properties.osasuoritukset.${a}.expand`
                   ).click()
                   if (alaosasuoritus.extra.kuvaus !== undefined) {
@@ -1746,7 +1745,7 @@ test.describe('Vapaa sivistystyö', () => {
         const suuntautumisopinto = vstOppijaPage.osasuoritus(0)
 
         await suuntautumisopinto.expand()
-        suuntautumisopinto.addNewAlaosasuoritus(
+        await suuntautumisopinto.addNewAlaosasuoritus(
           'Työelämäharjoittelu',
           'paikallinen.__NEW__'
         )

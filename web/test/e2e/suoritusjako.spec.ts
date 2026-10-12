@@ -18,7 +18,7 @@ test.describe('Suoritusjako', () => {
     await fixtures.apiLoginAsUser('kalle', 'kalle')
     await fixtures.reset()
     await fixtures.apiLogout()
-    page.goto('/koski/omattiedot')
+    await page.goto('/koski/omattiedot')
   })
 
   test.describe('Kansalaisen opintotiedot', () => {

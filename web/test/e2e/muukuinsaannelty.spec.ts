@@ -4,8 +4,8 @@ import { virkailija } from './setup/auth'
 test.describe('Muu kuin säännelty koulutus', () => {
   test.use({ storageState: virkailija('muks') })
   test.beforeEach(async ({ fixtures, page }) => {
-    page.once('dialog', (dialog) => {
-      dialog.accept()
+    page.once('dialog', async (dialog) => {
+      await dialog.accept()
     })
     await fixtures.reset()
   })
