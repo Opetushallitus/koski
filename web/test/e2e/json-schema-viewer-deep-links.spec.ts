@@ -109,7 +109,7 @@ test.describe('JSON Schema Viewer deep links', () => {
     )
 
     await expect(page.locator('#loading')).toBeHidden()
-    const branchCount = await page.evaluate(() => {
+    const branchCount: unknown = await page.evaluate(() => {
       const n = (window as any).JSV.resolveNodePath('opiskeluoikeudet')
       let kids = n.children || n._children
       while (kids.length === 1 && !kids[0].isReal) {
@@ -117,6 +117,9 @@ test.describe('JSON Schema Viewer deep links', () => {
       }
       return kids.length
     })
+    if (typeof branchCount !== 'number') {
+      throw new Error('Skeeman haarojen lukumäärän on oltava numero.')
+    }
     expect(branchCount).toBeGreaterThan(1)
     await expect(page.locator('svg#jsv-tree g.node.marked')).toHaveCount(
       branchCount

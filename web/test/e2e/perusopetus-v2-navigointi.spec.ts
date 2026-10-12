@@ -41,7 +41,7 @@ test.describe('Perusopetuksen uusi käyttöliittymä: navigointi pois sivulta', 
     expect(dialogShown).toBe(false)
   })
 
-  test('Muokkaustila tallentamattomilla muutoksilla — beforeunload pyytää vahvistuksen', async ({
+  test('Muokkaustila tallentamattomilla muutoksilla — beforeunload-tapahtuma estetään', async ({
     page,
     oppijaPage,
     fixtures
@@ -66,24 +66,13 @@ test.describe('Perusopetuksen uusi käyttöliittymä: navigointi pois sivulta', 
     // "Ei tallentamattomia muutoksia" -tekstiä
     await expect(page.getByTestId('oo.0.opiskeluoikeus.save')).toBeEnabled()
 
-    // Simuloidaan navigointi: beforeunload pitäisi laueta Chromissa, ja
-    // Playwrightin dialog-handler nappaa sen. Testi vahvistaa, että dialogi
-    // tulee, ja hyväksyy sen jolloin navigointi jatkuu.
-    let dialogCount = 0
-    page.on('dialog', (d) => {
-      dialogCount++
-      // Hyväksytään navigointi
-      d.accept().catch(() => {})
-    })
-
-    // Evaluate beforeunload manually to force it — Playwright:n goto ei
-    // välttämättä laukaise beforeunloadia jos navigation toinen samaan saittiin.
+    // Synteettinen tapahtuma tarkistaa eston ilman selaimen vahvistusdialogia.
     const prevented = await page.evaluate(() => {
-      const event = new Event('beforeunload', { cancelable: true }) as any
-      event.returnValue = ''
+      const event = new Event('beforeunload', { cancelable: true })
+      const beforeDispatch = event.defaultPrevented
       window.dispatchEvent(event)
-      return event.defaultPrevented
+      return { beforeDispatch, afterDispatch: event.defaultPrevented }
     })
-    expect(prevented).toBe(true)
+    expect(prevented).toEqual({ beforeDispatch: false, afterDispatch: true })
   })
 })

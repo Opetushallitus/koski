@@ -23,6 +23,7 @@ describe('perusopetus v2 päätason suorituksen poisto', () => {
       suoritukset: [ensimmäinenSeiska, toinenSeiska]
     }
 
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument -- Indeksillä valinnan testiin riittää osittainen opiskeluoikeus.
     const poistettava = poistettavaPäätasonSuoritus(opiskeluoikeus as any, 1)
 
     assert.strictEqual(poistettava, toinenSeiska)
