@@ -35,7 +35,7 @@ class KelaEstolistaSpec extends AnyFreeSpec with TestEnvironment with Matchers {
 
   private lazy val estoton = kelaService(Nil)
   private lazy val korkeakouluEstetty = kelaService(List("korkeakoulutus"))
-  private lazy val ammatillinenEstetty = kelaService(List("ammatillinenkoulutus"))
+  private lazy val ammatillinenJaYoEstetty = kelaService(List("ammatillinenkoulutus", "ylioppilastutkinto"))
 
   private def opiskeluoikeustyypit(service: KelaService, hetu: String): List[String] =
     service.findKelaOppijaByHetu(hetu)(session)
@@ -49,7 +49,14 @@ class KelaEstolistaSpec extends AnyFreeSpec with TestEnvironment with Matchers {
         .get
 
       estoton.opiskeluoikeudenHistoria(amiksenOo)(session) should not be empty
-      ammatillinenEstetty.opiskeluoikeudenHistoria(amiksenOo)(session) shouldBe empty
+      ammatillinenJaYoEstetty.opiskeluoikeudenHistoria(amiksenOo)(session) shouldBe empty
+    }
+
+    "rajaa myös YTR:stä haettavan ylioppilastutkinnon" in {
+      val hetu = KoskiSpecificMockOppijat.ylioppilas.hetu.get
+
+      opiskeluoikeustyypit(estoton, hetu) should contain("ylioppilastutkinto")
+      opiskeluoikeustyypit(ammatillinenJaYoEstetty, hetu) should not contain "ylioppilastutkinto"
     }
 
     "rajaa määritellyn opiskeluoikeustyypin pois" in {

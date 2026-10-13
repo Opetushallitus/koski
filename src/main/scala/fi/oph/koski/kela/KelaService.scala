@@ -38,7 +38,7 @@ class KelaService(application: KoskiApplication) extends GlobalExecutionContext 
 
     val oppija = opiskeluoikeudet.headOption.map {
       case (hlö, oos) => virtaResult.getOrElse(hlö, Right(Nil))
-        .flatMap(virta => teePalautettavaKelaOppija(hlö, oos, ytrResult(hlö), virta))
+        .flatMap(virta => teePalautettavaKelaOppija(hlö, oos, ytrResult.getOrElse(hlö, Nil), virta))
     }.toRight(
       KoskiErrorCategory.notFound.oppijaaEiLöydyTaiEiOikeuksia(
         "Oppijaa (hetu) ei löydy tai käyttäjällä ei ole oikeuksia tietojen katseluun."
@@ -83,7 +83,7 @@ class KelaService(application: KoskiApplication) extends GlobalExecutionContext 
     )
 
     val ytrResultFut: Future[Map[LaajatOppijaHenkilöTiedot, Seq[KelaYlioppilastutkinnonOpiskeluoikeus]]] = {
-      if (haeUlkoisetJärjestelmät) {
+      if (haeUlkoisetJärjestelmät && kelallePalautettavaOpiskeluoikeusTyyppi(OpiskeluoikeudenTyyppi.ylioppilastutkinto.koodiarvo)) {
         masterHenkilötFut
           .map { masterHenkilöt =>
             masterHenkilöt.values
