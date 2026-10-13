@@ -200,11 +200,23 @@
     grid-template-columns: minmax(11.5em, max-content) repeat(23, 1fr);
   }
 
-  // Saman kentän useat arvot (esim. arvioinnin korotukset) erotetaan välillä
   .OsasuoritusPropertyValue {
+    // Saman kentän useat arvot (esim. arvioinnin korotukset) erotetaan välillä
     > .NotRemovable + .NotRemovable,
     > .Removable + .Removable {
       margin-top: 9px;
+    }
+
+    // Valintaruutu ja Lisää-painike alkavat samasta kohdasta kuin sarakkeen
+    // tekstiarvot. Painikkeen sisennys ja korkeus kuten KeyValueRow:ssa.
+    .Checkbox {
+      margin-left: 0;
+    }
+
+    .FlatButton {
+      padding: 0 8px;
+      margin-left: -8px;
+      min-height: 2 * @baseline;
     }
   }
 

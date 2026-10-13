@@ -183,6 +183,12 @@
   &.OsasuoritusRow--open .OsasuoritusRow__nameColumn {
     font-weight: 600;
   }
+
+  // Muokkaustilassa syöttökentät alkaisivat muuten kiinni yläpuolisesta
+  // viivasta. Kentän alla on jo saman verran tilaa.
+  &.OsasuoritusRow--edit {
+    padding-top: (@baseline / 2);
+  }
 }
 
 .OsasuoritusRow + .OsasuoritusRow--ammatillinen {
