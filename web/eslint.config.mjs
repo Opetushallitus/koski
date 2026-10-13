@@ -98,6 +98,7 @@ export default defineConfig([
     extends: [
       eslintReact.configs.recommended,
       reactHooksPlugin.configs.flat.recommended,
+      eslintReact.configs['disable-conflict-eslint-plugin-react-hooks'],
       importXPlugin.configs['flat/recommended']
     ],
     settings: {
@@ -116,9 +117,6 @@ export default defineConfig([
       '@eslint-react/no-set-state-in-component-did-mount': 'off',
       '@eslint-react/no-unsafe-component-will-mount': 'off',
       '@eslint-react/no-unsafe-component-will-receive-props': 'off',
-      '@eslint-react/dom-no-render-return-value': 'off',
-      'react-hooks/immutability': 'off',
-      'import-x/no-named-as-default': 'off',
       '@eslint-react/no-unused-class-component-members': 'error',
       '@eslint-react/jsx-no-children-prop': 'error',
       '@eslint-react/jsx-no-comment-textnodes': 'error',
@@ -129,7 +127,7 @@ export default defineConfig([
       '@eslint-react/no-unused-state': 'error',
       '@eslint-react/no-unstable-context-value': 'error',
       '@eslint-react/dom-no-missing-iframe-sandbox': 'error',
-      'react-hooks/exhaustive-deps': 'error',
+      '@eslint-react/exhaustive-deps': 'error',
       'import-x/no-self-import': 'error',
       'import-x/no-useless-path-segments': 'error',
       'import-x/no-mutable-exports': 'error',
@@ -138,6 +136,7 @@ export default defineConfig([
       'import-x/no-absolute-path': 'error',
       'accessor-pairs': 'error',
       'array-callback-return': 'error',
+      'no-console': ['error', { allow: ['warn', 'error'] }],
       'no-constructor-return': 'error',
       'no-eval': 'error',
       'no-extend-native': 'error',

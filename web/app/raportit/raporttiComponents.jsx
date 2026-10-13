@@ -1,7 +1,7 @@
 import React from 'baret'
 import Text from '../i18n/Text'
 import DateInput from '../date/DateInput'
-import InfoIcon from '../icons/InfoIcon'
+import { InfoIcon } from '../icons/InfoIcon'
 import RaporttiDownloadButton from './RaporttiDownloadButton'
 import RadioButtons from '../components/RadioButtons'
 import { formatFinnishDateTime } from '../date/date'

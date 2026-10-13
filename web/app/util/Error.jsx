@@ -8,7 +8,7 @@ import { t } from '../i18n/i18n'
 import { GlobalErrors } from '../components-v2/messages/GlobalErrors'
 
 export const logError = (error) => {
-  console.log('ERROR', error)
+  console.error('ERROR', error)
 }
 
 export const errorP = (stateP, routeErrorP) => {
@@ -85,7 +85,7 @@ export const Error = ({ error }) => {
   const errorMessage = errorText(error)
   const showError = errorMessage && !isTopLevel(error)
   if (showError) {
-    console.log('render error', error)
+    console.error('render error', error)
   }
   const showAtom = Atom(showError)
   return (
@@ -115,7 +115,7 @@ export const Error = ({ error }) => {
 }
 
 export const TopLevelError = ({ error }) => {
-  console.log('render top-level error', error)
+  console.error('render top-level error', error)
   return (
     <div className="error content-area">
       <h1 className="http-status">{error.httpStatus}</h1>

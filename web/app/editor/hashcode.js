@@ -24,15 +24,6 @@ export const hashCode = (x) => {
     )
     return hash
   }
-  if (x instanceof Array) {
-    // TODO: Korjaa syntaksi
-    // eslint-disable-next-line no-undef
-    for (i in x) {
-      // eslint-disable-next-line no-undef
-      hash = hashAdd(hash, hashCode(x[i]))
-    }
-    return hash
-  }
   console.error('no hash for', x)
   return x
 }
