@@ -126,6 +126,9 @@ export default defineConfig([
       '@eslint-react/jsx-no-leaked-semicolon': 'error',
       '@eslint-react/dom-no-script-url': 'error',
       '@eslint-react/dom-no-string-style-prop': 'error',
+      '@eslint-react/no-unused-state': 'error',
+      '@eslint-react/no-unstable-context-value': 'error',
+      '@eslint-react/dom-no-missing-iframe-sandbox': 'error',
       'react-hooks/exhaustive-deps': 'error',
       'import-x/no-self-import': 'error',
       'import-x/no-useless-path-segments': 'error',
@@ -183,6 +186,8 @@ export default defineConfig([
         }
       ],
       'no-template-curly-in-string': 'error',
+      'no-var': 'error',
+      'prefer-const': ['error', { destructuring: 'all' }],
       'no-restricted-globals': ['error', ...confusingBrowserGlobals],
       'require-atomic-updates': 'error'
     }
