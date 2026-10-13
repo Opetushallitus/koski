@@ -6,6 +6,13 @@ Muutokset, joita ei ole vielä otettu käyttöön. Käyttöönoton yhteydessä m
 
 - Eri tutkinnon opiskeluoikeuteen linkittämisen esto (ks. 21.7.2026) ei tullut voimaan 1.9.2026, vaan sen käyttöönotto on lykätty toistaiseksi. Koski ei tällä hetkellä hylkää tällaisia linkityksiä. Kun esto otetaan käyttöön, se koskee vain rajapäivänä tai sen jälkeen alkaneita sisältyviä opiskeluoikeuksia. Rajapäivä ja käyttöönottopäivä ilmoitetaan myöhemmin.
 
+## 12.10.2026
+
+Muun kuin säännellyn koulutuksen opiskeluoikeuksissa, jotka alkavat 1.1.2027 tai sen jälkeen, vaaditaan vahvistetun suorituksen osasuorituksilta arviointi:
+
+- Kun opiskeluoikeus on tilassa `lasna` tai `hyvaksytystisuoritettu`, arviointi vaaditaan kaikilta osasuorituksilta ja alaosasuorituksilta.
+- Kun opiskeluoikeus on tilassa `keskeytynyt`, arviointia ei vaadita osasuoritukselta, jolla on alaosasuorituksia. Muilta osasuorituksilta ja kaikilta alaosasuorituksilta arviointi vaaditaan.
+
 ## 2.10.2026
 
 - Perusopetuksen, perusopetuksen lisäopetuksen ja aikuisten perusopetuksen opiskeluoikeutta ei voi tallentaa oppilaitokseen, jonka kotipaikka on ahvenanmaalainen kunta. Niissä perusopetus tallennetaan Ahvenanmaan perusopetuksen opiskeluoikeutena.
