@@ -27,7 +27,7 @@ import {
 } from '../util/location.js'
 import { addNavigationGuard, removeNavigationGuard } from '../util/router'
 import { katseltavaVersio } from '../appstate/sivunTila'
-import { OppijaHaku } from '../virkailija/OppijaHaku'
+import { OppijaHaku } from './OppijaHaku'
 import Link from '../components/Link'
 import { decreaseLoading, increaseLoading } from '../util/loadingFlag'
 import delays from '../util/delays'
@@ -426,7 +426,6 @@ export class Oppija extends React.Component {
       .onValue(päätasonSuoritusDeleted)
     const showHenkilöUiLink = userP.map('.hasHenkiloUiWriteAccess')
     const showVirtaXmlLink = userP.map('.hasGlobalReadAccess')
-    const showSureLink = userP.map('.hasHenkiloUiWriteAccess')
     const varoitukset = modelItems(oppija, 'varoitukset').map(modelData)
     return oppija.loading ? (
       <div className="loading" />

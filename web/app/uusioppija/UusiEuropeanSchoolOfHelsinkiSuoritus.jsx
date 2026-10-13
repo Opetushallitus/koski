@@ -6,7 +6,6 @@ import { makeSuoritus } from '../esh/europeanschoolofhelsinkiSuoritus'
 import KoodistoDropdown from '../koodisto/KoodistoDropdown'
 import Text from '../i18n/Text'
 import DateInput from '../date/DateInput'
-import { ift } from '../util/util'
 
 export default ({
   suoritusAtom,

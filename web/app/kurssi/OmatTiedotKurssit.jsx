@@ -6,7 +6,6 @@ import {
   modelTitle
 } from '../editor/EditorModel'
 import { t } from '../i18n/i18n'
-import { isIBKurssi } from './kurssi'
 import { isIBKurssinArviointi } from './KurssiPopup'
 import {
   isLukionKurssi,

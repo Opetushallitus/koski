@@ -1,7 +1,7 @@
 import React from 'baret'
 import LocalTopBar from './LocalTopBar'
 import NavList from './NavList'
-import InvalidationNotification from '../components/InvalidationNotification'
+import { InvalidationNotification } from '../components/InvalidationNotification'
 
 export const TopBar = ({ user, titleKey, inRaamit, location }) => {
   return inRaamit ? (

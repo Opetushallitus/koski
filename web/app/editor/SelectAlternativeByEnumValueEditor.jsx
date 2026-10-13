@@ -2,9 +2,14 @@ import React from 'baret'
 import Bacon from 'baconjs'
 import * as R from 'ramda'
 import * as L from 'partial.lenses'
-import { modelData, modelLookup } from './EditorModel.ts'
+import {
+  modelData,
+  modelLookup,
+  lensedModel,
+  modelSetValue,
+  oneOfPrototypes
+} from './EditorModel'
 import { fetchAlternativesBasedOnPrototypes, EnumEditor } from './EnumEditor'
-import { lensedModel, modelSetValue, oneOfPrototypes } from './EditorModel'
 
 export const SelectAlternativeByEnumValueEditor = ({
   model,

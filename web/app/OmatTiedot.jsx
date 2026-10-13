@@ -120,9 +120,9 @@ document.querySelector('title').innerHTML =
   t('Omat tiedot') + ' - ' + t('Koski') + ' - ' + t('Opintopolku.fi')
 
 // Render to DOM
-domP.onValue((component) =>
+domP.onValue((component) => {
   ReactDOM.render(component, document.getElementById('content'))
-)
+})
 
 // Handle errors
 domP.onError(handleError)

@@ -64,9 +64,9 @@ const canAccess = (user, location) =>
   user || noAccessControlPaths.find((p) => location.path.startsWith(p))
 
 // Render to DOM
-domP.onValue((component) =>
+domP.onValue((component) => {
   ReactDOM.render(component, document.getElementById('content'))
-)
+})
 
 titleKeyP.onValue((titleKey) => {
   const defaultTitle = t('Koski') + ' - ' + t('Opintopolku.fi')

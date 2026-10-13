@@ -25,7 +25,7 @@ const copyToClipboard = (message, copyState) => () => {
     Bacon.later(ConfirmationDuration, CopyState.PENDING).onValue((v) =>
       copyState.set(v)
     )
-  } catch (e) {
+  } catch {
     copyState.set(CopyState.ERROR)
   } finally {
     document.body.contains(el) && document.body.removeChild(el)
@@ -58,6 +58,7 @@ export const CopyableText = ({
       case CopyState.ERROR:
         return { isDisabled: true, style: '--error', text: buttonTextFailure }
     }
+    return undefined
   })
 
   const textAreaSize = {}

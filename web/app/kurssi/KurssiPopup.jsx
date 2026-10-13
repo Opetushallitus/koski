@@ -22,9 +22,9 @@ const resolvePropertyEditor = (model, property) => {
     isDIAOppiaineenTutkintovaiheenOsasuoritus(model) &&
     property.key === 'arviointi'
   )
-    return DIATutkintovaiheenLukukaudenArviointiEditor
+    return <DIATutkintovaiheenLukukaudenArviointiEditor model={model} />
   if (isAikuistenPerusopetuksenKurssi(model) && property.key === 'arviointi')
-    return AikuistenPerusopetuksenKurssinArviointiEditor
+    return <AikuistenPerusopetuksenKurssinArviointiEditor model={model} />
 
   return null
 }
@@ -58,14 +58,9 @@ export class KurssiPopup extends React.Component {
           propertyEditable={(p) =>
             !['tunniste', 'koodiarvo', 'nimi'].includes(p.key)
           }
-          getValueEditor={(prop, getDefault) => {
-            const PropertyEditor = resolvePropertyEditor(kurssi, prop)
-            return PropertyEditor ? (
-              <PropertyEditor model={kurssi} />
-            ) : (
-              getDefault()
-            )
-          }}
+          getValueEditor={(prop, getDefault) =>
+            resolvePropertyEditor(kurssi, prop) || getDefault()
+          }
           className={kurssi.context.kansalainen ? 'kansalainen' : ''}
         />
       </div>
@@ -73,6 +68,7 @@ export class KurssiPopup extends React.Component {
   }
 
   componentDidMount() {
+    // eslint-disable-next-line @eslint-react/no-set-state-in-component-did-mount
     this.setState({
       popupAlignment: getAlignment(
         this.props.parentElemPosition,

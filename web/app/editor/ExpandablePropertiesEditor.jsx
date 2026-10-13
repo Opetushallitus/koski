@@ -1,12 +1,12 @@
 import React from 'react'
-import { modelLookup } from './EditorModel.ts'
-import { PropertiesEditor, shouldShowProperty } from './PropertiesEditor'
 import {
+  modelLookup,
   modelErrorMessages,
   modelProperties,
   modelProperty,
   wrapOptional
 } from './EditorModel'
+import { PropertiesEditor, shouldShowProperty } from './PropertiesEditor'
 import { currentLocation, navigateWithQueryParams } from '../util/location'
 import { parseBool } from '../util/util'
 import Text from '../i18n/Text'

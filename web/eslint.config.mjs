@@ -7,13 +7,18 @@ import reactHooksPlugin from 'eslint-plugin-react-hooks'
 import globals from 'globals'
 import eslint from '@eslint/js'
 import tseslint from 'typescript-eslint'
-import { includeIgnoreFile } from 'eslint/config'
+import { defineConfig, includeIgnoreFile } from 'eslint/config'
 import path from 'node:path'
+import confusingBrowserGlobals from './eslint/confusingBrowserGlobals.mjs'
 
-export default [
+export default defineConfig([
   includeIgnoreFile(path.resolve(import.meta.dirname, '.gitignore')),
   {
-    plugins: { 'react-hooks': reactHooksPlugin },
+    plugins: {
+      'react-hooks': /** @type {import('eslint').ESLint.Plugin} */ (
+        reactHooksPlugin
+      )
+    },
     rules: {
       'react-hooks/rules-of-hooks': 'error',
       'react-hooks/exhaustive-deps': 'error'
@@ -43,7 +48,6 @@ export default [
     languageOptions: {
       globals: {
         ...globals.browser,
-        ...globals.node,
         __webpack_nonce__: true
       },
 
@@ -85,6 +89,102 @@ export default [
     }
   },
   {
+    files: ['**/*.{js,jsx,ts,tsx}'],
+    ignores: ['app/**/*.{js,jsx}'],
+    languageOptions: { globals: globals.node }
+  },
+  {
+    files: ['app/**/*.{js,jsx}'],
+    extends: [
+      eslintReact.configs.recommended,
+      reactHooksPlugin.configs.flat.recommended,
+      eslintReact.configs['disable-conflict-eslint-plugin-react-hooks'],
+      importXPlugin.configs['flat/recommended']
+    ],
+    settings: {
+      'import-x/resolver': {
+        node: { extensions: ['.js', '.jsx', '.ts', '.tsx', '.json'] }
+      },
+      'import-x/extensions': ['.js', '.jsx', '.ts', '.tsx'],
+      'import-x/parsers': {
+        '@typescript-eslint/parser': ['.ts', '.tsx']
+      }
+    },
+    rules: {
+      '@eslint-react/no-unused-class-component-members': 'error',
+      '@eslint-react/jsx-no-children-prop': 'error',
+      '@eslint-react/jsx-no-comment-textnodes': 'error',
+      '@eslint-react/jsx-no-leaked-dollar': 'error',
+      '@eslint-react/jsx-no-leaked-semicolon': 'error',
+      '@eslint-react/dom-no-script-url': 'error',
+      '@eslint-react/dom-no-string-style-prop': 'error',
+      '@eslint-react/no-unused-state': 'error',
+      '@eslint-react/no-unstable-context-value': 'error',
+      '@eslint-react/dom-no-missing-iframe-sandbox': 'error',
+      '@eslint-react/exhaustive-deps': 'error',
+      'import-x/no-self-import': 'error',
+      'import-x/no-useless-path-segments': 'error',
+      'import-x/no-mutable-exports': 'error',
+      'import-x/first': 'error',
+      'import-x/no-commonjs': 'error',
+      'import-x/no-absolute-path': 'error',
+      'accessor-pairs': 'error',
+      'array-callback-return': 'error',
+      'no-console': ['error', { allow: ['warn', 'error'] }],
+      'no-constructor-return': 'error',
+      'no-eval': 'error',
+      'no-extend-native': 'error',
+      'no-implied-eval': 'error',
+      'no-invalid-this': 'error',
+      'no-loop-func': 'error',
+      'no-new-func': 'error',
+      'no-new-wrappers': 'error',
+      'no-promise-executor-return': 'error',
+      'no-return-assign': ['error', 'except-parens'],
+      'no-self-compare': 'error',
+      'no-sequences': ['error', { allowInParentheses: false }],
+      'no-throw-literal': 'error',
+      'no-unmodified-loop-condition': 'error',
+      'no-unreachable-loop': 'error',
+      'no-unsafe-negation': ['error', { enforceForOrderingRelations: true }],
+      'no-unsafe-optional-chaining': [
+        'error',
+        { disallowArithmeticOperators: true }
+      ],
+      'no-unused-vars': ['error', { ignoreRestSiblings: true }],
+      // Salli myöhemmin määritellyt apurit sisäkkäisissä funktioissa.
+      'no-use-before-define': [
+        'error',
+        {
+          functions: false,
+          classes: false,
+          variables: false,
+          allowNamedExports: true
+        }
+      ],
+      'no-unused-expressions': [
+        'error',
+        {
+          allowShortCircuit: true,
+          allowTernary: true,
+          enforceForJSX: true
+        }
+      ],
+      'no-template-curly-in-string': 'error',
+      'no-var': 'error',
+      'prefer-const': ['error', { destructuring: 'all' }],
+      'no-restricted-globals': ['error', ...confusingBrowserGlobals],
+      'require-atomic-updates': 'error',
+      // Vääriä osumia Bacon/baret-koodissa tai liikaa korjattavaa vanhassa koodissa
+      '@eslint-react/no-array-index-key': 'off',
+      '@eslint-react/no-missing-key': 'off'
+    }
+  },
+  {
+    files: ['app/dokumentaatio/**'],
+    rules: { '@eslint-react/dom-no-dangerously-set-innerhtml': 'off' }
+  },
+  {
     files: ['**/*.ts', '**/*.tsx'],
 
     rules: {
@@ -121,4 +221,4 @@ export default [
   },
   eslintConfigPrettier,
   { rules: { 'no-unexpected-multiline': 'error' } }
-]
+])

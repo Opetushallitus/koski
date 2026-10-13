@@ -70,6 +70,7 @@ export const UusiEuropeanSchoolOfHelsinkiVuosiluokanSuoritus = ({
 }) => {
   const suoritusAtom = Atom()
   const oppilaitosAtom = Atom(modelData(opiskeluoikeus, 'oppilaitos'))
+  // eslint-disable-next-line @eslint-react/purity -- kaikki komponentin atomit luodaan joka renderöinnillä uudelleen, joten new Date() ei muuta käytöstä
   const dateAtom = Atom(new Date())
 
   const lisääSuoritus = () => {

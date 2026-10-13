@@ -12,7 +12,6 @@ import {
   diaRyhmät
 } from '../dia/DIA'
 import { diaLaajuusOpintopisteinä } from '../dia/diaLaajuus'
-import Text from '../i18n/Text'
 
 const diaCustomizations = {
   groupAineet: diaRyhmät,

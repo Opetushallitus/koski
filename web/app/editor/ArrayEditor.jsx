@@ -1,12 +1,13 @@
 import React from 'react'
-import { contextualizeSubModel, modelItems } from './EditorModel.ts'
-import { Editor } from './Editor'
 import {
+  contextualizeSubModel,
+  modelItems,
   wrapOptional,
   pushRemoval,
   pushModel,
   modelLookup
 } from './EditorModel'
+import { Editor } from './Editor'
 import Text from '../i18n/Text'
 
 export const ArrayEditor = ({ model, reverse, getValueEditor }) => {

@@ -241,7 +241,7 @@ export default ({
                   className={openAtom.map((open) =>
                     open ? 'options open' : 'options'
                   )}
-                  aria-expanded={open}
+                  aria-expanded={openAtom}
                   ref={(ref) => (listElem = ref)}
                   id="options-list"
                   data-testid="koodisto-dropdown-all-options"

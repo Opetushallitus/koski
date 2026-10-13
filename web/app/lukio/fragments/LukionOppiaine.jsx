@@ -1,5 +1,4 @@
 import React from 'react'
-import * as R from 'ramda'
 
 import { t } from '../../i18n/i18n'
 import { modelData, modelLookup, modelTitle } from '../../editor/EditorModel'
@@ -94,7 +93,7 @@ const KoulutusmoduuliPropertiesEditor = ({
   )
 }
 
-const Arviointi = ({ oppiaine, suoritetutKurssit, footnote, predicted }) => {
+const Arviointi = ({ oppiaine, footnote, predicted }) => {
   const { edit, suoritus } = oppiaine.context
   const ishDiploma =
     edit &&

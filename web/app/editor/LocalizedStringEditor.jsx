@@ -5,10 +5,10 @@ import {
   lensedModel,
   modelData,
   modelSetValue,
-  oneOfPrototypes
+  oneOfPrototypes,
+  modelLookup
 } from './EditorModel'
 import { StringEditor } from './StringEditor'
-import { modelLookup } from './EditorModel.ts'
 import { lang } from '../i18n/i18n'
 import * as L from 'partial.lenses'
 

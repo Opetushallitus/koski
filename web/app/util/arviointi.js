@@ -17,7 +17,7 @@ export const parasArviointi = (suoritus, arviointiField = 'arviointi') => {
     ? modelLookup(suoritus, `${arviointiField}.-1.arvosana`)
     : null
 
-  arvioinnit.map((item) => {
+  arvioinnit.forEach((item) => {
     const nthArvosana = modelLookup(item, 'arvosana')
     if (
       nthArvosana.value.data !== undefined &&

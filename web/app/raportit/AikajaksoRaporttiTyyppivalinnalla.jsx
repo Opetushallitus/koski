@@ -102,7 +102,7 @@ export const AikajaksoRaporttiTyyppivalinnalla = ({
       <Listavalinta
         label={listavalintaKuvaus}
         atom={raportinTyyppiAtom}
-        options={Object.entries(raporttiTyypit).map(([_, v]) => {
+        options={Object.values(raporttiTyypit).map((v) => {
           return {
             key: v.key,
             value: <Text name={v.name} />

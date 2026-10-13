@@ -3,7 +3,7 @@ import { UserInfo } from './UserInfo'
 import Link from '../components/Link'
 import Text from '../i18n/Text'
 import NavList from './NavList'
-import InvalidationNotification from '../components/InvalidationNotification'
+import { InvalidationNotification } from '../components/InvalidationNotification'
 import { DevLanguageButtons } from './DevLanguageButtons'
 
 export default ({ location, user, titleKey }) => {

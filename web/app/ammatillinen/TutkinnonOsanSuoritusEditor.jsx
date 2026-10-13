@@ -10,8 +10,8 @@ import {
   isValinnanMahdollisuus,
   isYhteinenTutkinnonOsa,
   isYlioppilastutkinnonKokeenSuoritus
-} from '../ammatillinen/TutkinnonOsa'
-import LiittyyTutkinnonOsaanEditor from '../ammatillinen/LiittyyTutkinnonOsaanEditor'
+} from './TutkinnonOsa'
+import LiittyyTutkinnonOsaanEditor from './LiittyyTutkinnonOsaanEditor'
 import { Suoritustaulukko } from '../suoritus/Suoritustaulukko'
 import {
   isMuunAmmatillisenKoulutuksenOsasuorituksenSuoritus,
