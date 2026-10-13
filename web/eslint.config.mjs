@@ -111,7 +111,6 @@ export default defineConfig([
       '@eslint-react/no-set-state-in-component-did-mount': 'off',
       '@eslint-react/no-unsafe-component-will-mount': 'off',
       '@eslint-react/no-unsafe-component-will-receive-props': 'off',
-      '@eslint-react/dom-no-dangerously-set-innerhtml': 'off',
       '@eslint-react/dom-no-render-return-value': 'off',
       'react-hooks/immutability': 'off',
       'import-x/no-named-as-default': 'off',
@@ -181,6 +180,10 @@ export default defineConfig([
       'no-template-curly-in-string': 'error',
       'require-atomic-updates': 'error'
     }
+  },
+  {
+    files: ['app/dokumentaatio/**'],
+    rules: { '@eslint-react/dom-no-dangerously-set-innerhtml': 'off' }
   },
   {
     files: ['**/*.ts', '**/*.tsx'],
