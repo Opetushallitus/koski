@@ -111,12 +111,6 @@ export default defineConfig([
       }
     },
     rules: {
-      // Vääriä osumia Bacon/baret-koodissa tai liikaa korjattavaa vanhassa koodissa
-      '@eslint-react/no-array-index-key': 'off',
-      '@eslint-react/no-missing-key': 'off',
-      '@eslint-react/no-set-state-in-component-did-mount': 'off',
-      '@eslint-react/no-unsafe-component-will-mount': 'off',
-      '@eslint-react/no-unsafe-component-will-receive-props': 'off',
       '@eslint-react/no-unused-class-component-members': 'error',
       '@eslint-react/jsx-no-children-prop': 'error',
       '@eslint-react/jsx-no-comment-textnodes': 'error',
@@ -188,7 +182,13 @@ export default defineConfig([
       'no-var': 'error',
       'prefer-const': ['error', { destructuring: 'all' }],
       'no-restricted-globals': ['error', ...confusingBrowserGlobals],
-      'require-atomic-updates': 'error'
+      'require-atomic-updates': 'error',
+      // Vääriä osumia Bacon/baret-koodissa tai liikaa korjattavaa vanhassa koodissa
+      '@eslint-react/no-array-index-key': 'off',
+      '@eslint-react/no-missing-key': 'off',
+      '@eslint-react/no-set-state-in-component-did-mount': 'off',
+      '@eslint-react/no-unsafe-component-will-mount': 'off',
+      '@eslint-react/no-unsafe-component-will-receive-props': 'off'
     }
   },
   {
