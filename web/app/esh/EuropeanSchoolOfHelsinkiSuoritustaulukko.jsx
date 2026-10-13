@@ -10,7 +10,7 @@ import {
 import {
   selectOsasuoritusPrototype,
   osasuoritusPrototypes
-} from '../esh/Osasuoritus'
+} from './Osasuoritus'
 import { EuropeanSchoolOfHelsinkiOsasuoritusEditor } from './EuropeanSchoolOfHelsinkiOsasuoritusEditor'
 import { UusiEuropeanSchoolOfHelsinkiOsasuoritusDropdown } from './EuropeanSchoolOfHelsinkiOsasuoritusDropdown'
 import {

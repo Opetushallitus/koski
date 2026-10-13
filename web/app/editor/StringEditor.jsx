@@ -1,6 +1,10 @@
 import React from 'react'
-import { modelData } from './EditorModel.ts'
-import { wrapOptional, pushModelValue, modelValid } from './EditorModel'
+import {
+  modelData,
+  wrapOptional,
+  pushModelValue,
+  modelValid
+} from './EditorModel'
 import { t } from '../i18n/i18n'
 
 export const StringEditor = ({ model, placeholder, autoFocus }) => {

@@ -1,6 +1,5 @@
 import React from 'react'
-import { modelData, modelSetValue } from './EditorModel.ts'
-import { pushModel } from './EditorModel'
+import { modelData, modelSetValue, pushModel } from './EditorModel'
 import Text from '../i18n/Text'
 
 export class BooleanEditor extends React.Component {

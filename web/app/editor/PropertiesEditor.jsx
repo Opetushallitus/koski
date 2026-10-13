@@ -1,12 +1,14 @@
 import React from 'react'
-import { addContext, modelEmpty, modelItems } from './EditorModel.ts'
-import { Editor } from './Editor'
-import { ArrayEditor } from './ArrayEditor'
 import {
+  addContext,
+  modelEmpty,
+  modelItems,
   checkOnlyWhen,
   modelErrorMessages,
   modelProperties
 } from './EditorModel'
+import { Editor } from './Editor'
+import { ArrayEditor } from './ArrayEditor'
 import Text from '../i18n/Text'
 import { buildClassNames } from '../components/classnames'
 import { flatMapArray } from '../util/util'

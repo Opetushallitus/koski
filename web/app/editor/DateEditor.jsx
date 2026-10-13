@@ -1,9 +1,13 @@
 import React from 'react'
 import * as R from 'ramda'
-import { modelData, pushModelValue } from './EditorModel.ts'
+import {
+  modelData,
+  pushModelValue,
+  wrapOptional,
+  modelSetData
+} from './EditorModel'
 import { formatISODate, parseISODate, formatFinnishDate } from '../date/date'
 import DateInput from '../date/DateInput'
-import { wrapOptional, modelSetData } from './EditorModel'
 
 export const DateEditor = ({ model, isAllowedDate }) => {
   const wrappedModel = wrapOptional(model)

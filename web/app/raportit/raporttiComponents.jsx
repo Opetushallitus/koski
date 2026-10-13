@@ -4,7 +4,7 @@ import DateInput from '../date/DateInput'
 import InfoIcon from '../icons/InfoIcon'
 import RaporttiDownloadButton from './RaporttiDownloadButton'
 import RadioButtons from '../components/RadioButtons'
-import { formatFinnishDateTime } from '../../app/date/date'
+import { formatFinnishDateTime } from '../date/date'
 import { t } from '../i18n/i18n'
 
 export const LyhytKuvaus = ({ children }) =>

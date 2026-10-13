@@ -1,12 +1,12 @@
 import React from 'react'
 import * as R from 'ramda'
-import { modelEmpty } from './EditorModel.ts'
-import { Editor } from './Editor'
 import {
+  modelEmpty,
   optionalPrototypeModel,
   pushModel,
   resetOptionalModel
 } from './EditorModel'
+import { Editor } from './Editor'
 import Text from '../i18n/Text'
 
 export class OptionalEditor extends React.Component {

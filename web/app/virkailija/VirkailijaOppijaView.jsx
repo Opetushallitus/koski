@@ -27,7 +27,7 @@ import {
 } from '../util/location.js'
 import { addNavigationGuard, removeNavigationGuard } from '../util/router'
 import { katseltavaVersio } from '../appstate/sivunTila'
-import { OppijaHaku } from '../virkailija/OppijaHaku'
+import { OppijaHaku } from './OppijaHaku'
 import Link from '../components/Link'
 import { decreaseLoading, increaseLoading } from '../util/loadingFlag'
 import delays from '../util/delays'
