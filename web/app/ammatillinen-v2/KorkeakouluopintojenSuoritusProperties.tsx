@@ -73,31 +73,33 @@ export const KorkeakouluopintojenSuoritusProperties = ({
           />
         </OsasuoritusPropertyValue>
       </OsasuoritusProperty>
-      <OsasuoritusProperty label={'Arviointi'}>
-        <OsasuoritusPropertyValue>
-          <FormListField
-            removable
-            form={form}
-            view={ArviointiView}
-            edit={ArviointiEdit}
-            path={osasuoritusPath.prop('arviointi')}
-          />
-          {form.editMode && (
-            <ButtonGroup>
-              <FlatButton
-                onClick={() =>
-                  form.updateAt(
-                    osasuoritusPath.prop('arviointi').valueOr([]),
-                    append(emptyArviointi)
-                  )
-                }
-              >
-                {t('Lisää')}
-              </FlatButton>
-            </ButtonGroup>
-          )}
-        </OsasuoritusPropertyValue>
-      </OsasuoritusProperty>
+      {(form.editMode || osasuoritus.arviointi) && (
+        <OsasuoritusProperty label={'Arviointi'}>
+          <OsasuoritusPropertyValue>
+            <FormListField
+              removable
+              form={form}
+              view={ArviointiView}
+              edit={ArviointiEdit}
+              path={osasuoritusPath.prop('arviointi')}
+            />
+            {form.editMode && (
+              <ButtonGroup>
+                <FlatButton
+                  onClick={() =>
+                    form.updateAt(
+                      osasuoritusPath.prop('arviointi').valueOr([]),
+                      append(emptyArviointi)
+                    )
+                  }
+                >
+                  {t('Lisää')}
+                </FlatButton>
+              </ButtonGroup>
+            )}
+          </OsasuoritusPropertyValue>
+        </OsasuoritusProperty>
+      )}
       {(form.editMode || osasuoritus.tunnustettu) && (
         <OsasuoritusProperty label={'Tunnustettu'}>
           <OsasuoritusPropertyValue>

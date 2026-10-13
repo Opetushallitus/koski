@@ -237,72 +237,77 @@ const TableForTutkinnonOsaRyhmä = ({
   ).filter(matchFilter) as AmisTutkinnonOsanSuoritus[]
 
   return (
-    <>
-      <OsasuoritusTable
-        editMode={form.editMode}
-        forceOpen={forceOpen}
-        rows={
-          (!rows || rows?.length === 0) && form.editMode
-            ? [dummyRow(ryhmä)] // Saadaan headeri näkymään editointimoodissa kun osasuorituksia ei ole
-            : rows || []
+    <OsasuoritusTable
+      editMode={form.editMode}
+      forceOpen={forceOpen}
+      rows={
+        (!rows || rows?.length === 0) && form.editMode
+          ? [dummyRow(ryhmä)] // Saadaan headeri näkymään editointimoodissa kun osasuorituksia ei ole
+          : rows || []
+      }
+      addNewOsasuoritusView={NewAmisOsasuoritus}
+      addNewOsasuoritusViewProps={{
+        form,
+        oppilaitosOid,
+        ryhmä,
+        suoritusPath: päätasonSuoritus.path
+      }}
+      onRemove={
+        !rows || rows?.length === 0
+          ? undefined
+          : (rowIndex) =>
+              form.updateAt(
+                päätasonSuoritus.path,
+                (pts) =>
+                  ({
+                    ...pts,
+                    osasuoritukset: deleteAt<AmisTutkinnonOsanSuoritus>(
+                      pts.osasuoritukset || [],
+                      originalIndexMap[rowIndex]
+                    )
+                  }) as AmisTutkinnonSuoritus
+              )
+      }
+      completed={(rowIndex) => {
+        const osasuoritus = (päätasonSuoritus.suoritus.osasuoritukset || [])[
+          originalIndexMap[rowIndex]
+        ]
+        if (
+          osasuoritus === undefined ||
+          isAmisKorkeakouluopintoSuoritus(osasuoritus) ||
+          isAmisJatkoOpintovalmiuksiaTukevienOpintojenSuoritus(osasuoritus)
+        ) {
+          // Näiden tyyppien tila tulee niiden alaosasuorituksista, ei
+          // ylätason arvioinnista, joten päärivillä ei näytetä
+          // valmis/kesken-merkkiä.
+          return undefined
         }
-        addNewOsasuoritusView={NewAmisOsasuoritus}
-        addNewOsasuoritusViewProps={{
-          form,
-          oppilaitosOid,
-          ryhmä,
-          suoritusPath: päätasonSuoritus.path
-        }}
-        onRemove={
-          !rows || rows?.length === 0
-            ? undefined
-            : (rowIndex) =>
-                form.updateAt(
-                  päätasonSuoritus.path,
-                  (pts) =>
-                    ({
-                      ...pts,
-                      osasuoritukset: deleteAt<AmisTutkinnonOsanSuoritus>(
-                        pts.osasuoritukset || [],
-                        originalIndexMap[rowIndex]
-                      )
-                    }) as AmisTutkinnonSuoritus
+        return hasAmmatillinenArviointi(osasuoritus)
+      }}
+      footer={
+        form.editMode || ryhmänOsasuoritukset.length > 0
+          ? {
+              label: t('Yhteensä'),
+              columns: {
+                Laajuus: (
+                  <TutkinnonOsaRyhmänLaajuus
+                    suoritukset={ryhmänOsasuoritukset}
+                    laajuus={
+                      perusteenRyhmä &&
+                      ryhmienLaajuudet[perusteenRyhmä.koodiarvo]
+                    }
+                    testId={
+                      ryhmä === 'Tutkinnon osat'
+                        ? 'yhteensa'
+                        : `yhteensa.${perusteenRyhmä?.koodiarvo || 'muut'}`
+                    }
+                  />
                 )
-        }
-        completed={(rowIndex) => {
-          const osasuoritus = (päätasonSuoritus.suoritus.osasuoritukset || [])[
-            originalIndexMap[rowIndex]
-          ]
-          if (
-            osasuoritus === undefined ||
-            isAmisKorkeakouluopintoSuoritus(osasuoritus) ||
-            isAmisJatkoOpintovalmiuksiaTukevienOpintojenSuoritus(osasuoritus)
-          ) {
-            // Näiden tyyppien tila tulee niiden alaosasuorituksista, ei
-            // ylätason arvioinnista, joten päärivillä ei näytetä
-            // valmis/kesken-merkkiä.
-            return undefined
-          }
-          return hasAmmatillinenArviointi(osasuoritus)
-        }}
-      />
-      {(form.editMode || ryhmänOsasuoritukset.length > 0) && (
-        <>
-          <TutkinnonOsaRyhmänLaajuus
-            suoritukset={ryhmänOsasuoritukset}
-            laajuus={
-              perusteenRyhmä && ryhmienLaajuudet[perusteenRyhmä.koodiarvo]
+              }
             }
-            testId={
-              ryhmä === 'Tutkinnon osat'
-                ? 'yhteensa'
-                : `yhteensa.${perusteenRyhmä?.koodiarvo || 'muut'}`
-            }
-          />
-          <Spacer />
-        </>
-      )}
-    </>
+          : undefined
+      }
+    />
   )
 }
 
