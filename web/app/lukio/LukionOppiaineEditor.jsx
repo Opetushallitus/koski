@@ -207,6 +207,7 @@ export class LukionOppiaineEditor extends React.Component {
     )
   }
 
+  // eslint-disable-next-line @eslint-react/no-unsafe-component-will-receive-props
   UNSAFE_componentWillReceiveProps(nextProps) {
     const currentData = modelData(this.props.oppiaine)
     const newData = modelData(nextProps.oppiaine)

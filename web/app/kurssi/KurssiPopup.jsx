@@ -68,6 +68,7 @@ export class KurssiPopup extends React.Component {
   }
 
   componentDidMount() {
+    // eslint-disable-next-line @eslint-react/no-set-state-in-component-did-mount
     this.setState({
       popupAlignment: getAlignment(
         this.props.parentElemPosition,

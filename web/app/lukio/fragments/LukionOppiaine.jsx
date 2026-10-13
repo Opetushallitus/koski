@@ -93,7 +93,7 @@ const KoulutusmoduuliPropertiesEditor = ({
   )
 }
 
-const Arviointi = ({ oppiaine, suoritetutKurssit, footnote, predicted }) => {
+const Arviointi = ({ oppiaine, footnote, predicted }) => {
   const { edit, suoritus } = oppiaine.context
   const ishDiploma =
     edit &&

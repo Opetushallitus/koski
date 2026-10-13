@@ -151,15 +151,7 @@ export default defineConfig([
         'error',
         { disallowArithmeticOperators: true }
       ],
-      'no-unused-vars': [
-        'error',
-        {
-          vars: 'all',
-          args: 'none',
-          caughtErrors: 'none',
-          ignoreRestSiblings: true
-        }
-      ],
+      'no-unused-vars': ['error', { ignoreRestSiblings: true }],
       // Salli myöhemmin määritellyt apurit sisäkkäisissä funktioissa.
       'no-use-before-define': [
         'error',
@@ -185,10 +177,7 @@ export default defineConfig([
       'require-atomic-updates': 'error',
       // Vääriä osumia Bacon/baret-koodissa tai liikaa korjattavaa vanhassa koodissa
       '@eslint-react/no-array-index-key': 'off',
-      '@eslint-react/no-missing-key': 'off',
-      '@eslint-react/no-set-state-in-component-did-mount': 'off',
-      '@eslint-react/no-unsafe-component-will-mount': 'off',
-      '@eslint-react/no-unsafe-component-will-receive-props': 'off'
+      '@eslint-react/no-missing-key': 'off'
     }
   },
   {

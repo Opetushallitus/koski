@@ -367,6 +367,7 @@ export class Oppijataulukko extends React.Component {
     )
   }
 
+  // eslint-disable-next-line @eslint-react/no-unsafe-component-will-mount
   UNSAFE_componentWillMount() {
     const koodistoMetadata = (k) =>
       k.metadata.find((m) => m.kieli === lang.toUpperCase()) ||

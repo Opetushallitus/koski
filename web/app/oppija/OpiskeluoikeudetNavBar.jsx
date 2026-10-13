@@ -15,7 +15,7 @@ import { useMuokattavaOpiskeluoikeus } from '../appstate/sivunTila'
 export default ({ oppijaOid, opiskeluoikeusTyypit, selectedIndex }) => {
   const muokkausKäynnissä = useMuokattavaOpiskeluoikeus() !== undefined
   const addingAtom = Atom(false)
-  const toggleAdd = (event) => {
+  const toggleAdd = () => {
     addingAtom.modify((x) => !x)
   }
   const addOpiskeluoikeus = (opiskeluoikeus) =>

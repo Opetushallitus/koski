@@ -96,6 +96,7 @@ export class PerusopetuksenOppiaineEditor extends React.Component {
     )
   }
 
+  // eslint-disable-next-line @eslint-react/no-unsafe-component-will-receive-props
   UNSAFE_componentWillReceiveProps(newProps) {
     const currentData = modelData(this.props.oppiaine)
     const newData = modelData(newProps.oppiaine)

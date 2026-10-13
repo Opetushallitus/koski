@@ -99,10 +99,6 @@ export class KurssiEditor extends React.Component {
     )
   }
 
-  componentDidMount() {
-    this.setState({ open: false })
-  }
-
   componentWillUnmount() {
     this.removeListeners()
   }

@@ -8,7 +8,7 @@ const virheteksti = (body) => {
     return extractValidationErrorText(
       virheet.length === 1 ? virheet[0] : virheet
     )
-  } catch (e) {
+  } catch {
     return body
   }
 }
@@ -33,7 +33,7 @@ export const downloadExcel = (params) => {
         text: virheteksti(iframe.contentDocument.body.textContent),
         httpStatus: 400
       }
-    } catch (err) {
+    } catch {
       response = { text: 'Tuntematon virhe', httpStatus: 500 }
     }
     if (downloadTimer !== null) {
