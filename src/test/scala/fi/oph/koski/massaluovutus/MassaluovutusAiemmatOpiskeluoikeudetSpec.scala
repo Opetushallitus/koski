@@ -185,7 +185,7 @@ class MassaluovutusAiemmatOpiskeluoikeudetSpec extends AnyFreeSpec with Massaluo
       }
     }
 
-    "Ei palauta oman oppilaitoksen päättyneitä opiskeluoikeuksia" in {
+    "Palauttaa myös oman oppilaitoksen päättyneet, ennen nykyisiä opintoja alkaneet opiskeluoikeudet" in {
       val oppija = KoskiSpecificMockOppijat.ammattilainen
       createOrUpdate(oppija, makeOpiskeluoikeus(alkamispäivä = LocalDate.of(2020, 1, 1)))
       createOrUpdate(oppija, PerusopetusExampleData.päättötodistusOpiskeluoikeus())
@@ -193,8 +193,8 @@ class MassaluovutusAiemmatOpiskeluoikeudetSpec extends AnyFreeSpec with Massaluo
       val files = haeTulostiedostot()
       verifyResultAndContent(oppijanTiedosto(files, oppija.oid).get, MockUsers.helsinkiAiemmatOpiskeluoikeudet) {
         val json = JsonMethods.parse(body)
-        koulutusmuodot(json) shouldBe List("perusopetus")
-        oppilaitokset(json) shouldBe Set(MockOrganisaatiot.jyväskylänNormaalikoulu)
+        koulutusmuodot(json) shouldBe List("perusopetus", "ammatillinenkoulutus")
+        oppilaitokset(json) shouldBe Set(MockOrganisaatiot.jyväskylänNormaalikoulu, MockOrganisaatiot.stadinAmmattiopisto)
       }
     }
 
@@ -216,7 +216,7 @@ class MassaluovutusAiemmatOpiskeluoikeudetSpec extends AnyFreeSpec with Massaluo
     "Demo-oppijat (AiemmatOpiskeluoikeudetDemoFixtures)" - {
       val perusopetusRaumonKoulussa = (MockOrganisaatiot.raumonKoulu, "perusopetus")
 
-      "Palauttaa kullekin oppijalle vain muiden organisaatioiden ennen Stadin opintoja alkaneet opiskeluoikeudet" in {
+      "Palauttaa kullekin oppijalle ennen Stadin opintoja alkaneet opiskeluoikeudet, myös Stadin omat päättyneet" in {
         val files = haeTulostiedostot()
 
         demoOppijanTulos(files, KoskiSpecificMockOppijat.aiemmatEsiJaPerusopetus) { json =>
@@ -229,7 +229,7 @@ class MassaluovutusAiemmatOpiskeluoikeudetSpec extends AnyFreeSpec with Massaluo
           oppilaitoksetJaKoulutusmuodot(json) shouldBe Set(perusopetusRaumonKoulussa, (MockOrganisaatiot.omnia, "ammatillinenkoulutus"))
         }
         demoOppijanTulos(files, KoskiSpecificMockOppijat.aiemmatOmaOppilaitos) { json =>
-          oppilaitoksetJaKoulutusmuodot(json) shouldBe Set(perusopetusRaumonKoulussa)
+          oppilaitoksetJaKoulutusmuodot(json) shouldBe Set(perusopetusRaumonKoulussa, (MockOrganisaatiot.stadinAmmattiopisto, "ammatillinenkoulutus"))
         }
         demoOppijanTulos(files, KoskiSpecificMockOppijat.aiemmatMyöhemminAlkanut) { json =>
           oppilaitoksetJaKoulutusmuodot(json) shouldBe Set(perusopetusRaumonKoulussa)

@@ -26,7 +26,7 @@ import scala.concurrent.duration.DurationInt
 
 @Title("Nykyisten opiskelijoiden aiemmat opiskeluoikeudet")
 @Description("Palauttaa oppilaitoksen nykyisten opiskelijoiden muissa organisaatioissa suoritetut esi-, perus-, ammatillisen ja lukiokoulutuksen opiskeluoikeudet, jotka ovat alkaneet ennen opiskelijan opintoja kyselyn oppilaitoksessa.")
-@Description("Nykyinen opiskelija on oppija, jolla on kyselyn oppilaitoksessa voimassa oleva esi-, perus-, ammatillisen tai lukiokoulutuksen opiskeluoikeus. Oppilaitoksen omia opiskeluoikeuksia ei palauteta. Kysely tehdään aina yhdelle oppilaitokselle.")
+@Description("Nykyinen opiskelija on oppija, jolla on kyselyn oppilaitoksessa voimassa oleva esi-, perus-, ammatillisen tai lukiokoulutuksen opiskeluoikeus. Mukana ovat myös oppilaitoksen omat aiemmat, ennen nykyisiä opintoja alkaneet opiskeluoikeudet. Kysely tehdään aina yhdelle oppilaitokselle.")
 @Description("Kysely edellyttää AIEMMAT_OPISKELUOIKEUDET-käyttöoikeutta kyselyn oppilaitoksessa. Palautettavat koulutusmuodot eivät riipu käyttäjän omista koulutusmuotokohtaisista käyttöoikeuksista, vaan ainoastaan tästä roolista. Arkaluontoiset tiedot palautetaan vain, jos käyttäjällä on niihin oikeus.")
 @Description("Tulostiedostot vastaavat organisaationOpiskeluoikeudet-kyselyn json-muotoa: yksi tiedosto oppijaa kohden.")
 case class MassaluovutusQueryAiemmatOpiskeluoikeudet(
@@ -62,7 +62,7 @@ case class MassaluovutusQueryAiemmatOpiskeluoikeudet(
 
         writer.predictFileCount(henkilöt.size)
         henkilöt.foreach { henkilö =>
-          val aiemmat = haeAiemmatOpiskeluoikeudet(db, organisaatiot, henkilö, opintojenAlkuKyselynOppilaitoksessa(henkilö.oid))
+          val aiemmat = haeAiemmatOpiskeluoikeudet(db, henkilö, opintojenAlkuKyselynOppilaitoksessa(henkilö.oid))
           if (aiemmat.isEmpty) {
             writer.skipFile()
           } else {
@@ -118,23 +118,19 @@ case class MassaluovutusQueryAiemmatOpiskeluoikeudet(
       .toMap
   }
 
-  private def haeAiemmatOpiskeluoikeudet(db: DB, organisaatiot: OrganisaationAlaisetOrganisaatiot, henkilö: LaajatOppijaHenkilöTiedot, alkanutEnnen: LocalDate): Seq[KoskiOpiskeluoikeusRow] = {
+  private def haeAiemmatOpiskeluoikeudet(db: DB, henkilö: LaajatOppijaHenkilöTiedot, alkanutEnnen: LocalDate): Seq[KoskiOpiskeluoikeusRow] = {
     // Tarkoituksella ei rajata käyttäjän omilla koulutusmuoto-oikeuksilla (toisin kuin nykyisten opiskelijoiden haussa):
     // esim. lukio tarvitsee opiskelijoidensa perusopetuksen tiedot, vaikka sillä ei ole perusopetuksen käyttöoikeutta.
     val koulutusmuodot: List[String] = koulutusmuoto.toList.flatten
-    QueryMethods.runDbSync(db, SQLHelpers.concatMany(
-      Some(sql"""
+    QueryMethods.runDbSync(db, sql"""
         SELECT *
         FROM opiskeluoikeus
         WHERE NOT poistettu AND NOT mitatoity
           AND oppija_oid = ANY(${henkilö.kaikkiOidit})
           AND koulutusmuoto = ANY($koulutusmuodot)
           AND alkamispaiva < $alkanutEnnen
-          AND NOT
-      """),
-      Some(MassaluovutusUtils.organisaatioFilter(organisaatiot)),
-      Some(sql" ORDER BY alkamispaiva"),
-    ).as[KoskiOpiskeluoikeusRow])
+        ORDER BY alkamispaiva
+      """.as[KoskiOpiskeluoikeusRow])
   }
 
   private def auditLog(oppijaOid: String, opiskeluoikeusOidit: Seq[String])(implicit user: KoskiSpecificSession): Unit =
