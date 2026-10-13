@@ -265,6 +265,8 @@ describe('Oppijataulukko', function () {
       )
       it('toimii', function () {
         expect(page.oppijataulukko.names()).to.deep.equal([
+          'Aiemmat-Ammatillinen, Anni',
+          'Aiemmat-Oma-Oppilaitos, Olli',
           'Aikuinen, AikuisAineOpiskelijaMuuKuinVos',
           'Aikuinen, AikuisopiskelijaMuuKuinVos',
           'Aikuinen, MuuRahoitus',
@@ -362,11 +364,9 @@ describe('Oppijataulukko', function () {
           't, tavallinen',
           'Tehtävään-Valmistava, Tauno',
           'Tehtävään-Valmistava-vahvistettu, Tauno',
-          'Tekijä, Teija',
-          'Telmanen, Tuula',
-          'Tiedonsiirto, Tiina'
+          'Tekijä, Teija'
         ])
-        expect(page.opiskeluoikeudeTotal()).to.equal('125')
+        expect(page.opiskeluoikeudeTotal()).to.equal('127')
       })
     })
 
