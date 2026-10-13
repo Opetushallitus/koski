@@ -7,7 +7,7 @@ import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.koskiuser.UserWithPassword
 import fi.oph.koski.organisaatio.MockOrganisaatiot._
 import fi.oph.koski.koskiuser.MockUsers._
-import fi.oph.koski.organisaatio.MockOrganisaatiot
+import fi.oph.koski.organisaatio.{MockOrganisaatiot, Organisaatiotyyppi}
 import fi.oph.koski.raportointikanta.RaportointikantaTestMethods
 import org.json4s.JArray
 import org.json4s.jackson.JsonMethods
@@ -96,6 +96,41 @@ class RaportitServletSpec extends AnyFreeSpec with RaportointikantaTestMethods w
           raportit should contain theSameElementsAs (List(EsiopetuksenRaportti.toString, EsiopetuksenOppijaMäärienRaportti.toString()))
         }
       }
+      "Kunnan kaikkien opiskeluoikeustyyppien oikeuksilla voi valita kotikuntaraportit" in {
+        verifyMahdollisetRaportit(helsinginKaupunki, user = helsinkiKatselija) { raportit =>
+          raportit should contain allOf (KotikuntalaskelmaRaportti.toString, KunnanOppijatRaportti.toString)
+        }
+      }
+      "Kunnan oppijat näytetään kunnalle, jolla ei ole omia perus- tai esiopetuksen oppilaitoksia" in {
+        val pyhtää = KoskiApplicationForTests.organisaatioRepository.getOrganisaatioHierarkia(pyhtäänKunta).get
+        val raportit = RaportitAccessResolver(KoskiApplicationForTests)
+          .mahdollisetRaporttienTyypitOrganisaatiolle(pyhtää, koulutusmuodot = Map.empty)(pyhtäänTallentaja.toKoskiSpecificSession(KoskiApplicationForTests.käyttöoikeusRepository))
+        raportit shouldBe Set(KunnanOppijatRaportti)
+      }
+      "Kunnan oppijoita ei näytetä koulutustoimijalle, joka ei ole kunta" in {
+        verifyMahdollisetRaportit(jyväskylänYliopisto, user = jyväskyläTallentaja) { raportit =>
+          raportit should contain(KotikuntalaskelmaRaportti.toString)
+          raportit should not contain KunnanOppijatRaportti.toString
+        }
+      }
+      "Muu kuin koulutustoimijana toimiva kunta näytetään vain Kunnan oppijoille ilman alaorganisaatioita" in {
+        val pelkkäKunta = KoskiApplicationForTests.organisaatioRepository.getOrganisaatioHierarkia(pyhtäänKunta).get
+          .copy(organisaatiotyypit = List(Organisaatiotyyppi.KUNTA))
+        val organisaatiot = new RaportitService(KoskiApplicationForTests)
+          .getRaportinOrganisatiotJaRaporttiTyypit(List(pelkkäKunta))(pyhtäänTallentaja.toKoskiSpecificSession(KoskiApplicationForTests.käyttöoikeusRepository))
+        organisaatiot.map(o => (o.oid, o.raportit, o.children)) shouldBe List((pyhtäänKunta, Set(KunnanOppijatRaportti.toString), Nil))
+      }
+      "Muuta kuin koulutustoimijana toimivaa kuntaa ei näytetä ilman Kunnan oppijoiden oikeutta" in {
+        val pelkkäKunta = KoskiApplicationForTests.organisaatioRepository.getOrganisaatioHierarkia(helsinginKaupunki).get
+          .copy(organisaatiotyypit = List(Organisaatiotyyppi.KUNTA))
+        new RaportitService(KoskiApplicationForTests)
+          .getRaportinOrganisatiotJaRaporttiTyypit(List(pelkkäKunta))(helsinkiIlmanLuottamuksellisiaTietoja.toKoskiSpecificSession(KoskiApplicationForTests.käyttöoikeusRepository)) shouldBe empty
+      }
+      "Kunnan oppijoita ei näytetä ilman kunnan luottamuksellisten tietojen oikeutta" in {
+        verifyMahdollisetRaportit(helsinginKaupunki, user = helsinkiIlmanLuottamuksellisiaTietoja) { raportit =>
+          raportit should not contain KunnanOppijatRaportti.toString
+        }
+      }
     }
 
     "Käyttäjä oikeuksien tarkistus" - {
@@ -113,6 +148,7 @@ class RaportitServletSpec extends AnyFreeSpec with RaportointikantaTestMethods w
              LuvaOpiskelijamaarat.toString,
              LukioOpintopistekertyma.toString,
              KotikuntalaskelmaRaportti.toString,
+             KunnanOppijatRaportti.toString,
            ))
           }
         }
@@ -171,8 +207,9 @@ class RaportitServletSpec extends AnyFreeSpec with RaportointikantaTestMethods w
 
   private def verifyMahdollisetRaportit(organisaatio: String, user: UserWithPassword = defaultUser)(f: Seq[String] => Unit) =
     verifyArrayResponse("api/raportit/organisaatiot-ja-raporttityypit", user, { arr =>
-      f(arr
-        .map(_.asInstanceOf[Map[String, Any]])
+      def kaikki(orgs: Seq[Map[String, Any]]): Seq[Map[String, Any]] =
+        if (orgs.isEmpty) orgs else orgs ++ kaikki(orgs.flatMap(_.get("children")).flatMap(_.asInstanceOf[Seq[Map[String, Any]]]))
+      f(kaikki(arr.map(_.asInstanceOf[Map[String, Any]]))
         .filter(_.get("oid").contains(organisaatio))
         .flatMap(_.get("raportit"))
         .flatMap(_.asInstanceOf[Seq[String]])
