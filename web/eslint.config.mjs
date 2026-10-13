@@ -9,6 +9,7 @@ import eslint from '@eslint/js'
 import tseslint from 'typescript-eslint'
 import { defineConfig, includeIgnoreFile } from 'eslint/config'
 import path from 'node:path'
+import confusingBrowserGlobals from './eslint/confusingBrowserGlobals.mjs'
 
 export default defineConfig([
   includeIgnoreFile(path.resolve(import.meta.dirname, '.gitignore')),
@@ -47,7 +48,6 @@ export default defineConfig([
     languageOptions: {
       globals: {
         ...globals.browser,
-        ...globals.node,
         __webpack_nonce__: true
       },
 
@@ -87,6 +87,11 @@ export default defineConfig([
       '@typescript-eslint/no-unnecessary-type-constraint': 'error',
       '@typescript-eslint/no-unused-expressions': 'off'
     }
+  },
+  {
+    files: ['**/*.{js,jsx,ts,tsx}'],
+    ignores: ['app/**/*.{js,jsx}'],
+    languageOptions: { globals: globals.node }
   },
   {
     files: ['app/**/*.{js,jsx}'],
@@ -178,6 +183,7 @@ export default defineConfig([
         }
       ],
       'no-template-curly-in-string': 'error',
+      'no-restricted-globals': ['error', ...confusingBrowserGlobals],
       'require-atomic-updates': 'error'
     }
   },
