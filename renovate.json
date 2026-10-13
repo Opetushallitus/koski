@@ -187,6 +187,25 @@
       "rebaseWhen": "behind-base-branch"
     },
     {
+      "description": "Group the OmaData OAuth2 sample server's runtime patch updates and automerge them after CI. Placed after the npm patch groups so that this groupName overrides theirs.",
+      "matchManagers": ["npm"],
+      "matchFileNames": ["omadata-oauth2-sample/server/package.json"],
+      "matchDepTypes": ["dependencies"],
+      "matchUpdateTypes": ["patch"],
+      "groupName": "OmaData OAuth2 sample runtime patch updates",
+      "automerge": true,
+      "rebaseWhen": "behind-base-branch"
+    },
+    {
+      "description": "Automerge the OmaData OAuth2 sample server's runtime minor updates after CI, each in its own PR. devDependency minors are already automerged above.",
+      "matchManagers": ["npm"],
+      "matchFileNames": ["omadata-oauth2-sample/server/package.json"],
+      "matchDepTypes": ["dependencies"],
+      "matchUpdateTypes": ["minor"],
+      "automerge": true,
+      "rebaseWhen": "behind-base-branch"
+    },
+    {
       "description": "Group all Parcel updates together. Placed after the npm patch groups so that their groupName does not override this one.",
       "groupName": "parcel",
       "matchPackageNames": [
