@@ -37,7 +37,7 @@ export default ({
       (fullscreen ? ' fullscreen textstyle-body' : '')
   )
 
-  const Modal = () => (
+  const modal = (
     <div
       className={classNameP}
       role="dialog"
@@ -80,9 +80,9 @@ export default ({
 
   return fullscreen ? (
     <FocusLock autoFocus={true} returnFocus={true}>
-      <Modal />
+      {modal}
     </FocusLock>
   ) : (
-    <Modal />
+    modal
   )
 }
