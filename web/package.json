@@ -41,7 +41,7 @@
     "@swc/core": "1.16.13",
     "@types/js-cookie": "3.0.6",
     "@types/mocha": "10.0.10",
-    "@types/node": "24.19.1",
+    "@types/node": "24.19.2",
     "@types/ramda": "0.32.0",
     "@types/react": "16.14.70",
     "@types/react-dom": "16.9.25",
