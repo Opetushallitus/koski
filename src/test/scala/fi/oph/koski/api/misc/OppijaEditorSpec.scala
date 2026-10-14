@@ -91,7 +91,28 @@ class OppijaEditorSpec extends AnyFreeSpec with Matchers with KoskiHttpSpec with
         body should include("\"unavailable.virta\"")
       }
     }
+    "hides korkeakoulututkinto's liittyvät opiskeluoikeudet, which the virkailija editor shows" in {
+      val oppija = KoskiSpecificMockOppijat.virtaKorkeakouluVisuaalinenRegressio
+
+      val virkailijalle = get("api/editor/" + oppija.oid, headers = authHeaders()) {
+        verifyResponseStatusOk()
+        liittyvätOpiskeluoikeudetValues(JsonMethods.parse(body))
+      }
+      virkailijalle.filter(_ != JNothing) should not be empty
+
+      val kansalaiselle = get("api/omattiedot/editor", headers = kansalainenLoginHeaders(oppija.hetu.get)) {
+        verifyResponseStatusOk()
+        liittyvätOpiskeluoikeudetValues(JsonMethods.parse(body))
+      }
+      kansalaiselle should have size virkailijalle.size
+      kansalaiselle.foreach(_ should equal(JNothing))
+    }
   }
+
+  private def liittyvätOpiskeluoikeudetValues(editorModel: JValue): List[JValue] =
+    editorModel
+      .filter(property => property \ "key" == JString("liittyvätOpiskeluoikeudet"))
+      .map(_ \ "model" \ "value")
 
   private def opiskeluoikeusModels(oppijaOid: String, params: List[(String, String)] = Nil, user: UserWithPassword = defaultUser): List[JValue] =
     get("api/editor/" + oppijaOid, params = params, headers = authHeaders(user)) {
