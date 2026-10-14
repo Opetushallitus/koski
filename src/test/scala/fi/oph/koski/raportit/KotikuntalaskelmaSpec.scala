@@ -310,5 +310,57 @@ class KotikuntalaskelmaSpec extends AnyFreeSpec with Matchers with Raportointika
         rivi.luokka shouldBe Some("3A")
       }
     }
+
+    "Päällekkäisillä opiskeluoikeuksilla eri tukitiedoin 16-vuotias lasketaan vain erityisen tuen sarakkeeseen" in {
+      val essi = KoskiSpecificMockOppijat.kotikuntalaskelmaKuusitoistaErityinen
+      val putaanKoulu = "1.2.246.562.10.36415898307"
+      val ilmanTukea = PerusopetuksenOpiskeluoikeus(
+        oppilaitos = Some(oppilaitos(putaanKoulu)),
+        suoritukset = List(vuosiluokka(9, "9B", date(2026, 8, 1)).copy(toimipiste = oppilaitos(putaanKoulu))),
+        tila = NuortenPerusopetuksenOpiskeluoikeudenTila(List(NuortenPerusopetuksenOpiskeluoikeusjakso(date(2026, 8, 1), opiskeluoikeusLäsnä)))
+      )
+      putOppija(Oppija(essi, List(perusopetuksenOpiskeluoikeus(essi), ilmanTukea)), headers = authHeaders(MockUsers.paakayttaja) ++ jsonContent) {
+        verifyResponseStatusOk()
+      }
+      reloadRaportointikanta()
+
+      val jyväskyläRivi = kotikuntalaskelmaBuilder
+        .build(Seq(aapajoenKoulu, putaanKoulu), raportointipäivä, t)(session(defaultUser))
+        .rows.map(_.asInstanceOf[KotikuntalaskelmaRow])
+        .find(_.oppilaanKotikunta.contains("Jyväskylä")).get
+      jyväskyläRivi.kuusitoistaErityisenTuenPerusteella shouldBe 1
+      jyväskyläRivi.kuusitoistaEiErityisenTuenPerusteella shouldBe 0
+
+      val essinRivi = kotikuntalaskelmaBuilder
+        .buildOppijat(Seq(aapajoenKoulu, putaanKoulu), raportointipäivä, t)(session(defaultUser))
+        .rows.map(_.asInstanceOf[KotikuntalaskelmaOppijaRow])
+        .find(_.oppijaNumero.contains(essi.oid)).get
+      essinRivi.kuusitoistaErityisenTuenPerusteella shouldBe true
+      essinRivi.kuusitoistaEiErityisenTuenPerusteella shouldBe false
+    }
+
+    "Toiminta-alueittain opiskeleva 16-vuotias lasketaan erityisen tuen sarakkeeseen" in {
+      val ilmari = KoskiSpecificMockOppijat.kotikuntalaskelmaKuusitoistaEiErityista
+      val oo = perusopetuksenOpiskeluoikeus(ilmari)
+      val toimintaAlueittain = oo.copy(lisätiedot = Some(PerusopetuksenOpiskeluoikeudenLisätiedot(
+        toimintaAlueittainOpiskelu = Some(List(Aikajakso(date(2026, 8, 1), None))),
+        tuenPäätöksenJaksot = Some(List(Tukijakso(Some(date(2026, 8, 1)), None)))
+      )))
+      putOppija(Oppija(ilmari, List(toimintaAlueittain)), headers = authHeaders(MockUsers.paakayttaja) ++ jsonContent) {
+        verifyResponseStatusOk()
+      }
+      reloadRaportointikanta()
+
+      val helsinkiRivi = kotikuntalaskelmaBuilder
+        .build(Seq(aapajoenKoulu), raportointipäivä, t)(session(defaultUser))
+        .rows.map(_.asInstanceOf[KotikuntalaskelmaRow])
+        .find(_.oppilaanKotikunta.contains("Helsinki")).get
+      helsinkiRivi.kuusitoistaErityisenTuenPerusteella shouldBe 1
+      helsinkiRivi.kuusitoistaEiErityisenTuenPerusteella shouldBe 0
+
+      val ilmarinRivi = uudetOppijatRivit.find(_.oppijaNumero.contains(ilmari.oid)).get
+      ilmarinRivi.kuusitoistaErityisenTuenPerusteella shouldBe true
+      ilmarinRivi.kuusitoistaEiErityisenTuenPerusteella shouldBe false
+    }
   }
 }

@@ -68,6 +68,26 @@ trait KotikunnistaRaportoiva extends QueryMethods {
       and extract(year from he.syntymaaika) between v.vuosi - 16 and v.vuosi - 6
   """))
 
+  // Oppija kuuluu erityisen tuen sarakkeeseen, jos yksikin hänen raportointipäivän jaksoistaan on sen perusteella
+  protected def ikäryhmät(päivä: LocalDate): SQLActionBuilder = sql"""
+      bool_or(extract(year from he.syntymaaika) = v.vuosi - 6) as kuusi,
+      bool_or(extract(year from he.syntymaaika) between v.vuosi - 12 and v.vuosi - 7) as seitseman_kaksitoista,
+      bool_or(extract(year from he.syntymaaika) between v.vuosi - 15 and v.vuosi - 13) as kolmetoista_viisitoista,
+      bool_or(
+        extract(year from he.syntymaaika) = v.vuosi - 16
+        and aj.alku <= $päivä and aj.loppu >= $päivä
+        and (aj.toiminta_alueittain_opiskelu or aj.opetus_vamman_sairauden_tai_rajoitteen_perusteella)
+      ) as kuusitoista_erityisen_tuen_perusteella,
+      bool_or(
+        extract(year from he.syntymaaika) = v.vuosi - 16
+        and aj.alku <= $päivä and aj.loppu >= $päivä
+      ) and not bool_or(
+        extract(year from he.syntymaaika) = v.vuosi - 16
+        and aj.alku <= $päivä and aj.loppu >= $päivä
+        and (aj.toiminta_alueittain_opiskelu or aj.opetus_vamman_sairauden_tai_rajoitteen_perusteella)
+      ) as kuusitoista_ei_erityisen_tuen_perusteella
+  """
+
   implicit protected lazy val getOppijaResult: GetResult[KotikuntalaskelmaOppijaRow] = GetResult(r =>
     KotikuntalaskelmaOppijaRow(
       oppijaNumero = Option(r.rs.getString("oppija_numero")),
@@ -128,25 +148,8 @@ trait KotikunnistaRaportoiva extends QueryMethods {
       case when bool_or(he.turvakielto) then null else max(valittu.oppilaitos_nimi) end as oppilaitos,
       case when bool_or(he.turvakielto) then null else max(valittu.luokka_aste) end as luokka_aste,
       case when bool_or(he.turvakielto) then null else max(valittu.luokka) end as luokka,
-
-      bool_or(extract(year from he.syntymaaika) = v.vuosi - 6) as kuusi,
-
-      bool_or(extract(year from he.syntymaaika) between v.vuosi - 12 and v.vuosi - 7) as seitseman_kaksitoista,
-
-      bool_or(extract(year from he.syntymaaika) between v.vuosi - 15 and v.vuosi - 13) as kolmetoista_viisitoista,
-
-      bool_or(
-        extract(year from he.syntymaaika) = v.vuosi - 16
-        and aj.alku <= $päivä and aj.loppu >= $päivä
-        and aj.opetus_vamman_sairauden_tai_rajoitteen_perusteella
-      ) as kuusitoista_erityisen_tuen_perusteella,
-
-      bool_or(
-        extract(year from he.syntymaaika) = v.vuosi - 16
-        and aj.alku <= $päivä and aj.loppu >= $päivä
-        and not aj.opetus_vamman_sairauden_tai_rajoitteen_perusteella
-      ) as kuusitoista_ei_erityisen_tuen_perusteella
     """),
+    Some(ikäryhmät(päivä)),
     Some(lähteet(päivä, kotikuntahistoria)),
     Some(sql"join valittu on valittu.master_oid = he.master_oid"),
     Some(ehdot(rajaus, päivä)),
