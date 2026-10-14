@@ -15,6 +15,11 @@ import java.time.LocalDate.{of => date}
 class ValpasHakeutumisvalvontaServiceSpec extends ValpasOppijaTestBase {
   private val hakeutumisvalvontaService = new ValpasHakeutumisvalvontaService(KoskiApplicationForTests)
 
+  private def nivelvaiheenOppijaOidit: Seq[String] =
+    hakeutumisvalvontaService
+      .getOppijatSuppeatTiedot(oppilaitos, HakeutumisvalvontaTieto.Nivelvaihe)(defaultSession).toOption.get
+      .map(_.oppija.henkilö.oid)
+
   "getHakeutumisvalvottavatOppijatSuppeatTiedot" - {
     "palauttaa yhden oppilaitoksen oppijat oikein tarkasteltaessa ennen syksyn rajapäivää" in {
       val oppijat = hakeutumisvalvontaService.getOppijatSuppeatTiedot(oppilaitos, HakeutumisvalvontaTieto.Perusopetus)(defaultSession).toOption.get.map(_.oppija)
@@ -71,6 +76,28 @@ class ValpasHakeutumisvalvontaServiceSpec extends ValpasOppijaTestBase {
 
       oppijat.map(_.henkilö.oid) should contain(ValpasMockOppijat.valmistunutTuvalainen.oid)
 
+    }
+
+    "palauttaa kevään valmistumisjaksolla nivelvaiheesta eronneen oppijan syksyn rajapäivään asti" in {
+      val oid = ValpasMockOppijat.alkukesästäEronneeksiKatsottuNivelvaiheenOpiskelija.oid
+      nivelvaiheenOppijaOidit should contain(oid)
+
+      rajapäivätService.asInstanceOf[MockValpasRajapäivätService].asetaMockTarkastelupäivä(date(2021, 9, 30))
+      nivelvaiheenOppijaOidit should contain(oid)
+
+      rajapäivätService.asInstanceOf[MockValpasRajapäivätService].asetaMockTarkastelupäivä(date(2021, 10, 1))
+      nivelvaiheenOppijaOidit should not contain(oid)
+    }
+
+    "palauttaa kevään valmistumisjakson ulkopuolella nivelvaiheesta eronneen oppijan 2 kk ajan" in {
+      val oid = ValpasMockOppijat.nivelvaiheestaKesänJälkeenEronneeksiKatsottu.oid
+      nivelvaiheenOppijaOidit should contain(oid)
+
+      rajapäivätService.asInstanceOf[MockValpasRajapäivätService].asetaMockTarkastelupäivä(date(2021, 10, 15))
+      nivelvaiheenOppijaOidit should contain(oid)
+
+      rajapäivätService.asInstanceOf[MockValpasRajapäivätService].asetaMockTarkastelupäivä(date(2021, 10, 16))
+      nivelvaiheenOppijaOidit should not contain(oid)
     }
 
     "ei palauta oppijaa, jolle on tehty kuntailmoitus" in {

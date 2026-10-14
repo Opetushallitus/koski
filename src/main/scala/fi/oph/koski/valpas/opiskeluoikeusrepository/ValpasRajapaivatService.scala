@@ -107,11 +107,6 @@ abstract class ValpasRajapäivätService(config: Config) extends Logging {
     }
   }
 
-  def nivelvaiheenOppilaitokselleHakeutumisvalvottavaJosOppijaEronnutAikaväli: (LocalDate, LocalDate) = {
-    val väli = List(keväänValmistumisjaksoAlku, keväänValmistumisjaksoLoppu).map(_.withYear(tarkastelupäivä.getYear))
-    (väli(0), väli(1))
-  }
-
   private val tulevaisuuteenMerkitynPerusopetuksenSuorituksenAikaikkunaPäivinä: Long =
     config.getLong(ValpasRajapäivätService.tulevaisuuteenMerkitynPerusopetuksenSuorituksenAikaikkunaPäivinäPath)
 
