@@ -1,11 +1,40 @@
+/*
+ * Playwrightin stylePath-tyylit fullPage-kuvakaappauksiin (takeFullPageScreenshot).
+ *
+ * Kiinteästi positioidut (position: fixed) palkit piirtyvät fullPage-kaappaukseen
+ * epävakaasti. Tällaisilta poistetaan kiinteä positiointi, ja ne piirretään
+ * osana tavanomaista flowta.
+ */
+
+/* Kiinteästi positioitu yläpalkki, jolle sisällössä on varattu tila.
+   Kaappauksessa palkki piirretään absoluuttisesti sivun alkuun varattuun tilaan. */
 #topbar.local {
   position: absolute !important;
 }
 
+/* V2-käyttöliittymän kiinteästi positioitu alapalkki, jolle body varaa tilan
+   paddingilla. Kaappauksessa palkki piirretään sivun loppuun ilman paddingia. */
 .FooterBar {
   position: static !important;
 }
 
 body.FooterBar--visible {
   padding-bottom: 0 !important;
+}
+
+/* Kiinteästi positioitu alapalkki, jolle sisältö varaa tilan paddingilla.
+   Kaappauksessa palkki piirretään sivun loppuun ilman paddingia. */
+#edit-bar-wrapper.visible {
+  position: static !important;
+}
+
+.oppija-content.edit,
+.oppija-content.dirty {
+  padding-bottom: 0 !important;
+}
+
+/* Piilotettu palkki jää DOMiin läpinäkyvänä, joten se poistetaan, jottei
+   se jätä staattisena tyhjää tilaa katselunäkymään. */
+#edit-bar-wrapper:not(.visible) {
+  display: none !important;
 }
