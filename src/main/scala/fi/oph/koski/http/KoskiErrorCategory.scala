@@ -45,6 +45,9 @@ object KoskiErrorCategory {
     class Massaluovutus extends ErrorCategory(badRequest, "massaluovutus", "Virheellinen kysely") {
       val eiYksiselitteinenOrganisaatio = subcategory("eiYksiselitteinenOrganisaatio", "Kenttää `organisaatioOid` ei ole annettu, eikä organisaatiota voi yksiselitteisesti päätellä käyttöoikeuksista.")
       val eiOppilaitos = subcategory("eiOppilaitos", "Kentän `organisaatioOid` arvon on oltava oppilaitoksen oid.")
+      val eiOppijoita = subcategory("eiOppijoita", "Kentässä `hetut` tai `oppijaOidit` on annettava vähintään yksi oppija.")
+      val eiNykyinenOpiskelija = subcategory("eiNykyinenOpiskelija", "Annettu oppija ei ole kyselyn oppilaitoksen nykyinen opiskelija.")
+      val täyttänyt18EnnenKyselyvuotta = subcategory("täyttänyt18EnnenKyselyvuotta", "Annettu oppija on täyttänyt 18 vuotta ennen kyselyn tekovuotta.")
     }
     val massaluovutus = new Massaluovutus
 

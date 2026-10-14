@@ -436,13 +436,25 @@ object KoskiSpecificMockOppijat {
   val kotikuntalaskelmaEsiopetus = koskiSpecificOppijat.oppija("Esiopetus", "Elias", "200520A802Y", syntymäaika = Some(LocalDate.of(2020, 5, 20)), kotikunta = Some(Kunta.helsinki))
   val kotikuntalaskelmaKansainvalinenEdellinenLukuvuosi = koskiSpecificOppijat.oppija("KansainvalinenEdellinenLukuvuosi", "Nea", "200819A8024", syntymäaika = Some(LocalDate.of(2019, 8, 20)), kotikunta = Some(Kunta.helsinki))
 
-  // aiemmatOpiskeluoikeudet-massaluovutuskyselyn demo-oppijat: Stadin ammattiopiston nykyisiä opiskelijoita, ks. AiemmatOpiskeluoikeudetDemoFixtures
-  val aiemmatEsiJaPerusopetus = koskiSpecificOppijat.oppijaSyntymäaikaHetusta("Aiemmat-Esi-Ja-Perusopetus", "Aino", "150308A4024")
-  val aiemmatLukio = koskiSpecificOppijat.oppijaSyntymäaikaHetusta("Aiemmat-Lukio", "Lauri", "200903A402W")
-  val aiemmatAmmatillinen = koskiSpecificOppijat.oppijaSyntymäaikaHetusta("Aiemmat-Ammatillinen", "Anni", "100502A402Y")
-  val aiemmatOmaOppilaitos = koskiSpecificOppijat.oppijaSyntymäaikaHetusta("Aiemmat-Oma-Oppilaitos", "Olli", "210802A402F")
-  val aiemmatMyöhemminAlkanut = koskiSpecificOppijat.oppijaSyntymäaikaHetusta("Aiemmat-Myöhemmin-Alkanut", "Milla", "021106A402N")
-  val aiemmatEiAiempia = koskiSpecificOppijat.oppijaSyntymäaikaHetusta("Aiemmat-Ei-Aiempia", "Eetu", "300606A402P")
+  // aiemmatOpiskeluoikeudet-massaluovutuskyselyn demo-oppijat: Stadin ammattiopiston nykyisiä opiskelijoita, ks. AiemmatOpiskeluoikeudetDemoFixtures.
+  // Kysely hylkää ennen kyselyvuotta 18 vuotta täyttäneet oppijat, joten syntymävuosi lasketaan kuluvasta vuodesta.
+  val aiemmatSyntymävuosi: Int = LocalDate.now().getYear - 18
+  private def aiemmatHetu(päivä: Int, kuukausi: Int, vuosi: Int = aiemmatSyntymävuosi) = Hetu.generate(LocalDate.of(vuosi, kuukausi, päivä), 402)
+  val aiemmatEsiJaPerusopetus = koskiSpecificOppijat.oppijaSyntymäaikaHetusta("Aiemmat-Esi-Ja-Perusopetus", "Aino", aiemmatHetu(15, 3))
+  val aiemmatLukio = koskiSpecificOppijat.oppijaSyntymäaikaHetusta("Aiemmat-Lukio", "Lauri", aiemmatHetu(20, 9))
+  val aiemmatAmmatillinen = koskiSpecificOppijat.oppijaSyntymäaikaHetusta("Aiemmat-Ammatillinen", "Anni", aiemmatHetu(10, 5))
+  val aiemmatOmaOppilaitos = koskiSpecificOppijat.oppijaSyntymäaikaHetusta("Aiemmat-Oma-Oppilaitos", "Olli", aiemmatHetu(21, 8))
+  val aiemmatMyöhemminAlkanut = koskiSpecificOppijat.oppijaSyntymäaikaHetusta("Aiemmat-Myöhemmin-Alkanut", "Milla", aiemmatHetu(2, 11))
+  val aiemmatEiAiempia = koskiSpecificOppijat.oppijaSyntymäaikaHetusta("Aiemmat-Ei-Aiempia", "Eetu", aiemmatHetu(30, 6))
+  // Vain MassaluovutusAiemmatOpiskeluoikeudetSpec:n käyttöön, ei fixture-opiskeluoikeuksia (sukunimi ei ala "Aiemmat-", jotta demoskripti ei poimi näitä)
+  val aiemmatTestiPäättynyt = koskiSpecificOppijat.oppijaSyntymäaikaHetusta("AiemmatTesti-Päättynyt", "Pekka", aiemmatHetu(1, 1))
+  val aiemmatTestiTulevaisuudessaAlkava = koskiSpecificOppijat.oppijaSyntymäaikaHetusta("AiemmatTesti-Tulevaisuudessa-Alkava", "Tuula", aiemmatHetu(2, 1))
+  val aiemmatTestiTuva = koskiSpecificOppijat.oppijaSyntymäaikaHetusta("AiemmatTesti-Tuva", "Teemu", aiemmatHetu(3, 1, vuosi = aiemmatSyntymävuosi + 2))
+  val aiemmatTestiMaster = koskiSpecificOppijat.oppijaSyntymäaikaHetusta("AiemmatTesti-Master", "Maija", aiemmatHetu(4, 1))
+  val aiemmatTestiSlave = koskiSpecificOppijat.addOppijaHenkilöWithMasterInfo(OppijaHenkilöWithMasterInfo(
+    LaajatOppijaHenkilöTiedot(oid = koskiSpecificOppijat.generateId(), sukunimi = "AiemmatTesti-Master", etunimet = "Maija", kutsumanimi = "Maija", hetu = aiemmatTestiMaster.hetu, syntymäaika = aiemmatTestiMaster.syntymäaika),
+    Some(aiemmatTestiMaster),
+  ))
 
   def defaultOppijat = koskiSpecificOppijat.getOppijat
   def defaultKuntahistoriat: mutable.Map[String, Seq[OppijanumerorekisteriKotikuntahistoriaRow]] = koskiSpecificOppijat.getKuntahistoriat
