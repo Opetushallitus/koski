@@ -199,9 +199,12 @@
       padding-bottom: (@baseline / 2);
     }
 
-    // Nimen alla oleva kielivalinta yhtä leveänä kuin kenttien valinnat
+    // Nimen alla oleva kielivalinta yhtä leveänä kuin kenttien valinnat.
+    // Valinnan oma alamarginaali tulisi nimen alapehmusteen päälle ja nostaisi
+    // sen muita syöttökenttiä ylemmäs.
     .OsasuoritusRow__nameColumn .Select {
       max-width: @Osasuoritus-kentta-max-leveys;
+      margin-bottom: 0;
     }
   }
 }
