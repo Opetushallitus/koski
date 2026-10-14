@@ -1173,6 +1173,17 @@ object ValpasOpiskeluoikeusExampleData {
     lisätiedot = None
   )
 
+  def kesänJälkeenEronneeksiKatsottuKymppiluokkalainen = ExamplesPerusopetuksenLisaopetus.lisäopetuksenOpiskeluoikeus.copy(
+    tila = NuortenPerusopetuksenOpiskeluoikeudenTila(
+      List(
+        NuortenPerusopetuksenOpiskeluoikeusjakso(date(2020, 8, 15), opiskeluoikeusLäsnä),
+        NuortenPerusopetuksenOpiskeluoikeusjakso(date(2021, 8, 15), opiskeluoikeusKatsotaanEronneeksi)
+      )
+    ),
+    suoritukset = List(lisäopetuksenSuoritus.copy(vahvistus = None)),
+    lisätiedot = None
+  )
+
   def alkuvuodestaEronnutKymppiluokkalainen = ExamplesPerusopetuksenLisaopetus.lisäopetuksenOpiskeluoikeus.copy(
     tila = NuortenPerusopetuksenOpiskeluoikeudenTila(
       List(

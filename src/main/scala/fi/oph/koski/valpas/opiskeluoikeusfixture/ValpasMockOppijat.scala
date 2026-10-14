@@ -430,6 +430,8 @@ object ValpasMockOppijat {
 
   val eiOppivelvollinenLukuvuosimaksuRahoitteinen = valpasOppijat.oppijaSyntymäaikaHetusta("Ei-oppivelvollinen-lukuvuosimaksu", "Valpas", "161106C769J", kotikunta = Some(Kunta.helsinki))
 
+  val nivelvaiheestaKesänJälkeenEronneeksiKatsottu = valpasOppijat.oppijaSyntymäaikaHetusta("Nivelvaiheesta-kesän-jälkeen-eronneeksi-katsottu", "Valpas", "060815C010H", kotikunta = Some(Kunta.helsinki))
+
   def defaultOppijat = valpasOppijat.getOppijat
   def defaultKuntahistoriat = valpasOppijat.getKuntahistoriat
   def defaultTurvakieltoKuntahistoriat = valpasOppijat.getTurvakieltoKuntahistoriat
