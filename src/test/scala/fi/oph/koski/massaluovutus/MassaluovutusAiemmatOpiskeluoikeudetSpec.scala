@@ -224,6 +224,20 @@ class MassaluovutusAiemmatOpiskeluoikeudetSpec extends AnyFreeSpec with Massaluo
       }
     }
 
+    "HiddenFromAiemmatOpiskeluoikeudet-kentät jätetään pois myös luottamuksellisten tietojen katselijalta" in {
+      oppijanTulos(haeTulostiedostot(oidilla(KoskiSpecificMockOppijat.aiemmatOmaOppilaitos)), KoskiSpecificMockOppijat.aiemmatOmaOppilaitos) { json =>
+        lisätieto(json, "ammatillinenkoulutus", "vaativanErityisenTuenErityinenTehtävä") should not be JNothing
+        lisätieto(json, "ammatillinenkoulutus", "vankilaopetuksessa") shouldBe JNothing
+      }
+      // Oppijan perusopetus on PerusopetusExampleData.päättötodistusOpiskeluoikeus, jonka 8. luokan suorituksella on käyttäytymisenArvio
+      val oppija = KoskiSpecificMockOppijat.aiemmatTestiTulevaisuudessaAlkava
+      oppijanTulos(haeTulostiedostot(oidilla(oppija)), oppija) { json =>
+        val vuosiluokat = (json \ "opiskeluoikeudet").children.flatMap(oo => (oo \ "suoritukset").children).filter(s => (s \ "tyyppi" \ "koodiarvo").extract[String] == "perusopetuksenvuosiluokka")
+        vuosiluokat should not be empty
+        vuosiluokat.map(_ \ "käyttäytymisenArvio") should contain only JNothing
+      }
+    }
+
     "Toisen käyttäjän kyselyä ei näe" in {
       val queryId = addQuerySuccessfully(query, oletuskäyttäjä)(_.queryId)
       getQuery(queryId, MockUsers.jyväskylänKatselijaEsiopetus) {
