@@ -37,7 +37,7 @@
     "@eslint/js": "10.0.1",
     "@swc/core": "1.16.13",
     "@types/jquery": "3.5.34",
-    "@types/node": "24.19.1",
+    "@types/node": "24.19.2",
     "@types/tv4": "1.2.33",
     "concurrently": "10.0.5",
     "css-minimizer-webpack-plugin": "8.0.0",
