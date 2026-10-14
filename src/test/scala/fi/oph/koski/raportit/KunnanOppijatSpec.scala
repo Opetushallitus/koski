@@ -115,7 +115,6 @@ class KunnanOppijatSpec extends AnyFreeSpec with Matchers with RaportointikantaT
     rivi.opetuksenJärjestäjä shouldBe None
     rivi.oppilaitos shouldBe None
     rivi.luokkaAste shouldBe None
-    rivi.luokka shouldBe None
     rivi.seitsemänKaksitoista shouldBe true
     helsinkiläiset.last shouldBe rivi
   }

@@ -38,69 +38,41 @@ case class Kotikuntalaskelma(db: DB) extends KotikunnistaRaportoiva {
 
   private def oppilaitoksissa(oppilaitosOids: Seq[String]): SQLActionBuilder = sql"oo.oppilaitos_oid = any($oppilaitosOids)"
 
-  private def query(oppilaitosOids: Seq[String], päivä: LocalDate, hetutonTeksti: String) = {
-    val rajaus = oppilaitoksissa(oppilaitosOids)
-    concatMany(
+  private def query(oppilaitosOids: Seq[String], päivä: LocalDate, hetutonTeksti: String) = concatMany(
     Some(sql"with "),
     Some(vuosiJaLukuvuosi(päivä)),
-    Some(sql"""
-    select
-      oo.koulutustoimija_oid as opetuksen_jarjestaja_oid,
-      oo.koulutustoimija_nimi as opetuksen_jarjestaja,
-      kkh.kotikunta as kotikunnan_koodi,
-      case
-        when kkh.kotikunta is null and he.hetu is null then $hetutonTeksti
-        else kkh.kotikunta_nimi_fi
-      end as oppilaan_kotikunta,
-
-      count(distinct case
-        when extract(year from he.syntymaaika) = v.vuosi - 6
-        then he.master_oid
-      end) as kuusi,
-
-      count(distinct case
-        when extract(year from he.syntymaaika) between v.vuosi - 12 and v.vuosi - 7
-        then he.master_oid
-      end) as seitseman_kaksitoista,
-
-      count(distinct case
-        when extract(year from he.syntymaaika) between v.vuosi - 15 and v.vuosi - 13
-        then he.master_oid
-      end) as kolmetoista_viisitoista,
-
-      count(distinct case
-        when extract(year from he.syntymaaika) = v.vuosi - 16
-          and aj.alku <= $päivä and aj.loppu >= $päivä
-          and aj.opetus_vamman_sairauden_tai_rajoitteen_perusteella
-        then he.master_oid
-      end) as kuusitoista_erityisen_tuen_perusteella,
-
-      count(distinct case
-        when extract(year from he.syntymaaika) = v.vuosi - 16
-          and aj.alku <= $päivä and aj.loppu >= $päivä
-          and not aj.opetus_vamman_sairauden_tai_rajoitteen_perusteella
-        then he.master_oid
-      end) as kuusitoista_ei_erityisen_tuen_perusteella,
-
-      count(distinct case
-        when extract(year from he.syntymaaika) between v.vuosi - 16 and v.vuosi - 6
-        then he.master_oid
-      end) as yhteensa
+    Some(sql""",
+    oppijat as (
+      select
+        oo.koulutustoimija_oid,
+        oo.koulutustoimija_nimi,
+        kkh.kotikunta,
+        kkh.kotikunta_nimi_fi,
+        bool_or(kkh.kotikunta is null and he.hetu is null) as hetuton,
     """),
+    Some(ikäryhmät(päivä)),
     // Turvakiellon alaiset lasketaan todellisiin kotikuntiinsa
     Some(lähteet(päivä, turvakiellollinenKotikuntahistoria)),
-    Some(ehdot(rajaus, päivä)),
+    Some(ehdot(oppilaitoksissa(oppilaitosOids), päivä)),
     Some(sql"""
-    group by
-      oo.koulutustoimija_oid,
-      oo.koulutustoimija_nimi,
-      kkh.kotikunta,
-      kkh.kotikunta_nimi_fi,
-      kkh.kotikunta is null and he.hetu is null
-    order by oo.koulutustoimija_nimi, kkh.kotikunta, kkh.kotikunta is null and he.hetu is null
+      group by oo.koulutustoimija_oid, oo.koulutustoimija_nimi, kkh.kotikunta, kkh.kotikunta_nimi_fi, he.master_oid
+    )
+    select
+      koulutustoimija_oid as opetuksen_jarjestaja_oid,
+      koulutustoimija_nimi as opetuksen_jarjestaja,
+      kotikunta as kotikunnan_koodi,
+      case when hetuton then $hetutonTeksti else kotikunta_nimi_fi end as oppilaan_kotikunta,
+      count(*) filter (where kuusi) as kuusi,
+      count(*) filter (where seitseman_kaksitoista) as seitseman_kaksitoista,
+      count(*) filter (where kolmetoista_viisitoista) as kolmetoista_viisitoista,
+      count(*) filter (where kuusitoista_erityisen_tuen_perusteella) as kuusitoista_erityisen_tuen_perusteella,
+      count(*) filter (where kuusitoista_ei_erityisen_tuen_perusteella) as kuusitoista_ei_erityisen_tuen_perusteella,
+      count(*) as yhteensa
+    from oppijat
+    group by koulutustoimija_oid, koulutustoimija_nimi, kotikunta, kotikunta_nimi_fi, hetuton
+    order by koulutustoimija_nimi, kotikunta, hetuton
     """)
   )
-  }
 
   def buildOppijat(oppilaitosOids: Seq[String], päivä: LocalDate, t: LocalizationReader)(implicit u: KoskiSpecificSession): DataSheet = {
     val raporttiQuery = oppijaQuery(oppilaitoksissa(oppilaitosOids), päivä, t.get("raportti-excel-default-value-esiopetus-lyhyt"), julkinenKotikuntahistoria).as[KotikuntalaskelmaOppijaRow]

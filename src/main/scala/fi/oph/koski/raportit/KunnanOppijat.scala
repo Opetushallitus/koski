@@ -14,7 +14,7 @@ case class KunnanOppijat(db: DB) extends KotikunnistaRaportoiva {
   implicit private val getKunnanOppijaResult: GetResult[KunnanOppijaRow] = GetResult(r => {
     val o = getOppijaResult(r)
     KunnanOppijaRow(o.oppijaNumero, o.hetu, o.yksiloity, o.etunimet, o.sukunimi, o.kotikunta,
-      Option(r.rs.getString("opetuksen_jarjestaja")), o.oppilaitos, o.luokkaAste, o.luokka, o.kuusi,
+      Option(r.rs.getString("opetuksen_jarjestaja")), o.oppilaitos, o.luokkaAste, o.kuusi,
       o.seitsemänKaksitoista, o.kolmetoistaViisitoista, o.kuusitoistaErityisenTuenPerusteella, o.kuusitoistaEiErityisenTuenPerusteella)
   })
 
@@ -37,7 +37,7 @@ case class KunnanOppijat(db: DB) extends KotikunnistaRaportoiva {
           and (k.poismuutto_pvm >= $päivä or k.poismuutto_pvm is null))"""
 
   private def columnSettings(t: LocalizationReader): Seq[(String, Column)] = {
-    val (ennen, jälkeen) = oppijaColumnSettings(t).span(_._1 != "oppilaitos")
+    val (ennen, jälkeen) = oppijaColumnSettings(t).filterNot(_._1 == "luokka").span(_._1 != "oppilaitos")
     ennen ++ Seq("opetuksenJärjestäjä" -> Column(t.get("raportti-excel-kolumni-opetuksenJarjestaja"))) ++ jälkeen
   }
 }
@@ -52,7 +52,6 @@ case class KunnanOppijaRow(
   opetuksenJärjestäjä: Option[String],
   oppilaitos: Option[String],
   luokkaAste: Option[String],
-  luokka: Option[String],
   kuusi: Boolean,
   seitsemänKaksitoista: Boolean,
   kolmetoistaViisitoista: Boolean,
