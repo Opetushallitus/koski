@@ -450,6 +450,7 @@ object KoskiSpecificMockOppijat {
   val aiemmatTestiPäättynyt = koskiSpecificOppijat.oppijaSyntymäaikaHetusta("AiemmatTesti-Päättynyt", "Pekka", aiemmatHetu(1, 1))
   val aiemmatTestiTulevaisuudessaAlkava = koskiSpecificOppijat.oppijaSyntymäaikaHetusta("AiemmatTesti-Tulevaisuudessa-Alkava", "Tuula", aiemmatHetu(2, 1))
   val aiemmatTestiTuva = koskiSpecificOppijat.oppijaSyntymäaikaHetusta("AiemmatTesti-Tuva", "Teemu", aiemmatHetu(3, 1, vuosi = aiemmatSyntymävuosi + 2))
+  val aiemmatTestiPerusopetus = koskiSpecificOppijat.oppijaSyntymäaikaHetusta("AiemmatTesti-Perusopetus", "Pihla", aiemmatHetu(5, 1, vuosi = aiemmatSyntymävuosi + 4))
   val aiemmatTestiMaster = koskiSpecificOppijat.oppijaSyntymäaikaHetusta("AiemmatTesti-Master", "Maija", aiemmatHetu(4, 1))
   val aiemmatTestiSlave = koskiSpecificOppijat.addOppijaHenkilöWithMasterInfo(OppijaHenkilöWithMasterInfo(
     LaajatOppijaHenkilöTiedot(oid = koskiSpecificOppijat.generateId(), sukunimi = "AiemmatTesti-Master", etunimet = "Maija", kutsumanimi = "Maija", hetu = aiemmatTestiMaster.hetu, syntymäaika = aiemmatTestiMaster.syntymäaika),
