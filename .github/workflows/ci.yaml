@@ -2,6 +2,7 @@ name: CI
 
 on:
   pull_request:
+  merge_group: { types: [checks_requested] }
 
 concurrency:
   group: ci-${{ github.ref }}
@@ -107,6 +108,7 @@ jobs:
 
   no_merge_commits:
     name: No merge commits
+    if: github.event_name == 'pull_request'
     runs-on: ubuntu-26.04
     permissions:
       pull-requests: read

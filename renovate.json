@@ -76,8 +76,7 @@
       "minimumReleaseAgeBehaviour": "timestamp-optional",
       "matchManagers": ["npm"],
       "matchUpdateTypes": ["lockFileMaintenance"],
-      "automerge": true,
-      "rebaseWhen": "behind-base-branch"
+      "automerge": true
     },
     {
       "description": "Create minor updates only while fewer than 6 PRs are open, leaving the remaining slots to patch updates.",
@@ -118,8 +117,7 @@
       "matchFileNames": ["docker-compose.yaml", "docker-compose-arm64.yaml", "opensearch/Dockerfile"],
       "matchUpdateTypes": ["minor", "patch", "digest"],
       "enabled": true,
-      "automerge": true,
-      "rebaseWhen": "behind-base-branch"
+      "automerge": true
     },
     {
       "description": "Automerge GitHub Actions minor and patch updates as one PR. Deploy and notification actions require manual review.",
@@ -128,8 +126,7 @@
       "matchUpdateTypes": ["minor", "patch"],
       "matchPackageNames": ["!aws-actions/**", "!slackapi/**"],
       "groupName": "github actions non-major",
-      "automerge": true,
-      "rebaseWhen": "behind-base-branch"
+      "automerge": true
     },
     {
       "description": "Automerge the Trivy CLI version that trivy-action installs, together with the actions. Renovate extracts it as a uses-with dependency, which the rule above does not match.",
@@ -138,8 +135,7 @@
       "matchPackageNames": ["aquasecurity/trivy"],
       "matchUpdateTypes": ["minor", "patch"],
       "groupName": "github actions non-major",
-      "automerge": true,
-      "rebaseWhen": "behind-base-branch"
+      "automerge": true
     },
     {
       "description": "Raise runner image updates on their own. The github-runners datasource has no release dates, so the strict internalChecksFilter would hold these back forever unless minimumReleaseAge is lifted.",
@@ -175,16 +171,14 @@
         "devDependencies"
       ],
       "groupName": "npm dev patch updates",
-      "automerge": true,
-      "rebaseWhen": "behind-base-branch"
+      "automerge": true
     },
     {
       "description": "Automerge devDependency minor updates after CI. Runtime code belongs in dependencies.",
       "matchManagers": ["npm"],
       "matchDepTypes": ["devDependencies"],
       "matchUpdateTypes": ["minor"],
-      "automerge": true,
-      "rebaseWhen": "behind-base-branch"
+      "automerge": true
     },
     {
       "description": "Group the OmaData OAuth2 sample server's runtime patch updates and automerge them after CI. Placed after the npm patch groups so that this groupName overrides theirs.",
@@ -193,8 +187,7 @@
       "matchDepTypes": ["dependencies"],
       "matchUpdateTypes": ["patch"],
       "groupName": "OmaData OAuth2 sample runtime patch updates",
-      "automerge": true,
-      "rebaseWhen": "behind-base-branch"
+      "automerge": true
     },
     {
       "description": "Automerge the OmaData OAuth2 sample server's runtime minor updates after CI, each in its own PR. devDependency minors are already automerged above.",
@@ -202,8 +195,7 @@
       "matchFileNames": ["omadata-oauth2-sample/server/package.json"],
       "matchDepTypes": ["dependencies"],
       "matchUpdateTypes": ["minor"],
-      "automerge": true,
-      "rebaseWhen": "behind-base-branch"
+      "automerge": true
     },
     {
       "description": "Group all Parcel updates together. Placed after the npm patch groups so that their groupName does not override this one.",
@@ -240,8 +232,7 @@
       "matchUpdateTypes": ["digest"],
       "matchPackageNames": ["node", "amazoncorretto"],
       "matchFileNames": ["docker-build/Dockerfile", "omadata-oauth2-sample/Dockerfile"],
-      "automerge": true,
-      "rebaseWhen": "behind-base-branch"
+      "automerge": true
     },
     {
       "description": "Use Node LTS versioning for @types/node so its major updates follow the same stability policy as the runtime, rather than npm's latest tag.",
@@ -264,8 +255,7 @@
       "groupName": "pnpm toolchain",
       "rangeStrategy": "pin",
       "separateMinorPatch": false,
-      "automerge": true,
-      "rebaseWhen": "behind-base-branch"
+      "automerge": true
     },
     {
       "description": "pnpm majors can change the lockfile format and defaults; review them manually.",
@@ -285,8 +275,7 @@
       "groupName": "playwright",
       "separateMinorPatch": false,
       "minimumGroupSize": 2,
-      "automerge": true,
-      "rebaseWhen": "behind-base-branch"
+      "automerge": true
     },
     {
       "description": "fs2 minor updates need Hotswap->NonEmptyHotswap refactoring",
@@ -308,7 +297,6 @@
       "groupName": "PDF rendering",
       "separateMinorPatch": false,
       "automerge": true,
-      "rebaseWhen": "behind-base-branch",
       "prBodyNotes": ["Renders the certificate PDFs (todistukset)."]
     },
     {
@@ -318,8 +306,7 @@
       "matchDepTypes": ["test"],
       "matchUpdateTypes": ["minor", "patch"],
       "matchPackageNames": ["!org.scalatra:**"],
-      "automerge": true,
-      "rebaseWhen": "behind-base-branch"
+      "automerge": true
     },
     {
       "description": "Automerge Maven build plugins that the PR build runs. The PR build never packages the WAR.",
@@ -328,16 +315,14 @@
       "matchDepTypes": ["build"],
       "matchUpdateTypes": ["minor", "patch"],
       "matchPackageNames": ["!org.apache.maven.plugins:maven-war-plugin"],
-      "automerge": true,
-      "rebaseWhen": "behind-base-branch"
+      "automerge": true
     },
     {
       "description": "Automerge Maven and the Maven wrapper in the OmaData OAuth2 Java sample.",
       "matchManagers": ["maven-wrapper"],
       "matchFileNames": ["omadata-oauth2-sample/java/**"],
       "matchUpdateTypes": ["minor", "patch"],
-      "automerge": true,
-      "rebaseWhen": "behind-base-branch"
+      "automerge": true
     },
     {
       "description": "Automerge patch updates of runtime libraries that every backend test run exercises. Integration clients (http4s, netty, AWS SDK), the PostgreSQL driver and aws-advanced-jdbc-wrapper (production connects through IAM and TLS), bouncycastle and log4j stay manual, because PR CI does not exercise them the way production uses them.",
@@ -359,8 +344,7 @@
         "org.scalaz:scalaz-core_2.13",
         "org.scala-lang.modules:scala-xml_2.13"
       ],
-      "automerge": true,
-      "rebaseWhen": "behind-base-branch"
+      "automerge": true
     },
     {
       "description": "scalafix-cli is published per Scala patch version, and each release only for the newest one. A release built for a newer Scala than scalafix.scala.version in pom.xml therefore never appears under the current artifact name. Look up versions from scalafix-interfaces, which has no Scala suffix, so that the update is still proposed instead of silently stopping.",
