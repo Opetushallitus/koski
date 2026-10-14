@@ -28,8 +28,10 @@ $otsikko,
 ""'
 taulukko() { jq -r --arg otsikko "$1" "$TAULUKKO" | sed -e 's/^\(.\)/  \1/' -e 's/ *$//'; }
 
-# 1. Kysely: luonti, odotus ja tulostiedostojen lataus (302 -> presigned S3-osoite, seurataan uudelleenohjausta)
-BODY="{\"type\":\"aiemmatOpiskeluoikeudet\",\"format\":\"application/json\",\"organisaatioOid\":\"$STADIN\"}"
+# 1. Kysely demo-oppijoille (sukunimihaku pääkäyttäjänä): luonti, odotus ja tulostiedostojen lataus
+#    (302 -> presigned S3-osoite, seurataan uudelleenohjausta)
+OIDIT=$(curl -s -u pää:pää -H 'Content-Type: application/json' -d "{\"query\":\"$HAKU\"}" "$KOSKI/henkilo/search" | jq -c '[.["henkilöt"][].oid] | sort')
+BODY="{\"type\":\"aiemmatOpiskeluoikeudet\",\"format\":\"application/json\",\"organisaatioOid\":\"$STADIN\",\"oppijaOidit\":$OIDIT}"
 RESP=$(curl -sS -u "$USER:$USER" -H 'Content-Type: application/json' -d "$BODY" "$KOSKI/massaluovutus")
 QID=$(echo "$RESP" | jq -r '.queryId // empty'); [ -n "$QID" ] || { echo "Kyselyn luonti epäonnistui:"; echo "$RESP" | jq . 2>/dev/null || echo "$RESP"; exit 1; }
 until STATUS=$(curl -s -u "$USER:$USER" "$KOSKI/massaluovutus/$QID"); [ "$(echo "$STATUS" | jq -r .status)" = complete ]; do
@@ -40,7 +42,7 @@ for URL in $(echo "$STATUS" | jq -r '.files[]'); do curl -s -L -u "$USER:$USER" 
 echo "aiemmatOpiskeluoikeudet ($USER): $(ls "$OUT" | wc -l | tr -d ' ') tulostiedostoa"; echo
 
 # 2. Oppijoittain: kyselyn tulos ja kaikki opiskeluoikeudet
-for OID in $(curl -s -u pää:pää -H 'Content-Type: application/json' -d "{\"query\":\"$HAKU\"}" "$KOSKI/henkilo/search" | jq -r '.["henkilöt"][].oid' | sort); do
+for OID in $(echo "$OIDIT" | jq -r '.[]'); do
   KAIKKI=$(curl -s -u pää:pää "$KOSKI/oppija/$OID")
   echo "$KAIKKI" | jq -r '"\(.["henkilö"].etunimet) \(.["henkilö"].sukunimi) (\(.["henkilö"].oid))"'
   if [ -f "$OUT/$OID.json" ]; then taulukko "Aiemmat opiskeluoikeudet:" < "$OUT/$OID.json"
