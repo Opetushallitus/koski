@@ -12,38 +12,51 @@ import fi.oph.koski.schema._
 import java.time.LocalDate
 import java.time.LocalDate.{of => date}
 
-// Demoaineisto aiemmatOpiskeluoikeudet-massaluovutuskyselylle. Kaikki ovat Stadin ammattiopiston nykyisiä opiskelijoita,
-// joiden aiemmat opinnot ovat Torniossa (ei muiden testien laskemissa organisaatioissa) tai Omniassa.
+// Demoaineisto aiemmatOpiskeluoikeudet-massaluovutuskyselylle: Helsingin kaupungin nykyisiä opiskelijoita Stadin ammattiopistossa
+// ja Kulosaaren ala-asteella, joiden aiemmat opinnot ovat Torniossa (ei muiden testien laskemissa organisaatioissa) tai Omniassa.
+// Kysely hyväksyy vain alle 18-vuotiaat ja kyselyvuonna 18 täyttävät oppijat, joten päivämäärät lasketaan kuluvasta vuodesta.
 object AiemmatOpiskeluoikeudetDemoFixtures {
-  private val stadinOpintojenAlku = date(2022, 8, 1)
+  private val vuosi = LocalDate.now().getYear
+  // Kyselyvuonna 18 täyttävät: perusopetus 7–16-vuotiaana, toinen aste kaksi vuotta sitten alkaen
+  private val perusopetuksenAlku = date(vuosi - 11, 8, 15)
+  private val perusopetuksenLoppu = date(vuosi - 2, 6, 1)
+  private val toisenAsteenAlku = date(vuosi - 2, 8, 1)
+  private val stadinOpintojenAlku = date(vuosi - 1, 8, 1)
+  // 14-vuotias peruskoululainen: esiopetus ja luokat 1–6 Torniossa, 7. luokka Kulosaaressa viime syksystä
+  private val esiopetuksenAlku = date(vuosi - 8, 8, 13)
+  private val esiopetuksenLoppu = date(vuosi - 7, 5, 29)
+  private val alakoulunAlku = date(vuosi - 7, 8, 13)
+  private val alakoulunLoppu = date(vuosi - 1, 6, 1)
+  private val kulosaarenAlku = date(vuosi - 1, 8, 15)
+
   private val tornio = Koodistokoodiviite("851", "kunta")
   private val raumonKoulu = Oppilaitos(MockOrganisaatiot.raumonKoulu, None, None)
   private val arpelanPäiväkoti = Oppilaitos(MockOrganisaatiot.arpelanPäiväkoti, None, None)
   private val tornionYhteislyseonLukio = Oppilaitos(MockOrganisaatiot.tornionYhteislyseonLukio, None, None)
+  private val kulosaarenAlaAste = Oppilaitos(MockOrganisaatiot.kulosaarenAlaAste, None, None)
 
   def opiskeluoikeudet: List[(OppijaHenkilö, KoskeenTallennettavaOpiskeluoikeus)] = List(
-    // Esiopetuksen peruste 102/011/2014 on voimassa vasta 31.12.2014 alkaen, siksi tämä oppija on muita nuorempi
     (KoskiSpecificMockOppijat.aiemmatEsiJaPerusopetus, esiopetusArkaluontoisillaLisätiedoilla),
-    (KoskiSpecificMockOppijat.aiemmatEsiJaPerusopetus, perusopetus(date(2015, 8, 13), date(2024, 6, 1), Some(perusopetuksenArkaluontoisetLisätiedot))),
-    (KoskiSpecificMockOppijat.aiemmatEsiJaPerusopetus, stadinAmmatillinen(alku = date(2024, 8, 1))),
+    (KoskiSpecificMockOppijat.aiemmatEsiJaPerusopetus, alakouluArkaluontoisillaLisätiedoilla),
+    (KoskiSpecificMockOppijat.aiemmatEsiJaPerusopetus, kulosaarenYläkoulu),
 
-    (KoskiSpecificMockOppijat.aiemmatLukio, perusopetus(date(2010, 8, 16), date(2019, 6, 1))),
-    (KoskiSpecificMockOppijat.aiemmatLukio, lukio(alku = date(2019, 8, 1), eronnut = Some(date(2021, 12, 20)))),
-    (KoskiSpecificMockOppijat.aiemmatLukio, stadinAmmatillinen()),
+    (KoskiSpecificMockOppijat.aiemmatLukio, perusopetus()),
+    (KoskiSpecificMockOppijat.aiemmatLukio, lukio(alku = toisenAsteenAlku, eronnut = Some(date(vuosi - 1, 12, 20)))),
+    (KoskiSpecificMockOppijat.aiemmatLukio, stadinAmmatillinen(alku = date(vuosi, 1, 8))),
 
-    (KoskiSpecificMockOppijat.aiemmatAmmatillinen, perusopetus(date(2009, 8, 15), date(2018, 6, 2))),
-    (KoskiSpecificMockOppijat.aiemmatAmmatillinen, AmmatillinenOpiskeluoikeusTestData.katsotaanEronneeksiOpiskeluoikeus(MockOrganisaatiot.omnia, alkamispäivä = date(2018, 8, 1), päättymispäivä = date(2019, 5, 1))),
+    (KoskiSpecificMockOppijat.aiemmatAmmatillinen, perusopetus()),
+    (KoskiSpecificMockOppijat.aiemmatAmmatillinen, AmmatillinenOpiskeluoikeusTestData.katsotaanEronneeksiOpiskeluoikeus(MockOrganisaatiot.omnia, alkamispäivä = toisenAsteenAlku, päättymispäivä = date(vuosi - 1, 5, 1))),
     (KoskiSpecificMockOppijat.aiemmatAmmatillinen, stadinAmmatillinen()),
 
-    (KoskiSpecificMockOppijat.aiemmatOmaOppilaitos, perusopetus(date(2009, 8, 15), date(2018, 6, 2))),
+    (KoskiSpecificMockOppijat.aiemmatOmaOppilaitos, perusopetus()),
     (KoskiSpecificMockOppijat.aiemmatOmaOppilaitos, stadinPäättynytAmmatillinen),
     (KoskiSpecificMockOppijat.aiemmatOmaOppilaitos, stadinAmmatillinen()),
 
-    (KoskiSpecificMockOppijat.aiemmatMyöhemminAlkanut, perusopetus(date(2013, 8, 15), date(2022, 6, 4))),
-    (KoskiSpecificMockOppijat.aiemmatMyöhemminAlkanut, stadinAmmatillinen()),
-    (KoskiSpecificMockOppijat.aiemmatMyöhemminAlkanut, lukio(alku = date(2023, 8, 1), eronnut = None)),
+    (KoskiSpecificMockOppijat.aiemmatMyöhemminAlkanut, perusopetus()),
+    (KoskiSpecificMockOppijat.aiemmatMyöhemminAlkanut, stadinAmmatillinen(alku = toisenAsteenAlku)),
+    (KoskiSpecificMockOppijat.aiemmatMyöhemminAlkanut, lukio(alku = stadinOpintojenAlku, eronnut = None)),
 
-    (KoskiSpecificMockOppijat.aiemmatEiAiempia, stadinAmmatillinen()),
+    (KoskiSpecificMockOppijat.aiemmatEiAiempia, stadinAmmatillinen(alku = toisenAsteenAlku)),
   )
 
   private def stadinAmmatillinen(alku: LocalDate = stadinOpintojenAlku): AmmatillinenOpiskeluoikeus =
@@ -51,56 +64,77 @@ object AiemmatOpiskeluoikeudetDemoFixtures {
 
   // Eri koulutus kuin nykyisessä opiskeluoikeudessa, jotta duplikaattivalidaatio hyväksyy saman oppilaitoksen toisen rivin
   private def stadinPäättynytAmmatillinen: AmmatillinenOpiskeluoikeus = {
-    val alku = date(2018, 8, 1)
-    val oo = AmmatillinenOpiskeluoikeusTestData.opiskeluoikeus(MockOrganisaatiot.stadinAmmattiopisto, koulutusKoodi = 351741, diaariNumero = "OPH-2455-2017", alkamispäivä = alku)
-    oo.copy(tila = AmmatillinenOpiskeluoikeudenTila(oo.tila.opiskeluoikeusjaksot :+ AmmatillinenOpiskeluoikeusjakso(date(2020, 5, 31), opiskeluoikeusEronnut)))
+    val oo = AmmatillinenOpiskeluoikeusTestData.opiskeluoikeus(MockOrganisaatiot.stadinAmmattiopisto, koulutusKoodi = 351741, diaariNumero = "OPH-2455-2017", alkamispäivä = toisenAsteenAlku)
+    oo.copy(tila = AmmatillinenOpiskeluoikeudenTila(oo.tila.opiskeluoikeusjaksot :+ AmmatillinenOpiskeluoikeusjakso(date(vuosi - 1, 5, 31), opiskeluoikeusEronnut)))
   }
 
   private def esiopetusArkaluontoisillaLisätiedoilla: EsiopetuksenOpiskeluoikeus = EsiopetuksenOpiskeluoikeus(
     oppilaitos = Some(arpelanPäiväkoti),
-    suoritukset = List(ExamplesEsiopetus.päiväkotisuoritus(arpelanPäiväkoti).copy(vahvistus = vahvistusPaikkakunnalla(date(2015, 5, 29), arpelanPäiväkoti, tornio))),
+    suoritukset = List(ExamplesEsiopetus.päiväkotisuoritus(arpelanPäiväkoti).copy(vahvistus = vahvistusPaikkakunnalla(esiopetuksenLoppu, arpelanPäiväkoti, tornio))),
     tila = NuortenPerusopetuksenOpiskeluoikeudenTila(List(
-      NuortenPerusopetuksenOpiskeluoikeusjakso(date(2014, 8, 13), opiskeluoikeusLäsnä),
-      NuortenPerusopetuksenOpiskeluoikeusjakso(date(2015, 5, 29), opiskeluoikeusValmistunut),
+      NuortenPerusopetuksenOpiskeluoikeusjakso(esiopetuksenAlku, opiskeluoikeusLäsnä),
+      NuortenPerusopetuksenOpiskeluoikeusjakso(esiopetuksenLoppu, opiskeluoikeusValmistunut),
     )),
     lisätiedot = Some(EsiopetuksenOpiskeluoikeudenLisätiedot(
-      pidennettyOppivelvollisuus = Some(Aikajakso(date(2014, 8, 13), Some(date(2015, 5, 29)))),
-      vammainen = Some(List(Aikajakso(date(2014, 8, 13), Some(date(2014, 12, 31))))),
-      vaikeastiVammainen = Some(List(Aikajakso(date(2015, 1, 1), Some(date(2015, 5, 29))))),
-      kuljetusetu = Some(Aikajakso(date(2014, 8, 13), Some(date(2015, 5, 29)))),
-      sisäoppilaitosmainenMajoitus = Some(List(Aikajakso(date(2014, 9, 1), Some(date(2015, 5, 29))))),
+      pidennettyOppivelvollisuus = Some(Aikajakso(esiopetuksenAlku, Some(esiopetuksenLoppu))),
+      vammainen = Some(List(Aikajakso(esiopetuksenAlku, Some(esiopetuksenAlku.withMonth(12).withDayOfMonth(31))))),
+      vaikeastiVammainen = Some(List(Aikajakso(esiopetuksenLoppu.withDayOfYear(1), Some(esiopetuksenLoppu)))),
+      kuljetusetu = Some(Aikajakso(esiopetuksenAlku, Some(esiopetuksenLoppu))),
+      sisäoppilaitosmainenMajoitus = Some(List(Aikajakso(esiopetuksenAlku.withMonth(9).withDayOfMonth(1), Some(esiopetuksenLoppu)))),
       erityisenTuenPäätökset = Some(List(ErityisenTuenPäätös(
-        alku = Some(date(2014, 8, 13)),
-        loppu = Some(date(2015, 5, 29)),
+        alku = Some(esiopetuksenAlku),
+        loppu = Some(esiopetuksenLoppu),
         erityisryhmässä = Some(false),
         tukimuodot = None,
       ))),
     )),
   )
 
-  private def perusopetuksenArkaluontoisetLisätiedot: PerusopetuksenOpiskeluoikeudenLisätiedot = PerusopetuksenOpiskeluoikeudenLisätiedot(
-    kuljetusetu = Some(Aikajakso(date(2015, 8, 13), Some(date(2018, 6, 2)))),
-    sisäoppilaitosmainenMajoitus = Some(List(Aikajakso(date(2021, 8, 16), Some(date(2024, 6, 1))))),
-    koulukoti = Some(List(Aikajakso(date(2022, 1, 10), Some(date(2022, 12, 16))))),
+  // Luokat 1–6 Torniossa, 6. luokka vahvistettu, eronnut koulun vaihdon vuoksi
+  private def alakouluArkaluontoisillaLisätiedoilla: PerusopetuksenOpiskeluoikeus = PerusopetuksenOpiskeluoikeus(
+    oppilaitos = Some(raumonKoulu),
+    suoritukset = List(PerusopetusExampleData.seitsemännenLuokanSuoritus.copy(
+      koulutusmoduuli = PerusopetuksenLuokkaAste(6, PerusopetusExampleData.perusopetuksenDiaarinumero),
+      luokka = "6A",
+      toimipiste = raumonKoulu,
+      alkamispäivä = Some(alakoulunLoppu.minusYears(1).withMonth(8).withDayOfMonth(15)),
+      vahvistus = vahvistusPaikkakunnalla(alakoulunLoppu.minusDays(2), raumonKoulu, tornio),
+    )),
+    tila = NuortenPerusopetuksenOpiskeluoikeudenTila(List(
+      NuortenPerusopetuksenOpiskeluoikeusjakso(alakoulunAlku, opiskeluoikeusLäsnä),
+      NuortenPerusopetuksenOpiskeluoikeusjakso(alakoulunLoppu, opiskeluoikeusEronnut),
+    )),
+    lisätiedot = Some(PerusopetuksenOpiskeluoikeudenLisätiedot(
+      kuljetusetu = Some(Aikajakso(alakoulunAlku, Some(alakoulunAlku.plusYears(3).withMonth(6).withDayOfMonth(2)))),
+      sisäoppilaitosmainenMajoitus = Some(List(Aikajakso(alakoulunLoppu.minusYears(3).withMonth(8).withDayOfMonth(16), Some(alakoulunLoppu)))),
+      koulukoti = Some(List(Aikajakso(alakoulunLoppu.minusYears(2).withMonth(1).withDayOfMonth(10), Some(alakoulunLoppu.minusYears(2).withMonth(12).withDayOfMonth(16))))),
+    )),
   )
 
-  private def perusopetus(alku: LocalDate, loppu: LocalDate, lisätiedot: Option[PerusopetuksenOpiskeluoikeudenLisätiedot] = None): PerusopetuksenOpiskeluoikeus =
+  private def kulosaarenYläkoulu: PerusopetuksenOpiskeluoikeus = PerusopetusExampleData.opiskeluoikeus(
+    oppilaitos = kulosaarenAlaAste,
+    suoritukset = List(PerusopetusExampleData.seitsemännenLuokanSuoritus.copy(toimipiste = kulosaarenAlaAste, luokka = "7A", alkamispäivä = Some(kulosaarenAlku), vahvistus = None)),
+    alkamispäivä = kulosaarenAlku,
+    päättymispäivä = None,
+  )
+
+  private def perusopetus(): PerusopetuksenOpiskeluoikeus =
     PerusopetusExampleData.opiskeluoikeus(
       oppilaitos = raumonKoulu,
       suoritukset = List(
         PerusopetusExampleData.yhdeksännenLuokanSuoritus.copy(
           toimipiste = raumonKoulu,
-          alkamispäivä = Some(loppu.minusYears(1).withMonth(8).withDayOfMonth(15)),
-          vahvistus = vahvistusPaikkakunnalla(loppu, raumonKoulu, tornio),
+          alkamispäivä = Some(perusopetuksenLoppu.minusYears(1).withMonth(8).withDayOfMonth(15)),
+          vahvistus = vahvistusPaikkakunnalla(perusopetuksenLoppu, raumonKoulu, tornio),
         ),
         PerusopetusExampleData.perusopetuksenOppimääränSuoritus.copy(
           toimipiste = raumonKoulu,
-          vahvistus = vahvistusPaikkakunnalla(loppu, raumonKoulu, tornio),
+          vahvistus = vahvistusPaikkakunnalla(perusopetuksenLoppu, raumonKoulu, tornio),
         ),
       ),
-      alkamispäivä = alku,
-      päättymispäivä = Some(loppu),
-    ).copy(lisätiedot = lisätiedot)
+      alkamispäivä = perusopetuksenAlku,
+      päättymispäivä = Some(perusopetuksenLoppu),
+    )
 
   private def lukio(alku: LocalDate, eronnut: Option[LocalDate]): LukionOpiskeluoikeus = LukionOpiskeluoikeus(
     oppilaitos = Some(tornionYhteislyseonLukio),
