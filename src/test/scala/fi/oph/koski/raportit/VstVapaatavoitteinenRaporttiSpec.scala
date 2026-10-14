@@ -1,8 +1,12 @@
 package fi.oph.koski.raportit
 
+import com.typesafe.config.ConfigValueFactory.fromAnyRef
 import fi.oph.koski.KoskiApplicationForTests
+import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.henkilo.{KoskiSpecificMockOppijat, LaajatOppijaHenkilöTiedot}
+import fi.oph.koski.koskiuser.MockUsers
 import fi.oph.koski.localization.LocalizationReader
+import fi.oph.koski.massaluovutus.raportit.MassaluovutusQueryVSTVapaatavoitteinen
 import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.raportit.vst.VSTVapaatavoitteinenRow
 import fi.oph.koski.raportointikanta.RaportointikantaTestMethods
@@ -114,6 +118,36 @@ class VstVapaatavoitteinenRaporttiSpec
       val pvm = LocalDate.of(2023, 12, 20)
       val sheet = getMainDataSheet(getRaportti(oppilaitosOid, alku = pvm, loppu = pvm))
       verifyOppijat(sheet, Seq(keskeytynytOppija))
+    }
+  }
+
+  "Raportti ei ole käytössä tuotantoympäristössä" - {
+    val app = KoskiApplicationForTests
+    val tuotantoConfig = app.config.withValue("opintopolku.virkailija.url", fromAnyRef("https://virkailija.opintopolku.fi"))
+    val oppilaitosOid = MockOrganisaatiot.varsinaisSuomenKansanopisto
+    implicit val session = MockUsers.varsinaisSuomiPalvelukäyttäjä.toKoskiSpecificSession(app.käyttöoikeusRepository)
+    val hierarkia = app.organisaatioRepository.getOrganisaatioHierarkia(oppilaitosOid).get
+    val koulutusmuodot = Map(oppilaitosOid -> Seq("vapaansivistystyonkoulutus"))
+    val kysely = MassaluovutusQueryVSTVapaatavoitteinen(
+      organisaatioOid = Some(oppilaitosOid),
+      alku = LocalDate.of(2022, 1, 1),
+      loppu = LocalDate.of(2025, 1, 1),
+    )
+
+    "raporttityyppiä ei tarjota käyttöliittymälle" in {
+      val tyypit = RaportitAccessResolver(app.organisaatioRepository, app.koodistoPalvelu, app.raportointiDatabase, tuotantoConfig)
+        .mahdollisetRaporttienTyypitOrganisaatiolle(hierarkia, koulutusmuodot)
+      tyypit should contain(JatkuvanOppimisenVapaanSivistystyönRaportti)
+      tyypit should not contain VapaanSivistystyönVapaatavoitteisenKoulutuksenRaportti
+    }
+
+    "massaluovutuskysely ei ole sallittu" in {
+      kysely.queryAllowed(KoskiApplication(tuotantoConfig)) should be(false)
+    }
+
+    "muissa ympäristöissä raportti ja kysely ovat käytössä" in {
+      RaportitAccessResolver(app).mahdollisetRaporttienTyypitOrganisaatiolle(hierarkia, koulutusmuodot) should contain(VapaanSivistystyönVapaatavoitteisenKoulutuksenRaportti)
+      kysely.queryAllowed(app) should be(true)
     }
   }
 
