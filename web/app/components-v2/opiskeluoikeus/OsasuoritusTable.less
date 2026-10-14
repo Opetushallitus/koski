@@ -112,7 +112,7 @@
 // ---------------------------------------------------------------------------
 // Ammatillisen tyyli (AmmatillinenTyyliContext)
 //
-// Rivit ovat valkoisia ja niiden välissä on ohut viiva. Laajennetun rivin
+// Rivit ovat valkoisia ilman välissä olevia viivoja. Laajennetun rivin
 // kentät ovat harmaassa laatikossa rivin nimen alla (OsasuoritusProperty.less)
 // ja sisäkkäinen taulukko on tavallinen taulukko yhden askeleen sisennettynä.
 // Sisennys on kiinteä mitta tasoa kohden (--osasuoritus-taso), ei ruudukon
@@ -130,24 +130,12 @@
 );
 // Ikonin etäisyys painikkeensa reunasta; otsikot tasataan ikonin kanssa
 @Osasuoritus-amis-ikoni: 4px;
-@Osasuoritus-amis-viiva: lighten(@color-gray-darker, 4%);
 
 @Osasuoritus-amis-sisennys: ~'calc(var(--osasuoritus-taso, 0) * @{Osasuoritus-amis-askel})';
 // Sisäkkäisen taulukon viivat alkavat hieman ikonien vasemmalta puolelta
 @Osasuoritus-amis-viivan-alku: ~'calc(@{Osasuoritus-amis-reuna} - @{Osasuoritus-amis-ikoni} + @{Osasuoritus-amis-sisennys})';
 
 .OsasuoritusRow--ammatillinen {
-  // Viiva piirretään taustakuvana, koska rivi on koko taulukon levyinen
-  // ruudukko: sisäkkäisellä rivillä viiva alkaa vasta taulukon omasta
-  // sisennyksestä, jolloin viivan pituus kertoo tason.
-  background: linear-gradient(@Osasuoritus-amis-viiva, @Osasuoritus-amis-viiva)
-    no-repeat right top;
-  background-size: 100% 1px;
-
-  &.OsasuoritusRow--sisakkainen {
-    background-size: ~'calc(100% - @{Osasuoritus-amis-viivan-alku})' 1px;
-  }
-
   > .Column {
     min-height: 38px;
   }
@@ -211,11 +199,6 @@
 
 .OsasuoritusRow + .OsasuoritusRow--ammatillinen {
   margin-top: 0;
-}
-
-// Taulukon ensimmäinen rivi alkaa otsikon viivasta
-.OsasuoritusHeader + .OsasuoritusRow--ammatillinen {
-  background: none;
 }
 
 .OsasuoritusHeader--ammatillinen {

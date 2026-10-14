@@ -392,7 +392,6 @@ export const OsasuoritusRow = <DATA_KEYS extends string>(
           className={cx(
             'OsasuoritusRow',
             'OsasuoritusRow--ammatillinen',
-            taso > 0 && 'OsasuoritusRow--sisakkainen',
             isOpen && 'OsasuoritusRow--open',
             props.editMode && 'OsasuoritusRow--edit'
           )}

@@ -134,8 +134,8 @@
 // laatikossa rivin nimen alla. Se on näkymän ainoa täyttöväri.
 //
 // Kenttärivit ulottuvat koko taulukon leveydelle, koska samassa ruudukossa on
-// myös sisäkkäinen taulukko. Laatikko ja kenttien välinen viiva piirretään
-// siksi taustakuvina, jotka alkavat nimisarakkeen kohdalta.
+// myös sisäkkäinen taulukko. Laatikko piirretään siksi taustakuvana, joka
+// alkaa nimisarakkeen kohdalta.
 // ---------------------------------------------------------------------------
 
 // Rivin nimen etäisyys taulukon vasemmasta reunasta = kenttien nimien paikka
@@ -167,21 +167,6 @@
     background-position: right top;
     background-size: ~'calc(100% - @{Osasuoritus-amis-nimi} + @{Osasuoritus-amis-laatikon-reunus})'
       100%;
-  }
-
-  // Kenttien välinen viiva laatikon sisällä
-  > .OsasuoritusProperty + .OsasuoritusProperty {
-    background-image:
-      linear-gradient(@color-gray-darker, @color-gray-darker),
-      linear-gradient(@color-neutral-gray, @color-neutral-gray);
-    background-position:
-      right @Osasuoritus-amis-laatikon-reunus top,
-      right top;
-    background-size:
-      ~'calc(100% - @{Osasuoritus-amis-nimi} - @{Osasuoritus-amis-laatikon-reunus})'
-        1px,
-      ~'calc(100% - @{Osasuoritus-amis-nimi} + @{Osasuoritus-amis-laatikon-reunus})'
-        100%;
   }
 
   .OsasuoritusPropertyLabel {
