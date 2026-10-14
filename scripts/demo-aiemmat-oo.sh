@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
-# Demo: aiemmatOpiskeluoikeudet-massaluovutuskysely Stadin ammattiopistolle paikallista Koskea vasten.
-# Ajaa kyselyn, lataa tulostiedostot ja tulostaa jokaisesta demo-oppijasta kyselyn palauttamat aiemmat
-# opiskeluoikeudet ja niiden alle oppijan kaikki opiskeluoikeudet (GET /koski/api/oppija/{oid} pääkäyttäjänä).
+# Demo: aiemmatOpiskeluoikeudet-massaluovutuskysely Helsingin kaupungin oppilaitoksille paikallista Koskea vasten.
+# Ajaa kyselyn Stadin ammattiopistolle ja Kulosaaren ala-asteelle niiden nykyisistä demo-oppijoista, lataa tulostiedostot ja
+# tulostaa jokaisesta demo-oppijasta kyselyn palauttamat aiemmat opiskeluoikeudet ja niiden alle oppijan kaikki
+# opiskeluoikeudet (GET /koski/api/oppija/{oid} pääkäyttäjänä).
 #
 # Usage: scripts/demo-aiemmat-oo.sh [user] [hakusana]
 #   user      kyselyn tekijä, oletus hki-aiemmat-oo (hki-aiemmat-oo-ei-luottamuksellinen näyttää arkaluontoiset tiedot suodatettuina)
@@ -11,7 +12,7 @@
 set -euo pipefail
 USER="${1:-hki-aiemmat-oo}"; HAKU="${2:-Aiemmat-}"
 KOSKI="http://localhost:7021/koski/api"
-STADIN="1.2.246.562.10.52251087186"
+OPPILAITOKSET="1.2.246.562.10.52251087186 1.2.246.562.10.64353470871"  # Stadin ammattiopisto, Kulosaaren ala-aste
 OUT="$(mktemp -d)"; trap 'rm -rf "$OUT"' EXIT
 
 # jq: oppijan opiskeluoikeudet taulukkona (sama rakenne massaluovutuksen tulostiedostossa ja oppija-API:n vastauksessa)
@@ -28,24 +29,36 @@ $otsikko,
 ""'
 taulukko() { jq -r --arg otsikko "$1" "$TAULUKKO" | sed -e 's/^\(.\)/  \1/' -e 's/ *$//'; }
 
-# 1. Kysely demo-oppijoille (sukunimihaku pääkäyttäjänä): luonti, odotus ja tulostiedostojen lataus
-#    (302 -> presigned S3-osoite, seurataan uudelleenohjausta)
-OIDIT=$(curl -s -u pää:pää -H 'Content-Type: application/json' -d "{\"query\":\"$HAKU\"}" "$KOSKI/henkilo/search" | jq -c '[.["henkilöt"][].oid] | sort')
-BODY="{\"type\":\"aiemmatOpiskeluoikeudet\",\"format\":\"application/json\",\"organisaatioOid\":\"$STADIN\",\"oppijaOidit\":$OIDIT}"
-RESP=$(curl -sS -u "$USER:$USER" -H 'Content-Type: application/json' -d "$BODY" "$KOSKI/massaluovutus")
-QID=$(echo "$RESP" | jq -r '.queryId // empty'); [ -n "$QID" ] || { echo "Kyselyn luonti epäonnistui:"; echo "$RESP" | jq . 2>/dev/null || echo "$RESP"; exit 1; }
-until STATUS=$(curl -s -u "$USER:$USER" "$KOSKI/massaluovutus/$QID"); [ "$(echo "$STATUS" | jq -r .status)" = complete ]; do
-  [ "$(echo "$STATUS" | jq -r .status)" = failed ] && { echo "$STATUS" | jq .; exit 1; }
-  sleep 1
-done
-for URL in $(echo "$STATUS" | jq -r '.files[]'); do curl -s -L -u "$USER:$USER" "$URL" -o "$OUT/$(basename "$URL")"; done
-echo "aiemmatOpiskeluoikeudet ($USER): $(ls "$OUT" | wc -l | tr -d ' ') tulostiedostoa"; echo
+# 1. Demo-oppijat (sukunimihaku pääkäyttäjänä) ja heidän kaikki opiskeluoikeutensa
+OIDIT=$(curl -s -u pää:pää -H 'Content-Type: application/json' -d "{\"query\":\"$HAKU\"}" "$KOSKI/henkilo/search" | jq -r '.["henkilöt"][].oid' | sort)
+for OID in $OIDIT; do curl -s -u pää:pää "$KOSKI/oppija/$OID" > "$OUT/$OID.kaikki.json"; done
 
-# 2. Oppijoittain: kyselyn tulos ja kaikki opiskeluoikeudet
-for OID in $(echo "$OIDIT" | jq -r '.[]'); do
-  KAIKKI=$(curl -s -u pää:pää "$KOSKI/oppija/$OID")
-  echo "$KAIKKI" | jq -r '"\(.["henkilö"].etunimet) \(.["henkilö"].sukunimi) (\(.["henkilö"].oid))"'
-  if [ -f "$OUT/$OID.json" ]; then taulukko "Aiemmat opiskeluoikeudet:" < "$OUT/$OID.json"
+# 2. Kysely kullekin oppilaitokselle sen nykyisistä opiskelijoista (päättymätön opiskeluoikeus oppilaitoksessa):
+#    luonti, odotus ja tulostiedostojen lataus (302 -> presigned S3-osoite, seurataan uudelleenohjausta)
+for OPPILAITOS in $OPPILAITOKSET; do
+  OPISKELIJAT=$(for OID in $OIDIT; do
+    jq -r --arg o "$OPPILAITOS" 'select(any(.opiskeluoikeudet[]; .oppilaitos.oid == $o and .["päättymispäivä"] == null)) | .["henkilö"].oid' "$OUT/$OID.kaikki.json"
+  done | jq -R . | jq -sc .)
+  [ "$OPISKELIJAT" != "[]" ] || continue
+  BODY="{\"type\":\"aiemmatOpiskeluoikeudet\",\"format\":\"application/json\",\"organisaatioOid\":\"$OPPILAITOS\",\"oppijaOidit\":$OPISKELIJAT}"
+  RESP=$(curl -sS -u "$USER:$USER" -H 'Content-Type: application/json' -d "$BODY" "$KOSKI/massaluovutus")
+  QID=$(echo "$RESP" | jq -r '.queryId // empty'); [ -n "$QID" ] || { echo "Kyselyn luonti epäonnistui:"; echo "$RESP" | jq . 2>/dev/null || echo "$RESP"; exit 1; }
+  until STATUS=$(curl -s -u "$USER:$USER" "$KOSKI/massaluovutus/$QID"); [ "$(echo "$STATUS" | jq -r .status)" = complete ]; do
+    [ "$(echo "$STATUS" | jq -r .status)" = failed ] && { echo "$STATUS" | jq .; exit 1; }
+    sleep 1
+  done
+  mkdir -p "$OUT/$OPPILAITOS"
+  for URL in $(echo "$STATUS" | jq -r '.files[]'); do curl -s -L -u "$USER:$USER" "$URL" -o "$OUT/$OPPILAITOS/$(basename "$URL")"; done
+  NIMI=$(jq -r --arg o "$OPPILAITOS" '.opiskeluoikeudet[] | select(.oppilaitos.oid == $o) | .oppilaitos.nimi.fi' "$OUT"/*.kaikki.json | head -1)
+  echo "aiemmatOpiskeluoikeudet ($USER), $NIMI: $(echo "$OPISKELIJAT" | jq length) oppijaa, $(ls "$OUT/$OPPILAITOS" | wc -l | tr -d ' ') tulostiedostoa"
+done
+echo
+
+# 3. Oppijoittain: kyselyn tulos ja kaikki opiskeluoikeudet
+for OID in $OIDIT; do
+  jq -r '"\(.["henkilö"].etunimet) \(.["henkilö"].sukunimi) (\(.["henkilö"].oid))"' "$OUT/$OID.kaikki.json"
+  TULOS=$(ls "$OUT"/*/"$OID.json" 2>/dev/null | head -1 || true)
+  if [ -n "$TULOS" ]; then taulukko "Aiemmat opiskeluoikeudet:" < "$TULOS"
   else printf '  Aiemmat opiskeluoikeudet:\n    (ei tulostiedostoa)\n\n'; fi
-  echo "$KAIKKI" | taulukko "Kaikki opiskeluoikeudet:"
+  taulukko "Kaikki opiskeluoikeudet:" < "$OUT/$OID.kaikki.json"
 done

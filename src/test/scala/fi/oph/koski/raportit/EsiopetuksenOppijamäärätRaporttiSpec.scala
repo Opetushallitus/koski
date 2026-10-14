@@ -278,8 +278,7 @@ class EsiopetuksenOppijamäärätRaporttiSpec
 
       "ei näe muiden ostopalvelu/palveluseteli-tietoja" in {
         val raportti = buildEsiopetuksenOppijamäärätRaportti(tornioTallentaja, tornionKaupunki)
-        // Tornion oma päiväkotiesiopetus näkyy, Helsingin ostopalvelupäiväkodit eivät
-        getOppilaitokset(raportti) should equal(List("ARPELAN PÄIVÄKOTI"))
+        getOppilaitokset(raportti) should be(empty)
       }
 
       "globaaleilla käyttöoikeuksilla voi tehdä raportin" in {

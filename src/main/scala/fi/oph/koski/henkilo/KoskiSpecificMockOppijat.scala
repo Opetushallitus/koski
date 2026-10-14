@@ -436,11 +436,11 @@ object KoskiSpecificMockOppijat {
   val kotikuntalaskelmaKansainvalinenEdellinenLukuvuosi = koskiSpecificOppijat.oppija("KansainvalinenEdellinenLukuvuosi", "Nea", "200819A8024", syntymäaika = Some(LocalDate.of(2019, 8, 20)), kotikunta = Some(Kunta.helsinki))
   val vstVapaatavoitteinenKeskeytynyt = koskiSpecificOppijat.oppija("Vapaa-Sivistys", "Keskeyttänyt-Kouluttautuja", "150685-200W")
 
-  // aiemmatOpiskeluoikeudet-massaluovutuskyselyn demo-oppijat: Stadin ammattiopiston nykyisiä opiskelijoita, ks. AiemmatOpiskeluoikeudetDemoFixtures.
+  // aiemmatOpiskeluoikeudet-massaluovutuskyselyn demo-oppijat: Helsingin kaupungin nykyisiä opiskelijoita, ks. AiemmatOpiskeluoikeudetDemoFixtures.
   // Kysely hylkää ennen kyselyvuotta 18 vuotta täyttäneet oppijat, joten syntymävuosi lasketaan kuluvasta vuodesta.
   val aiemmatSyntymävuosi: Int = LocalDate.now().getYear - 18
   private def aiemmatHetu(päivä: Int, kuukausi: Int, vuosi: Int = aiemmatSyntymävuosi) = Hetu.generate(LocalDate.of(vuosi, kuukausi, päivä), 402)
-  val aiemmatEsiJaPerusopetus = koskiSpecificOppijat.oppijaSyntymäaikaHetusta("Aiemmat-Esi-Ja-Perusopetus", "Aino", aiemmatHetu(15, 3))
+  val aiemmatEsiJaPerusopetus = koskiSpecificOppijat.oppijaSyntymäaikaHetusta("Aiemmat-Esi-Ja-Perusopetus", "Aino", aiemmatHetu(15, 3, vuosi = aiemmatSyntymävuosi + 4))
   val aiemmatLukio = koskiSpecificOppijat.oppijaSyntymäaikaHetusta("Aiemmat-Lukio", "Lauri", aiemmatHetu(20, 9))
   val aiemmatAmmatillinen = koskiSpecificOppijat.oppijaSyntymäaikaHetusta("Aiemmat-Ammatillinen", "Anni", aiemmatHetu(10, 5))
   val aiemmatOmaOppilaitos = koskiSpecificOppijat.oppijaSyntymäaikaHetusta("Aiemmat-Oma-Oppilaitos", "Olli", aiemmatHetu(21, 8))
