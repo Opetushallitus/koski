@@ -6,7 +6,7 @@ import fi.oph.koski.db.PostgresDriverWithJsonSupport.plainAPI._
 import fi.oph.koski.db._
 import fi.oph.koski.henkilo.{Hetu, KoskiSpecificMockOppijat, LaajatOppijaHenkilöTiedot}
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
-import fi.oph.koski.json.SensitiveDataAllowed
+import fi.oph.koski.json.{SensitiveAndRedundantDataFilter, SensitiveDataAllowed}
 import fi.oph.koski.koskiuser.{AccessType, KoskiSpecificSession, Rooli, Session}
 import fi.oph.koski.log.AuditLogMessage.AuditLogMessageField
 import fi.oph.koski.log.{KoskiAuditLogMessageField, KoskiOperation, Logging, OpiskeluoikeusOiditAuditLog}
@@ -16,9 +16,11 @@ import fi.oph.koski.massaluovutus.{KoulutuksenjärjestäjienMassaluovutusQueryPa
 import fi.oph.koski.opiskeluoikeus.OpiskeluoikeusQueryContext
 import fi.oph.koski.organisaatio.{MockOrganisaatiot, OrganisaationAlaisetOrganisaatiot}
 import fi.oph.koski.schema.Organisaatio
-import fi.oph.koski.schema.annotation.EnumValues
+import fi.oph.koski.schema.annotation.{EnumValues, HiddenFromAiemmatOpiskeluoikeudet}
 import fi.oph.koski.util.Retry.retryWithInterval
+import fi.oph.scalaschema.Serializer
 import fi.oph.scalaschema.annotation.{Description, Title}
+import org.json4s.JValue
 
 import java.sql.Date
 import java.time.LocalDate
@@ -27,7 +29,7 @@ import scala.concurrent.duration.DurationInt
 @Title("Nykyisten opiskelijoiden aiemmat opiskeluoikeudet")
 @Description("Palauttaa annettujen, oppilaitoksen nykyisten opiskelijoiden esi-, perus-, ammatillisen ja lukiokoulutuksen opiskeluoikeudet, jotka ovat alkaneet ennen opiskelijan opintoja kyselyn oppilaitoksessa. Mukana ovat sekä muiden organisaatioiden että oppilaitoksen omat aiemmat opiskeluoikeudet.")
 @Description("Oppijat annetaan henkilötunnuksina tai oppijanumeroina. Jokaisen annetun oppijan on oltava oppilaitoksen nykyinen opiskelija ja alle 18-vuotias tai kyselyn tekovuonna 18 vuotta täyttävä, muuten koko kysely hylätään ja vastaus kertoo, mitkä oppijat eivät täytä ehtoja. Nykyinen opiskelija on oppija, jolla on kyselyn oppilaitoksessa päättymätön, myös vasta tulevaisuudessa alkava, esi-, perus-, ammatillisen, lukio-, TUVA- tai IB-koulutuksen opiskeluoikeus. Kysely tehdään aina yhdelle oppilaitokselle.")
-@Description("Kysely edellyttää AIEMMAT_OPISKELUOIKEUDET-käyttöoikeutta kyselyn oppilaitoksessa. Palautettavat koulutusmuodot eivät riipu käyttäjän omista koulutusmuotokohtaisista käyttöoikeuksista, vaan ainoastaan tästä roolista. Arkaluontoiset tiedot palautetaan vain, jos käyttäjällä on niihin oikeus.")
+@Description("Kysely edellyttää AIEMMAT_OPISKELUOIKEUDET-käyttöoikeutta kyselyn oppilaitoksessa. Palautettavat koulutusmuodot eivät riipu käyttäjän omista koulutusmuotokohtaisista käyttöoikeuksista, vaan ainoastaan tästä roolista. Arkaluontoiset tiedot palautetaan vain, jos käyttäjällä on niihin oikeus. Skeemassa HiddenFromAiemmatOpiskeluoikeudet-merkinnällä varustetut kentät (esim. vankilaopetuksessa ja käyttäytymisenArvio) jätetään pois käyttöoikeuksista riippumatta.")
 @Description("Tulostiedostot vastaavat organisaationOpiskeluoikeudet-kyselyn json-muotoa: yksi tiedosto oppijaa kohden.")
 case class MassaluovutusQueryAiemmatOpiskeluoikeudet(
   @EnumValues(Set("aiemmatOpiskeluoikeudet"))
@@ -59,11 +61,11 @@ case class MassaluovutusQueryAiemmatOpiskeluoikeudet(
           if (aiemmat.isEmpty) {
             writer.skipFile()
           } else {
-            writer.putJson(henkilö.oid, MassaluovutusOppija(
+            writer.putJson(henkilö.oid, serialize(MassaluovutusOppija(
               henkilö = application.henkilöRepository.oppijaHenkilöToTäydellisetHenkilötiedot(henkilö),
               linkitetytOidit = henkilö.linkitetytOidit,
               opiskeluoikeudet = aiemmat.map(MassaluovutusUtils.toKoskeenTallennettavaOpiskeluoikeus(application, logger)),
-            ))
+            )))
             auditLog(henkilö.oid, aiemmat.map(_.oid))
           }
         }
@@ -97,6 +99,14 @@ case class MassaluovutusQueryAiemmatOpiskeluoikeudet(
   override def validateWithApplication(application: KoskiApplication)(implicit user: Session): Either[HttpStatus, MassaluovutusQueryAiemmatOpiskeluoikeudet] = user match {
     case u: KoskiSpecificSession => haeNykyisetOpiskelijat(application, LocalDate.now(), onrYritykset = 1)(u).map(_ => this)
     case _ => Left(KoskiErrorCategory.forbidden())
+  }
+
+  private def serialize(oppija: MassaluovutusOppija)(implicit user: SensitiveDataAllowed): JValue = {
+    val sensitiveFilter = SensitiveAndRedundantDataFilter(user)
+    val context = sensitiveFilter.serializationContext.copy(propertyProcessor = (schema, property) =>
+      if (property.metadata.exists(_.isInstanceOf[HiddenFromAiemmatOpiskeluoikeudet])) Nil else sensitiveFilter.filterSensitiveData(schema, property)
+    )
+    Serializer.serialize(oppija, context)
   }
 
   private def annetutHetut: List[String] = hetut.toList.flatten

@@ -1,7 +1,7 @@
 package fi.oph.koski.schema
 
 import fi.oph.koski.koskiuser.Rooli
-import fi.oph.koski.schema.annotation.{OksaUri, SensitiveData, Tooltip}
+import fi.oph.koski.schema.annotation.{HiddenFromAiemmatOpiskeluoikeudet, OksaUri, SensitiveData, Tooltip}
 import fi.oph.scalaschema.annotation.{DefaultValue, Description, OnlyWhen, Title}
 
 trait TutkintokoulutukseenValmentavanOpiskeluoikeudenLisätiedot
@@ -54,6 +54,7 @@ case class TutkintokoulutukseenValmentavanOpiskeluoikeudenAmmatillisenLuvanLisä
   @Description("Kyseessä on vankilaopetus. Lista alku-loppu päivämääräpareja. Rahoituksen laskennassa käytettävä tieto")
   @Tooltip("Tieto vankilaopetusjaksoista (alku- ja loppupäivämäärä). Voi olla useita erillisiä jaksoja. Rahoituksen laskennassa käytettävä tieto")
   @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT))
+  @HiddenFromAiemmatOpiskeluoikeudet
   vankilaopetuksessa: Option[List[Aikajakso]] = None,
   @Description("Onko kyseessä koulutusvientikoulutus (kyllä/ei). Kentän välittämättä jättäminen tulkitaan että kyseessä ei ole koulutusvientikoulutus.")
   @Tooltip("Valitse valintaruutu, jos kyseessä on koulutusvientikoulutus.")
