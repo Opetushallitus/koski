@@ -414,7 +414,6 @@ object KoskiSpecificMockOppijat {
   val virtaSaapuvaVaihto = koskiSpecificOppijat.oppija("SaapuvaVaihto", "Sofia", "070102A801N")
   val virtaKorkeakouluVisuaalinenRegressio = koskiSpecificOppijat.oppijaSyntymäaikaHetusta("Koskinen", "Harri", "250668-293Y", oid = "1.2.246.562.24.00000000216")
 
-  // Kotikuntalaskelman testioppijat: olemassa olevat fixtuurit ovat raportin ikäikkunan ulkopuolella
   val kotikuntalaskelmaKuusivuotias = koskiSpecificOppijat.oppija("Kuusi", "Kaisa", "220412C3283", syntymäaika = Some(LocalDate.of(2020, 3, 1)), kotikunta = Some(Kunta.jyväskylä))
   val kotikuntalaskelmaSeitsemanKaksitoista = koskiSpecificOppijat.oppija("SeitsemanKaksitoista", "Sami", "120517A8021", syntymäaika = Some(LocalDate.of(2017, 5, 12)), kotikunta = Some(Kunta.helsinki))
   val kotikuntalaskelmaKolmetoistaViisitoista = koskiSpecificOppijat.oppija("KolmetoistaViisitoista", "Kalle", "200912A8024", syntymäaika = Some(LocalDate.of(2012, 9, 20)), kotikunta = Some(Kunta.helsinki),

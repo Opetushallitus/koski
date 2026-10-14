@@ -5,7 +5,7 @@ import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.plainAPI._
 import fi.oph.koski.koskiuser.KoskiSpecificSession
 import fi.oph.koski.localization.LocalizationReader
-import fi.oph.koski.organisaatio.OrganisaatioHierarkia
+import fi.oph.koski.organisaatio.{OrganisaatioHierarkia, Organisaatiotyyppi}
 import fi.oph.koski.raportit.aikuistenperusopetus._
 import fi.oph.koski.raportit.esiopetus.{EsiopetuksenOppijamäärätRaportti}
 import fi.oph.koski.raportit.lukio.LukioOppiaineenOppimaaranKurssikertymat.{AikuistenOppimäärä, NuortenOppimäärä}
@@ -45,6 +45,7 @@ class RaportitService(application: KoskiApplication) {
   private val aikuistenPerusopetuksenOpiskeluoikeudenUlkopuolisetRaportti = AikuistenPerusopetuksenOpiskeluoikeudenUlkopuolisetKurssit(raportointiDatabase.db)
   private val aikuistenPerusopetuksenEriVuonnaKorotetutKurssitRaportti = AikuistenPerusopetuksenEriVuonnaKorotetutKurssit(raportointiDatabase.db)
   private val kotikuntalaskelmaBuilder = Kotikuntalaskelma(raportointiDatabase.db)
+  private val kunnanOppijatBuilder = KunnanOppijat(raportointiDatabase.db)
   private val perusopetuksenOppijamäärätRaportti = PerusopetuksenOppijamäärätRaportti(raportointiDatabase.db, application.organisaatioService)
   private val perusopetuksenLisäopetuksenOppijamäärätRaportti = PerusopetuksenLisäopetusOppijamäärätRaportti(raportointiDatabase.db, application.organisaatioService)
   private val ibSuoritustiedotRepository = IBSuoritustiedotRaporttiRepository(raportointiDatabase.db)
@@ -321,6 +322,14 @@ class RaportitService(application: KoskiApplication) {
     )
   }
 
+  def kunnanOppijat(request: RaporttiPäivältäRequest, kuntakoodi: String, t: LocalizationReader)(implicit u: KoskiSpecificSession) =
+    OppilaitosRaporttiResponse(
+      sheets = Seq(kunnanOppijatBuilder.build(kuntakoodi, request.paiva, t)),
+      workbookSettings = WorkbookSettings(t.get("raportti-excel-kunnanoppijat-title"), Some(request.password)),
+      filename = s"${t.get("raportti-excel-kunnanoppijat-tiedoston-etuliite")}_${request.oppilaitosOid}_${request.paiva}.xlsx",
+      downloadToken = request.downloadToken
+    )
+
   def kotikuntalaskelma(request: RaporttiPäivältäRequest, t: LocalizationReader)(implicit u: KoskiSpecificSession) = {
     val oppilaitosOids = accessResolver.kyselyOiditOrganisaatiolle(request.oppilaitosOid).toSeq
     OppilaitosRaporttiResponse(
@@ -489,10 +498,10 @@ class RaportitService(application: KoskiApplication) {
 
   private def buildOrganisaatioJaRaporttiTyypit(organisaatiot: Iterable[OrganisaatioHierarkia], koulutusmuodot: Map[String, Seq[String]])(implicit user: KoskiSpecificSession): List[OrganisaatioJaRaporttiTyypit] =
     organisaatiot
-      .filter(_.organisaatiotyypit.intersect(raporttinakymanOrganisaatiotyypit).nonEmpty)
       .map(_.sortBy(user.lang))
-      .map((organisaatio) => {
-        OrganisaatioJaRaporttiTyypit(
+      .flatMap((organisaatio) =>
+        if (organisaatio.organisaatiotyypit.intersect(raporttinakymanOrganisaatiotyypit).isEmpty) pelkkäKuntaKunnanOppijoille(organisaatio, koulutusmuodot)
+        else Some(OrganisaatioJaRaporttiTyypit(
           nimi = organisaatio.nimi,
           oid = organisaatio.oid,
           organisaatiotyypit = organisaatio.organisaatiotyypit,
@@ -506,9 +515,16 @@ class RaportitService(application: KoskiApplication) {
           }
 
         )
-      })
+      ))
       .toList
       .sortBy(_.nimi.get(user.lang))
+
+  // Muut kuin koulutustoimijana toimivat kunnat vain Kunnan oppijoille, ettei niiden alipuu tule muiden raporttien valintoihin
+  private def pelkkäKuntaKunnanOppijoille(organisaatio: OrganisaatioHierarkia, koulutusmuodot: Map[String, Seq[String]])(implicit user: KoskiSpecificSession): Option[OrganisaatioJaRaporttiTyypit] =
+    Option.when(
+      organisaatio.organisaatiotyypit.contains(Organisaatiotyyppi.KUNTA) &&
+        accessResolver.mahdollisetRaporttienTyypitOrganisaatiolle(organisaatio, koulutusmuodot).contains(KunnanOppijatRaportti)
+    )(OrganisaatioJaRaporttiTyypit(organisaatio.nimi, organisaatio.oid, organisaatio.organisaatiotyypit, Set(KunnanOppijatRaportti.toString), Nil))
 
   private val raporttinakymanOrganisaatiotyypit = List(
     "OPPILAITOS",

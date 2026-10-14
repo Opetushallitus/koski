@@ -5,10 +5,11 @@ import fi.oph.koski.documentation.ExampleData.{opiskeluoikeusEronnut, opiskeluoi
 import fi.oph.koski.documentation.PerusopetusExampleData
 import fi.oph.koski.documentation.YleissivistavakoulutusExampleData.oppilaitos
 import fi.oph.koski.henkilo.{KoskiSpecificMockOppijat, LaajatOppijaHenkilöTiedot}
-import fi.oph.koski.koskiuser.KoskiMockUser
+import fi.oph.koski.koskiuser.{KoskiMockUser, MockUsers}
 import fi.oph.koski.localization.LocalizationReader
 import fi.oph.koski.log.AuditLogTester
-import fi.oph.koski.organisaatio.MockOrganisaatiot.{aapajoenKoulu, jyväskylänNormaalikoulu}
+import fi.oph.koski.http.KoskiErrorCategory
+import fi.oph.koski.organisaatio.MockOrganisaatiot.{aapajoenKoulu, helsinginKaupunki, jyväskylänNormaalikoulu}
 import fi.oph.koski.raportointikanta.RaportointikantaTestMethods
 import fi.oph.koski.schema._
 import fi.oph.koski.{DirtiesFixtures, KoskiApplicationForTests}
@@ -86,6 +87,24 @@ class KotikuntalaskelmaSpec extends AnyFreeSpec with Matchers with Raportointika
             )
           )
         )
+      }
+    }
+
+    "Perus- ja esiopetuksen oikeuksilla voi ladata raportin" in {
+      authGet(s"api/raportit/kotikuntalaskelma?oppilaitosOid=$helsinginKaupunki&paiva=$raportointipäivä&lang=fi&password=salasana", user = MockUsers.helsinkiPerusopetuksenKatselija) {
+        verifyResponseStatusOk()
+      }
+    }
+
+    "Koulutusmuotoihin rajatuilla OPH:n oikeuksilla ei voi ladata raporttia" in {
+      authGet(s"api/raportit/kotikuntalaskelma?oppilaitosOid=$helsinginKaupunki&paiva=$raportointipäivä&lang=fi&password=salasana", user = MockUsers.ophLukioKatselija) {
+        verifyResponseStatus(403, KoskiErrorCategory.forbidden.opiskeluoikeudenTyyppi())
+      }
+    }
+
+    "Pelkillä esiopetuksen käyttöoikeuksilla ei voi ladata raporttia" in {
+      authGet(s"api/raportit/kotikuntalaskelma?oppilaitosOid=$helsinginKaupunki&paiva=$raportointipäivä&lang=fi&password=salasana", user = MockUsers.esiopetusTallentaja) {
+        verifyResponseStatus(403, KoskiErrorCategory.forbidden.opiskeluoikeudenTyyppi())
       }
     }
 

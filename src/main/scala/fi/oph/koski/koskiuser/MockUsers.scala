@@ -380,6 +380,27 @@ object MockUsers {
     Seq(oppilaitosTallentaja(pyhtäänKunta))
   )
 
+  val helsinkiIlmanLuottamuksellisiaTietoja = KoskiMockUser(
+    "hki-eiluottoa",
+    "hki-eiluottoa",
+    "1.2.246.562.24.99999999899",
+    Seq(ilmanLuottamuksellisiaTietoja(helsinginKaupunki), oppilaitosKatselija(MockOrganisaatiot.jyväskylänNormaalikoulu))
+  )
+
+  val helsinkiPerusopetuksenKatselija = KoskiMockUser(
+    "hki-perusopetus",
+    "hki-perusopetus",
+    "1.2.246.562.24.99999999898",
+    Seq(organisaatioKäyttäjä(helsinginKaupunki, List(Rooli.READ, Rooli.PERUSOPETUS, Rooli.ESIOPETUS, Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT)))
+  )
+
+  val ophLukioKatselija = KoskiMockUser(
+    "oph-lukio-katselija",
+    "oph-lukio-katselija",
+    "1.2.246.562.24.99999999897",
+    Seq(organisaatioKäyttäjä(Opetushallitus.organisaatioOid, List(Rooli.OPHKATSELIJA, Rooli.LUKIOKOULUTUS, Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT)))
+  )
+
   val jyväskyläTallentaja = KoskiMockUser(
     "jyvaskyla-tallentaja",
     "jyvaskyla-tallentaja",
@@ -814,6 +835,9 @@ object MockUsers {
     stadinTelma,
     kaksiTallentajaoikeutta,
     ruotsinkielinenKatselija,
+    helsinkiIlmanLuottamuksellisiaTietoja,
+    helsinkiPerusopetuksenKatselija,
+    ophLukioKatselija,
   )
 }
 
