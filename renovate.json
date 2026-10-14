@@ -430,13 +430,19 @@
       "allowedVersions": "<17"
     },
     {
-      "description": "Schema viewer library updates require manual review and must not join unrelated npm groups.",
+      "description": "Keep schema viewer updates in their own PRs, out of unrelated npm groups.",
       "matchManagers": ["npm"],
       "matchFileNames": ["json-schema-viewer/package.json"],
       "matchDepTypes": ["dependencies", "devDependencies"],
       "groupName": null,
-      "automerge": false,
       "additionalBranchPrefix": "schema-viewer-"
+    },
+    {
+      "description": "Schema viewer runtime libraries are a legacy stack that CI exercises only partly; review their updates manually.",
+      "matchManagers": ["npm"],
+      "matchFileNames": ["json-schema-viewer/package.json"],
+      "matchDepTypes": ["dependencies"],
+      "automerge": false
     },
     {
       "description": "Label PRs that Renovate will merge automatically and exempt them from the PR limits. This must be the last rule, so that it sees the automerge value set by the rules above.",
