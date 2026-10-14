@@ -158,6 +158,8 @@
   }
 
   > .OsasuoritusProperty {
+    // Poistopainikkeiden sijoittelua varten, ks. alempana
+    position: relative;
     margin-top: 0;
     padding-block: 8px;
     background-image: linear-gradient(@color-neutral-gray, @color-neutral-gray);
@@ -201,10 +203,35 @@
   }
 
   .OsasuoritusPropertyValue {
-    // Saman kentän useat arvot (esim. arvioinnin korotukset) erotetaan välillä
+    // Saman kentän useat arvot (esim. arvioinnin korotukset) erotetaan välillä,
+    // muokkaustilassa myös viivalla, koska lomakkeet ovat korkeita.
     > .NotRemovable + .NotRemovable,
     > .Removable + .Removable {
       margin-top: 9px;
+    }
+
+    > .Removable + .Removable {
+      padding-top: 9px;
+      border-top: 1px solid @color-gray-darker;
+    }
+
+    // Kentän ja sen arvojen poistopainikkeet samaan sarakkeeseen rivin
+    // poistopainikkeen kanssa (ruudukon viimeinen sarake), poistettavan asian
+    // yläreunaan. Kenttärivi on taulukon levyinen, joten sarakkeen leveys
+    // lasketaan siitä. Lomakkeen sisäiset listat pitävät painikkeensa vieressä.
+    .Removable > .IconButton {
+      position: absolute;
+      right: ~'calc((100% - @{Columns-gutters-total}) / @{Columns-count} - 2.5 * @{baseline})';
+    }
+
+    .KeyValueTable .Removable > .IconButton {
+      position: static;
+    }
+
+    // Tekstikentät yhtä leveinä kuin KeyValueTable-kentissä (TextField.less)
+    .TextEdit,
+    .TextEdit__input {
+      max-width: 500px;
     }
 
     // Valintaruutu ja Lisää-painike alkavat samasta kohdasta kuin sarakkeen
@@ -274,6 +301,10 @@
 
     .KeyValueTable {
       grid-template-columns: 1fr;
+    }
+
+    .OsasuoritusPropertyValue .Removable > .IconButton {
+      position: static;
     }
   }
 }

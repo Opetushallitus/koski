@@ -101,6 +101,10 @@ export const OsasuoritusTable = <DATA_KEYS extends string, P>(
   const newOsasuoritusIds = useNewItems(getRowId, props.rows)
   const ammatillinenTyyli = useContext(AmmatillinenTyyliContext)
   const [taso] = useLayout(AMMATILLINEN_TASO_KEY)
+  const addNewView = editMode && AddNewOsasuoritusView && (
+    // @ts-expect-error React.JSX.IntristicAttributes virhe
+    <AddNewOsasuoritusView {...(props.addNewOsasuoritusViewProps || {})} />
+  )
 
   // Laajennussarake (+-painike) varataan aina, vaikka mikään rivi ei olisi
   // laajennettavissa, jotta otsikkorivi pysyy kohdistettuna rivien kanssa.
@@ -148,9 +152,15 @@ export const OsasuoritusTable = <DATA_KEYS extends string, P>(
         ))}
       </TestIdLayer>
       {editMode && <Spacer />}
-      {editMode && AddNewOsasuoritusView && (
-        // @ts-expect-error React.JSX.IntristicAttributes virhe
-        <AddNewOsasuoritusView {...(props.addNewOsasuoritusViewProps || {})} />
+      {ammatillinenTyyli && taso > 0 && addNewView ? (
+        <div
+          className="OsasuoritusTable__lisays"
+          style={{ '--osasuoritus-taso': taso } as TasoStyle}
+        >
+          {addNewView}
+        </div>
+      ) : (
+        addNewView
       )}
       {props.footer && rows[0] && (
         <OsasuoritusFooter

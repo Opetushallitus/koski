@@ -180,7 +180,10 @@
   }
 
   // Rivi ei vaihda väriä avattaessa; avattu rivi erottuu lihavoidusta nimestä.
-  &.OsasuoritusRow--open .OsasuoritusRow__nameColumn {
+  // Muokkaustilassa rivit voivat olla pakotetusti auki, jolloin lihavointi ei
+  // kertoisi mitään.
+  &.OsasuoritusRow--open:not(.OsasuoritusRow--edit)
+    .OsasuoritusRow__nameColumn {
     font-weight: 600;
   }
 
@@ -188,6 +191,18 @@
   // viivasta. Kentän alla on jo saman verran tilaa.
   &.OsasuoritusRow--edit {
     padding-top: (@baseline / 2);
+
+    // Nimi ja poistopainike samalle korkeudelle kuin syöttökentät, joilla on
+    // alareunus (TextField.less, NumberField.less)
+    .OsasuoritusRow__lead,
+    .OsasuoritusRow__removeColumn {
+      padding-bottom: (@baseline / 2);
+    }
+
+    // Nimen alla oleva kielivalinta yhtä leveänä kuin kenttien valinnat
+    .OsasuoritusRow__nameColumn .Select {
+      max-width: @Osasuoritus-kentta-max-leveys;
+    }
   }
 }
 
@@ -229,6 +244,17 @@
     &:first-child {
       padding-left: ~'calc(@{Osasuoritus-amis-reuna} + @{Osasuoritus-amis-ikoni} + @{Osasuoritus-amis-sisennys})';
     }
+  }
+}
+
+// Sisäkkäisen taulukon lisäysnäkymä alkaa taulukon omasta sisennyksestä.
+// Näkymät sisentävät itsensä ruudukon sarakkeilla (ColumnRow indent), jotka
+// eivät osu yhteen pikselimittaisen sisennyksen kanssa, joten se ohitetaan.
+.OsasuoritusTable__lisays {
+  padding-left: @Osasuoritus-amis-viivan-alku;
+
+  .ColumnRow > .Column:first-child {
+    grid-column-start: auto;
   }
 }
 
