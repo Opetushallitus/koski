@@ -250,6 +250,8 @@ Esimerkki:
 {{title:fi.oph.koski.massaluovutus.raportit.MassaluovutusQueryVSTVapaatavoitteinen}}
 {{docs:fi.oph.koski.massaluovutus.raportit.MassaluovutusQueryVSTVapaatavoitteinen}}
 
+Raportti ei ole vielä käytössä tuotantoympäristössä.
+
 Esimerkki:
 
     POST {{var:baseUrl}}/api/massaluovutus HTTP/1.1

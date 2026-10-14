@@ -1,10 +1,11 @@
 package fi.oph.koski.massaluovutus.raportit
 
-import fi.oph.koski.koskiuser.KoskiSpecificSession
+import fi.oph.koski.config.KoskiApplication
+import fi.oph.koski.koskiuser.{KoskiSpecificSession, Session}
 import fi.oph.koski.localization.LocalizationReader
 import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.massaluovutus.QueryFormat
-import fi.oph.koski.raportit.{AikajaksoRaporttiRequest, OppilaitosRaporttiResponse, RaportitService}
+import fi.oph.koski.raportit.{AikajaksoRaporttiRequest, OppilaitosRaporttiResponse, RaportitService, VapaanSivistystyönVapaatavoitteisenKoulutuksenRaportti}
 import fi.oph.koski.schema.{OpiskeluoikeudenTyyppi, Organisaatio}
 import fi.oph.koski.schema.annotation.EnumValues
 import fi.oph.scalaschema.annotation.{Description, Title}
@@ -34,6 +35,9 @@ case class MassaluovutusQueryVSTVapaatavoitteinen(
 
   override def opiskeluoikeudenTyyppi = OpiskeluoikeudenTyyppi.vapaansivistystyonkoulutus
   override def raporttiName = "vstvapaatavoitteinen"
+
+  override def queryAllowed(application: KoskiApplication)(implicit user: Session): Boolean =
+    VapaanSivistystyönVapaatavoitteisenKoulutuksenRaportti.käytössä(application.config) && super.queryAllowed(application)
 
   override def auditLogParams = Map(
     "alku" -> List(alku.format(DateTimeFormatter.ISO_DATE)),
