@@ -34,11 +34,20 @@ object OmatTiedotEditorModel extends Timing {
     OmatTiedotEditorView(
       henkilö = näytettäväOppija.henkilö.asInstanceOf[TäydellisetHenkilötiedot],
       userHenkilö = userOppija.henkilö.asInstanceOf[TäydellisetHenkilötiedot],
-      opiskeluoikeudet = opiskeluoikeudetOppilaitoksittain(näytettäväOppija),
+      opiskeluoikeudet = opiskeluoikeudetOppilaitoksittain(ilmanLiittyviäOpiskeluoikeuksia(näytettäväOppija)),
       huollettavat = huollettavat.getOrElse(Nil),
       varoitukset = warnings.flatMap(_.errors).map(_.key).toList ++ huollettavat.left.map(_.errors.map(_.key)).left.getOrElse(Nil)
     )
   }
+
+  private def ilmanLiittyviäOpiskeluoikeuksia(oppija: Oppija): Oppija =
+    oppija.copy(opiskeluoikeudet = oppija.opiskeluoikeudet.map {
+      case oo: KorkeakoulunOpiskeluoikeus => oo.copy(suoritukset = oo.suoritukset.map {
+        case s: KorkeakoulututkinnonSuoritus => s.copy(liittyvätOpiskeluoikeudet = None)
+        case s => s
+      })
+      case oo => oo
+    })
 
   private def buildModel(obj: AnyRef)(implicit application: KoskiApplication, koskiSession: KoskiSpecificSession): EditorModel = {
     EditorModelBuilder.buildModel(EditorSchema.deserializationContext, obj, editable = false)(koskiSession, application.koodistoViitePalvelu, application.koskiLocalizationRepository)
