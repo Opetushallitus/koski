@@ -38,18 +38,17 @@ class VstVapaatavoitteinenRaporttiSpec
       "Hetu",
       "Sukunimi",
       "Etunimet",
-      "Kotikunta",
       "Opiskeluoikeuden alkamispäivä",
       "Opiskeluoikeuden päättymispäivä",
       "Viimeisin opiskeluoikeuden tila",
+      "Suoritus vahvistettu",
+      "Suorituksen vahvistuspäivä",
       "Opintokokonaisuuden koodiarvo",
       "Opintokokonaisuuden nimi",
       "Osasuoritusten yhteislaajuus (opintopistettä)",
       "Osasuorituksia yhteensä",
       "Arvioituja osasuorituksia",
       "Osasuorituksia ilman arviointia",
-      "Suoritus vahvistettu",
-      "Suorituksen vahvistuspäivä",
     )
 
     val vahvistettuOppija = KoskiSpecificMockOppijat.vapaaSivistystyöVapaatavoitteinenKoulutus
@@ -69,18 +68,17 @@ class VstVapaatavoitteinenRaporttiSpec
       hetu = vahvistettuOppija.hetu,
       sukunimi = vahvistettuOppija.sukunimi,
       etunimet = vahvistettuOppija.etunimet,
-      kotikunta = vahvistettuOppija.kotikunta.getOrElse(""),
       opiskeluoikeudenAlkamispäivä = Some(LocalDate.of(2022, 5, 31)),
       opiskeluoikeudenPäättymispäivä = Some(LocalDate.of(2022, 5, 31)),
       viimeisinTila = Some("hyvaksytystisuoritettu"),
+      suoritusVahvistettu = true,
+      suorituksenVahvistuspäivä = Some(LocalDate.of(2022, 5, 31)),
       opintokokonaisuusKoodiarvo = Some("1138"),
       opintokokonaisuusNimi = Some("Kuvallisen ilmaisun perusteet ja välineet"),
       yhteislaajuus = 5.0,
       osasuorituksiaYhteensä = 2,
       arvioitujaOsasuorituksia = 2,
       arviointiPuuttuuOsasuorituksia = 0,
-      suoritusVahvistettu = true,
-      suorituksenVahvistuspäivä = Some(LocalDate.of(2022, 5, 31)),
     )
 
     val expectedKeskeytynytRow: VSTVapaatavoitteinenRow = expectedVahvistettuRow.copy(
@@ -89,16 +87,15 @@ class VstVapaatavoitteinenRaporttiSpec
       hetu = keskeytynytOppija.hetu,
       sukunimi = keskeytynytOppija.sukunimi,
       etunimet = keskeytynytOppija.etunimet,
-      kotikunta = keskeytynytOppija.kotikunta.getOrElse(""),
       opiskeluoikeudenAlkamispäivä = Some(LocalDate.of(2023, 12, 20)),
       opiskeluoikeudenPäättymispäivä = Some(LocalDate.of(2023, 12, 20)),
       viimeisinTila = Some("keskeytynyt"),
+      suoritusVahvistettu = false,
+      suorituksenVahvistuspäivä = None,
       yhteislaajuus = 4.0,
       osasuorituksiaYhteensä = 2,
       arvioitujaOsasuorituksia = 1,
       arviointiPuuttuuOsasuorituksia = 1,
-      suoritusVahvistettu = false,
-      suorituksenVahvistuspäivä = None,
     )
 
     "Oppilaitoksen raportti latautuu ja sisältää oikeat datat" in {

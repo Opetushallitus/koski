@@ -40,18 +40,17 @@ object VapaanSivistystyonVapaatavoitteisenKoulutuksenRaportti {
         "hetu" -> Column(t.get("raportti-excel-kolumni-hetu")),
         "sukunimi" -> Column(t.get("raportti-excel-kolumni-sukunimi")),
         "etunimet" -> Column(t.get("raportti-excel-kolumni-etunimet")),
-        "kotikunta" -> Column(t.get("raportti-excel-kolumni-kotikunta")),
         "opiskeluoikeudenAlkamispäivä" -> Column(t.get("raportti-excel-kolumni-opiskeluoikeudenAlkamispäivä")),
         "opiskeluoikeudenPäättymispäivä" -> Column(t.get("raportti-excel-kolumni-opiskeluoikeudenPäättymispäivä")),
         "viimeisinTila" -> Column(t.get("raportti-excel-kolumni-viimeisinTila")),
+        "suoritusVahvistettu" -> Column(t.get("raportti-excel-kolumni-suoritusVahvistettu"), comment = Some(t.get("raportti-excel-kolumni-suoritusVahvistettu-comment"))),
+        "suorituksenVahvistuspäivä" -> Column(t.get("raportti-excel-kolumni-suorituksenVahvistuspaiva")),
         "opintokokonaisuusKoodiarvo" -> Column(t.get("raportti-excel-kolumni-opintokokonaisuusKoodiarvo")),
         "opintokokonaisuusNimi" -> Column(t.get("raportti-excel-kolumni-opintokokonaisuusNimi")),
         "yhteislaajuus" -> Column(t.get("raportti-excel-kolumni-yhteislaajuusOpintopisteet"), comment = Some(t.get("raportti-excel-kolumni-yhteislaajuusOpintopisteet-comment"))),
         "osasuorituksiaYhteensä" -> Column(t.get("raportti-excel-kolumni-osasuorituksiaYhteensä"), comment = Some(t.get("raportti-excel-kolumni-osasuorituksiaYhteensä-comment"))),
         "arvioitujaOsasuorituksia" -> Column(t.get("raportti-excel-kolumni-arvioitujaOsasuorituksia"), comment = Some(t.get("raportti-excel-kolumni-arvioitujaOsasuorituksia-comment"))),
         "arviointiPuuttuuOsasuorituksia" -> Column(t.get("raportti-excel-kolumni-arviointiPuuttuuOsasuorituksia"), comment = Some(t.get("raportti-excel-kolumni-arviointiPuuttuuOsasuorituksia-comment"))),
-        "suoritusVahvistettu" -> Column(t.get("raportti-excel-kolumni-suoritusVahvistettu"), comment = Some(t.get("raportti-excel-kolumni-suoritusVahvistettu-comment"))),
-        "suorituksenVahvistuspäivä" -> Column(t.get("raportti-excel-kolumni-suorituksenVahvistuspaiva")),
       )
     )
 }
@@ -70,18 +69,17 @@ case class VSTVapaatavoitteinenRow(
   hetu: Option[String],
   sukunimi: String,
   etunimet: String,
-  kotikunta: String,
   opiskeluoikeudenAlkamispäivä: Option[LocalDate],
   opiskeluoikeudenPäättymispäivä: Option[LocalDate],
   viimeisinTila: Option[String],
+  suoritusVahvistettu: Boolean,
+  suorituksenVahvistuspäivä: Option[LocalDate],
   opintokokonaisuusKoodiarvo: Option[String],
   opintokokonaisuusNimi: Option[String],
   yhteislaajuus: Double,
   osasuorituksiaYhteensä: Int,
   arvioitujaOsasuorituksia: Int,
   arviointiPuuttuuOsasuorituksia: Int,
-  suoritusVahvistettu: Boolean,
-  suorituksenVahvistuspäivä: Option[LocalDate],
 )
 
 object VSTVapaatavoitteinenRow {
@@ -109,18 +107,17 @@ object VSTVapaatavoitteinenRow {
       hetu = henkilö.hetu,
       sukunimi = henkilö.sukunimi,
       etunimet = henkilö.etunimet,
-      kotikunta = t.pick(henkilö.kotikuntaNimiFi, henkilö.kotikuntaNimiSv, henkilö.kotikunta.getOrElse("")),
       opiskeluoikeudenAlkamispäivä = oo.alkamispäivä.map(_.toLocalDate),
       opiskeluoikeudenPäättymispäivä = oo.päättymispäivä.map(_.toLocalDate),
       viimeisinTila = oo.viimeisinTila,
+      suoritusVahvistettu = pts.vahvistusPäivä.isDefined,
+      suorituksenVahvistuspäivä = pts.vahvistusPäivä.map(_.toLocalDate),
       opintokokonaisuusKoodiarvo = opintokokonaisuus.map(_.koodiarvo),
       opintokokonaisuusNimi = opintokokonaisuus.flatMap(_.nimi).map(t.from),
       yhteislaajuus = ylimmänTasonOsasuoritukset.map(_.laajuus.toDouble).sum,
       osasuorituksiaYhteensä = osasuoritukset.size,
       arvioitujaOsasuorituksia = arvioidut,
       arviointiPuuttuuOsasuorituksia = osasuoritukset.size - arvioidut,
-      suoritusVahvistettu = pts.vahvistusPäivä.isDefined,
-      suorituksenVahvistuspäivä = pts.vahvistusPäivä.map(_.toLocalDate),
     )
   }
 }
