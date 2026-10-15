@@ -1,9 +1,10 @@
 package fi.oph.koski.raportit.vst
 
+import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.localization.LocalizationReader
 import fi.oph.koski.raportit.{Column, DataSheet}
 import fi.oph.koski.raportointikanta.RaportointiDatabase
-import fi.oph.koski.schema.Organisaatio
+import fi.oph.koski.schema.{Koodistokoodiviite, Organisaatio}
 
 import java.time.LocalDate
 
@@ -27,6 +28,13 @@ object VapaanSivistystyonVapaatavoitteisenKoulutuksenRaportti {
       title = t.get("raportti-excel-vst-vapaatavoitteinen-title"),
       rows = rows,
       columnSettings = Seq(
+        "oppijaOid" -> Column(t.get("raportti-excel-kolumni-oppijaOid")),
+        "oppijaMasterOid" -> Column(t.get("raportti-excel-kolumni-oppijaMasterOid")),
+        "hetu" -> Column(t.get("raportti-excel-kolumni-hetu")),
+        "sukunimi" -> Column(t.get("raportti-excel-kolumni-sukunimi")),
+        "etunimet" -> Column(t.get("raportti-excel-kolumni-etunimet")),
+        "yksilöity" -> Column(t.get("raportti-excel-kolumni-yksiloity")),
+        "opetuskieli" -> Column(t.get("raportti-excel-kolumni-opetuskieli")),
         "opiskeluoikeusOid" -> Column(t.get("raportti-excel-kolumni-opiskeluoikeusOid")),
         "lähdejärjestelmä" -> Column(t.get("raportti-excel-kolumni-lähdejärjestelmä")),
         "lähdejärjestelmänId" -> Column(t.get("raportti-excel-kolumni-lähdejärjestelmänId")),
@@ -34,12 +42,6 @@ object VapaanSivistystyonVapaatavoitteisenKoulutuksenRaportti {
         "oppilaitoksenNimi" -> Column(t.get("raportti-excel-kolumni-oppilaitoksenNimi")),
         "toimipisteNimi" -> Column(t.get("raportti-excel-kolumni-toimipisteNimi")),
         "päivitetty" -> Column(t.get("raportti-excel-kolumni-päivitetty")),
-        "yksilöity" -> Column(t.get("raportti-excel-kolumni-yksiloity")),
-        "oppijaOid" -> Column(t.get("raportti-excel-kolumni-oppijaOid")),
-        "oppijaMasterOid" -> Column(t.get("raportti-excel-kolumni-oppijaMasterOid")),
-        "hetu" -> Column(t.get("raportti-excel-kolumni-hetu")),
-        "sukunimi" -> Column(t.get("raportti-excel-kolumni-sukunimi")),
-        "etunimet" -> Column(t.get("raportti-excel-kolumni-etunimet")),
         "opiskeluoikeudenAlkamispäivä" -> Column(t.get("raportti-excel-kolumni-opiskeluoikeudenAlkamispäivä")),
         "opiskeluoikeudenPäättymispäivä" -> Column(t.get("raportti-excel-kolumni-opiskeluoikeudenPäättymispäivä")),
         "viimeisinTila" -> Column(t.get("raportti-excel-kolumni-viimeisinTila")),
@@ -56,6 +58,13 @@ object VapaanSivistystyonVapaatavoitteisenKoulutuksenRaportti {
 }
 
 case class VSTVapaatavoitteinenRow(
+  oppijaOid: String,
+  oppijaMasterOid: Option[String],
+  hetu: Option[String],
+  sukunimi: String,
+  etunimet: String,
+  yksilöity: Boolean,
+  opetuskieli: Option[String],
   opiskeluoikeusOid: String,
   lähdejärjestelmä: Option[String],
   lähdejärjestelmänId: Option[String],
@@ -63,12 +72,6 @@ case class VSTVapaatavoitteinenRow(
   oppilaitoksenNimi: String,
   toimipisteNimi: String,
   päivitetty: LocalDate,
-  yksilöity: Boolean,
-  oppijaOid: String,
-  oppijaMasterOid: Option[String],
-  hetu: Option[String],
-  sukunimi: String,
-  etunimet: String,
   opiskeluoikeudenAlkamispäivä: Option[LocalDate],
   opiskeluoikeudenPäättymispäivä: Option[LocalDate],
   viimeisinTila: Option[String],
@@ -94,6 +97,13 @@ object VSTVapaatavoitteinenRow {
     val arvioidut = osasuoritukset.count(_.arviointiArvosanaKoodiarvo.isDefined)
 
     VSTVapaatavoitteinenRow(
+      oppijaOid = henkilö.oppijaOid,
+      oppijaMasterOid = oo.oppijaMasterOid,
+      hetu = henkilö.hetu,
+      sukunimi = henkilö.sukunimi,
+      etunimet = henkilö.etunimet,
+      yksilöity = henkilö.yksiloity,
+      opetuskieli = JsonSerializer.extract[Option[Koodistokoodiviite]](pts.data \ "suorituskieli").flatMap(_.nimi).map(t.from),
       opiskeluoikeusOid = oo.opiskeluoikeusOid,
       lähdejärjestelmä = oo.lähdejärjestelmäKoodiarvo,
       lähdejärjestelmänId = oo.lähdejärjestelmäId,
@@ -101,12 +111,6 @@ object VSTVapaatavoitteinenRow {
       oppilaitoksenNimi = t.pick(oo.oppilaitosNimi, oo.oppilaitosNimiSv),
       toimipisteNimi = t.pick(pts.toimipisteNimi, pts.toimipisteNimiSv),
       päivitetty = oo.aikaleima.toLocalDateTime.toLocalDate,
-      yksilöity = henkilö.yksiloity,
-      oppijaOid = henkilö.oppijaOid,
-      oppijaMasterOid = oo.oppijaMasterOid,
-      hetu = henkilö.hetu,
-      sukunimi = henkilö.sukunimi,
-      etunimet = henkilö.etunimet,
       opiskeluoikeudenAlkamispäivä = oo.alkamispäivä.map(_.toLocalDate),
       opiskeluoikeudenPäättymispäivä = oo.päättymispäivä.map(_.toLocalDate),
       viimeisinTila = oo.viimeisinTila,
