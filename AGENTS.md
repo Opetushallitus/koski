@@ -223,6 +223,8 @@ Removing an override is not enough on its own: pnpm keeps a lockfile resolution 
 - **Virta** - University data
 - **YTR** - Matriculation exam data
 
+**HTTP client retries:** `Http.retryingClient` (also the default behind `Http(root, name)` and `VirkailijaHttpClient`) retries only idempotent methods, so it never retries a POST. For read-only POSTs, such as SOAP queries or searches with a request body, use `Http.unsafeRetryingClient`. "Unsafe" means it retries regardless of method, so use it only when a duplicate request is harmless.
+
 ### Configuration
 - Default config: `src/main/resources/reference.conf`
 - Override with: `-Dconfig.resource=myconfig.conf`
