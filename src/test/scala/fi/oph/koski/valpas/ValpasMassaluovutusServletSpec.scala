@@ -326,7 +326,9 @@ class ValpasMassaluovutusServletSpec extends ValpasTestBase with BeforeAndAfterE
             (oppija \ "sukunimi").extract[String] should not be empty
 
             val vainOppijanumerorekisterissä = (oppija \ "vainOppijanumerorekisterissä").extract[Boolean]
-            if (!vainOppijanumerorekisterissä) {
+            val onKoskenOppivelvollisuustiedot = !vainOppijanumerorekisterissä ||
+              (oppija \ "oppijanumero").extract[String] == ValpasMockOppijat.vainMitätöityjäOpiskeluoikeuksia.oid
+            if (onKoskenOppivelvollisuustiedot) {
               // Jos on oppivelvollinen Valppaassa, on myös oikeus maksuttomuuteen päätelty
               (oppija \ "oikeusMaksuttomaanKoulutukseenVoimassaAsti").toOption should not be None
               (oppija \ "kotikuntaSuomessaAlkaen").toOption should not be None
