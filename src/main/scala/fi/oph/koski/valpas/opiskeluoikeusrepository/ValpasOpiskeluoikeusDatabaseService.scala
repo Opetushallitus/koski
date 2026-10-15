@@ -2098,6 +2098,14 @@ class ValpasOpiskeluoikeusDatabaseService(
         r_henkilo.hetu = any($hetut)
         -- Suodata vielä pois menehtyneet oppijat, vaikka heille oppivelvollisuus pitäisikin olla päättynyt
         AND r_henkilo.kuolinpaiva is null
+        -- Ei palauta oppijaa, jolla on vain mitätöityjä opiskeluoikeuksia, koska myöskään queryOppijat ei palauta sellaista
+        -- Kunnan heturouhinnassa tällainen oppija palautuu ONR:n kautta
+        AND EXISTS (
+          SELECT 1
+          FROM r_henkilo kaikki_henkilot
+          JOIN r_opiskeluoikeus ON r_opiskeluoikeus.oppija_oid = kaikki_henkilot.oppija_oid
+          WHERE kaikki_henkilot.master_oid = r_henkilo.master_oid
+        )
       """.as[HetuMasterOid])
   }
 
@@ -2125,6 +2133,7 @@ class ValpasOpiskeluoikeusDatabaseService(
 
   // Anna tämän kyselyn löytää myös menehtyneet oppijat.
   // Käytetään Kosken tuntemien oppijoiden poistamiseen ONR:stä saaduista oppijalistoista.
+  // Ei palauta oppijaa, jolla on vain mitätöityjä opiskeluoikeuksia, koska myöskään queryOppijat ei palauta sellaista.
   def haeTunnettujenOppijoidenOidit(oppijaOidit: Seq[ValpasHenkilö.Oid]): Seq[OidResult] = {
     db.runDbSync(sql"""
       SELECT
@@ -2132,6 +2141,12 @@ class ValpasOpiskeluoikeusDatabaseService(
       FROM r_henkilo
       WHERE
         r_henkilo.oppija_oid = any($oppijaOidit)
+        AND EXISTS (
+          SELECT 1
+          FROM r_henkilo kaikki_henkilot
+          JOIN r_opiskeluoikeus ON r_opiskeluoikeus.oppija_oid = kaikki_henkilot.oppija_oid
+          WHERE kaikki_henkilot.master_oid = r_henkilo.master_oid
+        )
       """.as[OidResult])
   }
 }
