@@ -68,7 +68,7 @@
     "parcel": "2.16.4",
     "postcss-less": "6.0.0",
     "prettier": "3.9.10",
-    "selenium-webdriver": "4.50.0",
+    "selenium-webdriver": "4.51.0",
     "stylelint": "17.16.0",
     "stylelint-no-unsupported-browser-features": "8.1.2",
     "typescript": "6.0.3",
