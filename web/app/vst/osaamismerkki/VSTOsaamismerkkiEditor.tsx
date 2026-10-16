@@ -14,16 +14,29 @@ import { Spacer } from '../../components-v2/layout/Spacer'
 import { PäätasosuorituksenTiedot } from '../common/suoritusFields'
 import * as Suoritus from '../common/suoritusFields'
 import { SuorituksenVahvistusField } from '../../components-v2/opiskeluoikeus/SuorituksenVahvistus'
-import { ArviointiProperty } from '../common/propertyFields'
 import { VapaanSivistystyönOsaamismerkinArviointi } from '../../types/fi/oph/koski/schema/VapaanSivistystyonOsaamismerkinArviointi'
-import { FormField } from '../../components-v2/forms/FormField'
 import {
+  FieldEditorProps,
+  FieldViewerProps,
+  FormField
+} from '../../components-v2/forms/FormField'
+import {
+  ArvosanaEdit,
+  ArvosanaView,
+  koodinNimiOnly,
   ParasArvosanaEdit,
   ParasArvosanaView
 } from '../../components-v2/opiskeluoikeus/ArvosanaField'
 import { Koodistokoodiviite } from '../../types/fi/oph/koski/schema/Koodistokoodiviite'
 import { todayISODate } from '../../date/date'
-import { KeyValueRow } from '../../components-v2/containers/KeyValueTable'
+import {
+  KeyValueRow,
+  KeyValueTable
+} from '../../components-v2/containers/KeyValueTable'
+import { FormListField } from '../../components-v2/forms/FormListField'
+import { DateEdit, DateView } from '../../components-v2/controls/DateField'
+import { TestIdLayer } from '../../appstate/useTestId'
+import { EmptyObject } from '../../util/objects'
 import { HenkilövahvistusValinnaisellaPaikkakunnalla } from '../../types/fi/oph/koski/schema/HenkilovahvistusValinnaisellaPaikkakunnalla'
 
 export type VSTOsaamismerkkiEditor =
@@ -68,11 +81,19 @@ export const VSTOsaamismerkkiEditor: React.FC<VSTOsaamismerkkiEditor> = ({
 
           {päätasonSuoritus.suoritus.arviointi !== undefined &&
           päätasonSuoritus.suoritus.arviointi.length > 0 ? (
-            <ArviointiProperty
-              form={form}
-              path={päätasonSuoritus.path}
-              arviointi={VapaanSivistystyönOsaamismerkinArviointi}
-            />
+            <KeyValueRow localizableLabel="Arviointi">
+              <TestIdLayer id="arviointi">
+                <FormListField
+                  form={form}
+                  path={päätasonSuoritus.path.prop('arviointi')}
+                  view={OsaamismerkinArviointiView}
+                  edit={OsaamismerkinArviointiEdit}
+                  editProps={{
+                    suoritusClassName: päätasonSuoritus.suoritus.$class
+                  }}
+                />
+              </TestIdLayer>
+            </KeyValueRow>
           ) : (
             <KeyValueRow localizableLabel="Arviointi">
               <FormField
@@ -117,3 +138,40 @@ const createOsaamismerkkiArviointi = (
     arvosana,
     päivä: todayISODate()
   })
+
+const OsaamismerkinArviointiView: React.FC<
+  FieldViewerProps<VapaanSivistystyönOsaamismerkinArviointi, EmptyObject>
+> = ({ value }) =>
+  value ? (
+    <KeyValueTable>
+      <KeyValueRow localizableLabel="Arvosana" innerKeyValueTable>
+        <ArvosanaView value={value} />
+      </KeyValueRow>
+      <KeyValueRow localizableLabel="Päivämäärä" innerKeyValueTable>
+        <DateView value={value.päivä} />
+      </KeyValueRow>
+    </KeyValueTable>
+  ) : null
+
+const OsaamismerkinArviointiEdit: React.FC<
+  FieldEditorProps<
+    VapaanSivistystyönOsaamismerkinArviointi,
+    { suoritusClassName: string }
+  >
+> = (props) => {
+  const { value, onChange, errors } = props
+  return value ? (
+    <KeyValueTable>
+      <KeyValueRow localizableLabel="Arvosana" innerKeyValueTable>
+        <ArvosanaEdit {...props} format={koodinNimiOnly} />
+      </KeyValueRow>
+      <KeyValueRow localizableLabel="Päivämäärä" innerKeyValueTable>
+        <DateEdit
+          value={value.päivä}
+          onChange={(päivä) => päivä && onChange({ ...value, päivä })}
+          errors={errors}
+        />
+      </KeyValueRow>
+    </KeyValueTable>
+  ) : null
+}
