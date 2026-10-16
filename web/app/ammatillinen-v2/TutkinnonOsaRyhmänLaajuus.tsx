@@ -6,10 +6,6 @@ import {
 } from '../api-fetch'
 import { useKoodisto } from '../appstate/koodisto'
 import { TestIdText } from '../appstate/useTestId'
-import {
-  KeyValueRow,
-  KeyValueTable
-} from '../components-v2/containers/KeyValueTable'
 import { t } from '../i18n/i18n'
 import { AmmatillinenArviointi } from '../types/fi/oph/koski/schema/AmmatillinenArviointi'
 import { LocalizedString } from '../types/fi/oph/koski/schema/LocalizedString'
@@ -114,14 +110,10 @@ export const TutkinnonOsaRyhmänLaajuus: React.FC<
   const väli = laajuusväli(laajuus)
 
   return (
-    <KeyValueTable>
-      <KeyValueRow localizableLabel="Yhteensä">
-        <TestIdText id={testId}>
-          {[formatNumber(yhteensä), väli && `/ ${väli}`, yksikkö && t(yksikkö)]
-            .filter(Boolean)
-            .join(' ')}
-        </TestIdText>
-      </KeyValueRow>
-    </KeyValueTable>
+    <TestIdText id={testId}>
+      {[formatNumber(yhteensä), väli && `/ ${väli}`, yksikkö && t(yksikkö)]
+        .filter(Boolean)
+        .join(' ')}
+    </TestIdText>
   )
 }

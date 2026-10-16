@@ -16,10 +16,19 @@ import { t } from '../../i18n/i18n'
 const PropertyLevelContext = createContext(0)
 
 /** Sisennys ruudukkosarakkeina; annetaan CSS:lle muuttujana. */
-type IndentStyle = React.CSSProperties & { '--osasuoritus-indent': number }
+type IndentStyle = React.CSSProperties & {
+  '--osasuoritus-indent': number
+  '--osasuoritus-taso'?: number
+}
 
 export type OsasuoritusPropertiesProps = CommonPropsWithChildren<{
   indent: number
+  /**
+   * Laajennetun rivin sisäkkäisyystaso ammatillisen tyylissä (ks.
+   * AmmatillinenTyyliContext). Kun annettu, kentät asetellaan harmaaseen
+   * laatikkoon rivin nimen alle.
+   */
+  ammatillinenTaso?: number
 }>
 
 /**
@@ -37,8 +46,17 @@ export const OsasuoritusProperties: React.FC<OsasuoritusPropertiesProps> = (
   props
 ) => (
   <section
-    {...common(props, ['OsasuoritusProperties'])}
-    style={{ '--osasuoritus-indent': props.indent } as IndentStyle}
+    {...common(props, [
+      'OsasuoritusProperties',
+      props.ammatillinenTaso !== undefined &&
+        'OsasuoritusProperties--ammatillinen'
+    ])}
+    style={
+      {
+        '--osasuoritus-indent': props.indent,
+        '--osasuoritus-taso': props.ammatillinenTaso
+      } as IndentStyle
+    }
   >
     {props.children}
   </section>
