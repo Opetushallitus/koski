@@ -31,6 +31,10 @@ on:
         description: Run History debug tests
         type: boolean
         default: true
+      run-docker-image-tests:
+        description: Build the Koski Docker image
+        type: boolean
+        default: false
 
 env:
   DOCKER_BUILDKIT: 1
@@ -126,7 +130,7 @@ jobs:
           pnpm run lint:check
 
   build_koski:
-    if: ${{ inputs.run-backend-tests || inputs.run-koski-ui-tests || inputs.run-valpas-ui-tests || inputs.run-oauth2-tests }}
+    if: ${{ inputs.run-backend-tests || inputs.run-koski-ui-tests || inputs.run-valpas-ui-tests || inputs.run-oauth2-tests || inputs.run-docker-image-tests }}
     name: Build Koski app
     runs-on: ubuntu-26.04
     steps:
@@ -134,6 +138,35 @@ jobs:
       - uses: ./.github/actions/build_koski
         with:
           commithash: ${{ github.sha }}
+
+  docker_image:
+    if: ${{ inputs.run-docker-image-tests }}
+    name: Koski Docker image
+    runs-on: ubuntu-26.04
+    needs: [build_koski]
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - uses: ./.github/actions/setup_java_17
+
+      - name: Restore target dir
+        uses: actions/cache/restore@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: "target/"
+          key: ${{ runner.os }}-target-${{ github.sha }}
+          fail-on-cache-miss: "true"
+
+      - name: Package war
+        env:
+          version: ${{ github.sha }}
+        run: |
+          mvn versions:set -DnewVersion="$version" --batch-mode
+          mvn war:war --batch-mode
+
+      - name: Build image
+        env:
+          version: ${{ github.sha }}
+        run: docker build -f docker-build/Dockerfile --build-arg KOSKI_VERSION="$version" .
 
   scalafix:
     if: ${{ inputs.run-backend-tests }}

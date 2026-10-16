@@ -28,6 +28,7 @@ jobs:
       smoketests: ${{ steps.filter.outputs.all == 'true' || steps.filter.outputs.smoketests == 'true' }}
       radiator: ${{ steps.filter.outputs.all == 'true' || steps.filter.outputs.radiator == 'true' }}
       history-debug: ${{ steps.filter.outputs.all == 'true' || steps.filter.outputs.history-debug == 'true' }}
+      docker-image: ${{ steps.filter.outputs.all == 'true' || steps.filter.outputs.docker-image == 'true' }}
       renovate: ${{ steps.filter.outputs.renovate == 'true' }}
       dependencies: ${{ steps.filter.outputs.dependencies == 'true' }}
     steps:
@@ -51,6 +52,7 @@ jobs:
               - '!smoketests/**'
               - '!radiator/**'
               - '!scripts/opiskeluoikeushistoria-debug/**'
+              - '!docker-build/**'
               - '!.claude/**'
               - '!sandbox/**'
               - '!renovate.json'
@@ -96,6 +98,10 @@ jobs:
             history-debug:
               - *documentation-exclusions
               - 'scripts/opiskeluoikeushistoria-debug/**'
+
+            docker-image:
+              - *documentation-exclusions
+              - 'docker-build/**'
 
             renovate:
               - 'renovate.json'
@@ -144,6 +150,7 @@ jobs:
       run-smoketests-tests: ${{ needs.changes.outputs.smoketests == 'true' }}
       run-radiator-tests: ${{ needs.changes.outputs.radiator == 'true' }}
       run-history-debug-tests: ${{ needs.changes.outputs.history-debug == 'true' }}
+      run-docker-image-tests: ${{ needs.changes.outputs.docker-image == 'true' }}
 
   trivy:
     name: Trivy
