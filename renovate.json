@@ -26,7 +26,8 @@
     "GitHub runner images are exempt from minimumReleaseAge because their datasource provides no release timestamps. Their updates require manual review.",
     "platformAutomerge is off as a second guard. GitHub's automerge is armed at PR creation and weighs only the required checks, so it would merge past a pending `renovate/stability-days` check if a young release ever reached a branch. Renovate's own automerge waits for CI to pass *and* for its internal checks, and merges at its next run.",
     "Renovate's vulnerabilityAlerts defaults set minimumReleaseAge to null, so security fixes are not delayed by it.",
-    "The last package rule labels the PRs that Renovate will merge automatically."
+    "The last package rule labels the PRs that Renovate will merge automatically.",
+    "A groupName names what the group contains, never the update type or whether it is automerged: Renovate appends (patch), (minor) or (major) to a group's PR title itself, and the automerge label marks automerged PRs."
   ],
   "automerge": false,
   "automergeType": "pr",
@@ -125,7 +126,8 @@
       "matchDepTypes": ["action"],
       "matchUpdateTypes": ["minor", "patch"],
       "matchPackageNames": ["!aws-actions/**", "!slackapi/**"],
-      "groupName": "github actions non-major",
+      "groupName": "GitHub Actions",
+      "group": { "description": ["Multiple packages: GitHub Actions"] },
       "automerge": true
     },
     {
@@ -134,7 +136,9 @@
       "matchDepTypes": ["uses-with"],
       "matchPackageNames": ["aquasecurity/trivy"],
       "matchUpdateTypes": ["minor", "patch"],
-      "groupName": "github actions non-major",
+      "groupName": "GitHub Actions",
+      "group": { "description": ["Multiple packages: GitHub Actions"] },
+      "commitMessageTopic": "Trivy CLI",
       "automerge": true
     },
     {
@@ -143,12 +147,14 @@
       "matchDepTypes": ["action"],
       "matchPackageNames": ["aws-actions/**"],
       "matchUpdateTypes": ["minor", "patch"],
-      "groupName": "aws actions"
+      "groupName": "AWS actions",
+      "group": { "description": ["Multiple packages: AWS actions"] }
     },
     {
       "description": "Raise runner image updates on their own. The github-runners datasource has no release dates, so the strict internalChecksFilter would hold these back forever unless minimumReleaseAge is lifted.",
       "matchDatasources": ["github-runners"],
       "groupName": "GitHub runner images",
+      "commitMessageTopic": "{{{depName}}} runner image",
       "minimumReleaseAge": null,
       "automerge": false
     },
@@ -165,7 +171,8 @@
       "matchUpdateTypes": [
         "patch"
       ],
-      "groupName": "npm patch updates"
+      "groupName": "npm dependencies",
+      "group": { "description": ["Multiple packages: npm dependencies"] }
     },
     {
       "description": "Automerge devDependency patch updates",
@@ -178,7 +185,8 @@
       "matchDepTypes": [
         "devDependencies"
       ],
-      "groupName": "npm dev patch updates",
+      "groupName": "npm devDependencies",
+      "group": { "description": ["Multiple packages: npm devDependencies"] },
       "automerge": true
     },
     {
@@ -194,7 +202,9 @@
       "matchFileNames": ["omadata-oauth2-sample/server/package.json"],
       "matchDepTypes": ["dependencies"],
       "matchUpdateTypes": ["patch"],
-      "groupName": "OmaData OAuth2 sample runtime patch updates",
+      "groupName": "OmaData OAuth2 sample dependencies",
+      "group": { "description": ["Multiple packages: OmaData OAuth2 sample dependencies"] },
+      "commitMessageTopic": "OmaData OAuth2 sample dependency {{{depName}}}",
       "automerge": true
     },
     {
@@ -211,7 +221,9 @@
       "matchFileNames": ["smoketests/package.json"],
       "matchDepTypes": ["dependencies"],
       "matchUpdateTypes": ["patch"],
-      "groupName": "smoketests runtime patch updates",
+      "groupName": "smoketests dependencies",
+      "group": { "description": ["Multiple packages: smoketests dependencies"] },
+      "commitMessageTopic": "smoketests dependency {{{depName}}}",
       "automerge": true
     },
     {
@@ -224,7 +236,7 @@
     },
     {
       "description": "Group all Parcel updates together. Placed after the npm patch groups so that their groupName does not override this one.",
-      "groupName": "parcel",
+      "groupName": "Parcel",
       "matchPackageNames": [
         "/^parcel$/",
         "/^@parcel//"
@@ -250,6 +262,14 @@
       "groupName": "Node.js",
       "separateMinorPatch": false,
       "automerge": false
+    },
+    {
+      "description": "Title Node image digest updates like other Docker digests and keep them out of the Node.js group. group:nodeJs would otherwise title them 'Update Node.js to <digest>', which reads like a version.",
+      "matchDatasources": ["docker"],
+      "matchPackageNames": ["node"],
+      "matchUpdateTypes": ["digest"],
+      "groupName": null,
+      "commitMessageTopic": "{{{depName}}}:{{{currentValue}}} Docker digest"
     },
     {
       "description": "Automerge Node and Corretto base-image digest updates after CI.",
@@ -297,7 +317,7 @@
         "@playwright/test",
         "mcr.microsoft.com/playwright"
       ],
-      "groupName": "playwright",
+      "groupName": "Playwright",
       "separateMinorPatch": false,
       "minimumGroupSize": 2,
       "automerge": true
@@ -320,6 +340,7 @@
       "matchManagers": ["maven"],
       "matchPackageNames": ["io.github.openhtmltopdf:**", "org.apache.pdfbox:**"],
       "groupName": "PDF rendering",
+      "group": { "description": ["Multiple packages: PDF rendering"] },
       "separateMinorPatch": false,
       "automerge": true,
       "prBodyNotes": ["Renders the certificate PDFs (todistukset)."]
@@ -385,7 +406,8 @@
       "matchUpdateTypes": ["patch"],
       "matchPackageNames": ["!org.scalatra:**"],
       "matchJsonata": ["$not($exists(groupName)) or groupName = null"],
-      "groupName": "maven test patch updates"
+      "groupName": "Maven test dependencies",
+      "group": { "description": ["Multiple packages: Maven test dependencies"] }
     },
     {
       "description": "Group Maven build plugin patch updates",
@@ -394,22 +416,25 @@
       "matchUpdateTypes": ["patch"],
       "matchPackageNames": ["!org.apache.maven.plugins:maven-war-plugin"],
       "matchJsonata": ["$not($exists(groupName)) or groupName = null"],
-      "groupName": "maven build plugin patch updates"
+      "groupName": "Maven build plugins",
+      "group": { "description": ["Multiple packages: Maven build plugins"] }
     },
     {
-      "description": "Keep the automerged runtime patch updates out of the manual group below. Renovate automerges a group only when every update in it may be automerged.",
+      "description": "Keep the automerged runtime patch updates out of the manual group below. Renovate automerges a group only when every update in it may be automerged. Core means the runtime dependencies automerged above because every PR build exercises them.",
       "matchManagers": ["maven"],
       "matchFileNames": ["pom.xml"],
       "matchUpdateTypes": ["patch"],
       "matchJsonata": ["automerge = true and ($not($exists(groupName)) or groupName = null)"],
-      "groupName": "maven automerged patch updates"
+      "groupName": "Maven core runtime dependencies",
+      "group": { "description": ["Multiple packages: Maven core runtime dependencies"] }
     },
     {
       "description": "Group the remaining Maven patch updates",
       "matchManagers": ["maven"],
       "matchUpdateTypes": ["patch"],
       "matchJsonata": ["$not($exists(groupName)) or groupName = null"],
-      "groupName": "maven patch updates"
+      "groupName": "Maven dependencies",
+      "group": { "description": ["Multiple packages: Maven dependencies"] }
     },
     {
       "description": "Pin postgres Docker image to match RDS version (RDS upgrades to 15.17 on 2026-06-03; auto-minor-version-upgrade is enabled in RDS). Bump this constraint when RDS is upgraded further.",
@@ -444,7 +469,8 @@
       "matchFileNames": ["json-schema-viewer/package.json"],
       "matchDepTypes": ["dependencies", "devDependencies"],
       "groupName": null,
-      "additionalBranchPrefix": "schema-viewer-"
+      "additionalBranchPrefix": "schema-viewer-",
+      "commitMessageTopic": "JSON Schema Viewer dependency {{{depName}}}"
     },
     {
       "description": "Schema viewer runtime libraries are a legacy stack that CI exercises only partly; review their updates manually.",
@@ -452,6 +478,11 @@
       "matchFileNames": ["json-schema-viewer/package.json"],
       "matchDepTypes": ["dependencies"],
       "automerge": false
+    },
+    {
+      "description": "Leave a shared version out of the titles of groups whose packages are versioned separately, so that it does not read as the group's version. A rule opts in with group.description \"Multiple packages: <its groupName>\". The marker names the group because group objects merge across rules and would otherwise carry it into a later group such as Parcel. Keep this rule after every rule that sets a groupName.",
+      "matchJsonata": ["('Multiple packages: ' & groupName) in group.description"],
+      "group": { "commitMessageExtra": "" }
     },
     {
       "description": "Label PRs that Renovate will merge automatically and exempt them from the PR limits. This must be the last rule, so that it sees the automerge value set by the rules above.",
