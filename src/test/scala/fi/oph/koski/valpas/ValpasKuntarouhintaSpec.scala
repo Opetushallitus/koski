@@ -7,6 +7,7 @@ import fi.oph.koski.organisaatio.MockOrganisaatiot.helsinginKaupunki
 import fi.oph.koski.raportit.DataSheet
 import fi.oph.koski.valpas.log.ValpasAuditLog
 import fi.oph.koski.valpas.opiskeluoikeusfixture.{FixtureUtil, ValpasMockOppijat}
+import fi.oph.koski.valpas.oppivelvollisuudestavapautus.UusiOppivelvollisuudestaVapautus
 import fi.oph.koski.valpas.rouhinta.{ValpasRouhintaOppivelvollinenSheetRow, ValpasRouhintaService}
 import fi.oph.koski.valpas.valpasuser.{ValpasMockUser, ValpasMockUsers}
 
@@ -202,6 +203,26 @@ class ValpasKuntarouhintaSpec extends ValpasRouhintaTestBase {
             expected => expected.kuntailmoitusPvm
           )
         }
+      }
+
+      "Ei sisällä oppivelvollisuudesta vapautettua oppijaa, jolla on vain mitätöityjä opiskeluoikeuksia" in {
+        FixtureUtil.resetMockData(KoskiApplicationForTests, ValpasKuntarouhintaSpec.tarkastelupäivä)
+        val oppija = ValpasMockOppijat.vainMitätöityjäOpiskeluoikeuksia
+
+        def eiSuorittavienHetut = loadKuntahaku().collectFirst {
+          case d: DataSheet if d.title == t.get("rouhinta_tab_ei_oppivelvollisuutta_suorittavat") => d.rows.collect {
+            case r: ValpasRouhintaOppivelvollinenSheetRow => r
+          }
+        }.get.flatMap(_.hetu)
+
+        eiSuorittavienHetut should contain (oppija.hetu.get)
+
+        KoskiApplicationForTests.valpasOppivelvollisuudestaVapautusService
+          .lisääOppivelvollisuudestaVapautus(
+            UusiOppivelvollisuudestaVapautus(oppija.oid, date(2021, 1, 1), ValpasKuntarouhintaSpec.kuntakoodi)
+          )(session(ValpasMockUsers.valpasPyhtääJaAapajoenPeruskoulu)) should equal(Right(()))
+
+        eiSuorittavienHetut should not contain (oppija.hetu.get)
       }
     }
 

@@ -36,6 +36,12 @@ class ValpasOppivelvollisuudestaVapautusService(application: KoskiApplication) e
       .map(OppivelvollisuudestaVapautus.apply(aktiivisetKunnat, rajapäivätService))
   }
 
+  def haeVapautettujenOppijoidenOidit(oppijaOids: Seq[String]): Set[String] =
+    findVapautukset(oppijaOids.toList)
+      .filterNot(_.tulevaisuudessa)
+      .map(_.oppijaOid)
+      .toSet
+
   def mapVapautetutOppijat[T](oppijat: Seq[T], toOids: T => Seq[String])(map: (T, OppivelvollisuudestaVapautus) => T): Seq[T] = {
     val oppijaOids = oppijat.flatMap(toOids)
     val vapautukset = db.getOppivelvollisuudestaVapautetutOppijat(oppijaOids)
