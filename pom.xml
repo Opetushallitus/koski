@@ -21,7 +21,6 @@
     <scalatra.version>3.2.1</scalatra.version>
     <http4s.version>0.23.38</http4s.version>
     <http4s-blaze-client.version>0.23.18</http4s-blaze-client.version>
-    <http4s-scala-xml.version>0.24.1</http4s-scala-xml.version>
     <json4s.version>4.0.7</json4s.version>
     <awssdk.version>2.55.15</awssdk.version>
     <jetty.version>12.1.14</jetty.version>
@@ -89,6 +88,12 @@
       <groupId>org.scala-lang</groupId>
       <artifactId>scala-compiler</artifactId>
       <version>${scala.version}</version>
+      <exclusions>
+        <exclusion>
+          <groupId>org.jline</groupId>
+          <artifactId>jline</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
     <dependency>
       <groupId>org.apache.commons</groupId>
@@ -270,18 +275,8 @@
     </dependency>
     <dependency>
       <groupId>org.http4s</groupId>
-      <artifactId>http4s-dsl_2.13</artifactId>
-      <version>${http4s.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.http4s</groupId>
       <artifactId>http4s-client_2.13</artifactId>
       <version>${http4s.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.http4s</groupId>
-      <artifactId>http4s-scala-xml_2.13</artifactId>
-      <version>${http4s-scala-xml.version}</version>
     </dependency>
     <dependency>
       <groupId>org.eclipse.jetty.ee11</groupId>
@@ -422,17 +417,6 @@
     </dependency>
     <dependency>
       <groupId>software.amazon.awssdk</groupId>
-      <artifactId>ecs</artifactId>
-      <version>${awssdk.version}</version>
-      <exclusions>
-        <exclusion>
-          <groupId>software.amazon.awssdk</groupId>
-          <artifactId>netty-nio-client</artifactId>
-        </exclusion>
-      </exclusions>
-    </dependency>
-    <dependency>
-      <groupId>software.amazon.awssdk</groupId>
       <artifactId>dynamodb</artifactId>
       <version>${awssdk.version}</version>
       <exclusions>
@@ -441,11 +425,6 @@
           <artifactId>netty-nio-client</artifactId>
         </exclusion>
       </exclusions>
-    </dependency>
-    <dependency>
-      <groupId>software.amazon.awssdk</groupId>
-      <artifactId>dynamodb-enhanced</artifactId>
-      <version>${awssdk.version}</version>
     </dependency>
     <dependency>
       <groupId>software.amazon.awssdk</groupId>

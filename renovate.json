@@ -370,7 +370,7 @@
       "automerge": true
     },
     {
-      "description": "Automerge patch updates of runtime libraries that every backend test run exercises. Integration clients (http4s, netty, AWS SDK), the PostgreSQL driver and aws-advanced-jdbc-wrapper (production connects through IAM and TLS), bouncycastle and log4j stay manual, because PR CI does not exercise them the way production uses them.",
+      "description": "Automerge patch updates of runtime libraries that every backend test run exercises. Integration clients (http4s, AWS SDK), the PostgreSQL driver and aws-advanced-jdbc-wrapper (production connects through IAM and TLS), bouncycastle and log4j stay manual, because PR CI does not exercise them the way production uses them.",
       "matchManagers": ["maven"],
       "matchFileNames": ["pom.xml"],
       "matchUpdateTypes": ["patch"],
