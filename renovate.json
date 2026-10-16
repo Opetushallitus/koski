@@ -115,7 +115,7 @@
     },
     {
       "description": "Automerge the development and test database images",
-      "matchFileNames": ["docker-compose.yaml", "docker-compose-arm64.yaml", "opensearch/Dockerfile"],
+      "matchFileNames": ["docker-compose.yaml", "opensearch/Dockerfile"],
       "matchUpdateTypes": ["minor", "patch", "digest"],
       "enabled": true,
       "automerge": true
