@@ -5,7 +5,6 @@ import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
 import fi.oph.koski.{KoskiApplicationForTests, KoskiHttpSpec}
 import fi.oph.koski.koskiuser.MockUsers
 import fi.oph.koski.ytr.{MockYtrClient, YtrSsnWithPreviousSsns}
-import junit.framework.Assert.{assertEquals, assertNotNull, assertNotSame}
 import org.scalatest.BeforeAndAfterEach
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.should.Matchers
@@ -140,21 +139,21 @@ class YtrDownloadSpec
     downloadYtrData(modifiedSince, force = false)
 
     var statusRows = getDownloadStatusRows()
-    assertEquals(1, statusRows.size)
+    statusRows.size should equal(1)
 
     var row = statusRows.head
-    assertEquals(modifiedSince.toString, (row \ "modifiedSinceParam").extract[String])
-    assertNotNull((row \ "completed").extract[String])
+    (row \ "modifiedSinceParam").extract[String] should equal(modifiedSince.toString)
+    (row \ "completed").extract[String] should not be null
 
     downloadYtrData(modifiedSinceLastRun = true, force = false)
 
     statusRows = getDownloadStatusRows()
-    assertEquals(2, statusRows.size)
+    statusRows.size should equal(2)
 
     row = statusRows(1)
     // Tarkistetaan vain onko modifiedSinceParam muuttunut sitten ylemmän assertin.
     // Tarkempi vertailu tämänhetkisellä päivämäärällä on flaky.
-    assertNotSame(modifiedSince.toString, (row \ "modifiedSinceParam").extract[String])
+    (row \ "modifiedSinceParam").extract[String] should not equal modifiedSince.toString
   }
 
   "Oppijalta lähetetään YTR:iin myös vanhat hetut" in {
