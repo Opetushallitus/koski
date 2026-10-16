@@ -1,4 +1,3 @@
-# Voit päivittää imagen komennolla ./update-openjdk.sh
 FROM amazoncorretto:17.0.20-alpine@sha256:80d268d89c10861f33792c7845bbd7c8494678a600f031988e135fe27eae3b48
 
 ARG KOSKI_VERSION
