@@ -163,6 +163,28 @@ jobs:
           mvn versions:set -DnewVersion="$version" --batch-mode
           mvn war:war --batch-mode
 
+      - name: Check war contents
+        env:
+          version: ${{ github.sha }}
+        run: |
+          war="target/koski-$version.war"
+          for path in \
+            "WEB-INF/lib/koski-$version.jar" \
+            WEB-INF/web.xml \
+            buildversion.txt \
+            koski/js/koski-main.js \
+            valpas/index.html.template
+          do
+            if ! unzip -Z1 "$war" "$path" > /dev/null 2>&1; then
+              echo "::error::$path is missing from the war"
+              exit 1
+            fi
+          done
+          if unzip -Z1 "$war" 'test/*' '*/test/*' 2> /dev/null; then
+            echo "::error::The war contains the test files listed above"
+            exit 1
+          fi
+
       - name: Build image
         env:
           version: ${{ github.sha }}

@@ -355,12 +355,11 @@
       "automerge": true
     },
     {
-      "description": "Automerge Maven build plugins that the PR build runs. The PR build never packages the WAR.",
+      "description": "Automerge Maven build plugins after CI.",
       "matchManagers": ["maven"],
       "matchFileNames": ["pom.xml"],
       "matchDepTypes": ["build"],
       "matchUpdateTypes": ["minor", "patch"],
-      "matchPackageNames": ["!org.apache.maven.plugins:maven-war-plugin"],
       "automerge": true
     },
     {
@@ -414,7 +413,6 @@
       "matchManagers": ["maven"],
       "matchDepTypes": ["build"],
       "matchUpdateTypes": ["patch"],
-      "matchPackageNames": ["!org.apache.maven.plugins:maven-war-plugin"],
       "matchJsonata": ["$not($exists(groupName)) or groupName = null"],
       "groupName": "Maven build plugins",
       "group": { "description": ["Multiple packages: Maven build plugins"] }
