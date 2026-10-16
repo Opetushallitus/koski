@@ -193,9 +193,13 @@ Migrations run automatically on application startup.
 psql -h localhost koski oph
 ```
 
-## Dependency vulnerabilities and pnpm overrides
+## Dependency vulnerabilities and overrides
 
-When Trivy or an advisory flags a transitive dependency, **do not reach for a `pnpm.overrides` entry first.** An override is permanent residue: it needs its own Renovate PRs forever, and an exact pin turns a self-healing transitive dep into one that can only be fixed by hand. In TOR-2696, three such pins (`"js-yaml": "4.3.0"`) were themselves holding a HIGH-severity version in place — the override *was* the vulnerability.
+When Trivy or an advisory flags a transitive dependency, **do not reach for an override first** (`pnpm.overrides`, or a Maven `<dependencyManagement>` entry). An override is permanent residue: Renovate treats it as a dependency of its own and raises PRs for it forever, long after the parent has caught up, and it can only be removed by hand. Fix the parent first; override only when the parent can't reach a fixed version, and remove the override once it can.
+
+### pnpm
+
+In TOR-2696, three pins (`"js-yaml": "4.3.0"`) were themselves holding a HIGH-severity version in place — the override *was* the vulnerability.
 
 Work through this order:
 
@@ -206,6 +210,14 @@ Work through this order:
 Removing an override is not enough on its own: pnpm keeps a lockfile resolution that still satisfies its parent, so the package also needs an explicit `pnpm update`.
 
 **If you are adding a third override in as many months, stop.** The question is not "which version do I pin" but "why is the lockfile never refreshed?" Renovate's `lockFileMaintenance` is the only mechanism that reaches dependencies absent from every `package.json` — Renovate will not create overrides for you, and the `transitiveRemediation` option that once did has been removed with no replacement. That job went silent between 2026-06-08 and 2026-08-07, which is what produced the override pile-up. Check the Dependency Dashboard (issue #3939) and the Mend job logs before adding a workaround.
+
+### Maven
+
+Maven has no version ranges or lockfile refresh: a transitive version changes only when the parent releases. So first check whether a newer parent brings a fixed version and bump that. Otherwise:
+
+- **Override in `<dependencyManagement>`.**
+- **Comment each override with its reason (CVE id) and the parent that brings it in.**
+- **Remove the override once the parent catches up.**
 
 ## Key Patterns
 
