@@ -23,6 +23,6 @@ runs:
       with:
         java-version: "17"
         architecture: "x64"
-        distribution: "zulu"
+        distribution: "corretto"
         cache: "maven"
         cache-read-only: ${{ inputs.cache-read-only }}
