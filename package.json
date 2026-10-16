@@ -1,10 +1,10 @@
 {
   "name": "koski-tools",
   "private": true,
-  "packageManager": "pnpm@12.11.2",
+  "packageManager": "pnpm@12.13.0",
   "engines": {
     "node": ">=24",
-    "pnpm": "12.11.2"
+    "pnpm": "12.13.0"
   },
   "devDependencies": {
     "concurrently": "10.0.6",
