@@ -14,7 +14,7 @@
   "dependencies": {
     "@skidding/react-codemirror": "1.0.2",
     "bacon.atom": "5.0.6",
-    "baconjs": "1.0.1",
+    "baconjs": "3.0.23",
     "baret": "1.2.0",
     "codemirror": "5.65.21",
     "fecha": "4.2.3",
