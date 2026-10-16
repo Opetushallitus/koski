@@ -8,7 +8,7 @@ import {
 
 export type VirkailijaKansalainenContainerProps = React.PropsWithChildren<
   OpiskeluoikeusTitleProps & {
-    renderTitle?: React.FC<OpiskeluoikeusTitleProps>
+    renderTitle?: (props: OpiskeluoikeusTitleProps) => React.ReactNode
   }
 >
 
@@ -18,16 +18,18 @@ export const VirkailijaKansalainenContainer: React.FC<
   const { TreeNode: OpiskeluoikeusTreeNode, ...opiskeluoikeusTree } = useTree()
   const kansalainenTaiSuoritusjako = useKansalainenTaiSuoritusjako()
   const { children, renderTitle, ...titleProps } = props
-  const Title = renderTitle || OpiskeluoikeusTitle
+  const title =
+    renderTitle ??
+    ((p: OpiskeluoikeusTitleProps) => <OpiskeluoikeusTitle {...p} />)
 
   return kansalainenTaiSuoritusjako ? (
     <OpiskeluoikeusTreeNode>
-      <Title {...titleProps} tree={opiskeluoikeusTree} />
+      {title({ ...titleProps, tree: opiskeluoikeusTree })}
       {opiskeluoikeusTree.isOpen && props.children}
     </OpiskeluoikeusTreeNode>
   ) : (
     <>
-      <Title {...titleProps} />
+      {title(titleProps)}
       {props.children}
     </>
   )

@@ -11,6 +11,7 @@ import { takeFullPageScreenshot } from './fragments/fullPageScreenshot'
 const lukutaitokoulutus = '1.2.246.562.24.00000000107'
 const jotpaKoulutus = '1.2.246.562.24.00000000140'
 const kansanopisto = '1.2.246.562.24.00000000105'
+const osaamismerkki = '1.2.246.562.24.00000000164'
 
 test.describe('VST – visuaaliset regressiot', () => {
   test.skip(
@@ -72,5 +73,11 @@ test.describe('VST – visuaaliset regressiot', () => {
     ).toBeVisible()
     await vstOppijaPage.openAllOsasuoritukset()
     await takeFullPageScreenshot(page, 'vst-kansanopisto-muokkaus-avattu.png')
+  })
+
+  test('Osaamismerkki, katselunäkymä', async ({ page, vstOppijaPage }) => {
+    await vstOppijaPage.goto(osaamismerkki)
+    await expect(page.getByRole('img', { name: 'Osaamismerkki' })).toBeVisible()
+    await takeFullPageScreenshot(page, 'vst-osaamismerkki-katselu.png')
   })
 })
