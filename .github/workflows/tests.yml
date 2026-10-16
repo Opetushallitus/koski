@@ -188,7 +188,9 @@ jobs:
       - name: Build image
         env:
           version: ${{ github.sha }}
-        run: docker build -f docker-build/Dockerfile --build-arg KOSKI_VERSION="$version" .
+        run: |
+          scripts/retry.sh "Image build" 5m -- \
+            docker build --file docker-build/Dockerfile --build-arg KOSKI_VERSION="$version" .
 
   scalafix:
     if: ${{ inputs.run-backend-tests }}
