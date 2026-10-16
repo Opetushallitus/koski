@@ -4,6 +4,7 @@ import fi.oph.koski.KoskiApplicationForTests
 import fi.oph.koski.raportit.{DataSheet, Sheet}
 import fi.oph.koski.valpas.log.ValpasAuditLog
 import fi.oph.koski.valpas.opiskeluoikeusfixture.{FixtureUtil, ValpasMockOppijat}
+import fi.oph.koski.valpas.oppivelvollisuudestavapautus.UusiOppivelvollisuudestaVapautus
 import fi.oph.koski.valpas.rouhinta.{ValpasRouhintaOppivelvollinenSheetRow, ValpasRouhintaPelkkäHetuSheetRow, ValpasRouhintaService}
 import fi.oph.koski.valpas.valpasuser.ValpasMockUsers
 
@@ -158,6 +159,34 @@ class ValpasHeturouhintaSpec extends ValpasRouhintaTestBase {
       }
     }
 
+    "Oppivelvollisuudesta vapautettu oppija, jolla on vain mitätöityjä opiskeluoikeuksia, on oppivelvollisuuden ulkopuolinen" in {
+      FixtureUtil.resetMockData(KoskiApplicationForTests)
+      val oppija = ValpasMockOppijat.vainMitätöityjäOpiskeluoikeuksia
+
+      def haeEiSuorittavienJaUlkopuolistenHetut() = {
+        val sheets = loadHetuhaku()
+        val eiSuorittavat = sheets.collectFirst {
+          case d: DataSheet if d.title == t.get("rouhinta_tab_ei_oppivelvollisuutta_suorittavat") => d.rows.collect {
+            case r: ValpasRouhintaOppivelvollinenSheetRow => r
+          }
+        }.get
+        (eiSuorittavat.flatMap(_.hetu), pelkkäHetuRows("rouhinta_tab_ovl_ulkopuoliset", sheets).map(_.hetu))
+      }
+
+      val (eiSuorittavatEnnen, ulkopuolisetEnnen) = haeEiSuorittavienJaUlkopuolistenHetut()
+      eiSuorittavatEnnen should contain (oppija.hetu.get)
+      ulkopuolisetEnnen should not contain (oppija.hetu.get)
+
+      KoskiApplicationForTests.valpasOppivelvollisuudestaVapautusService
+        .lisääOppivelvollisuudestaVapautus(
+          UusiOppivelvollisuudestaVapautus(oppija.oid, LocalDate.of(2021, 1, 1), "624")
+        )(session(ValpasMockUsers.valpasPyhtääJaAapajoenPeruskoulu)) should equal(Right(()))
+
+      val (eiSuorittavat, ulkopuoliset) = haeEiSuorittavienJaUlkopuolistenHetut()
+      eiSuorittavat should not contain (oppija.hetu.get)
+      ulkopuoliset should contain (oppija.hetu.get)
+    }
+
     "Heturouhinta ei palauta amiksesta valmistunutta" in {
       FixtureUtil.resetMockData(KoskiApplicationForTests, LocalDate.of(2023, 5, 2))
 
@@ -204,7 +233,7 @@ class ValpasHeturouhintaSpec extends ValpasRouhintaTestBase {
       )
   }
 
-  private def pelkkäHetuRows(titleKey: String): Seq[ValpasRouhintaPelkkäHetuSheetRow] = hakutulosSheets.collectFirst {
+  private def pelkkäHetuRows(titleKey: String, sheets: Seq[Sheet] = hakutulosSheets): Seq[ValpasRouhintaPelkkäHetuSheetRow] = sheets.collectFirst {
     case d: DataSheet if d.title == t.get(titleKey) => d.rows.collect {
       case r: ValpasRouhintaPelkkäHetuSheetRow => r
     }

@@ -24,6 +24,7 @@ class ValpasKuntarouhintaService(application: KoskiApplication)
   private val oppijalistatService = application.valpasOppijalistatService
   private val rouhintaOvKeskeytyksetService = application.valpasRouhintaOppivelvollisuudenKeskeytysService
   private val kuntailmoitusService = application.valpasKuntailmoitusService
+  private val vapautusService = application.valpasOppivelvollisuudestaVapautusService
 
   def haeKunnanPerusteellaIlmanOikeustarkastusta
     (kunta: String)
@@ -74,7 +75,8 @@ class ValpasKuntarouhintaService(application: KoskiApplication)
         .map(tarkistaYlivuoto(ylivuotosivu))
         .map(haeSivuOppijoitaOppijanumerorekisteristä(kunta))
         .takeWhile(!_.isEmpty)
-        .flatMap(poistaKoskenTuntematOppijat)
+        .map(poistaKoskenTuntematOppijat)
+        .flatMap(poistaOppivelvollisuudestaVapautetut)
         .filter(onHetullinenOppija)
         .map(ValpasRouhintaOppivelvollinen.apply)
         .filter(o => Oppivelvollisuustiedot.onOppivelvollinenPelkänIänPerusteella(o.syntymäaika, application.valpasRajapäivätService))
@@ -112,6 +114,16 @@ class ValpasKuntarouhintaService(application: KoskiApplication)
       val oids = oppijat.map(_.oidHenkilo)
       val koskessa = application.valpasOpiskeluoikeusDatabaseService.haeTunnettujenOppijoidenOidit(oids).map(_.oppijaOid).toSet
       oppijat.filter(o => !koskessa.contains(o.oidHenkilo))
+    }
+  }
+
+  private def poistaOppivelvollisuudestaVapautetut
+    (oppijat: Seq[OppijaNumerorekisteriKuntarouhintaOppija])
+  : Seq[OppijaNumerorekisteriKuntarouhintaOppija] =
+  {
+    timed("poistaOppivelvollisuudestaVapautetut") {
+      val vapautetut = vapautusService.haeVapautettujenOppijoidenOidit(oppijat.map(_.oidHenkilo))
+      oppijat.filterNot(o => vapautetut.contains(o.oidHenkilo))
     }
   }
 
