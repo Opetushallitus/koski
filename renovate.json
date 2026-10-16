@@ -198,6 +198,23 @@
       "automerge": true
     },
     {
+      "description": "Group the smoketests' runtime patch updates and automerge them after CI.",
+      "matchManagers": ["npm"],
+      "matchFileNames": ["smoketests/package.json"],
+      "matchDepTypes": ["dependencies"],
+      "matchUpdateTypes": ["patch"],
+      "groupName": "smoketests runtime patch updates",
+      "automerge": true
+    },
+    {
+      "description": "Automerge the smoketests' runtime minor updates after CI, each in its own PR. devDependency minors are already automerged above.",
+      "matchManagers": ["npm"],
+      "matchFileNames": ["smoketests/package.json"],
+      "matchDepTypes": ["dependencies"],
+      "matchUpdateTypes": ["minor"],
+      "automerge": true
+    },
+    {
       "description": "Group all Parcel updates together. Placed after the npm patch groups so that their groupName does not override this one.",
       "groupName": "parcel",
       "matchPackageNames": [
