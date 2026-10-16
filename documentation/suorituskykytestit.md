@@ -72,6 +72,9 @@ WHERE koulutusmuoto = 'perusopetus'
   AND luokka = '9A';
 ```
 
+Tietokantalaukaisin jonottaa poistetut opiskeluoikeudet poistettaviksi myös hakuindeksistä. Koski purkaa jonoa noin
+1000 opiskeluoikeutta sekunnissa, joten suuren poiston jälkeen QA:n hakuindeksin muut päivitykset viivästyvät hetken.
+
 Huom! QA:n tietokannassa on edelleen vanhempaa testidataa:
 - kausi 2021–2022, ei poistettu testiaineistomuutosten takia
 - kausi 2024-08-15–2025-05-31, luokka `9P`, 3 oppilaitosta

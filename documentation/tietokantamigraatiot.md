@@ -55,7 +55,9 @@ END; $$;
 
 ## Timestamp-sarakkeen automaattinen päivittyminen
 
-Kosken tietokannoille on säädetty trigger, joka päivittää rivin `timestamp`-sarakkeen aina kun riviä päivitetään. Muita triggereitä ei kirjoitushetkellä Koskella ole.
+Kosken tietokannoille on säädetty trigger, joka päivittää rivin `timestamp`-sarakkeen aina kun riviä päivitetään.
+Lisäksi `opiskeluoikeus`-taulun lisäykset ja päivitykset jonottuvat raportointikannan inkrementaaliseen lataukseen
+(`paivitetty_opiskeluoikeus`), ja rivin poisto jonottaa poiston perustiedot-hakuindeksiin (`perustiedot_sync`).
 
 Timestampin päivitys ei välttämättä ole suotavaa migraatioita tehdessä, koska kyseistä saraketta käytetään päättelemään koska opiskeluoikeuden tietoja on viimeksi muokattu.
 
