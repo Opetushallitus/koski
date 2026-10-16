@@ -18,18 +18,19 @@ case class KunnanOppijat(db: DB) extends KotikunnistaRaportoiva {
       o.seitsemänKaksitoista, o.kolmetoistaViisitoista, o.kuusitoistaErityisenTuenPerusteella, o.kuusitoistaEiErityisenTuenPerusteella)
   })
 
-  def build(kuntakoodi: String, päivä: LocalDate, t: LocalizationReader)(implicit u: KoskiSpecificSession): DataSheet =
+  def build(kuntaOid: String, kuntakoodi: String, päivä: LocalDate, t: LocalizationReader)(implicit u: KoskiSpecificSession): DataSheet =
     DataSheet(
       title = t.get("raportti-excel-kunnanoppijat-sheet-name"),
-      rows = oppijat(kuntakoodi, päivä, t.get("raportti-excel-default-value-esiopetus-lyhyt")),
+      rows = oppijat(kuntaOid, kuntakoodi, päivä, t.get("raportti-excel-default-value-esiopetus-lyhyt")),
       columnSettings = columnSettings(t)
     )
 
-  def oppijat(kuntakoodi: String, päivä: LocalDate, esiopetusLuokkaAste: String): Seq[KunnanOppijaRow] =
-    runDbSync(oppijaQuery(kotikunnassa(kuntakoodi, päivä), päivä, esiopetusLuokkaAste, turvakiellollinenKotikuntahistoria).as[KunnanOppijaRow], timeout = 5.minutes)
+  def oppijat(kuntaOid: String, kuntakoodi: String, päivä: LocalDate, esiopetusLuokkaAste: String): Seq[KunnanOppijaRow] =
+    runDbSync(oppijaQuery(kotikunnassaMuunJärjestämänä(kuntaOid, kuntakoodi, päivä), päivä, esiopetusLuokkaAste, turvakiellollinenKotikuntahistoria).as[KunnanOppijaRow], timeout = 5.minutes)
 
   // in-ehto rajaa kuntalaiset ennen kotikunnan per rivi -hakua, muuten haku ajetaan koko maan oppijoille
-  private def kotikunnassa(kuntakoodi: String, päivä: LocalDate): SQLActionBuilder = sql"""kkh.kotikunta = $kuntakoodi
+  private def kotikunnassaMuunJärjestämänä(kuntaOid: String, kuntakoodi: String, päivä: LocalDate): SQLActionBuilder = sql"""kkh.kotikunta = $kuntakoodi
+      and oo.koulutustoimija_oid <> $kuntaOid
       and he.master_oid in (
         select k.master_oid from #$turvakiellollinenKotikuntahistoria k
         where k.kotikunta = $kuntakoodi
