@@ -199,15 +199,6 @@ scalafix:
 scalafix-check:
 	mvn --batch-mode --activate-profiles scalafix,scalafix-check exec:java@scalafix-main exec:java@scalafix-test
 
-.PHONY: owasp
-owasp:
-	mvn dependency-check:check -P owasp --batch-mode
-
-.PHONY: owaspresults
-owaspresults:
-	open target/dependency-check-report.html
-
-
 .PHONY: npm-audit
 npm-audit:
 	cd web && pnpm audit --audit-level high
