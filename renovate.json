@@ -280,6 +280,20 @@
       "automerge": true
     },
     {
+      "description": "Automerge Corretto patch tags in Koski's image.",
+      "matchFileNames": ["docker-build/Dockerfile"],
+      "matchPackageNames": ["amazoncorretto"],
+      "matchUpdateTypes": ["patch"],
+      "automerge": true
+    },
+    {
+      "description": "Automerge JMX exporter minor and patch updates.",
+      "matchFileNames": ["docker-build/Dockerfile"],
+      "matchPackageNames": ["prometheus/jmx_exporter"],
+      "matchUpdateTypes": ["minor", "patch"],
+      "automerge": true
+    },
+    {
       "description": "Use Node LTS versioning for @types/node so its major updates follow the same stability policy as the runtime, rather than npm's latest tag.",
       "matchDatasources": ["npm"],
       "matchPackageNames": ["@types/node"],
