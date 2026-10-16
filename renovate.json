@@ -138,6 +138,14 @@
       "automerge": true
     },
     {
+      "description": "Group AWS action minor and patch updates into one PR. Not automerged: PR CI never runs these actions, so check the dev and QA deploys after merging. configure-aws-credentials is also used by the nightly Valpas performance tests.",
+      "matchManagers": ["github-actions"],
+      "matchDepTypes": ["action"],
+      "matchPackageNames": ["aws-actions/**"],
+      "matchUpdateTypes": ["minor", "patch"],
+      "groupName": "aws actions"
+    },
+    {
       "description": "Raise runner image updates on their own. The github-runners datasource has no release dates, so the strict internalChecksFilter would hold these back forever unless minimumReleaseAge is lifted.",
       "matchDatasources": ["github-runners"],
       "groupName": "GitHub runner images",
