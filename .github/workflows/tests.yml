@@ -149,12 +149,7 @@ jobs:
 
       - uses: ./.github/actions/setup_java_17
 
-      - name: Restore target dir
-        uses: actions/cache/restore@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
-        with:
-          path: "target/"
-          key: ${{ runner.os }}-target-${{ github.sha }}
-          fail-on-cache-miss: "true"
+      - uses: ./.github/actions/setup_backend
 
       - name: Package war
         env:
@@ -188,7 +183,25 @@ jobs:
       - name: Build image
         env:
           version: ${{ github.sha }}
-        run: docker build -f docker-build/Dockerfile --build-arg KOSKI_VERSION="$version" .
+        run: |
+          scripts/retry.sh "Image build" 5m -- \
+            docker build --file docker-build/Dockerfile --build-arg KOSKI_VERSION="$version" --tag koski:ci .
+
+      - name: Smoke test image
+        run: |
+          docker run --detach --name koski --network host --env SKIP_FIXTURES=true koski:ci
+          for _ in $(seq 1 90); do
+            curl --fail --fail-early --silent --show-error --max-time 5 \
+              --output /dev/null http://localhost:8080/koski/api/healthcheck/internal \
+              --output /dev/null http://localhost:8080/metrics \
+              --output /dev/null http://localhost:9101/metrics && exit 0
+            # Käynnistyksessä kaatunut kontti ei koskaan vastaa, joten lopetetaan odotus heti
+            # eikä vasta aikarajan täyttyessä.
+            [ "$(docker inspect --format '{{.State.Running}}' koski)" = true ] || break
+            sleep 2
+          done
+          docker logs koski
+          exit 1
 
   scalafix:
     if: ${{ inputs.run-backend-tests }}
@@ -610,6 +623,9 @@ jobs:
             curl --fail --fail-early --silent --show-error --max-time 5 \
               --output /dev/null http://localhost:8080/api/healthcheck \
               --output /dev/null http://localhost:8080/ && exit 0
+            # Käynnistyksessä kaatunut kontti ei koskaan vastaa, joten lopetetaan odotus heti
+            # eikä vasta aikarajan täyttyessä.
+            [ "$(docker inspect --format '{{.State.Running}}' omadataoauth2sample)" = true ] || break
             sleep 1
           done
           docker logs omadataoauth2sample
