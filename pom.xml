@@ -53,6 +53,12 @@
         <artifactId>commons-lang3</artifactId>
         <version>3.21.0</version>
       </dependency>
+      <!-- Keep xmpbox on the same version as pdfbox (openhtmltopdf-pdfbox brings an older one) -->
+      <dependency>
+        <groupId>org.apache.pdfbox</groupId>
+        <artifactId>xmpbox</artifactId>
+        <version>${pdfbox.version}</version>
+      </dependency>
     </dependencies>
   </dependencyManagement>
   <dependencies>
