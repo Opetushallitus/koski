@@ -623,6 +623,9 @@ jobs:
             curl --fail --fail-early --silent --show-error --max-time 5 \
               --output /dev/null http://localhost:8080/api/healthcheck \
               --output /dev/null http://localhost:8080/ && exit 0
+            # Käynnistyksessä kaatunut kontti ei koskaan vastaa, joten lopetetaan odotus heti
+            # eikä vasta aikarajan täyttyessä.
+            [ "$(docker inspect --format '{{.State.Running}}' omadataoauth2sample)" = true ] || break
             sleep 1
           done
           docker logs omadataoauth2sample
