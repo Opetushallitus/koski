@@ -75,7 +75,7 @@ describe('Raporttien luominen', function () {
           'Lukiokoulutus',
           'Lukiokoulutus (LOPS2021)',
           'IB-koulutus',
-          'VST JOTPA',
+          'VST',
           'MUKS',
           'Yleiset'
         ])
@@ -115,7 +115,7 @@ describe('Raporttien luominen', function () {
           'Lukiokoulutus',
           'Lukiokoulutus (LOPS2021)',
           'IB-koulutus',
-          'VST JOTPA',
+          'VST',
           'MUKS',
           'Yleiset'
         ])

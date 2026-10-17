@@ -3,7 +3,7 @@ import { lang } from '../i18n/i18n'
 import { OpiskeluoikeusHistoryPatch } from '../types/fi/oph/koski/history/OpiskeluoikeusHistoryPatch'
 import { UserWithAccessRights } from '../types/fi/oph/koski/koskiuser/UserWithAccessRights'
 import { QueryResponse } from '../types/fi/oph/koski/massaluovutus/QueryResponse'
-import { MassaluovutusQueryAmmatillinenTutkintoSuoritustiedot } from '../types/fi/oph/koski/massaluovutus/raportit/MassaluovutusQueryAmmatillinenTutkintoSuoritustiedot'
+import { MassaluovutusQueryParameters } from '../types/fi/oph/koski/massaluovutus/MassaluovutusQueryParameters'
 import { HenkilönOpiskeluoikeusVersiot } from '../types/fi/oph/koski/oppija/HenkilonOpiskeluoikeusVersiot'
 import { OrganisaatioHierarkia } from '../types/fi/oph/koski/organisaatio/OrganisaatioHierarkia'
 import { KeyValue } from '../types/fi/oph/koski/preferences/KeyValue'
@@ -394,7 +394,7 @@ export const generateTodistus = (
   )
 
 export const createMassaluovutusKysely = (
-  query: MassaluovutusQueryAmmatillinenTutkintoSuoritustiedot
+  query: MassaluovutusQueryParameters
 ) =>
   handleExpiredSession(
     apiPost<QueryResponse>(apiUrl('massaluovutus'), { body: query })

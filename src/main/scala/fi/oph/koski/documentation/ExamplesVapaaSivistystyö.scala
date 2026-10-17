@@ -103,6 +103,16 @@ object VapaaSivistystyöExample {
     suoritukset = List(suoritusVapaatavoitteinenKoulutusIlmanOpintokokonaisuutta)
   )
 
+  lazy val opiskeluoikeusVapaatavoitteinenKeskeytynyt = VapaanSivistystyönOpiskeluoikeus(
+    arvioituPäättymispäivä = Some(date(2023, 12, 20)),
+    tila = VapaanSivistystyönOpiskeluoikeudenTila(List(
+      VapaanSivistystyönVapaatavoitteisenKoulutuksenOpiskeluoikeusjakso(date(2023, 12, 20), opiskeluoikeusKeskeytynyt)
+    )),
+    lisätiedot = None,
+    oppilaitos = Some(varsinaisSuomenKansanopisto),
+    suoritukset = List(suoritusVapaatavoitteinenKoulutusKeskeytynyt)
+  )
+
   lazy val suoritusKOPS = OppivelvollisilleSuunnattuVapaanSivistystyönKoulutuksenSuoritus(
     toimipiste = varsinaisSuomenKansanopistoToimipiste,
     tyyppi = Koodistokoodiviite("vstoppivelvollisillesuunnattukoulutus", koodistoUri = "suorituksentyyppi"),
@@ -228,6 +238,33 @@ object VapaaSivistystyöExample {
     todistuksellaNäkyvätLisätiedot = None,
     osasuoritukset = Some(List(
       vapaanSivistystyönVapaatavoitteisenKoulutuksenOsasuorituksenSuoritus()
+    ))
+  )
+
+  lazy val suoritusVapaatavoitteinenKoulutusKeskeytynyt = VapaanSivistystyönVapaatavoitteisenKoulutuksenSuoritus(
+    toimipiste = OidOrganisaatio(MockOrganisaatiot.varsinaisSuomenKansanopisto),
+    tyyppi = Koodistokoodiviite(koodiarvo = "vstvapaatavoitteinenkoulutus", koodistoUri = "suorituksentyyppi"),
+    koulutusmoduuli = VapaanSivistystyönVapaatavoitteinenKoulutus(laajuus = Some(LaajuusOpintopisteissä(4)), opintokokonaisuus = Some(exampleOpintokokonaisuus)),
+    vahvistus = None,
+    suorituskieli = suomenKieli,
+    todistuksellaNäkyvätLisätiedot = None,
+    osasuoritukset = Some(List(
+      VapaanSivistystyönVapaatavoitteisenKoulutuksenOsasuorituksenSuoritus(
+        koulutusmoduuli = vapaanSivistystyönVapaatavoitteisenKoulutuksenOsasuoritus(
+          LocalizedString.finnish("Sienestämisen perusteet"),
+          PaikallinenKoodi("SP-1", "Sienestämisen perusteet"),
+          LaajuusOpintopisteissä(2)
+        ),
+        arviointi = Some(List(vapaanSivistystyöVapaatavoitteisenKoulutuksenArviointi(päivä = date(2023, 11, 15)))),
+      ),
+      VapaanSivistystyönVapaatavoitteisenKoulutuksenOsasuorituksenSuoritus(
+        koulutusmoduuli = vapaanSivistystyönVapaatavoitteisenKoulutuksenOsasuoritus(
+          LocalizedString.finnish("Sienestämisen jatkokurssi"),
+          PaikallinenKoodi("SP-2", "Sienestämisen jatkokurssi"),
+          LaajuusOpintopisteissä(2)
+        ),
+        arviointi = None,
+      ),
     ))
   )
 

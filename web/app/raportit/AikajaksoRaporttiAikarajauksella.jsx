@@ -67,7 +67,7 @@ export const AikajaksoRaporttiAikarajauksella = ({
   example,
   osasuoritusType = osasuoritusTypes.TUTKINNON_OSA,
   hideOsasuoritustenAikarajaus,
-  useMassaluovutus,
+  massaluovutusKyselymalli,
   lang
 }) => {
   const alkuAtom = Atom()
@@ -166,13 +166,14 @@ export const AikajaksoRaporttiAikarajauksella = ({
         />
       )}
 
-      {useMassaluovutus ? (
+      {massaluovutusKyselymalli ? (
         Bacon.combineWith(
           massaluovutusParametritP,
           dbUpdatedP,
           organisaatioNimetP,
           (parametrit, dbUpdated, oppilaitosNimet) => (
             <MassaluovutusRaportinLataus
+              kyselymalli={massaluovutusKyselymalli}
               parametrit={parametrit}
               dbUpdated={dbUpdated}
               oppilaitosNimet={oppilaitosNimet}
