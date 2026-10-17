@@ -5,7 +5,6 @@ import fi.oph.koski.henkilo.{HenkilöOid, Hetu}
 import fi.oph.koski.http.{HttpStatus, JsonErrorMessage, KoskiErrorCategory}
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.koskiuser._
-import fi.oph.koski.schema.Oppija
 import fi.oph.koski.servlet.{KoskiSpecificApiServlet, NoCache, RawJsonResponse}
 import org.json4s.JValue
 
@@ -13,19 +12,25 @@ class MigriServlet(implicit val application: KoskiApplication) extends KoskiSpec
   lazy val migriService =
     if (Environment.isMockEnvironment(application.config)) new MockMigriService else new RemoteMigriService
 
+  private lazy val migriOppijaService = new MigriOppijaService(application)
+
   private lazy val secretsManager = new SecretsManager
 
   post("/hetu") {
-    withJsonBody{ json =>
-      renderEither(extractAndValidateHetu(json).flatMap(haeHetulla))
+    val ykitiedot = ykitiedotPyydetty
+    withJsonBody { json =>
+      renderEither(extractAndValidateHetu(json).flatMap(migriOppijaService.findByHetu(_, ykitiedot)(koskiSession)))
     }()
   }
 
   post("/oid") {
+    val ykitiedot = ykitiedotPyydetty
     withJsonBody { json =>
-      renderEither(extractAndValidateOid(json).flatMap(haeOidilla))
+      renderEither(extractAndValidateOid(json).flatMap(migriOppijaService.findByOid(_, ykitiedot)(koskiSession)))
     }()
   }
+
+  private def ykitiedotPyydetty: Boolean = params.getAs[Boolean]("ykitiedot").getOrElse(false)
 
   post("/valinta/oid") {
     withJsonBody { json =>
@@ -59,16 +64,6 @@ class MigriServlet(implicit val application: KoskiApplication) extends KoskiSpec
       .left.map(errors => KoskiErrorCategory.badRequest.validation.jsonSchema(JsonErrorMessage(errors)))
       .map(req => req.hetut)
 
-  private def haeHetulla(hetu: String): Either[HttpStatus, MigriOppija] =
-    application.oppijaFacade.findOppijaByHetuOrCreateIfInYtrOrVirta(hetu, useVirta = true, useYtr = true)(koskiSession)
-      .flatMap(_.warningsToLeft)
-      .flatMap(convertToMigriSchema)
-
-  private def haeOidilla(oid: String): Either[HttpStatus, MigriOppija] =
-    application.oppijaFacade.findOppija(oid, findMasterIfSlaveOid = true, useVirta = true, useYtr = true)(koskiSession)
-      .flatMap(_.warningsToLeft)
-      .flatMap(convertToMigriSchema)
-
   private def valintaTiedotOideilla(oids: List[String]): Either[HttpStatus, RawJsonResponse] = {
     migriService.getByOids(oids, migriCredentials())
   }
@@ -86,9 +81,6 @@ class MigriServlet(implicit val application: KoskiApplication) extends KoskiSpec
       MigriCredentials(koskiSession.user.username, koskiSession.user.username)
     }
   }
-
-  private def convertToMigriSchema(oppija: Oppija): Either[HttpStatus, MigriOppija] =
-    ConvertMigriSchema.convert(oppija).toRight(KoskiErrorCategory.notFound.oppijaaEiLöydyTaiEiOikeuksia())
 }
 
 case class MigriHetuRequest(hetu: String)
