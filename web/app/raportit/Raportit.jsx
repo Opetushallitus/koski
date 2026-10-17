@@ -1149,6 +1149,9 @@ function IBSuoritustiedot({ stateP }) {
     <Text name="IBSuoritustiedotRaportti-short-description" />
   )
   const exampleText = <Paragraphs name="IBSuoritustiedotRaportti-example" />
+  const kotikuntaPvmInputHelp = (
+    <Text name="Lukioraportti-kotikunta-date-input-help" />
+  )
 
   return (
     <AikajaksoRaporttiTyyppivalinnalla
@@ -1167,6 +1170,8 @@ function IBSuoritustiedot({ stateP }) {
       osasuoritustenAikarajausKylläKuvaus={
         'ib-raportti-osasuoritusten-aikarajaus-kyllä'
       }
+      showKotikuntaPvmInput
+      kotikuntaPvmInputHelp={kotikuntaPvmInputHelp}
     />
   )
 }

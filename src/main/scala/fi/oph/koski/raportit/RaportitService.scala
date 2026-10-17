@@ -388,7 +388,8 @@ class RaportitService(application: KoskiApplication) {
           request.alku,
           request.loppu,
           request.osasuoritustenAikarajaus,
-          request.raportinTyyppi
+          request.raportinTyyppi,
+          request.kotikuntaPvm
         ),
       workbookSettings = WorkbookSettings(t.get("raportti-excel-ib-suoritustiedot-title"), Some(request.password)),
       filename = s"${t.get("raportti-excel-ib-suoritustiedot-tiedoston-etuliite")}_${IBSuoritustiedotRaporttiType.raporttiTypeLokalisoitu(request.raportinTyyppi, t)}_${request.oppilaitosOid}_${request.alku}_${request.loppu}.xlsx",
