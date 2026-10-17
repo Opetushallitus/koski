@@ -62,6 +62,14 @@ object Hetu {
   def toBirthday(hetu: String): Option[LocalDate] = {
     century(hetu).flatMap { century => Some(birthday(hetu, century)) }
   }
+
+  // Testi- ja demo-oppijoille, joiden syntymävuosi riippuu kuluvasta vuodesta
+  def generate(syntymäaika: LocalDate, yksilönumero: Int): String = {
+    val päivä = f"${syntymäaika.getDayOfMonth}%02d${syntymäaika.getMonthValue}%02d${syntymäaika.getYear % 100}%02d"
+    val välimerkki = if (syntymäaika.getYear >= 2000) "A" else "-"
+    val numero = f"$yksilönumero%03d"
+    päivä + välimerkki + numero + checkChars((päivä + numero).toInt % 31)
+  }
 }
 
 class Hetu(acceptSyntheticHetus: Boolean) {

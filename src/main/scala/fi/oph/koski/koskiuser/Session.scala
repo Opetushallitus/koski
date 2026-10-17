@@ -183,6 +183,11 @@ class KoskiSpecificSession(
     orgKäyttöoikeudet.exists(_.organisaatiokohtaisetPalveluroolit.contains(palveluRooli))
   }
 
+  def hasRoleInOrganisaatio(role: String, organisaatioOid: Oid): Boolean = {
+    val palveluRooli = Palvelurooli("KOSKI", role)
+    orgKäyttöoikeudet.exists(k => k.organisaatio.oid == organisaatioOid && k.organisaatiokohtaisetPalveluroolit.contains(palveluRooli))
+  }
+
   def huollettavat: Either[HttpStatus, List[Huollettava]] = {
     if (user.isSuoritusjakoKatsominen) {
       Right(Nil)
