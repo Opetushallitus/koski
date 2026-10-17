@@ -109,13 +109,13 @@
       "minimumReleaseAgeBehaviour": "timestamp-optional",
       "matchDatasources": ["docker"],
       "matchUpdateTypes": ["digest"],
-      "matchPackageNames": ["node", "amazoncorretto", "postgres", "amazon/dynamodb-local", "opensearchproject/opensearch"],
+      "matchPackageNames": ["node", "amazoncorretto", "postgres", "amazon/dynamodb-local", "opensearchproject/opensearch", "motoserver/moto"],
       "matchCurrentValue": "/^[0-9]+\\.[0-9]+\\.[0-9]+(?:[.-][a-zA-Z0-9.-]+)?$/",
       "matchCurrentAge": ">= 3 days"
     },
     {
       "description": "Automerge the development and test database images",
-      "matchFileNames": ["docker-compose.yaml", "docker-compose-arm64.yaml", "opensearch/Dockerfile"],
+      "matchFileNames": ["docker-compose.yaml", "opensearch/Dockerfile"],
       "matchUpdateTypes": ["minor", "patch", "digest"],
       "enabled": true,
       "automerge": true

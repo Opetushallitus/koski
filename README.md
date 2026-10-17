@@ -226,12 +226,6 @@ komennolla:
 make docker-dbs
 ```
 
-Arm-pohjaisilla koneilla aja:
-
-```shell
-make docker-dbs-arm64
-```
-
 Kehityksessä käytetään kolmea kantaa: `koski`, `valpas` ja `raportointikanta`.
 Näiden lisäksi automaattisissa testeissä käytetään vastaavia `koski_test`,
 `valpas_test` ja `raportointikanta_test` kantoja, jotka tyhjennetään aina

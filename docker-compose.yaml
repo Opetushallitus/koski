@@ -41,20 +41,12 @@ services:
     ports:
       - "8000:8000"
 
-  localstack:
-    container_name: koski-localstack
-    image: localstack/localstack:s3-latest@sha256:2c32486ed9ce66afbc6f8792dc6719a35890b454ecae7dc09eb9acecd057eda8
+  moto:
+    image: motoserver/moto:5.2.4@sha256:120b1589c6df7e35d2092935f6ff724486bb2c4189d0e36ce795baba1400ffd2
     ports:
-      - "127.0.0.1:4566:4566" # LocalStack Gateway
-      - "127.0.0.1:4510-4559:4510-4559" # external services port range
-    environment:
-      # LocalStack configuration: https://docs.localstack.cloud/references/configuration/
-      - DEBUG=${DEBUG:-0}
-    volumes:
-      - "${LOCALSTACK_VOLUME_DIR:-./localstack-volume}:/var/lib/localstack"
-      - "/var/run/docker.sock:/var/run/docker.sock"
+      - "127.0.0.1:5001:5000"
     healthcheck:
-      test: ["CMD", "curl", "--silent", "--fail", "localhost:4566/_localstack/health"]
+      test: ["CMD", "curl", "--silent", "--fail", "--output", "/dev/null", "localhost:5000/moto-api/"]
       interval: 5s
       timeout: 5s
       retries: 3

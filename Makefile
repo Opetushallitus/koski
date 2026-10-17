@@ -5,7 +5,7 @@ mvn_argline =
 mvn_opts =
 
 DOCKER_COMPOSE = docker compose
-DOCKER_COMPOSE_OPTS = --force-recreate --renew-anon-volumes --build
+DOCKER_COMPOSE_OPTS = --force-recreate --renew-anon-volumes --remove-orphans --build
 
 .PHONY: help
 help:
@@ -153,8 +153,7 @@ run:
 docker-dbs:
 	${DOCKER_COMPOSE} up ${DOCKER_COMPOSE_OPTS}
 
-docker-dbs-arm64:
-	${DOCKER_COMPOSE} -f docker-compose-arm64.yaml up ${DOCKER_COMPOSE_OPTS}
+docker-dbs-arm64: docker-dbs
 
 db-docs:
 	cd scripts/db-schema-docs && ./generate.sh

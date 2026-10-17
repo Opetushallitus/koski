@@ -27,7 +27,7 @@ Koski is a Finnish national education data repository system that stores and man
 
 ```bash
 # Start development databases (PostgreSQL + OpenSearch)
-make docker-dbs-arm64    # Apple Silicon
+make docker-dbs
 
 # Build and run
 make build               # Build entire application
