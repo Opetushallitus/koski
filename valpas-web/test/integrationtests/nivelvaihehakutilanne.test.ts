@@ -136,7 +136,10 @@ describe("Nivelvaiheen hakutilannenäkymä", () => {
 
     await selectOrganisaatioByNimi(ressunLukioOid)
     await urlIsEventually(pathToUrl(ressunLukioHakutilannePath))
-    await textEventuallyEquals(".card__header", "Hakeutumisvelvollisia (4)")
+    await textEventuallyEquals(
+      ".card__header",
+      ressunLukioTableHead_syyskuu2021,
+    )
 
     await dataTableEventuallyEquals(
       ".hakutilanne",
