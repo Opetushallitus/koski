@@ -11,6 +11,7 @@ import {
   deleteCookies,
   goToLocation,
   pathToApiUrl,
+  pathToKoskiUrl,
   pathToUrl,
   urlIsEventually,
 } from "../integrationtests-env/browser/core"
@@ -25,6 +26,7 @@ import { longTimeout } from "../integrationtests-env/browser/timeouts"
 import {
   kansalainenEiOpintopolussaPath,
   kansalainenLoginVirhePath,
+  kansalainenOmatTiedotPath,
 } from "../../src/state/kansalainenPaths"
 
 describe("Login / Logout / kirjautuminen", () => {
@@ -119,6 +121,17 @@ describe("Login / Logout / kirjautuminen", () => {
     await textEventuallyEquals(
       ".heading--primary",
       "Tietojasi ei löydy Opintopolusta",
+    )
+  })
+
+  it("Kirjautumaton kansalainen ohjataan Kosken paikalliseen kirjautumiseen", async () => {
+    allowNetworkError("/koski/user", "401 (Unauthorized)")
+    allowNetworkError("koski-korhopankki.js", "")
+    await deleteCookies()
+    await goToLocation(kansalainenOmatTiedotPath.href())
+    await urlIsEventually(
+      pathToKoskiUrl("/login/oppija/local?redirect=") +
+        encodeURIComponent(pathToUrl(kansalainenOmatTiedotPath.href())),
     )
   })
 })

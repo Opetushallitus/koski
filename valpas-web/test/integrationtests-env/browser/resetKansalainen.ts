@@ -1,31 +1,25 @@
-import { By, Key, until } from "selenium-webdriver"
-import { expectElementEventuallyVisible } from "./content"
-import { $, deleteCookies, goToLocation } from "./core"
+import { By, until } from "selenium-webdriver"
+import { goToLocation } from "./core"
 import { driver } from "./driver"
-import { allowNetworkError } from "./fail-on-console"
-import { resetMockData } from "./reset"
+import { reset } from "./reset"
 import { defaultTimeout, longTimeout } from "./timeouts"
-import { eventually } from "./utils"
+import { eventually, withMessage } from "./utils"
 
-const ignoreCalmmBaretErrors = () => {
-  allowNetworkError("webpack-internal", "componentWillMount has been renamed")
-  allowNetworkError(
-    "webpack-internal",
-    "componentWillReceiveProps has been renamed",
-  )
-}
-
-export const resetKansalainen = async (
-  initialPath: string,
-  force: boolean = false,
-  tarkastelupäivä?: string,
+const createKansalainenSession = (
+  hetu: string,
+  done: (userApiHttpStatus: number) => void,
 ) => {
-  ignoreCalmmBaretErrors()
-  await deleteCookies()
-  await goToLocation("")
-  await driver.wait(until.elementLocated(By.css("article")), defaultTimeout)
-  await resetMockData(tarkastelupäivä, force)
-  await goToLocation(initialPath)
+  // Kirjautuu hetulla ja asettaa selaimeen istuntoevästeen
+  fetch("/koski/cas/valpas/oppija", {
+    // Estää palvelimen uudelleenohjauksen kirjautumisen jälkeiselle sivulle
+    redirect: "manual",
+    headers: { hetu, security: "mock" },
+  })
+    .then(() => fetch("/koski/valpas/api/kansalainen/user"))
+    .then(
+      (response) => done(response.status),
+      () => done(0),
+    )
 }
 
 export const loginKansalainenAs = async (
@@ -35,10 +29,16 @@ export const loginKansalainenAs = async (
   tarkastelupäivä?: string,
 ) => {
   await eventually(async () => {
-    await resetKansalainen(initialPath, forceReset, tarkastelupäivä)
-    await expectElementEventuallyVisible("#hetu")
+    await reset("", forceReset, tarkastelupäivä)
+    const userApiHttpStatus = await driver.executeAsyncScript<number>(
+      createKansalainenSession,
+      hetu,
+    )
+    withMessage(`Kansalaisen ${hetu} kirjautuminen epäonnistui`, () =>
+      expect(userApiHttpStatus).toBe(200),
+    )
   }, longTimeout)
-  await (await $("#hetu")).sendKeys(hetu, Key.ENTER)
+  await goToLocation(initialPath)
   await driver.wait(
     until.elementLocated(By.css("article.kansalainenpage")),
     defaultTimeout,
