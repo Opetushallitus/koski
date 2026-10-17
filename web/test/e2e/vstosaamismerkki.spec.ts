@@ -85,7 +85,10 @@ test.describe('Vapaan sivistyön VST osaamismerkki', () => {
   })
 })
 
-async function eventually(initialize: () => void, trial: () => void) {
+async function eventually(
+  initialize: () => Promise<void>,
+  trial: () => Promise<void>
+) {
   let retriesLeft = 3
   while (retriesLeft > 0) {
     await initialize()

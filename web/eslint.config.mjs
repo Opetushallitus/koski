@@ -21,7 +21,8 @@ export default defineConfig([
     },
     rules: {
       'react-hooks/rules-of-hooks': 'error',
-      'react-hooks/exhaustive-deps': 'error'
+      'react-hooks/exhaustive-deps': 'error',
+      'react-hooks/purity': 'error'
     }
   },
   {
@@ -30,19 +31,26 @@ export default defineConfig([
       '@eslint-react/jsx-no-comment-textnodes': 'error',
       '@eslint-react/jsx-no-children-prop': 'error',
       '@eslint-react/no-direct-mutation-state': 'error',
+      '@eslint-react/no-access-state-in-setstate': 'error',
       '@eslint-react/no-component-will-mount': 'error',
       '@eslint-react/no-component-will-receive-props': 'error',
       '@eslint-react/no-component-will-update': 'error',
+      '@eslint-react/no-nested-lazy-component-declarations': 'error',
       '@eslint-react/dom-no-dangerously-set-innerhtml-with-children': 'error',
       '@eslint-react/dom-no-find-dom-node': 'error',
       '@eslint-react/dom-no-unsafe-target-blank': 'error',
-      '@eslint-react/dom-no-unknown-property': 'error'
+      '@eslint-react/dom-no-unknown-property': 'error',
+      '@eslint-react/dom-no-void-elements-with-children': 'error'
     }
   },
   eslint.configs.recommended,
   { ...mochaPlugin.configs.recommended, files: ['test/**/*'] },
   { ...compatPlugin.configs['flat/recommended'], files: ['app/**/*'] },
   ...tseslint.configs.recommended,
+  ...defineConfig({
+    files: ['test/**/*.{ts,tsx}'],
+    extends: [tseslint.configs.recommendedTypeCheckedOnly]
+  }),
   {
     files: ['**/*.{js,jsx,ts,tsx}'],
     languageOptions: {
@@ -207,6 +215,26 @@ export default defineConfig([
     }
   },
   {
+    files: ['test/**/*.{ts,tsx}'],
+    languageOptions: {
+      parserOptions: {
+        projectService: true,
+        tsconfigRootDir: import.meta.dirname
+      }
+    },
+    rules: {
+      '@typescript-eslint/no-unsafe-assignment': 'off',
+      '@typescript-eslint/no-unsafe-call': 'off',
+      '@typescript-eslint/no-unsafe-member-access': 'off',
+      '@typescript-eslint/no-unsafe-return': 'off',
+      '@typescript-eslint/no-unused-expressions': 'error',
+      '@typescript-eslint/return-await': [
+        'error',
+        'error-handling-correctness-only'
+      ]
+    }
+  },
+  {
     plugins: { 'import-x': importXPlugin },
     rules: { 'import-x/no-extraneous-dependencies': 'error' }
   },
@@ -216,6 +244,16 @@ export default defineConfig([
       'import-x/no-extraneous-dependencies': [
         'error',
         { devDependencies: false }
+      ]
+    }
+  },
+  {
+    files: ['app/**/*.{js,jsx,ts,tsx}'],
+    ignores: ['app/types/fi/oph/koski/**'],
+    rules: {
+      '@typescript-eslint/no-unused-expressions': [
+        'error',
+        { allowShortCircuit: true, allowTernary: true }
       ]
     }
   },

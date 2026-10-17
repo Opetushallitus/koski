@@ -10,7 +10,7 @@ test.describe.configure({
 test.describe('Perusopetus', () => {
   // Palautetaan virkailijan istunto
   test.use({ storageState: virkailija('kalle') })
-  test.describe('Opiskeluoikeuden lisääminen', async () => {
+  test.describe('Opiskeluoikeuden lisääminen', () => {
     test.beforeEach(async ({ browser, virkailijaPage, oppijaHaku }) => {
       const ctx = await browser.newContext({
         storageState: virkailijaPath('kalle')
@@ -39,7 +39,7 @@ test.describe('Perusopetus', () => {
       const search = await oppijaHaku.search('230872-7258')
       await search.clickOnFirst()
     })
-    test.describe('Aikuisten perusopetuksen alkuvaihe', async () => {
+    test.describe('Aikuisten perusopetuksen alkuvaihe', () => {
       test('Näytetään aikuisten perusopetuksen oppimäärän alkuvaihe opiskeluoikeuden otsikossa', async ({
         page
       }) => {
@@ -48,7 +48,7 @@ test.describe('Perusopetus', () => {
         )
       })
     })
-    test.describe('Päättövaiheen opinnot', async () => {
+    test.describe('Päättövaiheen opinnot', () => {
       test.beforeEach(async ({ perusopetusOppijaPage, page }) => {
         await perusopetusOppijaPage.avaaMuokkausnäkymä()
         await page.waitForLoadState('networkidle')
@@ -64,7 +64,7 @@ test.describe('Perusopetus', () => {
           })
         ).not.toBeVisible({ timeout: 900000 })
       })
-      test.describe('Lisäyksen jälkeen', async () => {
+      test.describe('Lisäyksen jälkeen', () => {
         test('Piilotetaan lisäyslinkki ja esitäytetään pakolliset oppiaineet', async ({
           page
         }) => {

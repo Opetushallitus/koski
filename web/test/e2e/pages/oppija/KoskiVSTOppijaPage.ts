@@ -59,7 +59,7 @@ export class KoskiVSTOppijaPage extends KoskiOppijaPageV2<
   }
 
   async suorituksenLaajuus() {
-    return this.$.suoritukset(0).laajuus.value()
+    return await this.$.suoritukset(0).laajuus.value()
   }
 
   async laajuudetYhteensä() {

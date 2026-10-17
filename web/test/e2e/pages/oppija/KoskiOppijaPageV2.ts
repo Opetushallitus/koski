@@ -62,12 +62,12 @@ export class KoskiOppijaPageV2<T extends IdNodeObject<string>> {
 
   async edit() {
     this.editMode = true
-    return this.$.opiskeluoikeus.edit.click()
+    return await this.$.opiskeluoikeus.edit.click()
   }
 
   async cancelEdit() {
     this.editMode = false
-    return this.$.opiskeluoikeus.cancelEdit.click()
+    return await this.$.opiskeluoikeus.cancelEdit.click()
   }
 
   async selectSuoritus(index: number) {
@@ -121,19 +121,19 @@ export class KoskiOppijaPageV2<T extends IdNodeObject<string>> {
   }
 
   async suorituksenTila() {
-    return this.$.suoritukset(this.suoritusIndex).suorituksenVahvistus[
+    return await this.$.suoritukset(this.suoritusIndex).suorituksenVahvistus[
       this.editMode ? 'edit' : 'value'
     ].status.value()
   }
 
   async suorituksenVahvistus() {
-    return this.$.suoritukset(this.suoritusIndex).suorituksenVahvistus[
+    return await this.$.suoritukset(this.suoritusIndex).suorituksenVahvistus[
       this.editMode ? 'edit' : 'value'
     ].details.value()
   }
 
   async suorituksenVahvistushenkilö(index: number) {
-    return this.$.suoritukset(this.suoritusIndex)
+    return await this.$.suoritukset(this.suoritusIndex)
       .suorituksenVahvistus[this.editMode ? 'edit' : 'value'].henkilö(index)
       .value()
   }

@@ -11,7 +11,7 @@ test.describe('Koodisto fetch error', () => {
   }) => {
     //asetetaan koodiston haku failaamaan että banneria voidaan testata
     await page.route('**/koski/api/types/koodisto/**', (route) => {
-      route.abort()
+      return route.abort()
     })
 
     await page.goto('/koski/uusioppija#hetu=270181-517T')

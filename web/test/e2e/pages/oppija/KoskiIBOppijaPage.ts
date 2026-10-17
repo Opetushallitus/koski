@@ -26,23 +26,18 @@ export class KoskiIBOppijaPage extends KoskiOppijaPageV2<typeof IBTestIds> {
     suoritusIndex: number,
     ...odotetutTiedot: OppiaineryhmätExpectedData[]
   ) {
-    for (const aineryhmäIndex in odotetutTiedot) {
-      const { aineryhmä: aineryhmänNimi, oppiaineet } =
-        odotetutTiedot[aineryhmäIndex]
-      const oppiaineryhmä = this.oppiaineryhmä(
-        suoritusIndex,
-        parseInt(aineryhmäIndex)
-      )
+    for (const [aineryhmäIndex, aineryhmä] of odotetutTiedot.entries()) {
+      const { aineryhmä: aineryhmänNimi, oppiaineet } = aineryhmä
+      const oppiaineryhmä = this.oppiaineryhmä(suoritusIndex, aineryhmäIndex)
 
       if (aineryhmänNimi) {
         await expect(oppiaineryhmä.nimi.elem).toHaveText(aineryhmänNimi)
       }
 
-      for (const oppiaineIndex in oppiaineet) {
-        const { nimi, arvosana, predictedGrade, kurssit } =
-          oppiaineet[oppiaineIndex]
+      for (const [oppiaineIndex, oppiaineTiedot] of oppiaineet.entries()) {
+        const { nimi, arvosana, predictedGrade, kurssit } = oppiaineTiedot
         const laajuus = sum(kurssit.map((kurssi) => kurssi.laajuus || 1))
-        const oppiaine = oppiaineryhmä.oppiaineet(parseInt(oppiaineIndex))
+        const oppiaine = oppiaineryhmä.oppiaineet(oppiaineIndex)
 
         await expect(oppiaine.nimi.elem).toHaveText(nimi)
         if (arvosana) {
@@ -55,13 +50,13 @@ export class KoskiIBOppijaPage extends KoskiOppijaPageV2<typeof IBTestIds> {
         }
         await expect(oppiaine.laajuus.elem).toHaveText(laajuus.toString())
 
-        for (const kurssiIndex in kurssit) {
+        for (const [kurssiIndex, kurssinTiedot] of kurssit.entries()) {
           const {
             tunniste,
             arvosana: kurssinArvosana,
             paikallinen
-          } = kurssit[kurssiIndex]
-          const kurssi = oppiaine.kurssit(parseInt(kurssiIndex))
+          } = kurssinTiedot
+          const kurssi = oppiaine.kurssit(kurssiIndex)
 
           await expect(kurssi.tunniste.button).toHaveText(
             paikallinen ? `${tunniste} *` : tunniste
