@@ -65,7 +65,7 @@
     "postcss-loader": "8.2.1",
     "postcss-preset-env": "11.6.1",
     "prettier": "3.9.10",
-    "puppeteer": "25.13.0",
+    "puppeteer": "25.14.0",
     "style-loader": "4.0.0",
     "stylelint": "17.16.0",
     "stylelint-no-unsupported-browser-features": "8.1.2",
