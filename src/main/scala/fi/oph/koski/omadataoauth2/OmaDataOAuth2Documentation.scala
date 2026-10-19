@@ -5,7 +5,7 @@ import fi.oph.koski.documentation.Markdown
 import fi.oph.koski.log.Logging
 import fi.oph.koski.util.TryWithLogging
 
-import java.net.URL
+import java.net.URI
 import scala.io.Source
 
 object OmaDataOAuth2Documentation extends Logging {
@@ -29,21 +29,21 @@ object OmaDataOAuth2Documentation extends Logging {
       .toString()
 
   def addVariableTexts(application: KoskiApplication, markdown: String): String = {
-    val virkailijaBaseUrl = new URL(
+    val virkailijaBaseUrl = URI.create(
       application.config.getString("opintopolku.virkailija.url") match {
         case "mock" => "http://localhost:7021/koski"
         case url => s"${url}/koski"
-    }).toString
+    }).toURL.toString
 
-    val oppijaBaseUrl = new URL(
+    val oppijaBaseUrl = URI.create(
       application.config.getString("opintopolku.oppija.url") match {
         case "mock" => "http://localhost:7021/koski"
         case url => s"${url}/koski"
-      }).toString
+      }).toURL.toString
 
     val luovutuspalveluRootUrl = application.config.getString("omadataoauth2.luovutuspalveluBaseUrl") match {
-      case "mock" => new URL("https://localhost:7022")
-      case url => new URL(url)
+      case "mock" => URI.create("https://localhost:7022").toURL
+      case url => URI.create(url).toURL
     }
     val luovutuspalveluBaseUrl = luovutuspalveluRootUrl.toString
 

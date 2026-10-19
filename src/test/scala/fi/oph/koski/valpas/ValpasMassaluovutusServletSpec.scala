@@ -718,11 +718,11 @@ class ValpasMassaluovutusServletSpec extends ValpasTestBase with BeforeAndAfterE
   }
 
   private def verifyResultAndContent[T](url: String, user: ValpasMockUser)(f: => T): T = {
-    val location = new java.net.URL(getResult(url, user) {
+    val location = java.net.URI.create(getResult(url, user) {
       verifyResponseStatus(302) // 302: Found (redirect)
       response.header("Location")
     }
-    )
+    ).toURL
     withBaseUrl(location) {
       get(s"${location.getPath}?${location.getQuery}") {
         verifyResponseStatusOk()

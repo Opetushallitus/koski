@@ -18,7 +18,7 @@ import fi.oph.scalaschema._
 import fi.oph.scalaschema.annotation.{Description, Title}
 import org.json4s.JValue
 
-import java.net.URL
+import java.net.URI
 import java.time.{Duration, OffsetDateTime}
 import java.util.UUID
 import scala.io.Source
@@ -85,9 +85,9 @@ object QueryDocumentation extends Logging {
       })
 
   def addVariableTexts(application: KoskiApplication, markdown: String): String = {
-    val rootUrl = new URL(application.config.getString("koski.root.url"))
+    val rootUrl = URI.create(application.config.getString("koski.root.url"))
     val host = rootUrl.getHost
-    val baseUrl = rootUrl.getPath
+    val baseUrl = rootUrl.getRawPath
 
     val vars = Map(
       "baseUrl" -> baseUrl,

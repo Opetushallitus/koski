@@ -20,7 +20,7 @@ import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.{BeforeAndAfterAll, BeforeAndAfterEach}
 
-import java.net.URL
+import java.net.URI
 import java.security.MessageDigest
 import java.time.{LocalDate, LocalDateTime}
 
@@ -173,10 +173,10 @@ class TodistusSpecHelpers extends AnyFreeSpec with KoskiHttpSpec with Matchers w
     verifyPresignedResultAndContent(url) {}
 
   def verifyPresignedResultAndContent[T](url: String)(f: => T): T = {
-    val location = new URL(get(url, headers = authHeaders(MockUsers.paakayttaja)) {
+    val location = URI.create(get(url, headers = authHeaders(MockUsers.paakayttaja)) {
       verifyResponseStatus(302) // 302: Found (redirect)
       response.header("Location")
-    })
+    }).toURL
     withBaseUrl(location) {
       get(s"${location.getPath}?${location.getQuery}") {
         verifyResponseStatusOk()
