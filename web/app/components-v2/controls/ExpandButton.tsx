@@ -25,10 +25,12 @@ export const ExpandButton: React.FC<ExpandButtonProps> = (props) => {
       {...common(props, classNames)}
       onClick={() => props.onChange(!props.expanded)}
       role="button"
-      aria-expanded={false}
-      aria-label={`${
-        props.expanded ? t('Pienennä') : t('Laajenna')
-      } ${props.label}`}
+      aria-expanded={props.expanded}
+      aria-label={
+        props.children
+          ? undefined
+          : `${props.expanded ? t('Pienennä') : t('Laajenna')} ${props.label}`
+      }
       data-testid={testId}
     >
       {props.children ? (
