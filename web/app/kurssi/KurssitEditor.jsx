@@ -1,5 +1,5 @@
 import React from '../util/baret'
-import Atom from 'bacon.atom'
+import Atom from '../util/bacon.atom'
 import { KurssiEditor } from './KurssiEditor'
 import { modelData, modelItems, modelLookup } from '../editor/EditorModel'
 import Text from '../i18n/Text'

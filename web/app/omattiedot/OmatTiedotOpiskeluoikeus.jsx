@@ -20,7 +20,7 @@ import { Editor } from '../editor/Editor'
 import { suorituksenTyyppi, suoritusTitle } from '../suoritus/Suoritus'
 import { focusWithoutScrolling } from '../util/util'
 import { SuostumuksenPeruutusPopup } from './SuostumuksenPeruutusPopup'
-import Atom from 'bacon.atom'
+import Atom from '../util/bacon.atom'
 import Http from '../util/http'
 
 export class OmatTiedotOpiskeluoikeus extends React.Component {

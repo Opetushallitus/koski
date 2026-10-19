@@ -1,6 +1,6 @@
 import React from '../util/baret'
 import Bacon from 'baconjs'
-import Atom from 'bacon.atom'
+import Atom from '../util/bacon.atom'
 import * as L from 'partial.lenses'
 import { Editor } from '../editor/Editor'
 import Dropdown from '../components/Dropdown'

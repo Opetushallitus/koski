@@ -1,5 +1,5 @@
 import React from '../util/baret'
-import Atom from 'bacon.atom'
+import Atom from '../util/bacon.atom'
 import { ift } from '../util/util'
 import ModalDialog from '../editor/ModalDialog'
 import {

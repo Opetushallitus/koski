@@ -1,7 +1,7 @@
 import React from '../util/baret'
 import Bacon from 'baconjs'
 import * as R from 'ramda'
-import Atom from 'bacon.atom'
+import Atom from '../util/bacon.atom'
 import DropDown from '../components/Dropdown'
 import {
   modelData,

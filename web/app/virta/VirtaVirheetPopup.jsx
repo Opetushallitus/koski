@@ -1,6 +1,6 @@
 import React from '../util/baret'
 import ModalDialog from '../editor/ModalDialog'
-import Atom from 'bacon.atom'
+import Atom from '../util/bacon.atom'
 
 export const VirtaVirheetPopup = ({ virheet, onDismiss }) => {
   const checkboxAtom = Atom(false)

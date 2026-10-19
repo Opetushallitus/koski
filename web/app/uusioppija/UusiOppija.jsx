@@ -1,6 +1,6 @@
 import React from '../util/baret'
 import Bacon from 'baconjs'
-import Atom from 'bacon.atom'
+import Atom from '../util/bacon.atom'
 import Http from '../util/http'
 import { navigateToOppija, showError } from '../util/location'
 import { searchStringAtom } from '../virkailija/OppijaHaku'

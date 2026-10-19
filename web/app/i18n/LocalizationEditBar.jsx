@@ -10,7 +10,7 @@ import { lang } from './i18n'
 import { setLocalizationEditorLanguage } from './localizationEditorLanguage'
 import Text from './Text'
 import * as R from 'ramda'
-import Atom from 'bacon.atom'
+import Atom from '../util/bacon.atom'
 
 export default ({ user }) => {
   if (!user.hasLocalizationWriteAccess) {

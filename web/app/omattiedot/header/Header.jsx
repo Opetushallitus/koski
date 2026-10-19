@@ -1,5 +1,5 @@
 import React from '../../util/baret'
-import Atom from 'bacon.atom'
+import Atom from '../../util/bacon.atom'
 import { modelData, modelItems, modelLookup } from '../../editor/EditorModel'
 import { HeaderInfo } from './HeaderInfo'
 import { HeaderButtons } from './HeaderButtons'

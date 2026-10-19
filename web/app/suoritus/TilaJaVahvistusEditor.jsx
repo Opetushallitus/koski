@@ -9,7 +9,7 @@ import {
 } from '../editor/EditorModel'
 import React from '../util/baret'
 import * as R from 'ramda'
-import Atom from 'bacon.atom'
+import Atom from '../util/bacon.atom'
 import { PropertyEditor } from '../editor/PropertyEditor'
 import { MerkitseSuoritusValmiiksiPopup } from './MerkitseSuoritusValmiiksiPopup'
 import { JääLuokalleTaiSiirretäänEditor } from './JaaLuokalleTaiSiirretaanEditor'

@@ -1,6 +1,6 @@
 import React from '../util/baret'
 import * as R from 'ramda'
-import Atom from 'bacon.atom'
+import Atom from '../util/bacon.atom'
 import { modelData, modelSetData, pushModel } from '../editor/EditorModel'
 import { suorituksenTyyppi } from '../suoritus/Suoritus'
 import KoodistoDropdown from '../koodisto/KoodistoDropdown'

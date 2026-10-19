@@ -1,6 +1,6 @@
 import React from '../util/baret'
 import Bacon from 'baconjs'
-import Atom from 'bacon.atom'
+import Atom from '../util/bacon.atom'
 import { doActionWhileMounted, parseBool } from '../util/util'
 import Text from '../i18n/Text'
 import { t } from '../i18n/i18n'

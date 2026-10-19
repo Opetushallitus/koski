@@ -1,6 +1,6 @@
 import React from '../util/baret'
 import * as L from 'partial.lenses'
-import Atom from 'bacon.atom'
+import Atom from '../util/bacon.atom'
 import Text from '../i18n/Text'
 import ModalDialog from '../editor/ModalDialog'
 import UusiInternationalSchoolSuoritus from '../uusioppija/UusiInternationalSchoolSuoritus'

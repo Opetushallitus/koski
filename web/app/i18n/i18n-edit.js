@@ -1,4 +1,4 @@
-import Atom from 'bacon.atom'
+import Atom from '../util/bacon.atom'
 import { lang } from './i18n'
 import {
   hasLocalizationEditorLanguage,

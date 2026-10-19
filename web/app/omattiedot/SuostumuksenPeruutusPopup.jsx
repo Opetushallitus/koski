@@ -3,7 +3,7 @@ import Http from '../util/http'
 import ModalDialog from '../editor/ModalDialog'
 import Text from '../i18n/Text'
 import Checkbox from '../components/Checkbox'
-import Atom from 'bacon.atom'
+import Atom from '../util/bacon.atom'
 
 export const SuostumuksenPeruutusPopup = ({ opiskeluoikeusOid, onDismiss }) => {
   const checkboxAtom = Atom(false)

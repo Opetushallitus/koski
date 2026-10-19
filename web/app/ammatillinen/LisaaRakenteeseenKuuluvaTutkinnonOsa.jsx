@@ -1,5 +1,5 @@
 import React from '../util/baret'
-import Atom from 'bacon.atom'
+import Atom from '../util/bacon.atom'
 import * as R from 'ramda'
 import { modelSetTitle, modelSetValues } from '../editor/EditorModel'
 import LisaaTutkinnonOsaDropdown from './LisaaTutkinnonOsaDropdown'

@@ -1,6 +1,6 @@
 import React from '../util/baret'
 import { Editor } from '../editor/Editor'
-import Atom from 'bacon.atom'
+import Atom from '../util/bacon.atom'
 import { modelData, modelSetData, pushModel } from '../editor/EditorModel'
 import * as R from 'ramda'
 import TutkintoAutocomplete from '../virkailija/TutkintoAutocomplete'

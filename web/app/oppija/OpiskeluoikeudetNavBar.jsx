@@ -1,4 +1,4 @@
-import Atom from 'bacon.atom'
+import Atom from '../util/bacon.atom'
 import React from '../util/baret'
 import Link from '../components/Link'
 import { yearFromIsoDateString } from '../date/date'

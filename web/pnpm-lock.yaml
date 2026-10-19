@@ -172,9 +172,6 @@ importers:
       '@skidding/react-codemirror':
         specifier: 1.0.2
         version: 1.0.2(react-dom@16.14.0(react@16.14.0))(react@16.14.0)
-      bacon.atom:
-        specifier: 5.0.6
-        version: 5.0.6(baconjs@1.0.1)
       baconjs:
         specifier: 1.0.1
         version: 1.0.1
@@ -1635,11 +1632,6 @@ packages:
   axe-core@4.14.0:
     resolution: {integrity: sha512-9WTZxEjsZ7b13TH8JPmbV2z8CHbl80/2hm3XPEG4JgNdQLK81IBRXmSxHfMAOkSqQeRxT/0dwNDz2GOm3zzpcQ==}
     engines: {node: '>=4'}
-
-  bacon.atom@5.0.6:
-    resolution: {integrity: sha512-UUy2rU2q+UQ/W3nWGl9+zjIJlobvkcXAxAsEtUvqsEuCt7oZ7fG3MS0+RCPELaPbhG7YtdZTV3jMRxfITOBZSw==}
-    peerDependencies:
-      baconjs: '>=0.7 <4.0'
 
   baconjs@1.0.1:
     resolution: {integrity: sha512-f4YHGKrxagnsgzrd5E33VIcfTJaFBgBwvwINP0vi0mJW9Rddjda6sG/ICBeT5a5foZmqwWDhRbWpbSH+TLVKxw==}
@@ -4729,12 +4721,6 @@ snapshots:
       postcss-value-parser: 4.2.0
 
   axe-core@4.14.0: {}
-
-  bacon.atom@5.0.6(baconjs@1.0.1):
-    dependencies:
-      baconjs: 1.0.1
-      infestines: 0.4.11
-      partial.lenses: 9.8.0
 
   baconjs@1.0.1: {}
 
