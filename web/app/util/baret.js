@@ -25,7 +25,7 @@ const reactElement = React.createElement
 const Component = React.Component
 
 const isObs = (x) => x instanceof Observable
-const bacon2 = typeof Bacon.Next().value != 'function'
+const bacon2 = typeof Bacon.Next().value !== 'function'
 const eventValue = bacon2 ? (e) => e.value : (e) => e.value()
 const hasValue = bacon2 ? (e) => e.hasValue : (e) => e.hasValue()
 const isError = bacon2 ? (e) => e.isError : (e) => e.isError()
@@ -33,6 +33,7 @@ const isEnd = bacon2 ? (e) => e.isEnd : (e) => e.isEnd()
 //
 
 const LiftedComponent = /*#__PURE__*/ inherit(
+  // eslint-disable-next-line @typescript-eslint/no-shadow
   function LiftedComponent(props) {
     Component.call(this, props)
   },
@@ -51,6 +52,7 @@ const LiftedComponent = /*#__PURE__*/ inherit(
 //
 
 const FromBacon = /*#__PURE__*/ inherit(
+  // eslint-disable-next-line @typescript-eslint/no-shadow
   function FromBacon(props) {
     LiftedComponent.call(this, props)
     this.callback = null
@@ -161,7 +163,7 @@ function render(props, values) {
   }
 
   return newChildren instanceof Array
-    ? reactElement.apply(null, [type, newProps].concat(newChildren))
+    ? reactElement(type, newProps, ...newChildren)
     : null !== newChildren
       ? reactElement(type, newProps, newChildren)
       : reactElement(type, newProps)
@@ -236,6 +238,7 @@ function unsub(handler) {
 }
 
 const FromClass = /*#__PURE__*/ inherit(
+  // eslint-disable-next-line @typescript-eslint/no-shadow
   function FromClass(props) {
     LiftedComponent.call(this, props)
     this.values = this
@@ -353,22 +356,7 @@ function createElement(...args) {
   return reactElement(...args)
 }
 
-export default process.env.NODE_ENV === 'production'
-  ? assocPartialU('createElement', createElement, React)
-  : Object.defineProperty(
-      assocPartialU(
-        'createElement',
-        createElement,
-        dissocPartialU('PropTypes', React)
-      ),
-      'PropTypes',
-      {
-        get: (
-          (React) => () =>
-            React.PropTypes
-        )(React)
-      }
-    )
+export default assocPartialU('createElement', createElement, React)
 
 //
 
