@@ -337,6 +337,12 @@
       "automerge": true
     },
     {
+      "description": "Renovate gets no usable release timestamp for the MCR image. Without this rule the image update would stay pending forever, and the Playwright group would never reach minimumGroupSize. The image is still not updated on its own: the group waits for the age-gated @playwright/test, and CI rejects mismatched versions.",
+      "matchFileNames": ["scripts/koski-visual.sh"],
+      "matchPackageNames": ["mcr.microsoft.com/playwright"],
+      "minimumReleaseAgeBehaviour": "timestamp-optional"
+    },
+    {
       "description": "fs2 minor updates need Hotswap->NonEmptyHotswap refactoring",
       "matchPackageNames": [
         "co.fs2:fs2-core_2.13",
