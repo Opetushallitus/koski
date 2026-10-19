@@ -13,12 +13,15 @@ __webpack_nonce__ = window.nonce
 
 const memberCodeRegex = /\/koski\/omadata\/valtuutus\/(.*)/
 
+const memberCodeFromPath = () =>
+  memberCodeRegex.exec(currentLocation().path)?.[1]
+
 class HyvaksyntaLanding extends React.Component {
   constructor(props) {
     super(props)
 
     this.state = {
-      loading: true,
+      loading: memberCodeFromPath() !== undefined,
       authorizationGiven: false,
       callback: this.parseCallbackURL(),
       error: undefined
@@ -28,9 +31,9 @@ class HyvaksyntaLanding extends React.Component {
   }
 
   componentDidMount() {
-    try {
-      const pathParam = memberCodeRegex.exec(currentLocation().path)[1]
-      Http.cachedGet(`/koski/api/omadata/kumppani/${pathParam}`, {
+    const memberCode = memberCodeFromPath()
+    if (memberCode !== undefined) {
+      Http.cachedGet(`/koski/api/omadata/kumppani/${memberCode}`, {
         errorHandler: (e) => {
           logError(e)
           this.setState({ loading: false })
@@ -42,9 +45,6 @@ class HyvaksyntaLanding extends React.Component {
           loading: false
         })
       )
-    } catch (error) {
-      logError(error)
-      this.setState({ loading: false })
     }
   }
 
