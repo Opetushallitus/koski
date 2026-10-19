@@ -1,6 +1,6 @@
 import React from '../util/baret'
 import Bacon from 'baconjs'
-import Atom from 'bacon.atom'
+import Atom from '../util/bacon.atom'
 import Text from '../i18n/Text'
 import ModalDialog from '../editor/ModalDialog'
 import {

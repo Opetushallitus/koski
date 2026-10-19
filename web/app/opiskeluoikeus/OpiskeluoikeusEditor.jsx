@@ -30,7 +30,7 @@ import { OpiskeluoikeudenTila } from '../omattiedot/fragments/OpiskeluoikeudenTi
 import { ArrayEditor } from '../editor/ArrayEditor'
 import { VirtaVirheetPopup } from '../virta/VirtaVirheetPopup.jsx'
 import { currentLocation, navigateTo } from '../util/location.js'
-import Atom from 'bacon.atom'
+import Atom from '../util/bacon.atom'
 
 export const excludedProperties = [
   'suoritukset',

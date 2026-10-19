@@ -1,5 +1,5 @@
 import React from './baret'
-import Atom from 'bacon.atom'
+import Atom from './bacon.atom'
 import { logout } from './user'
 import Bacon from 'baconjs'
 import Text from '../i18n/Text'

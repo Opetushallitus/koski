@@ -23,7 +23,7 @@ import {
   modelSetTitle,
   modelSetValues
 } from '../editor/EditorModel'
-import Atom from 'bacon.atom'
+import Atom from '../util/bacon.atom'
 import { ift } from '../util/util'
 import Text from '../i18n/Text'
 import ModalDialog from '../editor/ModalDialog'

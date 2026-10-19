@@ -1,7 +1,7 @@
 import React from '../util/baret'
 import Text from '../i18n/Text'
 import Bacon from 'baconjs'
-import Atom from 'bacon.atom'
+import Atom from '../util/bacon.atom'
 import { showError } from '../util/location'
 import { formatISODate } from '../date/date'
 import { generateRandomPassword } from '../util/password'

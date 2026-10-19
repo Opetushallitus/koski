@@ -3,7 +3,7 @@ import { editAtom, changeText } from './i18n-edit'
 import { parseBool } from '../util/util'
 import { t } from './i18n'
 import Bacon from 'baconjs'
-import Atom from 'bacon.atom'
+import Atom from '../util/bacon.atom'
 import { buildClassNames } from '../components/classnames'
 
 export default ({ name, ignoreMissing, lang, edit, className, ...rest }) => {

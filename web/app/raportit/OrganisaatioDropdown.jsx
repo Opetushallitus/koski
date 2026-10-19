@@ -1,5 +1,5 @@
 import React from '../util/baret'
-import Atom from 'bacon.atom'
+import Atom from '../util/bacon.atom'
 import { t } from '../i18n/i18n'
 import Bacon from 'baconjs'
 import { buildClassNames } from '../components/classnames'

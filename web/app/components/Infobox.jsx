@@ -1,5 +1,5 @@
 import React from '../util/baret'
-import Atom from 'bacon.atom'
+import Atom from '../util/bacon.atom'
 import { ift } from '../util/util'
 import { t } from '../i18n/i18n'
 import * as R from 'ramda'

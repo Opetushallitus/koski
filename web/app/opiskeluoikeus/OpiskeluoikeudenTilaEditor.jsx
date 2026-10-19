@@ -1,7 +1,7 @@
 import React from '../util/baret'
 import * as R from 'ramda'
 import * as L from 'partial.lenses'
-import Atom from 'bacon.atom'
+import Atom from '../util/bacon.atom'
 import {
   lensedModel,
   modelData,

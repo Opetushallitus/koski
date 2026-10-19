@@ -1,6 +1,6 @@
 import * as R from 'ramda'
 import React from '../util/baret'
-import Atom from 'bacon.atom'
+import Atom from '../util/bacon.atom'
 import {
   modelData,
   modelSetData,

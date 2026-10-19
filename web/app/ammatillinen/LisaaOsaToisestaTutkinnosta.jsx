@@ -1,5 +1,5 @@
 import React from '../util/baret'
-import Atom from 'bacon.atom'
+import Atom from '../util/bacon.atom'
 import { modelData, modelSetTitle, modelSetValues } from '../editor/EditorModel'
 import TutkinnonOsaToisestaTutkinnostaPicker from './TutkinnonOsaToisestaTutkinnostaPicker'
 import ModalDialog from '../editor/ModalDialog'
