@@ -57,6 +57,7 @@ import { Column, ColumnRow } from '../components-v2/containers/Columns'
 import { PaikallinenTutkinnonOsa } from '../types/fi/oph/koski/schema/PaikallinenTutkinnonOsa'
 import { PaikallinenKoodi } from '../types/fi/oph/koski/schema/PaikallinenKoodi'
 import { useKoodisto } from '../appstate/koodisto'
+import { KoodiarvotOf } from '../util/koodisto'
 import { TextEdit } from '../components-v2/controls/TextField'
 import { RaisedButton } from '../components-v2/controls/RaisedButton'
 import { MuuValtakunnallinenTutkinnonOsa } from '../types/fi/oph/koski/schema/MuuValtakunnallinenTutkinnonOsa'
@@ -399,43 +400,31 @@ export const hasAmmatillinenArviointi = (
   return Array.isArray(arviointi) && isAmmatillinenArviointi(arviointi[0])
 }
 
-// TODO hae constraints rajapinnasta, perusteesta, tjs...
-export const yhteisenTutkinnonOsat = [
-  '101053',
-  '101054',
-  '101055',
-  '101056',
-  '106727',
-  '106728',
-  '106729',
-  '108356',
-  '108357',
-  '108358',
-  '400012',
-  '400013',
-  '400014',
-  '600001',
-  '600002'
-]
+export type YhteisenTutkinnonOsatTunniste = YhteinenTutkinnonOsa['tunniste']
 
-export type YhteisenTutkinnonOsatTunniste = Koodistokoodiviite<
-  'tutkinnonosat',
-  | '101053'
-  | '101054'
-  | '101055'
-  | '101056'
-  | '106727'
-  | '106728'
-  | '106729'
-  | '108356'
-  | '108357'
-  | '108358'
-  | '400012'
-  | '400013'
-  | '400014'
-  | '600001'
-  | '600002'
->
+// Tyypitys pakottaa listaan täsmälleen YhteinenTutkinnonOsa-luokan koodiarvot
+const yhteisetKoodiarvot: Record<
+  KoodiarvotOf<YhteisenTutkinnonOsatTunniste>,
+  true
+> = {
+  '101053': true,
+  '101054': true,
+  '101055': true,
+  '101056': true,
+  '106727': true,
+  '106728': true,
+  '106729': true,
+  '108356': true,
+  '108357': true,
+  '108358': true,
+  '400012': true,
+  '400013': true,
+  '400014': true,
+  '600001': true,
+  '600002': true
+}
+
+export const yhteisenTutkinnonOsat = Object.keys(yhteisetKoodiarvot)
 
 // Osasuorituksen luokka riippuu päätason suorituksesta (koko tutkinto vai
 // tutkinnon osa/osia), joten uusi osasuoritus luodaan päivitettävän päätason

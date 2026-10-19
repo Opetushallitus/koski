@@ -25,3 +25,4 @@ TOR-2759 - korjattu kovakoodattua ammatillisen yhteisten tutkinnon osien listaa,
 TOR-2758 - lisätty skeemaan Virta-lähdeannotaatiot (@VirtaSource/@VirtaDerived/@VirtaNote) ja VirtaVirhe.tyyppi-kenttien @EnumValue; dokumentaatiota, ei muutosta tiedonsiirtoprotokollaan
 TOR-XXX - Scala-kääntäjän ja Scalafixin tarkistusten vaatimia koodimuutoksia skeematiedostoissa; ei muutosta skeemaan
 TOR-2773 - lisätty MUKS-osasuorituksen arviointi-kentälle kuvaus; ei muutosta skeeman rakenteeseen tai tiedonsiirtoprotokollaan
+TOR-2760 - ammatillisen yhteisten tutkinnon osien kovakoodattu lista johdettu YhteinenTutkinnonOsa-luokan annotaatiosta; ei muutosta skeemaan
