@@ -1,5 +1,5 @@
 import Atom from 'bacon.atom'
-import React from 'baret'
+import React from '../util/baret'
 import Link from '../components/Link'
 import { yearFromIsoDateString } from '../date/date'
 import { modelData, modelItems, modelTitle } from '../editor/EditorModel'

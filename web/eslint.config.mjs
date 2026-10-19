@@ -7,12 +7,13 @@ import reactHooksPlugin from 'eslint-plugin-react-hooks'
 import globals from 'globals'
 import eslint from '@eslint/js'
 import tseslint from 'typescript-eslint'
-import { defineConfig, includeIgnoreFile } from 'eslint/config'
+import { defineConfig, globalIgnores, includeIgnoreFile } from 'eslint/config'
 import path from 'node:path'
 import confusingBrowserGlobals from './eslint/confusingBrowserGlobals.mjs'
 
 export default defineConfig([
   includeIgnoreFile(path.resolve(import.meta.dirname, '.gitignore')),
+  globalIgnores(['app/util/baret.js']),
   {
     plugins: {
       'react-hooks': /** @type {import('eslint').ESLint.Plugin} */ (

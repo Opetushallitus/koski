@@ -1,4 +1,4 @@
-import React from 'baret'
+import React from '../util/baret'
 import Atom from 'bacon.atom'
 import Bacon from 'baconjs'
 import * as R from 'ramda'

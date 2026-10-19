@@ -1,4 +1,4 @@
-import React from 'baret'
+import React from '../util/baret'
 import Pager from '../util/Pager'
 import * as L from 'partial.lenses'
 import { ReloadButton, tiedonsiirrotContentP } from './Tiedonsiirrot'

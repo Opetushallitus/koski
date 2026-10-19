@@ -1,4 +1,4 @@
-import React from 'baret'
+import React from '../util/baret'
 import Http from '../util/http'
 import { tiedonsiirrotContentP, ReloadButton } from './Tiedonsiirrot'
 import Link from '../components/Link'

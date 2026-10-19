@@ -1,4 +1,4 @@
-import React from 'baret'
+import React from '../util/baret'
 import { t } from './i18n'
 
 export const Paragraphs = ({ name, ignoreMissing, lang }) => {

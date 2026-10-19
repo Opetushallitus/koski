@@ -1,4 +1,4 @@
-import React from 'baret'
+import React from '../util/baret'
 import { naviLink } from '../tiedonsiirrot/Tiedonsiirrot'
 
 export default ({ location, user }) => {

@@ -1,4 +1,4 @@
-import React from 'baret'
+import React from './baret'
 import Text from '../i18n/Text'
 
 export const Varoitukset = ({ varoitukset }) => {

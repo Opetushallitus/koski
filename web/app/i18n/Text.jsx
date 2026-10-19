@@ -1,4 +1,4 @@
-import React from 'baret'
+import React from '../util/baret'
 import { editAtom, changeText } from './i18n-edit'
 import { parseBool } from '../util/util'
 import { t } from './i18n'

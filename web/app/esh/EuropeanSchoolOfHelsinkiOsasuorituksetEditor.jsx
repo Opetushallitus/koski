@@ -1,4 +1,4 @@
-import React from 'baret'
+import React from '../util/baret'
 import { addContext, modelLookup } from '../editor/EditorModel'
 import Text from '../i18n/Text'
 import { EuropeanSchoolOfHelsinkiSuoritustaulukko } from './EuropeanSchoolOfHelsinkiSuoritustaulukko'

@@ -1,4 +1,4 @@
-import React from 'baret'
+import React from '../util/baret'
 import { cx } from '../components-v2/CommonProps'
 import { modelItems, modelProperty } from '../editor/EditorModel'
 import { accumulateExpandedState } from '../editor/ExpandableItems'

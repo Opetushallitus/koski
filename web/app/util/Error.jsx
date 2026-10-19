@@ -1,4 +1,4 @@
-import React from 'baret'
+import React from './baret'
 import Atom from 'bacon.atom'
 import { logout } from './user'
 import Bacon from 'baconjs'

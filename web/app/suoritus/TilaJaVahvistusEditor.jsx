@@ -7,7 +7,7 @@ import {
   modelSetValue,
   pushModel
 } from '../editor/EditorModel'
-import React from 'baret'
+import React from '../util/baret'
 import * as R from 'ramda'
 import Atom from 'bacon.atom'
 import { PropertyEditor } from '../editor/PropertyEditor'

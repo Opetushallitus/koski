@@ -1,4 +1,4 @@
-import React from 'baret'
+import React from '../util/baret'
 import { lang, setLang } from '../i18n/i18n'
 
 export const ChangeLang = () => (

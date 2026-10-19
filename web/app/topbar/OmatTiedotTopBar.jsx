@@ -1,4 +1,4 @@
-import React from 'baret'
+import React from '../util/baret'
 import { UserInfo } from './UserInfo'
 import Link from '../components/Link'
 import Text from '../i18n/Text'

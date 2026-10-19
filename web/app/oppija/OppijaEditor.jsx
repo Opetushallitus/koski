@@ -1,4 +1,4 @@
-import React from 'baret'
+import React from '../util/baret'
 import { addContext, modelData, modelItems } from '../editor/EditorModel'
 import { OpiskeluoikeusEditor } from '../opiskeluoikeus/OpiskeluoikeusEditor'
 import { useVirkailijaUiAdapterContext } from '../components-v2/interoperability/useUiAdapter'

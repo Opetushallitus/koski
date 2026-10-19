@@ -1,4 +1,4 @@
-import React from 'baret'
+import React from '../util/baret'
 import ReactDOM from 'react-dom'
 import UusiHyvaksynta from './UusiHyvaksynta'
 import ErrorPage from './ErrorPage'

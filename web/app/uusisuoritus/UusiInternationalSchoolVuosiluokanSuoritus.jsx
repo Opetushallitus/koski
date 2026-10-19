@@ -1,4 +1,4 @@
-import React from 'baret'
+import React from '../util/baret'
 import * as L from 'partial.lenses'
 import Atom from 'bacon.atom'
 import Text from '../i18n/Text'

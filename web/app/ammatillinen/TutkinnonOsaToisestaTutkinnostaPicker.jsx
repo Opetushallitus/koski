@@ -1,4 +1,4 @@
-import React from 'baret'
+import React from '../util/baret'
 import Bacon from 'baconjs'
 import { t } from '../i18n/i18n'
 import Text from '../i18n/Text'

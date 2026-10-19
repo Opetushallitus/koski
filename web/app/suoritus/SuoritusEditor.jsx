@@ -7,7 +7,7 @@ import {
   removeCommonPath
 } from '../editor/EditorModel'
 import * as L from 'partial.lenses'
-import React from 'baret'
+import React from '../util/baret'
 import { pathOr } from 'ramda'
 import { t } from '../i18n/i18n'
 import { PropertiesEditor } from '../editor/PropertiesEditor'

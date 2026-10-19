@@ -1,4 +1,4 @@
-import React from 'baret'
+import React from '../../util/baret'
 import Atom from 'bacon.atom'
 import { modelData, modelItems, modelLookup } from '../../editor/EditorModel'
 import { HeaderInfo } from './HeaderInfo'

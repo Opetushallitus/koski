@@ -1,4 +1,4 @@
-import React from 'baret'
+import React from '../util/baret'
 import Atom from 'bacon.atom'
 import Text from '../i18n/Text'
 import { Editor } from '../editor/Editor'

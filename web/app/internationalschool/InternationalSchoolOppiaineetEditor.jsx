@@ -1,4 +1,4 @@
-import React from 'baret'
+import React from '../util/baret'
 import { modelItems } from '../editor/EditorModel'
 import { LukionOppiaineetTableHead } from '../lukio/fragments/LukionOppiaineetTableHead'
 import { LukionOppiaineEditor } from '../lukio/LukionOppiaineEditor'

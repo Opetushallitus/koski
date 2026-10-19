@@ -1,4 +1,4 @@
-import React from 'baret'
+import React from '../util/baret'
 import { startEdit, hasEditAccess } from './i18n-edit'
 import Text from './Text'
 

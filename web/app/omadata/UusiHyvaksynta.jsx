@@ -1,4 +1,4 @@
-import React from 'baret'
+import React from '../util/baret'
 import { userP } from '../util/user'
 import Http from '../util/http'
 import Text from '../i18n/Text'

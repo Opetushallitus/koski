@@ -1,4 +1,4 @@
-import React from 'baret'
+import React from '../util/baret'
 import { Editor } from '../editor/Editor'
 import * as R from 'ramda'
 import * as L from 'partial.lenses'

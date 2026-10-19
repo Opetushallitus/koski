@@ -1,4 +1,4 @@
-import React from 'baret'
+import React from '../util/baret'
 import Text from '../i18n/Text'
 import DateInput from '../date/DateInput'
 import { InfoIcon } from '../icons/InfoIcon'

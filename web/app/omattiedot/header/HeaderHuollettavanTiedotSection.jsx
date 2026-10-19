@@ -1,4 +1,4 @@
-import React from 'baret'
+import React from '../../util/baret'
 import { Popup } from '../../components/Popup'
 import { FormState } from './Header'
 import Text from '../../i18n/Text'
