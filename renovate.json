@@ -390,9 +390,8 @@
       "automerge": true
     },
     {
-      "description": "Automerge Maven and the Maven wrapper in the OmaData OAuth2 Java sample.",
+      "description": "Automerge Maven and the Maven wrapper. Maven is a build tool that every CI job runs through the wrapper, and it does not ship with the application.",
       "matchManagers": ["maven-wrapper"],
-      "matchFileNames": ["omadata-oauth2-sample/java/**"],
       "matchUpdateTypes": ["minor", "patch"],
       "automerge": true
     },

@@ -155,8 +155,8 @@ jobs:
         env:
           version: ${{ github.sha }}
         run: |
-          mvn versions:set -DnewVersion="$version" --batch-mode
-          mvn war:war --batch-mode
+          ./mvnw versions:set -DnewVersion="$version" --batch-mode
+          ./mvnw war:war --batch-mode
 
       - name: Check war contents
         env:

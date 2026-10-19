@@ -35,7 +35,7 @@ jobs:
       - uses: ./.github/actions/setup_java_21
 
       - name: Resolve Maven dependencies
-        run: mvn --batch-mode --file pom.xml dependency:go-offline
+        run: ./mvnw --batch-mode --file pom.xml dependency:go-offline
 
       - name: Trivy vulnerability scan
         uses: aquasecurity/trivy-action@ed142fd0673e97e23eac54620cfb913e5ce36c25 # v0.36.0

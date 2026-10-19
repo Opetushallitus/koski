@@ -32,14 +32,14 @@ check-github-packages-token:
 
 .PHONY: clean
 clean:
-	mvn clean
+	./mvnw clean
 	rm -fr web/target
 
 ### Building the application
 
 .PHONY: build
 build: check-github-packages-token logdir
-	mvn compile
+	./mvnw compile
 	# Built the whole application, ready for running or testing
 
 .PHONY: build-snapshot-image
@@ -72,7 +72,7 @@ ts-types:
 
 .PHONY: localizationtest
 localizationtest:
-	mvn $(mvn_opts) -DargLine="$(mvn_argline)" test -DmembersOnlySuites="fi.oph.koski.inenvironmentlocalization"
+	./mvnw $(mvn_opts) -DargLine="$(mvn_argline)" test -DmembersOnlySuites="fi.oph.koski.inenvironmentlocalization"
 
 .PHONY: testresults
 testresults:
@@ -88,7 +88,7 @@ js-unit-test-watch:
 
 .PHONY: backtest
 backtest:
-	mvn $(mvn_opts) -DargLine="$(mvn_argline)" test -DmembersOnlySuites="\
+	./mvnw $(mvn_opts) -DargLine="$(mvn_argline)" test -DmembersOnlySuites="\
 	fi.oph.koski.cache,fi.oph.koski.documentation,fi.oph.koski.editor,fi.oph.koski.environment,\
 	fi.oph.koski.etk,fi.oph.koski.hakemuspalvelu,fi.oph.koski.henkilo,fi.oph.koski.html,fi.oph.koski.http,\
 	fi.oph.koski.integrationtest,fi.oph.koski.json,fi.oph.koski.kela,fi.oph.koski.koodisto,\
@@ -111,19 +111,19 @@ backtest:
 
 .PHONY: schematest
 schematest:
-	mvn $(mvn_opts) -DargLine="$(mvn_argline)" test -DmembersOnlySuites="fi.oph.scalaschema"
+	./mvnw $(mvn_opts) -DargLine="$(mvn_argline)" test -DmembersOnlySuites="fi.oph.scalaschema"
 
 .PHONY: backtestnonmock
 backtestnonmock:
-	mvn $(mvn_opts) -DargLine="$(mvn_argline)" test -DmembersOnlySuites="fi.oph.koski.nonmockloginsecurity"
+	./mvnw $(mvn_opts) -DargLine="$(mvn_argline)" test -DmembersOnlySuites="fi.oph.koski.nonmockloginsecurity"
 
 .PHONY: fronttest
 fronttest:
-	mvn $(mvn_opts) -DargLine="$(mvn_argline)" test -Dsuites="fi.oph.koski.mocha.KoskiMochaSpec,fi.oph.koski.mocha.KoskiJsUnitSpec"
+	./mvnw $(mvn_opts) -DargLine="$(mvn_argline)" test -Dsuites="fi.oph.koski.mocha.KoskiMochaSpec,fi.oph.koski.mocha.KoskiJsUnitSpec"
 
 .PHONY: integrationtest
 integrationtest:
-		mvn $(mvn_opts) -DargLine="$(mvn_argline)" test -Dsuites="fi.oph.koski.e2e.KoskiFrontSpec"
+		./mvnw $(mvn_opts) -DargLine="$(mvn_argline)" test -Dsuites="fi.oph.koski.e2e.KoskiFrontSpec"
 
 # Visuaaliset regressiotestit, ks. documentation/visual-testing.md
 #
@@ -139,7 +139,7 @@ visual-update:
 
 .PHONY: omadataoauth2e2e
 omadataoauth2e2e:
-		mvn $(mvn_opts) -DargLine="$(mvn_argline)" test -Dsuites="fi.oph.koski.omadataoauth2.e2e.OmaDataOAuth2E2ESpec"
+		./mvnw $(mvn_opts) -DargLine="$(mvn_argline)" test -Dsuites="fi.oph.koski.omadataoauth2.e2e.OmaDataOAuth2E2ESpec"
 
 .PHONY: test
 test: backtest fronttest backtestnonmock
@@ -148,7 +148,7 @@ test: backtest fronttest backtestnonmock
 
 .PHONY: run
 run:
-	mvn exec:java $(JAVA_OPTS) -Dexec.mainClass=fi.oph.koski.jettylauncher.JettyLauncher
+	./mvnw exec:java $(JAVA_OPTS) -Dexec.mainClass=fi.oph.koski.jettylauncher.JettyLauncher
 
 docker-dbs:
 	${DOCKER_COMPOSE} up ${DOCKER_COMPOSE_OPTS}
@@ -193,11 +193,11 @@ lint-check: install-lint-tools
 
 .PHONY: scalafix
 scalafix:
-	mvn --batch-mode --activate-profiles scalafix exec:java@scalafix-main exec:java@scalafix-test
+	./mvnw --batch-mode --activate-profiles scalafix exec:java@scalafix-main exec:java@scalafix-test
 
 .PHONY: scalafix-check
 scalafix-check:
-	mvn --batch-mode --activate-profiles scalafix,scalafix-check exec:java@scalafix-main exec:java@scalafix-test
+	./mvnw --batch-mode --activate-profiles scalafix,scalafix-check exec:java@scalafix-main exec:java@scalafix-test
 
 .PHONY: npm-audit
 npm-audit:
@@ -221,7 +221,7 @@ checkdoc_dbdocs:
 
 .PHONY: mvndeps
 mvndeps:
-	mvn dependency:tree|less
+	./mvnw dependency:tree|less
 
 .PHONY: scala-console
 scala-console:
@@ -239,24 +239,24 @@ install-and-verify-valpas-jest-deps:
 
 .PHONY: valpas-fronttest-1
 valpas-fronttest-1:
-	mvn $(mvn_opts) -DargLine="$(mvn_argline)" scalatest:test -Dsuites="fi.oph.koski.frontendvalpas.jest.ValpasFrontSpec1" --batch-mode
+	./mvnw $(mvn_opts) -DargLine="$(mvn_argline)" scalatest:test -Dsuites="fi.oph.koski.frontendvalpas.jest.ValpasFrontSpec1" --batch-mode
 
 .PHONY: valpas-fronttest-2
 valpas-fronttest-2:
-	mvn $(mvn_opts) -DargLine="$(mvn_argline)" scalatest:test -Dsuites="fi.oph.koski.frontendvalpas.jest.ValpasFrontSpec2" --batch-mode
+	./mvnw $(mvn_opts) -DargLine="$(mvn_argline)" scalatest:test -Dsuites="fi.oph.koski.frontendvalpas.jest.ValpasFrontSpec2" --batch-mode
 
 .PHONY: valpas-fronttest-3
 valpas-fronttest-3:
-	mvn $(mvn_opts) -DargLine="$(mvn_argline)" scalatest:test -Dsuites="fi.oph.koski.frontendvalpas.jest.ValpasFrontSpec3" --batch-mode
+	./mvnw $(mvn_opts) -DargLine="$(mvn_argline)" scalatest:test -Dsuites="fi.oph.koski.frontendvalpas.jest.ValpasFrontSpec3" --batch-mode
 
 .PHONY: valpas-fronttest-4
 valpas-fronttest-4:
-	mvn $(mvn_opts) -DargLine="$(mvn_argline)" scalatest:test -Dsuites="fi.oph.koski.frontendvalpas.jest.ValpasFrontSpec4" --batch-mode
+	./mvnw $(mvn_opts) -DargLine="$(mvn_argline)" scalatest:test -Dsuites="fi.oph.koski.frontendvalpas.jest.ValpasFrontSpec4" --batch-mode
 
 .PHONY: valpas-fronttest-5
 valpas-fronttest-5:
-	mvn $(mvn_opts) -DargLine="$(mvn_argline)" scalatest:test -Dsuites="fi.oph.koski.frontendvalpas.jest.ValpasFrontSpec5" --batch-mode
+	./mvnw $(mvn_opts) -DargLine="$(mvn_argline)" scalatest:test -Dsuites="fi.oph.koski.frontendvalpas.jest.ValpasFrontSpec5" --batch-mode
 
 .PHONY: valpas-fronttest-6
 valpas-fronttest-6:
-	mvn $(mvn_opts) -DargLine="$(mvn_argline)" scalatest:test -Dsuites="fi.oph.koski.frontendvalpas.jest.ValpasFrontSpec6" --batch-mode
+	./mvnw $(mvn_opts) -DargLine="$(mvn_argline)" scalatest:test -Dsuites="fi.oph.koski.frontendvalpas.jest.ValpasFrontSpec6" --batch-mode
