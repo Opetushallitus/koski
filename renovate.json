@@ -11,7 +11,8 @@
     "enabled": true,
     "labels": [
       "security"
-    ]
+    ],
+    "dependencyDashboardApproval": false
   },
   "lockFileMaintenance": {
     "description": "Only mechanism that updates transitive dependencies absent from every package.json. Do not delete the empty schedule: Renovate's built-in default for this block is ['before 4am on monday'], so removing the key restores a four-hour weekly window instead of removing the restriction. A repository schedule cannot start a Renovate run — isScheduledNow() only filters a run that is already in progress — so any window is a bet that Mend's scheduler happens to land inside it. That bet lost every week between 2026-06-08 and 2026-08-14. An empty schedule always passes the check, and costs no extra PR noise because lockFileMaintenance maintains a single branch.",
@@ -24,8 +25,8 @@
     "automergeType `pr` keeps the PR, and with it the CI run, mandatory.",
     "internalChecksFilter is strict, so Renovate filters release candidates by minimumReleaseAge. It proposes the newest release that is old enough, or nothing, and lists the young release under Pending Status Checks on the Dependency Dashboard.",
     "GitHub runner images are exempt from minimumReleaseAge because their datasource provides no release timestamps. Their updates require manual review.",
-    "platformAutomerge is off as a second guard. GitHub's automerge is armed at PR creation and weighs only the required checks, so it would merge past a pending `renovate/stability-days` check if a young release ever reached a branch. Renovate's own automerge waits for CI to pass *and* for its internal checks, and merges at its next run.",
-    "Renovate's vulnerabilityAlerts defaults set minimumReleaseAge to null, so security fixes are not delayed by it.",
+    "platformAutomerge is off as a second guard. GitHub's automerge is armed at PR creation and weighs only the required checks, so it would merge past a pending `renovate/stability-days` check if a young release ever reached a branch. Renovate's own automerge waits for CI to pass *and* for its internal checks.",
+    "Renovate forces vulnerabilityAlerts over every package rule. Its defaults set minimumReleaseAge to null, so security fixes are not delayed by it. dependencyDashboardApproval is set to false explicitly, so that a security fix gets a PR even when it needs a major update.",
     "The last package rule labels the PRs that Renovate will merge automatically.",
     "A groupName names what the group contains, never the update type or whether it is automerged: Renovate appends (patch), (minor) or (major) to a group's PR title itself, and the automerge label marks automerged PRs."
   ],
@@ -66,11 +67,12 @@
   ],
   "packageRules": [
     {
-      "description": "Prioritise lock file maintenance so it does not lose the last concurrency slot to routine bumps",
+      "description": "Create lock file maintenance first and exempt it from the concurrent PR limit, so that it never waits behind other PRs. It is a single branch, so the exemption cannot cause a burst of CI runs.",
       "matchUpdateTypes": [
         "lockFileMaintenance"
       ],
-      "prPriority": 10
+      "prPriority": 10,
+      "prConcurrentLimit": 0
     },
     {
       "description": "Automerge npm lock maintenance after CI. Workaround for https://github.com/renovatebot/renovate/issues/45236: lock-file maintenance has no release timestamp, so Renovate’s branch check otherwise stays pending forever. The three-day delay is enforced during dependency resolution by minimumReleaseAge: 4320 in every pnpm-workspace.yaml, including transitive dependencies.",
@@ -83,12 +85,6 @@
       "description": "Create minor updates only while fewer than 6 PRs are open, leaving the remaining slots to patch updates.",
       "matchUpdateTypes": ["minor"],
       "prConcurrentLimit": 6
-    },
-    {
-      "description": "Create major updates and package replacements last and only while fewer than 2 PRs are open.",
-      "matchUpdateTypes": ["major", "replacement"],
-      "prPriority": -1,
-      "prConcurrentLimit": 2
     },
     {
       "description": "Disable digest updates by default",
@@ -461,31 +457,17 @@
       "group": { "description": ["Multiple packages: Maven dependencies"] }
     },
     {
-      "description": "Pin postgres Docker image to match RDS version (RDS upgrades to 15.17 on 2026-06-03; auto-minor-version-upgrade is enabled in RDS). Bump this constraint when RDS is upgraded further.",
-      "matchManagers": ["docker-compose"],
-      "matchPackageNames": ["postgres"],
-      "allowedVersions": "<=15.17"
-    },
-    {
-      "description": "Stay on Scala 2.13",
-      "matchPackageNames": ["org.scala-lang:scala-library"],
-      "allowedVersions": "/^2\\.13\\./"
+      "description": "The local Postgres and OpenSearch must run the versions that AWS runs in production (koski-aws-infra src/ProductVersions.ts). Hold their minor and major updates on the Dependency Dashboard as reminders to upgrade production, and approve one once AWS runs that version. RDS applies Postgres minor versions automatically (auto-minor-version-upgrade).",
+      "matchFileNames": ["docker-compose.yaml", "docker-compose-arm64.yaml", "opensearch/Dockerfile"],
+      "matchPackageNames": ["postgres", "opensearchproject/opensearch"],
+      "matchUpdateTypes": ["minor", "major"],
+      "automerge": false,
+      "dependencyDashboardApproval": true
     },
     {
       "description": "Skip http4s 1.0 milestone builds",
       "matchPackageNames": ["org.http4s:**"],
       "allowedVersions": "!/^1\\.0-\\d+-[0-9a-f]+$/"
-    },
-    {
-      "description": "Stay on the OpenSearch version of AWS (koski-aws-infra src/ProductVersions.ts)",
-      "matchPackageNames": ["opensearchproject/opensearch"],
-      "allowedVersions": "/^3\\.5\\./"
-    },
-    {
-      "description": "Keep Koski UI on React 16",
-      "matchFileNames": ["web/package.json"],
-      "matchPackageNames": ["react", "react-dom", "@types/react", "@types/react-dom"],
-      "allowedVersions": "<17"
     },
     {
       "description": "Keep schema viewer updates in their own PRs, out of unrelated npm groups.",
@@ -509,10 +491,15 @@
       "group": { "commitMessageExtra": "" }
     },
     {
-      "description": "Label PRs that Renovate will merge automatically and exempt them from the PR limits. This must be the last rule, so that it sees the automerge value set by the rules above.",
+      "description": "Hold major updates and package replacements that no rule above automerges for approval on the Dependency Dashboard, so that they wait there instead of holding PR slots. Approving one creates its PR regardless of the PR limits. Keep this rule after every rule that sets automerge.",
+      "matchUpdateTypes": ["major", "replacement"],
+      "matchJsonata": ["$not(automerge = true)"],
+      "dependencyDashboardApproval": true
+    },
+    {
+      "description": "Label PRs that Renovate will merge automatically and exempt them from the hourly PR limit. They stay under the concurrent PR limits, which cap how many CI runs they start at once. This must be the last rule, so that it sees the automerge value set by the rules above.",
       "matchJsonata": ["automerge = true"],
       "addLabels": ["automerge"],
-      "prConcurrentLimit": 0,
       "prHourlyLimit": 0
     }
   ],
