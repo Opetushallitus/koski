@@ -1,5 +1,7 @@
 // bacon.atom 5.0.6 (https://github.com/calmm-js/bacon.atom), MIT-lisenssi.
 
+/* eslint-disable no-invalid-this */
+
 import { get, modify } from 'partial.lenses'
 import { always, id, identicalU } from 'infestines'
 import { Bus, Observable, combineWith } from 'baconjs'
@@ -19,14 +21,14 @@ function modifyLens(x2x) {
 }
 
 function view(lens) {
-  let atom = this
+  let atom
 
   if (lens instanceof Observable) {
-    atom = combineWith(lens, atom, (lens, data) =>
-      get((atom.lens = lens), data)
+    atom = combineWith(lens, this, (currentLens, data) =>
+      get((atom.lens = currentLens), data)
     )
   } else {
-    atom = atom.map(get(lens)).skipDuplicates(identicalU)
+    atom = this.map(get(lens)).skipDuplicates(identicalU)
     atom.lens = lens
   }
 
