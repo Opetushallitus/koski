@@ -1,9 +1,15 @@
 package fi.oph.koski.frontendvalpas.jest
 
 import fi.oph.koski.mocha.KoskiCommandLineSpec
+import fi.oph.koski.util.Futures
+import fi.oph.koski.valpas.opiskeluoikeusfixture.FixtureUtil
 import fi.oph.koski.{KoskiApplicationForTests, SharedJetty}
 import org.scalatest.Tag
 import org.scalatest.freespec.AnyFreeSpec
+
+import scala.concurrent.ExecutionContext.Implicits.global
+import scala.concurrent.Future
+import scala.concurrent.duration.DurationInt
 
 abstract class ValpasFrontSpecBase extends AnyFreeSpec with KoskiCommandLineSpec {
   def chunkNumber: Int
@@ -12,6 +18,10 @@ abstract class ValpasFrontSpecBase extends AnyFreeSpec with KoskiCommandLineSpec
   "Valpas front specs" taggedAs(ValpasFrontTag) in {
     val sharedJetty = new SharedJetty(KoskiApplicationForTests)
     sharedJetty.start()
+    // Ensimmäinen reset KOSKI_SPECIFIC → VALPAS on kylmällä sovelluksella moninkertaisesti hitaampi
+    // kuin myöhemmät ja voi ylittää testien 45 s aikarajan, joten tehdään se tässä. Testi, joka käyttää
+    // oletustarkastelupäivää ilman forcea, ei tämän jälkeen resetoi itse lainkaan.
+    Futures.await(Future(FixtureUtil.resetMockData(KoskiApplicationForTests)), atMost = 5.minutes)
     runTestCommand("valpas-front", Seq(
       "scripts/valpas-front-test.sh",
       sharedJetty.hostUrl,
