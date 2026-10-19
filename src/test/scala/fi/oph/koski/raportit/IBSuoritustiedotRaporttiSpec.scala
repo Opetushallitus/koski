@@ -4,7 +4,7 @@ import fi.oph.koski.{DirtiesFixtures, KoskiApplicationForTests}
 import fi.oph.koski.api.misc.{OpiskeluoikeusTestMethods, PutOpiskeluoikeusTestMethods}
 import fi.oph.koski.documentation.ExamplesIB.ibTutkinnonSuoritus
 import fi.oph.koski.documentation.{ExampleData, ExamplesIB, LukioExampleData}
-import fi.oph.koski.henkilo.KoskiSpecificMockOppijat.{ibPreIB2019, ibPredicted, tyhjä}
+import fi.oph.koski.henkilo.KoskiSpecificMockOppijat.{eskari, ibPreIB2019, ibPredicted, tyhjä}
 import fi.oph.koski.henkilo.LaajatOppijaHenkilöTiedot
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.koskiuser.{KoskiMockUser, KoskiSpecificSession}
@@ -36,7 +36,8 @@ class IBSuoritustiedotRaporttiSpec extends
       localDate(2012, 1, 1),
       localDate(2022, 1, 1),
       false,
-      IBTutkinnonSuoritusRaportti
+      IBTutkinnonSuoritusRaportti,
+      None
     )(session(defaultUser)).map(sheet => zipRowsWithColumTitles(sheet))
 
   private lazy val raporttiRivitIB2025 = raporttiBuilder.build(
@@ -44,7 +45,8 @@ class IBSuoritustiedotRaporttiSpec extends
     localDate(2025, 1, 1),
     localDate(2025, 12, 31),
     false,
-    IBTutkinnonSuoritusRaportti
+    IBTutkinnonSuoritusRaportti,
+    None
   )(session(defaultUser)).map(sheet => zipRowsWithColumTitles(sheet))
 
   private lazy val raporttiRivitPreIB = raporttiBuilder.build(
@@ -52,7 +54,8 @@ class IBSuoritustiedotRaporttiSpec extends
       localDate(2012, 1, 1),
       localDate(2022, 1, 1),
       false,
-      PreIBSuoritusRaportti
+      PreIBSuoritusRaportti,
+      None
     )(session(defaultUser)).map(sheet => zipRowsWithColumTitles(sheet))
 
   override protected def beforeAll(): Unit = {
@@ -60,38 +63,39 @@ class IBSuoritustiedotRaporttiSpec extends
     reloadRaportointikanta()
   }
 
-  override protected def alterFixture(): Unit = {
-    setupOppijaWithAndGetOpiskeluoikeus(
-      defaultOpiskeluoikeus.copy(
-        tila = LukionOpiskeluoikeudenTila(
-          List(LukionOpiskeluoikeusjakso(LocalDate.of(2024, 8, 1), LukioExampleData.opiskeluoikeusAktiivinen, Some(ExampleData.valtionosuusRahoitteinen)))
-        ),
-        suoritukset = List(
-          ibTutkinnonSuoritus().copy(
-            vahvistus = None,
-            theoryOfKnowledge = None,
-            extendedEssay = None,
-            creativityActionService = None,
-            lisäpisteet = None,
-            osasuoritukset = Some(List(
-              IBOppiaineenSuoritus(
-                koulutusmoduuli = IBOppiaineMuu(
-                  tunniste = Koodistokoodiviite("HIS", "oppiaineetib"),
-                  laajuus  = Some(LaajuusOpintopisteissä(10)),
-                  taso     = Some(Koodistokoodiviite("HL", "oppiaineentasoib")),
-                  ryhmä    = Koodistokoodiviite("3", "aineryhmaib"),
-                  pakollinen = true
-                ),
-                osasuoritukset = None,
-                arviointi = None,
-                predictedArviointi = None
-              )
-            ))
-          )
-        )
+  private lazy val ibTutkinto2024 =
+    defaultOpiskeluoikeus.copy(
+      tila = LukionOpiskeluoikeudenTila(
+        List(LukionOpiskeluoikeusjakso(LocalDate.of(2024, 8, 1), LukioExampleData.opiskeluoikeusAktiivinen, Some(ExampleData.valtionosuusRahoitteinen)))
       ),
-      tyhjä.copy(hetu = "010106A8691")
+      suoritukset = List(
+        ibTutkinnonSuoritus().copy(
+          vahvistus = None,
+          theoryOfKnowledge = None,
+          extendedEssay = None,
+          creativityActionService = None,
+          lisäpisteet = None,
+          osasuoritukset = Some(List(
+            IBOppiaineenSuoritus(
+              koulutusmoduuli = IBOppiaineMuu(
+                tunniste = Koodistokoodiviite("HIS", "oppiaineetib"),
+                laajuus  = Some(LaajuusOpintopisteissä(10)),
+                taso     = Some(Koodistokoodiviite("HL", "oppiaineentasoib")),
+                ryhmä    = Koodistokoodiviite("3", "aineryhmaib"),
+                pakollinen = true
+              ),
+              osasuoritukset = None,
+              arviointi = None,
+              predictedArviointi = None
+            )
+          ))
+        )
+      )
     )
+
+  override protected def alterFixture(): Unit = {
+    setupOppijaWithAndGetOpiskeluoikeus(ibTutkinto2024, tyhjä.copy(hetu = "010106A8691"))
+    setupOppijaWithAndGetOpiskeluoikeus(ibTutkinto2024, eskari)
 
     setupOppijaWithAndGetOpiskeluoikeus(
       defaultOpiskeluoikeus.copy(
@@ -196,6 +200,7 @@ class IBSuoritustiedotRaporttiSpec extends
           "Hetu" -> ibPredicted.hetu,
           "Sukunimi" -> ibPredicted.sukunimi,
           "Etunimet" -> ibPredicted.etunimet,
+          "Kotikunta" -> None,
           "Opiskeluoikeuden alkamispäivä" -> Some(LocalDate.of(2012, 9, 1)),
           "Viimeisin opiskeluoikeuden tila" -> Some("lasna"),
           "Opiskeluoikeuden tilat aikajakson aikana" -> "lasna",
@@ -248,6 +253,7 @@ class IBSuoritustiedotRaporttiSpec extends
           "Hetu" -> ibPredicted.hetu,
           "Sukunimi" -> ibPredicted.sukunimi,
           "Etunimet" -> ibPredicted.etunimet,
+          "Kotikunta" -> None,
           "Opiskeluoikeuden alkamispäivä" -> Some(LocalDate.of(2012, 9, 1)),
           "Viimeisin opiskeluoikeuden tila" -> Some("lasna"),
           "Opiskeluoikeuden tilat aikajakson aikana" -> "lasna",
@@ -321,6 +327,7 @@ class IBSuoritustiedotRaporttiSpec extends
           "Hetu" -> ibPreIB2019.hetu,
           "Sukunimi" -> ibPreIB2019.sukunimi,
           "Etunimet" -> ibPreIB2019.etunimet,
+          "Kotikunta" -> None,
           "Opiskeluoikeuden alkamispäivä" -> Some(LocalDate.of(2012, 9, 1)),
           "Viimeisin opiskeluoikeuden tila" -> Some("valmistunut"),
           "Opiskeluoikeuden tilat aikajakson aikana" -> "lasna, valmistunut",
@@ -372,6 +379,39 @@ class IBSuoritustiedotRaporttiSpec extends
         )
 
         verifyOppijanRow(ibPreIB2019, expectedPate, suoritusTiedotSheet)
+      }
+    }
+
+    "Kotikunnan hakeminen kotikuntahistoriasta" - {
+      def getKotikunta(kotikuntaPvm: Option[LocalDate]) = {
+        val rivit = raporttiBuilder.build(
+          ressunLukio,
+          localDate(2025, 1, 1),
+          localDate(2025, 12, 31),
+          false,
+          IBTutkinnonSuoritusRaportti,
+          kotikuntaPvm
+        )(session(defaultUser)).map(sheet => zipRowsWithColumTitles(sheet))
+        findFirstByOid(eskari.oid, rivit.head)("Kotikunta")
+      }
+
+      "Ilman päivää näytetään nykyinen kotikunta" in {
+        getKotikunta(None) should equal(Some("Jyväskylä"))
+      }
+
+      "Kotikunta löytyy historiasta" in {
+        getKotikunta(Some(localDate(2024, 3, 1))) should equal(Some("Juva"))
+      }
+
+      "Kotikunta ei löydy historiasta" in {
+        getKotikunta(Some(localDate(2024, 7, 1))) should equal(Some("Ei tiedossa 1.7.2024 (nykyinen kotikunta on Jyväskylä)"))
+      }
+
+      "Päivä tallentuu auditlokiin" in {
+        authGet(s"api/raportit/ibsuoritustietojentarkistus?oppilaitosOid=$ressunLukio&alku=2025-01-01&loppu=2025-12-31&raportinTyyppi=ibtutkinto&osasuoritustenAikarajaus=false&kotikuntaPvm=2024-03-01&lang=fi&password=salasana") {
+          verifyResponseStatusOk()
+          AuditLogTester.verifyLastAuditLogMessageForOperation(Map("operation" -> "OPISKELUOIKEUS_RAPORTTI", "target" -> Map("hakuEhto" -> s"raportti=ibsuoritustietojentarkistus&oppilaitosOid=$ressunLukio&alku=2025-01-01&loppu=2025-12-31&raportinTyyppi=ibtutkinto&osasuoritustenAikarajaus=false&lang=fi&kotikuntaPvm=2024-03-01")))
+        }
       }
     }
   }

@@ -11,9 +11,11 @@ import {
   Listavalinta,
   LyhytKuvaus,
   RaportinLataus,
-  Vinkit
+  Vinkit,
+  PaivaValinta
 } from './raporttiComponents'
-import { selectFromState } from './raporttiUtils'
+import { selectFromState, today } from './raporttiUtils'
+import { t } from '../i18n/i18n'
 
 export const aikuistenPerusopetusReportTypes = {
   alkuvaihe: {
@@ -52,10 +54,13 @@ export const AikajaksoRaporttiTyyppivalinnalla = ({
   raporttiTyypit,
   aikajaksoValintaKuvaus,
   osasuoritustenAikarajausEiKuvaus,
-  osasuoritustenAikarajausKylläKuvaus
+  osasuoritustenAikarajausKylläKuvaus,
+  showKotikuntaPvmInput,
+  kotikuntaPvmInputHelp
 }) => {
   const alkuAtom = Atom()
   const loppuAtom = Atom()
+  const kotikuntaPvmAtom = Atom(today())
   const osasuoritustenAikarajausAtom = Atom(false)
   const raportinTyyppiAtom = Atom(defaultRaportinTyyppi)
   const submitBus = Bacon.Bus()
@@ -69,18 +74,21 @@ export const AikajaksoRaporttiTyyppivalinnalla = ({
     loppuAtom,
     osasuoritustenAikarajausAtom,
     raportinTyyppiAtom,
-    (o, a, l, r, t) =>
+    kotikuntaPvmAtom,
+    (o, a, l, r, tyyppi, kkp) =>
       o &&
       a &&
       l &&
       l.valueOf() >= a.valueOf() &&
-      t && {
+      tyyppi &&
+      (!showKotikuntaPvmInput || kkp) && {
         oppilaitosOid: o.oid,
         alku: formatISODate(a),
         loppu: formatISODate(l),
         osasuoritustenAikarajaus: r,
         password,
-        raportinTyyppi: t,
+        raportinTyyppi: tyyppi,
+        ...(showKotikuntaPvmInput && { kotikuntaPvm: formatISODate(kkp) }),
         lang,
         baseUrl: `/koski/api/raportit${apiEndpoint}`
       }
@@ -126,6 +134,14 @@ export const AikajaksoRaporttiTyyppivalinnalla = ({
           }
         ]}
       />
+
+      {showKotikuntaPvmInput && (
+        <PaivaValinta
+          label={t('select-kotikunta-date')}
+          paivaAtom={kotikuntaPvmAtom}
+          ohje={kotikuntaPvmInputHelp}
+        />
+      )}
 
       <RaportinLataus
         password={password}
