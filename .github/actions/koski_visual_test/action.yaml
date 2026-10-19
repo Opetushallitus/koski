@@ -4,7 +4,7 @@ runs:
   using: "composite"
   steps:
     - name: "🔨 Setup Java"
-      uses: ./.github/actions/setup_java_21
+      uses: ./.github/actions/setup_java_25
     - name: "🔨 Setup backend and databases"
       uses: ./.github/actions/setup_backend
     - name: "Install web dependencies"

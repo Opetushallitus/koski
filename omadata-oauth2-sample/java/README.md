@@ -4,7 +4,7 @@ Spring Boot -pohjainen esimerkki OAuth2-integraatiosta Koski-palveluun.
 
 ## Esiehdot
 
-- Java 21 tai uudempi
+- Java 25 tai uudempi
 - Koski käynnissä portissa 7021 (ks. [README.md](../../README.md#koski-sovelluksen-ajaminen-paikallisesti))
 - Testisertifikaatit generoitu ja ALB-proxy käynnissä:
 
