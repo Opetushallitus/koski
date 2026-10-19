@@ -60,7 +60,6 @@ jobs:
               - '!.git-blame-ignore-revs'
               - '!.trivyignore'
               - '!img.png'
-              - '!owasp-dependency-check-suppressions.xml'
               - &documentation-exclusions
                 - '!documentation/**'
                 - '!*.md'
