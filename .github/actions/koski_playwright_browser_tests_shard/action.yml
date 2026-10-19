@@ -25,7 +25,7 @@ runs:
         PLAYWRIGHT_SHARD_INDEX: ${{inputs.shardIndex}}
         PLAYWRIGHT_SHARD_TOTAL: ${{inputs.shardTotal}}
         PLAYWRIGHT_HTML_REPORT: koski-playwright-report-${{inputs.shardIndex}}-of-${{inputs.shardTotal}}
-      run: mvn scalatest:test -Pintegrationtest -Dsuites="fi.oph.koski.e2e.KoskiFrontSpec" --batch-mode --no-snapshot-updates
+      run: ./mvnw scalatest:test -Pintegrationtest -Dsuites="fi.oph.koski.e2e.KoskiFrontSpec" --batch-mode --no-snapshot-updates
       shell: bash
 
     - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2

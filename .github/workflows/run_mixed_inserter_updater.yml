@@ -25,11 +25,11 @@ jobs:
       - uses: ./.github/actions/setup_java_21
 
       - name: Build
-        run: mvn test-compile -P-frontend
+        run: ./mvnw test-compile -P-frontend
 
       - name: Run MixedOpiskeluoikeusInserterUpdater
         run: |
           export PERFTEST_ROUNDS=$(( ${{ inputs.opiskeluoikeus_count }} / 2 ))
           export PERFTEST_THREADS=4
           export WARMUP_ROUNDS=0
-          mvn exec:java -Dexec.mainClass="fi.oph.koski.perftest.MixedOpiskeluoikeusInserterUpdater"
+          ./mvnw exec:java -Dexec.mainClass="fi.oph.koski.perftest.MixedOpiskeluoikeusInserterUpdater"

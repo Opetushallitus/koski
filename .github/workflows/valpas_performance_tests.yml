@@ -38,7 +38,7 @@ jobs:
           aws-region: eu-west-1
 
       - name: Build
-        run: mvn test-compile
+        run: ./mvnw test-compile
 
       - name: Run perftest valpas-organisaatio-listaus
         run: |
@@ -47,7 +47,7 @@ jobs:
           export WARMUP_ROUNDS=0
           export PERFTEST_SUCCESS_THRESHOLD_PERCENTAGE=98
           export VALPAS_ORGANISAATIOT_S3_KEY=${{ secrets.VALPAS_ORGANISAATIOT_S3_KEY }}
-          mvn exec:java -Dexec.mainClass="fi.oph.koski.perftest.ValpasRandomPerusopetuksenOppilaitoksetGetter"
+          ./mvnw exec:java -Dexec.mainClass="fi.oph.koski.perftest.ValpasRandomPerusopetuksenOppilaitoksetGetter"
 
       - name: Report failure
         uses: ./.github/actions/report-slack
@@ -84,7 +84,7 @@ jobs:
           aws-region: eu-west-1
 
       - name: Build
-        run: mvn test-compile
+        run: ./mvnw test-compile
 
       - name: Run perftest valpas-oppija-detaalit
         run: |
@@ -93,7 +93,7 @@ jobs:
           export WARMUP_ROUNDS=0
           export PERFTEST_SUCCESS_THRESHOLD_PERCENTAGE=98
           export VALPAS_OPPIJAOIDIT_S3_KEY=${{ secrets.VALPAS_OPPIJAOIDIT_S3_KEY }}
-          mvn exec:java -Dexec.mainClass="fi.oph.koski.perftest.ValpasRandomPerusopetuksenOppijaGetter"
+          ./mvnw exec:java -Dexec.mainClass="fi.oph.koski.perftest.ValpasRandomPerusopetuksenOppijaGetter"
 
       - name: Report failure
         uses: ./.github/actions/report-slack
