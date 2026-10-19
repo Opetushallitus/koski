@@ -1,4 +1,4 @@
-import React from 'baret'
+import React from '../util/baret'
 import * as R from 'ramda'
 import {
   footnoteDescriptions,

@@ -1,4 +1,4 @@
-import React from 'baret'
+import React from '../util/baret'
 import { lang, supportedLanguages } from '../i18n/i18n'
 import http from '../util/http'
 

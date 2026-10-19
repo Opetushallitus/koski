@@ -178,9 +178,6 @@ importers:
       baconjs:
         specifier: 1.0.1
         version: 1.0.1
-      baret:
-        specifier: 1.2.0
-        version: 1.2.0(baconjs@1.0.1)(react@16.14.0)
       codemirror:
         specifier: 5.65.21
         version: 5.65.21
@@ -193,6 +190,9 @@ importers:
       fp-ts:
         specifier: 2.16.11
         version: 2.16.11
+      infestines:
+        specifier: 0.4.11
+        version: 0.4.11
       js-cookie:
         specifier: 3.0.8
         version: 3.0.8
@@ -1650,12 +1650,6 @@ packages:
   balanced-match@4.0.4:
     resolution: {integrity: sha512-BLrgEcRTwX2o6gGxGOCNyMvGSp35YofuYzw9h1IMTRmKqttAZZVU67bdb9Pr2vUHA8+j3i2tJfjO6C6+4myGTA==}
     engines: {node: 18 || 20 || >=22}
-
-  baret@1.2.0:
-    resolution: {integrity: sha512-OhtM5xKQwJlYkln0SYi9JLTz5H1IIEqiZ0hHWn05nTkvk7obQoHtg4+pASlg1xwSAJp0xyguDJDQ3Xj4T3nKuA==}
-    peerDependencies:
-      baconjs: '>=0.7 <3.0'
-      react: '>=15.0.1 <17'
 
   baseline-browser-mapping@2.11.29:
     resolution: {integrity: sha512-YeesxhUmR4h5y5V8KF8iBCqJb8YFrBJ++XBTeGcWIaQOYXGN19JM0FoiOjAhwuDoln8owMgXcWBmgHtYSkky2w==}
@@ -4747,12 +4741,6 @@ snapshots:
   balanced-match@1.0.2: {}
 
   balanced-match@4.0.4: {}
-
-  baret@1.2.0(baconjs@1.0.1)(react@16.14.0):
-    dependencies:
-      baconjs: 1.0.1
-      infestines: 0.4.11
-      react: 16.14.0
 
   baseline-browser-mapping@2.11.29: {}
 

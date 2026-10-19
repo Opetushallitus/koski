@@ -9,7 +9,7 @@ import {
   optionalPrototypeModel,
   pushModel
 } from '../editor/EditorModel'
-import React from 'baret'
+import React from '../util/baret'
 import Http from '../util/http'
 import Bacon from 'baconjs'
 import * as R from 'ramda'

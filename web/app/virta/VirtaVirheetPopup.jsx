@@ -1,4 +1,4 @@
-import React from 'baret'
+import React from '../util/baret'
 import ModalDialog from '../editor/ModalDialog'
 import Atom from 'bacon.atom'
 

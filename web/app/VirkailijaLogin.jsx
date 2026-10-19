@@ -1,4 +1,4 @@
-import React from 'baret'
+import React from './util/baret'
 import ReactDOM from 'react-dom'
 import Http from './util/http'
 import Bacon from 'baconjs'

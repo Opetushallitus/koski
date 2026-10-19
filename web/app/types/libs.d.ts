@@ -1,8 +1,3 @@
-declare module 'baret' {
-  import * as React from 'react'
-  export = React
-}
-
 declare module 'bacon.atom' {
   import { Observable } from 'baconjs'
   import { Lens } from 'partial.lenses'

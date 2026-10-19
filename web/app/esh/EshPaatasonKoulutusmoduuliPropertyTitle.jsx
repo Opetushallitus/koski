@@ -1,4 +1,4 @@
-import React from 'baret'
+import React from '../util/baret'
 import { Infobox } from '../components/Infobox'
 import Text from '../i18n/Text'
 import { t } from '../i18n/i18n'

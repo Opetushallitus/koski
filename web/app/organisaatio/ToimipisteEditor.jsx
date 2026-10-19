@@ -1,4 +1,4 @@
-import React from 'baret'
+import React from '../util/baret'
 import { OrganisaatioEditor } from './OrganisaatioEditor'
 
 export const ToimipisteEditor = ({ model }) => {

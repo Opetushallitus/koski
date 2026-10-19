@@ -1,4 +1,4 @@
-import React from 'baret'
+import React from '../../util/baret'
 import {
   formatFinnishDate,
   ISO2FinnishDate,

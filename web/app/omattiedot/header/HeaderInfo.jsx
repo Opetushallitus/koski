@@ -1,4 +1,4 @@
-import React from 'baret'
+import React from '../../util/baret'
 import Text from '../../i18n/Text'
 import { Varoitukset } from '../../util/Varoitukset'
 import { hasOpintoja } from '../../OmatTiedot'

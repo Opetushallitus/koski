@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'baret'
+import React, { ReactNode } from '../util/baret'
 import * as R from 'ramda'
 import { tutkinnonOsaPrototypes } from '../ammatillinen/TutkinnonOsa'
 import { modelData, modelItems } from '../editor/EditorModel'

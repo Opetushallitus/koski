@@ -1,4 +1,4 @@
-import React from 'baret'
+import React from '../util/baret'
 import { enumValueToKoodiviiteLens } from '../koodisto/koodistot'
 import KoodistoDropdown from '../koodisto/KoodistoDropdown'
 

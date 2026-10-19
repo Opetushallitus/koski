@@ -1,4 +1,4 @@
-import React from 'baret'
+import React from '../util/baret'
 
 const Input = ({ id, type, disabled, value, autofocus = false }) => (
   <input

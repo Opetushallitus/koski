@@ -1,4 +1,4 @@
-import React from 'baret'
+import React from '../util/baret'
 import Atom from 'bacon.atom'
 import { KurssiEditor } from './KurssiEditor'
 import { modelData, modelItems, modelLookup } from '../editor/EditorModel'

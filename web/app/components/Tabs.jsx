@@ -1,4 +1,4 @@
-import React from 'baret'
+import React from '../util/baret'
 import * as R from 'ramda'
 
 export const Tabs = ({ optionsP, selectedP, onSelect }) => (

@@ -1,4 +1,4 @@
-import React from 'baret'
+import React from '../util/baret'
 import Text from '../i18n/Text'
 
 export default ({ inProgressP, disabled, onSubmit }) => (

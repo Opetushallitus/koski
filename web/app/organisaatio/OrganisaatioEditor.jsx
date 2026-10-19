@@ -1,4 +1,4 @@
-import React from 'baret'
+import React from '../util/baret'
 import { modelData, modelSetValue, pushModel } from '../editor/EditorModel'
 import OrganisaatioPicker from '../virkailija/OrganisaatioPicker'
 import { t } from '../i18n/i18n'

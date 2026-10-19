@@ -1,4 +1,4 @@
-import React from 'baret'
+import React from '../util/baret'
 import { modelLookup, pushRemoval } from '../editor/EditorModel'
 import { PropertiesEditor } from '../editor/PropertiesEditor'
 import {

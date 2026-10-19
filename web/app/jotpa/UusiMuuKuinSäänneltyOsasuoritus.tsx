@@ -1,5 +1,5 @@
 import Atom from 'bacon.atom'
-import React from 'baret'
+import React from '../util/baret'
 import { elementWithLoadingIndicator } from '../components/AjaxLoadingIndicator'
 import DropDown from '../components/Dropdown'
 import {

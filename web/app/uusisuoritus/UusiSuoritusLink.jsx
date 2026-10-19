@@ -1,4 +1,4 @@
-import React from 'baret'
+import React from '../util/baret'
 import Atom from 'bacon.atom'
 import { onLopputilassa } from '../opiskeluoikeus/OpiskeluoikeudenTilaEditor'
 import UusiPerusopetuksenOppiaineenOppimääränSuoritus from './UusiPerusopetuksenOppiaineenOppimaaranSuoritus'

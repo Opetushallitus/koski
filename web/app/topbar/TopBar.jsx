@@ -1,4 +1,4 @@
-import React from 'baret'
+import React from '../util/baret'
 import LocalTopBar from './LocalTopBar'
 import NavList from './NavList'
 import { InvalidationNotification } from '../components/InvalidationNotification'

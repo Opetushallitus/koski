@@ -1,4 +1,4 @@
-import React from 'baret'
+import React from '../../util/baret'
 import Text from '../../i18n/Text'
 import { modelData, modelItems, modelLookup } from '../../editor/EditorModel'
 import { Varoitukset } from '../../util/Varoitukset'

@@ -1,4 +1,4 @@
-import React from 'baret'
+import React from '../util/baret'
 import { Editor } from '../editor/Editor'
 import { modelLookup } from '../editor/EditorModel'
 import { fixArviointi } from '../suoritus/Suoritus'

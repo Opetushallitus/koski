@@ -1,4 +1,4 @@
-import React from 'baret'
+import React from '../util/baret'
 import { rekursiivisetOsasuoritukset } from '../suoritus/Suoritus'
 import { modelData, modelItems } from '../editor/EditorModel'
 import * as R from 'ramda'

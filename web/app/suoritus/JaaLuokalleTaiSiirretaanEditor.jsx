@@ -5,7 +5,7 @@ import {
   modelSetData
 } from '../editor/EditorModel'
 import * as L from 'partial.lenses'
-import React from 'baret'
+import React from '../util/baret'
 import { suoritusValmis } from './Suoritus'
 import { Editor } from '../editor/Editor'
 import Text from '../i18n/Text'

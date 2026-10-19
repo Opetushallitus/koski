@@ -1,4 +1,4 @@
-import React from 'baret'
+import React from '../util/baret'
 import Http from '../util/http'
 import { modelData, modelLookup, pushModelValue } from '../editor/EditorModel'
 import Dropdown from '../components/Dropdown'

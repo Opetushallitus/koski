@@ -1,4 +1,4 @@
-import React from 'baret'
+import React from '../util/baret'
 import { modelErrorMessages } from '../editor/EditorModel'
 import { LukionOppiaineEditor } from './LukionOppiaineEditor'
 import {

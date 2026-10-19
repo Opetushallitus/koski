@@ -1,4 +1,4 @@
-import React, { fromBacon } from 'baret'
+import React, { fromBacon } from '../util/baret'
 import Bacon from 'baconjs'
 import {
   isJatkoOpintovalmiuksiaTukevienOpintojenSuoritus,
