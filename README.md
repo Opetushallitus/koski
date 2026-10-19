@@ -105,7 +105,7 @@ Minimissään tarvitset nämä:
 
 - Git (osx, linux sisältää tämän, komentorivillä `git`)
 - GNU Make (osx, linux sisältää tämän, komentorivillä `make`)
-- JDK 17
+- JDK 21
 - Maven 3 (osx: `brew install maven`)
 - Node.js (`.nvmrc`-tiedoston mukainen versio)
 - pnpm (`npm install --global pnpm`)

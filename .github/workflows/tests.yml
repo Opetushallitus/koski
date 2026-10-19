@@ -147,7 +147,7 @@ jobs:
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
-      - uses: ./.github/actions/setup_java_17
+      - uses: ./.github/actions/setup_java_21
 
       - uses: ./.github/actions/setup_backend
 
@@ -209,7 +209,7 @@ jobs:
     runs-on: ubuntu-26.04
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-      - uses: ./.github/actions/setup_java_17
+      - uses: ./.github/actions/setup_java_21
       - run: make scalafix-check
 
   koski_frontend_lint:
