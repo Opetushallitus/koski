@@ -85,6 +85,14 @@ class RaportitServletSpec extends AnyFreeSpec with RaportointikantaTestMethods w
           raportit should contain(IBSuoritustietojenTarkistus.toString)
         }
       }
+      "sallii vapaan sivistystyön raportit vapaan sivistystyön oppilaitokselle" in {
+        verifyMahdollisetRaportit(varsinaisSuomenKansanopisto) { raportit =>
+          raportit should contain allOf(
+            JatkuvanOppimisenVapaanSivistystyönRaportti.toString,
+            VapaanSivistystyönVapaatavoitteisenKoulutuksenRaportti.toString,
+          )
+        }
+      }
     }
 
       "Käyttäjän mahdolliset raportit" - {

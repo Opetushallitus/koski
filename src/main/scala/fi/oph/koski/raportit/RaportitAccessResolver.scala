@@ -56,6 +56,7 @@ case class RaportitAccessResolver(
       .flatten
       .toSet
       .flatMap(raportinTyypitKoulutusmuodolle(_, isKoulutustoimija)) ++ kunnanRaportit)
+      .filter(_.käytössä(config))
       .filter(checkRaporttiAccessIfAccessIsLimited(_))
       .filter(raportti => session.allowedOpiskeluoikeudetJaPäätasonSuoritukset.intersects(OoPtsMask(raportti.opiskeluoikeudenTyyppi)))
       .filter(raportti => !kotikuntalaskelmanRaportit.contains(raportti) || hasKaikkiOpiskeluoikeudenTyypit(organisaatioHierarkia.oid, kotikuntalaskelmanOpiskeluoikeudenTyypit))
@@ -132,7 +133,7 @@ case class RaportitAccessResolver(
     case "perusopetukseenvalmistavaopetus" => Seq(PerusopetukseenValmistavanOpetuksenTarkistus)
     case "tuva" if !isKoulutustoimija => Seq(TuvaSuoritustietojenTarkistus, TuvaPerusopetuksenOppijaMääräRaportti)
     case "tuva" => Seq(TuvaPerusopetuksenOppijaMääräRaportti)
-    case "vapaansivistystyonkoulutus" => Seq(JatkuvanOppimisenVapaanSivistystyönRaportti)
+    case "vapaansivistystyonkoulutus" => Seq(JatkuvanOppimisenVapaanSivistystyönRaportti, VapaanSivistystyönVapaatavoitteisenKoulutuksenRaportti)
     case "muukuinsaanneltykoulutus" => Seq(MuunKuinSäännellynKoulutuksenRaportti)
     case _ => Seq.empty[RaportinTyyppi]
   }
