@@ -78,7 +78,10 @@ const NäyttöViewBase = (value?: AnyNäyttö) => (
       {': '}
       {t(value?.suorituspaikka?.kuvaus)}
     </KeyValueRow>
-    <KeyValueRow localizableLabel="Suoritusaika">
+    <KeyValueRow
+      localizableLabel="Suoritusaika"
+      hideIfEmpty={value?.suoritusaika}
+    >
       {value?.suoritusaika?.alku && ISO2FinnishDate(value.suoritusaika.alku)}
       {' — '}
       {value?.suoritusaika?.loppu && ISO2FinnishDate(value.suoritusaika.loppu)}

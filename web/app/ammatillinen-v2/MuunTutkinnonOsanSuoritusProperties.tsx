@@ -98,18 +98,23 @@ export const MuunTutkinnonOsanSuoritusProperties = ({
       {osasuoritus.tutkinto && (
         <OsasuoritusProperty label={'Tutkinto'}>
           <OsasuoritusPropertyValue>
-            <TestIdText id="tutkintoNimi">
-              {t(osasuoritus.tutkinto.perusteenNimi)}
-            </TestIdText>
-            {` (${osasuoritus.tutkinto.tunniste.koodiarvo}) `}
-            <FormField
-              form={form}
-              path={osasuoritusPath
-                .prop('tutkinto')
-                .optional()
-                .prop('perusteenDiaarinumero')}
-              view={PerusteView}
-            />
+            <span className="AmmatillinenTutkinto">
+              <TestIdText id="tutkintoNimi">
+                {t(
+                  osasuoritus.tutkinto.perusteenNimi ||
+                    osasuoritus.tutkinto.tunniste.nimi
+                )}
+              </TestIdText>
+              <span>{osasuoritus.tutkinto.tunniste.koodiarvo}</span>
+              <FormField
+                form={form}
+                path={osasuoritusPath
+                  .prop('tutkinto')
+                  .optional()
+                  .prop('perusteenDiaarinumero')}
+                view={PerusteView}
+              />
+            </span>
           </OsasuoritusPropertyValue>
         </OsasuoritusProperty>
       )}

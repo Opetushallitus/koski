@@ -229,7 +229,10 @@ const AmmatillisenPäätasonSuorituksenTiedot: React.FC<{
         <KeyValueRow localizableLabel="Koulutus">
           <span className="AmmatillinenTutkinto">
             <TestIdText id="koulutus">
-              {t(tutkinto.suoritus.koulutusmoduuli.perusteenNimi)}
+              {t(
+                tutkinto.suoritus.koulutusmoduuli.perusteenNimi ||
+                  tutkinto.suoritus.koulutusmoduuli.tunniste.nimi
+              )}
             </TestIdText>
             <span>{tutkinto.suoritus.koulutusmoduuli.tunniste.koodiarvo}</span>
             <FormField
