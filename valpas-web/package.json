@@ -5,7 +5,7 @@
   "license": "EUPL-1.1",
   "engines": {
     "node": ">=24",
-    "pnpm": "12.13.0"
+    "pnpm": "12.14.0"
   },
   "scripts": {
     "start": "node autoclear.js && PUBLIC_URL=/valpas node watch.mjs",
@@ -88,5 +88,5 @@
   "@parcel/resolver-default": {
     "packageExports": true
   },
-  "packageManager": "pnpm@12.13.0"
+  "packageManager": "pnpm@12.14.0"
 }
