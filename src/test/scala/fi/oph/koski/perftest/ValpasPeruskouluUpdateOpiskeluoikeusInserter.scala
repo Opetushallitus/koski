@@ -13,7 +13,8 @@ import scala.io.Source
 //   WHERE koulutusmuoto = 'perusopetus'
 //     AND alkamispaiva = '2025-08-15'
 //     AND paattymispaiva = '2026-05-31'
-//     AND luokka = '9A';
+//     AND luokka = '9A'
+//     AND NOT mitatoity;
 // Tulos tallennetaan CSV-muodossa (header: oppija_oid,oppilaitos_oid,opiskeluoikeus_oid).
 object ValpasPeruskouluUpdateOpiskeluoikeusInserter extends App {
   PerfTestRunner.executeTest(ValpasPeruskouluUpdateOpiskeluoikeusInserterScenario)
