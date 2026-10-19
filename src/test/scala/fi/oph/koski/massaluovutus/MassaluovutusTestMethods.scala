@@ -8,7 +8,7 @@ import fi.oph.koski.{KoskiApplicationForTests, KoskiHttpSpec}
 import org.json4s.jackson.JsonMethods
 import org.scalatest.matchers.should.Matchers
 
-import java.net.URL
+import java.net.URI
 
 trait MassaluovutusTestMethods extends KoskiHttpSpec with Matchers {
   val app = KoskiApplicationForTests
@@ -42,10 +42,10 @@ trait MassaluovutusTestMethods extends KoskiHttpSpec with Matchers {
     }
 
   def verifyResultAndContent[T](url: String, user: UserWithPassword)(f: => T): T = {
-    val location = new URL(getResult(url, user) {
+    val location = URI.create(getResult(url, user) {
       verifyResponseStatus(302) // 302: Found (redirect)
       response.header("Location")
-    })
+    }).toURL
     withBaseUrl(location) {
       get(s"${location.getPath}?${location.getQuery}") {
         verifyResponseStatusOk()

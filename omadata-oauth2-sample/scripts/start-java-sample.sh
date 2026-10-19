@@ -5,10 +5,8 @@ ROOT_DIR="$(cd "$(dirname "$0")/.." && pwd)"
 backend_host="${KOSKI_BACKEND_HOST:-http://$(node "$ROOT_DIR/scripts/getmyip.js"):7021}"
 cert_base="$ROOT_DIR/server/testca"
 
-# Prefer Java 23 (required for --release 21), fall back to existing JAVA_HOME or system default
-if [ -n "${JAVA_HOME_23_X64:-}" ]; then
-  export JAVA_HOME="$JAVA_HOME_23_X64"
-elif [ -z "${JAVA_HOME:-}" ] && command -v /usr/libexec/java_home &> /dev/null; then
+# Use existing JAVA_HOME, or the system default on macOS
+if [ -z "${JAVA_HOME:-}" ] && command -v /usr/libexec/java_home &> /dev/null; then
   export JAVA_HOME="$(/usr/libexec/java_home)"
 fi
 if [ -n "${JAVA_HOME:-}" ]; then
@@ -18,7 +16,7 @@ fi
 # Fail fast if Java < 21
 JAVA_MAJOR="$(java -version 2>&1 | head -n1 | awk -F[\\\".] '{print $2}')"
 if [ -z "$JAVA_MAJOR" ] || [ "$JAVA_MAJOR" -lt 21 ]; then
-  echo "Java 21+ is required (found $JAVA_MAJOR). Please install JDK 21+ or set JAVA_HOME_23_X64." >&2
+  echo "Java 21+ is required (found $JAVA_MAJOR). Please install JDK 21+ or set JAVA_HOME." >&2
   exit 1
 fi
 

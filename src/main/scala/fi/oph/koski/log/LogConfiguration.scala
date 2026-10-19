@@ -1,7 +1,7 @@
 package fi.oph.koski.log
 
 import java.io.File
-import java.net.URL
+import java.net.URI
 
 object LogConfiguration {
   // The actual technical limit is currently docker's 16kB for line length in stdout. Set the limit to 5000, since
@@ -13,18 +13,18 @@ object LogConfiguration {
 
   def configureLogging(isTestEnvironment: Boolean = false): Unit = {
     val log4jConfig = Option(System.getProperty("log4j.configuration"))
-      .map(path => new URL(path))
+      .map(URI.create)
       .getOrElse({
         val configPath = if (isTestEnvironment) TestLog4jConfigPath else LocalLog4jConfigPath
-        new URL("file://" + new File(configPath).getCanonicalPath)
+        new File(configPath).getCanonicalFile.toURI
       })
 
-    if (log4jConfig.getProtocol.equalsIgnoreCase("file")) {
+    if ("file".equalsIgnoreCase(log4jConfig.getScheme)) {
       // Optional override file, merged on top via log4j2's Composite Configuration.
       // For example, enable some custom debug level logging for local development:
       // export KOSKI_LOG4J_CONF_OVERRIDE_FILE=log4j2-debug.xml
       val configOverride = Option(System.getenv("KOSKI_LOG4J_CONF_OVERRIDE_FILE"))
-      val configurationFiles = (log4jConfig.getFile +: configOverride.toList).mkString(",")
+      val configurationFiles = (log4jConfig.getPath +:configOverride.toList).mkString(",")
       System.setProperty("log4j2.configurationFile", configurationFiles)
     }
 

@@ -6,7 +6,7 @@ import org.eclipse.jetty.client.{ContentResponse, HttpClient, Request}
 import org.eclipse.jetty.http.{HttpCookieStore, HttpField, HttpHeader}
 import org.scalatra.ScalatraServlet
 
-import java.net.{URI, URL}
+import java.net.URI
 import java.util
 import java.util.concurrent.TimeUnit
 import java.util.{HashSet, Locale}
@@ -55,7 +55,7 @@ class RaamiProxyServlet(val proxyHost: String, val proxyPrefix: String, val appl
   protected def setHostHeader(request: Request, value: String): Request = {
     request.headers(h => {
       h.remove(HttpHeader.HOST)
-      h.put(HttpHeader.HOST, new URL(value).getHost)
+      h.put(HttpHeader.HOST, URI.create(value).getHost)
     })
     request
   }

@@ -3,7 +3,7 @@ package fi.oph.koski.localization
 import java.text.Collator
 
 object Locale {
-  val finnish = new java.util.Locale("fi", "FI")
+  val finnish = java.util.Locale.of("fi", "FI")
 
   val finnishCollator: Collator = Collator.getInstance(finnish)
 
