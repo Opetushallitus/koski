@@ -22,7 +22,7 @@
     <http4s.version>0.23.38</http4s.version>
     <http4s-blaze-client.version>0.23.18</http4s-blaze-client.version>
     <json4s.version>4.0.7</json4s.version>
-    <awssdk.version>2.55.15</awssdk.version>
+    <awssdk.version>2.56.0</awssdk.version>
     <jetty.version>12.1.14</jetty.version>
     <prometheus.client.version>0.16.0</prometheus.client.version>
     <log4j.version>2.26.1</log4j.version>
