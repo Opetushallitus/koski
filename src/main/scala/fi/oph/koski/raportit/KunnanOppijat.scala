@@ -2,6 +2,7 @@ package fi.oph.koski.raportit
 
 import java.time.LocalDate
 import fi.oph.koski.db.DB
+import fi.oph.koski.db.SQLHelpers.concatMany
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.plainAPI._
 import fi.oph.koski.koskiuser.KoskiSpecificSession
 import fi.oph.koski.localization.LocalizationReader
@@ -26,16 +27,21 @@ case class KunnanOppijat(db: DB) extends KotikunnistaRaportoiva {
     )
 
   def oppijat(kuntaOid: String, kuntakoodi: String, päivä: LocalDate, esiopetusLuokkaAste: String): Seq[KunnanOppijaRow] =
-    runDbSync(oppijaQuery(kotikunnassaMuunJärjestämänä(kuntaOid, kuntakoodi, päivä), päivä, esiopetusLuokkaAste, turvakiellollinenKotikuntahistoria).as[KunnanOppijaRow], timeout = 5.minutes)
+    runDbSync(oppijaQuery(kuntalaisetEnnenKotikuntahakua(kuntaOid, kuntakoodi, päivä), kotikunnassaMuunJärjestämänä(kuntaOid, kuntakoodi), päivä, esiopetusLuokkaAste, turvakiellollinenKotikuntahistoria).as[KunnanOppijaRow], timeout = 5.minutes)
 
-  // in-ehto rajaa kuntalaiset ennen kotikunnan per rivi -hakua, muuten haku ajetaan koko maan oppijoille
-  private def kotikunnassaMuunJärjestämänä(kuntaOid: String, kuntakoodi: String, päivä: LocalDate): SQLActionBuilder = sql"""kkh.kotikunta = $kuntakoodi
-      and oo.koulutustoimija_oid <> $kuntaOid
+  private def kotikunnassaMuunJärjestämänä(kuntaOid: String, kuntakoodi: String): SQLActionBuilder =
+    sql"""kkh.kotikunta = $kuntakoodi and oo.koulutustoimija_oid <> $kuntaOid"""
+
+  // in-ehto rajaa kuntalaiset ennen kotikunnan per rivi -hakua. Vain valintaan: pääkyselyssä toistettuna pienen kunnan rivimääräarvio putoaa yhteen ja kysely hidastuu neliöllisesti.
+  private def kuntalaisetEnnenKotikuntahakua(kuntaOid: String, kuntakoodi: String, päivä: LocalDate): SQLActionBuilder = concatMany(
+    Some(kotikunnassaMuunJärjestämänä(kuntaOid, kuntakoodi)),
+    Some(sql"""
       and he.master_oid in (
         select k.master_oid from #$turvakiellollinenKotikuntahistoria k
         where k.kotikunta = $kuntakoodi
           and coalesce(k.muutto_pvm, '1900-01-01'::date) <= $päivä
-          and (k.poismuutto_pvm >= $päivä or k.poismuutto_pvm is null))"""
+          and (k.poismuutto_pvm >= $päivä or k.poismuutto_pvm is null))""")
+  )
 
   private def columnSettings(t: LocalizationReader): Seq[(String, Column)] = {
     val (ennen, jälkeen) = oppijaColumnSettings(t).filterNot(_._1 == "luokka").span(_._1 != "oppilaitos")
