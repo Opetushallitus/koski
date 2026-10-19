@@ -264,6 +264,13 @@
       "automerge": false
     },
     {
+      "description": "Automerge Node.js minor and patch updates.",
+      "matchManagers": ["nvm", "renovate-config", "dockerfile"],
+      "matchDepNames": ["node"],
+      "matchUpdateTypes": ["minor", "patch"],
+      "automerge": true
+    },
+    {
       "description": "Title Node image digest updates like other Docker digests and keep them out of the Node.js group. group:nodeJs would otherwise title them 'Update Node.js to <digest>', which reads like a version.",
       "matchDatasources": ["docker"],
       "matchPackageNames": ["node"],
