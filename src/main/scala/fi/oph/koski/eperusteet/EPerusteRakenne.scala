@@ -213,7 +213,8 @@ case class ETutkinnonOsa(
   id: Long,
   nimi: Map[String, String],
   koodiArvo: String,
-  osaAlueet: List[EOsaAlue]
+  osaAlueet: List[EOsaAlue],
+  tyyppi: Option[String]
 )
 
 case class EOsaAlue(

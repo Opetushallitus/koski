@@ -4,6 +4,10 @@
 
 - Opiskeluoikeutta ei voi linkittää (`sisältyyOpiskeluoikeuteen`) eri tutkinnon opiskeluoikeuteen: sisältyvän opiskeluoikeuden päätason suoritusten (suoritustyyppi ja perusteen diaarinumero) on oltava sisältävän opiskeluoikeuden päätason suoritusten osajoukko. Esto koskee vain 1.1.2020 tai sen jälkeen alkaneita sisältyviä opiskeluoikeuksia. Validaatio on ollut toteutettuna 21.7.2026 alkaen, mutta sen käyttöönotto oli lykätty.
 
+## 19.10.2026
+
+- Ammatillisen tutkinnon osan suoritusta ei voi tallentaa muuna tutkinnon osana, jos tutkinnon osa on ePerusteissa yhteinen tutkinnon osa (tyyppi `tutke2` tai `reformi_tutke2`), mutta Koski ei tunnista sitä yhteiseksi tutkinnon osaksi.
+
 ## 12.10.2026
 
 Muun kuin säännellyn koulutuksen opiskeluoikeuksissa, jotka alkavat 1.1.2027 tai sen jälkeen, vaaditaan vahvistetun suorituksen osasuorituksilta arviointi:

@@ -108,7 +108,9 @@ object EPerusteetTutkintoRakenneConverter extends Logging {
                   pakollisenOsanLaajuus = o.osaamistavoitteet.flatMap(_.find(_.pakollinen).flatMap(_.laajuus)),
                   valinnaisenOsanLaajuus = o.osaamistavoitteet.flatMap(_.find(!_.pakollinen).flatMap(_.laajuus))
                 )
-            }))
+            }),
+            yhteinen = eTutkinnonOsa.tyyppi.exists(Set("tutke2", "reformi_tutke2").contains)
+          )
         }
     }
 

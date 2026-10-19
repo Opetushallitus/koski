@@ -137,6 +137,7 @@ object KoskiErrorCategory {
         val deprekoituOsaamisenHankkimistapa = subcategory("deprekoituOsaamisenHankkimistapa", "Osaamisenhankkimistapaa oppisopimus ei voi tallentaa ilman y-tunnusta")
         val yhteiselläOsuudellaEiOsasuorituksia = subcategory("yhteiselläOsuudellaEiOsasuorituksia", "Tutkinnon yhteisellä osalla tulee olla osasuorituksia")
         val vääränKoodinYhteinenOsasuoritus = subcategory("vääränKoodinYhteinenOsasuoritus", "Tutkinnon yhteisellä osalla on epäsopivan suoritustyypin alaisen suorituksen koodi")
+        val tuntematonYhteinenTutkinnonOsa = subcategory("tuntematonYhteinenTutkinnonOsa", "Tutkinnon osa on perusteen mukaan yhteinen tutkinnon osa, mutta Koski ei tunnista sitä yhteiseksi tutkinnon osaksi")
         val epäsopiviaSuorituksia = subcategory("epäsopiviaSuorituksia", "Opiskeluoikeudella on epäsopiva lista suorituksia")
         val ahvenanmaanAlkuvaiheVainMuilleKuinOppivelvollisille = subcategory("ahvenanmaanAlkuvaiheVainMuilleKuinOppivelvollisille", "Alkuvaiheen voi merkitä vain Ahvenanmaan perusopetuksen opiskeluoikeudelle, jolla on muiden kuin oppivelvollisten oppimäärän suoritus")
         val erityisenäTutkintonaSuoritettuSisältääOsasuorituksia = subcategory("erityisenäTutkintoaSuoritettuSisältääOsasuorituksia", "Osasuorituksella on osasuorituksia, vaikka se on suoritettu erityisenä tutkintona")

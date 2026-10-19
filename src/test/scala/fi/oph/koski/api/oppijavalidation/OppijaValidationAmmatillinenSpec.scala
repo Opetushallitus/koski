@@ -403,6 +403,20 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
                   verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.rakenne.vääränKoodinYhteinenOsasuoritus("Suorituksella koulutus/351741 on Ops-muotoiselle tutkinnolle tarkoitettu yhteinen osasuoritus")))
                 )
             }
+
+            "Perusteen yhteinen tutkinnon osa, jota Koski ei tunnista yhteiseksi tutkinnon osaksi" - {
+              val suoritus = virheellinenPuuteollisuudenPerustutkinnonSuoritus().copy(
+                suoritustapa = suoritustapaReformi,
+                osaamisenHankkimistavat = Some(List(OsaamisenHankkimistapajakso(date(2018, 1, 1), None, osaamisenHankkimistapaOppilaitos))),
+                osasuoritukset = Some(List(tutkinnonOsanSuoritus("105444", "Puutuotevalmistuksessa toimiminen", ammatillisetTutkinnonOsat, None))),
+                vahvistus = None,
+                keskiarvo = None
+              )
+              "Palautetaan HTTP 400" in (
+                setupTutkintoSuoritus(suoritus) (
+                  verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.rakenne.tuntematonYhteinenTutkinnonOsa("Tutkinnon osa tutkinnonosat/105444 on perusteen OPH-992455-2017 (99932281) mukaan yhteinen tutkinnon osa, mutta Koski ei tunnista sitä yhteiseksi tutkinnon osaksi")))
+                )
+            }
           }
         }
 

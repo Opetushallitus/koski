@@ -1,6 +1,6 @@
-import { Koodistokoodiviite } from '../schema/Koodistokoodiviite'
-import { LocalizedString } from '../schema/LocalizedString'
 import { TutkinnonOsanOsaAlue } from './TutkinnonOsanOsaAlue'
+import { LocalizedString } from '../schema/LocalizedString'
+import { Koodistokoodiviite } from '../schema/Koodistokoodiviite'
 
 /**
  * TutkinnonOsa
@@ -9,17 +9,19 @@ import { TutkinnonOsanOsaAlue } from './TutkinnonOsanOsaAlue'
  */
 export type TutkinnonOsa = {
   $class: 'fi.oph.koski.tutkinto.TutkinnonOsa'
-  tunniste: Koodistokoodiviite
-  nimi: LocalizedString
-  laajuus?: number
   osaAlueet: Array<TutkinnonOsanOsaAlue>
+  nimi: LocalizedString
+  tunniste: Koodistokoodiviite
+  yhteinen: boolean
+  laajuus?: number
 }
 
 export const TutkinnonOsa = (o: {
-  tunniste: Koodistokoodiviite
-  nimi: LocalizedString
-  laajuus?: number
   osaAlueet?: Array<TutkinnonOsanOsaAlue>
+  nimi: LocalizedString
+  tunniste: Koodistokoodiviite
+  yhteinen: boolean
+  laajuus?: number
 }): TutkinnonOsa => ({
   $class: 'fi.oph.koski.tutkinto.TutkinnonOsa',
   osaAlueet: [],

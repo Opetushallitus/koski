@@ -175,7 +175,8 @@ case class TutkintoRakenneValidator(tutkintoRepository: TutkintoRepository, kood
                               case None =>
                                 KoskiErrorCategory.badRequest.validation.rakenne.tuntematonTutkinnonOsa(s"Tutkinnon osa ${osa.tunniste.nimi.map(_.get("fi")).getOrElse("")}(${osa.tunniste.koodiarvo}) ei löydy tutkintorakenteesta perusteelle ${rakenne.diaarinumero} (${rakenne.id})")
                               case Some(tutkinnonOsa) =>
-                                validateLaajuusJaOsaAlueet(os, tutkinnonOsa, oo, suoritus, rakenne)
+                                validateYhteinenTutkinnonOsa(osa, tutkinnonOsa, rakenne)
+                                  .onSuccess(validateLaajuusJaOsaAlueet(os, tutkinnonOsa, oo, suoritus, rakenne))
                             }
                           case None =>
                             KoskiErrorCategory.badRequest.validation.rakenne.suoritustapaaEiLöydyRakenteesta(s"Suoritustapaa ei löydy tutkinnon rakenteesta perusteelle ${rakenne.diaarinumero} (${rakenne.id})")
@@ -514,7 +515,8 @@ case class TutkintoRakenneValidator(tutkintoRepository: TutkintoRepository, kood
                 KoskiErrorCategory.badRequest.validation.rakenne.tuntematonTutkinnonOsa(
                   s"Tutkinnon osa ${osa.tunniste} ei löydy tutkintorakenteesta opiskeluoikeuden voimassaoloaikana voimassaolleelle perusteelle ${rakenne.diaarinumero} (${rakenne.id}) - suoritustapa ${suoritustapaJaRakenne.suoritustapa.koodiarvo}")
               case Some(tutkinnonOsa) =>
-                validateLaajuusJaOsaAlueet(suoritus, tutkinnonOsa, oo, ps, rakenne)
+                validateYhteinenTutkinnonOsa(osa, tutkinnonOsa, rakenne)
+                  .onSuccess(validateLaajuusJaOsaAlueet(suoritus, tutkinnonOsa, oo, ps, rakenne))
             }
         }
       case None =>
@@ -535,6 +537,14 @@ case class TutkintoRakenneValidator(tutkintoRepository: TutkintoRepository, kood
   private def findOsaamisala(rakenne: TutkintoRakenne, osaamisAlaKoodi: String) = rakenne.osaamisalat.find(_.koodiarvo == osaamisAlaKoodi)
 
   private def findTutkintonimike(rakenne: TutkintoRakenne, tutkintonimikeKoodi: String) = rakenne.tutkintonimikkeet.find(_.koodiarvo == tutkintonimikeKoodi)
+
+  private def validateYhteinenTutkinnonOsa(osa: ValtakunnallinenTutkinnonOsa, perusteenTutkinnonOsa: TutkinnonOsa, rakenne: TutkintoRakenne): HttpStatus =
+    osa match {
+      case _: MuuValtakunnallinenTutkinnonOsa if perusteenTutkinnonOsa.yhteinen =>
+        KoskiErrorCategory.badRequest.validation.rakenne.tuntematonYhteinenTutkinnonOsa(
+          s"Tutkinnon osa ${osa.tunniste} on perusteen ${rakenne.diaarinumero} (${rakenne.id}) mukaan yhteinen tutkinnon osa, mutta Koski ei tunnista sitä yhteiseksi tutkinnon osaksi")
+      case _ => HttpStatus.ok
+    }
 
   private def validateLaajuusJaOsaAlueet(suoritus: TutkinnonOsanSuoritus, perusteenTutkinnonOsa: TutkinnonOsa, oo: KoskeenTallennettavaOpiskeluoikeus, ps: PäätasonSuoritus, rakenne: TutkintoRakenne):
   HttpStatus = {
