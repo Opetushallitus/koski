@@ -2,6 +2,8 @@
 
 ## 20.10.2026
 
+- Vapaan sivistystyön kotoutumiskoulutuksen (`vstmaahanmuuttajienkotoutumiskoulutus`, sekä 2012 että 2022 opetussuunnitelman mukaiset suoritukset) ja lukutaitokoulutuksen (`vstlukutaitokoulutus`) opiskeluoikeus ei voi alkaa 1.1.2027 tai sen jälkeen.
+- Vapaan sivistystyön kotoutumiskoulutuksen opiskeluoikeus ei voi päättyä 31.12.2026 jälkeen. Validaatio tarkistaa vain opiskeluoikeuden päättymispäivän; päättymätöntä opiskeluoikeutta ei hylätä.
 - Opiskeluoikeutta ei voi linkittää (`sisältyyOpiskeluoikeuteen`) eri tutkinnon opiskeluoikeuteen: sisältyvän opiskeluoikeuden päätason suoritusten (suoritustyyppi ja perusteen diaarinumero) on oltava sisältävän opiskeluoikeuden päätason suoritusten osajoukko. Esto koskee vain 1.1.2020 tai sen jälkeen alkaneita sisältyviä opiskeluoikeuksia. Validaatio on ollut toteutettuna 21.7.2026 alkaen, mutta sen käyttöönotto oli lykätty.
 
 ## 12.10.2026
