@@ -30,8 +30,6 @@ import org.json4s.JValue
 import java.lang.Character.isDigit
 import java.time.LocalDate
 
-import scala.annotation.nowarn
-
 class KoskiValidator(
   organisaatioRepository: OrganisaatioRepository,
   koskiOpiskeluoikeudet: KoskiOpiskeluoikeusRepository,
@@ -565,50 +563,51 @@ class KoskiValidator(
     eriTutkinnonLinkityksenEstoKoskeeTätäOpiskeluoikeutta(sisältyvä) &&
     !sisältyvänSuorituksetSisältävänOsajoukko(sisältävä, sisältyvä)
 
-  @nowarn("cat=unused-privates")
   private def eriTutkinnonLinkitysEstetty(sisältävä: KoskiOpiskeluoikeusRow, sisältyvä: Opiskeluoikeus): Boolean =
     eriTutkinnonLinkityksenEstoVoimassa && eriTutkinnonLinkitysEstettäisiin(sisältävä, sisältyvä)
 
   private def opiskeluoikeudenTunniste(oo: Opiskeluoikeus): String =
     oo.oid.orElse(oo.lähdejärjestelmänId.flatMap(_.id)).getOrElse("-")
 
+  private def eriTutkinnonLinkityksenViesti(sisältyvä: Opiskeluoikeus, sisältävänOid: String): String =
+    s"Suoritukset linkitettyjen opiskeluoikeuksien välillä eivät täsmää: Sisältyvän opiskeluoikeuden (oid ${opiskeluoikeudenTunniste(sisältyvä)}) päätason suoritus ei täsmää sisältävällä opiskeluoikeudella (oid $sisältävänOid) olevan päätason suorituksen kanssa"
+
   private def validateSisältyvyys(henkilö: Option[Henkilö], opiskeluoikeus: Opiskeluoikeus)(implicit user: KoskiSpecificSession, accessType: AccessType.Value): HttpStatus = opiskeluoikeus.sisältyyOpiskeluoikeuteen match {
     case Some(SisältäväOpiskeluoikeus(Oppilaitos(oppilaitosOid, _, _, _), oid)) if accessType == AccessType.write =>
       koskiOpiskeluoikeudet.findByOid(oid)(KoskiSpecificSession.systemUser) match {
         case Right(sisältäväOpiskeluoikeus) if sisältäväOpiskeluoikeus.oppilaitosOid != oppilaitosOid =>
           KoskiErrorCategory.badRequest.validation.sisältäväOpiskeluoikeus.vääräOppilaitos()
+        case Right(sisältäväOpiskeluoikeus) if eriTutkinnonLinkitysEstetty(sisältäväOpiskeluoikeus, opiskeluoikeus) =>
+          KoskiErrorCategory.badRequest.validation.sisältäväOpiskeluoikeus.eriPäätasonSuoritus(eriTutkinnonLinkityksenViesti(opiskeluoikeus, oid))
         case Right(sisältäväOpiskeluoikeus) =>
-          val eriTutkinnonViesti = s"Suoritukset linkitettyjen opiskeluoikeuksien välillä eivät täsmää: Sisältyvän opiskeluoikeuden (oid ${opiskeluoikeudenTunniste(opiskeluoikeus)}) päätason suoritus ei täsmää sisältävällä opiskeluoikeudella (oid $oid) olevan päätason suorituksen kanssa"
           if (eriTutkinnonLinkitysEstettäisiin(sisältäväOpiskeluoikeus, opiskeluoikeus)) {
-            logger.info(eriTutkinnonViesti)
+            logger.info(eriTutkinnonLinkityksenViesti(opiskeluoikeus, oid))
           }
-          // TOR-2379: Esto on toistaiseksi pois käytöstä, eroavaisuudet vain lokitetaan.
-          // Käyttöönotossa siirrä merkintä validaation_muutoshistoria.md:n Suunnitellut-osiosta päivämäärän alle.
-          // if (eriTutkinnonLinkitysEstetty(sisältäväOpiskeluoikeus, opiskeluoikeus)) {
-          //   KoskiErrorCategory.badRequest.validation.sisältäväOpiskeluoikeus.eriPäätasonSuoritus(eriTutkinnonViesti)
-          // } else {
-          val löydettyHenkilö: Either[HttpStatus, Oid] = henkilö match {
-            case None => Left(HttpStatus.ok)
-            case Some(h: HenkilöWithOid) => Right(h.oid)
-            case Some(h: UusiHenkilö) => henkilöRepository.opintopolku.findByHetu(h.hetu) match {
-              case Some(henkilö) => Right(henkilö.oid)
-              case None => Left(KoskiErrorCategory.badRequest.validation.sisältäväOpiskeluoikeus.henkilöTiedot())
-            }
-          }
-
-          löydettyHenkilö match {
-            case Right(löydettyHenkilöOid) if löydettyHenkilöOid != sisältäväOpiskeluoikeus.oppijaOid =>
-              henkilöRepository.findByOid(löydettyHenkilöOid, findMasterIfSlaveOid = true) match {
-                case Some(hlö) if (hlö.oid :: hlö.linkitetytOidit).contains(sisältäväOpiskeluoikeus.oppijaOid) => HttpStatus.ok
-                case _ => KoskiErrorCategory.badRequest.validation.sisältäväOpiskeluoikeus.henkilöTiedot()
-              }
-            case Left(status) => status
-            case _ => HttpStatus.ok
-          }
-          // }
+          validateSisältävänHenkilö(henkilö, sisältäväOpiskeluoikeus)
         case _ => KoskiErrorCategory.badRequest.validation.sisältäväOpiskeluoikeus.eiLöydy(s"Sisältävää opiskeluoikeutta ei löydy oid-arvolla $oid")
       }
     case _ => HttpStatus.ok
+  }
+
+  private def validateSisältävänHenkilö(henkilö: Option[Henkilö], sisältäväOpiskeluoikeus: KoskiOpiskeluoikeusRow): HttpStatus = {
+    val löydettyHenkilö: Either[HttpStatus, Oid] = henkilö match {
+      case None => Left(HttpStatus.ok)
+      case Some(h: HenkilöWithOid) => Right(h.oid)
+      case Some(h: UusiHenkilö) => henkilöRepository.opintopolku.findByHetu(h.hetu) match {
+        case Some(henkilö) => Right(henkilö.oid)
+        case None => Left(KoskiErrorCategory.badRequest.validation.sisältäväOpiskeluoikeus.henkilöTiedot())
+      }
+    }
+
+    löydettyHenkilö match {
+      case Right(löydettyHenkilöOid) if löydettyHenkilöOid != sisältäväOpiskeluoikeus.oppijaOid =>
+        henkilöRepository.findByOid(löydettyHenkilöOid, findMasterIfSlaveOid = true) match {
+          case Some(hlö) if (hlö.oid :: hlö.linkitetytOidit).contains(sisältäväOpiskeluoikeus.oppijaOid) => HttpStatus.ok
+          case _ => KoskiErrorCategory.badRequest.validation.sisältäväOpiskeluoikeus.henkilöTiedot()
+        }
+      case Left(status) => status
+      case _ => HttpStatus.ok
+    }
   }
 
   private def validateAccess(oo: Opiskeluoikeus)(implicit user: KoskiSpecificSession, accessType: AccessType.Value): HttpStatus = {

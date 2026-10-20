@@ -1,10 +1,8 @@
 # Koskeen tallennettavien tietojen validaatiosäännöt
 
-## Suunnitellut
+## 20.10.2026
 
-Muutokset, joita ei ole vielä otettu käyttöön. Käyttöönoton yhteydessä merkintä siirretään käyttöönottopäivän alle.
-
-- Eri tutkinnon opiskeluoikeuteen linkittämisen esto (ks. 21.7.2026) ei tullut voimaan 1.9.2026, vaan sen käyttöönotto on lykätty toistaiseksi. Koski ei tällä hetkellä hylkää tällaisia linkityksiä. Kun esto otetaan käyttöön, se koskee vain rajapäivänä tai sen jälkeen alkaneita sisältyviä opiskeluoikeuksia. Rajapäivä ja käyttöönottopäivä ilmoitetaan myöhemmin.
+- Opiskeluoikeutta ei voi linkittää (`sisältyyOpiskeluoikeuteen`) eri tutkinnon opiskeluoikeuteen: sisältyvän opiskeluoikeuden päätason suoritusten (suoritustyyppi ja perusteen diaarinumero) on oltava sisältävän opiskeluoikeuden päätason suoritusten osajoukko. Esto koskee vain 1.1.2020 tai sen jälkeen alkaneita sisältyviä opiskeluoikeuksia. Validaatio on ollut toteutettuna 21.7.2026 alkaen, mutta sen käyttöönotto oli lykätty.
 
 ## 12.10.2026
 
@@ -70,7 +68,7 @@ Aikuisten perusopetuksen opiskeluoikeuksissa, jotka ovat alkaneet 1.1.2020 tai s
 ## 21.7.2026
 
 - Nuorten perusopetuksen opiskeluoikeudessa oppiaineen suorituksen luokka-aste voi poiketa vuosiluokasta, kun oppilaalla on vuosiluokan vahvistuspäivänä voimassa joko tavoitekokonaisuuksittain opiskelun tai yhdysluokan aikajakso. Aiemmin poikkeavan luokka-asteen salli vain tavoitekokonaisuuksittain opiskelun aikajakso.
-- Opiskeluoikeutta ei voi linkittää (`sisältyyOpiskeluoikeuteen`) eri tutkinnon opiskeluoikeuteen; sisältyvän opiskeluoikeuden päätason suoritusten (suoritustyyppi ja perusteen diaarinumero) on oltava sisältävän opiskeluoikeuden päätason suoritusten osajoukko. Validaatio otetaan tuotannossa käyttöön 1.9.2026. Käyttöönotto on lykätty, ks. Suunnitellut.
+- Opiskeluoikeutta ei voi linkittää (`sisältyyOpiskeluoikeuteen`) eri tutkinnon opiskeluoikeuteen; sisältyvän opiskeluoikeuden päätason suoritusten (suoritustyyppi ja perusteen diaarinumero) on oltava sisältävän opiskeluoikeuden päätason suoritusten osajoukko. Validaatio otetaan tuotannossa käyttöön 1.9.2026. Käyttöönotto lykkääntyi, ks. 20.10.2026.
 
 ## 17.7.2026
 
