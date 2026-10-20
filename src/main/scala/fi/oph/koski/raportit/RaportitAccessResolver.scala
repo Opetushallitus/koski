@@ -133,7 +133,7 @@ case class RaportitAccessResolver(
     case "perusopetukseenvalmistavaopetus" => Seq(PerusopetukseenValmistavanOpetuksenTarkistus)
     case "tuva" if !isKoulutustoimija => Seq(TuvaSuoritustietojenTarkistus, TuvaPerusopetuksenOppijaMääräRaportti)
     case "tuva" => Seq(TuvaPerusopetuksenOppijaMääräRaportti)
-    case "vapaansivistystyonkoulutus" => Seq(JatkuvanOppimisenVapaanSivistystyönRaportti, VapaanSivistystyönVapaatavoitteisenKoulutuksenRaportti)
+    case "vapaansivistystyonkoulutus" => Seq(JatkuvanOppimisenVapaanSivistystyönRaportti, VapaanSivistystyönVapaatavoitteisenKoulutuksenRaportti, VapaanSivistystyönOppivelvollisilleSuunnatunKoulutuksenRaportti)
     case "muukuinsaanneltykoulutus" => Seq(MuunKuinSäännellynKoulutuksenRaportti)
     case _ => Seq.empty[RaportinTyyppi]
   }

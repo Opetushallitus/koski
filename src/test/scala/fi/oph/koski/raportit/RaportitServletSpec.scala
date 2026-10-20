@@ -90,6 +90,7 @@ class RaportitServletSpec extends AnyFreeSpec with RaportointikantaTestMethods w
           raportit should contain allOf(
             JatkuvanOppimisenVapaanSivistystyönRaportti.toString,
             VapaanSivistystyönVapaatavoitteisenKoulutuksenRaportti.toString,
+            VapaanSivistystyönOppivelvollisilleSuunnatunKoulutuksenRaportti.toString,
           )
         }
       }
