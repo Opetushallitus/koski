@@ -37,6 +37,7 @@ const pyhtäänKuntarouhintaTableContents = `
   Eroaja-aiemmin Valpas                                                   | 24.9.2005 | 1.2.246.562.24.00000000008  | 240905A0078 | 1.1.2021                                                                      | Eronnut     | Perusopetus                     | Jyväskylän normaalikoulu                                      | –          | –      | –
   Int-school-9-luokalta-valmistumisen-jälkeen-eronnut-aiemmin Valpas      | 17.4.2005 | 1.2.246.562.24.00000000095  | 170405A683H | 1.1.2021                                                                      | Eronnut     | International school            | International School of Helsinki                              | –          | –      | –
   Oppivelvollisuus-keskeytetty-ei-opiskele Valpas                         | 1.10.2005 | 1.2.246.562.24.00000000135  | 011005A115P | 15.5.2021                                                                     | Valmistunut | Perusopetus                     | Jyväskylän normaalikoulu                                      | 16.8.2021– | Pyhtää | 20.5.2021
+  Vain-mitätöityjä-opiskeluoikeuksia Valpas                               | 8.1.2010  | 1.2.246.562.24.00000000204  | 080110C4236 | Oppijalla ei ole oppivelvollisuuden suorittamiseen kelpaavaa opiskeluoikeutta | –           | –                               | –                                                             | –          | –      | –
 `
 
 const pyhtäänKuntarouhinta2023TableContents = `
@@ -44,6 +45,7 @@ ESH-EB-tutkinnosta-eronnut Valpas                                               
 Ei-oppivelvollisuuden-suorittamiseen-yksinään-kelpaavia-opiskeluoikeuksia Valpas | 6.10.2005 | 1.2.246.562.24.00000000058 | 061005A671V | Oppijalla ei ole oppivelvollisuuden suorittamiseen kelpaavaa opiskeluoikeutta | –           | –                      | –                              | –          | –      | –
 Eroaja-aiemmin Valpas                                                            | 24.9.2005 | 1.2.246.562.24.00000000008 | 240905A0078 | 1.1.2021                                                                      | Eronnut     | Perusopetus            | Jyväskylän normaalikoulu       | –          | –      | –
 Oppivelvollisuus-keskeytetty-ei-opiskele Valpas                                  | 1.10.2005 | 1.2.246.562.24.00000000135 | 011005A115P | 15.5.2021                                                                     | Valmistunut | Perusopetus            | Jyväskylän normaalikoulu       | 16.8.2021– | Pyhtää | 20.5.2021
+Vain-mitätöityjä-opiskeluoikeuksia Valpas                                        | 8.1.2010  | 1.2.246.562.24.00000000204 | 080110C4236 | Oppijalla ei ole oppivelvollisuuden suorittamiseen kelpaavaa opiskeluoikeutta | –           | –                      | –                              | –          | –      | –
 `
 
 const vainOnrOppija = "1.2.246.562.24.00000000079"

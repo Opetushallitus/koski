@@ -19,6 +19,7 @@ class ValpasHeturouhintaService(application: KoskiApplication)
   private val oppijalistatService = application.valpasOppijalistatService
   private val rouhintaOvKeskeytyksetService = application.valpasRouhintaOppivelvollisuudenKeskeytysService
   private val kuntailmoitusService = application.valpasKuntailmoitusService
+  private val vapautusService = application.valpasOppivelvollisuudestaVapautusService
 
   private val maxHetuCount = application.config.getInt("valpas.rouhintaMaxHetuCount")
 
@@ -34,7 +35,10 @@ class ValpasHeturouhintaService(application: KoskiApplication)
 
         val (oppijatJotkaOnrissaMuttaEiKoskessa, oppijanumerorekisterinUlkopuolisetHetut) = haeOppijanumerorekisteristä(koskestaLöytymättömätHetut)
 
-        val (oppivelvollisetOnrissa, oppivelvollisuudenUlkopuolisetOnrissa) = oppijatJotkaOnrissaMuttaEiKoskessa.partition(onOppivelvollinenPelkänIänPerusteella)
+        val vapautetutOnrissa = vapautusService.haeVapautettujenOppijoidenOidit(oppijatJotkaOnrissaMuttaEiKoskessa.map(_.oid))
+
+        val (oppivelvollisetOnrissa, oppivelvollisuudenUlkopuolisetOnrissa) = oppijatJotkaOnrissaMuttaEiKoskessa
+          .partition(o => onOppivelvollinenPelkänIänPerusteella(o) && !vapautetutOnrissa.contains(o.oid))
         val (oppivelvollisetKoskessa, oppivelvollisuudenUlkopuolisetKoskessa) = oppijatKoskessa.partition(_.oppivelvollisuusVoimassa)
 
         oppijalistatService
