@@ -45,9 +45,9 @@ Paikallisesti suorituskykytestit ja inserter lukevat myös tiedostot suoraan S3:
 
 ### Valpas testidatan päivittäminen
 
-#### 1. Vanhan datan poisto QA-ympäristön kannasta
+#### 1. Vanhan datan mitätöinti QA-ympäristössä
 
-Mahdollinen vanha data on poistettava QA-ympäristöstä ennen kuin uusia datoja voidaan lisätä.
+Mahdollinen vanha data on mitätöitävä QA-ympäristössä ennen kuin uusia datoja voidaan lisätä.
 
 Tarkista [opiskeluoikeuden luovasta koodista](../src/test/scala/fi/oph/koski/perftest/ValpasOpiskeluoikeusInserterScenario.scala)
 mitä arvoja `alkamispäivä`, `valmistumispäivä` ja `luokka` -muuttujilla on. Tällä hetkellä arvot ovat:
@@ -56,21 +56,30 @@ mitä arvoja `alkamispäivä`, `valmistumispäivä` ja `luokka` -muuttujilla on.
 - `paattymispaiva`: `2026-05-31`
 - `luokka`: `9A`
 
-Ensin on hyvä asettaa kyselyn aikakatkaisu tarpeeksi suureksi:
+Hae mitätöitävien opiskeluoikeuksien OIDit QA:n operatiivisesta tietokannasta (`koski`) psql:llä:
 
 ```sql
-SET statement_timeout TO 7200000; -- 7200 sekuntia = 2 tuntia
+\copy (SELECT oid AS opiskeluoikeus_oid FROM opiskeluoikeus WHERE koulutusmuoto = 'perusopetus' AND alkamispaiva = '2025-08-15' AND paattymispaiva = '2026-05-31' AND luokka = '9A' AND NOT mitatoity ORDER BY id) TO 'valpas_mitatointi.csv' WITH (FORMAT csv, HEADER)
 ```
 
-Vanha data poistetaan QA:n operatiivisesta tietokannasta (`koski`):
+Siirrä tiedosto hakemistoon `src/test/resources/` ja aja
+[mitätöijä](../src/test/scala/fi/oph/koski/perftest/ValpasPeruskouluMitatoiOpiskeluoikeudet.scala). Käyttäjällä on
+oltava kirjoitusoikeus opiskeluoikeuksien oppilaitoksiin, esimerkiksi sama käyttäjä kuin inserterillä.
 
-```sql
-DELETE FROM opiskeluoikeus
-WHERE koulutusmuoto = 'perusopetus'
-  AND alkamispaiva = '2025-08-15'
-  AND paattymispaiva = '2026-05-31'
-  AND luokka = '9A';
+```bash
+export KOSKI_USER="XXXXXX"
+export KOSKI_PASS="XXXXXX"
+export KOSKI_BASE_URL="https://koski.testiopintopolku.fi/koski"
+export KOSKI_SERVER_COUNT=2
+export PERFTEST_THREADS=10
+export VALPAS_MITATOINTI_CSV="valpas_mitatointi.csv"
+
+mvn test-compile
+mvn exec:java -Dexec.mainClass="fi.oph.koski.perftest.ValpasPeruskouluMitatoiOpiskeluoikeudet"
 ```
+
+Jos ajo keskeytyy tai osa mitätöinneistä epäonnistuu, hae OIDit uudelleen samalla kyselyllä (se ohittaa jo
+mitätöidyt) ja aja mitätöijä uudelleen.
 
 Huom! QA:n tietokannassa on edelleen vanhempaa testidataa:
 - kausi 2021–2022, ei poistettu testiaineistomuutosten takia
