@@ -2,7 +2,8 @@ package fi.oph.koski.migri
 
 import java.time.{LocalDate, LocalDateTime}
 import fi.oph.koski.schema._
-import fi.oph.koski.schema.annotation.KoodistoUri
+import fi.oph.koski.schema.annotation.{KoodistoKoodiarvo, KoodistoUri}
+import fi.oph.scalaschema.annotation.Description
 import fi.oph.scalaschema.{ClassSchema, SchemaToJson}
 import org.json4s.JValue
 
@@ -13,7 +14,23 @@ object MigriSchema {
 
 case class MigriOppija(
   henkilö: MigriHenkilo,
-  opiskeluoikeudet: List[MigriOpiskeluoikeus]
+  opiskeluoikeudet: List[MigriOpiskeluoikeus],
+  @Description("Yleisen kielitutkinnon opiskeluoikeudet. Palautetaan vain, kun kyselyparametri ykitiedot=true on annettu; tällöin opiskeluoikeudet-lista on tyhjä.")
+  ykitiedot: Option[List[MigriYkiOpiskeluoikeus]] = None
+)
+
+case class MigriYkiOpiskeluoikeus(
+  oid: Option[String],
+  versionumero: Option[Int],
+  oppilaitos: Option[Oppilaitos],
+  koulutustoimija: Option[Koulutustoimija],
+  tila: KielitutkinnonOpiskeluoikeudenTila,
+  suoritukset: List[YleisenKielitutkinnonSuoritus],
+  @KoodistoKoodiarvo(OpiskeluoikeudenTyyppi.kielitutkinto.koodiarvo)
+  tyyppi: Koodistokoodiviite,
+  aikaleima: Option[LocalDateTime],
+  alkamispäivä: Option[LocalDate],
+  päättymispäivä: Option[LocalDate],
 )
 
 case class MigriHenkilo(

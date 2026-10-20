@@ -24,6 +24,32 @@ object ConvertMigriSchema {
     }
   }
 
+  def convertYki(henkilö: Henkilö, opiskeluoikeudet: Seq[Opiskeluoikeus]): Option[MigriOppija] = {
+    val ykit = opiskeluoikeudet.collect {
+      case oo: KielitutkinnonOpiskeluoikeus if oo.isYleinenKielitutkinto => convertYkiOpiskeluoikeus(oo)
+    }.toList
+
+    if (ykit.isEmpty) {
+      None
+    } else {
+      Some(MigriOppija(convertHenkilö(henkilö), opiskeluoikeudet = Nil, ykitiedot = Some(ykit)))
+    }
+  }
+
+  private def convertYkiOpiskeluoikeus(oo: KielitutkinnonOpiskeluoikeus): MigriYkiOpiskeluoikeus =
+    MigriYkiOpiskeluoikeus(
+      oid = oo.oid,
+      versionumero = oo.versionumero,
+      oppilaitos = oo.oppilaitos,
+      koulutustoimija = oo.koulutustoimija,
+      tila = oo.tila,
+      suoritukset = oo.suoritukset.collect { case s: YleisenKielitutkinnonSuoritus => s },
+      tyyppi = oo.tyyppi,
+      aikaleima = oo.aikaleima,
+      alkamispäivä = oo.alkamispäivä,
+      päättymispäivä = oo.päättymispäivä,
+    )
+
   private def migriäKiinnostavaOpiskeluoikeus(opiskeluoikeus: Opiskeluoikeus) = opiskeluoikeus match {
     case _: AikuistenPerusopetuksenOpiskeluoikeus |
          _: AmmatillinenOpiskeluoikeus |
