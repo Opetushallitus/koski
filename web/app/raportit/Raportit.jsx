@@ -24,6 +24,7 @@ import { lang } from '../i18n/i18n'
 import { hasFeatureFlag } from '../util/featureFlags'
 import {
   ammatillinenTutkintoSuoritustiedotKyselymalli,
+  vstKopsKyselymalli,
   vstVapaatavoitteinenKyselymalli
 } from '../components-v2/raportit/massaluovutusRaporttiKyselyt'
 
@@ -231,6 +232,12 @@ const kaikkiRaportitKategorioittain = [
         name: 'raportti-tab-vstvapaatavoitteinen',
         component: VSTVapaatavoitteinen,
         guard: () => hasFeatureFlag('vstvapaatavoitteinen')
+      },
+      {
+        id: 'vapaansivistystyönoppivelvollisillesuunnatunkoulutuksenraportti',
+        name: 'raportti-tab-vstkops',
+        component: VSTKops,
+        guard: () => hasFeatureFlag('vstkops')
       }
     ]
   },
@@ -1212,6 +1219,21 @@ function VSTVapaatavoitteinen({ stateP }) {
       shortDescription={shortDescriptionText}
       example={exampleText}
       massaluovutusKyselymalli={vstVapaatavoitteinenKyselymalli}
+      lang={lang}
+    />
+  )
+}
+
+function VSTKops({ stateP }) {
+  const shortDescriptionText = <Text name="VstKopsRaportti-short-description" />
+  const exampleText = <Paragraphs name="VstKopsRaportti-example" />
+
+  return (
+    <AikajaksoRaportti
+      stateP={stateP}
+      shortDescription={shortDescriptionText}
+      example={exampleText}
+      massaluovutusKyselymalli={vstKopsKyselymalli}
       lang={lang}
     />
   )
