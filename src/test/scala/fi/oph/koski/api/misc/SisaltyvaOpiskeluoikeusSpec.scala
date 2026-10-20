@@ -107,31 +107,27 @@ class SisältyväOpiskeluoikeusSpec extends AnyFreeSpec with Matchers with Opisk
           suoritukset = List(suoritus.copy(alkamispäivä = Some(alkamispäivä.plusDays(1))))
         )
 
-      // TOR-2379: Esto on toistaiseksi pois käytöstä, eroavaisuudet vain lokitetaan.
-      "Eri koulutusmuodon opiskeluoikeuteen linkitys sallitaan (vain lokitetaan) -> HTTP 200" in {
+      "Eri koulutusmuodon opiskeluoikeuteen linkitys estetään -> HTTP 400" in {
         val sisältyvä = sisältyväAmmatillinen(
           SisältäväOpiskeluoikeus(lukioMaster.oppilaitos.get, lukioMaster.oid.get),
           autoalanPerustutkinnonSuoritus(OidOrganisaatio(omnia))
         )
         putOpiskeluoikeus(sisältyvä, henkilö = KoskiSpecificMockOppijat.tyhjä, headers = authHeaders(MockUsers.omniaTallentaja) ++ jsonContent) {
-          // verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.sisältäväOpiskeluoikeus.eriPäätasonSuoritus(
-          //   s"Suoritukset linkitettyjen opiskeluoikeuksien välillä eivät täsmää: Sisältyvän opiskeluoikeuden (oid -) päätason suoritus ei täsmää sisältävällä opiskeluoikeudella (oid ${lukioMaster.oid.get}) olevan päätason suorituksen kanssa"
-          // ))
-          verifyResponseStatusOk()
+          verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.sisältäväOpiskeluoikeus.eriPäätasonSuoritus(
+            s"Suoritukset linkitettyjen opiskeluoikeuksien välillä eivät täsmää: Sisältyvän opiskeluoikeuden (oid -) päätason suoritus ei täsmää sisältävällä opiskeluoikeudella (oid ${lukioMaster.oid.get}) olevan päätason suorituksen kanssa"
+          ))
         }
       }
 
-      // TOR-2379: Esto on toistaiseksi pois käytöstä, eroavaisuudet vain lokitetaan.
-      "Eri tutkinnon opiskeluoikeuteen linkitys sallitaan (vain lokitetaan) -> HTTP 200" in {
+      "Eri tutkinnon opiskeluoikeuteen linkitys estetään -> HTTP 400" in {
         val sisältyvä = sisältyväAmmatillinen(
           SisältäväOpiskeluoikeus(ammatillinenAutoalaMaster.oppilaitos.get, ammatillinenAutoalaMaster.oid.get),
           puuteollisuudenPerustutkinnonSuoritus(OidOrganisaatio(omnia))
         )
         putOpiskeluoikeus(sisältyvä, henkilö = KoskiSpecificMockOppijat.tyhjä, headers = authHeaders(MockUsers.omniaTallentaja) ++ jsonContent) {
-          // verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.sisältäväOpiskeluoikeus.eriPäätasonSuoritus(
-          //   s"Suoritukset linkitettyjen opiskeluoikeuksien välillä eivät täsmää: Sisältyvän opiskeluoikeuden (oid -) päätason suoritus ei täsmää sisältävällä opiskeluoikeudella (oid ${ammatillinenAutoalaMaster.oid.get}) olevan päätason suorituksen kanssa"
-          // ))
-          verifyResponseStatusOk()
+          verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.sisältäväOpiskeluoikeus.eriPäätasonSuoritus(
+            s"Suoritukset linkitettyjen opiskeluoikeuksien välillä eivät täsmää: Sisältyvän opiskeluoikeuden (oid -) päätason suoritus ei täsmää sisältävällä opiskeluoikeudella (oid ${ammatillinenAutoalaMaster.oid.get}) olevan päätason suorituksen kanssa"
+          ))
         }
       }
 
