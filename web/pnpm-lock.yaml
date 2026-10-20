@@ -3076,9 +3076,10 @@ packages:
   scheduler@0.19.1:
     resolution: {integrity: sha512-n/zwRWRYSUj0/3g/otKDRPMh6qv2SYMWNq85IEa8iZyAv8od9zDYpGSnpBEjNgcMNq6Scbu5KfIPxNF72R/2EA==}
 
-  schema-utils@4.5.0:
-    resolution: {integrity: sha512-zJlMCZ0cAR5p/Y4oVpRoqioDMJcGxaXRrQ/4rP4WyR84vc5z/DolXdbvXeDpTwbtocDFr2rhPqHPErDCUtz2kA==}
+  schema-utils@4.6.0:
+    resolution: {integrity: sha512-q8cvkEp4bRQdWcLvB3vmxpZAlS25Hxws10nCK+rUxUfuB7e430dYZZJ5z5yAoOGBbbDtve8cUg8DFfc3ue12TA==}
     engines: {node: '>= 10.13.0'}
+    hasBin: true
 
   semver@6.3.1:
     resolution: {integrity: sha512-BR7VvDCVHO+q2xBEWskxS6DJE1qRnb7DxzUrogb71CWoSficBxYsiAGd+Kl0mmq/MprG9yArRkyrQxTO6XjMzA==}
@@ -4808,7 +4809,7 @@ snapshots:
     dependencies:
       glob-parent: 6.0.2
       normalize-path: 3.0.0
-      schema-utils: 4.5.0
+      schema-utils: 4.6.0
       serialize-javascript: 7.1.2
       tinyglobby: 0.2.17
       webpack: 5.112.0(@swc/core@1.16.18)(esbuild@0.28.2)(postcss@8.5.30)(webpack-cli@7.2.3)
@@ -5587,7 +5588,7 @@ snapshots:
     dependencies:
       '@jridgewell/trace-mapping': 0.3.31
       jest-worker: 27.5.1
-      schema-utils: 4.5.0
+      schema-utils: 4.6.0
       terser: 5.51.2
       webpack: 5.112.0(@swc/core@1.16.18)(esbuild@0.28.2)(postcss@8.5.30)(webpack-cli@7.2.3)
     optionalDependencies:
@@ -6192,7 +6193,7 @@ snapshots:
       loose-envify: 1.4.0
       object-assign: 4.1.1
 
-  schema-utils@4.5.0:
+  schema-utils@4.6.0:
     dependencies:
       '@types/json-schema': 7.0.15
       ajv: 8.20.0
@@ -6536,7 +6537,7 @@ snapshots:
       graceful-fs: 4.2.11
       mime-db: 1.54.0
       minimizer-webpack-plugin: 5.13.0(@swc/core@1.16.18)(esbuild@0.28.2)(postcss@8.5.30)(webpack@5.112.0)
-      schema-utils: 4.5.0
+      schema-utils: 4.6.0
       tapable: 2.3.3
       watchpack: 2.6.2
       webpack-sources: 3.6.0
