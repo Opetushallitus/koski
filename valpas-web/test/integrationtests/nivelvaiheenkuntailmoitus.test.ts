@@ -86,7 +86,7 @@ describe("Nivelvaiheen näkymästä kuntailmoituksen tekeminen", () => {
     await teeKuntailmoitusHakutilannenäkymästä("valpas-monta", opo)
   })
 
-  it("Näytä aikavälillä 1.4.-31.7. eronneet tai eronneiksi katsotut nivelvaiheen oppijat", async () => {
+  it("Näytä aikavälillä 1.4.-31.7. tai alle 2kk sitten eronneet tai eronneiksi katsotut nivelvaiheen oppijat", async () => {
     await loginAs(jyväskylänNormaalikouluHakutilannePath, "valpas-monta")
     await urlIsEventually(jyväskylänNormaalikouluHakutilannePath)
     await dataTableEventuallyEquals(

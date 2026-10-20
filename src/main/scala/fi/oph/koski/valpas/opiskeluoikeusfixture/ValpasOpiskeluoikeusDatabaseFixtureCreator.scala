@@ -287,6 +287,7 @@ class ValpasOpiskeluoikeusDatabaseFixtureCreator(application: KoskiApplication) 
     (ValpasMockOppijat.menehtynytOppija, ValpasOpiskeluoikeusExampleData.oppivelvollinenYsiluokkaKeskenKeväällä2021Opiskeluoikeus),
     (ValpasMockOppijat.menehtynytToisellaAsteellaOppija, ValpasOpiskeluoikeusExampleData.ammattikouluOpiskeluoikeus.withLisääPuuttuvaMaksuttomuustieto),
     (ValpasMockOppijat.ulkomailtaAlle18vuotiaanaMuuttanutSamallaMuuttopäivällä, ValpasOpiskeluoikeusExampleData.oppivelvollinenYsiluokkaKeskenKeväällä2021Opiskeluoikeus.copy(oppilaitos = Some(kulosaarenAlaAste))),
+    (ValpasMockOppijat.nivelvaiheestaKesänJälkeenEronneeksiKatsottu, ValpasOpiskeluoikeusExampleData.kesänJälkeenEronneeksiKatsottuKymppiluokkalainen.withLisääPuuttuvaMaksuttomuustieto),
   )
 
   protected def secondBatchOpiskeluOikeudet: List[(OppijaHenkilö, KoskeenTallennettavaOpiskeluoikeus)] = List(
