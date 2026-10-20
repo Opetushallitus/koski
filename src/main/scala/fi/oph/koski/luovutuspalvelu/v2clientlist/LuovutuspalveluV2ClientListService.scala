@@ -14,7 +14,6 @@ class MockLuovutuspalveluV2ClientListService extends LuovutuspalveluV2ClientList
   // - CN=client.example.com,O=Testi,C=FI: Java-esimerkkiclientin käyttämä (omadata-oauth2-sample/server/testca/generate-certs.sh)
   private val mockClientListJson =
     """[
-      |{"subjectDn": "CN=oa2-dev.koski-luovutuspalvelu-test-certs.testiopintopolku.fi", "ips": ["0.0.0.0"],  "user": "koskioauth2sampledevpk"},
       |{"subjectDn":"CN=migri", "ips":["0.0.0.0"], "user": "Migri"},
       |{"subjectDn":"CN=kela", "ips":["0.0.0.0"], "user": "Laaja"},
       |{"subjectDn":"CN=kela-suppeat", "ips":["0.0.0.0"], "user": "Suppea"},
