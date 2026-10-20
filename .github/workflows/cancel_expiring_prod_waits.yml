@@ -1,0 +1,29 @@
+name: Cancel expiring prod approvals
+on:
+  schedule:
+    - cron: "0 18 * * *"
+      timezone: Europe/Helsinki
+  workflow_dispatch:
+
+permissions:
+  actions: write
+
+jobs:
+  cancel:
+    name: Cancel master runs waiting over 28 days
+    runs-on: ubuntu-26.04
+    timeout-minutes: 5
+    steps:
+      - name: Cancel expiring runs
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+        run: |
+          set -euo pipefail
+          CUTOFF=$(date --utc --date '28 days ago' +%Y-%m-%dT%H:%M:%SZ)
+          EXPIRING_RUN_IDS=$(gh run list --workflow master.yml --status waiting --limit 1000 --json databaseId,startedAt \
+            | jq --raw-output --arg cutoff "$CUTOFF" '.[] | select(.startedAt < $cutoff) | .databaseId')
+          echo "$EXPIRING_RUN_IDS" | xargs --no-run-if-empty --max-args 1 gh run cancel
+          if [ -n "$EXPIRING_RUN_IDS" ]; then
+            echo "::notice::Cancelled master runs waiting over 28 days for prod approval: $(paste --serial --delimiters ' ' <<< "$EXPIRING_RUN_IDS")"
+          fi

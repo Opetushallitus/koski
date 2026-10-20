@@ -36,7 +36,7 @@ jobs:
     needs: [tests]
     uses: ./.github/workflows/publish_and_deploy.yml
     permissions:
-      actions: read
+      actions: write
       contents: read
       id-token: write
       packages: write
