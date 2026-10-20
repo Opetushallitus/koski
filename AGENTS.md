@@ -255,6 +255,14 @@ Maven has no version ranges or lockfile refresh: a transitive version changes on
 6. Korkeakoulu fields also need `@VirtaSource("<Virta path>", "<rule>")` or
    `@VirtaDerived("<how Koski sets it>")` — `VirtaSourceCoverageSpec` fails without one. Transcribe
    from `VirtaXMLConverter`, not from the Virta XSD, and write `@Description` before `@Virta*`.
+7. Record the change for data-transfer partners in `tiedonsiirtoprotokollan_muutoshistoria.md`
+   (repo root): a dated section, newest first, bullets in Finnish.
+
+### Changing validation rules
+Record every new or changed rule in `validaation_muutoshistoria.md` (repo root), under a dated
+section, newest first, bullets in Finnish. Neither history file mentions its own name in its
+content, so grep for the rule's wording or look at `git log -- <file>` for examples, not for
+"muutoshistoria".
 
 ### Updating localizations
 Localizations are served by the Lokalisointipalvelu service, which gets its data from Tolgee.
