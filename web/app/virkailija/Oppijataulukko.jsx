@@ -13,7 +13,7 @@ import Dropdown from '../components/Dropdown'
 import Http from '../util/http'
 import SortingTableHeader from '../components/SortingTableHeader'
 import delays from '../util/delays'
-import Highlight from 'react-highlighter'
+import { Highlight } from '../components/Highlight'
 import Link from '../components/Link'
 import { lang, t } from '../i18n/i18n'
 import Text from '../i18n/Text'
@@ -263,7 +263,6 @@ export class Oppijataulukko extends React.Component {
                         >
                           <Highlight
                             ignoreDiacritics={true}
-                            diacriticsBlacklist={'åäöÅÄÖ'}
                             search={params.nimihaku || ''}
                           >
                             {opiskeluoikeus.henkilö.sukunimi +
