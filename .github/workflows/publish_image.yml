@@ -48,7 +48,21 @@ jobs:
         run: |
           echo "image-exists=$(docker manifest inspect $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG > /dev/null 2>&1 ; echo $?)" >> $GITHUB_OUTPUT
 
-      - if: steps.check-image.outputs.image-exists != '0'
+      - name: Lookup target dir cache
+        id: target-cache
+        if: steps.check-image.outputs.image-exists != '0'
+        uses: actions/cache/restore@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: "target/"
+          key: ${{ runner.os }}-target-${{ inputs.commithash }}
+          lookup-only: "true"
+
+      - if: steps.check-image.outputs.image-exists != '0' && steps.target-cache.outputs.cache-hit != 'true'
+        uses: ./.github/actions/build_koski
+        with:
+          commithash: ${{ inputs.commithash }}
+
+      - if: steps.check-image.outputs.image-exists != '0' && steps.target-cache.outputs.cache-hit == 'true'
         uses: ./.github/actions/setup_java_21
 
       - name: Restore target dir
