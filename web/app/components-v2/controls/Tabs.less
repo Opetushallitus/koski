@@ -7,7 +7,10 @@
   // ei ole, joten tila jakautuu välilehdille ja alaviiva jatkuu rivin loppuun.
   @tab-filler-grow: 10000;
 
+  // Välilehdet alkavat sisältöalueen reunasta vanhan käyttöliittymän tapaan,
+  // mutta alaviiva jatkuu reunuksien yli opiskeluoikeuden reunoihin asti.
   margin: 0 -@h-padding;
+  padding: 0 @h-padding;
 
   .Tabs__list {
     display: flex;
@@ -22,6 +25,23 @@
     padding: 0;
     margin: 0;
 
+    // Jokainen listaelementti piirtää alaviivan reunuksen verran itsensä yli
+    // kumpaankin suuntaan. Rivin sisällä jatkeet osuvat naapurin viivan päälle,
+    // ja rivin päissä ne ulottuvat reunuksiin, rivittyessä jokaisella rivillä.
+    .Tabs__item,
+    .Tabs__filler {
+      position: relative;
+
+      &::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: -@h-padding;
+        right: -@h-padding;
+        border-bottom: 1px solid @tab-border-color;
+      }
+    }
+
     .Tabs__item {
       // Ei kutistuta otsikon alle, vaan siirrytään ennemmin uudelle riville.
       // Kasvaa sen sijaan täyttämään rivin, jotta alaviiva ei katkea kesken
@@ -33,9 +53,8 @@
 
       .Tabs__button {
         height: 100%;
-        // Painike täyttää venyneen listaelementin, koska alaviiva piirretään
-        // juuri painikkeen alareunasta: luonnollisen levyisenä viiva katkeaisi
-        // jokaisen välilehden kohdalla siihen tilaan, jonka venyminen lisäsi.
+        // Painike täyttää venyneen listaelementin, jotta koko välilehti on
+        // klikattava ja aktiivisen välilehden kehys ulottuu sen reunoihin.
         width: 100%;
         min-height: 3 * @baseline;
         // Vaakapadding pidetään tiukkana, jotta perusopetuksen tavallisin
@@ -46,7 +65,6 @@
         background: none;
 
         border: none;
-        border-bottom: 1px solid @tab-border-color;
         border-radius: 5px 5px 0 0;
 
         color: @color-link-blue;
@@ -62,6 +80,10 @@
 
     .Tabs__item-active {
       .Tabs__button {
+        // Peittää oman ja naapureiden alaviivan, jotta alareuna jää avoimeksi.
+        position: relative;
+        z-index: 1;
+        background: white;
         border: 1px solid @tab-border-color;
         border-top: 2px solid @color-blue;
         border-bottom: none;
@@ -76,8 +98,6 @@
 
     .Tabs__filler {
       flex-grow: @tab-filler-grow;
-      align-self: flex-end;
-      border-bottom: 1px solid @tab-border-color;
     }
   }
 }
