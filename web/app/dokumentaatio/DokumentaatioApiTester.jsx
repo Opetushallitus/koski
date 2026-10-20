@@ -3,7 +3,6 @@ import Bacon from 'baconjs'
 import Atom from '../util/bacon.atom'
 import * as R from 'ramda'
 import Highlight from 'react-highlight'
-import CodeMirror from '@skidding/react-codemirror'
 import Dropdown from '../components/Dropdown'
 import Cookies from 'js-cookie'
 
@@ -127,11 +126,10 @@ const PostDataExamples = ({ operation, postDataAtom }) => {
           />
         </label>
       </div>
-      <CodeMirror
-        baret-lift
+      <textarea
         value={postDataAtom}
-        onChange={(c) => postDataAtom.set(c)}
-        options={{ mode: { name: 'javascript', json: true } }}
+        onChange={(e) => postDataAtom.set(e.target.value)}
+        spellCheck={false}
       />
     </div>
   )
