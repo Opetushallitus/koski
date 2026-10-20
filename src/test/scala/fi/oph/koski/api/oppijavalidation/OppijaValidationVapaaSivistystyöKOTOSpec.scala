@@ -1,13 +1,14 @@
 package fi.oph.koski.api.oppijavalidation
 
-import fi.oph.koski.KoskiHttpSpec
 import fi.oph.koski.api.misc.PutOpiskeluoikeusTestMethods
-import fi.oph.koski.documentation.ExampleData.opiskeluoikeusLäsnä
+import fi.oph.koski.documentation.ExampleData.{opiskeluoikeusLäsnä, opiskeluoikeusValmistunut}
 import fi.oph.koski.documentation.VapaaSivistystyöExample._
 import fi.oph.koski.documentation.VapaaSivistystyöExampleData._
 import fi.oph.koski.documentation.{ExamplesVapaaSivistystyöKotoutuskoulutus2022 => Koto2022}
 import fi.oph.koski.http.{ErrorMatcher, KoskiErrorCategory}
 import fi.oph.koski.schema._
+import fi.oph.koski.validation.VapaaSivistystyöValidation
+import fi.oph.koski.{KoskiApplicationForTests, KoskiHttpSpec}
 import org.scalatest.freespec.AnyFreeSpec
 
 import java.time.LocalDate
@@ -133,6 +134,61 @@ class OppijaValidationVapaaSivistystyöKOTOSpec extends AnyFreeSpec with PutOpis
       }
       postOpiskeluoikeus(oo, defaultHenkilö) {
         verifyResponseStatus(409, KoskiErrorCategory.conflict.exists())
+      }
+    }
+
+    "Viimeinen sallittu päivä 31.12.2026" - {
+      val alkamispäiväVirhe = KoskiErrorCategory.badRequest.validation.vapaaSivistystyö.kotoJaLukutaitoAlkamispäivä(
+        "Vapaan sivistystyön kotoutumiskoulutuksen tai lukutaitokoulutuksen opiskeluoikeus ei voi alkaa 1.1.2027 tai sen jälkeen"
+      )
+      val päättymispäiväVirhe = KoskiErrorCategory.badRequest.validation.vapaaSivistystyö.kotoPäättymispäivä(
+        "Vapaan sivistystyön kotoutumiskoulutuksen opiskeluoikeuden viimeinen sallittu päättymispäivä on 31.12.2026"
+      )
+
+      def jakso(päivä: LocalDate, tila: Koodistokoodiviite) =
+        OppivelvollisilleSuunnattuVapaanSivistystyönOpiskeluoikeusjakso(päivä, tila)
+
+      def alkanut(alku: LocalDate) = Koto2022.Opiskeluoikeus.juuriAloittanut.copy(
+        tila = VapaanSivistystyönOpiskeluoikeudenTila(List(jakso(alku, opiskeluoikeusLäsnä)))
+      )
+
+      def valmistunut(päivä: LocalDate) = Koto2022.Opiskeluoikeus.suoritettu.copy(
+        tila = VapaanSivistystyönOpiskeluoikeudenTila(List(jakso(LocalDate.of(2022, 8, 1), opiskeluoikeusLäsnä), jakso(päivä, opiskeluoikeusValmistunut))),
+        suoritukset = List(Koto2022.PäätasonSuoritus.suoritettu.copy(
+          vahvistus = Koto2022.PäätasonSuoritus.suoritettu.vahvistus.map(_.copy(päivä = päivä))
+        ))
+      )
+
+      "Opiskeluoikeus voi alkaa 31.12.2026" in {
+        setupOppijaWithOpiskeluoikeus(alkanut(LocalDate.of(2026, 12, 31))) {
+          verifyResponseStatusOk()
+        }
+      }
+
+      "Opiskeluoikeus ei voi alkaa 1.1.2027" in {
+        setupOppijaWithOpiskeluoikeus(alkanut(LocalDate.of(2027, 1, 1))) {
+          verifyResponseStatus(400, alkamispäiväVirhe)
+        }
+      }
+
+      "Opiskeluoikeus voi päättyä 31.12.2026" in {
+        setupOppijaWithOpiskeluoikeus(valmistunut(LocalDate.of(2026, 12, 31))) {
+          verifyResponseStatusOk()
+        }
+      }
+
+      "Opiskeluoikeus ei voi päättyä 1.1.2027" in {
+        setupOppijaWithOpiskeluoikeus(valmistunut(LocalDate.of(2027, 1, 1))) {
+          verifyResponseStatus(400, päättymispäiväVirhe)
+        }
+      }
+
+      // Validoidaan suoraan, koska vanhan opsin peruste ei ole enää voimassa ja perusteEiVoimassa estäisi tallennuksen ennen tätä validaatiota
+      "Vanhan opsin mukainen opiskeluoikeus ei voi päättyä 1.1.2027" in {
+        val oo = opiskeluoikeusKOTO.copy(
+          tila = VapaanSivistystyönOpiskeluoikeudenTila(List(jakso(LocalDate.of(2021, 9, 1), opiskeluoikeusLäsnä), jakso(LocalDate.of(2027, 1, 1), opiskeluoikeusValmistunut)))
+        )
+        VapaaSivistystyöValidation.validateKotoutumisJaLukutaitokoulutuksenViimeinenPäivä(KoskiApplicationForTests.config)(oo) shouldBe päättymispäiväVirhe
       }
     }
   }
