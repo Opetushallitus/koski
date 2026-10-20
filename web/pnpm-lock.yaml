@@ -169,15 +169,9 @@ importers:
 
   .:
     dependencies:
-      '@skidding/react-codemirror':
-        specifier: 1.0.2
-        version: 1.0.2(react-dom@16.14.0(react@16.14.0))(react@16.14.0)
       baconjs:
         specifier: 1.0.1
         version: 1.0.1
-      codemirror:
-        specifier: 5.65.21
-        version: 5.65.21
       fecha:
         specifier: 4.2.3
         version: 4.2.3
@@ -1184,12 +1178,6 @@ packages:
     resolution: {integrity: sha512-tlqY9xq5ukxTUZBmoOp+m61cqwQD5pHJtFY3Mn8CA8ps6yghLH/Hw8UPdqg4OLmFW3IFlcXnQNmo/dh8HzXYIQ==}
     engines: {node: '>=18'}
 
-  '@skidding/react-codemirror@1.0.2':
-    resolution: {integrity: sha512-XObXhAOkbUYWVjLs8SwSxoqadtpFY0KmEDVbcfsBw7uaxjS2RJeFg2iuwho+kNFhKiRexJ308UlWA7wKXPOSjw==}
-    peerDependencies:
-      react: '>=15.5 <17'
-      react-dom: '>=15.5 <17'
-
   '@swc/core-darwin-arm64@1.16.18':
     resolution: {integrity: sha512-ozgiCHyFDCwfXzTnaLR+i8WxEyt06GTudn9rPh08vj+u3Z8vMvt5Pi8T+BikyNXm7y++h6UMdqsnJuWrV+tk2A==}
     engines: {node: '>=10'}
@@ -1705,9 +1693,6 @@ packages:
     peerDependencies:
       devtools-protocol: '*'
 
-  classnames@2.5.1:
-    resolution: {integrity: sha512-saHYOzhIQs6wy2sVxTM6bUDsQO4F50V9RQ22qBpEdCW+I+/Wmke2HOl6lS6dTpdxVhb88/I6+Hs+438c3lfUow==}
-
   cliui@8.0.1:
     resolution: {integrity: sha512-BSeNnyus75C4//NQ9gQt1/csTXyo/8Sb+afLAkzAptFuMsod9HFokGNudZpi/oQV73hnVK+sR+5PVRMd+Dr7YQ==}
     engines: {node: '>=12'}
@@ -1719,9 +1704,6 @@ packages:
   clone-deep@4.0.1:
     resolution: {integrity: sha512-neHB9xuzh/wk0dIHweyAXv2aPGZIVk3pLMe+/RNzINf17fe0OG96QroktYAUm7SM1PBnzTabaLboqqxDyMU+SQ==}
     engines: {node: '>=6'}
-
-  codemirror@5.65.21:
-    resolution: {integrity: sha512-6teYk0bA0nR3QP0ihGMoxuKzpl5W80FpnHpBJpgy66NK3cZv5b/d/HY8PnRvfSsCG1MTfr92u2WUl+wT0E40mQ==}
 
   color-convert@2.0.1:
     resolution: {integrity: sha512-RRECPsj7iu/xb5oKYcsFHSppFNnsj/52OVTRKb4zP5onXwVF3zVmmToNcOfGC+CRDpfK/U584fMg38ZHCaElKQ==}
@@ -2469,10 +2451,6 @@ packages:
   locate-path@6.0.0:
     resolution: {integrity: sha512-iPZK6eYjbxRu3uB4/WZ3EsEIMJFMqAoopl3R+zuq0UjcAm/MO6KCweDgPfP3elTztoKP3KtnVHxTn2NHBSDVUw==}
     engines: {node: '>=10'}
-
-  lodash.isequal@4.5.0:
-    resolution: {integrity: sha512-pDo3lu8Jhfjqls6GkMgpahsF9kCyayhgykjyLMNFTKWrpVdAQtYyB4muAMWozBB4ig/dtWAmsMxLEI8wuz+DYQ==}
-    deprecated: This package is deprecated. Use require('node:util').isDeepStrictEqual instead.
 
   lodash.memoize@4.1.2:
     resolution: {integrity: sha512-t7j+NzmgnQzTAYXcsHYLgimltOV1MXHtlOWf6GjL9Kj8GK5FInw5JotxvbOs+IvV1/Dzo04/fCGfLVs7aXb4Ag==}
@@ -4304,16 +4282,6 @@ snapshots:
 
   '@sindresorhus/merge-streams@4.0.0': {}
 
-  '@skidding/react-codemirror@1.0.2(react-dom@16.14.0(react@16.14.0))(react@16.14.0)':
-    dependencies:
-      classnames: 2.5.1
-      codemirror: 5.65.21
-      create-react-class: 15.7.0
-      lodash.isequal: 4.5.0
-      prop-types: 15.8.1
-      react: 16.14.0
-      react-dom: 16.14.0(react@16.14.0)
-
   '@swc/core-darwin-arm64@1.16.18':
     optional: true
 
@@ -4785,8 +4753,6 @@ snapshots:
       mitt: 3.0.1
       zod: 4.6.7
 
-  classnames@2.5.1: {}
-
   cliui@8.0.1:
     dependencies:
       string-width: 4.2.3
@@ -4804,8 +4770,6 @@ snapshots:
       is-plain-object: 2.0.4
       kind-of: 6.0.3
       shallow-clone: 3.0.1
-
-  codemirror@5.65.21: {}
 
   color-convert@2.0.1:
     dependencies:
@@ -5570,8 +5534,6 @@ snapshots:
   locate-path@6.0.0:
     dependencies:
       p-locate: 5.0.0
-
-  lodash.isequal@4.5.0: {}
 
   lodash.memoize@4.1.2: {}
 

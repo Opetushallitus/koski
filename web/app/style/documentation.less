@@ -1,4 +1,3 @@
-@import (less) 'codemirror/lib/codemirror.css';
 @import (less) 'highlight.js/styles/default.css';
 
 .logo {
@@ -240,8 +239,12 @@
         margin-bottom: 10px;
       }
 
-      .CodeMirror {
+      .postdata textarea {
+        box-sizing: border-box;
+        width: 100%;
+        height: 300px;
         border: 1px solid black;
+        font-family: monospace;
         font-size: 12px;
       }
     }
@@ -312,12 +315,10 @@
   }
 
   .json .key,
-  .api-tester .CodeMirror .cm-string.cm-property,
   .api-tester .hljs-attr {
     color: rgb(165, 116, 28);
   }
   .json .value,
-  .api-tester .CodeMirror .cm-string,
   .api-tester .hljs-string {
     color: green;
   }
