@@ -24,6 +24,7 @@ trait KotikunnistaRaportoiva extends QueryMethods {
     )
   """
 
+  // oppijaQueryn pääkysely liittää näiden lisäksi valittu-osan, ja liitoksia on jo Postgresin oletusrajan (join_collapse_limit 8) verran. Uusi liitos voi lukita liitosjärjestyksen: aja EXPLAIN ANALYZE pienelle kunnalle ja Helsingille.
   protected def lähteet(päivä: LocalDate, kotikuntahistoria: String): SQLActionBuilder = sql"""
     from v, r_henkilo he
     join r_opiskeluoikeus oo on oo.oppija_oid = he.oppija_oid
@@ -110,7 +111,7 @@ trait KotikunnistaRaportoiva extends QueryMethods {
     )
   )
 
-  protected def oppijaQuery(rajaus: SQLActionBuilder, päivä: LocalDate, esiopetusLuokkaAste: String, kotikuntahistoria: String) = concatMany(
+  protected def oppijaQuery(valittujenRajaus: SQLActionBuilder, rajaus: SQLActionBuilder, päivä: LocalDate, esiopetusLuokkaAste: String, kotikuntahistoria: String) = concatMany(
     Some(sql"with "),
     Some(vuosiJaLukuvuosi(päivä)),
     Some(sql""",
@@ -127,7 +128,7 @@ trait KotikunnistaRaportoiva extends QueryMethods {
         pts.luokka_tai_ryhma as luokka
     """),
     Some(lähteet(päivä, kotikuntahistoria)),
-    Some(ehdot(rajaus, päivä)),
+    Some(ehdot(valittujenRajaus, päivä)),
     Some(sql"""
       order by
         he.master_oid,
