@@ -7,3 +7,6 @@ strictPeerDependencies: true
 updateNotifier: false
 minimumReleaseAge: 4320
 ignoreScripts: true
+minimumReleaseAgeExclude:
+  # Renovate security update: highlight.js@9.18.2
+  - highlight.js@9.18.2

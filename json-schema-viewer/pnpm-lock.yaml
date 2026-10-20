@@ -170,8 +170,8 @@ importers:
         specifier: 3.5.17
         version: 3.5.17
       highlight.js:
-        specifier: 8.8.0
-        version: 8.8.0
+        specifier: 9.18.2
+        version: 9.18.2
       jquery:
         specifier: 3.7.1
         version: 3.7.1
@@ -1393,9 +1393,9 @@ packages:
     resolution: {integrity: sha512-T2UbfbBEF32wiepXIsMlTW9+dDYC6wMh/t/vYA4tuOMKqWz/n3vr1NFSxQiyP+zk2mXsoMA/i/7qV6LKut1t1A==}
     engines: {node: '>= 0.4'}
 
-  highlight.js@8.8.0:
-    resolution: {integrity: sha512-CCsdEPYmNANzZFbFaUWIpX5gqdr6r2OD1J26r/P2d4Hc4os//C1A+U6QGzDDuW0jGcT724ZiYz0KEmmHJykzcg==}
-    deprecated: Version no longer supported. Upgrade to @latest
+  highlight.js@9.18.2:
+    resolution: {integrity: sha512-tglpEIoxZR+CTZw7ivuOZJ2wEowySSPAmBv+BQnXzezJ937wQwWnqJ8BmpQAdi3Lgf3ltlCkhT2bb6IWVZrO9Q==}
+    deprecated: this package has been deprecated; has build issues;
 
   hookified@1.15.1:
     resolution: {integrity: sha512-MvG/clsADq1GPM2KGo2nyfaWVyn9naPiXrqIe4jYjXNZQt238kWyOGrsyc/DmRAQ+Re6yeo6yX/yoNCG5KAEVg==}
@@ -3442,7 +3442,7 @@ snapshots:
     dependencies:
       function-bind: 1.1.2
 
-  highlight.js@8.8.0: {}
+  highlight.js@9.18.2: {}
 
   hookified@1.15.1: {}
 
