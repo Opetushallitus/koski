@@ -61,7 +61,7 @@ class ValpasHeturouhintaService(application: KoskiApplication)
               .map(eiSuorittavatKuntailmoituksilla => {
 
                 val eiSuorittavatKuntailmoituksillaJaKeskeytyksillä =
-                  rouhintaOvKeskeytyksetService.fetchOppivelvollisuudenKeskeytykset(eiSuorittavatKuntailmoituksilla) ++ eiSuorittavatOnr
+                  rouhintaOvKeskeytyksetService.fetchOppivelvollisuudenKeskeytykset(eiSuorittavatKuntailmoituksilla ++ eiSuorittavatOnr)
 
                 HeturouhinnanTulos(
                   eiOppivelvollisuuttaSuorittavat = eiSuorittavatKuntailmoituksillaJaKeskeytyksillä,

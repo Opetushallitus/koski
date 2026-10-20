@@ -82,6 +82,9 @@ class ValpasKuntarouhintaService(application: KoskiApplication)
         .filter(o => Oppivelvollisuustiedot.onOppivelvollinenPelkänIänPerusteella(o.syntymäaika, application.valpasRajapäivätService))
         // Pakota iteraattorin evaluointi rinnakkaistuksen helpottamiseksi ja ajastuslogitusten vuoksi
         .toList
+        .grouped(10000)
+        .flatMap(rouhintaOvKeskeytyksetService.fetchOppivelvollisuudenKeskeytykset)
+        .toList
     }
   }
 

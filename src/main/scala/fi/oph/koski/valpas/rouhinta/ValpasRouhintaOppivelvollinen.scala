@@ -63,7 +63,7 @@ object ValpasRouhintaOppivelvollinen {
 
   def apply(henkilö: OppijaHenkilö): ValpasRouhintaOppivelvollinen = ValpasRouhintaOppivelvollinen(
     oppijanumero = henkilö.oid,
-    kaikkiOidit = None,
+    kaikkiOidit = Some(Seq(henkilö.oid)),
     etunimet = henkilö.etunimet,
     sukunimi = henkilö.sukunimi,
     syntymäaika = henkilö.syntymäaika,
