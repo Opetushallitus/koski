@@ -187,6 +187,19 @@ class ValpasHeturouhintaSpec extends ValpasRouhintaTestBase {
       ulkopuoliset should contain (oppija.hetu.get)
     }
 
+    "Näyttää Koskesta puuttuvan oppijan oppivelvollisuuden keskeytyksen" in {
+      FixtureUtil.resetMockData(KoskiApplicationForTests)
+      val oppija = ValpasMockOppijat.eiKoskessaOppivelvollinenJollaKeskeytyksiäJaIlmoituksia
+
+      val keskeytys = loadHetuhaku(List(oppija.hetu.get)).collectFirst {
+        case d: DataSheet if d.title == t.get("rouhinta_tab_ei_oppivelvollisuutta_suorittavat") => d.rows.collect {
+          case r: ValpasRouhintaOppivelvollinenSheetRow => r
+        }
+      }.get.find(_.hetu == oppija.hetu).map(_.keskeytys)
+
+      keskeytys should equal(Some("1.9.2021 -"))
+    }
+
     "Heturouhinta ei palauta amiksesta valmistunutta" in {
       FixtureUtil.resetMockData(KoskiApplicationForTests, LocalDate.of(2023, 5, 2))
 

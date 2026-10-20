@@ -607,6 +607,12 @@ class ValpasMassaluovutusServletSpec extends ValpasTestBase with BeforeAndAfterE
           // Tarkista että myös oppijat ONR:stä on mukana tuloksissa
           oppijat.find(oppija => (oppija \ "vainOppijanumerorekisterissä").extract[Boolean]) should not be empty
 
+          // Tarkista että ONR:stä tulevan oppijan keskeytykset on mukana tuloksissa
+          val onrOppijaKeskeytyksillä = oppijat.find(oppija => (oppija \ "oppijanumero").extract[String] == ValpasMockOppijat.eiKoskessaOppivelvollinenJollaKeskeytyksiäJaIlmoituksia.oid)
+          onrOppijaKeskeytyksillä should not be empty
+          val keskeytykset = (onrOppijaKeskeytyksillä.get \ "oppivelvollisuudenKeskeytys").extract[List[JObject]]
+          keskeytykset.map(k => (k \ "alku").extract[String]) should equal(List("2021-09-01"))
+
           // Tarkista että kaikki aktiiviset opiskeluoikeudet on mukana tuloksissa
           val aktiivisiaOpiskeluoikeuksia = oppijat.find(oppija => (oppija \ "oppijanumero").extract[String] == ValpasMockOppijat.amisEronnutUusiKelpaamatonOpiskeluoikeusNivelvaiheessa.oid)
           aktiivisiaOpiskeluoikeuksia should not be empty

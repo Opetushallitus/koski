@@ -238,6 +238,19 @@ class ValpasKuntarouhintaSpec extends ValpasRouhintaTestBase {
 
         oppijat.flatMap(_.hetu) should not contain (ValpasMockOppijat.amisValmistunutEronnutValmasta.hetu.get)
       }
+
+      "Näyttää Koskesta puuttuvan oppijan oppivelvollisuuden keskeytyksen" in {
+        FixtureUtil.resetMockData(KoskiApplicationForTests, LocalDate.of(2023, 5, 2))
+        val oppija = ValpasMockOppijat.eiKoskessaOppivelvollinenJollaKeskeytyksiäJaIlmoituksia
+
+        val keskeytys = loadKuntahaku("091", ValpasMockUsers.valpasHelsinki).collectFirst {
+          case d: DataSheet if d.title == t.get("rouhinta_tab_ei_oppivelvollisuutta_suorittavat") => d.rows.collect {
+            case r: ValpasRouhintaOppivelvollinenSheetRow => r
+          }
+        }.get.find(_.hetu == oppija.hetu).map(_.keskeytys)
+
+        keskeytys should equal(Some("1.9.2021 -"))
+      }
     }
 
     "Audit-log toimii myös isolla oppijamäärällä" in {
