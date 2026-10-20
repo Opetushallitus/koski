@@ -54,6 +54,9 @@ function KoskiPage() {
           return $(a).text()
         })
     },
+    getHighlights: function () {
+      return textsOf(S('.oppija-haku .highlight'))
+    },
     getSearchString: function () {
       return pageApi.getInputValue('#search-query')
     },

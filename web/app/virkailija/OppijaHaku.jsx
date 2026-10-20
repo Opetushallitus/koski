@@ -5,7 +5,7 @@ import Http from '../util/http'
 import { showError, navigateTo } from '../util/location'
 import delays from '../util/delays'
 import Link from '../components/Link'
-import Highlight from 'react-highlighter'
+import { Highlight } from '../components/Highlight'
 import { t } from '../i18n/i18n'
 import Text from '../i18n/Text'
 import { userP } from '../util/user.js'
@@ -91,13 +91,7 @@ export const OppijaHaku = () => {
                 key={i}
               >
                 <Link href={href}>
-                  <Highlight
-                    ignoreDiacritics={true}
-                    diacriticsBlacklist={'åäöÅÄÖ'}
-                    search={query}
-                  >
-                    {oppija}
-                  </Highlight>
+                  <Highlight searchQuery={query}>{oppija}</Highlight>
                 </Link>
               </li>
             )

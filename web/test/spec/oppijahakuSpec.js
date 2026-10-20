@@ -28,6 +28,14 @@ describe('Oppijahaku', function () {
       ])
     })
 
+    it('Hakusana korostetaan suomalaisella kirjainvertailulla', function () {
+      expect(page.oppijaHaku.getHighlights()).to.deep.equal([
+        'Eero',
+        'Eero',
+        'Eéro'
+      ])
+    })
+
     it('Uutta oppijaa ei voi lisätä', function () {
       expect(page.oppijaHaku.canAddNewOppija()).to.equal(false)
     })
