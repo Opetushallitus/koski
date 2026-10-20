@@ -10,8 +10,12 @@ jobs:
   check_master_head:
     name: Check master HEAD
     runs-on: ubuntu-26.04
+    timeout-minutes: 10
+    permissions:
+      actions: write
+      contents: read
     outputs:
-      is_head: ${{ steps.check.outputs.is_head }}
+      deploy: ${{ steps.check.outputs.deploy }}
     steps:
       - name: Compare commit to master HEAD
         id: check
@@ -20,17 +24,29 @@ jobs:
         run: |
           set -euo pipefail
           MASTER_SHA=$(gh api "repos/$GITHUB_REPOSITORY/git/ref/heads/master" --jq '.object.sha')
+          PREVIOUS_ATTEMPT_CHECK_CONCLUSION=""
+          if [ "$GITHUB_RUN_ATTEMPT" -gt 1 ]; then
+            PREVIOUS_ATTEMPT_CHECK_CONCLUSION=$(gh api --paginate "repos/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID/attempts/$((GITHUB_RUN_ATTEMPT - 1))/jobs?per_page=100" \
+              --jq '.jobs[] | select(.name == "Publish & deploy / Check master HEAD") | .conclusion')
+          fi
           if [ "$MASTER_SHA" = "$GITHUB_SHA" ]; then
-            echo "is_head=true" >> "$GITHUB_OUTPUT"
+            echo "deploy=true" >> "$GITHUB_OUTPUT"
+          elif [ "$PREVIOUS_ATTEMPT_CHECK_CONCLUSION" = "cancelled" ]; then
+            echo "::notice::Re-run of superseded $GITHUB_SHA, deploying it although master has moved on to $MASTER_SHA"
+            echo "deploy=true" >> "$GITHUB_OUTPUT"
           else
-            echo "::notice::Master has moved on to $MASTER_SHA, skipping publish and deploy of $GITHUB_SHA"
-            echo "is_head=false" >> "$GITHUB_OUTPUT"
+            echo "::notice::Master has moved on to $MASTER_SHA, cancelling publish and deploy of $GITHUB_SHA"
+            echo "deploy=false" >> "$GITHUB_OUTPUT"
+            gh run cancel "$GITHUB_RUN_ID" --repo "$GITHUB_REPOSITORY"
+            # Pidetään jobi käynnissä, kunnes peruutus pysäyttää sen, jotta jobi päättyy perutuksi eikä vihreäksi.
+            # Uudelleenajon poikkeus tunnistaa vanhentuneen ajon tästä.
+            gh run watch "$GITHUB_RUN_ID" --repo "$GITHUB_REPOSITORY" > /dev/null
           fi
 
   publish_image:
     name: Publish
     needs: [check_master_head]
-    if: ${{ needs.check_master_head.outputs.is_head == 'true' }}
+    if: ${{ needs.check_master_head.outputs.deploy == 'true' }}
     uses: ./.github/workflows/publish_image.yml
     with:
       commithash: ${{ github.sha }}
@@ -40,7 +56,8 @@ jobs:
     name: Dev & QA
     needs: [publish_image]
     # Ei cancel-in-progress: hitaampi vanhemman commitin ajo voisi keskeyttää uudemman ajon
-    # ja asentaa vanhemman version. Vanhentuneet ajot ohitetaan check_master_head-jobissa.
+    # ja asentaa vanhemman version. Vanhentuneet ajot perutaan check_master_head-jobissa,
+    # paitsi perutun ajon uudelleenajo, jolla palautetaan vanha versio.
     # queue: max, koska oletuksena uusi jonoon tuleva ajo peruisi jo jonossa odottavan.
     concurrency:
       group: master-deploy-dev-qa
@@ -71,6 +88,9 @@ jobs:
     name: Smoketests
     needs: [deploy_dev_qa, deploy_omadataoauth2sample_qa]
     if: ${{ !cancelled() && needs.deploy_dev_qa.result == 'success' }}
+    permissions:
+      actions: read
+      contents: read
     uses: ./.github/workflows/run_smoketests.yml
     with:
       expected_commithash: ${{ github.sha }}
