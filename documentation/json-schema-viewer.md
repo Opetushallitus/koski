@@ -73,6 +73,19 @@ re-vendor from upstream **must re-apply them**:
   `#info-panel-resizer` drag handle appended in the init code sets it, and the
   width is remembered in `localStorage` (`jsv-panel-width`).
 
+- **JSON panels without highlight.js** — the Schema and Example tabs set the
+  JSON as text (`.text()`, never as HTML), and "Open in new window" is a link
+  to a `blob:` URL of the same JSON, so the browser shows it as plain text.
+  `createPre` revokes the previous blob URL when the panel is rebuilt. Upstream
+  instead wrote the `<pre>` into an `about:blank` popup and coloured it with
+  highlight.js, whose theme was an `http://` cdnjs link: blocked as mixed
+  content on https since the 2015 import, and by Kosken CSP since 2022.
+  The blob is `text/plain;charset=utf-8`, not `application/json`: a blob
+  document inherits the viewer's CSP, which blocks Firefox's JSON viewer
+  script, and Firefox then falls back to proportional-font text. Without the
+  charset Firefox decodes `ä` as `Ã¤`. The page CSP (`connect-src 'self'`)
+  also blocks `fetch()` of the blob, so tests read it by opening the URL.
+
 - **Deep links** (TOR-2741) — see "Deep links" below. `JSV.applyDeepLinks`,
   `resolveNodePaths`, `getNodeNamePath`, the `.marked` class (reuses `.focus-box`) and
   the "Highlighted" legend row.

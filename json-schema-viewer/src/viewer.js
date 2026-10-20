@@ -4,7 +4,6 @@ const $ = require('jquery')
 const URI = require('urijs')
 const d3 = require('d3')
 const jsonpointer = require('jsonpointer.js')
-const hljs = require('./highlight')
 const tv4 = require('./tv4-async-load')
 require('jquery.scrollto')
 
@@ -640,7 +639,7 @@ if (typeof window.JSV === 'undefined') {
       $('#info-description-header').toggle(
         blocks.length > 0 || virtaText !== null
       )
-      JSV.createPre(schema, tv4.getSchema(node.schema), false, node.plainName)
+      JSV.createPre(schema, tv4.getSchema(node.schema), node.plainName)
       var example =
         !node.example &&
         node.parent &&
@@ -657,7 +656,7 @@ if (typeof window.JSV === 'undefined') {
               if (pointer) {
                 data = jsonpointer.get(data, pointer)
               }
-              JSV.createPre(ex, data, false, node.plainName)
+              JSV.createPre(ex, data, node.plainName)
               JSV.example = example
             }
           ).fail(function () {
@@ -681,26 +680,19 @@ if (typeof window.JSV === 'undefined') {
         JSV.example = false
       }
     },
-    createPre: function (el, obj, title, exp) {
-      var pre = $(
-        '<pre><code class="language-json">' +
-          JSON.stringify(obj, null, '  ') +
-          '</code></pre>'
+    createPre: function (el, obj, exp) {
+      var json = JSON.stringify(obj, null, '  ')
+      var pre = $('<pre>').append($('<code>').text(json))
+      if (el.data('jsonUrl')) {
+        URL.revokeObjectURL(el.data('jsonUrl'))
+      }
+      var jsonUrl = URL.createObjectURL(
+        new Blob([json], { type: 'text/plain;charset=utf-8' })
       )
+      el.data('jsonUrl', jsonUrl)
       var btn = $(
-        '<a href="#" class="ui-btn ui-mini ui-icon-action ui-btn-icon-right">Open in new window</a>'
-      ).click(function () {
-        var w = window.open('', 'pre', null, true)
-        $(w.document.body).html(
-          $('<div>').append(pre.clone().height('95%')).html()
-        )
-        hljs.highlightBlock($(w.document.body).children('pre')[0])
-        $(w.document.body).append(
-          '<link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.1/styles/default.min.css">'
-        )
-        w.document.title = title || 'JSON Schema Viewer'
-        w.document.close()
-      })
+        '<a target="_blank" rel="noopener" data-ajax="false" class="ui-btn ui-mini ui-icon-action ui-btn-icon-right">Open in new window</a>'
+      ).attr('href', jsonUrl)
       el.html(btn)
       if (exp) {
         pre.highlight(exp, 'highlight', true)
