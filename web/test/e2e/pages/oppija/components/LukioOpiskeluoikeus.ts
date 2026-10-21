@@ -6,6 +6,7 @@ export class LukioOpiskeluoikeus {
   readonly opiskeluoikeudenTiedot: Locator
   readonly omanÄidinkielenOpinnot: Locator
   readonly tilaVahvistus: Locator
+  readonly oppiaineet: Locator
 
   constructor(container: Locator) {
     this.container = container
@@ -15,6 +16,24 @@ export class LukioOpiskeluoikeus {
     )
     this.omanÄidinkielenOpinnot = this.kenttä('omanÄidinkielenOpinnot')
     this.tilaVahvistus = this.container.locator('.suoritus > .tila-vahvistus')
+    // Oppiaineiden/kurssien taulukko on oma React-komponenttinsa, ei
+    // PropertiesEditorin kautta renderöity - ei siis data-testid:tä.
+    // Sama taulukkoluokka on yhteinen "Lukion oppimäärä"- ja
+    // "Lukion oppiaineiden oppimäärien suoritus" -suoritustyypeille.
+    this.oppiaineet = this.container.locator('table.suoritukset.oppiaineet')
+  }
+
+  oppiaineRivi(koodi: string): Locator {
+    return this.oppiaineet.locator(`.oppiaine-rivi.${koodi}`)
+  }
+
+  // Kurssi tunnistetaan sen näkyvästä koodista (esim. "ÄI1") roolin ja nimen
+  // kautta, ei sijainnista listassa - kurssien järjestys ei ole osa
+  // testattavaa käyttäytymistä.
+  kurssi(oppiaineRivi: Locator, koodi: string): Locator {
+    return oppiaineRivi.locator('li.kurssi').filter({
+      has: oppiaineRivi.page().getByRole('button', { name: koodi, exact: true })
+    })
   }
 
   // Yleinen PropertiesEditor (web/app/editor/PropertiesEditor.jsx) merkitsee joka
