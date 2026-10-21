@@ -232,19 +232,19 @@ const kaikkiRaportitKategorioittain = [
         id: 'vapaansivistystyönvapaatavoitteisenkoulutuksenraportti',
         name: 'raportti-tab-vstvapaatavoitteinen',
         component: VSTVapaatavoitteinen,
-        guard: () => hasFeatureFlag('vstvapaatavoitteinen')
+        guard: () => hasFeatureFlag('vstraportit')
       },
       {
         id: 'vapaansivistystyönoppivelvollisillesuunnatunkoulutuksenraportti',
         name: 'raportti-tab-vstkops',
         component: VSTKops,
-        guard: () => hasFeatureFlag('vstkops')
+        guard: () => hasFeatureFlag('vstraportit')
       },
       {
         id: 'vapaansivistystyönosaamismerkkienraportti',
         name: 'raportti-tab-vstosaamismerkit',
         component: VSTOsaamismerkit,
-        guard: () => hasFeatureFlag('vstosaamismerkit')
+        guard: () => hasFeatureFlag('vstraportit')
       }
     ]
   },
