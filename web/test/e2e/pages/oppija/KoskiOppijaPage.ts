@@ -1,5 +1,6 @@
 import { Page, Locator, expect } from '@playwright/test'
 import { KorkeakouluOpiskeluoikeus } from './components/KorkeakouluOpiskeluoikeus'
+import { LukioOpiskeluoikeus } from './components/LukioOpiskeluoikeus'
 import { OpiskeluoikeudenTilaDialog } from './dialogs/OpiskeluoikeudentilaDialog'
 
 export class KoskiOppijaPage {
@@ -107,6 +108,10 @@ export class KoskiOppijaPage {
     otsikko: string | RegExp
   ): KorkeakouluOpiskeluoikeus {
     return new KorkeakouluOpiskeluoikeus(this.getOpiskeluoikeus(otsikko))
+  }
+
+  getLukioOpiskeluoikeus(otsikko: string | RegExp): LukioOpiskeluoikeus {
+    return new LukioOpiskeluoikeus(this.getOpiskeluoikeus(otsikko))
   }
 
   getOppilaitosNimi(otsikko: string | RegExp): Locator {
