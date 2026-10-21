@@ -261,7 +261,10 @@ export class Oppijataulukko extends React.Component {
                         <Link
                           href={`/koski/oppija/${opiskeluoikeus.henkilö.oid}`}
                         >
-                          <Highlight searchQuery={params.nimihaku || ''}>
+                          <Highlight
+                            matching="wordPrefix"
+                            searchQuery={params.nimihaku || ''}
+                          >
                             {opiskeluoikeus.henkilö.sukunimi +
                               ', ' +
                               opiskeluoikeus.henkilö.etunimet}
@@ -292,6 +295,7 @@ export class Oppijataulukko extends React.Component {
                               {
                                 <li className="koulutusmoduuli">
                                   <Highlight
+                                    matching="wordPrefix"
                                     searchQuery={params.tutkintohaku || ''}
                                   >
                                     {t(suoritus.koulutusmoduuli.tunniste.nimi)}
@@ -302,6 +306,7 @@ export class Oppijataulukko extends React.Component {
                                 (osaamisala, k) => (
                                   <li className="osaamisala" key={k}>
                                     <Highlight
+                                      matching="wordPrefix"
                                       searchQuery={params.tutkintohaku || ''}
                                     >
                                       {t(osaamisala.nimi)}
@@ -313,6 +318,7 @@ export class Oppijataulukko extends React.Component {
                                 (nimike, k) => (
                                   <li className="tutkintonimike" key={k}>
                                     <Highlight
+                                      matching="wordPrefix"
                                       searchQuery={params.tutkintohaku || ''}
                                     >
                                       {t(nimike.nimi)}
@@ -346,7 +352,7 @@ export class Oppijataulukko extends React.Component {
                       </td>
                       <td className="luokka">
                         <Highlight
-                          finnishFolding={false}
+                          matching="textPrefix"
                           searchQuery={params.luokkahaku || ''}
                         >
                           {opiskeluoikeus.luokka}

@@ -5,6 +5,7 @@ describe('Oppijahaku', function () {
   var eivastaa = 'Virtanen, Eivastaa (250390-680P)'
   var markkanen = 'Markkanen-Fagerström, Eéro Jorma-Petteri (080154-770R)'
   var eerola = 'Çelik-Eerola, Jouni (081165-793C)'
+  var aino = 'Lukioaineopiskelija, Aino (210163-2367)'
 
   before(Authentication().login(), resetFixtures, page.openPage)
 
@@ -46,6 +47,13 @@ describe('Oppijahaku', function () {
       it('Oppija valitaan', function () {
         expect(page.getSelectedOppija()).to.equal(markkanen)
       })
+    })
+  })
+  describe('Kun hakusanassa on useampi sana', function () {
+    before(page.openPage, page.oppijaHaku.search('ain lukio', [aino]))
+
+    it('Jokainen sana korostetaan, mutta vain nimen sanojen alusta', function () {
+      expect(page.oppijaHaku.getHighlights()).to.deep.equal(['Lukio', 'Ain'])
     })
   })
   describe('Haun tyhjentäminen', function () {

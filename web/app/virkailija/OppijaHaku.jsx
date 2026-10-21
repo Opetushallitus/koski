@@ -91,7 +91,9 @@ export const OppijaHaku = () => {
                 key={i}
               >
                 <Link href={href}>
-                  <Highlight searchQuery={query}>{oppija}</Highlight>
+                  <Highlight matching="wordPrefix" searchQuery={query}>
+                    {oppija}
+                  </Highlight>
                 </Link>
               </li>
             )

@@ -64,7 +64,7 @@ export default class OrganisaatioPicker extends BaconComponent {
     }
     const orgName = (org) => (
       <span>
-        <Highlight finnishFolding={false} searchQuery={searchString}>
+        <Highlight matching="substring" searchQuery={searchString}>
           {t(org.nimi)}
         </Highlight>{' '}
         {org.aktiivinen ? null : (
