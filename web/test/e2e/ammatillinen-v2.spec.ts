@@ -128,6 +128,8 @@ test.describe('Osittaisen ammatillisen tutkinnon useasta tutkinnosta virkailijan
     await expect(kuvaus).toHaveClass(/TextEdit__input--error/)
     await kuvaus.fill('Muksulan päiväkoti')
     await expect(kuvaus).not.toHaveClass(/TextEdit__input--error/)
+    await kuvaus.clear()
+    await expect(kuvaus).toHaveClass(/TextEdit__input--error/)
   })
 
   test('Renderöi osittaisen suorituksen useasta tutkinnosta tiedot virkailijan käyttöliittymässä', async ({ page, oppijaPage }) => {

@@ -47,6 +47,15 @@ const EmptySuoritusaika = (): NäytönSuoritusaika =>
     loppu: todayISODate()
   })
 
+// Suoritusaika on valinnainen, joten molempien päivien tyhjentäminen poistaa
+// sen. Yksin tyhjennetty päivä jää tyhjäksi ja näkyy virheenä.
+const suoritusaikaTaiTyhjä = (
+  suoritusaika: NäytönSuoritusaika
+): NäytönSuoritusaika | undefined =>
+  suoritusaika.alku === '' && suoritusaika.loppu === ''
+    ? undefined
+    : suoritusaika
+
 const EmptySuoritusPaikka = (): NäytönSuorituspaikka =>
   NäytönSuorituspaikka({
     tunniste: Koodistokoodiviite({
@@ -123,9 +132,12 @@ const NäyttöEditBase = <T extends AnyNäyttö>({
         <KeyValueRow localizableLabel="Kuvaus">
           <MultilineTextEdit
             value={t(value?.kuvaus)}
+            testId="nayton-kuvaus"
             onChange={(kuvaus) =>
-              kuvaus !== undefined &&
-              onChange({ ...value, kuvaus: localize(kuvaus) })
+              onChange({
+                ...value,
+                kuvaus: kuvaus ? localize(kuvaus) : undefined
+              })
             }
           />
         </KeyValueRow>
@@ -150,12 +162,11 @@ const NäyttöEditBase = <T extends AnyNäyttö>({
             placeholder={t('Kuvaus')}
             hasErrors={hasErrorAt(errors, 'suorituspaikka.kuvaus')}
             onChange={(kuvaus) =>
-              kuvaus !== undefined &&
               onChange({
                 ...value,
                 suorituspaikka: {
                   ...(value?.suorituspaikka ?? EmptySuoritusPaikka()),
-                  kuvaus
+                  kuvaus: kuvaus ?? localize('')
                 }
               })
             }
@@ -166,32 +177,30 @@ const NäyttöEditBase = <T extends AnyNäyttö>({
             <DateInput
               value={value?.suoritusaika?.alku}
               hasErrors={hasErrorAt(errors, 'suoritusaika.alku')}
-              onChange={(alku?: string) => {
-                alku &&
-                  onChange({
-                    ...value,
-                    suoritusaika: {
-                      ...(value?.suoritusaika ?? EmptySuoritusaika()),
-                      alku
-                    }
+              onChange={(alku?: string, rawAlku?: string) =>
+                onChange({
+                  ...value,
+                  suoritusaika: suoritusaikaTaiTyhjä({
+                    ...(value?.suoritusaika ?? EmptySuoritusaika()),
+                    alku: alku ?? rawAlku ?? ''
                   })
-              }}
+                })
+              }
               testId="alku"
             />
             <span className="AikajaksoEdit__separator"> {' — '}</span>
             <DateInput
               value={value?.suoritusaika?.loppu}
               hasErrors={hasErrorAt(errors, 'suoritusaika.loppu')}
-              onChange={(loppu?: string) => {
-                loppu &&
-                  onChange({
-                    ...value,
-                    suoritusaika: {
-                      ...(value?.suoritusaika ?? EmptySuoritusaika()),
-                      loppu
-                    }
+              onChange={(loppu?: string, rawLoppu?: string) =>
+                onChange({
+                  ...value,
+                  suoritusaika: suoritusaikaTaiTyhjä({
+                    ...(value?.suoritusaika ?? EmptySuoritusaika()),
+                    loppu: loppu ?? rawLoppu ?? ''
                   })
-              }}
+                })
+              }
               testId="loppu"
             />
           </div>
@@ -265,8 +274,11 @@ const NäytönArviointiEdit = ({
         <DateInput
           value={value?.päivä}
           hasErrors={hasErrorAt(errors, 'arviointi.päivä')}
-          onChange={(päivä) =>
-            päivä && onChange({ ...(value ?? emptyNäytönArviointi), päivä })
+          onChange={(päivä, rawPäivä) =>
+            onChange({
+              ...(value ?? emptyNäytönArviointi),
+              päivä: päivä ?? rawPäivä ?? ''
+            })
           }
         />
       </KeyValueRow>
@@ -277,7 +289,6 @@ const NäytönArviointiEdit = ({
               value={a.nimi}
               hasErrors={hasErrorAt(errors, `arvioitsijat.${index}.nimi`)}
               onChange={(nimi) =>
-                nimi !== undefined &&
                 value.arvioitsijat &&
                 onChange({
                   ...emptyNäytönArviointi,
@@ -285,7 +296,7 @@ const NäytönArviointiEdit = ({
                   arvioitsijat: [
                     ...value.arvioitsijat.slice(0, index),
                     NäytönArvioitsija({
-                      nimi,
+                      nimi: nimi ?? '',
                       ntm: value.arvioitsijat[index].ntm
                     }),
                     ...value.arvioitsijat.slice(index + 1)

@@ -307,6 +307,32 @@ test.describe('Ammatillisen tutkinnon uusi käyttöliittymä', () => {
       ).toHaveText('Autoalan perustutkinto')
     })
 
+    test('Näytön kuvauksen tyhjentäminen poistaa kuvauksen', async ({
+      page,
+      oppijaPage,
+      oppijaPageV2
+    }) => {
+      await oppijaPage.gotoWithQueryParams(ammattilainen, flag)
+      await page.getByTestId('oo.0.opiskeluoikeus.edit').click()
+      await suoritus(page, 'osasuoritukset.1.expand').click()
+      // Tyhjä kuvaus olisi palvelimelle virhe (emptyString), joten
+      // tyhjennetty kenttä poistetaan tallennettavasta näytöstä
+      await suoritus(
+        page,
+        'osasuoritukset.1.properties.nayton-kuvaus.input'
+      ).clear()
+      await oppijaPageV2.tallenna()
+
+      await expect(
+        page.getByText('työpaikka: Muksulan päiväkoti, Kaarinan kunta')
+      ).toBeVisible()
+      await expect(
+        page.getByText('Muksulan päiväkodin ympäristövaikutusten', {
+          exact: false
+        })
+      ).toHaveCount(0)
+    })
+
     test('Osaamisen tunnustamisen lisääminen tutkinnon osalle', async ({
       page,
       oppijaPage,
