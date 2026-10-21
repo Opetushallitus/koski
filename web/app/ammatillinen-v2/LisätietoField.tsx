@@ -10,6 +10,7 @@ import React from 'react'
 import { Koodistokoodiviite } from '../types/fi/oph/koski/schema/Koodistokoodiviite'
 import { KoodistoSelect } from '../components-v2/opiskeluoikeus/KoodistoSelect'
 import { MultilineTextEdit } from '../components-v2/controls/TextField'
+import { hasErrorInField } from '../components-v2/forms/validator'
 
 export const LisätietoView = ({
   value
@@ -35,7 +36,8 @@ export const emptyAmmatillisenTutkinnonOsanLisätieto =
   })
 export const LisätietoEdit = ({
   value,
-  onChange
+  onChange,
+  errors
 }: FieldEditorProps<AmmatillisenTutkinnonOsanLisätieto, EmptyObject>) => {
   return (
     <>
@@ -54,12 +56,12 @@ export const LisätietoEdit = ({
       />
       <MultilineTextEdit
         value={t(value?.kuvaus)}
+        hasErrors={hasErrorInField(errors, 'kuvaus')}
         onChange={(kuvaus) =>
-          kuvaus !== undefined &&
           onChange({
             ...emptyAmmatillisenTutkinnonOsanLisätieto,
             ...value,
-            kuvaus: localize(kuvaus)
+            kuvaus: localize(kuvaus ?? '')
           })
         }
       />

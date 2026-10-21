@@ -35,7 +35,11 @@ import {
 import { DateEdit } from '../controls/DateField'
 import { IconButton } from '../controls/IconButton'
 import { FieldEditorProps, FieldViewerProps } from '../forms/FormField'
-import { ValidationError, isValidationError } from '../forms/validator'
+import {
+  ValidationError,
+  hasErrorInField,
+  isValidationError
+} from '../forms/validator'
 import { CHARCODE_REMOVE } from '../texts/Icon'
 import {
   UusiOpiskeluoikeudenTilaModal,
@@ -153,6 +157,10 @@ export const OpiskeluoikeudenTilaEdit = <T extends OpiskeluoikeudenTila>(
                       min={min}
                       max={max}
                       onChange={oo.onChangeDate(index)}
+                      hasErrors={hasErrorInField(
+                        props.errors,
+                        `opiskeluoikeusjaksot.${index}.alku`
+                      )}
                     />,
                     <div key="jakso">
                       <TestIdText id="tila">{t(jakso.tila.nimi)}</TestIdText>
@@ -217,19 +225,20 @@ const useOpiskeluoikeudenTilaState = <T extends OpiskeluoikeudenTila>(
 ) => {
   const [isModalVisible, setModalVisible] = useState(false)
 
-  const onChangeDate = (index: number) => (value?: string | null) => {
-    if (props.value && value) {
-      const opiskeluoikeusjaksot = O.toUndefined(
-        A.updateAt(index, {
-          ...props.value.opiskeluoikeusjaksot[index],
-          alku: value
-        })(props.value.opiskeluoikeusjaksot)
-      )
-      if (opiskeluoikeusjaksot) {
-        props.onChange({ ...props.value, opiskeluoikeusjaksot })
+  const onChangeDate =
+    (index: number) => (value?: string | null, rawValue?: string) => {
+      if (props.value) {
+        const opiskeluoikeusjaksot = O.toUndefined(
+          A.updateAt(index, {
+            ...props.value.opiskeluoikeusjaksot[index],
+            alku: value ?? rawValue ?? ''
+          })(props.value.opiskeluoikeusjaksot)
+        )
+        if (opiskeluoikeusjaksot) {
+          props.onChange({ ...props.value, opiskeluoikeusjaksot })
+        }
       }
     }
-  }
 
   const { onChange, value, createJakso } = props
 

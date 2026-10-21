@@ -21,13 +21,16 @@ import { FlatButton } from '../controls/FlatButton'
 import { LocalizedTextEdit } from '../controls/LocalizedTestField'
 import { RaisedButton } from '../controls/RaisedButton'
 import { FormModel } from '../forms/FormModel'
+import { useFormErrors } from '../forms/useFormErrors'
+import { hasErrorInField } from '../forms/validator'
 import { ArvosanaEdit } from './ArvosanaField'
 import { KoodistoSelect } from './KoodistoSelect'
 import { LaajuusEdit } from './LaajuusField'
 import {
   OppiaineTableOpiskeluoikeus,
   OppiaineenOsasuoritus,
-  isKuvauksellinen
+  isKuvauksellinen,
+  pathTokensToString
 } from './OppiaineTable'
 
 type OppiaineTableKurssiEditorProps = {
@@ -54,6 +57,7 @@ export const OppiaineTableKurssiEditor: React.FC<
   OppiaineTableKurssiEditorProps
 > = ({ form, path, onClose }) => {
   const kurssi = get<OppiaineenOsasuoritus>(...path)(form.state)
+  const errors = useFormErrors(form, pathTokensToString(path))
 
   const createOsaamisenTunnustaminen = () =>
     form.set(
@@ -96,6 +100,7 @@ export const OppiaineTableKurssiEditor: React.FC<
               <LocalizedTextEdit
                 value={kurssi.koulutusmoduuli.kuvaus}
                 onChange={form.set(...path, 'koulutusmoduuli', 'kuvaus')}
+                hasErrors={hasErrorInField(errors, 'koulutusmoduuli.kuvaus')}
               />
             </KeyValueRow>
           )}
@@ -149,6 +154,10 @@ export const OppiaineTableKurssiEditor: React.FC<
                   <DateEdit
                     value={arviointi.päivä}
                     onChange={form.set(...path, ...arviointipäiväPath(index))}
+                    hasErrors={hasErrorInField(
+                      errors,
+                      `arviointi.${index}.päivä`
+                    )}
                     align="right"
                   />
                 </KeyValueRow>
@@ -174,6 +183,7 @@ export const OppiaineTableKurssiEditor: React.FC<
                     large
                     value={kurssi.tunnustettu.selite}
                     onChange={form.set(...path, 'tunnustettu', 'selite')}
+                    hasErrors={hasErrorInField(errors, 'tunnustettu.selite')}
                   />
                   <Checkbox
                     checked={kurssi.tunnustettu.rahoituksenPiirissä}
@@ -203,6 +213,7 @@ export const OppiaineTableKurssiEditor: React.FC<
                       large
                       value={kurssi.tunnustettu.selite}
                       onChange={form.set(...path, 'tunnustettu', 'selite')}
+                      hasErrors={hasErrorInField(errors, 'tunnustettu.selite')}
                     />
                     <Checkbox
                       checked={kurssi.tunnustettu.rahoituksenPiirissä}

@@ -35,7 +35,7 @@ export const LocalizedTextEdit: React.FC<LocalizedTextEditProps> = (props) => (
       value={t(props.value)}
       large={props.large}
       placeholder={props.placeholder}
-      hasErrors={props.hasErrors}
+      hasErrors={props.hasErrors || Boolean(props.errors)}
       onChange={(text) =>
         props.onChange(
           text === undefined || text === '' ? undefined : localize(text)

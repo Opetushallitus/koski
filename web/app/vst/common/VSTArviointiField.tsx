@@ -62,8 +62,11 @@ export const VSTArviointiEdit = <T extends VSTArviointi>(
         <OsasuoritusSubproperty rowNumber={startRow + 1} label="Päivämäärä">
           <DateEdit
             value={props.value.päivä}
-            onChange={(päivä) =>
-              päivä && props.onChange({ ...props.value, päivä } as T)
+            onChange={(päivä?: string, rawPäivä?: string) =>
+              props.onChange({
+                ...props.value,
+                päivä: päivä ?? rawPäivä ?? ''
+              } as T)
             }
             errors={props.errors}
             align="right"

@@ -31,15 +31,9 @@ import { NäytönSuorituspaikka } from '../types/fi/oph/koski/schema/NaytonSuori
 import { AmisArvosanaSelect } from './Arviointi'
 import { NäyttöAmmatillinenOsittainen } from '../types/fi/oph/koski/schema/NayttoAmmatillinenOsittainen'
 import { Näyttö } from '../types/fi/oph/koski/schema/Naytto'
-import { ValidationError } from '../components-v2/forms/validator'
+import { hasErrorInField } from '../components-v2/forms/validator'
 
 type AnyNäyttö = Näyttö | NäyttöAmmatillinenOsittainen
-
-// Tyhjän pakollisen kentän virhe näkyy vain kentän punaisena tilana (ks.
-// FieldErrors), joten se on välitettävä oikealle syötekentälle. Näytön alla on
-// samannimisiä kenttiä (kuvaus, päivä), joten virhe tunnistetaan polun lopusta.
-const hasErrorAt = (errors: ValidationError[] | undefined, path: string) =>
-  (errors || []).some((e) => `.${e.path}`.endsWith(`.${path}`))
 
 const EmptySuoritusaika = (): NäytönSuoritusaika =>
   NäytönSuoritusaika({
@@ -160,7 +154,7 @@ const NäyttöEditBase = <T extends AnyNäyttö>({
           <LocalizedTextEdit
             value={value?.suorituspaikka?.kuvaus}
             placeholder={t('Kuvaus')}
-            hasErrors={hasErrorAt(errors, 'suorituspaikka.kuvaus')}
+            hasErrors={hasErrorInField(errors, 'suorituspaikka.kuvaus')}
             onChange={(kuvaus) =>
               onChange({
                 ...value,
@@ -176,7 +170,7 @@ const NäyttöEditBase = <T extends AnyNäyttö>({
           <div className="AikajaksoEdit">
             <DateInput
               value={value?.suoritusaika?.alku}
-              hasErrors={hasErrorAt(errors, 'suoritusaika.alku')}
+              hasErrors={hasErrorInField(errors, 'suoritusaika.alku')}
               onChange={(alku?: string, rawAlku?: string) =>
                 onChange({
                   ...value,
@@ -191,7 +185,7 @@ const NäyttöEditBase = <T extends AnyNäyttö>({
             <span className="AikajaksoEdit__separator"> {' — '}</span>
             <DateInput
               value={value?.suoritusaika?.loppu}
-              hasErrors={hasErrorAt(errors, 'suoritusaika.loppu')}
+              hasErrors={hasErrorInField(errors, 'suoritusaika.loppu')}
               onChange={(loppu?: string, rawLoppu?: string) =>
                 onChange({
                   ...value,
@@ -273,7 +267,7 @@ const NäytönArviointiEdit = ({
       <KeyValueRow localizableLabel="Arviointipäivä">
         <DateInput
           value={value?.päivä}
-          hasErrors={hasErrorAt(errors, 'arviointi.päivä')}
+          hasErrors={hasErrorInField(errors, 'arviointi.päivä')}
           onChange={(päivä, rawPäivä) =>
             onChange({
               ...(value ?? emptyNäytönArviointi),
@@ -287,7 +281,7 @@ const NäytönArviointiEdit = ({
           <div key={`nayton.arvioijat.${index}`}>
             <TextEdit
               value={a.nimi}
-              hasErrors={hasErrorAt(errors, `arvioitsijat.${index}.nimi`)}
+              hasErrors={hasErrorInField(errors, `arvioitsijat.${index}.nimi`)}
               onChange={(nimi) =>
                 value.arvioitsijat &&
                 onChange({

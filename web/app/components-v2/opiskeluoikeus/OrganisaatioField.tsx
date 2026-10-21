@@ -83,6 +83,7 @@ export const OrganisaatioEdit = <T extends Organisaatio>(
       value={selected}
       onChange={onChangeCB}
       onSearch={setQuery}
+      hasErrors={Boolean(props.errors)}
       testId="organisaatio.edit"
     />
   )

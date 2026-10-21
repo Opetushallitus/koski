@@ -1,11 +1,14 @@
 import React, { useCallback } from 'react'
 import { common, CommonProps, cx } from '../CommonProps'
 import { useTestId } from '../../appstate/useTestId'
+import { ValidationError } from '../forms/validator'
 
 export type NumberFieldProps = CommonProps<{
   value?: number
   onChange: (text?: number) => void
   hasErrors?: boolean
+  /** FormFieldin välittämät virheet värjäävät kentän; tekstit näyttää FormField. */
+  errors?: ValidationError[]
   testId?: string | number
 }>
 
@@ -31,7 +34,8 @@ export const NumberField: React.FC<NumberFieldProps> = (props) => {
       <input
         className={cx(
           'NumberField__input',
-          props.hasErrors && 'NumberField__input--error'
+          (props.hasErrors || Boolean(props.errors)) &&
+            'NumberField__input--error'
         )}
         type="number"
         min={0}

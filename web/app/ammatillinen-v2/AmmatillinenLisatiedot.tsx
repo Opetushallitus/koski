@@ -58,6 +58,7 @@ import {
 } from '../components-v2/opiskeluoikeus/MaksuttomuusField'
 import { IconButton } from '../components-v2/controls/IconButton'
 import { CHARCODE_REMOVE } from '../components-v2/texts/Icon'
+import { hasErrorInField } from '../components-v2/forms/validator'
 
 interface AmmatillinenLisatiedotProps {
   form: FormModel<AmmatillinenOpiskeluoikeus>
@@ -409,19 +410,28 @@ const HojksEdit = ({
         <span className="AikajaksoEdit__separator"> {' — '}</span>
         <DateInput
           value={value?.alku}
-          onChange={(alku?: string) => {
-            alku && onChange({ ...emptyHojks, ...value, alku })
+          onChange={(alku?: string, rawAlku?: string) => {
+            onChange({
+              ...emptyHojks,
+              ...value,
+              alku: alku ?? (rawAlku || undefined)
+            })
           }}
           testId="alku"
-          hasErrors={hasErrors && !value?.alku}
+          hasErrors={hasErrorInField(errors, 'alku')}
         />
         <span className="AikajaksoEdit__separator"> {' — '}</span>
         <DateInput
           value={value?.loppu}
-          onChange={(loppu?: string) => {
-            loppu && onChange({ ...emptyHojks, ...value, loppu })
+          onChange={(loppu?: string, rawLoppu?: string) => {
+            onChange({
+              ...emptyHojks,
+              ...value,
+              loppu: loppu ?? (rawLoppu || undefined)
+            })
           }}
           testId="loppu"
+          hasErrors={hasErrorInField(errors, 'loppu')}
         />
       </div>
       <IconButton
@@ -469,19 +479,28 @@ const OsaAikaisuusEdit = ({
     <div className="AikajaksoEdit">
       <DateInput
         value={value?.alku}
-        onChange={(alku?: string) => {
-          alku && onChange({ ...emptyOsaAikausuus, ...value, alku })
+        onChange={(alku?: string, rawAlku?: string) => {
+          onChange({
+            ...emptyOsaAikausuus,
+            ...value,
+            alku: alku ?? rawAlku ?? ''
+          })
         }}
         testId="alku"
-        hasErrors={hasErrors && !value?.alku}
+        hasErrors={hasErrorInField(errors, 'alku')}
       />
       <span>{' — '}</span>
       <DateInput
         value={value?.loppu}
-        onChange={(loppu?: string) => {
-          loppu && onChange({ ...emptyOsaAikausuus, ...value, loppu })
+        onChange={(loppu?: string, rawLoppu?: string) => {
+          onChange({
+            ...emptyOsaAikausuus,
+            ...value,
+            loppu: loppu ?? (rawLoppu || undefined)
+          })
         }}
         testId="loppu"
+        hasErrors={hasErrorInField(errors, 'loppu')}
       />
       <span className="InlineJakso__label">{t('Osa-aikaisuus')}</span>
       <NumberField
@@ -536,49 +555,45 @@ const OpiskeluvalmiuksiaTuvkevienOpintojenJaksoEdit = ({
   OpiskeluvalmiuksiaTukevienOpintojenJakso | undefined,
   EmptyObject
 >) => {
-  const hasErrors = errors !== undefined && errors.length > 0
   return (
     <div className="AikajaksoEdit">
       <DateInput
         value={value?.alku}
-        onChange={(alku?: string) => {
-          alku &&
-            onChange({
-              ...emptyOpiskeluvalmiuksiaTuvkevienOpintojenJakso,
-              ...value,
-              alku
-            })
+        onChange={(alku?: string, rawAlku?: string) => {
+          onChange({
+            ...emptyOpiskeluvalmiuksiaTuvkevienOpintojenJakso,
+            ...value,
+            alku: alku ?? rawAlku ?? ''
+          })
         }}
         testId="alku"
-        hasErrors={hasErrors && !value?.alku}
+        hasErrors={hasErrorInField(errors, 'alku')}
       />
       <span>{' — '}</span>
       <DateInput
         value={value?.loppu}
-        onChange={(loppu?: string) => {
-          loppu &&
-            onChange({
-              ...emptyOpiskeluvalmiuksiaTuvkevienOpintojenJakso,
-              ...value,
-              loppu
-            })
+        onChange={(loppu?: string, rawLoppu?: string) => {
+          onChange({
+            ...emptyOpiskeluvalmiuksiaTuvkevienOpintojenJakso,
+            ...value,
+            loppu: loppu ?? rawLoppu ?? ''
+          })
         }}
         testId="loppu"
-        hasErrors={hasErrors && !value?.loppu}
+        hasErrors={hasErrorInField(errors, 'loppu')}
       />
       <span className="InlineJakso__label">{t('Kuvaus')}</span>
       <LocalizedTextEdit
         value={value?.kuvaus}
         onChange={(kuvaus?: LocalizedString) => {
-          kuvaus &&
-            onChange({
-              ...emptyOpiskeluvalmiuksiaTuvkevienOpintojenJakso,
-              ...value,
-              kuvaus
-            })
+          onChange({
+            ...emptyOpiskeluvalmiuksiaTuvkevienOpintojenJakso,
+            ...value,
+            kuvaus: kuvaus ?? emptyLocalizedString
+          })
         }}
         testId="kuvaus"
-        hasErrors={hasErrors && !t(value?.kuvaus)}
+        hasErrors={hasErrorInField(errors, 'kuvaus')}
       />
     </div>
   )

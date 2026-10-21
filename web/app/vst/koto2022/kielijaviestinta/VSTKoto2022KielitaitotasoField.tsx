@@ -7,6 +7,7 @@ import {
   FieldViewerProps
 } from '../../../components-v2/forms/FormField'
 import { FormListField } from '../../../components-v2/forms/FormListField'
+import { hasErrorInField } from '../../../components-v2/forms/validator'
 import { getValue } from '../../../components-v2/forms/FormModel'
 import {
   ArvosanaEdit,
@@ -92,12 +93,14 @@ export const VSTKoto2022KielitaitotasoEdit = (
       <OsasuoritusSubproperty rowNumber={startRow + 1} label="Päivämäärä">
         <DateEdit
           value={props.value.arviointipäivä}
-          onChange={(arviointipäivä) =>
+          hasErrors={hasErrorInField(props.errors, 'arviointipäivä')}
+          onChange={(arviointipäivä?: string, rawArviointipäivä?: string) =>
             props.value?.arvosana &&
             props.onChange(
               VSTKotoutumiskoulutuksenKieliJaViestintäosaamisenArviointi({
                 arvosana: props.value?.arvosana,
-                arviointipäivä
+                arviointipäivä:
+                  arviointipäivä ?? (rawArviointipäivä || undefined)
               })
             )
           }

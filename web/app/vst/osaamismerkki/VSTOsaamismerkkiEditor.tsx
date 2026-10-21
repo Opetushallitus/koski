@@ -168,7 +168,9 @@ const OsaamismerkinArviointiEdit: React.FC<
       <KeyValueRow localizableLabel="Päivämäärä" innerKeyValueTable>
         <DateEdit
           value={value.päivä}
-          onChange={(päivä) => päivä && onChange({ ...value, päivä })}
+          onChange={(päivä?: string, rawPäivä?: string) =>
+            onChange({ ...value, päivä: päivä ?? rawPäivä ?? '' })
+          }
           errors={errors}
         />
       </KeyValueRow>

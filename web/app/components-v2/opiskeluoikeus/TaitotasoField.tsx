@@ -17,6 +17,7 @@ import {
   SelectOption
 } from '../controls/Select'
 import { FieldEditorProps, FieldViewerProps } from '../forms/FormField'
+import { hasErrorInField } from '../forms/validator'
 
 type TaitotasoOf<T extends LukutaitokoulutuksenArviointi> = Exclude<
   T['taitotaso'],
@@ -78,6 +79,7 @@ export const TaitotasoEdit = <T extends LukutaitokoulutuksenArviointi>(
         value={selectedValue}
         options={groupedKoodisto as OptionList<TaitotasoOf<T>>}
         onChange={onChange}
+        hasErrors={hasErrorInField(props.errors, 'taitotaso')}
         testId="taitotaso.edit"
       />
     )

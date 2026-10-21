@@ -27,6 +27,7 @@ import {
 } from '../components-v2/controls/Select'
 import { TestIdLayer, TestIdText } from '../appstate/useTestId'
 import { parasArviointi } from '../util/arvioinnit'
+import { hasErrorInField } from '../components-v2/forms/validator'
 
 export const ArviointiView = ({
   value
@@ -67,7 +68,8 @@ export const emptyArviointi: AmmatillinenArviointi = AmmatillinenArviointi({
 })
 export const ArviointiEdit = ({
   value,
-  onChange
+  onChange,
+  errors
 }: FieldEditorProps<AmmatillinenArviointi, EmptyObject>) => {
   return (
     <KeyValueTable>
@@ -82,9 +84,14 @@ export const ArviointiEdit = ({
       <KeyValueRow localizableLabel="Arviointipäivä">
         <DateInput
           value={value?.päivä}
-          onChange={(päivä) =>
-            päivä && onChange({ ...emptyArviointi, ...value, päivä })
+          onChange={(päivä, rawPäivä) =>
+            onChange({
+              ...emptyArviointi,
+              ...value,
+              päivä: päivä ?? rawPäivä ?? ''
+            })
           }
+          hasErrors={hasErrorInField(errors, 'päivä')}
           align="right"
         />
       </KeyValueRow>
@@ -94,18 +101,21 @@ export const ArviointiEdit = ({
             <KeyValueRow localizableLabel="Nimi">
               <TextEdit
                 value={a.nimi}
+                hasErrors={hasErrorInField(
+                  errors,
+                  `arvioitsijat.${index}.nimi`
+                )}
                 onChange={(nimi) =>
-                  nimi !== undefined &&
                   onChange({
                     ...emptyArviointi,
                     ...value,
                     arvioitsijat: value.arvioitsijat
                       ? [
                           ...value.arvioitsijat.slice(0, index),
-                          Arvioitsija({ nimi }),
+                          Arvioitsija({ nimi: nimi ?? '' }),
                           ...value.arvioitsijat.slice(index + 1)
                         ]
-                      : [Arvioitsija({ nimi })]
+                      : [Arvioitsija({ nimi: nimi ?? '' })]
                   })
                 }
               />

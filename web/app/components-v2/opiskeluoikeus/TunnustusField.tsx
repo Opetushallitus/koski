@@ -11,6 +11,7 @@ import { FlatButton } from '../controls/FlatButton'
 import { Removable } from '../controls/Removable'
 import { MultilineTextEdit } from '../controls/TextField'
 import { FieldEditorProps, FieldViewerProps } from '../forms/FormField'
+import { hasErrorInField } from '../forms/validator'
 import { KeyValueRow, KeyValueTable } from '../containers/KeyValueTable'
 import { OsaamisenTunnustaminen } from '../../types/fi/oph/koski/schema/OsaamisenTunnustaminen'
 import { BooleanEdit, BooleanView } from './BooleanField'
@@ -77,6 +78,7 @@ export const TunnustusEdit = <
               value={value}
               onChange={onChange}
               placeholder={t('Selite')}
+              hasErrors={hasErrorInField(props.errors, 'selite')}
               testId="selite"
             />
           </Removable>
@@ -114,6 +116,7 @@ export const OsaamisenTunnustusEdit = <T extends OsaamisenTunnustaminen>(
               value={value}
               onChange={onChange}
               placeholder={t('Selite')}
+              hasErrors={hasErrorInField(props.errors, 'selite')}
               testId="selite"
             />
             <BooleanEdit

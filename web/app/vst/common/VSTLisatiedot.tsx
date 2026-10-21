@@ -4,6 +4,8 @@ import { DateEdit } from '../../components-v2/controls/DateField'
 import { FlatButton } from '../../components-v2/controls/FlatButton'
 import { RaisedButton } from '../../components-v2/controls/RaisedButton'
 import { FormModel, getValue } from '../../components-v2/forms/FormModel'
+import { useFormErrors } from '../../components-v2/forms/useFormErrors'
+import { hasErrorInField } from '../../components-v2/forms/validator'
 import { t } from '../../i18n/i18n'
 import { Maksuttomuus } from '../../types/fi/oph/koski/schema/Maksuttomuus'
 import { OikeuttaMaksuttomuuteenPidennetty } from '../../types/fi/oph/koski/schema/OikeuttaMaksuttomuuteenPidennetty'
@@ -22,6 +24,7 @@ interface VSTLisatiedotProps {
 export const VSTLisatiedot: React.FC<VSTLisatiedotProps> = ({ form }) => {
   const lisatiedotPath = form.root.prop('lisätiedot')
   const lisätiedot = getValue(lisatiedotPath)(form.state)
+  const lisatiedotErrors = useFormErrors(form, lisatiedotPath)
   const maksuttomuus = useMemo(
     () => lisätiedot?.maksuttomuus || [],
     [lisätiedot?.maksuttomuus]
@@ -105,17 +108,21 @@ export const VSTLisatiedot: React.FC<VSTLisatiedotProps> = ({ form }) => {
                       <div>
                         {form.editMode ? (
                           <DateEdit
-                            onChange={(val) => {
+                            onChange={(val?: string, raw?: string) => {
                               form.updateAt(
                                 maksuttomuusPath.at(i),
                                 (_maksuttomuus) =>
                                   Maksuttomuus({
-                                    alku: val || '',
+                                    alku: val ?? raw ?? '',
                                     maksuton: m.maksuton
                                   })
                               )
                             }}
                             value={m.alku}
+                            hasErrors={hasErrorInField(
+                              lisatiedotErrors,
+                              `maksuttomuus.${i}.alku`
+                            )}
                           />
                         ) : (
                           <>{ISO2FinnishDate(m.alku)}</>
@@ -198,17 +205,21 @@ export const VSTLisatiedot: React.FC<VSTLisatiedotProps> = ({ form }) => {
                     <div>
                       {form.editMode ? (
                         <DateEdit
-                          onChange={(val) => {
+                          onChange={(val?: string, raw?: string) => {
                             form.updateAt(
                               oikeuttaMaksuttomuuteenPath.at(i),
                               (om) =>
                                 OikeuttaMaksuttomuuteenPidennetty({
-                                  alku: val || '',
+                                  alku: val ?? raw ?? '',
                                   loppu: om.loppu
                                 })
                             )
                           }}
                           value={m.alku}
+                          hasErrors={hasErrorInField(
+                            lisatiedotErrors,
+                            `oikeuttaMaksuttomuuteenPidennetty.${i}.alku`
+                          )}
                         />
                       ) : (
                         <>{ISO2FinnishDate(m.alku)}</>
@@ -220,17 +231,21 @@ export const VSTLisatiedot: React.FC<VSTLisatiedotProps> = ({ form }) => {
                     <div>
                       {form.editMode ? (
                         <DateEdit
-                          onChange={(val) => {
+                          onChange={(val?: string, raw?: string) => {
                             form.updateAt(
                               oikeuttaMaksuttomuuteenPath.at(i),
                               (om) =>
                                 OikeuttaMaksuttomuuteenPidennetty({
                                   alku: om.alku,
-                                  loppu: val || ''
+                                  loppu: val ?? raw ?? ''
                                 })
                             )
                           }}
                           value={m.loppu}
+                          hasErrors={hasErrorInField(
+                            lisatiedotErrors,
+                            `oikeuttaMaksuttomuuteenPidennetty.${i}.loppu`
+                          )}
                         />
                       ) : (
                         <>{ISO2FinnishDate(m.loppu)}</>
