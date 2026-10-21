@@ -71,4 +71,47 @@ test.describe('Lukiokoulutus 2019: oppiaineen muokkaus', () => {
 
     await expect(ai.locator('td.arvosana')).toHaveText('8')
   })
+
+  test('Valtakunnallisen oppiaineen lisääminen vaatii arvosanan, koska suoritus on valmis', async ({
+    oppijaPage
+  }) => {
+    await opiskeluoikeus.lisääOppiaine('Psykologia')
+
+    await expect(oppijaPage.tallennaBtn).toBeDisabled()
+    await expect(
+      opiskeluoikeus.oppiaineet.getByText(
+        'Arvosana vaaditaan, koska päätason suoritus on merkitty valmiiksi.'
+      )
+    ).toBeVisible()
+    await expect(opiskeluoikeus.oppiaineRivi('PS').locator('.nimi')).toHaveText(
+      'Psykologia'
+    )
+  })
+
+  test('Valtakunnallinen oppiaine voidaan lisätä ja tallentaa arvosanan kanssa', async ({
+    oppijaPage
+  }) => {
+    await opiskeluoikeus.lisääOppiaine('Psykologia')
+    const ps = opiskeluoikeus.oppiaineRivi('PS')
+    await opiskeluoikeus.arvosanaDropdown(ps).selectOptionByClick('9')
+
+    await oppijaPage.tallenna()
+
+    await expect(
+      opiskeluoikeus.oppiaineRivi('PS').locator('.nimi')
+    ).toHaveText('Psykologia')
+  })
+
+  test('Valtakunnallinen oppiaine voidaan poistaa', async ({ oppijaPage }) => {
+    await opiskeluoikeus.lisääOppiaine('Psykologia')
+    const ps = opiskeluoikeus.oppiaineRivi('PS')
+    await opiskeluoikeus.arvosanaDropdown(ps).selectOptionByClick('9')
+    await oppijaPage.tallenna()
+
+    await oppijaPage.avaaMuokkausnäkymä()
+    await opiskeluoikeus.poistaOppiaine(opiskeluoikeus.oppiaineRivi('PS'))
+    await oppijaPage.tallenna()
+
+    await expect(opiskeluoikeus.oppiaineRivi('PS')).toHaveCount(0)
+  })
 })
