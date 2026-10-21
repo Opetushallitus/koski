@@ -25,6 +25,7 @@ import { hasFeatureFlag } from '../util/featureFlags'
 import {
   ammatillinenTutkintoSuoritustiedotKyselymalli,
   vstKopsKyselymalli,
+  vstOsaamismerkitKyselymalli,
   vstVapaatavoitteinenKyselymalli
 } from '../components-v2/raportit/massaluovutusRaporttiKyselyt'
 
@@ -238,6 +239,12 @@ const kaikkiRaportitKategorioittain = [
         name: 'raportti-tab-vstkops',
         component: VSTKops,
         guard: () => hasFeatureFlag('vstkops')
+      },
+      {
+        id: 'vapaansivistystyönosaamismerkkienraportti',
+        name: 'raportti-tab-vstosaamismerkit',
+        component: VSTOsaamismerkit,
+        guard: () => hasFeatureFlag('vstosaamismerkit')
       }
     ]
   },
@@ -1234,6 +1241,23 @@ function VSTKops({ stateP }) {
       shortDescription={shortDescriptionText}
       example={exampleText}
       massaluovutusKyselymalli={vstKopsKyselymalli}
+      lang={lang}
+    />
+  )
+}
+
+function VSTOsaamismerkit({ stateP }) {
+  const shortDescriptionText = (
+    <Text name="VstOsaamismerkitRaportti-short-description" />
+  )
+  const exampleText = <Paragraphs name="VstOsaamismerkitRaportti-example" />
+
+  return (
+    <AikajaksoRaportti
+      stateP={stateP}
+      shortDescription={shortDescriptionText}
+      example={exampleText}
+      massaluovutusKyselymalli={vstOsaamismerkitKyselymalli}
       lang={lang}
     />
   )
