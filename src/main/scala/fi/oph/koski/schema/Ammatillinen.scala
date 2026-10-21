@@ -919,6 +919,8 @@ case class YhteinenTutkinnonOsa(
   // Koulutusvientikokeilut:
   @KoodistoKoodiarvo("600001")
   @KoodistoKoodiarvo("600002")
+  // Uusi tunniste demoa varten:
+  @KoodistoKoodiarvo("demokoodi")
   tunniste: Koodistokoodiviite,
   pakollinen: Boolean,
   override val laajuus: Option[LaajuusOsaamispisteissä]

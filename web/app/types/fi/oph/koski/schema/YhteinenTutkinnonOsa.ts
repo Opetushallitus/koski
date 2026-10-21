@@ -26,6 +26,7 @@ export type YhteinenTutkinnonOsa = {
     | '400014'
     | '600001'
     | '600002'
+    | 'demokoodi'
   >
   pakollinen: boolean
   laajuus?: LaajuusOsaamispisteissä
@@ -49,6 +50,7 @@ export const YhteinenTutkinnonOsa = (o: {
     | '400014'
     | '600001'
     | '600002'
+    | 'demokoodi'
   >
   pakollinen: boolean
   laajuus?: LaajuusOsaamispisteissä
