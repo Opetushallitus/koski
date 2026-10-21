@@ -33,6 +33,7 @@ export default defineConfig([
       '@eslint-react/no-component-will-mount': 'error',
       '@eslint-react/no-component-will-receive-props': 'error',
       '@eslint-react/no-component-will-update': 'error',
+      '@eslint-react/no-nested-component-definitions': 'error',
       '@eslint-react/dom-no-dangerously-set-innerhtml-with-children': 'error',
       '@eslint-react/dom-no-find-dom-node': 'error',
       '@eslint-react/dom-no-unsafe-target-blank': 'error',
