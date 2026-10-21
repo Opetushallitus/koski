@@ -3,6 +3,7 @@ package fi.oph.koski.schema
 import java.time.{LocalDate, LocalDateTime}
 import fi.oph.koski.koskiuser.Rooli
 import fi.oph.scalaschema.annotation._
+import fi.oph.scalaschema.{ClassSchema, StringSchema}
 import fi.oph.koski.schema.annotation._
 import fi.oph.koski.util.FinnishDateFormat
 import mojave._
@@ -873,18 +874,14 @@ sealed trait AmmatillisenTutkinnonOsa extends KoulutusmoduuliValinnainenLaajuus
 }
 
 object AmmatillisenTutkinnonOsa {
-  val reformiMuotoisenTutkinnonYhteisetOsat = List(
-    // Yhteiset tutkinnon osat ennen 1.8.2022
-    "400012", "400013", "400014",
-    // Yhteiset tutkinnon osat 1.8.2022 alkaen
-    "106727", "106728", "106729",
-    // Yhteiset tutkinnon osat 1.8.2026 alkaen
-    "108356", "108357", "108358",
-    // Koulutusvientikokeilut
-    "600001", "600002",
-    ).map(Koodistokoodiviite(_, "tutkinnonosat"))
+  lazy val yhteisetTutkinnonOsat: List[Koodistokoodiviite] = {
+    val tunniste = KoskiSchema.createSchema(classOf[YhteinenTutkinnonOsa]).asInstanceOf[ClassSchema]
+      .properties.find(_.key == "tunniste").get.schema.asInstanceOf[ClassSchema]
+    val koodiarvo = tunniste.properties.find(_.key == "koodiarvo").get.schema.asInstanceOf[StringSchema]
+    koodiarvo.enumValues.get.map(Koodistokoodiviite(_, "tutkinnonosat"))
+  }
   val opsMuotoisenTutkinnonYhteisetOsat = List("101053", "101054", "101055", "101056").map(Koodistokoodiviite(_, "tutkinnonosat"))
-  val yhteisetTutkinnonOsat = reformiMuotoisenTutkinnonYhteisetOsat ::: opsMuotoisenTutkinnonYhteisetOsat
+  lazy val reformiMuotoisenTutkinnonYhteisetOsat = yhteisetTutkinnonOsat.filterNot(opsMuotoisenTutkinnonYhteisetOsat.contains)
 }
 
 trait ValtakunnallinenTutkinnonOsa extends AmmatillisenTutkinnonOsa
@@ -907,15 +904,19 @@ case class YhteinenTutkinnonOsa(
   @KoodistoKoodiarvo("101054")
   @KoodistoKoodiarvo("101055")
   @KoodistoKoodiarvo("101056")
+  // Yhteiset tutkinnon osat 1.8.2022 alkaen:
   @KoodistoKoodiarvo("106727")
   @KoodistoKoodiarvo("106728")
   @KoodistoKoodiarvo("106729")
+  // Yhteiset tutkinnon osat 1.8.2026 alkaen:
   @KoodistoKoodiarvo("108356")
   @KoodistoKoodiarvo("108357")
   @KoodistoKoodiarvo("108358")
+  // Yhteiset tutkinnon osat ennen 1.8.2022:
   @KoodistoKoodiarvo("400012")
   @KoodistoKoodiarvo("400013")
   @KoodistoKoodiarvo("400014")
+  // Koulutusvientikokeilut:
   @KoodistoKoodiarvo("600001")
   @KoodistoKoodiarvo("600002")
   tunniste: Koodistokoodiviite,
