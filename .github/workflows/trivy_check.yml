@@ -32,7 +32,7 @@ jobs:
           persist-credentials: false
 
       # Populate the Maven cache before Trivy to avoid Maven Central rate limiting during dependency analysis.
-      - uses: ./.github/actions/setup_java_21
+      - uses: ./.github/actions/setup_java_25
 
       - name: Resolve Maven dependencies
         run: ./mvnw --batch-mode --file pom.xml dependency:go-offline

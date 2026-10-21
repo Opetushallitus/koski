@@ -13,10 +13,10 @@ if [ -n "${JAVA_HOME:-}" ]; then
   export PATH="$JAVA_HOME/bin:$PATH"
 fi
 
-# Fail fast if Java < 21
+# Fail fast if Java < 25
 JAVA_MAJOR="$(java -version 2>&1 | head -n1 | awk -F[\\\".] '{print $2}')"
-if [ -z "$JAVA_MAJOR" ] || [ "$JAVA_MAJOR" -lt 21 ]; then
-  echo "Java 21+ is required (found $JAVA_MAJOR). Please install JDK 21+ or set JAVA_HOME." >&2
+if [ -z "$JAVA_MAJOR" ] || [ "$JAVA_MAJOR" -lt 25 ]; then
+  echo "Java 25+ is required (found $JAVA_MAJOR). Please install JDK 25+ or set JAVA_HOME." >&2
   exit 1
 fi
 
