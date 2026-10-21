@@ -86,5 +86,53 @@ test.describe('Lukiokoulutus 2019: virkailija', () => {
         opiskeluoikeus.tilaVahvistus.locator('.vahvistus.inline')
       ).toHaveText('15.5.2020 Jyväskylä Reijo Reksi, rehtori')
     })
+
+    test('Oppiaineiden ja kurssien arvosanat näytetään', async () => {
+      const ai = opiskeluoikeus.oppiaineRivi('AI')
+      await expect(ai.locator('.nimi')).toHaveText(
+        'Äidinkieli ja kirjallisuus, Suomen kieli ja kirjallisuus'
+      )
+
+      await expect(
+        opiskeluoikeus.kurssi(ai, 'ÄI1').locator('.arvosana')
+      ).toHaveText('8')
+      await expect(
+        opiskeluoikeus.kurssi(ai, 'ÄI2').locator('.arvosana')
+      ).toHaveText('8')
+      await expect(
+        opiskeluoikeus.kurssi(ai, 'ÄI3').locator('.arvosana')
+      ).toHaveText('8')
+
+      await expect(ai.locator('td.laajuus:not(.arvioitu)')).toHaveText('6')
+      await expect(ai.locator('td.laajuus.arvioitu')).toHaveText('6')
+      await expect(ai.locator('td.arvosana')).toHaveText('9')
+    })
+  })
+
+  test.describe('Lukion oppiaineiden oppimäärien suoritus', () => {
+    let opiskeluoikeus: LukioOpiskeluoikeus
+
+    test.beforeEach(async ({ virkailijaPage, oppijaHaku, oppijaPage }) => {
+      await virkailijaPage.goto()
+      await (await oppijaHaku.search('010105A1995')).clickOnFirst()
+      await oppijaPage.selectOpiskeluoikeus('lukiokoulutus')
+      opiskeluoikeus = oppijaPage.getLukioOpiskeluoikeus('lukion aineopinnot')
+    })
+
+    test('Arvioitu ja hyväksytysti arvioitu laajuus näytetään erikseen oppiaineelle', async () => {
+      // Varmistetaan, että sarakkeiden otsikot todella tarkoittavat sitä,
+      // mitä alla luetut arvot olettavat - sarake-erottelu nojaa CSS-luokkaan
+      // (.laajuus vs. .laajuus.arvioitu), ei suoraan käyttäjän näkemään otsikkoon.
+      await expect(
+        opiskeluoikeus.oppiaineet.locator('th.laajuus:not(.arvioitu)')
+      ).toHaveText('Arvioitu (opintopistettä)')
+      await expect(
+        opiskeluoikeus.oppiaineet.locator('th.laajuus.arvioitu')
+      ).toHaveText('Hyväksytysti arvioitu (opintopistettä)')
+
+      const fy = opiskeluoikeus.oppiaineRivi('FY')
+      await expect(fy.locator('td.laajuus:not(.arvioitu)')).toHaveText('6')
+      await expect(fy.locator('td.laajuus.arvioitu')).toHaveText('4')
+    })
   })
 })
