@@ -1,4 +1,5 @@
 import { Locator } from '@playwright/test'
+import { expect } from '../../../base'
 import { Dropdown } from './Dropdown'
 
 export class LukioOpiskeluoikeus {
@@ -63,6 +64,26 @@ export class LukioOpiskeluoikeus {
       oppiaineRivi.page(),
       oppiaineRivi.locator('td.arvosana').getByTestId('enum-editor-dropdown')
     )
+  }
+
+  // "Lisää oppiaine" -pudotusvalikko lataa koodiston asynkronisesti
+  // (ajax-loading-placeholder) - odotetaan sen valmistumista ennen valintaa.
+  async lisääOppiaine(nimi: string): Promise<void> {
+    const uusiOppiaine = this.container.locator('.uusi-oppiaine').first()
+    await expect(
+      uusiOppiaine.locator('.ajax-loading-placeholder')
+    ).toHaveCount(0)
+    const dropdown = new Dropdown(
+      uusiOppiaine.page(),
+      uusiOppiaine.locator('.dropdown')
+    )
+    await dropdown.selectOptionByClick(nimi)
+  }
+
+  // Poistolinkillä ei ole näkyvää tekstiä, aria-labelia eikä title-attribuuttia
+  // - CSS on ainoa toimiva valinta, ei roolin/nimen puutteen vuoksi oikotie.
+  async poistaOppiaine(oppiaineRivi: Locator): Promise<void> {
+    await oppiaineRivi.locator('td.remove-row a').click()
   }
 
   // Yleinen PropertiesEditor (web/app/editor/PropertiesEditor.jsx) merkitsee joka
