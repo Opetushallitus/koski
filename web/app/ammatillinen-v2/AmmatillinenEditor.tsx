@@ -9,6 +9,7 @@ import {
   usePäätasonSuoritus
 } from '../components-v2/containers/EditorContainer'
 import { FormModel, FormOptic, useForm } from '../components-v2/forms/FormModel'
+import { hasErrorInField } from '../components-v2/forms/validator'
 import { useSchema } from '../appstate/constraints'
 import { UusiOpiskeluoikeusjakso } from '../components-v2/opiskeluoikeus/UusiOpiskeluoikeudenTilaModal'
 import { AmmatillinenOpiskeluoikeusjakso } from '../types/fi/oph/koski/schema/AmmatillinenOpiskeluoikeusjakso'
@@ -229,7 +230,10 @@ const AmmatillisenPäätasonSuorituksenTiedot: React.FC<{
         <KeyValueRow localizableLabel="Koulutus">
           <span className="AmmatillinenTutkinto">
             <TestIdText id="koulutus">
-              {t(tutkinto.suoritus.koulutusmoduuli.perusteenNimi)}
+              {t(
+                tutkinto.suoritus.koulutusmoduuli.perusteenNimi ||
+                  tutkinto.suoritus.koulutusmoduuli.tunniste.nimi
+              )}
             </TestIdText>
             <span>{tutkinto.suoritus.koulutusmoduuli.tunniste.koodiarvo}</span>
             <FormField
@@ -830,6 +834,7 @@ const osaamisalaCache = createPreferLocalCache(fetchPerusteenOsaamisalat)
 export const OsaamisalaEdit = ({
   value,
   onChange,
+  errors,
   perusteenDiaarinumero
 }: FieldEditorProps<
   Osaamisalajakso | undefined,
@@ -864,17 +869,19 @@ export const OsaamisalaEdit = ({
         />
         <DateInput
           value={value?.alku}
-          onChange={(alku?: string) => {
-            alku && onChange({ ...value, alku })
-          }}
+          hasErrors={hasErrorInField(errors, 'alku')}
+          onChange={(alku?: string, rawAlku?: string) =>
+            onChange({ ...value, alku: alku ?? (rawAlku || undefined) })
+          }
           testId="alku"
         />
         <span className="AikajaksoEdit__separator"> {' — '}</span>
         <DateInput
           value={value?.loppu}
-          onChange={(loppu?: string) => {
-            loppu && onChange({ ...value, loppu })
-          }}
+          hasErrors={hasErrorInField(errors, 'loppu')}
+          onChange={(loppu?: string, rawLoppu?: string) =>
+            onChange({ ...value, loppu: loppu ?? (rawLoppu || undefined) })
+          }
           testId="loppu"
           align="right"
         />
@@ -925,29 +932,44 @@ export const emptyJärjestämismuoto: Järjestämismuotojakso = {
 
 export const JärjestämismouotoEdit = ({
   value,
-  onChange
+  onChange,
+  errors
 }: FieldEditorProps<Järjestämismuotojakso | undefined, EmptyObject>) => {
   return (
     <>
       <div className="AikajaksoEdit">
         <DateInput
           value={value?.alku}
-          onChange={(alku?: string) => {
-            alku && onChange({ ...emptyJärjestämismuoto, ...value, alku })
-          }}
+          hasErrors={hasErrorInField(errors, 'alku')}
+          onChange={(alku?: string, rawAlku?: string) =>
+            onChange({
+              ...emptyJärjestämismuoto,
+              ...value,
+              alku: alku ?? rawAlku ?? ''
+            })
+          }
           testId="alku"
         />
         <span className="AikajaksoEdit__separator"> {' — '}</span>
         <DateInput
           value={value?.loppu}
-          onChange={(loppu?: string) => {
-            loppu && onChange({ ...emptyJärjestämismuoto, ...value, loppu })
-          }}
+          hasErrors={hasErrorInField(errors, 'loppu')}
+          onChange={(loppu?: string, rawLoppu?: string) =>
+            onChange({
+              ...emptyJärjestämismuoto,
+              ...value,
+              loppu: loppu ?? (rawLoppu || undefined)
+            })
+          }
           testId="loppu"
         />
         <KoodistoSelect
           koodistoUri={'jarjestamismuoto'}
           value={value?.järjestämismuoto.tunniste.koodiarvo}
+          hasErrors={hasErrorInField(
+            errors,
+            'järjestämismuoto.tunniste.koodiarvo'
+          )}
           onSelect={(tunniste) =>
             tunniste &&
             onChange({
@@ -966,6 +988,7 @@ export const JärjestämismouotoEdit = ({
               ? value?.järjestämismuoto.oppisopimus
               : undefined
           }
+          errors={errors}
           onChange={(oppisopimus) =>
             oppisopimus &&
             onChange({
@@ -1033,22 +1056,23 @@ const emptyOppisopimus: Oppisopimus = Oppisopimus({
 
 const OppisopimusEdit = ({
   value,
-  onChange
+  onChange,
+  errors
 }: FieldEditorProps<Oppisopimus | undefined, EmptyObject>) => {
   return (
     <KeyValueTable>
       <KeyValueRow localizableLabel="Yritys">
         <LocalizedTextEdit
           value={value?.työnantaja.nimi}
+          hasErrors={hasErrorInField(errors, 'työnantaja.nimi')}
           onChange={(nimi) =>
-            nimi !== undefined &&
             onChange(
               Oppisopimus({
                 ...value,
                 työnantaja: Yritys({
                   ...emptyYritys,
                   ...value?.työnantaja,
-                  nimi
+                  nimi: nimi ?? localize('')
                 })
               })
             )
@@ -1058,15 +1082,15 @@ const OppisopimusEdit = ({
       <KeyValueRow localizableLabel="Y-tunnus">
         <TextEdit
           value={value?.työnantaja.yTunnus}
+          hasErrors={hasErrorInField(errors, 'työnantaja.yTunnus')}
           onChange={(yTunnus) =>
-            yTunnus &&
             onChange(
               Oppisopimus({
                 ...value,
                 työnantaja: Yritys({
                   ...emptyYritys,
                   ...value?.työnantaja,
-                  yTunnus
+                  yTunnus: yTunnus ?? ''
                 })
               })
             )
@@ -1075,6 +1099,7 @@ const OppisopimusEdit = ({
       </KeyValueRow>
       <OppisopimuksenPurkaminenEdit
         value={value?.oppisopimuksenPurkaminen}
+        errors={errors}
         onChange={(oppisopimuksenPurkaminen) =>
           onChange(
             Oppisopimus({
@@ -1091,7 +1116,8 @@ const OppisopimusEdit = ({
 
 const OppisopimuksenPurkaminenEdit = ({
   value,
-  onChange
+  onChange,
+  errors
 }: FieldEditorProps<OppisopimuksenPurkaminen | undefined, EmptyObject>) => {
   return (
     <KeyValueRow localizableLabel="Oppisopimuksen purkaminen">
@@ -1100,12 +1126,15 @@ const OppisopimuksenPurkaminenEdit = ({
           <KeyValueRow localizableLabel="Päivä">
             <DateInput
               value={value?.päivä}
-              onChange={(päivä) =>
-                päivä &&
+              hasErrors={hasErrorInField(
+                errors,
+                'oppisopimuksenPurkaminen.päivä'
+              )}
+              onChange={(päivä, rawPäivä) =>
                 onChange({
                   ...emptyOppisopimus.oppisopimuksenPurkaminen,
                   ...value,
-                  päivä
+                  päivä: päivä ?? rawPäivä ?? ''
                 })
               }
             />
@@ -1181,31 +1210,45 @@ export const emptyOsaamisenHankkimistapa: OsaamisenHankkimistapajakso =
 
 export const OsaamisenHankkimistapaEdit = ({
   value,
-  onChange
+  onChange,
+  errors
 }: FieldEditorProps<OsaamisenHankkimistapajakso | undefined, EmptyObject>) => {
   return (
     <>
       <div className="AikajaksoEdit">
         <DateInput
           value={value?.alku}
-          onChange={(alku?: string) => {
-            alku && onChange({ ...emptyOsaamisenHankkimistapa, ...value, alku })
-          }}
+          hasErrors={hasErrorInField(errors, 'alku')}
+          onChange={(alku?: string, rawAlku?: string) =>
+            onChange({
+              ...emptyOsaamisenHankkimistapa,
+              ...value,
+              alku: alku ?? rawAlku ?? ''
+            })
+          }
           testId="alku"
         />
         <span className="AikajaksoEdit__separator"> {' — '}</span>
         <DateInput
           value={value?.loppu}
-          onChange={(loppu?: string) => {
-            loppu &&
-              onChange({ ...emptyOsaamisenHankkimistapa, ...value, loppu })
-          }}
+          hasErrors={hasErrorInField(errors, 'loppu')}
+          onChange={(loppu?: string, rawLoppu?: string) =>
+            onChange({
+              ...emptyOsaamisenHankkimistapa,
+              ...value,
+              loppu: loppu ?? (rawLoppu || undefined)
+            })
+          }
           testId="loppu"
         />
         <span className="AikajaksoEdit__separator"> {' : '}</span>
         <KoodistoSelect
           koodistoUri={'osaamisenhankkimistapa'}
           value={value?.osaamisenHankkimistapa.tunniste.koodiarvo}
+          hasErrors={hasErrorInField(
+            errors,
+            'osaamisenHankkimistapa.tunniste.koodiarvo'
+          )}
           onSelect={(tunniste) =>
             tunniste &&
             onChange({
@@ -1228,6 +1271,7 @@ export const OsaamisenHankkimistapaEdit = ({
               ? value?.osaamisenHankkimistapa.oppisopimus
               : undefined
           }
+          errors={errors}
           onChange={(oppisopimus) =>
             oppisopimus &&
             onChange({
@@ -1295,24 +1339,35 @@ export const emptyTyössäoppimisjakso: Työssäoppimisjakso = Työssäoppimisja
 
 export const TyössäoppimisjaksoEdit = ({
   value,
-  onChange
+  onChange,
+  errors
 }: FieldEditorProps<Työssäoppimisjakso | undefined, EmptyObject>) => {
   return (
     <>
       <div className="AikajaksoEdit">
         <DateInput
           value={value?.alku}
-          onChange={(alku?: string) => {
-            alku && onChange({ ...emptyTyössäoppimisjakso, ...value, alku })
-          }}
+          hasErrors={hasErrorInField(errors, 'alku')}
+          onChange={(alku?: string, rawAlku?: string) =>
+            onChange({
+              ...emptyTyössäoppimisjakso,
+              ...value,
+              alku: alku ?? rawAlku ?? ''
+            })
+          }
           testId="alku"
         />
         <span className="AikajaksoEdit__separator"> {' — '}</span>
         <DateInput
           value={value?.loppu}
-          onChange={(loppu?: string) => {
-            loppu && onChange({ ...emptyTyössäoppimisjakso, ...value, loppu })
-          }}
+          hasErrors={hasErrorInField(errors, 'loppu')}
+          onChange={(loppu?: string, rawLoppu?: string) =>
+            onChange({
+              ...emptyTyössäoppimisjakso,
+              ...value,
+              loppu: loppu ?? (rawLoppu || undefined)
+            })
+          }
           testId="loppu"
         />
       </div>
@@ -1369,6 +1424,7 @@ export const TyössäoppimisjaksoEdit = ({
           <LaajuusEdit
             value={value?.laajuus}
             createLaajuus={(arvo) => LaajuusOsaamispisteissä({ arvo })}
+            hasErrors={hasErrorInField(errors, 'laajuus')}
             onChange={(laajuus) =>
               laajuus &&
               onChange({
@@ -1429,24 +1485,35 @@ export const emptyKoulutussopimus: Koulutussopimusjakso = Koulutussopimusjakso({
 
 export const KoulutussopimusEdit = ({
   value,
-  onChange
+  onChange,
+  errors
 }: FieldEditorProps<Koulutussopimusjakso | undefined, EmptyObject>) => {
   return (
     <>
       <div className="AikajaksoEdit">
         <DateInput
           value={value?.alku}
-          onChange={(alku?: string) => {
-            alku && onChange({ ...emptyKoulutussopimus, ...value, alku })
-          }}
+          hasErrors={hasErrorInField(errors, 'alku')}
+          onChange={(alku?: string, rawAlku?: string) =>
+            onChange({
+              ...emptyKoulutussopimus,
+              ...value,
+              alku: alku ?? rawAlku ?? ''
+            })
+          }
           testId="alku"
         />
         <span className="AikajaksoEdit__separator"> {' — '}</span>
         <DateInput
           value={value?.loppu}
-          onChange={(loppu?: string) => {
-            loppu && onChange({ ...emptyKoulutussopimus, ...value, loppu })
-          }}
+          hasErrors={hasErrorInField(errors, 'loppu')}
+          onChange={(loppu?: string, rawLoppu?: string) =>
+            onChange({
+              ...emptyKoulutussopimus,
+              ...value,
+              loppu: loppu ?? (rawLoppu || undefined)
+            })
+          }
           testId="loppu"
         />
       </div>

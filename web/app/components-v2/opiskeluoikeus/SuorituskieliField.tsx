@@ -56,6 +56,7 @@ export const SuorituskieliEdit: React.FC<SuorituskieliEditProps> = (props) => {
       options={options}
       value={selected}
       onChange={onChangeCB}
+      hasErrors={Boolean(props.errors)}
       testId="suorituskieli.edit"
     />
   ) : (

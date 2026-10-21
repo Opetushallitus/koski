@@ -65,6 +65,7 @@ export const OpintokokonaisuusEdit: React.FC<OpintokokonaisuusEditProps> = (
       initialValue={props.value?.koodiarvo}
       value={props.value?.koodiarvo || ''}
       options={mappedOpintokokonaisuudet}
+      hasErrors={Boolean(props.errors)}
       testId="opintokokonaisuus.edit"
     />
   )

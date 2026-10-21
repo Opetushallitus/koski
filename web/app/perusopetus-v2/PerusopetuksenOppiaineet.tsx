@@ -10,6 +10,8 @@ import { useKoodisto } from '../appstate/koodisto'
 import { usePreferences } from '../appstate/preferences'
 import { finnish } from '../i18n/i18n'
 import { PaikallinenKoodi } from '../types/fi/oph/koski/schema/PaikallinenKoodi'
+import { parsePath } from '../util/optics'
+import { errorPathIs } from '../components-v2/forms/validator'
 import { LocalizedString } from '../types/fi/oph/koski/schema/LocalizedString'
 import {
   OptionList,
@@ -663,9 +665,18 @@ const oppiaineToRow = <T extends string>(
       suoritus.koulutusmoduuli.laajuus
         ? (suoritus.koulutusmoduuli.laajuus as LaajuusVuosiviikkotunneissa)
         : undefined
+    const laajuusPath = form.editMode
+      ? parsePath(osasuoritusPath.prop('koulutusmoduuli'), form.state)
+      : undefined
+    const laajuusHasErrors =
+      laajuusPath !== undefined &&
+      form.errors.some(
+        errorPathIs((path) => path.startsWith(`${laajuusPath}.laajuus`))
+      )
     columns['Laajuus' as T | 'Arvosana' | 'Laajuus' | ' '] = form.editMode ? (
       <NumberField
         value={laajuus?.arvo}
+        hasErrors={laajuusHasErrors}
         onChange={(arvo) => {
           form.updateAt(osasuoritusPath.prop('koulutusmoduuli'), (km) => ({
             ...km,

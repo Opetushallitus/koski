@@ -41,8 +41,8 @@ export const MaksuttomuusEdit: React.FC<MaksuttomuusEditProps> = ({
   onChange,
   errors
 }) => {
-  const setAlku = (alku?: string) => {
-    alku && onChange({ ...emptyMaksuttomuuus, ...value, alku })
+  const setAlku = (alku?: string, rawAlku?: string) => {
+    onChange({ ...emptyMaksuttomuuus, ...value, alku: alku ?? rawAlku ?? '' })
   }
 
   const setMaksuton = (maksuton: boolean) => {

@@ -22,6 +22,8 @@ import {
 import { TextEdit, TextView } from '../components-v2/controls/TextField'
 import { FieldViewerProps, FormField } from '../components-v2/forms/FormField'
 import { FormModel, FormOptic } from '../components-v2/forms/FormModel'
+import { parsePath } from '../util/optics'
+import { errorPathIs } from '../components-v2/forms/validator'
 import {
   ParasArvosanaEdit,
   ParasArvosanaViewProps
@@ -557,9 +559,18 @@ const oppiaineToRow = <T extends string>(
       suoritus.koulutusmoduuli.laajuus
         ? (suoritus.koulutusmoduuli.laajuus as LaajuusVuosiviikkotunneissa)
         : undefined
+    const laajuusPath = form.editMode
+      ? parsePath(osasuoritusPath.prop('koulutusmoduuli'), form.state)
+      : undefined
+    const laajuusHasErrors =
+      laajuusPath !== undefined &&
+      form.errors.some(
+        errorPathIs((path) => path.startsWith(`${laajuusPath}.laajuus`))
+      )
     columns['Laajuus' as T | 'Arvosana' | 'Laajuus' | ' '] = form.editMode ? (
       <NumberField
         value={laajuus?.arvo}
+        hasErrors={laajuusHasErrors}
         onChange={(arvo) => {
           form.updateAt(osasuoritusPath.prop('koulutusmoduuli'), (km) => ({
             ...km,

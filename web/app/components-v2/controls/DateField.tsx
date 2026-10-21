@@ -49,6 +49,8 @@ export type DateEditProps = CommonProps<
   >
 > & {
   align?: PositionalPopupAlign
+  /** Värjää kentän ilman virhetekstiä, kun virheet näytetään muualla. */
+  hasErrors?: boolean
 }
 
 export const DateEdit: React.FC<DateEditProps> = (props) => {
@@ -62,7 +64,7 @@ export const DateEdit: React.FC<DateEditProps> = (props) => {
   const testId = props.testId || 'date'
   const inputId = useTestId(`${testId}.edit.input`)
   const buttonId = useTestId(`${testId}.edit.calendarButton`)
-  const hasError = Boolean(props.errors)
+  const hasError = Boolean(props.errors) || Boolean(props.hasErrors)
 
   return (
     <label {...common(props, ['DateEdit'])}>

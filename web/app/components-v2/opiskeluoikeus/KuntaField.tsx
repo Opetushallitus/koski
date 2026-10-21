@@ -56,6 +56,7 @@ export const KuntaEdit: React.FC<KuntaEditProps> = (props) => {
       options={options}
       value={selected}
       onChange={onChangeCB}
+      hasErrors={Boolean(props.errors)}
       testId="kunta.edit"
     />
   ) : (

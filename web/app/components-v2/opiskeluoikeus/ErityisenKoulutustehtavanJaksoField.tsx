@@ -42,12 +42,20 @@ export const emptyErityisenKoulutustehtävänJakso =
 export const ErityisenKoulutustehtävänJaksoEdit: React.FC<
   ErityisenKoulutustehtävänJaksoEditProps
 > = ({ value, onChange, errors }) => {
-  const setAlku = (alku?: string) => {
-    alku && onChange({ ...emptyErityisenKoulutustehtävänJakso, ...value, alku })
+  const setAlku = (alku?: string, rawAlku?: string) => {
+    onChange({
+      ...emptyErityisenKoulutustehtävänJakso,
+      ...value,
+      alku: alku ?? rawAlku ?? ''
+    })
   }
 
-  const setLoppu = (loppu?: string) => {
-    onChange({ ...emptyErityisenKoulutustehtävänJakso, ...value, loppu })
+  const setLoppu = (loppu?: string, rawLoppu?: string) => {
+    onChange({
+      ...emptyErityisenKoulutustehtävänJakso,
+      ...value,
+      loppu: loppu ?? (rawLoppu ? rawLoppu : undefined)
+    })
   }
 
   const setTehtävä = (

@@ -58,74 +58,87 @@ import {
 } from '../components-v2/opiskeluoikeus/MaksuttomuusField'
 import { IconButton } from '../components-v2/controls/IconButton'
 import { CHARCODE_REMOVE } from '../components-v2/texts/Icon'
+import { hasErrorInField } from '../components-v2/forms/validator'
 
 interface AmmatillinenLisatiedotProps {
   form: FormModel<AmmatillinenOpiskeluoikeus>
+}
+
+const getLisatiedotPath = (form: FormModel<AmmatillinenOpiskeluoikeus>) =>
+  form.root.prop('lisätiedot').valueOr(AmmatillisenOpiskeluoikeudenLisätiedot())
+
+const AikajaksoRow: React.FC<{
+  form: FormModel<AmmatillinenOpiskeluoikeus>
+  localizableLabel: string
+  path: keyof AmmatillisenOpiskeluoikeudenLisätiedot
+}> = ({ form, localizableLabel, path }) => {
+  const aikajaksoPath = getLisatiedotPath(form).prop(path) as FormOptic<
+    AmmatillinenOpiskeluoikeus,
+    Aikajakso[] | undefined
+  >
+  return (
+    <KeyValueRow localizableLabel={localizableLabel} largeLabel>
+      <FormListField
+        form={form}
+        view={AikajaksoView}
+        edit={AikajaksoEdit}
+        path={aikajaksoPath}
+        editProps={{
+          createAikajakso: Aikajakso
+        }}
+        removable
+      />
+      {form.editMode && (
+        <ButtonGroup>
+          <FlatButton
+            onClick={() => {
+              form.updateAt(
+                aikajaksoPath.valueOr([]),
+                append(uusiTyhjäAikajakso())
+              )
+            }}
+          >
+            {t('Lisää')}
+          </FlatButton>
+        </ButtonGroup>
+      )}
+    </KeyValueRow>
+  )
 }
 
 export const AmmatillinenLisatiedot: React.FC<AmmatillinenLisatiedotProps> = ({
   form
 }) => {
   const emptyLisatiedot = AmmatillisenOpiskeluoikeudenLisätiedot()
-  const lisatiedotPath = form.root.prop('lisätiedot').valueOr(emptyLisatiedot)
+  const lisatiedotPath = getLisatiedotPath(form)
   const lisätiedot = getValue(lisatiedotPath)(form.state)
-
-  const AikajaksoRow: React.FC<{
-    localizableLabel: string
-    path: keyof AmmatillisenOpiskeluoikeudenLisätiedot
-  }> = ({ localizableLabel, path }) => {
-    const aikajaksoPath = lisatiedotPath.prop(path) as FormOptic<
-      AmmatillinenOpiskeluoikeus,
-      Aikajakso[] | undefined
-    >
-    return (
-      <KeyValueRow localizableLabel={localizableLabel} largeLabel>
-        <FormListField
-          form={form}
-          view={AikajaksoView}
-          edit={AikajaksoEdit}
-          path={aikajaksoPath}
-          editProps={{
-            createAikajakso: Aikajakso
-          }}
-          removable
-        />
-        {form.editMode && (
-          <ButtonGroup>
-            <FlatButton
-              onClick={() => {
-                form.updateAt(
-                  aikajaksoPath.valueOr([]),
-                  append(uusiTyhjäAikajakso())
-                )
-              }}
-            >
-              {t('Lisää')}
-            </FlatButton>
-          </ButtonGroup>
-        )}
-      </KeyValueRow>
-    )
-  }
 
   return (
     <KeyValueTable>
-      <AikajaksoRow localizableLabel={'Majoitus'} path={'majoitus'} />
       <AikajaksoRow
+        form={form}
+        localizableLabel={'Majoitus'}
+        path={'majoitus'}
+      />
+      <AikajaksoRow
+        form={form}
         localizableLabel={'Sisäoppilaitosmainen majoitus'}
         path={'sisäoppilaitosmainenMajoitus'}
       />
       <AikajaksoRow
+        form={form}
         localizableLabel={
           'Vaativan erityisen tuen yhteydessä järjestettävä majoitus'
         }
         path={'vaativanErityisenTuenYhteydessäJärjestettäväMajoitus'}
       />
       <AikajaksoRow
+        form={form}
         localizableLabel={'Erityinen tuki'}
         path={'erityinenTuki'}
       />
       <AikajaksoRow
+        form={form}
         localizableLabel={'Vaativan erityisen tuen erityinen tehtävä'}
         path={'vaativanErityisenTuenErityinenTehtävä'}
       />
@@ -179,11 +192,13 @@ export const AmmatillinenLisatiedot: React.FC<AmmatillinenLisatiedotProps> = ({
       </KeyValueRow>
 
       <AikajaksoRow
+        form={form}
         localizableLabel={'Vaikeasti vammaisille järjestetty opetus'}
         path={'vaikeastiVammainen'}
       />
 
       <AikajaksoRow
+        form={form}
         localizableLabel={'Vammainen ja avustaja'}
         path={'vammainenJaAvustaja'}
       />
@@ -254,6 +269,7 @@ export const AmmatillinenLisatiedot: React.FC<AmmatillinenLisatiedotProps> = ({
       </KeyValueRow>
 
       <AikajaksoRow
+        form={form}
         localizableLabel={'Vankilaopetuksessa'}
         path={'vankilaopetuksessa'}
       />
@@ -296,6 +312,7 @@ export const AmmatillinenLisatiedot: React.FC<AmmatillinenLisatiedotProps> = ({
       </KeyValueRow>
 
       <AikajaksoRow
+        form={form}
         localizableLabel={'Oikeutta maksuttomuuteen pidennetty'}
         path={'oikeuttaMaksuttomuuteenPidennetty'}
       />
@@ -393,19 +410,28 @@ const HojksEdit = ({
         <span className="AikajaksoEdit__separator"> {' — '}</span>
         <DateInput
           value={value?.alku}
-          onChange={(alku?: string) => {
-            alku && onChange({ ...emptyHojks, ...value, alku })
+          onChange={(alku?: string, rawAlku?: string) => {
+            onChange({
+              ...emptyHojks,
+              ...value,
+              alku: alku ?? (rawAlku || undefined)
+            })
           }}
           testId="alku"
-          hasErrors={hasErrors && !value?.alku}
+          hasErrors={hasErrorInField(errors, 'alku')}
         />
         <span className="AikajaksoEdit__separator"> {' — '}</span>
         <DateInput
           value={value?.loppu}
-          onChange={(loppu?: string) => {
-            loppu && onChange({ ...emptyHojks, ...value, loppu })
+          onChange={(loppu?: string, rawLoppu?: string) => {
+            onChange({
+              ...emptyHojks,
+              ...value,
+              loppu: loppu ?? (rawLoppu || undefined)
+            })
           }}
           testId="loppu"
+          hasErrors={hasErrorInField(errors, 'loppu')}
         />
       </div>
       <IconButton
@@ -453,19 +479,28 @@ const OsaAikaisuusEdit = ({
     <div className="AikajaksoEdit">
       <DateInput
         value={value?.alku}
-        onChange={(alku?: string) => {
-          alku && onChange({ ...emptyOsaAikausuus, ...value, alku })
+        onChange={(alku?: string, rawAlku?: string) => {
+          onChange({
+            ...emptyOsaAikausuus,
+            ...value,
+            alku: alku ?? rawAlku ?? ''
+          })
         }}
         testId="alku"
-        hasErrors={hasErrors && !value?.alku}
+        hasErrors={hasErrorInField(errors, 'alku')}
       />
       <span>{' — '}</span>
       <DateInput
         value={value?.loppu}
-        onChange={(loppu?: string) => {
-          loppu && onChange({ ...emptyOsaAikausuus, ...value, loppu })
+        onChange={(loppu?: string, rawLoppu?: string) => {
+          onChange({
+            ...emptyOsaAikausuus,
+            ...value,
+            loppu: loppu ?? (rawLoppu || undefined)
+          })
         }}
         testId="loppu"
+        hasErrors={hasErrorInField(errors, 'loppu')}
       />
       <span className="InlineJakso__label">{t('Osa-aikaisuus')}</span>
       <NumberField
@@ -520,49 +555,45 @@ const OpiskeluvalmiuksiaTuvkevienOpintojenJaksoEdit = ({
   OpiskeluvalmiuksiaTukevienOpintojenJakso | undefined,
   EmptyObject
 >) => {
-  const hasErrors = errors !== undefined && errors.length > 0
   return (
     <div className="AikajaksoEdit">
       <DateInput
         value={value?.alku}
-        onChange={(alku?: string) => {
-          alku &&
-            onChange({
-              ...emptyOpiskeluvalmiuksiaTuvkevienOpintojenJakso,
-              ...value,
-              alku
-            })
+        onChange={(alku?: string, rawAlku?: string) => {
+          onChange({
+            ...emptyOpiskeluvalmiuksiaTuvkevienOpintojenJakso,
+            ...value,
+            alku: alku ?? rawAlku ?? ''
+          })
         }}
         testId="alku"
-        hasErrors={hasErrors && !value?.alku}
+        hasErrors={hasErrorInField(errors, 'alku')}
       />
       <span>{' — '}</span>
       <DateInput
         value={value?.loppu}
-        onChange={(loppu?: string) => {
-          loppu &&
-            onChange({
-              ...emptyOpiskeluvalmiuksiaTuvkevienOpintojenJakso,
-              ...value,
-              loppu
-            })
+        onChange={(loppu?: string, rawLoppu?: string) => {
+          onChange({
+            ...emptyOpiskeluvalmiuksiaTuvkevienOpintojenJakso,
+            ...value,
+            loppu: loppu ?? rawLoppu ?? ''
+          })
         }}
         testId="loppu"
-        hasErrors={hasErrors && !value?.loppu}
+        hasErrors={hasErrorInField(errors, 'loppu')}
       />
       <span className="InlineJakso__label">{t('Kuvaus')}</span>
       <LocalizedTextEdit
         value={value?.kuvaus}
         onChange={(kuvaus?: LocalizedString) => {
-          kuvaus &&
-            onChange({
-              ...emptyOpiskeluvalmiuksiaTuvkevienOpintojenJakso,
-              ...value,
-              kuvaus
-            })
+          onChange({
+            ...emptyOpiskeluvalmiuksiaTuvkevienOpintojenJakso,
+            ...value,
+            kuvaus: kuvaus ?? emptyLocalizedString
+          })
         }}
         testId="kuvaus"
-        hasErrors={hasErrors && !t(value?.kuvaus)}
+        hasErrors={hasErrorInField(errors, 'kuvaus')}
       />
     </div>
   )

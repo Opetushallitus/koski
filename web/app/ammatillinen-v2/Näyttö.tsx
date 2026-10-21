@@ -31,6 +31,7 @@ import { NäytönSuorituspaikka } from '../types/fi/oph/koski/schema/NaytonSuori
 import { AmisArvosanaSelect } from './Arviointi'
 import { NäyttöAmmatillinenOsittainen } from '../types/fi/oph/koski/schema/NayttoAmmatillinenOsittainen'
 import { Näyttö } from '../types/fi/oph/koski/schema/Naytto'
+import { hasErrorInField } from '../components-v2/forms/validator'
 
 type AnyNäyttö = Näyttö | NäyttöAmmatillinenOsittainen
 
@@ -39,6 +40,15 @@ const EmptySuoritusaika = (): NäytönSuoritusaika =>
     alku: todayISODate(),
     loppu: todayISODate()
   })
+
+// Suoritusaika on valinnainen, joten molempien päivien tyhjentäminen poistaa
+// sen. Yksin tyhjennetty päivä jää tyhjäksi ja näkyy virheenä.
+const suoritusaikaTaiTyhjä = (
+  suoritusaika: NäytönSuoritusaika
+): NäytönSuoritusaika | undefined =>
+  suoritusaika.alku === '' && suoritusaika.loppu === ''
+    ? undefined
+    : suoritusaika
 
 const EmptySuoritusPaikka = (): NäytönSuorituspaikka =>
   NäytönSuorituspaikka({
@@ -78,7 +88,10 @@ const NäyttöViewBase = (value?: AnyNäyttö) => (
       {': '}
       {t(value?.suorituspaikka?.kuvaus)}
     </KeyValueRow>
-    <KeyValueRow localizableLabel="Suoritusaika">
+    <KeyValueRow
+      localizableLabel="Suoritusaika"
+      hideIfEmpty={value?.suoritusaika}
+    >
       {value?.suoritusaika?.alku && ISO2FinnishDate(value.suoritusaika.alku)}
       {' — '}
       {value?.suoritusaika?.loppu && ISO2FinnishDate(value.suoritusaika.loppu)}
@@ -94,6 +107,7 @@ export const NäyttöView = ({
 const NäyttöEditBase = <T extends AnyNäyttö>({
   value,
   onChange,
+  errors,
   EmptyNäyttö
 }: NäyttöEditBaseProps<T>) => {
   if (value === undefined) {
@@ -112,9 +126,12 @@ const NäyttöEditBase = <T extends AnyNäyttö>({
         <KeyValueRow localizableLabel="Kuvaus">
           <MultilineTextEdit
             value={t(value?.kuvaus)}
+            testId="nayton-kuvaus"
             onChange={(kuvaus) =>
-              kuvaus !== undefined &&
-              onChange({ ...value, kuvaus: localize(kuvaus) })
+              onChange({
+                ...value,
+                kuvaus: kuvaus ? localize(kuvaus) : undefined
+              })
             }
           />
         </KeyValueRow>
@@ -136,13 +153,14 @@ const NäyttöEditBase = <T extends AnyNäyttö>({
           />
           <LocalizedTextEdit
             value={value?.suorituspaikka?.kuvaus}
+            placeholder={t('Kuvaus')}
+            hasErrors={hasErrorInField(errors, 'suorituspaikka.kuvaus')}
             onChange={(kuvaus) =>
-              kuvaus !== undefined &&
               onChange({
                 ...value,
                 suorituspaikka: {
                   ...(value?.suorituspaikka ?? EmptySuoritusPaikka()),
-                  kuvaus
+                  kuvaus: kuvaus ?? localize('')
                 }
               })
             }
@@ -152,37 +170,38 @@ const NäyttöEditBase = <T extends AnyNäyttö>({
           <div className="AikajaksoEdit">
             <DateInput
               value={value?.suoritusaika?.alku}
-              onChange={(alku?: string) => {
-                alku &&
-                  onChange({
-                    ...value,
-                    suoritusaika: {
-                      ...(value?.suoritusaika ?? EmptySuoritusaika()),
-                      alku
-                    }
+              hasErrors={hasErrorInField(errors, 'suoritusaika.alku')}
+              onChange={(alku?: string, rawAlku?: string) =>
+                onChange({
+                  ...value,
+                  suoritusaika: suoritusaikaTaiTyhjä({
+                    ...(value?.suoritusaika ?? EmptySuoritusaika()),
+                    alku: alku ?? rawAlku ?? ''
                   })
-              }}
+                })
+              }
               testId="alku"
             />
             <span className="AikajaksoEdit__separator"> {' — '}</span>
             <DateInput
               value={value?.suoritusaika?.loppu}
-              onChange={(loppu?: string) => {
-                loppu &&
-                  onChange({
-                    ...value,
-                    suoritusaika: {
-                      ...(value?.suoritusaika ?? EmptySuoritusaika()),
-                      loppu
-                    }
+              hasErrors={hasErrorInField(errors, 'suoritusaika.loppu')}
+              onChange={(loppu?: string, rawLoppu?: string) =>
+                onChange({
+                  ...value,
+                  suoritusaika: suoritusaikaTaiTyhjä({
+                    ...(value?.suoritusaika ?? EmptySuoritusaika()),
+                    loppu: loppu ?? rawLoppu ?? ''
                   })
-              }}
+                })
+              }
               testId="loppu"
             />
           </div>
         </KeyValueRow>
         <NäytönArviointiEdit
           value={value?.arviointi}
+          errors={errors}
           onChange={(arviointi) =>
             arviointi && onChange({ ...value, arviointi })
           }
@@ -231,7 +250,8 @@ const emptyNäytönArviointi: NäytönArviointi = NäytönArviointi({
 })
 const NäytönArviointiEdit = ({
   value,
-  onChange
+  onChange,
+  errors
 }: FieldEditorProps<NäytönArviointi, EmptyObject>) => {
   return (
     <>
@@ -247,8 +267,12 @@ const NäytönArviointiEdit = ({
       <KeyValueRow localizableLabel="Arviointipäivä">
         <DateInput
           value={value?.päivä}
-          onChange={(päivä) =>
-            päivä && onChange({ ...(value ?? emptyNäytönArviointi), päivä })
+          hasErrors={hasErrorInField(errors, 'arviointi.päivä')}
+          onChange={(päivä, rawPäivä) =>
+            onChange({
+              ...(value ?? emptyNäytönArviointi),
+              päivä: päivä ?? rawPäivä ?? ''
+            })
           }
         />
       </KeyValueRow>
@@ -257,8 +281,8 @@ const NäytönArviointiEdit = ({
           <div key={`nayton.arvioijat.${index}`}>
             <TextEdit
               value={a.nimi}
+              hasErrors={hasErrorInField(errors, `arvioitsijat.${index}.nimi`)}
               onChange={(nimi) =>
-                nimi !== undefined &&
                 value.arvioitsijat &&
                 onChange({
                   ...emptyNäytönArviointi,
@@ -266,7 +290,7 @@ const NäytönArviointiEdit = ({
                   arvioitsijat: [
                     ...value.arvioitsijat.slice(0, index),
                     NäytönArvioitsija({
-                      nimi,
+                      nimi: nimi ?? '',
                       ntm: value.arvioitsijat[index].ntm
                     }),
                     ...value.arvioitsijat.slice(index + 1)

@@ -66,6 +66,7 @@ import { LaajuusVuosiviikkotunneissa } from '../types/fi/oph/koski/schema/Laajuu
 import { OmanÄidinkielenOpinnotLaajuusVuosiviikkotunteina } from '../types/fi/oph/koski/schema/OmanAidinkielenOpinnotLaajuusVuosiviikkotunteina'
 import { UusiTäydentäväOmanÄidinkielenOpinnotModal } from './UusiTäydentäväOmanÄidinkielenOpinnotModal'
 import { KoulusivistyskieliPropertyTitle } from '../suoritus/Koulusivistyskieli'
+import { hasErrorInField } from '../components-v2/forms/validator'
 
 type PerusopetuksenSuorituksenTiedotProps = {
   form: FormModel<PerusopetuksenOpiskeluoikeus>
@@ -593,7 +594,7 @@ const LiitetietoView: React.FC<
 
 const LiitetietoEdit: React.FC<
   FieldEditorProps<PerusopetuksenVuosiluokanSuorituksenLiite, EmptyObject>
-> = ({ value, onChange }) => {
+> = ({ value, onChange, errors }) => {
   const current = value || emptyLiitetieto
   return (
     <div className="Liitetieto">
@@ -614,8 +615,9 @@ const LiitetietoEdit: React.FC<
       />
       <LocalizedTextEdit
         value={current.kuvaus}
+        hasErrors={hasErrorInField(errors, 'kuvaus')}
         onChange={(kuvaus) =>
-          kuvaus !== undefined && onChange({ ...current, kuvaus })
+          onChange({ ...current, kuvaus: kuvaus ?? finnish('') })
         }
         testId="kuvaus"
       />

@@ -74,12 +74,14 @@ export const isValidationError = (a: any): a is ValidationError =>
  * Kenttäeditori saa virheet koko olionsa alta, koska useFormErrors kerää
  * kaikki polun alkuiset virheet. Esimerkiksi aikajakson editori näkee sekä
  * alku- että loppupäivän virheet, joten oikean syötekentän värjäämiseksi ne on
- * eroteltava polun viimeisen osan perusteella.
+ * eroteltava polun lopun perusteella. Kenttä voi olla myös pisteillä erotettu
+ * polku (esim. 'suorituspaikka.kuvaus'), jos editorin alla on samannimisiä
+ * kenttiä eri tasoilla.
  */
 export const hasErrorInField = (
   errors: ValidationError[] | undefined,
   field: string
-): boolean => (errors || []).some((e) => e.path.split('.').pop() === field)
+): boolean => (errors || []).some((e) => `.${e.path}`.endsWith(`.${field}`))
 
 export type InvalidTypeError = {
   type: 'invalidType'

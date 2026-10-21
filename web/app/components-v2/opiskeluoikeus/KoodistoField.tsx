@@ -52,6 +52,8 @@ export type KoodistoEditProps<T extends string> = CommonProps<
       testId: string
       koodiarvot?: string[]
       zeroValueOption?: boolean
+      /** Värjää kentän, kun virheet tulevat muualta kuin FormFieldiltä. */
+      hasErrors?: boolean
     }
   >
 >
@@ -114,7 +116,7 @@ export const KoodistoEdit = <T extends string>(props: KoodistoEditProps<T>) => {
       options={options}
       onChange={update}
       onClear={onClear}
-      hasErrors={Boolean(props.errors)}
+      hasErrors={Boolean(props.errors) || Boolean(props.hasErrors)}
       testId={props.testId}
     />
   )

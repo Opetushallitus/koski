@@ -876,6 +876,9 @@ export const Details: React.FC<React.PropsWithChildren<{ id: string }>> = ({
   )
 }
 
+export const pathTokensToString = (path: PathToken[]): string =>
+  path.map((token) => (typeof token === 'object' ? token.key : token)).join('.')
+
 export const isKuvauksellinen = (
   koulutusmoduuli: KoulutusmoduuliOf<OsasuoritusOf<Oppiaine>>
 ): koulutusmoduuli is Extract<

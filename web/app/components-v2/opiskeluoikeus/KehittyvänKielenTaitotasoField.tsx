@@ -77,6 +77,7 @@ export const KehittyvänKielenTaitotasoEdit = <
         value={selectedValue}
         options={groupedKoodisto as OptionList<TaitotasoOf<T>>}
         onChange={onChange}
+        hasErrors={Boolean(props.errors)}
         testId={`${props.testId || 'taitotaso'}.edit`}
       />
     )

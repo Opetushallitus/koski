@@ -27,6 +27,7 @@ import {
 } from '../components-v2/opiskeluoikeus/BooleanField'
 import { CHARCODE_REMOVE } from '../components-v2/texts/Icon'
 import { IconButton } from '../components-v2/controls/IconButton'
+import { hasErrorInField } from '../components-v2/forms/validator'
 
 interface SisältyyOpiskeluoikeuteenProps {
   form: FormModel<AmmatillinenOpiskeluoikeus>
@@ -95,7 +96,8 @@ const SisältyyOpiskeluoikeuteenView = <T extends SisältäväOpiskeluoikeus>({
 
 const SisältyyOpiskeluoikeuteenEdit = ({
   value,
-  onChange
+  onChange,
+  errors
 }: CommonProps<
   FieldEditorProps<SisältäväOpiskeluoikeus | undefined, EmptyObject>
 >) => {
@@ -105,9 +107,13 @@ const SisältyyOpiskeluoikeuteenEdit = ({
         <KeyValueRow localizableLabel={'Oid'}>
           <TextEdit
             value={value?.oid}
+            hasErrors={hasErrorInField(errors, 'sisältyyOpiskeluoikeuteen.oid')}
             onChange={(oid) =>
-              oid &&
-              onChange({ ...emptySisältäväOpiskeluoikeus, ...value, oid })
+              onChange({
+                ...emptySisältäväOpiskeluoikeus,
+                ...value,
+                oid: oid ?? ''
+              })
             }
           />
         </KeyValueRow>

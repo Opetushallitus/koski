@@ -8,6 +8,7 @@ import {
   FieldViewerProps
 } from '../../components-v2/forms/FormField'
 import { FormListField } from '../../components-v2/forms/FormListField'
+import { hasErrorInField } from '../../components-v2/forms/validator'
 import { getValue } from '../../components-v2/forms/FormModel'
 import { ArvosanaView } from '../../components-v2/opiskeluoikeus/ArvosanaField'
 import { KoodistoEdit } from '../../components-v2/opiskeluoikeus/KoodistoField'
@@ -113,12 +114,12 @@ export const VSTLukutaitoKielitaitotasoEdit = (
       <OsasuoritusSubproperty rowNumber={startRow + 2} label="Päivämäärä">
         <DateEdit
           value={props.value.päivä}
-          onChange={(päivä) =>
-            päivä &&
+          hasErrors={hasErrorInField(props.errors, 'päivä')}
+          onChange={(päivä?: string, rawPäivä?: string) =>
             props.value &&
             props.onChange({
               ...props.value,
-              päivä
+              päivä: päivä ?? rawPäivä ?? ''
             })
           }
         />

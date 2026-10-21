@@ -49,6 +49,8 @@ export type LaajuusEditProps<T extends Laajuus> = CommonProps<
     T,
     {
       createLaajuus: (arvo: number) => T
+      /** Värjää kentän ilman virhetekstiä, kun virheet näytetään muualla. */
+      hasErrors?: boolean
     }
   >
 >
@@ -91,7 +93,7 @@ export const LaajuusEdit = <T extends Laajuus>(props: LaajuusEditProps<T>) => {
           className="LaajuusField__arvo"
           value={props.value?.arvo}
           onChange={onChangeCB}
-          hasErrors={Boolean(props.errors)}
+          hasErrors={Boolean(props.errors) || Boolean(props.hasErrors)}
           testId="laajuus.edit"
         />
         <TestIdText id="laajuus.unit" className="LaajuusField__yksikko">

@@ -15,8 +15,14 @@ import { LocalizedTextEdit } from '../controls/LocalizedTestField'
 import { RaisedButton } from '../controls/RaisedButton'
 import { useKoodistoOptions } from '../controls/Select'
 import { FormModel } from '../forms/FormModel'
+import { useFormErrors } from '../forms/useFormErrors'
+import { hasErrorInField } from '../forms/validator'
 import { LaajuusEdit } from './LaajuusField'
-import { Oppiaine, OppiaineTableOpiskeluoikeus } from './OppiaineTable'
+import {
+  Oppiaine,
+  OppiaineTableOpiskeluoikeus,
+  pathTokensToString
+} from './OppiaineTable'
 import { isIBDPCoreOppiaineExtendedEssay } from '../../types/fi/oph/koski/schema/IBDPCoreOppiaineExtendedEssay'
 import { isIBDPCoreOppiaineCAS } from '../../types/fi/oph/koski/schema/IBDPCoreOppiaineCAS'
 import { isIBDPCoreOppiaineTheoryOfKnowledge } from '../../types/fi/oph/koski/schema/IBDPCoreOppiaineTheoryOfKnowledge'
@@ -32,6 +38,7 @@ export const OppiaineTableOppiaineEditor: React.FC<
   OppiaineTableOppiaineEditorProps
 > = ({ form, path, onClose }) => {
   const oppiaine = get<Oppiaine>(...path)(form.state)
+  const errors = useFormErrors(form, pathTokensToString(path))
   const koulutus = oppiaine.koulutusmoduuli
 
   const tunnisteet = useKoodistoOptions('oppiaineetib')
@@ -136,6 +143,7 @@ export const OppiaineTableOppiaineEditor: React.FC<
               <LocalizedTextEdit
                 value={koulutus.aihe}
                 onChange={form.set(...path, 'koulutusmoduuli', 'aihe')}
+                hasErrors={hasErrorInField(errors, 'koulutusmoduuli.aihe')}
               />
             </KeyValueRow>
           )}

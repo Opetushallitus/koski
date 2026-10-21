@@ -85,6 +85,7 @@ export const PerusteEdit: React.FC<PerusteEditProps> = (props) => {
   }))
   return (
     <Select
+      hasErrors={Boolean(props.errors)}
       testId="peruste.edit"
       onChange={(opt) => {
         props.onChange(opt?.value || '')
