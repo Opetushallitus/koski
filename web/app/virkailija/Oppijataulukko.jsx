@@ -292,7 +292,6 @@ export class Oppijataulukko extends React.Component {
                               {
                                 <li className="koulutusmoduuli">
                                   <Highlight
-                                    finnishFolding={false}
                                     searchQuery={params.tutkintohaku || ''}
                                   >
                                     {t(suoritus.koulutusmoduuli.tunniste.nimi)}
@@ -303,7 +302,6 @@ export class Oppijataulukko extends React.Component {
                                 (osaamisala, k) => (
                                   <li className="osaamisala" key={k}>
                                     <Highlight
-                                      finnishFolding={false}
                                       searchQuery={params.tutkintohaku || ''}
                                     >
                                       {t(osaamisala.nimi)}
@@ -315,7 +313,6 @@ export class Oppijataulukko extends React.Component {
                                 (nimike, k) => (
                                   <li className="tutkintonimike" key={k}>
                                     <Highlight
-                                      finnishFolding={false}
                                       searchQuery={params.tutkintohaku || ''}
                                     >
                                       {t(nimike.nimi)}
