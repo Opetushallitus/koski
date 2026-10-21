@@ -271,6 +271,18 @@ Esimerkki:
 
     {{json:VSTKOPSXlsx}}
 
+{{title:fi.oph.koski.massaluovutus.raportit.MassaluovutusQueryVSTOsaamismerkit}}
+{{docs:fi.oph.koski.massaluovutus.raportit.MassaluovutusQueryVSTOsaamismerkit}}
+
+Raportti ei ole vielä käytössä tuotantoympäristössä.
+
+Esimerkki:
+
+    POST {{var:baseUrl}}/api/massaluovutus HTTP/1.1
+    {{var:headers}}
+
+    {{json:VSTOsaamismerkitXlsx}}
+
 {{title:fi.oph.koski.massaluovutus.raportit.MassaluovutusQueryMuuKuinSaanneltyKoulutus}}
 {{docs:fi.oph.koski.massaluovutus.raportit.MassaluovutusQueryMuuKuinSaanneltyKoulutus}}
 

@@ -14,7 +14,7 @@ import fi.oph.koski.raportit.lukio.lops2021._
 import fi.oph.koski.raportit.muks.MuunKuinSaannellynKoulutuksenRaportti
 import fi.oph.koski.raportit.perusopetus.{PerusopetuksenOppijamäärätRaportti, PerusopetuksenRaportitRepository, PerusopetuksenVuosiluokkaRaportti}
 import fi.oph.koski.raportit.tuva.{TuvaPerusopetuksenOppijamäärätAikajaksovirheetRaportti, TuvaPerusopetuksenOppijamäärätRaportti, TuvaSuoritustiedotRaportti}
-import fi.oph.koski.raportit.vst.{JatkuvanOppimisenVapaanSivistystyonRaportti, VapaanSivistystyonOppivelvollisilleSuunnatunKoulutuksenRaportti, VapaanSivistystyonVapaatavoitteisenKoulutuksenRaportti}
+import fi.oph.koski.raportit.vst.{JatkuvanOppimisenVapaanSivistystyonRaportti, VapaanSivistystyonOppivelvollisilleSuunnatunKoulutuksenRaportti, VapaanSivistystyonOsaamismerkkienRaportti, VapaanSivistystyonVapaatavoitteisenKoulutuksenRaportti}
 import fi.oph.koski.schema.LocalizedString
 import fi.oph.koski.schema.Organisaatio.isValidOrganisaatioOid
 import fi.oph.koski.util.Retry
@@ -432,6 +432,16 @@ class RaportitService(application: KoskiApplication) {
       sheets = VapaanSivistystyonOppivelvollisilleSuunnatunKoulutuksenRaportti.buildRaportti(raportointiDatabase, application.koodistoViitePalvelu, oppilaitosOids, request.alku, request.loppu, t),
       workbookSettings = WorkbookSettings(t.get("raportti-excel-vst-kops-title"), Some(request.password)),
       filename = s"${t.get("raportti-excel-vst-kops-tiedoston-etuliite")}_${request.oppilaitosOid}_${request.alku}_${request.loppu}.xlsx",
+      downloadToken = request.downloadToken,
+    )
+  }
+
+  def vstOsaamismerkit(request: AikajaksoRaporttiRequest, t: LocalizationReader) = {
+    val oppilaitosOids = accessResolver.kyselyOiditOrganisaatiolle(request.oppilaitosOid)
+    OppilaitosRaporttiResponse(
+      sheets = VapaanSivistystyonOsaamismerkkienRaportti.buildRaportti(raportointiDatabase, oppilaitosOids, request.alku, request.loppu, t),
+      workbookSettings = WorkbookSettings(t.get("raportti-excel-vst-osaamismerkit-title"), Some(request.password)),
+      filename = s"${t.get("raportti-excel-vst-osaamismerkit-tiedoston-etuliite")}_${request.oppilaitosOid}_${request.alku}_${request.loppu}.xlsx",
       downloadToken = request.downloadToken,
     )
   }
