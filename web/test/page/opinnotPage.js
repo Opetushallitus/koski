@@ -559,6 +559,14 @@ function Kurssi(elem) {
     arvosana: Editor(elem).propertyBySelector('.arvosana'),
     arviointipäivä: Editor(elem).propertyBySelector('.details .property.päivä'),
     toggleDetails: click(subElement(elem, '.tunniste')),
+    clickDetails: click(detailsElem),
+    clickArvosana: click(subElement(elem, '.arvosana')),
+    openArviointipäiväCalendar: click(
+      subElement(detailsElem, '.property.päivä .toggle-calendar')
+    ),
+    clickSelectedCalendarDay: click(
+      subElement(detailsElem, '.DayPicker-Day--selected')
+    ),
     showDetails: function () {
       if (api.detailsText() === '') return api.toggleDetails()
       return wait.forAjax()

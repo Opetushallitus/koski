@@ -39,7 +39,7 @@ export class KurssiPopup extends React.Component {
     const { kurssi } = this.props
     return (
       <div
-        ref={(e) => (this.popupElem = e)}
+        ref={this.props.popupRef}
         className={
           'details details-' +
           this.state.popupAlignment.x +
@@ -72,7 +72,7 @@ export class KurssiPopup extends React.Component {
     this.setState({
       popupAlignment: getAlignment(
         this.props.parentElemPosition,
-        this.popupElem
+        this.props.popupRef.current
       )
     })
   }

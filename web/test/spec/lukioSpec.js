@@ -105,8 +105,20 @@ describe('Lukiokoulutus', function () {
           )
         })
       })
+      describe('Kun klikataan kurssin tietojen sisällä', function () {
+        before(kurssi.clickDetails)
+        it('kurssin tiedot pysyvät auki', function () {
+          expect(kurssi.detailsText()).to.not.equal('')
+        })
+      })
       describe('Kun klikataan uudestaan', function () {
         before(kurssi.toggleDetails)
+        it('piilottaa kurssin tiedot', function () {
+          expect(kurssi.detailsText()).to.equal('')
+        })
+      })
+      describe('Kun klikataan kurssin tietojen ulkopuolella', function () {
+        before(kurssi.toggleDetails, kurssi.clickArvosana)
         it('piilottaa kurssin tiedot', function () {
           expect(kurssi.detailsText()).to.equal('')
         })
@@ -118,6 +130,18 @@ describe('Lukiokoulutus', function () {
             k.toggleDetails()
             expect(k.detailsText().length > 10).to.equal(true)
           })
+        })
+      })
+      describe('Kun valitaan päivä kalenterista muokkaustilassa', function () {
+        before(
+          editor.edit,
+          kurssi.toggleDetails,
+          kurssi.openArviointipäiväCalendar,
+          kurssi.clickSelectedCalendarDay
+        )
+        after(editor.cancelChanges)
+        it('kurssin tiedot pysyvät auki', function () {
+          expect(kurssi.detailsText()).to.not.equal('')
         })
       })
     })

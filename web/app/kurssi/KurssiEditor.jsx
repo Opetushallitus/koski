@@ -15,34 +15,24 @@ import {
 } from '../suoritus/Koulutusmoduuli'
 import { FootnoteHint } from '../components/footnote'
 import { eiLasketaKokonaispistemäärään } from '../dia/DIA'
+import { useOutsideClick } from '../util/useOutsideClick'
 
 export const KurssiEditor = ({ kurssi }) => {
   const [open, setOpen] = useState(false)
+  const hideDetails = () => setOpen(false)
 
-  const kurssiRef = useRef(null)
+  const buttonRef = useRef(null)
+  const popupRef = useRef(null)
+  // Painike rajataan pois ulkopuolisista klikkauksista, koska muuten sen
+  // klikkaus sulkisi avoimen popupin ja toggleDetails avaisi sen heti
+  // uudelleen. Painike hoitaa itse sekä avaamisen että sulkemisen.
+  useOutsideClick([buttonRef, popupRef], hideDetails, open)
+
   useEffect(() => {
     if (open) {
-      const handleClickOutside = (e) => {
-        const detailsElem = kurssiRef.current.querySelector('.details')
-        if (
-          detailsElem &&
-          !detailsElem.contains(e.target) &&
-          ![
-            'DayPicker-Day',
-            'DayPicker-Day DayPicker-Day--selected',
-            'remove-item'
-          ].includes(e.target.className)
-        ) {
-          setOpen(false)
-        }
-      }
       const handleEsc = (e) => e.keyCode === 27 && setOpen(false)
-      document.addEventListener('click', handleClickOutside, false)
       document.addEventListener('keyup', handleEsc)
-      return () => {
-        document.removeEventListener('click', handleClickOutside, false)
-        document.removeEventListener('keyup', handleEsc)
-      }
+      return () => document.removeEventListener('keyup', handleEsc)
     }
   }, [open])
 
@@ -74,12 +64,15 @@ export const KurssiEditor = ({ kurssi }) => {
     isPaikallinen(koulutusmoduuliModel)
 
   const showDetails = () => setOpen(true)
-  const hideDetails = () => setOpen(false)
+  const toggleDetails = () => setOpen((isOpen) => !isOpen)
+
+  const kurssiRef = useRef(null)
 
   return (
     <li className="kurssi" ref={kurssiRef}>
       <button
-        onClick={showDetails}
+        ref={buttonRef}
+        onClick={toggleDetails}
         onMouseEnter={!edit ? showDetails : undefined}
         onMouseLeave={!edit ? hideDetails : undefined}
         className={className}
@@ -105,6 +98,7 @@ export const KurssiEditor = ({ kurssi }) => {
       {open && (
         <KurssiPopup
           kurssi={kurssi}
+          popupRef={popupRef}
           parentElemPosition={kurssiRef.current.getBoundingClientRect()}
         />
       )}
