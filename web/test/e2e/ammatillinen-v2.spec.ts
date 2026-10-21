@@ -47,6 +47,23 @@ test.describe('Osittaisen ammatillisen tutkinnon uusi käyttöliittymä', () => 
     await expect(page.getByTestId('oo.0.suoritukset.0.korotus-sisaltaa-mukautettuja.edit')).toBeVisible()
   })
 
+  test('Lisätietojen aikajakson päivämäärän voi kirjoittaa näppäin kerrallaan', async ({ page, oppijaPage }) => {
+    await oppijaPage.goto('1.2.246.562.24.00000000055')
+    await page.getByTestId('oo.0.opiskeluoikeus.edit').click()
+    await page
+      .locator('.EditorContainer__lisatiedot .KeyValueRow')
+      .filter({ hasText: /^Majoitus/ })
+      .getByRole('button', { name: 'Lisää', exact: true })
+      .click()
+
+    // fill() asettaisi arvon kerralla eikä paljastaisi, jos kenttä
+    // remountataan ja menettää fokuksen jokaisen näppäilyn jälkeen
+    const alku = page.getByTestId('oo.0.opiskeluoikeus.lisätiedot.0.aikajakso.alku.input')
+    await alku.pressSequentially('2.3.2024')
+    await expect(alku).toHaveValue('2.3.2024')
+    await expect(alku).toBeFocused()
+  })
+
   test('Yhteisen osan lisääminen arvosanalla onnistuu', async ({ page, oppijaPage, oppijaPageV2 }) => {
     await oppijaPage.goto('1.2.246.562.24.00000000055')
 

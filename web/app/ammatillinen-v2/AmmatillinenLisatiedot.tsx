@@ -63,69 +63,81 @@ interface AmmatillinenLisatiedotProps {
   form: FormModel<AmmatillinenOpiskeluoikeus>
 }
 
+const getLisatiedotPath = (form: FormModel<AmmatillinenOpiskeluoikeus>) =>
+  form.root.prop('lisätiedot').valueOr(AmmatillisenOpiskeluoikeudenLisätiedot())
+
+const AikajaksoRow: React.FC<{
+  form: FormModel<AmmatillinenOpiskeluoikeus>
+  localizableLabel: string
+  path: keyof AmmatillisenOpiskeluoikeudenLisätiedot
+}> = ({ form, localizableLabel, path }) => {
+  const aikajaksoPath = getLisatiedotPath(form).prop(path) as FormOptic<
+    AmmatillinenOpiskeluoikeus,
+    Aikajakso[] | undefined
+  >
+  return (
+    <KeyValueRow localizableLabel={localizableLabel} largeLabel>
+      <FormListField
+        form={form}
+        view={AikajaksoView}
+        edit={AikajaksoEdit}
+        path={aikajaksoPath}
+        editProps={{
+          createAikajakso: Aikajakso
+        }}
+        removable
+      />
+      {form.editMode && (
+        <ButtonGroup>
+          <FlatButton
+            onClick={() => {
+              form.updateAt(
+                aikajaksoPath.valueOr([]),
+                append(uusiTyhjäAikajakso())
+              )
+            }}
+          >
+            {t('Lisää')}
+          </FlatButton>
+        </ButtonGroup>
+      )}
+    </KeyValueRow>
+  )
+}
+
 export const AmmatillinenLisatiedot: React.FC<AmmatillinenLisatiedotProps> = ({
   form
 }) => {
   const emptyLisatiedot = AmmatillisenOpiskeluoikeudenLisätiedot()
-  const lisatiedotPath = form.root.prop('lisätiedot').valueOr(emptyLisatiedot)
+  const lisatiedotPath = getLisatiedotPath(form)
   const lisätiedot = getValue(lisatiedotPath)(form.state)
-
-  const AikajaksoRow: React.FC<{
-    localizableLabel: string
-    path: keyof AmmatillisenOpiskeluoikeudenLisätiedot
-  }> = ({ localizableLabel, path }) => {
-    const aikajaksoPath = lisatiedotPath.prop(path) as FormOptic<
-      AmmatillinenOpiskeluoikeus,
-      Aikajakso[] | undefined
-    >
-    return (
-      <KeyValueRow localizableLabel={localizableLabel} largeLabel>
-        <FormListField
-          form={form}
-          view={AikajaksoView}
-          edit={AikajaksoEdit}
-          path={aikajaksoPath}
-          editProps={{
-            createAikajakso: Aikajakso
-          }}
-          removable
-        />
-        {form.editMode && (
-          <ButtonGroup>
-            <FlatButton
-              onClick={() => {
-                form.updateAt(
-                  aikajaksoPath.valueOr([]),
-                  append(uusiTyhjäAikajakso())
-                )
-              }}
-            >
-              {t('Lisää')}
-            </FlatButton>
-          </ButtonGroup>
-        )}
-      </KeyValueRow>
-    )
-  }
 
   return (
     <KeyValueTable>
-      <AikajaksoRow localizableLabel={'Majoitus'} path={'majoitus'} />
       <AikajaksoRow
+        form={form}
+        localizableLabel={'Majoitus'}
+        path={'majoitus'}
+      />
+      <AikajaksoRow
+        form={form}
         localizableLabel={'Sisäoppilaitosmainen majoitus'}
         path={'sisäoppilaitosmainenMajoitus'}
       />
       <AikajaksoRow
+        form={form}
         localizableLabel={
           'Vaativan erityisen tuen yhteydessä järjestettävä majoitus'
         }
         path={'vaativanErityisenTuenYhteydessäJärjestettäväMajoitus'}
       />
       <AikajaksoRow
+        form={form}
         localizableLabel={'Erityinen tuki'}
         path={'erityinenTuki'}
       />
       <AikajaksoRow
+        form={form}
         localizableLabel={'Vaativan erityisen tuen erityinen tehtävä'}
         path={'vaativanErityisenTuenErityinenTehtävä'}
       />
@@ -179,11 +191,13 @@ export const AmmatillinenLisatiedot: React.FC<AmmatillinenLisatiedotProps> = ({
       </KeyValueRow>
 
       <AikajaksoRow
+        form={form}
         localizableLabel={'Vaikeasti vammaisille järjestetty opetus'}
         path={'vaikeastiVammainen'}
       />
 
       <AikajaksoRow
+        form={form}
         localizableLabel={'Vammainen ja avustaja'}
         path={'vammainenJaAvustaja'}
       />
@@ -254,6 +268,7 @@ export const AmmatillinenLisatiedot: React.FC<AmmatillinenLisatiedotProps> = ({
       </KeyValueRow>
 
       <AikajaksoRow
+        form={form}
         localizableLabel={'Vankilaopetuksessa'}
         path={'vankilaopetuksessa'}
       />
@@ -296,6 +311,7 @@ export const AmmatillinenLisatiedot: React.FC<AmmatillinenLisatiedotProps> = ({
       </KeyValueRow>
 
       <AikajaksoRow
+        form={form}
         localizableLabel={'Oikeutta maksuttomuuteen pidennetty'}
         path={'oikeuttaMaksuttomuuteenPidennetty'}
       />
