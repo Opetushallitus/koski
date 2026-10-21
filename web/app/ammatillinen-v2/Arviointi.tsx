@@ -202,7 +202,7 @@ export const AmisArvosanaInTableView = ({
   const paras = parasArviointi(value)
   return (
     <TestIdText id="arvosana.value">
-      {paras ? paras.arvosana.koodiarvo : '-'}
+      {paras ? paras.arvosana.koodiarvo : '–'}
     </TestIdText>
   )
 }
