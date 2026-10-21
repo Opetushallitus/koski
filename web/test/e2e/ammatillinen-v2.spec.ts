@@ -114,6 +114,22 @@ test.describe('Osittaisen ammatillisen tutkinnon useasta tutkinnosta virkailijan
     await oppijaPageV2.tallenna()
   })
 
+  test('Näytön suorituspaikan puuttuva kuvaus merkitään punaisella', async ({ page, oppijaPage }) => {
+    // Ei 056:ta, jolle edellinen testi tallentaa näytön
+    await oppijaPage.goto('1.2.246.562.24.00000000055')
+    await page.getByTestId('oo.0.opiskeluoikeus.edit').click()
+    await page.getByTestId('oo.0.suoritukset.0.osasuoritukset.0.expand').click()
+    await page.getByText('Lisää ammattiosaamisen näyttö').click()
+    await page.getByTestId('oo.0.suoritukset.0.osasuoritukset.0.properties.suorituspaikka.input').click()
+    await page.getByTestId('oo.0.suoritukset.0.osasuoritukset.0.properties.suorituspaikka.options.1.item').click()
+
+    // Tyhjän pakollisen kentän virheestä ei tule tekstiä, vain punainen kenttä
+    const kuvaus = page.getByPlaceholder('Kuvaus')
+    await expect(kuvaus).toHaveClass(/TextEdit__input--error/)
+    await kuvaus.fill('Muksulan päiväkoti')
+    await expect(kuvaus).not.toHaveClass(/TextEdit__input--error/)
+  })
+
   test('Renderöi osittaisen suorituksen useasta tutkinnosta tiedot virkailijan käyttöliittymässä', async ({ page, oppijaPage }) => {
     await oppijaPage.goto('1.2.246.562.24.00000000182')
     await expect(page.getByTestId('oo.0.opiskeluoikeus.nimi')).toContainText('Stadin ammatti- ja aikuisopisto, ammatillisen tutkinnon osia useasta tutkinnosta')
