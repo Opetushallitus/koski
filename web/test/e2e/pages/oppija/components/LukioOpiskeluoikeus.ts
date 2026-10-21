@@ -1,4 +1,5 @@
 import { Locator } from '@playwright/test'
+import { Dropdown } from './Dropdown'
 
 export class LukioOpiskeluoikeus {
   readonly container: Locator
@@ -34,6 +35,34 @@ export class LukioOpiskeluoikeus {
     return oppiaineRivi.locator('li.kurssi').filter({
       has: oppiaineRivi.page().getByRole('button', { name: koodi, exact: true })
     })
+  }
+
+  // Kieliaineen kieli (esim. "Suomen kieli ja kirjallisuus") ei ole oma
+  // PropertiesEditor-rivi, vaan osa oppiaineen otsikkoa - ei data-testid:tä
+  // ympärillä, CSS-skoppaus sama kuin vanhassa Mocha-testissä.
+  kieliaineenKieliDropdown(oppiaineRivi: Locator): Dropdown {
+    return new Dropdown(
+      oppiaineRivi.page(),
+      oppiaineRivi
+        .locator('.title .properties .dropdown-wrapper')
+        .getByTestId('enum-editor-dropdown')
+    )
+  }
+
+  suorituskieliDropdown(oppiaineRivi: Locator): Dropdown {
+    return new Dropdown(
+      oppiaineRivi.page(),
+      this.kenttä('suorituskieli', oppiaineRivi).getByTestId(
+        'enum-editor-dropdown'
+      )
+    )
+  }
+
+  arvosanaDropdown(oppiaineRivi: Locator): Dropdown {
+    return new Dropdown(
+      oppiaineRivi.page(),
+      oppiaineRivi.locator('td.arvosana').getByTestId('enum-editor-dropdown')
+    )
   }
 
   // Yleinen PropertiesEditor (web/app/editor/PropertiesEditor.jsx) merkitsee joka

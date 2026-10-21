@@ -5,6 +5,13 @@ import { LukioOpiskeluoikeus } from './pages/oppija/components/LukioOpiskeluoike
 test.describe('Lukiokoulutus 2019: virkailija', () => {
   test.use({ storageState: virkailija('pää') })
 
+  // Pelkkä näyttötesti, mutta fixturet resetoidaan silti: sama oppija on
+  // jaettu lukio2019-oppiaineen-muokkaus.spec.ts:n kanssa, joka tallentaa
+  // muutoksia - ei saa olettaa, missä järjestyksessä tiedostot ajetaan.
+  test.beforeEach(async ({ fixtures }) => {
+    await fixtures.reset()
+  })
+
   test.describe('Lukion päättötodistus', () => {
     let opiskeluoikeus: LukioOpiskeluoikeus
 
