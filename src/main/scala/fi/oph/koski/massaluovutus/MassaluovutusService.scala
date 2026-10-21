@@ -44,7 +44,7 @@ class MassaluovutusService(application: KoskiApplication) extends GlobalExecutio
 
       existing.fold {
         if (query.queryAllowed(application)) {
-          Right[HttpStatus, Query](queries.add(query))
+          query.validateWithApplication(application).map(q => queries.add(q): Query)
         } else {
           Left(KoskiErrorCategory.forbidden())
         }

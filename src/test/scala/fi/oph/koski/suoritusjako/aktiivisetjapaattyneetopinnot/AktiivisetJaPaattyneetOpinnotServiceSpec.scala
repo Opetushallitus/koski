@@ -73,7 +73,7 @@ class AktiivisetJaPäättyneetOpinnotServiceSpec
 
     onnistuu.length should be > 100
     eiOnnistu.length should be > 20
-    eiOnnistu.length should be < 35
+    eiOnnistu.length should be < 45
     eiOnnistu.length should be(eiOnnistu404.length)
   }
 

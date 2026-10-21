@@ -293,6 +293,7 @@ case class PerusopetuksenVuosiluokanSuoritus(
   @DefaultValue(false)
   @Title("Oppilas jää luokalle")
   jääLuokalle: Boolean = false,
+  @HiddenFromAiemmatOpiskeluoikeudet
   käyttäytymisenArvio: Option[PerusopetuksenKäyttäytymisenArviointi] = None,
   @Description("Vuosiluokan suoritukseen liittyvät oppiaineen suoritukset")
   @Title("Oppiaineet")

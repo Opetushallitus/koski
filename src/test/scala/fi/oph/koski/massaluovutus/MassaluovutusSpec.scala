@@ -275,10 +275,10 @@ class MassaluovutusSpec extends AnyFreeSpec with MassaluovutusTestMethods with M
         }
         val complete = waitForCompletion(queryId, user)
 
-        // 22, ei 23: Jyväskylän yliopiston esiopetus Jyväskylän normaalikoulussa ei kuulu
+        // 28, ei 29: Jyväskylän yliopiston esiopetus Jyväskylän normaalikoulussa ei kuulu
         // Helsingin piiriin, vaikka koulu onkin Helsingin ostopalveluyksikkö.
         // Ks. "Ostopalveluyksiköstä palautetaan vain ostajan omat opiskeluoikeudet".
-        complete.files should have length 22
+        complete.files should have length 28
         complete.files.foreach(verifyResult(_, user))
 
         AuditLogTester.verifyLastAuditLogMessageForOperation(Map(

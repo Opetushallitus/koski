@@ -164,7 +164,7 @@ class KäyttöoikeusryhmätSpec
     }
 
     "voi hakea opiskeluoikeuksia kyselyrajapinnasta" in {
-      queryOppijat(user = user).map(_.henkilö.asInstanceOf[TäydellisetHenkilötiedot].sukunimi) should equal(List("Markkanen-Fagerström", "Paallekkaisia"))
+      queryOppijat(user = user).map(_.henkilö.asInstanceOf[TäydellisetHenkilötiedot].sukunimi) should equal(List("Markkanen-Fagerström", "Paallekkaisia", "Aiemmat-Ammatillinen"))
     }
 
     "ei voi muokata opiskeluoikeuksia muussa organisaatiossa" in {
