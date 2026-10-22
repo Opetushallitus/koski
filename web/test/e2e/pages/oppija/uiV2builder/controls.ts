@@ -24,8 +24,10 @@ export type Viewer = {
 
 export type Editor = {
   value: () => Promise<string>
-  set: (value: string) => Promise<void>
+  set: (value: never) => Promise<void>
 }
+
+type EditorValue<E extends Editor> = Parameters<E['set']>[0]
 
 export const FormField = <E extends Editor>(
   viewer: Control<Viewer>,
@@ -46,7 +48,7 @@ export const FormField = <E extends Editor>(
       ...edit,
       value: (editMode: boolean) =>
         editMode && edit ? edit.value() : view.value(),
-      set: (value: string) => {
+      set: (value: EditorValue<E>) => {
         if (!edit) {
           throw new Error('Trying to set an editor value without editor')
         }
@@ -57,7 +59,7 @@ export const FormField = <E extends Editor>(
   }) as Control<
     E & {
       value: (editMode: boolean) => Promise<string>
-      set: (value: string) => Promise<void>
+      set: (value: EditorValue<E>) => Promise<void>
       viewer: Locator
     }
   >

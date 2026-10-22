@@ -8,6 +8,7 @@ import { FormField } from './uiV2builder/controls'
 import { Input } from './uiV2builder/Input'
 import { Label } from './uiV2builder/Label'
 import { OpiskeluoikeusHeader } from './uiV2builder/OpiskeluoikeusHeader'
+import { OpiskeluoikeudenTilaKoodiarvo } from './uiV2builder/OpiskeluoikeudenTila'
 import { Select } from './uiV2builder/Select'
 import {
   SuorituksenVahvistus,
@@ -95,7 +96,10 @@ export class KoskiTpoOppijaPage extends KoskiOppijaPageV2<
       .properties.tunnustettu.set(selite)
   }
 
-  async addOpiskeluoikeudenTila(pvm: string, tila: string) {
+  async addOpiskeluoikeudenTila(
+    pvm: string,
+    tila: OpiskeluoikeudenTilaKoodiarvo
+  ) {
     const editor = this.$.opiskeluoikeus.tila.edit
     await editor.add.click()
     await editor.modal.date.set(pvm)
