@@ -1,8 +1,6 @@
 import React, { createContext, useContext } from 'react'
-import { useLayout } from '../../util/useDepth'
 import { common, CommonPropsWithChildren } from '../CommonProps'
 import { Column, ColumnRow } from '../containers/Columns'
-import { OSASUORITUSTABLE_DEPTH_KEY } from './OsasuoritusTable'
 import { t } from '../../i18n/i18n'
 
 /**
@@ -15,20 +13,14 @@ import { t } from '../../i18n/i18n'
  */
 const PropertyLevelContext = createContext(0)
 
-/** Sisennys ruudukkosarakkeina; annetaan CSS:lle muuttujana. */
-type IndentStyle = React.CSSProperties & {
-  '--osasuoritus-indent': number
-  '--osasuoritus-taso'?: number
-}
+type TasoStyle = React.CSSProperties & { '--osasuoritus-taso': number }
 
 export type OsasuoritusPropertiesProps = CommonPropsWithChildren<{
-  indent: number
   /**
-   * Laajennetun rivin sisäkkäisyystaso ammatillisen tyylissä (ks.
-   * AmmatillinenTyyliContext). Kun annettu, kentät asetellaan rivin nimen
-   * alle.
+   * Laajennetun rivin sisäkkäisyystaso taulukossa; kentät asetellaan rivin
+   * nimen alle.
    */
-  ammatillinenTaso?: number
+  taso: number
 }>
 
 /**
@@ -46,55 +38,35 @@ export const OsasuoritusProperties: React.FC<OsasuoritusPropertiesProps> = (
   props
 ) => (
   <section
-    {...common(props, [
-      'OsasuoritusProperties',
-      props.ammatillinenTaso !== undefined &&
-        'OsasuoritusProperties--ammatillinen'
-    ])}
-    style={
-      {
-        '--osasuoritus-indent': props.indent,
-        '--osasuoritus-taso': props.ammatillinenTaso
-      } as IndentStyle
-    }
+    {...common(props, ['OsasuoritusProperties'])}
+    style={{ '--osasuoritus-taso': props.taso } as TasoStyle}
   >
     {props.children}
   </section>
 )
 
-/**
- * Nimen viemä sisennys sellaiselle sisällölle, joka ei ole nimi tai arvo vaan
- * oma asettelunsa (esim. sisäkkäinen osasuoritustaulukko kentän arvossa).
- */
-const LABEL_INDENT_COLUMNS = 4
-
 export type OsasuoritusPropertyProps = CommonPropsWithChildren<{
   label: string
-  /** Ammatillisen tyylissä kenttä nimineen harmaalla taustalla. */
+  /** Kenttä nimineen harmaalla taustalla (esim. ammatillisen näyttö). */
   korostettu?: boolean
 }>
 
 export const OsasuoritusProperty: React.FC<OsasuoritusPropertyProps> = (
   props
-) => {
-  const [, LayoutProvider] = useLayout(OSASUORITUSTABLE_DEPTH_KEY)
-  return (
-    <ColumnRow
-      {...common(props, [
-        'OsasuoritusProperty',
-        props.korostettu && 'OsasuoritusProperty--korostettu'
-      ])}
-      valign="top"
-    >
-      <OsasuoritusPropertyLabel>{t(props.label)}</OsasuoritusPropertyLabel>
-      <LayoutProvider indent={LABEL_INDENT_COLUMNS}>
-        <PropertyLevelContext.Provider value={1}>
-          {props.children}
-        </PropertyLevelContext.Provider>
-      </LayoutProvider>
-    </ColumnRow>
-  )
-}
+) => (
+  <ColumnRow
+    {...common(props, [
+      'OsasuoritusProperty',
+      props.korostettu && 'OsasuoritusProperty--korostettu'
+    ])}
+    valign="top"
+  >
+    <OsasuoritusPropertyLabel>{t(props.label)}</OsasuoritusPropertyLabel>
+    <PropertyLevelContext.Provider value={1}>
+      {props.children}
+    </PropertyLevelContext.Provider>
+  </ColumnRow>
+)
 
 export type OsasuoritusSubpropertyProps = CommonPropsWithChildren<{
   label: string

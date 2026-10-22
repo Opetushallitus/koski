@@ -1,26 +1,3 @@
-// Otsikkorivi erotetaan osasuorituksista ohuella viivalla vanhan
-// käyttöliittymän tapaan (ei vaaleansinistä palkkia).
-.OsasuoritusHeader {
-  font-weight: 600;
-  margin-bottom: (@baseline / 2);
-  border-bottom: 1px solid @color-disabled;
-
-  .Column {
-    min-height: 2 * @baseline;
-    display: flex;
-    align-items: center;
-
-    &:first-child {
-      padding-left: @h-padding;
-    }
-  }
-
-  // Ryhmän otsikko alkaa reunasta kuten taulukon yläpuolinen sisältö.
-  .Column.OsasuoritusHeader__title {
-    padding-left: 0;
-  }
-}
-
 // Samalla rivillä ryhmän otsikon kanssa sarakeotsikot ovat harmaita, jotta
 // otsikko erottuu niistä.
 .OsasuoritusHeader--title .Column:not(.OsasuoritusHeader__title) {
@@ -31,19 +8,11 @@
   padding: 0;
 }
 
-.OsasuoritusRow .OsasuoritusRow__expandColumn {
-  min-width: 2 * @baseline;
-}
-
 // Otsikkorivin oikea reunasarake varaa saman leveyden kuin rivien poista-
 // painike (IconButton--size-input), jotta otsikot kohdistuvat sarakkeiden
 // kanssa muokkaustilassa.
 .OsasuoritusHeader__rightIcons {
   min-width: 2.5 * @baseline;
-}
-
-.OsasuoritusRow + .OsasuoritusRow {
-  margin-top: (@baseline / 2);
 }
 
 .OsasuoritusRow--edit {
@@ -105,12 +74,8 @@
   color: inherit;
 }
 
-.OsasuoritusPropertyLabel {
-  opacity: 0.5;
-}
-
 // ---------------------------------------------------------------------------
-// Ammatillisen tyyli (AmmatillinenTyyliContext)
+// Asettelu
 //
 // Otsikkorivi on harmaa palkki kuten vanhassa käyttöliittymässä, rivit
 // valkoisia ilman välissä olevia viivoja. Laajennetun rivin kentät ovat rivin
@@ -122,21 +87,19 @@
 // ---------------------------------------------------------------------------
 
 // Rivin sisällön etäisyys taulukon reunasta
-@Osasuoritus-amis-reuna: 8px;
+@Osasuoritus-reuna: 8px;
 // Sisennys tasoa kohden = laajennuspainikkeen ja valmis-merkin yhteisleveys
-@Osasuoritus-amis-laajennus: 26px;
-@Osasuoritus-amis-merkki: 24px;
-@Osasuoritus-amis-askel: (
-  @Osasuoritus-amis-laajennus + @Osasuoritus-amis-merkki
-);
+@Osasuoritus-laajennus: 26px;
+@Osasuoritus-merkki: 24px;
+@Osasuoritus-askel: (@Osasuoritus-laajennus + @Osasuoritus-merkki);
 // Ikonin etäisyys painikkeensa reunasta; otsikot tasataan ikonin kanssa
-@Osasuoritus-amis-ikoni: 4px;
+@Osasuoritus-ikoni: 4px;
 
-@Osasuoritus-amis-sisennys: ~'calc(var(--osasuoritus-taso, 0) * @{Osasuoritus-amis-askel})';
+@Osasuoritus-sisennys: ~'calc(var(--osasuoritus-taso, 0) * @{Osasuoritus-askel})';
 // Sisäkkäisen taulukon otsikkopalkki alkaa hieman ikonien vasemmalta puolelta
-@Osasuoritus-amis-taulukon-reuna: ~'calc(@{Osasuoritus-amis-reuna} - @{Osasuoritus-amis-ikoni} + @{Osasuoritus-amis-sisennys})';
+@Osasuoritus-taulukon-reuna: ~'calc(@{Osasuoritus-reuna} - @{Osasuoritus-ikoni} + @{Osasuoritus-sisennys})';
 
-.OsasuoritusRow--ammatillinen {
+.OsasuoritusRow {
   > .Column {
     min-height: 38px;
   }
@@ -144,22 +107,22 @@
   .OsasuoritusRow__lead {
     display: flex;
     align-items: center;
-    padding-left: ~'calc(@{Osasuoritus-amis-reuna} + @{Osasuoritus-amis-sisennys})';
+    padding-left: ~'calc(@{Osasuoritus-reuna} + @{Osasuoritus-sisennys})';
   }
 
   .OsasuoritusRow__expandColumn {
     flex: none;
-    width: @Osasuoritus-amis-laajennus;
+    width: @Osasuoritus-laajennus;
     min-width: 0;
 
     .ExpandButton {
-      padding: 0 @Osasuoritus-amis-ikoni;
+      padding: 0 @Osasuoritus-ikoni;
     }
   }
 
   .OsasuoritusRow__completedColumn {
     flex: none;
-    width: @Osasuoritus-amis-merkki;
+    width: @Osasuoritus-merkki;
   }
 
   .OsasuoritusRow__nameColumn {
@@ -198,29 +161,30 @@
   }
 }
 
-.OsasuoritusRow + .OsasuoritusRow--ammatillinen {
-  margin-top: 0;
-}
-
 // Sarakkeet erottaa valkoinen pystyviiva kuten vanhassa käyttöliittymässä
 // (style/suoritustaulukko.less).
-.OsasuoritusHeader--ammatillinen {
-  margin-bottom: 0;
-  border-bottom: 0;
+.OsasuoritusHeader {
+  font-weight: 600;
   background: @color-neutral-gray;
 
   .Column {
     position: relative;
     min-height: 32px;
+    display: flex;
+    align-items: center;
 
     &:first-child {
-      padding-left: (@Osasuoritus-amis-reuna + @Osasuoritus-amis-ikoni);
+      padding-left: (@Osasuoritus-reuna + @Osasuoritus-ikoni);
     }
   }
 
-  // Viiva sarakevälin keskelle. Poistopainikkeiden sarakkeella ei ole
-  // otsikkoa, joten viimeinen otsikko jatkuu sen yli.
-  .Column + .Column:not(.OsasuoritusHeader__rightIcons)::before {
+  // Viiva sarakevälin keskelle. Poistopainikkeiden sarakkeella ja
+  // otsikottomalla täytesarakkeella (esim. perusopetus) ei ole otsikkoa, joten
+  // edellinen otsikko jatkuu niiden yli.
+  .Column
+    + .Column:not(.OsasuoritusHeader__rightIcons):not(
+      .OsasuoritusHeader__tyhja
+    )::before {
     content: '';
     position: absolute;
     top: 0;
@@ -239,13 +203,13 @@
   color: @color-label-darker;
   background: linear-gradient(@color-neutral-gray, @color-neutral-gray)
     no-repeat right top;
-  background-size: ~'calc(100% - @{Osasuoritus-amis-taulukon-reuna})' 100%;
+  background-size: ~'calc(100% - @{Osasuoritus-taulukon-reuna})' 100%;
 
   .Column {
     min-height: 28px;
 
     &:first-child {
-      padding-left: ~'calc(@{Osasuoritus-amis-reuna} + @{Osasuoritus-amis-ikoni} + @{Osasuoritus-amis-sisennys})';
+      padding-left: ~'calc(@{Osasuoritus-reuna} + @{Osasuoritus-ikoni} + @{Osasuoritus-sisennys})';
     }
   }
 }
@@ -254,7 +218,7 @@
 // Näkymät sisentävät itsensä ruudukon sarakkeilla (ColumnRow indent), jotka
 // eivät osu yhteen pikselimittaisen sisennyksen kanssa, joten se ohitetaan.
 .OsasuoritusTable__lisays {
-  padding-left: @Osasuoritus-amis-taulukon-reuna;
+  padding-left: @Osasuoritus-taulukon-reuna;
 
   .ColumnRow > .Column:first-child {
     grid-column-start: auto;

@@ -28,18 +28,16 @@ import {
 import { useNewItems } from '../../appstate/newItems'
 import { TestIdLayer } from '../../appstate/useTestId'
 
-export const OSASUORITUSTABLE_DEPTH_KEY = 'OsasuoritusTable'
-
-// Ammatillinen-v2:n osasuoritustaulukon tyyli (klikattava nimi, otsikko
-// vasempaan reunaan, tiivis completed-merkki FontAwesome-ikonein). Muut
-// suoritustyypit käyttävät oletusarvoa (false) eli perinteistä asettelua.
+// Ammatillinen-v2:n omat valinnat: rivi avautuu myös nimestä ja valmis-merkki
+// on vanhan käyttöliittymän FontAwesome-ikoni. Taulukon asettelu on sama
+// kaikissa v2-käyttöliittymissä.
 export const AmmatillinenTyyliContext = createContext(false)
 
-// Ammatillisen tyylin sisäkkäisyystaso (0 = päätason taulukko). Sisennys on
-// siinä kiinteä pikselimitta tasoa kohden eikä ruudukon sarakkeita, jotta
-// sisäkkäinen taulukko ja kentät osuvat ylemmän rivin nimen alle taulukon
-// leveydestä riippumatta. Ks. OsasuoritusTable.less.
-const AMMATILLINEN_TASO_KEY = 'OsasuoritusTableAmmatillinenTaso'
+// Taulukon sisäkkäisyystaso (0 = päätason taulukko). Sisennys on kiinteä
+// pikselimitta tasoa kohden eikä ruudukon sarakkeita, jotta sisäkkäinen
+// taulukko ja kentät osuvat ylemmän rivin nimen alle taulukon leveydestä
+// riippumatta. Ks. OsasuoritusTable.less.
+const TASO_KEY = 'OsasuoritusTableTaso'
 
 type TasoStyle = React.CSSProperties & { '--osasuoritus-taso': number }
 
@@ -57,7 +55,6 @@ export type OsasuoritusTableProps<
   addNewOsasuoritusView?: React.FC<P>
   addNewOsasuoritusViewProps?: P
   forceOpen?: boolean
-  expandedContentIndent?: number
   // Ryhmän otsikko (esim. "Yhteiset oppiaineet") otsikkorivin nimisarakkeeseen,
   // samalle riville muiden sarakkeiden otsikoiden kanssa. Ilman rivejä otsikko
   // näytetään yksinään, koska sarakeotsikoille ei silloin ole sisältöä.
@@ -91,8 +88,7 @@ export const OsasuoritusTable = <DATA_KEYS extends string, P>(
 
   const { addNewOsasuoritusView: AddNewOsasuoritusView } = props
   const newOsasuoritusIds = useNewItems(getRowId, props.rows)
-  const ammatillinenTyyli = useContext(AmmatillinenTyyliContext)
-  const [taso] = useLayout(AMMATILLINEN_TASO_KEY)
+  const [taso] = useLayout(TASO_KEY)
   const addNewView = editMode && AddNewOsasuoritusView && (
     // @ts-expect-error React.JSX.IntristicAttributes virhe
     <AddNewOsasuoritusView {...(props.addNewOsasuoritusViewProps || {})} />
@@ -133,7 +129,6 @@ export const OsasuoritusTable = <DATA_KEYS extends string, P>(
               forceOpen={props.forceOpen}
               expandable={row.expandable}
               skipExpandableColumn={skipExpandableColumn}
-              expandedContentIndent={props.expandedContentIndent}
               showCompleted={showCompleted}
               completed={completed ? completed(index) : undefined}
               onRemove={
@@ -144,7 +139,7 @@ export const OsasuoritusTable = <DATA_KEYS extends string, P>(
         ))}
       </TestIdLayer>
       {editMode && <Spacer />}
-      {ammatillinenTyyli && taso > 0 && addNewView ? (
+      {taso > 0 && addNewView ? (
         <div
           className="OsasuoritusTable__lisays"
           style={{ '--osasuoritus-taso': taso } as TasoStyle}
@@ -154,9 +149,9 @@ export const OsasuoritusTable = <DATA_KEYS extends string, P>(
       ) : (
         addNewView
       )}
-      {/* Ammatillisen tyylissä sisäkkäisen taulukon alaväli tulee laajennetun
-          rivin omasta alareunuksesta. */}
-      {!(ammatillinenTyyli && taso > 0) && <Spacer />}
+      {/* Sisäkkäisen taulukon alaväli tulee laajennetun rivin omasta
+          alareunuksesta. */}
+      {taso === 0 && <Spacer />}
     </>
   )
 }
@@ -172,7 +167,6 @@ export type OsasuoritusRowProps<DATA_KEYS extends string> = CommonProps<{
   onRemove?: () => void
   initiallyOpen?: boolean
   forceOpen?: boolean
-  expandedContentIndent?: number
 }>
 
 type OsasuoritusHeaderProps<DATA_KEYS extends string> = CommonProps<{
@@ -186,98 +180,65 @@ type OsasuoritusHeaderProps<DATA_KEYS extends string> = CommonProps<{
 export const OsasuoritusHeader = <DATA_KEYS extends string>(
   props: OsasuoritusHeaderProps<DATA_KEYS>
 ) => {
-  const [indentation] = useLayout(OSASUORITUSTABLE_DEPTH_KEY)
-  const [taso] = useLayout(AMMATILLINEN_TASO_KEY)
-  const ammatillinenTyyli = useContext(AmmatillinenTyyliContext)
-  const nimiotsikkoReunaan = ammatillinenTyyli || props.title !== undefined
+  const [taso] = useLayout(TASO_KEY)
   const spans = getSpans(
     props.columns,
-    ammatillinenTyyli ? 0 : indentation,
     props.canRemove,
     props.skipExpandableColumn,
     props.showCompleted
   )
+  // Nimisarakkeen otsikko ("… tutkinnon osat" tai ryhmän otsikko) alkaa rivin
+  // reunasta laajennus- ja completed-sarakkeiden yli kuten rivien nimisolu.
+  const leadingSpan =
+    (props.skipExpandableColumn ? 0 : spans.leftIcons) + spans.completed
   return (
-    <>
-      <ColumnRow
-        className={cx(
-          'OsasuoritusHeader',
-          props.title !== undefined && 'OsasuoritusHeader--title',
-          ammatillinenTyyli && 'OsasuoritusHeader--ammatillinen',
-          ammatillinenTyyli && taso > 0 && 'OsasuoritusHeader--sisakkainen'
-        )}
-        style={
-          ammatillinenTyyli
-            ? ({ '--osasuoritus-taso': taso } as TasoStyle)
-            : undefined
-        }
-      >
-        {spans.indent > 0 && (
-          <Column span={spans.indent} className="OsasuoritusHeader__indent" />
-        )}
-        {nimiotsikkoReunaan ? (
-          props.columns.map((column, index) => {
-            const isNameColumn = index === 0
-            // Nimisarakkeen otsikko ("… tutkinnon osat" tai ryhmän otsikko)
-            // venytetään alkamaan rivin vasemmasta reunasta laajennus- ja
-            // completed-ikonisarakkeiden yli, jotta se on linjassa alapuolisen
-            // vaakaviivan ja muun vasempaan tasatun sisällön kanssa.
-            const leadingSpan =
-              (props.skipExpandableColumn ? 0 : spans.leftIcons) +
-              spans.completed
-            const span = isNameColumn
-              ? mapResponsiveValue((w: number) => leadingSpan + w)(spans.name)
-              : spans.data[index - 1]
-            const isTitle = isNameColumn && props.title !== undefined
-            return (
-              <Column
-                key={index}
-                span={span}
-                align={column.align}
-                className={isTitle ? 'OsasuoritusHeader__title' : undefined}
-              >
-                {isTitle ? props.title : getColumnLabel(column)}
-              </Column>
-            )
-          })
-        ) : (
-          <>
-            {/* Tyhjät sarakkeet laajennus- ja completed-painikkeille, jotta
-                ensimmäisen sarakkeen otsikko on rivien nimien yläpuolella. */}
-            {!props.skipExpandableColumn && <Column span={spans.leftIcons} />}
-            {spans.completed > 0 && <Column span={spans.completed} />}
-            {props.columns.map((column, index) => (
-              <Column
-                key={index}
-                span={index === 0 ? spans.name : spans.data[index - 1]}
-                align={column.align}
-              >
-                {getColumnLabel(column)}
-              </Column>
-            ))}
-          </>
-        )}
-        {spans.rightIcons > 0 && (
+    <ColumnRow
+      className={cx(
+        'OsasuoritusHeader',
+        props.title !== undefined && 'OsasuoritusHeader--title',
+        taso > 0 && 'OsasuoritusHeader--sisakkainen'
+      )}
+      style={{ '--osasuoritus-taso': taso } as TasoStyle}
+    >
+      {props.columns.map((column, index) => {
+        const isNameColumn = index === 0
+        const span = isNameColumn
+          ? mapResponsiveValue((w: number) => leadingSpan + w)(spans.name)
+          : spans.data[index - 1]
+        const isTitle = isNameColumn && props.title !== undefined
+        const label = isTitle ? props.title : getColumnLabel(column)
+        return (
           <Column
-            span={spans.rightIcons}
-            className="OsasuoritusHeader__rightIcons"
-          />
-        )}
-      </ColumnRow>
-    </>
+            key={index}
+            span={span}
+            align={column.align}
+            className={cx(
+              isTitle && 'OsasuoritusHeader__title',
+              label === null && 'OsasuoritusHeader__tyhja'
+            )}
+          >
+            {label}
+          </Column>
+        )
+      })}
+      {spans.rightIcons > 0 && (
+        <Column
+          span={spans.rightIcons}
+          className="OsasuoritusHeader__rightIcons"
+        />
+      )}
+    </ColumnRow>
   )
 }
 
 export const OsasuoritusRow = <DATA_KEYS extends string>(
   props: OsasuoritusRowProps<DATA_KEYS>
 ) => {
-  const [indentation, LayoutProvider] = useLayout(OSASUORITUSTABLE_DEPTH_KEY)
-  const [taso, TasoProvider] = useLayout(AMMATILLINEN_TASO_KEY)
+  const [taso, TasoProvider] = useLayout(TASO_KEY)
   const ammatillinenTyyli = useContext(AmmatillinenTyyliContext)
   const canRemove = Boolean(props.editMode && props.onRemove)
   const spans = getSpans(
     props.columns,
-    ammatillinenTyyli ? 0 : indentation,
     canRemove,
     props.skipExpandableColumn,
     props.showCompleted
@@ -369,106 +330,54 @@ export const OsasuoritusRow = <DATA_KEYS extends string>(
 
   return (
     <TreeNode>
-      {ammatillinenTyyli ? (
-        // Laajennuspainike, valmis-merkki ja nimi ovat yhdessä solussa, jonka
-        // sisennys on kiinteä mitta tasoa kohden. Datasarakkeet pysyvät
-        // ruudukossa, joten ne ovat linjassa kaikilla tasoilla.
-        <ColumnRow
-          className={cx(
-            'OsasuoritusRow',
-            'OsasuoritusRow--ammatillinen',
-            isOpen && 'OsasuoritusRow--open',
-            props.editMode && 'OsasuoritusRow--edit'
-          )}
-          style={{ '--osasuoritus-taso': taso } as TasoStyle}
+      {/* Laajennuspainike, valmis-merkki ja nimi ovat yhdessä solussa, jonka
+          sisennys on kiinteä mitta tasoa kohden. Datasarakkeet pysyvät
+          ruudukossa, joten ne ovat linjassa kaikilla tasoilla. */}
+      <ColumnRow
+        className={cx(
+          'OsasuoritusRow',
+          isOpen && 'OsasuoritusRow--open',
+          props.editMode && 'OsasuoritusRow--edit'
+        )}
+        style={{ '--osasuoritus-taso': taso } as TasoStyle}
+      >
+        <Column
+          span={mapResponsiveValue(
+            (w: number) => spans.leftIcons + spans.completed + w
+          )(spans.name)}
+          className="OsasuoritusRow__lead"
         >
+          <div className="OsasuoritusRow__expandColumn">{expandButton}</div>
+          <div className="OsasuoritusRow__completedColumn">{completedMark}</div>
+          <div className="OsasuoritusRow__nameColumn">
+            {cellContent(props.columns[0], 0)}
+          </div>
+        </Column>
+        {props.columns.slice(1).map((column, index) => (
           <Column
-            span={mapResponsiveValue(
-              (w: number) => spans.leftIcons + spans.completed + w
-            )(spans.name)}
-            className="OsasuoritusRow__lead"
+            key={index}
+            span={spans.data[index]}
+            align={column.align}
+            className="OsasuoritusRow__dataColumn"
           >
-            <div className="OsasuoritusRow__expandColumn">{expandButton}</div>
-            <div className="OsasuoritusRow__completedColumn">
-              {completedMark}
-            </div>
-            <div className="OsasuoritusRow__nameColumn">
-              {cellContent(props.columns[0], 0)}
-            </div>
+            {cellContent(column, index + 1)}
           </Column>
-          {props.columns.slice(1).map((column, index) => (
-            <Column
-              key={index}
-              span={spans.data[index]}
-              align={column.align}
-              className="OsasuoritusRow__dataColumn"
-            >
-              {cellContent(column, index + 1)}
-            </Column>
-          ))}
-          {removeColumn}
-        </ColumnRow>
-      ) : (
-        <ColumnRow
-          className={cx(
-            'OsasuoritusRow',
-            props.editMode && 'OsasuoritusRow--edit'
-          )}
-        >
-          {spans.indent > 0 && (
-            <Column span={spans.indent} className="OsasuoritusHeader__indent" />
-          )}
-          {!props.skipExpandableColumn && (
-            <Column
-              span={spans.leftIcons}
-              align="right"
-              className="OsasuoritusRow__expandColumn"
-            >
-              {expandButton}
-            </Column>
-          )}
-          {props.showCompleted && (
-            <Column span={1} className="OsasuoritusRow__completedColumn">
-              {completedMark}
-            </Column>
-          )}
-          {props.columns.map((column, index) => (
-            <Column
-              key={index}
-              span={index === 0 ? spans.name : spans.data[index - 1]}
-              align={column.align}
-              className={
-                index === 0
-                  ? 'OsasuoritusRow__nameColumn'
-                  : 'OsasuoritusRow__dataColumn'
-              }
-            >
-              {cellContent(column, index)}
-            </Column>
-          ))}
-          {removeColumn}
-        </ColumnRow>
-      )}
+        ))}
+        {removeColumn}
+      </ColumnRow>
       {props.row.alwaysVisibleContent && (
-        <LayoutProvider indent={3}>
-          <OsasuoritusProperties indent={indentation + 3}>
-            {props.row.alwaysVisibleContent}
-          </OsasuoritusProperties>
-        </LayoutProvider>
+        <OsasuoritusProperties taso={taso}>
+          {props.row.alwaysVisibleContent}
+        </OsasuoritusProperties>
       )}
       {expandable && isOpen && props.row.content && (
-        <LayoutProvider indent={props.expandedContentIndent ?? 2}>
-          <TasoProvider indent={1}>
-            <TestIdLayer id="properties">
-              <OsasuoritusProperties
-                indent={indentation + (props.expandedContentIndent ?? 2)}
-                ammatillinenTaso={ammatillinenTyyli ? taso : undefined}
-              >
-                {props.row.content}
-              </OsasuoritusProperties>
-            </TestIdLayer>
-          </TasoProvider>
-        </LayoutProvider>
+        <TasoProvider indent={1}>
+          <TestIdLayer id="properties">
+            <OsasuoritusProperties taso={taso}>
+              {props.row.content}
+            </OsasuoritusProperties>
+          </TestIdLayer>
+        </TasoProvider>
       )}
     </TreeNode>
   )
@@ -476,17 +385,14 @@ export const OsasuoritusRow = <DATA_KEYS extends string>(
 
 const getSpans = (
   columns: Array<OsasuoritusTableColumn<string>>,
-  depth?: number,
   canRemove?: boolean,
   skipExpandableColumn?: boolean,
   showCompleted?: boolean
 ) => {
-  const indent = depth || 0
   const leftIcons = skipExpandableColumn ? 0 : 1
   const completed = showCompleted ? 1 : 0
   const rightIcons = canRemove ? 1 : 0
-  const availableColumns =
-    COLUMN_COUNT - indent - leftIcons - completed - rightIcons
+  const availableColumns = COLUMN_COUNT - leftIcons - completed - rightIcons
   const dataColumnCount = Math.max(0, columns.length - 1)
   const dataSpan: ResponsiveValue<number> = {
     default: 4,
@@ -500,7 +406,6 @@ const getSpans = (
   )
 
   return {
-    indent,
     leftIcons,
     completed,
     rightIcons,

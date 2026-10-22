@@ -384,7 +384,6 @@ const Oppiainetaulukko: React.FC<OppiainetaulukkoProps> = ({
       editMode={form.editMode}
       columns={columns}
       rows={rows}
-      expandedContentIndent={3}
       onRemove={(rowIndex) => {
         const dataIndex = allOsasuoritukset.indexOf(osasuoritukset[rowIndex])
         if (dataIndex >= 0) {
