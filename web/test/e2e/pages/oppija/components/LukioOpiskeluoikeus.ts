@@ -29,6 +29,22 @@ export class LukioOpiskeluoikeus {
     return this.oppiaineet.locator(`.oppiaine-rivi.${koodi}`)
   }
 
+  // Tila-historia on lista erillisiä opiskeluoikeusjaksoja: varmistetaan
+  // päivämäärä ja tila per jakso erikseen, jotta pari ei voi mennä sekaisin.
+  async odotaTilaHistoria(
+    odotetut: { päivä: string; tila: string }[]
+  ): Promise<void> {
+    const jaksot = this.kenttä('tila').locator('.opiskeluoikeusjakso')
+    for (let i = 0; i < odotetut.length; i++) {
+      await expect(jaksot.nth(i).locator('label.date')).toHaveText(
+        odotetut[i].päivä
+      )
+      await expect(jaksot.nth(i).locator('label.tila')).toHaveText(
+        odotetut[i].tila
+      )
+    }
+  }
+
   // Kurssi tunnistetaan sen näkyvästä koodista (esim. "ÄI1") roolin ja nimen
   // kautta, ei sijainnista listassa - kurssien järjestys ei ole osa
   // testattavaa käyttäytymistä.
@@ -68,45 +84,43 @@ export class LukioOpiskeluoikeus {
 
   // "Lisää oppiaine" -pudotusvalikko lataa koodiston asynkronisesti
   // (ajax-loading-placeholder) - odotetaan sen valmistumista ennen valintaa.
-  async lisääOppiaine(nimi: string): Promise<void> {
+  // Pudotusvalikon kehyksellä itsellään ei ole data-testid:tä, mutta sen
+  // combobox-syötteellä on näkyvä nimi (placeholder "Lisää oppiaine") -
+  // fromComboboxName tunnistaa kehyksen sen perusteella, ei kehyskohtaisella
+  // CSS-luokalla.
+  private async uusiOppiaineDropdown(): Promise<Dropdown> {
     const uusiOppiaine = this.container.locator('.uusi-oppiaine').first()
     await expect(
       uusiOppiaine.locator('.ajax-loading-placeholder')
     ).toHaveCount(0)
-    const dropdown = new Dropdown(
-      uusiOppiaine.page(),
-      uusiOppiaine.locator('.dropdown')
-    )
+    return Dropdown.fromComboboxName(uusiOppiaine, 'Lisää oppiaine')
+  }
+
+  async lisääOppiaine(nimi: string): Promise<void> {
+    const dropdown = await this.uusiOppiaineDropdown()
     await dropdown.selectOptionByClick(nimi)
   }
 
   // Poistolinkillä ei ole näkyvää tekstiä, aria-labelia eikä title-attribuuttia
   // - CSS on ainoa toimiva valinta, ei roolin/nimen puutteen vuoksi oikotie.
   async poistaOppiaine(oppiaineRivi: Locator): Promise<void> {
-    await oppiaineRivi.locator('td.remove-row a').click()
+    await oppiaineRivi.locator('.remove-row a').click()
   }
 
   // "Lisää..." on sama pudotusvalikko kuin lisääOppiaine(), mutta oma
   // erikoisvaihtoehtonsa luo tyhjän paikallisen oppiaineen täytettäväksi,
   // ei valitse olemassaolevaa koodiston arvoa.
   async lisääPaikallinenOppiaine(): Promise<Locator> {
-    const uusiOppiaine = this.container.locator('.uusi-oppiaine').first()
-    await expect(
-      uusiOppiaine.locator('.ajax-loading-placeholder')
-    ).toHaveCount(0)
-    const dropdown = new Dropdown(
-      uusiOppiaine.page(),
-      uusiOppiaine.locator('.dropdown')
-    )
+    const dropdown = await this.uusiOppiaineDropdown()
     await dropdown.selectOptionByClick('Lisää...')
     return this.oppiaineet.locator('.oppiaine-rivi').last()
   }
 
-  paikallisenOppiaineenKoodi(oppiaineRivi: Locator): Locator {
+  private paikallisenOppiaineenKoodi(oppiaineRivi: Locator): Locator {
     return oppiaineRivi.getByPlaceholder('Koodi')
   }
 
-  paikallisenOppiaineenNimi(oppiaineRivi: Locator): Locator {
+  private paikallisenOppiaineenNimi(oppiaineRivi: Locator): Locator {
     return oppiaineRivi.getByPlaceholder('Oppiaineen nimi')
   }
 
@@ -126,14 +140,23 @@ export class LukioOpiskeluoikeus {
 
   // "Lisää osasuoritus" -linkki avaa valintaikkunan (role="dialog"), jossa
   // ensin valitaan kurssi pudotusvalikosta, täytetään sen kentät ja
-  // vahvistetaan. Jaettu lisääPaikallinenKurssi()/lisääValtakunnallinenKurssi()
-  // -metodien kesken.
+  // vahvistetaan.
   private async avaaLisääOsasuoritusDialogi(
     oppiaineRivi: Locator
   ): Promise<{ dialog: Locator; kurssiDropdown: Dropdown }> {
     await oppiaineRivi.getByText('Lisää osasuoritus').click()
     const page = oppiaineRivi.page()
     const dialog = page.getByRole('dialog')
+    // Dialogin kurssipudotusvalikko lataa koodiston asynkronisesti, samoin
+    // kuin uusiOppiaineDropdown() - odotetaan latauksen valmistumista ennen
+    // kuin pudotusvalikkoon koskee, muuten combobox ei ole vielä olemassa.
+    await expect(dialog.locator('.ajax-loading-placeholder')).toHaveCount(0)
+    // Ei Dropdown.fromComboboxName(): tämän combobox'in aria-label seuraa
+    // elävästi kirjoitettua hakutekstiä (Dropdown.jsx: aria-label on
+    // queryAtomista riippuvainen) - kun filterAndSelectByClick() kirjoittaa
+    // kenttään, nimi "Lisää osasuoritus" katoaa ja laiska has-suodatin lakkaa
+    // täsmäämästä kesken haun. Varmistettu livenä: kirjoituksen jälkeen
+    // nimihaku ei enää löydä combobox'ia lainkaan.
     const kurssiDropdown = new Dropdown(page, dialog.locator('.dropdown'))
     return { dialog, kurssiDropdown }
   }
@@ -204,7 +227,7 @@ export class LukioOpiskeluoikeus {
     return this.vahvistaLisääOsasuoritusDialogi(oppiaineRivi, dialog, koodi)
   }
 
-  // Poistolinkki on sama rakenne kuin oppiaineen remove-value, ei roolia/nimeä.
+  // Samantyyppinen tilanne kuin poistaOppiaine(): ei roolia/nimeä.
   async poistaKurssi(kurssi: Locator): Promise<void> {
     await kurssi.locator('a.remove-value').click()
   }
