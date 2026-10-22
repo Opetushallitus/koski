@@ -97,9 +97,8 @@ test.describe('Lukiokoulutus 2019: oppiaineen muokkaus', () => {
 
     await oppijaPage.tallenna()
 
-    await expect(
-      opiskeluoikeus.oppiaineRivi('PS').locator('.nimi')
-    ).toHaveText('Psykologia')
+    await expect(ps.locator('.nimi')).toHaveText('Psykologia')
+    await expect(ps.locator('td.arvosana')).toHaveText('9')
   })
 
   test('Valtakunnallinen oppiaine voidaan poistaa', async ({ oppijaPage }) => {
@@ -109,7 +108,7 @@ test.describe('Lukiokoulutus 2019: oppiaineen muokkaus', () => {
     await oppijaPage.tallenna()
 
     await oppijaPage.avaaMuokkausnäkymä()
-    await opiskeluoikeus.poistaOppiaine(opiskeluoikeus.oppiaineRivi('PS'))
+    await opiskeluoikeus.poistaOppiaine(ps)
     await oppijaPage.tallenna()
 
     await expect(opiskeluoikeus.oppiaineRivi('PS')).toHaveCount(0)
@@ -166,6 +165,10 @@ test.describe('Lukiokoulutus 2019: oppiaineen muokkaus', () => {
   test('Paikallisen oppiaineen alle voidaan lisätä osasuoritus/kurssi', async ({
     oppijaPage
   }) => {
+    // Kurssin arvosanan lisäys leimaa arviointipäivän tämänpäiväiseksi, joka ei
+    // voi olla opiskeluoikeuden päättymispäivän jälkeen (suoritus on valmis).
+    await oppijaPage.poistaViimeisinTila()
+
     const rivi = await opiskeluoikeus.lisääJaTäytäPaikallinenOppiaine({
       koodi: 'PAI',
       nimi: 'Paikallinen oppiaine',
@@ -183,9 +186,9 @@ test.describe('Lukiokoulutus 2019: oppiaineen muokkaus', () => {
 
     await oppijaPage.tallenna()
 
-    await expect(
-      opiskeluoikeus.kurssi(opiskeluoikeus.oppiaineRivi('PAI'), 'PA')
-    ).toBeVisible()
+    const paAgain = opiskeluoikeus.kurssi(opiskeluoikeus.oppiaineRivi('PAI'), 'PA')
+    await expect(paAgain).toBeVisible()
+    await expect(paAgain.locator('.arvosana')).toHaveText('9')
   })
 
   test('Paikallinen oppiaine voidaan poistaa', async ({ oppijaPage }) => {

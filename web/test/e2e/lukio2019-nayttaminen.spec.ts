@@ -36,17 +36,10 @@ test.describe('Lukiokoulutus 2019: virkailija', () => {
         'Opiskeluoikeuden voimassaoloaika: 1.8.2019 — 5.9.2021'
       )
 
-      // Tila-historia on kaksi erillistä opiskeluoikeusjaksoa: varmistetaan
-      // päivämäärä ja tila per jakso erikseen, jotta pari ei voi mennä sekaisin.
-      const jaksot = opiskeluoikeus.kenttä('tila').locator('.opiskeluoikeusjakso')
-      await expect(jaksot.nth(0).locator('label.date')).toHaveText('5.9.2021')
-      await expect(jaksot.nth(0).locator('label.tila')).toHaveText(
-        'Valmistunut (valtionosuusrahoitteinen koulutus)'
-      )
-      await expect(jaksot.nth(1).locator('label.date')).toHaveText('1.8.2019')
-      await expect(jaksot.nth(1).locator('label.tila')).toHaveText(
-        'Läsnä (valtionosuusrahoitteinen koulutus)'
-      )
+      await opiskeluoikeus.odotaTilaHistoria([
+        { päivä: '5.9.2021', tila: 'Valmistunut (valtionosuusrahoitteinen koulutus)' },
+        { päivä: '1.8.2019', tila: 'Läsnä (valtionosuusrahoitteinen koulutus)' }
+      ])
 
       await expect(opiskeluoikeus.kenttä('oppimääräSuoritettu')).toHaveText(
         'kyllä'
@@ -110,36 +103,77 @@ test.describe('Lukiokoulutus 2019: virkailija', () => {
         opiskeluoikeus.kurssi(ai, 'ÄI3').locator('.arvosana')
       ).toHaveText('8')
 
-      await expect(ai.locator('td.laajuus:not(.arvioitu)')).toHaveText('6')
-      await expect(ai.locator('td.laajuus.arvioitu')).toHaveText('6')
+      await expect(ai.locator('.laajuus:not(.arvioitu)')).toHaveText('6')
+      await expect(ai.locator('.laajuus.arvioitu')).toHaveText('6')
       await expect(ai.locator('td.arvosana')).toHaveText('9')
     })
   })
 
   test.describe('Lukion oppiaineiden oppimäärien suoritus', () => {
-    let opiskeluoikeus: LukioOpiskeluoikeus
+    test.describe('Laajuuksien erottelu', () => {
+      let opiskeluoikeus: LukioOpiskeluoikeus
 
-    test.beforeEach(async ({ virkailijaPage, oppijaHaku, oppijaPage }) => {
-      await virkailijaPage.goto()
-      await (await oppijaHaku.search('010105A1995')).clickOnFirst()
-      await oppijaPage.selectOpiskeluoikeus('lukiokoulutus')
-      opiskeluoikeus = oppijaPage.getLukioOpiskeluoikeus('lukion aineopinnot')
+      test.beforeEach(async ({ virkailijaPage, oppijaHaku, oppijaPage }) => {
+        await virkailijaPage.goto()
+        await (await oppijaHaku.search('010105A1995')).clickOnFirst()
+        await oppijaPage.selectOpiskeluoikeus('lukiokoulutus')
+        opiskeluoikeus = oppijaPage.getLukioOpiskeluoikeus('lukion aineopinnot')
+      })
+
+      test('Arvioitu ja hyväksytysti arvioitu laajuus näytetään erikseen oppiaineelle', async () => {
+        // Varmistetaan, että sarakkeiden otsikot todella tarkoittavat sitä,
+        // mitä alla luetut arvot olettavat - sarake-erottelu nojaa CSS-luokkaan
+        // (.laajuus vs. .laajuus.arvioitu), ei suoraan käyttäjän näkemään otsikkoon.
+        await expect(
+          opiskeluoikeus.oppiaineet.locator('th.laajuus:not(.arvioitu)')
+        ).toHaveText('Arvioitu (opintopistettä)')
+        await expect(
+          opiskeluoikeus.oppiaineet.locator('th.laajuus.arvioitu')
+        ).toHaveText('Hyväksytysti arvioitu (opintopistettä)')
+
+        const fy = opiskeluoikeus.oppiaineRivi('FY')
+        await expect(fy.locator('.laajuus:not(.arvioitu)')).toHaveText('6')
+        await expect(fy.locator('.laajuus.arvioitu')).toHaveText('4')
+      })
     })
 
-    test('Arvioitu ja hyväksytysti arvioitu laajuus näytetään erikseen oppiaineelle', async () => {
-      // Varmistetaan, että sarakkeiden otsikot todella tarkoittavat sitä,
-      // mitä alla luetut arvot olettavat - sarake-erottelu nojaa CSS-luokkaan
-      // (.laajuus vs. .laajuus.arvioitu), ei suoraan käyttäjän näkemään otsikkoon.
-      await expect(
-        opiskeluoikeus.oppiaineet.locator('th.laajuus:not(.arvioitu)')
-      ).toHaveText('Arvioitu (opintopistettä)')
-      await expect(
-        opiskeluoikeus.oppiaineet.locator('th.laajuus.arvioitu')
-      ).toHaveText('Hyväksytysti arvioitu (opintopistettä)')
+    test.describe('Perustiedot', () => {
+      let opiskeluoikeus: LukioOpiskeluoikeus
 
-      const fy = opiskeluoikeus.oppiaineRivi('FY')
-      await expect(fy.locator('td.laajuus:not(.arvioitu)')).toHaveText('6')
-      await expect(fy.locator('td.laajuus.arvioitu')).toHaveText('4')
+      test.beforeEach(async ({ virkailijaPage, oppijaHaku, oppijaPage }) => {
+        await virkailijaPage.goto()
+        await (await oppijaHaku.search('010705A6119')).clickOnFirst()
+        await oppijaPage.selectOpiskeluoikeus('lukiokoulutus')
+        opiskeluoikeus = oppijaPage.getLukioOpiskeluoikeus('lukion aineopinnot')
+      })
+
+      test('Tutkinto ja oppilaitos näytetään, suoritustyyppi näkyy otsikossa', async ({
+        oppijaPage
+      }) => {
+        await expect(opiskeluoikeus.tutkinnonNimi).toHaveText(
+          'Lukion aineopinnot'
+        )
+        await expect(
+          oppijaPage.getOppilaitosNimi('lukion aineopinnot')
+        ).toHaveText('Jyväskylän normaalikoulu')
+
+        await expect(
+          opiskeluoikeus.container.locator('h3 .koulutus')
+        ).toHaveText('Lukion aineopinnot')
+      })
+
+      test('Opiskeluoikeuden tiedot näytetään', async () => {
+        // Toisin kuin "Lukion oppimäärä" -suoritustyypillä, tällä ei ole
+        // oppimääräSuoritettu-kenttää lainkaan.
+        await expect(
+          opiskeluoikeus.kenttä('oppimääräSuoritettu')
+        ).toHaveCount(0)
+
+        await opiskeluoikeus.odotaTilaHistoria([
+          { päivä: '5.9.2021', tila: 'Valmistunut (valtionosuusrahoitteinen koulutus)' },
+          { päivä: '1.8.2019', tila: 'Läsnä (valtionosuusrahoitteinen koulutus)' }
+        ])
+      })
     })
   })
 })

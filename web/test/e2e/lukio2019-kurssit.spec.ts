@@ -30,9 +30,7 @@ test.describe('Lukiokoulutus 2019: moduulin/kurssin muokkaus', () => {
 
     await oppijaPage.tallenna()
 
-    const maAgain = opiskeluoikeus.oppiaineRivi('MA')
-    const mab4Again = opiskeluoikeus.kurssi(maAgain, 'MAB4')
-    await expect(mab4Again.locator('.arvosana')).toHaveText('6')
+    await expect(mab4.locator('.arvosana')).toHaveText('6')
   })
 
   test('Valtakunnallinen moduuli voidaan lisätä oppiaineelle', async ({
@@ -50,9 +48,8 @@ test.describe('Lukiokoulutus 2019: moduulin/kurssin muokkaus', () => {
 
     await oppijaPage.tallenna()
 
-    await expect(
-      opiskeluoikeus.kurssi(opiskeluoikeus.oppiaineRivi('AOM'), 'RUA2')
-    ).toBeVisible()
+    await expect(rua2).toBeVisible()
+    await expect(rua2.locator('.arvosana')).toHaveText('9')
   })
 
   test('Moduuli/kurssi voidaan poistaa', async ({ oppijaPage }) => {
