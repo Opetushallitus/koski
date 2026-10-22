@@ -86,6 +86,30 @@ export class LukioOpiskeluoikeus {
     await oppiaineRivi.locator('td.remove-row a').click()
   }
 
+  // "Lisää..." on sama pudotusvalikko kuin lisääOppiaine(), mutta oma
+  // erikoisvaihtoehtonsa luo tyhjän paikallisen oppiaineen täytettäväksi,
+  // ei valitse olemassaolevaa koodiston arvoa.
+  async lisääPaikallinenOppiaine(): Promise<Locator> {
+    const uusiOppiaine = this.container.locator('.uusi-oppiaine').first()
+    await expect(
+      uusiOppiaine.locator('.ajax-loading-placeholder')
+    ).toHaveCount(0)
+    const dropdown = new Dropdown(
+      uusiOppiaine.page(),
+      uusiOppiaine.locator('.dropdown')
+    )
+    await dropdown.selectOptionByClick('Lisää...')
+    return this.oppiaineet.locator('.oppiaine-rivi').last()
+  }
+
+  paikallisenOppiaineenKoodi(oppiaineRivi: Locator): Locator {
+    return oppiaineRivi.getByPlaceholder('Koodi')
+  }
+
+  paikallisenOppiaineenNimi(oppiaineRivi: Locator): Locator {
+    return oppiaineRivi.getByPlaceholder('Oppiaineen nimi')
+  }
+
   // Yleinen PropertiesEditor (web/app/editor/PropertiesEditor.jsx) merkitsee joka
   // skeemakentän arvon data-testid:llä "<kenttäavain>-value" - käytetään sitä
   // suoraan CSS-luokkien sijaan. .first(), koska sama kenttäavain (esim.

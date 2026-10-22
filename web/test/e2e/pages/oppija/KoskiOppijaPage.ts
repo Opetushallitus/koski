@@ -27,6 +27,7 @@ export class KoskiOppijaPage {
   readonly opiskeluoikeudetNav: Locator
   readonly opiskeluoikeudetNavValittuVälilehti: Locator
   readonly error: Locator
+  readonly editBarMessage: Locator
 
   constructor(page: Page) {
     this.page = page
@@ -85,6 +86,7 @@ export class KoskiOppijaPage {
     // TODO: Refaktoroi assertio
     this.opiskeluoikeudenTiedot = page.locator('.opiskeluoikeuden-tiedot')
     this.error = page.getByTestId('error')
+    this.editBarMessage = page.locator('#edit-bar .state-indicator')
   }
 
   async goto(oid: string) {
