@@ -124,19 +124,38 @@ export class LukioOpiskeluoikeus {
     return rivi
   }
 
-  // "Lisää osasuoritus" -linkki avaa valintaikkunan (role="dialog"); siinä
-  // valitaan sama pudotusvalikon "Lisää paikallinen kurssi..." -erikoisvaihtoehto
-  // kuin oppiaineen lisäyksessä. Tunniste/nimi/laajuus/kuvaus ovat tavallisia
-  // PropertiesEditor-rivejä, joten data-testid toimii suoraan.
+  // "Lisää osasuoritus" -linkki avaa valintaikkunan (role="dialog"), jossa
+  // ensin valitaan kurssi pudotusvalikosta, täytetään sen kentät ja
+  // vahvistetaan. Jaettu lisääPaikallinenKurssi()/lisääValtakunnallinenKurssi()
+  // -metodien kesken.
+  private async avaaLisääOsasuoritusDialogi(
+    oppiaineRivi: Locator
+  ): Promise<{ dialog: Locator; kurssiDropdown: Dropdown }> {
+    await oppiaineRivi.getByText('Lisää osasuoritus').click()
+    const page = oppiaineRivi.page()
+    const dialog = page.getByRole('dialog')
+    const kurssiDropdown = new Dropdown(page, dialog.locator('.dropdown'))
+    return { dialog, kurssiDropdown }
+  }
+
+  private async vahvistaLisääOsasuoritusDialogi(
+    oppiaineRivi: Locator,
+    dialog: Locator,
+    koodi: string
+  ): Promise<Locator> {
+    await expect(dialog.getByTestId('dialog-vahvista')).toBeEnabled()
+    await dialog.getByTestId('dialog-vahvista').click()
+    return this.kurssi(oppiaineRivi, koodi)
+  }
+
+  // Tunniste/nimi/laajuus/kuvaus ovat tavallisia PropertiesEditor-rivejä,
+  // joten data-testid toimii suoraan.
   async lisääPaikallinenKurssi(
     oppiaineRivi: Locator,
     tiedot: { tunniste: string; nimi: string; kuvaus: string; laajuus: string }
   ): Promise<Locator> {
-    await oppiaineRivi.getByText('Lisää osasuoritus').click()
-
-    const page = oppiaineRivi.page()
-    const dialog = page.getByRole('dialog')
-    const kurssiDropdown = new Dropdown(page, dialog.locator('.dropdown'))
+    const { dialog, kurssiDropdown } =
+      await this.avaaLisääOsasuoritusDialogi(oppiaineRivi)
     await kurssiDropdown.selectOptionByClick('Lisää paikallinen kurssi...')
 
     await dialog
@@ -153,14 +172,41 @@ export class LukioOpiskeluoikeus {
       .locator('textarea')
       .fill(tiedot.kuvaus)
 
-    await expect(dialog.getByTestId('dialog-vahvista')).toBeEnabled()
-    await dialog.getByTestId('dialog-vahvista').click()
-
-    return this.kurssi(oppiaineRivi, tiedot.tunniste)
+    return this.vahvistaLisääOsasuoritusDialogi(
+      oppiaineRivi,
+      dialog,
+      tiedot.tunniste
+    )
   }
 
   kurssinArvosanaDropdown(kurssi: Locator): Dropdown {
     return new Dropdown(kurssi.page(), kurssi.getByTestId('enum-editor-dropdown'))
+  }
+
+  // Valtakunnallinen moduuli ei näy pudotusvalikon oletuslistassa (katkaistu/
+  // rajattu alijoukko) - Dropdown.filterAndSelectByClick() kirjoittaa koodin
+  // hakukenttään ja klikkaa suodatettua vaihtoehtoa sen koodin perusteella
+  // (ei koko näkyvää nimeä, jotta koodiston sanamuodon muutos ei riko testiä).
+  async lisääValtakunnallinenKurssi(
+    oppiaineRivi: Locator,
+    koodi: string,
+    laajuus: string
+  ): Promise<Locator> {
+    const { dialog, kurssiDropdown } =
+      await this.avaaLisääOsasuoritusDialogi(oppiaineRivi)
+    await kurssiDropdown.filterAndSelectByClick(koodi)
+
+    await dialog
+      .getByTestId('laajuus-value')
+      .getByTestId('number-editor')
+      .fill(laajuus)
+
+    return this.vahvistaLisääOsasuoritusDialogi(oppiaineRivi, dialog, koodi)
+  }
+
+  // Poistolinkki on sama rakenne kuin oppiaineen remove-value, ei roolia/nimeä.
+  async poistaKurssi(kurssi: Locator): Promise<void> {
+    await kurssi.locator('a.remove-value').click()
   }
 
   // Yleinen PropertiesEditor (web/app/editor/PropertiesEditor.jsx) merkitsee joka
