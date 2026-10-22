@@ -5,7 +5,8 @@ export type Control<T = any> = {
   isLeaf: true
 }
 
-export const isLeaf = (a: any): a is Control => a?.isLeaf
+export const isLeaf = (a: unknown): a is Control =>
+  (a as Partial<Control> | undefined)?.isLeaf === true
 
 export function createControl<T>(
   build: (

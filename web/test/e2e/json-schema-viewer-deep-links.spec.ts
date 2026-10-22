@@ -1,6 +1,16 @@
 import { Page } from '@playwright/test'
 import { expect, test } from './schema-viewer-base'
 
+type JsvNode = {
+  isReal?: boolean
+  children?: JsvNode[] | null
+  _children?: JsvNode[] | null
+}
+
+type JsvWindow = {
+  JSV: { resolveNodePath: (path: string) => JsvNode | null }
+}
+
 const viewer = (hash: string, schema = 'migri-oppija-schema.json') =>
   `/koski/json-schema-viewer/?schema=${schema}#viewer-page?${hash}`
 
@@ -110,10 +120,14 @@ test.describe('JSON Schema Viewer deep links', () => {
 
     await expect(page.locator('#loading')).toBeHidden()
     const branchCount = await page.evaluate((): number => {
-      const n = (window as any).JSV.resolveNodePath('opiskeluoikeudet')
-      let kids = n.children || n._children
+      const jsv = (window as unknown as JsvWindow).JSV
+      const n = jsv.resolveNodePath('opiskeluoikeudet')
+      if (n === null) {
+        return 0
+      }
+      let kids = n.children || n._children || []
       while (kids.length === 1 && !kids[0].isReal) {
-        kids = kids[0].children || kids[0]._children
+        kids = kids[0].children || kids[0]._children || []
       }
       return kids.length
     })

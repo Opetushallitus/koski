@@ -1,4 +1,6 @@
+import { Page } from '@playwright/test'
 import { expect, test } from './base'
+import { KoskiOppijaPage } from './pages/oppija/KoskiOppijaPage'
 import { virkailija } from './setup/auth'
 
 /**
@@ -20,7 +22,11 @@ const KIELI = 'oo.0.suoritukset.0.osasuoritukset.2.kieli.edit'
 test.describe('Pudotusvalikko', () => {
   test.use({ storageState: virkailija('kalle') })
 
-  const avaaMuokkaus = async (page: any, oppijaPage: any, tabi: number) => {
+  const avaaMuokkaus = async (
+    page: Page,
+    oppijaPage: KoskiOppijaPage,
+    tabi: number
+  ) => {
     await oppijaPage.goto(kaisaUrl)
     await page.getByTestId(`oo.0.suoritusTabs.${tabi}.tab`).click()
     await page.getByTestId('oo.0.opiskeluoikeus.edit').click()
