@@ -110,6 +110,59 @@ export class LukioOpiskeluoikeus {
     return oppiaineRivi.getByPlaceholder('Oppiaineen nimi')
   }
 
+  async lisääJaTäytäPaikallinenOppiaine(tiedot: {
+    koodi: string
+    nimi: string
+    kuvaus: string
+    arvosana: string
+  }): Promise<Locator> {
+    const rivi = await this.lisääPaikallinenOppiaine()
+    await this.paikallisenOppiaineenKoodi(rivi).fill(tiedot.koodi)
+    await this.paikallisenOppiaineenNimi(rivi).fill(tiedot.nimi)
+    await this.kenttä('kuvaus', rivi).locator('textarea').fill(tiedot.kuvaus)
+    await this.arvosanaDropdown(rivi).selectOptionByClick(tiedot.arvosana)
+    return rivi
+  }
+
+  // "Lisää osasuoritus" -linkki avaa valintaikkunan (role="dialog"); siinä
+  // valitaan sama pudotusvalikon "Lisää paikallinen kurssi..." -erikoisvaihtoehto
+  // kuin oppiaineen lisäyksessä. Tunniste/nimi/laajuus/kuvaus ovat tavallisia
+  // PropertiesEditor-rivejä, joten data-testid toimii suoraan.
+  async lisääPaikallinenKurssi(
+    oppiaineRivi: Locator,
+    tiedot: { tunniste: string; nimi: string; kuvaus: string; laajuus: string }
+  ): Promise<Locator> {
+    await oppiaineRivi.getByText('Lisää osasuoritus').click()
+
+    const page = oppiaineRivi.page()
+    const dialog = page.getByRole('dialog')
+    const kurssiDropdown = new Dropdown(page, dialog.locator('.dropdown'))
+    await kurssiDropdown.selectOptionByClick('Lisää paikallinen kurssi...')
+
+    await dialog
+      .getByTestId('koodiarvo-value')
+      .locator('input')
+      .fill(tiedot.tunniste)
+    await dialog.getByTestId('nimi-value').locator('input').fill(tiedot.nimi)
+    await dialog
+      .getByTestId('laajuus-value')
+      .getByTestId('number-editor')
+      .fill(tiedot.laajuus)
+    await dialog
+      .getByTestId('kuvaus-value')
+      .locator('textarea')
+      .fill(tiedot.kuvaus)
+
+    await expect(dialog.getByTestId('dialog-vahvista')).toBeEnabled()
+    await dialog.getByTestId('dialog-vahvista').click()
+
+    return this.kurssi(oppiaineRivi, tiedot.tunniste)
+  }
+
+  kurssinArvosanaDropdown(kurssi: Locator): Dropdown {
+    return new Dropdown(kurssi.page(), kurssi.getByTestId('enum-editor-dropdown'))
+  }
+
   // Yleinen PropertiesEditor (web/app/editor/PropertiesEditor.jsx) merkitsee joka
   // skeemakentän arvon data-testid:llä "<kenttäavain>-value" - käytetään sitä
   // suoraan CSS-luokkien sijaan. .first(), koska sama kenttäavain (esim.
