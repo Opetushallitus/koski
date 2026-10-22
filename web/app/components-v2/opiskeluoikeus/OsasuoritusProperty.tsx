@@ -13,14 +13,19 @@ import { t } from '../../i18n/i18n'
  */
 const PropertyLevelContext = createContext(0)
 
-type TasoStyle = React.CSSProperties & { '--osasuoritus-taso': number }
+type SisennysStyle = React.CSSProperties & {
+  '--osasuoritus-taso': number
+  '--osasuoritus-merkkitasot': number
+}
 
 export type OsasuoritusPropertiesProps = CommonPropsWithChildren<{
   /**
-   * Laajennetun rivin sisäkkäisyystaso taulukossa; kentät asetellaan rivin
-   * nimen alle.
+   * Laajennetun rivin sisällön sisennys taulukossa: sisällön taso ja niiden
+   * ylempien tasojen määrä, joiden taulukossa on valmis-merkki. Kentät
+   * asettuvat samaan kohtaan kuin sisäkkäisen taulukon rivit.
    */
   taso: number
+  merkkitasot: number
 }>
 
 /**
@@ -39,7 +44,12 @@ export const OsasuoritusProperties: React.FC<OsasuoritusPropertiesProps> = (
 ) => (
   <section
     {...common(props, ['OsasuoritusProperties'])}
-    style={{ '--osasuoritus-taso': props.taso } as TasoStyle}
+    style={
+      {
+        '--osasuoritus-taso': props.taso,
+        '--osasuoritus-merkkitasot': props.merkkitasot
+      } as SisennysStyle
+    }
   >
     {props.children}
   </section>

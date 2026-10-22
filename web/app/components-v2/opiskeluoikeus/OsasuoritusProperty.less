@@ -3,9 +3,10 @@
 // samanlevyiseksi kuin osasuoritusrivin poistopainikkeen sarake.
 @Columns-gutters-total: (@Columns-count - 1) * @Columns-gutter;
 @Column-step: ~'calc((100% - @{Columns-gutters-total}) / @{Columns-count} + @{Columns-gutter})';
-// Kenttien nimien etäisyys taulukon vasemmasta reunasta: rivin nimi ja
-// sisällön sisennys (OsasuoritusTable.less)
-@Osasuoritus-nimi: ~'calc(@{Osasuoritus-reuna} + (var(--osasuoritus-taso, 0) + 1) * @{Osasuoritus-askel})';
+// Kenttien nimien etäisyys taulukon vasemmasta reunasta. OsasuoritusProperties
+// saa sisältönsä tason muuttujat, joten kentät alkavat samasta kohdasta kuin
+// sisäkkäisen taulukon rivit (OsasuoritusTable.less).
+@Osasuoritus-nimi: ~'calc(@{Osasuoritus-reuna} + @{Osasuoritus-sisennys})';
 @Osasuoritus-laatikon-reunus: @baseline;
 
 // Sama raja kuin vanhassa käyttöliittymässä (style/opiskeluoikeus.less).

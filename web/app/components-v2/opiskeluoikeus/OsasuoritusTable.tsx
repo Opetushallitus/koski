@@ -32,13 +32,19 @@ import { TestIdLayer } from '../../appstate/useTestId'
 // on muuten sama kaikissa v2-käyttöliittymissä.
 export const AmmatillinenTyyliContext = createContext(false)
 
-// Taulukon sisäkkäisyystaso (0 = päätason taulukko). Sisennys on kiinteä
-// pikselimitta tasoa kohden eikä ruudukon sarakkeita, jotta sisäkkäinen
-// taulukko ja kentät osuvat ylemmän rivin nimen alle taulukon leveydestä
-// riippumatta. Ks. OsasuoritusTable.less.
+// Taulukon sisäkkäisyys: taso (0 = päätason taulukko) ja niiden ylempien
+// tasojen määrä, joiden taulukossa on valmis-merkki. Sisennys lasketaan niistä
+// pikselimittana eikä ruudukon sarakkeina, jotta sisäkkäinen taulukko ja kentät
+// osuvat ylemmän rivin nimen alle taulukon leveydestä riippumatta. Taulukko,
+// jossa merkkejä ei ole, ei varaa niille tilaa. Ks. OsasuoritusTable.less.
 const TASO_KEY = 'OsasuoritusTableTaso'
+const MERKKITASO_KEY = 'OsasuoritusTableMerkkitasot'
 
-type TasoStyle = React.CSSProperties & { '--osasuoritus-taso': number }
+const sisennysStyle = (taso: number, merkkitasot: number) =>
+  ({
+    '--osasuoritus-taso': taso,
+    '--osasuoritus-merkkitasot': merkkitasot
+  }) as React.CSSProperties
 
 type Completed = (osasuoritusIndex: number) => boolean | undefined
 
@@ -88,6 +94,7 @@ export const OsasuoritusTable = <DATA_KEYS extends string, P>(
   const { addNewOsasuoritusView: AddNewOsasuoritusView } = props
   const newOsasuoritusIds = useNewItems(getRowId, props.rows)
   const [taso] = useLayout(TASO_KEY)
+  const [merkkitasot] = useLayout(MERKKITASO_KEY)
   const addNewView = editMode && AddNewOsasuoritusView && (
     // @ts-expect-error React.JSX.IntristicAttributes virhe
     <AddNewOsasuoritusView {...(props.addNewOsasuoritusViewProps || {})} />
@@ -141,7 +148,7 @@ export const OsasuoritusTable = <DATA_KEYS extends string, P>(
       {taso > 0 && addNewView ? (
         <div
           className="OsasuoritusTable__lisays"
-          style={{ '--osasuoritus-taso': taso } as TasoStyle}
+          style={sisennysStyle(taso, merkkitasot)}
         >
           {addNewView}
         </div>
@@ -180,6 +187,7 @@ export const OsasuoritusHeader = <DATA_KEYS extends string>(
   props: OsasuoritusHeaderProps<DATA_KEYS>
 ) => {
   const [taso] = useLayout(TASO_KEY)
+  const [merkkitasot] = useLayout(MERKKITASO_KEY)
   const spans = getSpans(
     props.columns,
     props.canRemove,
@@ -197,7 +205,7 @@ export const OsasuoritusHeader = <DATA_KEYS extends string>(
         props.title !== undefined && 'OsasuoritusHeader--title',
         taso > 0 && 'OsasuoritusHeader--sisakkainen'
       )}
-      style={{ '--osasuoritus-taso': taso } as TasoStyle}
+      style={sisennysStyle(taso, merkkitasot)}
     >
       {props.columns.map((column, index) => {
         const isNameColumn = index === 0
@@ -234,6 +242,8 @@ export const OsasuoritusRow = <DATA_KEYS extends string>(
   props: OsasuoritusRowProps<DATA_KEYS>
 ) => {
   const [taso, TasoProvider] = useLayout(TASO_KEY)
+  const [merkkitasot, MerkkitasoProvider] = useLayout(MERKKITASO_KEY)
+  const omaMerkki = props.showCompleted ? 1 : 0
   const ammatillinenTyyli = useContext(AmmatillinenTyyliContext)
   const canRemove = Boolean(props.editMode && props.onRemove)
   const spans = getSpans(
@@ -331,7 +341,7 @@ export const OsasuoritusRow = <DATA_KEYS extends string>(
           isOpen && 'OsasuoritusRow--open',
           props.editMode && 'OsasuoritusRow--edit'
         )}
-        style={{ '--osasuoritus-taso': taso } as TasoStyle}
+        style={sisennysStyle(taso, merkkitasot)}
       >
         <Column
           span={mapResponsiveValue(
@@ -340,7 +350,11 @@ export const OsasuoritusRow = <DATA_KEYS extends string>(
           className="OsasuoritusRow__lead"
         >
           <div className="OsasuoritusRow__expandColumn">{expandButton}</div>
-          <div className="OsasuoritusRow__completedColumn">{completedMark}</div>
+          {props.showCompleted && (
+            <div className="OsasuoritusRow__completedColumn">
+              {completedMark}
+            </div>
+          )}
           <div className="OsasuoritusRow__nameColumn">
             {cellContent(props.columns[0], 0)}
           </div>
@@ -358,17 +372,25 @@ export const OsasuoritusRow = <DATA_KEYS extends string>(
         {removeColumn}
       </ColumnRow>
       {props.row.alwaysVisibleContent && (
-        <OsasuoritusProperties taso={taso}>
+        <OsasuoritusProperties
+          taso={taso + 1}
+          merkkitasot={merkkitasot + omaMerkki}
+        >
           {props.row.alwaysVisibleContent}
         </OsasuoritusProperties>
       )}
       {expandable && isOpen && props.row.content && (
         <TasoProvider indent={1}>
-          <TestIdLayer id="properties">
-            <OsasuoritusProperties taso={taso}>
-              {props.row.content}
-            </OsasuoritusProperties>
-          </TestIdLayer>
+          <MerkkitasoProvider indent={omaMerkki}>
+            <TestIdLayer id="properties">
+              <OsasuoritusProperties
+                taso={taso + 1}
+                merkkitasot={merkkitasot + omaMerkki}
+              >
+                {props.row.content}
+              </OsasuoritusProperties>
+            </TestIdLayer>
+          </MerkkitasoProvider>
         </TasoProvider>
       )}
     </TreeNode>

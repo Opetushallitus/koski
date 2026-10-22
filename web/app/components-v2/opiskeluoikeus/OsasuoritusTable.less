@@ -81,26 +81,24 @@
 // valkoisia ilman välissä olevia viivoja. Laajennetun rivin kentät ovat rivin
 // nimen alla (OsasuoritusProperty.less) ja sisäkkäinen taulukko on tavallinen
 // taulukko yhden askeleen sisennettynä.
-// Sisennys on kiinteä mitta tasoa kohden (--osasuoritus-taso), ei ruudukon
-// sarakkeita, jotta lapsirivit osuvat ylemmän rivin nimen alle taulukon
-// leveydestä riippumatta.
+// Sisennys on pikselimitta (--osasuoritus-taso ja --osasuoritus-merkkitasot),
+// ei ruudukon sarakkeita, jotta lapsirivit osuvat ylemmän rivin nimen alle
+// taulukon leveydestä riippumatta.
 // ---------------------------------------------------------------------------
 
 // Rivin sisällön etäisyys taulukon reunasta
 @Osasuoritus-reuna: 8px;
-// Sisennys tasoa kohden = laajennuspainike, valmis-merkki ja laajennetun rivin
-// sisällön sisennys rivin nimestä. Sisäkkäisen taulukon laajennuspainike osuu
-// siten samaan kohtaan kuin kenttien nimet.
+// Sisennys tasoa kohden = laajennuspainike ja laajennetun rivin sisällön
+// sisennys rivin nimestä sekä valmis-merkki niillä tasoilla, joiden taulukossa
+// merkki on (--osasuoritus-merkkitasot). Sisäkkäisen taulukon laajennuspainike
+// osuu siten samaan kohtaan kuin ylemmän rivin kenttien nimet.
 @Osasuoritus-laajennus: 26px;
 @Osasuoritus-merkki: 24px;
 @Osasuoritus-sisalto: 24px;
-@Osasuoritus-askel: (
-  @Osasuoritus-laajennus + @Osasuoritus-merkki + @Osasuoritus-sisalto
-);
 // Ikonin etäisyys painikkeensa reunasta; otsikot tasataan ikonin kanssa
 @Osasuoritus-ikoni: 4px;
 
-@Osasuoritus-sisennys: ~'calc(var(--osasuoritus-taso, 0) * @{Osasuoritus-askel})';
+@Osasuoritus-sisennys: ~'calc(var(--osasuoritus-taso, 0) * (@{Osasuoritus-laajennus} + @{Osasuoritus-sisalto}) + var(--osasuoritus-merkkitasot, 0) * @{Osasuoritus-merkki})';
 // Sisäkkäisen taulukon otsikkopalkki alkaa hieman ikonien vasemmalta puolelta
 @Osasuoritus-taulukon-reuna: ~'calc(@{Osasuoritus-reuna} - @{Osasuoritus-ikoni} + @{Osasuoritus-sisennys})';
 
