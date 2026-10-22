@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { cx } from '../components-v2/CommonProps'
 import {
   modelData,
@@ -15,116 +15,93 @@ import {
 } from '../suoritus/Koulutusmoduuli'
 import { FootnoteHint } from '../components/footnote'
 import { eiLasketaKokonaispistemäärään } from '../dia/DIA'
+import { useOutsideClick } from '../util/useOutsideClick'
 
-export class KurssiEditor extends React.Component {
-  constructor(props) {
-    super(props)
-    this.state = { open: false }
-    this.handleClickOutside = this.handleClickOutside.bind(this)
-    this.handleEsc = this.handleEsc.bind(this)
-  }
+export const KurssiEditor = ({ kurssi }) => {
+  const [open, setOpen] = useState(false)
+  const hideDetails = () => setOpen(false)
 
-  render() {
-    const { kurssi } = this.props
-    const { open } = this.state
-    const koulutusmoduuli = modelData(kurssi, 'koulutusmoduuli')
-    const koulutusmoduuliModel = modelLookup(kurssi, 'koulutusmoduuli')
-    const showDetails = () => {
-      if (!open) {
-        document.addEventListener('click', this.handleClickOutside, false)
-        document.addEventListener('keyup', this.handleEsc)
-        this.setState({ open: true })
-      }
+  const buttonRef = useRef(null)
+  const popupRef = useRef(null)
+  // Painike rajataan pois ulkopuolisista klikkauksista, koska muuten sen
+  // klikkaus sulkisi avoimen popupin ja toggleDetails avaisi sen heti
+  // uudelleen. Painike hoitaa itse sekä avaamisen että sulkemisen.
+  useOutsideClick([buttonRef, popupRef], hideDetails, open)
+
+  useEffect(() => {
+    if (open) {
+      const handleEsc = (e) => e.keyCode === 27 && setOpen(false)
+      document.addEventListener('keyup', handleEsc)
+      return () => document.removeEventListener('keyup', handleEsc)
     }
-    const hideDetails = () => {
-      this.setState({ open: false })
-    }
-    const kurssinTyyppi = koulutusmoduuli.kurssinTyyppi?.koodiarvo
-    const edit = kurssi.context.edit
-    const paikallinenLukionKurssimainen =
-      isLukionKurssimainen(koulutusmoduuliModel) &&
-      isPaikallinen(koulutusmoduuliModel)
-    const paikallinenLukionOpintojakso =
-      isLukio2019ModuuliTaiOpintojakso(koulutusmoduuliModel) &&
-      isPaikallinen(koulutusmoduuliModel)
+  }, [open])
 
-    const className = cx(
-      'text-button-small',
-      'tunniste',
-      kurssinTyyppi,
-      !edit && 'hoverabe',
-      eiLasketaKokonaispistemäärään(kurssi) &&
-        'ei-lasketa-kokonaispistemäärään',
-      isPaikallinen(koulutusmoduuliModel) &&
-        !paikallinenLukionKurssimainen &&
-        'paikallinen'
-    )
+  const koulutusmoduuli = modelData(kurssi, 'koulutusmoduuli')
+  const koulutusmoduuliModel = modelLookup(kurssi, 'koulutusmoduuli')
+  const edit = kurssi.context.edit
 
-    const title = kurssi.value.classes.includes('diasuoritus')
-      ? modelTitle(kurssi, 'koulutusmoduuli')
-      : koulutusmoduuli.tunniste.koodiarvo
-    return (
-      <li className="kurssi" ref={(e) => (this.kurssiElement = e)}>
-        <button
-          onClick={showDetails}
-          onMouseEnter={!edit ? showDetails : undefined}
-          onMouseLeave={!edit ? hideDetails : undefined}
-          className={className}
-          title={modelTitle(kurssi, 'koulutusmoduuli')}
-        >
-          {title}
-        </button>
-        {edit && (
-          <a className="remove-value" onClick={() => pushRemoval(kurssi)} />
-        )}
-        {paikallinenLukionKurssimainen && (
-          <FootnoteHint title={'Paikallinen kurssi'} />
-        )}
-        {paikallinenLukionOpintojakso && (
-          <FootnoteHint title={'Paikallinen opintojakso'} />
-        )}
-        {eiLasketaKokonaispistemäärään(kurssi) && (
-          <FootnoteHint title={'Ei lasketa kokonaispistemäärään'} />
-        )}
-        <div className="arvosana">
-          <ArvosanaEditor model={kurssi} />
-        </div>
-        {open && (
-          <KurssiPopup
-            kurssi={kurssi}
-            parentElemPosition={this.kurssiElement.getBoundingClientRect()}
-          />
-        )}
-      </li>
-    )
-  }
+  const kurssinTyyppi = koulutusmoduuli.kurssinTyyppi?.koodiarvo
+  const paikallinenLukionKurssimainen =
+    isLukionKurssimainen(koulutusmoduuliModel) &&
+    isPaikallinen(koulutusmoduuliModel)
+  const className = cx(
+    'text-button-small',
+    'tunniste',
+    kurssinTyyppi,
+    !edit && 'hoverabe',
+    eiLasketaKokonaispistemäärään(kurssi) && 'ei-lasketa-kokonaispistemäärään',
+    isPaikallinen(koulutusmoduuliModel) &&
+      !paikallinenLukionKurssimainen &&
+      'paikallinen'
+  )
 
-  componentWillUnmount() {
-    this.removeListeners()
-  }
+  const title = kurssi.value.classes.includes('diasuoritus')
+    ? modelTitle(kurssi, 'koulutusmoduuli')
+    : koulutusmoduuli.tunniste.koodiarvo
 
-  removeListeners() {
-    document.removeEventListener('click', this.handleClickOutside, false)
-    document.removeEventListener('keyup', this.handleEsc)
-  }
+  const paikallinenLukionOpintojakso =
+    isLukio2019ModuuliTaiOpintojakso(koulutusmoduuliModel) &&
+    isPaikallinen(koulutusmoduuliModel)
 
-  handleClickOutside(e) {
-    const detailsElem = this.kurssiElement.querySelector('.details')
-    if (
-      detailsElem &&
-      !detailsElem.contains(e.target) &&
-      ![
-        'DayPicker-Day',
-        'DayPicker-Day DayPicker-Day--selected',
-        'remove-item'
-      ].includes(e.target.className)
-    ) {
-      this.removeListeners()
-      this.setState({ open: false })
-    }
-  }
+  const showDetails = () => setOpen(true)
+  const toggleDetails = () => setOpen((isOpen) => !isOpen)
 
-  handleEsc(e) {
-    e.keyCode === 27 && this.setState({ open: false })
-  }
+  const kurssiRef = useRef(null)
+
+  return (
+    <li className="kurssi" ref={kurssiRef}>
+      <button
+        ref={buttonRef}
+        onClick={toggleDetails}
+        onMouseEnter={!edit ? showDetails : undefined}
+        onMouseLeave={!edit ? hideDetails : undefined}
+        className={className}
+        title={modelTitle(kurssi, 'koulutusmoduuli')}
+      >
+        {title}
+      </button>
+      {edit && (
+        <a className="remove-value" onClick={() => pushRemoval(kurssi)} />
+      )}
+      {paikallinenLukionKurssimainen && (
+        <FootnoteHint title={'Paikallinen kurssi'} />
+      )}
+      {paikallinenLukionOpintojakso && (
+        <FootnoteHint title={'Paikallinen opintojakso'} />
+      )}
+      {eiLasketaKokonaispistemäärään(kurssi) && (
+        <FootnoteHint title={'Ei lasketa kokonaispistemäärään'} />
+      )}
+      <div className="arvosana">
+        <ArvosanaEditor model={kurssi} />
+      </div>
+      {open && (
+        <KurssiPopup
+          kurssi={kurssi}
+          popupRef={popupRef}
+          parentElemPosition={kurssiRef.current.getBoundingClientRect()}
+        />
+      )}
+    </li>
+  )
 }

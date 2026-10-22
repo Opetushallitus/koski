@@ -1,4 +1,5 @@
-import React, { useCallback, useEffect, useRef } from 'react'
+import React, { useRef } from 'react'
+import { useOutsideClick } from '../../util/useOutsideClick'
 import { common, CommonPropsWithChildren } from '../CommonProps'
 
 export type PositionalPopupAlign = 'left' | 'right'
@@ -13,21 +14,7 @@ export type PositionalPopupProps = CommonPropsWithChildren<{
 export const PositionalPopup: React.FC<PositionalPopupProps> = (props) => {
   const ref = useRef<HTMLDivElement>(null)
 
-  useEffect(() => {
-    if (props.onDismiss) {
-      const clickHandler = (event: MouseEvent) => {
-        const container = props.parentRef?.current || ref.current
-        if (
-          !(event.target instanceof Element) ||
-          !container?.contains(event.target)
-        ) {
-          props.onDismiss?.()
-        }
-      }
-      document.body.addEventListener('click', clickHandler)
-      return () => document.body.removeEventListener('click', clickHandler)
-    }
-  }, [props, props.onDismiss])
+  useOutsideClick([props.parentRef ?? ref], props.onDismiss, props.open)
 
   return (
     <div
