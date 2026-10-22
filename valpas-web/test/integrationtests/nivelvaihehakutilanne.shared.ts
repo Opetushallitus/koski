@@ -35,5 +35,5 @@ export const jyväskylänNormaalikouluNivelvaiheTableContent = `
   Jkl-Nivel-Kulosaarelainen Valpas                                | 1.1.2004    | Perusopetuksen lisäopetus | 15.8.2012 | –         | Ei hakemusta  | – | – | –                             |
   Nivelvaiheesta-kesän-jälkeen-eronneeksi-katsottu Valpas         | 6.8.2015    | Perusopetuksen lisäopetus | 15.8.2020 | 15.8.2021 | Ei hakemusta  | – | – | –                             |
   Nivelvaiheesta-valmistunut Valpas                               | 20.10.2005  | Perusopetuksen lisäopetus | 15.8.2008 | 31.5.2021 | Ei hakemusta  | – | – | –                             |
-  Nivelvaiheesta-valmistunut-tuva Valpas	                        | 16.5.2005	  | TUVA	                    | 1.1.2020  |	1.8.2022  |	Ei hakemusta  |	– |	– |	–                             |
+  Nivelvaiheesta-valmistunut-tuva Valpas	                        | 16.5.2005	  | TUVA	                    | 1.1.2020  |	1.8.2022  |	Hakenut open_in_new  |	– |	– |	–                             |
 `

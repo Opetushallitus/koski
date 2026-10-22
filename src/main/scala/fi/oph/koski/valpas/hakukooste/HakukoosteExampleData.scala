@@ -194,13 +194,31 @@ object HakukoosteExampleData {
           pisteet = Some(9)
         ),
       ))),
+    haku(
+      henkilö = ValpasMockOppijat.valmistunutTuvalainen,
+      hakuNimi = Finnish("Jatkuva haku 2021"),
+      hakutapa = jatkuvanHaunKoodi,
+      aktiivinenHaku = None,
+      ilmanHakutoivenumeroita = true,
+      hakukoosteidenToiveet = Vector(Vector(
+        hakutoive(
+          hakukohdeOid = generateOid(),
+          hakukohdeOrganisaatio = MockOrganisaatiot.omnia,
+          hakukohdeNimi = "Liiketoiminnan perustutkinto",
+          koulutusNimi = "Liiketoiminnan perustutkinto",
+          valintatila = Some("KESKEN"),
+          vastaanottotieto = Some("KESKEN"),
+        ),
+      ))),
   ).flatten
 
   def haku(
     henkilö: OppijaHenkilö,
     hakukoosteidenToiveet: Seq[Seq[Hakutoive]],
     hakuNimi: BlankableLocalizedString = yhteishaku2021HakuNimi,
-    aktiivinenHaku: Some[Boolean] = Some(true),
+    hakutapa: Koodistokoodiviite = yhteishakukoodi,
+    aktiivinenHaku: Option[Boolean] = Some(true),
+    ilmanHakutoivenumeroita: Boolean = false,
     alkamisaika: LocalDateTime = LocalDateTime.of(2020, 3, 9, 12, 0, 0),
     muokkausaika: Option[LocalDateTime] = Some(LocalDateTime.of(2020, 4, 9, 12, 0, 0)),
     lahiosoite: String = "Esimerkkikatu 123",
@@ -213,7 +231,7 @@ object HakukoosteExampleData {
       aktiivinenHaku = aktiivinenHaku,
       hakemusOid = generateHakemusOid(),
       hakemusUrl = "/placeholder-hakemus-url",
-      hakutapa = yhteishakukoodi,
+      hakutapa = hakutapa,
       hakutyyppi = Some(varsinaisenHaunKoodi),
       haunAlkamispaivamaara = alkamisaika,
       hakemuksenMuokkauksenAikaleima = muokkausaika,
@@ -228,7 +246,9 @@ object HakukoosteExampleData {
         organisaatioNimi = MockOrganisaatioRepository
           .getOrganisaationNimiHetkellä(hakutoive.hakukohdeOrganisaatio, alkamisaika.toLocalDate)
           .toBlankable,
-        hakutoivenumero = if (hakutoive.hakutoivenumero >= 0) {
+        hakutoivenumero = if (ilmanHakutoivenumeroita) {
+          -1
+        } else if (hakutoive.hakutoivenumero >= 0) {
           hakutoive.hakutoivenumero
         } else {
           hakutoiveet.indexOf(hakutoive) + 1
@@ -272,6 +292,7 @@ object HakukoosteExampleData {
   def yhteishaku2021HakuNimi = Finnish("Yhteishaku 2021")
 
   def yhteishakukoodi = Koodistokoodiviite("01", "hakutapa")
+  def jatkuvanHaunKoodi = Koodistokoodiviite("03", "hakutapa")
   def varsinaisenHaunKoodi = Koodistokoodiviite("01", "hakutyyppi")
   def generateHakuOid() = OIDGenerator.generateOID(100)
   def generateHakemusOid() = OIDGenerator.generateOID(101)
