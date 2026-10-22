@@ -148,17 +148,12 @@ test.describe('Lukiokoulutus 2019: oppiaineen muokkaus', () => {
   test('Paikallinen oppiaine voidaan lisätä pakolliset tiedot täytettynä', async ({
     oppijaPage
   }) => {
-    const rivi = await opiskeluoikeus.lisääPaikallinenOppiaine()
-
-    await opiskeluoikeus.paikallisenOppiaineenKoodi(rivi).fill('PAI')
-    await opiskeluoikeus
-      .paikallisenOppiaineenNimi(rivi)
-      .fill('Paikallinen oppiaine')
-    await opiskeluoikeus
-      .kenttä('kuvaus', rivi)
-      .locator('textarea')
-      .fill('Pakollinen kuvaus')
-    await opiskeluoikeus.arvosanaDropdown(rivi).selectOptionByClick('9')
+    await opiskeluoikeus.lisääJaTäytäPaikallinenOppiaine({
+      koodi: 'PAI',
+      nimi: 'Paikallinen oppiaine',
+      kuvaus: 'Pakollinen kuvaus',
+      arvosana: '9'
+    })
 
     await expect(oppijaPage.tallennaBtn).toBeEnabled()
     await oppijaPage.tallenna()
@@ -166,5 +161,46 @@ test.describe('Lukiokoulutus 2019: oppiaineen muokkaus', () => {
     await expect(
       opiskeluoikeus.oppiaineRivi('PAI').locator('.nimi')
     ).toHaveText('Paikallinen oppiaine')
+  })
+
+  test('Paikallisen oppiaineen alle voidaan lisätä osasuoritus/kurssi', async ({
+    oppijaPage
+  }) => {
+    const rivi = await opiskeluoikeus.lisääJaTäytäPaikallinenOppiaine({
+      koodi: 'PAI',
+      nimi: 'Paikallinen oppiaine',
+      kuvaus: 'Pakollinen kuvaus',
+      arvosana: '9'
+    })
+
+    const kurssi = await opiskeluoikeus.lisääPaikallinenKurssi(rivi, {
+      tunniste: 'PA',
+      nimi: 'Paikallinen kurssi',
+      kuvaus: 'Kurssin kuvaus',
+      laajuus: '2'
+    })
+    await opiskeluoikeus.kurssinArvosanaDropdown(kurssi).selectOptionByClick('9')
+
+    await oppijaPage.tallenna()
+
+    await expect(
+      opiskeluoikeus.kurssi(opiskeluoikeus.oppiaineRivi('PAI'), 'PA')
+    ).toBeVisible()
+  })
+
+  test('Paikallinen oppiaine voidaan poistaa', async ({ oppijaPage }) => {
+    await opiskeluoikeus.lisääJaTäytäPaikallinenOppiaine({
+      koodi: 'PAI',
+      nimi: 'Paikallinen oppiaine',
+      kuvaus: 'Pakollinen kuvaus',
+      arvosana: '9'
+    })
+    await oppijaPage.tallenna()
+
+    await oppijaPage.avaaMuokkausnäkymä()
+    await opiskeluoikeus.poistaOppiaine(opiskeluoikeus.oppiaineRivi('PAI'))
+    await oppijaPage.tallenna()
+
+    await expect(opiskeluoikeus.oppiaineRivi('PAI')).toHaveCount(0)
   })
 })
