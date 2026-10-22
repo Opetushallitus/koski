@@ -91,6 +91,7 @@ class RaportitServletSpec extends AnyFreeSpec with RaportointikantaTestMethods w
             JatkuvanOppimisenVapaanSivistystyönRaportti.toString,
             VapaanSivistystyönVapaatavoitteisenKoulutuksenRaportti.toString,
             VapaanSivistystyönOppivelvollisilleSuunnatunKoulutuksenRaportti.toString,
+            VapaanSivistystyönOsaamismerkkienRaportti.toString,
           )
         }
       }

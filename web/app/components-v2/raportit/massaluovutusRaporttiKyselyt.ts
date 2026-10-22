@@ -8,6 +8,10 @@ import {
   MassaluovutusQueryVSTKOPS
 } from '../../types/fi/oph/koski/massaluovutus/raportit/MassaluovutusQueryVSTKOPS'
 import {
+  isMassaluovutusQueryVSTOsaamismerkit,
+  MassaluovutusQueryVSTOsaamismerkit
+} from '../../types/fi/oph/koski/massaluovutus/raportit/MassaluovutusQueryVSTOsaamismerkit'
+import {
   isMassaluovutusQueryVSTVapaatavoitteinen,
   MassaluovutusQueryVSTVapaatavoitteinen
 } from '../../types/fi/oph/koski/massaluovutus/raportit/MassaluovutusQueryVSTVapaatavoitteinen'
@@ -81,6 +85,21 @@ export const vstKopsKyselymalli: MassaluovutusKyselymalli = {
     }),
   lue: (q) =>
     isMassaluovutusQueryVSTKOPS(q)
+      ? { organisaatioOid: q.organisaatioOid, alku: q.alku, loppu: q.loppu }
+      : null,
+  näytäOsasuoritustenRajaus: false
+}
+
+export const vstOsaamismerkitKyselymalli: MassaluovutusKyselymalli = {
+  luo: (p) =>
+    MassaluovutusQueryVSTOsaamismerkit({
+      organisaatioOid: p.organisaatioOid,
+      language: p.language,
+      alku: p.alku,
+      loppu: p.loppu
+    }),
+  lue: (q) =>
+    isMassaluovutusQueryVSTOsaamismerkit(q)
       ? { organisaatioOid: q.organisaatioOid, alku: q.alku, loppu: q.loppu }
       : null,
   näytäOsasuoritustenRajaus: false

@@ -219,6 +219,12 @@ case object VapaanSivistystyönOppivelvollisilleSuunnatunKoulutuksenRaportti ext
   override def käytössä(config: Config): Boolean = !Environment.isProdEnvironment(config)
 }
 
+case object VapaanSivistystyönOsaamismerkkienRaportti extends RaportinTyyppi {
+  val opiskeluoikeudenTyyppi = OpiskeluoikeudenTyyppi.vapaansivistystyonkoulutus.koodiarvo
+  // Piilotettu tuotannosta, kunnes raportin sisältö on hyväksytty käyttöön (TOR-1543)
+  override def käytössä(config: Config): Boolean = !Environment.isProdEnvironment(config)
+}
+
 case object MuunKuinSäännellynKoulutuksenRaportti extends RaportinTyyppi {
   val opiskeluoikeudenTyyppi = OpiskeluoikeudenTyyppi.muukuinsaanneltykoulutus.koodiarvo
 }

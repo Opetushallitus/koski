@@ -437,6 +437,22 @@ class MassaluovutusRaportitSpec extends AnyFreeSpec with MassaluovutusTestMethod
     }
   }
 
+  "Vapaan sivistystyön osaamismerkit" - {
+    val query = MassaluovutusQueryVSTOsaamismerkit(
+      alku = LocalDate.of(2024, 1, 1),
+      loppu = LocalDate.of(2025, 1, 1),
+      organisaatioOid = Some(MockOrganisaatiot.varsinaisSuomenKansanopisto),
+    )
+
+    "Kysely onnistuu ja palauttaa oikeat tiedostot" in {
+      raporttiKyselyOnnistuu(query, MockUsers.varsinaisSuomiPalvelukäyttäjä)
+    }
+
+    "Ei onnistu väärän organisaation tietoihin" in {
+      raporttiKyselyEiOnnistu(query, MockUsers.stadinAmmattiopistoPalvelukäyttäjä)
+    }
+  }
+
   "Muu kuin säännelty koulutus" - {
     val query = MassaluovutusQueryMuuKuinSaanneltyKoulutus(
       alku = LocalDate.of(2022, 1, 1),

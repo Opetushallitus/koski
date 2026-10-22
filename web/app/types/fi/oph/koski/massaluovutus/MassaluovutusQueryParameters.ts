@@ -123,6 +123,10 @@ import {
   isMassaluovutusQueryVSTKOPS
 } from './raportit/MassaluovutusQueryVSTKOPS'
 import {
+  MassaluovutusQueryVSTOsaamismerkit,
+  isMassaluovutusQueryVSTOsaamismerkit
+} from './raportit/MassaluovutusQueryVSTOsaamismerkit'
+import {
   MassaluovutusQueryVSTVapaatavoitteinen,
   isMassaluovutusQueryVSTVapaatavoitteinen
 } from './raportit/MassaluovutusQueryVSTVapaatavoitteinen'
@@ -184,6 +188,7 @@ export type MassaluovutusQueryParameters =
   | MassaluovutusQueryTuvaSuoritustiedot
   | MassaluovutusQueryVSTJOTPA
   | MassaluovutusQueryVSTKOPS
+  | MassaluovutusQueryVSTOsaamismerkit
   | MassaluovutusQueryVSTVapaatavoitteinen
   | SuorituspalveluMuuttuneetJalkeenQuery
   | SuorituspalveluOppijaOidsQuery
@@ -225,6 +230,7 @@ export const isMassaluovutusQueryParameters = (
   isMassaluovutusQueryTuvaSuoritustiedot(a) ||
   isMassaluovutusQueryVSTJOTPA(a) ||
   isMassaluovutusQueryVSTKOPS(a) ||
+  isMassaluovutusQueryVSTOsaamismerkit(a) ||
   isMassaluovutusQueryVSTVapaatavoitteinen(a) ||
   isSuorituspalveluMuuttuneetJalkeenQuery(a) ||
   isSuorituspalveluOppijaOidsQuery(a) ||
