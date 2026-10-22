@@ -3,8 +3,8 @@
 // samanlevyiseksi kuin osasuoritusrivin poistopainikkeen sarake.
 @Columns-gutters-total: (@Columns-count - 1) * @Columns-gutter;
 @Column-step: ~'calc((100% - @{Columns-gutters-total}) / @{Columns-count} + @{Columns-gutter})';
-// Rivin nimen etäisyys taulukon vasemmasta reunasta = kenttien nimien paikka
-// (OsasuoritusTable.less)
+// Kenttien nimien etäisyys taulukon vasemmasta reunasta: rivin nimi ja
+// sisällön sisennys (OsasuoritusTable.less)
 @Osasuoritus-nimi: ~'calc(@{Osasuoritus-reuna} + (var(--osasuoritus-taso, 0) + 1) * @{Osasuoritus-askel})';
 @Osasuoritus-laatikon-reunus: @baseline;
 

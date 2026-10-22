@@ -99,7 +99,7 @@ test.describe('Ammatillisen tutkinnon uusi käyttöliittymä', () => {
       ).toHaveText('3')
     })
 
-    test('Laajennetun rivin kentät ja sisäkkäinen taulukko asettuvat rivin nimen alle', async ({
+    test('Laajennetun rivin kentät ja sisäkkäinen taulukko sisennetään samaan kohtaan rivin nimestä', async ({
       page,
       oppijaPage,
       oppijaPageV2
@@ -147,8 +147,9 @@ test.describe('Ammatillisen tutkinnon uusi käyttöliittymä', () => {
         }
       })
 
-      expect(asettelu.kentänNimi).toBe(asettelu.rivinNimi)
-      expect(asettelu.sisäkkäinenPainike).toBe(asettelu.ylätasonNimi)
+      expect(asettelu.ylätasonNimi).toBe(asettelu.rivinNimi)
+      expect(asettelu.kentänNimi).toBeGreaterThan(asettelu.rivinNimi)
+      expect(asettelu.sisäkkäinenPainike).toBe(asettelu.kentänNimi)
       expect(asettelu.tyhjätArvioinnit).toBe(0)
     })
 

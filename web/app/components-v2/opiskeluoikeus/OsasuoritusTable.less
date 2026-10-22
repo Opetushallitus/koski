@@ -88,10 +88,15 @@
 
 // Rivin sisällön etäisyys taulukon reunasta
 @Osasuoritus-reuna: 8px;
-// Sisennys tasoa kohden = laajennuspainikkeen ja valmis-merkin yhteisleveys
+// Sisennys tasoa kohden = laajennuspainike, valmis-merkki ja laajennetun rivin
+// sisällön sisennys rivin nimestä. Sisäkkäisen taulukon laajennuspainike osuu
+// siten samaan kohtaan kuin kenttien nimet.
 @Osasuoritus-laajennus: 26px;
 @Osasuoritus-merkki: 24px;
-@Osasuoritus-askel: (@Osasuoritus-laajennus + @Osasuoritus-merkki);
+@Osasuoritus-sisalto: 24px;
+@Osasuoritus-askel: (
+  @Osasuoritus-laajennus + @Osasuoritus-merkki + @Osasuoritus-sisalto
+);
 // Ikonin etäisyys painikkeensa reunasta; otsikot tasataan ikonin kanssa
 @Osasuoritus-ikoni: 4px;
 

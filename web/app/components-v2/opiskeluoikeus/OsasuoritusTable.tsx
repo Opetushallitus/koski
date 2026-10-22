@@ -28,9 +28,8 @@ import {
 import { useNewItems } from '../../appstate/newItems'
 import { TestIdLayer } from '../../appstate/useTestId'
 
-// Ammatillinen-v2:n omat valinnat: rivi avautuu myös nimestä ja valmis-merkki
-// on vanhan käyttöliittymän FontAwesome-ikoni. Taulukon asettelu on sama
-// kaikissa v2-käyttöliittymissä.
+// Ammatillinen-v2:n oma valinta: rivi avautuu myös nimestä. Taulukon asettelu
+// on muuten sama kaikissa v2-käyttöliittymissä.
 export const AmmatillinenTyyliContext = createContext(false)
 
 // Taulukon sisäkkäisyystaso (0 = päätason taulukko). Sisennys on kiinteä
@@ -263,26 +262,19 @@ export const OsasuoritusRow = <DATA_KEYS extends string>(
     />
   )
 
+  // Vanhan käyttöliittymän valmis- ja tiimalasi-ikonit (FontAwesome)
   const completedMark = (
     <>
-      {props.completed === true &&
-        (ammatillinenTyyli ? (
-          // Vanhan käyttöliittymän valmis-ikoni (FontAwesome check)
-          <span aria-label={t('Suoritus valmis')}>
-            <Icon charCode={CHARCODE_VALMIS} />
-          </span>
-        ) : (
-          <span aria-label={t('Suoritus valmis')}>&#x2713;</span>
-        ))}
-      {props.completed === false &&
-        (ammatillinenTyyli ? (
-          // Vanhan käyttöliittymän tiimalasi-ikoni (FontAwesome hourglass-half)
-          <span aria-label={t('Suoritus kesken')}>
-            <Icon charCode={CHARCODE_KESKEN} />
-          </span>
-        ) : (
-          <span aria-label={t('Suoritus kesken')}>&#x29D6;</span>
-        ))}
+      {props.completed === true && (
+        <span aria-label={t('Suoritus valmis')}>
+          <Icon charCode={CHARCODE_VALMIS} />
+        </span>
+      )}
+      {props.completed === false && (
+        <span aria-label={t('Suoritus kesken')}>
+          <Icon charCode={CHARCODE_KESKEN} />
+        </span>
+      )}
     </>
   )
 
