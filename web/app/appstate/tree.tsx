@@ -9,6 +9,7 @@ import { CommonProps } from '../components-v2/CommonProps'
 import { RaisedButton } from '../components-v2/controls/RaisedButton'
 import { t } from '../i18n/i18n'
 import { assertNever } from '../util/selfcare'
+import { useUniqueId } from '../util/useUniqueId'
 import { useTestId } from './useTestId'
 
 export type TreeContext = {
@@ -43,12 +44,11 @@ export type TreeHook = {
 
 export type TreeNodeComponent = React.FC<{ children: React.ReactNode }>
 
-const random = (): string => Math.random().toString().slice(2)
-
 export const useTree = (initiallyOpen = false): TreeHook => {
   // Tunnisteet
   const parent = useContext(TreeContext)
-  const id = useMemo(() => `${parent.id}/${random()}`, [parent.id])
+  const ownId = useUniqueId('tree')
+  const id = `${parent.id}/${ownId}`
 
   // Oma tila
   const [isOpen, setOpen] = useState(initiallyOpen)
@@ -58,7 +58,7 @@ export const useTree = (initiallyOpen = false): TreeHook => {
   const [action, setAction] = useState<TreeAction | null>(null)
   useEffect(() => {
     setAction(null) // Uusi action vanhemmalta jyrää yli edellisen toiminnon
-    if (parent.action && id.startsWith(parent.action.origin)) {
+    if (parent.action && id.startsWith(`${parent.action.origin}/`)) {
       const type = parent.action.type
       switch (type) {
         case 'openAll':
