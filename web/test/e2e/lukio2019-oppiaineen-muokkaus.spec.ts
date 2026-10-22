@@ -114,4 +114,57 @@ test.describe('Lukiokoulutus 2019: oppiaineen muokkaus', () => {
 
     await expect(opiskeluoikeus.oppiaineRivi('PS')).toHaveCount(0)
   })
+
+  test('Alkutilassa ei ole tallentamattomia muutoksia', async ({
+    oppijaPage
+  }) => {
+    await expect(oppijaPage.editBarMessage).toHaveText(
+      'Ei tallentamattomia muutoksia'
+    )
+    await expect(oppijaPage.tallennaBtn).toBeDisabled()
+    await expect(opiskeluoikeus.oppiaineet.locator('.oppiaine-rivi')).toHaveCount(
+      12
+    )
+  })
+
+  test('Paikallisen oppiaineen lisääminen vaatii pakolliset tiedot ennen tallennusta', async ({
+    oppijaPage
+  }) => {
+    const alkuperäinenMäärä = await opiskeluoikeus.oppiaineet
+      .locator('.oppiaine-rivi')
+      .count()
+
+    await opiskeluoikeus.lisääPaikallinenOppiaine()
+
+    await expect(
+      opiskeluoikeus.oppiaineet.locator('.oppiaine-rivi')
+    ).toHaveCount(alkuperäinenMäärä + 1)
+    await expect(oppijaPage.tallennaBtn).toBeDisabled()
+    await expect(oppijaPage.editBarMessage).toHaveText(
+      'Korjaa virheelliset tiedot.'
+    )
+  })
+
+  test('Paikallinen oppiaine voidaan lisätä pakolliset tiedot täytettynä', async ({
+    oppijaPage
+  }) => {
+    const rivi = await opiskeluoikeus.lisääPaikallinenOppiaine()
+
+    await opiskeluoikeus.paikallisenOppiaineenKoodi(rivi).fill('PAI')
+    await opiskeluoikeus
+      .paikallisenOppiaineenNimi(rivi)
+      .fill('Paikallinen oppiaine')
+    await opiskeluoikeus
+      .kenttä('kuvaus', rivi)
+      .locator('textarea')
+      .fill('Pakollinen kuvaus')
+    await opiskeluoikeus.arvosanaDropdown(rivi).selectOptionByClick('9')
+
+    await expect(oppijaPage.tallennaBtn).toBeEnabled()
+    await oppijaPage.tallenna()
+
+    await expect(
+      opiskeluoikeus.oppiaineRivi('PAI').locator('.nimi')
+    ).toHaveText('Paikallinen oppiaine')
+  })
 })
