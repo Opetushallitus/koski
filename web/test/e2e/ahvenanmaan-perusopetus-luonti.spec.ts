@@ -1,4 +1,6 @@
 import { Page } from '@playwright/test'
+import { AhvenanmaanPerusopetuksenOpiskeluoikeus } from '../../app/types/fi/oph/koski/schema/AhvenanmaanPerusopetuksenOpiskeluoikeus'
+import { Oppija } from '../../app/types/fi/oph/koski/schema/Oppija'
 import { expect, test } from './base'
 import { virkailija } from './setup/auth'
 
@@ -43,9 +45,9 @@ const haeLuotuOpiskeluoikeus = async (page: Page) => {
   expect(oid).toBeDefined()
   const response = await page.request.get(`/koski/api/oppija/${oid}`)
   expect(response.ok()).toBeTruthy()
-  const oppija = await response.json()
+  const oppija = (await response.json()) as Oppija
   expect(oppija.opiskeluoikeudet).toHaveLength(1)
-  return oppija.opiskeluoikeudet[0]
+  return oppija.opiskeluoikeudet[0] as AhvenanmaanPerusopetuksenOpiskeluoikeus
 }
 
 test.describe('Ahvenanmaan perusopetuksen opiskeluoikeuden luonti', () => {
@@ -129,7 +131,7 @@ test.describe('Ahvenanmaan perusopetuksen opiskeluoikeuden luonti', () => {
     )
     // Oppivelvollisen oppimäärän alkamispäivä tulee vuosiluokan suorituksilta,
     // joita dialogi ei luo (ks. KoskiValidator.validateAlkamispäivä).
-    expect(suoritus.alkamispäivä).toBeUndefined()
+    expect(suoritus).not.toHaveProperty('alkamispäivä')
     // Pakolliset oppiaineet esitäytetään avgångsbetygin kaavakkeelta.
     expect(suoritus.osasuoritukset).toHaveLength(17)
   })

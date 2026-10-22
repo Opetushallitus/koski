@@ -48,7 +48,7 @@ test.describe('Suoritusjako', () => {
       const jsonSuoritusotePage =
         await suoritusotePage.avaaJsonSuoritusotePage()
 
-      const o: Oppija = JSON.parse(await jsonSuoritusotePage.jsonContent())
+      const o = JSON.parse(await jsonSuoritusotePage.jsonContent()) as Oppija
       const h = o.henkilö as TäydellisetHenkilötiedot
 
       expect(h.hetu).not.toBeDefined()
