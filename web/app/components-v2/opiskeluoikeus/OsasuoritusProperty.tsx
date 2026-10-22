@@ -16,10 +16,19 @@ import { t } from '../../i18n/i18n'
 const PropertyLevelContext = createContext(0)
 
 /** Sisennys ruudukkosarakkeina; annetaan CSS:lle muuttujana. */
-type IndentStyle = React.CSSProperties & { '--osasuoritus-indent': number }
+type IndentStyle = React.CSSProperties & {
+  '--osasuoritus-indent': number
+  '--osasuoritus-taso'?: number
+}
 
 export type OsasuoritusPropertiesProps = CommonPropsWithChildren<{
   indent: number
+  /**
+   * Laajennetun rivin sisäkkäisyystaso ammatillisen tyylissä (ks.
+   * AmmatillinenTyyliContext). Kun annettu, kentät asetellaan rivin nimen
+   * alle.
+   */
+  ammatillinenTaso?: number
 }>
 
 /**
@@ -37,8 +46,17 @@ export const OsasuoritusProperties: React.FC<OsasuoritusPropertiesProps> = (
   props
 ) => (
   <section
-    {...common(props, ['OsasuoritusProperties'])}
-    style={{ '--osasuoritus-indent': props.indent } as IndentStyle}
+    {...common(props, [
+      'OsasuoritusProperties',
+      props.ammatillinenTaso !== undefined &&
+        'OsasuoritusProperties--ammatillinen'
+    ])}
+    style={
+      {
+        '--osasuoritus-indent': props.indent,
+        '--osasuoritus-taso': props.ammatillinenTaso
+      } as IndentStyle
+    }
   >
     {props.children}
   </section>
@@ -52,6 +70,8 @@ const LABEL_INDENT_COLUMNS = 4
 
 export type OsasuoritusPropertyProps = CommonPropsWithChildren<{
   label: string
+  /** Ammatillisen tyylissä kenttä nimineen harmaalla taustalla. */
+  korostettu?: boolean
 }>
 
 export const OsasuoritusProperty: React.FC<OsasuoritusPropertyProps> = (
@@ -59,7 +79,13 @@ export const OsasuoritusProperty: React.FC<OsasuoritusPropertyProps> = (
 ) => {
   const [, LayoutProvider] = useLayout(OSASUORITUSTABLE_DEPTH_KEY)
   return (
-    <ColumnRow {...common(props, ['OsasuoritusProperty'])} valign="top">
+    <ColumnRow
+      {...common(props, [
+        'OsasuoritusProperty',
+        props.korostettu && 'OsasuoritusProperty--korostettu'
+      ])}
+      valign="top"
+    >
       <OsasuoritusPropertyLabel>{t(props.label)}</OsasuoritusPropertyLabel>
       <LayoutProvider indent={LABEL_INDENT_COLUMNS}>
         <PropertyLevelContext.Provider value={1}>

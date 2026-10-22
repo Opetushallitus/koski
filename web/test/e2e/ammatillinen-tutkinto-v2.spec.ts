@@ -99,6 +99,59 @@ test.describe('Ammatillisen tutkinnon uusi käyttöliittymä', () => {
       ).toHaveText('3')
     })
 
+    test('Laajennetun rivin kentät ja sisäkkäinen taulukko asettuvat rivin nimen alle', async ({
+      page,
+      oppijaPage,
+      oppijaPageV2
+    }) => {
+      await oppijaPage.gotoWithQueryParams(autonen, flag)
+      await oppijaPageV2.openAllOsasuoritukset()
+      await expect(
+        page.locator('.OsasuoritusHeader--sisakkainen').first()
+      ).toBeVisible()
+
+      const asettelu = await page.evaluate(() => {
+        const vasen = (e: Element | null | undefined) =>
+          Math.round(e!.getBoundingClientRect().left)
+        const rivit = [...document.querySelectorAll('.OsasuoritusRow')]
+        const rivi = (nimi: string) =>
+          rivit.find((r) => r.textContent!.includes(nimi))!
+        // Korkeakouluopinnot-rivin laajennuksessa on vain sisäkkäinen taulukko
+        const ylätaso = rivi('Korkeakouluopinnot')
+        const sisäkkäinen = rivi('Saksa')
+        return {
+          rivinNimi: vasen(
+            rivit[0].querySelector('.OsasuoritusRow__cellContent')
+          ),
+          kentänNimi: vasen(
+            rivit[0].nextElementSibling!.querySelector(
+              '.OsasuoritusPropertyLabel'
+            )
+          ),
+          ylätasonNimi: vasen(
+            ylätaso.querySelector('.OsasuoritusRow__cellContent')
+          ),
+          sisäkkäinenPainike: vasen(
+            sisäkkäinen.querySelector('.ExpandButton')
+          ),
+          // Katselutilassa arvioimattoman osan Arviointi-kenttää ei näytetä
+          tyhjätArvioinnit: [
+            ...document.querySelectorAll('.OsasuoritusProperty')
+          ].filter(
+            (kenttä) =>
+              kenttä
+                .querySelector('.OsasuoritusPropertyLabel')
+                ?.textContent?.trim() === 'Arviointi' &&
+              !kenttä.querySelector('.KeyValueTable')
+          ).length
+        }
+      })
+
+      expect(asettelu.kentänNimi).toBe(asettelu.rivinNimi)
+      expect(asettelu.sisäkkäinenPainike).toBe(asettelu.ylätasonNimi)
+      expect(asettelu.tyhjätArvioinnit).toBe(0)
+    })
+
     test('Jakson päivämäärät näytetään vain annetuilta osin', async ({
       page,
       oppijaPage

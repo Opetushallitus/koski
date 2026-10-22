@@ -129,6 +129,122 @@
   margin-top: (@baseline / 2);
 }
 
+// ---------------------------------------------------------------------------
+// Ammatillisen tyyli (ks. OsasuoritusTable.less): kentät ovat rivin nimen alla
+// ja korostettu kenttä (näyttö) harmaalla taustalla.
+//
+// Kenttärivit ulottuvat koko taulukon leveydelle, koska samassa ruudukossa on
+// myös sisäkkäinen taulukko. Tausta piirretään siksi taustakuvana, joka alkaa
+// nimisarakkeen kohdalta.
+// ---------------------------------------------------------------------------
+
+// Rivin nimen etäisyys taulukon vasemmasta reunasta = kenttien nimien paikka
+@Osasuoritus-amis-nimi: ~'calc(@{Osasuoritus-amis-reuna} + (var(--osasuoritus-taso, 0) + 1) * @{Osasuoritus-amis-askel})';
+@Osasuoritus-amis-laatikon-reunus: @baseline;
+
+.OsasuoritusProperties--ammatillinen {
+  // Nimisarakkeella on vähimmäisleveys, jotta arvot alkavat samasta kohdasta
+  // myös vierekkäisissä laajennuksissa, joissa on eri kentät.
+  grid-template-columns:
+    @Osasuoritus-amis-nimi minmax(10.5em, max-content) max-content minmax(
+      0,
+      1fr
+    )
+    @Column-step;
+  padding-bottom: 16px;
+
+  .OsasuoritusProperties--ammatillinen {
+    padding-bottom: @baseline;
+  }
+
+  > .OsasuoritusProperty {
+    // Poistopainikkeiden sijoittelua varten, ks. alempana
+    position: relative;
+    margin-top: 0;
+    padding-block: 8px;
+  }
+
+  > .OsasuoritusProperty--korostettu {
+    background-image: linear-gradient(@color-neutral-gray, @color-neutral-gray);
+    background-repeat: no-repeat;
+    background-position: right top;
+    background-size: ~'calc(100% - @{Osasuoritus-amis-nimi} + @{Osasuoritus-amis-laatikon-reunus})'
+      100%;
+  }
+
+  .OsasuoritusPropertyLabel {
+    opacity: 1;
+    color: @color-label-darker;
+  }
+
+  // Kentän nimi samalle riville arvon ensimmäisen rivin kanssa: arvon sisäiset
+  // KeyValueRow-rivit ovat tämän korkuisia.
+  .OsasuoritusPropertyLabel,
+  .OsasuoritusPropertyValue {
+    min-height: 2 * @baseline;
+  }
+
+  // Alikenttien nimisarakkeelle vähimmäisleveys, jotta eri kenttien (esim.
+  // arviointi ja näyttö) arvot alkavat samasta kohdasta.
+  .KeyValueTable {
+    grid-template-columns: minmax(11.5em, max-content) repeat(23, 1fr);
+  }
+
+  .OsasuoritusPropertyValue {
+    // Saman kentän useat arvot (esim. arvioinnin korotukset) erotetaan välillä,
+    // muokkaustilassa myös viivalla, koska lomakkeet ovat korkeita.
+    > .NotRemovable + .NotRemovable,
+    > .Removable + .Removable {
+      margin-top: 9px;
+    }
+
+    > .Removable + .Removable {
+      padding-top: 9px;
+      border-top: 1px solid @color-gray-darker;
+    }
+
+    // Kentän ja sen arvojen poistopainikkeet samaan sarakkeeseen rivin
+    // poistopainikkeen kanssa (ruudukon viimeinen sarake), poistettavan asian
+    // yläreunaan. Kenttärivi on taulukon levyinen, joten sarakkeen leveys
+    // lasketaan siitä. Lomakkeen sisäiset listat pitävät painikkeensa vieressä.
+    .Removable > .IconButton {
+      position: absolute;
+      right: ~'calc((100% - @{Columns-gutters-total}) / @{Columns-count} - 2.5 * @{baseline})';
+    }
+
+    .KeyValueTable .Removable > .IconButton {
+      position: static;
+    }
+
+    // Tekstikentät yhtä leveinä kuin KeyValueTable-kentissä (TextField.less)
+    .TextEdit,
+    .TextEdit__input {
+      max-width: 500px;
+    }
+
+    // Valintaruutu ja Lisää-painike alkavat samasta kohdasta kuin sarakkeen
+    // tekstiarvot. Painikkeen sisennys ja korkeus kuten KeyValueRow:ssa.
+    .Checkbox {
+      margin-left: 0;
+    }
+
+    .FlatButton {
+      padding: 0 8px;
+      margin-left: -8px;
+      min-height: 2 * @baseline;
+    }
+  }
+
+  // Sisäkkäinen taulukko kenttien alla
+  > .OsasuoritusProperty + .OsasuoritusHeader {
+    margin-top: @baseline;
+  }
+
+  > .OsasuoritusHeader:first-child {
+    margin-top: 4px;
+  }
+}
+
 // Kapeilla näytöillä (esim. kansalaisen mobiilinäkymä) max-content-nimisarake
 // veisi liikaa tilaa, joten nimi ja arvo pinotaan allekkain kuten muissakin
 // v2-taulukoissa.
@@ -144,6 +260,39 @@
         grid-column: 1 / -1;
         white-space: normal;
       }
+    }
+  }
+}
+
+// Ammatillisen tyyli kapeilla näytöillä: nimi ja arvo allekkain. Arvo
+// siirretään omalle rivilleen, koska nimellä ja arvolla on sama
+// Column-row-luokka ja ne asettuisivat muuten päällekkäin.
+@media screen and (max-width: @Columns-phone-breakpoint) {
+  .OsasuoritusProperties--ammatillinen {
+    grid-template-columns:
+      @Osasuoritus-amis-nimi minmax(0, 1fr)
+      @Osasuoritus-amis-laatikon-reunus;
+
+    > .OsasuoritusProperty {
+      // stylelint-disable-next-line plugin/no-unsupported-browser-features -- ks. sama sääntö ylempänä
+      grid-template-columns: subgrid;
+
+      .OsasuoritusPropertyLabel,
+      .OsasuoritusPropertyValue {
+        grid-column: 2 / 3;
+      }
+
+      .OsasuoritusPropertyValue {
+        grid-row-start: 2;
+      }
+    }
+
+    .KeyValueTable {
+      grid-template-columns: 1fr;
+    }
+
+    .OsasuoritusPropertyValue .Removable > .IconButton {
+      position: static;
     }
   }
 }

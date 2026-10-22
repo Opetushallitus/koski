@@ -72,34 +72,36 @@ export const YhteisenTutkinnonOsanOsaAlueenSuoritusProperties = ({
           />
         </OsasuoritusPropertyValue>
       </OsasuoritusProperty>
-      <OsasuoritusProperty label={'Arviointi'}>
-        <OsasuoritusPropertyValue>
-          <TestIdLayer id="arviointi">
-            <FormListField
-              removable
-              form={form}
-              view={ArviointiView}
-              edit={ArviointiEdit}
-              path={osasuoritusPath.prop('arviointi')}
-            />
-            {form.editMode && (
-              <ButtonGroup>
-                <FlatButton
-                  testId="lisää-arviointi"
-                  onClick={() =>
-                    form.updateAt(
-                      osasuoritusPath.prop('arviointi').valueOr([]),
-                      append(emptyArviointi)
-                    )
-                  }
-                >
-                  {t('Lisää')}
-                </FlatButton>
-              </ButtonGroup>
-            )}
-          </TestIdLayer>
-        </OsasuoritusPropertyValue>
-      </OsasuoritusProperty>
+      {(form.editMode || osasuoritus.arviointi) && (
+        <OsasuoritusProperty label={'Arviointi'}>
+          <OsasuoritusPropertyValue>
+            <TestIdLayer id="arviointi">
+              <FormListField
+                removable
+                form={form}
+                view={ArviointiView}
+                edit={ArviointiEdit}
+                path={osasuoritusPath.prop('arviointi')}
+              />
+              {form.editMode && (
+                <ButtonGroup>
+                  <FlatButton
+                    testId="lisää-arviointi"
+                    onClick={() =>
+                      form.updateAt(
+                        osasuoritusPath.prop('arviointi').valueOr([]),
+                        append(emptyArviointi)
+                      )
+                    }
+                  >
+                    {t('Lisää')}
+                  </FlatButton>
+                </ButtonGroup>
+              )}
+            </TestIdLayer>
+          </OsasuoritusPropertyValue>
+        </OsasuoritusProperty>
+      )}
       {(form.editMode || osasuoritus.tunnustettu) && (
         <OsasuoritusProperty label={'Tunnustettu'}>
           <OsasuoritusPropertyValue>
@@ -144,7 +146,7 @@ export const YhteisenTutkinnonOsanOsaAlueenSuoritusProperties = ({
         </OsasuoritusProperty>
       )}
       {(form.editMode || osasuoritus.näyttö) && (
-        <OsasuoritusProperty label={'Näyttö'}>
+        <OsasuoritusProperty label={'Näyttö'} korostettu>
           <OsasuoritusPropertyValue>
             <FormField
               form={form}
