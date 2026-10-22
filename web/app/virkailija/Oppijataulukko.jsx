@@ -13,7 +13,7 @@ import Dropdown from '../components/Dropdown'
 import Http from '../util/http'
 import SortingTableHeader from '../components/SortingTableHeader'
 import delays from '../util/delays'
-import Highlight from 'react-highlighter'
+import { Highlight } from '../components/Highlight'
 import Link from '../components/Link'
 import { lang, t } from '../i18n/i18n'
 import Text from '../i18n/Text'
@@ -262,9 +262,8 @@ export class Oppijataulukko extends React.Component {
                           href={`/koski/oppija/${opiskeluoikeus.henkilö.oid}`}
                         >
                           <Highlight
-                            ignoreDiacritics={true}
-                            diacriticsBlacklist={'åäöÅÄÖ'}
-                            search={params.nimihaku || ''}
+                            matching="wordPrefix"
+                            searchQuery={params.nimihaku || ''}
                           >
                             {opiskeluoikeus.henkilö.sukunimi +
                               ', ' +
@@ -295,7 +294,10 @@ export class Oppijataulukko extends React.Component {
                             <ul className="cell-listing" key={j}>
                               {
                                 <li className="koulutusmoduuli">
-                                  <Highlight search={params.tutkintohaku || ''}>
+                                  <Highlight
+                                    matching="wordPrefix"
+                                    searchQuery={params.tutkintohaku || ''}
+                                  >
                                     {t(suoritus.koulutusmoduuli.tunniste.nimi)}
                                   </Highlight>
                                 </li>
@@ -304,7 +306,8 @@ export class Oppijataulukko extends React.Component {
                                 (osaamisala, k) => (
                                   <li className="osaamisala" key={k}>
                                     <Highlight
-                                      search={params.tutkintohaku || ''}
+                                      matching="wordPrefix"
+                                      searchQuery={params.tutkintohaku || ''}
                                     >
                                       {t(osaamisala.nimi)}
                                     </Highlight>
@@ -315,7 +318,8 @@ export class Oppijataulukko extends React.Component {
                                 (nimike, k) => (
                                   <li className="tutkintonimike" key={k}>
                                     <Highlight
-                                      search={params.tutkintohaku || ''}
+                                      matching="wordPrefix"
+                                      searchQuery={params.tutkintohaku || ''}
                                     >
                                       {t(nimike.nimi)}
                                     </Highlight>
@@ -347,7 +351,10 @@ export class Oppijataulukko extends React.Component {
                         {ISO2FinnishDate(opiskeluoikeus.päättymispäivä)}
                       </td>
                       <td className="luokka">
-                        <Highlight search={params.luokkahaku || ''}>
+                        <Highlight
+                          matching="textPrefix"
+                          searchQuery={params.luokkahaku || ''}
+                        >
                           {opiskeluoikeus.luokka}
                         </Highlight>
                       </td>

@@ -654,6 +654,20 @@ describe('Oppijataulukko', function () {
         '9'
       ])
     })
+
+    describe('Tutkinnon nimessä samaistetaan ü ja u', function () {
+      before(
+        page.oppijataulukko.filterBy('nimi'),
+        page.oppijataulukko.filterBy('luokka'),
+        page.oppijataulukko.filterBy('tutkinto', 'reifepru')
+      )
+      it('Toimii', function () {
+        expect(page.oppijataulukko.highlights()).to.deep.equal([
+          'Reifeprü',
+          'Reifeprü'
+        ])
+      })
+    })
   })
 
   describe('Siirtyminen oppijan tietoihin', function () {

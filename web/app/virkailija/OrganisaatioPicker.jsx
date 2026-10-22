@@ -3,7 +3,7 @@ import Bacon from 'baconjs'
 import * as R from 'ramda'
 import BaconComponent from '../components/BaconComponent'
 import Http from '../util/http'
-import Highlight from 'react-highlighter'
+import { Highlight } from '../components/Highlight'
 import { buildClassNames } from '../components/classnames.js'
 import { t } from '../i18n/i18n'
 import Text from '../i18n/Text'
@@ -64,7 +64,9 @@ export default class OrganisaatioPicker extends BaconComponent {
     }
     const orgName = (org) => (
       <span>
-        <Highlight search={searchString}>{t(org.nimi)}</Highlight>{' '}
+        <Highlight matching="substring" searchQuery={searchString}>
+          {t(org.nimi)}
+        </Highlight>{' '}
         {org.aktiivinen ? null : (
           <span>
             {' ('}
