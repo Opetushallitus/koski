@@ -57,7 +57,7 @@ export const FormField = <E extends Editor>(
       viewer: child('value')
     }
   }) as Control<
-    E & {
+    NoInfer<E> & {
       value: (editMode: boolean) => Promise<string>
       set: (value: EditorValue<E>) => Promise<void>
       viewer: Locator

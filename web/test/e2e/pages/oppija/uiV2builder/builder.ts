@@ -54,7 +54,7 @@ export function build(page: Page, node: IdNode, prefix?: string): any {
     if (!prefix) {
       throw new Error('Leaf cannot be the root of the hierarchy')
     }
-    return node(
+    return (node as Control<unknown>)(
       page.getByTestId(prefix),
       (postfix) => page.getByTestId(`${prefix}.${postfix}`),
       prefix

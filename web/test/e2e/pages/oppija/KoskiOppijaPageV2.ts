@@ -1,5 +1,7 @@
 import { Locator, Page, expect } from '@playwright/test'
 import { build, BuiltIdNode, IdNodeObject } from './uiV2builder/builder'
+import { OpiskeluoikeudenTila } from './uiV2builder/OpiskeluoikeudenTila'
+import { BuiltSuorituksenVahvistus } from './uiV2builder/SuorituksenVahvistus'
 import { notUndefined } from '../../../../app/util/util'
 
 export class KoskiOppijaPageV2<T extends IdNodeObject<string>> {
@@ -60,14 +62,14 @@ export class KoskiOppijaPageV2<T extends IdNodeObject<string>> {
     await expect(opiskeluoikeusTab).toHaveAttribute('data-selected', 'true')
   }
 
-  edit() {
+  async edit() {
     this.editMode = true
-    return this.$.opiskeluoikeus.edit.click()
+    await this.$.opiskeluoikeus.edit.click()
   }
 
-  cancelEdit() {
+  async cancelEdit() {
     this.editMode = false
-    return this.$.opiskeluoikeus.cancelEdit.click()
+    await this.$.opiskeluoikeus.cancelEdit.click()
   }
 
   async selectSuoritus(index: number) {
@@ -111,31 +113,38 @@ export class KoskiOppijaPageV2<T extends IdNodeObject<string>> {
   }
 
   async opiskeluoikeudenTila(index: number) {
-    const item =
-      this.$.opiskeluoikeus.tila[this.editMode ? 'edit' : 'value'].items(index)
-    return `${await item.date.value(this.editMode)} ${await item.tila.value()}`
+    const tilat = this.$.opiskeluoikeus.tila as BuiltIdNode<
+      ReturnType<typeof OpiskeluoikeudenTila>
+    >
+    if (this.editMode) {
+      const item = tilat.edit.items(index)
+      return `${await item.date.value(true)} ${await item.tila.value()}`
+    } else {
+      const item = tilat.value.items(index)
+      return `${await item.date.value()} ${await item.tila.value()}`
+    }
   }
 
   async removeOpiskeluoikeudenTila(index: number) {
     await this.$.opiskeluoikeus.tila.edit.items(index).remove.click()
   }
 
+  private suorituksenVahvistusIds() {
+    const vahvistus = this.$.suoritukset(this.suoritusIndex)
+      .suorituksenVahvistus as BuiltSuorituksenVahvistus
+    return vahvistus[this.editMode ? 'edit' : 'value']
+  }
+
   suorituksenTila() {
-    return this.$.suoritukset(this.suoritusIndex).suorituksenVahvistus[
-      this.editMode ? 'edit' : 'value'
-    ].status.value()
+    return this.suorituksenVahvistusIds().status.value()
   }
 
   suorituksenVahvistus() {
-    return this.$.suoritukset(this.suoritusIndex).suorituksenVahvistus[
-      this.editMode ? 'edit' : 'value'
-    ].details.value()
+    return this.suorituksenVahvistusIds().details.value()
   }
 
   suorituksenVahvistushenkilö(index: number) {
-    return this.$.suoritukset(this.suoritusIndex)
-      .suorituksenVahvistus[this.editMode ? 'edit' : 'value'].henkilö(index)
-      .value()
+    return this.suorituksenVahvistusIds().henkilö(index).value()
   }
 
   async poistaSuorituksenVahvistus() {
