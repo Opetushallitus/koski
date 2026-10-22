@@ -45,7 +45,7 @@ export const OppijanHaut = (props: OppijanHautProps) => {
   ) : A.isNonEmpty(haut) ? (
     <div className={b()}>
       {haut.map((haku) => (
-        <HakuTable key={haku.hakuOid} haku={haku} />
+        <HakuTable key={haku.hakemusOid} haku={haku} />
       ))}
     </div>
   ) : (

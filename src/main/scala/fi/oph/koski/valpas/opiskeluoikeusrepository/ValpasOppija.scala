@@ -444,7 +444,7 @@ object ValpasHakutoive {
       hakukohdeNimi = hakutoive.hakukohdeNimi.toLocalizedString,
       organisaatioNimi = hakutoive.organisaatioNimi.toLocalizedString,
       koulutusNimi = hakutoive.koulutusNimi.toLocalizedString,
-      hakutoivenumero = Some(hakutoive.hakutoivenumero),
+      hakutoivenumero = Some(hakutoive.hakutoivenumero).filter(_ > 0),
       pisteet = hakutoive.pisteet,
       alinHyvaksyttyPistemaara = hakutoive.alinHyvaksyttyPistemaara,
       valintatila = Valintatila.valpasKoodiviiteOption(hakutoive.valintatila),

@@ -54,6 +54,13 @@ case class Hakutoive(
   hakukohdeKoulutuskoodi: Option[Koodistokoodiviite]
 )
 
+object Hakutapa {
+  private val yhteishaku = "01"
+  private val jatkuvaHaku = "03"
+
+  val näytettävät: Set[String] = Set(yhteishaku, jatkuvaHaku)
+}
+
 object Vastaanottotieto {
   val values = Set(
     "KESKEN",

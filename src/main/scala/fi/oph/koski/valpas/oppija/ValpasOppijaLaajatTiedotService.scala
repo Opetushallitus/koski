@@ -291,7 +291,7 @@ class ValpasOppijaLaajatTiedotService(
     val hakukoosteet = if (oppija.oppivelvollisuudestaVapautettu) {
       Right(Nil)
     } else {
-      hakukoosteService.getYhteishakujenHakukoosteet(oppijaOids = Set(oppija.henkilö.oid), ainoastaanAktiivisetHaut = false, errorClue = s"oppija:${oppija.henkilö.oid}")
+      hakukoosteService.getNäytettävätHakukoosteet(oppijaOids = Set(oppija.henkilö.oid), ainoastaanAktiivisetHaut = false, errorClue = s"oppija:${oppija.henkilö.oid}")
     }
 
     OppijaHakutilanteillaLaajatTiedot.apply(oppija = oppija, yhteystietoryhmänNimi = localizationRepository.get("oppija__yhteystiedot"), haut = hakukoosteet)
