@@ -924,8 +924,8 @@ packages:
     resolution: {integrity: sha512-yQbXgO/OSZVD2IsiLlro+7Hf6Q18EJrKSEsdoMzKePKXct3gvD8oLcOQdIzGupr5Fj+EDe8gO/lxc1BzfMpxvA==}
     engines: {node: '>=8'}
 
-  browserslist@4.29.3:
-    resolution: {integrity: sha512-1R4kiYKXGViqEN0CnoDrXc1StD9niAwu+j2dukWzrD4bJgsD4lDmEp0CRbc6E/vYJIfTHwPmwyaKtVSudICdPA==}
+  browserslist@4.29.4:
+    resolution: {integrity: sha512-2TcbbiwXEq+N0kD36tykpCfyyQigUXmuwNQbnPp4Xk4PX9JOqVIKjJlIDjpH7uY6tmRGoAd+apeT1p60T8wsdA==}
     engines: {node: ^6 || ^7 || ^8 || ^9 || ^10 || ^11 || ^12 || >=13.7}
     hasBin: true
 
@@ -2339,7 +2339,7 @@ snapshots:
     dependencies:
       '@babel/compat-data': 8.0.5
       '@babel/helper-validator-option': 8.0.0
-      browserslist: 4.29.3
+      browserslist: 4.29.4
       flru: 1.0.2
       verkit: 0.5.0
 
@@ -2948,13 +2948,13 @@ snapshots:
     dependencies:
       fill-range: 7.1.1
 
-  browserslist@4.29.3:
+  browserslist@4.29.4:
     dependencies:
       baseline-browser-mapping: 2.11.29
       caniuse-lite: 1.0.30001816
       electron-to-chromium: 1.5.459
       node-releases: 2.0.59
-      update-browserslist-db: 1.3.4(browserslist@4.29.3)
+      update-browserslist-db: 1.3.4(browserslist@4.29.4)
 
   buffer-from@1.1.2: {}
 
@@ -2970,7 +2970,7 @@ snapshots:
 
   caniuse-api@3.0.0:
     dependencies:
-      browserslist: 4.29.3
+      browserslist: 4.29.4
       caniuse-lite: 1.0.30001816
       lodash.memoize: 4.1.2
       lodash.uniq: 4.5.0
@@ -3097,7 +3097,7 @@ snapshots:
 
   cssnano-preset-default@7.0.17(postcss@8.5.31):
     dependencies:
-      browserslist: 4.29.3
+      browserslist: 4.29.4
       css-declaration-sorter: 7.4.0(postcss@8.5.31)
       cssnano-utils: 5.0.3(postcss@8.5.31)
       postcss: 8.5.31
@@ -3155,7 +3155,7 @@ snapshots:
 
   doiuse@6.0.6:
     dependencies:
-      browserslist: 4.29.3
+      browserslist: 4.29.4
       caniuse-lite: 1.0.30001816
       css-tokenize: 1.0.1
       duplexify: 4.1.3
@@ -3237,7 +3237,7 @@ snapshots:
     dependencies:
       '@mdn/browser-compat-data': 6.1.5
       ast-metadata-inferer: 0.8.1
-      browserslist: 4.29.3
+      browserslist: 4.29.4
       eslint: 10.13.0(supports-color@10.2.2)
       find-up: 5.0.0
       globals: 15.15.0
@@ -3711,14 +3711,14 @@ snapshots:
   postcss-colormin@7.0.10(postcss@8.5.31):
     dependencies:
       '@colordx/core': 5.8.0
-      browserslist: 4.29.3
+      browserslist: 4.29.4
       caniuse-api: 3.0.0
       postcss: 8.5.31
       postcss-value-parser: 4.2.0
 
   postcss-convert-values@7.0.12(postcss@8.5.31):
     dependencies:
-      browserslist: 4.29.3
+      browserslist: 4.29.4
       postcss: 8.5.31
       postcss-value-parser: 4.2.0
 
@@ -3747,7 +3747,7 @@ snapshots:
 
   postcss-merge-rules@7.0.11(postcss@8.5.31):
     dependencies:
-      browserslist: 4.29.3
+      browserslist: 4.29.4
       caniuse-api: 3.0.0
       cssnano-utils: 5.0.3(postcss@8.5.31)
       postcss: 8.5.31
@@ -3767,14 +3767,14 @@ snapshots:
 
   postcss-minify-params@7.0.9(postcss@8.5.31):
     dependencies:
-      browserslist: 4.29.3
+      browserslist: 4.29.4
       cssnano-utils: 5.0.3(postcss@8.5.31)
       postcss: 8.5.31
       postcss-value-parser: 4.2.0
 
   postcss-minify-selectors@7.1.2(postcss@8.5.31):
     dependencies:
-      browserslist: 4.29.3
+      browserslist: 4.29.4
       caniuse-api: 3.0.0
       cssesc: 3.0.0
       postcss: 8.5.31
@@ -3811,7 +3811,7 @@ snapshots:
 
   postcss-normalize-unicode@7.0.9(postcss@8.5.31):
     dependencies:
-      browserslist: 4.29.3
+      browserslist: 4.29.4
       postcss: 8.5.31
       postcss-value-parser: 4.2.0
 
@@ -3833,7 +3833,7 @@ snapshots:
 
   postcss-reduce-initial@7.0.9(postcss@8.5.31):
     dependencies:
-      browserslist: 4.29.3
+      browserslist: 4.29.4
       caniuse-api: 3.0.0
       postcss: 8.5.31
 
@@ -4017,13 +4017,13 @@ snapshots:
 
   stylehacks@7.0.11(postcss@8.5.31):
     dependencies:
-      browserslist: 4.29.3
+      browserslist: 4.29.4
       postcss: 8.5.31
       postcss-selector-parser: 7.1.6
 
   stylelint-no-unsupported-browser-features@8.1.2(stylelint@17.16.0(supports-color@10.2.2)(typescript@6.0.3)):
     dependencies:
-      browserslist: 4.29.3
+      browserslist: 4.29.4
       doiuse: 6.0.6
       postcss: 8.5.31
       stylelint: 17.16.0(supports-color@10.2.2)(typescript@6.0.3)
@@ -4188,9 +4188,9 @@ snapshots:
       '@unrs/resolver-binding-win32-ia32-msvc': 1.12.2
       '@unrs/resolver-binding-win32-x64-msvc': 1.12.2
 
-  update-browserslist-db@1.3.4(browserslist@4.29.3):
+  update-browserslist-db@1.3.4(browserslist@4.29.4):
     dependencies:
-      browserslist: 4.29.3
+      browserslist: 4.29.4
       escalade: 3.2.0
       picocolors: 1.1.1
 
@@ -4237,7 +4237,7 @@ snapshots:
       '@webassemblyjs/ast': 1.14.1
       '@webassemblyjs/wasm-edit': 1.14.1
       '@webassemblyjs/wasm-parser': 1.14.1
-      browserslist: 4.29.3
+      browserslist: 4.29.4
       chrome-trace-event: 1.0.4
       enhanced-resolve: 5.26.0
       es-module-lexer: 2.3.2
