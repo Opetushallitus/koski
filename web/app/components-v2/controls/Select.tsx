@@ -22,6 +22,7 @@ import { nonNull } from '../../util/fp/arrays'
 import { pluck } from '../../util/fp/objects'
 import { koodistokoodiviiteId, koodiviiteId } from '../../util/koodisto'
 import { clamp, sum } from '../../util/numbers'
+import { useOutsideClick } from '../../util/useOutsideClick'
 import { coerceForSort, textSearch } from '../../util/strings'
 import { common, CommonProps, cx } from '../CommonProps'
 import { Removable } from './Removable'
@@ -437,36 +438,24 @@ const useSelectState = <T,>(props: SelectProps<T>) => {
     }
   }, [])
 
-  useEffect(() => {
-    const mouseHandler = (event: MouseEvent) => {
-      const isInside =
-        event.target instanceof Element &&
-        selectContainer.current?.contains(event.target)
-
+  const onClickCapture: React.MouseEventHandler<HTMLDivElement> = useCallback(
+    (event) => {
+      cancelBlur()
       const isToggle =
-        event.target instanceof Element &&
+        event.target instanceof Node &&
         toggleRef.current?.contains(event.target)
 
-      if (isToggle) {
-        // Avauspainike vaihtaa tilan itse, joten täällä ei saa pakottaa auki.
-        cancelBlur()
-      } else if (isInside) {
-        // Jos klikataan sisällä, peruuta blur ja pidä auki
-        cancelBlur()
+      // Avauspainike vaihtaa tilan itse. Vaihtoehdon valinta sulkee valikon
+      // capture-käsittelijän jälkeen, vaikka se pysäyttäisi kuplimisen.
+      if (!isToggle) {
         setDropdownVisible(true)
-      } else {
-        // Jos klikataan ulkopuolella, sulje
-        closeDropdown()
       }
-    }
-    document.body.addEventListener('click', mouseHandler)
-    return () => {
-      document.body.removeEventListener('click', mouseHandler)
-      if (blurTimeoutRef.current !== null) {
-        clearTimeout(blurTimeoutRef.current)
-      }
-    }
-  }, [cancelBlur, closeDropdown])
+    },
+    [cancelBlur]
+  )
+
+  useOutsideClick([selectContainer], closeDropdown, dropdownVisible)
+  useEffect(() => cancelBlur, [cancelBlur])
 
   // Changes
 
@@ -631,7 +620,8 @@ const useSelectState = <T,>(props: SelectProps<T>) => {
         ref: selectContainer,
         onFocus,
         onKeyDown,
-        onBlur
+        onBlur,
+        onClickCapture
       },
       inputEventListeners: {
         onChange: onUserType,
@@ -648,6 +638,7 @@ const useSelectState = <T,>(props: SelectProps<T>) => {
       filter,
       hoveredOption,
       onBlur,
+      onClickCapture,
       onClickOption,
       onFocus,
       onKeyDown,
