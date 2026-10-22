@@ -2506,8 +2506,8 @@ packages:
   minimatch@3.1.5:
     resolution: {integrity: sha512-VgjWUsnnT6n+NUk6eZq77zeFdpW2LWDzP6zFGrCbHXiYNul5Dzqk2HHQ5uFH2DNW5Xbp8+jVzaeNt94ssEEl4w==}
 
-  minimizer-webpack-plugin@5.13.0:
-    resolution: {integrity: sha512-OO1NF2zHj6sf4CNv2AsUWYcS8WEwkVKQDXxxKzlOxx1Xl+WlqYtVC+oNlGNwGkLAOnpj277BSHypWwRtd9w4JQ==}
+  minimizer-webpack-plugin@5.13.1:
+    resolution: {integrity: sha512-1mhAfvachWYYOm8tpmany5NLuvP+F2wxZWBSX8DC0uFS2wJpM9q3rWgN9wBooAH9d5V12wX0BjyJe4fMjHMarQ==}
     engines: {node: '>= 10.13.0'}
     peerDependencies:
       '@minify-html/node': '*'
@@ -3069,10 +3069,15 @@ packages:
   scheduler@0.19.1:
     resolution: {integrity: sha512-n/zwRWRYSUj0/3g/otKDRPMh6qv2SYMWNq85IEa8iZyAv8od9zDYpGSnpBEjNgcMNq6Scbu5KfIPxNF72R/2EA==}
 
-  schema-utils@4.6.0:
-    resolution: {integrity: sha512-q8cvkEp4bRQdWcLvB3vmxpZAlS25Hxws10nCK+rUxUfuB7e430dYZZJ5z5yAoOGBbbDtve8cUg8DFfc3ue12TA==}
+  schema-utils@4.8.1:
+    resolution: {integrity: sha512-x39pYlJPyH7Uge5QO64B9XGP9zLDc9WNmiQZc+CE3IzZPvMu3lHOuAMGpYNoPixEL7MSWlGhYTg5UlLSL8G6iw==}
     engines: {node: '>= 10.13.0'}
     hasBin: true
+    peerDependencies:
+      webpack: ^5.112.0
+    peerDependenciesMeta:
+      webpack:
+        optional: true
 
   semver@6.3.1:
     resolution: {integrity: sha512-BR7VvDCVHO+q2xBEWskxS6DJE1qRnb7DxzUrogb71CWoSficBxYsiAGd+Kl0mmq/MprG9yArRkyrQxTO6XjMzA==}
@@ -4800,7 +4805,7 @@ snapshots:
     dependencies:
       glob-parent: 6.0.2
       normalize-path: 3.0.0
-      schema-utils: 4.6.0
+      schema-utils: 4.8.1(webpack@5.112.0)
       serialize-javascript: 7.1.2
       tinyglobby: 0.2.17
       webpack: 5.112.0(@swc/core@1.16.18)(esbuild@0.28.2)(postcss@8.5.31)(webpack-cli@7.2.3)
@@ -5570,11 +5575,11 @@ snapshots:
     dependencies:
       brace-expansion: 1.1.21
 
-  minimizer-webpack-plugin@5.13.0(@swc/core@1.16.18)(esbuild@0.28.2)(postcss@8.5.31)(webpack@5.112.0):
+  minimizer-webpack-plugin@5.13.1(@swc/core@1.16.18)(esbuild@0.28.2)(postcss@8.5.31)(webpack@5.112.0):
     dependencies:
       '@jridgewell/trace-mapping': 0.3.31
       jest-worker: 27.5.1
-      schema-utils: 4.6.0
+      schema-utils: 4.8.1(webpack@5.112.0)
       terser: 5.51.2
       webpack: 5.112.0(@swc/core@1.16.18)(esbuild@0.28.2)(postcss@8.5.31)(webpack-cli@7.2.3)
     optionalDependencies:
@@ -6176,12 +6181,14 @@ snapshots:
       loose-envify: 1.4.0
       object-assign: 4.1.1
 
-  schema-utils@4.6.0:
+  schema-utils@4.8.1(webpack@5.112.0):
     dependencies:
       '@types/json-schema': 7.0.15
       ajv: 8.20.0
       ajv-formats: 3.0.1
       ajv-keywords: 5.1.0(ajv@8.20.0)
+    optionalDependencies:
+      webpack: 5.112.0(@swc/core@1.16.18)(esbuild@0.28.2)(postcss@8.5.31)(webpack-cli@7.2.3)
 
   semver@6.3.1: {}
 
@@ -6519,8 +6526,8 @@ snapshots:
       events: 3.3.0
       graceful-fs: 4.2.11
       mime-db: 1.54.0
-      minimizer-webpack-plugin: 5.13.0(@swc/core@1.16.18)(esbuild@0.28.2)(postcss@8.5.31)(webpack@5.112.0)
-      schema-utils: 4.6.0
+      minimizer-webpack-plugin: 5.13.1(@swc/core@1.16.18)(esbuild@0.28.2)(postcss@8.5.31)(webpack@5.112.0)
+      schema-utils: 4.8.1(webpack@5.112.0)
       tapable: 2.3.3
       watchpack: 2.6.3
       webpack-sources: 3.6.0
