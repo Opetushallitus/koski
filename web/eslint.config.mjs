@@ -231,6 +231,7 @@ export default defineConfig([
         'error',
         'error-handling-correctness-only'
       ],
+      '@typescript-eslint/no-deprecated': 'error',
       '@typescript-eslint/no-meaningless-void-operator': 'error',
       '@typescript-eslint/no-misused-spread': 'error',
       '@typescript-eslint/no-mixed-enums': 'error',

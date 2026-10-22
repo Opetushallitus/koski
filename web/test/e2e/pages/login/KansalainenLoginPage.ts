@@ -24,7 +24,7 @@ export class KansalainenLoginPage {
   async loginWithHetu(hetu: string) {
     await this.goto()
     await expect(this.page).toHaveURL(/\/koski\/login\/oppija\/local$/)
-    await this.hetuInput.type(hetu)
+    await this.hetuInput.fill(hetu)
     await this.loginButton.click()
     await expect(this.page).toHaveURL(/\/koski\/omattiedot$/)
   }

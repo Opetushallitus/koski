@@ -23,8 +23,8 @@ export class VirkailijaLoginPage {
    * @param password Password
    */
   async loginAsUser(username: string, password: string) {
-    await this.usernameInput.type(username)
-    await this.passwordInput.type(password)
+    await this.usernameInput.fill(username)
+    await this.passwordInput.fill(password)
     await this.loginButton.click()
     // Uudelleenohjaus /koski/virkailija
     await expect(this.page).toHaveURL(/koski\/virkailija/)
