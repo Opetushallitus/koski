@@ -283,6 +283,8 @@ object KoskiErrorCategory {
       ) {
         val kotoAlkamispäivä2012 = subcategory("kotoAlkamispäivä2012", "Vapaan sivistystyön kotiutumiskoulutuksen suorituksella ei voi olla 1.8.2022 jälkeen aloitettuja aikuisten maahanmuuttajien kotoutumiskoulutuksen opetussuunnitelman 2012 mukaisia suorituksia")
         val kotoAlkamispäivä2022 = subcategory("kotoAlkamispäivä2022", "Vapaan sivistystyön kotiutumiskoulutuksen suorituksella ei voi olla ennen 1.8.2022 aloitettuja kotoutumiskoulutuksen opetussuunnitelman 2022 mukaisia suorituksia")
+        val kotoJaLukutaitoAlkamispäivä = subcategory("kotoJaLukutaitoAlkamispäivä", "Vapaan sivistystyön kotoutumiskoulutuksen tai lukutaitokoulutuksen opiskeluoikeus ei voi alkaa 1.1.2027 tai sen jälkeen")
+        val kotoPäättymispäivä = subcategory("kotoPäättymispäivä", "Vapaan sivistystyön kotoutumiskoulutuksen opiskeluoikeuden viimeinen sallittu päättymispäivä on 31.12.2026")
         val puuttuvaOpintokokonaisuus = subcategory("puuttuvaOpintokokonaisuus", "Vapaan sivistystyön vapaatavoitteisen koulutuksen opiskeluoikeuden opintokokonaisuus ei saa olla tyhjä.")
         val puuttuvaOpintokokonaisuusDeadline = subcategory("puuttuvaOpintokokonaisuusDeadline", "Vapaan sivistystyön vapaatavoitteisen koulutuksen opiskeluoikeuden opintokokonaisuus on pakollinen tieto 1.8.2022 jälkeen.")
         val opintokokonaisuusVainVapaaTavoitteisessaKoulutuksessa = subcategory("opintokokonaisuusVainVapaaTavoitteisessaKoulutuksessa", "Opiskeluoikeuden opintokokonaisuus saa olla määritelty vain vapaan sivistystyön vapaatavoitteisissa koulutuksissa")

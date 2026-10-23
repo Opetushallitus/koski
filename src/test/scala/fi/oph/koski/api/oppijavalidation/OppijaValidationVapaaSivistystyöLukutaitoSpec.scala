@@ -1,6 +1,7 @@
 package fi.oph.koski.api.oppijavalidation
 
 import fi.oph.koski.KoskiHttpSpec
+import fi.oph.koski.documentation.ExampleData.{opiskeluoikeusKatsotaanEronneeksi, opiskeluoikeusLäsnä}
 import fi.oph.koski.documentation.VapaaSivistystyöExample._
 import fi.oph.koski.documentation.VapaaSivistystyöExampleData._
 import fi.oph.koski.http.{ErrorMatcher, KoskiErrorCategory}
@@ -71,6 +72,31 @@ class OppijaValidationVapaaSivistystyöLukutaitoSpec extends TutkinnonPerusteetT
 
       setupOppijaWithOpiskeluoikeus(oo) {
         verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.rakenne.vääräKoulutustyyppi("Suoritukselle VapaanSivistystyönLukutaitokoulutus ei voi käyttää opiskeluoikeuden voimassaoloaikana voimassaollutta perustetta OPH-5410-2021 (7614470), jonka koulutustyyppi on 1(Ammatillinen perustutkinto). Tälle suoritukselle hyväksytyt perusteen koulutustyypit ovat 35(Vapaan sivistystyön lukutaitokoulutus)."))
+      }
+    }
+
+    "Viimeinen sallittu alkamispäivä 31.12.2026" - {
+      def jakso(päivä: java.time.LocalDate, tila: Koodistokoodiviite) =
+        OppivelvollisilleSuunnattuVapaanSivistystyönOpiskeluoikeusjakso(päivä, tila)
+
+      def alkanutJaEronnut(alku: java.time.LocalDate, loppu: java.time.LocalDate) = opiskeluoikeusLukutaito.copy(
+        arvioituPäättymispäivä = None,
+        tila = VapaanSivistystyönOpiskeluoikeudenTila(List(jakso(alku, opiskeluoikeusLäsnä), jakso(loppu, opiskeluoikeusKatsotaanEronneeksi))),
+        suoritukset = List(suoritusLukutaito.copy(osasuoritukset = None, vahvistus = None)),
+      )
+
+      "Opiskeluoikeus voi alkaa 31.12.2026 ja jatkua sen jälkeen" in {
+        setupOppijaWithOpiskeluoikeus(alkanutJaEronnut(date(2026, 12, 31), date(2027, 6, 1))) {
+          verifyResponseStatusOk()
+        }
+      }
+
+      "Opiskeluoikeus ei voi alkaa 1.1.2027" in {
+        setupOppijaWithOpiskeluoikeus(alkanutJaEronnut(date(2027, 1, 1), date(2027, 6, 1))) {
+          verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.vapaaSivistystyö.kotoJaLukutaitoAlkamispäivä(
+            "Vapaan sivistystyön kotoutumiskoulutuksen tai lukutaitokoulutuksen opiskeluoikeus ei voi alkaa 1.1.2027 tai sen jälkeen"
+          ))
+        }
       }
     }
   }
