@@ -141,7 +141,7 @@ jobs:
 
       - name: Report task ready
         uses: ./.github/actions/report-slack
-        if: ${{ always() && !(job.status == 'success' && inputs.environment == 'dev') }}
+        if: ${{ always() && !(job.status == 'success' && contains(fromJSON('["dev", "qa"]'), inputs.environment)) }}
         with:
           webhook: ${{ secrets.SLACK_CI_ALERTS_WEBHOOK }}
           title: ":rocket: DEPLOY · ${{ job.status == 'success' && ':heavy_check_mark:' || job.status == 'failure' && ':x:' || ':no_entry_sign:' }} ${{ inputs.environment }} install ${{ job.status == 'success' && 'passed' || job.status == 'failure' && 'failed' || 'cancelled' }}"
