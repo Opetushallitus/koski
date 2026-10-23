@@ -27,7 +27,7 @@ trait ValpasHakukoosteService extends Logging {
       .filter(oppijatJoilleHaetaanHakutiedot.contains)
       .toSet
 
-    val hakukoosteet = getYhteishakujenHakukoosteet(oppijaOids = oppijaOids, ainoastaanAktiivisetHaut = true, errorClue = errorClue)
+    val hakukoosteet = getNäytettävätHakukoosteet(oppijaOids = oppijaOids, ainoastaanAktiivisetHaut = true, errorClue = errorClue)
     val hakukoosteetOppijaOidit = hakukoosteet.map(_.map(_.oppijaOid).toSet)
     val tuntemattomatOppijaOiditHakukoosteissa = hakukoosteetOppijaOidit.map(_.diff(oppijaOids))
     val masterOppijaOiditTuntemattomille: Either[HttpStatus, Map[String, String]] = tuntemattomatOppijaOiditHakukoosteissa
@@ -82,12 +82,12 @@ trait ValpasHakukoosteService extends Logging {
     errorClue: String
   ): Either[HttpStatus, Seq[Hakukooste]]
 
-  def getYhteishakujenHakukoosteet(
+  def getNäytettävätHakukoosteet(
     oppijaOids: Set[ValpasHenkilö.Oid],
     ainoastaanAktiivisetHaut: Boolean,
     errorClue: String
   ): Either[HttpStatus, Seq[Hakukooste]] = {
-    getHakukoosteet(oppijaOids, ainoastaanAktiivisetHaut, errorClue).map(_.filter(hk => hk.hakutapa.koodiarvo == "01"))
+    getHakukoosteet(oppijaOids, ainoastaanAktiivisetHaut, errorClue).map(_.filter(hk => Hakutapa.näytettävät.contains(hk.hakutapa.koodiarvo)))
   }
 }
 

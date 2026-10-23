@@ -11,7 +11,7 @@ import fi.oph.koski.henkilo.LaajatOppijaHenkilöTiedot
 import fi.oph.koski.schema.BlankableLocalizedString
 import fi.oph.koski.valpas.hakukooste.{Hakukooste, HakukoosteExampleData, Hakutoive, Harkinnanvaraisuus, ValpasHakukoosteService}
 import fi.oph.koski.valpas.opiskeluoikeusfixture.ValpasMockOppijat
-import fi.oph.koski.valpas.opiskeluoikeusrepository.{ValpasHenkilöLaajatTiedot, ValpasOppivelvollinenOppijaLaajatTiedot}
+import fi.oph.koski.valpas.opiskeluoikeusrepository.{ValpasHakutoive, ValpasHenkilöLaajatTiedot, ValpasOppivelvollinenOppijaLaajatTiedot}
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.{BeforeAndAfterAll, EitherValues}
 
@@ -127,6 +127,22 @@ class OvaraHakukoosteServiceSpec extends ValpasTestBase with Matchers with Eithe
       result.map(_.oppijaOid).toSet should equal(queryOids)
     }
 
+    "palauttaa näytettävinä myös jatkuvan haun hakukoosteet" in {
+      val queryOids = Set(ValpasMockOppijat.oppivelvollinenYsiluokkaKeskenKeväällä2021.oid)
+      mockGetResponseForOids(queryOids, hakutapaKoodiarvo = "03")
+
+      val result = mockClient.getNäytettävätHakukoosteet(queryOids, ainoastaanAktiivisetHaut = false, "test").value
+      result.map(_.hakutapa.koodiarvo) should equal(List("03"))
+    }
+
+    "suodattaa näytettävistä pois muiden hakutapojen hakukoosteet" in {
+      val queryOids = Set(ValpasMockOppijat.oppivelvollinenYsiluokkaKeskenKeväällä2021.oid)
+      mockGetResponseForOids(queryOids, hakutapaKoodiarvo = "02")
+
+      mockClient.getHakukoosteet(queryOids, ainoastaanAktiivisetHaut = false, "test").value should not be empty
+      mockClient.getNäytettävätHakukoosteet(queryOids, ainoastaanAktiivisetHaut = false, "test").value should be(empty)
+    }
+
     "välittää ainoastaanAktiivisetHaut-parametrin GET-kutsussa" in {
       wireMockServer.stubFor(
         WireMock.get(WireMock.urlPathEqualTo(ovaraHakukoosteUrl))
@@ -172,6 +188,22 @@ class OvaraHakukoosteServiceSpec extends ValpasTestBase with Matchers with Eithe
       hakutoive2.hakukohdeOid should equal("1.2.246.562.20.00000000000000058485")
       hakutoive2.harkinnanvaraisuus should be(Some("EI_HARKINNANVARAINEN_HAKUKOHDE"))
       Harkinnanvaraisuus.isHarkinnanvarainen(hakutoive2.harkinnanvaraisuus.get) shouldBe false
+    }
+
+    "osaa serialisoida aidon jatkuvan haun API-vastauksen" in {
+      val oppijaOid = "1.2.246.562.24.61418911089"
+      wireMockServer.stubFor(
+        WireMock.get(WireMock.urlPathEqualTo(ovaraHakukoosteUrl))
+          .withQueryParam("ovara_oppijanumero", WireMock.equalTo(oppijaOid))
+          .willReturn(WireMock.ok().withBody(OvaraHakukoosteServiceSpec.realJatkuvanHaunResponse(oppijaOid)))
+      )
+      val results = mockClient.getNäytettävätHakukoosteet(Set(oppijaOid), ainoastaanAktiivisetHaut = false, "test").value
+      results should have length 1
+      val result = results.head
+      result.hakutapa.koodiarvo should equal("03")
+      result.aktiivinenHaku should equal(Some(false))
+      result.hakutoiveet.head.hakutoivenumero should equal(-1)
+      ValpasHakutoive(result.hakutoiveet.head).hakutoivenumero should be(None)
     }
 
     "palauttaa hakutilanteet kun ovara palauttaa saman oppija-oidin" in {
@@ -571,6 +603,89 @@ object OvaraHakukoosteServiceSpec {
        |        ],
        |        "harkinnanvaraisuus": "EI_HARKINNANVARAINEN_HAKUKOHDE",
        |        "alinValintaPistemaara": 0
+       |      }
+       |    ]
+       |  }
+       |]""".stripMargin
+
+  def realJatkuvanHaunResponse(oppijaOid: String): String =
+    s"""[
+       |  {
+       |    "hakemusOid": "1.2.246.562.11.00000000000001927757",
+       |    "hakemusUrl": "https://virkailija.testiopintopolku.fi/lomake-editori/applications/search?term=1.2.246.562.11.00000000000001927757",
+       |    "hakemuksenMuokkauksenAikaleima": "2026-03-30T21:37:13.544214+03:00",
+       |    "email": "gunvor_testi_siren_testi-61418911089@testiopintopolku.fi",
+       |    "matkapuhelin": "+3584861418911",
+       |    "lahiosoite": "Testitie 61418911089",
+       |    "postinumero": "00100",
+       |    "postitoimipaikka": "HELSINKI",
+       |    "maa": {
+       |      "versioituUri": "maatjavaltiot2_246#2",
+       |      "koodiarvo": "246",
+       |      "koodistoUri": "maatjavaltiot2",
+       |      "koodistoVersio": 2,
+       |      "nimi": {
+       |        "fi": "Suomi",
+       |        "sv": "Finland",
+       |        "en": "Finland"
+       |      }
+       |    },
+       |    "hakuOid": "1.2.246.562.29.00000000000000044924",
+       |    "hakuNimi": {
+       |      "fi": "Omnia, jatkuva haku HO, 23.10.-31.12.2023",
+       |      "sv": "Omnia, jatkuva haku HO, 23.10.-31.12.2023",
+       |      "en": "Omnia, jatkuva haku HO, 23.10.-31.12.2023"
+       |    },
+       |    "hakutapa": {
+       |      "versioituUri": "hakutapa_03#1",
+       |      "koodiarvo": "03",
+       |      "koodistoUri": "hakutapa",
+       |      "koodistoVersio": 1,
+       |      "nimi": {
+       |        "fi": "Jatkuva haku",
+       |        "sv": "Kontinuerlig ansökan",
+       |        "en": "Rolling admission (upper secondary level)"
+       |      }
+       |    },
+       |    "aktiivinenHaku": false,
+       |    "haunAlkamispaivamaara": "2023-10-23T00:01:00",
+       |    "oppijaOid": "$oppijaOid",
+       |    "hakutoiveet": [
+       |      {
+       |        "hakukohdeOid": "1.2.246.562.20.00000000000000044974",
+       |        "hakukohdeNimi": {
+       |          "fi": "Liiketoiminnan perustutkinto, verkko-opetus, jatkuva haku 23.10.2023 - 31.12.2023",
+       |          "sv": "Liiketoiminnan perustutkinto, verkko-opetus, jatkuva haku 23.10.2023 - 31.12.2023",
+       |          "en": "Liiketoiminnan perustutkinto, verkko-opetus, jatkuva haku 23.10.2023 - 31.12.2023"
+       |        },
+       |        "hakutoivenumero": -1,
+       |        "hakukohdeOrganisaatio": "1.2.246.562.10.15764382386",
+       |        "organisaatioNimi": {
+       |          "fi": "Espoon keskus, Kirkkokatu",
+       |          "sv": "Espoon keskus, Kirkkokatu"
+       |        },
+       |        "koulutusOid": "1.2.246.562.13.00000000000000000001",
+       |        "koulutusNimi": {
+       |          "fi": "Liiketoiminnan perustutkinto",
+       |          "sv": "Grundexamen i affärsverksamhet",
+       |          "en": "Vocational qualification in Business"
+       |        },
+       |        "hakukohdeKoulutuskoodi": [
+       |          {
+       |            "versioituUri": "koulutus_331101#12",
+       |            "koodiarvo": "331101",
+       |            "koodistoUri": "koulutus",
+       |            "koodistoVersio": 12,
+       |            "nimi": {
+       |              "fi": "Liiketoiminnan perustutkinto",
+       |              "sv": "Grundexamen i affärsverksamhet",
+       |              "en": "Vocational qualification in Business"
+       |            }
+       |          }
+       |        ],
+       |        "vastaanottotieto": "KESKEN",
+       |        "valintatila": "KESKEN",
+       |        "ilmoittautumistila": "EI_TEHTY"
        |      }
        |    ]
        |  }
