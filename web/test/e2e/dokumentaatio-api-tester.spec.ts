@@ -7,7 +7,7 @@ const clickAndGetHetuSearchRequestBody = async (page: Page, button: Locator) => 
     (r) => r.method() === 'POST' && r.url().endsWith('/koski/api/henkilo/hetu')
   )
   await button.click()
-  return (await request).postDataJSON()
+  return (await request).postDataJSON() as unknown
 }
 
 test.describe('Documentation API tester', () => {

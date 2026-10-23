@@ -101,48 +101,32 @@ export class ESHOsasuoritus {
 
   async valitseKieli(
     kieli: string,
-    poistuvaValidaatiovirhe:
-      | string
-      | undefined = 'Kielioppiaineella on oltava valittuna kieli.'
+    poistuvaValidaatiovirhe = 'Kielioppiaineella on oltava valittuna kieli.'
   ) {
     const validaatioElement = this.validaatioElementLocator(
       poistuvaValidaatiovirhe
     )
 
-    if (poistuvaValidaatiovirhe !== undefined) {
-      await expect(validaatioElement).toBeVisible()
-    }
-
+    await expect(validaatioElement).toBeVisible()
     await this.kieliDropdown.selectOptionByClick(kieli)
-
-    if (poistuvaValidaatiovirhe !== undefined) {
-      await expect(validaatioElement).not.toBeVisible({
-        timeout: this.validaatioTimeout
-      })
-    }
+    await expect(validaatioElement).not.toBeVisible({
+      timeout: this.validaatioTimeout
+    })
   }
 
   async valitseSuorituskieli(
     kieli: string,
-    poistuvaValidaatiovirhe:
-      | string
-      | undefined = 'Suorituksella on oltava valittuna suorituskieli.'
+    poistuvaValidaatiovirhe = 'Suorituksella on oltava valittuna suorituskieli.'
   ) {
     const validaatioElement = this.validaatioElementLocator(
       poistuvaValidaatiovirhe
     )
 
-    if (poistuvaValidaatiovirhe !== undefined) {
-      await expect(validaatioElement).toBeVisible()
-    }
-
+    await expect(validaatioElement).toBeVisible()
     await this.suorituskieliDropdown.selectOptionByClick(kieli)
-
-    if (poistuvaValidaatiovirhe !== undefined) {
-      await expect(validaatioElement).not.toBeVisible({
-        timeout: this.validaatioTimeout
-      })
-    }
+    await expect(validaatioElement).not.toBeVisible({
+      timeout: this.validaatioTimeout
+    })
   }
 
   private validaatioElementLocator(poistuvaValidaatiovirhe: string) {
@@ -171,8 +155,8 @@ export class ESHOsasuoritus {
   }
 
   async syötäArviointipäivä(value: string) {
-    this.arviointiPäiväInput.click()
-    this.arviointiPäiväInput.fill(value)
+    await this.arviointiPäiväInput.click()
+    await this.arviointiPäiväInput.fill(value)
   }
 
   async lisääArvioija(value: string) {

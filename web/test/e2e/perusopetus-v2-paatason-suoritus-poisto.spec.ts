@@ -1,4 +1,6 @@
 import type { Page } from '@playwright/test'
+import { Oppija } from '../../app/types/fi/oph/koski/schema/Oppija'
+import { PerusopetuksenOpiskeluoikeus } from '../../app/types/fi/oph/koski/schema/PerusopetuksenOpiskeluoikeus'
 import { expect, test } from './base'
 import { virkailija } from './setup/auth'
 
@@ -321,10 +323,11 @@ test.describe('Perusopetuksen uusi käyttöliittymä: päätason suorituksen poi
       const vastaus = await page.request.get(
         `/koski/api/oppija/${miiaOid}/uiv2?class_refs=true`
       )
-      const opiskeluoikeus = (await vastaus.json()).opiskeluoikeudet[0]
+      const oppija = (await vastaus.json()) as Oppija
+      const opiskeluoikeus = oppija
+        .opiskeluoikeudet[0] as PerusopetuksenOpiskeluoikeus
       const seitsemäs = opiskeluoikeus.suoritukset.find(
-        (s: DeletePäätasonSuoritusRequest) =>
-          s.koulutusmoduuli?.tunniste?.koodiarvo === '7'
+        (s) => s.koulutusmoduuli.tunniste.koodiarvo === '7'
       )
       const poisto = await page.request.post(
         `/koski/api/opiskeluoikeus/${opiskeluoikeus.oid}/${opiskeluoikeus.versionumero}/delete-paatason-suoritus`,

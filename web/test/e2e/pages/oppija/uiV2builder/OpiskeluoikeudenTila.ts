@@ -1,11 +1,11 @@
 import { arrayOf } from './builder'
 import { Button } from './Button'
-import { FormField, Control } from './controls'
+import { FormField } from './controls'
 import { Input } from './Input'
 import { Label } from './Label'
 import { RadioButtons } from './RadioButtons'
 
-const OpiskeluoikeudenTilaButtons = RadioButtons(
+const opiskeluoikeudenTilat = [
   'eronnut',
   'hyvaksytystisuoritettu',
   'katsotaaneronneeksi',
@@ -17,7 +17,12 @@ const OpiskeluoikeudenTilaButtons = RadioButtons(
   'peruutettu',
   'valiaikaisestikeskeytynyt',
   'valmistunut'
-)
+] as const
+
+export type OpiskeluoikeudenTilaKoodiarvo =
+  (typeof opiskeluoikeudenTilat)[number]
+
+const OpiskeluoikeudenTilaButtons = RadioButtons(...opiskeluoikeudenTilat)
 
 const RahoitusButtons = RadioButtons(
   '1',
@@ -54,11 +59,8 @@ export const OpiskeluoikeudenTila = () => ({
     add: Button,
     modal: {
       date: FormField(Input, Input),
-      tila: FormField(
-        OpiskeluoikeudenTilaButtons,
-        OpiskeluoikeudenTilaButtons as Control
-      ),
-      rahoitus: FormField(RahoitusButtons, RahoitusButtons as Control),
+      tila: FormField(OpiskeluoikeudenTilaButtons, OpiskeluoikeudenTilaButtons),
+      rahoitus: FormField(RahoitusButtons, RahoitusButtons),
       submit: Button,
       cancel: Button
     }

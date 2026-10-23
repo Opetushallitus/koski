@@ -7,8 +7,8 @@ const hankintakoulutuksenOpiskelija = '1.2.246.562.24.00000000144'
 
 test.describe('Taiteen perusopetus', () => {
   test.beforeEach(async ({ fixtures, page }) => {
-    page.once('dialog', (dialog) => {
-      dialog.accept()
+    page.once('dialog', async (dialog) => {
+      await dialog.accept()
     })
     await fixtures.reset()
   })
@@ -36,7 +36,7 @@ test.describe('Taiteen perusopetus', () => {
       test('Vain oikeat opiskeluoikeuden tilat valittavissa', async ({
         uusiOppijaPage
       }) => {
-        await expect(await uusiOppijaPage.controls.tila.options()).toEqual([
+        expect(await uusiOppijaPage.controls.tila.options()).toEqual([
           'Läsnä',
           'Päättynyt'
         ])
@@ -46,14 +46,12 @@ test.describe('Taiteen perusopetus', () => {
         uusiOppijaPage
       }) => {
         const oppimäärä = uusiOppijaPage.controls.oppimäärä
-        await expect(await oppimäärä.options()).toEqual([
+        expect(await oppimäärä.options()).toEqual([
           'Taiteen perusopetuksen laaja oppimäärä',
           'Taiteen perusopetuksen yleinen oppimäärä'
         ])
         await oppimäärä.set('taiteenperusopetusoppimaara_yleinenoppimaara')
-        await expect(
-          await uusiOppijaPage.controls.suoritustyyppi.options()
-        ).toEqual([
+        expect(await uusiOppijaPage.controls.suoritustyyppi.options()).toEqual([
           'Taiteen perusopetuksen yleisen oppimäärän teemaopintojen suoritus',
           'Taiteen perusopetuksen yleisen oppimäärän yhteisten opintojen suoritus'
         ])
@@ -65,9 +63,7 @@ test.describe('Taiteen perusopetus', () => {
         await uusiOppijaPage.controls.oppimäärä.set(
           'taiteenperusopetusoppimaara_laajaoppimaara'
         )
-        await expect(
-          await uusiOppijaPage.controls.suoritustyyppi.options()
-        ).toEqual([
+        expect(await uusiOppijaPage.controls.suoritustyyppi.options()).toEqual([
           'Taiteen perusopetuksen laajan oppimäärän perusopintojen suoritus',
           'Taiteen perusopetuksen laajan oppimäärän syventävien opintojen suoritus'
         ])
@@ -98,7 +94,7 @@ test.describe('Taiteen perusopetus', () => {
         })
         await uusiOppijaPage.controls.submit.click()
 
-        await expect(
+        expect(
           await taiteenPerusopetusPage.suoritustieto('taiteenala')
         ).toEqual('Tanssi')
       })

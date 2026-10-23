@@ -15,22 +15,19 @@ function sanitizeString(str: string) {
 }
 
 function isVirkailija(x: unknown): x is Virkailija {
-  const k = x as any
+  const k = x as Partial<Record<keyof Virkailija, unknown>>
   return (
-    k.type &&
     k.type === 'virkailija' &&
-    k.username &&
     typeof k.username === 'string' &&
-    k.password &&
-    typeof k.password === 'string'
+    k.username !== '' &&
+    typeof k.password === 'string' &&
+    k.password !== ''
   )
 }
 
 function isKansalainen(x: unknown): x is Kansalainen {
-  const k = x as any
-  return (
-    k.type && k.type === 'kansalainen' && k.hetu && typeof k.hetu === 'string'
-  )
+  const k = x as Partial<Record<keyof Kansalainen, unknown>>
+  return k.type === 'kansalainen' && typeof k.hetu === 'string' && k.hetu !== ''
 }
 
 type Kansalainen = {
@@ -53,7 +50,7 @@ async function globalSetup(_config: FullConfig) {
   const usersFile = await fs
     .readFile(join(__dirname, 'users.json'))
     .then((data) => data.toString('utf-8'))
-  const userData = JSON.parse(usersFile).data
+  const userData = (JSON.parse(usersFile) as { data: unknown }).data
   if (!Array.isArray(userData)) {
     throw new Error('Userdata is not an Array')
   }

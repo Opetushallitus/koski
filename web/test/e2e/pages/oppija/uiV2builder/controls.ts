@@ -5,7 +5,8 @@ export type Control<T = any> = {
   isLeaf: true
 }
 
-export const isLeaf = (a: any): a is Control => a?.isLeaf
+export const isLeaf = (a: unknown): a is Control =>
+  (a as Partial<Control> | undefined)?.isLeaf === true
 
 export function createControl<T>(
   build: (
@@ -23,8 +24,10 @@ export type Viewer = {
 
 export type Editor = {
   value: () => Promise<string>
-  set: (value: string) => Promise<void>
+  set: (value: never) => Promise<void>
 }
+
+type EditorValue<E extends Editor> = Parameters<E['set']>[0]
 
 export const FormField = <E extends Editor>(
   viewer: Control<Viewer>,
@@ -45,7 +48,7 @@ export const FormField = <E extends Editor>(
       ...edit,
       value: (editMode: boolean) =>
         editMode && edit ? edit.value() : view.value(),
-      set: (value: string) => {
+      set: (value: EditorValue<E>) => {
         if (!edit) {
           throw new Error('Trying to set an editor value without editor')
         }
@@ -54,9 +57,9 @@ export const FormField = <E extends Editor>(
       viewer: child('value')
     }
   }) as Control<
-    E & {
+    NoInfer<E> & {
       value: (editMode: boolean) => Promise<string>
-      set: (value: string) => Promise<void>
+      set: (value: EditorValue<E>) => Promise<void>
       viewer: Locator
     }
   >

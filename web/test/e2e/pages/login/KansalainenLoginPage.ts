@@ -24,23 +24,8 @@ export class KansalainenLoginPage {
   async loginWithHetu(hetu: string) {
     await this.goto()
     await expect(this.page).toHaveURL(/\/koski\/login\/oppija\/local$/)
-    await this.hetuInput.type(hetu)
+    await this.hetuInput.fill(hetu)
     await this.loginButton.click()
     await expect(this.page).toHaveURL(/\/koski\/omattiedot$/)
-  }
-
-  /**
-   * Kirjautuu Koski-palvelun kansalaisnäkymään käyttämällä henkilötunnusta.
-   * @param hetu Henkilötunnus
-   */
-  async apiLoginWithHetu(_hetu: string) {
-    throw new Error('Not implemented')
-  }
-
-  /**
-   * Kirjautuu Koski-palvelun kansalaisnäkymästä.
-   */
-  async apiLogout() {
-    throw new Error('Not implemented')
   }
 }

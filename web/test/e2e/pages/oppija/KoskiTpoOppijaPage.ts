@@ -8,6 +8,7 @@ import { FormField } from './uiV2builder/controls'
 import { Input } from './uiV2builder/Input'
 import { Label } from './uiV2builder/Label'
 import { OpiskeluoikeusHeader } from './uiV2builder/OpiskeluoikeusHeader'
+import { OpiskeluoikeudenTilaKoodiarvo } from './uiV2builder/OpiskeluoikeudenTila'
 import { Select } from './uiV2builder/Select'
 import {
   SuorituksenVahvistus,
@@ -23,7 +24,7 @@ export class KoskiTpoOppijaPage extends KoskiOppijaPageV2<
     super(page, TaiteenPerusopetusTestIds)
   }
 
-  async suoritustieto(
+  suoritustieto(
     key:
       | 'koulutuksenToteutustapa'
       | 'laajuus'
@@ -34,14 +35,14 @@ export class KoskiTpoOppijaPage extends KoskiOppijaPageV2<
     return this.$.suoritukset(this.suoritusIndex)[key].value(this.editMode)
   }
 
-  async osasuoritustieto(key: 'nimi' | 'laajuus' | 'arvosana') {
+  osasuoritustieto(key: 'nimi' | 'laajuus' | 'arvosana') {
     const oo = this.$.suoritukset(this.suoritusIndex).osasuoritukset(
       this.osasuoritusIndex
     )[key]
     return oo.value(this.editMode)
   }
 
-  async osasuoritusProperty(key: 'arvosana' | 'arvostelunPvm' | 'tunnustettu') {
+  osasuoritusProperty(key: 'arvosana' | 'arvostelunPvm' | 'tunnustettu') {
     return this.$.suoritukset(this.suoritusIndex)
       .osasuoritukset(this.osasuoritusIndex)
       .properties[key].value(this.editMode)
@@ -95,7 +96,10 @@ export class KoskiTpoOppijaPage extends KoskiOppijaPageV2<
       .properties.tunnustettu.set(selite)
   }
 
-  async addOpiskeluoikeudenTila(pvm: string, tila: string) {
+  async addOpiskeluoikeudenTila(
+    pvm: string,
+    tila: OpiskeluoikeudenTilaKoodiarvo
+  ) {
     const editor = this.$.opiskeluoikeus.tila.edit
     await editor.add.click()
     await editor.modal.date.set(pvm)

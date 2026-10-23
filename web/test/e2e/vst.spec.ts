@@ -503,8 +503,7 @@ test.describe('Vapaa sivistystyö', () => {
                   )
                 ).toHaveText(alaosasuoritus.nimi)
                 if (alaosasuoritus.extra !== undefined) {
-                  await page
-                  getByTestId(
+                  await getByTestId(
                     `suoritukset.0.osasuoritukset.${i}.properties.osasuoritukset.${a}.expand`
                   ).click()
                   if (alaosasuoritus.extra.kuvaus !== undefined) {
@@ -1362,7 +1361,7 @@ test.describe('Vapaa sivistystyö', () => {
           'Lisää osasuoritus',
           nimi
         ])
-        await expect(await osasuoritus.alaosasuoritus(1).nimi()).toEqual(nimi)
+        expect(await osasuoritus.alaosasuoritus(1).nimi()).toEqual(nimi)
 
         await vstOppijaPage.tallennaVirheellisenä(
           'Valmiiksi merkityllä suorituksella SK-K (Sienestämisen kokonaisuus) on keskeneräinen osasuoritus Sienien tunnistaminen 2 (Sienien tunnistaminen 2)',
@@ -1746,7 +1745,7 @@ test.describe('Vapaa sivistystyö', () => {
         const suuntautumisopinto = vstOppijaPage.osasuoritus(0)
 
         await suuntautumisopinto.expand()
-        suuntautumisopinto.addNewAlaosasuoritus(
+        await suuntautumisopinto.addNewAlaosasuoritus(
           'Työelämäharjoittelu',
           'paikallinen.__NEW__'
         )
@@ -2339,7 +2338,7 @@ test.describe('Vapaa sivistystyö', () => {
         await tarkistaTiedot(page, kansalainenPage)
 
         // Tarkista ettei oppilaitoksen otsikko näy sivulla
-        const title = await page.locator('.oppilaitos-title')
+        const title = page.locator('.oppilaitos-title')
         await expect(title).toContainText('Osaamismerkit')
 
         // Tee suoritusjako, ja tarkista, että sen sisällössä on sama sisältö

@@ -18,7 +18,7 @@ test.describe('Suoritusjako', () => {
     await fixtures.apiLoginAsUser('kalle', 'kalle')
     await fixtures.reset()
     await fixtures.apiLogout()
-    page.goto('/koski/omattiedot')
+    await page.goto('/koski/omattiedot')
   })
 
   test.describe('Kansalaisen opintotiedot', () => {
@@ -48,11 +48,11 @@ test.describe('Suoritusjako', () => {
       const jsonSuoritusotePage =
         await suoritusotePage.avaaJsonSuoritusotePage()
 
-      const o: Oppija = JSON.parse(await jsonSuoritusotePage.jsonContent())
+      const o = JSON.parse(await jsonSuoritusotePage.jsonContent()) as Oppija
       const h = o.henkilö as TäydellisetHenkilötiedot
 
-      expect(h.hetu).not.toBeDefined
-      expect(h.kansalaisuus).not.toBeDefined
+      expect(h.hetu).not.toBeDefined()
+      expect(h.kansalaisuus).not.toBeDefined()
 
       expect(h.syntymäaika).toBe('2005-05-11')
       expect((h.äidinkieli?.nimi as Finnish).fi).toBe('suomi')

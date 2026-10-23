@@ -1,8 +1,9 @@
-import React, { useMemo } from 'react'
+import React from 'react'
 import { t } from '../../i18n/i18n'
 import { LocalizedString } from '../../types/fi/oph/koski/schema/LocalizedString'
 import { common, CommonProps } from '../CommonProps'
 import { useTestId } from '../../appstate/useTestId'
+import { useUniqueId } from '../../util/useUniqueId'
 
 export type CheckboxProps = CommonProps<{
   label: string | LocalizedString
@@ -12,13 +13,12 @@ export type CheckboxProps = CommonProps<{
 }>
 
 export const Checkbox: React.FC<CheckboxProps> = (props) => {
-  const id = useMemo(() => Math.random().toString(), [])
+  const id = useUniqueId('Checkbox')
   const testId = useTestId(props.testId)
   return (
     <div {...common(props, ['Checkbox'])} data-testid={testId}>
       <input
         id={id}
-        key={Math.random()}
         className="Checkbox__input"
         type="checkbox"
         checked={props.checked}

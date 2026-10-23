@@ -1,4 +1,4 @@
-import { test } from './base'
+import { expect, test } from './base'
 import { virkailija } from './setup/auth'
 import { KoskiUusiOppijaPage } from './pages/oppija/KoskiUusiOppijaPage'
 
@@ -64,7 +64,7 @@ test.describe('Vapaan sivistyön VST osaamismerkki', () => {
       .fill('1.1.2024')
 
     // Tallenna muutokset
-    await page.getByTestId('oo.0.opiskeluoikeus.save').click()
+    await vstOppijaPage.tallenna()
 
     // Oppija löytyy oppijahaulla uudestaan
     await virkailijaPage.goto()
@@ -72,28 +72,9 @@ test.describe('Vapaan sivistyön VST osaamismerkki', () => {
     await search.clickOnFirst()
 
     // Varmista versiohistoriaa käyttämällä, että versio 2 tuli luotua muokatessa
-    await eventually(
-      () =>
-        page
-          .getByTestId('oo.0.opiskeluoikeus.versiohistoria.button')
-          .click({ timeout: 2000 }),
-      () =>
-        page
-          .getByTestId('oo.0.opiskeluoikeus.versiohistoria.list.2')
-          .click({ trial: true, timeout: 2000 })
-    )
+    await page.getByTestId('oo.0.opiskeluoikeus.versiohistoria.button').click()
+    await expect(
+      page.getByTestId('oo.0.opiskeluoikeus.versiohistoria.list.2')
+    ).toBeVisible()
   })
 })
-
-async function eventually(initialize: () => void, trial: () => void) {
-  let retriesLeft = 3
-  while (retriesLeft > 0) {
-    await initialize()
-    try {
-      await trial()
-      return
-    } catch {
-      retriesLeft--
-    }
-  }
-}

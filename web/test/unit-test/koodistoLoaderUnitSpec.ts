@@ -16,9 +16,9 @@ import { Koodistokoodiviite } from '../../app/types/fi/oph/koski/schema/Koodisto
 describe('KoodistoLoader', () => {
   it('ei jää jumiin, jos haku heittää poikkeuksen', async () => {
     let kutsuja = 0
-    const loader = new KoodistoLoader(async () => {
+    const loader = new KoodistoLoader(() => {
       kutsuja++
-      throw new Error('verkkovirhe')
+      return Promise.reject(new Error('verkkovirhe'))
     })
 
     // Ensimmäinen kutsu ei saa hylkäytyä, vaan käsittelee virheen.
@@ -32,26 +32,28 @@ describe('KoodistoLoader', () => {
   })
 
   it('täyttää koodistot onnistuneen haun jälkeen', async () => {
-    const loader = new KoodistoLoader(async () =>
-      E.right({
-        status: 200,
-        data: GroupedKoodistot({
-          koodistot: {
-            kielivalikoima: [
-              Koodistokoodiviite({
-                koodistoUri: 'kielivalikoima',
-                koodiarvo: 'SV'
-              })
-            ]
-          }
+    const loader = new KoodistoLoader(() =>
+      Promise.resolve(
+        E.right({
+          status: 200,
+          data: GroupedKoodistot({
+            koodistot: {
+              kielivalikoima: [
+                Koodistokoodiviite({
+                  koodistoUri: 'kielivalikoima',
+                  koodiarvo: 'SV'
+                })
+              ]
+            }
+          })
         })
-      })
+      )
     )
 
     await loader.loadKoodistot(['kielivalikoima'])
 
     assert.strictEqual(
-      loader.findKoodi('kielivalikoima', 'SV')?.koodiarvo,
+      loader.findKoodi('kielivalikoima', 'SV').koodiarvo,
       'SV'
     )
   })

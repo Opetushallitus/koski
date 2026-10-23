@@ -434,7 +434,7 @@ test.describe('European School of Helsinki', () => {
           opiskeluoikeus: 'European School of Helsinki'
         })
 
-        await expect(await uusiOppijaPage.controls.tila.options()).toEqual([
+        expect(await uusiOppijaPage.controls.tila.options()).toEqual([
           'Eronnut',
           'Läsnä',
           'Valmistunut',

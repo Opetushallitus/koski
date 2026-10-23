@@ -23,6 +23,7 @@ import { pluck } from '../../util/fp/objects'
 import { koodistokoodiviiteId, koodiviiteId } from '../../util/koodisto'
 import { clamp, sum } from '../../util/numbers'
 import { coerceForSort, textSearch } from '../../util/strings'
+import { useUniqueId } from '../../util/useUniqueId'
 import { common, CommonProps, cx } from '../CommonProps'
 import { Removable } from './Removable'
 import { Spinner } from '../texts/Spinner'
@@ -89,10 +90,6 @@ export type SelectOption<T> = FlatOption<T> & {
 
 export type OptionKey = string
 
-// React 16:ssa ei ole useId:tä, joten aria-controlsin tarvitsema uniikki id
-// juoksutetaan itse. Selainpuolen renderöinti vain, joten laskuri riittää.
-let optionListIdCounter = 0
-
 /**
  * "Ei valintaa" -vaihtoehto, jos kenttä sellaisen tarjoaa: ryhmittelemätön
  * vaihtoehto ilman arvoa (ks. KoodistoField/KoodistoSelect zeroValueOption).
@@ -119,10 +116,7 @@ export const Select = <T,>(props: SelectProps<T>) => {
   const toggleTestId = useTestId(props.testId, 'toggle')
   const select = useSelectState(props)
   const input = useRef<HTMLInputElement>(null)
-  const optionListId = useMemo(
-    () => `Select__options-${(optionListIdCounter += 1)}`,
-    []
-  )
+  const optionListId = useUniqueId('Select__options')
 
   const { options, onChange, value, initialValue, autoselect } = props
   useEffect(() => {

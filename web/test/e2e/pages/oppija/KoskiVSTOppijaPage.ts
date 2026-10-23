@@ -58,7 +58,7 @@ export class KoskiVSTOppijaPage extends KoskiOppijaPageV2<
     await this.$.suoritukset(0).osasuoritukset(index).delete.click()
   }
 
-  async suorituksenLaajuus() {
+  suorituksenLaajuus() {
     return this.$.suoritukset(0).laajuus.value()
   }
 

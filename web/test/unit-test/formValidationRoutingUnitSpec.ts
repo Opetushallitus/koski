@@ -179,7 +179,8 @@ describe('validateData', () => {
     assert.deepStrictEqual(
       merkatut(
         classValidationRule(
-          (d: any): d is Suoritus => d?.$class === 'Vuosiluokka',
+          (d: unknown): d is Suoritus =>
+            (d as Partial<Suoritus> | undefined)?.$class === 'Vuosiluokka',
           merkkaus
         )
       ),

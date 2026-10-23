@@ -103,7 +103,7 @@ export const virkailija =
       const parsed = JSON.parse(data) as {
         cookies: Cookie[]
       }
-      const cookie = parsed.cookies.find((c: any) => c.name === 'koskiUser')
+      const cookie = parsed.cookies.find((c) => c.name === 'koskiUser')
       if (cookie === undefined) {
         throw new Error('No koskiUser cookie found')
       }
@@ -142,7 +142,7 @@ export const kansalainen =
       const parsed = JSON.parse(data) as {
         cookies: Cookie[]
       }
-      const cookie = parsed.cookies.find((c: any) => c.name === 'koskiOppija')
+      const cookie = parsed.cookies.find((c) => c.name === 'koskiOppija')
       if (cookie === undefined) {
         throw new Error('No koskiOppija cookie found')
       }
