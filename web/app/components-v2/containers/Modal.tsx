@@ -3,33 +3,28 @@ import { useModalState } from '../../appstate/modals'
 import { common, CommonPropsWithChildren } from '../CommonProps'
 import { ButtonGroup } from './ButtonGroup'
 import { TestIdLayer } from '../../appstate/useTestId'
+import { useOutsideClick } from '../../util/useOutsideClick'
 
 export type ModalProps = CommonPropsWithChildren<{
   onClose?: () => void
 }>
 
 export const Modal: React.FC<ModalProps> = (props) => {
-  const ref = useRef<HTMLFormElement>(null)
+  const formRef = useRef<HTMLFormElement>(null)
+  const contentRef = useRef<HTMLDivElement>(null)
   const { isActive, props: modalProps } = useModalState()
 
-  const onClose = useCallback(
-    (event: React.MouseEvent<HTMLFormElement, MouseEvent>) => {
-      event.preventDefault()
-      event.stopPropagation()
-      props.onClose?.()
-    },
-    [props]
-  )
+  useOutsideClick([contentRef], props.onClose, isActive)
 
   const onKeyDown: React.KeyboardEventHandler = useCallback(
     (event) => {
       if (event.key === 'Enter') {
         event.preventDefault()
-      } else if (event.key === 'Escape') {
+      } else if (event.key === 'Escape' && isActive) {
         props.onClose?.()
       }
     },
-    [props]
+    [isActive, props]
   )
 
   useEffect(() => {
@@ -37,7 +32,7 @@ export const Modal: React.FC<ModalProps> = (props) => {
       // [data-skip-autofocus] -elementit jäävät tab-järjestykseen, mutta
       // niitä ei valita modalin avautuessa automaattisesti.
       const inputs: NodeListOf<HTMLInputElement> | undefined =
-        ref.current?.querySelectorAll(
+        formRef.current?.querySelectorAll(
           'input:not([data-skip-autofocus]), textarea:not([data-skip-autofocus]), button:not([data-skip-autofocus]), [tabindex]:not([data-skip-autofocus])'
         )
       inputs?.[0]?.focus?.()
@@ -51,11 +46,11 @@ export const Modal: React.FC<ModalProps> = (props) => {
         {...modalProps}
         onSubmit={(e) => e.preventDefault()}
         onKeyDown={onKeyDown}
-        onClick={onClose}
+        onClick={(e) => e.stopPropagation()}
         role="dialog"
-        ref={ref}
+        ref={formRef}
       >
-        <div className="Modal__content" onClick={(e) => e.stopPropagation()}>
+        <div className="Modal__content" ref={contentRef}>
           {props.children}
         </div>
       </form>

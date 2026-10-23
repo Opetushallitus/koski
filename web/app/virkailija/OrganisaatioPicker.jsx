@@ -230,13 +230,13 @@ export default class OrganisaatioPicker extends BaconComponent {
   }
 
   componentDidMount() {
-    window.addEventListener('click', this.handleClickOutside, false)
+    window.addEventListener('click', this.handleClickOutside, true)
     window.addEventListener('focus', this.handleFocus, true)
   }
 
   componentWillUnmount() {
     super.componentWillUnmount()
-    window.removeEventListener('click', this.handleClickOutside, false)
+    window.removeEventListener('click', this.handleClickOutside, true)
     window.removeEventListener('focus', this.handleFocus, true)
   }
 
@@ -250,7 +250,7 @@ export default class OrganisaatioPicker extends BaconComponent {
   }
 
   handleClickOutside(e) {
-    !e.target.closest('.organisaatio') && this.setState({ open: false })
+    !this.root.contains(e.target) && this.setState({ open: false })
   }
 
   onKeyDown(e) {
