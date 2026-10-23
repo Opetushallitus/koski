@@ -1,194 +1,173 @@
 import { formatFinnishDate, parseFinnishDate } from './date'
-import React from 'react'
+import React, { useLayoutEffect, useRef, useState } from 'react'
 import Text from '../i18n/Text'
 import { t } from '../i18n/i18n'
 
-export default class DateRangeSelection extends React.Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      from:
-        this.props.selectedStartDay &&
-        parseFinnishDate(this.props.selectedStartDay),
-      to:
-        this.props.selectedEndDay && parseFinnishDate(this.props.selectedEndDay)
-    }
-    this.keyHandlers = {
-      Enter(e) {
-        e.preventDefault()
-        this.setState({ open: false })
-      },
-      Escape() {
-        this.setState({ open: false })
-      },
-      ArrowDown(e) {
-        e.stopPropagation()
-        if (!this.state.open) {
-          this.setState({ open: true })
-        }
-      }
-    }
-    this.handleFocus = this.handleFocus.bind(this)
-    this.handleClickOutside = this.handleClickOutside.bind(this)
-  }
+export default function DateRangeSelection(props) {
+  const [range, setRange] = useState(() => ({
+    from: props.selectedStartDay && parseFinnishDate(props.selectedStartDay),
+    to: props.selectedEndDay && parseFinnishDate(props.selectedEndDay)
+  }))
+  const { from, to, invalidStartDate, invalidEndDate } = range
+  const [open, setOpen] = useState()
+  const rootRef = useRef(null)
+  const startDateInputRef = useRef(null)
 
-  render() {
-    const { from, to, invalidStartDate, invalidEndDate } = this.state
-    return (
-      <div
-        className="date-range"
-        onKeyDown={this.onKeyDown.bind(this)}
-        tabIndex="0"
-        ref={(root) => (this.root = root)}
-      >
-        <div
-          onClick={this.toggleOpen.bind(this)}
-          className="date-range-selection"
-        >
-          {from || to
-            ? (from ? formatFinnishDate(from) : '') +
-              '-' +
-              (to ? formatFinnishDate(to) : '')
-            : t('kaikki')}
-        </div>
-        {this.state.open && (
-          <div className="date-range-container">
-            <div className="date-range-input">
-              <label>
-                <Text name={this.props.label || 'Aloituspäivä'} />
-              </label>
-              <input
-                className={invalidStartDate ? 'start error' : 'start'}
-                type="text"
-                value={
-                  invalidStartDate
-                    ? invalidStartDate.value
-                    : from
-                      ? formatFinnishDate(from)
-                      : ''
-                }
-                onChange={this.handleStartDate.bind(this)}
-                ref={(input) => (this.startDateInput = input)}
-              />
-              {'—'}
-              <input
-                className={invalidEndDate ? 'end error' : 'end'}
-                type="text"
-                value={
-                  invalidEndDate
-                    ? invalidEndDate.value
-                    : to
-                      ? formatFinnishDate(to)
-                      : ''
-                }
-                onChange={this.handleEndDate.bind(this)}
-              />
-            </div>
-            <div className="date-range-shortcuts">
-              <button
-                className="koski-button"
-                onClick={() =>
-                  this.handleRangeSelection({ from: undefined, to: undefined })
-                }
-              >
-                <Text name="kaikki" />
-              </button>
-              <button
-                className="koski-button"
-                onClick={() =>
-                  this.handleRangeSelection({
-                    from: new Date(new Date().getFullYear(), 0, 1),
-                    to: new Date()
-                  })
-                }
-              >
-                <Text name="kuluva vuosi" />
-              </button>
-              <button
-                className="koski-button"
-                onClick={() =>
-                  this.handleRangeSelection({
-                    from: new Date(new Date().getFullYear() - 1, 0, 1),
-                    to: new Date(new Date().getFullYear() - 1, 11, 31)
-                  })
-                }
-              >
-                <Text name="edellinen vuosi" />
-              </button>
-            </div>
-          </div>
-        )}
-      </div>
-    )
-  }
+  useLayoutEffect(() => {
+    const handleClickOutside = (e) => {
+      !e.target.closest('.date-range') && setOpen(false)
+    }
+    const handleFocus = (e) => {
+      const focusInside =
+        e.target === window ? false : !!rootRef.current.contains(e.target)
+      setOpen((wasOpen) => wasOpen && focusInside)
+    }
 
-  handleStartDate(e) {
-    const newStartDate = calculateStartState(e.target.value, this.state.to)
+    window.addEventListener('click', handleClickOutside, false)
+    window.addEventListener('focus', handleFocus, true)
+    return () => {
+      window.removeEventListener('click', handleClickOutside, false)
+      window.removeEventListener('focus', handleFocus, true)
+    }
+  }, [])
+
+  useLayoutEffect(() => {
+    if (open) {
+      startDateInputRef.current.focus()
+    }
+  }, [open])
+
+  const handleStartDate = (e) => {
+    const newStartDate = calculateStartState(e.target.value, to)
     const newState = Object.assign(
       newStartDate,
-      this.state.invalidEndDate
-        ? calculateEndState(this.state.invalidEndDate.value, newStartDate.from)
-        : { to: this.state.to }
+      invalidEndDate
+        ? calculateEndState(invalidEndDate.value, newStartDate.from)
+        : { to }
     )
-    this.setState(newState, () =>
-      this.props.onSelectionChanged({ from: newState.from, to: newState.to })
-    )
+    setRange((previous) => ({ ...previous, ...newState }))
+    props.onSelectionChanged({ from: newState.from, to: newState.to })
   }
 
-  handleEndDate(e) {
-    const newEndDate = calculateEndState(e.target.value, this.state.from)
+  const handleEndDate = (e) => {
+    const newEndDate = calculateEndState(e.target.value, from)
     const newState = Object.assign(
       newEndDate,
-      this.state.invalidStartDate
-        ? calculateStartState(this.state.invalidStartDate.value, newEndDate.to)
-        : { from: this.state.from }
+      invalidStartDate
+        ? calculateStartState(invalidStartDate.value, newEndDate.to)
+        : { from }
     )
-    this.setState(newState, () =>
-      this.props.onSelectionChanged({ from: newState.from, to: newState.to })
-    )
+    setRange((previous) => ({ ...previous, ...newState }))
+    props.onSelectionChanged({ from: newState.from, to: newState.to })
   }
 
-  handleRangeSelection(range) {
-    this.setState(range, () => this.props.onSelectionChanged(range))
-    this.setState({ open: false })
+  const handleRangeSelection = (selection) => {
+    setRange((previous) => ({ ...previous, ...selection }))
+    setOpen(false)
+    props.onSelectionChanged(selection)
   }
 
-  componentDidUpdate(prevProps, prevState) {
-    if (this.state.open && !prevState.open) {
-      this.startDateInput.focus()
+  const toggleOpen = () => setOpen((wasOpen) => !wasOpen)
+
+  const onKeyDown = (e) => {
+    switch (e.key) {
+      case 'Enter':
+        e.preventDefault()
+        setOpen(false)
+        break
+      case 'Escape':
+        setOpen(false)
+        break
+      case 'ArrowDown':
+        e.stopPropagation()
+        setOpen(true)
+        break
     }
   }
 
-  componentDidMount() {
-    window.addEventListener('click', this.handleClickOutside, false)
-    window.addEventListener('focus', this.handleFocus, true)
-  }
-
-  componentWillUnmount() {
-    window.removeEventListener('click', this.handleClickOutside, false)
-    window.removeEventListener('focus', this.handleFocus, true)
-  }
-
-  handleFocus(e) {
-    const focusInside =
-      e.target === window ? false : !!this.root.contains(e.target)
-    this.setState((state) => ({ open: state.open && focusInside }))
-  }
-
-  handleClickOutside(e) {
-    !e.target.closest('.date-range') && this.setState({ open: false })
-  }
-
-  toggleOpen() {
-    this.setState((state) => ({ open: !state.open }))
-  }
-
-  onKeyDown(e) {
-    const handler = this.keyHandlers[e.key]
-    if (handler) {
-      handler.call(this, e)
-    }
-  }
+  return (
+    <div
+      className="date-range"
+      onKeyDown={onKeyDown}
+      tabIndex="0"
+      ref={rootRef}
+    >
+      <div onClick={toggleOpen} className="date-range-selection">
+        {from || to
+          ? (from ? formatFinnishDate(from) : '') +
+            '-' +
+            (to ? formatFinnishDate(to) : '')
+          : t('kaikki')}
+      </div>
+      {open && (
+        <div className="date-range-container">
+          <div className="date-range-input">
+            <label>
+              <Text name={props.label || 'Aloituspäivä'} />
+            </label>
+            <input
+              className={invalidStartDate ? 'start error' : 'start'}
+              type="text"
+              value={
+                invalidStartDate
+                  ? invalidStartDate.value
+                  : from
+                    ? formatFinnishDate(from)
+                    : ''
+              }
+              onChange={handleStartDate}
+              ref={startDateInputRef}
+            />
+            {'—'}
+            <input
+              className={invalidEndDate ? 'end error' : 'end'}
+              type="text"
+              value={
+                invalidEndDate
+                  ? invalidEndDate.value
+                  : to
+                    ? formatFinnishDate(to)
+                    : ''
+              }
+              onChange={handleEndDate}
+            />
+          </div>
+          <div className="date-range-shortcuts">
+            <button
+              className="koski-button"
+              onClick={() =>
+                handleRangeSelection({ from: undefined, to: undefined })
+              }
+            >
+              <Text name="kaikki" />
+            </button>
+            <button
+              className="koski-button"
+              onClick={() =>
+                handleRangeSelection({
+                  from: new Date(new Date().getFullYear(), 0, 1),
+                  to: new Date()
+                })
+              }
+            >
+              <Text name="kuluva vuosi" />
+            </button>
+            <button
+              className="koski-button"
+              onClick={() =>
+                handleRangeSelection({
+                  from: new Date(new Date().getFullYear() - 1, 0, 1),
+                  to: new Date(new Date().getFullYear() - 1, 11, 31)
+                })
+              }
+            >
+              <Text name="edellinen vuosi" />
+            </button>
+          </div>
+        </div>
+      )}
+    </div>
+  )
 }
 
 const calculateEndState = (endValue, fromDate) => {
