@@ -1,8 +1,9 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react'
+import React, { useRef, useState } from 'react'
 import { parseFinnishDate, formatFinnishDate } from './date'
 import DayPicker, { DateUtils } from 'react-day-picker'
 import { t } from '../i18n/i18n'
 import { HiddenDescription } from '../components/HiddenDescription'
+import { useOutsideClick } from '../util/useOutsideClick'
 
 const months = [
   'Tammikuu',
@@ -37,29 +38,18 @@ const DateInput = (props) => {
     props.value ? formatFinnishDate(props.value) : ''
   )
   const [invalidDate, setInvalidDate] = useState()
-  const [calendarOpen, setCalendarOpen] = useState()
+  const [calendarOpen, setCalendarOpen] = useState(false)
   const calendarInputRef = useRef(null)
 
-  const handleClickOutside = useCallback((event) => {
-    if (!calendarInputRef.current?.contains(event.target)) {
-      document.removeEventListener('click', handleClickOutside, false)
-      setCalendarOpen(false)
-    }
-  }, [])
-
-  useEffect(() => {
-    return () => {
-      document.removeEventListener('click', handleClickOutside, false)
-    }
-  }, [handleClickOutside])
+  useOutsideClick(
+    [calendarInputRef],
+    () => setCalendarOpen(false),
+    calendarOpen
+  )
 
   const toggleCalendarOpen = (e) => {
     e.preventDefault()
-    const open = !calendarOpen
-    if (open) {
-      document.addEventListener('click', handleClickOutside, false)
-    }
-    setCalendarOpen(open)
+    setCalendarOpen(!calendarOpen)
   }
 
   const onChange = (event) => {
