@@ -65,6 +65,39 @@ function Page(mainElement) {
   return api
 
   function Input(inputElem) {
+    // React 16 ajaa odottavat efektit ennen syötetapahtuman käsittelyä. Jos ne
+    // renderöivät kentän, React palauttaa siihen vanhan arvon eikä huomaa
+    // muutosta, jolloin syöte katoaa. Kirjoitetaan silloin uudelleen, mutta
+    // rajatusti, koska myös sovellus voi hylätä syötteen palauttamalla arvon.
+    // Testit kirjoittavat myös lukittuihin kenttiin (esim. olemassa olevan
+    // henkilön nimi), joihin syöte ei voi jäädä.
+    function typeText(value, attempt) {
+      var input = inputElem()
+      var domElem = input[0]
+      var before = domElem.value
+      // Workaround for react-dom > 15.6
+      // React tracks input.value = 'foo' changes too, so when the event is dispatched, it doesn't see any changes in the value and thus the event is ignored
+      Object.getOwnPropertyDescriptor(
+        Object.getPrototypeOf(domElem),
+        'value'
+      ).set.call(domElem, value)
+      var typed = domElem.value
+      var done = triggerEvent(input, 'input')()
+      var reverted = typed !== before && domElem.value === before
+      return done.then(function () {
+        if (
+          reverted &&
+          attempt < 3 &&
+          !domElem.disabled &&
+          !domElem.readOnly &&
+          domElem.isConnected &&
+          domElem.value !== typed
+        ) {
+          return typeText(value, attempt + 1)
+        }
+      })
+    }
+
     return {
       element: function () {
         return inputElem()
@@ -99,14 +132,7 @@ function Page(mainElement) {
           case 'PASSWORD':
           case 'TEXTAREA':
           case 'SEARCH':
-            var domElem = inputElem()[0]
-            // Workaround for react-dom > 15.6
-            // React tracks input.value = 'foo' changes too, so when the event is dispatched, it doesn't see any changes in the value and thus the event is ignored
-            Object.getOwnPropertyDescriptor(
-              Object.getPrototypeOf(domElem),
-              'value'
-            ).set.call(domElem, value)
-            return triggerEvent(input, 'input')()
+            return typeText(value, 1)
           case 'CHECKBOX':
             if (value !== input.is(':checked')) {
               return click(input)()
