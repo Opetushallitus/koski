@@ -53,7 +53,7 @@ describe('KoodistoLoader', () => {
     await loader.loadKoodistot(['kielivalikoima'])
 
     assert.strictEqual(
-      loader.findKoodi('kielivalikoima', 'SV')?.koodiarvo,
+      loader.findKoodi('kielivalikoima', 'SV').koodiarvo,
       'SV'
     )
   })
