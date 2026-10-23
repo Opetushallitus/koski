@@ -18,12 +18,14 @@ test.describe('Lukiokoulutus 2019: Lukion oppiaineiden oppimäärien suoritus', 
     await oppijaPage.avaaMuokkausnäkymä()
     await oppijaPage.poistaViimeisinTila()
 
+    // Luettu ennen dialogin avaamista, jotta päivämäärä ei voi ehtiä vaihtua
+    // keskiyön rajalla tämän ja dialogin oman "tänään"-oletusarvon välillä.
+    const tänään = formatFinnishDate(new Date())!
+
     const opiskeluoikeus = oppijaPage.getLukioOpiskeluoikeus('lukion aineopinnot')
     await opiskeluoikeus.lisääTila('Valmistunut')
     await oppijaPage.tallenna()
 
-    await expect(opiskeluoikeus.päättymispäivä).toHaveText(
-      formatFinnishDate(new Date())!
-    )
+    await expect(opiskeluoikeus.päättymispäivä).toHaveText(tänään)
   })
 })
