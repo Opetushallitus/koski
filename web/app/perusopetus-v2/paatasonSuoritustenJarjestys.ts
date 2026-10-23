@@ -54,3 +54,23 @@ const vertaaAlkamispäivääLaskevasti = (
   if (b === undefined) return -1
   return a < b ? 1 : -1
 }
+
+/**
+ * Oletuksena avattava välilehti sortPäätasonSuorituksilla järjestetystä
+ * listasta: vahvistettu päättötodistus, muuten viimeisin vuosiluokka ja
+ * muuten ensimmäinen suoritus.
+ */
+export const oletuksenaAvattavanSuorituksenIndeksi = <
+  T extends { vahvistus?: unknown }
+>(
+  suoritukset: T[],
+  isOppimääränSuoritus: (suoritus: T) => boolean,
+  isVuosiluokanSuoritus: (suoritus: T) => boolean
+): number => {
+  const päättötodistus = suoritukset.findIndex(
+    (s) => isOppimääränSuoritus(s) && !!s.vahvistus
+  )
+  if (päättötodistus >= 0) return päättötodistus
+  const vuosiluokka = suoritukset.findIndex(isVuosiluokanSuoritus)
+  return vuosiluokka >= 0 ? vuosiluokka : 0
+}
