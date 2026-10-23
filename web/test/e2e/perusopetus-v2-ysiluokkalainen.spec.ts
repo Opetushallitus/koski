@@ -11,7 +11,7 @@ import { virkailija } from './setup/auth'
  *
  * V1 vs. v2 erot:
  *  - V1 valitsi oletuksena viimeisimmän keskeneräisen suorituksen tabiksi;
- *    v2 aloittaa aina ensimmäisestä (Päättötodistus).
+ *    v2 avaa vahvistetun päättötodistuksen ja muuten viimeisimmän vuosiluokan.
  *  - V1 esitäytti oppiaineet automaattisesti kun `jääLuokalle` = true;
  *    v2 näyttää taulukon mutta käyttäjä lisää oppiaineet manuaalisesti.
  *  - V1:n "merkitse valmiiksi" -dialogissa on "Siirretään seuraavalle luokalle"
@@ -25,7 +25,7 @@ const ysiluokkalainenUrl = `${ysiluokkalainenOid}?opiskeluoikeudenTyyppi=perusop
 test.describe('Perusopetuksen uusi käyttöliittymä: 9. vuosiluokan oppilas', () => {
   test.use({ storageState: virkailija('kalle') })
 
-  test('Aluksi: Päättötodistus on oletustabi, 9. vuosiluokkatabilla oppiaineet piilossa', async ({
+  test('Aluksi: päättötodistus on kesken, joten 9. vuosiluokka on oletustabi ja oppiaineet piilossa', async ({
     page,
     oppijaPage,
     fixtures
@@ -33,7 +33,6 @@ test.describe('Perusopetuksen uusi käyttöliittymä: 9. vuosiluokan oppilas', (
     await fixtures.reset()
     await oppijaPage.goto(ysiluokkalainenUrl)
 
-    // Oletustabi v2:ssa on tab 0 (Päättötodistus)
     await expect(page.getByTestId('oo.0.suoritusTabs.0.tab')).toContainText(
       'Päättötodistus'
     )
@@ -44,8 +43,7 @@ test.describe('Perusopetuksen uusi käyttöliittymä: 9. vuosiluokan oppilas', (
       '8. vuosiluokka'
     )
 
-    // Siirry 9. vuosiluokan tabille
-    await page.getByTestId('oo.0.suoritusTabs.1.tab').click()
+    // Päättötodistus on kesken, joten oletustabi on 9. vuosiluokka (tab 1)
     await expect(page.getByTestId('oo.0.suoritukset.1.koulutus')).toContainText(
       '9. vuosiluokka'
     )

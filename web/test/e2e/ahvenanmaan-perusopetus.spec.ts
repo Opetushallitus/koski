@@ -10,8 +10,9 @@ import { virkailija } from './setup/auth'
  * (Avgångsbetyg). Edellinen lukuvuositodistus (8. lk) sisältää oppiaineet
  * arvosanoineen.
  *
- * Suoritukset lajitellaan: 0 = Avgångsbetyg (oppimäärä), 1 = 9. vuosiluokka
- * (tyhjä, oletustabi), 2 = 8. vuosiluokka (läsårsbetyg arvosanoineen).
+ * Suoritukset lajitellaan: 0 = Avgångsbetyg (oppimäärä, vahvistettu, joten
+ * oletustabi), 1 = 9. vuosiluokka (tyhjä), 2 = 8. vuosiluokka (läsårsbetyg
+ * arvosanoineen).
  *
  * Erot manner-Suomen perusopetukseen:
  *  - Arviointiasteikko 4-10 / G-D-U (ahvenanmaanarviointiasteikkoyleissivistava),
@@ -35,6 +36,7 @@ const saveButton = 'oo.0.opiskeluoikeus.save'
 
 // 8. vuosiluokan läsårsbetyg sisältää oppiaineet arvosanoineen (ei oletustabi).
 const avgångsbetygTab = 'oo.0.suoritusTabs.0.tab'
+const ysiluokkaTab = 'oo.0.suoritusTabs.1.tab'
 const vuosiluokkaTab = 'oo.0.suoritusTabs.2.tab'
 
 const ensimmäisenOppiaineenArvosanaView =
@@ -64,9 +66,12 @@ test.describe('Ahvenanmaan perusopetuksen käyttöliittymä', () => {
       '8. vuosiluokka'
     )
 
-    // Oletustabi on 9. vuosiluokka. Sen oppiaineita ei näytetä, koska oppilas ei
-    // jää luokalle: päättövuoden arvosanat ovat päättötodistuksella (kuten
-    // manner-Suomessa).
+    // Vahvistettu päättötodistus on oletustabi.
+    await expect(page.getByTestId('oo.0.suoritukset.0.koulutus')).toBeVisible()
+
+    // 9. vuosiluokan oppiaineita ei näytetä, koska oppilas ei jää luokalle:
+    // päättövuoden arvosanat ovat päättötodistuksella (kuten manner-Suomessa).
+    await page.getByTestId(ysiluokkaTab).click()
     await expect(page.getByTestId('oo.0.suoritukset.1.koulutus')).toHaveText(
       '9. vuosiluokka'
     )
@@ -115,8 +120,9 @@ test.describe('Ahvenanmaan perusopetuksen käyttöliittymä', () => {
     await fixtures.reset()
     await oppijaPage.goto(url)
 
-    // Oletustabi on vahvistettu 9. vuosiluokka. Päättövuodelta ei siirrytä
-    // seuraavalle luokalle, kuten manner-Suomessa.
+    // Vahvistetulta 9. vuosiluokalta ei siirrytä seuraavalle luokalle, kuten
+    // manner-Suomessa.
+    await page.getByTestId(ysiluokkaTab).click()
     await expect(
       page.getByTestId('oo.0.suoritukset.1.suorituksenVahvistus.value.details')
     ).toContainText('Vahvistus: 4.6.2026')
@@ -142,6 +148,7 @@ test.describe('Ahvenanmaan perusopetuksen käyttöliittymä', () => {
   }) => {
     await fixtures.reset()
     await oppijaPage.goto(url)
+    await page.getByTestId(ysiluokkaTab).click()
     await page.getByTestId(editButton).click()
 
     const ysiluokanVahvistus = 'oo.0.suoritukset.1.suorituksenVahvistus.edit'
@@ -540,8 +547,9 @@ test.describe('Ahvenanmaan perusopetuksen käyttöliittymä', () => {
     await oppijaPage.goto(url)
     await page.getByTestId(editButton).click()
 
-    // Oletustabi on tyhjä 9. vuosiluokka. Merkitään oppilas jäämään luokalle,
-    // jolloin (tyhjän) vuosiluokan oppiaineet tulevat näkyviin.
+    // 9. vuosiluokka on tyhjä. Merkitään oppilas jäämään luokalle, jolloin
+    // (tyhjän) vuosiluokan oppiaineet tulevat näkyviin.
+    await page.getByTestId(ysiluokkaTab).click()
     await page.getByTestId('oo.0.suoritukset.1.jääLuokalle.edit.input').click()
 
     // Tyhjällekin vuosiluokalle näytetään molemmat ryhmät, jotta sekä pakollisen

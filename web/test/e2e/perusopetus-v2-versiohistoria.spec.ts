@@ -144,7 +144,7 @@ test.describe('Perusopetuksen uusi käyttöliittymä: versiohistoria', () => {
     await page.getByTestId('oo.0.opiskeluoikeus.edit').click()
     await page
       .getByTestId(
-        'oo.0.suoritukset.1.todistuksellaNäkyvätLisätiedot.edit.input'
+        'oo.0.suoritukset.0.todistuksellaNäkyvätLisätiedot.edit.input'
       )
       .fill(marker)
     await page.getByTestId('oo.0.opiskeluoikeus.save').click()
@@ -379,7 +379,7 @@ test.describe('Perusopetuksen uusi käyttöliittymä: versiohistoria', () => {
     await uusi.getByTestId('oo.1.opiskeluoikeus.edit').click()
     await uusi
       .getByTestId(
-        'oo.1.suoritukset.1.todistuksellaNäkyvätLisätiedot.edit.input'
+        'oo.1.suoritukset.0.todistuksellaNäkyvätLisätiedot.edit.input'
       )
       .fill(marker)
     await uusi.getByTestId('oo.1.opiskeluoikeus.save').click()

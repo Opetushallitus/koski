@@ -36,7 +36,10 @@ import { AhvenanmaanPerusopetuksenOppiaineet } from './AhvenanmaanPerusopetuksen
 import { AhvenanmaanPerusopetuksenSuorituksenTiedot } from './AhvenanmaanPerusopetuksenSuorituksenTiedot'
 import { isAhvenanmaanOppimääränSuoritus } from './oppimaaranSuoritus'
 import { poistettavaPäätasonSuoritus } from './paatasonSuoritusPoisto'
-import { sortPäätasonSuoritukset } from '../perusopetus-v2/paatasonSuoritustenJarjestys'
+import {
+  oletuksenaAvattavanSuorituksenIndeksi,
+  sortPäätasonSuoritukset
+} from '../perusopetus-v2/paatasonSuoritustenJarjestys'
 import { UusiAhvenanmaanPerusopetuksenVuosiluokanSuoritusModal } from './UusiAhvenanmaanPerusopetuksenVuosiluokanSuoritusModal'
 
 export type AhvenanmaanPerusopetusEditorProps =
@@ -82,15 +85,15 @@ const AhvenanmaanPerusopetuksenPäätasonSuoritusEditor: React.FC<
     form: FormModel<AhvenanmaanPerusopetuksenOpiskeluoikeus>
   }
 > = (props) => {
-  // Avataan oletuksena viimeisin vuosiluokka (suoritukset on lajiteltu niin,
-  // että oppimäärä on ensin ja vuosiluokat laskevassa järjestyksessä).
-  // Jos vuosiluokkia ei ole, näytetään ensimmäinen suoritus (oppimäärä).
-  const initialSuoritusIndex = useMemo(() => {
-    const i = props.form.state.suoritukset.findIndex(
-      isAhvenanmaanPerusopetuksenVuosiluokanSuoritus
-    )
-    return i >= 0 ? i : 0
-  }, [props.form.state.suoritukset])
+  const initialSuoritusIndex = useMemo(
+    () =>
+      oletuksenaAvattavanSuorituksenIndeksi(
+        props.form.state.suoritukset,
+        isAhvenanmaanOppimääränSuoritus,
+        isAhvenanmaanPerusopetuksenVuosiluokanSuoritus
+      ),
+    [props.form.state.suoritukset]
+  )
 
   const [päätasonSuoritus, setPäätasonSuoritus] = usePäätasonSuoritus(
     props.form,

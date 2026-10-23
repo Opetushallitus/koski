@@ -43,7 +43,10 @@ import {
 } from '../types/fi/oph/koski/schema/NuortenPerusopetuksenPaikallinenOppiaine'
 import { isNuortenPerusopetuksenOppiaineenSuoritus } from '../types/fi/oph/koski/schema/NuortenPerusopetuksenOppiaineenSuoritus'
 import { poistettavaPäätasonSuoritus } from './paatasonSuoritusPoisto'
-import { sortPäätasonSuoritukset } from './paatasonSuoritustenJarjestys'
+import {
+  oletuksenaAvattavanSuorituksenIndeksi,
+  sortPäätasonSuoritukset
+} from './paatasonSuoritustenJarjestys'
 import { deleteAt } from '../util/fp/arrays'
 
 export type PerusopetusEditorProps =
@@ -93,15 +96,15 @@ const PerusopetuksenPäätasonSuoritusEditor: React.FC<
     form: FormModel<PerusopetuksenOpiskeluoikeus>
   }
 > = (props) => {
-  // Avataan oletuksena viimeisin vuosiluokka (suoritukset on lajiteltu niin,
-  // että oppimäärä on ensin ja vuosiluokat laskevassa järjestyksessä).
-  // Jos vuosiluokkia ei ole, näytetään ensimmäinen suoritus (oppimäärä).
-  const initialSuoritusIndex = useMemo(() => {
-    const i = props.form.state.suoritukset.findIndex(
-      isPerusopetuksenVuosiluokanSuoritus
-    )
-    return i >= 0 ? i : 0
-  }, [props.form.state.suoritukset])
+  const initialSuoritusIndex = useMemo(
+    () =>
+      oletuksenaAvattavanSuorituksenIndeksi(
+        props.form.state.suoritukset,
+        isNuortenPerusopetuksenOppimääränSuoritus,
+        isPerusopetuksenVuosiluokanSuoritus
+      ),
+    [props.form.state.suoritukset]
+  )
 
   const [päätasonSuoritus, setPäätasonSuoritus] = usePäätasonSuoritus(
     props.form,

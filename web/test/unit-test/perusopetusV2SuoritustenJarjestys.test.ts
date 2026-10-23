@@ -1,12 +1,16 @@
 import { describe, expect, it } from 'vitest'
 
-import { sortPäätasonSuoritukset } from '../../app/perusopetus-v2/paatasonSuoritustenJarjestys'
+import {
+  oletuksenaAvattavanSuorituksenIndeksi,
+  sortPäätasonSuoritukset
+} from '../../app/perusopetus-v2/paatasonSuoritustenJarjestys'
 
 type TestiSuoritus = {
   nimi: string
   oppimäärä?: boolean
   koulutusmoduuli: { tunniste: { koodiarvo: string } }
   alkamispäivä?: string
+  vahvistus?: { päivä: string }
 }
 
 const vuosiluokka = (
@@ -19,10 +23,14 @@ const vuosiluokka = (
   alkamispäivä
 })
 
-const oppimäärä = (nimi = 'päättötodistus'): TestiSuoritus => ({
+const oppimäärä = (
+  nimi = 'päättötodistus',
+  vahvistus?: { päivä: string }
+): TestiSuoritus => ({
   nimi,
   oppimäärä: true,
-  koulutusmoduuli: { tunniste: { koodiarvo: '201101' } }
+  koulutusmoduuli: { tunniste: { koodiarvo: '201101' } },
+  vahvistus
 })
 
 const järjestä = (suoritukset: TestiSuoritus[]) =>
@@ -79,5 +87,35 @@ describe('perusopetus v2 päätason suoritusten järjestys', () => {
     sortPäätasonSuoritukset(suoritukset, (s) => s.oppimäärä === true)
 
     expect(suoritukset.map((s) => s.nimi)).toStrictEqual(['7', '9'])
+  })
+})
+
+describe('perusopetus v2 oletuksena avattava päätason suoritus', () => {
+  const avattava = (suoritukset: TestiSuoritus[]) =>
+    suoritukset[
+      oletuksenaAvattavanSuorituksenIndeksi(
+        suoritukset,
+        (s) => s.oppimäärä === true,
+        (s) => s.oppimäärä !== true
+      )
+    ].nimi
+
+  it('avaa vahvistetun päättötodistuksen', () => {
+    expect(
+      avattava([
+        oppimäärä('päättötodistus', { päivä: '2016-06-04' }),
+        vuosiluokka('9', '9')
+      ])
+    ).toBe('päättötodistus')
+  })
+
+  it('avaa viimeisimmän vuosiluokan, kun päättötodistus on vahvistamatta', () => {
+    expect(
+      avattava([oppimäärä(), vuosiluokka('9', '9'), vuosiluokka('8', '8')])
+    ).toBe('9')
+  })
+
+  it('avaa vahvistamattoman päättötodistuksen, kun vuosiluokkia ei ole', () => {
+    expect(avattava([oppimäärä()])).toBe('päättötodistus')
   })
 })

@@ -13,7 +13,7 @@ import { takeFullPageScreenshot } from './fragments/fullPageScreenshot'
 const oppija = '1.2.246.562.24.00000000190'
 const url = `${oppija}?opiskeluoikeudenTyyppi=ahvenanmaanperusopetus`
 
-// Oletustabi (9. vuosiluokka) on tyhjä, joten kuvat otetaan tabeista 0 ja 2.
+// 9. vuosiluokka (tab 1) on tyhjä, joten kuvat otetaan tabeista 0 ja 2.
 const päättötodistusTab = 'oo.0.suoritusTabs.0.tab'
 const vuosiluokkaTab = 'oo.0.suoritusTabs.2.tab'
 

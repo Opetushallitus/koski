@@ -20,8 +20,7 @@ test.describe('Perusopetuksen uusi käyttöliittymä', () => {
     oppijaPage
   }) => {
     await oppijaPage.goto(kaisaUrl)
-    // Näkymä avautuu viimeisimmälle vuosiluokalle; oppimäärän tiedot ovat
-    // Päättötodistus-välilehdellä.
+    // Oppimäärän tiedot ovat Päättötodistus-välilehdellä.
     await page.getByTestId('oo.0.suoritusTabs.0.tab').click()
 
     // Opiskeluoikeuden otsikko + edit-painike
