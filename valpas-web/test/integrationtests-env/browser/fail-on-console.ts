@@ -1,4 +1,5 @@
 import { logging, WebDriver } from "selenium-webdriver"
+import { koskiBackendHost } from "../../../src/utils/environment"
 import { withMessage } from "./utils"
 
 export const UNAUTHORIZED = "401 (Unauthorized)"
@@ -7,7 +8,8 @@ export const BAD_REQUEST = "400 (Bad Request)"
 
 const errorLogLevels = [logging.Level.SEVERE, logging.Level.WARNING]
 
-type NetworkErrorCase = [string | RegExp, string]
+type SourcePattern = string | RegExp | ((source: string) => boolean)
+type NetworkErrorCase = [SourcePattern, string]
 const globalAllowedNetworkErrors: NetworkErrorCase[] = [
   // Virkailijanäkymä:
   ["/valpas/api/user", UNAUTHORIZED],
@@ -15,7 +17,6 @@ const globalAllowedNetworkErrors: NetworkErrorCase[] = [
   // Kansalaisen näkymä:
   ["/valpas/api/kansalainen/user", UNAUTHORIZED],
   ["/valpas/api/kansalainen/user", FORBIDDEN],
-  ["/koski/user", UNAUTHORIZED],
   [
     // Chrome 89.0 deprecation message due React
     // Fixed in PR https://github.com/facebook/react/pull/20831
@@ -24,11 +25,6 @@ const globalAllowedNetworkErrors: NetworkErrorCase[] = [
     "SharedArrayBuffer will require cross-origin isolation as of M91, around May 2021.",
   ],
   [new RegExp("/valpas/api/oppijat/[\\d\\.]+/hakutiedot"), UNAUTHORIZED],
-  [
-    // Korhopankki functionality only used in local development causes errors on Macs, but apparently not on CI
-    new RegExp("koski-korhopankki.js"),
-    "",
-  ],
 ]
 let testCaseSpecificAllowedNetworkErrors: NetworkErrorCase[] = []
 
@@ -36,8 +32,19 @@ export function resetTestSpecificNetworkErrors() {
   testCaseSpecificAllowedNetworkErrors = []
 }
 
-export function allowNetworkError(pathSlice: string, messageSlice: string) {
+export function allowNetworkError(
+  pathSlice: SourcePattern,
+  messageSlice: string,
+) {
   testCaseSpecificAllowedNetworkErrors.push([pathSlice, messageSlice])
+}
+
+export function allowKoskiPageConsoleOutput() {
+  const isKoskiPage = (source: string) =>
+    source.startsWith("webpack-internal:") ||
+    (source.startsWith(`${koskiBackendHost}/koski/`) &&
+      !source.startsWith(`${koskiBackendHost}/koski/valpas/`))
+  allowNetworkError(isKoskiPage, "")
 }
 
 export async function expectCleanConsoleLogs(driver: WebDriver) {
@@ -64,11 +71,13 @@ function isAllowedError(message: string) {
   )
 }
 
-function matches(message: string, pattern: string | RegExp): boolean {
-  const slice = message.split(" ")[0]
+function matches(message: string, pattern: SourcePattern): boolean {
+  const slice = message.split(" ")[0] ?? ""
   if (typeof pattern === "string") {
-    return Boolean(slice?.includes(pattern))
+    return slice.includes(pattern)
+  } else if (typeof pattern === "function") {
+    return pattern(slice)
   } else {
-    return Boolean(slice?.match(pattern))
+    return Boolean(slice.match(pattern))
   }
 }

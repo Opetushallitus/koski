@@ -9,22 +9,30 @@ import {
 } from "../integrationtests-env/browser/content"
 import {
   deleteCookies,
+  getCurrentUrl,
   goToLocation,
+  locationUrl,
   pathToApiUrl,
+  pathToKoskiUrl,
   pathToUrl,
   urlIsEventually,
 } from "../integrationtests-env/browser/core"
 import { waitTableLoadingHasFinished } from "../integrationtests-env/browser/datatable"
-import { allowNetworkError } from "../integrationtests-env/browser/fail-on-console"
+import {
+  allowKoskiPageConsoleOutput,
+  allowNetworkError,
+} from "../integrationtests-env/browser/fail-on-console"
 import {
   defaultLogin,
   loginAs,
   reset,
 } from "../integrationtests-env/browser/reset"
 import { longTimeout } from "../integrationtests-env/browser/timeouts"
+import { eventually } from "../integrationtests-env/browser/utils"
 import {
   kansalainenEiOpintopolussaPath,
   kansalainenLoginVirhePath,
+  kansalainenOmatTiedotPath,
 } from "../../src/state/kansalainenPaths"
 
 describe("Login / Logout / kirjautuminen", () => {
@@ -120,5 +128,20 @@ describe("Login / Logout / kirjautuminen", () => {
       ".heading--primary",
       "Tietojasi ei löydy Opintopolusta",
     )
+  })
+
+  it("Paikallisessa kehityksessä ja testeissä kirjautumaton kansalainen ohjataan Kosken mock-kirjautumissivulle Valppaan paluuosoitteella", async () => {
+    allowKoskiPageConsoleOutput()
+    await deleteCookies()
+    await goToLocation(kansalainenOmatTiedotPath.href())
+    await eventually(async () => {
+      const url = new URL(await getCurrentUrl())
+      expect(url.origin + url.pathname).toBe(
+        pathToKoskiUrl("/login/oppija/local"),
+      )
+      expect([...url.searchParams]).toEqual([
+        ["redirect", locationUrl(kansalainenOmatTiedotPath.href())],
+      ])
+    })
   })
 })
