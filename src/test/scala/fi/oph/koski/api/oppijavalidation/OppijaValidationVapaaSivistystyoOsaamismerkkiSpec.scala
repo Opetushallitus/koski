@@ -112,6 +112,57 @@ class OppijaValidationVapaaSivistystyoOsaamismerkkiSpec extends AnyFreeSpec with
       }
     }
 
+    "Opiskeluoikeuden alkamispäivä" - {
+      val alkamispäivä = date(2024, 1, 15)
+      val päättymispäivä = date(2024, 3, 1)
+
+      def läsnäJaksolla(oo: VapaanSivistystyönOpiskeluoikeus): VapaanSivistystyönOpiskeluoikeus = oo.copy(
+        tila = VapaanSivistystyönOpiskeluoikeudenTila(
+          VapaanSivistystyönOsaamismerkinOpiskeluoikeusjakso(alkamispäivä, ExampleData.opiskeluoikeusLäsnä) :: oo.tila.opiskeluoikeusjaksot
+        )
+      )
+
+      "voi olla aiempi kuin päättymispäivä, kun opiskeluoikeus alkaa tilassa 'lasna'" in {
+        val tallennettu = setupOppijaWithAndGetOpiskeluoikeus(läsnäJaksolla(opiskeluoikeusOsaamismerkki(päättymispäivä)))
+
+        tallennettu.alkamispäivä should equal(Some(alkamispäivä))
+        tallennettu.päättymispäivä should equal(Some(päättymispäivä))
+      }
+
+      "voi tallentaa käyttöliittymästä ensimmäisen version pelkässä tilassa 'lasna'" in {
+        val oo = opiskeluoikeusOsaamismerkki(päättymispäivä).copy(
+          tila = VapaanSivistystyönOpiskeluoikeudenTila(List(
+            VapaanSivistystyönOsaamismerkinOpiskeluoikeusjakso(alkamispäivä, ExampleData.opiskeluoikeusLäsnä)
+          )),
+          suoritukset = List(suoritusOsaamismerkki().copy(
+            vahvistus = None,
+            arviointi = None
+          ))
+        )
+
+        val tallennettu = setupOppijaWithAndGetOpiskeluoikeus(oo)
+        tallennettu.alkamispäivä should equal(Some(alkamispäivä))
+        tallennettu.päättymispäivä should equal(None)
+      }
+
+      "lähdejärjestelmästä siirrettäessä opiskeluoikeus ei voi jäädä tilaan 'lasna'" in {
+        val oo = opiskeluoikeusOsaamismerkki(päättymispäivä).copy(
+          lähdejärjestelmänId = Some(LähdejärjestelmäId(Some("kolme"), lähdePrimus)),
+          tila = VapaanSivistystyönOpiskeluoikeudenTila(List(
+            VapaanSivistystyönOsaamismerkinOpiskeluoikeusjakso(alkamispäivä, ExampleData.opiskeluoikeusLäsnä)
+          )),
+          suoritukset = List(suoritusOsaamismerkki().copy(
+            vahvistus = None,
+            arviointi = None
+          ))
+        )
+
+        setupOppijaWithOpiskeluoikeus(oo, headers = authHeaders(varsinaisSuomiPalvelukäyttäjä) ++ jsonContent) {
+          verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.vapaaSivistystyö.osaamismerkkiPäivät(s"Osaamismerkin pitää olla arvioitu, vahvistettu ja päättynyt"))
+        }
+      }
+    }
+
     "Arviointi ja vahvistus" - {
       val päättymispäivä = date(2025, 2, 2)
 

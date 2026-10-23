@@ -20,6 +20,7 @@ const oppivelvollisilleSuunnatunVapaanSivistystyönKoulutuksenTilat = [
   'valmistunut'
 ]
 const vapaatavoitteisenVapaanSivistystyönKoulutuksenTilat = [
+  'lasna',
   'hyvaksytystisuoritettu',
   'keskeytynyt'
 ]
@@ -28,7 +29,7 @@ const jatkuvanOppimisenVapaanSivistystyönKoulutuksenTilat = [
   'keskeytynyt',
   'lasna'
 ]
-const osaamismerkinVapaanSivistystyönTilat = ['hyvaksytystisuoritettu']
+const osaamismerkinVapaanSivistystyönTilat = ['lasna', 'hyvaksytystisuoritettu']
 const tuvaTilat = [
   'katsotaaneronneeksi',
   'lasna',

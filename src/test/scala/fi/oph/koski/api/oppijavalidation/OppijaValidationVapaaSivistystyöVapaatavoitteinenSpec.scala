@@ -48,18 +48,19 @@ class OppijaValidationVapaaSivistystyöVapaatavoitteinenSpec extends AnyFreeSpec
         }
       }
 
-      "Opiskeluoikeuden tila ei voi olla 'lasna'" in {
+      "Opiskeluoikeus voi alkaa tilassa 'lasna' ja päättyä tilaan 'hyvaksytystisuoritettu'" in {
         val oo = VapaatavoitteinenOpiskeluoikeus.withTila(
           VapaanSivistystyönOpiskeluoikeudenTila(
             List(
-              OppivelvollisilleSuunnattuVapaanSivistystyönOpiskeluoikeusjakso(date(2022, 5, 31), opiskeluoikeusLäsnä)
+              VapaanSivistystyönVapaatavoitteisenKoulutuksenOpiskeluoikeusjakso(date(2022, 1, 10), opiskeluoikeusLäsnä),
+              VapaanSivistystyönVapaatavoitteisenKoulutuksenOpiskeluoikeusjakso(date(2022, 5, 31), opiskeluoikeusHyväksytystiSuoritettu)
             )
           )
         )
 
-        setupOppijaWithOpiskeluoikeus(oo) {
-          verifyResponseStatus(400, ErrorMatcher.regex(KoskiErrorCategory.badRequest.validation.jsonSchema, ".*notAnyOf.*".r))
-        }
+        val tallennettu = setupOppijaWithAndGetOpiskeluoikeus(oo)
+        tallennettu.alkamispäivä should equal(Some(date(2022, 1, 10)))
+        tallennettu.päättymispäivä should equal(Some(date(2022, 5, 31)))
       }
     }
 
