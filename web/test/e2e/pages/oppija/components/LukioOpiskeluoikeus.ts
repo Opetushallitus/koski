@@ -9,6 +9,7 @@ export class LukioOpiskeluoikeus {
   readonly omanÄidinkielenOpinnot: Locator
   readonly tilaVahvistus: Locator
   readonly oppiaineet: Locator
+  readonly päättymispäivä: Locator
 
   constructor(container: Locator) {
     this.container = container
@@ -23,6 +24,8 @@ export class LukioOpiskeluoikeus {
     // Sama taulukkoluokka on yhteinen "Lukion oppimäärä"- ja
     // "Lukion oppiaineiden oppimäärien suoritus" -suoritustyypeille.
     this.oppiaineet = this.container.locator('table.suoritukset.oppiaineet')
+    // Ei data-testid:tä, ei roolia/nimeä - ei PropertiesEditor-rivi.
+    this.päättymispäivä = this.container.locator('.päättymispäivä')
   }
 
   oppiaineRivi(koodi: string): Locator {
@@ -43,6 +46,19 @@ export class LukioOpiskeluoikeus {
         odotetut[i].tila
       )
     }
+  }
+
+  // "Lisää opiskeluoikeuden tila" -linkki on <a> ilman href-attribuuttia -
+  // ei siis linkki-roolia, testid on roolin puutteessa parempi valinta kuin
+  // CSS-luokkaketju. Avautuva valintaikkuna tarjoaa tilan roolipohjaisena
+  // radiopainikeryhmänä.
+  async lisääTila(tila: string): Promise<void> {
+    await this.container
+      .getByTestId('lisää-opiskeluoikeuden-tila-btn')
+      .click()
+    const dialog = this.container.page().getByRole('dialog')
+    await dialog.getByRole('radio', { name: tila }).click()
+    await dialog.getByTestId('dialog-vahvista').click()
   }
 
   // Kurssi tunnistetaan sen näkyvästä koodista (esim. "ÄI1") roolin ja nimen
