@@ -37,4 +37,16 @@ export class Dropdown {
       .getByRole('listitem', { name: optionName, exact: true })
       .click()
   }
+
+  // Osa vaihtoehdoista ei näy oletuslistassa (katkaistu/rajattu alijoukko) -
+  // hakuteksti suodattaa koko koodiston, ja suodatettu vaihtoehto klikataan.
+  // Ei search(): sen Enter-painallus sulkee joissain konteksteissa (esim.
+  // valintaikkunassa) koko dialogin sen sijaan että valitsisi vaihtoehdon.
+  async filterAndSelectByClick(
+    hakuteksti: string,
+    optionName: string | RegExp = hakuteksti
+  ) {
+    await this.textInput.fill(hakuteksti)
+    await this.options.filter({ hasText: optionName }).first().click()
+  }
 }
