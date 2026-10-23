@@ -134,14 +134,6 @@
     padding-right: @Columns-gutter;
   }
 
-  // Rivi ei vaihda väriä avattaessa; avattu rivi erottuu lihavoidusta nimestä.
-  // Muokkaustilassa rivit voivat olla pakotetusti auki, jolloin lihavointi ei
-  // kertoisi mitään.
-  &.OsasuoritusRow--open:not(.OsasuoritusRow--edit)
-    .OsasuoritusRow__nameColumn {
-    font-weight: 600;
-  }
-
   // Muokkaustilassa syöttökentät alkaisivat muuten kiinni yläpuolisesta
   // viivasta. Kentän alla on jo saman verran tilaa.
   &.OsasuoritusRow--edit {

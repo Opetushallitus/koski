@@ -338,7 +338,6 @@ export const OsasuoritusRow = <DATA_KEYS extends string>(
       <ColumnRow
         className={cx(
           'OsasuoritusRow',
-          isOpen && 'OsasuoritusRow--open',
           props.editMode && 'OsasuoritusRow--edit'
         )}
         style={sisennysStyle(taso, merkkitasot)}
