@@ -1,4 +1,5 @@
-import * as assert from 'assert'
+import { describe, expect, it } from 'vitest'
+
 import { poistettavaPäätasonSuoritus } from '../../app/perusopetus-v2/paatasonSuoritusPoisto'
 
 const vuosiluokanSuoritus = (luokka: string) => ({
@@ -25,7 +26,7 @@ describe('perusopetus v2 päätason suorituksen poisto', () => {
 
     const poistettava = poistettavaPäätasonSuoritus(opiskeluoikeus as any, 1)
 
-    assert.strictEqual(poistettava, toinenSeiska)
-    assert.notStrictEqual(poistettava, ensimmäinenSeiska)
+    expect(poistettava).toBe(toinenSeiska)
+    expect(poistettava).not.toBe(ensimmäinenSeiska)
   })
 })

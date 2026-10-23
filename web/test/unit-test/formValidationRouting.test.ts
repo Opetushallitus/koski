@@ -1,8 +1,7 @@
-import * as assert from 'assert'
+import { describe, expect, it } from 'vitest'
+
 import * as $ from 'optics-ts'
-// i18n lukee lokalisoinnit window-objektista moduulin latautuessa, joten selainglobaalit
-// pitää alustaa ennen app-importteja.
-import './setup/browserGlobals'
+
 import { allLanguages, parsePath } from '../../app/util/optics'
 import {
   pathToString,
@@ -51,25 +50,22 @@ const root = $.optic_<State>()
 
 describe('parsePath', () => {
   it('löytää polun kun kentällä on arvo', () => {
-    assert.strictEqual(
-      parsePath(root.prop('suoritukset').at(0).prop('luokka'), state),
-      'suoritukset.0.luokka'
-    )
+    expect(
+      parsePath(root.prop('suoritukset').at(0).prop('luokka'), state)
+    ).toBe('suoritukset.0.luokka')
   })
 
   it('löytää polun kun kentän arvo on tyhjä merkkijono', () => {
-    assert.strictEqual(
-      parsePath(root.prop('suoritukset').at(1).prop('luokka'), state),
-      'suoritukset.1.luokka'
-    )
+    expect(
+      parsePath(root.prop('suoritukset').at(1).prop('luokka'), state)
+    ).toBe('suoritukset.1.luokka')
   })
 
   it('löytää polun kun kenttä puuttuu objektista kokonaan', () => {
-    assert.strictEqual(
-      parsePath(root.prop('suoritukset').at(2).prop('luokka'), state),
-      'suoritukset.2.luokka'
-    )
-    assert.strictEqual(
+    expect(
+      parsePath(root.prop('suoritukset').at(2).prop('luokka'), state)
+    ).toBe('suoritukset.2.luokka')
+    expect(
       parsePath(
         root
           .prop('suoritukset')
@@ -78,44 +74,36 @@ describe('parsePath', () => {
           .at(1)
           .prop('arviointi'),
         state
-      ),
-      'suoritukset.0.osasuoritukset.1.arviointi'
-    )
+      )
+    ).toBe('suoritukset.0.osasuoritukset.1.arviointi')
   })
 
   it('ei sekoita samanarvoisia kenttiä keskenään', () => {
     // Vanha toteutus etsi kentän arvoa datasta, jolloin identtinen arvo toisaalla
     // saattoi antaa väärän polun.
     const identtiset = { a: 'sama', b: 'sama' }
-    assert.strictEqual(
-      parsePath($.optic_<typeof identtiset>().prop('b'), identtiset),
+    expect(parsePath($.optic_<typeof identtiset>().prop('b'), identtiset)).toBe(
       'b'
     )
   })
 
   it('palauttaa yhteisen alkuosan kun optiikka levittää arvon useaan paikkaan', () => {
-    assert.strictEqual(
-      parsePath(root.prop('nimi').compose(allLanguages), state),
+    expect(parsePath(root.prop('nimi').compose(allLanguages), state)).toBe(
       'nimi'
     )
   })
 
   it('palauttaa undefined kun optiikka ei osoita mihinkään', () => {
-    assert.strictEqual(
-      parsePath(root.prop('suoritukset').at(9).prop('luokka'), state),
-      undefined
-    )
-    assert.strictEqual(
-      parsePath(
-        root.prop('suoritukset').at(2).prop('luokka').optional(),
-        state
-      ),
-      undefined
-    )
+    expect(
+      parsePath(root.prop('suoritukset').at(9).prop('luokka'), state)
+    ).toBeUndefined()
+    expect(
+      parsePath(root.prop('suoritukset').at(2).prop('luokka').optional(), state)
+    ).toBeUndefined()
   })
 
   it('palauttaa undefined datan juurelle', () => {
-    assert.strictEqual(parsePath(root, state), undefined)
+    expect(parsePath(root, state)).toBeUndefined()
   })
 })
 
@@ -149,7 +137,7 @@ const merkatut = (rule: ValidationRule<any>): string[] =>
 
 describe('validateData', () => {
   it('raportoi puuttuvan pakollisen arvon tyhjänä arvona eikä tyyppivirheenä', () => {
-    assert.deepStrictEqual(validateData(data, constraint), [
+    expect(validateData(data, constraint)).toStrictEqual([
       { type: 'emptyValue', path: 'suoritukset.1.luokka' }
     ])
   })
@@ -165,7 +153,7 @@ describe('validateData', () => {
       validate: () => []
     }
     validateData(data, constraint, [rule])
-    assert.deepStrictEqual(nähdytPolut, [
+    expect(nähdytPolut).toStrictEqual([
       '',
       'suoritukset',
       'suoritukset.0',
@@ -176,28 +164,25 @@ describe('validateData', () => {
   })
 
   it('classValidationRule osuu jokaiseen luokan olioon, ei vain juureen', () => {
-    assert.deepStrictEqual(
+    expect(
       merkatut(
         classValidationRule(
           (d: any): d is Suoritus => d?.$class === 'Vuosiluokka',
           merkkaus
         )
-      ),
-      ['suoritukset.0.testi', 'suoritukset.1.testi']
-    )
+      )
+    ).toStrictEqual(['suoritukset.0.testi', 'suoritukset.1.testi'])
   })
 
   it('exactPathValidationRule osuu annettuun polkuun', () => {
-    assert.deepStrictEqual(
-      merkatut(exactPathValidationRule('suoritukset', '1')(merkkaus)),
-      ['suoritukset.1.testi']
-    )
+    expect(
+      merkatut(exactPathValidationRule('suoritukset', '1')(merkkaus))
+    ).toStrictEqual(['suoritukset.1.testi'])
   })
 
   it('pathPatternValidationRule osuu jokaiseen taulukon alkioon', () => {
-    assert.deepStrictEqual(
-      merkatut(pathPatternValidationRule('suoritukset', '*')(merkkaus)),
-      ['suoritukset.0.testi', 'suoritukset.1.testi']
-    )
+    expect(
+      merkatut(pathPatternValidationRule('suoritukset', '*')(merkkaus))
+    ).toStrictEqual(['suoritukset.0.testi', 'suoritukset.1.testi'])
   })
 })

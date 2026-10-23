@@ -6,3 +6,4 @@ virkailijaState.json
 test/.pw-state
 /dist
 /node/
+.vitest/

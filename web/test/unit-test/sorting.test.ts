@@ -1,5 +1,5 @@
+import { describe, expect, it } from 'vitest'
 import { sortLanguages, sortGrades } from '../../app/util/sorting'
-import * as assert from 'assert'
 
 const kielet = [
   { value: '97', title: 'Ei suoritusta', data: { koodiarvo: '97' } },
@@ -26,7 +26,7 @@ const kielet = [
 
 describe('When sorting languages', () => {
   it('languages are sorted in correct order', () => {
-    assert.deepEqual(sortLanguages(kielet), [
+    expect(sortLanguages(kielet)).toStrictEqual([
       { value: 'FI', title: 'suomi', data: { koodiarvo: 'FI' } },
       { value: 'SV', title: 'ruotsi', data: { koodiarvo: 'SV' } },
       { value: 'EN', title: 'englanti', data: { koodiarvo: 'EN' } },
@@ -54,62 +54,58 @@ describe('When sorting languages', () => {
 describe('Sorting grades', () => {
   describe('When sorting grades', () => {
     it('sorts character grades correctly', () => {
-      assert.deepEqual(
+      expect(
         sortGrades([
           { value: 'arviointiasteikkoyleissivistava_S' },
           { value: 'arviointiasteikkoyleissivistava_H' }
-        ]),
-        [
-          { value: 'arviointiasteikkoyleissivistava_H' },
-          { value: 'arviointiasteikkoyleissivistava_S' }
-        ]
-      )
+        ])
+      ).toStrictEqual([
+        { value: 'arviointiasteikkoyleissivistava_H' },
+        { value: 'arviointiasteikkoyleissivistava_S' }
+      ])
     })
     it('sorts numeric grades correctly', () => {
-      assert.deepEqual(
+      expect(
         sortGrades([
           { value: 'arviointiasteikkoyleissivistava_6' },
           { value: 'arviointiasteikkoyleissivistava_3' },
           { value: 'arviointiasteikkoyleissivistava_10' }
-        ]),
-        [
-          { value: 'arviointiasteikkoyleissivistava_3' },
-          { value: 'arviointiasteikkoyleissivistava_6' },
-          { value: 'arviointiasteikkoyleissivistava_10' }
-        ]
-      )
+        ])
+      ).toStrictEqual([
+        { value: 'arviointiasteikkoyleissivistava_3' },
+        { value: 'arviointiasteikkoyleissivistava_6' },
+        { value: 'arviointiasteikkoyleissivistava_10' }
+      ])
     })
     it('sorts mixed grades correctly', () => {
-      assert.deepEqual(
+      expect(
         sortGrades([
           { value: 'arviointiasteikkoyleissivistava_6' },
           { value: 'arviointiasteikkoyleissivistava_H' },
           { value: 'arviointiasteikkoyleissivistava_3' },
           { value: 'arviointiasteikkoyleissivistava_S' },
           { value: 'arviointiasteikkoyleissivistava_10' }
-        ]),
-        [
-          { value: 'arviointiasteikkoyleissivistava_3' },
-          { value: 'arviointiasteikkoyleissivistava_6' },
-          { value: 'arviointiasteikkoyleissivistava_10' },
-          { value: 'arviointiasteikkoyleissivistava_H' },
-          { value: 'arviointiasteikkoyleissivistava_S' }
-        ]
-      )
+        ])
+      ).toStrictEqual([
+        { value: 'arviointiasteikkoyleissivistava_3' },
+        { value: 'arviointiasteikkoyleissivistava_6' },
+        { value: 'arviointiasteikkoyleissivistava_10' },
+        { value: 'arviointiasteikkoyleissivistava_H' },
+        { value: 'arviointiasteikkoyleissivistava_S' }
+      ])
     })
     it('sorts mixed koodistot correctly', () => {
-      assert.deepEqual(
+      expect(
         sortGrades([
           { value: 'arviointiasteikkoammatillinent1k3_2' },
           { value: 'arviointiasteikkoammatillinen15_1' },
           { value: 'arviointiasteikkoammatillinent1k3_1' }
-        ]),
-        [
-          { value: 'arviointiasteikkoammatillinen15_1' },
-          { value: 'arviointiasteikkoammatillinent1k3_1' },
-          { value: 'arviointiasteikkoammatillinent1k3_2' }
-        ]
-      )
+        ])
+      ).toStrictEqual([
+        { value: 'arviointiasteikkoammatillinen15_1' },
+        { value: 'arviointiasteikkoammatillinent1k3_1' },
+        { value: 'arviointiasteikkoammatillinent1k3_2' }
+      ])
     })
     it('does not modify original array', () => {
       const original = [
@@ -117,7 +113,7 @@ describe('Sorting grades', () => {
         { value: 'arviointiasteikkoyleissivistava_3' }
       ]
       const sorted = sortGrades(original)
-      assert.notDeepEqual(original, sorted)
+      expect(original).not.toStrictEqual(sorted)
     })
   })
 })

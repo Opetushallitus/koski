@@ -1,4 +1,5 @@
-import * as assert from 'assert'
+import { describe, expect, it } from 'vitest'
+
 import {
   uniqueKoodistoUris,
   uniqueKoodistot
@@ -6,7 +7,7 @@ import {
 
 describe('koodisto appstate', () => {
   it('poistaa duplikaatti-URIt säilyttäen järjestyksen', () => {
-    assert.deepStrictEqual(
+    expect(
       uniqueKoodistoUris([
         'arviointiasteikkoyleissivistava',
         'kielivalikoima',
@@ -14,9 +15,8 @@ describe('koodisto appstate', () => {
         null,
         undefined,
         'kielivalikoima'
-      ]),
-      ['arviointiasteikkoyleissivistava', 'kielivalikoima']
-    )
+      ])
+    ).toStrictEqual(['arviointiasteikkoyleissivistava', 'kielivalikoima'])
   })
 
   it('poistaa duplikaattikoodit id:n perusteella säilyttäen ensimmäisen arvon', () => {
@@ -27,7 +27,7 @@ describe('koodisto appstate', () => {
     const toinen = { id: 'arviointiasteikkoyleissivistava_10', label: '10b' }
     const kolmas = { id: 'arviointiasteikkoyleissivistava_9', label: '9' }
 
-    assert.deepStrictEqual(uniqueKoodistot([ensimmäinen, toinen, kolmas]), [
+    expect(uniqueKoodistot([ensimmäinen, toinen, kolmas])).toStrictEqual([
       ensimmäinen,
       kolmas
     ])

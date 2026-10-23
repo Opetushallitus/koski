@@ -39,8 +39,9 @@ make front               # One-shot frontend build in prod mode (non-watching; u
 # Testing
 make test                # Run all tests
 make backtest            # Backend tests only
-make fronttest           # Frontend (Mocha) tests only
-make integrationtest     # Playwright integration tests
+make js-unit-test        # Frontend unit tests
+make fronttest           # Mocha browser tests
+make integrationtest     # Playwright browser tests
 
 # Code quality
 make lint                # Typecheck, lint and format; fix what can be fixed
@@ -152,7 +153,8 @@ A misspelled or non-existent suite name fails differently: `*** RUN ABORTED ***`
 Older dated snapshots are kept and still run through `KoskiValidator`, so a **new validation rule** can make them fail. Don't delete them: add `"ignoreKoskiValidator" : true` as a top-level field to each rejected file. Deserialization and the roundtrip check still run.
 
 ### Frontend Tests
-- **Mocha tests**: `web/test/` - run with `make fronttest`
+- **Mocha browser tests**: `web/test/` - run with `make fronttest`
+- **Vitest unit tests**: `web/test/unit-test/*.test.ts` - run with `make js-unit-test`
 - **Playwright tests**: `web/test/e2e/` - run with `make integrationtest`
 - **Valpas Jest tests**: `valpas-web/test/` - run with `make valpas-fronttest-*`
 - **UI feature flags** (`hasFeatureFlag`, e.g. a report's `guard` in `web/app/raportit/Raportit.jsx`): the URL parameter needs a value, `?kotikuntalaskelma=1`, not a bare `?kotikuntalaskelma` — `web/app/util/location.js` rewrites the URL on startup and drops empty-valued parameters. A localStorage key named after the flag works too.
