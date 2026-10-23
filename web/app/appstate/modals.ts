@@ -11,6 +11,7 @@ export type ModalState = {
 
 export type ModalProps = {
   'aria-hidden': boolean
+  'aria-modal': boolean
   style?: React.CSSProperties
 }
 
@@ -35,6 +36,7 @@ const inactiveModalState = (zIndex?: number): ModalState => ({
   isActive: false,
   props: {
     'aria-hidden': true,
+    'aria-modal': false,
     style:
       zIndex !== undefined
         ? {
@@ -48,6 +50,7 @@ const activeModalState = (zIndex: number): ModalState => ({
   isActive: true,
   props: {
     'aria-hidden': false,
+    'aria-modal': true,
     style: { zIndex: 1000 + zIndex }
   }
 })
@@ -74,13 +77,6 @@ class ModalManager {
         setState(inactiveModalState(index))
       }
     })
-
-    setTimeout(() => {
-      document.body.setAttribute(
-        'aria-hidden',
-        this.modalStack.length > 0 ? 'true' : 'false'
-      )
-    }, 300)
   }
 }
 
