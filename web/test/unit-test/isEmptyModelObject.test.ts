@@ -1,18 +1,18 @@
+import { describe, expect, it } from 'vitest'
 import { isEmptyModelObject } from '../../app/util/objects'
-import assert from 'node:assert'
 
 describe('isEmptyModelObject', () => {
   it('Palauttaa true tyhjällä objektilla', () => {
     const obj = {}
-    assert(isEmptyModelObject(obj))
+    expect(isEmptyModelObject(obj)).toBe(true)
   })
   it('Palauttaa true objektilla missä $class kenttä', () => {
     const obj = { $class: 'joku_luokka' }
-    assert(isEmptyModelObject(obj))
+    expect(isEmptyModelObject(obj)).toBe(true)
   })
   it('Palauttaa true jos objektissa on pelkkä tyhjä array', () => {
     const obj = { $class: 'joku', maksuttomuudet: [] }
-    assert(isEmptyModelObject(obj))
+    expect(isEmptyModelObject(obj)).toBe(true)
   })
   it('Palauttaa true jos objektissa on montaa tyhjää arrayta', () => {
     const obj = {
@@ -20,14 +20,14 @@ describe('isEmptyModelObject', () => {
       maksuttomuudet: [],
       oikeuttaMaksuttomuuteenPidennetty: []
     }
-    assert(isEmptyModelObject(obj))
+    expect(isEmptyModelObject(obj)).toBe(true)
   })
   it('Palauttaa true jos objektissa on tyhjä aliobjekti', () => {
     const obj = {
       $class: 'joku',
       objekti: {}
     }
-    assert(isEmptyModelObject(obj))
+    expect(isEmptyModelObject(obj)).toBe(true)
   })
 
   it('Palauttaa false jos objektissa on yksi epätyhjä array', () => {
@@ -42,7 +42,7 @@ describe('isEmptyModelObject', () => {
       ],
       oikeuttaMaksuttomuuteenPidennetty: []
     }
-    assert(!isEmptyModelObject(obj))
+    expect(isEmptyModelObject(obj)).toBe(false)
   })
   it('Palauttaa false jos objektissa on monta epätyhjää arrayta', () => {
     const obj = {
@@ -62,7 +62,7 @@ describe('isEmptyModelObject', () => {
         }
       ]
     }
-    assert(!isEmptyModelObject(obj))
+    expect(isEmptyModelObject(obj)).toBe(false)
   })
   it('Palauttaa false jos objektissa on stringi', () => {
     const obj = {
@@ -71,6 +71,6 @@ describe('isEmptyModelObject', () => {
       oikeuttaMaksuttomuuteenPidennetty: [],
       joku: 'stringi'
     }
-    assert(!isEmptyModelObject(obj))
+    expect(isEmptyModelObject(obj)).toBe(false)
   })
 })

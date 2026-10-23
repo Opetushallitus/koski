@@ -1,4 +1,5 @@
-import * as assert from 'assert'
+import { describe, expect, it } from 'vitest'
+
 import { shouldShowLaajuusColumn } from '../../app/perusopetus-v2/oppiaineLaajuus'
 
 const laajuudellinenOppiaine = {
@@ -19,80 +20,74 @@ const suoritus = (vahvistusPäivä?: string) => ({
 
 describe('perusopetus v2 oppiaineen laajuussarake', () => {
   it('näkyy muokkaustilassa', () => {
-    assert.strictEqual(
+    expect(
       shouldShowLaajuusColumn({
         editMode: true,
         sisältääToimintaAlueita: false,
         pakollinen: true,
         suoritus: suoritus(),
         osasuoritukset: []
-      }),
-      true
-    )
+      })
+    ).toBe(true)
   })
 
   it('ei näy pakollisille ilman laajuudellisia suorituksia', () => {
-    assert.strictEqual(
+    expect(
       shouldShowLaajuusColumn({
         editMode: false,
         sisältääToimintaAlueita: false,
         pakollinen: true,
         suoritus: suoritus('2020-08-01'),
         osasuoritukset: [laajuudetonOppiaine]
-      }),
-      false
-    )
+      })
+    ).toBe(false)
   })
 
   it('ei näy pakollisille ennen leikkuripäivää', () => {
-    assert.strictEqual(
+    expect(
       shouldShowLaajuusColumn({
         editMode: false,
         sisältääToimintaAlueita: false,
         pakollinen: true,
         suoritus: suoritus('2020-07-31'),
         osasuoritukset: [laajuudellinenOppiaine]
-      }),
-      false
-    )
+      })
+    ).toBe(false)
   })
 
   it('näkyy pakollisille leikkuripäivästä alkaen', () => {
-    assert.strictEqual(
+    expect(
       shouldShowLaajuusColumn({
         editMode: false,
         sisältääToimintaAlueita: false,
         pakollinen: true,
         suoritus: suoritus('2020-08-01'),
         osasuoritukset: [laajuudellinenOppiaine]
-      }),
-      true
-    )
+      })
+    ).toBe(true)
   })
 
   it('näkyy toiminta-alueittain leikkuripäivästä alkaen', () => {
-    assert.strictEqual(
+    expect(
       shouldShowLaajuusColumn({
         editMode: false,
         sisältääToimintaAlueita: true,
         pakollinen: undefined,
         suoritus: suoritus('2020-08-01'),
         osasuoritukset: [laajuudellinenOppiaine]
-      }),
-      true
-    )
+      })
+    ).toBe(true)
   })
 
   it('näkyy valinnaisille ilman vahvistuspäiväleikkuria', () => {
-    assert.strictEqual(
+    expect(
       shouldShowLaajuusColumn({
         editMode: false,
         sisältääToimintaAlueita: false,
         pakollinen: false,
         suoritus: suoritus(),
         osasuoritukset: [laajuudellinenOppiaine]
-      }),
-      true
-    )
+      })
+    ).toBe(true)
   })
 })

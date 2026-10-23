@@ -1,4 +1,5 @@
-import * as assert from 'assert'
+import { describe, expect, it } from 'vitest'
+
 import { PerusopetuksenOpiskeluoikeus } from '../../app/types/fi/oph/koski/schema/PerusopetuksenOpiskeluoikeus'
 import {
   isSekamuotoinen,
@@ -41,147 +42,124 @@ const toimintaAlueJaksolla = {
 describe('perusopetus v2 toiminta-alueittain opiskelun päättely', () => {
   describe('lisätietolippu', () => {
     it('on pois päältä ilman lisätietoja', () => {
-      assert.strictEqual(isToimintaAlueittainOpiskelu(ilmanLisätietoa), false)
+      expect(isToimintaAlueittainOpiskelu(ilmanLisätietoa)).toBe(false)
     })
 
     it('tunnistaa yksittäisen erityisen tuen päätöksen', () => {
-      assert.strictEqual(
-        isToimintaAlueittainOpiskelu(erityisenTuenPäätöksellä),
-        true
-      )
+      expect(isToimintaAlueittainOpiskelu(erityisenTuenPäätöksellä)).toBe(true)
     })
 
     it('tunnistaa erityisen tuen päätösten listan', () => {
-      assert.strictEqual(
-        isToimintaAlueittainOpiskelu(erityisenTuenPäätöksillä),
-        true
-      )
+      expect(isToimintaAlueittainOpiskelu(erityisenTuenPäätöksillä)).toBe(true)
     })
 
     it('tunnistaa toiminta-alueittain opiskelun jakson', () => {
-      assert.strictEqual(
-        isToimintaAlueittainOpiskelu(toimintaAlueJaksolla),
-        true
-      )
+      expect(isToimintaAlueittainOpiskelu(toimintaAlueJaksolla)).toBe(true)
     })
   })
 
   describe('listan sisältö', () => {
     it('tyhjässä listassa ei ole kumpaakaan', () => {
-      assert.strictEqual(sisältääOppiaineita([]), false)
-      assert.strictEqual(sisältääToimintaAlueita([]), false)
-      assert.strictEqual(isSekamuotoinen([]), false)
+      expect(sisältääOppiaineita([])).toBe(false)
+      expect(sisältääToimintaAlueita([])).toBe(false)
+      expect(isSekamuotoinen([])).toBe(false)
     })
 
     it('puhdas oppiainelista ei ole sekamuotoinen', () => {
-      assert.strictEqual(sisältääOppiaineita([oppiaine, oppiaine]), true)
-      assert.strictEqual(sisältääToimintaAlueita([oppiaine, oppiaine]), false)
-      assert.strictEqual(isSekamuotoinen([oppiaine, oppiaine]), false)
+      expect(sisältääOppiaineita([oppiaine, oppiaine])).toBe(true)
+      expect(sisältääToimintaAlueita([oppiaine, oppiaine])).toBe(false)
+      expect(isSekamuotoinen([oppiaine, oppiaine])).toBe(false)
     })
 
     it('puhdas toiminta-aluelista ei ole sekamuotoinen', () => {
-      assert.strictEqual(sisältääOppiaineita([toimintaAlue]), false)
-      assert.strictEqual(sisältääToimintaAlueita([toimintaAlue]), true)
-      assert.strictEqual(isSekamuotoinen([toimintaAlue]), false)
+      expect(sisältääOppiaineita([toimintaAlue])).toBe(false)
+      expect(sisältääToimintaAlueita([toimintaAlue])).toBe(true)
+      expect(isSekamuotoinen([toimintaAlue])).toBe(false)
     })
 
     it('tunnistaa sekamuotoisen listan', () => {
-      assert.strictEqual(isSekamuotoinen([toimintaAlue, oppiaine]), true)
+      expect(isSekamuotoinen([toimintaAlue, oppiaine])).toBe(true)
     })
 
     it('tuntematon tyyppi tulkitaan oppiaineeksi, ei toiminta-alueeksi', () => {
       const tuntematon = { $class: 'fi.oph.koski.schema.JokinUusiSuoritus' }
-      assert.strictEqual(sisältääOppiaineita([tuntematon]), true)
-      assert.strictEqual(sisältääToimintaAlueita([tuntematon]), false)
+      expect(sisältääOppiaineita([tuntematon])).toBe(true)
+      expect(sisältääToimintaAlueita([tuntematon])).toBe(false)
     })
   })
 
   describe('osasuoritusten sisältö otsikoita varten', () => {
     it('tunnistaa tyhjän listan', () => {
-      assert.strictEqual(osasuoritustenSisältö([]), 'tyhjä')
+      expect(osasuoritustenSisältö([])).toBe('tyhjä')
     })
 
     it('tunnistaa pelkät oppiaineet', () => {
-      assert.strictEqual(osasuoritustenSisältö([oppiaine]), 'oppiaineet')
+      expect(osasuoritustenSisältö([oppiaine])).toBe('oppiaineet')
     })
 
     it('tunnistaa pelkät toiminta-alueet', () => {
-      assert.strictEqual(
-        osasuoritustenSisältö([toimintaAlue, toimintaAlue]),
+      expect(osasuoritustenSisältö([toimintaAlue, toimintaAlue])).toBe(
         'toimintaAlueet'
       )
     })
 
     it('tunnistaa sekamuodon', () => {
-      assert.strictEqual(
-        osasuoritustenSisältö([toimintaAlue, oppiaine]),
+      expect(osasuoritustenSisältö([toimintaAlue, oppiaine])).toBe(
         'sekamuotoinen'
       )
     })
 
     it('ei riipu lisätietolipusta', () => {
-      assert.strictEqual(
-        osasuoritustenSisältö([toimintaAlue]),
-        'toimintaAlueet'
-      )
-      assert.strictEqual(osasuoritustenSisältö([oppiaine]), 'oppiaineet')
+      expect(osasuoritustenSisältö([toimintaAlue])).toBe('toimintaAlueet')
+      expect(osasuoritustenSisältö([oppiaine])).toBe('oppiaineet')
     })
   })
 
   describe('suorituskohtainen tila', () => {
     it('on toiminta-aluetaulukko, kun lippu on päällä eikä oppiaineita ole', () => {
-      assert.strictEqual(
-        isToimintaAlueittainSuoritus(erityisenTuenPäätöksellä, [toimintaAlue]),
-        true
-      )
+      expect(
+        isToimintaAlueittainSuoritus(erityisenTuenPäätöksellä, [toimintaAlue])
+      ).toBe(true)
     })
 
     it('palautuu lippuun tyhjällä listalla, jotta esitäyttö säilyy', () => {
-      assert.strictEqual(
-        isToimintaAlueittainSuoritus(erityisenTuenPäätöksellä, []),
+      expect(isToimintaAlueittainSuoritus(erityisenTuenPäätöksellä, [])).toBe(
         true
       )
-      assert.strictEqual(
-        isToimintaAlueittainSuoritus(ilmanLisätietoa, []),
-        false
-      )
+      expect(isToimintaAlueittainSuoritus(ilmanLisätietoa, [])).toBe(false)
     })
 
     it('yksikin oppiaine pakottaa normaalitilan lipusta huolimatta', () => {
-      assert.strictEqual(
+      expect(
         isToimintaAlueittainSuoritus(erityisenTuenPäätöksellä, [
           toimintaAlue,
           toimintaAlue,
           oppiaine
-        ]),
-        false
-      )
-      assert.strictEqual(
+        ])
+      ).toBe(false)
+      expect(
         isToimintaAlueittainSuoritus(toimintaAlueJaksolla, [
           toimintaAlue,
           oppiaine
-        ]),
-        false
-      )
+        ])
+      ).toBe(false)
     })
 
     it('on toiminta-aluetaulukko myös ilman lippua, kun listalla on vain toiminta-alueita', () => {
       // 1444 tuotannon suoritusta on tällaisia: sisältö ratkaisee, jotta
       // otsikko ja lisäyspudotus eivät ole eri mieltä keskenään.
-      assert.strictEqual(
-        isToimintaAlueittainSuoritus(ilmanLisätietoa, [toimintaAlue]),
-        true
-      )
+      expect(
+        isToimintaAlueittainSuoritus(ilmanLisätietoa, [toimintaAlue])
+      ).toBe(true)
     })
 
     it('ei ole toiminta-aluetaulukko sekamuotoisella listalla', () => {
-      assert.strictEqual(
+      expect(
         isToimintaAlueittainSuoritus(erityisenTuenPäätöksellä, [
           toimintaAlue,
           oppiaine
-        ]),
-        false
-      )
+        ])
+      ).toBe(false)
     })
   })
 })

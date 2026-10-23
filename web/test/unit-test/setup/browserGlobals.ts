@@ -1,6 +1,6 @@
 /**
  * Minimaaliset selainglobaalit, jotta app-koodia (esim. i18n) voi importata node-ajossa.
- * Importoi tämä ennen muita app-importteja — ES-moduulit ajetaan importtien järjestyksessä.
+ * Vitestin setupFiles alustaa nämä ennen testitiedostojen app-importteja.
  */
 const g = global as any
 g.window = g.window || { koskiLocalizationMap: {} }

@@ -1,4 +1,5 @@
-import * as assert from 'assert'
+import { describe, expect, it } from 'vitest'
+
 import { sortPäätasonSuoritukset } from '../../app/perusopetus-v2/paatasonSuoritustenJarjestys'
 
 type TestiSuoritus = {
@@ -38,7 +39,7 @@ describe('perusopetus v2 päätason suoritusten järjestys', () => {
       vuosiluokka('8', '8', '2018-08-01')
     ])
 
-    assert.deepStrictEqual(järjestetyt, ['päättötodistus', '9', '8', '7'])
+    expect(järjestetyt).toStrictEqual(['päättötodistus', '9', '8', '7'])
   })
 
   it('järjestää saman vuosiluokan suoritukset alkamispäivän mukaan uusimmasta vanhimpaan', () => {
@@ -48,7 +49,7 @@ describe('perusopetus v2 päätason suoritusten järjestys', () => {
       vuosiluokka('7 uusinta', '7', '2014-08-15')
     ])
 
-    assert.deepStrictEqual(järjestetyt, ['8', '7 uusinta', '7 vanha'])
+    expect(järjestetyt).toStrictEqual(['8', '7 uusinta', '7 vanha'])
   })
 
   it('järjestää saman vuosiluokan suoritukset alkamispäivän mukaan myös kun ne ovat valmiiksi oikein päin', () => {
@@ -57,7 +58,7 @@ describe('perusopetus v2 päätason suoritusten järjestys', () => {
       vuosiluokka('7 vanha', '7', '2013-08-15')
     ])
 
-    assert.deepStrictEqual(järjestetyt, ['7 uusinta', '7 vanha'])
+    expect(järjestetyt).toStrictEqual(['7 uusinta', '7 vanha'])
   })
 
   it('jättää alkamispäivättömän suorituksen saman vuosiluokan viimeiseksi', () => {
@@ -66,7 +67,7 @@ describe('perusopetus v2 päätason suoritusten järjestys', () => {
       vuosiluokka('7 päivällinen', '7', '2013-08-15')
     ])
 
-    assert.deepStrictEqual(järjestetyt, ['7 päivällinen', '7 päivätön'])
+    expect(järjestetyt).toStrictEqual(['7 päivällinen', '7 päivätön'])
   })
 
   it('ei muuta alkuperäistä listaa', () => {
@@ -77,9 +78,6 @@ describe('perusopetus v2 päätason suoritusten järjestys', () => {
 
     sortPäätasonSuoritukset(suoritukset, (s) => s.oppimäärä === true)
 
-    assert.deepStrictEqual(
-      suoritukset.map((s) => s.nimi),
-      ['7', '9']
-    )
+    expect(suoritukset.map((s) => s.nimi)).toStrictEqual(['7', '9'])
   })
 })

@@ -1,5 +1,5 @@
-import './setup/browserGlobals'
-import * as assert from 'assert'
+import { describe, expect, it } from 'vitest'
+
 import * as E from 'fp-ts/Either'
 import { KoodistoLoader } from '../../app/appstate/koodisto'
 import { GroupedKoodistot } from '../../app/types/fi/oph/koski/typemodel/GroupedKoodistot'
@@ -23,12 +23,12 @@ describe('KoodistoLoader', () => {
 
     // Ensimmäinen kutsu ei saa hylkäytyä, vaan käsittelee virheen.
     await loader.loadKoodistot(['kielivalikoima'])
-    assert.strictEqual(kutsuja, 1)
+    expect(kutsuja).toBe(1)
 
     // Toinen kutsu ei saa jäädä odottamaan edellisen hylättyä lupausta, vaan
     // yrittää hakua uudelleen.
     await loader.loadKoodistot(['kielivalikoima'])
-    assert.strictEqual(kutsuja, 2)
+    expect(kutsuja).toBe(2)
   })
 
   it('täyttää koodistot onnistuneen haun jälkeen', async () => {
@@ -50,9 +50,6 @@ describe('KoodistoLoader', () => {
 
     await loader.loadKoodistot(['kielivalikoima'])
 
-    assert.strictEqual(
-      loader.findKoodi('kielivalikoima', 'SV')?.koodiarvo,
-      'SV'
-    )
+    expect(loader.findKoodi('kielivalikoima', 'SV')?.koodiarvo).toBe('SV')
   })
 })

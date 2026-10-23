@@ -119,7 +119,7 @@ backtestnonmock:
 
 .PHONY: fronttest
 fronttest:
-	./mvnw $(mvn_opts) -DargLine="$(mvn_argline)" test -Dsuites="fi.oph.koski.mocha.KoskiMochaSpec,fi.oph.koski.mocha.KoskiJsUnitSpec"
+	./mvnw $(mvn_opts) -DargLine="$(mvn_argline)" test -Dsuites="fi.oph.koski.mocha.KoskiMochaSpec"
 
 .PHONY: integrationtest
 integrationtest:
@@ -142,7 +142,7 @@ omadataoauth2e2e:
 		./mvnw $(mvn_opts) -DargLine="$(mvn_argline)" test -Dsuites="fi.oph.koski.omadataoauth2.e2e.OmaDataOAuth2E2ESpec"
 
 .PHONY: test
-test: backtest fronttest backtestnonmock
+test: backtest backtestnonmock js-unit-test fronttest
 
 ### Running application and database
 

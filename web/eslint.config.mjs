@@ -3,6 +3,7 @@ import compatPlugin from 'eslint-plugin-compat'
 import importXPlugin from 'eslint-plugin-import-x'
 import eslintConfigPrettier from 'eslint-config-prettier'
 import mochaPlugin from 'eslint-plugin-mocha'
+import vitestPlugin from '@vitest/eslint-plugin'
 import reactHooksPlugin from 'eslint-plugin-react-hooks'
 import globals from 'globals'
 import eslint from '@eslint/js'
@@ -41,7 +42,14 @@ export default defineConfig([
     }
   },
   eslint.configs.recommended,
-  { ...mochaPlugin.configs.recommended, files: ['test/**/*'] },
+  {
+    extends: [vitestPlugin.configs.recommended],
+    files: ['test/unit-test/**/*'],
+    rules: {
+      'vitest/no-focused-tests': 'error',
+      'vitest/no-disabled-tests': 'error'
+    }
+  },
   { ...compatPlugin.configs['flat/recommended'], files: ['app/**/*'] },
   ...tseslint.configs.recommended,
   {
@@ -193,7 +201,9 @@ export default defineConfig([
     }
   },
   {
+    extends: [mochaPlugin.configs.recommended],
     files: ['test/**/*'],
+    ignores: ['test/unit-test/**'],
     rules: {
       'no-undef': 'off', // Mochan takia
       'no-var': 'off', // Mochan takia
