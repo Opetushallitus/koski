@@ -2,6 +2,7 @@ import { formatFinnishDate, parseFinnishDate } from './date'
 import React, { useLayoutEffect, useRef, useState } from 'react'
 import Text from '../i18n/Text'
 import { t } from '../i18n/i18n'
+import { useOutsideClick } from '../util/useOutsideClick'
 
 export default function DateRangeSelection(props) {
   const [range, setRange] = useState(() => ({
@@ -9,24 +10,21 @@ export default function DateRangeSelection(props) {
     to: props.selectedEndDay && parseFinnishDate(props.selectedEndDay)
   }))
   const { from, to, invalidStartDate, invalidEndDate } = range
-  const [open, setOpen] = useState()
+  const [open, setOpen] = useState(false)
   const rootRef = useRef(null)
   const startDateInputRef = useRef(null)
 
+  useOutsideClick([rootRef], () => setOpen(false), open)
+
   useLayoutEffect(() => {
-    const handleClickOutside = (e) => {
-      !e.target.closest('.date-range') && setOpen(false)
-    }
     const handleFocus = (e) => {
       const focusInside =
         e.target === window ? false : !!rootRef.current.contains(e.target)
       setOpen((wasOpen) => wasOpen && focusInside)
     }
 
-    window.addEventListener('click', handleClickOutside, false)
     window.addEventListener('focus', handleFocus, true)
     return () => {
-      window.removeEventListener('click', handleClickOutside, false)
       window.removeEventListener('focus', handleFocus, true)
     }
   }, [])
