@@ -31,6 +31,7 @@ jobs:
       docker-image: ${{ steps.filter.outputs.all == 'true' || steps.filter.outputs.docker-image == 'true' }}
       renovate: ${{ steps.filter.outputs.renovate == 'true' }}
       dependencies: ${{ steps.filter.outputs.dependencies == 'true' }}
+      node-version: ${{ steps.filter.outputs.node-version == 'true' }}
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       - name: Detect changed paths
@@ -111,6 +112,11 @@ jobs:
               - '.trivyignore'
               - '.github/workflows/trivy_check.yml'
 
+            node-version:
+              - '.nvmrc'
+              - 'omadata-oauth2-sample/Dockerfile'
+              - '.github/workflows/node_vulnerability_check.yml'
+
   no_merge_commits:
     name: No merge commits
     if: github.event_name == 'pull_request'
@@ -159,6 +165,14 @@ jobs:
     permissions:
       contents: read
 
+  node_vulnerabilities:
+    name: Node.js vulnerabilities
+    needs: [changes]
+    if: ${{ needs.changes.outputs.node-version == 'true' }}
+    uses: ./.github/workflows/node_vulnerability_check.yml
+    permissions:
+      contents: read
+
   renovate_config:
     name: Renovate config check
     needs: [changes]
@@ -180,7 +194,7 @@ jobs:
   ci_passed:
     name: CI passed
     runs-on: ubuntu-26.04
-    needs: [changes, no_merge_commits, tests, trivy, renovate_config]
+    needs: [changes, no_merge_commits, tests, trivy, node_vulnerabilities, renovate_config]
     if: ${{ always() }}
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
