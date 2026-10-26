@@ -26,7 +26,7 @@ test.describe('Omat tiedot: lukio 2019', () => {
         'Äidinkieli ja kirjallisuus, Suomen kieli ja kirjallisuus'
       )
       await expect(ai.locator('.laajuus')).toHaveText('(6 opintopistettä)')
-      await expect(ai.locator('td.arvosana')).toHaveText('9')
+      await expect(ai.locator('.arvosana')).toHaveText('9')
 
       // Työpöytänäkymässä kurssit näkyvät suoraan, ei tarvitse avata.
       const aiKurssit = ai.locator('xpath=following-sibling::tr[1]')
@@ -55,9 +55,9 @@ test.describe('Omat tiedot: lukio 2019', () => {
         .locator('xpath=following-sibling::tr[1]')
         .locator('table.kurssilista-mobile')
       const äi1 = aiKurssit.locator('tr.kurssi').filter({ hasText: /^ÄI1\s/ })
-      await expect(äi1.locator('td.arvosana')).toHaveText('8')
+      await expect(äi1.locator('.arvosana')).toHaveText('8')
       const äi2 = aiKurssit.locator('tr.kurssi').filter({ hasText: /^ÄI2\s/ })
-      await expect(äi2.locator('td.arvosana')).toHaveText('8')
+      await expect(äi2.locator('.arvosana')).toHaveText('8')
     })
   })
 

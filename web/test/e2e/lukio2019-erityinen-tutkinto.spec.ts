@@ -24,8 +24,8 @@ test.describe('Lukiokoulutus 2019: erityinen tutkinto', () => {
       'title',
       'Erityisenä tutkintona suoritettu oppiaine'
     )
-    await expect(bi.locator('td.laajuus:not(.arvioitu)')).toHaveText('6')
-    await expect(bi.locator('td.laajuus.arvioitu')).toHaveText('6')
+    await expect(bi.locator('.laajuus:not(.arvioitu)')).toHaveText('6')
+    await expect(bi.locator('.laajuus.arvioitu')).toHaveText('6')
 
     const ai = opiskeluoikeus.oppiaineRivi('ÄI')
     await expect(ai.locator('.title .footnote-hint')).toHaveCount(0)
@@ -65,8 +65,8 @@ test.describe('Lukiokoulutus 2019: erityinen tutkinto', () => {
       'title',
       'Erityisenä tutkintona suoritettu oppiaine'
     )
-    await expect(psAgain.locator('td.laajuus:not(.arvioitu)')).toHaveText('6')
-    await expect(psAgain.locator('td.laajuus.arvioitu')).toHaveText('6')
+    await expect(psAgain.locator('.laajuus:not(.arvioitu)')).toHaveText('6')
+    await expect(psAgain.locator('.laajuus.arvioitu')).toHaveText('6')
 
     // Lipun asettaminen yhdelle oppiaineelle ei vaikuta muihin.
     const ai = opiskeluoikeus.oppiaineRivi('ÄI')
@@ -118,8 +118,8 @@ test.describe('Lukiokoulutus 2019: erityinen tutkinto', () => {
         'title',
         'Erityisenä tutkintona suoritettu oppiaine'
       )
-      await expect(biAgain.locator('td.laajuus:not(.arvioitu)')).toHaveText('12')
-      await expect(biAgain.locator('td.laajuus.arvioitu')).toHaveText('12')
+      await expect(biAgain.locator('.laajuus:not(.arvioitu)')).toHaveText('12')
+      await expect(biAgain.locator('.laajuus.arvioitu')).toHaveText('12')
       await expect(opiskeluoikeus.container.locator('.kurssit-yhteensä')).toHaveText(
         'Arvioitujen osasuoritusten laajuus yhteensä: 12,0Hyväksytysti arvioitujen osasuoritusten laajuus yhteensä: 12,0'
       )

@@ -110,7 +110,7 @@ export class LukioOpiskeluoikeus {
   // shouldEditLaajuus) - muulloin laajuus lasketaan kursseista eikä sitä voi
   // syöttää suoraan.
   laajuusInput(oppiaineRivi: Locator): Locator {
-    return oppiaineRivi.locator('td.laajuus:not(.arvioitu)').locator('input')
+    return oppiaineRivi.locator('.laajuus:not(.arvioitu)').locator('input')
   }
 
   arvosanaDropdown(oppiaineRivi: Locator): Dropdown {
