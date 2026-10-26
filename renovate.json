@@ -28,8 +28,9 @@
     "platformAutomerge is off as a second guard. GitHub's automerge is armed at PR creation and weighs only the required checks, so it would merge past a pending `renovate/stability-days` check if a young release ever reached a branch. Renovate's own automerge waits for CI to pass *and* for its internal checks.",
     "Renovate forces vulnerabilityAlerts over every package rule. Its defaults set minimumReleaseAge to null, so security fixes are not delayed by it. dependencyDashboardApproval is set to false explicitly, so that a security fix gets a PR even when it needs a major update.",
     "The last package rule labels the PRs that Renovate will merge automatically.",
-    "A groupName names what the group contains, never the update type or whether it is automerged: Renovate appends (patch), (minor) or (major) to a group's PR title itself, and the automerge label marks automerged PRs."
+    "A groupName names what the group contains, never the update type or whether it is automerged: the patch, minor and major labels mark the update type, and the automerge label marks automerged PRs. prTitleStrict stops Renovate from also appending (patch), (minor) or (major) to group PR titles."
   ],
+  "prTitleStrict": true,
   "automerge": false,
   "automergeType": "pr",
   "platformAutomerge": false,
@@ -496,6 +497,21 @@
       "matchJsonata": ["$not(automerge = true)"],
       "prPriority": -1,
       "prConcurrentLimit": 2
+    },
+    {
+      "description": "Label patch updates. One rule per type with a literal label, because Renovate fills in label templates once per branch: a templated label would mark a group of minor and patch updates with only one of them.",
+      "matchUpdateTypes": ["patch"],
+      "addLabels": ["patch"]
+    },
+    {
+      "description": "Label minor updates.",
+      "matchUpdateTypes": ["minor"],
+      "addLabels": ["minor"]
+    },
+    {
+      "description": "Label major updates.",
+      "matchUpdateTypes": ["major"],
+      "addLabels": ["major"]
     },
     {
       "description": "Label PRs that Renovate will merge automatically and exempt them from the hourly PR limit. They stay under the concurrent PR limits, which cap how many CI runs they start at once. This must be the last rule, so that it sees the automerge value set by the rules above.",
