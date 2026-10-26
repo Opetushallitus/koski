@@ -22,6 +22,7 @@ import { replaceLocation } from '../util/location'
 import { Paragraphs } from '../i18n/Paragraphs'
 import { lang } from '../i18n/i18n'
 import {
+  aikuistenPerusopetuksenKurssikertymaKyselymalli,
   ammatillinenOpiskelijavuositiedotKyselymalli,
   ammatillinenOsittainenSuoritustiedotKyselymalli,
   ammatillinenTutkintoSuoritustiedotKyselymalli,
@@ -1157,7 +1158,7 @@ function AikuistenPerusopetuksenKurssikertymäRaportti({ stateP }) {
     <Text name="Aikuisten-perusopetus-kurssikertymä-raportti-title" />
   )
   const shortDescriptionText = (
-    <Text name="Aikuisten-perusopetus-kurssikertymä-raportti-short-description" />
+    <Text name="Aikuisten-perusopetus-kurssikertymä-raportti-short-description-massaluovutus" />
   )
   const dateInputHelpText = (
     <Text name="Aikuisten-perusopetus-kurssikertymä-raportti-date-input-help" />
@@ -1174,6 +1175,7 @@ function AikuistenPerusopetuksenKurssikertymäRaportti({ stateP }) {
       shortDescription={shortDescriptionText}
       dateInputHelp={dateInputHelpText}
       example={exampleText}
+      massaluovutusKyselymalli={aikuistenPerusopetuksenKurssikertymaKyselymalli}
       lang={lang}
     />
   )
