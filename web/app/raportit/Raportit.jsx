@@ -26,6 +26,7 @@ import {
   ammatillinenOsittainenSuoritustiedotKyselymalli,
   ammatillinenTutkintoSuoritustiedotKyselymalli,
   muuAmmatillinenKyselymalli,
+  topksAmmatillinenKyselymalli,
   vstKopsKyselymalli,
   vstOsaamismerkitKyselymalli,
   vstVapaatavoitteinenKyselymalli
@@ -734,7 +735,9 @@ function MuuAmmatillinenRaportti({ stateP }) {
 
 function TOPKSAmmatillinenRaportti({ stateP }) {
   const titleText = <Text name="Suoritustiedot (TOPKS ammatillinen koulutus)" />
-  const descriptionText = <Text name="topksammatillinen-description" />
+  const descriptionText = (
+    <Text name="topksammatillinen-description-massaluovutus" />
+  )
 
   return (
     <AikajaksoRaportti
@@ -742,6 +745,7 @@ function TOPKSAmmatillinenRaportti({ stateP }) {
       apiEndpoint={'/topksammatillinen'}
       title={titleText}
       shortDescription={descriptionText}
+      massaluovutusKyselymalli={topksAmmatillinenKyselymalli}
       lang={lang}
     />
   )
