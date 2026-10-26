@@ -1,10 +1,13 @@
+name: Koski Mocha browser tests
+description: "Run one shard of the Koski Mocha browser tests"
+
 inputs:
   shardIndex:
+    description: "1-based index of the shard to run"
     required: true
-    type: string
   shardTotal:
+    description: "Total number of shards"
     required: true
-    type: string
 
 runs:
   using: "composite"
