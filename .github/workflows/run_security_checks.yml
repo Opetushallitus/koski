@@ -19,32 +19,11 @@ jobs:
   node_vulnerabilities:
     name: Node.js vulnerabilities
     uses: ./.github/workflows/node_vulnerability_check.yml
-
-  notify_node_vulnerabilities:
-    name: Notify Slack of Node.js vulnerabilities
-    runs-on: ubuntu-26.04
-    needs: [node_vulnerabilities]
-    if: always() && needs.node_vulnerabilities.result == 'failure'
-    permissions: {}
-    timeout-minutes: 5
-    steps:
-      - name: Report to Slack
-        uses: slackapi/slack-github-action@dcb1066f776dd043e64d0e8ba94ca15cc7e1875d # v4.0.0
-        with:
-          webhook: ${{ secrets.SLACK_WEBHOOK_URL_PROD_ALERTS }}
-          webhook-type: incoming-webhook
-          payload-templated: true
-          payload: |
-            {
-              "text": ":rotating_light: Node.js vulnerability check failed",
-              "blocks": [
-                {"type": "section", "text": {"type": "mrkdwn", "text": "*:rotating_light: Node.js vulnerability check failed*\n\nA pinned Node.js version has a high or critical CVE or is end-of-life, or the check could not be completed."}},
-                {"type": "context", "elements": [
-                  {"type": "mrkdwn", "text": "*Repo:* ${{ github.repository }} | *<${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}/attempts/${{ github.run_attempt }}|View Run>*"}
-                ]},
-                {"type": "divider"}
-              ]
-            }
+    with:
+      notify: true
+    secrets:
+      SLACK_WEBHOOK_URL_PROD_ALERTS: ${{ secrets.SLACK_WEBHOOK_URL_PROD_ALERTS }}
+      SLACK_CI_ALERTS_WEBHOOK: ${{ secrets.SLACK_CI_ALERTS_WEBHOOK }}
 
   image_vulnerabilities:
     name: Image vulnerabilities
