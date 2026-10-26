@@ -1371,6 +1371,7 @@
   "Muokkaa vahvistusta": "Muokkaa vahvistusta",
   "Muu": "Muu",
   "muuammatillinenraportti-description": "Raportti sisältää sellaiset ammatillisen koulutuksen opiskeluoikeudet, joissa päätason suoritus on muun ammatillisen koulutuksen suoritus, valitulla aikajaksolla sekä näihin liittyvien osasuoritusten tiedot erilaisina summalukuina tietojen oikeellisuuden tarkistamista varten. Raportti pohjautuu edellisen päivän tietoihin, eli tietojen päivitys KOSKI-tietovarantoon ei näy välittömästi raportilla. Raportin lataaminen voi viedä viisikin minuuttia.",
+  "muuammatillinenraportti-description-massaluovutus": "Raportti sisältää sellaiset ammatillisen koulutuksen opiskeluoikeudet, joissa päätason suoritus on muun ammatillisen koulutuksen suoritus, valitulla aikajaksolla sekä näihin liittyvien osasuoritusten tiedot erilaisina summalukuina tietojen oikeellisuuden tarkistamista varten. Raportti pohjautuu edellisen päivän tietoihin, eli tietojen päivitys KOSKI-tietovarantoon ei näy välittömästi raportilla. Raportti muodostetaan taustalla, joten voit halutessasi poistua sivulta muodostamisen ajaksi. Valmiit raportit ovat ladattavissa kolmen vuorokauden ajan.",
   "Muutokset tallennettu": "Muutokset tallennettu",
   "Muutospäivä": "Muutospäivä",
   "Muut suoritukset": "Muut suoritukset",

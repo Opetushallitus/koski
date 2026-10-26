@@ -25,6 +25,7 @@ import {
   ammatillinenOpiskelijavuositiedotKyselymalli,
   ammatillinenOsittainenSuoritustiedotKyselymalli,
   ammatillinenTutkintoSuoritustiedotKyselymalli,
+  muuAmmatillinenKyselymalli,
   vstKopsKyselymalli,
   vstOsaamismerkitKyselymalli,
   vstVapaatavoitteinenKyselymalli
@@ -715,7 +716,9 @@ function AmmatillinenOsittainenSuoritustietojenTarkistus({ stateP }) {
 
 function MuuAmmatillinenRaportti({ stateP }) {
   const titleText = <Text name="Suoritustiedot (muu ammatillinen koulutus)" />
-  const descriptionText = <Text name="muuammatillinenraportti-description" />
+  const descriptionText = (
+    <Text name="muuammatillinenraportti-description-massaluovutus" />
+  )
 
   return (
     <AikajaksoRaportti
@@ -723,6 +726,7 @@ function MuuAmmatillinenRaportti({ stateP }) {
       apiEndpoint={'/muuammatillinen'}
       title={titleText}
       shortDescription={descriptionText}
+      massaluovutusKyselymalli={muuAmmatillinenKyselymalli}
       lang={lang}
     />
   )
