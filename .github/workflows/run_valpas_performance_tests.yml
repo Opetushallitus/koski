@@ -45,12 +45,13 @@ jobs:
         run: ./mvnw test-compile
 
       - name: Run perftest valpas-organisaatio-listaus
+        env:
+          VALPAS_ORGANISAATIOT_S3_KEY: ${{ secrets.VALPAS_ORGANISAATIOT_S3_KEY }}
         run: |
           export PERFTEST_THREADS=30
           export PERFTEST_ROUNDS=1700
           export WARMUP_ROUNDS=50
           export PERFTEST_SUCCESS_THRESHOLD_PERCENTAGE=98
-          export VALPAS_ORGANISAATIOT_S3_KEY=${{ secrets.VALPAS_ORGANISAATIOT_S3_KEY }}
           ./mvnw exec:java -Dexec.mainClass="fi.oph.koski.perftest.ValpasRandomPerusopetuksenOppilaitoksetGetter"
 
       - name: Report failure
@@ -91,12 +92,13 @@ jobs:
         run: ./mvnw test-compile
 
       - name: Run perftest valpas-oppija-detaalit
+        env:
+          VALPAS_OPPIJAOIDIT_S3_KEY: ${{ secrets.VALPAS_OPPIJAOIDIT_S3_KEY }}
         run: |
           export PERFTEST_THREADS=30
           export PERFTEST_ROUNDS=5000
           export WARMUP_ROUNDS=50
           export PERFTEST_SUCCESS_THRESHOLD_PERCENTAGE=98
-          export VALPAS_OPPIJAOIDIT_S3_KEY=${{ secrets.VALPAS_OPPIJAOIDIT_S3_KEY }}
           ./mvnw exec:java -Dexec.mainClass="fi.oph.koski.perftest.ValpasRandomPerusopetuksenOppijaGetter"
 
       - name: Report failure

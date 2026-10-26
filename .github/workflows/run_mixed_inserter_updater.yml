@@ -31,8 +31,14 @@ jobs:
         run: ./mvnw test-compile -P-frontend
 
       - name: Run MixedOpiskeluoikeusInserterUpdater
+        env:
+          OPISKELUOIKEUS_COUNT: ${{ inputs.opiskeluoikeus_count }}
         run: |
-          export PERFTEST_ROUNDS=$(( ${{ inputs.opiskeluoikeus_count }} / 2 ))
+          if ! [[ "$OPISKELUOIKEUS_COUNT" =~ ^[1-9][0-9]*$ ]]; then
+            echo "::error::opiskeluoikeus_count must be a positive whole number"
+            exit 1
+          fi
+          export PERFTEST_ROUNDS=$(( OPISKELUOIKEUS_COUNT / 2 ))
           export PERFTEST_THREADS=4
           export WARMUP_ROUNDS=0
           ./mvnw exec:java -Dexec.mainClass="fi.oph.koski.perftest.MixedOpiskeluoikeusInserterUpdater"

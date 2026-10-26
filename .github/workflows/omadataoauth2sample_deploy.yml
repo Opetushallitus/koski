@@ -121,7 +121,7 @@ jobs:
       - name: Get task definition skeleton
         id: get-task-def
         run: |
-          TASK_DEFINITION_ARN=$(aws ecs describe-task-definition --task-definition "${{ env.TASK_FAMILY }}" --region eu-west-1 | jq -r .taskDefinition.taskDefinitionArn )
+          TASK_DEFINITION_ARN=$(aws ecs describe-task-definition --task-definition "$TASK_FAMILY" --region eu-west-1 | jq -r .taskDefinition.taskDefinitionArn )
           aws ecs describe-task-definition --task-definition $TASK_DEFINITION_ARN --query 'taskDefinition' \
           | jq 'del(.registeredBy, .registeredAt, .status, .revision, .requiresAttributes, .taskDefinitionArn, .compatibilities)' \
           > task-definition.json

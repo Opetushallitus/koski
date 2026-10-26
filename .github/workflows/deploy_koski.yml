@@ -45,8 +45,10 @@ jobs:
           echo "taskdef-arn=$(aws ssm get-parameter --name /koski/task-definition-skeleton --output text --query 'Parameter.Value')" >> $GITHUB_OUTPUT
 
       - name: Get task definition skeleton
+        env:
+          TASKDEF_ARN: ${{ steps.get-taskdef-arn.outputs.taskdef-arn }}
         run: |
-          aws ecs describe-task-definition --task-definition ${{ steps.get-taskdef-arn.outputs.taskdef-arn }} --query 'taskDefinition' > task-definition.json
+          aws ecs describe-task-definition --task-definition "$TASKDEF_ARN" --query 'taskDefinition' > task-definition.json
 
       - name: Render Amazon ECS task definition
         id: task-def
@@ -67,9 +69,10 @@ jobs:
 
       - name: Verify ECS deployment
         id: verify-ecs-deployment
+        env:
+          NEW_TASK_DEF_ARN: ${{ steps.ecs-deploy.outputs.task-definition-arn }}
         run: |
           CURRENT_TASK_DEF_ARN=$(aws ecs describe-services --cluster koski-cluster --services koski-v2 --query services[0].deployments[0].taskDefinition | jq -r ".")
-          NEW_TASK_DEF_ARN=${{ steps.ecs-deploy.outputs.task-definition-arn }}
           echo "Current task arn: $CURRENT_TASK_DEF_ARN"
           echo "New task arn: $NEW_TASK_DEF_ARN"
           if [ "$CURRENT_TASK_DEF_ARN" != "$NEW_TASK_DEF_ARN" ]; then
@@ -83,8 +86,10 @@ jobs:
           echo "taskdef-arn=$(aws ssm get-parameter --name /koski/raportointikanta-loader/task-definition-skeleton --output text --query 'Parameter.Value')" >> $GITHUB_OUTPUT
 
       - name: Get task definition skeleton
+        env:
+          TASKDEF_ARN: ${{ steps.get-raportointikanta-loader-taskdef-arn.outputs.taskdef-arn }}
         run: |
-          aws ecs describe-task-definition --task-definition ${{ steps.get-raportointikanta-loader-taskdef-arn.outputs.taskdef-arn }} --query 'taskDefinition' > raportointikanta-loader-task-definition.json
+          aws ecs describe-task-definition --task-definition "$TASKDEF_ARN" --query 'taskDefinition' > raportointikanta-loader-task-definition.json
 
       - name: Render Amazon ECS task definition
         id: raportointikanta-loader-task-def
@@ -112,8 +117,10 @@ jobs:
           echo "taskdef-arn=$(aws ssm get-parameter --name /koski/ytr-data-loader/task-definition-skeleton --output text --query 'Parameter.Value')" >> $GITHUB_OUTPUT
 
       - name: Get task definition skeleton
+        env:
+          TASKDEF_ARN: ${{ steps.get-ytr-data-loader-taskdef-arn.outputs.taskdef-arn }}
         run: |
-          aws ecs describe-task-definition --task-definition ${{ steps.get-ytr-data-loader-taskdef-arn.outputs.taskdef-arn }} --query 'taskDefinition' > ytr-data-loader-task-definition.json
+          aws ecs describe-task-definition --task-definition "$TASKDEF_ARN" --query 'taskDefinition' > ytr-data-loader-task-definition.json
 
       - name: Render Amazon ECS task definition
         id: ytr-data-loader-task-def
