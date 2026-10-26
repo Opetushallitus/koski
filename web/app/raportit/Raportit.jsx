@@ -30,6 +30,7 @@ import {
   lukioKurssikertymatKyselymalli,
   muuAmmatillinenKyselymalli,
   muuKuinSaanneltyKoulutusKyselymalli,
+  perusopetukseenValmistavaKyselymalli,
   topksAmmatillinenKyselymalli,
   tuvaSuoritustiedotKyselymalli,
   vstKopsKyselymalli,
@@ -980,7 +981,7 @@ function EsiopetuksenOppijamäärätRaportti({ stateP }) {
 function PerusopetukseenValmistavanTarkistusRaportti({ stateP }) {
   const titleText = <Text name="Perusopetukseen-valmistava-raportti-title" />
   const shortDescriptionText = (
-    <Text name="Perusopetukseen-valmistava-raportti-short-description" />
+    <Text name="Perusopetukseen-valmistava-raportti-short-description-massaluovutus" />
   )
   const exampleText = (
     <Paragraphs name="Perusopetukseen-valmistava-raportti-example" />
@@ -995,6 +996,7 @@ function PerusopetukseenValmistavanTarkistusRaportti({ stateP }) {
       example={exampleText}
       osasuoritusType={osasuoritusTypes.OPINNOT}
       hideOsasuoritustenAikarajaus
+      massaluovutusKyselymalli={perusopetukseenValmistavaKyselymalli}
       lang={lang}
     />
   )
