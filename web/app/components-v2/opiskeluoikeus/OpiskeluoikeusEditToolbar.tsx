@@ -10,7 +10,6 @@ import {
 } from '../../util/koskiApi'
 import { getOpiskeluoikeusOid } from '../../util/opiskeluoikeus'
 import { RequiresWriteAccess } from '../access/RequiresWriteAccess'
-import { Column, ColumnRow } from '../containers/Columns'
 import { FlatButton } from '../controls/FlatButton'
 import { RaisedButton } from '../controls/RaisedButton'
 import { Trans } from '../texts/Trans'
@@ -34,7 +33,6 @@ export type OpiskeluoikeusEditToolbarProps = {
 export const OpiskeluoikeusEditToolbar = (
   props: OpiskeluoikeusEditToolbarProps
 ) => {
-  const spans = props.editMode ? [12, 12] : [16, 8]
   const opiskeluoikeusOid = getOpiskeluoikeusOid(props.opiskeluoikeus)
   const hasAnyInvalidateAccess = useVirkailijaUser()?.hasAnyInvalidateAccess
   const inVersiohistoria = useVersionumero(opiskeluoikeusOid) !== null
@@ -49,8 +47,8 @@ export const OpiskeluoikeusEditToolbar = (
     (props.editMode || hasAnyInvalidateAccess)
 
   return (
-    <ColumnRow>
-      <Column span={{ default: spans[0], phone: 24 }}>
+    <div className="OpiskeluoikeusEditToolbar">
+      <div className="OpiskeluoikeusEditToolbar__voimassaoloaika">
         <TestIdText id="voimassaoloaika">
           <Trans>{'Opiskeluoikeuden voimassaoloaika'}</Trans>
           {': '}
@@ -65,11 +63,8 @@ export const OpiskeluoikeusEditToolbar = (
                 props.opiskeluoikeus.päättymispäivä
               )}
         </TestIdText>
-      </Column>
-      <Column
-        span={{ default: spans[1], phone: 24 }}
-        align={{ default: 'right', phone: 'left' }}
-      >
+      </div>
+      <div className="OpiskeluoikeusEditToolbar__painikkeet">
         {mitätöintiTarjolla && opiskeluoikeusOid && (
           <MitätöintiButton opiskeluoikeusOid={opiskeluoikeusOid} />
         )}
@@ -103,8 +98,8 @@ export const OpiskeluoikeusEditToolbar = (
             )}
           </RequiresLahdejarjestelmakytkennanPurkaminenAccess>
         )}
-      </Column>
-    </ColumnRow>
+      </div>
+    </div>
   )
 }
 

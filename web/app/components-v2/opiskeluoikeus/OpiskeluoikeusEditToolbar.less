@@ -1,0 +1,40 @@
+// Voimassaoloaika ja painikkeet ovat samalla rivillä, ja painikkeet pysyvät
+// yhdellä rivillä. Kiinteässä sarakejaossa mitätöinti- ja kytkennän
+// purkamispainike eivät mahtuneet vierekkäin, vaan rivittyivät ja kasvattivat
+// riviä, jolloin keskitetty voimassaoloaika sai ylä- ja alapuolelleen
+// ylimääräistä tilaa. Jos painikkeet eivät mahdu tekstin viereen, ne siirtyvät
+// yhdessä omalle rivilleen.
+.OpiskeluoikeusEditToolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  column-gap: @Columns-gutter;
+  // Sama vähimmäiskorkeus kuin ruudukon sarakkeilla (Columns.less)
+  min-height: 2.5 * @baseline;
+
+  // Puhelimella osat ovat allekkain ja kumpikin vähintään sarakkeen korkuinen
+  // kuten ruudukossa, myös tyhjä painikealue.
+  @media screen and (max-width: @Columns-phone-breakpoint) {
+    flex-direction: column;
+    align-items: stretch;
+
+    > * {
+      display: flex;
+      align-items: center;
+      min-height: 2.5 * @baseline;
+    }
+  }
+}
+
+.OpiskeluoikeusEditToolbar__painikkeet {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
+  margin-left: auto;
+
+  @media screen and (max-width: @Columns-phone-breakpoint) {
+    justify-content: flex-start;
+    margin-left: 0;
+  }
+}
