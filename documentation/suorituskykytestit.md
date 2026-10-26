@@ -1,6 +1,6 @@
 # Koski suorituskykytestit
 
-Suorituskykytestit ovat ajossa Github Actionsissa ja ne ajetaan joka yö testiopintopolkua vasten.
+Suorituskykytestit ovat ajossa Github Actionsissa ja ne ajetaan arkiöisin (ma–pe) testiopintopolkua vasten.
 
 Ajantasaisen tiedon testien ajamisesta saa [github actionsin configuraatiosta](../.github/workflows/run_performance_tests.yml).
 
