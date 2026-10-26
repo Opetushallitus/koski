@@ -12,6 +12,8 @@ jobs:
   scan:
     name: Trivy scan
     uses: $/.github/workflows/trivy_check.yml
+    permissions:
+      contents: read
     with:
       upload-report: true
       severity: CRITICAL,HIGH
@@ -19,6 +21,8 @@ jobs:
   node_vulnerabilities:
     name: Node.js vulnerabilities
     uses: $/.github/workflows/node_vulnerability_check.yml
+    permissions:
+      contents: read
     with:
       notify: true
     secrets:
@@ -28,6 +32,8 @@ jobs:
   image_vulnerabilities:
     name: Image vulnerabilities
     uses: $/.github/workflows/image_vulnerability_check.yml
+    permissions:
+      contents: read
 
   notify_image_vulnerabilities:
     name: Notify Slack of image vulnerabilities
@@ -58,6 +64,8 @@ jobs:
   pnpm_audit:
     name: pnpm audit
     uses: $/.github/workflows/pnpm_audit_check.yml
+    permissions:
+      contents: read
     with:
       notify: true
     secrets:

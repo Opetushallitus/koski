@@ -180,6 +180,8 @@ jobs:
     needs: [changes]
     if: ${{ needs.changes.outputs.renovate == 'true' }}
     runs-on: ubuntu-26.04
+    permissions:
+      contents: read
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
@@ -200,6 +202,8 @@ jobs:
     runs-on: ubuntu-26.04
     needs: [changes, no_merge_commits, tests, trivy, node_vulnerabilities, renovate_config]
     if: ${{ always() }}
+    permissions:
+      contents: read
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:

@@ -2,10 +2,16 @@ name: Dev & QA
 on:
   workflow_call:
 
+permissions:
+  contents: read
+
 jobs:
   deploy_dev:
     name: Dev
     uses: $/.github/workflows/deploy_koski.yml
+    permissions:
+      id-token: write
+      contents: read
     with:
       environment: dev
       commithash: ${{ github.sha }}
@@ -15,6 +21,9 @@ jobs:
     name: QA
     needs: [deploy_dev]
     uses: $/.github/workflows/deploy_koski.yml
+    permissions:
+      id-token: write
+      contents: read
     with:
       environment: qa
       commithash: ${{ github.sha }}

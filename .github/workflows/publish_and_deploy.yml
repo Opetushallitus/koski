@@ -1,6 +1,10 @@
 name: Publish & deploy
 on:
   workflow_call:
+
+permissions:
+  contents: read
+
 env:
   DOCKER_BUILDKIT: 1
   SSH_AUTH_SOCK: /tmp/ssh_agent.sock
@@ -48,6 +52,10 @@ jobs:
     needs: [check_master_head]
     if: ${{ needs.check_master_head.outputs.deploy == 'true' }}
     uses: $/.github/workflows/publish_image.yml
+    permissions:
+      id-token: write
+      contents: read
+      packages: write
     with:
       commithash: ${{ github.sha }}
     secrets: inherit
@@ -64,12 +72,18 @@ jobs:
       cancel-in-progress: false
       queue: max
     uses: $/.github/workflows/deploy_dev_qa.yml
+    permissions:
+      id-token: write
+      contents: read
     secrets: inherit
 
   deploy_omadataoauth2sample_dev:
     name: OmaData dev
     needs: [deploy_dev_qa]
     uses: $/.github/workflows/omadataoauth2sample_deploy.yml
+    permissions:
+      id-token: write
+      contents: read
     with:
       environment: dev
       commithash: ${{ github.sha }}
@@ -79,6 +93,9 @@ jobs:
     name: OmaData QA
     needs: [deploy_dev_qa]
     uses: $/.github/workflows/omadataoauth2sample_deploy.yml
+    permissions:
+      id-token: write
+      contents: read
     with:
       environment: qa
       commithash: ${{ github.sha }}
@@ -100,6 +117,9 @@ jobs:
     name: Prod
     needs: [deploy_dev_qa]
     uses: $/.github/workflows/deploy_koski.yml
+    permissions:
+      id-token: write
+      contents: read
     with:
       environment: prod
       commithash: ${{ github.sha }}
