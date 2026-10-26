@@ -7,3 +7,5 @@ strictPeerDependencies: true
 updateNotifier: false
 minimumReleaseAge: 4320
 ignoreScripts: true
+trustPolicy: no-downgrade
+blockExoticSubdeps: true
