@@ -1622,6 +1622,7 @@
   "perusopetukseenvalmistavaopetus_koski_raportti": "Perusopetukseen valmistavan opetuksen suoritukset",
   "Perusopetukseen-valmistava-raportti-example": "Esimerkiksi, kun halutaan tulostaa perusopetukseen valmistavan opetuksen tiedot kalenterivuodelta 2025, syötetään aikajakson alkupäivämääräksi 1.1.2025 ja loppupäivämääräksi 31.12.2025.",
   "Perusopetukseen-valmistava-raportti-short-description": "Perusopetukseen valmistavan opetuksen suoritustiedot halutulla aikavälillä",
+  "Perusopetukseen-valmistava-raportti-short-description-massaluovutus": "Perusopetukseen valmistavan opetuksen suoritustiedot halutulla aikavälillä. Raportti muodostetaan taustalla, joten voit halutessasi poistua sivulta muodostamisen ajaksi. Valmiit raportit ovat ladattavissa kolmen vuorokauden ajan.",
   "Perusopetukseen-valmistava-raportti-title": "Perusopetukseen valmistavan opetuksen tiedot",
   "Perusopetuksen aloittamista lykätty": "Perusopetuksen aloittamista lykätty",
   "Perusopetuksen oppiaineen oppimäärä": "Perusopetuksen oppiaineen oppimäärä",
