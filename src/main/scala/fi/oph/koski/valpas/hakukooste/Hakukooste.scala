@@ -35,7 +35,7 @@ case class Hakutoive(
   hakukohdeOid: String,
   hakukohdeNimi: BlankableLocalizedString,
   organisaatioNimi: BlankableLocalizedString,
-  hakukohdeOrganisaatio: String,
+  hakukohdeOrganisaatio: Option[String],
   koulutusNimi: BlankableLocalizedString,
   koulutusOid: Option[ValpasHakutoive.KoulutusOid],
   hakutoivenumero: Int,

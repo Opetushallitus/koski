@@ -198,12 +198,17 @@ class OvaraHakukoosteServiceSpec extends ValpasTestBase with Matchers with Eithe
           .willReturn(WireMock.ok().withBody(OvaraHakukoosteServiceSpec.realJatkuvanHaunResponse(oppijaOid)))
       )
       val results = mockClient.getNäytettävätHakukoosteet(Set(oppijaOid), ainoastaanAktiivisetHaut = false, "test").value
-      results should have length 1
+      results should have length 2
       val result = results.head
       result.hakutapa.koodiarvo should equal("03")
       result.aktiivinenHaku should equal(Some(false))
       result.hakutoiveet.head.hakutoivenumero should equal(-1)
       ValpasHakutoive(result.hakutoiveet.head).hakutoivenumero should be(None)
+
+      results.last.aktiivinenHaku should be(None)
+      val hakutoive2 = results.last.hakutoiveet.head
+      hakutoive2.hakukohdeOrganisaatio should be(None)
+      ValpasHakutoive(hakutoive2).organisaatioNimi should be(None)
     }
 
     "palauttaa hakutilanteet kun ovara palauttaa saman oppija-oidin" in {
@@ -320,7 +325,7 @@ object OvaraHakukoosteServiceSpec {
        |  "hakukohdeOid": "${t.hakukohdeOid}",
        |  "hakukohdeNimi": ${localizedStringJson(t.hakukohdeNimi)},
        |  "hakutoivenumero": ${t.hakutoivenumero},
-       |  "hakukohdeOrganisaatio": "${t.hakukohdeOrganisaatio}",
+       |  "hakukohdeOrganisaatio": ${t.hakukohdeOrganisaatio.map(s => s""""$s"""").getOrElse("null")},
        |  "organisaatioNimi": ${localizedStringJson(t.organisaatioNimi)},
        |  "koulutusOid": ${t.koulutusOid.map(s => s""""$s"""").getOrElse("null")},
        |  "koulutusNimi": ${localizedStringJson(t.koulutusNimi)},
@@ -683,6 +688,59 @@ object OvaraHakukoosteServiceSpec {
        |            }
        |          }
        |        ],
+       |        "vastaanottotieto": "KESKEN",
+       |        "valintatila": "KESKEN",
+       |        "ilmoittautumistila": "EI_TEHTY"
+       |      }
+       |    ]
+       |  },
+       |  {
+       |    "hakemusOid": "1.2.246.562.11.00000000000003565403",
+       |    "hakemusUrl": "https://virkailija.testiopintopolku.fi/lomake-editori/applications/search?term=1.2.246.562.11.00000000000003565403",
+       |    "hakemuksenMuokkauksenAikaleima": "2026-09-16T21:22:08.579415+03:00",
+       |    "email": "rolf_testi_rekola_testi-48451722313@testiopintopolku.fi",
+       |    "matkapuhelin": "+3584848451722",
+       |    "lahiosoite": "Testitie 48451722313",
+       |    "postinumero": "00100",
+       |    "postitoimipaikka": "HELSINKI",
+       |    "maa": {
+       |      "versioituUri": "maatjavaltiot2_246#2",
+       |      "koodiarvo": "246",
+       |      "koodistoUri": "maatjavaltiot2",
+       |      "koodistoVersio": 2,
+       |      "nimi": {
+       |        "fi": "Suomi",
+       |        "sv": "Finland",
+       |        "en": "Finland"
+       |      }
+       |    },
+       |    "hakuOid": "1.2.246.562.29.00000000000000091855",
+       |    "hakuNimi": {
+       |      "fi": "Omnia, jatkuva haku, 8.6. - 13.7.2026",
+       |      "sv": "Omnia, jatkuva haku, 8.6. - 13.7.2026",
+       |      "en": "Omnia, jatkuva haku, 8.6. - 13.7.2026"
+       |    },
+       |    "hakutapa": {
+       |      "versioituUri": "hakutapa_03#1",
+       |      "koodiarvo": "03",
+       |      "koodistoUri": "hakutapa",
+       |      "koodistoVersio": 1,
+       |      "nimi": {
+       |        "fi": "Jatkuva haku",
+       |        "sv": "Kontinuerlig ansökan",
+       |        "en": "Rolling admission (upper secondary level)"
+       |      }
+       |    },
+       |    "haunAlkamispaivamaara": "2026-06-08T12:00:00",
+       |    "oppijaOid": "1.2.246.562.24.48451722313",
+       |    "hakutoiveet": [
+       |      {
+       |        "hakukohdeOid": "1.2.246.562.20.00000000000000092088",
+       |        "hakukohdeNimi": {},
+       |        "hakutoivenumero": 1,
+       |        "organisaatioNimi": {},
+       |        "koulutusNimi": {},
+       |        "hakukohdeKoulutuskoodi": [],
        |        "vastaanottotieto": "KESKEN",
        |        "valintatila": "KESKEN",
        |        "ilmoittautumistila": "EI_TEHTY"

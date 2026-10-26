@@ -243,8 +243,8 @@ object HakukoosteExampleData {
       maa = maa,
       matkapuhelin = "0401234567",
       hakutoiveet = hakutoiveet.map(hakutoive => hakutoive.copy(
-        organisaatioNimi = MockOrganisaatioRepository
-          .getOrganisaationNimiHetkellä(hakutoive.hakukohdeOrganisaatio, alkamisaika.toLocalDate)
+        organisaatioNimi = hakutoive.hakukohdeOrganisaatio
+          .flatMap(MockOrganisaatioRepository.getOrganisaationNimiHetkellä(_, alkamisaika.toLocalDate))
           .toBlankable,
         hakutoivenumero = if (ilmanHakutoivenumeroita) {
           -1
@@ -277,7 +277,7 @@ object HakukoosteExampleData {
       ).toBlankable,
       hakutoivenumero = -1,
       koulutusNimi = Finnish(koulutusNimi),
-      hakukohdeOrganisaatio = hakukohdeOrganisaatio,
+      hakukohdeOrganisaatio = Some(hakukohdeOrganisaatio),
       pisteet = pisteet,
       alinHyvaksyttyPistemaara = alinHyvaksyttyPistemaara,
       valintatila = valintatila,
