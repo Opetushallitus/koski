@@ -130,8 +130,14 @@
 // Tunnustettu, ...) ovat 18 px korkeita ja kiinni toisissaan, jolloin näkymä on
 // liian tiivis. Väli tulee riviväliin eikä riviin itseensä, joten monirivisten
 // kenttien korkeus säilyy.
+//
+// Kentät ja niiden alirivit ovat samassa 27 px rytmissä: 18 px kenttä + 9 px
+// väli, ja arvioinnin ja näytön KeyValueTable-rivit (24 px) + 3 px väli.
+@Osasuoritus-kenttien-vali: 9px;
+@Osasuoritus-alirivien-vali: 3px;
+
 .OsasuoritusProperty + .OsasuoritusProperty {
-  margin-top: (@baseline / 2);
+  margin-top: @Osasuoritus-kenttien-vali;
 }
 
 // ---------------------------------------------------------------------------
@@ -153,6 +159,22 @@
   // kielitutkinnon osakokeen arvioinnit) alkaa kenttien nimien kohdalta.
   > .KeyValueTable {
     grid-column: 2 / -1;
+  }
+
+  .KeyValueTable {
+    row-gap: @Osasuoritus-alirivien-vali;
+  }
+
+  // Alikentät ovat 18 px rivejä kuten kentät: joko kentän ruudukon riveinä tai
+  // arvosarakkeeseen pinottuina nimi–arvo-pareina (esim. VST:n arviointi).
+  .OsasuoritusProperty {
+    row-gap: @Osasuoritus-kenttien-vali;
+  }
+
+  .OsasuoritusPropertyValue
+    .OsasuoritusPropertyValue--level-2
+    + .OsasuoritusPropertyLabel--level-1 {
+    margin-top: @Osasuoritus-kenttien-vali;
   }
 
   // Ilman sisäistä tilaa teksti olisi kiinni laatikon ylä- ja alareunassa.
@@ -237,6 +259,9 @@
     > .OsasuoritusProperty {
       // stylelint-disable-next-line plugin/no-unsupported-browser-features -- ks. sama sääntö ylempänä
       grid-template-columns: subgrid;
+      // Nimi ja arvo ovat tässä omilla riveillään, eikä niiden väliin kuulu
+      // kenttien välistä väliä.
+      row-gap: 0;
 
       .OsasuoritusPropertyLabel,
       .OsasuoritusPropertyValue {
