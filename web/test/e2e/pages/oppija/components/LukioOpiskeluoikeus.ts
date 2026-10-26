@@ -91,6 +91,28 @@ export class LukioOpiskeluoikeus {
     )
   }
 
+  // "suoritettuErityisenäTutkintona" on additionalOnlyEditableProperties -
+  // näkyy vain muokkaustilassa, ei koskaan katselutilassa edes arvolla true;
+  // katselussa sen näkyvä vaikutus on "**"-alaviite (footnote-hint), ei oma
+  // tekstikenttä. Toimii sekä suoritus- että oppiainetasolla - juuri valitsee
+  // kumman. Huom: suoritustason lipun asettaminen vaikuttaa KAIKKIIN
+  // oppiaineisiin (isErityinenTutkinto OR:ttaa suoritus- ja oppiainetason),
+  // ja jokaiselta vaaditaan tämän jälkeen oma laajuus - turvallinen testata
+  // vain tyhjällä, juuri luodulla suorituksella, ei valmiiksi täytetyllä.
+  erityinenTutkintoCheckbox(juuri: Locator = this.container): Locator {
+    return this.kenttä('suoritettuErityisenäTutkintona', juuri).locator(
+      'input[type=checkbox]'
+    )
+  }
+
+  // Laajuus muuttuu muokattavaksi inline-syötteeksi ainoastaan erityisenä
+  // tutkintona suoritetulle oppiaineelle (LukionOppiaineEditor.jsx:
+  // shouldEditLaajuus) - muulloin laajuus lasketaan kursseista eikä sitä voi
+  // syöttää suoraan.
+  laajuusInput(oppiaineRivi: Locator): Locator {
+    return oppiaineRivi.locator('td.laajuus:not(.arvioitu)').locator('input')
+  }
+
   arvosanaDropdown(oppiaineRivi: Locator): Dropdown {
     return new Dropdown(
       oppiaineRivi.page(),
