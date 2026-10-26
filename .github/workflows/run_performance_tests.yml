@@ -5,6 +5,9 @@ on:
       timezone: Europe/Helsinki
   workflow_dispatch:
 
+permissions:
+  contents: read
+
 env:
   DOCKER_BUILDKIT: 1
   KOSKI_SERVER_COUNT: 2

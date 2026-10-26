@@ -8,6 +8,9 @@ on:
         default: "1000"
         type: string
 
+permissions:
+  contents: read
+
 env:
   KOSKI_SERVER_COUNT: 2
   KOSKI_USER: ${{ secrets.KOSKI_USER_USERNAME }}
