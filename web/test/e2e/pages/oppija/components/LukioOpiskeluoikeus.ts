@@ -70,9 +70,8 @@ export class LukioOpiskeluoikeus {
     })
   }
 
-  // Kieliaineen kieli (esim. "Suomen kieli ja kirjallisuus") ei ole oma
-  // PropertiesEditor-rivi, vaan osa oppiaineen otsikkoa - ei data-testid:tä
-  // ympärillä, CSS-skoppaus sama kuin vanhassa Mocha-testissä.
+  // Kieliaineen kieli ei ole oma PropertiesEditor-rivi, vaan osa oppiaineen
+  // otsikkoa - ei data-testid:tä ympärillä.
   kieliaineenKieliDropdown(oppiaineRivi: Locator): Dropdown {
     return new Dropdown(
       oppiaineRivi.page(),
@@ -148,9 +147,8 @@ export class LukioOpiskeluoikeus {
     await oppiaineRivi.locator('.remove-row a').click()
   }
 
-  // "Lisää..." on sama pudotusvalikko kuin lisääOppiaine(), mutta oma
-  // erikoisvaihtoehtonsa luo tyhjän paikallisen oppiaineen täytettäväksi,
-  // ei valitse olemassaolevaa koodiston arvoa.
+  // "Lisää..." luo tyhjän paikallisen oppiaineen täytettäväksi, ei valitse
+  // olemassaolevaa koodiston arvoa.
   async lisääPaikallinenOppiaine(): Promise<Locator> {
     const dropdown = await this.uusiOppiaineDropdown()
     await dropdown.selectOptionByClick('Lisää...')
@@ -179,9 +177,6 @@ export class LukioOpiskeluoikeus {
     return rivi
   }
 
-  // "Lisää osasuoritus" -linkki avaa valintaikkunan (role="dialog"), jossa
-  // ensin valitaan kurssi pudotusvalikosta, täytetään sen kentät ja
-  // vahvistetaan.
   private async avaaLisääOsasuoritusDialogi(
     oppiaineRivi: Locator
   ): Promise<{ dialog: Locator; kurssiDropdown: Dropdown }> {
@@ -212,8 +207,6 @@ export class LukioOpiskeluoikeus {
     return this.kurssi(oppiaineRivi, koodi)
   }
 
-  // Tunniste/nimi/laajuus/kuvaus ovat tavallisia PropertiesEditor-rivejä,
-  // joten data-testid toimii suoraan.
   async lisääPaikallinenKurssi(
     oppiaineRivi: Locator,
     tiedot: { tunniste: string; nimi: string; kuvaus: string; laajuus: string }
