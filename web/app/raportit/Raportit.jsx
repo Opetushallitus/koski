@@ -29,6 +29,7 @@ import {
   muuAmmatillinenKyselymalli,
   muuKuinSaanneltyKoulutusKyselymalli,
   topksAmmatillinenKyselymalli,
+  tuvaSuoritustiedotKyselymalli,
   vstKopsKyselymalli,
   vstOsaamismerkitKyselymalli,
   vstVapaatavoitteinenKyselymalli
@@ -1028,7 +1029,7 @@ function PerusopetuksenOppijamäärätRaportti({ stateP }) {
 function TuvaSuoritustiedotRaportti({ stateP }) {
   const titleText = <Text name="tuva-suoritustiedot-raportti-title" />
   const shortDescriptionText = (
-    <Text name="tuva-suoritustiedot-raportti-short-description" />
+    <Text name="tuva-suoritustiedot-raportti-short-description-massaluovutus" />
   )
   const exampleText = <Paragraphs name="tuva-suoritustiedot-raportti-example" />
 
@@ -1039,6 +1040,7 @@ function TuvaSuoritustiedotRaportti({ stateP }) {
       title={titleText}
       shortDescription={shortDescriptionText}
       example={exampleText}
+      massaluovutusKyselymalli={tuvaSuoritustiedotKyselymalli}
       lang={lang}
     />
   )
