@@ -12,6 +12,9 @@ on:
         required: false
         default: ""
 
+permissions:
+  contents: read
+
 jobs:
   deploy_in_progress:
     name: Check for QA deploy in progress
