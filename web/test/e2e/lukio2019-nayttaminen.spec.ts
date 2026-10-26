@@ -64,7 +64,6 @@ test.describe('Lukiokoulutus 2019: virkailija', () => {
         'suomi'
       )
 
-      // Lukion oppimäärää täydentävät oman äidinkielen opinnot
       const taydentavat = opiskeluoikeus.omanÄidinkielenOpinnot
       await expect(opiskeluoikeus.kenttä('arvosana', taydentavat)).toHaveText(
         '8'

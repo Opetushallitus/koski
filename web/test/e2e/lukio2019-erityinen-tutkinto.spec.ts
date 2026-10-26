@@ -80,7 +80,7 @@ test.describe('Lukiokoulutus 2019: erityinen tutkinto', () => {
       uusiOppijaPage,
       oppijaPage
     }) => {
-      // Suoritustason lippu vaikuttaa kaikkiin oppiaineisiin (ks. muistio
+      // Suoritustason lippu vaikuttaa kaikkiin oppiaineisiin (ks.
       // LukioOpiskeluoikeus.erityinenTutkintoCheckbox) - käytetään siksi
       // juuri luotua, tyhjää aikuisten oppimäärää, ei valmiiksi täytettyä
       // kiinteää fixtuuria.
