@@ -22,6 +22,7 @@ import { replaceLocation } from '../util/location'
 import { Paragraphs } from '../i18n/Paragraphs'
 import { lang } from '../i18n/i18n'
 import {
+  ammatillinenOpiskelijavuositiedotKyselymalli,
   ammatillinenOsittainenSuoritustiedotKyselymalli,
   ammatillinenTutkintoSuoritustiedotKyselymalli,
   vstKopsKyselymalli,
@@ -650,7 +651,9 @@ function KunnanOppijat({ stateP }) {
 
 function Opiskelijavuositiedot({ stateP }) {
   const titleText = <Text name="Opiskelijavuositiedot" />
-  const descriptionText = <Text name="Opiskelijavuositiedot-description" />
+  const descriptionText = (
+    <Text name="AmmatillinenOpiskelijavuositiedot-description-massaluovutus" />
+  )
 
   return (
     <AikajaksoRaportti
@@ -658,6 +661,7 @@ function Opiskelijavuositiedot({ stateP }) {
       apiEndpoint={'/ammatillinenopiskelijavuositiedot'}
       title={titleText}
       shortDescription={descriptionText}
+      massaluovutusKyselymalli={ammatillinenOpiskelijavuositiedotKyselymalli}
       lang={lang}
     />
   )
