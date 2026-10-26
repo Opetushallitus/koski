@@ -29,7 +29,7 @@ case class OvaraHakutoiveResponse(
   organisaatioNimi: Option[OvaraNimi],
   oppilaitosNimi: Option[OvaraNimi],
   toimipisteNimi: Option[OvaraNimi],
-  hakukohdeOrganisaatio: String,
+  hakukohdeOrganisaatio: Option[String],
   koulutusNimi: OvaraNimi,
   koulutusOid: Option[String],
   hakutoivenumero: Int,
