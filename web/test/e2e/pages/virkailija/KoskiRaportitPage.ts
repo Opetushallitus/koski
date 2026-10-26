@@ -28,6 +28,13 @@ export class KoskiRaportitPage {
     await expect(this.muodostaButton).toBeVisible()
   }
 
+  async gotoAmmatillinenOpiskelijavuositiedot() {
+    await this.page.goto(
+      '/koski/raportit/ammatillinen-koulutus/ammatillinenopiskelijavuositiedot'
+    )
+    await expect(this.muodostaButton).toBeVisible()
+  }
+
   async gotoVstVapaatavoitteinen() {
     await this.page.goto(
       '/koski/raportit/vst/vapaansivistystyönvapaatavoitteisenkoulutuksenraportti?vstraportit=1'
