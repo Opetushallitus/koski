@@ -1,0 +1,75 @@
+name: pnpm audit
+
+on:
+  workflow_call:
+    inputs:
+      notify:
+        description: Report failures to Slack
+        type: boolean
+        default: false
+    secrets:
+      SLACK_WEBHOOK_URL_PROD_ALERTS:
+        required: false
+      SLACK_CI_ALERTS_WEBHOOK:
+        required: false
+
+permissions:
+  contents: read
+
+jobs:
+  pnpm_audit:
+    name: pnpm audit
+    runs-on: ubuntu-26.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version-file: ".nvmrc"
+
+      - uses: pnpm/action-setup@ea17c68df8912ef543352723c149a84f56e3d413 # v6.1.0
+        with:
+          package_json_file: package.json
+
+      - name: Audit production dependencies of every lockfile
+        id: audit
+        # A job timeout would skip the Slack step, a step timeout does not.
+        timeout-minutes: 12
+        env:
+          INTERNAL_DIRS: |
+            .
+            radiator
+            scripts/opiskeluoikeushistoria-debug
+            smoketests
+        run: |
+          failed_dirs=()
+          internal_only=true
+          while IFS= read -r lockfile; do
+            dir=$(dirname "$lockfile")
+            echo "::group::$dir"
+            if ! pnpm --dir "$dir" audit --prod --audit-level high; then
+              failed_dirs+=("$dir")
+              # Is $dir exactly one of the lines in INTERNAL_DIRS? A single failure outside them sends the alert to prod.
+              grep --quiet --line-regexp --fixed-strings "$dir" <<< "$INTERNAL_DIRS" || internal_only=false
+            fi
+            echo "::endgroup::"
+          done < <(git ls-files '*pnpm-lock.yaml')
+
+          echo "failed_dirs=${failed_dirs[*]}" >> "$GITHUB_OUTPUT"
+          echo "internal_only=$internal_only" >> "$GITHUB_OUTPUT"
+
+          if [ "${#failed_dirs[@]}" -gt 0 ]; then
+            echo "::error::High or critical advisories, or the audit failed, in: ${failed_dirs[*]}"
+            exit 1
+          fi
+
+      - name: Report to Slack
+        if: failure() && inputs.notify
+        uses: ./.github/actions/report-slack
+        with:
+          webhook: ${{ steps.audit.outputs.internal_only == 'true' && secrets.SLACK_CI_ALERTS_WEBHOOK || secrets.SLACK_WEBHOOK_URL_PROD_ALERTS }}
+          title: ":rotating_light: pnpm audit failed: ${{ steps.audit.outputs.failed_dirs || 'the audit did not complete' }}"
+          include_context: repo ci_run

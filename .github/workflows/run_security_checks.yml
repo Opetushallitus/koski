@@ -55,6 +55,15 @@ jobs:
               ]
             }
 
+  pnpm_audit:
+    name: pnpm audit
+    uses: ./.github/workflows/pnpm_audit_check.yml
+    with:
+      notify: true
+    secrets:
+      SLACK_WEBHOOK_URL_PROD_ALERTS: ${{ secrets.SLACK_WEBHOOK_URL_PROD_ALERTS }}
+      SLACK_CI_ALERTS_WEBHOOK: ${{ secrets.SLACK_CI_ALERTS_WEBHOOK }}
+
   notify:
     name: Notify Slack
     runs-on: ubuntu-26.04
