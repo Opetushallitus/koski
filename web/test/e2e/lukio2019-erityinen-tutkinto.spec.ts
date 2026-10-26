@@ -1,5 +1,5 @@
 import { expect, test } from './base'
-import { KoskiUusiOppijaPage } from './pages/oppija/KoskiUusiOppijaPage'
+import { luoLukio } from './fragments/LukioLuonti'
 import { virkailija } from './setup/auth'
 
 test.describe('Lukiokoulutus 2019: erityinen tutkinto', () => {
@@ -76,22 +76,6 @@ test.describe('Lukiokoulutus 2019: erityinen tutkinto', () => {
   test.describe('suoritustason lippu', () => {
     test.use({ storageState: virkailija('kalle') })
 
-    const luoAikuistenLukio = async (uusiOppijaPage: KoskiUusiOppijaPage) => {
-      await uusiOppijaPage.goTo('130307A208A')
-      await uusiOppijaPage.fill({ etunimet: 'Tero', sukunimi: 'Tyhjä' })
-      await uusiOppijaPage.fill({ oppilaitos: 'Jyväskylän normaalikoulu' })
-      await uusiOppijaPage.controls.opiskeluoikeus.setByLabel('Lukiokoulutus')
-      await uusiOppijaPage.controls.oppimäärä.setByLabel('Lukion oppimäärä')
-      await uusiOppijaPage.controls.peruste.setByLabel(
-        'OPH-2267-2019 Aikuisten lukiokoulutuksen opetussuunnitelman perusteet 2019'
-      )
-      await uusiOppijaPage.fill({
-        aloituspäivä: new Date(2018, 0, 1),
-        rahoitus: 'Valtionosuusrahoitteinen koulutus'
-      })
-      await uusiOppijaPage.submitAndExpectSuccess()
-    }
-
     test('Erityinen tutkinto voidaan merkitä suorituksen tasolla', async ({
       uusiOppijaPage,
       oppijaPage
@@ -100,7 +84,12 @@ test.describe('Lukiokoulutus 2019: erityinen tutkinto', () => {
       // LukioOpiskeluoikeus.erityinenTutkintoCheckbox) - käytetään siksi
       // juuri luotua, tyhjää aikuisten oppimäärää, ei valmiiksi täytettyä
       // kiinteää fixtuuria.
-      await luoAikuistenLukio(uusiOppijaPage)
+      await luoLukio(uusiOppijaPage, {
+        hetu: '130307A208A',
+        oppimäärä: 'Lukion oppimäärä',
+        peruste:
+          'OPH-2267-2019 Aikuisten lukiokoulutuksen opetussuunnitelman perusteet 2019'
+      })
 
       await oppijaPage.avaaMuokkausnäkymä()
       const opiskeluoikeus = oppijaPage.getLukioOpiskeluoikeus('Lukion oppimäärä')
