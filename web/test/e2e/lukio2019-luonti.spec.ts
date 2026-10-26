@@ -121,4 +121,28 @@ test.describe('Lukiokoulutus 2019: opiskeluoikeuden luonti', () => {
     )
     await expect(opiskeluoikeus.kenttä('suorituskieli')).toHaveText('suomi')
   })
+
+  // Regressiotesti: "Lukion oppiaineen oppimäärä" on 2015-OPS:n yksittäisen
+  // oppiaineen suoritus, eri oppimäärä kuin "Lukion oppimäärä"/"Lukion
+  // aineopinnot" - sen peruste-valikon ei pidä tarjota 2019-OPS:n
+  // diaarinumeroita, vaikka ne näkyvät muiden lukio-oppimäärien valikoissa.
+  test('Lukion oppiaineen oppimäärän peruste-valikko ei näytä 2019-OPS vaihtoehtoja', async ({
+    uusiOppijaPage
+  }) => {
+    await uusiOppijaPage.goTo('230872-7258')
+    await uusiOppijaPage.fill({ etunimet: 'Tero', sukunimi: 'Tyhjä' })
+    await uusiOppijaPage.fill({ oppilaitos: 'Jyväskylän normaalikoulu' })
+    await uusiOppijaPage.controls.opiskeluoikeus.setByLabel('Lukiokoulutus')
+    await uusiOppijaPage.controls.oppimäärä.setByLabel(
+      'Lukion oppiaineen oppimäärä'
+    )
+
+    const perusteet = await uusiOppijaPage.controls.peruste.options()
+    expect(perusteet).not.toContain(
+      'OPH-2267-2019 Aikuisten lukiokoulutuksen opetussuunnitelman perusteet 2019'
+    )
+    expect(perusteet).not.toContain(
+      'OPH-2263-2019 Lukion opetussuunnitelman perusteet 2019'
+    )
+  })
 })
