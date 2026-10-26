@@ -7,3 +7,13 @@ strictPeerDependencies: true
 updateNotifier: false
 minimumReleaseAge: 4320
 ignoreScripts: true
+trustPolicy: no-downgrade
+blockExoticSubdeps: true
+trustPolicyExclude:
+  # Tulee puppeteerin kautta (puppeteer → puppeteer-core → chromium-bidi).
+  # Versiosta 157.0.8080-0 (2026-09-30) alkaen chromium-bidin julkaisee
+  # chrome-devtools-npm-tili ilman provenance-todistusta eli allekirjoitettua tietoa
+  # siitä, mistä lähdekoodista ja missä CI:ssä paketti on rakennettu. Aiemmat versiot
+  # julkaistiin GitHub Actionsista todistuksen kanssa. Kaikki versiot sallitaan,
+  # koska puppeteer, jonka julkaisuilla on todistus, lukitsee tarkan version.
+  - "chromium-bidi"

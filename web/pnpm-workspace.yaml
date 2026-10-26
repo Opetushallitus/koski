@@ -7,6 +7,22 @@ strictPeerDependencies: true
 updateNotifier: false
 minimumReleaseAge: 4320
 ignoreScripts: true
+trustPolicy: no-downgrade
+blockExoticSubdeps: true
+trustPolicyExclude:
+  # Tulee puppeteerin kautta (puppeteer → puppeteer-core → chromium-bidi).
+  # Versiosta 157.0.8080-0 (2026-09-30) alkaen chromium-bidin julkaisee
+  # chrome-devtools-npm-tili ilman provenance-todistusta eli allekirjoitettua tietoa
+  # siitä, mistä lähdekoodista ja missä CI:ssä paketti on rakennettu. Aiemmat versiot
+  # julkaistiin GitHub Actionsista todistuksen kanssa. Kaikki versiot sallitaan,
+  # koska puppeteer, jonka julkaisuilla on todistus, lukitsee tarkan version.
+  - 'chromium-bidi'
+  # Tulee eslint-plugin-react-hooksin kautta: sen käyttämä @babel/core riippuu
+  # semver ^6.3.1:stä.
+  # npm-tiimi julkaisi 6.3.1:n käsin heinäkuussa 2023 tietoturvakorjauksena, kun
+  # 7.5.x-versiot julkaistiin jo CI:stä provenance-todistuksen kanssa. 6.x-haaraan
+  # ei tule uusia versioita.
+  - 'semver@6.3.1'
 
 overrides:
   serialize-javascript: ^7.0.3
