@@ -501,7 +501,7 @@
     <dependency>
       <groupId>org.scalamock</groupId>
       <artifactId>scalamock-scalatest_2.13</artifactId>
-      <version>7.6.0</version>
+      <version>7.6.1</version>
       <scope>test</scope>
     </dependency>
     <dependency>
