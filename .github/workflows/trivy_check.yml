@@ -26,6 +26,11 @@ jobs:
     timeout-minutes: 20
     outputs:
       cves: ${{ steps.summarize.outputs.cves }}
+    env:
+      BASE_SHA: ${{ github.event.pull_request.base.sha || github.event.merge_group.base_sha }}
+      TRIVY_SCANNERS: vuln
+      TRIVY_SEVERITY: ${{ inputs.severity || 'CRITICAL,HIGH' }}
+      TRIVY_SKIP_DIRS: src/main/resources/mockdata,src/test,target,omadata-oauth2-sample/java
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
@@ -44,12 +49,24 @@ jobs:
           scan-type: fs
           scan-ref: .
           exit-code: 0
-          scanners: vuln
           trivyignores: .trivyignore
           format: json
           output: trivy-report.json
-          severity: ${{ inputs.severity || 'CRITICAL,HIGH' }}
-          skip-dirs: 'src/main/resources/mockdata,src/test,target,omadata-oauth2-sample/java'
+
+      - name: Check out the base commit
+        if: env.BASE_SHA != ''
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ env.BASE_SHA }}
+          path: base
+          persist-credentials: false
+
+      - name: Trivy scan of the base commit
+        if: env.BASE_SHA != ''
+        working-directory: base
+        env:
+          TRIVY_CACHE_DIR: ${{ github.workspace }}/.cache/trivy
+        run: trivy fs --skip-db-update --format json --output ../base-report.json .
 
       - name: Summarize CVEs
         if: always() && hashFiles('trivy-report.json') != ''
@@ -75,9 +92,25 @@ jobs:
             echo 'EOF'
           } >> "$GITHUB_OUTPUT"
 
-      - name: Print Trivy report
+      - name: Print Trivy report and fail on any vulnerability without a base commit
         if: always() && hashFiles('trivy-report.json') != ''
-        run: trivy convert --format table --scanners vuln --exit-code 1 trivy-report.json
+        env:
+          # With a base commit, the next step fails only on vulnerabilities that the base commit does not have.
+          EXIT_CODE: ${{ env.BASE_SHA == '' && 1 || 0 }}
+        run: trivy convert --format table --scanners vuln --exit-code "$EXIT_CODE" trivy-report.json
+
+      - name: Fail on any vulnerability not in the base commit, when there is one
+        if: env.BASE_SHA != ''
+        run: |
+          new_vulnerabilities=$(jq --raw-output --slurpfile base base-report.json '
+            def findings: [.Results[]? | .Target as $target | .Vulnerabilities[]? | "\($target): \(.PkgName) \(.VulnerabilityID)"];
+            (findings - ($base[0] | findings)) | unique[]
+          ' trivy-report.json)
+          if [ -n "$new_vulnerabilities" ]; then
+            echo "::error::Vulnerabilities not in the base commit:"
+            echo "$new_vulnerabilities"
+            exit 1
+          fi
 
       - name: Upload Trivy report
         if: >-
