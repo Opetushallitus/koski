@@ -32,6 +32,7 @@ jobs:
       renovate: ${{ steps.filter.outputs.renovate == 'true' }}
       dependencies: ${{ steps.filter.outputs.dependencies == 'true' }}
       node-version: ${{ steps.filter.outputs.node-version == 'true' }}
+      github-actions: ${{ steps.filter.outputs.github-actions == 'true' }}
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
@@ -119,6 +120,9 @@ jobs:
               - 'omadata-oauth2-sample/Dockerfile'
               - '.github/workflows/node_vulnerability_check.yml'
 
+            github-actions:
+              - '.github/**'
+
   no_merge_commits:
     name: No merge commits
     if: github.event_name == 'pull_request'
@@ -175,6 +179,14 @@ jobs:
     permissions:
       contents: read
 
+  zizmor:
+    name: zizmor
+    needs: [changes]
+    if: ${{ needs.changes.outputs.github-actions == 'true' }}
+    uses: $/.github/workflows/zizmor_check.yml
+    permissions:
+      contents: read
+
   renovate_config:
     name: Renovate config check
     needs: [changes]
@@ -200,7 +212,7 @@ jobs:
   ci_passed:
     name: CI passed
     runs-on: ubuntu-26.04
-    needs: [changes, no_merge_commits, tests, trivy, node_vulnerabilities, renovate_config]
+    needs: [changes, no_merge_commits, tests, trivy, node_vulnerabilities, zizmor, renovate_config]
     if: ${{ always() }}
     permissions:
       contents: read

@@ -72,6 +72,16 @@ jobs:
       SLACK_WEBHOOK_URL_PROD_ALERTS: ${{ secrets.SLACK_WEBHOOK_URL_PROD_ALERTS }}
       SLACK_CI_ALERTS_WEBHOOK: ${{ secrets.SLACK_CI_ALERTS_WEBHOOK }}
 
+  zizmor:
+    name: zizmor
+    uses: $/.github/workflows/zizmor_check.yml
+    permissions:
+      contents: read
+    with:
+      notify: true
+    secrets:
+      SLACK_CI_ALERTS_WEBHOOK: ${{ secrets.SLACK_CI_ALERTS_WEBHOOK }}
+
   notify:
     name: Notify Slack
     runs-on: ubuntu-26.04
