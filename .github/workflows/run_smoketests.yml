@@ -11,6 +11,13 @@ on:
         type: string
         required: false
         default: ""
+    secrets:
+      KOSKI_USER_USERNAME:
+        required: true
+      KOSKI_USER_PASSWORD:
+        required: true
+      SLACK_CI_ALERTS_WEBHOOK:
+        required: true
 
 permissions:
   contents: read

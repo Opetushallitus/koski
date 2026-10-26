@@ -10,6 +10,13 @@ on:
         description: "Target environment (dev/qa/prod)"
         type: string
         required: true
+    secrets:
+      DEPLOY_ROLE:
+        required: false
+      ECR_ACCOUNT_ID:
+        required: false
+      SLACK_CI_ALERTS_WEBHOOK:
+        required: true
 env:
   DOCKER_BUILDKIT: 1
   SSH_AUTH_SOCK: /tmp/ssh_agent.sock

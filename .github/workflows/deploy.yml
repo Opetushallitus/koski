@@ -62,7 +62,9 @@ jobs:
       packages: write
     with:
       commithash: ${{ inputs.commithash }}
-    secrets: inherit
+    secrets:
+      ECR_ROLE: ${{ secrets.ECR_ROLE }}
+      ECR_ACCOUNT_ID: ${{ secrets.ECR_ACCOUNT_ID }}
   deploy:
     name: Deploy
     needs: [publish_image]
@@ -73,4 +75,7 @@ jobs:
     with:
       environment: ${{ inputs.environment }}
       commithash: ${{ inputs.commithash }}
-    secrets: inherit
+    secrets:
+      DEPLOY_ROLE: ${{ secrets.DEPLOY_ROLE }}
+      ECR_ACCOUNT_ID: ${{ secrets.ECR_ACCOUNT_ID }}
+      SLACK_CI_ALERTS_WEBHOOK: ${{ secrets.SLACK_CI_ALERTS_WEBHOOK }}

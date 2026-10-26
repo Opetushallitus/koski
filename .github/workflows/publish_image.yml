@@ -6,6 +6,11 @@ on:
         description: "Commit hash (version) of the image to package and publish"
         type: string
         required: true
+    secrets:
+      ECR_ROLE:
+        required: false
+      ECR_ACCOUNT_ID:
+        required: false
 env:
   DOCKER_BUILDKIT: 1
   SSH_AUTH_SOCK: /tmp/ssh_agent.sock

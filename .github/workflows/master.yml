@@ -36,4 +36,10 @@ jobs:
       contents: read
       id-token: write
       packages: write
-    secrets: inherit
+    secrets:
+      ECR_ROLE: ${{ secrets.ECR_ROLE }}
+      DEPLOY_ROLE: ${{ secrets.DEPLOY_ROLE }}
+      ECR_ACCOUNT_ID: ${{ secrets.ECR_ACCOUNT_ID }}
+      KOSKI_USER_USERNAME: ${{ secrets.KOSKI_USER_USERNAME }}
+      KOSKI_USER_PASSWORD: ${{ secrets.KOSKI_USER_PASSWORD }}
+      SLACK_CI_ALERTS_WEBHOOK: ${{ secrets.SLACK_CI_ALERTS_WEBHOOK }}

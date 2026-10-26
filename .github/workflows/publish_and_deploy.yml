@@ -1,6 +1,19 @@
 name: Publish & deploy
 on:
   workflow_call:
+    secrets:
+      ECR_ROLE:
+        required: false
+      DEPLOY_ROLE:
+        required: false
+      ECR_ACCOUNT_ID:
+        required: false
+      KOSKI_USER_USERNAME:
+        required: true
+      KOSKI_USER_PASSWORD:
+        required: true
+      SLACK_CI_ALERTS_WEBHOOK:
+        required: true
 
 permissions:
   contents: read
@@ -58,7 +71,9 @@ jobs:
       packages: write
     with:
       commithash: ${{ github.sha }}
-    secrets: inherit
+    secrets:
+      ECR_ROLE: ${{ secrets.ECR_ROLE }}
+      ECR_ACCOUNT_ID: ${{ secrets.ECR_ACCOUNT_ID }}
 
   deploy_dev_qa:
     name: Dev & QA
@@ -75,7 +90,10 @@ jobs:
     permissions:
       id-token: write
       contents: read
-    secrets: inherit
+    secrets:
+      DEPLOY_ROLE: ${{ secrets.DEPLOY_ROLE }}
+      ECR_ACCOUNT_ID: ${{ secrets.ECR_ACCOUNT_ID }}
+      SLACK_CI_ALERTS_WEBHOOK: ${{ secrets.SLACK_CI_ALERTS_WEBHOOK }}
 
   deploy_omadataoauth2sample_dev:
     name: OmaData dev
@@ -87,7 +105,8 @@ jobs:
     with:
       environment: dev
       commithash: ${{ github.sha }}
-    secrets: inherit
+    secrets:
+      ECR_ACCOUNT_ID: ${{ secrets.ECR_ACCOUNT_ID }}
 
   deploy_omadataoauth2sample_qa:
     name: OmaData QA
@@ -99,7 +118,8 @@ jobs:
     with:
       environment: qa
       commithash: ${{ github.sha }}
-    secrets: inherit
+    secrets:
+      ECR_ACCOUNT_ID: ${{ secrets.ECR_ACCOUNT_ID }}
 
   smoketests_qa:
     name: Smoketests
@@ -111,7 +131,10 @@ jobs:
     uses: $/.github/workflows/run_smoketests.yml
     with:
       expected_commithash: ${{ github.sha }}
-    secrets: inherit
+    secrets:
+      KOSKI_USER_USERNAME: ${{ secrets.KOSKI_USER_USERNAME }}
+      KOSKI_USER_PASSWORD: ${{ secrets.KOSKI_USER_PASSWORD }}
+      SLACK_CI_ALERTS_WEBHOOK: ${{ secrets.SLACK_CI_ALERTS_WEBHOOK }}
 
   deploy_prod:
     name: Prod
@@ -123,4 +146,7 @@ jobs:
     with:
       environment: prod
       commithash: ${{ github.sha }}
-    secrets: inherit
+    secrets:
+      DEPLOY_ROLE: ${{ secrets.DEPLOY_ROLE }}
+      ECR_ACCOUNT_ID: ${{ secrets.ECR_ACCOUNT_ID }}
+      SLACK_CI_ALERTS_WEBHOOK: ${{ secrets.SLACK_CI_ALERTS_WEBHOOK }}

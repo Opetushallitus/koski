@@ -10,6 +10,9 @@ on:
         description: "Commit hash to deploy from"
         type: string
         required: true
+    secrets:
+      ECR_ACCOUNT_ID:
+        required: false
   workflow_dispatch:
     inputs:
       environment:
