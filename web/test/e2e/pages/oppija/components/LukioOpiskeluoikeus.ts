@@ -100,17 +100,20 @@ export class LukioOpiskeluoikeus {
   // ja jokaiselta vaaditaan tämän jälkeen oma laajuus - turvallinen testata
   // vain tyhjällä, juuri luodulla suorituksella, ei valmiiksi täytetyllä.
   erityinenTutkintoCheckbox(juuri: Locator = this.container): Locator {
-    return this.kenttä('suoritettuErityisenäTutkintona', juuri).locator(
-      'input[type=checkbox]'
+    return this.kenttä('suoritettuErityisenäTutkintona', juuri).getByRole(
+      'checkbox'
     )
   }
 
   // Laajuus muuttuu muokattavaksi inline-syötteeksi ainoastaan erityisenä
   // tutkintona suoritetulle oppiaineelle (LukionOppiaineEditor.jsx:
   // shouldEditLaajuus) - muulloin laajuus lasketaan kursseista eikä sitä voi
-  // syöttää suoraan.
+  // syöttää suoraan. Sama "number-editor"-testid kuin muualla tässä
+  // tiedostossa laajuuden numerosyötteillä (lisääPaikallinenKurssi ym.).
   laajuusInput(oppiaineRivi: Locator): Locator {
-    return oppiaineRivi.locator('.laajuus:not(.arvioitu)').locator('input')
+    return oppiaineRivi
+      .locator('.laajuus:not(.arvioitu)')
+      .getByTestId('number-editor')
   }
 
   arvosanaDropdown(oppiaineRivi: Locator): Dropdown {
