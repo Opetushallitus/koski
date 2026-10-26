@@ -26,6 +26,7 @@ import {
   ammatillinenOpiskelijavuositiedotKyselymalli,
   ammatillinenOsittainenSuoritustiedotKyselymalli,
   ammatillinenTutkintoSuoritustiedotKyselymalli,
+  lukio2019OpintopistekertymatKyselymalli,
   lukioKurssikertymatKyselymalli,
   muuAmmatillinenKyselymalli,
   muuKuinSaanneltyKoulutusKyselymalli,
@@ -856,7 +857,7 @@ function LukioKurssikertyma({ stateP }) {
 function Lukio2019Opintopistekertyma({ stateP }) {
   const title = <Text name="lukion-opintopistekertyma-title" />
   const shortDescriptionText = (
-    <Text name="lukion-opintopistekertyma-short-description" />
+    <Text name="lukion-opintopistekertyma-short-description-massaluovutus" />
   )
   const dateInputHelpText = (
     <Text name="lukion-opintopistekertyma-date-input-help" />
@@ -871,6 +872,7 @@ function Lukio2019Opintopistekertyma({ stateP }) {
       shortDescription={shortDescriptionText}
       dateInputHelp={dateInputHelpText}
       example={exampleText}
+      massaluovutusKyselymalli={lukio2019OpintopistekertymatKyselymalli}
       lang={lang}
     />
   )
