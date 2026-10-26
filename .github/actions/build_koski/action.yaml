@@ -17,6 +17,7 @@ runs:
     - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       if: steps.lookup.outputs.cache-hit != 'true'
       with:
+        persist-credentials: false
         ref: ${{ inputs.commithash }}
     - uses: $/.github/actions/setup_pnpm_cache
     - name: Setup Node

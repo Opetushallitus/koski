@@ -46,6 +46,8 @@ jobs:
     runs-on: ubuntu-26.04
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
 
       - name: Check Node versions match .nvmrc
         shell: bash
@@ -78,6 +80,8 @@ jobs:
     runs-on: ubuntu-26.04
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
 
       - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
@@ -97,6 +101,8 @@ jobs:
     runs-on: ubuntu-26.04
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
 
       - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
@@ -116,6 +122,8 @@ jobs:
     runs-on: ubuntu-26.04
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
 
       - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
@@ -135,6 +143,8 @@ jobs:
     runs-on: ubuntu-26.04
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
       - uses: $/.github/actions/build_koski
         with:
           commithash: ${{ github.sha }}
@@ -146,6 +156,8 @@ jobs:
     needs: [build_koski]
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
 
       - uses: $/.github/actions/setup_java_25
 
@@ -209,6 +221,8 @@ jobs:
     runs-on: ubuntu-26.04
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
       - uses: $/.github/actions/setup_java_25
       - run: make scalafix-check
 
@@ -218,6 +232,8 @@ jobs:
     runs-on: ubuntu-26.04
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
 
       - name: Setup Node
         uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
@@ -253,6 +269,7 @@ jobs:
         # Reads git history only, so the tree is unnecessary: blob:none keeps
         # commits and trees while skipping file contents.
         with:
+          persist-credentials: false
           fetch-depth: 0
           filter: blob:none
           sparse-checkout: scripts
@@ -270,6 +287,7 @@ jobs:
         # Reads git history only, so the tree is unnecessary: blob:none keeps
         # commits and trees while skipping file contents.
         with:
+          persist-credentials: false
           fetch-depth: 0
           filter: blob:none
           sparse-checkout: scripts
@@ -287,6 +305,7 @@ jobs:
         # Reads git history only, so the tree is unnecessary: blob:none keeps
         # commits and trees while skipping file contents.
         with:
+          persist-credentials: false
           fetch-depth: 0
           filter: blob:none
           sparse-checkout: scripts
@@ -302,6 +321,8 @@ jobs:
     needs: [build_koski]
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
       - uses: $/.github/actions/koski_backend_test
         with:
           suites: |
@@ -314,6 +335,8 @@ jobs:
     needs: [build_koski]
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
       - uses: $/.github/actions/koski_backend_test
         with:
           suites: |
@@ -326,6 +349,8 @@ jobs:
     needs: [build_koski]
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
       - uses: $/.github/actions/koski_backend_test
         with:
           suites: |
@@ -339,6 +364,8 @@ jobs:
     needs: [build_koski]
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
       - uses: $/.github/actions/koski_backend_test
         with:
           suites: |
@@ -352,6 +379,8 @@ jobs:
     needs: [build_koski]
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
       - uses: $/.github/actions/koski_backend_test
         with:
           suites: |
@@ -364,6 +393,8 @@ jobs:
     needs: [build_koski]
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
       - uses: $/.github/actions/koski_backend_test
         with:
           suites: |
@@ -406,6 +437,8 @@ jobs:
     needs: [build_koski]
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
       - uses: $/.github/actions/koski_backend_test
         with:
           suites: |
@@ -423,6 +456,8 @@ jobs:
     needs: [build_koski]
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
       - uses: $/.github/actions/koski_backend_test
         with:
           suites: |
@@ -435,6 +470,8 @@ jobs:
     needs: [build_koski]
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
       - uses: $/.github/actions/koski_backend_test
         with:
           suites: |
@@ -459,6 +496,8 @@ jobs:
     needs: [build_koski]
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
       - uses: $/.github/actions/koski_backend_test
         with:
           suites: |
@@ -472,6 +511,8 @@ jobs:
     needs: [build_koski]
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
       - uses: $/.github/actions/koski_backend_test
         with:
           suites: |
@@ -505,6 +546,8 @@ jobs:
     needs: [build_koski]
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
       - uses: $/.github/actions/koski_mocha_browser_tests_shard
         with:
           shardIndex: ${{ matrix.shardIndex }}
@@ -516,6 +559,8 @@ jobs:
     runs-on: ubuntu-26.04
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
 
       - name: Setup Node
         uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
@@ -542,6 +587,8 @@ jobs:
     needs: [build_koski]
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
       - uses: $/.github/actions/koski_playwright_browser_tests_shard
         with:
           shardIndex: ${{ matrix.shardIndex }}
@@ -554,6 +601,8 @@ jobs:
     needs: [build_koski]
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
       - uses: $/.github/actions/koski_visual_test
 
   valpas_browser_tests_selenium:
@@ -568,6 +617,8 @@ jobs:
     needs: [build_koski]
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
       - uses: $/.github/actions/valpas_integration_test
         with:
           index: ${{ matrix.shardIndex }}
@@ -578,6 +629,8 @@ jobs:
     if: ${{ inputs.run-valpas-ui-tests && !contains(github.event.head_commit.message, '[skip-tests]') }}
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
 
       - name: Setup Node
         uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
@@ -601,6 +654,8 @@ jobs:
       contents: read
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
 
       - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
@@ -647,6 +702,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
 
       - name: Generate  test certificates
         run: bash omadata-oauth2-sample/server/testca/generate-certs.sh
