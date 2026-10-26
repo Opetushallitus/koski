@@ -273,25 +273,42 @@ const NäytönArviointiEdit = ({
       <KeyValueRow localizableLabel="Arvioijat">
         {value?.arvioitsijat?.map((a, index) => (
           <div key={`nayton.arvioijat.${index}`}>
-            <TextEdit
-              value={a.nimi}
-              hasErrors={hasErrorInField(errors, `arvioitsijat.${index}.nimi`)}
-              onChange={(nimi) =>
+            <Removable
+              onClick={() =>
                 value.arvioitsijat &&
                 onChange({
                   ...emptyNäytönArviointi,
                   ...value,
                   arvioitsijat: [
                     ...value.arvioitsijat.slice(0, index),
-                    NäytönArvioitsija({
-                      nimi: nimi ?? '',
-                      ntm: value.arvioitsijat[index].ntm
-                    }),
                     ...value.arvioitsijat.slice(index + 1)
                   ]
                 })
               }
-            />
+            >
+              <TextEdit
+                value={a.nimi}
+                hasErrors={hasErrorInField(
+                  errors,
+                  `arvioitsijat.${index}.nimi`
+                )}
+                onChange={(nimi) =>
+                  value.arvioitsijat &&
+                  onChange({
+                    ...emptyNäytönArviointi,
+                    ...value,
+                    arvioitsijat: [
+                      ...value.arvioitsijat.slice(0, index),
+                      NäytönArvioitsija({
+                        nimi: nimi ?? '',
+                        ntm: value.arvioitsijat[index].ntm
+                      }),
+                      ...value.arvioitsijat.slice(index + 1)
+                    ]
+                  })
+                }
+              />
+            </Removable>
             <BooleanEdit
               label={t('Näyttötutkintomestari')}
               onChange={(ntm) =>
@@ -311,23 +328,6 @@ const NäytönArviointiEdit = ({
                 })
               }
               value={a.ntm}
-            />
-            <IconButton
-              charCode={CHARCODE_REMOVE}
-              label={t('Poista')}
-              size="input"
-              onClick={() =>
-                value.arvioitsijat &&
-                onChange({
-                  ...emptyNäytönArviointi,
-                  ...value,
-                  arvioitsijat: [
-                    ...value.arvioitsijat.slice(0, index),
-                    ...value.arvioitsijat.slice(index + 1)
-                  ]
-                })
-              }
-              testId="delete"
             />
           </div>
         ))}
