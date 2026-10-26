@@ -491,10 +491,11 @@
       "group": { "commitMessageExtra": "" }
     },
     {
-      "description": "Hold major updates and package replacements that no rule above automerges for approval on the Dependency Dashboard, so that they wait there instead of holding PR slots. Approving one creates its PR regardless of the PR limits. Keep this rule after every rule that sets automerge.",
+      "description": "Open major updates and package replacements that no rule above automerges as PRs, so that CI shows whether they work unchanged. Merge or close them promptly: closing makes Renovate ignore that major and list it on the Dependency Dashboard. Create them last and keep at most 2 open, so that open majors do not take the PR slots that automerged updates need. Keep this rule after every rule that sets automerge.",
       "matchUpdateTypes": ["major", "replacement"],
       "matchJsonata": ["$not(automerge = true)"],
-      "dependencyDashboardApproval": true
+      "prPriority": -1,
+      "prConcurrentLimit": 2
     },
     {
       "description": "Label PRs that Renovate will merge automatically and exempt them from the hourly PR limit. They stay under the concurrent PR limits, which cap how many CI runs they start at once. This must be the last rule, so that it sees the automerge value set by the rules above.",
