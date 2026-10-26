@@ -1,5 +1,9 @@
 import { MassaluovutusQueryParameters } from '../../types/fi/oph/koski/massaluovutus/MassaluovutusQueryParameters'
 import {
+  isMassaluovutusQueryAikuistenPerusopetuksenKurssikertyma,
+  MassaluovutusQueryAikuistenPerusopetuksenKurssikertyma
+} from '../../types/fi/oph/koski/massaluovutus/raportit/MassaluovutusQueryAikuistenPerusopetuksenKurssikertyma'
+import {
   isMassaluovutusQueryAmmatillinenOpiskelijavuositiedot,
   MassaluovutusQueryAmmatillinenOpiskelijavuositiedot
 } from '../../types/fi/oph/koski/massaluovutus/raportit/MassaluovutusQueryAmmatillinenOpiskelijavuositiedot'
@@ -181,6 +185,22 @@ export const tuvaSuoritustiedotKyselymalli: MassaluovutusKyselymalli = {
       : null,
   näytäOsasuoritustenRajaus: false
 }
+
+export const aikuistenPerusopetuksenKurssikertymaKyselymalli: MassaluovutusKyselymalli =
+  {
+    luo: (p) =>
+      MassaluovutusQueryAikuistenPerusopetuksenKurssikertyma({
+        organisaatioOid: p.organisaatioOid,
+        language: p.language,
+        alku: p.alku,
+        loppu: p.loppu
+      }),
+    lue: (q) =>
+      isMassaluovutusQueryAikuistenPerusopetuksenKurssikertyma(q)
+        ? { organisaatioOid: q.organisaatioOid, alku: q.alku, loppu: q.loppu }
+        : null,
+    näytäOsasuoritustenRajaus: false
+  }
 
 export const vstVapaatavoitteinenKyselymalli: MassaluovutusKyselymalli = {
   luo: (p) =>

@@ -61,6 +61,13 @@ export class KoskiRaportitPage {
     await expect(this.muodostaButton).toBeVisible()
   }
 
+  async gotoAikuistenPerusopetuksenKurssikertyma() {
+    await this.page.goto(
+      '/koski/raportit/aikuisten-perusopetus/aikuistenperusopetuskurssikertymänraportti'
+    )
+    await expect(this.muodostaButton).toBeVisible()
+  }
+
   async gotoVstVapaatavoitteinen() {
     await this.page.goto(
       '/koski/raportit/vst/vapaansivistystyönvapaatavoitteisenkoulutuksenraportti?vstraportit=1'
