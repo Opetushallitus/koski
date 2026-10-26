@@ -58,12 +58,12 @@ jobs:
           lookup-only: "true"
 
       - if: steps.check-image.outputs.image-exists != '0' && steps.target-cache.outputs.cache-hit != 'true'
-        uses: ./.github/actions/build_koski
+        uses: $/.github/actions/build_koski
         with:
           commithash: ${{ inputs.commithash }}
 
       - if: steps.check-image.outputs.image-exists != '0' && steps.target-cache.outputs.cache-hit == 'true'
-        uses: ./.github/actions/setup_java_25
+        uses: $/.github/actions/setup_java_25
 
       - name: Restore target dir
         uses: actions/cache/restore@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0

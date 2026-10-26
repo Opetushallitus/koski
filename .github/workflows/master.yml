@@ -10,7 +10,7 @@ permissions:
 jobs:
   tests:
     name: "Tests"
-    uses: ./.github/workflows/tests.yml
+    uses: $/.github/workflows/tests.yml
     permissions:
       contents: read
       packages: read
@@ -21,11 +21,7 @@ jobs:
     if: ${{ failure() }}
     runs-on: ubuntu-26.04
     steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-        with:
-          sparse-checkout: .github/actions/report-slack
-
-      - uses: ./.github/actions/report-slack
+      - uses: $/.github/actions/report-slack
         with:
           webhook: ${{ secrets.SLACK_CI_ALERTS_WEBHOOK }}
           title: ":rotating_light: CI failed on master"
@@ -34,7 +30,7 @@ jobs:
   publish_and_deploy:
     name: Publish & deploy
     needs: [tests]
-    uses: ./.github/workflows/publish_and_deploy.yml
+    uses: $/.github/workflows/publish_and_deploy.yml
     permissions:
       actions: write
       contents: read

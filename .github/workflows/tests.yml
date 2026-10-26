@@ -67,7 +67,7 @@ jobs:
         with:
           node-version-file: ".nvmrc"
 
-      - uses: ./.github/actions/setup_pnpm_cache
+      - uses: $/.github/actions/setup_pnpm_cache
 
       - name: Check formatting
         run: make format-check
@@ -83,7 +83,7 @@ jobs:
         with:
           node-version-file: ".nvmrc"
 
-      - uses: ./.github/actions/setup_pnpm_cache
+      - uses: $/.github/actions/setup_pnpm_cache
 
       - name: Check smoketests
         working-directory: smoketests
@@ -102,7 +102,7 @@ jobs:
         with:
           node-version-file: ".nvmrc"
 
-      - uses: ./.github/actions/setup_pnpm_cache
+      - uses: $/.github/actions/setup_pnpm_cache
 
       - name: Check radiator
         working-directory: radiator
@@ -121,7 +121,7 @@ jobs:
         with:
           node-version-file: ".nvmrc"
 
-      - uses: ./.github/actions/setup_pnpm_cache
+      - uses: $/.github/actions/setup_pnpm_cache
 
       - name: Check history debug
         working-directory: scripts/opiskeluoikeushistoria-debug
@@ -135,7 +135,7 @@ jobs:
     runs-on: ubuntu-26.04
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-      - uses: ./.github/actions/build_koski
+      - uses: $/.github/actions/build_koski
         with:
           commithash: ${{ github.sha }}
 
@@ -147,9 +147,9 @@ jobs:
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
-      - uses: ./.github/actions/setup_java_25
+      - uses: $/.github/actions/setup_java_25
 
-      - uses: ./.github/actions/setup_backend
+      - uses: $/.github/actions/setup_backend
 
       - name: Package war
         env:
@@ -209,7 +209,7 @@ jobs:
     runs-on: ubuntu-26.04
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-      - uses: ./.github/actions/setup_java_25
+      - uses: $/.github/actions/setup_java_25
       - run: make scalafix-check
 
   koski_frontend_lint:
@@ -224,7 +224,7 @@ jobs:
         with:
           node-version-file: ".nvmrc"
 
-      - uses: ./.github/actions/setup_pnpm_cache
+      - uses: $/.github/actions/setup_pnpm_cache
 
       - run: pnpm --dir web install --frozen-lockfile
 
@@ -302,7 +302,7 @@ jobs:
     needs: [build_koski]
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-      - uses: ./.github/actions/koski_backend_test
+      - uses: $/.github/actions/koski_backend_test
         with:
           suites: |
             fi.oph.koski.api.oppijavalidation
@@ -314,7 +314,7 @@ jobs:
     needs: [build_koski]
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-      - uses: ./.github/actions/koski_backend_test
+      - uses: $/.github/actions/koski_backend_test
         with:
           suites: |
             fi.oph.scalaschema
@@ -326,7 +326,7 @@ jobs:
     needs: [build_koski]
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-      - uses: ./.github/actions/koski_backend_test
+      - uses: $/.github/actions/koski_backend_test
         with:
           suites: |
             fi.oph.koski.api.oppijaupdate, \
@@ -339,7 +339,7 @@ jobs:
     needs: [build_koski]
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-      - uses: ./.github/actions/koski_backend_test
+      - uses: $/.github/actions/koski_backend_test
         with:
           suites: |
             fi.oph.koski.api.misc, \
@@ -352,7 +352,7 @@ jobs:
     needs: [build_koski]
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-      - uses: ./.github/actions/koski_backend_test
+      - uses: $/.github/actions/koski_backend_test
         with:
           suites: |
             fi.oph.koski.nonmockloginsecurity
@@ -364,7 +364,7 @@ jobs:
     needs: [build_koski]
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-      - uses: ./.github/actions/koski_backend_test
+      - uses: $/.github/actions/koski_backend_test
         with:
           suites: |
             fi.oph.koski.cache, \
@@ -406,7 +406,7 @@ jobs:
     needs: [build_koski]
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-      - uses: ./.github/actions/koski_backend_test
+      - uses: $/.github/actions/koski_backend_test
         with:
           suites: |
             fi.oph.koski.valpas, \
@@ -423,7 +423,7 @@ jobs:
     needs: [build_koski]
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-      - uses: ./.github/actions/koski_backend_test
+      - uses: $/.github/actions/koski_backend_test
         with:
           suites: |
             fi.oph.koski.raportit
@@ -435,7 +435,7 @@ jobs:
     needs: [build_koski]
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-      - uses: ./.github/actions/koski_backend_test
+      - uses: $/.github/actions/koski_backend_test
         with:
           suites: |
             fi.oph.koski.perftest, \
@@ -459,7 +459,7 @@ jobs:
     needs: [build_koski]
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-      - uses: ./.github/actions/koski_backend_test
+      - uses: $/.github/actions/koski_backend_test
         with:
           suites: |
             fi.oph.koski.massaluovutus, \
@@ -472,7 +472,7 @@ jobs:
     needs: [build_koski]
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-      - uses: ./.github/actions/koski_backend_test
+      - uses: $/.github/actions/koski_backend_test
         with:
           suites: |
             fi.oph.koski.opensearch, \
@@ -505,7 +505,7 @@ jobs:
     needs: [build_koski]
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-      - uses: ./.github/actions/koski_mocha_browser_tests_shard
+      - uses: $/.github/actions/koski_mocha_browser_tests_shard
         with:
           shardIndex: ${{ matrix.shardIndex }}
           shardTotal: ${{ matrix.shardTotal }}
@@ -522,7 +522,7 @@ jobs:
         with:
           node-version-file: ".nvmrc"
 
-      - uses: ./.github/actions/setup_pnpm_cache
+      - uses: $/.github/actions/setup_pnpm_cache
 
       - name: Run unit tests
         run: |
@@ -542,7 +542,7 @@ jobs:
     needs: [build_koski]
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-      - uses: ./.github/actions/koski_playwright_browser_tests_shard
+      - uses: $/.github/actions/koski_playwright_browser_tests_shard
         with:
           shardIndex: ${{ matrix.shardIndex }}
           shardTotal: ${{ matrix.shardTotal }}
@@ -554,7 +554,7 @@ jobs:
     needs: [build_koski]
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-      - uses: ./.github/actions/koski_visual_test
+      - uses: $/.github/actions/koski_visual_test
 
   valpas_browser_tests_selenium:
     name: Valpas browser tests (Selenium) ${{matrix.shardIndex}}/${{matrix.shardTotal}}
@@ -568,7 +568,7 @@ jobs:
     needs: [build_koski]
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-      - uses: ./.github/actions/valpas_integration_test
+      - uses: $/.github/actions/valpas_integration_test
         with:
           index: ${{ matrix.shardIndex }}
 
@@ -584,7 +584,7 @@ jobs:
         with:
           node-version-file: ".nvmrc"
 
-      - uses: ./.github/actions/setup_pnpm_cache
+      - uses: $/.github/actions/setup_pnpm_cache
 
       - name: Static analysis and unit tests
         working-directory: valpas-web
@@ -606,7 +606,7 @@ jobs:
         with:
           node-version-file: ".nvmrc"
 
-      - uses: ./.github/actions/setup_pnpm_cache
+      - uses: $/.github/actions/setup_pnpm_cache
 
       - name: Static analysis
         working-directory: omadata-oauth2-sample/server
@@ -651,7 +651,7 @@ jobs:
       - name: Generate  test certificates
         run: bash omadata-oauth2-sample/server/testca/generate-certs.sh
 
-      - uses: ./.github/actions/omadataoauth2_playwright_browser_tests_shard
+      - uses: $/.github/actions/omadataoauth2_playwright_browser_tests_shard
         with:
           shardIndex: ${{ matrix.shardIndex }}
           shardTotal: ${{ matrix.shardTotal }}

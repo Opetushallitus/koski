@@ -24,10 +24,6 @@ jobs:
       contents: read
       packages: write
     steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-        with:
-          sparse-checkout: .github/actions/report-slack
-
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@e1253824e5c10ff9df46874f81ed3ec929e19cfd # v6.3.0
         with:
@@ -140,7 +136,7 @@ jobs:
         run: aws ssm put-parameter --overwrite --name /koski/ytr-data-loader/task-definition --type String --value ${TASKDEF_ARN}
 
       - name: Report task ready
-        uses: ./.github/actions/report-slack
+        uses: $/.github/actions/report-slack
         if: ${{ always() && !(job.status == 'success' && contains(fromJSON('["dev", "qa"]'), inputs.environment)) }}
         with:
           webhook: ${{ secrets.SLACK_CI_ALERTS_WEBHOOK }}

@@ -5,9 +5,9 @@ runs:
   using: "composite"
   steps:
     - name: "🔨 Setup Java"
-      uses: ./.github/actions/setup_java_25
+      uses: $/.github/actions/setup_java_25
     - name: "🔨 Setup backend and databases"
-      uses: ./.github/actions/setup_backend
+      uses: $/.github/actions/setup_backend
     - name: "Install web dependencies"
       working-directory: web
       run: pnpm install --frozen-lockfile

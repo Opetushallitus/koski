@@ -13,9 +13,9 @@ runs:
   using: "composite"
   steps:
     - name: "🔨 Setup Java"
-      uses: ./.github/actions/setup_java_25
+      uses: $/.github/actions/setup_java_25
     - name: "🔨 Setup backend and databases"
-      uses: ./.github/actions/setup_backend
+      uses: $/.github/actions/setup_backend
 
     - name: Install js deps
       run: cd web && pnpm install --frozen-lockfile

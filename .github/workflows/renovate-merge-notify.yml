@@ -44,15 +44,9 @@ jobs:
           echo "slack_title=$slack_title" >> "$GITHUB_OUTPUT"
           echo "ci_run_url=$ci_run_url" >> "$GITHUB_OUTPUT"
 
-      - name: Checkout the Slack action
-        if: ${{ steps.resolve.outputs.slack_title != '' }}
-        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-        with:
-          sparse-checkout: .github/actions/report-slack
-
       - name: Post to Slack
         if: ${{ steps.resolve.outputs.slack_title != '' }}
-        uses: ./.github/actions/report-slack
+        uses: $/.github/actions/report-slack
         with:
           webhook: ${{ secrets.SLACK_CI_ALERTS_WEBHOOK }}
           title: ${{ steps.resolve.outputs.slack_title }}

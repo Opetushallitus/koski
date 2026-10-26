@@ -24,9 +24,9 @@ jobs:
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
-      - uses: ./.github/actions/setup_java_25
+      - uses: $/.github/actions/setup_java_25
 
-      - uses: ./.github/actions/setup_pnpm_cache
+      - uses: $/.github/actions/setup_pnpm_cache
 
       - name: Setup Node
         uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
@@ -42,7 +42,7 @@ jobs:
           ./mvnw exec:java -Dexec.mainClass="fi.oph.koski.perftest.RandomOpiskeluoikeusGetter"
 
       - name: Report failure
-        uses: ./.github/actions/report-slack
+        uses: $/.github/actions/report-slack
         if: ${{ failure() }}
         with:
           webhook: ${{ secrets.SLACK_CI_ALERTS_WEBHOOK }}
@@ -56,9 +56,9 @@ jobs:
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
-      - uses: ./.github/actions/setup_java_25
+      - uses: $/.github/actions/setup_java_25
 
-      - uses: ./.github/actions/setup_pnpm_cache
+      - uses: $/.github/actions/setup_pnpm_cache
 
       - name: Setup Node
         uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
@@ -74,7 +74,7 @@ jobs:
           ./mvnw exec:java -Dexec.mainClass="fi.oph.koski.perftest.MixedOpiskeluoikeusInserterUpdater"
 
       - name: Report failure
-        uses: ./.github/actions/report-slack
+        uses: $/.github/actions/report-slack
         if: ${{ failure() }}
         with:
           webhook: ${{ secrets.SLACK_CI_ALERTS_WEBHOOK }}
@@ -88,9 +88,9 @@ jobs:
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
-      - uses: ./.github/actions/setup_java_25
+      - uses: $/.github/actions/setup_java_25
 
-      - uses: ./.github/actions/setup_pnpm_cache
+      - uses: $/.github/actions/setup_pnpm_cache
 
       - name: Setup Node
         uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
@@ -106,7 +106,7 @@ jobs:
           ./mvnw exec:java -Dexec.mainClass="fi.oph.koski.perftest.MixedPerfTester"
 
       - name: Report failure
-        uses: ./.github/actions/report-slack
+        uses: $/.github/actions/report-slack
         if: ${{ failure() }}
         with:
           webhook: ${{ secrets.SLACK_CI_ALERTS_WEBHOOK }}
@@ -120,9 +120,9 @@ jobs:
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
-      - uses: ./.github/actions/setup_java_25
+      - uses: $/.github/actions/setup_java_25
 
-      - uses: ./.github/actions/setup_pnpm_cache
+      - uses: $/.github/actions/setup_pnpm_cache
 
       - name: Setup Node
         uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
@@ -162,7 +162,7 @@ jobs:
           ./mvnw exec:java -Dexec.mainClass="fi.oph.koski.perftest.YleinenKielitutkintoTodistusGenerator"
 
       - name: Report failure
-        uses: ./.github/actions/report-slack
+        uses: $/.github/actions/report-slack
         if: ${{ failure() }}
         with:
           webhook: ${{ secrets.SLACK_CI_ALERTS_WEBHOOK }}

@@ -143,7 +143,7 @@ jobs:
       group: ${{ github.event.pull_request.user.login == 'renovate[bot]' && 'ci-tests-renovate' || format('ci-tests-{0}-{1}', github.run_id, github.run_attempt) }}
       cancel-in-progress: false
       queue: max
-    uses: ./.github/workflows/tests.yml
+    uses: $/.github/workflows/tests.yml
     permissions:
       contents: read
       packages: read
@@ -161,7 +161,7 @@ jobs:
     name: Trivy
     needs: [changes]
     if: ${{ needs.changes.outputs.dependencies == 'true' }}
-    uses: ./.github/workflows/trivy_check.yml
+    uses: $/.github/workflows/trivy_check.yml
     permissions:
       contents: read
 
@@ -169,7 +169,7 @@ jobs:
     name: Node.js vulnerabilities
     needs: [changes]
     if: ${{ needs.changes.outputs.node-version == 'true' }}
-    uses: ./.github/workflows/node_vulnerability_check.yml
+    uses: $/.github/workflows/node_vulnerability_check.yml
     permissions:
       contents: read
 

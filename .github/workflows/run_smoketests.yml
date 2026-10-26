@@ -61,7 +61,7 @@ jobs:
         with:
           node-version-file: ".nvmrc"
 
-      - uses: ./.github/actions/setup_pnpm_cache
+      - uses: $/.github/actions/setup_pnpm_cache
 
       - name: Install dependencies
         uses: nick-fields/retry@ad984534de44a9489a53aefd81eb77f87c70dc60 # v4
@@ -113,7 +113,7 @@ jobs:
         run: cd smoketests && pnpm run qa:tiedote
 
       - name: Report failure
-        uses: ./.github/actions/report-slack
+        uses: $/.github/actions/report-slack
         if: ${{ failure() && !cancelled() }}
         with:
           webhook: ${{ secrets.SLACK_CI_ALERTS_WEBHOOK }}

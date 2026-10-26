@@ -48,13 +48,13 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
-      - uses: ./.github/actions/build_koski
+      - uses: $/.github/actions/build_koski
         with:
           commithash: ${{ inputs.commithash }}
   publish_image:
     name: Publish Koski Docker Image and package
     needs: [build]
-    uses: ./.github/workflows/publish_image.yml
+    uses: $/.github/workflows/publish_image.yml
     permissions:
       contents: read
       id-token: write
@@ -65,7 +65,7 @@ jobs:
   deploy:
     name: Deploy
     needs: [publish_image]
-    uses: ./.github/workflows/deploy_koski.yml
+    uses: $/.github/workflows/deploy_koski.yml
     permissions:
       contents: read
       id-token: write
