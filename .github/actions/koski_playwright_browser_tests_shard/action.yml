@@ -1,12 +1,13 @@
 name: Koski Playwright E2E tests
+description: "Run one shard of the Koski Playwright E2E tests"
 
 inputs:
   shardIndex:
+    description: "1-based index of the shard to run"
     required: true
-    type: string
   shardTotal:
+    description: "Total number of shards"
     required: true
-    type: string
 
 runs:
   using: "composite"

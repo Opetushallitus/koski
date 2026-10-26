@@ -1,9 +1,10 @@
 name: Valpas integration test
+description: "Run one group of the Valpas browser tests"
 
 inputs:
   index:
+    description: "Test group to run, as in make valpas-fronttest-<index>"
     required: true
-    type: string
 
 runs:
   using: "composite"

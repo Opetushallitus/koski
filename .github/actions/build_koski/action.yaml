@@ -1,8 +1,8 @@
 name: "Build Koski app + tests"
+description: "Build Koski and its tests, and cache target/ for the test jobs"
 inputs:
   commithash:
     required: true
-    type: string
     description: "Commit hash to build"
 runs:
   using: composite

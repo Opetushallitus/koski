@@ -1,9 +1,10 @@
 name: "Run Koski backend tests"
+description: "Run the given Koski backend test suites"
 
 inputs:
   suites:
+    description: "Comma-separated packages or suites, passed to -DmembersOnlySuites"
     required: true
-    type: string
 
 runs:
   using: "composite"

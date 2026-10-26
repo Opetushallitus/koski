@@ -1,4 +1,5 @@
 name: Koski visual regression tests
+description: "Run the Koski visual regression tests"
 
 runs:
   using: "composite"
