@@ -21,6 +21,13 @@ export class KoskiRaportitPage {
     await expect(this.muodostaButton).toBeVisible()
   }
 
+  async gotoAmmatillinenOsittainenSuoritustiedot() {
+    await this.page.goto(
+      '/koski/raportit/ammatillinen-koulutus/ammatillinenosittainensuoritustietojentarkistus'
+    )
+    await expect(this.muodostaButton).toBeVisible()
+  }
+
   async gotoVstVapaatavoitteinen() {
     await this.page.goto(
       '/koski/raportit/vst/vapaansivistystyönvapaatavoitteisenkoulutuksenraportti?vstraportit=1'
@@ -46,6 +53,14 @@ export class KoskiRaportitPage {
     await this.page.locator('#dateinput-alku').fill(alku)
     await this.page.locator('#dateinput-loppu').fill(loppu)
     await expect(this.muodostaButton).toBeEnabled()
+  }
+
+  async rajaaOsasuorituksetAikajaksolle() {
+    const vaihtoehto = this.page.locator('label.radio-option-container', {
+      hasText: 'Raportille valitaan vain sellaiset'
+    })
+    await vaihtoehto.click()
+    await expect(vaihtoehto).toHaveAttribute('data-selected', 'true')
   }
 
   async muodosta() {

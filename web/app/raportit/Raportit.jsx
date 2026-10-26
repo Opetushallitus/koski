@@ -23,6 +23,7 @@ import { Paragraphs } from '../i18n/Paragraphs'
 import { lang } from '../i18n/i18n'
 import { hasFeatureFlag } from '../util/featureFlags'
 import {
+  ammatillinenOsittainenSuoritustiedotKyselymalli,
   ammatillinenTutkintoSuoritustiedotKyselymalli,
   vstKopsKyselymalli,
   vstOsaamismerkitKyselymalli,
@@ -695,7 +696,7 @@ function AmmatillinenOsittainenSuoritustietojenTarkistus({ stateP }) {
     <Text name="Suoritustiedot (ammatillinen koulutus, tutkinnon osa/osia)" />
   )
   const shortDescriptionText = (
-    <Text name="AmmatillinenOsittainenSuoritustietojenTarkistus-short-description" />
+    <Text name="AmmatillinenOsittainenSuoritustietojenTarkistus-short-description-massaluovutus" />
   )
   const exampleText = (
     <Paragraphs name="AmmatillinenOsittainenSuoritustietojenTarkistus-example" />
@@ -708,6 +709,7 @@ function AmmatillinenOsittainenSuoritustietojenTarkistus({ stateP }) {
       title={titleText}
       shortDescription={shortDescriptionText}
       example={exampleText}
+      massaluovutusKyselymalli={ammatillinenOsittainenSuoritustiedotKyselymalli}
       lang={lang}
     />
   )
