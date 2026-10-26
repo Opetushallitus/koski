@@ -32,6 +32,10 @@ import {
   MassaluovutusQueryMuuKuinSaanneltyKoulutus
 } from '../../types/fi/oph/koski/massaluovutus/raportit/MassaluovutusQueryMuuKuinSaanneltyKoulutus'
 import {
+  isMassaluovutusQueryPerusopetukseenValmistava,
+  MassaluovutusQueryPerusopetukseenValmistava
+} from '../../types/fi/oph/koski/massaluovutus/raportit/MassaluovutusQueryPerusopetukseenValmistava'
+import {
   isMassaluovutusQueryTOPKSAmmatillinen,
   MassaluovutusQueryTOPKSAmmatillinen
 } from '../../types/fi/oph/koski/massaluovutus/raportit/MassaluovutusQueryTOPKSAmmatillinen'
@@ -240,6 +244,21 @@ export const lukio2019OpintopistekertymatKyselymalli: MassaluovutusKyselymalli =
         : null,
     näytäOsasuoritustenRajaus: false
   }
+
+export const perusopetukseenValmistavaKyselymalli: MassaluovutusKyselymalli = {
+  luo: (p) =>
+    MassaluovutusQueryPerusopetukseenValmistava({
+      organisaatioOid: p.organisaatioOid,
+      language: p.language,
+      alku: p.alku,
+      loppu: p.loppu
+    }),
+  lue: (q) =>
+    isMassaluovutusQueryPerusopetukseenValmistava(q)
+      ? { organisaatioOid: q.organisaatioOid, alku: q.alku, loppu: q.loppu }
+      : null,
+  näytäOsasuoritustenRajaus: false
+}
 
 export const vstVapaatavoitteinenKyselymalli: MassaluovutusKyselymalli = {
   luo: (p) =>
