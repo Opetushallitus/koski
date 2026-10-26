@@ -1361,6 +1361,7 @@
   "Mukautettu oppimäärä": "Mukautettu oppimäärä",
   "MuksRaportti-example": "Jos haluat tulostaa raportin tietylle päivälle, syötä sekä aikajakson alku- että loppupäivämääräkenttään sama päivämäärä.",
   "MuksRaportti-short-description": "Raportti sisältää muun kuin säännellyn koulutuksen opiskeluoikeus- ja suoritustiedot tietojen oikeellisuuden tarkistamista varten valitulla aikajaksolla. Raportti pohjautuu viime yön tietoihin, eli tietojen päivitys KOSKI-tietovarantoon ei näy välittömästi raportilla.",
+  "MuksRaportti-short-description-massaluovutus": "Raportti sisältää muun kuin säännellyn koulutuksen opiskeluoikeus- ja suoritustiedot tietojen oikeellisuuden tarkistamista varten valitulla aikajaksolla. Raportti pohjautuu viime yön tietoihin, eli tietojen päivitys KOSKI-tietovarantoon ei näy välittömästi raportilla. Raportti muodostetaan taustalla, joten voit halutessasi poistua sivulta muodostamisen ajaksi. Valmiit raportit ovat ladattavissa kolmen vuorokauden ajan.",
   "MuksRaportti-title": "Muun kuin säännellyn koulutuksen raportti",
   "Muodosta Excel-tiedosto": "Muodosta Excel-tiedosto",
   "Muodostetaan raporttia": "Muodostetaan raporttia",

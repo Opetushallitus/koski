@@ -27,6 +27,7 @@ import {
   ammatillinenOsittainenSuoritustiedotKyselymalli,
   ammatillinenTutkintoSuoritustiedotKyselymalli,
   muuAmmatillinenKyselymalli,
+  muuKuinSaanneltyKoulutusKyselymalli,
   topksAmmatillinenKyselymalli,
   vstKopsKyselymalli,
   vstOsaamismerkitKyselymalli,
@@ -1284,7 +1285,9 @@ function VSTOsaamismerkit({ stateP }) {
 
 function MUKS({ stateP }) {
   const titleText = <Text name="MuksRaportti-title" />
-  const shortDescriptionText = <Text name="MuksRaportti-short-description" />
+  const shortDescriptionText = (
+    <Text name="MuksRaportti-short-description-massaluovutus" />
+  )
   const exampleText = <Paragraphs name="MuksRaportti-example" />
 
   return (
@@ -1294,6 +1297,7 @@ function MUKS({ stateP }) {
       title={titleText}
       shortDescription={shortDescriptionText}
       example={exampleText}
+      massaluovutusKyselymalli={muuKuinSaanneltyKoulutusKyselymalli}
       lang={lang}
     />
   )
