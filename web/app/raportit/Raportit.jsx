@@ -37,6 +37,7 @@ import {
   perusopetuksenLisaopetuksenOppijamaaratRaporttiKyselymalli,
   perusopetuksenOppijamaaratRaporttiKyselymalli,
   topksAmmatillinenKyselymalli,
+  tuvaPerusopetuksenOppijamaaratRaporttiKyselymalli,
   tuvaSuoritustiedotKyselymalli,
   vstKopsKyselymalli,
   vstOsaamismerkitKyselymalli,
@@ -1067,7 +1068,7 @@ function TuvaSuoritustiedotRaportti({ stateP }) {
 function TuvaPerusopetuksenOppijamäärätRaportti({ stateP }) {
   const titleText = <Text name="Tuva-perusopetus-oppijamäärät-raportti-title" />
   const shortDescriptionText = (
-    <Text name="Tuva-perusopetus-oppijamäärät-raportti-short-description" />
+    <Text name="Tuva-perusopetus-oppijamäärät-raportti-short-description-massaluovutus" />
   )
   const dateInputHelpText = (
     <Text name="Tuva-perusopetus-oppijamäärät-raportti-date-input-help" />
@@ -1084,6 +1085,9 @@ function TuvaPerusopetuksenOppijamäärätRaportti({ stateP }) {
       shortDescription={shortDescriptionText}
       dateInputHelp={dateInputHelpText}
       example={exampleText}
+      massaluovutusKyselymalli={
+        tuvaPerusopetuksenOppijamaaratRaporttiKyselymalli
+      }
       lang={lang}
     />
   )
