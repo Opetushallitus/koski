@@ -23,7 +23,7 @@ runs:
     # Jumittunut yhteys ei katkea itsestään, joten yrityksillä on aikaraja.
     - name: Pull and build container images
       run: |
-        scripts/retry.sh "Container image pull/build" 90s -- bash -c \
+        scripts/retry.sh "Container image pull/build" 180s -- bash -c \
           'docker compose --progress quiet pull --policy missing --ignore-buildable && docker compose --progress quiet build'
       shell: bash
 
