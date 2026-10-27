@@ -583,6 +583,16 @@
                   </excludes>
                   <message>Netty is only needed by async AWS SDK clients, which Koski does not use. Exclude software.amazon.awssdk:netty-nio-client from the dependency that brings it in.</message>
                 </bannedDependencies>
+                <banDynamicVersions>
+                  <ignores>
+                    <!-- auditlogger publishes only snapshots; remove once it publishes releases -->
+                    <ignore>fi.vm.sade:auditlogger</ignore>
+                  </ignores>
+                </banDynamicVersions>
+                <requirePluginVersions>
+                  <!-- Versions bundled with the Maven version pinned by the Maven wrapper -->
+                  <unCheckedPluginList>org.apache.maven.plugins:maven-clean-plugin,org.apache.maven.plugins:maven-install-plugin,org.apache.maven.plugins:maven-site-plugin,org.apache.maven.plugins:maven-deploy-plugin</unCheckedPluginList>
+                </requirePluginVersions>
               </rules>
             </configuration>
           </execution>
