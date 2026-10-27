@@ -23,6 +23,7 @@ import { Paragraphs } from '../i18n/Paragraphs'
 import { lang } from '../i18n/i18n'
 import {
   aikuistenPerusopetuksenKurssikertymaKyselymalli,
+  aikuistenPerusopetuksenOppijamaaratRaporttiKyselymalli,
   ammatillinenOpiskelijavuositiedotKyselymalli,
   ammatillinenOsittainenSuoritustiedotKyselymalli,
   ammatillinenTutkintoSuoritustiedotKyselymalli,
@@ -1155,7 +1156,7 @@ function AikuistenPerusopetuksenOppijamäärätRaportti({ stateP }) {
     <Text name="Aikuisten-perusopetus-oppilasmäärät-raportti-title" />
   )
   const shortDescriptionText = (
-    <Text name="Aikuisten-perusopetus-oppilasmäärät-raportti-short-description" />
+    <Text name="Aikuisten-perusopetus-oppilasmäärät-raportti-short-description-massaluovutus" />
   )
   const dateInputHelpText = (
     <Text name="Aikuisten-perusopetus-oppilasmäärät-raportti-date-input-help" />
@@ -1172,6 +1173,9 @@ function AikuistenPerusopetuksenOppijamäärätRaportti({ stateP }) {
       shortDescription={shortDescriptionText}
       dateInputHelp={dateInputHelpText}
       example={exampleText}
+      massaluovutusKyselymalli={
+        aikuistenPerusopetuksenOppijamaaratRaporttiKyselymalli
+      }
       lang={lang}
     />
   )
