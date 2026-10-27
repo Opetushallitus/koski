@@ -11,6 +11,8 @@
 
 // Sama raja kuin vanhassa käyttöliittymässä (style/opiskeluoikeus.less).
 @Osasuoritus-kentta-max-leveys: 300px;
+// Sama raja kuin KeyValueTablen tekstikentillä (TextField.less).
+@Osasuoritus-tekstikentta-max-leveys: 500px;
 
 // Laajennetun osasuorituksen kenttien yhteinen ruudukko:
 //
@@ -57,6 +59,22 @@
   grid-column: 1 / -1;
   // stylelint-disable-next-line plugin/no-unsupported-browser-features -- ilman tukea kunkin kentän nimisarake on oman nimensä levyinen, jolloin arvot eivät ole linjassa keskenään; hyväksyttävä heikennys
   grid-template-columns: subgrid;
+}
+
+// Nimi samalle tekstilinjalle arvon ensimmäisen rivin kanssa: arvo voi alkaa
+// tekstillä, 24 px:n alikenttärivillä, valinnalla tai syötekentällä, joiden
+// teksti on eri korkeudella kuin 18 px:n nimirivin.
+.OsasuoritusProperties .OsasuoritusProperty {
+  align-items: baseline;
+}
+
+// Tekstialueen perusviiva on sen alareunassa, joten pelkän tekstialueen (esim.
+// kuvaus tai tunnustuksen selite) rinnalla nimi jäisi alareunaan. Arvo
+// tasataan silloin yläreunaan.
+// stylelint-disable-next-line plugin/no-unsupported-browser-features -- ilman tukea nimi asettuu tekstialueen alareunaan; hyväksyttävä heikennys
+.OsasuoritusProperties
+  .OsasuoritusPropertyValue:has(textarea):not(:has(.KeyValueTable)) {
+  align-self: start;
 }
 
 // Nimi omaan sarakkeeseensa, arvo heti oman tasonsa nimisarakkeen jälkeen
@@ -177,6 +195,11 @@
     margin-top: @Osasuoritus-kenttien-vali;
   }
 
+  // Sisäkkäisen taulukon otsikkopalkki ei ala kiinni edellisestä kentästä.
+  > .OsasuoritusProperty + .OsasuoritusHeader {
+    margin-top: @Osasuoritus-kenttien-vali;
+  }
+
   // Ilman sisäistä tilaa teksti olisi kiinni laatikon ylä- ja alareunassa.
   > .OsasuoritusProperty--korostettu {
     padding-block: (@baseline / 2);
@@ -192,14 +215,16 @@
   }
 
   .OsasuoritusPropertyValue {
-    // Saman kentän useat arvot (esim. arvioinnin korotukset) erotetaan välillä,
-    // muokkaustilassa myös viivalla, koska lomakkeet ovat korkeita.
-    > .NotRemovable + .NotRemovable,
-    > .Removable + .Removable {
-      margin-top: 9px;
+    // Saman kentän useat arvot (esim. arvioinnin korotukset) erotetaan
+    // kenttien väliä suuremmalla välillä, jotta ne erottuvat arvon omista
+    // alikentistä. Muokkaustilassa erotin on viiva, koska lomakkeet ovat
+    // korkeita.
+    > .NotRemovable + .NotRemovable {
+      margin-top: 2 * @Osasuoritus-kenttien-vali;
     }
 
     > .Removable + .Removable {
+      margin-top: 9px;
       padding-top: 9px;
       border-top: 1px solid @color-gray-darker;
     }
@@ -217,16 +242,33 @@
       position: static;
     }
 
+    // Pelkän tekstikentän (tunnustuksen selite) poistopainike kentän viereen:
+    // rivin poistopainikkeiden sarakkeessa se näytti koko osasuorituksen
+    // poistolta. Leveys = kenttä, väli (Removable.less) ja painike.
+    .TunnustusEdit .Removable {
+      max-width: ~'calc(@{Osasuoritus-tekstikentta-max-leveys} + 6px + 2.5 * @{baseline})';
+
+      > .IconButton {
+        position: static;
+      }
+    }
+
     // Tekstikentät yhtä leveinä kuin KeyValueTable-kentissä (TextField.less)
     .TextEdit,
     .TextEdit__input {
-      max-width: 500px;
+      max-width: @Osasuoritus-tekstikentta-max-leveys;
     }
 
     // Valintaruutu ja Lisää-painike alkavat samasta kohdasta kuin sarakkeen
     // tekstiarvot. Painikkeen sisennys kuten KeyValueRow:ssa.
     .Checkbox {
       margin-left: 0;
+    }
+
+    // Valintaruudun perusviiva sen tekstistä, jotta kentän nimi asettuu samalle
+    // linjalle: ruudun piirtävällä ::before-elementillä ei ole tekstiä.
+    .Checkbox__label {
+      align-self: baseline;
     }
 
     .FlatButton {

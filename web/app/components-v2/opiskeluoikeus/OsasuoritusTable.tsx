@@ -155,9 +155,9 @@ export const OsasuoritusTable = <DATA_KEYS extends string, P>(
       ) : (
         addNewView
       )}
-      {/* Sisäkkäisen taulukon alaväli tulee laajennetun rivin omasta
-          alareunuksesta. */}
-      <Spacer />
+      {/* Sisäkkäisen taulukon jälkeinen väli tulee ylemmän rivin sisällön
+          alareunuksesta (OsasuoritusTable.less), jotta välit eivät kasaudu. */}
+      {taso === 0 && <Spacer />}
     </>
   )
 }
@@ -338,6 +338,7 @@ export const OsasuoritusRow = <DATA_KEYS extends string>(
       <ColumnRow
         className={cx(
           'OsasuoritusRow',
+          taso > 0 && 'OsasuoritusRow--sisakkainen',
           props.editMode && 'OsasuoritusRow--edit'
         )}
         style={sisennysStyle(taso, merkkitasot)}
