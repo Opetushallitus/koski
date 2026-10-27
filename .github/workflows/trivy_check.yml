@@ -61,6 +61,20 @@ jobs:
           path: base
           persist-credentials: false
 
+      - name: Restore the Maven cache of the base commit
+        if: env.BASE_SHA != '' && hashFiles('pom.xml') != hashFiles('base/pom.xml')
+        uses: ./.github/actions/setup_java_25
+        with:
+          cache-dependency-path: |
+            base/**/pom.xml
+            base/**/.mvn/wrapper/maven-wrapper.properties
+            base/**/.mvn/extensions.xml
+
+      - name: Resolve Maven dependencies of the base commit
+        if: env.BASE_SHA != ''
+        working-directory: base
+        run: ./mvnw --batch-mode --file pom.xml dependency:go-offline
+
       - name: Trivy scan of the base commit
         if: env.BASE_SHA != ''
         working-directory: base
