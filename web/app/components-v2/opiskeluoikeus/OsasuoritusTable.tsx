@@ -78,6 +78,9 @@ export type OsasuoritusRowData<DATA_KEYS extends string> = {
   osasuoritusIndex: number
   osasuoritusPath?: FormOptic<Opiskeluoikeus, any>
   expandable: boolean
+  // Esim. tyhjän taulukon otsikon näyttävä paikkarivi ei ole poistettavissa,
+  // vaikka taulukko varaa poistopainikkeille sarakkeen.
+  removable?: boolean
   columns: Partial<Record<DATA_KEYS, React.ReactNode>>
   alwaysVisibleContent?: React.ReactElement
   content?: React.ReactElement
@@ -138,7 +141,9 @@ export const OsasuoritusTable = <DATA_KEYS extends string, P>(
               showCompleted={showCompleted}
               completed={completed ? completed(index) : undefined}
               onRemove={
-                onRemove !== undefined ? () => onRemove(index) : undefined
+                onRemove !== undefined && row.removable !== false
+                  ? () => onRemove(index)
+                  : undefined
               }
             />
           </TestIdLayer>

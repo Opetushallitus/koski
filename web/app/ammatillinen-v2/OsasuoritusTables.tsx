@@ -188,6 +188,7 @@ export const dummyRow = <T extends string>(
     suoritusIndex: 0,
     osasuoritusIndex: 0,
     expandable: false,
+    removable: false,
     columns
   }
 }
@@ -254,21 +255,18 @@ const TableForTutkinnonOsaRyhmä = ({
           ryhmä,
           suoritusPath: päätasonSuoritus.path
         }}
-        onRemove={
-          !rows || rows?.length === 0
-            ? undefined
-            : (rowIndex) =>
-                form.updateAt(
-                  päätasonSuoritus.path,
-                  (pts) =>
-                    ({
-                      ...pts,
-                      osasuoritukset: deleteAt<AmisTutkinnonOsanSuoritus>(
-                        pts.osasuoritukset || [],
-                        originalIndexMap[rowIndex]
-                      )
-                    }) as AmisTutkinnonSuoritus
+        onRemove={(rowIndex) =>
+          form.updateAt(
+            päätasonSuoritus.path,
+            (pts) =>
+              ({
+                ...pts,
+                osasuoritukset: deleteAt<AmisTutkinnonOsanSuoritus>(
+                  pts.osasuoritukset || [],
+                  originalIndexMap[rowIndex]
                 )
+              }) as AmisTutkinnonSuoritus
+          )
         }
         completed={(rowIndex) => {
           const osasuoritus = (päätasonSuoritus.suoritus.osasuoritukset || [])[
