@@ -6,6 +6,7 @@ import { AdaptedOpiskeluoikeusEditorCollection } from './useUiAdapter'
 import AmmatillinenEditor from '../../ammatillinen-v2/AmmatillinenEditor'
 import PerusopetusEditor from '../../perusopetus-v2/PerusopetusEditor'
 import AhvenanmaanPerusopetusEditor from '../../ahvenanmaan-perusopetus/AhvenanmaanPerusopetusEditor'
+import LukioEditor from '../../lukio-v2/LukioEditor'
 
 export const opiskeluoikeusEditors: AdaptedOpiskeluoikeusEditorCollection = {
   taiteenperusopetus: TaiteenPerusopetusEditor,
@@ -14,5 +15,6 @@ export const opiskeluoikeusEditors: AdaptedOpiskeluoikeusEditorCollection = {
   kielitutkinto: KielitutkintoEditor,
   ammatillinenkoulutus: AmmatillinenEditor,
   perusopetus: PerusopetusEditor,
-  ahvenanmaanperusopetus: AhvenanmaanPerusopetusEditor
+  ahvenanmaanperusopetus: AhvenanmaanPerusopetusEditor,
+  lukiokoulutus: LukioEditor
 }
