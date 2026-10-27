@@ -41,20 +41,9 @@ jobs:
             echo "::error::Commit $COMMIT_HASH does not contain latest master."
             exit 1
           fi
-  build:
-    name: Build Koski
-    needs: [check-master]
-    runs-on: ubuntu-26.04
-    steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-        with:
-          persist-credentials: false
-      - uses: $/.github/actions/build_koski
-        with:
-          commithash: ${{ inputs.commithash }}
   publish_image:
     name: Publish Koski Docker Image and package
-    needs: [build]
+    needs: [check-master]
     uses: $/.github/workflows/publish_image.yml
     permissions:
       contents: read
