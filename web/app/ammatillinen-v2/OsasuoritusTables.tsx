@@ -53,6 +53,7 @@ import {
   ModalTitle
 } from '../components-v2/containers/Modal'
 import { FlatButton } from '../components-v2/controls/FlatButton'
+import { ButtonGroup } from '../components-v2/containers/ButtonGroup'
 import { Column, ColumnRow } from '../components-v2/containers/Columns'
 import { PaikallinenTutkinnonOsa } from '../types/fi/oph/koski/schema/PaikallinenTutkinnonOsa'
 import { PaikallinenKoodi } from '../types/fi/oph/koski/schema/PaikallinenKoodi'
@@ -577,21 +578,21 @@ const NewAmisOsasuoritus = ({
             testId={'uusi-muu-tutkinnonosa'}
           />
         </Column>
-        <Column span={7}>
-          <NewPaikallinen
-            form={form}
-            tutkinnonOsanRyhmä={tutkinnonOsanRyhmä}
-            suoritusPath={suoritusPath}
-          />
-        </Column>
-        <Column span={7}>
-          <NewToisestaTutkinnosta
-            form={form}
-            oppilaitosOid={oppilaitosOid}
-            ryhmäKoodi={ryhmäKoodi}
-            tutkinnonOsanRyhmä={tutkinnonOsanRyhmä}
-            suoritusPath={suoritusPath}
-          />
+        <Column span={14}>
+          <ButtonGroup>
+            <NewPaikallinen
+              form={form}
+              tutkinnonOsanRyhmä={tutkinnonOsanRyhmä}
+              suoritusPath={suoritusPath}
+            />
+            <NewToisestaTutkinnosta
+              form={form}
+              oppilaitosOid={oppilaitosOid}
+              ryhmäKoodi={ryhmäKoodi}
+              tutkinnonOsanRyhmä={tutkinnonOsanRyhmä}
+              suoritusPath={suoritusPath}
+            />
+          </ButtonGroup>
         </Column>
       </ColumnRow>
       {showLisääKorkeakouluopinto && (

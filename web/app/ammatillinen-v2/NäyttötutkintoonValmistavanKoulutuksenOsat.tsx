@@ -1,5 +1,6 @@
 import React, { useCallback, useState } from 'react'
 import { ActivePäätasonSuoritus } from '../components-v2/containers/EditorContainer'
+import { ButtonGroup } from '../components-v2/containers/ButtonGroup'
 import { Column, ColumnRow } from '../components-v2/containers/Columns'
 import {
   LocalizedTextEdit,
@@ -197,51 +198,51 @@ const NewValmistavanKoulutuksenOsa = ({
           testId="uusi-muu-tutkinnonosa"
         />
       </Column>
-      <Column span={7}>
-        <FlatButton
-          withAddIcon
-          onClick={() => setPaikallinenModal(true)}
-          testId="lisaa-paikallinen-osa"
-        >
-          {t('Lisää paikallinen tutkinnon osa')}
-        </FlatButton>
-        {paikallinenModal && (
-          <NewPaikallinenModal
-            onClose={() => setPaikallinenModal(false)}
-            onSubmit={(nimi) => {
-              lisää(
-                PaikallinenNäyttötutkintoonValmistavanKoulutuksenOsa({
-                  tunniste: PaikallinenKoodi({
-                    koodiarvo: nimi,
-                    nimi: finnish(nimi)
-                  }),
-                  kuvaus: finnish(nimi)
-                })
-              )
-              setPaikallinenModal(false)
-            }}
-          />
-        )}
-      </Column>
-      <Column span={7}>
-        <FlatButton
-          withAddIcon
-          onClick={() => setToisestaTutkinnostaModal(true)}
-          testId="lisaa-osa-toisesta-tutkinnosta"
-        >
-          {t('Lisää tutkinnon osa toisesta tutkinnosta')}
-        </FlatButton>
-        {toisestaTutkinnostaModal && (
-          <NewToisestaTutkinnostaModal
-            oppilaitosOid={oppilaitosOid}
-            onClose={() => setToisestaTutkinnostaModal(false)}
-            onSubmit={(_tutkinto, tunniste) => {
-              // Valmistavan koulutuksen osalle ei tallenneta tutkintoa
-              lisää(valtakunnallinenTutkinnonOsa(tunniste))
-              setToisestaTutkinnostaModal(false)
-            }}
-          />
-        )}
+      <Column span={14}>
+        <ButtonGroup>
+          <FlatButton
+            withAddIcon
+            onClick={() => setPaikallinenModal(true)}
+            testId="lisaa-paikallinen-osa"
+          >
+            {t('Lisää paikallinen tutkinnon osa')}
+          </FlatButton>
+          {paikallinenModal && (
+            <NewPaikallinenModal
+              onClose={() => setPaikallinenModal(false)}
+              onSubmit={(nimi) => {
+                lisää(
+                  PaikallinenNäyttötutkintoonValmistavanKoulutuksenOsa({
+                    tunniste: PaikallinenKoodi({
+                      koodiarvo: nimi,
+                      nimi: finnish(nimi)
+                    }),
+                    kuvaus: finnish(nimi)
+                  })
+                )
+                setPaikallinenModal(false)
+              }}
+            />
+          )}
+          <FlatButton
+            withAddIcon
+            onClick={() => setToisestaTutkinnostaModal(true)}
+            testId="lisaa-osa-toisesta-tutkinnosta"
+          >
+            {t('Lisää tutkinnon osa toisesta tutkinnosta')}
+          </FlatButton>
+          {toisestaTutkinnostaModal && (
+            <NewToisestaTutkinnostaModal
+              oppilaitosOid={oppilaitosOid}
+              onClose={() => setToisestaTutkinnostaModal(false)}
+              onSubmit={(_tutkinto, tunniste) => {
+                // Valmistavan koulutuksen osalle ei tallenneta tutkintoa
+                lisää(valtakunnallinenTutkinnonOsa(tunniste))
+                setToisestaTutkinnostaModal(false)
+              }}
+            />
+          )}
+        </ButtonGroup>
       </Column>
     </ColumnRow>
   )
