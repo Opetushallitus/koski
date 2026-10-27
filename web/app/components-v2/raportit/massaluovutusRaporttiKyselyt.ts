@@ -56,6 +56,10 @@ import {
   MassaluovutusQueryTOPKSAmmatillinen
 } from '../../types/fi/oph/koski/massaluovutus/raportit/MassaluovutusQueryTOPKSAmmatillinen'
 import {
+  isMassaluovutusQueryTuvaPerusopetuksenOppijamaaratRaportti,
+  MassaluovutusQueryTuvaPerusopetuksenOppijamaaratRaportti
+} from '../../types/fi/oph/koski/massaluovutus/raportit/MassaluovutusQueryTuvaPerusopetuksenOppijamaaratRaportti'
+import {
   isMassaluovutusQueryTuvaSuoritustiedot,
   MassaluovutusQueryTuvaSuoritustiedot
 } from '../../types/fi/oph/koski/massaluovutus/raportit/MassaluovutusQueryTuvaSuoritustiedot'
@@ -359,6 +363,21 @@ export const perusopetuksenLisaopetuksenOppijamaaratRaporttiKyselymalli: Massalu
       }),
     lue: (q) =>
       isMassaluovutusQueryPerusopetuksenLisaopetuksenOppijamaaratRaportti(q)
+        ? { organisaatioOid: q.organisaatioOid, paiva: q.paiva }
+        : null,
+    ajankohdanOtsikko: 'Päivä'
+  }
+
+export const tuvaPerusopetuksenOppijamaaratRaporttiKyselymalli: MassaluovutusKyselymalli<PäiväraportinKyselynParametrit> =
+  {
+    luo: (p) =>
+      MassaluovutusQueryTuvaPerusopetuksenOppijamaaratRaportti({
+        organisaatioOid: p.organisaatioOid,
+        language: p.language,
+        paiva: p.paiva
+      }),
+    lue: (q) =>
+      isMassaluovutusQueryTuvaPerusopetuksenOppijamaaratRaportti(q)
         ? { organisaatioOid: q.organisaatioOid, paiva: q.paiva }
         : null,
     ajankohdanOtsikko: 'Päivä'
