@@ -28,7 +28,10 @@ trait LuovutuspalveluHeaderAuthenticationSupport extends AuthenticationSupport {
           })
           user <- DirectoryClientLogin
             .findUser(application.directoryClient, request, client.user)
-            .toRight(KoskiErrorCategory.unauthorized.loginFail())
+            .toRight {
+              defaultLogger.warn(s"Luovutuspalvelu client ${client.user} has no käyttöoikeudet ($subjectDnHeader, $serial)")
+              KoskiErrorCategory.unauthorized.loginFail()
+            }
         } yield {
           defaultLogger.info(s"Luovutuspalvelu client certificate $subjectDnHeader ($serial) mapped to user ${user.username}")
           user

@@ -5,9 +5,11 @@ import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.kela.KelaRequest
+import fi.oph.koski.log.RootLogTester
 import org.scalatest.freespec.AnyFreeSpec
+import org.scalatest.matchers.should.Matchers
 
-class LuovutuspalveluV2Spec extends AnyFreeSpec with KoskiHttpSpec {
+class LuovutuspalveluV2Spec extends AnyFreeSpec with KoskiHttpSpec with Matchers {
 
   "Kelan yhden oppijan rajapinta" - {
     "Toimii LuovutuspalveluV2 headerilla" in {
@@ -67,6 +69,16 @@ class LuovutuspalveluV2Spec extends AnyFreeSpec with KoskiHttpSpec {
         verifyResponseStatus(401, KoskiErrorCategory.unauthorized("Virheellinen varmenteen myöntäjä"))
       }
     }
+
+    "Palauttaa 401 ja lokittaa, kun varmenteeseen kytketyllä käyttäjällä ei ole käyttöoikeuksia" in {
+      RootLogTester.clearMessages()
+      post("api/luovutuspalvelu/kela/hetu",
+        JsonSerializer.writeWithRoot(KelaRequest(KoskiSpecificMockOppijat.amis.hetu.get)),
+        headers = mockLuovutuspalveluV2PassivoituHeader ++ jsonContent) {
+        verifyResponseStatus(401, KoskiErrorCategory.unauthorized.loginFail())
+        RootLogTester.getLogMessages.exists(_.startsWith("Luovutuspalvelu client passivoitu has no käyttöoikeudet")) should be(true)
+      }
+    }
   }
 
   def mockLuovutuspalveluV2KelaHeader: Headers = Map(
@@ -85,6 +97,13 @@ class LuovutuspalveluV2Spec extends AnyFreeSpec with KoskiHttpSpec {
 
   def mockLuovutuspalveluV2InvalidHeader: Headers = Map(
     "x-amzn-mtls-clientcert-subject" -> "CN=example.com",
+    "x-amzn-mtls-clientcert-serial-number" -> "123",
+    "x-amzn-mtls-clientcert-issuer" -> "CN=mock-issuer",
+    "X-Forwarded-For" -> "0.0.0.0"
+  )
+
+  def mockLuovutuspalveluV2PassivoituHeader: Headers = Map(
+    "x-amzn-mtls-clientcert-subject" -> "CN=passivoitu",
     "x-amzn-mtls-clientcert-serial-number" -> "123",
     "x-amzn-mtls-clientcert-issuer" -> "CN=mock-issuer",
     "X-Forwarded-For" -> "0.0.0.0"

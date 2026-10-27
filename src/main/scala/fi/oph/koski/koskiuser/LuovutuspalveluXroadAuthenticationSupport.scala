@@ -34,7 +34,10 @@ trait LuovutuspalveluXroadAuthenticationSupport extends AuthenticationSupport wi
           }
           user <- DirectoryClientLogin
             .findUser(application.directoryClient, request, clientUsername)
-            .toRight(KoskiErrorCategory.unauthorized.loginFail())
+            .toRight {
+              defaultLogger.warn(s"Luovutuspalvelu client $clientUsername has no käyttöoikeudet (X-Road client $xroadClient)")
+              KoskiErrorCategory.unauthorized.loginFail()
+            }
         } yield user
     ).getOrElse(Left(KoskiErrorCategory.unauthorized.notAuthenticated()))
   }
