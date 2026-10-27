@@ -85,6 +85,13 @@ export class KoskiRaportitPage {
     await expect(this.muodostaButton).toBeVisible()
   }
 
+  async gotoLukionSuoritustiedot() {
+    await this.page.goto(
+      '/koski/raportit/lukio/lukionsuoritustietojentarkistus'
+    )
+    await expect(this.muodostaButton).toBeVisible()
+  }
+
   async gotoVstVapaatavoitteinen() {
     await this.page.goto(
       '/koski/raportit/vst/vapaansivistystyönvapaatavoitteisenkoulutuksenraportti?vstraportit=1'
@@ -120,8 +127,22 @@ export class KoskiRaportitPage {
     await expect(vaihtoehto).toHaveAttribute('data-selected', 'true')
   }
 
+  async syötäKotikuntaPvm(pvm: string) {
+    await this.page.locator('#dateinput-kotikuntapvm').fill(pvm)
+  }
+
   async muodosta() {
     await this.muodostaButton.click()
+  }
+
+  async muodostaJaLueKysely() {
+    const pyyntö = this.page.waitForRequest(
+      (r) =>
+        r.method() === 'POST' &&
+        new URL(r.url()).pathname === '/koski/api/massaluovutus'
+    )
+    await this.muodosta()
+    return (await pyyntö).postDataJSON()
   }
 
   latauslinkki(rivi: Locator): Locator {
@@ -130,5 +151,9 @@ export class KoskiRaportitPage {
 
   salasana(rivi: Locator): Locator {
     return rivi.locator('td.password')
+  }
+
+  kotikuntaPvm(rivi: Locator): Locator {
+    return rivi.locator('td.kotikunta')
   }
 }

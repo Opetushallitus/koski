@@ -5,7 +5,11 @@ import {
   useLocalDataCopy,
   useOnApiSuccess
 } from '../../api-fetch'
-import { ISO2FinnishDate, formatFinnishDateTime } from '../../date/date'
+import {
+  ISO2FinnishDate,
+  formatFinnishDate,
+  formatFinnishDateTime
+} from '../../date/date'
 import { t } from '../../i18n/i18n'
 import { isCompleteQueryResponse } from '../../types/fi/oph/koski/massaluovutus/CompleteQueryResponse'
 import { isFailedQueryResponse } from '../../types/fi/oph/koski/massaluovutus/FailedQueryResponse'
@@ -115,8 +119,11 @@ export const MassaluovutusRaportinLataus: React.FC<
                 <th>{t('Muodostettu')}</th>
                 <th>{t('Oppilaitos')}</th>
                 <th>{t('Aikajakso')}</th>
-                {kyselymalli.näytäOsasuoritustenRajaus && (
-                  <th>{t('Tutkinnon osat')}</th>
+                {kyselymalli.osasuoritustenRajausOtsikko && (
+                  <th>{t(kyselymalli.osasuoritustenRajausOtsikko)}</th>
+                )}
+                {kyselymalli.näytäKotikuntaPvm && (
+                  <th>{t('Kotikunta päivältä')}</th>
                 )}
                 <th>{t('Tiedosto')}</th>
                 <th>{t('Salasana')}</th>
@@ -129,8 +136,9 @@ export const MassaluovutusRaportinLataus: React.FC<
                   kysely={kysely}
                   tiedot={tiedot}
                   näytäOsasuoritustenRajaus={
-                    kyselymalli.näytäOsasuoritustenRajaus
+                    !!kyselymalli.osasuoritustenRajausOtsikko
                   }
+                  näytäKotikuntaPvm={!!kyselymalli.näytäKotikuntaPvm}
                   oppilaitosNimet={oppilaitosNimet}
                 />
               ))}
@@ -146,8 +154,15 @@ const RaporttiRivi: React.FC<{
   kysely: QueryResponse
   tiedot: RaporttiKyselynTiedot
   näytäOsasuoritustenRajaus: boolean
+  näytäKotikuntaPvm: boolean
   oppilaitosNimet: Record<string, string>
-}> = ({ kysely, tiedot, näytäOsasuoritustenRajaus, oppilaitosNimet }) => (
+}> = ({
+  kysely,
+  tiedot,
+  näytäOsasuoritustenRajaus,
+  näytäKotikuntaPvm,
+  oppilaitosNimet
+}) => (
   <tr>
     <td className="luontiaika">
       {formatFinnishDateTime(new Date(kysely.createdAt))}
@@ -156,6 +171,9 @@ const RaporttiRivi: React.FC<{
     <td className="aikavali">{aikaväli(tiedot)}</td>
     {näytäOsasuoritustenRajaus && (
       <td className="osasuoritukset">{osasuoritustenRajaus(tiedot)}</td>
+    )}
+    {näytäKotikuntaPvm && (
+      <td className="kotikunta">{kotikuntaPäivä(kysely, tiedot)}</td>
     )}
     <td className="tiedosto">
       {isCompleteQueryResponse(kysely) && (
@@ -209,3 +227,12 @@ const oppilaitos = (
 
 const osasuoritustenRajaus = (tiedot: RaporttiKyselynTiedot): string =>
   tiedot.osasuoritustenAikarajaus ? t('Aikajaksolta') : t('Kaikki')
+
+// Kuluvaa päivää ei tallenneta kyselyyn, joten silloin päivä on kyselyn luontipäivä
+const kotikuntaPäivä = (
+  kysely: QueryResponse,
+  tiedot: RaporttiKyselynTiedot
+): string | undefined =>
+  tiedot.kotikuntaPvm
+    ? ISO2FinnishDate(tiedot.kotikuntaPvm)
+    : formatFinnishDate(new Date(kysely.createdAt))
