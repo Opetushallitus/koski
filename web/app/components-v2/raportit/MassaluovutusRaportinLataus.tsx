@@ -23,15 +23,14 @@ import {
 import { useInterval } from '../../util/useInterval'
 import {
   MassaluovutusKyselymalli,
-  RaporttiKyselynParametrit,
   RaporttiKyselynTiedot
 } from './massaluovutusRaporttiKyselyt'
 
 const pollausväliMs = 3000
 
-export type MassaluovutusRaportinLatausProps = {
-  kyselymalli: MassaluovutusKyselymalli
-  parametrit: RaporttiKyselynParametrit | null
+export type MassaluovutusRaportinLatausProps<P> = {
+  kyselymalli: MassaluovutusKyselymalli<P>
+  parametrit: P | null
   dbUpdated?: string
   oppilaitosNimet: Record<string, string>
 }
@@ -41,9 +40,12 @@ type OmaRaportti = {
   tiedot: RaporttiKyselynTiedot
 }
 
-export const MassaluovutusRaportinLataus: React.FC<
-  MassaluovutusRaportinLatausProps
-> = ({ kyselymalli, parametrit, dbUpdated, oppilaitosNimet }) => {
+export const MassaluovutusRaportinLataus = <P,>({
+  kyselymalli,
+  parametrit,
+  dbUpdated,
+  oppilaitosNimet
+}: MassaluovutusRaportinLatausProps<P>) => {
   const kyselyt = useApiOnce(fetchOmatMassaluovutusKyselyt)
   const [kyselytData] = useLocalDataCopy(kyselyt)
   const luoKysely = useApiMethod(createMassaluovutusKysely)
@@ -118,7 +120,7 @@ export const MassaluovutusRaportinLataus: React.FC<
               <tr>
                 <th>{t('Muodostettu')}</th>
                 <th>{t('Oppilaitos')}</th>
-                <th>{t('Aikajakso')}</th>
+                <th>{t(kyselymalli.ajankohdanOtsikko ?? 'Aikajakso')}</th>
                 {kyselymalli.osasuoritustenRajausOtsikko && (
                   <th>{t(kyselymalli.osasuoritustenRajausOtsikko)}</th>
                 )}
@@ -168,7 +170,7 @@ const RaporttiRivi: React.FC<{
       {formatFinnishDateTime(new Date(kysely.createdAt))}
     </td>
     <td className="oppilaitos">{oppilaitos(tiedot, oppilaitosNimet)}</td>
-    <td className="aikavali">{aikaväli(tiedot)}</td>
+    <td className="ajankohta">{ajankohta(tiedot)}</td>
     {näytäOsasuoritustenRajaus && (
       <td className="osasuoritukset">{osasuoritustenRajaus(tiedot)}</td>
     )}
@@ -214,8 +216,10 @@ const Päivitysaika: React.FC<{ aika: string }> = ({ aika }) => {
 const onKesken = (q: QueryResponse): boolean =>
   isPendingQueryResponse(q) || isRunningQueryResponse(q)
 
-const aikaväli = (tiedot: RaporttiKyselynTiedot): string =>
-  `${ISO2FinnishDate(tiedot.alku)} – ${ISO2FinnishDate(tiedot.loppu)}`
+const ajankohta = (tiedot: RaporttiKyselynTiedot): string | undefined =>
+  'paiva' in tiedot
+    ? ISO2FinnishDate(tiedot.paiva)
+    : `${ISO2FinnishDate(tiedot.alku)} – ${ISO2FinnishDate(tiedot.loppu)}`
 
 const oppilaitos = (
   tiedot: RaporttiKyselynTiedot,

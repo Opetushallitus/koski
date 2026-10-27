@@ -33,6 +33,7 @@ import {
   muuAmmatillinenKyselymalli,
   muuKuinSaanneltyKoulutusKyselymalli,
   perusopetukseenValmistavaKyselymalli,
+  perusopetuksenOppijamaaratRaporttiKyselymalli,
   topksAmmatillinenKyselymalli,
   tuvaSuoritustiedotKyselymalli,
   vstKopsKyselymalli,
@@ -1013,7 +1014,7 @@ function PerusopetukseenValmistavanTarkistusRaportti({ stateP }) {
 function PerusopetuksenOppijamäärätRaportti({ stateP }) {
   const titleText = <Text name="Perusopetus-oppijamäärät-raportti-title" />
   const shortDescriptionText = (
-    <Text name="Perusopetus-oppijamäärät-raportti-short-description" />
+    <Text name="Perusopetus-oppijamäärät-raportti-short-description-massaluovutus" />
   )
   const dateInputHelpText = (
     <Text name="Perusopetus-oppijamäärät-raportti-date-input-help" />
@@ -1030,6 +1031,7 @@ function PerusopetuksenOppijamäärätRaportti({ stateP }) {
       shortDescription={shortDescriptionText}
       dateInputHelp={dateInputHelpText}
       example={exampleText}
+      massaluovutusKyselymalli={perusopetuksenOppijamaaratRaporttiKyselymalli}
       lang={lang}
     />
   )
