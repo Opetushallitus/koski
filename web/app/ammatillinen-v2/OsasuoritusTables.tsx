@@ -523,22 +523,24 @@ const NewAmisOsasuoritus = ({
 
   if (ryhmä === 'Yhteiset tutkinnon osat') {
     return (
-      <>
-        <KoodistoSelect
-          addNewText={'Lisää tutkinnon osa'}
-          koodistoUri="tutkinnonosat"
-          format={format}
-          filter={yhteisetFilter}
-          onSelect={(tunniste) => {
-            const yhteinenTunniste = tunniste as YhteisenTutkinnonOsatTunniste
-            tunniste &&
-              lisääOsasuoritus(form, suoritusPath, (pts) =>
-                newYhteinenTutkinnonOsa(pts, yhteinenTunniste)
-              )
-          }}
-          testId="uusi-yhteinen-tutkinnonosa"
-        />
-      </>
+      <ColumnRow>
+        <Column span={10}>
+          <KoodistoSelect
+            addNewText={'Lisää tutkinnon osa'}
+            koodistoUri="tutkinnonosat"
+            format={format}
+            filter={yhteisetFilter}
+            onSelect={(tunniste) => {
+              const yhteinenTunniste = tunniste as YhteisenTutkinnonOsatTunniste
+              tunniste &&
+                lisääOsasuoritus(form, suoritusPath, (pts) =>
+                  newYhteinenTutkinnonOsa(pts, yhteinenTunniste)
+                )
+            }}
+            testId="uusi-yhteinen-tutkinnonosa"
+          />
+        </Column>
+      </ColumnRow>
     )
   }
   const osasuoritukset =
@@ -560,7 +562,7 @@ const NewAmisOsasuoritus = ({
   return (
     <>
       <ColumnRow>
-        <Column span={12}>
+        <Column span={10}>
           <KoodistoSelect
             addNewText={'Lisää tutkinnon osa'}
             koodistoUri={'tutkinnonosat'}
@@ -575,14 +577,14 @@ const NewAmisOsasuoritus = ({
             testId={'uusi-muu-tutkinnonosa'}
           />
         </Column>
-        <Column span={6}>
+        <Column span={7}>
           <NewPaikallinen
             form={form}
             tutkinnonOsanRyhmä={tutkinnonOsanRyhmä}
             suoritusPath={suoritusPath}
           />
         </Column>
-        <Column span={6}>
+        <Column span={7}>
           <NewToisestaTutkinnosta
             form={form}
             oppilaitosOid={oppilaitosOid}

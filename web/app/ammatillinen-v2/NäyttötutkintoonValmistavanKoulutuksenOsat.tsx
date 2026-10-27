@@ -185,7 +185,7 @@ const NewValmistavanKoulutuksenOsa = ({
 
   return (
     <ColumnRow>
-      <Column span={12}>
+      <Column span={10}>
         <KoodistoSelect
           addNewText={'Lisää tutkinnon osa'}
           koodistoUri="tutkinnonosat"
@@ -197,7 +197,7 @@ const NewValmistavanKoulutuksenOsa = ({
           testId="uusi-muu-tutkinnonosa"
         />
       </Column>
-      <Column span={6}>
+      <Column span={7}>
         <FlatButton
           withAddIcon
           onClick={() => setPaikallinenModal(true)}
@@ -223,7 +223,7 @@ const NewValmistavanKoulutuksenOsa = ({
           />
         )}
       </Column>
-      <Column span={6}>
+      <Column span={7}>
         <FlatButton
           withAddIcon
           onClick={() => setToisestaTutkinnostaModal(true)}
