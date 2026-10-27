@@ -24,6 +24,10 @@ import {
   MassaluovutusQueryLukioKurssikertymat
 } from '../../types/fi/oph/koski/massaluovutus/raportit/MassaluovutusQueryLukioKurssikertymat'
 import {
+  isMassaluovutusQueryLukionSuoritustiedot,
+  MassaluovutusQueryLukionSuoritustiedot
+} from '../../types/fi/oph/koski/massaluovutus/raportit/MassaluovutusQueryLukionSuoritustiedot'
+import {
   isMassaluovutusQueryMuuAmmatillinen,
   MassaluovutusQueryMuuAmmatillinen
 } from '../../types/fi/oph/koski/massaluovutus/raportit/MassaluovutusQueryMuuAmmatillinen'
@@ -61,6 +65,7 @@ export type RaporttiKyselynParametrit = {
   alku: string
   loppu: string
   osasuoritustenAikarajaus?: boolean
+  kotikuntaPvm?: string
   language: 'fi' | 'sv' | 'en'
 }
 
@@ -69,13 +74,16 @@ export type RaporttiKyselynTiedot = {
   alku: string
   loppu: string
   osasuoritustenAikarajaus?: boolean
+  kotikuntaPvm?: string
 }
 
 export type MassaluovutusKyselymalli = {
   luo: (parametrit: RaporttiKyselynParametrit) => MassaluovutusQueryParameters
   // Palauttaa null, jos kysely ei ole tämän raportin kysely
   lue: (kysely: MassaluovutusQueryParameters) => RaporttiKyselynTiedot | null
-  näytäOsasuoritustenRajaus: boolean
+  // Annettuna omissa raporteissa näytetään osasuoritusten rajaus tällä otsikolla
+  osasuoritustenRajausOtsikko?: string
+  näytäKotikuntaPvm?: boolean
 }
 
 export const ammatillinenTutkintoSuoritustiedotKyselymalli: MassaluovutusKyselymalli =
@@ -97,7 +105,7 @@ export const ammatillinenTutkintoSuoritustiedotKyselymalli: MassaluovutusKyselym
             osasuoritustenAikarajaus: q.osasuoritustenAikarajaus
           }
         : null,
-    näytäOsasuoritustenRajaus: true
+    osasuoritustenRajausOtsikko: 'Tutkinnon osat'
   }
 
 export const ammatillinenOsittainenSuoritustiedotKyselymalli: MassaluovutusKyselymalli =
@@ -119,7 +127,7 @@ export const ammatillinenOsittainenSuoritustiedotKyselymalli: MassaluovutusKysel
             osasuoritustenAikarajaus: q.osasuoritustenAikarajaus
           }
         : null,
-    näytäOsasuoritustenRajaus: true
+    osasuoritustenRajausOtsikko: 'Tutkinnon osat'
   }
 
 export const ammatillinenOpiskelijavuositiedotKyselymalli: MassaluovutusKyselymalli =
@@ -134,8 +142,7 @@ export const ammatillinenOpiskelijavuositiedotKyselymalli: MassaluovutusKyselyma
     lue: (q) =>
       isMassaluovutusQueryAmmatillinenOpiskelijavuositiedot(q)
         ? { organisaatioOid: q.organisaatioOid, alku: q.alku, loppu: q.loppu }
-        : null,
-    näytäOsasuoritustenRajaus: false
+        : null
   }
 
 export const muuAmmatillinenKyselymalli: MassaluovutusKyselymalli = {
@@ -149,8 +156,7 @@ export const muuAmmatillinenKyselymalli: MassaluovutusKyselymalli = {
   lue: (q) =>
     isMassaluovutusQueryMuuAmmatillinen(q)
       ? { organisaatioOid: q.organisaatioOid, alku: q.alku, loppu: q.loppu }
-      : null,
-  näytäOsasuoritustenRajaus: false
+      : null
 }
 
 export const topksAmmatillinenKyselymalli: MassaluovutusKyselymalli = {
@@ -164,8 +170,7 @@ export const topksAmmatillinenKyselymalli: MassaluovutusKyselymalli = {
   lue: (q) =>
     isMassaluovutusQueryTOPKSAmmatillinen(q)
       ? { organisaatioOid: q.organisaatioOid, alku: q.alku, loppu: q.loppu }
-      : null,
-  näytäOsasuoritustenRajaus: false
+      : null
 }
 
 export const muuKuinSaanneltyKoulutusKyselymalli: MassaluovutusKyselymalli = {
@@ -179,8 +184,7 @@ export const muuKuinSaanneltyKoulutusKyselymalli: MassaluovutusKyselymalli = {
   lue: (q) =>
     isMassaluovutusQueryMuuKuinSaanneltyKoulutus(q)
       ? { organisaatioOid: q.organisaatioOid, alku: q.alku, loppu: q.loppu }
-      : null,
-  näytäOsasuoritustenRajaus: false
+      : null
 }
 
 export const tuvaSuoritustiedotKyselymalli: MassaluovutusKyselymalli = {
@@ -194,8 +198,7 @@ export const tuvaSuoritustiedotKyselymalli: MassaluovutusKyselymalli = {
   lue: (q) =>
     isMassaluovutusQueryTuvaSuoritustiedot(q)
       ? { organisaatioOid: q.organisaatioOid, alku: q.alku, loppu: q.loppu }
-      : null,
-  näytäOsasuoritustenRajaus: false
+      : null
 }
 
 export const aikuistenPerusopetuksenKurssikertymaKyselymalli: MassaluovutusKyselymalli =
@@ -210,8 +213,7 @@ export const aikuistenPerusopetuksenKurssikertymaKyselymalli: MassaluovutusKysel
     lue: (q) =>
       isMassaluovutusQueryAikuistenPerusopetuksenKurssikertyma(q)
         ? { organisaatioOid: q.organisaatioOid, alku: q.alku, loppu: q.loppu }
-        : null,
-    näytäOsasuoritustenRajaus: false
+        : null
   }
 
 export const lukioKurssikertymatKyselymalli: MassaluovutusKyselymalli = {
@@ -225,8 +227,7 @@ export const lukioKurssikertymatKyselymalli: MassaluovutusKyselymalli = {
   lue: (q) =>
     isMassaluovutusQueryLukioKurssikertymat(q)
       ? { organisaatioOid: q.organisaatioOid, alku: q.alku, loppu: q.loppu }
-      : null,
-  näytäOsasuoritustenRajaus: false
+      : null
 }
 
 export const lukio2019OpintopistekertymatKyselymalli: MassaluovutusKyselymalli =
@@ -241,8 +242,7 @@ export const lukio2019OpintopistekertymatKyselymalli: MassaluovutusKyselymalli =
     lue: (q) =>
       isMassaluovutusQueryLukio2019Opintopistekertymat(q)
         ? { organisaatioOid: q.organisaatioOid, alku: q.alku, loppu: q.loppu }
-        : null,
-    näytäOsasuoritustenRajaus: false
+        : null
   }
 
 export const perusopetukseenValmistavaKyselymalli: MassaluovutusKyselymalli = {
@@ -256,8 +256,31 @@ export const perusopetukseenValmistavaKyselymalli: MassaluovutusKyselymalli = {
   lue: (q) =>
     isMassaluovutusQueryPerusopetukseenValmistava(q)
       ? { organisaatioOid: q.organisaatioOid, alku: q.alku, loppu: q.loppu }
+      : null
+}
+
+export const lukionSuoritustiedotKyselymalli: MassaluovutusKyselymalli = {
+  luo: (p) =>
+    MassaluovutusQueryLukionSuoritustiedot({
+      organisaatioOid: p.organisaatioOid,
+      language: p.language,
+      alku: p.alku,
+      loppu: p.loppu,
+      osasuoritustenAikarajaus: p.osasuoritustenAikarajaus ?? false,
+      kotikuntaPvm: p.kotikuntaPvm
+    }),
+  lue: (q) =>
+    isMassaluovutusQueryLukionSuoritustiedot(q)
+      ? {
+          organisaatioOid: q.organisaatioOid,
+          alku: q.alku,
+          loppu: q.loppu,
+          osasuoritustenAikarajaus: q.osasuoritustenAikarajaus,
+          kotikuntaPvm: q.kotikuntaPvm
+        }
       : null,
-  näytäOsasuoritustenRajaus: false
+  osasuoritustenRajausOtsikko: 'Kurssit',
+  näytäKotikuntaPvm: true
 }
 
 export const vstVapaatavoitteinenKyselymalli: MassaluovutusKyselymalli = {
@@ -271,8 +294,7 @@ export const vstVapaatavoitteinenKyselymalli: MassaluovutusKyselymalli = {
   lue: (q) =>
     isMassaluovutusQueryVSTVapaatavoitteinen(q)
       ? { organisaatioOid: q.organisaatioOid, alku: q.alku, loppu: q.loppu }
-      : null,
-  näytäOsasuoritustenRajaus: false
+      : null
 }
 
 export const vstKopsKyselymalli: MassaluovutusKyselymalli = {
@@ -286,8 +308,7 @@ export const vstKopsKyselymalli: MassaluovutusKyselymalli = {
   lue: (q) =>
     isMassaluovutusQueryVSTKOPS(q)
       ? { organisaatioOid: q.organisaatioOid, alku: q.alku, loppu: q.loppu }
-      : null,
-  näytäOsasuoritustenRajaus: false
+      : null
 }
 
 export const vstOsaamismerkitKyselymalli: MassaluovutusKyselymalli = {
@@ -301,6 +322,5 @@ export const vstOsaamismerkitKyselymalli: MassaluovutusKyselymalli = {
   lue: (q) =>
     isMassaluovutusQueryVSTOsaamismerkit(q)
       ? { organisaatioOid: q.organisaatioOid, alku: q.alku, loppu: q.loppu }
-      : null,
-  näytäOsasuoritustenRajaus: false
+      : null
 }
