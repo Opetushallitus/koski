@@ -11,6 +11,13 @@ on:
         type: string
         required: false
         default: ""
+    secrets:
+      KOSKI_USER_USERNAME:
+        required: true
+      KOSKI_USER_PASSWORD:
+        required: true
+      SLACK_CI_ALERTS_WEBHOOK:
+        required: true
 
 permissions:
   contents: read
@@ -55,13 +62,15 @@ jobs:
       cancel-in-progress: true
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
 
       - name: Setup Node
         uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
           node-version-file: ".nvmrc"
 
-      - uses: ./.github/actions/setup_pnpm_cache
+      - uses: $/.github/actions/setup_pnpm_cache
 
       - name: Install dependencies
         uses: nick-fields/retry@ad984534de44a9489a53aefd81eb77f87c70dc60 # v4
@@ -113,7 +122,7 @@ jobs:
         run: cd smoketests && pnpm run qa:tiedote
 
       - name: Report failure
-        uses: ./.github/actions/report-slack
+        uses: $/.github/actions/report-slack
         if: ${{ failure() && !cancelled() }}
         with:
           webhook: ${{ secrets.SLACK_CI_ALERTS_WEBHOOK }}

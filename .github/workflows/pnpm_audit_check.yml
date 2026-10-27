@@ -68,7 +68,7 @@ jobs:
 
       - name: Report to Slack
         if: failure() && inputs.notify
-        uses: ./.github/actions/report-slack
+        uses: $/.github/actions/report-slack
         with:
           webhook: ${{ steps.audit.outputs.internal_only == 'true' && secrets.SLACK_CI_ALERTS_WEBHOOK || secrets.SLACK_WEBHOOK_URL_PROD_ALERTS }}
           title: ":rotating_light: pnpm audit failed: ${{ steps.audit.outputs.failed_dirs || 'the audit did not complete' }}"

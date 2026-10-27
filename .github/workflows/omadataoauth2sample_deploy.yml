@@ -10,6 +10,9 @@ on:
         description: "Commit hash to deploy from"
         type: string
         required: true
+    secrets:
+      ECR_ACCOUNT_ID:
+        required: false
   workflow_dispatch:
     inputs:
       environment:
@@ -35,6 +38,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
+          persist-credentials: false
           ref: ${{ inputs.commithash }}
 
       - name: Configure AWS credentials
@@ -101,6 +105,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
+          persist-credentials: false
           ref: ${{ inputs.commithash }}
 
       - name: Configure AWS credentials
@@ -121,7 +126,7 @@ jobs:
       - name: Get task definition skeleton
         id: get-task-def
         run: |
-          TASK_DEFINITION_ARN=$(aws ecs describe-task-definition --task-definition "${{ env.TASK_FAMILY }}" --region eu-west-1 | jq -r .taskDefinition.taskDefinitionArn )
+          TASK_DEFINITION_ARN=$(aws ecs describe-task-definition --task-definition "$TASK_FAMILY" --region eu-west-1 | jq -r .taskDefinition.taskDefinitionArn )
           aws ecs describe-task-definition --task-definition $TASK_DEFINITION_ARN --query 'taskDefinition' \
           | jq 'del(.registeredBy, .registeredAt, .status, .revision, .requiresAttributes, .taskDefinitionArn, .compatibilities)' \
           > task-definition.json

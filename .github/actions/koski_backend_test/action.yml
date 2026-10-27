@@ -10,13 +10,15 @@ runs:
   using: "composite"
   steps:
     - name: "🔨 Setup Java"
-      uses: ./.github/actions/setup_java_25
+      uses: $/.github/actions/setup_java_25
 
     - name: "🔨 Setup backend and databases"
-      uses: ./.github/actions/setup_backend
+      uses: $/.github/actions/setup_backend
 
     - name: Run backend tests
-      run: ./mvnw scalatest:test -DmembersOnlySuites="${{ inputs.suites }}" --batch-mode --no-snapshot-updates
+      env:
+        SUITES: ${{ inputs.suites }}
+      run: ./mvnw scalatest:test -DmembersOnlySuites="$(tr --delete '\\\n' <<< "$SUITES")" --batch-mode --no-snapshot-updates
       shell: bash
 
     # ScalaTest reports BUILD SUCCESS even when the suite selection matches no tests.

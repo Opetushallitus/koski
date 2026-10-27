@@ -29,48 +29,42 @@ jobs:
     steps:
       - name: Verify commit contains latest master
         if: ${{ !inputs.force }}
-        run: |
-          set -euo pipefail
-          MASTER_SHA=$(gh api repos/${{ github.repository }}/git/ref/heads/master --jq '.object.sha')
-          echo "Master is at $MASTER_SHA — comparing against ${{ inputs.commithash }}"
-          STATUS=$(gh api repos/${{ github.repository }}/compare/${MASTER_SHA}...${{ inputs.commithash }} --jq '.status')
-          if [ "$STATUS" = "behind" ] || [ "$STATUS" = "diverged" ]; then
-            echo "::error::Commit ${{ inputs.commithash }} does not contain latest master."
-            exit 1
-          fi
         env:
           GH_TOKEN: ${{ github.token }}
-  build:
-    name: Build Koski
-    needs: [check-master]
-    runs-on: ubuntu-26.04
-    steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-        with:
-          persist-credentials: false
-      - uses: ./.github/actions/build_koski
-        with:
-          commithash: ${{ inputs.commithash }}
+          COMMIT_HASH: ${{ inputs.commithash }}
+        run: |
+          set -euo pipefail
+          MASTER_SHA=$(gh api "repos/$GITHUB_REPOSITORY/git/ref/heads/master" --jq '.object.sha')
+          echo "Master is at $MASTER_SHA — comparing against $COMMIT_HASH"
+          STATUS=$(gh api "repos/$GITHUB_REPOSITORY/compare/$MASTER_SHA...$COMMIT_HASH" --jq '.status')
+          if [ "$STATUS" = "behind" ] || [ "$STATUS" = "diverged" ]; then
+            echo "::error::Commit $COMMIT_HASH does not contain latest master."
+            exit 1
+          fi
   publish_image:
     name: Publish Koski Docker Image and package
-    needs: [build]
-    uses: ./.github/workflows/publish_image.yml
+    needs: [check-master]
+    uses: $/.github/workflows/publish_image.yml
     permissions:
       contents: read
       id-token: write
       packages: write
     with:
       commithash: ${{ inputs.commithash }}
-    secrets: inherit
+    secrets:
+      ECR_ROLE: ${{ secrets.ECR_ROLE }}
+      ECR_ACCOUNT_ID: ${{ secrets.ECR_ACCOUNT_ID }}
   deploy:
     name: Deploy
     needs: [publish_image]
-    uses: ./.github/workflows/deploy_koski.yml
+    uses: $/.github/workflows/deploy_koski.yml
     permissions:
       contents: read
       id-token: write
-      packages: write
     with:
       environment: ${{ inputs.environment }}
       commithash: ${{ inputs.commithash }}
-    secrets: inherit
+    secrets:
+      DEPLOY_ROLE: ${{ secrets.DEPLOY_ROLE }}
+      ECR_ACCOUNT_ID: ${{ secrets.ECR_ACCOUNT_ID }}
+      SLACK_CI_ALERTS_WEBHOOK: ${{ secrets.SLACK_CI_ALERTS_WEBHOOK }}

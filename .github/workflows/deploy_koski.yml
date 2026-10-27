@@ -10,6 +10,13 @@ on:
         description: "Target environment (dev/qa/prod)"
         type: string
         required: true
+    secrets:
+      DEPLOY_ROLE:
+        required: false
+      ECR_ACCOUNT_ID:
+        required: false
+      SLACK_CI_ALERTS_WEBHOOK:
+        required: true
 env:
   DOCKER_BUILDKIT: 1
   SSH_AUTH_SOCK: /tmp/ssh_agent.sock
@@ -22,12 +29,7 @@ jobs:
     permissions:
       id-token: write
       contents: read
-      packages: write
     steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-        with:
-          sparse-checkout: .github/actions/report-slack
-
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@e1253824e5c10ff9df46874f81ed3ec929e19cfd # v6.3.0
         with:
@@ -49,8 +51,10 @@ jobs:
           echo "taskdef-arn=$(aws ssm get-parameter --name /koski/task-definition-skeleton --output text --query 'Parameter.Value')" >> $GITHUB_OUTPUT
 
       - name: Get task definition skeleton
+        env:
+          TASKDEF_ARN: ${{ steps.get-taskdef-arn.outputs.taskdef-arn }}
         run: |
-          aws ecs describe-task-definition --task-definition ${{ steps.get-taskdef-arn.outputs.taskdef-arn }} --query 'taskDefinition' > task-definition.json
+          aws ecs describe-task-definition --task-definition "$TASKDEF_ARN" --query 'taskDefinition' > task-definition.json
 
       - name: Render Amazon ECS task definition
         id: task-def
@@ -71,9 +75,10 @@ jobs:
 
       - name: Verify ECS deployment
         id: verify-ecs-deployment
+        env:
+          NEW_TASK_DEF_ARN: ${{ steps.ecs-deploy.outputs.task-definition-arn }}
         run: |
           CURRENT_TASK_DEF_ARN=$(aws ecs describe-services --cluster koski-cluster --services koski-v2 --query services[0].deployments[0].taskDefinition | jq -r ".")
-          NEW_TASK_DEF_ARN=${{ steps.ecs-deploy.outputs.task-definition-arn }}
           echo "Current task arn: $CURRENT_TASK_DEF_ARN"
           echo "New task arn: $NEW_TASK_DEF_ARN"
           if [ "$CURRENT_TASK_DEF_ARN" != "$NEW_TASK_DEF_ARN" ]; then
@@ -87,8 +92,10 @@ jobs:
           echo "taskdef-arn=$(aws ssm get-parameter --name /koski/raportointikanta-loader/task-definition-skeleton --output text --query 'Parameter.Value')" >> $GITHUB_OUTPUT
 
       - name: Get task definition skeleton
+        env:
+          TASKDEF_ARN: ${{ steps.get-raportointikanta-loader-taskdef-arn.outputs.taskdef-arn }}
         run: |
-          aws ecs describe-task-definition --task-definition ${{ steps.get-raportointikanta-loader-taskdef-arn.outputs.taskdef-arn }} --query 'taskDefinition' > raportointikanta-loader-task-definition.json
+          aws ecs describe-task-definition --task-definition "$TASKDEF_ARN" --query 'taskDefinition' > raportointikanta-loader-task-definition.json
 
       - name: Render Amazon ECS task definition
         id: raportointikanta-loader-task-def
@@ -116,8 +123,10 @@ jobs:
           echo "taskdef-arn=$(aws ssm get-parameter --name /koski/ytr-data-loader/task-definition-skeleton --output text --query 'Parameter.Value')" >> $GITHUB_OUTPUT
 
       - name: Get task definition skeleton
+        env:
+          TASKDEF_ARN: ${{ steps.get-ytr-data-loader-taskdef-arn.outputs.taskdef-arn }}
         run: |
-          aws ecs describe-task-definition --task-definition ${{ steps.get-ytr-data-loader-taskdef-arn.outputs.taskdef-arn }} --query 'taskDefinition' > ytr-data-loader-task-definition.json
+          aws ecs describe-task-definition --task-definition "$TASKDEF_ARN" --query 'taskDefinition' > ytr-data-loader-task-definition.json
 
       - name: Render Amazon ECS task definition
         id: ytr-data-loader-task-def
@@ -140,7 +149,7 @@ jobs:
         run: aws ssm put-parameter --overwrite --name /koski/ytr-data-loader/task-definition --type String --value ${TASKDEF_ARN}
 
       - name: Report task ready
-        uses: ./.github/actions/report-slack
+        uses: $/.github/actions/report-slack
         if: ${{ always() && !(job.status == 'success' && contains(fromJSON('["dev", "qa"]'), inputs.environment)) }}
         with:
           webhook: ${{ secrets.SLACK_CI_ALERTS_WEBHOOK }}

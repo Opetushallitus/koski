@@ -1,6 +1,23 @@
 name: Publish & deploy
 on:
   workflow_call:
+    secrets:
+      ECR_ROLE:
+        required: false
+      DEPLOY_ROLE:
+        required: false
+      ECR_ACCOUNT_ID:
+        required: false
+      KOSKI_USER_USERNAME:
+        required: true
+      KOSKI_USER_PASSWORD:
+        required: true
+      SLACK_CI_ALERTS_WEBHOOK:
+        required: true
+
+permissions:
+  contents: read
+
 env:
   DOCKER_BUILDKIT: 1
   SSH_AUTH_SOCK: /tmp/ssh_agent.sock
@@ -47,10 +64,16 @@ jobs:
     name: Publish
     needs: [check_master_head]
     if: ${{ needs.check_master_head.outputs.deploy == 'true' }}
-    uses: ./.github/workflows/publish_image.yml
+    uses: $/.github/workflows/publish_image.yml
+    permissions:
+      id-token: write
+      contents: read
+      packages: write
     with:
       commithash: ${{ github.sha }}
-    secrets: inherit
+    secrets:
+      ECR_ROLE: ${{ secrets.ECR_ROLE }}
+      ECR_ACCOUNT_ID: ${{ secrets.ECR_ACCOUNT_ID }}
 
   deploy_dev_qa:
     name: Dev & QA
@@ -63,26 +86,40 @@ jobs:
       group: master-deploy-dev-qa
       cancel-in-progress: false
       queue: max
-    uses: ./.github/workflows/deploy_dev_qa.yml
-    secrets: inherit
+    uses: $/.github/workflows/deploy_dev_qa.yml
+    permissions:
+      id-token: write
+      contents: read
+    secrets:
+      DEPLOY_ROLE: ${{ secrets.DEPLOY_ROLE }}
+      ECR_ACCOUNT_ID: ${{ secrets.ECR_ACCOUNT_ID }}
+      SLACK_CI_ALERTS_WEBHOOK: ${{ secrets.SLACK_CI_ALERTS_WEBHOOK }}
 
   deploy_omadataoauth2sample_dev:
     name: OmaData dev
     needs: [deploy_dev_qa]
-    uses: ./.github/workflows/omadataoauth2sample_deploy.yml
+    uses: $/.github/workflows/omadataoauth2sample_deploy.yml
+    permissions:
+      id-token: write
+      contents: read
     with:
       environment: dev
       commithash: ${{ github.sha }}
-    secrets: inherit
+    secrets:
+      ECR_ACCOUNT_ID: ${{ secrets.ECR_ACCOUNT_ID }}
 
   deploy_omadataoauth2sample_qa:
     name: OmaData QA
     needs: [deploy_dev_qa]
-    uses: ./.github/workflows/omadataoauth2sample_deploy.yml
+    uses: $/.github/workflows/omadataoauth2sample_deploy.yml
+    permissions:
+      id-token: write
+      contents: read
     with:
       environment: qa
       commithash: ${{ github.sha }}
-    secrets: inherit
+    secrets:
+      ECR_ACCOUNT_ID: ${{ secrets.ECR_ACCOUNT_ID }}
 
   smoketests_qa:
     name: Smoketests
@@ -91,16 +128,25 @@ jobs:
     permissions:
       actions: read
       contents: read
-    uses: ./.github/workflows/run_smoketests.yml
+    uses: $/.github/workflows/run_smoketests.yml
     with:
       expected_commithash: ${{ github.sha }}
-    secrets: inherit
+    secrets:
+      KOSKI_USER_USERNAME: ${{ secrets.KOSKI_USER_USERNAME }}
+      KOSKI_USER_PASSWORD: ${{ secrets.KOSKI_USER_PASSWORD }}
+      SLACK_CI_ALERTS_WEBHOOK: ${{ secrets.SLACK_CI_ALERTS_WEBHOOK }}
 
   deploy_prod:
     name: Prod
     needs: [deploy_dev_qa]
-    uses: ./.github/workflows/deploy_koski.yml
+    uses: $/.github/workflows/deploy_koski.yml
+    permissions:
+      id-token: write
+      contents: read
     with:
       environment: prod
       commithash: ${{ github.sha }}
-    secrets: inherit
+    secrets:
+      DEPLOY_ROLE: ${{ secrets.DEPLOY_ROLE }}
+      ECR_ACCOUNT_ID: ${{ secrets.ECR_ACCOUNT_ID }}
+      SLACK_CI_ALERTS_WEBHOOK: ${{ secrets.SLACK_CI_ALERTS_WEBHOOK }}

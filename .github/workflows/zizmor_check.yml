@@ -1,0 +1,41 @@
+name: zizmor
+
+on:
+  push:
+    branches: [master]
+    paths: [".github/**"]
+  workflow_call:
+    inputs:
+      notify:
+        description: Report failures to Slack
+        type: boolean
+        default: false
+    secrets:
+      SLACK_CI_ALERTS_WEBHOOK:
+        required: false
+
+permissions:
+  contents: read
+
+jobs:
+  zizmor:
+    name: zizmor
+    runs-on: ubuntu-26.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - uses: zizmorcore/zizmor-action@53290badfa369cb0bf7ad16342cb62c2fa47ac7b # v0.8.0
+        with:
+          advanced-security: false
+          annotations: true
+
+      - name: Report to Slack
+        if: failure() && (inputs.notify || github.event_name == 'push')
+        uses: $/.github/actions/report-slack
+        with:
+          webhook: ${{ secrets.SLACK_CI_ALERTS_WEBHOOK }}
+          title: ":rotating_light: zizmor found security issues in GitHub Actions workflows, or the check failed"
+          include_context: repo ci_run

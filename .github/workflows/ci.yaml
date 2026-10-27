@@ -32,8 +32,11 @@ jobs:
       renovate: ${{ steps.filter.outputs.renovate == 'true' }}
       dependencies: ${{ steps.filter.outputs.dependencies == 'true' }}
       node-version: ${{ steps.filter.outputs.node-version == 'true' }}
+      github-actions: ${{ steps.filter.outputs.github-actions == 'true' }}
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
       - name: Detect changed paths
         id: filter
         uses: dorny/paths-filter@ceb8a2b8f2d89434be7ff52d3de7ec3738c5cc9d # v4.0.3
@@ -117,6 +120,9 @@ jobs:
               - 'omadata-oauth2-sample/Dockerfile'
               - '.github/workflows/node_vulnerability_check.yml'
 
+            github-actions:
+              - '.github/**'
+
   no_merge_commits:
     name: No merge commits
     if: github.event_name == 'pull_request'
@@ -143,10 +149,9 @@ jobs:
       group: ${{ github.event.pull_request.user.login == 'renovate[bot]' && 'ci-tests-renovate' || format('ci-tests-{0}-{1}', github.run_id, github.run_attempt) }}
       cancel-in-progress: false
       queue: max
-    uses: ./.github/workflows/tests.yml
+    uses: $/.github/workflows/tests.yml
     permissions:
       contents: read
-      packages: read
     with:
       run-backend-tests: ${{ needs.changes.outputs.backend == 'true' }}
       run-koski-ui-tests: ${{ needs.changes.outputs.koski-ui == 'true' }}
@@ -161,7 +166,7 @@ jobs:
     name: Trivy
     needs: [changes]
     if: ${{ needs.changes.outputs.dependencies == 'true' }}
-    uses: ./.github/workflows/trivy_check.yml
+    uses: $/.github/workflows/trivy_check.yml
     permissions:
       contents: read
 
@@ -169,7 +174,15 @@ jobs:
     name: Node.js vulnerabilities
     needs: [changes]
     if: ${{ needs.changes.outputs.node-version == 'true' }}
-    uses: ./.github/workflows/node_vulnerability_check.yml
+    uses: $/.github/workflows/node_vulnerability_check.yml
+    permissions:
+      contents: read
+
+  zizmor:
+    name: zizmor
+    needs: [changes]
+    if: ${{ needs.changes.outputs.github-actions == 'true' }}
+    uses: $/.github/workflows/zizmor_check.yml
     permissions:
       contents: read
 
@@ -178,8 +191,12 @@ jobs:
     needs: [changes]
     if: ${{ needs.changes.outputs.renovate == 'true' }}
     runs-on: ubuntu-26.04
+    permissions:
+      contents: read
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
 
       - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
@@ -194,10 +211,14 @@ jobs:
   ci_passed:
     name: CI passed
     runs-on: ubuntu-26.04
-    needs: [changes, no_merge_commits, tests, trivy, node_vulnerabilities, renovate_config]
+    needs: [changes, no_merge_commits, tests, trivy, node_vulnerabilities, zizmor, renovate_config]
     if: ${{ always() }}
+    permissions:
+      contents: read
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
 
       - name: Verify every check is gated
         env:

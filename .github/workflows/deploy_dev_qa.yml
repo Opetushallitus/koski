@@ -1,21 +1,43 @@
 name: Dev & QA
 on:
   workflow_call:
+    secrets:
+      DEPLOY_ROLE:
+        required: false
+      ECR_ACCOUNT_ID:
+        required: false
+      SLACK_CI_ALERTS_WEBHOOK:
+        required: true
+
+permissions:
+  contents: read
 
 jobs:
   deploy_dev:
     name: Dev
-    uses: ./.github/workflows/deploy_koski.yml
+    uses: $/.github/workflows/deploy_koski.yml
+    permissions:
+      id-token: write
+      contents: read
     with:
       environment: dev
       commithash: ${{ github.sha }}
-    secrets: inherit
+    secrets:
+      DEPLOY_ROLE: ${{ secrets.DEPLOY_ROLE }}
+      ECR_ACCOUNT_ID: ${{ secrets.ECR_ACCOUNT_ID }}
+      SLACK_CI_ALERTS_WEBHOOK: ${{ secrets.SLACK_CI_ALERTS_WEBHOOK }}
 
   deploy_qa:
     name: QA
     needs: [deploy_dev]
-    uses: ./.github/workflows/deploy_koski.yml
+    uses: $/.github/workflows/deploy_koski.yml
+    permissions:
+      id-token: write
+      contents: read
     with:
       environment: qa
       commithash: ${{ github.sha }}
-    secrets: inherit
+    secrets:
+      DEPLOY_ROLE: ${{ secrets.DEPLOY_ROLE }}
+      ECR_ACCOUNT_ID: ${{ secrets.ECR_ACCOUNT_ID }}
+      SLACK_CI_ALERTS_WEBHOOK: ${{ secrets.SLACK_CI_ALERTS_WEBHOOK }}
