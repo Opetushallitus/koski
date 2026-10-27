@@ -28,6 +28,10 @@ import {
   MassaluovutusQueryLukio2019Suoritustiedot
 } from '../../types/fi/oph/koski/massaluovutus/raportit/MassaluovutusQueryLukio2019Suoritustiedot'
 import {
+  isMassaluovutusQueryLukioDiaIbInternationalESHOpiskelijamaarat,
+  MassaluovutusQueryLukioDiaIbInternationalESHOpiskelijamaarat
+} from '../../types/fi/oph/koski/massaluovutus/raportit/MassaluovutusQueryLukioDiaIbInternationalESHOpiskelijamaarat'
+import {
   isMassaluovutusQueryLukioKurssikertymat,
   MassaluovutusQueryLukioKurssikertymat
 } from '../../types/fi/oph/koski/massaluovutus/raportit/MassaluovutusQueryLukioKurssikertymat'
@@ -397,6 +401,21 @@ export const aikuistenPerusopetuksenOppijamaaratRaporttiKyselymalli: Massaluovut
       }),
     lue: (q) =>
       isMassaluovutusQueryAikuistenPerusopetuksenOppijamaaratRaportti(q)
+        ? { organisaatioOid: q.organisaatioOid, paiva: q.paiva }
+        : null,
+    ajankohdanOtsikko: 'Päivä'
+  }
+
+export const lukioDiaIbInternationalESHOpiskelijamaaratKyselymalli: MassaluovutusKyselymalli<PäiväraportinKyselynParametrit> =
+  {
+    luo: (p) =>
+      MassaluovutusQueryLukioDiaIbInternationalESHOpiskelijamaarat({
+        organisaatioOid: p.organisaatioOid,
+        language: p.language,
+        paiva: p.paiva
+      }),
+    lue: (q) =>
+      isMassaluovutusQueryLukioDiaIbInternationalESHOpiskelijamaarat(q)
         ? { organisaatioOid: q.organisaatioOid, paiva: q.paiva }
         : null,
     ajankohdanOtsikko: 'Päivä'

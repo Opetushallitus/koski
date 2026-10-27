@@ -127,6 +127,13 @@ export class KoskiRaportitPage {
     await expect(this.muodostaButton).toBeVisible()
   }
 
+  async gotoLukiokoulutuksenOpiskelijamaarat() {
+    await this.page.goto(
+      '/koski/raportit/lukio/lukiodiaibinternationaleshopiskelijamaarat'
+    )
+    await expect(this.muodostaButton).toBeVisible()
+  }
+
   async gotoVstVapaatavoitteinen() {
     await this.page.goto(
       '/koski/raportit/vst/vapaansivistystyönvapaatavoitteisenkoulutuksenraportti?vstraportit=1'
