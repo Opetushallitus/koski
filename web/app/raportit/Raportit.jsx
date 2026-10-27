@@ -29,6 +29,7 @@ import {
   ammatillinenTutkintoSuoritustiedotKyselymalli,
   lukio2019OpintopistekertymatKyselymalli,
   lukio2019SuoritustiedotKyselymalli,
+  lukioDiaIbInternationalESHOpiskelijamaaratKyselymalli,
   lukioKurssikertymatKyselymalli,
   lukionSuoritustiedotKyselymalli,
   muuAmmatillinenKyselymalli,
@@ -894,7 +895,7 @@ function Lukio2019Opintopistekertyma({ stateP }) {
 function LukioDiaIBInternationalESHOpiskelijamaarat({ stateP }) {
   const titleText = <Text name="lukiokoulutuksen-opiskelijamaarat-title" />
   const shortDescriptionText = (
-    <Text name="lukiokoulutuksen-opiskelijamaarat-short-description" />
+    <Text name="lukiokoulutuksen-opiskelijamaarat-short-description-massaluovutus" />
   )
   const dateInputHelpText = (
     <Text name="lukiokoulutuksen-opiskelijamaarat-date-input-help" />
@@ -911,6 +912,9 @@ function LukioDiaIBInternationalESHOpiskelijamaarat({ stateP }) {
       shortDescription={shortDescriptionText}
       dateInputHelp={dateInputHelpText}
       example={exampleText}
+      massaluovutusKyselymalli={
+        lukioDiaIbInternationalESHOpiskelijamaaratKyselymalli
+      }
       lang={lang}
     />
   )
