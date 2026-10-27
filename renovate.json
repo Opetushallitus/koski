@@ -415,6 +415,16 @@
       "automerge": true
     },
     {
+      "description": "Automerge minor and patch updates of runtime libraries that CI exercises sufficiently. A library listed here belongs only in this list, not also in the patch-only one above.",
+      "matchManagers": ["maven"],
+      "matchFileNames": ["pom.xml"],
+      "matchUpdateTypes": ["minor", "patch"],
+      "matchPackageNames": [
+        "org.scala-lang.modules:scala-parallel-collections_2.13"
+      ],
+      "automerge": true
+    },
+    {
       "description": "scalafix-cli is published per Scala patch version, and each release only for the newest one. A release built for a newer Scala than scalafix.scala.version in pom.xml therefore never appears under the current artifact name. Look up versions from scalafix-interfaces, which has no Scala suffix, so that the update is still proposed instead of silently stopping.",
       "matchManagers": ["maven"],
       "matchPackageNames": ["ch.epfl.scala:scalafix-cli_*"],
