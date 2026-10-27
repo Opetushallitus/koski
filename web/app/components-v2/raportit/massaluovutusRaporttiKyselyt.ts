@@ -44,6 +44,10 @@ import {
   MassaluovutusQueryPerusopetukseenValmistava
 } from '../../types/fi/oph/koski/massaluovutus/raportit/MassaluovutusQueryPerusopetukseenValmistava'
 import {
+  isMassaluovutusQueryPerusopetuksenOppijamaaratRaportti,
+  MassaluovutusQueryPerusopetuksenOppijamaaratRaportti
+} from '../../types/fi/oph/koski/massaluovutus/raportit/MassaluovutusQueryPerusopetuksenOppijamaaratRaportti'
+import {
   isMassaluovutusQueryTOPKSAmmatillinen,
   MassaluovutusQueryTOPKSAmmatillinen
 } from '../../types/fi/oph/koski/massaluovutus/raportit/MassaluovutusQueryTOPKSAmmatillinen'
@@ -64,7 +68,7 @@ import {
   MassaluovutusQueryVSTVapaatavoitteinen
 } from '../../types/fi/oph/koski/massaluovutus/raportit/MassaluovutusQueryVSTVapaatavoitteinen'
 
-export type RaporttiKyselynParametrit = {
+export type AikajaksoraportinKyselynParametrit = {
   organisaatioOid: string
   alku: string
   loppu: string
@@ -73,24 +77,31 @@ export type RaporttiKyselynParametrit = {
   language: 'fi' | 'sv' | 'en'
 }
 
-export type RaporttiKyselynTiedot = {
-  organisaatioOid?: string
-  alku: string
-  loppu: string
-  osasuoritustenAikarajaus?: boolean
+export type PäiväraportinKyselynParametrit = {
+  organisaatioOid: string
+  paiva: string
   kotikuntaPvm?: string
+  language: 'fi' | 'sv' | 'en'
 }
 
-export type MassaluovutusKyselymalli = {
-  luo: (parametrit: RaporttiKyselynParametrit) => MassaluovutusQueryParameters
+export type RaporttiKyselynTiedot = {
+  organisaatioOid?: string
+  osasuoritustenAikarajaus?: boolean
+  kotikuntaPvm?: string
+} & ({ alku: string; loppu: string } | { paiva: string })
+
+export type MassaluovutusKyselymalli<P> = {
+  luo: (parametrit: P) => MassaluovutusQueryParameters
   // Palauttaa null, jos kysely ei ole tämän raportin kysely
   lue: (kysely: MassaluovutusQueryParameters) => RaporttiKyselynTiedot | null
+  // Omien raporttien ajankohtasarakkeen otsikko, oletuksena Aikajakso
+  ajankohdanOtsikko?: string
   // Annettuna omissa raporteissa näytetään osasuoritusten rajaus tällä otsikolla
   osasuoritustenRajausOtsikko?: string
   näytäKotikuntaPvm?: boolean
 }
 
-export const ammatillinenTutkintoSuoritustiedotKyselymalli: MassaluovutusKyselymalli =
+export const ammatillinenTutkintoSuoritustiedotKyselymalli: MassaluovutusKyselymalli<AikajaksoraportinKyselynParametrit> =
   {
     luo: (p) =>
       MassaluovutusQueryAmmatillinenTutkintoSuoritustiedot({
@@ -112,7 +123,7 @@ export const ammatillinenTutkintoSuoritustiedotKyselymalli: MassaluovutusKyselym
     osasuoritustenRajausOtsikko: 'Tutkinnon osat'
   }
 
-export const ammatillinenOsittainenSuoritustiedotKyselymalli: MassaluovutusKyselymalli =
+export const ammatillinenOsittainenSuoritustiedotKyselymalli: MassaluovutusKyselymalli<AikajaksoraportinKyselynParametrit> =
   {
     luo: (p) =>
       MassaluovutusQueryAmmatillinenOsittainenSuoritustiedot({
@@ -134,7 +145,7 @@ export const ammatillinenOsittainenSuoritustiedotKyselymalli: MassaluovutusKysel
     osasuoritustenRajausOtsikko: 'Tutkinnon osat'
   }
 
-export const ammatillinenOpiskelijavuositiedotKyselymalli: MassaluovutusKyselymalli =
+export const ammatillinenOpiskelijavuositiedotKyselymalli: MassaluovutusKyselymalli<AikajaksoraportinKyselynParametrit> =
   {
     luo: (p) =>
       MassaluovutusQueryAmmatillinenOpiskelijavuositiedot({
@@ -149,63 +160,67 @@ export const ammatillinenOpiskelijavuositiedotKyselymalli: MassaluovutusKyselyma
         : null
   }
 
-export const muuAmmatillinenKyselymalli: MassaluovutusKyselymalli = {
-  luo: (p) =>
-    MassaluovutusQueryMuuAmmatillinen({
-      organisaatioOid: p.organisaatioOid,
-      language: p.language,
-      alku: p.alku,
-      loppu: p.loppu
-    }),
-  lue: (q) =>
-    isMassaluovutusQueryMuuAmmatillinen(q)
-      ? { organisaatioOid: q.organisaatioOid, alku: q.alku, loppu: q.loppu }
-      : null
-}
+export const muuAmmatillinenKyselymalli: MassaluovutusKyselymalli<AikajaksoraportinKyselynParametrit> =
+  {
+    luo: (p) =>
+      MassaluovutusQueryMuuAmmatillinen({
+        organisaatioOid: p.organisaatioOid,
+        language: p.language,
+        alku: p.alku,
+        loppu: p.loppu
+      }),
+    lue: (q) =>
+      isMassaluovutusQueryMuuAmmatillinen(q)
+        ? { organisaatioOid: q.organisaatioOid, alku: q.alku, loppu: q.loppu }
+        : null
+  }
 
-export const topksAmmatillinenKyselymalli: MassaluovutusKyselymalli = {
-  luo: (p) =>
-    MassaluovutusQueryTOPKSAmmatillinen({
-      organisaatioOid: p.organisaatioOid,
-      language: p.language,
-      alku: p.alku,
-      loppu: p.loppu
-    }),
-  lue: (q) =>
-    isMassaluovutusQueryTOPKSAmmatillinen(q)
-      ? { organisaatioOid: q.organisaatioOid, alku: q.alku, loppu: q.loppu }
-      : null
-}
+export const topksAmmatillinenKyselymalli: MassaluovutusKyselymalli<AikajaksoraportinKyselynParametrit> =
+  {
+    luo: (p) =>
+      MassaluovutusQueryTOPKSAmmatillinen({
+        organisaatioOid: p.organisaatioOid,
+        language: p.language,
+        alku: p.alku,
+        loppu: p.loppu
+      }),
+    lue: (q) =>
+      isMassaluovutusQueryTOPKSAmmatillinen(q)
+        ? { organisaatioOid: q.organisaatioOid, alku: q.alku, loppu: q.loppu }
+        : null
+  }
 
-export const muuKuinSaanneltyKoulutusKyselymalli: MassaluovutusKyselymalli = {
-  luo: (p) =>
-    MassaluovutusQueryMuuKuinSaanneltyKoulutus({
-      organisaatioOid: p.organisaatioOid,
-      language: p.language,
-      alku: p.alku,
-      loppu: p.loppu
-    }),
-  lue: (q) =>
-    isMassaluovutusQueryMuuKuinSaanneltyKoulutus(q)
-      ? { organisaatioOid: q.organisaatioOid, alku: q.alku, loppu: q.loppu }
-      : null
-}
+export const muuKuinSaanneltyKoulutusKyselymalli: MassaluovutusKyselymalli<AikajaksoraportinKyselynParametrit> =
+  {
+    luo: (p) =>
+      MassaluovutusQueryMuuKuinSaanneltyKoulutus({
+        organisaatioOid: p.organisaatioOid,
+        language: p.language,
+        alku: p.alku,
+        loppu: p.loppu
+      }),
+    lue: (q) =>
+      isMassaluovutusQueryMuuKuinSaanneltyKoulutus(q)
+        ? { organisaatioOid: q.organisaatioOid, alku: q.alku, loppu: q.loppu }
+        : null
+  }
 
-export const tuvaSuoritustiedotKyselymalli: MassaluovutusKyselymalli = {
-  luo: (p) =>
-    MassaluovutusQueryTuvaSuoritustiedot({
-      organisaatioOid: p.organisaatioOid,
-      language: p.language,
-      alku: p.alku,
-      loppu: p.loppu
-    }),
-  lue: (q) =>
-    isMassaluovutusQueryTuvaSuoritustiedot(q)
-      ? { organisaatioOid: q.organisaatioOid, alku: q.alku, loppu: q.loppu }
-      : null
-}
+export const tuvaSuoritustiedotKyselymalli: MassaluovutusKyselymalli<AikajaksoraportinKyselynParametrit> =
+  {
+    luo: (p) =>
+      MassaluovutusQueryTuvaSuoritustiedot({
+        organisaatioOid: p.organisaatioOid,
+        language: p.language,
+        alku: p.alku,
+        loppu: p.loppu
+      }),
+    lue: (q) =>
+      isMassaluovutusQueryTuvaSuoritustiedot(q)
+        ? { organisaatioOid: q.organisaatioOid, alku: q.alku, loppu: q.loppu }
+        : null
+  }
 
-export const aikuistenPerusopetuksenKurssikertymaKyselymalli: MassaluovutusKyselymalli =
+export const aikuistenPerusopetuksenKurssikertymaKyselymalli: MassaluovutusKyselymalli<AikajaksoraportinKyselynParametrit> =
   {
     luo: (p) =>
       MassaluovutusQueryAikuistenPerusopetuksenKurssikertyma({
@@ -220,21 +235,22 @@ export const aikuistenPerusopetuksenKurssikertymaKyselymalli: MassaluovutusKysel
         : null
   }
 
-export const lukioKurssikertymatKyselymalli: MassaluovutusKyselymalli = {
-  luo: (p) =>
-    MassaluovutusQueryLukioKurssikertymat({
-      organisaatioOid: p.organisaatioOid,
-      language: p.language,
-      alku: p.alku,
-      loppu: p.loppu
-    }),
-  lue: (q) =>
-    isMassaluovutusQueryLukioKurssikertymat(q)
-      ? { organisaatioOid: q.organisaatioOid, alku: q.alku, loppu: q.loppu }
-      : null
-}
+export const lukioKurssikertymatKyselymalli: MassaluovutusKyselymalli<AikajaksoraportinKyselynParametrit> =
+  {
+    luo: (p) =>
+      MassaluovutusQueryLukioKurssikertymat({
+        organisaatioOid: p.organisaatioOid,
+        language: p.language,
+        alku: p.alku,
+        loppu: p.loppu
+      }),
+    lue: (q) =>
+      isMassaluovutusQueryLukioKurssikertymat(q)
+        ? { organisaatioOid: q.organisaatioOid, alku: q.alku, loppu: q.loppu }
+        : null
+  }
 
-export const lukio2019OpintopistekertymatKyselymalli: MassaluovutusKyselymalli =
+export const lukio2019OpintopistekertymatKyselymalli: MassaluovutusKyselymalli<AikajaksoraportinKyselynParametrit> =
   {
     luo: (p) =>
       MassaluovutusQueryLukio2019Opintopistekertymat({
@@ -249,106 +265,127 @@ export const lukio2019OpintopistekertymatKyselymalli: MassaluovutusKyselymalli =
         : null
   }
 
-export const perusopetukseenValmistavaKyselymalli: MassaluovutusKyselymalli = {
-  luo: (p) =>
-    MassaluovutusQueryPerusopetukseenValmistava({
-      organisaatioOid: p.organisaatioOid,
-      language: p.language,
-      alku: p.alku,
-      loppu: p.loppu
-    }),
-  lue: (q) =>
-    isMassaluovutusQueryPerusopetukseenValmistava(q)
-      ? { organisaatioOid: q.organisaatioOid, alku: q.alku, loppu: q.loppu }
-      : null
-}
+export const perusopetukseenValmistavaKyselymalli: MassaluovutusKyselymalli<AikajaksoraportinKyselynParametrit> =
+  {
+    luo: (p) =>
+      MassaluovutusQueryPerusopetukseenValmistava({
+        organisaatioOid: p.organisaatioOid,
+        language: p.language,
+        alku: p.alku,
+        loppu: p.loppu
+      }),
+    lue: (q) =>
+      isMassaluovutusQueryPerusopetukseenValmistava(q)
+        ? { organisaatioOid: q.organisaatioOid, alku: q.alku, loppu: q.loppu }
+        : null
+  }
 
-export const lukionSuoritustiedotKyselymalli: MassaluovutusKyselymalli = {
-  luo: (p) =>
-    MassaluovutusQueryLukionSuoritustiedot({
-      organisaatioOid: p.organisaatioOid,
-      language: p.language,
-      alku: p.alku,
-      loppu: p.loppu,
-      osasuoritustenAikarajaus: p.osasuoritustenAikarajaus ?? false,
-      kotikuntaPvm: p.kotikuntaPvm
-    }),
-  lue: (q) =>
-    isMassaluovutusQueryLukionSuoritustiedot(q)
-      ? {
-          organisaatioOid: q.organisaatioOid,
-          alku: q.alku,
-          loppu: q.loppu,
-          osasuoritustenAikarajaus: q.osasuoritustenAikarajaus,
-          kotikuntaPvm: q.kotikuntaPvm
-        }
-      : null,
-  osasuoritustenRajausOtsikko: 'Kurssit',
-  näytäKotikuntaPvm: true
-}
+export const lukionSuoritustiedotKyselymalli: MassaluovutusKyselymalli<AikajaksoraportinKyselynParametrit> =
+  {
+    luo: (p) =>
+      MassaluovutusQueryLukionSuoritustiedot({
+        organisaatioOid: p.organisaatioOid,
+        language: p.language,
+        alku: p.alku,
+        loppu: p.loppu,
+        osasuoritustenAikarajaus: p.osasuoritustenAikarajaus ?? false,
+        kotikuntaPvm: p.kotikuntaPvm
+      }),
+    lue: (q) =>
+      isMassaluovutusQueryLukionSuoritustiedot(q)
+        ? {
+            organisaatioOid: q.organisaatioOid,
+            alku: q.alku,
+            loppu: q.loppu,
+            osasuoritustenAikarajaus: q.osasuoritustenAikarajaus,
+            kotikuntaPvm: q.kotikuntaPvm
+          }
+        : null,
+    osasuoritustenRajausOtsikko: 'Kurssit',
+    näytäKotikuntaPvm: true
+  }
 
-export const lukio2019SuoritustiedotKyselymalli: MassaluovutusKyselymalli = {
-  luo: (p) =>
-    MassaluovutusQueryLukio2019Suoritustiedot({
-      organisaatioOid: p.organisaatioOid,
-      language: p.language,
-      alku: p.alku,
-      loppu: p.loppu,
-      osasuoritustenAikarajaus: p.osasuoritustenAikarajaus ?? false,
-      kotikuntaPvm: p.kotikuntaPvm
-    }),
-  lue: (q) =>
-    isMassaluovutusQueryLukio2019Suoritustiedot(q)
-      ? {
-          organisaatioOid: q.organisaatioOid,
-          alku: q.alku,
-          loppu: q.loppu,
-          osasuoritustenAikarajaus: q.osasuoritustenAikarajaus,
-          kotikuntaPvm: q.kotikuntaPvm
-        }
-      : null,
-  osasuoritustenRajausOtsikko: 'Kurssit',
-  näytäKotikuntaPvm: true
-}
+export const lukio2019SuoritustiedotKyselymalli: MassaluovutusKyselymalli<AikajaksoraportinKyselynParametrit> =
+  {
+    luo: (p) =>
+      MassaluovutusQueryLukio2019Suoritustiedot({
+        organisaatioOid: p.organisaatioOid,
+        language: p.language,
+        alku: p.alku,
+        loppu: p.loppu,
+        osasuoritustenAikarajaus: p.osasuoritustenAikarajaus ?? false,
+        kotikuntaPvm: p.kotikuntaPvm
+      }),
+    lue: (q) =>
+      isMassaluovutusQueryLukio2019Suoritustiedot(q)
+        ? {
+            organisaatioOid: q.organisaatioOid,
+            alku: q.alku,
+            loppu: q.loppu,
+            osasuoritustenAikarajaus: q.osasuoritustenAikarajaus,
+            kotikuntaPvm: q.kotikuntaPvm
+          }
+        : null,
+    osasuoritustenRajausOtsikko: 'Kurssit',
+    näytäKotikuntaPvm: true
+  }
 
-export const vstVapaatavoitteinenKyselymalli: MassaluovutusKyselymalli = {
-  luo: (p) =>
-    MassaluovutusQueryVSTVapaatavoitteinen({
-      organisaatioOid: p.organisaatioOid,
-      language: p.language,
-      alku: p.alku,
-      loppu: p.loppu
-    }),
-  lue: (q) =>
-    isMassaluovutusQueryVSTVapaatavoitteinen(q)
-      ? { organisaatioOid: q.organisaatioOid, alku: q.alku, loppu: q.loppu }
-      : null
-}
+export const perusopetuksenOppijamaaratRaporttiKyselymalli: MassaluovutusKyselymalli<PäiväraportinKyselynParametrit> =
+  {
+    luo: (p) =>
+      MassaluovutusQueryPerusopetuksenOppijamaaratRaportti({
+        organisaatioOid: p.organisaatioOid,
+        language: p.language,
+        paiva: p.paiva
+      }),
+    lue: (q) =>
+      isMassaluovutusQueryPerusopetuksenOppijamaaratRaportti(q)
+        ? { organisaatioOid: q.organisaatioOid, paiva: q.paiva }
+        : null,
+    ajankohdanOtsikko: 'Päivä'
+  }
 
-export const vstKopsKyselymalli: MassaluovutusKyselymalli = {
-  luo: (p) =>
-    MassaluovutusQueryVSTKOPS({
-      organisaatioOid: p.organisaatioOid,
-      language: p.language,
-      alku: p.alku,
-      loppu: p.loppu
-    }),
-  lue: (q) =>
-    isMassaluovutusQueryVSTKOPS(q)
-      ? { organisaatioOid: q.organisaatioOid, alku: q.alku, loppu: q.loppu }
-      : null
-}
+export const vstVapaatavoitteinenKyselymalli: MassaluovutusKyselymalli<AikajaksoraportinKyselynParametrit> =
+  {
+    luo: (p) =>
+      MassaluovutusQueryVSTVapaatavoitteinen({
+        organisaatioOid: p.organisaatioOid,
+        language: p.language,
+        alku: p.alku,
+        loppu: p.loppu
+      }),
+    lue: (q) =>
+      isMassaluovutusQueryVSTVapaatavoitteinen(q)
+        ? { organisaatioOid: q.organisaatioOid, alku: q.alku, loppu: q.loppu }
+        : null
+  }
 
-export const vstOsaamismerkitKyselymalli: MassaluovutusKyselymalli = {
-  luo: (p) =>
-    MassaluovutusQueryVSTOsaamismerkit({
-      organisaatioOid: p.organisaatioOid,
-      language: p.language,
-      alku: p.alku,
-      loppu: p.loppu
-    }),
-  lue: (q) =>
-    isMassaluovutusQueryVSTOsaamismerkit(q)
-      ? { organisaatioOid: q.organisaatioOid, alku: q.alku, loppu: q.loppu }
-      : null
-}
+export const vstKopsKyselymalli: MassaluovutusKyselymalli<AikajaksoraportinKyselynParametrit> =
+  {
+    luo: (p) =>
+      MassaluovutusQueryVSTKOPS({
+        organisaatioOid: p.organisaatioOid,
+        language: p.language,
+        alku: p.alku,
+        loppu: p.loppu
+      }),
+    lue: (q) =>
+      isMassaluovutusQueryVSTKOPS(q)
+        ? { organisaatioOid: q.organisaatioOid, alku: q.alku, loppu: q.loppu }
+        : null
+  }
+
+export const vstOsaamismerkitKyselymalli: MassaluovutusKyselymalli<AikajaksoraportinKyselynParametrit> =
+  {
+    luo: (p) =>
+      MassaluovutusQueryVSTOsaamismerkit({
+        organisaatioOid: p.organisaatioOid,
+        language: p.language,
+        alku: p.alku,
+        loppu: p.loppu
+      }),
+    lue: (q) =>
+      isMassaluovutusQueryVSTOsaamismerkit(q)
+        ? { organisaatioOid: q.organisaatioOid, alku: q.alku, loppu: q.loppu }
+        : null
+  }

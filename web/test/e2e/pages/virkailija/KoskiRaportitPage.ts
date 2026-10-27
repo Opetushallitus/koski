@@ -99,6 +99,13 @@ export class KoskiRaportitPage {
     await expect(this.muodostaButton).toBeVisible()
   }
 
+  async gotoPerusopetuksenOppijamaarat() {
+    await this.page.goto(
+      '/koski/raportit/perusopetus/perusopetuksenoppijamääräraportti'
+    )
+    await expect(this.muodostaButton).toBeVisible()
+  }
+
   async gotoVstVapaatavoitteinen() {
     await this.page.goto(
       '/koski/raportit/vst/vapaansivistystyönvapaatavoitteisenkoulutuksenraportti?vstraportit=1'
@@ -123,6 +130,11 @@ export class KoskiRaportitPage {
   async syötäAikajakso(alku: string, loppu: string) {
     await this.page.locator('#dateinput-alku').fill(alku)
     await this.page.locator('#dateinput-loppu').fill(loppu)
+    await expect(this.muodostaButton).toBeEnabled()
+  }
+
+  async syötäPäivä(pvm: string) {
+    await this.page.locator('#dateinput-paiva').fill(pvm)
     await expect(this.muodostaButton).toBeEnabled()
   }
 
