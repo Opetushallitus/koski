@@ -1,5 +1,16 @@
 # Koskeen tallennettavien tietojen validaatiosäännöt
 
+## 27.10.2026
+
+Vapaan sivistystyön vapaatavoitteisen koulutuksen (`vstvapaatavoitteinenkoulutus`) ja osaamismerkin (`vstosaamismerkki`) opiskeluoikeuksille sallitaan tila `lasna`. Opiskeluoikeuksille, jotka eivät ole päättyneet ennen 1.1.2027, validaatiot muuttuvat:
+
+- Tilan `lasna` voi tallentaa vasta 1.1.2027 alkaen ja vain opiskeluoikeudelle, joka ei ole päättynyt ennen 1.1.2027. Läsnä-jakson alkupäivä saa olla ennen 1.1.2027.
+- Tilaan `hyvaksytystisuoritettu` päättyvällä opiskeluoikeudella on oltava vahvistettu päätason suoritus. Vaatimus koskee myös käyttöliittymästä tehtävää ensimmäistä tallennusta, jolle aiemmin sallittiin vahvistamaton suoritus.
+- Osaamismerkin opiskeluoikeuden ei tarvitse olla päättynyt: se voi jäädä tilaan `lasna` ilman arviointia ja vahvistusta, myös lähdejärjestelmästä siirrettäessä. Päättyneen osaamismerkin arviointi-, vahvistus- ja päättymispäivän on edelleen oltava samat.
+- Vapaatavoitteisen koulutuksen vahvistuksen ja päättävän tilan vastaavuus sekä vaatimus vähintään yhdestä arvioidusta osasuorituksesta tarkistetaan aina, ei vain toisesta versiosta tai lähdejärjestelmäsiirrosta alkaen. Arvioitua osasuoritusta vaaditaan vain päättyneeltä opiskeluoikeudelta.
+
+Ennen 1.1.2027 päättyneet opiskeluoikeudet validoidaan aiempien sääntöjen mukaan, eikä niille voi tallentaa tilaa `lasna`.
+
 ## 20.10.2026
 
 - Vapaan sivistystyön kotoutumiskoulutuksen (`vstmaahanmuuttajienkotoutumiskoulutus`, sekä 2012 että 2022 opetussuunnitelman mukaiset suoritukset) ja lukutaitokoulutuksen (`vstlukutaitokoulutus`) opiskeluoikeus ei voi alkaa 1.1.2027 tai sen jälkeen.

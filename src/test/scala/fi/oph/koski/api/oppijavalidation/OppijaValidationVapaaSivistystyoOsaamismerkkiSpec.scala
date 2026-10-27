@@ -112,53 +112,85 @@ class OppijaValidationVapaaSivistystyoOsaamismerkkiSpec extends AnyFreeSpec with
       }
     }
 
-    "Opiskeluoikeuden alkamispäivä" - {
-      val alkamispäivä = date(2024, 1, 15)
-      val päättymispäivä = date(2024, 3, 1)
+    "Läsnä-tila ja alkamispäivä" - {
+      val alkamispäivä = date(2026, 11, 15)
+      val päättymispäivä = date(2027, 1, 8)
+
+      def läsnäJakso(päivä: LocalDate) =
+        VapaanSivistystyönOsaamismerkinOpiskeluoikeusjakso(päivä, ExampleData.opiskeluoikeusLäsnä)
 
       def läsnäJaksolla(oo: VapaanSivistystyönOpiskeluoikeus): VapaanSivistystyönOpiskeluoikeus = oo.copy(
-        tila = VapaanSivistystyönOpiskeluoikeudenTila(
-          VapaanSivistystyönOsaamismerkinOpiskeluoikeusjakso(alkamispäivä, ExampleData.opiskeluoikeusLäsnä) :: oo.tila.opiskeluoikeusjaksot
-        )
+        tila = VapaanSivistystyönOpiskeluoikeudenTila(läsnäJakso(alkamispäivä) :: oo.tila.opiskeluoikeusjaksot)
       )
 
-      "voi olla aiempi kuin päättymispäivä, kun opiskeluoikeus alkaa tilassa 'lasna'" in {
+      val ooVainLäsnä = opiskeluoikeusOsaamismerkki().copy(
+        tila = VapaanSivistystyönOpiskeluoikeudenTila(List(läsnäJakso(alkamispäivä))),
+        suoritukset = List(suoritusOsaamismerkki().copy(
+          vahvistus = None,
+          arviointi = None
+        ))
+      )
+
+      "alkamispäivä voi olla ennen 1.1.2027, kun opiskeluoikeus päättyy 1.1.2027 tai sen jälkeen" in {
         val tallennettu = setupOppijaWithAndGetOpiskeluoikeus(läsnäJaksolla(opiskeluoikeusOsaamismerkki(päättymispäivä)))
 
         tallennettu.alkamispäivä should equal(Some(alkamispäivä))
         tallennettu.päättymispäivä should equal(Some(päättymispäivä))
       }
 
-      "voi tallentaa käyttöliittymästä ensimmäisen version pelkässä tilassa 'lasna'" in {
-        val oo = opiskeluoikeusOsaamismerkki(päättymispäivä).copy(
-          tila = VapaanSivistystyönOpiskeluoikeudenTila(List(
-            VapaanSivistystyönOsaamismerkinOpiskeluoikeusjakso(alkamispäivä, ExampleData.opiskeluoikeusLäsnä)
-          )),
-          suoritukset = List(suoritusOsaamismerkki().copy(
-            vahvistus = None,
-            arviointi = None
-          ))
-        )
-
-        val tallennettu = setupOppijaWithAndGetOpiskeluoikeus(oo)
-        tallennettu.alkamispäivä should equal(Some(alkamispäivä))
-        tallennettu.päättymispäivä should equal(None)
+      "tilaa 'lasna' ei voi tallentaa ennen 1.1.2027 päättyneelle opiskeluoikeudelle" in {
+        setupOppijaWithOpiskeluoikeus(läsnäJaksolla(opiskeluoikeusOsaamismerkki(date(2026, 12, 31)))) {
+          verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.vapaaSivistystyö.läsnäTila("Vapaan sivistystyön osaamismerkin opiskeluoikeudelle voi tallentaa tilan 'Läsnä' vain, jos opiskeluoikeus ei ole päättynyt ennen 1.1.2027"))
+        }
       }
 
-      "lähdejärjestelmästä siirrettäessä opiskeluoikeus ei voi jäädä tilaan 'lasna'" in {
-        val oo = opiskeluoikeusOsaamismerkki(päättymispäivä).copy(
-          lähdejärjestelmänId = Some(LähdejärjestelmäId(Some("kolme"), lähdePrimus)),
-          tila = VapaanSivistystyönOpiskeluoikeudenTila(List(
-            VapaanSivistystyönOsaamismerkinOpiskeluoikeusjakso(alkamispäivä, ExampleData.opiskeluoikeusLäsnä)
-          )),
-          suoritukset = List(suoritusOsaamismerkki().copy(
-            vahvistus = None,
-            arviointi = None
-          ))
+      "tilaa 'lasna' ei voi tallentaa ennen päivää, josta alkaen sen siirto on sallittu" in {
+        mitätöiOppijanKaikkiOpiskeluoikeudet()
+
+        val siirtoSallittuAlkaen = LocalDate.now.plusDays(1)
+
+        implicit val session: KoskiSpecificSession = KoskiSpecificSession.systemUser
+        implicit val accessType = AccessType.read
+        val mockConfig = ConfigFactory.parseString(
+          s"""
+            validaatiot.vstVapaatavoitteinenJaOsaamismerkkiLasnaTilaSiirrettavissaAlkaen = "${siirtoSallittuAlkaen.toString}"
+          """.stripMargin)
+        val config = KoskiApplicationForTests.config.withoutPath("validaatiot.vstVapaatavoitteinenJaOsaamismerkkiLasnaTilaSiirrettavissaAlkaen").withFallback(mockConfig)
+        mockKoskiValidator(config).updateFieldsAndValidateAsJson(
+          Oppija(defaultHenkilö, List(ooVainLäsnä))
+        ).swap.toOption.get should equal (KoskiErrorCategory.badRequest.validation.vapaaSivistystyö.läsnäTila(s"Vapaan sivistystyön osaamismerkin opiskeluoikeudelle voi tallentaa tilan 'Läsnä' vasta ${finnishDateFormat.format(siirtoSallittuAlkaen)} alkaen"))
+      }
+
+      "voi tallentaa käyttöliittymästä pelkässä tilassa 'lasna' ja tallentaa sen jälkeen uudelleen" in {
+        val tallennettu = setupOppijaWithAndGetOpiskeluoikeus(ooVainLäsnä)
+        tallennettu.alkamispäivä should equal(Some(alkamispäivä))
+        tallennettu.päättymispäivä should equal(None)
+
+        putOpiskeluoikeus(tallennettu) {
+          verifyResponseStatusOk()
+        }
+      }
+
+      "voi tallentaa lähdejärjestelmästä pelkässä tilassa 'lasna'" in {
+        val oo = ooVainLäsnä.copy(
+          lähdejärjestelmänId = Some(LähdejärjestelmäId(Some("kolme"), lähdePrimus))
         )
 
         setupOppijaWithOpiskeluoikeus(oo, headers = authHeaders(varsinaisSuomiPalvelukäyttäjä) ++ jsonContent) {
-          verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.vapaaSivistystyö.osaamismerkkiPäivät(s"Osaamismerkin pitää olla arvioitu, vahvistettu ja päättynyt"))
+          verifyResponseStatusOk()
+        }
+      }
+
+      "ei voi päättyä tilaan 'hyvaksytystisuoritettu' ilman vahvistusta edes ensimmäisellä tallennuksella" in {
+        val oo = opiskeluoikeusOsaamismerkki(päättymispäivä).copy(
+          suoritukset = List(suoritusOsaamismerkki(päättymispäivä).copy(
+            vahvistus = None,
+            arviointi = None
+          ))
+        )
+
+        setupOppijaWithOpiskeluoikeus(oo) {
+          verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.vapaanSivistystyönVapaatavoitteeisenKoulutuksenVahvistus("Vahvistamattomalla vapaan sivistystyön osaamismerkillä ei voi olla päättävänä tilana 'Hyväksytysti suoritettu'"))
         }
       }
     }

@@ -13,6 +13,7 @@ import fi.oph.koski.koskiuser.MockUsers.varsinaisSuomiPalvelukäyttäjä
 import fi.oph.koski.schema._
 import org.scalatest.freespec.AnyFreeSpec
 
+import java.time.LocalDate
 import java.time.LocalDate.{of => date}
 
 class OppijaValidationVapaaSivistystyöVapaatavoitteinenSpec extends AnyFreeSpec with PutOpiskeluoikeusTestMethods[VapaanSivistystyönOpiskeluoikeus] with KoskiHttpSpec {
@@ -48,7 +49,7 @@ class OppijaValidationVapaaSivistystyöVapaatavoitteinenSpec extends AnyFreeSpec
         }
       }
 
-      "Opiskeluoikeus voi alkaa tilassa 'lasna' ja päättyä tilaan 'hyvaksytystisuoritettu'" in {
+      "Opiskeluoikeuden tila ei voi olla 'lasna', jos opiskeluoikeus on päättynyt ennen 1.1.2027" in {
         val oo = VapaatavoitteinenOpiskeluoikeus.withTila(
           VapaanSivistystyönOpiskeluoikeudenTila(
             List(
@@ -58,9 +59,63 @@ class OppijaValidationVapaaSivistystyöVapaatavoitteinenSpec extends AnyFreeSpec
           )
         )
 
-        val tallennettu = setupOppijaWithAndGetOpiskeluoikeus(oo)
-        tallennettu.alkamispäivä should equal(Some(date(2022, 1, 10)))
-        tallennettu.päättymispäivä should equal(Some(date(2022, 5, 31)))
+        setupOppijaWithOpiskeluoikeus(oo) {
+          verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.vapaaSivistystyö.läsnäTila("Vapaan sivistystyön vapaatavoitteisen koulutuksen opiskeluoikeudelle voi tallentaa tilan 'Läsnä' vain, jos opiskeluoikeus ei ole päättynyt ennen 1.1.2027"))
+        }
+      }
+    }
+
+    "1.1.2027 tai sen jälkeen voimassa oleva opiskeluoikeus" - {
+      val alkamispäivä = date(2026, 12, 1)
+      val päättymispäivä = date(2027, 1, 8)
+
+      def jakso(päivä: LocalDate, tila: Koodistokoodiviite) =
+        VapaanSivistystyönVapaatavoitteisenKoulutuksenOpiskeluoikeusjakso(päivä, tila)
+
+      def ooTilalla(jaksot: VapaanSivistystyönVapaatavoitteisenKoulutuksenOpiskeluoikeusjakso*) =
+        VapaatavoitteinenOpiskeluoikeus.copy(tila = VapaanSivistystyönOpiskeluoikeudenTila(jaksot.toList))
+
+      "voi alkaa tilassa 'lasna' ennen 1.1.2027 ja päättyä tilaan 'hyvaksytystisuoritettu'" in {
+        val tallennettu = setupOppijaWithAndGetOpiskeluoikeus(
+          ooTilalla(jakso(alkamispäivä, opiskeluoikeusLäsnä), jakso(päättymispäivä, opiskeluoikeusHyväksytystiSuoritettu))
+        )
+
+        tallennettu.alkamispäivä should equal(Some(alkamispäivä))
+        tallennettu.päättymispäivä should equal(Some(päättymispäivä))
+      }
+
+      "voi jäädä tilaan 'lasna' ilman arvioituja osasuorituksia myös lähdejärjestelmästä siirrettäessä" in {
+        val oo = ooTilalla(jakso(alkamispäivä, opiskeluoikeusLäsnä)).copy(
+          lähdejärjestelmänId = Some(winnovaLähdejärjestelmäId("win-423083")),
+          suoritukset = List(suoritusVapaatavoitteinenKoulutus.copy(
+            vahvistus = None,
+            osasuoritukset = Some(List(
+              vapaanSivistystyönVapaatavoitteisenKoulutuksenOsasuorituksenSuoritus().copy(arviointi = None)
+            ))
+          ))
+        )
+
+        setupOppijaWithOpiskeluoikeus(oo, headers = authHeaders(varsinaisSuomiPalvelukäyttäjä) ++ jsonContent) {
+          verifyResponseStatusOk()
+        }
+      }
+
+      "ei voi päättyä tilaan 'hyvaksytystisuoritettu' ilman vahvistusta edes ensimmäisellä tallennuksella" in {
+        val oo = ooTilalla(jakso(päättymispäivä, opiskeluoikeusHyväksytystiSuoritettu)).copy(
+          suoritukset = List(suoritusVapaatavoitteinenKoulutus.copy(vahvistus = None))
+        )
+
+        setupOppijaWithOpiskeluoikeus(oo) {
+          verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.vapaanSivistystyönVapaatavoitteeisenKoulutuksenVahvistus("Vahvistamattomalla vapaan sivistystyön vapaatavoitteisella koulutuksella ei voi olla päättävänä tilana 'Hyväksytysti suoritettu'"))
+        }
+      }
+
+      "ei voi päättyä ilman arvioitua osasuoritusta edes ensimmäisellä tallennuksella" in {
+        val oo = päätasoArvioimattomallaOsasuorituksella(ooTilalla(jakso(päättymispäivä, opiskeluoikeusHyväksytystiSuoritettu)))
+
+        setupOppijaWithOpiskeluoikeus(oo) {
+          verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.vapaanSivistystyönVapaatavoitteisenKoulutuksenPäätasonOsasuoritukset())
+        }
       }
     }
 
