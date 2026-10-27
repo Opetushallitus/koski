@@ -20,7 +20,7 @@
     "js-cookie": "3.0.8",
     "normalize.css": "8.0.1",
     "optics-ts": "2.4.1",
-    "partial.lenses": "9.8.0",
+    "partial.lenses": "14.17.0",
     "ramda": "0.32.0",
     "react": "17.0.2",
     "react-day-picker": "7.4.10",

@@ -194,8 +194,8 @@ importers:
         specifier: 2.4.1
         version: 2.4.1
       partial.lenses:
-        specifier: 9.8.0
-        version: 9.8.0
+        specifier: 14.17.0
+        version: 14.17.0
       ramda:
         specifier: 0.32.0
         version: 0.32.0
@@ -2751,8 +2751,8 @@ packages:
     resolution: {integrity: sha512-3YHlOa/JgH6Mnpr05jP9eDG254US9ek25LyIxZlDItp2iJtwyaXQb57lBYLdT3MowkUFYEV2XXNAYIPlESvJlA==}
     engines: {node: '>= 0.10'}
 
-  partial.lenses@9.8.0:
-    resolution: {integrity: sha512-lj/wP+hgEt6rw4JIx1lFZow6UUvIQEEZ+jaIaa/WH8VCbHlhiTQSzwwC/w+3GTZ7yBwSKqgN19ZgixzIIMBmjw==}
+  partial.lenses@14.17.0:
+    resolution: {integrity: sha512-Iq+wDw5b5iwmn7b9MO+//buOqF0YoAC2Hsj+HoeG88BGeT3NkL/YwHNGDrySyX7xZSqj0LFEWwfgGSj4cSFmXQ==}
 
   path-exists@4.0.0:
     resolution: {integrity: sha512-ak9Qy5Q7jYb2Wwcey5Fpvg2KoAc/ZIhLSLOSBmRmygPsGwkVVt0fZa0qrtMz+m6tJTAHfZQ8FnmB4MG4LWy7/w==}
@@ -5921,7 +5921,7 @@ snapshots:
 
   parse-node-version@1.0.1: {}
 
-  partial.lenses@9.8.0:
+  partial.lenses@14.17.0:
     dependencies:
       infestines: 0.4.11
 
