@@ -28,6 +28,7 @@ import {
   ammatillinenTutkintoSuoritustiedotKyselymalli,
   lukio2019OpintopistekertymatKyselymalli,
   lukioKurssikertymatKyselymalli,
+  lukionSuoritustiedotKyselymalli,
   muuAmmatillinenKyselymalli,
   muuKuinSaanneltyKoulutusKyselymalli,
   perusopetukseenValmistavaKyselymalli,
@@ -789,7 +790,9 @@ function PerusopetuksenVuosiluokka({ stateP }) {
 
 function Lukioraportti({ stateP }) {
   const titleText = <Text name="Lukioraportti-title" />
-  const shortDescriptionText = <Text name="Lukioraportti-short-description" />
+  const shortDescriptionText = (
+    <Text name="Lukioraportti-short-description-massaluovutus" />
+  )
   const exampleText = <Paragraphs name="Lukioraportti-example" />
   const kotikuntaPvmInputHelp = (
     <Text name="Lukioraportti-kotikunta-date-input-help" />
@@ -805,6 +808,7 @@ function Lukioraportti({ stateP }) {
       kotikuntaPvmInputHelp={kotikuntaPvmInputHelp}
       example={exampleText}
       osasuoritusType={osasuoritusTypes.KURSSI}
+      massaluovutusKyselymalli={lukionSuoritustiedotKyselymalli}
       lang={lang}
     />
   )
