@@ -349,7 +349,7 @@ Skip what is already obvious from the code, commit history, or other documentati
 - **JSON Schema Viewer** (the `/koski/json-schema-viewer/` schema browser, a vendored & Koski-patched library), see: `documentation/json-schema-viewer.md`.
   - The vendored assets in `web/static/json-schema-viewer/` carry Koski-local patches not present upstream; edits require `make front` to take effect.
 
-- **Luovutuspalvelu service accounts**: Otuva closes a palvelukäyttäjä's rights after a year without a CAS/OAuth2 login, and certificate-authenticated partners never log in. The periodic login round and its rules (log in **before** re-granting closed rights; new partner accounts on onboarding day) are in the sibling repo, `../koski-aws-infra/documentation/luovutuspalvelu-v2.md`. Koski only logs `Luovutuspalvelu client <user> has no käyttöoikeudet` for the alarm.
+- **Luovutuspalvelu service accounts**: Otuva closes a palvelukäyttäjä's rights after a year without a CAS/OAuth2 login, and certificate-authenticated partners never log in. The periodic login round and its rules (log in **before** re-granting closed rights; new partner accounts on onboarding day) are in the sibling repo, `../koski-aws-infra/documentation/luovutuspalvelu-v2.md`. When it happens, Koski logs `Luovutuspalvelu client <user> has no käyttöoikeudet` and the partner gets a 401.
 
 ## GenAI tool usage guidelines
 
