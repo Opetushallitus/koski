@@ -1,5 +1,6 @@
 package fi.oph.koski.raportit
 
+import java.sql.Date
 import java.time.LocalDate
 import fi.oph.koski.db.QueryMethods
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
@@ -26,7 +27,8 @@ case class IBSuoritustiedotRaporttiRepository(
     alku: LocalDate,
     loppu: LocalDate,
     osasuoritustenAikarajaus: Boolean,
-    päätasonSuorituksenTyyppi: String
+    päätasonSuorituksenTyyppi: String,
+    kotikuntaPvm: Option[LocalDate]
   ): Seq[IBRaporttiRows] = {
 
     val opiskeluoikeusAikajaksotPaatasonsuorituksetTunnisteet = opiskeluoikeusAikajaksotPaatasonSuorituksetResult(oppilaitosOid, alku, loppu)
@@ -57,8 +59,20 @@ case class IBSuoritustiedotRaporttiRepository(
 
     val henkilot = runDbSync(RHenkilöt.filter(_.oppijaOid inSet opiskeluoikeudet.map(_.oppijaOid).distinct).result, timeout = defaultTimeout).groupBy(_.oppijaOid).view.mapValues(_.head).toMap
 
+    val kotikuntahistoriat = kotikuntaPvm.toSeq.flatMap { pvm =>
+      val pvmDateBegin = Date.valueOf(LocalDate.of(1900, 1, 1))
+      val pvmDateEnd = Date.valueOf(LocalDate.now())
+      val pvmDate = Date.valueOf(pvm)
+      runDbSync(RKotikuntahistoria
+        .filter(_.masterOppijaOid inSet opiskeluoikeudet.map(_.oppijaOid).distinct)
+        .filter(r => r.muuttoPvm.getOrElse(pvmDateBegin) <= pvmDate && r.poismuuttoPvm.getOrElse(pvmDateEnd) >= pvmDate)
+        .result,
+        timeout = defaultTimeout
+      )
+    }
+
     opiskeluoikeudet.foldLeft[Seq[IBRaporttiRows]](Seq.empty) {
-      combineOpiskeluoikeusWith(_, _, aikajaksot, paatasonSuorituksetPerTyyppi, paatasonSuorituksetAll, osasuoritukset, henkilot)
+      combineOpiskeluoikeusWith(_, _, aikajaksot, paatasonSuorituksetPerTyyppi, paatasonSuorituksetAll, osasuoritukset, henkilot, kotikuntahistoriat)
     }
   }
 
@@ -70,6 +84,7 @@ case class IBSuoritustiedotRaporttiRepository(
     paatasonSuorituksetAll: Map[OpiskeluoikeusOid, Seq[RPäätasonSuoritusRow]],
     osasuoritukset: Map[PäätasonSuoritusId, Seq[ROsasuoritusRow]],
     henkilot: Map[OppijaOid, RHenkilöRow],
+    kotikuntahistoria: Seq[RKotikuntahistoriaRow],
   ): Seq[IBRaporttiRows] = {
     paatasonSuoritukset.getOrElse(opiskeluoikeus.opiskeluoikeusOid, Nil).map(paatasonsuoritus =>
       IBRaporttiRows(
@@ -78,7 +93,8 @@ case class IBSuoritustiedotRaporttiRepository(
         aikajaksot.getOrElse(opiskeluoikeus.opiskeluoikeusOid, Nil).sortBy(_.alku)(sqlDateOrdering),
         paatasonsuoritus,
         paatasonSuorituksetAll.getOrElse(opiskeluoikeus.opiskeluoikeusOid, Nil),
-        osasuoritukset.getOrElse(paatasonsuoritus.päätasonSuoritusId, Nil)
+        osasuoritukset.getOrElse(paatasonsuoritus.päätasonSuoritusId, Nil),
+        kotikuntahistoria.find(_.masterOppijaOid == opiskeluoikeus.oppijaOid),
       )
     ) ++ acc
   }
@@ -134,4 +150,5 @@ case class IBRaporttiRows(
   päätasonSuoritus: RPäätasonSuoritusRow,
   päätasonSuorituksetAll: Seq[RPäätasonSuoritusRow],
   osasuoritukset: Seq[ROsasuoritusRow],
+  kotikuntaHistoriassa: Option[RKotikuntahistoriaRow],
 ) extends YleissivistäväRaporttiRows

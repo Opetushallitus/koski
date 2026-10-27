@@ -66,6 +66,7 @@ case class MassaluovutusQueryIBSuoritustiedot(
       loppu = loppu,
       osasuoritustenAikarajaus = osasuoritustenAikarajaus.getOrElse(false),
       raportinTyyppi = raporttiType,
+      kotikuntaPvm = None,
       lang = language.get,
     )
     raportitService.ibSuoritustiedot(request, localizationReader)
