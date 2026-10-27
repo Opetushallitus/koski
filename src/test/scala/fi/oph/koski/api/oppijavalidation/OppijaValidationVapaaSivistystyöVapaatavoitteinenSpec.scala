@@ -73,7 +73,10 @@ class OppijaValidationVapaaSivistystyöVapaatavoitteinenSpec extends AnyFreeSpec
         VapaanSivistystyönVapaatavoitteisenKoulutuksenOpiskeluoikeusjakso(päivä, tila)
 
       def ooTilalla(jaksot: VapaanSivistystyönVapaatavoitteisenKoulutuksenOpiskeluoikeusjakso*) =
-        VapaatavoitteinenOpiskeluoikeus.copy(tila = VapaanSivistystyönOpiskeluoikeudenTila(jaksot.toList))
+        VapaatavoitteinenOpiskeluoikeus.copy(
+          arvioituPäättymispäivä = Some(päättymispäivä),
+          tila = VapaanSivistystyönOpiskeluoikeudenTila(jaksot.toList)
+        )
 
       "voi alkaa tilassa 'lasna' ennen 1.1.2027 ja päättyä tilaan 'hyvaksytystisuoritettu'" in {
         val tallennettu = setupOppijaWithAndGetOpiskeluoikeus(
