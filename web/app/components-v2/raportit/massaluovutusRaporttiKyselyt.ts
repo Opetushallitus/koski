@@ -40,6 +40,10 @@ import {
   MassaluovutusQueryLukionSuoritustiedot
 } from '../../types/fi/oph/koski/massaluovutus/raportit/MassaluovutusQueryLukionSuoritustiedot'
 import {
+  isMassaluovutusQueryLuvaOpiskelijamaarat,
+  MassaluovutusQueryLuvaOpiskelijamaarat
+} from '../../types/fi/oph/koski/massaluovutus/raportit/MassaluovutusQueryLuvaOpiskelijamaarat'
+import {
   isMassaluovutusQueryMuuAmmatillinen,
   MassaluovutusQueryMuuAmmatillinen
 } from '../../types/fi/oph/koski/massaluovutus/raportit/MassaluovutusQueryMuuAmmatillinen'
@@ -416,6 +420,21 @@ export const lukioDiaIbInternationalESHOpiskelijamaaratKyselymalli: Massaluovutu
       }),
     lue: (q) =>
       isMassaluovutusQueryLukioDiaIbInternationalESHOpiskelijamaarat(q)
+        ? { organisaatioOid: q.organisaatioOid, paiva: q.paiva }
+        : null,
+    ajankohdanOtsikko: 'Päivä'
+  }
+
+export const luvaOpiskelijamaaratKyselymalli: MassaluovutusKyselymalli<PäiväraportinKyselynParametrit> =
+  {
+    luo: (p) =>
+      MassaluovutusQueryLuvaOpiskelijamaarat({
+        organisaatioOid: p.organisaatioOid,
+        language: p.language,
+        paiva: p.paiva
+      }),
+    lue: (q) =>
+      isMassaluovutusQueryLuvaOpiskelijamaarat(q)
         ? { organisaatioOid: q.organisaatioOid, paiva: q.paiva }
         : null,
     ajankohdanOtsikko: 'Päivä'

@@ -32,6 +32,7 @@ import {
   lukioDiaIbInternationalESHOpiskelijamaaratKyselymalli,
   lukioKurssikertymatKyselymalli,
   lukionSuoritustiedotKyselymalli,
+  luvaOpiskelijamaaratKyselymalli,
   muuAmmatillinenKyselymalli,
   muuKuinSaanneltyKoulutusKyselymalli,
   perusopetukseenValmistavaKyselymalli,
@@ -923,7 +924,7 @@ function LukioDiaIBInternationalESHOpiskelijamaarat({ stateP }) {
 function LuvaOpiskelijamaaratRaportti({ stateP }) {
   const titleText = <Text name="luva-opiskelijamaarat-title" />
   const shortDescriptionText = (
-    <Text name="luva-opiskelijamaarat-short-description" />
+    <Text name="luva-opiskelijamaarat-short-description-massaluovutus" />
   )
   const dateInputHelpText = (
     <Text name="luva-opiskelijamaarat-date-input-help" />
@@ -938,6 +939,7 @@ function LuvaOpiskelijamaaratRaportti({ stateP }) {
       shortDescription={shortDescriptionText}
       dateInputHelp={dateInputHelpText}
       example={exampleText}
+      massaluovutusKyselymalli={luvaOpiskelijamaaratKyselymalli}
       lang={lang}
     />
   )
