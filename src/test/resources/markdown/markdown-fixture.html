@@ -1,0 +1,125 @@
+<h1>Otsikko 1</h1>
+<h2>Otsikko 2</h2>
+<p>Kappale heti otsikon perässä ilman tyhjää riviä.</p>
+<h3>Otsikko 3</h3>
+<h4>Otsikko 4</h4>
+<h2>/koski/api/luovutuspalvelu/kela/versiohistoria/:opiskeluoikeusOid/:versionumero</h2>
+<h2>/koski/api/luovutuspalvelu/migri/oid</h2>
+<h2>Kappaleet ja tekstityylit</h2>
+<p>Kappale, joka jatkuu
+seuraavalle riville. Ääkköset: åäö ÅÄÖ, &quot;lainausmerkit&quot;, 'heittomerkit', (1) ja 1.10.2026 rivin keskellä.
+Alleviivat sanojen sisällä eivät ole korostuksia: redirect_urit, client_id:n, body:ssä, Authorization code:n.</p>
+<p><strong>Lihavoitu</strong> ja <em>kursivoitu</em> teksti. <strong>Huom!</strong> Lauseen keskellä <em>follow redirects</em> päälle.</p>
+<p><strong>OPISKELUOIKEUDET_</strong>-scopeja ei voi käyttää kuin yhtä kerrallaan.</p>
+<p>Selain ohjataan osoitteeseen <strong>/koski/omadata/valtuutus/acme</strong>
+, missä käyttäjä voi antaa luvan.
+<strong>/koski/omadata/valtuutus/acme?callback=https%3A%2F%2Fwww.acme.org%2Fuser%2F</strong></p>
+<p>Koodia rivin sisällä: <code>Authorization</code>-headeri, <code>locale=(fi|sv|en)</code>, <code>POST {{var:baseUrl}}/api/massaluovutus</code>,
+<code>GET {{var:baseUrl}}/api/massaluovutus/{queryId}</code> ja <code>GET {{var:baseUrl}}/api/supa/opiskeluoikeus/&lt;opiskeluoikeusOid&gt;/&lt;versionumero&gt;</code>.</p>
+<p><code>GET {{var:baseUrl}}/api/supa/opiskeluoikeus/1.2.246.562.15.99999999999/1</code></p>
+<h2>Linkit</h2>
+<p>Linkki <a href="https://github.com/Opetushallitus/koodisto">Koodistopalveluun</a> ja suhteellinen linkki <a href="/koski/dokumentaatio/koodisto/koulutus/latest">koulutuskoodiin</a>.
+<a href="/koski/json-schema-viewer/?schema=massaluovutus-query.json">Katso myös kaikki skeemat graafisessa muodossa</a>.</p>
+<p>Linkki, jonka teksti on osoite: <a href="https://github.com/Opetushallitus/koski/tree/master/omadata-oauth2-sample">https://github.com/Opetushallitus/koski/tree/master/omadata-oauth2-sample</a>.</p>
+<p>Ks. tarkemmin: <a href="https://wiki.eduuni.fi/pages/viewpage.action?pageId=190613191#Aikuistenperusopetuksenopiskeluoikeudenl%C3%A4sn%C3%A4olotiedot-Opiskeluoikeudentilat/L%C3%A4sn%C3%A4olojaopintojenlopettaminen">wiki</a></p>
+<p>Kuvattu <a href="https://wiki.eduuni.fi/display/OPHPALV/Oma+Data%3A+Opiskelijastatus+-+palautuvat+tiedot">wikissä</a>,
+mutta käytännössä se on osajoukko <a href="/koski/dokumentaatio/tietomalli">tietomallista</a>.</p>
+<p><a href="https://www.rfc-editor.org/rfc/rfc6749">RFC6749 The OAuth 2.0 Authorization Framework</a></p>
+<p><a href="https://www.rfc-editor.org/rfc/rfc6819.txt">RFC6819 OAuth 2.0 Threat Model and Security Considerations</a></p>
+<p>Pelkkä osoite ei ole linkki: https://docs.aws.amazon.com/elasticloadbalancing/latest/application/mutual-authentication.html , otsikon alla.
+Tilaa tuote &quot;asiakasvarmenne&quot; (https://dvv.fi/palveluvarmenteet).</p>
+<h2>HTML tekstin seassa</h2>
+<p>Palautettavan JSON-rakenteen tietomallin dokumentaatio on
+<a href="/koski/json-schema-viewer/?schema=kela-oppija-schema.json">täällä</a>.</p>
+<p>Vastauksen skeema on yksittäinen <a href="/koski/json-schema-viewer/?schema=suorituspalvelu-versio-result.json">SupaOpiskeluoikeudenVersioResponse</a>-objekti.</p>
+<p>Vastauksen skeema on saatavana <a href="/koski/json-schema-viewer/?schema=valintalaskenta-result.json">täältä.</a></p>
+<h2>Luettelot</h2>
+<ul>
+<li>Authorization code flow</li>
+<li>Mutual-TLS Client Authentication (ilman certificate-bound access tokeneita)</li>
+<li><a href="/koski/json-schema-viewer/?schema=valpas-internal-laaja-schema.json">Yksittäisen oppijan näkymän tietomalli.</a></li>
+</ul>
+<ul>
+<li>HTTP-otsake nimeltä <code>CSRF</code>. Suositeltava arvo on sama kuin käytetty <code>Caller-Id</code>.</li>
+<li><code>valintatiedot</code> (false): palautetaanko henkilön opiskelijavalintatiedot. Tiedot haetaan
+Opintopolun opiskelijavalintapalveluista. Jos valintatietoja ei saada haettua, kutsu palauttaa virheen 503.</li>
+<li><code>osasuoritukset</code> (false): palautetaanko suoritusten osasuoritukset</li>
+</ul>
+<p>Body-kenttien kuvaukset:</p>
+<ul>
+<li>hetu: haettavan kansalaisen henkilötunnus.</li>
+</ul>
+<p>Numeroitu luettelo ilman tyhjiä rivejä:</p>
+<ol>
+<li>Ensimmäinen kohta, joka jatkuu
+seuraavalle riville ilman sisennystä.</li>
+<li>Toinen kohta.</li>
+</ol>
+<p>Numeroitu luettelo tyhjillä riveillä:</p>
+<ol>
+<li>
+<p>Ensimmäinen kohta, joka jatkuu
+seuraavalle riville ilman sisennystä.</p>
+</li>
+<li>
+<p>Toinen kohta, joka jatkuu
+seuraavalle riville.</p>
+</li>
+</ol>
+<h2>Koodilohkot</h2>
+<p>Esimerkkipyyntö</p>
+<pre><code>POST /koski/api/luovutuspalvelu/keha/sdg/hetu?vainVahvistetut=false&amp;osasuoritukset=false HTTP/1.1
+Content-Type: application/json
+
+{
+  &quot;hetut&quot;: [&quot;180859-914S&quot;, &quot;020654-9025&quot;],
+  &quot;issue&quot;: &quot;issue #123&quot;,
+  ...
+}
+</code></pre>
+<p>Teksti heti koodilohkon perässä.</p>
+<pre><code>GET /koski/api/luovutuspalvelu/valvira/010326-953H' HTTP/1.1
+</code></pre>
+<p>Koodilohko, jossa on useita tyhjiä rivejä:</p>
+<pre><code>POST {{var:baseUrl}}/valpas/api/massaluovutus HTTP/1.1
+
+{{var:headers}}
+
+
+{{json:ValpasOppivelvollisetQuery}}
+</code></pre>
+<p>XML koodilohkossa:</p>
+<pre><code>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; standalone=&quot;no&quot;?&gt;
+&lt;SOAP-ENV:Envelope xmlns:SOAP-ENV=&quot;http://schemas.xmlsoap.org/soap/envelope/&quot;&gt;
+  &lt;SOAP-ENV:Body&gt;
+    &lt;kns1:opintoOikeudet&gt;
+      &lt;![CDATA[{&quot;henkilö&quot;:{&quot;oid&quot;:&quot;1.2.123.456.78.12345678901&quot;},&quot;suoritukset&quot;:[{}]}]]&gt;
+    &lt;/kns1:opintoOikeudet&gt;
+    &lt;detail/&gt;
+  &lt;/SOAP-ENV:Body&gt;
+&lt;/SOAP-ENV:Envelope&gt;
+</code></pre>
+<hr />
+<h2>Paikkamerkit</h2>
+<p>{{docs:fi.oph.koski.massaluovutus.PendingQueryResponse}}</p>
+<p>{{title:fi.oph.koski.massaluovutus.raportit.MassaluovutusQueryLukionSuoritustiedot}}
+{{docs:fi.oph.koski.massaluovutus.raportit.MassaluovutusQueryLukionSuoritustiedot}}</p>
+<h2>HTML-lohkot</h2>
+<div class="preview-image-links">
+  <a href="/koski/json-schema-viewer#koski-oppija-schema.json">
+    <div class="img-wrapper">
+      <image src="/koski/images/koski-schema-preview.png">
+    </div>
+    <div class="caption">Visualisoitu JSON-schema</div>
+    <p>Voi tarkastella schemaa visualisointityökalun avulla.</p>
+  </a>
+</div>
+<dl>
+  <dt>(1) Kumppanin palvelun nimi</dt>
+  <dd>
+    Suomeksi, ruotsiksi ja englanniksi.
+    <br/>Ks. <a href="{{var:virkailijaBaseUrl}}/dokumentaatio/rajapinnat/luovutuspalvelu">{{var:virkailijaBaseUrl}}/dokumentaatio/rajapinnat/luovutuspalvelu</a>
+  </dd>
+  <dt>Token type</dt>
+  <dd>Access token endpoint palauttaa aina Bearer-tokeneita.</dd>
+</dl>
