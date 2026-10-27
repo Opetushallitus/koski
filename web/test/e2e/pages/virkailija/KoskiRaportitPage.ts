@@ -134,6 +134,11 @@ export class KoskiRaportitPage {
     await expect(this.muodostaButton).toBeVisible()
   }
 
+  async gotoLuvaOpiskelijamaarat() {
+    await this.page.goto('/koski/raportit/lukio/luvaopiskelijamaarat')
+    await expect(this.muodostaButton).toBeVisible()
+  }
+
   async gotoVstVapaatavoitteinen() {
     await this.page.goto(
       '/koski/raportit/vst/vapaansivistystyönvapaatavoitteisenkoulutuksenraportti?vstraportit=1'
