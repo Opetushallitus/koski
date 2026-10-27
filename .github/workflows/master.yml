@@ -13,7 +13,6 @@ jobs:
     uses: $/.github/workflows/tests.yml
     permissions:
       contents: read
-      packages: read
 
   notify_failure:
     name: Report CI failure to Slack

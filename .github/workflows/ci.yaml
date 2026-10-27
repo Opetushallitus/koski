@@ -152,7 +152,6 @@ jobs:
     uses: $/.github/workflows/tests.yml
     permissions:
       contents: read
-      packages: read
     with:
       run-backend-tests: ${{ needs.changes.outputs.backend == 'true' }}
       run-koski-ui-tests: ${{ needs.changes.outputs.koski-ui == 'true' }}
