@@ -20,6 +20,10 @@ import {
   MassaluovutusQueryLukio2019Opintopistekertymat
 } from '../../types/fi/oph/koski/massaluovutus/raportit/MassaluovutusQueryLukio2019Opintopistekertymat'
 import {
+  isMassaluovutusQueryLukio2019Suoritustiedot,
+  MassaluovutusQueryLukio2019Suoritustiedot
+} from '../../types/fi/oph/koski/massaluovutus/raportit/MassaluovutusQueryLukio2019Suoritustiedot'
+import {
   isMassaluovutusQueryLukioKurssikertymat,
   MassaluovutusQueryLukioKurssikertymat
 } from '../../types/fi/oph/koski/massaluovutus/raportit/MassaluovutusQueryLukioKurssikertymat'
@@ -271,6 +275,30 @@ export const lukionSuoritustiedotKyselymalli: MassaluovutusKyselymalli = {
     }),
   lue: (q) =>
     isMassaluovutusQueryLukionSuoritustiedot(q)
+      ? {
+          organisaatioOid: q.organisaatioOid,
+          alku: q.alku,
+          loppu: q.loppu,
+          osasuoritustenAikarajaus: q.osasuoritustenAikarajaus,
+          kotikuntaPvm: q.kotikuntaPvm
+        }
+      : null,
+  osasuoritustenRajausOtsikko: 'Kurssit',
+  näytäKotikuntaPvm: true
+}
+
+export const lukio2019SuoritustiedotKyselymalli: MassaluovutusKyselymalli = {
+  luo: (p) =>
+    MassaluovutusQueryLukio2019Suoritustiedot({
+      organisaatioOid: p.organisaatioOid,
+      language: p.language,
+      alku: p.alku,
+      loppu: p.loppu,
+      osasuoritustenAikarajaus: p.osasuoritustenAikarajaus ?? false,
+      kotikuntaPvm: p.kotikuntaPvm
+    }),
+  lue: (q) =>
+    isMassaluovutusQueryLukio2019Suoritustiedot(q)
       ? {
           organisaatioOid: q.organisaatioOid,
           alku: q.alku,
