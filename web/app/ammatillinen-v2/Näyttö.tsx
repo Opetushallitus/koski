@@ -20,6 +20,7 @@ import { DateInput } from '../components-v2/controls/DateInput'
 import { NäytönSuoritusaika } from '../types/fi/oph/koski/schema/NaytonSuoritusaika'
 import { BooleanEdit } from '../components-v2/opiskeluoikeus/BooleanField'
 import { IconButton } from '../components-v2/controls/IconButton'
+import { Removable } from '../components-v2/controls/Removable'
 import { CHARCODE_REMOVE } from '../components-v2/texts/Icon'
 import React from 'react'
 import { NäytönArviointi } from '../types/fi/oph/koski/schema/NaytonArviointi'
@@ -121,7 +122,7 @@ const NäyttöEditBase = <T extends AnyNäyttö>({
   }
 
   return (
-    <>
+    <Removable onClick={() => onChange(undefined)}>
       <KeyValueTable>
         <KeyValueRow localizableLabel="Kuvaus">
           <MultilineTextEdit
@@ -207,14 +208,7 @@ const NäyttöEditBase = <T extends AnyNäyttö>({
           }
         />
       </KeyValueTable>
-      <IconButton
-        charCode={CHARCODE_REMOVE}
-        label={t('Poista')}
-        size="input"
-        onClick={() => onChange(undefined)}
-        testId="delete"
-      />
-    </>
+    </Removable>
   )
 }
 const NäytönArviointiView = ({
@@ -279,25 +273,42 @@ const NäytönArviointiEdit = ({
       <KeyValueRow localizableLabel="Arvioijat">
         {value?.arvioitsijat?.map((a, index) => (
           <div key={`nayton.arvioijat.${index}`}>
-            <TextEdit
-              value={a.nimi}
-              hasErrors={hasErrorInField(errors, `arvioitsijat.${index}.nimi`)}
-              onChange={(nimi) =>
+            <Removable
+              onClick={() =>
                 value.arvioitsijat &&
                 onChange({
                   ...emptyNäytönArviointi,
                   ...value,
                   arvioitsijat: [
                     ...value.arvioitsijat.slice(0, index),
-                    NäytönArvioitsija({
-                      nimi: nimi ?? '',
-                      ntm: value.arvioitsijat[index].ntm
-                    }),
                     ...value.arvioitsijat.slice(index + 1)
                   ]
                 })
               }
-            />
+            >
+              <TextEdit
+                value={a.nimi}
+                hasErrors={hasErrorInField(
+                  errors,
+                  `arvioitsijat.${index}.nimi`
+                )}
+                onChange={(nimi) =>
+                  value.arvioitsijat &&
+                  onChange({
+                    ...emptyNäytönArviointi,
+                    ...value,
+                    arvioitsijat: [
+                      ...value.arvioitsijat.slice(0, index),
+                      NäytönArvioitsija({
+                        nimi: nimi ?? '',
+                        ntm: value.arvioitsijat[index].ntm
+                      }),
+                      ...value.arvioitsijat.slice(index + 1)
+                    ]
+                  })
+                }
+              />
+            </Removable>
             <BooleanEdit
               label={t('Näyttötutkintomestari')}
               onChange={(ntm) =>
@@ -317,23 +328,6 @@ const NäytönArviointiEdit = ({
                 })
               }
               value={a.ntm}
-            />
-            <IconButton
-              charCode={CHARCODE_REMOVE}
-              label={t('Poista')}
-              size="input"
-              onClick={() =>
-                value.arvioitsijat &&
-                onChange({
-                  ...emptyNäytönArviointi,
-                  ...value,
-                  arvioitsijat: [
-                    ...value.arvioitsijat.slice(0, index),
-                    ...value.arvioitsijat.slice(index + 1)
-                  ]
-                })
-              }
-              testId="delete"
             />
           </div>
         ))}
