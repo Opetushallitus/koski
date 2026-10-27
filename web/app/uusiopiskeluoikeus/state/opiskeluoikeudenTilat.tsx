@@ -7,6 +7,7 @@ import {
   koodiviiteToOption
 } from '../../components-v2/controls/Select'
 import { Koodistokoodiviite } from '../../types/fi/oph/koski/schema/Koodistokoodiviite'
+import { vstLäsnäTilaPiilotettuSuoritustyypiltä } from '../../vst/common/lasnaTila'
 import { opiskeluoikeudenTilaClass } from './opiskeluoikeudenTilaClass'
 import {
   UusiOpiskeluoikeusDialogState,
@@ -46,11 +47,17 @@ export const useOpiskeluoikeudenTilat = (
   const koodistot =
     useKoodistoOfConstraint<'koskiopiskeluoikeudentila'>(opiskelujaksonTila)
 
+  const päätasonSuoritusKoodiarvo = state.päätasonSuoritus.value?.koodiarvo
+
   const options = useMemo(() => {
-    const excludedOptions =
-      excludedOpiskeluoikeudenTilat[
+    const excludedOptions = [
+      ...(excludedOpiskeluoikeudenTilat[
         state.opiskeluoikeus.value?.koodiarvo || 'default'
-      ] || excludedOpiskeluoikeudenTilat.default
+      ] || excludedOpiskeluoikeudenTilat.default),
+      ...(vstLäsnäTilaPiilotettuSuoritustyypiltä(päätasonSuoritusKoodiarvo)
+        ? ['lasna']
+        : [])
+    ]
 
     return koodistot
       ? sortOptions(
@@ -63,7 +70,11 @@ export const useOpiskeluoikeudenTilat = (
             .map(koodiviiteToOption)
         )
       : []
-  }, [koodistot, state.opiskeluoikeus.value?.koodiarvo])
+  }, [
+    koodistot,
+    state.opiskeluoikeus.value?.koodiarvo,
+    päätasonSuoritusKoodiarvo
+  ])
 
   const initialValue = useMemo(() => {
     const defaults = [
