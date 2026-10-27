@@ -11,6 +11,12 @@ inputs:
       voimaan seuraaviin ajoihin asti. Vain build_koski kirjoittaa välimuistin.
     required: false
     default: "true"
+  cache-dependency-path:
+    description: >
+      Polut, joiden sisällöstä Maven-välimuistin avain lasketaan. Tyhjä käyttää
+      setup-javan oletuksia.
+    required: false
+    default: ""
 
 runs:
   using: composite
@@ -26,3 +32,4 @@ runs:
         distribution: "corretto"
         cache: "maven"
         cache-read-only: ${{ inputs.cache-read-only }}
+        cache-dependency-path: ${{ inputs.cache-dependency-path }}
