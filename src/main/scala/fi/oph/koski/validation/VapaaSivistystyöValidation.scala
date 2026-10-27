@@ -8,6 +8,7 @@ import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.koskiuser.KoskiSpecificSession
 import fi.oph.koski.opiskeluoikeus.KoskiOpiskeluoikeusRepository
 import fi.oph.koski.schema._
+import fi.oph.koski.util.ChainingSyntax._
 import fi.oph.koski.util.FinnishDateFormat.finnishDateFormat
 import fi.oph.koski.validation.DuplikaattiValidation.samaOo
 
@@ -32,10 +33,14 @@ object VapaaSivistystyöValidation {
                 validateVapaanSivistystyönPäätasonKOPSSuorituksenLaajuus(kops),
                 validateVapaanSivistystyönPäätasonKOPSSuorituksenOsaamiskokonaisuuksienLaajuudet(kops)
               ))
-            case vapaa: VapaanSivistystyönVapaatavoitteisenKoulutuksenSuoritus if vapaatavoitteinenKoulutusTuleeValidoida(opiskeluoikeus) =>
+            case vapaa: VapaanSivistystyönVapaatavoitteisenKoulutuksenSuoritus =>
+              val uudenLainMukainen = voimassaLäsnäTilanRajapäivänäTaiSenJälkeen(config, opiskeluoikeus)
+              val tuleeValidoida = uudenLainMukainen || vapaatavoitteinenKoulutusTuleeValidoida(opiskeluoikeus)
+              val osasuorituksetTuleeValidoida = tuleeValidoida && (!uudenLainMukainen || opiskeluoikeus.päättymispäivä.isDefined)
               HttpStatus.fold(List(
-                validateVapaanSivistystyönVahvistus(vapaa, opiskeluoikeus),
-                validateVapaanSivistystyönVapaatavoitteisenPäätasonOsaSuoritukset(vapaa)
+                validateLäsnäTila(config, opiskeluoikeus, "Vapaan sivistystyön vapaatavoitteisen koulutuksen opiskeluoikeudelle"),
+                if (tuleeValidoida) validateVapaanSivistystyönVahvistus(vapaa, opiskeluoikeus) else HttpStatus.ok,
+                if (osasuorituksetTuleeValidoida) validateVapaanSivistystyönVapaatavoitteisenPäätasonOsaSuoritukset(vapaa) else HttpStatus.ok
               ))
             case jotpa: VapaanSivistystyönJotpaKoulutuksenSuoritus =>
               HttpStatus.fold(List(
@@ -47,7 +52,12 @@ object VapaaSivistystyöValidation {
                 validateTallennuspäivä(
                   LocalDate.parse(config.getString("validaatiot.vstOsaamismerkkiAikaisinSallittuTallennuspaiva"))
                 ),
-                validateEnsitallennusKäyttöliittymästäTaiKaikkiPäivätMääritelty(opiskeluoikeus, osaamismerkki),
+                validateLäsnäTila(config, opiskeluoikeus, "Vapaan sivistystyön osaamismerkin opiskeluoikeudelle"),
+                if (voimassaLäsnäTilanRajapäivänäTaiSenJälkeen(config, opiskeluoikeus)) {
+                  validateOsaamismerkinVahvistus(opiskeluoikeus, osaamismerkki)
+                } else {
+                  validateEnsitallennusKäyttöliittymästäTaiKaikkiPäivätMääritelty(opiskeluoikeus, osaamismerkki)
+                },
                 validateSamaArviointiVahvistusJaPäättymispäivä(
                   opiskeluoikeus,
                   osaamismerkki
@@ -157,6 +167,37 @@ object VapaaSivistystyöValidation {
 
   private def vapaatavoitteinenKoulutusTuleeValidoida(opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus) =
     opiskeluoikeus.versionumero.getOrElse(0) > 0 || opiskeluoikeus.lähdejärjestelmänId.nonEmpty
+
+  private def läsnäTilanRajapäivä(config: Config): LocalDate =
+    LocalDate.parse(config.getString("validaatiot.vstVapaatavoitteinenJaOsaamismerkkiLasnaTilaRajapaiva"))
+
+  // Rajapäivänä tai sen jälkeen voimassa olevat opiskeluoikeudet validoidaan uuden lain mukaan: Läsnä-tila on sallittu
+  // ja päättävä tila vaatii vahvistetun suorituksen. Sitä ennen päättyneille jäävät alkuperäiset säännöt.
+  private def voimassaLäsnäTilanRajapäivänäTaiSenJälkeen(config: Config, oo: Opiskeluoikeus): Boolean =
+    oo.päättymispäivä.forall(_.isEqualOrAfter(läsnäTilanRajapäivä(config)))
+
+  private def validateLäsnäTila(config: Config, oo: Opiskeluoikeus, opiskeluoikeudelle: String): HttpStatus = {
+    val siirtoSallittuAlkaen = LocalDate.parse(config.getString("validaatiot.vstVapaatavoitteinenJaOsaamismerkkiLasnaTilaSiirrettavissaAlkaen"))
+    val onLäsnäJakso = oo.tila.opiskeluoikeusjaksot.exists(_.tila.koodiarvo == "lasna")
+
+    if (!onLäsnäJakso) {
+      HttpStatus.ok
+    } else if (LocalDate.now.isBefore(siirtoSallittuAlkaen)) {
+      KoskiErrorCategory.badRequest.validation.vapaaSivistystyö.läsnäTila(s"$opiskeluoikeudelle voi tallentaa tilan 'Läsnä' vasta ${finnishDateFormat.format(siirtoSallittuAlkaen)} alkaen")
+    } else if (!voimassaLäsnäTilanRajapäivänäTaiSenJälkeen(config, oo)) {
+      KoskiErrorCategory.badRequest.validation.vapaaSivistystyö.läsnäTila(s"$opiskeluoikeudelle voi tallentaa tilan 'Läsnä' vain, jos opiskeluoikeus ei ole päättynyt ennen ${finnishDateFormat.format(läsnäTilanRajapäivä(config))}")
+    } else {
+      HttpStatus.ok
+    }
+  }
+
+  private def validateOsaamismerkinVahvistus(oo: Opiskeluoikeus, osaamismerkki: VapaanSivistystyönOsaamismerkinSuoritus): HttpStatus = {
+    if (!osaamismerkki.vahvistettu && oo.tila.opiskeluoikeusjaksot.exists(_.tila.koodiarvo == opiskeluoikeusHyväksytystiSuoritettu.koodiarvo)) {
+      KoskiErrorCategory.badRequest.validation.tila.vapaanSivistystyönVapaatavoitteeisenKoulutuksenVahvistus("Vahvistamattomalla vapaan sivistystyön osaamismerkillä ei voi olla päättävänä tilana 'Hyväksytysti suoritettu'")
+    } else {
+      HttpStatus.ok
+    }
+  }
 
   private def suorituksenTunniste(suoritus: Suoritus): KoodiViite = {
     suoritus.koulutusmoduuli.tunniste

@@ -290,6 +290,7 @@ object KoskiErrorCategory {
         val päättymispäivä = subcategory("päättymispäivä", "Opiskeluoikeus ei voi päättyä ennen lain voimaantuloa")
         val osaamismerkkiPäivät = subcategory("osaamismerkkiPäivät", "Osaamismerkin päivämäärissä ongelma")
         val duplikaattiOsaamismerkki = subcategory("duplikaattiOsaamismerkki", "Oppijalla on jo samalle päivälle saman osaamismerkin suoritus")
+        val läsnäTila = subcategory("läsnäTila", "Tilaa 'Läsnä' ei voi tallentaa tälle opiskeluoikeudelle")
       }
       val vapaaSivistystyö = new VapaaSivistystyö
 
