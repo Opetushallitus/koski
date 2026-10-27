@@ -1,26 +1,3 @@
-// Otsikkorivi erotetaan osasuorituksista ohuella viivalla vanhan
-// käyttöliittymän tapaan (ei vaaleansinistä palkkia).
-.OsasuoritusHeader {
-  font-weight: 600;
-  margin-bottom: (@baseline / 2);
-  border-bottom: 1px solid @color-disabled;
-
-  .Column {
-    min-height: 2 * @baseline;
-    display: flex;
-    align-items: center;
-
-    &:first-child {
-      padding-left: @h-padding;
-    }
-  }
-
-  // Ryhmän otsikko alkaa reunasta kuten taulukon yläpuolinen sisältö.
-  .Column.OsasuoritusHeader__title {
-    padding-left: 0;
-  }
-}
-
 // Samalla rivillä ryhmän otsikon kanssa sarakeotsikot ovat harmaita, jotta
 // otsikko erottuu niistä.
 .OsasuoritusHeader--title .Column:not(.OsasuoritusHeader__title) {
@@ -31,19 +8,11 @@
   padding: 0;
 }
 
-.OsasuoritusRow .OsasuoritusRow__expandColumn {
-  min-width: 2 * @baseline;
-}
-
 // Otsikkorivin oikea reunasarake varaa saman leveyden kuin rivien poista-
 // painike (IconButton--size-input), jotta otsikot kohdistuvat sarakkeiden
 // kanssa muokkaustilassa.
 .OsasuoritusHeader__rightIcons {
   min-width: 2.5 * @baseline;
-}
-
-.OsasuoritusRow + .OsasuoritusRow {
-  margin-top: (@baseline / 2);
 }
 
 .OsasuoritusRow--edit {
@@ -105,13 +74,132 @@
   color: inherit;
 }
 
-// Completed-merkin sarake varaa kokonaisen ruudukkosarakkeen, vaikka itse
-// merkki on kapea. Vedetään nimisaraketta vasemmalle, jotta nimi asettuu
-// lähelle completed-merkkiä (joka puolestaan on kiinni laajennuspainikkeessa).
-.OsasuoritusRow__nameColumn--completedAdjacent {
-  margin-left: -(2 * @baseline);
+// ---------------------------------------------------------------------------
+// Asettelu
+//
+// Otsikkorivi on harmaa palkki kuten vanhassa käyttöliittymässä, rivit
+// valkoisia ilman välissä olevia viivoja. Laajennetun rivin kentät ovat rivin
+// nimen alla (OsasuoritusProperty.less) ja sisäkkäinen taulukko on tavallinen
+// taulukko yhden askeleen sisennettynä.
+// Sisennys on pikselimitta (--osasuoritus-taso ja --osasuoritus-merkkitasot),
+// ei ruudukon sarakkeita, jotta lapsirivit osuvat ylemmän rivin nimen alle
+// taulukon leveydestä riippumatta.
+// ---------------------------------------------------------------------------
+
+// Rivin sisällön etäisyys taulukon reunasta
+@Osasuoritus-reuna: 8px;
+// Sisennys tasoa kohden = laajennuspainike ja laajennetun rivin sisällön
+// sisennys rivin nimestä sekä valmis-merkki niillä tasoilla, joiden taulukossa
+// merkki on (--osasuoritus-merkkitasot). Sisäkkäisen taulukon laajennuspainike
+// osuu siten samaan kohtaan kuin ylemmän rivin kenttien nimet.
+@Osasuoritus-laajennus: 26px;
+@Osasuoritus-merkki: 24px;
+@Osasuoritus-sisalto: 24px;
+// Ikonin etäisyys painikkeensa reunasta; otsikot tasataan ikonin kanssa
+@Osasuoritus-ikoni: 4px;
+
+@Osasuoritus-sisennys: ~'calc(var(--osasuoritus-taso, 0) * (@{Osasuoritus-laajennus} + @{Osasuoritus-sisalto}) + var(--osasuoritus-merkkitasot, 0) * @{Osasuoritus-merkki})';
+// Sisäkkäisen taulukon otsikkopalkki alkaa hieman ikonien vasemmalta puolelta
+@Osasuoritus-taulukon-reuna: ~'calc(@{Osasuoritus-reuna} - @{Osasuoritus-ikoni} + @{Osasuoritus-sisennys})';
+
+.OsasuoritusRow + .OsasuoritusRow {
+  margin-top: (@baseline / 2);
 }
 
-.OsasuoritusPropertyLabel {
-  opacity: 0.5;
+.OsasuoritusRow {
+  .OsasuoritusRow__lead {
+    display: flex;
+    align-items: center;
+    padding-left: ~'calc(@{Osasuoritus-reuna} + @{Osasuoritus-sisennys})';
+  }
+
+  .OsasuoritusRow__expandColumn {
+    flex: none;
+    width: @Osasuoritus-laajennus;
+    min-width: 0;
+
+    .ExpandButton {
+      padding: 0 @Osasuoritus-ikoni;
+    }
+  }
+
+  .OsasuoritusRow__completedColumn {
+    flex: none;
+    width: @Osasuoritus-merkki;
+  }
+
+  .OsasuoritusRow__nameColumn {
+    flex: 1;
+    min-width: 0;
+    padding-right: @Columns-gutter;
+  }
+
+  // Nimen alla oleva kielivalinta yhtä leveänä kuin kenttien valinnat.
+  &.OsasuoritusRow--edit .OsasuoritusRow__nameColumn .Select {
+    max-width: @Osasuoritus-kentta-max-leveys;
+  }
+}
+
+// Sarakkeet erottaa valkoinen pystyviiva kuten vanhassa käyttöliittymässä
+// (style/suoritustaulukko.less).
+.OsasuoritusHeader {
+  font-weight: 600;
+  background: @color-neutral-gray;
+
+  // Korkeus = vanha otsikkorivi viivoineen (24 + 1 px) ja sen alla ollut väli
+  // (6 px), jotta ensimmäinen rivi alkaa samasta kohdasta kuin ennen.
+  .Column {
+    position: relative;
+    min-height: 31px;
+    display: flex;
+    align-items: center;
+
+    &:first-child {
+      padding-left: (@Osasuoritus-reuna + @Osasuoritus-ikoni);
+    }
+  }
+
+  // Viiva sarakevälin keskelle. Poistopainikkeiden sarakkeella ja
+  // otsikottomalla täytesarakkeella (esim. perusopetus) ei ole otsikkoa, joten
+  // edellinen otsikko jatkuu niiden yli.
+  .Column
+    + .Column:not(.OsasuoritusHeader__rightIcons):not(
+      .OsasuoritusHeader__tyhja
+    )::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: -((@Columns-gutter / 2) + 1px);
+    width: 2px;
+    background: white;
+  }
+}
+
+// Sisäkkäisen taulukon otsikkopalkki alkaa taulukon omasta sisennyksestä ja
+// sen teksti on pienempää ja harmaata. Päätason otsikon näköisenä sisäkkäinen
+// taulukko näyttäisi uudelta rinnakkaiselta ryhmältä.
+.OsasuoritusHeader--sisakkainen {
+  font-size: 14px;
+  color: @color-label-darker;
+  background: linear-gradient(@color-neutral-gray, @color-neutral-gray)
+    no-repeat right top;
+  background-size: ~'calc(100% - @{Osasuoritus-taulukon-reuna})' 100%;
+
+  .Column {
+    &:first-child {
+      padding-left: ~'calc(@{Osasuoritus-reuna} + @{Osasuoritus-ikoni} + @{Osasuoritus-sisennys})';
+    }
+  }
+}
+
+// Sisäkkäisen taulukon lisäysnäkymä alkaa taulukon omasta sisennyksestä.
+// Näkymät sisentävät itsensä ruudukon sarakkeilla (ColumnRow indent), jotka
+// eivät osu yhteen pikselimittaisen sisennyksen kanssa, joten se ohitetaan.
+.OsasuoritusTable__lisays {
+  padding-left: @Osasuoritus-taulukon-reuna;
+
+  .ColumnRow > .Column:first-child {
+    grid-column-start: auto;
+  }
 }

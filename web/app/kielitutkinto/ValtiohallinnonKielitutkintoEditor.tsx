@@ -292,8 +292,6 @@ type OsakokeenArvioinnitProps = {
 const OsakokeenArvioinnit: React.FC<OsakokeenArvioinnitProps> = ({
   arvioinnit
 }) => {
-  const indentation = 4
-
   return (
     <>
       <Spacer />
@@ -302,10 +300,10 @@ const OsakokeenArvioinnit: React.FC<OsakokeenArvioinnitProps> = ({
         A.sort(Ord.reverse(ArviointipäiväOrd)),
         A.mapWithIndex((index, arviointi) => (
           <KeyValueTable key={index}>
-            <KeyValueRow localizableLabel="Arviointipäivä" indent={indentation}>
+            <KeyValueRow localizableLabel="Arviointipäivä">
               {ISO2FinnishDate(arviointi.päivä)}
             </KeyValueRow>
-            <KeyValueRow localizableLabel="Arvosana" indent={indentation}>
+            <KeyValueRow localizableLabel="Arvosana">
               {t(arviointi.arvosana.nimi)}
             </KeyValueRow>
           </KeyValueTable>
