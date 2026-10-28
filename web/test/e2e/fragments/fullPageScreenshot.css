@@ -3,8 +3,25 @@
  *
  * Kiinteästi positioidut (position: fixed) palkit piirtyvät fullPage-kaappaukseen
  * epävakaasti. Tällaisilta poistetaan kiinteä positiointi, ja ne piirretään
- * osana tavanomaista flowta.
+ * sivulle niille varattuun tilaan tai osana tavanomaista flowta.
  */
+
+/* Absoluuttisesti sijoitetut palkit sijoitetaan bodya vasten.
+
+   - position: relative saa palkit sijoittumaan bodya vasten. Ilman sitä palkit
+     sijoitettaisiin sivun alkuun nähden, eikä bottom: 0 osuisi sivun loppuun.
+   - .content-arean margin-top (@topbar-height eli 93px, main.less) varaa
+     tilan yläpalkille. Marginaalien yhdistymisen (margin collapsing) takia
+     marginaali siirtyy bodyn yläpuolelle, joten body alkaa 93px sivun alun
+     alapuolelta. Yläpalkin top: 0 osuisi sinne, ja palkki peittäisi
+     hakukentän.
+   - display: flow-root pitää marginaalin bodyn sisällä: body alkaa sivun
+     alusta, ja yläpalkki piirtyy sivun alkuun. Sisältö alkaa edelleen
+     93px:n kohdalta. */
+body {
+  position: relative !important;
+  display: flow-root !important;
+}
 
 /* Kiinteästi positioitu yläpalkki, jolle sisällössä on varattu tila.
    Kaappauksessa palkki piirretään absoluuttisesti sivun alkuun varattuun tilaan. */
@@ -13,13 +30,11 @@
 }
 
 /* V2-käyttöliittymän kiinteästi positioitu alapalkki, jolle body varaa tilan
-   paddingilla. Kaappauksessa palkki piirretään sivun loppuun ilman paddingia. */
+   paddingilla (body.FooterBar--visible). Kaappauksessa palkki piirretään
+   absoluuttisesti sivun loppuun varattuun tilaan, jolloin se on koko näkymän
+   levyinen kuten sovelluksessa. */
 .FooterBar {
-  position: static !important;
-}
-
-body.FooterBar--visible {
-  padding-bottom: 0 !important;
+  position: absolute !important;
 }
 
 /* Kiinteästi positioitu alapalkki, jolle sisältö varaa tilan paddingilla.
