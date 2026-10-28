@@ -42,6 +42,7 @@ import {
   topksAmmatillinenKyselymalli,
   tuvaPerusopetuksenOppijamaaratRaporttiKyselymalli,
   tuvaSuoritustiedotKyselymalli,
+  vstJotpaKyselymalli,
   vstKopsKyselymalli,
   vstOsaamismerkitKyselymalli,
   vstVapaatavoitteinenKyselymalli
@@ -1258,7 +1259,7 @@ function IBSuoritustiedot({ stateP }) {
 function VSTJotpa({ stateP }) {
   const titleText = <Text name="VstJotpaRaportti-title" />
   const shortDescriptionText = (
-    <Text name="VstJotpaRaportti-short-description" />
+    <Text name="VstJotpaRaportti-short-description-massaluovutus" />
   )
   const exampleText = <Paragraphs name="VstJotpaRaportti-example" />
 
@@ -1269,6 +1270,7 @@ function VSTJotpa({ stateP }) {
       title={titleText}
       shortDescription={shortDescriptionText}
       example={exampleText}
+      massaluovutusKyselymalli={vstJotpaKyselymalli}
       lang={lang}
     />
   )
