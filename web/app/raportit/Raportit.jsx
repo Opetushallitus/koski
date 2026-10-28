@@ -39,6 +39,7 @@ import {
   perusopetukseenValmistavaKyselymalli,
   perusopetuksenLisaopetuksenOppijamaaratRaporttiKyselymalli,
   perusopetuksenOppijamaaratRaporttiKyselymalli,
+  perusopetuksenVuosiluokkaKyselymalli,
   topksAmmatillinenKyselymalli,
   tuvaPerusopetuksenOppijamaaratRaporttiKyselymalli,
   tuvaSuoritustiedotKyselymalli,
@@ -776,7 +777,7 @@ function PerusopetuksenVuosiluokka({ stateP }) {
     <Text name="Nuorten perusopetuksen opiskeluoikeus- ja suoritustietojen tarkistusraportti" />
   )
   const shortDescriptionText = (
-    <Text name="PerusopetuksenVuosiluokka-short-description" />
+    <Text name="PerusopetuksenVuosiluokka-short-description-massaluovutus" />
   )
   const dateInputHelpText = (
     <Text name="PerusopetuksenVuosiluokka-date-input-help" />
@@ -796,6 +797,7 @@ function PerusopetuksenVuosiluokka({ stateP }) {
       showKotikuntaPvmInput
       kotikuntaPvmInputHelp={kotikuntaPvmInputHelp}
       example={exampleText}
+      massaluovutusKyselymalli={perusopetuksenVuosiluokkaKyselymalli}
       lang={lang}
     />
   )
