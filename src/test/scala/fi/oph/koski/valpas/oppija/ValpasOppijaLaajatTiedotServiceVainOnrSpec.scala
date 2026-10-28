@@ -4,10 +4,12 @@ import fi.oph.koski.KoskiApplicationForTests
 import fi.oph.koski.http.{ErrorDetail, HttpStatus}
 import fi.oph.koski.schema.{Finnish, Koodistokoodiviite, LocalizedString}
 import fi.oph.koski.valpas.opiskeluoikeusfixture.ValpasMockOppijat
-import fi.oph.koski.valpas.opiskeluoikeusrepository.MockValpasRajapäivätService
+import fi.oph.koski.valpas.opiskeluoikeusrepository.{MockValpasRajapäivätService, ValpasOppivelvollinenOppijaLaajatTiedot, ValpasOppivelvollisuudestaVapautettuLaajatTiedot}
+import fi.oph.koski.valpas.oppivelvollisuudestavapautus.UusiOppivelvollisuudestaVapautus
 import fi.oph.koski.valpas.valpasuser.ValpasMockUsers
 import fi.oph.koski.valpas.yhteystiedot.{ValpasYhteystiedot, ValpasYhteystietoHakemukselta, ValpasYhteystietoOppijanumerorekisteristä}
 
+import java.time.LocalDate
 import java.time.LocalDate.{of => date}
 
 class ValpasOppijaLaajatTiedotServiceVainOnrSpec extends ValpasOppijaTestBase {
@@ -333,6 +335,54 @@ class ValpasOppijaLaajatTiedotServiceVainOnrSpec extends ValpasOppijaTestBase {
       )(session(ValpasMockUsers.valpasHelsinki)).toOption.get
 
       result.kuntailmoitukset should have length(2)
+    }
+  }
+
+  "getOppijaLaajatTiedotYhteystiedoillaJaKuntailmoituksilla oppivelvollisuudesta vapautetulla oppijalla, jolla on vain mitätöityjä opiskeluoikeuksia" - {
+    val oppija = ValpasMockOppijat.vainMitätöityjäOpiskeluoikeuksia
+
+    def vapautaOppivelvollisuudesta(vapautettu: LocalDate) =
+      KoskiApplicationForTests.valpasOppivelvollisuudestaVapautusService
+        .lisääOppivelvollisuudestaVapautus(
+          UusiOppivelvollisuudestaVapautus(oppija.oid, vapautettu, "624")
+        )(session(ValpasMockUsers.valpasPyhtääJaAapajoenPeruskoulu)) should equal(Right(()))
+
+    "palauttaa vapautetun oppijan tiedot vapautuksella rajattuina" in {
+      vapautaOppivelvollisuudesta(date(2021, 8, 1))
+
+      val result = oppijaLaajatTiedotService.getOppijaLaajatTiedotYhteystiedoillaJaKuntailmoituksilla(
+        oppija.oid
+      )(session(ValpasMockUsers.valpasPyhtääJaAapajoenPeruskoulu)).toOption.get
+
+      result.oppija shouldBe a[ValpasOppivelvollisuudestaVapautettuLaajatTiedot]
+      result.oppija.oppivelvollisuudestaVapautus.map(_.vapautettu) should equal(Some(date(2021, 8, 1)))
+      result.oppija.oppivelvollisuusVoimassaAsti should equal(date(2021, 7, 31))
+      result.oppija.oikeusKoulutuksenMaksuttomuuteenVoimassaAsti should equal(date(2021, 7, 31))
+      result.hakutilanteet shouldBe empty
+      result.yhteystiedot shouldBe empty
+      result.onOikeusMitätöidäOppivelvollisuudestaVapautus should equal(Some(true))
+    }
+
+    "ei anna vapautusta mitätöitäväksi toiselle kunnalle" in {
+      vapautaOppivelvollisuudesta(date(2021, 8, 1))
+
+      val result = oppijaLaajatTiedotService.getOppijaLaajatTiedotYhteystiedoillaJaKuntailmoituksilla(
+        oppija.oid
+      )(session(ValpasMockUsers.valpasHelsinki)).toOption.get
+
+      result.onOikeusMitätöidäOppivelvollisuudestaVapautus should equal(Some(false))
+    }
+
+    "palauttaa oppijan tiedot, kun vapautus alkaa tulevaisuudessa" in {
+      vapautaOppivelvollisuudesta(date(2022, 1, 1))
+
+      val result = oppijaLaajatTiedotService.getOppijaLaajatTiedotYhteystiedoillaJaKuntailmoituksilla(
+        oppija.oid
+      )(session(ValpasMockUsers.valpasPyhtääJaAapajoenPeruskoulu)).toOption.get
+
+      result.oppija shouldBe a[ValpasOppivelvollinenOppijaLaajatTiedot]
+      result.oppija.oppivelvollisuudestaVapautus.map(_.vapautettu) should equal(Some(date(2022, 1, 1)))
+      result.oppija.oppivelvollisuusVoimassaAsti should equal(date(2021, 12, 31))
     }
   }
 }
