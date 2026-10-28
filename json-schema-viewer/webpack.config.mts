@@ -39,8 +39,23 @@ export default (
     clean: true
   },
   // JsonSchemaViewerHtmlServlet lataa alla tuotetut jQuery-tiedostot
-  // script-tageilla ennen viewer-bundlea.
+  // script-tageilla ennen viewer-bundlea, koska vanha jQuery Mobile 1.4.5 tarvitsee
+  // globaalin jQueryn ja ennen itseään ladatun Migrate-yhteensopivuuskirjaston.
   externals: { jquery: 'jQuery' },
+  resolve: {
+    // Servletin script-tageja varten index.ts importoi jQueryn ja Migraten valmiit
+    // dist-tiedostot. jQuery 4 ja Migrate 4 sallivat package.json:n exports-kentässä
+    // vain tietyt import-polut, eikä dist ole niiden joukossa, joten webpack hylkää
+    // importin. Alias osoittaa suoraan node_modules-hakemistoon, jolloin
+    // exports-rajausta ei sovelleta.
+    alias: {
+      'jquery/dist': path.join(import.meta.dirname, 'node_modules/jquery/dist'),
+      'jquery-migrate/dist': path.join(
+        import.meta.dirname,
+        'node_modules/jquery-migrate/dist'
+      )
+    }
+  },
   module: {
     rules: [
       {

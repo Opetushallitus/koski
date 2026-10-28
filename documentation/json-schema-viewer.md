@@ -259,8 +259,12 @@ query-less.
   The bundle exposes `JSV` and `tv4` for the servlet's bootstrap. The viewer URL
   and deep links are unchanged.
 - **Vendor exception:** `vendor/jquery.mobile.js` and `.css` retain
-  jQuery Mobile 1.4.5, which requires Migrate with the current jQuery 3.7.1
-  integration; Migrate must load before Mobile. Other libraries use the existing
+  jQuery Mobile 1.4.5, which needs Migrate on jQuery 4 for removed functions
+  such as `$.isArray` and `$.type`; Migrate must load before Mobile. Migrate 4
+  no longer restores APIs removed in jQuery 3, so `vendor/jquery.mobile.js` has
+  local fixes that a re-vendor must re-apply: `$window.load( fn )` →
+  `.on( "load", fn )` (two places) and a quoted `#` in the
+  `img[usemap='#…']` selector. Other libraries use the existing
   versions from npm, locked in this package's `pnpm-lock.yaml`.
   Renovate opens the package's updates as their own PRs. Runtime library updates
   require manual review; build tooling patch and minor updates automerge after
