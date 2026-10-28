@@ -112,14 +112,14 @@
     },
     {
       "description": "Automerge the development and test database images",
-      "matchFileNames": ["docker-compose.yaml", "docker-compose-arm64.yaml", "opensearch/Dockerfile"],
+      "matchFileNames": ["docker-compose.yaml", "opensearch/Dockerfile"],
       "matchUpdateTypes": ["minor", "patch", "digest"],
       "enabled": true,
       "automerge": true
     },
     {
       "description": "The local Postgres and OpenSearch must run the versions that AWS runs in production. Open their minor and major updates as manual draft PRs that say so, because green CI does not mean they can be merged; close a PR that production has not caught up with and reopen it from the Dependency Dashboard later.",
-      "matchFileNames": ["docker-compose.yaml", "docker-compose-arm64.yaml", "opensearch/Dockerfile"],
+      "matchFileNames": ["docker-compose.yaml", "opensearch/Dockerfile"],
       "matchPackageNames": ["postgres", "opensearchproject/opensearch"],
       "matchUpdateTypes": ["minor", "major"],
       "automerge": false,
