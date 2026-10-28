@@ -83,7 +83,7 @@
     "react-calendar": "6.0.1",
     "react-date-picker": "12.1.0",
     "react-dom": "19.3.1",
-    "react-router-dom": "5.3.4"
+    "react-router-dom": "7.18.4"
   },
   "@parcel/resolver-default": {
     "packageExports": true
