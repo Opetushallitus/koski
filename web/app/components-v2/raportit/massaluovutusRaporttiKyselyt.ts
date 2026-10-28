@@ -84,6 +84,10 @@ import {
   MassaluovutusQueryTuvaSuoritustiedot
 } from '../../types/fi/oph/koski/massaluovutus/raportit/MassaluovutusQueryTuvaSuoritustiedot'
 import {
+  isMassaluovutusQueryVSTJOTPA,
+  MassaluovutusQueryVSTJOTPA
+} from '../../types/fi/oph/koski/massaluovutus/raportit/MassaluovutusQueryVSTJOTPA'
+import {
   isMassaluovutusQueryVSTKOPS,
   MassaluovutusQueryVSTKOPS
 } from '../../types/fi/oph/koski/massaluovutus/raportit/MassaluovutusQueryVSTKOPS'
@@ -538,6 +542,21 @@ export const aikuistenPerusopetusSuoritustiedotKyselymalli: MassaluovutusKyselym
   raportinTyypit: aikuistenPerusopetusRaporttityypit,
   osasuoritustenRajausOtsikko: 'Osasuoritukset'
 }
+
+export const vstJotpaKyselymalli: MassaluovutusKyselymalli<AikajaksoraportinKyselynParametrit> =
+  {
+    luo: (p) =>
+      MassaluovutusQueryVSTJOTPA({
+        organisaatioOid: p.organisaatioOid,
+        language: p.language,
+        alku: p.alku,
+        loppu: p.loppu
+      }),
+    lue: (q) =>
+      isMassaluovutusQueryVSTJOTPA(q)
+        ? { organisaatioOid: q.organisaatioOid, alku: q.alku, loppu: q.loppu }
+        : null
+  }
 
 export const vstVapaatavoitteinenKyselymalli: MassaluovutusKyselymalli<AikajaksoraportinKyselynParametrit> =
   {
