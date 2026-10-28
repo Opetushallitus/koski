@@ -660,6 +660,27 @@ test.describe('Ahvenanmaan perusopetuksen käyttöliittymä', () => {
   })
 })
 
+test.describe('Ahvenanmaan perusopetuksen käyttöliittymä ruotsiksi', () => {
+  test.use({ storageState: virkailija('ruotsinkielinen') })
+
+  test('Koulutuksen nimi on Ahvenanmaan termi eikä koulutuskoodin nimi', async ({
+    page,
+    oppijaPage,
+    fixtures
+  }) => {
+    await fixtures.reset()
+    await oppijaPage.goto(url)
+
+    await expect(page.getByTestId('oo.0.opiskeluoikeus.nimi')).toContainText(
+      'grundskoleutbildning'
+    )
+    await page.getByTestId(avgångsbetygTab).click()
+    await expect(page.getByTestId('oo.0.suoritukset.0.koulutus')).toHaveText(
+      'Grundskoleutbildning'
+    )
+  })
+})
+
 /** Avaa vuosiluokan lisäysdialogin, täyttää kentät ja klikkaa Lisää. */
 async function lisääVuosiluokka(
   page: import('@playwright/test').Page,

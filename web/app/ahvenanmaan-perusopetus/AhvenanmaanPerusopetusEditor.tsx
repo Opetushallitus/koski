@@ -34,7 +34,10 @@ import { puuttuvatLuokkaAsteet } from '../perusopetus-v2/luokkaAsteenOppiaineet'
 import { AhvenanmaanPerusopetuksenLisatiedot } from './AhvenanmaanPerusopetuksenLisatiedot'
 import { AhvenanmaanPerusopetuksenOppiaineet } from './AhvenanmaanPerusopetuksenOppiaineet'
 import { AhvenanmaanPerusopetuksenSuorituksenTiedot } from './AhvenanmaanPerusopetuksenSuorituksenTiedot'
-import { isAhvenanmaanOppimääränSuoritus } from './oppimaaranSuoritus'
+import {
+  ahvenanmaanKoulutuksenNimi,
+  isAhvenanmaanOppimääränSuoritus
+} from './oppimaaranSuoritus'
 import { poistettavaPäätasonSuoritus } from './paatasonSuoritusPoisto'
 import {
   oletuksenaAvattavanSuorituksenIndeksi,
@@ -71,8 +74,8 @@ const AhvenanmaanPerusopetusEditor: React.FC<
   return (
     <VirkailijaKansalainenContainer
       opiskeluoikeus={form.state}
-      opiskeluoikeudenNimi={t(
-        form.state.suoritukset[0]?.koulutusmoduuli?.tunniste?.nimi
+      opiskeluoikeudenNimi={ahvenanmaanKoulutuksenNimi(
+        form.state.suoritukset[0]
       )}
     >
       <AhvenanmaanPerusopetuksenPäätasonSuoritusEditor {...props} form={form} />

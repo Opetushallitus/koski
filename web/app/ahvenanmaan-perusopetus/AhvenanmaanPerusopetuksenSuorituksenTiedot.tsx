@@ -42,6 +42,7 @@ import {
 import { HenkilövahvistusPaikkakunnalla } from '../types/fi/oph/koski/schema/HenkilovahvistusPaikkakunnalla'
 import {
   AhvenanmaanOppimääränSuoritus,
+  ahvenanmaanKoulutuksenNimi,
   isAhvenanmaanOppimääränSuoritus
 } from './oppimaaranSuoritus'
 
@@ -85,7 +86,7 @@ export const AhvenanmaanPerusopetuksenSuorituksenTiedot: React.FC<
           >
             {[
               <TestIdText key="tunniste" id="koulutus">
-                {t(suoritus.koulutusmoduuli.tunniste.nimi)}
+                {ahvenanmaanKoulutuksenNimi(suoritus)}
               </TestIdText>,
               <TestIdText key="koodiarvo" id="koulutuskoodi">
                 {suoritus.koulutusmoduuli.tunniste.koodiarvo}
