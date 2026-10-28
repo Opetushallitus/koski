@@ -23,7 +23,8 @@ import {
 import { useInterval } from '../../util/useInterval'
 import {
   MassaluovutusKyselymalli,
-  RaporttiKyselynTiedot
+  RaporttiKyselynTiedot,
+  Raporttityypit
 } from './massaluovutusRaporttiKyselyt'
 
 const pollausväliMs = 3000
@@ -122,6 +123,7 @@ export const MassaluovutusRaportinLataus = <P,>({
                 <th>{t('Oppilaitos')}</th>
                 <th>{t(kyselymalli.ajankohdanOtsikko ?? 'Aikajakso')}</th>
                 {kyselymalli.näytäVuosiluokka && <th>{t('Vuosiluokka')}</th>}
+                {kyselymalli.raportinTyypit && <th>{t('Suoritus')}</th>}
                 {kyselymalli.osasuoritustenRajausOtsikko && (
                   <th>{t(kyselymalli.osasuoritustenRajausOtsikko)}</th>
                 )}
@@ -142,6 +144,7 @@ export const MassaluovutusRaportinLataus = <P,>({
                     !!kyselymalli.osasuoritustenRajausOtsikko
                   }
                   näytäVuosiluokka={!!kyselymalli.näytäVuosiluokka}
+                  raportinTyypit={kyselymalli.raportinTyypit}
                   näytäKotikuntaPvm={!!kyselymalli.näytäKotikuntaPvm}
                   oppilaitosNimet={oppilaitosNimet}
                 />
@@ -159,6 +162,7 @@ const RaporttiRivi: React.FC<{
   tiedot: RaporttiKyselynTiedot
   näytäOsasuoritustenRajaus: boolean
   näytäVuosiluokka: boolean
+  raportinTyypit?: Raporttityypit
   näytäKotikuntaPvm: boolean
   oppilaitosNimet: Record<string, string>
 }> = ({
@@ -166,6 +170,7 @@ const RaporttiRivi: React.FC<{
   tiedot,
   näytäOsasuoritustenRajaus,
   näytäVuosiluokka,
+  raportinTyypit,
   näytäKotikuntaPvm,
   oppilaitosNimet
 }) => (
@@ -176,6 +181,11 @@ const RaporttiRivi: React.FC<{
     <td className="oppilaitos">{oppilaitos(tiedot, oppilaitosNimet)}</td>
     <td className="ajankohta">{ajankohta(tiedot)}</td>
     {näytäVuosiluokka && <td className="vuosiluokka">{tiedot.vuosiluokka}</td>}
+    {raportinTyypit && (
+      <td className="raportin-tyyppi">
+        {raportinTyypinNimi(raportinTyypit, tiedot)}
+      </td>
+    )}
     {näytäOsasuoritustenRajaus && (
       <td className="osasuoritukset">{osasuoritustenRajaus(tiedot)}</td>
     )}
@@ -236,6 +246,16 @@ const oppilaitos = (
 
 const osasuoritustenRajaus = (tiedot: RaporttiKyselynTiedot): string =>
   tiedot.osasuoritustenAikarajaus ? t('Aikajaksolta') : t('Kaikki')
+
+const raportinTyypinNimi = (
+  raportinTyypit: Raporttityypit,
+  tiedot: RaporttiKyselynTiedot
+): string => {
+  const tyyppi = Object.values(raportinTyypit).find(
+    (r) => r.key === tiedot.raportinTyyppi
+  )
+  return tyyppi ? t(tyyppi.name) : tiedot.raportinTyyppi || ''
+}
 
 // Kuluvaa päivää ei tallenneta kyselyyn, joten silloin päivä on kyselyn luontipäivä
 const kotikuntaPäivä = (
