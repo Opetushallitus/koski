@@ -33,7 +33,7 @@ test.describe('Lukiokoulutuksen suoritustietoraportti (lukio 2019)', () => {
     await expect(rivi).toContainText('Aikajaksolta')
     await expect(raportitPage.kotikuntaPvm(rivi)).toHaveText('1.1.2020')
     await expect(
-      raportitPage.raportit.locator('th', { hasText: 'Kurssit' })
+      raportitPage.raportit.locator('th', { hasText: 'Osasuoritukset' })
     ).toHaveCount(1)
 
     await expect(raportitPage.latauslinkki(rivi)).toBeVisible({
