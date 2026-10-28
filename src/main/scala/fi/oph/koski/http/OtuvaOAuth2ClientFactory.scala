@@ -22,7 +22,7 @@ object OtuvaOAuth2Credentials {
   }
 }
 
-@nowarn("cat=deprecation")
+@nowarn("cat=deprecation&msg=NonEmptyHotswap")
 class OtuvaOAuth2ClientFactory(
   credentials: OtuvaOAuth2Credentials,
   otuvaTokenEndpoint: String,

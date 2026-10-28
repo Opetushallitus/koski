@@ -358,7 +358,7 @@
       "minimumReleaseAgeBehaviour": "timestamp-optional"
     },
     {
-      "description": "fs2 minor updates need Hotswap->NonEmptyHotswap refactoring",
+      "description": "Update fs2-core and fs2-io together; they share a version.",
       "matchPackageNames": [
         "co.fs2:fs2-core_2.13",
         "co.fs2:fs2-io_2.13"
