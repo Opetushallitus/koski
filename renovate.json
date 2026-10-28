@@ -118,6 +118,17 @@
       "automerge": true
     },
     {
+      "description": "The local Postgres and OpenSearch must run the versions that AWS runs in production. Open their minor and major updates as manual draft PRs that say so, because green CI does not mean they can be merged; close a PR that production has not caught up with and reopen it from the Dependency Dashboard later.",
+      "matchFileNames": ["docker-compose.yaml", "docker-compose-arm64.yaml", "opensearch/Dockerfile"],
+      "matchPackageNames": ["postgres", "opensearchproject/opensearch"],
+      "matchUpdateTypes": ["minor", "major"],
+      "automerge": false,
+      "draftPR": true,
+      "prBodyNotes": [
+        "> [!WARNING]\n> Local development and CI must run the same version as production. Check the version AWS runs in koski-aws-infra `src/ProductVersions.ts` (RDS applies Postgres minor versions automatically). Merge only once production runs this version; otherwise close this PR with a comment on what it waits for, and reopen it from the Dependency Dashboard when production catches up."
+      ]
+    },
+    {
       "description": "Automerge GitHub Actions minor and patch updates as one PR. Deploy and notification actions require manual review.",
       "matchManagers": ["github-actions"],
       "matchDepTypes": ["action"],
@@ -467,14 +478,6 @@
       "matchJsonata": ["$not($exists(groupName)) or groupName = null"],
       "groupName": "Maven dependencies",
       "group": { "description": ["Multiple packages: Maven dependencies"] }
-    },
-    {
-      "description": "The local Postgres and OpenSearch must run the versions that AWS runs in production (koski-aws-infra src/ProductVersions.ts). Hold their minor and major updates on the Dependency Dashboard as reminders to upgrade production, and approve one once AWS runs that version. RDS applies Postgres minor versions automatically (auto-minor-version-upgrade).",
-      "matchFileNames": ["docker-compose.yaml", "docker-compose-arm64.yaml", "opensearch/Dockerfile"],
-      "matchPackageNames": ["postgres", "opensearchproject/opensearch"],
-      "matchUpdateTypes": ["minor", "major"],
-      "automerge": false,
-      "dependencyDashboardApproval": true
     },
     {
       "description": "Skip http4s 1.0 milestone builds",
