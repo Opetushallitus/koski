@@ -139,6 +139,13 @@ export class KoskiRaportitPage {
     await expect(this.muodostaButton).toBeVisible()
   }
 
+  async gotoPerusopetuksenVuosiluokka() {
+    await this.page.goto(
+      '/koski/raportit/perusopetus/perusopetuksenvuosiluokka'
+    )
+    await expect(this.muodostaButton).toBeVisible()
+  }
+
   async gotoVstVapaatavoitteinen() {
     await this.page.goto(
       '/koski/raportit/vst/vapaansivistystyönvapaatavoitteisenkoulutuksenraportti?vstraportit=1'
@@ -183,6 +190,15 @@ export class KoskiRaportitPage {
     await this.page.locator('#dateinput-kotikuntapvm').fill(pvm)
   }
 
+  async valitseVuosiluokka(vuosiluokka: string) {
+    const valinta = this.page.locator('.parametri.vuosiluokka')
+    await valinta.locator('.select').click()
+    await valinta
+      .getByRole('listitem', { name: vuosiluokka, exact: true })
+      .click()
+    await expect(valinta.locator('.select')).toHaveText(vuosiluokka)
+  }
+
   async muodosta() {
     await this.muodostaButton.click()
   }
@@ -207,5 +223,9 @@ export class KoskiRaportitPage {
 
   kotikuntaPvm(rivi: Locator): Locator {
     return rivi.locator('td.kotikunta')
+  }
+
+  vuosiluokka(rivi: Locator): Locator {
+    return rivi.locator('td.vuosiluokka')
   }
 }

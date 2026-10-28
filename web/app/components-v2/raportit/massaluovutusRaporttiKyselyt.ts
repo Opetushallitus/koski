@@ -64,6 +64,10 @@ import {
   MassaluovutusQueryPerusopetuksenOppijamaaratRaportti
 } from '../../types/fi/oph/koski/massaluovutus/raportit/MassaluovutusQueryPerusopetuksenOppijamaaratRaportti'
 import {
+  isMassaluovutusQueryPerusopetuksenVuosiluokka,
+  MassaluovutusQueryPerusopetuksenVuosiluokka
+} from '../../types/fi/oph/koski/massaluovutus/raportit/MassaluovutusQueryPerusopetuksenVuosiluokka'
+import {
   isMassaluovutusQueryTOPKSAmmatillinen,
   MassaluovutusQueryTOPKSAmmatillinen
 } from '../../types/fi/oph/koski/massaluovutus/raportit/MassaluovutusQueryTOPKSAmmatillinen'
@@ -104,9 +108,13 @@ export type PäiväraportinKyselynParametrit = {
   language: 'fi' | 'sv' | 'en'
 }
 
+export type VuosiluokkaraportinKyselynParametrit =
+  PäiväraportinKyselynParametrit & { vuosiluokka: string }
+
 export type RaporttiKyselynTiedot = {
   organisaatioOid?: string
   osasuoritustenAikarajaus?: boolean
+  vuosiluokka?: string
   kotikuntaPvm?: string
 } & ({ alku: string; loppu: string } | { paiva: string })
 
@@ -118,6 +126,7 @@ export type MassaluovutusKyselymalli<P> = {
   ajankohdanOtsikko?: string
   // Annettuna omissa raporteissa näytetään osasuoritusten rajaus tällä otsikolla
   osasuoritustenRajausOtsikko?: string
+  näytäVuosiluokka?: boolean
   näytäKotikuntaPvm?: boolean
 }
 
@@ -438,6 +447,30 @@ export const luvaOpiskelijamaaratKyselymalli: MassaluovutusKyselymalli<Päivära
         ? { organisaatioOid: q.organisaatioOid, paiva: q.paiva }
         : null,
     ajankohdanOtsikko: 'Päivä'
+  }
+
+export const perusopetuksenVuosiluokkaKyselymalli: MassaluovutusKyselymalli<VuosiluokkaraportinKyselynParametrit> =
+  {
+    luo: (p) =>
+      MassaluovutusQueryPerusopetuksenVuosiluokka({
+        organisaatioOid: p.organisaatioOid,
+        language: p.language,
+        paiva: p.paiva,
+        vuosiluokka: p.vuosiluokka,
+        kotikuntaPvm: p.kotikuntaPvm
+      }),
+    lue: (q) =>
+      isMassaluovutusQueryPerusopetuksenVuosiluokka(q)
+        ? {
+            organisaatioOid: q.organisaatioOid,
+            paiva: q.paiva,
+            vuosiluokka: q.vuosiluokka,
+            kotikuntaPvm: q.kotikuntaPvm
+          }
+        : null,
+    ajankohdanOtsikko: 'Päivä',
+    näytäVuosiluokka: true,
+    näytäKotikuntaPvm: true
   }
 
 export const vstVapaatavoitteinenKyselymalli: MassaluovutusKyselymalli<AikajaksoraportinKyselynParametrit> =

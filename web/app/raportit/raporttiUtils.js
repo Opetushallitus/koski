@@ -1,3 +1,4 @@
+import { formatISODate } from '../date/date'
 import { t } from '../i18n/i18n'
 
 export const filterOrgTreeByRaporttityyppi = (raporttityyppi, orgs) =>
@@ -14,6 +15,12 @@ export const isEqualDate = (a, b) =>
   a.getYear() === b.getYear() &&
   a.getMonth() === b.getMonth() &&
   a.getDate() === b.getDate()
+
+// Kuluvan päivän kotikuntaa ei tarvitse asettaa
+export const kotikuntaPvmParametri = (showKotikuntaPvmInput, kotikuntaPvm) =>
+  showKotikuntaPvmInput && !isEqualDate(today(), kotikuntaPvm)
+    ? formatISODate(kotikuntaPvm)
+    : undefined
 
 export const organisaatioNimet = (organisaatiot) => {
   const nimet = {}

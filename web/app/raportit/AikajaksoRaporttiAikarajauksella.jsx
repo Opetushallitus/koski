@@ -14,7 +14,7 @@ import {
   Vinkit,
   PaivaValinta
 } from './raporttiComponents'
-import { isEqualDate, selectFromState, today } from './raporttiUtils'
+import { kotikuntaPvmParametri, selectFromState, today } from './raporttiUtils'
 import { MassaluovutusRaportinLataus } from '../components-v2/raportit/MassaluovutusRaportinLataus'
 import { t } from '../i18n/i18n'
 
@@ -120,11 +120,7 @@ export const AikajaksoRaporttiAikarajauksella = ({
             alku: formatISODate(a),
             loppu: formatISODate(l),
             osasuoritustenAikarajaus: r,
-            // Kuluvan päivän kotikuntaa ei tarvitse asettaa
-            kotikuntaPvm:
-              showKotikuntaPvmInput && !isEqualDate(today(), kkp)
-                ? formatISODate(kkp)
-                : undefined,
+            kotikuntaPvm: kotikuntaPvmParametri(showKotikuntaPvmInput, kkp),
             language: lang
           }
         : null
