@@ -82,3 +82,53 @@
     display: block;
   }
 }
+
+// Lukion oppimäärää täydentävien oman äidinkielen opintojen osasuoritukset -
+// sama taulukkoratkaisu kuin yllä .LukionOppiaineet__taulukossa, mutta
+// väreiltään päinvastoin: otsikkorivi on harmaa, data-rivit valkoisia -
+// kuten vanhassa käyttöliittymässä tämän taulukon kohdalla. Oma lohko
+// KeyValueTablen nimi/arvo-ruudukon ulkopuolella (ks. LukionSuorituksenTiedot
+// .tsx:n OmanÄidinkielenOpinnotRow), jotta taulukolla on käytössään koko
+// "Lukion oppimäärää täydentävät oman äidinkielen opinnot" -rivin arvosarake
+// eikä vain sisäkkäisen KeyValueRow'n kaventama 16/24-osa siitä.
+.LukionOmanÄidinkielenOpinnot__osasuorituksetLohko {
+  margin-top: (@baseline / 2);
+}
+
+.LukionOmanÄidinkielenOpinnot__otsikko {
+  display: block;
+  color: @color-label;
+  margin-bottom: 4px;
+}
+
+.LukionOmanÄidinkielenOpinnot__osasuoritukset {
+  width: 100%;
+  table-layout: fixed;
+  border-collapse: separate;
+  border-spacing: 2px;
+
+  th,
+  td {
+    padding: 4px 6px;
+    text-align: left;
+    vertical-align: top;
+  }
+
+  th {
+    font-weight: normal;
+    color: @color-label;
+    background: @color-neutral-gray;
+  }
+}
+
+.LukionOmanÄidinkielenOpinnot__kurssi {
+  width: 50%;
+}
+
+.LukionOmanÄidinkielenOpinnot__suorituskieli {
+  width: 20%;
+}
+
+.LukionOmanÄidinkielenOpinnot__arviointi {
+  width: 30%;
+}

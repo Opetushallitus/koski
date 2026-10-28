@@ -233,77 +233,119 @@ const OmanÄidinkielenOpinnotRow: React.FC<{
   opinnot: LukionOmanÄidinkielenOpinnot
 }> = ({ opinnot }) => (
   <KeyValueRow localizableLabel="Lukion oppimäärää täydentävät oman äidinkielen opinnot">
-    <KeyValueTable>
-      <KeyValueRow localizableLabel="Arvosana" innerKeyValueTable>
-        <TestIdText id="omanÄidinkielenOpinnot.arvosana">
-          {opinnot.arvosana.koodiarvo}
-        </TestIdText>
-      </KeyValueRow>
-      {opinnot.arviointipäivä && (
-        <KeyValueRow localizableLabel="Arviointipäivä" innerKeyValueTable>
-          <TestIdText id="omanÄidinkielenOpinnot.arviointipäivä">
-            {opinnot.arviointipäivä}
+    <>
+      <KeyValueTable>
+        <KeyValueRow localizableLabel="Arvosana" innerKeyValueTable>
+          <TestIdText id="omanÄidinkielenOpinnot.arvosana">
+            {opinnot.arvosana.koodiarvo}
           </TestIdText>
         </KeyValueRow>
-      )}
-      <KeyValueRow localizableLabel="Kieli" innerKeyValueTable>
-        <TestIdText id="omanÄidinkielenOpinnot.kieli">
-          {t(opinnot.kieli.nimi)}
-        </TestIdText>
-      </KeyValueRow>
-      <KeyValueRow localizableLabel="Laajuus" innerKeyValueTable>
-        <TestIdText id="omanÄidinkielenOpinnot.laajuus">
-          {opinnot.laajuus.arvo} {t(opinnot.laajuus.yksikkö.lyhytNimi)}
-        </TestIdText>
-      </KeyValueRow>
+        {opinnot.arviointipäivä && (
+          <KeyValueRow localizableLabel="Arviointipäivä" innerKeyValueTable>
+            <TestIdText id="omanÄidinkielenOpinnot.arviointipäivä">
+              {opinnot.arviointipäivä}
+            </TestIdText>
+          </KeyValueRow>
+        )}
+        <KeyValueRow localizableLabel="Kieli" innerKeyValueTable>
+          <TestIdText id="omanÄidinkielenOpinnot.kieli">
+            {t(opinnot.kieli.nimi)}
+          </TestIdText>
+        </KeyValueRow>
+        <KeyValueRow localizableLabel="Laajuus" innerKeyValueTable>
+          <TestIdText id="omanÄidinkielenOpinnot.laajuus">
+            {opinnot.laajuus.arvo} {t(opinnot.laajuus.yksikkö.lyhytNimi)}
+          </TestIdText>
+        </KeyValueRow>
+      </KeyValueTable>
       {opinnot.osasuoritukset && opinnot.osasuoritukset.length > 0 && (
-        <KeyValueRow localizableLabel="Osasuoritukset" innerKeyValueTable>
+        // Oma lohko KeyValueTablen ulkopuolella, ei innerKeyValueTable-rivinä:
+        // sisäkkäinen rivi kaventaisi taulukon vain 16/24-osaan tämänkin jo
+        // kavennetun arvosarakkeen leveydestä, jolloin esim. "Tekstien
+        // tulkinta ja kirjoittaminen" ei mahtuisi enää yhdelle riville kuten
+        // vanhassa käyttöliittymässä.
+        <div className="LukionOmanÄidinkielenOpinnot__osasuorituksetLohko">
+          <span className="LukionOmanÄidinkielenOpinnot__otsikko">
+            {t('Osasuoritukset')}
+          </span>
           <OmanÄidinkielenOpintojenOsasuorituksetLista
             osasuoritukset={opinnot.osasuoritukset}
           />
-        </KeyValueRow>
+        </div>
       )}
-    </KeyValueTable>
+    </>
   </KeyValueRow>
 )
 
+// Oikea <table>, ei KeyValueTable: sama syy kuin LukionOppiaineet.tsx:ssä
+// (lukio-v2/LukioEditor.less) - tämä on aidosti taulukollinen rakenne
+// (Kurssi/Suorituskieli/Arviointi per rivi), kuten vanhassa
+// käyttöliittymässä, ei pino yksittäisiä kenttä-arvo-pareja.
 const OmanÄidinkielenOpintojenOsasuorituksetLista: React.FC<{
   osasuoritukset: LukionOmanÄidinkielenOpintojenOsasuoritus[]
 }> = ({ osasuoritukset }) => (
-  <>
-    {osasuoritukset.map((osasuoritus, i) => {
-      const arviointi =
-        osasuoritus.arviointi?.[osasuoritus.arviointi.length - 1]
-      return (
-        <KeyValueTable key={i}>
-          <KeyValueRow localizableLabel="Kurssi" innerKeyValueTable>
-            <TestIdText id="nimi">
-              {t(osasuoritus.koulutusmoduuli.tunniste.nimi)}
-            </TestIdText>
-          </KeyValueRow>
-          {osasuoritus.suorituskieli && (
-            <KeyValueRow localizableLabel="Suorituskieli" innerKeyValueTable>
-              <TestIdText id="suorituskieli">
-                {t(osasuoritus.suorituskieli.nimi)}
+  <table className="LukionOmanÄidinkielenOpinnot__osasuoritukset">
+    <thead>
+      <tr>
+        <th className="LukionOmanÄidinkielenOpinnot__kurssi">{t('Kurssi')}</th>
+        <th className="LukionOmanÄidinkielenOpinnot__suorituskieli">
+          {t('Suorituskieli')}
+        </th>
+        <th className="LukionOmanÄidinkielenOpinnot__arviointi">
+          {t('Arviointi')}
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      {osasuoritukset.map((osasuoritus, i) => {
+        const arviointi =
+          osasuoritus.arviointi?.[osasuoritus.arviointi.length - 1]
+        return (
+          <tr key={i}>
+            <td className="LukionOmanÄidinkielenOpinnot__kurssi">
+              <TestIdText id="nimi">
+                {t(osasuoritus.koulutusmoduuli.tunniste.nimi)}
               </TestIdText>
-            </KeyValueRow>
-          )}
-          {arviointi && (
-            <>
-              <KeyValueRow localizableLabel="Arvosana" innerKeyValueTable>
-                <TestIdText id="arvosana">
-                  {arviointi.arvosana.koodiarvo}
+              <KeyValueTable>
+                <KeyValueRow localizableLabel="Laajuus" innerKeyValueTable>
+                  <TestIdText id="laajuus">
+                    {osasuoritus.koulutusmoduuli.laajuus.arvo}{' '}
+                    {t(osasuoritus.koulutusmoduuli.laajuus.yksikkö.lyhytNimi)}
+                  </TestIdText>
+                </KeyValueRow>
+              </KeyValueTable>
+            </td>
+            <td className="LukionOmanÄidinkielenOpinnot__suorituskieli">
+              {osasuoritus.suorituskieli && (
+                <TestIdText id="suorituskieli">
+                  {t(osasuoritus.suorituskieli.nimi)}
                 </TestIdText>
-              </KeyValueRow>
-              <KeyValueRow localizableLabel="Arviointipäivä" innerKeyValueTable>
-                <TestIdText id="arviointipaiva">{arviointi.päivä}</TestIdText>
-              </KeyValueRow>
-            </>
-          )}
-        </KeyValueTable>
-      )
-    })}
-  </>
+              )}
+            </td>
+            <td className="LukionOmanÄidinkielenOpinnot__arviointi">
+              {arviointi && (
+                <KeyValueTable>
+                  <KeyValueRow localizableLabel="Arvosana" innerKeyValueTable>
+                    <TestIdText id="arvosana">
+                      {arviointi.arvosana.koodiarvo}
+                    </TestIdText>
+                  </KeyValueRow>
+                  <KeyValueRow
+                    localizableLabel="Arviointipäivä"
+                    innerKeyValueTable
+                  >
+                    <TestIdText id="arviointipaiva">
+                      {arviointi.päivä}
+                    </TestIdText>
+                  </KeyValueRow>
+                </KeyValueTable>
+              )}
+            </td>
+          </tr>
+        )
+      })}
+    </tbody>
+  </table>
 )
 
 const PuhviKoeRow: React.FC<{ puhviKoe: PuhviKoe2019 }> = ({ puhviKoe }) => (
