@@ -125,9 +125,8 @@ if (typeof window.JSV === 'undefined') {
       })
       JSV.initValidator()
       $('#popup-error').enhanceWithin().popup()
-      $.fn.highlight = function (str, className, quote) {
-        var string = quote ? '\\"\\b' + str + '\\b\\"' : '\\b' + str + '\\b',
-          regex = new RegExp(string, 'g')
+      $.fn.highlight = function (str, className) {
+        var regex = new RegExp('"' + str + '"', 'g')
         return this.each(function () {
           this.innerHTML = this.innerHTML.replace(regex, function (matched) {
             return '<span class="' + className + '">' + matched + '</span>'
@@ -668,7 +667,7 @@ if (typeof window.JSV === 'undefined') {
             highEl
           pre.find('span.highlight').removeClass('highlight')
           if (node.plainName) {
-            pre.highlight(node.plainName, 'highlight', true)
+            pre.highlight(node.plainName, 'highlight')
           }
           highEl = pre.find('span.highlight')[0]
           if (highEl) {
@@ -695,7 +694,7 @@ if (typeof window.JSV === 'undefined') {
       ).attr('href', jsonUrl)
       el.html(btn)
       if (exp) {
-        pre.highlight(exp, 'highlight', true)
+        pre.highlight(exp, 'highlight')
       }
       el.append(pre)
       pre.height(

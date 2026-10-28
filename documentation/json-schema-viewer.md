@@ -86,6 +86,11 @@ re-vendor from upstream **must re-apply them**:
   charset Firefox decodes `ä` as `Ã¤`. The page CSP (`connect-src 'self'`)
   also blocks `fetch()` of the blob, so tests read it by opening the URL.
 
+- **Highlighting non-ASCII field names** — `$.fn.highlight` matches the quoted
+  key (`"alkamispäivä"`) without upstream's `\b`, which is ASCII-only in
+  JavaScript: names starting or ending in `ä`/`ö` were never highlighted, so
+  the Schema/Example tab did not scroll to them.
+
 - **Deep links** (TOR-2741) — see "Deep links" below. `JSV.applyDeepLinks`,
   `resolveNodePaths`, `getNodeNamePath`, the `.marked` class (reuses `.focus-box`) and
   the "Highlighted" legend row.
