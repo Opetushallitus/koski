@@ -127,7 +127,7 @@ function focusable( element, isTabIndexNotNaN ) {
 		if ( !element.href || !mapName || map.nodeName.toLowerCase() !== "map" ) {
 			return false;
 		}
-		img = $( "img[usemap=#" + mapName + "]" )[0];
+		img = $( "img[usemap='#" + mapName + "']" )[0];
 		return !!img && visible( img );
 	}
 	return ( /input|select|textarea|button|object/.test( nodeName ) ?
@@ -6173,7 +6173,7 @@ $.widget( "mobile.page", {
 	if ( document.readyState === "complete" ) {
 		pageIsFullyLoaded();
 	} else {
-		$.mobile.window.load( pageIsFullyLoaded );
+		$.mobile.window.on( "load", pageIsFullyLoaded );
 	}
 
 	$.when( domreadyDeferred, $.mobile.navreadyDeferred ).done( function() { $.mobile._registerInternalEvents(); } );
@@ -15433,7 +15433,7 @@ $.widget( "ui.tabs", {
 		// window load event
 		// hide iOS browser chrome on load if hideUrlBar is true this is as fall back incase we were too early before
 		if ( $.mobile.hideUrlBar ) {
-			$window.load( $.mobile.silentScroll );
+			$window.on( "load", $.mobile.silentScroll );
 		}
 
 		if ( !$.support.cssPointerEvents ) {
