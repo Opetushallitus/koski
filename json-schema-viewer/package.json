@@ -24,7 +24,7 @@
   },
   "dependencies": {
     "d3": "3.5.17",
-    "jquery": "3.7.1",
+    "jquery": "4.0.0",
     "jquery-migrate": "3.6.0",
     "jquery.scrollto": "1.4.14",
     "jsonpointer.js": "0.4.0",
@@ -35,7 +35,7 @@
     "@babel/helper-compilation-targets": "8.0.7",
     "@eslint/js": "10.0.1",
     "@swc/core": "1.16.20",
-    "@types/jquery": "3.5.34",
+    "@types/jquery": "4.0.1",
     "@types/node": "24.19.2",
     "@types/tv4": "1.2.33",
     "concurrently": "10.0.6",
