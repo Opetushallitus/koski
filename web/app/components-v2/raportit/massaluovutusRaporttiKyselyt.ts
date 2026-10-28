@@ -8,6 +8,10 @@ import {
   MassaluovutusQueryAikuistenPerusopetuksenOppijamaaratRaportti
 } from '../../types/fi/oph/koski/massaluovutus/raportit/MassaluovutusQueryAikuistenPerusopetuksenOppijamaaratRaportti'
 import {
+  isMassaluovutusQueryAikuistenPerusopetusSuoritustiedot,
+  MassaluovutusQueryAikuistenPerusopetusSuoritustiedot
+} from '../../types/fi/oph/koski/massaluovutus/raportit/MassaluovutusQueryAikuistenPerusopetusSuoritustiedot'
+import {
   isMassaluovutusQueryAmmatillinenOpiskelijavuositiedot,
   MassaluovutusQueryAmmatillinenOpiskelijavuositiedot
 } from '../../types/fi/oph/koski/massaluovutus/raportit/MassaluovutusQueryAmmatillinenOpiskelijavuositiedot'
@@ -111,12 +115,18 @@ export type PäiväraportinKyselynParametrit = {
 export type VuosiluokkaraportinKyselynParametrit =
   PäiväraportinKyselynParametrit & { vuosiluokka: string }
 
+export type TyyppivalintaraportinKyselynParametrit<T extends string> =
+  AikajaksoraportinKyselynParametrit & { raportinTyyppi: T }
+
 export type RaporttiKyselynTiedot = {
   organisaatioOid?: string
+  raportinTyyppi?: string
   osasuoritustenAikarajaus?: boolean
   vuosiluokka?: string
   kotikuntaPvm?: string
 } & ({ alku: string; loppu: string } | { paiva: string })
+
+export type Raporttityypit = Record<string, { key: string; name: string }>
 
 export type MassaluovutusKyselymalli<P> = {
   luo: (parametrit: P) => MassaluovutusQueryParameters
@@ -124,10 +134,38 @@ export type MassaluovutusKyselymalli<P> = {
   lue: (kysely: MassaluovutusQueryParameters) => RaporttiKyselynTiedot | null
   // Omien raporttien ajankohtasarakkeen otsikko, oletuksena Aikajakso
   ajankohdanOtsikko?: string
+  // Annettuna omissa raporteissa näytetään raportin tyyppi näillä nimillä
+  raportinTyypit?: Raporttityypit
   // Annettuna omissa raporteissa näytetään osasuoritusten rajaus tällä otsikolla
   osasuoritustenRajausOtsikko?: string
   näytäVuosiluokka?: boolean
   näytäKotikuntaPvm?: boolean
+}
+
+export const aikuistenPerusopetusRaporttityypit = {
+  alkuvaihe: {
+    key: 'alkuvaihe',
+    name: 'Alkuvaihe'
+  },
+  päättövaihe: {
+    key: 'päättövaihe',
+    name: 'Päättövaihe'
+  },
+  oppiaineenoppimäärä: {
+    key: 'oppiaineenoppimäärä',
+    name: 'Oppiaineen oppimäärä (ns. aineopiskelijat)'
+  }
+}
+
+export const ibRaporttityypit = {
+  ib: {
+    key: 'ibtutkinto',
+    name: 'IB-tutkinnon suoritukset'
+  },
+  preib: {
+    key: 'preiboppimaara',
+    name: 'Pre-IB-opintojen suoritukset'
+  }
 }
 
 export const ammatillinenTutkintoSuoritustiedotKyselymalli: MassaluovutusKyselymalli<AikajaksoraportinKyselynParametrit> =
@@ -330,7 +368,7 @@ export const lukionSuoritustiedotKyselymalli: MassaluovutusKyselymalli<Aikajakso
             kotikuntaPvm: q.kotikuntaPvm
           }
         : null,
-    osasuoritustenRajausOtsikko: 'Kurssit',
+    osasuoritustenRajausOtsikko: 'Osasuoritukset',
     näytäKotikuntaPvm: true
   }
 
@@ -355,7 +393,7 @@ export const lukio2019SuoritustiedotKyselymalli: MassaluovutusKyselymalli<Aikaja
             kotikuntaPvm: q.kotikuntaPvm
           }
         : null,
-    osasuoritustenRajausOtsikko: 'Kurssit',
+    osasuoritustenRajausOtsikko: 'Osasuoritukset',
     näytäKotikuntaPvm: true
   }
 
@@ -472,6 +510,34 @@ export const perusopetuksenVuosiluokkaKyselymalli: MassaluovutusKyselymalli<Vuos
     näytäVuosiluokka: true,
     näytäKotikuntaPvm: true
   }
+
+export const aikuistenPerusopetusSuoritustiedotKyselymalli: MassaluovutusKyselymalli<
+  TyyppivalintaraportinKyselynParametrit<
+    MassaluovutusQueryAikuistenPerusopetusSuoritustiedot['raportinTyyppi']
+  >
+> = {
+  luo: (p) =>
+    MassaluovutusQueryAikuistenPerusopetusSuoritustiedot({
+      organisaatioOid: p.organisaatioOid,
+      language: p.language,
+      alku: p.alku,
+      loppu: p.loppu,
+      raportinTyyppi: p.raportinTyyppi,
+      osasuoritustenAikarajaus: p.osasuoritustenAikarajaus ?? false
+    }),
+  lue: (q) =>
+    isMassaluovutusQueryAikuistenPerusopetusSuoritustiedot(q)
+      ? {
+          organisaatioOid: q.organisaatioOid,
+          alku: q.alku,
+          loppu: q.loppu,
+          raportinTyyppi: q.raportinTyyppi,
+          osasuoritustenAikarajaus: q.osasuoritustenAikarajaus
+        }
+      : null,
+  raportinTyypit: aikuistenPerusopetusRaporttityypit,
+  osasuoritustenRajausOtsikko: 'Osasuoritukset'
+}
 
 export const vstVapaatavoitteinenKyselymalli: MassaluovutusKyselymalli<AikajaksoraportinKyselynParametrit> =
   {

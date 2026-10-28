@@ -9,11 +9,7 @@ import {
   osasuoritusTypes
 } from './AikajaksoRaporttiAikarajauksella'
 import { RaporttiPaivalta } from './RaporttiPaivalta'
-import {
-  AikajaksoRaporttiTyyppivalinnalla,
-  aikuistenPerusopetusReportTypes,
-  ibReportTypes
-} from './AikajaksoRaporttiTyyppivalinnalla'
+import { AikajaksoRaporttiTyyppivalinnalla } from './AikajaksoRaporttiTyyppivalinnalla'
 import { Tabs } from '../components/Tabs'
 import { OrganisaatioDropdown } from './OrganisaatioDropdown'
 import { filterOrgTreeByRaporttityyppi } from './raporttiUtils'
@@ -24,9 +20,12 @@ import { lang } from '../i18n/i18n'
 import {
   aikuistenPerusopetuksenKurssikertymaKyselymalli,
   aikuistenPerusopetuksenOppijamaaratRaporttiKyselymalli,
+  aikuistenPerusopetusRaporttityypit,
+  aikuistenPerusopetusSuoritustiedotKyselymalli,
   ammatillinenOpiskelijavuositiedotKyselymalli,
   ammatillinenOsittainenSuoritustiedotKyselymalli,
   ammatillinenTutkintoSuoritustiedotKyselymalli,
+  ibRaporttityypit,
   lukio2019OpintopistekertymatKyselymalli,
   lukio2019SuoritustiedotKyselymalli,
   lukioDiaIbInternationalESHOpiskelijamaaratKyselymalli,
@@ -1129,7 +1128,7 @@ function PerusopetuksenLisäopetuksenOppijamäärätRaportti({ stateP }) {
 function AikuistenPerusopetusRaportti({ stateP }) {
   const titleText = <Text name="aikuisten-perusopetus-raportti-title" />
   const shortDescriptionText = (
-    <Text name="aikuisten-perusopetus-raportti-short-description" />
+    <Text name="aikuisten-perusopetus-raportti-short-description-massaluovutus" />
   )
   const exampleText = (
     <Paragraphs name="aikuisten-perusopetus-raportti-example" />
@@ -1142,9 +1141,10 @@ function AikuistenPerusopetusRaportti({ stateP }) {
       title={titleText}
       shortDescription={shortDescriptionText}
       example={exampleText}
+      massaluovutusKyselymalli={aikuistenPerusopetusSuoritustiedotKyselymalli}
       lang={lang}
-      raporttiTyypit={aikuistenPerusopetusReportTypes}
-      defaultRaportinTyyppi={aikuistenPerusopetusReportTypes.alkuvaihe.key}
+      raporttiTyypit={aikuistenPerusopetusRaporttityypit}
+      defaultRaportinTyyppi={aikuistenPerusopetusRaporttityypit.alkuvaihe.key}
       listavalintaKuvaus={'suorituksentyyppivalinta-help'}
       aikajaksoValintaKuvaus={
         'aikuistenperusopetuksen-raportti-osasuoritusten-aikavaraus-help'
@@ -1233,8 +1233,8 @@ function IBSuoritustiedot({ stateP }) {
       shortDescription={shortDescriptionText}
       example={exampleText}
       lang={lang}
-      raporttiTyypit={ibReportTypes}
-      defaultRaportinTyyppi={ibReportTypes.ib.key}
+      raporttiTyypit={ibRaporttityypit}
+      defaultRaportinTyyppi={ibRaporttityypit.ib.key}
       listavalintaKuvaus={'suorituksentyyppivalinta-ib-help'}
       aikajaksoValintaKuvaus={'ib-raportti-osasuoritusten-aikavaraus-help'}
       osasuoritustenAikarajausEiKuvaus={

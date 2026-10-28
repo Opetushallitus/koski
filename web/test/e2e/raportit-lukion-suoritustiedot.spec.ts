@@ -50,7 +50,7 @@ test.describe('Lukiokoulutuksen suoritustietoraportti', () => {
       timeout: raportinMuodostusAikakatkaisuMs
     })
     await expect(
-      raportitPage.raportit.locator('th', { hasText: 'Kurssit' })
+      raportitPage.raportit.locator('th', { hasText: 'Osasuoritukset' })
     ).toHaveCount(1)
   })
 })
