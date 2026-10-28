@@ -27,7 +27,10 @@ const config: PlaywrightTestConfig = {
     toHaveScreenshot: {
       /* Piilota animaatiot ja tekstikursori vakauden vuoksi. */
       animations: 'disabled',
-      caret: 'hide'
+      caret: 'hide',
+      threshold: 0,
+      maxDiffPixels: 0,
+      maxDiffPixelRatio: 0
     }
   },
   /* Run tests in files in parallel */
