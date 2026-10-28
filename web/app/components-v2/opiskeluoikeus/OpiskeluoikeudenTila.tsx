@@ -194,13 +194,10 @@ export const OpiskeluoikeudenTilaEdit = <T extends OpiskeluoikeudenTila>(
         </TestIdLayer>
 
         {!oo.isTerminated && (
+          // Linkki saa koko arvoalueen: päivämääräsarakkeen levyisenä sen
+          // leveys levittäisi saraketta ja siirtäisi tilojen nimiä.
           <KeyColumnedValuesRow
             localizableName={A.isEmpty(oo.jaksot) ? 'Tila' : undefined}
-            columnSpans={{
-              default: [3, '*'],
-              small: [8, '*'],
-              phone: [24, '*']
-            }}
           >
             {[<LisääTilaLink key="addLink" onClick={oo.openModal} />]}
           </KeyColumnedValuesRow>

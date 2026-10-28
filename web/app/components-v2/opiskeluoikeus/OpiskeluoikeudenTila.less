@@ -7,6 +7,13 @@
   min-width: 100px - @Columns-gutter;
 }
 
+// Päivämääräkenttä on 1280 px leveydellä noin 3 px soluaan leveämpi ja ulottuu
+// sarakeväliin. Ilman tätä KeyValueTable levittäisi saraketta ja tilan nimi
+// siirtyisi myös leveällä näytöllä; kapealla nimi jää 8 px:n päähän kentästä.
+.OpiskeluoikeudenTila > .KeyValueRow .DateEdit__field {
+  margin-right: -4px;
+}
+
 .OpiskeluoikeudenTila-viimeisin {
   .KeyValueRow__value {
     font-weight: 600;
