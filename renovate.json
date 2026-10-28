@@ -482,10 +482,11 @@
       "allowedVersions": "!/^1\\.0-\\d+-[0-9a-f]+$/"
     },
     {
-      "description": "Keep schema viewer updates in their own PRs, out of unrelated npm groups.",
+      "description": "Keep schema viewer updates in their own PRs, out of unrelated npm groups. @types/node stays in the Node.js group.",
       "matchManagers": ["npm"],
       "matchFileNames": ["json-schema-viewer/package.json"],
       "matchDepTypes": ["dependencies", "devDependencies"],
+      "matchPackageNames": ["!@types/node"],
       "groupName": null,
       "additionalBranchPrefix": "schema-viewer-",
       "commitMessageTopic": "JSON Schema Viewer dependency {{{depName}}}"
