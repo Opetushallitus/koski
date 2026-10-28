@@ -63,6 +63,7 @@ class ValpasOppijaLaajatTiedotService(
           .map(withTurvakieltosiivottuKotikunta)
       case None if haeMyösVainOppijanumerorekisterissäOleva =>
         oppijanumerorekisteriService.getOppijaLaajatTiedotOppijanumerorekisteristä(oppijaOid)
+          .map(withTurvakieltosiivottuVapautus)
           .map(withTurvakieltosiivottuKotikunta)
       case _ =>
         Left(ValpasErrorCategory.forbidden.oppija())
