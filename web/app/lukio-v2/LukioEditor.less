@@ -1,0 +1,134 @@
+// Visuaalinen ilme pyrkii matkimaan vanhaa lukion käyttöliittymää
+// (style/lukio.less, style/kurssi.less) uudella -v2-komponenttipohjalla, ei
+// kopioimaan sen koko <table>-rakennetta - paitsi oppiainetaulukko, joka on
+// oikea <table>. OsasuoritusTablen (CSS Grid) jokainen rivi mitoittaa
+// sarakkeensa erikseen omasta sisällöstään, joten lyhyen sisällön
+// (yksinumeroinen arvosana) sarakkeet eivät osu kohdalleen otsikon kanssa -
+// <table> mitoittaa sarakkeet koko taulukon yli yhtenäisesti, kuten samasta
+// syystä components-v2/opiskeluoikeus/OppiaineTable.tsx:ssäkin (IB).
+.LukionOppiaineet {
+  .footnote-hint {
+    color: @color-link-blue;
+    font-weight: bold;
+  }
+
+  .selitteet {
+    margin-top: 10px;
+    font-size: 0.9em;
+  }
+
+  .kurssit-yhteensä {
+    text-align: right;
+    font-size: 0.9em;
+
+    > * {
+      display: block;
+    }
+  }
+
+  &__taulukko {
+    width: 100%;
+    table-layout: fixed;
+    // border-spacing tuottaa samat valkoiset raot harmaiden solujen välissä
+    // kuin vanhan käyttöliittymän table.suoritukset.
+    border-collapse: separate;
+    border-spacing: 2px;
+
+    th,
+    td {
+      padding: 4px 6px;
+      text-align: left;
+    }
+
+    // Otsikkorivi ei kuulu harmaisiin "laatikoihin" - pelkkä teksti erottavan
+    // viivan päällä, kuten vanhassa käyttöliittymässä (lihavoimaton, reilu
+    // väli viivaan ennen ensimmäistä riviä).
+    th {
+      font-weight: normal;
+      padding-bottom: 10px;
+      border-bottom: 1px solid @color-disabled;
+      // Alareunaan tasattu kuten vanhassa käyttöliittymässä: kun otsikot
+      // rivittyvät eri pituisina ("Arvioitu (opintopistettä)" vs.
+      // "Hyväksytysti arvioitu (opintopistettä)"), alareunaan tasaus saa
+      // niiden yläreunat limittymään porrastetusti.
+      vertical-align: bottom;
+    }
+
+    td {
+      background: @color-neutral-gray;
+      vertical-align: top;
+    }
+  }
+
+  &__tila {
+    width: 2.5 * @baseline;
+    text-align: center;
+  }
+
+  &__laajuus,
+  &__arvosana {
+    text-align: right;
+  }
+
+  &__laajuus {
+    width: 110px;
+  }
+
+  &__arvosana {
+    width: 70px;
+  }
+
+  .kurssit {
+    display: block;
+  }
+}
+
+// Lukion oppimäärää täydentävien oman äidinkielen opintojen osasuoritukset -
+// sama taulukkoratkaisu kuin yllä .LukionOppiaineet__taulukossa, mutta
+// väreiltään päinvastoin: otsikkorivi on harmaa, data-rivit valkoisia -
+// kuten vanhassa käyttöliittymässä tämän taulukon kohdalla. Oma lohko
+// KeyValueTablen nimi/arvo-ruudukon ulkopuolella (ks. LukionSuorituksenTiedot
+// .tsx:n OmanÄidinkielenOpinnotRow), jotta taulukolla on käytössään koko
+// "Lukion oppimäärää täydentävät oman äidinkielen opinnot" -rivin arvosarake
+// eikä vain sisäkkäisen KeyValueRow'n kaventama 16/24-osa siitä.
+.LukionOmanÄidinkielenOpinnot__osasuorituksetLohko {
+  margin-top: (@baseline / 2);
+}
+
+.LukionOmanÄidinkielenOpinnot__otsikko {
+  display: block;
+  color: @color-label;
+  margin-bottom: 4px;
+}
+
+.LukionOmanÄidinkielenOpinnot__osasuoritukset {
+  width: 100%;
+  table-layout: fixed;
+  border-collapse: separate;
+  border-spacing: 2px;
+
+  th,
+  td {
+    padding: 4px 6px;
+    text-align: left;
+    vertical-align: top;
+  }
+
+  th {
+    font-weight: normal;
+    color: @color-label;
+    background: @color-neutral-gray;
+  }
+}
+
+.LukionOmanÄidinkielenOpinnot__kurssi {
+  width: 50%;
+}
+
+.LukionOmanÄidinkielenOpinnot__suorituskieli {
+  width: 20%;
+}
+
+.LukionOmanÄidinkielenOpinnot__arviointi {
+  width: 30%;
+}

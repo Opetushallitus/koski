@@ -137,6 +137,13 @@ visual-test:
 visual-update:
 	scripts/koski-visual.sh update
 
+# Ei regressiotesti - vanha-vs-uusi-kuvavertailu TOR-2777:n lukio 2019
+# -v2-editorin rakentamisen ajalle. Epäonnistuu aina tarkoituksella; avaa
+# lopuksi tulostettu HTML-raportti nähdäksesi kuvat rinnakkain.
+.PHONY: lukio-vertailu
+lukio-vertailu:
+	scripts/koski-lukio-vertailu.sh
+
 .PHONY: omadataoauth2e2e
 omadataoauth2e2e:
 		./mvnw $(mvn_opts) -DargLine="$(mvn_argline)" test -Dsuites="fi.oph.koski.omadataoauth2.e2e.OmaDataOAuth2E2ESpec"
