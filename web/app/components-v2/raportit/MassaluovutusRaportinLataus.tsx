@@ -121,6 +121,7 @@ export const MassaluovutusRaportinLataus = <P,>({
                 <th>{t('Muodostettu')}</th>
                 <th>{t('Oppilaitos')}</th>
                 <th>{t(kyselymalli.ajankohdanOtsikko ?? 'Aikajakso')}</th>
+                {kyselymalli.näytäVuosiluokka && <th>{t('Vuosiluokka')}</th>}
                 {kyselymalli.osasuoritustenRajausOtsikko && (
                   <th>{t(kyselymalli.osasuoritustenRajausOtsikko)}</th>
                 )}
@@ -140,6 +141,7 @@ export const MassaluovutusRaportinLataus = <P,>({
                   näytäOsasuoritustenRajaus={
                     !!kyselymalli.osasuoritustenRajausOtsikko
                   }
+                  näytäVuosiluokka={!!kyselymalli.näytäVuosiluokka}
                   näytäKotikuntaPvm={!!kyselymalli.näytäKotikuntaPvm}
                   oppilaitosNimet={oppilaitosNimet}
                 />
@@ -156,12 +158,14 @@ const RaporttiRivi: React.FC<{
   kysely: QueryResponse
   tiedot: RaporttiKyselynTiedot
   näytäOsasuoritustenRajaus: boolean
+  näytäVuosiluokka: boolean
   näytäKotikuntaPvm: boolean
   oppilaitosNimet: Record<string, string>
 }> = ({
   kysely,
   tiedot,
   näytäOsasuoritustenRajaus,
+  näytäVuosiluokka,
   näytäKotikuntaPvm,
   oppilaitosNimet
 }) => (
@@ -171,6 +175,7 @@ const RaporttiRivi: React.FC<{
     </td>
     <td className="oppilaitos">{oppilaitos(tiedot, oppilaitosNimet)}</td>
     <td className="ajankohta">{ajankohta(tiedot)}</td>
+    {näytäVuosiluokka && <td className="vuosiluokka">{tiedot.vuosiluokka}</td>}
     {näytäOsasuoritustenRajaus && (
       <td className="osasuoritukset">{osasuoritustenRajaus(tiedot)}</td>
     )}
