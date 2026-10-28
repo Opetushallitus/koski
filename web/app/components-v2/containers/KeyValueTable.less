@@ -40,6 +40,14 @@
     padding-right: 16px;
   }
 
+  // Usean fr-raidan yli ulottuva grid-kohde ei saa automaattista
+  // minimileveyttä, joten saraketta leveämpi sisältö (katkeamaton sana,
+  // päivämääräkenttä) valuisi viereisen arvon päälle. Raidat levenevät
+  // sisällön mittaisiksi vain, kun se ei muuten mahdu.
+  .KeyValueRow__value {
+    min-width: min-content;
+  }
+
   // Arvosarakkeet käyttävät Column-luokkien grid-column: span N -arvoja, jotka
   // sijoittuvat automaattisesti sarakkeen 1 jälkeen riville. Tämä mahdollistaa
   // KeyColumnedValuesRown monisarakkeiset rivit (esim. päivä + selitys).
