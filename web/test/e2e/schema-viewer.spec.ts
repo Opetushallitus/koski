@@ -134,6 +134,18 @@ test.describe('Schema viewer', () => {
     await expect(page.locator('#info-badges')).toContainText('Vanhentunut')
   })
 
+  test('Schema-välilehti vierittää valitun kentän näkyviin', async ({
+    page
+  }) => {
+    await openNode(page, 'opiskeluoikeudet.lisätiedot.koulutusvienti')
+    await page.getByRole('link', { name: 'Schema', exact: true }).click()
+    await expect(
+      page
+        .locator('#info-tab-schema')
+        .getByText('"koulutusvienti"', { exact: true })
+    ).toBeInViewport()
+  })
+
   test.describe('Viewerin toiminnot testiskeemalla', () => {
     const oppijaSchemaUrl = '/koski/api/documentation/viewer-smoke-schema.json'
     const oppijaSchema = {
