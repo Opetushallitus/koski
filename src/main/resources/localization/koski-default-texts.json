@@ -1561,6 +1561,7 @@
   "paallekkaiset-opiskeluoikeudet-short-description": "Raportti näyttää päällekkäisten opiskeluoikeuksien tiedot sellaisille opiskeluoikeuksille, jotka ovat olleet vähintään yhden päivän aktiivisena tulostusparametreissa valitulla aikajaksolla, yhdellä rivillä per päällekkäinen opiskeluoikeus. Sekä oppilaitoksen omasta että päällekkäisestä opiskeluoikeudesta tulostetaan tarvittavat tunnistetiedot sekä tilajaksoihin ja mahdollisiin rahoitusmuotoihin liittyvät tiedot. Keskenään linkitettyjä opiskeluoikeuksia ei tulkita päällekkäisiksi opiskeluoikeuksiksi. Raportti pohjautuu viime yön tietoihin, eli tietojen päivitys KOSKI-tietovarantoon ei näy välittömästi raportilla. HUOM! Päällekkäisen opiskeluoikeuden löytyminen joko omasta tai toisen koulutuksen järjestäjän oppilaitoksesta ei ole välttämättä virhe.",
   "Päättöarvosana": "Päättöarvosana",
   "Päättötodistus": "Päättötodistus",
+  "ahvenanmaan-perusopetus-koulutuksen-nimi": "Perusopetus",
   "Päättövaihe": "Päättövaihe",
   "Päättyminen pvm": "Päättyminen pvm",
   "Päättymispäivä": "Päättymispäivä",

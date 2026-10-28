@@ -24,6 +24,22 @@
     "description": null,
     "force": null,
     "id": null,
+    "key": "ahvenanmaan-perusopetus-koulutuksen-nimi",
+    "locale": "en",
+    "modified": null,
+    "modifiedBy": "anonymousUser",
+    "namespace": "koski",
+    "value": "Basic education"
+  },
+  {
+    "accesscount": null,
+    "accessed": null,
+    "category": "koski",
+    "created": null,
+    "createdBy": "anonymousUser",
+    "description": null,
+    "force": null,
+    "id": null,
     "key": "Aiemmin suoritetut kokeet",
     "locale": "en",
     "modified": null,
@@ -8350,6 +8366,22 @@
     "modifiedBy": "anonymousUser",
     "namespace": "koski",
     "value": "1-5, Hylätty tai Hyväksytty"
+  },
+  {
+    "accesscount": null,
+    "accessed": null,
+    "category": "koski",
+    "created": null,
+    "createdBy": "anonymousUser",
+    "description": null,
+    "force": null,
+    "id": null,
+    "key": "ahvenanmaan-perusopetus-koulutuksen-nimi",
+    "locale": "fi",
+    "modified": null,
+    "modifiedBy": "anonymousUser",
+    "namespace": "koski",
+    "value": "Perusopetus"
   },
   {
     "accesscount": null,
@@ -56894,6 +56926,22 @@
     "modifiedBy": "anonymousUser",
     "namespace": "koski",
     "value": "1-5, Underkänd eller Godkänd"
+  },
+  {
+    "accesscount": null,
+    "accessed": null,
+    "category": "koski",
+    "created": null,
+    "createdBy": "anonymousUser",
+    "description": null,
+    "force": null,
+    "id": null,
+    "key": "ahvenanmaan-perusopetus-koulutuksen-nimi",
+    "locale": "sv",
+    "modified": null,
+    "modifiedBy": "anonymousUser",
+    "namespace": "koski",
+    "value": "Grundskoleutbildning"
   },
   {
     "accesscount": null,
