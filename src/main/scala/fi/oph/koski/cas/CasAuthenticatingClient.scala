@@ -16,7 +16,7 @@ import scala.annotation.nowarn
  *  a central cache of session cookies per service url. If a session cookie is not found for requested service, it is obtained using
  *  CasClient. Stale sessions are detected and refreshed automatically.
  */
-@nowarn("cat=deprecation")
+@nowarn("cat=deprecation&msg=NonEmptyHotswap")
 object CasAuthenticatingClient extends Logging {
   val DefaultSessionCookieName = "JSESSIONID"
 
