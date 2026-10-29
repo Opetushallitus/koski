@@ -35,7 +35,7 @@ case class Hakutoive(
   hakukohdeOid: String,
   hakukohdeNimi: BlankableLocalizedString,
   organisaatioNimi: BlankableLocalizedString,
-  hakukohdeOrganisaatio: String,
+  hakukohdeOrganisaatio: Option[String],
   koulutusNimi: BlankableLocalizedString,
   koulutusOid: Option[ValpasHakutoive.KoulutusOid],
   hakutoivenumero: Int,
@@ -53,6 +53,13 @@ case class Hakutoive(
   @KoodistoUri("koulutus")
   hakukohdeKoulutuskoodi: Option[Koodistokoodiviite]
 )
+
+object Hakutapa {
+  private val yhteishaku = "01"
+  private val jatkuvaHaku = "03"
+
+  val näytettävät: Set[String] = Set(yhteishaku, jatkuvaHaku)
+}
 
 object Vastaanottotieto {
   val values = Set(
