@@ -1,5 +1,9 @@
 import { MassaluovutusQueryParameters } from '../../types/fi/oph/koski/massaluovutus/MassaluovutusQueryParameters'
 import {
+  isMassaluovutusQueryPaallekkaisetOpiskeluoikeudet,
+  MassaluovutusQueryPaallekkaisetOpiskeluoikeudet
+} from '../../types/fi/oph/koski/massaluovutus/paallekkaisetopiskeluoikeudet/MassaluovutusQueryPaallekkaisetOpiskeluoikeudet'
+import {
   isMassaluovutusQueryAikuistenPerusopetuksenKurssikertyma,
   MassaluovutusQueryAikuistenPerusopetuksenKurssikertyma
 } from '../../types/fi/oph/koski/massaluovutus/raportit/MassaluovutusQueryAikuistenPerusopetuksenKurssikertyma'
@@ -577,6 +581,25 @@ export const ibSuoritustiedotKyselymalli: MassaluovutusKyselymalli<
   osasuoritustenRajausOtsikko: 'Osasuoritukset',
   näytäKotikuntaPvm: true
 }
+
+const xlsx = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+
+export const paallekkaisetOpiskeluoikeudetKyselymalli: MassaluovutusKyselymalli<AikajaksoraportinKyselynParametrit> =
+  {
+    luo: (p) =>
+      MassaluovutusQueryPaallekkaisetOpiskeluoikeudet({
+        format: xlsx,
+        organisaatioOid: p.organisaatioOid,
+        language: p.language,
+        alku: p.alku,
+        loppu: p.loppu
+      }),
+    // Rajapinnan kautta tehdyt csv-kyselyt eivät ole tämän näkymän Excel-raportteja
+    lue: (q) =>
+      isMassaluovutusQueryPaallekkaisetOpiskeluoikeudet(q) && q.format === xlsx
+        ? { organisaatioOid: q.organisaatioOid, alku: q.alku, loppu: q.loppu }
+        : null
+  }
 
 export const vstJotpaKyselymalli: MassaluovutusKyselymalli<AikajaksoraportinKyselynParametrit> =
   {
