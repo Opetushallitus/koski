@@ -24,6 +24,10 @@ import {
   MassaluovutusQueryAmmatillinenTutkintoSuoritustiedot
 } from '../../types/fi/oph/koski/massaluovutus/raportit/MassaluovutusQueryAmmatillinenTutkintoSuoritustiedot'
 import {
+  isMassaluovutusQueryIBSuoritustiedot,
+  MassaluovutusQueryIBSuoritustiedot
+} from '../../types/fi/oph/koski/massaluovutus/raportit/MassaluovutusQueryIBSuoritustiedot'
+import {
   isMassaluovutusQueryLukio2019Opintopistekertymat,
   MassaluovutusQueryLukio2019Opintopistekertymat
 } from '../../types/fi/oph/koski/massaluovutus/raportit/MassaluovutusQueryLukio2019Opintopistekertymat'
@@ -541,6 +545,37 @@ export const aikuistenPerusopetusSuoritustiedotKyselymalli: MassaluovutusKyselym
       : null,
   raportinTyypit: aikuistenPerusopetusRaporttityypit,
   osasuoritustenRajausOtsikko: 'Osasuoritukset'
+}
+
+export const ibSuoritustiedotKyselymalli: MassaluovutusKyselymalli<
+  TyyppivalintaraportinKyselynParametrit<
+    MassaluovutusQueryIBSuoritustiedot['raportinTyyppi']
+  >
+> = {
+  luo: (p) =>
+    MassaluovutusQueryIBSuoritustiedot({
+      organisaatioOid: p.organisaatioOid,
+      language: p.language,
+      alku: p.alku,
+      loppu: p.loppu,
+      raportinTyyppi: p.raportinTyyppi,
+      osasuoritustenAikarajaus: p.osasuoritustenAikarajaus ?? false,
+      kotikuntaPvm: p.kotikuntaPvm
+    }),
+  lue: (q) =>
+    isMassaluovutusQueryIBSuoritustiedot(q)
+      ? {
+          organisaatioOid: q.organisaatioOid,
+          alku: q.alku,
+          loppu: q.loppu,
+          raportinTyyppi: q.raportinTyyppi,
+          osasuoritustenAikarajaus: q.osasuoritustenAikarajaus,
+          kotikuntaPvm: q.kotikuntaPvm
+        }
+      : null,
+  raportinTyypit: ibRaporttityypit,
+  osasuoritustenRajausOtsikko: 'Osasuoritukset',
+  näytäKotikuntaPvm: true
 }
 
 export const vstJotpaKyselymalli: MassaluovutusKyselymalli<AikajaksoraportinKyselynParametrit> =

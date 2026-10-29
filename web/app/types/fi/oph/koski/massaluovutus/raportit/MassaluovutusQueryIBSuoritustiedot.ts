@@ -6,7 +6,6 @@
 export type MassaluovutusQueryIBSuoritustiedot = {
   $class: 'fi.oph.koski.massaluovutus.raportit.MassaluovutusQueryIBSuoritustiedot'
   loppu: string
-  language?: 'fi' | 'sv' | 'en'
   osasuoritustenAikarajaus?: boolean
   type: 'ibSuoritustiedot'
   alku: string
@@ -14,11 +13,12 @@ export type MassaluovutusQueryIBSuoritustiedot = {
   password?: string
   organisaatioOid?: string
   format: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+  language?: 'fi' | 'sv' | 'en'
+  kotikuntaPvm?: string
 }
 
 export const MassaluovutusQueryIBSuoritustiedot = (o: {
   loppu: string
-  language?: 'fi' | 'sv' | 'en'
   osasuoritustenAikarajaus?: boolean
   type?: 'ibSuoritustiedot'
   alku: string
@@ -26,6 +26,8 @@ export const MassaluovutusQueryIBSuoritustiedot = (o: {
   password?: string
   organisaatioOid?: string
   format?: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+  language?: 'fi' | 'sv' | 'en'
+  kotikuntaPvm?: string
 }): MassaluovutusQueryIBSuoritustiedot => ({
   type: 'ibSuoritustiedot',
   $class:
