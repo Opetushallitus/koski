@@ -1,0 +1,47 @@
+name: Remind Slack of Renovate major updates
+
+on:
+  schedule:
+    - cron: "0 10 * * 3"
+      timezone: Europe/Helsinki
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: read
+
+jobs:
+  remind:
+    runs-on: ubuntu-26.04
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout the script
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          sparse-checkout: scripts
+
+      - name: Build the message
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+
+          dashboard_number=$(gh issue list --repo "$GITHUB_REPOSITORY" --author app/renovate --state open \
+            --search 'in:title "Dependency Dashboard"' --json number --jq '.[0].number // empty')
+          if [ -z "$dashboard_number" ]; then
+            echo "::error::Renovate's Dependency Dashboard issue was not found"
+            exit 1
+          fi
+
+          gh issue view "$dashboard_number" --repo "$GITHUB_REPOSITORY" --json body --jq .body > "$RUNNER_TEMP/dashboard.md"
+          python3 scripts/renovate-major-updates.py "$RUNNER_TEMP/dashboard.md" \
+            "$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/issues/$dashboard_number" > "$RUNNER_TEMP/payload.json"
+
+      - name: Post to Slack
+        env:
+          WEBHOOK: ${{ secrets.SLACK_CI_ALERTS_WEBHOOK }}
+        run: |
+          curl --fail-with-body --max-time 30 --silent --show-error --request POST \
+            --header 'Content-type: application/json' \
+            --data "@$RUNNER_TEMP/payload.json" "$WEBHOOK"
