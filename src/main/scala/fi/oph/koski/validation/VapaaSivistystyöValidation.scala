@@ -94,6 +94,33 @@ object VapaaSivistystyöValidation {
   def vstJotpaAikaisinSallittuAlkamispäivä(config: Config): LocalDate =
     LocalDate.parse(config.getString("validaatiot.vstJotpaAikaisinSallittuAlkamispäivä"))
 
+  def validateKotoutumisJaLukutaitokoulutuksenViimeinenPäivä(config: Config)(opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus): HttpStatus =
+    opiskeluoikeus match {
+      case oo: VapaanSivistystyönOpiskeluoikeus =>
+        val viimeinenPäivä = LocalDate.parse(config.getString("validaatiot.vstKotoutumisJaLukutaitokoulutuksenViimeinenPäivä"))
+        val ensimmäinenKiellettyPäivä = finnishDateFormat.format(viimeinenPäivä.plusDays(1))
+
+        val onKotoutumiskoulutus = oo.suoritukset.exists {
+          case _: OppivelvollisilleSuunnattuMaahanmuuttajienKotoutumiskoulutuksenSuoritus | _: OppivelvollisilleSuunnattuMaahanmuuttajienKotoutumiskoulutuksenSuoritus2022 => true
+          case _ => false
+        }
+        val onLukutaitokoulutus = oo.suoritukset.exists {
+          case _: VapaanSivistystyönLukutaitokoulutuksenSuoritus => true
+          case _ => false
+        }
+        val alkaaViimeisenPäivänJälkeen = oo.alkamispäivä.exists(_.isAfter(viimeinenPäivä))
+        val päättyyViimeisenPäivänJälkeen = oo.päättymispäivä.exists(_.isAfter(viimeinenPäivä))
+
+        if ((onKotoutumiskoulutus || onLukutaitokoulutus) && alkaaViimeisenPäivänJälkeen) {
+          KoskiErrorCategory.badRequest.validation.vapaaSivistystyö.kotoJaLukutaitoAlkamispäivä(s"Vapaan sivistystyön kotoutumiskoulutuksen tai lukutaitokoulutuksen opiskeluoikeus ei voi alkaa $ensimmäinenKiellettyPäivä tai sen jälkeen")
+        } else if (onKotoutumiskoulutus && päättyyViimeisenPäivänJälkeen) {
+          KoskiErrorCategory.badRequest.validation.vapaaSivistystyö.kotoPäättymispäivä(s"Vapaan sivistystyön kotoutumiskoulutuksen opiskeluoikeuden viimeinen sallittu päättymispäivä on ${finnishDateFormat.format(viimeinenPäivä)}")
+        } else {
+          HttpStatus.ok
+        }
+      case _ => HttpStatus.ok
+    }
+
   private def validateVapaanSivistystyönPäätasonKOPSSuorituksenLaajuus(suoritus: OppivelvollisilleSuunnattuVapaanSivistystyönKoulutuksenSuoritus): HttpStatus = {
     if (suoritus.osasuoritusLista.map(_.osasuoritusLista).flatten.map(_.koulutusmoduuli.laajuusArvo(0)).sum < 53.0) {
       KoskiErrorCategory.badRequest.validation.tila.vapaanSivistystyönVahvistetunPäätasonSuorituksenLaajuus("Päätason suoritus " + suorituksenTunniste(suoritus) + " on vahvistettu, mutta sillä ei ole 53 opintopisteen edestä hyväksytyksi arvioituja suorituksia")
