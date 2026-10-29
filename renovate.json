@@ -124,9 +124,7 @@
       "matchUpdateTypes": ["minor", "major"],
       "automerge": false,
       "draftPR": true,
-      "prBodyNotes": [
-        "> [!WARNING]\n> Local development and CI must run the same version as production. Check the version AWS runs in koski-aws-infra `src/ProductVersions.ts` (RDS applies Postgres minor versions automatically). Merge only once production runs this version; otherwise close this PR with a comment on what it waits for, and reopen it from the Dependency Dashboard when production catches up."
-      ]
+      "prHeader": "> [!CAUTION]\n> **Merge only once production runs this version.**\n>\n> Local development and CI must run the same version as production. Check the version AWS runs in koski-aws-infra `src/ProductVersions.ts` (RDS applies Postgres minor versions automatically). If production is behind, close this PR with a comment on what it waits for, and reopen it from the Dependency Dashboard when production catches up."
     },
     {
       "description": "Automerge GitHub Actions minor and patch updates as one PR. Deploy and notification actions require manual review.",
