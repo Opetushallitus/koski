@@ -91,7 +91,7 @@ export const PerusopetuksenLisatiedot: React.FC<
       <AikajaksoArrayRow
         form={form}
         path={lisatiedotPath.prop('tavoitekokonaisuuksittainOpiskelu')}
-        label="Tavoitekokonaisuuksittain opiskelu"
+        label="Opiskelee tavoitekokonaisuuksittain"
         testId="tavoitekokonaisuuksittainOpiskelu"
       />
       <AikajaksoArrayRow
@@ -150,7 +150,7 @@ export const PerusopetuksenLisatiedot: React.FC<
         form={form}
         lisatiedotPath={lisatiedotPath}
         fieldName="vuosiluokkiinSitoutumatonOpetus"
-        label="Vuosiluokkiin sitoutumaton opetus"
+        label="Vuosiluokkiin sitomaton opetus"
         value={lisätiedot.vuosiluokkiinSitoutumatonOpetus}
       />
 
