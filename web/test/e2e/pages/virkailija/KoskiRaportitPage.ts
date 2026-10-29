@@ -153,6 +153,11 @@ export class KoskiRaportitPage {
     await expect(this.muodostaButton).toBeVisible()
   }
 
+  async gotoIBSuoritustiedot() {
+    await this.page.goto('/koski/raportit/ib/ibsuoritustietojentarkistus')
+    await expect(this.muodostaButton).toBeVisible()
+  }
+
   async gotoVstJotpa() {
     await this.page.goto(
       '/koski/raportit/vst/jatkuvanoppimisenvapaansivistystyönraportti'

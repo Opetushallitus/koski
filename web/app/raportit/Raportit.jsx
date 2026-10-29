@@ -27,6 +27,7 @@ import {
   ammatillinenOsittainenSuoritustiedotKyselymalli,
   ammatillinenTutkintoSuoritustiedotKyselymalli,
   ibRaporttityypit,
+  ibSuoritustiedotKyselymalli,
   lukio2019OpintopistekertymatKyselymalli,
   lukio2019SuoritustiedotKyselymalli,
   lukioDiaIbInternationalESHOpiskelijamaaratKyselymalli,
@@ -1226,7 +1227,7 @@ function AikuistenPerusopetuksenKurssikertymäRaportti({ stateP }) {
 
 function IBSuoritustiedot({ stateP }) {
   const shortDescriptionText = (
-    <Text name="IBSuoritustiedotRaportti-short-description" />
+    <Text name="IBSuoritustiedotRaportti-short-description-massaluovutus" />
   )
   const exampleText = <Paragraphs name="IBSuoritustiedotRaportti-example" />
   const kotikuntaPvmInputHelp = (
@@ -1239,6 +1240,7 @@ function IBSuoritustiedot({ stateP }) {
       apiEndpoint={'/ibsuoritustietojentarkistus'}
       shortDescription={shortDescriptionText}
       example={exampleText}
+      massaluovutusKyselymalli={ibSuoritustiedotKyselymalli}
       lang={lang}
       raporttiTyypit={ibRaporttityypit}
       defaultRaportinTyyppi={ibRaporttityypit.ib.key}

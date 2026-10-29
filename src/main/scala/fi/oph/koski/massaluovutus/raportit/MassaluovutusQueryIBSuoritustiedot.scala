@@ -33,6 +33,8 @@ case class MassaluovutusQueryIBSuoritustiedot(
   raportinTyyppi: String,
   @Description("Jos true, osasuorituksiin rajoitetaan vain aikajakson sisällä arvioidut.")
   osasuoritustenAikarajaus: Option[Boolean] = None,
+  @Description("Kotikuntapäivämäärä historialliseen kotikuntahakuun.")
+  kotikuntaPvm: Option[LocalDate] = None,
   @Description("Salasana xlsx-tiedostolle. Jos ei annettu, salasana generoidaan automaattisesti. Salasana palautetaan tulosten yhteydessä.")
   password: Option[String] = None,
 ) extends MassaluovutusRaporttiBase[MassaluovutusQueryIBSuoritustiedot] {
@@ -45,6 +47,7 @@ case class MassaluovutusQueryIBSuoritustiedot(
     "loppu" -> List(loppu.format(DateTimeFormatter.ISO_DATE)),
     "raportinTyyppi" -> List(raportinTyyppi),
     "osasuoritustenAikarajaus" -> osasuoritustenAikarajaus.map(_.toString).toList,
+    "kotikuntaPvm" -> kotikuntaPvm.map(_.format(DateTimeFormatter.ISO_DATE)).toList,
   )
 
   override protected def generateReport(
@@ -66,7 +69,7 @@ case class MassaluovutusQueryIBSuoritustiedot(
       loppu = loppu,
       osasuoritustenAikarajaus = osasuoritustenAikarajaus.getOrElse(false),
       raportinTyyppi = raporttiType,
-      kotikuntaPvm = None,
+      kotikuntaPvm = kotikuntaPvm,
       lang = language.get,
     )
     raportitService.ibSuoritustiedot(request, localizationReader)

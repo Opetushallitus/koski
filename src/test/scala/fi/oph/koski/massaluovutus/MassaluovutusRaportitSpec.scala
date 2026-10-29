@@ -384,6 +384,10 @@ class MassaluovutusRaportitSpec extends AnyFreeSpec with MassaluovutusTestMethod
       raporttiKyselyOnnistuu(query, MockUsers.paakayttaja)
     }
 
+    "Kysely kotikuntapäivällä onnistuu" in {
+      raporttiKyselyOnnistuu(query.copy(kotikuntaPvm = Some(LocalDate.of(2015, 1, 1))), MockUsers.paakayttaja)
+    }
+
     "Ei onnistu väärän organisaation tietoihin" in {
       raporttiKyselyEiOnnistu(query, MockUsers.stadinAmmattiopistoPalvelukäyttäjä)
     }
