@@ -158,6 +158,18 @@ export class KoskiRaportitPage {
     await expect(this.muodostaButton).toBeVisible()
   }
 
+  async gotoPaallekkaisetOpiskeluoikeudet() {
+    await this.page.goto('/koski/raportit/muut/paallekkaisetopiskeluoikeudet')
+    await expect(this.muodostaButton).toBeVisible()
+  }
+
+  async valitseOrganisaatio(nimi: string) {
+    const valinta = this.page.locator('.organisaatio-dropdown')
+    await valinta.locator('input.select').click()
+    await valinta.getByText(nimi, { exact: true }).click()
+    await expect(valinta.locator('input.select')).toHaveValue(nimi)
+  }
+
   async gotoVstJotpa() {
     await this.page.goto(
       '/koski/raportit/vst/jatkuvanoppimisenvapaansivistystyönraportti'

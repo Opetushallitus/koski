@@ -36,6 +36,7 @@ import {
   luvaOpiskelijamaaratKyselymalli,
   muuAmmatillinenKyselymalli,
   muuKuinSaanneltyKoulutusKyselymalli,
+  paallekkaisetOpiskeluoikeudetKyselymalli,
   perusopetukseenValmistavaKyselymalli,
   perusopetuksenLisaopetuksenOppijamaaratRaporttiKyselymalli,
   perusopetuksenOppijamaaratRaporttiKyselymalli,
@@ -625,9 +626,10 @@ function PaallekkaisetOpiskeluoikeudet({ stateP }) {
       stateP={stateP}
       apiEndpoint={'/paallekkaisetopiskeluoikeudet'}
       shortDescription={
-        <Text name="paallekkaiset-opiskeluoikeudet-short-description" />
+        <Text name="paallekkaiset-opiskeluoikeudet-short-description-massaluovutus" />
       }
       example={<Text name="paallekkaiset-opiskeluoikeudet-example" />}
+      massaluovutusKyselymalli={paallekkaisetOpiskeluoikeudetKyselymalli}
       lang={lang}
     />
   )
