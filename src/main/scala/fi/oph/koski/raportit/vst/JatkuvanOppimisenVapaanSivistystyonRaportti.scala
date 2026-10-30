@@ -53,8 +53,8 @@ object JatkuvanOppimisenVapaanSivistystyonRaportti {
         "suorituksenVahvistuspäivä" -> Column(t.get("raportti-excel-kolumni-suorituksenVahvistuspaiva")),
         "rahoitukset" -> Column(t.get("raportti-excel-kolumni-rahoitukset")),
         "jotpaAsianumero" -> Column(t.get("raportti-excel-kolumni-jotpaAsianumero")),
-        "yhteislaajuus" -> Column(t.get("raportti-excel-kolumni-yhteislaajuusKaikki")),
-        "yhteislaajuusHyväksytyt" -> Column(t.get("raportti-excel-kolumni-yhteislaajuusHyväksytyt")),
+        "yhteislaajuus" -> Column(t.get("raportti-excel-kolumni-yhteislaajuusKaikki"), numberFormat = Some(Column.laajuusFormat)),
+        "yhteislaajuusHyväksytyt" -> Column(t.get("raportti-excel-kolumni-yhteislaajuusHyväksytyt"), numberFormat = Some(Column.laajuusFormat)),
       )
     )
   }

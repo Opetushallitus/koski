@@ -49,7 +49,7 @@ object VapaanSivistystyonVapaatavoitteisenKoulutuksenRaportti {
         "suorituksenVahvistuspäivä" -> Column(t.get("raportti-excel-kolumni-suorituksenVahvistuspaiva")),
         "opintokokonaisuusKoodiarvo" -> Column(t.get("raportti-excel-kolumni-opintokokonaisuusKoodiarvo")),
         "opintokokonaisuusNimi" -> Column(t.get("raportti-excel-kolumni-opintokokonaisuusNimi")),
-        "yhteislaajuus" -> Column(t.get("raportti-excel-kolumni-yhteislaajuusOpintopisteet"), comment = Some(t.get("raportti-excel-kolumni-yhteislaajuusOpintopisteet-comment"))),
+        "yhteislaajuus" -> Column(t.get("raportti-excel-kolumni-yhteislaajuusOpintopisteet"), comment = Some(t.get("raportti-excel-kolumni-yhteislaajuusOpintopisteet-comment")), numberFormat = Some(Column.laajuusFormat)),
         "osasuorituksiaYhteensä" -> Column(t.get("raportti-excel-kolumni-osasuorituksiaYhteensä"), comment = Some(t.get("raportti-excel-kolumni-osasuorituksiaYhteensä-comment"))),
         "arvioitujaOsasuorituksia" -> Column(t.get("raportti-excel-kolumni-arvioitujaOsasuorituksia"), comment = Some(t.get("raportti-excel-kolumni-arvioitujaOsasuorituksia-comment"))),
         "arviointiPuuttuuOsasuorituksia" -> Column(t.get("raportti-excel-kolumni-arviointiPuuttuuOsasuorituksia"), comment = Some(t.get("raportti-excel-kolumni-arviointiPuuttuuOsasuorituksia-comment"))),

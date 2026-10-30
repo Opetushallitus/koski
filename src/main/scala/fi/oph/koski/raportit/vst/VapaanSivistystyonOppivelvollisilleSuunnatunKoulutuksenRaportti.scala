@@ -57,19 +57,20 @@ object VapaanSivistystyonOppivelvollisilleSuunnatunKoulutuksenRaportti {
       Column(t.get("raportti-excel-kolumni-oikeuttaMaksuttomuuteenPidennetty")),
       Column(t.get("raportti-excel-kolumni-suoritusVahvistettu"), comment = Some(t.get("raportti-excel-kolumni-suoritusVahvistettu-comment"))),
       Column(t.get("raportti-excel-kolumni-suorituksenVahvistuspaiva")),
-      Column(t.get("raportti-excel-kolumni-päätasonSuorituksenLaajuusOpintopisteet"), comment = Some(t.get("raportti-excel-kolumni-päätasonSuorituksenLaajuusOpintopisteet-comment"))),
+      Column(t.get("raportti-excel-kolumni-päätasonSuorituksenLaajuusOpintopisteet"), comment = Some(t.get("raportti-excel-kolumni-päätasonSuorituksenLaajuusOpintopisteet-comment")), numberFormat = Some(Column.laajuusFormat)),
     ) ++ osaamiskokonaisuudet.map(k => Column(
       t.get("raportti-excel-kolumni-osaamiskokonaisuudenLaajuus", Map("osaamiskokonaisuus" -> k.nimi.map(t.from).getOrElse(k.koodiarvo))),
       comment = Some(t.get(
         if (k.koodiarvo == VSTKOPSRow.valinnaistenSuuntautumisopintojenSarake) "raportti-excel-kolumni-valinnaistenSuuntautumisopintojenLaajuus-comment"
         else "raportti-excel-kolumni-osaamiskokonaisuudenLaajuus-comment"
       )),
+      numberFormat = Some(Column.laajuusFormat),
     )) ++ Seq(
       Column(t.get("raportti-excel-kolumni-osaamiskokonaisuuksiaAlle4Opintopistettä"), comment = Some(t.get("raportti-excel-kolumni-osaamiskokonaisuuksiaAlle4Opintopistettä-comment"))),
       Column(t.get("raportti-excel-kolumni-opintokokonaisuuksiaYhteensä"), comment = Some(t.get("raportti-excel-kolumni-opintokokonaisuuksiaYhteensä-comment"))),
       Column(t.get("raportti-excel-kolumni-arvioitujaOpintokokonaisuuksia")),
       Column(t.get("raportti-excel-kolumni-arviointiPuuttuuOpintokokonaisuuksia")),
-      Column(t.get("raportti-excel-kolumni-arvioitujenOpintokokonaisuuksienLaajuus")),
+      Column(t.get("raportti-excel-kolumni-arvioitujenOpintokokonaisuuksienLaajuus"), numberFormat = Some(Column.laajuusFormat)),
     )
 }
 

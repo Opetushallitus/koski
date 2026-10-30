@@ -10,13 +10,16 @@ case class Column(
   title: String,
   width: Option[Int] = None,
   comment: Option[String] = None,
-  groupingTitle: Option[String] = None
+  groupingTitle: Option[String] = None,
+  numberFormat: Option[String] = None,
 ) extends ColumnSetting
 
 object Column {
-  def apply(title: String, width: Option[Int] = None, comment: Option[String] = None, groupingTitle: Option[String] = None): Column = {
+  val laajuusFormat = "0.0#"
+
+  def apply(title: String, width: Option[Int] = None, comment: Option[String] = None, groupingTitle: Option[String] = None, numberFormat: Option[String] = None): Column = {
     val titlePrepended = comment.fold(title)(title + ": " + _)
-    new Column(title, width, Some(titlePrepended), groupingTitle)
+    new Column(title, width, Some(titlePrepended), groupingTitle, numberFormat)
   }
 }
 
