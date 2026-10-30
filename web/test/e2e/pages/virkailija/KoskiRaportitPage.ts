@@ -163,6 +163,13 @@ export class KoskiRaportitPage {
     await expect(this.muodostaButton).toBeVisible()
   }
 
+  async gotoEsiopetuksenOppijamaarat() {
+    await this.page.goto(
+      '/koski/raportit/esiopetus/esiopetuksenoppijamäärienraportti'
+    )
+    await expect(this.muodostaButton).toBeVisible()
+  }
+
   async valitseOrganisaatio(nimi: string) {
     const valinta = this.page.locator('.organisaatio-dropdown')
     await valinta.locator('input.select').click()

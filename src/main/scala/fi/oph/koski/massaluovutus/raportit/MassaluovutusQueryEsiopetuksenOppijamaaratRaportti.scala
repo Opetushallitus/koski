@@ -32,6 +32,7 @@ case class MassaluovutusQueryEsiopetuksenOppijamaaratRaportti(
 
   override def opiskeluoikeudenTyyppi = OpiskeluoikeudenTyyppi.esiopetus
   override def raporttiName = "esiopetuksenoppijamaaratraportti"
+  override protected def ostopalveluSallittu: Boolean = true
 
   override def auditLogParams = Map(
     "paiva" -> List(paiva.format(DateTimeFormatter.ISO_DATE)),

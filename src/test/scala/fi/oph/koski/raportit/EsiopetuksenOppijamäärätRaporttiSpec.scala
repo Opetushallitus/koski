@@ -20,6 +20,7 @@ import org.scalatest.BeforeAndAfterAll
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.should.Matchers
 
+import java.time.LocalDate
 import java.time.LocalDate.{of => date}
 
 class EsiopetuksenOppijamäärätRaporttiSpec
@@ -285,6 +286,26 @@ class EsiopetuksenOppijamäärätRaporttiSpec
         val raportti = buildEsiopetuksenOppijamäärätRaportti(MockUsers.paakayttaja, helsinginKaupunki)
         getOppilaitokset(raportti) should equal(List("Kulosaaren ala-aste", "Päiväkoti Majakka", "Päiväkoti Touhula"))
       }
+
+      "Ostopalvelu/palveluseteli-valinnalla" - {
+        // Normaalikoulu on Helsingin ostopalveluyksikkö, mutta raportointipäivänä siellä on vain Jyväskylän
+        // yliopiston omia oppilaita
+        "näkee vain omat opiskeluoikeutensa ostopalveluyksiköissä" in {
+          val raportti = buildOstopalveluRaportti(helsinkiTallentaja, raportointipäivä)
+          getOppilaitokset(raportti) should equal(List("Päiväkoti Majakka", "Päiväkoti Touhula"))
+        }
+
+        // Normaalikoulussa on tuen päätösten raportointipäivänä kolme oppilasta, joista vain yksi Helsingin
+        "ei laske ostopalveluyksikön muiden koulutustoimijoiden oppilaita" in {
+          val raportti = buildOstopalveluRaportti(helsinkiTallentaja, tuenPäätöstenRaportointipäivä)
+          getRows(raportti).filter(_.oppilaitosNimi == "Jyväskylän normaalikoulu").map(_.esiopetusoppilaidenMäärä) should equal(List(1))
+        }
+
+        "ei näe muiden ostopalvelu/palveluseteli-tietoja" in {
+          val raportti = buildOstopalveluRaportti(tornioTallentaja, raportointipäivä)
+          getOppilaitokset(raportti) should be(empty)
+        }
+      }
     }
 
     "Raportilla ei useita rivejä vaikka kieliä olisi useampi" in {
@@ -313,6 +334,13 @@ class EsiopetuksenOppijamäärätRaporttiSpec
 
   private def buildEsiopetuksenOppijamäärätRaportti(user: KoskiMockUser, organisaatio: Oid) =
     esiopetuksenOppijamäärätRaporttiService.build(List(organisaatio), raportointipäivä, t)(session(user))
+
+  private def buildOstopalveluRaportti(user: KoskiMockUser, päivä: LocalDate): DataSheet =
+    new RaportitService(application)
+      .esiopetuksenOppijamäärät(RaporttiPäivältäRequest(application.organisaatioService.ostopalveluRootOid, None, "", päivä, "fi"), t)(session(user))
+      .sheets
+      .collect { case s: DataSheet => s }
+      .head
 
   private def getOppilaitokset(raportti: DataSheet) = {
     getRows(raportti).map(_.oppilaitosNimi).sorted

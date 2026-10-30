@@ -321,6 +321,14 @@ class MassaluovutusRaportitSpec extends AnyFreeSpec with MassaluovutusTestMethod
     "Ei onnistu väärän organisaation tietoihin" in {
       raporttiKyselyEiOnnistu(query, MockUsers.helsinkiKatselija)
     }
+
+    "Ostopalvelu/palveluseteli-kysely onnistuu ostavan koulutustoimijan käyttäjällä" in {
+      val ostopalvelukysely = query.copy(
+        paiva = LocalDate.of(2015, 1, 1),
+        organisaatioOid = Some(app.organisaatioService.ostopalveluRootOid),
+      )
+      raporttiKyselyOnnistuu(ostopalvelukysely, MockUsers.helsinkiTallentaja)
+    }
   }
 
   // Muut
