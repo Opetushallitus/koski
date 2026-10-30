@@ -73,6 +73,10 @@ import { PaikallinenLukionOpinto } from '../types/fi/oph/koski/schema/Paikalline
 import { PaikallinenKoodi } from '../types/fi/oph/koski/schema/PaikallinenKoodi'
 import { PaikallinenOpintovalmiuksiaTukevaOpinto } from '../types/fi/oph/koski/schema/PaikallinenOpintovalmiuksiaTukevaOpinto'
 import { TestIdLayer } from '../appstate/useTestId'
+import {
+  LocalizedTextEdit,
+  LocalizedTextView
+} from '../components-v2/controls/LocalizedTestField'
 
 export type TutkinnonOsanJatkoOpintovalmiuksiaTukevienOpintojenSuoritusPropertiesProps =
   {
@@ -473,6 +477,18 @@ const LukionJaMuunOsasoritusProperties = ({
           </OsasuoritusPropertyValue>
         </OsasuoritusProperty>
       )}
+      <OsasuoritusProperty label={'Kuvaus'}>
+        <OsasuoritusPropertyValue>
+          <FormField
+            form={form}
+            path={osasuoritusPath.prop('koulutusmoduuli').prop('kuvaus')}
+            view={LocalizedTextView}
+            edit={LocalizedTextEdit}
+            editProps={{ large: true }}
+            testId="kuvaus"
+          />
+        </OsasuoritusPropertyValue>
+      </OsasuoritusProperty>
       {(form.editMode || osasuoritus.arviointi) && (
         <OsasuoritusProperty label={'Arviointi'}>
           <OsasuoritusPropertyValue>

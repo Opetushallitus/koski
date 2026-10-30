@@ -44,6 +44,30 @@ test.describe('Osittaisen ammatillisen tutkinnon uusi käyttöliittymä', () => 
     await expect(page.getByTestId(`${kuvaus}.value`)).toHaveText('Matematiikan opinnot\nToinen rivi')
   })
 
+  test('Kokonaisuuden ja opintovalmiuksia tukevien opintojen kuvaukset näkyvät', async ({ page, oppijaPage }) => {
+    await oppijaPage.goto('1.2.246.562.24.00000000056')
+    const os = 'oo.0.suoritukset.0.osasuoritukset'
+
+    await page.getByRole('button', { name: 'Avaa kaikki' }).click()
+    await expect(page.getByTestId(`${os}.2.properties.osasuoritukset.0.properties.kuvaus.value`)).toHaveText('Hoitotarpeen määrittäminen')
+    await expect(page.getByTestId(`${os}.7.properties.osasuoritukset.0.properties.kuvaus.value`)).toHaveText('Lukion maantiedon oppimäärä')
+    await expect(page.getByTestId(`${os}.7.properties.osasuoritukset.1.properties.kuvaus.value`)).toHaveText('Englannin kurssi')
+  })
+
+  test('Valtakunnalliselle tutkinnon osalle voi lisätä kuvauksen', async ({ page, oppijaPage, oppijaPageV2 }) => {
+    await oppijaPage.goto('1.2.246.562.24.00000000056')
+    const kuvaus = 'oo.0.suoritukset.0.osasuoritukset.0.properties.kuvaus'
+
+    await page.getByTestId('oo.0.suoritukset.0.osasuoritukset.0.expand').click()
+    await expect(page.getByTestId(`${kuvaus}.value`)).toHaveCount(0)
+
+    await page.getByTestId('oo.0.opiskeluoikeus.edit').click()
+    await page.getByTestId(`${kuvaus}.edit.input`).fill('Videotuotannon kuvaus')
+    await oppijaPageV2.tallenna()
+
+    await expect(page.getByTestId(`${kuvaus}.value`)).toHaveText('Videotuotannon kuvaus')
+  })
+
   test('Mukautettujen arvosanojen rivit näkyvät katselutilassa vain kun arvo on tosi', async ({ page, oppijaPage }) => {
     await oppijaPage.goto('1.2.246.562.24.00000000055')
 

@@ -56,10 +56,6 @@ import {
   LocalizedTextEdit,
   LocalizedTextView
 } from '../components-v2/controls/LocalizedTestField'
-import {
-  PaikallinenTutkinnonOsa,
-  isPaikallinenTutkinnonOsa
-} from '../types/fi/oph/koski/schema/PaikallinenTutkinnonOsa'
 import { PerusteView } from '../components-v2/opiskeluoikeus/PerusteField'
 
 type MuunTutkinnonOsanSuoritusPropertiesProps = {
@@ -75,11 +71,6 @@ export const MuunTutkinnonOsanSuoritusProperties = ({
   osasuoritusPath,
   osasuoritus
 }: MuunTutkinnonOsanSuoritusPropertiesProps) => {
-  const paikallinenKoulutusmoduuli = isPaikallinenTutkinnonOsa(
-    osasuoritus.koulutusmoduuli
-  )
-    ? osasuoritus.koulutusmoduuli
-    : undefined
   return (
     <>
       {osasuoritus.suorituskieli && (
@@ -118,28 +109,20 @@ export const MuunTutkinnonOsanSuoritusProperties = ({
           </OsasuoritusPropertyValue>
         </OsasuoritusProperty>
       )}
-      {paikallinenKoulutusmoduuli &&
-        (form.editMode || paikallinenKoulutusmoduuli.kuvaus) && (
-          <OsasuoritusProperty label={'Kuvaus'}>
-            <OsasuoritusPropertyValue>
-              <FormField
-                form={form}
-                path={(
-                  osasuoritusPath.prop(
-                    'koulutusmoduuli'
-                  ) as unknown as FormOptic<
-                    AmmatillinenOpiskeluoikeus,
-                    PaikallinenTutkinnonOsa
-                  >
-                ).prop('kuvaus')}
-                view={LocalizedTextView}
-                edit={LocalizedTextEdit}
-                editProps={{ large: true }}
-                testId="paikallinenKuvaus"
-              />
-            </OsasuoritusPropertyValue>
-          </OsasuoritusProperty>
-        )}
+      {(form.editMode || osasuoritus.koulutusmoduuli.kuvaus) && (
+        <OsasuoritusProperty label={'Kuvaus'}>
+          <OsasuoritusPropertyValue>
+            <FormField
+              form={form}
+              path={osasuoritusPath.prop('koulutusmoduuli').prop('kuvaus')}
+              view={LocalizedTextView}
+              edit={LocalizedTextEdit}
+              editProps={{ large: true }}
+              testId="kuvaus"
+            />
+          </OsasuoritusPropertyValue>
+        </OsasuoritusProperty>
+      )}
       <OsasuoritusProperty label={'Pakollinen'}>
         <OsasuoritusPropertyValue>
           <FormField
