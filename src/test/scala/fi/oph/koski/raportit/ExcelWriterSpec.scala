@@ -11,6 +11,7 @@ import java.io.{File, FileOutputStream}
 import java.sql.Date
 import java.time.LocalDate
 import java.time.LocalDate.{of => date}
+import java.util.Locale
 import scala.jdk.CollectionConverters._
 
 
@@ -28,6 +29,19 @@ class ExcelWriterSpec extends AnyFreeSpec with TestEnvironment with Matchers {
           wb.getSheetAt(0).getSheetName should equal("       datasheet_title")
         }
       )
+    }
+
+    "Sarakekohtainen lukumuotoilu" in {
+      withExcel(sarakekohtainenLukumuotoiluTestCase) { wb =>
+        val row = wb.getSheet("datasheet_title").getRow(1)
+        val formatter = new DataFormatter(Locale.ROOT)
+        row.getCell(0).getCellStyle.getDataFormatString should equal("0.0#")
+        formatter.formatCellValue(row.getCell(0)) should equal("0.25")
+        row.getCell(1).getCellStyle.getDataFormatString should equal("0.0#")
+        formatter.formatCellValue(row.getCell(1)) should equal("6.0")
+        row.getCell(2).getCellStyle.getDataFormatString should equal("#.0")
+        formatter.formatCellValue(row.getCell(2)) should equal(".3")
+      }
     }
 
     "Saman nimiset välilehdet" - {
@@ -328,6 +342,17 @@ class ExcelWriterSpec extends AnyFreeSpec with TestEnvironment with Matchers {
     val dynamicColumnSettings = Seq(Column(s"${erikoismerkit}bar", comment = Some(erikoismerkit)))
     val dataSheet = DynamicDataSheet(s"${erikoismerkit}datasheet_title", dynamicRows, dynamicColumnSettings)
     (workbookSettings, Seq(dataSheet))
+  }
+
+  private def sarakekohtainenLukumuotoiluTestCase = {
+    val workbookSettings = WorkbookSettings(expectedExcelTitle, Some(excelPassword))
+    val rows = Seq(Seq(0.25, 6.0, 0.25))
+    val columns = Seq(
+      Column("laajuus", numberFormat = Some(Column.laajuusFormat)),
+      Column("kokonaisluku", numberFormat = Some(Column.laajuusFormat)),
+      Column("oletusmuotoilu"),
+    )
+    (workbookSettings, Seq(DynamicDataSheet("datasheet_title", rows, columns)))
   }
 
   private def yhteentörmäysTestCase = {

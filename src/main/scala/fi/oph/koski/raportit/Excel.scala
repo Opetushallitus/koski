@@ -10,13 +10,18 @@ case class Column(
   title: String,
   width: Option[Int] = None,
   comment: Option[String] = None,
-  groupingTitle: Option[String] = None
+  groupingTitle: Option[String] = None,
+  // Excelin lukumuotoilu sarakkeen desimaaliluvuille; ilman tätä käytetään yhden desimaalin oletusta
+  numberFormat: Option[String] = None,
 ) extends ColumnSetting
 
 object Column {
-  def apply(title: String, width: Option[Int] = None, comment: Option[String] = None, groupingTitle: Option[String] = None): Column = {
+  // Enintään kaksi desimaalia: esim. 0,25 op ei pyöristy 0,3:ksi
+  val laajuusFormat = "0.0#"
+
+  def apply(title: String, width: Option[Int] = None, comment: Option[String] = None, groupingTitle: Option[String] = None, numberFormat: Option[String] = None): Column = {
     val titlePrepended = comment.fold(title)(title + ": " + _)
-    new Column(title, width, Some(titlePrepended), groupingTitle)
+    new Column(title, width, Some(titlePrepended), groupingTitle, numberFormat)
   }
 }
 

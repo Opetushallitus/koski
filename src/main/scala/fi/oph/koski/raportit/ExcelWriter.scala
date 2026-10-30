@@ -158,7 +158,7 @@ object ExcelWriter {
     //sets column names visible when user is scrolling through rows
     sh.createFreezePane(0, cellHeaderRownumber + 1)
 
-    val writeDataToCell = createDataCellWriter(wb, t)
+    val writeDataToCell = createDataCellWriter(wb, t, dataSheet.columnSettingsWithIndex)
 
     for (rowNumber <- dataSheet.rows.indices) {
       val rowInExcel = sh.createRow(rowNumber + cellHeaderRownumber + 1)
@@ -166,7 +166,7 @@ object ExcelWriter {
       var colNumber = 0
       for (data <- dataRow) {
         val cell = rowInExcel.createCell(colNumber)
-        writeDataToCell(data, cell)
+        writeDataToCell(data, cell, colNumber)
         colNumber += 1
       }
     }
@@ -240,8 +240,8 @@ object ExcelWriter {
     }
   }
 
-  type DataCellWriter = (Any, SXSSFCell) => Unit
-  private def createDataCellWriter(wb: SXSSFWorkbook, t: BooleanCellStyleLocalizedValues): DataCellWriter = {
+  type DataCellWriter = (Any, SXSSFCell, Int) => Unit
+  private def createDataCellWriter(wb: SXSSFWorkbook, t: BooleanCellStyleLocalizedValues, columns: Seq[(Column, Int)]): DataCellWriter = {
     val textStyle = wb.createCellStyle()
     textStyle.setDataFormat(BuiltinFormats.getBuiltinFormat("text").toShort)
 
@@ -249,8 +249,11 @@ object ExcelWriter {
     dateStyle.setDataFormat(wb.getCreationHelper.createDataFormat.getFormat("yyyy-MM-dd"))
     dateStyle.setAlignment(HorizontalAlignment.LEFT)
 
-    val floatStyle = wb.createCellStyle()
-    floatStyle.setDataFormat(wb.getCreationHelper.createDataFormat().getFormat("#.0"))
+    val floatStyle = createFloatStyle(wb, "#.0")
+
+    // Työkirjan tyylien määrä on rajattu, joten sama muotoilu jaetaan sarakkeiden kesken
+    val floatStylesByFormat = columns.flatMap(_._1.numberFormat).distinct.map(f => f -> createFloatStyle(wb, f)).toMap
+    val columnFloatStyles = columns.flatMap { case (column, index) => column.numberFormat.map(f => index -> floatStylesByFormat(f)) }.toMap
 
     val quot = "\""
     val booleanStyle = wb.createCellStyle()
@@ -259,7 +262,14 @@ object ExcelWriter {
     )
     booleanStyle.setAlignment(HorizontalAlignment.LEFT)
 
-    (data: Any, cell: SXSSFCell) => setDataCellValue(data, cell, textStyle, dateStyle, floatStyle, booleanStyle)
+    (data: Any, cell: SXSSFCell, colNumber: Int) =>
+      setDataCellValue(data, cell, textStyle, dateStyle, columnFloatStyles.getOrElse(colNumber, floatStyle), booleanStyle)
+  }
+
+  private def createFloatStyle(wb: SXSSFWorkbook, format: String): CellStyle = {
+    val style = wb.createCellStyle()
+    style.setDataFormat(wb.getCreationHelper.createDataFormat().getFormat(format))
+    style
   }
 
   private def setDataCellValue(data: Any, cell: SXSSFCell, textStyle: CellStyle, dateStyle: CellStyle, floatStyle: CellStyle, booleanStyle: CellStyle): Unit = data match {
