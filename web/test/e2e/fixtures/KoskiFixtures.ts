@@ -35,6 +35,22 @@ export class KoskiFixtures {
     return JSON.parse(body) as HenkilönOpiskeluoikeusVersiot
   }
 
+  /**
+   * Hakee oppijan, muokkaa hänen ensimmäistä opiskeluoikeuttaan ja tallentaa
+   * sen takaisin. Tiedonsiirroista tulevien kenttien testaamiseen silloin, kun
+   * fixtureissa ei ole niitä.
+   */
+  async muokkaaOpiskeluoikeutta(
+    oppijaOid: string,
+    muokkaa: (opiskeluoikeus: any) => void
+  ): Promise<HenkilönOpiskeluoikeusVersiot> {
+    const response = await this.page.request.get(`/koski/api/oppija/${oppijaOid}`)
+    expect(response.ok()).toBeTruthy()
+    const oppija = await response.json()
+    muokkaa(oppija.opiskeluoikeudet[0])
+    return this.putOppija(oppija)
+  }
+
   async teardown() {
     // TODO: Teardown voisi resetoida fixturet
     await Promise.resolve(true)

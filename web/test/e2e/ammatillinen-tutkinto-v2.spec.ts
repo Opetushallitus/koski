@@ -238,6 +238,36 @@ test.describe('Ammatillisen tutkinnon uusi käyttöliittymä', () => {
         '0 osp'
       )
     })
+
+    test('Näyttää osasuoritusten alkamispäivät ja valmistavan koulutuksen osan suorituskielen', async ({
+      page,
+      fixtures,
+      oppijaPage,
+      oppijaPageV2
+    }) => {
+      await oppijaPage.gotoWithQueryParams(ammattilainen, flag)
+      await oppijaPageV2.openAllOsasuoritukset()
+      await expect(
+        suoritus(
+          page,
+          'osasuoritukset.7.properties.osasuoritukset.4.properties.alkamispäivä'
+        )
+      ).toHaveText('1.1.2014')
+
+      await fixtures.muokkaaOpiskeluoikeutta(erikoinen, (oo) => {
+        const osa = oo.suoritukset[0].osasuoritukset[1]
+        osa.suorituskieli = { koodiarvo: 'SV', koodistoUri: 'kieli' }
+        osa.alkamispäivä = '2014-09-01'
+      })
+      await oppijaPage.gotoWithQueryParams(erikoinen, flag)
+      await oppijaPageV2.openAllOsasuoritukset()
+      await expect(
+        suoritus(page, 'osasuoritukset.1.properties.suorituskieli.value')
+      ).toHaveText('ruotsi')
+      await expect(
+        suoritus(page, 'osasuoritukset.1.properties.alkamispäivä')
+      ).toHaveText('1.9.2014')
+    })
   })
 
   test.describe('Muokkaus', () => {

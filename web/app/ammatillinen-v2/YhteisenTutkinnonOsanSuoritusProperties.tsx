@@ -63,7 +63,9 @@ import { RaisedButton } from '../components-v2/controls/RaisedButton'
 import { TextEdit } from '../components-v2/controls/TextField'
 import { Column, ColumnRow } from '../components-v2/containers/Columns'
 import { hasAmmatillinenArviointi } from './OsasuoritusTables'
-import { TestIdLayer } from '../appstate/useTestId'
+import { TestIdLayer, TestIdText } from '../appstate/useTestId'
+import { OsasuorituksenAlkamispäivä } from './OsasuorituksenAlkamispäivä'
+import { PerusteView } from '../components-v2/opiskeluoikeus/PerusteField'
 import { useTutkinnonOsanOsat } from './useTutkinnonOsanOsat'
 
 type YhteisenTutkinnonOsanSuoritusPropertiesProps = {
@@ -96,6 +98,29 @@ export const YhteisenTutkinnonOsanSuoritusProperties = ({
           </OsasuoritusPropertyValue>
         </OsasuoritusProperty>
       )}
+      {osasuoritus.tutkinto && (
+        <OsasuoritusProperty label={'Tutkinto'}>
+          <OsasuoritusPropertyValue>
+            <span className="AmmatillinenTutkinto">
+              <TestIdText id="tutkintoNimi">
+                {t(
+                  osasuoritus.tutkinto.perusteenNimi ||
+                    osasuoritus.tutkinto.tunniste.nimi
+                )}
+              </TestIdText>
+              <span>{osasuoritus.tutkinto.tunniste.koodiarvo}</span>
+              <FormField
+                form={form}
+                path={osasuoritusPath
+                  .prop('tutkinto')
+                  .optional()
+                  .prop('perusteenDiaarinumero')}
+                view={PerusteView}
+              />
+            </span>
+          </OsasuoritusPropertyValue>
+        </OsasuoritusProperty>
+      )}
       <OsasuoritusProperty label={'Pakollinen'}>
         <OsasuoritusPropertyValue>
           <FormField
@@ -110,6 +135,7 @@ export const YhteisenTutkinnonOsanSuoritusProperties = ({
         toimipiste={osasuoritus.toimipiste}
         vahvistus={osasuoritus.vahvistus}
       />
+      <OsasuorituksenAlkamispäivä alkamispäivä={osasuoritus.alkamispäivä} />
       {(form.editMode || osasuoritus.arviointi) && (
         <OsasuoritusProperty label={'Arviointi'}>
           <OsasuoritusPropertyValue>
