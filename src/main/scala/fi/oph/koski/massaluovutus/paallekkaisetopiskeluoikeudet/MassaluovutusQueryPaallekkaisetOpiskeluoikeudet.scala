@@ -69,7 +69,7 @@ case class MassaluovutusQueryPaallekkaisetOpiskeluoikeudet(
     }
 
   override def queryAllowed(application: KoskiApplication)(implicit user: Session): Boolean = withKoskiSpecificSession { u =>
-    u.hasGlobalReadAccess || organisaatioOid.exists(oid => u.hasRaporttiReadAccess(oid))
+    !u.isKielitutkintorekisteri && (u.hasGlobalReadAccess || organisaatioOid.exists(oid => u.hasRaporttiReadAccess(oid)))
   }
 
   override def fillAndValidate(implicit user: Session): Either[HttpStatus, MassaluovutusQueryPaallekkaisetOpiskeluoikeudet] =

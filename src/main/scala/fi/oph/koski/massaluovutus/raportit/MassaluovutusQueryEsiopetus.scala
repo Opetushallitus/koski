@@ -72,8 +72,10 @@ case class MassaluovutusQueryEsiopetus(
       auditLog
     }
 
+  // Samat oikeudet kuin MassaluovutusRaporttiBase.queryAllowed
   override def queryAllowed(application: KoskiApplication)(implicit user: Session): Boolean = withKoskiSpecificSession { u =>
-    (u.hasGlobalReadAccess || organisaatioOid.exists(oid => u.hasRaporttiReadAccess(oid))) &&
+    u.hasRaportitAccess &&
+      (u.hasGlobalReadAccess || organisaatioOid.exists(oid => u.hasRaporttiReadAccess(oid))) &&
       u.allowedOpiskeluoikeudetJaPäätasonSuoritukset.intersects(OoPtsMask(OpiskeluoikeudenTyyppi.esiopetus.koodiarvo))
   }
 

@@ -29,6 +29,10 @@ object MassaluovutusUtils {
       Left(KoskiErrorCategory.forbidden.organisaatio())
   }
 
+  // Kielitutkintorekisterin globaali lukuoikeus koskee vain kielitutkintoja, joten se ei oikeuta muiden kyselyihin
+  def näkeeMuidenKäyttäjienKyselyt(user: KoskiSpecificSession): Boolean =
+    user.hasGlobalReadAccess && !user.isKielitutkintorekisteri
+
   def QueryResourceManager(logger: LoggerWithContext)(op: Using.Manager => Unit): Either[String, Unit] =
     TryWithLogging.andResources(logger, op).left.map(_.getMessage)
 
