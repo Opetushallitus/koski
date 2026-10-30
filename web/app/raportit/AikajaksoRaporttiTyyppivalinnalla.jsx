@@ -14,34 +14,9 @@ import {
   Vinkit,
   PaivaValinta
 } from './raporttiComponents'
-import { selectFromState, today } from './raporttiUtils'
+import { kotikuntaPvmParametri, selectFromState, today } from './raporttiUtils'
+import { MassaluovutusRaportinLataus } from '../components-v2/raportit/MassaluovutusRaportinLataus'
 import { t } from '../i18n/i18n'
-
-export const aikuistenPerusopetusReportTypes = {
-  alkuvaihe: {
-    key: 'alkuvaihe',
-    name: 'Alkuvaihe'
-  },
-  päättövaihe: {
-    key: 'päättövaihe',
-    name: 'Päättövaihe'
-  },
-  oppiaineenoppimäärä: {
-    key: 'oppiaineenoppimäärä',
-    name: 'Oppiaineen oppimäärä (ns. aineopiskelijat)'
-  }
-}
-
-export const ibReportTypes = {
-  ib: {
-    key: 'ibtutkinto',
-    name: 'IB-tutkinnon suoritukset'
-  },
-  preib: {
-    key: 'preiboppimaara',
-    name: 'Pre-IB-opintojen suoritukset'
-  }
-}
 
 export const AikajaksoRaporttiTyyppivalinnalla = ({
   stateP,
@@ -56,7 +31,8 @@ export const AikajaksoRaporttiTyyppivalinnalla = ({
   osasuoritustenAikarajausEiKuvaus,
   osasuoritustenAikarajausKylläKuvaus,
   showKotikuntaPvmInput,
-  kotikuntaPvmInputHelp
+  kotikuntaPvmInputHelp,
+  massaluovutusKyselymalli
 }) => {
   const alkuAtom = Atom()
   const loppuAtom = Atom()
@@ -64,7 +40,8 @@ export const AikajaksoRaporttiTyyppivalinnalla = ({
   const osasuoritustenAikarajausAtom = Atom(false)
   const raportinTyyppiAtom = Atom(defaultRaportinTyyppi)
   const submitBus = Bacon.Bus()
-  const { selectedOrganisaatioP, dbUpdatedP } = selectFromState(stateP)
+  const { selectedOrganisaatioP, dbUpdatedP, organisaatioNimetP } =
+    selectFromState(stateP)
 
   const password = generateRandomPassword()
 
@@ -92,6 +69,32 @@ export const AikajaksoRaporttiTyyppivalinnalla = ({
         lang,
         baseUrl: `/koski/api/raportit${apiEndpoint}`
       }
+  )
+
+  const massaluovutusParametritP = Bacon.combineWith(
+    selectedOrganisaatioP,
+    alkuAtom,
+    loppuAtom,
+    osasuoritustenAikarajausAtom,
+    raportinTyyppiAtom,
+    kotikuntaPvmAtom,
+    (o, a, l, r, tyyppi, kkp) =>
+      o &&
+      a &&
+      l &&
+      l.valueOf() >= a.valueOf() &&
+      tyyppi &&
+      (!showKotikuntaPvmInput || kkp)
+        ? {
+            organisaatioOid: o.oid,
+            alku: formatISODate(a),
+            loppu: formatISODate(l),
+            osasuoritustenAikarajaus: r,
+            raportinTyyppi: tyyppi,
+            kotikuntaPvm: kotikuntaPvmParametri(showKotikuntaPvmInput, kkp),
+            language: lang
+          }
+        : null
   )
 
   const downloadExcelE = submitBus
@@ -140,16 +143,33 @@ export const AikajaksoRaporttiTyyppivalinnalla = ({
           label={t('select-kotikunta-date')}
           paivaAtom={kotikuntaPvmAtom}
           ohje={kotikuntaPvmInputHelp}
+          inputId="dateinput-kotikuntapvm"
         />
       )}
 
-      <RaportinLataus
-        password={password}
-        inProgressP={inProgressP}
-        submitEnabledP={submitEnabledP}
-        submitBus={submitBus}
-        dbUpdatedP={dbUpdatedP}
-      />
+      {massaluovutusKyselymalli ? (
+        Bacon.combineWith(
+          massaluovutusParametritP,
+          dbUpdatedP,
+          organisaatioNimetP,
+          (parametrit, dbUpdated, oppilaitosNimet) => (
+            <MassaluovutusRaportinLataus
+              kyselymalli={massaluovutusKyselymalli}
+              parametrit={parametrit}
+              dbUpdated={dbUpdated}
+              oppilaitosNimet={oppilaitosNimet}
+            />
+          )
+        )
+      ) : (
+        <RaportinLataus
+          password={password}
+          inProgressP={inProgressP}
+          submitEnabledP={submitEnabledP}
+          submitBus={submitBus}
+          dbUpdatedP={dbUpdatedP}
+        />
+      )}
 
       <Vinkit>{example}</Vinkit>
     </section>

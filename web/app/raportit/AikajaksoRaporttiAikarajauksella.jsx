@@ -14,7 +14,7 @@ import {
   Vinkit,
   PaivaValinta
 } from './raporttiComponents'
-import { selectFromState, today } from './raporttiUtils'
+import { kotikuntaPvmParametri, selectFromState, today } from './raporttiUtils'
 import { MassaluovutusRaportinLataus } from '../components-v2/raportit/MassaluovutusRaportinLataus'
 import { t } from '../i18n/i18n'
 
@@ -108,13 +108,19 @@ export const AikajaksoRaporttiAikarajauksella = ({
     alkuAtom,
     loppuAtom,
     osasuoritustenAikarajausAtom,
-    (o, a, l, r) =>
-      o && a && l && l.valueOf() >= a.valueOf()
+    kotikuntaPvmAtom,
+    (o, a, l, r, kkp) =>
+      o &&
+      a &&
+      l &&
+      l.valueOf() >= a.valueOf() &&
+      (!showKotikuntaPvmInput || kkp)
         ? {
             organisaatioOid: o.oid,
             alku: formatISODate(a),
             loppu: formatISODate(l),
             osasuoritustenAikarajaus: r,
+            kotikuntaPvm: kotikuntaPvmParametri(showKotikuntaPvmInput, kkp),
             language: lang
           }
         : null
@@ -163,6 +169,7 @@ export const AikajaksoRaporttiAikarajauksella = ({
           label={t('select-kotikunta-date')}
           paivaAtom={kotikuntaPvmAtom}
           ohje={kotikuntaPvmInputHelp}
+          inputId="dateinput-kotikuntapvm"
         />
       )}
 

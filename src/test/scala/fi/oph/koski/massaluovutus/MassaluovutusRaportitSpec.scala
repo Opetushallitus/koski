@@ -321,6 +321,14 @@ class MassaluovutusRaportitSpec extends AnyFreeSpec with MassaluovutusTestMethod
     "Ei onnistu väärän organisaation tietoihin" in {
       raporttiKyselyEiOnnistu(query, MockUsers.helsinkiKatselija)
     }
+
+    "Ostopalvelu/palveluseteli-kysely onnistuu ostavan koulutustoimijan käyttäjällä" in {
+      val ostopalvelukysely = query.copy(
+        paiva = LocalDate.of(2015, 1, 1),
+        organisaatioOid = Some(app.organisaatioService.ostopalveluRootOid),
+      )
+      raporttiKyselyOnnistuu(ostopalvelukysely, MockUsers.helsinkiTallentaja)
+    }
   }
 
   // Muut
@@ -382,6 +390,10 @@ class MassaluovutusRaportitSpec extends AnyFreeSpec with MassaluovutusTestMethod
 
     "Kysely onnistuu ja palauttaa oikeat tiedostot" in {
       raporttiKyselyOnnistuu(query, MockUsers.paakayttaja)
+    }
+
+    "Kysely kotikuntapäivällä onnistuu" in {
+      raporttiKyselyOnnistuu(query.copy(kotikuntaPvm = Some(LocalDate.of(2015, 1, 1))), MockUsers.paakayttaja)
     }
 
     "Ei onnistu väärän organisaation tietoihin" in {

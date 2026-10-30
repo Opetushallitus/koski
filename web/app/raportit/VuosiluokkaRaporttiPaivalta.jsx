@@ -13,7 +13,8 @@ import {
   RaportinLataus,
   Vinkit
 } from './raporttiComponents'
-import { selectFromState, today } from './raporttiUtils'
+import { kotikuntaPvmParametri, selectFromState, today } from './raporttiUtils'
+import { MassaluovutusRaportinLataus } from '../components-v2/raportit/MassaluovutusRaportinLataus'
 import { t } from '../i18n/i18n'
 
 export const VuosiluokkaRaporttiPaivalta = ({
@@ -24,13 +25,15 @@ export const VuosiluokkaRaporttiPaivalta = ({
   example,
   lang,
   showKotikuntaPvmInput,
-  kotikuntaPvmInputHelp
+  kotikuntaPvmInputHelp,
+  massaluovutusKyselymalli
 }) => {
   const paivaAtom = Atom(today())
   const kotikuntaPvmAtom = Atom(today())
   const vuosiluokkaAtom = Atom('1')
   const submitBus = Bacon.Bus()
-  const { selectedOrganisaatioP, dbUpdatedP } = selectFromState(stateP)
+  const { selectedOrganisaatioP, dbUpdatedP, organisaatioNimetP } =
+    selectFromState(stateP)
 
   const password = generateRandomPassword()
 
@@ -54,6 +57,24 @@ export const VuosiluokkaRaporttiPaivalta = ({
       }
   )
 
+  const massaluovutusParametritP = Bacon.combineWith(
+    selectedOrganisaatioP,
+    paivaAtom,
+    kotikuntaPvmAtom,
+    vuosiluokkaAtom,
+    (o, p, kkp, v) =>
+      o && p && v && (!showKotikuntaPvmInput || kkp)
+        ? {
+            organisaatioOid: o.oid,
+            paiva: formatISODate(p),
+            // Valikko antaa vuosiluokan numerona, kysely odottaa merkkijonoa
+            vuosiluokka: String(v),
+            kotikuntaPvm: kotikuntaPvmParametri(showKotikuntaPvmInput, kkp),
+            language: lang
+          }
+        : null
+  )
+
   const downloadExcelE = submitBus
     .map(downloadExcelP)
     .flatMapLatest(downloadExcel)
@@ -70,12 +91,17 @@ export const VuosiluokkaRaporttiPaivalta = ({
     <section>
       <LyhytKuvaus>{shortDescription}</LyhytKuvaus>
 
-      <PaivaValinta paivaAtom={paivaAtom} ohje={dateInputHelp} />
+      <PaivaValinta
+        paivaAtom={paivaAtom}
+        ohje={dateInputHelp}
+        inputId="dateinput-paiva"
+      />
       {showKotikuntaPvmInput && (
         <PaivaValinta
           label={t('select-kotikunta-date')}
           paivaAtom={kotikuntaPvmAtom}
           ohje={kotikuntaPvmInputHelp}
+          inputId="dateinput-kotikuntapvm"
         />
       )}
 
@@ -89,13 +115,29 @@ export const VuosiluokkaRaporttiPaivalta = ({
         />
       </div>
 
-      <RaportinLataus
-        password={password}
-        inProgressP={inProgressP}
-        submitEnabledP={submitEnabledP}
-        submitBus={submitBus}
-        dbUpdatedP={dbUpdatedP}
-      />
+      {massaluovutusKyselymalli ? (
+        Bacon.combineWith(
+          massaluovutusParametritP,
+          dbUpdatedP,
+          organisaatioNimetP,
+          (parametrit, dbUpdated, oppilaitosNimet) => (
+            <MassaluovutusRaportinLataus
+              kyselymalli={massaluovutusKyselymalli}
+              parametrit={parametrit}
+              dbUpdated={dbUpdated}
+              oppilaitosNimet={oppilaitosNimet}
+            />
+          )
+        )
+      ) : (
+        <RaportinLataus
+          password={password}
+          inProgressP={inProgressP}
+          submitEnabledP={submitEnabledP}
+          submitBus={submitBus}
+          dbUpdatedP={dbUpdatedP}
+        />
+      )}
 
       <Vinkit>{example}</Vinkit>
     </section>
