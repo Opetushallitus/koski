@@ -1,5 +1,5 @@
 name: Set up backend
-description: "Set up Node.js, start the database containers and restore the built target/"
+description: "Set up Node.js, start the database containers and restore the built target/. Needs the opensearch_image job."
 
 runs:
   using: composite
@@ -18,13 +18,24 @@ runs:
         sudo sysctl -w vm.max_map_count=262144
       shell: bash
 
+    - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+      with:
+        name: opensearch-image.tar.zst
+        path: ${{ runner.temp }}
+
+    - name: Load OpenSearch image
+      run: |
+        zstd --decompress --quiet --stdout "$RUNNER_TEMP/opensearch-image.tar.zst" | docker load --quiet
+        rm "$RUNNER_TEMP/opensearch-image.tar.zst"
+      shell: bash
+
     # Docker Hub palauttaa ajoittain 5xx-virheitä tai auth-timeouteja, imageiden hakua
     # yritetään uudelleen. --policy missing ei hae uudelleen jo ladattuja imageja.
     # Jumittunut yhteys ei katkea itsestään, joten yrityksillä on aikaraja.
-    - name: Pull and build container images
+    - name: Pull container images
       run: |
-        scripts/retry.sh "Container image pull/build" 90s -- bash -c \
-          'docker compose --progress quiet pull --policy missing --ignore-buildable && docker compose --progress quiet build'
+        scripts/retry.sh "Container image pull" 180s -- \
+          docker compose --progress quiet pull --policy missing --ignore-buildable
       shell: bash
 
     - name: Start Postgres and OS containers
