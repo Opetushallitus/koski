@@ -82,10 +82,14 @@ test.describe('Osittaisen ammatillisen tutkinnon uusi käyttöliittymä', () => 
     const os = 'oo.0.suoritukset.0.osasuoritukset'
 
     await page.getByRole('button', { name: 'Avaa kaikki' }).click()
-    await expect(page.getByTestId(`${os}.0.properties.vahvistus`)).toHaveText('31.5.2016 Helsinki Reijo Reksi, rehtori')
-    await expect(page.getByTestId(`${os}.4.properties.tutkintoNimi`)).toHaveText('Ajoneuvoalan perustutkinto')
-    await expect(page.getByTestId(`${os}.5.properties.osasuoritukset.2.properties.alkamispäivä`)).toHaveText('1.1.2014')
-    await expect(page.getByText('Näyttö jäi kesken')).toBeVisible()
+    // Kenttiä ei muokata, joten ne näkyvät samoina myös muokkaustilassa
+    for (const tila of ['katselu', 'muokkaus']) {
+      if (tila === 'muokkaus') await page.getByTestId('oo.0.opiskeluoikeus.edit').click()
+      await expect(page.getByTestId(`${os}.0.properties.vahvistus`)).toHaveText('31.5.2016 Helsinki Reijo Reksi, rehtori')
+      await expect(page.getByTestId(`${os}.4.properties.tutkintoNimi`)).toHaveText('Ajoneuvoalan perustutkinto')
+      await expect(page.getByTestId(`${os}.5.properties.osasuoritukset.2.properties.alkamispäivä`)).toHaveText('1.1.2014')
+      await expect(page.getByText('Näyttö jäi kesken')).toBeVisible()
+    }
   })
 
   test('Arvioinnin kuvausta ei näytetä, mutta se säilyy tallennettaessa', async ({ page, fixtures, oppijaPage, oppijaPageV2 }) => {
