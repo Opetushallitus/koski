@@ -88,6 +88,25 @@ test.describe('Osittaisen ammatillisen tutkinnon uusi käyttöliittymä', () => 
     await expect(page.getByText('Näyttö jäi kesken')).toBeVisible()
   })
 
+  test('Arvioinnin kuvausta ei näytetä, mutta se säilyy tallennettaessa', async ({ page, fixtures, oppijaPage, oppijaPageV2 }) => {
+    const oid = '1.2.246.562.24.00000000056'
+    await fixtures.muokkaaOpiskeluoikeutta(oid, (oo) => {
+      oo.suoritukset[0].osasuoritukset[0].arviointi[0].kuvaus = { fi: 'Arvioinnin kuvaus' }
+    })
+    await oppijaPage.goto(oid)
+
+    await page.getByTestId('oo.0.suoritukset.0.osasuoritukset.0.expand').click()
+    await expect(page.getByText('Arvioinnin kuvaus')).toHaveCount(0)
+
+    await page.getByTestId('oo.0.opiskeluoikeus.edit').click()
+    expect(await page.locator('textarea').evaluateAll((els) => els.map((e) => (e as HTMLTextAreaElement).value))).not.toContain('Arvioinnin kuvaus')
+    await page.getByTestId('oo.0.suoritukset.0.osasuoritukset.0.properties.kuvaus.edit.input').fill('Muutettu tutkinnon osan kuvaus')
+    await oppijaPageV2.tallenna()
+
+    const oppija = await (await page.request.get(`/koski/api/oppija/${oid}`)).json()
+    expect(oppija.opiskeluoikeudet[0].suoritukset[0].osasuoritukset[0].arviointi[0].kuvaus).toEqual({ fi: 'Arvioinnin kuvaus' })
+  })
+
   test('Mukautettujen arvosanojen rivit näkyvät katselutilassa vain kun arvo on tosi', async ({ page, oppijaPage }) => {
     await oppijaPage.goto('1.2.246.562.24.00000000055')
 
