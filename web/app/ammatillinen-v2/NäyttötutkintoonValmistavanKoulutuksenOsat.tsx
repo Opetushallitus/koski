@@ -42,6 +42,11 @@ import {
   YhteisenTutkinnonOsatTunniste
 } from './OsasuoritusTables'
 import { useTutkinnonOsat } from './useTutkinnonOsat'
+import { OsasuorituksenAlkamispäivä } from './OsasuorituksenAlkamispäivä'
+import {
+  KoodistoEdit,
+  KoodistoView
+} from '../components-v2/opiskeluoikeus/KoodistoField'
 
 type ValmistavanKoulutuksenOsatProps = {
   form: FormModel<AmmatillinenOpiskeluoikeus>
@@ -55,7 +60,8 @@ type ValmistavanKoulutuksenOsatProps = {
 const KOULUTUKSEN_OSA = 'Koulutuksen osa'
 
 // Näyttötutkintoon valmistavan koulutuksen osilla ei ole arviointia eikä
-// laajuutta, joten taulukossa on vain osan nimi ja paikallisille osille kuvaus.
+// laajuutta, joten taulukossa on vain osan nimi. Avattavalla rivillä näkyvät
+// kuvaus sekä annettuina suorituskieli ja alkamispäivä.
 export const NäyttötutkintoonValmistavanKoulutuksenOsat = ({
   form,
   oppilaitosOid,
@@ -75,34 +81,57 @@ export const NäyttötutkintoonValmistavanKoulutuksenOsat = ({
         (isPaikallinenNäyttötutkintoonValmistavanKoulutuksenOsa(km) ||
           isMuuValtakunnallinenTutkinnonOsa(km)) &&
         (form.editMode || km.kuvaus !== undefined)
+      const expandable =
+        näytäKuvaus ||
+        s.suorituskieli !== undefined ||
+        s.alkamispäivä !== undefined
       return {
         suoritusIndex: päätasonSuoritus.index,
         osasuoritusIndex: index,
-        expandable: näytäKuvaus,
+        expandable,
         columns: {
           [KOULUTUKSEN_OSA]: t(s.koulutusmoduuli.tunniste.nimi)
         },
-        content: näytäKuvaus ? (
-          <OsasuoritusProperty label="Kuvaus">
-            <OsasuoritusPropertyValue>
-              <FormField
-                form={form}
-                path={(
-                  osasuorituksetPath
-                    .at(index)
-                    .prop('koulutusmoduuli') as FormOptic<
-                    AmmatillinenOpiskeluoikeus,
-                    | PaikallinenNäyttötutkintoonValmistavanKoulutuksenOsa
-                    | MuuValtakunnallinenTutkinnonOsa
-                  >
-                ).prop('kuvaus')}
-                view={LocalizedTextView}
-                edit={LocalizedTextEdit}
-                editProps={{ large: true }}
-                testId="kuvaus"
-              />
-            </OsasuoritusPropertyValue>
-          </OsasuoritusProperty>
+        content: expandable ? (
+          <>
+            {näytäKuvaus && (
+              <OsasuoritusProperty label="Kuvaus">
+                <OsasuoritusPropertyValue>
+                  <FormField
+                    form={form}
+                    path={(
+                      osasuorituksetPath
+                        .at(index)
+                        .prop('koulutusmoduuli') as FormOptic<
+                        AmmatillinenOpiskeluoikeus,
+                        | PaikallinenNäyttötutkintoonValmistavanKoulutuksenOsa
+                        | MuuValtakunnallinenTutkinnonOsa
+                      >
+                    ).prop('kuvaus')}
+                    view={LocalizedTextView}
+                    edit={LocalizedTextEdit}
+                    editProps={{ large: true }}
+                    testId="kuvaus"
+                  />
+                </OsasuoritusPropertyValue>
+              </OsasuoritusProperty>
+            )}
+            {s.suorituskieli && (
+              <OsasuoritusProperty label="Suorituskieli">
+                <OsasuoritusPropertyValue>
+                  <FormField
+                    form={form}
+                    view={KoodistoView}
+                    edit={KoodistoEdit}
+                    path={osasuorituksetPath.at(index).prop('suorituskieli')}
+                    editProps={{ koodistoUri: 'kieli', zeroValueOption: true }}
+                    testId="suorituskieli"
+                  />
+                </OsasuoritusPropertyValue>
+              </OsasuoritusProperty>
+            )}
+            <OsasuorituksenAlkamispäivä alkamispäivä={s.alkamispäivä} />
+          </>
         ) : undefined
       }
     }

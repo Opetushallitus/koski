@@ -232,6 +232,13 @@ const NäytönArviointiView = ({
       <KeyValueRow localizableLabel="Arvioinnista päättäneet">
         {value?.arvioinnistaPäättäneet?.map((a) => t(a.nimi)).join(', ')}
       </KeyValueRow>
+      {value?.hylkäyksenPeruste && (
+        <KeyValueRow localizableLabel="Hylkäyksen peruste">
+          <span style={{ whiteSpace: 'pre-line' }}>
+            {t(value.hylkäyksenPeruste)}
+          </span>
+        </KeyValueRow>
+      )}
     </>
   )
 }

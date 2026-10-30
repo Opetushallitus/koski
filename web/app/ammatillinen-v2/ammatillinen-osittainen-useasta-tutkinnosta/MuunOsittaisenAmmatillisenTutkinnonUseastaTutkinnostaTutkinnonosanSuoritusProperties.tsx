@@ -31,6 +31,8 @@ import {
 import { OsasuoritusTable } from '../../components-v2/opiskeluoikeus/OsasuoritusTable'
 import { AmmatillisenTutkinnonOsaaPienemmänKokonaisuudenSuoritusProperties } from '../AmmatillisenTutkinnonOsaaPienemmänKokonaisuudenSuoritusProperties'
 import React from 'react'
+import { OsasuorituksenAlkamispäivä } from '../OsasuorituksenAlkamispäivä'
+import { TutkinnonOsanToimipisteJaVahvistus } from '../TutkinnonOsanToimipisteJaVahvistus'
 import {
   KoodistoEdit,
   KoodistoView
@@ -110,6 +112,10 @@ export const MuunOsittaisenAmmatillisenTutkinnonUseastaTutkinnostaTutkinnonosanS
             />
           </OsasuoritusPropertyValue>
         </OsasuoritusProperty>
+        <TutkinnonOsanToimipisteJaVahvistus
+          toimipiste={osasuoritus.toimipiste}
+        />
+        <OsasuorituksenAlkamispäivä alkamispäivä={osasuoritus.alkamispäivä} />
         {(form.editMode || osasuoritus.arviointi) && (
           <OsasuoritusProperty label={'Arviointi'}>
             <OsasuoritusPropertyValue>
