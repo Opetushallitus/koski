@@ -25,7 +25,7 @@ Ydinpalvelu
 
 Tietokanta ja S3
 ├── TodistusJobRepository    – todistus-jobit (PostgreSQL). Tietokannassa taulu todistus_job .
-└── TodistusResultRepository – PDF-tiedostot (S3 / paikallisesti Localstack)
+└── TodistusResultRepository – PDF-tiedostot (S3 / paikallisesti moto)
 
 PDF-tuotanto
 └── pdfgenerator/
