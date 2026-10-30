@@ -401,6 +401,17 @@ object MockUsers {
     Seq(organisaatioKäyttäjä(Opetushallitus.organisaatioOid, List(Rooli.OPHKATSELIJA, Rooli.LUKIOKOULUTUS, Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT)))
   )
 
+  // Viranomaisen globaali lukuoikeus estää raportit, vaikka organisaation oikeudet muuten riittäisivät
+  val viranomainenJaJyväskylänTallentaja = KoskiMockUser(
+    "viranomainen-jyvas-tallentaja",
+    "viranomainen-jyvas-tallentaja",
+    "1.2.246.562.24.99999999555",
+    Seq(
+      organisaatioKäyttäjä(MockOrganisaatiot.tilastokeskus, List(Rooli.GLOBAALI_LUKU_PERUSOPETUS)),
+      oppilaitosTallentaja(MockOrganisaatiot.jyväskylänNormaalikoulu)
+    )
+  )
+
   val jyväskyläTallentaja = KoskiMockUser(
     "jyvaskyla-tallentaja",
     "jyvaskyla-tallentaja",
@@ -838,6 +849,7 @@ object MockUsers {
     helsinkiIlmanLuottamuksellisiaTietoja,
     helsinkiPerusopetuksenKatselija,
     ophLukioKatselija,
+    viranomainenJaJyväskylänTallentaja,
   )
 }
 

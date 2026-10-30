@@ -190,6 +190,28 @@ class RaportitServletSpec extends AnyFreeSpec with RaportointikantaTestMethods w
           verifyResponseStatus(403, KoskiErrorCategory.forbidden.organisaatio())
         }
       }
+      "ei voi ladata raporttia ilman luottamuksellisten tietojen oikeutta" - {
+        "organisaation käyttäjä" in {
+          authGet(s"api/raportit/esiopetus?oppilaitosOid=${MockOrganisaatiot.jyväskylänNormaalikoulu}&paiva=2012-01-01&lang=fi&password=dummy", user = tallentajaEiLuottamuksellinen) {
+            verifyResponseStatus(403, KoskiErrorCategory.forbidden.organisaatio())
+          }
+        }
+        "OPH:n katselija" in {
+          authGet(s"api/raportit/esiopetus?oppilaitosOid=${MockOrganisaatiot.jyväskylänNormaalikoulu}&paiva=2012-01-01&lang=fi&password=dummy", user = viranomainen) {
+            verifyResponseStatus(403, KoskiErrorCategory.forbidden.organisaatio())
+          }
+        }
+        "kielitutkintorekisterin palvelukäyttäjä päällekkäisten opiskeluoikeuksien raporttiin" in {
+          authGet(s"api/raportit/paallekkaisetopiskeluoikeudet?oppilaitosOid=${MockOrganisaatiot.jyväskylänNormaalikoulu}&alku=2012-01-01&loppu=2016-01-01&lang=fi&password=dummy", user = kielitutkintorekisteriKäyttäjä) {
+            verifyResponseStatus(403, KoskiErrorCategory.forbidden.organisaatio())
+          }
+        }
+      }
+      "ei voi ladata raporttia viranomaisen globaalilla lukuoikeudella, vaikka organisaation oikeudet riittäisivät" in {
+        authGet(s"api/raportit/esiopetus?oppilaitosOid=${MockOrganisaatiot.jyväskylänNormaalikoulu}&paiva=2012-01-01&lang=fi&password=dummy", user = viranomainenJaJyväskylänTallentaja) {
+          verifyResponseStatus(403, KoskiErrorCategory.forbidden.organisaatio())
+        }
+      }
     }
   }
 

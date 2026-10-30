@@ -56,7 +56,8 @@ trait MassaluovutusRaporttiBase[Self <: MassaluovutusRaporttiBase[Self]]
   // Common queryAllowed implementation
   override def queryAllowed(application: KoskiApplication)(implicit user: Session): Boolean =
     withKoskiSpecificSession { u =>
-      (u.hasGlobalReadAccess || organisaatioOid.exists(oid => u.hasRaporttiReadAccess(oid))) &&
+      u.hasRaportitAccess &&
+        (u.hasGlobalReadAccess || organisaatioOid.exists(oid => u.hasRaporttiReadAccess(oid))) &&
         u.allowedOpiskeluoikeudetJaPäätasonSuoritukset.intersects(OoPtsMask(opiskeluoikeudenTyyppi.koodiarvo))
     }
 

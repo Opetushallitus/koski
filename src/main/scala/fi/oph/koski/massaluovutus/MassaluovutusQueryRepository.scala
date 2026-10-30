@@ -28,7 +28,7 @@ class QueryRepository(
 
   def getKoskiQuery(id: UUID)(implicit user: KoskiSpecificSession): Option[Query] =
     runDbSync(
-      getQuerySql(id, user.oid, user.hasGlobalReadAccess).as[Query]
+      getQuerySql(id, user.oid, MassaluovutusUtils.näkeeMuidenKäyttäjienKyselyt(user)).as[Query]
     ).headOption
 
   def getValpasQuery(id: UUID)(implicit user: ValpasSession): Option[Query] =
@@ -53,7 +53,7 @@ class QueryRepository(
       """.as[Query]).toList
 
   def getExistingKoskiQuery(query: MassaluovutusQueryParameters)(implicit user: KoskiSpecificSession): Option[Query] = {
-    getExisting(query, user.oid, user.hasGlobalReadAccess)
+    getExisting(query, user.oid, MassaluovutusUtils.näkeeMuidenKäyttäjienKyselyt(user))
   }
 
   def getExistingValpasQuery(query: MassaluovutusQueryParameters)(implicit user: ValpasSession): Option[Query] = {

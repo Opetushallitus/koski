@@ -56,7 +56,7 @@ class MassaluovutusService(application: KoskiApplication) extends GlobalExecutio
 
   def get(id: UUID)(implicit user: Session): Either[HttpStatus, Query] = {
     val queryWithAccess = user match {
-      case s: KoskiSpecificSession => queries.getKoskiQuery(id)(s).filter(_.userOid == s.oid || s.hasGlobalReadAccess)
+      case s: KoskiSpecificSession => queries.getKoskiQuery(id)(s).filter(_.userOid == s.oid || MassaluovutusUtils.näkeeMuidenKäyttäjienKyselyt(s))
       case s: ValpasSession => queries.getValpasQuery(id)(s).filter(_.userOid == s.oid || s.hasGlobalValpasOikeus(Set(ValpasRooli.KUNTA_MASSALUOVUTUS)))
     }
     queryWithAccess.toRight(KoskiErrorCategory.notFound())
