@@ -158,7 +158,7 @@ export const UusiOsasuoritusModal: React.FC<UusiOsasuoritusModalProps> = (
           {t('Peruuta')}
         </FlatButton>
         <RaisedButton
-          disabled={form.state.koodiarvo.length === 0}
+          disabled={!form.state.koodiarvo}
           onClick={onSubmitCB}
           testId="submit"
         >

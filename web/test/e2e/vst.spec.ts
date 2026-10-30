@@ -1269,6 +1269,26 @@ test.describe('Vapaa sivistystyö', () => {
         expect(await vstOppijaPage.suorituksenLaajuus()).toEqual('6 op')
       })
 
+      test('Uuden osasuorituksen nimen tyhjentäminen ei kaada sivua', async ({
+        vstOppijaPage
+      }) => {
+        const addOsasuoritus = vstOppijaPage.$.suoritukset(0).addOsasuoritus
+        await addOsasuoritus.select.set('__NEW__')
+        await addOsasuoritus.modal.nimi.elem.fill('Väärin kirjoitettu')
+        await expect(addOsasuoritus.modal.submit.button).toBeEnabled()
+
+        await addOsasuoritus.modal.nimi.elem.fill('')
+
+        await expect(addOsasuoritus.modal.nimi.elem).toBeVisible()
+        await expect(addOsasuoritus.modal.submit.button).toBeDisabled()
+
+        await addOsasuoritus.modal.nimi.elem.fill('Oikein kirjoitettu')
+        await addOsasuoritus.modal.submit.click()
+        expect(await vstOppijaPage.osasuoritus(1).nimi()).toEqual(
+          'Oikein kirjoitettu'
+        )
+      })
+
       test('Vaihda laajuutta ja arvosanaa', async ({ vstOppijaPage }) => {
         const osasuoritus = vstOppijaPage.osasuoritus(0)
         await osasuoritus.setLaajuus(5)
