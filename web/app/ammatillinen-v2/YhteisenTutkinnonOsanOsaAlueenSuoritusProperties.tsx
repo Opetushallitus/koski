@@ -33,6 +33,7 @@ import {
 } from '../components-v2/opiskeluoikeus/KoodistoField'
 import { ArviointiEdit, ArviointiView, emptyArviointi } from './Arviointi'
 import { TestIdLayer } from '../appstate/useTestId'
+import { OsasuorituksenAlkamispäivä } from './OsasuorituksenAlkamispäivä'
 import {
   LocalizedTextEdit,
   LocalizedTextView
@@ -106,6 +107,7 @@ export const YhteisenTutkinnonOsanOsaAlueenSuoritusProperties = ({
           />
         </OsasuoritusPropertyValue>
       </OsasuoritusProperty>
+      <OsasuorituksenAlkamispäivä alkamispäivä={osasuoritus.alkamispäivä} />
       {(form.editMode || osasuoritus.arviointi) && (
         <OsasuoritusProperty label={'Arviointi'}>
           <OsasuoritusPropertyValue>

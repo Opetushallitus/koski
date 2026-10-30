@@ -5,6 +5,7 @@ import { localize, t } from '../i18n/i18n'
 import { OsasuoritusTable } from '../components-v2/opiskeluoikeus/OsasuoritusTable'
 import { YhteisenTutkinnonOsanOsaAlueenSuoritusProperties } from './YhteisenTutkinnonOsanOsaAlueenSuoritusProperties'
 import React, { useState } from 'react'
+import { OsasuorituksenAlkamispäivä } from './OsasuorituksenAlkamispäivä'
 import {
   isYhteisenTutkinnonOsanOsaAlueenSuoritus,
   YhteisenTutkinnonOsanOsaAlueenSuoritus
@@ -489,6 +490,7 @@ const LukionJaMuunOsasoritusProperties = ({
           />
         </OsasuoritusPropertyValue>
       </OsasuoritusProperty>
+      <OsasuorituksenAlkamispäivä alkamispäivä={osasuoritus.alkamispäivä} />
       {(form.editMode || osasuoritus.arviointi) && (
         <OsasuoritusProperty label={'Arviointi'}>
           <OsasuoritusPropertyValue>

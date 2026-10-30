@@ -68,6 +68,26 @@ test.describe('Osittaisen ammatillisen tutkinnon uusi käyttöliittymä', () => 
     await expect(page.getByTestId(`${kuvaus}.value`)).toHaveText('Videotuotannon kuvaus')
   })
 
+  test('Osasuoritusten tiedonsiirroista tulevat kentät näkyvät', async ({ page, fixtures, oppijaPage }) => {
+    await fixtures.muokkaaOpiskeluoikeutta('1.2.246.562.24.00000000056', (oo) => {
+      const osat = oo.suoritukset[0].osasuoritukset
+      osat[0].vahvistus.paikkakunta = { koodiarvo: '091', koodistoUri: 'kunta' }
+      osat[3].näyttö.arviointi.hylkäyksenPeruste = { fi: 'Näyttö jäi kesken' }
+      osat[4].tutkinto = {
+        tunniste: { koodiarvo: '351301', koodistoUri: 'koulutus' },
+        perusteenDiaarinumero: 'OPH-2762-2017'
+      }
+    })
+    await oppijaPage.goto('1.2.246.562.24.00000000056')
+    const os = 'oo.0.suoritukset.0.osasuoritukset'
+
+    await page.getByRole('button', { name: 'Avaa kaikki' }).click()
+    await expect(page.getByTestId(`${os}.0.properties.vahvistus`)).toHaveText('31.5.2016 Helsinki Reijo Reksi, rehtori')
+    await expect(page.getByTestId(`${os}.4.properties.tutkintoNimi`)).toHaveText('Ajoneuvoalan perustutkinto')
+    await expect(page.getByTestId(`${os}.5.properties.osasuoritukset.2.properties.alkamispäivä`)).toHaveText('1.1.2014')
+    await expect(page.getByText('Näyttö jäi kesken')).toBeVisible()
+  })
+
   test('Mukautettujen arvosanojen rivit näkyvät katselutilassa vain kun arvo on tosi', async ({ page, oppijaPage }) => {
     await oppijaPage.goto('1.2.246.562.24.00000000055')
 
@@ -192,6 +212,10 @@ test.describe('Osittaisen ammatillisen tutkinnon useasta tutkinnosta virkailijan
     await expect(page.getByTestId('oo.0.suoritukset.0.osasuoritukset.4.properties.tutkintoNimi')).toContainText('Ajoneuvoalan perustutkinto')
     await expect(page.getByTestId('oo.0.suoritukset.0.osasuoritukset.4.properties.peruste.value')).toContainText('OPH-5410-2021')
     await expect(page.getByTestId('oo.0.suoritukset.0.osasuoritukset.4.properties.arviointi.0.arvosana')).toContainText('2')
+    // Sekä muulla (0) että yhteisellä (4) tutkinnon osalla on oma toimipiste
+    for (const osa of [0, 4]) {
+      await expect(page.getByTestId(`oo.0.suoritukset.0.osasuoritukset.${osa}.properties.toimipiste`)).toHaveText('Stadin ammatti- ja aikuisopisto, Lehtikuusentien toimipaikka')
+    }
 
     await expect(page.getByTestId('oo.0.suoritukset.0.osasuoritukset.4.properties.osasuoritukset.0.laajuus.value')).toContainText('4 osp')
     await expect(page.getByTestId('oo.0.suoritukset.0.osasuoritukset.4.properties.osasuoritukset.0.arvosana.value')).toContainText('3')
