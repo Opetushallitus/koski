@@ -93,11 +93,26 @@
 @Osasuoritus-ikoni: 4px;
 
 @Osasuoritus-sisennys: ~'calc(var(--osasuoritus-taso, 0) * (@{Osasuoritus-laajennus} + @{Osasuoritus-sisalto}) + var(--osasuoritus-merkkitasot, 0) * @{Osasuoritus-merkki})';
-// Sisäkkäisen taulukon otsikkopalkki alkaa hieman ikonien vasemmalta puolelta
-@Osasuoritus-taulukon-reuna: ~'calc(@{Osasuoritus-reuna} - @{Osasuoritus-ikoni} + @{Osasuoritus-sisennys})';
+// Sisäkkäisen taulukon otsikkopalkki alkaa samasta kohdasta kuin näytön harmaa
+// laatikko (OsasuoritusProperty.less), jotta peräkkäiset harmaat alueet ovat
+// linjassa.
+@Osasuoritus-taulukon-reuna: ~'calc(@{Osasuoritus-reuna} - @{Osasuoritus-laatikon-reunus} + @{Osasuoritus-sisennys})';
 
 .OsasuoritusRow + .OsasuoritusRow {
   margin-top: (@baseline / 2);
+}
+
+// Avatun rivin sisällön jälkeen väli, jotta sisältö erottuu omaksi ryhmäkseen:
+// kenttien ja alirivien 27 px rytmi on muuten väljempi kuin väli seuraavaan
+// riviin. Päätasolla väli on 24 px, kuten sisäkkäisen taulukon loppuväli ennen
+// antoi, myös taulukon viimeisen rivin jälkeen. Sisäkkäisillä riveillä väli on
+// puolet, ja viimeisen rivin jälkeen sen antaa ylemmän rivin sisältö.
+.OsasuoritusRow:not(.OsasuoritusRow--sisakkainen) + .OsasuoritusProperties {
+  padding-bottom: 2 * @baseline;
+}
+
+.OsasuoritusProperties + .OsasuoritusRow--sisakkainen {
+  margin-top: @baseline;
 }
 
 .OsasuoritusRow {

@@ -53,6 +53,7 @@ import {
   ModalTitle
 } from '../components-v2/containers/Modal'
 import { FlatButton } from '../components-v2/controls/FlatButton'
+import { ButtonGroup } from '../components-v2/containers/ButtonGroup'
 import { Column, ColumnRow } from '../components-v2/containers/Columns'
 import { PaikallinenTutkinnonOsa } from '../types/fi/oph/koski/schema/PaikallinenTutkinnonOsa'
 import { PaikallinenKoodi } from '../types/fi/oph/koski/schema/PaikallinenKoodi'
@@ -188,6 +189,7 @@ export const dummyRow = <T extends string>(
     suoritusIndex: 0,
     osasuoritusIndex: 0,
     expandable: false,
+    removable: false,
     columns
   }
 }
@@ -254,21 +256,18 @@ const TableForTutkinnonOsaRyhmä = ({
           ryhmä,
           suoritusPath: päätasonSuoritus.path
         }}
-        onRemove={
-          !rows || rows?.length === 0
-            ? undefined
-            : (rowIndex) =>
-                form.updateAt(
-                  päätasonSuoritus.path,
-                  (pts) =>
-                    ({
-                      ...pts,
-                      osasuoritukset: deleteAt<AmisTutkinnonOsanSuoritus>(
-                        pts.osasuoritukset || [],
-                        originalIndexMap[rowIndex]
-                      )
-                    }) as AmisTutkinnonSuoritus
+        onRemove={(rowIndex) =>
+          form.updateAt(
+            päätasonSuoritus.path,
+            (pts) =>
+              ({
+                ...pts,
+                osasuoritukset: deleteAt<AmisTutkinnonOsanSuoritus>(
+                  pts.osasuoritukset || [],
+                  originalIndexMap[rowIndex]
                 )
+              }) as AmisTutkinnonSuoritus
+          )
         }
         completed={(rowIndex) => {
           const osasuoritus = (päätasonSuoritus.suoritus.osasuoritukset || [])[
@@ -525,22 +524,24 @@ const NewAmisOsasuoritus = ({
 
   if (ryhmä === 'Yhteiset tutkinnon osat') {
     return (
-      <>
-        <KoodistoSelect
-          addNewText={'Lisää tutkinnon osa'}
-          koodistoUri="tutkinnonosat"
-          format={format}
-          filter={yhteisetFilter}
-          onSelect={(tunniste) => {
-            const yhteinenTunniste = tunniste as YhteisenTutkinnonOsatTunniste
-            tunniste &&
-              lisääOsasuoritus(form, suoritusPath, (pts) =>
-                newYhteinenTutkinnonOsa(pts, yhteinenTunniste)
-              )
-          }}
-          testId="uusi-yhteinen-tutkinnonosa"
-        />
-      </>
+      <ColumnRow>
+        <Column span={10}>
+          <KoodistoSelect
+            addNewText={'Lisää tutkinnon osa'}
+            koodistoUri="tutkinnonosat"
+            format={format}
+            filter={yhteisetFilter}
+            onSelect={(tunniste) => {
+              const yhteinenTunniste = tunniste as YhteisenTutkinnonOsatTunniste
+              tunniste &&
+                lisääOsasuoritus(form, suoritusPath, (pts) =>
+                  newYhteinenTutkinnonOsa(pts, yhteinenTunniste)
+                )
+            }}
+            testId="uusi-yhteinen-tutkinnonosa"
+          />
+        </Column>
+      </ColumnRow>
     )
   }
   const osasuoritukset =
@@ -562,7 +563,7 @@ const NewAmisOsasuoritus = ({
   return (
     <>
       <ColumnRow>
-        <Column span={12}>
+        <Column span={10}>
           <KoodistoSelect
             addNewText={'Lisää tutkinnon osa'}
             koodistoUri={'tutkinnonosat'}
@@ -577,21 +578,21 @@ const NewAmisOsasuoritus = ({
             testId={'uusi-muu-tutkinnonosa'}
           />
         </Column>
-        <Column span={6}>
-          <NewPaikallinen
-            form={form}
-            tutkinnonOsanRyhmä={tutkinnonOsanRyhmä}
-            suoritusPath={suoritusPath}
-          />
-        </Column>
-        <Column span={6}>
-          <NewToisestaTutkinnosta
-            form={form}
-            oppilaitosOid={oppilaitosOid}
-            ryhmäKoodi={ryhmäKoodi}
-            tutkinnonOsanRyhmä={tutkinnonOsanRyhmä}
-            suoritusPath={suoritusPath}
-          />
+        <Column span={14}>
+          <ButtonGroup>
+            <NewPaikallinen
+              form={form}
+              tutkinnonOsanRyhmä={tutkinnonOsanRyhmä}
+              suoritusPath={suoritusPath}
+            />
+            <NewToisestaTutkinnosta
+              form={form}
+              oppilaitosOid={oppilaitosOid}
+              ryhmäKoodi={ryhmäKoodi}
+              tutkinnonOsanRyhmä={tutkinnonOsanRyhmä}
+              suoritusPath={suoritusPath}
+            />
+          </ButtonGroup>
         </Column>
       </ColumnRow>
       {showLisääKorkeakouluopinto && (

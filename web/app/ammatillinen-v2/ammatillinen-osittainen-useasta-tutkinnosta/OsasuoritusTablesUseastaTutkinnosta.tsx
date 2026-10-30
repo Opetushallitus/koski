@@ -147,19 +147,16 @@ const TableForTutkinnonOsaRyhmäUseastaTutkinnosta = ({
         ryhmä,
         suoritusPath: osittainenPäätasonSuoritus.path
       }}
-      onRemove={
-        !rows || rows?.length === 0
-          ? undefined
-          : (rowIndex) =>
-              form.updateAt(osittainenPäätasonSuoritus.path, (pts) => {
-                return {
-                  ...pts,
-                  osasuoritukset: deleteAt(
-                    pts.osasuoritukset || [],
-                    originalIndexMap[rowIndex]
-                  )
-                }
-              })
+      onRemove={(rowIndex) =>
+        form.updateAt(osittainenPäätasonSuoritus.path, (pts) => {
+          return {
+            ...pts,
+            osasuoritukset: deleteAt(
+              pts.osasuoritukset || [],
+              originalIndexMap[rowIndex]
+            )
+          }
+        })
       }
       completed={(rowIndex) => {
         const osasuoritus = (osittainenPäätasonSuoritus.suoritus
