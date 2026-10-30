@@ -38,7 +38,7 @@
   "minimumReleaseAge": "3 days",
   "internalChecksFilter": "strict",
   "constraints": {
-    "node": "24.22.1"
+    "node": "24.22.2"
   },
   "ignoreDeps": [
     "com.github.Opetushallitus.java-utils:oid-generator"
