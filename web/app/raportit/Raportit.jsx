@@ -25,6 +25,7 @@ import {
   ammatillinenOpiskelijavuositiedotKyselymalli,
   ammatillinenOsittainenSuoritustiedotKyselymalli,
   ammatillinenTutkintoSuoritustiedotKyselymalli,
+  esiopetuksenOppijamaaratRaporttiKyselymalli,
   ibRaporttityypit,
   ibSuoritustiedotKyselymalli,
   lukio2019OpintopistekertymatKyselymalli,
@@ -979,7 +980,7 @@ function EsiopetusRaportti({ stateP }) {
 function EsiopetuksenOppijamäärätRaportti({ stateP }) {
   const titleText = <Text name="Esiopetus-oppilasmäärät-raportti-title" />
   const shortDescriptionText = (
-    <Text name="Esiopetus-oppilasmäärät-raportti-short-description" />
+    <Text name="Esiopetus-oppilasmäärät-raportti-short-description-massaluovutus" />
   )
   const dateInputHelpText = (
     <Text name="Esiopetus-oppilasmäärät-raportti-date-input-help" />
@@ -996,6 +997,7 @@ function EsiopetuksenOppijamäärätRaportti({ stateP }) {
       shortDescription={shortDescriptionText}
       dateInputHelp={dateInputHelpText}
       example={exampleText}
+      massaluovutusKyselymalli={esiopetuksenOppijamaaratRaporttiKyselymalli}
       lang={lang}
     />
   )

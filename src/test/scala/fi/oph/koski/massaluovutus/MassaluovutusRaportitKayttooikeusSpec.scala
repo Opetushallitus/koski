@@ -36,7 +36,10 @@ class MassaluovutusRaportitKayttooikeusSpec extends AnyFreeSpec with Massaluovut
   private val esiopetus = MassaluovutusQueryEsiopetus(paiva = paiva, organisaatioOid = organisaatioOid)
   private val päällekkäiset = MassaluovutusQueryPaallekkaisetOpiskeluoikeudet(format = QueryFormat.xlsx, alku = alku, loppu = loppu, organisaatioOid = organisaatioOid)
 
-  private val raporttikyselyt: List[(String, MassaluovutusQueryParameters)] = List(
+  private val raporttikyselyt = raporttikyselytOrganisaatiolle(organisaatioOid)
+  private lazy val ostopalvelunRaporttikyselyt = raporttikyselytOrganisaatiolle(Some(app.organisaatioService.ostopalveluRootOid))
+
+  private def raporttikyselytOrganisaatiolle(organisaatioOid: Option[String]): List[(String, MassaluovutusQueryParameters)] = List(
     "Lukion suoritustiedot" -> MassaluovutusQueryLukionSuoritustiedot(alku = alku, loppu = loppu, organisaatioOid = organisaatioOid),
     "Lukio 2019 suoritustiedot" -> MassaluovutusQueryLukio2019Suoritustiedot(alku = alku, loppu = loppu, organisaatioOid = organisaatioOid),
     "Lukion kurssikertymät" -> MassaluovutusQueryLukioKurssikertymat(alku = alku, loppu = loppu, organisaatioOid = organisaatioOid),
@@ -56,7 +59,7 @@ class MassaluovutusRaportitKayttooikeusSpec extends AnyFreeSpec with Massaluovut
     "Aikuisten perusopetuksen suoritustietojen tarkistus" -> MassaluovutusQueryAikuistenPerusopetusSuoritustiedot(alku = alku, loppu = loppu, raportinTyyppi = "päättövaihe", organisaatioOid = organisaatioOid),
     "Aikuisten perusopetuksen oppijamäärät" -> MassaluovutusQueryAikuistenPerusopetuksenOppijamaaratRaportti(paiva = paiva, organisaatioOid = organisaatioOid),
     "Aikuisten perusopetuksen kurssikertymät" -> MassaluovutusQueryAikuistenPerusopetuksenKurssikertyma(alku = alku, loppu = loppu, organisaatioOid = organisaatioOid),
-    "Esiopetus" -> esiopetus,
+    "Esiopetus" -> MassaluovutusQueryEsiopetus(paiva = paiva, organisaatioOid = organisaatioOid),
     "Esiopetuksen oppijamäärät" -> MassaluovutusQueryEsiopetuksenOppijamaaratRaportti(paiva = paiva, organisaatioOid = organisaatioOid),
     "TUVA perusopetuksen oppijamäärät" -> MassaluovutusQueryTuvaPerusopetuksenOppijamaaratRaportti(paiva = paiva, organisaatioOid = organisaatioOid),
     "TUVA suoritustiedot" -> MassaluovutusQueryTuvaSuoritustiedot(alku = alku, loppu = loppu, organisaatioOid = organisaatioOid),
@@ -113,6 +116,20 @@ class MassaluovutusRaportitKayttooikeusSpec extends AnyFreeSpec with Massaluovut
     "organisaation oikeuksista huolimatta" in {
       sallitutKyselyt(raporttikyselyt, MockUsers.viranomainenJaJyväskylänTallentaja) shouldBe empty
       raporttikyselyEstetään(esiopetus, MockUsers.viranomainenJaJyväskylänTallentaja)
+    }
+  }
+
+  "Ostopalvelu/palveluseteli-valinta" - {
+    "sallitaan ostavan koulutustoimijan käyttäjälle vain esiopetuksen oppijamääräraportissa" in {
+      sallitutKyselyt(ostopalvelunRaporttikyselyt, MockUsers.helsinkiTallentaja) should equal(List("Esiopetuksen oppijamäärät"))
+    }
+
+    "estetään ilman ostopalveluoikeuksia" in {
+      sallitutKyselyt(ostopalvelunRaporttikyselyt, MockUsers.jyväskylänNormaalikoulunPalvelukäyttäjä) shouldBe empty
+    }
+
+    "ei sallita pelkällä globaalilla lukuoikeudella" in {
+      sallitutKyselyt(ostopalvelunRaporttikyselyt, MockUsers.paakayttaja) should not contain ("Esiopetuksen oppijamäärät")
     }
   }
 
