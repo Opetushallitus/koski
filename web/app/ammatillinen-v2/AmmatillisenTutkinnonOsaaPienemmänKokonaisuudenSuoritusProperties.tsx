@@ -29,6 +29,10 @@ import {
   KoodistoView
 } from '../components-v2/opiskeluoikeus/KoodistoField'
 import { TestIdLayer } from '../appstate/useTestId'
+import {
+  LocalizedTextEdit,
+  LocalizedTextView
+} from '../components-v2/controls/LocalizedTestField'
 
 type AmmatillisenTutkinnonOsaaPienemmänKokonaisuudenSuoritusPropertiesProps = {
   form: FormModel<AmmatillinenOpiskeluoikeus>
@@ -59,6 +63,18 @@ export const AmmatillisenTutkinnonOsaaPienemmänKokonaisuudenSuoritusProperties 
             </OsasuoritusPropertyValue>
           </OsasuoritusProperty>
         )}
+        <OsasuoritusProperty label={'Kuvaus'}>
+          <OsasuoritusPropertyValue>
+            <FormField
+              form={form}
+              path={osasuoritusPath.prop('koulutusmoduuli').prop('kuvaus')}
+              view={LocalizedTextView}
+              edit={LocalizedTextEdit}
+              editProps={{ large: true }}
+              testId="kuvaus"
+            />
+          </OsasuoritusPropertyValue>
+        </OsasuoritusProperty>
         {(form.editMode || osasuoritus.tunnustettu) && (
           <OsasuoritusProperty label={'Tunnustettu'}>
             <OsasuoritusPropertyValue>
