@@ -33,6 +33,14 @@ import {
 } from '../components-v2/opiskeluoikeus/KoodistoField'
 import { ArviointiEdit, ArviointiView, emptyArviointi } from './Arviointi'
 import { TestIdLayer } from '../appstate/useTestId'
+import {
+  LocalizedTextEdit,
+  LocalizedTextView
+} from '../components-v2/controls/LocalizedTestField'
+import {
+  isPaikallinenAmmatillisenTutkinnonOsanOsaAlue,
+  PaikallinenAmmatillisenTutkinnonOsanOsaAlue
+} from '../types/fi/oph/koski/schema/PaikallinenAmmatillisenTutkinnonOsanOsaAlue'
 
 type YhteisenTutkinnonOsanOsaAlueenSuoritusPropertiesProps = {
   form: FormModel<AmmatillinenOpiskeluoikeus>
@@ -47,6 +55,10 @@ export const YhteisenTutkinnonOsanOsaAlueenSuoritusProperties = ({
   osasuoritusPath,
   osasuoritus
 }: YhteisenTutkinnonOsanOsaAlueenSuoritusPropertiesProps) => {
+  const paikallinenKoulutusmoduuli =
+    isPaikallinenAmmatillisenTutkinnonOsanOsaAlue(osasuoritus.koulutusmoduuli)
+      ? osasuoritus.koulutusmoduuli
+      : undefined
   return (
     <>
       {osasuoritus.suorituskieli && (
@@ -62,6 +74,28 @@ export const YhteisenTutkinnonOsanOsaAlueenSuoritusProperties = ({
           </OsasuoritusPropertyValue>
         </OsasuoritusProperty>
       )}
+      {paikallinenKoulutusmoduuli &&
+        (form.editMode || paikallinenKoulutusmoduuli.kuvaus) && (
+          <OsasuoritusProperty label={'Kuvaus'}>
+            <OsasuoritusPropertyValue>
+              <FormField
+                form={form}
+                path={(
+                  osasuoritusPath.prop(
+                    'koulutusmoduuli'
+                  ) as unknown as FormOptic<
+                    AmmatillinenOpiskeluoikeus,
+                    PaikallinenAmmatillisenTutkinnonOsanOsaAlue
+                  >
+                ).prop('kuvaus')}
+                view={LocalizedTextView}
+                edit={LocalizedTextEdit}
+                editProps={{ large: true }}
+                testId="paikallinenKuvaus"
+              />
+            </OsasuoritusPropertyValue>
+          </OsasuoritusProperty>
+        )}
       <OsasuoritusProperty label={'Pakollinen'}>
         <OsasuoritusPropertyValue>
           <FormField
