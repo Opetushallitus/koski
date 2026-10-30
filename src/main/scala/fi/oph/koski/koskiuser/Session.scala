@@ -56,8 +56,7 @@ class KoskiSpecificSession(
   lazy val varhaiskasvatusKoulutustoimijat: Set[Oid] = varhaiskasvatuksenOstopalvelukäyttöoikeudet.map(_.ostavaKoulutustoimija.oid)
   lazy val hasKoulutustoimijaVarhaiskasvatuksenJärjestäjäAccess: Boolean = varhaiskasvatusKoulutustoimijat.nonEmpty
   lazy val allowedOpiskeluoikeudetJaPäätasonSuoritukset: Set[OoPtsMask] =
-    if (isKielitutkintorekisteri) Set(OoPtsMask.fromKoodistokoodiviite(OpiskeluoikeudenTyyppi.kielitutkinto).get)
-    else if (isRoot) OpiskeluoikeudenTyyppi.kaikkiOpiskeluoikeudetJaPäätasonSuoritukset
+    if (isRoot) OpiskeluoikeudenTyyppi.kaikkiOpiskeluoikeudetJaPäätasonSuoritukset
     else käyttöoikeudet.flatMap(_.allowedOpiskeluoikeusTyypit)
   lazy val deniedOpiskeluoikeudetJaPäätasonSuoritukset: Set[OoPtsMask] = OpiskeluoikeudenTyyppi.kaikkiOpiskeluoikeudetJaPäätasonSuoritukset -- allowedOpiskeluoikeudetJaPäätasonSuoritukset
   lazy val hasKoulutusmuotoRestrictions: Boolean = !allowedOpiskeluoikeudetJaPäätasonSuoritukset.satisfiesAll(OpiskeluoikeudenTyyppi.kaikkiOpiskeluoikeudetJaPäätasonSuoritukset)
@@ -67,7 +66,7 @@ class KoskiSpecificSession(
 
   def organisationOids(accessType: AccessType.Value): Set[String] = orgKäyttöoikeudet.collect { case k: KäyttöoikeusOrg if k.organisaatioAccessType.contains(accessType) => k.organisaatio.oid }
   lazy val globalAccess = globalKäyttöoikeudet.flatMap { _.globalAccessType }
-  def isRoot = globalAccess.contains(AccessType.write) && !isKielitutkintorekisteri
+  def isRoot = globalAccess.contains(AccessType.write)
   def isPalvelukäyttäjä = orgKäyttöoikeudet.flatMap(_.organisaatiokohtaisetPalveluroolit).contains(Palvelurooli(TIEDONSIIRTO)) || isKielitutkintorekisteri
   def hasReadAccess(organisaatio: Organisaatio.Oid, koulutustoimija: Option[Organisaatio.Oid]) = hasAccess(organisaatio, koulutustoimija, AccessType.read)
 
@@ -148,7 +147,7 @@ class KoskiSpecificSession(
   }
 
   def hasKielitutkintoAccess(organisaatio: Organisaatio.Oid, koulutustoimija: Option[Organisaatio.Oid], accessType: AccessType.Value): Boolean =
-    hasAccess(organisaatio, koulutustoimija, accessType) || (isKielitutkintorekisteri && globalAccess.contains(accessType))
+    hasAccess(organisaatio, koulutustoimija, accessType) || isKielitutkintorekisteri
 
   def hasAccess(organisaatio: Organisaatio.Oid, koulutustoimija: Option[Organisaatio.Oid], accessType: AccessType.Value): Boolean = {
     val access = globalAccess.contains(accessType) ||
@@ -168,7 +167,7 @@ class KoskiSpecificSession(
   def hasRaportitAccess = hasAnyReadAccess && hasRole(LUOTTAMUKSELLINEN_KAIKKI_TIEDOT) && !hasGlobalKoulutusmuotoReadAccess
   def sensitiveDataAllowed(allowedRoles: Set[Role]) = allowedRoles.exists(hasRole)
   def hasAnyLähdejärjestelmäkytkennänPurkaminenAccess = globalAccess.contains(AccessType.lähdejärjestelmäkytkennänPurkaminen) || organisationOids(AccessType.lähdejärjestelmäkytkennänPurkaminen).nonEmpty
-  def isKielitutkintorekisteri: Boolean = globalKäyttöoikeudet.exists(_.globalPalveluroolit.contains(Palvelurooli("KOSKI", KIELITUTKINTOREKISTERI)))
+  def isKielitutkintorekisteri: Boolean = hasRole(KIELITUTKINTOREKISTERI)
 
   // Note: keep in sync with PermissionCheckServlet's hasSufficientRoles function. See PermissionCheckServlet for more comments.
   private val OppijanumerorekisteriRekisterinpitäjä = Palvelurooli("OPPIJANUMEROREKISTERI", "REKISTERINPITAJA")

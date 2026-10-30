@@ -39,6 +39,30 @@ class KielitutkintorekisteriSpec
     "sessio on määritelty oikein" in {
       session.allowedOpiskeluoikeudetJaPäätasonSuoritukset should equal(Set(OoPtsMask("kielitutkinto")))
       session.hasKoulutusmuotoRestrictions should equal(true)
+      session.isKielitutkintorekisteri should equal(true)
+      session.isPalvelukäyttäjä should equal(true)
+    }
+    "lukuoikeus on koulutusmuotoon rajattu globaali lukuoikeus, ei OPH:n yleisoikeus" in {
+      session.hasGlobalReadAccess should equal(false)
+      session.hasGlobalKoulutusmuotoReadAccess should equal(true)
+      session.hasAnyReadAccess should equal(true)
+      session.isRoot should equal(false)
+      session.hasRaportitAccess should equal(false)
+    }
+    "pystyy kirjoittamaan kielitutkinnon opiskeluoikeuden rajapinnan kautta" in {
+      putOppija(kielitutkinnonOpiskeluoikeus, headers = authHeaders(MockUsers.kielitutkintorekisteriKäyttäjä) ++ jsonContent) {
+        verifyResponseStatusOk()
+      }
+    }
+    "pystyy lukemaan kielitutkinnon opiskeluoikeuden rajapinnan kautta" in {
+      get(s"api/oppija/${kielitutkinnonSuorittaja.oid}", headers = authHeaders(MockUsers.kielitutkintorekisteriKäyttäjä)) {
+        verifyResponseStatusOk()
+      }
+    }
+    "ei pysty lukemaan muita opiskeluoikeuksia rajapinnan kautta" in {
+      get(s"api/oppija/${lukiolainen.oid}", headers = authHeaders(MockUsers.kielitutkintorekisteriKäyttäjä)) {
+        verifyResponseStatus(404, KoskiErrorCategory.notFound.oppijaaEiLöydyTaiEiOikeuksia(s"Oppijaa ${lukiolainen.oid} ei löydy tai käyttäjällä ei ole oikeuksia tietojen katseluun."))
+      }
     }
     "pystyy kirjoittamaan kielitutkinnon opiskeluoikeuden" in { canWrite(kielitutkinnonOpiskeluoikeus) }
     "pystyy lukemaan kielitutkinnon opiskeluoikeuden" in { canRead(ExamplesKielitutkinto.exampleMockOppija) }

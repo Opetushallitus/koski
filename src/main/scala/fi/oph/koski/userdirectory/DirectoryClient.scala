@@ -61,6 +61,9 @@ object DirectoryClient {
         val roolit = käyttöoikeudet.collect { case PalveluJaOikeus(palvelu, oikeus) => Palvelurooli(palvelu, oikeus) }
         if (!roolit.map(_.palveluName).exists(List("KOSKI", "VALPAS").contains)) {
           Nil
+        } else if (roolit.contains(Palvelurooli("KOSKI", Rooli.KIELITUTKINTOREKISTERI))) {
+          // Käyttöoikeus on OPH:n organisaatiossa, mutta se ei ole OPH:n yleiskäyttöoikeus vaan rajattu kielitutkintoihin
+          List(KäyttöoikeusViranomainen(roolit))
         } else if (
           organisaatioOid == Opetushallitus.organisaatioOid ||
             roolit.map(_.rooli).forall(_.startsWith(Rooli.omadataOAuth2Prefix))
