@@ -19,7 +19,6 @@ import { IconButton } from '../components-v2/controls/IconButton'
 import { CHARCODE_REMOVE } from '../components-v2/texts/Icon'
 import { ButtonGroup } from '../components-v2/containers/ButtonGroup'
 import { FlatButton } from '../components-v2/controls/FlatButton'
-import { LocalizedTextEdit } from '../components-v2/controls/LocalizedTestField'
 import { Koodistokoodiviite } from '../types/fi/oph/koski/schema/Koodistokoodiviite'
 import {
   Select,
@@ -50,11 +49,6 @@ export const ArviointiView = ({
           ))}
         </TestIdLayer>
       </KeyValueRow>
-      {t(value?.kuvaus) && (
-        <KeyValueRow localizableLabel="Kuvaus">
-          <span style={{ whiteSpace: 'pre-line' }}>{t(value?.kuvaus)}</span>
-        </KeyValueRow>
-      )}
     </KeyValueTable>
   )
 }
@@ -155,15 +149,6 @@ export const ArviointiEdit = ({
             {t('Lisää uusi')}
           </FlatButton>
         </ButtonGroup>
-      </KeyValueRow>
-      <KeyValueRow localizableLabel="Kuvaus">
-        <LocalizedTextEdit
-          large
-          value={value?.kuvaus}
-          onChange={(kuvaus) =>
-            onChange({ ...emptyArviointi, ...value, kuvaus })
-          }
-        />
       </KeyValueRow>
     </KeyValueTable>
   )
