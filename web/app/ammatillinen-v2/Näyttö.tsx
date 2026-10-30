@@ -26,6 +26,7 @@ import React from 'react'
 import { NäytönArviointi } from '../types/fi/oph/koski/schema/NaytonArviointi'
 import { ISO2FinnishDate, todayISODate } from '../date/date'
 import { Koodistokoodiviite } from '../types/fi/oph/koski/schema/Koodistokoodiviite'
+import { LocalizedString } from '../types/fi/oph/koski/schema/LocalizedString'
 import { NäytönArvioitsija } from '../types/fi/oph/koski/schema/NaytonArvioitsija'
 import { CommonProps } from '../components-v2/CommonProps'
 import { NäytönSuorituspaikka } from '../types/fi/oph/koski/schema/NaytonSuorituspaikka'
@@ -232,16 +233,19 @@ const NäytönArviointiView = ({
       <KeyValueRow localizableLabel="Arvioinnista päättäneet">
         {value?.arvioinnistaPäättäneet?.map((a) => t(a.nimi)).join(', ')}
       </KeyValueRow>
-      {value?.hylkäyksenPeruste && (
-        <KeyValueRow localizableLabel="Hylkäyksen peruste">
-          <span style={{ whiteSpace: 'pre-line' }}>
-            {t(value.hylkäyksenPeruste)}
-          </span>
-        </KeyValueRow>
-      )}
+      <HylkäyksenPeruste value={value?.hylkäyksenPeruste} />
     </>
   )
 }
+
+// Hylkäyksen peruste tulee tiedonsiirroista eikä sitä muokata käyttöliittymässä,
+// joten se näytetään muokkaustilassakin vain luettavana.
+const HylkäyksenPeruste = ({ value }: { value?: LocalizedString }) =>
+  value ? (
+    <KeyValueRow localizableLabel="Hylkäyksen peruste">
+      <span style={{ whiteSpace: 'pre-line' }}>{t(value)}</span>
+    </KeyValueRow>
+  ) : null
 const emptyNäytönArviointi: NäytönArviointi = NäytönArviointi({
   päivä: todayISODate(),
   arvosana: Koodistokoodiviite({
@@ -415,6 +419,7 @@ const NäytönArviointiEdit = ({
           testId={'ammatillisennaytonarvioinnistapaattaneet-uusi'}
         />
       </KeyValueRow>
+      <HylkäyksenPeruste value={value?.hylkäyksenPeruste} />
     </>
   )
 }
