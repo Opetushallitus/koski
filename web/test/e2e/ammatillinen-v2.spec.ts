@@ -30,6 +30,20 @@ test.describe('Osittaisen ammatillisen tutkinnon uusi käyttöliittymä', () => 
     await expect(page.getByTestId('oo.0.opiskeluoikeus.tila.value.items.1.rahoitus')).toContainText('Valtionosuusrahoitteinen koulutus')
   })
 
+  test('Paikallisen tutkinnon osan osa-alueen kuvaus näkyy ja on muokattavissa', async ({ page, oppijaPage, oppijaPageV2 }) => {
+    await oppijaPage.goto('1.2.246.562.24.00000000056')
+    const kuvaus = 'oo.0.suoritukset.0.osasuoritukset.5.properties.osasuoritukset.0.properties.paikallinenKuvaus'
+
+    await page.getByRole('button', { name: 'Avaa kaikki' }).click()
+    await expect(page.getByTestId(`${kuvaus}.value`)).toHaveText('Matematiikan opinnot')
+
+    await page.getByTestId('oo.0.opiskeluoikeus.edit').click()
+    await page.getByTestId(`${kuvaus}.edit.input`).fill('Matematiikan opinnot\nToinen rivi')
+    await oppijaPageV2.tallenna()
+
+    await expect(page.getByTestId(`${kuvaus}.value`)).toHaveText('Matematiikan opinnot\nToinen rivi')
+  })
+
   test('Mukautettujen arvosanojen rivit näkyvät katselutilassa vain kun arvo on tosi', async ({ page, oppijaPage }) => {
     await oppijaPage.goto('1.2.246.562.24.00000000055')
 
