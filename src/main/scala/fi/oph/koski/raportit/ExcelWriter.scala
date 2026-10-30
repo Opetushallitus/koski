@@ -251,7 +251,6 @@ object ExcelWriter {
 
     val floatStyle = createFloatStyle(wb, "#.0")
 
-    // Työkirjan tyylien määrä on rajattu, joten sama muotoilu jaetaan sarakkeiden kesken
     val floatStylesByFormat = columns.flatMap(_._1.numberFormat).distinct.map(f => f -> createFloatStyle(wb, f)).toMap
     val columnFloatStyles = columns.flatMap { case (column, index) => column.numberFormat.map(f => index -> floatStylesByFormat(f)) }.toMap
 
