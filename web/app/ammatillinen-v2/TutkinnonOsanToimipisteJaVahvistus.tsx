@@ -33,6 +33,7 @@ export const TutkinnonOsanToimipisteJaVahvistus: React.FC<
           <TestIdText id="vahvistus">
             {[
               ISO2FinnishDate(vahvistus.päivä),
+              ...(vahvistus.paikkakunta ? [t(vahvistus.paikkakunta.nimi)] : []),
               ...vahvistus.myöntäjäHenkilöt.map((h) =>
                 h.titteli ? `${h.nimi}, ${t(h.titteli)}` : h.nimi
               )

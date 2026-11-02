@@ -30,6 +30,87 @@ test.describe('Osittaisen ammatillisen tutkinnon uusi käyttöliittymä', () => 
     await expect(page.getByTestId('oo.0.opiskeluoikeus.tila.value.items.1.rahoitus')).toContainText('Valtionosuusrahoitteinen koulutus')
   })
 
+  test('Paikallisen tutkinnon osan osa-alueen kuvaus näkyy ja on muokattavissa', async ({ page, oppijaPage, oppijaPageV2 }) => {
+    await oppijaPage.goto('1.2.246.562.24.00000000056')
+    const kuvaus = 'oo.0.suoritukset.0.osasuoritukset.5.properties.osasuoritukset.0.properties.paikallinenKuvaus'
+
+    await page.getByRole('button', { name: 'Avaa kaikki' }).click()
+    await expect(page.getByTestId(`${kuvaus}.value`)).toHaveText('Matematiikan opinnot')
+
+    await page.getByTestId('oo.0.opiskeluoikeus.edit').click()
+    await page.getByTestId(`${kuvaus}.edit.input`).fill('Matematiikan opinnot\nToinen rivi')
+    await oppijaPageV2.tallenna()
+
+    await expect(page.getByTestId(`${kuvaus}.value`)).toHaveText('Matematiikan opinnot\nToinen rivi')
+  })
+
+  test('Kokonaisuuden ja opintovalmiuksia tukevien opintojen kuvaukset näkyvät', async ({ page, oppijaPage }) => {
+    await oppijaPage.goto('1.2.246.562.24.00000000056')
+    const os = 'oo.0.suoritukset.0.osasuoritukset'
+
+    await page.getByRole('button', { name: 'Avaa kaikki' }).click()
+    await expect(page.getByTestId(`${os}.2.properties.osasuoritukset.0.properties.kuvaus.value`)).toHaveText('Hoitotarpeen määrittäminen')
+    await expect(page.getByTestId(`${os}.7.properties.osasuoritukset.0.properties.kuvaus.value`)).toHaveText('Lukion maantiedon oppimäärä')
+    await expect(page.getByTestId(`${os}.7.properties.osasuoritukset.1.properties.kuvaus.value`)).toHaveText('Englannin kurssi')
+  })
+
+  test('Valtakunnalliselle tutkinnon osalle voi lisätä kuvauksen', async ({ page, oppijaPage, oppijaPageV2 }) => {
+    await oppijaPage.goto('1.2.246.562.24.00000000056')
+    const kuvaus = 'oo.0.suoritukset.0.osasuoritukset.0.properties.kuvaus'
+
+    await page.getByTestId('oo.0.suoritukset.0.osasuoritukset.0.expand').click()
+    await expect(page.getByTestId(`${kuvaus}.value`)).toHaveCount(0)
+
+    await page.getByTestId('oo.0.opiskeluoikeus.edit').click()
+    await page.getByTestId(`${kuvaus}.edit.input`).fill('Videotuotannon kuvaus')
+    await oppijaPageV2.tallenna()
+
+    await expect(page.getByTestId(`${kuvaus}.value`)).toHaveText('Videotuotannon kuvaus')
+  })
+
+  test('Osasuoritusten tiedonsiirroista tulevat kentät näkyvät', async ({ page, fixtures, oppijaPage }) => {
+    await fixtures.muokkaaOpiskeluoikeutta('1.2.246.562.24.00000000056', (oo) => {
+      const osat = oo.suoritukset[0].osasuoritukset
+      osat[0].vahvistus.paikkakunta = { koodiarvo: '091', koodistoUri: 'kunta' }
+      osat[3].näyttö.arviointi.hylkäyksenPeruste = { fi: 'Näyttö jäi kesken' }
+      osat[4].tutkinto = {
+        tunniste: { koodiarvo: '351301', koodistoUri: 'koulutus' },
+        perusteenDiaarinumero: 'OPH-2762-2017'
+      }
+    })
+    await oppijaPage.goto('1.2.246.562.24.00000000056')
+    const os = 'oo.0.suoritukset.0.osasuoritukset'
+
+    await page.getByRole('button', { name: 'Avaa kaikki' }).click()
+    // Kenttiä ei muokata, joten ne näkyvät samoina myös muokkaustilassa
+    for (const tila of ['katselu', 'muokkaus']) {
+      if (tila === 'muokkaus') await page.getByTestId('oo.0.opiskeluoikeus.edit').click()
+      await expect(page.getByTestId(`${os}.0.properties.vahvistus`)).toHaveText('31.5.2016 Helsinki Reijo Reksi, rehtori')
+      await expect(page.getByTestId(`${os}.4.properties.tutkintoNimi`)).toHaveText('Ajoneuvoalan perustutkinto')
+      await expect(page.getByTestId(`${os}.5.properties.osasuoritukset.2.properties.alkamispäivä`)).toHaveText('1.1.2014')
+      await expect(page.getByText('Näyttö jäi kesken')).toBeVisible()
+    }
+  })
+
+  test('Arvioinnin kuvausta ei näytetä, mutta se säilyy tallennettaessa', async ({ page, fixtures, oppijaPage, oppijaPageV2 }) => {
+    const oid = '1.2.246.562.24.00000000056'
+    await fixtures.muokkaaOpiskeluoikeutta(oid, (oo) => {
+      oo.suoritukset[0].osasuoritukset[0].arviointi[0].kuvaus = { fi: 'Arvioinnin kuvaus' }
+    })
+    await oppijaPage.goto(oid)
+
+    await page.getByTestId('oo.0.suoritukset.0.osasuoritukset.0.expand').click()
+    await expect(page.getByText('Arvioinnin kuvaus')).toHaveCount(0)
+
+    await page.getByTestId('oo.0.opiskeluoikeus.edit').click()
+    expect(await page.locator('textarea').evaluateAll((els) => els.map((e) => (e as HTMLTextAreaElement).value))).not.toContain('Arvioinnin kuvaus')
+    await page.getByTestId('oo.0.suoritukset.0.osasuoritukset.0.properties.kuvaus.edit.input').fill('Muutettu tutkinnon osan kuvaus')
+    await oppijaPageV2.tallenna()
+
+    const oppija = await (await page.request.get(`/koski/api/oppija/${oid}`)).json()
+    expect(oppija.opiskeluoikeudet[0].suoritukset[0].osasuoritukset[0].arviointi[0].kuvaus).toEqual({ fi: 'Arvioinnin kuvaus' })
+  })
+
   test('Mukautettujen arvosanojen rivit näkyvät katselutilassa vain kun arvo on tosi', async ({ page, oppijaPage }) => {
     await oppijaPage.goto('1.2.246.562.24.00000000055')
 
@@ -154,6 +235,10 @@ test.describe('Osittaisen ammatillisen tutkinnon useasta tutkinnosta virkailijan
     await expect(page.getByTestId('oo.0.suoritukset.0.osasuoritukset.4.properties.tutkintoNimi')).toContainText('Ajoneuvoalan perustutkinto')
     await expect(page.getByTestId('oo.0.suoritukset.0.osasuoritukset.4.properties.peruste.value')).toContainText('OPH-5410-2021')
     await expect(page.getByTestId('oo.0.suoritukset.0.osasuoritukset.4.properties.arviointi.0.arvosana')).toContainText('2')
+    // Sekä muulla (0) että yhteisellä (4) tutkinnon osalla on oma toimipiste
+    for (const osa of [0, 4]) {
+      await expect(page.getByTestId(`oo.0.suoritukset.0.osasuoritukset.${osa}.properties.toimipiste`)).toHaveText('Stadin ammatti- ja aikuisopisto, Lehtikuusentien toimipaikka')
+    }
 
     await expect(page.getByTestId('oo.0.suoritukset.0.osasuoritukset.4.properties.osasuoritukset.0.laajuus.value')).toContainText('4 osp')
     await expect(page.getByTestId('oo.0.suoritukset.0.osasuoritukset.4.properties.osasuoritukset.0.arvosana.value')).toContainText('3')

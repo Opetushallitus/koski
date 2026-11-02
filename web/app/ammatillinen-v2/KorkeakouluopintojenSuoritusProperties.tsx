@@ -22,6 +22,7 @@ import { ButtonGroup } from '../components-v2/containers/ButtonGroup'
 import { FlatButton } from '../components-v2/controls/FlatButton'
 import { append } from '../util/fp/arrays'
 import React from 'react'
+import { OsasuorituksenAlkamispäivä } from './OsasuorituksenAlkamispäivä'
 import { ArviointiEdit, ArviointiView, emptyArviointi } from './Arviointi'
 import {
   KoodistoEdit,
@@ -73,6 +74,7 @@ export const KorkeakouluopintojenSuoritusProperties = ({
           />
         </OsasuoritusPropertyValue>
       </OsasuoritusProperty>
+      <OsasuorituksenAlkamispäivä alkamispäivä={osasuoritus.alkamispäivä} />
       {(form.editMode || osasuoritus.arviointi) && (
         <OsasuoritusProperty label={'Arviointi'}>
           <OsasuoritusPropertyValue>

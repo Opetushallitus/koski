@@ -5,6 +5,7 @@ import { localize, t } from '../i18n/i18n'
 import { OsasuoritusTable } from '../components-v2/opiskeluoikeus/OsasuoritusTable'
 import { YhteisenTutkinnonOsanOsaAlueenSuoritusProperties } from './YhteisenTutkinnonOsanOsaAlueenSuoritusProperties'
 import React, { useState } from 'react'
+import { OsasuorituksenAlkamispäivä } from './OsasuorituksenAlkamispäivä'
 import {
   isYhteisenTutkinnonOsanOsaAlueenSuoritus,
   YhteisenTutkinnonOsanOsaAlueenSuoritus
@@ -73,6 +74,10 @@ import { PaikallinenLukionOpinto } from '../types/fi/oph/koski/schema/Paikalline
 import { PaikallinenKoodi } from '../types/fi/oph/koski/schema/PaikallinenKoodi'
 import { PaikallinenOpintovalmiuksiaTukevaOpinto } from '../types/fi/oph/koski/schema/PaikallinenOpintovalmiuksiaTukevaOpinto'
 import { TestIdLayer } from '../appstate/useTestId'
+import {
+  LocalizedTextEdit,
+  LocalizedTextView
+} from '../components-v2/controls/LocalizedTestField'
 
 export type TutkinnonOsanJatkoOpintovalmiuksiaTukevienOpintojenSuoritusPropertiesProps =
   {
@@ -473,6 +478,19 @@ const LukionJaMuunOsasoritusProperties = ({
           </OsasuoritusPropertyValue>
         </OsasuoritusProperty>
       )}
+      <OsasuoritusProperty label={'Kuvaus'}>
+        <OsasuoritusPropertyValue>
+          <FormField
+            form={form}
+            path={osasuoritusPath.prop('koulutusmoduuli').prop('kuvaus')}
+            view={LocalizedTextView}
+            edit={LocalizedTextEdit}
+            editProps={{ large: true }}
+            testId="kuvaus"
+          />
+        </OsasuoritusPropertyValue>
+      </OsasuoritusProperty>
+      <OsasuorituksenAlkamispäivä alkamispäivä={osasuoritus.alkamispäivä} />
       {(form.editMode || osasuoritus.arviointi) && (
         <OsasuoritusProperty label={'Arviointi'}>
           <OsasuoritusPropertyValue>

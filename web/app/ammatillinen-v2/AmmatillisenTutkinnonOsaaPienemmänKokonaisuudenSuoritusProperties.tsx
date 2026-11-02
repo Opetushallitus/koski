@@ -23,12 +23,17 @@ import { ButtonGroup } from '../components-v2/containers/ButtonGroup'
 import { FlatButton } from '../components-v2/controls/FlatButton'
 import { append } from '../util/fp/arrays'
 import React from 'react'
+import { OsasuorituksenAlkamispäivä } from './OsasuorituksenAlkamispäivä'
 import { ArviointiEdit, ArviointiView, emptyArviointi } from './Arviointi'
 import {
   KoodistoEdit,
   KoodistoView
 } from '../components-v2/opiskeluoikeus/KoodistoField'
 import { TestIdLayer } from '../appstate/useTestId'
+import {
+  LocalizedTextEdit,
+  LocalizedTextView
+} from '../components-v2/controls/LocalizedTestField'
 
 type AmmatillisenTutkinnonOsaaPienemmänKokonaisuudenSuoritusPropertiesProps = {
   form: FormModel<AmmatillinenOpiskeluoikeus>
@@ -59,6 +64,19 @@ export const AmmatillisenTutkinnonOsaaPienemmänKokonaisuudenSuoritusProperties 
             </OsasuoritusPropertyValue>
           </OsasuoritusProperty>
         )}
+        <OsasuoritusProperty label={'Kuvaus'}>
+          <OsasuoritusPropertyValue>
+            <FormField
+              form={form}
+              path={osasuoritusPath.prop('koulutusmoduuli').prop('kuvaus')}
+              view={LocalizedTextView}
+              edit={LocalizedTextEdit}
+              editProps={{ large: true }}
+              testId="kuvaus"
+            />
+          </OsasuoritusPropertyValue>
+        </OsasuoritusProperty>
+        <OsasuorituksenAlkamispäivä alkamispäivä={osasuoritus.alkamispäivä} />
         {(form.editMode || osasuoritus.tunnustettu) && (
           <OsasuoritusProperty label={'Tunnustettu'}>
             <OsasuoritusPropertyValue>

@@ -31,6 +31,8 @@ import {
 import { OsasuoritusTable } from '../../components-v2/opiskeluoikeus/OsasuoritusTable'
 import { AmmatillisenTutkinnonOsaaPienemmänKokonaisuudenSuoritusProperties } from '../AmmatillisenTutkinnonOsaaPienemmänKokonaisuudenSuoritusProperties'
 import React from 'react'
+import { OsasuorituksenAlkamispäivä } from '../OsasuorituksenAlkamispäivä'
+import { TutkinnonOsanToimipisteJaVahvistus } from '../TutkinnonOsanToimipisteJaVahvistus'
 import {
   KoodistoEdit,
   KoodistoView
@@ -55,10 +57,6 @@ import {
   LocalizedTextEdit,
   LocalizedTextView
 } from '../../components-v2/controls/LocalizedTestField'
-import {
-  PaikallinenTutkinnonOsa,
-  isPaikallinenTutkinnonOsa
-} from '../../types/fi/oph/koski/schema/PaikallinenTutkinnonOsa'
 
 type MuunOsittaisenAmmatillisenTutkinnonUseastaTutkinnostaTutkinnonosanSuoritusPropertiesProps =
   {
@@ -75,11 +73,6 @@ export const MuunOsittaisenAmmatillisenTutkinnonUseastaTutkinnostaTutkinnonosanS
     osasuoritusPath,
     osasuoritus
   }: MuunOsittaisenAmmatillisenTutkinnonUseastaTutkinnostaTutkinnonosanSuoritusPropertiesProps) => {
-    const paikallinenKoulutusmoduuli = isPaikallinenTutkinnonOsa(
-      osasuoritus.koulutusmoduuli
-    )
-      ? osasuoritus.koulutusmoduuli
-      : undefined
     return (
       <>
         {osasuoritus.suorituskieli && (
@@ -95,28 +88,20 @@ export const MuunOsittaisenAmmatillisenTutkinnonUseastaTutkinnostaTutkinnonosanS
             </OsasuoritusPropertyValue>
           </OsasuoritusProperty>
         )}
-        {paikallinenKoulutusmoduuli &&
-          (form.editMode || paikallinenKoulutusmoduuli.kuvaus) && (
-            <OsasuoritusProperty label={'Kuvaus'}>
-              <OsasuoritusPropertyValue>
-                <FormField
-                  form={form}
-                  path={(
-                    osasuoritusPath.prop(
-                      'koulutusmoduuli'
-                    ) as unknown as FormOptic<
-                      AmmatillinenOpiskeluoikeus,
-                      PaikallinenTutkinnonOsa
-                    >
-                  ).prop('kuvaus')}
-                  view={LocalizedTextView}
-                  edit={LocalizedTextEdit}
-                  editProps={{ large: true }}
-                  testId="paikallinenKuvaus"
-                />
-              </OsasuoritusPropertyValue>
-            </OsasuoritusProperty>
-          )}
+        {(form.editMode || osasuoritus.koulutusmoduuli.kuvaus) && (
+          <OsasuoritusProperty label={'Kuvaus'}>
+            <OsasuoritusPropertyValue>
+              <FormField
+                form={form}
+                path={osasuoritusPath.prop('koulutusmoduuli').prop('kuvaus')}
+                view={LocalizedTextView}
+                edit={LocalizedTextEdit}
+                editProps={{ large: true }}
+                testId="kuvaus"
+              />
+            </OsasuoritusPropertyValue>
+          </OsasuoritusProperty>
+        )}
         <OsasuoritusProperty label={'Pakollinen'}>
           <OsasuoritusPropertyValue>
             <FormField
@@ -127,6 +112,10 @@ export const MuunOsittaisenAmmatillisenTutkinnonUseastaTutkinnostaTutkinnonosanS
             />
           </OsasuoritusPropertyValue>
         </OsasuoritusProperty>
+        <TutkinnonOsanToimipisteJaVahvistus
+          toimipiste={osasuoritus.toimipiste}
+        />
+        <OsasuorituksenAlkamispäivä alkamispäivä={osasuoritus.alkamispäivä} />
         {(form.editMode || osasuoritus.arviointi) && (
           <OsasuoritusProperty label={'Arviointi'}>
             <OsasuoritusPropertyValue>
