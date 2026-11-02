@@ -48,6 +48,7 @@ test.describe('Esiopetuksen oppijamääräraportti', () => {
     await raportitPage.syötäPäivä('1.1.2015')
     const kysely = await raportitPage.muodostaJaLueKysely()
     expect(kysely).toMatchObject({
+      type: 'esiopetuksenOppijamaaratRaportti',
       organisaatioOid: 'OSTOPALVELUTAIPALVELUSETELI',
       paiva: '2015-01-01'
     })

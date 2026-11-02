@@ -2,6 +2,7 @@ package fi.oph.koski.massaluovutus
 
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.koskiuser.{MockUsers, UserWithPassword}
+import fi.oph.koski.log.AuditLogTester
 import fi.oph.koski.massaluovutus.raportit._
 import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.raportit.RaportitService
@@ -46,6 +47,20 @@ class MassaluovutusRaportitSpec extends AnyFreeSpec with MassaluovutusTestMethod
       verifyResponseStatus(403, KoskiErrorCategory.forbidden())
     }
   }
+
+  private def verifyAinoaAuditlokimerkintä(raportti: String, paiva: String, oppilaitokset: List[String]): Unit =
+    AuditLogTester.verifyOnlyAuditLogMessageForOperation(Map(
+      "operation" -> "OPISKELUOIKEUS_RAPORTTI",
+      "target" -> Map("hakuEhto" -> (
+        "lang=fi&" + oppilaitokset.map(oid => s"oppilaitosOid=$oid").mkString("&") + s"&paiva=$paiva&raportti=$raportti"
+      )),
+    ))
+
+  private val helsinginOstopalveluyksiköt = List(
+    MockOrganisaatiot.jyväskylänNormaalikoulu,
+    MockOrganisaatiot.päiväkotiMajakka,
+    MockOrganisaatiot.päiväkotiTouhula,
+  )
 
   // Lukio
 
@@ -306,6 +321,22 @@ class MassaluovutusRaportitSpec extends AnyFreeSpec with MassaluovutusTestMethod
     "Ei onnistu väärän organisaation tietoihin" in {
       raporttiKyselyEiOnnistu(query, MockUsers.helsinkiKatselija)
     }
+
+    "Kysely kirjaa auditlokiin yhden merkinnän" in {
+      AuditLogTester.clearMessages()
+      raporttiKyselyOnnistuu(query, MockUsers.jyväskylänNormaalikoulunPalvelukäyttäjä)
+      verifyAinoaAuditlokimerkintä("esiopetus", "2012-01-01", List(MockOrganisaatiot.jyväskylänNormaalikoulu))
+    }
+
+    "Ostopalvelu/palveluseteli-kysely onnistuu ja kirjaa auditlokiin ostopalveluyksiköt" in {
+      AuditLogTester.clearMessages()
+      val ostopalvelukysely = query.copy(
+        paiva = LocalDate.of(2015, 1, 1),
+        organisaatioOid = Some(app.organisaatioService.ostopalveluRootOid),
+      )
+      raporttiKyselyOnnistuu(ostopalvelukysely, MockUsers.helsinkiTallentaja)
+      verifyAinoaAuditlokimerkintä("esiopetus", "2015-01-01", helsinginOstopalveluyksiköt)
+    }
   }
 
   "Esiopetuksen oppijamäärät" - {
@@ -322,12 +353,14 @@ class MassaluovutusRaportitSpec extends AnyFreeSpec with MassaluovutusTestMethod
       raporttiKyselyEiOnnistu(query, MockUsers.helsinkiKatselija)
     }
 
-    "Ostopalvelu/palveluseteli-kysely onnistuu ostavan koulutustoimijan käyttäjällä" in {
+    "Ostopalvelu/palveluseteli-kysely onnistuu ja kirjaa auditlokiin ostopalveluyksiköt" in {
+      AuditLogTester.clearMessages()
       val ostopalvelukysely = query.copy(
         paiva = LocalDate.of(2015, 1, 1),
         organisaatioOid = Some(app.organisaatioService.ostopalveluRootOid),
       )
       raporttiKyselyOnnistuu(ostopalvelukysely, MockUsers.helsinkiTallentaja)
+      verifyAinoaAuditlokimerkintä("esiopetuksenoppijamaaratraportti", "2015-01-01", helsinginOstopalveluyksiköt)
     }
   }
 

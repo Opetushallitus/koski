@@ -26,6 +26,7 @@ import {
   ammatillinenOsittainenSuoritustiedotKyselymalli,
   ammatillinenTutkintoSuoritustiedotKyselymalli,
   esiopetuksenOppijamaaratRaporttiKyselymalli,
+  esiopetusKyselymalli,
   ibRaporttityypit,
   ibSuoritustiedotKyselymalli,
   lukio2019OpintopistekertymatKyselymalli,
@@ -384,11 +385,12 @@ const getInitialState = (pathTokens) => {
     pathKategoriaId
   )
   const raporttiIdxByPath =
-    tabIdxByPath &&
-    findIndexById(
-      kaikkiRaportitKategorioittain[tabIdxByPath].raportit,
-      pathRaporttiId
-    )
+    tabIdxByPath === null
+      ? null
+      : findIndexById(
+          kaikkiRaportitKategorioittain[tabIdxByPath].raportit,
+          pathRaporttiId
+        )
 
   return {
     tabIdxByPath,
@@ -422,11 +424,12 @@ export const raportitContentP = (pathTokens) => {
     (state, organisaatiot) => {
       const tabs = getEnrichedRaportitKategorioittain(organisaatiot)
       const selectedTabIdx =
-        state.tabIdxByPath && tabs[state.tabIdxByPath].visible
+        state.tabIdxByPath !== null && tabs[state.tabIdxByPath].visible
           ? state.tabIdxByPath
           : tabs.findIndex((r) => r.visible)
       const selectedRaporttiIdx =
-        state.raporttiIdxByPath &&
+        selectedTabIdx === state.tabIdxByPath &&
+        state.raporttiIdxByPath !== null &&
         tabs[selectedTabIdx].raportit[state.raporttiIdxByPath].visible
           ? state.raporttiIdxByPath
           : 0
@@ -954,7 +957,7 @@ function LuvaOpiskelijamaaratRaportti({ stateP }) {
 function EsiopetusRaportti({ stateP }) {
   const titleText = <Text name="esiopetusraportti-title" />
   const shortDescriptionText = (
-    <Text name="esiopetusraportti-short-description" />
+    <Text name="esiopetusraportti-short-description-massaluovutus" />
   )
   const dateInputHelpText = <Text name="esiopetusraportti-date-input-help" />
   const kotikuntaPvmInputHelp = (
@@ -972,6 +975,7 @@ function EsiopetusRaportti({ stateP }) {
       showKotikuntaPvmInput
       kotikuntaPvmInputHelp={kotikuntaPvmInputHelp}
       example={exampleText}
+      massaluovutusKyselymalli={esiopetusKyselymalli}
       lang={lang}
     />
   )

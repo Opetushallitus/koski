@@ -11,7 +11,6 @@ import fi.oph.koski.log.KoskiOperation.OPISKELUOIKEUS_RAPORTTI
 import fi.oph.koski.log.{AuditLog, KoskiAuditLogMessage, Logging}
 import fi.oph.koski.raportit.aikuistenperusopetus.AikuistenPerusopetusRaportti
 import fi.oph.koski.organisaatio.OrganisaatioOid
-import fi.oph.koski.raportit.esiopetus.EsiopetusRaporttiService
 import fi.oph.koski.schema.{Koodistokoodiviite, OpiskeluoikeudenTyyppi, Organisaatio}
 import fi.oph.koski.servlet.{KoskiSpecificApiServlet, NoCache}
 import org.scalatra.{ContentEncodingSupport, Cookie, CookieOptions}
@@ -19,7 +18,6 @@ import org.scalatra.{ContentEncodingSupport, Cookie, CookieOptions}
 class RaportitServlet(implicit val application: KoskiApplication) extends KoskiSpecificApiServlet with RequiresVirkailijaOrPalvelukäyttäjä with Logging with NoCache with ContentEncodingSupport {
   private lazy val raportitService = new RaportitService(application)
   private lazy val organisaatioService = application.organisaatioService
-  private lazy val esiopetusService = new EsiopetusRaporttiService(application)
   private lazy val accessResolver = RaportitAccessResolver(application)
   private lazy val vapaatRaporttipaikat = new Semaphore(application.config.getInt("raportit.maxConcurrent"))
 
@@ -164,14 +162,16 @@ class RaportitServlet(implicit val application: KoskiApplication) extends KoskiS
     val lang = getStringParam("lang")
     val t = new LocalizationReader(application.koskiLocalizationRepository, lang)
 
-    val resp = getStringParam("oppilaitosOid") match {
+    val (oppilaitosOid, auditlokinOppilaitokset) = getStringParam("oppilaitosOid") match {
       case organisaatioService.ostopalveluRootOid =>
-        esiopetusService.buildOstopalveluRaportti(date, getKotikuntaDate, password, token, t)
+        (organisaatioService.ostopalveluRootOid, organisaatioService.omatOstopalveluOrganisaatiot.map(_.oid).mkString(","))
       case oid =>
-        esiopetusService.buildOrganisaatioRaportti(validateOrganisaatioOid(oid), date, getKotikuntaDate, password, token, t)
+        val validoituOid = validateOrganisaatioOid(oid)
+        (validoituOid, validoituOid)
     }
-
-    writeExcel(resp, t)
+    val kotikuntaPvm = getKotikuntaDate
+    AuditLog.log(KoskiAuditLogMessage(OPISKELUOIKEUS_RAPORTTI, session, Map(hakuEhto -> s"raportti=esiopetus&oppilaitosOid=$auditlokinOppilaitokset&paiva=$date&lang=${t.language}${kotikuntaPvm.fold("")(p => s"&kotikuntaPvm=$p")}")))
+    writeExcel(raportitService.esiopetus(oppilaitosOid, date, kotikuntaPvm, password, token, t), t)
   }
 
   get("/perusopetukseenvalmistavansuoritustietojentarkistus") {

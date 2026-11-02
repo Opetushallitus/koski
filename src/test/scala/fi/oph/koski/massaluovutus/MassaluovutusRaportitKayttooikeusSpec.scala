@@ -120,8 +120,8 @@ class MassaluovutusRaportitKayttooikeusSpec extends AnyFreeSpec with Massaluovut
   }
 
   "Ostopalvelu/palveluseteli-valinta" - {
-    "sallitaan ostavan koulutustoimijan käyttäjälle vain esiopetuksen oppijamääräraportissa" in {
-      sallitutKyselyt(ostopalvelunRaporttikyselyt, MockUsers.helsinkiTallentaja) should equal(List("Esiopetuksen oppijamäärät"))
+    "sallitaan ostavan koulutustoimijan käyttäjälle vain esiopetuksen raporteissa" in {
+      sallitutKyselyt(ostopalvelunRaporttikyselyt, MockUsers.helsinkiTallentaja) should equal(List("Esiopetus", "Esiopetuksen oppijamäärät"))
     }
 
     "estetään ilman ostopalveluoikeuksia" in {
@@ -129,7 +129,7 @@ class MassaluovutusRaportitKayttooikeusSpec extends AnyFreeSpec with Massaluovut
     }
 
     "ei sallita pelkällä globaalilla lukuoikeudella" in {
-      sallitutKyselyt(ostopalvelunRaporttikyselyt, MockUsers.paakayttaja) should not contain ("Esiopetuksen oppijamäärät")
+      sallitutKyselyt(ostopalvelunRaporttikyselyt, MockUsers.paakayttaja) shouldBe empty
     }
   }
 

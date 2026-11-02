@@ -163,6 +163,11 @@ export class KoskiRaportitPage {
     await expect(this.muodostaButton).toBeVisible()
   }
 
+  async gotoEsiopetus() {
+    await this.page.goto('/koski/raportit/esiopetus/esiopetuksenraportti')
+    await expect(this.muodostaButton).toBeVisible()
+  }
+
   async gotoEsiopetuksenOppijamaarat() {
     await this.page.goto(
       '/koski/raportit/esiopetus/esiopetuksenoppijamäärienraportti'
