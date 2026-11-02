@@ -232,7 +232,7 @@ src/test/scala/fi/oph/koski/todistus/
 ```
 
 Pikselivertailu käyttää referenssikuvia hakemistosta
-`src/test/resources/todistus-test-kielitutkinto-yleinenkielitutkinto-fi-expected/`.
+`src/test/resources/todistus-test-kielitutkinto-yleinenkielitutkinto-expected/`.
 
 `simulateMockDownloadError()`:ssa on simulointi todistuksen luonnin epäonnistumiseen tietyllä
 mock-oppijalla.

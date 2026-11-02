@@ -5,6 +5,7 @@ import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
 import fi.oph.koski.koskiuser.MockUsers
 import fi.oph.koski.schema.KoskiSchema.strictDeserialization
 import fi.oph.koski.schema.{KielitutkinnonOpiskeluoikeus, Opiskeluoikeus, YleisenKielitutkinnonOsakokeenSuoritus}
+import org.apache.commons.io.FileUtils
 import org.apache.pdfbox.Loader
 import org.apache.pdfbox.pdmodel.PDDocument
 import org.apache.pdfbox.rendering.PDFRenderer
@@ -16,7 +17,7 @@ import org.verapdf.gf.foundry.VeraGreenfieldFoundryProvider
 import org.verapdf.pdfa.flavours.PDFAFlavour
 import org.verapdf.pdfa.{Foundries, PDFAParser, PDFAValidator}
 
-import java.awt.Rectangle
+import java.awt.{Color, Rectangle}
 import java.awt.image.BufferedImage
 import javax.imageio.ImageIO
 import scala.jdk.CollectionConverters._
@@ -351,14 +352,11 @@ class TodistusLatausSpec extends TodistusSpecHelpers with BeforeAndAfterAll {
 
   private lazy val enPaivitysPdfText: String = new PDFTextStripper().getText(enPaivitysPdfDocument)
 
-  // Temp-hakemistot debuggausta varten
-  private lazy val datePrefix: String = {
-    java.time.LocalDate.now().format(java.time.format.DateTimeFormatter.ISO_LOCAL_DATE)
-  }
-
-  private lazy val baseTempDir: java.nio.file.Path = {
-    val dir = java.nio.file.Files.createTempDirectory(s"todistus-test-kielitutkinto-yleinenkielitutkinto-${datePrefix}-")
-    println(s"DEBUG: Temp-hakemisto: ${dir.toAbsolutePath}")
+  private lazy val outputDir: java.nio.file.Path = {
+    val dir = java.nio.file.Paths.get("target", "todistus-visual-test")
+    FileUtils.deleteDirectory(dir.toFile)
+    java.nio.file.Files.createDirectories(dir)
+    println(s"DEBUG: Tulostehakemisto: ${dir.toAbsolutePath}")
     dir
   }
 
@@ -404,8 +402,7 @@ class TodistusLatausSpec extends TodistusSpecHelpers with BeforeAndAfterAll {
   }
 
   "Todistuksen generointi onnistuu ja todistus valmistuu" in {
-    // Kirjoita PDF temp-tiedostoon debuggausta varten
-    writeTempPdf(baseTempDir, "todistus-test.pdf", pdfBytes, "PDF kirjoitettu tiedostoon")
+    writePdf(outputDir, "todistus-test.pdf", pdfBytes, "PDF kirjoitettu tiedostoon")
 
     completedJob.state should equal(TodistusState.COMPLETED)
     completedJob.error should be(None)
@@ -1169,7 +1166,7 @@ class TodistusLatausSpec extends TodistusSpecHelpers with BeforeAndAfterAll {
     pageCount: Int
   ): Unit = {
     // Luo lataustapa-alihakemisto
-    val lataustapaDir = baseTempDir.resolve(lataustapa)
+    val lataustapaDir = outputDir.resolve(lataustapa)
     java.nio.file.Files.createDirectories(lataustapaDir)
     println(s"DEBUG: Lataustapa-hakemisto: ${lataustapaDir.toAbsolutePath}")
 
@@ -1191,7 +1188,7 @@ class TodistusLatausSpec extends TodistusSpecHelpers with BeforeAndAfterAll {
     // Tallenna koko renderöidyt sivut debuggausta varten
     testPages.foreach { case (pageIdx, pageImage) =>
       println(s"DEBUG: Renderöity actual-sivu ${pageIdx + 1}: ${pageImage.getWidth}x${pageImage.getHeight} px")
-      writeTempImage(
+      writeImage(
         lataustapaDir,
         s"todistus-full-page-${pageIdx + 1}.png",
         pageImage,
@@ -1206,7 +1203,7 @@ class TodistusLatausSpec extends TodistusSpecHelpers with BeforeAndAfterAll {
       val testArea = cropImage(testPages(region.pageIndex), region)
 
       // Tallenna leikatut alueet debuggausta varten
-      writeTempImage(
+      writeImage(
         lataustapaDir,
         s"todistus-area-${region.name}.png",
         testArea,
@@ -1223,6 +1220,18 @@ class TodistusLatausSpec extends TodistusSpecHelpers with BeforeAndAfterAll {
 
     referencePages.foreach { case (pageIdx, pageImage) =>
       println(s"DEBUG: Ladattu expected-sivu ${pageIdx + 1}: ${pageImage.getWidth}x${pageImage.getHeight} px")
+    }
+
+    // Kirjoitetaan ennen tarkistuksia, jotta kuvat jäävät talteen myös testin epäonnistuessa
+    testPages.foreach { case (pageIdx, actualPage) =>
+      val pageNumber = pageIdx + 1
+      val expectedPage = referencePages(pageIdx)
+      val (diffImage, changedPixels) = createPageDiff(actualPage, expectedPage)
+      println(s"DEBUG: Sivulla $pageNumber poikkeaa referenssistä $changedPixels pikseliä")
+      if (changedPixels > 0) {
+        writeImage(lataustapaDir, s"todistus-full-page-$pageNumber-expected.png", expectedPage, s"DEBUG: Expected-sivun $pageNumber kuva kirjoitettu")
+        writeImage(lataustapaDir, s"todistus-full-page-$pageNumber-diff.png", diffImage, s"DEBUG: Sivun $pageNumber erokuva kirjoitettu")
+      }
     }
 
     // Toinen loop: Vertaa testialueita referenssialueisiin
@@ -1254,14 +1263,42 @@ class TodistusLatausSpec extends TodistusSpecHelpers with BeforeAndAfterAll {
     }
   }
 
-  private def writeTempPdf(dir: java.nio.file.Path, filename: String, bytes: Array[Byte], debugMessage: String): java.nio.file.Path = {
+  private def createPageDiff(actual: BufferedImage, expected: BufferedImage): (BufferedImage, Int) = {
+    val width = math.max(actual.getWidth, expected.getWidth)
+    val height = math.max(actual.getHeight, expected.getHeight)
+    val diff = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB)
+    var changedPixels = 0
+
+    for {
+      y <- 0 until height
+      x <- 0 until width
+    } {
+      val isInBoth = x < actual.getWidth && x < expected.getWidth && y < actual.getHeight && y < expected.getHeight
+      if (isInBoth && actual.getRGB(x, y) == expected.getRGB(x, y)) {
+        diff.setRGB(x, y, fadeTowardsWhite(actual.getRGB(x, y)))
+      } else {
+        diff.setRGB(x, y, Color.RED.getRGB)
+        changedPixels += 1
+      }
+    }
+
+    (diff, changedPixels)
+  }
+
+  private def fadeTowardsWhite(rgb: Int): Int = {
+    def fade(channel: Int): Int = 255 - (255 - channel) / 4
+    val color = new Color(rgb)
+    new Color(fade(color.getRed), fade(color.getGreen), fade(color.getBlue)).getRGB
+  }
+
+  private def writePdf(dir: java.nio.file.Path, filename: String, bytes: Array[Byte], debugMessage: String): java.nio.file.Path = {
     val file = dir.resolve(filename)
     java.nio.file.Files.write(file, bytes)
     println(s"$debugMessage: ${file.toAbsolutePath}")
     file
   }
 
-  private def writeTempImage(dir: java.nio.file.Path, filename: String, image: BufferedImage, debugMessage: String): java.nio.file.Path = {
+  private def writeImage(dir: java.nio.file.Path, filename: String, image: BufferedImage, debugMessage: String): java.nio.file.Path = {
     val file = dir.resolve(filename)
     ImageIO.write(image, "png", file.toFile)
     println(s"$debugMessage: ${file.toAbsolutePath}")
