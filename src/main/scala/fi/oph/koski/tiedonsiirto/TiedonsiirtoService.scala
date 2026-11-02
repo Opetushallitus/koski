@@ -197,7 +197,7 @@ class TiedonsiirtoService(
         .flatMap(_.opiskeluoikeudet.headOption.map(_.tyyppi.koodiarvo))
         .orElse(data.flatMap(extractKoulutusmuoto))
 
-      val juuriOrganisaatiot = if (koskiSession.isRoot) koulutustoimija else koskiSession.juuriOrganisaatiot
+      val juuriOrganisaatiot = if (koskiSession.isRoot || koskiSession.isKielitutkintorekisteri) koulutustoimija else koskiSession.juuriOrganisaatiot
 
       juuriOrganisaatiot.foreach((org: OrganisaatioWithOid) => {
         val (data: Option[JValue], virheet: Option[List[ErrorDetail]]) = error.map(e => (Some(e.data), Some(e.virheet))).getOrElse((None, None))

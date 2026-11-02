@@ -215,10 +215,6 @@ case class KäyttöoikeusGlobal(globalPalveluroolit: List[Palvelurooli]) extends
       AccessType.käyttöliittymäsiirronMitätöinti,
       AccessType.lähdejärjestelmäkytkennänPurkaminen,
     )
-    case Palvelurooli("KOSKI", KIELITUTKINTOREKISTERI) => List(
-      AccessType.read,
-      AccessType.write,
-    )
     case _ => Nil
   }
 
@@ -260,7 +256,9 @@ case class KäyttöoikeusOrg(
 ) extends OrgKäyttöoikeus
 
 case class KäyttöoikeusViranomainen(globalPalveluroolit: List[Palvelurooli]) extends Käyttöoikeus {
-  def globalAccessType: List[AccessType.Value] = if (globalPalveluroolit.exists(r => r.palveluName == "KOSKI" && Rooli.globaalitKoulutusmuotoRoolit.contains(r.rooli))) {
+  // Kielitutkintorekisterin lukuoikeus rajautuu kielitutkintoihin kuten GLOBAALI_LUKU_*-roolit koulutusmuotoihinsa;
+  // kirjoitusoikeus ratkaistaan erikseen KoskiSpecificSession.hasKielitutkintoAccess-metodissa.
+  def globalAccessType: List[AccessType.Value] = if (globalPalveluroolit.exists(r => r.palveluName == "KOSKI" && (Rooli.globaalitKoulutusmuotoRoolit.contains(r.rooli) || r.rooli == KIELITUTKINTOREKISTERI))) {
     List(AccessType.read)
   } else {
     Nil
