@@ -1,23 +1,27 @@
 package fi.oph.koski.todistus
 
 import fi.oph.koski.KoskiApplicationForTests
+import fi.oph.koski.db.PostgresDriverWithJsonSupport.plainAPI._
+import fi.oph.koski.db.QueryMethods
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
 import fi.oph.koski.koskiuser.MockUsers
 import fi.oph.koski.schema.KoskiSchema.strictDeserialization
 import fi.oph.koski.schema.{KielitutkinnonOpiskeluoikeus, Opiskeluoikeus, YleisenKielitutkinnonOsakokeenSuoritus}
+import org.apache.commons.io.FileUtils
 import org.apache.pdfbox.Loader
 import org.apache.pdfbox.pdmodel.PDDocument
 import org.apache.pdfbox.rendering.PDFRenderer
 import org.apache.pdfbox.text.{PDFTextStripper, PDFTextStripperByArea}
 import org.json4s.jackson.JsonMethods
-import org.scalatest.BeforeAndAfterAll
+import org.scalatest.{Args, BeforeAndAfterAll, Status}
 import org.verapdf.core.VeraPDFException
 import org.verapdf.gf.foundry.VeraGreenfieldFoundryProvider
 import org.verapdf.pdfa.flavours.PDFAFlavour
 import org.verapdf.pdfa.{Foundries, PDFAParser, PDFAValidator}
 
-import java.awt.Rectangle
+import java.awt.{Color, Rectangle}
 import java.awt.image.BufferedImage
+import java.time.LocalDateTime
 import javax.imageio.ImageIO
 import scala.jdk.CollectionConverters._
 
@@ -35,13 +39,38 @@ class TodistusLatausSpec extends TodistusSpecHelpers with BeforeAndAfterAll {
 
   private lazy val opiskeluoikeusOid: String = opiskeluoikeus.oid.get
 
-  private lazy val todistusJob: TodistusJob = {
-    val req = TodistusGenerateRequest(opiskeluoikeusOid, templateVariant)
-    addGenerateJobSuccessfully(req, hetu) { todistusJob =>
-      todistusJob.state should equal(TodistusState.QUEUED)
-      todistusJob
-    }
+  private val referenceImageCreatedAt = LocalDateTime.of(2026, 9, 29, 12, 0)
+  private val referenceImageOid = "1.2.246.562.15.48887126828"
+
+  // Todistuksilla näkyvä OID arvotaan fixtureita luotaessa, joten testien ajaksi vaihdetaan referenssikuvien OID
+  override protected def runTests(testName: Option[String], args: Args): Status = {
+    val fixtureOid = getVahvistettuKielitutkinnonOpiskeluoikeusOid(oppijaOid).get
+    overwriteOpiskeluoikeusOidInDb(from = fixtureOid, to = referenceImageOid)
+    try super.runTests(testName, args)
+    finally overwriteOpiskeluoikeusOidInDb(from = referenceImageOid, to = fixtureOid)
   }
+
+  // Ohittaa historian ja hakuindeksin, joten OID saa olla muutettuna vain väliaikaisesti
+  private def overwriteOpiskeluoikeusOidInDb(from: String, to: String): Unit =
+    withoutRunningSchedulers(truncate = false) {
+      val updatedRows = QueryMethods.runDbSync(app.masterDatabase.db, sql"UPDATE opiskeluoikeus SET oid = $to WHERE oid = $from".asUpdate)
+      updatedRows should equal(1)
+    }
+
+  private def addQueuedJobWithFixedDate(templateVariant: String): TodistusJob =
+    app.todistusRepository.addRawForUnitTests(TodistusJob(
+      id = java.util.UUID.randomUUID().toString,
+      userOid = Some(oppijaOid),
+      oppijaOid = oppijaOid,
+      opiskeluoikeusOid = opiskeluoikeusOid,
+      templateVariant = templateVariant,
+      opiskeluoikeusVersionumero = None,
+      oppijaHenkilötiedotHash = None,
+      isStamped = !TodistusTemplateVariant.printVariants.contains(templateVariant),
+      createdAt = referenceImageCreatedAt
+    ))
+
+  private lazy val todistusJob: TodistusJob = addQueuedJobWithFixedDate(templateVariant)
 
   private lazy val completedJob: TodistusJob = waitForCompletion(todistusJob.id, hetu)
 
@@ -84,13 +113,7 @@ class TodistusLatausSpec extends TodistusSpecHelpers with BeforeAndAfterAll {
   // Printattava todistus (fi_tulostettava_uusi) - vain pääkäyttäjille
   private val printTemplateVariant = "fi_tulostettava_uusi"
 
-  private lazy val printTodistusJob: TodistusJob = {
-    val req = TodistusGenerateRequest(opiskeluoikeusOid, printTemplateVariant)
-    addGenerateJobSuccessfullyAsVirkailijaPääkäyttäjä(req) { todistusJob =>
-      todistusJob.state should equal(TodistusState.QUEUED)
-      todistusJob
-    }
-  }
+  private lazy val printTodistusJob: TodistusJob = addQueuedJobWithFixedDate(printTemplateVariant)
 
   private lazy val printCompletedJob: TodistusJob = waitForCompletionAsVirkailijaPääkäyttäjä(printTodistusJob.id)
 
@@ -114,13 +137,7 @@ class TodistusLatausSpec extends TodistusSpecHelpers with BeforeAndAfterAll {
 
   private val svTemplateVariant = "sv"
 
-  private lazy val svTodistusJob: TodistusJob = {
-    val req = TodistusGenerateRequest(opiskeluoikeusOid, svTemplateVariant)
-    addGenerateJobSuccessfully(req, hetu) { todistusJob =>
-      todistusJob.state should equal(TodistusState.QUEUED)
-      todistusJob
-    }
-  }
+  private lazy val svTodistusJob: TodistusJob = addQueuedJobWithFixedDate(svTemplateVariant)
 
   private lazy val svCompletedJob: TodistusJob = waitForCompletion(svTodistusJob.id, hetu)
 
@@ -156,13 +173,7 @@ class TodistusLatausSpec extends TodistusSpecHelpers with BeforeAndAfterAll {
 
   private val enTemplateVariant = "en"
 
-  private lazy val enTodistusJob: TodistusJob = {
-    val req = TodistusGenerateRequest(opiskeluoikeusOid, enTemplateVariant)
-    addGenerateJobSuccessfully(req, hetu) { todistusJob =>
-      todistusJob.state should equal(TodistusState.QUEUED)
-      todistusJob
-    }
-  }
+  private lazy val enTodistusJob: TodistusJob = addQueuedJobWithFixedDate(enTemplateVariant)
 
   private lazy val enCompletedJob: TodistusJob = waitForCompletion(enTodistusJob.id, hetu)
 
@@ -199,13 +210,7 @@ class TodistusLatausSpec extends TodistusSpecHelpers with BeforeAndAfterAll {
   // Printattava todistus: fi_tulostettava_paivitys (2 sivua, ei tiedotesivua)
   private val fiPaivitysTemplateVariant = "fi_tulostettava_paivitys"
 
-  private lazy val fiPaivitysTodistusJob: TodistusJob = {
-    val req = TodistusGenerateRequest(opiskeluoikeusOid, fiPaivitysTemplateVariant)
-    addGenerateJobSuccessfullyAsVirkailijaPääkäyttäjä(req) { todistusJob =>
-      todistusJob.state should equal(TodistusState.QUEUED)
-      todistusJob
-    }
-  }
+  private lazy val fiPaivitysTodistusJob: TodistusJob = addQueuedJobWithFixedDate(fiPaivitysTemplateVariant)
 
   private lazy val fiPaivitysCompletedJob: TodistusJob = waitForCompletionAsVirkailijaPääkäyttäjä(fiPaivitysTodistusJob.id)
 
@@ -230,13 +235,7 @@ class TodistusLatausSpec extends TodistusSpecHelpers with BeforeAndAfterAll {
   // Printattava todistus: sv_tulostettava_uusi (3 sivua)
   private val svUusiTemplateVariant = "sv_tulostettava_uusi"
 
-  private lazy val svUusiTodistusJob: TodistusJob = {
-    val req = TodistusGenerateRequest(opiskeluoikeusOid, svUusiTemplateVariant)
-    addGenerateJobSuccessfullyAsVirkailijaPääkäyttäjä(req) { todistusJob =>
-      todistusJob.state should equal(TodistusState.QUEUED)
-      todistusJob
-    }
-  }
+  private lazy val svUusiTodistusJob: TodistusJob = addQueuedJobWithFixedDate(svUusiTemplateVariant)
 
   private lazy val svUusiCompletedJob: TodistusJob = waitForCompletionAsVirkailijaPääkäyttäjä(svUusiTodistusJob.id)
 
@@ -261,13 +260,7 @@ class TodistusLatausSpec extends TodistusSpecHelpers with BeforeAndAfterAll {
   // Printattava todistus: sv_tulostettava_paivitys (2 sivua)
   private val svPaivitysTemplateVariant = "sv_tulostettava_paivitys"
 
-  private lazy val svPaivitysTodistusJob: TodistusJob = {
-    val req = TodistusGenerateRequest(opiskeluoikeusOid, svPaivitysTemplateVariant)
-    addGenerateJobSuccessfullyAsVirkailijaPääkäyttäjä(req) { todistusJob =>
-      todistusJob.state should equal(TodistusState.QUEUED)
-      todistusJob
-    }
-  }
+  private lazy val svPaivitysTodistusJob: TodistusJob = addQueuedJobWithFixedDate(svPaivitysTemplateVariant)
 
   private lazy val svPaivitysCompletedJob: TodistusJob = waitForCompletionAsVirkailijaPääkäyttäjä(svPaivitysTodistusJob.id)
 
@@ -292,13 +285,7 @@ class TodistusLatausSpec extends TodistusSpecHelpers with BeforeAndAfterAll {
   // Printattava todistus: en_tulostettava_uusi (3 sivua)
   private val enUusiTemplateVariant = "en_tulostettava_uusi"
 
-  private lazy val enUusiTodistusJob: TodistusJob = {
-    val req = TodistusGenerateRequest(opiskeluoikeusOid, enUusiTemplateVariant)
-    addGenerateJobSuccessfullyAsVirkailijaPääkäyttäjä(req) { todistusJob =>
-      todistusJob.state should equal(TodistusState.QUEUED)
-      todistusJob
-    }
-  }
+  private lazy val enUusiTodistusJob: TodistusJob = addQueuedJobWithFixedDate(enUusiTemplateVariant)
 
   private lazy val enUusiCompletedJob: TodistusJob = waitForCompletionAsVirkailijaPääkäyttäjä(enUusiTodistusJob.id)
 
@@ -323,13 +310,7 @@ class TodistusLatausSpec extends TodistusSpecHelpers with BeforeAndAfterAll {
   // Printattava todistus: en_tulostettava_paivitys (2 sivua)
   private val enPaivitysTemplateVariant = "en_tulostettava_paivitys"
 
-  private lazy val enPaivitysTodistusJob: TodistusJob = {
-    val req = TodistusGenerateRequest(opiskeluoikeusOid, enPaivitysTemplateVariant)
-    addGenerateJobSuccessfullyAsVirkailijaPääkäyttäjä(req) { todistusJob =>
-      todistusJob.state should equal(TodistusState.QUEUED)
-      todistusJob
-    }
-  }
+  private lazy val enPaivitysTodistusJob: TodistusJob = addQueuedJobWithFixedDate(enPaivitysTemplateVariant)
 
   private lazy val enPaivitysCompletedJob: TodistusJob = waitForCompletionAsVirkailijaPääkäyttäjä(enPaivitysTodistusJob.id)
 
@@ -351,14 +332,11 @@ class TodistusLatausSpec extends TodistusSpecHelpers with BeforeAndAfterAll {
 
   private lazy val enPaivitysPdfText: String = new PDFTextStripper().getText(enPaivitysPdfDocument)
 
-  // Temp-hakemistot debuggausta varten
-  private lazy val datePrefix: String = {
-    java.time.LocalDate.now().format(java.time.format.DateTimeFormatter.ISO_LOCAL_DATE)
-  }
-
-  private lazy val baseTempDir: java.nio.file.Path = {
-    val dir = java.nio.file.Files.createTempDirectory(s"todistus-test-kielitutkinto-yleinenkielitutkinto-${datePrefix}-")
-    println(s"DEBUG: Temp-hakemisto: ${dir.toAbsolutePath}")
+  private lazy val outputDir: java.nio.file.Path = {
+    val dir = java.nio.file.Paths.get("target", "todistus-visual-test")
+    FileUtils.deleteDirectory(dir.toFile)
+    java.nio.file.Files.createDirectories(dir)
+    println(s"DEBUG: Tulostehakemisto: ${dir.toAbsolutePath}")
     dir
   }
 
@@ -404,8 +382,7 @@ class TodistusLatausSpec extends TodistusSpecHelpers with BeforeAndAfterAll {
   }
 
   "Todistuksen generointi onnistuu ja todistus valmistuu" in {
-    // Kirjoita PDF temp-tiedostoon debuggausta varten
-    writeTempPdf(baseTempDir, "todistus-test.pdf", pdfBytes, "PDF kirjoitettu tiedostoon")
+    writePdf(outputDir, "todistus-test.pdf", pdfBytes, "PDF kirjoitettu tiedostoon")
 
     completedJob.state should equal(TodistusState.COMPLETED)
     completedJob.error should be(None)
@@ -414,7 +391,6 @@ class TodistusLatausSpec extends TodistusSpecHelpers with BeforeAndAfterAll {
 
   "Todistusjobin tiedot tallennetaan oikein" in {
     completedJob.userOid should be(None)
-    completedJobFromDb.userOid should be(Some(oppijaOid))
 
     completedJob.opiskeluoikeusVersionumero should be(Some(opiskeluoikeus.versionumero.get))
     completedJobFromDb.opiskeluoikeusVersionumero should be(Some(opiskeluoikeus.versionumero.get))
@@ -470,8 +446,8 @@ class TodistusLatausSpec extends TodistusSpecHelpers with BeforeAndAfterAll {
         verifyPageSize(documentGetter(), 2)
       }
 
-      "PDF alueet ja logot vastaavat referenssikuvaa pikselitasolla" in {
-        verifyAreasByPixel(documentGetter(), lang, lataustapa)
+      "PDF-sivut vastaavat referenssikuvia pikselilleen" in {
+        verifyPagesByPixel(documentGetter(), lang, lataustapa)
       }
 
       "PDF-allekirjoitusanalyysi (PdfSignatureAnalyzer)" in {
@@ -555,8 +531,8 @@ class TodistusLatausSpec extends TodistusSpecHelpers with BeforeAndAfterAll {
         verifyPageSize(documentGetter(), expectedPages)
       }
 
-      "PDF alueet ja logot vastaavat referenssikuvaa pikselitasolla" in {
-        verifyAreasByPixelPrintTemplate(documentGetter(), s"$variant", expectedPages, variant)
+      "PDF-sivut vastaavat referenssikuvia pikselilleen" in {
+        verifyPrintTemplatePagesByPixel(documentGetter(), s"$variant", expectedPages, variant)
       }
     }
   }
@@ -823,51 +799,22 @@ class TodistusLatausSpec extends TodistusSpecHelpers with BeforeAndAfterAll {
     verifyTextRegions(document, regions, "Printattava todistus")
   }
 
-  // Vertailee, että logot ja muut sivun alueet vastaavat renderöitynä grafiikkana (lähes) toisiaan.
-  def verifyAreasByPixel(document: PDDocument, lang: String, lataustapa: String): Unit = {
-    // PDF renderöidään 72 DPI:llä, mikä vastaa PDF:n natiiveja pisteitä ja tekee A4:stä noin 595 x 842 pikseliä
-    // Koordinaatit ovat pikseleinä renderöidyssä kuvassa (0,0 = vasen ylänurkka, y kasvaa alaspäin)
-    // minContentRatio: Minimiosuus ei-valkoisia pikseleitä jotta alue katsotaan sisällölliseksi
-    // skipPixelComparison: Jos true, vertaillaan vain sisältömääriä, ei pikselikohtaista samankaltaisuutta
-    val testRegions = Seq(
-      TestRegion("vasen_ylanurkka", pageIndex = 0, x = 45, y = 45, width = 200, height = 100, minContentRatio = 0.25),
-      TestRegion("oikea_alanurkka", pageIndex = 0, x = 420, y = 750, width = 130, height = 50, minContentRatio = 0.15),
-      TestRegion("sivu1_kokonaan", pageIndex = 0, x = 0, y = 0, width = 595, height = 842, minContentRatio = 0.05, skipPixelComparison = true),
-      TestRegion("sivu2_kokonaan", pageIndex = 1, x = 0, y = 0, width = 595, height = 842, minContentRatio = 0.10, skipPixelComparison = true)
-    )
-
-    verifyPixelRegions(
+  // Vaatii, että renderöidyt sivut vastaavat referenssikuvia pikselilleen.
+  def verifyPagesByPixel(document: PDDocument, lang: String, lataustapa: String): Unit = {
+    verifyPagesMatchReferenceImages(
       document,
       s"$lang-$lataustapa",
       s"/todistus-test-kielitutkinto-yleinenkielitutkinto-expected/$lang",
-      testRegions,
       pageCount = 2
     )
   }
 
   // Printattavan todistuksen pikselitason vertailu (_uusi: 3 sivua, _paivitys: 2 sivua)
-  def verifyAreasByPixelPrintTemplate(document: PDDocument, lataustapa: String, pageCount: Int = 3, variant: String = "fi_tulostettava_uusi"): Unit = {
-    val baseRegions = Seq(
-      // Sivu 1
-      TestRegion("vasen_ylanurkka", pageIndex = 0, x = 45, y = 45, width = 200, height = 100, minContentRatio = 0.25),
-      TestRegion("oikea_alanurkka", pageIndex = 0, x = 420, y = 750, width = 130, height = 50, minContentRatio = 0.15),
-      TestRegion("sivu1_kokonaan", pageIndex = 0, x = 0, y = 0, width = 595, height = 842, minContentRatio = 0.05, skipPixelComparison = true),
-
-      // Sivu 2
-      TestRegion("sivu2_kokonaan", pageIndex = 1, x = 0, y = 0, width = 595, height = 842, minContentRatio = 0.10, skipPixelComparison = true)
-    )
-
-    val testRegions = if (pageCount >= 3) {
-      baseRegions :+ TestRegion("sivu3_kokonaan", pageIndex = 2, x = 0, y = 0, width = 595, height = 842, minContentRatio = 0.05, skipPixelComparison = true)
-    } else {
-      baseRegions
-    }
-
-    verifyPixelRegions(
+  def verifyPrintTemplatePagesByPixel(document: PDDocument, lataustapa: String, pageCount: Int = 3, variant: String = "fi_tulostettava_uusi"): Unit = {
+    verifyPagesMatchReferenceImages(
       document,
       lataustapa,
       s"/todistus-test-kielitutkinto-yleinenkielitutkinto-expected/$variant",
-      testRegions,
       pageCount = pageCount
     )
   }
@@ -1100,17 +1047,6 @@ class TodistusLatausSpec extends TodistusSpecHelpers with BeforeAndAfterAll {
     }
   }
 
-  case class TestRegion(
-    name: String,
-    pageIndex: Int,
-    x: Int,
-    y: Int,
-    width: Int,
-    height: Int,
-    minContentRatio: Double,
-    skipPixelComparison: Boolean = false
-  )
-
   private val dpi = 72f
 
   private def renderPageToImage(doc: PDDocument, pageIndex: Int): BufferedImage = {
@@ -1118,58 +1054,14 @@ class TodistusLatausSpec extends TodistusSpecHelpers with BeforeAndAfterAll {
     renderer.renderImageWithDPI(pageIndex, dpi)
   }
 
-  private def cropImage(image: BufferedImage, region: TestRegion): BufferedImage = {
-    val actualX = math.max(0, math.min(region.x, image.getWidth - 1))
-    val actualY = math.max(0, math.min(region.y, image.getHeight - 1))
-    val actualWidth = math.min(region.width, image.getWidth - actualX)
-    val actualHeight = math.min(region.height, image.getHeight - actualY)
-
-    image.getSubimage(actualX, actualY, actualWidth, actualHeight)
-  }
-
-  private def isImageContentful(image: BufferedImage, minContentRatio: Double = 0.10): (Boolean, Double) = {
-    val contentRatio = calculateContentRatio(image)
-    (contentRatio >= minContentRatio, contentRatio)
-  }
-
-  private def calculateContentRatio(image: BufferedImage): Double = {
-    val width = image.getWidth
-    val height = image.getHeight
-    val totalPixels = width * height
-
-    var contentPixels = 0
-
-    for {
-      x <- 0 until width
-      y <- 0 until height
-    } {
-      val rgb = image.getRGB(x, y)
-      if (!isBackgroundColor(rgb)) {
-        contentPixels += 1
-      }
-    }
-
-    contentPixels.toDouble / totalPixels
-  }
-
-  private def isBackgroundColor(rgb: Int): Boolean = {
-    val r = (rgb >> 16) & 0xFF
-    val g = (rgb >> 8) & 0xFF
-    val b = rgb & 0xFF
-
-    // Valkoinen tai lähes valkoinen (threshold 240)
-    r > 240 && g > 240 && b > 240
-  }
-
-  private def verifyPixelRegions(
+  private def verifyPagesMatchReferenceImages(
     document: PDDocument,
     lataustapa: String,
     referenceResourcePath: String,
-    testRegions: Seq[TestRegion],
     pageCount: Int
   ): Unit = {
     // Luo lataustapa-alihakemisto
-    val lataustapaDir = baseTempDir.resolve(lataustapa)
+    val lataustapaDir = outputDir.resolve(lataustapa)
     java.nio.file.Files.createDirectories(lataustapaDir)
     println(s"DEBUG: Lataustapa-hakemisto: ${lataustapaDir.toAbsolutePath}")
 
@@ -1191,30 +1083,13 @@ class TodistusLatausSpec extends TodistusSpecHelpers with BeforeAndAfterAll {
     // Tallenna koko renderöidyt sivut debuggausta varten
     testPages.foreach { case (pageIdx, pageImage) =>
       println(s"DEBUG: Renderöity actual-sivu ${pageIdx + 1}: ${pageImage.getWidth}x${pageImage.getHeight} px")
-      writeTempImage(
+      writeImage(
         lataustapaDir,
         s"todistus-full-page-${pageIdx + 1}.png",
         pageImage,
         s"DEBUG: Actual-sivun ${pageIdx + 1} kuva kirjoitettu"
       )
     }
-
-    // Ensimmäinen loop: Generoi ja tallenna kaikki testialueet
-    val testAreas = testRegions.map { region =>
-      println(s"DEBUG: Luodaan testiarea: ${region.name} (sivu ${region.pageIndex + 1}, x=${region.x}, y=${region.y}, w=${region.width}, h=${region.height})")
-
-      val testArea = cropImage(testPages(region.pageIndex), region)
-
-      // Tallenna leikatut alueet debuggausta varten
-      writeTempImage(
-        lataustapaDir,
-        s"todistus-area-${region.name}.png",
-        testArea,
-        s"DEBUG: Actual-alue '${region.name}' kirjoitettu"
-      )
-
-      region -> testArea
-    }.toMap
 
     // Lazy loading - ladataan vasta kun tarvitaan vertailuun
     lazy val referencePages = (0 until pageCount).map { pageIdx =>
@@ -1225,43 +1100,64 @@ class TodistusLatausSpec extends TodistusSpecHelpers with BeforeAndAfterAll {
       println(s"DEBUG: Ladattu expected-sivu ${pageIdx + 1}: ${pageImage.getWidth}x${pageImage.getHeight} px")
     }
 
-    // Toinen loop: Vertaa testialueita referenssialueisiin
-    testRegions.foreach { region =>
-      println(s"DEBUG: Tarkistetaan alue: ${region.name}")
-
-      val testArea = testAreas(region)
-      val referenceArea = cropImage(referencePages(region.pageIndex), region)
-
-      // Tarkista että alueet eivät ole tyhjiä
-      val (actualHasContent, actualContentRatio) = isImageContentful(testArea, minContentRatio = region.minContentRatio)
-      val (expectedHasContent, expectedContentRatio) = isImageContentful(referenceArea, minContentRatio = region.minContentRatio)
-
-      withClue(f"Actual-alue '${region.name}' on tyhjä tai lähes tyhjä (vain ${actualContentRatio * 100}%.2f%% sisältöä, vaadittu vähintään ${region.minContentRatio * 100}%.2f%%). Tarkista että koordinaatit ovat oikein. ") {
-        actualHasContent should be(true)
+    // Kirjoitetaan ennen tarkistuksia, jotta kuvat jäävät talteen myös testin epäonnistuessa
+    val changedPixelsByPage = testPages.toSeq.sortBy(_._1).map { case (pageIdx, actualPage) =>
+      val pageNumber = pageIdx + 1
+      val expectedPage = referencePages(pageIdx)
+      val (diffImage, changedPixels) = createPageDiff(actualPage, expectedPage)
+      println(s"DEBUG: Sivulla $pageNumber poikkeaa referenssistä $changedPixels pikseliä")
+      if (changedPixels > 0) {
+        writeImage(lataustapaDir, s"todistus-full-page-$pageNumber-expected.png", expectedPage, s"DEBUG: Expected-sivun $pageNumber kuva kirjoitettu")
+        writeImage(lataustapaDir, s"todistus-full-page-$pageNumber-diff.png", diffImage, s"DEBUG: Sivun $pageNumber erokuva kirjoitettu")
       }
+      pageIdx -> changedPixels
+    }
 
-      withClue(f"Expected-alue '${region.name}' on tyhjä tai lähes tyhjä (vain ${expectedContentRatio * 100}%.2f%% sisältöä, vaadittu vähintään ${region.minContentRatio * 100}%.2f%%). Tarkista että koordinaatit ovat oikein. ") {
-        expectedHasContent should be(true)
-      }
-
-      // Tarkista että sisältömäärät ovat lähellä toisiaan
-      val contentRatioDifference = math.abs(actualContentRatio - expectedContentRatio)
-      val maxAllowedDifference = 0.0005
-
-      withClue(f"Alueen '${region.name}' sisältömäärät poikkeavat liikaa toisistaan. Actual: ${actualContentRatio * 100}%.2f%%, expected: ${expectedContentRatio * 100}%.2f%%, ero ${contentRatioDifference * 100}%.2f%% (max ${maxAllowedDifference * 100}%.2f%%). Tarkista että koordinaatit ovat oikein. ") {
-        contentRatioDifference should be <= maxAllowedDifference
-      }
+    val unexpectedDifferences = changedPixelsByPage.collect {
+      case (pageIdx, changedPixels) if changedPixels > 0 =>
+        s"sivu ${pageIdx + 1}: $changedPixels pikseliä"
+    }
+    withClue(s"Renderöity todistus poikkeaa referenssikuvista. Erokuvat: ${lataustapaDir.toAbsolutePath}. ") {
+      unexpectedDifferences should be(empty)
     }
   }
 
-  private def writeTempPdf(dir: java.nio.file.Path, filename: String, bytes: Array[Byte], debugMessage: String): java.nio.file.Path = {
+  private def createPageDiff(actual: BufferedImage, expected: BufferedImage): (BufferedImage, Int) = {
+    val width = math.max(actual.getWidth, expected.getWidth)
+    val height = math.max(actual.getHeight, expected.getHeight)
+    val diff = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB)
+    var changedPixels = 0
+
+    for {
+      y <- 0 until height
+      x <- 0 until width
+    } {
+      val isInBoth = x < actual.getWidth && x < expected.getWidth && y < actual.getHeight && y < expected.getHeight
+      if (isInBoth && actual.getRGB(x, y) == expected.getRGB(x, y)) {
+        diff.setRGB(x, y, fadeTowardsWhite(actual.getRGB(x, y)))
+      } else {
+        diff.setRGB(x, y, Color.RED.getRGB)
+        changedPixels += 1
+      }
+    }
+
+    (diff, changedPixels)
+  }
+
+  private def fadeTowardsWhite(rgb: Int): Int = {
+    def fade(channel: Int): Int = 255 - (255 - channel) / 4
+    val color = new Color(rgb)
+    new Color(fade(color.getRed), fade(color.getGreen), fade(color.getBlue)).getRGB
+  }
+
+  private def writePdf(dir: java.nio.file.Path, filename: String, bytes: Array[Byte], debugMessage: String): java.nio.file.Path = {
     val file = dir.resolve(filename)
     java.nio.file.Files.write(file, bytes)
     println(s"$debugMessage: ${file.toAbsolutePath}")
     file
   }
 
-  private def writeTempImage(dir: java.nio.file.Path, filename: String, image: BufferedImage, debugMessage: String): java.nio.file.Path = {
+  private def writeImage(dir: java.nio.file.Path, filename: String, image: BufferedImage, debugMessage: String): java.nio.file.Path = {
     val file = dir.resolve(filename)
     ImageIO.write(image, "png", file.toFile)
     println(s"$debugMessage: ${file.toAbsolutePath}")

@@ -26,3 +26,12 @@ runs:
       run: |
         grep --quiet --extended-regexp 'Tests: succeeded [1-9]' target/surefire-reports/koski-tests.txt || { echo "::error::No tests were executed"; exit 1; }
       shell: bash
+
+    - name: "Upload todistus visual diffs"
+      uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+      if: failure()
+      with:
+        name: todistus-visual-diffs-${{ github.job }}
+        path: target/todistus-visual-test/**/*.png
+        retention-days: 3
+        if-no-files-found: ignore
