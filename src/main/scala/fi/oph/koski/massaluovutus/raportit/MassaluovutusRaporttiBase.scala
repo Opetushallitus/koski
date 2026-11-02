@@ -65,11 +65,14 @@ trait MassaluovutusRaporttiBase[Self <: MassaluovutusRaporttiBase[Self]]
     }
 
   private def organisaatioSallittu(application: KoskiApplication, u: KoskiSpecificSession): Boolean =
-    if (organisaatioOid.contains(application.organisaatioService.ostopalveluRootOid)) {
+    if (ostopalveluvalinta(application)) {
       ostopalveluSallittu && u.varhaiskasvatuksenOstopalvelukäyttöoikeudet.exists(_.organisaatioAccessType.contains(AccessType.read))
     } else {
       u.hasGlobalReadAccess || organisaatioOid.exists(oid => u.hasRaporttiReadAccess(oid))
     }
+
+  private def ostopalveluvalinta(application: KoskiApplication): Boolean =
+    organisaatioOid.contains(application.organisaatioService.ostopalveluRootOid)
 
   // Common fillAndValidate implementation
   override def fillAndValidate(implicit user: Session): Either[HttpStatus, Self] =
@@ -97,18 +100,25 @@ trait MassaluovutusRaporttiBase[Self <: MassaluovutusRaporttiBase[Self]]
         raportointikantaGeneratedAt = Some(raportitService.viimeisinOpiskeluoikeuspäivitystenVastaanottoaika),
       ))
 
-      doAuditLog
+      doAuditLog(application)
     }
 
-  private def doAuditLog(implicit user: Session): Unit =
+  private def doAuditLog(application: KoskiApplication)(implicit user: Session): Unit =
     AuditLog.log(KoskiAuditLogMessage(
       OPISKELUOIKEUS_RAPORTTI,
       user,
       Map(hakuEhto -> OpiskeluoikeusQueryContext.queryForAuditLog(
         (Map(
           "raportti" -> List(raporttiName),
-          "oppilaitosOid" -> organisaatioOid.toList,
+          "oppilaitosOid" -> auditlokinOrganisaatiot(application),
           "lang" -> language.toList
         ) ++ auditLogParams).filter(_._2.nonEmpty)
       ))))
+
+  // Ostopalvelu/palveluseteli-valinnalla kirjataan yksiköt, joiden tiedot raportille haettiin
+  private def auditlokinOrganisaatiot(application: KoskiApplication)(implicit user: Session): List[String] = {
+    val ostopalveluyksiköt =
+      if (ostopalveluvalinta(application)) application.organisaatioService.omatOstopalveluOrganisaatiot.map(_.oid) else Nil
+    if (ostopalveluyksiköt.nonEmpty) ostopalveluyksiköt else organisaatioOid.toList
+  }
 }

@@ -1,26 +1,16 @@
 package fi.oph.koski.massaluovutus.raportit
 
-import fi.oph.koski.config.KoskiApplication
-import fi.oph.koski.http.HttpStatus
-import fi.oph.koski.json.SensitiveDataAllowed
-import fi.oph.koski.koskiuser.{KoskiSpecificSession, OoPtsMask, Session}
+import fi.oph.koski.koskiuser.KoskiSpecificSession
 import fi.oph.koski.localization.LocalizationReader
-import fi.oph.koski.log.KoskiAuditLogMessageField.hakuEhto
-import fi.oph.koski.log.KoskiOperation.OPISKELUOIKEUS_RAPORTTI
-import fi.oph.koski.log.{AuditLog, KoskiAuditLogMessage, Logging}
-import fi.oph.koski.opiskeluoikeus.OpiskeluoikeusQueryContext
 import fi.oph.koski.organisaatio.MockOrganisaatiot
-import fi.oph.koski.massaluovutus.MassaluovutusUtils.{QueryResourceManager, defaultOrganisaatio, generatePassword}
-import fi.oph.koski.massaluovutus.{KoulutuksenjärjestäjienMassaluovutusQueryParameters, QueryFormat, QueryMeta, QueryResultWriter}
-import fi.oph.koski.raportit.RaportitService
-import fi.oph.koski.raportit.esiopetus.EsiopetusRaporttiService
+import fi.oph.koski.massaluovutus.QueryFormat
+import fi.oph.koski.raportit.{OppilaitosRaporttiResponse, RaportitService}
 import fi.oph.koski.schema.{OpiskeluoikeudenTyyppi, Organisaatio}
 import fi.oph.koski.schema.annotation.EnumValues
 import fi.oph.scalaschema.annotation.{Description, Title}
 
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
-import scala.util.Using
 
 @Title("Esiopetus")
 @Description("Palauttaa esiopetuksen raportin.")
@@ -40,67 +30,26 @@ case class MassaluovutusQueryEsiopetus(
   kotikuntaPvm: Option[LocalDate] = None,
   @Description("Salasana xlsx-tiedostolle. Jos ei annettu, salasana generoidaan automaattisesti. Salasana palautetaan tulosten yhteydessä.")
   password: Option[String] = None,
-) extends KoulutuksenjärjestäjienMassaluovutusQueryParameters with Logging {
+) extends MassaluovutusRaporttiBase[MassaluovutusQueryEsiopetus] {
 
-  override def run(application: KoskiApplication, writer: QueryResultWriter)(implicit user: Session with SensitiveDataAllowed): Either[String, Unit] =
-    QueryResourceManager(logger) { mgr =>
-      implicit val manager: Using.Manager = mgr
-      implicit val s: KoskiSpecificSession = user.asInstanceOf[KoskiSpecificSession]
+  override def opiskeluoikeudenTyyppi = OpiskeluoikeudenTyyppi.esiopetus
+  override def raporttiName = "esiopetus"
+  override protected def ostopalveluSallittu: Boolean = true
 
-      val esiopetusService = new EsiopetusRaporttiService(application)
-      val raportitService = new RaportitService(application)
+  override def auditLogParams = Map(
+    "paiva" -> List(paiva.format(DateTimeFormatter.ISO_DATE)),
+    "kotikuntaPvm" -> kotikuntaPvm.map(_.format(DateTimeFormatter.ISO_DATE)).toList,
+  )
 
-      val localizationReader = new LocalizationReader(application.koskiLocalizationRepository, language.get)
-      val pw = password.getOrElse(generatePassword(16))
+  override protected def generateReport(
+    raportitService: RaportitService,
+    localizationReader: LocalizationReader,
+    pw: String
+  )(implicit session: KoskiSpecificSession): OppilaitosRaporttiResponse =
+    raportitService.esiopetus(organisaatioOid.get, paiva, kotikuntaPvm, pw, None, localizationReader)
 
-      val response = esiopetusService.buildOrganisaatioRaportti(
-        organisaatioOid = organisaatioOid.get,
-        date = paiva,
-        kotikuntaPäivänä = kotikuntaPvm,
-        password = pw,
-        downloadToken = None,
-        t = localizationReader
-      )
-
-      writer.putReport(response, format, localizationReader)
-      writer.patchMeta(QueryMeta(password = Some(pw)))
-
-      writer.patchMeta(QueryMeta(
-        raportointikantaGeneratedAt = Some(raportitService.viimeisinOpiskeluoikeuspäivitystenVastaanottoaika),
-      ))
-
-      auditLog
-    }
-
-  // Samat oikeudet kuin MassaluovutusRaporttiBase.queryAllowed
-  override def queryAllowed(application: KoskiApplication)(implicit user: Session): Boolean = withKoskiSpecificSession { u =>
-    u.hasRaportitAccess &&
-      (u.hasGlobalReadAccess || organisaatioOid.exists(oid => u.hasRaporttiReadAccess(oid))) &&
-      u.allowedOpiskeluoikeudetJaPäätasonSuoritukset.intersects(OoPtsMask(OpiskeluoikeudenTyyppi.esiopetus.koodiarvo))
-  }
-
-  override def fillAndValidate(implicit user: Session): Either[HttpStatus, MassaluovutusQueryEsiopetus] =
-    for {
-      orgOid <- organisaatioOid
-        .toRight(defaultOrganisaatio)
-        .fold(identity, Right.apply)
-      lang <- Right(language.getOrElse(user.lang))
-    } yield copy(
-      organisaatioOid = Some(orgOid),
-      language = Some(lang),
-    )
-
-  private def auditLog(implicit user: Session): Unit =
-    AuditLog.log(KoskiAuditLogMessage(
-      OPISKELUOIKEUS_RAPORTTI,
-      user,
-      Map(hakuEhto -> OpiskeluoikeusQueryContext.queryForAuditLog(Map(
-        "raportti" -> List("esiopetus"),
-        "oppilaitosOid" -> organisaatioOid.toList,
-        "paiva" -> List(paiva.format(DateTimeFormatter.ISO_DATE)),
-        "kotikuntaPvm" -> kotikuntaPvm.map(_.format(DateTimeFormatter.ISO_DATE)).toList,
-        "lang" -> language.toList,
-      ).filter(_._2.nonEmpty)))))
+  override protected def withFilledParams(orgOid: Organisaatio.Oid, lang: String) =
+    copy(organisaatioOid = Some(orgOid), language = Some(lang))
 }
 
 object QueryEsiopetusDocumentation {
