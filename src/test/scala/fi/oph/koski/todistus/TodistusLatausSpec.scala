@@ -781,52 +781,34 @@ class TodistusLatausSpec extends TodistusSpecHelpers with BeforeAndAfterAll {
     verifyTextRegions(document, regions, "Printattava todistus")
   }
 
-  // Vertailee, että logot ja muut sivun alueet vastaavat renderöitynä grafiikkana (lähes) toisiaan.
+  // Vaatii, että renderöidyt sivut vastaavat referenssikuvia pikselilleen.
   def verifyAreasByPixel(document: PDDocument, lang: String, lataustapa: String): Unit = {
-    // PDF renderöidään 72 DPI:llä, mikä vastaa PDF:n natiiveja pisteitä ja tekee A4:stä noin 595 x 842 pikseliä
-    // Koordinaatit ovat pikseleinä renderöidyssä kuvassa (0,0 = vasen ylänurkka, y kasvaa alaspäin)
-    // minContentRatio: Minimiosuus ei-valkoisia pikseleitä jotta alue katsotaan sisällölliseksi
-    // skipPixelComparison: Jos true, vertaillaan vain sisältömääriä, ei pikselikohtaista samankaltaisuutta
-    val testRegions = Seq(
-      TestRegion("vasen_ylanurkka", pageIndex = 0, x = 45, y = 45, width = 200, height = 100, minContentRatio = 0.25),
-      TestRegion("oikea_alanurkka", pageIndex = 0, x = 420, y = 750, width = 130, height = 50, minContentRatio = 0.15),
-      TestRegion("sivu1_kokonaan", pageIndex = 0, x = 0, y = 0, width = 595, height = 842, minContentRatio = 0.05, skipPixelComparison = true),
-      TestRegion("sivu2_kokonaan", pageIndex = 1, x = 0, y = 0, width = 595, height = 842, minContentRatio = 0.10, skipPixelComparison = true)
-    )
-
     verifyPixelRegions(
       document,
       s"$lang-$lataustapa",
       s"/todistus-test-kielitutkinto-yleinenkielitutkinto-expected/$lang",
-      testRegions,
       pageCount = 2
     )
   }
 
   // Printattavan todistuksen pikselitason vertailu (_uusi: 3 sivua, _paivitys: 2 sivua)
   def verifyAreasByPixelPrintTemplate(document: PDDocument, lataustapa: String, pageCount: Int = 3, variant: String = "fi_tulostettava_uusi"): Unit = {
-    val baseRegions = Seq(
-      // Sivu 1
-      TestRegion("vasen_ylanurkka", pageIndex = 0, x = 45, y = 45, width = 200, height = 100, minContentRatio = 0.25),
-      TestRegion("oikea_alanurkka", pageIndex = 0, x = 420, y = 750, width = 130, height = 50, minContentRatio = 0.15),
-      TestRegion("sivu1_kokonaan", pageIndex = 0, x = 0, y = 0, width = 595, height = 842, minContentRatio = 0.05, skipPixelComparison = true),
-
-      // Sivu 2
-      TestRegion("sivu2_kokonaan", pageIndex = 1, x = 0, y = 0, width = 595, height = 842, minContentRatio = 0.10, skipPixelComparison = true)
-    )
-
-    val testRegions = if (pageCount >= 3) {
-      baseRegions :+ TestRegion("sivu3_kokonaan", pageIndex = 2, x = 0, y = 0, width = 595, height = 842, minContentRatio = 0.05, skipPixelComparison = true)
-    } else {
-      baseRegions
-    }
-
     verifyPixelRegions(
       document,
       lataustapa,
       s"/todistus-test-kielitutkinto-yleinenkielitutkinto-expected/$variant",
-      testRegions,
-      pageCount = pageCount
+      pageCount = pageCount,
+      // Ensimmäisellä sivulla on opiskeluoikeuden OID, joka arvotaan fixtureita luotaessa, joten
+      // sitä verrataan vain sisältömäärien perusteella.
+      pagesWithRandomContent = Set(0),
+      // PDF renderöidään 72 DPI:llä, mikä vastaa PDF:n natiiveja pisteitä ja tekee A4:stä noin 595 x 842 pikseliä
+      // Koordinaatit ovat pikseleinä renderöidyssä kuvassa (0,0 = vasen ylänurkka, y kasvaa alaspäin)
+      // minContentRatio: Minimiosuus ei-valkoisia pikseleitä jotta alue katsotaan sisällölliseksi
+      testRegions = Seq(
+        TestRegion("vasen_ylanurkka", pageIndex = 0, x = 45, y = 45, width = 200, height = 100, minContentRatio = 0.25),
+        TestRegion("oikea_alanurkka", pageIndex = 0, x = 420, y = 750, width = 130, height = 50, minContentRatio = 0.15),
+        TestRegion("sivu1_kokonaan", pageIndex = 0, x = 0, y = 0, width = 595, height = 842, minContentRatio = 0.05)
+      )
     )
   }
 
@@ -1065,8 +1047,7 @@ class TodistusLatausSpec extends TodistusSpecHelpers with BeforeAndAfterAll {
     y: Int,
     width: Int,
     height: Int,
-    minContentRatio: Double,
-    skipPixelComparison: Boolean = false
+    minContentRatio: Double
   )
 
   private val dpi = 72f
@@ -1123,8 +1104,9 @@ class TodistusLatausSpec extends TodistusSpecHelpers with BeforeAndAfterAll {
     document: PDDocument,
     lataustapa: String,
     referenceResourcePath: String,
-    testRegions: Seq[TestRegion],
-    pageCount: Int
+    pageCount: Int,
+    pagesWithRandomContent: Set[Int] = Set.empty,
+    testRegions: Seq[TestRegion] = Seq.empty
   ): Unit = {
     // Luo lataustapa-alihakemisto
     val lataustapaDir = outputDir.resolve(lataustapa)
@@ -1184,7 +1166,7 @@ class TodistusLatausSpec extends TodistusSpecHelpers with BeforeAndAfterAll {
     }
 
     // Kirjoitetaan ennen tarkistuksia, jotta kuvat jäävät talteen myös testin epäonnistuessa
-    testPages.foreach { case (pageIdx, actualPage) =>
+    val changedPixelsByPage = testPages.toSeq.sortBy(_._1).map { case (pageIdx, actualPage) =>
       val pageNumber = pageIdx + 1
       val expectedPage = referencePages(pageIdx)
       val (diffImage, changedPixels) = createPageDiff(actualPage, expectedPage)
@@ -1193,6 +1175,15 @@ class TodistusLatausSpec extends TodistusSpecHelpers with BeforeAndAfterAll {
         writeImage(lataustapaDir, s"todistus-full-page-$pageNumber-expected.png", expectedPage, s"DEBUG: Expected-sivun $pageNumber kuva kirjoitettu")
         writeImage(lataustapaDir, s"todistus-full-page-$pageNumber-diff.png", diffImage, s"DEBUG: Sivun $pageNumber erokuva kirjoitettu")
       }
+      pageIdx -> changedPixels
+    }
+
+    val unexpectedDifferences = changedPixelsByPage.collect {
+      case (pageIdx, changedPixels) if changedPixels > 0 && !pagesWithRandomContent.contains(pageIdx) =>
+        s"sivu ${pageIdx + 1}: $changedPixels pikseliä"
+    }
+    withClue(s"Renderöity todistus poikkeaa referenssikuvista. Erokuvat: ${lataustapaDir.toAbsolutePath}. ") {
+      unexpectedDifferences should be(empty)
     }
 
     // Toinen loop: Vertaa testialueita referenssialueisiin
