@@ -11,6 +11,14 @@ export type FormPostRequest = Request<
   Record<string, string | string[]> | undefined
 >
 
+export function getFormPostParams(req: FormPostRequest): URLSearchParams {
+  return new URLSearchParams(
+    Object.entries(req.body ?? {}).flatMap(([key, value]) =>
+      [value].flat().map((item): [string, string] => [key, item])
+    )
+  )
+}
+
 export async function buildAuthorizationUrl(
   code_verifier: string,
   state: string,
@@ -46,7 +54,7 @@ export async function fetchAccessToken(
   const reqUrl = new URL(
     `${req.protocol}://${req.get('host')}${req.originalUrl}`
   )
-  reqUrl.search = new URLSearchParams(req.body).toString()
+  reqUrl.search = getFormPostParams(req).toString()
 
   const tokens: client.TokenEndpointResponse =
     await client.authorizationCodeGrant(config, reqUrl, {

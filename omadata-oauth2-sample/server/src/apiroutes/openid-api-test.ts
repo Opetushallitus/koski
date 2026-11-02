@@ -10,6 +10,7 @@ import {
   buildAuthorizationUrl,
   fetchAccessToken,
   fetchData,
+  getFormPostParams,
   type FormPostRequest
 } from '../oauth2-client/oauth2-client.ts'
 import {
@@ -17,7 +18,6 @@ import {
   ClientError,
   ResponseBodyError
 } from 'openid-client'
-import { URLSearchParams } from 'url'
 
 const router: Router = express.Router()
 
@@ -73,7 +73,7 @@ router.post(
   '/form-post-response-cb',
   async (req: FormPostRequest, res: Response, next: NextFunction) => {
     try {
-      const params = new URLSearchParams(req.body)
+      const params = getFormPostParams(req)
       const state = params.get('state') || ''
       const code_verifier = (state && verifiers.get(state)) || ''
 
