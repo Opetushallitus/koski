@@ -500,9 +500,10 @@
       "automerge": false
     },
     {
-      "description": "Leave a shared version out of the titles of groups whose packages are versioned separately, so that it does not read as the group's version. A rule opts in with group.description \"Multiple packages: <its groupName>\". The marker names the group because group objects merge across rules and would otherwise carry it into a later group such as Parcel. Keep this rule after every rule that sets a groupName.",
+      "description": "Leave a shared version out of the titles of groups whose packages are versioned separately, so that it does not read as the group's version. A rule opts in with group.description \"Multiple packages: <its groupName>\". The marker names the group because group objects merge across rules and would otherwise carry it into a later group such as Parcel. Keep this rule after every rule that sets a groupName. Without a version the title no longer tells updates apart, so recreateWhen stops Renovate from taking the group's next update for an already merged PR, which would disable its automerge. As a side effect, a closed PR of these groups is recreated, which already happens when their packages update to different versions.",
       "matchJsonata": ["('Multiple packages: ' & groupName) in group.description"],
-      "group": { "commitMessageExtra": "" }
+      "group": { "commitMessageExtra": "" },
+      "recreateWhen": "always"
     },
     {
       "description": "Open major updates and package replacements that no rule above automerges as PRs, so that CI shows whether they work unchanged. Merge or close them promptly: closing makes Renovate ignore that major and list it on the Dependency Dashboard. Create them last and keep at most 2 open, so that open majors do not take the PR slots that automerged updates need. Keep this rule after every rule that sets automerge.",
