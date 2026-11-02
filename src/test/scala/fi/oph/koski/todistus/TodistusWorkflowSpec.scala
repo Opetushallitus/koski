@@ -3,13 +3,60 @@ package fi.oph.koski.todistus
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
 import fi.oph.koski.koskiuser.MockUsers
 import fi.oph.koski.schema.{YleisenKielitutkinnonSuoritus}
+import org.apache.pdfbox.Loader
+import org.apache.pdfbox.text.PDFTextStripper
 
-import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
+import java.time.{LocalDate, LocalDateTime}
+import java.util.Locale
 
 class TodistusWorkflowSpec extends TodistusSpecHelpers {
 
   override protected def afterEach(): Unit = {
     cleanup()
+  }
+
+  "Todistuksen luonti rajapinnan kautta" - {
+    val oppija = KoskiSpecificMockOppijat.kielitutkinnonSuorittaja
+    val hetu = oppija.hetu.get
+
+    def opiskeluoikeusOid = getVahvistettuKielitutkinnonOpiskeluoikeus(oppija.oid).flatMap(_.oid).get
+
+    TodistusTemplateVariant.kansalainenVariants.toSeq.sorted.foreach { templateVariant =>
+      s"Kansalainen luo todistuksen $templateVariant, ja sen vahvistuspäivä lasketaan luontipäivästä" in {
+        val dateBeforeRequest = LocalDate.now()
+        val job = addGenerateJobSuccessfully(TodistusGenerateRequest(opiskeluoikeusOid, templateVariant), hetu)(identity)
+        val createdOn = Set(dateBeforeRequest, LocalDate.now())
+        waitForCompletion(job.id, hetu)
+
+        val jobFromDb = app.todistusRepository.getFromDbForUnitTests(job.id).get
+        jobFromDb.userOid should be(Some(oppija.oid))
+        jobFromDb.isStamped should be(true)
+        createdOn should contain(jobFromDb.createdAt.toLocalDate)
+
+        val pdfBytes = verifyDownloadResultAndContent(s"/todistus/download/${job.id}", hetu) {
+          response.getContentBytes()
+        }
+        val document = Loader.loadPDF(pdfBytes)
+        val pdfText = try new PDFTextStripper().getText(document) finally document.close()
+
+        val datePattern = if (templateVariant == TodistusTemplateVariant.EN) "d MMMM yyyy" else "d.M.yyyy"
+        val lastValidationDate = jobFromDb.createdAt.toLocalDate.plusDays(app.config.getLong("todistus.allekirjoituksenVoimassaolonKestoInDays"))
+        // Locale vaikuttaa vain englanninkielisen päivämäärän kuukauden nimeen, numeromuotoisiin sillä ei ole vaikutusta
+        pdfText should include(lastValidationDate.format(DateTimeFormatter.ofPattern(datePattern, Locale.ENGLISH)))
+      }
+    }
+
+    TodistusTemplateVariant.printVariants.toSeq.sorted.foreach { templateVariant =>
+      s"Pääkäyttäjä luo printattavan todistuksen $templateVariant" in {
+        val job = addGenerateJobSuccessfullyAsVirkailijaPääkäyttäjä(TodistusGenerateRequest(opiskeluoikeusOid, templateVariant))(identity)
+        waitForCompletionAsVirkailijaPääkäyttäjä(job.id)
+
+        val jobFromDb = app.todistusRepository.getFromDbForUnitTests(job.id).get
+        jobFromDb.userOid should be(Some(MockUsers.paakayttaja.oid))
+        jobFromDb.isStamped should be(false)
+      }
+    }
   }
 
   "Todistuksen uudelleenkäyttö" - {

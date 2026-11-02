@@ -19,6 +19,7 @@ import org.verapdf.pdfa.{Foundries, PDFAParser, PDFAValidator}
 
 import java.awt.{Color, Rectangle}
 import java.awt.image.BufferedImage
+import java.time.LocalDateTime
 import javax.imageio.ImageIO
 import scala.jdk.CollectionConverters._
 
@@ -36,13 +37,22 @@ class TodistusLatausSpec extends TodistusSpecHelpers with BeforeAndAfterAll {
 
   private lazy val opiskeluoikeusOid: String = opiskeluoikeus.oid.get
 
-  private lazy val todistusJob: TodistusJob = {
-    val req = TodistusGenerateRequest(opiskeluoikeusOid, templateVariant)
-    addGenerateJobSuccessfully(req, hetu) { todistusJob =>
-      todistusJob.state should equal(TodistusState.QUEUED)
-      todistusJob
-    }
-  }
+  private val referenceImageCreatedAt = LocalDateTime.of(2026, 9, 29, 12, 0)
+
+  private def addQueuedJobWithFixedDate(templateVariant: String, userOid: String): TodistusJob =
+    app.todistusRepository.addRawForUnitTests(TodistusJob(
+      id = java.util.UUID.randomUUID().toString,
+      userOid = Some(userOid),
+      oppijaOid = oppijaOid,
+      opiskeluoikeusOid = opiskeluoikeusOid,
+      templateVariant = templateVariant,
+      opiskeluoikeusVersionumero = None,
+      oppijaHenkilötiedotHash = None,
+      isStamped = !TodistusTemplateVariant.printVariants.contains(templateVariant),
+      createdAt = referenceImageCreatedAt
+    ))
+
+  private lazy val todistusJob: TodistusJob = addQueuedJobWithFixedDate(templateVariant, oppijaOid)
 
   private lazy val completedJob: TodistusJob = waitForCompletion(todistusJob.id, hetu)
 
@@ -85,13 +95,7 @@ class TodistusLatausSpec extends TodistusSpecHelpers with BeforeAndAfterAll {
   // Printattava todistus (fi_tulostettava_uusi) - vain pääkäyttäjille
   private val printTemplateVariant = "fi_tulostettava_uusi"
 
-  private lazy val printTodistusJob: TodistusJob = {
-    val req = TodistusGenerateRequest(opiskeluoikeusOid, printTemplateVariant)
-    addGenerateJobSuccessfullyAsVirkailijaPääkäyttäjä(req) { todistusJob =>
-      todistusJob.state should equal(TodistusState.QUEUED)
-      todistusJob
-    }
-  }
+  private lazy val printTodistusJob: TodistusJob = addQueuedJobWithFixedDate(printTemplateVariant, MockUsers.paakayttaja.oid)
 
   private lazy val printCompletedJob: TodistusJob = waitForCompletionAsVirkailijaPääkäyttäjä(printTodistusJob.id)
 
@@ -115,13 +119,7 @@ class TodistusLatausSpec extends TodistusSpecHelpers with BeforeAndAfterAll {
 
   private val svTemplateVariant = "sv"
 
-  private lazy val svTodistusJob: TodistusJob = {
-    val req = TodistusGenerateRequest(opiskeluoikeusOid, svTemplateVariant)
-    addGenerateJobSuccessfully(req, hetu) { todistusJob =>
-      todistusJob.state should equal(TodistusState.QUEUED)
-      todistusJob
-    }
-  }
+  private lazy val svTodistusJob: TodistusJob = addQueuedJobWithFixedDate(svTemplateVariant, oppijaOid)
 
   private lazy val svCompletedJob: TodistusJob = waitForCompletion(svTodistusJob.id, hetu)
 
@@ -157,13 +155,7 @@ class TodistusLatausSpec extends TodistusSpecHelpers with BeforeAndAfterAll {
 
   private val enTemplateVariant = "en"
 
-  private lazy val enTodistusJob: TodistusJob = {
-    val req = TodistusGenerateRequest(opiskeluoikeusOid, enTemplateVariant)
-    addGenerateJobSuccessfully(req, hetu) { todistusJob =>
-      todistusJob.state should equal(TodistusState.QUEUED)
-      todistusJob
-    }
-  }
+  private lazy val enTodistusJob: TodistusJob = addQueuedJobWithFixedDate(enTemplateVariant, oppijaOid)
 
   private lazy val enCompletedJob: TodistusJob = waitForCompletion(enTodistusJob.id, hetu)
 
@@ -200,13 +192,7 @@ class TodistusLatausSpec extends TodistusSpecHelpers with BeforeAndAfterAll {
   // Printattava todistus: fi_tulostettava_paivitys (2 sivua, ei tiedotesivua)
   private val fiPaivitysTemplateVariant = "fi_tulostettava_paivitys"
 
-  private lazy val fiPaivitysTodistusJob: TodistusJob = {
-    val req = TodistusGenerateRequest(opiskeluoikeusOid, fiPaivitysTemplateVariant)
-    addGenerateJobSuccessfullyAsVirkailijaPääkäyttäjä(req) { todistusJob =>
-      todistusJob.state should equal(TodistusState.QUEUED)
-      todistusJob
-    }
-  }
+  private lazy val fiPaivitysTodistusJob: TodistusJob = addQueuedJobWithFixedDate(fiPaivitysTemplateVariant, MockUsers.paakayttaja.oid)
 
   private lazy val fiPaivitysCompletedJob: TodistusJob = waitForCompletionAsVirkailijaPääkäyttäjä(fiPaivitysTodistusJob.id)
 
@@ -231,13 +217,7 @@ class TodistusLatausSpec extends TodistusSpecHelpers with BeforeAndAfterAll {
   // Printattava todistus: sv_tulostettava_uusi (3 sivua)
   private val svUusiTemplateVariant = "sv_tulostettava_uusi"
 
-  private lazy val svUusiTodistusJob: TodistusJob = {
-    val req = TodistusGenerateRequest(opiskeluoikeusOid, svUusiTemplateVariant)
-    addGenerateJobSuccessfullyAsVirkailijaPääkäyttäjä(req) { todistusJob =>
-      todistusJob.state should equal(TodistusState.QUEUED)
-      todistusJob
-    }
-  }
+  private lazy val svUusiTodistusJob: TodistusJob = addQueuedJobWithFixedDate(svUusiTemplateVariant, MockUsers.paakayttaja.oid)
 
   private lazy val svUusiCompletedJob: TodistusJob = waitForCompletionAsVirkailijaPääkäyttäjä(svUusiTodistusJob.id)
 
@@ -262,13 +242,7 @@ class TodistusLatausSpec extends TodistusSpecHelpers with BeforeAndAfterAll {
   // Printattava todistus: sv_tulostettava_paivitys (2 sivua)
   private val svPaivitysTemplateVariant = "sv_tulostettava_paivitys"
 
-  private lazy val svPaivitysTodistusJob: TodistusJob = {
-    val req = TodistusGenerateRequest(opiskeluoikeusOid, svPaivitysTemplateVariant)
-    addGenerateJobSuccessfullyAsVirkailijaPääkäyttäjä(req) { todistusJob =>
-      todistusJob.state should equal(TodistusState.QUEUED)
-      todistusJob
-    }
-  }
+  private lazy val svPaivitysTodistusJob: TodistusJob = addQueuedJobWithFixedDate(svPaivitysTemplateVariant, MockUsers.paakayttaja.oid)
 
   private lazy val svPaivitysCompletedJob: TodistusJob = waitForCompletionAsVirkailijaPääkäyttäjä(svPaivitysTodistusJob.id)
 
@@ -293,13 +267,7 @@ class TodistusLatausSpec extends TodistusSpecHelpers with BeforeAndAfterAll {
   // Printattava todistus: en_tulostettava_uusi (3 sivua)
   private val enUusiTemplateVariant = "en_tulostettava_uusi"
 
-  private lazy val enUusiTodistusJob: TodistusJob = {
-    val req = TodistusGenerateRequest(opiskeluoikeusOid, enUusiTemplateVariant)
-    addGenerateJobSuccessfullyAsVirkailijaPääkäyttäjä(req) { todistusJob =>
-      todistusJob.state should equal(TodistusState.QUEUED)
-      todistusJob
-    }
-  }
+  private lazy val enUusiTodistusJob: TodistusJob = addQueuedJobWithFixedDate(enUusiTemplateVariant, MockUsers.paakayttaja.oid)
 
   private lazy val enUusiCompletedJob: TodistusJob = waitForCompletionAsVirkailijaPääkäyttäjä(enUusiTodistusJob.id)
 
@@ -324,13 +292,7 @@ class TodistusLatausSpec extends TodistusSpecHelpers with BeforeAndAfterAll {
   // Printattava todistus: en_tulostettava_paivitys (2 sivua)
   private val enPaivitysTemplateVariant = "en_tulostettava_paivitys"
 
-  private lazy val enPaivitysTodistusJob: TodistusJob = {
-    val req = TodistusGenerateRequest(opiskeluoikeusOid, enPaivitysTemplateVariant)
-    addGenerateJobSuccessfullyAsVirkailijaPääkäyttäjä(req) { todistusJob =>
-      todistusJob.state should equal(TodistusState.QUEUED)
-      todistusJob
-    }
-  }
+  private lazy val enPaivitysTodistusJob: TodistusJob = addQueuedJobWithFixedDate(enPaivitysTemplateVariant, MockUsers.paakayttaja.oid)
 
   private lazy val enPaivitysCompletedJob: TodistusJob = waitForCompletionAsVirkailijaPääkäyttäjä(enPaivitysTodistusJob.id)
 
@@ -411,7 +373,6 @@ class TodistusLatausSpec extends TodistusSpecHelpers with BeforeAndAfterAll {
 
   "Todistusjobin tiedot tallennetaan oikein" in {
     completedJob.userOid should be(None)
-    completedJobFromDb.userOid should be(Some(oppijaOid))
 
     completedJob.opiskeluoikeusVersionumero should be(Some(opiskeluoikeus.versionumero.get))
     completedJobFromDb.opiskeluoikeusVersionumero should be(Some(opiskeluoikeus.versionumero.get))
