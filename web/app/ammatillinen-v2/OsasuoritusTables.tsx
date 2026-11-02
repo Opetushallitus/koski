@@ -337,7 +337,15 @@ const tutkinnonOsatToTableRow = <T extends string>({
     <>{t(osasuoritus?.koulutusmoduuli.tunniste.nimi)}</>
   )
 
-  columns.Laajuus = (
+  // Näille laajuutta ei yleensä tallenneta, vaan se lasketaan osasuorituksista,
+  // joten ajatusviiva näyttäisi virheellisesti puuttuvalta tiedolta.
+  const piilotaTyhjäLaajuus =
+    !form.editMode &&
+    (isAmisKorkeakouluopintoSuoritus(osasuoritus) ||
+      isAmisJatkoOpintovalmiuksiaTukevienOpintojenSuoritus(osasuoritus)) &&
+    osasuoritus.koulutusmoduuli.laajuus === undefined
+
+  columns.Laajuus = piilotaTyhjäLaajuus ? null : (
     <FormField
       form={form}
       view={LaajuusView}

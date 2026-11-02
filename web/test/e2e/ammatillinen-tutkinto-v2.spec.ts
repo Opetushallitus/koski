@@ -465,6 +465,31 @@ test.describe('Ammatillisen tutkinnon uusi käyttöliittymä', () => {
       await expect(osanNimi(page, 'Ajoneuvoalan kehitystehtävä')).toBeVisible()
     })
 
+    test('Korkeakouluopinnoille ja jatko-opintovalmiuksia tukeville opinnoille ei näytetä tyhjää laajuutta', async ({
+      page,
+      oppijaPage,
+      oppijaPageV2
+    }) => {
+      await oppijaPage.gotoWithQueryParams(autonen, flag)
+      await expect(suoritus(page, 'osasuoritukset.0.laajuus.value')).toHaveText(
+        '–'
+      )
+      await expect(suoritus(page, 'osasuoritukset.3.laajuus.value')).toHaveCount(
+        0
+      )
+      await expect(suoritus(page, 'osasuoritukset.4.laajuus.value')).toHaveCount(
+        0
+      )
+
+      // Skeema sallii laajuuden, joten tallennettu arvo näytetään
+      await page.getByTestId('oo.0.opiskeluoikeus.edit').click()
+      await suoritus(page, 'osasuoritukset.3.laajuus.edit.input').fill('5')
+      await oppijaPageV2.tallenna()
+      await expect(suoritus(page, 'osasuoritukset.3.laajuus.value')).toHaveText(
+        '5 osp'
+      )
+    })
+
     test('Korkeakouluopintokokonaisuuden laajuus lasketaan ammatillisiin tutkinnon osiin', async ({
       page,
       oppijaPage,
