@@ -198,9 +198,13 @@ jobs:
         with:
           persist-credentials: false
 
+      - name: Read Node version required by Renovate
+        id: renovate_node
+        run: echo "version=$(npm view renovate@latest engines.node)" >> "$GITHUB_OUTPUT"
+
       - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
-          node-version-file: ".nvmrc"
+          node-version: ${{ steps.renovate_node.outputs.version }}
 
       # Renovate ajetaan Mendin ylläpitämänä sovelluksena, joka seuraa aina uusinta
       # julkaisua, joten validaattoria ei pinnata. --strict kaatuu myös varoituksiin,
