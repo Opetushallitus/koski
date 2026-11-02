@@ -1,6 +1,8 @@
 package fi.oph.koski.todistus
 
 import fi.oph.koski.KoskiApplicationForTests
+import fi.oph.koski.db.PostgresDriverWithJsonSupport.plainAPI._
+import fi.oph.koski.db.QueryMethods
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
 import fi.oph.koski.koskiuser.MockUsers
 import fi.oph.koski.schema.KoskiSchema.strictDeserialization
@@ -11,7 +13,7 @@ import org.apache.pdfbox.pdmodel.PDDocument
 import org.apache.pdfbox.rendering.PDFRenderer
 import org.apache.pdfbox.text.{PDFTextStripper, PDFTextStripperByArea}
 import org.json4s.jackson.JsonMethods
-import org.scalatest.BeforeAndAfterAll
+import org.scalatest.{Args, BeforeAndAfterAll, Status}
 import org.verapdf.core.VeraPDFException
 import org.verapdf.gf.foundry.VeraGreenfieldFoundryProvider
 import org.verapdf.pdfa.flavours.PDFAFlavour
@@ -38,11 +40,27 @@ class TodistusLatausSpec extends TodistusSpecHelpers with BeforeAndAfterAll {
   private lazy val opiskeluoikeusOid: String = opiskeluoikeus.oid.get
 
   private val referenceImageCreatedAt = LocalDateTime.of(2026, 9, 29, 12, 0)
+  private val referenceImageOid = "1.2.246.562.15.48887126828"
 
-  private def addQueuedJobWithFixedDate(templateVariant: String, userOid: String): TodistusJob =
+  // Todistuksilla näkyvä OID arvotaan fixtureita luotaessa, joten testien ajaksi vaihdetaan referenssikuvien OID
+  override protected def runTests(testName: Option[String], args: Args): Status = {
+    val fixtureOid = getVahvistettuKielitutkinnonOpiskeluoikeusOid(oppijaOid).get
+    overwriteOpiskeluoikeusOidInDb(from = fixtureOid, to = referenceImageOid)
+    try super.runTests(testName, args)
+    finally overwriteOpiskeluoikeusOidInDb(from = referenceImageOid, to = fixtureOid)
+  }
+
+  // Ohittaa historian ja hakuindeksin, joten OID saa olla muutettuna vain väliaikaisesti
+  private def overwriteOpiskeluoikeusOidInDb(from: String, to: String): Unit =
+    withoutRunningSchedulers(truncate = false) {
+      val updatedRows = QueryMethods.runDbSync(app.masterDatabase.db, sql"UPDATE opiskeluoikeus SET oid = $to WHERE oid = $from".asUpdate)
+      updatedRows should equal(1)
+    }
+
+  private def addQueuedJobWithFixedDate(templateVariant: String): TodistusJob =
     app.todistusRepository.addRawForUnitTests(TodistusJob(
       id = java.util.UUID.randomUUID().toString,
-      userOid = Some(userOid),
+      userOid = Some(oppijaOid),
       oppijaOid = oppijaOid,
       opiskeluoikeusOid = opiskeluoikeusOid,
       templateVariant = templateVariant,
@@ -52,7 +70,7 @@ class TodistusLatausSpec extends TodistusSpecHelpers with BeforeAndAfterAll {
       createdAt = referenceImageCreatedAt
     ))
 
-  private lazy val todistusJob: TodistusJob = addQueuedJobWithFixedDate(templateVariant, oppijaOid)
+  private lazy val todistusJob: TodistusJob = addQueuedJobWithFixedDate(templateVariant)
 
   private lazy val completedJob: TodistusJob = waitForCompletion(todistusJob.id, hetu)
 
@@ -95,7 +113,7 @@ class TodistusLatausSpec extends TodistusSpecHelpers with BeforeAndAfterAll {
   // Printattava todistus (fi_tulostettava_uusi) - vain pääkäyttäjille
   private val printTemplateVariant = "fi_tulostettava_uusi"
 
-  private lazy val printTodistusJob: TodistusJob = addQueuedJobWithFixedDate(printTemplateVariant, MockUsers.paakayttaja.oid)
+  private lazy val printTodistusJob: TodistusJob = addQueuedJobWithFixedDate(printTemplateVariant)
 
   private lazy val printCompletedJob: TodistusJob = waitForCompletionAsVirkailijaPääkäyttäjä(printTodistusJob.id)
 
@@ -119,7 +137,7 @@ class TodistusLatausSpec extends TodistusSpecHelpers with BeforeAndAfterAll {
 
   private val svTemplateVariant = "sv"
 
-  private lazy val svTodistusJob: TodistusJob = addQueuedJobWithFixedDate(svTemplateVariant, oppijaOid)
+  private lazy val svTodistusJob: TodistusJob = addQueuedJobWithFixedDate(svTemplateVariant)
 
   private lazy val svCompletedJob: TodistusJob = waitForCompletion(svTodistusJob.id, hetu)
 
@@ -155,7 +173,7 @@ class TodistusLatausSpec extends TodistusSpecHelpers with BeforeAndAfterAll {
 
   private val enTemplateVariant = "en"
 
-  private lazy val enTodistusJob: TodistusJob = addQueuedJobWithFixedDate(enTemplateVariant, oppijaOid)
+  private lazy val enTodistusJob: TodistusJob = addQueuedJobWithFixedDate(enTemplateVariant)
 
   private lazy val enCompletedJob: TodistusJob = waitForCompletion(enTodistusJob.id, hetu)
 
@@ -192,7 +210,7 @@ class TodistusLatausSpec extends TodistusSpecHelpers with BeforeAndAfterAll {
   // Printattava todistus: fi_tulostettava_paivitys (2 sivua, ei tiedotesivua)
   private val fiPaivitysTemplateVariant = "fi_tulostettava_paivitys"
 
-  private lazy val fiPaivitysTodistusJob: TodistusJob = addQueuedJobWithFixedDate(fiPaivitysTemplateVariant, MockUsers.paakayttaja.oid)
+  private lazy val fiPaivitysTodistusJob: TodistusJob = addQueuedJobWithFixedDate(fiPaivitysTemplateVariant)
 
   private lazy val fiPaivitysCompletedJob: TodistusJob = waitForCompletionAsVirkailijaPääkäyttäjä(fiPaivitysTodistusJob.id)
 
@@ -217,7 +235,7 @@ class TodistusLatausSpec extends TodistusSpecHelpers with BeforeAndAfterAll {
   // Printattava todistus: sv_tulostettava_uusi (3 sivua)
   private val svUusiTemplateVariant = "sv_tulostettava_uusi"
 
-  private lazy val svUusiTodistusJob: TodistusJob = addQueuedJobWithFixedDate(svUusiTemplateVariant, MockUsers.paakayttaja.oid)
+  private lazy val svUusiTodistusJob: TodistusJob = addQueuedJobWithFixedDate(svUusiTemplateVariant)
 
   private lazy val svUusiCompletedJob: TodistusJob = waitForCompletionAsVirkailijaPääkäyttäjä(svUusiTodistusJob.id)
 
@@ -242,7 +260,7 @@ class TodistusLatausSpec extends TodistusSpecHelpers with BeforeAndAfterAll {
   // Printattava todistus: sv_tulostettava_paivitys (2 sivua)
   private val svPaivitysTemplateVariant = "sv_tulostettava_paivitys"
 
-  private lazy val svPaivitysTodistusJob: TodistusJob = addQueuedJobWithFixedDate(svPaivitysTemplateVariant, MockUsers.paakayttaja.oid)
+  private lazy val svPaivitysTodistusJob: TodistusJob = addQueuedJobWithFixedDate(svPaivitysTemplateVariant)
 
   private lazy val svPaivitysCompletedJob: TodistusJob = waitForCompletionAsVirkailijaPääkäyttäjä(svPaivitysTodistusJob.id)
 
@@ -267,7 +285,7 @@ class TodistusLatausSpec extends TodistusSpecHelpers with BeforeAndAfterAll {
   // Printattava todistus: en_tulostettava_uusi (3 sivua)
   private val enUusiTemplateVariant = "en_tulostettava_uusi"
 
-  private lazy val enUusiTodistusJob: TodistusJob = addQueuedJobWithFixedDate(enUusiTemplateVariant, MockUsers.paakayttaja.oid)
+  private lazy val enUusiTodistusJob: TodistusJob = addQueuedJobWithFixedDate(enUusiTemplateVariant)
 
   private lazy val enUusiCompletedJob: TodistusJob = waitForCompletionAsVirkailijaPääkäyttäjä(enUusiTodistusJob.id)
 
@@ -292,7 +310,7 @@ class TodistusLatausSpec extends TodistusSpecHelpers with BeforeAndAfterAll {
   // Printattava todistus: en_tulostettava_paivitys (2 sivua)
   private val enPaivitysTemplateVariant = "en_tulostettava_paivitys"
 
-  private lazy val enPaivitysTodistusJob: TodistusJob = addQueuedJobWithFixedDate(enPaivitysTemplateVariant, MockUsers.paakayttaja.oid)
+  private lazy val enPaivitysTodistusJob: TodistusJob = addQueuedJobWithFixedDate(enPaivitysTemplateVariant)
 
   private lazy val enPaivitysCompletedJob: TodistusJob = waitForCompletionAsVirkailijaPääkäyttäjä(enPaivitysTodistusJob.id)
 
@@ -428,8 +446,8 @@ class TodistusLatausSpec extends TodistusSpecHelpers with BeforeAndAfterAll {
         verifyPageSize(documentGetter(), 2)
       }
 
-      "PDF alueet ja logot vastaavat referenssikuvaa pikselitasolla" in {
-        verifyAreasByPixel(documentGetter(), lang, lataustapa)
+      "PDF-sivut vastaavat referenssikuvia pikselilleen" in {
+        verifyPagesByPixel(documentGetter(), lang, lataustapa)
       }
 
       "PDF-allekirjoitusanalyysi (PdfSignatureAnalyzer)" in {
@@ -513,8 +531,8 @@ class TodistusLatausSpec extends TodistusSpecHelpers with BeforeAndAfterAll {
         verifyPageSize(documentGetter(), expectedPages)
       }
 
-      "PDF alueet ja logot vastaavat referenssikuvaa pikselitasolla" in {
-        verifyAreasByPixelPrintTemplate(documentGetter(), s"$variant", expectedPages, variant)
+      "PDF-sivut vastaavat referenssikuvia pikselilleen" in {
+        verifyPrintTemplatePagesByPixel(documentGetter(), s"$variant", expectedPages, variant)
       }
     }
   }
@@ -782,8 +800,8 @@ class TodistusLatausSpec extends TodistusSpecHelpers with BeforeAndAfterAll {
   }
 
   // Vaatii, että renderöidyt sivut vastaavat referenssikuvia pikselilleen.
-  def verifyAreasByPixel(document: PDDocument, lang: String, lataustapa: String): Unit = {
-    verifyPixelRegions(
+  def verifyPagesByPixel(document: PDDocument, lang: String, lataustapa: String): Unit = {
+    verifyPagesMatchReferenceImages(
       document,
       s"$lang-$lataustapa",
       s"/todistus-test-kielitutkinto-yleinenkielitutkinto-expected/$lang",
@@ -792,23 +810,12 @@ class TodistusLatausSpec extends TodistusSpecHelpers with BeforeAndAfterAll {
   }
 
   // Printattavan todistuksen pikselitason vertailu (_uusi: 3 sivua, _paivitys: 2 sivua)
-  def verifyAreasByPixelPrintTemplate(document: PDDocument, lataustapa: String, pageCount: Int = 3, variant: String = "fi_tulostettava_uusi"): Unit = {
-    verifyPixelRegions(
+  def verifyPrintTemplatePagesByPixel(document: PDDocument, lataustapa: String, pageCount: Int = 3, variant: String = "fi_tulostettava_uusi"): Unit = {
+    verifyPagesMatchReferenceImages(
       document,
       lataustapa,
       s"/todistus-test-kielitutkinto-yleinenkielitutkinto-expected/$variant",
-      pageCount = pageCount,
-      // Ensimmäisellä sivulla on opiskeluoikeuden OID, joka arvotaan fixtureita luotaessa, joten
-      // sitä verrataan vain sisältömäärien perusteella.
-      pagesWithRandomContent = Set(0),
-      // PDF renderöidään 72 DPI:llä, mikä vastaa PDF:n natiiveja pisteitä ja tekee A4:stä noin 595 x 842 pikseliä
-      // Koordinaatit ovat pikseleinä renderöidyssä kuvassa (0,0 = vasen ylänurkka, y kasvaa alaspäin)
-      // minContentRatio: Minimiosuus ei-valkoisia pikseleitä jotta alue katsotaan sisällölliseksi
-      testRegions = Seq(
-        TestRegion("vasen_ylanurkka", pageIndex = 0, x = 45, y = 45, width = 200, height = 100, minContentRatio = 0.25),
-        TestRegion("oikea_alanurkka", pageIndex = 0, x = 420, y = 750, width = 130, height = 50, minContentRatio = 0.15),
-        TestRegion("sivu1_kokonaan", pageIndex = 0, x = 0, y = 0, width = 595, height = 842, minContentRatio = 0.05)
-      )
+      pageCount = pageCount
     )
   }
 
@@ -1040,16 +1047,6 @@ class TodistusLatausSpec extends TodistusSpecHelpers with BeforeAndAfterAll {
     }
   }
 
-  case class TestRegion(
-    name: String,
-    pageIndex: Int,
-    x: Int,
-    y: Int,
-    width: Int,
-    height: Int,
-    minContentRatio: Double
-  )
-
   private val dpi = 72f
 
   private def renderPageToImage(doc: PDDocument, pageIndex: Int): BufferedImage = {
@@ -1057,56 +1054,11 @@ class TodistusLatausSpec extends TodistusSpecHelpers with BeforeAndAfterAll {
     renderer.renderImageWithDPI(pageIndex, dpi)
   }
 
-  private def cropImage(image: BufferedImage, region: TestRegion): BufferedImage = {
-    val actualX = math.max(0, math.min(region.x, image.getWidth - 1))
-    val actualY = math.max(0, math.min(region.y, image.getHeight - 1))
-    val actualWidth = math.min(region.width, image.getWidth - actualX)
-    val actualHeight = math.min(region.height, image.getHeight - actualY)
-
-    image.getSubimage(actualX, actualY, actualWidth, actualHeight)
-  }
-
-  private def isImageContentful(image: BufferedImage, minContentRatio: Double = 0.10): (Boolean, Double) = {
-    val contentRatio = calculateContentRatio(image)
-    (contentRatio >= minContentRatio, contentRatio)
-  }
-
-  private def calculateContentRatio(image: BufferedImage): Double = {
-    val width = image.getWidth
-    val height = image.getHeight
-    val totalPixels = width * height
-
-    var contentPixels = 0
-
-    for {
-      x <- 0 until width
-      y <- 0 until height
-    } {
-      val rgb = image.getRGB(x, y)
-      if (!isBackgroundColor(rgb)) {
-        contentPixels += 1
-      }
-    }
-
-    contentPixels.toDouble / totalPixels
-  }
-
-  private def isBackgroundColor(rgb: Int): Boolean = {
-    val r = (rgb >> 16) & 0xFF
-    val g = (rgb >> 8) & 0xFF
-    val b = rgb & 0xFF
-
-    // Valkoinen tai lähes valkoinen (threshold 240)
-    r > 240 && g > 240 && b > 240
-  }
-
-  private def verifyPixelRegions(
+  private def verifyPagesMatchReferenceImages(
     document: PDDocument,
     lataustapa: String,
     referenceResourcePath: String,
-    pageCount: Int,
-    pagesWithRandomContent: Set[Int] = Set.empty,
-    testRegions: Seq[TestRegion] = Seq.empty
+    pageCount: Int
   ): Unit = {
     // Luo lataustapa-alihakemisto
     val lataustapaDir = outputDir.resolve(lataustapa)
@@ -1139,23 +1091,6 @@ class TodistusLatausSpec extends TodistusSpecHelpers with BeforeAndAfterAll {
       )
     }
 
-    // Ensimmäinen loop: Generoi ja tallenna kaikki testialueet
-    val testAreas = testRegions.map { region =>
-      println(s"DEBUG: Luodaan testiarea: ${region.name} (sivu ${region.pageIndex + 1}, x=${region.x}, y=${region.y}, w=${region.width}, h=${region.height})")
-
-      val testArea = cropImage(testPages(region.pageIndex), region)
-
-      // Tallenna leikatut alueet debuggausta varten
-      writeImage(
-        lataustapaDir,
-        s"todistus-area-${region.name}.png",
-        testArea,
-        s"DEBUG: Actual-alue '${region.name}' kirjoitettu"
-      )
-
-      region -> testArea
-    }.toMap
-
     // Lazy loading - ladataan vasta kun tarvitaan vertailuun
     lazy val referencePages = (0 until pageCount).map { pageIdx =>
       pageIdx -> loadReferenceImage(s"todistus-full-page-${pageIdx + 1}.png")
@@ -1179,39 +1114,11 @@ class TodistusLatausSpec extends TodistusSpecHelpers with BeforeAndAfterAll {
     }
 
     val unexpectedDifferences = changedPixelsByPage.collect {
-      case (pageIdx, changedPixels) if changedPixels > 0 && !pagesWithRandomContent.contains(pageIdx) =>
+      case (pageIdx, changedPixels) if changedPixels > 0 =>
         s"sivu ${pageIdx + 1}: $changedPixels pikseliä"
     }
     withClue(s"Renderöity todistus poikkeaa referenssikuvista. Erokuvat: ${lataustapaDir.toAbsolutePath}. ") {
       unexpectedDifferences should be(empty)
-    }
-
-    // Toinen loop: Vertaa testialueita referenssialueisiin
-    testRegions.foreach { region =>
-      println(s"DEBUG: Tarkistetaan alue: ${region.name}")
-
-      val testArea = testAreas(region)
-      val referenceArea = cropImage(referencePages(region.pageIndex), region)
-
-      // Tarkista että alueet eivät ole tyhjiä
-      val (actualHasContent, actualContentRatio) = isImageContentful(testArea, minContentRatio = region.minContentRatio)
-      val (expectedHasContent, expectedContentRatio) = isImageContentful(referenceArea, minContentRatio = region.minContentRatio)
-
-      withClue(f"Actual-alue '${region.name}' on tyhjä tai lähes tyhjä (vain ${actualContentRatio * 100}%.2f%% sisältöä, vaadittu vähintään ${region.minContentRatio * 100}%.2f%%). Tarkista että koordinaatit ovat oikein. ") {
-        actualHasContent should be(true)
-      }
-
-      withClue(f"Expected-alue '${region.name}' on tyhjä tai lähes tyhjä (vain ${expectedContentRatio * 100}%.2f%% sisältöä, vaadittu vähintään ${region.minContentRatio * 100}%.2f%%). Tarkista että koordinaatit ovat oikein. ") {
-        expectedHasContent should be(true)
-      }
-
-      // Tarkista että sisältömäärät ovat lähellä toisiaan
-      val contentRatioDifference = math.abs(actualContentRatio - expectedContentRatio)
-      val maxAllowedDifference = 0.0005
-
-      withClue(f"Alueen '${region.name}' sisältömäärät poikkeavat liikaa toisistaan. Actual: ${actualContentRatio * 100}%.2f%%, expected: ${expectedContentRatio * 100}%.2f%%, ero ${contentRatioDifference * 100}%.2f%% (max ${maxAllowedDifference * 100}%.2f%%). Tarkista että koordinaatit ovat oikein. ") {
-        contentRatioDifference should be <= maxAllowedDifference
-      }
     }
   }
 
