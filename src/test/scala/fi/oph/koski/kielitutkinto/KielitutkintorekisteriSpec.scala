@@ -12,6 +12,7 @@ import fi.oph.koski.koskiuser.{KoskiMockUser, KoskiSpecificSession, MockUsers, O
 import fi.oph.koski.oppija.{HenkilönOpiskeluoikeusVersiot, OppijaServletOppijaAdder}
 import fi.oph.koski.organisaatio.{MockOrganisaatiot, Opetushallitus}
 import fi.oph.koski.schema._
+import fi.oph.koski.tiedonsiirto.Tiedonsiirrot
 import fi.oph.koski.util.WithWarnings
 import fi.oph.koski.{KoskiApplicationForTests, KoskiHttpSpec}
 import org.json4s.JValue
@@ -62,6 +63,17 @@ class KielitutkintorekisteriSpec
     "ei pysty lukemaan muita opiskeluoikeuksia rajapinnan kautta" in {
       get(s"api/oppija/${lukiolainen.oid}", headers = authHeaders(MockUsers.kielitutkintorekisteriKäyttäjä)) {
         verifyResponseStatus(404, KoskiErrorCategory.notFound.oppijaaEiLöydyTaiEiOikeuksia(s"Oppijaa ${lukiolainen.oid} ei löydy tai käyttäjällä ei ole oikeuksia tietojen katseluun."))
+      }
+    }
+    "siirto kirjataan tiedonsiirtolokiin opiskeluoikeuden koulutustoimijalle" in {
+      putOppija(kielitutkinnonOpiskeluoikeus, headers = authHeaders(MockUsers.kielitutkintorekisteriKäyttäjä) ++ jsonContent) {
+        verifyResponseStatusOk()
+      }
+      KoskiApplicationForTests.tiedonsiirtoService.syncToOpenSearch(refresh = true)
+      authGet("api/tiedonsiirrot", MockUsers.paakayttaja) {
+        verifyResponseStatusOk()
+        val siirrot = readPaginatedResponse[Tiedonsiirrot].henkilöt
+        siirrot.exists(_.oppija.exists(_.hetu.contains("160586-873P"))) should equal(true)
       }
     }
     "pystyy kirjoittamaan kielitutkinnon opiskeluoikeuden" in { canWrite(kielitutkinnonOpiskeluoikeus) }
