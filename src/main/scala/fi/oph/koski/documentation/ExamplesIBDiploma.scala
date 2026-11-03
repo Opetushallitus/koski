@@ -73,6 +73,6 @@ object ExamplesIBDiploma {
   )
 
   val examples: List[Example] = List(
-    Example("ibdiploma", "IBO:n myöntämä IB Diploma, joka on tuotu IBIS-tulostiedostosta", Oppija(asUusiOppija(KoskiSpecificMockOppijat.ibDiploma), List(opiskeluoikeus)))
+    Example("ibdiploma", "IBO:n myöntämä IB Diploma, joka on tuotu IBIS-tulostiedostosta", Oppija(asUusiOppija(KoskiSpecificMockOppijat.ibDiploma), List(opiskeluoikeus)), 400)
   )
 }
