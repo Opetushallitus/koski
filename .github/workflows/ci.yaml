@@ -23,6 +23,7 @@ jobs:
     outputs:
       backend: ${{ steps.filter.outputs.all == 'true' || steps.filter.outputs.backend == 'true' }}
       koski-ui: ${{ steps.filter.outputs.all == 'true' || steps.filter.outputs.backend == 'true' || steps.filter.outputs.koski-ui == 'true' }}
+      schema-viewer: ${{ steps.filter.outputs.all == 'true' || steps.filter.outputs.backend == 'true' || steps.filter.outputs.koski-ui == 'true' || steps.filter.outputs.schema-viewer == 'true' }}
       valpas-ui: ${{ steps.filter.outputs.all == 'true' || steps.filter.outputs.backend == 'true' || steps.filter.outputs.valpas-ui == 'true' }}
       oauth2: ${{ steps.filter.outputs.all == 'true' || steps.filter.outputs.backend == 'true' || steps.filter.outputs.koski-ui == 'true' || steps.filter.outputs.oauth2 == 'true' }}
       smoketests: ${{ steps.filter.outputs.all == 'true' || steps.filter.outputs.smoketests == 'true' }}
@@ -78,8 +79,13 @@ jobs:
             koski-ui:
               - *documentation-exclusions
               - 'web/**'
-              - 'json-schema-viewer/**'
+              - '!web/test/e2e/schema-viewer/**'
               - '.browserslistrc'
+
+            schema-viewer:
+              - *documentation-exclusions
+              - 'json-schema-viewer/**'
+              - 'web/test/e2e/schema-viewer/**'
 
             valpas-ui:
               - *documentation-exclusions
@@ -155,6 +161,7 @@ jobs:
     with:
       run-backend-tests: ${{ needs.changes.outputs.backend == 'true' }}
       run-koski-ui-tests: ${{ needs.changes.outputs.koski-ui == 'true' }}
+      run-schema-viewer-tests: ${{ needs.changes.outputs.schema-viewer == 'true' }}
       run-valpas-ui-tests: ${{ needs.changes.outputs.valpas-ui == 'true' }}
       run-oauth2-tests: ${{ needs.changes.outputs.oauth2 == 'true' }}
       run-smoketests-tests: ${{ needs.changes.outputs.smoketests == 'true' }}

@@ -209,7 +209,7 @@ Editing the hash in place re-applies it (`hashchange` → `resetDeepLinks` +
 
 The parsing lives in the viewer JS (`JSV.applyDeepLinks`); the servlet's inline
 bootstrap only calls it, so tweaks need `make front` but not a backend restart.
-Covered by `web/test/e2e/json-schema-viewer-deep-links.spec.ts`.
+Covered by `web/test/e2e/schema-viewer/json-schema-viewer-deep-links.spec.ts`.
 
 ## jQuery Mobile `<base>` vs. the info-panel tabs
 
@@ -275,3 +275,6 @@ query-less.
   `curl -s http://localhost:7021/koski/json-schema-viewer/styles/json-schema-viewer.css`.
 - Viewer tests use Koski's existing Playwright setup:
   `pnpm --dir web exec playwright test schema-viewer` (requires a running Koski).
+  Keep them all in `web/test/e2e/schema-viewer/`: a PR that changes only
+  `json-schema-viewer/` or that directory runs just those tests in CI, not the
+  whole Koski UI suite.

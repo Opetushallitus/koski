@@ -11,6 +11,10 @@ on:
         description: Run Koski frontend lint, unit, browser and visual tests
         type: boolean
         default: true
+      run-schema-viewer-tests:
+        description: Run frontend static analysis and JSON Schema Viewer browser tests
+        type: boolean
+        default: true
       run-valpas-ui-tests:
         description: Run Valpas frontend lint, unit and browser tests
         type: boolean
@@ -138,7 +142,7 @@ jobs:
           pnpm run lint:check
 
   build_koski:
-    if: ${{ inputs.run-backend-tests || inputs.run-koski-ui-tests || inputs.run-valpas-ui-tests || inputs.run-oauth2-tests || inputs.run-docker-image-tests }}
+    if: ${{ inputs.run-backend-tests || inputs.run-koski-ui-tests || inputs.run-schema-viewer-tests || inputs.run-valpas-ui-tests || inputs.run-oauth2-tests || inputs.run-docker-image-tests }}
     name: Build Koski app
     runs-on: ubuntu-26.04
     steps:
@@ -224,7 +228,7 @@ jobs:
       - run: make scalafix-check
 
   koski_frontend_lint:
-    if: ${{ inputs.run-koski-ui-tests }}
+    if: ${{ inputs.run-koski-ui-tests || inputs.run-schema-viewer-tests }}
     name: Koski frontend static analysis
     runs-on: ubuntu-26.04
     steps:
@@ -590,6 +594,22 @@ jobs:
         with:
           shardIndex: ${{ matrix.shardIndex }}
           shardTotal: ${{ matrix.shardTotal }}
+
+  schema_viewer_browser_tests:
+    name: Schema viewer browser tests
+    timeout-minutes: 30
+    runs-on: ubuntu-26.04
+    if: ${{ inputs.run-schema-viewer-tests && !inputs.run-koski-ui-tests && !contains(github.event.head_commit.message, '[skip-tests]') }}
+    needs: [build_koski]
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: $/.github/actions/koski_playwright_browser_tests_shard
+        with:
+          shardIndex: 1
+          shardTotal: 1
+          testPath: test/e2e/schema-viewer/
 
   koski_frontend_visual_tests:
     name: Koski visuaaliregressiot
