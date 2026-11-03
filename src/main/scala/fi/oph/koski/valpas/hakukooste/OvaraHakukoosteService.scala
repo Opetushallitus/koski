@@ -10,7 +10,7 @@ import fi.oph.koski.json.Json4sHttp4s.json4sEncoderOf
 import fi.oph.koski.koodisto.KoodistoViitePalvelu
 import fi.oph.koski.localization.LocalizationRepository
 import fi.oph.koski.log.Logging
-import fi.oph.koski.schema.{BlankLocalizedString, BlankableLocalizedString, Koodistokoodiviite, LocalizedString}
+import fi.oph.koski.schema.{BlankLocalizedString, BlankableLocalizedString, Finnish, Koodistokoodiviite, LocalizedString}
 import fi.oph.koski.util.Timing
 import fi.oph.koski.valpas.opiskeluoikeusrepository.ValpasHenkilö
 import fi.oph.koski.valpas.oppija.ValpasErrorCategory
@@ -26,7 +26,9 @@ case class OvaraNimi(fi: Option[String], sv: Option[String], en: Option[String])
 case class OvaraHakutoiveResponse(
   hakukohdeOid: String,
   hakukohdeNimi: OvaraNimi,
-  organisaatioNimi: OvaraNimi,
+  organisaatioNimi: Option[OvaraNimi],
+  oppilaitosNimi: Option[OvaraNimi],
+  toimipisteNimi: Option[OvaraNimi],
   hakukohdeOrganisaatio: String,
   koulutusNimi: OvaraNimi,
   koulutusOid: Option[String],
@@ -207,7 +209,7 @@ class OvaraHakukoosteService(
       Hakutoive(
         hakukohdeOid = t.hakukohdeOid,
         hakukohdeNimi = toLocalizedString(t.hakukohdeNimi),
-        organisaatioNimi = toLocalizedString(t.organisaatioNimi),
+        organisaatioNimi = toOrganisaatioNimi(t),
         hakukohdeOrganisaatio = t.hakukohdeOrganisaatio,
         koulutusNimi = toLocalizedString(t.koulutusNimi),
         koulutusOid = t.koulutusOid,
@@ -243,6 +245,33 @@ class OvaraHakukoosteService(
       logger.error(s"Invalid haunAlkamispaivamaara '$dateStr' from Ovara for $errorClue: ${e.getMessage}")
       ValpasErrorCategory.badGateway.ovara()
     }
+
+  private def toOrganisaatioNimi(hakutoive: OvaraHakutoiveResponse): BlankableLocalizedString = {
+    val oppilaitosNimi = toOptionalLocalizedString(hakutoive.oppilaitosNimi)
+    val toimipisteNimi = toOptionalLocalizedString(hakutoive.toimipisteNimi)
+    oppilaitosNimi
+      .map(oppilaitos => toimipisteNimi.fold(oppilaitos)(combineOppilaitosAndToimipisteNimi(oppilaitos, _)))
+      .orElse(toimipisteNimi)
+      // Varalla, jos Ovara ei (vielä) palauta oppilaitoksen eikä toimipisteen nimeä
+      .orElse(toOptionalLocalizedString(hakutoive.organisaatioNimi))
+      .getOrElse(BlankLocalizedString())
+  }
+
+  private def combineOppilaitosAndToimipisteNimi(oppilaitos: LocalizedString, toimipiste: LocalizedString): LocalizedString = {
+    def combine(lang: String): String = {
+      val oppilaitosNimi = oppilaitos.get(lang)
+      val toimipisteNimi = toimipiste.get(lang)
+      // Toimipisteen nimi alkaa usein oppilaitoksen nimellä, esim. "Stadin aikuisopisto, Holkkitien toimipaikka"
+      if (toimipisteNimi.startsWith(oppilaitosNimi)) toimipisteNimi else s"$oppilaitosNimi, $toimipisteNimi"
+    }
+    def combineIfEitherHasLanguage(lang: String): Option[String] =
+      Option.when(oppilaitos.hasLanguage(lang) || toimipiste.hasLanguage(lang))(combine(lang))
+
+    Finnish(combine("fi"), combineIfEitherHasLanguage("sv"), combineIfEitherHasLanguage("en"))
+  }
+
+  private def toOptionalLocalizedString(nimi: Option[OvaraNimi]): Option[LocalizedString] =
+    nimi.flatMap(toLocalizedString(_).toLocalizedString)
 
   private def toLocalizedString(nimi: OvaraNimi): BlankableLocalizedString = LocalizedString.sanitize(Map(
     "fi" -> nimi.fi.getOrElse(""),
