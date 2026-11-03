@@ -1,308 +1,100 @@
 # Raportit massaluovutusrajapinnan kautta
 
-Tämä dokumentaatio kuvaa raportit, jotka ovat saatavilla massaluovutusrajapinnan kautta.
-Raportit palauttavat Excel-muotoisia (xlsx) tiedostoja.
+Tällä sivulla kuvataan raportit, jotka ovat saatavilla massaluovutusrajapinnan kautta. Raportit vastaavat
+raporttinäkymästä ladattavia raportteja ja palauttavat Excel-muotoisia (xlsx) tiedostoja; päällekkäisten
+opiskeluoikeuksien raportti on saatavana myös csv-muodossa. Raporttien hakeminen edellyttää samoja
+käyttöoikeuksia kuin raporttinäkymän käyttö.
 
-Raporttien käyttö tapahtuu samalla tavalla kuin muutkin massaluovutuskyselyt.
-Katso [massaluovutusrajapinnan yleinen dokumentaatio](/koski/dokumentaatio/rajapinnat/massaluovutus/koulutuksenjarjestajat)
-kyselyn luonnista ja tulosten hakemisesta.
+Raportteja haetaan samalla tavalla kuin muitakin massaluovutuskyselyitä. Kyselyn luonti, tilan seuranta ja
+tulosten lataus on kuvattu [yleisissä ohjeissa](/koski/dokumentaatio/rajapinnat/massaluovutus). Kyselyt
+lähetetään osoitteeseen `POST {{var:baseUrl}}/api/massaluovutus`.
+[Katso myös kaikki kyselyiden skeemat graafisessa muodossa](/koski/json-schema-viewer/?schema=massaluovutus-query.json).
 
-{{title:fi.oph.koski.massaluovutus.raportit.MassaluovutusQueryLukionSuoritustiedot}}
-{{docs:fi.oph.koski.massaluovutus.raportit.MassaluovutusQueryLukionSuoritustiedot}}
+{{toc}}
 
-Esimerkki:
+## Yhteiset parametrit
 
-    POST {{var:baseUrl}}/api/massaluovutus HTTP/1.1
-    {{var:headers}}
+Kyselyn tyyppi (`type`) ja alla luetellut parametrit ovat kaikilla raporteilla samat. Raporttikohtaisissa
+kuvauksissa näytetään vain raportin omat parametrit.
 
-    {{json:LukionSuoritustiedotXlsx}}
+{{docs:fi.oph.koski.massaluovutus.RaporttikyselynYhteisetParametrit|title=Yhteiset parametrit|open}}
 
-{{title:fi.oph.koski.massaluovutus.raportit.MassaluovutusQueryLukio2019Suoritustiedot}}
-{{docs:fi.oph.koski.massaluovutus.raportit.MassaluovutusQueryLukio2019Suoritustiedot}}
+{{query:PaallekkaisetOpiskeluoikeudetCsv,PaallekkaisetOpiskeluoikeudetXlsx}}
 
-Esimerkki:
+## Lukiokoulutus
 
-    POST {{var:baseUrl}}/api/massaluovutus HTTP/1.1
-    {{var:headers}}
+{{query:LukionSuoritustiedotXlsx|h3|raportti}}
 
-    {{json:Lukio2019SuoritustiedotXlsx}}
+{{query:Lukio2019SuoritustiedotXlsx|h3|raportti}}
 
-{{title:fi.oph.koski.massaluovutus.raportit.MassaluovutusQueryLukioKurssikertymat}}
-{{docs:fi.oph.koski.massaluovutus.raportit.MassaluovutusQueryLukioKurssikertymat}}
+{{query:LukioKurssikertymatXlsx|h3|raportti}}
 
-Esimerkki:
+{{query:Lukio2019OpintopistekertymatXlsx|h3|raportti}}
 
-    POST {{var:baseUrl}}/api/massaluovutus HTTP/1.1
-    {{var:headers}}
+{{query:LukioDiaIbInternationalESHOpiskelijamaaratXlsx|h3|raportti}}
 
-    {{json:LukioKurssikertymatXlsx}}
+{{query:LuvaOpiskelijamaaratXlsx|h3|raportti}}
 
-{{title:fi.oph.koski.massaluovutus.raportit.MassaluovutusQueryLukio2019Opintopistekertymat}}
-{{docs:fi.oph.koski.massaluovutus.raportit.MassaluovutusQueryLukio2019Opintopistekertymat}}
+## Ammatillinen koulutus
 
-Esimerkki:
+{{query:AmmatillinenOpiskelijavuositiedotXlsx|h3|raportti}}
 
-    POST {{var:baseUrl}}/api/massaluovutus HTTP/1.1
-    {{var:headers}}
+{{query:AmmatillinenTutkintoSuoritustiedotXlsx|h3|raportti}}
 
-    {{json:Lukio2019OpintopistekertymatXlsx}}
+{{query:AmmatillinenOsittainenSuoritustiedotXlsx|h3|raportti}}
 
-{{title:fi.oph.koski.massaluovutus.raportit.MassaluovutusQueryLukioDiaIbInternationalESHOpiskelijamaarat}}
-{{docs:fi.oph.koski.massaluovutus.raportit.MassaluovutusQueryLukioDiaIbInternationalESHOpiskelijamaarat}}
+{{query:MuuAmmatillinenXlsx|h3|raportti}}
 
-Esimerkki:
+{{query:TOPKSAmmatillinenXlsx|h3|raportti}}
 
-    POST {{var:baseUrl}}/api/massaluovutus HTTP/1.1
-    {{var:headers}}
+## Perusopetus
 
-    {{json:LukioDiaIbInternationalESHOpiskelijamaaratXlsx}}
+{{query:PerusopetuksenVuosiluokkaXlsx|h3|raportti}}
 
-{{title:fi.oph.koski.massaluovutus.raportit.MassaluovutusQueryLuvaOpiskelijamaarat}}
-{{docs:fi.oph.koski.massaluovutus.raportit.MassaluovutusQueryLuvaOpiskelijamaarat}}
+{{query:PerusopetuksenOppijamaaratRaporttiXlsx|h3|raportti}}
 
-Esimerkki:
+{{query:PerusopetuksenLisaopetuksenOppijamaaratRaporttiXlsx|h3|raportti}}
 
-    POST {{var:baseUrl}}/api/massaluovutus HTTP/1.1
-    {{var:headers}}
+{{query:PerusopetukseenValmistavaXlsx|h3|raportti}}
 
-    {{json:LuvaOpiskelijamaaratXlsx}}
+{{query:KotikuntalaskelmaXlsx|h3|exclude=format,language,password}}
 
-{{title:fi.oph.koski.massaluovutus.raportit.MassaluovutusQueryAmmatillinenOpiskelijavuositiedot}}
-{{docs:fi.oph.koski.massaluovutus.raportit.MassaluovutusQueryAmmatillinenOpiskelijavuositiedot}}
+{{query:KunnanOppijatXlsx|h3|exclude=format,language,password}}
 
-Esimerkki:
+## Aikuisten perusopetus
 
-    POST {{var:baseUrl}}/api/massaluovutus HTTP/1.1
-    {{var:headers}}
+{{query:AikuistenPerusopetusSuoritustiedotXlsx|h3|raportti}}
 
-    {{json:AmmatillinenOpiskelijavuositiedotXlsx}}
+{{query:AikuistenPerusopetuksenOppijamaaratRaporttiXlsx|h3|raportti}}
 
-{{title:fi.oph.koski.massaluovutus.raportit.MassaluovutusQueryAmmatillinenTutkintoSuoritustiedot}}
-{{docs:fi.oph.koski.massaluovutus.raportit.MassaluovutusQueryAmmatillinenTutkintoSuoritustiedot}}
+{{query:AikuistenPerusopetuksenKurssikertymaXlsx|h3|raportti}}
 
-Esimerkki:
+## Esiopetus
 
-    POST {{var:baseUrl}}/api/massaluovutus HTTP/1.1
-    {{var:headers}}
+{{query:EsiopetusXlsx|h3|raportti}}
 
-    {{json:AmmatillinenTutkintoSuoritustiedotXlsx}}
+{{query:EsiopetuksenOppijamaaratRaporttiXlsx|h3|raportti}}
 
-{{title:fi.oph.koski.massaluovutus.raportit.MassaluovutusQueryAmmatillinenOsittainenSuoritustiedot}}
-{{docs:fi.oph.koski.massaluovutus.raportit.MassaluovutusQueryAmmatillinenOsittainenSuoritustiedot}}
+## Tutkintokoulutukseen valmentava koulutus (TUVA)
 
-Esimerkki:
+{{query:TuvaPerusopetuksenOppijamaaratRaporttiXlsx|h3|raportti}}
 
-    POST {{var:baseUrl}}/api/massaluovutus HTTP/1.1
-    {{var:headers}}
+{{query:TuvaSuoritustiedotXlsx|h3|raportti}}
 
-    {{json:AmmatillinenOsittainenSuoritustiedotXlsx}}
+## IB-tutkinto
 
-{{title:fi.oph.koski.massaluovutus.raportit.MassaluovutusQueryMuuAmmatillinen}}
-{{docs:fi.oph.koski.massaluovutus.raportit.MassaluovutusQueryMuuAmmatillinen}}
+{{query:IBSuoritustiedotXlsx|h3|raportti}}
 
-Esimerkki:
+## Vapaa sivistystyö
 
-    POST {{var:baseUrl}}/api/massaluovutus HTTP/1.1
-    {{var:headers}}
+{{query:VSTJOTPAXlsx|h3|raportti}}
 
-    {{json:MuuAmmatillinenXlsx}}
+{{query:VSTVapaatavoitteinenXlsx|h3|raportti}}
 
-{{title:fi.oph.koski.massaluovutus.raportit.MassaluovutusQueryTOPKSAmmatillinen}}
-{{docs:fi.oph.koski.massaluovutus.raportit.MassaluovutusQueryTOPKSAmmatillinen}}
+{{query:VSTKOPSXlsx|h3|raportti}}
 
-Esimerkki:
+{{query:VSTOsaamismerkitXlsx|h3|raportti}}
 
-    POST {{var:baseUrl}}/api/massaluovutus HTTP/1.1
-    {{var:headers}}
+## Muu kuin säännelty koulutus
 
-    {{json:TOPKSAmmatillinenXlsx}}
-
-{{title:fi.oph.koski.massaluovutus.raportit.MassaluovutusQueryPerusopetuksenVuosiluokka}}
-{{docs:fi.oph.koski.massaluovutus.raportit.MassaluovutusQueryPerusopetuksenVuosiluokka}}
-
-Esimerkki:
-
-    POST {{var:baseUrl}}/api/massaluovutus HTTP/1.1
-    {{var:headers}}
-
-    {{json:PerusopetuksenVuosiluokkaXlsx}}
-
-{{title:fi.oph.koski.massaluovutus.raportit.MassaluovutusQueryPerusopetuksenOppijamaaratRaportti}}
-{{docs:fi.oph.koski.massaluovutus.raportit.MassaluovutusQueryPerusopetuksenOppijamaaratRaportti}}
-
-Esimerkki:
-
-    POST {{var:baseUrl}}/api/massaluovutus HTTP/1.1
-    {{var:headers}}
-
-    {{json:PerusopetuksenOppijamaaratRaporttiXlsx}}
-
-{{title:fi.oph.koski.massaluovutus.raportit.MassaluovutusQueryPerusopetuksenLisaopetuksenOppijamaaratRaportti}}
-{{docs:fi.oph.koski.massaluovutus.raportit.MassaluovutusQueryPerusopetuksenLisaopetuksenOppijamaaratRaportti}}
-
-Esimerkki:
-
-    POST {{var:baseUrl}}/api/massaluovutus HTTP/1.1
-    {{var:headers}}
-
-    {{json:PerusopetuksenLisaopetuksenOppijamaaratRaporttiXlsx}}
-
-{{title:fi.oph.koski.massaluovutus.raportit.MassaluovutusQueryPerusopetukseenValmistava}}
-{{docs:fi.oph.koski.massaluovutus.raportit.MassaluovutusQueryPerusopetukseenValmistava}}
-
-Esimerkki:
-
-    POST {{var:baseUrl}}/api/massaluovutus HTTP/1.1
-    {{var:headers}}
-
-    {{json:PerusopetukseenValmistavaXlsx}}
-
-{{title:fi.oph.koski.massaluovutus.raportit.MassaluovutusQueryAikuistenPerusopetusSuoritustiedot}}
-{{docs:fi.oph.koski.massaluovutus.raportit.MassaluovutusQueryAikuistenPerusopetusSuoritustiedot}}
-
-Esimerkki:
-
-    POST {{var:baseUrl}}/api/massaluovutus HTTP/1.1
-    {{var:headers}}
-
-    {{json:AikuistenPerusopetusSuoritustiedotXlsx}}
-
-{{title:fi.oph.koski.massaluovutus.raportit.MassaluovutusQueryAikuistenPerusopetuksenOppijamaaratRaportti}}
-{{docs:fi.oph.koski.massaluovutus.raportit.MassaluovutusQueryAikuistenPerusopetuksenOppijamaaratRaportti}}
-
-Esimerkki:
-
-    POST {{var:baseUrl}}/api/massaluovutus HTTP/1.1
-    {{var:headers}}
-
-    {{json:AikuistenPerusopetuksenOppijamaaratRaporttiXlsx}}
-
-{{title:fi.oph.koski.massaluovutus.raportit.MassaluovutusQueryAikuistenPerusopetuksenKurssikertyma}}
-{{docs:fi.oph.koski.massaluovutus.raportit.MassaluovutusQueryAikuistenPerusopetuksenKurssikertyma}}
-
-Esimerkki:
-
-    POST {{var:baseUrl}}/api/massaluovutus HTTP/1.1
-    {{var:headers}}
-
-    {{json:AikuistenPerusopetuksenKurssikertymaXlsx}}
-
-{{title:fi.oph.koski.massaluovutus.raportit.MassaluovutusQueryEsiopetus}}
-{{docs:fi.oph.koski.massaluovutus.raportit.MassaluovutusQueryEsiopetus}}
-
-Esimerkki:
-
-    POST {{var:baseUrl}}/api/massaluovutus HTTP/1.1
-    {{var:headers}}
-
-    {{json:EsiopetusXlsx}}
-
-{{title:fi.oph.koski.massaluovutus.raportit.MassaluovutusQueryEsiopetuksenOppijamaaratRaportti}}
-{{docs:fi.oph.koski.massaluovutus.raportit.MassaluovutusQueryEsiopetuksenOppijamaaratRaportti}}
-
-Esimerkki:
-
-    POST {{var:baseUrl}}/api/massaluovutus HTTP/1.1
-    {{var:headers}}
-
-    {{json:EsiopetuksenOppijamaaratRaporttiXlsx}}
-
-{{title:fi.oph.koski.massaluovutus.raportit.MassaluovutusQueryTuvaPerusopetuksenOppijamaaratRaportti}}
-{{docs:fi.oph.koski.massaluovutus.raportit.MassaluovutusQueryTuvaPerusopetuksenOppijamaaratRaportti}}
-
-Esimerkki:
-
-    POST {{var:baseUrl}}/api/massaluovutus HTTP/1.1
-    {{var:headers}}
-
-    {{json:TuvaPerusopetuksenOppijamaaratRaporttiXlsx}}
-
-{{title:fi.oph.koski.massaluovutus.raportit.MassaluovutusQueryTuvaSuoritustiedot}}
-{{docs:fi.oph.koski.massaluovutus.raportit.MassaluovutusQueryTuvaSuoritustiedot}}
-
-Esimerkki:
-
-    POST {{var:baseUrl}}/api/massaluovutus HTTP/1.1
-    {{var:headers}}
-
-    {{json:TuvaSuoritustiedotXlsx}}
-
-{{title:fi.oph.koski.massaluovutus.raportit.MassaluovutusQueryIBSuoritustiedot}}
-{{docs:fi.oph.koski.massaluovutus.raportit.MassaluovutusQueryIBSuoritustiedot}}
-
-Esimerkki:
-
-    POST {{var:baseUrl}}/api/massaluovutus HTTP/1.1
-    {{var:headers}}
-
-    {{json:IBSuoritustiedotXlsx}}
-
-{{title:fi.oph.koski.massaluovutus.raportit.MassaluovutusQueryVSTJOTPA}}
-{{docs:fi.oph.koski.massaluovutus.raportit.MassaluovutusQueryVSTJOTPA}}
-
-Esimerkki:
-
-    POST {{var:baseUrl}}/api/massaluovutus HTTP/1.1
-    {{var:headers}}
-
-    {{json:VSTJOTPAXlsx}}
-
-{{title:fi.oph.koski.massaluovutus.raportit.MassaluovutusQueryVSTVapaatavoitteinen}}
-{{docs:fi.oph.koski.massaluovutus.raportit.MassaluovutusQueryVSTVapaatavoitteinen}}
-
-Esimerkki:
-
-    POST {{var:baseUrl}}/api/massaluovutus HTTP/1.1
-    {{var:headers}}
-
-    {{json:VSTVapaatavoitteinenXlsx}}
-
-{{title:fi.oph.koski.massaluovutus.raportit.MassaluovutusQueryVSTKOPS}}
-{{docs:fi.oph.koski.massaluovutus.raportit.MassaluovutusQueryVSTKOPS}}
-
-Esimerkki:
-
-    POST {{var:baseUrl}}/api/massaluovutus HTTP/1.1
-    {{var:headers}}
-
-    {{json:VSTKOPSXlsx}}
-
-{{title:fi.oph.koski.massaluovutus.raportit.MassaluovutusQueryVSTOsaamismerkit}}
-{{docs:fi.oph.koski.massaluovutus.raportit.MassaluovutusQueryVSTOsaamismerkit}}
-
-Esimerkki:
-
-    POST {{var:baseUrl}}/api/massaluovutus HTTP/1.1
-    {{var:headers}}
-
-    {{json:VSTOsaamismerkitXlsx}}
-
-{{title:fi.oph.koski.massaluovutus.raportit.MassaluovutusQueryMuuKuinSaanneltyKoulutus}}
-{{docs:fi.oph.koski.massaluovutus.raportit.MassaluovutusQueryMuuKuinSaanneltyKoulutus}}
-
-Esimerkki:
-
-    POST {{var:baseUrl}}/api/massaluovutus HTTP/1.1
-    {{var:headers}}
-
-    {{json:MuuKuinSaanneltyKoulutusXlsx}}
-
-{{title:fi.oph.koski.massaluovutus.raportit.MassaluovutusQueryKotikuntalaskelma}}
-{{docs:fi.oph.koski.massaluovutus.raportit.MassaluovutusQueryKotikuntalaskelma}}
-
-Esimerkki:
-
-    POST {{var:baseUrl}}/api/massaluovutus HTTP/1.1
-    {{var:headers}}
-
-    {{json:KotikuntalaskelmaXlsx}}
-
-{{title:fi.oph.koski.massaluovutus.raportit.MassaluovutusQueryKunnanOppijat}}
-{{docs:fi.oph.koski.massaluovutus.raportit.MassaluovutusQueryKunnanOppijat}}
-
-Esimerkki:
-
-    POST {{var:baseUrl}}/api/massaluovutus HTTP/1.1
-    {{var:headers}}
-
-    {{json:KunnanOppijatXlsx}}
+{{query:MuuKuinSaanneltyKoulutusXlsx|h3|raportti}}
