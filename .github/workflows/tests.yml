@@ -150,11 +150,33 @@ jobs:
         with:
           commithash: ${{ github.sha }}
 
+  opensearch_image:
+    if: ${{ inputs.run-backend-tests || inputs.run-koski-ui-tests || inputs.run-valpas-ui-tests || inputs.run-oauth2-tests || inputs.run-docker-image-tests }}
+    name: OpenSearch image
+    runs-on: ubuntu-26.04
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Build image
+        run: |
+          scripts/retry.sh "OpenSearch image build" 5m -- \
+            docker compose --progress quiet build opensearch
+          docker save koski-opensearch | zstd --threads=0 --quiet --stdout > "$RUNNER_TEMP/opensearch-image.tar.zst"
+
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          path: ${{ runner.temp }}/opensearch-image.tar.zst
+          archive: false
+          retention-days: 3
+          if-no-files-found: error
+
   docker_image:
     if: ${{ inputs.run-docker-image-tests }}
     name: Koski Docker image
     runs-on: ubuntu-26.04
-    needs: [build_koski]
+    needs: [build_koski, opensearch_image]
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
@@ -319,7 +341,7 @@ jobs:
     name: Backend (api oppijavalidation)
     runs-on: ubuntu-26.04
     if: ${{ inputs.run-backend-tests && !contains(github.event.head_commit.message, '[skip-tests]') }}
-    needs: [build_koski]
+    needs: [build_koski, opensearch_image]
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
@@ -333,7 +355,7 @@ jobs:
     name: Backend (scala-schema)
     runs-on: ubuntu-26.04
     if: ${{ inputs.run-backend-tests && !contains(github.event.head_commit.message, '[skip-tests]') }}
-    needs: [build_koski]
+    needs: [build_koski, opensearch_image]
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
@@ -347,7 +369,7 @@ jobs:
     name: Backend (api misc 1/2)
     runs-on: ubuntu-26.04
     if: ${{ inputs.run-backend-tests && !contains(github.event.head_commit.message, '[skip-tests]') }}
-    needs: [build_koski]
+    needs: [build_koski, opensearch_image]
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
@@ -362,7 +384,7 @@ jobs:
     name: Backend (api misc 2/2)
     runs-on: ubuntu-26.04
     if: ${{ inputs.run-backend-tests && !contains(github.event.head_commit.message, '[skip-tests]') }}
-    needs: [build_koski]
+    needs: [build_koski, opensearch_image]
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
@@ -377,7 +399,7 @@ jobs:
     name: Backend (non-mock)
     runs-on: ubuntu-26.04
     if: ${{ inputs.run-backend-tests && !contains(github.event.head_commit.message, '[skip-tests]') }}
-    needs: [build_koski]
+    needs: [build_koski, opensearch_image]
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
@@ -391,7 +413,7 @@ jobs:
     name: Backend (other 1/4)
     runs-on: ubuntu-26.04
     if: ${{ inputs.run-backend-tests && !contains(github.event.head_commit.message, '[skip-tests]') }}
-    needs: [build_koski]
+    needs: [build_koski, opensearch_image]
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
@@ -435,7 +457,7 @@ jobs:
     name: Backend (other 2/4)
     runs-on: ubuntu-26.04
     if: ${{ inputs.run-backend-tests && !contains(github.event.head_commit.message, '[skip-tests]') }}
-    needs: [build_koski]
+    needs: [build_koski, opensearch_image]
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
@@ -454,7 +476,7 @@ jobs:
     name: Backend (raportit)
     runs-on: ubuntu-26.04
     if: ${{ inputs.run-backend-tests && !contains(github.event.head_commit.message, '[skip-tests]') }}
-    needs: [build_koski]
+    needs: [build_koski, opensearch_image]
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
@@ -468,7 +490,7 @@ jobs:
     name: Backend (other 3/4)
     runs-on: ubuntu-26.04
     if: ${{ inputs.run-backend-tests && !contains(github.event.head_commit.message, '[skip-tests]') }}
-    needs: [build_koski]
+    needs: [build_koski, opensearch_image]
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
@@ -494,7 +516,7 @@ jobs:
     name: Backend (massaluovutus)
     runs-on: ubuntu-26.04
     if: ${{ inputs.run-backend-tests && !contains(github.event.head_commit.message, '[skip-tests]') }}
-    needs: [build_koski]
+    needs: [build_koski, opensearch_image]
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
@@ -509,7 +531,7 @@ jobs:
     name: Backend (other 4/4)
     runs-on: ubuntu-26.04
     if: ${{ inputs.run-backend-tests && !contains(github.event.head_commit.message, '[skip-tests]') }}
-    needs: [build_koski]
+    needs: [build_koski, opensearch_image]
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
@@ -544,7 +566,7 @@ jobs:
         shardTotal: [12]
     runs-on: ubuntu-26.04
     if: ${{ inputs.run-koski-ui-tests && !contains(github.event.head_commit.message, '[skip-tests]') }}
-    needs: [build_koski]
+    needs: [build_koski, opensearch_image]
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
@@ -585,7 +607,7 @@ jobs:
         shardTotal: [5]
     runs-on: ubuntu-26.04
     if: ${{ inputs.run-koski-ui-tests && !contains(github.event.head_commit.message, '[skip-tests]') }}
-    needs: [build_koski]
+    needs: [build_koski, opensearch_image]
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
@@ -615,7 +637,7 @@ jobs:
     name: Koski visuaaliregressiot
     runs-on: ubuntu-26.04
     if: ${{ inputs.run-koski-ui-tests && !contains(github.event.head_commit.message, '[skip-tests]') }}
-    needs: [build_koski]
+    needs: [build_koski, opensearch_image]
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
@@ -631,7 +653,7 @@ jobs:
         shardTotal: [6]
     runs-on: ubuntu-26.04
     if: ${{ inputs.run-valpas-ui-tests && !contains(github.event.head_commit.message, '[skip-tests]') }}
-    needs: [build_koski]
+    needs: [build_koski, opensearch_image]
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
@@ -715,7 +737,7 @@ jobs:
         shardIndex: [1]
         shardTotal: [1]
     if: ${{ inputs.run-oauth2-tests && !contains(github.event.head_commit.message, '[skip-tests]') }}
-    needs: [build_koski]
+    needs: [build_koski, opensearch_image]
     steps:
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1

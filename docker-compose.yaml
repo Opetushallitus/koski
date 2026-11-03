@@ -21,6 +21,7 @@ services:
 
   opensearch:
     build: "./opensearch"
+    image: "koski-opensearch"
     environment:
       - "OPENSEARCH_JAVA_OPTS=-Xms512m -Xmx512m"
       - "discovery.type=single-node"
