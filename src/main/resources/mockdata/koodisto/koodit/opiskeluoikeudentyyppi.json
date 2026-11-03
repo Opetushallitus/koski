@@ -702,5 +702,37 @@
     "koodiUri": "opiskeluoikeudentyyppi_ylioppilastutkinto",
     "versio": 1,
     "koodiArvo": "ylioppilastutkinto"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "IB Diploma",
+        "kuvaus": "",
+        "lyhytNimi": "IB Diploma",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "IB Diploma",
+        "kuvaus": "",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "IB Diploma",
+        "kuvaus": null,
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [
+      {
+        "codeElementUri": "koulutustyyppikouta_lk",
+        "codeElementVersion": 1,
+        "passive": false
+      }
+    ],
+    "koodiUri": "opiskeluoikeudentyyppi_ibdiploma",
+    "versio": 1,
+    "koodiArvo": "ibdiploma"
   }
 ]

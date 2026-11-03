@@ -1,3 +1,7 @@
+# xx.xx.2026
+
+- Lisätty uusi opiskeluoikeuden tyyppi `ibdiploma` (IB Diploma) päätason suorituksella `ibdiploma` ja osasuorituksilla `ibdiplomanoppiaine` ja `ibdiplomancore`. Se kuvaa IBO:n myöntämää IB-tutkintoa erotuksena oppilaitosten tallentamasta IB-koulutuksesta (`ibtutkinto`). Opiskeluoikeudet tuodaan Koskeen IBO:n IBIS-järjestelmän tulostiedostosta, ja niiden tallennus on rajattu Opetushallituksen pääkäyttäjille.
+
 # 17.11.2026
 
 - Vapaan sivistystyön vapaatavoitteisen koulutuksen (`vstvapaatavoitteinenkoulutus`) opiskeluoikeusjaksoille sallitaan uutena tilana `lasna` ja osaamismerkin (`vstosaamismerkki`) opiskeluoikeusjaksoille tilat `lasna` ja `keskeytynyt`. Opiskeluoikeudelle voi siten siirtää päättymispäivästä erillisen alkamispäivän, ja se voi päättyä ilman suoritusta. Aiemmin opiskeluoikeus alkoi ja päättyi samana päivänä, koska ainoat sallitut tilat olivat päättäviä.

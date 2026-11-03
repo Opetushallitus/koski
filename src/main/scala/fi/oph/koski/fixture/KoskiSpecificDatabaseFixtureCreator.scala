@@ -420,6 +420,8 @@ class KoskiSpecificDatabaseFixtureCreator(application: KoskiApplication) extends
   protected def secondBatchOpiskeluOikeudet: List[(OppijaHenkilö, KoskeenTallennettavaOpiskeluoikeus)] = {
     List(
       (KoskiSpecificMockOppijat.europeanSchoolOfHelsinki, ExamplesEB.opiskeluoikeus), // Ei validoidu ilman, että ESH-opiskeluoikeus on jo aikaisemmin tietokannassa
+      (KoskiSpecificMockOppijat.ibDiploma, ExamplesIB.opiskeluoikeus),
+      (KoskiSpecificMockOppijat.ibDiploma, ExamplesIBDiploma.opiskeluoikeus), // Ei validoidu ilman, että IB-koulutuksen opiskeluoikeus samalla iboTunnisteella on jo tietokannassa
     )
   }
 

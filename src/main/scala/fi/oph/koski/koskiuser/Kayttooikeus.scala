@@ -77,6 +77,7 @@ object Rooli {
   val TUVA = "TUVA" // Ei käyttöoikeus-palvelussa
   val ESH = "EUROPEANSCHOOLOFHELSINKI" // Ei käyttöoikeus-palvelussa
   val EBTUTKINTO = "EBTUTKINTO" // Ei käyttöoikeus-palvelussa
+  val IBDIPLOMA = "IBDIPLOMA" // Ei käyttöoikeus-palvelussa
   val MUUKUINSAANNELTYKOULUTUS = "MUUKUINSAANNELTYKOULUTUS" // Ei käyttöoikeus-palvelussa
   val TAITEENPERUSOPETUS = "TAITEENPERUSOPETUS" // Ei käyttöoikeus-palvelussa
   val TAITEENPERUSOPETUS_HANKINTAKOULUTUS = "TAITEENPERUSOPETUS_HANKINTAKOULUTUS"
@@ -186,7 +187,8 @@ object Käyttöoikeus {
       VAPAANSIVISTYSTYONKOULUTUS,
       TUVA,
       ESH,
-      EBTUTKINTO
+      EBTUTKINTO,
+      IBDIPLOMA
     ).map(Palvelurooli(_))
     case Palvelurooli("KOSKI", READ_UPDATE_ESIOPETUS) => List(Palvelurooli(ESIOPETUS))
     case Palvelurooli("KOSKI", LUKU_ESIOPETUS) => List(Palvelurooli(ESIOPETUS))
