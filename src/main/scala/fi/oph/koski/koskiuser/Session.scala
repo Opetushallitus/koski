@@ -167,7 +167,7 @@ class KoskiSpecificSession(
   def hasRaportitAccess = hasAnyReadAccess && hasRole(LUOTTAMUKSELLINEN_KAIKKI_TIEDOT) && !hasGlobalKoulutusmuotoReadAccess
   def sensitiveDataAllowed(allowedRoles: Set[Role]) = allowedRoles.exists(hasRole)
   def hasAnyLähdejärjestelmäkytkennänPurkaminenAccess = globalAccess.contains(AccessType.lähdejärjestelmäkytkennänPurkaminen) || organisationOids(AccessType.lähdejärjestelmäkytkennänPurkaminen).nonEmpty
-  def isKielitutkintorekisteri: Boolean = hasRole(KIELITUTKINTOREKISTERI)
+  def isKielitutkintorekisteri: Boolean = globalViranomaisKäyttöoikeudet.exists(_.globalPalveluroolit.contains(Palvelurooli("KOSKI", KIELITUTKINTOREKISTERI)))
 
   // Note: keep in sync with PermissionCheckServlet's hasSufficientRoles function. See PermissionCheckServlet for more comments.
   private val OppijanumerorekisteriRekisterinpitäjä = Palvelurooli("OPPIJANUMEROREKISTERI", "REKISTERINPITAJA")

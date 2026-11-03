@@ -8,17 +8,19 @@ import fi.oph.koski.documentation.{ExamplesKielitutkinto, ExamplesLukio}
 import fi.oph.koski.henkilo.{KoskiSpecificMockOppijat, LaajatOppijaHenkilöTiedot}
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.json.JsonSerializer
-import fi.oph.koski.koskiuser.{KoskiMockUser, KoskiSpecificSession, MockUsers, OoPtsMask}
+import fi.oph.koski.koskiuser.{AccessType, AuthenticationUser, KoskiMockUser, KoskiSpecificSession, MockUsers, OoPtsMask, Rooli}
 import fi.oph.koski.oppija.{HenkilönOpiskeluoikeusVersiot, OppijaServletOppijaAdder}
 import fi.oph.koski.organisaatio.{MockOrganisaatiot, Opetushallitus}
 import fi.oph.koski.schema._
 import fi.oph.koski.tiedonsiirto.Tiedonsiirrot
+import fi.oph.koski.userdirectory.{OrganisaatioJaKäyttöoikeudet, PalveluJaOikeus}
 import fi.oph.koski.util.WithWarnings
 import fi.oph.koski.{KoskiApplicationForTests, KoskiHttpSpec}
 import org.json4s.JValue
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.should.Matchers
 
+import java.net.InetAddress
 import java.time.LocalDate
 import scala.reflect.runtime.universe
 
@@ -107,6 +109,31 @@ class KielitutkintorekisteriSpec
       cannotWrite(jsonOf(oppija), s"Yleisen kielitutkinnon opiskeluoikeuden voi tallentaa vain organisaatioille: 1.2.246.562.10.00000000001")
     }
     "ei pysty lukemaan oman organisaation kielitutkinnon opiskeluoikeuksia" in { cannotRead(ExamplesKielitutkinto.exampleMockOppija, s"Oppijaa ${ExamplesKielitutkinto.exampleMockOppija.oid} ei löydy tai käyttäjällä ei ole oikeuksia tietojen katseluun.") }
+  }
+
+  "Kielitutkintorekisteri-rooli muussa kuin OPH:n organisaatiossa ei anna oikeuksia" - {
+    val käyttäjä = KoskiMockUser("Kielitutkintorekisteri", "kitu-muualla", "1.2.246.562.24.00000000777", Seq(OrganisaatioJaKäyttöoikeudet(
+      MockOrganisaatiot.jyväskylänNormaalikoulu,
+      List(PalveluJaOikeus("KOSKI", Rooli.KIELITUTKINTOREKISTERI)),
+    )))
+    implicit val session: KoskiSpecificSession = new KoskiSpecificSession(
+      AuthenticationUser.fromDirectoryUser(käyttäjä.username, käyttäjä.ldapUser), "fi", InetAddress.getByName("192.168.0.10"), "", käyttäjä.käyttöoikeudet
+    )
+
+    "sessio ei ole kielitutkintorekisteri eikä palvelukäyttäjä" in {
+      session.isKielitutkintorekisteri should equal(false)
+      session.isPalvelukäyttäjä should equal(false)
+      session.hasGlobalKoulutusmuotoReadAccess should equal(false)
+      session.hasAnyReadAccess should equal(false)
+      session.allowedOpiskeluoikeudetJaPäätasonSuoritukset should equal(Set.empty)
+    }
+    "ei saa kielitutkinto-oikeutta omaan eikä muihin organisaatioihin" in {
+      session.hasKielitutkintoAccess(MockOrganisaatiot.jyväskylänNormaalikoulu, None, AccessType.write) should equal(false)
+      session.hasKielitutkintoAccess(Opetushallitus.organisaatioOid, None, AccessType.write) should equal(false)
+      session.hasKielitutkintoAccess(Opetushallitus.organisaatioOid, None, AccessType.read) should equal(false)
+    }
+    "ei pysty kirjoittamaan kielitutkinnon opiskeluoikeutta" in { cannotWrite(kielitutkinnonOpiskeluoikeus, "Ei oikeuksia opiskeluoikeuden tyyppiin kielitutkinto (yleinenkielitutkinto)") }
+    "ei pysty lukemaan kielitutkinnon opiskeluoikeutta" in { cannotRead(ExamplesKielitutkinto.exampleMockOppija, s"Oppijaa ${ExamplesKielitutkinto.exampleMockOppija.oid} ei löydy tai käyttäjällä ei ole oikeuksia tietojen katseluun.") }
   }
 
   "Raportointikanta" - {
