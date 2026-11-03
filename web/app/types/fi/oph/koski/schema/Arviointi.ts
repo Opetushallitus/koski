@@ -42,6 +42,14 @@ import {
   IBCoreRequirementsArviointi,
   isIBCoreRequirementsArviointi
 } from './IBCoreRequirementsArviointi'
+import {
+  IBDiplomanCoreArviointi,
+  isIBDiplomanCoreArviointi
+} from './IBDiplomanCoreArviointi'
+import {
+  IBDiplomanOppiaineenArviointi,
+  isIBDiplomanOppiaineenArviointi
+} from './IBDiplomanOppiaineenArviointi'
 import { IBKurssinArviointi, isIBKurssinArviointi } from './IBKurssinArviointi'
 import {
   IBOppiaineenArviointi,
@@ -255,6 +263,8 @@ export type Arviointi =
   | IBCoreKurssinArviointi
   | IBCoreOppiaineenArviointi
   | IBCoreRequirementsArviointi
+  | IBDiplomanCoreArviointi
+  | IBDiplomanOppiaineenArviointi
   | IBKurssinArviointi
   | IBOppiaineenArviointi
   | IBOppiaineenPredictedArviointi
@@ -319,6 +329,8 @@ export const isArviointi = (a: any): a is Arviointi =>
   isIBCoreKurssinArviointi(a) ||
   isIBCoreOppiaineenArviointi(a) ||
   isIBCoreRequirementsArviointi(a) ||
+  isIBDiplomanCoreArviointi(a) ||
+  isIBDiplomanOppiaineenArviointi(a) ||
   isIBKurssinArviointi(a) ||
   isIBOppiaineenArviointi(a) ||
   isIBOppiaineenPredictedArviointi(a) ||

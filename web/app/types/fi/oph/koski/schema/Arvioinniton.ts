@@ -70,6 +70,7 @@ import {
   EsiopetuksenSuoritus,
   isEsiopetuksenSuoritus
 } from './EsiopetuksenSuoritus'
+import { IBDiplomanSuoritus, isIBDiplomanSuoritus } from './IBDiplomanSuoritus'
 import {
   IBTutkinnonSuoritus,
   isIBTutkinnonSuoritus
@@ -277,6 +278,7 @@ export type Arvioinniton =
   | EBTutkinnonOsasuoritus
   | EBTutkinnonSuoritus
   | EsiopetuksenSuoritus
+  | IBDiplomanSuoritus
   | IBTutkinnonSuoritus
   | LukionOppiaineidenOppimäärienSuoritus2019
   | LukionOppimääränSuoritus2015
@@ -346,6 +348,7 @@ export const isArvioinniton = (a: any): a is Arvioinniton =>
   isEBTutkinnonOsasuoritus(a) ||
   isEBTutkinnonSuoritus(a) ||
   isEsiopetuksenSuoritus(a) ||
+  isIBDiplomanSuoritus(a) ||
   isIBTutkinnonSuoritus(a) ||
   isLukionOppiaineidenOppimäärienSuoritus2019(a) ||
   isLukionOppimääränSuoritus2015(a) ||
