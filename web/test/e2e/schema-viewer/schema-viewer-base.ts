@@ -1,4 +1,4 @@
-import { expect, test as base } from './base'
+import { expect, test as base } from '../base'
 
 export const test = base.extend<{ checkPageErrors: void }>({
   checkPageErrors: [
@@ -14,4 +14,4 @@ export const test = base.extend<{ checkPageErrors: void }>({
   ]
 })
 
-export { expect } from './base'
+export { expect } from '../base'

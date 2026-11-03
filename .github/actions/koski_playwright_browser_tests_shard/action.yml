@@ -8,6 +8,10 @@ inputs:
   shardTotal:
     description: "Total number of shards"
     required: true
+  testPath:
+    description: "Run only the tests under this path, relative to web/"
+    required: false
+    default: ""
 
 runs:
   using: "composite"
@@ -25,6 +29,7 @@ runs:
       env:
         PLAYWRIGHT_SHARD_INDEX: ${{inputs.shardIndex}}
         PLAYWRIGHT_SHARD_TOTAL: ${{inputs.shardTotal}}
+        PLAYWRIGHT_TEST_PATH: ${{inputs.testPath}}
         PLAYWRIGHT_HTML_REPORT: koski-playwright-report-${{inputs.shardIndex}}-of-${{inputs.shardTotal}}
       run: ./mvnw scalatest:test -Pintegrationtest -Dsuites="fi.oph.koski.e2e.KoskiFrontSpec" --batch-mode --no-snapshot-updates
       shell: bash
