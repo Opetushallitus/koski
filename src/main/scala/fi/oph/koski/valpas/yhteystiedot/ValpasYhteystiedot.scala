@@ -26,7 +26,7 @@ trait ValpasYhteystietojenAlkuperä
 
 case class ValpasYhteystietoHakemukselta (
   hakuNimi: BlankableLocalizedString,
-  haunAlkamispaivämäärä: LocalDateTime,
+  haunAlkamispaivämäärä: Option[LocalDateTime],
   hakemuksenMuokkauksenAikaleima: Option[LocalDateTime],
   hakuOid: String,
   hakemusOid: String

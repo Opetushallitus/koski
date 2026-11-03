@@ -233,7 +233,7 @@ object HakukoosteExampleData {
       hakemusUrl = "/placeholder-hakemus-url",
       hakutapa = hakutapa,
       hakutyyppi = Some(varsinaisenHaunKoodi),
-      haunAlkamispaivamaara = alkamisaika,
+      haunAlkamispaivamaara = Some(alkamisaika),
       hakemuksenMuokkauksenAikaleima = muokkausaika,
       hakuNimi = hakuNimi,
       email = generateEmail(henkilö),
@@ -247,11 +247,9 @@ object HakukoosteExampleData {
           .flatMap(MockOrganisaatioRepository.getOrganisaationNimiHetkellä(_, alkamisaika.toLocalDate))
           .toBlankable,
         hakutoivenumero = if (ilmanHakutoivenumeroita) {
-          -1
-        } else if (hakutoive.hakutoivenumero >= 0) {
-          hakutoive.hakutoivenumero
+          None
         } else {
-          hakutoiveet.indexOf(hakutoive) + 1
+          hakutoive.hakutoivenumero.orElse(Some(hakutoiveet.indexOf(hakutoive) + 1))
         }
       ))
     )
@@ -275,7 +273,7 @@ object HakukoosteExampleData {
         oid = hakukohdeOrganisaatio,
         localDate = LocalDate.now()
       ).toBlankable,
-      hakutoivenumero = -1,
+      hakutoivenumero = None,
       koulutusNimi = Finnish(koulutusNimi),
       hakukohdeOrganisaatio = Some(hakukohdeOrganisaatio),
       pisteet = pisteet,

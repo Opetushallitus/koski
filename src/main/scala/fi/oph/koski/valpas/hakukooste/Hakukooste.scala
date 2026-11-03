@@ -17,7 +17,7 @@ case class Hakukooste(
   hakutapa: Koodistokoodiviite,
   @KoodistoUri("hakutyyppi")
   hakutyyppi: Option[Koodistokoodiviite],
-  haunAlkamispaivamaara: LocalDateTime,
+  haunAlkamispaivamaara: Option[LocalDateTime],
   hakuNimi: BlankableLocalizedString,
   email: String,
   lahiosoite: String,
@@ -38,7 +38,7 @@ case class Hakutoive(
   hakukohdeOrganisaatio: Option[String],
   koulutusNimi: BlankableLocalizedString,
   koulutusOid: Option[ValpasHakutoive.KoulutusOid],
-  hakutoivenumero: Int,
+  hakutoivenumero: Option[Int],
   pisteet: Option[BigDecimal],
   alinHyvaksyttyPistemaara: Option[BigDecimal],
   @EnumValues(Valintatila.values)

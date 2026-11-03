@@ -101,7 +101,7 @@ object OppijaHakutilanteillaLaajatTiedot {
 
   private def uusimmatIlmoitetutYhteystiedot(yhteystietoryhmänNimi: LocalizedString)(hakukoosteet: Seq[Hakukooste]): Seq[ValpasYhteystiedot] =
     hakukoosteet
-      .sortBy(hk => hk.hakemuksenMuokkauksenAikaleima.getOrElse(hk.haunAlkamispaivamaara))
+      .sortBy(hk => hk.hakemuksenMuokkauksenAikaleima.orElse(hk.haunAlkamispaivamaara))
       .lastOption
       .map(haku => List(
         ValpasYhteystiedot.oppijanIlmoittamatYhteystiedot(haku, yhteystietoryhmänNimi),

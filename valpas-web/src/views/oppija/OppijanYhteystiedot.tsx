@@ -87,13 +87,15 @@ export const OppijanYhteystiedot = (props: OppijanYhteystiedotProps) => {
             </TertiaryHeading>
             <YhteystietoAccordion
               yhteystiedot={ilmoitetut}
-              label={(yt) =>
-                getLocalized(yt.yhteystietoryhmänNimi) +
-                (yt.alkuperä.hakemuksenMuokkauksenAikaleima !== undefined
-                  ? " – " +
-                    formatDate(yt.alkuperä.hakemuksenMuokkauksenAikaleima)
-                  : formatDate(yt.alkuperä.haunAlkamispaivämäärä))
-              }
+              label={(yt) => {
+                const pvm =
+                  yt.alkuperä.hakemuksenMuokkauksenAikaleima ??
+                  yt.alkuperä.haunAlkamispaivämäärä
+                return (
+                  getLocalized(yt.yhteystietoryhmänNimi) +
+                  (pvm !== undefined ? " – " + formatDate(pvm) : "")
+                )
+              }}
             />
           </Column>
         )}

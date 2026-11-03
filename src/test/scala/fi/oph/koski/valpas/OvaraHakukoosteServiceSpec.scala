@@ -11,7 +11,7 @@ import fi.oph.koski.henkilo.LaajatOppijaHenkilöTiedot
 import fi.oph.koski.schema.BlankableLocalizedString
 import fi.oph.koski.valpas.hakukooste.{Hakukooste, HakukoosteExampleData, Hakutoive, Harkinnanvaraisuus, ValpasHakukoosteService}
 import fi.oph.koski.valpas.opiskeluoikeusfixture.ValpasMockOppijat
-import fi.oph.koski.valpas.opiskeluoikeusrepository.{ValpasHakutoive, ValpasHenkilöLaajatTiedot, ValpasOppivelvollinenOppijaLaajatTiedot}
+import fi.oph.koski.valpas.opiskeluoikeusrepository.{ValpasHakutilanneLaajatTiedot, ValpasHakutoive, ValpasHenkilöLaajatTiedot, ValpasOppivelvollinenOppijaLaajatTiedot}
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.{BeforeAndAfterAll, EitherValues}
 
@@ -176,7 +176,7 @@ class OvaraHakukoosteServiceSpec extends ValpasTestBase with Matchers with Eithe
       result.oppijaOid should equal(oppijaOid)
       result.hakutapa.koodiarvo should equal("01")
       result.hakuNimi.get("fi") should startWith("Perusopetuksen jälkeisen")
-      result.haunAlkamispaivamaara should equal(LocalDateTime.of(2022, 8, 31, 23, 59))
+      result.haunAlkamispaivamaara should equal(Some(LocalDateTime.of(2022, 8, 31, 23, 59)))
       result.hakemuksenMuokkauksenAikaleima should equal(Some(LocalDateTime.of(2026, 3, 30, 21, 37, 13, 544214000)))
       result.maa.map(_.koodiarvo) should equal(Some("246"))
       result.hakutoiveet should have length 3
@@ -202,13 +202,43 @@ class OvaraHakukoosteServiceSpec extends ValpasTestBase with Matchers with Eithe
       val result = results.head
       result.hakutapa.koodiarvo should equal("03")
       result.aktiivinenHaku should equal(Some(false))
-      result.hakutoiveet.head.hakutoivenumero should equal(-1)
+      result.hakutoiveet.head.hakutoivenumero should equal(Some(-1))
       ValpasHakutoive(result.hakutoiveet.head).hakutoivenumero should be(None)
 
       results.last.aktiivinenHaku should be(None)
       val hakutoive2 = results.last.hakutoiveet.head
       hakutoive2.hakukohdeOrganisaatio should be(None)
       ValpasHakutoive(hakutoive2).organisaatioNimi should be(None)
+    }
+
+    "hyväksyy vastauksen, josta puuttuvat haun alkamispäivämäärä ja hakutoivenumero" in {
+      val oppijaOid = "1.2.246.562.24.00000000002"
+      val vastaus =
+        s"""[{
+           |  "oppijaOid": "$oppijaOid",
+           |  "hakuOid": "1.2.246.562.29.00000000000000075761",
+           |  "hakemusOid": "1.2.246.562.11.00000000000003301492",
+           |  "hakemusUrl": "https://virkailija.testiopintopolku.fi/lomake-editori/applications/search?term=1.2.246.562.11.00000000000003301492",
+           |  "hakutapa": {"koodiarvo": "03", "koodistoUri": "hakutapa"},
+           |  "hakuNimi": {"fi": "Jatkuva haku"},
+           |  "hakutoiveet": [{
+           |    "hakukohdeOid": "1.2.246.562.20.00000000000000080037",
+           |    "hakukohdeNimi": {"fi": "Liiketoiminnan perustutkinto"},
+           |    "koulutusNimi": {"fi": "Liiketoiminnan perustutkinto"}
+           |  }]
+           |}]""".stripMargin
+      wireMockServer.stubFor(
+        WireMock.get(WireMock.urlPathEqualTo(ovaraHakukoosteUrl))
+          .withQueryParam("ovara_oppijanumero", WireMock.equalTo(oppijaOid))
+          .willReturn(WireMock.ok().withBody(vastaus)))
+
+      val hakukooste = mockClient.getHakukoosteet(Set(oppijaOid), ainoastaanAktiivisetHaut = false, "test").value.head
+      hakukooste.haunAlkamispaivamaara should be(None)
+      hakukooste.hakutoiveet.head.hakutoivenumero should be(None)
+
+      val hakutilanne = ValpasHakutilanneLaajatTiedot(hakukooste)
+      hakutilanne.hakuAlkaa should be(None)
+      hakutilanne.hakutoiveet.head.hakutoivenumero should be(None)
     }
 
     "palauttaa hakutilanteet kun ovara palauttaa saman oppija-oidin" in {
@@ -413,7 +443,7 @@ object OvaraHakukoosteServiceSpec {
        |  "hakuNimi": ${localizedStringJson(h.hakuNimi)},
        |  "hakutapa": {"koodiarvo": "$hakutapaKoodiarvo", "koodistoUri": "hakutapa"},
        |  "aktiivinenHaku": ${h.aktiivinenHaku.getOrElse(false)},
-       |  "haunAlkamispaivamaara": "${h.haunAlkamispaivamaara.toString}",
+       |  "haunAlkamispaivamaara": ${h.haunAlkamispaivamaara.map(dt => s""""$dt"""").getOrElse("null")},
        |  "oppijaOid": "${h.oppijaOid}",
        |  "hakutoiveet": [${h.hakutoiveet.map(hakutoiveJson).mkString(",")}]
        |}""".stripMargin
@@ -426,7 +456,7 @@ object OvaraHakukoosteServiceSpec {
     s"""{
        |  "hakukohdeOid": "${t.hakukohdeOid}",
        |  "hakukohdeNimi": ${localizedStringJson(t.hakukohdeNimi)},
-       |  "hakutoivenumero": ${t.hakutoivenumero},
+       |  "hakutoivenumero": ${t.hakutoivenumero.map(_.toString).getOrElse("null")},
        |  "hakukohdeOrganisaatio": ${t.hakukohdeOrganisaatio.map(s => s""""$s"""").getOrElse("null")},
        |  "organisaatioNimi": ${localizedStringJson(t.organisaatioNimi)},
        |  "koulutusOid": ${t.koulutusOid.map(s => s""""$s"""").getOrElse("null")},

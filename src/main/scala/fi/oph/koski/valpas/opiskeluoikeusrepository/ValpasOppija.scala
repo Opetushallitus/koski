@@ -427,7 +427,7 @@ case class ValpasHakutilanneLaajatTiedot(
   hakemusOid: String,
   hakemusUrl: String,
   aktiivinenHaku: Boolean,
-  hakuAlkaa: LocalDateTime,
+  hakuAlkaa: Option[LocalDateTime],
   muokattu: Option[LocalDateTime],
   hakutoiveet: Seq[ValpasHakutoive],
   debugHakukooste: Option[Hakukooste]
@@ -444,7 +444,7 @@ object ValpasHakutoive {
       hakukohdeNimi = hakutoive.hakukohdeNimi.toLocalizedString,
       organisaatioNimi = hakutoive.organisaatioNimi.toLocalizedString,
       koulutusNimi = hakutoive.koulutusNimi.toLocalizedString,
-      hakutoivenumero = Some(hakutoive.hakutoivenumero).filter(_ > 0),
+      hakutoivenumero = hakutoive.hakutoivenumero.filter(_ > 0),
       pisteet = hakutoive.pisteet,
       alinHyvaksyttyPistemaara = hakutoive.alinHyvaksyttyPistemaara,
       valintatila = Valintatila.valpasKoodiviiteOption(hakutoive.valintatila),

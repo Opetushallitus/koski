@@ -14,7 +14,7 @@ export type HakuLaajatTiedot = {
   hakemusOid: Oid
   hakemusUrl: string
   aktiivinenHaku: boolean
-  hakuAlkaa: ISODateTime
+  hakuAlkaa?: ISODateTime
   muokattu?: ISODateTime
   hakutoiveet: Hakutoive[]
 }

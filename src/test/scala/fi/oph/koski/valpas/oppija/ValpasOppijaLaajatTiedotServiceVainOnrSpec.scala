@@ -58,7 +58,7 @@ class ValpasOppijaLaajatTiedotServiceVainOnrSpec extends ValpasOppijaTestBase {
         ValpasYhteystiedot(
           alkuperä = ValpasYhteystietoHakemukselta(
             hakuNimi = LocalizedString.finnish("Yhteishaku 2021"),
-            haunAlkamispaivämäärä = date(2020, 3, 9).atTime(12, 0, 0),
+            haunAlkamispaivämäärä = Some(date(2020, 3, 9).atTime(12, 0, 0)),
             hakemuksenMuokkauksenAikaleima = Some(date(2020, 4, 9).atTime(12, 0, 0)),
             hakuOid = "",
             hakemusOid = ""

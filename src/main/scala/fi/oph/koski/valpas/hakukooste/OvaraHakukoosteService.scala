@@ -32,7 +32,7 @@ case class OvaraHakutoiveResponse(
   hakukohdeOrganisaatio: Option[String],
   koulutusNimi: OvaraNimi,
   koulutusOid: Option[String],
-  hakutoivenumero: Int,
+  hakutoivenumero: Option[Int],
   pisteet: Option[BigDecimal],
   alinHyvaksyttyPistemaara: Option[BigDecimal],
   alinValintaPistemaara: Option[Int],
@@ -51,7 +51,7 @@ case class OvaraHakukoosteResponse(
   hakemusOid: String,
   hakemusUrl: String,
   hakutapa: Koodistokoodiviite,
-  haunAlkamispaivamaara: String,
+  haunAlkamispaivamaara: Option[String],
   hakuNimi: OvaraNimi,
   email: Option[String],
   lahiosoite: Option[String],
@@ -240,9 +240,9 @@ class OvaraHakukoosteService(
       case Some(koodiviite) => validateKoodiviite(koodiviite, errorClue).map(Some(_))
     }
 
-  private def parseDateToDateTime(dateStr: String, errorClue: String): Either[HttpStatus, LocalDateTime] =
-    Try(LocalDateTime.parse(dateStr)).toEither.left.map { e =>
-      logger.error(s"Invalid haunAlkamispaivamaara '$dateStr' from Ovara for $errorClue: ${e.getMessage}")
+  private def parseDateToDateTime(dateStr: Option[String], errorClue: String): Either[HttpStatus, Option[LocalDateTime]] =
+    Try(dateStr.map(LocalDateTime.parse(_))).toEither.left.map { e =>
+      logger.error(s"Invalid haunAlkamispaivamaara '${dateStr.getOrElse("")}' from Ovara for $errorClue: ${e.getMessage}")
       ValpasErrorCategory.badGateway.ovara()
     }
 
