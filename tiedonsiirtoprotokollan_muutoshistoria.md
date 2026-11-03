@@ -1,3 +1,7 @@
+# xx.xx.2026
+
+- Lisätty uusi opiskeluoikeuden tyyppi `ibdiploma` (IB Diploma) päätason suorituksella `ibdiploma` ja osasuorituksilla `ibdiplomanoppiaine` ja `ibdiplomancore`. Se kuvaa IBO:n myöntämää IB-tutkintoa erotuksena oppilaitosten tallentamasta IB-koulutuksesta (`ibtutkinto`). Opiskeluoikeudet tuodaan Koskeen IBO:n IBIS-järjestelmän tulostiedostosta, ja niiden tallennus on rajattu Opetushallituksen pääkäyttäjille.
+
 # 19.11.2026
 
 - Skeeman JSON-muodossa kentän `koodisto`-avain on nyt taulukko, jos kentän arvo voi tulla useammasta koodistosta (esim. `["arviointiasteikkoammatillinenhyvaksyttyhylatty", "arviointiasteikkoammatillinent1k3"]`). Aiemmin avaimessa näkyi vain yksi koodistoista. Yhden koodiston kentissä arvo on edelleen merkkijono. Siirrettävä data ei muutu.

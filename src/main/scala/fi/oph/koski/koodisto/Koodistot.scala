@@ -48,6 +48,7 @@ object Koodistot {
     KoodistoAsetus("effortasteikkoib", vaadiSuomenkielinenNimi = false, vaadiRuotsinkielinenNimi = false),
     KoodistoAsetus("erityinenkoulutustehtava"),
     KoodistoAsetus("erityisopetuksentoteutuspaikka"),
+    KoodistoAsetus("ibdiplomantulos"),
     KoodistoAsetus("internationalschooldiplomatype", vaadiSuomenkielinenNimi = false, vaadiRuotsinkielinenNimi = false),
     KoodistoAsetus("internationalschoolluokkaaste", vaadiSuomenkielinenNimi = false, vaadiRuotsinkielinenNimi = false),
     KoodistoAsetus("koskikoulutustendiaarinumerot"),

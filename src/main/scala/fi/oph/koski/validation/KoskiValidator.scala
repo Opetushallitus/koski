@@ -159,6 +159,7 @@ class KoskiValidator(
           JotpaValidation.validateOpiskeluoikeus(opiskeluoikeus, config),
           TutkintokoulutukseenValmentavaKoulutusValidation.validateOpiskeluoikeus(opiskeluoikeus),
           EuropeanSchoolOfHelsinkiValidation.validateOpiskeluoikeus(config)(henkilöRepository, koskiOpiskeluoikeudet, henkilö, opiskeluoikeus),
+          IBDiplomaValidation.validateOpiskeluoikeus(henkilöRepository, koskiOpiskeluoikeudet, henkilö, opiskeluoikeus),
           TaiteenPerusopetusValidation.validateOpiskeluoikeus(config)(opiskeluoikeus, suostumuksenPeruutusService),
           IBValidation.validateIbOpiskeluoikeus(config)(opiskeluoikeus),
           DIAValidation.validateOpiskeluoikeus(config)(opiskeluoikeus),
