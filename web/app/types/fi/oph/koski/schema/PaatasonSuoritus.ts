@@ -54,6 +54,7 @@ import {
   EsiopetuksenSuoritus,
   isEsiopetuksenSuoritus
 } from './EsiopetuksenSuoritus'
+import { IBDiplomanSuoritus, isIBDiplomanSuoritus } from './IBDiplomanSuoritus'
 import {
   IBTutkinnonSuoritus,
   isIBTutkinnonSuoritus
@@ -241,6 +242,7 @@ export type PäätasonSuoritus =
   | DiplomaVuosiluokanSuoritus
   | EBTutkinnonSuoritus
   | EsiopetuksenSuoritus
+  | IBDiplomanSuoritus
   | IBTutkinnonSuoritus
   | KorkeakoulunOpintojaksonSuoritus
   | KorkeakoulututkinnonSuoritus
@@ -300,6 +302,7 @@ export const isPäätasonSuoritus = (a: any): a is PäätasonSuoritus =>
   isDiplomaVuosiluokanSuoritus(a) ||
   isEBTutkinnonSuoritus(a) ||
   isEsiopetuksenSuoritus(a) ||
+  isIBDiplomanSuoritus(a) ||
   isIBTutkinnonSuoritus(a) ||
   isKorkeakoulunOpintojaksonSuoritus(a) ||
   isKorkeakoulututkinnonSuoritus(a) ||

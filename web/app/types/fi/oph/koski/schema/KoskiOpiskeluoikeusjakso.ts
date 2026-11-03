@@ -23,6 +23,10 @@ import {
   isEuropeanSchoolOfHelsinkiOpiskeluoikeusjakso
 } from './EuropeanSchoolOfHelsinkiOpiskeluoikeusjakso'
 import {
+  IBDiplomaOpiskeluoikeusjakso,
+  isIBDiplomaOpiskeluoikeusjakso
+} from './IBDiplomaOpiskeluoikeusjakso'
+import {
   InternationalSchoolOpiskeluoikeusjakso,
   isInternationalSchoolOpiskeluoikeusjakso
 } from './InternationalSchoolOpiskeluoikeusjakso'
@@ -75,6 +79,7 @@ export type KoskiOpiskeluoikeusjakso =
   | DIAOpiskeluoikeusjakso
   | EBOpiskeluoikeusjakso
   | EuropeanSchoolOfHelsinkiOpiskeluoikeusjakso
+  | IBDiplomaOpiskeluoikeusjakso
   | InternationalSchoolOpiskeluoikeusjakso
   | KielitutkinnonOpiskeluoikeudenOpiskeluoikeusjakso
   | LukionOpiskeluoikeusjakso
@@ -95,6 +100,7 @@ export const isKoskiOpiskeluoikeusjakso = (
   isDIAOpiskeluoikeusjakso(a) ||
   isEBOpiskeluoikeusjakso(a) ||
   isEuropeanSchoolOfHelsinkiOpiskeluoikeusjakso(a) ||
+  isIBDiplomaOpiskeluoikeusjakso(a) ||
   isInternationalSchoolOpiskeluoikeusjakso(a) ||
   isKielitutkinnonOpiskeluoikeudenOpiskeluoikeusjakso(a) ||
   isLukionOpiskeluoikeusjakso(a) ||
