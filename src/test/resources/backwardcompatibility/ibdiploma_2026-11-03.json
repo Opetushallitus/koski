@@ -1,4 +1,5 @@
 {
+  "ignoreKoskiValidator" : true,
   "henkilö" : {
     "hetu" : "040701A002J",
     "etunimet" : "Dani",
