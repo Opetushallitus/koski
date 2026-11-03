@@ -93,16 +93,36 @@ const massaluovutusPages = [
   }
 ]
 
-// Sivun sisäiset ankkurilinkit vieritetään suoraan: hash-muutos popstate-tapahtumana
+// Avaa ankkurin osoittaman kyselyosion avattavat lohkot ja vierittää siihen, jotta jaettu
+// linkki (esim. #tuvaSuoritustiedot) näyttää parametrit ja esimerkin suoraan.
+const revealAnchor = (hash) => {
+  const target = hash && document.getElementById(hash.slice(1))
+  if (!target) return false
+  const section = target.closest('.query-doc') || target
+  section.querySelectorAll('details').forEach((details) => {
+    details.open = true
+  })
+  target.scrollIntoView()
+  return true
+}
+
+// Sisältö ladataan asynkronisesti, joten selaimen oma hash-vieritys ehtii ajaa ennen kuin
+// kohde on olemassa. Hash käsitellään, kun markdown-sisältö on liitetty DOM:iin.
+const revealAnchorOnMount = (element) => {
+  if (element) {
+    revealAnchor(window.location.hash)
+  }
+}
+
+// Sivun sisäiset ankkurilinkit käsitellään itse: hash-muutos popstate-tapahtumana
 // ajaisi reitityksen uudelleen ja piirtäisi sivun uusiksi vierityksen alta.
 const scrollToAnchor = (event) => {
   const link = event.target.closest('a[href^="#"]')
   if (!link) return
-  const target = document.getElementById(link.getAttribute('href').slice(1))
-  if (target) {
+  const href = link.getAttribute('href')
+  if (revealAnchor(href)) {
     event.preventDefault()
-    target.scrollIntoView()
-    replaceLocationSilently(link.getAttribute('href'))
+    replaceLocationSilently(href)
   }
 }
 
@@ -373,6 +393,7 @@ export const dokumentaatioKyselytP = (path) => {
         <div>
           <div
             className="markdown-content"
+            ref={revealAnchorOnMount}
             onClick={scrollToAnchor}
             dangerouslySetInnerHTML={{
               __html: htmlSections[section]
