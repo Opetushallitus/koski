@@ -6,6 +6,7 @@ import Http from '../util/http'
 import { contentWithLoadingIndicator } from '../components/AjaxLoadingIndicator'
 import { ApiOperations } from './DokumentaatioApiTester'
 import Link from '../components/Link'
+import { replaceLocationSilently } from '../util/router'
 import Text from '../i18n/Text'
 
 const JsonExampleTable = ({ contents }) => {
@@ -71,6 +72,60 @@ const naviLink = (
   )
 }
 
+const massaluovutusBasePath = '/koski/dokumentaatio/rajapinnat/massaluovutus'
+
+const massaluovutusPages = [
+  {
+    path: '',
+    title: 'Massaluovutusrajapinnat',
+    section: 'massaluovutus_yleista'
+  },
+  {
+    path: '/koulutuksenjarjestajat',
+    title: 'Koulutuksenjärjestäjät',
+    section: 'massaluovutus_koulutuksenjarjestajat'
+  },
+  { path: '/raportit', title: 'Raportit', section: 'massaluovutus_raportit' },
+  {
+    path: '/valpas',
+    title: 'Oppivelvollisuuden valvonta',
+    section: 'massaluovutus_valpas'
+  }
+]
+
+// Sivun sisäiset ankkurilinkit vieritetään suoraan: hash-muutos popstate-tapahtumana
+// ajaisi reitityksen uudelleen ja piirtäisi sivun uusiksi vierityksen alta.
+const scrollToAnchor = (event) => {
+  const link = event.target.closest('a[href^="#"]')
+  if (!link) return
+  const target = document.getElementById(link.getAttribute('href').slice(1))
+  if (target) {
+    event.preventDefault()
+    target.scrollIntoView()
+    replaceLocationSilently(link.getAttribute('href'))
+  }
+}
+
+// Yleiset ohjeet on ryhmän päälinkki, muut sivut sen alle sisennettyinä
+const massaluovutusNavi = (location) =>
+  massaluovutusPages.map((page, index) => {
+    const path = massaluovutusBasePath + page.path
+    const selected = path === location
+    return (
+      <React.Fragment key={path}>
+        <span
+          className={`navi-link-container${
+            index > 0 ? ' navi-sublink-container' : ''
+          }${selected ? ' selected' : ''}`}
+        >
+          <Link href={path}>
+            <Text name={page.title} />
+          </Link>
+        </span>
+      </React.Fragment>
+    )
+  })
+
 const dokumentaatioContentP = (location, contentP) =>
   contentWithLoadingIndicator(contentP).map((content) => ({
     content: (
@@ -129,26 +184,7 @@ const dokumentaatioContentP = (location, contentP) =>
             ''
           )}
 
-          {naviLink(
-            '/koski/dokumentaatio/rajapinnat/massaluovutus/koulutuksenjarjestajat',
-            'Massaluovutusrajapinnat koulutuksenjärjestäjille',
-            location,
-            ''
-          )}
-
-          {naviLink(
-            '/koski/dokumentaatio/rajapinnat/massaluovutus/raportit',
-            'Koulutuksenjärjestäjän raporttien lataus massaluovutusrajapinnasta',
-            location,
-            ''
-          )}
-
-          {naviLink(
-            '/koski/dokumentaatio/rajapinnat/massaluovutus/valpas',
-            'Massaluovutusrajapinnat oppivelvollisuuden valvontaan',
-            location,
-            ''
-          )}
+          {massaluovutusNavi(location)}
         </nav>
 
         <div className="main-content dokumentaatio-content">
@@ -318,34 +354,35 @@ export const dokumentaatioPalveluväyläOmadataP = () =>
   )
 
 export const dokumentaatioKyselytP = (path) => {
-  const basePath = '/koski/dokumentaatio/rajapinnat/massaluovutus'
-  const sections = {
-    koulutuksenjarjestajat: 'massaluovutus_koulutuksenjarjestajat',
-    oph: 'massaluovutus_oph',
-    valpas: 'massaluovutus_valpas',
-    raportit: 'massaluovutus_raportit'
-  }
-  const match = Object.keys(sections).find((key) =>
-    path.includes(`${basePath}/${key}`)
+  const page = massaluovutusPages.find(
+    (p) => massaluovutusBasePath + p.path === path
   )
-  if (match) {
-    return dokumentaatioContentP(
-      `${basePath}/${match}`,
-      htmlSectionsP().map((htmlSections) => ({
-        content: (
-          <div>
-            <div
-              className="markdown-content"
-              dangerouslySetInnerHTML={{
-                __html: htmlSections[sections[match]]
-              }}
-            ></div>
-          </div>
-        ),
-        title: 'Dokumentaatio - Rajapinnat'
-      }))
-    )
+  const ophPath = `${massaluovutusBasePath}/oph`
+  const section = page
+    ? page.section
+    : path === ophPath
+      ? 'massaluovutus_oph'
+      : undefined
+  if (!section) {
+    return undefined
   }
+  return dokumentaatioContentP(
+    path,
+    htmlSectionsP().map((htmlSections) => ({
+      content: (
+        <div>
+          <div
+            className="markdown-content"
+            onClick={scrollToAnchor}
+            dangerouslySetInnerHTML={{
+              __html: htmlSections[section]
+            }}
+          ></div>
+        </div>
+      ),
+      title: 'Dokumentaatio - Rajapinnat'
+    }))
+  )
 }
 
 export const dokumentaatioValpasP = () =>
