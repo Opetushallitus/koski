@@ -1,5 +1,9 @@
 # Koskeen tallennettavien tietojen validaatiosäännöt
 
+## 3.11.2026
+
+- IB Diploma -opiskeluoikeuden (`ibdiploma`) voi tallentaa vain, jos oppijalla on IB-tutkinnon (`ibtutkinto`) tai International schoolin (`internationalschool`) opiskeluoikeus, jonka `iboTunniste` on sama kuin diploman. Tietomalli on luonnos (TOR-747).
+
 ## 20.10.2026
 
 - Vapaan sivistystyön kotoutumiskoulutuksen (`vstmaahanmuuttajienkotoutumiskoulutus`, sekä 2012 että 2022 opetussuunnitelman mukaiset suoritukset) ja lukutaitokoulutuksen (`vstlukutaitokoulutus`) opiskeluoikeus ei voi alkaa 1.1.2027 tai sen jälkeen.

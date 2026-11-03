@@ -66,6 +66,7 @@ object OpiskeluoikeusChangeMigrator extends Logging {
          _: NuortenPerusopetuksenOppiaineenOppimääränSuoritus |
          _: AikuistenPerusopetuksenOppiaineenOppimääränSuoritus |
          _: EBTutkinnonSuoritus |
+         _: IBDiplomanSuoritus |
          _: EuropeanSchoolOfHelsinkiPäätasonSuoritus |
          _: TaiteenPerusopetuksenPäätasonSuoritus |
          _: IBPäätasonSuoritus => false

@@ -319,6 +319,16 @@ object KoskiErrorCategory {
 
       val eb = new EB
 
+      class IBDiploma extends ErrorCategory(
+        Validation.this,
+        "ibdiploma",
+        "IB Diploma -opiskeluoikeuden kirjauksiin liittyvä validointivirhe"
+      ) {
+        val puuttuvaKoulutus = subcategory("puuttuvaKoulutus", "IB Diploma -opiskeluoikeutta ei voi kirjata, jos oppijalla ei ole IB-tutkinnon tai International schoolin opiskeluoikeutta, jolla on sama IBO-tunniste")
+      }
+
+      val ibdiploma = new IBDiploma
+
       class Perusopetus extends ErrorCategory(
         Validation.this,
         "perusopetus",

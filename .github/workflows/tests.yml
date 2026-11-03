@@ -528,6 +528,7 @@ jobs:
             fi.oph.koski.ytl, \
             fi.oph.koski.ytr, \
             fi.oph.koski.ytr.download, \
+            fi.oph.koski.ibis, \
             fi.oph.koski.meta, \
             fi.oph.koski.frontendvalvonta, \
             fi.oph.koski.tiedonsiirto, \
