@@ -200,6 +200,71 @@ class OvaraHakukoosteServiceSpec extends ValpasTestBase with Matchers with Eithe
       result.length shouldBe 1
       result.head.hakutilanteet shouldBe empty
     }
+
+    "hakutoiveen organisaation nimi" - {
+      "yhdistää oppilaitoksen ja toimipisteen nimet kullakin kielellä" in {
+        organisaatioNimiOvaranVastauksesta(
+          oppilaitosNimi = Some("""{"fi": "Esimerkkilän ammattiopisto", "sv": "Exempelby yrkesinstitut", "en": "Esimerkkilä Vocational College"}"""),
+          toimipisteNimi = Some("""{"fi": "Keskustan toimipaikka", "sv": "Centrums verksamhetsställe", "en": "City Centre Campus"}"""),
+          organisaatioNimi = Some("""{"fi": "Keskustan toimipaikka"}"""),
+        ).values should equal(Map(
+          "fi" -> "Esimerkkilän ammattiopisto, Keskustan toimipaikka",
+          "sv" -> "Exempelby yrkesinstitut, Centrums verksamhetsställe",
+          "en" -> "Esimerkkilä Vocational College, City Centre Campus",
+        ))
+      }
+
+      "käyttää puuttuvan kieliversion tilalla suomenkielistä nimeä" in {
+        organisaatioNimiOvaranVastauksesta(
+          oppilaitosNimi = Some("""{"fi": "Esimerkkilän ammattiopisto", "sv": "Exempelby yrkesinstitut"}"""),
+          toimipisteNimi = Some("""{"fi": "Keskustan toimipaikka"}"""),
+        ).values should equal(Map(
+          "fi" -> "Esimerkkilän ammattiopisto, Keskustan toimipaikka",
+          "sv" -> "Exempelby yrkesinstitut, Keskustan toimipaikka",
+        ))
+      }
+
+      "ei toista oppilaitoksen nimeä, jos toimipisteen nimi alkaa jo sillä samalla kielellä" in {
+        organisaatioNimiOvaranVastauksesta(
+          oppilaitosNimi = Some("""{"fi": "Esimerkkilän ammattiopisto", "sv": "Exempelby yrkesinstitut"}"""),
+          toimipisteNimi = Some("""{"fi": "Esimerkkilän ammattiopisto, Keskustan toimipaikka"}"""),
+        ).values should equal(Map(
+          "fi" -> "Esimerkkilän ammattiopisto, Keskustan toimipaikka",
+          "sv" -> "Exempelby yrkesinstitut, Esimerkkilän ammattiopisto, Keskustan toimipaikka",
+        ))
+      }
+
+      "näyttää pelkän oppilaitoksen nimen, kun toimipisteen nimeä ei ole" in {
+        organisaatioNimiOvaranVastauksesta(
+          oppilaitosNimi = Some("""{"fi": "Esimerkkilän lukio"}"""),
+          toimipisteNimi = Some("null"),
+        ).values should equal(Map("fi" -> "Esimerkkilän lukio"))
+      }
+
+      "suosii toimipisteen nimeä organisaatioNimen sijaan, kun oppilaitoksen nimeä ei ole" in {
+        organisaatioNimiOvaranVastauksesta(
+          toimipisteNimi = Some("""{"fi": "Keskustan toimipaikka"}"""),
+          organisaatioNimi = Some("""{"fi": "Lahti, Villähde"}"""),
+        ).values should equal(Map("fi" -> "Keskustan toimipaikka"))
+      }
+
+      "käyttää organisaatioNimeä, kun Ovara ei palauta oppilaitoksen eikä toimipisteen nimeä" in {
+        organisaatioNimiOvaranVastauksesta(
+          organisaatioNimi = Some("""{"fi": "Lahti, Villähde", "sv": "Lahti, Villähde"}"""),
+        ).values should equal(Map("fi" -> "Lahti, Villähde", "sv" -> "Lahti, Villähde"))
+      }
+
+      "käsittelee tyhjän oppilaitoksen nimen puuttuvana" in {
+        organisaatioNimiOvaranVastauksesta(
+          oppilaitosNimi = Some("{}"),
+          organisaatioNimi = Some("""{"fi": "Lahti, Villähde"}"""),
+        ).values should equal(Map("fi" -> "Lahti, Villähde"))
+      }
+
+      "palauttaa tyhjän nimen, kun Ovara ei palauta yhtään nimeä" in {
+        organisaatioNimiOvaranVastauksesta().values shouldBe empty
+      }
+    }
   }
 
   private def minimalValpasOppija(henkilö: LaajatOppijaHenkilöTiedot): ValpasOppivelvollinenOppijaLaajatTiedot =
@@ -251,6 +316,43 @@ class OvaraHakukoosteServiceSpec extends ValpasTestBase with Matchers with Eithe
       WireMock.post(WireMock.urlPathEqualTo(ovaraHakukoosteUrl))
         .withRequestBody(WireMock.equalToJson(expectedBody, true, false))
         .willReturn(WireMock.ok().withBody(json)))
+  }
+
+  // Parametrit ovat kenttien JSON-arvoja; None jättää kentän pois vastauksesta.
+  private def organisaatioNimiOvaranVastauksesta(
+    oppilaitosNimi: Option[String] = None,
+    toimipisteNimi: Option[String] = None,
+    organisaatioNimi: Option[String] = None,
+  ): BlankableLocalizedString = {
+    val oppijaOid = "1.2.246.562.24.00000000001"
+    val nimikentät = Seq("oppilaitosNimi" -> oppilaitosNimi, "toimipisteNimi" -> toimipisteNimi, "organisaatioNimi" -> organisaatioNimi)
+      .collect { case (kenttä, Some(json)) => s""""$kenttä": $json,""" }
+      .mkString(" ")
+    val vastaus =
+      s"""[{
+         |  "oppijaOid": "$oppijaOid",
+         |  "hakuOid": "1.2.246.562.29.00000000000000075761",
+         |  "hakemusOid": "1.2.246.562.11.00000000000003301492",
+         |  "hakemusUrl": "https://virkailija.testiopintopolku.fi/lomake-editori/applications/search?term=1.2.246.562.11.00000000000003301492",
+         |  "hakutapa": {"koodiarvo": "01", "koodistoUri": "hakutapa"},
+         |  "haunAlkamispaivamaara": "2026-02-24T08:00:00",
+         |  "hakuNimi": {"fi": "Perusopetuksen jälkeisen koulutuksen yhteishaku 2026"},
+         |  "hakutoiveet": [{
+         |    $nimikentät
+         |    "hakukohdeOid": "1.2.246.562.20.00000000000000080037",
+         |    "hakukohdeNimi": {"fi": "Musiikkialan perustutkinto"},
+         |    "hakutoivenumero": 1,
+         |    "hakukohdeOrganisaatio": "1.2.246.562.10.76662434703",
+         |    "koulutusNimi": {"fi": "Musiikkialan perustutkinto"}
+         |  }]
+         |}]""".stripMargin
+    wireMockServer.stubFor(
+      WireMock.get(WireMock.urlPathEqualTo(ovaraHakukoosteUrl))
+        .withQueryParam("ovara_oppijanumero", WireMock.equalTo(oppijaOid))
+        .willReturn(WireMock.ok().withBody(vastaus)))
+
+    mockClient.getHakukoosteet(Set(oppijaOid), ainoastaanAktiivisetHaut = false, "test").value
+      .head.hakutoiveet.head.organisaatioNimi
   }
 }
 
