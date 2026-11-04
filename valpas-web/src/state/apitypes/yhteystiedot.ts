@@ -18,7 +18,7 @@ export type YhteystietojenAlkuperä = AlkuperäHakemukselta | AlkuperäRekisteri
 
 export type AlkuperäHakemukselta = {
   hakuNimi: LocalizedString
-  haunAlkamispaivämäärä: ISODateTime
+  haunAlkamispaivämäärä?: ISODateTime
   hakemuksenMuokkauksenAikaleima?: ISODateTime
   hakuOid: Oid
   hakemusOid: Oid
@@ -40,7 +40,6 @@ export const isAlkuperäHakemukselta = (
   const a = alkuperä as AlkuperäHakemukselta
   return (
     a.hakuNimi !== undefined &&
-    a.haunAlkamispaivämäärä !== undefined &&
     a.hakuOid !== undefined &&
     a.hakemusOid !== undefined
   )

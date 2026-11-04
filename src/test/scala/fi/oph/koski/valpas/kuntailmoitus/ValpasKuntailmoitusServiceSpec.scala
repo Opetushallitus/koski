@@ -442,7 +442,7 @@ class ValpasKuntailmoitusServiceSpec extends ValpasTestBase with BeforeAndAfterE
     val oppijanHakukoosteet =
       HakukoosteExampleData.data.filter(hk => hk.oppijaOid == oppijaOid)
     val expectedHakukooste =
-      oppijanHakukoosteet.sortBy(h => h.hakemuksenMuokkauksenAikaleima.getOrElse(h.haunAlkamispaivamaara))(DateOrdering.localDateTimeOrdering.reverse).head
+      oppijanHakukoosteet.sortBy(h => h.hakemuksenMuokkauksenAikaleima.orElse(h.haunAlkamispaivamaara))(Ordering.Option(DateOrdering.localDateTimeOrdering).reverse).head
 
     val expectedYhteystiedot = Seq(
       ValpasPohjatietoYhteystieto(
