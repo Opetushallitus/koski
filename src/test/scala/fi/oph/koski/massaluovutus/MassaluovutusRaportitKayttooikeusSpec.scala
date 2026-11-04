@@ -71,6 +71,13 @@ class MassaluovutusRaportitKayttooikeusSpec extends AnyFreeSpec with Massaluovut
     "Kotikuntalaskelma" -> MassaluovutusQueryKotikuntalaskelma(paiva = paiva, organisaatioOid = organisaatioOid),
   )
 
+  // Kunnan oppijat vaatii organisaatioksi kunnan
+  private val kuntaraporttikyselyt: List[(String, MassaluovutusQueryParameters)] = List(
+    "Kunnan oppijat" -> MassaluovutusQueryKunnanOppijat(paiva = paiva, organisaatioOid = Some(MockOrganisaatiot.helsinginKaupunki)),
+  )
+
+  private val kaikkiRaporttikyselyt = raporttikyselyt ++ kuntaraporttikyselyt
+
   // Päällekkäisten opiskeluoikeuksien raportilla ei ole luottamuksellisia tietoja, joten se ei vaadi raporttien oikeuksia
   private val päällekkäisetKyselyt: List[(String, MassaluovutusQueryParameters)] = List(
     "Päällekkäiset opiskeluoikeudet (xlsx)" -> päällekkäiset,
@@ -78,7 +85,7 @@ class MassaluovutusRaportitKayttooikeusSpec extends AnyFreeSpec with Massaluovut
   )
 
   "Kaikki raporttikyselyt ovat mukana testeissä" in {
-    raporttikyselyt.map(_._2.getClass.getName).toSet should equal(kaikkiRaporttikyselyluokat)
+    kaikkiRaporttikyselyt.map(_._2.getClass.getName).toSet should equal(kaikkiRaporttikyselyluokat)
   }
 
   "Luottamuksellisten tietojen oikeudella kaikki raporttikyselyt sallitaan" - {
@@ -86,36 +93,40 @@ class MassaluovutusRaportitKayttooikeusSpec extends AnyFreeSpec with Massaluovut
       estetytKyselyt(raporttikyselyt, MockUsers.jyväskylänNormaalikoulunPalvelukäyttäjä) shouldBe empty
     }
 
+    "kunnan käyttäjälle" in {
+      estetytKyselyt(kuntaraporttikyselyt, MockUsers.helsinkiTallentaja) shouldBe empty
+    }
+
     "OPH:n katselijalle" in {
-      estetytKyselyt(raporttikyselyt, MockUsers.ophkatselija) shouldBe empty
+      estetytKyselyt(kaikkiRaporttikyselyt, MockUsers.ophkatselija) shouldBe empty
     }
   }
 
   "Ilman luottamuksellisten tietojen oikeutta kaikki raporttikyselyt estetään" - {
     "organisaation käyttäjältä" in {
-      sallitutKyselyt(raporttikyselyt, MockUsers.tallentajaEiLuottamuksellinen) shouldBe empty
+      sallitutKyselyt(kaikkiRaporttikyselyt, MockUsers.tallentajaEiLuottamuksellinen) shouldBe empty
       raporttikyselyEstetään(esiopetus, MockUsers.tallentajaEiLuottamuksellinen)
     }
 
     "OPH:n katselijalta" in {
-      sallitutKyselyt(raporttikyselyt, MockUsers.viranomainen) shouldBe empty
+      sallitutKyselyt(kaikkiRaporttikyselyt, MockUsers.viranomainen) shouldBe empty
       raporttikyselyEstetään(esiopetus, MockUsers.viranomainen)
     }
 
     "kielitutkintorekisterin palvelukäyttäjältä" in {
-      sallitutKyselyt(raporttikyselyt, MockUsers.kielitutkintorekisteriKäyttäjä) shouldBe empty
+      sallitutKyselyt(kaikkiRaporttikyselyt, MockUsers.kielitutkintorekisteriKäyttäjä) shouldBe empty
       raporttikyselyEstetään(esiopetus, MockUsers.kielitutkintorekisteriKäyttäjä)
     }
   }
 
   "Viranomaisen globaalilla lukuoikeudella kaikki raporttikyselyt estetään" - {
     "ilman organisaation oikeuksia" in {
-      sallitutKyselyt(raporttikyselyt, MockUsers.tilastokeskusKäyttäjä) shouldBe empty
+      sallitutKyselyt(kaikkiRaporttikyselyt, MockUsers.tilastokeskusKäyttäjä) shouldBe empty
       raporttikyselyEstetään(esiopetus, MockUsers.tilastokeskusKäyttäjä)
     }
 
     "organisaation oikeuksista huolimatta" in {
-      sallitutKyselyt(raporttikyselyt, MockUsers.viranomainenJaJyväskylänTallentaja) shouldBe empty
+      sallitutKyselyt(kaikkiRaporttikyselyt, MockUsers.viranomainenJaJyväskylänTallentaja) shouldBe empty
       raporttikyselyEstetään(esiopetus, MockUsers.viranomainenJaJyväskylänTallentaja)
     }
   }

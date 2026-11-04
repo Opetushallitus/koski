@@ -1,5 +1,5 @@
 /**
- * Palauttaa kotikuntalaskelman eli perusopetusikäisten oppilaiden lukumäärät opetuksen järjestäjittäin ja oppilaan kotikunnittain valittuna päivänä sekä oppilaskohtaiset tiedot. Kysely vaatii valitussa organisaatiossa oikeudet sekä perusopetuksen että esiopetuksen opiskeluoikeuksiin.
+ * Palauttaa perusopetusikäisten oppilaiden lukumäärät opetuksen järjestäjittäin ja oppilaan kotikunnittain valittuna päivänä. Kysely vaatii valitussa organisaatiossa oikeudet sekä perusopetuksen että esiopetuksen opiskeluoikeuksiin.
  *
  * @see `fi.oph.koski.massaluovutus.raportit.MassaluovutusQueryKotikuntalaskelma`
  */

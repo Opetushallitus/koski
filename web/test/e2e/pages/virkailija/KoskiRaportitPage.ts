@@ -182,6 +182,13 @@ export class KoskiRaportitPage {
     await expect(this.muodostaButton).toBeVisible()
   }
 
+  async gotoKunnanOppijat() {
+    await this.page.goto(
+      '/koski/raportit/muut/kunnanoppijatraportti?kotikuntalaskelma=1'
+    )
+    await expect(this.muodostaButton).toBeVisible()
+  }
+
   async valitseOrganisaatio(nimi: string) {
     const valinta = this.page.locator('.organisaatio-dropdown')
     await valinta.locator('input.select').click()

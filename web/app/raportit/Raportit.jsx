@@ -31,6 +31,7 @@ import {
   ibRaporttityypit,
   ibSuoritustiedotKyselymalli,
   kotikuntalaskelmaKyselymalli,
+  kunnanOppijatKyselymalli,
   lukio2019OpintopistekertymatKyselymalli,
   lukio2019SuoritustiedotKyselymalli,
   lukioDiaIbInternationalESHOpiskelijamaaratKyselymalli,
@@ -664,7 +665,9 @@ function Kotikuntalaskelma({ stateP }) {
 
 function KunnanOppijat({ stateP }) {
   const titleText = <Text name="kunnanoppijat-title" />
-  const shortDescriptionText = <Text name="kunnanoppijat-short-description" />
+  const shortDescriptionText = (
+    <Text name="kunnanoppijat-short-description-massaluovutus" />
+  )
   const dateInputHelpText = <Text name="kunnanoppijat-date-input-help" />
   const exampleText = <Paragraphs name="kunnanoppijat-example" />
 
@@ -676,6 +679,7 @@ function KunnanOppijat({ stateP }) {
       shortDescription={shortDescriptionText}
       dateInputHelp={dateInputHelpText}
       example={exampleText}
+      massaluovutusKyselymalli={kunnanOppijatKyselymalli}
       lang={lang}
     />
   )
