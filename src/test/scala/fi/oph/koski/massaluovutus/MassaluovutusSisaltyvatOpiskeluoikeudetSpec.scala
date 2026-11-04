@@ -1,7 +1,6 @@
 package fi.oph.koski.massaluovutus
 
 import fi.oph.koski.api.misc.{OpiskeluoikeudenMitätöintiJaPoistoTestMethods, OpiskeluoikeusTestMethodsAmmatillinen}
-import fi.oph.koski.documentation.AmmatillinenExampleData.autoalanPerustutkinnonSuoritus
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.koskiuser.{MockUsers, UserWithPassword}
@@ -66,7 +65,6 @@ class MassaluovutusSisaltyvatOpiskeluoikeudetSpec
   private def sisältyväOmniassa(sisältävä: AmmatillinenOpiskeluoikeus): AmmatillinenOpiskeluoikeus =
     makeOpiskeluoikeus(alkamispäivä = sisältyvänAlkamispäivä, toimpiste = OidOrganisaatio(MockOrganisaatiot.omnia), oppilaitos = MockOrganisaatiot.omnia).copy(
       sisältyyOpiskeluoikeuteen = Some(SisältäväOpiskeluoikeus(sisältävä.oppilaitos.get, sisältävä.oid.get)),
-      suoritukset = List(autoalanPerustutkinnonSuoritus(OidOrganisaatio(MockOrganisaatiot.omnia))),
     )
 
   private val query = MassaluovutusQuerySisaltyvatOpiskeluoikeudet(
