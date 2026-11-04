@@ -1,3 +1,10 @@
+# 27.10.2026
+
+- Vapaan sivistystyön vapaatavoitteisen koulutuksen (`vstvapaatavoitteinenkoulutus`) ja osaamismerkin (`vstosaamismerkki`) opiskeluoikeusjaksoille sallitaan uutena tilana `lasna`, jolloin opiskeluoikeudelle voi siirtää päättymispäivästä erillisen alkamispäivän. Aiemmin opiskeluoikeus alkoi ja päättyi samana päivänä, koska ainoat sallitut tilat olivat päättäviä.
+  - Tilan voi siirtää vasta 1.1.2027 alkaen ja vain opiskeluoikeudelle, joka ei ole päättynyt ennen 1.1.2027. Läsnä-jakson alkupäivä saa kuitenkin olla ennen 1.1.2027.
+  - Opiskeluoikeus voi jäädä tilaan `lasna`, myös lähdejärjestelmästä siirrettäessä. Tilaan `hyvaksytystisuoritettu` päättyvällä opiskeluoikeudella on oltava vahvistettu päätason suoritus.
+  - Ennen 1.1.2027 päättyneet opiskeluoikeudet validoidaan aiempien sääntöjen mukaan.
+
 # 14.9.2026
 
 - Ahvenanmaan perusopetuksen opiskeluoikeuden lisätietoihin lisätty vapaaehtoinen `alkuvaihe`-kenttä (aikajakso), jolla ilmaistaan muiden kuin oppivelvollisten alkuvaiheen (Inledningsskedet) opintojen ajanjakso.
