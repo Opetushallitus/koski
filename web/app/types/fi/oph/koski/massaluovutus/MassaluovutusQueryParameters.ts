@@ -15,6 +15,10 @@ import {
   isMassaluovutusQueryOrganisaationOpiskeluoikeudetJson
 } from './organisaationopiskeluoikeudet/MassaluovutusQueryOrganisaationOpiskeluoikeudetJson'
 import {
+  MassaluovutusQuerySisaltyvatOpiskeluoikeudet,
+  isMassaluovutusQuerySisaltyvatOpiskeluoikeudet
+} from './organisaationopiskeluoikeudet/MassaluovutusQuerySisaltyvatOpiskeluoikeudet'
+import {
   MassaluovutusQueryPaallekkaisetOpiskeluoikeudet,
   isMassaluovutusQueryPaallekkaisetOpiskeluoikeudet
 } from './paallekkaisetopiskeluoikeudet/MassaluovutusQueryPaallekkaisetOpiskeluoikeudet'
@@ -161,6 +165,7 @@ export type MassaluovutusQueryParameters =
   | MassaluovutusQueryLuokalleJaaneetJson
   | MassaluovutusQueryOrganisaationOpiskeluoikeudetCsv
   | MassaluovutusQueryOrganisaationOpiskeluoikeudetJson
+  | MassaluovutusQuerySisaltyvatOpiskeluoikeudet
   | MassaluovutusQueryPaallekkaisetOpiskeluoikeudet
   | MassaluovutusQueryAikuistenPerusopetuksenKurssikertyma
   | MassaluovutusQueryAikuistenPerusopetuksenOppijamaaratRaportti
@@ -203,6 +208,7 @@ export const isMassaluovutusQueryParameters = (
   isMassaluovutusQueryLuokalleJaaneetJson(a) ||
   isMassaluovutusQueryOrganisaationOpiskeluoikeudetCsv(a) ||
   isMassaluovutusQueryOrganisaationOpiskeluoikeudetJson(a) ||
+  isMassaluovutusQuerySisaltyvatOpiskeluoikeudet(a) ||
   isMassaluovutusQueryPaallekkaisetOpiskeluoikeudet(a) ||
   isMassaluovutusQueryAikuistenPerusopetuksenKurssikertyma(a) ||
   isMassaluovutusQueryAikuistenPerusopetuksenOppijamaaratRaportti(a) ||
