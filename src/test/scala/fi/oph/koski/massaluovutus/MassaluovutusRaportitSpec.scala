@@ -568,12 +568,65 @@ class MassaluovutusRaportitSpec extends AnyFreeSpec with MassaluovutusTestMethod
       raporttiKyselyEiOnnistu(query, MockUsers.esiopetusTallentaja)
     }
 
+    "Pelkillä perusopetuksen oikeuksilla ei onnistu" in {
+      raporttiKyselyEiOnnistu(query, MockUsers.helsinkiPelkänPerusopetuksenKatselija)
+    }
+
     "Koulutusmuotoihin rajatuilla OPH:n oikeuksilla ei onnistu" in {
       raporttiKyselyEiOnnistu(query, MockUsers.ophLukioKatselija)
     }
 
     "Ei onnistu toisen koulutustoimijan oppilaitokselle" in {
       raporttiKyselyEiOnnistu(query.copy(organisaatioOid = Some(MockOrganisaatiot.aapajoenKoulu)), MockUsers.helsinkiTallentaja)
+    }
+  }
+
+  "Kunnan oppijat" - {
+    val query = MassaluovutusQueryKunnanOppijat(
+      paiva = LocalDate.of(2026, 9, 1),
+      organisaatioOid = Some(MockOrganisaatiot.helsinginKaupunki),
+    )
+
+    "Kysely onnistuu ja palauttaa oikeat tiedostot" in {
+      raporttiKyselyOnnistuu(query, MockUsers.paakayttaja)
+    }
+
+    "Kysely kirjaa auditlokiin yhden merkinnän" in {
+      AuditLogTester.clearMessages()
+      raporttiKyselyOnnistuu(query, MockUsers.helsinkiPerusopetuksenKatselija)
+      verifyAinoaAuditlokimerkintä("kunnanoppijat", "2026-09-01", List(MockOrganisaatiot.helsinginKaupunki))
+    }
+
+    "Perus- ja esiopetuksen oikeuksilla kysely onnistuu" in {
+      raporttiKyselyOnnistuu(query, MockUsers.helsinkiPerusopetuksenKatselija)
+    }
+
+    "Kysely onnistuu kunnalle, jolla ei ole omia oppilaitoksia" in {
+      raporttiKyselyOnnistuu(query.copy(organisaatioOid = Some(MockOrganisaatiot.pyhtäänKunta)), MockUsers.pyhtäänTallentaja)
+    }
+
+    "Ei onnistu organisaatiolle, joka ei ole kunta" in {
+      raporttiKyselyEiOnnistu(query.copy(organisaatioOid = Some(MockOrganisaatiot.aapajoenKoulu)), MockUsers.kalle)
+    }
+
+    "Kunnan oppilaitoksen käyttöoikeuksilla ei onnistu" in {
+      raporttiKyselyEiOnnistu(query, MockUsers.stadinAmmattiopistoKatselija)
+    }
+
+    "Kunnan esiopetuksen käyttöoikeuksilla ei onnistu" in {
+      raporttiKyselyEiOnnistu(query, MockUsers.esiopetusTallentaja)
+    }
+
+    "Kunnan pelkillä perusopetuksen käyttöoikeuksilla ei onnistu" in {
+      raporttiKyselyEiOnnistu(query, MockUsers.helsinkiPelkänPerusopetuksenKatselija)
+    }
+
+    "Koulutusmuotoihin rajatuilla OPH:n oikeuksilla ei onnistu" in {
+      raporttiKyselyEiOnnistu(query, MockUsers.ophLukioKatselija)
+    }
+
+    "Luottamuksellisten tietojen oikeus muussa organisaatiossa ei riitä" in {
+      raporttiKyselyEiOnnistu(query, MockUsers.helsinkiIlmanLuottamuksellisiaTietoja)
     }
   }
 }

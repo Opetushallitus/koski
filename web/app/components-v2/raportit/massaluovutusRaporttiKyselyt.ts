@@ -44,6 +44,10 @@ import {
   MassaluovutusQueryKotikuntalaskelma
 } from '../../types/fi/oph/koski/massaluovutus/raportit/MassaluovutusQueryKotikuntalaskelma'
 import {
+  isMassaluovutusQueryKunnanOppijat,
+  MassaluovutusQueryKunnanOppijat
+} from '../../types/fi/oph/koski/massaluovutus/raportit/MassaluovutusQueryKunnanOppijat'
+import {
   isMassaluovutusQueryLukio2019Opintopistekertymat,
   MassaluovutusQueryLukio2019Opintopistekertymat
 } from '../../types/fi/oph/koski/massaluovutus/raportit/MassaluovutusQueryLukio2019Opintopistekertymat'
@@ -719,6 +723,21 @@ export const kotikuntalaskelmaKyselymalli: MassaluovutusKyselymalli<Päivärapor
       }),
     lue: (q) =>
       isMassaluovutusQueryKotikuntalaskelma(q)
+        ? { organisaatioOid: q.organisaatioOid, paiva: q.paiva }
+        : null,
+    ajankohdanOtsikko: 'Päivä'
+  }
+
+export const kunnanOppijatKyselymalli: MassaluovutusKyselymalli<PäiväraportinKyselynParametrit> =
+  {
+    luo: (p) =>
+      MassaluovutusQueryKunnanOppijat({
+        organisaatioOid: p.organisaatioOid,
+        language: p.language,
+        paiva: p.paiva
+      }),
+    lue: (q) =>
+      isMassaluovutusQueryKunnanOppijat(q)
         ? { organisaatioOid: q.organisaatioOid, paiva: q.paiva }
         : null,
     ajankohdanOtsikko: 'Päivä'

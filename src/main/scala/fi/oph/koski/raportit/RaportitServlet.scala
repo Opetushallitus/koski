@@ -220,11 +220,12 @@ class RaportitServlet(implicit val application: KoskiApplication) extends KoskiS
     if (!accessResolver.hasLuottamuksellisetTiedot(parsedRequest.oppilaitosOid)) {
       haltWithStatus(KoskiErrorCategory.forbidden.kiellettyKäyttöoikeus())
     }
-    val kuntakoodi = accessResolver.kuntakoodi(parsedRequest.oppilaitosOid)
-      .getOrElse(haltWithStatus(KoskiErrorCategory.badRequest.queryParam(s"Organisaatio ${parsedRequest.oppilaitosOid} ei ole kunta")))
+    if (accessResolver.kuntakoodi(parsedRequest.oppilaitosOid).isEmpty) {
+      haltWithStatus(KoskiErrorCategory.badRequest.queryParam(s"Organisaatio ${parsedRequest.oppilaitosOid} ei ole kunta"))
+    }
     val t = new LocalizationReader(application.koskiLocalizationRepository, parsedRequest.lang)
     AuditLog.log(KoskiAuditLogMessage(OPISKELUOIKEUS_RAPORTTI, session, Map(hakuEhto -> s"raportti=kunnanoppijat&oppilaitosOid=${parsedRequest.oppilaitosOid}&paiva=${parsedRequest.paiva}&lang=${parsedRequest.lang}")))
-    writeExcel(raportitService.kunnanOppijat(parsedRequest, kuntakoodi, t), t)
+    writeExcel(raportitService.kunnanOppijat(parsedRequest, t), t)
   }
 
   get("/perusopetuksenoppijamaaratraportti") {

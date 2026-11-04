@@ -326,13 +326,16 @@ class RaportitService(application: KoskiApplication) {
     )
   }
 
-  def kunnanOppijat(request: RaporttiPäivältäRequest, kuntakoodi: String, t: LocalizationReader)(implicit u: KoskiSpecificSession) =
+  def kunnanOppijat(request: RaporttiPäivältäRequest, t: LocalizationReader)(implicit u: KoskiSpecificSession) = {
+    val kuntakoodi = accessResolver.kuntakoodi(request.oppilaitosOid)
+      .getOrElse(throw new IllegalArgumentException(s"Organisaatio ${request.oppilaitosOid} ei ole kunta"))
     OppilaitosRaporttiResponse(
       sheets = Seq(kunnanOppijatBuilder.build(request.oppilaitosOid, kuntakoodi, request.paiva, t)),
       workbookSettings = WorkbookSettings(t.get("raportti-excel-kunnanoppijat-title"), Some(request.password)),
       filename = s"${t.get("raportti-excel-kunnanoppijat-tiedoston-etuliite")}_${request.oppilaitosOid}_${request.paiva}.xlsx",
       downloadToken = request.downloadToken
     )
+  }
 
   def kotikuntalaskelma(request: RaporttiPäivältäRequest, t: LocalizationReader)(implicit u: KoskiSpecificSession) = {
     val oppilaitosOids = accessResolver.kyselyOiditOrganisaatiolle(request.oppilaitosOid).toSeq

@@ -296,3 +296,13 @@ Esimerkki:
     {{var:headers}}
 
     {{json:KotikuntalaskelmaXlsx}}
+
+{{title:fi.oph.koski.massaluovutus.raportit.MassaluovutusQueryKunnanOppijat}}
+{{docs:fi.oph.koski.massaluovutus.raportit.MassaluovutusQueryKunnanOppijat}}
+
+Esimerkki:
+
+    POST {{var:baseUrl}}/api/massaluovutus HTTP/1.1
+    {{var:headers}}
+
+    {{json:KunnanOppijatXlsx}}
