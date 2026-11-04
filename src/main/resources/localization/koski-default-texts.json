@@ -900,6 +900,7 @@
   "EsiopetusRaportti-title": "Esiopetuksen opiskeluoikeus- ja suoritustietojen tarkistusraportti",
   "kotikuntalaskelma-title": "Kotikuntalaskelma",
   "kotikuntalaskelma-short-description": "Raportilla saa tulostettua koulutuksen järjestäjän siirtämän KOSKI-datan pohjalta muodostetut perusopetusikäisten oppilaiden lukumäärät opetuksen järjestäjittäin ja oppilaan kotikunnittain valittuna päivänä.",
+  "kotikuntalaskelma-short-description-massaluovutus": "Raportilla saa tulostettua koulutuksen järjestäjän siirtämän KOSKI-datan pohjalta muodostetut perusopetusikäisten oppilaiden lukumäärät opetuksen järjestäjittäin ja oppilaan kotikunnittain valittuna päivänä. Raportti muodostetaan taustalla, joten voit halutessasi poistua sivulta muodostamisen ajaksi. Valmiit raportit ovat ladattavissa kolmen vuorokauden ajan.",
   "kotikuntalaskelma-date-input-help": "Syötä \"Valitse päivä\"-kenttään se päivämäärä, jolta raportti tulostetaan. Oppilaan kotikunta ratkaistaan samalta päivältä.",
   "kotikuntalaskelma-example": "Esimerkiksi, kun halutaan tulostaa kotikuntalaskelma tilanteesta 31.12.2026, valitaan \"Valitse päivä\"-kenttään päivämääräksi 31.12.2026.",
   "raportti-excel-kotikuntalaskelma-title": "Kotikuntalaskelma",

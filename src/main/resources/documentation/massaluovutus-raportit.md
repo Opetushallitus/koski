@@ -292,3 +292,13 @@ Esimerkki:
     {{var:headers}}
 
     {{json:MuuKuinSaanneltyKoulutusXlsx}}
+
+{{title:fi.oph.koski.massaluovutus.raportit.MassaluovutusQueryKotikuntalaskelma}}
+{{docs:fi.oph.koski.massaluovutus.raportit.MassaluovutusQueryKotikuntalaskelma}}
+
+Esimerkki:
+
+    POST {{var:baseUrl}}/api/massaluovutus HTTP/1.1
+    {{var:headers}}
+
+    {{json:KotikuntalaskelmaXlsx}}

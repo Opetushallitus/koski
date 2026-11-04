@@ -68,6 +68,7 @@ class MassaluovutusRaportitKayttooikeusSpec extends AnyFreeSpec with Massaluovut
     "Vapaan sivistystyön oppivelvollisille suunnattu koulutus" -> MassaluovutusQueryVSTKOPS(alku = alku, loppu = loppu, organisaatioOid = organisaatioOid),
     "Vapaan sivistystyön osaamismerkit" -> MassaluovutusQueryVSTOsaamismerkit(alku = alku, loppu = loppu, organisaatioOid = organisaatioOid),
     "Muu kuin säännelty koulutus" -> MassaluovutusQueryMuuKuinSaanneltyKoulutus(alku = alku, loppu = loppu, organisaatioOid = organisaatioOid),
+    "Kotikuntalaskelma" -> MassaluovutusQueryKotikuntalaskelma(paiva = paiva, organisaatioOid = organisaatioOid),
   )
 
   // Päällekkäisten opiskeluoikeuksien raportilla ei ole luottamuksellisia tietoja, joten se ei vaadi raporttien oikeuksia

@@ -30,6 +30,7 @@ import {
   esiopetusKyselymalli,
   ibRaporttityypit,
   ibSuoritustiedotKyselymalli,
+  kotikuntalaskelmaKyselymalli,
   lukio2019OpintopistekertymatKyselymalli,
   lukio2019SuoritustiedotKyselymalli,
   lukioDiaIbInternationalESHOpiskelijamaaratKyselymalli,
@@ -642,7 +643,7 @@ function PaallekkaisetOpiskeluoikeudet({ stateP }) {
 function Kotikuntalaskelma({ stateP }) {
   const titleText = <Text name="kotikuntalaskelma-title" />
   const shortDescriptionText = (
-    <Text name="kotikuntalaskelma-short-description" />
+    <Text name="kotikuntalaskelma-short-description-massaluovutus" />
   )
   const dateInputHelpText = <Text name="kotikuntalaskelma-date-input-help" />
   const exampleText = <Paragraphs name="kotikuntalaskelma-example" />
@@ -655,6 +656,7 @@ function Kotikuntalaskelma({ stateP }) {
       shortDescription={shortDescriptionText}
       dateInputHelp={dateInputHelpText}
       example={exampleText}
+      massaluovutusKyselymalli={kotikuntalaskelmaKyselymalli}
       lang={lang}
     />
   )

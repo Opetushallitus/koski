@@ -543,4 +543,37 @@ class MassaluovutusRaportitSpec extends AnyFreeSpec with MassaluovutusTestMethod
       raporttiKyselyEiOnnistu(query, MockUsers.helsinkiKatselija)
     }
   }
+
+  "Kotikuntalaskelma" - {
+    val query = MassaluovutusQueryKotikuntalaskelma(
+      paiva = LocalDate.of(2026, 9, 1),
+      organisaatioOid = Some(MockOrganisaatiot.helsinginKaupunki),
+    )
+
+    "Kysely onnistuu ja palauttaa oikeat tiedostot" in {
+      raporttiKyselyOnnistuu(query.copy(organisaatioOid = Some(MockOrganisaatiot.aapajoenKoulu)), MockUsers.kalle)
+    }
+
+    "Kysely kirjaa auditlokiin yhden merkinnän" in {
+      AuditLogTester.clearMessages()
+      raporttiKyselyOnnistuu(query, MockUsers.helsinkiPerusopetuksenKatselija)
+      verifyAinoaAuditlokimerkintä("kotikuntalaskelma", "2026-09-01", List(MockOrganisaatiot.helsinginKaupunki))
+    }
+
+    "Perus- ja esiopetuksen oikeuksilla kysely onnistuu" in {
+      raporttiKyselyOnnistuu(query, MockUsers.helsinkiPerusopetuksenKatselija)
+    }
+
+    "Pelkillä esiopetuksen oikeuksilla ei onnistu" in {
+      raporttiKyselyEiOnnistu(query, MockUsers.esiopetusTallentaja)
+    }
+
+    "Koulutusmuotoihin rajatuilla OPH:n oikeuksilla ei onnistu" in {
+      raporttiKyselyEiOnnistu(query, MockUsers.ophLukioKatselija)
+    }
+
+    "Ei onnistu toisen koulutustoimijan oppilaitokselle" in {
+      raporttiKyselyEiOnnistu(query.copy(organisaatioOid = Some(MockOrganisaatiot.aapajoenKoulu)), MockUsers.helsinkiTallentaja)
+    }
+  }
 }
