@@ -24,7 +24,8 @@ import {
 import {
   koodiarvoOnly,
   ParasArvosanaEdit,
-  ParasArvosanaKoodiarvoView
+  ParasArvosanaKoodiarvoView,
+  ParasArvosanaPäiväView
 } from '../components-v2/opiskeluoikeus/ArvosanaField'
 import {
   LaajuusView,
@@ -42,6 +43,7 @@ import { FlatButton } from '../components-v2/controls/FlatButton'
 import { IconButton } from '../components-v2/controls/IconButton'
 import { CHARCODE_REMOVE } from '../components-v2/texts/Icon'
 import { Removable } from '../components-v2/controls/Removable'
+import { parasArviointi } from '../util/arvioinnit'
 import { t } from '../i18n/i18n'
 import {
   isLukionOppimääränSuoritus2019,
@@ -484,10 +486,6 @@ const OmanÄidinkielenOpinnotRow: React.FC<{
   )
 }
 
-// Oikea <table>, ei KeyValueTable: sama syy kuin LukionOppiaineet.tsx:ssä
-// (lukio-v2/LukioEditor.less) - tämä on aidosti taulukollinen rakenne
-// (Kurssi/Suorituskieli/Arviointi per rivi), kuten vanhassa
-// käyttöliittymässä, ei pino yksittäisiä kenttä-arvo-pareja.
 const OmanÄidinkielenOpintojenOsasuorituksetLista: React.FC<{
   form: FormModel<LukionOpiskeluoikeus>
   opinnotPath: FormOptic<LukionOpiskeluoikeus, LukionOmanÄidinkielenOpinnot>
@@ -503,100 +501,18 @@ const OmanÄidinkielenOpintojenOsasuorituksetLista: React.FC<{
 
   return (
     <>
-      <TestIdLayer id="omanÄidinkielenOpinnot.osasuoritukset">
-        <table className="LukionOmanÄidinkielenOpinnot__osasuoritukset">
-          <thead>
-            <tr>
-              <th className="LukionOmanÄidinkielenOpinnot__kurssi">
-                {t('Kurssi')}
-              </th>
-              <th className="LukionOmanÄidinkielenOpinnot__suorituskieli">
-                {t('Suorituskieli')}
-              </th>
-              <th className="LukionOmanÄidinkielenOpinnot__arviointi">
-                {t('Arviointi')}
-              </th>
-              {form.editMode && (
-                <th className="LukionOmanÄidinkielenOpinnot__poisto" />
-              )}
-            </tr>
-          </thead>
-          <tbody>
-            {osasuoritukset.map((osasuoritus, i) => {
-              const kurssiPath = opinnotPath
-                .prop('osasuoritukset')
-                .optional()
-                .at(i) as unknown as FormOptic<
-                LukionOpiskeluoikeus,
-                LukionOmanÄidinkielenOpintojenOsasuoritus
-              >
-              return (
-                <TestIdLayer id={i} key={i} wrap="tr">
-                  <td className="LukionOmanÄidinkielenOpinnot__kurssi">
-                    <TestIdText id="nimi">
-                      {t(osasuoritus.koulutusmoduuli.tunniste.nimi)}
-                    </TestIdText>
-                    <KeyValueTable>
-                      <KeyValueRow
-                        localizableLabel="Laajuus"
-                        innerKeyValueTable
-                      >
-                        <TestIdText id="laajuus">
-                          {osasuoritus.koulutusmoduuli.laajuus.arvo}{' '}
-                          {t(
-                            osasuoritus.koulutusmoduuli.laajuus.yksikkö
-                              .lyhytNimi
-                          )}
-                        </TestIdText>
-                      </KeyValueRow>
-                    </KeyValueTable>
-                  </td>
-                  <td className="LukionOmanÄidinkielenOpinnot__suorituskieli">
-                    <FormField
-                      form={form}
-                      path={kurssiPath.prop('suorituskieli')}
-                      optional
-                      view={KoodistoView}
-                      edit={KoodistoEdit}
-                      editProps={{ koodistoUri: 'kieli' }}
-                      testId="suorituskieli"
-                    />
-                  </td>
-                  <td className="LukionOmanÄidinkielenOpinnot__arviointi">
-                    <FormField
-                      form={form}
-                      path={kurssiPath.prop('arviointi')}
-                      optional
-                      view={ParasArvosanaKoodiarvoView}
-                      edit={ParasArvosanaEdit}
-                      editProps={{
-                        suoritusClassName: osasuoritus.$class,
-                        format: koodiarvoOnly
-                      }}
-                      testId="arvosana"
-                    />
-                  </td>
-                  {form.editMode && (
-                    <td className="LukionOmanÄidinkielenOpinnot__poisto">
-                      <IconButton
-                        charCode={CHARCODE_REMOVE}
-                        label={t('Poista')}
-                        size="input"
-                        onClick={() =>
-                          form.updateAt(osasuorituksetPath, (os) =>
-                            deleteAt(i)(os || [])
-                          )
-                        }
-                        testId="poisto"
-                      />
-                    </td>
-                  )}
-                </TestIdLayer>
-              )
-            })}
-          </tbody>
-        </table>
-      </TestIdLayer>
+      {form.editMode ? (
+        <OmanÄidinkielenOpintojenOsasuorituksetEditList
+          form={form}
+          opinnotPath={opinnotPath}
+          osasuoritukset={osasuoritukset}
+          osasuorituksetPath={osasuorituksetPath}
+        />
+      ) : (
+        <OmanÄidinkielenOpintojenOsasuorituksetViewTable
+          osasuoritukset={osasuoritukset}
+        />
+      )}
       {form.editMode && (
         <FlatButton
           testId="omanÄidinkielenOpinnot.lisääKurssi"
@@ -620,6 +536,177 @@ const OmanÄidinkielenOpintojenOsasuorituksetLista: React.FC<{
     </>
   )
 }
+
+// Oikea <table>, ei KeyValueTable: sama syy kuin LukionOppiaineet.tsx:ssä
+// (lukio-v2/LukioEditor.less) - tämä on aidosti taulukollinen rakenne
+// (Kurssi/Suorituskieli/Arviointi per rivi), kuten vanhan käyttöliittymän
+// katselutilan "table.tabular-array". Arviointi-solu sisältää Arvosanan ja
+// Arviointipäivän samaan tapaan kuin Kurssi-solu sisältää Laajuuden -
+// sisäkkäinen KeyValueTable, ei oma sarake kummallekaan.
+const OmanÄidinkielenOpintojenOsasuorituksetViewTable: React.FC<{
+  osasuoritukset: LukionOmanÄidinkielenOpintojenOsasuoritus[]
+}> = ({ osasuoritukset }) => (
+  <TestIdLayer id="omanÄidinkielenOpinnot.osasuoritukset">
+    <table className="LukionOmanÄidinkielenOpinnot__osasuoritukset">
+      <thead>
+        <tr>
+          <th className="LukionOmanÄidinkielenOpinnot__kurssi">
+            {t('Kurssi')}
+          </th>
+          <th className="LukionOmanÄidinkielenOpinnot__suorituskieli">
+            {t('Suorituskieli')}
+          </th>
+          <th className="LukionOmanÄidinkielenOpinnot__arviointi">
+            {t('Arviointi')}
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        {osasuoritukset.map((osasuoritus, i) => {
+          const paras =
+            osasuoritus.arviointi && parasArviointi(osasuoritus.arviointi)
+          return (
+            <TestIdLayer id={i} key={i} wrap="tr">
+              <td className="LukionOmanÄidinkielenOpinnot__kurssi">
+                <TestIdText id="nimi">
+                  {t(osasuoritus.koulutusmoduuli.tunniste.nimi)}
+                </TestIdText>
+                <KeyValueTable>
+                  <KeyValueRow localizableLabel="Laajuus" innerKeyValueTable>
+                    <TestIdText id="laajuus">
+                      {osasuoritus.koulutusmoduuli.laajuus.arvo}{' '}
+                      {t(osasuoritus.koulutusmoduuli.laajuus.yksikkö.lyhytNimi)}
+                    </TestIdText>
+                  </KeyValueRow>
+                </KeyValueTable>
+              </td>
+              <td className="LukionOmanÄidinkielenOpinnot__suorituskieli">
+                {osasuoritus.suorituskieli && (
+                  <TestIdText id="suorituskieli">
+                    {t(osasuoritus.suorituskieli.nimi)}
+                  </TestIdText>
+                )}
+              </td>
+              <td className="LukionOmanÄidinkielenOpinnot__arviointi">
+                {paras && (
+                  <KeyValueTable>
+                    <KeyValueRow localizableLabel="Arvosana" innerKeyValueTable>
+                      <TestIdText id="arvosana.value">
+                        {paras.arvosana.koodiarvo}
+                      </TestIdText>
+                    </KeyValueRow>
+                    <KeyValueRow
+                      localizableLabel="Arviointipäivä"
+                      innerKeyValueTable
+                    >
+                      <TestIdText id="arviointipäivä.value">
+                        {ISO2FinnishDate(paras.päivä)}
+                      </TestIdText>
+                    </KeyValueRow>
+                  </KeyValueTable>
+                )}
+              </td>
+            </TestIdLayer>
+          )
+        })}
+      </tbody>
+    </table>
+  </TestIdLayer>
+)
+
+// Pino yksittäisiä kenttä-arvo-pareja per kurssi (KeyValueTable), ei taulukko
+// - vastaa vanhan käyttöliittymän muokkaustilan rakennetta (jokainen kurssi
+// omana "Nimi / Laajuus / Suorituskieli / Arvosana / Arviointipäivä"
+// -lohkonaan), toisin kuin katselutilan tiivis taulukko yllä. Sama
+// PuhviKoeRow:n jo käyttämä KeyValueTable+innerKeyValueTable-malli tässä
+// tiedostossa.
+const OmanÄidinkielenOpintojenOsasuorituksetEditList: React.FC<{
+  form: FormModel<LukionOpiskeluoikeus>
+  opinnotPath: FormOptic<LukionOpiskeluoikeus, LukionOmanÄidinkielenOpinnot>
+  osasuoritukset: LukionOmanÄidinkielenOpintojenOsasuoritus[]
+  osasuorituksetPath: FormOptic<
+    LukionOpiskeluoikeus,
+    LukionOmanÄidinkielenOpintojenOsasuoritus[] | undefined
+  >
+}> = ({ form, opinnotPath, osasuoritukset, osasuorituksetPath }) => (
+  <TestIdLayer id="omanÄidinkielenOpinnot.osasuoritukset">
+    <ul className="LukionOmanÄidinkielenOpinnot__osasuorituksetEdit">
+      {osasuoritukset.map((osasuoritus, i) => {
+        const kurssiPath = opinnotPath
+          .prop('osasuoritukset')
+          .optional()
+          .at(i) as unknown as FormOptic<
+          LukionOpiskeluoikeus,
+          LukionOmanÄidinkielenOpintojenOsasuoritus
+        >
+        return (
+          <TestIdLayer id={i} key={i} wrap="li">
+            <KeyValueTable>
+              <KeyValueRow localizableLabel="Nimi">
+                <div className="LukionOmanÄidinkielenOpinnot__osasuoritusNimi">
+                  <TestIdText id="nimi">
+                    {t(osasuoritus.koulutusmoduuli.tunniste.nimi)}
+                  </TestIdText>
+                  <IconButton
+                    charCode={CHARCODE_REMOVE}
+                    label={t('Poista')}
+                    size="input"
+                    onClick={() =>
+                      form.updateAt(osasuorituksetPath, (os) =>
+                        deleteAt(i)(os || [])
+                      )
+                    }
+                    testId="poisto"
+                  />
+                </div>
+              </KeyValueRow>
+              <KeyValueRow localizableLabel="Laajuus">
+                <TestIdText id="laajuus">
+                  {osasuoritus.koulutusmoduuli.laajuus.arvo}{' '}
+                  {t(osasuoritus.koulutusmoduuli.laajuus.yksikkö.lyhytNimi)}
+                </TestIdText>
+              </KeyValueRow>
+              <KeyValueRow localizableLabel="Suorituskieli">
+                <FormField
+                  form={form}
+                  path={kurssiPath.prop('suorituskieli')}
+                  optional
+                  view={KoodistoView}
+                  edit={KoodistoEdit}
+                  editProps={{ koodistoUri: 'kieli' }}
+                  testId="suorituskieli"
+                />
+              </KeyValueRow>
+              <KeyValueRow localizableLabel="Arvosana">
+                <FormField
+                  form={form}
+                  path={kurssiPath.prop('arviointi')}
+                  optional
+                  view={ParasArvosanaKoodiarvoView}
+                  edit={ParasArvosanaEdit}
+                  editProps={{
+                    suoritusClassName: osasuoritus.$class,
+                    format: koodiarvoOnly
+                  }}
+                  testId="arvosana"
+                />
+              </KeyValueRow>
+              <KeyValueRow localizableLabel="Arviointipäivä">
+                <FormField
+                  form={form}
+                  path={kurssiPath.prop('arviointi')}
+                  optional
+                  view={ParasArvosanaPäiväView}
+                  testId="arviointipäivä"
+                />
+              </KeyValueRow>
+            </KeyValueTable>
+          </TestIdLayer>
+        )
+      })}
+    </ul>
+  </TestIdLayer>
+)
 
 const PuhviKoeRow: React.FC<{ puhviKoe: PuhviKoe2019 }> = ({ puhviKoe }) => (
   <KeyValueRow localizableLabel="Puhvi-koe">

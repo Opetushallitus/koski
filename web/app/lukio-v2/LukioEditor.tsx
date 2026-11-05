@@ -147,21 +147,33 @@ const LukionPäätasonSuoritusEditor: React.FC<
       // suorituksilla on vahvistus) estäisi tämän muuten.
       suorituksetVahvistettu
     >
-      {props.form.state.suoritukset.length > 1 && (
-        <RemovePaatasonSuoritus
+      {/* Oma luokka LukioEditor.less:n testid-pohjaisten ylikirjoitusten
+      rajaamiseksi - EditorContainer on jaettu komponentti, eikä renderöi
+      lapsiaan minkään muun erottuvan luokan sisällä, joten ilman tätä
+      esim. "[data-testid$='kieli.edit'] .Select" osuisi myös muiden
+      koulutusmuotojen samannimisiin kenttiin (vahvistettu livenä: rikkoi
+      ahvenanmaan-perusopetuksen/ammatillisen/IB:n/perusopetuksen/VST:n
+      visuaalitestejä, koska nekin käyttävät testId="kieli"/"peruste"-nimiä). */}
+      <div className="LukioEditor">
+        {props.form.state.suoritukset.length > 1 && (
+          <RemovePaatasonSuoritus
+            form={props.form}
+            päätasonSuoritus={päätasonSuoritus}
+            removePäätasonSuoritus={removePäätasonSuoritus}
+            invalidatable={props.invalidatable}
+          />
+        )}
+        <LukionSuorituksenTiedot
           form={props.form}
           päätasonSuoritus={päätasonSuoritus}
-          removePäätasonSuoritus={removePäätasonSuoritus}
-          invalidatable={props.invalidatable}
         />
-      )}
-      <LukionSuorituksenTiedot
-        form={props.form}
-        päätasonSuoritus={päätasonSuoritus}
-      />
-      <Spacer />
-      <LukionOppiaineet form={props.form} päätasonSuoritus={päätasonSuoritus} />
-      <Spacer />
+        <Spacer />
+        <LukionOppiaineet
+          form={props.form}
+          päätasonSuoritus={päätasonSuoritus}
+        />
+        <Spacer />
+      </div>
     </EditorContainer>
   )
 }

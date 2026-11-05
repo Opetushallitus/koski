@@ -161,8 +161,16 @@
   table-layout: auto;
   border-collapse: collapse;
 
+  // padding-top/-bottom vain, ei padding-shorthandia - shorthand asettaisi
+  // samalla padding-rightin 0:aan, mikä yliajaisi
+  // .LukionOmanÄidinkielenOpinnot__tietoLabelin oman padding-rightin
+  // suuremmalla spesifisyydellä (".tiedot td" voittaa pelkän ".tietoLabel"-
+  // luokan) - nimi- ja arvosarakkeet olisivat näyttäneet kiinni toisissaan
+  // ilman tätä (vahvistettu livenä: "Osasuoritukset" ja "Nimi" koskettivat
+  // toisiaan).
   td {
-    padding: 2px 0;
+    padding-top: 2px;
+    padding-bottom: 2px;
     vertical-align: top;
   }
 }
@@ -194,42 +202,78 @@
 }
 
 .LukionOmanÄidinkielenOpinnot__kurssi {
-  width: 40%;
+  width: 44%;
 }
 
 .LukionOmanÄidinkielenOpinnot__suorituskieli {
-  width: 28%;
+  width: 30%;
 }
 
 .LukionOmanÄidinkielenOpinnot__arviointi {
-  width: 24%;
+  width: 26%;
+}
+
+// Muokkaustilan kurssilista: jokainen kurssi oma KeyValueTable-lohkonsa
+// (Nimi/Laajuus/Suorituskieli/Arvosana/Arviointipäivä), kuten vanhan
+// käyttöliittymän vastaava muokkausnäkymä - ei sama tiivis taulukko kuin
+// katselutilassa (ks. LukionSuorituksenTiedot.tsx:n
+// OmanÄidinkielenOpintojenOsasuorituksetEditList). Erotinviiva lohkojen
+// välissä samaan tapaan kuin vanhassa käyttöliittymässä.
+.LukionOmanÄidinkielenOpinnot__osasuorituksetEdit {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+
+  > li {
+    padding: 10px 0;
+    border-bottom: 1px solid @color-neutral-gray;
+
+    &:first-child {
+      padding-top: 0;
+    }
+  }
+}
+
+.LukionOmanÄidinkielenOpinnot__osasuoritusNimi {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .LukionOmanÄidinkielenOpinnot__poisto {
   width: 8%;
 }
 
-// components-v2/controls/Select.less:n yleissääntö
-// (".KeyValueTable .Select { max-width: 300px; }") rajaa jokaisen
-// KeyValueTablen sisällä olevan Selectin 300px leveyteen - sopii useimmille
-// lyhyille koodistoarvoille, mutta opetussuunnitelman/perusteen koodisto-
-// tekstit ovat poikkeuksellisen pitkiä ("Lukio suoritetaan nuorten
-// opetussuunnitelman mukaan", "OPH-2263-2019 Lukion opetussuunnitelman
-// perusteet 2019") ja leikkautuivat näkyvistä. Ylikirjoitetaan vain näille
-// kahdelle kentälle testid-pohjaisella valitsimella, ei muuteta yleissääntöä
-// - sillä voi olla tarkoituksellisia syitä muualla sovelluksessa.
-[data-testid$='oppimäärä.edit'] .Select,
-[data-testid$='peruste.edit'] .Select {
-  max-width: 600px;
-}
+// Rajattu .LukioEditor-luokan sisään (ks. LukioEditor.tsx), koska nämä ovat
+// testid-pohjaisia attribuuttivalitsimia eivätkä muuten rajoitu lukio-v2:een
+// - testId="oppimäärä"/"peruste"/"kieli" ovat yleisiä nimiä, joita käyttävät
+// myös mm. ahvenanmaan-perusopetus, ammatillinen-v2, IB ja perusopetus-v2
+// omille, täysin erillisille kentilleen. Ilman rajausta ylikirjoitus osuisi
+// myös niihin (vahvistettu livenä visuaalitestien kautta).
+.LukioEditor {
+  // components-v2/controls/Select.less:n yleissääntö
+  // (".KeyValueTable .Select { max-width: 300px; }") rajaa jokaisen
+  // KeyValueTablen sisällä olevan Selectin 300px leveyteen - sopii
+  // useimmille lyhyille koodistoarvoille, mutta opetussuunnitelman/perusteen
+  // koodistotekstit ovat poikkeuksellisen pitkiä ("Lukio suoritetaan
+  // nuorten opetussuunnitelman mukaan", "OPH-2263-2019 Lukion
+  // opetussuunnitelman perusteet 2019") ja leikkautuivat näkyvistä.
+  // Ylikirjoitetaan vain näille kahdelle kentälle, ei muuteta yleissääntöä -
+  // sillä voi olla tarkoituksellisia syitä muualla sovelluksessa.
+  [data-testid$='oppimäärä.edit'] .Select,
+  [data-testid$='peruste.edit'] .Select {
+    max-width: 600px;
+  }
 
-// Oppiaineen kieliaineen kieli (esim. "Ruotsi toisena kielenä ja
-// kirjallisuus", pisin koodistoarvo 38 merkkiä) ja oppiaineen oma
-// suorituskieli eivät ole KeyValueTablen sisällä kuten muut kentät - ne ovat
-// LukionOppiaineet__oppiaine-solun suorassa sisällössä, joten yllä mainittu
-// yleisraja (300px) ei koske niitä, ja Select venyy koko solun levyiseksi.
-// Vanhassa käyttöliittymässä kieli näkyy pelkkänä kompaktina linkkitekstinä
-// ja suorituskieli-pudotusvalikko on kapea - rajataan tässä samaan tapaan.
-[data-testid$='kieli.edit'] .Select {
-  max-width: 340px;
+  // Oppiaineen kieliaineen kieli (esim. "Ruotsi toisena kielenä ja
+  // kirjallisuus", pisin koodistoarvo 38 merkkiä) ja oppiaineen oma
+  // suorituskieli eivät ole KeyValueTablen sisällä kuten muut kentät - ne
+  // ovat LukionOppiaineet__oppiaine-solun suorassa sisällössä, joten yllä
+  // mainittu yleisraja (300px) ei koske niitä, ja Select venyy koko solun
+  // levyiseksi. Vanhassa käyttöliittymässä kieli näkyy pelkkänä kompaktina
+  // linkkitekstinä ja suorituskieli-pudotusvalikko on kapea - rajataan
+  // tässä samaan tapaan.
+  [data-testid$='kieli.edit'] .Select {
+    max-width: 340px;
+  }
 }
