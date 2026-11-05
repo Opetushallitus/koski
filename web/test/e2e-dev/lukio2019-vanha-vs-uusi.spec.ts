@@ -62,7 +62,7 @@ test.describe('Lukio 2019: vanha vs. uusi käyttöliittymä', () => {
     await fs.writeFile(snapshotPath, vanha)
 
     await oppijaPageV2.gotoWithQueryParams(ullaUusilukio, {
-      'lukio-2019-v2': '1'
+      'lukio-v2': '1'
     })
     await waitForContent(page)
     const { restore: restoreUusi } = await replaceScreenshotData(page)

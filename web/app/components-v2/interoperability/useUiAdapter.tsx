@@ -111,7 +111,7 @@ export const näytetäänUudellaKäyttöliittymällä = (
       )
     case 'lukiokoulutus':
       return (
-        hasFeatureFlag('lukio-2019-v2') &&
+        hasFeatureFlag('lukio-v2') &&
         !!suoritustyypit?.length &&
         suoritustyypit.every(
           (suoritustyyppi) =>

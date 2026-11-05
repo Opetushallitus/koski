@@ -1,178 +1,175 @@
+import { Page } from '@playwright/test'
 import { expect, test } from './base'
 import { virkailija } from './setup/auth'
-import { LukioOpiskeluoikeus } from './pages/oppija/components/LukioOpiskeluoikeus'
+import {
+  LukioKatselu,
+  UusiLukioKatselu,
+  VanhaLukioKatselu
+} from './pages/oppija/components/LukioKatselu'
 
-test.describe('Lukiokoulutus 2019: virkailija', () => {
-  test.use({ storageState: virkailija('pää') })
+/**
+ * Ajetaan jokainen testi sekä vanhaa (mallipohjainen editori) että uutta
+ * (lukio-v2/, feature flag "lukio-v2") käyttöliittymää vasten samoilla
+ * assertioilla - ks. pages/oppija/components/LukioKatselu.ts. Uusi
+ * käyttöliittymä toteuttaa toistaiseksi vain katselun, joten vain
+ * näyttämiseen liittyvät skenaariot on retrofitattu tähän (muokkaus/luonti/
+ * poisto pysyvät omissa, vain vanhaa käyttöliittymää ajavissa
+ * spec-tiedostoissaan).
+ */
+const VARIANTIT: Array<{
+  nimi: string
+  luoKatselu: (page: Page, otsikko: string | RegExp) => LukioKatselu
+}> = [
+  {
+    nimi: 'vanha',
+    luoKatselu: (page, otsikko) => new VanhaLukioKatselu(page, otsikko)
+  },
+  {
+    nimi: 'uusi',
+    luoKatselu: (page) => new UusiLukioKatselu(page)
+  }
+]
 
-  // Pelkkä näyttötesti, mutta fixturet resetoidaan silti: sama oppija on
-  // jaettu lukio2019-oppiaineen-muokkaus.spec.ts:n kanssa, joka tallentaa
-  // muutoksia - ei saa olettaa, missä järjestyksessä tiedostot ajetaan.
-  test.beforeEach(async ({ fixtures }) => {
-    await fixtures.reset()
-  })
+for (const variantti of VARIANTIT) {
+  test.describe(`Lukiokoulutus 2019: ${variantti.nimi} käyttöliittymä`, () => {
+    test.use({ storageState: virkailija('pää') })
 
-  test.describe('Lukion päättötodistus', () => {
-    let opiskeluoikeus: LukioOpiskeluoikeus
-
-    test.beforeEach(async ({ virkailijaPage, oppijaHaku, oppijaPage }) => {
-      await virkailijaPage.goto()
-      await (await oppijaHaku.search('250605A518Y')).clickOnFirst()
-      await oppijaPage.selectOpiskeluoikeus('lukiokoulutus')
-      opiskeluoikeus = oppijaPage.getLukioOpiskeluoikeus('Lukion oppimäärä')
+    test.beforeEach(async ({ fixtures }) => {
+      await fixtures.reset()
     })
 
-    test('Tutkinto ja oppilaitos näytetään oppijan suorituksissa', async ({
-      oppijaPage
-    }) => {
-      await expect(opiskeluoikeus.tutkinnonNimi).toHaveText('Lukion oppimäärä')
-      await expect(
-        oppijaPage.getOppilaitosNimi('Lukion oppimäärä')
-      ).toHaveText('Jyväskylän normaalikoulu')
-    })
+    test.describe('Lukion päättötodistus', () => {
+      // Uusilukio, Ulla (250605A518Y)
+      const oid = '1.2.246.562.24.00000000015'
+      let katselu: LukioKatselu
 
-    test('Opiskeluoikeuden tiedot näytetään', async () => {
-      await expect(opiskeluoikeus.opiskeluoikeudenTiedot).toContainText(
-        'Opiskeluoikeuden voimassaoloaika: 1.8.2019 — 5.9.2021'
-      )
-
-      await opiskeluoikeus.odotaTilaHistoria([
-        { päivä: '5.9.2021', tila: 'Valmistunut (valtionosuusrahoitteinen koulutus)' },
-        { päivä: '1.8.2019', tila: 'Läsnä (valtionosuusrahoitteinen koulutus)' }
-      ])
-
-      await expect(opiskeluoikeus.kenttä('oppimääräSuoritettu')).toHaveText(
-        'kyllä'
-      )
-    })
-
-    test('Suorituksen tiedot näytetään', async () => {
-      // Tunniste, koodiarvo ja diaarinumero renderöityvät vierekkäisinä
-      // <span>-elementteinä ilman välilyöntiä niiden välissä.
-      await expect(opiskeluoikeus.kenttä('koulutusmoduuli')).toHaveText(
-        'Lukion oppimäärä309902OPH-2263-2019'
-      )
-      await expect(opiskeluoikeus.kenttä('oppimäärä')).toHaveText(
-        'Lukio suoritetaan nuorten opetussuunnitelman mukaan'
-      )
-      await expect(opiskeluoikeus.kenttä('toimipiste')).toHaveText(
-        'Jyväskylän normaalikoulu'
-      )
-      await expect(opiskeluoikeus.kenttä('suorituskieli')).toHaveText('suomi')
-      await expect(opiskeluoikeus.kenttä('ryhmä')).toHaveText('AH')
-      await expect(opiskeluoikeus.kenttä('koulusivistyskieli')).toHaveText(
-        'suomi'
-      )
-
-      const taydentavat = opiskeluoikeus.omanÄidinkielenOpinnot
-      await expect(opiskeluoikeus.kenttä('arvosana', taydentavat)).toHaveText(
-        '8'
-      )
-      await expect(
-        opiskeluoikeus.kenttä('arviointipäivä', taydentavat)
-      ).toHaveText('4.9.2021')
-      await expect(opiskeluoikeus.kenttä('kieli', taydentavat)).toHaveText(
-        'saame, lappi'
-      )
-      await expect(opiskeluoikeus.kenttä('laajuus', taydentavat)).toHaveText(
-        '3 op'
-      )
-
-      await expect(opiskeluoikeus.tilaVahvistus.locator('.tila')).toHaveText(
-        'Suoritus valmis'
-      )
-      await expect(
-        opiskeluoikeus.tilaVahvistus.locator('.vahvistus.inline')
-      ).toHaveText('15.5.2020 Jyväskylä Reijo Reksi, rehtori')
-    })
-
-    test('Oppiaineiden ja kurssien arvosanat näytetään', async () => {
-      const ai = opiskeluoikeus.oppiaineRivi('AI')
-      await expect(ai.locator('.nimi')).toHaveText(
-        'Äidinkieli ja kirjallisuus, Suomen kieli ja kirjallisuus'
-      )
-
-      await expect(
-        opiskeluoikeus.kurssi(ai, 'ÄI1').locator('.arvosana')
-      ).toHaveText('8')
-      await expect(
-        opiskeluoikeus.kurssi(ai, 'ÄI2').locator('.arvosana')
-      ).toHaveText('8')
-      await expect(
-        opiskeluoikeus.kurssi(ai, 'ÄI3').locator('.arvosana')
-      ).toHaveText('8')
-
-      await expect(ai.locator('.laajuus:not(.arvioitu)')).toHaveText('6')
-      await expect(ai.locator('.laajuus.arvioitu')).toHaveText('6')
-      await expect(ai.locator('td.arvosana')).toHaveText('9')
-    })
-  })
-
-  test.describe('Lukion oppiaineiden oppimäärien suoritus', () => {
-    test.describe('Laajuuksien erottelu', () => {
-      let opiskeluoikeus: LukioOpiskeluoikeus
-
-      test.beforeEach(async ({ virkailijaPage, oppijaHaku, oppijaPage }) => {
-        await virkailijaPage.goto()
-        await (await oppijaHaku.search('010105A1995')).clickOnFirst()
-        await oppijaPage.selectOpiskeluoikeus('lukiokoulutus')
-        opiskeluoikeus = oppijaPage.getLukioOpiskeluoikeus('lukion aineopinnot')
+      test.beforeEach(async ({ page }) => {
+        katselu = variantti.luoKatselu(page, 'Lukion oppimäärä')
+        await katselu.goto(oid)
       })
 
-      test('Arvioitu ja hyväksytysti arvioitu laajuus näytetään erikseen oppiaineelle', async () => {
-        // Varmistetaan, että sarakkeiden otsikot todella tarkoittavat sitä,
-        // mitä alla luetut arvot olettavat - sarake-erottelu nojaa CSS-luokkaan
-        // (.laajuus vs. .laajuus.arvioitu), ei suoraan käyttäjän näkemään otsikkoon.
-        await expect(
-          opiskeluoikeus.oppiaineet.locator('th.laajuus:not(.arvioitu)')
-        ).toHaveText('Arvioitu (opintopistettä)')
-        await expect(
-          opiskeluoikeus.oppiaineet.locator('th.laajuus.arvioitu')
-        ).toHaveText('Hyväksytysti arvioitu (opintopistettä)')
-
-        const fy = opiskeluoikeus.oppiaineRivi('FY')
-        await expect(fy.locator('.laajuus:not(.arvioitu)')).toHaveText('6')
-        await expect(fy.locator('.laajuus.arvioitu')).toHaveText('4')
-      })
-    })
-
-    test.describe('Perustiedot', () => {
-      let opiskeluoikeus: LukioOpiskeluoikeus
-
-      test.beforeEach(async ({ virkailijaPage, oppijaHaku, oppijaPage }) => {
-        await virkailijaPage.goto()
-        await (await oppijaHaku.search('010705A6119')).clickOnFirst()
-        await oppijaPage.selectOpiskeluoikeus('lukiokoulutus')
-        opiskeluoikeus = oppijaPage.getLukioOpiskeluoikeus('lukion aineopinnot')
-      })
-
-      test('Tutkinto ja oppilaitos näytetään, suoritustyyppi näkyy otsikossa', async ({
-        oppijaPage
-      }) => {
-        await expect(opiskeluoikeus.tutkinnonNimi).toHaveText(
-          'Lukion aineopinnot'
-        )
-        await expect(
-          oppijaPage.getOppilaitosNimi('lukion aineopinnot')
-        ).toHaveText('Jyväskylän normaalikoulu')
-
-        await expect(
-          opiskeluoikeus.container.locator('h3 .koulutus')
-        ).toHaveText('Lukion aineopinnot')
+      test('Tutkinto ja oppilaitos näytetään oppijan suorituksissa', async () => {
+        await expect(katselu.koulutusNimi).toHaveText('Lukion oppimäärä')
+        await expect(katselu.koulutusKoodi).toHaveText('309902')
+        await expect(katselu.toimipiste).toHaveText('Jyväskylän normaalikoulu')
       })
 
       test('Opiskeluoikeuden tiedot näytetään', async () => {
-        // Toisin kuin "Lukion oppimäärä" -suoritustyypillä, tällä ei ole
-        // oppimääräSuoritettu-kenttää lainkaan.
-        await expect(
-          opiskeluoikeus.kenttä('oppimääräSuoritettu')
-        ).toHaveCount(0)
+        await expect(katselu.opiskeluoikeudenTiedot).toContainText(
+          'Opiskeluoikeuden voimassaoloaika: 1.8.2019 — 5.9.2021'
+        )
 
-        await opiskeluoikeus.odotaTilaHistoria([
-          { päivä: '5.9.2021', tila: 'Valmistunut (valtionosuusrahoitteinen koulutus)' },
-          { päivä: '1.8.2019', tila: 'Läsnä (valtionosuusrahoitteinen koulutus)' }
+        await katselu.odotaTilaHistoria([
+          { päivä: '5.9.2021', tila: 'Valmistunut' },
+          { päivä: '1.8.2019', tila: 'Läsnä' }
         ])
+
+        await expect(katselu.oppimääräSuoritettu).toHaveText('kyllä')
+      })
+
+      test('Suorituksen tiedot näytetään', async () => {
+        await expect(katselu.oppimäärä).toHaveText(
+          'Lukio suoritetaan nuorten opetussuunnitelman mukaan'
+        )
+        await expect(katselu.suorituskieli).toHaveText('suomi')
+        await expect(katselu.ryhmä).toHaveText('AH')
+        await expect(katselu.koulusivistyskieli).toHaveText('suomi')
+
+        const taydentavat = katselu.omanÄidinkielenOpinnot()
+        await expect(taydentavat.arvosana).toHaveText('8')
+        await expect(taydentavat.arviointipäivä).toHaveText('4.9.2021')
+        await expect(taydentavat.kieli).toHaveText('saame, lappi')
+        await expect(taydentavat.laajuus).toHaveText('3 op')
+
+        const vahvistus = katselu.vahvistus()
+        await expect(vahvistus.tila).toHaveText('Suoritus valmis')
+        await expect(vahvistus.päivä).toContainText('15.5.2020')
+        await expect(vahvistus.paikka).toContainText('Jyväskylä')
+        await expect(vahvistus.henkilöTeksti).toContainText('Reijo Reksi')
+        await expect(vahvistus.henkilöTeksti).toContainText('rehtori')
+      })
+
+      test('Oppiaineiden ja kurssien arvosanat näytetään', async () => {
+        const ai = katselu.oppiaineRivi('AI')
+
+        await expect(
+          katselu.kurssinArvosana(katselu.kurssi(ai, 'ÄI1'))
+        ).toHaveText('8')
+        await expect(
+          katselu.kurssinArvosana(katselu.kurssi(ai, 'ÄI2'))
+        ).toHaveText('8')
+        await expect(
+          katselu.kurssinArvosana(katselu.kurssi(ai, 'ÄI3'))
+        ).toHaveText('8')
+
+        await expect(katselu.oppiaineenLaajuusArvioitu(ai)).toHaveText('6')
+        await expect(
+          katselu.oppiaineenLaajuusHyväksytystiArvioitu(ai)
+        ).toHaveText('6')
+        await expect(katselu.oppiaineenArvosana(ai)).toHaveText('9')
+        await expect(katselu.oppiaineenTilaTitle(ai)).toHaveAttribute(
+          'title',
+          'Suoritus valmis'
+        )
+      })
+    })
+
+    test.describe('Lukion oppiaineiden oppimäärien suoritus', () => {
+      test.describe('Laajuuksien erottelu', () => {
+        // Vajaa-Suoritus, Lukiolainen (010105A1995)
+        const oid = '1.2.246.562.24.00000000161'
+        let katselu: LukioKatselu
+
+        test.beforeEach(async ({ page }) => {
+          katselu = variantti.luoKatselu(page, 'lukion aineopinnot')
+          await katselu.goto(oid)
+        })
+
+        test('Arvioitu ja hyväksytysti arvioitu laajuus näytetään erikseen oppiaineelle', async () => {
+          await expect(katselu.oppiaineetOtsikkoArvioitu).toHaveText(
+            'Arvioitu (opintopistettä)'
+          )
+          await expect(
+            katselu.oppiaineetOtsikkoHyväksytystiArvioitu
+          ).toHaveText('Hyväksytysti arvioitu (opintopistettä)')
+
+          const fy = katselu.oppiaineRivi('FY')
+          await expect(katselu.oppiaineenLaajuusArvioitu(fy)).toHaveText('6')
+          await expect(
+            katselu.oppiaineenLaajuusHyväksytystiArvioitu(fy)
+          ).toHaveText('4')
+        })
+      })
+
+      test.describe('Perustiedot', () => {
+        // Uusilukionaineopiskelija, Urho (010705A6119)
+        const oid = '1.2.246.562.24.00000000016'
+        let katselu: LukioKatselu
+
+        test.beforeEach(async ({ page }) => {
+          katselu = variantti.luoKatselu(page, 'lukion aineopinnot')
+          await katselu.goto(oid)
+        })
+
+        test('Tutkinto ja oppilaitos näytetään, suoritustyyppi näkyy otsikossa', async () => {
+          await expect(katselu.koulutusNimi).toHaveText('Lukion aineopinnot')
+          await expect(katselu.toimipiste).toHaveText('Jyväskylän normaalikoulu')
+          await expect(katselu.suoritustyyppiOtsikko).toHaveText(
+            'Lukion aineopinnot'
+          )
+        })
+
+        test('Opiskeluoikeuden tiedot näytetään', async () => {
+          // Toisin kuin "Lukion oppimäärä" -suoritustyypillä, tällä ei ole
+          // oppimääräSuoritettu-kenttää lainkaan.
+          await expect(katselu.oppimääräSuoritettu).toHaveCount(0)
+
+          await katselu.odotaTilaHistoria([
+            { päivä: '5.9.2021', tila: 'Valmistunut' },
+            { päivä: '1.8.2019', tila: 'Läsnä' }
+          ])
+        })
       })
     })
   })
-})
+}

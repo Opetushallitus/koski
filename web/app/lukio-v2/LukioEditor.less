@@ -17,6 +17,13 @@
     font-size: 0.9em;
   }
 
+  // Vanhassa käyttöliittymässä "Lisää oppiaine" on taulukon oma rivi
+  // (style/lukio.less: "tr.uusi-oppiaine"); meillä se on taulukon jälkeinen
+  // erillinen Select, joka ilman väliä roikkuu kiinni taulukon alareunassa.
+  [data-testid$='uusi-oppiaine'] {
+    margin-top: 5px;
+  }
+
   .kurssit-yhteensä {
     text-align: right;
     font-size: 0.9em;
@@ -36,7 +43,7 @@
 
     th,
     td {
-      padding: 4px 6px;
+      padding: 8px 10px;
       text-align: left;
     }
 
@@ -63,6 +70,19 @@
   &__tila {
     width: 2.5 * @baseline;
     text-align: center;
+
+    // Jaettu Icon-komponentti on oletuksena sininen (@color-blue, käytetään
+    // mm. toimintopainikkeissa), mutta vanhassa käyttöliittymässä
+    // suoritustilan merkki (valmis/kesken) on musta.
+    .Icon {
+      color: @color-black;
+    }
+  }
+
+  // Oppiaineen nimi on vanhassa käyttöliittymässä harmaa (@color-label),
+  // kuten .title .nimi (style/lukio.less).
+  &__nimi {
+    color: @color-label;
   }
 
   &__laajuus,
@@ -78,27 +98,79 @@
     width: 70px;
   }
 
+  // Vanhassa käyttöliittymässä oppiaineen poistolinkki ("×") kelluu
+  // taulukon oikealla puolella valkoisella taustalla, harmaan "laatikon"
+  // ulkopuolella - ei omana harmaana solunaan kuten muut sarakkeet.
+  // Ylikirjoitetaan tässä taulukon yleinen "td { background:
+  // @color-neutral-gray }" vain tälle sarakkeelle.
+  &__poisto {
+    width: 2.5 * @baseline;
+    text-align: center;
+    background: @color-white !important;
+  }
+
   .kurssit {
     display: block;
+
+    // Kurssikoodi on vanhassa käyttöliittymässä sininen "tunniste"-painike
+    // (kurssi/KurssiEditor.jsx); meillä pelkkä teksti, joten väri lisätään
+    // tässä.
+    .tunniste {
+      color: @color-link-blue;
+    }
+
+    // Vanhassa käyttöliittymässä poistolinkki on pelkkä pieni "×"-merkki
+    // heti tunnisteen vieressä (style/kurssi.less: "a.remove-value"), ei
+    // oma riittävän suuri kosketuskohde kuten jaetun IconButtonin
+    // pienikin koko (size="input" = 30x30px). Pienennetään ja tiivistetään
+    // vain tässä, jotta kurssi säilyy yhtä kompaktina kuin vanhassa
+    // käyttöliittymässä - ei muuteta IconButtonia itseään, koska muut
+    // käyttöpaikat nojaavat sen tavalliseen kokoon.
+    .kurssi .IconButton {
+      width: 18px;
+      height: 18px;
+      min-width: 18px;
+      vertical-align: middle;
+      margin-left: -2px;
+
+      .Icon {
+        font-size: 11px;
+      }
+    }
+
+    // style/kurssi.less:n ".kurssi { display: inline-block }" tekee
+    // kursseista vierekkäisiä vain, jos niiden sisältö on kapeaa - vanhassa
+    // käyttöliittymässä arvosanan pudotusvalikko on rajattu 62px:iin
+    // (".arvosana .dropdown { width: 62px !important }"). Uuden Selectin
+    // oletusleveys on 100% omasta sisältölohkostaan, joka venyy tässä koko
+    // taulukkosolun levyiseksi - rajataan samaan tapaan, jotta kurssit
+    // mahtuvat vierekkäin pystyyn pinoutumisen sijaan.
+    .arvosana .Select {
+      width: 70px;
+    }
   }
 }
 
-// Lukion oppimäärää täydentävien oman äidinkielen opintojen osasuoritukset -
-// sama taulukkoratkaisu kuin yllä .LukionOppiaineet__taulukossa, mutta
-// väreiltään päinvastoin: otsikkorivi on harmaa, data-rivit valkoisia -
-// kuten vanhassa käyttöliittymässä tämän taulukon kohdalla. Oma lohko
-// KeyValueTablen nimi/arvo-ruudukon ulkopuolella (ks. LukionSuorituksenTiedot
-// .tsx:n OmanÄidinkielenOpinnotRow), jotta taulukolla on käytössään koko
-// "Lukion oppimäärää täydentävät oman äidinkielen opinnot" -rivin arvosarake
-// eikä vain sisäkkäisen KeyValueRow'n kaventama 16/24-osa siitä.
-.LukionOmanÄidinkielenOpinnot__osasuorituksetLohko {
-  margin-top: (@baseline / 2);
+// Lukion oppimäärää täydentävien oman äidinkielen opintojen tietokenttien
+// (Arvosana/Arviointipäivä/Kieli/Laajuus/Osasuoritukset) rakenne: oikea
+// <table>, ei KeyValueTable - ks. LukionSuorituksenTiedot.tsx:n
+// OmanÄidinkielenOpinnotRow:n kommentti. table-layout: auto (ei fixed)
+// jättää nimisarakkeen mitoittumaan sisällön (max-content) mukaan, kuten
+// vanhassa käyttöliittymässä.
+.LukionOmanÄidinkielenOpinnot__tiedot {
+  table-layout: auto;
+  border-collapse: collapse;
+
+  td {
+    padding: 2px 0;
+    vertical-align: top;
+  }
 }
 
-.LukionOmanÄidinkielenOpinnot__otsikko {
-  display: block;
+.LukionOmanÄidinkielenOpinnot__tietoLabel {
+  padding-right: 10px;
+  white-space: nowrap;
   color: @color-label;
-  margin-bottom: 4px;
 }
 
 .LukionOmanÄidinkielenOpinnot__osasuoritukset {
@@ -122,13 +194,42 @@
 }
 
 .LukionOmanÄidinkielenOpinnot__kurssi {
-  width: 50%;
+  width: 40%;
 }
 
 .LukionOmanÄidinkielenOpinnot__suorituskieli {
-  width: 20%;
+  width: 28%;
 }
 
 .LukionOmanÄidinkielenOpinnot__arviointi {
-  width: 30%;
+  width: 24%;
+}
+
+.LukionOmanÄidinkielenOpinnot__poisto {
+  width: 8%;
+}
+
+// components-v2/controls/Select.less:n yleissääntö
+// (".KeyValueTable .Select { max-width: 300px; }") rajaa jokaisen
+// KeyValueTablen sisällä olevan Selectin 300px leveyteen - sopii useimmille
+// lyhyille koodistoarvoille, mutta opetussuunnitelman/perusteen koodisto-
+// tekstit ovat poikkeuksellisen pitkiä ("Lukio suoritetaan nuorten
+// opetussuunnitelman mukaan", "OPH-2263-2019 Lukion opetussuunnitelman
+// perusteet 2019") ja leikkautuivat näkyvistä. Ylikirjoitetaan vain näille
+// kahdelle kentälle testid-pohjaisella valitsimella, ei muuteta yleissääntöä
+// - sillä voi olla tarkoituksellisia syitä muualla sovelluksessa.
+[data-testid$='oppimäärä.edit'] .Select,
+[data-testid$='peruste.edit'] .Select {
+  max-width: 600px;
+}
+
+// Oppiaineen kieliaineen kieli (esim. "Ruotsi toisena kielenä ja
+// kirjallisuus", pisin koodistoarvo 38 merkkiä) ja oppiaineen oma
+// suorituskieli eivät ole KeyValueTablen sisällä kuten muut kentät - ne ovat
+// LukionOppiaineet__oppiaine-solun suorassa sisällössä, joten yllä mainittu
+// yleisraja (300px) ei koske niitä, ja Select venyy koko solun levyiseksi.
+// Vanhassa käyttöliittymässä kieli näkyy pelkkänä kompaktina linkkitekstinä
+// ja suorituskieli-pudotusvalikko on kapea - rajataan tässä samaan tapaan.
+[data-testid$='kieli.edit'] .Select {
+  max-width: 340px;
 }

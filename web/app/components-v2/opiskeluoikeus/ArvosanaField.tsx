@@ -51,6 +51,20 @@ export const ParasArvosanaView = <T extends Arviointi>(
   return paras ? <ArvosanaView {...props} value={paras} /> : null
 }
 
+// Näyttää vain parhaan arvioinnin koodiarvon, ei nimeä - esim.
+// lukio-v2:n oppiaine-/kurssitauluissa, joissa arvosanalle on vain kapea
+// sarake.
+export const ParasArvosanaKoodiarvoView = <T extends Arviointi>(
+  props: ParasArvosanaViewProps<T>
+) => {
+  const paras = props.value !== undefined && parasArviointi(props.value)
+  return (
+    <TestIdText id="arvosana.value">
+      {paras ? paras.arvosana.koodiarvo : ''}
+    </TestIdText>
+  )
+}
+
 export const ParasArvosanaPäiväView = <T extends Arviointi>(
   props: ParasArvosanaViewProps<T>
 ) => {
