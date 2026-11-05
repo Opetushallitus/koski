@@ -27,7 +27,6 @@ object MuunKuinSäännellynKoulutuksenValidation {
   private def validateOsasuoritustenArvioinnit(oo: MuunKuinSäännellynKoulutuksenOpiskeluoikeus): HttpStatus = {
     val viimeisinTila = oo.tila.opiskeluoikeusjaksot.lastOption.map(_.tila.koodiarvo)
     val arvioimattomienOsasuoritustenTunnisteet = oo.suoritukset
-      .filter(_.vahvistettu)
       .flatMap(arviointiaVaativatOsasuoritukset(_, viimeisinTila))
       .filterNot(_.arvioitu)
       .map(_.koulutusmoduuli.tunniste)
@@ -46,7 +45,8 @@ object MuunKuinSäännellynKoulutuksenValidation {
     case Some("keskeytynyt") => suoritus.osasuoritusLista.flatMap(osasuoritus =>
       if (osasuoritus.osasuoritusLista.isEmpty) List(osasuoritus) else osasuoritus.rekursiivisetOsasuoritukset
     )
-    case _ => suoritus.rekursiivisetOsasuoritukset
+    case _ if suoritus.vahvistettu => suoritus.rekursiivisetOsasuoritukset
+    case _ => Nil
   }
 
   private def validateOsasuoritustenArviointipäivät(oo: MuunKuinSäännellynKoulutuksenOpiskeluoikeus): HttpStatus = {
