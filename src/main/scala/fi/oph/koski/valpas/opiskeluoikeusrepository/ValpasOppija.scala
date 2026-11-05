@@ -413,7 +413,7 @@ object ValpasHakutilanneLaajatTiedot {
       hakuNimi = hakukooste.hakuNimi.toLocalizedString,
       hakemusOid = hakukooste.hakemusOid,
       hakemusUrl = hakukooste.hakemusUrl,
-      aktiivinenHaku = hakukooste.aktiivinenHaku.getOrElse(true),
+      aktiivinenHaku = hakukooste.aktiivinenHaku.contains(true),
       hakuAlkaa = hakukooste.haunAlkamispaivamaara,
       muokattu = hakukooste.hakemuksenMuokkauksenAikaleima,
       hakutoiveet = hakukooste.hakutoiveet.sortBy(_.hakutoivenumero).map(ValpasHakutoive.apply),
