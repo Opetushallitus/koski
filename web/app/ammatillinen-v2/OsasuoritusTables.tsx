@@ -753,14 +753,20 @@ const newMuuOsaToisestaTutkinnosta = (
       tunniste: osa,
       pakollinen: false
     }),
-    tutkinto: AmmatillinenTutkintoKoulutus({
-      tunniste: Koodistokoodiviite({
-        koodiarvo: tutkinto.tutkintoKoodi,
-        koodistoUri: 'koulutus'
-      }),
-      perusteenDiaarinumero: tutkinto.diaarinumero,
-      perusteenNimi: tutkinto.nimi
-    }),
+    // Backend hylkää osalle merkityn tutkinnon, jos se on sama kuin suorituksen
+    // oma tutkinto.
+    tutkinto:
+      tutkinto.diaarinumero ===
+      päätasonSuoritus.koulutusmoduuli.perusteenDiaarinumero
+        ? undefined
+        : AmmatillinenTutkintoKoulutus({
+            tunniste: Koodistokoodiviite({
+              koodiarvo: tutkinto.tutkintoKoodi,
+              koodistoUri: 'koulutus'
+            }),
+            perusteenDiaarinumero: tutkinto.diaarinumero,
+            perusteenNimi: tutkinto.nimi
+          }),
     tutkinnonOsanRyhmä: ryhmä
   })
 }

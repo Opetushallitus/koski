@@ -423,6 +423,45 @@ test.describe('Ammatillisen tutkinnon uusi käyttöliittymä', () => {
       ).toHaveText('Autoalan perustutkinto')
     })
 
+    test('Tutkinnon osan lisääminen toisesta tutkinnosta, kun tutkinto on suorituksen oma', async ({
+      page,
+      oppijaPage,
+      oppijaPageV2
+    }) => {
+      await oppijaPage.goto(amis)
+      await page.getByTestId('oo.0.opiskeluoikeus.edit').click()
+
+      await page
+        .getByRole('button', {
+          name: 'Lisää tutkinnon osa toisesta tutkinnosta'
+        })
+        .nth(1)
+        .click()
+      await suoritus(page, 'modal.tutkinto.input').fill('luonto')
+      await suoritus(
+        page,
+        'modal.tutkinto.options.361902_62/011/2014.item'
+      ).click()
+      await suoritus(
+        page,
+        'modal.uusi-muu-tutkinnonosa-toisesta-tutkinnosta.input'
+      ).click()
+      await suoritus(
+        page,
+        'modal.uusi-muu-tutkinnonosa-toisesta-tutkinnosta.options.100431.item'
+      ).click()
+      await page
+        .locator('.Modal')
+        .getByRole('button', { name: 'Lisää' })
+        .last()
+        .click()
+
+      await oppijaPageV2.tallenna()
+      await expect(
+        osanNimi(page, 'Kestävällä tavalla toimiminen').last()
+      ).toBeVisible()
+    })
+
     test('Näytön kuvauksen tyhjentäminen poistaa kuvauksen', async ({
       page,
       oppijaPage,
