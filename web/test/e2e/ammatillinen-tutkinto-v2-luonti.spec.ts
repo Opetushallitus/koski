@@ -95,8 +95,11 @@ test.describe('Ammatillisen tutkinnon uusi käyttöliittymä: opiskeluoikeuden l
       await expect(suoritus(page, 'koulutus')).toHaveText(
         'Autoalan perustutkinto'
       )
+      await expect(page.getByTestId('oo.0.suoritusTabs.0.tab')).toHaveText(
+        'Autoalan perustutkinto'
+      )
       await expect(page.getByTestId('oo.0.opiskeluoikeus.nimi')).toContainText(
-        'Stadin ammatti- ja aikuisopisto,'
+        'Stadin ammatti- ja aikuisopisto, autoalan perustutkinto'
       )
       await expect(suoritus(page, 'suorituskieli.value')).toHaveText('suomi')
     })

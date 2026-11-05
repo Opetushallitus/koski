@@ -142,16 +142,23 @@ const AmmatillinenEditor: React.FC<AmmatillinenEditorProps> = (props) => {
   )
 }
 
+// Koodiston nimi voi poiketa perusteen nimestä, joten perusteen nimi on ensisijainen
+// kuten koulutusrivillä ja vanhassa käyttöliittymässä.
+const koulutuksenNimi = (
+  koulutusmoduuli: AmmatillinenPäätasonSuoritus['koulutusmoduuli']
+): LocalizedString | undefined =>
+  ('perusteenNimi' in koulutusmoduuli && koulutusmoduuli.perusteenNimi) ||
+  koulutusmoduuli.tunniste.nimi
+
 const suorituksenNimi = (oo: AmmatillinenOpiskeluoikeus): string => {
+  const nimi = t(koulutuksenNimi(oo.suoritukset[0].koulutusmoduuli))
   if (
     oo.suoritukset[0].tyyppi.koodiarvo === 'ammatillinentutkintoosittainen' &&
     oo.suoritukset[0].koulutusmoduuli.tunniste.koodiarvo !==
       'ammatillinentutkintoosittainenuseastatutkinnosta'
   ) {
-    return (
-      t(oo.suoritukset[0].koulutusmoduuli.tunniste.nimi) + t(', osittainen')
-    )
-  } else return t(oo.suoritukset[0].koulutusmoduuli.tunniste.nimi)
+    return nimi + t(', osittainen')
+  } else return nimi
 }
 
 const AmmatillinenPäätasonSuoritusEditor: React.FC<
@@ -809,7 +816,7 @@ const päätasonSuorituksenNimi = (
 ): LocalizedString =>
   isAmmatillisenTutkinnonOsittainenSuoritus(suoritus)
     ? suoritus.tyyppi.nimi || localize(suoritus.tyyppi.koodiarvo)
-    : suoritus.koulutusmoduuli.tunniste.nimi ||
+    : koulutuksenNimi(suoritus.koulutusmoduuli) ||
       localize(suoritus.koulutusmoduuli.tunniste.koodiarvo)
 
 const keskiarvoFormatter = new Intl.NumberFormat('fi-FI', {

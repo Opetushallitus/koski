@@ -882,6 +882,12 @@ test.describe('Ammatillisen tutkinnon uusi käyttöliittymä: tietojen katselu',
       await expect(suoritus(page, 'koulutus')).toHaveText(
         'Tieto- ja viestintätekniikan perustutkinto, koulutusvientikokeilu'
       )
+      await expect(page.getByTestId('oo.0.suoritusTabs.0.tab')).toHaveText(
+        'Tieto- ja viestintätekniikan perustutkinto, koulutusvientikokeilu'
+      )
+      await expect(page.getByTestId('oo.0.opiskeluoikeus.nimi')).toContainText(
+        'tieto- ja viestintätekniikan perustutkinto, koulutusvientikokeilu'
+      )
       await expect(page.locator('.AmmatillinenTutkinto')).toContainText(
         '341101'
       )
