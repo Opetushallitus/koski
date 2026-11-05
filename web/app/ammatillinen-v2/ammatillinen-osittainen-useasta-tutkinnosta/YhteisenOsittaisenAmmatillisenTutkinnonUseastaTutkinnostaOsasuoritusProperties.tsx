@@ -65,6 +65,7 @@ import { useTutkinnonOsanOsat } from '../useTutkinnonOsanOsat'
 import { AmmatillisenTutkinnonOsittainenSuoritus } from '../../types/fi/oph/koski/schema/AmmatillisenTutkinnonOsittainenSuoritus'
 import { YhteisenOsittaisenAmmatillisenTutkinnonTutkinnonosanUseastaTutkinnostaSuoritus } from '../../types/fi/oph/koski/schema/YhteisenOsittaisenAmmatillisenTutkinnonTutkinnonosanUseastaTutkinnostaSuoritus'
 import { PerusteView } from '../../components-v2/opiskeluoikeus/PerusteField'
+import { KoulutuksenKoodiarvo } from '../KoulutuksenKoodiarvo'
 
 type YhteisenAmmatillisenTutkinnonOsasuoritusUseastaTutkinnostaPropertiesProps =
   {
@@ -149,7 +150,9 @@ export const YhteisenOsittaisenAmmatillisenTutkinnonUseastaTutkinnostaOsasuoritu
                     osasuoritus.tutkinto.tunniste.nimi
                 )}
               </TestIdText>
-              <span>{osasuoritus.tutkinto.tunniste.koodiarvo}</span>
+              <KoulutuksenKoodiarvo
+                koodiarvo={osasuoritus.tutkinto.tunniste.koodiarvo}
+              />
               <FormField
                 form={form}
                 path={osasuoritusPath

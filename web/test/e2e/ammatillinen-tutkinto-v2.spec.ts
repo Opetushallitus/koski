@@ -262,6 +262,13 @@ test.describe('Ammatillisen tutkinnon uusi käyttöliittymä', () => {
   })
 
   test.describe('Virkailijalle näytettävät tiedot', () => {
+    test('Koulutuksen koodiarvo näytetään', async ({ page, oppijaPage }) => {
+      await oppijaPage.goto(ammattilainen)
+      await expect(page.locator('.AmmatillinenTutkinto')).toContainText(
+        '361902'
+      )
+    })
+
     test('Ostettu-tieto näytetään', async ({ page, oppijaPage }) => {
       await oppijaPage.goto(ostettu)
       await expect(page.getByText('Ostettu', { exact: true })).toBeVisible()
@@ -721,6 +728,9 @@ test.describe('Ammatillisen tutkinnon uusi käyttöliittymä kansalaiselle', () 
     )
     await expect(suoritus(page, 'yhteensa.1')).toHaveText('135 / 135 osp')
     await expect(page.getByTestId('oo.0.opiskeluoikeus.edit')).toHaveCount(0)
+    await expect(page.locator('.AmmatillinenTutkinto')).not.toContainText(
+      '361902'
+    )
   })
 
   test.describe('Ostettu koulutus', () => {

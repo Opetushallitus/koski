@@ -58,6 +58,7 @@ import {
   LocalizedTextView
 } from '../components-v2/controls/LocalizedTestField'
 import { PerusteView } from '../components-v2/opiskeluoikeus/PerusteField'
+import { KoulutuksenKoodiarvo } from './KoulutuksenKoodiarvo'
 
 type MuunTutkinnonOsanSuoritusPropertiesProps = {
   form: FormModel<AmmatillinenOpiskeluoikeus>
@@ -97,7 +98,9 @@ export const MuunTutkinnonOsanSuoritusProperties = ({
                     osasuoritus.tutkinto.tunniste.nimi
                 )}
               </TestIdText>
-              <span>{osasuoritus.tutkinto.tunniste.koodiarvo}</span>
+              <KoulutuksenKoodiarvo
+                koodiarvo={osasuoritus.tutkinto.tunniste.koodiarvo}
+              />
               <FormField
                 form={form}
                 path={osasuoritusPath

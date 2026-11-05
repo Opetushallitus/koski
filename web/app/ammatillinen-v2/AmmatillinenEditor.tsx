@@ -120,6 +120,7 @@ import { SisältyyOpiskeluoikeuteen } from './SisältyyOpiskeluoikeuteen'
 import { AmmatillinenArviointiasteikko } from './AmmatillinenArviointiasteikko'
 import { isAmmatillisenTutkinnonOsittainenUseastaTutkinnostaSuoritus } from '../types/fi/oph/koski/schema/AmmatillisenTutkinnonOsittainenUseastaTutkinnostaSuoritus'
 import { AmmatillinenTutkintoOsittainenUseastaTutkinnostaEditor } from './ammatillinen-osittainen-useasta-tutkinnosta/AmmatillinenTutkintoOsittainenUseastaTutkinnostaEditor'
+import { KoulutuksenKoodiarvo } from './KoulutuksenKoodiarvo'
 
 export type AmmatillinenEditorProps =
   AdaptedOpiskeluoikeusEditorProps<AmmatillinenOpiskeluoikeus>
@@ -235,7 +236,9 @@ const AmmatillisenPäätasonSuorituksenTiedot: React.FC<{
                   tutkinto.suoritus.koulutusmoduuli.tunniste.nimi
               )}
             </TestIdText>
-            <span>{tutkinto.suoritus.koulutusmoduuli.tunniste.koodiarvo}</span>
+            <KoulutuksenKoodiarvo
+              koodiarvo={tutkinto.suoritus.koulutusmoduuli.tunniste.koodiarvo}
+            />
             <FormField
               form={form}
               path={tutkinto.path
@@ -262,7 +265,9 @@ const AmmatillisenPäätasonSuorituksenTiedot: React.FC<{
                   valmistava.suoritus.tutkinto.tunniste.nimi
               )}
             </TestIdText>
-            <span>{valmistava.suoritus.tutkinto.tunniste.koodiarvo}</span>
+            <KoulutuksenKoodiarvo
+              koodiarvo={valmistava.suoritus.tutkinto.tunniste.koodiarvo}
+            />
             <FormField
               form={form}
               path={valmistava.path
