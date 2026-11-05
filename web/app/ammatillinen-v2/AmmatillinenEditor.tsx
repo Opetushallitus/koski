@@ -257,6 +257,7 @@ const AmmatillisenPäätasonSuorituksenTiedot: React.FC<{
                 .prop('koulutusmoduuli')
                 .prop('perusteenDiaarinumero')}
               view={PerusteView}
+              viewProps={{ päättymispäivä: form.state.päättymispäivä }}
             />
           </span>
         </KeyValueRow>
@@ -286,6 +287,7 @@ const AmmatillisenPäätasonSuorituksenTiedot: React.FC<{
                 .prop('tutkinto')
                 .prop('perusteenDiaarinumero')}
               view={PerusteView}
+              viewProps={{ päättymispäivä: form.state.päättymispäivä }}
             />
           </span>
         </KeyValueRow>

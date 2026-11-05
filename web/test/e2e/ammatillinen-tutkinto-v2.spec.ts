@@ -290,6 +290,39 @@ test.describe('Ammatillisen tutkinnon uusi käyttöliittymä', () => {
     })
   })
 
+  test.describe('Perusteen linkki', () => {
+    const perusteLinkki = (page: Page) =>
+      page.locator('.AmmatillinenTutkinto a').first()
+
+    test('Keskeneräisestä opiskeluoikeudesta linkitetään uusimpaan perusteeseen uudessa välilehdessä', async ({
+      page,
+      oppijaPage
+    }) => {
+      await oppijaPage.goto(reformi)
+      // -1 on testidatassa tarkoituksellinen epävalidi id
+      await expect(perusteLinkki(page)).toHaveAttribute('href', /-1/)
+      await expect(perusteLinkki(page)).toHaveAttribute('target', '_blank')
+    })
+
+    test('Päättyneestä opiskeluoikeudesta linkitetään päättymispäivänä voimassa olleeseen perusteeseen', async ({
+      page,
+      oppijaPage,
+      fixtures
+    }) => {
+      await fixtures.muokkaaOpiskeluoikeutta(reformi, (oo) => {
+        oo.tila.opiskeluoikeusjaksot.push({
+          alku: '2018-12-31',
+          tila: {
+            koodiarvo: 'katsotaaneronneeksi',
+            koodistoUri: 'koskiopiskeluoikeudentila'
+          }
+        })
+      })
+      await oppijaPage.goto(reformi)
+      await expect(perusteLinkki(page)).toHaveAttribute('href', /2434073/)
+    })
+  })
+
   test.describe('Muokkaus', () => {
     test('Uuden tilan valinnoissa ei ole eronnut-tilaa', async ({
       page,

@@ -108,6 +108,7 @@ export const MuunTutkinnonOsanSuoritusProperties = ({
                   .optional()
                   .prop('perusteenDiaarinumero')}
                 view={PerusteView}
+                viewProps={{ päättymispäivä: form.state.päättymispäivä }}
               />
             </span>
           </OsasuoritusPropertyValue>

@@ -196,14 +196,16 @@ export interface Perustelinkki {
   url: string
 }
 
-export const fetchPerustelinkki = (diaarinumero: string) =>
+export const fetchPerustelinkki = (
+  diaarinumero: string,
+  päättymispäivä?: string
+) =>
   handleExpiredSession(
     apiGet<Perustelinkki>(
-      apiUrl(
-        `tutkinnonperusteet/peruste/${diaarinumero}/linkki?lang=${encodeURIComponent(
-          lang
-        )}`
-      )
+      apiUrl(`tutkinnonperusteet/peruste/${diaarinumero}/linkki`, {
+        lang,
+        päättymispäivä
+      })
     )
   )
 

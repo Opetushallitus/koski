@@ -165,6 +165,7 @@ export const MuunOsittaisenAmmatillisenTutkinnonUseastaTutkinnostaTutkinnonosanS
                   .prop('tutkinto')
                   .prop('perusteenDiaarinumero')}
                 view={PerusteView}
+                viewProps={{ päättymispäivä: form.state.päättymispäivä }}
               />
             </span>
           </OsasuoritusPropertyValue>

@@ -19,14 +19,17 @@ import { FieldEditorProps, FieldViewerProps } from '../forms/FormField'
 import { Trans } from '../texts/Trans'
 
 type PerusteViewProps = CommonProps<
-  FieldViewerProps<string | undefined, EmptyObject>
+  FieldViewerProps<string | undefined, { päättymispäivä?: string }>
 >
 
 export const PerusteView: React.FC<PerusteViewProps> = (props) => {
   const { TreeNode, ...tree } = useTree()
 
   return props.value ? (
-    <PerusteViewLink diaarinumero={props.value} />
+    <PerusteViewLink
+      diaarinumero={props.value}
+      päättymispäivä={props.päättymispäivä}
+    />
   ) : (
     <TestIdText id="peruste.value">{'-'}</TestIdText>
   )
@@ -34,14 +37,17 @@ export const PerusteView: React.FC<PerusteViewProps> = (props) => {
 
 const cache = createPreferLocalCache(fetchPerustelinkki)
 
-export const PerusteViewLink: React.FC<{ diaarinumero: string }> = ({
-  diaarinumero
-}) => {
+// Päättyneeltä opiskeluoikeudelta linkitetään päättymispäivänä voimassa olleeseen
+// perusteeseen.
+export const PerusteViewLink: React.FC<{
+  diaarinumero: string
+  päättymispäivä?: string
+}> = ({ diaarinumero, päättymispäivä }) => {
   const { TreeNode, ...tree } = useTree()
 
   const perustelinkkiResponse = useApiWithParams(
     fetchPerustelinkki,
-    [diaarinumero],
+    [diaarinumero, päättymispäivä],
     cache
   )
 
@@ -58,7 +64,7 @@ export const PerusteViewLink: React.FC<{ diaarinumero: string }> = ({
       ))}
       {mapSuccess(perustelinkkiResponse, (responseData: Perustelinkki) => (
         <>
-          <a href={responseData.url}>
+          <a href={responseData.url} target="_blank" rel="noopener noreferrer">
             <TestIdText id="peruste.value">{diaarinumero}</TestIdText>
           </a>
         </>
