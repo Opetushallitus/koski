@@ -328,6 +328,15 @@ class MassaluovutusRaportitSpec extends AnyFreeSpec with MassaluovutusTestMethod
       verifyAinoaAuditlokimerkintä("esiopetus", "2012-01-01", List(MockOrganisaatiot.jyväskylänNormaalikoulu))
     }
 
+    "Toisen käyttäjän tulostiedostoa ei voi ladata OPH:n käyttäjä, joka ei saisi tehdä samaa kyselyä" in {
+      val queryId = addQuerySuccessfully(query, MockUsers.jyväskylänNormaalikoulunPalvelukäyttäjä)(_.queryId)
+      val tiedosto = waitForCompletion(queryId, MockUsers.jyväskylänNormaalikoulunPalvelukäyttäjä).files.head
+      getResult(tiedosto, MockUsers.ophLukioKatselija) {
+        verifyResponseStatus(404, KoskiErrorCategory.notFound())
+      }
+      verifyResult(tiedosto, MockUsers.ophkatselija)
+    }
+
     "Ostopalvelu/palveluseteli-kysely onnistuu ja kirjaa auditlokiin ostopalveluyksiköt" in {
       AuditLogTester.clearMessages()
       val ostopalvelukysely = query.copy(

@@ -179,6 +179,47 @@ class MassaluovutusRaportitKayttooikeusSpec extends AnyFreeSpec with Massaluovut
     }
   }
 
+  "Toisen käyttäjän raporttikysely" - {
+    "ei näy saman organisaation käyttäjälle, vaikka tämä saisi tehdä saman kyselyn" in {
+      withoutRunningQueryScheduler {
+        val queryId = addQuerySuccessfully(esiopetus, MockUsers.jyväskylänNormaalikoulunPalvelukäyttäjä)(_.queryId)
+        getQuery(queryId, MockUsers.jyväskylänKatselijaEsiopetus) {
+          verifyResponseStatus(404, KoskiErrorCategory.notFound())
+        }
+        addQuerySuccessfully(esiopetus, MockUsers.jyväskylänKatselijaEsiopetus)(_.queryId) should not equal queryId
+      }
+    }
+
+    "näkyy OPH:n käyttäjälle, joka saisi tehdä saman kyselyn" in {
+      withoutRunningQueryScheduler {
+        val queryId = addQuerySuccessfully(esiopetus, MockUsers.jyväskylänNormaalikoulunPalvelukäyttäjä)(_.queryId)
+        getQuery(queryId, MockUsers.ophkatselija) {
+          verifyResponseStatusOk()
+        }
+        addQuerySuccessfully(esiopetus, MockUsers.ophkatselija)(_.queryId) should equal(queryId)
+      }
+    }
+
+    "ei näy OPH:n käyttäjälle, joka ei saisi tehdä samaa kyselyä" - {
+      "koulutusmuotoihin rajatuilla oikeuksilla" in {
+        eiNäyToiselleKäyttäjälle(esiopetus, MockUsers.ophLukioKatselija)
+      }
+
+      "ilman luottamuksellisten tietojen oikeutta" in {
+        eiNäyToiselleKäyttäjälle(esiopetus, MockUsers.viranomainen)
+      }
+    }
+  }
+
+  private def eiNäyToiselleKäyttäjälle(query: MassaluovutusQueryParameters, user: UserWithPassword): Unit =
+    withoutRunningQueryScheduler {
+      val queryId = addQuerySuccessfully(query, MockUsers.jyväskylänNormaalikoulunPalvelukäyttäjä)(_.queryId)
+      getQuery(queryId, user) {
+        verifyResponseStatus(404, KoskiErrorCategory.notFound())
+      }
+      raporttikyselyEstetään(query, user)
+    }
+
   private def sallitutKyselyt(kyselyt: List[(String, MassaluovutusQueryParameters)], user: KoskiMockUser): List[String] = {
     val session = user.toKoskiSpecificSession(app.käyttöoikeusRepository)
     kyselyt.collect { case (nimi, kysely) if kysely.queryAllowed(app)(session) => nimi }

@@ -74,6 +74,10 @@ trait MassaluovutusRaporttiBase[Self <: MassaluovutusRaporttiBase[Self]]
   private def ostopalveluvalinta(application: KoskiApplication): Boolean =
     organisaatioOid.contains(application.organisaatioService.ostopalveluRootOid)
 
+  // OPH:n käyttäjä näkee toisen käyttäjän raporttikyselyn vain, jos saisi tehdä saman kyselyn itse
+  override def additionalAccessCheckForOtherUsers(application: KoskiApplication)(implicit user: Session): Boolean =
+    queryAllowed(application)
+
   // Common fillAndValidate implementation
   override def fillAndValidate(implicit user: Session): Either[HttpStatus, Self] =
     for {
