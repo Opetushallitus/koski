@@ -462,6 +462,23 @@ test.describe('Ammatillisen tutkinnon uusi käyttöliittymä', () => {
       ).toBeVisible()
     })
 
+    test('Lukio-opinnon lisääminen pelkällä nimellä, peruste esivalitaan', async ({
+      page,
+      oppijaPage,
+      oppijaPageV2
+    }) => {
+      await oppijaPage.goto(autonen)
+      await page.getByTestId('oo.0.opiskeluoikeus.edit').click()
+      await suoritus(page, 'osasuoritukset.4.expand').click()
+      await page.getByRole('button', { name: 'Lisää lukio-opinto' }).click()
+      await page.locator('.Modal input').first().fill('MAA4 Vektorit')
+      await page.locator('.Modal').getByRole('button', { name: 'Lisää' }).click()
+
+      await oppijaPageV2.tallenna()
+      await oppijaPageV2.openAllOsasuoritukset()
+      await expect(page.getByText('MAA4 Vektorit').first()).toBeVisible()
+    })
+
     test('Näytön kuvauksen tyhjentäminen poistaa kuvauksen', async ({
       page,
       oppijaPage,
