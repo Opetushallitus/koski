@@ -47,9 +47,12 @@ export const SisältyyOpiskeluoikeuteen: React.FC<
   const virkailija = useVirkailijaUser()
 
   return (
-    <KeyValueTable>
+    <KeyValueTable editMode={form.editMode}>
       {virkailija && (
-        <KeyValueRow localizableLabel={'Ostettu'}>
+        <KeyValueRow
+          localizableLabel={'Ostettu'}
+          hideIfEmpty={form.state.ostettu}
+        >
           <FormField
             form={form}
             view={BooleanView}

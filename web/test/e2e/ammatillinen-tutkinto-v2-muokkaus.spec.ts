@@ -216,9 +216,10 @@ test.describe('Ammatillisen tutkinnon uusi käyttöliittymä: tietojen muokkaus'
     }) => {
       await luoAmmatillinenTutkinto(page, uusiOppijaPage, eiKoskessa)
       const ostettu = rivi(page, 'Ostettu')
-      await expect(ostettu).not.toContainText('Kyllä')
+      await expect(ostettu).toHaveCount(0)
 
       await muokkaa(page)
+      await expect(ostettu).toBeVisible()
       await page.getByTestId('oo.0.opiskeluoikeus.bool.label').click()
       await oppijaPageV2.tallenna()
 
