@@ -3,11 +3,6 @@ import { getVirkailijaSession, kansalainen, virkailija } from './setup/auth'
 import { KoskiFixtures } from './fixtures/KoskiFixtures'
 import { Page } from '@playwright/test'
 
-// Ammatillinen tutkinto (koko tutkinto) renderöidään uudella käyttöliittymällä
-// toistaiseksi vain feature flagin kanssa, ks. useUiAdapter.
-const FEATURE_FLAG = 'ammatillinen-tutkinto-v2'
-const flag = { [FEATURE_FLAG]: 'true' }
-
 // Luonto- ja ympäristöalan perustutkinto, ops, valmis
 const ammattilainen = '1.2.246.562.24.00000000020'
 // Luonto- ja ympäristöalan perustutkinto, ops, kesken
@@ -36,22 +31,13 @@ test.describe('Ammatillisen tutkinnon uusi käyttöliittymä', () => {
     await fixtures.reset()
   })
 
-  test('Ilman feature flagia käytetään vanhaa käyttöliittymää', async ({
-    page,
-    oppijaPage
-  }) => {
-    await oppijaPage.goto(ammattilainen)
-    await expect(page.locator('.opiskeluoikeuden-tiedot')).toBeVisible()
-    await expect(page.getByTestId('oo.0.opiskeluoikeus.nimi')).toHaveCount(0)
-  })
-
   test.describe('Katselu', () => {
     test('Näyttää perustutkinnon tiedot, tutkinnon osat ja ryhmien laajuudet', async ({
       page,
       oppijaPage,
       oppijaPageV2
     }) => {
-      await oppijaPage.gotoWithQueryParams(ammattilainen, flag)
+      await oppijaPage.goto(ammattilainen)
 
       await expect(page.getByTestId('oo.0.opiskeluoikeus.nimi')).toContainText(
         'Stadin ammatti- ja aikuisopisto, luonto- ja ympäristöalan perustutkinto'
@@ -104,7 +90,7 @@ test.describe('Ammatillisen tutkinnon uusi käyttöliittymä', () => {
       oppijaPage,
       oppijaPageV2
     }) => {
-      await oppijaPage.gotoWithQueryParams(autonen, flag)
+      await oppijaPage.goto(autonen)
       await oppijaPageV2.openAllOsasuoritukset()
       await expect(
         page.locator('.OsasuoritusHeader--sisakkainen').first()
@@ -157,7 +143,7 @@ test.describe('Ammatillisen tutkinnon uusi käyttöliittymä', () => {
       page,
       oppijaPage
     }) => {
-      await oppijaPage.gotoWithQueryParams(amis, flag)
+      await oppijaPage.goto(amis)
 
       // Hojks ja osaamisala ilman päivämääriä: ei irrallisia viivoja
       const hojks = page.getByTestId(
@@ -181,7 +167,7 @@ test.describe('Ammatillisen tutkinnon uusi käyttöliittymä', () => {
       page,
       oppijaPage
     }) => {
-      await oppijaPage.gotoWithQueryParams(tunnustettu, flag)
+      await oppijaPage.goto(tunnustettu)
 
       await expect(suoritus(page, 'suoritustapa')).toHaveText('Näyttötutkinto')
       await expect(suoritus(page, 'yhteensa')).toHaveText('15 osp')
@@ -198,7 +184,7 @@ test.describe('Ammatillisen tutkinnon uusi käyttöliittymä', () => {
       oppijaPage,
       oppijaPageV2
     }) => {
-      await oppijaPage.gotoWithQueryParams(erikoinen, flag)
+      await oppijaPage.goto(erikoinen)
 
       await expect(page.getByTestId('oo.0.opiskeluoikeus.nimi')).toContainText(
         'Stadin ammatti- ja aikuisopisto, näyttötutkintoon valmistava koulutus'
@@ -245,7 +231,7 @@ test.describe('Ammatillisen tutkinnon uusi käyttöliittymä', () => {
       oppijaPage,
       oppijaPageV2
     }) => {
-      await oppijaPage.gotoWithQueryParams(ammattilainen, flag)
+      await oppijaPage.goto(ammattilainen)
       await oppijaPageV2.openAllOsasuoritukset()
       await expect(
         suoritus(
@@ -259,7 +245,7 @@ test.describe('Ammatillisen tutkinnon uusi käyttöliittymä', () => {
         osa.suorituskieli = { koodiarvo: 'SV', koodistoUri: 'kieli' }
         osa.alkamispäivä = '2014-09-01'
       })
-      await oppijaPage.gotoWithQueryParams(erikoinen, flag)
+      await oppijaPage.goto(erikoinen)
       await oppijaPageV2.openAllOsasuoritukset()
       await expect(
         suoritus(page, 'osasuoritukset.1.properties.suorituskieli.value')
@@ -276,7 +262,7 @@ test.describe('Ammatillisen tutkinnon uusi käyttöliittymä', () => {
       oppijaPage,
       oppijaPageV2
     }) => {
-      await oppijaPage.gotoWithQueryParams(amis, flag)
+      await oppijaPage.goto(amis)
       await expect(suoritus(page, 'yhteensa.1')).toHaveText('90 / 135 osp')
 
       await page.getByTestId('oo.0.opiskeluoikeus.edit').click()
@@ -303,7 +289,7 @@ test.describe('Ammatillisen tutkinnon uusi käyttöliittymä', () => {
       oppijaPage,
       oppijaPageV2
     }) => {
-      await oppijaPage.gotoWithQueryParams(amis, flag)
+      await oppijaPage.goto(amis)
       await page.getByTestId('oo.0.opiskeluoikeus.edit').click()
 
       await suoritus(page, 'uusi-yhteinen-tutkinnonosa.input').click()
@@ -336,7 +322,7 @@ test.describe('Ammatillisen tutkinnon uusi käyttöliittymä', () => {
       oppijaPage,
       oppijaPageV2
     }) => {
-      await oppijaPage.gotoWithQueryParams(amis, flag)
+      await oppijaPage.goto(amis)
       await page.getByTestId('oo.0.opiskeluoikeus.edit').click()
 
       // Painikkeet ovat ryhmien järjestyksessä: ammatilliset, vapaasti valittavat, ...
@@ -359,7 +345,7 @@ test.describe('Ammatillisen tutkinnon uusi käyttöliittymä', () => {
       oppijaPage,
       oppijaPageV2
     }) => {
-      await oppijaPage.gotoWithQueryParams(amis, flag)
+      await oppijaPage.goto(amis)
       await page.getByTestId('oo.0.opiskeluoikeus.edit').click()
 
       await page
@@ -396,7 +382,7 @@ test.describe('Ammatillisen tutkinnon uusi käyttöliittymä', () => {
       oppijaPage,
       oppijaPageV2
     }) => {
-      await oppijaPage.gotoWithQueryParams(ammattilainen, flag)
+      await oppijaPage.goto(ammattilainen)
       await page.getByTestId('oo.0.opiskeluoikeus.edit').click()
       await suoritus(page, 'osasuoritukset.1.expand').click()
       // Tyhjä kuvaus olisi palvelimelle virhe (emptyString), joten
@@ -422,7 +408,7 @@ test.describe('Ammatillisen tutkinnon uusi käyttöliittymä', () => {
       oppijaPage,
       oppijaPageV2
     }) => {
-      await oppijaPage.gotoWithQueryParams(amis, flag)
+      await oppijaPage.goto(amis)
       await page.getByTestId('oo.0.opiskeluoikeus.edit').click()
       await suoritus(page, 'osasuoritukset.0.expand').click()
       await suoritus(
@@ -446,7 +432,7 @@ test.describe('Ammatillisen tutkinnon uusi käyttöliittymä', () => {
       oppijaPageV2
     }) => {
       // Keskiarvon voi antaa vain valmiille suoritukselle
-      await oppijaPage.gotoWithQueryParams(ammattilainen, flag)
+      await oppijaPage.goto(ammattilainen)
       await page.getByTestId('oo.0.opiskeluoikeus.edit').click()
       await suoritus(page, 'painotettu-keskiarvo.edit.input').fill('3.5')
 
@@ -460,7 +446,7 @@ test.describe('Ammatillisen tutkinnon uusi käyttöliittymä', () => {
       page,
       oppijaPage
     }) => {
-      await oppijaPage.gotoWithQueryParams(amis, flag)
+      await oppijaPage.goto(amis)
       await page.getByTestId('oo.0.opiskeluoikeus.edit').click()
       await suoritus(page, '0.osaamisala.input').click()
 
@@ -480,7 +466,7 @@ test.describe('Ammatillisen tutkinnon uusi käyttöliittymä', () => {
       oppijaPage,
       oppijaPageV2
     }) => {
-      await oppijaPage.gotoWithQueryParams(reformi, flag)
+      await oppijaPage.goto(reformi)
       await page.getByTestId('oo.0.opiskeluoikeus.edit').click()
 
       // Korkeakouluopintoja ja jatko-opintovalmiuksia tukevia opintoja voi
@@ -500,7 +486,7 @@ test.describe('Ammatillisen tutkinnon uusi käyttöliittymä', () => {
       oppijaPage,
       oppijaPageV2
     }) => {
-      await oppijaPage.gotoWithQueryParams(autonen, flag)
+      await oppijaPage.goto(autonen)
       await expect(suoritus(page, 'osasuoritukset.0.laajuus.value')).toHaveText(
         '–'
       )
@@ -525,7 +511,7 @@ test.describe('Ammatillisen tutkinnon uusi käyttöliittymä', () => {
       oppijaPage,
       oppijaPageV2
     }) => {
-      await oppijaPage.gotoWithQueryParams(autonen, flag)
+      await oppijaPage.goto(autonen)
       await expect(suoritus(page, 'yhteensa.1')).toHaveText('11 / 145 osp')
       await page.getByTestId('oo.0.opiskeluoikeus.edit').click()
 
@@ -558,7 +544,7 @@ test.describe('Ammatillisen tutkinnon uusi käyttöliittymä', () => {
       oppijaPage,
       oppijaPageV2
     }) => {
-      await oppijaPage.gotoWithQueryParams(erikoinen, flag)
+      await oppijaPage.goto(erikoinen)
       await page.getByTestId('oo.0.opiskeluoikeus.edit').click()
 
       await suoritus(page, 'uusi-muu-tutkinnonosa.input').click()
@@ -602,7 +588,7 @@ test.describe('Ammatillisen tutkinnon uusi käyttöliittymä', () => {
       oppijaPage,
       oppijaPageV2
     }) => {
-      await oppijaPage.gotoWithQueryParams(tunnustettu, flag)
+      await oppijaPage.goto(tunnustettu)
       await page.getByTestId('oo.0.opiskeluoikeus.edit').click()
 
       await page
@@ -638,7 +624,7 @@ test.describe('Ammatillisen tutkinnon uusi käyttöliittymä', () => {
         })
       ).toHaveCount(0)
 
-      await oppijaPage.gotoWithQueryParams(tunnustettu, flag)
+      await oppijaPage.goto(tunnustettu)
       await expect(page.getByTestId('oo.0.suoritusTabs.0.tab')).toHaveText(
         'Autoalan perustutkinto'
       )
@@ -650,7 +636,7 @@ test.describe('Ammatillisen tutkinnon uusi käyttöliittymä', () => {
       oppijaPage,
       oppijaPageV2
     }) => {
-      await oppijaPage.gotoWithQueryParams(tunnustettu, flag)
+      await oppijaPage.goto(tunnustettu)
       await page.getByTestId('oo.0.opiskeluoikeus.edit').click()
       await page
         .getByText('lisää näyttötutkintoon valmistavan koulutuksen suoritus')
@@ -675,7 +661,7 @@ test.describe('Ammatillisen tutkinnon uusi käyttöliittymä', () => {
       page,
       oppijaPage
     }) => {
-      await oppijaPage.gotoWithQueryParams(paallekkaisia, flag)
+      await oppijaPage.goto(paallekkaisia)
       // Oppijalla on kaksi opiskeluoikeutta, joista jälkimmäinen on pelkkä valmistava koulutus
       await page.getByTestId('oo.0.opiskeluoikeus.edit').nth(1).click()
       await page.getByText('lisää ammatillisen tutkinnon suoritus').click()
@@ -703,12 +689,6 @@ test.describe('Ammatillisen tutkinnon uusi käyttöliittymä kansalaiselle', () 
     await new KoskiFixtures(await ctx.newPage()).reset()
   })
   test.use({ storageState: kansalainen('280618-402H') })
-
-  test.beforeEach(async ({ page }) => {
-    await page.addInitScript((flagName) => {
-      window.localStorage.setItem(flagName, 'true')
-    }, FEATURE_FLAG)
-  })
 
   test('Näyttää tutkinnon tiedot ja ryhmien laajuudet', async ({
     page,
