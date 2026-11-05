@@ -18,6 +18,11 @@ const autonen = '1.2.246.562.24.00000000137'
 // Kaksi opiskeluoikeutta, joista jälkimmäisessä pelkkä näyttötutkintoon valmistava koulutus
 const paallekkaisia = '1.2.246.562.24.00000000104'
 
+// Omnian ostettu autoalan perustutkinto
+const ostettu = '1.2.246.562.24.00000000003'
+// Tieto- ja viestintätekniikan perustutkinto, organisaatiohistoria
+const historoitsija = '1.2.246.562.24.00000000073'
+
 const suoritus = (page: Page, testId: string) =>
   page.getByTestId(`oo.0.suoritukset.0.${testId}`)
 
@@ -253,6 +258,20 @@ test.describe('Ammatillisen tutkinnon uusi käyttöliittymä', () => {
       await expect(
         suoritus(page, 'osasuoritukset.1.properties.alkamispäivä')
       ).toHaveText('1.9.2014')
+    })
+  })
+
+  test.describe('Virkailijalle näytettävät tiedot', () => {
+    test('Ostettu-tieto näytetään', async ({ page, oppijaPage }) => {
+      await oppijaPage.goto(ostettu)
+      await expect(page.getByText('Ostettu', { exact: true })).toBeVisible()
+    })
+
+    test('Organisaatiohistoria näytetään', async ({ page, oppijaPage }) => {
+      await oppijaPage.goto(historoitsija)
+      await expect(
+        page.getByText('Opiskeluoikeuden organisaatiohistoria')
+      ).toBeVisible()
     })
   })
 
@@ -702,6 +721,33 @@ test.describe('Ammatillisen tutkinnon uusi käyttöliittymä kansalaiselle', () 
     )
     await expect(suoritus(page, 'yhteensa.1')).toHaveText('135 / 135 osp')
     await expect(page.getByTestId('oo.0.opiskeluoikeus.edit')).toHaveCount(0)
+  })
+
+  test.describe('Ostettu koulutus', () => {
+    test.use({ storageState: kansalainen('080154-770R') })
+
+    test('Ostettu-tietoa ei näytetä', async ({ page, kansalainenPage }) => {
+      await kansalainenPage.goto()
+      await page.locator('.OpiskeluoikeusTitle__expand').first().click()
+      await expect(suoritus(page, 'koulutus')).toBeVisible()
+      await expect(page.getByText('Ostettu')).toHaveCount(0)
+    })
+  })
+
+  test.describe('Opiskeluoikeus, jolla on organisaatiohistoriaa', () => {
+    test.use({ storageState: kansalainen('200994-834A') })
+
+    test('Organisaatiohistoriaa ei näytetä', async ({
+      page,
+      kansalainenPage
+    }) => {
+      await kansalainenPage.goto()
+      await page.locator('.OpiskeluoikeusTitle__expand').first().click()
+      await expect(suoritus(page, 'koulutus')).toBeVisible()
+      await expect(
+        page.getByText('Opiskeluoikeuden organisaatiohistoria')
+      ).toHaveCount(0)
+    })
   })
 
   test('Sivulla ei saavutettavuusvirheitä', async ({

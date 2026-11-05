@@ -100,6 +100,7 @@ export const EditorContainer = <T extends Opiskeluoikeus>(
   )
 
   const hasOrganisaatiohistoria =
+    virkailija !== null &&
     'organisaatiohistoria' in props.form.state &&
     Array.isArray(props.form.state.organisaatiohistoria) &&
     props.form.state.organisaatiohistoria.length > 0
