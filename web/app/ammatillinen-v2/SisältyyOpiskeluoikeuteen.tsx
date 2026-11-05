@@ -132,7 +132,7 @@ const SisältyyOpiskeluoikeuteenEdit = ({
                 oppilaitos: Oppilaitos({ oid: org.oid, nimi: org.nimi })
               })
             }
-            orgTypes={['OPPILAITOS']}
+            orgTypes={['OPPILAITOS', 'OPPISOPIMUSTOIMIPISTE']}
           />
         </KeyValueRow>
       </KeyValueTable>
