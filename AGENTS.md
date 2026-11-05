@@ -157,7 +157,7 @@ Older dated snapshots are kept and still run through `KoskiValidator`, so a **ne
 - **Vitest unit tests**: `web/test/unit-test/*.test.ts` - run with `make js-unit-test`
 - **Playwright tests**: `web/test/e2e/` - run with `make integrationtest`
 - **Valpas Jest tests**: `valpas-web/test/` - run with `make valpas-fronttest-*`
-- **UI feature flags** (`hasFeatureFlag`, e.g. a report's `guard` in `web/app/raportit/Raportit.jsx`): the URL parameter needs a value, `?kotikuntalaskelma=1`, not a bare `?kotikuntalaskelma` — `web/app/util/location.js` rewrites the URL on startup and drops empty-valued parameters. A localStorage key named after the flag works too.
+- **UI feature flags** (`hasFeatureFlag`, e.g. a report's `guard` in `web/app/raportit/Raportit.jsx`): the URL parameter needs a value, `?vstraportit=1`, not a bare `?vstraportit` — `web/app/util/location.js` rewrites the URL on startup and drops empty-valued parameters. A localStorage key named after the flag works too.
 
 ### Test Users
 Test users are defined in `src/main/scala/fi/oph/koski/koskiuser/MockUsers.scala`

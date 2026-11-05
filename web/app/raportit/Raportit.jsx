@@ -274,14 +274,12 @@ const kaikkiRaportitKategorioittain = [
       {
         id: 'kotikuntalaskelmaraportti',
         name: 'raportti-tab-kotikuntalaskelma',
-        component: Kotikuntalaskelma,
-        guard: () => hasFeatureFlag('kotikuntalaskelma')
+        component: Kotikuntalaskelma
       },
       {
         id: 'kunnanoppijatraportti',
         name: 'raportti-tab-kunnanoppijat',
-        component: KunnanOppijat,
-        guard: () => hasFeatureFlag('kotikuntalaskelma')
+        component: KunnanOppijat
       }
     ]
   }
