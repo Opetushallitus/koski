@@ -283,6 +283,26 @@ test.describe('Ammatillisen tutkinnon uusi käyttöliittymä', () => {
   })
 
   test.describe('Muokkaus', () => {
+    test('Uuden tilan valinnoissa ei ole eronnut-tilaa', async ({
+      page,
+      oppijaPage
+    }) => {
+      await oppijaPage.goto(amis)
+      await page.getByTestId('oo.0.opiskeluoikeus.edit').click()
+      await page.getByTestId('oo.0.opiskeluoikeus.tila.edit.add').click()
+      const tilat = page.getByTestId(
+        'oo.0.opiskeluoikeus.tila.edit.modal.tila.edit'
+      )
+      await expect(tilat.locator('label')).toHaveText([
+        'Katsotaan eronneeksi',
+        'Läsnä',
+        'Loma',
+        'Peruutettu',
+        'Väliaikaisesti keskeytynyt',
+        'Valmistunut'
+      ])
+    })
+
     test('Laajuuteen lasketaan vain hyväksytysti arvioidut tutkinnon osat', async ({
       page,
       oppijaPage,
