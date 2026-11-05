@@ -206,6 +206,7 @@ class OvaraHakukoosteServiceSpec extends ValpasTestBase with Matchers with Eithe
       ValpasHakutoive(result.hakutoiveet.head).hakutoivenumero should be(None)
 
       results.last.aktiivinenHaku should be(None)
+      ValpasHakutilanneLaajatTiedot(results.last).aktiivinenHaku should be(false)
       val hakutoive2 = results.last.hakutoiveet.head
       hakutoive2.hakukohdeOrganisaatio should be(None)
       ValpasHakutoive(hakutoive2).organisaatioNimi should be(None)

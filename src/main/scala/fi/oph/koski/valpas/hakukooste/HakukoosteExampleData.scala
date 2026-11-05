@@ -198,7 +198,6 @@ object HakukoosteExampleData {
       henkilö = ValpasMockOppijat.valmistunutTuvalainen,
       hakuNimi = Finnish("Jatkuva haku 2021"),
       hakutapa = jatkuvanHaunKoodi,
-      aktiivinenHaku = None,
       ilmanHakutoivenumeroita = true,
       hakukoosteidenToiveet = Vector(Vector(
         hakutoive(
