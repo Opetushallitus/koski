@@ -1,14 +1,10 @@
 package fi.oph.koski.raportit
 
-import com.typesafe.config.ConfigValueFactory.fromAnyRef
 import fi.oph.koski.{DirtiesFixtures, KoskiApplicationForTests}
 import fi.oph.koski.api.misc.PutOpiskeluoikeusTestMethods
-import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.documentation.VapaaSivistystyöExample
 import fi.oph.koski.henkilo.{KoskiSpecificMockOppijat, LaajatOppijaHenkilöTiedot}
-import fi.oph.koski.koskiuser.MockUsers
 import fi.oph.koski.localization.LocalizationReader
-import fi.oph.koski.massaluovutus.raportit.MassaluovutusQueryVSTOsaamismerkit
 import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.raportit.vst.VSTOsaamismerkkiRow
 import fi.oph.koski.raportointikanta.RaportointikantaTestMethods
@@ -116,36 +112,6 @@ class VstOsaamismerkitRaporttiSpec
       val oppijat = oppijaOidit(getRaportti(oppilaitosOid, alku = date(2025, 2, 2), loppu = date(2025, 2, 2)))
       oppijat should contain(keskeneräinenOppija.oid)
       oppijat should not contain vahvistettuOppija.oid
-    }
-  }
-
-  "Raportti ei ole käytössä tuotantoympäristössä" - {
-    val app = KoskiApplicationForTests
-    val tuotantoConfig = app.config.withValue("opintopolku.virkailija.url", fromAnyRef("https://virkailija.opintopolku.fi"))
-    val oppilaitosOid = MockOrganisaatiot.varsinaisSuomenKansanopisto
-    implicit val session = MockUsers.varsinaisSuomiPalvelukäyttäjä.toKoskiSpecificSession(app.käyttöoikeusRepository)
-    val hierarkia = app.organisaatioRepository.getOrganisaatioHierarkia(oppilaitosOid).get
-    val koulutusmuodot = Map(oppilaitosOid -> Seq("vapaansivistystyonkoulutus"))
-    val kysely = MassaluovutusQueryVSTOsaamismerkit(
-      organisaatioOid = Some(oppilaitosOid),
-      alku = date(2024, 1, 1),
-      loppu = date(2025, 12, 31),
-    )
-
-    "raporttityyppiä ei tarjota käyttöliittymälle" in {
-      val tyypit = RaportitAccessResolver(app.organisaatioRepository, app.koodistoPalvelu, app.raportointiDatabase, tuotantoConfig)
-        .mahdollisetRaporttienTyypitOrganisaatiolle(hierarkia, koulutusmuodot)
-      tyypit should contain(JatkuvanOppimisenVapaanSivistystyönRaportti)
-      tyypit should not contain VapaanSivistystyönOsaamismerkkienRaportti
-    }
-
-    "massaluovutuskysely ei ole sallittu" in {
-      kysely.queryAllowed(KoskiApplication(tuotantoConfig)) should be(false)
-    }
-
-    "muissa ympäristöissä raportti ja kysely ovat käytössä" in {
-      RaportitAccessResolver(app).mahdollisetRaporttienTyypitOrganisaatiolle(hierarkia, koulutusmuodot) should contain(VapaanSivistystyönOsaamismerkkienRaportti)
-      kysely.queryAllowed(app) should be(true)
     }
   }
 

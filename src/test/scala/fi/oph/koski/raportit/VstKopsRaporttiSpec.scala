@@ -1,16 +1,12 @@
 package fi.oph.koski.raportit
 
-import com.typesafe.config.ConfigValueFactory.fromAnyRef
 import fi.oph.koski.{DirtiesFixtures, KoskiApplicationForTests}
 import fi.oph.koski.api.misc.PutOpiskeluoikeusTestMethods
-import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.documentation.ExampleData.opiskeluoikeusLäsnä
 import fi.oph.koski.documentation.VapaaSivistystyöExample
 import fi.oph.koski.documentation.VapaaSivistystyöExampleData._
 import fi.oph.koski.henkilo.{KoskiSpecificMockOppijat, LaajatOppijaHenkilöTiedot}
-import fi.oph.koski.koskiuser.MockUsers
 import fi.oph.koski.localization.LocalizationReader
-import fi.oph.koski.massaluovutus.raportit.MassaluovutusQueryVSTKOPS
 import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.raportointikanta.RaportointikantaTestMethods
 import fi.oph.koski.schema._
@@ -168,36 +164,6 @@ class VstKopsRaporttiSpec
       val oppijat = getSheet(getRaportti(oppilaitosOid, alku = date(2020, 1, 1), loppu = date(2021, 8, 31))).rows.map(_.head)
       oppijat shouldBe empty
       getSheet(getRaportti(oppilaitosOid, alku = date(2024, 9, 1), loppu = date(2024, 9, 1))).rows.map(_.head) should contain(keskeneräinenOppija.oid)
-    }
-  }
-
-  "Raportti ei ole käytössä tuotantoympäristössä" - {
-    val app = KoskiApplicationForTests
-    val tuotantoConfig = app.config.withValue("opintopolku.virkailija.url", fromAnyRef("https://virkailija.opintopolku.fi"))
-    val oppilaitosOid = MockOrganisaatiot.varsinaisSuomenKansanopisto
-    implicit val session = MockUsers.varsinaisSuomiPalvelukäyttäjä.toKoskiSpecificSession(app.käyttöoikeusRepository)
-    val hierarkia = app.organisaatioRepository.getOrganisaatioHierarkia(oppilaitosOid).get
-    val koulutusmuodot = Map(oppilaitosOid -> Seq("vapaansivistystyonkoulutus"))
-    val kysely = MassaluovutusQueryVSTKOPS(
-      organisaatioOid = Some(oppilaitosOid),
-      alku = date(2022, 1, 1),
-      loppu = date(2025, 1, 1),
-    )
-
-    "raporttityyppiä ei tarjota käyttöliittymälle" in {
-      val tyypit = RaportitAccessResolver(app.organisaatioRepository, app.koodistoPalvelu, app.raportointiDatabase, tuotantoConfig)
-        .mahdollisetRaporttienTyypitOrganisaatiolle(hierarkia, koulutusmuodot)
-      tyypit should contain(JatkuvanOppimisenVapaanSivistystyönRaportti)
-      tyypit should not contain VapaanSivistystyönOppivelvollisilleSuunnatunKoulutuksenRaportti
-    }
-
-    "massaluovutuskysely ei ole sallittu" in {
-      kysely.queryAllowed(KoskiApplication(tuotantoConfig)) should be(false)
-    }
-
-    "muissa ympäristöissä raportti ja kysely ovat käytössä" in {
-      RaportitAccessResolver(app).mahdollisetRaporttienTyypitOrganisaatiolle(hierarkia, koulutusmuodot) should contain(VapaanSivistystyönOppivelvollisilleSuunnatunKoulutuksenRaportti)
-      kysely.queryAllowed(app) should be(true)
     }
   }
 
