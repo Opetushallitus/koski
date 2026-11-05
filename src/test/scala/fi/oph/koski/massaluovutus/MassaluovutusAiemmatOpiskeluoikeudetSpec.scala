@@ -188,6 +188,7 @@ class MassaluovutusAiemmatOpiskeluoikeudetSpec extends AnyFreeSpec with Massaluo
           (m \ "target" \ "oppijaHenkiloOid").extractOpt[String].contains(lauri.oid)
       )
       auditViesti shouldBe defined
+      (auditViesti.get \ "target" \ "juuriOrganisaatio").extract[String] shouldBe MockOrganisaatiot.stadinAmmattiopisto
       (auditViesti.get \ "target" \ "hakuEhto").extract[String] shouldBe
         s"koulutusmuoto=esiopetus&koulutusmuoto=perusopetus&koulutusmuoto=ammatillinenkoulutus&koulutusmuoto=lukiokoulutus&organisaatio=${MockOrganisaatiot.stadinAmmattiopisto}"
     }

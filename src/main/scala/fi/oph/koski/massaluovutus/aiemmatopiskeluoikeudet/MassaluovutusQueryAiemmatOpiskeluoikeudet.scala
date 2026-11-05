@@ -180,10 +180,13 @@ case class MassaluovutusQueryAiemmatOpiskeluoikeudet(
       KoskiOperation.AIEMMAT_OPISKELUOIKEUDET_KATSOMINEN,
       oppijaOid,
       opiskeluoikeusOidit,
-      Map[AuditLogMessageField, String](KoskiAuditLogMessageField.hakuEhto -> OpiskeluoikeusQueryContext.queryForAuditLog(Map(
-        "organisaatio" -> List(organisaatioOid),
-        "koulutusmuoto" -> koulutusmuoto.toList.flatten,
-      ))),
+      Map[AuditLogMessageField, String](
+        KoskiAuditLogMessageField.juuriOrganisaatio -> organisaatioOid,
+        KoskiAuditLogMessageField.hakuEhto -> OpiskeluoikeusQueryContext.queryForAuditLog(Map(
+          "organisaatio" -> List(organisaatioOid),
+          "koulutusmuoto" -> koulutusmuoto.toList.flatten,
+        )),
+      ),
     )
 }
 
