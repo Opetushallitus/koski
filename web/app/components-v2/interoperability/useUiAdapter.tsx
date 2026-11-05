@@ -109,6 +109,16 @@ export const näytetäänUudellaKäyttöliittymällä = (
           suoritustyyppi === 'perusopetuksenvuosiluokka' ||
           suoritustyyppi === 'perusopetuksenoppimaara'
       )
+    case 'lukiokoulutus':
+      return (
+        hasFeatureFlag('lukio-v2') &&
+        !!suoritustyypit?.length &&
+        suoritustyypit.every(
+          (suoritustyyppi) =>
+            suoritustyyppi === 'lukionoppimaara' ||
+            suoritustyyppi === 'lukionaineopinnot'
+        )
+      )
     default:
       return Object.keys(opiskeluoikeusEditors).includes(tyyppi)
   }

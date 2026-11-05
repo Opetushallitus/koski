@@ -1,5 +1,6 @@
 import { Page, Locator, expect } from '@playwright/test'
 import { KorkeakouluOpiskeluoikeus } from './components/KorkeakouluOpiskeluoikeus'
+import { LukioOpiskeluoikeus } from './components/LukioOpiskeluoikeus'
 import { OpiskeluoikeudenTilaDialog } from './dialogs/OpiskeluoikeudentilaDialog'
 
 export class KoskiOppijaPage {
@@ -26,6 +27,7 @@ export class KoskiOppijaPage {
   readonly opiskeluoikeudetNav: Locator
   readonly opiskeluoikeudetNavValittuVälilehti: Locator
   readonly error: Locator
+  readonly editBarMessage: Locator
 
   constructor(page: Page) {
     this.page = page
@@ -84,6 +86,7 @@ export class KoskiOppijaPage {
     // TODO: Refaktoroi assertio
     this.opiskeluoikeudenTiedot = page.locator('.opiskeluoikeuden-tiedot')
     this.error = page.getByTestId('error')
+    this.editBarMessage = page.locator('#edit-bar .state-indicator')
   }
 
   async goto(oid: string) {
@@ -107,6 +110,10 @@ export class KoskiOppijaPage {
     otsikko: string | RegExp
   ): KorkeakouluOpiskeluoikeus {
     return new KorkeakouluOpiskeluoikeus(this.getOpiskeluoikeus(otsikko))
+  }
+
+  getLukioOpiskeluoikeus(otsikko: string | RegExp): LukioOpiskeluoikeus {
+    return new LukioOpiskeluoikeus(this.getOpiskeluoikeus(otsikko))
   }
 
   getOppilaitosNimi(otsikko: string | RegExp): Locator {
