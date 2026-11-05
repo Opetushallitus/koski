@@ -23,6 +23,9 @@ const ostettu = '1.2.246.562.24.00000000003'
 // Tieto- ja viestintätekniikan perustutkinto, organisaatiohistoria
 const historoitsija = '1.2.246.562.24.00000000073'
 
+const hojksOpetusryhmä = 'oo.0.opiskeluoikeus.lisätiedot.opetusryhmä'
+const hojksOpetusryhmäInput = `${hojksOpetusryhmä}.input`
+
 const suoritus = (page: Page, testId: string) =>
   page.getByTestId(`oo.0.suoritukset.0.${testId}`)
 
@@ -477,6 +480,30 @@ test.describe('Ammatillisen tutkinnon uusi käyttöliittymä', () => {
       await oppijaPageV2.tallenna()
       await oppijaPageV2.openAllOsasuoritukset()
       await expect(page.getByText('MAA4 Vektorit').first()).toBeVisible()
+    })
+
+    test('Hojks tallentuu pelkällä opetusryhmällä', async ({
+      page,
+      oppijaPage,
+      oppijaPageV2
+    }) => {
+      await oppijaPage.goto(autonen)
+      await page.getByTestId('oo.0.opiskeluoikeus.edit').click()
+      await page
+        .locator('.KeyValueRow', {
+          has: page.getByText('Hojks', { exact: true })
+        })
+        .getByRole('button', { name: 'Lisää' })
+        .click()
+      await page.getByTestId(hojksOpetusryhmäInput).click()
+      await page
+        .getByTestId(`${hojksOpetusryhmä}.options.1.item`)
+        .click()
+
+      await oppijaPageV2.tallenna()
+      await expect(
+        page.getByTestId('oo.0.opiskeluoikeus.lisätiedot.opetusryhmä')
+      ).toHaveText('Yleinen opetusryhmä')
     })
 
     test('Näytön kuvauksen tyhjentäminen poistaa kuvauksen', async ({
