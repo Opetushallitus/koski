@@ -560,11 +560,6 @@ object MockUsers {
     "1.2.246.562.24.99999988889",
     Seq(OrganisaatioJaKäyttöoikeudet(MockOrganisaatiot.suomifi, List(
       PalveluJaOikeus("KOSKI", Rooli.SUOMIFI),
-      PalveluJaOikeus("KOSKI", Rooli.GLOBAALI_LUKU_PERUSOPETUS),
-      PalveluJaOikeus("KOSKI", Rooli.GLOBAALI_LUKU_TOINEN_ASTE),
-      PalveluJaOikeus("KOSKI", Rooli.GLOBAALI_LUKU_KORKEAKOULU),
-      PalveluJaOikeus("KOSKI", Rooli.GLOBAALI_LUKU_MUU_KUIN_SAANNELTY),
-      PalveluJaOikeus("KOSKI", Rooli.GLOBAALI_LUKU_TAITEENPERUSOPETUS),
     )))
   )
 
