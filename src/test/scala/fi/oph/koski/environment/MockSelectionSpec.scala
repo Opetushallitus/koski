@@ -9,6 +9,7 @@ import fi.oph.koski.henkilo.{Hetu, OpintopolkuHenkilöFacade, OppijanumeroRekist
 import fi.oph.koski.huoltaja.HuollettavatRepository
 import fi.oph.koski.koodisto.{KoodistoPalvelu, MockKoodistoViitePalvelu}
 import fi.oph.koski.localization.LocalizationRepository
+import fi.oph.koski.luovutuspalvelu.v2clientlist.{LuovutuspalveluV2ClientListService, LuovutuspalveluV2XRoadConfigService}
 import fi.oph.koski.organisaatio.OrganisaatioRepository
 import fi.oph.koski.ovara.OvaraClient
 import fi.oph.koski.pulssi.PrometheusRepository
@@ -53,6 +54,8 @@ class MockSelectionSpec extends AnyFreeSpec with Matchers {
     "valpas.rajapäivät.useMock" -> (c => ValpasRajapäivätService(c)),
     "otuvaTokenEndpoint" -> (c => OppijanumeroRekisteriClient(c)),
     "login.security" -> (c => SSOConfig(c).isCasSsoUsed),
+    "MockLuovutuspalveluV2ClientListService" -> (c => LuovutuspalveluV2ClientListService(c)),
+    "MockLuovutuspalveluV2XRoadConfigService" -> (c => LuovutuspalveluV2XRoadConfigService(c)),
   )
 
   // Näiden luominen muissa ympäristöissä vaatisi tietokantayhteyden, joten testataan vain tuotannossa.
