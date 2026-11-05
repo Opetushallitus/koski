@@ -23,6 +23,11 @@ const ostettu = '1.2.246.562.24.00000000003'
 // Tieto- ja viestintätekniikan perustutkinto, organisaatiohistoria
 const historoitsija = '1.2.246.562.24.00000000073'
 
+// Puuteollisuuden perustutkinto, perusteella useita koulutuskoodeja
+const montaKoulutuskoodia = '1.2.246.562.24.00000000074'
+// Tieto- ja viestintätekniikan perustutkinto, koodi poistunut ePerusteista
+const poistunutKoulutuskoodi = '1.2.246.562.24.00000000075'
+
 const hojksOpetusryhmä = 'oo.0.opiskeluoikeus.lisätiedot.opetusryhmä'
 const hojksOpetusryhmäInput = `${hojksOpetusryhmä}.input`
 
@@ -504,6 +509,43 @@ test.describe('Ammatillisen tutkinnon uusi käyttöliittymä', () => {
       await expect(
         page.getByTestId('oo.0.opiskeluoikeus.lisätiedot.opetusryhmä')
       ).toHaveText('Yleinen opetusryhmä')
+    })
+
+    test('Poistunut koulutuskoodi päivittyy perusteen ainoaan koulutukseen', async ({
+      page,
+      oppijaPage,
+      oppijaPageV2
+    }) => {
+      await oppijaPage.goto(poistunutKoulutuskoodi)
+      const koulutus = page.locator('.AmmatillinenTutkinto')
+      await expect(koulutus).toContainText('123456')
+
+      await page.getByTestId('oo.0.opiskeluoikeus.edit').click()
+      await expect(koulutus).toContainText('341101')
+      await oppijaPageV2.tallenna()
+      await expect(koulutus).toContainText('341101')
+    })
+
+    test('Koulutuskoodin voi valita, kun perusteella on useita koulutuksia', async ({
+      page,
+      oppijaPage,
+      oppijaPageV2
+    }) => {
+      await oppijaPage.goto(montaKoulutuskoodia)
+      const koulutus = page.locator('.AmmatillinenTutkinto')
+      await expect(koulutus).toContainText('12345')
+
+      await page.getByTestId('oo.0.opiskeluoikeus.edit').click()
+      await suoritus(page, 'koulutuskoodi.input').click()
+      for (const koodi of ['12345', '351741', '451741']) {
+        await expect(
+          suoritus(page, `koulutuskoodi.options.${koodi}.item`)
+        ).toBeVisible()
+      }
+      await suoritus(page, 'koulutuskoodi.options.351741.item').click()
+
+      await oppijaPageV2.tallenna()
+      await expect(koulutus).toContainText('351741')
     })
 
     test('Näytön kuvauksen tyhjentäminen poistaa kuvauksen', async ({
