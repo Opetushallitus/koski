@@ -120,7 +120,7 @@ import { SisältyyOpiskeluoikeuteen } from './SisältyyOpiskeluoikeuteen'
 import { AmmatillinenArviointiasteikko } from './AmmatillinenArviointiasteikko'
 import { isAmmatillisenTutkinnonOsittainenUseastaTutkinnostaSuoritus } from '../types/fi/oph/koski/schema/AmmatillisenTutkinnonOsittainenUseastaTutkinnostaSuoritus'
 import { AmmatillinenTutkintoOsittainenUseastaTutkinnostaEditor } from './ammatillinen-osittainen-useasta-tutkinnosta/AmmatillinenTutkintoOsittainenUseastaTutkinnostaEditor'
-import { KoulutuksenKoodiarvo } from './KoulutuksenKoodiarvo'
+import { KoulutuksenKoodiarvo } from '../components-v2/opiskeluoikeus/KoulutuksenKoodiarvo'
 import { KoulutuskoodiEdit } from './KoulutuskoodiEdit'
 
 export type AmmatillinenEditorProps =

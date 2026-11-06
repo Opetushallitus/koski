@@ -67,7 +67,7 @@ import { TestIdLayer, TestIdText } from '../appstate/useTestId'
 import { OsasuorituksenAlkamispäivä } from './OsasuorituksenAlkamispäivä'
 import { PerusteView } from '../components-v2/opiskeluoikeus/PerusteField'
 import { useTutkinnonOsanOsat } from './useTutkinnonOsanOsat'
-import { KoulutuksenKoodiarvo } from './KoulutuksenKoodiarvo'
+import { KoulutuksenKoodiarvo } from '../components-v2/opiskeluoikeus/KoulutuksenKoodiarvo'
 
 type YhteisenTutkinnonOsanSuoritusPropertiesProps = {
   form: FormModel<AmmatillinenOpiskeluoikeus>

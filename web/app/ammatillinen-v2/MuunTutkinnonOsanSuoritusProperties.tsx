@@ -58,7 +58,7 @@ import {
   LocalizedTextView
 } from '../components-v2/controls/LocalizedTestField'
 import { PerusteView } from '../components-v2/opiskeluoikeus/PerusteField'
-import { KoulutuksenKoodiarvo } from './KoulutuksenKoodiarvo'
+import { KoulutuksenKoodiarvo } from '../components-v2/opiskeluoikeus/KoulutuksenKoodiarvo'
 
 type MuunTutkinnonOsanSuoritusPropertiesProps = {
   form: FormModel<AmmatillinenOpiskeluoikeus>

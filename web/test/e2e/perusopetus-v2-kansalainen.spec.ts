@@ -50,6 +50,15 @@ test.describe('Perusopetuksen uusi käyttöliittymä: kansalaisen näkymät', ()
     await expect(
       page.getByTestId(/^oo\.\d+\.suoritukset\.0\.osasuoritukset\.11\.footnote$/)
     ).toHaveText('*')
+
+    // Koulutuksen koodiarvoa ei näytetä kansalaiselle, kuten vanhassa
+    // käyttöliittymässä.
+    await expect(
+      page.getByTestId(/^oo\.\d+\.suoritukset\.0\.koulutus$/)
+    ).toHaveText('Perusopetus')
+    await expect(
+      page.getByTestId(/^oo\.\d+\.suoritukset\.0\.koulutuskoodi$/)
+    ).toHaveCount(0)
   })
 
   test('Suoritusjako: jaettu vuosiluokka näkyy suoritusotteella', async ({

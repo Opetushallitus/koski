@@ -57,7 +57,7 @@ import {
   LocalizedTextEdit,
   LocalizedTextView
 } from '../../components-v2/controls/LocalizedTestField'
-import { KoulutuksenKoodiarvo } from '../KoulutuksenKoodiarvo'
+import { KoulutuksenKoodiarvo } from '../../components-v2/opiskeluoikeus/KoulutuksenKoodiarvo'
 
 type MuunOsittaisenAmmatillisenTutkinnonUseastaTutkinnostaTutkinnonosanSuoritusPropertiesProps =
   {

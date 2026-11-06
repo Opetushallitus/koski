@@ -65,7 +65,7 @@ import { useTutkinnonOsanOsat } from '../useTutkinnonOsanOsat'
 import { AmmatillisenTutkinnonOsittainenSuoritus } from '../../types/fi/oph/koski/schema/AmmatillisenTutkinnonOsittainenSuoritus'
 import { YhteisenOsittaisenAmmatillisenTutkinnonTutkinnonosanUseastaTutkinnostaSuoritus } from '../../types/fi/oph/koski/schema/YhteisenOsittaisenAmmatillisenTutkinnonTutkinnonosanUseastaTutkinnostaSuoritus'
 import { PerusteView } from '../../components-v2/opiskeluoikeus/PerusteField'
-import { KoulutuksenKoodiarvo } from '../KoulutuksenKoodiarvo'
+import { KoulutuksenKoodiarvo } from '../../components-v2/opiskeluoikeus/KoulutuksenKoodiarvo'
 
 type YhteisenAmmatillisenTutkinnonOsasuoritusUseastaTutkinnostaPropertiesProps =
   {
