@@ -1,5 +1,5 @@
 import { expect, test } from './base'
-import { virkailija } from './setup/auth'
+import { kansalainen, virkailija } from './setup/auth'
 
 /**
  * Testit Ahvenanmaan perusopetuksen v2-editorille.
@@ -720,3 +720,28 @@ async function lisääVuosiluokka(
   await page.getByTestId('oo.0.modal.uusiVuosiluokanSuoritus.submit').click()
   await expect(modal).not.toBeVisible()
 }
+
+test.describe('Ahvenanmaan perusopetus kansalaiselle', () => {
+  test.use({ storageState: kansalainen('150510A0873') })
+
+  test.beforeEach(async ({ fixtures }) => {
+    await fixtures.apiLoginAsUser('kalle', 'kalle')
+    await fixtures.reset()
+    await fixtures.apiLogout()
+  })
+
+  test('Koulutuksen koodiarvoa ei näytetä', async ({
+    page,
+    kansalainenPage
+  }) => {
+    await kansalainenPage.goto()
+    await kansalainenPage.openOpiskeluoikeusByIndex(0)
+    await page.getByTestId(avgångsbetygTab).click()
+    await expect(page.getByTestId('oo.0.suoritukset.0.koulutus')).toHaveText(
+      'Perusopetus'
+    )
+    await expect(
+      page.getByTestId('oo.0.suoritukset.0.koulutuskoodi')
+    ).toHaveCount(0)
+  })
+})

@@ -43,6 +43,7 @@ import {
 import { VapaanSivistystyönKoulutuksenPäätasonSuoritus } from '../../types/fi/oph/koski/schema/VapaanSivistystyonKoulutuksenPaatasonSuoritus'
 import { VapaanSivistystyönOsaamismerkinSuoritus } from '../../types/fi/oph/koski/schema/VapaanSivistystyonOsaamismerkinSuoritus'
 import { t } from '../../i18n/i18n'
+import { useKoulutuksenKoodiarvoNäkyy } from '../../components-v2/opiskeluoikeus/KoulutuksenKoodiarvo'
 
 export const PäätasosuorituksenTiedot: React.FC<{
   children: React.ReactNode
@@ -84,13 +85,14 @@ export const Koulutus = <T extends VapaanSivistystyönPäätasonSuoritus>({
 
 export const Koulutusmoduuli = <T extends VapaanSivistystyönPäätasonSuoritus>({
   suoritus: päätasonSuoritus
-}: SuoritusFieldProps<T>) => (
-  <KeyValueRow localizableLabel="Koulutusmoduuli">
-    <TestIdText id="tunniste.koodiarvo">
-      {päätasonSuoritus.suoritus.koulutusmoduuli.tunniste.koodiarvo}
-    </TestIdText>
-  </KeyValueRow>
-)
+}: SuoritusFieldProps<T>) =>
+  useKoulutuksenKoodiarvoNäkyy() ? (
+    <KeyValueRow localizableLabel="Koulutusmoduuli">
+      <TestIdText id="tunniste.koodiarvo">
+        {päätasonSuoritus.suoritus.koulutusmoduuli.tunniste.koodiarvo}
+      </TestIdText>
+    </KeyValueRow>
+  ) : null
 
 export const Osaamismerkki = <
   T extends VapaanSivistystyönOsaamismerkinSuoritus

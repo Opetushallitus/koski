@@ -67,6 +67,7 @@ import { OmanÄidinkielenOpinnotLaajuusVuosiviikkotunteina } from '../types/fi/o
 import { UusiTäydentäväOmanÄidinkielenOpinnotModal } from './UusiTäydentäväOmanÄidinkielenOpinnotModal'
 import { KoulusivistyskieliPropertyTitle } from '../suoritus/Koulusivistyskieli'
 import { hasErrorInField } from '../components-v2/forms/validator'
+import { useKoulutuksenKoodiarvoNäkyy } from '../components-v2/opiskeluoikeus/KoulutuksenKoodiarvo'
 
 type PerusopetuksenSuorituksenTiedotProps = {
   form: FormModel<PerusopetuksenOpiskeluoikeus>
@@ -76,6 +77,7 @@ type PerusopetuksenSuorituksenTiedotProps = {
 export const PerusopetuksenSuorituksenTiedot: React.FC<
   PerusopetuksenSuorituksenTiedotProps
 > = ({ form, päätasonSuoritus }) => {
+  const koodiarvoNäkyy = useKoulutuksenKoodiarvoNäkyy()
   const path = päätasonSuoritus.path
   const suoritus = päätasonSuoritus.suoritus
   const isVuosiluokka = isPerusopetuksenVuosiluokanSuoritus(suoritus)
@@ -115,15 +117,23 @@ export const PerusopetuksenSuorituksenTiedot: React.FC<
         ) : (
           <KeyColumnedValuesRow
             localizableName="Koulutus"
-            columnSpans={{ default: [4, 2, '*'], phone: [24, 24, 24] }}
+            columnSpans={
+              koodiarvoNäkyy
+                ? { default: [4, 2, '*'], phone: [24, 24, 24] }
+                : { default: [4, '*'], phone: [24, 24] }
+            }
           >
             {[
               <TestIdText key="tunniste" id="koulutus">
                 {t(suoritus.koulutusmoduuli.tunniste.nimi)}
               </TestIdText>,
-              <TestIdText key="koodiarvo" id="koulutuskoodi">
-                {suoritus.koulutusmoduuli.tunniste.koodiarvo}
-              </TestIdText>,
+              ...(koodiarvoNäkyy
+                ? [
+                    <TestIdText key="koodiarvo" id="koulutuskoodi">
+                      {suoritus.koulutusmoduuli.tunniste.koodiarvo}
+                    </TestIdText>
+                  ]
+                : []),
               isNuortenPerusopetuksenOppimääränSuoritus(suoritus) ? (
                 <FormField
                   key="peruste"

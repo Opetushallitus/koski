@@ -190,7 +190,9 @@ function KoskiPage() {
     oppijaHaku: OppijaHaku,
     oppijataulukko: Oppijataulukko,
     getSelectedOppija: function () {
-      return S('.oppija h2').text().replace('JSON', '')
+      // Oppijan otsikon jälkeen sivulla voi olla muitakin h2-otsikoita:
+      // v2-editorit käyttävät niitä esim. Suoritukset-osiossa.
+      return S('.oppija h2').first().text().replace('JSON', '')
     },
     opiskeluoikeudeTotal: function () {
       return S('.opiskeluoikeudet-total .value').text().slice(2)

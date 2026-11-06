@@ -1,6 +1,5 @@
 describe('Oppijahaku', function () {
   var page = KoskiPage()
-  var opinnot = OpinnotPage()
   var eero = 'Esimerkki, Eero (010101-123N)'
   var eivastaa = 'Virtanen, Eivastaa (250390-680P)'
   var markkanen = 'Markkanen-Fagerström, Eéro Jorma-Petteri (080154-770R)'
@@ -204,9 +203,8 @@ describe('Oppijahaku', function () {
     })
 
     it('Oppijan tutkinto ja oppilaitos näytetään', function () {
-      expect(opinnot.getTutkinto()).to.equal('Autoalan perustutkinto')
-      expect(opinnot.getOppilaitos()).to.equal(
-        'Stadin ammatti- ja aikuisopisto'
+      expect(S('[data-testid="oo.0.opiskeluoikeus.nimi"]').text()).to.contain(
+        'Stadin ammatti- ja aikuisopisto, autoalan perustutkinto'
       )
     })
   })

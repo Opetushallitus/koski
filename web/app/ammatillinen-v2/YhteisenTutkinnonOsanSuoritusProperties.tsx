@@ -67,6 +67,7 @@ import { TestIdLayer, TestIdText } from '../appstate/useTestId'
 import { OsasuorituksenAlkamispäivä } from './OsasuorituksenAlkamispäivä'
 import { PerusteView } from '../components-v2/opiskeluoikeus/PerusteField'
 import { useTutkinnonOsanOsat } from './useTutkinnonOsanOsat'
+import { KoulutuksenKoodiarvo } from '../components-v2/opiskeluoikeus/KoulutuksenKoodiarvo'
 
 type YhteisenTutkinnonOsanSuoritusPropertiesProps = {
   form: FormModel<AmmatillinenOpiskeluoikeus>
@@ -108,7 +109,9 @@ export const YhteisenTutkinnonOsanSuoritusProperties = ({
                     osasuoritus.tutkinto.tunniste.nimi
                 )}
               </TestIdText>
-              <span>{osasuoritus.tutkinto.tunniste.koodiarvo}</span>
+              <KoulutuksenKoodiarvo
+                koodiarvo={osasuoritus.tutkinto.tunniste.koodiarvo}
+              />
               <FormField
                 form={form}
                 path={osasuoritusPath
@@ -116,6 +119,7 @@ export const YhteisenTutkinnonOsanSuoritusProperties = ({
                   .optional()
                   .prop('perusteenDiaarinumero')}
                 view={PerusteView}
+                viewProps={{ päättymispäivä: form.state.päättymispäivä }}
               />
             </span>
           </OsasuoritusPropertyValue>

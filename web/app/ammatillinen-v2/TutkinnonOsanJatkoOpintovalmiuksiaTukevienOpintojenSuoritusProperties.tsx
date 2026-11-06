@@ -78,6 +78,8 @@ import {
   LocalizedTextEdit,
   LocalizedTextView
 } from '../components-v2/controls/LocalizedTestField'
+import { usePeruste } from '../appstate/peruste'
+import { OptionList, Select } from '../components-v2/controls/Select'
 
 export type TutkinnonOsanJatkoOpintovalmiuksiaTukevienOpintojenSuoritusPropertiesProps =
   {
@@ -293,6 +295,14 @@ const newLukioOpinto = (
   })
 }
 
+const lukioOpinnonPerusteenSuoritustyyppi = 'lukionoppiaineenoppimaara'
+const aikuistenLukionPerusteet = ['OPH-2267-2019', 'OPH-2263-2019']
+const ensisijaisetLukionPerusteet = [
+  'OPH-1280-2017',
+  '104/011/2014',
+  'OPH-4958-2020'
+]
+
 type NewLukioOpintoModalProps = {
   onClose: () => void
   onSubmit: (nimi: string, peruste: string) => void
@@ -303,7 +313,21 @@ const NewLukioOpintoModal = ({
   onSubmit
 }: NewLukioOpintoModalProps) => {
   const [nimi, setNimi] = useState('')
-  const [peruste, setPeruste] = useState('')
+  const perusteet = usePeruste(lukioOpinnonPerusteenSuoritustyyppi)
+  const perusteOptions: OptionList<string> = (perusteet || [])
+    .filter((p) => !aikuistenLukionPerusteet.includes(p.koodiarvo))
+    .map((p) => ({
+      key: p.koodiarvo,
+      label: `${p.koodiarvo} ${t(p.nimi)}`,
+      value: p.koodiarvo
+    }))
+  const [valittuPeruste, setValittuPeruste] = useState<string>()
+  const peruste =
+    valittuPeruste ??
+    (
+      perusteOptions.find((o) => ensisijaisetLukionPerusteet.includes(o.key)) ??
+      perusteOptions[0]
+    )?.key
 
   return (
     <Modal onClose={onClose}>
@@ -315,14 +339,22 @@ const NewLukioOpintoModal = ({
         </label>
         <label>
           {t('Peruste')}
-          <TextEdit onChange={(p) => setPeruste(p ? p : '')} />
+          <Select
+            options={perusteOptions}
+            value={peruste}
+            onChange={(opt) => setValittuPeruste(opt?.value)}
+            testId="peruste"
+          />
         </label>
       </ModalBody>
       <ModalFooter>
         <FlatButton onClick={onClose} testId="cancel">
           {t('Peruuta')}
         </FlatButton>
-        <RaisedButton onClick={() => onSubmit(nimi, peruste)}>
+        <RaisedButton
+          disabled={!nimi || !peruste}
+          onClick={() => peruste && onSubmit(nimi, peruste)}
+        >
           {t('Lisää')}
         </RaisedButton>
       </ModalFooter>

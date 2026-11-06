@@ -8,6 +8,7 @@ import {
   Koodistokoodiviite,
   isKoodistokoodiviite
 } from '../../types/fi/oph/koski/schema/Koodistokoodiviite'
+import { AmmatillinenOpiskeluoikeusjakso } from '../../types/fi/oph/koski/schema/AmmatillinenOpiskeluoikeusjakso'
 import { Opiskeluoikeusjakso } from '../../types/fi/oph/koski/schema/Opiskeluoikeusjakso'
 import { VapaanSivistystyönJotpaKoulutuksenOpiskeluoikeusjakso } from '../../types/fi/oph/koski/schema/VapaanSivistystyonJotpaKoulutuksenOpiskeluoikeusjakso'
 import { hasProp } from '../../util/constraints'
@@ -148,10 +149,14 @@ const OpiskeluoikeudenTilanRahoitusField = <T extends Opiskeluoikeusjakso>(
 export const UusiOpiskeluoikeudenTilaModal = <T extends Opiskeluoikeusjakso>(
   props: UusiOpiskeluoikeudenTilaModalProps<T>
 ) => {
+  const piilotetutTilat =
+    props.opiskeluoikeusjaksoClass === AmmatillinenOpiskeluoikeusjakso.className
+      ? ['mitatoity', 'eronnut']
+      : ['mitatoity']
   const koodiarvot = useAllowedStrings(
     props.opiskeluoikeusjaksoClass,
     'tila.koodiarvo'
-  )?.filter((k) => k !== 'mitatoity')
+  )?.filter((k) => !piilotetutTilat.includes(k))
 
   const tilat = useKoodisto(KOODISTOURI_OPISKELUOIKEUDEN_TILA, koodiarvot)?.map(
     (k) => k.koodiviite

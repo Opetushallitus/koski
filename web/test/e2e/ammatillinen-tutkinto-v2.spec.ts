@@ -3,11 +3,6 @@ import { getVirkailijaSession, kansalainen, virkailija } from './setup/auth'
 import { KoskiFixtures } from './fixtures/KoskiFixtures'
 import { Page } from '@playwright/test'
 
-// Ammatillinen tutkinto (koko tutkinto) renderöidään uudella käyttöliittymällä
-// toistaiseksi vain feature flagin kanssa, ks. useUiAdapter.
-const FEATURE_FLAG = 'ammatillinen-tutkinto-v2'
-const flag = { [FEATURE_FLAG]: 'true' }
-
 // Luonto- ja ympäristöalan perustutkinto, ops, valmis
 const ammattilainen = '1.2.246.562.24.00000000020'
 // Luonto- ja ympäristöalan perustutkinto, ops, kesken
@@ -23,6 +18,19 @@ const autonen = '1.2.246.562.24.00000000137'
 // Kaksi opiskeluoikeutta, joista jälkimmäisessä pelkkä näyttötutkintoon valmistava koulutus
 const paallekkaisia = '1.2.246.562.24.00000000104'
 
+// Omnian ostettu autoalan perustutkinto
+const ostettu = '1.2.246.562.24.00000000003'
+// Tieto- ja viestintätekniikan perustutkinto, organisaatiohistoria
+const historoitsija = '1.2.246.562.24.00000000073'
+
+// Puuteollisuuden perustutkinto, perusteella useita koulutuskoodeja
+const montaKoulutuskoodia = '1.2.246.562.24.00000000074'
+// Tieto- ja viestintätekniikan perustutkinto, koodi poistunut ePerusteista
+const poistunutKoulutuskoodi = '1.2.246.562.24.00000000075'
+
+const hojksOpetusryhmä = 'oo.0.opiskeluoikeus.lisätiedot.opetusryhmä'
+const hojksOpetusryhmäInput = `${hojksOpetusryhmä}.input`
+
 const suoritus = (page: Page, testId: string) =>
   page.getByTestId(`oo.0.suoritukset.0.${testId}`)
 
@@ -36,22 +44,13 @@ test.describe('Ammatillisen tutkinnon uusi käyttöliittymä', () => {
     await fixtures.reset()
   })
 
-  test('Ilman feature flagia käytetään vanhaa käyttöliittymää', async ({
-    page,
-    oppijaPage
-  }) => {
-    await oppijaPage.goto(ammattilainen)
-    await expect(page.locator('.opiskeluoikeuden-tiedot')).toBeVisible()
-    await expect(page.getByTestId('oo.0.opiskeluoikeus.nimi')).toHaveCount(0)
-  })
-
   test.describe('Katselu', () => {
     test('Näyttää perustutkinnon tiedot, tutkinnon osat ja ryhmien laajuudet', async ({
       page,
       oppijaPage,
       oppijaPageV2
     }) => {
-      await oppijaPage.gotoWithQueryParams(ammattilainen, flag)
+      await oppijaPage.goto(ammattilainen)
 
       await expect(page.getByTestId('oo.0.opiskeluoikeus.nimi')).toContainText(
         'Stadin ammatti- ja aikuisopisto, luonto- ja ympäristöalan perustutkinto'
@@ -104,7 +103,7 @@ test.describe('Ammatillisen tutkinnon uusi käyttöliittymä', () => {
       oppijaPage,
       oppijaPageV2
     }) => {
-      await oppijaPage.gotoWithQueryParams(autonen, flag)
+      await oppijaPage.goto(autonen)
       await oppijaPageV2.openAllOsasuoritukset()
       await expect(
         page.locator('.OsasuoritusHeader--sisakkainen').first()
@@ -157,7 +156,7 @@ test.describe('Ammatillisen tutkinnon uusi käyttöliittymä', () => {
       page,
       oppijaPage
     }) => {
-      await oppijaPage.gotoWithQueryParams(amis, flag)
+      await oppijaPage.goto(amis)
 
       // Hojks ja osaamisala ilman päivämääriä: ei irrallisia viivoja
       const hojks = page.getByTestId(
@@ -181,7 +180,7 @@ test.describe('Ammatillisen tutkinnon uusi käyttöliittymä', () => {
       page,
       oppijaPage
     }) => {
-      await oppijaPage.gotoWithQueryParams(tunnustettu, flag)
+      await oppijaPage.goto(tunnustettu)
 
       await expect(suoritus(page, 'suoritustapa')).toHaveText('Näyttötutkinto')
       await expect(suoritus(page, 'yhteensa')).toHaveText('15 osp')
@@ -198,7 +197,7 @@ test.describe('Ammatillisen tutkinnon uusi käyttöliittymä', () => {
       oppijaPage,
       oppijaPageV2
     }) => {
-      await oppijaPage.gotoWithQueryParams(erikoinen, flag)
+      await oppijaPage.goto(erikoinen)
 
       await expect(page.getByTestId('oo.0.opiskeluoikeus.nimi')).toContainText(
         'Stadin ammatti- ja aikuisopisto, näyttötutkintoon valmistava koulutus'
@@ -245,7 +244,7 @@ test.describe('Ammatillisen tutkinnon uusi käyttöliittymä', () => {
       oppijaPage,
       oppijaPageV2
     }) => {
-      await oppijaPage.gotoWithQueryParams(ammattilainen, flag)
+      await oppijaPage.goto(ammattilainen)
       await oppijaPageV2.openAllOsasuoritukset()
       await expect(
         suoritus(
@@ -259,7 +258,7 @@ test.describe('Ammatillisen tutkinnon uusi käyttöliittymä', () => {
         osa.suorituskieli = { koodiarvo: 'SV', koodistoUri: 'kieli' }
         osa.alkamispäivä = '2014-09-01'
       })
-      await oppijaPage.gotoWithQueryParams(erikoinen, flag)
+      await oppijaPage.goto(erikoinen)
       await oppijaPageV2.openAllOsasuoritukset()
       await expect(
         suoritus(page, 'osasuoritukset.1.properties.suorituskieli.value')
@@ -270,13 +269,87 @@ test.describe('Ammatillisen tutkinnon uusi käyttöliittymä', () => {
     })
   })
 
+  test.describe('Virkailijalle näytettävät tiedot', () => {
+    test('Koulutuksen koodiarvo näytetään', async ({ page, oppijaPage }) => {
+      await oppijaPage.goto(ammattilainen)
+      await expect(page.locator('.AmmatillinenTutkinto')).toContainText(
+        '361902'
+      )
+    })
+
+    test('Ostettu-tieto näytetään', async ({ page, oppijaPage }) => {
+      await oppijaPage.goto(ostettu)
+      await expect(page.getByText('Ostettu', { exact: true })).toBeVisible()
+    })
+
+    test('Organisaatiohistoria näytetään', async ({ page, oppijaPage }) => {
+      await oppijaPage.goto(historoitsija)
+      await expect(
+        page.getByText('Opiskeluoikeuden organisaatiohistoria')
+      ).toBeVisible()
+    })
+  })
+
+  test.describe('Perusteen linkki', () => {
+    const perusteLinkki = (page: Page) =>
+      page.locator('.AmmatillinenTutkinto a').first()
+
+    test('Keskeneräisestä opiskeluoikeudesta linkitetään uusimpaan perusteeseen uudessa välilehdessä', async ({
+      page,
+      oppijaPage
+    }) => {
+      await oppijaPage.goto(reformi)
+      // -1 on testidatassa tarkoituksellinen epävalidi id
+      await expect(perusteLinkki(page)).toHaveAttribute('href', /-1/)
+      await expect(perusteLinkki(page)).toHaveAttribute('target', '_blank')
+    })
+
+    test('Päättyneestä opiskeluoikeudesta linkitetään päättymispäivänä voimassa olleeseen perusteeseen', async ({
+      page,
+      oppijaPage,
+      fixtures
+    }) => {
+      await fixtures.muokkaaOpiskeluoikeutta(reformi, (oo) => {
+        oo.tila.opiskeluoikeusjaksot.push({
+          alku: '2018-12-31',
+          tila: {
+            koodiarvo: 'katsotaaneronneeksi',
+            koodistoUri: 'koskiopiskeluoikeudentila'
+          }
+        })
+      })
+      await oppijaPage.goto(reformi)
+      await expect(perusteLinkki(page)).toHaveAttribute('href', /2434073/)
+    })
+  })
+
   test.describe('Muokkaus', () => {
+    test('Uuden tilan valinnoissa ei ole eronnut-tilaa', async ({
+      page,
+      oppijaPage
+    }) => {
+      await oppijaPage.goto(amis)
+      await page.getByTestId('oo.0.opiskeluoikeus.edit').click()
+      await page.getByTestId('oo.0.opiskeluoikeus.tila.edit.add').click()
+      const tilat = page.getByTestId(
+        'oo.0.opiskeluoikeus.tila.edit.modal.tila.edit'
+      )
+      await expect(tilat.locator('label')).toHaveText([
+        'Katsotaan eronneeksi',
+        'Läsnä',
+        'Loma',
+        'Peruutettu',
+        'Väliaikaisesti keskeytynyt',
+        'Valmistunut'
+      ])
+    })
+
     test('Laajuuteen lasketaan vain hyväksytysti arvioidut tutkinnon osat', async ({
       page,
       oppijaPage,
       oppijaPageV2
     }) => {
-      await oppijaPage.gotoWithQueryParams(amis, flag)
+      await oppijaPage.goto(amis)
       await expect(suoritus(page, 'yhteensa.1')).toHaveText('90 / 135 osp')
 
       await page.getByTestId('oo.0.opiskeluoikeus.edit').click()
@@ -303,7 +376,7 @@ test.describe('Ammatillisen tutkinnon uusi käyttöliittymä', () => {
       oppijaPage,
       oppijaPageV2
     }) => {
-      await oppijaPage.gotoWithQueryParams(amis, flag)
+      await oppijaPage.goto(amis)
       await page.getByTestId('oo.0.opiskeluoikeus.edit').click()
 
       await suoritus(page, 'uusi-yhteinen-tutkinnonosa.input').click()
@@ -336,7 +409,7 @@ test.describe('Ammatillisen tutkinnon uusi käyttöliittymä', () => {
       oppijaPage,
       oppijaPageV2
     }) => {
-      await oppijaPage.gotoWithQueryParams(amis, flag)
+      await oppijaPage.goto(amis)
       await page.getByTestId('oo.0.opiskeluoikeus.edit').click()
 
       // Painikkeet ovat ryhmien järjestyksessä: ammatilliset, vapaasti valittavat, ...
@@ -359,7 +432,7 @@ test.describe('Ammatillisen tutkinnon uusi käyttöliittymä', () => {
       oppijaPage,
       oppijaPageV2
     }) => {
-      await oppijaPage.gotoWithQueryParams(amis, flag)
+      await oppijaPage.goto(amis)
       await page.getByTestId('oo.0.opiskeluoikeus.edit').click()
 
       await page
@@ -391,12 +464,129 @@ test.describe('Ammatillisen tutkinnon uusi käyttöliittymä', () => {
       ).toHaveText('Autoalan perustutkinto')
     })
 
+    test('Tutkinnon osan lisääminen toisesta tutkinnosta, kun tutkinto on suorituksen oma', async ({
+      page,
+      oppijaPage,
+      oppijaPageV2
+    }) => {
+      await oppijaPage.goto(amis)
+      await page.getByTestId('oo.0.opiskeluoikeus.edit').click()
+
+      await page
+        .getByRole('button', {
+          name: 'Lisää tutkinnon osa toisesta tutkinnosta'
+        })
+        .nth(1)
+        .click()
+      await suoritus(page, 'modal.tutkinto.input').fill('luonto')
+      await suoritus(
+        page,
+        'modal.tutkinto.options.361902_62/011/2014.item'
+      ).click()
+      await suoritus(
+        page,
+        'modal.uusi-muu-tutkinnonosa-toisesta-tutkinnosta.input'
+      ).click()
+      await suoritus(
+        page,
+        'modal.uusi-muu-tutkinnonosa-toisesta-tutkinnosta.options.100431.item'
+      ).click()
+      await page
+        .locator('.Modal')
+        .getByRole('button', { name: 'Lisää' })
+        .last()
+        .click()
+
+      await oppijaPageV2.tallenna()
+      await expect(
+        osanNimi(page, 'Kestävällä tavalla toimiminen').last()
+      ).toBeVisible()
+    })
+
+    test('Lukio-opinnon lisääminen pelkällä nimellä, peruste esivalitaan', async ({
+      page,
+      oppijaPage,
+      oppijaPageV2
+    }) => {
+      await oppijaPage.goto(autonen)
+      await page.getByTestId('oo.0.opiskeluoikeus.edit').click()
+      await suoritus(page, 'osasuoritukset.4.expand').click()
+      await page.getByRole('button', { name: 'Lisää lukio-opinto' }).click()
+      await page.locator('.Modal input').first().fill('MAA4 Vektorit')
+      await page.locator('.Modal').getByRole('button', { name: 'Lisää' }).click()
+
+      await oppijaPageV2.tallenna()
+      await oppijaPageV2.openAllOsasuoritukset()
+      await expect(page.getByText('MAA4 Vektorit').first()).toBeVisible()
+    })
+
+    test('Hojks tallentuu pelkällä opetusryhmällä', async ({
+      page,
+      oppijaPage,
+      oppijaPageV2
+    }) => {
+      await oppijaPage.goto(autonen)
+      await page.getByTestId('oo.0.opiskeluoikeus.edit').click()
+      await page
+        .locator('.KeyValueRow', {
+          has: page.getByText('Hojks', { exact: true })
+        })
+        .getByRole('button', { name: 'Lisää' })
+        .click()
+      await page.getByTestId(hojksOpetusryhmäInput).click()
+      await page
+        .getByTestId(`${hojksOpetusryhmä}.options.1.item`)
+        .click()
+
+      await oppijaPageV2.tallenna()
+      await expect(
+        page.getByTestId('oo.0.opiskeluoikeus.lisätiedot.opetusryhmä')
+      ).toHaveText('Yleinen opetusryhmä')
+    })
+
+    test('Poistunut koulutuskoodi päivittyy perusteen ainoaan koulutukseen', async ({
+      page,
+      oppijaPage,
+      oppijaPageV2
+    }) => {
+      await oppijaPage.goto(poistunutKoulutuskoodi)
+      const koulutus = page.locator('.AmmatillinenTutkinto')
+      await expect(koulutus).toContainText('123456')
+
+      await page.getByTestId('oo.0.opiskeluoikeus.edit').click()
+      await expect(koulutus).toContainText('341101')
+      await oppijaPageV2.tallenna()
+      await expect(koulutus).toContainText('341101')
+    })
+
+    test('Koulutuskoodin voi valita, kun perusteella on useita koulutuksia', async ({
+      page,
+      oppijaPage,
+      oppijaPageV2
+    }) => {
+      await oppijaPage.goto(montaKoulutuskoodia)
+      const koulutus = page.locator('.AmmatillinenTutkinto')
+      await expect(koulutus).toContainText('12345')
+
+      await page.getByTestId('oo.0.opiskeluoikeus.edit').click()
+      await suoritus(page, 'koulutuskoodi.input').click()
+      for (const koodi of ['12345', '351741', '451741']) {
+        await expect(
+          suoritus(page, `koulutuskoodi.options.${koodi}.item`)
+        ).toBeVisible()
+      }
+      await suoritus(page, 'koulutuskoodi.options.351741.item').click()
+
+      await oppijaPageV2.tallenna()
+      await expect(koulutus).toContainText('351741')
+    })
+
     test('Näytön kuvauksen tyhjentäminen poistaa kuvauksen', async ({
       page,
       oppijaPage,
       oppijaPageV2
     }) => {
-      await oppijaPage.gotoWithQueryParams(ammattilainen, flag)
+      await oppijaPage.goto(ammattilainen)
       await page.getByTestId('oo.0.opiskeluoikeus.edit').click()
       await suoritus(page, 'osasuoritukset.1.expand').click()
       // Tyhjä kuvaus olisi palvelimelle virhe (emptyString), joten
@@ -422,7 +612,7 @@ test.describe('Ammatillisen tutkinnon uusi käyttöliittymä', () => {
       oppijaPage,
       oppijaPageV2
     }) => {
-      await oppijaPage.gotoWithQueryParams(amis, flag)
+      await oppijaPage.goto(amis)
       await page.getByTestId('oo.0.opiskeluoikeus.edit').click()
       await suoritus(page, 'osasuoritukset.0.expand').click()
       await suoritus(
@@ -446,7 +636,7 @@ test.describe('Ammatillisen tutkinnon uusi käyttöliittymä', () => {
       oppijaPageV2
     }) => {
       // Keskiarvon voi antaa vain valmiille suoritukselle
-      await oppijaPage.gotoWithQueryParams(ammattilainen, flag)
+      await oppijaPage.goto(ammattilainen)
       await page.getByTestId('oo.0.opiskeluoikeus.edit').click()
       await suoritus(page, 'painotettu-keskiarvo.edit.input').fill('3.5')
 
@@ -460,7 +650,7 @@ test.describe('Ammatillisen tutkinnon uusi käyttöliittymä', () => {
       page,
       oppijaPage
     }) => {
-      await oppijaPage.gotoWithQueryParams(amis, flag)
+      await oppijaPage.goto(amis)
       await page.getByTestId('oo.0.opiskeluoikeus.edit').click()
       await suoritus(page, '0.osaamisala.input').click()
 
@@ -480,7 +670,7 @@ test.describe('Ammatillisen tutkinnon uusi käyttöliittymä', () => {
       oppijaPage,
       oppijaPageV2
     }) => {
-      await oppijaPage.gotoWithQueryParams(reformi, flag)
+      await oppijaPage.goto(reformi)
       await page.getByTestId('oo.0.opiskeluoikeus.edit').click()
 
       // Korkeakouluopintoja ja jatko-opintovalmiuksia tukevia opintoja voi
@@ -500,7 +690,7 @@ test.describe('Ammatillisen tutkinnon uusi käyttöliittymä', () => {
       oppijaPage,
       oppijaPageV2
     }) => {
-      await oppijaPage.gotoWithQueryParams(autonen, flag)
+      await oppijaPage.goto(autonen)
       await expect(suoritus(page, 'osasuoritukset.0.laajuus.value')).toHaveText(
         '–'
       )
@@ -525,7 +715,7 @@ test.describe('Ammatillisen tutkinnon uusi käyttöliittymä', () => {
       oppijaPage,
       oppijaPageV2
     }) => {
-      await oppijaPage.gotoWithQueryParams(autonen, flag)
+      await oppijaPage.goto(autonen)
       await expect(suoritus(page, 'yhteensa.1')).toHaveText('11 / 145 osp')
       await page.getByTestId('oo.0.opiskeluoikeus.edit').click()
 
@@ -558,7 +748,7 @@ test.describe('Ammatillisen tutkinnon uusi käyttöliittymä', () => {
       oppijaPage,
       oppijaPageV2
     }) => {
-      await oppijaPage.gotoWithQueryParams(erikoinen, flag)
+      await oppijaPage.goto(erikoinen)
       await page.getByTestId('oo.0.opiskeluoikeus.edit').click()
 
       await suoritus(page, 'uusi-muu-tutkinnonosa.input').click()
@@ -602,7 +792,7 @@ test.describe('Ammatillisen tutkinnon uusi käyttöliittymä', () => {
       oppijaPage,
       oppijaPageV2
     }) => {
-      await oppijaPage.gotoWithQueryParams(tunnustettu, flag)
+      await oppijaPage.goto(tunnustettu)
       await page.getByTestId('oo.0.opiskeluoikeus.edit').click()
 
       await page
@@ -638,7 +828,7 @@ test.describe('Ammatillisen tutkinnon uusi käyttöliittymä', () => {
         })
       ).toHaveCount(0)
 
-      await oppijaPage.gotoWithQueryParams(tunnustettu, flag)
+      await oppijaPage.goto(tunnustettu)
       await expect(page.getByTestId('oo.0.suoritusTabs.0.tab')).toHaveText(
         'Autoalan perustutkinto'
       )
@@ -650,7 +840,7 @@ test.describe('Ammatillisen tutkinnon uusi käyttöliittymä', () => {
       oppijaPage,
       oppijaPageV2
     }) => {
-      await oppijaPage.gotoWithQueryParams(tunnustettu, flag)
+      await oppijaPage.goto(tunnustettu)
       await page.getByTestId('oo.0.opiskeluoikeus.edit').click()
       await page
         .getByText('lisää näyttötutkintoon valmistavan koulutuksen suoritus')
@@ -675,7 +865,7 @@ test.describe('Ammatillisen tutkinnon uusi käyttöliittymä', () => {
       page,
       oppijaPage
     }) => {
-      await oppijaPage.gotoWithQueryParams(paallekkaisia, flag)
+      await oppijaPage.goto(paallekkaisia)
       // Oppijalla on kaksi opiskeluoikeutta, joista jälkimmäinen on pelkkä valmistava koulutus
       await page.getByTestId('oo.0.opiskeluoikeus.edit').nth(1).click()
       await page.getByText('lisää ammatillisen tutkinnon suoritus').click()
@@ -704,12 +894,6 @@ test.describe('Ammatillisen tutkinnon uusi käyttöliittymä kansalaiselle', () 
   })
   test.use({ storageState: kansalainen('280618-402H') })
 
-  test.beforeEach(async ({ page }) => {
-    await page.addInitScript((flagName) => {
-      window.localStorage.setItem(flagName, 'true')
-    }, FEATURE_FLAG)
-  })
-
   test('Näyttää tutkinnon tiedot ja ryhmien laajuudet', async ({
     page,
     kansalainenPage
@@ -722,6 +906,36 @@ test.describe('Ammatillisen tutkinnon uusi käyttöliittymä kansalaiselle', () 
     )
     await expect(suoritus(page, 'yhteensa.1')).toHaveText('135 / 135 osp')
     await expect(page.getByTestId('oo.0.opiskeluoikeus.edit')).toHaveCount(0)
+    await expect(page.locator('.AmmatillinenTutkinto')).not.toContainText(
+      '361902'
+    )
+  })
+
+  test.describe('Ostettu koulutus', () => {
+    test.use({ storageState: kansalainen('080154-770R') })
+
+    test('Ostettu-tietoa ei näytetä', async ({ page, kansalainenPage }) => {
+      await kansalainenPage.goto()
+      await page.locator('.OpiskeluoikeusTitle__expand').first().click()
+      await expect(suoritus(page, 'koulutus')).toBeVisible()
+      await expect(page.getByText('Ostettu')).toHaveCount(0)
+    })
+  })
+
+  test.describe('Opiskeluoikeus, jolla on organisaatiohistoriaa', () => {
+    test.use({ storageState: kansalainen('200994-834A') })
+
+    test('Organisaatiohistoriaa ei näytetä', async ({
+      page,
+      kansalainenPage
+    }) => {
+      await kansalainenPage.goto()
+      await page.locator('.OpiskeluoikeusTitle__expand').first().click()
+      await expect(suoritus(page, 'koulutus')).toBeVisible()
+      await expect(
+        page.getByText('Opiskeluoikeuden organisaatiohistoria')
+      ).toHaveCount(0)
+    })
   })
 
   test('Sivulla ei saavutettavuusvirheitä', async ({

@@ -120,6 +120,8 @@ import { SisältyyOpiskeluoikeuteen } from './SisältyyOpiskeluoikeuteen'
 import { AmmatillinenArviointiasteikko } from './AmmatillinenArviointiasteikko'
 import { isAmmatillisenTutkinnonOsittainenUseastaTutkinnostaSuoritus } from '../types/fi/oph/koski/schema/AmmatillisenTutkinnonOsittainenUseastaTutkinnostaSuoritus'
 import { AmmatillinenTutkintoOsittainenUseastaTutkinnostaEditor } from './ammatillinen-osittainen-useasta-tutkinnosta/AmmatillinenTutkintoOsittainenUseastaTutkinnostaEditor'
+import { KoulutuksenKoodiarvo } from '../components-v2/opiskeluoikeus/KoulutuksenKoodiarvo'
+import { KoulutuskoodiEdit } from './KoulutuskoodiEdit'
 
 export type AmmatillinenEditorProps =
   AdaptedOpiskeluoikeusEditorProps<AmmatillinenOpiskeluoikeus>
@@ -140,16 +142,23 @@ const AmmatillinenEditor: React.FC<AmmatillinenEditorProps> = (props) => {
   )
 }
 
+// Koodiston nimi voi poiketa perusteen nimestä, joten perusteen nimi on ensisijainen
+// kuten koulutusrivillä ja vanhassa käyttöliittymässä.
+const koulutuksenNimi = (
+  koulutusmoduuli: AmmatillinenPäätasonSuoritus['koulutusmoduuli']
+): LocalizedString | undefined =>
+  ('perusteenNimi' in koulutusmoduuli && koulutusmoduuli.perusteenNimi) ||
+  koulutusmoduuli.tunniste.nimi
+
 const suorituksenNimi = (oo: AmmatillinenOpiskeluoikeus): string => {
+  const nimi = t(koulutuksenNimi(oo.suoritukset[0].koulutusmoduuli))
   if (
     oo.suoritukset[0].tyyppi.koodiarvo === 'ammatillinentutkintoosittainen' &&
     oo.suoritukset[0].koulutusmoduuli.tunniste.koodiarvo !==
       'ammatillinentutkintoosittainenuseastatutkinnosta'
   ) {
-    return (
-      t(oo.suoritukset[0].koulutusmoduuli.tunniste.nimi) + t(', osittainen')
-    )
-  } else return t(oo.suoritukset[0].koulutusmoduuli.tunniste.nimi)
+    return nimi + t(', osittainen')
+  } else return nimi
 }
 
 const AmmatillinenPäätasonSuoritusEditor: React.FC<
@@ -235,13 +244,27 @@ const AmmatillisenPäätasonSuorituksenTiedot: React.FC<{
                   tutkinto.suoritus.koulutusmoduuli.tunniste.nimi
               )}
             </TestIdText>
-            <span>{tutkinto.suoritus.koulutusmoduuli.tunniste.koodiarvo}</span>
+            {form.editMode ? (
+              <KoulutuskoodiEdit
+                form={form}
+                path={tutkinto.path.prop('koulutusmoduuli').prop('tunniste')}
+                tunniste={tutkinto.suoritus.koulutusmoduuli.tunniste}
+                diaarinumero={
+                  tutkinto.suoritus.koulutusmoduuli.perusteenDiaarinumero
+                }
+              />
+            ) : (
+              <KoulutuksenKoodiarvo
+                koodiarvo={tutkinto.suoritus.koulutusmoduuli.tunniste.koodiarvo}
+              />
+            )}
             <FormField
               form={form}
               path={tutkinto.path
                 .prop('koulutusmoduuli')
                 .prop('perusteenDiaarinumero')}
               view={PerusteView}
+              viewProps={{ päättymispäivä: form.state.päättymispäivä }}
             />
           </span>
         </KeyValueRow>
@@ -262,13 +285,16 @@ const AmmatillisenPäätasonSuorituksenTiedot: React.FC<{
                   valmistava.suoritus.tutkinto.tunniste.nimi
               )}
             </TestIdText>
-            <span>{valmistava.suoritus.tutkinto.tunniste.koodiarvo}</span>
+            <KoulutuksenKoodiarvo
+              koodiarvo={valmistava.suoritus.tutkinto.tunniste.koodiarvo}
+            />
             <FormField
               form={form}
               path={valmistava.path
                 .prop('tutkinto')
                 .prop('perusteenDiaarinumero')}
               view={PerusteView}
+              viewProps={{ päättymispäivä: form.state.päättymispäivä }}
             />
           </span>
         </KeyValueRow>
@@ -790,7 +816,7 @@ const päätasonSuorituksenNimi = (
 ): LocalizedString =>
   isAmmatillisenTutkinnonOsittainenSuoritus(suoritus)
     ? suoritus.tyyppi.nimi || localize(suoritus.tyyppi.koodiarvo)
-    : suoritus.koulutusmoduuli.tunniste.nimi ||
+    : koulutuksenNimi(suoritus.koulutusmoduuli) ||
       localize(suoritus.koulutusmoduuli.tunniste.koodiarvo)
 
 const keskiarvoFormatter = new Intl.NumberFormat('fi-FI', {

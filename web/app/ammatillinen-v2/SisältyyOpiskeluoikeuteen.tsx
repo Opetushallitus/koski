@@ -1,4 +1,5 @@
 import React from 'react'
+import { useVirkailijaUser } from '../appstate/user'
 import { FormModel } from '../components-v2/forms/FormModel'
 import { AmmatillinenOpiskeluoikeus } from '../types/fi/oph/koski/schema/AmmatillinenOpiskeluoikeus'
 import { SisältäväOpiskeluoikeus } from '../types/fi/oph/koski/schema/SisaltavaOpiskeluoikeus'
@@ -43,18 +44,24 @@ export const SisältyyOpiskeluoikeuteen: React.FC<
   SisältyyOpiskeluoikeuteenProps
 > = ({ form }) => {
   const path = form.root.prop('sisältyyOpiskeluoikeuteen')
+  const virkailija = useVirkailijaUser()
 
   return (
-    <KeyValueTable>
-      <KeyValueRow localizableLabel={'Ostettu'}>
-        <FormField
-          form={form}
-          view={BooleanView}
-          viewProps={{ hideFalse: true }}
-          edit={BooleanEdit}
-          path={form.root.prop('ostettu')}
-        />
-      </KeyValueRow>
+    <KeyValueTable editMode={form.editMode}>
+      {virkailija && (
+        <KeyValueRow
+          localizableLabel={'Ostettu'}
+          hideIfEmpty={form.state.ostettu}
+        >
+          <FormField
+            form={form}
+            view={BooleanView}
+            viewProps={{ hideFalse: true }}
+            edit={BooleanEdit}
+            path={form.root.prop('ostettu')}
+          />
+        </KeyValueRow>
+      )}
       <KeyValueRow localizableLabel={'Sisältyy opiskeluoikeuteen'}>
         {form.state.sisältyyOpiskeluoikeuteen ? (
           <FormField
@@ -128,7 +135,7 @@ const SisältyyOpiskeluoikeuteenEdit = ({
                 oppilaitos: Oppilaitos({ oid: org.oid, nimi: org.nimi })
               })
             }
-            orgTypes={['OPPILAITOS']}
+            orgTypes={['OPPILAITOS', 'OPPISOPIMUSTOIMIPISTE']}
           />
         </KeyValueRow>
       </KeyValueTable>
