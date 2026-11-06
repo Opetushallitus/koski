@@ -21,7 +21,7 @@ class YtrKoesuoritusServlet(implicit val application: KoskiApplication) extends 
     if (Environment.usesAwsSecretsManager) YtrS3Config.fromSecretsManager else YtrS3Config.fromConfig(application.config)
   }
 
-  private val koesuoritukset: KoesuoritusService = KoesuoritusService(s3config)
+  private val koesuoritukset: KoesuoritusService = KoesuoritusService(application.config, s3config)
 
   get("/*.*")(nonce => {
     val examPaper = multiParams("splat").mkString(".")

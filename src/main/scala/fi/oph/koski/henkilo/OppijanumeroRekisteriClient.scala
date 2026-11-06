@@ -3,6 +3,7 @@ package fi.oph.koski.henkilo
 import java.time.LocalDate
 import cats.effect.IO
 import com.typesafe.config.Config
+import fi.oph.koski.config.Environment
 import fi.oph.koski.http.Http._
 import fi.oph.koski.http._
 import fi.oph.koski.json.Json4sHttp4s.json4sEncoderOf
@@ -43,6 +44,7 @@ case class OppijanumeroRekisteriClient(
 
   private val oauth2clientFactory: (String, Client[IO]) => Http = {
     if (otuvaTokenEndpoint == "mock") {
+      Environment.requireMockAllowed(config, "otuvaTokenEndpoint")
       (root: String, client: Client[IO]) => {
         Http(root, ClientWithBasicAuthentication(client,
           config.getString("opintopolku.virkailija.username"),

@@ -1,6 +1,7 @@
 package fi.oph.koski.sso
 
 import com.typesafe.config.Config
+import fi.oph.koski.config.Environment
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.koskiuser.{UserAuthenticationContext, UserLanguage}
 import fi.oph.koski.log.Logging
@@ -137,7 +138,14 @@ trait SSOSupport extends ScalatraBase with Logging {
 }
 
 case class SSOConfig(config: Config) {
-  def isCasSsoUsed = SSOConfigurationOverride.getValue(config, "login.security") != "mock"
+  // ScalatraBootstrap kutsuu tätä servlettejä liittäessään, joten mock tuotannossa estää käynnistyksen.
+  def isCasSsoUsed: Boolean = {
+    val usesMockLogin = SSOConfigurationOverride.getValue(config, "login.security") == "mock"
+    if (usesMockLogin) {
+      Environment.requireMockAllowed(config, "login.security")
+    }
+    !usesMockLogin
+  }
 }
 
 object SSOConfigurationOverride {

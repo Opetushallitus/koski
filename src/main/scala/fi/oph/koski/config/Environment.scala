@@ -33,6 +33,11 @@ object Environment {
   def isProdEnvironment(config: Config): Boolean =
     !NonProductionEnvironments.contains(currentEnvironment(config))
 
+  def requireMockAllowed(config: Config, mock: String): Unit =
+    if (isProdEnvironment(config)) {
+      throw new IllegalStateException(s"$mock ei ole sallittu tuotannossa")
+    }
+
   def isServerEnvironment(config: Config): Boolean = !Set(Local, UnitTest).contains(currentEnvironment(config))
 
   def usesAwsAppConfig: Boolean = {

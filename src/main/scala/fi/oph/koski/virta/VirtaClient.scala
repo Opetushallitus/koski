@@ -23,6 +23,7 @@ object VirtaClient extends Logging {
     }
     serviceUrl match {
       case "mock" =>
+        Environment.requireMockAllowed(config, "MockVirtaClient")
         logger.info("Using mock Virta integration")
         MockVirtaClient(hetu, config)
       case "" =>

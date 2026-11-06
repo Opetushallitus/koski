@@ -3,6 +3,7 @@ package fi.oph.koski.valpas.opiskeluoikeusrepository
 import java.time.LocalDate
 import java.time.LocalDate.{of => date}
 import com.typesafe.config.Config
+import fi.oph.koski.config.Environment
 import fi.oph.koski.log.Logging
 import fi.oph.koski.valpas.opiskeluoikeusrepository.MockValpasRajapäivätService.defaultMockTarkastelupäivä
 
@@ -140,6 +141,7 @@ object ValpasRajapäivätService {
 
   def apply(config: Config) = {
     if (config.getBoolean(UseMockPath)) {
+      Environment.requireMockAllowed(config, UseMockPath)
       new MockValpasRajapäivätService(config)
     } else {
       new ConfigValpasRajapäivätService(config)

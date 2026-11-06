@@ -267,6 +267,11 @@ class KoskiApplication(
   def init(): Future[Any] = {
     AuditLog.startHeartbeat()
 
+    // Muut mock-toteutuksen valitsevat palvelut alustuvat servlettien mukana. Näitä ei muuten
+    // alustettaisi ennen ensimmäistä käyttöä, eikä mock tuotannossa estäisi käynnistystä.
+    prometheusRepository
+    ovaraClient
+
     tryCatch("Koodistojen luonti") {
       if (config.getString("opintopolku.virkailija.url") != "mock") {
         KoodistoCreator(this).createAndUpdateCodesBasedOnMockData
