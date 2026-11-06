@@ -15,20 +15,40 @@ object MuunKuinSäännellynKoulutuksenValidation {
   private val arviointiVaaditaanAlkaen = LocalDate.of(2027, 1, 1)
 
   def validateOpiskeluoikeus(opiskeluoikeus: Opiskeluoikeus): HttpStatus = opiskeluoikeus match {
-    case oo: MuunKuinSäännellynKoulutuksenOpiskeluoikeus
-      if oo.alkamispäivä.exists(alkamispäivä => !alkamispäivä.isBefore(arviointiVaaditaanAlkaen)) =>
+    case oo: MuunKuinSäännellynKoulutuksenOpiskeluoikeus =>
       HttpStatus.fold(
-        validateOsasuoritustenArvioinnit(oo),
-        validateOsasuoritustenArviointipäivät(oo),
+        validatePäättävänTilanVahvistus(oo),
+        validateArvioinnit(oo),
       )
     case _ => HttpStatus.ok
   }
 
+  private def validatePäättävänTilanVahvistus(oo: MuunKuinSäännellynKoulutuksenOpiskeluoikeus): HttpStatus =
+    viimeisinTila(oo) match {
+      case Some("hyvaksytystisuoritettu") if !oo.suoritukset.forall(_.vahvistettu) =>
+        KoskiErrorCategory.badRequest.validation.tila.vahvistusPuuttuu(
+          "Suoritukselta puuttuu vahvistus, vaikka opiskeluoikeus on tilassa hyväksytysti suoritettu"
+        )
+      case Some("keskeytynyt") if oo.suoritukset.exists(_.vahvistettu) =>
+        KoskiErrorCategory.badRequest.validation.tila.tilaEronnutTaiKatsotaanEronneeksiVaikkaVahvistettuPäätasonSuoritus(
+          "Opiskeluoikeutta ei voi merkitä keskeytyneeksi, koska päätason suoritus on vahvistettu"
+        )
+      case _ => HttpStatus.ok
+    }
+
+  private def validateArvioinnit(oo: MuunKuinSäännellynKoulutuksenOpiskeluoikeus): HttpStatus =
+    if (oo.alkamispäivä.exists(alkamispäivä => !alkamispäivä.isBefore(arviointiVaaditaanAlkaen))) {
+      HttpStatus.fold(
+        validateOsasuoritustenArvioinnit(oo),
+        validateOsasuoritustenArviointipäivät(oo),
+      )
+    } else {
+      HttpStatus.ok
+    }
+
   private def validateOsasuoritustenArvioinnit(oo: MuunKuinSäännellynKoulutuksenOpiskeluoikeus): HttpStatus = {
-    val viimeisinTila = oo.tila.opiskeluoikeusjaksot.lastOption.map(_.tila.koodiarvo)
     val arvioimattomienOsasuoritustenTunnisteet = oo.suoritukset
-      .filter(_.vahvistettu)
-      .flatMap(arviointiaVaativatOsasuoritukset(_, viimeisinTila))
+      .flatMap(arviointiaVaativatOsasuoritukset(_, viimeisinTila(oo)))
       .filterNot(_.arvioitu)
       .map(_.koulutusmoduuli.tunniste)
 
@@ -46,7 +66,8 @@ object MuunKuinSäännellynKoulutuksenValidation {
     case Some("keskeytynyt") => suoritus.osasuoritusLista.flatMap(osasuoritus =>
       if (osasuoritus.osasuoritusLista.isEmpty) List(osasuoritus) else osasuoritus.rekursiivisetOsasuoritukset
     )
-    case _ => suoritus.rekursiivisetOsasuoritukset
+    case _ if suoritus.vahvistettu => suoritus.rekursiivisetOsasuoritukset
+    case _ => Nil
   }
 
   private def validateOsasuoritustenArviointipäivät(oo: MuunKuinSäännellynKoulutuksenOpiskeluoikeus): HttpStatus = {
@@ -61,6 +82,9 @@ object MuunKuinSäännellynKoulutuksenValidation {
       )
     ))
   }
+
+  private def viimeisinTila(oo: MuunKuinSäännellynKoulutuksenOpiskeluoikeus): Option[String] =
+    oo.tila.opiskeluoikeusjaksot.lastOption.map(_.tila.koodiarvo)
 
   private def tunnisteTekstinä(tunniste: KoodiViite, kieli: String): String = {
     tunniste.getNimi.flatMap(_.getOptional(kieli)) match {

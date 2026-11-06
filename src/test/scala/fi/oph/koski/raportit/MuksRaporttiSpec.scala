@@ -65,7 +65,7 @@ class MuksRaporttiSpec
         viimeisinTila = Some("hyvaksytystisuoritettu"),
         opiskeluoikeudenTilatAikajaksonAikana = "lasna, hyvaksytystisuoritettu",
         opintokokonaisuus = Some("1138 Kuvallisen ilmaisun perusteet ja välineet"),
-        suorituksenVahvistuspäivä = None,
+        suorituksenVahvistuspäivä = Some(LocalDate.of(2023, 2, 1)),
         rahoitukset = "14",
         jotpaAsianumero = Some("01/5848/2023"),
         yhteislaajuus = 30.0,
