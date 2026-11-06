@@ -25,6 +25,8 @@ trait MassaluovutusQueryParameters {
   def run(application: KoskiApplication, writer: QueryResultWriter)(implicit user: Session with SensitiveDataAllowed): Either[String, Unit]
 
   def queryAllowed(application: KoskiApplication)(implicit user: Session): Boolean
+  // Lisäehto toisen käyttäjän kyselyn näkemiselle (MassaluovutusUtils.näkeeMuidenKäyttäjienKyselyt). Oletuksena lisäehtoa ei ole.
+  def additionalAccessCheckForOtherUsers(application: KoskiApplication)(implicit user: Session): Boolean = true
   def asJson: JValue = JsonSerializer.serializeWithRoot(this)
   def fillAndValidate(implicit user: Session): Either[HttpStatus, MassaluovutusQueryParameters] = Right(this)
   def priority: Int = MassaluovutusQueryPriority.normal

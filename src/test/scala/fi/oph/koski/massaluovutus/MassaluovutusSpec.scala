@@ -13,9 +13,11 @@ import fi.oph.koski.massaluovutus.organisaationopiskeluoikeudet.{MassaluovutusQu
 import fi.oph.koski.massaluovutus.paallekkaisetopiskeluoikeudet.MassaluovutusQueryPaallekkaisetOpiskeluoikeudet
 import fi.oph.koski.massaluovutus.suorituspalvelu.{SuorituspalveluMuuttuneetJalkeenQuery, SuorituspalveluOppijaOidsQuery}
 import fi.oph.koski.massaluovutus.valintalaskenta.ValintalaskentaQuery
+import fi.oph.koski.massaluovutus.valpas.oppivelvolliset.ValpasOppivelvollisetQuery
 import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.schema.{KoskeenTallennettavaOpiskeluoikeus, LocalizedString, OpiskeluoikeudenTyyppi, PerusopetuksenVuosiluokanSuoritus}
 import fi.oph.koski.util.Wait
+import fi.oph.koski.valpas.valpasuser.ValpasMockUsers
 import fi.oph.koski.KoskiApplicationForTests
 import fi.oph.koski.raportit.RaportitService
 import fi.oph.scalaschema.Serializer.format
@@ -237,6 +239,22 @@ class MassaluovutusSpec extends AnyFreeSpec with MassaluovutusTestMethods with M
         getOmatKyselyt(MockUsers.tornioTallentaja) { kyselyt =>
           kyselyt.map(_.queryId) should equal(List(tuore.queryId))
         }
+      }
+    }
+  }
+
+  "Valppaan kyselyä ei voi hakea Kosken massaluovutusrajapinnasta" in {
+    withoutRunningQueryScheduler {
+      val kysely = app.massaluovutusService.addRaw(PendingQuery(
+        queryId = UUID.randomUUID().toString,
+        userOid = ValpasMockUsers.valpasOphPääkäyttäjä.oid,
+        query = ValpasOppivelvollisetQuery(kuntaOid = MockOrganisaatiot.helsinginKaupunki),
+        createdAt = LocalDateTime.now(),
+        session = JObject(),
+        meta = None,
+      ))
+      getQuery(kysely.queryId, MockUsers.paakayttaja) {
+        verifyResponseStatus(404, KoskiErrorCategory.notFound())
       }
     }
   }

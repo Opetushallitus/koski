@@ -9,6 +9,7 @@ import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.json.SensitiveDataAllowed
 import fi.oph.koski.koskiuser.{KoskiSpecificSession, Session}
 import fi.oph.koski.log.Logging
+import fi.oph.koski.massaluovutus.valpas.ValpasMassaluovutusQueryParameters
 import fi.oph.koski.util.{Timeout, TryWithLogging}
 import fi.oph.koski.valpas.valpasuser.{ValpasRooli, ValpasSession}
 
@@ -37,10 +38,7 @@ class MassaluovutusService(application: KoskiApplication) extends GlobalExecutio
 
   def add(query: MassaluovutusQueryParameters)(implicit user: Session with SensitiveDataAllowed): Either[HttpStatus, Query] = {
     query.fillAndValidate.flatMap { query =>
-      val existing = user match {
-        case s: KoskiSpecificSession => queries.getExistingKoskiQuery(query)(s)
-        case s: ValpasSession => queries.getExistingValpasQuery(query)(s)
-      }
+      val existing = queries.getExisting(query, user.oid, näkeeMuidenKyselyt(query))
 
       existing.fold {
         if (query.queryAllowed(application)) {
@@ -54,12 +52,21 @@ class MassaluovutusService(application: KoskiApplication) extends GlobalExecutio
 
   def addRaw(query: Query): Query = queries.addRaw(query)
 
-  def get(id: UUID)(implicit user: Session): Either[HttpStatus, Query] = {
-    val queryWithAccess = user match {
-      case s: KoskiSpecificSession => queries.getKoskiQuery(id)(s).filter(_.userOid == s.oid || MassaluovutusUtils.näkeeMuidenKäyttäjienKyselyt(s))
-      case s: ValpasSession => queries.getValpasQuery(id)(s).filter(_.userOid == s.oid || s.hasGlobalValpasOikeus(Set(ValpasRooli.KUNTA_MASSALUOVUTUS)))
-    }
-    queryWithAccess.toRight(KoskiErrorCategory.notFound())
+  def get(id: UUID)(implicit user: Session): Either[HttpStatus, Query] =
+    queries.get(id)
+      .filter(q => samanPalvelunKysely(q.query) && (q.userOid == user.oid || näkeeMuidenKyselyt(q.query)))
+      .toRight(KoskiErrorCategory.notFound())
+
+  private def näkeeMuidenKyselyt(query: MassaluovutusQueryParameters)(implicit user: Session): Boolean = user match {
+    case s: KoskiSpecificSession => MassaluovutusUtils.näkeeMuidenKäyttäjienKyselyt(s, query, application)
+    case s: ValpasSession => s.hasGlobalValpasOikeus(Set(ValpasRooli.KUNTA_MASSALUOVUTUS))
+  }
+
+  // Kosken ja Valppaan massaluovutusrajapinnat näyttävät vain omat kyselytyyppinsä
+  private def samanPalvelunKysely(query: MassaluovutusQueryParameters)(implicit user: Session): Boolean = (user, query) match {
+    case (_: KoskiSpecificSession, _: KoskiMassaluovutusQueryParameters) => true
+    case (_: ValpasSession, _: ValpasMassaluovutusQueryParameters) => true
+    case _ => false
   }
 
   def getOwnQueries(implicit user: Session): List[Query] =

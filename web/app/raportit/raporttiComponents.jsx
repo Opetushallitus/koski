@@ -10,10 +10,11 @@ import { t } from '../i18n/i18n'
 export const LyhytKuvaus = ({ children }) =>
   children ? <p className="lyhyt-kuvaus">{children}</p> : null
 
-export const PaivaValinta = ({ paivaAtom, ohje, label }) => (
+export const PaivaValinta = ({ paivaAtom, ohje, label, inputId }) => (
   <div className="parametri">
     <label>{label || <Text name="select-date" />}</label>
     <DateInput
+      inputId={inputId}
       value={paivaAtom.get()}
       valueCallback={(value) => paivaAtom.set(value)}
       validityCallback={(valid) => !valid && paivaAtom.set(undefined)}

@@ -2,6 +2,7 @@ package fi.oph.koski.massaluovutus
 
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.koskiuser.{MockUsers, UserWithPassword}
+import fi.oph.koski.log.AuditLogTester
 import fi.oph.koski.massaluovutus.raportit._
 import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.raportit.RaportitService
@@ -46,6 +47,20 @@ class MassaluovutusRaportitSpec extends AnyFreeSpec with MassaluovutusTestMethod
       verifyResponseStatus(403, KoskiErrorCategory.forbidden())
     }
   }
+
+  private def verifyAinoaAuditlokimerkintä(raportti: String, paiva: String, oppilaitokset: List[String]): Unit =
+    AuditLogTester.verifyOnlyAuditLogMessageForOperation(Map(
+      "operation" -> "OPISKELUOIKEUS_RAPORTTI",
+      "target" -> Map("hakuEhto" -> (
+        "lang=fi&" + oppilaitokset.map(oid => s"oppilaitosOid=$oid").mkString("&") + s"&paiva=$paiva&raportti=$raportti"
+      )),
+    ))
+
+  private val helsinginOstopalveluyksiköt = List(
+    MockOrganisaatiot.jyväskylänNormaalikoulu,
+    MockOrganisaatiot.päiväkotiMajakka,
+    MockOrganisaatiot.päiväkotiTouhula,
+  )
 
   // Lukio
 
@@ -306,6 +321,31 @@ class MassaluovutusRaportitSpec extends AnyFreeSpec with MassaluovutusTestMethod
     "Ei onnistu väärän organisaation tietoihin" in {
       raporttiKyselyEiOnnistu(query, MockUsers.helsinkiKatselija)
     }
+
+    "Kysely kirjaa auditlokiin yhden merkinnän" in {
+      AuditLogTester.clearMessages()
+      raporttiKyselyOnnistuu(query, MockUsers.jyväskylänNormaalikoulunPalvelukäyttäjä)
+      verifyAinoaAuditlokimerkintä("esiopetus", "2012-01-01", List(MockOrganisaatiot.jyväskylänNormaalikoulu))
+    }
+
+    "Toisen käyttäjän tulostiedostoa ei voi ladata OPH:n käyttäjä, joka ei saisi tehdä samaa kyselyä" in {
+      val queryId = addQuerySuccessfully(query, MockUsers.jyväskylänNormaalikoulunPalvelukäyttäjä)(_.queryId)
+      val tiedosto = waitForCompletion(queryId, MockUsers.jyväskylänNormaalikoulunPalvelukäyttäjä).files.head
+      getResult(tiedosto, MockUsers.ophLukioKatselija) {
+        verifyResponseStatus(404, KoskiErrorCategory.notFound())
+      }
+      verifyResult(tiedosto, MockUsers.ophkatselija)
+    }
+
+    "Ostopalvelu/palveluseteli-kysely onnistuu ja kirjaa auditlokiin ostopalveluyksiköt" in {
+      AuditLogTester.clearMessages()
+      val ostopalvelukysely = query.copy(
+        paiva = LocalDate.of(2015, 1, 1),
+        organisaatioOid = Some(app.organisaatioService.ostopalveluRootOid),
+      )
+      raporttiKyselyOnnistuu(ostopalvelukysely, MockUsers.helsinkiTallentaja)
+      verifyAinoaAuditlokimerkintä("esiopetus", "2015-01-01", helsinginOstopalveluyksiköt)
+    }
   }
 
   "Esiopetuksen oppijamäärät" - {
@@ -320,6 +360,16 @@ class MassaluovutusRaportitSpec extends AnyFreeSpec with MassaluovutusTestMethod
 
     "Ei onnistu väärän organisaation tietoihin" in {
       raporttiKyselyEiOnnistu(query, MockUsers.helsinkiKatselija)
+    }
+
+    "Ostopalvelu/palveluseteli-kysely onnistuu ja kirjaa auditlokiin ostopalveluyksiköt" in {
+      AuditLogTester.clearMessages()
+      val ostopalvelukysely = query.copy(
+        paiva = LocalDate.of(2015, 1, 1),
+        organisaatioOid = Some(app.organisaatioService.ostopalveluRootOid),
+      )
+      raporttiKyselyOnnistuu(ostopalvelukysely, MockUsers.helsinkiTallentaja)
+      verifyAinoaAuditlokimerkintä("esiopetuksenoppijamaaratraportti", "2015-01-01", helsinginOstopalveluyksiköt)
     }
   }
 
@@ -382,6 +432,10 @@ class MassaluovutusRaportitSpec extends AnyFreeSpec with MassaluovutusTestMethod
 
     "Kysely onnistuu ja palauttaa oikeat tiedostot" in {
       raporttiKyselyOnnistuu(query, MockUsers.paakayttaja)
+    }
+
+    "Kysely kotikuntapäivällä onnistuu" in {
+      raporttiKyselyOnnistuu(query.copy(kotikuntaPvm = Some(LocalDate.of(2015, 1, 1))), MockUsers.paakayttaja)
     }
 
     "Ei onnistu väärän organisaation tietoihin" in {
@@ -496,6 +550,92 @@ class MassaluovutusRaportitSpec extends AnyFreeSpec with MassaluovutusTestMethod
 
     "Ei onnistu väärän organisaation tietoihin" in {
       raporttiKyselyEiOnnistu(query, MockUsers.helsinkiKatselija)
+    }
+  }
+
+  "Kotikuntalaskelma" - {
+    val query = MassaluovutusQueryKotikuntalaskelma(
+      paiva = LocalDate.of(2026, 9, 1),
+      organisaatioOid = Some(MockOrganisaatiot.helsinginKaupunki),
+    )
+
+    "Kysely onnistuu ja palauttaa oikeat tiedostot" in {
+      raporttiKyselyOnnistuu(query.copy(organisaatioOid = Some(MockOrganisaatiot.aapajoenKoulu)), MockUsers.kalle)
+    }
+
+    "Kysely kirjaa auditlokiin yhden merkinnän" in {
+      AuditLogTester.clearMessages()
+      raporttiKyselyOnnistuu(query, MockUsers.helsinkiPerusopetuksenKatselija)
+      verifyAinoaAuditlokimerkintä("kotikuntalaskelma", "2026-09-01", List(MockOrganisaatiot.helsinginKaupunki))
+    }
+
+    "Perus- ja esiopetuksen oikeuksilla kysely onnistuu" in {
+      raporttiKyselyOnnistuu(query, MockUsers.helsinkiPerusopetuksenKatselija)
+    }
+
+    "Pelkillä esiopetuksen oikeuksilla ei onnistu" in {
+      raporttiKyselyEiOnnistu(query, MockUsers.esiopetusTallentaja)
+    }
+
+    "Pelkillä perusopetuksen oikeuksilla ei onnistu" in {
+      raporttiKyselyEiOnnistu(query, MockUsers.helsinkiPelkänPerusopetuksenKatselija)
+    }
+
+    "Koulutusmuotoihin rajatuilla OPH:n oikeuksilla ei onnistu" in {
+      raporttiKyselyEiOnnistu(query, MockUsers.ophLukioKatselija)
+    }
+
+    "Ei onnistu toisen koulutustoimijan oppilaitokselle" in {
+      raporttiKyselyEiOnnistu(query.copy(organisaatioOid = Some(MockOrganisaatiot.aapajoenKoulu)), MockUsers.helsinkiTallentaja)
+    }
+  }
+
+  "Kunnan oppijat" - {
+    val query = MassaluovutusQueryKunnanOppijat(
+      paiva = LocalDate.of(2026, 9, 1),
+      organisaatioOid = Some(MockOrganisaatiot.helsinginKaupunki),
+    )
+
+    "Kysely onnistuu ja palauttaa oikeat tiedostot" in {
+      raporttiKyselyOnnistuu(query, MockUsers.paakayttaja)
+    }
+
+    "Kysely kirjaa auditlokiin yhden merkinnän" in {
+      AuditLogTester.clearMessages()
+      raporttiKyselyOnnistuu(query, MockUsers.helsinkiPerusopetuksenKatselija)
+      verifyAinoaAuditlokimerkintä("kunnanoppijat", "2026-09-01", List(MockOrganisaatiot.helsinginKaupunki))
+    }
+
+    "Perus- ja esiopetuksen oikeuksilla kysely onnistuu" in {
+      raporttiKyselyOnnistuu(query, MockUsers.helsinkiPerusopetuksenKatselija)
+    }
+
+    "Kysely onnistuu kunnalle, jolla ei ole omia oppilaitoksia" in {
+      raporttiKyselyOnnistuu(query.copy(organisaatioOid = Some(MockOrganisaatiot.pyhtäänKunta)), MockUsers.pyhtäänTallentaja)
+    }
+
+    "Ei onnistu organisaatiolle, joka ei ole kunta" in {
+      raporttiKyselyEiOnnistu(query.copy(organisaatioOid = Some(MockOrganisaatiot.aapajoenKoulu)), MockUsers.kalle)
+    }
+
+    "Kunnan oppilaitoksen käyttöoikeuksilla ei onnistu" in {
+      raporttiKyselyEiOnnistu(query, MockUsers.stadinAmmattiopistoKatselija)
+    }
+
+    "Kunnan esiopetuksen käyttöoikeuksilla ei onnistu" in {
+      raporttiKyselyEiOnnistu(query, MockUsers.esiopetusTallentaja)
+    }
+
+    "Kunnan pelkillä perusopetuksen käyttöoikeuksilla ei onnistu" in {
+      raporttiKyselyEiOnnistu(query, MockUsers.helsinkiPelkänPerusopetuksenKatselija)
+    }
+
+    "Koulutusmuotoihin rajatuilla OPH:n oikeuksilla ei onnistu" in {
+      raporttiKyselyEiOnnistu(query, MockUsers.ophLukioKatselija)
+    }
+
+    "Luottamuksellisten tietojen oikeus muussa organisaatiossa ei riitä" in {
+      raporttiKyselyEiOnnistu(query, MockUsers.helsinkiIlmanLuottamuksellisiaTietoja)
     }
   }
 }

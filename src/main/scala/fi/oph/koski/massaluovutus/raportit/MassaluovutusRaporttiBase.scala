@@ -3,7 +3,7 @@ package fi.oph.koski.massaluovutus.raportit
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.http.HttpStatus
 import fi.oph.koski.json.SensitiveDataAllowed
-import fi.oph.koski.koskiuser.{KoskiSpecificSession, OoPtsMask, Session}
+import fi.oph.koski.koskiuser.{AccessType, KoskiSpecificSession, OoPtsMask, Session}
 import fi.oph.koski.localization.LocalizationReader
 import fi.oph.koski.log.KoskiAuditLogMessageField.hakuEhto
 import fi.oph.koski.log.KoskiOperation.OPISKELUOIKEUS_RAPORTTI
@@ -53,13 +53,30 @@ trait MassaluovutusRaporttiBase[Self <: MassaluovutusRaporttiBase[Self]]
 
   protected def withFilledParams(orgOid: Organisaatio.Oid, lang: String): Self
 
+  // Ostopalvelu/palveluseteli-valinnan sallivan raportin on itse rajattava tiedot ostajan omiin opiskeluoikeuksiin
+  protected def ostopalveluSallittu: Boolean = false
+
   // Common queryAllowed implementation
   override def queryAllowed(application: KoskiApplication)(implicit user: Session): Boolean =
     withKoskiSpecificSession { u =>
       u.hasRaportitAccess &&
-        (u.hasGlobalReadAccess || organisaatioOid.exists(oid => u.hasRaporttiReadAccess(oid))) &&
+        organisaatioSallittu(application, u) &&
         u.allowedOpiskeluoikeudetJaPäätasonSuoritukset.intersects(OoPtsMask(opiskeluoikeudenTyyppi.koodiarvo))
     }
+
+  private def organisaatioSallittu(application: KoskiApplication, u: KoskiSpecificSession): Boolean =
+    if (ostopalveluvalinta(application)) {
+      ostopalveluSallittu && u.varhaiskasvatuksenOstopalvelukäyttöoikeudet.exists(_.organisaatioAccessType.contains(AccessType.read))
+    } else {
+      u.hasGlobalReadAccess || organisaatioOid.exists(oid => u.hasRaporttiReadAccess(oid))
+    }
+
+  private def ostopalveluvalinta(application: KoskiApplication): Boolean =
+    organisaatioOid.contains(application.organisaatioService.ostopalveluRootOid)
+
+  // OPH:n käyttäjä näkee toisen käyttäjän raporttikyselyn vain, jos saisi tehdä saman kyselyn itse
+  override def additionalAccessCheckForOtherUsers(application: KoskiApplication)(implicit user: Session): Boolean =
+    queryAllowed(application)
 
   // Common fillAndValidate implementation
   override def fillAndValidate(implicit user: Session): Either[HttpStatus, Self] =
@@ -87,18 +104,25 @@ trait MassaluovutusRaporttiBase[Self <: MassaluovutusRaporttiBase[Self]]
         raportointikantaGeneratedAt = Some(raportitService.viimeisinOpiskeluoikeuspäivitystenVastaanottoaika),
       ))
 
-      doAuditLog
+      doAuditLog(application)
     }
 
-  private def doAuditLog(implicit user: Session): Unit =
+  private def doAuditLog(application: KoskiApplication)(implicit user: Session): Unit =
     AuditLog.log(KoskiAuditLogMessage(
       OPISKELUOIKEUS_RAPORTTI,
       user,
       Map(hakuEhto -> OpiskeluoikeusQueryContext.queryForAuditLog(
         (Map(
           "raportti" -> List(raporttiName),
-          "oppilaitosOid" -> organisaatioOid.toList,
+          "oppilaitosOid" -> auditlokinOrganisaatiot(application),
           "lang" -> language.toList
         ) ++ auditLogParams).filter(_._2.nonEmpty)
       ))))
+
+  // Ostopalvelu/palveluseteli-valinnalla kirjataan yksiköt, joiden tiedot raportille haettiin
+  private def auditlokinOrganisaatiot(application: KoskiApplication)(implicit user: Session): List[String] = {
+    val ostopalveluyksiköt =
+      if (ostopalveluvalinta(application)) application.organisaatioService.omatOstopalveluOrganisaatiot.map(_.oid) else Nil
+    if (ostopalveluyksiköt.nonEmpty) ostopalveluyksiköt else organisaatioOid.toList
+  }
 }
