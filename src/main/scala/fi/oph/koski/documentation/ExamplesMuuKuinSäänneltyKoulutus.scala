@@ -3,7 +3,7 @@ package fi.oph.koski.documentation
 import fi.oph.koski.documentation.ExampleData.opiskeluoikeusLäsnä
 import fi.oph.koski.documentation.VapaaSivistystyöExample.opiskeluoikeusHyväksytystiSuoritettu
 import fi.oph.koski.organisaatio.MockOrganisaatiot
-import fi.oph.koski.schema.{Koodistokoodiviite, LaajuusTunneissa, MuuKuinSäänneltyKoulutus, MuunKuinSäännellynKoulutuksenArviointi, MuunKuinSäännellynKoulutuksenLisätiedot, MuunKuinSäännellynKoulutuksenOpiskeluoikeudenJakso, MuunKuinSäännellynKoulutuksenOpiskeluoikeus, MuunKuinSäännellynKoulutuksenOsasuorituksenKoulutusmoduuli, MuunKuinSäännellynKoulutuksenOsasuoritus, MuunKuinSäännellynKoulutuksenPäätasonSuoritus, MuunKuinSäännellynKoulutuksenTila, Oppilaitos, PaikallinenKoodi}
+import fi.oph.koski.schema.{Koodistokoodiviite, LaajuusTunneissa, MuuKuinSäänneltyKoulutus, MuunKuinSäännellynKoulutuksenArviointi, MuunKuinSäännellynKoulutuksenLisätiedot, MuunKuinSäännellynKoulutuksenOpiskeluoikeudenJakso, MuunKuinSäännellynKoulutuksenOpiskeluoikeus, MuunKuinSäännellynKoulutuksenOsasuorituksenKoulutusmoduuli, MuunKuinSäännellynKoulutuksenOsasuoritus, MuunKuinSäännellynKoulutuksenPäätasonSuoritus, MuunKuinSäännellynKoulutuksenTila, Oppilaitos, PaikallinenKoodi, Päivämäärävahvistus}
 import fi.oph.koski.schema.LocalizedString.finnish
 
 import java.time.LocalDate
@@ -70,6 +70,10 @@ object ExamplesMuuKuinSäänneltyKoulutus {
       koulutusmoduuli = Koulutusmoduuli.kuvallinenIlmaisu,
       toimipiste = jatkuvaKoulutusOyOppilaitos,
       suorituskieli = suomenKieli,
+      vahvistus = Some(Päivämäärävahvistus(
+        päivä = LocalDate.of(2023, 2, 1),
+        myöntäjäOrganisaatio = jatkuvaKoulutusOyOppilaitos,
+      )),
       arviointi = Some(List(Osasuoritus.Arviointi.arvosana())),
       osasuoritukset = Some(List(
         MuunKuinSäännellynKoulutuksenOsasuoritus(
