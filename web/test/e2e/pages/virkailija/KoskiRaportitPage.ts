@@ -23,21 +23,21 @@ export class KoskiRaportitPage {
 
   async gotoVstVapaatavoitteinen() {
     await this.page.goto(
-      '/koski/raportit/vst/vapaansivistystyönvapaatavoitteisenkoulutuksenraportti?vstraportit=1'
+      '/koski/raportit/vst/vapaansivistystyönvapaatavoitteisenkoulutuksenraportti'
     )
     await expect(this.muodostaButton).toBeVisible()
   }
 
   async gotoVstKops() {
     await this.page.goto(
-      '/koski/raportit/vst/vapaansivistystyönoppivelvollisillesuunnatunkoulutuksenraportti?vstraportit=1'
+      '/koski/raportit/vst/vapaansivistystyönoppivelvollisillesuunnatunkoulutuksenraportti'
     )
     await expect(this.muodostaButton).toBeVisible()
   }
 
   async gotoVstOsaamismerkit() {
     await this.page.goto(
-      '/koski/raportit/vst/vapaansivistystyönosaamismerkkienraportti?vstraportit=1'
+      '/koski/raportit/vst/vapaansivistystyönosaamismerkkienraportti'
     )
     await expect(this.muodostaButton).toBeVisible()
   }

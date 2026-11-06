@@ -56,7 +56,6 @@ case class RaportitAccessResolver(
       .flatten
       .toSet
       .flatMap(raportinTyypitKoulutusmuodolle(_, isKoulutustoimija)) ++ kunnanRaportit)
-      .filter(_.käytössä(config))
       .filter(checkRaporttiAccessIfAccessIsLimited(_))
       .filter(raportti => session.allowedOpiskeluoikeudetJaPäätasonSuoritukset.intersects(OoPtsMask(raportti.opiskeluoikeudenTyyppi)))
       .filter(raportti => !kotikuntalaskelmanRaportit.contains(raportti) || hasKaikkiOpiskeluoikeudenTyypit(organisaatioHierarkia.oid, kotikuntalaskelmanOpiskeluoikeudenTyypit))
