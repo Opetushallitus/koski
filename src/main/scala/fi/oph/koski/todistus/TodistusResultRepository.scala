@@ -5,11 +5,11 @@ import fi.oph.koski.config.Environment
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.log.Logging
 import fi.oph.koski.todistus.BucketType.BucketType
-import software.amazon.awssdk.auth.credentials.{AwsSessionCredentials, StaticCredentialsProvider}
+import software.amazon.awssdk.auth.credentials.{AwsBasicCredentials, StaticCredentialsProvider}
 import software.amazon.awssdk.core.sync.RequestBody
 import software.amazon.awssdk.http.ContentStreamProvider
 import software.amazon.awssdk.regions.Region
-import software.amazon.awssdk.services.s3.S3Client
+import software.amazon.awssdk.services.s3.{S3Client, S3Configuration}
 import software.amazon.awssdk.services.s3.model.{CreateBucketRequest, GetObjectRequest, GetUrlRequest, PutObjectRequest}
 import software.amazon.awssdk.services.s3.presigner.S3Presigner
 import software.amazon.awssdk.services.s3.presigner.model.GetObjectPresignRequest
@@ -33,16 +33,16 @@ class TodistusResultRepository(config: Config) extends Logging {
   val s3: S3Client = {
     val awsS3 = S3Client.builder().region(region)
     val awsOrLocalS3 = if (useAWS) awsS3 else {
-      logger.warn("Using Localstack for S3")
+      logger.warn(s"Using local S3 emulator at $endpointOverride")
       awsS3
         .endpointOverride(endpointOverride)
-        .credentialsProvider(localstackCredentialsProvider)
+        .forcePathStyle(true)
+        .credentialsProvider(localCredentialsProvider)
     }
     awsOrLocalS3.build()
   }
 
   if (!useAWS) {
-    // Bucketin automaattinen luonti ainoastaan Localstackin kanssa
     createBucketIfDoesNotExist(rawBucketName)
     createBucketIfDoesNotExist(stampedBucketName)
     createBucketIfDoesNotExist(tiedoteBucketName)
@@ -101,7 +101,8 @@ class TodistusResultRepository(config: Config) extends Logging {
     } else {
       awsPresigner
         .endpointOverride(endpointOverride)
-        .credentialsProvider(localstackCredentialsProvider)
+        .serviceConfiguration(S3Configuration.builder().pathStyleAccessEnabled(true).build())
+        .credentialsProvider(localCredentialsProvider)
     }).build()
 
     val objectRequest = GetObjectRequest.builder()
@@ -148,12 +149,8 @@ class TodistusResultRepository(config: Config) extends Logging {
     }
   }
 
-  private lazy val localstackCredentialsProvider = StaticCredentialsProvider.create(localstackCredentials)
-  private lazy val localstackCredentials = AwsSessionCredentials.builder()
-    .accessKeyId("000000000000")
-    .secretAccessKey("1234")
-    .sessionToken("1234")
-    .build()
+  private lazy val localCredentialsProvider = StaticCredentialsProvider.create(localCredentials)
+  private lazy val localCredentials = AwsBasicCredentials.create("test", "test")
 
   private def buildPutRequest(bucketType: BucketType, id: String, key: String, contentType: String) =
     PutObjectRequest.builder()
