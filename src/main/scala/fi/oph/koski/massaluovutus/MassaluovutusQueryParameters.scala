@@ -27,6 +27,8 @@ trait MassaluovutusQueryParameters {
   def queryAllowed(application: KoskiApplication)(implicit user: Session): Boolean
   def asJson: JValue = JsonSerializer.serializeWithRoot(this)
   def fillAndValidate(implicit user: Session): Either[HttpStatus, MassaluovutusQueryParameters] = Right(this)
+  // Ajetaan vasta queryAllowed-tarkistuksen jälkeen: tänne kuuluvat tarkistukset, jotka tarvitsevat rekistereitä tai tietokantaa
+  def validateWithApplication(application: KoskiApplication)(implicit user: Session): Either[HttpStatus, MassaluovutusQueryParameters] = Right(this)
   def priority: Int = MassaluovutusQueryPriority.normal
 
   def withValpasSession(f: ValpasSession => Either[String, Unit])

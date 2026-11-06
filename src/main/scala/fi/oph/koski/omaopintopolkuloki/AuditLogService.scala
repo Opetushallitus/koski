@@ -46,6 +46,7 @@ class AuditLogService(val application: KoskiApplication) extends Logging with My
           | (contains (#rawEntry, :katsominen) or
           |  contains (#rawEntry, :muutoshistoria_katsominen) or
           |  contains (#rawEntry, :ytr_katsominen) or
+          |  contains (#rawEntry, :aiemmat_opiskeluoikeudet_katsominen) or
           |  contains (#rawEntry, :oauth2_katsominen_kaikki_tiedot) or
           |  contains (#rawEntry, :oauth2_katsominen_kaikki_tiedot_ja_valintatiedot) or
           |  contains (#rawEntry, :oauth2_katsominen_suoritetut_tutkinnot) or
@@ -64,6 +65,7 @@ class AuditLogService(val application: KoskiApplication) extends Logging with My
         valueMap.put(":katsominen", AttributeValue.builder.s("\"OPISKELUOIKEUS_KATSOMINEN\"").build)
         valueMap.put(":muutoshistoria_katsominen", AttributeValue.builder.s("\"MUUTOSHISTORIA_KATSOMINEN\"").build)
         valueMap.put(":ytr_katsominen", AttributeValue.builder.s("\"YTR_OPISKELUOIKEUS_KATSOMINEN\"").build)
+        valueMap.put(":aiemmat_opiskeluoikeudet_katsominen", AttributeValue.builder.s("\"AIEMMAT_OPISKELUOIKEUDET_KATSOMINEN\"").build)
         valueMap.put(":oauth2_katsominen_kaikki_tiedot", AttributeValue.builder.s("\"OAUTH2_KATSOMINEN_KAIKKI_TIEDOT\"").build)
         valueMap.put(":oauth2_katsominen_kaikki_tiedot_ja_valintatiedot", AttributeValue.builder.s("\"OAUTH2_KATSOMINEN_KAIKKI_TIEDOT_JA_VALINTATIEDOT\"").build)
         valueMap.put(":oauth2_katsominen_suoritetut_tutkinnot", AttributeValue.builder.s("\"OAUTH2_KATSOMINEN_SUORITETUT_TUTKINNOT\"").build)

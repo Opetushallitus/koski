@@ -1,14 +1,13 @@
 package fi.oph.koski.massaluovutus.organisaationopiskeluoikeudet
 
 import fi.oph.koski.config.KoskiApplication
-import fi.oph.koski.db.{KoskiOpiskeluoikeusRow, KoskiTables}
 import fi.oph.koski.koskiuser.KoskiSpecificSession
 import fi.oph.koski.organisaatio.{MockOrganisaatiot, OrganisaationAlaisetOrganisaatiot}
 import fi.oph.koski.massaluovutus.MassaluovutusUtils.QueryResourceManager
-import fi.oph.koski.massaluovutus.{MassaluovutusException, QueryFormat, QueryResultWriter}
+import fi.oph.koski.massaluovutus.{MassaluovutusUtils, QueryFormat, QueryResultWriter}
 import fi.oph.koski.schema.Organisaatio.Oid
 import fi.oph.koski.schema.annotation.EnumValues
-import fi.oph.koski.schema.{Henkilö, KoskeenTallennettavaOpiskeluoikeus, KoskiSchema, Organisaatio, TäydellisetHenkilötiedot}
+import fi.oph.koski.schema.{Henkilö, KoskeenTallennettavaOpiskeluoikeus, Organisaatio, TäydellisetHenkilötiedot}
 import fi.oph.koski.util.Retry.retryWithInterval
 import fi.oph.scalaschema.annotation.{Description, Title}
 
@@ -50,18 +49,8 @@ case class MassaluovutusQueryOrganisaationOpiskeluoikeudetJson(
       writer.putJson(henkilö.oid, MassaluovutusOppija(
         henkilö = application.henkilöRepository.oppijaHenkilöToTäydellisetHenkilötiedot(henkilö),
         linkitetytOidit = henkilö.linkitetytOidit,
-        opiskeluoikeudet = opiskeluoikeudet.flatMap(toKoskeenTallennettavaOpiskeluoikeus(application)),
+        opiskeluoikeudet = opiskeluoikeudet.map(MassaluovutusUtils.toKoskeenTallennettavaOpiskeluoikeus(application, logger)),
       ))
-    }
-  }
-
-  private def toKoskeenTallennettavaOpiskeluoikeus(application: KoskiApplication)(row: KoskiOpiskeluoikeusRow): Option[KoskeenTallennettavaOpiskeluoikeus] = {
-    val json = KoskiTables.KoskiOpiskeluoikeusTable.readAsJValue(row.data, row.oid, row.versionumero, row.aikaleima)
-    application.validatingAndResolvingExtractor.extract[KoskeenTallennettavaOpiskeluoikeus](KoskiSchema.lenientDeserializationWithoutValidation)(json) match {
-      case Right(oo: KoskeenTallennettavaOpiskeluoikeus) => Some(oo)
-      case Left(errors) =>
-        logger.warn(s"Error deserializing oppijan ${row.oppijaOid} opiskeluoikeus ${row.oid}: ${errors}")
-        throw new MassaluovutusException(s"Oppijan ${row.oppijaOid} opiskeluoikeuden ${row.oid} deserialisointi epäonnistui")
     }
   }
 }

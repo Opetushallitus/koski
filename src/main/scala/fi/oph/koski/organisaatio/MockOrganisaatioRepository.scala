@@ -74,6 +74,10 @@ object MockOrganisaatiot {
     val toimipiste = "1.2.246.562.10.12798841685"
   }
   val oulunAikuislukio = "1.2.246.562.10.73692574509"
+  // Tornion kaupungin oppilaitoksia, jotka eivät ole oppilaitokset-listassa: aiemmatOpiskeluoikeudet-demon aiemmat opinnot
+  val tornionYhteislyseonLukio = "1.2.246.562.10.79627883881"
+  val raumonKoulu = "1.2.246.562.10.19673882072"
+  val arpelanPäiväkoti = "1.2.246.562.10.11992370442"
   // Esimerkki muuta kuin säänneltyä koulutusta järjestävästä toimijasta, jotka koostuvat organisaatiopalvelussa koulutustoimija-oppilaitos-parista
   object MuuKuinSäänneltyKoulutusToimija {
     val koulutustoimija = "1.2.246.562.10.53455746569"
