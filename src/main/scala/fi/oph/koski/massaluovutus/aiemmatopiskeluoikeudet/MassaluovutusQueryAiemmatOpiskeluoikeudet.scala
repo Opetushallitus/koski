@@ -22,27 +22,26 @@ import fi.oph.scalaschema.Serializer
 import fi.oph.scalaschema.annotation.{Description, Title}
 import org.json4s.JValue
 
-import java.sql.Date
 import java.time.LocalDate
 import scala.concurrent.duration.DurationInt
 
-@Title("Nykyisten opiskelijoiden aiemmat opiskeluoikeudet")
-@Description("Palauttaa annettujen, oppilaitoksen nykyisten opiskelijoiden esi-, perus-, ammatillisen ja lukiokoulutuksen opiskeluoikeudet, jotka ovat alkaneet ennen opiskelijan opintoja kyselyn oppilaitoksessa. Mukana ovat sekä muiden organisaatioiden että oppilaitoksen omat aiemmat opiskeluoikeudet.")
-@Description("Oppijat annetaan henkilötunnuksina tai oppijanumeroina. Jokaisen annetun oppijan on oltava oppilaitoksen nykyinen opiskelija ja alle 18-vuotias tai kyselyn tekovuonna 18 vuotta täyttävä, muuten koko kysely hylätään ja vastaus kertoo, mitkä oppijat eivät täytä ehtoja. Nykyinen opiskelija on oppija, jolla on kyselyn oppilaitoksessa päättymätön, myös vasta tulevaisuudessa alkava, esi-, perus-, ammatillisen, lukio-, TUVA- tai IB-koulutuksen opiskeluoikeus. Esiopetuksen opiskeluoikeudet palautetaan vain, jos oppija on kyselyn oppilaitoksessa esi- tai perusopetuksen opiskelija. Kysely tehdään aina yhdelle oppilaitokselle.")
-@Description("Kysely edellyttää AIEMMAT_OPISKELUOIKEUDET-käyttöoikeutta kyselyn oppilaitoksessa. Palautettavat koulutusmuodot eivät riipu käyttäjän omista koulutusmuotokohtaisista käyttöoikeuksista, vaan ainoastaan tästä roolista. Arkaluontoiset tiedot palautetaan vain, jos käyttäjällä on niihin oikeus. Skeemassa HiddenFromAiemmatOpiskeluoikeudet-merkinnällä varustetut kentät (esim. vankilaopetuksessa ja käyttäytymisenArvio) jätetään pois käyttöoikeuksista riippumatta.")
+@Title("Nykyisten opiskelijoiden opiskeluoikeudet")
+@Description("Palauttaa annettujen, oppilaitoksen nykyisten opiskelijoiden kaikki esi-, perus-, ammatillisen, lukio-, TUVA-, IB-, EB-, DIA-, International School- ja European School of Helsinki -koulutuksen opiskeluoikeudet: aiemmat, nykyiset ja tulevat, sekä muiden organisaatioiden että oppilaitoksen omat.")
+@Description("Oppijat annetaan henkilötunnuksina tai oppijanumeroina. Jokaisen annetun oppijan on oltava oppilaitoksen nykyinen opiskelija ja alle 18-vuotias tai kyselyn tekovuonna 18 vuotta täyttävä, muuten koko kysely hylätään ja vastaus kertoo, mitkä oppijat eivät täytä ehtoja. Nykyinen opiskelija on oppija, jolla on kyselyn oppilaitoksessa päättymätön, myös vasta tulevaisuudessa alkava, jonkin näistä koulutusmuodoista opiskeluoikeus. Esiopetuksen opiskeluoikeudet palautetaan vain, jos oppija on kyselyn oppilaitoksessa esi- tai perusopetuksen opiskelija. Kysely tehdään aina yhdelle oppilaitokselle.")
+@Description("Kysely on käytettävissä palvelukäyttäjälle, jolla on kyselyn oppilaitoksessa lukuoikeus ja AIEMMAT_OPISKELUOIKEUDET-käyttöoikeus, sekä Opetushallituksen pääkäyttäjälle. Palautettavat koulutusmuodot eivät riipu käyttäjän omista koulutusmuotokohtaisista käyttöoikeuksista, vaan ainoastaan tästä roolista. Arkaluontoiset tiedot palautetaan aina. Skeemassa HiddenFromAiemmatOpiskeluoikeudet-merkinnällä varustetut kentät (esim. vankilaopetuksessa ja käyttäytymisenArvio) jätetään pois.")
 @Description("Tulostiedostot vastaavat organisaationOpiskeluoikeudet-kyselyn json-muotoa: yksi tiedosto oppijaa kohden.")
 case class MassaluovutusQueryAiemmatOpiskeluoikeudet(
   @EnumValues(Set("aiemmatOpiskeluoikeudet"))
   `type`: String = "aiemmatOpiskeluoikeudet",
   @EnumValues(Set(QueryFormat.json))
   format: String = QueryFormat.json,
-  @Description("Oppilaitoksen oid, jonka nykyisten opiskelijoiden aiemmat opiskeluoikeudet haetaan. Koulutustoimijan tai kunnan oidia ei hyväksytä.")
+  @Description("Oppilaitoksen oid, jonka nykyisten opiskelijoiden opiskeluoikeudet haetaan. Koulutustoimijan tai kunnan oidia ei hyväksytä.")
   organisaatioOid: Organisaatio.Oid,
   @Description("Haettavat oppijat henkilötunnuksina. Kentässä hetut tai oppijaOidit on annettava vähintään yksi oppija.")
   hetut: Option[List[String]] = None,
   @Description("Haettavat oppijat oppijanumeroina.")
   oppijaOidit: Option[List[String]] = None,
-  @Description("Palautettavat koulutusmuodot. Oletuksena kaikki sallitut: esiopetus, perusopetus, ammatillinenkoulutus, lukiokoulutus.")
+  @Description("Palautettavat koulutusmuodot. Oletuksena kaikki sallitut: esiopetus, perusopetus, ammatillinenkoulutus, lukiokoulutus, tuva, ibtutkinto, ebtutkinto, diatutkinto, internationalschool, europeanschoolofhelsinki.")
   koulutusmuoto: Option[List[String]] = None,
 ) extends KoulutuksenjärjestäjienMassaluovutusQueryParameters with DatabaseConverters with Logging {
   import MassaluovutusQueryAiemmatOpiskeluoikeudet._
@@ -57,16 +56,16 @@ case class MassaluovutusQueryAiemmatOpiskeluoikeudet(
         writer.predictFileCount(opiskelijat.size)
         opiskelijat.foreach { opiskelija =>
           val henkilö = opiskelija.henkilö
-          val aiemmat = haeAiemmatOpiskeluoikeudet(db, henkilö, opiskelija.opintojenAlku, opiskelija.koulutusmuodot)
-          if (aiemmat.isEmpty) {
+          val opiskeluoikeudet = haeOpiskeluoikeudet(db, henkilö, opiskelija.koulutusmuodot)
+          if (opiskeluoikeudet.isEmpty) {
             writer.skipFile()
           } else {
             writer.putJson(henkilö.oid, serialize(MassaluovutusOppija(
               henkilö = application.henkilöRepository.oppijaHenkilöToTäydellisetHenkilötiedot(henkilö),
               linkitetytOidit = henkilö.linkitetytOidit,
-              opiskeluoikeudet = aiemmat.map(MassaluovutusUtils.toKoskeenTallennettavaOpiskeluoikeus(application, logger)),
+              opiskeluoikeudet = opiskeluoikeudet.map(MassaluovutusUtils.toKoskeenTallennettavaOpiskeluoikeus(application, logger)),
             )))
-            auditLog(henkilö.oid, aiemmat.map(_.oid))
+            auditLog(henkilö.oid, opiskeluoikeudet.map(_.oid))
           }
         }
       }
@@ -75,8 +74,9 @@ case class MassaluovutusQueryAiemmatOpiskeluoikeudet(
   override def queryAllowed(application: KoskiApplication)(implicit user: Session): Boolean = withKoskiSpecificSession { u =>
     val onOppilaitos = application.organisaatioRepository.getOrganisaatio(organisaatioOid).exists(_.toOppilaitos.isDefined)
     onOppilaitos && (
-      u.hasGlobalReadAccess || (
-        u.organisationOids(AccessType.read).contains(organisaatioOid)
+      u.isRoot || (
+        u.isPalvelukäyttäjä
+          && u.organisationOids(AccessType.read).contains(organisaatioOid)
           && u.hasRoleInOrganisaatio(Rooli.AIEMMAT_OPISKELUOIKEUDET, organisaatioOid)
       )
     )
@@ -101,10 +101,11 @@ case class MassaluovutusQueryAiemmatOpiskeluoikeudet(
     case _ => Left(KoskiErrorCategory.forbidden())
   }
 
-  private def serialize(oppija: MassaluovutusOppija)(implicit user: SensitiveDataAllowed): JValue = {
-    val sensitiveFilter = SensitiveAndRedundantDataFilter(user)
-    val context = sensitiveFilter.serializationContext.copy(propertyProcessor = (schema, property) =>
-      if (property.metadata.exists(_.isInstanceOf[HiddenFromAiemmatOpiskeluoikeudet])) Nil else sensitiveFilter.filterSensitiveData(schema, property)
+  // Arkaluontoiset tiedot palautetaan käyttäjän rooleista riippumatta, vain HiddenFromAiemmatOpiskeluoikeudet-kentät jätetään pois
+  private def serialize(oppija: MassaluovutusOppija): JValue = {
+    val filter = SensitiveAndRedundantDataFilter(SensitiveDataAllowed.SystemUser)
+    val context = filter.serializationContext.copy(propertyProcessor = (schema, property) =>
+      if (property.metadata.exists(_.isInstanceOf[HiddenFromAiemmatOpiskeluoikeudet])) Nil else filter.filterSensitiveData(schema, property)
     )
     Serializer.serialize(oppija, context)
   }
@@ -125,7 +126,7 @@ case class MassaluovutusQueryAiemmatOpiskeluoikeudet(
       val omatOpiskeluoikeudet = haeOmatOpiskeluoikeudet(application.replicaDatabase.db, organisaatiot, henkilöt.flatMap(_.kaikkiOidit), tänään)
       val opiskelijat = henkilöt.flatMap { henkilö =>
         val omat = omatOpiskeluoikeudet.filter(oo => henkilö.kaikkiOidit.contains(oo.oppijaOid))
-        Option.when(omat.nonEmpty)(NykyinenOpiskelija(henkilö, omat.map(_.alkamispäivä).min, omat.map(_.koulutusmuoto).toSet))
+        Option.when(omat.nonEmpty)(NykyinenOpiskelija(henkilö, omat.map(_.koulutusmuoto).toSet))
       }
       val opiskelijaOidit = opiskelijat.map(_.henkilö.oid).toSet
 
@@ -143,10 +144,10 @@ case class MassaluovutusQueryAiemmatOpiskeluoikeudet(
     !henkilö.syntymäaika.orElse(henkilö.hetu.flatMap(Hetu.toBirthday)).exists(_.getYear >= vuosi - 18)
 
   private def haeOmatOpiskeluoikeudet(db: DB, organisaatiot: OrganisaationAlaisetOrganisaatiot, oppijaOidit: List[String], tänään: LocalDate)(implicit user: KoskiSpecificSession): Seq[OmaOpiskeluoikeus] = {
-    val koulutusmuodot = nykyisenOpiskelijanKoulutusmuodot.intersect(user.allowedOpiskeluoikeudetJaPäätasonSuoritukset.toOpiskeluoikeudenTyypit.toList)
+    val koulutusmuodot = sallitutKoulutusmuodot.intersect(user.allowedOpiskeluoikeudetJaPäätasonSuoritukset.toOpiskeluoikeudenTyypit.toList)
     QueryMethods.runDbSync(db, SQLHelpers.concatMany(
       Some(sql"""
-        SELECT oppija_oid, koulutusmuoto, alkamispaiva
+        SELECT oppija_oid, koulutusmuoto
         FROM opiskeluoikeus
         WHERE NOT poistettu AND NOT mitatoity
           AND oppija_oid = ANY($oppijaOidit)
@@ -155,13 +156,14 @@ case class MassaluovutusQueryAiemmatOpiskeluoikeudet(
           AND
       """),
       Some(MassaluovutusUtils.organisaatioFilter(organisaatiot)),
-    ).as[(String, String, Date)])
-      .map { case (oppijaOid, koulutusmuoto, alkamispäivä) => OmaOpiskeluoikeus(oppijaOid, koulutusmuoto, alkamispäivä.toLocalDate) }
+    ).as[(String, String)])
+      .map { case (oppijaOid, koulutusmuoto) => OmaOpiskeluoikeus(oppijaOid, koulutusmuoto) }
   }
 
-  private def haeAiemmatOpiskeluoikeudet(db: DB, henkilö: LaajatOppijaHenkilöTiedot, alkanutEnnen: LocalDate, nykyisetKoulutusmuodot: Set[String]): Seq[KoskiOpiskeluoikeusRow] = {
-    // Tarkoituksella ei rajata käyttäjän omilla koulutusmuoto-oikeuksilla (toisin kuin nykyisten opiskelijoiden haussa):
-    // esim. lukio tarvitsee opiskelijoidensa perusopetuksen tiedot, vaikka sillä ei ole perusopetuksen käyttöoikeutta.
+  // Kaikki oppijan opiskeluoikeudet palautettavissa koulutusmuodoissa päivämääristä riippumatta: aiemmat, nykyiset ja tulevat.
+  // Tarkoituksella ei rajata käyttäjän omilla koulutusmuoto-oikeuksilla (toisin kuin nykyisten opiskelijoiden haussa):
+  // esim. lukio tarvitsee opiskelijoidensa perusopetuksen tiedot, vaikka sillä ei ole perusopetuksen käyttöoikeutta.
+  private def haeOpiskeluoikeudet(db: DB, henkilö: LaajatOppijaHenkilöTiedot, nykyisetKoulutusmuodot: Set[String]): Seq[KoskiOpiskeluoikeusRow] = {
     val esiopetusMukana = nykyisetKoulutusmuodot.exists(esiopetuksenSaavatKoulutusmuodot)
     val koulutusmuodot: List[String] = koulutusmuoto.toList.flatten.filter(k => k != "esiopetus" || esiopetusMukana)
     QueryMethods.runDbSync(db, sql"""
@@ -170,7 +172,6 @@ case class MassaluovutusQueryAiemmatOpiskeluoikeudet(
         WHERE NOT poistettu AND NOT mitatoity
           AND oppija_oid = ANY(${henkilö.kaikkiOidit})
           AND koulutusmuoto = ANY($koulutusmuodot)
-          AND alkamispaiva < $alkanutEnnen
         ORDER BY alkamispaiva
       """.as[KoskiOpiskeluoikeusRow])
   }
@@ -191,14 +192,13 @@ case class MassaluovutusQueryAiemmatOpiskeluoikeudet(
 }
 
 object MassaluovutusQueryAiemmatOpiskeluoikeudet {
-  val sallitutKoulutusmuodot: List[String] = List("esiopetus", "perusopetus", "ammatillinenkoulutus", "lukiokoulutus")
-  // Koulutusmuodot, joiden opiskelijana oppija on kyselyn oppilaitoksen nykyinen opiskelija; palautettavat tyypit ovat sallitutKoulutusmuodot
-  val nykyisenOpiskelijanKoulutusmuodot: List[String] = sallitutKoulutusmuodot ++ List("tuva", "ibtutkinto")
+  // Sekä palautettavat koulutusmuodot että ne, joiden opiskelijana oppija on kyselyn oppilaitoksen nykyinen opiskelija
+  val sallitutKoulutusmuodot: List[String] = List("esiopetus", "perusopetus", "ammatillinenkoulutus", "lukiokoulutus", "tuva", "ibtutkinto", "ebtutkinto", "diatutkinto", "internationalschool", "europeanschoolofhelsinki")
   // Esiopetus palautetaan vain, jos oppija on kyselyn oppilaitoksessa jonkin näistä opiskelija
   val esiopetuksenSaavatKoulutusmuodot: Set[String] = Set("esiopetus", "perusopetus")
 
-  private case class OmaOpiskeluoikeus(oppijaOid: String, koulutusmuoto: String, alkamispäivä: LocalDate)
-  private case class NykyinenOpiskelija(henkilö: LaajatOppijaHenkilöTiedot, opintojenAlku: LocalDate, koulutusmuodot: Set[String])
+  private case class OmaOpiskeluoikeus(oppijaOid: String, koulutusmuoto: String)
+  private case class NykyinenOpiskelija(henkilö: LaajatOppijaHenkilöTiedot, koulutusmuodot: Set[String])
 }
 
 object MassaluovutusQueryAiemmatOpiskeluoikeudetDocumentation {

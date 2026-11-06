@@ -363,14 +363,14 @@ object MockUsers {
     "hki-aiemmat-oo",
     "hki-aiemmat-oo",
     "1.2.246.562.24.99999999601",
-    Seq(oppilaitosAiempienOpiskeluoikeuksienKatselija(helsinginKaupunki))
+    Seq(oppilaitosAiempienOpiskeluoikeuksienPalvelukäyttäjä(helsinginKaupunki))
   )
 
-  val helsinkiAiemmatOpiskeluoikeudetEiLuottamuksellinen = KoskiMockUser(
-    "hki-aiemmat-oo-ei-luottamuksellinen",
-    "hki-aiemmat-oo-ei-luottamuksellinen",
+  val helsinkiAiemmatOpiskeluoikeudetVirkailija = KoskiMockUser(
+    "hki-aiemmat-oo-virkailija",
+    "hki-aiemmat-oo-virkailija",
     "1.2.246.562.24.99999999602",
-    Seq(oppilaitosAiempienOpiskeluoikeuksienKatselijaEiLuottamuksellinen(helsinginKaupunki))
+    Seq(oppilaitosAiempienOpiskeluoikeuksienVirkailija(helsinginKaupunki))
   )
 
   // Rooli Torniossa, Helsingissä vain katselija: ei saa kysyä Helsingin puolesta.
@@ -378,7 +378,7 @@ object MockUsers {
     "tornio-aiemmat-oo",
     "tornio-aiemmat-oo",
     "1.2.246.562.24.99999999603",
-    Seq(oppilaitosAiempienOpiskeluoikeuksienKatselija(tornionKaupunki), oppilaitosKatselija(helsinginKaupunki))
+    Seq(oppilaitosAiempienOpiskeluoikeuksienPalvelukäyttäjä(tornionKaupunki), oppilaitosKatselija(helsinginKaupunki))
   )
 
   val tornioTallentaja = KoskiMockUser(
@@ -853,7 +853,7 @@ object MockUsers {
     xssHyökkääjä,
     muuKuinSäänneltyKoulutusYritys,
     helsinkiAiemmatOpiskeluoikeudet,
-    helsinkiAiemmatOpiskeluoikeudetEiLuottamuksellinen,
+    helsinkiAiemmatOpiskeluoikeudetVirkailija,
     tornioAiemmatOpiskeluoikeudetHelsinkiKatselija,
     pohjoiskalotinKoulutussäätiöKäyttäjä,
     omadataOAuth2Palvelukäyttäjä,

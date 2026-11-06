@@ -5,7 +5,7 @@ import fi.oph.koski.documentation.{AmmatillinenExampleData, ExampleData, Example
 import fi.oph.koski.schema.Oppilaitos
 import fi.oph.koski.henkilo.{KoskiSpecificMockOppijat, OppijaHenkilö}
 import fi.oph.koski.http.KoskiErrorCategory
-import fi.oph.koski.koskiuser.{MockUsers, UserWithPassword}
+import fi.oph.koski.koskiuser.{MockUsers, Rooli, UserWithPassword}
 import fi.oph.koski.log.AuditLogTester
 import fi.oph.koski.massaluovutus.aiemmatopiskeluoikeudet.MassaluovutusQueryAiemmatOpiskeluoikeudet
 import fi.oph.koski.organisaatio.MockOrganisaatiot
@@ -117,6 +117,12 @@ class MassaluovutusAiemmatOpiskeluoikeudetSpec extends AnyFreeSpec with Massaluo
         }
       }
 
+      "Ei onnistu virkailijakäyttäjällä, vaikka rooli on" in {
+        addQuery(query, MockUsers.helsinkiAiemmatOpiskeluoikeudetVirkailija) {
+          verifyResponseStatus(403, KoskiErrorCategory.forbidden())
+        }
+      }
+
       "Ei onnistu, jos rooli on vain toisessa organisaatiossa" in {
         addQuery(query, MockUsers.tornioAiemmatOpiskeluoikeudetHelsinkiKatselija) {
           verifyResponseStatus(403, KoskiErrorCategory.forbidden())
@@ -133,6 +139,10 @@ class MassaluovutusAiemmatOpiskeluoikeudetSpec extends AnyFreeSpec with Massaluo
         addQuery(query.copy(organisaatioOid = MockOrganisaatiot.helsinginKaupunki), MockUsers.paakayttaja) {
           verifyResponseStatus(403, KoskiErrorCategory.forbidden())
         }
+      }
+
+      "Onnistuu pääkäyttäjällä ilman erillistä roolia" in {
+        haeTulostiedostot(query, MockUsers.paakayttaja) should have length 5
       }
 
       "Ei onnistu tuntemattomalla koulutusmuodolla" in {
@@ -211,13 +221,13 @@ class MassaluovutusAiemmatOpiskeluoikeudetSpec extends AnyFreeSpec with Massaluo
       }
     }
 
-    "Palauttaa hetulla annetun nykyisen opiskelijan aiemmat opiskeluoikeudet ja kirjaa ne audit-lokiin" in {
+    "Palauttaa hetulla annetun nykyisen opiskelijan kaikki opiskeluoikeudet ja kirjaa ne audit-lokiin" in {
       AuditLogTester.clearMessages()
       val files = haeTulostiedostot(query.copy(hetut = lauri.hetu.map(List(_)), oppijaOidit = None))
       files should have length 1
       oppijanTulos(files, lauri) { json =>
         (json \ "henkilö" \ "oid").extract[String] shouldBe lauri.oid
-        oppilaitoksetJaKoulutusmuodot(json) shouldBe Set(perusopetusRaumonKoulussa, (MockOrganisaatiot.tornionYhteislyseonLukio, "lukiokoulutus"))
+        oppilaitoksetJaKoulutusmuodot(json) shouldBe Set(perusopetusRaumonKoulussa, (MockOrganisaatiot.tornionYhteislyseonLukio, "lukiokoulutus"), ammatillinenStadissa)
       }
       val auditViesti = AuditLogTester.getLogMessages.map(JsonMethods.parse(_)).find(m =>
         (m \ "operation").extract[String] == "AIEMMAT_OPISKELUOIKEUDET_KATSOMINEN" &&
@@ -226,7 +236,7 @@ class MassaluovutusAiemmatOpiskeluoikeudetSpec extends AnyFreeSpec with Massaluo
       auditViesti shouldBe defined
       (auditViesti.get \ "target" \ "juuriOrganisaatio").extract[String] shouldBe MockOrganisaatiot.stadinAmmattiopisto
       (auditViesti.get \ "target" \ "hakuEhto").extract[String] shouldBe
-        s"koulutusmuoto=esiopetus&koulutusmuoto=perusopetus&koulutusmuoto=ammatillinenkoulutus&koulutusmuoto=lukiokoulutus&organisaatio=${MockOrganisaatiot.stadinAmmattiopisto}"
+        MassaluovutusQueryAiemmatOpiskeluoikeudet.sallitutKoulutusmuodot.map(k => s"koulutusmuoto=$k").mkString("&") + s"&organisaatio=${MockOrganisaatiot.stadinAmmattiopisto}"
     }
 
     "Rajaa koulutusmuodon mukaan" in {
@@ -235,18 +245,14 @@ class MassaluovutusAiemmatOpiskeluoikeudetSpec extends AnyFreeSpec with Massaluo
       }
     }
 
-    "Suodattaa sensitiiviset kentät ilman LUOTTAMUKSELLINEN_KAIKKI_TIEDOT-roolia" in {
+    "Palauttaa arkaluontoiset tiedot, vaikka palvelukäyttäjällä ei ole LUOTTAMUKSELLINEN_KAIKKI_TIEDOT-roolia" in {
+      MockUsers.helsinkiAiemmatOpiskeluoikeudet.käyttöoikeudetRaw.flatMap(_.kayttooikeudet).map(_.oikeus) should not contain Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT
       oppijanTulos(haeTulostiedostot(oidilla(lauri)), lauri) { json =>
         lisätieto(json, "lukiokoulutus", "sisäoppilaitosmainenMajoitus") should not be JNothing
       }
-      val eiLuottamuksellinen = MockUsers.helsinkiAiemmatOpiskeluoikeudetEiLuottamuksellinen
-      oppijanTulos(haeTulostiedostot(oidilla(lauri), eiLuottamuksellinen), lauri, eiLuottamuksellinen) { json =>
-        koulutusmuodot(json).sorted shouldBe List("lukiokoulutus", "perusopetus")
-        lisätieto(json, "lukiokoulutus", "sisäoppilaitosmainenMajoitus") shouldBe JNothing
-      }
     }
 
-    "Master/slave -yhdistys: slave-oidilla annetun oppijan aiemmat opiskeluoikeudet ryhmitellään masterin alle" in {
+    "Master/slave -yhdistys: slave-oidilla annetun oppijan opiskeluoikeudet ryhmitellään masterin alle" in {
       val slaveOid = KoskiSpecificMockOppijat.aiemmatTestiSlave.henkilö.oid
       val master = KoskiSpecificMockOppijat.aiemmatTestiMaster
       val files = haeTulostiedostot(query.copy(oppijaOidit = Some(List(slaveOid))))
@@ -254,28 +260,28 @@ class MassaluovutusAiemmatOpiskeluoikeudetSpec extends AnyFreeSpec with Massaluo
       oppijanTulos(files, master) { json =>
         (json \ "henkilö" \ "oid").extract[String] shouldBe master.oid
         (json \ "linkitetytOidit").extract[List[String]] should contain(slaveOid)
-        koulutusmuodot(json) shouldBe List("perusopetus")
+        koulutusmuodot(json).sorted shouldBe List("ammatillinenkoulutus", "perusopetus")
       }
     }
 
-    "Tulevaisuudessa alkava opiskeluoikeus omassa oppilaitoksessa tekee oppijasta nykyisen opiskelijan" in {
+    "Tulevaisuudessa alkava opiskeluoikeus omassa oppilaitoksessa tekee oppijasta nykyisen opiskelijan ja palautetaan" in {
       val oppija = KoskiSpecificMockOppijat.aiemmatTestiTulevaisuudessaAlkava
       oppijanTulos(haeTulostiedostot(oidilla(oppija)), oppija) { json =>
-        oppilaitoksetJaKoulutusmuodot(json) shouldBe Set((MockOrganisaatiot.jyväskylänNormaalikoulu, "perusopetus"))
+        oppilaitoksetJaKoulutusmuodot(json) shouldBe Set(perusopetusJyväskylässä, ammatillinenStadissa)
       }
     }
 
     "Huomenna päättyvä opiskeluoikeus omassa oppilaitoksessa tekee oppijasta nykyisen opiskelijan" in {
       val oppija = KoskiSpecificMockOppijat.aiemmatTestiPäättyyHuomenna
       oppijanTulos(haeTulostiedostot(oidilla(oppija)), oppija) { json =>
-        oppilaitoksetJaKoulutusmuodot(json) shouldBe Set((MockOrganisaatiot.jyväskylänNormaalikoulu, "perusopetus"))
+        oppilaitoksetJaKoulutusmuodot(json) shouldBe Set(perusopetusJyväskylässä, ammatillinenStadissa)
       }
     }
 
-    "Alle 18-vuotias TUVA-opiskelija on nykyinen opiskelija, vaikka TUVA-opiskeluoikeuksia ei palauteta" in {
+    "Alle 18-vuotias TUVA-opiskelija on nykyinen opiskelija ja TUVA-opiskeluoikeus palautetaan" in {
       val oppija = KoskiSpecificMockOppijat.aiemmatTestiTuva
       oppijanTulos(haeTulostiedostot(oidilla(oppija)), oppija) { json =>
-        oppilaitoksetJaKoulutusmuodot(json) shouldBe Set((MockOrganisaatiot.jyväskylänNormaalikoulu, "perusopetus"))
+        oppilaitoksetJaKoulutusmuodot(json) shouldBe Set(perusopetusJyväskylässä, (MockOrganisaatiot.stadinAmmattiopisto, "tuva"))
       }
     }
 
@@ -296,11 +302,11 @@ class MassaluovutusAiemmatOpiskeluoikeudetSpec extends AnyFreeSpec with Massaluo
     "Esiopetus palautetaan vain esi- tai perusopetuksen opiskelijalle" in {
       val ammatillinen = KoskiSpecificMockOppijat.aiemmatTestiTulevaisuudessaAlkava
       oppijanTulos(haeTulostiedostot(oidilla(ammatillinen)), ammatillinen) { json =>
-        koulutusmuodot(json) shouldBe List("perusopetus")
+        koulutusmuodot(json).sorted shouldBe List("ammatillinenkoulutus", "perusopetus")
       }
       val perusopetus = KoskiSpecificMockOppijat.aiemmatTestiPerusopetus
       oppijanTulos(haeTulostiedostot(oidilla(perusopetus)), perusopetus) { json =>
-        oppilaitoksetJaKoulutusmuodot(json) shouldBe Set((MockOrganisaatiot.jyväskylänNormaalikoulu, "esiopetus"))
+        oppilaitoksetJaKoulutusmuodot(json) shouldBe Set((MockOrganisaatiot.jyväskylänNormaalikoulu, "esiopetus"), (MockOrganisaatiot.stadinAmmattiopisto, "perusopetus"))
       }
     }
 
@@ -312,46 +318,40 @@ class MassaluovutusAiemmatOpiskeluoikeudetSpec extends AnyFreeSpec with Massaluo
     }
 
     "Demo-oppijat (AiemmatOpiskeluoikeudetDemoFixtures)" - {
-      "Palauttaa Stadin opiskelijoille ennen Stadin opintoja alkaneet opiskeluoikeudet, myös Stadin omat päättyneet" in {
+      "Palauttaa Stadin opiskelijoille kaikki opiskeluoikeudet: aiemmat muualla, Stadin omat päättyneet ja nykyiset sekä Stadin opintojen jälkeen alkaneet" in {
         val files = haeTulostiedostot()
-        files should have length 4
+        files should have length 5
 
         oppijanTulos(files, lauri) { json =>
-          oppilaitoksetJaKoulutusmuodot(json) shouldBe Set(perusopetusRaumonKoulussa, (MockOrganisaatiot.tornionYhteislyseonLukio, "lukiokoulutus"))
+          oppilaitoksetJaKoulutusmuodot(json) shouldBe Set(perusopetusRaumonKoulussa, lukioTorniossa, ammatillinenStadissa)
         }
         oppijanTulos(files, KoskiSpecificMockOppijat.aiemmatAmmatillinen) { json =>
-          oppilaitoksetJaKoulutusmuodot(json) shouldBe Set(perusopetusRaumonKoulussa, (MockOrganisaatiot.omnia, "ammatillinenkoulutus"))
+          oppilaitoksetJaKoulutusmuodot(json) shouldBe Set(perusopetusRaumonKoulussa, (MockOrganisaatiot.omnia, "ammatillinenkoulutus"), ammatillinenStadissa)
         }
         oppijanTulos(files, KoskiSpecificMockOppijat.aiemmatOmaOppilaitos) { json =>
-          oppilaitoksetJaKoulutusmuodot(json) shouldBe Set(perusopetusRaumonKoulussa, (MockOrganisaatiot.stadinAmmattiopisto, "ammatillinenkoulutus"))
+          koulutusmuodot(json) shouldBe List("perusopetus", "ammatillinenkoulutus", "ammatillinenkoulutus")
+          oppilaitoksetJaKoulutusmuodot(json) shouldBe Set(perusopetusRaumonKoulussa, ammatillinenStadissa)
         }
         oppijanTulos(files, KoskiSpecificMockOppijat.aiemmatMyöhemminAlkanut) { json =>
-          oppilaitoksetJaKoulutusmuodot(json) shouldBe Set(perusopetusRaumonKoulussa)
+          oppilaitoksetJaKoulutusmuodot(json) shouldBe Set(perusopetusRaumonKoulussa, ammatillinenStadissa, lukioTorniossa)
         }
-        oppijanTiedosto(files, KoskiSpecificMockOppijat.aiemmatEiAiempia.oid) shouldBe None
+        oppijanTulos(files, KoskiSpecificMockOppijat.aiemmatEiAiempia) { json =>
+          oppilaitoksetJaKoulutusmuodot(json) shouldBe Set(ammatillinenStadissa)
+        }
       }
 
-      "Palauttaa Kulosaaren peruskoululaiselle esiopetuksen ja alakoulun Torniossa" in {
+      "Palauttaa Kulosaaren peruskoululaiselle esiopetuksen, alakoulun Torniossa ja nykyisen perusopetuksen" in {
         oppijanTulos(haeTulostiedostot(kulosaarenQuery), aino) { json =>
-          oppilaitoksetJaKoulutusmuodot(json) shouldBe Set((MockOrganisaatiot.arpelanPäiväkoti, "esiopetus"), perusopetusRaumonKoulussa)
+          oppilaitoksetJaKoulutusmuodot(json) shouldBe Set((MockOrganisaatiot.arpelanPäiväkoti, "esiopetus"), perusopetusRaumonKoulussa, (MockOrganisaatiot.kulosaarenAlaAste, "perusopetus"))
         }
       }
 
-      "Esi- ja perusopetuksen arkaluontoiset lisätiedot palautetaan vain luottamuksellisten tietojen katselijalle" in {
+      "Esi- ja perusopetuksen arkaluontoiset lisätiedot palautetaan" in {
         oppijanTulos(haeTulostiedostot(kulosaarenQuery), aino) { json =>
           lisätieto(json, "esiopetus", "pidennettyOppivelvollisuus") should not be JNothing
           lisätieto(json, "esiopetus", "erityisenTuenPäätökset") should not be JNothing
           lisätieto(json, "perusopetus", "kuljetusetu") should not be JNothing
           lisätieto(json, "perusopetus", "sisäoppilaitosmainenMajoitus") should not be JNothing
-        }
-
-        val eiLuottamuksellinen = MockUsers.helsinkiAiemmatOpiskeluoikeudetEiLuottamuksellinen
-        oppijanTulos(haeTulostiedostot(kulosaarenQuery, eiLuottamuksellinen), aino, eiLuottamuksellinen) { json =>
-          oppilaitoksetJaKoulutusmuodot(json) shouldBe Set((MockOrganisaatiot.arpelanPäiväkoti, "esiopetus"), perusopetusRaumonKoulussa)
-          lisätieto(json, "esiopetus", "pidennettyOppivelvollisuus") shouldBe JNothing
-          lisätieto(json, "esiopetus", "erityisenTuenPäätökset") shouldBe JNothing
-          lisätieto(json, "perusopetus", "kuljetusetu") shouldBe JNothing
-          lisätieto(json, "perusopetus", "sisäoppilaitosmainenMajoitus") shouldBe JNothing
         }
       }
     }
@@ -361,4 +361,7 @@ class MassaluovutusAiemmatOpiskeluoikeudetSpec extends AnyFreeSpec with Massaluo
 object MassaluovutusAiemmatOpiskeluoikeudetSpec {
   val oletuskäyttäjä: UserWithPassword = MockUsers.helsinkiAiemmatOpiskeluoikeudet
   val perusopetusRaumonKoulussa: (String, String) = (MockOrganisaatiot.raumonKoulu, "perusopetus")
+  val perusopetusJyväskylässä: (String, String) = (MockOrganisaatiot.jyväskylänNormaalikoulu, "perusopetus")
+  val lukioTorniossa: (String, String) = (MockOrganisaatiot.tornionYhteislyseonLukio, "lukiokoulutus")
+  val ammatillinenStadissa: (String, String) = (MockOrganisaatiot.stadinAmmattiopisto, "ammatillinenkoulutus")
 }

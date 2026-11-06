@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
 # Demo: aiemmatOpiskeluoikeudet-massaluovutuskysely Helsingin kaupungin oppilaitoksille paikallista Koskea vasten.
 # Ajaa kyselyn Stadin ammattiopistolle ja Kulosaaren ala-asteelle niiden nykyisistä demo-oppijoista, lataa tulostiedostot ja
-# tulostaa jokaisesta demo-oppijasta kyselyn palauttamat aiemmat opiskeluoikeudet ja niiden alle oppijan kaikki
+# tulostaa jokaisesta demo-oppijasta kyselyn palauttamat opiskeluoikeudet ja niiden alle oppijan kaikki
 # opiskeluoikeudet (GET /koski/api/oppija/{oid} pääkäyttäjänä).
 #
 # Usage: scripts/demo-aiemmat-oo.sh [user] [hakusana]
-#   user      kyselyn tekijä, oletus hki-aiemmat-oo (hki-aiemmat-oo-ei-luottamuksellinen näyttää arkaluontoiset tiedot suodatettuina)
+#   user      kyselyn tekijä, oletus hki-aiemmat-oo (palvelukäyttäjä; hki-aiemmat-oo-virkailija saa 403)
 #   hakusana  oppijoiden sukunimihaku, oletus "Aiemmat-" (demo-oppijat)
 # Tulostiedostot ladataan väliaikaishakemistoon, joka poistetaan lopuksi.
 # Vaatii: curl, jq. Mock-käyttäjien salasana on sama kuin tunnus.

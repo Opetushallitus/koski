@@ -13,7 +13,7 @@ import java.time.LocalDate
 import java.time.LocalDate.{of => date}
 
 // Demoaineisto aiemmatOpiskeluoikeudet-massaluovutuskyselylle: Helsingin kaupungin nykyisiä opiskelijoita Stadin ammattiopistossa
-// ja Kulosaaren ala-asteella, joiden aiemmat opinnot ovat Torniossa (ei muiden testien laskemissa organisaatioissa) tai Omniassa.
+// ja Kulosaaren ala-asteella, joiden muut opinnot ovat Torniossa (ei muiden testien laskemissa organisaatioissa) tai Omniassa.
 // Kysely hyväksyy vain alle 18-vuotiaat ja kyselyvuonna 18 täyttävät oppijat, joten päivämäärät lasketaan kuluvasta vuodesta.
 object AiemmatOpiskeluoikeudetDemoFixtures {
   private val vuosi = LocalDate.now().getYear
