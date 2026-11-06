@@ -33,8 +33,8 @@ object AppConfigAvaintarkistus {
   }
 
   def tarkista(reference: Config, appConfig: Config): Tulos = {
-    val referenceAvaimet = avaimet(reference.root)
-    val appConfigAvaimet = avaimet(appConfig.root)
+    val referenceAvaimet = lehdet(reference).map(_._1).toSet
+    val appConfigAvaimet = lehdet(appConfig).map(_._1).toSet
     Tulos(
       puuttuvat = (referenceAvaimet -- appConfigAvaimet).toList.sorted,
       ylimääräiset = (appConfigAvaimet -- referenceAvaimet).toList.sorted
@@ -42,11 +42,13 @@ object AppConfigAvaintarkistus {
   }
 
   // Puu käydään läpi ratkaisematta viittauksia, jotta ${...}-arvoja ei tarvitse ratkaista tarkistuksessa.
-  private def avaimet(objekti: ConfigObject, polku: List[String] = Nil): Set[String] =
-    objekti.asScala.toSet.flatMap { (avainJaArvo: (String, ConfigValue)) =>
+  private[config] def lehdet(config: Config): List[(String, ConfigValue)] = lehdet(config.root, Nil)
+
+  private def lehdet(objekti: ConfigObject, polku: List[String]): List[(String, ConfigValue)] =
+    objekti.asScala.toList.flatMap { (avainJaArvo: (String, ConfigValue)) =>
       avainJaArvo match {
-        case (avain, lapsi: ConfigObject) => avaimet(lapsi, polku :+ avain)
-        case (avain, _) => Set(ConfigUtil.joinPath((polku :+ avain).asJava))
+        case (avain, lapsi: ConfigObject) => lehdet(lapsi, polku :+ avain)
+        case (avain, arvo) => List(ConfigUtil.joinPath((polku :+ avain).asJava) -> arvo)
       }
     }
 
