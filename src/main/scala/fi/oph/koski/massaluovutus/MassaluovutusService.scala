@@ -8,9 +8,11 @@ import fi.oph.koski.executors.GlobalExecutionContext
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.json.SensitiveDataAllowed
 import fi.oph.koski.koskiuser.{KoskiSpecificSession, Session}
-import fi.oph.koski.log.Logging
+import fi.oph.koski.log.KoskiOperation.MASSALUOVUTUKSEN_LATAAMINEN
+import fi.oph.koski.log.{AuditLog, KoskiAuditLogMessage, KoskiAuditLogMessageField, Logging}
 import fi.oph.koski.massaluovutus.valpas.ValpasMassaluovutusQueryParameters
 import fi.oph.koski.util.{Timeout, TryWithLogging}
+import fi.oph.koski.valpas.log.ValpasAuditLog
 import fi.oph.koski.valpas.valpasuser.{ValpasRooli, ValpasSession}
 
 import java.time.format.DateTimeFormatter
@@ -117,10 +119,30 @@ class MassaluovutusService(application: KoskiApplication) extends GlobalExecutio
     }
   }
 
-  def getDownloadUrl(query: QueryWithResultFiles, name: String): Either[HttpStatus, String] =
-    TryWithLogging(logger, {
-      results.getPresignedDownloadUrl(UUID.fromString(query.queryId), name)
-    }).left.map(t => KoskiErrorCategory.badRequest(s"Tiedostoa ei löydy tai tapahtui virhe sen jakamisessa"))
+  def getDownloadUrl(query: QueryWithResultFiles, name: String)(implicit user: Session): Either[HttpStatus, String] =
+    if (query.resultFiles.contains(name)) {
+      TryWithLogging(logger, {
+        results.getPresignedDownloadUrl(UUID.fromString(query.queryId), name)
+      }).left.map(t => KoskiErrorCategory.badRequest(s"Tiedostoa ei löydy tai tapahtui virhe sen jakamisessa"))
+        .map { url =>
+          auditLogLataaminen(query.queryId, name)
+          url
+        }
+    } else {
+      Left(KoskiErrorCategory.notFound())
+    }
+
+  private def auditLogLataaminen(queryId: String, tiedosto: String)(implicit user: Session): Unit = user match {
+    case s: ValpasSession => ValpasAuditLog.auditLogMassaluovutuksenLataaminen(queryId, tiedosto)(s)
+    case _ => AuditLog.log(KoskiAuditLogMessage(
+      MASSALUOVUTUKSEN_LATAAMINEN,
+      user,
+      Map(
+        KoskiAuditLogMessageField.massaluovutusId -> queryId,
+        KoskiAuditLogMessageField.massaluovutusTiedosto -> tiedosto,
+      ),
+    ))
+  }
 
   def cleanup(activeWorkers: Seq[String]): Unit = {
     queries

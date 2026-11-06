@@ -259,6 +259,50 @@ class MassaluovutusSpec extends AnyFreeSpec with MassaluovutusTestMethods with M
     }
   }
 
+  "Tulostiedoston lataus" - {
+    val query = MassaluovutusQueryPaallekkaisetOpiskeluoikeudet(
+      format = QueryFormat.csv,
+      alku = LocalDate.of(2000, 1, 1),
+      loppu = LocalDate.of(2020, 1, 1),
+    )
+    val tekijä = MockUsers.helsinkiKatselija
+
+    def verifyLatausmerkintä(lataaja: MockUser, queryId: String, tiedosto: String): Unit =
+      AuditLogTester.verifyLastAuditLogMessageForOperation(Map(
+        "operation" -> "MASSALUOVUTUKSEN_LATAAMINEN",
+        "user" -> Map("oid" -> lataaja.oid),
+        "target" -> Map(
+          "massaluovutusId" -> queryId,
+          "massaluovutusTiedosto" -> tiedosto,
+        ),
+      ))
+
+    "kirjataan auditlokiin lataajan nimissä, latasipa tiedoston kyselyn tekijä tai joku muu" in {
+      val queryId = addQuerySuccessfully(query, tekijä)(_.queryId)
+      val tiedosto = waitForCompletion(queryId, tekijä).files.head
+      val tiedostonimi = tiedosto.split("/").last
+
+      AuditLogTester.clearMessages()
+      verifyResult(tiedosto, tekijä)
+      AuditLogTester.verifyOnlyAuditLogMessageForOperation(Map("operation" -> "MASSALUOVUTUKSEN_LATAAMINEN"))
+      verifyLatausmerkintä(tekijä, queryId, tiedostonimi)
+
+      verifyResult(tiedosto, MockUsers.paakayttaja)
+      verifyLatausmerkintä(MockUsers.paakayttaja, queryId, tiedostonimi)
+    }
+
+    "muuta kuin kyselyn tulostiedostoa ei voi ladata, eikä yritystä kirjata lataukseksi" in {
+      val queryId = addQuerySuccessfully(query, tekijä)(_.queryId)
+      waitForCompletion(queryId, tekijä)
+
+      AuditLogTester.clearMessages()
+      getResult(s"api/massaluovutus/$queryId/tuntematon.csv", tekijä) {
+        verifyResponseStatus(404, KoskiErrorCategory.notFound())
+      }
+      AuditLogTester.verifyNoAuditLogMessagesForOperation("MASSALUOVUTUKSEN_LATAAMINEN")
+    }
+  }
+
   "Organisaation opiskeluoikeudet" - {
     "JSON" - {
       val query = MassaluovutusQueryOrganisaationOpiskeluoikeudetJson(

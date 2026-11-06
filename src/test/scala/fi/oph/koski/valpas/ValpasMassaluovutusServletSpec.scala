@@ -509,6 +509,29 @@ class ValpasMassaluovutusServletSpec extends ValpasTestBase with BeforeAndAfterE
           )
         )
       }
+
+      "jättää merkinnän tulostiedoston latauksesta lataajan nimissä" in {
+        val queryId = postQuery(getQuery(MockOrganisaatiot.helsinginKaupunki), ValpasMockUsers.valpasHelsinkiPk) {
+          verifyResponseStatusOk()
+          (JsonMethods.parse(body) \ "queryId").extract[String]
+        }
+        waitForCompletion(queryId, ValpasMockUsers.valpasHelsinkiPk)
+        val fileUrl = verifyAndGetFileUrl(queryId, ValpasMockUsers.valpasHelsinkiPk)
+
+        AuditLogTester.clearMessages()
+        getResult(fileUrl, ValpasMockUsers.valpasOphPääkäyttäjä) {
+          verifyResponseStatus(302) // 302: Found (redirect)
+        }
+
+        AuditLogTester.verifyOnlyAuditLogMessageForOperation(Map(
+          "operation" -> ValpasOperation.VALPAS_MASSALUOVUTUS_LATAAMINEN.toString,
+          "user" -> Map("oid" -> ValpasMockUsers.valpasOphPääkäyttäjä.oid),
+          "target" -> Map(
+            ValpasAuditLogMessageField.massaluovutusId.toString -> queryId,
+            ValpasAuditLogMessageField.massaluovutusTiedosto.toString -> fileUrl.split("/").last,
+          ),
+        ))
+      }
     }
   }
 

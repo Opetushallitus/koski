@@ -228,6 +228,19 @@ object ValpasAuditLog {
     (implicit session: ValpasSession)
   : Unit = auditLogKuntahaku(ValpasOperation.VALPAS_MASSALUOVUTUS_KUNTA, kunta, palautetutOppijaOidit)
 
+  def auditLogMassaluovutuksenLataaminen
+    (massaluovutusId: String, tiedosto: String)
+    (implicit session: ValpasSession)
+  : Unit =
+    AuditLog.log(ValpasAuditLogMessage(
+      ValpasOperation.VALPAS_MASSALUOVUTUS_LATAAMINEN,
+      session,
+      Map(
+        ValpasAuditLogMessageField.massaluovutusId -> massaluovutusId,
+        ValpasAuditLogMessageField.massaluovutusTiedosto -> tiedosto
+      )
+    ))
+
   private def auditLogKuntahaku
     (operation: ValpasOperation, kunta: String, palautetutOppijaOidit: Seq[String])
     (implicit session: ValpasSession)
@@ -331,7 +344,9 @@ object ValpasAuditLogMessageField extends Enumeration {
       hakutulosOppijaOid,
       sivu,
       sivuLukumäärä,
-      ilmoitusUuid = Value
+      ilmoitusUuid,
+      massaluovutusId,
+      massaluovutusTiedosto = Value
 }
 
 object ValpasOperation extends Enumeration {
@@ -354,7 +369,8 @@ object ValpasOperation extends Enumeration {
       VALPAS_KANSALAINEN_HUOLTAJA_KATSOMINEN,
       VALPAS_OPPIVELVOLLISUUDESTA_VAPAUTTAMINEN,
       VALPAS_OPPIVELVOLLISUUDESTA_VAPAUTTAMISEN_POISTO,
-      VALPAS_MASSALUOVUTUS_KUNTA = Value
+      VALPAS_MASSALUOVUTUS_KUNTA,
+      VALPAS_MASSALUOVUTUS_LATAAMINEN = Value
 }
 
 private class ValpasAuditLogOperation(op: ValpasOperation) extends AuditLogOperation(op)
