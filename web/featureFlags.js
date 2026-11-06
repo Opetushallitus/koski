@@ -3,6 +3,6 @@ export default {
     kelaUi: true
   },
   OPHKoskiDev: {},
-  'OPHKoskiOpintopolku-QA': {},
+  OPHKoskiQA: {},
   OPHKoskiProd: {}
 }
