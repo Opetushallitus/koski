@@ -1,0 +1,80 @@
+[
+  {
+    "metadata": [
+      {
+        "nimi": "Diploma myönnetty",
+        "kuvaus": "IBIS RESULT CODE D – Diploma awarded",
+        "lyhytNimi": "Diploma",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Diploma beviljat",
+        "kuvaus": null,
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Diploma awarded",
+        "kuvaus": null,
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "ibdiplomantulos_d",
+    "versio": 1,
+    "koodiArvo": "D"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "Kaksikielinen diploma myönnetty",
+        "kuvaus": "IBIS RESULT CODE B – Bilingual diploma awarded",
+        "lyhytNimi": "Kaksikielinen diploma",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Tvåspråkigt diploma beviljat",
+        "kuvaus": null,
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Bilingual diploma awarded",
+        "kuvaus": null,
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "ibdiplomantulos_b",
+    "versio": 1,
+    "koodiArvo": "B"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "Diplomaa ei myönnetty, oppiaineiden tulokset myönnetty",
+        "kuvaus": "IBIS RESULT CODE F – Failed diploma, individual course awarded",
+        "lyhytNimi": "Hylätty diploma",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Diploma inte beviljat, ämnesresultat beviljade",
+        "kuvaus": null,
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Failed diploma, individual course awarded",
+        "kuvaus": null,
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "ibdiplomantulos_f",
+    "versio": 1,
+    "koodiArvo": "F"
+  }
+]

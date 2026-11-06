@@ -1,0 +1,400 @@
+{
+  "ignoreKoskiValidator" : true,
+  "henkilö" : {
+    "hetu" : "040701A002J",
+    "etunimet" : "Dani",
+    "kutsumanimi" : "Dani",
+    "sukunimi" : "IB-Diploma"
+  },
+  "opiskeluoikeudet" : [ {
+    "oppilaitos" : {
+      "oid" : "1.2.246.562.10.62858797335",
+      "oppilaitosnumero" : {
+        "koodiarvo" : "00082",
+        "nimi" : {
+          "fi" : "Ressun lukio",
+          "sv" : "Ressun lukio",
+          "en" : "Ressun lukio"
+        },
+        "lyhytNimi" : {
+          "fi" : "Ressun lukio",
+          "sv" : "Ressun lukio",
+          "en" : "Ressun lukio"
+        },
+        "koodistoUri" : "oppilaitosnumero"
+      },
+      "nimi" : {
+        "fi" : "Ressun lukio",
+        "sv" : "Ressun lukio",
+        "en" : "Ressun lukio"
+      },
+      "kotipaikka" : {
+        "koodiarvo" : "091",
+        "nimi" : {
+          "fi" : "Helsinki",
+          "sv" : "Helsingfors"
+        },
+        "koodistoUri" : "kunta"
+      }
+    },
+    "tila" : {
+      "opiskeluoikeusjaksot" : [ {
+        "alku" : "2016-07-06",
+        "tila" : {
+          "koodiarvo" : "valmistunut",
+          "nimi" : {
+            "fi" : "Valmistunut"
+          },
+          "koodistoUri" : "koskiopiskeluoikeudentila",
+          "koodistoVersio" : 1
+        }
+      } ]
+    },
+    "suoritukset" : [ {
+      "koulutusmoduuli" : {
+        "tunniste" : {
+          "koodiarvo" : "301102",
+          "koodistoUri" : "koulutus"
+        }
+      },
+      "toimipiste" : {
+        "oid" : "1.2.246.562.10.62858797335",
+        "oppilaitosnumero" : {
+          "koodiarvo" : "00082",
+          "nimi" : {
+            "fi" : "Ressun lukio",
+            "sv" : "Ressun lukio",
+            "en" : "Ressun lukio"
+          },
+          "lyhytNimi" : {
+            "fi" : "Ressun lukio",
+            "sv" : "Ressun lukio",
+            "en" : "Ressun lukio"
+          },
+          "koodistoUri" : "oppilaitosnumero"
+        },
+        "nimi" : {
+          "fi" : "Ressun lukio",
+          "sv" : "Ressun lukio",
+          "en" : "Ressun lukio"
+        },
+        "kotipaikka" : {
+          "koodiarvo" : "091",
+          "nimi" : {
+            "fi" : "Helsinki",
+            "sv" : "Helsingfors"
+          },
+          "koodistoUri" : "kunta"
+        }
+      },
+      "vahvistus" : {
+        "päivä" : "2016-07-06",
+        "myöntäjäOrganisaatio" : {
+          "oid" : "1.2.246.562.10.62858797335",
+          "oppilaitosnumero" : {
+            "koodiarvo" : "00082",
+            "nimi" : {
+              "fi" : "Ressun lukio",
+              "sv" : "Ressun lukio",
+              "en" : "Ressun lukio"
+            },
+            "lyhytNimi" : {
+              "fi" : "Ressun lukio",
+              "sv" : "Ressun lukio",
+              "en" : "Ressun lukio"
+            },
+            "koodistoUri" : "oppilaitosnumero"
+          },
+          "nimi" : {
+            "fi" : "Ressun lukio",
+            "sv" : "Ressun lukio",
+            "en" : "Ressun lukio"
+          },
+          "kotipaikka" : {
+            "koodiarvo" : "091",
+            "nimi" : {
+              "fi" : "Helsinki",
+              "sv" : "Helsingfors"
+            },
+            "koodistoUri" : "kunta"
+          }
+        }
+      },
+      "tutkintokerta" : {
+        "koodiarvo" : "2016M",
+        "vuosi" : 2016,
+        "kuukausi" : {
+          "fi" : "toukokuu"
+        }
+      },
+      "kokonaispistemäärä" : 37,
+      "lisäpisteet" : 2,
+      "tulos" : {
+        "koodiarvo" : "D",
+        "koodistoUri" : "ibdiplomantulos"
+      },
+      "tyyppi" : {
+        "koodiarvo" : "ibdiploma",
+        "koodistoUri" : "suorituksentyyppi"
+      },
+      "osasuoritukset" : [ {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "A",
+            "koodistoUri" : "oppiaineetib"
+          },
+          "taso" : {
+            "koodiarvo" : "HL",
+            "koodistoUri" : "oppiaineentasoib"
+          },
+          "kieli" : {
+            "koodiarvo" : "FI",
+            "koodistoUri" : "kielivalikoima"
+          }
+        },
+        "tutkintokerta" : {
+          "koodiarvo" : "2016M",
+          "vuosi" : 2016,
+          "kuukausi" : {
+            "fi" : "toukokuu"
+          }
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "7",
+            "koodistoUri" : "arviointiasteikkoib"
+          },
+          "päivä" : "2016-07-06",
+          "hyväksytty" : true
+        } ],
+        "lisäaine" : false,
+        "tyyppi" : {
+          "koodiarvo" : "ibdiplomanoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "B",
+            "koodistoUri" : "oppiaineetib"
+          },
+          "taso" : {
+            "koodiarvo" : "HL",
+            "koodistoUri" : "oppiaineentasoib"
+          },
+          "kieli" : {
+            "koodiarvo" : "EN",
+            "koodistoUri" : "kielivalikoima"
+          }
+        },
+        "tutkintokerta" : {
+          "koodiarvo" : "2016M",
+          "vuosi" : 2016,
+          "kuukausi" : {
+            "fi" : "toukokuu"
+          }
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "6",
+            "koodistoUri" : "arviointiasteikkoib"
+          },
+          "päivä" : "2016-07-06",
+          "hyväksytty" : true
+        } ],
+        "lisäaine" : false,
+        "tyyppi" : {
+          "koodiarvo" : "ibdiplomanoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "HIS",
+            "koodistoUri" : "oppiaineetib"
+          },
+          "taso" : {
+            "koodiarvo" : "HL",
+            "koodistoUri" : "oppiaineentasoib"
+          }
+        },
+        "tutkintokerta" : {
+          "koodiarvo" : "2016M",
+          "vuosi" : 2016,
+          "kuukausi" : {
+            "fi" : "toukokuu"
+          }
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "6",
+            "koodistoUri" : "arviointiasteikkoib"
+          },
+          "päivä" : "2016-07-06",
+          "hyväksytty" : true
+        } ],
+        "lisäaine" : false,
+        "tyyppi" : {
+          "koodiarvo" : "ibdiplomanoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "BIO",
+            "koodistoUri" : "oppiaineetib"
+          },
+          "taso" : {
+            "koodiarvo" : "SL",
+            "koodistoUri" : "oppiaineentasoib"
+          }
+        },
+        "tutkintokerta" : {
+          "koodiarvo" : "2016M",
+          "vuosi" : 2016,
+          "kuukausi" : {
+            "fi" : "toukokuu"
+          }
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "6",
+            "koodistoUri" : "arviointiasteikkoib"
+          },
+          "päivä" : "2016-07-06",
+          "hyväksytty" : true
+        } ],
+        "lisäaine" : false,
+        "tyyppi" : {
+          "koodiarvo" : "ibdiplomanoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "MATAA",
+            "koodistoUri" : "oppiaineetib"
+          },
+          "taso" : {
+            "koodiarvo" : "SL",
+            "koodistoUri" : "oppiaineentasoib"
+          }
+        },
+        "tutkintokerta" : {
+          "koodiarvo" : "2016M",
+          "vuosi" : 2016,
+          "kuukausi" : {
+            "fi" : "toukokuu"
+          }
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "5",
+            "koodistoUri" : "arviointiasteikkoib"
+          },
+          "päivä" : "2016-07-06",
+          "hyväksytty" : true
+        } ],
+        "lisäaine" : false,
+        "tyyppi" : {
+          "koodiarvo" : "ibdiplomanoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "PHY",
+            "koodistoUri" : "oppiaineetib"
+          },
+          "taso" : {
+            "koodiarvo" : "SL",
+            "koodistoUri" : "oppiaineentasoib"
+          }
+        },
+        "tutkintokerta" : {
+          "koodiarvo" : "2016M",
+          "vuosi" : 2016,
+          "kuukausi" : {
+            "fi" : "toukokuu"
+          }
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "5",
+            "koodistoUri" : "arviointiasteikkoib"
+          },
+          "päivä" : "2016-07-06",
+          "hyväksytty" : true
+        } ],
+        "lisäaine" : false,
+        "tyyppi" : {
+          "koodiarvo" : "ibdiplomanoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "EE",
+            "koodistoUri" : "oppiaineetib"
+          },
+          "aine" : {
+            "koodiarvo" : "HIS",
+            "koodistoUri" : "oppiaineetib"
+          }
+        },
+        "tutkintokerta" : {
+          "koodiarvo" : "2016M",
+          "vuosi" : 2016,
+          "kuukausi" : {
+            "fi" : "toukokuu"
+          }
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "B",
+            "koodistoUri" : "arviointiasteikkocorerequirementsib"
+          },
+          "päivä" : "2016-07-06",
+          "hyväksytty" : true
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "ibdiplomancore",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "TOK",
+            "koodistoUri" : "oppiaineetib"
+          }
+        },
+        "tutkintokerta" : {
+          "koodiarvo" : "2016M",
+          "vuosi" : 2016,
+          "kuukausi" : {
+            "fi" : "toukokuu"
+          }
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "A",
+            "koodistoUri" : "arviointiasteikkocorerequirementsib"
+          },
+          "päivä" : "2016-07-06",
+          "hyväksytty" : true
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "ibdiplomancore",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      } ]
+    } ],
+    "tyyppi" : {
+      "koodiarvo" : "ibdiploma",
+      "koodistoUri" : "opiskeluoikeudentyyppi"
+    },
+    "iboTunniste" : "ABC123",
+    "alkamispäivä" : "2016-07-06",
+    "päättymispäivä" : "2016-07-06"
+  } ]
+}

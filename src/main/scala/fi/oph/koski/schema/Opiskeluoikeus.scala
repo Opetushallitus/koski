@@ -176,6 +176,7 @@ object OpiskeluoikeudenTyyppi {
   val tuva = apply("tuva")
   val europeanschoolofhelsinki = apply("europeanschoolofhelsinki")
   val ebtutkinto = apply("ebtutkinto")
+  val ibdiploma = apply("ibdiploma")
   val muukuinsaanneltykoulutus = apply("muukuinsaanneltykoulutus")
   val taiteenperusopetus = apply("taiteenperusopetus")
   val kielitutkinto = apply("kielitutkinto")
@@ -267,6 +268,8 @@ trait KoskeenTallennettavaOpiskeluoikeus extends Opiskeluoikeus with Lähdejärj
         throw new InternalError("Ylioppilastutkinnon opiskeluoikeuksia ei voi mitätöidä")
       case t: EBOpiskeluoikeudenTila =>
         t.copy(opiskeluoikeusjaksot = t.opiskeluoikeusjaksot :+ EBOpiskeluoikeusjakso(mitatointiPvm, mitätöityKoodistokoodiviite))
+      case t: IBDiplomaOpiskeluoikeudenTila =>
+        t.copy(opiskeluoikeusjaksot = t.opiskeluoikeusjaksot :+ IBDiplomaOpiskeluoikeusjakso(mitatointiPvm, mitätöityKoodistokoodiviite))
       case t: EuropeanSchoolOfHelsinkiOpiskeluoikeudenTila =>
         t.copy(opiskeluoikeusjaksot = t.opiskeluoikeusjaksot :+ EuropeanSchoolOfHelsinkiOpiskeluoikeusjakso(mitatointiPvm, mitätöityKoodistokoodiviite))
       case t: MuunKuinSäännellynKoulutuksenTila =>
