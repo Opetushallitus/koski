@@ -8,6 +8,11 @@ import java.time.format.DateTimeParseException
 object Environment {
   val Local = "local"
   val UnitTest = "unittest"
+  val Dev = "OPHKoskiDev"
+  val QA = "OPHKoskiQA"
+  val Prod = "OPHKoskiProd"
+
+  private val NonProductionEnvironments = Set(Local, UnitTest, Dev, QA)
 
   def isUnitTestEnvironment(config: Config): Boolean = currentEnvironment(config) == UnitTest
 
@@ -24,8 +29,9 @@ object Environment {
     }
   }
 
+  // Tuntematon ympäristö tulkitaan tuotannoksi, koska tällä piilotetaan tuotannolta keskeneräisiä toimintoja.
   def isProdEnvironment(config: Config): Boolean =
-    config.getString("opintopolku.virkailija.url") == "https://virkailija.opintopolku.fi"
+    !NonProductionEnvironments.contains(currentEnvironment(config))
 
   def isServerEnvironment(config: Config): Boolean = !Set(Local, UnitTest).contains(currentEnvironment(config))
 
