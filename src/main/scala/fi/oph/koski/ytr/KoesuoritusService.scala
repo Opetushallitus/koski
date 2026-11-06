@@ -2,6 +2,8 @@ package fi.oph.koski.ytr
 
 import java.io.{InputStream, OutputStream}
 
+import com.typesafe.config.Config
+import fi.oph.koski.config.Environment
 import fi.oph.koski.log.Logging
 import fi.oph.koski.util._
 import software.amazon.awssdk.core.sync.ResponseTransformer
@@ -53,9 +55,10 @@ object MockKoesuoritusService extends KoesuoritusService with EnvVariables {
 }
 
 object KoesuoritusService {
-  def apply(config: YtrS3Config): KoesuoritusService = if (config.bucket == "mock") {
+  def apply(config: Config, s3Config: YtrS3Config): KoesuoritusService = if (s3Config.bucket == "mock") {
+    Environment.requireMockAllowed(config, "MockKoesuoritusService")
     MockKoesuoritusService
   } else {
-    new RemoteKoesuoritusService(config)
+    new RemoteKoesuoritusService(s3Config)
   }
 }

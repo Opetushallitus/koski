@@ -1,6 +1,7 @@
 package fi.oph.koski.henkilo
 
 import com.typesafe.config.Config
+import fi.oph.koski.config.Environment
 import fi.oph.koski.db.DB
 import fi.oph.koski.fixture.FixtureCreator
 import fi.oph.koski.http.Http._
@@ -39,7 +40,9 @@ object OpintopolkuHenkilöFacade {
     perustiedotIndexer: => OpiskeluoikeudenPerustiedotIndexer,
     rekisteriClientRetryStrategy: OppijanumeroRekisteriClientRetryStrategy = OppijanumeroRekisteriClientRetryStrategy.Default,
   ): OpintopolkuHenkilöFacade = config.getString("opintopolku.virkailija.url") match {
-    case "mock" => new MockOpintopolkuHenkilöFacadeWithDBSupport(db, hetu, fixtures)
+    case "mock" =>
+      Environment.requireMockAllowed(config, "MockOpintopolkuHenkilöFacade")
+      new MockOpintopolkuHenkilöFacadeWithDBSupport(db, hetu, fixtures)
     case _ => RemoteOpintopolkuHenkilöFacade(config, perustiedotRepository, perustiedotIndexer, rekisteriClientRetryStrategy)
   }
 }
@@ -51,8 +54,12 @@ object RemoteOpintopolkuHenkilöFacade {
     perustiedotIndexer: => OpiskeluoikeudenPerustiedotIndexer,
     rekisteriClientRetryStrategy: OppijanumeroRekisteriClientRetryStrategy = OppijanumeroRekisteriClientRetryStrategy.Default,
   ): RemoteOpintopolkuHenkilöFacade = {
+    val usingMockOids = config.hasPath("authentication-service.mockOid") && config.getBoolean("authentication-service.mockOid")
+    if (usingMockOids) {
+      Environment.requireMockAllowed(config, "authentication-service.mockOid")
+    }
     val client = OppijanumeroRekisteriClient(config, rekisteriClientRetryStrategy)
-    if (config.hasPath("authentication-service.mockOid") && config.getBoolean("authentication-service.mockOid")) {
+    if (usingMockOids) {
       new RemoteOpintopolkuHenkilöFacadeWithMockOids(client, perustiedotRepository, perustiedotIndexer, config)
     } else {
       new RemoteOpintopolkuHenkilöFacade(client, config)

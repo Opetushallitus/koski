@@ -1,6 +1,7 @@
 package fi.oph.koski.koodisto
 
 import com.typesafe.config.Config
+import fi.oph.koski.config.Environment
 import fi.oph.koski.cache.{CacheManager, CachingProxy, RefreshingCache}
 
 import scala.concurrent.duration.DurationInt
@@ -14,7 +15,9 @@ object KoodistoPalvelu {
 
   def withoutCache(config: Config): KoodistoPalvelu = {
     config.getString("opintopolku.virkailija.url") match {
-      case "mock" => MockKoodistoPalvelu()
+      case "mock" =>
+        Environment.requireMockAllowed(config, "MockKoodistoPalvelu")
+        MockKoodistoPalvelu()
       case url => new RemoteKoodistoPalvelu(url)
     }
   }
