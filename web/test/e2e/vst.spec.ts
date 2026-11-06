@@ -2342,6 +2342,22 @@ test.describe('Vapaa sivistystyö', () => {
       await page.goto('/koski/omattiedot')
     })
 
+    test.describe('Vapaatavoitteinen VST', () => {
+      test.use({ storageState: kansalainen('010917-156A') })
+      test('Koulutusmoduulin koodiarvoa ei näytetä', async ({
+        kansalainenPage,
+        page
+      }) => {
+        await kansalainenPage.openOpiskeluoikeusByIndex(0)
+        await expect(
+          page.getByTestId('oo.0.suoritukset.0.tunniste.nimi')
+        ).toHaveText('Vapaan sivistystyön koulutus')
+        await expect(
+          page.getByTestId('oo.0.suoritukset.0.tunniste.koodiarvo')
+        ).toHaveCount(0)
+      })
+    })
+
     test.describe('Osaamismerkki VST', () => {
       test.use({ storageState: kansalainen('050705A564B') })
       test('Kansalaisen tietoja voi katsella ja suoritusjakaa', async ({
