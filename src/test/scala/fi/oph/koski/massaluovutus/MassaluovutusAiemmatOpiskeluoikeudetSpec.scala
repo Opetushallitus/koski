@@ -1,7 +1,7 @@
 package fi.oph.koski.massaluovutus
 
 import fi.oph.koski.api.misc.OpiskeluoikeusTestMethodsAmmatillinen
-import fi.oph.koski.documentation.{AmmatillinenExampleData, ExamplesEsiopetus, ExamplesTutkintokoulutukseenValmentavaKoulutus, PerusopetusExampleData}
+import fi.oph.koski.documentation.{AmmatillinenExampleData, ExampleData, ExamplesEsiopetus, ExamplesTutkintokoulutukseenValmentavaKoulutus, PerusopetusExampleData}
 import fi.oph.koski.schema.Oppilaitos
 import fi.oph.koski.henkilo.{KoskiSpecificMockOppijat, OppijaHenkilö}
 import fi.oph.koski.http.KoskiErrorCategory
@@ -61,6 +61,16 @@ class MassaluovutusAiemmatOpiskeluoikeudetSpec extends AnyFreeSpec with Massaluo
     val slave = KoskiSpecificMockOppijat.aiemmatTestiSlave.henkilö
     createOrUpdate(slave, PerusopetusExampleData.päättötodistusOpiskeluoikeus())
     createOrUpdate(slave, makeOpiskeluoikeus(alkamispäivä = LocalDate.of(2020, 1, 1)))
+    val päättyyTänään = KoskiSpecificMockOppijat.aiemmatTestiPäättyyTänään
+    createOrUpdate(päättyyTänään, PerusopetusExampleData.päättötodistusOpiskeluoikeus())
+    createOrUpdate(päättyyTänään, lisääTila(makeOpiskeluoikeus(alkamispäivä = LocalDate.of(2024, 8, 1)), LocalDate.now(), ExampleData.opiskeluoikeusEronnut))
+    val päättyyHuomenna = KoskiSpecificMockOppijat.aiemmatTestiPäättyyHuomenna
+    createOrUpdate(päättyyHuomenna, PerusopetusExampleData.päättötodistusOpiskeluoikeus())
+    createOrUpdate(päättyyHuomenna, lisääTila(makeOpiskeluoikeus(alkamispäivä = LocalDate.of(2024, 8, 1)), LocalDate.now().plusDays(1), ExampleData.opiskeluoikeusEronnut))
+    val mitätöity = KoskiSpecificMockOppijat.aiemmatTestiMitätöity
+    createOrUpdate(mitätöity, PerusopetusExampleData.päättötodistusOpiskeluoikeus())
+    val mitätöitävä = createOrUpdate(mitätöity, makeOpiskeluoikeus(alkamispäivä = LocalDate.of(2024, 8, 1)))
+    delete(s"api/opiskeluoikeus/${mitätöitävä.oid.get}", headers = authHeaders(MockUsers.paakayttaja))(verifyResponseStatusOk())
   }
 
   // Siivotaan beforeAll:ssa luodut opiskeluoikeudet, jotta samassa JVM:ssä seuraavien suitejen oppijamäärät eivät muutu
@@ -164,6 +174,32 @@ class MassaluovutusAiemmatOpiskeluoikeudetSpec extends AnyFreeSpec with Massaluo
         }
       }
 
+      "Hylätään, jos annetun oppijan päättymätön opiskeluoikeus on vain toisessa oppilaitoksessa" in {
+        addQuery(kulosaarenQuery.copy(oppijaOidit = Some(List(lauri.oid))), oletuskäyttäjä) {
+          verifyResponseStatus(400)
+          body should include("eiNykyinenOpiskelija")
+          body should include(lauri.oid)
+        }
+      }
+
+      "Hylätään, jos annetun oppijan opiskeluoikeus omassa oppilaitoksessa päättyy tänään" in {
+        val oppija = KoskiSpecificMockOppijat.aiemmatTestiPäättyyTänään
+        addQuery(oidilla(oppija), oletuskäyttäjä) {
+          verifyResponseStatus(400)
+          body should include("eiNykyinenOpiskelija")
+          body should include(oppija.oid)
+        }
+      }
+
+      "Hylätään, jos annetun oppijan opiskeluoikeus omassa oppilaitoksessa on mitätöity" in {
+        val oppija = KoskiSpecificMockOppijat.aiemmatTestiMitätöity
+        addQuery(oidilla(oppija), oletuskäyttäjä) {
+          verifyResponseStatus(400)
+          body should include("eiNykyinenOpiskelija")
+          body should include(oppija.oid)
+        }
+      }
+
       "Hylätään, jos annettu oppija on täyttänyt 18 vuotta ennen kuluvaa vuotta" in {
         val oppija = KoskiSpecificMockOppijat.eero
         addQuery(oidilla(oppija), oletuskäyttäjä) {
@@ -224,6 +260,13 @@ class MassaluovutusAiemmatOpiskeluoikeudetSpec extends AnyFreeSpec with Massaluo
 
     "Tulevaisuudessa alkava opiskeluoikeus omassa oppilaitoksessa tekee oppijasta nykyisen opiskelijan" in {
       val oppija = KoskiSpecificMockOppijat.aiemmatTestiTulevaisuudessaAlkava
+      oppijanTulos(haeTulostiedostot(oidilla(oppija)), oppija) { json =>
+        oppilaitoksetJaKoulutusmuodot(json) shouldBe Set((MockOrganisaatiot.jyväskylänNormaalikoulu, "perusopetus"))
+      }
+    }
+
+    "Huomenna päättyvä opiskeluoikeus omassa oppilaitoksessa tekee oppijasta nykyisen opiskelijan" in {
+      val oppija = KoskiSpecificMockOppijat.aiemmatTestiPäättyyHuomenna
       oppijanTulos(haeTulostiedostot(oidilla(oppija)), oppija) { json =>
         oppilaitoksetJaKoulutusmuodot(json) shouldBe Set((MockOrganisaatiot.jyväskylänNormaalikoulu, "perusopetus"))
       }

@@ -456,6 +456,9 @@ object KoskiSpecificMockOppijat {
     LaajatOppijaHenkilöTiedot(oid = koskiSpecificOppijat.generateId(), sukunimi = "AiemmatTesti-Master", etunimet = "Maija", kutsumanimi = "Maija", hetu = aiemmatTestiMaster.hetu, syntymäaika = aiemmatTestiMaster.syntymäaika),
     Some(aiemmatTestiMaster),
   ))
+  val aiemmatTestiPäättyyTänään = koskiSpecificOppijat.oppijaSyntymäaikaHetusta("AiemmatTesti-Päättyy-Tänään", "Taneli", aiemmatHetu(6, 1))
+  val aiemmatTestiPäättyyHuomenna = koskiSpecificOppijat.oppijaSyntymäaikaHetusta("AiemmatTesti-Päättyy-Huomenna", "Heli", aiemmatHetu(7, 1))
+  val aiemmatTestiMitätöity = koskiSpecificOppijat.oppijaSyntymäaikaHetusta("AiemmatTesti-Mitätöity", "Mikko", aiemmatHetu(8, 1))
 
   def defaultOppijat = koskiSpecificOppijat.getOppijat
   def defaultKuntahistoriat: mutable.Map[String, Seq[OppijanumerorekisteriKotikuntahistoriaRow]] = koskiSpecificOppijat.getKuntahistoriat
