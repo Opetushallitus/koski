@@ -11,9 +11,11 @@ import scala.jdk.CollectionConverters._
 
 // Täydentää AppConfig-tiedoston reference.confin avaimilla ja järjestää avaimet reference.confin järjestykseen
 // {}-lohkoihin. AppConfigin arvot ja kommentit säilyvät, ja puuttuva avain saa reference.confin oletuksen.
+// reference.confin "Ei käytössä pilvessä:" -kommentit kopioidaan AppConfigiin avaimen yläpuolelle.
 object AppConfigYhdistys {
   case class Tulos(tiedosto: String, lisätyt: List[String], paikallisetOletukset: List[String])
 
+  private val PilviMerkintä = "Ei käytössä pilvessä:"
   private val PaikallinenArvo = """mock|localhost|localstack|127\.0\.0\.1|0:0:0:0:0:0:0:1""".r
   // JSON-muodossa merkkijonot ovat aina lainausmerkeissä, ja viittaukset ${...} säilyvät. HOCON-muodossa sama
   // merkkijono renderöityisi eri tavoin sen mukaan, oliko se lainausmerkeissä.
@@ -62,9 +64,12 @@ object AppConfigYhdistys {
       haara.lapset(polku.last) = Lehti(arvo, kommentit)
     }
     referenceArvot.foreach { case (avain, oletus) =>
+      val pilviKommentit = eiKäytössäPilvessä(oletus)
       appConfigArvo.get(avain) match {
-        case Some(arvo) => lisää(avain, arvo, arvo.origin.comments.asScala.toList)
-        case None => lisää(avain, oletus, Nil)
+        case Some(arvo) =>
+          val omat = arvo.origin.comments.asScala.toList
+          lisää(avain, arvo, omat ++ pilviKommentit.filterNot(kommentti => omat.exists(_.trim == kommentti.trim)))
+        case None => lisää(avain, oletus, pilviKommentit)
       }
     }
     appConfigArvot
@@ -78,9 +83,14 @@ object AppConfigYhdistys {
     Tulos(
       tiedosto,
       lisätyt.map(_._1),
-      lisätyt.collect { case (avain, oletus) if PaikallinenArvo.findFirstIn(oletus.render(Lyhyt)).isDefined => avain }
+      lisätyt.collect {
+        case (avain, oletus) if PaikallinenArvo.findFirstIn(oletus.render(Lyhyt)).isDefined && eiKäytössäPilvessä(oletus).isEmpty => avain
+      }
     )
   }
+
+  private def eiKäytössäPilvessä(oletus: ConfigValue): List[String] =
+    oletus.origin.comments.asScala.toList.filter(_.trim.startsWith(PilviMerkintä))
 
   private sealed trait Solmu
   private case class Lehti(arvo: ConfigValue, kommentit: List[String]) extends Solmu
