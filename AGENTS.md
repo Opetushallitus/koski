@@ -244,6 +244,7 @@ Maven has no version ranges or lockfile refresh: a transitive version changes on
 - Default config: `src/main/resources/reference.conf`
 - Override with: `-Dconfig.resource=myconfig.conf`
 - Local dev runs with mocked external services by default
+- Every `reference.conf` key must also exist in AppConfig in Dev, QA and Prod. Add a new key there first with `tools/koskiConfig.sh` in koski-aws-infra: PR CI checks QA, and each deploy stops if its target environment is missing a key.
 
 ## Common Tasks
 
