@@ -413,12 +413,9 @@
         "org.eclipse.jetty.compression:jetty-compression-server",
         "org.eclipse.jetty.compression:jetty-compression-gzip",
         "com.fasterxml.jackson.core:jackson-databind",
-        "com.typesafe:config",
         "org.slf4j:slf4j-api",
         "org.apache.commons:commons-lang3",
-        "joda-time:joda-time",
-        "org.scalaz:scalaz-core_2.13",
-        "org.scala-lang.modules:scala-xml_2.13"
+        "org.scalaz:scalaz-core_2.13"
       ],
       "automerge": true
     },
@@ -430,7 +427,14 @@
       "matchPackageNames": [
         "org.scala-lang.modules:scala-parallel-collections_2.13",
         "org.commonmark:commonmark",
-        "com.google.guava:guava"
+        "com.google.guava:guava",
+        "joda-time:joda-time",
+        "org.thymeleaf:thymeleaf",
+        "org.apache.commons:commons-text",
+        "org.scala-lang.modules:scala-xml_2.13",
+        "com.typesafe:config",
+        "org.apache.poi:poi-ooxml",
+        "org.scalatra:**"
       ],
       "automerge": true
     },
