@@ -415,7 +415,6 @@
         "com.fasterxml.jackson.core:jackson-databind",
         "com.typesafe:config",
         "org.slf4j:slf4j-api",
-        "com.google.guava:guava",
         "org.apache.commons:commons-lang3",
         "joda-time:joda-time",
         "org.scalaz:scalaz-core_2.13",
@@ -430,7 +429,8 @@
       "matchUpdateTypes": ["minor", "patch"],
       "matchPackageNames": [
         "org.scala-lang.modules:scala-parallel-collections_2.13",
-        "org.commonmark:commonmark"
+        "org.commonmark:commonmark",
+        "com.google.guava:guava"
       ],
       "automerge": true
     },
