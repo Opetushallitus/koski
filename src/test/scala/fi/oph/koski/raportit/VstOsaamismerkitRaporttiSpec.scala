@@ -3,7 +3,7 @@ package fi.oph.koski.raportit
 import com.typesafe.config.ConfigValueFactory.fromAnyRef
 import fi.oph.koski.{DirtiesFixtures, KoskiApplicationForTests}
 import fi.oph.koski.api.misc.PutOpiskeluoikeusTestMethods
-import fi.oph.koski.config.KoskiApplication
+import fi.oph.koski.config.{Environment, KoskiApplication}
 import fi.oph.koski.documentation.VapaaSivistystyöExample
 import fi.oph.koski.henkilo.{KoskiSpecificMockOppijat, LaajatOppijaHenkilöTiedot}
 import fi.oph.koski.koskiuser.MockUsers
@@ -121,7 +121,7 @@ class VstOsaamismerkitRaporttiSpec
 
   "Raportti ei ole käytössä tuotantoympäristössä" - {
     val app = KoskiApplicationForTests
-    val tuotantoConfig = app.config.withValue("opintopolku.virkailija.url", fromAnyRef("https://virkailija.opintopolku.fi"))
+    val tuotantoConfig = app.config.withValue("env", fromAnyRef(Environment.Prod))
     val oppilaitosOid = MockOrganisaatiot.varsinaisSuomenKansanopisto
     implicit val session = MockUsers.varsinaisSuomiPalvelukäyttäjä.toKoskiSpecificSession(app.käyttöoikeusRepository)
     val hierarkia = app.organisaatioRepository.getOrganisaatioHierarkia(oppilaitosOid).get

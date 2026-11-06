@@ -38,6 +38,7 @@ object LuovutuspalveluV2XRoadConfigService {
     if (Environment.isServerEnvironment(config) && Environment.usesAwsSecretsManager) {
       new RemoteLuovutuspalveluV2XRoadConfigService
     } else {
+      Environment.requireMockAllowed(config, "MockLuovutuspalveluV2XRoadConfigService")
       new MockLuovutuspalveluV2XRoadConfigService
     }
   }

@@ -45,6 +45,30 @@ jobs:
           registries: ${{ secrets.ECR_ACCOUNT_ID }}
           mask-password: "true"
 
+      # Pilvessä puuttuva avain saisi arvonsa reference.confista, jonka arvot on tarkoitettu paikalliseen kehitykseen.
+      - name: Check that AppConfig has every reference.conf key
+        env:
+          ENVIRONMENT: ${{ inputs.environment }}
+          IMAGE: ${{ steps.login-deployment.outputs.registry }}/koski:${{ inputs.commithash }}
+        run: |
+          set -euo pipefail
+          case "$ENVIRONMENT" in
+            dev) ENV_NAME=OPHKoskiDev;;
+            qa) ENV_NAME=OPHKoskiQA;;
+            prod) ENV_NAME=OPHKoskiProd;;
+            *) echo "::error::Unknown environment $ENVIRONMENT"; exit 1;;
+          esac
+          CONFIG_FILE="$RUNNER_TEMP/appconfig.conf"
+          trap 'rm -f "$CONFIG_FILE"' EXIT
+          TOKEN=$(aws appconfigdata start-configuration-session \
+            --application-identifier koski \
+            --environment-identifier "$ENV_NAME" \
+            --configuration-profile-identifier "$ENV_NAME" \
+            --query InitialConfigurationToken --output text)
+          aws appconfigdata get-latest-configuration --configuration-token "$TOKEN" "$CONFIG_FILE" > /dev/null
+          docker run --rm --interactive --entrypoint java --workdir /home/koski "$IMAGE" \
+            -classpath 'WEB-INF/lib/*' fi.oph.koski.config.AppConfigAvaintarkistus < "$CONFIG_FILE"
+
       - name: Get task definition ARN
         id: get-taskdef-arn
         run: |

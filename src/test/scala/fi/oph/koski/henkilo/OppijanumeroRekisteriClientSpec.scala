@@ -31,6 +31,7 @@ class OppijanumeroRekisteriClientSpec
       |authentication-service.useCas = false
       |opintopolku.virkailija.username = "foo"
       |opintopolku.virkailija.password = "bar"
+      |env = "unittest"
       |otuvaTokenEndpoint="mock"
       |oppijanumerorekisteri.baseUrl="http://localhost:9876"
     """.stripMargin)

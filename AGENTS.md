@@ -244,6 +244,8 @@ Maven has no version ranges or lockfile refresh: a transitive version changes on
 - Default config: `src/main/resources/reference.conf`
 - Override with: `-Dconfig.resource=myconfig.conf`
 - Local dev runs with mocked external services by default
+- Every `reference.conf` key must also exist in AppConfig in Dev, QA and Prod. Add a new key there first with `tools/koskiConfig.sh` in koski-aws-infra: PR CI checks QA, and each deploy stops if its target environment is missing a key. `scripts/yhdista-appconfig.sh` fills in missing keys with their defaults and orders the file like `reference.conf`.
+- Changing a value in `reference.conf` doesn't change the cloud, because AppConfig overrides it; change the value in AppConfig in each environment too.
 
 ## Common Tasks
 
@@ -265,6 +267,9 @@ Record every new or changed rule in `validaation_muutoshistoria.md` (repo root),
 section, newest first, bullets in Finnish. Neither history file mentions its own name in its
 content, so grep for the rule's wording or look at `git log -- <file>` for examples, not for
 "muutoshistoria".
+
+A validation date in `validaatiot.*` lives in AppConfig too: changing it in `reference.conf` alone doesn't
+reach the cloud (see *Configuration*).
 
 ### Updating localizations
 Localizations are served by the Lokalisointipalvelu service, which gets its data from Tolgee.

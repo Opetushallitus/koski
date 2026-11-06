@@ -22,9 +22,7 @@ object KituClient {
 
   def apply(config: Config): KituClient = {
     if (config.getString("kitu.baseUrl") == "mock") {
-      if (Environment.isServerEnvironment(config)) {
-        throw new IllegalStateException("MockKituClient ei ole sallittu palvelinympäristössä – aseta kitu.baseUrl konfiguraatioon")
-      }
+      Environment.requireMockAllowed(config, "MockKituClient")
       new MockKituClient
     } else {
       new RemoteKituClient(config)

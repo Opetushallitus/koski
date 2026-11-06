@@ -14,19 +14,27 @@ class OmaDataOAuth2DiscoveryServlet(implicit val application: KoskiApplication) 
   val frontendValvontaMode: FrontendValvontaMode.FrontendValvontaMode =
     FrontendValvontaMode(application.config.getString("frontend-valvonta.mode"))
 
+  // Luetaan servletin luonnissa, jotta mock tuotannossa estää käynnistyksen.
+  private val configuredOpintopolkuBaseUrl: Option[String] = application.config.getString("opintopolku.oppija.url") match {
+    case "mock" =>
+      Environment.requireMockAllowed(application.config, "opintopolku.oppija.url")
+      None
+    case url => Some(url)
+  }
+
+  private val luovutuspalveluBaseUrl: String = application.config.getString("omadataoauth2.luovutuspalveluBaseUrl") match {
+    case "mock" =>
+      Environment.requireMockAllowed(application.config, "omadataoauth2.luovutuspalveluBaseUrl")
+      "https://localhost:7022"
+    case url => url
+  }
+
   get("/") {
 
-    val opintopolkuBaseUrl = application.config.getString("opintopolku.oppija.url") match {
-      case "mock" =>
-        val url = request.getRequestURL
-        val uri = request.getRequestURI
-        url.substring(0, url.indexOf(uri))
-      case url => url
-    }
-    val luovutuspalveluBaseUrl = application.config.getString("omadataoauth2.luovutuspalveluBaseUrl") match {
-      case "mock" =>
-        "https://localhost:7022"
-      case url => url
+    val opintopolkuBaseUrl = configuredOpintopolkuBaseUrl.getOrElse {
+      val url = request.getRequestURL
+      val uri = request.getRequestURI
+      url.substring(0, url.indexOf(uri))
     }
 
     val metadata = OAuth2ProviderMetadata(

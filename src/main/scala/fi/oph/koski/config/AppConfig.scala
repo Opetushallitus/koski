@@ -6,7 +6,7 @@ import software.amazon.awssdk.services.appconfigdata.AppConfigDataClient
 import software.amazon.awssdk.services.appconfigdata.model.{GetLatestConfigurationRequest, StartConfigurationSessionRequest}
 
 object AppConfig extends Logging {
-  lazy private val envName = sys.env.getOrElse("ENV_NAME", "local")
+  lazy val envName: String = sys.env.getOrElse("ENV_NAME", throw new RuntimeException("Ympäristömuuttuja ENV_NAME puuttuu"))
 
   lazy private val appConfigClient: AppConfigDataClient = AppConfigDataClient.builder
     .build

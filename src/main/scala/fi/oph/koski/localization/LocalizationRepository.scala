@@ -1,6 +1,7 @@
 package fi.oph.koski.localization
 
 import com.typesafe.config.Config
+import fi.oph.koski.config.Environment
 import fi.oph.koski.cache._
 import fi.oph.koski.http.Http._
 import fi.oph.koski.http.{Http, ServiceConfig, VirkailijaHttpClient}
@@ -91,6 +92,7 @@ object LocalizationRepository {
   def apply(config: Config, localizationConfig: LocalizationConfig)(implicit cacheInvalidator: CacheManager): LocalizationRepository = {
     config.getString("localization.url") match {
       case "mock" =>
+        Environment.requireMockAllowed(config, "MockLocalizationRepository")
         new MockLocalizationRepository(localizationConfig)
       case url: Any =>
         new RemoteLocalizationRepository(config, localizationConfig)

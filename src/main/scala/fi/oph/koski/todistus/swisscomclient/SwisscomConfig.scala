@@ -38,7 +38,9 @@ object SwisscomConfig extends Logging {
     secretsSource match {
       case FROM_SECRETS_MANAGER => fromSecretsManager(config, secretsSource)
       case FROM_SSO_SECRETS_MANAGER => fromSsoCredentialsSecretsManager(config, secretsSource)
-      case MOCK_FROM_CONFIG => fromConfig(config, secretsSource)
+      case MOCK_FROM_CONFIG =>
+        Environment.requireMockAllowed(config, "MockSwisscomClient")
+        fromConfig(config, secretsSource)
     }
   }
 

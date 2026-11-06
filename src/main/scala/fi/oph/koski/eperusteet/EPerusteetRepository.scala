@@ -1,6 +1,7 @@
 package fi.oph.koski.eperusteet
 
 import com.typesafe.config.Config
+import fi.oph.koski.config.Environment
 import fi.oph.koski.cache.CacheManager
 import fi.oph.koski.tutkinto.Koulutustyyppi.Koulutustyyppi
 
@@ -63,6 +64,7 @@ object EPerusteetRepository {
   def apply(config: Config)(implicit cacheInvalidator: CacheManager): EPerusteetRepository = {
     config.getString("eperusteet.url") match {
       case "mock" =>
+        Environment.requireMockAllowed(config, "MockEPerusteetRepository")
         MockEPerusteetRepository
       case url =>
         new RemoteEPerusteetRepository(url, config.getString("eperusteet.baseUrl"))
