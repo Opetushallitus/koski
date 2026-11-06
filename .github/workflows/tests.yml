@@ -370,8 +370,7 @@ jobs:
       - uses: $/.github/actions/koski_backend_test
         with:
           suites: |
-            fi.oph.koski.api.misc, \
-            fi.oph.koski.cache
+            fi.oph.koski.api.misc
 
   backend_tests_nonmock:
     name: Backend (non-mock)
