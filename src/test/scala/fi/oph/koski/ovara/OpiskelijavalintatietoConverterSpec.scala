@@ -40,6 +40,21 @@ class OpiskelijavalintatietoConverterSpec extends AnyFreeSpec with TestEnvironme
     hakutoive.vastaanotonTila.map(k => (k.koodistoUri, k.koodiarvo)) shouldBe Some(("omadatavastaanotontila", "vastaanottanutsitovasti"))
     hakutoive.ilmoittautumisenTila.map(k => (k.koodistoUri, k.koodiarvo)) shouldBe Some(("omadatailmoittautumisentila", "lasna"))
     hakutoive.johtaaTutkintoon shouldBe Some(true)
+    hakutoive.nqf.map(k => (k.koodistoUri, k.koodiarvo)) shouldBe List(("nqf", "6"))
+    hakutoive.eqf.map(k => (k.koodistoUri, k.koodiarvo)) shouldBe List(("eqf", "6"))
+    val laajuus = hakutoive.opintojenLaajuus.getOrElse(fail("opintojenLaajuus puuttuu"))
+    laajuus.yksikkö.map(k => (k.koodistoUri, k.koodiarvo)) shouldBe Some(("opintojenlaajuusyksikko", "2"))
+    laajuus.yksikkö.flatMap(_.nimi).map(_.get("fi")) shouldBe Some("opintopistettä")
+    laajuus.laajuus shouldBe Some(240)
+    laajuus.laajuusMin shouldBe None
+    laajuus.laajuusMax shouldBe None
+  }
+
+  "Jättää puuttuvat NQF-, EQF- ja laajuustiedot tyhjiksi" in {
+    val hakutoive = converter.convert(mockData(KoskiSpecificMockOppijat.masterYlioppilasJaAmmattilainen.oid)).hakemukset.head.hakutoiveet.head
+    hakutoive.nqf shouldBe Nil
+    hakutoive.eqf shouldBe Nil
+    hakutoive.opintojenLaajuus shouldBe None
   }
 
   "Täsmää koodi-URI:n kirjainkoosta riippumatta" in {
