@@ -3433,8 +3433,8 @@ packages:
     resolution: {integrity: sha512-eNRKgb3z66Yp3D2CixVujOUvXLFUTij/zVnV8KRyvFdQwpz7I5DS8UfRkTeLzb64u+dkzDSdelE24izu+zSSUg==}
     engines: {node: ^14.18.0 || >=16.0.0}
 
-  table@6.9.0:
-    resolution: {integrity: sha512-9kY+CygyYM6j02t5YFHbNz2FN5QmYGv9zAjVp4lCDjlCw7amdckXlEt/bjMhUIfj4ThGRE4gCUH5+yGnNuPo5A==}
+  table@6.9.1:
+    resolution: {integrity: sha512-aFh6MRLCU6WKdrJS+v++PeuglXT6VQ9qPDFgMBBJk5PJBaFHM10kb6Gqv8ecKD6iMXi4cheXh3KMWtWO0IJWIg==}
     engines: {node: '>=10.0.0'}
 
   term-size@2.2.1:
@@ -7309,7 +7309,7 @@ snapshots:
       string-width: 8.3.0
       supports-hyperlinks: 4.6.0
       svg-tags: 1.0.0
-      table: 6.9.0
+      table: 6.9.1
       write-file-atomic: 7.0.1
     transitivePeerDependencies:
       - supports-color
@@ -7338,7 +7338,7 @@ snapshots:
     dependencies:
       '@pkgr/core': 0.3.6
 
-  table@6.9.0:
+  table@6.9.1:
     dependencies:
       ajv: 8.20.0
       lodash.truncate: 4.4.2
