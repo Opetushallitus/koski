@@ -27,7 +27,17 @@ case class OpiskelijavalintaHakutoive(
   valinnanTila: Option[Koodistokoodiviite],
   vastaanotonTila: Option[Koodistokoodiviite],
   ilmoittautumisenTila: Option[Koodistokoodiviite],
-  johtaaTutkintoon: Option[Boolean]
+  johtaaTutkintoon: Option[Boolean],
+  nqf: List[Koodistokoodiviite],
+  eqf: List[Koodistokoodiviite],
+  opintojenLaajuus: Option[OpiskelijavalintaOpintojenLaajuus]
+)
+
+case class OpiskelijavalintaOpintojenLaajuus(
+  yksikkö: Option[Koodistokoodiviite],
+  laajuus: Option[Double],
+  laajuusMin: Option[Double],
+  laajuusMax: Option[Double]
 )
 
 case class OpiskelijavalintaOrganisaatio(

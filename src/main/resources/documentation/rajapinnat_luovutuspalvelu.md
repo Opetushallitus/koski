@@ -565,7 +565,8 @@ Käytössä olevat parametrit (oletusarvo suluissa):
 - `osasuoritukset` (false): palautetaanko suoritusten osasuoritukset
 - `vainVahvistetut` (false): palautetaanko vain vahvistetut suoritukset
 - `valintatiedot` (false): palautetaanko henkilön opiskelijavalintatiedot eli hakemukset ja hakutoiveet sekä
-  valinnan, opiskelupaikan vastaanoton ja ilmoittautumisen tilat. Tiedot haetaan Opintopolun
+  valinnan, opiskelupaikan vastaanoton ja ilmoittautumisen tilat. Hakutoiveen mukana palautetaan myös hakukohteen
+  koulutuksen NQF- ja EQF-tasot sekä opintojen laajuus. Tiedot haetaan Opintopolun
   opiskelijavalintapalveluista. Jos valintatietoja ei saada haettua, koko kutsu palauttaa virheen 503.
   Parametri ei ole vielä käytössä tuotantoympäristössä: siellä se jätetään huomiotta.
 

@@ -24,11 +24,22 @@ class OpiskelijavalintatietoConverter(koodistoViitePalvelu: KoodistoViitePalvelu
               valinnanTila = hakutoive.valinnanTila.map(validateTila("omadatavalinnantila", _)),
               vastaanotonTila = hakutoive.vastaanotonTila.map(validateTila("omadatavastaanotontila", _)),
               ilmoittautumisenTila = hakutoive.ilmoittautumisenTila.map(validateTila("omadatailmoittautumisentila", _)),
-              johtaaTutkintoon = hakutoive.johtaaTutkintoon
+              johtaaTutkintoon = hakutoive.johtaaTutkintoon,
+              nqf = hakutoive.nqf.toList.flatten.map(taso => koodistoViitePalvelu.validateRequired("nqf", taso.toString)),
+              eqf = hakutoive.eqf.toList.flatten.map(taso => koodistoViitePalvelu.validateRequired("eqf", taso.toString)),
+              opintojenLaajuus = hakutoive.opintojenLaajuus.map(toOpintojenLaajuus)
             )
           }
         )
       }
+    )
+
+  private def toOpintojenLaajuus(laajuus: OvaraOpintojenLaajuus): OpiskelijavalintaOpintojenLaajuus =
+    OpiskelijavalintaOpintojenLaajuus(
+      yksikkö = laajuus.yksikkoKoodiuri.map(validateKoodiUri("opintojenlaajuusyksikko", _)),
+      laajuus = laajuus.laajuus,
+      laajuusMin = laajuus.laajuusMin,
+      laajuusMax = laajuus.laajuusMax
     )
 
   private def toOrganisaatio(org: OvaraOrganisaatio): OpiskelijavalintaOrganisaatio =

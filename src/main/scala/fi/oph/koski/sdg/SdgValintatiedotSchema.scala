@@ -29,7 +29,12 @@ object SdgValintatieto {
               valinnanTila = hakutoive.valinnanTila,
               vastaanotonTila = hakutoive.vastaanotonTila,
               ilmoittautumisenTila = hakutoive.ilmoittautumisenTila,
-              johtaaTutkintoon = hakutoive.johtaaTutkintoon
+              johtaaTutkintoon = hakutoive.johtaaTutkintoon,
+              nqf = hakutoive.nqf,
+              eqf = hakutoive.eqf,
+              opintojenLaajuus = hakutoive.opintojenLaajuus.map(l =>
+                SdgOpintojenLaajuus(yksikkö = l.yksikkö, laajuus = l.laajuus, laajuusMin = l.laajuusMin, laajuusMax = l.laajuusMax)
+              )
             )
           }
         )
@@ -68,7 +73,27 @@ case class SdgHakutoive(
   vastaanotonTila: Option[Koodistokoodiviite],
   @KoodistoUri("omadatailmoittautumisentila")
   ilmoittautumisenTila: Option[Koodistokoodiviite],
-  johtaaTutkintoon: Option[Boolean]
+  johtaaTutkintoon: Option[Boolean],
+  @Description("Hakukohteen koulutuksen tasot tutkintojen ja muiden osaamiskokonaisuuksien kansallisessa viitekehyksessä (NQF)")
+  @KoodistoUri("nqf")
+  nqf: List[Koodistokoodiviite],
+  @Description("Hakukohteen koulutuksen tasot eurooppalaisessa tutkintojen viitekehyksessä (EQF)")
+  @KoodistoUri("eqf")
+  eqf: List[Koodistokoodiviite],
+  @Description("Hakukohteen koulutuksen laajuus")
+  opintojenLaajuus: Option[SdgOpintojenLaajuus]
+)
+
+@Title("Opintojen laajuus")
+case class SdgOpintojenLaajuus(
+  @KoodistoUri("opintojenlaajuusyksikko")
+  yksikkö: Option[Koodistokoodiviite],
+  @Description("Laajuus, kun koulutuksella on yksi kiinteä laajuus")
+  laajuus: Option[Double],
+  @Description("Laajuuden alaraja, kun laajuus on vaihteluväli")
+  laajuusMin: Option[Double],
+  @Description("Laajuuden yläraja, kun laajuus on vaihteluväli")
+  laajuusMax: Option[Double]
 )
 
 @Title("Hakutoiveen organisaatio")

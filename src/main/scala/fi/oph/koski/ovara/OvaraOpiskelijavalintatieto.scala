@@ -29,7 +29,17 @@ case class OvaraHakutoive(
   valinnanTila: Option[String],
   vastaanotonTila: Option[String],
   ilmoittautumisenTila: Option[String],
-  johtaaTutkintoon: Option[Boolean]
+  johtaaTutkintoon: Option[Boolean],
+  nqf: Option[List[Int]],
+  eqf: Option[List[Int]],
+  opintojenLaajuus: Option[OvaraOpintojenLaajuus]
+)
+
+case class OvaraOpintojenLaajuus(
+  yksikkoKoodiuri: Option[String],
+  laajuus: Option[Double],
+  laajuusMin: Option[Double],
+  laajuusMax: Option[Double]
 )
 
 case class OvaraOrganisaatio(oid: String, nimi: OvaraNimi)
