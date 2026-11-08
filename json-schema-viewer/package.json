@@ -34,7 +34,7 @@
   "devDependencies": {
     "@babel/helper-compilation-targets": "8.0.7",
     "@eslint/js": "10.0.1",
-    "@swc/core": "1.16.21",
+    "@swc/core": "1.16.22",
     "@types/jquery": "4.0.1",
     "@types/node": "26.6.6",
     "@types/tv4": "1.2.33",
