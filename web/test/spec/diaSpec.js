@@ -1297,13 +1297,16 @@ describe('DIA', function () {
           })
         )
 
-        it('muuttaa automaattisesti suorituskieleksi saksan', function () {
-          expect(
-            S(
-              '[data-testid="uusiOpiskeluoikeus.modal.suorituskieli.input"]'
-            ).val()
-          ).to.equal('saksa')
-        })
+        it(
+          'muuttaa automaattisesti suorituskieleksi saksan',
+          wait.until(function () {
+            return (
+              S(
+                '[data-testid="uusiOpiskeluoikeus.modal.suorituskieli.input"]'
+              ).val() === 'saksa'
+            )
+          })
+        )
       })
     })
 
