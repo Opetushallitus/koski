@@ -10,7 +10,7 @@ import fi.oph.koski.koskiuser.Rooli.{OPHKATSELIJA, OPHPAAKAYTTAJA}
 import fi.oph.koski.log.AuditLogMessage.AuditLogMessageField
 import fi.oph.koski.log._
 import fi.oph.koski.massaluovutus.suorituspalvelu.opiskeluoikeus.{SupaOpiskeluoikeus, SupaPoistettuOpiskeluoikeus, SupaPoistettuTaiOlemassaolevaOpiskeluoikeus, SupaVirheellinenOpiskeluoikeus}
-import fi.oph.koski.massaluovutus.{MassaluovutusQueryPriority, OpetushallituksenMassaluovutusQueryParameters, QueryResultWriter}
+import fi.oph.koski.massaluovutus.{MassaluovutusQueryPriority, MassaluovutusUtils, OpetushallituksenMassaluovutusQueryParameters, QueryResultWriter}
 import fi.oph.koski.schema.{KoskeenTallennettavaOpiskeluoikeus, KoskiSchema}
 
 import java.sql.Timestamp
@@ -28,6 +28,7 @@ trait SuorituspalveluQuery extends OpetushallituksenMassaluovutusQueryParameters
 
     writer.predictFileCount(resultsByOppija.size / 100)
     resultsByOppija.grouped(100).zipWithIndex.foreach { case (oppijaResult, index) =>
+      val massaluovutuksenKentät = MassaluovutusUtils.auditlokinKentät(writer.queryId.toString, Some(writer.jsonFileName(s"$index")))
       val supaResponses = oppijaResult.flatMap { case (oppija_oid, opiskeluoikeudet) =>
         val latestTimestamp = opiskeluoikeudet.maxBy(_._2.toInstant)._2
         val db = selectDbByLag(application, latestTimestamp)
@@ -38,7 +39,7 @@ trait SuorituspalveluQuery extends OpetushallituksenMassaluovutusQueryParameters
           val responseVirheellisetOpiskeluoikeudet = response.collect { case Left(virheellinenOo) => virheellinenOo }
 
           val auditLogOidit = responseOpiskeluoikeudet.map(_.oid) ++ responseVirheellisetOpiskeluoikeudet.map(_.oid)
-          SuorituspalveluQuery.auditLog(oppija_oid, auditLogOidit)
+          SuorituspalveluQuery.auditLog(oppija_oid, auditLogOidit, massaluovutuksenKentät = massaluovutuksenKentät)
 
           Some(
             SupaResponse(
@@ -149,16 +150,26 @@ object SuorituspalveluQuery {
   // kokoisiin ryhmiin, jolloin yksi viesti pysyy reilusti rajan alla (100 oidia ~2800 merkkiä).
   private[suorituspalvelu] val auditLogOiditPerViesti = 100
 
-  def auditLog(oppijaOid: String, opiskeluoikeusOidit: Seq[String], versionumero: Option[Int] = None)(implicit user: Session): Unit =
+  def auditLog(
+    oppijaOid: String,
+    opiskeluoikeusOidit: Seq[String],
+    versionumero: Option[Int] = None,
+    massaluovutuksenKentät: AuditLogMessage.ExtraFields = Map.empty,
+  )(implicit user: Session): Unit =
     if (opiskeluoikeusOidit.isEmpty) {
-      logAuditMessage(oppijaOid, None, versionumero)
+      logAuditMessage(oppijaOid, None, versionumero, massaluovutuksenKentät)
     } else {
       opiskeluoikeusOidit
         .grouped(auditLogOiditPerViesti)
-        .foreach(ryhmä => logAuditMessage(oppijaOid, Some(ryhmä.mkString(",")), versionumero))
+        .foreach(ryhmä => logAuditMessage(oppijaOid, Some(ryhmä.mkString(",")), versionumero, massaluovutuksenKentät))
     }
 
-  private def logAuditMessage(oppijaOid: String, opiskeluoikeusOidit: Option[String], versionumero: Option[Int])(implicit user: Session): Unit = {
+  private def logAuditMessage(
+    oppijaOid: String,
+    opiskeluoikeusOidit: Option[String],
+    versionumero: Option[Int],
+    massaluovutuksenKentät: AuditLogMessage.ExtraFields,
+  )(implicit user: Session): Unit = {
     val base: AuditLogMessage.ExtraFields = Map(KoskiAuditLogMessageField.oppijaHenkiloOid -> oppijaOid)
     val withOidit = opiskeluoikeusOidit match {
       case Some(oidit) => base + (KoskiAuditLogMessageField.opiskeluoikeusOid -> oidit)
@@ -171,7 +182,7 @@ object SuorituspalveluQuery {
       KoskiAuditLogMessage(
         KoskiOperation.SUORITUSPALVELU_OPISKELUOIKEUS_HAKU,
         user,
-        fields
+        fields ++ massaluovutuksenKentät
       )
     )
   }

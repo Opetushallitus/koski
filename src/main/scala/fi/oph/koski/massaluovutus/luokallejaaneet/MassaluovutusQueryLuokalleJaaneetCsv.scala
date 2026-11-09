@@ -20,8 +20,9 @@ case class MassaluovutusQueryLuokalleJaaneetCsv(
     (implicit user: Session with SensitiveDataAllowed): Either[String, Unit] = withKoskiSpecificSession { implicit koskiUser =>
     QueryResourceManager(logger) { mgr =>
       implicit val manager: Using.Manager = mgr
-      val csvFile = writer.createCsv[CsvFields](s"luokalle_jaaneet_${organisaatioOid.get}", None)
-      forEachResult(application) { result => csvFile.put(CsvFields(result)) }
+      val tiedostonNimi = s"luokalle_jaaneet_${organisaatioOid.get}"
+      val csvFile = writer.createCsv[CsvFields](tiedostonNimi, None)
+      forEachResult(application, writer.queryId.toString, _ => writer.csvFileName(tiedostonNimi)) { result => csvFile.put(CsvFields(result)) }
       csvFile.save()
     }
   }

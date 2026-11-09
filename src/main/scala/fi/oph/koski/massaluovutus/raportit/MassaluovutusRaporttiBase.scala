@@ -9,7 +9,7 @@ import fi.oph.koski.log.KoskiAuditLogMessageField.hakuEhto
 import fi.oph.koski.log.KoskiOperation.OPISKELUOIKEUS_RAPORTTI
 import fi.oph.koski.log.{AuditLog, KoskiAuditLogMessage, Logging}
 import fi.oph.koski.opiskeluoikeus.OpiskeluoikeusQueryContext
-import fi.oph.koski.massaluovutus.MassaluovutusUtils.{QueryResourceManager, defaultOrganisaatio, generatePassword}
+import fi.oph.koski.massaluovutus.MassaluovutusUtils.{QueryResourceManager, auditlokinKentät, defaultOrganisaatio, generatePassword}
 import fi.oph.koski.massaluovutus.{KoulutuksenjärjestäjienMassaluovutusQueryParameters, QueryMeta, QueryResultWriter}
 import fi.oph.koski.raportit.{OppilaitosRaporttiResponse, RaportitService}
 import fi.oph.koski.schema.{Koodistokoodiviite, Organisaatio}
@@ -98,20 +98,19 @@ trait MassaluovutusRaporttiBase[Self <: MassaluovutusRaporttiBase[Self]]
       val pw = password.getOrElse(generatePassword(16))
 
       val response = generateReport(raportitService, localizationReader, pw)
+      doAuditLog(application, writer.queryId.toString)
       writer.putReport(response, format, localizationReader)
       writer.patchMeta(QueryMeta(password = Some(pw)))
       writer.patchMeta(QueryMeta(
         raportointikantaGeneratedAt = Some(raportitService.viimeisinOpiskeluoikeuspäivitystenVastaanottoaika),
       ))
-
-      doAuditLog(application)
     }
 
-  private def doAuditLog(application: KoskiApplication)(implicit user: Session): Unit =
+  private def doAuditLog(application: KoskiApplication, queryId: String)(implicit user: Session): Unit =
     AuditLog.log(KoskiAuditLogMessage(
       OPISKELUOIKEUS_RAPORTTI,
       user,
-      Map(hakuEhto -> OpiskeluoikeusQueryContext.queryForAuditLog(
+      auditlokinKentät(queryId) ++ Map(hakuEhto -> OpiskeluoikeusQueryContext.queryForAuditLog(
         (Map(
           "raportti" -> List(raporttiName),
           "oppilaitosOid" -> auditlokinOrganisaatiot(application),

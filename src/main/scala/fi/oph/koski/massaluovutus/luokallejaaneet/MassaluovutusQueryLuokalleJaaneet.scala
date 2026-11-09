@@ -13,6 +13,7 @@ import fi.oph.koski.log.KoskiAuditLogMessageField.oppijaHenkiloOid
 import fi.oph.koski.log.KoskiOperation.OPISKELUOIKEUS_KATSOMINEN
 import fi.oph.koski.log.{AuditLog, KoskiAuditLogMessage, Logging}
 import fi.oph.koski.massaluovutus.KoulutuksenjärjestäjienMassaluovutusQueryParameters
+import fi.oph.koski.massaluovutus.MassaluovutusUtils.auditlokinKentät
 import fi.oph.koski.organisaatio.OrganisaationAlaisetOrganisaatiot
 import fi.oph.koski.schema.PerusopetuksenOpiskeluoikeus
 import fi.oph.koski.schema.annotation.EnumValues
@@ -33,7 +34,11 @@ trait MassaluovutusQueryLuokalleJaaneet extends KoulutuksenjärjestäjienMassalu
   @Description("Kyselyyn otettavan koulutustoimijan tai oppilaitoksen oid. Jos ei ole annettu, päätellään käyttäjän käyttöoikeuksista.")
   def organisaatioOid: Option[String]
 
-  def forEachResult(application: KoskiApplication)(f: MassaluovutusQueryLuokalleJaaneetResult => Unit)(implicit user: KoskiSpecificSession): Either[String, Unit] = {
+  def forEachResult(
+    application: KoskiApplication,
+    queryId: String,
+    tiedostonimi: MassaluovutusQueryLuokalleJaaneetResult => String,
+  )(f: MassaluovutusQueryLuokalleJaaneetResult => Unit)(implicit user: KoskiSpecificSession): Either[String, Unit] = {
     val organisaatiot = application.organisaatioService.organisaationAlaisetOrganisaatiot(organisaatioOid.get)
     val oids = haeOpiskeluoikeusOidit(application.raportointiDatabase.db, organisaatiot)
 
@@ -41,22 +46,20 @@ trait MassaluovutusQueryLuokalleJaaneet extends KoulutuksenjärjestäjienMassalu
       application.historyRepository
         .findByOpiskeluoikeusOid(opiskeluoikeusOid)
         .map { patches =>
-          val result = patches.foldLeft(LuokalleJääntiAccumulator()) { (acc, diff) => acc.next(diff) }
-          if (result.invalidHistory) {
-            f(MassaluovutusQueryLuokalleJaaneetResult(LuokalleJääntiMatch.empty(opiskeluoikeusOid), "err", oppijaOid))
+          val historia = patches.foldLeft(LuokalleJääntiAccumulator()) { (acc, diff) => acc.next(diff) }
+          val results = if (historia.invalidHistory) {
+            List(MassaluovutusQueryLuokalleJaaneetResult(LuokalleJääntiMatch.empty(opiskeluoikeusOid), "err", oppijaOid))
           } else {
-            result.matches.foreach {
+            historia.matches.toList.map {
               case (luokka, oo) =>
                 val viimeisinOo = application.opiskeluoikeusRepository.findByOid(opiskeluoikeusOid)
-                val result = MassaluovutusQueryLuokalleJaaneetResult(oo, luokka, oppijaOid).copy(
+                MassaluovutusQueryLuokalleJaaneetResult(oo, luokka, oppijaOid).copy(
                   viimeisinVersionumero = viimeisinOo.map(_.versionumero).toOption,
                 )
-                f(result)
             }
           }
-          if (result.matches.nonEmpty) {
-            auditLog(oppijaOid)
-          }
+          results.map(tiedostonimi).distinct.foreach(auditLog(oppijaOid, queryId, _))
+          results.foreach(f)
         }
     }
 
@@ -93,11 +96,11 @@ trait MassaluovutusQueryLuokalleJaaneet extends KoulutuksenjärjestäjienMassalu
         r_opiskeluoikeus.opiskeluoikeus_oid
     """.as[Tuple2[String, String]])
 
-  private def auditLog(oppijaOid: String)(implicit user: KoskiSpecificSession): Unit = {
+  private def auditLog(oppijaOid: String, queryId: String, tiedosto: String)(implicit user: KoskiSpecificSession): Unit = {
     AuditLog.log(KoskiAuditLogMessage(
       OPISKELUOIKEUS_KATSOMINEN,
       user,
-      Map(oppijaHenkiloOid -> oppijaOid),
+      auditlokinKentät(queryId, Some(tiedosto)) ++ Map(oppijaHenkiloOid -> oppijaOid),
     ))
   }
 }

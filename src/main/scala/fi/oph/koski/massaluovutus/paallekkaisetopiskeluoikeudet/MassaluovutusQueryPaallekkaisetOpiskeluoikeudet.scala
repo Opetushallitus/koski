@@ -10,7 +10,7 @@ import fi.oph.koski.log.KoskiOperation.OPISKELUOIKEUS_RAPORTTI
 import fi.oph.koski.log.{AuditLog, KoskiAuditLogMessage, Logging}
 import fi.oph.koski.opiskeluoikeus.OpiskeluoikeusQueryContext
 import fi.oph.koski.organisaatio.MockOrganisaatiot
-import fi.oph.koski.massaluovutus.MassaluovutusUtils.{QueryResourceManager, defaultOrganisaatio, generatePassword}
+import fi.oph.koski.massaluovutus.MassaluovutusUtils.{QueryResourceManager, auditlokinKentät, defaultOrganisaatio, generatePassword}
 import fi.oph.koski.massaluovutus.{KoulutuksenjärjestäjienMassaluovutusQueryParameters, QueryFormat, QueryMeta, QueryResultWriter}
 import fi.oph.koski.raportit.{AikajaksoRaporttiRequest, RaportitService}
 import fi.oph.koski.schema.Organisaatio
@@ -58,14 +58,14 @@ case class MassaluovutusQueryPaallekkaisetOpiskeluoikeudet(
       )
 
       val localizationReader = new LocalizationReader(application.koskiLocalizationRepository, language.get)
-      writer.putReport(raportitService.paallekkaisetOpiskeluoikeudet(request, localizationReader), format, localizationReader)
+      val raportti = raportitService.paallekkaisetOpiskeluoikeudet(request, localizationReader)
+      auditLog(writer.queryId.toString)
+      writer.putReport(raportti, format, localizationReader)
       writer.patchMeta(QueryMeta(password = Some(request.password)))
 
       writer.patchMeta(QueryMeta(
         raportointikantaGeneratedAt = Some(raportitService.viimeisinOpiskeluoikeuspäivitystenVastaanottoaika),
       ))
-
-      auditLog
     }
 
   override def queryAllowed(application: KoskiApplication)(implicit user: Session): Boolean = withKoskiSpecificSession { u =>
@@ -83,11 +83,11 @@ case class MassaluovutusQueryPaallekkaisetOpiskeluoikeudet(
       language = Some(lang),
     )
 
-  private def auditLog(implicit user: Session): Unit =
+  private def auditLog(queryId: String)(implicit user: Session): Unit =
     AuditLog.log(KoskiAuditLogMessage(
       OPISKELUOIKEUS_RAPORTTI,
       user,
-      Map(hakuEhto -> OpiskeluoikeusQueryContext.queryForAuditLog(Map(
+      auditlokinKentät(queryId) ++ Map(hakuEhto -> OpiskeluoikeusQueryContext.queryForAuditLog(Map(
         "raportti" -> List("paallekkaisetopiskeluoikeudet"),
         "oppilaitosOid" -> organisaatioOid.toList,
         "alku" -> List(alku.format(DateTimeFormatter.ISO_DATE)),

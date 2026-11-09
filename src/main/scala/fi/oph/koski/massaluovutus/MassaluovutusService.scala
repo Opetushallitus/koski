@@ -9,7 +9,7 @@ import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.json.SensitiveDataAllowed
 import fi.oph.koski.koskiuser.{KoskiSpecificSession, Session}
 import fi.oph.koski.log.KoskiOperation.MASSALUOVUTUKSEN_LATAAMINEN
-import fi.oph.koski.log.{AuditLog, KoskiAuditLogMessage, KoskiAuditLogMessageField, Logging}
+import fi.oph.koski.log.{AuditLog, KoskiAuditLogMessage, Logging}
 import fi.oph.koski.massaluovutus.valpas.ValpasMassaluovutusQueryParameters
 import fi.oph.koski.util.{Timeout, TryWithLogging}
 import fi.oph.koski.valpas.log.ValpasAuditLog
@@ -134,14 +134,7 @@ class MassaluovutusService(application: KoskiApplication) extends GlobalExecutio
 
   private def auditLogLataaminen(queryId: String, tiedosto: String)(implicit user: Session): Unit = user match {
     case s: ValpasSession => ValpasAuditLog.auditLogMassaluovutuksenLataaminen(queryId, tiedosto)(s)
-    case _ => AuditLog.log(KoskiAuditLogMessage(
-      MASSALUOVUTUKSEN_LATAAMINEN,
-      user,
-      Map(
-        KoskiAuditLogMessageField.massaluovutusId -> queryId,
-        KoskiAuditLogMessageField.massaluovutusTiedosto -> tiedosto,
-      ),
-    ))
+    case _ => AuditLog.log(KoskiAuditLogMessage(MASSALUOVUTUKSEN_LATAAMINEN, user, MassaluovutusUtils.auditlokinKentät(queryId, Some(tiedosto))))
   }
 
   def cleanup(activeWorkers: Seq[String]): Unit = {

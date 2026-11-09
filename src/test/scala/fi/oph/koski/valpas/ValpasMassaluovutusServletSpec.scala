@@ -505,6 +505,8 @@ class ValpasMassaluovutusServletSpec extends ValpasTestBase with BeforeAndAfterE
                 .mkString(" "),
               ValpasAuditLogMessageField.sivu.toString -> "1",
               ValpasAuditLogMessageField.sivuLukumäärä.toString -> "1",
+              ValpasAuditLogMessageField.massaluovutusId.toString -> queryId,
+              ValpasAuditLogMessageField.massaluovutusTiedosto.toString -> "0.json",
             ),
           )
         )

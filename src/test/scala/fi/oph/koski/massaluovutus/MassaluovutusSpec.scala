@@ -347,6 +347,7 @@ class MassaluovutusSpec extends AnyFreeSpec with MassaluovutusTestMethods with M
           "operation" -> "OPISKELUOIKEUS_HAKU",
           "target" -> Map(
             "hakuEhto" -> "alkanutAikaisintaan=2020-01-01&organisaatio=1.2.246.562.10.346830761110",
+            "massaluovutusId" -> queryId,
           ),
         ))
       }
@@ -484,6 +485,7 @@ class MassaluovutusSpec extends AnyFreeSpec with MassaluovutusTestMethods with M
           "operation" -> "OPISKELUOIKEUS_HAKU",
           "target" -> Map(
             "hakuEhto" -> "alkanutAikaisintaan=2020-01-01&organisaatio=1.2.246.562.10.346830761110",
+            "massaluovutusId" -> queryId,
           ),
         ))
       }
@@ -591,6 +593,7 @@ class MassaluovutusSpec extends AnyFreeSpec with MassaluovutusTestMethods with M
           "operation" -> "OPISKELUOIKEUS_RAPORTTI",
           "target" -> Map(
             "hakuEhto" -> "alku=2000-01-01&lang=fi&loppu=2020-01-01&oppilaitosOid=1.2.246.562.10.346830761110&raportti=paallekkaisetopiskeluoikeudet",
+            "massaluovutusId" -> queryId,
           ),
         ))
       }
@@ -654,6 +657,22 @@ class MassaluovutusSpec extends AnyFreeSpec with MassaluovutusTestMethods with M
 
       complete.files should have length 1
       complete.files.foreach(verifyResult(_, user))
+    }
+
+    "Kyselystä jää oppijakohtainen audit log -merkintä, jossa on kysely ja tulostiedosto" in {
+      AuditLogTester.clearMessages()
+      val queryId = addQuerySuccessfully(getQuery(ammattikoululainen), user)(_.queryId)
+      val complete = waitForCompletion(queryId, user)
+
+      complete.files.map(_.split("/").last) should equal(List(s"$ammattikoululainen.json"))
+      AuditLogTester.verifyOnlyAuditLogMessageForOperation(Map(
+        "operation" -> "VALINTAPALVELU_OPISKELUOIKEUS_HAKU",
+        "target" -> Map(
+          "oppijaHenkiloOid" -> ammattikoululainen,
+          "massaluovutusId" -> queryId,
+          "massaluovutusTiedosto" -> s"$ammattikoululainen.json",
+        ),
+      ))
     }
 
     "Kysely hakee opiskeluoikeusversion historiasta" in {
@@ -775,6 +794,8 @@ class MassaluovutusSpec extends AnyFreeSpec with MassaluovutusTestMethods with M
                 "target" -> Map(
                   "oppijaHenkiloOid" -> oppijaOid,
                   "opiskeluoikeusOid" -> opiskeluoikeusOidit,
+                  "massaluovutusId" -> queryId,
+                  "massaluovutusTiedosto" -> complete.files.last.split("/").last,
                 ),
               ))
             }
@@ -1186,6 +1207,8 @@ class MassaluovutusSpec extends AnyFreeSpec with MassaluovutusTestMethods with M
                 "target" -> Map(
                   "oppijaHenkiloOid" -> oppijaOid,
                   "opiskeluoikeusOid" -> opiskeluoikeusOidit,
+                  "massaluovutusId" -> queryId,
+                  "massaluovutusTiedosto" -> complete.files.last.split("/").last,
                 ),
               ))
             }
@@ -1599,12 +1622,13 @@ class MassaluovutusSpec extends AnyFreeSpec with MassaluovutusTestMethods with M
         complete.files should have length 2
         complete.files.foreach(verifyResult(_, user))
 
-        AuditLogTester.verifyLastAuditLogMessageForOperation(Map(
-          "operation" -> "OPISKELUOIKEUS_KATSOMINEN",
-          "target" -> Map(
-            "oppijaHenkiloOid" -> KoskiSpecificMockOppijat.perusopetuksenTiedonsiirto.oid,
-          ),
-        ))
+        // Jokaisesta tulostiedostosta yksi merkintä, joka yhdistyy latauksen merkintään kyselyn tunnisteella ja tiedostonimellä
+        val merkinnät = AuditLogTester.getLogMessages
+          .map(JsonMethods.parse(_))
+          .filter(m => (m \ "operation").extractOpt[String].contains("OPISKELUOIKEUS_KATSOMINEN"))
+          .map(m => ((m \ "target" \ "massaluovutusId").extract[String], (m \ "target" \ "massaluovutusTiedosto").extract[String], (m \ "target" \ "oppijaHenkiloOid").extract[String]))
+        merkinnät.map(m => (m._1, m._2)) should contain theSameElementsAs complete.files.map(f => (queryId, f.split("/").last))
+        merkinnät.map(_._3) should contain(KoskiSpecificMockOppijat.perusopetuksenTiedonsiirto.oid)
       }
 
       "Toisen käyttäjän kyselyn tietoja ei voi hakea" in {

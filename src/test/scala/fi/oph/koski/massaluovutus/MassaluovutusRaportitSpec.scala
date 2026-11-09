@@ -28,7 +28,7 @@ class MassaluovutusRaportitSpec extends AnyFreeSpec with MassaluovutusTestMethod
     app.massaluovutusService.truncate()
   }
 
-  private def raporttiKyselyOnnistuu(query: MassaluovutusQueryParameters, user: UserWithPassword): Unit = {
+  private def raporttiKyselyOnnistuu(query: MassaluovutusQueryParameters, user: UserWithPassword): String = {
     val queryId = addQuerySuccessfully(query, user) { response =>
       response.status should equal(QueryState.pending)
       response.queryId
@@ -40,6 +40,7 @@ class MassaluovutusRaportitSpec extends AnyFreeSpec with MassaluovutusTestMethod
 
     val raportitService = new RaportitService(app)
     complete.sourceDataUpdatedAt.map(_.toLocalDateTime) should equal(Some(raportitService.viimeisinOpiskeluoikeuspäivitystenVastaanottoaika))
+    queryId
   }
 
   private def raporttiKyselyEiOnnistu(query: MassaluovutusQueryParameters, user: UserWithPassword): Unit = {
@@ -48,12 +49,13 @@ class MassaluovutusRaportitSpec extends AnyFreeSpec with MassaluovutusTestMethod
     }
   }
 
-  private def verifyAinoaAuditlokimerkintä(raportti: String, paiva: String, oppilaitokset: List[String]): Unit =
+  private def verifyAinoaAuditlokimerkintä(raportti: String, paiva: String, oppilaitokset: List[String], queryId: String): Unit =
     AuditLogTester.verifyOnlyAuditLogMessageForOperation(Map(
       "operation" -> "OPISKELUOIKEUS_RAPORTTI",
-      "target" -> Map("hakuEhto" -> (
-        "lang=fi&" + oppilaitokset.map(oid => s"oppilaitosOid=$oid").mkString("&") + s"&paiva=$paiva&raportti=$raportti"
-      )),
+      "target" -> Map(
+        "hakuEhto" -> ("lang=fi&" + oppilaitokset.map(oid => s"oppilaitosOid=$oid").mkString("&") + s"&paiva=$paiva&raportti=$raportti"),
+        "massaluovutusId" -> queryId,
+      ),
     ))
 
   private val helsinginOstopalveluyksiköt = List(
@@ -324,8 +326,8 @@ class MassaluovutusRaportitSpec extends AnyFreeSpec with MassaluovutusTestMethod
 
     "Kysely kirjaa auditlokiin yhden merkinnän" in {
       AuditLogTester.clearMessages()
-      raporttiKyselyOnnistuu(query, MockUsers.jyväskylänNormaalikoulunPalvelukäyttäjä)
-      verifyAinoaAuditlokimerkintä("esiopetus", "2012-01-01", List(MockOrganisaatiot.jyväskylänNormaalikoulu))
+      val queryId = raporttiKyselyOnnistuu(query, MockUsers.jyväskylänNormaalikoulunPalvelukäyttäjä)
+      verifyAinoaAuditlokimerkintä("esiopetus", "2012-01-01", List(MockOrganisaatiot.jyväskylänNormaalikoulu), queryId)
     }
 
     "Toisen käyttäjän tulostiedostoa ei voi ladata OPH:n käyttäjä, joka ei saisi tehdä samaa kyselyä" in {
@@ -343,8 +345,8 @@ class MassaluovutusRaportitSpec extends AnyFreeSpec with MassaluovutusTestMethod
         paiva = LocalDate.of(2015, 1, 1),
         organisaatioOid = Some(app.organisaatioService.ostopalveluRootOid),
       )
-      raporttiKyselyOnnistuu(ostopalvelukysely, MockUsers.helsinkiTallentaja)
-      verifyAinoaAuditlokimerkintä("esiopetus", "2015-01-01", helsinginOstopalveluyksiköt)
+      val queryId = raporttiKyselyOnnistuu(ostopalvelukysely, MockUsers.helsinkiTallentaja)
+      verifyAinoaAuditlokimerkintä("esiopetus", "2015-01-01", helsinginOstopalveluyksiköt, queryId)
     }
   }
 
@@ -368,8 +370,8 @@ class MassaluovutusRaportitSpec extends AnyFreeSpec with MassaluovutusTestMethod
         paiva = LocalDate.of(2015, 1, 1),
         organisaatioOid = Some(app.organisaatioService.ostopalveluRootOid),
       )
-      raporttiKyselyOnnistuu(ostopalvelukysely, MockUsers.helsinkiTallentaja)
-      verifyAinoaAuditlokimerkintä("esiopetuksenoppijamaaratraportti", "2015-01-01", helsinginOstopalveluyksiköt)
+      val queryId = raporttiKyselyOnnistuu(ostopalvelukysely, MockUsers.helsinkiTallentaja)
+      verifyAinoaAuditlokimerkintä("esiopetuksenoppijamaaratraportti", "2015-01-01", helsinginOstopalveluyksiköt, queryId)
     }
   }
 
@@ -565,8 +567,8 @@ class MassaluovutusRaportitSpec extends AnyFreeSpec with MassaluovutusTestMethod
 
     "Kysely kirjaa auditlokiin yhden merkinnän" in {
       AuditLogTester.clearMessages()
-      raporttiKyselyOnnistuu(query, MockUsers.helsinkiPerusopetuksenKatselija)
-      verifyAinoaAuditlokimerkintä("kotikuntalaskelma", "2026-09-01", List(MockOrganisaatiot.helsinginKaupunki))
+      val queryId = raporttiKyselyOnnistuu(query, MockUsers.helsinkiPerusopetuksenKatselija)
+      verifyAinoaAuditlokimerkintä("kotikuntalaskelma", "2026-09-01", List(MockOrganisaatiot.helsinginKaupunki), queryId)
     }
 
     "Perus- ja esiopetuksen oikeuksilla kysely onnistuu" in {
@@ -602,8 +604,8 @@ class MassaluovutusRaportitSpec extends AnyFreeSpec with MassaluovutusTestMethod
 
     "Kysely kirjaa auditlokiin yhden merkinnän" in {
       AuditLogTester.clearMessages()
-      raporttiKyselyOnnistuu(query, MockUsers.helsinkiPerusopetuksenKatselija)
-      verifyAinoaAuditlokimerkintä("kunnanoppijat", "2026-09-01", List(MockOrganisaatiot.helsinginKaupunki))
+      val queryId = raporttiKyselyOnnistuu(query, MockUsers.helsinkiPerusopetuksenKatselija)
+      verifyAinoaAuditlokimerkintä("kunnanoppijat", "2026-09-01", List(MockOrganisaatiot.helsinginKaupunki), queryId)
     }
 
     "Perus- ja esiopetuksen oikeuksilla kysely onnistuu" in {
