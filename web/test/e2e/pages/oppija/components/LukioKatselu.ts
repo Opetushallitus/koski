@@ -424,7 +424,7 @@ export class UusiLukioKatselu implements LukioKatselu {
     return {
       arvosana: this.suoritus('omanÄidinkielenOpinnot.arvosana'),
       arviointipäivä: this.suoritus('omanÄidinkielenOpinnot.arviointipäivä.value'),
-      kieli: this.suoritus('omanÄidinkielenOpinnot.kieli'),
+      kieli: this.suoritus('omanÄidinkielenOpinnot.kieli.value'),
       laajuus: this.suoritus('laajuus.value')
     }
   }

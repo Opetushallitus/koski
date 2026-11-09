@@ -2,6 +2,8 @@ import React, { useState } from 'react'
 import { FormModel, FormOptic } from '../components-v2/forms/FormModel'
 import { ActivePäätasonSuoritus } from '../components-v2/containers/EditorContainer'
 import { LukionOpiskeluoikeus } from '../types/fi/oph/koski/schema/LukionOpiskeluoikeus'
+import { LocalizedString } from '../types/fi/oph/koski/schema/LocalizedString'
+import { Koodistokoodiviite } from '../types/fi/oph/koski/schema/Koodistokoodiviite'
 import {
   KeyColumnedValuesRow,
   KeyValueRow,
@@ -40,9 +42,17 @@ import {
 } from '../components-v2/controls/LocalizedTestField'
 import { TextEdit, TextView } from '../components-v2/controls/TextField'
 import { FlatButton } from '../components-v2/controls/FlatButton'
+import { RaisedButton } from '../components-v2/controls/RaisedButton'
 import { IconButton } from '../components-v2/controls/IconButton'
 import { CHARCODE_REMOVE } from '../components-v2/texts/Icon'
 import { Removable } from '../components-v2/controls/Removable'
+import {
+  Modal,
+  ModalBody,
+  ModalFooter,
+  ModalTitle
+} from '../components-v2/containers/Modal'
+import { DateInput } from '../components-v2/controls/DateInput'
 import { parasArviointi } from '../util/arvioinnit'
 import { t } from '../i18n/i18n'
 import {
@@ -71,8 +81,52 @@ type LukionSuorituksenTiedotProps = {
   päätasonSuoritus: ActivePäätasonSuoritus<LukionOpiskeluoikeus>
 }
 
-type TuettuSuoritus =
+export type TuettuSuoritus =
   LukionOppimääränSuoritus2019 | LukionOppiaineidenOppimäärienSuoritus2019
+
+// path.prop(...) tällä unionilla ei vaadi "as unknown as FormOptic<...>"
+// -kavennusta kentille, jotka molemmat TuettuSuoritus-jäsenet jakavat
+// identtisenä (esim. puhviKoe, suullisenKielitaidonKokeet, lukiodiplomit2019
+// - kaikki kolme periytyvät samasta LukionPäätasonSuoritus2019-traitista).
+// Vain jommallekummalle ainoalle ominaiset kentät (esim.
+// suoritettuErityisenäTutkintona, koulutusmoduuli.perusteenDiaarinumero)
+// vaativat kavennuksen tiettyyn suoritustyyppiin.
+export const isTuettuSuoritus = (suoritus: {
+  $class: string
+}): suoritus is TuettuSuoritus =>
+  isLukionOppimääränSuoritus2019(suoritus) ||
+  isLukionOppiaineidenOppimäärienSuoritus2019(suoritus)
+
+// Yhdistää tässä tiedostossa toistuvan arviointiasteikkoyleissivistava-
+// koodiston valinnan (koodiarvoOnly-muotoilu, numerojärjestys) yhteen
+// paikkaan - sekä KoodistoSelectin koodistoUri/format/sort-toiston että
+// sen onSelect-paluuarvon kavennuksen "as X['arvosana']" tyyliin: komponentin
+// oma tyyppiparametri ei kavenna koodiarvoa, vaikka kutsupaikka tietää
+// tarkemman skeematyypin.
+const ArvosanaKoodistoSelect = <A extends Koodistokoodiviite>({
+  value,
+  onSelect,
+  testId,
+  koodiarvot,
+  skipAutoFocus
+}: {
+  value?: string
+  onSelect: (arvosana?: A) => void
+  testId: string
+  koodiarvot?: string[]
+  skipAutoFocus?: boolean
+}) => (
+  <KoodistoSelect
+    koodistoUri="arviointiasteikkoyleissivistava"
+    format={koodiarvoOnly}
+    sort
+    koodiarvot={koodiarvot}
+    skipAutoFocus={skipAutoFocus}
+    onSelect={(k) => onSelect(k as A | undefined)}
+    value={value}
+    testId={testId}
+  />
+)
 
 // Suorituksen otsikkokentät - muokattavissa kuten vanhassa käyttöliittymässä
 // (suoritus/SuoritusEditor.jsx:n yleinen PropertiesEditor ei rajoita näitä
@@ -84,10 +138,7 @@ export const LukionSuorituksenTiedot: React.FC<
 > = ({ form, päätasonSuoritus }) => {
   const suoritus = päätasonSuoritus.suoritus
 
-  if (
-    !isLukionOppimääränSuoritus2019(suoritus) &&
-    !isLukionOppiaineidenOppimäärienSuoritus2019(suoritus)
-  ) {
+  if (!isTuettuSuoritus(suoritus)) {
     // Muut lukion suoritustyypit (2015, pre-IB, LUVA) ei kuulu vaiheen 1
     // laajuuteen.
     return null
@@ -169,19 +220,27 @@ export const LukionSuorituksenTiedot: React.FC<
           />
         )}
 
-        {suoritus.puhviKoe && <PuhviKoeRow puhviKoe={suoritus.puhviKoe} />}
+        <PuhviKoeRow form={form} path={path} puhviKoe={suoritus.puhviKoe} />
 
-        {suoritus.suullisenKielitaidonKokeet &&
-          suoritus.suullisenKielitaidonKokeet.length > 0 && (
-            <SuullisenKielitaidonKokeetRow
-              kokeet={suoritus.suullisenKielitaidonKokeet}
-            />
-          )}
+        {(form.editMode ||
+          (suoritus.suullisenKielitaidonKokeet &&
+            suoritus.suullisenKielitaidonKokeet.length > 0)) && (
+          <SuullisenKielitaidonKokeetRow
+            form={form}
+            path={path}
+            kokeet={suoritus.suullisenKielitaidonKokeet || []}
+          />
+        )}
 
-        {suoritus.lukiodiplomit2019 &&
-          suoritus.lukiodiplomit2019.length > 0 && (
-            <LukiodiplomitRow diplomit={suoritus.lukiodiplomit2019} />
-          )}
+        {(form.editMode ||
+          (suoritus.lukiodiplomit2019 &&
+            suoritus.lukiodiplomit2019.length > 0)) && (
+          <LukiodiplomitRow
+            form={form}
+            path={path}
+            diplomit={suoritus.lukiodiplomit2019 || []}
+          />
+        )}
 
         {(form.editMode || suoritus.todistuksellaNäkyvätLisätiedot) && (
           <KeyValueRow localizableLabel="Todistuksella näkyvät lisätiedot">
@@ -384,15 +443,14 @@ const OmanÄidinkielenOpinnotRow: React.FC<{
               </td>
               <td>
                 {form.editMode ? (
-                  <KoodistoSelect
-                    koodistoUri="arviointiasteikkoyleissivistava"
-                    format={koodiarvoOnly}
-                    sort
+                  <ArvosanaKoodistoSelect<
+                    LukionOmanÄidinkielenOpinnot['arvosana']
+                  >
                     onSelect={(k) =>
                       k &&
                       form.updateAt(
                         opinnotOptionalPath.prop('arvosana'),
-                        () => k as LukionOmanÄidinkielenOpinnot['arvosana']
+                        () => k
                       )
                     }
                     value={opinnot.arvosana.koodiarvo}
@@ -428,21 +486,14 @@ const OmanÄidinkielenOpinnotRow: React.FC<{
                 {t('Kieli')}
               </td>
               <td>
-                {form.editMode ? (
-                  <KoodistoSelect
-                    koodistoUri="kielivalikoima"
-                    onSelect={(k) =>
-                      k &&
-                      form.updateAt(opinnotOptionalPath.prop('kieli'), () => k)
-                    }
-                    value={opinnot.kieli.koodiarvo}
-                    testId="omanÄidinkielenOpinnot.kieli"
-                  />
-                ) : (
-                  <TestIdText id="omanÄidinkielenOpinnot.kieli">
-                    {t(opinnot.kieli.nimi)}
-                  </TestIdText>
-                )}
+                <FormField
+                  form={form}
+                  path={opinnotOptionalPath.prop('kieli')}
+                  view={KoodistoView}
+                  edit={KoodistoEdit}
+                  editProps={{ koodistoUri: 'kielivalikoima' }}
+                  testId="omanÄidinkielenOpinnot.kieli"
+                />
               </td>
             </tr>
             <tr>
@@ -708,81 +759,615 @@ const OmanÄidinkielenOpintojenOsasuorituksetEditList: React.FC<{
   </TestIdLayer>
 )
 
-const PuhviKoeRow: React.FC<{ puhviKoe: PuhviKoe2019 }> = ({ puhviKoe }) => (
-  <KeyValueRow localizableLabel="Puhvi-koe">
-    <KeyValueTable>
-      <KeyValueRow localizableLabel="Arvosana" innerKeyValueTable>
-        <TestIdText id="puhviKoe.arvosana">
-          {puhviKoe.arvosana.koodiarvo}
-        </TestIdText>
-      </KeyValueRow>
-      {puhviKoe.kuvaus && (
-        <KeyValueRow localizableLabel="Kuvaus" innerKeyValueTable>
-          <TestIdText id="puhviKoe.kuvaus">{t(puhviKoe.kuvaus)}</TestIdText>
-        </KeyValueRow>
-      )}
-      <KeyValueRow localizableLabel="Arviointipäivä" innerKeyValueTable>
-        <TestIdText id="puhviKoe.paiva">
-          {ISO2FinnishDate(puhviKoe.päivä)}
-        </TestIdText>
-      </KeyValueRow>
-    </KeyValueTable>
-  </KeyValueRow>
-)
+// Muokattavissa samalla mallilla kuin OmanÄidinkielenOpinnotRow: koko lohko
+// voidaan lisätä/poistaa (Removable + modaali), ja lohkon kentät ovat
+// muokattavissa. Arvosana ei kulje FormField+KoodistoEdit:n kautta kuten
+// Kuvaus/Arviointipäivä, koska KoodistoEdit/KoodistoView eivät tue
+// koodiarvoOnly/sort-muotoilua, jota arvosanan näyttäminen paljaana
+// koodiarvona (esim. "8") vaatii - sama rajoitus kuin oman äidinkielen
+// opintojen arvosanalla.
+const PuhviKoeRow: React.FC<{
+  form: FormModel<LukionOpiskeluoikeus>
+  path: FormOptic<LukionOpiskeluoikeus, TuettuSuoritus>
+  puhviKoe?: PuhviKoe2019
+}> = ({ form, path, puhviKoe }) => {
+  const [lisääAuki, setLisääAuki] = useState(false)
+  const puhviKoeOptionalPath = path.prop('puhviKoe').optional()
 
+  if (!form.editMode && !puhviKoe) return null
+
+  if (form.editMode && !puhviKoe) {
+    return (
+      <KeyValueRow localizableLabel="Puhvi-koe">
+        <FlatButton testId="puhviKoe.lisää" onClick={() => setLisääAuki(true)}>
+          {t('Lisää Puhvi-koe')}
+        </FlatButton>
+        {lisääAuki && (
+          <UusiPuhviKoeModal
+            onClose={() => setLisääAuki(false)}
+            onSubmit={(uusi) => {
+              form.updateAt(path.prop('puhviKoe'), () => uusi)
+              setLisääAuki(false)
+            }}
+          />
+        )}
+      </KeyValueRow>
+    )
+  }
+
+  if (!puhviKoe) return null
+
+  return (
+    <KeyValueRow localizableLabel="Puhvi-koe">
+      <Removable
+        isRemovable={form.editMode}
+        onClick={() => form.updateAt(path.prop('puhviKoe'), () => undefined)}
+        testId="puhviKoe"
+      >
+        <KeyValueTable>
+          <KeyValueRow localizableLabel="Arvosana" innerKeyValueTable>
+            {form.editMode ? (
+              <ArvosanaKoodistoSelect<PuhviKoe2019['arvosana']>
+                onSelect={(k) =>
+                  k &&
+                  form.updateAt(puhviKoeOptionalPath.prop('arvosana'), () => k)
+                }
+                value={puhviKoe.arvosana.koodiarvo}
+                testId="puhviKoe.arvosana"
+              />
+            ) : (
+              <TestIdText id="puhviKoe.arvosana">
+                {puhviKoe.arvosana.koodiarvo}
+              </TestIdText>
+            )}
+          </KeyValueRow>
+          {(form.editMode || puhviKoe.kuvaus) && (
+            <KeyValueRow localizableLabel="Kuvaus" innerKeyValueTable>
+              <FormField
+                form={form}
+                path={puhviKoeOptionalPath.prop('kuvaus')}
+                optional
+                view={LocalizedTextView}
+                edit={LocalizedTextEdit}
+                testId="puhviKoe.kuvaus"
+              />
+            </KeyValueRow>
+          )}
+          <KeyValueRow localizableLabel="Arviointipäivä" innerKeyValueTable>
+            <FormField
+              form={form}
+              path={puhviKoeOptionalPath.prop('päivä')}
+              view={DateView}
+              edit={DateEdit}
+              testId="puhviKoe.paiva"
+            />
+          </KeyValueRow>
+        </KeyValueTable>
+      </Removable>
+    </KeyValueRow>
+  )
+}
+
+const UusiPuhviKoeModal: React.FC<{
+  onClose: () => void
+  onSubmit: (puhviKoe: PuhviKoe2019) => void
+}> = ({ onClose, onSubmit }) => {
+  const [arvosana, setArvosana] = useState<
+    PuhviKoe2019['arvosana'] | undefined
+  >(undefined)
+  const [kuvaus, setKuvaus] = useState<LocalizedString | undefined>(undefined)
+  const [päivä, setPäivä] = useState<string | undefined>(undefined)
+
+  const payload =
+    arvosana !== undefined && päivä !== undefined
+      ? { arvosana, kuvaus, päivä }
+      : undefined
+
+  return (
+    <Modal onClose={onClose}>
+      <ModalTitle>{t('Lisää Puhvi-koe')}</ModalTitle>
+      <ModalBody>
+        <label>
+          {t('Arvosana')}
+          <ArvosanaKoodistoSelect<PuhviKoe2019['arvosana']>
+            skipAutoFocus
+            onSelect={(k) => k && setArvosana(k)}
+            value={arvosana?.koodiarvo}
+            testId="arvosana"
+          />
+        </label>
+        <label>
+          {t('Kuvaus')}
+          <LocalizedTextEdit
+            value={kuvaus}
+            onChange={setKuvaus}
+            testId="kuvaus"
+          />
+        </label>
+        <label>
+          {t('Arviointipäivä')}
+          <DateInput
+            value={päivä}
+            onChange={setPäivä}
+            testId="paiva"
+            align="right"
+          />
+        </label>
+      </ModalBody>
+      <ModalFooter>
+        <FlatButton onClick={onClose} testId="cancel">
+          {t('Peruuta')}
+        </FlatButton>
+        <RaisedButton
+          disabled={!payload}
+          onClick={() => payload && onSubmit(PuhviKoe2019(payload))}
+          testId="confirm"
+        >
+          {t('Lisää')}
+        </RaisedButton>
+      </ModalFooter>
+    </Modal>
+  )
+}
+
+// Katselutila: tiivis KeyValueTable per koe, muuttumaton. Muokkaustila:
+// pino yksittäisiä kenttä-arvo-pareja per koe (sama malli kuin
+// OmanÄidinkielenOpintojenOsasuorituksetEditList), koska rivillä on useita
+// muokattavia kenttiä eikä tiivis taulukko sovi editointiin.
 const SuullisenKielitaidonKokeetRow: React.FC<{
+  form: FormModel<LukionOpiskeluoikeus>
+  path: FormOptic<LukionOpiskeluoikeus, TuettuSuoritus>
   kokeet: SuullisenKielitaidonKoe2019[]
-}> = ({ kokeet }) => (
-  <KeyValueRow localizableLabel="Suullisen kielitaidon kokeet">
-    <>
-      {kokeet.map((koe, i) => (
-        <KeyValueTable key={i}>
-          <KeyValueRow localizableLabel="Kieli" innerKeyValueTable>
-            <TestIdText id="kieli">{t(koe.kieli.nimi)}</TestIdText>
-          </KeyValueRow>
-          <KeyValueRow localizableLabel="Arvosana" innerKeyValueTable>
-            <TestIdText id="arvosana">{koe.arvosana.koodiarvo}</TestIdText>
-          </KeyValueRow>
-          <KeyValueRow localizableLabel="Taitotaso" innerKeyValueTable>
-            <TestIdText id="taitotaso">{t(koe.taitotaso.nimi)}</TestIdText>
-          </KeyValueRow>
-          {koe.kuvaus && (
-            <KeyValueRow localizableLabel="Kuvaus" innerKeyValueTable>
-              <TestIdText id="kuvaus">{t(koe.kuvaus)}</TestIdText>
-            </KeyValueRow>
-          )}
-          <KeyValueRow localizableLabel="Arviointipäivä" innerKeyValueTable>
-            <TestIdText id="paiva">{ISO2FinnishDate(koe.päivä)}</TestIdText>
-          </KeyValueRow>
-        </KeyValueTable>
-      ))}
-    </>
-  </KeyValueRow>
-)
+}> = ({ form, path, kokeet }) => {
+  const [lisääAuki, setLisääAuki] = useState(false)
+  const kokeetPath = path.prop('suullisenKielitaidonKokeet')
 
+  if (!form.editMode && kokeet.length === 0) return null
+
+  return (
+    <KeyValueRow localizableLabel="Suullisen kielitaidon kokeet">
+      <>
+        {form.editMode ? (
+          <TestIdLayer id="suullisenKielitaidonKokeet">
+            <ul className="LukioEditor__arviointiListaEdit">
+              {kokeet.map((koe, i) => {
+                const koePath = kokeetPath.optional().at(i)
+                return (
+                  <TestIdLayer id={i} key={i} wrap="li">
+                    <KeyValueTable>
+                      <KeyValueRow localizableLabel="Kieli">
+                        <div className="LukioEditor__arviointiEnsimmäinenKenttäJaPoisto">
+                          <FormField
+                            form={form}
+                            path={koePath.prop('kieli')}
+                            view={KoodistoView}
+                            edit={KoodistoEdit}
+                            editProps={{ koodistoUri: 'kielivalikoima' }}
+                            testId="kieli"
+                          />
+                          <IconButton
+                            charCode={CHARCODE_REMOVE}
+                            label={t('Poista')}
+                            size="input"
+                            onClick={() =>
+                              form.updateAt(kokeetPath, (os) =>
+                                deleteAt(i)(os || [])
+                              )
+                            }
+                            testId="poisto"
+                          />
+                        </div>
+                      </KeyValueRow>
+                      <KeyValueRow localizableLabel="Arvosana">
+                        <ArvosanaKoodistoSelect<
+                          SuullisenKielitaidonKoe2019['arvosana']
+                        >
+                          onSelect={(k) =>
+                            k &&
+                            form.updateAt(koePath.prop('arvosana'), () => k)
+                          }
+                          value={koe.arvosana.koodiarvo}
+                          testId="arvosana"
+                        />
+                      </KeyValueRow>
+                      <KeyValueRow localizableLabel="Taitotaso">
+                        <FormField
+                          form={form}
+                          path={koePath.prop('taitotaso')}
+                          view={KoodistoView}
+                          edit={KoodistoEdit}
+                          editProps={{
+                            koodistoUri:
+                              'arviointiasteikkokehittyvankielitaidontasot'
+                          }}
+                          testId="taitotaso"
+                        />
+                      </KeyValueRow>
+                      <KeyValueRow localizableLabel="Kuvaus">
+                        <FormField
+                          form={form}
+                          path={koePath.prop('kuvaus')}
+                          optional
+                          view={LocalizedTextView}
+                          edit={LocalizedTextEdit}
+                          testId="kuvaus"
+                        />
+                      </KeyValueRow>
+                      <KeyValueRow localizableLabel="Arviointipäivä">
+                        <FormField
+                          form={form}
+                          path={koePath.prop('päivä')}
+                          view={DateView}
+                          edit={DateEdit}
+                          testId="paiva"
+                        />
+                      </KeyValueRow>
+                    </KeyValueTable>
+                  </TestIdLayer>
+                )
+              })}
+            </ul>
+          </TestIdLayer>
+        ) : (
+          kokeet.map((koe, i) => (
+            <KeyValueTable key={i}>
+              <KeyValueRow localizableLabel="Kieli" innerKeyValueTable>
+                <TestIdText id="kieli">{t(koe.kieli.nimi)}</TestIdText>
+              </KeyValueRow>
+              <KeyValueRow localizableLabel="Arvosana" innerKeyValueTable>
+                <TestIdText id="arvosana">{koe.arvosana.koodiarvo}</TestIdText>
+              </KeyValueRow>
+              <KeyValueRow localizableLabel="Taitotaso" innerKeyValueTable>
+                <TestIdText id="taitotaso">{t(koe.taitotaso.nimi)}</TestIdText>
+              </KeyValueRow>
+              {koe.kuvaus && (
+                <KeyValueRow localizableLabel="Kuvaus" innerKeyValueTable>
+                  <TestIdText id="kuvaus">{t(koe.kuvaus)}</TestIdText>
+                </KeyValueRow>
+              )}
+              <KeyValueRow localizableLabel="Arviointipäivä" innerKeyValueTable>
+                <TestIdText id="paiva">{ISO2FinnishDate(koe.päivä)}</TestIdText>
+              </KeyValueRow>
+            </KeyValueTable>
+          ))
+        )}
+        {form.editMode && (
+          <FlatButton
+            testId="suullisenKielitaidonKokeet.lisää"
+            onClick={() => setLisääAuki(true)}
+          >
+            {t('Lisää koe')}
+          </FlatButton>
+        )}
+        {lisääAuki && (
+          <UusiSuullisenKielitaidonKoeModal
+            onClose={() => setLisääAuki(false)}
+            onSubmit={(uusi) => {
+              form.updateAt(kokeetPath, (os) => appendOptional(uusi)(os))
+              setLisääAuki(false)
+            }}
+          />
+        )}
+      </>
+    </KeyValueRow>
+  )
+}
+
+const UusiSuullisenKielitaidonKoeModal: React.FC<{
+  onClose: () => void
+  onSubmit: (koe: SuullisenKielitaidonKoe2019) => void
+}> = ({ onClose, onSubmit }) => {
+  const [kieli, setKieli] = useState<
+    SuullisenKielitaidonKoe2019['kieli'] | undefined
+  >(undefined)
+  const [arvosana, setArvosana] = useState<
+    SuullisenKielitaidonKoe2019['arvosana'] | undefined
+  >(undefined)
+  const [taitotaso, setTaitotaso] = useState<
+    SuullisenKielitaidonKoe2019['taitotaso'] | undefined
+  >(undefined)
+  const [kuvaus, setKuvaus] = useState<LocalizedString | undefined>(undefined)
+  const [päivä, setPäivä] = useState<string | undefined>(undefined)
+
+  const payload =
+    kieli !== undefined &&
+    arvosana !== undefined &&
+    taitotaso !== undefined &&
+    päivä !== undefined
+      ? { kieli, arvosana, taitotaso, kuvaus, päivä }
+      : undefined
+
+  return (
+    <Modal onClose={onClose}>
+      <ModalTitle>{t('Lisää koe')}</ModalTitle>
+      <ModalBody>
+        <label>
+          {t('Kieli')}
+          <KoodistoSelect
+            koodistoUri="kielivalikoima"
+            skipAutoFocus
+            onSelect={(k) => setKieli(k)}
+            value={kieli?.koodiarvo}
+            testId="kieli"
+          />
+        </label>
+        <label>
+          {t('Arvosana')}
+          <ArvosanaKoodistoSelect<SuullisenKielitaidonKoe2019['arvosana']>
+            onSelect={(k) => k && setArvosana(k)}
+            value={arvosana?.koodiarvo}
+            testId="arvosana"
+          />
+        </label>
+        <label>
+          {t('Taitotaso')}
+          <KoodistoSelect
+            koodistoUri="arviointiasteikkokehittyvankielitaidontasot"
+            onSelect={(k) =>
+              setTaitotaso(k as SuullisenKielitaidonKoe2019['taitotaso'])
+            }
+            value={taitotaso?.koodiarvo}
+            testId="taitotaso"
+          />
+        </label>
+        <label>
+          {t('Kuvaus')}
+          <LocalizedTextEdit
+            value={kuvaus}
+            onChange={setKuvaus}
+            testId="kuvaus"
+          />
+        </label>
+        <label>
+          {t('Arviointipäivä')}
+          <DateInput
+            value={päivä}
+            onChange={setPäivä}
+            testId="paiva"
+            align="right"
+          />
+        </label>
+      </ModalBody>
+      <ModalFooter>
+        <FlatButton onClick={onClose} testId="cancel">
+          {t('Peruuta')}
+        </FlatButton>
+        <RaisedButton
+          disabled={!payload}
+          onClick={() =>
+            payload && onSubmit(SuullisenKielitaidonKoe2019(payload))
+          }
+          testId="confirm"
+        >
+          {t('Lisää')}
+        </RaisedButton>
+      </ModalFooter>
+    </Modal>
+  )
+}
+
+// Katselutila: tiivis KeyValueTable per lukiodiplomi, muuttumaton.
+// Muokkaustila: sama pino-per-rivi-malli kuin SuullisenKielitaidonKokeetRow'lla.
 const LukiodiplomitRow: React.FC<{
+  form: FormModel<LukionOpiskeluoikeus>
+  path: FormOptic<LukionOpiskeluoikeus, TuettuSuoritus>
   diplomit: LukiodiplominSuoritusJaArviointi[]
-}> = ({ diplomit }) => (
-  <KeyValueRow localizableLabel="Lukiodiplomit">
-    <>
-      {diplomit.map((diplomi, i) => (
-        <KeyValueTable key={i}>
-          <KeyValueRow localizableLabel="Arvosana" innerKeyValueTable>
-            <TestIdText id="arvosana">{diplomi.arvosana.koodiarvo}</TestIdText>
-          </KeyValueRow>
-          <KeyValueRow localizableLabel="Arviointipäivä" innerKeyValueTable>
-            <TestIdText id="paiva">{ISO2FinnishDate(diplomi.päivä)}</TestIdText>
-          </KeyValueRow>
-          {diplomi.kuvaus && (
-            <KeyValueRow localizableLabel="Kuvaus" innerKeyValueTable>
-              <TestIdText id="kuvaus">{t(diplomi.kuvaus)}</TestIdText>
-            </KeyValueRow>
-          )}
-          <KeyValueRow localizableLabel="Tunniste" innerKeyValueTable>
-            <TestIdText id="tunniste">{t(diplomi.tunniste.nimi)}</TestIdText>
-          </KeyValueRow>
-        </KeyValueTable>
-      ))}
-    </>
-  </KeyValueRow>
-)
+}> = ({ form, path, diplomit }) => {
+  const [lisääAuki, setLisääAuki] = useState(false)
+  const diplomitPath = path.prop('lukiodiplomit2019')
+
+  if (!form.editMode && diplomit.length === 0) return null
+
+  return (
+    <KeyValueRow localizableLabel="Lukiodiplomit">
+      <>
+        {form.editMode ? (
+          <TestIdLayer id="lukiodiplomit2019">
+            <ul className="LukioEditor__arviointiListaEdit">
+              {diplomit.map((diplomi, i) => {
+                const diplomiPath = diplomitPath.optional().at(i)
+                return (
+                  <TestIdLayer id={i} key={i} wrap="li">
+                    <KeyValueTable>
+                      <KeyValueRow localizableLabel="Tunniste">
+                        <div className="LukioEditor__arviointiEnsimmäinenKenttäJaPoisto">
+                          <TestIdText id="tunniste">
+                            {t(diplomi.tunniste.nimi)}
+                          </TestIdText>
+                          <IconButton
+                            charCode={CHARCODE_REMOVE}
+                            label={t('Poista')}
+                            size="input"
+                            onClick={() =>
+                              form.updateAt(diplomitPath, (os) =>
+                                deleteAt(i)(os || [])
+                              )
+                            }
+                            testId="poisto"
+                          />
+                        </div>
+                      </KeyValueRow>
+                      <KeyValueRow localizableLabel="Arvosana">
+                        <ArvosanaKoodistoSelect<
+                          LukiodiplominSuoritusJaArviointi['arvosana']
+                        >
+                          koodiarvot={LUKIODIPLOMIN_ARVOSANA_KOODIARVOT}
+                          onSelect={(k) =>
+                            k &&
+                            form.updateAt(diplomiPath.prop('arvosana'), () => k)
+                          }
+                          value={diplomi.arvosana.koodiarvo}
+                          testId="arvosana"
+                        />
+                      </KeyValueRow>
+                      <KeyValueRow localizableLabel="Kuvaus">
+                        <FormField
+                          form={form}
+                          path={diplomiPath.prop('kuvaus')}
+                          optional
+                          view={LocalizedTextView}
+                          edit={LocalizedTextEdit}
+                          testId="kuvaus"
+                        />
+                      </KeyValueRow>
+                      <KeyValueRow localizableLabel="Arviointipäivä">
+                        <FormField
+                          form={form}
+                          path={diplomiPath.prop('päivä')}
+                          view={DateView}
+                          edit={DateEdit}
+                          testId="paiva"
+                        />
+                      </KeyValueRow>
+                    </KeyValueTable>
+                  </TestIdLayer>
+                )
+              })}
+            </ul>
+          </TestIdLayer>
+        ) : (
+          diplomit.map((diplomi, i) => (
+            <KeyValueTable key={i}>
+              <KeyValueRow localizableLabel="Arvosana" innerKeyValueTable>
+                <TestIdText id="arvosana">
+                  {diplomi.arvosana.koodiarvo}
+                </TestIdText>
+              </KeyValueRow>
+              <KeyValueRow localizableLabel="Arviointipäivä" innerKeyValueTable>
+                <TestIdText id="paiva">
+                  {ISO2FinnishDate(diplomi.päivä)}
+                </TestIdText>
+              </KeyValueRow>
+              {diplomi.kuvaus && (
+                <KeyValueRow localizableLabel="Kuvaus" innerKeyValueTable>
+                  <TestIdText id="kuvaus">{t(diplomi.kuvaus)}</TestIdText>
+                </KeyValueRow>
+              )}
+              <KeyValueRow localizableLabel="Tunniste" innerKeyValueTable>
+                <TestIdText id="tunniste">
+                  {t(diplomi.tunniste.nimi)}
+                </TestIdText>
+              </KeyValueRow>
+            </KeyValueTable>
+          ))
+        )}
+        {form.editMode && (
+          <FlatButton
+            testId="lukiodiplomit2019.lisää"
+            onClick={() => setLisääAuki(true)}
+          >
+            {t('Lisää lukiodiplomi')}
+          </FlatButton>
+        )}
+        {lisääAuki && (
+          <UusiLukiodiplomiModal
+            onClose={() => setLisääAuki(false)}
+            onSubmit={(uusi) => {
+              form.updateAt(diplomitPath, (os) => appendOptional(uusi)(os))
+              setLisääAuki(false)
+            }}
+          />
+        )}
+      </>
+    </KeyValueRow>
+  )
+}
+
+// Vain nämä 8 koodiarvoa ovat sallittuja Lukio2019.scala:n
+// LukiodiplominSuoritusJaArviointi.tunniste-kentälle (@KoodistoKoodiarvo),
+// samasta moduulikoodistolops2021-koodistosta kuin valtakunnalliset moduulit.
+const LUKIODIPLOMIN_TUNNISTE_KOODIARVOT = [
+  'KOLD1',
+  'KULD2',
+  'KÄLD3',
+  'LILD4',
+  'MELD5',
+  'MULD6',
+  'TALD7',
+  'TELD8'
+]
+
+// Lukiodiplomin arvosana-asteikko ei sisällä S/H-arvosanoja, toisin kuin
+// Puhvi-kokeen/suullisen kielitaidon kokeen arvosana - ks. Lukio2019.scala:n
+// LukiodiplominSuoritusJaArviointi.
+const LUKIODIPLOMIN_ARVOSANA_KOODIARVOT = ['4', '5', '6', '7', '8', '9', '10']
+
+const UusiLukiodiplomiModal: React.FC<{
+  onClose: () => void
+  onSubmit: (diplomi: LukiodiplominSuoritusJaArviointi) => void
+}> = ({ onClose, onSubmit }) => {
+  const [tunniste, setTunniste] = useState<
+    LukiodiplominSuoritusJaArviointi['tunniste'] | undefined
+  >(undefined)
+  const [arvosana, setArvosana] = useState<
+    LukiodiplominSuoritusJaArviointi['arvosana'] | undefined
+  >(undefined)
+  const [kuvaus, setKuvaus] = useState<LocalizedString | undefined>(undefined)
+  const [päivä, setPäivä] = useState<string | undefined>(undefined)
+
+  const payload =
+    tunniste !== undefined && arvosana !== undefined && päivä !== undefined
+      ? { tunniste, arvosana, kuvaus, päivä }
+      : undefined
+
+  return (
+    <Modal onClose={onClose}>
+      <ModalTitle>{t('Lisää lukiodiplomi')}</ModalTitle>
+      <ModalBody>
+        <label>
+          {t('Tunniste')}
+          <KoodistoSelect
+            koodistoUri="moduulikoodistolops2021"
+            koodiarvot={LUKIODIPLOMIN_TUNNISTE_KOODIARVOT}
+            skipAutoFocus
+            onSelect={(k) =>
+              setTunniste(k as LukiodiplominSuoritusJaArviointi['tunniste'])
+            }
+            value={tunniste?.koodiarvo}
+            testId="tunniste"
+          />
+        </label>
+        <label>
+          {t('Arvosana')}
+          <ArvosanaKoodistoSelect<LukiodiplominSuoritusJaArviointi['arvosana']>
+            koodiarvot={LUKIODIPLOMIN_ARVOSANA_KOODIARVOT}
+            onSelect={(k) => k && setArvosana(k)}
+            value={arvosana?.koodiarvo}
+            testId="arvosana"
+          />
+        </label>
+        <label>
+          {t('Kuvaus')}
+          <LocalizedTextEdit
+            value={kuvaus}
+            onChange={setKuvaus}
+            testId="kuvaus"
+          />
+        </label>
+        <label>
+          {t('Arviointipäivä')}
+          <DateInput
+            value={päivä}
+            onChange={setPäivä}
+            testId="paiva"
+            align="right"
+          />
+        </label>
+      </ModalBody>
+      <ModalFooter>
+        <FlatButton onClick={onClose} testId="cancel">
+          {t('Peruuta')}
+        </FlatButton>
+        <RaisedButton
+          disabled={!payload}
+          onClick={() =>
+            payload && onSubmit(LukiodiplominSuoritusJaArviointi(payload))
+          }
+          testId="confirm"
+        >
+          {t('Lisää')}
+        </RaisedButton>
+      </ModalFooter>
+    </Modal>
+  )
+}

@@ -14,10 +14,14 @@ import {
   SelectOption,
   useKoodistoOptions
 } from '../components-v2/controls/Select'
+import { KoodistoSelect } from '../components-v2/opiskeluoikeus/KoodistoSelect'
+import { koodiarvoOnly } from '../components-v2/opiskeluoikeus/ArvosanaField'
 import { LaajuusEdit } from '../components-v2/opiskeluoikeus/LaajuusField'
 import { t } from '../i18n/i18n'
+import { todayISODate } from '../date/date'
 import { Koodistokoodiviite } from '../types/fi/oph/koski/schema/Koodistokoodiviite'
 import { LaajuusOpintopisteissä } from '../types/fi/oph/koski/schema/LaajuusOpintopisteissa'
+import { LukionOmanÄidinkielenOpinnonOsasuorituksenArviointi } from '../types/fi/oph/koski/schema/LukionOmanAidinkielenOpinnonOsasuorituksenArviointi'
 import { LukionOmanÄidinkielenOpinto } from '../types/fi/oph/koski/schema/LukionOmanAidinkielenOpinto'
 import { LukionOmanÄidinkielenOpintojenOsasuoritus } from '../types/fi/oph/koski/schema/LukionOmanAidinkielenOpintojenOsasuoritus'
 import { labelWithKoodiarvo } from './UusiLukionModuuli'
@@ -35,6 +39,12 @@ export const UusiOmanÄidinkielenOpintojenKurssi: React.FC<{
   const [laajuus, setLaajuus] = useState<LaajuusOpintopisteissä | undefined>(
     undefined
   )
+  const [suorituskieli, setSuorituskieli] = useState<
+    Koodistokoodiviite<'kieli'> | undefined
+  >(undefined)
+  const [arvosana, setArvosana] = useState<
+    LukionOmanÄidinkielenOpinnonOsasuorituksenArviointi['arvosana'] | undefined
+  >(undefined)
 
   const kaikkiTunnisteet = useKoodistoOptions('moduulikoodistolops2021')
   const tunnisteOptions: SelectOption<OmanÄidinkielenOpinnonTunniste>[] =
@@ -56,7 +66,16 @@ export const UusiOmanÄidinkielenOpintojenKurssi: React.FC<{
     if (!tunniste || !laajuus) return
     onAdd(
       LukionOmanÄidinkielenOpintojenOsasuoritus({
-        koulutusmoduuli: LukionOmanÄidinkielenOpinto({ tunniste, laajuus })
+        koulutusmoduuli: LukionOmanÄidinkielenOpinto({ tunniste, laajuus }),
+        suorituskieli,
+        arviointi: arvosana
+          ? [
+              LukionOmanÄidinkielenOpinnonOsasuorituksenArviointi({
+                arvosana,
+                päivä: todayISODate()
+              })
+            ]
+          : undefined
       })
     )
   }
@@ -80,6 +99,34 @@ export const UusiOmanÄidinkielenOpintojenKurssi: React.FC<{
             value={laajuus}
             onChange={setLaajuus}
             createLaajuus={(arvo) => LaajuusOpintopisteissä({ arvo })}
+          />
+        </label>
+        <label>
+          {t('Suorituskieli')}
+          <KoodistoSelect
+            koodistoUri="kieli"
+            zeroValueOption
+            onSelect={setSuorituskieli}
+            value={suorituskieli?.koodiarvo}
+            testId="suorituskieli"
+          />
+        </label>
+        <label>
+          {t('Arvosana')}
+          <KoodistoSelect
+            koodistoUri="arviointiasteikkoyleissivistava"
+            format={koodiarvoOnly}
+            sort
+            zeroValueOption
+            onSelect={(k) =>
+              setArvosana(
+                k as
+                  | LukionOmanÄidinkielenOpinnonOsasuorituksenArviointi['arvosana']
+                  | undefined
+              )
+            }
+            value={arvosana?.koodiarvo}
+            testId="arvosana"
           />
         </label>
       </ModalBody>

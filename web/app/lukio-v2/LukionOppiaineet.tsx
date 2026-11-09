@@ -13,12 +13,11 @@ import {
   isLukionOppimääränSuoritus2019,
   LukionOppimääränSuoritus2019
 } from '../types/fi/oph/koski/schema/LukionOppimaaranSuoritus2019'
-import { isLukionOppiaineidenOppimäärienSuoritus2019 } from '../types/fi/oph/koski/schema/LukionOppiaineidenOppimaarienSuoritus2019'
+import { isTuettuSuoritus } from './LukionSuorituksenTiedot'
 import {
   isLukionOppiaineenSuoritus2019,
   LukionOppiaineenSuoritus2019
 } from '../types/fi/oph/koski/schema/LukionOppiaineenSuoritus2019'
-import { LukionModuulinTaiPaikallisenOpintojaksonSuoritusOppiaineissa2019 } from '../types/fi/oph/koski/schema/LukionModuulinTaiPaikallisenOpintojaksonSuoritusOppiaineissa2019'
 import { isLukionPaikallisenOpintojaksonSuoritus2019 } from '../types/fi/oph/koski/schema/LukionPaikallisenOpintojaksonSuoritus2019'
 import {
   isPaikallinenLukionOppiaine2019,
@@ -56,6 +55,10 @@ import {
   LukionÄidinkieliJaKirjallisuus2019
 } from '../types/fi/oph/koski/schema/LukionAidinkieliJaKirjallisuus2019'
 import { isVierasTaiToinenKotimainenKieli2019 } from '../types/fi/oph/koski/schema/VierasTaiToinenKotimainenKieli2019'
+import {
+  isLukionMatematiikka2019,
+  LukionMatematiikka2019
+} from '../types/fi/oph/koski/schema/LukionMatematiikka2019'
 import { appendOptional, deleteAt } from '../util/array'
 import { IconButton } from '../components-v2/controls/IconButton'
 import { Select, SelectOption } from '../components-v2/controls/Select'
@@ -76,7 +79,6 @@ import {
   isMuidenLukioOpintojenSuoritus2019,
   MuidenLukioOpintojenSuoritus2019
 } from '../types/fi/oph/koski/schema/MuidenLukioOpintojenSuoritus2019'
-import { LukionModuulinTaiPaikallisenOpintojaksonSuoritusMuissaOpinnoissa2019 } from '../types/fi/oph/koski/schema/LukionModuulinTaiPaikallisenOpintojaksonSuoritusMuissaOpinnoissa2019'
 import { MuutLukionSuoritukset2019 } from '../types/fi/oph/koski/schema/MuutLukionSuoritukset2019'
 import { Lukiodiplomit2019 } from '../types/fi/oph/koski/schema/Lukiodiplomit2019'
 import { TemaattisetOpinnot2019 } from '../types/fi/oph/koski/schema/TemaattisetOpinnot2019'
@@ -102,14 +104,21 @@ const isHyväksytty = (arviointi?: ArviointiLike): boolean => {
   return !['4', 'H', 'O'].includes(arviointi.arvosana.koodiarvo)
 }
 
-// Kieliaineen kieli (esim. "Suomen kieli ja kirjallisuus") renderöidään
+// Kieliaineen kieli (esim. "Suomen kieli ja kirjallisuus") ja matematiikan
+// oppimäärä (pitkä/lyhyt/yhteinen opintokokonaisuus) renderöidään molemmat
 // inline-tekstinä oppiaineen nimen jatkeena, kuten vanhassa
-// käyttöliittymässäkin - ei KoodistoView'n <div>, joka katkaisisi rivin.
-const KieliNimiView = <T extends string>(props: KoodistoViewProps<T>) => (
-  <TestIdText id="kieli.value">
-    {props.value ? t(props.value.nimi) : ''}
-  </TestIdText>
-)
+// käyttöliittymässäkin - ei KoodistoView'n <div>, joka katkaisisi rivin. Oma
+// testId kummallekin, jottei sekoitu toisiinsa.
+const inlineNimiView =
+  (testId: string) =>
+  <T extends string>(props: KoodistoViewProps<T>) => (
+    <TestIdText id={testId}>
+      {props.value ? t(props.value.nimi) : ''}
+    </TestIdText>
+  )
+
+const KieliNimiView = inlineNimiView('kieli.value')
+const OppimääräNimiView = inlineNimiView('oppimäärä.value')
 
 // Vain kahdella oppiainetyypillä on kieli-kenttä, ja kummallakin on oma
 // koodistonsa - ks. Lukio2019.scala:n LukionÄidinkieliJaKirjallisuus2019 ja
@@ -196,10 +205,7 @@ export const LukionOppiaineet: React.FC<LukionOppiaineetProps> = ({
 }) => {
   const suoritus = päätasonSuoritus.suoritus
 
-  if (
-    !isLukionOppimääränSuoritus2019(suoritus) &&
-    !isLukionOppiaineidenOppimäärienSuoritus2019(suoritus)
-  ) {
+  if (!isTuettuSuoritus(suoritus)) {
     return null
   }
 
@@ -244,11 +250,13 @@ export const LukionOppiaineet: React.FC<LukionOppiaineetProps> = ({
       return []
     }
   )
-  const oppiaineet = (suoritus.osasuoritukset || []).filter(
-    isLukionOppiaineenSuoritus2019
+  // Suodatetaan jo luokitellusta kaikkiRivit-listasta sen sijaan, että
+  // suoritus.osasuoritukset luokiteltaisiin uudelleen kahdesti.
+  const oppiaineet = kaikkiRivit.flatMap((rivi) =>
+    rivi.kind === 'oppiaine' ? [rivi.suoritus] : []
   )
-  const muutSuoritukset = (suoritus.osasuoritukset || []).filter(
-    isMuidenLukioOpintojenSuoritus2019
+  const muutSuoritukset = kaikkiRivit.flatMap((rivi) =>
+    rivi.kind === 'muuSuoritus' ? [rivi.suoritus] : []
   )
 
   return (
@@ -436,6 +444,26 @@ const OppiaineRivi: React.FC<{
             />
           </div>
         )}
+        {form.editMode &&
+          isLukionMatematiikka2019(suoritus.koulutusmoduuli) && (
+            <div className="LukionOppiaineet__oppimäärä">
+              {t('Oppimäärä')}
+              {': '}
+              <FormField
+                form={form}
+                path={(
+                  oppiainePath.prop('koulutusmoduuli') as unknown as FormOptic<
+                    LukionOpiskeluoikeus,
+                    LukionMatematiikka2019
+                  >
+                ).prop('oppimäärä')}
+                view={() => null}
+                edit={KoodistoEdit}
+                editProps={{ koodistoUri: 'oppiainematematiikka' }}
+                testId="oppimääräEdit"
+              />
+            </div>
+          )}
         {form.editMode && (
           <div className="LukionOppiaineet__erityinenTutkinto">
             <FormField
@@ -573,6 +601,15 @@ type KurssiData = {
 // ja kurssityyppi (T) eroavat, siksi renderLisaaModal-propilla annetaan
 // kontekstikohtainen "Lisää osasuoritus" -modaali (UusiLukionModuuli vs.
 // UusiLukionMuuSuoritusModuuli).
+//
+// TParent ei kavenna mitään KurssiLista: n sisällä (parentPath.prop(...)
+// joudutaan silti kavantamaan "as unknown as" -castilla, koska optics-ts:n
+// FormOptic ei tue union-polkujen kavennusta) - se on silti tarpeellinen,
+// jotta kutsujat voivat antaa oman (oppiaineen/muun suorituksen) FormOpticinsa
+// sellaisenaan: FormOptic ei ole kovariantti propertyn suhteen (vahvistettu
+// tsc:llä), joten löyhempi "FormOptic<LukionOpiskeluoikeus, unknown>" -
+// parametrityyppi ei hyväksyisi kutsujien tarkempia FormOpticeja ilman omaa
+// castiaan kutsupaikalla.
 function KurssiLista<
   TParent extends { osasuoritukset?: T[] },
   T extends KurssiData
@@ -1104,6 +1141,23 @@ const OppiaineNimi: React.FC<{
               testId="paikallinenNimi"
             />
           </>
+        ) : isLukionMatematiikka2019(suoritus.koulutusmoduuli) ? (
+          // Matematiikan oppimäärän (pitkä/lyhyt/yhteinen opintokokonaisuus)
+          // koodistoarvon oma nimi on jo valmiiksi muotoa "Matematiikka,
+          // lyhyt oppimäärä" (vahvistettu livenä koodistosta ja vanhasta
+          // käyttöliittymästä) - ei siis liitetä perään kuten kieliaineen
+          // kieltä, vaan korvataan koko nimi sillä.
+          <FormField
+            form={form}
+            path={(
+              oppiainePath.prop('koulutusmoduuli') as unknown as FormOptic<
+                LukionOpiskeluoikeus,
+                LukionMatematiikka2019
+              >
+            ).prop('oppimäärä')}
+            view={OppimääräNimiView}
+            testId="oppimäärä"
+          />
         ) : (
           t(suoritus.koulutusmoduuli.tunniste.nimi)
         )}

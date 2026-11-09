@@ -130,31 +130,35 @@ const LukionPäätasonSuoritusEditor: React.FC<
   }, [props.form, päätasonSuoritus.index, setPäätasonSuoritus])
 
   return (
-    <EditorContainer
-      form={props.form}
-      oppijaOid={props.oppijaOid}
-      invalidatable={props.invalidatable}
-      suoritusIndex={päätasonSuoritus.index}
-      onChangeSuoritus={setPäätasonSuoritus}
-      testId={päätasonSuoritus.testId}
-      createOpiskeluoikeusjakso={createOpiskeluoikeusjakso}
-      suorituksenNimi={lukionSuorituksenNimi}
-      additionalOpiskeluoikeusFields={LukionOpiskeluoikeudenLisäkentät}
-      lisätiedotContainer={LukionLisätiedot}
-      // Vanha käyttöliittymä sallii opiskeluoikeuden tilan merkitsemisen
-      // "Valmistunut"-tilaan, vaikka suoritusta ei olisi vielä vahvistettu -
-      // EditorContainerin oletusarvo (suorituksetVahvistettu = kaikilla
-      // suorituksilla on vahvistus) estäisi tämän muuten.
-      suorituksetVahvistettu
-    >
-      {/* Oma luokka LukioEditor.less:n testid-pohjaisten ylikirjoitusten
-      rajaamiseksi - EditorContainer on jaettu komponentti, eikä renderöi
-      lapsiaan minkään muun erottuvan luokan sisällä, joten ilman tätä
-      esim. "[data-testid$='kieli.edit'] .Select" osuisi myös muiden
-      koulutusmuotojen samannimisiin kenttiin (vahvistettu livenä: rikkoi
-      ahvenanmaan-perusopetuksen/ammatillisen/IB:n/perusopetuksen/VST:n
-      visuaalitestejä, koska nekin käyttävät testId="kieli"/"peruste"-nimiä). */}
-      <div className="LukioEditor">
+    // Oma luokka LukioEditor.less:n testid-pohjaisten ylikirjoitusten
+    // rajaamiseksi - EditorContainer on jaettu komponentti, eikä renderöi
+    // sisältöään (lapset mukaan lukien additionalOpiskeluoikeusFields/
+    // lisätiedotContainer) minkään muun erottuvan luokan sisällä, joten
+    // ilman tätä esim. "[data-testid$='kieli.edit'] .Select" osuisi myös
+    // muiden koulutusmuotojen samannimisiin kenttiin (vahvistettu livenä:
+    // rikkoi ahvenanmaan-perusopetuksen/ammatillisen/IB:n/perusopetuksen/
+    // VST:n visuaalitestejä, koska nekin käyttävät testId="kieli"/
+    // "peruste"-nimiä). Koko EditorContainerin ympärillä, ei vain lapsien,
+    // jotta rajaus kattaa myös additionalOpiskeluoikeusFieldsin ja
+    // lisätiedotContainerin renderöimät kentät.
+    <div className="LukioEditor">
+      <EditorContainer
+        form={props.form}
+        oppijaOid={props.oppijaOid}
+        invalidatable={props.invalidatable}
+        suoritusIndex={päätasonSuoritus.index}
+        onChangeSuoritus={setPäätasonSuoritus}
+        testId={päätasonSuoritus.testId}
+        createOpiskeluoikeusjakso={createOpiskeluoikeusjakso}
+        suorituksenNimi={lukionSuorituksenNimi}
+        additionalOpiskeluoikeusFields={LukionOpiskeluoikeudenLisäkentät}
+        lisätiedotContainer={LukionLisätiedot}
+        // Vanha käyttöliittymä sallii opiskeluoikeuden tilan merkitsemisen
+        // "Valmistunut"-tilaan, vaikka suoritusta ei olisi vielä vahvistettu -
+        // EditorContainerin oletusarvo (suorituksetVahvistettu = kaikilla
+        // suorituksilla on vahvistus) estäisi tämän muuten.
+        suorituksetVahvistettu
+      >
         {props.form.state.suoritukset.length > 1 && (
           <RemovePaatasonSuoritus
             form={props.form}
@@ -173,8 +177,8 @@ const LukionPäätasonSuoritusEditor: React.FC<
           päätasonSuoritus={päätasonSuoritus}
         />
         <Spacer />
-      </div>
-    </EditorContainer>
+      </EditorContainer>
+    </div>
   )
 }
 

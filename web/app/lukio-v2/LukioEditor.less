@@ -240,8 +240,30 @@
   align-items: center;
 }
 
-.LukionOmanÄidinkielenOpinnot__poisto {
-  width: 8%;
+// Sama lista+erotinviiva-rakenne kuin yllä, mutta jaettuna muillekin
+// päätason suorituksen kenttä-arvo-pareja sisältäville taulukollisille
+// kentille (Suullisen kielitaidon kokeet, Lukiodiplomit) - ei nimetty
+// oman äidinkielen opintojen mukaan, koska ulkoasu on identtinen eikä
+// liity vain siihen kenttään.
+.LukioEditor__arviointiListaEdit {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+
+  > li {
+    padding: 10px 0;
+    border-bottom: 1px solid @color-neutral-gray;
+
+    &:first-child {
+      padding-top: 0;
+    }
+  }
+}
+
+.LukioEditor__arviointiEnsimmäinenKenttäJaPoisto {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 // Rajattu .LukioEditor-luokan sisään (ks. LukioEditor.tsx), koska nämä ovat
