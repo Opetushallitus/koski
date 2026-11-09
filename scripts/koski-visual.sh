@@ -17,7 +17,7 @@ if [ -z "$pw_version" ]; then
   exit 1
 fi
 
-IMAGE="mcr.microsoft.com/playwright:v1.64.1-jammy@sha256:7e9f074b4b69f7c746865936ac7840733cf5dfc957f265a547f331e7b83922d7"
+IMAGE="mcr.microsoft.com/playwright:v1.65.0-jammy@sha256:5a8620d70618963ec6628dd77cc25ec6a4b232e26c4a41241a8c1def04e2dc04"
 image_tag="${IMAGE#*:v}"                      # image:v1.2.3-variant@digest → 1.2.3-variant@digest
 image_tag="${image_tag%%@*}"                  # 1.2.3-variant@digest → 1.2.3-variant
 image_version="${image_tag%%-*}"              # 1.2.3-variant → 1.2.3
