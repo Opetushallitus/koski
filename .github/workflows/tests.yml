@@ -220,6 +220,7 @@ jobs:
     if: ${{ inputs.run-backend-tests }}
     name: Scalafix
     runs-on: ubuntu-26.04
+    needs: [build_koski]
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
