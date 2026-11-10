@@ -39,13 +39,7 @@ on:
         description: Build the Koski Docker image
         type: boolean
         default: false
-      run-appconfig-check:
-        description: Check that the QA AppConfig has every reference.conf key
-        type: boolean
-        default: false
 
-# Jokaisen kutsujan on annettava id-token-oikeus, koska GitHub tarkistaa appconfig_checkin oikeudet
-# myös silloin, kun se ohitetaan. Muut jobit eivät saa sitä.
 permissions:
   contents: read
 
@@ -226,50 +220,6 @@ jobs:
           done
           docker logs koski
           exit 1
-
-  appconfig_check:
-    # Forkin PR ei saa salaisuuksia eikä OIDC-tunnistetta.
-    if: ${{ inputs.run-appconfig-check && !github.event.pull_request.head.repo.fork }}
-    name: QA AppConfig keys
-    runs-on: ubuntu-26.04
-    needs: [build_koski]
-    permissions:
-      contents: read
-      id-token: write
-    steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-        with:
-          persist-credentials: false
-
-      - uses: $/.github/actions/setup_java_25
-
-      - name: Restore target dir
-        uses: actions/cache/restore@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
-        with:
-          path: "target/"
-          key: ${{ runner.os }}-target-${{ github.sha }}
-          fail-on-cache-miss: "true"
-
-      - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@e1253824e5c10ff9df46874f81ed3ec929e19cfd # v6.3.0
-        with:
-          role-to-assume: ${{ vars.APPCONFIG_READ_ROLE_QA }}
-          role-session-name: KoskiAppConfigCheck-${{ github.run_id }}
-          aws-region: eu-west-1
-
-      # Asennusvaihe tarkistaa vielä kohdeympäristön, myös QA:n, juuri ennen asennusta.
-      - name: Check that QA AppConfig has every reference.conf key
-        run: |
-          set -euo pipefail
-          CONFIG_FILE="$RUNNER_TEMP/appconfig.conf"
-          trap 'rm -f "$CONFIG_FILE"' EXIT
-          TOKEN=$(aws appconfigdata start-configuration-session \
-            --application-identifier koski \
-            --environment-identifier OPHKoskiQA \
-            --configuration-profile-identifier OPHKoskiQA \
-            --query InitialConfigurationToken --output text)
-          aws appconfigdata get-latest-configuration --configuration-token "$TOKEN" "$CONFIG_FILE" > /dev/null
-          ./mvnw --batch-mode --quiet exec:java -Dexec.mainClass=fi.oph.koski.config.AppConfigAvaintarkistus < "$CONFIG_FILE"
 
   scalafix:
     if: ${{ inputs.run-backend-tests }}

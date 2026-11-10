@@ -158,7 +158,6 @@ jobs:
     uses: $/.github/workflows/tests.yml
     permissions:
       contents: read
-      id-token: write
     with:
       run-backend-tests: ${{ needs.changes.outputs.backend == 'true' }}
       run-koski-ui-tests: ${{ needs.changes.outputs.koski-ui == 'true' }}
@@ -169,7 +168,51 @@ jobs:
       run-radiator-tests: ${{ needs.changes.outputs.radiator == 'true' }}
       run-history-debug-tests: ${{ needs.changes.outputs.history-debug == 'true' }}
       run-docker-image-tests: ${{ needs.changes.outputs.docker-image == 'true' }}
-      run-appconfig-check: true
+
+  appconfig_check:
+    name: QA AppConfig keys
+    # target/ tulee testien build_koski-jobista. Forkin PR ei saa salaisuuksia eikä OIDC-tunnistetta.
+    needs: [changes, tests]
+    # Ajetaan myös testien kaaduttua: tarkistus tarvitsee vain build_koskin tuloksen.
+    if: ${{ !cancelled() && needs.changes.outputs.backend == 'true' && !github.event.pull_request.head.repo.fork }}
+    runs-on: ubuntu-26.04
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - uses: $/.github/actions/setup_java_25
+
+      - name: Restore target dir
+        uses: actions/cache/restore@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: "target/"
+          key: ${{ runner.os }}-target-${{ github.sha }}
+          fail-on-cache-miss: "true"
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@e1253824e5c10ff9df46874f81ed3ec929e19cfd # v6.3.0
+        with:
+          role-to-assume: ${{ vars.APPCONFIG_READ_ROLE_QA }}
+          role-session-name: KoskiAppConfigCheck-${{ github.run_id }}
+          aws-region: eu-west-1
+
+      # Asennusvaihe tarkistaa vielä kohdeympäristön, myös QA:n, juuri ennen asennusta.
+      - name: Check that QA AppConfig has every reference.conf key
+        run: |
+          set -euo pipefail
+          CONFIG_FILE="$RUNNER_TEMP/appconfig.conf"
+          trap 'rm -f "$CONFIG_FILE"' EXIT
+          TOKEN=$(aws appconfigdata start-configuration-session \
+            --application-identifier koski \
+            --environment-identifier OPHKoskiQA \
+            --configuration-profile-identifier OPHKoskiQA \
+            --query InitialConfigurationToken --output text)
+          aws appconfigdata get-latest-configuration --configuration-token "$TOKEN" "$CONFIG_FILE" > /dev/null
+          ./mvnw --batch-mode --quiet exec:java -Dexec.mainClass=fi.oph.koski.config.AppConfigAvaintarkistus < "$CONFIG_FILE"
 
   trivy:
     name: Trivy
@@ -224,7 +267,7 @@ jobs:
   ci_passed:
     name: CI passed
     runs-on: ubuntu-26.04
-    needs: [changes, no_merge_commits, tests, trivy, node_vulnerabilities, zizmor, renovate_config]
+    needs: [changes, no_merge_commits, tests, appconfig_check, trivy, node_vulnerabilities, zizmor, renovate_config]
     if: ${{ always() }}
     permissions:
       contents: read
