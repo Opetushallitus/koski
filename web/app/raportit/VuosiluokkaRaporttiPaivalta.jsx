@@ -2,24 +2,15 @@ import React from '../util/baret'
 import Text from '../i18n/Text'
 import Bacon from 'baconjs'
 import Atom from '../util/bacon.atom'
-import { showError } from '../util/location'
 import { formatISODate } from '../date/date'
-import { generateRandomPassword } from '../util/password'
-import { downloadExcel } from './downloadExcel'
 import Dropdown from '../components/Dropdown'
-import {
-  LyhytKuvaus,
-  PaivaValinta,
-  RaportinLataus,
-  Vinkit
-} from './raporttiComponents'
+import { LyhytKuvaus, PaivaValinta, Vinkit } from './raporttiComponents'
 import { kotikuntaPvmParametri, selectFromState, today } from './raporttiUtils'
 import { MassaluovutusRaportinLataus } from '../components-v2/raportit/MassaluovutusRaportinLataus'
 import { t } from '../i18n/i18n'
 
 export const VuosiluokkaRaporttiPaivalta = ({
   stateP,
-  apiEndpoint,
   shortDescription,
   dateInputHelp,
   example,
@@ -31,31 +22,8 @@ export const VuosiluokkaRaporttiPaivalta = ({
   const paivaAtom = Atom(today())
   const kotikuntaPvmAtom = Atom(today())
   const vuosiluokkaAtom = Atom('1')
-  const submitBus = Bacon.Bus()
   const { selectedOrganisaatioP, dbUpdatedP, organisaatioNimetP } =
     selectFromState(stateP)
-
-  const password = generateRandomPassword()
-
-  const downloadExcelP = Bacon.combineWith(
-    selectedOrganisaatioP,
-    paivaAtom,
-    kotikuntaPvmAtom,
-    vuosiluokkaAtom,
-    (o, p, kkp, v) =>
-      o &&
-      p &&
-      v &&
-      kkp && {
-        oppilaitosOid: o.oid,
-        paiva: formatISODate(p),
-        kotikuntaPvm: showKotikuntaPvmInput ? formatISODate(kkp) : undefined,
-        vuosiluokka: v,
-        lang,
-        password,
-        baseUrl: `/koski/api/raportit${apiEndpoint}`
-      }
-  )
 
   const massaluovutusParametritP = Bacon.combineWith(
     selectedOrganisaatioP,
@@ -75,16 +43,6 @@ export const VuosiluokkaRaporttiPaivalta = ({
         : null
   )
 
-  const downloadExcelE = submitBus
-    .map(downloadExcelP)
-    .flatMapLatest(downloadExcel)
-
-  downloadExcelE.onError((e) => {
-    showError(e)
-  })
-
-  const inProgressP = submitBus.awaiting(downloadExcelE.mapError())
-  const submitEnabledP = downloadExcelP.map((x) => !!x).and(inProgressP.not())
   const vuosiluokat = [1, 2, 3, 4, 5, 6, 7, 8, 9]
 
   return (
@@ -115,28 +73,18 @@ export const VuosiluokkaRaporttiPaivalta = ({
         />
       </div>
 
-      {massaluovutusKyselymalli ? (
-        Bacon.combineWith(
-          massaluovutusParametritP,
-          dbUpdatedP,
-          organisaatioNimetP,
-          (parametrit, dbUpdated, oppilaitosNimet) => (
-            <MassaluovutusRaportinLataus
-              kyselymalli={massaluovutusKyselymalli}
-              parametrit={parametrit}
-              dbUpdated={dbUpdated}
-              oppilaitosNimet={oppilaitosNimet}
-            />
-          )
+      {Bacon.combineWith(
+        massaluovutusParametritP,
+        dbUpdatedP,
+        organisaatioNimetP,
+        (parametrit, dbUpdated, oppilaitosNimet) => (
+          <MassaluovutusRaportinLataus
+            kyselymalli={massaluovutusKyselymalli}
+            parametrit={parametrit}
+            dbUpdated={dbUpdated}
+            oppilaitosNimet={oppilaitosNimet}
+          />
         )
-      ) : (
-        <RaportinLataus
-          password={password}
-          inProgressP={inProgressP}
-          submitEnabledP={submitEnabledP}
-          submitBus={submitBus}
-          dbUpdatedP={dbUpdatedP}
-        />
       )}
 
       <Vinkit>{example}</Vinkit>

@@ -2,15 +2,11 @@ import React from '../util/baret'
 import Text from '../i18n/Text'
 import Bacon from 'baconjs'
 import Atom from '../util/bacon.atom'
-import { showError } from '../util/location'
 import { formatISODate } from '../date/date'
-import { generateRandomPassword } from '../util/password'
-import { downloadExcel } from './downloadExcel'
 import {
   AikajaksoValinta,
   Listavalinta,
   LyhytKuvaus,
-  RaportinLataus,
   Vinkit,
   PaivaValinta
 } from './raporttiComponents'
@@ -60,7 +56,6 @@ const AikarajatutSuorituksetLabel = ({ osasuoritusType }) => {
 
 export const AikajaksoRaporttiAikarajauksella = ({
   stateP,
-  apiEndpoint,
   shortDescription,
   showKotikuntaPvmInput,
   kotikuntaPvmInputHelp,
@@ -74,34 +69,8 @@ export const AikajaksoRaporttiAikarajauksella = ({
   const loppuAtom = Atom()
   const kotikuntaPvmAtom = Atom(today())
   const osasuoritustenAikarajausAtom = Atom(false)
-  const submitBus = Bacon.Bus()
   const { selectedOrganisaatioP, dbUpdatedP, organisaatioNimetP } =
     selectFromState(stateP)
-
-  const password = generateRandomPassword()
-
-  const downloadExcelP = Bacon.combineWith(
-    selectedOrganisaatioP,
-    alkuAtom,
-    loppuAtom,
-    osasuoritustenAikarajausAtom,
-    kotikuntaPvmAtom,
-    (o, a, l, r, kkp) =>
-      o &&
-      a &&
-      l &&
-      l.valueOf() >= a.valueOf() &&
-      (!showKotikuntaPvmInput || kkp) && {
-        oppilaitosOid: o.oid,
-        alku: formatISODate(a),
-        loppu: formatISODate(l),
-        kotikuntaPvm: formatISODate(kkp),
-        osasuoritustenAikarajaus: r,
-        lang,
-        password,
-        baseUrl: `/koski/api/raportit${apiEndpoint}`
-      }
-  )
 
   const massaluovutusParametritP = Bacon.combineWith(
     selectedOrganisaatioP,
@@ -125,15 +94,6 @@ export const AikajaksoRaporttiAikarajauksella = ({
           }
         : null
   )
-
-  const downloadExcelE = submitBus
-    .map(downloadExcelP)
-    .flatMapLatest(downloadExcel)
-
-  downloadExcelE.onError((e) => showError(e))
-
-  const inProgressP = submitBus.awaiting(downloadExcelE.mapError())
-  const submitEnabledP = downloadExcelP.map((x) => !!x).and(inProgressP.not())
 
   return (
     <section>
@@ -173,28 +133,18 @@ export const AikajaksoRaporttiAikarajauksella = ({
         />
       )}
 
-      {massaluovutusKyselymalli ? (
-        Bacon.combineWith(
-          massaluovutusParametritP,
-          dbUpdatedP,
-          organisaatioNimetP,
-          (parametrit, dbUpdated, oppilaitosNimet) => (
-            <MassaluovutusRaportinLataus
-              kyselymalli={massaluovutusKyselymalli}
-              parametrit={parametrit}
-              dbUpdated={dbUpdated}
-              oppilaitosNimet={oppilaitosNimet}
-            />
-          )
+      {Bacon.combineWith(
+        massaluovutusParametritP,
+        dbUpdatedP,
+        organisaatioNimetP,
+        (parametrit, dbUpdated, oppilaitosNimet) => (
+          <MassaluovutusRaportinLataus
+            kyselymalli={massaluovutusKyselymalli}
+            parametrit={parametrit}
+            dbUpdated={dbUpdated}
+            oppilaitosNimet={oppilaitosNimet}
+          />
         )
-      ) : (
-        <RaportinLataus
-          password={password}
-          inProgressP={inProgressP}
-          submitEnabledP={submitEnabledP}
-          submitBus={submitBus}
-          dbUpdatedP={dbUpdatedP}
-        />
       )}
 
       <Vinkit>{example}</Vinkit>

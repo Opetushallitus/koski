@@ -2,10 +2,7 @@ import React from '../util/baret'
 import Text from '../i18n/Text'
 import DateInput from '../date/DateInput'
 import { InfoIcon } from '../icons/InfoIcon'
-import RaporttiDownloadButton from './RaporttiDownloadButton'
 import RadioButtons from '../components/RadioButtons'
-import { formatFinnishDateTime } from '../date/date'
-import { t } from '../i18n/i18n'
 
 export const LyhytKuvaus = ({ children }) =>
   children ? <p className="lyhyt-kuvaus">{children}</p> : null
@@ -72,43 +69,3 @@ export const Vinkit = ({ children }) =>
       {children}
     </div>
   ) : null
-
-export const RaportinLataus = ({
-  password,
-  dbUpdatedP,
-  inProgressP,
-  submitEnabledP,
-  submitBus
-}) => (
-  <div className="raportin-lataus">
-    <div className="password">
-      <Text name="Excel-tiedosto on suojattu salasanalla" /> {password}
-      <br />
-      <Text name="Ota salasana itsellesi talteen" />
-    </div>
-    {dbUpdatedP.map((dbUpdated) => {
-      const text = t(
-        'Raportti pohjautuu KOSKI-tietovarannossa hetkellä $DATETIME olleille tiedoille.'
-      )
-      const [head, foot] = text.split('$DATETIME')
-      return (
-        <div className="update-time">
-          {head}
-          <span className="datetime">
-            {formatFinnishDateTime(new Date(dbUpdated))}
-          </span>
-          {foot}
-        </div>
-      )
-    })}
-    <RaporttiDownloadButton
-      inProgressP={inProgressP}
-      disabled={submitEnabledP.not()}
-      onSubmit={(e) => {
-        e.preventDefault()
-        submitBus.push()
-        return false
-      }}
-    />
-  </div>
-)
