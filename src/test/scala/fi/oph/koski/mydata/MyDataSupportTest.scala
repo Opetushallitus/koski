@@ -13,7 +13,6 @@ import scala.jdk.CollectionConverters._
 class MyDataSupportTest extends AnyFreeSpec with TestEnvironment with Matchers with MockFactory {
 
   val memberId = "hsl"
-  val lang = "fi"
 
   def support: MyDataSupport = support(mock[HttpServletRequest])
 
@@ -25,13 +24,15 @@ class MyDataSupportTest extends AnyFreeSpec with TestEnvironment with Matchers w
   }
 
   "MyDataSupport" - {
-    "Palauttaa oikean Korhopankki-URL:n sisään loggautumattomille" in {
-      val mockRequest = mock[HttpServletRequest]
-      (() => mockRequest.getQueryString).expects().returning("callback=http://www.hsl.fi").repeat(2)
-      (() => mockRequest.getRequestURI).expects().returning("/koski/omadata/valtuutus/hsl")
+    Seq("fi", "sv", "en").foreach { lang =>
+      s"Palauttaa oikean Korhopankki-URL:n sisään loggautumattomille, kieli $lang" in {
+        val mockRequest = mock[HttpServletRequest]
+        (() => mockRequest.getQueryString).expects().returning("callback=http://www.hsl.fi").repeat(2)
+        (() => mockRequest.getRequestURI).expects().returning("/koski/omadata/valtuutus/hsl")
 
-      support(mockRequest).getCasLoginURL(lang = lang) should
-        equal(s"/koski/login/oppija?locale=${lang}&service=/koski/user/login?onSuccess=/koski/omadata/valtuutus/hsl?callback=http://www.hsl.fi&valtuudet=false&redirect=%2Fkoski%2Fomadata%2Fvaltuutus%2Fhsl%3Fcallback%3Dhttp%3A%2F%2Fwww.hsl.fi")
+        support(mockRequest).getCasLoginURL(lang = lang) should
+          equal(s"/koski/login/oppija?locale=${lang}&service=/koski/user/login?onSuccess=/koski/omadata/valtuutus/hsl?callback=http://www.hsl.fi&valtuudet=false&redirect=%2Fkoski%2Fomadata%2Fvaltuutus%2Fhsl%3Fcallback%3Dhttp%3A%2F%2Fwww.hsl.fi")
+      }
     }
     "Palauttaa oikean URL:n sisään loganneille" in {
       val mockRequest = mock[HttpServletRequest]
