@@ -1,0 +1,456 @@
+package fi.oph.koski.massaluovutus
+
+import com.typesafe.config.ConfigValueFactory.fromAnyRef
+import fi.oph.koski.api.misc.OpiskeluoikeusTestMethodsAmmatillinen
+import fi.oph.koski.config.KoskiApplication
+import fi.oph.koski.documentation.{AmmatillinenExampleData, ExampleData, ExamplesEsiopetus, ExamplesEuropeanSchoolOfHelsinki, ExamplesInternationalSchool, ExamplesTutkintokoulutukseenValmentavaKoulutus, LukioExampleData, PerusopetusExampleData}
+import fi.oph.koski.schema.{EuropeanSchoolOfHelsinkiOpiskeluoikeudenTila, EuropeanSchoolOfHelsinkiOpiskeluoikeusjakso, InternationalSchoolOpiskeluoikeudenTila, InternationalSchoolOpiskeluoikeusjakso, Oppilaitos}
+import fi.oph.koski.henkilo.{KoskiSpecificMockOppijat, OppijaHenkilö}
+import fi.oph.koski.http.KoskiErrorCategory
+import fi.oph.koski.koskiuser.{MockUsers, Rooli, UserWithPassword}
+import fi.oph.koski.log.AuditLogTester
+import fi.oph.koski.massaluovutus.aiemmatopiskeluoikeudet.MassaluovutusQueryAiemmatOpiskeluoikeudet
+import fi.oph.koski.organisaatio.MockOrganisaatiot
+import fi.oph.koski.util.Wait
+import fi.oph.scalaschema.Serializer.format
+import org.json4s.{JNothing, JValue}
+import org.json4s.jackson.JsonMethods
+import org.scalatest.freespec.AnyFreeSpec
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.{BeforeAndAfterAll, BeforeAndAfterEach}
+
+import java.nio.charset.StandardCharsets
+import java.time.LocalDate
+
+class MassaluovutusAiemmatOpiskeluoikeudetSpec extends AnyFreeSpec with MassaluovutusTestMethods with Matchers with BeforeAndAfterAll with BeforeAndAfterEach with OpiskeluoikeusTestMethodsAmmatillinen {
+  import MassaluovutusAiemmatOpiskeluoikeudetSpec._
+  override def body: String = new String(response.bodyBytes, StandardCharsets.UTF_8)
+
+  private val lauri = KoskiSpecificMockOppijat.aiemmatLukio
+  private val aino = KoskiSpecificMockOppijat.aiemmatEsiJaPerusopetus
+  private val stadinDemoOppijat = List(
+    lauri,
+    KoskiSpecificMockOppijat.aiemmatAmmatillinen,
+    KoskiSpecificMockOppijat.aiemmatOmaOppilaitos,
+    KoskiSpecificMockOppijat.aiemmatMyöhemminAlkanut,
+    KoskiSpecificMockOppijat.aiemmatEiAiempia,
+  )
+  private val query = MassaluovutusQueryAiemmatOpiskeluoikeudet(organisaatioOid = MockOrganisaatiot.stadinAmmattiopisto, oppijaOidit = Some(stadinDemoOppijat.map(_.oid)))
+  private val kulosaarenQuery = MassaluovutusQueryAiemmatOpiskeluoikeudet(organisaatioOid = MockOrganisaatiot.kulosaarenAlaAste, oppijaOidit = Some(List(aino.oid)))
+  private def oidilla(oppijat: OppijaHenkilö*) = query.copy(oppijaOidit = Some(oppijat.map(_.oid).toList))
+
+  override protected def beforeAll(): Unit = {
+    super.beforeAll()
+    resetFixtures()
+    val päättynyt = KoskiSpecificMockOppijat.aiemmatTestiPäättynyt
+    createOrUpdate(päättynyt, PerusopetusExampleData.päättötodistusOpiskeluoikeus())
+    createOrUpdate(päättynyt, päättymispäivällä(makeOpiskeluoikeus(alkamispäivä = LocalDate.of(2015, 1, 1)), LocalDate.of(2018, 1, 1)))
+    val tulevaisuudessaAlkava = KoskiSpecificMockOppijat.aiemmatTestiTulevaisuudessaAlkava
+    createOrUpdate(tulevaisuudessaAlkava, ExamplesEsiopetus.opiskeluoikeus)
+    createOrUpdate(tulevaisuudessaAlkava, PerusopetusExampleData.päättötodistusOpiskeluoikeus())
+    createOrUpdate(tulevaisuudessaAlkava, makeOpiskeluoikeus(alkamispäivä = LocalDate.now().plusMonths(1)))
+    val tuva = KoskiSpecificMockOppijat.aiemmatTestiTuva
+    createOrUpdate(tuva, PerusopetusExampleData.päättötodistusOpiskeluoikeus())
+    createOrUpdate(tuva, ExamplesTutkintokoulutukseenValmentavaKoulutus.tuvaOpiskeluOikeusEiValmistunut.copy(lisätiedot = None))
+    val perusopetus = KoskiSpecificMockOppijat.aiemmatTestiPerusopetus
+    createOrUpdate(perusopetus, ExamplesEsiopetus.opiskeluoikeus)
+    createOrUpdate(perusopetus, PerusopetusExampleData.opiskeluoikeus(
+      oppilaitos = Oppilaitos(MockOrganisaatiot.stadinAmmattiopisto),
+      suoritukset = List(PerusopetusExampleData.kahdeksannenLuokanSuoritus.copy(toimipiste = AmmatillinenExampleData.stadinToimipiste, alkamispäivä = Some(LocalDate.of(2025, 8, 15)), vahvistus = None)),
+      alkamispäivä = LocalDate.of(2024, 8, 15),
+      päättymispäivä = None,
+    ))
+    val slave = KoskiSpecificMockOppijat.aiemmatTestiSlave.henkilö
+    createOrUpdate(slave, PerusopetusExampleData.päättötodistusOpiskeluoikeus())
+    createOrUpdate(slave, makeOpiskeluoikeus(alkamispäivä = LocalDate.of(2020, 1, 1)))
+    val päättyyTänään = KoskiSpecificMockOppijat.aiemmatTestiPäättyyTänään
+    createOrUpdate(päättyyTänään, PerusopetusExampleData.päättötodistusOpiskeluoikeus())
+    createOrUpdate(päättyyTänään, lisääTila(makeOpiskeluoikeus(alkamispäivä = LocalDate.of(2024, 8, 1)), LocalDate.now(), ExampleData.opiskeluoikeusEronnut))
+    val päättyyHuomenna = KoskiSpecificMockOppijat.aiemmatTestiPäättyyHuomenna
+    createOrUpdate(päättyyHuomenna, PerusopetusExampleData.päättötodistusOpiskeluoikeus())
+    createOrUpdate(päättyyHuomenna, lisääTila(makeOpiskeluoikeus(alkamispäivä = LocalDate.of(2024, 8, 1)), LocalDate.now().plusDays(1), ExampleData.opiskeluoikeusEronnut))
+    val mitätöity = KoskiSpecificMockOppijat.aiemmatTestiMitätöity
+    createOrUpdate(mitätöity, PerusopetusExampleData.päättötodistusOpiskeluoikeus())
+    val mitätöitävä = createOrUpdate(mitätöity, makeOpiskeluoikeus(alkamispäivä = LocalDate.of(2024, 8, 1)))
+    delete(s"api/opiskeluoikeus/${mitätöitävä.oid.get}", headers = authHeaders(MockUsers.paakayttaja))(verifyResponseStatusOk())
+
+    val ishGrade9 = KoskiSpecificMockOppijat.aiemmatTestiIshGrade9
+    createOrUpdate(ishGrade9, ExamplesEsiopetus.opiskeluoikeus)
+    createOrUpdate(ishGrade9, ishOpiskeluoikeus(ishSuoritukset.take(9) :+ ExamplesInternationalSchool.grade9.copy(vahvistus = None)))
+    val ishGrade10 = KoskiSpecificMockOppijat.aiemmatTestiIshGrade10
+    createOrUpdate(ishGrade10, ExamplesEsiopetus.opiskeluoikeus)
+    createOrUpdate(ishGrade10, ishOpiskeluoikeus(ishSuoritukset.take(10) :+ ExamplesInternationalSchool.grade10.copy(vahvistus = None)))
+    val eshS4 = KoskiSpecificMockOppijat.aiemmatTestiEshS4
+    createOrUpdate(eshS4, ExamplesEsiopetus.opiskeluoikeus)
+    createOrUpdate(eshS4, eshOpiskeluoikeus(eshSuoritukset.take(11) :+ ExamplesEuropeanSchoolOfHelsinki.s4.copy(vahvistus = None)))
+    val eshS5 = KoskiSpecificMockOppijat.aiemmatTestiEshS5
+    createOrUpdate(eshS5, ExamplesEsiopetus.opiskeluoikeus)
+    createOrUpdate(eshS5, eshOpiskeluoikeus(eshSuoritukset.take(12) :+ ExamplesEuropeanSchoolOfHelsinki.s5.copy(vahvistus = None)))
+    val kansainvälisetAiemmin = KoskiSpecificMockOppijat.aiemmatTestiKansainvälisetAiemmin
+    createOrUpdate(kansainvälisetAiemmin, ExamplesInternationalSchool.opiskeluoikeus)
+    createOrUpdate(kansainvälisetAiemmin, ExamplesEuropeanSchoolOfHelsinki.opiskeluoikeus)
+    createOrUpdate(kansainvälisetAiemmin, makeOpiskeluoikeus(alkamispäivä = LocalDate.of(2025, 8, 1)))
+  }
+
+  // Siivotaan beforeAll:ssa luodut opiskeluoikeudet, jotta samassa JVM:ssä seuraavien suitejen oppijamäärät eivät muutu
+  override protected def afterAll(): Unit = {
+    resetFixtures()
+    super.afterAll()
+  }
+
+  override protected def afterEach(): Unit = {
+    super.afterEach()
+    Wait.until { !app.massaluovutusService.hasWork }
+    app.massaluovutusService.truncate()
+  }
+
+  private val ishSuoritukset = ExamplesInternationalSchool.opiskeluoikeus.suoritukset
+  private def ishOpiskeluoikeus(suoritukset: List[fi.oph.koski.schema.InternationalSchoolVuosiluokanSuoritus]) = ExamplesInternationalSchool.opiskeluoikeus.copy(
+    tila = InternationalSchoolOpiskeluoikeudenTila(List(InternationalSchoolOpiskeluoikeusjakso(LocalDate.of(2005, 8, 15), LukioExampleData.opiskeluoikeusAktiivinen, Some(ExampleData.valtionosuusRahoitteinen)))),
+    suoritukset = suoritukset,
+  )
+  private val eshSuoritukset = ExamplesEuropeanSchoolOfHelsinki.opiskeluoikeus.suoritukset
+  private def eshOpiskeluoikeus(suoritukset: List[fi.oph.koski.schema.EuropeanSchoolOfHelsinkiPäätasonSuoritus]) = ExamplesEuropeanSchoolOfHelsinki.opiskeluoikeus.copy(
+    tila = EuropeanSchoolOfHelsinkiOpiskeluoikeudenTila(List(EuropeanSchoolOfHelsinkiOpiskeluoikeusjakso(ExamplesEuropeanSchoolOfHelsinki.alkamispäivä, LukioExampleData.opiskeluoikeusAktiivinen))),
+    suoritukset = suoritukset,
+  )
+  private val ishQuery = MassaluovutusQueryAiemmatOpiskeluoikeudet(organisaatioOid = MockOrganisaatiot.internationalSchool, oppijaOidit = Some(Nil))
+  private val eshQuery = MassaluovutusQueryAiemmatOpiskeluoikeudet(organisaatioOid = MockOrganisaatiot.EuropeanSchoolOfHelsinki.oppilaitos, oppijaOidit = Some(Nil))
+
+  private def oppijanTiedosto(files: List[String], oid: String) = files.find(_.contains(oid))
+
+  private def vuosiluokat(json: JValue, koulutusmuoto: String): List[String] =
+    (json \ "opiskeluoikeudet").children
+      .find(oo => (oo \ "tyyppi" \ "koodiarvo").extract[String] == koulutusmuoto)
+      .map(oo => (oo \ "suoritukset").children.map(s => (s \ "koulutusmoduuli" \ "tunniste" \ "koodiarvo").extract[String]))
+      .getOrElse(fail(s"$koulutusmuoto-opiskeluoikeutta ei löytynyt"))
+
+  private def koulutusmuodot(json: JValue): List[String] =
+    (json \ "opiskeluoikeudet").children.map(oo => (oo \ "tyyppi" \ "koodiarvo").extract[String])
+
+  private def oppilaitoksetJaKoulutusmuodot(json: JValue): Set[(String, String)] =
+    (json \ "opiskeluoikeudet").children.map(oo => ((oo \ "oppilaitos" \ "oid").extract[String], (oo \ "tyyppi" \ "koodiarvo").extract[String])).toSet
+
+  private def lisätieto(json: JValue, koulutusmuoto: String, kenttä: String): JValue =
+    (json \ "opiskeluoikeudet").children
+      .find(oo => (oo \ "tyyppi" \ "koodiarvo").extract[String] == koulutusmuoto)
+      .map(oo => oo \ "lisätiedot" \ kenttä)
+      .getOrElse(fail(s"$koulutusmuoto-opiskeluoikeutta ei löytynyt"))
+
+  private def haeTulostiedostot(q: MassaluovutusQueryAiemmatOpiskeluoikeudet = query, user: UserWithPassword = oletuskäyttäjä): List[String] = {
+    val queryId = addQuerySuccessfully(q, user)(_.queryId)
+    waitForCompletion(queryId, user).files
+  }
+
+  private def oppijanTulos[T](files: List[String], oppija: OppijaHenkilö, user: UserWithPassword = oletuskäyttäjä)(f: JValue => T): T =
+    verifyResultAndContent(oppijanTiedosto(files, oppija.oid).getOrElse(fail(s"Tiedostoa ei löytynyt oppijalle ${oppija.sukunimi}")), user) {
+      f(JsonMethods.parse(body))
+    }
+
+  "Aiemmat opiskeluoikeudet" - {
+    "Käyttöoikeudet ja parametrit" - {
+      "Ei ole käytössä tuotantoympäristössä" in {
+        val tuotantoConfig = app.config.withValue("opintopolku.virkailija.url", fromAnyRef("https://virkailija.opintopolku.fi"))
+        implicit val session = MockUsers.paakayttaja.toKoskiSpecificSession(app.käyttöoikeusRepository)
+        query.queryAllowed(KoskiApplication(tuotantoConfig)) should be(false)
+        query.queryAllowed(app) should be(true)
+      }
+
+      "Ei onnistu ilman AIEMMAT_OPISKELUOIKEUDET-roolia" in {
+        addQuery(query, MockUsers.helsinkiKatselija) {
+          verifyResponseStatus(403, KoskiErrorCategory.forbidden())
+        }
+      }
+
+      "Ei onnistu virkailijakäyttäjällä, vaikka rooli on" in {
+        addQuery(query, MockUsers.helsinkiAiemmatOpiskeluoikeudetVirkailija) {
+          verifyResponseStatus(403, KoskiErrorCategory.forbidden())
+        }
+      }
+
+      "Ei onnistu, jos rooli on vain toisessa organisaatiossa" in {
+        addQuery(query, MockUsers.tornioAiemmatOpiskeluoikeudetHelsinkiKatselija) {
+          verifyResponseStatus(403, KoskiErrorCategory.forbidden())
+        }
+      }
+
+      "Ei onnistu koulutustoimijan oidilla" in {
+        addQuery(query.copy(organisaatioOid = MockOrganisaatiot.helsinginKaupunki), oletuskäyttäjä) {
+          verifyResponseStatus(400, KoskiErrorCategory.badRequest.massaluovutus.eiOppilaitos())
+        }
+      }
+
+      "Ei onnistu koulutustoimijan oidilla globaaleilla lukuoikeuksilla" in {
+        addQuery(query.copy(organisaatioOid = MockOrganisaatiot.helsinginKaupunki), MockUsers.paakayttaja) {
+          verifyResponseStatus(403, KoskiErrorCategory.forbidden())
+        }
+      }
+
+      "Onnistuu pääkäyttäjällä ilman erillistä roolia" in {
+        haeTulostiedostot(query, MockUsers.paakayttaja) should have length 5
+      }
+
+      "Ei onnistu tuntemattomalla koulutusmuodolla" in {
+        addQuery(query.copy(koulutusmuoto = Some(List("perusopetus", "korkeakoulutus"))), oletuskäyttäjä) {
+          verifyResponseStatus(400)
+          body should include("Tuntematon koulutusmuoto")
+        }
+      }
+
+      "Ei onnistu ilman oppijoita" in {
+        addQuery(query.copy(hetut = None, oppijaOidit = Some(Nil)), oletuskäyttäjä) {
+          verifyResponseStatus(400, KoskiErrorCategory.badRequest.massaluovutus.eiOppijoita())
+        }
+      }
+
+      "Ei onnistu virheellisellä hetulla" in {
+        addQuery(query.copy(hetut = Some(List("123456-789Z"))), oletuskäyttäjä) {
+          verifyResponseStatus(400)
+          body should include("badRequest.validation.henkilötiedot.hetu")
+        }
+      }
+
+      "Hylätään, jos annettu oppija on tuntematon" in {
+        val tuntematon = "1.2.246.562.24.98765432100"
+        addQuery(oidilla(lauri).copy(oppijaOidit = Some(List(lauri.oid, tuntematon))), oletuskäyttäjä) {
+          verifyResponseStatus(400)
+          body should include("eiNykyinenOpiskelija")
+          body should include(tuntematon)
+          body should not include lauri.oid
+        }
+      }
+
+      "Hylätään, jos annetun oppijan opiskeluoikeus omassa oppilaitoksessa on päättynyt" in {
+        val oppija = KoskiSpecificMockOppijat.aiemmatTestiPäättynyt
+        addQuery(oidilla(oppija), oletuskäyttäjä) {
+          verifyResponseStatus(400)
+          body should include("eiNykyinenOpiskelija")
+          body should include(oppija.oid)
+        }
+      }
+
+      "Hylätään, jos annetun oppijan päättymätön opiskeluoikeus on vain toisessa oppilaitoksessa" in {
+        addQuery(kulosaarenQuery.copy(oppijaOidit = Some(List(lauri.oid))), oletuskäyttäjä) {
+          verifyResponseStatus(400)
+          body should include("eiNykyinenOpiskelija")
+          body should include(lauri.oid)
+        }
+      }
+
+      "Hylätään, jos annetun oppijan opiskeluoikeus omassa oppilaitoksessa päättyy tänään" in {
+        val oppija = KoskiSpecificMockOppijat.aiemmatTestiPäättyyTänään
+        addQuery(oidilla(oppija), oletuskäyttäjä) {
+          verifyResponseStatus(400)
+          body should include("eiNykyinenOpiskelija")
+          body should include(oppija.oid)
+        }
+      }
+
+      "Hylätään, jos annetun oppijan opiskeluoikeus omassa oppilaitoksessa on mitätöity" in {
+        val oppija = KoskiSpecificMockOppijat.aiemmatTestiMitätöity
+        addQuery(oidilla(oppija), oletuskäyttäjä) {
+          verifyResponseStatus(400)
+          body should include("eiNykyinenOpiskelija")
+          body should include(oppija.oid)
+        }
+      }
+
+      "Hylätään, jos annettu oppija on täyttänyt 18 vuotta ennen kuluvaa vuotta" in {
+        val oppija = KoskiSpecificMockOppijat.eero
+        addQuery(oidilla(oppija), oletuskäyttäjä) {
+          verifyResponseStatus(400)
+          body should include("täyttänyt18EnnenKyselyvuotta")
+          body should include(oppija.oid)
+          body should not include "eiNykyinenOpiskelija"
+        }
+      }
+    }
+
+    "Palauttaa hetulla annetun nykyisen opiskelijan kaikki opiskeluoikeudet ja kirjaa ne audit-lokiin" in {
+      AuditLogTester.clearMessages()
+      val queryId = addQuerySuccessfully(query.copy(hetut = lauri.hetu.map(List(_)), oppijaOidit = None), oletuskäyttäjä)(_.queryId)
+      val files = waitForCompletion(queryId, oletuskäyttäjä).files
+      files should have length 1
+      oppijanTulos(files, lauri) { json =>
+        (json \ "henkilö" \ "oid").extract[String] shouldBe lauri.oid
+        oppilaitoksetJaKoulutusmuodot(json) shouldBe Set(perusopetusRaumonKoulussa, (MockOrganisaatiot.tornionYhteislyseonLukio, "lukiokoulutus"), ammatillinenStadissa)
+      }
+      val auditViesti = AuditLogTester.getLogMessages.map(JsonMethods.parse(_)).find(m =>
+        (m \ "operation").extract[String] == "AIEMMAT_OPISKELUOIKEUDET_KATSOMINEN" &&
+          (m \ "target" \ "oppijaHenkiloOid").extractOpt[String].contains(lauri.oid)
+      )
+      auditViesti shouldBe defined
+      (auditViesti.get \ "target" \ "juuriOrganisaatio").extract[String] shouldBe MockOrganisaatiot.stadinAmmattiopisto
+      (auditViesti.get \ "target" \ "hakuEhto").extract[String] shouldBe
+        MassaluovutusQueryAiemmatOpiskeluoikeudet.sallitutKoulutusmuodot.map(k => s"koulutusmuoto=$k").mkString("&") + s"&organisaatio=${MockOrganisaatiot.stadinAmmattiopisto}"
+      (auditViesti.get \ "target" \ "massaluovutusId").extract[String] shouldBe queryId
+      (auditViesti.get \ "target" \ "massaluovutusTiedosto").extract[String] shouldBe files.head.split("/").last
+    }
+
+    "Rajaa koulutusmuodon mukaan" in {
+      oppijanTulos(haeTulostiedostot(oidilla(lauri).copy(koulutusmuoto = Some(List("perusopetus")))), lauri) { json =>
+        koulutusmuodot(json) shouldBe List("perusopetus")
+      }
+    }
+
+    "Palauttaa arkaluontoiset tiedot, vaikka palvelukäyttäjällä ei ole LUOTTAMUKSELLINEN_KAIKKI_TIEDOT-roolia" in {
+      MockUsers.helsinkiAiemmatOpiskeluoikeudet.käyttöoikeudetRaw.flatMap(_.kayttooikeudet).map(_.oikeus) should not contain Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT
+      oppijanTulos(haeTulostiedostot(oidilla(lauri)), lauri) { json =>
+        lisätieto(json, "lukiokoulutus", "sisäoppilaitosmainenMajoitus") should not be JNothing
+      }
+    }
+
+    "Master/slave -yhdistys: slave-oidilla annetun oppijan opiskeluoikeudet ryhmitellään masterin alle" in {
+      val slaveOid = KoskiSpecificMockOppijat.aiemmatTestiSlave.henkilö.oid
+      val master = KoskiSpecificMockOppijat.aiemmatTestiMaster
+      val files = haeTulostiedostot(query.copy(oppijaOidit = Some(List(slaveOid))))
+      oppijanTiedosto(files, slaveOid) shouldBe None
+      oppijanTulos(files, master) { json =>
+        (json \ "henkilö" \ "oid").extract[String] shouldBe master.oid
+        (json \ "linkitetytOidit").extract[List[String]] should contain(slaveOid)
+        koulutusmuodot(json).sorted shouldBe List("ammatillinenkoulutus", "perusopetus")
+      }
+    }
+
+    "Tulevaisuudessa alkava opiskeluoikeus omassa oppilaitoksessa tekee oppijasta nykyisen opiskelijan ja palautetaan" in {
+      val oppija = KoskiSpecificMockOppijat.aiemmatTestiTulevaisuudessaAlkava
+      oppijanTulos(haeTulostiedostot(oidilla(oppija)), oppija) { json =>
+        oppilaitoksetJaKoulutusmuodot(json) shouldBe Set(perusopetusJyväskylässä, ammatillinenStadissa)
+      }
+    }
+
+    "Huomenna päättyvä opiskeluoikeus omassa oppilaitoksessa tekee oppijasta nykyisen opiskelijan" in {
+      val oppija = KoskiSpecificMockOppijat.aiemmatTestiPäättyyHuomenna
+      oppijanTulos(haeTulostiedostot(oidilla(oppija)), oppija) { json =>
+        oppilaitoksetJaKoulutusmuodot(json) shouldBe Set(perusopetusJyväskylässä, ammatillinenStadissa)
+      }
+    }
+
+    "Alle 18-vuotias TUVA-opiskelija on nykyinen opiskelija ja TUVA-opiskeluoikeus palautetaan" in {
+      val oppija = KoskiSpecificMockOppijat.aiemmatTestiTuva
+      oppijanTulos(haeTulostiedostot(oidilla(oppija)), oppija) { json =>
+        oppilaitoksetJaKoulutusmuodot(json) shouldBe Set(perusopetusJyväskylässä, (MockOrganisaatiot.stadinAmmattiopisto, "tuva"))
+      }
+    }
+
+    "HiddenFromAiemmatOpiskeluoikeudet-kentät jätetään pois myös luottamuksellisten tietojen katselijalta" in {
+      oppijanTulos(haeTulostiedostot(oidilla(KoskiSpecificMockOppijat.aiemmatOmaOppilaitos)), KoskiSpecificMockOppijat.aiemmatOmaOppilaitos) { json =>
+        lisätieto(json, "ammatillinenkoulutus", "vaativanErityisenTuenErityinenTehtävä") should not be JNothing
+        lisätieto(json, "ammatillinenkoulutus", "vankilaopetuksessa") shouldBe JNothing
+      }
+      // Oppijan perusopetus on PerusopetusExampleData.päättötodistusOpiskeluoikeus, jonka 8. luokan suorituksella on käyttäytymisenArvio
+      val oppija = KoskiSpecificMockOppijat.aiemmatTestiTulevaisuudessaAlkava
+      oppijanTulos(haeTulostiedostot(oidilla(oppija)), oppija) { json =>
+        val vuosiluokat = (json \ "opiskeluoikeudet").children.flatMap(oo => (oo \ "suoritukset").children).filter(s => (s \ "tyyppi" \ "koodiarvo").extract[String] == "perusopetuksenvuosiluokka")
+        vuosiluokat should not be empty
+        vuosiluokat.map(_ \ "käyttäytymisenArvio") should contain only JNothing
+      }
+    }
+
+    "Esiopetus palautetaan vain esi- tai perusopetuksen opiskelijalle" in {
+      val ammatillinen = KoskiSpecificMockOppijat.aiemmatTestiTulevaisuudessaAlkava
+      oppijanTulos(haeTulostiedostot(oidilla(ammatillinen)), ammatillinen) { json =>
+        koulutusmuodot(json).sorted shouldBe List("ammatillinenkoulutus", "perusopetus")
+      }
+      val perusopetus = KoskiSpecificMockOppijat.aiemmatTestiPerusopetus
+      oppijanTulos(haeTulostiedostot(oidilla(perusopetus)), perusopetus) { json =>
+        oppilaitoksetJaKoulutusmuodot(json) shouldBe Set((MockOrganisaatiot.jyväskylänNormaalikoulu, "esiopetus"), (MockOrganisaatiot.stadinAmmattiopisto, "perusopetus"))
+      }
+    }
+
+    "Esiopetustasoiset tiedot International Schoolin ja Helsingin eurooppalaisen koulun opiskelijoille" - {
+      "MYP 9 -opiskelijalle palautetaan esiopetus" in {
+        val oppija = KoskiSpecificMockOppijat.aiemmatTestiIshGrade9
+        oppijanTulos(haeTulostiedostot(ishQuery.copy(oppijaOidit = Some(List(oppija.oid))), MockUsers.paakayttaja), oppija, MockUsers.paakayttaja) { json =>
+          koulutusmuodot(json).sorted shouldBe List("esiopetus", "internationalschool")
+        }
+      }
+
+      "MYP 10 -opiskelijalle ei palauteta esiopetusta, mutta oman opiskeluoikeuden explorer-vuosi säilyy" in {
+        val oppija = KoskiSpecificMockOppijat.aiemmatTestiIshGrade10
+        oppijanTulos(haeTulostiedostot(ishQuery.copy(oppijaOidit = Some(List(oppija.oid))), MockUsers.paakayttaja), oppija, MockUsers.paakayttaja) { json =>
+          koulutusmuodot(json) shouldBe List("internationalschool")
+          vuosiluokat(json, "internationalschool") should contain("explorer")
+        }
+      }
+
+      "S4-opiskelijalle palautetaan esiopetus" in {
+        val oppija = KoskiSpecificMockOppijat.aiemmatTestiEshS4
+        oppijanTulos(haeTulostiedostot(eshQuery.copy(oppijaOidit = Some(List(oppija.oid))), MockUsers.paakayttaja), oppija, MockUsers.paakayttaja) { json =>
+          koulutusmuodot(json).sorted shouldBe List("esiopetus", "europeanschoolofhelsinki")
+        }
+      }
+
+      "S5-opiskelijalle ei palauteta esiopetusta, mutta oman opiskeluoikeuden nursery-vuodet säilyvät" in {
+        val oppija = KoskiSpecificMockOppijat.aiemmatTestiEshS5
+        oppijanTulos(haeTulostiedostot(eshQuery.copy(oppijaOidit = Some(List(oppija.oid))), MockUsers.paakayttaja), oppija, MockUsers.paakayttaja) { json =>
+          koulutusmuodot(json) shouldBe List("europeanschoolofhelsinki")
+          vuosiluokat(json, "europeanschoolofhelsinki") should contain allOf("N1", "N2")
+        }
+      }
+
+      "Toisen asteen opiskelijalle muiden organisaatioiden ISH- ja ESH-opiskeluoikeuksista karsitaan explorer- ja nursery-vuodet" in {
+        val oppija = KoskiSpecificMockOppijat.aiemmatTestiKansainvälisetAiemmin
+        oppijanTulos(haeTulostiedostot(oidilla(oppija)), oppija) { json =>
+          koulutusmuodot(json).sorted shouldBe List("ammatillinenkoulutus", "europeanschoolofhelsinki", "internationalschool")
+          vuosiluokat(json, "internationalschool") should (not contain "explorer" and contain("1"))
+          vuosiluokat(json, "europeanschoolofhelsinki") should (not contain "N1" and not contain "N2" and contain("P1"))
+        }
+      }
+    }
+
+    "Toisen käyttäjän kyselyä ei näe" in {
+      val queryId = addQuerySuccessfully(query, oletuskäyttäjä)(_.queryId)
+      getQuery(queryId, MockUsers.jyväskylänKatselijaEsiopetus) {
+        verifyResponseStatus(404, KoskiErrorCategory.notFound())
+      }
+    }
+
+    "Demo-oppijat (AiemmatOpiskeluoikeudetDemoFixtures)" - {
+      "Palauttaa Stadin opiskelijoille kaikki opiskeluoikeudet: aiemmat muualla, Stadin omat päättyneet ja nykyiset sekä Stadin opintojen jälkeen alkaneet" in {
+        val files = haeTulostiedostot()
+        files should have length 5
+
+        oppijanTulos(files, lauri) { json =>
+          oppilaitoksetJaKoulutusmuodot(json) shouldBe Set(perusopetusRaumonKoulussa, lukioTorniossa, ammatillinenStadissa)
+        }
+        oppijanTulos(files, KoskiSpecificMockOppijat.aiemmatAmmatillinen) { json =>
+          oppilaitoksetJaKoulutusmuodot(json) shouldBe Set(perusopetusRaumonKoulussa, (MockOrganisaatiot.omnia, "ammatillinenkoulutus"), ammatillinenStadissa)
+        }
+        oppijanTulos(files, KoskiSpecificMockOppijat.aiemmatOmaOppilaitos) { json =>
+          koulutusmuodot(json) shouldBe List("perusopetus", "ammatillinenkoulutus", "ammatillinenkoulutus")
+          oppilaitoksetJaKoulutusmuodot(json) shouldBe Set(perusopetusRaumonKoulussa, ammatillinenStadissa)
+        }
+        oppijanTulos(files, KoskiSpecificMockOppijat.aiemmatMyöhemminAlkanut) { json =>
+          oppilaitoksetJaKoulutusmuodot(json) shouldBe Set(perusopetusRaumonKoulussa, ammatillinenStadissa, lukioTorniossa)
+        }
+        oppijanTulos(files, KoskiSpecificMockOppijat.aiemmatEiAiempia) { json =>
+          oppilaitoksetJaKoulutusmuodot(json) shouldBe Set(ammatillinenStadissa)
+        }
+      }
+
+      "Palauttaa Kulosaaren peruskoululaiselle esiopetuksen, alakoulun Torniossa ja nykyisen perusopetuksen" in {
+        oppijanTulos(haeTulostiedostot(kulosaarenQuery), aino) { json =>
+          oppilaitoksetJaKoulutusmuodot(json) shouldBe Set((MockOrganisaatiot.arpelanPäiväkoti, "esiopetus"), perusopetusRaumonKoulussa, (MockOrganisaatiot.kulosaarenAlaAste, "perusopetus"))
+        }
+      }
+
+      "Esi- ja perusopetuksen arkaluontoiset lisätiedot palautetaan" in {
+        oppijanTulos(haeTulostiedostot(kulosaarenQuery), aino) { json =>
+          lisätieto(json, "esiopetus", "pidennettyOppivelvollisuus") should not be JNothing
+          lisätieto(json, "esiopetus", "erityisenTuenPäätökset") should not be JNothing
+          lisätieto(json, "perusopetus", "kuljetusetu") should not be JNothing
+          lisätieto(json, "perusopetus", "sisäoppilaitosmainenMajoitus") should not be JNothing
+        }
+      }
+    }
+  }
+}
+
+object MassaluovutusAiemmatOpiskeluoikeudetSpec {
+  val oletuskäyttäjä: UserWithPassword = MockUsers.helsinkiAiemmatOpiskeluoikeudet
+  val perusopetusRaumonKoulussa: (String, String) = (MockOrganisaatiot.raumonKoulu, "perusopetus")
+  val perusopetusJyväskylässä: (String, String) = (MockOrganisaatiot.jyväskylänNormaalikoulu, "perusopetus")
+  val lukioTorniossa: (String, String) = (MockOrganisaatiot.tornionYhteislyseonLukio, "lukiokoulutus")
+  val ammatillinenStadissa: (String, String) = (MockOrganisaatiot.stadinAmmattiopisto, "ammatillinenkoulutus")
+}
