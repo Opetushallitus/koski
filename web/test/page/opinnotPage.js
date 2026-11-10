@@ -278,7 +278,13 @@ function OpinnotPage() {
     avaaKaikki: click(findSingle('.expand-all')),
     suljeKaikki: click(findSingle('.expand-all.koski-button.expanded')),
     anythingEditable: function () {
-      return Editor(findSingle('.content-area')).isEditable()
+      var contentArea = findSingle('.content-area')
+      return (
+        Editor(contentArea).isEditable() ||
+        contentArea()
+          .find('[data-testid$=".opiskeluoikeus.edit"]')
+          .is(':visible')
+      )
     },
     expandAll: function () {
       var expand = function () {
@@ -1336,7 +1342,10 @@ function Opiskeluoikeudet() {
       return textsOf(S('.opiskeluoikeustyypit-nav .opiskeluoikeustyyppi'))
     },
     opiskeluoikeuksienMäärä: function () {
-      return S('.opiskeluoikeuksientiedot .opiskeluoikeus').length
+      return (
+        S('.opiskeluoikeuksientiedot .opiskeluoikeus').length +
+        S('[data-testid$=".opiskeluoikeus.nimi"]').length
+      )
     },
     omatTiedotOpiskeluoikeuksienMäärä: function () {
       return S(

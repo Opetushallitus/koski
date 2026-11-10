@@ -258,15 +258,39 @@ test.describe('Mitätöinti, suorituksen poisto ja lähdejärjestelmäkytkennän
       oppijaPage
     }) => {
       await fixtures.reset()
-      await oppijaPage.goto(
-        `${pekkaOid}?opiskeluoikeudenTyyppi=ammatillinenkoulutus`
-      )
-      await expect(page.locator('.toggle-edit')).toHaveCount(3)
-      await expect(vanhaMitätöinti(page)).toHaveCount(3)
 
-      // Stadin oppisopimuskeskuksen opiskeluoikeudella on kaksi päätason
-      // suoritusta, joten sillä voisi näkyä myös suorituksen poisto.
-      const muokattava = opiskeluoikeus(page, 'Omnia')
+      // Fixtureissa ei ole oppijaa, jolla olisi useita vanhan käyttöliittymän
+      // opiskeluoikeuksia ja niistä yhdellä useita päätason suorituksia, joten
+      // lisätään aineopiskelijalle toinen opiskeluoikeus toiseen oppilaitokseen.
+      const haku = await page.request.get(
+        `/koski/api/oppija/${aineopiskelijaOid}`
+      )
+      const { opiskeluoikeudet } = (await haku.json()) as {
+        opiskeluoikeudet: Array<Record<string, any>>
+      }
+      const { oid, versionumero, aikaleima, koulutustoimija, ...kopio } =
+        opiskeluoikeudet[0]
+      const ressunLukio = { oid: '1.2.246.562.10.62858797335' }
+      await fixtures.putOppija({
+        henkilö: { oid: aineopiskelijaOid },
+        opiskeluoikeudet: [
+          {
+            ...kopio,
+            oppilaitos: ressunLukio,
+            suoritukset: [
+              { ...kopio.suoritukset[0], toimipiste: ressunLukio }
+            ]
+          }
+        ]
+      } as any)
+
+      await oppijaPage.goto(aineopiskelijaOid)
+      await expect(page.locator('.toggle-edit')).toHaveCount(2)
+      await expect(vanhaMitätöinti(page)).toHaveCount(2)
+
+      // Jyväskylän normaalikoulun opiskeluoikeudella on useita päätason
+      // suorituksia, joten sillä voisi näkyä myös suorituksen poisto.
+      const muokattava = opiskeluoikeus(page, 'Ressun lukio')
       await muokattava.locator('.toggle-edit').click()
       await expect(vanhaMitätöinti(muokattava)).toBeVisible()
       await expect(vanhaMitätöinti(page)).toHaveCount(1)
@@ -348,7 +372,8 @@ const perttiOid = '1.2.246.562.24.00000000059'
 
 // Paallekkaisia Pekka: kolme ammatillisen koulutuksen opiskeluoikeutta, jotka
 // kaikki näkyvät vanhalla käyttöliittymällä.
-const pekkaOid = '1.2.246.562.24.00000000104'
+// Lukion oppiaineiden oppimääriä, neljä päätason suoritusta
+const aineopiskelijaOid = '1.2.246.562.24.00000000019'
 
 const jynNimi = 'Jyväskylän normaalikoulu'
 const jynOppilaitos = {

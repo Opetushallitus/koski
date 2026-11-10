@@ -138,6 +138,15 @@ export const fetchPerusteenOsaamisalat = (diaarinumero: string) =>
     )
   )
 
+export const fetchPerusteenKoulutukset = (diaarinumero: string) =>
+  handleExpiredSession(
+    apiGet<Array<{ data: Koodistokoodiviite<'koulutus'> }>>(
+      apiUrl(
+        `editor/koodit/koulutukset/koulutus/${encodeURIComponent(diaarinumero)}`
+      )
+    )
+  )
+
 export interface LisättävätTutkinnonOsat {
   osat: Koodistokoodiviite[]
 }
@@ -187,14 +196,16 @@ export interface Perustelinkki {
   url: string
 }
 
-export const fetchPerustelinkki = (diaarinumero: string) =>
+export const fetchPerustelinkki = (
+  diaarinumero: string,
+  päättymispäivä?: string
+) =>
   handleExpiredSession(
     apiGet<Perustelinkki>(
-      apiUrl(
-        `tutkinnonperusteet/peruste/${diaarinumero}/linkki?lang=${encodeURIComponent(
-          lang
-        )}`
-      )
+      apiUrl(`tutkinnonperusteet/peruste/${diaarinumero}/linkki`, {
+        lang,
+        päättymispäivä
+      })
     )
   )
 

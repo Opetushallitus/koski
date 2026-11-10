@@ -2,10 +2,7 @@ import { expect, test } from './base'
 import { takeFullPageScreenshot } from './fragments/fullPageScreenshot'
 import { kansalainen } from './setup/auth'
 
-const vanhanKälinOpiskeluoikeudet = [
-  'Lukion oppimäärä',
-  'Autoalan perustutkinto'
-]
+const vanhanKälinOpiskeluoikeudet = ['Lukion oppimäärä']
 
 test.describe('Omat tiedot – visuaaliset regressiot', () => {
   test.skip(
@@ -35,6 +32,15 @@ test.describe('Omat tiedot – visuaaliset regressiot', () => {
     await expect(page.locator('.Tabs__item-active')).toHaveText(
       'Päättötodistus'
     )
+    await page
+      .getByTestId(/^oo\.\d+\.opiskeluoikeus\.expand$/)
+      .filter({ hasText: 'Autoalan perustutkinto' })
+      .click()
+    await expect(
+      page
+        .getByTestId(/^oo\.\d+\.suoritukset\.\d+\.koulutus$/)
+        .filter({ hasText: 'Autoalan perustutkinto' })
+    ).toBeVisible()
 
     for (const opiskeluoikeus of vanhanKälinOpiskeluoikeudet) {
       await kansalainenPage.openOpiskeluoikeus(opiskeluoikeus)

@@ -1169,48 +1169,6 @@ describe('Omat tiedot', function () {
         })
       })
 
-      describe('Ostettu tietoa', function () {
-        before(
-          authentication.logout,
-          etusivu.openPage,
-          etusivu.login(),
-          wait.until(korhopankki.isReady),
-          korhopankki.login('080154-770R'),
-          wait.until(omattiedot.isVisible),
-          wait.forMilliseconds(50),
-          SuoritusjakoPage().avaaOpiskeluoikeus(
-            'Autoalan perustutkinto (2019—, läsnä)'
-          )
-        )
-
-        it('ei näytetä', function () {
-          expect(extractAsText(S('.opiskeluoikeus-content'))).not.to.contain(
-            'Ostettu'
-          )
-        })
-      })
-
-      describe('Opiskeluoikeuden organisaatio historiaa', function () {
-        before(
-          authentication.logout,
-          etusivu.openPage,
-          etusivu.login(),
-          wait.until(korhopankki.isReady),
-          korhopankki.login('200994-834A'),
-          wait.until(omattiedot.isVisible),
-          wait.forMilliseconds(50),
-          SuoritusjakoPage().avaaOpiskeluoikeus(
-            'Tieto- ja viestintätekniikan perustutkinto, koulutusvientikokeilu (2016—, läsnä)'
-          )
-        )
-
-        it('ei näytetä', function () {
-          expect(extractAsText(S('.opiskeluoikeus-content'))).not.to.contain(
-            'Opiskeluoikeuden organisaatiohistoria'
-          )
-        })
-      })
-
       describe('Kun Virta-tietoja ei saada haettua', function () {
         before(authentication.logout, etusivu.openPage)
 

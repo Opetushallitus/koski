@@ -381,8 +381,7 @@ const emptyHojks: Hojks = Hojks({
     koodiarvo: '',
     koodistoUri: 'opetusryhma',
     nimi: emptyLocalizedString
-  }),
-  alku: ''
+  })
 })
 
 const HojksEdit = ({

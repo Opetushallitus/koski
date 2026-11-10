@@ -20,7 +20,6 @@ import { Contextualized } from '../../types/EditorModelContext'
 import { ObjectModel } from '../../types/EditorModels'
 import { Opiskeluoikeus } from '../../types/fi/oph/koski/schema/Opiskeluoikeus'
 import { Oppija } from '../../types/fi/oph/koski/schema/Oppija'
-import { hasFeatureFlag } from '../../util/featureFlags'
 import { intersects, last } from '../../util/fp/arrays'
 import { getHenkilöOid } from '../../util/henkilo'
 import {
@@ -95,8 +94,7 @@ export const näytetäänUudellaKäyttöliittymällä = (
     case 'ammatillinenkoulutus':
       return (
         suoritustyypit?.[0] === 'ammatillinentutkintoosittainen' ||
-        (hasFeatureFlag('ammatillinen-tutkinto-v2') &&
-          !!suoritustyypit?.length &&
+        (!!suoritustyypit?.length &&
           suoritustyypit.every(
             (suoritustyyppi) =>
               suoritustyyppi === 'ammatillinentutkinto' ||

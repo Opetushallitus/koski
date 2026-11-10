@@ -47,6 +47,18 @@ describe('Käyttöoikeudet', function () {
     })
   })
 
+  describe('Kun käyttäjällä on kirjoitusoikeudet', function () {
+    before(
+      Authentication().logout,
+      Authentication().login('omnia-tallentaja'),
+      page.openPage,
+      page.oppijaHaku.searchAndSelect('080154-770R')
+    )
+    it('Muutokset sallittu', function () {
+      expect(opinnot.anythingEditable()).to.equal(true)
+    })
+  })
+
   describe('Kun käyttäjällä ei ole kirjoitusoikeuksia', function () {
     before(
       Authentication().logout,
@@ -55,8 +67,7 @@ describe('Käyttöoikeudet', function () {
       page.oppijaHaku.searchAndSelect('080154-770R')
     )
     it('Muutokset estetty', function () {
-      var suoritus = opinnot.opiskeluoikeusEditor()
-      expect(suoritus.isEditable()).to.equal(false)
+      expect(opinnot.anythingEditable()).to.equal(false)
     })
     it('Uuden opiskeluoikeuden lisääminen estetty', function () {
       expect(opinnot.opiskeluoikeudet.lisääOpiskeluoikeusEnabled()).to.equal(
@@ -73,8 +84,7 @@ describe('Käyttöoikeudet', function () {
       page.oppijaHaku.searchAndSelect('080154-770R')
     )
     it('Muutokset estetty', function () {
-      var suoritus = opinnot.opiskeluoikeusEditor()
-      expect(suoritus.isEditable()).to.equal(false)
+      expect(opinnot.anythingEditable()).to.equal(false)
     })
     it('Uuden opiskeluoikeuden lisääminen estetty', function () {
       expect(opinnot.opiskeluoikeudet.lisääOpiskeluoikeusEnabled()).to.equal(

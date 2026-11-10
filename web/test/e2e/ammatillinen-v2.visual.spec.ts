@@ -8,9 +8,8 @@ import { takeFullPageScreenshot } from './fragments/fullPageScreenshot'
  * katselunäkymästä ja muokkaustilasta.
  */
 
-// Osittainen ammatillinen tutkinto renderöityy aina v2-editorilla, koko
-// tutkinto vain feature flagin kanssa (ks. useUiAdapter). Muu ammatillinen
-// käyttää yhä vanhaa käyttöliittymää.
+// Osittainen ja koko ammatillinen tutkinto renderöityvät v2-editorilla (ks.
+// useUiAdapter). Muu ammatillinen käyttää yhä vanhaa käyttöliittymää.
 const osittainenTutkinto = '1.2.246.562.24.00000000055'
 // Ammatillisen tutkinnon osia useasta tutkinnosta (myös osittainen -> v2)
 const useastaTutkinnosta = '1.2.246.562.24.00000000182'
@@ -18,7 +17,6 @@ const useastaTutkinnosta = '1.2.246.562.24.00000000182'
 const kokoTutkinto = '1.2.246.562.24.00000000020'
 // Näyttötutkintoon valmistava koulutus + erikoisammattitutkinto
 const valmistavaKoulutus = '1.2.246.562.24.00000000053'
-const tutkintoFlag = { 'ammatillinen-tutkinto-v2': 'true' }
 
 test.describe('Ammatillinen v2 – visuaaliset regressiot', () => {
   // Baseline-kuvat ovat Linux-renderöityjä eivätkä kelpaa muilla
@@ -72,7 +70,7 @@ test.describe('Ammatillinen v2 – visuaaliset regressiot', () => {
     oppijaPage,
     oppijaPageV2
   }) => {
-    await oppijaPage.gotoWithQueryParams(kokoTutkinto, tutkintoFlag)
+    await oppijaPage.goto(kokoTutkinto)
     await expect(page.getByTestId('oo.0.opiskeluoikeus.nimi')).toBeVisible()
     await oppijaPageV2.openAllOsasuoritukset()
     await expect(
@@ -90,7 +88,7 @@ test.describe('Ammatillinen v2 – visuaaliset regressiot', () => {
     page,
     oppijaPage
   }) => {
-    await oppijaPage.gotoWithQueryParams(valmistavaKoulutus, tutkintoFlag)
+    await oppijaPage.goto(valmistavaKoulutus)
     await page.getByTestId('oo.0.opiskeluoikeus.edit').click()
     await expect(
       page.getByTestId('oo.0.suoritukset.0.uusi-muu-tutkinnonosa.input')

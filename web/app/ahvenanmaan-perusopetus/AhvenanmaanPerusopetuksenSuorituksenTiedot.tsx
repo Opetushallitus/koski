@@ -45,6 +45,7 @@ import {
   ahvenanmaanKoulutuksenNimi,
   isAhvenanmaanOppimääränSuoritus
 } from './oppimaaranSuoritus'
+import { useKoulutuksenKoodiarvoNäkyy } from '../components-v2/opiskeluoikeus/KoulutuksenKoodiarvo'
 
 type AhvenanmaanPerusopetuksenSuorituksenTiedotProps = {
   form: FormModel<AhvenanmaanPerusopetuksenOpiskeluoikeus>
@@ -54,6 +55,7 @@ type AhvenanmaanPerusopetuksenSuorituksenTiedotProps = {
 export const AhvenanmaanPerusopetuksenSuorituksenTiedot: React.FC<
   AhvenanmaanPerusopetuksenSuorituksenTiedotProps
 > = ({ form, päätasonSuoritus }) => {
+  const koodiarvoNäkyy = useKoulutuksenKoodiarvoNäkyy()
   const path = päätasonSuoritus.path
   const suoritus = päätasonSuoritus.suoritus
   const isVuosiluokka = isAhvenanmaanPerusopetuksenVuosiluokanSuoritus(suoritus)
@@ -82,15 +84,23 @@ export const AhvenanmaanPerusopetuksenSuorituksenTiedot: React.FC<
         ) : (
           <KeyColumnedValuesRow
             localizableName="Koulutus"
-            columnSpans={{ default: [4, 2, '*'], phone: [24, 24, 24] }}
+            columnSpans={
+              koodiarvoNäkyy
+                ? { default: [4, 2, '*'], phone: [24, 24, 24] }
+                : { default: [4, '*'], phone: [24, 24] }
+            }
           >
             {[
               <TestIdText key="tunniste" id="koulutus">
                 {ahvenanmaanKoulutuksenNimi(suoritus)}
               </TestIdText>,
-              <TestIdText key="koodiarvo" id="koulutuskoodi">
-                {suoritus.koulutusmoduuli.tunniste.koodiarvo}
-              </TestIdText>,
+              ...(koodiarvoNäkyy
+                ? [
+                    <TestIdText key="koodiarvo" id="koulutuskoodi">
+                      {suoritus.koulutusmoduuli.tunniste.koodiarvo}
+                    </TestIdText>
+                  ]
+                : []),
               // Ahvenanmaan ops (ÅLp21) ei ole ePerusteissa, joten diaarinumero
               // linkitetään suoraan laroplan.ax-sivustolle (ei ePerusteet-hakua).
               <PerusteLinkki
