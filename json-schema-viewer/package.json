@@ -38,7 +38,7 @@
     "@types/jquery": "4.0.1",
     "@types/node": "26.6.6",
     "@types/tv4": "1.2.33",
-    "concurrently": "10.0.6",
+    "concurrently": "10.0.7",
     "css-minimizer-webpack-plugin": "8.0.0",
     "eslint": "10.14.0",
     "eslint-config-prettier": "10.1.8",
