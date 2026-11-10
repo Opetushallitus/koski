@@ -20,7 +20,10 @@ test.describe('Lukiokoulutuksen opiskelijamääräraportti (lukio, DIA, IB, Inte
 
     await raportitPage.syötäPäivä('15.1.2016')
     const kysely = await raportitPage.muodostaJaLueKysely()
-    expect(kysely).toMatchObject({ paiva: '2016-01-15' })
+    expect(kysely).toMatchObject({
+      type: 'lukioDiaIbInternationalESHOpiskelijamaarat',
+      paiva: '2016-01-15'
+    })
 
     await expect(raportitPage.raporttiRivit).toHaveCount(1)
     const rivi = raportitPage.raporttiRivit.first()

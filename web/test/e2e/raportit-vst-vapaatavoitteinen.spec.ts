@@ -19,7 +19,12 @@ test.describe('VST vapaatavoitteisen koulutuksen raportti', () => {
     await expect(raportitPage.raportit).toBeHidden()
 
     await raportitPage.syötäAikajakso('1.1.2022', '31.12.2023')
-    await raportitPage.muodosta()
+    const kysely = await raportitPage.muodostaJaLueKysely()
+    expect(kysely).toMatchObject({
+      type: 'vstVapaatavoitteinen',
+      alku: '2022-01-01',
+      loppu: '2023-12-31'
+    })
 
     await expect(raportitPage.taustallaOhje).toBeVisible()
     await expect(raportitPage.raporttiRivit).toHaveCount(1)
