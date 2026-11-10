@@ -66,7 +66,15 @@ object MockOvaraClient extends OvaraClient {
                 valinnanTila = Some("HYVAKSYTTY"),
                 vastaanotonTila = Some("VASTAANOTTANUT_SITOVASTI"),
                 ilmoittautumisenTila = Some("LASNA"),
-                johtaaTutkintoon = Some(true)
+                johtaaTutkintoon = Some(true),
+                nqf = Some(List(6)),
+                eqf = Some(List(6)),
+                opintojenLaajuus = Some(OvaraOpintojenLaajuus(
+                  yksikkoKoodiuri = Some("opintojenlaajuusyksikko_2#1"),
+                  laajuus = Some(240),
+                  laajuusMin = None,
+                  laajuusMax = None
+                ))
               )
             )
           )
@@ -102,7 +110,10 @@ object MockOvaraClient extends OvaraClient {
                 valinnanTila = None,
                 vastaanotonTila = None,
                 ilmoittautumisenTila = None,
-                johtaaTutkintoon = Some(false)
+                johtaaTutkintoon = Some(false),
+                nqf = None,
+                eqf = None,
+                opintojenLaajuus = None
               )
             )
           )
@@ -137,7 +148,10 @@ object MockOvaraClient extends OvaraClient {
                 valinnanTila = Some("TUNTEMATON_TILA"),
                 vastaanotonTila = None,
                 ilmoittautumisenTila = None,
-                johtaaTutkintoon = None
+                johtaaTutkintoon = None,
+                nqf = None,
+                eqf = None,
+                opintojenLaajuus = None
               )
             )
           )
@@ -172,7 +186,10 @@ object MockOvaraClient extends OvaraClient {
                 valinnanTila = Some("HYVAKSYTTY"),
                 vastaanotonTila = None,
                 ilmoittautumisenTila = None,
-                johtaaTutkintoon = Some(true)
+                johtaaTutkintoon = Some(true),
+                nqf = None,
+                eqf = None,
+                opintojenLaajuus = None
               )
             )
           )
@@ -210,7 +227,15 @@ object MockOvaraClient extends OvaraClient {
                 valinnanTila = Some("HYVAKSYTTY"),
                 vastaanotonTila = Some("VASTAANOTTANUT_SITOVASTI"),
                 ilmoittautumisenTila = None,
-                johtaaTutkintoon = Some(true)
+                johtaaTutkintoon = Some(true),
+                nqf = Some(List(6)),
+                eqf = Some(List(6)),
+                opintojenLaajuus = Some(OvaraOpintojenLaajuus(
+                  yksikkoKoodiuri = Some("opintojenlaajuusyksikko_2#1"),
+                  laajuus = Some(240),
+                  laajuusMin = None,
+                  laajuusMax = None
+                ))
               )
             )
           )

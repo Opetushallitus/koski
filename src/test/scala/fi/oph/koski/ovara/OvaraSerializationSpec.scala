@@ -265,5 +265,77 @@ class OvaraSerializationSpec extends AnyFreeSpec with Matchers {
       hakutoive2.vastaanotonTila should be(Some("EI_VASTAANOTETTU_MAARA_AIKANA"))
       hakutoive2.ilmoittautumisenTila should be(Some("EI_ILMOITTAUTUNUT"))
     }
+
+    "deserialisoi numeerisen alkamisvuoden sekä NQF-, EQF- ja laajuustiedot" in {
+      val json =
+        """{
+          |  "oppijanumero": "1.2.246.562.24.50395694537",
+          |  "hetu": "190956-9088",
+          |  "syntymaaika": "1956-09-19",
+          |  "sukunimi": "Juuti-Testi",
+          |  "etunimet": "Gudrun Testi",
+          |  "hakemukset": [
+          |    {
+          |      "hakemusOid": "1.2.246.562.11.00000000000003661188",
+          |      "haku": {
+          |        "oid": "1.2.246.562.29.00000000000000087775",
+          |        "nimi": {
+          |          "fi": "Korkeakoulujen yhteishaku syksy 2026",
+          |          "sv": "Högskolornas gemensamma ansökan hösten 2026",
+          |          "en": "Joint application to higher education autumn 2026"
+          |        }
+          |      },
+          |      "haunKohdejoukko": "haunkohdejoukko_12#1",
+          |      "hakutapa": "hakutapa_01#1",
+          |      "hakutoiveet": [
+          |        {
+          |          "hakukohde": {
+          |            "oid": "1.2.246.562.20.00000000000000091779",
+          |            "nimi": {
+          |              "fi": "Agrologi (AMK), monimuotototeutus",
+          |              "sv": "Agrolog (YH)",
+          |              "en": "Bachelor of Natural Resources (UAS)"
+          |            }
+          |          },
+          |          "tarjoaja": {
+          |            "oid": "1.2.246.562.10.52750255714",
+          |            "nimi": {
+          |              "fi": "SeAMK",
+          |              "sv": "SeAMK"
+          |            }
+          |          },
+          |          "koulutuksenAlkamiskausiUri": "kausi_k#1",
+          |          "koulutuksenAlkamisvuosi": 2027,
+          |          "valinnanTila": "HYVAKSYTTY",
+          |          "vastaanotonTila": null,
+          |          "ilmoittautumisenTila": null,
+          |          "johtaaTutkintoon": true,
+          |          "nqf": [6],
+          |          "eqf": [6],
+          |          "opintojenLaajuus": {
+          |            "yksikkoKoodiuri": "opintojenlaajuusyksikko_2#1",
+          |            "laajuus": 240,
+          |            "laajuusMin": null,
+          |            "laajuusMax": null
+          |          }
+          |        }
+          |      ]
+          |    }
+          |  ]
+          |}""".stripMargin
+
+      val hakutoive = JsonSerializer.parse[OvaraOpiskelijavalintatieto](json).hakemukset.head.hakutoiveet.head
+      hakutoive.koulutuksenAlkamiskausiUri should be(Some("kausi_k#1"))
+      hakutoive.koulutuksenAlkamisvuosi should be(Some("2027"))
+      hakutoive.valinnanTila should be(Some("HYVAKSYTTY"))
+      hakutoive.nqf should be(Some(List(6)))
+      hakutoive.eqf should be(Some(List(6)))
+      hakutoive.opintojenLaajuus should be(Some(OvaraOpintojenLaajuus(
+        yksikkoKoodiuri = Some("opintojenlaajuusyksikko_2#1"),
+        laajuus = Some(240),
+        laajuusMin = None,
+        laajuusMax = None
+      )))
+    }
   }
 }

@@ -274,6 +274,10 @@ class KehaSdgSpec
         hakutoive.vastaanotonTila.map(_.koodiarvo) shouldBe Some("vastaanottanutsitovasti")
         hakutoive.ilmoittautumisenTila.map(_.koodiarvo) shouldBe Some("lasna")
         hakutoive.johtaaTutkintoon shouldBe Some(true)
+        hakutoive.nqf.map(_.koodiarvo) shouldBe List("6")
+        hakutoive.eqf.map(_.koodiarvo) shouldBe List("6")
+        hakutoive.opintojenLaajuus.flatMap(_.yksikkö).map(_.koodiarvo) shouldBe Some("2")
+        hakutoive.opintojenLaajuus.flatMap(_.laajuus) shouldBe Some(240)
       }
     }
 
