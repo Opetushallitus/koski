@@ -35,20 +35,3 @@ class KoskiSpecificLogoutServlet(implicit val application: KoskiApplication) ext
     }
   })
 }
-
-object LogoutServerConfiguration {
-  var overrides: Map[String, String] = Map.empty
-
-  def logoutUrl(application: KoskiApplication, lang: String) = {
-    val key = "logout.url." + lang
-    overrides.get(key).getOrElse(application.config.getString(key))
-  }
-
-  def overrideKey(key: String, value: String): Unit = {
-    overrides = overrides + (key -> value)
-  }
-
-  def clearOverrides = {
-    overrides = Map.empty
-  }
-}

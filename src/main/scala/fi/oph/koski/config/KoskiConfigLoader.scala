@@ -18,7 +18,7 @@ object KoskiConfigLoader extends Logging {
           throw new RuntimeException("Konfiguraatiota ei saatu ladattua")
         }
     } catch {
-      case e: Exception =>
+      case e: Throwable =>
         logger.error(s"Konfiguraation lataus epäonnistui: ${e.getMessage}")
         throw e
     }

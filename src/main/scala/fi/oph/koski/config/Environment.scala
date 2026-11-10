@@ -35,7 +35,12 @@ object Environment {
 
   def requireMockAllowed(config: Config, mock: String): Unit =
     if (isProdEnvironment(config)) {
-      throw new IllegalStateException(s"$mock ei ole sallittu tuotannossa")
+      throw new IllegalStateException(s"$mock ei ole sallittu ympäristössä '${currentEnvironment(config)}', joka tulkitaan tuotannoksi")
+    }
+
+  def requireMockAllowedLocally(config: Config, mock: String): Unit =
+    if (isServerEnvironment(config)) {
+      throw new IllegalStateException(s"$mock on sallittu vain paikallisesti, ei ympäristössä '${currentEnvironment(config)}'")
     }
 
   def isServerEnvironment(config: Config): Boolean = !Set(Local, UnitTest).contains(currentEnvironment(config))

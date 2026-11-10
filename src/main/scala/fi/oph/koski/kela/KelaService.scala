@@ -235,15 +235,8 @@ class KelaService(application: KoskiApplication) extends GlobalExecutionContext 
       }
   }
 
-  private def kelallePalautettavaOpiskeluoikeusTyyppi(opiskeluoikeusTyyppi: String): Boolean = {
-    val configKey = "kela.eiPalautettavatOpiskeluoikeustyypit"
-    if (application.config.hasPath(configKey)) {
-      val estetyt = application.config.getList(configKey)
-      !estetyt.unwrapped().asScala.toList.contains(opiskeluoikeusTyyppi)
-    } else {
-      true
-    }
-  }
+  private def kelallePalautettavaOpiskeluoikeusTyyppi(opiskeluoikeusTyyppi: String): Boolean =
+    !application.config.getStringList("kela.eiPalautettavatOpiskeluoikeustyypit").asScala.contains(opiskeluoikeusTyyppi)
 
   private def auditLogOpiskeluoikeusKatsominen(oppija: KelaOppija)(kelaSession: KoskiSpecificSession): Unit =
     AuditLog

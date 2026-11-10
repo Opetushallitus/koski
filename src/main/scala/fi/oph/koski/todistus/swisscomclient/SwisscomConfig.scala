@@ -35,6 +35,10 @@ object SwisscomConfig extends Logging {
     } else {
       SwisscomConfigSecretsSource.MOCK_FROM_CONFIG
     }
+    apply(config, secretsSource)
+  }
+
+  private[koski] def apply(config: Config, secretsSource: SwisscomConfigSecretsSource): SwisscomConfig =
     secretsSource match {
       case FROM_SECRETS_MANAGER => fromSecretsManager(config, secretsSource)
       case FROM_SSO_SECRETS_MANAGER => fromSsoCredentialsSecretsManager(config, secretsSource)
@@ -42,7 +46,6 @@ object SwisscomConfig extends Logging {
         Environment.requireMockAllowed(config, "MockSwisscomClient")
         fromConfig(config, secretsSource)
     }
-  }
 
   private def fromConfig(config: Config, secretsSource: SwisscomConfigSecretsSource): SwisscomConfig = {
     val swisscomConfig = config.getConfig("todistus.swisscom")

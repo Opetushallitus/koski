@@ -138,14 +138,14 @@ trait SSOSupport extends ScalatraBase with Logging {
 }
 
 case class SSOConfig(config: Config) {
-  // ScalatraBootstrap kutsuu tätä servlettejä liittäessään, joten mock tuotannossa estää käynnistyksen.
-  def isCasSsoUsed: Boolean = {
-    val usesMockLogin = SSOConfigurationOverride.getValue(config, "login.security") == "mock"
-    if (usesMockLogin) {
+  def isCasSsoUsed: Boolean = SSOConfigurationOverride.getValue(config, "login.security") != "mock"
+}
+
+object SSOConfig {
+  def requireMockLoginAllowed(config: Config): Unit =
+    if (config.getString("login.security") == "mock") {
       Environment.requireMockAllowed(config, "login.security")
     }
-    !usesMockLogin
-  }
 }
 
 object SSOConfigurationOverride {

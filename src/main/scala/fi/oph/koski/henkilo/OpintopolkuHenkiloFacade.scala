@@ -54,7 +54,7 @@ object RemoteOpintopolkuHenkilöFacade {
     perustiedotIndexer: => OpiskeluoikeudenPerustiedotIndexer,
     rekisteriClientRetryStrategy: OppijanumeroRekisteriClientRetryStrategy = OppijanumeroRekisteriClientRetryStrategy.Default,
   ): RemoteOpintopolkuHenkilöFacade = {
-    val usingMockOids = config.hasPath("authentication-service.mockOid") && config.getBoolean("authentication-service.mockOid")
+    val usingMockOids = config.getBoolean("authentication-service.mockOid")
     if (usingMockOids) {
       Environment.requireMockAllowed(config, "authentication-service.mockOid")
     }

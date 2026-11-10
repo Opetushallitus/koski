@@ -17,7 +17,6 @@ class KoskiSpecificLogoutServletTest
     with BeforeAndAfterEach {
 
   override protected def afterEach(): Unit = {
-    LogoutServerConfiguration.clearOverrides
     SSOConfigurationOverride.clearOverrides
   }
 
@@ -58,9 +57,6 @@ class KoskiSpecificLogoutServletTest
   }
 
   def enableCasUrls(): Unit = {
-    LogoutServerConfiguration.overrideKey("logout.url.fi", "https://opintopolku.fi/cas-oppija/logout?service=")
-    LogoutServerConfiguration.overrideKey("configurable.logout.url.fi", "https://opintopolku.fi/cas-oppija/logout?service=")
-    LogoutServerConfiguration.overrideKey("opintopolku.virkailija.url", "https://virkailija.testiopintopolku.fi")
     SSOConfigurationOverride.overrideKey("opintopolku.oppija.url", "https://opintopolku.fi")
     SSOConfigurationOverride.overrideKey("login.security", "cas")
     //config.getString("opintopolku.virkailija.url") !=

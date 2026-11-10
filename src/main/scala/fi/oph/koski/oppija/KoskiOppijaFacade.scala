@@ -29,9 +29,7 @@ class KoskiOppijaFacade(
   hetu: Hetu
 ) extends Logging with Timing {
 
-  private val usingMockOids =
-    config.hasPath("authentication-service.mockOid") &&
-      config.getBoolean("authentication-service.mockOid")
+  private val usingMockOids = config.getBoolean("authentication-service.mockOid")
 
   def findOppija
     (oid: String, findMasterIfSlaveOid: Boolean = false, useVirta: Boolean = true, useYtr: Boolean = true)
