@@ -167,6 +167,19 @@ object AuditLogMockData extends Logging {
       organizationOid = List("123123123123123", MockOrganisaatiot.helsinginKaupunki),
       raw = rawAuditlog("OPISKELUOIKEUS_KATSOMINEN")
     ),
+    // Katsojan organisaatioina pelkkiä ryhmiä (TOR-1050), joita ei löydy organisaatiopalvelusta
+    MockData(
+      studentOid = KoskiSpecificMockOppijat.virtaEiVastaa.oid,
+      time = "2000-01-13T20:31:32.104+03",
+      organizationOid = List("1.2.246.562.28.11111111111", "1.2.246.562.28.22222222222"),
+      raw = rawAuditlog("OPISKELUOIKEUS_KATSOMINEN")
+    ),
+    MockData(
+      studentOid = KoskiSpecificMockOppijat.virtaEiVastaa.oid,
+      time = "2000-01-14T20:31:32.104+03",
+      organizationOid = List("1.2.246.562.28.33333333333"),
+      raw = rawAuditlog("OPISKELUOIKEUS_KATSOMINEN")
+    ),
     MockData(
       studentOid = KoskiSpecificMockOppijat.aikuisOpiskelija.oid,
       time = "2000-01-12T20:31:32.104+03",

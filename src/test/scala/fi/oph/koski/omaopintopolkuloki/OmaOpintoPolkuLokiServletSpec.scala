@@ -82,10 +82,16 @@ class OmaOpintoPolkuLokiServletSpec extends AnyFreeSpec with Matchers with Koski
     "Huollettavalle ei näytetä huoltajan katseluja" in {
       auditlogs(KoskiSpecificMockOppijat.lukiolainen) shouldBe empty
     }
-    "Organisaation oidia, jota ei löydy organisaatiopalvelusta, ei osata käsitellä" in {
-      auditlogsRequest(KoskiSpecificMockOppijat.virtaEiVastaa) {
-        verifyResponseStatus(500, KoskiErrorCategory.internalError())
-      }
+    "Organisaation oid, jota ei löydy organisaatiopalvelusta, jätetään pois riviltä" in {
+      auditlogs(KoskiSpecificMockOppijat.virtaEiVastaa).map(_.organizations.map(_.oid)) should contain(
+        List(MockOrganisaatiot.helsinginKaupunki)
+      )
+    }
+    "Rivit, joiden yhtäkään organisaatiota ei löydy organisaatiopalvelusta, näytetään yhtenä organisaatiotieto ei saatavilla -rivinä" in {
+      val tuntemattomat = auditlogs(KoskiSpecificMockOppijat.virtaEiVastaa)
+        .filter(_.organizations.map(_.oid) == List(AuditLogService.TuntematonOrganisaatioOid))
+      tuntemattomat should have length 1
+      tuntemattomat.head.timestamps should equal(List("2000-01-14T20:31:32.104+03", "2000-01-13T20:31:32.104+03"))
     }
     "Suodattaa pois organisaatiot, joissa kansalaisella ei ole opiskeluoikeutta" in {
       val orgs = auditlogs(KoskiSpecificMockOppijat.koululainen).flatMap(_.organizations.map(_.oid)).toSet
