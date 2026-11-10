@@ -33,7 +33,7 @@ import fi.oph.koski.pulssi.{KoskiPulssi, PrometheusRepository}
 import fi.oph.koski.raportointikanta.{Public, RaportointiDatabase, RaportointikantaService}
 import fi.oph.koski.schedule.{KoskiScheduledTasks, PerustiedotManualSyncScheduler, PerustiedotSyncScheduler, WorkerLeaseRepository}
 import fi.oph.koski.sdg.SdgService
-import fi.oph.koski.sso.{CasOppijaCreationService, CasService, KoskiSessionRepository}
+import fi.oph.koski.sso.{CasOppijaCreationService, CasService, KoskiSessionRepository, SSOConfig}
 import fi.oph.koski.suoritetuttutkinnot.SuoritetutTutkinnotService
 import fi.oph.koski.suoritusjako.{SuoritusjakoRepository, SuoritusjakoService}
 import fi.oph.koski.suostumus.SuostumuksenPeruutusService
@@ -269,6 +269,7 @@ class KoskiApplication(
 
     // Muut mock-toteutuksen valitsevat palvelut alustuvat servlettien mukana. Näitä ei muuten
     // alustettaisi ennen ensimmäistä käyttöä, eikä mock tuotannossa estäisi käynnistystä.
+    SSOConfig.requireMockLoginAllowed(config)
     prometheusRepository
     ovaraClient
 

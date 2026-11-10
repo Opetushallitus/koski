@@ -53,7 +53,7 @@ class MockSelectionSpec extends AnyFreeSpec with Matchers {
     "MockKoesuoritusService" -> (c => KoesuoritusService(c, mockS3Config)),
     "valpas.rajapäivät.useMock" -> (c => ValpasRajapäivätService(c)),
     "otuvaTokenEndpoint" -> (c => OppijanumeroRekisteriClient(c)),
-    "login.security" -> (c => SSOConfig(c).isCasSsoUsed),
+    "login.security" -> (c => SSOConfig.requireMockLoginAllowed(c)),
     "MockLuovutuspalveluV2ClientListService" -> (c => LuovutuspalveluV2ClientListService(c)),
     "MockLuovutuspalveluV2XRoadConfigService" -> (c => LuovutuspalveluV2XRoadConfigService(c)),
   )
