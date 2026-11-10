@@ -118,6 +118,9 @@ Rajapinta korvaa aiemman palveluväylän (X-Road) kautta toimineen SOAP-rajapinn
 Rajapinta palauttaa oppilaitokset ja niiden opiskeluoikeudet tiivistettynä: opiskeluoikeuden tila,
 alkamis- ja päättymispäivä sekä suorituksen nimi.
 
+Rajapinta ei palauta muun kuin säännellyn koulutuksen, taiteen perusopetuksen, kielitutkintojen eikä
+Ahvenanmaan perusopetuksen opiskeluoikeuksia eikä vapaan sivistystyön vapaatavoitteisen koulutuksen suorituksia.
+
 ### Esimerkkipyyntö
 
     POST /koski/api/luovutuspalvelu/suomifi/rekisteritiedot HTTP/1.1

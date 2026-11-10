@@ -54,6 +54,34 @@ class SuomiFiServletSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers wi
       }
     }
 
+    "Palautettavat opiskeluoikeustyypit" - {
+      "ei palauta muuta kuin säänneltyä koulutusta" in {
+        opiskeluoikeudetRekisteritiedoissa(KoskiSpecificMockOppijat.jotpaMuuKuinSäännelty) shouldBe empty
+      }
+
+      "ei palauta kielitutkintoja" in {
+        opiskeluoikeudetRekisteritiedoissa(KoskiSpecificMockOppijat.kielitutkinnonSuorittaja) shouldBe empty
+      }
+
+      "ei palauta Ahvenanmaan perusopetusta" in {
+        opiskeluoikeudetRekisteritiedoissa(KoskiSpecificMockOppijat.ahvenanmaanPerusoppilas) shouldBe empty
+      }
+
+      "ei palauta vapaan sivistystyön vapaatavoitteista koulutusta" in {
+        opiskeluoikeudetRekisteritiedoissa(KoskiSpecificMockOppijat.vapaaSivistystyöVapaatavoitteinenKoulutus) shouldBe empty
+      }
+
+      "palauttaa vapaan sivistystyön osaamismerkin" in {
+        opiskeluoikeudetRekisteritiedoissa(KoskiSpecificMockOppijat.vapaaSivistystyöOsaamismerkki) should have size 1
+      }
+
+      "ei palauta taiteen perusopetusta mutta palauttaa saman oppijan muut opiskeluoikeudet" in {
+        val opiskeluoikeudet = opiskeluoikeudetRekisteritiedoissa(KoskiSpecificMockOppijat.taiteenPerusopetusValmis)
+        opiskeluoikeudet should have size 1
+        opiskeluoikeudet.head.nimi.get("fi") should equal("Kansanopistojen vapaan sivistystyön koulutus oppivelvollisille")
+      }
+    }
+
     "palauttaa tyhjän listan jos opiskeluoikeuksia ei löydy" in {
       postRekisteritiedot("261125-1531") {
         verifyResponseStatusOk()
@@ -146,6 +174,12 @@ class SuomiFiServletSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers wi
   private def parseSuomiFiResponse: SuomiFiResponse = {
     JsonSerializer.parse[SuomiFiResponse](body)
   }
+
+  private def opiskeluoikeudetRekisteritiedoissa(oppija: LaajatOppijaHenkilöTiedot): List[SuomiFiOpiskeluoikeus] =
+    postRekisteritiedot(oppija.hetu.get) {
+      verifyResponseStatusOk()
+      parseSuomiFiResponse.oppilaitokset.flatMap(_.opiskeluoikeudet)
+    }
 
   private def ensimmäisenSuorituksenNimiRekisteritiedoissa(oppija: LaajatOppijaHenkilöTiedot): String =
     postRekisteritiedot(oppija.hetu.get) {
