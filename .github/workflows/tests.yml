@@ -44,7 +44,8 @@ on:
         type: boolean
         default: false
 
-# Kutsuja voi antaa id-token-oikeuden AppConfig-tarkistusta varten, muut jobit eivät saa sitä.
+# Jokaisen kutsujan on annettava id-token-oikeus, koska GitHub tarkistaa appconfig_checkin oikeudet
+# myös silloin, kun se ohitetaan. Muut jobit eivät saa sitä.
 permissions:
   contents: read
 
