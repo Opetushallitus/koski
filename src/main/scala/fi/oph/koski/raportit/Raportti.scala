@@ -1,7 +1,5 @@
 package fi.oph.koski.raportit
 
-import com.typesafe.config.Config
-import fi.oph.koski.config.Environment
 import fi.oph.koski.localization.LocalizationReader
 
 import java.time.{LocalDate, LocalDateTime}
@@ -122,7 +120,6 @@ case class RaporttiPäivältäRequest(
 
 sealed trait RaportinTyyppi {
   val opiskeluoikeudenTyyppi: String
-  def käytössä(config: Config): Boolean = true
   override def toString: String = this.getClass.getSimpleName.toLowerCase.filterNot(_ == '$')
 }
 
@@ -210,20 +207,14 @@ case object JatkuvanOppimisenVapaanSivistystyönRaportti extends RaportinTyyppi 
 
 case object VapaanSivistystyönVapaatavoitteisenKoulutuksenRaportti extends RaportinTyyppi {
   val opiskeluoikeudenTyyppi = OpiskeluoikeudenTyyppi.vapaansivistystyonkoulutus.koodiarvo
-  // Piilotettu tuotannosta, kunnes raportin sisältö on hyväksytty käyttöön (TOR-1543)
-  override def käytössä(config: Config): Boolean = !Environment.isProdEnvironment(config)
 }
 
 case object VapaanSivistystyönOppivelvollisilleSuunnatunKoulutuksenRaportti extends RaportinTyyppi {
   val opiskeluoikeudenTyyppi = OpiskeluoikeudenTyyppi.vapaansivistystyonkoulutus.koodiarvo
-  // Piilotettu tuotannosta, kunnes raportin sisältö on hyväksytty käyttöön (TOR-1543)
-  override def käytössä(config: Config): Boolean = !Environment.isProdEnvironment(config)
 }
 
 case object VapaanSivistystyönOsaamismerkkienRaportti extends RaportinTyyppi {
   val opiskeluoikeudenTyyppi = OpiskeluoikeudenTyyppi.vapaansivistystyonkoulutus.koodiarvo
-  // Piilotettu tuotannosta, kunnes raportin sisältö on hyväksytty käyttöön (TOR-1543)
-  override def käytössä(config: Config): Boolean = !Environment.isProdEnvironment(config)
 }
 
 case object MuunKuinSäännellynKoulutuksenRaportti extends RaportinTyyppi {
