@@ -624,7 +624,6 @@ function PaallekkaisetOpiskeluoikeudet({ stateP }) {
   return (
     <AikajaksoRaportti
       stateP={stateP}
-      apiEndpoint={'/paallekkaisetopiskeluoikeudet'}
       shortDescription={
         <Text name="paallekkaiset-opiskeluoikeudet-short-description-massaluovutus" />
       }
@@ -646,7 +645,6 @@ function Kotikuntalaskelma({ stateP }) {
   return (
     <RaporttiPaivalta
       stateP={stateP}
-      apiEndpoint={'/kotikuntalaskelma'}
       title={titleText}
       shortDescription={shortDescriptionText}
       dateInputHelp={dateInputHelpText}
@@ -668,7 +666,6 @@ function KunnanOppijat({ stateP }) {
   return (
     <RaporttiPaivalta
       stateP={stateP}
-      apiEndpoint={'/kunnanoppijat'}
       title={titleText}
       shortDescription={shortDescriptionText}
       dateInputHelp={dateInputHelpText}
@@ -688,7 +685,6 @@ function Opiskelijavuositiedot({ stateP }) {
   return (
     <AikajaksoRaportti
       stateP={stateP}
-      apiEndpoint={'/ammatillinenopiskelijavuositiedot'}
       title={titleText}
       shortDescription={descriptionText}
       massaluovutusKyselymalli={ammatillinenOpiskelijavuositiedotKyselymalli}
@@ -709,7 +705,6 @@ function SuoritustietojenTarkistus({ stateP }) {
   return (
     <AikajaksoRaporttiAikarajauksella
       stateP={stateP}
-      apiEndpoint={'/ammatillinentutkintosuoritustietojentarkistus'}
       title={titleText}
       shortDescription={shortDescriptionText}
       example={exampleText}
@@ -733,7 +728,6 @@ function AmmatillinenOsittainenSuoritustietojenTarkistus({ stateP }) {
   return (
     <AikajaksoRaporttiAikarajauksella
       stateP={stateP}
-      apiEndpoint={'/ammatillinenosittainensuoritustietojentarkistus'}
       title={titleText}
       shortDescription={shortDescriptionText}
       example={exampleText}
@@ -752,7 +746,6 @@ function MuuAmmatillinenRaportti({ stateP }) {
   return (
     <AikajaksoRaportti
       stateP={stateP}
-      apiEndpoint={'/muuammatillinen'}
       title={titleText}
       shortDescription={descriptionText}
       massaluovutusKyselymalli={muuAmmatillinenKyselymalli}
@@ -770,7 +763,6 @@ function TOPKSAmmatillinenRaportti({ stateP }) {
   return (
     <AikajaksoRaportti
       stateP={stateP}
-      apiEndpoint={'/topksammatillinen'}
       title={titleText}
       shortDescription={descriptionText}
       massaluovutusKyselymalli={topksAmmatillinenKyselymalli}
@@ -797,7 +789,6 @@ function PerusopetuksenVuosiluokka({ stateP }) {
   return (
     <VuosiluokkaRaporttiPaivalta
       stateP={stateP}
-      apiEndpoint={'/perusopetuksenvuosiluokka'}
       title={titleText}
       shortDescription={shortDescriptionText}
       dateInputHelp={dateInputHelpText}
@@ -823,7 +814,6 @@ function Lukioraportti({ stateP }) {
   return (
     <AikajaksoRaporttiAikarajauksella
       stateP={stateP}
-      apiEndpoint={'/lukionsuoritustietojentarkistus'}
       title={titleText}
       shortDescription={shortDescriptionText}
       showKotikuntaPvmInput
@@ -849,7 +839,6 @@ function Lukio2019raportti({ stateP }) {
   return (
     <AikajaksoRaporttiAikarajauksella
       stateP={stateP}
-      apiEndpoint={'/lukio2019suoritustietojentarkistus'}
       title={titleText}
       shortDescription={shortDescriptionText}
       showKotikuntaPvmInput
@@ -873,7 +862,6 @@ function LukioKurssikertyma({ stateP }) {
   return (
     <AikajaksoRaportti
       stateP={stateP}
-      apiEndpoint={'/lukiokurssikertymat'}
       title={title}
       shortDescription={shortDescriptionText}
       dateInputHelp={dateInputHelpText}
@@ -897,7 +885,6 @@ function Lukio2019Opintopistekertyma({ stateP }) {
   return (
     <AikajaksoRaportti
       stateP={stateP}
-      apiEndpoint={'/lukio2019opintopistekertymat'}
       title={title}
       shortDescription={shortDescriptionText}
       dateInputHelp={dateInputHelpText}
@@ -923,7 +910,6 @@ function LukioDiaIBInternationalESHOpiskelijamaarat({ stateP }) {
   return (
     <RaporttiPaivalta
       stateP={stateP}
-      apiEndpoint={'/lukiodiaibinternationaleshopiskelijamaarat'}
       title={titleText}
       shortDescription={shortDescriptionText}
       dateInputHelp={dateInputHelpText}
@@ -949,7 +935,6 @@ function LuvaOpiskelijamaaratRaportti({ stateP }) {
   return (
     <RaporttiPaivalta
       stateP={stateP}
-      apiEndpoint={'/luvaopiskelijamaarat'}
       title={titleText}
       shortDescription={shortDescriptionText}
       dateInputHelp={dateInputHelpText}
@@ -974,7 +959,6 @@ function EsiopetusRaportti({ stateP }) {
   return (
     <RaporttiPaivalta
       stateP={stateP}
-      apiEndpoint={'/esiopetus'}
       title={titleText}
       shortDescription={shortDescriptionText}
       dateInputHelp={dateInputHelpText}
@@ -1002,7 +986,6 @@ function EsiopetuksenOppijamäärätRaportti({ stateP }) {
   return (
     <RaporttiPaivalta
       stateP={stateP}
-      apiEndpoint={'/esiopetuksenoppijamaaratraportti'}
       title={titleText}
       shortDescription={shortDescriptionText}
       dateInputHelp={dateInputHelpText}
@@ -1025,7 +1008,6 @@ function PerusopetukseenValmistavanTarkistusRaportti({ stateP }) {
   return (
     <AikajaksoRaporttiAikarajauksella
       stateP={stateP}
-      apiEndpoint={'/perusopetukseenvalmistavansuoritustietojentarkistus'}
       title={titleText}
       shortDescription={shortDescriptionText}
       example={exampleText}
@@ -1052,7 +1034,6 @@ function PerusopetuksenOppijamäärätRaportti({ stateP }) {
   return (
     <RaporttiPaivalta
       stateP={stateP}
-      apiEndpoint={'/perusopetuksenoppijamaaratraportti'}
       title={titleText}
       shortDescription={shortDescriptionText}
       dateInputHelp={dateInputHelpText}
@@ -1073,7 +1054,6 @@ function TuvaSuoritustiedotRaportti({ stateP }) {
   return (
     <AikajaksoRaportti
       stateP={stateP}
-      apiEndpoint={'/tuvasuoritustietojentarkistus'}
       title={titleText}
       shortDescription={shortDescriptionText}
       example={exampleText}
@@ -1098,7 +1078,6 @@ function TuvaPerusopetuksenOppijamäärätRaportti({ stateP }) {
   return (
     <RaporttiPaivalta
       stateP={stateP}
-      apiEndpoint={'/tuvaperusopetuksenoppijamaaratraportti'}
       title={titleText}
       shortDescription={shortDescriptionText}
       dateInputHelp={dateInputHelpText}
@@ -1128,7 +1107,6 @@ function PerusopetuksenLisäopetuksenOppijamäärätRaportti({ stateP }) {
   return (
     <RaporttiPaivalta
       stateP={stateP}
-      apiEndpoint={'/perusopetuksenlisaopetuksenoppijamaaratraportti'}
       title={titleText}
       shortDescription={shortDescriptionText}
       dateInputHelp={dateInputHelpText}
@@ -1153,7 +1131,6 @@ function AikuistenPerusopetusRaportti({ stateP }) {
   return (
     <AikajaksoRaporttiTyyppivalinnalla
       stateP={stateP}
-      apiEndpoint={'/aikuisten-perusopetus-suoritustietojen-tarkistus'}
       title={titleText}
       shortDescription={shortDescriptionText}
       example={exampleText}
@@ -1192,7 +1169,6 @@ function AikuistenPerusopetuksenOppijamäärätRaportti({ stateP }) {
   return (
     <RaporttiPaivalta
       stateP={stateP}
-      apiEndpoint={'/aikuistenperusopetuksenoppijamaaratraportti'}
       title={titleText}
       shortDescription={shortDescriptionText}
       dateInputHelp={dateInputHelpText}
@@ -1222,7 +1198,6 @@ function AikuistenPerusopetuksenKurssikertymäRaportti({ stateP }) {
   return (
     <AikajaksoRaportti
       stateP={stateP}
-      apiEndpoint={'/aikuistenperusopetuksenkurssikertymaraportti'}
       title={titleText}
       shortDescription={shortDescriptionText}
       dateInputHelp={dateInputHelpText}
@@ -1245,7 +1220,6 @@ function IBSuoritustiedot({ stateP }) {
   return (
     <AikajaksoRaporttiTyyppivalinnalla
       stateP={stateP}
-      apiEndpoint={'/ibsuoritustietojentarkistus'}
       shortDescription={shortDescriptionText}
       example={exampleText}
       massaluovutusKyselymalli={ibSuoritustiedotKyselymalli}
@@ -1276,7 +1250,6 @@ function VSTJotpa({ stateP }) {
   return (
     <AikajaksoRaportti
       stateP={stateP}
-      apiEndpoint={'/vstjotpa'}
       title={titleText}
       shortDescription={shortDescriptionText}
       example={exampleText}
@@ -1345,7 +1318,6 @@ function MUKS({ stateP }) {
   return (
     <AikajaksoRaportti
       stateP={stateP}
-      apiEndpoint={'/muks'}
       title={titleText}
       shortDescription={shortDescriptionText}
       example={exampleText}
