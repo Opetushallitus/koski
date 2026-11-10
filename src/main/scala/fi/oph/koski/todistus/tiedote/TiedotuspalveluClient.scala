@@ -7,7 +7,7 @@ import fi.oph.koski.http.HttpStatus
 object TiedotuspalveluClient {
   def apply(config: Config): TiedotuspalveluClient = {
     if (config.getString("tiedote.baseUrl") == "mock") {
-      Environment.requireMockAllowed(config, "MockTiedotuspalveluClient")
+      Environment.requireMockAllowedLocally(config, "MockTiedotuspalveluClient")
       new MockTiedotuspalveluClient
     } else {
       new RemoteTiedotuspalveluClient(config)
