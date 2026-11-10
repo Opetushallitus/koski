@@ -24,6 +24,7 @@ test.describe('IB-suoritustietoraportti', () => {
     await raportitPage.syötäKotikuntaPvm('1.1.2015')
     const kysely = await raportitPage.muodostaJaLueKysely()
     expect(kysely).toMatchObject({
+      type: 'ibSuoritustiedot',
       raportinTyyppi: 'preiboppimaara',
       osasuoritustenAikarajaus: true,
       kotikuntaPvm: '2015-01-01'

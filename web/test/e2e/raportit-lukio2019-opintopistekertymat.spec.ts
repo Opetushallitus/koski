@@ -19,7 +19,12 @@ test.describe('Lukiokoulutuksen opintopistekertymäraportti', () => {
     await expect(raportitPage.raportit).toBeHidden()
 
     await raportitPage.syötäAikajakso('1.1.2019', '31.12.2021')
-    await raportitPage.muodosta()
+    const kysely = await raportitPage.muodostaJaLueKysely()
+    expect(kysely).toMatchObject({
+      type: 'lukio2019Opintopistekertymat',
+      alku: '2019-01-01',
+      loppu: '2021-12-31'
+    })
 
     await expect(raportitPage.taustallaOhje).toBeVisible()
     await expect(raportitPage.raporttiRivit).toHaveCount(1)

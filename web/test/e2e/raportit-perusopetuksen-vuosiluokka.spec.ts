@@ -23,6 +23,7 @@ test.describe('Perusopetuksen vuosiluokkaraportti', () => {
     await raportitPage.syötäKotikuntaPvm('1.1.2011')
     const kysely = await raportitPage.muodostaJaLueKysely()
     expect(kysely).toMatchObject({
+      type: 'perusopetuksenVuosiluokka',
       paiva: '2012-01-01',
       vuosiluokka: '9',
       kotikuntaPvm: '2011-01-01'

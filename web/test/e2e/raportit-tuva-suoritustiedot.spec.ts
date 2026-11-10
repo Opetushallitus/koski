@@ -19,7 +19,12 @@ test.describe('Tutkintokoulutukseen valmentavan koulutuksen suoritustietoraportt
     await expect(raportitPage.raportit).toBeHidden()
 
     await raportitPage.syötäAikajakso('1.1.2021', '31.12.2022')
-    await raportitPage.muodosta()
+    const kysely = await raportitPage.muodostaJaLueKysely()
+    expect(kysely).toMatchObject({
+      type: 'tuvaSuoritustiedot',
+      alku: '2021-01-01',
+      loppu: '2022-12-31'
+    })
 
     await expect(raportitPage.taustallaOhje).toBeVisible()
     await expect(raportitPage.raporttiRivit).toHaveCount(1)

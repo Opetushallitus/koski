@@ -23,6 +23,7 @@ test.describe('Päällekkäisten opiskeluoikeuksien raportti', () => {
     await raportitPage.syötäAikajakso('1.1.2018', '31.12.2019')
     const kysely = await raportitPage.muodostaJaLueKysely()
     expect(kysely).toMatchObject({
+      type: 'paallekkaisetOpiskeluoikeudet',
       format:
         'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
     })

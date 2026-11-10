@@ -23,6 +23,7 @@ test.describe('Lukiokoulutuksen suoritustietoraportti (lukio 2019)', () => {
     await raportitPage.syötäKotikuntaPvm('1.1.2020')
     const kysely = await raportitPage.muodostaJaLueKysely()
     expect(kysely).toMatchObject({
+      type: 'lukio2019Suoritustiedot',
       kotikuntaPvm: '2020-01-01',
       osasuoritustenAikarajaus: true
     })
