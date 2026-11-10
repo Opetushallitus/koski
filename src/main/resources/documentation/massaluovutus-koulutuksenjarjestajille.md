@@ -110,6 +110,16 @@ Esimerkki:
 
     {{json:LuokalleJaaneetJson}}
 
+{{title:fi.oph.koski.massaluovutus.aiemmatopiskeluoikeudet.MassaluovutusQueryAiemmatOpiskeluoikeudet}}
+{{docs:fi.oph.koski.massaluovutus.aiemmatopiskeluoikeudet.MassaluovutusQueryAiemmatOpiskeluoikeudet}}
+
+Esimerkki:
+
+    POST {{var:baseUrl}}/api/massaluovutus HTTP/1.1
+    {{var:headers}}
+
+    {{json:AiemmatOpiskeluoikeudet}}
+
 ### Raportit
 
 Excel-muotoiset raportit ovat saatavilla massaluovutusrajapinnan kautta. Katso erillinen
