@@ -44,7 +44,7 @@
     "@types/react-dom": "17.0.26",
     "@vitest/eslint-plugin": "1.6.28",
     "chai": "6.3.0",
-    "concurrently": "10.0.6",
+    "concurrently": "10.0.7",
     "copy-webpack-plugin": "14.0.0",
     "css-loader": "7.1.5",
     "eslint": "10.14.0",
