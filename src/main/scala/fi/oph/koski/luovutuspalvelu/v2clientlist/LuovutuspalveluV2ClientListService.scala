@@ -58,6 +58,7 @@ object LuovutuspalveluV2ClientListService {
     if (Environment.isServerEnvironment(config) && Environment.usesAwsSecretsManager) {
       new RemoteLuovutuspalveluV2ClientListService
     } else {
+      Environment.requireMockAllowed(config, "MockLuovutuspalveluV2ClientListService")
       new MockLuovutuspalveluV2ClientListService
     }
   }

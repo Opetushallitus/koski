@@ -1,6 +1,6 @@
 package fi.oph.koski.ytr
 
-import fi.oph.koski.config.KoskiApplication
+import fi.oph.koski.config.{Environment, KoskiApplication}
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.log.Logging
 import fi.oph.koski.util.Streams
@@ -17,6 +17,7 @@ object YoTodistusService {
   def apply(application: KoskiApplication): YoTodistusService = {
     val s3config: YtrS3Config = YtrS3Config.getEnvironmentConfig(application)
     if (s3config.bucket == "mock") {
+      Environment.requireMockAllowed(application.config, "MockYoTodistusService")
       new MockYoTodistusService(application)
     } else {
       new RemoteYoTodistusService(application, s3config)

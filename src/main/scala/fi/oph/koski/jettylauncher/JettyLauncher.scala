@@ -2,9 +2,9 @@ package fi.oph.koski.jettylauncher
 
 import java.lang.management.ManagementFactory
 import java.nio.file.{Files, Paths}
-import com.typesafe.config.{Config, ConfigFactory}
+import com.typesafe.config.Config
 import fi.oph.koski.cache.JMXCacheManager
-import fi.oph.koski.config.{AppConfig, Environment, KoskiApplication}
+import fi.oph.koski.config.{Environment, KoskiApplication, KoskiConfigLoader}
 import fi.oph.koski.executors.Pools
 import fi.oph.koski.log.{LogConfiguration, Logging, MaskedSlf4jRequestLogWriter}
 import io.prometheus.client.servlet.jakarta.exporter.MetricsServlet
@@ -24,24 +24,7 @@ object JettyLauncher extends App with Logging {
 
   private val globalPort = System.getProperty("koski.port", "7021").toInt
 
-  private val config: Config = if (Environment.usesAwsAppConfig) {
-    logger.info("Ladataan konfiguraatio...")
-    try {
-      AppConfig
-        .loadConfig
-        .map(ConfigFactory.load)
-        .getOrElse {
-          throw new RuntimeException("Konfiguraatiota ei saatu ladattua")
-        }
-    } catch {
-      case e: Any => {
-        logger.error(s"Konfiguraation lataus epäonnistui: ${e.getMessage}")
-        throw e
-      }
-    }
-  } else {
-    ConfigFactory.load
-  }
+  private val config: Config = KoskiConfigLoader.load()
 
   logger.info(s"Starting koski in ${Environment.currentEnvironment(config)}")
 

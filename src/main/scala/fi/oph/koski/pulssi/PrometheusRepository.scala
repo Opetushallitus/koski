@@ -2,6 +2,7 @@ package fi.oph.koski.pulssi
 
 import cats.effect.IO
 import com.typesafe.config.Config
+import fi.oph.koski.config.Environment
 import fi.oph.koski.http.Http
 import fi.oph.koski.http.Http._
 import fi.oph.koski.json.GenericJsonFormats
@@ -11,6 +12,7 @@ import org.json4s.{Formats, JValue}
 object PrometheusRepository {
   def apply(config: Config) = {
     if (config.getString("prometheus.url") == "mock") {
+      Environment.requireMockAllowed(config, "MockPrometheusRepository")
       MockPrometheusRepository
     } else {
       new RemotePrometheusRepository(Http(config.getString("prometheus.url"), "prometheus"))

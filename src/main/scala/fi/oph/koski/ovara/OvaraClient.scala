@@ -1,6 +1,7 @@
 package fi.oph.koski.ovara
 
 import com.typesafe.config.Config
+import fi.oph.koski.config.Environment
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
 import fi.oph.koski.http.Http
 import fi.oph.koski.http.Http.{UriInterpolator, runIO}
@@ -13,6 +14,7 @@ object OvaraClient extends Logging {
   def apply(config: Config): OvaraClient = {
     config.getString("opintopolku.virkailija.url") match {
       case "mock" =>
+        Environment.requireMockAllowed(config, "MockOvaraClient")
         logger.info("Using mock Ovara integration")
         MockOvaraClient
       case "" =>

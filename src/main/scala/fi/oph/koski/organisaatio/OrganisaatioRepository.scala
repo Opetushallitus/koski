@@ -3,6 +3,7 @@ package fi.oph.koski.organisaatio
 import java.lang.System.currentTimeMillis
 import java.time.LocalDate
 import com.typesafe.config.Config
+import fi.oph.koski.config.Environment
 import fi.oph.koski.cache._
 import fi.oph.koski.http.{ServiceConfig, VirkailijaHttpClient}
 import fi.oph.koski.koodisto.KoodistoViitePalvelu
@@ -148,6 +149,7 @@ object OrganisaatioRepository {
   def apply(config: Config, koodisto: KoodistoViitePalvelu)(implicit cacheInvalidator: CacheManager) = {
     config.getString("opintopolku.virkailija.url") match {
       case "mock" =>
+        Environment.requireMockAllowed(config, "MockOrganisaatioRepository")
         MockOrganisaatioRepository
       case url =>
         val http = VirkailijaHttpClient(ServiceConfig.apply(config, "opintopolku.virkailija"), "/organisaatio-service", sessionCookieName = "SESSION", true)

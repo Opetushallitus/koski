@@ -101,6 +101,7 @@ object ValpasHakukoosteService {
     if (!config.getBoolean("valpas.hakukoosteEnabled")) {
       new DisabledHakukoosteService(application)
     } else if (Environment.isMockEnvironment(config)) {
+      Environment.requireMockAllowed(config, "MockHakukoosteService")
       new MockHakukoosteService(application)
     } else {
       new OvaraHakukoosteService(
