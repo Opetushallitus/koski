@@ -11,6 +11,14 @@ object MockKäyttöoikeusryhmät {
   def oppilaitosKatselija(organisaatioOid: String): OrganisaatioJaKäyttöoikeudet =
     organisaatioKäyttäjä(organisaatioOid, List(Rooli.READ, Rooli.KAIKKI_OPISKELUOIKEUS_TYYPIT, Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT))
 
+  // Palvelukäyttäjä ilman LUOTTAMUKSELLINEN_KAIKKI_TIEDOT-roolia: aiemmatOpiskeluoikeudet-kysely palauttaa arkaluontoiset tiedot silti
+  def oppilaitosAiempienOpiskeluoikeuksienPalvelukäyttäjä(organisaatioOid: String): OrganisaatioJaKäyttöoikeudet =
+    organisaatioKäyttäjä(organisaatioOid, List(Rooli.READ, Rooli.TIEDONSIIRTO, Rooli.AIEMMAT_OPISKELUOIKEUDET))
+
+  // Virkailija, jolla on rooli mutta ei TIEDONSIIRTO-oikeutta: ei saa tehdä aiemmatOpiskeluoikeudet-kyselyä
+  def oppilaitosAiempienOpiskeluoikeuksienVirkailija(organisaatioOid: String): OrganisaatioJaKäyttöoikeudet =
+    organisaatioKäyttäjä(organisaatioOid, List(Rooli.READ, Rooli.KAIKKI_OPISKELUOIKEUS_TYYPIT, Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT, Rooli.AIEMMAT_OPISKELUOIKEUDET))
+
   def oppilaitosTodistuksenMyöntäjä(organisaatioOid: String): OrganisaatioJaKäyttöoikeudet =
     organisaatioKäyttäjä(organisaatioOid, List(Rooli.READ))
 
