@@ -120,9 +120,11 @@ class MockOppijat(
 
   def getTurvakieltoKuntahistoriat = turvakieltoKuntahistoriat
 
+  // Ohittaa oidit, jotka on annettu jollekin oppijalle käsin (esim. 1.2.246.562.24.00000000216)
   def generateId(): String = this.synchronized {
     idCounter = idCounter + 1
-    FixtureCreator.generateOppijaOid(idCounter)
+    val oid = FixtureCreator.generateOppijaOid(idCounter)
+    if (oppijat.exists(_.henkilö.oid == oid)) generateId() else oid
   }
 }
 
