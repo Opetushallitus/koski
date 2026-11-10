@@ -1,5 +1,10 @@
 # Koskeen tallennettavien tietojen validaatiosäännöt
 
+## 10.11.2026
+
+- Muun kuin säännellyn koulutuksen opiskeluoikeuksissa, jotka alkavat 1.1.2027 tai sen jälkeen ja ovat tilassa `keskeytynyt`, osasuoritusten arviointi vaaditaan (ks. 12.10.2026) myös silloin, kun suoritusta ei ole vahvistettu.
+- Muun kuin säännellyn koulutuksen opiskeluoikeuden tila voi olla `hyvaksytystisuoritettu` vain, kun päätason suoritus on vahvistettu, ja `keskeytynyt` vain, kun päätason suoritusta ei ole vahvistettu. Sääntö koskee kaikkia opiskeluoikeuksia alkamispäivästä riippumatta.
+
 ## 20.10.2026
 
 - Vapaan sivistystyön kotoutumiskoulutuksen (`vstmaahanmuuttajienkotoutumiskoulutus`, sekä 2012 että 2022 opetussuunnitelman mukaiset suoritukset) ja lukutaitokoulutuksen (`vstlukutaitokoulutus`) opiskeluoikeus ei voi alkaa 1.1.2027 tai sen jälkeen.

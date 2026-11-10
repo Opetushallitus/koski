@@ -39,6 +39,48 @@ class OppijaValidationMuuKuinSäänneltySpec extends AnyFreeSpec with PutOpiskel
           verifyResponseStatus(400, ErrorMatcher.regex(KoskiErrorCategory.badRequest.validation.jsonSchema, ".*enumValueMismatch.*".r))
         }
       }
+
+      "Tila 'hyvaksytystisuoritettu' vaatii suorituksen vahvistuksen" in {
+        setupOppijaWithOpiskeluoikeus(muksOpiskeluoikeusOsasuorituksella(
+          alkamispäivä = LocalDate.of(2027, 1, 1),
+          päättäväTila = Some(opiskeluoikeusHyväksytystiSuoritettu),
+        )) {
+          verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.vahvistusPuuttuu(
+            "Suoritukselta puuttuu vahvistus, vaikka opiskeluoikeus on tilassa hyväksytysti suoritettu"
+          ))
+        }
+      }
+
+      "Tila 'hyvaksytystisuoritettu' sallitaan vahvistetulle suoritukselle" in {
+        setupOppijaWithOpiskeluoikeus(muksOpiskeluoikeusOsasuorituksella(
+          alkamispäivä = LocalDate.of(2027, 1, 1),
+          vahvistettu = true,
+          päättäväTila = Some(opiskeluoikeusHyväksytystiSuoritettu),
+        )) {
+          verifyResponseStatusOk()
+        }
+      }
+
+      "Tila 'keskeytynyt' ei ole sallittu vahvistetulle suoritukselle" in {
+        setupOppijaWithOpiskeluoikeus(muksOpiskeluoikeusOsasuorituksella(
+          alkamispäivä = LocalDate.of(2027, 1, 1),
+          vahvistettu = true,
+          päättäväTila = Some(opiskeluoikeusKeskeytynyt),
+        )) {
+          verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.tilaEronnutTaiKatsotaanEronneeksiVaikkaVahvistettuPäätasonSuoritus(
+            "Opiskeluoikeutta ei voi merkitä keskeytyneeksi, koska päätason suoritus on vahvistettu"
+          ))
+        }
+      }
+
+      "Tila 'keskeytynyt' sallitaan vahvistamattomalle suoritukselle" in {
+        setupOppijaWithOpiskeluoikeus(muksOpiskeluoikeusOsasuorituksella(
+          alkamispäivä = LocalDate.of(2027, 1, 1),
+          päättäväTila = Some(opiskeluoikeusKeskeytynyt),
+        )) {
+          verifyResponseStatusOk()
+        }
+      }
     }
 
     "Rahoitusmuoto" - {
@@ -54,7 +96,7 @@ class OppijaValidationMuuKuinSäänneltySpec extends AnyFreeSpec with PutOpiskel
 
       "Suoritettu-tilaista opiskeluoikeutta ei voi tallentaa ilman rahoitusmuotoa" in {
         val oo = ExamplesMuuKuinSäänneltyKoulutus.Opiskeluoikeus.suoritettu.copy(
-          tila = opiskeluoikeudenTila(List(opiskeluoikeusHyväksytystiSuoritettu), None),
+          tila = opiskeluoikeudenTila(List(opiskeluoikeusHyväksytystiSuoritettu), None, aloitusPvm = LocalDate.of(2023, 2, 1)),
           lisätiedot = None,
         )
         setupOppijaWithOpiskeluoikeus(oo) {
@@ -100,7 +142,7 @@ class OppijaValidationMuuKuinSäänneltySpec extends AnyFreeSpec with PutOpiskel
         }
       }
 
-      "Arviointia ei vaadita, kun suoritusta ei ole vahvistettu" in {
+      "Arviointia ei vaadita läsnä-tilaisessa opiskeluoikeudessa, kun suoritusta ei ole vahvistettu" in {
         setupOppijaWithOpiskeluoikeus(muksOpiskeluoikeusOsasuorituksella(
           alkamispäivä = LocalDate.of(2027, 1, 1),
           arvioitu = false,
@@ -147,13 +189,12 @@ class OppijaValidationMuuKuinSäänneltySpec extends AnyFreeSpec with PutOpiskel
         }
       }
 
-      "Keskeytyneessä opiskeluoikeudessa" - {
+      "Keskeytyneessä opiskeluoikeudessa suorituksen vahvistuksesta riippumatta" - {
         "Osasuoritus, jolla on alaosasuorituksia, voi olla ilman arviointia" in {
           setupOppijaWithOpiskeluoikeus(muksOpiskeluoikeusOsasuorituksella(
             alkamispäivä = LocalDate.of(2027, 1, 1),
             alaosasuorituksena = true,
             ylempiOsasuoritusArvioitu = false,
-            vahvistettu = true,
             päättäväTila = Some(opiskeluoikeusKeskeytynyt),
           )) {
             verifyResponseStatusOk()
@@ -165,7 +206,6 @@ class OppijaValidationMuuKuinSäänneltySpec extends AnyFreeSpec with PutOpiskel
             alkamispäivä = LocalDate.of(2027, 1, 1),
             arvioitu = false,
             alaosasuorituksena = true,
-            vahvistettu = true,
             päättäväTila = Some(opiskeluoikeusKeskeytynyt),
           )) {
             verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.arviointi.arviointiPuuttuu(
@@ -178,7 +218,6 @@ class OppijaValidationMuuKuinSäänneltySpec extends AnyFreeSpec with PutOpiskel
           setupOppijaWithOpiskeluoikeus(muksOpiskeluoikeusOsasuorituksella(
             alkamispäivä = LocalDate.of(2027, 1, 1),
             arvioitu = false,
-            vahvistettu = true,
             päättäväTila = Some(opiskeluoikeusKeskeytynyt),
           )) {
             verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.arviointi.arviointiPuuttuu(
