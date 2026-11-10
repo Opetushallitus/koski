@@ -92,6 +92,7 @@ describe('Raporttien luominen', function () {
           'Päiväkoti Majakka',
           'Päiväkoti Touhula',
           'Tornion kaupunki',
+          'ARPELAN PÄIVÄKOTI',
           'Aapajoen koulu'
         ])
       })
