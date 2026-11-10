@@ -34,9 +34,7 @@ class OmaOpintoPolkuLokiServlet(implicit val application: KoskiApplication) exte
 
       val allowedOrganisaatiot = loadAllowedOrganisaatiot(personOid)
 
-      renderEither(
-        auditLogs.queryLogsFromDynamo(personOid, allowedOrganisaatiot)
-      )
+      renderObject(auditLogs.queryLogsFromDynamo(personOid, allowedOrganisaatiot))
     })()
   }
 

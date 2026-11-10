@@ -4,7 +4,6 @@ package fi.oph.koski.omaopintopolkuloki
 import java.util
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.organisaatio.Opetushallitus
-import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.log.Logging
 import fi.oph.koski.mydata.MyDataConfig
@@ -21,7 +20,7 @@ class AuditLogService(val application: KoskiApplication) extends Logging with My
   private val localizationRepository = application.koskiLocalizationRepository
   private val dynamoDB = AuditLogDynamoDB.buildDb(application.config)
 
-  def queryLogsFromDynamo(masterOppijaOid: String, allowedOrganisaatiot: AllowedOrganisaatiot): Either[HttpStatus, Seq[OrganisaationAuditLogit]] = {
+  def queryLogsFromDynamo(masterOppijaOid: String, allowedOrganisaatiot: AllowedOrganisaatiot): Seq[OrganisaationAuditLogit] = {
     val kaikkiOppijanOidit = application.opintopolkuHenkilöFacade.findSlaveOids(masterOppijaOid).toSet + masterOppijaOid
 
     val queryResult = kaikkiOppijanOidit
@@ -95,8 +94,8 @@ class AuditLogService(val application: KoskiApplication) extends Logging with My
     AuditlogRow(organizationOid, raw, time)
   }
 
-  private def buildLogs(queryResult: Iterator[util.Map[Oid, AttributeValue]], allowedOrganisaatiot: AllowedOrganisaatiot): Either[HttpStatus, Seq[OrganisaationAuditLogit]] = {
-    val timestampsGrouped = queryResult
+  private def buildLogs(queryResult: Iterator[util.Map[Oid, AttributeValue]], allowedOrganisaatiot: AllowedOrganisaatiot): Seq[OrganisaationAuditLogit] = {
+    val rivit = queryResult
       .map(item => {
         val parsedRow = convertToAuditLogRow(item)
         val parsedRaw = JsonSerializer.parse[AuditlogRaw](parsedRow.raw, ignoreExtras = true)
@@ -120,31 +119,42 @@ class AuditLogService(val application: KoskiApplication) extends Logging with My
         (organisaatioOidit, serviceName, isMyDataUse, timestampString)
       })
       .toSeq
-      .groupBy(x => (x._1, x._2, x._3))
-      .view
-      .mapValues(_.map(_._4))
+
+    val organisaatiot: Map[String, Organisaatio] = rivit
+      .flatMap(_._1)
+      .distinct
+      .flatMap(oid => toOrganisaatio(oid).map(oid -> _))
       .toMap
 
-    HttpStatus.foldEithers(
-      timestampsGrouped
-        .map {
-          case ((orgs, serviceName, isMyDataUse), timestamps) =>
-            HttpStatus.foldEithers(orgs.map(toOrganisaatio))
-              .map(orgs => OrganisaationAuditLogit(orgs, serviceName, isMyDataUse, timestamps.sorted.reverse))
-        }
-        .toSeq
-    ).map(_.sortBy(_.timestamps.headOption)(Ordering[Option[String]].reverse))
+    // Rivi näytetään aina, vaikka sen yhtäkään organisaatiota ei tunnistettaisi: kansalaisella on oikeus nähdä katselu.
+    def tunnistetutOrganisaatiot(oidit: List[String]): List[Organisaatio] =
+      oidit.flatMap(organisaatiot.get) match {
+        case Nil => List(organisaatiotietoEiSaatavilla)
+        case tunnistetut => tunnistetut
+      }
+
+    rivit
+      .map { case (oidit, serviceName, isMyDataUse, timestamp) => (tunnistetutOrganisaatiot(oidit), serviceName, isMyDataUse, timestamp) }
+      .groupBy { case (orgs, serviceName, isMyDataUse, _) => (orgs.map(_.oid), serviceName, isMyDataUse) }
+      .values
+      .map { ryhmänRivit =>
+        val (orgs, serviceName, isMyDataUse, _) = ryhmänRivit.head
+        OrganisaationAuditLogit(orgs, serviceName, isMyDataUse, ryhmänRivit.map(_._4).sorted.reverse)
+      }
+      .toSeq
+      .sortBy(_.timestamps.headOption)(Ordering[Option[String]].reverse)
   }
 
-  private def toOrganisaatio(oid: String): Either[HttpStatus, Organisaatio] = {
-    val nimi = organisaatioRepository.getOrganisaatio(oid)
+  private def toOrganisaatio(oid: String): Option[Organisaatio] = {
+    val organisaatio = organisaatioRepository.getOrganisaatio(oid)
       .flatMap(_.nimi)
       .map(name => Organisaatio(oid, name))
       .orElse(isOpetushallitus(oid))
       .orElse(tuntematonOrganisaatio(oid))
-      .toRight(KoskiErrorCategory.internalError())
-    nimi.left.foreach(_ => logger.error(s"AuditLogissa olevaa organisaatiota $oid ei löytynyt organisaatiopalvelusta. Ks. oletettava syy TOR-1050."))
-    nimi
+    if (organisaatio.isEmpty) {
+      logger.warn(s"AuditLogissa olevaa organisaatiota $oid ei löytynyt organisaatiopalvelusta. Ks. oletettava syy TOR-1050.")
+    }
+    organisaatio
   }
 
   private def isOpetushallitus(oid: String) = {
@@ -157,11 +167,14 @@ class AuditLogService(val application: KoskiApplication) extends Logging with My
 
   private def tuntematonOrganisaatio(oid: String) = {
     if (oid == AuditLogService.TuntematonOrganisaatioOid) {
-      Some(Organisaatio(oid, localizationRepository.get("Organisaatiotieto ei saatavilla")))
+      Some(organisaatiotietoEiSaatavilla)
     } else {
       None
     }
   }
+
+  private def organisaatiotietoEiSaatavilla =
+    Organisaatio(AuditLogService.TuntematonOrganisaatioOid, localizationRepository.get("Organisaatiotieto ei saatavilla"))
 }
 
 object AuditLogService {
