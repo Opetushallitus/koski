@@ -5,7 +5,11 @@ import {
   useLocalDataCopy,
   useOnApiSuccess
 } from '../../api-fetch'
-import { ISO2FinnishDate, formatFinnishDateTime } from '../../date/date'
+import {
+  ISO2FinnishDate,
+  formatFinnishDate,
+  formatFinnishDateTime
+} from '../../date/date'
 import { t } from '../../i18n/i18n'
 import { isCompleteQueryResponse } from '../../types/fi/oph/koski/massaluovutus/CompleteQueryResponse'
 import { isFailedQueryResponse } from '../../types/fi/oph/koski/massaluovutus/FailedQueryResponse'
@@ -19,15 +23,15 @@ import {
 import { useInterval } from '../../util/useInterval'
 import {
   MassaluovutusKyselymalli,
-  RaporttiKyselynParametrit,
-  RaporttiKyselynTiedot
+  RaporttiKyselynTiedot,
+  Raporttityypit
 } from './massaluovutusRaporttiKyselyt'
 
 const pollausväliMs = 3000
 
-export type MassaluovutusRaportinLatausProps = {
-  kyselymalli: MassaluovutusKyselymalli
-  parametrit: RaporttiKyselynParametrit | null
+export type MassaluovutusRaportinLatausProps<P> = {
+  kyselymalli: MassaluovutusKyselymalli<P>
+  parametrit: P | null
   dbUpdated?: string
   oppilaitosNimet: Record<string, string>
 }
@@ -37,9 +41,12 @@ type OmaRaportti = {
   tiedot: RaporttiKyselynTiedot
 }
 
-export const MassaluovutusRaportinLataus: React.FC<
-  MassaluovutusRaportinLatausProps
-> = ({ kyselymalli, parametrit, dbUpdated, oppilaitosNimet }) => {
+export const MassaluovutusRaportinLataus = <P,>({
+  kyselymalli,
+  parametrit,
+  dbUpdated,
+  oppilaitosNimet
+}: MassaluovutusRaportinLatausProps<P>) => {
   const kyselyt = useApiOnce(fetchOmatMassaluovutusKyselyt)
   const [kyselytData] = useLocalDataCopy(kyselyt)
   const luoKysely = useApiMethod(createMassaluovutusKysely)
@@ -114,9 +121,14 @@ export const MassaluovutusRaportinLataus: React.FC<
               <tr>
                 <th>{t('Muodostettu')}</th>
                 <th>{t('Oppilaitos')}</th>
-                <th>{t('Aikajakso')}</th>
-                {kyselymalli.näytäOsasuoritustenRajaus && (
-                  <th>{t('Tutkinnon osat')}</th>
+                <th>{t(kyselymalli.ajankohdanOtsikko ?? 'Aikajakso')}</th>
+                {kyselymalli.näytäVuosiluokka && <th>{t('Vuosiluokka')}</th>}
+                {kyselymalli.raportinTyypit && <th>{t('Suoritus')}</th>}
+                {kyselymalli.osasuoritustenRajausOtsikko && (
+                  <th>{t(kyselymalli.osasuoritustenRajausOtsikko)}</th>
+                )}
+                {kyselymalli.näytäKotikuntaPvm && (
+                  <th>{t('Kotikunta päivältä')}</th>
                 )}
                 <th>{t('Tiedosto')}</th>
                 <th>{t('Salasana')}</th>
@@ -129,8 +141,11 @@ export const MassaluovutusRaportinLataus: React.FC<
                   kysely={kysely}
                   tiedot={tiedot}
                   näytäOsasuoritustenRajaus={
-                    kyselymalli.näytäOsasuoritustenRajaus
+                    !!kyselymalli.osasuoritustenRajausOtsikko
                   }
+                  näytäVuosiluokka={!!kyselymalli.näytäVuosiluokka}
+                  raportinTyypit={kyselymalli.raportinTyypit}
+                  näytäKotikuntaPvm={!!kyselymalli.näytäKotikuntaPvm}
                   oppilaitosNimet={oppilaitosNimet}
                 />
               ))}
@@ -146,16 +161,36 @@ const RaporttiRivi: React.FC<{
   kysely: QueryResponse
   tiedot: RaporttiKyselynTiedot
   näytäOsasuoritustenRajaus: boolean
+  näytäVuosiluokka: boolean
+  raportinTyypit?: Raporttityypit
+  näytäKotikuntaPvm: boolean
   oppilaitosNimet: Record<string, string>
-}> = ({ kysely, tiedot, näytäOsasuoritustenRajaus, oppilaitosNimet }) => (
+}> = ({
+  kysely,
+  tiedot,
+  näytäOsasuoritustenRajaus,
+  näytäVuosiluokka,
+  raportinTyypit,
+  näytäKotikuntaPvm,
+  oppilaitosNimet
+}) => (
   <tr>
     <td className="luontiaika">
       {formatFinnishDateTime(new Date(kysely.createdAt))}
     </td>
     <td className="oppilaitos">{oppilaitos(tiedot, oppilaitosNimet)}</td>
-    <td className="aikavali">{aikaväli(tiedot)}</td>
+    <td className="ajankohta">{ajankohta(tiedot)}</td>
+    {näytäVuosiluokka && <td className="vuosiluokka">{tiedot.vuosiluokka}</td>}
+    {raportinTyypit && (
+      <td className="raportin-tyyppi">
+        {raportinTyypinNimi(raportinTyypit, tiedot)}
+      </td>
+    )}
     {näytäOsasuoritustenRajaus && (
       <td className="osasuoritukset">{osasuoritustenRajaus(tiedot)}</td>
+    )}
+    {näytäKotikuntaPvm && (
+      <td className="kotikunta">{kotikuntaPäivä(kysely, tiedot)}</td>
     )}
     <td className="tiedosto">
       {isCompleteQueryResponse(kysely) && (
@@ -196,8 +231,10 @@ const Päivitysaika: React.FC<{ aika: string }> = ({ aika }) => {
 const onKesken = (q: QueryResponse): boolean =>
   isPendingQueryResponse(q) || isRunningQueryResponse(q)
 
-const aikaväli = (tiedot: RaporttiKyselynTiedot): string =>
-  `${ISO2FinnishDate(tiedot.alku)} – ${ISO2FinnishDate(tiedot.loppu)}`
+const ajankohta = (tiedot: RaporttiKyselynTiedot): string | undefined =>
+  'paiva' in tiedot
+    ? ISO2FinnishDate(tiedot.paiva)
+    : `${ISO2FinnishDate(tiedot.alku)} – ${ISO2FinnishDate(tiedot.loppu)}`
 
 const oppilaitos = (
   tiedot: RaporttiKyselynTiedot,
@@ -209,3 +246,22 @@ const oppilaitos = (
 
 const osasuoritustenRajaus = (tiedot: RaporttiKyselynTiedot): string =>
   tiedot.osasuoritustenAikarajaus ? t('Aikajaksolta') : t('Kaikki')
+
+const raportinTyypinNimi = (
+  raportinTyypit: Raporttityypit,
+  tiedot: RaporttiKyselynTiedot
+): string => {
+  const tyyppi = Object.values(raportinTyypit).find(
+    (r) => r.key === tiedot.raportinTyyppi
+  )
+  return tyyppi ? t(tyyppi.name) : tiedot.raportinTyyppi || ''
+}
+
+// Kuluvaa päivää ei tallenneta kyselyyn, joten silloin päivä on kyselyn luontipäivä
+const kotikuntaPäivä = (
+  kysely: QueryResponse,
+  tiedot: RaporttiKyselynTiedot
+): string | undefined =>
+  tiedot.kotikuntaPvm
+    ? ISO2FinnishDate(tiedot.kotikuntaPvm)
+    : formatFinnishDate(new Date(kysely.createdAt))

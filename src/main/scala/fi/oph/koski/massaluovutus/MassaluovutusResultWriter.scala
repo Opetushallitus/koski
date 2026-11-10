@@ -47,10 +47,13 @@ case class QueryResultWriter(
     updateProgress()
   }
 
+  def jsonFileName(name: String): String = s"$name.json"
+  def csvFileName(name: String): String = s"$name.csv"
+
   def putJson(name: String, json: String): Unit = {
     results.putStream(
       queryId = queryId,
-      name = newObjectKey(s"$name.json"),
+      name = newObjectKey(jsonFileName(name)),
       provider = StringStreamProvider(json),
       contentType = QueryFormat.json,
     )
@@ -67,7 +70,7 @@ case class QueryResultWriter(
     manager(new CsvStream[T](s"$queryId-$name", partitionSize, { (file, partition) =>
       results.putFile(
         queryId = queryId,
-        name = partition.fold(newObjectKey(s"$name.csv"))(i => newObjectKey(s"$name.csv.${"%02d".format(i + 1)}")),
+        name = partition.fold(newObjectKey(csvFileName(name)))(i => newObjectKey(s"${csvFileName(name)}.${"%02d".format(i + 1)}")),
         file = file,
         contentType = partition.fold(QueryFormat.csv)(_ => QueryFormat.csvPartition),
       )

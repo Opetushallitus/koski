@@ -1,9 +1,10 @@
 package fi.oph.koski.massaluovutus
 
 import com.typesafe.config.Config
+import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.koskiuser.{KoskiSpecificSession, Session}
-import fi.oph.koski.log.LoggerWithContext
+import fi.oph.koski.log.{AuditLogMessage, KoskiAuditLogMessageField, LoggerWithContext}
 import fi.oph.koski.schema.Organisaatio.Oid
 import fi.oph.koski.util.TryWithLogging
 
@@ -13,6 +14,10 @@ import scala.util.Using
 object MassaluovutusUtils {
   def readDatabaseId(config: Config): String = config.getString("kyselyt.readDatabase")
   def concurrency(config: Config): Int = config.getInt("kyselyt.concurrency")
+
+  def auditlokinKentät(massaluovutusId: String, tiedosto: Option[String] = None): AuditLogMessage.ExtraFields =
+    Map[AuditLogMessage.AuditLogMessageField, String](KoskiAuditLogMessageField.massaluovutusId -> massaluovutusId) ++
+      tiedosto.map(KoskiAuditLogMessageField.massaluovutusTiedosto -> _)
 
   def defaultOrganisaatio(implicit user: Session): Either[HttpStatus, Oid] = user match {
     case koskiUser: KoskiSpecificSession =>
@@ -30,8 +35,8 @@ object MassaluovutusUtils {
   }
 
   // Kielitutkintorekisterin globaali lukuoikeus koskee vain kielitutkintoja, joten se ei oikeuta muiden kyselyihin
-  def näkeeMuidenKäyttäjienKyselyt(user: KoskiSpecificSession): Boolean =
-    user.hasGlobalReadAccess && !user.isKielitutkintorekisteri
+  def näkeeMuidenKäyttäjienKyselyt(user: KoskiSpecificSession, query: MassaluovutusQueryParameters, application: KoskiApplication): Boolean =
+    user.hasGlobalReadAccess && !user.isKielitutkintorekisteri && query.additionalAccessCheckForOtherUsers(application)(user)
 
   def QueryResourceManager(logger: LoggerWithContext)(op: Using.Manager => Unit): Either[String, Unit] =
     TryWithLogging.andResources(logger, op).left.map(_.getMessage)

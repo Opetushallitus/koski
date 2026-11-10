@@ -10,7 +10,7 @@ import fi.oph.koski.json.SensitiveDataAllowed
 import fi.oph.koski.koskiuser.{KoskiSpecificSession, Session}
 import fi.oph.koski.koskiuser.Rooli.{OPHKATSELIJA, OPHPAAKAYTTAJA}
 import fi.oph.koski.log._
-import fi.oph.koski.massaluovutus.{MassaluovutusQueryParameters, MassaluovutusQueryPriority, OpetushallituksenMassaluovutusQueryParameters, QueryFormat, QueryResultWriter}
+import fi.oph.koski.massaluovutus.{MassaluovutusQueryParameters, MassaluovutusQueryPriority, MassaluovutusUtils, OpetushallituksenMassaluovutusQueryParameters, QueryFormat, QueryResultWriter}
 import fi.oph.koski.opiskeluoikeus.OpiskeluoikeusQueryContext
 import fi.oph.koski.schema.annotation.EnumValues
 import fi.oph.koski.schema.{KoskeenTallennettavaOpiskeluoikeus, KoskiSchema}
@@ -53,10 +53,10 @@ case class ValintalaskentaQuery(
       if (results.nonEmpty) {
         val opiskeluoikeudet = asNonEmpty(results.collect { case Right(oo) => oo })
         val virheet = asNonEmpty(results.collect { case Left(err) => err })
-        writer.putJson(oid, ValintalaskentaResult(oid, opiskeluoikeudet, virheet))
         if (opiskeluoikeudet.nonEmpty) {
-          auditLog(oid)
+          auditLog(oid, writer.queryId.toString, writer.jsonFileName(oid))
         }
+        writer.putJson(oid, ValintalaskentaResult(oid, opiskeluoikeudet, virheet))
       } else {
         writer.skipFile()
       }
@@ -143,13 +143,13 @@ case class ValintalaskentaQuery(
     }
   }
 
-  private def auditLog(oppijaOid: String)(implicit user: KoskiSpecificSession): Unit =
+  private def auditLog(oppijaOid: String, queryId: String, tiedosto: String)(implicit user: KoskiSpecificSession): Unit =
     AuditLog
       .log(
         KoskiAuditLogMessage(
           KoskiOperation.VALINTAPALVELU_OPISKELUOIKEUS_HAKU,
           user,
-          Map(
+          MassaluovutusUtils.auditlokinKentät(queryId, Some(tiedosto)) ++ Map(
             KoskiAuditLogMessageField.oppijaHenkiloOid -> oppijaOid,
             KoskiAuditLogMessageField.hakuEhto -> OpiskeluoikeusQueryContext.queryForAuditLog(Map(
               "koulutusmuoto" -> koulutusmuoto.toList,

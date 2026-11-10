@@ -221,15 +221,30 @@ object ValpasAuditLog {
   def auditLogRouhintahakuKunnalla
     (kunta: String, palautetutOppijaOidit: Seq[String])
     (implicit session: ValpasSession)
-  : Unit = auditLogKuntahaku(ValpasOperation.VALPAS_ROUHINTA_KUNTA, kunta, palautetutOppijaOidit)
+  : Unit = auditLogKuntahaku(ValpasOperation.VALPAS_ROUHINTA_KUNTA, kunta, palautetutOppijaOidit, Map.empty)
 
   def auditLogMassaluovutusKunnalla
-    (kunta: String, palautetutOppijaOidit: Seq[String])
+    (kunta: String, palautetutOppijaOidit: Seq[String], massaluovutusId: String, tiedosto: String)
     (implicit session: ValpasSession)
-  : Unit = auditLogKuntahaku(ValpasOperation.VALPAS_MASSALUOVUTUS_KUNTA, kunta, palautetutOppijaOidit)
+  : Unit = auditLogKuntahaku(ValpasOperation.VALPAS_MASSALUOVUTUS_KUNTA, kunta, palautetutOppijaOidit, massaluovutuksenKentät(massaluovutusId, tiedosto))
+
+  def auditLogMassaluovutuksenLataaminen
+    (massaluovutusId: String, tiedosto: String)
+    (implicit session: ValpasSession)
+  : Unit =
+    AuditLog.log(ValpasAuditLogMessage(
+      ValpasOperation.VALPAS_MASSALUOVUTUS_LATAAMINEN,
+      session,
+      massaluovutuksenKentät(massaluovutusId, tiedosto)
+    ))
+
+  private def massaluovutuksenKentät(massaluovutusId: String, tiedosto: String): AuditLogMessage.ExtraFields = Map(
+    ValpasAuditLogMessageField.massaluovutusId -> massaluovutusId,
+    ValpasAuditLogMessageField.massaluovutusTiedosto -> tiedosto
+  )
 
   private def auditLogKuntahaku
-    (operation: ValpasOperation, kunta: String, palautetutOppijaOidit: Seq[String])
+    (operation: ValpasOperation, kunta: String, palautetutOppijaOidit: Seq[String], lisäkentät: AuditLogMessage.ExtraFields)
     (implicit session: ValpasSession)
   : Unit = {
     val palautetutOppijaOiditSivut = palautetutOppijaOidit.grouped(oidejaEnintäänAuditlogEntryssä).toList
@@ -240,7 +255,7 @@ object ValpasAuditLog {
         AuditLog.log(ValpasAuditLogMessage(
           operation,
           session,
-          Map(
+          lisäkentät ++ Map(
             ValpasAuditLogMessageField.hakulause -> kunta,
             ValpasAuditLogMessageField.oppijaHenkilöOidList -> oidit.mkString(" "),
             ValpasAuditLogMessageField.sivu -> s"${sivu}",
@@ -331,7 +346,9 @@ object ValpasAuditLogMessageField extends Enumeration {
       hakutulosOppijaOid,
       sivu,
       sivuLukumäärä,
-      ilmoitusUuid = Value
+      ilmoitusUuid,
+      massaluovutusId,
+      massaluovutusTiedosto = Value
 }
 
 object ValpasOperation extends Enumeration {
@@ -354,7 +371,8 @@ object ValpasOperation extends Enumeration {
       VALPAS_KANSALAINEN_HUOLTAJA_KATSOMINEN,
       VALPAS_OPPIVELVOLLISUUDESTA_VAPAUTTAMINEN,
       VALPAS_OPPIVELVOLLISUUDESTA_VAPAUTTAMISEN_POISTO,
-      VALPAS_MASSALUOVUTUS_KUNTA = Value
+      VALPAS_MASSALUOVUTUS_KUNTA,
+      VALPAS_MASSALUOVUTUS_LATAAMINEN = Value
 }
 
 private class ValpasAuditLogOperation(op: ValpasOperation) extends AuditLogOperation(op)

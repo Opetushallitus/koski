@@ -13,9 +13,11 @@ import fi.oph.koski.massaluovutus.organisaationopiskeluoikeudet.{MassaluovutusQu
 import fi.oph.koski.massaluovutus.paallekkaisetopiskeluoikeudet.MassaluovutusQueryPaallekkaisetOpiskeluoikeudet
 import fi.oph.koski.massaluovutus.suorituspalvelu.{SuorituspalveluMuuttuneetJalkeenQuery, SuorituspalveluOppijaOidsQuery}
 import fi.oph.koski.massaluovutus.valintalaskenta.ValintalaskentaQuery
+import fi.oph.koski.massaluovutus.valpas.oppivelvolliset.ValpasOppivelvollisetQuery
 import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.schema.{KoskeenTallennettavaOpiskeluoikeus, LocalizedString, OpiskeluoikeudenTyyppi, PerusopetuksenVuosiluokanSuoritus}
 import fi.oph.koski.util.Wait
+import fi.oph.koski.valpas.valpasuser.ValpasMockUsers
 import fi.oph.koski.KoskiApplicationForTests
 import fi.oph.koski.raportit.RaportitService
 import fi.oph.scalaschema.Serializer.format
@@ -241,6 +243,66 @@ class MassaluovutusSpec extends AnyFreeSpec with MassaluovutusTestMethods with M
     }
   }
 
+  "Valppaan kyselyä ei voi hakea Kosken massaluovutusrajapinnasta" in {
+    withoutRunningQueryScheduler {
+      val kysely = app.massaluovutusService.addRaw(PendingQuery(
+        queryId = UUID.randomUUID().toString,
+        userOid = ValpasMockUsers.valpasOphPääkäyttäjä.oid,
+        query = ValpasOppivelvollisetQuery(kuntaOid = MockOrganisaatiot.helsinginKaupunki),
+        createdAt = LocalDateTime.now(),
+        session = JObject(),
+        meta = None,
+      ))
+      getQuery(kysely.queryId, MockUsers.paakayttaja) {
+        verifyResponseStatus(404, KoskiErrorCategory.notFound())
+      }
+    }
+  }
+
+  "Tulostiedoston lataus" - {
+    val query = MassaluovutusQueryPaallekkaisetOpiskeluoikeudet(
+      format = QueryFormat.csv,
+      alku = LocalDate.of(2000, 1, 1),
+      loppu = LocalDate.of(2020, 1, 1),
+    )
+    val tekijä = MockUsers.helsinkiKatselija
+
+    def verifyLatausmerkintä(lataaja: MockUser, queryId: String, tiedosto: String): Unit =
+      AuditLogTester.verifyLastAuditLogMessageForOperation(Map(
+        "operation" -> "MASSALUOVUTUKSEN_LATAAMINEN",
+        "user" -> Map("oid" -> lataaja.oid),
+        "target" -> Map(
+          "massaluovutusId" -> queryId,
+          "massaluovutusTiedosto" -> tiedosto,
+        ),
+      ))
+
+    "kirjataan auditlokiin lataajan nimissä, latasipa tiedoston kyselyn tekijä tai joku muu" in {
+      val queryId = addQuerySuccessfully(query, tekijä)(_.queryId)
+      val tiedosto = waitForCompletion(queryId, tekijä).files.head
+      val tiedostonimi = tiedosto.split("/").last
+
+      AuditLogTester.clearMessages()
+      verifyResult(tiedosto, tekijä)
+      AuditLogTester.verifyOnlyAuditLogMessageForOperation(Map("operation" -> "MASSALUOVUTUKSEN_LATAAMINEN"))
+      verifyLatausmerkintä(tekijä, queryId, tiedostonimi)
+
+      verifyResult(tiedosto, MockUsers.paakayttaja)
+      verifyLatausmerkintä(MockUsers.paakayttaja, queryId, tiedostonimi)
+    }
+
+    "muuta kuin kyselyn tulostiedostoa ei voi ladata, eikä yritystä kirjata lataukseksi" in {
+      val queryId = addQuerySuccessfully(query, tekijä)(_.queryId)
+      waitForCompletion(queryId, tekijä)
+
+      AuditLogTester.clearMessages()
+      getResult(s"api/massaluovutus/$queryId/tuntematon.csv", tekijä) {
+        verifyResponseStatus(404, KoskiErrorCategory.notFound())
+      }
+      AuditLogTester.verifyNoAuditLogMessagesForOperation("MASSALUOVUTUKSEN_LATAAMINEN")
+    }
+  }
+
   "Organisaation opiskeluoikeudet" - {
     "JSON" - {
       val query = MassaluovutusQueryOrganisaationOpiskeluoikeudetJson(
@@ -285,6 +347,7 @@ class MassaluovutusSpec extends AnyFreeSpec with MassaluovutusTestMethods with M
           "operation" -> "OPISKELUOIKEUS_HAKU",
           "target" -> Map(
             "hakuEhto" -> "alkanutAikaisintaan=2020-01-01&organisaatio=1.2.246.562.10.346830761110",
+            "massaluovutusId" -> queryId,
           ),
         ))
       }
@@ -422,6 +485,7 @@ class MassaluovutusSpec extends AnyFreeSpec with MassaluovutusTestMethods with M
           "operation" -> "OPISKELUOIKEUS_HAKU",
           "target" -> Map(
             "hakuEhto" -> "alkanutAikaisintaan=2020-01-01&organisaatio=1.2.246.562.10.346830761110",
+            "massaluovutusId" -> queryId,
           ),
         ))
       }
@@ -529,6 +593,7 @@ class MassaluovutusSpec extends AnyFreeSpec with MassaluovutusTestMethods with M
           "operation" -> "OPISKELUOIKEUS_RAPORTTI",
           "target" -> Map(
             "hakuEhto" -> "alku=2000-01-01&lang=fi&loppu=2020-01-01&oppilaitosOid=1.2.246.562.10.346830761110&raportti=paallekkaisetopiskeluoikeudet",
+            "massaluovutusId" -> queryId,
           ),
         ))
       }
@@ -592,6 +657,22 @@ class MassaluovutusSpec extends AnyFreeSpec with MassaluovutusTestMethods with M
 
       complete.files should have length 1
       complete.files.foreach(verifyResult(_, user))
+    }
+
+    "Kyselystä jää oppijakohtainen audit log -merkintä, jossa on kysely ja tulostiedosto" in {
+      AuditLogTester.clearMessages()
+      val queryId = addQuerySuccessfully(getQuery(ammattikoululainen), user)(_.queryId)
+      val complete = waitForCompletion(queryId, user)
+
+      complete.files.map(_.split("/").last) should equal(List(s"$ammattikoululainen.json"))
+      AuditLogTester.verifyOnlyAuditLogMessageForOperation(Map(
+        "operation" -> "VALINTAPALVELU_OPISKELUOIKEUS_HAKU",
+        "target" -> Map(
+          "oppijaHenkiloOid" -> ammattikoululainen,
+          "massaluovutusId" -> queryId,
+          "massaluovutusTiedosto" -> s"$ammattikoululainen.json",
+        ),
+      ))
     }
 
     "Kysely hakee opiskeluoikeusversion historiasta" in {
@@ -713,6 +794,8 @@ class MassaluovutusSpec extends AnyFreeSpec with MassaluovutusTestMethods with M
                 "target" -> Map(
                   "oppijaHenkiloOid" -> oppijaOid,
                   "opiskeluoikeusOid" -> opiskeluoikeusOidit,
+                  "massaluovutusId" -> queryId,
+                  "massaluovutusTiedosto" -> complete.files.last.split("/").last,
                 ),
               ))
             }
@@ -1124,6 +1207,8 @@ class MassaluovutusSpec extends AnyFreeSpec with MassaluovutusTestMethods with M
                 "target" -> Map(
                   "oppijaHenkiloOid" -> oppijaOid,
                   "opiskeluoikeusOid" -> opiskeluoikeusOidit,
+                  "massaluovutusId" -> queryId,
+                  "massaluovutusTiedosto" -> complete.files.last.split("/").last,
                 ),
               ))
             }
@@ -1537,12 +1622,13 @@ class MassaluovutusSpec extends AnyFreeSpec with MassaluovutusTestMethods with M
         complete.files should have length 2
         complete.files.foreach(verifyResult(_, user))
 
-        AuditLogTester.verifyLastAuditLogMessageForOperation(Map(
-          "operation" -> "OPISKELUOIKEUS_KATSOMINEN",
-          "target" -> Map(
-            "oppijaHenkiloOid" -> KoskiSpecificMockOppijat.perusopetuksenTiedonsiirto.oid,
-          ),
-        ))
+        // Jokaisesta tulostiedostosta yksi merkintä, joka yhdistyy latauksen merkintään kyselyn tunnisteella ja tiedostonimellä
+        val merkinnät = AuditLogTester.getLogMessages
+          .map(JsonMethods.parse(_))
+          .filter(m => (m \ "operation").extractOpt[String].contains("OPISKELUOIKEUS_KATSOMINEN"))
+          .map(m => ((m \ "target" \ "massaluovutusId").extract[String], (m \ "target" \ "massaluovutusTiedosto").extract[String], (m \ "target" \ "oppijaHenkiloOid").extract[String]))
+        merkinnät.map(m => (m._1, m._2)) should contain theSameElementsAs complete.files.map(f => (queryId, f.split("/").last))
+        merkinnät.map(_._3) should contain(KoskiSpecificMockOppijat.perusopetuksenTiedonsiirto.oid)
       }
 
       "Toisen käyttäjän kyselyn tietoja ei voi hakea" in {

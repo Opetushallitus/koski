@@ -36,7 +36,10 @@ class MassaluovutusRaportitKayttooikeusSpec extends AnyFreeSpec with Massaluovut
   private val esiopetus = MassaluovutusQueryEsiopetus(paiva = paiva, organisaatioOid = organisaatioOid)
   private val päällekkäiset = MassaluovutusQueryPaallekkaisetOpiskeluoikeudet(format = QueryFormat.xlsx, alku = alku, loppu = loppu, organisaatioOid = organisaatioOid)
 
-  private val raporttikyselyt: List[(String, MassaluovutusQueryParameters)] = List(
+  private val raporttikyselyt = raporttikyselytOrganisaatiolle(organisaatioOid)
+  private lazy val ostopalvelunRaporttikyselyt = raporttikyselytOrganisaatiolle(Some(app.organisaatioService.ostopalveluRootOid))
+
+  private def raporttikyselytOrganisaatiolle(organisaatioOid: Option[String]): List[(String, MassaluovutusQueryParameters)] = List(
     "Lukion suoritustiedot" -> MassaluovutusQueryLukionSuoritustiedot(alku = alku, loppu = loppu, organisaatioOid = organisaatioOid),
     "Lukio 2019 suoritustiedot" -> MassaluovutusQueryLukio2019Suoritustiedot(alku = alku, loppu = loppu, organisaatioOid = organisaatioOid),
     "Lukion kurssikertymät" -> MassaluovutusQueryLukioKurssikertymat(alku = alku, loppu = loppu, organisaatioOid = organisaatioOid),
@@ -56,7 +59,7 @@ class MassaluovutusRaportitKayttooikeusSpec extends AnyFreeSpec with Massaluovut
     "Aikuisten perusopetuksen suoritustietojen tarkistus" -> MassaluovutusQueryAikuistenPerusopetusSuoritustiedot(alku = alku, loppu = loppu, raportinTyyppi = "päättövaihe", organisaatioOid = organisaatioOid),
     "Aikuisten perusopetuksen oppijamäärät" -> MassaluovutusQueryAikuistenPerusopetuksenOppijamaaratRaportti(paiva = paiva, organisaatioOid = organisaatioOid),
     "Aikuisten perusopetuksen kurssikertymät" -> MassaluovutusQueryAikuistenPerusopetuksenKurssikertyma(alku = alku, loppu = loppu, organisaatioOid = organisaatioOid),
-    "Esiopetus" -> esiopetus,
+    "Esiopetus" -> MassaluovutusQueryEsiopetus(paiva = paiva, organisaatioOid = organisaatioOid),
     "Esiopetuksen oppijamäärät" -> MassaluovutusQueryEsiopetuksenOppijamaaratRaportti(paiva = paiva, organisaatioOid = organisaatioOid),
     "TUVA perusopetuksen oppijamäärät" -> MassaluovutusQueryTuvaPerusopetuksenOppijamaaratRaportti(paiva = paiva, organisaatioOid = organisaatioOid),
     "TUVA suoritustiedot" -> MassaluovutusQueryTuvaSuoritustiedot(alku = alku, loppu = loppu, organisaatioOid = organisaatioOid),
@@ -65,7 +68,15 @@ class MassaluovutusRaportitKayttooikeusSpec extends AnyFreeSpec with Massaluovut
     "Vapaan sivistystyön oppivelvollisille suunnattu koulutus" -> MassaluovutusQueryVSTKOPS(alku = alku, loppu = loppu, organisaatioOid = organisaatioOid),
     "Vapaan sivistystyön osaamismerkit" -> MassaluovutusQueryVSTOsaamismerkit(alku = alku, loppu = loppu, organisaatioOid = organisaatioOid),
     "Muu kuin säännelty koulutus" -> MassaluovutusQueryMuuKuinSaanneltyKoulutus(alku = alku, loppu = loppu, organisaatioOid = organisaatioOid),
+    "Kotikuntalaskelma" -> MassaluovutusQueryKotikuntalaskelma(paiva = paiva, organisaatioOid = organisaatioOid),
   )
+
+  // Kunnan oppijat vaatii organisaatioksi kunnan
+  private val kuntaraporttikyselyt: List[(String, MassaluovutusQueryParameters)] = List(
+    "Kunnan oppijat" -> MassaluovutusQueryKunnanOppijat(paiva = paiva, organisaatioOid = Some(MockOrganisaatiot.helsinginKaupunki)),
+  )
+
+  private val kaikkiRaporttikyselyt = raporttikyselyt ++ kuntaraporttikyselyt
 
   // Päällekkäisten opiskeluoikeuksien raportilla ei ole luottamuksellisia tietoja, joten se ei vaadi raporttien oikeuksia
   private val päällekkäisetKyselyt: List[(String, MassaluovutusQueryParameters)] = List(
@@ -74,7 +85,7 @@ class MassaluovutusRaportitKayttooikeusSpec extends AnyFreeSpec with Massaluovut
   )
 
   "Kaikki raporttikyselyt ovat mukana testeissä" in {
-    raporttikyselyt.map(_._2.getClass.getName).toSet should equal(kaikkiRaporttikyselyluokat)
+    kaikkiRaporttikyselyt.map(_._2.getClass.getName).toSet should equal(kaikkiRaporttikyselyluokat)
   }
 
   "Luottamuksellisten tietojen oikeudella kaikki raporttikyselyt sallitaan" - {
@@ -82,37 +93,55 @@ class MassaluovutusRaportitKayttooikeusSpec extends AnyFreeSpec with Massaluovut
       estetytKyselyt(raporttikyselyt, MockUsers.jyväskylänNormaalikoulunPalvelukäyttäjä) shouldBe empty
     }
 
+    "kunnan käyttäjälle" in {
+      estetytKyselyt(kuntaraporttikyselyt, MockUsers.helsinkiTallentaja) shouldBe empty
+    }
+
     "OPH:n katselijalle" in {
-      estetytKyselyt(raporttikyselyt, MockUsers.ophkatselija) shouldBe empty
+      estetytKyselyt(kaikkiRaporttikyselyt, MockUsers.ophkatselija) shouldBe empty
     }
   }
 
   "Ilman luottamuksellisten tietojen oikeutta kaikki raporttikyselyt estetään" - {
     "organisaation käyttäjältä" in {
-      sallitutKyselyt(raporttikyselyt, MockUsers.tallentajaEiLuottamuksellinen) shouldBe empty
+      sallitutKyselyt(kaikkiRaporttikyselyt, MockUsers.tallentajaEiLuottamuksellinen) shouldBe empty
       raporttikyselyEstetään(esiopetus, MockUsers.tallentajaEiLuottamuksellinen)
     }
 
     "OPH:n katselijalta" in {
-      sallitutKyselyt(raporttikyselyt, MockUsers.viranomainen) shouldBe empty
+      sallitutKyselyt(kaikkiRaporttikyselyt, MockUsers.viranomainen) shouldBe empty
       raporttikyselyEstetään(esiopetus, MockUsers.viranomainen)
     }
 
     "kielitutkintorekisterin palvelukäyttäjältä" in {
-      sallitutKyselyt(raporttikyselyt, MockUsers.kielitutkintorekisteriKäyttäjä) shouldBe empty
+      sallitutKyselyt(kaikkiRaporttikyselyt, MockUsers.kielitutkintorekisteriKäyttäjä) shouldBe empty
       raporttikyselyEstetään(esiopetus, MockUsers.kielitutkintorekisteriKäyttäjä)
     }
   }
 
   "Viranomaisen globaalilla lukuoikeudella kaikki raporttikyselyt estetään" - {
     "ilman organisaation oikeuksia" in {
-      sallitutKyselyt(raporttikyselyt, MockUsers.tilastokeskusKäyttäjä) shouldBe empty
+      sallitutKyselyt(kaikkiRaporttikyselyt, MockUsers.tilastokeskusKäyttäjä) shouldBe empty
       raporttikyselyEstetään(esiopetus, MockUsers.tilastokeskusKäyttäjä)
     }
 
     "organisaation oikeuksista huolimatta" in {
-      sallitutKyselyt(raporttikyselyt, MockUsers.viranomainenJaJyväskylänTallentaja) shouldBe empty
+      sallitutKyselyt(kaikkiRaporttikyselyt, MockUsers.viranomainenJaJyväskylänTallentaja) shouldBe empty
       raporttikyselyEstetään(esiopetus, MockUsers.viranomainenJaJyväskylänTallentaja)
+    }
+  }
+
+  "Ostopalvelu/palveluseteli-valinta" - {
+    "sallitaan ostavan koulutustoimijan käyttäjälle vain esiopetuksen raporteissa" in {
+      sallitutKyselyt(ostopalvelunRaporttikyselyt, MockUsers.helsinkiTallentaja) should equal(List("Esiopetus", "Esiopetuksen oppijamäärät"))
+    }
+
+    "estetään ilman ostopalveluoikeuksia" in {
+      sallitutKyselyt(ostopalvelunRaporttikyselyt, MockUsers.jyväskylänNormaalikoulunPalvelukäyttäjä) shouldBe empty
+    }
+
+    "ei sallita pelkällä globaalilla lukuoikeudella" in {
+      sallitutKyselyt(ostopalvelunRaporttikyselyt, MockUsers.paakayttaja) shouldBe empty
     }
   }
 
@@ -149,6 +178,47 @@ class MassaluovutusRaportitKayttooikeusSpec extends AnyFreeSpec with Massaluovut
       }
     }
   }
+
+  "Toisen käyttäjän raporttikysely" - {
+    "ei näy saman organisaation käyttäjälle, vaikka tämä saisi tehdä saman kyselyn" in {
+      withoutRunningQueryScheduler {
+        val queryId = addQuerySuccessfully(esiopetus, MockUsers.jyväskylänNormaalikoulunPalvelukäyttäjä)(_.queryId)
+        getQuery(queryId, MockUsers.jyväskylänKatselijaEsiopetus) {
+          verifyResponseStatus(404, KoskiErrorCategory.notFound())
+        }
+        addQuerySuccessfully(esiopetus, MockUsers.jyväskylänKatselijaEsiopetus)(_.queryId) should not equal queryId
+      }
+    }
+
+    "näkyy OPH:n käyttäjälle, joka saisi tehdä saman kyselyn" in {
+      withoutRunningQueryScheduler {
+        val queryId = addQuerySuccessfully(esiopetus, MockUsers.jyväskylänNormaalikoulunPalvelukäyttäjä)(_.queryId)
+        getQuery(queryId, MockUsers.ophkatselija) {
+          verifyResponseStatusOk()
+        }
+        addQuerySuccessfully(esiopetus, MockUsers.ophkatselija)(_.queryId) should equal(queryId)
+      }
+    }
+
+    "ei näy OPH:n käyttäjälle, joka ei saisi tehdä samaa kyselyä" - {
+      "koulutusmuotoihin rajatuilla oikeuksilla" in {
+        eiNäyToiselleKäyttäjälle(esiopetus, MockUsers.ophLukioKatselija)
+      }
+
+      "ilman luottamuksellisten tietojen oikeutta" in {
+        eiNäyToiselleKäyttäjälle(esiopetus, MockUsers.viranomainen)
+      }
+    }
+  }
+
+  private def eiNäyToiselleKäyttäjälle(query: MassaluovutusQueryParameters, user: UserWithPassword): Unit =
+    withoutRunningQueryScheduler {
+      val queryId = addQuerySuccessfully(query, MockUsers.jyväskylänNormaalikoulunPalvelukäyttäjä)(_.queryId)
+      getQuery(queryId, user) {
+        verifyResponseStatus(404, KoskiErrorCategory.notFound())
+      }
+      raporttikyselyEstetään(query, user)
+    }
 
   private def sallitutKyselyt(kyselyt: List[(String, MassaluovutusQueryParameters)], user: KoskiMockUser): List[String] = {
     val session = user.toKoskiSpecificSession(app.käyttöoikeusRepository)

@@ -13,7 +13,7 @@ import fi.oph.koski.log.KoskiOperation.OPISKELUOIKEUS_HAKU
 import fi.oph.koski.log.{AuditLog, KoskiAuditLogMessage, Logging}
 import fi.oph.koski.opiskeluoikeus.OpiskeluoikeusQueryContext
 import fi.oph.koski.organisaatio.OrganisaationAlaisetOrganisaatiot
-import fi.oph.koski.massaluovutus.MassaluovutusUtils.defaultOrganisaatio
+import fi.oph.koski.massaluovutus.MassaluovutusUtils.{auditlokinKentät, defaultOrganisaatio}
 import fi.oph.koski.massaluovutus.{KoulutuksenjärjestäjienMassaluovutusQueryParameters, QueryResultWriter}
 import fi.oph.koski.schema.Organisaatio
 import fi.oph.koski.schema.annotation.EnumValues
@@ -58,7 +58,7 @@ trait MassaluovutusQueryOrganisaationOpiskeluoikeudet extends Koulutuksenjärjes
 
   def run(application: KoskiApplication, writer: QueryResultWriter)(implicit user: Session with SensitiveDataAllowed): Either[String, Unit] = withKoskiSpecificSession { implicit u =>
     val organisaatiot = application.organisaatioService.organisaationAlaisetOrganisaatiot(organisaatioOid.get)
-    auditLog
+    auditLog(writer.queryId.toString)
     fetchData(
       application = application,
       writer = writer,
@@ -93,11 +93,11 @@ trait MassaluovutusQueryOrganisaationOpiskeluoikeudet extends Koulutuksenjärjes
 
   def withOrganisaatioOid(organisaatioOid: Organisaatio.Oid): MassaluovutusQueryOrganisaationOpiskeluoikeudet
 
-  protected def auditLog(implicit user: Session): Unit = {
+  protected def auditLog(queryId: String)(implicit user: Session): Unit = {
     AuditLog.log(KoskiAuditLogMessage(
       OPISKELUOIKEUS_HAKU,
       user,
-      Map(hakuEhto -> OpiskeluoikeusQueryContext.queryForAuditLog(Map(
+      auditlokinKentät(queryId) ++ Map(hakuEhto -> OpiskeluoikeusQueryContext.queryForAuditLog(Map(
         "organisaatio" -> List(organisaatioOid.get),
         "alkanutAikaisintaan" -> List(alkanutAikaisintaan.format(DateTimeFormatter.ISO_DATE)),
         "alkanutViimeistään" -> alkanutViimeistään.toList.map(_.format(DateTimeFormatter.ISO_DATE)),

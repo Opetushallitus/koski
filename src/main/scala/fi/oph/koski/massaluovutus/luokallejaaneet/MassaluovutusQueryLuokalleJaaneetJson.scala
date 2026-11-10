@@ -16,10 +16,13 @@ case class MassaluovutusQueryLuokalleJaaneetJson(
 ) extends MassaluovutusQueryLuokalleJaaneet {
   override def run(application: KoskiApplication, writer: QueryResultWriter)
     (implicit user: Session with SensitiveDataAllowed): Either[String, Unit] = withKoskiSpecificSession { implicit koskiUser =>
-    forEachResult(application) { result =>
-      writer.putJson(s"${result.opiskeluoikeus.oid.getOrElse("")}_luokka_${result.luokka}", result)
+    forEachResult(application, writer.queryId.toString, result => writer.jsonFileName(tiedostonNimi(result))) { result =>
+      writer.putJson(tiedostonNimi(result), result)
     }
   }
+
+  private def tiedostonNimi(result: MassaluovutusQueryLuokalleJaaneetResult): String =
+    s"${result.opiskeluoikeus.oid.getOrElse("")}_luokka_${result.luokka}"
 
   override def fillAndValidate(implicit user: Session): Either[HttpStatus, MassaluovutusQueryLuokalleJaaneet] =
     if (organisaatioOid.isEmpty) {

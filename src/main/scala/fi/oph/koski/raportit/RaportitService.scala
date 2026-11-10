@@ -7,7 +7,7 @@ import fi.oph.koski.koskiuser.KoskiSpecificSession
 import fi.oph.koski.localization.LocalizationReader
 import fi.oph.koski.organisaatio.{OrganisaatioHierarkia, Organisaatiotyyppi}
 import fi.oph.koski.raportit.aikuistenperusopetus._
-import fi.oph.koski.raportit.esiopetus.{EsiopetuksenOppijamäärätRaportti}
+import fi.oph.koski.raportit.esiopetus.{EsiopetuksenOppijamäärätRaportti, EsiopetusRaporttiService}
 import fi.oph.koski.raportit.lukio.LukioOppiaineenOppimaaranKurssikertymat.{AikuistenOppimäärä, NuortenOppimäärä}
 import fi.oph.koski.raportit.lukio._
 import fi.oph.koski.raportit.lukio.lops2021._
@@ -19,7 +19,7 @@ import fi.oph.koski.schema.LocalizedString
 import fi.oph.koski.schema.Organisaatio.isValidOrganisaatioOid
 import fi.oph.koski.util.Retry
 
-import java.time.LocalDateTime
+import java.time.{LocalDate, LocalDateTime}
 import scala.concurrent.duration.DurationInt
 
 class RaportitService(application: KoskiApplication) {
@@ -36,6 +36,7 @@ class RaportitService(application: KoskiApplication) {
   private val muuammatillinenRaportti = MuuAmmatillinenRaporttiBuilder(raportointiDatabase.db)
   private val topksAmmatillinenRaportti = TOPKSAmmatillinenRaporttiBuilder(raportointiDatabase.db)
   private val esiopetuksenOppijamäärätRaportti = EsiopetuksenOppijamäärätRaportti(raportointiDatabase.db, application.organisaatioService)
+  private val esiopetusRaporttiService = new EsiopetusRaporttiService(application)
   private val aikuistenPerusopetuksenOppijamäärätRaportti = AikuistenPerusopetuksenOppijamäärätRaportti(raportointiDatabase.db, application.organisaatioService)
   private val aikuistenPerusopetuksenOppimääränKurssikertymätRaportti = AikuistenPerusopetuksenOppimääränKurssikertymät(raportointiDatabase.db)
   private val aikuistenPerusopetuksenOppimääränArvioinnitRaportti = AikuistenPerusopetuksenOppimääräArvioinnit(raportointiDatabase.db, application.koodistoViitePalvelu)
@@ -269,6 +270,9 @@ class RaportitService(application: KoskiApplication) {
     downloadToken = request.downloadToken
   )
 
+  def esiopetus(organisaatioOid: String, paiva: LocalDate, kotikuntaPvm: Option[LocalDate], password: String, downloadToken: Option[String], t: LocalizationReader)(implicit u: KoskiSpecificSession): OppilaitosRaporttiResponse =
+    esiopetusRaporttiService.raportti(organisaatioOid, paiva, kotikuntaPvm, password, downloadToken, t)
+
   def esiopetuksenOppijamäärät(request: RaporttiPäivältäRequest, t: LocalizationReader)(implicit u: KoskiSpecificSession) = {
 
     val oppilaitosOids = request.oppilaitosOid match {
@@ -322,13 +326,16 @@ class RaportitService(application: KoskiApplication) {
     )
   }
 
-  def kunnanOppijat(request: RaporttiPäivältäRequest, kuntakoodi: String, t: LocalizationReader)(implicit u: KoskiSpecificSession) =
+  def kunnanOppijat(request: RaporttiPäivältäRequest, t: LocalizationReader)(implicit u: KoskiSpecificSession) = {
+    val kuntakoodi = accessResolver.kuntakoodi(request.oppilaitosOid)
+      .getOrElse(throw new IllegalArgumentException(s"Organisaatio ${request.oppilaitosOid} ei ole kunta"))
     OppilaitosRaporttiResponse(
       sheets = Seq(kunnanOppijatBuilder.build(request.oppilaitosOid, kuntakoodi, request.paiva, t)),
       workbookSettings = WorkbookSettings(t.get("raportti-excel-kunnanoppijat-title"), Some(request.password)),
       filename = s"${t.get("raportti-excel-kunnanoppijat-tiedoston-etuliite")}_${request.oppilaitosOid}_${request.paiva}.xlsx",
       downloadToken = request.downloadToken
     )
+  }
 
   def kotikuntalaskelma(request: RaporttiPäivältäRequest, t: LocalizationReader)(implicit u: KoskiSpecificSession) = {
     val oppilaitosOids = accessResolver.kyselyOiditOrganisaatiolle(request.oppilaitosOid).toSeq

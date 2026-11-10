@@ -5,6 +5,8 @@ import fi.oph.koski.http.{ErrorMatcher, KoskiErrorCategory}
 import fi.oph.koski.koskiuser.{MockUser, MockUsers}
 import fi.oph.koski.localization.LocalizationReader
 import fi.oph.koski.log.AuditLogTester
+import fi.oph.koski.massaluovutus.CompleteQuery
+import fi.oph.koski.massaluovutus.organisaationopiskeluoikeudet.MassaluovutusQueryOrganisaationOpiskeluoikeudetCsv
 import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.util.Wait
 import fi.oph.koski.valpas.log.{ValpasAuditLogMessageField, ValpasOperation}
@@ -17,6 +19,8 @@ import org.scalatest.BeforeAndAfterEach
 import org.json4s.DefaultFormats
 
 import java.nio.charset.StandardCharsets
+import java.time.{LocalDate, LocalDateTime}
+import java.util.UUID
 
 class ValpasMassaluovutusServletSpec extends ValpasTestBase with BeforeAndAfterEach {
   override def body: String = new String(response.bodyBytes, StandardCharsets.UTF_8)
@@ -501,9 +505,34 @@ class ValpasMassaluovutusServletSpec extends ValpasTestBase with BeforeAndAfterE
                 .mkString(" "),
               ValpasAuditLogMessageField.sivu.toString -> "1",
               ValpasAuditLogMessageField.sivuLukumäärä.toString -> "1",
+              ValpasAuditLogMessageField.massaluovutusId.toString -> queryId,
+              ValpasAuditLogMessageField.massaluovutusTiedosto.toString -> "0.json",
             ),
           )
         )
+      }
+
+      "jättää merkinnän tulostiedoston latauksesta lataajan nimissä" in {
+        val queryId = postQuery(getQuery(MockOrganisaatiot.helsinginKaupunki), ValpasMockUsers.valpasHelsinkiPk) {
+          verifyResponseStatusOk()
+          (JsonMethods.parse(body) \ "queryId").extract[String]
+        }
+        waitForCompletion(queryId, ValpasMockUsers.valpasHelsinkiPk)
+        val fileUrl = verifyAndGetFileUrl(queryId, ValpasMockUsers.valpasHelsinkiPk)
+
+        AuditLogTester.clearMessages()
+        getResult(fileUrl, ValpasMockUsers.valpasOphPääkäyttäjä) {
+          verifyResponseStatus(302) // 302: Found (redirect)
+        }
+
+        AuditLogTester.verifyOnlyAuditLogMessageForOperation(Map(
+          "operation" -> ValpasOperation.VALPAS_MASSALUOVUTUS_LATAAMINEN.toString,
+          "user" -> Map("oid" -> ValpasMockUsers.valpasOphPääkäyttäjä.oid),
+          "target" -> Map(
+            ValpasAuditLogMessageField.massaluovutusId.toString -> queryId,
+            ValpasAuditLogMessageField.massaluovutusTiedosto.toString -> fileUrl.split("/").last,
+          ),
+        ))
       }
     }
   }
@@ -691,6 +720,26 @@ class ValpasMassaluovutusServletSpec extends ValpasTestBase with BeforeAndAfterE
 
     postQuery(koskiQuery, ValpasMockUsers.valpasHelsinkiPk) {
       verifyResponseStatus(400, ErrorMatcher.regex(KoskiErrorCategory.badRequest.validation.jsonSchema, ".*notAnyOf.*".r))
+    }
+  }
+
+  "Kosken kyselyä ei voi hakea Valppaan massaluovutuksen kautta" in {
+    // Valmiina, jotta ajastin ei yritä ajaa kyselyä
+    val kysely = KoskiApplicationForTests.massaluovutusService.addRaw(CompleteQuery(
+      queryId = UUID.randomUUID().toString,
+      userOid = MockUsers.helsinkiKatselija.oid,
+      query = MassaluovutusQueryOrganisaationOpiskeluoikeudetCsv(alkanutAikaisintaan = LocalDate.of(2000, 1, 1)),
+      createdAt = LocalDateTime.now(),
+      startedAt = LocalDateTime.now(),
+      finishedAt = LocalDateTime.now(),
+      worker = "ignore",
+      resultFiles = List(),
+      session = JObject(),
+      meta = None,
+    ))
+
+    get(s"/valpas/api/massaluovutus/${kysely.queryId}", headers = authHeaders(ValpasMockUsers.valpasOphPääkäyttäjä)) {
+      verifyResponseStatus(404, KoskiErrorCategory.notFound())
     }
   }
 

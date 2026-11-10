@@ -55,6 +55,14 @@ import {
   isMassaluovutusQueryIBSuoritustiedot
 } from './raportit/MassaluovutusQueryIBSuoritustiedot'
 import {
+  MassaluovutusQueryKotikuntalaskelma,
+  isMassaluovutusQueryKotikuntalaskelma
+} from './raportit/MassaluovutusQueryKotikuntalaskelma'
+import {
+  MassaluovutusQueryKunnanOppijat,
+  isMassaluovutusQueryKunnanOppijat
+} from './raportit/MassaluovutusQueryKunnanOppijat'
+import {
   MassaluovutusQueryLukio2019Opintopistekertymat,
   isMassaluovutusQueryLukio2019Opintopistekertymat
 } from './raportit/MassaluovutusQueryLukio2019Opintopistekertymat'
@@ -171,6 +179,8 @@ export type MassaluovutusQueryParameters =
   | MassaluovutusQueryEsiopetuksenOppijamaaratRaportti
   | MassaluovutusQueryEsiopetus
   | MassaluovutusQueryIBSuoritustiedot
+  | MassaluovutusQueryKotikuntalaskelma
+  | MassaluovutusQueryKunnanOppijat
   | MassaluovutusQueryLukio2019Opintopistekertymat
   | MassaluovutusQueryLukio2019Suoritustiedot
   | MassaluovutusQueryLukioDiaIbInternationalESHOpiskelijamaarat
@@ -213,6 +223,8 @@ export const isMassaluovutusQueryParameters = (
   isMassaluovutusQueryEsiopetuksenOppijamaaratRaportti(a) ||
   isMassaluovutusQueryEsiopetus(a) ||
   isMassaluovutusQueryIBSuoritustiedot(a) ||
+  isMassaluovutusQueryKotikuntalaskelma(a) ||
+  isMassaluovutusQueryKunnanOppijat(a) ||
   isMassaluovutusQueryLukio2019Opintopistekertymat(a) ||
   isMassaluovutusQueryLukio2019Suoritustiedot(a) ||
   isMassaluovutusQueryLukioDiaIbInternationalESHOpiskelijamaarat(a) ||

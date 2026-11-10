@@ -5,14 +5,14 @@ import fi.oph.koski.db.{DB, DatabaseConverters, QueryMethods}
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.json.SensitiveDataAllowed
 import fi.oph.koski.koskiuser.{AuthenticationUser, KoskiSpecificSession, KäyttöoikeusRepository, MockUser, Session}
-import fi.oph.koski.valpas.valpasuser.{ValpasRooli, ValpasSession}
+import fi.oph.koski.valpas.valpasuser.ValpasSession
 import fi.oph.koski.log.Logging
 import fi.oph.koski.schema.KoskiSchema.strictDeserialization
 import fi.oph.koski.util.Optional.when
 import fi.oph.koski.validation.ValidatingAndResolvingExtractor
 import fi.oph.scalaschema.annotation.Description
 import org.json4s.JValue
-import slick.jdbc.{GetResult, SQLActionBuilder}
+import slick.jdbc.GetResult
 
 import java.net.InetAddress
 import java.sql.Timestamp
@@ -26,22 +26,13 @@ class QueryRepository(
   extractor: ValidatingAndResolvingExtractor,
 )  extends QueryMethods with Logging with DatabaseConverters  {
 
-  def getKoskiQuery(id: UUID)(implicit user: KoskiSpecificSession): Option[Query] =
-    runDbSync(
-      getQuerySql(id, user.oid, MassaluovutusUtils.näkeeMuidenKäyttäjienKyselyt(user)).as[Query]
-    ).headOption
-
-  def getValpasQuery(id: UUID)(implicit user: ValpasSession): Option[Query] =
-    runDbSync(
-      getQuerySql(id, user.oid, user.hasGlobalValpasOikeus(Set(ValpasRooli.KUNTA_MASSALUOVUTUS))).as[Query]
-    ).headOption
-
-  private def getQuerySql(id: UUID, userOid: String, hasGlobalAccess: Boolean): SQLActionBuilder = sql"""
+  def get(id: UUID): Option[Query] =
+    runDbSync(sql"""
       SELECT *
       FROM massaluovutus
       WHERE id = ${id.toString}::uuid
-        AND (user_oid = $userOid OR $hasGlobalAccess)
-      """
+      """.as[Query]
+    ).headOption
 
   def getOwnQueries(userOid: String, maxAge: Duration): List[Query] =
     runDbSync(sql"""
@@ -52,19 +43,11 @@ class QueryRepository(
       ORDER BY created_at DESC
       """.as[Query]).toList
 
-  def getExistingKoskiQuery(query: MassaluovutusQueryParameters)(implicit user: KoskiSpecificSession): Option[Query] = {
-    getExisting(query, user.oid, MassaluovutusUtils.näkeeMuidenKäyttäjienKyselyt(user))
-  }
-
-  def getExistingValpasQuery(query: MassaluovutusQueryParameters)(implicit user: ValpasSession): Option[Query] = {
-    getExisting(query, user.oid, user.hasGlobalValpasOikeus(Set(ValpasRooli.KUNTA_MASSALUOVUTUS)))
-  }
-
-  private def getExisting(query: MassaluovutusQueryParameters, userOid: String, hasGlobalAccess: Boolean): Option[Query] =
+  def getExisting(query: MassaluovutusQueryParameters, userOid: String, näkeeMuidenKyselyt: Boolean): Option[Query] =
     runDbSync(sql"""
       SELECT *
       FROM massaluovutus
-      WHERE (user_oid = $userOid OR $hasGlobalAccess)
+      WHERE (user_oid = $userOid OR $näkeeMuidenKyselyt)
         AND query = ${query.asJson}
         AND state IN (${QueryState.pending}, ${QueryState.running})
      """.as[Query]

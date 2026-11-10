@@ -394,6 +394,13 @@ object MockUsers {
     Seq(organisaatioKäyttäjä(helsinginKaupunki, List(Rooli.READ, Rooli.PERUSOPETUS, Rooli.ESIOPETUS, Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT)))
   )
 
+  val helsinkiPelkänPerusopetuksenKatselija = KoskiMockUser(
+    "hki-pelkka-perusopetus",
+    "hki-pelkka-perusopetus",
+    "1.2.246.562.24.99999999554",
+    Seq(organisaatioKäyttäjä(helsinginKaupunki, List(Rooli.READ, Rooli.PERUSOPETUS, Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT)))
+  )
+
   val ophLukioKatselija = KoskiMockUser(
     "oph-lukio-katselija",
     "oph-lukio-katselija",
@@ -848,6 +855,7 @@ object MockUsers {
     ruotsinkielinenKatselija,
     helsinkiIlmanLuottamuksellisiaTietoja,
     helsinkiPerusopetuksenKatselija,
+    helsinkiPelkänPerusopetuksenKatselija,
     ophLukioKatselija,
     viranomainenJaJyväskylänTallentaja,
   )

@@ -119,37 +119,41 @@ class EsiopetusRaporttiSpec extends AnyFreeSpec with Matchers with Raportointika
       "voi hakea kaikki koulutustoimijan alla olevat tiedot" in {
         val raportti = buildOrganisaatioRaportti(helsinkiTallentaja, helsinginKaupunki)
         getOppilaitokset(raportti) should equal(List("Kulosaaren ala-aste", "Päiväkoti Majakka", "Päiväkoti Touhula"))
-        AuditLogTester.verifyLastAuditLogMessageForOperation(Map("operation" -> "OPISKELUOIKEUS_RAPORTTI", "target" -> Map("hakuEhto" -> s"raportti=esiopetus&oppilaitosOid=$helsinginKaupunki&paiva=2014-08-13&lang=fi")))
+        verifyLatauksenAuditloki(helsinkiTallentaja, helsinginKaupunki, helsinginKaupunki)
       }
 
       "voi hakea kaikki ostopalvelu/palveluseteli-tiedot" in {
         val raportti = buildOstopalveluRaportti(helsinkiTallentaja)
         getOppilaitokset(raportti) should equal(List("Päiväkoti Majakka", "Päiväkoti Touhula"))
         getRows(raportti).flatMap(_.ostopalveluTaiPalveluseteli) should equal(List("JM02", "JM02"))
-
-        val ostopalveluOrganisaatiot = s"$jyväskylänNormaalikoulu,$päiväkotiMajakka,$päiväkotiTouhula"
-        AuditLogTester.verifyLastAuditLogMessageForOperation(Map("operation" -> "OPISKELUOIKEUS_RAPORTTI", "target" -> Map("hakuEhto" -> s"raportti=esiopetus&oppilaitosOid=$ostopalveluOrganisaatiot&paiva=2014-08-13&lang=fi")))
+        verifyLatauksenAuditloki(helsinkiTallentaja, application.organisaatioService.ostopalveluRootOid, s"$jyväskylänNormaalikoulu,$päiväkotiMajakka,$päiväkotiTouhula")
       }
 
       "ei näe muiden ostopalvelu/palveluseteli-tietoja" in {
         val raportti = buildOstopalveluRaportti(tornioTallentaja)
         getOppilaitokset(raportti) should be(empty)
-        AuditLogTester.verifyLastAuditLogMessageForOperation(Map("operation" -> "OPISKELUOIKEUS_RAPORTTI", "target" -> Map("hakuEhto" -> s"raportti=esiopetus&oppilaitosOid=&paiva=2014-08-13&lang=fi")))
+        verifyLatauksenAuditloki(tornioTallentaja, application.organisaatioService.ostopalveluRootOid, "")
       }
 
       "globaaleilla käyttöoikeuksilla voi tehdä raportin" in {
         val raportti = buildOrganisaatioRaportti(MockUsers.paakayttaja, helsinginKaupunki)
         getOppilaitokset(raportti) should equal(List("Kulosaaren ala-aste", "Päiväkoti Majakka", "Päiväkoti Touhula"))
-        AuditLogTester.verifyLastAuditLogMessageForOperation(Map("operation" -> "OPISKELUOIKEUS_RAPORTTI", "target" -> Map("hakuEhto" -> s"raportti=esiopetus&oppilaitosOid=$helsinginKaupunki&paiva=2014-08-13&lang=fi")))
+        verifyLatauksenAuditloki(MockUsers.paakayttaja, helsinginKaupunki, helsinginKaupunki)
       }
     }
   }
 
+  private def verifyLatauksenAuditloki(user: KoskiMockUser, oppilaitosOid: Oid, kirjattavatOppilaitokset: String) =
+    authGet(s"api/raportit/esiopetus?oppilaitosOid=$oppilaitosOid&paiva=2014-08-13&lang=fi&password=salasana", user = user) {
+      verifyResponseStatusOk()
+      AuditLogTester.verifyLastAuditLogMessageForOperation(Map("operation" -> "OPISKELUOIKEUS_RAPORTTI", "target" -> Map("hakuEhto" -> s"raportti=esiopetus&oppilaitosOid=$kirjattavatOppilaitokset&paiva=2014-08-13&lang=fi")))
+    }
+
   private def buildOstopalveluRaportti(user: KoskiMockUser) =
-    raporttiService.buildOstopalveluRaportti(localDate(2014, 8, 13), None, "", None, t)(session(user))
+    raporttiService.raportti(application.organisaatioService.ostopalveluRootOid, localDate(2014, 8, 13), None, "", None, t)(session(user))
 
   private def buildOrganisaatioRaportti(user: KoskiMockUser, organisaatio: Oid) =
-    raporttiService.buildOrganisaatioRaportti(organisaatio, localDate(2014, 8, 13), None, "", None, t)(session(user))
+    raporttiService.raportti(organisaatio, localDate(2014, 8, 13), None, "", None, t)(session(user))
 
   private def getOppilaitokset(raportti: OppilaitosRaporttiResponse) = {
     getRows(raportti).flatMap(_.oppilaitosNimi).sorted

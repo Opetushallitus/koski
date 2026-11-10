@@ -85,7 +85,7 @@ case class ValpasOppivelvollisetQuery(
 
           oppijatOppivelvollisuustiedoilla.grouped(sivukoko).zipWithIndex.foreach { case (oppijatSivu, index) =>
             val oppijaOids = oppijatSivu.map(_.oppijanumero)
-            ValpasAuditLog.auditLogMassaluovutusKunnalla(kunta, oppijaOids)
+            ValpasAuditLog.auditLogMassaluovutusKunnalla(kunta, oppijaOids, writer.queryId.toString, writer.jsonFileName(s"$index"))
             val result = ValpasOppivelvollisetMassaluovutusResult(oppijatSivu)
             writer.putJson(s"$index", result)
           }
