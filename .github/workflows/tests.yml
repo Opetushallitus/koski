@@ -211,7 +211,9 @@ jobs:
 
       - name: Smoke test image
         run: |
-          docker run --detach --name koski --network host --env SKIP_FIXTURES=true koski:ci
+          # local.conf ei kuulu imageen, joten se annetaan kontille liitoksena.
+          docker run --detach --name koski --network host --env SKIP_FIXTURES=true \
+            --volume "$PWD/src/main/conf:/home/koski/src/main/conf:ro" koski:ci
           for _ in $(seq 1 90); do
             curl --fail --fail-early --silent --show-error --max-time 5 \
               --output /dev/null http://localhost:8080/koski/api/healthcheck/internal \

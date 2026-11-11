@@ -1,6 +1,6 @@
 package fi.oph.koski.todistus
 
-import com.typesafe.config.ConfigFactory
+import fi.oph.koski.config.KoskiConfigLoader
 
 import java.io.File
 
@@ -38,7 +38,7 @@ object PdfSignatureAnalyzerCLI {
       System.exit(1)
     }
 
-    val config = ConfigFactory.load()
+    val config = KoskiConfigLoader.config
     val validationConfig = PdfSignatureAnalyzer.ValidationConfig.fromConfig(config)
       .copy(hashValidointi = true)
 

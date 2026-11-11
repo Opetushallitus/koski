@@ -1,8 +1,6 @@
 package fi.oph.koski.koodisto
 
-import com.typesafe.config.Config
 import fi.oph.koski.cache._
-import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.log.Logging
 import fi.oph.koski.schema.Koodistokoodiviite
@@ -10,7 +8,7 @@ import fi.oph.koski.servlet.InvalidRequestException
 
 import scala.concurrent.duration.DurationInt
 
-case class KoodistoViitePalvelu(config: Config, koodistoPalvelu: KoodistoPalvelu)(implicit cacheInvalidator: CacheManager) extends Logging {
+case class KoodistoViitePalvelu(koodistoPalvelu: KoodistoPalvelu)(implicit cacheInvalidator: CacheManager) extends Logging {
   private val koodiviiteCache = KeyValueCache(RefreshingCache("KoodistoViitePalvelu", 1.hour, 100), { koodisto: KoodistoViite =>
     val koodit: List[KoodistoKoodi] = koodistoPalvelu.getKoodistoKoodit(koodisto)
     koodit.map(toKoodiviite(koodisto))
@@ -87,7 +85,7 @@ case class KoodistoViitePalvelu(config: Config, koodistoPalvelu: KoodistoPalvelu
     Koodistokoodiviite(koodi.koodiArvo, koodi.nimi, koodi.lyhytNimi, koodisto.koodistoUri, Some(koodisto.versio))
 }
 
-object MockKoodistoViitePalvelu extends KoodistoViitePalvelu(KoskiApplication.defaultConfig, MockKoodistoPalvelu())(GlobalCacheManager) {
+object MockKoodistoViitePalvelu extends KoodistoViitePalvelu(MockKoodistoPalvelu())(GlobalCacheManager) {
   override def validate(input: Koodistokoodiviite) = super.validate(input).map(_.copy(koodistoVersio = None))
   override def validate(koodistoUri: String, koodiArvo: String) = super.validate(koodistoUri, koodiArvo).map(_.copy(koodistoVersio = None))
   override def getKoodistoKoodiViitteet(koodisto: KoodistoViite) = super.getKoodistoKoodiViitteet(koodisto).map(_.copy(koodistoVersio = None))

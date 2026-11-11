@@ -246,6 +246,7 @@ Maven has no version ranges or lockfile refresh: a transitive version changes on
 - Local dev runs with mocked external services by default
 - Every `reference.conf` key must also exist in AppConfig in Dev, QA and Prod. Add a new key there first with `tools/koskiConfig.sh` in koski-aws-infra: PR CI checks QA, and each deploy stops if its target environment is missing a key. `scripts/yhdista-appconfig.sh` fills in missing keys with their defaults and orders the file like `reference.conf`.
 - Changing a value in `reference.conf` doesn't change the cloud, because AppConfig overrides it; change the value in AppConfig in each environment too.
+- A key that only local runs and tests read (local DB login, mock credentials, localstack endpoints) goes to `src/main/conf/local.conf`, not `reference.conf`. The cloud never loads that file, so the key isn't needed in AppConfig, and cloud code reading it fails with `ConfigException.Missing`. A spec fails if a key is in both files.
 
 ## Common Tasks
 

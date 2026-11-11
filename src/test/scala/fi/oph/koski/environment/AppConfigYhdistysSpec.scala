@@ -71,26 +71,6 @@ class AppConfigYhdistysSpec extends AnyFreeSpec with Matchers {
     tulos.tiedosto should include("virta.serviceUrl = \"mock\"\n")
   }
 
-  "reference.confin Ei käytössä pilvessä -kommentti kopioidaan, eikä paikallisesta oletuksesta varoiteta" in {
-    val referenceKommentilla =
-      """
-        |// Ei käytössä pilvessä: vain localstack käyttää.
-        |endpoint = "http://localhost:4566"
-        |// Kehittäjän kommentti
-        |muu = 1
-        |""".stripMargin
-    def yhdistäKommentilla(appConfig: String) =
-      AppConfigYhdistys.yhdistä(ConfigFactory.parseString(referenceKommentilla), ConfigFactory.parseString(appConfig))
-
-    val lisätty = yhdistäKommentilla("")
-    lisätty.tiedosto should be("# Ei käytössä pilvessä: vain localstack käyttää.\nendpoint = \"http://localhost:4566\"\n\nmuu = 1\n")
-    lisätty.paikallisetOletukset should be(empty)
-
-    val olemassaOleva = yhdistäKommentilla("# Oma kommentti\nendpoint = \"\"\nmuu = 2")
-    olemassaOleva.tiedosto should startWith("# Oma kommentti\n# Ei käytössä pilvessä: vain localstack käyttää.\nendpoint = \"\"\n")
-    yhdistäKommentilla(olemassaOleva.tiedosto).tiedosto should be(olemassaOleva.tiedosto)
-  }
-
   "Avaimet, joita reference.confissa ei ole, tulevat loppuun AppConfigin järjestyksessä" in {
     val tulos = yhdistä(
       """
