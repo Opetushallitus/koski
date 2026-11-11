@@ -3,7 +3,6 @@ import { useTree } from '../../appstate/tree'
 import { VSTPäätasonSuoritusEditorProps } from '../common/types'
 import { VapaanSivistystyönOsaamismerkinSuoritus } from '../../types/fi/oph/koski/schema/VapaanSivistystyonOsaamismerkinSuoritus'
 import { EditorContainer } from '../../components-v2/containers/EditorContainer'
-import { arviointienPuolestaVahvistettavissa } from '../common/arviointi'
 import { localize, t } from '../../i18n/i18n'
 import { UusiOpiskeluoikeusjakso } from '../../components-v2/opiskeluoikeus/UusiOpiskeluoikeudenTilaModal'
 import { VapaanSivistystyönOpiskeluoikeusjakso } from '../../types/fi/oph/koski/schema/VapaanSivistystyonOpiskeluoikeusjakso'
@@ -60,7 +59,9 @@ export const VSTOsaamismerkkiEditor: React.FC<VSTOsaamismerkkiEditor> = ({
         invalidatable={invalidatable}
         oppijaOid={oppijaOid}
         suorituksenNimi={() => localize(t('Vapaan sivistystyön osaamismerkki'))}
-        suorituksetVahvistettu={arviointienPuolestaVahvistettavissa(form.state)}
+        // Päättävä tila jätetään valittavaksi: radiolla ei voi kertoa, miksi se olisi estetty,
+        // ja backend ilmoittaa puuttuvan vahvistuksen tallennettaessa.
+        suorituksetVahvistettu
         createOpiskeluoikeusjakso={createVstOsaamismerkkiOpiskeluoikeusjakso}
         suoritusIndex={päätasonSuoritus.index}
         onChangeSuoritus={onChangeSuoritus}

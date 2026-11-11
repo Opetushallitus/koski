@@ -15,7 +15,6 @@ import { VapaanSivistystyönVapaatavoitteisenKoulutuksenOpiskeluoikeusjakso } fr
 import { VapaanSivistystyönVapaatavoitteisenKoulutuksenSuoritus } from '../../types/fi/oph/koski/schema/VapaanSivistystyonVapaatavoitteisenKoulutuksenSuoritus'
 import { deleteAt } from '../../util/array'
 import { VSTLaajuudetYhteensä } from '../common/VSTLaajuudetYhteensa'
-import { arviointienPuolestaVahvistettavissa } from '../common/arviointi'
 import { isCompletedVapaatavoitteinenOsasuoritus } from '../common/osasuoritukset'
 import * as Suoritus from '../common/suoritusFields'
 import { PäätasosuorituksenTiedot } from '../common/suoritusFields'
@@ -50,7 +49,9 @@ export const VSTVapaatavoitteinenEditor: React.FC<
         invalidatable={invalidatable}
         oppijaOid={oppijaOid}
         suorituksenNimi={() => localize(t('Vapaan sivistystyön koulutus'))}
-        suorituksetVahvistettu={arviointienPuolestaVahvistettavissa(form.state)}
+        // Päättävä tila jätetään valittavaksi: radiolla ei voi kertoa, miksi se olisi estetty,
+        // ja backend ilmoittaa puuttuvan vahvistuksen tallennettaessa.
+        suorituksetVahvistettu
         createOpiskeluoikeusjakso={
           createVstVapaatavoitteinenOpiskeluoikeusjakso
         }
