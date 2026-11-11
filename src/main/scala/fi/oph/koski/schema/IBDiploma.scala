@@ -103,7 +103,7 @@ case class IBDiplomanOppiaineenSuoritus(
   tutkintokerta: IBTutkintokerta,
   arviointi: Option[List[IBDiplomanOppiaineenArviointi]] = None,
   @Description("Oppiaine ei kuulu diploman vaatimuksiin eikä vaikuta kokonaispistemäärään (IBIS ADDITIONAL SUBJECT)")
-  lisäaine: Boolean = false,
+  additionalSubject: Boolean = false,
   @KoodistoKoodiarvo("ibdiplomanoppiaine")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("ibdiplomanoppiaine", "suorituksentyyppi")
 ) extends IBDiplomanOsasuoritus
@@ -123,7 +123,7 @@ trait IBDiplomanOppiaine extends IBOppiaine with Laajuudeton {
   @Description("Oppiaineen taso: Higher Level (HL) tai Standard Level (SL)")
   @KoodistoUri("oppiaineentasoib")
   def taso: Koodistokoodiviite
-  // TODO TOR-747: IBO:n koodit vaihtuvat istunnoittain (SUB-ristiviittaustiedosto); alkuperäinen koodi säilytetään jäljitettävyyden vuoksi.
+  // TODO TOR-747: IBO:n koodit vaihtuvat tutkintokerroittain (SUB cross-reference file); alkuperäinen koodi säilytetään jäljitettävyyden vuoksi.
   @Description("IBO:n kuusinumeroinen oppiainekoodi (IBIS SUBJECT CODE)")
   def iboOppiainekoodi: Option[String]
 }

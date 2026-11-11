@@ -12,7 +12,7 @@ case class IbisKieliOppiaine(tunniste: String, kieli: String) extends IbisOppiai
 
 // Kuvaus IBO:n kuusinumeroisesta oppiainekoodista (IBIS SUBJECT CODE) Kosken oppiaineetib-koodiin ja kielioppiaineilla
 // lisäksi kielivalikoima-koodiin.
-// TODO TOR-747: Koodit vaihtuvat istunnoittain ja selviävät IBO:n SUB-ristiviittaustiedostosta, jota ei vielä ole. Kartta
+// TODO TOR-747: Koodit vaihtuvat tutkintokerroittain ja selviävät IBO:n SUB cross-reference filestä, jota ei vielä ole. Kartta
 // täytetään resurssitiedostoon ensimmäisen oikean aineiston perusteella. Vaihtoehto on viedä kuvaus koodistoon.
 case class IbisOppiainekartta(koodit: Map[String, IbisOppiaine]) {
   def get(iboKoodi: String): Option[IbisOppiaine] = koodit.get(iboKoodi)

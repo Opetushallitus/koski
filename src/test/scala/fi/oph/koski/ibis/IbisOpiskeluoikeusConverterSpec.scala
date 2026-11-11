@@ -12,7 +12,7 @@ import scala.io.Source
 class IbisOpiskeluoikeusConverterSpec extends AnyFreeSpec with TestEnvironment with Matchers {
   private lazy val rivit = IbisCsvParser.parse(Source.fromInputStream(getClass.getResourceAsStream("/ibis/esimerkki.csv"), "UTF-8").mkString)._2
 
-  // TODO TOR-747: Oppiainekoodit ovat keksittyjä, kunnes IBO:n SUB-ristiviittaustiedosto on käytettävissä.
+  // TODO TOR-747: Oppiainekoodit ovat keksittyjä, kunnes IBO:n SUB cross-reference file on käytettävissä.
   private val oppiainekartta = IbisOppiainekartta(Map(
     "100001" -> IbisKieliOppiaine("A", "FI"),
     "100002" -> IbisKieliOppiaine("B", "EN"),
@@ -68,7 +68,7 @@ class IbisOpiskeluoikeusConverterSpec extends AnyFreeSpec with TestEnvironment w
       oppiaineet.head.viimeisinArvosana should be(Some("7"))
       oppiaineet.head.arviointi.toList.flatten.head.päivä should be(Some(vahvistuspäivä))
       oppiaineet.map(_.koulutusmoduuli.tunniste.koodiarvo) should be(List("A", "B", "HIS", "BIO", "MATAA", "PHY"))
-      oppiaineet.map(_.lisäaine) should be(List.fill(6)(false))
+      oppiaineet.map(_.additionalSubject) should be(List.fill(6)(false))
     }
 
     "muuntaa extended essayn aineineen ja theory of knowledgen" in {
@@ -84,7 +84,7 @@ class IbisOpiskeluoikeusConverterSpec extends AnyFreeSpec with TestEnvironment w
     }
   }
 
-  "Kaksikielinen diploma uusijalla" - {
+  "Bilingual diploma uusijalla" - {
     val oo = converter.convert(rivi("DEF456"), kohde, vahvistuspäivä).toOption.get
     val osasuoritukset = oo.suoritukset.head.osasuoritukset.toList.flatten
 
@@ -92,12 +92,12 @@ class IbisOpiskeluoikeusConverterSpec extends AnyFreeSpec with TestEnvironment w
       oo.suoritukset.head.tulos.koodiarvo should be("B")
     }
 
-    "säilyttää lisäaineen ja aiemman tutkintokerran, mutta jättää arvosanattoman oppiaineen pois" in {
+    "säilyttää additional subjectin ja aiemman tutkintokerran, mutta jättää arvosanattoman oppiaineen pois" in {
       osasuoritukset should have length 1
-      val lisäaine = osasuoritukset.head.asInstanceOf[IBDiplomanOppiaineenSuoritus]
-      lisäaine.lisäaine should be(true)
-      lisäaine.tutkintokerta.koodiarvo should be("2015N")
-      lisäaine.tutkintokerta.vuosi should be(2015)
+      val oppiaine = osasuoritukset.head.asInstanceOf[IBDiplomanOppiaineenSuoritus]
+      oppiaine.additionalSubject should be(true)
+      oppiaine.tutkintokerta.koodiarvo should be("2015N")
+      oppiaine.tutkintokerta.vuosi should be(2015)
     }
   }
 

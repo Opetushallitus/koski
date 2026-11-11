@@ -39,7 +39,7 @@ class IbisOpiskeluoikeusConverter(
     for {
       _ <- tarkistaTuotava(record)
       tulos <- koodi(record, "ibdiplomantulos", record.resultCode)
-      istunto <- tutkintokerta(record, record.session)
+      kerta <- tutkintokerta(record, record.session)
       osasuoritukset <- sequence(arvioidutOppiaineet(record).map(convertSubject(record, vahvistuspäivä)))
       opiskeluoikeus <- täydennäKoodistoYmsMerkkijonot(record, IBDiplomaOpiskeluoikeus(
         oppilaitos = Some(kohde.oppilaitos),
@@ -50,7 +50,7 @@ class IbisOpiskeluoikeusConverter(
         suoritukset = List(IBDiplomanSuoritus(
           toimipiste = kohde.oppilaitos,
           vahvistus = Some(Päivämäärävahvistus(vahvistuspäivä, kohde.oppilaitos)),
-          tutkintokerta = istunto,
+          tutkintokerta = kerta,
           kokonaispistemäärä = record.totalPoints,
           lisäpisteet = record.eeTokPoints,
           tulos = tulos,
@@ -82,7 +82,7 @@ class IbisOpiskeluoikeusConverter(
     // TODO TOR-747: Arviointipäiväksi merkitään vahvistuspäivä, koska IBIS ei kerro tulosten julkaisupäivää.
     val päivä = Some(vahvistuspäivä)
     for {
-      istunto <- tutkintokerta(record, subject.session)
+      kerta <- tutkintokerta(record, subject.session)
       osasuoritus <- subject.level match {
         case "EE" | "TK" =>
           for {
@@ -91,7 +91,7 @@ class IbisOpiskeluoikeusConverter(
             arvosana <- koodi(record, "arviointiasteikkocorerequirementsib", subject.grade)
           } yield IBDiplomanCoreSuoritus(
             koulutusmoduuli = IBDiplomanCoreOppiaine(tunniste, aine, Some(subject.code)),
-            tutkintokerta = istunto,
+            tutkintokerta = kerta,
             arviointi = Some(List(IBDiplomanCoreArviointi(arvosana, päivä))),
           )
         case "HL" | "SL" =>
@@ -101,9 +101,9 @@ class IbisOpiskeluoikeusConverter(
             arvosana <- koodi(record, "arviointiasteikkoib", subject.grade)
           } yield IBDiplomanOppiaineenSuoritus(
             koulutusmoduuli = koulutusmoduuli,
-            tutkintokerta = istunto,
+            tutkintokerta = kerta,
             arviointi = Some(List(IBDiplomanOppiaineenArviointi(arvosana, päivä))),
-            lisäaine = subject.additional,
+            additionalSubject = subject.additional,
           )
         case muu =>
           Left(IbisKonversiovirhe(record.personalCode, s"Tuntematon oppiaineen taso $muu"))

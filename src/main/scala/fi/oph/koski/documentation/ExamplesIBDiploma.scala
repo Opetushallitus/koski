@@ -18,12 +18,12 @@ object ExamplesIBDiploma {
   def oppiaineenArviointi(arvosana: String): Option[List[IBDiplomanOppiaineenArviointi]] =
     Some(List(IBDiplomanOppiaineenArviointi(Koodistokoodiviite(arvosana, "arviointiasteikkoib"), Some(vahvistuspäivä))))
 
-  def muuOppiaine(tunniste: String, taso: String, arvosana: String, lisäaine: Boolean = false): IBDiplomanOppiaineenSuoritus =
+  def muuOppiaine(tunniste: String, taso: String, arvosana: String, additionalSubject: Boolean = false): IBDiplomanOppiaineenSuoritus =
     IBDiplomanOppiaineenSuoritus(
       koulutusmoduuli = IBDiplomanMuuOppiaine(Koodistokoodiviite(tunniste, "oppiaineetib"), Koodistokoodiviite(taso, "oppiaineentasoib")),
       tutkintokerta = tutkintokerta,
       arviointi = oppiaineenArviointi(arvosana),
-      lisäaine = lisäaine,
+      additionalSubject = additionalSubject,
     )
 
   def kieliOppiaine(tunniste: String, kieli: String, taso: String, arvosana: String): IBDiplomanOppiaineenSuoritus =
