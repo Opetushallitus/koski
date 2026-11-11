@@ -22,18 +22,31 @@ export const useOutsideClick = (
   const listening = enabled && onOutsideClick !== undefined
   useEffect(() => {
     if (listening) {
-      const handler = (event: MouseEvent) => {
-        const { target } = event
+      const isOutside = (target: EventTarget | null) => {
         const containers = latestRef.current.containerRefs
           .map((containerRef) => containerRef.current)
           .filter((container) => container !== null)
-        if (
+        return (
           target instanceof Node &&
           containers.length > 0 &&
           !containers.some((container) => container.contains(target))
-        ) {
+        )
+      }
+      // Selain kohdistaa click-tapahtuman mousedownin ja mouseupin yhteiseen
+      // esivanhempaan. Kun tekstin maalaus alkaa containerin sisältä ja päättyy
+      // sen ulkopuolelle, click osuu containerin ulkopuolelle, vaikka käyttäjä
+      // ei klikannut ulos. Containerin sisältä alkanut painallus ei siksi
+      // koskaan laukaise onOutsideClickia. Näppäimistöllä tehty click tulee
+      // ilman mousedownia, ja se käsitellään pelkän kohteen perusteella.
+      let pressedInside = false
+      const onMouseDown = (event: MouseEvent) => {
+        pressedInside = !isOutside(event.target)
+      }
+      const handler = (event: MouseEvent) => {
+        if (!pressedInside && isOutside(event.target)) {
           latestRef.current.onOutsideClick?.(event)
         }
+        pressedInside = false
       }
       // Kuunnellaan capture-vaiheessa (true), koska silloin:
       // - Klikkaus, joka avasi containerin, ei sulje sitä heti. Kuuntelija
@@ -44,8 +57,12 @@ export const useOutsideClick = (
       //   oikean tuloksen.
       // - Kuuntelija saa klikkauksen, vaikka jokin komponentti kutsuisi
       //   stopPropagation()-metodia.
+      document.addEventListener('mousedown', onMouseDown, true)
       document.addEventListener('click', handler, true)
-      return () => document.removeEventListener('click', handler, true)
+      return () => {
+        document.removeEventListener('mousedown', onMouseDown, true)
+        document.removeEventListener('click', handler, true)
+      }
     }
   }, [listening])
 }
