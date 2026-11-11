@@ -2,6 +2,7 @@ package fi.oph.koski.environment
 
 import com.typesafe.config.{Config, ConfigException, ConfigFactory}
 import fi.oph.koski.config.KoskiConfigLoader
+import fi.oph.koski.huoltaja.VtjRuntimeConfig
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.should.Matchers
 
@@ -81,6 +82,10 @@ class KoskiConfigLoaderSpec extends AnyFreeSpec with Matchers {
       intercept[ConfigException] {
         KoskiConfigLoader.loadLocal(new File("tiedostoa-ei-ole.conf"))
       }
+    }
+
+    "VTJ:n paikalliseen asiakkaaseen tarvittavat avaimet ovat local.confissa" in {
+      noException should be thrownBy VtjRuntimeConfig.fromAppConfig(KoskiConfigLoader.loadLocal())
     }
 
     "local.conf ei ole luokkapolulla, joten se ei päädy pakettiin" in {
