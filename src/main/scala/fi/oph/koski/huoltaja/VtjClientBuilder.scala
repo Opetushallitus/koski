@@ -38,8 +38,10 @@ object VtjClientBuilder extends Logging {
 // 2. VtjRuntimeConfig
 // ---------------------------
 object VtjRuntimeConfig {
+  val ConfigSecretId = "vtj-kysely-config"
+
   def fromAws(
-    configSecretId: String = "vtj-kysely-config",
+    configSecretId: String = ConfigSecretId,
     keystoreSecretId: String = "vtj-kysely-keystore",
     truststoreSecretId: String = "vtj-kysely-truststore"
   ): VtjRuntimeConfig = {
