@@ -19,7 +19,11 @@ import {
   dokumentaatioValpasP
 } from '../dokumentaatio/Dokumentaatio'
 import { onlyIfHasReadAccess } from './accessCheck'
-import { raportitContentP } from '../raportit/Raportit'
+import { Raportit } from '../raportit/Raportit'
+
+// Uusi avain jokaisella navigoinnilla, jotta raporttinäkymä alkaa alusta myös
+// samaan osoitteeseen navigoitaessa
+let raportitAvattu = 0
 
 const redirectRouteTo = (path) => {
   redirectTo(path)
@@ -54,7 +58,10 @@ export const routeP = locationP
     } else if (path.includes('/koski/raportit')) {
       const match = path.match(/^\/koski\/raportit\/(.*)$/)
       const tokens = (match ? match[1].split('/') : []).map(decodeURIComponent)
-      return raportitContentP(tokens)
+      return {
+        content: <Raportit key={raportitAvattu++} polku={tokens} />,
+        title: 'Raportit'
+      }
     } else if (path === '/koski/dokumentaatio') {
       return dokumentaatioYleistäP()
     } else if (path === '/koski/dokumentaatio/tietomalli') {
