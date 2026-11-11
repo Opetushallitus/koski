@@ -4,7 +4,7 @@ import fi.oph.koski.api.misc.{OpiskeluoikeudenMitätöintiJaPoistoTestMethods, O
 import fi.oph.koski.db.KoskiTables.{KoskiOpiskeluOikeudet, PoistetutOpiskeluoikeudet, YtrOpiskeluOikeudet}
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.documentation.ExampleData.{helsinki, suomi}
-import fi.oph.koski.documentation.{AmmatillinenExampleData, ExampleData, YleissivistavakoulutusExampleData}
+import fi.oph.koski.documentation.{AhvenanmaanPerusopetusExampleData, AmmatillinenExampleData, ExampleData, YleissivistavakoulutusExampleData}
 import fi.oph.koski.henkilo.{KoskiSpecificMockOppijat, LaajatOppijaHenkilöTiedot}
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat.masterEiKoskessa
 import fi.oph.koski.json.{JsonFiles, JsonSerializer}
@@ -1036,6 +1036,12 @@ class RaportointikantaSpec
         )
         val (ps, _, _, _) = OpiskeluoikeusLoaderRowBuilder.buildKoskiSuoritusRows(oid, None, opiskeluoikeus.oppilaitos.get, opiskeluoikeus.suoritukset.head, JObject(), 1)
         ps.luokkaTaiRyhmä should equal(Some("YMP14SN"))
+      }
+
+      "Ahvenanmaan vuosiluokan suorituksen luokka haetaan oikein" in {
+        val opiskeluoikeus = AhvenanmaanPerusopetusExampleData.opiskeluoikeus
+        val (ps, _, _, _) = OpiskeluoikeusLoaderRowBuilder.buildKoskiSuoritusRows(oid, None, opiskeluoikeus.oppilaitos.get, AhvenanmaanPerusopetusExampleData.ysiluokanSuoritus, JObject(), 1)
+        ps.luokkaTaiRyhmä should equal(Some("9A"))
       }
 
 
