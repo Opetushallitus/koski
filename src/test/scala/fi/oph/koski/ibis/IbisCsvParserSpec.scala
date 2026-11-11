@@ -43,23 +43,23 @@ class IbisCsvParserSpec extends AnyFreeSpec with TestEnvironment with Matchers {
     }
 
     "käsittelee lainausmerkeissä olevat pilkut ja kahdennetut lainausmerkit" in {
-      val kurssilainen = rivit(1)
-      kurssilainen.lastName should be("Kurssi, Kalle")
-      kurssilainen.firstName should be("Kalle \"Kale\"")
-      kurssilainen.courseRef should be("BIOLOGY 00104")
-      kurssilainen.totalPoints should be(None)
-      kurssilainen.resultCode should be("")
-      kurssilainen.eeTokPoints should be(None)
+      val courseRivi = rivit(1)
+      courseRivi.lastName should be("Kurssi, Kalle")
+      courseRivi.firstName should be("Kalle \"Kale\"")
+      courseRivi.courseRef should be("BIOLOGY 00104")
+      courseRivi.totalPoints should be(None)
+      courseRivi.resultCode should be("")
+      courseRivi.eeTokPoints should be(None)
     }
 
-    "lukee lisäaineen ja aiemman tutkintokerran" in {
-      val uusija = rivit(2)
-      uusija.category should be("RETAKE")
-      uusija.resultCode should be("B")
-      uusija.subjects.head.additional should be(true)
-      uusija.subjects.head.session should be(IbisSession(2015, "NOVEMBER"))
-      uusija.subjects.head.session.koodiarvo should be("2015N")
-      uusija.subjects(1).grade should be("N")
+    "lukee additional subjectin ja aiemman tutkintokerran" in {
+      val retakeRivi = rivit(2)
+      retakeRivi.category should be("RETAKE")
+      retakeRivi.resultCode should be("B")
+      retakeRivi.subjects.head.additional should be(true)
+      retakeRivi.subjects.head.session should be(IbisSession(2015, "NOVEMBER"))
+      retakeRivi.subjects.head.session.koodiarvo should be("2015N")
+      retakeRivi.subjects(1).grade should be("N")
     }
 
     "ohittaa otsikkorivin" in {

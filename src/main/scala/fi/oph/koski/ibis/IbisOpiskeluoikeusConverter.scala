@@ -29,9 +29,9 @@ class IbisOpiskeluoikeusConverter(
   private val serializationContext = SerializationContext(KoskiSchema.schemaFactory)
   private val deserializationContext = KoskiSchema.strictDeserialization
 
-  // TODO TOR-747: Vain myönnetyt diplomat (tuloskoodit D ja B) tuodaan. Hylätyn diploman (F, oppiainetulokset myönnetty),
-  // CP:n (J, K) ja pelkkien kurssien (COURSE) käsittely on päättämättä.
-  private val tuotavatKategoriat = Set(IbisCategory.Diploma, IbisCategory.Retake)
+  // TODO TOR-747: Vain myönnetyt diplomat (tuloskoodit D ja B) tuodaan. Tuloskoodin F (Failed diploma, individual course awarded),
+  // CP:n (J, K) ja CATEGORY-arvon COURSE käsittely on päättämättä.
+  private val tuotavatCategoryArvot = Set(IbisCategory.Diploma, IbisCategory.Retake)
   private val tuotavatTulokset = Set(IbisResultCode.DiplomaAwarded, IbisResultCode.BilingualDiplomaAwarded)
 
   // vahvistuspäivä: todistuksen myöntämispäivä, jota ei ole IBIS-tiedostossa. TODO TOR-747: tuoja antaa sen eräkohtaisesti.
@@ -62,8 +62,8 @@ class IbisOpiskeluoikeusConverter(
   }
 
   private def tarkistaTuotava(record: IbisRecord): Either[IbisKonversiovirhe, Unit] = {
-    if (!tuotavatKategoriat.contains(record.category)) {
-      Left(IbisKonversiovirhe(record.personalCode, s"Kategoriaa ${record.category} ei tuoda Koskeen"))
+    if (!tuotavatCategoryArvot.contains(record.category)) {
+      Left(IbisKonversiovirhe(record.personalCode, s"CATEGORY-arvoa ${record.category} ei tuoda Koskeen"))
     } else if (!tuotavatTulokset.contains(record.resultCode)) {
       Left(IbisKonversiovirhe(record.personalCode, s"Tuloskoodia '${record.resultCode}' ei tuoda Koskeen"))
     } else {

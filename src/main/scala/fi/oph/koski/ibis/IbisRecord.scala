@@ -2,7 +2,7 @@ package fi.oph.koski.ibis
 
 import java.time.LocalDate
 
-// IBIS-tulostiedoston rivi, eli yksi ehdokasrekisteröinti. Kentät ja niiden järjestys ovat IBO:n dokumentin
+// IBIS-tulostiedoston rivi, eli yksi candidate registration. Kentät ja niiden järjestys ovat IBO:n dokumentin
 // "IB data file formats" (v1.0, 2021) muodon "CSV file new Language format (numeric subject code)" mukaiset.
 // TODO TOR-747: Dokumentti on vanha. Kenttäjärjestys ja arvot on varmistettava ensimmäisestä oikeasta aineistosta.
 case class IbisRecord(
