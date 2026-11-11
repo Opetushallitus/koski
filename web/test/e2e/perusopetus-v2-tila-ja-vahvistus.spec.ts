@@ -310,6 +310,50 @@ test.describe('Perusopetuksen uusi käyttöliittymä: tila ja vahvistus', () => 
     ).toBeVisible()
   })
 
+  test('Merkitse valmiiksi: tekstin maalaus dialogin ulkopuolelle ei sulje dialogia', async ({
+    page,
+    oppijaPage,
+    fixtures
+  }) => {
+    await fixtures.reset()
+    await oppijaPage.goto(kaisaUrl)
+    await page.getByTestId('oo.0.suoritusTabs.0.tab').click()
+
+    await page.getByTestId('oo.0.opiskeluoikeus.edit').click()
+    await page.getByTestId('oo.0.opiskeluoikeus.tila.edit.items.1.remove').click()
+    await page.getByTestId(
+      'oo.0.suoritukset.0.suorituksenVahvistus.edit.merkitseKeskeneräiseksi'
+    ).click()
+    await page.getByTestId('oo.0.opiskeluoikeus.save').click()
+    await expect(
+      page.getByTestId('oo.0.opiskeluoikeus.edit')
+    ).toBeVisible({ timeout: 15000 })
+
+    await page.getByTestId('oo.0.opiskeluoikeus.edit').click()
+    await page.getByTestId(
+      'oo.0.suoritukset.0.suorituksenVahvistus.edit.merkitseValmiiksi'
+    ).click()
+
+    const modal = page.locator('.Modal')
+    await expect(modal).toBeVisible()
+
+    // Maalaus alkaa dialogin otsikosta ja hiiri vapautetaan dialogin
+    // ulkopuolella. Selain kohdistaa click-tapahtuman yhteiseen esivanhempaan,
+    // mikä ei saa tulkkautua dialogin ulkopuolelle klikkaamiseksi.
+    const title = modal.locator('.ModalTitle')
+    const box = await title.boundingBox()
+    if (!box) throw new Error('ModalTitle ei näkyvissä')
+    await page.mouse.move(box.x + 5, box.y + box.height / 2)
+    await page.mouse.down()
+    await page.mouse.move(5, 5, { steps: 5 })
+    await page.mouse.up()
+    await expect(modal).toBeVisible()
+
+    // Oikea klikkaus dialogin ulkopuolelle sulkee sen edelleen
+    await page.mouse.click(5, 5)
+    await expect(modal).not.toBeVisible()
+  })
+
   test('Merkitse valmiiksi -nappi on disabloitu ilman myöntäjää', async ({
     page,
     oppijaPage,
