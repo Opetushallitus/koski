@@ -27,7 +27,7 @@ class DocumentationServlet(implicit val application: KoskiApplication)
     FrontendValvontaMode(application.config.getString("frontend-valvonta.mode"))
   private val virtaSources: Boolean = application.config.getBoolean("features.virtaSchemaDocumentation")
 
-  get("^/(|tietomalli|koodistot|valpas|rajapinnat/opintohallintojarjestelmat|rajapinnat/luovutuspalvelu|rajapinnat/palveluvayla-omadata|rajapinnat/massaluovutus/koulutuksenjarjestajat|rajapinnat/massaluovutus/oph|rajapinnat/massaluovutus/raportit|rajapinnat/massaluovutus/valpas|rajapinnat/oauth2/omadata)$".r)(nonce => {
+  get("^/(|tietomalli|koodistot|valpas|rajapinnat/opintohallintojarjestelmat|rajapinnat/luovutuspalvelu|rajapinnat/palveluvayla-omadata|rajapinnat/massaluovutus|rajapinnat/massaluovutus/koulutuksenjarjestajat|rajapinnat/massaluovutus/oph|rajapinnat/massaluovutus/raportit|rajapinnat/massaluovutus/valpas|rajapinnat/oauth2/omadata)$".r)(nonce => {
     htmlIndex("koski-main.js", raamit = virkailijaRaamit, allowIndexing = true, nonce = nonce)
   })
 

@@ -41,6 +41,9 @@
       .navi-item-selected;
     }
   }
+  .navi-sublink-container a {
+    padding-left: 24px;
+  }
 }
 
 .dokumentaatio-content {
@@ -331,6 +334,70 @@
       overflow-x: auto;
       padding: 0.5em;
       background: #f0f0f0;
+    }
+    h3 {
+      font-size: 1.25em;
+      font-weight: bold;
+      margin: 1.5em 0 0.5em;
+    }
+    details.doc-details {
+      margin: 0.5em 0 1em;
+      summary {
+        cursor: pointer;
+        font-weight: bold;
+      }
+      > table,
+      > pre {
+        margin-top: 0.5em;
+      }
+    }
+    .query-doc {
+      margin-bottom: 2em;
+    }
+    .toc {
+      line-height: 1.6em;
+      margin: 1em 0 2em;
+      ul {
+        margin: 0;
+        padding-left: 1.4em;
+      }
+      > ul > li {
+        margin-top: 0.4em;
+      }
+    }
+    // Formaattivälilehdet ilman javascriptiä: radiovalinnat ohjaavat näkyvää välilehteä
+    .format-tabs {
+      > input {
+        display: none;
+      }
+      > .format-tab {
+        display: none;
+        &:after {
+          content: none;
+        }
+      }
+      .format-tab-labels {
+        margin: 0.5em 0;
+        label {
+          display: inline-block;
+          padding: 4px 16px;
+          margin-right: 4px;
+          border: 1px solid #d9d9d9;
+          border-bottom: none;
+          cursor: pointer;
+          background: #f0f0f0;
+        }
+      }
+      each(range(1, 3), {
+        > input:nth-of-type(@{value}):checked ~ .format-tab:nth-of-type(@{value}) {
+          display: block;
+        }
+        > input:nth-of-type(@{value}):checked ~ .format-tab-labels label:nth-of-type(@{value}) {
+          background: @color-blue;
+          color: @color-white;
+          border-color: @color-blue;
+        }
+      });
     }
   }
 
