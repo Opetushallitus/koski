@@ -24,9 +24,25 @@ class OpiskeluoikeudenPerustiedotSpec extends AnyFreeSpec with Matchers {
     }
   }
 
+  "Opiskelijalistan Luokka/ryhmä-sarakkeessa näytetään viimeisimmän vuosiluokan luokka" - {
+    "manner-Suomen perusopetus" in {
+      perustiedot(
+        ExamplesPerusopetus.ysiluokkalaisenOpiskeluoikeus,
+        KoskiSpecificMockOppijat.ysiluokkalainen
+      ).luokka should be(Some("9C"))
+    }
+
+    "Ahvenanmaan perusopetus" in {
+      perustiedot(
+        AhvenanmaanPerusopetusExampleData.opiskeluoikeus,
+        KoskiSpecificMockOppijat.ahvenanmaanPerusoppilas
+      ).luokka should be(Some("9A"))
+    }
+  }
+
   private def suoritusTyypit(oo: Opiskeluoikeus, oppija: OppijaHenkilö): List[String] =
-    OpiskeluoikeudenPerustiedot
-      .makePerustiedot(1, oo, OppijaHenkilöWithMasterInfo(oppija, None))
-      .suoritukset
-      .map(_.tyyppi.koodiarvo)
+    perustiedot(oo, oppija).suoritukset.map(_.tyyppi.koodiarvo)
+
+  private def perustiedot(oo: Opiskeluoikeus, oppija: OppijaHenkilö): OpiskeluoikeudenPerustiedot =
+    OpiskeluoikeudenPerustiedot.makePerustiedot(1, oo, OppijaHenkilöWithMasterInfo(oppija, None))
 }
