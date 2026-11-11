@@ -14,7 +14,10 @@ trait HuollettavatRepository {
 
 object HuollettavatRepository {
   def apply(config: Config): HuollettavatRepository = {
-    if (Environment.isMockEnvironment(config) || config.getString("vtj.serviceUrl") == "mock") {
+    val serviceUrl =
+      if (Environment.usesAwsSecretsManager) VtjConfig.fromSecretsManager(VtjRuntimeConfig.ConfigSecretId).serviceUrl
+      else config.getString("vtj.serviceUrl")
+    if (Environment.isMockEnvironment(config) || serviceUrl == "mock") {
       Environment.requireMockAllowed(config, "MockHuollettavatRepository")
       new MockHuollettavatRepository
     } else {
