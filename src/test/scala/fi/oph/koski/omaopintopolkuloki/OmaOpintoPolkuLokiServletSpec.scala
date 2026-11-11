@@ -37,6 +37,11 @@ class OmaOpintoPolkuLokiServletSpec extends AnyFreeSpec with Matchers with Koski
         List(MockOrganisaatiot.stadinAmmattiopisto)
       ))
     }
+    "Näytetään AIEMMAT_OPISKELUOIKEUDET_KATSOMINEN-auditlogeja" in {
+      auditlogs(KoskiSpecificMockOppijat.aiemmatLukio).map(_.organizations.map(_.oid)) should contain theSameElementsAs(List(
+        List(MockOrganisaatiot.helsinginKaupunki, MockOrganisaatiot.stadinAmmattiopisto)
+      ))
+    }
     "Näytetään OAUTH2_KATSOMINEN_* -auditlogeja" in {
       val logs = auditlogs(KoskiSpecificMockOppijat.ylioppilasLukiolainen)
       logs should have length(1)

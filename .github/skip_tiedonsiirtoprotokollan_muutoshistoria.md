@@ -26,3 +26,4 @@ TOR-2758 - lisätty skeemaan Virta-lähdeannotaatiot (@VirtaSource/@VirtaDerived
 TOR-XXX - Scala-kääntäjän ja Scalafixin tarkistusten vaatimia koodimuutoksia skeematiedostoissa; ei muutosta skeemaan
 TOR-2773 - lisätty MUKS-osasuorituksen arviointi-kentälle kuvaus; ei muutosta skeeman rakenteeseen tai tiedonsiirtoprotokollaan
 TOR-2760 - ammatillisen yhteisten tutkinnon osien kovakoodattu lista johdettu YhteinenTutkinnonOsa-luokan annotaatiosta; ei muutosta skeemaan
+TOR-2714 - lisätty skeemaan @HiddenFromAiemmatOpiskeluoikeudet-merkintä (vankilaopetuksessa, käyttäytymisenArvio) aiemmatOpiskeluoikeudet-massaluovutuskyselyn suodatusta ja dokumentaatiota varten; ei muutosta tiedonsiirtoprotokollaan

@@ -144,46 +144,16 @@ object SuorituspalveluQuery {
     "perusopetukseenvalmistavaopetus",
   )
 
-  // Yhden oppijan opiskeluoikeus-oidit voi olla niin monta (esim. runsaasti linkitetyt henkilöt), että ne eivät
-  // mahtuisi yhteen audit-lokiviestiin ilman että LogConfiguration.logMessageMaxLength (5000 merkkiä) ylittyy ja
-  // AuditLogger heittää poikkeuksen (joka kaataisi koko massaluovutuksen). Pilkotaan oidit korkeintaan tämän
-  // kokoisiin ryhmiin, jolloin yksi viesti pysyy reilusti rajan alla (100 oidia ~2800 merkkiä).
-  private[suorituspalvelu] val auditLogOiditPerViesti = 100
-
   def auditLog(
     oppijaOid: String,
     opiskeluoikeusOidit: Seq[String],
     versionumero: Option[Int] = None,
     massaluovutuksenKentät: AuditLogMessage.ExtraFields = Map.empty,
   )(implicit user: Session): Unit =
-    if (opiskeluoikeusOidit.isEmpty) {
-      logAuditMessage(oppijaOid, None, versionumero, massaluovutuksenKentät)
-    } else {
-      opiskeluoikeusOidit
-        .grouped(auditLogOiditPerViesti)
-        .foreach(ryhmä => logAuditMessage(oppijaOid, Some(ryhmä.mkString(",")), versionumero, massaluovutuksenKentät))
-    }
-
-  private def logAuditMessage(
-    oppijaOid: String,
-    opiskeluoikeusOidit: Option[String],
-    versionumero: Option[Int],
-    massaluovutuksenKentät: AuditLogMessage.ExtraFields,
-  )(implicit user: Session): Unit = {
-    val base: AuditLogMessage.ExtraFields = Map(KoskiAuditLogMessageField.oppijaHenkiloOid -> oppijaOid)
-    val withOidit = opiskeluoikeusOidit match {
-      case Some(oidit) => base + (KoskiAuditLogMessageField.opiskeluoikeusOid -> oidit)
-      case None => base
-    }
-    val fields = withOidit ++ versionumero.map(v =>
-      Map(KoskiAuditLogMessageField.opiskeluoikeusVersio -> v.toString)
-    ).getOrElse(Map.empty[AuditLogMessageField, String])
-    AuditLog.log(
-      KoskiAuditLogMessage(
-        KoskiOperation.SUORITUSPALVELU_OPISKELUOIKEUS_HAKU,
-        user,
-        fields ++ massaluovutuksenKentät
-      )
+    OpiskeluoikeusOiditAuditLog.log(
+      KoskiOperation.SUORITUSPALVELU_OPISKELUOIKEUS_HAKU,
+      oppijaOid,
+      opiskeluoikeusOidit,
+      versionumero.map(v => Map[AuditLogMessageField, String](KoskiAuditLogMessageField.opiskeluoikeusVersio -> v.toString)).getOrElse(Map.empty) ++ massaluovutuksenKentät,
     )
-  }
 }
