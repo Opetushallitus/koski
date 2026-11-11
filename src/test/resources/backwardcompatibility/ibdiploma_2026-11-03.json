@@ -167,7 +167,7 @@
           "päivä" : "2016-07-06",
           "hyväksytty" : true
         } ],
-        "lisäaine" : false,
+        "additionalSubject" : false,
         "tyyppi" : {
           "koodiarvo" : "ibdiplomanoppiaine",
           "koodistoUri" : "suorituksentyyppi"
@@ -202,7 +202,7 @@
           "päivä" : "2016-07-06",
           "hyväksytty" : true
         } ],
-        "lisäaine" : false,
+        "additionalSubject" : false,
         "tyyppi" : {
           "koodiarvo" : "ibdiplomanoppiaine",
           "koodistoUri" : "suorituksentyyppi"
@@ -233,7 +233,7 @@
           "päivä" : "2016-07-06",
           "hyväksytty" : true
         } ],
-        "lisäaine" : false,
+        "additionalSubject" : false,
         "tyyppi" : {
           "koodiarvo" : "ibdiplomanoppiaine",
           "koodistoUri" : "suorituksentyyppi"
@@ -264,7 +264,7 @@
           "päivä" : "2016-07-06",
           "hyväksytty" : true
         } ],
-        "lisäaine" : false,
+        "additionalSubject" : false,
         "tyyppi" : {
           "koodiarvo" : "ibdiplomanoppiaine",
           "koodistoUri" : "suorituksentyyppi"
@@ -295,7 +295,7 @@
           "päivä" : "2016-07-06",
           "hyväksytty" : true
         } ],
-        "lisäaine" : false,
+        "additionalSubject" : false,
         "tyyppi" : {
           "koodiarvo" : "ibdiplomanoppiaine",
           "koodistoUri" : "suorituksentyyppi"
@@ -326,7 +326,7 @@
           "päivä" : "2016-07-06",
           "hyväksytty" : true
         } ],
-        "lisäaine" : false,
+        "additionalSubject" : false,
         "tyyppi" : {
           "koodiarvo" : "ibdiplomanoppiaine",
           "koodistoUri" : "suorituksentyyppi"
