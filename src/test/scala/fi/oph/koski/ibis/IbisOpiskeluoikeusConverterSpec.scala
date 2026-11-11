@@ -35,7 +35,7 @@ class IbisOpiskeluoikeusConverterSpec extends AnyFreeSpec with TestEnvironment w
 
   private def rivi(personalCode: String): IbisRecord = rivit.find(_.personalCode == personalCode).get
 
-  "Myönnetty diploma" - {
+  "Diploma awarded" - {
     val oo = converter.convert(rivi("ABC123"), kohde, vahvistuspäivä).toOption.get
     val suoritus = oo.suoritukset.head
 
@@ -84,7 +84,7 @@ class IbisOpiskeluoikeusConverterSpec extends AnyFreeSpec with TestEnvironment w
     }
   }
 
-  "Bilingual diploma uusijalla" - {
+  "Bilingual diploma, RETAKE" - {
     val oo = converter.convert(rivi("DEF456"), kohde, vahvistuspäivä).toOption.get
     val osasuoritukset = oo.suoritukset.head.osasuoritukset.toList.flatten
 
@@ -102,13 +102,13 @@ class IbisOpiskeluoikeusConverterSpec extends AnyFreeSpec with TestEnvironment w
   }
 
   "Ei tuotavat rivit" - {
-    "pelkkä kurssi hylätään" in {
-      converter.convert(rivi("XYZ999"), kohde, vahvistuspäivä) should be(Left(IbisKonversiovirhe("XYZ999", "Kategoriaa COURSE ei tuoda Koskeen")))
+    "CATEGORY COURSE hylätään" in {
+      converter.convert(rivi("XYZ999"), kohde, vahvistuspäivä) should be(Left(IbisKonversiovirhe("XYZ999", "CATEGORY-arvoa COURSE ei tuoda Koskeen")))
     }
 
-    "hylätty diploma hylätään" in {
-      val hylätty = rivi("ABC123").copy(resultCode = IbisResultCode.FailedDiploma)
-      converter.convert(hylätty, kohde, vahvistuspäivä) should be(Left(IbisKonversiovirhe("ABC123", "Tuloskoodia 'F' ei tuoda Koskeen")))
+    "failed diploma hylätään" in {
+      val failedDiploma = rivi("ABC123").copy(resultCode = IbisResultCode.FailedDiploma)
+      converter.convert(failedDiploma, kohde, vahvistuspäivä) should be(Left(IbisKonversiovirhe("ABC123", "Tuloskoodia 'F' ei tuoda Koskeen")))
     }
 
     "tuntematon oppiainekoodi hylkää koko rivin" in {
