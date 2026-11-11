@@ -12,6 +12,10 @@ const replacementRules: ScreenshotTextReplacementRule[] = [
       '[data-testid$=".opiskeluoikeus.oid"], .opiskeluoikeus .id .value, .opiskeluoikeus-button .id .value',
     pattern: '1\\.2\\.246\\.562\\.15\\.\\d{11}',
     replacement: '1.2.246.562.15.00000000001'
+  },
+  {
+    selector: '.update-time .datetime',
+    replacement: '1.1.2026 12:00'
   }
 ]
 
