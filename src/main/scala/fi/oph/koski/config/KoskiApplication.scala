@@ -1,6 +1,6 @@
 package fi.oph.koski.config
 
-import com.typesafe.config.{Config, ConfigFactory}
+import com.typesafe.config.Config
 import fi.oph.koski.aktiivisetjapaattyneetopinnot.AktiivisetJaPäättyneetOpinnotService
 import fi.oph.koski.cache.CacheManager
 import fi.oph.koski.db.{KoskiDatabase, KoskiTables, RaportointiDatabaseConfig, RaportointiGenerointiDatabaseConfig, ValpasDatabaseConfig}
@@ -66,7 +66,7 @@ import java.util.UUID
 import scala.concurrent.Future
 
 object KoskiApplication {
-  lazy val defaultConfig = ConfigFactory.load
+  def defaultConfig: Config = KoskiConfigLoader.config
 
   def apply: KoskiApplication = apply(defaultConfig)
 
@@ -89,7 +89,7 @@ class KoskiApplication(
   lazy val tutkintoRepository = TutkintoRepository(ePerusteet, koodistoViitePalvelu)
   lazy val oppilaitosRepository = OppilaitosRepository(config, organisaatioRepository)
   lazy val koodistoPalvelu = KoodistoPalvelu.apply(config)
-  lazy val koodistoViitePalvelu = KoodistoViitePalvelu(config, koodistoPalvelu)
+  lazy val koodistoViitePalvelu = KoodistoViitePalvelu(koodistoPalvelu)
   lazy val validatingAndResolvingExtractor = new ValidatingAndResolvingExtractor(koodistoViitePalvelu, organisaatioRepository)
   lazy val opintopolkuHenkilöFacade = OpintopolkuHenkilöFacade(config, masterDatabase.db, hetu, fixtureCreator, perustiedotRepository, perustiedotIndexer)
   lazy val käyttöoikeusRepository = new KäyttöoikeusRepository(organisaatioRepository, directoryClient)

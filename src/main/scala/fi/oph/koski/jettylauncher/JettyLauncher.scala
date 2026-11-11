@@ -24,7 +24,7 @@ object JettyLauncher extends App with Logging {
 
   private val globalPort = System.getProperty("koski.port", "7021").toInt
 
-  private val config: Config = KoskiConfigLoader.load()
+  private val config: Config = KoskiConfigLoader.config
 
   logger.info(s"Starting koski in ${Environment.currentEnvironment(config)}")
 

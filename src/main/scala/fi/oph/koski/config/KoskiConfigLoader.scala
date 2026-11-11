@@ -5,7 +5,8 @@ import com.typesafe.config.{Config, ConfigFactory}
 import fi.oph.koski.log.Logging
 
 object KoskiConfigLoader extends Logging {
-  def load(): Config =
+  // Ladataan kerran, jotta kaikki käyttävät samaa konfiguraatiota ja pilvessä AppConfig haetaan vain yhdellä AWS-kutsulla.
+  lazy val config: Config =
     if (Environment.usesAwsAppConfig) loadFromAppConfig() else ConfigFactory.load()
 
   private def loadFromAppConfig(): Config = {
