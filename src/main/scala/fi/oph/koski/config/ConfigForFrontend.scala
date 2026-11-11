@@ -19,6 +19,7 @@ case class Rajapäivät(
   ibLaajuusOpintopisteinäAlkaen: String,
   diaLaajuusOpintopisteinäAlkaen: String,
   kielitutkintotodistusAikaisinAlkamispäivä: String,
+  vstLäsnäTilaSiirrettävissäAlkaen: String,
 )
 
 object Rajapäivät {
@@ -26,6 +27,7 @@ object Rajapäivät {
     ibLaajuusOpintopisteinäAlkaen = dateString(config, "validaatiot.ibLaajuudetOpintopisteinäAlkaen"),
     diaLaajuusOpintopisteinäAlkaen = dateString(config, "validaatiot.diaLaajuudetOpintopisteinäAlkaen"),
     kielitutkintotodistusAikaisinAlkamispäivä = dateString(config, "todistus.yleinenKielitutkinto.earliestDate"),
+    vstLäsnäTilaSiirrettävissäAlkaen = dateString(config, "validaatiot.vstVapaatavoitteinenJaOsaamismerkkiLasnaTilaSiirrettavissaAlkaen"),
   )
 
   // Tarkastaa että päivämäärä on validi ja varmistaa sen formaatin frontin ymmärtämässä muodossa
