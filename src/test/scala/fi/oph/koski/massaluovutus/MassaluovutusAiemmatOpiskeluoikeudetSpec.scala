@@ -2,7 +2,7 @@ package fi.oph.koski.massaluovutus
 
 import com.typesafe.config.ConfigValueFactory.fromAnyRef
 import fi.oph.koski.api.misc.OpiskeluoikeusTestMethodsAmmatillinen
-import fi.oph.koski.config.KoskiApplication
+import fi.oph.koski.config.{Environment, KoskiApplication}
 import fi.oph.koski.documentation.{AmmatillinenExampleData, ExampleData, ExamplesEsiopetus, ExamplesEuropeanSchoolOfHelsinki, ExamplesInternationalSchool, ExamplesTutkintokoulutukseenValmentavaKoulutus, LukioExampleData, PerusopetusExampleData}
 import fi.oph.koski.schema.{EuropeanSchoolOfHelsinkiOpiskeluoikeudenTila, EuropeanSchoolOfHelsinkiOpiskeluoikeusjakso, InternationalSchoolOpiskeluoikeudenTila, InternationalSchoolOpiskeluoikeusjakso, Oppilaitos}
 import fi.oph.koski.henkilo.{KoskiSpecificMockOppijat, OppijaHenkilö}
@@ -150,7 +150,7 @@ class MassaluovutusAiemmatOpiskeluoikeudetSpec extends AnyFreeSpec with Massaluo
   "Aiemmat opiskeluoikeudet" - {
     "Käyttöoikeudet ja parametrit" - {
       "Ei ole käytössä tuotantoympäristössä" in {
-        val tuotantoConfig = app.config.withValue("opintopolku.virkailija.url", fromAnyRef("https://virkailija.opintopolku.fi"))
+        val tuotantoConfig = app.config.withValue("env", fromAnyRef(Environment.Prod))
         implicit val session = MockUsers.paakayttaja.toKoskiSpecificSession(app.käyttöoikeusRepository)
         query.queryAllowed(KoskiApplication(tuotantoConfig)) should be(false)
         query.queryAllowed(app) should be(true)
