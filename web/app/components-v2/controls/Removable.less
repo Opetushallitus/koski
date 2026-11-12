@@ -22,3 +22,10 @@
     flex-grow: 0;
   }
 }
+
+@supports selector(:has(*)) {
+  // stylelint-disable-next-line plugin/no-unsupported-browser-features -- ilman tukea hiiri ei korosta poistettavaa sisältöä; hyväksyttävä heikennys
+  .Removable:has(> .IconButton:hover) > .Removable__content {
+    outline: 1px solid #aeaeae;
+  }
+}

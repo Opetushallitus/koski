@@ -104,6 +104,10 @@ export class LukioOpiskeluoikeus {
     )
   }
 
+  pakollinenCheckbox(juuri: Locator): Locator {
+    return this.kenttä('pakollinen', juuri).getByRole('checkbox')
+  }
+
   // Laajuus muuttuu muokattavaksi inline-syötteeksi ainoastaan erityisenä
   // tutkintona suoritetulle oppiaineelle (LukionOppiaineEditor.jsx:
   // shouldEditLaajuus) - muulloin laajuus lasketaan kursseista eikä sitä voi

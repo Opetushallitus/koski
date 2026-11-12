@@ -31,7 +31,7 @@ import {
 } from '../components-v2/controls/LocalizedTestField'
 import { Arviointi } from '../types/fi/oph/koski/schema/Arviointi'
 import { LaajuusOpintopisteissä } from '../types/fi/oph/koski/schema/LaajuusOpintopisteissa'
-import { parasArviointi } from '../util/arvioinnit'
+import { parasArviointi, viimeisinArviointi } from '../util/arvioinnit'
 import { suoritusValmis } from '../util/suoritus'
 import {
   CHARCODE_KESKEN,
@@ -68,12 +68,27 @@ import { LukionUskonto2019 } from '../types/fi/oph/koski/schema/LukionUskonto201
 import { LukionMuuValtakunnallinenOppiaine2019 } from '../types/fi/oph/koski/schema/LukionMuuValtakunnallinenOppiaine2019'
 import { FlatButton } from '../components-v2/controls/FlatButton'
 import { UusiLukionModuuli } from './UusiLukionModuuli'
-import { BooleanEdit } from '../components-v2/opiskeluoikeus/BooleanField'
-import { LaajuusOpintopisteissäEdit } from '../components-v2/opiskeluoikeus/LaajuusField'
+import {
+  BooleanEdit,
+  BooleanView
+} from '../components-v2/opiskeluoikeus/BooleanField'
+import {
+  LaajuusOpintopisteissäEdit,
+  LaajuusView
+} from '../components-v2/opiskeluoikeus/LaajuusField'
 import {
   OsaamisenTunnustusEdit,
   OsaamisenTunnustusView
 } from '../components-v2/opiskeluoikeus/TunnustusField'
+import { DateView } from '../components-v2/controls/DateField'
+import {
+  KeyValueTable,
+  KeyValueRow
+} from '../components-v2/containers/KeyValueTable'
+import {
+  PositionalPopup,
+  PositionalPopupHolder
+} from '../components-v2/containers/PositionalPopup'
 import { OsaamisenTunnustaminen } from '../types/fi/oph/koski/schema/OsaamisenTunnustaminen'
 import {
   isMuidenLukioOpintojenSuoritus2019,
@@ -87,6 +102,18 @@ import { UusiLukionMuuSuoritusModuuli } from './UusiLukionMuuSuoritusModuuli'
 type LukionOppiaineetProps = {
   form: FormModel<LukionOpiskeluoikeus>
   päätasonSuoritus: ActivePäätasonSuoritus<LukionOpiskeluoikeus>
+}
+
+// "Tila"/"Poista"-sarakkeiden otsikot ovat vain kuvakkeita (ei näkyvää
+// tekstiä) - axe-core (empty-table-header) vaatii oikean, näkyvän-
+// ruudunlukijalle tekstisisällön, pelkkä aria-label th:lla ei riitä.
+const VISUALLY_HIDDEN: React.CSSProperties = {
+  position: 'absolute',
+  width: 1,
+  height: 1,
+  overflow: 'hidden',
+  clip: 'rect(0, 0, 0, 0)',
+  whiteSpace: 'nowrap'
 }
 
 type ArviointiLike = {
@@ -155,11 +182,31 @@ const itemArviointi = (item: LaajuusArvioitavaItem) =>
 const itemLaajuusArvo = (item: LaajuusArvioitavaItem): number =>
   item.koulutusmoduuli.laajuus?.arvo ?? 1
 
+// "Arvioitu" (kokonaismäärä) ja "Hyväksytysti arvioitu" katsovat eri
+// arviointia vanhassa käyttöliittymässä (lukio.js:
+// arvioidutOsasuoritukset/hyväksytystiArvioidutOsasuoritukset) - tämä EI ole
+// vahinko, vaan tarkoituksellista: "arvioitu" kertoo onko osasuoritus ylipäätään
+// käsitelty VIIMEISIMMÄN arvosanan perusteella (jottei esim. korjattu/uusittu
+// arvosana näy vielä arvioimattomana), kun taas "hyväksytysti arvioitu" katsoo
+// PARASTA arvosanaa (jottei esim. kesken-jäänyt uusintayritys pilaa aiemmin
+// saatua hyväksyttyä arvosanaa). Molemmissa "O" (osallistunut, ei arvioitu)
+// suljetaan pois - se ei ole arvioimaton (undefined), mutta ei myöskään
+// lasketa arvioiduksi.
+const ARVOSANA_OSALLISTUNUT = 'O'
+const itemViimeisinArvosana = (
+  item: LaajuusArvioitavaItem
+): string | undefined =>
+  viimeisinArviointi(item.arviointi as Arviointi[] | undefined)?.arvosana
+    .koodiarvo
+
 const arvioituLaajuus = (
   items: LaajuusArvioitavaItem[]
 ): { arvioitu: number; hyväksytysti: number } => {
-  const arvioidut = items.filter((i) => itemArviointi(i) !== undefined)
-  const hyväksytyt = arvioidut.filter((i) =>
+  const arvioidut = items.filter((i) => {
+    const arvosana = itemViimeisinArvosana(i)
+    return arvosana !== undefined && arvosana !== ARVOSANA_OSALLISTUNUT
+  })
+  const hyväksytyt = items.filter((i) =>
     isHyväksytty(itemArviointi(i) as ArviointiLike | undefined)
   )
   return {
@@ -264,7 +311,9 @@ export const LukionOppiaineet: React.FC<LukionOppiaineetProps> = ({
       <table className="LukionOppiaineet__taulukko">
         <thead>
           <tr>
-            <th className="LukionOppiaineet__tila" />
+            <th className="LukionOppiaineet__tila">
+              <span style={VISUALLY_HIDDEN}>{t('Tila')}</span>
+            </th>
             <th className="LukionOppiaineet__oppiaine">{t('Oppiaine')}</th>
             <th className="LukionOppiaineet__laajuus">
               {t('Arvioitu (opintopistettä)')}
@@ -273,7 +322,11 @@ export const LukionOppiaineet: React.FC<LukionOppiaineetProps> = ({
               {t('Hyväksytysti arvioitu (opintopistettä)')}
             </th>
             <th className="LukionOppiaineet__arvosana">{t('Arvosana')}</th>
-            {form.editMode && <th className="LukionOppiaineet__poisto" />}
+            {form.editMode && (
+              <th className="LukionOppiaineet__poisto">
+                <span style={VISUALLY_HIDDEN}>{t('Poista')}</span>
+              </th>
+            )}
           </tr>
         </thead>
         <TestIdLayer id="osasuoritukset">
@@ -374,6 +427,39 @@ export const LukionOppiaineet: React.FC<LukionOppiaineetProps> = ({
   )
 }
 
+// Jaettu oppiaineen ja kurssin/moduulin pakollinen-/suorituskieli-kenttien
+// kesken (OppiaineRivi/KurssiLista) - vain itse FormField on yhteinen,
+// kutsupaikat vastaavat itse näkyvyysehdoistaan ja ympäröivästä
+// div/span-kääreestään, koska ne eroavat tasojen välillä.
+const PakollinenField: React.FC<{
+  form: FormModel<LukionOpiskeluoikeus>
+  path: FormOptic<LukionOpiskeluoikeus, boolean>
+}> = ({ form, path }) => (
+  <FormField
+    form={form}
+    path={path}
+    view={() => null}
+    edit={BooleanEdit}
+    editProps={{ label: t('Pakollinen') }}
+    testId="pakollinen"
+  />
+)
+
+const SuorituskieliField: React.FC<{
+  form: FormModel<LukionOpiskeluoikeus>
+  path: FormOptic<LukionOpiskeluoikeus, Koodistokoodiviite<'kieli'> | undefined>
+}> = ({ form, path }) => (
+  <FormField
+    form={form}
+    path={path}
+    optional
+    view={KoodistoViewSpan}
+    edit={KoodistoEdit}
+    editProps={{ koodistoUri: 'kieli', zeroValueOption: true }}
+    testId="suorituskieli"
+  />
+)
+
 type OsasuoritusRivi =
   | { kind: 'oppiaine'; suoritus: LukionOppiaineenSuoritus2019; index: number }
   | {
@@ -434,13 +520,9 @@ const OppiaineRivi: React.FC<{
         />
         {form.editMode && (
           <div className="LukionOppiaineet__pakollinen">
-            <FormField
+            <PakollinenField
               form={form}
               path={oppiainePath.prop('koulutusmoduuli').prop('pakollinen')}
-              view={() => null}
-              edit={BooleanEdit}
-              editProps={{ label: t('Pakollinen') }}
-              testId="pakollinen"
             />
           </div>
         )}
@@ -480,14 +562,9 @@ const OppiaineRivi: React.FC<{
           <div className="LukionOppiaineet__suorituskieli">
             {t('Suorituskieli')}
             {': '}
-            <FormField
+            <SuorituskieliField
               form={form}
               path={oppiainePath.prop('suorituskieli')}
-              optional
-              view={KoodistoViewSpan}
-              edit={KoodistoEdit}
-              editProps={{ koodistoUri: 'kieli', zeroValueOption: true }}
-              testId="suorituskieli"
             />
           </div>
         )}
@@ -590,9 +667,122 @@ const OppiaineFootnoteHints: React.FC<{
 // trait skeemassa, jolle ei ole TS-tyyppiä valmiiksi generoituna).
 type KurssiData = {
   $class: string
-  koulutusmoduuli: { tunniste: { koodiarvo: string; nimi?: LocalizedString } }
+  koulutusmoduuli: {
+    tunniste: { koodiarvo: string; nimi?: LocalizedString }
+    pakollinen: boolean
+    laajuus: LaajuusOpintopisteissä
+    kuvaus?: LocalizedString
+  }
   arviointi?: Arviointi[]
   tunnustettu?: OsaamisenTunnustaminen
+  suorituskieli?: Koodistokoodiviite<'kieli'>
+}
+
+// Vanhan käyttöliittymän kurssi/KurssiEditor.jsx näyttää kurssin
+// lisätiedot (Nimi/Laajuus/Pakollinen/Arvosana/Arviointipäivä/...)
+// hiirellä osoittamalla avautuvassa popupissa katselutilassa - sama
+// tieto, jota lukio-v2:n rivillä ei aiemmin näkynyt lainkaan (laajuus
+// puuttui kokonaan, loput vain kun jo asetettu). Muokkaustilassa popupia
+// ei tarvita, koska pakollinen/suorituskieli/tunnustettu ovat jo omina
+// muokattavina kenttinään rivillä - siksi naytaPopup={!form.editMode}.
+const KurssiInfoPopup: React.FC<{
+  kurssi: KurssiData
+  paikallinen: boolean
+}> = ({ kurssi, paikallinen }) => {
+  const paras = parasArviointi(kurssi.arviointi as Arviointi[] | undefined)
+  return (
+    <KeyValueTable className="KurssiInfoPopup">
+      <KeyValueRow localizableLabel="Nimi" innerKeyValueTable>
+        <TestIdText id="popup.nimi">
+          {t(kurssi.koulutusmoduuli.tunniste.nimi)}
+        </TestIdText>
+      </KeyValueRow>
+      <KeyValueRow localizableLabel="Laajuus" innerKeyValueTable>
+        <LaajuusView
+          value={kurssi.koulutusmoduuli.laajuus}
+          testId="popup.laajuus"
+        />
+      </KeyValueRow>
+      <KeyValueRow localizableLabel="Pakollinen" innerKeyValueTable>
+        <BooleanView
+          value={kurssi.koulutusmoduuli.pakollinen}
+          testId="popup.pakollinen"
+        />
+      </KeyValueRow>
+      {kurssi.suorituskieli && (
+        <KeyValueRow localizableLabel="Suorituskieli" innerKeyValueTable>
+          <KoodistoViewSpan
+            value={kurssi.suorituskieli}
+            koodistoUri="kieli"
+            testId="popup.suorituskieli"
+          />
+        </KeyValueRow>
+      )}
+      {paras && (
+        <>
+          <KeyValueRow localizableLabel="Arvosana" innerKeyValueTable>
+            <TestIdText id="popup.arvosana">
+              {paras.arvosana.koodiarvo}
+            </TestIdText>
+          </KeyValueRow>
+          <KeyValueRow localizableLabel="Arviointipäivä" innerKeyValueTable>
+            <DateView
+              value={(paras as any).päivä}
+              testId="popup.arviointipaiva"
+            />
+          </KeyValueRow>
+        </>
+      )}
+      {/* Tunnustettu jätetään popupin ulkopuolelle: OsaamisenTunnustusView
+          kiinnittää "selite"-osan testitunnisteensa aina sisäisesti riippumatta
+          annetusta testId-propista, joten se törmäisi rivillä jo olevan
+          (muokkaustilassa/kun asetettu näkyvän) inline-kentän kanssa saman
+          kurssin TestIdLayerin sisällä - ks. lukio2019-moduulin-osaamisen-
+          tunnustaminen.spec.ts, joka löysi tämän. Tieto ei katoa: se näkyy jo
+          inline-kenttänä aina kun tunnustettu on asetettu. */}
+      {paikallinen && kurssi.koulutusmoduuli.kuvaus && (
+        <KeyValueRow localizableLabel="Kuvaus" innerKeyValueTable>
+          <TestIdText id="popup.kuvaus">
+            {t(kurssi.koulutusmoduuli.kuvaus)}
+          </TestIdText>
+        </KeyValueRow>
+      )}
+    </KeyValueTable>
+  )
+}
+
+const KurssiTunnisteJaInfoPopup: React.FC<{
+  kurssi: KurssiData
+  paikallinen: boolean
+  naytaPopup: boolean
+}> = ({ kurssi, paikallinen, naytaPopup }) => {
+  const [auki, setAuki] = useState(false)
+  const tunniste = (
+    <span
+      className="tunniste"
+      title={t(kurssi.koulutusmoduuli.tunniste.nimi)}
+      onMouseEnter={naytaPopup ? () => setAuki(true) : undefined}
+      onMouseLeave={naytaPopup ? () => setAuki(false) : undefined}
+    >
+      {kurssi.koulutusmoduuli.tunniste.koodiarvo}
+    </span>
+  )
+
+  if (!naytaPopup) return tunniste
+
+  return (
+    <PositionalPopupHolder>
+      {tunniste}
+      <PositionalPopup open={auki} onDismiss={() => setAuki(false)}>
+        {/* Rakennetaan popupin sisältö vasta auetessa - muuten jokaisen
+            kurssin KurssiInfoPopup rakennettaisiin heti katselutilan
+            alkulatauksella (yleensä 35-60 kurssia), vaikka se näytetään
+            kerrallaan korkeintaan yksi. PositionalPopup ei muutenkaan
+            poista lapsia DOM:sta suljettuna, pelkkä CSS piilottaa ne. */}
+        {auki && <KurssiInfoPopup kurssi={kurssi} paikallinen={paikallinen} />}
+      </PositionalPopup>
+    </PositionalPopupHolder>
+  )
 }
 
 // Jaettu sekä oppiaineen (OppiaineRivi) että lukiodiplomien/muiden
@@ -654,12 +844,11 @@ function KurssiLista<
             return (
               <TestIdLayer id={i} key={i}>
                 <li className="kurssi">
-                  <span
-                    className="tunniste"
-                    title={t(kurssi.koulutusmoduuli.tunniste.nimi)}
-                  >
-                    {kurssi.koulutusmoduuli.tunniste.koodiarvo}
-                  </span>
+                  <KurssiTunnisteJaInfoPopup
+                    kurssi={kurssi}
+                    paikallinen={paikallinen}
+                    naytaPopup={!form.editMode}
+                  />
                   {paikallinen && (
                     <sup className="footnote-hint">{PAIKALLINEN_HINT}</sup>
                   )}
@@ -690,6 +879,24 @@ function KurssiLista<
                       testId="arvosana"
                     />
                   </div>
+                  {form.editMode && (
+                    <PakollinenField
+                      form={form}
+                      path={kurssiPath
+                        .prop('koulutusmoduuli')
+                        .prop('pakollinen')}
+                    />
+                  )}
+                  {(form.editMode || kurssi.suorituskieli) && (
+                    <span className="suorituskieli">
+                      {t('Suorituskieli')}
+                      {': '}
+                      <SuorituskieliField
+                        form={form}
+                        path={kurssiPath.prop('suorituskieli')}
+                      />
+                    </span>
+                  )}
                   {(form.editMode || kurssi.tunnustettu) && (
                     <FormField
                       form={form}
@@ -963,14 +1170,18 @@ const LISATTAVAT_VALTAKUNNALLISET_KOODIARVOT = [
   'KT'
 ]
 
+// Pakollinen: true vastaa vanhan UI:n UusiOppiaineDropdown.jsx:n
+// setPakollisuus-ylikirjoitusta ("Lisää oppiaine" asettaa pakollinen=true
+// kaikille uusille oppiaineille, myös paikallisille), ei kunkin tyypin
+// omaa skeemaoletusta.
 const uusiValtakunnallinenLukionOppiaine = (
   tunniste: Koodistokoodiviite<'koskioppiaineetyleissivistava'>
 ) =>
   tunniste.koodiarvo === 'KT'
-    ? LukionUskonto2019({ tunniste: tunniste as any, pakollinen: false })
+    ? LukionUskonto2019({ tunniste: tunniste as any, pakollinen: true })
     : LukionMuuValtakunnallinenOppiaine2019({
         tunniste: tunniste as any,
-        pakollinen: false
+        pakollinen: true
       })
 
 const UUSI_PAIKALLINEN_OPPIAINE_KEY = 'uusi-paikallinen-oppiaine'
@@ -1043,7 +1254,10 @@ const UusiLukionOppiaine: React.FC<{
         koulutusmoduuli: PaikallinenLukionOppiaine2019({
           tunniste: PaikallinenKoodi({ koodiarvo: '', nimi: finnish('') }),
           kuvaus: finnish(''),
-          pakollinen: false
+          // Vanha UI ylikirjoittaa pakollinen=true myös paikallisille
+          // oppiaineille (setPakollisuus), vaikka skeeman oma oletus on
+          // false - ks. uusiValtakunnallinenLukionOppiaine.
+          pakollinen: true
         })
       })
       form.updateAt(osasuorituksetPath, (os) => appendOptional(newSuoritus)(os))
@@ -1118,6 +1332,17 @@ const OppiaineNimi: React.FC<{
         PaikallinenLukionOppiaine2019
       >)
     : undefined
+  // Vanhan UI:n LukionOppiaine.jsx:n Nimi-fragmentti: ", valinnainen" näytetään
+  // aina paitsi kun nimen tilalla on jo oma kieli-/oppimäärä-/koodi-dropdown
+  // tai -tekstikenttä muokkaustilassa (kieliaine, matematiikka tai paikallinen
+  // oppiaine - kukin oma renderöintipolkunsa alla).
+  const nimiKorvattuMuokkauskentällä =
+    form.editMode &&
+    (!!paikallinenPath ||
+      isLukionMatematiikka2019(suoritus.koulutusmoduuli) ||
+      !!koodistoUri)
+  const näytäValinnainen =
+    !nimiKorvattuMuokkauskentällä && !suoritus.koulutusmoduuli.pakollinen
 
   return (
     <>
@@ -1179,6 +1404,7 @@ const OppiaineNimi: React.FC<{
             />
           </>
         )}
+        {näytäValinnainen && `, ${t('valinnainen')}`}
       </TestIdText>
       {paikallinenPath &&
         (form.editMode || t(paikallinenKoulutusmoduuli!.kuvaus)) && (
@@ -1188,7 +1414,7 @@ const OppiaineNimi: React.FC<{
               path={paikallinenPath.prop('kuvaus')}
               view={LocalizedTextView}
               edit={LocalizedTextEdit}
-              editProps={{ large: true }}
+              editProps={{ large: true, ariaLabel: t('Kuvaus') }}
               testId="paikallinenKuvaus"
             />
           </div>

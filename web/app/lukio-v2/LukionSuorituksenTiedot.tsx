@@ -728,28 +728,35 @@ const OmanÄidinkielenOpintojenOsasuorituksetEditList: React.FC<{
                   testId="suorituskieli"
                 />
               </KeyValueRow>
-              <KeyValueRow localizableLabel="Arvosana">
-                <FormField
-                  form={form}
-                  path={kurssiPath.prop('arviointi')}
-                  optional
-                  view={ParasArvosanaKoodiarvoView}
-                  edit={ParasArvosanaEdit}
-                  editProps={{
-                    suoritusClassName: osasuoritus.$class,
-                    format: koodiarvoOnly
-                  }}
-                  testId="arvosana"
-                />
-              </KeyValueRow>
-              <KeyValueRow localizableLabel="Arviointipäivä">
-                <FormField
-                  form={form}
-                  path={kurssiPath.prop('arviointi')}
-                  optional
-                  view={ParasArvosanaPäiväView}
-                  testId="arviointipäivä"
-                />
+              <KeyValueRow localizableLabel="Arviointi">
+                <KeyValueTable>
+                  <KeyValueRow localizableLabel="Arvosana" innerKeyValueTable>
+                    <FormField
+                      form={form}
+                      path={kurssiPath.prop('arviointi')}
+                      optional
+                      view={ParasArvosanaKoodiarvoView}
+                      edit={ParasArvosanaEdit}
+                      editProps={{
+                        suoritusClassName: osasuoritus.$class,
+                        format: koodiarvoOnly
+                      }}
+                      testId="arvosana"
+                    />
+                  </KeyValueRow>
+                  <KeyValueRow
+                    localizableLabel="Arviointipäivä"
+                    innerKeyValueTable
+                  >
+                    <FormField
+                      form={form}
+                      path={kurssiPath.prop('arviointi')}
+                      optional
+                      view={ParasArvosanaPäiväView}
+                      testId="arviointipäivä"
+                    />
+                  </KeyValueRow>
+                </KeyValueTable>
               </KeyValueRow>
             </KeyValueTable>
           </TestIdLayer>
@@ -799,6 +806,16 @@ const PuhviKoeRow: React.FC<{
 
   return (
     <KeyValueRow localizableLabel="Puhvi-koe">
+      {/* Removable kutistaa sisältönsä (siis tämän KeyValueTablen) leveyden
+          sisällön mukaiseksi KeyValueTable.less:n yleissäännöllä
+          (".KeyValueTable .Removable { width: auto }"), joten Arvosana-
+          valikko ei ole yhtä leveä kuin esim. Suullisen kielitaidon kokeet
+          -lohkon oma, Removable-kiertämätön arvosana. Tämä on kuitenkin sama,
+          jo tuotannossa oleva malli kuin perusopetus-v2:n/IB:n omilla "Oman
+          äidinkielen opinnot"/"Puhvi-koe" -lohkoilla (ks.
+          perusopetus-v2/PerusopetuksenSuorituksenTiedot.tsx,
+          ib/PreIB2019KieliJaViestintäRows.tsx) - ei korjata tätä erikseen
+          vain lukiolle, koska se veisi poispäin yhtenäisestä käytännöstä. */}
       <Removable
         isRemovable={form.editMode}
         onClick={() => form.updateAt(path.prop('puhviKoe'), () => undefined)}
@@ -829,6 +846,7 @@ const PuhviKoeRow: React.FC<{
                 optional
                 view={LocalizedTextView}
                 edit={LocalizedTextEdit}
+                editProps={{ large: true }}
                 testId="puhviKoe.kuvaus"
               />
             </KeyValueRow>
@@ -881,6 +899,7 @@ const UusiPuhviKoeModal: React.FC<{
           <LocalizedTextEdit
             value={kuvaus}
             onChange={setKuvaus}
+            large
             testId="kuvaus"
           />
         </label>
@@ -935,7 +954,7 @@ const SuullisenKielitaidonKokeetRow: React.FC<{
                 return (
                   <TestIdLayer id={i} key={i} wrap="li">
                     <KeyValueTable>
-                      <KeyValueRow localizableLabel="Kieli">
+                      <KeyValueRow localizableLabel="Kieli" innerKeyValueTable>
                         <div className="LukioEditor__arviointiEnsimmäinenKenttäJaPoisto">
                           <FormField
                             form={form}
@@ -958,7 +977,10 @@ const SuullisenKielitaidonKokeetRow: React.FC<{
                           />
                         </div>
                       </KeyValueRow>
-                      <KeyValueRow localizableLabel="Arvosana">
+                      <KeyValueRow
+                        localizableLabel="Arvosana"
+                        innerKeyValueTable
+                      >
                         <ArvosanaKoodistoSelect<
                           SuullisenKielitaidonKoe2019['arvosana']
                         >
@@ -970,7 +992,10 @@ const SuullisenKielitaidonKokeetRow: React.FC<{
                           testId="arvosana"
                         />
                       </KeyValueRow>
-                      <KeyValueRow localizableLabel="Taitotaso">
+                      <KeyValueRow
+                        localizableLabel="Taitotaso"
+                        innerKeyValueTable
+                      >
                         <FormField
                           form={form}
                           path={koePath.prop('taitotaso')}
@@ -983,17 +1008,21 @@ const SuullisenKielitaidonKokeetRow: React.FC<{
                           testId="taitotaso"
                         />
                       </KeyValueRow>
-                      <KeyValueRow localizableLabel="Kuvaus">
+                      <KeyValueRow localizableLabel="Kuvaus" innerKeyValueTable>
                         <FormField
                           form={form}
                           path={koePath.prop('kuvaus')}
                           optional
                           view={LocalizedTextView}
                           edit={LocalizedTextEdit}
+                          editProps={{ large: true }}
                           testId="kuvaus"
                         />
                       </KeyValueRow>
-                      <KeyValueRow localizableLabel="Arviointipäivä">
+                      <KeyValueRow
+                        localizableLabel="Arviointipäivä"
+                        innerKeyValueTable
+                      >
                         <FormField
                           form={form}
                           path={koePath.prop('päivä')}
@@ -1009,27 +1038,40 @@ const SuullisenKielitaidonKokeetRow: React.FC<{
             </ul>
           </TestIdLayer>
         ) : (
-          kokeet.map((koe, i) => (
-            <KeyValueTable key={i}>
-              <KeyValueRow localizableLabel="Kieli" innerKeyValueTable>
-                <TestIdText id="kieli">{t(koe.kieli.nimi)}</TestIdText>
-              </KeyValueRow>
-              <KeyValueRow localizableLabel="Arvosana" innerKeyValueTable>
-                <TestIdText id="arvosana">{koe.arvosana.koodiarvo}</TestIdText>
-              </KeyValueRow>
-              <KeyValueRow localizableLabel="Taitotaso" innerKeyValueTable>
-                <TestIdText id="taitotaso">{t(koe.taitotaso.nimi)}</TestIdText>
-              </KeyValueRow>
-              {koe.kuvaus && (
-                <KeyValueRow localizableLabel="Kuvaus" innerKeyValueTable>
-                  <TestIdText id="kuvaus">{t(koe.kuvaus)}</TestIdText>
-                </KeyValueRow>
-              )}
-              <KeyValueRow localizableLabel="Arviointipäivä" innerKeyValueTable>
-                <TestIdText id="paiva">{ISO2FinnishDate(koe.päivä)}</TestIdText>
-              </KeyValueRow>
-            </KeyValueTable>
-          ))
+          <ul className="LukioEditor__arviointiListaEdit">
+            {kokeet.map((koe, i) => (
+              <TestIdLayer id={i} key={i} wrap="li">
+                <KeyValueTable>
+                  <KeyValueRow localizableLabel="Kieli" innerKeyValueTable>
+                    <TestIdText id="kieli">{t(koe.kieli.nimi)}</TestIdText>
+                  </KeyValueRow>
+                  <KeyValueRow localizableLabel="Arvosana" innerKeyValueTable>
+                    <TestIdText id="arvosana">
+                      {koe.arvosana.koodiarvo}
+                    </TestIdText>
+                  </KeyValueRow>
+                  <KeyValueRow localizableLabel="Taitotaso" innerKeyValueTable>
+                    <TestIdText id="taitotaso">
+                      {t(koe.taitotaso.nimi)}
+                    </TestIdText>
+                  </KeyValueRow>
+                  {koe.kuvaus && (
+                    <KeyValueRow localizableLabel="Kuvaus" innerKeyValueTable>
+                      <TestIdText id="kuvaus">{t(koe.kuvaus)}</TestIdText>
+                    </KeyValueRow>
+                  )}
+                  <KeyValueRow
+                    localizableLabel="Arviointipäivä"
+                    innerKeyValueTable
+                  >
+                    <TestIdText id="paiva">
+                      {ISO2FinnishDate(koe.päivä)}
+                    </TestIdText>
+                  </KeyValueRow>
+                </KeyValueTable>
+              </TestIdLayer>
+            ))}
+          </ul>
         )}
         {form.editMode && (
           <FlatButton
@@ -1115,6 +1157,7 @@ const UusiSuullisenKielitaidonKoeModal: React.FC<{
           <LocalizedTextEdit
             value={kuvaus}
             onChange={setKuvaus}
+            large
             testId="kuvaus"
           />
         </label>
@@ -1169,7 +1212,10 @@ const LukiodiplomitRow: React.FC<{
                 return (
                   <TestIdLayer id={i} key={i} wrap="li">
                     <KeyValueTable>
-                      <KeyValueRow localizableLabel="Tunniste">
+                      <KeyValueRow
+                        localizableLabel="Tunniste"
+                        innerKeyValueTable
+                      >
                         <div className="LukioEditor__arviointiEnsimmäinenKenttäJaPoisto">
                           <TestIdText id="tunniste">
                             {t(diplomi.tunniste.nimi)}
@@ -1187,7 +1233,10 @@ const LukiodiplomitRow: React.FC<{
                           />
                         </div>
                       </KeyValueRow>
-                      <KeyValueRow localizableLabel="Arvosana">
+                      <KeyValueRow
+                        localizableLabel="Arvosana"
+                        innerKeyValueTable
+                      >
                         <ArvosanaKoodistoSelect<
                           LukiodiplominSuoritusJaArviointi['arvosana']
                         >
@@ -1200,17 +1249,21 @@ const LukiodiplomitRow: React.FC<{
                           testId="arvosana"
                         />
                       </KeyValueRow>
-                      <KeyValueRow localizableLabel="Kuvaus">
+                      <KeyValueRow localizableLabel="Kuvaus" innerKeyValueTable>
                         <FormField
                           form={form}
                           path={diplomiPath.prop('kuvaus')}
                           optional
                           view={LocalizedTextView}
                           edit={LocalizedTextEdit}
+                          editProps={{ large: true }}
                           testId="kuvaus"
                         />
                       </KeyValueRow>
-                      <KeyValueRow localizableLabel="Arviointipäivä">
+                      <KeyValueRow
+                        localizableLabel="Arviointipäivä"
+                        innerKeyValueTable
+                      >
                         <FormField
                           form={form}
                           path={diplomiPath.prop('päivä')}
@@ -1226,30 +1279,37 @@ const LukiodiplomitRow: React.FC<{
             </ul>
           </TestIdLayer>
         ) : (
-          diplomit.map((diplomi, i) => (
-            <KeyValueTable key={i}>
-              <KeyValueRow localizableLabel="Arvosana" innerKeyValueTable>
-                <TestIdText id="arvosana">
-                  {diplomi.arvosana.koodiarvo}
-                </TestIdText>
-              </KeyValueRow>
-              <KeyValueRow localizableLabel="Arviointipäivä" innerKeyValueTable>
-                <TestIdText id="paiva">
-                  {ISO2FinnishDate(diplomi.päivä)}
-                </TestIdText>
-              </KeyValueRow>
-              {diplomi.kuvaus && (
-                <KeyValueRow localizableLabel="Kuvaus" innerKeyValueTable>
-                  <TestIdText id="kuvaus">{t(diplomi.kuvaus)}</TestIdText>
-                </KeyValueRow>
-              )}
-              <KeyValueRow localizableLabel="Tunniste" innerKeyValueTable>
-                <TestIdText id="tunniste">
-                  {t(diplomi.tunniste.nimi)}
-                </TestIdText>
-              </KeyValueRow>
-            </KeyValueTable>
-          ))
+          <ul className="LukioEditor__arviointiListaEdit">
+            {diplomit.map((diplomi, i) => (
+              <TestIdLayer id={i} key={i} wrap="li">
+                <KeyValueTable>
+                  <KeyValueRow localizableLabel="Arvosana" innerKeyValueTable>
+                    <TestIdText id="arvosana">
+                      {diplomi.arvosana.koodiarvo}
+                    </TestIdText>
+                  </KeyValueRow>
+                  <KeyValueRow
+                    localizableLabel="Arviointipäivä"
+                    innerKeyValueTable
+                  >
+                    <TestIdText id="paiva">
+                      {ISO2FinnishDate(diplomi.päivä)}
+                    </TestIdText>
+                  </KeyValueRow>
+                  {diplomi.kuvaus && (
+                    <KeyValueRow localizableLabel="Kuvaus" innerKeyValueTable>
+                      <TestIdText id="kuvaus">{t(diplomi.kuvaus)}</TestIdText>
+                    </KeyValueRow>
+                  )}
+                  <KeyValueRow localizableLabel="Tunniste" innerKeyValueTable>
+                    <TestIdText id="tunniste">
+                      {t(diplomi.tunniste.nimi)}
+                    </TestIdText>
+                  </KeyValueRow>
+                </KeyValueTable>
+              </TestIdLayer>
+            ))}
+          </ul>
         )}
         {form.editMode && (
           <FlatButton
@@ -1341,6 +1401,7 @@ const UusiLukiodiplomiModal: React.FC<{
           <LocalizedTextEdit
             value={kuvaus}
             onChange={setKuvaus}
+            large
             testId="kuvaus"
           />
         </label>

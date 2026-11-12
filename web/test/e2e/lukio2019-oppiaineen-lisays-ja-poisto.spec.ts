@@ -66,6 +66,19 @@ for (const variantti of VARIANTIT) {
       await expect(katselu.oppiaineenArvosana(ps)).toHaveText('9')
     })
 
+    test('Lisätty oppiaine on oletuksena pakollinen, ja valinnaiseksi muuttaminen näkyy nimessä', async () => {
+      await katselu.lisääOppiaine('Psykologia')
+      const ps = katselu.oppiaineRivi('PS')
+
+      await expect(katselu.pakollinenCheckbox(ps)).toBeChecked()
+      await expect(katselu.oppiaineenNimi(ps)).toHaveText('Psykologia')
+
+      await katselu.pakollinenCheckbox(ps).uncheck()
+      await expect(katselu.oppiaineenNimi(ps)).toHaveText(
+        'Psykologia, valinnainen'
+      )
+    })
+
     test('Valtakunnallinen oppiaine voidaan poistaa', async () => {
       await katselu.lisääOppiaine('Psykologia')
       const ps = katselu.oppiaineRivi('PS')

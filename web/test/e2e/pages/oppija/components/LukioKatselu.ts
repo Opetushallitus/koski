@@ -88,6 +88,7 @@ export interface LukioKatselu {
   // Ilman riviä: suoritustason lippu (vain "Lukion oppimäärä" -suoritustyypillä).
   // Rivin kanssa: oppiainetason lippu.
   erityinenTutkintoCheckbox(rivi?: Locator): Locator
+  pakollinenCheckbox(rivi: Locator): Locator
   laajuusInput(rivi: Locator): Locator
   oppiaineenFootnoteHint(rivi: Locator): Locator
   readonly erityinenTutkintoLegend: Locator
@@ -326,6 +327,10 @@ export class VanhaLukioKatselu implements LukioKatselu {
     return this.opiskeluoikeus.erityinenTutkintoCheckbox(rivi)
   }
 
+  pakollinenCheckbox(rivi: Locator) {
+    return this.opiskeluoikeus.pakollinenCheckbox(rivi)
+  }
+
   laajuusInput(rivi: Locator) {
     return this.opiskeluoikeus.laajuusInput(rivi)
   }
@@ -547,6 +552,15 @@ export class UusiLukioKatselu implements LukioKatselu {
     return rivi.locator('.LukionOppiaineet__suorituskieli .Select__input')
   }
 
+  // Ei vastinetta LukioKatselu-rajapinnassa eikä VanhaLukioKatselussa - uusi,
+  // ei portattu ominaisuus (ks. lukio2019-moduulin-lisays-ja-poisto.spec.ts).
+  async muokkaaKurssinSuorituskieltä(kurssi: Locator, kieli: string) {
+    await this.valitseDropdownArvo(
+      kurssi.locator('.suorituskieli .Select__toggle'),
+      kieli
+    )
+  }
+
   async lisääOppiaine(nimi: string) {
     await this.valitseDropdownArvo(
       this.suoritus('uusi-oppiaine.toggle'),
@@ -648,6 +662,17 @@ export class UusiLukioKatselu implements LukioKatselu {
       : this.suoritus('suoritettuErityisenäTutkintona.edit').getByRole(
           'checkbox'
         )
+  }
+
+  // .first(), koska sama testid-pääte ("pakollinen.edit") toistuu oppiaineen
+  // omassa kentässä JA jokaisen sen kurssin omassa kentässä - DOM-järjestyksessä
+  // oppiaineen oma kenttä tulee aina ennen kurssien kenttiä, sama periaate kuin
+  // LukioOpiskeluoikeus.kenttä():ssä.
+  pakollinenCheckbox(rivi: Locator) {
+    return rivi
+      .locator('[data-testid$="pakollinen.edit"]')
+      .getByRole('checkbox')
+      .first()
   }
 
   laajuusInput(rivi: Locator) {

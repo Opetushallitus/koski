@@ -69,3 +69,44 @@ for (const variantti of VARIANTIT) {
     })
   })
 }
+
+/**
+ * Kurssin/moduulin suorituskieli ja pakollisuus - olemassa vanhassa
+ * käyttöliittymässä geneerisesti (KurssiPopup.jsx:n PropertiesEditor
+ * näyttää kaikki kurssin skeemakentät paitsi arviointi/koodistoUri/
+ * tunniste/koodiarvo/nimi), mutta koskaan testaamatta kummassakaan
+ * käyttöliittymässä. Siksi uusi, ei portattu ominaisuus - ei VARIANTIT-
+ * rinnakkaisajoa, sama periaate kuin
+ * lukio2019-moduulin-osaamisen-tunnustaminen.spec.ts:ssä.
+ */
+test.describe('Lukiokoulutus 2019: moduulin suorituskielen ja pakollisuuden muokkaus', () => {
+  test.use({ storageState: virkailija('pää') })
+
+  // Uusilukio, Ulla (250605A518Y)
+  const oid = '1.2.246.562.24.00000000015'
+  let katselu: UusiLukioKatselu
+
+  test.beforeEach(async ({ fixtures, page }) => {
+    await fixtures.reset()
+    katselu = new UusiLukioKatselu(page)
+    await katselu.goto(oid)
+    await katselu.aloitaMuokkaus()
+    await katselu.poistaViimeisinTila()
+  })
+
+  test('Kurssin suorituskieli ja pakollisuus voidaan muokata ja tallentaa', async () => {
+    const ai1 = katselu.kurssi(katselu.oppiaineRivi('AI'), 'ÄI1')
+
+    await katselu.pakollinenCheckbox(ai1).uncheck()
+    await katselu.muokkaaKurssinSuorituskieltä(ai1, 'ruotsi')
+
+    await katselu.tallenna()
+    await katselu.aloitaMuokkaus()
+
+    const ai1Again = katselu.kurssi(katselu.oppiaineRivi('AI'), 'ÄI1')
+    await expect(katselu.pakollinenCheckbox(ai1Again)).not.toBeChecked()
+    await expect(
+      ai1Again.locator('.suorituskieli .Select__input')
+    ).toHaveValue('ruotsi')
+  })
+})

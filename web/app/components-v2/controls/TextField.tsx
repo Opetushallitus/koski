@@ -1,7 +1,8 @@
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useCallback, useContext, useEffect, useState } from 'react'
 import { TestIdText, useTestId } from '../../appstate/useTestId'
 import { EmptyObject } from '../../types/EditorModels'
 import { common, CommonProps, cx } from '../CommonProps'
+import { KeyValueRowLabelContext } from '../containers/KeyValueTable'
 import { FieldErrors } from '../forms/FieldErrors'
 import {
   FieldEditorProps,
@@ -28,6 +29,11 @@ export type TextEditProps = CommonProps<
       disabled?: boolean
       large?: boolean
       hasErrors?: boolean
+      /**
+       * Vain kenttiin, joilla ei ole KeyValueRow'ta ympärillään (ks.
+       * KeyValueRowLabelContext) - muuten nimi tulee rivin omasta nimestä.
+       */
+      ariaLabel?: string
     }
   >
 >
@@ -42,6 +48,7 @@ const useBufferedValue = (value: string | undefined) => {
 
 export const TextEdit: React.FC<TextEditProps> = (props) => {
   const testId = useTestId(props.testId, 'input')
+  const labelledBy = useContext(KeyValueRowLabelContext)
 
   const { onChange, value } = props
   const [internalValue, setInternalValue] = useBufferedValue(value)
@@ -69,7 +76,14 @@ export const TextEdit: React.FC<TextEditProps> = (props) => {
           onChange={onChangeCB}
           autoFocus={props.autoFocus}
           disabled={props.disabled}
+          aria-label={props.ariaLabel}
+          aria-labelledby={props.ariaLabel ? undefined : labelledBy}
           data-testid={testId}
+          // Selaimen oletusarvo (rows=2) näyttää vain pari riviä, ja pidempi
+          // kuvausteksti jää siihen kätkeytymään ilman vierittämistä - sama
+          // 5 riviä kuin vanhan UI:n @MultiLineString(5)-skeemakentillä
+          // (ks. PaikallinenKoulutusmoduuliKuvauksella).
+          rows={5}
         />
       ) : (
         <input
@@ -82,6 +96,8 @@ export const TextEdit: React.FC<TextEditProps> = (props) => {
           onChange={onChangeCB}
           autoFocus={props.autoFocus}
           disabled={props.disabled}
+          aria-label={props.ariaLabel}
+          aria-labelledby={props.ariaLabel ? undefined : labelledBy}
           data-testid={testId}
         />
       )}
@@ -93,6 +109,7 @@ componentsWithBuiltInErrors.add(TextEdit)
 
 export const MultilineTextEdit: React.FC<TextEditProps> = (props) => {
   const testId = useTestId(props.testId, 'input')
+  const labelledBy = useContext(KeyValueRowLabelContext)
 
   const { onChange, value } = props
   const [internalValue, setInternalValue] = useBufferedValue(value)
@@ -116,7 +133,10 @@ export const MultilineTextEdit: React.FC<TextEditProps> = (props) => {
         value={internalValue}
         onChange={onChangeCB}
         autoFocus={props.autoFocus}
+        aria-label={props.ariaLabel}
+        aria-labelledby={props.ariaLabel ? undefined : labelledBy}
         data-testid={testId}
+        rows={5}
       />
       <FieldErrors errors={props.errors} />
     </label>

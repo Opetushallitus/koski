@@ -6,6 +6,20 @@
 // (yksinumeroinen arvosana) sarakkeet eivät osu kohdalleen otsikon kanssa -
 // <table> mitoittaa sarakkeet koko taulukon yli yhtenäisesti, kuten samasta
 // syystä components-v2/opiskeluoikeus/OppiaineTable.tsx:ssäkin (IB).
+
+// Hiiren vieminen [data-testid$='.poisto']-painikkeen päälle korostaa sen
+// poistettavan sisällön, johon painike kuuluu - [data-testid$='.poisto'],
+// ei pelkkä .IconButton, koska samassa elementissä voi olla muitakin
+// IconButtoneja (esim. päivämäärävalitsin).
+.poisto-hover-outline() {
+  @supports selector(:has(*)) {
+    // stylelint-disable-next-line plugin/no-unsupported-browser-features -- ilman tukea hiiri ei korosta poistettavaa sisältöä; hyväksyttävä heikennys
+    &:has([data-testid$='.poisto']:hover) {
+      outline: 1px solid #aeaeae;
+    }
+  }
+}
+
 .LukionOppiaineet {
   .footnote-hint {
     color: @color-link-blue;
@@ -109,6 +123,18 @@
     background: @color-white !important;
   }
 
+  @supports selector(:has(*)) {
+    // stylelint-disable-next-line plugin/no-unsupported-browser-features -- ilman tukea hiiri ei korosta poistettavaa riviä; hyväksyttävä heikennys
+    // [data-testid$='.poisto'], ei pelkkä .IconButton, koska rivillä voi olla
+    // muitakin IconButtoneja (esim. päivämäärävalitsin). box-shadow: inset,
+    // ei outline, taulukon soluille - vahvistettu livenä, että <td>:n
+    // outline piirtyy vain pysty- ei vaakareunoille taulukkoasettelussa,
+    // vaikka tyyli asettuisikin oikein (getComputedStyle).
+    &__taulukko tr:has([data-testid$='.poisto']:hover) > td {
+      box-shadow: inset 0 0 0 1px #aeaeae;
+    }
+  }
+
   .kurssit {
     display: block;
 
@@ -126,15 +152,19 @@
     // vain tässä, jotta kurssi säilyy yhtä kompaktina kuin vanhassa
     // käyttöliittymässä - ei muuteta IconButtonia itseään, koska muut
     // käyttöpaikat nojaavat sen tavalliseen kokoon.
-    .kurssi .IconButton {
-      width: 18px;
-      height: 18px;
-      min-width: 18px;
-      vertical-align: middle;
-      margin-left: -2px;
+    .kurssi {
+      .poisto-hover-outline();
 
-      .Icon {
-        font-size: 11px;
+      .IconButton {
+        width: 18px;
+        height: 18px;
+        min-width: 18px;
+        vertical-align: middle;
+        margin-left: -2px;
+
+        .Icon {
+          font-size: 11px;
+        }
       }
     }
 
@@ -227,6 +257,7 @@
   > li {
     padding: 10px 0;
     border-bottom: 1px solid @color-neutral-gray;
+    .poisto-hover-outline();
 
     &:first-child {
       padding-top: 0;
@@ -253,6 +284,7 @@
   > li {
     padding: 10px 0;
     border-bottom: 1px solid @color-neutral-gray;
+    .poisto-hover-outline();
 
     &:first-child {
       padding-top: 0;
@@ -298,4 +330,18 @@
   [data-testid$='kieli.edit'] .Select {
     max-width: 340px;
   }
+}
+
+// PositionalPopup__overlay ei tuo omaa sisennystä, joten kurssin tietopopupin
+// teksti osuisi muuten kiinni popupin reunaan. Lisäksi display: grid on
+// pakko toistaa tässä: style/kurssi.less:n vanhan käyttöliittymän
+// ".kurssit ul { display: inline-block; padding: 0 }" (luokka+tunniste, siis
+// spesifisyydeltään yksittäistä luokkaa suurempi) osuu myös tähän, koska
+// popup sijaitsee saman ".kurssit"-esi-isän sisällä - ilman display: grid
+// -ylikirjoitusta KeyValueTablen nimi/arvo-sarakkeet pinoutuvat allekkain
+// subgridin sijaan, koska subgrid laskeutuu arvoon "none" kun vanhempi ei
+// ole grid-säiliö.
+.KurssiInfoPopup.KeyValueTable {
+  display: grid;
+  padding: 10px 14px;
 }
