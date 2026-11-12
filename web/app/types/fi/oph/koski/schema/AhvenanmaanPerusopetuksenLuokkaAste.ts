@@ -8,13 +8,13 @@ import { LocalizedString } from './LocalizedString'
  */
 export type AhvenanmaanPerusopetuksenLuokkaAste = {
   $class: 'fi.oph.koski.schema.AhvenanmaanPerusopetuksenLuokkaAste'
-  tunniste: Koodistokoodiviite<'perusopetuksenluokkaaste' | 'koulutus', string>
+  tunniste: Koodistokoodiviite<'perusopetuksenluokkaaste', string>
   perusteenDiaarinumero?: string
   koulutustyyppi?: Koodistokoodiviite<'koulutustyyppi', string>
 }
 
 export const AhvenanmaanPerusopetuksenLuokkaAste = (o: {
-  tunniste: Koodistokoodiviite<'perusopetuksenluokkaaste' | 'koulutus', string>
+  tunniste: Koodistokoodiviite<'perusopetuksenluokkaaste', string>
   perusteenDiaarinumero?: string
   koulutustyyppi?: Koodistokoodiviite<'koulutustyyppi', string>
 }): AhvenanmaanPerusopetuksenLuokkaAste => ({

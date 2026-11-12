@@ -541,7 +541,7 @@ case class PerusopetuksenLuokkaAste(
   def luokkaAste = tunniste.koodiarvo
 }
 
-trait PerusopetuksenDiaarinumerollinenKoulutus extends DiaarinumerollinenKoulutus
+trait PerusopetuksenDiaarinumerollinenKoulutus extends PääteltävänKoulutustyypinSisältäväKoulutusmoduuli with Diaarinumerollinen
 
 object PerusopetuksenLuokkaAste {
   def apply(luokkaAste: Int, diaarinumero: String): PerusopetuksenLuokkaAste = PerusopetuksenLuokkaAste(Koodistokoodiviite(luokkaAste.toString, "perusopetuksenluokkaaste"), Some(diaarinumero))

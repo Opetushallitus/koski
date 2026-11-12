@@ -1,7 +1,7 @@
 package fi.oph.koski.eperusteetvalidation
 
 import fi.oph.koski.koodisto.KoodistoViitePalvelu
-import fi.oph.koski.schema.{Koodistokoodiviite, KoskeenTallennettavaOpiskeluoikeus, Koulutus, Koulutusmoduuli, PäätasonSuoritus}
+import fi.oph.koski.schema.{Koodistokoodiviite, KoskeenTallennettavaOpiskeluoikeus, Koulutusmoduuli, PäätasonSuoritus, PääteltävänKoulutustyypinSisältäväKoulutusmoduuli}
 import fi.oph.koski.tutkinto.Koulutustyyppi.Koulutustyyppi
 import fi.oph.koski.tutkinto.TutkintoRepository
 import mojave._
@@ -25,6 +25,6 @@ class EPerusteetValidationUtils(
       .field[List[PäätasonSuoritus]]("suoritukset")
       .items
       .field[Koulutusmoduuli]("koulutusmoduuli")
-      .ifInstanceOf[Koulutus]
+      .ifInstanceOf[PääteltävänKoulutustyypinSisältäväKoulutusmoduuli]
 
 }
