@@ -63,7 +63,6 @@ class LukioonValmistavanKoulutuksenOpiskelijamaaratRaporttiSpec extends AnyFreeS
   private def loadRaportti(oppilaitosOid: String) = {
     val request = RaporttiPäivältäRequest(
       oppilaitosOid,
-      downloadToken = None,
       password = "bassword",
       paiva = LukioDiaIbInternationalESHOpiskelijaMaaratRaporttiFixtures.fixedDate,
       lang = "fi"

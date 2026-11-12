@@ -135,7 +135,7 @@ class AmmatillinenOsittainenRaporttiSpec
   )
 
   private def testiHenkilöRaporttiRows(alku: LocalDate, loppu: LocalDate, osasuoritustenAikarajaus: Boolean, hetu:String = defaultTestiHenkilö.hetu.get) = {
-    val request = AikajaksoRaporttiAikarajauksellaRequest(MockOrganisaatiot.stadinAmmattiopisto, None, "", alku, loppu, osasuoritustenAikarajaus, None, "fi")
+    val request = AikajaksoRaporttiAikarajauksellaRequest(MockOrganisaatiot.stadinAmmattiopisto, "", alku, loppu, osasuoritustenAikarajaus, None, "fi")
     AmmatillinenOsittainenRaportti.buildRaportti(request, repository, t).filter(_.hetu.contains(hetu)).toList
   }
 }

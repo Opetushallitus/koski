@@ -316,7 +316,7 @@ class EsiopetuksenOppijamäärätRaporttiSpec
 
   private def buildOstopalveluRaportti(user: KoskiMockUser, päivä: LocalDate): DataSheet =
     new RaportitService(application)
-      .esiopetuksenOppijamäärät(RaporttiPäivältäRequest(application.organisaatioService.ostopalveluRootOid, None, "", päivä, "fi"), t)(session(user))
+      .esiopetuksenOppijamäärät(RaporttiPäivältäRequest(application.organisaatioService.ostopalveluRootOid, "", päivä, "fi"), t)(session(user))
       .sheets
       .collect { case s: DataSheet => s }
       .head

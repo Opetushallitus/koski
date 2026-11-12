@@ -143,7 +143,6 @@ class LukioDiaIbInternationalESHOpiskelijaMaaratRaporttiSpec extends AnyFreeSpec
   private def loadRaportti = {
     val request = RaporttiPäivältäRequest(
       oppilaitosOid = MockOrganisaatiot.helsinginKaupunki,
-      downloadToken = None,
       password = "foobar",
       paiva = LukioDiaIbInternationalESHOpiskelijaMaaratRaporttiFixtures.date,
       lang = "fi"

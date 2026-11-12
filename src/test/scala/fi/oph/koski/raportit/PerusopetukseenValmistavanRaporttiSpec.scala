@@ -81,7 +81,6 @@ class PerusopetukseenValmistavanRaporttiSpec extends AnyFreeSpec with Matchers w
         val raportitService = new RaportitService(KoskiApplicationForTests)
         val raportti = raportitService.perusopetukseenvalmistavanopetuksenraportti(AikajaksoRaporttiAikarajauksellaRequest(
           oppilaitosOid = organisaatioOid,
-          downloadToken = None,
           password = "",
           alku = alku,
           loppu = loppu,

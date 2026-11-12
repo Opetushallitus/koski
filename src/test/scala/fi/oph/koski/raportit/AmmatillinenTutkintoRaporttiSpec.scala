@@ -373,7 +373,6 @@ class AmmatillinenTutkintoRaporttiSpec
     alku =  date(2016, 1, 1),
     loppu = date(2016,5 , 30),
     osasuoritustenAikarajaus = false,
-    downloadToken = None,
     password = "",
     lang = "fi",
     kotikuntaPvm = None,

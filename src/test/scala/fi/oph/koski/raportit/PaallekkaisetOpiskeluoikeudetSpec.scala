@@ -285,7 +285,6 @@ class PaallekkaisetOpiskeluoikeudetSpec extends AnyFreeSpec with Raportointikant
   ) = {
     val request = AikajaksoRaporttiRequest(
       oppilaitosOid = oppilaitos,
-      downloadToken = None,
       password = "password",
       alku = alku,
       loppu = loppu,

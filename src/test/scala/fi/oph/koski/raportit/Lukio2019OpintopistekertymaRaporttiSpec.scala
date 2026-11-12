@@ -265,7 +265,6 @@ class Lukio2019OpintopistekertymaRaporttiSpec extends AnyFreeSpec with Raportoin
   private def loadRaportti = {
     val request = AikajaksoRaporttiRequest(
       oppilaitosOid = MockOrganisaatiot.jyväskylänNormaalikoulu,
-      downloadToken = None,
       password = "foobar",
       alku = LocalDate.of(2000, 1, 1),
       loppu = LocalDate.of(2001, 1, 1),

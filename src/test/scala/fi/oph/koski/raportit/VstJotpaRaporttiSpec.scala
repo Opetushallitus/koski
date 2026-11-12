@@ -113,7 +113,7 @@ class VstJotpaRaporttiSpec
     loppu: LocalDate = LocalDate.of(2025, 1, 1),
     lang: String = "fi",
   ): OppilaitosRaporttiResponse = {
-    val request = AikajaksoRaporttiRequest(organisaatioOid, None, "password", alku, loppu, lang)
+    val request = AikajaksoRaporttiRequest(organisaatioOid, "password", alku, loppu, lang)
     val t = new LocalizationReader(KoskiApplicationForTests.koskiLocalizationRepository, lang)
     raportitService.vstJotpa(request, t)
   }

@@ -53,7 +53,6 @@ case class MassaluovutusQueryKotikuntalaskelma(
   )(implicit session: KoskiSpecificSession): OppilaitosRaporttiResponse = {
     val request = RaporttiPäivältäRequest(
       oppilaitosOid = organisaatioOid.get,
-      downloadToken = None,
       password = pw,
       paiva = paiva,
       lang = language.get,
