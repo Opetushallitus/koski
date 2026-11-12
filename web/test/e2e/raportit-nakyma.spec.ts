@@ -403,6 +403,27 @@ test.describe('Raporttinäkymä', () => {
       )
     })
 
+    test.describe('Oppilaitoksen raportti koulutustoimijan käyttäjällä', () => {
+      test.use({ storageState: virkailija('jyvaskyla-tallentaja') })
+
+      test('Nuolinäppäimet ohittavat organisaatiot, joita ei voi valita', async ({
+        raportitPage
+      }) => {
+        await raportitPage.goto('/lukio/lukionsuoritustietojentarkistus')
+        await expect(raportitPage.organisaatiot.first()).toHaveClass(/disabled/)
+        await expect(raportitPage.organisaatiokenttä).toHaveValue(
+          'Jyväskylän normaalikoulu'
+        )
+
+        await raportitPage.organisaatiokenttä.click()
+        await raportitPage.organisaatiokenttä.press('ArrowUp')
+        await raportitPage.organisaatiokenttä.press('Enter')
+        await expect(raportitPage.organisaatiokenttä).toHaveValue(
+          'Jyväskylän normaalikoulu'
+        )
+      })
+    })
+
     test.describe('Koulutustoimijan käyttäjä', () => {
       test.use({ storageState: virkailija('hki-tallentaja') })
 
