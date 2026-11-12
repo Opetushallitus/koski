@@ -2,9 +2,9 @@ import React, { useMemo, useState } from 'react'
 import { buildClassNames } from '../components/classnames'
 import { t } from '../i18n/i18n'
 import {
-  litistäOrganisaatiot,
   NäkyväOrganisaatio,
-  rajaaHakusanalla
+  rajaaHakusanalla,
+  viereinenValittavaOrganisaatio
 } from './raporttivalinta'
 
 type OrganisaatioDropdownProps = {
@@ -38,14 +38,11 @@ export const OrganisaatioDropdown: React.FC<OrganisaatioDropdownProps> = ({
   }
 
   const siirräValintaa = (siirtymä: number) => {
-    if (valittu) {
-      const lista = litistäOrganisaatiot(rajatutOrganisaatiot)
-      const uusiIndeksi =
-        lista.findIndex((organisaatio) => organisaatio.oid === valittu.oid) +
-        siirtymä
-      if (uusiIndeksi >= 0 && uusiIndeksi < lista.length) {
-        onValinta(lista[uusiIndeksi])
-      }
+    const viereinen =
+      valittu &&
+      viereinenValittavaOrganisaatio(rajatutOrganisaatiot, valittu, siirtymä)
+    if (viereinen) {
+      onValinta(viereinen)
     }
   }
 

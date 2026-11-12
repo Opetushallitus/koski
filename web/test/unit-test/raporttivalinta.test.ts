@@ -10,7 +10,8 @@ import {
   RaportinOrganisaatio,
   raportinOrganisaatiot,
   raportinValinta,
-  rajaaHakusanalla
+  rajaaHakusanalla,
+  viereinenValittavaOrganisaatio
 } from '../../app/raportit/raporttivalinta'
 
 const organisaatio = (
@@ -120,6 +121,25 @@ describe('esivalitseOrganisaatio', () => {
       organisaatiot: []
     }
     expect(esivalitseOrganisaatio(raportti, undefined)).toBeUndefined()
+  })
+})
+
+describe('viereinenValittavaOrganisaatio', () => {
+  const lukio = raportinOrganisaatiot('lukio', organisaatiot)
+  const [kulosaari, jnk] = litistäOrganisaatiot(lukio).filter(
+    (o) => o.selectable
+  )
+
+  it('ohittaa organisaatiot, joita ei voi valita', () => {
+    expect(viereinenValittavaOrganisaatio(lukio, kulosaari, 1)?.oid).toBe('jnk')
+    expect(viereinenValittavaOrganisaatio(lukio, jnk, -1)?.oid).toBe(
+      'kulosaari'
+    )
+  })
+
+  it('ei siirry listan ensimmäistä ylemmäs eikä viimeistä alemmas', () => {
+    expect(viereinenValittavaOrganisaatio(lukio, kulosaari, -1)).toBeUndefined()
+    expect(viereinenValittavaOrganisaatio(lukio, jnk, 1)).toBeUndefined()
   })
 })
 

@@ -144,6 +144,20 @@ export const litistäOrganisaatiot = (
     ...litistäOrganisaatiot(organisaatio.children)
   ])
 
+export const viereinenValittavaOrganisaatio = (
+  organisaatiot: NäkyväOrganisaatio[],
+  valittu: NäkyväOrganisaatio,
+  siirtymä: number
+): NäkyväOrganisaatio | undefined => {
+  const valittavat = litistäOrganisaatiot(organisaatiot).filter(
+    (organisaatio) => organisaatio.selectable
+  )
+  const indeksi = valittavat.findIndex(
+    (organisaatio) => organisaatio.oid === valittu.oid
+  )
+  return valittavat[indeksi + siirtymä]
+}
+
 export const organisaatioidenNimet = (
   organisaatiot: RaportinOrganisaatio[]
 ): Record<string, string> =>
