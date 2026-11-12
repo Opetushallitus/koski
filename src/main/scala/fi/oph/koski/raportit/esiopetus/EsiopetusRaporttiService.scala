@@ -16,7 +16,6 @@ class EsiopetusRaporttiService(application: KoskiApplication) {
     date: LocalDate,
     kotikuntaPäivänä: Option[LocalDate],
     password: String,
-    downloadToken: Option[String],
     t: LocalizationReader
   )(implicit session: KoskiSpecificSession): OppilaitosRaporttiResponse = {
     val ostopalvelu = organisaatioOid == application.organisaatioService.ostopalveluRootOid
@@ -28,8 +27,7 @@ class EsiopetusRaporttiService(application: KoskiApplication) {
     OppilaitosRaporttiResponse(
       sheets = Seq(esiopetusRaportti.build(oppilaitokset, date, kotikuntaPäivänä, t)),
       workbookSettings = WorkbookSettings(t.get("raportti-excel-esiopetus-title"), Some(password)),
-      filename = s"${t.get("raportti-excel-esiopetus-tiedoston-etuliite")}_${tiedostonimenOrganisaatio}_${date.toString.replaceAll("-", "")}.xlsx",
-      downloadToken = downloadToken
+      filename = s"${t.get("raportti-excel-esiopetus-tiedoston-etuliite")}_${tiedostonimenOrganisaatio}_${date.toString.replaceAll("-", "")}.xlsx"
     )
   }
 }

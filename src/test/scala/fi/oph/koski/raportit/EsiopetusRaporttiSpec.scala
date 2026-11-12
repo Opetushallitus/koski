@@ -121,10 +121,10 @@ class EsiopetusRaporttiSpec extends AnyFreeSpec with Matchers with Raportointika
   }
 
   private def buildOstopalveluRaportti(user: KoskiMockUser) =
-    raporttiService.raportti(application.organisaatioService.ostopalveluRootOid, localDate(2014, 8, 13), None, "", None, t)(session(user))
+    raporttiService.raportti(application.organisaatioService.ostopalveluRootOid, localDate(2014, 8, 13), None, "", t)(session(user))
 
   private def buildOrganisaatioRaportti(user: KoskiMockUser, organisaatio: Oid) =
-    raporttiService.raportti(organisaatio, localDate(2014, 8, 13), None, "", None, t)(session(user))
+    raporttiService.raportti(organisaatio, localDate(2014, 8, 13), None, "", t)(session(user))
 
   private def getOppilaitokset(raportti: OppilaitosRaporttiResponse) = {
     getRows(raportti).flatMap(_.oppilaitosNimi).sorted

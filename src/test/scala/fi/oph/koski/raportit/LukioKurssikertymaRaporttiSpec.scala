@@ -221,7 +221,6 @@ class LukioKurssikertymaRaporttiSpec extends AnyFreeSpec with RaportointikantaTe
   private def loadRaportti = {
     val request = AikajaksoRaporttiRequest(
       oppilaitosOid = MockOrganisaatiot.helsinginKaupunki,
-      downloadToken = None,
       password = "foobar",
       alku = LukioKurssikertymaRaporttiFixtures.raportinAikajaksoAlku,
       loppu = LukioKurssikertymaRaporttiFixtures.raportinAikajaksoLoppu,

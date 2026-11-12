@@ -289,13 +289,13 @@ class PerusopetuksenVuosiluokkaRaporttiSpec
       lazy val raportitService = new RaportitService(KoskiApplicationForTests)
 
       "Vuosiluokan suoritus" in {
-        val request = PerusopetuksenVuosiluokkaRequest(MockOrganisaatiot.helsinginKaupunki, None, "", date(2015, 1, 1), "8", "fi", None)
+        val request = PerusopetuksenVuosiluokkaRequest(MockOrganisaatiot.helsinginKaupunki, "", date(2015, 1, 1), "8", "fi", None)
         val rows = raportitService.perusopetuksenVuosiluokka(request, t).sheets.collect { case dSheet: DataSheet => dSheet }
         rows.flatMap(_.rows.map(_.asInstanceOf[PerusopetusRow])).map(_.oppilaitoksenNimi).toSet should equal(Set("Stadin ammatti- ja aikuisopisto"))
       }
 
       "Peruskoulun päättävät" in {
-        val request = PerusopetuksenVuosiluokkaRequest(MockOrganisaatiot.helsinginKaupunki, None, "", date(2015, 9, 1), "9", "fi", None)
+        val request = PerusopetuksenVuosiluokkaRequest(MockOrganisaatiot.helsinginKaupunki, "", date(2015, 9, 1), "9", "fi", None)
         val rows = raportitService.perusopetuksenVuosiluokka(request, t).sheets.collect { case dSheet: DataSheet => dSheet }
         rows.flatMap(_.rows.map(_.asInstanceOf[PerusopetusRow])).map(_.oppilaitoksenNimi).toSet should equal(Set("Stadin ammatti- ja aikuisopisto"))
       }
