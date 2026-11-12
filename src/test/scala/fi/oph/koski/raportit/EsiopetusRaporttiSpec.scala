@@ -6,8 +6,7 @@ import fi.oph.koski.henkilo.{KoskiSpecificMockOppijat, LaajatOppijaHenkilöTiedo
 import fi.oph.koski.koskiuser.{KoskiMockUser, KoskiSpecificSession, MockUsers}
 import fi.oph.koski.koskiuser.MockUsers.{helsinkiTallentaja, tornioTallentaja}
 import fi.oph.koski.localization.LocalizationReader
-import fi.oph.koski.log.AuditLogTester
-import fi.oph.koski.organisaatio.MockOrganisaatiot.{helsinginKaupunki, jyväskylänNormaalikoulu, päiväkotiMajakka, päiväkotiTouhula}
+import fi.oph.koski.organisaatio.MockOrganisaatiot.{helsinginKaupunki, jyväskylänNormaalikoulu, päiväkotiTouhula}
 import fi.oph.koski.raportit.esiopetus.{EsiopetusRaportti, EsiopetusRaporttiRow, EsiopetusRaporttiService}
 import fi.oph.koski.raportointikanta.RaportointikantaTestMethods
 import fi.oph.koski.schema.Organisaatio.Oid
@@ -31,24 +30,6 @@ class EsiopetusRaporttiSpec extends AnyFreeSpec with Matchers with Raportointika
   }
 
   "Esiopetuksen raportti" - {
-    "Raportti voidaan ladata ja lataaminen tuottaa auditlogin" in {
-      authGet(s"api/raportit/esiopetus?oppilaitosOid=$jyväskylänNormaalikoulu&paiva=2018-01-01&lang=fi&password=salasana") {
-        verifyResponseStatusOk()
-        response.headers("Content-Disposition").head should equal(s"""attachment; filename="esiopetus_koski_raportti_${jyväskylänNormaalikoulu}_20180101.xlsx"""")
-        response.bodyBytes.take(ENCRYPTED_XLSX_PREFIX.length) should equal(ENCRYPTED_XLSX_PREFIX)
-        AuditLogTester.verifyLastAuditLogMessageForOperation(Map("operation" -> "OPISKELUOIKEUS_RAPORTTI", "target" -> Map("hakuEhto" -> s"raportti=esiopetus&oppilaitosOid=$jyväskylänNormaalikoulu&paiva=2018-01-01&lang=fi")))
-      }
-    }
-
-    "Raportti voidaan ladata eri lokalisaatiolla ja lataaminen tuottaa auditlogin" in {
-      authGet(s"api/raportit/esiopetus?oppilaitosOid=$jyväskylänNormaalikoulu&paiva=2018-01-01&lang=sv&password=salasana") {
-        verifyResponseStatusOk()
-        response.headers("Content-Disposition").head should equal(s"""attachment; filename="förskoleundervisning_koski_rapport_${jyväskylänNormaalikoulu}_20180101.xlsx"""")
-        response.bodyBytes.take(ENCRYPTED_XLSX_PREFIX.length) should equal(ENCRYPTED_XLSX_PREFIX)
-        AuditLogTester.verifyLastAuditLogMessageForOperation(Map("operation" -> "OPISKELUOIKEUS_RAPORTTI", "target" -> Map("hakuEhto" -> s"raportti=esiopetus&oppilaitosOid=$jyväskylänNormaalikoulu&paiva=2018-01-01&lang=sv")))
-      }
-    }
-
     "Raportin kolumnit" - {
       lazy val r = findSingle(raportti, KoskiSpecificMockOppijat.eskari)
 
@@ -119,35 +100,25 @@ class EsiopetusRaporttiSpec extends AnyFreeSpec with Matchers with Raportointika
       "voi hakea kaikki koulutustoimijan alla olevat tiedot" in {
         val raportti = buildOrganisaatioRaportti(helsinkiTallentaja, helsinginKaupunki)
         getOppilaitokset(raportti) should equal(List("Kulosaaren ala-aste", "Päiväkoti Majakka", "Päiväkoti Touhula"))
-        verifyLatauksenAuditloki(helsinkiTallentaja, helsinginKaupunki, helsinginKaupunki)
       }
 
       "voi hakea kaikki ostopalvelu/palveluseteli-tiedot" in {
         val raportti = buildOstopalveluRaportti(helsinkiTallentaja)
         getOppilaitokset(raportti) should equal(List("Päiväkoti Majakka", "Päiväkoti Touhula"))
         getRows(raportti).flatMap(_.ostopalveluTaiPalveluseteli) should equal(List("JM02", "JM02"))
-        verifyLatauksenAuditloki(helsinkiTallentaja, application.organisaatioService.ostopalveluRootOid, s"$jyväskylänNormaalikoulu,$päiväkotiMajakka,$päiväkotiTouhula")
       }
 
       "ei näe muiden ostopalvelu/palveluseteli-tietoja" in {
         val raportti = buildOstopalveluRaportti(tornioTallentaja)
         getOppilaitokset(raportti) should be(empty)
-        verifyLatauksenAuditloki(tornioTallentaja, application.organisaatioService.ostopalveluRootOid, "")
       }
 
       "globaaleilla käyttöoikeuksilla voi tehdä raportin" in {
         val raportti = buildOrganisaatioRaportti(MockUsers.paakayttaja, helsinginKaupunki)
         getOppilaitokset(raportti) should equal(List("Kulosaaren ala-aste", "Päiväkoti Majakka", "Päiväkoti Touhula"))
-        verifyLatauksenAuditloki(MockUsers.paakayttaja, helsinginKaupunki, helsinginKaupunki)
       }
     }
   }
-
-  private def verifyLatauksenAuditloki(user: KoskiMockUser, oppilaitosOid: Oid, kirjattavatOppilaitokset: String) =
-    authGet(s"api/raportit/esiopetus?oppilaitosOid=$oppilaitosOid&paiva=2014-08-13&lang=fi&password=salasana", user = user) {
-      verifyResponseStatusOk()
-      AuditLogTester.verifyLastAuditLogMessageForOperation(Map("operation" -> "OPISKELUOIKEUS_RAPORTTI", "target" -> Map("hakuEhto" -> s"raportti=esiopetus&oppilaitosOid=$kirjattavatOppilaitokset&paiva=2014-08-13&lang=fi")))
-    }
 
   private def buildOstopalveluRaportti(user: KoskiMockUser) =
     raporttiService.raportti(application.organisaatioService.ostopalveluRootOid, localDate(2014, 8, 13), None, "", None, t)(session(user))

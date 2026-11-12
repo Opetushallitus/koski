@@ -34,7 +34,7 @@ case class MassaluovutusQueryKotikuntalaskelma(
   override def opiskeluoikeudenTyyppi = OpiskeluoikeudenTyyppi.perusopetus
   override def raporttiName = "kotikuntalaskelma"
 
-  // Sama ehto kuin RaportitServletissä: raportilla on oppijoita kaikista sen koulutusmuodoista
+  // Raportilla on oppijoita kaikista sen koulutusmuodoista, joten oikeus vain osaan niistä ei riitä
   override def queryAllowed(application: KoskiApplication)(implicit user: Session): Boolean =
     super.queryAllowed(application) && withKoskiSpecificSession { u =>
       organisaatioOid.exists(oid =>

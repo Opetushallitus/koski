@@ -5,7 +5,6 @@ import fi.oph.koski.KoskiApplicationForTests
 import fi.oph.koski.fixture.LukioDiaIbInternationalESHOpiskelijaMaaratRaporttiFixtures
 import fi.oph.koski.koskiuser.MockUsers
 import fi.oph.koski.localization.LocalizationReader
-import fi.oph.koski.log.AuditLogTester
 import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.raportit.lukio.LukioDiaIbInternationalESHOpiskelijaMaaratRaporttiRow
 import fi.oph.koski.raportointikanta.RaportointikantaTestMethods
@@ -28,26 +27,6 @@ class LukioDiaIbInternationalESHOpiskelijaMaaratRaporttiSpec extends AnyFreeSpec
   val resu = "Ressun lukio"
 
   "Lukion opiskelijamäärät raportti" - {
-    "Raportin lataaminen onnistuu ja tuottaa auditlogin" in {
-      AuditLogTester.clearMessages()
-      authGet(s"api/raportit/lukiodiaibinternationaleshopiskelijamaarat?oppilaitosOid=${MockOrganisaatiot.helsinginKaupunki}&paiva=2018-01-01&password=salasana&lang=fi") {
-        verifyResponseStatusOk()
-        response.headers("Content-Disposition").head should equal(s"""attachment; filename="lukiokoulutus_opiskelijamaarat_20180101.xlsx"""")
-        response.bodyBytes.take(ENCRYPTED_XLSX_PREFIX.length) should equal(ENCRYPTED_XLSX_PREFIX)
-        AuditLogTester.verifyLastAuditLogMessageForOperation(Map("operation" -> "OPISKELUOIKEUS_RAPORTTI", "target" -> Map("hakuEhto" -> s"raportti=lukiodiaibinternationaleshopiskelijamaarat&oppilaitosOid=${MockOrganisaatiot.helsinginKaupunki}&paiva=2018-01-01&lang=fi")))
-      }
-    }
-
-    "Raportin lataaminen onnistuu eri lokalisaatiolla ja tuottaa auditlogin" in {
-      AuditLogTester.clearMessages()
-      authGet(s"api/raportit/lukiodiaibinternationaleshopiskelijamaarat?oppilaitosOid=${MockOrganisaatiot.helsinginKaupunki}&paiva=2018-01-01&password=salasana&lang=sv") {
-        verifyResponseStatusOk()
-        response.headers("Content-Disposition").head should equal(s"""attachment; filename="gymnasieutbildning_antal_studerande_20180101.xlsx"""")
-        response.bodyBytes.take(ENCRYPTED_XLSX_PREFIX.length) should equal(ENCRYPTED_XLSX_PREFIX)
-        AuditLogTester.verifyLastAuditLogMessageForOperation(Map("operation" -> "OPISKELUOIKEUS_RAPORTTI", "target" -> Map("hakuEhto" -> s"raportti=lukiodiaibinternationaleshopiskelijamaarat&oppilaitosOid=${MockOrganisaatiot.helsinginKaupunki}&paiva=2018-01-01&lang=sv")))
-      }
-    }
-
     lazy val rivit: Seq[LukioDiaIbInternationalESHOpiskelijaMaaratRaporttiRow] = loadRaportti
     lazy val helsinki = rivit.find(_.oppilaitosNimi == hese).get
     lazy val ressu = rivit.find(_.oppilaitosNimi == resu).get

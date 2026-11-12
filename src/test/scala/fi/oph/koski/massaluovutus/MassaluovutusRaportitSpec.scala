@@ -50,10 +50,13 @@ class MassaluovutusRaportitSpec extends AnyFreeSpec with MassaluovutusTestMethod
   }
 
   private def verifyAinoaAuditlokimerkintä(raportti: String, paiva: String, oppilaitokset: List[String], queryId: String): Unit =
+    verifyAinoaAuditlokimerkintä(queryId, "lang=fi&" + oppilaitokset.map(oid => s"oppilaitosOid=$oid").mkString("&") + s"&paiva=$paiva&raportti=$raportti")
+
+  private def verifyAinoaAuditlokimerkintä(queryId: String, hakuEhto: String): Unit =
     AuditLogTester.verifyOnlyAuditLogMessageForOperation(Map(
       "operation" -> "OPISKELUOIKEUS_RAPORTTI",
       "target" -> Map(
-        "hakuEhto" -> ("lang=fi&" + oppilaitokset.map(oid => s"oppilaitosOid=$oid").mkString("&") + s"&paiva=$paiva&raportti=$raportti"),
+        "hakuEhto" -> hakuEhto,
         "massaluovutusId" -> queryId,
       ),
     ))
@@ -73,12 +76,19 @@ class MassaluovutusRaportitSpec extends AnyFreeSpec with MassaluovutusTestMethod
       organisaatioOid = Some(MockOrganisaatiot.jyväskylänNormaalikoulu),
     )
 
-    "Kysely onnistuu ja palauttaa oikeat tiedostot" in {
-      raporttiKyselyOnnistuu(query, MockUsers.jyväskylänNormaalikoulunPalvelukäyttäjä)
+    "Kysely onnistuu, palauttaa oikeat tiedostot ja kirjaa auditlokiin hakuehdot" in {
+      AuditLogTester.clearMessages()
+      val queryId = raporttiKyselyOnnistuu(query, MockUsers.jyväskylänNormaalikoulunPalvelukäyttäjä)
+      verifyAinoaAuditlokimerkintä(queryId, s"alku=2012-01-01&lang=fi&loppu=2016-01-01&oppilaitosOid=${MockOrganisaatiot.jyväskylänNormaalikoulu}&raportti=lukionsuoritustietojentarkistus")
     }
 
     "Ei onnistu väärän organisaation tietoihin" in {
       raporttiKyselyEiOnnistu(query, MockUsers.helsinkiKatselija)
+    }
+
+    "Ei onnistu ilman oikeuksia lukiokoulutuksen opiskeluoikeuksiin" in {
+      raporttiKyselyEiOnnistu(query, MockUsers.perusopetusTallentaja)
+      raporttiKyselyEiOnnistu(query, MockUsers.esiopetusTallentaja)
     }
   }
 
@@ -89,8 +99,10 @@ class MassaluovutusRaportitSpec extends AnyFreeSpec with MassaluovutusTestMethod
       organisaatioOid = Some(MockOrganisaatiot.jyväskylänNormaalikoulu),
     )
 
-    "Kysely onnistuu ja palauttaa oikeat tiedostot" in {
-      raporttiKyselyOnnistuu(query, MockUsers.jyväskylänNormaalikoulunPalvelukäyttäjä)
+    "Kysely onnistuu, palauttaa oikeat tiedostot ja kirjaa auditlokiin hakuehdot" in {
+      AuditLogTester.clearMessages()
+      val queryId = raporttiKyselyOnnistuu(query, MockUsers.jyväskylänNormaalikoulunPalvelukäyttäjä)
+      verifyAinoaAuditlokimerkintä(queryId, s"alku=2012-01-01&lang=fi&loppu=2016-01-01&oppilaitosOid=${MockOrganisaatiot.jyväskylänNormaalikoulu}&raportti=lukio2019suoritustietojentarkistus")
     }
 
     "Ei onnistu väärän organisaation tietoihin" in {
@@ -105,12 +117,21 @@ class MassaluovutusRaportitSpec extends AnyFreeSpec with MassaluovutusTestMethod
       organisaatioOid = Some(MockOrganisaatiot.jyväskylänNormaalikoulu),
     )
 
-    "Kysely onnistuu ja palauttaa oikeat tiedostot" in {
-      raporttiKyselyOnnistuu(query, MockUsers.jyväskylänNormaalikoulunPalvelukäyttäjä)
+    "Kysely onnistuu, palauttaa oikeat tiedostot ja kirjaa auditlokiin hakuehdot" in {
+      AuditLogTester.clearMessages()
+      val queryId = raporttiKyselyOnnistuu(query, MockUsers.jyväskylänNormaalikoulunPalvelukäyttäjä)
+      verifyAinoaAuditlokimerkintä(queryId, s"alku=2012-01-01&lang=fi&loppu=2016-01-01&oppilaitosOid=${MockOrganisaatiot.jyväskylänNormaalikoulu}&raportti=lukiokurssikertymat")
     }
 
     "Ei onnistu väärän organisaation tietoihin" in {
       raporttiKyselyEiOnnistu(query, MockUsers.helsinkiKatselija)
+    }
+
+    "Tiedoston nimi on kyselyn kielellä" in {
+      val queryId = addQuerySuccessfully(query.copy(language = Some("sv")), MockUsers.jyväskylänNormaalikoulunPalvelukäyttäjä)(_.queryId)
+      val tiedostot = waitForCompletion(queryId, MockUsers.jyväskylänNormaalikoulunPalvelukäyttäjä).files
+      tiedostot should have length 1
+      tiedostot.head should endWith("/gymnasiets_antal_kurser_20120101-20160101.xlsx")
     }
   }
 
@@ -121,8 +142,10 @@ class MassaluovutusRaportitSpec extends AnyFreeSpec with MassaluovutusTestMethod
       organisaatioOid = Some(MockOrganisaatiot.jyväskylänNormaalikoulu),
     )
 
-    "Kysely onnistuu ja palauttaa oikeat tiedostot" in {
-      raporttiKyselyOnnistuu(query, MockUsers.jyväskylänNormaalikoulunPalvelukäyttäjä)
+    "Kysely onnistuu, palauttaa oikeat tiedostot ja kirjaa auditlokiin hakuehdot" in {
+      AuditLogTester.clearMessages()
+      val queryId = raporttiKyselyOnnistuu(query, MockUsers.jyväskylänNormaalikoulunPalvelukäyttäjä)
+      verifyAinoaAuditlokimerkintä(queryId, s"alku=2012-01-01&lang=fi&loppu=2016-01-01&oppilaitosOid=${MockOrganisaatiot.jyväskylänNormaalikoulu}&raportti=lukio2019opintopistekertymat")
     }
 
     "Ei onnistu väärän organisaation tietoihin" in {
@@ -136,8 +159,10 @@ class MassaluovutusRaportitSpec extends AnyFreeSpec with MassaluovutusTestMethod
       organisaatioOid = Some(MockOrganisaatiot.jyväskylänNormaalikoulu),
     )
 
-    "Kysely onnistuu ja palauttaa oikeat tiedostot" in {
-      raporttiKyselyOnnistuu(query, MockUsers.jyväskylänNormaalikoulunPalvelukäyttäjä)
+    "Kysely onnistuu, palauttaa oikeat tiedostot ja kirjaa auditlokiin hakuehdot" in {
+      AuditLogTester.clearMessages()
+      val queryId = raporttiKyselyOnnistuu(query, MockUsers.jyväskylänNormaalikoulunPalvelukäyttäjä)
+      verifyAinoaAuditlokimerkintä("lukiodiaibinternationaleshopiskelijamaarat", "2016-01-15", List(MockOrganisaatiot.jyväskylänNormaalikoulu), queryId)
     }
 
     "Ei onnistu väärän organisaation tietoihin" in {
@@ -154,8 +179,10 @@ class MassaluovutusRaportitSpec extends AnyFreeSpec with MassaluovutusTestMethod
       organisaatioOid = Some(MockOrganisaatiot.stadinAmmattiopisto),
     )
 
-    "Kysely onnistuu ja palauttaa oikeat tiedostot" in {
-      raporttiKyselyOnnistuu(query, MockUsers.stadinAmmattiopistoPalvelukäyttäjä)
+    "Kysely onnistuu, palauttaa oikeat tiedostot ja kirjaa auditlokiin hakuehdot" in {
+      AuditLogTester.clearMessages()
+      val queryId = raporttiKyselyOnnistuu(query, MockUsers.stadinAmmattiopistoPalvelukäyttäjä)
+      verifyAinoaAuditlokimerkintä(queryId, s"alku=2016-01-01&lang=fi&loppu=2020-01-01&oppilaitosOid=${MockOrganisaatiot.stadinAmmattiopisto}&raportti=ammatillinenopiskelijavuositiedot")
     }
 
     "Ei onnistu väärän organisaation tietoihin" in {
@@ -170,8 +197,10 @@ class MassaluovutusRaportitSpec extends AnyFreeSpec with MassaluovutusTestMethod
       organisaatioOid = Some(MockOrganisaatiot.stadinAmmattiopisto),
     )
 
-    "Kysely onnistuu ja palauttaa oikeat tiedostot" in {
-      raporttiKyselyOnnistuu(query, MockUsers.stadinAmmattiopistoPalvelukäyttäjä)
+    "Kysely onnistuu, palauttaa oikeat tiedostot ja kirjaa auditlokiin hakuehdot" in {
+      AuditLogTester.clearMessages()
+      val queryId = raporttiKyselyOnnistuu(query, MockUsers.stadinAmmattiopistoPalvelukäyttäjä)
+      verifyAinoaAuditlokimerkintä(queryId, s"alku=2016-01-01&lang=fi&loppu=2020-01-01&oppilaitosOid=${MockOrganisaatiot.stadinAmmattiopisto}&raportti=ammatillinentutkintosuoritustietojentarkistus")
     }
 
     "Ei onnistu väärän organisaation tietoihin" in {
@@ -186,8 +215,10 @@ class MassaluovutusRaportitSpec extends AnyFreeSpec with MassaluovutusTestMethod
       organisaatioOid = Some(MockOrganisaatiot.stadinAmmattiopisto),
     )
 
-    "Kysely onnistuu ja palauttaa oikeat tiedostot" in {
-      raporttiKyselyOnnistuu(query, MockUsers.stadinAmmattiopistoPalvelukäyttäjä)
+    "Kysely onnistuu, palauttaa oikeat tiedostot ja kirjaa auditlokiin hakuehdot" in {
+      AuditLogTester.clearMessages()
+      val queryId = raporttiKyselyOnnistuu(query, MockUsers.stadinAmmattiopistoPalvelukäyttäjä)
+      verifyAinoaAuditlokimerkintä(queryId, s"alku=2016-01-01&lang=fi&loppu=2020-01-01&oppilaitosOid=${MockOrganisaatiot.stadinAmmattiopisto}&raportti=ammatillinenosittainensuoritustietojentarkistus")
     }
 
     "Ei onnistu väärän organisaation tietoihin" in {
@@ -202,8 +233,10 @@ class MassaluovutusRaportitSpec extends AnyFreeSpec with MassaluovutusTestMethod
       organisaatioOid = Some(MockOrganisaatiot.stadinAmmattiopisto),
     )
 
-    "Kysely onnistuu ja palauttaa oikeat tiedostot" in {
-      raporttiKyselyOnnistuu(query, MockUsers.stadinAmmattiopistoPalvelukäyttäjä)
+    "Kysely onnistuu, palauttaa oikeat tiedostot ja kirjaa auditlokiin hakuehdot" in {
+      AuditLogTester.clearMessages()
+      val queryId = raporttiKyselyOnnistuu(query, MockUsers.stadinAmmattiopistoPalvelukäyttäjä)
+      verifyAinoaAuditlokimerkintä(queryId, s"alku=2016-01-01&lang=fi&loppu=2020-01-01&oppilaitosOid=${MockOrganisaatiot.stadinAmmattiopisto}&raportti=muuammatillinen")
     }
 
     "Ei onnistu väärän organisaation tietoihin" in {
@@ -218,8 +251,10 @@ class MassaluovutusRaportitSpec extends AnyFreeSpec with MassaluovutusTestMethod
       organisaatioOid = Some(MockOrganisaatiot.stadinAmmattiopisto),
     )
 
-    "Kysely onnistuu ja palauttaa oikeat tiedostot" in {
-      raporttiKyselyOnnistuu(query, MockUsers.stadinAmmattiopistoPalvelukäyttäjä)
+    "Kysely onnistuu, palauttaa oikeat tiedostot ja kirjaa auditlokiin hakuehdot" in {
+      AuditLogTester.clearMessages()
+      val queryId = raporttiKyselyOnnistuu(query, MockUsers.stadinAmmattiopistoPalvelukäyttäjä)
+      verifyAinoaAuditlokimerkintä(queryId, s"alku=2016-01-01&lang=fi&loppu=2020-01-01&oppilaitosOid=${MockOrganisaatiot.stadinAmmattiopisto}&raportti=topksammatillinen")
     }
 
     "Ei onnistu väärän organisaation tietoihin" in {
@@ -236,12 +271,18 @@ class MassaluovutusRaportitSpec extends AnyFreeSpec with MassaluovutusTestMethod
       organisaatioOid = Some(MockOrganisaatiot.jyväskylänNormaalikoulu),
     )
 
-    "Kysely onnistuu ja palauttaa oikeat tiedostot" in {
-      raporttiKyselyOnnistuu(query, MockUsers.jyväskylänNormaalikoulunPalvelukäyttäjä)
+    "Kysely onnistuu, palauttaa oikeat tiedostot ja kirjaa auditlokiin hakuehdot" in {
+      AuditLogTester.clearMessages()
+      val queryId = raporttiKyselyOnnistuu(query, MockUsers.jyväskylänNormaalikoulunPalvelukäyttäjä)
+      verifyAinoaAuditlokimerkintä(queryId, s"lang=fi&oppilaitosOid=${MockOrganisaatiot.jyväskylänNormaalikoulu}&paiva=2012-01-01&raportti=perusopetuksenvuosiluokka&vuosiluokka=9")
     }
 
     "Ei onnistu väärän organisaation tietoihin" in {
       raporttiKyselyEiOnnistu(query, MockUsers.helsinkiKatselija)
+    }
+
+    "Ei onnistu koulutustoimijalle esiopetuksen ostopalvelun oppilaitoksen tietoihin" in {
+      raporttiKyselyEiOnnistu(query, MockUsers.helsinkiTallentaja)
     }
   }
 
@@ -251,8 +292,10 @@ class MassaluovutusRaportitSpec extends AnyFreeSpec with MassaluovutusTestMethod
       organisaatioOid = Some(MockOrganisaatiot.jyväskylänNormaalikoulu),
     )
 
-    "Kysely onnistuu ja palauttaa oikeat tiedostot" in {
-      raporttiKyselyOnnistuu(query, MockUsers.jyväskylänNormaalikoulunPalvelukäyttäjä)
+    "Kysely onnistuu, palauttaa oikeat tiedostot ja kirjaa auditlokiin hakuehdot" in {
+      AuditLogTester.clearMessages()
+      val queryId = raporttiKyselyOnnistuu(query, MockUsers.jyväskylänNormaalikoulunPalvelukäyttäjä)
+      verifyAinoaAuditlokimerkintä("perusopetuksenoppijamaaratraportti", "2012-01-01", List(MockOrganisaatiot.jyväskylänNormaalikoulu), queryId)
     }
 
     "Ei onnistu väärän organisaation tietoihin" in {
@@ -268,8 +311,10 @@ class MassaluovutusRaportitSpec extends AnyFreeSpec with MassaluovutusTestMethod
       organisaatioOid = Some(MockOrganisaatiot.jyväskylänNormaalikoulu),
     )
 
-    "Kysely onnistuu ja palauttaa oikeat tiedostot" in {
-      raporttiKyselyOnnistuu(query, MockUsers.jyväskylänNormaalikoulunPalvelukäyttäjä)
+    "Kysely onnistuu, palauttaa oikeat tiedostot ja kirjaa auditlokiin hakuehdot" in {
+      AuditLogTester.clearMessages()
+      val queryId = raporttiKyselyOnnistuu(query, MockUsers.jyväskylänNormaalikoulunPalvelukäyttäjä)
+      verifyAinoaAuditlokimerkintä(queryId, s"alku=2008-01-01&lang=fi&loppu=2020-01-01&oppilaitosOid=${MockOrganisaatiot.jyväskylänNormaalikoulu}&raportinTyyppi=päättövaihe&raportti=aikuistenperusopetuksensuoritustietojentarkistus")
     }
 
     "Ei onnistu väärän organisaation tietoihin" in {
@@ -283,8 +328,10 @@ class MassaluovutusRaportitSpec extends AnyFreeSpec with MassaluovutusTestMethod
       organisaatioOid = Some(MockOrganisaatiot.jyväskylänNormaalikoulu),
     )
 
-    "Kysely onnistuu ja palauttaa oikeat tiedostot" in {
-      raporttiKyselyOnnistuu(query, MockUsers.jyväskylänNormaalikoulunPalvelukäyttäjä)
+    "Kysely onnistuu, palauttaa oikeat tiedostot ja kirjaa auditlokiin hakuehdot" in {
+      AuditLogTester.clearMessages()
+      val queryId = raporttiKyselyOnnistuu(query, MockUsers.jyväskylänNormaalikoulunPalvelukäyttäjä)
+      verifyAinoaAuditlokimerkintä("aikuistenperusopetuksenoppijamaaratraportti", "2010-01-01", List(MockOrganisaatiot.jyväskylänNormaalikoulu), queryId)
     }
 
     "Ei onnistu väärän organisaation tietoihin" in {
@@ -299,8 +346,10 @@ class MassaluovutusRaportitSpec extends AnyFreeSpec with MassaluovutusTestMethod
       organisaatioOid = Some(MockOrganisaatiot.jyväskylänNormaalikoulu),
     )
 
-    "Kysely onnistuu ja palauttaa oikeat tiedostot" in {
-      raporttiKyselyOnnistuu(query, MockUsers.jyväskylänNormaalikoulunPalvelukäyttäjä)
+    "Kysely onnistuu, palauttaa oikeat tiedostot ja kirjaa auditlokiin hakuehdot" in {
+      AuditLogTester.clearMessages()
+      val queryId = raporttiKyselyOnnistuu(query, MockUsers.jyväskylänNormaalikoulunPalvelukäyttäjä)
+      verifyAinoaAuditlokimerkintä(queryId, s"alku=2008-01-01&lang=fi&loppu=2020-01-01&oppilaitosOid=${MockOrganisaatiot.jyväskylänNormaalikoulu}&raportti=aikuistenperusopetuksenkurssikertymaraportti")
     }
 
     "Ei onnistu väärän organisaation tietoihin" in {
@@ -356,8 +405,10 @@ class MassaluovutusRaportitSpec extends AnyFreeSpec with MassaluovutusTestMethod
       organisaatioOid = Some(MockOrganisaatiot.jyväskylänNormaalikoulu),
     )
 
-    "Kysely onnistuu ja palauttaa oikeat tiedostot" in {
-      raporttiKyselyOnnistuu(query, MockUsers.jyväskylänNormaalikoulunPalvelukäyttäjä)
+    "Kysely onnistuu, palauttaa oikeat tiedostot ja kirjaa auditlokiin hakuehdot" in {
+      AuditLogTester.clearMessages()
+      val queryId = raporttiKyselyOnnistuu(query, MockUsers.jyväskylänNormaalikoulunPalvelukäyttäjä)
+      verifyAinoaAuditlokimerkintä("esiopetuksenoppijamaaratraportti", "2012-01-01", List(MockOrganisaatiot.jyväskylänNormaalikoulu), queryId)
     }
 
     "Ei onnistu väärän organisaation tietoihin" in {
@@ -384,8 +435,10 @@ class MassaluovutusRaportitSpec extends AnyFreeSpec with MassaluovutusTestMethod
       organisaatioOid = Some(MockOrganisaatiot.jyväskylänNormaalikoulu),
     )
 
-    "Kysely onnistuu ja palauttaa oikeat tiedostot" in {
-      raporttiKyselyOnnistuu(query, MockUsers.jyväskylänNormaalikoulunPalvelukäyttäjä)
+    "Kysely onnistuu, palauttaa oikeat tiedostot ja kirjaa auditlokiin hakuehdot" in {
+      AuditLogTester.clearMessages()
+      val queryId = raporttiKyselyOnnistuu(query, MockUsers.jyväskylänNormaalikoulunPalvelukäyttäjä)
+      verifyAinoaAuditlokimerkintä(queryId, s"alku=2008-01-01&lang=fi&loppu=2020-01-01&oppilaitosOid=${MockOrganisaatiot.jyväskylänNormaalikoulu}&raportti=perusopetukseenvalmistavansuoritustietojentarkistus")
     }
 
     "Ei onnistu väärän organisaation tietoihin" in {
@@ -399,8 +452,10 @@ class MassaluovutusRaportitSpec extends AnyFreeSpec with MassaluovutusTestMethod
       organisaatioOid = Some(MockOrganisaatiot.stadinAmmattiopisto),
     )
 
-    "Kysely onnistuu ja palauttaa oikeat tiedostot" in {
-      raporttiKyselyOnnistuu(query, MockUsers.stadinAmmattiopistoPalvelukäyttäjä)
+    "Kysely onnistuu, palauttaa oikeat tiedostot ja kirjaa auditlokiin hakuehdot" in {
+      AuditLogTester.clearMessages()
+      val queryId = raporttiKyselyOnnistuu(query, MockUsers.stadinAmmattiopistoPalvelukäyttäjä)
+      verifyAinoaAuditlokimerkintä("tuvaperusopetuksenoppijamaaratraportti", "2022-01-01", List(MockOrganisaatiot.stadinAmmattiopisto), queryId)
     }
 
     "Ei onnistu väärän organisaation tietoihin" in {
@@ -415,8 +470,10 @@ class MassaluovutusRaportitSpec extends AnyFreeSpec with MassaluovutusTestMethod
       organisaatioOid = Some(MockOrganisaatiot.stadinAmmattiopisto),
     )
 
-    "Kysely onnistuu ja palauttaa oikeat tiedostot" in {
-      raporttiKyselyOnnistuu(query, MockUsers.stadinAmmattiopistoPalvelukäyttäjä)
+    "Kysely onnistuu, palauttaa oikeat tiedostot ja kirjaa auditlokiin hakuehdot" in {
+      AuditLogTester.clearMessages()
+      val queryId = raporttiKyselyOnnistuu(query, MockUsers.stadinAmmattiopistoPalvelukäyttäjä)
+      verifyAinoaAuditlokimerkintä(queryId, s"alku=2021-01-01&lang=fi&loppu=2025-01-01&oppilaitosOid=${MockOrganisaatiot.stadinAmmattiopisto}&raportti=tuvasuoritustietojentarkistus")
     }
 
     "Ei onnistu väärän organisaation tietoihin" in {
@@ -432,12 +489,16 @@ class MassaluovutusRaportitSpec extends AnyFreeSpec with MassaluovutusTestMethod
       organisaatioOid = Some(MockOrganisaatiot.ressunLukio),
     )
 
-    "Kysely onnistuu ja palauttaa oikeat tiedostot" in {
-      raporttiKyselyOnnistuu(query, MockUsers.paakayttaja)
+    "Kysely onnistuu, palauttaa oikeat tiedostot ja kirjaa auditlokiin hakuehdot" in {
+      AuditLogTester.clearMessages()
+      val queryId = raporttiKyselyOnnistuu(query, MockUsers.paakayttaja)
+      verifyAinoaAuditlokimerkintä(queryId, s"alku=2012-01-01&lang=fi&loppu=2025-01-01&oppilaitosOid=${MockOrganisaatiot.ressunLukio}&raportinTyyppi=ibtutkinto&raportti=ibsuoritustietojentarkistus")
     }
 
-    "Kysely kotikuntapäivällä onnistuu" in {
-      raporttiKyselyOnnistuu(query.copy(kotikuntaPvm = Some(LocalDate.of(2015, 1, 1))), MockUsers.paakayttaja)
+    "Kysely kotikuntapäivällä onnistuu ja kirjaa päivän auditlokiin" in {
+      AuditLogTester.clearMessages()
+      val queryId = raporttiKyselyOnnistuu(query.copy(kotikuntaPvm = Some(LocalDate.of(2015, 1, 1))), MockUsers.paakayttaja)
+      verifyAinoaAuditlokimerkintä(queryId, s"alku=2012-01-01&kotikuntaPvm=2015-01-01&lang=fi&loppu=2025-01-01&oppilaitosOid=${MockOrganisaatiot.ressunLukio}&raportinTyyppi=ibtutkinto&raportti=ibsuoritustietojentarkistus")
     }
 
     "Ei onnistu väärän organisaation tietoihin" in {
@@ -452,8 +513,10 @@ class MassaluovutusRaportitSpec extends AnyFreeSpec with MassaluovutusTestMethod
       organisaatioOid = Some(MockOrganisaatiot.varsinaisSuomenKansanopisto),
     )
 
-    "Kysely onnistuu ja palauttaa oikeat tiedostot" in {
-      raporttiKyselyOnnistuu(query, MockUsers.varsinaisSuomiPalvelukäyttäjä)
+    "Kysely onnistuu, palauttaa oikeat tiedostot ja kirjaa auditlokiin hakuehdot" in {
+      AuditLogTester.clearMessages()
+      val queryId = raporttiKyselyOnnistuu(query, MockUsers.varsinaisSuomiPalvelukäyttäjä)
+      verifyAinoaAuditlokimerkintä(queryId, s"alku=2022-01-01&lang=fi&loppu=2025-01-01&oppilaitosOid=${MockOrganisaatiot.varsinaisSuomenKansanopisto}&raportti=vstjotpa")
     }
 
     "Ei onnistu väärän organisaation tietoihin" in {
@@ -468,8 +531,10 @@ class MassaluovutusRaportitSpec extends AnyFreeSpec with MassaluovutusTestMethod
       organisaatioOid = Some(MockOrganisaatiot.varsinaisSuomenKansanopisto),
     )
 
-    "Kysely onnistuu ja palauttaa oikeat tiedostot" in {
-      raporttiKyselyOnnistuu(query, MockUsers.varsinaisSuomiPalvelukäyttäjä)
+    "Kysely onnistuu, palauttaa oikeat tiedostot ja kirjaa auditlokiin hakuehdot" in {
+      AuditLogTester.clearMessages()
+      val queryId = raporttiKyselyOnnistuu(query, MockUsers.varsinaisSuomiPalvelukäyttäjä)
+      verifyAinoaAuditlokimerkintä(queryId, s"alku=2022-01-01&lang=fi&loppu=2025-01-01&oppilaitosOid=${MockOrganisaatiot.varsinaisSuomenKansanopisto}&raportti=vstvapaatavoitteinen")
     }
 
     "Ei onnistu väärän organisaation tietoihin" in {
@@ -484,8 +549,10 @@ class MassaluovutusRaportitSpec extends AnyFreeSpec with MassaluovutusTestMethod
       organisaatioOid = Some(MockOrganisaatiot.varsinaisSuomenKansanopisto),
     )
 
-    "Kysely onnistuu ja palauttaa oikeat tiedostot" in {
-      raporttiKyselyOnnistuu(query, MockUsers.varsinaisSuomiPalvelukäyttäjä)
+    "Kysely onnistuu, palauttaa oikeat tiedostot ja kirjaa auditlokiin hakuehdot" in {
+      AuditLogTester.clearMessages()
+      val queryId = raporttiKyselyOnnistuu(query, MockUsers.varsinaisSuomiPalvelukäyttäjä)
+      verifyAinoaAuditlokimerkintä(queryId, s"alku=2022-01-01&lang=fi&loppu=2025-01-01&oppilaitosOid=${MockOrganisaatiot.varsinaisSuomenKansanopisto}&raportti=vstkops")
     }
 
     "Ei onnistu väärän organisaation tietoihin" in {
@@ -500,8 +567,10 @@ class MassaluovutusRaportitSpec extends AnyFreeSpec with MassaluovutusTestMethod
       organisaatioOid = Some(MockOrganisaatiot.varsinaisSuomenKansanopisto),
     )
 
-    "Kysely onnistuu ja palauttaa oikeat tiedostot" in {
-      raporttiKyselyOnnistuu(query, MockUsers.varsinaisSuomiPalvelukäyttäjä)
+    "Kysely onnistuu, palauttaa oikeat tiedostot ja kirjaa auditlokiin hakuehdot" in {
+      AuditLogTester.clearMessages()
+      val queryId = raporttiKyselyOnnistuu(query, MockUsers.varsinaisSuomiPalvelukäyttäjä)
+      verifyAinoaAuditlokimerkintä(queryId, s"alku=2024-01-01&lang=fi&loppu=2025-01-01&oppilaitosOid=${MockOrganisaatiot.varsinaisSuomenKansanopisto}&raportti=vstosaamismerkit")
     }
 
     "Ei onnistu väärän organisaation tietoihin" in {
@@ -516,8 +585,10 @@ class MassaluovutusRaportitSpec extends AnyFreeSpec with MassaluovutusTestMethod
       organisaatioOid = Some(MockOrganisaatiot.MuuKuinSäänneltyKoulutusToimija.oppilaitos),
     )
 
-    "Kysely onnistuu ja palauttaa oikeat tiedostot" in {
-      raporttiKyselyOnnistuu(query, MockUsers.muuKuinSäänneltyKoulutusYritys)
+    "Kysely onnistuu, palauttaa oikeat tiedostot ja kirjaa auditlokiin hakuehdot" in {
+      AuditLogTester.clearMessages()
+      val queryId = raporttiKyselyOnnistuu(query, MockUsers.muuKuinSäänneltyKoulutusYritys)
+      verifyAinoaAuditlokimerkintä(queryId, s"alku=2022-01-01&lang=fi&loppu=2025-01-01&oppilaitosOid=${MockOrganisaatiot.MuuKuinSäänneltyKoulutusToimija.oppilaitos}&raportti=muukuinsaanneltykoulutus")
     }
 
     "Ei onnistu väärän organisaation tietoihin" in {
@@ -531,8 +602,10 @@ class MassaluovutusRaportitSpec extends AnyFreeSpec with MassaluovutusTestMethod
       organisaatioOid = Some(MockOrganisaatiot.ressunLukio),
     )
 
-    "Kysely onnistuu ja palauttaa oikeat tiedostot" in {
-      raporttiKyselyOnnistuu(query, MockUsers.paakayttaja)
+    "Kysely onnistuu, palauttaa oikeat tiedostot ja kirjaa auditlokiin hakuehdot" in {
+      AuditLogTester.clearMessages()
+      val queryId = raporttiKyselyOnnistuu(query, MockUsers.paakayttaja)
+      verifyAinoaAuditlokimerkintä("luvaopiskelijamaarat", "2016-01-01", List(MockOrganisaatiot.ressunLukio), queryId)
     }
 
     "Ei onnistu väärän organisaation tietoihin" in {
@@ -546,8 +619,10 @@ class MassaluovutusRaportitSpec extends AnyFreeSpec with MassaluovutusTestMethod
       organisaatioOid = Some(MockOrganisaatiot.jyväskylänNormaalikoulu),
     )
 
-    "Kysely onnistuu ja palauttaa oikeat tiedostot" in {
-      raporttiKyselyOnnistuu(query, MockUsers.jyväskylänNormaalikoulunPalvelukäyttäjä)
+    "Kysely onnistuu, palauttaa oikeat tiedostot ja kirjaa auditlokiin hakuehdot" in {
+      AuditLogTester.clearMessages()
+      val queryId = raporttiKyselyOnnistuu(query, MockUsers.jyväskylänNormaalikoulunPalvelukäyttäjä)
+      verifyAinoaAuditlokimerkintä("perusopetuksenlisaopetuksenoppijamaaratraportti", "2012-01-01", List(MockOrganisaatiot.jyväskylänNormaalikoulu), queryId)
     }
 
     "Ei onnistu väärän organisaation tietoihin" in {
