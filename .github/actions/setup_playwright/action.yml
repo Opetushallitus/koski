@@ -36,9 +36,9 @@ runs:
         path: |
           ~/.cache/ms-playwright
         key: ${{ runner.os }}-playwright-${{ steps.cache-key.outputs.browsers }}-${{ steps.playwright-version.outputs.version }}
-    - name: Install Playwright with dependencies
+    - name: Install Playwright browsers
       working-directory: ${{ inputs.workingDirectory }}
       env:
         BROWSERS: ${{ inputs.browsers }}
-      run: pnpm exec playwright install --with-deps $BROWSERS
+      run: pnpm exec playwright install $BROWSERS
       shell: bash
