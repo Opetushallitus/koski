@@ -35,23 +35,6 @@ class PerusopetuksenVuosiluokkaRaporttiSpec
 
   "Perusopetuksenvuosiluokka raportti" - {
 
-    "Raportin lataaminen toimii" in {
-      verifyPerusopetukseVuosiluokkaRaportinLataaminen(
-        queryString = defaultQuery(lang = "fi"),
-        apiUrl = "api/raportit/perusopetuksenvuosiluokka",
-        expectedRaporttiNimi = "perusopetuksenvuosiluokka",
-        expectedFileNamePrefix = "Perusopetuksen_vuosiluokka")
-    }
-
-    "Raportin lataaminen toimii eri lokalisaatiolla" in {
-      verifyPerusopetukseVuosiluokkaRaportinLataaminen(
-        queryString = defaultQuery(lang = "sv"),
-        apiUrl = "api/raportit/perusopetuksenvuosiluokka",
-        expectedRaporttiNimi = "perusopetuksenvuosiluokka",
-        expectedFileNamePrefix = "Grundläggande_utbildning_årskurs"
-      )
-    }
-
     "Tuottaa oikeat tiedot" in {
       withLisätiedotFixture(KoskiSpecificMockOppijat.ysiluokkalainen, perusopetuksenOpiskeluoikeudenLisätiedot.copy(
         vammainen = None,
@@ -644,12 +627,6 @@ class PerusopetuksenVuosiluokkaRaporttiSpec
     toimintaAlueenSuoritus("3"),
     toimintaAlueenSuoritus("4")
   ))
-
-  private def defaultQuery(lang: String) = makeQueryString(MockOrganisaatiot.jyväskylänNormaalikoulu, LocalDate.of(2016, 1, 1), "9", lang)
-
-  private def makeQueryString(oppilaitosOid: String, paiva: LocalDate, vuosiluokka: String, lang: String) = {
-    s"oppilaitosOid=$oppilaitosOid&paiva=${paiva.toString}&vuosiluokka=$vuosiluokka&lang=$lang"
-  }
 
   private val mennytAikajakso = Aikajakso(date(2000, 1, 1), Some(date(2001, 1, 1)))
   private val voimassaolevaAikajakso = Aikajakso(date(2008, 1, 1), None)

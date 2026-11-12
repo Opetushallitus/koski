@@ -80,15 +80,6 @@ object AikuistenPerusopetusOppiaineenOppimääräRaportti extends AikuistenPerus
 }
 
 object AikuistenPerusopetusRaportti {
-  def makeRaporttiType(typeName: String): Either[String, AikuistenPerusopetusRaporttiType] = {
-    typeName match {
-      case "alkuvaihe" => Right(AikuistenPerusopetusAlkuvaiheRaportti)
-      case "päättövaihe" => Right(AikuistenPerusopetusPäättövaiheRaportti)
-      case "oppiaineenoppimäärä" => Right(AikuistenPerusopetusOppiaineenOppimääräRaportti)
-      case _ => Left(s"${typeName} on epäkelpo aikuisten perusopetuksen raportin tyyppi")
-    }
-  }
-
   def raporttiTypeLokalisoitu(typeName: String, t: LocalizationReader): String = typeName match {
     case "alkuvaihe" => t.get("raportti-excel-aikuistenperusopetus-alkuvaihe-type")
     case "päättövaihe" => t.get("raportti-excel-aikuistenperusopetus-päättövaihe-type")

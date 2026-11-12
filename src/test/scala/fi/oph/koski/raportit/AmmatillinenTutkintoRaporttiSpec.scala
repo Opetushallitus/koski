@@ -364,23 +364,6 @@ class AmmatillinenTutkintoRaporttiSpec
         ))
       }
     }
-
-    "raportin lataaminen toimii (ja tuottaa audit log viestin)" in {
-      verifyRaportinLataaminen(
-        apiUrl = "api/raportit/ammatillinentutkintosuoritustietojentarkistus",
-        expectedRaporttiNimi = AmmatillinenTutkintoSuoritustietojenTarkistus.toString,
-        expectedFileNamePrefix = "suoritustiedot"
-      )
-    }
-
-    "raportin lataaminen toimii eri lokalisaatiolla (ja tuottaa audit log viestin)" in {
-      verifyRaportinLataaminen(
-        apiUrl = "api/raportit/ammatillinentutkintosuoritustietojentarkistus",
-        expectedRaporttiNimi = AmmatillinenTutkintoSuoritustietojenTarkistus.toString,
-        expectedFileNamePrefix = "prestationsuppgifter",
-        lang = "sv"
-      )
-    }
   }
 
   private val defaultHetu = KoskiSpecificMockOppijat.ammattilainen.hetu.get

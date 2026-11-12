@@ -3,7 +3,6 @@ package fi.oph.koski.raportit
 import fi.oph.koski.KoskiApplicationForTests
 import fi.oph.koski.koskiuser.KoskiMockUser
 import fi.oph.koski.localization.LocalizationReader
-import fi.oph.koski.log.AuditLogTester
 import fi.oph.koski.organisaatio.MockOrganisaatiot.jyväskylänNormaalikoulu
 import fi.oph.koski.raportit.aikuistenperusopetus.{AikuistenPerusopetuksenOppijamäärätRaportti, AikuistenPerusopetuksenOppijamäärätRaporttiRow}
 import fi.oph.koski.raportointikanta.RaportointikantaTestMethods
@@ -26,24 +25,6 @@ class AikuistenPerusopetuksenOppijamäärätRaporttiSpec extends AnyFreeSpec wit
   }
 
   "Aikuisten perusopetuksen oppijamäärien raportti" - {
-    "Raportti voidaan ladata ja lataaminen tuottaa auditlogin" in {
-      authGet(s"api/raportit/aikuistenperusopetuksenoppijamaaratraportti?oppilaitosOid=$jyväskylänNormaalikoulu&paiva=2010-01-01&password=salasana&lang=fi") {
-        verifyResponseStatusOk()
-        response.headers("Content-Disposition").head should equal(s"""attachment; filename="aikuisten_perusopetuksen_tunnuslukuraportti-2010-01-01.xlsx"""")
-        response.bodyBytes.take(ENCRYPTED_XLSX_PREFIX.length) should equal(ENCRYPTED_XLSX_PREFIX)
-        AuditLogTester.verifyLastAuditLogMessageForOperation(Map("operation" -> "OPISKELUOIKEUS_RAPORTTI", "target" -> Map("hakuEhto" -> s"raportti=aikuistenperusopetuksenoppijamaaratraportti&oppilaitosOid=$jyväskylänNormaalikoulu&paiva=2010-01-01&lang=fi")))
-      }
-    }
-
-    "Raportti voidaan ladata eri lokalisaatiolla ja lataaminen tuottaa auditlogin" in {
-      authGet(s"api/raportit/aikuistenperusopetuksenoppijamaaratraportti?oppilaitosOid=$jyväskylänNormaalikoulu&paiva=2010-01-01&password=salasana&lang=sv") {
-        verifyResponseStatusOk()
-        response.headers("Content-Disposition").head should equal(s"""attachment; filename="grundläggande_vuxna_nyckeltal_rapport-2010-01-01.xlsx"""")
-        response.bodyBytes.take(ENCRYPTED_XLSX_PREFIX.length) should equal(ENCRYPTED_XLSX_PREFIX)
-        AuditLogTester.verifyLastAuditLogMessageForOperation(Map("operation" -> "OPISKELUOIKEUS_RAPORTTI", "target" -> Map("hakuEhto" -> s"raportti=aikuistenperusopetuksenoppijamaaratraportti&oppilaitosOid=$jyväskylänNormaalikoulu&paiva=2010-01-01&lang=sv")))
-      }
-    }
-
     "Raportin kolumnit" in {
       lazy val r = findSingle(raportti)
 

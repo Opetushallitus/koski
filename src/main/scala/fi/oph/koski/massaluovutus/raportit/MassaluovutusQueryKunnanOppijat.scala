@@ -34,7 +34,7 @@ case class MassaluovutusQueryKunnanOppijat(
   override def opiskeluoikeudenTyyppi = OpiskeluoikeudenTyyppi.perusopetus
   override def raporttiName = "kunnanoppijat"
 
-  // Samat ehdot kuin RaportitServletissä: raportilla on kuntalaisten tietoja muidenkin järjestäjien opiskeluoikeuksista
+  // Raportilla on kuntalaisten tietoja muidenkin järjestäjien opiskeluoikeuksista
   override def queryAllowed(application: KoskiApplication)(implicit user: Session): Boolean =
     super.queryAllowed(application) && withKoskiSpecificSession { u =>
       val accessResolver = RaportitAccessResolver(application)

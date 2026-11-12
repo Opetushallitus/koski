@@ -5,8 +5,6 @@ import fi.oph.koski.api.misc.{OpiskeluoikeusTestMethods, OpiskeluoikeusTestMetho
 import fi.oph.koski.documentation.AmmatillinenExampleData
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat.vuonna2005SyntynytEiOpiskeluoikeuksiaFikstuurissa
-import fi.oph.koski.http.KoskiErrorCategory
-import fi.oph.koski.koskiuser.MockUsers._
 import fi.oph.koski.localization.LocalizationReader
 import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.raportointikanta.{ROpiskeluoikeusAikajaksoRow, RaportointikantaTestMethods}
@@ -380,37 +378,6 @@ class AmmatillinenOpiskelijavuositiedotRaporttiSpec
         AmmatillinenRaporttiUtils.opiskelijavuosikertymä2026(Seq(
           ROpiskeluoikeusAikajaksoRow(oid, Date.valueOf("2026-07-01"), Date.valueOf("2026-07-31"), "loma", Date.valueOf("2026-07-01"))
         ), laskeHeinäkuunPäivät = true) should equal(0)
-      }
-    }
-
-    "raportin lataaminen toimii (ja tuottaa audit log viestin)" in {
-      verifyRaportinLataaminen(apiUrl = "api/raportit/ammatillinenopiskelijavuositiedot", expectedRaporttiNimi = AmmatillinenOpiskelijavuositiedot.toString, expectedFileNamePrefix = "opiskelijavuositiedot")
-    }
-
-    "raportin lataaminen toimii eri lokalisaatiolla (ja tuottaa audit log viestin)" in {
-      verifyRaportinLataaminen(apiUrl = "api/raportit/ammatillinenopiskelijavuositiedot", expectedRaporttiNimi = AmmatillinenOpiskelijavuositiedot.toString, expectedFileNamePrefix = "uppgifter om studerandeår", lang = "sv")
-    }
-
-    "käyttöoikeudet" - {
-      "raportin lataaminen vaatii käyttöoikeudet organisaatioon" in {
-        authGet(s"api/raportit/ammatillinenopiskelijavuositiedot?oppilaitosOid=${MockOrganisaatiot.stadinAmmattiopisto}&alku=2016-01-01&loppu=2016-12-31&password=dummy", user = omniaTallentaja) {
-          verifyResponseStatus(403, KoskiErrorCategory.forbidden.organisaatio("Käyttäjällä ei oikeuksia annettuun organisaatioon (esimerkiksi oppilaitokseen)."))
-        }
-      }
-
-      "raportin lataaminen ei ole sallittu viranomais-käyttäjille (globaali-luku)" in {
-        authGet(s"api/raportit/ammatillinenopiskelijavuositiedot?oppilaitosOid=${MockOrganisaatiot.stadinAmmattiopisto}&alku=2016-01-01&loppu=2016-12-31&password=dummy", user = viranomainenGlobaaliKatselija) {
-          verifyResponseStatus(403, KoskiErrorCategory.forbidden.organisaatio("Käyttäjällä ei oikeuksia annettuun organisaatioon (esimerkiksi oppilaitokseen)."))
-        }
-      }
-    }
-
-    "raportin lataaminen asettaa koskiDownloadToken-cookien" in {
-      authGet(s"api/raportit/ammatillinenopiskelijavuositiedot?oppilaitosOid=${MockOrganisaatiot.stadinAmmattiopisto}&alku=2016-01-01&loppu=2016-12-31&lang=fi&password=dummy&downloadToken=test123") {
-        verifyResponseStatusOk()
-        val cookie = response.headers("Set-Cookie").find(x => x.startsWith("koskiDownloadToken"))
-        cookie shouldBe defined
-        cookie.get should include("koskiDownloadToken=test123; Path=/")
       }
     }
   }
