@@ -9,9 +9,6 @@ class IndexServlet(implicit val application: KoskiApplication) extends ScalatraS
 
   val allowFrameAncestors: Boolean = !Environment.isServerEnvironment(application.config)
 
-  // Salli framet, koska Kosken raporttien Excel-tiedostojen lataaminen käyttää niitä
-  override val allowFrameSrcSelf: Boolean = true
-
   val frontendValvontaMode: FrontendValvontaMode.FrontendValvontaMode =
     FrontendValvontaMode(application.config.getString("frontend-valvonta.mode"))
 

@@ -7,7 +7,6 @@ import org.scalatra.ScalatraBase
 trait FrontendValvottuServlet extends ScalatraBase {
 
   def allowFrameAncestors: Boolean
-  def allowFrameSrcSelf: Boolean = false
   def frontendValvontaMode: FrontendValvontaMode
   def unsafeAllowInlineStyles: Boolean = false
   def unsafeAllowBaseUri: Boolean = false
@@ -22,7 +21,7 @@ trait FrontendValvottuServlet extends ScalatraBase {
 
   protected def setNonceHeader: String = {
     val nonce = Cryptographic.nonce
-    FrontendValvontaHeaders.headers(allowFrameAncestors, allowFrameSrcSelf, frontendValvontaMode, unsafeAllowInlineStyles, unsafeAllowBaseUri, nonce, formActionSources).foreach {
+    FrontendValvontaHeaders.headers(allowFrameAncestors, frontendValvontaMode, unsafeAllowInlineStyles, unsafeAllowBaseUri, nonce, formActionSources).foreach {
       case (h, v) => response.setHeader(h, v)
     }
     response.setHeader("Cache-Control", "no-store, no-cache, must-revalidate")
