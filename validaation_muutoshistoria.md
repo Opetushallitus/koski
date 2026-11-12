@@ -5,6 +5,17 @@
 - Muun kuin säännellyn koulutuksen opiskeluoikeuksissa, jotka alkavat 1.1.2027 tai sen jälkeen ja ovat tilassa `keskeytynyt`, osasuoritusten arviointi vaaditaan (ks. 12.10.2026) myös silloin, kun suoritusta ei ole vahvistettu.
 - Muun kuin säännellyn koulutuksen opiskeluoikeuden tila voi olla `hyvaksytystisuoritettu` vain, kun päätason suoritus on vahvistettu, ja `keskeytynyt` vain, kun päätason suoritusta ei ole vahvistettu. Sääntö koskee kaikkia opiskeluoikeuksia alkamispäivästä riippumatta.
 
+## 27.10.2026
+
+Vapaan sivistystyön vapaatavoitteisen koulutuksen (`vstvapaatavoitteinenkoulutus`) ja osaamismerkin (`vstosaamismerkki`) opiskeluoikeuksille sallitaan tila `lasna`. Opiskeluoikeuksille, jotka ovat päättyneet 1.1.2027 tai sen jälkeen tai ovat edelleen voimassa, validaatiot muuttuvat:
+
+- Tilan `lasna` voi tallentaa vasta 1.1.2027 alkaen ja vain opiskeluoikeudelle, joka on päättynyt 1.1.2027 tai sen jälkeen tai on edelleen voimassa. Läsnä-jakson alkupäivä saa olla ennen 1.1.2027.
+- Tilaan `hyvaksytystisuoritettu` päättyvällä opiskeluoikeudella on oltava vahvistettu päätason suoritus. Vaatimus koskee myös käyttöliittymästä tehtävää ensimmäistä tallennusta, jolle aiemmin sallittiin vahvistamaton suoritus.
+- Osaamismerkin opiskeluoikeuden ei tarvitse olla päättynyt: se voi jäädä tilaan `lasna` ilman arviointia ja vahvistusta, myös lähdejärjestelmästä siirrettäessä. Päättyneen osaamismerkin arviointi-, vahvistus- ja päättymispäivän on edelleen oltava samat.
+- Vapaatavoitteisen koulutuksen vahvistuksen ja päättävän tilan vastaavuus sekä vaatimus vähintään yhdestä arvioidusta osasuorituksesta tarkistetaan aina, ei vain toisesta versiosta tai lähdejärjestelmäsiirrosta alkaen. Arvioitua osasuoritusta vaaditaan vain päättyneeltä opiskeluoikeudelta.
+
+Ennen 1.1.2027 päättyneet opiskeluoikeudet validoidaan aiempien sääntöjen mukaan, eikä niille voi tallentaa tilaa `lasna`.
+
 ## 20.10.2026
 
 - Vapaan sivistystyön kotoutumiskoulutuksen (`vstmaahanmuuttajienkotoutumiskoulutus`, sekä 2012 että 2022 opetussuunnitelman mukaiset suoritukset) ja lukutaitokoulutuksen (`vstlukutaitokoulutus`) opiskeluoikeus ei voi alkaa 1.1.2027 tai sen jälkeen.
