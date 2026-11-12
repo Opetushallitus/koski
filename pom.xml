@@ -41,12 +41,6 @@
         <artifactId>scala-xml_2.13</artifactId>
         <version>2.5.0</version>
       </dependency>
-      <!-- CVE-2025-48924: auditlogger brings commons-lang3 3.13.0 -->
-      <dependency>
-        <groupId>org.apache.commons</groupId>
-        <artifactId>commons-lang3</artifactId>
-        <version>3.21.0</version>
-      </dependency>
       <!-- Keep xmpbox on the same version as pdfbox (openhtmltopdf-pdfbox brings an older one) -->
       <dependency>
         <groupId>org.apache.pdfbox</groupId>
@@ -61,6 +55,13 @@
       <groupId>fi.vm.sade</groupId>
       <artifactId>auditlogger</artifactId>
       <version>9.2.7-SNAPSHOT</version>
+      <exclusions>
+        <!-- CVE-2025-48924: auditlogger declares commons-lang3 3.13.0. Remove once auditlogger drops or updates it. -->
+        <exclusion>
+          <groupId>org.apache.commons</groupId>
+          <artifactId>commons-lang3</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
     <dependency>
       <groupId>co.fs2</groupId>
