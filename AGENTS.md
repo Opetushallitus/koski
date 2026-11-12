@@ -272,6 +272,21 @@ content, so grep for the rule's wording or look at `git log -- <file>` for examp
 A validation date in `validaatiot.*` lives in AppConfig too: changing it in `reference.conf` alone doesn't
 reach the cloud (see *Configuration*).
 
+### Changelog checks in CI
+CI (`scripts/checkdoc_*.sh`) fails a branch based only on which paths it changes, even if users see no difference:
+
+| Branch changes | Must also change |
+|---|---|
+| `src/main/scala/fi/oph/koski/schema` | `tiedonsiirtoprotokollan_muutoshistoria.md` |
+| `koski/validation`, `koski/eperusteetvalidation`, `api/OppijaValidation*` (test-only changes count too) | `validaation_muutoshistoria.md` |
+| Koski or Valpas migrations, `RaportointiDatabase` | the DB docs (`make db-docs`) |
+
+If nothing changes for data-transfer partners, add a line `TOR-XXXX - <reason>` to
+`.github/skip_tiedonsiirtoprotokollan_muutoshistoria.md` or `.github/skip_validaation_muutoshistoria.md`
+instead. A schema change that narrows what is accepted (an enum or koodisto) is also a validation change and
+belongs in both files. Run `make checkdoc_schema checkdoc_validation checkdoc_dbdocs` before handing over a
+branch.
+
 ### Updating localizations
 Localizations are served by the Lokalisointipalvelu service, which gets its data from Tolgee.
 The repo mirrors it in two files: `src/main/resources/mockdata/lokalisointi/koski.json` (all
