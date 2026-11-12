@@ -182,7 +182,7 @@ class IBSuoritustiedotRaporttiSpec extends
 
       "suoritustiedot sheetillä IB-tutkinnon suorituksille" in {
         val suoritusTiedotSheet = raporttiRivitIB.head
-        suoritusTiedotSheet.size shouldBe 4
+        suoritusTiedotSheet.size shouldBe 5
 
         lazy val expectedPetteri = Map(
           "Opiskeluoikeuden oid" -> "",
@@ -235,7 +235,7 @@ class IBSuoritustiedotRaporttiSpec extends
 
       "suoritustiedot sheetillä Pre-IB suorituksille" in {
         val suoritusTiedotSheet = raporttiRivitPreIB.head
-        suoritusTiedotSheet.size shouldBe 5
+        suoritusTiedotSheet.size shouldBe 6
 
         lazy val expectedPetteri = Map(
           "Opiskeluoikeuden oid" -> "",
@@ -309,7 +309,7 @@ class IBSuoritustiedotRaporttiSpec extends
 
       "suoritustiedot sheetillä Pre-IB 2019 suorituksille" in {
         val suoritusTiedotSheet = raporttiRivitPreIB.head
-        suoritusTiedotSheet.size shouldBe 5
+        suoritusTiedotSheet.size shouldBe 6
 
         lazy val expectedPate = Map(
           "Opiskeluoikeuden oid" -> "",

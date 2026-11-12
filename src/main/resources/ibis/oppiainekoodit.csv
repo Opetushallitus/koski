@@ -1,0 +1,3 @@
+# TODO TOR-747: IBO:n oppiainekoodit (IBIS SUBJECT CODE) -> Kosken oppiaineetib (+ kielivalikoima kielioppiaineille).
+# Täytetään, kun ensimmäinen oikea IBIS-aineisto ja sen SUB cross-reference file on saatu.
+# Rivimuoto: iboKoodi;oppiaineetib;kielivalikoima
