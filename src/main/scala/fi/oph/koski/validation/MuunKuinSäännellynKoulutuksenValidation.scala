@@ -31,7 +31,7 @@ object MuunKuinSäännellynKoulutuksenValidation {
         )
       case Some("keskeytynyt") if oo.suoritukset.exists(_.vahvistettu) =>
         KoskiErrorCategory.badRequest.validation.tila.tilaEronnutTaiKatsotaanEronneeksiVaikkaVahvistettuPäätasonSuoritus(
-          "Opiskeluoikeutta ei voi merkitä keskeytyneeksi, koska päätason suoritus on vahvistettu"
+          "Suorituksella on vahvistus, vaikka opiskeluoikeus on tilassa keskeytynyt"
         )
       case _ => HttpStatus.ok
     }
