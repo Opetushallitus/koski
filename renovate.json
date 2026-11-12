@@ -414,7 +414,6 @@
         "org.eclipse.jetty.compression:jetty-compression-gzip",
         "com.fasterxml.jackson.core:jackson-databind",
         "org.slf4j:slf4j-api",
-        "org.apache.commons:commons-lang3",
         "org.scalaz:scalaz-core_2.13"
       ],
       "automerge": true
