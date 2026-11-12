@@ -1,5 +1,9 @@
 # Koskeen tallennettavien tietojen validaatiosäännöt
 
+## 12.11.2026
+
+- Perusopetuksen (`perusopetuksenvuosiluokka`) ja Ahvenanmaan perusopetuksen (`ahvenanmaanperusopetuksenvuosiluokka`) vuosiluokan suorituksen luokka-asteen (`koulutusmoduuli.tunniste`) on oltava `perusopetuksenluokkaaste`-koodistosta. Aiemmin hyväksyttiin virheellisesti myös `koulutus`-koodiston koodi.
+
 ## 10.11.2026
 
 - Muun kuin säännellyn koulutuksen opiskeluoikeuksissa, jotka alkavat 1.1.2027 tai sen jälkeen ja ovat tilassa `keskeytynyt`, osasuoritusten arviointi vaaditaan (ks. 12.10.2026) myös silloin, kun suoritusta ei ole vahvistettu.

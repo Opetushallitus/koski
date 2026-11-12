@@ -9,7 +9,7 @@ import fi.oph.koski.documentation.PerusopetusExampleData.suoritustapaErityinenTu
 import fi.oph.koski.documentation.YleissivistavakoulutusExampleData.jyväskylänNormaalikoulu
 import fi.oph.koski.eperusteetvalidation.{EPerusteetFiller, EPerusteisiinPerustuvaValidator}
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
-import fi.oph.koski.http.KoskiErrorCategory
+import fi.oph.koski.http.{ErrorMatcher, KoskiErrorCategory}
 import fi.oph.koski.koskiuser.{AccessType, KoskiSpecificSession}
 import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.schema._
@@ -57,6 +57,16 @@ class OppijaValidationAhvenanmaanPerusopetusSpec
       )
       setupOppijaWithOpiskeluoikeus(opiskeluoikeus) {
         verifyResponseStatusOk()
+      }
+    }
+
+    "luokka-asteen tunniste koulutus-koodistosta -> HTTP 400" in {
+      val kahdeksas = AhvenanmaanPerusopetusExampleData.kahdeksannenLuokanSuoritus
+      val koulutuskoodi = Koodistokoodiviite("201101", "koulutus")
+      setupOppijaWithOpiskeluoikeus(defaultOpiskeluoikeus.copy(suoritukset = List(
+        kahdeksas.copy(koulutusmoduuli = kahdeksas.koulutusmoduuli.copy(tunniste = koulutuskoodi))
+      ))) {
+        verifyResponseStatus(400, ErrorMatcher.regex(KoskiErrorCategory.badRequest.validation.jsonSchema, ".*enumValueMismatch.*".r))
       }
     }
 

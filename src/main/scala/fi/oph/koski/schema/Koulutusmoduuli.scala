@@ -55,7 +55,12 @@ trait KoulutustyypinSisältäväKoulutusmoduuli extends KoodistostaLöytyväKoul
   def koulutustyyppi: Option[Koodistokoodiviite]
 }
 
-trait Koulutus extends KoulutustyypinSisältäväKoulutusmoduuli {
+// Koulutusmoduulit, joille EPerusteetFiller päättelee koulutustyypin. Erillään Koulutus-traitista, koska
+// scala-schema yhdistää perittyjen traitien annotaatiot kentän omiin: Koulutus-traitin perijän tunnisteeksi
+// kelpaisi aina myös koulutus-koodisto.
+trait PääteltävänKoulutustyypinSisältäväKoulutusmoduuli extends KoulutustyypinSisältäväKoulutusmoduuli
+
+trait Koulutus extends PääteltävänKoulutustyypinSisältäväKoulutusmoduuli {
   @Description("Tutkinnon 6-numeroinen tutkintokoodi. Sama kuin tilastokeskuksen koulutuskoodi")
   @KoodistoUri("koulutus")
   @OksaUri("tmpOKSAID560", "tutkinto")

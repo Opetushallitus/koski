@@ -1,3 +1,7 @@
+# 12.11.2026
+
+- Perusopetuksen (`perusopetuksenvuosiluokka`) ja Ahvenanmaan perusopetuksen (`ahvenanmaanperusopetuksenvuosiluokka`) vuosiluokan suorituksen koulutusmoduulin `tunniste` hyväksyy vain `perusopetuksenluokkaaste`-koodiston koodeja. Skeema salli aiemmin virheellisesti myös `koulutus`-koodiston, ja skeeman dokumentaatiossa koodistoksi oli merkitty `koulutus`.
+
 # 14.9.2026
 
 - Ahvenanmaan perusopetuksen opiskeluoikeuden lisätietoihin lisätty vapaaehtoinen `alkuvaihe`-kenttä (aikajakso), jolla ilmaistaan muiden kuin oppivelvollisten alkuvaiheen (Inledningsskedet) opintojen ajanjakso.

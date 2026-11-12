@@ -101,6 +101,15 @@ class OppijaUpdateSpec extends AnyFreeSpec with KoskiHttpSpec with Opiskeluoikeu
           setupOppija(oppija, oo).suoritukset.find(_.isInstanceOf[PerusopetuksenOppimääränSuoritus]).get.koulutusmoduuli.asInstanceOf[Koulutus].koulutustyyppi.get.koodiarvo should equal("16")
         }
 
+        "perusopetuksen vuosiluokka" in {
+          val oo = PerusopetuksenOpiskeluoikeus(
+            oppilaitos = Some(jyväskylänNormaalikoulu),
+            suoritukset = List(yhdeksännenLuokanSuoritus),
+            tila = NuortenPerusopetuksenOpiskeluoikeudenTila(List(NuortenPerusopetuksenOpiskeluoikeusjakso(longTimeAgo, opiskeluoikeusLäsnä)))
+          )
+          setupOppija(oppija, oo).suoritukset.collectFirst { case s: PerusopetuksenVuosiluokanSuoritus => s }.get.koulutusmoduuli.koulutustyyppi.get.koodiarvo should equal("16")
+        }
+
         "aikuisten perusopetus" in {
           val oo = AikuistenPerusopetuksenOpiskeluoikeus(
             oppilaitos = Some(jyväskylänNormaalikoulu),
