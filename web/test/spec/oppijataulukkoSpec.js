@@ -593,6 +593,7 @@ describe('Oppijataulukko', function () {
             ).to.deep.equal([
               '9A',
               '9A',
+              '9A',
               '9B',
               '9C',
               '9C',
@@ -633,6 +634,7 @@ describe('Oppijataulukko', function () {
               '9C',
               '9C',
               '9B',
+              '9A',
               '9A',
               '9A'
             ])

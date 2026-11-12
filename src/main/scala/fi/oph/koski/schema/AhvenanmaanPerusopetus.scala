@@ -211,7 +211,7 @@ case class AhvenanmaanPerusopetuksenVuosiluokanSuoritus(
   @KoodistoKoodiarvo("ahvenanmaanperusopetuksenvuosiluokka")
   tyyppi: Koodistokoodiviite =
     Koodistokoodiviite("ahvenanmaanperusopetuksenvuosiluokka", koodistoUri = "suorituksentyyppi"),
-) extends AhvenanmaanPerusopetuksenPäätasonSuoritus with Arvioinniton
+) extends AhvenanmaanPerusopetuksenPäätasonSuoritus with Luokallinen with Arvioinniton
 
 @Title("Ahvenanmaan perusopetuksen oppimäärän suoritus")
 @Description("Ahvenanmaan perusopetuksen koko oppimäärän suoritus. Nämä suoritukset näkyvät päättötodistuksella.")
