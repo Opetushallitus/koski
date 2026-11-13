@@ -44,6 +44,8 @@ class MassaluovutusDocumentationSpec extends AnyFreeSpec with Matchers {
       html should include("""<nav class="toc">""")
       html should include("""<li><a href="#lukionSuoritustiedot">Lukion suoritustietojen tarkistus</a></li>""")
       html should include("""<h2 id="paallekkaisetOpiskeluoikeudet">Päällekkäiset opiskeluoikeudet</h2>""")
+      html should include("""<h2 id="kotikuntalaskelma">Kotikuntalaskelma</h2>""")
+      html should include("""<h2 id="kunnanOppijat">Kunnan oppijat muilla opetuksen järjestäjillä</h2>""")
       html should include("""<h2 id="lukiokoulutus">Lukiokoulutus</h2>""")
       html should include("""<h3 id="lukionSuoritustiedot">Lukion suoritustietojen tarkistus</h3>""")
       // raporttikohtaisissa taulukoissa ei toisteta yhteisiä kenttiä
