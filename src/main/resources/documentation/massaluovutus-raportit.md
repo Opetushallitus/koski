@@ -21,6 +21,10 @@ kuvauksissa näytetään vain raportin omat parametrit.
 
 {{query:PaallekkaisetOpiskeluoikeudetCsv,PaallekkaisetOpiskeluoikeudetXlsx}}
 
+{{query:KotikuntalaskelmaXlsx|exclude=format,language,password}}
+
+{{query:KunnanOppijatXlsx|exclude=format,language,password}}
+
 ## Lukiokoulutus
 
 {{query:LukionSuoritustiedotXlsx|h3|raportti}}
@@ -56,10 +60,6 @@ kuvauksissa näytetään vain raportin omat parametrit.
 {{query:PerusopetuksenLisaopetuksenOppijamaaratRaporttiXlsx|h3|raportti}}
 
 {{query:PerusopetukseenValmistavaXlsx|h3|raportti}}
-
-{{query:KotikuntalaskelmaXlsx|h3|exclude=format,language,password}}
-
-{{query:KunnanOppijatXlsx|h3|exclude=format,language,password}}
 
 ## Aikuisten perusopetus
 
