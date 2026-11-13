@@ -14,7 +14,7 @@ import scala.util.Try
 
 object CloudWatchMetricsService {
   def apply(config: Config): CloudWatchMetricsService = {
-    if (Environment.isServerEnvironment(config)) {
+    if (Environment.isCloudEnvironment(config)) {
       new AwsCloudWatchMetricsService
     } else {
       new MockCloudWatchMetricsService

@@ -9,7 +9,7 @@ import org.scalatra.ScalatraServlet
 class OmaDataOAuth2ResourceOwnerReactServlet(implicit val application: KoskiApplication) extends ScalatraServlet
   with OppijaHtmlServlet with KoskiCookieAndBasicAuthenticationSupport with OmaOpintopolkuSupport with OmaDataOAuth2ServletSupport with OmaDataOAuth2Config {
 
-  val allowFrameAncestors: Boolean = !Environment.isServerEnvironment(application.config)
+  val allowFrameAncestors: Boolean = !Environment.isCloudEnvironment(application.config)
   val frontendValvontaMode: FrontendValvontaMode.FrontendValvontaMode =
     FrontendValvontaMode(application.config.getString("frontend-valvonta.mode"))
 

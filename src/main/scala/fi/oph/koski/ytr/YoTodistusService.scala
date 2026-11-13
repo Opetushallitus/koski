@@ -17,7 +17,7 @@ object YoTodistusService {
   def apply(application: KoskiApplication): YoTodistusService = {
     val s3config: YtrS3Config = YtrS3Config.getEnvironmentConfig(application)
     if (s3config.bucket == "mock") {
-      Environment.requireMockAllowed(application.config, "MockYoTodistusService")
+      Environment.refuseMockInCloud(application.config, "MockYoTodistusService")
       new MockYoTodistusService(application)
     } else {
       new RemoteYoTodistusService(application, s3config)

@@ -16,7 +16,7 @@ object KoodistoPalvelu {
   def withoutCache(config: Config): KoodistoPalvelu = {
     config.getString("opintopolku.virkailija.url") match {
       case "mock" =>
-        Environment.requireMockAllowed(config, "MockKoodistoPalvelu")
+        Environment.refuseMockInCloud(config, "MockKoodistoPalvelu")
         MockKoodistoPalvelu()
       case url => new RemoteKoodistoPalvelu(url)
     }

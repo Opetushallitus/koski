@@ -22,7 +22,7 @@ import scala.jdk.CollectionConverters._
 import scala.util.Try
 
 class TodistusResultRepository(config: Config) extends Logging {
-  val useAWS = Environment.isServerEnvironment(config)
+  val useAWS = Environment.isCloudEnvironment(config)
   lazy val region: Region = Region.of(config.getString("todistus.s3.region"))
   lazy val rawBucketName: String = config.getString("todistus.s3.rawBucket")
   lazy val stampedBucketName: String = config.getString("todistus.s3.stampedBucket")

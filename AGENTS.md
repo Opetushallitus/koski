@@ -152,6 +152,8 @@ A misspelled or non-existent suite name fails differently: `*** RUN ABORTED ***`
 
 Older dated snapshots are kept and still run through `KoskiValidator`, so a **new validation rule** can make them fail. Don't delete them: add `"ignoreKoskiValidator" : true` as a top-level field to each rejected file. Deserialization and the roundtrip check still run.
 
+`MigrationSpec` stores a checksum of every file under `raportointikanta/`, so **any edit there fails it**, even a rename that can't touch the reporting schema. Run it after a cross-cutting rename or `sed` over `src/main`. To update a checksum, copy the `nykyinen` value from the failure; it isn't a plain `md5sum` of the file.
+
 ### Frontend Tests
 - **Mocha browser tests**: `web/test/` - run with `make fronttest`
 - **Vitest unit tests**: `web/test/unit-test/*.test.ts` - run with `make js-unit-test`

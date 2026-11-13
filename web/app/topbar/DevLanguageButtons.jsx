@@ -10,7 +10,7 @@ import http from '../util/http'
  *
  * Napit näytetään vain siellä, missä rajapinta toimii: se on mountattu vain paikallisesti ja
  * testeissä, ja se vaatii kirjautumisen. Raamien puuttuminen ei riitä ehdoksi, koska LocalTopBar
- * näkyy palvelinympäristöissäkin kirjautumattomalle dokumentaatiosivulla ja kansalaisen sivujen
+ * näkyy pilviympäristöissäkin kirjautumattomalle dokumentaatiosivulla ja kansalaisen sivujen
  * virhesivuilla (esim. OmaData-OAuth2). Ympäristöehto hyväksyy sekä `make run` -ajon (local) että
  * CI:n (unittest), jotta paikallisesti nauhoitetut visual-baselinet kelpaavat CI:lle.
  */

@@ -8,7 +8,7 @@ import fi.oph.koski.servlet.{KoskiSpecificApiServlet, NoCache}
 // Workaround: CAS-oppija ei päästä paluuosoitteessa olevia query-parametreja läpi. Ne on siksi base64url-enkoodattu path-parametriksi.
 class OmaDataOAuth2CASWorkaroundServlet(implicit val application: KoskiApplication) extends KoskiSpecificApiServlet with OmaDataOAuth2ServletSupport with Unauthenticated with NoCache
 {
- val allowFrameAncestors: Boolean = !Environment.isServerEnvironment(application.config)
+ val allowFrameAncestors: Boolean = !Environment.isCloudEnvironment(application.config)
   val frontendValvontaMode: FrontendValvontaMode.FrontendValvontaMode =
     FrontendValvontaMode(application.config.getString("frontend-valvonta.mode"))
 

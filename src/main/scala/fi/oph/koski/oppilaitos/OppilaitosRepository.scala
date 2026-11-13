@@ -9,7 +9,7 @@ import fi.oph.koski.schema.{OidOrganisaatio, Oppilaitos}
 
 object OppilaitosRepository {
   def apply(config: Config, organisatioRepository: OrganisaatioRepository): OppilaitosRepository = {
-    if (Environment.isServerEnvironment(config)) {
+    if (Environment.isCloudEnvironment(config)) {
       new OppilaitosRepository(organisatioRepository)
     } else {
       new MockOppilaitosRepository

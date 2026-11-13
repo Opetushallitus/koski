@@ -10,21 +10,21 @@ import org.scalatra.{ContentEncodingSupport}
 class OmaDataOAuth2DiscoveryServlet(implicit val application: KoskiApplication) extends KoskiSpecificApiServlet
   with OmaDataOAuth2ServletSupport with Logging with ContentEncodingSupport with NoCache with Unauthenticated {
 
-  val allowFrameAncestors: Boolean = !Environment.isServerEnvironment(application.config)
+  val allowFrameAncestors: Boolean = !Environment.isCloudEnvironment(application.config)
   val frontendValvontaMode: FrontendValvontaMode.FrontendValvontaMode =
     FrontendValvontaMode(application.config.getString("frontend-valvonta.mode"))
 
-  // Luetaan servletin luonnissa, jotta mock tuotannossa estää käynnistyksen.
+  // Luetaan servletin luonnissa, jotta kielletty mock estää käynnistyksen.
   private val configuredOpintopolkuBaseUrl: Option[String] = application.config.getString("opintopolku.oppija.url") match {
     case "mock" =>
-      Environment.requireMockAllowed(application.config, "opintopolku.oppija.url")
+      Environment.refuseMockInCloud(application.config, "opintopolku.oppija.url")
       None
     case url => Some(url)
   }
 
   private val luovutuspalveluBaseUrl: String = application.config.getString("omadataoauth2.luovutuspalveluBaseUrl") match {
     case "mock" =>
-      Environment.requireMockAllowed(application.config, "omadataoauth2.luovutuspalveluBaseUrl")
+      Environment.refuseMockInCloud(application.config, "omadataoauth2.luovutuspalveluBaseUrl")
       "https://localhost:7022"
     case url => url
   }

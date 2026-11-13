@@ -912,8 +912,8 @@ class KoskiValidator(
       } else {
         validatePidennettyOppivelvollisuusVanha(lisätiedot, opiskeluoikeudenAlkamispäivä)
       }
-    } else if (Environment.isServerEnvironment(config)) {
-      // Muissa palvelinympäristöissä käytä vain uusia validointeja testausta ja järjestelmätoimittajia varten
+    } else if (Environment.isCloudEnvironment(config)) {
+      // Muissa pilviympäristöissä käytä vain uusia validointeja testausta ja järjestelmätoimittajia varten
       validatePidennettyOppivelvollisuus(lisätiedot, opiskeluoikeudenAlkamispäivä, opiskeluoikeudenPäättymispäivä)
     } else {
       // Muuten käytä uusia, jos ovat voimassa, eikä mitään, jos eivät ole voimassa (testejä varten lähinnä: vanhoilla validaatioilla ei enää ole testejä)
@@ -1128,8 +1128,8 @@ class KoskiValidator(
       } else {
         HttpStatus.ok
       }
-    } else if (Environment.isServerEnvironment(config)) {
-      // Muissa palvelinympäristöissä käytä vain uusia validointeja testausta ja järjestelmätoimittajia varten
+    } else if (Environment.isCloudEnvironment(config)) {
+      // Muissa pilviympäristöissä käytä vain uusia validointeja testausta ja järjestelmätoimittajia varten
       validateTuvaPerusopetusErityinenTukiJaVammaisuus(lisätiedot)
     } else {
       // Muuten käytä uusia, jos ovat voimassa, eikä mitään, jos eivät ole voimassa (testejä varten lähinnä: vanhoilla validaatioilla ei enää ole testejä)

@@ -17,11 +17,11 @@ class ScriptCacheBusterSpec extends AnyFreeSpec with TestEnvironment with Matche
   }
 
   "ScriptCacheBuster" - {
-    "käyttää palvelinympäristössä build-versiota" in {
+    "käyttää pilviympäristössä build-versiota" in {
       resolveScriptVersion(isLocal = false, buildVersion = Some("commit")) shouldEqual "commit"
     }
 
-    "vaatii palvelinympäristössä build-version" in {
+    "vaatii pilviympäristössä build-version" in {
       intercept[IllegalStateException] {
         resolveScriptVersion(isLocal = false, buildVersion = None)
       }

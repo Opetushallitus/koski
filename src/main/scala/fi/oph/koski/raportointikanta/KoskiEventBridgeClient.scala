@@ -12,7 +12,7 @@ import scala.jdk.CollectionConverters._
 
 object KoskiEventBridgeClient extends Logging {
   def apply(config: Config): KoskiEventBridgeClient = {
-    if (Environment.isServerEnvironment(config)) {
+    if (Environment.isCloudEnvironment(config)) {
       new AwsEventBridgeClient
     } else {
       new MockEventBridgeClient

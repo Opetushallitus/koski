@@ -53,17 +53,14 @@ class MockSelectionSpec extends AnyFreeSpec with Matchers {
     "MockKoesuoritusService" -> (c => KoesuoritusService(c, mockS3Config)),
     "valpas.rajapäivät.useMock" -> (c => ValpasRajapäivätService(c)),
     "otuvaTokenEndpoint" -> (c => OppijanumeroRekisteriClient(c)),
-    "login.security" -> (c => SSOConfig.requireMockLoginAllowed(c)),
+    "login.security" -> (c => SSOConfig.refuseMockLoginInCloud(c)),
     "MockLuovutuspalveluV2ClientListService" -> (c => LuovutuspalveluV2ClientListService(c)),
     "MockLuovutuspalveluV2XRoadConfigService" -> (c => LuovutuspalveluV2XRoadConfigService(c)),
-  )
-
-  private val localOnlySelections: Seq[(String, Config => Any)] = Seq(
     "MockKituClient" -> (c => KituClient(c)),
     "MockTiedotuspalveluClient" -> (c => TiedotuspalveluClient(c)),
   )
 
-  // Näiden luominen muissa ympäristöissä vaatisi tietokantayhteyden, joten testataan vain tuotannossa.
+  // Näiden luominen paikallisesti vaatisi tietokantayhteyden, joten testataan vain pilviympäristöissä.
   private val applicationSelections: Seq[(String, KoskiApplication => Any)] = Seq(
     "MockOpintopolkuHenkilöFacade" -> (a => OpintopolkuHenkilöFacade(a.config, a.masterDatabase.db, a.hetu, a.fixtureCreator, a.perustiedotRepository, a.perustiedotIndexer)),
     "MockHakukoosteService" -> (a => ValpasHakukoosteService(a)),
@@ -71,69 +68,44 @@ class MockSelectionSpec extends AnyFreeSpec with Matchers {
     "opintopolku.oppija.url" -> (a => new OmaDataOAuth2DiscoveryServlet()(a)),
   )
 
-  "Tuotannossa mock-toteutuksen valinta estetään" - {
-    selections.foreach { case (name, select) =>
-      name in {
-        val thrown = intercept[IllegalStateException](select(configFor(Environment.Prod)))
-        thrown.getMessage should include(name)
+  // Tuntematon ympäristö tulkitaan pilviympäristöksi.
+  Seq(Environment.Dev, Environment.QA, Environment.Prod, "OPHKoskiUusi").foreach { env =>
+    s"Pilviympäristössä $env mock-toteutuksen valinta estetään" - {
+      selections.foreach { case (name, select) =>
+        name in {
+          val thrown = intercept[IllegalStateException](select(configFor(env)))
+          thrown.getMessage should include(name)
+        }
       }
-    }
 
-    applicationSelections.foreach { case (name, select) =>
-      name in {
-        val thrown = intercept[IllegalStateException](select(new KoskiApplication(configFor(Environment.Prod))))
-        thrown.getMessage should include(name)
+      applicationSelections.foreach { case (name, select) =>
+        name in {
+          val thrown = intercept[IllegalStateException](select(new KoskiApplication(configFor(env))))
+          thrown.getMessage should include(name)
+        }
       }
-    }
 
-    "authentication-service.mockOid" in {
-      val config = configFor(Environment.Prod).withValue("authentication-service.mockOid", fromAnyRef(true))
-      val app = new KoskiApplication(config)
-      val thrown = intercept[IllegalStateException] {
-        RemoteOpintopolkuHenkilöFacade(config, app.perustiedotRepository, app.perustiedotIndexer)
+      "authentication-service.mockOid" in {
+        val config = configFor(env).withValue("authentication-service.mockOid", fromAnyRef(true))
+        val app = new KoskiApplication(config)
+        val thrown = intercept[IllegalStateException] {
+          RemoteOpintopolkuHenkilöFacade(config, app.perustiedotRepository, app.perustiedotIndexer)
+        }
+        thrown.getMessage should include("authentication-service.mockOid")
       }
-      thrown.getMessage should include("authentication-service.mockOid")
-    }
 
-    "omadataoauth2.luovutuspalveluBaseUrl" in {
-      val config = configFor(Environment.Prod).withValue("opintopolku.oppija.url", fromAnyRef("https://opintopolku.fi"))
-      val thrown = intercept[IllegalStateException](new OmaDataOAuth2DiscoveryServlet()(new KoskiApplication(config)))
-      thrown.getMessage should include("omadataoauth2.luovutuspalveluBaseUrl")
+      "omadataoauth2.luovutuspalveluBaseUrl" in {
+        val config = configFor(env).withValue("opintopolku.oppija.url", fromAnyRef("https://opintopolku.fi"))
+        val thrown = intercept[IllegalStateException](new OmaDataOAuth2DiscoveryServlet()(new KoskiApplication(config)))
+        thrown.getMessage should include("omadataoauth2.luovutuspalveluBaseUrl")
+      }
     }
   }
 
-  "Tuntemattomassa ympäristössä mock-toteutuksen valinta estetään" in {
-    val thrown = intercept[IllegalStateException](YtrClient(configFor("OPHKoskiUusi")))
-    thrown.getMessage should include("MockYtrClient")
-  }
-
-  "Muissa ympäristöissä mock-toteutus on sallittu" - {
-    Seq(Environment.Dev, Environment.QA, Environment.Local, Environment.UnitTest).foreach { env =>
+  "Paikallisesti mock-toteutus on sallittu" - {
+    Seq(Environment.Local, Environment.UnitTest).foreach { env =>
       env - {
         selections.foreach { case (name, select) =>
-          name in {
-            noException should be thrownBy select(configFor(env))
-          }
-        }
-      }
-    }
-  }
-
-  "Kielitutkintotodistusten tiedotteiden mock-toteutukset" - {
-    Seq(Environment.Prod, Environment.Dev, Environment.QA, "OPHKoskiUusi").foreach { env =>
-      s"estetään ympäristössä $env" - {
-        localOnlySelections.foreach { case (name, select) =>
-          name in {
-            val thrown = intercept[IllegalStateException](select(configFor(env)))
-            thrown.getMessage should include(name)
-          }
-        }
-      }
-    }
-
-    Seq(Environment.Local, Environment.UnitTest).foreach { env =>
-      s"sallitaan ympäristössä $env" - {
-        localOnlySelections.foreach { case (name, select) =>
           name in {
             noException should be thrownBy select(configFor(env))
           }
