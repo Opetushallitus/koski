@@ -33,17 +33,12 @@ object Environment {
   def isProdEnvironment(config: Config): Boolean =
     !NonProductionEnvironments.contains(currentEnvironment(config))
 
-  def requireMockAllowed(config: Config, mock: String): Unit =
-    if (isProdEnvironment(config)) {
-      throw new IllegalStateException(s"$mock ei ole sallittu ympäristössä '${currentEnvironment(config)}', joka tulkitaan tuotannoksi")
-    }
-
-  def requireMockAllowedLocally(config: Config, mock: String): Unit =
-    if (isServerEnvironment(config)) {
+  def refuseMockInCloud(config: Config, mock: String): Unit =
+    if (isCloudEnvironment(config)) {
       throw new IllegalStateException(s"$mock on sallittu vain paikallisesti, ei ympäristössä '${currentEnvironment(config)}'")
     }
 
-  def isServerEnvironment(config: Config): Boolean = !Set(Local, UnitTest).contains(currentEnvironment(config))
+  def isCloudEnvironment(config: Config): Boolean = !Set(Local, UnitTest).contains(currentEnvironment(config))
 
   def usesAwsAppConfig: Boolean = {
     sys.env.getOrElse("CONFIG_SOURCE", "") == "appconfig"

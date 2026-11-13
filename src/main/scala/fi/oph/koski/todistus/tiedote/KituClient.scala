@@ -22,7 +22,7 @@ object KituClient {
 
   def apply(config: Config): KituClient = {
     if (config.getString("kitu.baseUrl") == "mock") {
-      Environment.requireMockAllowedLocally(config, "MockKituClient")
+      Environment.refuseMockInCloud(config, "MockKituClient")
       new MockKituClient
     } else {
       new RemoteKituClient(config)

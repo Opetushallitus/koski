@@ -19,7 +19,7 @@ import java.util.UUID
 import scala.jdk.CollectionConverters._
 
 class MassaluovutusResultRepository(config: Config) extends Logging {
-  val useAWS = Environment.isServerEnvironment(config)
+  val useAWS = Environment.isCloudEnvironment(config)
   lazy val region: Region = Region.of(config.getString("kyselyt.s3.region"))
   lazy val bucketName: String = config.getString("kyselyt.s3.bucket")
   lazy val presignDuration: Duration = config.getDuration("kyselyt.s3.presignDuration")

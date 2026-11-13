@@ -13,7 +13,7 @@ object AuditLogDynamoDB extends Logging {
   def buildDb(config: Config): DynamoDbClient = buildClient(config)
 
   private def buildClient(config: Config): DynamoDbClient = {
-    if (Environment.isServerEnvironment(config)) {
+    if (Environment.isCloudEnvironment(config)) {
       logger.info("Connecting to DynamoDB running in AWS")
       DynamoDbClient.create()
     } else {

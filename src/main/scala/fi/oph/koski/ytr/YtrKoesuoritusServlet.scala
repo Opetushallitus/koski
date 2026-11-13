@@ -12,7 +12,7 @@ import fi.oph.koski.servlet.OppijaHtmlServlet
 
 class YtrKoesuoritusServlet(implicit val application: KoskiApplication) extends OppijaHtmlServlet with RequiresKansalainen {
 
-  val allowFrameAncestors: Boolean = !Environment.isServerEnvironment(application.config)
+  val allowFrameAncestors: Boolean = !Environment.isCloudEnvironment(application.config)
   val frontendValvontaMode: FrontendValvontaMode.FrontendValvontaMode =
     FrontendValvontaMode(application.config.getString("frontend-valvonta.mode"))
   override val unsafeAllowInlineStyles: Boolean = true

@@ -151,7 +151,7 @@ class RaportointikantaService(application: KoskiApplication) extends Logging {
 
   def isLoading: Boolean =
     loadDatabase.status.isLoading && {
-      if (Environment.isServerEnvironment(application.config)) {
+      if (Environment.isCloudEnvironment(application.config)) {
         val holders = application.workerLeaseRepository.activeHolders(raportointikantaLoaderLeaseName)
           .filterNot(_ == application.instanceId)
         val loading = holders.nonEmpty

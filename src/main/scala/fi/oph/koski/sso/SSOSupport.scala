@@ -142,9 +142,9 @@ case class SSOConfig(config: Config) {
 }
 
 object SSOConfig {
-  def requireMockLoginAllowed(config: Config): Unit =
+  def refuseMockLoginInCloud(config: Config): Unit =
     if (config.getString("login.security") == "mock") {
-      Environment.requireMockAllowed(config, "login.security")
+      Environment.refuseMockInCloud(config, "login.security")
     }
 }
 

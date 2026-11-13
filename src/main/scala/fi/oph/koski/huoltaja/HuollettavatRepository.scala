@@ -18,7 +18,7 @@ object HuollettavatRepository {
       if (Environment.usesAwsSecretsManager) VtjConfig.fromSecretsManager(VtjRuntimeConfig.ConfigSecretId).serviceUrl
       else config.getString("vtj.serviceUrl")
     if (Environment.isMockEnvironment(config) || serviceUrl == "mock") {
-      Environment.requireMockAllowed(config, "MockHuollettavatRepository")
+      Environment.refuseMockInCloud(config, "MockHuollettavatRepository")
       new MockHuollettavatRepository
     } else {
       val vtjClient = VtjClientBuilder.build(config)

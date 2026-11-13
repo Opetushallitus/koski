@@ -12,7 +12,7 @@ import org.json4s.{Formats, JValue}
 object PrometheusRepository {
   def apply(config: Config) = {
     if (config.getString("prometheus.url") == "mock") {
-      Environment.requireMockAllowed(config, "MockPrometheusRepository")
+      Environment.refuseMockInCloud(config, "MockPrometheusRepository")
       MockPrometheusRepository
     } else {
       new RemotePrometheusRepository(Http(config.getString("prometheus.url"), "prometheus"))

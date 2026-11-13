@@ -14,3 +14,4 @@ TOR-1585 - arviointipäivävalidaation virheviestien sanamuoto selkeytetty (suor
 TOR-XXXX - poistettu käyttämätön PUT /api/oppija/batch -rajapinta ja sen erävalidointi, yksittäisen oppijan validointi ennallaan
 TOR-XXX - Scala-kääntäjän ja Scalafixin tarkistusten vaatimia koodimuutoksia validaatiotiedostoissa; validaatiologiikka ennallaan
 TOR-2745 - korjattu virheviestin sanamuoto
+TOR-2265 - isServerEnvironment nimetty isCloudEnvironmentiksi ja kommentti päivitetty, validaatiologiikka ennallaan

@@ -54,7 +54,7 @@ class RemoteTiedotuspalveluClient(config: Config) extends TiedotuspalveluClient 
       TiedotuspalveluRetryBudget.backoffPolicy
     )
     val withAuth =
-      if (otuvaTokenEndpoint == "mock" && !Environment.isServerEnvironment(config)) {
+      if (otuvaTokenEndpoint == "mock" && !Environment.isCloudEnvironment(config)) {
         Http(baseUrl, client)
       } else {
         new OtuvaOAuth2ClientFactory(OtuvaOAuth2Credentials.fromSecretsManager, otuvaTokenEndpoint)

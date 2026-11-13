@@ -23,7 +23,7 @@ class TiedoteApiServlet(implicit val application: KoskiApplication)
   }
 
   private val repository = application.kielitutkintotodistusTiedoteRepository
-  // Constructing the service creates its clients, which fails startup if a mock client is configured in a server environment
+  // Constructing the service creates its clients, which fails startup if a mock client is configured in a cloud environment
   @nowarn("cat=unused-privates")
   private val service = application.kielitutkintotodistusTiedoteService
 

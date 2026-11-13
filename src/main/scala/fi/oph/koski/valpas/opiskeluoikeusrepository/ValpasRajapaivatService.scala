@@ -141,7 +141,7 @@ object ValpasRajapäivätService {
 
   def apply(config: Config) = {
     if (config.getBoolean(UseMockPath)) {
-      Environment.requireMockAllowed(config, UseMockPath)
+      Environment.refuseMockInCloud(config, UseMockPath)
       new MockValpasRajapäivätService(config)
     } else {
       new ConfigValpasRajapäivätService(config)

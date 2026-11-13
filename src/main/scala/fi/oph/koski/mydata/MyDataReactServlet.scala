@@ -12,7 +12,7 @@ import scala.util.matching.Regex
 class MyDataReactServlet(implicit val application: KoskiApplication) extends ScalatraServlet
   with OppijaHtmlServlet with KoskiCookieAndBasicAuthenticationSupport with OmaOpintopolkuSupport with MyDataSupport {
 
-  val allowFrameAncestors: Boolean = !Environment.isServerEnvironment(application.config)
+  val allowFrameAncestors: Boolean = !Environment.isCloudEnvironment(application.config)
   val frontendValvontaMode: FrontendValvontaMode.FrontendValvontaMode =
     FrontendValvontaMode(application.config.getString("frontend-valvonta.mode"))
 

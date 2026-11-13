@@ -6,7 +6,7 @@ import org.scalatra.ScalatraServlet
 
 class VirhesivuServlet(implicit val application: KoskiApplication) extends ScalatraServlet with OppijaHtmlServlet with OmaOpintopolkuSupport {
 
-  val allowFrameAncestors: Boolean = !Environment.isServerEnvironment(application.config)
+  val allowFrameAncestors: Boolean = !Environment.isCloudEnvironment(application.config)
   val frontendValvontaMode: FrontendValvontaMode.FrontendValvontaMode =
     FrontendValvontaMode(application.config.getString("frontend-valvonta.mode"))
 

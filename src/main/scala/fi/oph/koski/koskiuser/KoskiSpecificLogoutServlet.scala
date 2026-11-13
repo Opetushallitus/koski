@@ -7,7 +7,7 @@ import fi.oph.koski.sso.KoskiSpecificSSOSupport
 
 class KoskiSpecificLogoutServlet(implicit val application: KoskiApplication) extends VirkailijaHtmlServlet with KoskiSpecificSSOSupport {
 
-  val allowFrameAncestors: Boolean = !Environment.isServerEnvironment(application.config)
+  val allowFrameAncestors: Boolean = !Environment.isCloudEnvironment(application.config)
   val frontendValvontaMode: FrontendValvontaMode.FrontendValvontaMode =
     FrontendValvontaMode(application.config.getString("frontend-valvonta.mode"))
 

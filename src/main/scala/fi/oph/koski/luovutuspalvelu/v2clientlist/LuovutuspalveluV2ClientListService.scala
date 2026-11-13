@@ -55,10 +55,10 @@ class RemoteLuovutuspalveluV2ClientListService extends LuovutuspalveluV2ClientLi
 
 object LuovutuspalveluV2ClientListService {
   def apply(config: Config): LuovutuspalveluV2ClientListService = {
-    if (Environment.isServerEnvironment(config) && Environment.usesAwsSecretsManager) {
+    if (Environment.isCloudEnvironment(config) && Environment.usesAwsSecretsManager) {
       new RemoteLuovutuspalveluV2ClientListService
     } else {
-      Environment.requireMockAllowed(config, "MockLuovutuspalveluV2ClientListService")
+      Environment.refuseMockInCloud(config, "MockLuovutuspalveluV2ClientListService")
       new MockLuovutuspalveluV2ClientListService
     }
   }

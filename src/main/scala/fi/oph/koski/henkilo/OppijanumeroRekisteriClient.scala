@@ -44,7 +44,7 @@ case class OppijanumeroRekisteriClient(
 
   private val oauth2clientFactory: (String, Client[IO]) => Http = {
     if (otuvaTokenEndpoint == "mock") {
-      Environment.requireMockAllowed(config, "otuvaTokenEndpoint")
+      Environment.refuseMockInCloud(config, "otuvaTokenEndpoint")
       (root: String, client: Client[IO]) => {
         Http(root, ClientWithBasicAuthentication(client,
           config.getString("opintopolku.virkailija.username"),

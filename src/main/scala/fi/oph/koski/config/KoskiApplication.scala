@@ -268,8 +268,8 @@ class KoskiApplication(
     AuditLog.startHeartbeat()
 
     // Muut mock-toteutuksen valitsevat palvelut alustuvat servlettien mukana. Näitä ei muuten
-    // alustettaisi ennen ensimmäistä käyttöä, eikä mock tuotannossa estäisi käynnistystä.
-    SSOConfig.requireMockLoginAllowed(config)
+    // alustettaisi ennen ensimmäistä käyttöä, eikä kielletty mock estäisi käynnistystä.
+    SSOConfig.refuseMockLoginInCloud(config)
     prometheusRepository
     ovaraClient
 

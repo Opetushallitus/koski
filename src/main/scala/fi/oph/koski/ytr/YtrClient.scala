@@ -49,7 +49,7 @@ object YtrClient extends Logging {
       }
       url match {
         case "mock" =>
-          Environment.requireMockAllowed(config, "MockYtrClient")
+          Environment.refuseMockInCloud(config, "MockYtrClient")
           logger.info("Using mock YTR integration")
           MockYtrClient
         case "" =>

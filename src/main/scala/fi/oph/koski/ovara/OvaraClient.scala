@@ -14,7 +14,7 @@ object OvaraClient extends Logging {
   def apply(config: Config): OvaraClient = {
     config.getString("opintopolku.virkailija.url") match {
       case "mock" =>
-        Environment.requireMockAllowed(config, "MockOvaraClient")
+        Environment.refuseMockInCloud(config, "MockOvaraClient")
         logger.info("Using mock Ovara integration")
         MockOvaraClient
       case "" =>

@@ -22,7 +22,7 @@ import scala.util.Using
 
 object QueryResultWriter {
   def defaultPartitionSize(config: Config): Long = {
-    if (Environment.isServerEnvironment(config)) {
+    if (Environment.isCloudEnvironment(config)) {
       1000000000L
     } else {
       50000L // Pieni partitiokoko testeille

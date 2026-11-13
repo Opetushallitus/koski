@@ -35,10 +35,10 @@ class RemoteLuovutuspalveluV2XRoadConfigService extends LuovutuspalveluV2XRoadCo
 
 object LuovutuspalveluV2XRoadConfigService {
   def apply(config: Config): LuovutuspalveluV2XRoadConfigService = {
-    if (Environment.isServerEnvironment(config) && Environment.usesAwsSecretsManager) {
+    if (Environment.isCloudEnvironment(config) && Environment.usesAwsSecretsManager) {
       new RemoteLuovutuspalveluV2XRoadConfigService
     } else {
-      Environment.requireMockAllowed(config, "MockLuovutuspalveluV2XRoadConfigService")
+      Environment.refuseMockInCloud(config, "MockLuovutuspalveluV2XRoadConfigService")
       new MockLuovutuspalveluV2XRoadConfigService
     }
   }

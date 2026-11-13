@@ -7,7 +7,7 @@ import fi.oph.koski.servlet.VirkailijaHtmlServlet
 
 class HealthCheckHtmlServlet(implicit val application: KoskiApplication) extends VirkailijaHtmlServlet{
 
-  val allowFrameAncestors: Boolean = !Environment.isServerEnvironment(application.config)
+  val allowFrameAncestors: Boolean = !Environment.isCloudEnvironment(application.config)
   val frontendValvontaMode: FrontendValvontaMode.FrontendValvontaMode =
     FrontendValvontaMode(application.config.getString("frontend-valvonta.mode"))
 

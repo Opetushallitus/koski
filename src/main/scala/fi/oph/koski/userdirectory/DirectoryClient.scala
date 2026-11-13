@@ -27,7 +27,7 @@ object DirectoryClient {
     val cacheStrategy = ExpiringCache("DirectoryClient", 60.seconds, maxSize = 100)
     val client = config.getString("opintopolku.virkailija.url") match {
       case "mock" =>
-        Environment.requireMockAllowed(config, "MockDirectoryClient")
+        Environment.refuseMockInCloud(config, "MockDirectoryClient")
         new MockDirectoryClient()
       case _ => new OpintopolkuDirectoryClient(config, casService)
     }

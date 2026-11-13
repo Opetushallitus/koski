@@ -149,7 +149,7 @@ object OrganisaatioRepository {
   def apply(config: Config, koodisto: KoodistoViitePalvelu)(implicit cacheInvalidator: CacheManager) = {
     config.getString("opintopolku.virkailija.url") match {
       case "mock" =>
-        Environment.requireMockAllowed(config, "MockOrganisaatioRepository")
+        Environment.refuseMockInCloud(config, "MockOrganisaatioRepository")
         MockOrganisaatioRepository
       case url =>
         val http = VirkailijaHttpClient(ServiceConfig.apply(config, "opintopolku.virkailija"), "/organisaatio-service", sessionCookieName = "SESSION", true)

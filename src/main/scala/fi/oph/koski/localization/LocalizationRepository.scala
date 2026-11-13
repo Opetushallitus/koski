@@ -92,7 +92,7 @@ object LocalizationRepository {
   def apply(config: Config, localizationConfig: LocalizationConfig)(implicit cacheInvalidator: CacheManager): LocalizationRepository = {
     config.getString("localization.url") match {
       case "mock" =>
-        Environment.requireMockAllowed(config, "MockLocalizationRepository")
+        Environment.refuseMockInCloud(config, "MockLocalizationRepository")
         new MockLocalizationRepository(localizationConfig)
       case url: Any =>
         new RemoteLocalizationRepository(config, localizationConfig)

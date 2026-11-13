@@ -56,7 +56,7 @@ object MockKoesuoritusService extends KoesuoritusService with EnvVariables {
 
 object KoesuoritusService {
   def apply(config: Config, s3Config: YtrS3Config): KoesuoritusService = if (s3Config.bucket == "mock") {
-    Environment.requireMockAllowed(config, "MockKoesuoritusService")
+    Environment.refuseMockInCloud(config, "MockKoesuoritusService")
     MockKoesuoritusService
   } else {
     new RemoteKoesuoritusService(s3Config)

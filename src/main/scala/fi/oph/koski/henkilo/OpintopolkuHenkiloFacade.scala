@@ -41,7 +41,7 @@ object OpintopolkuHenkilöFacade {
     rekisteriClientRetryStrategy: OppijanumeroRekisteriClientRetryStrategy = OppijanumeroRekisteriClientRetryStrategy.Default,
   ): OpintopolkuHenkilöFacade = config.getString("opintopolku.virkailija.url") match {
     case "mock" =>
-      Environment.requireMockAllowed(config, "MockOpintopolkuHenkilöFacade")
+      Environment.refuseMockInCloud(config, "MockOpintopolkuHenkilöFacade")
       new MockOpintopolkuHenkilöFacadeWithDBSupport(db, hetu, fixtures)
     case _ => RemoteOpintopolkuHenkilöFacade(config, perustiedotRepository, perustiedotIndexer, rekisteriClientRetryStrategy)
   }
@@ -56,7 +56,7 @@ object RemoteOpintopolkuHenkilöFacade {
   ): RemoteOpintopolkuHenkilöFacade = {
     val usingMockOids = config.getBoolean("authentication-service.mockOid")
     if (usingMockOids) {
-      Environment.requireMockAllowed(config, "authentication-service.mockOid")
+      Environment.refuseMockInCloud(config, "authentication-service.mockOid")
     }
     val client = OppijanumeroRekisteriClient(config, rekisteriClientRetryStrategy)
     if (usingMockOids) {

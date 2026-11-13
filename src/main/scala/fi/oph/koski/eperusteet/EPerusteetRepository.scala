@@ -64,7 +64,7 @@ object EPerusteetRepository {
   def apply(config: Config)(implicit cacheInvalidator: CacheManager): EPerusteetRepository = {
     config.getString("eperusteet.url") match {
       case "mock" =>
-        Environment.requireMockAllowed(config, "MockEPerusteetRepository")
+        Environment.refuseMockInCloud(config, "MockEPerusteetRepository")
         MockEPerusteetRepository
       case url =>
         new RemoteEPerusteetRepository(url, config.getString("eperusteet.baseUrl"))
