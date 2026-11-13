@@ -31,7 +31,11 @@ import {
 } from '../components-v2/controls/LocalizedTestField'
 import { Arviointi } from '../types/fi/oph/koski/schema/Arviointi'
 import { LaajuusOpintopisteissä } from '../types/fi/oph/koski/schema/LaajuusOpintopisteissa'
-import { parasArviointi, viimeisinArviointi } from '../util/arvioinnit'
+import {
+  parasArviointi,
+  parasArviointiIndex,
+  viimeisinArviointi
+} from '../util/arvioinnit'
 import { suoritusValmis } from '../util/suoritus'
 import {
   CHARCODE_KESKEN,
@@ -80,7 +84,7 @@ import {
   OsaamisenTunnustusEdit,
   OsaamisenTunnustusView
 } from '../components-v2/opiskeluoikeus/TunnustusField'
-import { DateView } from '../components-v2/controls/DateField'
+import { DateView, DateEdit } from '../components-v2/controls/DateField'
 import {
   KeyValueTable,
   KeyValueRow
@@ -89,6 +93,13 @@ import {
   PositionalPopup,
   PositionalPopupHolder
 } from '../components-v2/containers/PositionalPopup'
+import {
+  Modal,
+  ModalTitle,
+  ModalBody,
+  ModalFooter
+} from '../components-v2/containers/Modal'
+import { LukionPaikallinenOpintojakso2019 } from '../types/fi/oph/koski/schema/LukionPaikallinenOpintojakso2019'
 import { OsaamisenTunnustaminen } from '../types/fi/oph/koski/schema/OsaamisenTunnustaminen'
 import {
   isMuidenLukioOpintojenSuoritus2019,
@@ -682,9 +693,10 @@ type KurssiData = {
 // lisätiedot (Nimi/Laajuus/Pakollinen/Arvosana/Arviointipäivä/...)
 // hiirellä osoittamalla avautuvassa popupissa katselutilassa - sama
 // tieto, jota lukio-v2:n rivillä ei aiemmin näkynyt lainkaan (laajuus
-// puuttui kokonaan, loput vain kun jo asetettu). Muokkaustilassa popupia
-// ei tarvita, koska pakollinen/suorituskieli/tunnustettu ovat jo omina
-// muokattavina kenttinään rivillä - siksi naytaPopup={!form.editMode}.
+// puuttui kokonaan, loput vain kun jo asetettu). Muokkaustilassa sama
+// tieto näkyy ja on muokattavissa KurssinTietojenMuokkausModaalin kautta
+// (ks. KurssiTunnisteJaInfoPopup) - tämä popup on siis vain katselutilan
+// vastine, ei käytössä muokkauksen aikana.
 const KurssiInfoPopup: React.FC<{
   kurssi: KurssiData
   paikallinen: boolean
@@ -735,11 +747,13 @@ const KurssiInfoPopup: React.FC<{
       )}
       {/* Tunnustettu jätetään popupin ulkopuolelle: OsaamisenTunnustusView
           kiinnittää "selite"-osan testitunnisteensa aina sisäisesti riippumatta
-          annetusta testId-propista, joten se törmäisi rivillä jo olevan
-          (muokkaustilassa/kun asetettu näkyvän) inline-kentän kanssa saman
-          kurssin TestIdLayerin sisällä - ks. lukio2019-moduulin-osaamisen-
-          tunnustaminen.spec.ts, joka löysi tämän. Tieto ei katoa: se näkyy jo
-          inline-kenttänä aina kun tunnustettu on asetettu. */}
+          annetusta testId-propista, joten se törmäisi rivillä jo olevan,
+          katselutilassa aina näkyvän inline-kentän kanssa saman kurssin
+          TestIdLayerin sisällä (tämä popup näkyy vain katselutilassa, samoin
+          kuin rivin oma inline-kenttä - molemmat olisivat siis samaan aikaan
+          DOM:issa) - ks. lukio2019-moduulin-osaamisen-tunnustaminen.spec.ts,
+          joka löysi tämän. Tieto ei katoa: se näkyy jo inline-kenttänä aina
+          kun tunnustettu on asetettu. */}
       {paikallinen && kurssi.koulutusmoduuli.kuvaus && (
         <KeyValueRow localizableLabel="Kuvaus" innerKeyValueTable>
           <TestIdText id="popup.kuvaus">
@@ -751,37 +765,201 @@ const KurssiInfoPopup: React.FC<{
   )
 }
 
-const KurssiTunnisteJaInfoPopup: React.FC<{
-  kurssi: KurssiData
+// Sama hybridirakenne kuin vanhan käyttöliittymän kurssi/KurssiEditor.jsx:ssä:
+// klikkaus avaa/sulkee muokkausmodaalin vain muokkaustilassa, hiiren vienti
+// päälle/pois avaa/sulkee katselutilan infopopupin vain katselutilassa - ei
+// koskaan molempia yhtä aikaa, koska form.editMode ei voi olla molempia.
+// Tunniste on <button>, ei <span> - sama kuin vanhassa käyttöliittymässä
+// (ks. LukioOpiskeluoikeus.ts:n kurssi()-lokaattori, joka hakee sen roolilla
+// "button") - tämä on myös saavutettavuuskorjaus: klikattava <span> ei olisi
+// nappulan tavoin fokusoitavissa/näppäimistöllä käytettävissä.
+const KurssiTunnisteJaInfoPopup = <T extends KurssiData>({
+  form,
+  kurssiPath,
+  kurssi,
+  paikallinen
+}: {
+  form: FormModel<LukionOpiskeluoikeus>
+  kurssiPath: FormOptic<LukionOpiskeluoikeus, T>
+  kurssi: T
   paikallinen: boolean
-  naytaPopup: boolean
-}> = ({ kurssi, paikallinen, naytaPopup }) => {
-  const [auki, setAuki] = useState(false)
+}) => {
+  const [hoverAuki, setHoverAuki] = useState(false)
+  const [muokkausAuki, setMuokkausAuki] = useState(false)
+  const editMode = form.editMode
+
   const tunniste = (
-    <span
+    <button
+      type="button"
       className="tunniste"
       title={t(kurssi.koulutusmoduuli.tunniste.nimi)}
-      onMouseEnter={naytaPopup ? () => setAuki(true) : undefined}
-      onMouseLeave={naytaPopup ? () => setAuki(false) : undefined}
+      onClick={editMode ? () => setMuokkausAuki(true) : undefined}
+      onMouseEnter={!editMode ? () => setHoverAuki(true) : undefined}
+      onMouseLeave={!editMode ? () => setHoverAuki(false) : undefined}
     >
       {kurssi.koulutusmoduuli.tunniste.koodiarvo}
-    </span>
+    </button>
   )
 
-  if (!naytaPopup) return tunniste
+  if (editMode) {
+    return (
+      <>
+        {tunniste}
+        {muokkausAuki && (
+          <KurssinTietojenMuokkausModaali
+            form={form}
+            kurssiPath={kurssiPath}
+            kurssi={kurssi}
+            paikallinen={paikallinen}
+            onClose={() => setMuokkausAuki(false)}
+          />
+        )}
+      </>
+    )
+  }
 
   return (
     <PositionalPopupHolder>
       {tunniste}
-      <PositionalPopup open={auki} onDismiss={() => setAuki(false)}>
+      <PositionalPopup open={hoverAuki} onDismiss={() => setHoverAuki(false)}>
         {/* Rakennetaan popupin sisältö vasta auetessa - muuten jokaisen
             kurssin KurssiInfoPopup rakennettaisiin heti katselutilan
             alkulatauksella (yleensä 35-60 kurssia), vaikka se näytetään
             kerrallaan korkeintaan yksi. PositionalPopup ei muutenkaan
             poista lapsia DOM:sta suljettuna, pelkkä CSS piilottaa ne. */}
-        {auki && <KurssiInfoPopup kurssi={kurssi} paikallinen={paikallinen} />}
+        {hoverAuki && (
+          <KurssiInfoPopup kurssi={kurssi} paikallinen={paikallinen} />
+        )}
       </PositionalPopup>
     </PositionalPopupHolder>
+  )
+}
+
+// Vanhan käyttöliittymän kurssi/KurssiPopup.jsx vastine: geneerinen
+// PropertiesEditor näyttää siellä kaikki kurssin kentät paitsi
+// tunniste/koodiarvo/nimi (lukittu) ja arviointi (piilotettu kunnes
+// arviointi on olemassa) - tämä modaali toistaa saman kenttäjoukon
+// nimenomaisesti, koska geneeristä skeemaan perustuvaa editoria ei ole.
+// Arvosana muokataan tässä (yhdessä Arviointipäivän kanssa, loogisena
+// parina) - KurssiListan rivillä näkyy siitä silti aina pelkkä katselu,
+// jotta arvosana on edelleen nähtävissä yhdellä silmäyksellä avaamatta
+// modaalia.
+const KurssinTietojenMuokkausModaali = <T extends KurssiData>({
+  form,
+  kurssiPath,
+  kurssi,
+  paikallinen,
+  onClose
+}: {
+  form: FormModel<LukionOpiskeluoikeus>
+  kurssiPath: FormOptic<LukionOpiskeluoikeus, T>
+  kurssi: T
+  paikallinen: boolean
+  onClose: () => void
+}) => {
+  const arviointiIndex = parasArviointiIndex(kurssi.arviointi || [])
+  return (
+    <Modal onClose={onClose}>
+      <ModalTitle>{t(kurssi.koulutusmoduuli.tunniste.nimi)}</ModalTitle>
+      <ModalBody>
+        <KeyValueTable>
+          <KeyValueRow localizableLabel="Nimi" innerKeyValueTable>
+            <TestIdText id="nimi">
+              {t(kurssi.koulutusmoduuli.tunniste.nimi)}
+            </TestIdText>
+          </KeyValueRow>
+          <KeyValueRow localizableLabel="Pakollinen" innerKeyValueTable>
+            <PakollinenField
+              form={form}
+              path={kurssiPath.prop('koulutusmoduuli').prop('pakollinen')}
+            />
+          </KeyValueRow>
+          <KeyValueRow localizableLabel="Laajuus" innerKeyValueTable>
+            <FormField
+              form={form}
+              path={kurssiPath.prop('koulutusmoduuli').prop('laajuus')}
+              view={LaajuusView}
+              edit={LaajuusOpintopisteissäEdit}
+              testId="laajuus"
+            />
+          </KeyValueRow>
+          <KeyValueRow localizableLabel="Suorituskieli" innerKeyValueTable>
+            <SuorituskieliField
+              form={form}
+              path={kurssiPath.prop('suorituskieli')}
+            />
+          </KeyValueRow>
+          <KeyValueRow localizableLabel="Tunnustettu" innerKeyValueTable>
+            <FormField
+              form={form}
+              path={kurssiPath.prop('tunnustettu')}
+              optional
+              view={OsaamisenTunnustusView}
+              edit={OsaamisenTunnustusEdit}
+              editProps={{
+                createEmptyTunnustus: () =>
+                  OsaamisenTunnustaminen({ selite: finnish('') })
+              }}
+            />
+          </KeyValueRow>
+          <KeyValueRow localizableLabel="Arvosana" innerKeyValueTable>
+            <FormField
+              form={form}
+              path={kurssiPath.prop('arviointi')}
+              optional
+              view={ParasArvosanaKoodiarvoView}
+              edit={ParasArvosanaEdit}
+              editProps={{
+                suoritusClassName: kurssi.$class,
+                format: koodiarvoOnly
+              }}
+              testId="arvosana"
+            />
+          </KeyValueRow>
+          {arviointiIndex !== undefined && (
+            <KeyValueRow localizableLabel="Arviointipäivä" innerKeyValueTable>
+              <FormField
+                form={form}
+                path={(
+                  kurssiPath
+                    .prop('arviointi')
+                    .optional()
+                    .at(arviointiIndex) as unknown as FormOptic<
+                    LukionOpiskeluoikeus,
+                    { päivä: string }
+                  >
+                ).prop('päivä')}
+                view={DateView}
+                edit={DateEdit}
+                testId="arviointipaiva"
+              />
+            </KeyValueRow>
+          )}
+          {paikallinen && (
+            <KeyValueRow localizableLabel="Kuvaus" innerKeyValueTable>
+              <FormField
+                form={form}
+                path={(
+                  kurssiPath.prop('koulutusmoduuli') as unknown as FormOptic<
+                    LukionOpiskeluoikeus,
+                    LukionPaikallinenOpintojakso2019
+                  >
+                ).prop('kuvaus')}
+                view={LocalizedTextView}
+                edit={LocalizedTextEdit}
+                editProps={{ large: true }}
+                testId="kuvaus"
+              />
+            </KeyValueRow>
+          )}
+        </KeyValueTable>
+      </ModalBody>
+      <ModalFooter>
+        <FlatButton onClick={onClose} testId="sulje">
+          {t('Sulje')}
+        </FlatButton>
+      </ModalFooter>
+    </Modal>
   )
 }
 
@@ -845,9 +1023,10 @@ function KurssiLista<
               <TestIdLayer id={i} key={i}>
                 <li className="kurssi">
                   <KurssiTunnisteJaInfoPopup
+                    form={form}
+                    kurssiPath={kurssiPath}
                     kurssi={kurssi}
                     paikallinen={paikallinen}
-                    naytaPopup={!form.editMode}
                   />
                   {paikallinen && (
                     <sup className="footnote-hint">{PAIKALLINEN_HINT}</sup>
@@ -865,29 +1044,24 @@ function KurssiLista<
                       testId="poisto"
                     />
                   )}
+                  {/* Ei edit-propertya: arvosana näkyy rivillä aina pelkkänä
+                      katseluna (myös muokkaustilassa), jotta sen näkee
+                      avaamatta modaalia - itse muokkaus tapahtuu
+                      KurssinTietojenMuokkausModaalissa (ks. yllä). */}
                   <div className="arvosana">
                     <FormField
                       form={form}
                       path={kurssiPath.prop('arviointi')}
                       optional
                       view={ParasArvosanaKoodiarvoView}
-                      edit={ParasArvosanaEdit}
-                      editProps={{
-                        suoritusClassName: kurssi.$class,
-                        format: koodiarvoOnly
-                      }}
                       testId="arvosana"
                     />
                   </div>
-                  {form.editMode && (
-                    <PakollinenField
-                      form={form}
-                      path={kurssiPath
-                        .prop('koulutusmoduuli')
-                        .prop('pakollinen')}
-                    />
-                  )}
-                  {(form.editMode || kurssi.suorituskieli) && (
+                  {/* Pakollinen/Suorituskieli/Tunnustettu ovat muokattavissa
+                      KurssinTietojenMuokkausModaalin kautta (ks.
+                      KurssiTunnisteJaInfoPopup) - katselutilassa näytetään
+                      tässä vain jo asetetut arvot, kuten ennenkin. */}
+                  {!form.editMode && kurssi.suorituskieli && (
                     <span className="suorituskieli">
                       {t('Suorituskieli')}
                       {': '}
@@ -897,7 +1071,7 @@ function KurssiLista<
                       />
                     </span>
                   )}
-                  {(form.editMode || kurssi.tunnustettu) && (
+                  {!form.editMode && kurssi.tunnustettu && (
                     <FormField
                       form={form}
                       path={kurssiPath.prop('tunnustettu')}

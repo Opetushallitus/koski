@@ -139,8 +139,7 @@ export const LukionSuorituksenTiedot: React.FC<
   const suoritus = päätasonSuoritus.suoritus
 
   if (!isTuettuSuoritus(suoritus)) {
-    // Muut lukion suoritustyypit (2015, pre-IB, LUVA) ei kuulu vaiheen 1
-    // laajuuteen.
+    // Muut lukion suoritustyypit (2015, pre-IB, LUVA) eivät ole tuettuja.
     return null
   }
 
@@ -391,8 +390,10 @@ const KoulusivistyskieliRow: React.FC<{
 // muokkaus eivät ole perusopetuksen puolella lainkaan (sillä ei ole
 // osasuorituksia tässä kohdassa) - rakennettu tätä varten LukionOppiaineet.tsx:n
 // jo todistetuilla ParasArvosanaEdit/appendOptional/deleteAt-malleilla.
-// tunnustettu-kenttä jätetään tarkoituksella muokkaamattomaksi - se on
-// @Hidden, ks. tämän session aiempi tutkimus/päätös.
+// tunnustettu-kenttä jätetään tarkoituksella muokkaamattomaksi: se on
+// @Hidden skeemassa (LukionOmanÄidinkielenOpintojenOsasuoritus, ainoa
+// @Hidden tunnustettu-kenttä koko skeemassa) jo ennen tätä editoria,
+// ja vanha käyttöliittymäkään ei näytä sitä edes katselussa.
 const OmanÄidinkielenOpinnotRow: React.FC<{
   form: FormModel<LukionOpiskeluoikeus>
   path: FormOptic<LukionOpiskeluoikeus, LukionOppimääränSuoritus2019>

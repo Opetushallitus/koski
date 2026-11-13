@@ -3,16 +3,17 @@ import { LukioOpiskeluoikeus } from './LukioOpiskeluoikeus'
 import { KoskiOppijaPage } from '../KoskiOppijaPage'
 
 /**
- * Yhteinen katselurajapinta lukio 2019 -opiskeluoikeuden vanhalle (mallipohjainen
- * editori, lukio/lukio.js) ja uudelle (lukio-v2/, feature flag "lukio-v2")
- * käyttöliittymälle. Mahdollistaa saman testin ajamisen molempia vasten -
- * ks. lukio2019-nayttaminen.spec.ts, joka ajaa jokaisen testin kummallakin
+ * Yhteinen katselu- ja muokkausrajapinta lukio 2019 -opiskeluoikeuden
+ * vanhalle (mallipohjainen editori, lukio/lukio.js) ja uudelle (lukio-v2/,
+ * feature flag "lukio-v2") käyttöliittymälle. Mahdollistaa saman testin
+ * ajamisen molempia vasten - ks. lukio2019-nayttaminen.spec.ts ja useat
+ * muut lukio2019-*.spec.ts-tiedostot, jotka ajavat testejä kummallakin
  * toteutuksella samoilla assertioilla.
  *
- * Vain katselukäyttöön: muokkaus-/luonti-/poisto-/kurssiskenaariot
- * (lukio2019-oppiaineen-muokkaus.spec.ts ym.) eivät vielä toimi uudella
- * käyttöliittymällä (vaihe 1 on pelkkä katselu), joten niitä EI retrofitata
- * tämän rajapinnan taakse - vain lukio2019-nayttaminen.spec.ts.
+ * Osa uuden käyttöliittymän ominaisuuksista (esim. kurssin tietojen
+ * muokkausmodaali, paikallisten uudelleenkäyttö) ei ole osa tätä rajapintaa,
+ * koska vanhalla käyttöliittymällä ei ole niille vastinetta - ne testataan
+ * UusiLukioKatselu-luokan omilla, rajapinnan ulkopuolisilla metodeilla.
  */
 export interface LukioKatselu {
   readonly nimi: string
@@ -523,11 +524,16 @@ export class UusiLukioKatselu implements LukioKatselu {
     )
   }
 
+  // Arvosana muokataan kurssin tietojen muokkausmodaalin kautta (ks.
+  // avaaKurssinMuokkausModaali) - rivillä näkyy siitä aina vain katselu
+  // (ks. LukionOppiaineet.tsx:n KurssinTietojenMuokkausModaali).
   async muokkaaKurssinArvosanaa(kurssi: Locator, arvosana: string) {
+    const modaali = await this.avaaKurssinMuokkausModaali(kurssi)
     await this.valitseDropdownArvo(
-      kurssi.locator('.arvosana .Select__toggle'),
+      modaali.locator('[data-testid$="arvosana.edit"] .Select__toggle'),
       arvosana
     )
+    await this.suljeModaali(modaali)
   }
 
   oppiaineenNimi(rivi: Locator): Locator {
@@ -552,13 +558,61 @@ export class UusiLukioKatselu implements LukioKatselu {
     return rivi.locator('.LukionOppiaineet__suorituskieli .Select__input')
   }
 
+  // Suorituskieli, Pakollinen, Tunnustettu ja Arvosana ovat muokattavissa vain
+  // kurssin tietojen muokkausmodaalin kautta (klikkaus kurssin tunnisteeseen
+  // muokkaustilassa) - ei enää rivin omana muokattavana kenttänä (rivillä
+  // näkyy Arvosanasta silti aina pelkkä katselu, ks. LukionOppiaineet.tsx:n
+  // KurssinTietojenMuokkausModaali). Julkinen (ei vain muokkaaKurssinSuoritus-
+  // kieltä/kurssinPakollinenCheckbox:n sisäinen apu), koska myös
+  // lukio2019-moduulin-lisays-ja-poisto.spec.ts avaa modaalin suoraan
+  // Laajuuden/Arviointipäivän/Kuvauksen muokkausta varten.
+  async avaaKurssinMuokkausModaali(kurssi: Locator): Promise<Locator> {
+    const modaali = this.page.locator('[role="dialog"]')
+    // Idempotentti: modaali peittää koko kurssirivin, joten toinen klikkaus
+    // tunnisteeseen sen ollessa jo auki estyisi (modaali sieppaisi klikkauksen)
+    // - esim. kun samalle kurssille kutsutaan sekä kurssinPakollinenCheckbox
+    // että muokkaaKurssinSuorituskieltä peräkkäin.
+    if ((await modaali.count()) === 0) {
+      await kurssi.locator('.tunniste').click()
+      await expect(modaali).toBeVisible()
+      // Modal.tsx fokusoi automaattisesti ensimmäisen fokusoitavan kentän
+      // auetessaan, ja fokus näytti livenä palautuvan takaisin bodyyn vielä
+      // hetken päästä siitäkin riippumatta (toistettavissa myös ilman mitään
+      // omaa vuorovaikutusta - ei siis luotettava "asettuiko modaali jo"
+      // -signaali, todennäköisesti tämän Playwright/selainympäristön oma
+      // kvirkki eikä tuotantokoodin bugi). Odotetaan silti hetki ennen
+      // ensimmäistä täyttöä, koska ensimmäinen vuorovaikutus heti auetessa
+      // hävisi kerran livenä testatessa (Kuvaus palautui alkuperäiseksi
+      // arvoksi välittömästi täytön jälkeen).
+      await this.page.waitForTimeout(300)
+    }
+    return modaali
+  }
+
+  private async suljeModaali(modaali: Locator) {
+    await modaali.getByRole('button', { name: 'Sulje' }).click()
+  }
+
   // Ei vastinetta LukioKatselu-rajapinnassa eikä VanhaLukioKatselussa - uusi,
   // ei portattu ominaisuus (ks. lukio2019-moduulin-lisays-ja-poisto.spec.ts).
   async muokkaaKurssinSuorituskieltä(kurssi: Locator, kieli: string) {
+    const modaali = await this.avaaKurssinMuokkausModaali(kurssi)
     await this.valitseDropdownArvo(
-      kurssi.locator('.suorituskieli .Select__toggle'),
+      modaali.locator('[data-testid$="suorituskieli.edit.toggle"]'),
       kieli
     )
+    await this.suljeModaali(modaali)
+  }
+
+  // Ei vastinetta LukioKatselu-rajapinnassa eikä VanhaLukioKatselussa - sama
+  // peruste kuin muokkaaKurssinSuorituskieltä:ssä. Palauttaa Promisen, koska
+  // modaali pitää avata ensin - ei siis sama synkroninen allekirjoitus kuin
+  // jaetun rajapinnan oppiainetason pakollinenCheckbox():lla.
+  async kurssinPakollinenCheckbox(kurssi: Locator): Promise<Locator> {
+    const modaali = await this.avaaKurssinMuokkausModaali(kurssi)
+    return modaali
+      .locator('[data-testid$="pakollinen.edit"]')
+      .getByRole('checkbox')
   }
 
   async lisääOppiaine(nimi: string) {

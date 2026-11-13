@@ -123,11 +123,19 @@ test.describe('Lukiokoulutus 2019: paikallisten oppiaineiden ja kurssien uudelle
     const kprefUusi = ai.locator('li.kurssi').filter({
       has: page.locator('.tunniste', { hasText: /^KPREF$/ })
     })
-    await kprefUusi.locator('.arvosana .Select__toggle').click()
+    // Arvosana muokataan kurssin tietojen muokkausmodaalin kautta, ei enää
+    // rivin omana kenttänä (ks. LukionOppiaineet.tsx:n
+    // KurssinTietojenMuokkausModaali).
+    await kprefUusi.locator('.tunniste').click()
+    const kurssiModaali = page.locator('[role="dialog"]')
+    await kurssiModaali
+      .locator('[data-testid$="arvosana.edit"] .Select__toggle')
+      .click()
     await page
       .locator('.Select__optionLabel')
       .filter({ hasText: /^9$/ })
       .click()
+    await kurssiModaali.getByRole('button', { name: 'Sulje' }).click()
     await page.getByTestId('oo.0.opiskeluoikeus.save').click()
     await expect(page.getByTestId('oo.0.opiskeluoikeus.edit')).toBeVisible({
       timeout: 15000

@@ -1,4 +1,11 @@
-import React, { useCallback, useRef, useEffect } from 'react'
+import React, {
+  createContext,
+  useCallback,
+  useContext,
+  useMemo,
+  useRef,
+  useEffect
+} from 'react'
 import { useModalState } from '../../appstate/modals'
 import { common, CommonPropsWithChildren } from '../CommonProps'
 import { ButtonGroup } from './ButtonGroup'
@@ -9,10 +16,19 @@ export type ModalProps = CommonPropsWithChildren<{
   onClose?: () => void
 }>
 
+// Antaa ModalTitlelle satunnaisen id:n, johon role="dialog" -elementti
+// viittaa aria-labelledby:llä - ilman tätä ruudunlukija ei osaa nimetä
+// modaalia lainkaan (vahvistettu axe-core:lla: "aria-label attribute does
+// not exist..." jokaisessa Modalissa, koska mikään ei aiemmin kytkenyt
+// näkyvää otsikkoa dialogin rooliin). Sama Context+useMemo(Math.random())
+// -malli kuin KeyValueTable.tsx:n KeyValueRowLabelContextissa.
+const ModalTitleContext = createContext<string | undefined>(undefined)
+
 export const Modal: React.FC<ModalProps> = (props) => {
-  const formRef = useRef<HTMLFormElement>(null)
+  const dialogRef = useRef<HTMLDivElement>(null)
   const contentRef = useRef<HTMLDivElement>(null)
   const { isActive, props: modalProps } = useModalState()
+  const titleId = useMemo(() => Math.random().toString(), [])
 
   useOutsideClick([contentRef], props.onClose, isActive)
 
@@ -32,7 +48,7 @@ export const Modal: React.FC<ModalProps> = (props) => {
       // [data-skip-autofocus] -elementit jäävät tab-järjestykseen, mutta
       // niitä ei valita modalin avautuessa automaattisesti.
       const inputs: NodeListOf<HTMLInputElement> | undefined =
-        formRef.current?.querySelectorAll(
+        dialogRef.current?.querySelectorAll(
           'input:not([data-skip-autofocus]), textarea:not([data-skip-autofocus]), button:not([data-skip-autofocus]), [tabindex]:not([data-skip-autofocus])'
         )
       inputs?.[0]?.focus?.()
@@ -41,28 +57,41 @@ export const Modal: React.FC<ModalProps> = (props) => {
 
   return (
     <TestIdLayer id="modal">
-      <form
+      {/* <div>, ei <form> - role="dialog" ei ole sallittu <form>-elementille
+          (ARIA in HTML -spesifikaation implisiittinen rooliristiriita,
+          vahvistettu axe-core:lla: "ARIA role dialog is not allowed for
+          given element"). onSubmit ei siis enää tarvita - Enterin
+          oletuskäyttäytyminen (lomakkeen lähetys) ei koske <div>:iä
+          ylipäätään, ja onKeyDown hoitaa Enterin erikseen silti. */}
+      <div
         {...common(props, ['Modal', isActive && 'Modal__active'])}
         {...modalProps}
-        onSubmit={(e) => e.preventDefault()}
         onKeyDown={onKeyDown}
         onClick={(e) => e.stopPropagation()}
         role="dialog"
-        ref={formRef}
+        aria-labelledby={titleId}
+        ref={dialogRef}
       >
         <div className="Modal__content" ref={contentRef}>
-          {props.children}
+          <ModalTitleContext.Provider value={titleId}>
+            {props.children}
+          </ModalTitleContext.Provider>
         </div>
-      </form>
+      </div>
     </TestIdLayer>
   )
 }
 
 export type ModalTitleProps = CommonPropsWithChildren
 
-export const ModalTitle: React.FC<ModalTitleProps> = (props) => (
-  <h1 {...common(props, ['ModalTitle'])}>{props.children}</h1>
-)
+export const ModalTitle: React.FC<ModalTitleProps> = (props) => {
+  const titleId = useContext(ModalTitleContext)
+  return (
+    <h1 id={titleId} {...common(props, ['ModalTitle'])}>
+      {props.children}
+    </h1>
+  )
+}
 
 export type ModalBodyProps = CommonPropsWithChildren
 

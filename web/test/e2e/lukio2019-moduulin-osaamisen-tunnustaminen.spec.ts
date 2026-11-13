@@ -46,11 +46,18 @@ test.describe('Lukiokoulutus 2019: moduulin osaamisen tunnustaminen', () => {
       has: page.locator('.tunniste', { hasText: /^ÄI1$/ })
     })
 
-    await ai1.locator('[data-testid$=".tunnustettu.edit.add"]').click()
-    await ai1
+    // Tunnustettu on muokattavissa vain kurssin tietojen muokkausmodaalin
+    // kautta (klikkaus kurssin tunnisteeseen) - ei enää rivin omana kenttänä.
+    await ai1.locator('.tunniste').click()
+    const modaali = page.locator('[role="dialog"]')
+    await modaali.locator('[data-testid$=".tunnustettu.edit.add"]').click()
+    await modaali
       .locator('[data-testid$=".tunnustettu.edit.selite.input"]')
       .fill('Tunnustettu aiemmasta opinnosta')
-    await ai1.locator('[data-testid$=".tunnustettu.edit.bool.label"]').click()
+    await modaali
+      .locator('[data-testid$=".tunnustettu.edit.bool.label"]')
+      .click()
+    await modaali.getByRole('button', { name: 'Sulje' }).click()
 
     await page.getByTestId('oo.0.opiskeluoikeus.save').click()
     await expect(page.getByTestId('oo.0.opiskeluoikeus.edit')).toBeVisible({

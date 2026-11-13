@@ -17,8 +17,9 @@ import {
  * geneeristä, jo testattua poistologiikkaa kuin valtakunnallisella
  * oppiaineella/kurssilla (ks. lukio2019-oppiaineen-lisays-ja-poisto.spec.ts,
  * lukio2019-moduulin-lisays-ja-poisto.spec.ts). Ei myöskään organisaation
- * paikallisten oppiaineiden uudelleenkäyttöä - ei vanhan käyttöliittymän
- * testattua käyttäytymistä, ks. suunnitelma.
+ * paikallisten oppiaineiden uudelleenkäyttöä - testattu erikseen
+ * lukio2019-paikallisten-uudelleenkaytto.spec.ts:ssä, uutena lukio-v2:n
+ * ominaisuutena jolla ei ole vanhan käyttöliittymän vastinetta.
  */
 const VARIANTIT: Array<{
   nimi: string

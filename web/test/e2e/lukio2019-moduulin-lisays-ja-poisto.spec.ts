@@ -71,15 +71,22 @@ for (const variantti of VARIANTIT) {
 }
 
 /**
- * Kurssin/moduulin suorituskieli ja pakollisuus - olemassa vanhassa
- * käyttöliittymässä geneerisesti (KurssiPopup.jsx:n PropertiesEditor
- * näyttää kaikki kurssin skeemakentät paitsi arviointi/koodistoUri/
- * tunniste/koodiarvo/nimi), mutta koskaan testaamatta kummassakaan
- * käyttöliittymässä. Siksi uusi, ei portattu ominaisuus - ei VARIANTIT-
- * rinnakkaisajoa, sama periaate kuin
- * lukio2019-moduulin-osaamisen-tunnustaminen.spec.ts:ssä.
+ * Kurssin tietojen muokkausmodaali (klikkaus kurssin tunnisteeseen
+ * muokkaustilassa) - Suorituskieli, Pakollinen, Tunnustettu, Laajuus,
+ * Arvosana, Arviointipäivä, Kuvaus (vain paikallinen opintojakso). Kaikki
+ * olemassa vanhassa käyttöliittymässä geneerisesti (KurssiPopup.jsx:n
+ * PropertiesEditor näyttää kaikki kurssin skeemakentät paitsi
+ * arviointi/koodistoUri/tunniste/koodiarvo/nimi), mutta koskaan
+ * testaamatta kummassakaan käyttöliittymässä. Siksi uusi, ei portattu
+ * ominaisuus - ei VARIANTIT-rinnakkaisajoa, sama periaate kuin
+ * lukio2019-moduulin-osaamisen-tunnustaminen.spec.ts:ssä. Arvosana on
+ * tietoisesti eri tavalla kuin vanhassa käyttöliittymässä, jossa se pysyy
+ * aina rivin omana kenttänään (div.arvosana) eikä ole osa popupia - uudessa
+ * käyttöliittymässä se on muokattavissa tästä modaalista, rivillä näkyy
+ * siitä silti aina pelkkä katselu (ks. KurssinTietojenMuokkausModaalin
+ * kommentti).
  */
-test.describe('Lukiokoulutus 2019: moduulin suorituskielen ja pakollisuuden muokkaus', () => {
+test.describe('Lukiokoulutus 2019: kurssin tietojen muokkausmodaali', () => {
   test.use({ storageState: virkailija('pää') })
 
   // Uusilukio, Ulla (250605A518Y)
@@ -94,19 +101,78 @@ test.describe('Lukiokoulutus 2019: moduulin suorituskielen ja pakollisuuden muok
     await katselu.poistaViimeisinTila()
   })
 
-  test('Kurssin suorituskieli ja pakollisuus voidaan muokata ja tallentaa', async () => {
+  test('Kurssin suorituskieli ja pakollisuus voidaan muokata ja tallentaa', async ({
+    page
+  }) => {
     const ai1 = katselu.kurssi(katselu.oppiaineRivi('AI'), 'ÄI1')
 
-    await katselu.pakollinenCheckbox(ai1).uncheck()
+    await (await katselu.kurssinPakollinenCheckbox(ai1)).uncheck()
     await katselu.muokkaaKurssinSuorituskieltä(ai1, 'ruotsi')
 
     await katselu.tallenna()
     await katselu.aloitaMuokkaus()
 
     const ai1Again = katselu.kurssi(katselu.oppiaineRivi('AI'), 'ÄI1')
-    await expect(katselu.pakollinenCheckbox(ai1Again)).not.toBeChecked()
     await expect(
-      ai1Again.locator('.suorituskieli .Select__input')
+      await katselu.kurssinPakollinenCheckbox(ai1Again)
+    ).not.toBeChecked()
+    await expect(
+      page
+        .locator('[role="dialog"]')
+        .locator('[data-testid$="suorituskieli.edit.input"]')
     ).toHaveValue('ruotsi')
+  })
+
+  // Laajuus ja Arviointipäivä - samasta modaalista löytyvät, aiemmin
+  // tavoittamattomat kentät (ei muokattavissa minkään olemassa olevan
+  // kurssin osalta ennen tätä, vain lisäyshetkellä/arvosanaa asetettaessa).
+  // Kuvaus koskee vain paikallista opintojaksoa, siksi oma paikallinen
+  // oppiaine+kurssi tähän testiin - valtakunnallisella moduulilla ei ole
+  // kuvaus-kenttää lainkaan.
+  test('Kurssin laajuus, arviointipäivä ja kuvaus voidaan muokata ja tallentaa', async () => {
+    const ai1 = katselu.kurssi(katselu.oppiaineRivi('AI'), 'ÄI1')
+    const modaali = await katselu.avaaKurssinMuokkausModaali(ai1)
+    await modaali.locator('.LaajuusField input').fill('5')
+    await modaali
+      .locator('[data-testid$="arviointipaiva.edit.edit.input"]')
+      .fill('1.9.2020')
+    await modaali.getByRole('button', { name: 'Sulje' }).click()
+
+    const paiRivi = await katselu.lisääPaikallinenOppiaine({
+      koodi: 'PAI',
+      nimi: 'Paikallinen oppiaine',
+      kuvaus: 'Oppiaineen kuvaus',
+      arvosana: '9'
+    })
+    const paKurssi = await katselu.lisääPaikallinenKurssi(paiRivi, {
+      tunniste: 'PA',
+      nimi: 'Paikallinen kurssi',
+      kuvaus: 'Kurssin alkuperäinen kuvaus',
+      laajuus: '2'
+    })
+    await katselu.muokkaaKurssinArvosanaa(paKurssi, '9')
+    const kuvausModaali = await katselu.avaaKurssinMuokkausModaali(paKurssi)
+    await kuvausModaali
+      .locator('[data-testid$="kuvaus.edit.input"]')
+      .fill('Kurssin muokattu kuvaus')
+    await kuvausModaali.getByRole('button', { name: 'Sulje' }).click()
+
+    await katselu.tallenna()
+    await katselu.aloitaMuokkaus()
+
+    const ai1Again = katselu.kurssi(katselu.oppiaineRivi('AI'), 'ÄI1')
+    const modaaliAgain = await katselu.avaaKurssinMuokkausModaali(ai1Again)
+    await expect(modaaliAgain.locator('.LaajuusField input')).toHaveValue('5')
+    await expect(
+      modaaliAgain.locator('[data-testid$="arviointipaiva.edit.edit.input"]')
+    ).toHaveValue('1.9.2020')
+    await modaaliAgain.getByRole('button', { name: 'Sulje' }).click()
+
+    const paKurssiAgain = katselu.kurssi(katselu.oppiaineRivi('PAI'), 'PA')
+    const kuvausModaaliAgain =
+      await katselu.avaaKurssinMuokkausModaali(paKurssiAgain)
+    await expect(
+      kuvausModaaliAgain.locator('[data-testid$="kuvaus.edit.input"]')
+    ).toHaveValue('Kurssin muokattu kuvaus')
   })
 })

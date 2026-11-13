@@ -100,7 +100,7 @@ for (const variantti of VARIANTIT) {
         page
       }) => {
         // Suoritustason lippu vaikuttaa kaikkiin oppiaineisiin (ks.
-        // LukioOppiaineet.tsx:n isErityinenTutkinto) - käytetään siksi juuri
+        // LukionOppiaineet.tsx:n isErityinenTutkinto) - käytetään siksi juuri
         // luotua, tyhjää aikuisten oppimäärää, ei valmiiksi täytettyä
         // kiinteää fixtuuria. luoLukio käyttää vanhaa "Uusi opiskelija"
         // -lomaketta UI-variantista riippumatta ja laskeutuu vanhalla

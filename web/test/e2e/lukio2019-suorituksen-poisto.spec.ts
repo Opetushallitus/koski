@@ -15,8 +15,13 @@ import {
  * removePäätasonSuoritus. Vanhan käyttöliittymän lukio2019-poisto.spec.ts
  * sisältää vain yhden testin - negatiivisen tapauksen, jossa linkkiä ei
  * näytetä yhden suorituksen opiskeluoikeudelle. Positiivista poistopolkua ei
- * voi portata, koska mikään testioppija ei omaa 2+ lukio-suoritusta, ja
- * lukio-v2:ssa ei (vielä) ole keinoa luoda toista suoritusta testin aikana.
+ * voi portata, koska mikään testioppija ei omaa 2+ lukio-suoritusta, eikä
+ * sellaista voi luoda testin aikana - backend hylkää aina toisen päätason
+ * suorituksen lisäyksen lukio-v2:n tukemille suoritustyypeille (Lukion
+ * oppimäärä sallii vain yhden suorituksen ylipäätään, Lukion aineopinnot
+ * sallii vain yhden kappaleen), vahvistettu rakentamalla ja ajamalla lisäys-
+ * ominaisuus livenä ja havaitsemalla backendin hylkäys ennen sen poistamista
+ * - ei siis puuttuva ominaisuus vaan mahdoton tälle skoopille.
  */
 const VARIANTIT: Array<{
   nimi: string

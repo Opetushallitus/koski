@@ -216,6 +216,12 @@ test.describe('Lukiokoulutus 2019: saavutettavuus, uusi käyttöliittymä', () =
     await katselu.goto(oid)
     await katselu.aloitaMuokkaus()
 
+    // Kurssin tietojen muokkausmodaali ei ole auki oletuksena - avataan se
+    // tässä, jotta sen oma sisältö (uusi <button>-tunniste, uusi Modal)
+    // tulee myös skannatuksi, ei vain suljetun tilan sivu.
+    const ai1 = katselu.kurssi(katselu.oppiaineRivi('AI'), 'ÄI1')
+    await katselu.avaaKurssinMuokkausModaali(ai1)
+
     // .oppija-haku: virkailijan sivunlaajuinen "Hae tai lisää opiskelija"
     // -haku, ei liity lukio-v2:een - sama elementti kaikilla virkailijan
     // sivuilla, ei tähän asti ollut minkään axe-testin piirissä.

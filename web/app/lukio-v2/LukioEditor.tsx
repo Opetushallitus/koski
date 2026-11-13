@@ -49,10 +49,8 @@ import { LukionLisätiedot } from './LukionLisatiedot'
 export type LukioEditorProps =
   AdaptedOpiskeluoikeusEditorProps<LukionOpiskeluoikeus>
 
-// Vaihe 1: vain katselu "Lukion oppimäärä" ja "Lukion aineopinnot"
-// -suoritustyypeille 2019 (nuorten/aikuisten). Ei muokkausta, ei dialogeja,
-// ei pre-IB/LUVA/erityinen tutkinto/omat tiedot -näkymää vielä - ks.
-// TOR-2777:n suunnitelma.
+// Pre-IB/LUVA eivät ole tuettuja suoritustyyppejä - vain "Lukion oppimäärä"
+// ja "Lukion aineopinnot" (nuorten/aikuisten) 2019.
 const LukioEditor: React.FC<LukioEditorProps> = (props) => {
   const opiskeluoikeusSchema = useSchema(LukionOpiskeluoikeus.className)
   const form = useForm(props.opiskeluoikeus, false, opiskeluoikeusSchema, [
