@@ -26,7 +26,7 @@ export default ({ location, user, titleKey }) => {
           </span>
         ) : null}
       </h1>
-      <DevLanguageButtons />
+      <DevLanguageButtons user={user} />
       <UserInfo user={user} />
       {user !== null && (
         <div className="topbarnav">

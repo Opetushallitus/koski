@@ -8,19 +8,21 @@ import http from '../util/http'
  * kieli ratkeaa täsmälleen samaa reittiä kuin tuotannossa. Ks. MockAsiointikieliServlet ja
  * MockDirectoryClient.
  *
- * Ei omaa ympäristötarkistusta: LocalTopBar renderöidään vain ilman virkailijan raameja, ja raamit
- * ovat päällä kaikissa palvelinympäristöissä (VirkailijaHtmlServlet), joten napit näkyvät vain
- * paikallisesti ja testeissä - samoissa ympäristöissä, joissa rajapinta on käytössä.
- * window.environment-tarkistus teki sivusta erilaisen `make run` -ajossa (local) ja CI:ssä
- * (unittest), jolloin paikallisesti nauhoitetut visual-baselinet eivät kelvanneet CI:lle.
+ * Napit näytetään vain siellä, missä rajapinta toimii: se on mountattu vain paikallisesti ja
+ * testeissä, ja se vaatii kirjautumisen. Raamien puuttuminen ei riitä ehdoksi, koska LocalTopBar
+ * näkyy palvelinympäristöissäkin kirjautumattomalle dokumentaatiosivulla ja kansalaisen sivujen
+ * virhesivuilla (esim. OmaData-OAuth2). Ympäristöehto hyväksyy sekä `make run` -ajon (local) että
+ * CI:n (unittest), jotta paikallisesti nauhoitetut visual-baselinet kelpaavat CI:lle.
  */
-export const DevLanguageButtons = () => {
-  const setAsiointikieli = (language) =>
-    http
-      .post('/koski/api/test/asiointikieli/' + language, {})
-      .onValue(() => window.location.reload())
+const devEnvironments = ['local', 'unittest']
 
-  return (
+const setAsiointikieli = (language) =>
+  http
+    .post('/koski/api/test/asiointikieli/' + language, {})
+    .onValue(() => window.location.reload())
+
+export const DevLanguageButtons = ({ user }) =>
+  user && devEnvironments.includes(window.environment) ? (
     <span className="dev-languages">
       {supportedLanguages.map((language) => (
         <a
@@ -32,5 +34,4 @@ export const DevLanguageButtons = () => {
         </a>
       ))}
     </span>
-  )
-}
+  ) : null
