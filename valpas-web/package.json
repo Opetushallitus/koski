@@ -46,7 +46,7 @@
     "@swc/jest": "0.2.39",
     "@testing-library/dom": "10.4.2",
     "@testing-library/react": "16.3.3",
-    "@testing-library/user-event": "14.6.8",
+    "@testing-library/user-event": "14.6.9",
     "@types/jest": "30.0.0",
     "@types/js-cookie": "3.0.6",
     "@types/node": "26.6.6",
@@ -72,7 +72,7 @@
     "stylelint": "18.0.0",
     "stylelint-no-unsupported-browser-features": "8.1.2",
     "typescript": "6.0.3",
-    "typescript-eslint": "8.72.1"
+    "typescript-eslint": "8.72.2"
   },
   "dependencies": {
     "bem-ts": "0.15.1",
