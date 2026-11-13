@@ -341,8 +341,8 @@ class RaportitService(application: KoskiApplication) {
     val oppilaitosOids = accessResolver.kyselyOiditOrganisaatiolle(request.oppilaitosOid).toSeq
     OppilaitosRaporttiResponse(
       sheets = Seq(
-        kotikuntalaskelmaBuilder.build(oppilaitosOids, request.paiva, t),
-        kotikuntalaskelmaBuilder.buildOppijat(oppilaitosOids, request.paiva, t)
+        kotikuntalaskelmaBuilder.buildOppijat(oppilaitosOids, request.paiva, t),
+        kotikuntalaskelmaBuilder.build(oppilaitosOids, request.paiva, t)
       ),
       workbookSettings = WorkbookSettings(t.get("raportti-excel-kotikuntalaskelma-title"), Some(request.password)),
       filename = s"${t.get("raportti-excel-kotikuntalaskelma-tiedoston-etuliite")}_${request.oppilaitosOid}_${request.paiva}.xlsx",
