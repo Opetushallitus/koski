@@ -173,8 +173,8 @@ importers:
         specifier: 5.3.0
         version: 5.3.0(supports-color@10.2.2)
       express-rate-limit:
-        specifier: 8.7.3
-        version: 8.7.3(express@5.3.0(supports-color@10.2.2))(supports-color@10.2.2)
+        specifier: 8.7.4
+        version: 8.7.4(express@5.3.0(supports-color@10.2.2))(supports-color@10.2.2)
       helmet:
         specifier: 8.3.0
         version: 8.3.0
@@ -829,8 +829,8 @@ packages:
     resolution: {integrity: sha512-aIL5Fx7mawVa300al2BnEE4iNvo1qETxLrPI/o05L7z6go7fCw1J6EQmbK4FmJ2AS7kgVF/KEZWufBfdClMcPg==}
     engines: {node: '>= 0.6'}
 
-  express-rate-limit@8.7.3:
-    resolution: {integrity: sha512-zPLqDI2f0gV2WmGnacLf9XSSqn4VldRyP5LCzOwx0BKH40mO6+2PCFkoSsRO2jePx87/Kf6NUF6P2QOTKXHbQA==}
+  express-rate-limit@8.7.4:
+    resolution: {integrity: sha512-LKBXzX700wz3zAGNNmVnjRI5mEbYkLv7UbMI4+9Xa+JPcg2UZh6AgY/2CZh9RrJjFM5ttC/N1lD+KzyFoZITCw==}
     engines: {node: '>= 16'}
     peerDependencies:
       express: '>= 4.11'
@@ -1994,7 +1994,7 @@ snapshots:
 
   etag@1.8.1: {}
 
-  express-rate-limit@8.7.3(express@5.3.0(supports-color@10.2.2))(supports-color@10.2.2):
+  express-rate-limit@8.7.4(express@5.3.0(supports-color@10.2.2))(supports-color@10.2.2):
     dependencies:
       debug: 4.4.3(supports-color@10.2.2)
       express: 5.3.0(supports-color@10.2.2)
