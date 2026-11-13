@@ -7,9 +7,7 @@ import fi.oph.koski.documentation.YleissivistavakoulutusExampleData.oppilaitos
 import fi.oph.koski.henkilo.{KoskiSpecificMockOppijat, LaajatOppijaHenkilöTiedot}
 import fi.oph.koski.koskiuser.{KoskiMockUser, MockUsers}
 import fi.oph.koski.localization.LocalizationReader
-import fi.oph.koski.log.AuditLogTester
-import fi.oph.koski.http.KoskiErrorCategory
-import fi.oph.koski.organisaatio.MockOrganisaatiot.{aapajoenKoulu, helsinginKaupunki, jyväskylänNormaalikoulu}
+import fi.oph.koski.organisaatio.MockOrganisaatiot.{aapajoenKoulu, jyväskylänNormaalikoulu}
 import fi.oph.koski.raportointikanta.RaportointikantaTestMethods
 import fi.oph.koski.schema._
 import fi.oph.koski.{DirtiesFixtures, KoskiApplicationForTests}
@@ -75,39 +73,6 @@ class KotikuntalaskelmaSpec extends AnyFreeSpec with Matchers with Raportointika
     uudetOppijatRivit.find(_.oppijaNumero.contains(oppija.oid)).get
 
   "Kotikuntalaskelma" - {
-    "Raportti voidaan ladata ja lataaminen tuottaa auditlogin" in {
-      authGet(s"api/raportit/kotikuntalaskelma?oppilaitosOid=$aapajoenKoulu&paiva=$raportointipäivä&lang=fi&password=salasana") {
-        verifyResponseStatusOk()
-        response.bodyBytes.take(ENCRYPTED_XLSX_PREFIX.length) should equal(ENCRYPTED_XLSX_PREFIX)
-        AuditLogTester.verifyLastAuditLogMessageForOperation(
-          Map(
-            "operation" -> "OPISKELUOIKEUS_RAPORTTI",
-            "target" -> Map(
-              "hakuEhto" -> s"raportti=kotikuntalaskelma&oppilaitosOid=$aapajoenKoulu&paiva=$raportointipäivä&lang=fi"
-            )
-          )
-        )
-      }
-    }
-
-    "Perus- ja esiopetuksen oikeuksilla voi ladata raportin" in {
-      authGet(s"api/raportit/kotikuntalaskelma?oppilaitosOid=$helsinginKaupunki&paiva=$raportointipäivä&lang=fi&password=salasana", user = MockUsers.helsinkiPerusopetuksenKatselija) {
-        verifyResponseStatusOk()
-      }
-    }
-
-    "Koulutusmuotoihin rajatuilla OPH:n oikeuksilla ei voi ladata raporttia" in {
-      authGet(s"api/raportit/kotikuntalaskelma?oppilaitosOid=$helsinginKaupunki&paiva=$raportointipäivä&lang=fi&password=salasana", user = MockUsers.ophLukioKatselija) {
-        verifyResponseStatus(403, KoskiErrorCategory.forbidden.opiskeluoikeudenTyyppi())
-      }
-    }
-
-    "Pelkillä esiopetuksen käyttöoikeuksilla ei voi ladata raporttia" in {
-      authGet(s"api/raportit/kotikuntalaskelma?oppilaitosOid=$helsinginKaupunki&paiva=$raportointipäivä&lang=fi&password=salasana", user = MockUsers.esiopetusTallentaja) {
-        verifyResponseStatus(403, KoskiErrorCategory.forbidden.opiskeluoikeudenTyyppi())
-      }
-    }
-
     "Aggregaattivälilehti - eri-ikäiset ja eri kotikunnissa asuvat oppijat päätyvät oikeisiin ikäryhmä- ja kotikuntariveihin" in {
       val jyväskyläRivi = aggregaattiRivit.find(_.oppilaanKotikunta.contains("Jyväskylä"))
       jyväskyläRivi shouldBe defined

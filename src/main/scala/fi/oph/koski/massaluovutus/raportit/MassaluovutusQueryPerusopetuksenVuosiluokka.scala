@@ -50,7 +50,6 @@ case class MassaluovutusQueryPerusopetuksenVuosiluokka(
   )(implicit session: KoskiSpecificSession): OppilaitosRaporttiResponse = {
     val request = PerusopetuksenVuosiluokkaRequest(
       oppilaitosOid = organisaatioOid.get,
-      downloadToken = None,
       password = pw,
       paiva = paiva,
       vuosiluokka = vuosiluokka,

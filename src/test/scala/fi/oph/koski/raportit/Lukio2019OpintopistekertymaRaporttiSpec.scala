@@ -7,7 +7,6 @@ import fi.oph.koski.documentation.ExampleData
 import fi.oph.koski.documentation.LukioExampleData.{aikuistenOpetussuunnitelma, opiskeluoikeusAktiivinen}
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
 import fi.oph.koski.localization.LocalizationReader
-import fi.oph.koski.log.AuditLogTester
 import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.raportit.lukio.lops2021.{Lukio2019AineopinnotOpiskeluoikeudenUlkopuolisetRow, Lukio2019ModuulinRahoitusmuotoRow, Lukio2019OpintopistekertymaAineopiskelijaRow, Lukio2019OppiaineEriVuonnaKorotetutOpintopisteetRow, LukioOpintopistekertymaOppimaaraRow}
 import fi.oph.koski.raportointikanta.RaportointikantaTestMethods
@@ -92,16 +91,6 @@ class Lukio2019OpintopistekertymaRaporttiSpec extends AnyFreeSpec with Raportoin
     }
 
     reloadRaportointikanta()
-  }
-
-  "Raportin lataaminen onnistuu ja tuottaa auditlogin" in {
-    AuditLogTester.clearMessages()
-    authGet(s"api/raportit/lukio2019opintopistekertymat?oppilaitosOid=${MockOrganisaatiot.jyväskylänNormaalikoulu}&alku=2000-01-01&loppu=2001-01-01&lang=fi&password=salasana") {
-      verifyResponseStatusOk()
-      response.headers("Content-Disposition").head should equal(s"""attachment; filename="lukio2019_opintopistekertymat_20000101-20010101.xlsx"""")
-      response.bodyBytes.take(ENCRYPTED_XLSX_PREFIX.length) should equal(ENCRYPTED_XLSX_PREFIX)
-      AuditLogTester.verifyLastAuditLogMessageForOperation(Map("operation" -> "OPISKELUOIKEUS_RAPORTTI", "target" -> Map("hakuEhto" -> s"raportti=lukio2019opintopistekertymat&oppilaitosOid=${MockOrganisaatiot.jyväskylänNormaalikoulu}&alku=2000-01-01&loppu=2001-01-01&lang=fi")))
-    }
   }
 
   "Excel välilehtien sarakkeet, valitaan vain ne kurssit joiden arviointipäivä on aikavälin sisällä" - {
@@ -276,7 +265,6 @@ class Lukio2019OpintopistekertymaRaporttiSpec extends AnyFreeSpec with Raportoin
   private def loadRaportti = {
     val request = AikajaksoRaporttiRequest(
       oppilaitosOid = MockOrganisaatiot.jyväskylänNormaalikoulu,
-      downloadToken = None,
       password = "foobar",
       alku = LocalDate.of(2000, 1, 1),
       loppu = LocalDate.of(2001, 1, 1),

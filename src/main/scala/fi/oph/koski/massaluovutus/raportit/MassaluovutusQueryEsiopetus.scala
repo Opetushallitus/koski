@@ -46,7 +46,7 @@ case class MassaluovutusQueryEsiopetus(
     localizationReader: LocalizationReader,
     pw: String
   )(implicit session: KoskiSpecificSession): OppilaitosRaporttiResponse =
-    raportitService.esiopetus(organisaatioOid.get, paiva, kotikuntaPvm, pw, None, localizationReader)
+    raportitService.esiopetus(organisaatioOid.get, paiva, kotikuntaPvm, pw, localizationReader)
 
   override protected def withFilledParams(orgOid: Organisaatio.Oid, lang: String) =
     copy(organisaatioOid = Some(orgOid), language = Some(lang))

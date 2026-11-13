@@ -62,7 +62,6 @@ case class MassaluovutusQueryAikuistenPerusopetusSuoritustiedot(
 
     val request = AikuistenPerusopetusRaporttiRequest(
       oppilaitosOid = organisaatioOid.get,
-      downloadToken = None,
       password = pw,
       alku = alku,
       loppu = loppu,

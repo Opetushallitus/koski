@@ -20,7 +20,10 @@ test.describe('Tutkintokoulutukseen valmentavan koulutuksen oppijamääräraport
 
     await raportitPage.syötäPäivä('1.1.2022')
     const kysely = await raportitPage.muodostaJaLueKysely()
-    expect(kysely).toMatchObject({ paiva: '2022-01-01' })
+    expect(kysely).toMatchObject({
+      type: 'tuvaPerusopetuksenOppijamaaratRaportti',
+      paiva: '2022-01-01'
+    })
 
     await expect(raportitPage.raporttiRivit).toHaveCount(1)
     const rivi = raportitPage.raporttiRivit.first()

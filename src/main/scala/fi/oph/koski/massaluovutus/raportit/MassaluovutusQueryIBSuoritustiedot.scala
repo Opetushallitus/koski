@@ -63,7 +63,6 @@ case class MassaluovutusQueryIBSuoritustiedot(
 
     val request = IBSuoritustiedotRaporttiRequest(
       oppilaitosOid = organisaatioOid.get,
-      downloadToken = None,
       password = pw,
       alku = alku,
       loppu = loppu,

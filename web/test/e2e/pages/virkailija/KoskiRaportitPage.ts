@@ -6,12 +6,80 @@ export class KoskiRaportitPage {
   readonly taustallaOhje: Locator
   readonly raportit: Locator
   readonly raporttiRivit: Locator
+  readonly kategoriat: Locator
+  readonly valittuKategoria: Locator
+  readonly otsikko: Locator
+  readonly raporttivalinnat: Locator
+  readonly valittuRaportti: Locator
+  readonly organisaatiovalitsin: Locator
+  readonly organisaatiokenttä: Locator
+  readonly organisaatiolistaAuki: Locator
+  readonly organisaatiot: Locator
+  readonly valittavatOrganisaatiot: Locator
+  readonly listastaValittuOrganisaatio: Locator
+  readonly päivämääräkentät: Locator
+  readonly päiväkenttä: Locator
+  readonly kotikuntaPvmKenttä: Locator
+  readonly alkuKenttä: Locator
+  readonly loppuKenttä: Locator
+  readonly päivitysaika: Locator
 
   constructor(private readonly page: Page) {
     this.muodostaButton = page.getByTestId('massaluovutus.start')
     this.taustallaOhje = page.getByTestId('massaluovutus.taustalla')
     this.raportit = page.getByTestId('massaluovutus.raportit')
     this.raporttiRivit = this.raportit.locator('tbody tr')
+    this.kategoriat = page.locator('.tabs-container .tabs-item-text')
+    this.valittuKategoria = page.locator(
+      '.tabs-container .tabs-item-selected .tabs-item-text'
+    )
+    this.otsikko = page.locator('.main-content > h2')
+    this.raporttivalinnat = page.locator('.raportti-valitsin .pills-item')
+    this.valittuRaportti = page.locator(
+      '.raportti-valitsin .pills-item-selected'
+    )
+    this.organisaatiovalitsin = page.locator('.organisaatio-dropdown')
+    this.organisaatiokenttä = this.organisaatiovalitsin.locator('input.select')
+    this.organisaatiolistaAuki =
+      this.organisaatiovalitsin.locator('.options.open')
+    this.organisaatiot = this.organisaatiovalitsin.locator('.options .value')
+    this.valittavatOrganisaatiot = this.organisaatiovalitsin.locator(
+      '.options .value:not(.disabled)'
+    )
+    this.listastaValittuOrganisaatio = this.organisaatiovalitsin.locator(
+      '.options .value.selected'
+    )
+    this.päivämääräkentät = page.locator('input.date-editor')
+    this.päiväkenttä = page.locator('#dateinput-paiva')
+    this.kotikuntaPvmKenttä = page.locator('#dateinput-kotikuntapvm')
+    this.alkuKenttä = page.locator('#dateinput-alku')
+    this.loppuKenttä = page.locator('#dateinput-loppu')
+    this.päivitysaika = page.locator('.update-time .datetime')
+  }
+
+  async goto(polku = '') {
+    await this.page.goto(`/koski/raportit${polku}`)
+    await expect(this.valittuKategoria).toBeVisible()
+  }
+
+  async valitseKategoria(nimi: string) {
+    await this.page
+      .locator('.tabs-container')
+      .getByText(nimi, { exact: true })
+      .click()
+    await expect(this.valittuKategoria).toHaveText(nimi)
+  }
+
+  async valitseRaportti(nimi: string) {
+    await this.page
+      .locator('.raportti-valitsin')
+      .getByText(nimi, { exact: true })
+      .click()
+    await expect(this.valittuRaportti).toHaveText(nimi)
+  }
+
+  async haeOrganisaatiota(hakusana: string) {
+    await this.organisaatiokenttä.fill(hakusana)
   }
 
   async gotoAmmatillinenSuoritustiedot() {
@@ -177,14 +245,14 @@ export class KoskiRaportitPage {
 
   async gotoKotikuntalaskelma() {
     await this.page.goto(
-      '/koski/raportit/muut/kotikuntalaskelmaraportti?kotikuntalaskelma=1'
+      '/koski/raportit/muut/kotikuntalaskelmaraportti'
     )
     await expect(this.muodostaButton).toBeVisible()
   }
 
   async gotoKunnanOppijat() {
     await this.page.goto(
-      '/koski/raportit/muut/kunnanoppijatraportti?kotikuntalaskelma=1'
+      '/koski/raportit/muut/kunnanoppijatraportti'
     )
     await expect(this.muodostaButton).toBeVisible()
   }

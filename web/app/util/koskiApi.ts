@@ -25,6 +25,7 @@ import { GroupedKoodistot } from '../types/fi/oph/koski/typemodel/GroupedKoodist
 import { OpiskeluoikeusClass } from '../types/fi/oph/koski/typemodel/OpiskeluoikeusClass'
 import { YtrCertificateResponse } from '../types/fi/oph/koski/ytr/YtrCertificateResponse'
 import { TodistusJob } from '../types/fi/oph/koski/todistus/TodistusJob'
+import { RaportinOrganisaatio } from '../raportit/raporttivalinta'
 import { tapLeftP } from './fp/either'
 import { TypedEnumValue } from './TypedEnumValue'
 import { queryString } from './url'
@@ -413,6 +414,16 @@ export const createMassaluovutusKysely = (
 
 export const fetchOmatMassaluovutusKyselyt = () =>
   handleExpiredSession(apiGet<QueryResponse[]>(apiUrl('massaluovutus')))
+
+export const fetchRaporttienOrganisaatiot = () =>
+  handleExpiredSession(
+    apiGet<RaportinOrganisaatio[]>(
+      apiUrl('raportit/organisaatiot-ja-raporttityypit')
+    )
+  )
+
+export const fetchRaportointikannanPäivitysaika = () =>
+  handleExpiredSession(apiGet<string>(apiUrl('raportit/paivitysaika')))
 
 export const fetchOsaamismerkkikuva = (koodiarvo: string) =>
   handleExpiredSession(

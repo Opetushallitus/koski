@@ -23,6 +23,7 @@ test.describe('Aikuisten perusopetuksen suoritustietoraportti', () => {
     await raportitPage.rajaaOsasuorituksetAikajaksolle()
     const kysely = await raportitPage.muodostaJaLueKysely()
     expect(kysely).toMatchObject({
+      type: 'aikuistenPerusopetusSuoritustiedot',
       raportinTyyppi: 'päättövaihe',
       osasuoritustenAikarajaus: true
     })

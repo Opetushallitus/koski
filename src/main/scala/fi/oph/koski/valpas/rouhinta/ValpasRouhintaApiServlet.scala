@@ -13,7 +13,6 @@ import fi.oph.koski.valpas.oppija.ValpasErrorCategory
 import fi.oph.koski.valpas.servlet.ValpasApiServlet
 import fi.oph.koski.valpas.valpasuser.RequiresValpasSession
 import org.json4s.JValue
-import org.scalatra.{Cookie, CookieOptions}
 
 class ValpasRouhintaApiServlet(implicit val application: KoskiApplication) extends ValpasApiServlet with NoCache with RequiresValpasSession {
   private val rouhinta = new ValpasRouhintaService(application)
@@ -100,7 +99,6 @@ class ValpasRouhintaApiServlet(implicit val application: KoskiApplication) exten
   private def writeExcel(raportti: OppilaitosRaporttiResponse, t: LocalizationReader): Unit = {
     contentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
     response.setHeader("Content-Disposition", s"""attachment; filename="${raportti.filename}"""")
-    raportti.downloadToken.foreach { t => response.addCookie(Cookie("valpasDownloadToken", t)(CookieOptions(path = "/", maxAge = 600))) }
     ExcelWriter.writeExcel(
       raportti.workbookSettings,
       raportti.sheets,

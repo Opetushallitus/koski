@@ -6,10 +6,8 @@ import fi.oph.koski.documentation.ExamplesIB.ibTutkinnonSuoritus
 import fi.oph.koski.documentation.{ExampleData, ExamplesIB, LukioExampleData}
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat.{eskari, ibPreIB2019, ibPredicted, tyhjä}
 import fi.oph.koski.henkilo.LaajatOppijaHenkilöTiedot
-import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.koskiuser.{KoskiMockUser, KoskiSpecificSession}
 import fi.oph.koski.localization.LocalizationReader
-import fi.oph.koski.log.AuditLogTester
 import fi.oph.koski.organisaatio.MockOrganisaatiot.ressunLukio
 import fi.oph.koski.raportointikanta.RaportointikantaTestMethods
 import fi.oph.koski.schema.{IBOpiskeluoikeus, IBOppiaineMuu, IBOppiaineenSuoritus, Koodistokoodiviite, LaajuusOpintopisteissä, LaajuusTunneissa, LukionOpiskeluoikeudenTila, LukionOpiskeluoikeusjakso}
@@ -135,30 +133,6 @@ class IBSuoritustiedotRaporttiSpec extends
   override def defaultOpiskeluoikeus = ExamplesIB.opiskeluoikeus
 
   "IB suoritustiedot raportti" - {
-    "Raportti voidaan ladata ja lataaminen tuottaa auditlogin" in {
-      authGet(s"api/raportit/ibsuoritustietojentarkistus?oppilaitosOid=$ressunLukio&alku=2018-01-01&loppu=2022-01-01&raportinTyyppi=ibtutkinto&osasuoritustenAikarajaus=false&lang=fi&password=salasana") {
-        verifyResponseStatusOk()
-        response.headers("Content-Disposition").head should equal(s"""attachment; filename="ib_suoritustiedot_ib-tutkinto_${ressunLukio}_2018-01-01_2022-01-01.xlsx"""")
-        response.bodyBytes.take(ENCRYPTED_XLSX_PREFIX.length) should equal(ENCRYPTED_XLSX_PREFIX)
-        AuditLogTester.verifyLastAuditLogMessageForOperation(Map("operation" -> "OPISKELUOIKEUS_RAPORTTI", "target" -> Map("hakuEhto" -> s"raportti=ibsuoritustietojentarkistus&oppilaitosOid=$ressunLukio&alku=2018-01-01&loppu=2022-01-01&raportinTyyppi=ibtutkinto&osasuoritustenAikarajaus=false&lang=fi")))
-      }
-    }
-
-    "Raportti voidaan ladata eri lokalisaatiolla ja lataaminen tuottaa auditlogin" in {
-      authGet(s"api/raportit/ibsuoritustietojentarkistus?oppilaitosOid=$ressunLukio&alku=2018-01-01&loppu=2022-01-01&raportinTyyppi=ibtutkinto&osasuoritustenAikarajaus=false&lang=sv&password=salasana") {
-        verifyResponseStatusOk()
-        response.headers("Content-Disposition").head should equal(s"""attachment; filename="ib_prestationsuppgifter_ib-examen_${ressunLukio}_2018-01-01_2022-01-01.xlsx"""")
-        response.bodyBytes.take(ENCRYPTED_XLSX_PREFIX.length) should equal(ENCRYPTED_XLSX_PREFIX)
-        AuditLogTester.verifyLastAuditLogMessageForOperation(Map("operation" -> "OPISKELUOIKEUS_RAPORTTI", "target" -> Map("hakuEhto" -> s"raportti=ibsuoritustietojentarkistus&oppilaitosOid=$ressunLukio&alku=2018-01-01&loppu=2022-01-01&raportinTyyppi=ibtutkinto&osasuoritustenAikarajaus=false&lang=sv")))
-      }
-    }
-
-    "Raporttia ei voi ladata väärin muodostuneella hakuparametrilla" in {
-      authGet(s"api/raportit/ibsuoritustietojentarkistus?oppilaitosOid=$ressunLukio&alku=2018-01-01&loppu=2022-01-01&raportinTyyppi=virheellinenTyyppi&osasuoritustenAikarajaus=false&lang=sv&password=salasana") {
-        verifyResponseStatus(400, KoskiErrorCategory.badRequest.queryParam(s"Raportin lataaminen epäonnistui, tuntematon raportin tyyppi virheellinenTyyppi"))
-      }
-    }
-
     "Raportilla olevat rivit näyttävät tiedot oikein" - {
 
       def containsLaajuusyksikkö(
@@ -405,13 +379,6 @@ class IBSuoritustiedotRaporttiSpec extends
 
       "Kotikunta ei löydy historiasta" in {
         getKotikunta(Some(localDate(2024, 7, 1))) should equal(Some("Ei tiedossa 1.7.2024 (nykyinen kotikunta on Jyväskylä)"))
-      }
-
-      "Päivä tallentuu auditlokiin" in {
-        authGet(s"api/raportit/ibsuoritustietojentarkistus?oppilaitosOid=$ressunLukio&alku=2025-01-01&loppu=2025-12-31&raportinTyyppi=ibtutkinto&osasuoritustenAikarajaus=false&kotikuntaPvm=2024-03-01&lang=fi&password=salasana") {
-          verifyResponseStatusOk()
-          AuditLogTester.verifyLastAuditLogMessageForOperation(Map("operation" -> "OPISKELUOIKEUS_RAPORTTI", "target" -> Map("hakuEhto" -> s"raportti=ibsuoritustietojentarkistus&oppilaitosOid=$ressunLukio&alku=2025-01-01&loppu=2025-12-31&raportinTyyppi=ibtutkinto&osasuoritustenAikarajaus=false&lang=fi&kotikuntaPvm=2024-03-01")))
-        }
       }
     }
   }

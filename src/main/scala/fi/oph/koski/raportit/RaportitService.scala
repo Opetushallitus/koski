@@ -75,8 +75,7 @@ class RaportitService(application: KoskiApplication) {
           PaallekkaisetOpiskeluoikeudet.datasheet(request.oppilaitosOid, oidit, request.alku, request.loppu, raportointiDatabase)(t)
         ),
         workbookSettings = WorkbookSettings("", Some(request.password)),
-        filename = s"${t.get("raportti-excel-paallekkaiset-opiskeluoikeudet-tiedoston-etuliite")}_${request.oppilaitosOid}_${request.alku}_${request.loppu}.xlsx",
-        downloadToken = request.downloadToken
+        filename = s"${t.get("raportti-excel-paallekkaiset-opiskeluoikeudet-tiedoston-etuliite")}_${request.oppilaitosOid}_${request.alku}_${request.loppu}.xlsx"
       )
     }
   }
@@ -101,8 +100,7 @@ class RaportitService(application: KoskiApplication) {
           text = AmmatillinenTutkintoRaportti.documentation(request, raportointiDatabase.status.startedTime.get.toLocalDateTime, t))
       ),
       workbookSettings = WorkbookSettings(AmmatillinenTutkintoRaportti.title(request, t), Some(request.password)),
-      filename = AmmatillinenTutkintoRaportti.filename(request, t),
-      downloadToken = request.downloadToken
+      filename = AmmatillinenTutkintoRaportti.filename(request, t)
     )
   }
 
@@ -120,8 +118,7 @@ class RaportitService(application: KoskiApplication) {
         )
       ),
       workbookSettings = WorkbookSettings(AmmatillinenOsittainenRaportti.title(request, t), Some(request.password)),
-      filename = AmmatillinenOsittainenRaportti.filename(request, t),
-      downloadToken = request.downloadToken
+      filename = AmmatillinenOsittainenRaportti.filename(request, t)
     )
   }
 
@@ -139,8 +136,7 @@ class RaportitService(application: KoskiApplication) {
       workbookSettings = WorkbookSettings(
         s"${t.get("raportti-excel-perusopetukseen-valmistava-opetus-title")}_${request.oppilaitosOid}", Some(request.password)
       ),
-      filename = s"${t.get("raportti-excel-perusopetukseenvalmistavaopetus-etuliite")}_${request.oppilaitosOid}_${request.alku}_${request.loppu}.xlsx",
-      downloadToken = request.downloadToken
+      filename = s"${t.get("raportti-excel-perusopetukseenvalmistavaopetus-etuliite")}_${request.oppilaitosOid}_${request.alku}_${request.loppu}.xlsx"
     )
   }
 
@@ -151,8 +147,7 @@ class RaportitService(application: KoskiApplication) {
       workbookSettings = WorkbookSettings(
         s"${t.get("raportti-excel-lukio-opiskeluoikeus-title")}_${request.oppilaitosOid}", Some(request.password)
       ),
-      filename = s"${t.get("raportti-excel-lukio-opiskeluoikeus-tiedoston-etuliite")}_${request.oppilaitosOid}_${request.alku}_${request.loppu}.xlsx",
-      downloadToken = request.downloadToken
+      filename = s"${t.get("raportti-excel-lukio-opiskeluoikeus-tiedoston-etuliite")}_${request.oppilaitosOid}_${request.alku}_${request.loppu}.xlsx"
     )
   }
 
@@ -163,8 +158,7 @@ class RaportitService(application: KoskiApplication) {
       workbookSettings = WorkbookSettings(
         s"${t.get("raportti-excel-lukio-opiskeluoikeus-title")}_${request.oppilaitosOid}", Some(request.password)
       ),
-      filename = s"${t.get("raportti-excel-lukio2019-opiskeluoikeus-tiedoston-etuliite")}_${request.oppilaitosOid}_${request.alku}_${request.loppu}.xlsx",
-      downloadToken = request.downloadToken
+      filename = s"${t.get("raportti-excel-lukio2019-opiskeluoikeus-tiedoston-etuliite")}_${request.oppilaitosOid}_${request.alku}_${request.loppu}.xlsx"
     )
   }
 
@@ -177,8 +171,7 @@ class RaportitService(application: KoskiApplication) {
         .build(accessResolver.kyselyOiditOrganisaatiolle(request.oppilaitosOid).toList, request.paiva, t)
       ),
       workbookSettings = WorkbookSettings("", Some(request.password)),
-      filename = s"${t.get("raportti-excel-lukio-opiskelijamäärät-tiedoston-etuliite")}_${request.paiva.toString.replaceAll("-", "")}.xlsx",
-      downloadToken = request.downloadToken
+      filename = s"${t.get("raportti-excel-lukio-opiskelijamäärät-tiedoston-etuliite")}_${request.paiva.toString.replaceAll("-", "")}.xlsx"
     )
   }
 
@@ -198,8 +191,7 @@ class RaportitService(application: KoskiApplication) {
         LukioOppiaineEriVuonnaKorotetutKurssit.dataSheet(oppilaitosOidit, request.alku, request.loppu, raportointiDatabase, t)
       ),
       workbookSettings = WorkbookSettings(t.get("raportti-excel-lukio-kurssikertymät-title"), Some(request.password)),
-      filename = s"${t.get("raportti-excel-lukio-kurssikertymät-tiedoston-etuliite")}_${request.alku.toString.replaceAll("-", "")}-${request.loppu.toString.replaceAll("-", "")}.xlsx",
-      downloadToken = request.downloadToken
+      filename = s"${t.get("raportti-excel-lukio-kurssikertymät-tiedoston-etuliite")}_${request.alku.toString.replaceAll("-", "")}-${request.loppu.toString.replaceAll("-", "")}.xlsx"
     )
   }
 
@@ -219,8 +211,7 @@ class RaportitService(application: KoskiApplication) {
         Lukio2019OppiaineEriVuonnaKorotetutOpintopisteet.dataSheet(oppilaitosOidit, request.alku, request.loppu, raportointiDatabase, t)
       ),
       workbookSettings = WorkbookSettings(t.get("raportti-excel-lukio2019-opintopistekertymät-title"), Some(request.password)),
-      filename = s"${t.get("raportti-excel-lukio2019-opintopistekertymät-tiedoston-etuliite")}_${request.alku.toString.replaceAll("-", "")}-${request.loppu.toString.replaceAll("-", "")}.xlsx",
-      downloadToken = request.downloadToken
+      filename = s"${t.get("raportti-excel-lukio2019-opintopistekertymät-tiedoston-etuliite")}_${request.alku.toString.replaceAll("-", "")}-${request.loppu.toString.replaceAll("-", "")}.xlsx"
     )
   }
 
@@ -234,8 +225,7 @@ class RaportitService(application: KoskiApplication) {
         LukioonValmistavanKoulutuksenOpiskelijamaaratRaportti.dataSheet(oidit, request.paiva, raportointiDatabase, t)
       ),
       workbookSettings = WorkbookSettings("", Some(request.password)),
-      filename = s"${t.get("raportti-excel-luva-opiskelijamäärät-tiedoston-etuliite")}_${request.paiva.toString.replaceAll("-", "")}.xlsx",
-      downloadToken = request.downloadToken
+      filename = s"${t.get("raportti-excel-luva-opiskelijamäärät-tiedoston-etuliite")}_${request.paiva.toString.replaceAll("-", "")}.xlsx"
     )
   }
 
@@ -251,27 +241,24 @@ class RaportitService(application: KoskiApplication) {
         t
       ).build(),
       workbookSettings = WorkbookSettings(s"${t.get("raportti-excel-aikuistenperusopetus-title-etuliite")}_${request.oppilaitosOid}", Some(request.password)),
-      filename = s"${t.get("raportti-excel-aikuistenperusopetus-tiedoston-etuliite")}_${AikuistenPerusopetusRaportti.raporttiTypeLokalisoitu(request.raportinTyyppi.typeName, t)}_${request.oppilaitosOid}_${request.alku}_${request.loppu}.xlsx",
-      downloadToken = request.downloadToken
+      filename = s"${t.get("raportti-excel-aikuistenperusopetus-tiedoston-etuliite")}_${AikuistenPerusopetusRaportti.raporttiTypeLokalisoitu(request.raportinTyyppi.typeName, t)}_${request.oppilaitosOid}_${request.alku}_${request.loppu}.xlsx"
     )
   }
 
   def muuAmmatillinen(request: AikajaksoRaporttiRequest, t: LocalizationReader) = OppilaitosRaporttiResponse(
     sheets = Seq(muuammatillinenRaportti.build(request.oppilaitosOid, request.alku, request.loppu, t)),
     workbookSettings = WorkbookSettings(t.get("raportti-excel-muu-ammatillinen-title"), Some(request.password)),
-    filename = s"${t.get("raportti-excel-muu-ammatillinen-tiedoston-etuliite")}_${request.oppilaitosOid}_${request.alku.toString.replaceAll("-","")}-${request.loppu.toString.replaceAll("-","")}.xlsx",
-    downloadToken = request.downloadToken
+    filename = s"${t.get("raportti-excel-muu-ammatillinen-tiedoston-etuliite")}_${request.oppilaitosOid}_${request.alku.toString.replaceAll("-","")}-${request.loppu.toString.replaceAll("-","")}.xlsx"
   )
 
   def topksAmmatillinen(request: AikajaksoRaporttiRequest, t: LocalizationReader) = OppilaitosRaporttiResponse(
     sheets = Seq(topksAmmatillinenRaportti.build(request.oppilaitosOid, request.alku, request.loppu, t)),
     workbookSettings = WorkbookSettings(t.get("raportti-excel-ammatillinen-topks-title"), Some(request.password)),
-    filename = s"${t.get("raportti-excel-ammatillinen-topks-tiedoston-etuliite")}_${request.oppilaitosOid}_${request.alku.toString.replaceAll("-","")}-${request.loppu.toString.replaceAll("-","")}.xlsx",
-    downloadToken = request.downloadToken
+    filename = s"${t.get("raportti-excel-ammatillinen-topks-tiedoston-etuliite")}_${request.oppilaitosOid}_${request.alku.toString.replaceAll("-","")}-${request.loppu.toString.replaceAll("-","")}.xlsx"
   )
 
-  def esiopetus(organisaatioOid: String, paiva: LocalDate, kotikuntaPvm: Option[LocalDate], password: String, downloadToken: Option[String], t: LocalizationReader)(implicit u: KoskiSpecificSession): OppilaitosRaporttiResponse =
-    esiopetusRaporttiService.raportti(organisaatioOid, paiva, kotikuntaPvm, password, downloadToken, t)
+  def esiopetus(organisaatioOid: String, paiva: LocalDate, kotikuntaPvm: Option[LocalDate], password: String, t: LocalizationReader)(implicit u: KoskiSpecificSession): OppilaitosRaporttiResponse =
+    esiopetusRaporttiService.raportti(organisaatioOid, paiva, kotikuntaPvm, password, t)
 
   def esiopetuksenOppijamäärät(request: RaporttiPäivältäRequest, t: LocalizationReader)(implicit u: KoskiSpecificSession) = {
 
@@ -287,8 +274,7 @@ class RaportitService(application: KoskiApplication) {
         DocumentationSheet(t.get("raportti-excel-ohjeet-sheet-name"), t.get("raportti-excel-aikajaksovirheet-ohje-body"))
       ),
       workbookSettings = WorkbookSettings(t.get("raportti-excel-esiopetus-vos-title"), Some(request.password)),
-      filename = s"${t.get("raportti-excel-esiopetus-vos-tiedoston-etuliite")}-${request.paiva}.xlsx",
-      downloadToken = request.downloadToken
+      filename = s"${t.get("raportti-excel-esiopetus-vos-tiedoston-etuliite")}-${request.paiva}.xlsx"
     )
   }
 
@@ -307,8 +293,7 @@ class RaportitService(application: KoskiApplication) {
         documentationSheet
       ),
       workbookSettings = WorkbookSettings(t.get("raportti-excel-aikuistenperusopetus-kurssikertymä-title-etuliite"), Some(request.password)),
-      filename = s"${t.get("raportti-excel-aikuistenperusopetus-kurssikertymä-tiedoston-etuliite")}-${request.alku.toString.replaceAll("-", "")}-${request.loppu.toString.replaceAll("-", "")}.xlsx",
-      downloadToken = request.downloadToken
+      filename = s"${t.get("raportti-excel-aikuistenperusopetus-kurssikertymä-tiedoston-etuliite")}-${request.alku.toString.replaceAll("-", "")}-${request.loppu.toString.replaceAll("-", "")}.xlsx"
     )
   }
 
@@ -321,8 +306,7 @@ class RaportitService(application: KoskiApplication) {
     OppilaitosRaporttiResponse(
       sheets = Seq(aikuistenPerusopetuksenOppijamäärätRaportti.build(oppilaitosOids, request.paiva, t)),
       workbookSettings = WorkbookSettings(t.get("raportti-excel-aikuistenperusopetus-vos-title-etuliite"), Some(request.password)),
-      filename = s"${t.get("raportti-excel-aikuistenperusopetus-vos-tiedoston-etuliite")}-${request.paiva}.xlsx",
-      downloadToken = request.downloadToken
+      filename = s"${t.get("raportti-excel-aikuistenperusopetus-vos-tiedoston-etuliite")}-${request.paiva}.xlsx"
     )
   }
 
@@ -332,8 +316,7 @@ class RaportitService(application: KoskiApplication) {
     OppilaitosRaporttiResponse(
       sheets = Seq(kunnanOppijatBuilder.build(request.oppilaitosOid, kuntakoodi, request.paiva, t)),
       workbookSettings = WorkbookSettings(t.get("raportti-excel-kunnanoppijat-title"), Some(request.password)),
-      filename = s"${t.get("raportti-excel-kunnanoppijat-tiedoston-etuliite")}_${request.oppilaitosOid}_${request.paiva}.xlsx",
-      downloadToken = request.downloadToken
+      filename = s"${t.get("raportti-excel-kunnanoppijat-tiedoston-etuliite")}_${request.oppilaitosOid}_${request.paiva}.xlsx"
     )
   }
 
@@ -345,8 +328,7 @@ class RaportitService(application: KoskiApplication) {
         kotikuntalaskelmaBuilder.buildOppijat(oppilaitosOids, request.paiva, t)
       ),
       workbookSettings = WorkbookSettings(t.get("raportti-excel-kotikuntalaskelma-title"), Some(request.password)),
-      filename = s"${t.get("raportti-excel-kotikuntalaskelma-tiedoston-etuliite")}_${request.oppilaitosOid}_${request.paiva}.xlsx",
-      downloadToken = request.downloadToken
+      filename = s"${t.get("raportti-excel-kotikuntalaskelma-tiedoston-etuliite")}_${request.oppilaitosOid}_${request.paiva}.xlsx"
     )
   }
 
@@ -358,8 +340,7 @@ class RaportitService(application: KoskiApplication) {
         DocumentationSheet(t.get("raportti-excel-ohjeet-sheet-name"), t.get("raportti-excel-aikajaksovirheet-ohje-body"))
       ),
       workbookSettings = WorkbookSettings(t.get("raportti-excel-perusopetus-vos-title"), Some(request.password)),
-      filename = s"${t.get("raportti-excel-perusopetus-vos-tiedoston-etuliite")}-${request.paiva}.xlsx",
-      downloadToken = request.downloadToken
+      filename = s"${t.get("raportti-excel-perusopetus-vos-tiedoston-etuliite")}-${request.paiva}.xlsx"
     )
   }
 
@@ -372,8 +353,7 @@ class RaportitService(application: KoskiApplication) {
         DocumentationSheet(t.get("raportti-excel-ohjeet-sheet-name"), t.get("raportti-excel-tuva-perus-aikajaksovirheet-ohje-body"))
       ),
       workbookSettings = WorkbookSettings(t.get("raportti-excel-tuva-perusopetus-vos-title"), Some(request.password)),
-      filename = s"${t.get("raportti-excel-tuva-perusopetus-vos-tiedoston-etuliite")}-${request.paiva}.xlsx",
-      downloadToken = request.downloadToken
+      filename = s"${t.get("raportti-excel-tuva-perusopetus-vos-tiedoston-etuliite")}-${request.paiva}.xlsx"
     )
   }
 
@@ -382,8 +362,7 @@ class RaportitService(application: KoskiApplication) {
     OppilaitosRaporttiResponse(
       sheets = Seq(perusopetuksenLisäopetuksenOppijamäärätRaportti.build(oppilaitosOids.toSeq, request.paiva, t)),
       workbookSettings = WorkbookSettings(t.get("raportti-excel-perusopetuksenlisaopetus-vos-title"), Some(request.password)),
-      filename = s"${t.get("raportti-excel-perusopetuksenlisaopetus-vos-tiedoston-etuliite")}-${request.paiva}.xlsx",
-      downloadToken = request.downloadToken
+      filename = s"${t.get("raportti-excel-perusopetuksenlisaopetus-vos-tiedoston-etuliite")}-${request.paiva}.xlsx"
     )
   }
 
@@ -399,8 +378,7 @@ class RaportitService(application: KoskiApplication) {
           request.kotikuntaPvm
         ),
       workbookSettings = WorkbookSettings(t.get("raportti-excel-ib-suoritustiedot-title"), Some(request.password)),
-      filename = s"${t.get("raportti-excel-ib-suoritustiedot-tiedoston-etuliite")}_${IBSuoritustiedotRaporttiType.raporttiTypeLokalisoitu(request.raportinTyyppi, t)}_${request.oppilaitosOid}_${request.alku}_${request.loppu}.xlsx",
-      downloadToken = request.downloadToken
+      filename = s"${t.get("raportti-excel-ib-suoritustiedot-tiedoston-etuliite")}_${IBSuoritustiedotRaporttiType.raporttiTypeLokalisoitu(request.raportinTyyppi, t)}_${request.oppilaitosOid}_${request.alku}_${request.loppu}.xlsx"
     )
   }
 
@@ -409,8 +387,7 @@ class RaportitService(application: KoskiApplication) {
       sheets = TuvaSuoritustiedotRaportti
         .buildRaportti(raportointiDatabase, request.oppilaitosOid, request.alku, request.loppu, t),
       workbookSettings = WorkbookSettings(t.get("raportti-excel-tuva-suoritustiedot-title"), Some(request.password)),
-      filename = s"${t.get("raportti-excel-tuva-suoritustiedot-tiedoston-etuliite")}_${request.oppilaitosOid}_${request.alku}_${request.loppu}.xlsx",
-      downloadToken = request.downloadToken
+      filename = s"${t.get("raportti-excel-tuva-suoritustiedot-tiedoston-etuliite")}_${request.oppilaitosOid}_${request.alku}_${request.loppu}.xlsx"
     )
   }
 
@@ -420,7 +397,6 @@ class RaportitService(application: KoskiApplication) {
       sheets = JatkuvanOppimisenVapaanSivistystyonRaportti.buildRaportti(raportointiDatabase, oppilaitosOids, request.alku, request.loppu, t),
       workbookSettings = WorkbookSettings(t.get("raportti-excel-vst-jotpa-title"), Some(request.password)),
       filename = s"${t.get("raportti-excel-vst-jotpa-tiedoston-etuliite")}_${request.oppilaitosOid}_${request.alku}_${request.loppu}.xlsx",
-      downloadToken = request.downloadToken,
     )
   }
 
@@ -430,7 +406,6 @@ class RaportitService(application: KoskiApplication) {
       sheets = VapaanSivistystyonVapaatavoitteisenKoulutuksenRaportti.buildRaportti(raportointiDatabase, oppilaitosOids, request.alku, request.loppu, t),
       workbookSettings = WorkbookSettings(t.get("raportti-excel-vst-vapaatavoitteinen-title"), Some(request.password)),
       filename = s"${t.get("raportti-excel-vst-vapaatavoitteinen-tiedoston-etuliite")}_${request.oppilaitosOid}_${request.alku}_${request.loppu}.xlsx",
-      downloadToken = request.downloadToken,
     )
   }
 
@@ -440,7 +415,6 @@ class RaportitService(application: KoskiApplication) {
       sheets = VapaanSivistystyonOppivelvollisilleSuunnatunKoulutuksenRaportti.buildRaportti(raportointiDatabase, application.koodistoViitePalvelu, oppilaitosOids, request.alku, request.loppu, t),
       workbookSettings = WorkbookSettings(t.get("raportti-excel-vst-kops-title"), Some(request.password)),
       filename = s"${t.get("raportti-excel-vst-kops-tiedoston-etuliite")}_${request.oppilaitosOid}_${request.alku}_${request.loppu}.xlsx",
-      downloadToken = request.downloadToken,
     )
   }
 
@@ -450,7 +424,6 @@ class RaportitService(application: KoskiApplication) {
       sheets = VapaanSivistystyonOsaamismerkkienRaportti.buildRaportti(raportointiDatabase, oppilaitosOids, request.alku, request.loppu, t),
       workbookSettings = WorkbookSettings(t.get("raportti-excel-vst-osaamismerkit-title"), Some(request.password)),
       filename = s"${t.get("raportti-excel-vst-osaamismerkit-tiedoston-etuliite")}_${request.oppilaitosOid}_${request.alku}_${request.loppu}.xlsx",
-      downloadToken = request.downloadToken,
     )
   }
 
@@ -460,7 +433,6 @@ class RaportitService(application: KoskiApplication) {
       sheets = MuunKuinSaannellynKoulutuksenRaportti.buildRaportti(raportointiDatabase, oppilaitosOids, request.alku, request.loppu, t),
       workbookSettings = WorkbookSettings(t.get("raportti-excel-muks-title"), Some(request.password)),
       filename = s"${t.get("raportti-excel-must-tiedoston-etuliite")}_${request.oppilaitosOid}_${request.alku}_${request.loppu}.xlsx",
-      downloadToken = request.downloadToken,
     )
   }
 
@@ -507,8 +479,7 @@ class RaportitService(application: KoskiApplication) {
     OppilaitosRaporttiResponse(
       sheets = Seq(data, documentation),
       workbookSettings = WorkbookSettings(raporttiBuilder.title(request.oppilaitosOid, request.alku, request.loppu, t), Some(request.password)),
-      filename = raporttiBuilder.filename(request.oppilaitosOid, request.alku, request.loppu, t),
-      downloadToken = request.downloadToken
+      filename = raporttiBuilder.filename(request.oppilaitosOid, request.alku, request.loppu, t)
     )
   }
 
@@ -521,8 +492,7 @@ class RaportitService(application: KoskiApplication) {
     OppilaitosRaporttiResponse(
       sheets = Seq(data, documentation),
       workbookSettings = WorkbookSettings(raporttiBuilder.title(t.get("raportti-excel-perusopetus-title-etuliite"), request.oppilaitosOid, request.paiva, request.vuosiluokka), Some(request.password)),
-      filename = raporttiBuilder.filename(t.get("raportti-excel-perusopetus-tiedoston-etuliite"), request.oppilaitosOid, request.paiva, request.vuosiluokka),
-      downloadToken = request.downloadToken
+      filename = raporttiBuilder.filename(t.get("raportti-excel-perusopetus-tiedoston-etuliite"), request.oppilaitosOid, request.paiva, request.vuosiluokka)
     )
   }
 
@@ -572,8 +542,6 @@ class RaportitService(application: KoskiApplication) {
     "OSTOPALVELUTAIPALVELUSETELI"
   )
 }
-
-case class DynamicResponse(sheets: Seq[Sheet], workbookSettings: WorkbookSettings, filename: String, downloadToken: Option[String])
 
 case class OrganisaatioJaRaporttiTyypit(
   nimi: LocalizedString,

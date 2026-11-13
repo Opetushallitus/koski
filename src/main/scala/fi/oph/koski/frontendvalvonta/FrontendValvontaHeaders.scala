@@ -58,11 +58,7 @@ object FrontendValvontaHeaders {
       case _ => "frame-ancestors 'none'"
     }
 
-  private def frameSrc(allowFrameSrcSelf: Boolean): String =
-    allowFrameSrcSelf match {
-      case true => "frame-src 'self'"
-      case _ => "frame-src 'none'"
-    }
+  private val frameSrc = "frame-src 'none'"
 
   private val manifestSrc = "manifest-src 'none'"
 
@@ -72,7 +68,6 @@ object FrontendValvontaHeaders {
 
   def headers(
     allowFrameAncestors: Boolean,
-    allowFrameSrcSelf: Boolean,
     mode: FrontendValvontaMode,
     unsafeAllowInlineStyles: Boolean,
     unsafeAllowBaseUri: Boolean,
@@ -85,7 +80,7 @@ object FrontendValvontaHeaders {
         case FrontendValvontaMode.ENABLED => s"Content-Security-Policy"
       }
       Map(
-        key -> createString(allowFrameAncestors, allowFrameSrcSelf, unsafeAllowInlineStyles, unsafeAllowBaseUri, nonce, formActionSources),
+        key -> createString(allowFrameAncestors, unsafeAllowInlineStyles, unsafeAllowBaseUri, nonce, formActionSources),
         "Report-To" -> s"""{ "group": "${cspEndPointGroup}", "max_age": 10886400, "endpoints": [ { "url": "${uriForReportTo}" } ] }"""
       )
     } else {
@@ -95,7 +90,6 @@ object FrontendValvontaHeaders {
 
   private def createString(
     allowRunningInFrame: Boolean,
-    allowFrameSrcSelf: Boolean,
     unsafeAllowInlineStyles: Boolean,
     unsafeAllowBaseUri: Boolean,
     nonce: String,
@@ -113,7 +107,7 @@ object FrontendValvontaHeaders {
       formAction(formActionSources),
       childSrc,
       frameAncestors(allowRunningInFrame),
-      frameSrc(allowFrameSrcSelf),
+      frameSrc,
       manifestSrc,
       mediaSrc,
       workerSrc,

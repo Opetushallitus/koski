@@ -20,7 +20,13 @@ test.describe('Ammatillisen koulutuksen tutkinnon osa/osia -suoritustietoraportt
 
     await raportitPage.syötäAikajakso('1.1.2024', '31.12.2024')
     await raportitPage.rajaaOsasuorituksetAikajaksolle()
-    await raportitPage.muodosta()
+    const kysely = await raportitPage.muodostaJaLueKysely()
+    expect(kysely).toMatchObject({
+      type: 'ammatillinenOsittainenSuoritustiedot',
+      alku: '2024-01-01',
+      loppu: '2024-12-31',
+      osasuoritustenAikarajaus: true
+    })
 
     await expect(raportitPage.taustallaOhje).toBeVisible()
     await expect(raportitPage.raporttiRivit).toHaveCount(1)

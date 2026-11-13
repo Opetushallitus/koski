@@ -9,7 +9,6 @@ import fi.oph.koski.fixture.PaallekkaisetOpiskeluoikeudetFixtures.{ensimmaisenAl
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
 import fi.oph.koski.koskiuser.MockUsers
 import fi.oph.koski.localization.LocalizationReader
-import fi.oph.koski.log.AuditLogTester
 import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.raportointikanta.RaportointikantaTestMethods
 import fi.oph.koski.schema.VapaanSivistystyönOpiskeluoikeus
@@ -45,36 +44,6 @@ class PaallekkaisetOpiskeluoikeudetSpec extends AnyFreeSpec with Raportointikant
   lazy val jyväskylänNormaalikoulunRaportti = loadRaportti(MockOrganisaatiot.jyväskylänNormaalikoulu, LocalDate.of(2014, 8, 12), LocalDate.of(2014, 8, 13))
 
   "Päällekkäisten opiskeluoikeuksien raportti" - {
-    "Lataus onnistuu ja tuottaa auditlogin" in {
-      AuditLogTester.clearMessages()
-      authGet(s"api/raportit/paallekkaisetopiskeluoikeudet?oppilaitosOid=${MockOrganisaatiot.helsinginKaupunki}&alku=2018-01-01&loppu=2020-01-01&lang=fi&password=salasana") {
-        verifyResponseStatusOk()
-        response.headers("Content-Disposition").head should equal(
-          s"""attachment; filename="paallekkaiset_opiskeluoikeudet_${MockOrganisaatiot.helsinginKaupunki}_2018-01-01_2020-01-01.xlsx""""
-        )
-        response.bodyBytes.take(ENCRYPTED_XLSX_PREFIX.length) should equal(ENCRYPTED_XLSX_PREFIX)
-        AuditLogTester.verifyLastAuditLogMessageForOperation(Map(
-          "operation" -> "OPISKELUOIKEUS_RAPORTTI",
-          "target" -> Map("hakuEhto" -> s"raportti=paallekkaisetopiskeluoikeudet&oppilaitosOid=${MockOrganisaatiot.helsinginKaupunki}&alku=2018-01-01&loppu=2020-01-01&lang=fi")
-        ))
-      }
-    }
-
-    "Lataus onnistuu eri lokalisaatiolla ja tuottaa auditlogin" in {
-      AuditLogTester.clearMessages()
-      authGet(s"api/raportit/paallekkaisetopiskeluoikeudet?oppilaitosOid=${MockOrganisaatiot.helsinginKaupunki}&alku=2018-01-01&loppu=2020-01-01&lang=sv&password=salasana") {
-        verifyResponseStatusOk()
-        response.headers("Content-Disposition").head should equal(
-          s"""attachment; filename="överlappande_studierätter_${MockOrganisaatiot.helsinginKaupunki}_2018-01-01_2020-01-01.xlsx""""
-        )
-        response.bodyBytes.take(ENCRYPTED_XLSX_PREFIX.length) should equal(ENCRYPTED_XLSX_PREFIX)
-        AuditLogTester.verifyLastAuditLogMessageForOperation(Map(
-          "operation" -> "OPISKELUOIKEUS_RAPORTTI",
-          "target" -> Map("hakuEhto" -> s"raportti=paallekkaisetopiskeluoikeudet&oppilaitosOid=${MockOrganisaatiot.helsinginKaupunki}&alku=2018-01-01&loppu=2020-01-01&lang=sv")
-        ))
-      }
-    }
-
     "Pekalla on 3 opiskeluoikeutta, keskimmäinen opiskeluoikeus on päällekkäinen ensimmäisen ja viimeisin opiskeluoikeuden kanssa" - {
       "Raportti koko koulutustoimijalta, kahdella opiskeluoikeudella on sama koulutustoimija Helsingin kaupunki" - {
         "Keskimmäinen opiskeluoikeus on kahdella rivillä, koska se on päällekkäinen kahden muun opiskeluoikeuden kanssa" in {
@@ -316,7 +285,6 @@ class PaallekkaisetOpiskeluoikeudetSpec extends AnyFreeSpec with Raportointikant
   ) = {
     val request = AikajaksoRaporttiRequest(
       oppilaitosOid = oppilaitos,
-      downloadToken = None,
       password = "password",
       alku = alku,
       loppu = loppu,

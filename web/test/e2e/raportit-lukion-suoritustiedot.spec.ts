@@ -38,6 +38,7 @@ test.describe('Lukiokoulutuksen suoritustietoraportti', () => {
     await raportitPage.syötäKotikuntaPvm('1.1.2015')
     const kysely = await raportitPage.muodostaJaLueKysely()
     expect(kysely).toMatchObject({
+      type: 'lukionSuoritustiedot',
       kotikuntaPvm: '2015-01-01',
       osasuoritustenAikarajaus: true
     })
