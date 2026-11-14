@@ -28,7 +28,7 @@
     <log4j.version>2.26.1</log4j.version>
     <pdfbox.version>3.0.8</pdfbox.version>
     <openhtmltopdf.version>1.1.100</openhtmltopdf.version>
-    <bouncycastle.version>1.86</bouncycastle.version>
+    <bouncycastle.version>1.87</bouncycastle.version>
     <finalName>${project.artifactId}-${project.version}</finalName>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <verapdf.version>1.30.4</verapdf.version>
