@@ -2,7 +2,7 @@ package fi.oph.koski.migri
 
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.http.Http.{UriInterpolator, runIO}
-import fi.oph.koski.http.{ErrorDetail, HttpStatus, ServiceConfig, VirkailijaHttpClient}
+import fi.oph.koski.http.{ErrorDetail, Http, HttpStatus, ServiceConfig, VirkailijaHttpClient}
 import fi.oph.koski.json.Json4sHttp4s.json4sEncoderOf
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.log.Logging
@@ -14,10 +14,14 @@ trait MigriService {
 }
 
 class RemoteMigriService (implicit val application: KoskiApplication) extends Logging with MigriService {
+  // Http.baseClient ei koskaan vapauta luomaansa clientia, joten kutsukohtainen client vuotaisi säikeen ja yhteyspoolin.
+  private val valintaTulosServiceClient = Http.retryingClient("/valinta-tulos-service")
+
   private def getClient(credentials: MigriCredentials) = {
     val config = ServiceConfig(application.config.getString("opintopolku.virkailija.url"), credentials.username, credentials.password, useCas = true)
     VirkailijaHttpClient(config,
       "/valinta-tulos-service",
+      valintaTulosServiceClient,
       sessionCookieName = "session",
       serviceUrlSuffix = "auth/login",
       preferGettingCredentialsFromSecretsManager = false)
