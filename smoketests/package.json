@@ -24,7 +24,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "puppeteer": "25.16.0"
+    "puppeteer": "25.17.0"
   },
   "engines": {
     "pnpm": "12.18.0",
