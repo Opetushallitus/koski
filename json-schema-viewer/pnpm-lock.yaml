@@ -254,8 +254,8 @@ importers:
 
 packages:
 
-  '@babel/compat-data@8.0.5':
-    resolution: {integrity: sha512-YLsYoQMvL8l8WrGpN3Zj7O1wK5LEBN+cQtux7BcuHyxIXve724XG+zuJ1n3U1cUweRtTzQOA4IHbuQw3N34SZw==}
+  '@babel/compat-data@8.1.2':
+    resolution: {integrity: sha512-XvUnYY6D/bJMB88821n7HFmiwFS6feV7vZLxxudRgWnnwAGtOnDa7C+6svNciIN+BAZDY6WEdIeKHaEW9c0LPg==}
     engines: {node: ^22.18.0 || >=24.11.0}
 
   '@babel/helper-compilation-targets@8.0.7':
@@ -858,8 +858,8 @@ packages:
     resolution: {integrity: sha512-BLrgEcRTwX2o6gGxGOCNyMvGSp35YofuYzw9h1IMTRmKqttAZZVU67bdb9Pr2vUHA8+j3i2tJfjO6C6+4myGTA==}
     engines: {node: 18 || 20 || >=22}
 
-  baseline-browser-mapping@2.11.35:
-    resolution: {integrity: sha512-GNk8KX52CHqeNKGk8+7tZnQab/2k1t/BgrUHPKNdijzpEhF1saPQZHVKb6m5loSAxB39gyrTYw34Qf9CQ3u1qQ==}
+  baseline-browser-mapping@2.11.36:
+    resolution: {integrity: sha512-AbPFGS4K9S3meMRCLTM0Zas+e9X7b5ygUBOboDT5zevCZt9ByKSbMtKhwyVqW+oL8WemPVsbP7X3rdZcIyOa0w==}
     engines: {node: '>=6.0.0'}
     hasBin: true
 
@@ -2057,11 +2057,11 @@ packages:
 
 snapshots:
 
-  '@babel/compat-data@8.0.5': {}
+  '@babel/compat-data@8.1.2': {}
 
   '@babel/helper-compilation-targets@8.0.7':
     dependencies:
-      '@babel/compat-data': 8.0.5
+      '@babel/compat-data': 8.1.2
       '@babel/helper-validator-option': 8.0.0
       browserslist: 4.29.5
       flru: 1.0.2
@@ -2600,7 +2600,7 @@ snapshots:
 
   balanced-match@4.0.4: {}
 
-  baseline-browser-mapping@2.11.35: {}
+  baseline-browser-mapping@2.11.36: {}
 
   boolbase@1.0.0: {}
 
@@ -2615,7 +2615,7 @@ snapshots:
 
   browserslist@4.29.5:
     dependencies:
-      baseline-browser-mapping: 2.11.35
+      baseline-browser-mapping: 2.11.36
       caniuse-lite: 1.0.30001826
       electron-to-chromium: 1.5.481
       node-releases: 2.0.63
