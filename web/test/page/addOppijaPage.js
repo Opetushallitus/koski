@@ -787,12 +787,14 @@ function Select(testId, base) {
           if (value === undefined) {
             return
           }
-          return await api
-            .enter(value)()
-            .then(async () => {
-              api.options().click()
-              await sleep()
-            })
+          await api.enter(value)()
+          await eventually(() => {
+            const options = api.options()
+            if (options.length === 0) {
+              throw new Error(`No options for '${value}' in ${testId}`)
+            }
+            options.click()
+          })()
         } catch (er) {
           console.error('UusiOpiskeluoikeusOppilaitosSelect.select failed:', er)
           throw er
