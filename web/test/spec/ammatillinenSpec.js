@@ -260,14 +260,15 @@ describe('Ammatillinen koulutus', function () {
             before(
               prepareForNewOppija('kalle', '230872-7258'),
               addOppija.enterValidDataAmmatillinen(),
-              addOppija.enterOppilaitos('ammatti'),
-              wait.forMilliseconds(500)
+              addOppija.enterOppilaitos('ammatti')
             )
             it('Mahdollistetaan valinta', function () {
-              expect(addOppija.oppilaitokset()).to.deep.equal([
-                'Lahden ammattikorkeakoulu (lakkautettu)',
-                'Stadin ammatti- ja aikuisopisto'
-              ])
+              return eventually(() =>
+                expect(addOppija.oppilaitokset()).to.deep.equal([
+                  'Lahden ammattikorkeakoulu (lakkautettu)',
+                  'Stadin ammatti- ja aikuisopisto'
+                ])
+              )()
             })
           })
         })
