@@ -1,11 +1,13 @@
 package fi.oph.koski.cache
 
 import fi.oph.koski.TestEnvironment
+import fi.oph.koski.util.{Invocation, Wait}
 import org.scalatest.BeforeAndAfterAll
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.should.Matchers
 
-import java.util.concurrent.{ExecutorService, Executors}
+import java.util.concurrent.atomic.AtomicInteger
+import java.util.concurrent.{CountDownLatch, ExecutorService, Executors, TimeUnit}
 import scala.concurrent.{ExecutionContext, ExecutionContextExecutor}
 import scala.concurrent.duration.DurationInt
 
@@ -28,26 +30,34 @@ class SeldomBlockingRefreshingCacheSpec extends AnyFreeSpec with TestEnvironment
   }
 
   "Returns previous value and triggers background refresh" in {
-    val counter = new Counter()
+    // A fast refresh could already give the new value to the call that triggered it.
+    // Hold the refresh at refreshGate until countDown() so that the call triggering the background refresh still gets the old value.
+    val refreshGate = new CountDownLatch(1)
+    val loadCount = new AtomicInteger(0)
+    val invocation = Invocation((key: String) => {
+      val n = loadCount.incrementAndGet()
+      // Loads after the first are background refreshes on another thread; they wait here until the gate opens
+      if (n > 1) refreshGate.await(5, TimeUnit.SECONDS)
+      key + n
+    }, "a")
 
     val cache = new SeldomBlockingRefreshingCache(
       "testcache",
       SeldomBlockingRefreshingCache.Params(
-        duration = 500.milliseconds,
+        duration = 10.seconds,
         refreshDuration = 100.milliseconds,
         maxSize = 10,
         executor = executionContext
       )
     )
 
-    cache(counter.incInvocation("a")) should equal("a1")
-    cache(counter.incInvocation("a")) should equal("a1")
+    cache(invocation) should equal("a1")
     Thread.sleep(150)
     // Returns old value, triggers refresh
-    cache(counter.incInvocation("a")) should equal("a1")
-    Thread.sleep(50)
+    cache(invocation) should equal("a1")
+    refreshGate.countDown()
     // Returns refreshed value
-    cache(counter.incInvocation("a")) should equal("a2")
+    Wait.until(cache(invocation) != "a1", timeoutMs = 5000, retryIntervalMs = 10)
   }
 
   "After hard expire duration does not return previous value but retrieves new value immediately" in {
