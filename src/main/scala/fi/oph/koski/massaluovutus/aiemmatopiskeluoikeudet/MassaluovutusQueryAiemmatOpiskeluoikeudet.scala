@@ -57,10 +57,13 @@ case class MassaluovutusQueryAiemmatOpiskeluoikeudet(
         writer.predictFileCount(opiskelijat.size)
         opiskelijat.foreach { opiskelija =>
           val henkilö = opiskelija.henkilö
+          // Esiopetustasoisten tietojen oikeus päätellään kaikista omista opiskeluoikeuksista, ei vain pyydetyistä koulutusmuodoista
           val kaikki = haeOpiskeluoikeudet(db, henkilö).map(MassaluovutusUtils.toKoskeenTallennettavaOpiskeluoikeus(application, logger))
           val oma = (oo: KoskeenTallennettavaOpiskeluoikeus) => oo.oid.exists(opiskelija.omatOpiskeluoikeusOidit)
           val esiopetustasoisetSallittu = kaikki.exists(oo => oma(oo) && oikeuttaaEsiopetustasoisiinTietoihin(oo))
-          val opiskeluoikeudet = if (esiopetustasoisetSallittu) kaikki else kaikki.flatMap(oo => if (oma(oo)) Some(oo) else ilmanEsiopetustasoisiaTietoja(oo))
+          val opiskeluoikeudet = kaikki
+            .filter(oo => pyydetytKoulutusmuodot.contains(oo.tyyppi.koodiarvo))
+            .flatMap(oo => if (esiopetustasoisetSallittu || oma(oo)) Some(oo) else ilmanEsiopetustasoisiaTietoja(oo))
           if (opiskeluoikeudet.isEmpty) {
             writer.skipFile()
           } else {
@@ -174,20 +177,20 @@ case class MassaluovutusQueryAiemmatOpiskeluoikeudet(
       .map { case (oid, oppijaOid) => OmaOpiskeluoikeus(oid, oppijaOid) }
   }
 
-  // Kaikki oppijan opiskeluoikeudet palautettavissa koulutusmuodoissa päivämääristä riippumatta: aiemmat, nykyiset ja tulevat.
+  private def pyydetytKoulutusmuodot: List[String] = koulutusmuoto.getOrElse(sallitutKoulutusmuodot)
+
+  // Kaikki oppijan opiskeluoikeudet sallituissa koulutusmuodoissa päivämääristä riippumatta: aiemmat, nykyiset ja tulevat.
   // Tarkoituksella ei rajata käyttäjän omilla koulutusmuoto-oikeuksilla (toisin kuin nykyisten opiskelijoiden haussa):
   // esim. lukio tarvitsee opiskelijoidensa perusopetuksen tiedot, vaikka sillä ei ole perusopetuksen käyttöoikeutta.
-  private def haeOpiskeluoikeudet(db: DB, henkilö: LaajatOppijaHenkilöTiedot): Seq[KoskiOpiskeluoikeusRow] = {
-    val koulutusmuodot: List[String] = koulutusmuoto.toList.flatten
+  private def haeOpiskeluoikeudet(db: DB, henkilö: LaajatOppijaHenkilöTiedot): Seq[KoskiOpiskeluoikeusRow] =
     QueryMethods.runDbSync(db, sql"""
         SELECT *
         FROM opiskeluoikeus
         WHERE NOT poistettu AND NOT mitatoity
           AND oppija_oid = ANY(${henkilö.kaikkiOidit})
-          AND koulutusmuoto = ANY($koulutusmuodot)
+          AND koulutusmuoto = ANY($sallitutKoulutusmuodot)
         ORDER BY alkamispaiva
       """.as[KoskiOpiskeluoikeusRow])
-  }
 
   private def auditLog(oppijaOid: String, opiskeluoikeusOidit: Seq[String], writer: QueryResultWriter)(implicit user: KoskiSpecificSession): Unit =
     OpiskeluoikeusOiditAuditLog.log(

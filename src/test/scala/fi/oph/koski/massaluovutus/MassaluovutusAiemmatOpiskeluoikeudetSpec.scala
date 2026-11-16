@@ -293,6 +293,18 @@ class MassaluovutusAiemmatOpiskeluoikeudetSpec extends AnyFreeSpec with Massaluo
       }
     }
 
+    "Koulutusmuotorajaus ei vaikuta esiopetustasoisten tietojen oikeuteen" in {
+      val perusopetus = KoskiSpecificMockOppijat.aiemmatTestiPerusopetus
+      oppijanTulos(haeTulostiedostot(oidilla(perusopetus).copy(koulutusmuoto = Some(List("esiopetus")))), perusopetus) { json =>
+        koulutusmuodot(json) shouldBe List("esiopetus")
+      }
+      val ammatillinen = KoskiSpecificMockOppijat.aiemmatTestiKansainvälisetAiemmin
+      oppijanTulos(haeTulostiedostot(oidilla(ammatillinen).copy(koulutusmuoto = Some(List("internationalschool")))), ammatillinen) { json =>
+        koulutusmuodot(json) shouldBe List("internationalschool")
+        vuosiluokat(json, "internationalschool") should not contain "explorer"
+      }
+    }
+
     "Palauttaa arkaluontoiset tiedot, vaikka palvelukäyttäjällä ei ole LUOTTAMUKSELLINEN_KAIKKI_TIEDOT-roolia" in {
       MockUsers.helsinkiAiemmatOpiskeluoikeudet.käyttöoikeudetRaw.flatMap(_.kayttooikeudet).map(_.oikeus) should not contain Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT
       oppijanTulos(haeTulostiedostot(oidilla(lauri)), lauri) { json =>
