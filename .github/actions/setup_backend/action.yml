@@ -28,7 +28,14 @@ runs:
       shell: bash
 
     - name: Start Postgres and OS containers
-      run: docker compose --progress quiet up --detach --wait
+      run: |
+        docker compose --progress quiet up --detach --wait || {
+          echo "::group::Container logs"
+          docker compose ps --all
+          docker compose logs --no-color --tail 300
+          echo "::endgroup::"
+          exit 1
+        }
       shell: bash
 
     - name: Restore target dir
