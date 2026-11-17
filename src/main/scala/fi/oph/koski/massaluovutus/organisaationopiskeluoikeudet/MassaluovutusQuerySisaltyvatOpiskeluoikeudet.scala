@@ -1,8 +1,8 @@
 package fi.oph.koski.massaluovutus.organisaationopiskeluoikeudet
 
-import fi.oph.koski.config.KoskiApplication
+import fi.oph.koski.config.{Environment, KoskiApplication}
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.plainAPI._
-import fi.oph.koski.koskiuser.KoskiSpecificSession
+import fi.oph.koski.koskiuser.{KoskiSpecificSession, Session}
 import fi.oph.koski.log.KoskiOperation.{KoskiOperation, SISALTYVAT_OPISKELUOIKEUDET_HAKU}
 import fi.oph.koski.massaluovutus.{QueryFormat, QueryResultWriter}
 import fi.oph.koski.organisaatio.{MockOrganisaatiot, OrganisaationAlaisetOrganisaatiot}
@@ -34,6 +34,10 @@ case class MassaluovutusQuerySisaltyvatOpiskeluoikeudet(
   mitätöidyt: Option[Boolean] = None,
 ) extends MassaluovutusQueryOrganisaationOpiskeluoikeudetBase {
   def withOrganisaatioOid(organisaatioOid: Oid): MassaluovutusQuerySisaltyvatOpiskeluoikeudet = copy(organisaatioOid = Some(organisaatioOid))
+
+  // Suljettu tuotannossa, kunnes kysely otetaan käyttöön
+  override def queryAllowed(application: KoskiApplication)(implicit user: Session): Boolean =
+    !Environment.isProdEnvironment(application.config) && super.queryAllowed(application)
 
   def fetchData(
     application: KoskiApplication,
