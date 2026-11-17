@@ -25,8 +25,8 @@ import org.json4s.JValue
 import java.time.LocalDate
 import scala.concurrent.duration.DurationInt
 
-@Title("Nykyisten opiskelijoiden opiskeluoikeudet")
-@Description("Nivel- ja siirtymävaiheen opiskelijoiden tietojen haku muista organisaatioista: oppilaitos saa uusien ja siirtyvien opiskelijoidensa aiemmat opinnot muilta koulutuksen järjestäjiltä.")
+@Title("Tiedonvaihtotyökalu oppijan siirtymä- ja nivelvaiheisiin")
+@Description("Oppilaitos saa siirtymä- ja nivelvaiheessa olevien uusien opiskelijoidensa aiemmat opinnot muilta koulutuksen järjestäjiltä.")
 @Description("Palauttaa annettujen, oppilaitoksen nykyisten opiskelijoiden kaikki esi-, perus-, ammatillisen, lukio-, TUVA-, IB-, EB-, DIA-, International School- ja European School of Helsinki -koulutuksen opiskeluoikeudet: aiemmat, nykyiset ja tulevat, sekä muiden organisaatioiden että oppilaitoksen omat.")
 @Description("Oppijat annetaan henkilötunnuksina tai oppijanumeroina. Jokaisen annetun oppijan on oltava oppilaitoksen nykyinen opiskelija ja alle 18-vuotias tai kyselyn tekovuonna 18 vuotta täyttävä, muuten koko kysely hylätään ja vastaus kertoo, mitkä oppijat eivät täytä ehtoja. Nykyinen opiskelija on oppija, jolla on kyselyn oppilaitoksessa päättymätön, myös vasta tulevaisuudessa alkava, jonkin näistä koulutusmuodoista opiskeluoikeus. Kysely tehdään aina yhdelle oppilaitokselle.")
 @Description("Esiopetustasoiset tiedot eli esiopetuksen opiskeluoikeudet sekä International Schoolin explorer-vuosiluokka ja Helsingin eurooppalaisen koulun nursery-vuosiluokat palautetaan vain, jos oppija on kyselyn oppilaitoksessa esi- tai perusopetustasoinen opiskelija. International Schoolissa ja eurooppalaisessa koulussa taso päätellään nykyisen opiskeluoikeuden uusimmasta vuosiluokasta: PYP ja MYP 6–9 sekä nursery, primary ja S1–S4 ovat perusopetustasoa, MYP 10, Diploma ja S5–S7 toista astetta. Oppilaitoksen omaa nykyistä opiskeluoikeutta ei karsita.")
