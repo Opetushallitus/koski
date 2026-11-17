@@ -32,8 +32,9 @@ OAuth2-rajapinnassa on käytössä:
   </dd>
   <dt>(4) Mahdolliset ketjutetut paluuosoitteet</dt>
   <dd>
-    Jos redirect_uriin KOSKI-palvelusta tuleva pyyntö aiheuttaa uusia uudelleenohjauksia kumppanin palvelun sisällä toiseen domainiin, täytyy nekin osoitteet ottaa huomioon KOSKI-palvelun CSP:ssä (Content Security Policy)
-    <br/>Nämä voivat olla eri testiympäristössä ja tuotannossa.
+    KOSKI-palvelu välittää vastauksen redirect_uriin selaimen kautta POST-lomakkeella. Lomakkeen sivun Content Security Policy (CSP) sallii lomakkeen lähettämisen vain redirect_uriin, ja osa selaimista (esim. Chrome ja Edge) soveltaa samaa rajoitusta myös redirect_urin palauttamiin uudelleenohjauksiin. Jos redirect_uri ohjaa eteenpäin (esim. 303-vastauksella) eri domainiin, selain estää uudelleenohjauksen ja käyttäjälle jää tyhjä sivu. Saman domainin sisäiset uudelleenohjaukset toimivat.
+    <br/>Suosittelemme, että redirect_uri vastaa HTML-sivulla, joka vie käyttäjän eteenpäin. Jos palvelunne kuitenkin ohjaa redirect_urista eteenpäin toiseen domainiin, kertokaa siitä, niin rajoitus voidaan poistaa käytöstä palvelunne osalta. Ongelma ei näy kaikissa selaimissa, joten kannattaa testata flow:ta myös Chromella tai Edgellä.
+    <br/>Tämä voi olla eri testiympäristössä ja tuotannossa.
   </dd>
   <dt>(5) Mutual TLS (mTLS) -client-sertifikaatin tunnistetieto</dt>
   <dd>
