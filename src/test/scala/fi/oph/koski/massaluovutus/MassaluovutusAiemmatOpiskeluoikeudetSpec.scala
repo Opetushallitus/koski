@@ -461,6 +461,13 @@ class MassaluovutusAiemmatOpiskeluoikeudetSpec extends AnyFreeSpec with Massaluo
           lisätieto(json, "perusopetus", "sisäoppilaitosmainenMajoitus") should not be JNothing
         }
       }
+
+      "Vanhentuneiksi merkityt kentät jätetään pois" in {
+        oppijanTulos(haeTulostiedostot(kulosaarenQuery), aino) { json =>
+          lisätieto(json, "perusopetus", "koulukoti") should not be JNothing
+          lisätieto(json, "perusopetus", "ulkomailla") shouldBe JNothing
+        }
+      }
     }
   }
 }
