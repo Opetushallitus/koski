@@ -1,6 +1,8 @@
 package fi.oph.koski.massaluovutus
 
+import com.typesafe.config.ConfigValueFactory.fromAnyRef
 import fi.oph.koski.api.misc.{OpiskeluoikeudenMitätöintiJaPoistoTestMethods, OpiskeluoikeusTestMethodsAmmatillinen}
+import fi.oph.koski.config.{Environment, KoskiApplication}
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.koskiuser.{MockUsers, UserWithPassword}
@@ -77,6 +79,14 @@ class MassaluovutusSisaltyvatOpiskeluoikeudetSpec
     }
 
   "Sisältyvät opiskeluoikeudet" - {
+    "Ei ole käytössä tuotantoympäristössä" in {
+      val tuotantoConfig = app.config.withValue("env", fromAnyRef(Environment.Prod))
+      implicit val session = MockUsers.helsinkiKatselija.toKoskiSpecificSession(app.käyttöoikeusRepository)
+      val helsinginKysely = query.withOrganisaatioOid(MockOrganisaatiot.helsinginKaupunki)
+      helsinginKysely.queryAllowed(KoskiApplication(tuotantoConfig)) should be(false)
+      helsinginKysely.queryAllowed(app) should be(true)
+    }
+
     "Ei onnistu väärän organisaation tietoihin" in {
       addQuery(query.withOrganisaatioOid(MockOrganisaatiot.jyväskylänNormaalikoulu), MockUsers.helsinkiKatselija) {
         verifyResponseStatus(403, KoskiErrorCategory.forbidden())
