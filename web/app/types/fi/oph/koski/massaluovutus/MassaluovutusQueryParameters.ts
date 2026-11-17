@@ -19,10 +19,6 @@ import {
   isMassaluovutusQueryOrganisaationOpiskeluoikeudetJson
 } from './organisaationopiskeluoikeudet/MassaluovutusQueryOrganisaationOpiskeluoikeudetJson'
 import {
-  MassaluovutusQuerySisaltyvatOpiskeluoikeudet,
-  isMassaluovutusQuerySisaltyvatOpiskeluoikeudet
-} from './organisaationopiskeluoikeudet/MassaluovutusQuerySisaltyvatOpiskeluoikeudet'
-import {
   MassaluovutusQueryPaallekkaisetOpiskeluoikeudet,
   isMassaluovutusQueryPaallekkaisetOpiskeluoikeudet
 } from './paallekkaisetopiskeluoikeudet/MassaluovutusQueryPaallekkaisetOpiskeluoikeudet'
@@ -147,6 +143,10 @@ import {
   isMassaluovutusQueryVSTVapaatavoitteinen
 } from './raportit/MassaluovutusQueryVSTVapaatavoitteinen'
 import {
+  MassaluovutusQuerySisaltyvatOpiskeluoikeudet,
+  isMassaluovutusQuerySisaltyvatOpiskeluoikeudet
+} from './sisaltyvatopiskeluoikeudet/MassaluovutusQuerySisaltyvatOpiskeluoikeudet'
+import {
   SuorituspalveluMuuttuneetJalkeenQuery,
   isSuorituspalveluMuuttuneetJalkeenQuery
 } from './suorituspalvelu/SuorituspalveluMuuttuneetJalkeenQuery'
@@ -178,7 +178,6 @@ export type MassaluovutusQueryParameters =
   | MassaluovutusQueryLuokalleJaaneetJson
   | MassaluovutusQueryOrganisaationOpiskeluoikeudetCsv
   | MassaluovutusQueryOrganisaationOpiskeluoikeudetJson
-  | MassaluovutusQuerySisaltyvatOpiskeluoikeudet
   | MassaluovutusQueryPaallekkaisetOpiskeluoikeudet
   | MassaluovutusQueryAikuistenPerusopetuksenKurssikertyma
   | MassaluovutusQueryAikuistenPerusopetuksenOppijamaaratRaportti
@@ -210,6 +209,7 @@ export type MassaluovutusQueryParameters =
   | MassaluovutusQueryVSTKOPS
   | MassaluovutusQueryVSTOsaamismerkit
   | MassaluovutusQueryVSTVapaatavoitteinen
+  | MassaluovutusQuerySisaltyvatOpiskeluoikeudet
   | SuorituspalveluMuuttuneetJalkeenQuery
   | SuorituspalveluOppijaOidsQuery
   | ValintalaskentaQuery
@@ -224,7 +224,6 @@ export const isMassaluovutusQueryParameters = (
   isMassaluovutusQueryLuokalleJaaneetJson(a) ||
   isMassaluovutusQueryOrganisaationOpiskeluoikeudetCsv(a) ||
   isMassaluovutusQueryOrganisaationOpiskeluoikeudetJson(a) ||
-  isMassaluovutusQuerySisaltyvatOpiskeluoikeudet(a) ||
   isMassaluovutusQueryPaallekkaisetOpiskeluoikeudet(a) ||
   isMassaluovutusQueryAikuistenPerusopetuksenKurssikertyma(a) ||
   isMassaluovutusQueryAikuistenPerusopetuksenOppijamaaratRaportti(a) ||
@@ -256,6 +255,7 @@ export const isMassaluovutusQueryParameters = (
   isMassaluovutusQueryVSTKOPS(a) ||
   isMassaluovutusQueryVSTOsaamismerkit(a) ||
   isMassaluovutusQueryVSTVapaatavoitteinen(a) ||
+  isMassaluovutusQuerySisaltyvatOpiskeluoikeudet(a) ||
   isSuorituspalveluMuuttuneetJalkeenQuery(a) ||
   isSuorituspalveluOppijaOidsQuery(a) ||
   isValintalaskentaQuery(a) ||

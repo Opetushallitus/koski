@@ -7,7 +7,7 @@ import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.koskiuser.{MockUsers, UserWithPassword}
 import fi.oph.koski.log.AuditLogTester
-import fi.oph.koski.massaluovutus.organisaationopiskeluoikeudet.MassaluovutusQuerySisaltyvatOpiskeluoikeudet
+import fi.oph.koski.massaluovutus.sisaltyvatopiskeluoikeudet.MassaluovutusQuerySisaltyvatOpiskeluoikeudet
 import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.schema.{AmmatillinenOpiskeluoikeus, OidOrganisaatio, SisältäväOpiskeluoikeus}
 import fi.oph.koski.util.Wait
@@ -79,27 +79,29 @@ class MassaluovutusSisaltyvatOpiskeluoikeudetSpec
     }
 
   "Sisältyvät opiskeluoikeudet" - {
-    "Ei ole käytössä tuotantoympäristössä" in {
-      val tuotantoConfig = app.config.withValue("env", fromAnyRef(Environment.Prod))
-      implicit val session = MockUsers.helsinkiKatselija.toKoskiSpecificSession(app.käyttöoikeusRepository)
-      val helsinginKysely = query.withOrganisaatioOid(MockOrganisaatiot.helsinginKaupunki)
-      helsinginKysely.queryAllowed(KoskiApplication(tuotantoConfig)) should be(false)
-      helsinginKysely.queryAllowed(app) should be(true)
-    }
+    "Käyttöoikeudet ja parametrit" - {
+      "Ei ole käytössä tuotantoympäristössä" in {
+        val tuotantoConfig = app.config.withValue("env", fromAnyRef(Environment.Prod))
+        implicit val session = MockUsers.helsinkiKatselija.toKoskiSpecificSession(app.käyttöoikeusRepository)
+        val helsinginKysely = query.withOrganisaatioOid(MockOrganisaatiot.helsinginKaupunki)
+        helsinginKysely.queryAllowed(KoskiApplication(tuotantoConfig)) should be(false)
+        helsinginKysely.queryAllowed(app) should be(true)
+      }
 
-    "Ei onnistu väärän organisaation tietoihin" in {
-      addQuery(query.withOrganisaatioOid(MockOrganisaatiot.jyväskylänNormaalikoulu), MockUsers.helsinkiKatselija) {
-        verifyResponseStatus(403, KoskiErrorCategory.forbidden())
+      "Ei onnistu väärän organisaation tietoihin" in {
+        addQuery(query.withOrganisaatioOid(MockOrganisaatiot.jyväskylänNormaalikoulu), MockUsers.helsinkiKatselija) {
+          verifyResponseStatus(403, KoskiErrorCategory.forbidden())
+        }
+      }
+
+      "Ei onnistu ilman LUOTTAMUKSELLINEN_KAIKKI_TIEDOT-roolia" in {
+        addQuery(query.withOrganisaatioOid(MockOrganisaatiot.omnia), MockUsers.tallentajaEiLuottamuksellinen) {
+          verifyResponseStatus(403, KoskiErrorCategory.forbidden())
+        }
       }
     }
 
-    "Ei onnistu ilman oikeuksia sensitiivisen datan lukemiseen" in {
-      addQuery(query.withOrganisaatioOid(MockOrganisaatiot.omnia), MockUsers.tallentajaEiLuottamuksellinen) {
-        verifyResponseStatus(403, KoskiErrorCategory.forbidden())
-      }
-    }
-
-    "Sisältävän opiskeluoikeuden organisaatio saa toisen oppilaitoksen sisältyvän opiskeluoikeuden, muttei omaa sisältävää opiskeluoikeuttaan" in {
+    "Palauttaa sisältävän opiskeluoikeuden organisaatiolle toisen oppilaitoksen sisältyvän opiskeluoikeuden" in {
       AuditLogTester.clearMessages()
       val user = MockUsers.helsinkiKatselija
       val queryId = addQuerySuccessfully(query, user) { response =>
@@ -167,7 +169,7 @@ class MassaluovutusSisaltyvatOpiskeluoikeudetSpec
       complete.files.find(_.contains(KoskiSpecificMockOppijat.eerola.oid)) shouldBe None
     }
 
-    "Toisen käyttäjän kyselyn tietoja ei voi hakea" in {
+    "Toisen käyttäjän kyselyä ei näe" in {
       val queryId = addQuerySuccessfully(query, MockUsers.helsinkiKatselija)(_.queryId)
       getQuery(queryId, MockUsers.omniaKatselija) {
         verifyResponseStatus(404, KoskiErrorCategory.notFound())

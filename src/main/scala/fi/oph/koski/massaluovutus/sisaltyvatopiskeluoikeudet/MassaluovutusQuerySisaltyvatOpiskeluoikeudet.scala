@@ -1,9 +1,10 @@
-package fi.oph.koski.massaluovutus.organisaationopiskeluoikeudet
+package fi.oph.koski.massaluovutus.sisaltyvatopiskeluoikeudet
 
 import fi.oph.koski.config.{Environment, KoskiApplication}
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.plainAPI._
 import fi.oph.koski.koskiuser.{KoskiSpecificSession, Session}
 import fi.oph.koski.log.KoskiOperation.{KoskiOperation, SISALTYVAT_OPISKELUOIKEUDET_HAKU}
+import fi.oph.koski.massaluovutus.organisaationopiskeluoikeudet.MassaluovutusQueryOrganisaationOpiskeluoikeudetBase
 import fi.oph.koski.massaluovutus.{QueryFormat, QueryResultWriter}
 import fi.oph.koski.organisaatio.{MockOrganisaatiot, OrganisaationAlaisetOrganisaatiot}
 import fi.oph.koski.schema.Organisaatio
@@ -17,6 +18,7 @@ import java.time.{LocalDate, LocalDateTime}
 @Title("Organisaation opiskeluoikeuksiin sisältyvät opiskeluoikeudet")
 @Description("Palauttaa muiden oppilaitosten opiskeluoikeudet, jotka on merkitty sisältyviksi (kenttä sisältyyOpiskeluoikeuteen) organisaation tai sen alaorganisaatioiden opiskeluoikeuksiin. Täydentää organisaationOpiskeluoikeudet-kyselyä: sisältyvyys on merkitty vain sisältyvään opiskeluoikeuteen, joten sisältävän opiskeluoikeuden oppilaitos ei muuten näe, mitkä muualle kirjatut opiskeluoikeudet on liitetty sen omiin opiskeluoikeuksiin.")
 @Description("Hakuehdot kohdistuvat palautettaviin eli sisältyviin opiskeluoikeuksiin, eivät organisaation omiin sisältäviin opiskeluoikeuksiin. Opiskeluoikeus palautetaan vain, jos sen sisältävä opiskeluoikeus on olemassa eikä sitä ole mitätöity. Kunkin palautetun opiskeluoikeuden kenttä sisältyyOpiskeluoikeuteen kertoo, mihin organisaation opiskeluoikeuteen se on liitetty.")
+@Description("Kysely on käytettävissä samoilla käyttöoikeuksilla kuin organisaationOpiskeluoikeudet: käyttäjällä on oltava lukuoikeus kyselyn organisaatioon ja LUOTTAMUKSELLINEN_KAIKKI_TIEDOT-käyttöoikeus. Palautettavat koulutusmuodot rajautuvat käyttäjän koulutusmuotokohtaisiin käyttöoikeuksiin.")
 @Description("Tulostiedostot vastaavat organisaationOpiskeluoikeudet-kyselyn json-muotoa: yksi tiedosto oppijaa kohden.")
 case class MassaluovutusQuerySisaltyvatOpiskeluoikeudet(
   @EnumValues(Set("sisaltyvatOpiskeluoikeudet"))
@@ -63,7 +65,7 @@ case class MassaluovutusQuerySisaltyvatOpiskeluoikeudet(
   override protected def auditLogOperation: KoskiOperation = SISALTYVAT_OPISKELUOIKEUDET_HAKU
 }
 
-object QuerySisaltyvatOpiskeluoikeudetDocumentation {
+object MassaluovutusQuerySisaltyvatOpiskeluoikeudetDocumentation {
   def example: MassaluovutusQuerySisaltyvatOpiskeluoikeudet = MassaluovutusQuerySisaltyvatOpiskeluoikeudet(
     organisaatioOid = Some(MockOrganisaatiot.helsinginKaupunki),
     alkanutAikaisintaan = LocalDate.of(2024, 1, 1),
