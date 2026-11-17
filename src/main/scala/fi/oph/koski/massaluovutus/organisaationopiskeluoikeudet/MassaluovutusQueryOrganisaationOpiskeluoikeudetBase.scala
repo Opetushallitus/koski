@@ -9,7 +9,7 @@ import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.json.SensitiveDataAllowed
 import fi.oph.koski.koskiuser.{AccessType, KoskiSpecificSession, OoPtsMask, Rooli, Session}
 import fi.oph.koski.log.KoskiAuditLogMessageField.hakuEhto
-import fi.oph.koski.log.KoskiOperation.{KoskiOperation, OPISKELUOIKEUS_HAKU}
+import fi.oph.koski.log.KoskiOperation.OPISKELUOIKEUS_HAKU
 import fi.oph.koski.log.{AuditLog, KoskiAuditLogMessage, Logging}
 import fi.oph.koski.massaluovutus.MassaluovutusUtils.{QueryResourceManager, auditlokinKentät, defaultOrganisaatio}
 import fi.oph.koski.massaluovutus.{KoulutuksenjärjestäjienMassaluovutusQueryParameters, MassaluovutusUtils, QueryResultWriter}
@@ -63,7 +63,7 @@ trait MassaluovutusQueryOrganisaationOpiskeluoikeudetBase extends Koulutuksenjä
 
   def run(application: KoskiApplication, writer: QueryResultWriter)(implicit user: Session with SensitiveDataAllowed): Either[String, Unit] = withKoskiSpecificSession { implicit u =>
     val organisaatiot = application.organisaatioService.organisaationAlaisetOrganisaatiot(organisaatioOid.get)
-    auditLog(writer.queryId.toString)
+    auditLogKysely(writer.queryId.toString)
     fetchData(
       application = application,
       writer = writer,
@@ -96,24 +96,26 @@ trait MassaluovutusQueryOrganisaationOpiskeluoikeudetBase extends Koulutuksenjä
     } yield s2
   }
 
-  protected def auditLogOperation: KoskiOperation = OPISKELUOIKEUS_HAKU
-
-  protected def auditLog(queryId: String)(implicit user: Session): Unit = {
+  protected def auditLogKysely(queryId: String)(implicit user: Session): Unit =
     AuditLog.log(KoskiAuditLogMessage(
-      auditLogOperation,
+      OPISKELUOIKEUS_HAKU,
       user,
-      auditlokinKentät(queryId) ++ Map(hakuEhto -> OpiskeluoikeusQueryContext.queryForAuditLog(Map(
-        "organisaatio" -> List(organisaatioOid.get),
-        "alkanutAikaisintaan" -> List(alkanutAikaisintaan.format(DateTimeFormatter.ISO_DATE)),
-        "alkanutViimeistään" -> alkanutViimeistään.toList.map(_.format(DateTimeFormatter.ISO_DATE)),
-        "päättynytAikaisintaan" -> päättynytAikaisintaan.toList.map(_.format(DateTimeFormatter.ISO_DATE)),
-        "päättynytViimeistään" -> päättynytViimeistään.toList.map(_.format(DateTimeFormatter.ISO_DATE)),
-        "eiPäättymispäivää" -> eiPäättymispäivää.toList.map(_.toString),
-        "muuttunutJälkeen" -> muuttunutJälkeen.toList.map(_.format(DateTimeFormatter.ISO_DATE)),
-        "koulutusmuoto" -> koulutusmuoto.toList,
-      ).filter(_._2.nonEmpty))),
+      auditlokinKentät(queryId) ++ Map(hakuEhto -> hakuehdotAuditLokiin),
     ))
-  }
+
+  protected def auditLogOppija(oppijaOid: String, opiskeluoikeusOidit: Seq[String], writer: QueryResultWriter)(implicit user: KoskiSpecificSession): Unit = ()
+
+  protected def hakuehdotAuditLokiin: String =
+    OpiskeluoikeusQueryContext.queryForAuditLog(Map(
+      "organisaatio" -> List(organisaatioOid.get),
+      "alkanutAikaisintaan" -> List(alkanutAikaisintaan.format(DateTimeFormatter.ISO_DATE)),
+      "alkanutViimeistään" -> alkanutViimeistään.toList.map(_.format(DateTimeFormatter.ISO_DATE)),
+      "päättynytAikaisintaan" -> päättynytAikaisintaan.toList.map(_.format(DateTimeFormatter.ISO_DATE)),
+      "päättynytViimeistään" -> päättynytViimeistään.toList.map(_.format(DateTimeFormatter.ISO_DATE)),
+      "eiPäättymispäivää" -> eiPäättymispäivää.toList.map(_.toString),
+      "muuttunutJälkeen" -> muuttunutJälkeen.toList.map(_.format(DateTimeFormatter.ISO_DATE)),
+      "koulutusmuoto" -> koulutusmuoto.toList,
+    ).filter(_._2.nonEmpty))
 
   protected def getDb(application: KoskiApplication): DB = application.replicaDatabase.db
 
@@ -197,12 +199,14 @@ trait MassaluovutusQueryOrganisaationOpiskeluoikeudetBase extends Koulutuksenjä
       application.opintopolkuHenkilöFacade.findMasterOppijatWithSlaveOids(oppijaOids).values.toList.distinctBy(_.oid)
     }
 
-    forEachHenkilöAndOpiskeluoikeudet(application, filters, masterHenkilöt) { (henkilö, opiskeluoikeudet) =>
+    forEachHenkilöAndOpiskeluoikeudet(application, filters, masterHenkilöt) { (henkilö, rivit) =>
+      val opiskeluoikeudet = rivit.map(MassaluovutusUtils.toKoskeenTallennettavaOpiskeluoikeus(application, logger))
       writer.putJson(henkilö.oid, MassaluovutusOppija(
         henkilö = application.henkilöRepository.oppijaHenkilöToTäydellisetHenkilötiedot(henkilö),
         linkitetytOidit = henkilö.linkitetytOidit,
-        opiskeluoikeudet = opiskeluoikeudet.map(MassaluovutusUtils.toKoskeenTallennettavaOpiskeluoikeus(application, logger)),
+        opiskeluoikeudet = opiskeluoikeudet,
       ))
+      auditLogOppija(henkilö.oid, opiskeluoikeudet.flatMap(_.oid), writer)
     }
   }
 

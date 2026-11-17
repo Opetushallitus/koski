@@ -3,7 +3,9 @@ package fi.oph.koski.massaluovutus.sisaltyvatopiskeluoikeudet
 import fi.oph.koski.config.{Environment, KoskiApplication}
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.plainAPI._
 import fi.oph.koski.koskiuser.{KoskiSpecificSession, Session}
-import fi.oph.koski.log.KoskiOperation.{KoskiOperation, SISALTYVAT_OPISKELUOIKEUDET_HAKU}
+import fi.oph.koski.log.AuditLogMessage.AuditLogMessageField
+import fi.oph.koski.log.{KoskiAuditLogMessageField, KoskiOperation, OpiskeluoikeusOiditAuditLog}
+import fi.oph.koski.massaluovutus.MassaluovutusUtils.auditlokinKentät
 import fi.oph.koski.massaluovutus.organisaationopiskeluoikeudet.MassaluovutusQueryOrganisaationOpiskeluoikeudetBase
 import fi.oph.koski.massaluovutus.{QueryFormat, QueryResultWriter}
 import fi.oph.koski.organisaatio.{MockOrganisaatiot, OrganisaationAlaisetOrganisaatiot}
@@ -62,7 +64,19 @@ case class MassaluovutusQuerySisaltyvatOpiskeluoikeudet(
       )
     """
 
-  override protected def auditLogOperation: KoskiOperation = SISALTYVAT_OPISKELUOIKEUDET_HAKU
+  // Toisen oppilaitoksen opiskeluoikeudet kirjataan oppijakohtaisesti, jotta luovutus näkyy oppijalle Oma Opintopolussa
+  override protected def auditLogKysely(queryId: String)(implicit user: Session): Unit = ()
+
+  override protected def auditLogOppija(oppijaOid: String, opiskeluoikeusOidit: Seq[String], writer: QueryResultWriter)(implicit user: KoskiSpecificSession): Unit =
+    OpiskeluoikeusOiditAuditLog.log(
+      KoskiOperation.SISALTYVAT_OPISKELUOIKEUDET_KATSOMINEN,
+      oppijaOid,
+      opiskeluoikeusOidit,
+      auditlokinKentät(writer.queryId.toString, Some(writer.jsonFileName(oppijaOid))) ++ Map[AuditLogMessageField, String](
+        KoskiAuditLogMessageField.juuriOrganisaatio -> organisaatioOid.get,
+        KoskiAuditLogMessageField.hakuEhto -> hakuehdotAuditLokiin,
+      ),
+    )
 }
 
 object MassaluovutusQuerySisaltyvatOpiskeluoikeudetDocumentation {
