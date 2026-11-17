@@ -123,16 +123,12 @@ trait IBDiplomanOppiaine extends IBOppiaine with Laajuudeton {
   @Description("Oppiaineen taso: Higher Level (HL) tai Standard Level (SL)")
   @KoodistoUri("oppiaineentasoib")
   def taso: Koodistokoodiviite
-  // TODO TOR-747: IBO:n koodit vaihtuvat tutkintokerroittain (SUB cross-reference file); alkuperäinen koodi säilytetään jäljitettävyyden vuoksi.
-  @Description("IBO:n kuusinumeroinen oppiainekoodi (IBIS SUBJECT CODE)")
-  def iboOppiainekoodi: Option[String]
 }
 
 @Title("Muu IB Diploman oppiaine")
 case class IBDiplomanMuuOppiaine(
   tunniste: Koodistokoodiviite,
-  taso: Koodistokoodiviite,
-  iboOppiainekoodi: Option[String] = None
+  taso: Koodistokoodiviite
 ) extends IBDiplomanOppiaine with MuuOppiaineIB
 
 @Title("IB Diploman kielioppiaine")
@@ -140,8 +136,7 @@ case class IBDiplomanKieliOppiaine(
   tunniste: Koodistokoodiviite,
   taso: Koodistokoodiviite,
   @Discriminator
-  kieli: Koodistokoodiviite,
-  iboOppiainekoodi: Option[String] = None
+  kieli: Koodistokoodiviite
 ) extends IBDiplomanOppiaine with KieliOppiaineIB
 
 @Title("IB Diploman core-oppiaine")
@@ -151,13 +146,11 @@ case class IBDiplomanCoreOppiaine(
   tunniste: Koodistokoodiviite,
   @Description("Oppiaine, josta extended essay on kirjoitettu")
   @KoodistoUri("oppiaineetib")
-  aine: Option[Koodistokoodiviite] = None,
-  @Description("IBO:n kuusinumeroinen oppiainekoodi (IBIS SUBJECT CODE)")
-  iboOppiainekoodi: Option[String] = None
+  aine: Option[Koodistokoodiviite] = None
 ) extends IBOppiaine with Laajuudeton
 
-// TODO TOR-747: arviointiasteikkoib ei sisällä IBIS-arvosanoja N (no grade) ja P (pending). Myönnetyn diploman oppiaineilla
-// ne ovat harvinaisia, ja konvertteri jättää ne toistaiseksi pois.
+// TODO TOR-747: IBIS merkitsee arvosanan puuttumisen koodilla N (no grade issued) tai P (pending), joita arviointiasteikkoib ei
+// sisällä. Myönnetyn diploman oppiaineilla ne ovat harvinaisia, ja konvertteri jättää tällaiset oppiaineet toistaiseksi pois.
 @Title("IB Diploman oppiaineen arviointi")
 case class IBDiplomanOppiaineenArviointi(
   @KoodistoUri("arviointiasteikkoib")

@@ -1,6 +1,6 @@
 package fi.oph.koski.ibis
 
-import scala.io.Source
+import java.util.Locale
 
 sealed trait IbisOppiaine {
   def tunniste: String
@@ -10,33 +10,267 @@ case class IbisMuuOppiaine(tunniste: String) extends IbisOppiaine
 
 case class IbisKieliOppiaine(tunniste: String, kieli: String) extends IbisOppiaine
 
-// Kuvaus IBO:n kuusinumeroisesta oppiainekoodista (IBIS SUBJECT CODE) Kosken oppiaineetib-koodiin ja kielioppiaineilla
-// lisäksi kielivalikoima-koodiin.
-// TODO TOR-747: Koodit vaihtuvat tutkintokerroittain ja selviävät IBO:n SUB cross-reference filestä, jota ei vielä ole. Kartta
-// täytetään resurssitiedostoon ensimmäisen oikean aineiston perusteella. Vaihtoehto on viedä kuvaus koodistoon.
-case class IbisOppiainekartta(koodit: Map[String, IbisOppiaine]) {
-  def get(iboKoodi: String): Option[IbisOppiaine] = koodit.get(iboKoodi)
-}
-
+// IBIS-tulostiedoston oppiaineen nimi (SUBJECT NAME) -> Kosken oppiaineetib-koodi ja kielioppiaineilla kielivalikoima-koodi.
+// Nimet ovat IBO:n oppiaineluettelosta 2026 sellaisinaan, myös katkaistut ja kirjoitusvirheelliset, koska haku vertaa koko nimeä.
 object IbisOppiainekartta {
-  val resurssi = "/ibis/oppiainekoodit.csv"
+  def get(nimi: String): Option[IbisOppiaine] = normalisoidut.get(normalisoi(nimi))
 
-  lazy val default: IbisOppiainekartta = fromCsv(
-    Option(getClass.getResourceAsStream(resurssi))
-      .map(stream => Source.fromInputStream(stream, "UTF-8").mkString)
-      .getOrElse("")
+  // IBO:n luettelossa kirjainkoko vaihtelee (ENGLISH A: Literature, KOREAN A: Lang and Literature).
+  private def normalisoi(nimi: String): String = nimi.trim.replaceAll("\\s+", " ").toUpperCase(Locale.ROOT)
+
+  // TODO TOR-747: Näille IBO:n oppiaineluettelon nimille ei vielä ole vastinetta Koskessa:
+  // - Kieli puuttuu kielivalikoimasta (nimet muotoa "<KIELI> A" tai "<KIELI> A: Literature"): AKAN, BELARUSIAN, BEMBA, BURMESE,
+  //   CHICHEWA, DHIVEHI, DZONGKHA, GUARANI, IRISH, KAZAKH, LAO, LUGANDA, MALAGASY, NDEBELE, SHONA, TAJIK, TIBETAN, WELSH ja ZULU.
+  // - CLASS.GREEK, koska kielivalikoiman EL on nykykreikka.
+  // - Oppiaine puuttuu oppiaineetib-koodistosta: ART HISTORY, ASTRONOMY, BRAZILIAN SOCIAL STUDIES, FOOD SCIENCE AND TECHNOLOGY,
+  //   LANGUAGE AND CULTURE, LITERARY ARTS, MARINE SCIENCE, SYSTEMS TRANSFORMATION 1/2/A/B DUAL AWARD,
+  //   TURKEY IN THE 20TH CENTURY ja WORLD ARTS AND CULTURES.
+  // THEORY KNOWL. tunnistetaan tasosta TK, ja REF PROJECT (taso RP) kuuluu Career-related Programmeen, joten niitä ei haeta nimellä.
+  val oppiaineet: Map[String, IbisOppiaine] = Map(
+    // Language A: literature
+    "AFRIKAANS A: Literature" -> IbisKieliOppiaine("A", "AF"),
+    "ALBANIAN A: Literature" -> IbisKieliOppiaine("A", "SQ"),
+    "AMHARIC A: Literature" -> IbisKieliOppiaine("A", "AM"),
+    "ARABIC A: Literature" -> IbisKieliOppiaine("A", "AR"),
+    "ARMENIAN A: Literature" -> IbisKieliOppiaine("A", "HY"),
+    "AZERBAIJANI A: Literature" -> IbisKieliOppiaine("A", "AZ"),
+    "BENGALI A: Literature" -> IbisKieliOppiaine("A", "BN"),
+    "BOSNIAN A: Literature" -> IbisKieliOppiaine("A", "BS"),
+    "BULGARIAN A: Literature" -> IbisKieliOppiaine("A", "BG"),
+    "CATALAN A: Literature" -> IbisKieliOppiaine("A", "CA"),
+    "CHINESE A: Literature" -> IbisKieliOppiaine("A", "ZH"),
+    "CROATIAN A: Literature" -> IbisKieliOppiaine("A", "HR"),
+    "CZECH A: Literature" -> IbisKieliOppiaine("A", "CS"),
+    "DANISH A: Literature" -> IbisKieliOppiaine("A", "DA"),
+    "DUTCH A: Literature" -> IbisKieliOppiaine("A", "NL"),
+    "ENGLISH A: Literature" -> IbisKieliOppiaine("A", "EN"),
+    "ESTONIAN A: Literature" -> IbisKieliOppiaine("A", "ET"),
+    "FILIPINO A: Literature" -> IbisKieliOppiaine("A", "FIL"),
+    "FINNISH A: Literature" -> IbisKieliOppiaine("A", "FI"),
+    "FRENCH A: Literature" -> IbisKieliOppiaine("A", "FR"),
+    "GEORGIAN A: Literature" -> IbisKieliOppiaine("A", "KA"),
+    "GERMAN A: Literature" -> IbisKieliOppiaine("A", "DE"),
+    "HEBREW A: Literature" -> IbisKieliOppiaine("A", "HE"),
+    "HINDI A: Literature" -> IbisKieliOppiaine("A", "HI"),
+    "HUNGARIAN A: Literature" -> IbisKieliOppiaine("A", "HU"),
+    "ICELANDIC A: Literature" -> IbisKieliOppiaine("A", "IS"),
+    "INDONESIAN A: Literature" -> IbisKieliOppiaine("A", "ID"),
+    "ITALIAN A: Literature" -> IbisKieliOppiaine("A", "IT"),
+    "JAPANESE A: Literature" -> IbisKieliOppiaine("A", "JA"),
+    "KHMER A: Literature" -> IbisKieliOppiaine("A", "KM"),
+    "KINYARWANDA A: Literature" -> IbisKieliOppiaine("A", "RW"),
+    "KISWAHILI A: Literature" -> IbisKieliOppiaine("A", "SW"),
+    "KOREAN A: Literature" -> IbisKieliOppiaine("A", "KO"),
+    "KURDISH A: Literature" -> IbisKieliOppiaine("A", "KU"),
+    "LATVIAN A: Literature" -> IbisKieliOppiaine("A", "LV"),
+    "LITHUANIAN A: Literature" -> IbisKieliOppiaine("A", "LT"),
+    "MACEDONIAN A: Literature" -> IbisKieliOppiaine("A", "MK"),
+    "MALAY A: Literature" -> IbisKieliOppiaine("A", "MS"),
+    "MALAYALAM A: Literature" -> IbisKieliOppiaine("A", "ML"),
+    "MARATHI A: Literature" -> IbisKieliOppiaine("A", "MR"),
+    "MODERN GREEK A: Literature." -> IbisKieliOppiaine("A", "EL"),
+    "MONGOLIAN A: Literature" -> IbisKieliOppiaine("A", "MN"),
+    "NEPALI A: Literature" -> IbisKieliOppiaine("A", "NE"),
+    "NORWEGIAN A: Literature" -> IbisKieliOppiaine("A", "NO"),
+    "PASHTO A: Literature" -> IbisKieliOppiaine("A", "PS"),
+    "PERSIAN A: Literature" -> IbisKieliOppiaine("A", "FA"),
+    "POLISH A: Literature" -> IbisKieliOppiaine("A", "PL"),
+    "PORTUGUESE A: Literature" -> IbisKieliOppiaine("A", "PT"),
+    "PUNJABI A: Literature" -> IbisKieliOppiaine("A", "PA"),
+    "ROMANIAN A: Literature" -> IbisKieliOppiaine("A", "RO"),
+    "RUSSIAN A: Literature" -> IbisKieliOppiaine("A", "RU"),
+    "SERBIAN A: Literature" -> IbisKieliOppiaine("A", "SR"),
+    "SESOTHO A: Literature" -> IbisKieliOppiaine("A", "ST"),
+    "SINHALA A: Literature" -> IbisKieliOppiaine("A", "SI"),
+    "SISWATI A: Literature" -> IbisKieliOppiaine("A", "SS"),
+    "SLOVAK A: Literature" -> IbisKieliOppiaine("A", "SK"),
+    "SLOVENE A: Literature" -> IbisKieliOppiaine("A", "SL"),
+    "SOMALI A: Literature" -> IbisKieliOppiaine("A", "SO"),
+    "SPANISH A: Literature" -> IbisKieliOppiaine("A", "ES"),
+    "SWEDISH A: Literature" -> IbisKieliOppiaine("A", "SV"),
+    "TAMIL A: Literature" -> IbisKieliOppiaine("A", "TA"),
+    "TELUGU A: Literature" -> IbisKieliOppiaine("A", "TE"),
+    "THAI A: Literature" -> IbisKieliOppiaine("A", "TH"),
+    "TURKISH A: Literature" -> IbisKieliOppiaine("A", "TR"),
+    "UKRAINIAN A: Literature" -> IbisKieliOppiaine("A", "UK"),
+    "URDU A: Literature" -> IbisKieliOppiaine("A", "UR"),
+    "UYGHUR A: Literature" -> IbisKieliOppiaine("A", "UG"),
+    "UZBEK A: Literature" -> IbisKieliOppiaine("A", "UZ"),
+    "VIETNAMESE A: Literature" -> IbisKieliOppiaine("A", "VI"),
+    "YORUBA A: Literature" -> IbisKieliOppiaine("A", "YO"),
+
+    // Language A: language and literature
+    "ARABIC A Language and Literature" -> IbisKieliOppiaine("A2", "AR"),
+    "CHINESE A Language and Literature" -> IbisKieliOppiaine("A2", "ZH"),
+    "DUTCH A Language and Literature" -> IbisKieliOppiaine("A2", "NL"),
+    "ENGLISH A Language and Literature" -> IbisKieliOppiaine("A2", "EN"),
+    "FRENCH A Language and Literature" -> IbisKieliOppiaine("A2", "FR"),
+    "GERMAN A Language and Literature" -> IbisKieliOppiaine("A2", "DE"),
+    "INDONESIAN A: Lang and Literature" -> IbisKieliOppiaine("A2", "ID"),
+    "ITALIAN A Language and Literature" -> IbisKieliOppiaine("A2", "IT"),
+    "JAPANESE A: Lang and Literatur" -> IbisKieliOppiaine("A2", "JA"),
+    "KOREAN A: Lang and Literature" -> IbisKieliOppiaine("A2", "KO"),
+    "MOD. GREEK A: Lang and Literat" -> IbisKieliOppiaine("A2", "EL"),
+    "NORWEGIAN A: Lang and Literatu" -> IbisKieliOppiaine("A2", "NO"),
+    "PORTUGUESE A: Lang and Literat" -> IbisKieliOppiaine("A2", "PT"),
+    "RUSSIAN A Language and Literature" -> IbisKieliOppiaine("A2", "RU"),
+    "SPANISH A Language and Literature" -> IbisKieliOppiaine("A2", "ES"),
+    "SWEDISH A Language and Literature" -> IbisKieliOppiaine("A2", "SV"),
+    "THAI A Language and Literature" -> IbisKieliOppiaine("A2", "TH"),
+    "VIETNAMESE A: Lang and Literature" -> IbisKieliOppiaine("A2", "VI"),
+
+    // Language A, extended essay
+    "AFRIKAANS A" -> IbisKieliOppiaine("A", "AF"),
+    "ALBANIAN A" -> IbisKieliOppiaine("A", "SQ"),
+    "AMHARIC A" -> IbisKieliOppiaine("A", "AM"),
+    "ARABIC A" -> IbisKieliOppiaine("A", "AR"),
+    "ARMENIAN A" -> IbisKieliOppiaine("A", "HY"),
+    "AZERBAIJANI A" -> IbisKieliOppiaine("A", "AZ"),
+    "BENGALI A" -> IbisKieliOppiaine("A", "BN"),
+    "BOSNIAN A" -> IbisKieliOppiaine("A", "BS"),
+    "BULGARIAN A" -> IbisKieliOppiaine("A", "BG"),
+    "CATALAN A" -> IbisKieliOppiaine("A", "CA"),
+    "CHINESE A" -> IbisKieliOppiaine("A", "ZH"),
+    "CROATIAN A" -> IbisKieliOppiaine("A", "HR"),
+    "CZECH A" -> IbisKieliOppiaine("A", "CS"),
+    "DANISH A" -> IbisKieliOppiaine("A", "DA"),
+    "DUTCH A" -> IbisKieliOppiaine("A", "NL"),
+    "ENGLISH A" -> IbisKieliOppiaine("A", "EN"),
+    "ESTONIAN A" -> IbisKieliOppiaine("A", "ET"),
+    "FILIPINO A" -> IbisKieliOppiaine("A", "FIL"),
+    "FINNISH A" -> IbisKieliOppiaine("A", "FI"),
+    "FRENCH A" -> IbisKieliOppiaine("A", "FR"),
+    "GEORGIAN A" -> IbisKieliOppiaine("A", "KA"),
+    "GERMAN A" -> IbisKieliOppiaine("A", "DE"),
+    "HEBREW A" -> IbisKieliOppiaine("A", "HE"),
+    "HINDI A" -> IbisKieliOppiaine("A", "HI"),
+    "HUNGARIAN A" -> IbisKieliOppiaine("A", "HU"),
+    "ICELANDIC A" -> IbisKieliOppiaine("A", "IS"),
+    "INDONESIAN A" -> IbisKieliOppiaine("A", "ID"),
+    "ITALIAN A" -> IbisKieliOppiaine("A", "IT"),
+    "JAPANESE A" -> IbisKieliOppiaine("A", "JA"),
+    "KHMER A" -> IbisKieliOppiaine("A", "KM"),
+    "KINYARWANDA A" -> IbisKieliOppiaine("A", "RW"),
+    "KISWAHILI A" -> IbisKieliOppiaine("A", "SW"),
+    "KOREAN A" -> IbisKieliOppiaine("A", "KO"),
+    "KURDISH A" -> IbisKieliOppiaine("A", "KU"),
+    "KYRGYZ A" -> IbisKieliOppiaine("A", "KY"),
+    "LATVIAN A" -> IbisKieliOppiaine("A", "LV"),
+    "LITHUANIAN A" -> IbisKieliOppiaine("A", "LT"),
+    "MACEDONIAN A" -> IbisKieliOppiaine("A", "MK"),
+    "MALAY A" -> IbisKieliOppiaine("A", "MS"),
+    "MOD. GREEK A" -> IbisKieliOppiaine("A", "EL"),
+    "MONGOLIAN A" -> IbisKieliOppiaine("A", "MN"),
+    "NEPALI A" -> IbisKieliOppiaine("A", "NE"),
+    "NORWEGIAN A" -> IbisKieliOppiaine("A", "NO"),
+    "PASHTO A" -> IbisKieliOppiaine("A", "PS"),
+    "PERSIAN A" -> IbisKieliOppiaine("A", "FA"),
+    "POLISH A" -> IbisKieliOppiaine("A", "PL"),
+    "PORTUGUESE A" -> IbisKieliOppiaine("A", "PT"),
+    "PUNJABI A" -> IbisKieliOppiaine("A", "PA"),
+    "ROMANIAN A" -> IbisKieliOppiaine("A", "RO"),
+    "RUSSIAN A" -> IbisKieliOppiaine("A", "RU"),
+    "SERBIAN A" -> IbisKieliOppiaine("A", "SR"),
+    "SESOTHO A" -> IbisKieliOppiaine("A", "ST"),
+    "SINHALA A" -> IbisKieliOppiaine("A", "SI"),
+    "SISWATI A" -> IbisKieliOppiaine("A", "SS"),
+    "SLOVAK A" -> IbisKieliOppiaine("A", "SK"),
+    "SLOVENE A" -> IbisKieliOppiaine("A", "SL"),
+    "SOMALI A" -> IbisKieliOppiaine("A", "SO"),
+    "SPANISH A" -> IbisKieliOppiaine("A", "ES"),
+    "SWEDISH A" -> IbisKieliOppiaine("A", "SV"),
+    "TAMIL A" -> IbisKieliOppiaine("A", "TA"),
+    "TELUGU A" -> IbisKieliOppiaine("A", "TE"),
+    "THAI A" -> IbisKieliOppiaine("A", "TH"),
+    "TURKISH A" -> IbisKieliOppiaine("A", "TR"),
+    "UKRAINIAN A" -> IbisKieliOppiaine("A", "UK"),
+    "URDU A" -> IbisKieliOppiaine("A", "UR"),
+    "VIETNAMESE A" -> IbisKieliOppiaine("A", "VI"),
+
+    // Language B
+    "ARABIC B" -> IbisKieliOppiaine("B", "AR"),
+    "CHINESE B" -> IbisKieliOppiaine("B", "ZH"),
+    "CHINESE B - CANTONESE" -> IbisKieliOppiaine("B", "YUE"),
+    "CHINESE B - MANDARIN" -> IbisKieliOppiaine("B", "CMN"),
+    "DANISH B" -> IbisKieliOppiaine("B", "DA"),
+    "DUTCH B" -> IbisKieliOppiaine("B", "NL"),
+    "ENGLISH B" -> IbisKieliOppiaine("B", "EN"),
+    "FINNISH B" -> IbisKieliOppiaine("B", "FI"),
+    "FRENCH B" -> IbisKieliOppiaine("B", "FR"),
+    "GERMAN B" -> IbisKieliOppiaine("B", "DE"),
+    "HEBREW B" -> IbisKieliOppiaine("B", "HE"),
+    "HINDI B" -> IbisKieliOppiaine("B", "HI"),
+    "INDONESIAN B" -> IbisKieliOppiaine("B", "ID"),
+    "ITALIAN B" -> IbisKieliOppiaine("B", "IT"),
+    "JAPANESE B" -> IbisKieliOppiaine("B", "JA"),
+    "KISWAHILI B" -> IbisKieliOppiaine("B", "SW"),
+    "KOREAN B" -> IbisKieliOppiaine("B", "KO"),
+    "MALAY B" -> IbisKieliOppiaine("B", "MS"),
+    "NORWEGIAN B" -> IbisKieliOppiaine("B", "NO"),
+    "PORTUGUESE B" -> IbisKieliOppiaine("B", "PT"),
+    "RUSSIAN B" -> IbisKieliOppiaine("B", "RU"),
+    "SPANISH B" -> IbisKieliOppiaine("B", "ES"),
+    "SWEDISH B" -> IbisKieliOppiaine("B", "SV"),
+    "TAMIL B" -> IbisKieliOppiaine("B", "TA"),
+
+    // Language ab initio
+    "ARABIC AB." -> IbisKieliOppiaine("AB", "AR"),
+    "DANISH AB." -> IbisKieliOppiaine("AB", "DA"),
+    "DUTCH AB." -> IbisKieliOppiaine("AB", "NL"),
+    "ENGLISH AB." -> IbisKieliOppiaine("AB", "EN"),
+    "FRENCH AB." -> IbisKieliOppiaine("AB", "FR"),
+    "GERMAN AB." -> IbisKieliOppiaine("AB", "DE"),
+    "INDONESIAN AB" -> IbisKieliOppiaine("AB", "ID"),
+    "ITALIAN AB." -> IbisKieliOppiaine("AB", "IT"),
+    "JAPANESE AB." -> IbisKieliOppiaine("AB", "JA"),
+    "KISWAHILI AB." -> IbisKieliOppiaine("AB", "SW"),
+    "MANDARIN AB." -> IbisKieliOppiaine("AB", "CMN"),
+    "RUSSIAN AB." -> IbisKieliOppiaine("AB", "RU"),
+    "SPANISH AB." -> IbisKieliOppiaine("AB", "ES"),
+    "SWEDISH AB." -> IbisKieliOppiaine("AB", "SV"),
+
+    // Classical languages
+    "LATIN" -> IbisKieliOppiaine("CLA", "LA"),
+
+    // Muut oppiaineet
+    "BIOLOGY" -> IbisMuuOppiaine("BIO"),
+    "BUSINESS MANAGEMENT" -> IbisMuuOppiaine("BU"),
+    "CHEMISTRY" -> IbisMuuOppiaine("CHE"),
+    "COMPUTER SC." -> IbisMuuOppiaine("CS"),
+    "DANCE" -> IbisMuuOppiaine("DAN"),
+    "DESIGN TECH." -> IbisMuuOppiaine("DES"),
+    "DIGITAL SOC." -> IbisMuuOppiaine("DIS"),
+    "ECONOMICS" -> IbisMuuOppiaine("ECO"),
+    "ENVIRONMENTAL SYSTEMS AND SOCIETIES" -> IbisMuuOppiaine("ESS"),
+    "FILM" -> IbisMuuOppiaine("FIL"),
+    "GEOGRAPHY" -> IbisMuuOppiaine("GEO"),
+    "GLOBAL POLITICS" -> IbisMuuOppiaine("POL"),
+    "HIST. AFRICA AND MID. EAST" -> IbisMuuOppiaine("HIS"),
+    "HISTORY" -> IbisMuuOppiaine("HIS"),
+    "HISTORY AFRICA AND MIDDLE EAST" -> IbisMuuOppiaine("HIS"),
+    "HISTORY AMERICAS" -> IbisMuuOppiaine("HIS"),
+    "HISTORY ASIA AND OCEANIA" -> IbisMuuOppiaine("HIS"),
+    "HISTORY EUROPE" -> IbisMuuOppiaine("HIS"),
+    "LITERATURE AND PERFORMANCE" -> IbisMuuOppiaine("LIT"),
+    "MATHEMATICS" -> IbisMuuOppiaine("MAT"),
+    "MATHEMATICS ANALYSIS AND APPROACHES" -> IbisMuuOppiaine("MATAA"),
+    "MATHEMATICS APPLICATIONS AND INTERP" -> IbisMuuOppiaine("MATAI"),
+    "MUSIC" -> IbisMuuOppiaine("MUS"),
+    "PHILOSOPHY" -> IbisMuuOppiaine("PHI"),
+    "PHYSICS" -> IbisMuuOppiaine("PHY"),
+    "PSYCHOLOGY" -> IbisMuuOppiaine("PSY"),
+    "SOC.CUL.ANTH." -> IbisMuuOppiaine("SOC"),
+    "SPORTS EX SCI" -> IbisMuuOppiaine("SPO"),
+    "THEATRE" -> IbisMuuOppiaine("THE"),
+    "VISUAL ARTS" -> IbisMuuOppiaine("VA"),
+    "WLD. STUDIES CONF PEACE AND SECURE" -> IbisMuuOppiaine("WS"),
+    "WLD. STUDIES CULT LANG AND IDENT" -> IbisMuuOppiaine("WS"),
+    "WLD. STUDIES ENV/ECO SUSTAINABILTY" -> IbisMuuOppiaine("WS"),
+    "WLD. STUDIES EQUALITY AND INEQUALITY" -> IbisMuuOppiaine("WS"),
+    "WLD. STUDIES HEALTH AND DEV" -> IbisMuuOppiaine("WS"),
+    "WLD. STUDIES SCI TECH AND SOC" -> IbisMuuOppiaine("WS"),
+    "WORLD RELIG." -> IbisMuuOppiaine("REL"),
   )
 
-  // Rivimuoto: iboKoodi;oppiaineetib;kielivalikoima. Kieli jätetään tyhjäksi muilla kuin kielioppiaineilla. #-alkuiset rivit ohitetaan.
-  def fromCsv(content: String): IbisOppiainekartta = IbisOppiainekartta(
-    content.split("\r?\n").toList
-      .map(_.trim)
-      .filter(line => line.nonEmpty && !line.startsWith("#"))
-      .map(_.split(";", -1).toList.map(_.trim))
-      .collect {
-        case iboKoodi :: tunniste :: kieli :: _ if kieli.nonEmpty => iboKoodi -> IbisKieliOppiaine(tunniste, kieli)
-        case iboKoodi :: tunniste :: _ => iboKoodi -> IbisMuuOppiaine(tunniste)
-      }
-      .toMap
-  )
+  private lazy val normalisoidut: Map[String, IbisOppiaine] = oppiaineet.map { case (nimi, oppiaine) => normalisoi(nimi) -> oppiaine }
 }

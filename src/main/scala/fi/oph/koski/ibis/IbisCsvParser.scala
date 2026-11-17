@@ -43,8 +43,8 @@ object IbisCsvParser {
     val subjects = subjectFields.grouped(subjectFieldCount).toList
       .filter(_.exists(_.nonEmpty))
       .map {
-        case List(year, month, code, level, grade, additional, language) =>
-          IbisSubject(year.toInt, validMonth(month), code, level.toUpperCase, grade.toUpperCase, additional.equalsIgnoreCase("Y"), language)
+        case List(year, month, name, level, grade, additional, language) =>
+          IbisSubject(year.toInt, validMonth(month), name, level.toUpperCase, grade.toUpperCase, additional.equalsIgnoreCase("Y"), language)
         case group =>
           throw new IllegalArgumentException(s"Virheellinen oppiainekenttien ryhmä: $group")
       }

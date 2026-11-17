@@ -42,7 +42,6 @@ export type IBDiplomanMuuOppiaine = {
     | 'WS'
   >
   taso: Koodistokoodiviite<'oppiaineentasoib', string>
-  iboOppiainekoodi?: string
 }
 
 export const IBDiplomanMuuOppiaine = (o: {
@@ -80,7 +79,6 @@ export const IBDiplomanMuuOppiaine = (o: {
     | 'WS'
   >
   taso: Koodistokoodiviite<'oppiaineentasoib', string>
-  iboOppiainekoodi?: string
 }): IBDiplomanMuuOppiaine => ({
   $class: 'fi.oph.koski.schema.IBDiplomanMuuOppiaine',
   ...o
