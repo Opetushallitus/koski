@@ -38,7 +38,7 @@ class IbisCsvParserSpec extends AnyFreeSpec with TestEnvironment with Matchers {
     "lukee toistuvat oppiainekentät" in {
       val oppiaineet = rivit.head.subjects
       oppiaineet should have length 8
-      oppiaineet.head should be(IbisSubject(2016, "MAY", "100001", "HL", "7", additional = false, "FINNISH"))
+      oppiaineet.head should be(IbisSubject(2016, "MAY", "FINNISH A: Literature", "HL", "7", additional = false, "FINNISH"))
       oppiaineet.filter(_.isCore).map(_.level) should be(List("EE", "TK"))
     }
 

@@ -24,7 +24,6 @@ class IbisOpiskeluoikeusConverter(
   koodistoViitePalvelu: KoodistoViitePalvelu,
   localizations: LocalizationRepository,
   validatingAndResolvingExtractor: ValidatingAndResolvingExtractor,
-  oppiainekartta: IbisOppiainekartta,
 ) extends Logging {
   private val serializationContext = SerializationContext(KoskiSchema.schemaFactory)
   private val deserializationContext = KoskiSchema.strictDeserialization
@@ -71,10 +70,11 @@ class IbisOpiskeluoikeusConverter(
     }
   }
 
-  // TODO TOR-747: Arvosanat N (no grade) ja P (pending) puuttuvat arviointiasteikkoib-koodistosta, joten ne jätetään pois.
+  // TODO TOR-747: Oppiaineet ilman arvosanaa (N tai P) jätetään pois. Koodit eivät ole arvosanoja: arviointiasteikkoib ei tunne
+  // niitä, ja arviointiasteikkocorerequirementsib:n P tarkoittaa hyväksyttyä (pass) eikä odottavaa tulosta.
   private def arvioidutOppiaineet(record: IbisRecord): List[IbisSubject] = {
-    val (arvioimattomat, arvioidut) = record.subjects.partition(s => IbisSubject.gradelessGrades.contains(s.grade))
-    arvioimattomat.foreach(s => logger.warn(s"IBIS: ohitetaan oppiaine ${s.code} (${s.level}) arvosanalla ${s.grade}"))
+    val (arvioimattomat, arvioidut) = record.subjects.partition(s => IbisSubject.noGradeCodes.contains(s.grade))
+    arvioimattomat.foreach(s => logger.warn(s"IBIS: ohitetaan arvioimaton oppiaine ${s.name} (${s.level}): arvosanan tilalla ${s.grade} (${IbisSubject.noGradeCodes(s.grade)})"))
     arvioidut
   }
 
@@ -87,16 +87,16 @@ class IbisOpiskeluoikeusConverter(
         case "EE" | "TK" =>
           for {
             tunniste <- koodi(record, "oppiaineetib", if (subject.level == "EE") "EE" else "TOK")
-            aine <- sequenceOption(oppiainekartta.get(subject.code).filter(_ => subject.level == "EE").map(a => koodi(record, "oppiaineetib", a.tunniste)))
+            aine <- sequenceOption(extendedEssaynAine(subject).map(a => koodi(record, "oppiaineetib", a.tunniste)))
             arvosana <- koodi(record, "arviointiasteikkocorerequirementsib", subject.grade)
           } yield IBDiplomanCoreSuoritus(
-            koulutusmoduuli = IBDiplomanCoreOppiaine(tunniste, aine, Some(subject.code)),
+            koulutusmoduuli = IBDiplomanCoreOppiaine(tunniste, aine),
             tutkintokerta = kerta,
             arviointi = Some(List(IBDiplomanCoreArviointi(arvosana, päivä))),
           )
         case "HL" | "SL" =>
           for {
-            oppiaine <- oppiainekartta.get(subject.code).toRight(IbisKonversiovirhe(record.personalCode, s"Tuntematon IBO:n oppiainekoodi ${subject.code}"))
+            oppiaine <- IbisOppiainekartta.get(subject.name).toRight(IbisKonversiovirhe(record.personalCode, s"IBO:n oppiaineelle '${subject.name}' ei ole vastinetta Koskessa"))
             koulutusmoduuli <- oppiaineenKoulutusmoduuli(record, subject, oppiaine)
             arvosana <- koodi(record, "arviointiasteikkoib", subject.grade)
           } yield IBDiplomanOppiaineenSuoritus(
@@ -111,13 +111,23 @@ class IbisOpiskeluoikeusConverter(
     } yield osasuoritus
   }
 
+  // Extended essayn aine on vapaaehtoinen tieto, joten vastineeton aine ei hylkää riviä kuten HL/SL-oppiaine.
+  private def extendedEssaynAine(subject: IbisSubject): Option[IbisOppiaine] =
+    if (subject.level == "EE") {
+      val aine = IbisOppiainekartta.get(subject.name)
+      if (aine.isEmpty) logger.warn(s"IBIS: extended essayn aineelle ${subject.name} ei ole vastinetta Koskessa, joten aine jätetään pois")
+      aine
+    } else {
+      None
+    }
+
   private def oppiaineenKoulutusmoduuli(record: IbisRecord, subject: IbisSubject, oppiaine: IbisOppiaine): Either[IbisKonversiovirhe, IBDiplomanOppiaine] = {
     for {
       tunniste <- koodi(record, "oppiaineetib", oppiaine.tunniste)
       taso <- koodi(record, "oppiaineentasoib", subject.level)
       koulutusmoduuli <- oppiaine match {
-        case IbisKieliOppiaine(_, kieli) => koodi(record, "kielivalikoima", kieli).map(IBDiplomanKieliOppiaine(tunniste, taso, _, Some(subject.code)))
-        case IbisMuuOppiaine(_) => Right(IBDiplomanMuuOppiaine(tunniste, taso, Some(subject.code)))
+        case IbisKieliOppiaine(_, kieli) => koodi(record, "kielivalikoima", kieli).map(IBDiplomanKieliOppiaine(tunniste, taso, _))
+        case IbisMuuOppiaine(_) => Right(IBDiplomanMuuOppiaine(tunniste, taso))
       }
     } yield koulutusmoduuli
   }

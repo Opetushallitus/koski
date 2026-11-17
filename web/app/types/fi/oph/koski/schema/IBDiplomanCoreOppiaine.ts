@@ -10,13 +10,11 @@ export type IBDiplomanCoreOppiaine = {
   $class: 'fi.oph.koski.schema.IBDiplomanCoreOppiaine'
   tunniste: Koodistokoodiviite<'oppiaineetib', 'EE' | 'TOK'>
   aine?: Koodistokoodiviite<'oppiaineetib', string>
-  iboOppiainekoodi?: string
 }
 
 export const IBDiplomanCoreOppiaine = (o: {
   tunniste: Koodistokoodiviite<'oppiaineetib', 'EE' | 'TOK'>
   aine?: Koodistokoodiviite<'oppiaineetib', string>
-  iboOppiainekoodi?: string
 }): IBDiplomanCoreOppiaine => ({
   $class: 'fi.oph.koski.schema.IBDiplomanCoreOppiaine',
   ...o

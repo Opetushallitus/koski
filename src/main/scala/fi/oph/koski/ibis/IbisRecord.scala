@@ -3,8 +3,9 @@ package fi.oph.koski.ibis
 import java.time.LocalDate
 
 // IBIS-tulostiedoston rivi, eli yksi candidate registration. Kentät ja niiden järjestys ovat IBO:n dokumentin
-// "IB data file formats" (v1.0, 2021) muodon "CSV file new Language format (numeric subject code)" mukaiset.
-// TODO TOR-747: Dokumentti on vanha. Kenttäjärjestys ja arvot on varmistettava ensimmäisestä oikeasta aineistosta.
+// "IB data file formats" (v1.0, 2021) muodon "CSV file new Language format" mukaiset, eli oppiaine tunnistetaan nimestä.
+// TODO TOR-747: Dokumentti on vanha. Kenttäjärjestys ja arvot on varmistettava ensimmäisestä oikeasta aineistosta. Jos OPH
+// saa muodon, jossa oppiaineet ovat numeerisina koodeina, nimet saadaan IBO:n SUB cross-reference filestä.
 case class IbisRecord(
   year: Int,
   month: String,
@@ -29,7 +30,7 @@ case class IbisRecord(
 case class IbisSubject(
   year: Int,
   month: String,
-  code: String,
+  name: String,
   level: String,
   grade: String,
   additional: Boolean,
@@ -42,7 +43,8 @@ case class IbisSubject(
 object IbisSubject {
   val coreLevels: Set[String] = Set("EE", "TK")
   val subjectLevels: Set[String] = Set("HL", "SL")
-  val gradelessGrades: Set[String] = Set("N", "P")
+  // IBIS merkitsee nämä SUBJECT GRADE -kenttään arvosanan sijaan.
+  val noGradeCodes: Map[String, String] = Map("N" -> "no grade issued", "P" -> "pending")
 }
 
 case class IbisSession(year: Int, month: String) {

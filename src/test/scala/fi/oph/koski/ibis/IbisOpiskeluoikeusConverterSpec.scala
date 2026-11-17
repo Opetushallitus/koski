@@ -1,6 +1,7 @@
 package fi.oph.koski.ibis
 
 import fi.oph.koski.documentation.YleissivistavakoulutusExampleData.ressunLukio
+import fi.oph.koski.log.RootLogTester
 import fi.oph.koski.schema._
 import fi.oph.koski.{KoskiApplicationForTests, TestEnvironment}
 import org.scalatest.freespec.AnyFreeSpec
@@ -12,22 +13,10 @@ import scala.io.Source
 class IbisOpiskeluoikeusConverterSpec extends AnyFreeSpec with TestEnvironment with Matchers {
   private lazy val rivit = IbisCsvParser.parse(Source.fromInputStream(getClass.getResourceAsStream("/ibis/esimerkki.csv"), "UTF-8").mkString)._2
 
-  // TODO TOR-747: Oppiainekoodit ovat keksittyjä, kunnes IBO:n SUB cross-reference file on käytettävissä.
-  private val oppiainekartta = IbisOppiainekartta(Map(
-    "100001" -> IbisKieliOppiaine("A", "FI"),
-    "100002" -> IbisKieliOppiaine("B", "EN"),
-    "100003" -> IbisMuuOppiaine("HIS"),
-    "100004" -> IbisMuuOppiaine("BIO"),
-    "100005" -> IbisMuuOppiaine("MATAA"),
-    "100006" -> IbisMuuOppiaine("PHY"),
-    "100007" -> IbisMuuOppiaine("HIS"),
-  ))
-
   private val converter = new IbisOpiskeluoikeusConverter(
     KoskiApplicationForTests.koodistoViitePalvelu,
     KoskiApplicationForTests.koskiLocalizationRepository,
     KoskiApplicationForTests.validatingAndResolvingExtractor,
-    oppiainekartta,
   )
 
   private val kohde = IbisKohde("1.2.246.562.24.00000000001", ressunLukio, None)
@@ -64,7 +53,6 @@ class IbisOpiskeluoikeusConverterSpec extends AnyFreeSpec with TestEnvironment w
       kieli.tunniste.koodiarvo should be("A")
       kieli.kieli.koodiarvo should be("FI")
       kieli.taso.koodiarvo should be("HL")
-      kieli.iboOppiainekoodi should be(Some("100001"))
       oppiaineet.head.viimeisinArvosana should be(Some("7"))
       oppiaineet.head.arviointi.toList.flatten.head.päivä should be(Some(vahvistuspäivä))
       oppiaineet.map(_.koulutusmoduuli.tunniste.koodiarvo) should be(List("A", "B", "HIS", "BIO", "MATAA", "PHY"))
@@ -101,6 +89,19 @@ class IbisOpiskeluoikeusConverterSpec extends AnyFreeSpec with TestEnvironment w
     }
   }
 
+  "Extended essay, jonka aineelle ei ole vastinetta Koskessa" - {
+    "tuodaan ilman ainetta, ja siitä kirjataan varoitus" in {
+      val alkuperäinen = rivi("ABC123")
+      val muutettu = alkuperäinen.copy(subjects = alkuperäinen.subjects.map(s => if (s.level == "EE") s.copy(name = "WELSH A") else s))
+      RootLogTester.clearMessages()
+      val oo = converter.convert(muutettu, kohde, vahvistuspäivä).toOption.get
+      val ee = oo.suoritukset.head.osasuoritukset.toList.flatten.collect { case s: IBDiplomanCoreSuoritus => s }.head
+      ee.koulutusmoduuli.tunniste.koodiarvo should be("EE")
+      ee.koulutusmoduuli.aine should be(None)
+      RootLogTester.getLogMessages.exists(_.contains("extended essayn aineelle WELSH A ei ole vastinetta Koskessa")) should be(true)
+    }
+  }
+
   "Ei tuotavat rivit" - {
     "CATEGORY COURSE hylätään" in {
       converter.convert(rivi("XYZ999"), kohde, vahvistuspäivä) should be(Left(IbisKonversiovirhe("XYZ999", "CATEGORY-arvoa COURSE ei tuoda Koskeen")))
@@ -111,10 +112,10 @@ class IbisOpiskeluoikeusConverterSpec extends AnyFreeSpec with TestEnvironment w
       converter.convert(failedDiploma, kohde, vahvistuspäivä) should be(Left(IbisKonversiovirhe("ABC123", "Tuloskoodia 'F' ei tuoda Koskeen")))
     }
 
-    "tuntematon oppiainekoodi hylkää koko rivin" in {
-      val tuntematon = rivi("ABC123")
-      val muutettu = tuntematon.copy(subjects = tuntematon.subjects.map(s => if (s.code == "100003") s.copy(code = "999999") else s))
-      converter.convert(muutettu, kohde, vahvistuspäivä) should be(Left(IbisKonversiovirhe("ABC123", "Tuntematon IBO:n oppiainekoodi 999999")))
+    "oppiaine, jolle ei ole vastinetta Koskessa, hylkää koko rivin" in {
+      val alkuperäinen = rivi("ABC123")
+      val muutettu = alkuperäinen.copy(subjects = alkuperäinen.subjects.map(s => if (s.name == "BIOLOGY") s.copy(name = "ART HISTORY") else s))
+      converter.convert(muutettu, kohde, vahvistuspäivä) should be(Left(IbisKonversiovirhe("ABC123", "IBO:n oppiaineelle 'ART HISTORY' ei ole vastinetta Koskessa")))
     }
   }
 }
