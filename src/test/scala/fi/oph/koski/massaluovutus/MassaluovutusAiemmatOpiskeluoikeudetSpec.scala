@@ -190,6 +190,12 @@ class MassaluovutusAiemmatOpiskeluoikeudetSpec extends AnyFreeSpec with Massaluo
         haeTulostiedostot(query, MockUsers.paakayttaja) should have length 5
       }
 
+      "Ei onnistu OPH:n katselijalla, jolla on vain globaali lukuoikeus" in {
+        addQuery(query, MockUsers.ophkatselija) {
+          verifyResponseStatus(403, KoskiErrorCategory.forbidden())
+        }
+      }
+
       "Ei onnistu tuntemattomalla koulutusmuodolla" in {
         addQuery(query.copy(koulutusmuoto = Some(List("perusopetus", "korkeakoulutus"))), oletuskäyttäjä) {
           verifyResponseStatus(400)
