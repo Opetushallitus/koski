@@ -101,7 +101,7 @@ class MassaluovutusSisaltyvatOpiskeluoikeudetSpec
       }
     }
 
-    "Palauttaa sisältävän opiskeluoikeuden organisaatiolle toisen oppilaitoksen sisältyvän opiskeluoikeuden" in {
+    "Palauttaa sisältävän opiskeluoikeuden organisaatiolle toisen oppilaitoksen sisältyvän opiskeluoikeuden ja kirjaa sen audit-lokiin" in {
       AuditLogTester.clearMessages()
       val user = MockUsers.helsinkiKatselija
       val queryId = addQuerySuccessfully(query, user) { response =>
@@ -121,13 +121,18 @@ class MassaluovutusSisaltyvatOpiskeluoikeudetSpec
         (opiskeluoikeudet.head \ "sisältyyOpiskeluoikeuteen" \ "oid").extract[String] should equal(sisältävä.oid.get)
       }
 
-      AuditLogTester.verifyLastAuditLogMessageForOperation(Map(
-        "operation" -> "SISALTYVAT_OPISKELUOIKEUDET_HAKU",
-        "target" -> Map(
-          "hakuEhto" -> s"alkanutAikaisintaan=2020-01-01&organisaatio=${MockOrganisaatiot.helsinginKaupunki}",
-          "massaluovutusId" -> queryId,
-        ),
-      ))
+      val auditViestit = AuditLogTester.getLogMessages.map(JsonMethods.parse(_))
+      val auditViesti = auditViestit.find(m =>
+        (m \ "operation").extract[String] == "SISALTYVAT_OPISKELUOIKEUDET_KATSOMINEN" &&
+          (m \ "target" \ "oppijaHenkiloOid").extractOpt[String].contains(KoskiSpecificMockOppijat.eero.oid)
+      )
+      auditViesti shouldBe defined
+      (auditViesti.get \ "target" \ "opiskeluoikeusOid").extract[String] shouldBe sisältyvä.oid.get
+      (auditViesti.get \ "target" \ "juuriOrganisaatio").extract[String] shouldBe MockOrganisaatiot.helsinginKaupunki
+      (auditViesti.get \ "target" \ "hakuEhto").extract[String] shouldBe s"alkanutAikaisintaan=2020-01-01&organisaatio=${MockOrganisaatiot.helsinginKaupunki}"
+      (auditViesti.get \ "target" \ "massaluovutusId").extract[String] shouldBe queryId
+      (auditViesti.get \ "target" \ "massaluovutusTiedosto").extract[String] shouldBe complete.files.head.split("/").last
+      auditViestit.map(m => (m \ "operation").extract[String]) should not contain "OPISKELUOIKEUS_HAKU"
     }
 
     "Kysely toimii myös sisältävän opiskeluoikeuden oppilaitokselle, ei vain koulutustoimijalle" in {
