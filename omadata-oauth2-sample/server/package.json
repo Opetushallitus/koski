@@ -35,7 +35,7 @@
     "express": "5.3.0",
     "express-rate-limit": "8.7.4",
     "helmet": "8.3.0",
-    "openid-client": "6.8.9",
+    "openid-client": "6.9.0",
     "undici": "8.12.4"
   },
   "devDependencies": {
