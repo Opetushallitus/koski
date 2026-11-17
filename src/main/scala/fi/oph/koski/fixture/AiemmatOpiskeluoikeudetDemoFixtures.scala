@@ -108,6 +108,8 @@ object AiemmatOpiskeluoikeudetDemoFixtures {
       kuljetusetu = Some(Aikajakso(alakoulunAlku, Some(alakoulunAlku.plusYears(3).withMonth(6).withDayOfMonth(2)))),
       sisäoppilaitosmainenMajoitus = Some(List(Aikajakso(alakoulunLoppu.minusYears(3).withMonth(8).withDayOfMonth(16), Some(alakoulunLoppu)))),
       koulukoti = Some(List(Aikajakso(alakoulunLoppu.minusYears(2).withMonth(1).withDayOfMonth(10), Some(alakoulunLoppu.minusYears(2).withMonth(12).withDayOfMonth(16))))),
+      // Vanhentunut kenttä: ei saa päätyä aiemmatOpiskeluoikeudet-kyselyn tulokseen
+      ulkomailla = Some(Aikajakso(alakoulunLoppu.minusYears(1).withMonth(1).withDayOfMonth(7), Some(alakoulunLoppu.minusYears(1).withMonth(5).withDayOfMonth(30)))),
     )),
   )
 
