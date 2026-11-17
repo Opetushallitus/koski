@@ -113,6 +113,7 @@ class MassaluovutusSisaltyvatOpiskeluoikeudetSpec
         "operation" -> "SISALTYVAT_OPISKELUOIKEUDET_HAKU",
         "target" -> Map(
           "hakuEhto" -> s"alkanutAikaisintaan=2020-01-01&organisaatio=${MockOrganisaatiot.helsinginKaupunki}",
+          "massaluovutusId" -> queryId,
         ),
       ))
     }
