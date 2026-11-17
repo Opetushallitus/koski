@@ -72,7 +72,8 @@ td.kuvaus .description {
 
 .sensitive,
 .deprecated,
-.redundant {
+.redundant,
+.hidden-from-query {
   font-weight: bold;
 }
 

@@ -96,6 +96,12 @@ object AuditLogMockData extends Logging {
       raw = rawAuditlog("MUUTOSHISTORIA_KATSOMINEN")
     ),
     MockData(
+      studentOid = KoskiSpecificMockOppijat.aiemmatLukio.oid,
+      time = "2026-11-06T10:00:00.000+02",
+      organizationOid = List(MockOrganisaatiot.helsinginKaupunki, MockOrganisaatiot.stadinAmmattiopisto),
+      raw = rawAuditlog("AIEMMAT_OPISKELUOIKEUDET_KATSOMINEN")
+    ),
+    MockData(
       studentOid = KoskiSpecificMockOppijat.amis.oid,
       time = "2020-01-12T20:31:32.104+03",
       organizationOid = List(MockOrganisaatiot.helsinginKaupunki),

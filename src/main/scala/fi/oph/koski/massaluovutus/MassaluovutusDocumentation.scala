@@ -4,6 +4,7 @@ import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.documentation.Markdown
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.log.Logging
+import fi.oph.koski.massaluovutus.aiemmatopiskeluoikeudet.MassaluovutusQueryAiemmatOpiskeluoikeudetDocumentation
 import fi.oph.koski.massaluovutus.luokallejaaneet.MassaluovutusQueryLuokalleJaaneetExamples
 import fi.oph.koski.massaluovutus.organisaationopiskeluoikeudet.{QueryOrganisaationOpiskeluoikeudetCsvDocumentation, QueryOrganisaationOpiskeluoikeudetJsonDocumentation}
 import fi.oph.koski.massaluovutus.paallekkaisetopiskeluoikeudet.QueryPaallekkaisetOpiskeluoikeudetDocumentation
@@ -478,6 +479,7 @@ object QueryExamples {
     case "Valintalaskenta" => Some(example(ValintalaskentaQueryDocumentation.example))
     case "LuokalleJaaneetJson" => Some(example(MassaluovutusQueryLuokalleJaaneetExamples.jsonQuery))
     case "LuokalleJaaneetCsv" => Some(example(MassaluovutusQueryLuokalleJaaneetExamples.csvQuery))
+    case "AiemmatOpiskeluoikeudet" => Some(example(MassaluovutusQueryAiemmatOpiskeluoikeudetDocumentation.example))
     case "ValpasOppivelvollisetQuery" => Some(example(ValpasOppivelvollisetQuery.example))
     case "ValpasEiOppivelvollisuuttaSuorittavatQuery" => Some(example(ValpasEiOppivelvollisuuttaSuorittavatQueryDocumentation.example))
     case "PaallekkaisetOpiskeluoikeudetCsv" => Some(example(QueryPaallekkaisetOpiskeluoikeudetDocumentation.csvExample))
