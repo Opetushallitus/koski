@@ -112,12 +112,15 @@ class OppijaValidationVapaaSivistystyoOsaamismerkkiSpec extends AnyFreeSpec with
       }
     }
 
-    "Läsnä-tila ja alkamispäivä" - {
+    "Läsnä- ja Keskeytynyt-tilat" - {
       val alkamispäivä = date(2026, 11, 15)
       val päättymispäivä = date(2027, 1, 8)
 
       def läsnäJakso(päivä: LocalDate) =
         VapaanSivistystyönOsaamismerkinOpiskeluoikeusjakso(päivä, ExampleData.opiskeluoikeusLäsnä)
+
+      def keskeytynytJakso(päivä: LocalDate) =
+        VapaanSivistystyönOsaamismerkinOpiskeluoikeusjakso(päivä, opiskeluoikeusKeskeytynyt)
 
       def läsnäJaksolla(oo: VapaanSivistystyönOpiskeluoikeus): VapaanSivistystyönOpiskeluoikeus = oo.copy(
         tila = VapaanSivistystyönOpiskeluoikeudenTila(läsnäJakso(alkamispäivä) :: oo.tila.opiskeluoikeusjaksot)
@@ -140,7 +143,7 @@ class OppijaValidationVapaaSivistystyoOsaamismerkkiSpec extends AnyFreeSpec with
 
       "tilaa 'lasna' ei voi tallentaa ennen 1.1.2027 päättyneelle opiskeluoikeudelle" in {
         setupOppijaWithOpiskeluoikeus(läsnäJaksolla(opiskeluoikeusOsaamismerkki(date(2026, 12, 31)))) {
-          verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.vapaaSivistystyö.läsnäTila("Vapaan sivistystyön osaamismerkin opiskeluoikeudelle voi tallentaa tilan 'Läsnä' vain, jos opiskeluoikeus on päättynyt 1.1.2027 tai sen jälkeen tai on edelleen voimassa"))
+          verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.vapaaSivistystyö.uusiTila("Vapaan sivistystyön osaamismerkin opiskeluoikeudelle voi tallentaa tilan 'Läsnä' vain, jos opiskeluoikeus on päättynyt 1.1.2027 tai sen jälkeen tai on edelleen voimassa"))
         }
       }
 
@@ -158,7 +161,7 @@ class OppijaValidationVapaaSivistystyoOsaamismerkkiSpec extends AnyFreeSpec with
         val config = KoskiApplicationForTests.config.withoutPath("validaatiot.vstVapaatavoitteinenJaOsaamismerkkiLasnaTilaSiirrettavissaAlkaen").withFallback(mockConfig)
         mockKoskiValidator(config).updateFieldsAndValidateAsJson(
           Oppija(defaultHenkilö, List(ooVainLäsnä))
-        ).swap.toOption.get should equal (KoskiErrorCategory.badRequest.validation.vapaaSivistystyö.läsnäTila(s"Vapaan sivistystyön osaamismerkin opiskeluoikeudelle voi tallentaa tilan 'Läsnä' vasta ${finnishDateFormat.format(siirtoSallittuAlkaen)} alkaen"))
+        ).swap.toOption.get should equal (KoskiErrorCategory.badRequest.validation.vapaaSivistystyö.uusiTila(s"Vapaan sivistystyön osaamismerkin opiskeluoikeudelle voi tallentaa tilan 'Läsnä' vasta ${finnishDateFormat.format(siirtoSallittuAlkaen)} alkaen"))
       }
 
       "voi tallentaa käyttöliittymästä pelkässä tilassa 'lasna' ja tallentaa sen jälkeen uudelleen" in {
@@ -191,6 +194,47 @@ class OppijaValidationVapaaSivistystyoOsaamismerkkiSpec extends AnyFreeSpec with
 
         setupOppijaWithOpiskeluoikeus(oo) {
           verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.vapaanSivistystyönVapaatavoitteeisenKoulutuksenVahvistus("Vahvistamattomalla vapaan sivistystyön osaamismerkillä ei voi olla päättävänä tilana 'Hyväksytysti suoritettu'"))
+        }
+      }
+
+      "voi päättyä tilaan 'keskeytynyt' ilman arviointia ja vahvistusta" in {
+        val oo = ooVainLäsnä.copy(
+          tila = VapaanSivistystyönOpiskeluoikeudenTila(List(läsnäJakso(alkamispäivä), keskeytynytJakso(päättymispäivä)))
+        )
+
+        val tallennettu = setupOppijaWithAndGetOpiskeluoikeus(oo)
+        tallennettu.alkamispäivä should equal(Some(alkamispäivä))
+        tallennettu.päättymispäivä should equal(Some(päättymispäivä))
+      }
+
+      "voi päättyä tilaan 'keskeytynyt' ilman arviointia ja vahvistusta myös lähdejärjestelmästä siirrettäessä" in {
+        val oo = ooVainLäsnä.copy(
+          tila = VapaanSivistystyönOpiskeluoikeudenTila(List(keskeytynytJakso(päättymispäivä))),
+          lähdejärjestelmänId = Some(LähdejärjestelmäId(Some("neljä"), lähdePrimus))
+        )
+
+        setupOppijaWithOpiskeluoikeus(oo, headers = authHeaders(varsinaisSuomiPalvelukäyttäjä) ++ jsonContent) {
+          verifyResponseStatusOk()
+        }
+      }
+
+      "ei voi päättyä tilaan 'keskeytynyt', jos suoritus on vahvistettu" in {
+        val oo = opiskeluoikeusOsaamismerkki(päättymispäivä).copy(
+          tila = VapaanSivistystyönOpiskeluoikeudenTila(List(keskeytynytJakso(päättymispäivä)))
+        )
+
+        setupOppijaWithOpiskeluoikeus(oo) {
+          verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.vapaanSivistystyönVapaatavoitteeisenKoulutuksenVahvistus("Vahvistetulla vapaan sivistystyön osaamismerkillä ei voi olla päättävänä tilana 'Keskeytynyt'"))
+        }
+      }
+
+      "tilaa 'keskeytynyt' ei voi tallentaa ennen 1.1.2027 päättyneelle opiskeluoikeudelle" in {
+        val oo = ooVainLäsnä.copy(
+          tila = VapaanSivistystyönOpiskeluoikeudenTila(List(keskeytynytJakso(date(2026, 12, 31))))
+        )
+
+        setupOppijaWithOpiskeluoikeus(oo) {
+          verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.vapaaSivistystyö.uusiTila("Vapaan sivistystyön osaamismerkin opiskeluoikeudelle voi tallentaa tilan 'Keskeytynyt' vain, jos opiskeluoikeus on päättynyt 1.1.2027 tai sen jälkeen tai on edelleen voimassa"))
         }
       }
     }

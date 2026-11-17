@@ -1,4 +1,4 @@
-import { test } from './base'
+import { expect, test } from './base'
 import { virkailija } from './setup/auth'
 import { KoskiUusiOppijaPage } from './pages/oppija/KoskiUusiOppijaPage'
 
@@ -82,6 +82,36 @@ test.describe('Vapaan sivistyön VST osaamismerkki', () => {
           .getByTestId('oo.0.opiskeluoikeus.versiohistoria.list.2')
           .click({ trial: true, timeout: 2000 })
     )
+  })
+
+  test('Keskeytyneelle osaamismerkille ei näytetä merkin kuvaa', async ({
+    page
+  }) => {
+    const uusiOppijaPage = new KoskiUusiOppijaPage(page)
+    await uusiOppijaPage.goTo('280706A261N')
+    await uusiOppijaPage.fill(
+      {
+        oppilaitos: 'Varsinais-Suomen kansanopisto',
+        etunimet: 'Keijo',
+        sukunimi: 'Keskeyttäjä',
+        opiskeluoikeus: 'Vapaan sivistystyön koulutus',
+        suoritustyyppi: 'Vapaan sivistystyön osaamismerkki',
+        osaamismerkki: '1022 Digitaalinen tiedonhaku',
+        // Keskeytynyt on sallittu vain 1.1.2027 tai sen jälkeen päättyneelle opiskeluoikeudelle
+        aloituspäivä: new Date(2027, 0, 8),
+        opiskeluoikeudenTila: 'Keskeytynyt'
+      },
+      true
+    )
+    await uusiOppijaPage.submitAndExpectSuccess()
+
+    await expect(
+      page.getByTestId('oo.0.opiskeluoikeus.tila.value.items.0.tila')
+    ).toHaveText('Keskeytynyt')
+    await expect(page.getByTestId('oo.0.opiskeluoikeus.nimi')).toBeVisible()
+    await expect(
+      page.getByTestId('oo.0.opiskeluoikeus.kuva')
+    ).not.toBeAttached()
   })
 })
 

@@ -11,7 +11,7 @@ export type VapaanSivistystyönOsaamismerkinOpiskeluoikeusjakso = {
   alku: string
   tila: Koodistokoodiviite<
     'koskiopiskeluoikeudentila',
-    'lasna' | 'hyvaksytystisuoritettu' | 'mitatoity'
+    'lasna' | 'hyvaksytystisuoritettu' | 'keskeytynyt' | 'mitatoity'
   >
 }
 
@@ -19,7 +19,7 @@ export const VapaanSivistystyönOsaamismerkinOpiskeluoikeusjakso = (o: {
   alku: string
   tila: Koodistokoodiviite<
     'koskiopiskeluoikeudentila',
-    'lasna' | 'hyvaksytystisuoritettu' | 'mitatoity'
+    'lasna' | 'hyvaksytystisuoritettu' | 'keskeytynyt' | 'mitatoity'
   >
 }): VapaanSivistystyönOsaamismerkinOpiskeluoikeusjakso => ({
   $class:

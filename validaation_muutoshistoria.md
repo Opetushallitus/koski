@@ -1,5 +1,17 @@
 # Koskeen tallennettavien tietojen validaatiosäännöt
 
+## 17.11.2026
+
+Vapaan sivistystyön vapaatavoitteisen koulutuksen (`vstvapaatavoitteinenkoulutus`) opiskeluoikeuksille sallitaan tila `lasna` ja osaamismerkin (`vstosaamismerkki`) opiskeluoikeuksille tilat `lasna` ja `keskeytynyt`. Opiskeluoikeuksille, jotka ovat päättyneet 1.1.2027 tai sen jälkeen tai ovat edelleen voimassa, validaatiot muuttuvat:
+
+- Uudet tilat voi tallentaa vasta 1.1.2027 alkaen ja vain opiskeluoikeudelle, joka on päättynyt 1.1.2027 tai sen jälkeen tai on edelleen voimassa. Läsnä-jakson alkupäivä saa olla ennen 1.1.2027.
+- Opiskeluoikeus voi olla tyhjä kuten muissa koulutusmuodoissa: se voi jäädä tilaan `lasna` tai päättyä tilaan `keskeytynyt` ilman arviointia, vahvistusta tai yhtäkään osasuoritusta, myös lähdejärjestelmästä siirrettäessä. Oppija antaa suostumuksensa tietojensa, ei suorituksen, tallentamiseen.
+- Tilaan `hyvaksytystisuoritettu` päättyvällä opiskeluoikeudella on oltava vahvistettu päätason suoritus, eikä vahvistettu suoritus voi päättyä tilaan `keskeytynyt`. Vaatimus koskee myös käyttöliittymästä tehtävää ensimmäistä tallennusta, jolle aiemmin sallittiin vahvistamaton suoritus.
+- Vapaatavoitteisen koulutuksen vahvistetulla päätason suorituksella on oltava vähintään yksi arvioitu osasuoritus. Tämä ja vahvistuksen ja päättävän tilan vastaavuus tarkistetaan aina, ei vain toisesta versiosta tai lähdejärjestelmäsiirrosta alkaen.
+- Päättyneen osaamismerkin arviointi-, vahvistus- ja päättymispäivän on edelleen oltava samat.
+
+Ennen 1.1.2027 päättyneet opiskeluoikeudet validoidaan aiempien sääntöjen mukaan, eikä niille voi tallentaa uusia tiloja.
+
 ## 12.11.2026
 
 - Perusopetuksen (`perusopetuksenvuosiluokka`) ja Ahvenanmaan perusopetuksen (`ahvenanmaanperusopetuksenvuosiluokka`) vuosiluokan suorituksen luokka-asteen (`koulutusmoduuli.tunniste`) on oltava `perusopetuksenluokkaaste`-koodistosta. Aiemmin hyväksyttiin virheellisesti myös `koulutus`-koodiston koodi.
@@ -8,17 +20,6 @@
 
 - Muun kuin säännellyn koulutuksen opiskeluoikeuksissa, jotka alkavat 1.1.2027 tai sen jälkeen ja ovat tilassa `keskeytynyt`, osasuoritusten arviointi vaaditaan (ks. 12.10.2026) myös silloin, kun suoritusta ei ole vahvistettu.
 - Muun kuin säännellyn koulutuksen opiskeluoikeuden tila voi olla `hyvaksytystisuoritettu` vain, kun päätason suoritus on vahvistettu, ja `keskeytynyt` vain, kun päätason suoritusta ei ole vahvistettu. Sääntö koskee kaikkia opiskeluoikeuksia alkamispäivästä riippumatta.
-
-## 27.10.2026
-
-Vapaan sivistystyön vapaatavoitteisen koulutuksen (`vstvapaatavoitteinenkoulutus`) ja osaamismerkin (`vstosaamismerkki`) opiskeluoikeuksille sallitaan tila `lasna`. Opiskeluoikeuksille, jotka ovat päättyneet 1.1.2027 tai sen jälkeen tai ovat edelleen voimassa, validaatiot muuttuvat:
-
-- Tilan `lasna` voi tallentaa vasta 1.1.2027 alkaen ja vain opiskeluoikeudelle, joka on päättynyt 1.1.2027 tai sen jälkeen tai on edelleen voimassa. Läsnä-jakson alkupäivä saa olla ennen 1.1.2027.
-- Tilaan `hyvaksytystisuoritettu` päättyvällä opiskeluoikeudella on oltava vahvistettu päätason suoritus. Vaatimus koskee myös käyttöliittymästä tehtävää ensimmäistä tallennusta, jolle aiemmin sallittiin vahvistamaton suoritus.
-- Osaamismerkin opiskeluoikeuden ei tarvitse olla päättynyt: se voi jäädä tilaan `lasna` ilman arviointia ja vahvistusta, myös lähdejärjestelmästä siirrettäessä. Päättyneen osaamismerkin arviointi-, vahvistus- ja päättymispäivän on edelleen oltava samat.
-- Vapaatavoitteisen koulutuksen vahvistuksen ja päättävän tilan vastaavuus sekä vaatimus vähintään yhdestä arvioidusta osasuorituksesta tarkistetaan aina, ei vain toisesta versiosta tai lähdejärjestelmäsiirrosta alkaen. Arvioitua osasuoritusta vaaditaan vain päättyneeltä opiskeluoikeudelta.
-
-Ennen 1.1.2027 päättyneet opiskeluoikeudet validoidaan aiempien sääntöjen mukaan, eikä niille voi tallentaa tilaa `lasna`.
 
 ## 20.10.2026
 

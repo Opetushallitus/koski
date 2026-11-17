@@ -11,6 +11,7 @@ case class VapaanSivistystyönOsaamismerkinOpiskeluoikeusjakso(
   alku: LocalDate,
   @KoodistoKoodiarvo("lasna")
   @KoodistoKoodiarvo("hyvaksytystisuoritettu")
+  @KoodistoKoodiarvo("keskeytynyt")
   @KoodistoKoodiarvo("mitatoity")
   tila: Koodistokoodiviite,
 ) extends VapaanSivistystyönOpiskeluoikeusjakso {

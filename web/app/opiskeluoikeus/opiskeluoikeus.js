@@ -1,4 +1,4 @@
-import { vstLäsnäTilaPiilotettuSuoritustyypiltä } from '../vst/common/lasnaTila'
+import { vstPiilotetutTilatSuoritustyypiltä } from '../vst/common/uudetTilat'
 const internationalSchoolTilat = [
   'eronnut',
   'lasna',
@@ -30,7 +30,11 @@ const jatkuvanOppimisenVapaanSivistystyönKoulutuksenTilat = [
   'keskeytynyt',
   'lasna'
 ]
-const osaamismerkinVapaanSivistystyönTilat = ['lasna', 'hyvaksytystisuoritettu']
+const osaamismerkinVapaanSivistystyönTilat = [
+  'lasna',
+  'hyvaksytystisuoritettu',
+  'keskeytynyt'
+]
 const tuvaTilat = [
   'katsotaaneronneeksi',
   'lasna',
@@ -151,14 +155,14 @@ const filterBySuorituksenTyyppi = (
 
     const sallitutTilat =
       sallitutTilatSuoritustyypeittäin[suorituksenTyyppi?.koodiarvo]
-    const läsnäPiilotettu = vstLäsnäTilaPiilotettuSuoritustyypiltä(
+    const piilotetutTilat = vstPiilotetutTilatSuoritustyypiltä(
       suorituksenTyyppi?.koodiarvo
     )
 
     return sallitutTilat
       ? tilat
           .filter(includedIn(sallitutTilat))
-          .filter((t) => !(läsnäPiilotettu && koodiarvo(t) === 'lasna'))
+          .filter(notIncludedIn(piilotetutTilat))
       : []
   }
 

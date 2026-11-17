@@ -1,13 +1,13 @@
+# 17.11.2026
+
+- Vapaan sivistystyön vapaatavoitteisen koulutuksen (`vstvapaatavoitteinenkoulutus`) opiskeluoikeusjaksoille sallitaan uutena tilana `lasna` ja osaamismerkin (`vstosaamismerkki`) opiskeluoikeusjaksoille tilat `lasna` ja `keskeytynyt`. Opiskeluoikeudelle voi siten siirtää päättymispäivästä erillisen alkamispäivän, ja se voi päättyä ilman suoritusta. Aiemmin opiskeluoikeus alkoi ja päättyi samana päivänä, koska ainoat sallitut tilat olivat päättäviä.
+  - Uudet tilat voi siirtää vasta 1.1.2027 alkaen ja vain opiskeluoikeudelle, joka on päättynyt 1.1.2027 tai sen jälkeen tai on edelleen voimassa. Läsnä-jakson alkupäivä saa kuitenkin olla ennen 1.1.2027.
+  - Opiskeluoikeus voi olla tyhjä: se voi jäädä tilaan `lasna` tai päättyä tilaan `keskeytynyt` ilman arviointia, vahvistusta tai osasuorituksia, myös lähdejärjestelmästä siirrettäessä. Tilaan `hyvaksytystisuoritettu` päättyvällä opiskeluoikeudella on oltava vahvistettu päätason suoritus.
+  - Ennen 1.1.2027 päättyneet opiskeluoikeudet validoidaan aiempien sääntöjen mukaan.
+
 # 12.11.2026
 
 - Perusopetuksen (`perusopetuksenvuosiluokka`) ja Ahvenanmaan perusopetuksen (`ahvenanmaanperusopetuksenvuosiluokka`) vuosiluokan suorituksen koulutusmoduulin `tunniste` hyväksyy vain `perusopetuksenluokkaaste`-koodiston koodeja. Skeema salli aiemmin virheellisesti myös `koulutus`-koodiston, ja skeeman dokumentaatiossa koodistoksi oli merkitty `koulutus`.
-
-# 27.10.2026
-
-- Vapaan sivistystyön vapaatavoitteisen koulutuksen (`vstvapaatavoitteinenkoulutus`) ja osaamismerkin (`vstosaamismerkki`) opiskeluoikeusjaksoille sallitaan uutena tilana `lasna`, jolloin opiskeluoikeudelle voi siirtää päättymispäivästä erillisen alkamispäivän. Aiemmin opiskeluoikeus alkoi ja päättyi samana päivänä, koska ainoat sallitut tilat olivat päättäviä.
-  - Tilan voi siirtää vasta 1.1.2027 alkaen ja vain opiskeluoikeudelle, joka on päättynyt 1.1.2027 tai sen jälkeen tai on edelleen voimassa. Läsnä-jakson alkupäivä saa kuitenkin olla ennen 1.1.2027.
-  - Opiskeluoikeus voi jäädä tilaan `lasna`, myös lähdejärjestelmästä siirrettäessä. Tilaan `hyvaksytystisuoritettu` päättyvällä opiskeluoikeudella on oltava vahvistettu päätason suoritus.
-  - Ennen 1.1.2027 päättyneet opiskeluoikeudet validoidaan aiempien sääntöjen mukaan.
 
 # 14.9.2026
 

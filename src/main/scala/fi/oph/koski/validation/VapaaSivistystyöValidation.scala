@@ -1,6 +1,7 @@
 package fi.oph.koski.validation
 
 import com.typesafe.config.Config
+import fi.oph.koski.documentation.ExampleData.opiskeluoikeusLäsnä
 import fi.oph.koski.documentation.VapaaSivistystyöExample.{opiskeluoikeusHyväksytystiSuoritettu, opiskeluoikeusKeskeytynyt}
 import fi.oph.koski.henkilo.HenkilöRepository
 import fi.oph.koski.http.HttpStatus.validate
@@ -36,9 +37,9 @@ object VapaaSivistystyöValidation {
             case vapaa: VapaanSivistystyönVapaatavoitteisenKoulutuksenSuoritus =>
               val uudenLainMukainen = voimassaLäsnäTilanRajapäivänäTaiSenJälkeen(config, opiskeluoikeus)
               val tuleeValidoida = uudenLainMukainen || vapaatavoitteinenKoulutusTuleeValidoida(opiskeluoikeus)
-              val osasuorituksetTuleeValidoida = tuleeValidoida && (!uudenLainMukainen || opiskeluoikeus.päättymispäivä.isDefined)
+              val osasuorituksetTuleeValidoida = tuleeValidoida && (!uudenLainMukainen || vapaa.vahvistettu)
               HttpStatus.fold(List(
-                validateLäsnäTila(config, opiskeluoikeus, "Vapaan sivistystyön vapaatavoitteisen koulutuksen opiskeluoikeudelle"),
+                validateUudetTilat(config, opiskeluoikeus, "Vapaan sivistystyön vapaatavoitteisen koulutuksen opiskeluoikeudelle", List(opiskeluoikeusLäsnä)),
                 if (tuleeValidoida) validateVapaanSivistystyönVahvistus(vapaa, opiskeluoikeus) else HttpStatus.ok,
                 if (osasuorituksetTuleeValidoida) validateVapaanSivistystyönVapaatavoitteisenPäätasonOsaSuoritukset(vapaa) else HttpStatus.ok
               ))
@@ -52,7 +53,7 @@ object VapaaSivistystyöValidation {
                 validateTallennuspäivä(
                   LocalDate.parse(config.getString("validaatiot.vstOsaamismerkkiAikaisinSallittuTallennuspaiva"))
                 ),
-                validateLäsnäTila(config, opiskeluoikeus, "Vapaan sivistystyön osaamismerkin opiskeluoikeudelle"),
+                validateUudetTilat(config, opiskeluoikeus, "Vapaan sivistystyön osaamismerkin opiskeluoikeudelle", List(opiskeluoikeusLäsnä, opiskeluoikeusKeskeytynyt)),
                 if (voimassaLäsnäTilanRajapäivänäTaiSenJälkeen(config, opiskeluoikeus)) {
                   validateOsaamismerkinVahvistus(opiskeluoikeus, osaamismerkki)
                 } else {
@@ -198,28 +199,34 @@ object VapaaSivistystyöValidation {
   private def läsnäTilanRajapäivä(config: Config): LocalDate =
     LocalDate.parse(config.getString("validaatiot.vstVapaatavoitteinenJaOsaamismerkkiLasnaTilaRajapaiva"))
 
-  // Rajapäivänä tai sen jälkeen voimassa olevat opiskeluoikeudet validoidaan uuden lain mukaan: Läsnä-tila on sallittu
-  // ja päättävä tila vaatii vahvistetun suorituksen. Sitä ennen päättyneille jäävät alkuperäiset säännöt.
+  // Rajapäivänä tai sen jälkeen voimassa olevat opiskeluoikeudet validoidaan uuden lain mukaan: opiskeluoikeus saa olla
+  // tyhjä, Läsnä- ja Keskeytynyt-tilat ovat sallittuja ja Hyväksytysti suoritettu vaatii vahvistetun suorituksen.
+  // Sitä ennen päättyneille jäävät alkuperäiset säännöt.
   private def voimassaLäsnäTilanRajapäivänäTaiSenJälkeen(config: Config, oo: Opiskeluoikeus): Boolean =
     oo.päättymispäivä.forall(_.isEqualOrAfter(läsnäTilanRajapäivä(config)))
 
-  private def validateLäsnäTila(config: Config, oo: Opiskeluoikeus, opiskeluoikeudelle: String): HttpStatus = {
+  private def validateUudetTilat(config: Config, oo: Opiskeluoikeus, opiskeluoikeudelle: String, uudetTilat: List[Koodistokoodiviite]): HttpStatus = {
     val siirtoSallittuAlkaen = LocalDate.parse(config.getString("validaatiot.vstVapaatavoitteinenJaOsaamismerkkiLasnaTilaSiirrettavissaAlkaen"))
-    val onLäsnäJakso = oo.tila.opiskeluoikeusjaksot.exists(_.tila.koodiarvo == "lasna")
+    val käytettyUusiTila = oo.tila.opiskeluoikeusjaksot.map(_.tila.koodiarvo).flatMap(k => uudetTilat.find(_.koodiarvo == k)).headOption
 
-    if (!onLäsnäJakso) {
-      HttpStatus.ok
-    } else if (LocalDate.now.isBefore(siirtoSallittuAlkaen)) {
-      KoskiErrorCategory.badRequest.validation.vapaaSivistystyö.läsnäTila(s"$opiskeluoikeudelle voi tallentaa tilan 'Läsnä' vasta ${finnishDateFormat.format(siirtoSallittuAlkaen)} alkaen")
-    } else if (!voimassaLäsnäTilanRajapäivänäTaiSenJälkeen(config, oo)) {
-      KoskiErrorCategory.badRequest.validation.vapaaSivistystyö.läsnäTila(s"$opiskeluoikeudelle voi tallentaa tilan 'Läsnä' vain, jos opiskeluoikeus on päättynyt ${finnishDateFormat.format(läsnäTilanRajapäivä(config))} tai sen jälkeen tai on edelleen voimassa")
-    } else {
-      HttpStatus.ok
+    käytettyUusiTila match {
+      case None =>
+        HttpStatus.ok
+      case Some(tila) if LocalDate.now.isBefore(siirtoSallittuAlkaen) =>
+        KoskiErrorCategory.badRequest.validation.vapaaSivistystyö.uusiTila(s"$opiskeluoikeudelle voi tallentaa tilan '${tilanNimi(tila)}' vasta ${finnishDateFormat.format(siirtoSallittuAlkaen)} alkaen")
+      case Some(tila) if !voimassaLäsnäTilanRajapäivänäTaiSenJälkeen(config, oo) =>
+        KoskiErrorCategory.badRequest.validation.vapaaSivistystyö.uusiTila(s"$opiskeluoikeudelle voi tallentaa tilan '${tilanNimi(tila)}' vain, jos opiskeluoikeus on päättynyt ${finnishDateFormat.format(läsnäTilanRajapäivä(config))} tai sen jälkeen tai on edelleen voimassa")
+      case Some(_) =>
+        HttpStatus.ok
     }
   }
 
+  private def tilanNimi(tila: Koodistokoodiviite): String = tila.nimi.map(_.get("fi")).getOrElse(tila.koodiarvo)
+
   private def validateOsaamismerkinVahvistus(oo: Opiskeluoikeus, osaamismerkki: VapaanSivistystyönOsaamismerkinSuoritus): HttpStatus = {
-    if (!osaamismerkki.vahvistettu && oo.tila.opiskeluoikeusjaksot.exists(_.tila.koodiarvo == opiskeluoikeusHyväksytystiSuoritettu.koodiarvo)) {
+    if (osaamismerkki.vahvistettu && oo.tila.opiskeluoikeusjaksot.exists(_.tila.koodiarvo == opiskeluoikeusKeskeytynyt.koodiarvo)) {
+      KoskiErrorCategory.badRequest.validation.tila.vapaanSivistystyönVapaatavoitteeisenKoulutuksenVahvistus("Vahvistetulla vapaan sivistystyön osaamismerkillä ei voi olla päättävänä tilana 'Keskeytynyt'")
+    } else if (!osaamismerkki.vahvistettu && oo.tila.opiskeluoikeusjaksot.exists(_.tila.koodiarvo == opiskeluoikeusHyväksytystiSuoritettu.koodiarvo)) {
       KoskiErrorCategory.badRequest.validation.tila.vapaanSivistystyönVapaatavoitteeisenKoulutuksenVahvistus("Vahvistamattomalla vapaan sivistystyön osaamismerkillä ei voi olla päättävänä tilana 'Hyväksytysti suoritettu'")
     } else {
       HttpStatus.ok

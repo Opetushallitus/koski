@@ -60,7 +60,7 @@ class OppijaValidationVapaaSivistystyöVapaatavoitteinenSpec extends AnyFreeSpec
         )
 
         setupOppijaWithOpiskeluoikeus(oo) {
-          verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.vapaaSivistystyö.läsnäTila("Vapaan sivistystyön vapaatavoitteisen koulutuksen opiskeluoikeudelle voi tallentaa tilan 'Läsnä' vain, jos opiskeluoikeus on päättynyt 1.1.2027 tai sen jälkeen tai on edelleen voimassa"))
+          verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.vapaaSivistystyö.uusiTila("Vapaan sivistystyön vapaatavoitteisen koulutuksen opiskeluoikeudelle voi tallentaa tilan 'Läsnä' vain, jos opiskeluoikeus on päättynyt 1.1.2027 tai sen jälkeen tai on edelleen voimassa"))
         }
       }
     }
@@ -113,11 +113,31 @@ class OppijaValidationVapaaSivistystyöVapaatavoitteinenSpec extends AnyFreeSpec
         }
       }
 
-      "ei voi päättyä ilman arvioitua osasuoritusta edes ensimmäisellä tallennuksella" in {
+      "ei voi päättyä tilaan 'hyvaksytystisuoritettu' ilman arvioitua osasuoritusta edes ensimmäisellä tallennuksella" in {
         val oo = päätasoArvioimattomallaOsasuorituksella(ooTilalla(jakso(päättymispäivä, opiskeluoikeusHyväksytystiSuoritettu)))
 
         setupOppijaWithOpiskeluoikeus(oo) {
           verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.vapaanSivistystyönVapaatavoitteisenKoulutuksenPäätasonOsasuoritukset())
+        }
+      }
+
+      "voi päättyä tilaan 'keskeytynyt' ilman yhtäkään osasuoritusta" in {
+        val oo = ooTilalla(jakso(alkamispäivä, opiskeluoikeusLäsnä), jakso(päättymispäivä, opiskeluoikeusKeskeytynyt)).copy(
+          suoritukset = List(suoritusVapaatavoitteinenKoulutus.copy(vahvistus = None, osasuoritukset = None))
+        )
+
+        val tallennettu = setupOppijaWithAndGetOpiskeluoikeus(oo)
+        tallennettu.päättymispäivä should equal(Some(päättymispäivä))
+      }
+
+      "voi päättyä tilaan 'keskeytynyt' ilman yhtäkään osasuoritusta myös lähdejärjestelmästä siirrettäessä" in {
+        val oo = ooTilalla(jakso(päättymispäivä, opiskeluoikeusKeskeytynyt)).copy(
+          lähdejärjestelmänId = Some(winnovaLähdejärjestelmäId("win-423084")),
+          suoritukset = List(suoritusVapaatavoitteinenKoulutus.copy(vahvistus = None, osasuoritukset = None))
+        )
+
+        setupOppijaWithOpiskeluoikeus(oo, headers = authHeaders(varsinaisSuomiPalvelukäyttäjä) ++ jsonContent) {
+          verifyResponseStatusOk()
         }
       }
     }

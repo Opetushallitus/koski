@@ -27,6 +27,7 @@ import { isVapaanSivistystyönOsaamismerkinSuoritus } from '../types/fi/oph/kosk
 import { VapaanSivistystyönPäätasonSuoritus } from '../types/fi/oph/koski/schema/VapaanSivistystyonPaatasonSuoritus'
 import { isVapaanSivistystyönVapaatavoitteisenKoulutuksenSuoritus } from '../types/fi/oph/koski/schema/VapaanSivistystyonVapaatavoitteisenKoulutuksenSuoritus'
 import { parasArviointi } from '../util/arvioinnit'
+import { viimeisinOpiskelujaksonTila } from '../util/schema'
 import { isVSTSuoritusArvioinnilla } from './common/arviointi'
 import { VSTJotpaEditor } from './jotpa/VSTJotpaEditor'
 import { KOPSEditor } from './kops/KOPSEditor'
@@ -108,6 +109,9 @@ export const VSTEditor: React.FC<VSTEditorProps> = (props) => {
     isVapaanSivistystyönOsaamismerkinSuoritus,
     päätasonSuoritus
   )
+  // Keskeytyneelle osaamismerkille ei näytetä merkin kuvaa, koska merkkiä ei ole myönnetty.
+  const näytäOsaamismerkinKuva =
+    viimeisinOpiskelujaksonTila(form.state.tila)?.koodiarvo !== 'keskeytynyt'
 
   return (
     <VirkailijaKansalainenContainer
@@ -118,7 +122,11 @@ export const VSTEditor: React.FC<VSTEditorProps> = (props) => {
           ? (titleProps) => (
               <OsaamismerkkiTitle
                 {...titleProps}
-                kuva={<OsaamismerkkiKuva päätasonSuoritus={päätasonSuoritus} />}
+                kuva={
+                  näytäOsaamismerkinKuva ? (
+                    <OsaamismerkkiKuva päätasonSuoritus={päätasonSuoritus} />
+                  ) : undefined
+                }
               />
             )
           : undefined

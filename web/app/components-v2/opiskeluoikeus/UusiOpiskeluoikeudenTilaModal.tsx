@@ -15,7 +15,7 @@ import { hasProp } from '../../util/constraints'
 import { KoodiarvotOf } from '../../util/koodisto'
 import { isValmistuvaTerminaalitila } from '../../util/opiskeluoikeus'
 import { ClassOf } from '../../util/types'
-import { vstLäsnäTilaPiilotettuJaksoluokalta } from '../../vst/common/lasnaTila'
+import { vstPiilotetutTilatJaksoluokalta } from '../../vst/common/uudetTilat'
 import { CommonProps, common } from '../CommonProps'
 import { Label } from '../containers/Label'
 import { Modal, ModalBody, ModalFooter, ModalTitle } from '../containers/Modal'
@@ -156,9 +156,7 @@ export const UusiOpiskeluoikeudenTilaModal = <T extends Opiskeluoikeusjakso>(
     AmmatillinenOpiskeluoikeusjakso.className
       ? ['eronnut']
       : []),
-    ...(vstLäsnäTilaPiilotettuJaksoluokalta(props.opiskeluoikeusjaksoClass)
-      ? ['lasna']
-      : [])
+    ...vstPiilotetutTilatJaksoluokalta(props.opiskeluoikeusjaksoClass)
   ]
   const koodiarvot = useAllowedStrings(
     props.opiskeluoikeusjaksoClass,

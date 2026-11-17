@@ -7,7 +7,7 @@ import {
   koodiviiteToOption
 } from '../../components-v2/controls/Select'
 import { Koodistokoodiviite } from '../../types/fi/oph/koski/schema/Koodistokoodiviite'
-import { vstLäsnäTilaPiilotettuSuoritustyypiltä } from '../../vst/common/lasnaTila'
+import { vstPiilotetutTilatSuoritustyypiltä } from '../../vst/common/uudetTilat'
 import { opiskeluoikeudenTilaClass } from './opiskeluoikeudenTilaClass'
 import {
   UusiOpiskeluoikeusDialogState,
@@ -54,9 +54,7 @@ export const useOpiskeluoikeudenTilat = (
       ...(excludedOpiskeluoikeudenTilat[
         state.opiskeluoikeus.value?.koodiarvo || 'default'
       ] || excludedOpiskeluoikeudenTilat.default),
-      ...(vstLäsnäTilaPiilotettuSuoritustyypiltä(päätasonSuoritusKoodiarvo)
-        ? ['lasna']
-        : [])
+      ...vstPiilotetutTilatSuoritustyypiltä(päätasonSuoritusKoodiarvo)
     ]
 
     return koodistot
