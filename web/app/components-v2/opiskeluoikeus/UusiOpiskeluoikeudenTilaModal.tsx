@@ -15,6 +15,7 @@ import { hasProp } from '../../util/constraints'
 import { KoodiarvotOf } from '../../util/koodisto'
 import { isValmistuvaTerminaalitila } from '../../util/opiskeluoikeus'
 import { ClassOf } from '../../util/types'
+import { vstPiilotetutTilatJaksoluokalta } from '../../vst/common/uudetTilat'
 import { CommonProps, common } from '../CommonProps'
 import { Label } from '../containers/Label'
 import { Modal, ModalBody, ModalFooter, ModalTitle } from '../containers/Modal'
@@ -149,10 +150,14 @@ const OpiskeluoikeudenTilanRahoitusField = <T extends Opiskeluoikeusjakso>(
 export const UusiOpiskeluoikeudenTilaModal = <T extends Opiskeluoikeusjakso>(
   props: UusiOpiskeluoikeudenTilaModalProps<T>
 ) => {
-  const piilotetutTilat =
-    props.opiskeluoikeusjaksoClass === AmmatillinenOpiskeluoikeusjakso.className
-      ? ['mitatoity', 'eronnut']
-      : ['mitatoity']
+  const piilotetutTilat = [
+    'mitatoity',
+    ...(props.opiskeluoikeusjaksoClass ===
+    AmmatillinenOpiskeluoikeusjakso.className
+      ? ['eronnut']
+      : []),
+    ...vstPiilotetutTilatJaksoluokalta(props.opiskeluoikeusjaksoClass)
+  ]
   const koodiarvot = useAllowedStrings(
     props.opiskeluoikeusjaksoClass,
     'tila.koodiarvo'

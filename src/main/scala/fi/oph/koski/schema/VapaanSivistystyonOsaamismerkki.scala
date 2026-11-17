@@ -9,7 +9,9 @@ import java.time.LocalDate
 @OnlyWhen("../../../suoritukset/0/tyyppi/koodiarvo", "vstosaamismerkki")
 case class VapaanSivistystyönOsaamismerkinOpiskeluoikeusjakso(
   alku: LocalDate,
+  @KoodistoKoodiarvo("lasna")
   @KoodistoKoodiarvo("hyvaksytystisuoritettu")
+  @KoodistoKoodiarvo("keskeytynyt")
   @KoodistoKoodiarvo("mitatoity")
   tila: Koodistokoodiviite,
 ) extends VapaanSivistystyönOpiskeluoikeusjakso {
