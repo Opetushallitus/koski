@@ -211,7 +211,7 @@ object PropertyHtmlDocs {
       <h2>
         {schema.title}
       </h2>
-      {description(schema.metadata)}
+      {descriptionParagraphs(schema.metadata.collect { case d: Description => d.text })}
     </div>.toString()
   }
 
@@ -310,8 +310,12 @@ object PropertyHtmlDocs {
   def description(metadata: List[Metadata]): Node =
     descriptions(metadata.collect { case d: Description => d.text })
 
+  // Taulukon solussa kuvaukset yhdistetään yhdeksi tekstiksi, osion alussa jokainen @Description on oma kappaleensa
   def descriptions(texts: List[String]): Node =
     scala.xml.XML.loadString("<div class=\"description\">" + texts.mkString(" ") + "</div>")
+
+  def descriptionParagraphs(texts: List[String]): Node =
+    scala.xml.XML.loadString("<div class=\"description\">" + texts.map(t => s"<p>$t</p>").mkString + "</div>")
 
   private def sort(properties: Seq[Property]): Seq[Property] =
     properties.sortBy(p => if (isOptional(p)) 1 else 0)
@@ -350,7 +354,7 @@ object QueryHtmlDocs {
     val section: Elem =
       <section class="query-doc">
         {heading}
-        {PropertyHtmlDocs.descriptions(commonDescriptions)}
+        {PropertyHtmlDocs.descriptionParagraphs(commonDescriptions)}
         {body}
       </section>
     section.toString()
@@ -372,7 +376,7 @@ object QueryHtmlDocs {
 
   private def tabBody(tab: FormatTab): NodeSeq =
     <div class="query-doc-body">
-      {if (tab.descriptions.nonEmpty) PropertyHtmlDocs.descriptions(tab.descriptions) else NodeSeq.Empty}
+      {if (tab.descriptions.nonEmpty) PropertyHtmlDocs.descriptionParagraphs(tab.descriptions) else NodeSeq.Empty}
       {PropertyHtmlDocs.details("Parametrit", PropertyHtmlDocs.renderPropertiesTable(tab.properties))}
       {PropertyHtmlDocs.details("Esimerkki", exampleRequest(tab.example))}
     </div>
