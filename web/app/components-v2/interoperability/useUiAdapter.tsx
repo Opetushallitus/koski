@@ -20,6 +20,7 @@ import { Contextualized } from '../../types/EditorModelContext'
 import { ObjectModel } from '../../types/EditorModels'
 import { Opiskeluoikeus } from '../../types/fi/oph/koski/schema/Opiskeluoikeus'
 import { Oppija } from '../../types/fi/oph/koski/schema/Oppija'
+import { hasFeatureFlag } from '../../util/featureFlags'
 import { intersects, last } from '../../util/fp/arrays'
 import { getHenkilöOid } from '../../util/henkilo'
 import {
