@@ -154,6 +154,7 @@ object SuomiFiService {
 
   val eiPalautettavatPäätasonSuoritustyypit: Set[Koodistokoodiviite] = Set(
     SuorituksenTyyppi.vstvapaatavoitteinenkoulutus,
+    SuorituksenTyyppi.vstosaamismerkki,
   )
 
   private val palautettavatOpiskeluoikeusKoodiarvot = palautettavatOpiskeluoikeustyypit.map(_.koodiarvo)
