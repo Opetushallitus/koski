@@ -71,8 +71,8 @@ class SuomiFiServletSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers wi
         opiskeluoikeudetRekisteritiedoissa(KoskiSpecificMockOppijat.vapaaSivistystyöVapaatavoitteinenKoulutus) shouldBe empty
       }
 
-      "palauttaa vapaan sivistystyön osaamismerkin" in {
-        opiskeluoikeudetRekisteritiedoissa(KoskiSpecificMockOppijat.vapaaSivistystyöOsaamismerkki) should have size 1
+      "ei palauta vapaan sivistystyön osaamismerkkejä" in {
+        opiskeluoikeudetRekisteritiedoissa(KoskiSpecificMockOppijat.vapaaSivistystyöOsaamismerkki) shouldBe empty
       }
 
       "ei palauta taiteen perusopetusta mutta palauttaa saman oppijan muut opiskeluoikeudet" in {

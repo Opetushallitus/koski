@@ -119,7 +119,8 @@ Rajapinta palauttaa oppilaitokset ja niiden opiskeluoikeudet tiivistettynä: opi
 alkamis- ja päättymispäivä sekä suorituksen nimi.
 
 Rajapinta ei palauta muun kuin säännellyn koulutuksen, taiteen perusopetuksen, kielitutkintojen eikä
-Ahvenanmaan perusopetuksen opiskeluoikeuksia eikä vapaan sivistystyön vapaatavoitteisen koulutuksen suorituksia.
+Ahvenanmaan perusopetuksen opiskeluoikeuksia eikä vapaan sivistystyön vapaatavoitteisen koulutuksen tai osaamismerkkien
+suorituksia.
 
 ### Esimerkkipyyntö
 
