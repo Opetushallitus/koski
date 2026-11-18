@@ -15,6 +15,14 @@ permissions:
 jobs:
   deploy_dev:
     name: Dev
+    concurrency:
+      group: master-deploy-dev
+      # Hitaampi vanhemman commitin ajo voisi keskeyttää uudemman ajon ja asentaa vanhemman version.
+      # Vanhentuneet ajot perutaan publish_and_deploy.yml:n check_master_head-jobissa, paitsi
+      # perutun ajon uudelleenajo, jolla palautetaan vanha versio.
+      cancel-in-progress: false
+      # Oletuksena uusi jonoon tuleva ajo peruisi jo jonossa odottavan.
+      queue: max
     uses: $/.github/workflows/deploy_koski.yml
     permissions:
       id-token: write
@@ -27,9 +35,77 @@ jobs:
       ECR_ACCOUNT_ID: ${{ secrets.ECR_ACCOUNT_ID }}
       SLACK_CI_ALERTS_WEBHOOK: ${{ secrets.SLACK_CI_ALERTS_WEBHOOK }}
 
+  check_qa:
+    name: Check QA for dev build
+    needs: [deploy_dev]
+    runs-on: ubuntu-26.04
+    timeout-minutes: 5
+    permissions:
+      actions: read
+      contents: read
+    outputs:
+      hold: ${{ steps.in_master.outputs.in_master == 'false' }}
+    steps:
+      - name: Read QA version
+        id: qa_version
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          # Käynnissä oleva käsin tehty QA-asennus korvaa QA:n version, kun se valmistuu.
+          QA_SHA=$(
+            gh run list --repo "$GITHUB_REPOSITORY" --workflow deploy.yml --json status,displayTitle \
+              --jq '[.[] | select(.status != "completed") | .displayTitle | capture("^Deploy to qa \\((?<sha>.+)\\)$").sha] | first // empty'
+          )
+          if [ -z "$QA_SHA" ]; then
+            QA_SHA=$(
+              curl --fail --silent --show-error --max-time 10 \
+                "https://koski.testiopintopolku.fi/koski/api/status?cacheBust=$(date +%s)" \
+                | jq --raw-output '.commitHash // empty'
+            ) || QA_SHA=""
+          fi
+          # Jos QA ei vastaa, asennetaan master, jotta rikkinäinen QA korjaantuu.
+          if [[ "$QA_SHA" =~ ^[0-9a-f]{7,40}$ ]]; then
+            echo "sha=$QA_SHA" >> "$GITHUB_OUTPUT"
+          else
+            echo "::warning::QA version unavailable ('$QA_SHA'), deploying master to QA"
+          fi
+
+      - name: Check whether QA version is in master
+        id: in_master
+        if: ${{ steps.qa_version.outputs.sha != '' }}
+        uses: $/.github/actions/commit-in-master
+        with:
+          commit_sha: ${{ steps.qa_version.outputs.sha }}
+
+      - name: Report QA hold
+        if: ${{ steps.in_master.outputs.in_master == 'false' }}
+        uses: $/.github/actions/report-slack
+        with:
+          webhook: ${{ secrets.SLACK_CI_ALERTS_WEBHOOK }}
+          title: ":double_vertical_bar: DEPLOY · Master deploy to QA held, QA runs a dev build (commit below). Rebase and redeploy the dev build to include master, or approve qa-hold in the CI run to replace it with master."
+          commit_sha: ${{ steps.qa_version.outputs.sha }}
+          include_context: commit ci_run
+
+  qa_gate:
+    name: QA hold
+    needs: [check_qa]
+    if: ${{ needs.check_qa.outputs.hold == 'true' }}
+    runs-on: ubuntu-26.04
+    timeout-minutes: 5
+    environment: qa-hold
+    steps:
+      - name: Release QA hold
+        run: echo "QA hold released, deploying master to QA"
+
   deploy_qa:
     name: QA
-    needs: [deploy_dev]
+    needs: [check_qa, qa_gate]
+    if: ${{ !cancelled() && needs.check_qa.result == 'success' && (needs.check_qa.outputs.hold == 'false' || needs.qa_gate.result == 'success') }}
+    concurrency:
+      group: master-deploy-qa
+      cancel-in-progress: false
+      queue: max
     uses: $/.github/workflows/deploy_koski.yml
     permissions:
       id-token: write

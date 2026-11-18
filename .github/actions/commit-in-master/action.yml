@@ -1,0 +1,32 @@
+name: Commit in master
+description: Check whether a commit is part of master
+
+inputs:
+  commit_sha:
+    description: Commit to look for in master
+    required: true
+
+outputs:
+  in_master:
+    description: >-
+      "true" when master contains the commit, otherwise "false", also when the
+      comparison fails.
+    value: ${{ steps.compare.outputs.in_master }}
+
+runs:
+  using: composite
+  steps:
+    - name: Compare commit to master
+      id: compare
+      shell: bash
+      env:
+        GH_TOKEN: ${{ github.token }}
+        COMMIT_SHA: ${{ inputs.commit_sha }}
+      run: |
+        set -euo pipefail
+        STATUS_AGAINST_MASTER=$(gh api "repos/$GITHUB_REPOSITORY/compare/master...$COMMIT_SHA" --jq '.status') || STATUS_AGAINST_MASTER=unknown
+        echo "Commit $COMMIT_SHA compared to master: $STATUS_AGAINST_MASTER"
+        case "$STATUS_AGAINST_MASTER" in
+          identical | behind) echo "in_master=true" >> "$GITHUB_OUTPUT" ;;
+          *) echo "in_master=false" >> "$GITHUB_OUTPUT" ;;
+        esac

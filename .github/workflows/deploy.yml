@@ -21,7 +21,7 @@ env:
   DOCKER_BUILDKIT: 1
   SSH_AUTH_SOCK: /tmp/ssh_agent.sock
 
-run-name: Deploy to ${{ inputs.environment }}
+run-name: Deploy to ${{ inputs.environment }} (${{ inputs.commithash }})
 jobs:
   check-master:
     name: Check commit contains master
@@ -68,3 +68,24 @@ jobs:
       DEPLOY_ROLE: ${{ secrets.DEPLOY_ROLE }}
       ECR_ACCOUNT_ID: ${{ secrets.ECR_ACCOUNT_ID }}
       SLACK_CI_ALERTS_WEBHOOK: ${{ secrets.SLACK_CI_ALERTS_WEBHOOK }}
+  announce_qa_dev_build:
+    name: Announce QA dev build
+    needs: [deploy]
+    if: ${{ inputs.environment == 'qa' }}
+    runs-on: ubuntu-26.04
+    timeout-minutes: 5
+    steps:
+      - name: Check whether commit is in master
+        id: in_master
+        uses: $/.github/actions/commit-in-master
+        with:
+          commit_sha: ${{ inputs.commithash }}
+
+      - name: Report QA dev build
+        if: ${{ steps.in_master.outputs.in_master == 'false' }}
+        uses: $/.github/actions/report-slack
+        with:
+          webhook: ${{ secrets.SLACK_CI_ALERTS_WEBHOOK }}
+          title: ":construction: DEPLOY · QA now runs a dev build. Master deploys to QA wait for approval instead of overwriting automatically."
+          commit_sha: ${{ inputs.commithash }}
+          include_context: commit actor ci_run
