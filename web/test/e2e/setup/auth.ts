@@ -5,8 +5,13 @@ import fs from 'fs'
 import { resolve } from 'path'
 import { Kansalainen, Virkailija } from './users.types'
 import { KansalainenLoginPage } from '../pages/login/KansalainenLoginPage'
+import { backendUrl } from './backend'
 
 const PW_STATE_PATH = 'test/.pw-state'
+
+// Istuntoevästeet ovat isäntäkohtaisia, ja kontissa ajettavat visuaalitestit
+// käyttävät macOS:llä eri osoitetta kuin paikallisesti ajettavat testit
+const backendHostname = new URL(backendUrl).hostname
 
 type Cookie = {
   name: string
@@ -81,10 +86,13 @@ async function getKansalainenSession(testInfo: TestInfo, hetu: string) {
 }
 
 export const virkailijaPath = (username: Virkailija) =>
-  resolve(PW_STATE_PATH, `${username.toLowerCase()}-virkailija.json`)
+  resolve(
+    PW_STATE_PATH,
+    `${username.toLowerCase()}-${backendHostname}-virkailija.json`
+  )
 
 export const kansalainenPath = (hetu: string) =>
-  resolve(PW_STATE_PATH, `${hetu}-kansalainen.json`)
+  resolve(PW_STATE_PATH, `${hetu}-${backendHostname}-kansalainen.json`)
 
 export const virkailija =
   (virk: Virkailija): TestFixture<string, any> =>

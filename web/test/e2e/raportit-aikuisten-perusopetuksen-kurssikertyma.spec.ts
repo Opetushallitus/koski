@@ -19,7 +19,12 @@ test.describe('Aikuisten perusopetuksen kurssikertymäraportti', () => {
     await expect(raportitPage.raportit).toBeHidden()
 
     await raportitPage.syötäAikajakso('1.1.2016', '31.12.2018')
-    await raportitPage.muodosta()
+    const kysely = await raportitPage.muodostaJaLueKysely()
+    expect(kysely).toMatchObject({
+      type: 'aikuistenPerusopetuksenKurssikertyma',
+      alku: '2016-01-01',
+      loppu: '2018-12-31'
+    })
 
     await expect(raportitPage.taustallaOhje).toBeVisible()
     await expect(raportitPage.raporttiRivit).toHaveCount(1)

@@ -19,7 +19,13 @@ test.describe('Ammatillisen tutkinnon suoritustietoraportti', () => {
     await expect(raportitPage.raportit).toBeHidden()
 
     await raportitPage.syötäAikajakso('1.1.2024', '31.12.2024')
-    await raportitPage.muodosta()
+    const kysely = await raportitPage.muodostaJaLueKysely()
+    expect(kysely).toMatchObject({
+      type: 'ammatillinenTutkintoSuoritustiedot',
+      alku: '2024-01-01',
+      loppu: '2024-12-31',
+      osasuoritustenAikarajaus: false
+    })
 
     await expect(raportitPage.taustallaOhje).toBeVisible()
     await expect(raportitPage.raporttiRivit).toHaveCount(1)

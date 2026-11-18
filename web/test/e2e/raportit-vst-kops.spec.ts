@@ -19,7 +19,12 @@ test.describe('VST oppivelvollisille suunnatun koulutuksen raportti', () => {
     await expect(raportitPage.raportit).toBeHidden()
 
     await raportitPage.syötäAikajakso('1.1.2022', '31.12.2025')
-    await raportitPage.muodosta()
+    const kysely = await raportitPage.muodostaJaLueKysely()
+    expect(kysely).toMatchObject({
+      type: 'vstKops',
+      alku: '2022-01-01',
+      loppu: '2025-12-31'
+    })
 
     await expect(raportitPage.taustallaOhje).toBeVisible()
     await expect(raportitPage.raporttiRivit).toHaveCount(1)

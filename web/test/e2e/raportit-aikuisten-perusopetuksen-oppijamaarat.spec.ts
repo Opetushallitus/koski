@@ -20,7 +20,10 @@ test.describe('Aikuisten perusopetuksen oppijamääräraportti', () => {
 
     await raportitPage.syötäPäivä('1.1.2010')
     const kysely = await raportitPage.muodostaJaLueKysely()
-    expect(kysely).toMatchObject({ paiva: '2010-01-01' })
+    expect(kysely).toMatchObject({
+      type: 'aikuistenPerusopetuksenOppijamaaratRaportti',
+      paiva: '2010-01-01'
+    })
 
     await expect(raportitPage.raporttiRivit).toHaveCount(1)
     const rivi = raportitPage.raporttiRivit.first()
