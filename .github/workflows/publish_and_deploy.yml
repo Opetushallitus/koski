@@ -78,16 +78,9 @@ jobs:
   deploy_dev_qa:
     name: Dev & QA
     needs: [publish_image]
-    # Ei cancel-in-progress: hitaampi vanhemman commitin ajo voisi keskeyttää uudemman ajon
-    # ja asentaa vanhemman version. Vanhentuneet ajot perutaan check_master_head-jobissa,
-    # paitsi perutun ajon uudelleenajo, jolla palautetaan vanha versio.
-    # queue: max, koska oletuksena uusi jonoon tuleva ajo peruisi jo jonossa odottavan.
-    concurrency:
-      group: master-deploy-dev-qa
-      cancel-in-progress: false
-      queue: max
     uses: $/.github/workflows/deploy_dev_qa.yml
     permissions:
+      actions: read
       id-token: write
       contents: read
     secrets:
