@@ -25,7 +25,7 @@ case class EhoksHenkilö(oid: String)
 case class EhoksOpiskeluoikeus(
   oid: String,
   tyyppi: EhoksKoodi,
-  oppilaitos: Option[EhoksOrganisaatio],
+  oppilaitos: Option[EhoksOppilaitos],
   koulutustoimija: Option[EhoksKoulutustoimija],
   sisältyyOpiskeluoikeuteen: Option[EhoksSisältäväOpiskeluoikeus],
   arvioituPäättymispäivä: Option[LocalDate],
@@ -50,6 +50,9 @@ case class EhoksNimettyKoodi(koodiarvo: String, nimi: Option[LocalizedString])
 @Title("Organisaatio")
 case class EhoksOrganisaatio(oid: String)
 
+@Title("Oppilaitos")
+case class EhoksOppilaitos(oid: String, nimi: Option[LocalizedString])
+
 @Title("Koulutustoimija")
 case class EhoksKoulutustoimija(oid: String, nimi: Option[LocalizedString])
 
@@ -71,17 +74,17 @@ case class EhoksPäätasonSuoritus(
   tyyppi: EhoksKoodi,
   koulutusmoduuli: EhoksKoulutusmoduuli,
   osaamisala: Option[List[EhoksOsaamisalajakso]],
-  tutkintonimike: Option[List[EhoksKoodi]],
+  tutkintonimike: Option[List[EhoksNimettyKoodi]],
   suorituskieli: Option[EhoksKoodi],
   toimipiste: Option[EhoksOrganisaatio],
   vahvistus: Option[EhoksVahvistus]
 )
 
 @Title("Koulutusmoduuli")
-case class EhoksKoulutusmoduuli(tunniste: EhoksNimettyKoodi)
+case class EhoksKoulutusmoduuli(tunniste: EhoksNimettyKoodi, perusteenDiaarinumero: Option[String])
 
 @Title("Osaamisalajakso")
-case class EhoksOsaamisalajakso(osaamisala: EhoksNimettyKoodi)
+case class EhoksOsaamisalajakso(osaamisala: EhoksNimettyKoodi, alku: Option[LocalDate], loppu: Option[LocalDate])
 
 @Title("Vahvistus")
 case class EhoksVahvistus(päivä: LocalDate)
