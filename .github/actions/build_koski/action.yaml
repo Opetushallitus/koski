@@ -31,6 +31,12 @@ runs:
       with:
         # Ainoa jobi, joka saa kirjoittaa ~/.m2-välimuistin.
         cache-read-only: "false"
+    - name: Fetch Koski dependencies
+      if: steps.lookup.outputs.cache-hit != 'true'
+      run: |
+        scripts/retry.sh "Koski dependency resolution" 5m -- \
+          ./mvnw --batch-mode --update-snapshots --activate-profiles frontend,scalafix dependency:go-offline
+      shell: bash
     - name: Build Koski app + tests
       if: steps.lookup.outputs.cache-hit != 'true'
       env:
@@ -40,6 +46,14 @@ runs:
         ./mvnw test -DskipTests=true -Dscalac.fixableWarnings=e --batch-mode
         # Lataa scalafix-cli ~/.m2-välimuistiin Scalafix-jobia varten
         ./mvnw --activate-profiles scalafix exec:java@scalafix-main -Dexec.args=--version --batch-mode
+      shell: bash
+    - name: Fetch OmaData Java sample dependencies
+      if: steps.lookup.outputs.cache-hit != 'true'
+      # Lataa riippuvuudet ~/.m2-välimuistiin OAuth2-selaintestejä varten
+      working-directory: omadata-oauth2-sample/java
+      run: |
+        ../../scripts/retry.sh "OmaData Java sample dependency resolution" 5m -- \
+          ./mvnw --batch-mode --update-snapshots dependency:go-offline compile
       shell: bash
     - name: Cache target dir
       if: steps.lookup.outputs.cache-hit != 'true'
