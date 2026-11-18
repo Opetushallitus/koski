@@ -90,7 +90,12 @@ export const VSTOsaamismerkkiEditor: React.FC<VSTOsaamismerkkiEditor> = ({
                   view={OsaamismerkinArviointiView}
                   edit={OsaamismerkinArviointiEdit}
                   editProps={{
-                    suoritusClassName: päätasonSuoritus.suoritus.$class
+                    suoritusClassName: päätasonSuoritus.suoritus.$class,
+                    onRemove: () =>
+                      form.updateAt(
+                        päätasonSuoritus.path.prop('arviointi'),
+                        () => undefined
+                      )
                   }}
                 />
               </TestIdLayer>
@@ -157,14 +162,22 @@ const OsaamismerkinArviointiView: React.FC<
 const OsaamismerkinArviointiEdit: React.FC<
   FieldEditorProps<
     VapaanSivistystyönOsaamismerkinArviointi,
-    { suoritusClassName: string }
+    { suoritusClassName: string; onRemove: () => void }
   >
 > = (props) => {
-  const { value, onChange, errors } = props
+  const { value, onChange, onRemove, errors } = props
   return value ? (
     <KeyValueTable>
       <KeyValueRow localizableLabel="Arvosana" innerKeyValueTable>
-        <ArvosanaEdit {...props} format={koodinNimiOnly} />
+        <ArvosanaEdit
+          {...props}
+          format={koodinNimiOnly}
+          // Arvosanan tyhjentäminen poistaa koko arvioinnin: listaan jäävä
+          // tyhjä alkio ei läpäisisi validointia eikä sitä voisi enää muokata.
+          onChange={(arviointi) =>
+            arviointi ? onChange(arviointi) : onRemove()
+          }
+        />
       </KeyValueRow>
       <KeyValueRow localizableLabel="Päivämäärä" innerKeyValueTable>
         <DateEdit

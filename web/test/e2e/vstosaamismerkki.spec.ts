@@ -113,6 +113,30 @@ test.describe('Vapaan sivistyön VST osaamismerkki', () => {
       page.getByTestId('oo.0.opiskeluoikeus.kuva')
     ).not.toBeAttached()
   })
+
+  test('Tallennetun osaamismerkin arvosanan tyhjentäminen poistaa arvioinnin ja lomakkeen voi tallentaa', async ({
+    page,
+    vstOppijaPage
+  }) => {
+    // Fixture-oppija, jolla on arvioitu ja vahvistettu osaamismerkki
+    await vstOppijaPage.goto('1.2.246.562.24.00000000164')
+    await vstOppijaPage.edit()
+
+    const arvosana = page.getByTestId(
+      'oo.0.suoritukset.0.arviointi.0.arvosana.edit.input'
+    )
+    await expect(arvosana).toHaveValue('Hyväksytty')
+    await arvosana.click()
+    await arvosana.fill('')
+    await page.keyboard.press('Tab')
+
+    // Arviointi poistuu kokonaan ja tilalle tulee tyhjä arvosanavalinta
+    await expect(arvosana).not.toBeAttached()
+    await expect(
+      page.getByTestId('oo.0.suoritukset.0.arvosana.edit.input')
+    ).toBeVisible()
+    await expect(page.getByTestId('oo.0.opiskeluoikeus.save')).toBeEnabled()
+  })
 })
 
 async function eventually(initialize: () => void, trial: () => void) {
