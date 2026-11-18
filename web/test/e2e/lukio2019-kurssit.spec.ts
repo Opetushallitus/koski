@@ -19,9 +19,6 @@ test.describe('Lukiokoulutus 2019: moduulin/kurssin muokkaus', () => {
   )
 
   test('Moduulin arvosanaa voidaan muuttaa', async ({ oppijaPage }) => {
-    // Suoritus on valmis: moduulin arvosanan muutos leimaa arviointipäivän
-    // tämänpäiväiseksi, joka ei voi olla opiskeluoikeuden päättymispäivän
-    // jälkeen. Siksi viimeisin tila poistetaan ensin (= suoritus kesken).
     await oppijaPage.poistaViimeisinTila()
 
     const ma = opiskeluoikeus.oppiaineRivi('MA')

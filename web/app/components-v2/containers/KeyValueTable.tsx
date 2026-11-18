@@ -27,6 +27,13 @@ const KeyValueTableContext = createContext<{
   editMode?: boolean
 }>({})
 
+/**
+ * KeyValueRow'n nimisarakkeen id, jotta riviin voidaan viitata ohjelmallisesti
+ */
+export const KeyValueRowLabelContext = createContext<string | undefined>(
+  undefined
+)
+
 export type KeyValueTableProps = CommonPropsWithChildren<{
   /** Pakottaa kaikkien rivien nimisarakkeen tähän leveyteen (ruudukon sarakkeissa). */
   labelWidth?: number
@@ -64,6 +71,10 @@ export type KeyValueRowProps = CommonPropsWithChildren<{
 export const KeyValueRow = (props: KeyValueRowProps) => {
   const indent = props.indent || 0
   const { labelWidth, editMode } = useContext(KeyValueTableContext)
+  const randomId = useMemo(() => Math.random().toString(), [])
+  const hasLabel =
+    props.labelContent !== undefined || props.localizableLabel !== undefined
+  const labelId = hasLabel ? randomId : undefined
   const hiddenAsEmpty =
     'hideIfEmpty' in props && !props.hideIfEmpty && !editMode
   const nameSpans = props.innerKeyValueTable
@@ -88,7 +99,9 @@ export const KeyValueRow = (props: KeyValueRowProps) => {
         valign="top"
         component="span"
       >
-        {props.labelContent ?? <Trans>{props.localizableLabel}</Trans>}
+        <span id={labelId}>
+          {props.labelContent ?? <Trans>{props.localizableLabel}</Trans>}
+        </span>
       </Column>
       <Column
         className="KeyValueRow__value"
@@ -96,7 +109,9 @@ export const KeyValueRow = (props: KeyValueRowProps) => {
         valign="top"
         component="div"
       >
-        {props.children}
+        <KeyValueRowLabelContext.Provider value={labelId}>
+          {props.children}
+        </KeyValueRowLabelContext.Provider>
       </Column>
     </ColumnRow>
   ) : null
