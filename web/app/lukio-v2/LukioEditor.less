@@ -231,6 +231,14 @@
   [data-testid$='kieli.edit'] .Select {
     max-width: 340px;
   }
+
+  @supports selector(:has(*)) {
+    // stylelint-disable-next-line plugin/no-unsupported-browser-features -- ilman tukea hiiri ei korosta poistettavaa sisältöä
+    .Removable:has(> .IconButton:hover) > .Removable__content {
+      outline: 1px solid #aeaeae;
+      outline-offset: 4px;
+    }
+  }
 }
 
 .KurssiInfoPopup.KeyValueTable {
