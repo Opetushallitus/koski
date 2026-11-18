@@ -13,7 +13,7 @@ import org.scalatest.BeforeAndAfterAll
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.should.Matchers
 
-import java.time.OffsetDateTime
+import java.time.LocalDate
 
 class EhoksSpec
   extends AnyFreeSpec
@@ -117,19 +117,19 @@ class EhoksSpec
 
   "GET /api/ehoks/mitatoidyt" - {
     "palauttaa aikavälillä mitätöidyt ammatilliset opiskeluoikeudet" in {
-      val alku = OffsetDateTime.now().minusMinutes(1)
+      val tänään = LocalDate.now()
       val oo = createOpiskeluoikeus(KoskiSpecificMockOppijat.tyhjä, defaultOpiskeluoikeus, resetFixtures = true)
       val muuttumaton = lastOpiskeluoikeus(KoskiSpecificMockOppijat.ammattilainen.oid, MockUsers.paakayttaja)
       mitätöiOpiskeluoikeus(oo.oid.get)
 
-      getMitätöidyt(Map("alku" -> alku.toString)) {
+      getMitätöidyt(Map("alku" -> tänään.toString)) {
         verifyResponseStatusOk()
         val oidit = mitätöidytOidit
         oidit should contain(oo.oid.get)
         oidit should not contain muuttumaton.oid.get
       }
 
-      getMitätöidyt(Map("alku" -> alku.minusYears(1).toString, "loppu" -> alku.toString)) {
+      getMitätöidyt(Map("alku" -> tänään.minusYears(1).toString, "loppu" -> tänään.minusDays(1).toString)) {
         verifyResponseStatusOk()
         mitätöidytOidit should not contain oo.oid.get
       }
@@ -137,19 +137,19 @@ class EhoksSpec
 
     "alku puuttuu" in {
       getMitätöidyt(Map.empty) {
-        verifyResponseStatus(400, KoskiErrorCategory.badRequest.queryParam("Parametri alku puuttuu"))
+        verifyResponseStatus(400, KoskiErrorCategory.badRequest.queryParam.missing("Missing alku"))
       }
     }
 
     "alku loppua myöhemmin" in {
-      getMitätöidyt(Map("alku" -> "2026-02-01T00:00:00+02:00", "loppu" -> "2026-01-01T00:00:00+02:00")) {
-        verifyResponseStatus(400, KoskiErrorCategory.badRequest.queryParam("alku pitää olla ennen loppua"))
+      getMitätöidyt(Map("alku" -> "2026-02-01", "loppu" -> "2026-01-01")) {
+        verifyResponseStatus(400, KoskiErrorCategory.badRequest.queryParam("alku ei voi olla loppua myöhemmin"))
       }
     }
 
-    "virheellinen aikaleima" in {
-      getMitätöidyt(Map("alku" -> "2026-01-01")) {
-        verifyResponseStatus(400, KoskiErrorCategory.badRequest.format.pvm("Parametrin alku pitää olla ISO 8601 -aikaleima aikavyöhykkeellä, esim. 2026-01-01T00:00:00+02:00"))
+    "virheellinen päivämäärä" in {
+      getMitätöidyt(Map("alku" -> "2026-01-01T00:00:00+02:00")) {
+        verifyResponseStatus(400, KoskiErrorCategory.badRequest.format.pvm())
       }
     }
   }
@@ -166,7 +166,7 @@ class EhoksSpec
       get(s"api/ehoks/oppija/${KoskiSpecificMockOppijat.ammattilainen.oid}", headers = authHeaders(MockUsers.kalle)) {
         verifyResponseStatus(403, KoskiErrorCategory.forbidden())
       }
-      get("api/ehoks/mitatoidyt", Map("alku" -> "2026-01-01T00:00:00+02:00"), authHeaders(MockUsers.kalle)) {
+      get("api/ehoks/mitatoidyt", Map("alku" -> "2026-01-01"), authHeaders(MockUsers.kalle)) {
         verifyResponseStatus(403, KoskiErrorCategory.forbidden())
       }
     }

@@ -10,6 +10,7 @@ import fi.oph.koski.schema.KoskiSchema
 import fi.oph.koski.suoritusjako.common.OpiskeluoikeusFacade
 
 import java.sql.Timestamp
+import java.time.LocalDate
 
 class EhoksService(application: KoskiApplication) extends QueryMethods {
   protected val db = application.replicaDatabase.db
@@ -29,18 +30,21 @@ class EhoksService(application: KoskiApplication) extends QueryMethods {
       )
       .flatMap(row => deserialize(row).map(oo => (row.oppijaOid, oo)))
 
-  def mitätöidytOpiskeluoikeudet(alku: Timestamp, loppu: Timestamp): Seq[String] =
+  def mitätöidytOpiskeluoikeudet(alku: LocalDate, loppu: LocalDate): Seq[String] = {
+    val alkuHetki = Timestamp.valueOf(alku.atStartOfDay())
+    val loppuHetki = Timestamp.valueOf(loppu.plusDays(1).atStartOfDay())
     runDbSync(sql"""
       select oid from opiskeluoikeus
       where mitatoity
         and koulutusmuoto = any(${EhoksSchema.palautettavatOpiskeluoikeudenTyypit})
-        and aikaleima >= $alku and aikaleima < $loppu
+        and aikaleima >= $alkuHetki and aikaleima < $loppuHetki
       union
       select oid from poistettu_opiskeluoikeus
       where koulutusmuoto = any(${EhoksSchema.palautettavatOpiskeluoikeudenTyypit})
-        and mitatoity_aikaleima >= $alku and mitatoity_aikaleima < $loppu
+        and mitatoity_aikaleima >= $alkuHetki and mitatoity_aikaleima < $loppuHetki
       order by oid
     """.as[String])
+  }
 
   private def deserialize(row: KoskiOpiskeluoikeusRow): Either[HttpStatus, EhoksOpiskeluoikeus] =
     application.validatingAndResolvingExtractor.extract[EhoksOpiskeluoikeus](

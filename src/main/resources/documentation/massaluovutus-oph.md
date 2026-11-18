@@ -123,15 +123,15 @@ Rajapinta palauttaa 404-virhekoodin, mikäli opiskeluoikeutta ei löydy, se on m
 
 ### Mitätöidyt opiskeluoikeudet
 
-`GET {{var:baseUrl}}/api/ehoks/mitatoidyt?alku=<aikaleima>&loppu=<aikaleima>`
+`GET {{var:baseUrl}}/api/ehoks/mitatoidyt?alku=<päivämäärä>&loppu=<päivämäärä>`
 
 Palauttaa listan niiden ammatillisten ja TUVA-opiskeluoikeuksien oideista, jotka on mitätöity annetulla aikavälillä.
-Aikaleimat annetaan ISO 8601 -muodossa aikavyöhykkeen kanssa, esimerkiksi `2026-01-01T00:00:00+02:00`.
-Aikaväli sisältää alun mutta ei loppua. Parametri `loppu` on valinnainen, oletuksena nykyhetki.
+Päivämäärät annetaan muodossa `VVVV-KK-PP`, ja aikaväli sisältää molemmat päivät.
+Parametri `loppu` on valinnainen, oletuksena kuluva päivä.
 
 Esimerkiksi:
 
-`GET {{var:baseUrl}}/api/ehoks/mitatoidyt?alku=2026-01-01T00:00:00%2B02:00`
+`GET {{var:baseUrl}}/api/ehoks/mitatoidyt?alku=2026-01-01&loppu=2026-01-31`
 
     [
       "1.2.246.562.15.99999999999"
