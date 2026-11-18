@@ -28,3 +28,4 @@ TOR-2773 - lisätty MUKS-osasuorituksen arviointi-kentälle kuvaus; ei muutosta 
 TOR-2760 - ammatillisen yhteisten tutkinnon osien kovakoodattu lista johdettu YhteinenTutkinnonOsa-luokan annotaatiosta; ei muutosta skeemaan
 TOR-2587 - Ahvenanmaan vuosiluokan luokka opiskelijalistalle ja raportointikantaan: lisätty Opiskeluoikeus.luokka-funktioon tapaus ja vuosiluokan suoritukselle Luokallinen-trait; ei muutosta skeeman rakenteeseen tai tiedonsiirtoprotokollaan
 TOR-2714 - lisätty skeemaan @HiddenFromAiemmatOpiskeluoikeudet-merkintä (vankilaopetuksessa, käyttäytymisenArvio) aiemmatOpiskeluoikeudet-massaluovutuskyselyn suodatusta ja dokumentaatiota varten; ei muutosta tiedonsiirtoprotokollaan
+TOR-XXX - AmmatillisenTutkinnonOsittainenUseastaTutkinnostaSuoritus-luokan suoritustapa-kentän Scala-oletusarvossa koodiarvo ja koodistoUri olivat väärin päin; oletusarvoa ei käytetä deserialisoinnissa, ei muutosta skeemaan tai tiedonsiirtoprotokollaan
