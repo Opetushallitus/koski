@@ -51,6 +51,17 @@ export const ParasArvosanaView = <T extends Arviointi>(
   return paras ? <ArvosanaView {...props} value={paras} /> : null
 }
 
+export const ParasArvosanaKoodiarvoView = <T extends Arviointi>(
+  props: ParasArvosanaViewProps<T>
+) => {
+  const paras = props.value !== undefined && parasArviointi(props.value)
+  return (
+    <TestIdText id="arvosana.value">
+      {paras ? paras.arvosana.koodiarvo : ''}
+    </TestIdText>
+  )
+}
+
 export const ParasArvosanaPäiväView = <T extends Arviointi>(
   props: ParasArvosanaViewProps<T>
 ) => {

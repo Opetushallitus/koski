@@ -23,8 +23,6 @@ test.describe('Lukiokoulutus 2019: oppiaineen muokkaus', () => {
   test('Kieliaineen kieli voidaan muuttaa ja tallentaa', async ({
     oppijaPage
   }) => {
-    // Muokkausnäkymässä .nimi näyttää vain kiinteän etuliitteen - kielivalinta
-    // on erillinen pudotusvalikko, ei osa nimeä.
     await expect(ai.locator('.nimi')).toHaveText('Äidinkieli ja kirjallisuus,')
 
     const kieli = opiskeluoikeus.kieliaineenKieliDropdown(ai)
@@ -165,8 +163,6 @@ test.describe('Lukiokoulutus 2019: oppiaineen muokkaus', () => {
   test('Paikallisen oppiaineen alle voidaan lisätä osasuoritus/kurssi', async ({
     oppijaPage
   }) => {
-    // Kurssin arvosanan lisäys leimaa arviointipäivän tämänpäiväiseksi, joka ei
-    // voi olla opiskeluoikeuden päättymispäivän jälkeen (suoritus on valmis).
     await oppijaPage.poistaViimeisinTila()
 
     const rivi = await opiskeluoikeus.lisääJaTäytäPaikallinenOppiaine({

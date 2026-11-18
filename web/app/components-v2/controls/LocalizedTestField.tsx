@@ -27,6 +27,8 @@ export type LocalizedTextEditProps = CommonProps<
   large?: boolean
   placeholder?: string
   hasErrors?: boolean
+  /** Vain kenttiin, joilla ei ole KeyValueRow'ta ympärillään - ks. TextEdit. */
+  ariaLabel?: string
 }
 
 export const LocalizedTextEdit: React.FC<LocalizedTextEditProps> = (props) => (
@@ -36,6 +38,7 @@ export const LocalizedTextEdit: React.FC<LocalizedTextEditProps> = (props) => (
       large={props.large}
       placeholder={props.placeholder}
       hasErrors={props.hasErrors || Boolean(props.errors)}
+      ariaLabel={props.ariaLabel}
       onChange={(text) =>
         props.onChange(
           text === undefined || text === '' ? undefined : localize(text)

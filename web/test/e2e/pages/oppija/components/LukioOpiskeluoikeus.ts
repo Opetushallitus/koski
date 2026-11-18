@@ -19,12 +19,7 @@ export class LukioOpiskeluoikeus {
     )
     this.omanÄidinkielenOpinnot = this.kenttä('omanÄidinkielenOpinnot')
     this.tilaVahvistus = this.container.locator('.suoritus > .tila-vahvistus')
-    // Oppiaineiden/kurssien taulukko on oma React-komponenttinsa, ei
-    // PropertiesEditorin kautta renderöity - ei siis data-testid:tä.
-    // Sama taulukkoluokka on yhteinen "Lukion oppimäärä"- ja
-    // "Lukion oppiaineiden oppimäärien suoritus" -suoritustyypeille.
     this.oppiaineet = this.container.locator('table.suoritukset.oppiaineet')
-    // Ei data-testid:tä, ei roolia/nimeä - ei PropertiesEditor-rivi.
     this.päättymispäivä = this.container.locator('.päättymispäivä')
   }
 
@@ -32,8 +27,6 @@ export class LukioOpiskeluoikeus {
     return this.oppiaineet.locator(`.oppiaine-rivi.${koodi}`)
   }
 
-  // Tila-historia on lista erillisiä opiskeluoikeusjaksoja: varmistetaan
-  // päivämäärä ja tila per jakso erikseen, jotta pari ei voi mennä sekaisin.
   async odotaTilaHistoria(
     odotetut: { päivä: string; tila: string }[]
   ): Promise<void> {
@@ -48,10 +41,6 @@ export class LukioOpiskeluoikeus {
     }
   }
 
-  // "Lisää opiskeluoikeuden tila" -linkki on <a> ilman href-attribuuttia -
-  // ei siis linkki-roolia, testid on roolin puutteessa parempi valinta kuin
-  // CSS-luokkaketju. Avautuva valintaikkuna tarjoaa tilan roolipohjaisena
-  // radiopainikeryhmänä.
   async lisääTila(tila: string): Promise<void> {
     await this.container
       .getByTestId('lisää-opiskeluoikeuden-tila-btn')
@@ -61,17 +50,12 @@ export class LukioOpiskeluoikeus {
     await dialog.getByTestId('dialog-vahvista').click()
   }
 
-  // Kurssi tunnistetaan sen näkyvästä koodista (esim. "ÄI1") roolin ja nimen
-  // kautta, ei sijainnista listassa - kurssien järjestys ei ole osa
-  // testattavaa käyttäytymistä.
   kurssi(oppiaineRivi: Locator, koodi: string): Locator {
     return oppiaineRivi.locator('li.kurssi').filter({
       has: oppiaineRivi.page().getByRole('button', { name: koodi, exact: true })
     })
   }
 
-  // Kieliaineen kieli ei ole oma PropertiesEditor-rivi, vaan osa oppiaineen
-  // otsikkoa - ei data-testid:tä ympärillä.
   kieliaineenKieliDropdown(oppiaineRivi: Locator): Dropdown {
     return new Dropdown(
       oppiaineRivi.page(),
@@ -90,25 +74,16 @@ export class LukioOpiskeluoikeus {
     )
   }
 
-  // "suoritettuErityisenäTutkintona" on additionalOnlyEditableProperties -
-  // näkyy vain muokkaustilassa, ei koskaan katselutilassa edes arvolla true;
-  // katselussa sen näkyvä vaikutus on "**"-alaviite (footnote-hint), ei oma
-  // tekstikenttä. Toimii sekä suoritus- että oppiainetasolla - juuri valitsee
-  // kumman. Huom: suoritustason lipun asettaminen vaikuttaa KAIKKIIN
-  // oppiaineisiin (isErityinenTutkinto OR:ttaa suoritus- ja oppiainetason),
-  // ja jokaiselta vaaditaan tämän jälkeen oma laajuus - turvallinen testata
-  // vain tyhjällä, juuri luodulla suorituksella, ei valmiiksi täytetyllä.
   erityinenTutkintoCheckbox(juuri: Locator = this.container): Locator {
     return this.kenttä('suoritettuErityisenäTutkintona', juuri).getByRole(
       'checkbox'
     )
   }
 
-  // Laajuus muuttuu muokattavaksi inline-syötteeksi ainoastaan erityisenä
-  // tutkintona suoritetulle oppiaineelle (LukionOppiaineEditor.jsx:
-  // shouldEditLaajuus) - muulloin laajuus lasketaan kursseista eikä sitä voi
-  // syöttää suoraan. Sama "number-editor"-testid kuin muualla tässä
-  // tiedostossa laajuuden numerosyötteillä (lisääPaikallinenKurssi ym.).
+  pakollinenCheckbox(juuri: Locator): Locator {
+    return this.kenttä('pakollinen', juuri).getByRole('checkbox')
+  }
+
   laajuusInput(oppiaineRivi: Locator): Locator {
     return oppiaineRivi
       .locator('.laajuus:not(.arvioitu)')
@@ -122,12 +97,6 @@ export class LukioOpiskeluoikeus {
     )
   }
 
-  // "Lisää oppiaine" -pudotusvalikko lataa koodiston asynkronisesti
-  // (ajax-loading-placeholder) - odotetaan sen valmistumista ennen valintaa.
-  // Pudotusvalikon kehyksellä itsellään ei ole data-testid:tä, mutta sen
-  // combobox-syötteellä on näkyvä nimi (placeholder "Lisää oppiaine") -
-  // fromComboboxName tunnistaa kehyksen sen perusteella, ei kehyskohtaisella
-  // CSS-luokalla.
   private async uusiOppiaineDropdown(): Promise<Dropdown> {
     const uusiOppiaine = this.container.locator('.uusi-oppiaine').first()
     await expect(
@@ -147,8 +116,6 @@ export class LukioOpiskeluoikeus {
     await oppiaineRivi.locator('.remove-row a').click()
   }
 
-  // "Lisää..." luo tyhjän paikallisen oppiaineen täytettäväksi, ei valitse
-  // olemassaolevaa koodiston arvoa.
   async lisääPaikallinenOppiaine(): Promise<Locator> {
     const dropdown = await this.uusiOppiaineDropdown()
     await dropdown.selectOptionByClick('Lisää...')
@@ -183,16 +150,7 @@ export class LukioOpiskeluoikeus {
     await oppiaineRivi.getByText('Lisää osasuoritus').click()
     const page = oppiaineRivi.page()
     const dialog = page.getByRole('dialog')
-    // Dialogin kurssipudotusvalikko lataa koodiston asynkronisesti, samoin
-    // kuin uusiOppiaineDropdown() - odotetaan latauksen valmistumista ennen
-    // kuin pudotusvalikkoon koskee, muuten combobox ei ole vielä olemassa.
     await expect(dialog.locator('.ajax-loading-placeholder')).toHaveCount(0)
-    // Ei Dropdown.fromComboboxName(): tämän combobox'in aria-label seuraa
-    // elävästi kirjoitettua hakutekstiä (Dropdown.jsx: aria-label on
-    // queryAtomista riippuvainen) - kun filterAndSelectByClick() kirjoittaa
-    // kenttään, nimi "Lisää osasuoritus" katoaa ja laiska has-suodatin lakkaa
-    // täsmäämästä kesken haun. Varmistettu livenä: kirjoituksen jälkeen
-    // nimihaku ei enää löydä combobox'ia lainkaan.
     const kurssiDropdown = new Dropdown(page, dialog.locator('.dropdown'))
     return { dialog, kurssiDropdown }
   }
@@ -240,10 +198,6 @@ export class LukioOpiskeluoikeus {
     return new Dropdown(kurssi.page(), kurssi.getByTestId('enum-editor-dropdown'))
   }
 
-  // Valtakunnallinen moduuli ei näy pudotusvalikon oletuslistassa (katkaistu/
-  // rajattu alijoukko) - Dropdown.filterAndSelectByClick() kirjoittaa koodin
-  // hakukenttään ja klikkaa suodatettua vaihtoehtoa sen koodin perusteella
-  // (ei koko näkyvää nimeä, jotta koodiston sanamuodon muutos ei riko testiä).
   async lisääValtakunnallinenKurssi(
     oppiaineRivi: Locator,
     koodi: string,
@@ -261,16 +215,10 @@ export class LukioOpiskeluoikeus {
     return this.vahvistaLisääOsasuoritusDialogi(oppiaineRivi, dialog, koodi)
   }
 
-  // Samantyyppinen tilanne kuin poistaOppiaine(): ei roolia/nimeä.
   async poistaKurssi(kurssi: Locator): Promise<void> {
     await kurssi.locator('a.remove-value').click()
   }
 
-  // Yleinen PropertiesEditor (web/app/editor/PropertiesEditor.jsx) merkitsee joka
-  // skeemakentän arvon data-testid:llä "<kenttäavain>-value" - käytetään sitä
-  // suoraan CSS-luokkien sijaan. .first(), koska sama kenttäavain (esim.
-  // arvosana) voi toistua sisäkkäisissä osasuorituksissa; DOM-järjestyksessä
-  // oma kenttä tulee aina ennen sisäkkäisiä.
   kenttä(avain: string, juuri: Locator = this.container): Locator {
     return juuri.getByTestId(`${avain}-value`).first()
   }
