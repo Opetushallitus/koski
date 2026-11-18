@@ -153,6 +153,7 @@ jobs:
   build_koski:
     if: ${{ inputs.run-backend-tests || inputs.run-koski-ui-tests || inputs.run-schema-viewer-tests || inputs.run-valpas-ui-tests || inputs.run-oauth2-tests || inputs.run-docker-image-tests }}
     name: Build Koski app
+    timeout-minutes: 30
     runs-on: ubuntu-26.04
     steps:
       - uses: $/.github/actions/build_koski
