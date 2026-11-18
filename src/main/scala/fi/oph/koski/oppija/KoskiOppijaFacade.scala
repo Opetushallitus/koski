@@ -385,6 +385,7 @@ class KoskiOppijaFacade(
     } else {
       (oo, päätasonSuoritus) match {
         case (_: PerusopetuksenOpiskeluoikeus
+              | _: AhvenanmaanPerusopetuksenOpiskeluoikeus
               | _: AikuistenPerusopetuksenOpiskeluoikeus
               | _: AmmatillinenOpiskeluoikeus
               | _: InternationalSchoolOpiskeluoikeus
