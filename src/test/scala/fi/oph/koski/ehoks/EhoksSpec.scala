@@ -154,6 +154,13 @@ class EhoksSpec
     }
   }
 
+  "Dokumentaation skeema on saatavilla" in {
+    get("api/documentation/ehoks-oppija-result.json") {
+      verifyResponseStatusOk()
+      body should include("#/definitions/ehoksopiskeluoikeus")
+    }
+  }
+
   "Käyttöoikeudet" - {
     "vain globaalit lukuoikeudet sallitaan" in {
       get(s"api/ehoks/oppija/${KoskiSpecificMockOppijat.ammattilainen.oid}", headers = authHeaders(MockUsers.kalle)) {
