@@ -3,10 +3,15 @@ package fi.oph.koski.ehoks
 import fi.oph.koski.schema
 import fi.oph.koski.schema.LocalizedString
 import fi.oph.scalaschema.annotation.{SyntheticProperty, Title}
+import fi.oph.scalaschema.{ClassSchema, SchemaToJson}
+import org.json4s.JValue
 
 import java.time.LocalDate
 
 object EhoksSchema {
+  lazy val schemaJson: JValue =
+    SchemaToJson.toJsonSchema(schema.KoskiSchema.createSchema(classOf[EhoksOppija]).asInstanceOf[ClassSchema])
+
   val palautettavatOpiskeluoikeudenTyypit: List[String] = List(
     schema.OpiskeluoikeudenTyyppi.ammatillinenkoulutus.koodiarvo,
     schema.OpiskeluoikeudenTyyppi.tuva.koodiarvo
