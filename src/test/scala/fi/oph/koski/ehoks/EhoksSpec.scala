@@ -45,6 +45,8 @@ class EhoksSpec
         suoritus.tyyppi.koodiarvo should equal("ammatillinentutkinto")
         suoritus.koulutusmoduuli.tunniste.nimi should not be empty
         suoritus.vahvistus should not be empty
+        suoritus.koulutusmoduuli.perusteenDiaarinumero should not be empty
+        suoritus.tutkintonimike.toList.flatten.flatMap(_.nimi) should not be empty
 
         val json = JsonMethods.parse(body)
         val ooJson = (json \ "opiskeluoikeudet")(0).asInstanceOf[JObject]
@@ -52,7 +54,7 @@ class EhoksSpec
           "oid", "tyyppi", "oppilaitos", "koulutustoimija", "arvioituPäättymispäivä", "tila", "suoritukset", "alkamispäivä", "päättymispäivä"
         ))
         (ooJson \ "tyyppi").asInstanceOf[JObject].values.keySet should equal(Set("koodiarvo"))
-        (ooJson \ "oppilaitos").asInstanceOf[JObject].values.keySet should equal(Set("oid"))
+        (ooJson \ "oppilaitos").asInstanceOf[JObject].values.keySet should equal(Set("oid", "nimi"))
         (ooJson \ "suoritukset")(0).asInstanceOf[JObject].values.keySet should equal(Set(
           "tyyppi", "koulutusmoduuli", "osaamisala", "tutkintonimike", "suorituskieli", "toimipiste", "vahvistus"
         ))
