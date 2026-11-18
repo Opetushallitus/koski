@@ -579,6 +579,7 @@ jobs:
             fi.oph.koski.virta, \
             fi.oph.koski.sdg, \
             fi.oph.koski.kios, \
+            fi.oph.koski.ehoks, \
             fi.oph.koski.vtj, \
             fi.oph.koski.ytl, \
             fi.oph.koski.ytr, \
