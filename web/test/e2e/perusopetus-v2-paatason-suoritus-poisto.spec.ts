@@ -151,6 +151,30 @@ test.describe('Perusopetuksen uusi käyttöliittymä: päätason suorituksen poi
     await expectVuosiluokkaTabs(page)
   })
 
+  test('Välilehtien järjestys säilyy poiston jälkeen', async ({
+    page,
+    oppijaPage,
+    fixtures
+  }) => {
+    // Kaisan suoritukset on tallennettu järjestyksessä 7., 8., 9. vuosiluokka,
+    // päättötodistus, mutta editori järjestää ne päinvastoin.
+    await fixtures.reset()
+    await oppijaPage.goto(kaisaUrl)
+    await page.getByTestId('oo.0.opiskeluoikeus.edit').click()
+    await suoritusTabs(page).filter({ hasText: '7. vuosiluokka' }).click()
+    await page.getByTestId('oo.0.suoritukset.3.button').click()
+    await page.getByTestId('oo.0.suoritukset.3.confirm').click()
+
+    await expect(page.getByTestId('oo.0.opiskeluoikeus.edit')).toBeVisible({
+      timeout: 15000
+    })
+    await expect(suoritusTabs(page)).toHaveText([
+      'Päättötodistus',
+      '9. vuosiluokka',
+      '8. vuosiluokka'
+    ])
+  })
+
   test('Toistetun vuosiluokan poisto lähettää valitun suorituksen backendille', async ({
     page,
     oppijaPage,

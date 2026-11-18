@@ -25,13 +25,7 @@ import {
   PerusopetuksenVuosiluokanSuoritus,
   isPerusopetuksenVuosiluokanSuoritus
 } from '../types/fi/oph/koski/schema/PerusopetuksenVuosiluokanSuoritus'
-import {
-  getOpiskeluoikeusOid,
-  getVersionumero,
-  isTerminaalitila,
-  mergeOpiskeluoikeusVersionumeroAndRefetch
-} from '../util/opiskeluoikeus'
-import { deletePäätasonSuoritus } from '../util/koskiApi'
+import { isTerminaalitila } from '../util/opiskeluoikeus'
 import { viimeisinOpiskelujaksonTila } from '../util/schema'
 import { UusiPerusopetuksenVuosiluokanSuoritusModal } from './UusiPerusopetuksenVuosiluokanSuoritusModal'
 import { puuttuvatLuokkaAsteet } from './luokkaAsteenOppiaineet'
@@ -42,12 +36,12 @@ import {
   NuortenPerusopetuksenPaikallinenOppiaine
 } from '../types/fi/oph/koski/schema/NuortenPerusopetuksenPaikallinenOppiaine'
 import { isNuortenPerusopetuksenOppiaineenSuoritus } from '../types/fi/oph/koski/schema/NuortenPerusopetuksenOppiaineenSuoritus'
-import { poistettavaPäätasonSuoritus } from './paatasonSuoritusPoisto'
+import { perusopetuksenPäätasonSuoritusEq } from './paatasonSuoritusPoisto'
+import { useRemovePäätasonSuoritus } from '../components-v2/forms/useRemovePaatasonSuoritus'
 import {
   oletuksenaAvattavanSuorituksenIndeksi,
   sortPäätasonSuoritukset
 } from './paatasonSuoritustenJarjestys'
-import { deleteAt } from '../util/fp/arrays'
 
 export type PerusopetusEditorProps =
   AdaptedOpiskeluoikeusEditorProps<PerusopetuksenOpiskeluoikeus>
@@ -120,24 +114,12 @@ const PerusopetuksenPäätasonSuoritusEditor: React.FC<
     setPäätasonSuoritus
   )
 
-  const päätasonSuoritusAtBackend = poistettavaPäätasonSuoritus(
-    props.form.initialState,
-    päätasonSuoritus.index
-  )
-
-  const removePäätasonSuoritus = useCallback(async () => {
-    setPäätasonSuoritus(0)
-    await poistaPäätasonSuoritusBackendiltä(
-      props.form,
-      päätasonSuoritusAtBackend,
-      päätasonSuoritus.index
-    )
-  }, [
-    päätasonSuoritus.index,
-    päätasonSuoritusAtBackend,
+  const removePäätasonSuoritus = useRemovePäätasonSuoritus(
     props.form,
-    setPäätasonSuoritus
-  ])
+    päätasonSuoritus.suoritus,
+    perusopetuksenPäätasonSuoritusEq,
+    () => setPäätasonSuoritus(0)
+  )
 
   return (
     <>
@@ -174,32 +156,6 @@ const PerusopetuksenPäätasonSuoritusEditor: React.FC<
       </EditorContainer>
       {addSuoritusProps.modal}
     </>
-  )
-}
-
-const poistaPäätasonSuoritusBackendiltä = async (
-  form: FormModel<PerusopetuksenOpiskeluoikeus>,
-  päätasonSuoritus: PerusopetuksenPäätasonSuoritus | undefined,
-  suoritusIndex: number
-): Promise<void> => {
-  const oid = getOpiskeluoikeusOid(form.state)
-  const versio = getVersionumero(form.state)
-
-  if (!päätasonSuoritus || !oid || versio === undefined) {
-    return
-  }
-
-  const opiskeluoikeusPoistonJälkeen: PerusopetuksenOpiskeluoikeus = {
-    ...form.originalState,
-    suoritukset: deleteAt(form.originalState.suoritukset, suoritusIndex)
-  }
-
-  form.save(
-    () => deletePäätasonSuoritus(oid, versio, päätasonSuoritus),
-    (ooVersiot) => () =>
-      mergeOpiskeluoikeusVersionumeroAndRefetch<PerusopetuksenOpiskeluoikeus>(
-        ooVersiot
-      )(opiskeluoikeusPoistonJälkeen)
   )
 }
 

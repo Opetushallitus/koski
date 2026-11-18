@@ -1,32 +1,49 @@
 import { describe, expect, it } from 'vitest'
 
-import { poistettavaPäätasonSuoritus } from '../../app/perusopetus-v2/paatasonSuoritusPoisto'
+import { perusopetuksenPäätasonSuoritusEq } from '../../app/perusopetus-v2/paatasonSuoritusPoisto'
 
-const vuosiluokanSuoritus = (luokka: string) => ({
+const vuosiluokanSuoritus = (
+  koodiarvo: string,
+  luokka: string,
+  alkamispäivä: string
+) => ({
   $class: 'fi.oph.koski.schema.PerusopetuksenVuosiluokanSuoritus',
   luokka,
-  koulutusmoduuli: {
-    tunniste: {
-      koodiarvo: '7'
-    }
-  },
-  tyyppi: {
-    koodiarvo: 'perusopetuksenvuosiluokka',
-    koodistoUri: 'suorituksentyyppi'
-  }
+  alkamispäivä,
+  koulutusmoduuli: { tunniste: { koodiarvo } }
 })
 
-describe('perusopetus v2 päätason suorituksen poisto', () => {
-  it('erottaa saman vuosiluokan suoritukset valitun indeksin perusteella', () => {
-    const ensimmäinenSeiska = vuosiluokanSuoritus('7A')
-    const toinenSeiska = vuosiluokanSuoritus('7C')
-    const opiskeluoikeus = {
-      suoritukset: [ensimmäinenSeiska, toinenSeiska]
-    }
+const oppimääränSuoritus = {
+  $class: 'fi.oph.koski.schema.NuortenPerusopetuksenOppimääränSuoritus',
+  koulutusmoduuli: { tunniste: { koodiarvo: '201101' } }
+}
 
-    const poistettava = poistettavaPäätasonSuoritus(opiskeluoikeus as any, 1)
+describe('perusopetus v2 päätason suorituksen poisto', () => {
+  it('erottaa saman vuosiluokan suoritukset', () => {
+    const ensimmäinenSeiska = vuosiluokanSuoritus('7', '7A', '2013-08-15')
+    const toinenSeiska = vuosiluokanSuoritus('7', '7C', '2013-08-16')
+    const tallennetut = [ensimmäinenSeiska, toinenSeiska]
+
+    const poistettava = tallennetut.find((s) =>
+      perusopetuksenPäätasonSuoritusEq.equals(s, { ...toinenSeiska })
+    )
 
     expect(poistettava).toBe(toinenSeiska)
-    expect(poistettava).not.toBe(ensimmäinenSeiska)
+  })
+
+  it('ei löydä tallennetuista muokkauksessa lisättyä vuosiluokkaa', () => {
+    const tallennetut = [
+      oppimääränSuoritus,
+      vuosiluokanSuoritus('1', '1A', '2018-08-15')
+    ]
+    const lisätty = vuosiluokanSuoritus('2', '2A', '2019-08-15')
+
+    expect(tallennetut.some((s) => perusopetuksenPäätasonSuoritusEq.equals(s, lisätty))).toBe(false)
+  })
+
+  it('tunnistaa oppimäärän suorituksen', () => {
+    expect(perusopetuksenPäätasonSuoritusEq.equals(oppimääränSuoritus, { ...oppimääränSuoritus })).toBe(
+      true
+    )
   })
 })

@@ -6,7 +6,7 @@ import fi.oph.koski.documentation.PerusopetusExampleData
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
 import fi.oph.koski.http.{ErrorMatcher, KoskiErrorCategory}
 import fi.oph.koski.koskiuser.MockUsers
-import fi.oph.koski.schema.{NuortenPerusopetuksenOpiskeluoikeudenTila, NuortenPerusopetuksenOpiskeluoikeusjakso, PerusopetuksenOpiskeluoikeus, PerusopetuksenVuosiluokanSuoritus}
+import fi.oph.koski.schema.{AhvenanmaanPerusopetuksenOpiskeluoikeus, AhvenanmaanPerusopetuksenVuosiluokanSuoritus, NuortenPerusopetuksenOpiskeluoikeudenTila, NuortenPerusopetuksenOpiskeluoikeusjakso, PerusopetuksenOpiskeluoikeus, PerusopetuksenVuosiluokanSuoritus}
 import org.json4s.{JInt, JNothing, JString}
 import org.json4s.jackson.JsonMethods
 import org.scalatest.freespec.AnyFreeSpec
@@ -33,6 +33,23 @@ class PaatasonSuoritusInvalidateSpec extends AnyFreeSpec with Matchers with Kosk
         deletePäätasonSuoritus(oo.oid.get, 1, oo.suoritukset.head) {
           verifyResponseStatusOk()
         }
+      }
+
+      "kun useampi Ahvenanmaan perusopetuksen päätason suoritus" in {
+        val oid = KoskiSpecificMockOppijat.ahvenanmaanPerusoppilas.oid
+        val oo = oppija(oid).tallennettavatOpiskeluoikeudet.collect { case o: AhvenanmaanPerusopetuksenOpiskeluoikeus => o }.head
+        val kahdeksasLuokka = oo.suoritukset
+          .collect { case s: AhvenanmaanPerusopetuksenVuosiluokanSuoritus => s }
+          .find(_.koulutusmoduuli.tunniste.koodiarvo == "8")
+          .get
+
+        deletePäätasonSuoritus(oo.oid.get, oo.versionumero.get, kahdeksasLuokka) {
+          verifyResponseStatusOk()
+        }
+
+        val updated = getOpiskeluoikeus(oid, "ahvenanmaanperusopetus")
+        updated.suoritukset.map(_.koulutusmoduuli.tunniste.koodiarvo) should not contain "8"
+        updated.suoritukset.length should equal(oo.suoritukset.length - 1)
       }
 
       "kun suoritus on valmis" in {

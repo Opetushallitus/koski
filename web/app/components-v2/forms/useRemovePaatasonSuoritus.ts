@@ -42,12 +42,35 @@ export const useRemovePäätasonSuoritus = <T extends Opiskeluoikeus>(
     }
     form.save(
       () => deletePäätasonSuoritus(oid, versio, tallennetut[index]),
-      (ooVersiot) => () =>
-        mergeOpiskeluoikeusVersionumeroAndRefetch<T>(ooVersiot)(
-          opiskeluoikeusPoistonJälkeen
-        )
+      (ooVersiot) => async () => {
+        const tallennettu = await mergeOpiskeluoikeusVersionumeroAndRefetch<T>(
+          ooVersiot
+        )(opiskeluoikeusPoistonJälkeen)
+        // Backend palauttaa suoritukset tallennusjärjestyksessä, joka voi
+        // poiketa editorin järjestämistä välilehdistä.
+        return {
+          ...tallennettu,
+          suoritukset: samaanJärjestykseen(
+            tallennettu.suoritukset as PäätasonSuoritusOf<T>[],
+            opiskeluoikeusPoistonJälkeen.suoritukset,
+            päätasonSuoritusEq
+          )
+        }
+      }
     )
   }, [form, onRemove, päätasonSuoritus, päätasonSuoritusEq])
 
   return removePäätasonSuoritus
+}
+
+const samaanJärjestykseen = <S>(
+  suoritukset: S[],
+  järjestys: S[],
+  eq: Eq.Eq<S>
+): S[] => {
+  const sijainti = (s: S) => {
+    const i = järjestys.findIndex((j) => eq.equals(j, s))
+    return i < 0 ? järjestys.length : i
+  }
+  return [...suoritukset].sort((a, b) => sijainti(a) - sijainti(b))
 }
