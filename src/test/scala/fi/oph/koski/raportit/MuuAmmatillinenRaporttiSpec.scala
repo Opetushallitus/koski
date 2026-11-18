@@ -37,14 +37,6 @@ class MuuAmmatillinenRaporttiSpec
   }
 
   "Muu ammatillinen suoritustietoraportti" - {
-    "Voidaan ladata ja tuottaa auditlogin" in {
-      verifyRaportinLataaminen(apiUrl = "api/raportit/muuammatillinen", expectedRaporttiNimi = "muuammatillinen", expectedFileNamePrefix = "muu_ammatillinen_koski_raportti")
-    }
-
-    "Voidaan ladata eri lokalisaatiolla ja tuottaa auditlogin" in {
-      verifyRaportinLataaminen(apiUrl = "api/raportit/muuammatillinen", expectedRaporttiNimi = "muuammatillinen", expectedFileNamePrefix = "övrig_yrkesutbildning_koski_rapport", lang = "sv")
-    }
-
     "Raportin hakuväli päivämäärä rajaus" - {
       "Opiskeluoikeus alkanut raportin hakuvälin jälkeen" in {
         raportti.filter(_.hetu.exists(KoskiSpecificMockOppijat.amis.hetu.contains)).length should equal(0)

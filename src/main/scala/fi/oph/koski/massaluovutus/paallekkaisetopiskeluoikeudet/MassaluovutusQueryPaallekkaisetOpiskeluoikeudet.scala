@@ -50,7 +50,6 @@ case class MassaluovutusQueryPaallekkaisetOpiskeluoikeudet(
 
       val request = AikajaksoRaporttiRequest(
         oppilaitosOid = organisaatioOid.get,
-        downloadToken = None,
         password = password.getOrElse(generatePassword(16)),
         alku = alku,
         loppu = loppu,

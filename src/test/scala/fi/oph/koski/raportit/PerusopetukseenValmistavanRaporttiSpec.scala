@@ -5,10 +5,8 @@ import fi.oph.koski.api.misc.OpiskeluoikeusTestMethodsPerusopetus
 import fi.oph.koski.documentation.ExampleData.{opiskeluoikeusEronnut, opiskeluoikeusLäsnä}
 import fi.oph.koski.documentation.ExamplesPerusopetukseenValmistavaOpetus.perusopetukseenValmistavanOpetuksenSuoritus
 import fi.oph.koski.documentation.YleissivistavakoulutusExampleData
-import fi.oph.koski.organisaatio.MockOrganisaatiot.jyväskylänNormaalikoulu
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
 import fi.oph.koski.localization.LocalizationReader
-import fi.oph.koski.log.AuditLogTester
 import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.raportointikanta.RaportointikantaTestMethods
 import fi.oph.koski.schema._
@@ -75,24 +73,6 @@ class PerusopetukseenValmistavanRaporttiSpec extends AnyFreeSpec with Matchers w
   )
 
   "Valmistavan opetuksen raportti" - {
-    "Raportti voidaan ladata ja lataaminen tuottaa auditlogin" in {
-      authGet(s"api/raportit/perusopetukseenvalmistavansuoritustietojentarkistus?oppilaitosOid=$jyväskylänNormaalikoulu&alku=2018-01-01&loppu=2022-01-01&lang=fi&password=salasana") {
-        verifyResponseStatusOk()
-        response.headers("Content-Disposition").head should equal(s"""attachment; filename="Perusopetukseen_valmistava_opetus_${jyväskylänNormaalikoulu}_2018-01-01_2022-01-01.xlsx"""")
-        response.bodyBytes.take(ENCRYPTED_XLSX_PREFIX.length) should equal(ENCRYPTED_XLSX_PREFIX)
-        AuditLogTester.verifyLastAuditLogMessageForOperation(Map("operation" -> "OPISKELUOIKEUS_RAPORTTI", "target" -> Map("hakuEhto" -> s"raportti=perusopetukseenvalmistavansuoritustietojentarkistus&oppilaitosOid=$jyväskylänNormaalikoulu&alku=2018-01-01&loppu=2022-01-01&lang=fi")))
-      }
-    }
-
-    "Raportin lataaminen toimii eri lokalisaatiolla" in {
-      authGet(s"api/raportit/perusopetukseenvalmistavansuoritustietojentarkistus?oppilaitosOid=$jyväskylänNormaalikoulu&alku=2018-01-01&loppu=2022-01-01&lang=sv&password=salasana") {
-        verifyResponseStatusOk()
-        response.headers("Content-Disposition").head should equal(s"""attachment; filename="Undervisning_som_förbereder_för_grundläggande_utbildning_${jyväskylänNormaalikoulu}_2018-01-01_2022-01-01.xlsx"""")
-        response.bodyBytes.take(ENCRYPTED_XLSX_PREFIX.length) should equal(ENCRYPTED_XLSX_PREFIX)
-        AuditLogTester.verifyLastAuditLogMessageForOperation(Map("operation" -> "OPISKELUOIKEUS_RAPORTTI", "target" -> Map("hakuEhto" -> s"raportti=perusopetukseenvalmistavansuoritustietojentarkistus&oppilaitosOid=$jyväskylänNormaalikoulu&alku=2018-01-01&loppu=2022-01-01&lang=sv")))
-      }
-    }
-
     "Raportti näyttää oikealta" - {
       def haeRaportti(organisaatioOid: String) = {
         val alku = LocalDate.of(2000, 1, 1)
@@ -101,7 +81,6 @@ class PerusopetukseenValmistavanRaporttiSpec extends AnyFreeSpec with Matchers w
         val raportitService = new RaportitService(KoskiApplicationForTests)
         val raportti = raportitService.perusopetukseenvalmistavanopetuksenraportti(AikajaksoRaporttiAikarajauksellaRequest(
           oppilaitosOid = organisaatioOid,
-          downloadToken = None,
           password = "",
           alku = alku,
           loppu = loppu,

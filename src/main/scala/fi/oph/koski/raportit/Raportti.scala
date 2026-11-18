@@ -39,7 +39,6 @@ trait VuosiluokkaRaporttiPaivalta extends Raportti {
 
 trait RaporttiRequest {
   def oppilaitosOid: Organisaatio.Oid
-  def downloadToken: Option[String]
   def password: String
 }
 
@@ -51,7 +50,6 @@ trait RaporttiAikajaksoltaRequest extends RaporttiRequest {
 case class AikajaksoRaporttiRequest
 (
   oppilaitosOid: Organisaatio.Oid,
-  downloadToken: Option[String],
   password: String,
   alku: LocalDate,
   loppu: LocalDate,
@@ -61,7 +59,6 @@ case class AikajaksoRaporttiRequest
 case class PerusopetuksenVuosiluokkaRequest
 (
   oppilaitosOid: Organisaatio.Oid,
-  downloadToken: Option[String],
   password: String,
   paiva: LocalDate,
   vuosiluokka: String,
@@ -72,13 +69,11 @@ case class PerusopetuksenVuosiluokkaRequest
 case class OppilaitosRaporttiResponse(
   sheets: Seq[Sheet],
   workbookSettings: WorkbookSettings,
-  filename: String,
-  downloadToken: Option[String]
+  filename: String
 )
 
 case class AikajaksoRaporttiAikarajauksellaRequest(
   oppilaitosOid: Organisaatio.Oid,
-  downloadToken: Option[String],
   password: String,
   alku: LocalDate,
   loppu: LocalDate,
@@ -89,7 +84,6 @@ case class AikajaksoRaporttiAikarajauksellaRequest(
 
 case class AikuistenPerusopetusRaporttiRequest(
   oppilaitosOid: Organisaatio.Oid,
-  downloadToken: Option[String],
   password: String,
   alku: LocalDate,
   loppu: LocalDate,
@@ -100,7 +94,6 @@ case class AikuistenPerusopetusRaporttiRequest(
 
 case class IBSuoritustiedotRaporttiRequest(
   oppilaitosOid: Organisaatio.Oid,
-  downloadToken: Option[String],
   password: String,
   alku: LocalDate,
   loppu: LocalDate,
@@ -112,7 +105,6 @@ case class IBSuoritustiedotRaporttiRequest(
 
 case class RaporttiPäivältäRequest(
   oppilaitosOid: Organisaatio.Oid,
-  downloadToken: Option[String],
   password: String,
   paiva: LocalDate,
   lang: String

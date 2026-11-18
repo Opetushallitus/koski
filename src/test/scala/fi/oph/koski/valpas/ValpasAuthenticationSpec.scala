@@ -8,7 +8,7 @@ import fi.oph.koski.valpas.valpasuser.ValpasMockUsers
 class ValpasAuthenticationSpec extends ValpasTestBase {
   val täysinAvoinUri = s"/api/koodisto/suoritustyypit"
   val sessionVaativaUri = s"/api/organisaatio/hierarkia"
-  val virkailjanTaiPalvelukäyttäjänVaativaUri = s"/api/raportit/organisaatiot"
+  val virkailjanTaiPalvelukäyttäjänVaativaUri = "/api/raportit/organisaatiot-ja-raporttityypit"
   val kansalaisUri = s"/api/omattiedot/editor"
   val valpasSessionVaativaUri = s"/valpas/api/user"
 

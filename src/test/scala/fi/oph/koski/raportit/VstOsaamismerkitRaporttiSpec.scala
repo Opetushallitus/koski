@@ -122,7 +122,7 @@ class VstOsaamismerkitRaporttiSpec
     alku: LocalDate = date(2020, 1, 1),
     loppu: LocalDate = date(2026, 1, 1),
   ): OppilaitosRaporttiResponse = {
-    val request = AikajaksoRaporttiRequest(organisaatioOid, None, "password", alku, loppu, "fi")
+    val request = AikajaksoRaporttiRequest(organisaatioOid, "password", alku, loppu, "fi")
     val t = new LocalizationReader(KoskiApplicationForTests.koskiLocalizationRepository, "fi")
     raportitService.vstOsaamismerkit(request, t)
   }

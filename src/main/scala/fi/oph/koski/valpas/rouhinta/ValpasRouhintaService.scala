@@ -91,7 +91,6 @@ class ValpasRouhintaService(application: KoskiApplication) extends ValpasRouhint
       sheets = sheets,
       workbookSettings = WorkbookSettings(title, password),
       filename = filename,
-      downloadToken = None,
     )
   }
 }

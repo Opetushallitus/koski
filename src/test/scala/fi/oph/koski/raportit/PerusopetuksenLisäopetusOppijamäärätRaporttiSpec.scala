@@ -6,7 +6,6 @@ import fi.oph.koski.henkilo.VerifiedHenkilöOid
 import fi.oph.koski.{DirtiesFixtures, KoskiApplicationForTests}
 import fi.oph.koski.koskiuser.KoskiMockUser
 import fi.oph.koski.localization.LocalizationReader
-import fi.oph.koski.log.AuditLogTester
 import fi.oph.koski.organisaatio.MockOrganisaatiot.jyväskylänNormaalikoulu
 import fi.oph.koski.raportointikanta.RaportointikantaTestMethods
 import fi.oph.koski.schema.{Aikajakso, ErityisenTuenPäätös, PerusopetuksenLisäopetuksenOpiskeluoikeudenLisätiedot, PerusopetuksenLisäopetuksenOpiskeluoikeus}
@@ -154,38 +153,6 @@ class PerusopetuksenLisäopetusOppijamäärätRaporttiSpec extends AnyFreeSpec w
     .rows.map(_.asInstanceOf[PerusopetuksenLisäopetusOppijamäärätRaporttiRow])
 
   "Perusopetuksen lisäopetuksen oppijamäärien raportti" - {
-    "Raportti voidaan ladata ja lataaminen tuottaa auditlogin" in {
-      authGet(s"api/raportit/perusopetuksenlisaopetuksenoppijamaaratraportti?oppilaitosOid=$jyväskylänNormaalikoulu&paiva=2007-01-01&password=salasana&lang=fi") {
-        verifyResponseStatusOk()
-        response.headers("Content-Disposition").head should equal(s"""attachment; filename="lisaopetus_tunnuslukuraportti-2007-01-01.xlsx"""")
-        response.bodyBytes.take(ENCRYPTED_XLSX_PREFIX.length) should equal(ENCRYPTED_XLSX_PREFIX)
-        AuditLogTester.verifyLastAuditLogMessageForOperation(
-          Map(
-            "operation" -> "OPISKELUOIKEUS_RAPORTTI",
-            "target" -> Map(
-              "hakuEhto" -> s"raportti=perusopetuksenlisaopetuksenoppijamaaratraportti&oppilaitosOid=$jyväskylänNormaalikoulu&paiva=2007-01-01&lang=fi"
-            )
-          )
-        )
-      }
-    }
-
-    "Raportti voidaan ladata eri lokalisaatiolla ja lataaminen tuottaa auditlogin" in {
-      authGet(s"api/raportit/perusopetuksenlisaopetuksenoppijamaaratraportti?oppilaitosOid=$jyväskylänNormaalikoulu&paiva=2007-01-01&password=salasana&lang=sv") {
-        verifyResponseStatusOk()
-        response.headers("Content-Disposition").head should equal(s"""attachment; filename="påbyggnadsundervisning_nyckeltal_rapport-2007-01-01.xlsx"""")
-        response.bodyBytes.take(ENCRYPTED_XLSX_PREFIX.length) should equal(ENCRYPTED_XLSX_PREFIX)
-        AuditLogTester.verifyLastAuditLogMessageForOperation(
-          Map(
-            "operation" -> "OPISKELUOIKEUS_RAPORTTI",
-            "target" -> Map(
-              "hakuEhto" -> s"raportti=perusopetuksenlisaopetuksenoppijamaaratraportti&oppilaitosOid=$jyväskylänNormaalikoulu&paiva=2007-01-01&lang=sv"
-            )
-          )
-        )
-      }
-    }
-
     "Raportin sarakkeet" in {
       val rows = raportti.filter(_.oppilaitosNimi.equals("Jyväskylän normaalikoulu"))
       rows.length should be(1)

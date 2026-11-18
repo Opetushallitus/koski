@@ -3,7 +3,6 @@ package fi.oph.koski.raportit
 import fi.oph.koski.api.misc.OpiskeluoikeusTestMethods
 import fi.oph.koski.henkilo.{KoskiSpecificMockOppijat, LaajatOppijaHenkilöTiedot}
 import fi.oph.koski.localization.LocalizationReader
-import fi.oph.koski.log.AuditLogTester
 import fi.oph.koski.organisaatio.MockOrganisaatiot._
 import fi.oph.koski.raportit.tuva.TuvaSuoritustiedotRaportti
 import fi.oph.koski.raportointikanta.RaportointikantaTestMethods
@@ -25,24 +24,6 @@ class TuvaSuoritustiedotRaporttiSpec
   private lazy val t: LocalizationReader = new LocalizationReader(KoskiApplicationForTests.koskiLocalizationRepository, "fi")
 
   "Tutkintokoulutukseen valmentavan koulutuksen suoritustietoraportti" - {
-
-    "Raportti voidaan ladata ja lataaminen tuottaa auditlogin" in {
-      authGet(s"api/raportit/tuvasuoritustietojentarkistus?oppilaitosOid=$stadinAmmattiopisto&alku=2018-01-01&loppu=2022-01-01&lang=fi&password=salasana") {
-        verifyResponseStatusOk()
-        response.headers("Content-Disposition").head should equal(s"""attachment; filename="tuva_suoritustiedot_${stadinAmmattiopisto}_2018-01-01_2022-01-01.xlsx"""")
-        response.bodyBytes.take(ENCRYPTED_XLSX_PREFIX.length) should equal(ENCRYPTED_XLSX_PREFIX)
-        AuditLogTester.verifyLastAuditLogMessageForOperation(Map("operation" -> "OPISKELUOIKEUS_RAPORTTI", "target" -> Map("hakuEhto" -> s"raportti=tuvasuoritustietojentarkistus&oppilaitosOid=$stadinAmmattiopisto&alku=2018-01-01&loppu=2022-01-01&lang=fi")))
-      }
-    }
-
-    "Raportti voidaan ladata eri lokalisaatiolla ja lataaminen tuottaa auditlogin" in {
-      authGet(s"api/raportit/tuvasuoritustietojentarkistus?oppilaitosOid=$stadinAmmattiopisto&alku=2018-01-01&loppu=2022-01-01&lang=sv&password=salasana") {
-        verifyResponseStatusOk()
-        response.headers("Content-Disposition").head should equal(s"""attachment; filename="hux_prestationsuppgifter_${stadinAmmattiopisto}_2018-01-01_2022-01-01.xlsx"""")
-        response.bodyBytes.take(ENCRYPTED_XLSX_PREFIX.length) should equal(ENCRYPTED_XLSX_PREFIX)
-        AuditLogTester.verifyLastAuditLogMessageForOperation(Map("operation" -> "OPISKELUOIKEUS_RAPORTTI", "target" -> Map("hakuEhto" -> s"raportti=tuvasuoritustietojentarkistus&oppilaitosOid=$stadinAmmattiopisto&alku=2018-01-01&loppu=2022-01-01&lang=sv")))
-      }
-    }
 
     "Raportti näyttää oikealta" - {
       lazy val sheets = TuvaSuoritustiedotRaportti.buildRaportti(KoskiApplicationForTests.raportointiDatabase, stadinAmmattiopisto, date(2000, 1, 1), date(2022, 9, 30), t)

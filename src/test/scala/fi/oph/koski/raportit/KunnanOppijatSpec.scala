@@ -6,10 +6,8 @@ import fi.oph.koski.documentation.PerusopetusExampleData
 import fi.oph.koski.documentation.YleissivistavakoulutusExampleData.oppilaitos
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
 import fi.oph.koski.koskiuser.MockUsers
-import fi.oph.koski.log.AuditLogTester
-import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.koodisto.Kunta
-import fi.oph.koski.organisaatio.MockOrganisaatiot.{aapajoenKoulu, helsinginKaupunki, tornionKaupunki}
+import fi.oph.koski.organisaatio.MockOrganisaatiot.{helsinginKaupunki, tornionKaupunki}
 import fi.oph.koski.raportointikanta.RaportointikantaTestMethods
 import fi.oph.koski.schema._
 import fi.oph.koski.{DirtiesFixtures, KoskiApplicationForTests}
@@ -29,57 +27,6 @@ class KunnanOppijatSpec extends AnyFreeSpec with Matchers with RaportointikantaT
   private val application = KoskiApplicationForTests
 
   private val kunnanOppijatBuilder = KunnanOppijat(application.raportointiDatabase.db)
-
-  "Raportti voidaan ladata kunnalle ja lataaminen tuottaa auditlogin" in {
-    authGet(s"api/raportit/kunnanoppijat?oppilaitosOid=$helsinginKaupunki&paiva=$raportointipäivä&lang=fi&password=salasana", user = MockUsers.paakayttaja) {
-      verifyResponseStatusOk()
-      response.bodyBytes.take(ENCRYPTED_XLSX_PREFIX.length) should equal(ENCRYPTED_XLSX_PREFIX)
-      AuditLogTester.verifyLastAuditLogMessageForOperation(
-        Map(
-          "operation" -> "OPISKELUOIKEUS_RAPORTTI",
-          "target" -> Map(
-            "hakuEhto" -> s"raportti=kunnanoppijat&oppilaitosOid=$helsinginKaupunki&paiva=$raportointipäivä&lang=fi"
-          )
-        )
-      )
-    }
-  }
-
-  "Raporttia ei voi ladata organisaatiolle, joka ei ole kunta" in {
-    authGet(s"api/raportit/kunnanoppijat?oppilaitosOid=$aapajoenKoulu&paiva=$raportointipäivä&lang=fi&password=salasana") {
-      verifyResponseStatus(400, KoskiErrorCategory.badRequest.queryParam(s"Organisaatio $aapajoenKoulu ei ole kunta"))
-    }
-  }
-
-  "Kunnan oppilaitoksen käyttöoikeuksilla ei voi ladata kunnan raporttia" in {
-    authGet(s"api/raportit/kunnanoppijat?oppilaitosOid=$helsinginKaupunki&paiva=$raportointipäivä&lang=fi&password=salasana", user = MockUsers.stadinAmmattiopistoKatselija) {
-      verifyResponseStatus(403, KoskiErrorCategory.forbidden.organisaatio())
-    }
-  }
-
-  "Kunnan esiopetuksen käyttöoikeuksilla ei voi ladata raporttia" in {
-    authGet(s"api/raportit/kunnanoppijat?oppilaitosOid=$helsinginKaupunki&paiva=$raportointipäivä&lang=fi&password=salasana", user = MockUsers.esiopetusTallentaja) {
-      verifyResponseStatus(403, KoskiErrorCategory.forbidden.opiskeluoikeudenTyyppi())
-    }
-  }
-
-  "Koulutusmuotoihin rajatuilla OPH:n oikeuksilla ei voi ladata raporttia" in {
-    authGet(s"api/raportit/kunnanoppijat?oppilaitosOid=$helsinginKaupunki&paiva=$raportointipäivä&lang=fi&password=salasana", user = MockUsers.ophLukioKatselija) {
-      verifyResponseStatus(403, KoskiErrorCategory.forbidden.opiskeluoikeudenTyyppi())
-    }
-  }
-
-  "Luottamuksellisten tietojen oikeus muussa organisaatiossa ei riitä" in {
-    authGet(s"api/raportit/kunnanoppijat?oppilaitosOid=$helsinginKaupunki&paiva=$raportointipäivä&lang=fi&password=salasana", user = MockUsers.helsinkiIlmanLuottamuksellisiaTietoja) {
-      verifyResponseStatus(403, KoskiErrorCategory.forbidden.kiellettyKäyttöoikeus())
-    }
-  }
-
-  "Perus- ja esiopetuksen oikeuksilla voi ladata raportin" in {
-    authGet(s"api/raportit/kunnanoppijat?oppilaitosOid=$helsinginKaupunki&paiva=$raportointipäivä&lang=fi&password=salasana", user = MockUsers.helsinkiPerusopetuksenKatselija) {
-      verifyResponseStatusOk()
-    }
-  }
 
   lazy val helsinkiläiset = kunnanOppijatBuilder.oppijat(helsinginKaupunki, Kunta.helsinki, raportointipäivä, "Esiopetus")
 
