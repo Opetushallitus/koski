@@ -58,6 +58,7 @@ import fi.oph.koski.valpas.rouhinta.ValpasRouhintaApiServlet
 import fi.oph.koski.valpas.sso.ValpasOppijaCasServlet
 import fi.oph.koski.valpas.ytl.ValpasYtlServlet
 import fi.oph.koski.valvira.ValviraServlet
+import fi.oph.koski.ehoks.EhoksServlet
 import fi.oph.koski.kios.KiosServlet
 import fi.oph.koski.ytl.YtlServlet
 import fi.oph.koski.ytr.download.{YtrDownloadService, YtrStatusServlet, YtrTestServlet}
@@ -145,6 +146,7 @@ class ScalatraBootstrap extends LifeCycle with Logging with Timing with GlobalEx
     mount("/koski/api/ytrkoesuoritukset", new YtrKoesuoritusApiServlet)
     mount("/koski/api/massaluovutus", new MassaluovutusServlet)
     mount("/koski/api/kios", new KiosServlet)
+    mount("/koski/api/ehoks", new EhoksServlet)
     mount("/koski/api/hakemuspalvelu", new HakemuspalveluServlet)
 
     mount("/koski/api/todistus", new TodistusApiServlet)
