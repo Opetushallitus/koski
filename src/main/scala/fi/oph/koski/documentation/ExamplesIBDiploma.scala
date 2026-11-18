@@ -13,14 +13,14 @@ import java.time.LocalDate.{of => date}
 object ExamplesIBDiploma {
   val iboTunniste = "ABC123"
   val vahvistuspäivä: LocalDate = date(2016, 7, 6)
-  val tutkintokerta: IBTutkintokerta = IBTutkintokerta("2016M", 2016, finnish("toukokuu"))
+  val tutkintokerta: IBTutkintokerta = IBTutkintokerta("2016K", 2016, finnish("kevät"))
 
   def oppiaineenArviointi(arvosana: String): Option[List[IBDiplomanOppiaineenArviointi]] =
     Some(List(IBDiplomanOppiaineenArviointi(Koodistokoodiviite(arvosana, "arviointiasteikkoib"), Some(vahvistuspäivä))))
 
   def muuOppiaine(tunniste: String, taso: String, arvosana: String, additionalSubject: Boolean = false): IBDiplomanOppiaineenSuoritus =
     IBDiplomanOppiaineenSuoritus(
-      koulutusmoduuli = IBDiplomanMuuOppiaine(Koodistokoodiviite(tunniste, "oppiaineetib"), Koodistokoodiviite(taso, "oppiaineentasoib")),
+      koulutusmoduuli = IBDiplomanMuuOppiaine(Koodistokoodiviite(tunniste, "oppiaineetib"), Some(Koodistokoodiviite(taso, "oppiaineentasoib"))),
       tutkintokerta = tutkintokerta,
       arviointi = oppiaineenArviointi(arvosana),
       additionalSubject = additionalSubject,
@@ -30,18 +30,28 @@ object ExamplesIBDiploma {
     IBDiplomanOppiaineenSuoritus(
       koulutusmoduuli = IBDiplomanKieliOppiaine(
         Koodistokoodiviite(tunniste, "oppiaineetib"),
-        Koodistokoodiviite(taso, "oppiaineentasoib"),
+        Some(Koodistokoodiviite(taso, "oppiaineentasoib")),
         Koodistokoodiviite(kieli, "kielivalikoima"),
       ),
       tutkintokerta = tutkintokerta,
       arviointi = oppiaineenArviointi(arvosana),
     )
 
-  def core(tunniste: String, aine: Option[String], arvosana: String): IBDiplomanCoreSuoritus =
+  def coreArviointi(arvosana: String): Option[List[IBDiplomanCoreArviointi]] =
+    Some(List(IBDiplomanCoreArviointi(Koodistokoodiviite(arvosana, "arviointiasteikkocorerequirementsib"), Some(vahvistuspäivä))))
+
+  def extendedEssay(aine: String, arvosana: String): IBDiplomanCoreSuoritus =
     IBDiplomanCoreSuoritus(
-      koulutusmoduuli = IBDiplomanCoreOppiaine(Koodistokoodiviite(tunniste, "oppiaineetib"), aine.map(Koodistokoodiviite(_, "oppiaineetib"))),
+      koulutusmoduuli = IBDiplomanExtendedEssay(aine = Some(IBDiplomanMuuOppiaine(Koodistokoodiviite(aine, "oppiaineetib"), None))),
       tutkintokerta = tutkintokerta,
-      arviointi = Some(List(IBDiplomanCoreArviointi(Koodistokoodiviite(arvosana, "arviointiasteikkocorerequirementsib"), Some(vahvistuspäivä)))),
+      arviointi = coreArviointi(arvosana),
+    )
+
+  def theoryOfKnowledge(arvosana: String): IBDiplomanCoreSuoritus =
+    IBDiplomanCoreSuoritus(
+      koulutusmoduuli = IBDiplomanTheoryOfKnowledge(),
+      tutkintokerta = tutkintokerta,
+      arviointi = coreArviointi(arvosana),
     )
 
   val suoritus: IBDiplomanSuoritus = IBDiplomanSuoritus(
@@ -58,8 +68,8 @@ object ExamplesIBDiploma {
       muuOppiaine("BIO", "SL", "6"),
       muuOppiaine("MATAA", "SL", "5"),
       muuOppiaine("PHY", "SL", "5"),
-      core("EE", Some("HIS"), "B"),
-      core("TOK", None, "A"),
+      extendedEssay("HIS", "B"),
+      theoryOfKnowledge("A"),
     )),
   )
 

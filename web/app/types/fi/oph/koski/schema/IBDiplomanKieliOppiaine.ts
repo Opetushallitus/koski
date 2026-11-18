@@ -9,13 +9,13 @@ import { LocalizedString } from './LocalizedString'
 export type IBDiplomanKieliOppiaine = {
   $class: 'fi.oph.koski.schema.IBDiplomanKieliOppiaine'
   tunniste: Koodistokoodiviite<'oppiaineetib', 'A' | 'A2' | 'B' | 'AB' | 'CLA'>
-  taso: Koodistokoodiviite<'oppiaineentasoib', string>
+  taso?: Koodistokoodiviite<'oppiaineentasoib', string>
   kieli: Koodistokoodiviite<'kielivalikoima', string>
 }
 
 export const IBDiplomanKieliOppiaine = (o: {
   tunniste: Koodistokoodiviite<'oppiaineetib', 'A' | 'A2' | 'B' | 'AB' | 'CLA'>
-  taso: Koodistokoodiviite<'oppiaineentasoib', string>
+  taso?: Koodistokoodiviite<'oppiaineentasoib', string>
   kieli: Koodistokoodiviite<'kielivalikoima', string>
 }): IBDiplomanKieliOppiaine => ({
   $class: 'fi.oph.koski.schema.IBDiplomanKieliOppiaine',

@@ -35,6 +35,18 @@ class IbisOppiainekarttaSpec extends AnyFreeSpec with TestEnvironment with Match
       IbisOppiainekartta.get("  english a:  literature ") should be(Some(IbisKieliOppiaine("A", "EN")))
     }
 
+    "tunnistaa IBIS:n 30 merkkiin katkaisemat nimet" in {
+      IbisOppiainekartta.get("MATHEMATICS ANALYSIS AND APPRO") should be(Some(IbisMuuOppiaine("MATAA")))
+      IbisOppiainekartta.get("MATHEMATICS APPLICATIONS AND I") should be(Some(IbisMuuOppiaine("MATAI")))
+    }
+
+    "tunnistaa jokaisen oppiaineen myös 30 merkkiin katkaistulla nimellä" in {
+      val eriävät = IbisOppiainekartta.oppiaineet.toList.collect {
+        case (nimi, oppiaine) if !IbisOppiainekartta.get(nimi.take(30)).contains(oppiaine) => nimi
+      }
+      eriävät should be(empty)
+    }
+
     "ei tunnista oppiaineita, joille ei vielä ole vastinetta Koskessa" in {
       List("WELSH A: Literature", "CLASS.GREEK", "ART HISTORY", "REF PROJECT").flatMap(IbisOppiainekartta.get) should be(empty)
     }
@@ -57,18 +69,16 @@ class IbisOppiainekarttaSpec extends AnyFreeSpec with TestEnvironment with Match
     year = 2026,
     month = "MAY",
     school = "000001",
-    personalCode = "ABC123",
-    dateOfBirth = None,
-    gender = "FEMALE",
+    sessionNumber = "0001",
+    personalCode = "abc123",
     category = IbisCategory.Diploma,
     lastName = "",
     firstName = "",
-    studentId = "",
-    courseRef = "",
+    universityId = "",
     lastChangeDate = None,
     totalPoints = Some(30),
     resultCode = IbisResultCode.DiplomaAwarded,
     eeTokPoints = Some(1),
-    subjects = List(IbisSubject(2026, "MAY", nimi, "HL", "5", additional = false, "ENGLISH")),
+    subjects = List(IbisSubject(2026, "MAY", nimi, "HL", "5", additional = false)),
   )
 }

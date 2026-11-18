@@ -11,9 +11,16 @@ case class IbisMuuOppiaine(tunniste: String) extends IbisOppiaine
 case class IbisKieliOppiaine(tunniste: String, kieli: String) extends IbisOppiaine
 
 // IBIS-tulostiedoston oppiaineen nimi (SUBJECT NAME) -> Kosken oppiaineetib-koodi ja kielioppiaineilla kielivalikoima-koodi.
-// Nimet ovat IBO:n oppiaineluettelosta 2026 sellaisinaan, myös katkaistut ja kirjoitusvirheelliset, koska haku vertaa koko nimeä.
+// Nimet ovat IBO:n oppiaineluettelosta 2026 sellaisinaan, myös katkaistut ja kirjoitusvirheelliset.
 object IbisOppiainekartta {
-  def get(nimi: String): Option[IbisOppiaine] = normalisoidut.get(normalisoi(nimi))
+  // Tulostiedostossa IBIS voi katkaista pitkän nimen 30 merkkiin (MATHEMATICS ANALYSIS AND APPRO), joten pitkät nimet
+  // tunnistetaan myös katkaistuina.
+  private val katkaistunNimenPituus = 30
+
+  def get(nimi: String): Option[IbisOppiaine] = {
+    val haettava = normalisoi(nimi)
+    normalisoidut.get(haettava).orElse(katkaistut.get(haettava))
+  }
 
   // IBO:n luettelossa kirjainkoko vaihtelee (ENGLISH A: Literature, KOREAN A: Lang and Literature).
   private def normalisoi(nimi: String): String = nimi.trim.replaceAll("\\s+", " ").toUpperCase(Locale.ROOT)
@@ -273,4 +280,8 @@ object IbisOppiainekartta {
   )
 
   private lazy val normalisoidut: Map[String, IbisOppiaine] = oppiaineet.map { case (nimi, oppiaine) => normalisoi(nimi) -> oppiaine }
+
+  private lazy val katkaistut: Map[String, IbisOppiaine] = oppiaineet.collect {
+    case (nimi, oppiaine) if nimi.length > katkaistunNimenPituus => normalisoi(nimi.take(katkaistunNimenPituus)) -> oppiaine
+  }
 }

@@ -84,14 +84,14 @@ case class IBDiplomanSuoritus(
 @Title("IB-tutkintokerta")
 @Description("IB-tutkintokerta (examination session), joita on vuosittain kaksi: toukokuu ja marraskuu")
 case class IBTutkintokerta(
-  @Description("Tutkintokerran tunniste muodossa VVVVK, jossa K on M (toukokuu) tai N (marraskuu)")
-  @RegularExpression("^[0-9]{4}[MN]$")
+  @Description("Tutkintokerran tunniste muodossa VVVVX, jossa X on K (kevät, May session) tai S (syksy, November session)")
+  @RegularExpression("^[0-9]{4}[KS]$")
   koodiarvo: String,
   vuosi: Int,
-  kuukausi: LocalizedString
+  vuodenaika: LocalizedString
 )
 
-trait IBDiplomanOsasuoritus extends Vahvistukseton with DuplikaatitSallittu {
+trait IBDiplomanOsasuoritus extends Vahvistukseton with DuplikaatitSallittu with MahdollisestiSuorituskielellinen {
   @Description("Tutkintokerta, jossa tulos on saatu")
   def tutkintokerta: IBTutkintokerta
 }
@@ -102,6 +102,7 @@ case class IBDiplomanOppiaineenSuoritus(
   koulutusmoduuli: IBDiplomanOppiaine,
   tutkintokerta: IBTutkintokerta,
   arviointi: Option[List[IBDiplomanOppiaineenArviointi]] = None,
+  suorituskieli: Option[Koodistokoodiviite] = None,
   @Description("Oppiaine ei kuulu diploman vaatimuksiin eikä vaikuta kokonaispistemäärään (IBIS ADDITIONAL SUBJECT)")
   additionalSubject: Boolean = false,
   @KoodistoKoodiarvo("ibdiplomanoppiaine")
@@ -115,39 +116,49 @@ case class IBDiplomanCoreSuoritus(
   koulutusmoduuli: IBDiplomanCoreOppiaine,
   tutkintokerta: IBTutkintokerta,
   arviointi: Option[List[IBDiplomanCoreArviointi]] = None,
+  suorituskieli: Option[Koodistokoodiviite] = None,
   @KoodistoKoodiarvo("ibdiplomancore")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("ibdiplomancore", "suorituksentyyppi")
 ) extends IBDiplomanOsasuoritus
 
 trait IBDiplomanOppiaine extends IBOppiaine with Laajuudeton {
+  // Valinnainen, koska extended essayn aineella ei ole tasoa (vrt. IBTaso).
   @Description("Oppiaineen taso: Higher Level (HL) tai Standard Level (SL)")
   @KoodistoUri("oppiaineentasoib")
-  def taso: Koodistokoodiviite
+  def taso: Option[Koodistokoodiviite]
 }
 
 @Title("Muu IB Diploman oppiaine")
 case class IBDiplomanMuuOppiaine(
   tunniste: Koodistokoodiviite,
-  taso: Koodistokoodiviite
+  taso: Option[Koodistokoodiviite]
 ) extends IBDiplomanOppiaine with MuuOppiaineIB
 
 @Title("IB Diploman kielioppiaine")
 case class IBDiplomanKieliOppiaine(
   tunniste: Koodistokoodiviite,
-  taso: Koodistokoodiviite,
+  taso: Option[Koodistokoodiviite],
   @Discriminator
   kieli: Koodistokoodiviite
 ) extends IBDiplomanOppiaine with KieliOppiaineIB
 
-@Title("IB Diploman core-oppiaine")
-case class IBDiplomanCoreOppiaine(
-  @KoodistoKoodiarvo("EE")
+trait IBDiplomanCoreOppiaine extends IBOppiaine with Laajuudeton
+
+@Title("IB Diploman Theory of Knowledge")
+case class IBDiplomanTheoryOfKnowledge(
+  @Description("Oppiaineen Theory of Knowledge tunniste")
   @KoodistoKoodiarvo("TOK")
-  tunniste: Koodistokoodiviite,
+  tunniste: Koodistokoodiviite = Koodistokoodiviite("TOK", "oppiaineetib")
+) extends IBDiplomanCoreOppiaine
+
+@Title("IB Diploman Extended Essay")
+case class IBDiplomanExtendedEssay(
+  @Description("Oppiaineen Extended Essay tunniste")
+  @KoodistoKoodiarvo("EE")
+  tunniste: Koodistokoodiviite = Koodistokoodiviite("EE", "oppiaineetib"),
   @Description("Oppiaine, josta extended essay on kirjoitettu")
-  @KoodistoUri("oppiaineetib")
-  aine: Option[Koodistokoodiviite] = None
-) extends IBOppiaine with Laajuudeton
+  aine: Option[IBDiplomanOppiaine] = None
+) extends IBDiplomanCoreOppiaine
 
 // TODO TOR-747: IBIS merkitsee arvosanan puuttumisen koodilla N (no grade issued) tai P (pending), joita arviointiasteikkoib ei
 // sisällä. Myönnetyn diploman oppiaineilla ne ovat harvinaisia, ja konvertteri jättää tällaiset oppiaineet toistaiseksi pois.

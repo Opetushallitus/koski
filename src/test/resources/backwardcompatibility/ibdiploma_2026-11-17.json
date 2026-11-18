@@ -121,10 +121,10 @@
         }
       },
       "tutkintokerta" : {
-        "koodiarvo" : "2016M",
+        "koodiarvo" : "2016K",
         "vuosi" : 2016,
-        "kuukausi" : {
-          "fi" : "toukokuu"
+        "vuodenaika" : {
+          "fi" : "kevät"
         }
       },
       "kokonaispistemäärä" : 37,
@@ -153,10 +153,10 @@
           }
         },
         "tutkintokerta" : {
-          "koodiarvo" : "2016M",
+          "koodiarvo" : "2016K",
           "vuosi" : 2016,
-          "kuukausi" : {
-            "fi" : "toukokuu"
+          "vuodenaika" : {
+            "fi" : "kevät"
           }
         },
         "arviointi" : [ {
@@ -188,10 +188,10 @@
           }
         },
         "tutkintokerta" : {
-          "koodiarvo" : "2016M",
+          "koodiarvo" : "2016K",
           "vuosi" : 2016,
-          "kuukausi" : {
-            "fi" : "toukokuu"
+          "vuodenaika" : {
+            "fi" : "kevät"
           }
         },
         "arviointi" : [ {
@@ -219,10 +219,10 @@
           }
         },
         "tutkintokerta" : {
-          "koodiarvo" : "2016M",
+          "koodiarvo" : "2016K",
           "vuosi" : 2016,
-          "kuukausi" : {
-            "fi" : "toukokuu"
+          "vuodenaika" : {
+            "fi" : "kevät"
           }
         },
         "arviointi" : [ {
@@ -250,10 +250,10 @@
           }
         },
         "tutkintokerta" : {
-          "koodiarvo" : "2016M",
+          "koodiarvo" : "2016K",
           "vuosi" : 2016,
-          "kuukausi" : {
-            "fi" : "toukokuu"
+          "vuodenaika" : {
+            "fi" : "kevät"
           }
         },
         "arviointi" : [ {
@@ -281,10 +281,10 @@
           }
         },
         "tutkintokerta" : {
-          "koodiarvo" : "2016M",
+          "koodiarvo" : "2016K",
           "vuosi" : 2016,
-          "kuukausi" : {
-            "fi" : "toukokuu"
+          "vuodenaika" : {
+            "fi" : "kevät"
           }
         },
         "arviointi" : [ {
@@ -312,10 +312,10 @@
           }
         },
         "tutkintokerta" : {
-          "koodiarvo" : "2016M",
+          "koodiarvo" : "2016K",
           "vuosi" : 2016,
-          "kuukausi" : {
-            "fi" : "toukokuu"
+          "vuodenaika" : {
+            "fi" : "kevät"
           }
         },
         "arviointi" : [ {
@@ -338,15 +338,17 @@
             "koodistoUri" : "oppiaineetib"
           },
           "aine" : {
-            "koodiarvo" : "HIS",
-            "koodistoUri" : "oppiaineetib"
+            "tunniste" : {
+              "koodiarvo" : "HIS",
+              "koodistoUri" : "oppiaineetib"
+            }
           }
         },
         "tutkintokerta" : {
-          "koodiarvo" : "2016M",
+          "koodiarvo" : "2016K",
           "vuosi" : 2016,
-          "kuukausi" : {
-            "fi" : "toukokuu"
+          "vuodenaika" : {
+            "fi" : "kevät"
           }
         },
         "arviointi" : [ {
@@ -369,10 +371,10 @@
           }
         },
         "tutkintokerta" : {
-          "koodiarvo" : "2016M",
+          "koodiarvo" : "2016K",
           "vuosi" : 2016,
-          "kuukausi" : {
-            "fi" : "toukokuu"
+          "vuodenaika" : {
+            "fi" : "kevät"
           }
         },
         "arviointi" : [ {
