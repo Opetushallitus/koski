@@ -856,7 +856,8 @@ function KurssiLista<
   form,
   parentPath,
   kurssit,
-  renderLisaaModal
+  renderLisaaModal,
+  syncWrapperLaajuus
 }: {
   form: FormModel<LukionOpiskeluoikeus>
   parentPath: FormOptic<LukionOpiskeluoikeus, TParent>
@@ -866,6 +867,7 @@ function KurssiLista<
     onAdd: (uusi: T) => void
     onClose: () => void
   }) => React.ReactNode
+  syncWrapperLaajuus?: boolean
 }) {
   const [lisääAuki, setLisääAuki] = useState(false)
 
@@ -873,6 +875,27 @@ function KurssiLista<
     LukionOpiskeluoikeus,
     T[] | undefined
   >
+  const wrapperLaajuusPath = (
+    parentPath as unknown as FormOptic<
+      LukionOpiskeluoikeus,
+      { koulutusmoduuli: { laajuus: LaajuusOpintopisteissä } }
+    >
+  )
+    .prop('koulutusmoduuli')
+    .prop('laajuus')
+
+  const updateKurssit = (uudetKurssit: T[] | undefined) => {
+    form.updateAt(kurssitPath, () => uudetKurssit)
+    if (syncWrapperLaajuus) {
+      form.updateAt(wrapperLaajuusPath, () =>
+        LaajuusOpintopisteissä({
+          arvo: sum(
+            (uudetKurssit || []).map((k) => k.koulutusmoduuli.laajuus.arvo)
+          )
+        })
+      )
+    }
+  }
 
   return (
     <span className="kurssit">
@@ -905,11 +928,7 @@ function KurssiLista<
                       charCode={CHARCODE_REMOVE}
                       label={t('Poista')}
                       size="input"
-                      onClick={() =>
-                        form.updateAt(kurssitPath, (os) =>
-                          deleteAt(i)(os || [])
-                        )
-                      }
+                      onClick={() => updateKurssit(deleteAt(i)(kurssit))}
                       testId="poisto"
                     />
                   )}
@@ -965,7 +984,7 @@ function KurssiLista<
                 (k) => k.koulutusmoduuli.tunniste.koodiarvo
               ),
               onAdd: (uusi) => {
-                form.updateAt(kurssitPath, (os) => appendOptional(uusi)(os))
+                updateKurssit(appendOptional(uusi)(kurssit))
                 setLisääAuki(false)
               },
               onClose: () => setLisääAuki(false)
@@ -1011,6 +1030,7 @@ const MuuSuoritusRivi: React.FC<{
             form={form}
             parentPath={muuSuoritusPath}
             kurssit={kurssit}
+            syncWrapperLaajuus
             renderLisaaModal={({
               olemassaOlevatKoodiarvot,
               onAdd,
@@ -1048,6 +1068,8 @@ const MuuSuoritusRivi: React.FC<{
   )
 }
 
+const MUU_SUORITUS_TUETUT_KOODIARVOT = ['LD', 'TO', 'MS']
+
 const uusiMuuSuoritus = (
   tunniste: Koodistokoodiviite<'lukionmuutopinnot'>
 ): MuidenLukioOpintojenSuoritus2019 => {
@@ -1076,6 +1098,9 @@ const UusiMuuSuoritus: React.FC<{
   const options: SelectOption<Koodistokoodiviite<'lukionmuutopinnot'>>[] = (
     koodisto || []
   )
+    .filter((k) =>
+      MUU_SUORITUS_TUETUT_KOODIARVOT.includes(k.koodiviite.koodiarvo)
+    )
     .filter((k) => !olemassaOlevatKoodiarvot.includes(k.koodiviite.koodiarvo))
     .map((k) => ({
       key: k.koodiviite.koodiarvo,
