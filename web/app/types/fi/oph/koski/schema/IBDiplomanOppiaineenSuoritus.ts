@@ -14,6 +14,7 @@ export type IBDiplomanOppiaineenSuoritus = {
   arviointi?: Array<IBDiplomanOppiaineenArviointi>
   tyyppi: Koodistokoodiviite<'suorituksentyyppi', 'ibdiplomanoppiaine'>
   tila?: Koodistokoodiviite<'suorituksentila', string>
+  suorituskieli?: Koodistokoodiviite<'kieli', string>
   tutkintokerta: IBTutkintokerta
   koulutusmoduuli: IBDiplomanOppiaine
   additionalSubject: boolean
@@ -23,15 +24,16 @@ export const IBDiplomanOppiaineenSuoritus = (o: {
   arviointi?: Array<IBDiplomanOppiaineenArviointi>
   tyyppi?: Koodistokoodiviite<'suorituksentyyppi', 'ibdiplomanoppiaine'>
   tila?: Koodistokoodiviite<'suorituksentila', string>
+  suorituskieli?: Koodistokoodiviite<'kieli', string>
   tutkintokerta: IBTutkintokerta
   koulutusmoduuli: IBDiplomanOppiaine
   additionalSubject: boolean
 }): IBDiplomanOppiaineenSuoritus => ({
-  $class: 'fi.oph.koski.schema.IBDiplomanOppiaineenSuoritus',
   tyyppi: Koodistokoodiviite({
     koodiarvo: 'ibdiplomanoppiaine',
     koodistoUri: 'suorituksentyyppi'
   }),
+  $class: 'fi.oph.koski.schema.IBDiplomanOppiaineenSuoritus',
   ...o
 })
 

@@ -3,21 +3,17 @@ package fi.oph.koski.ibis
 import java.time.LocalDate
 
 // IBIS-tulostiedoston rivi, eli yksi candidate registration. Kentät ja niiden järjestys ovat IBO:n dokumentin
-// "IB data file formats" (v1.0, 2021) muodon "CSV file new Language format" mukaiset, eli oppiaine tunnistetaan nimestä.
-// TODO TOR-747: Dokumentti on vanha. Kenttäjärjestys ja arvot on varmistettava ensimmäisestä oikeasta aineistosta. Jos OPH
-// saa muodon, jossa oppiaineet ovat numeerisina koodeina, nimet saadaan IBO:n SUB cross-reference filestä.
+// "IB data file formats" (v1.0, 2021) muodon "CSV file (normal)" mukaiset, ja ne on varmistettu kevään 2026 tiedostosta.
 case class IbisRecord(
   year: Int,
   month: String,
   school: String,
+  sessionNumber: String,
   personalCode: String,
-  dateOfBirth: Option[LocalDate],
-  gender: String,
   category: String,
   lastName: String,
   firstName: String,
-  studentId: String,
-  courseRef: String,
+  universityId: String,
   lastChangeDate: Option[LocalDate],
   totalPoints: Option[Int],
   resultCode: String,
@@ -34,27 +30,24 @@ case class IbisSubject(
   level: String,
   grade: String,
   additional: Boolean,
-  language: String,
 ) {
   def session: IbisSession = IbisSession(year, month)
-  def isCore: Boolean = IbisSubject.coreLevels.contains(level)
 }
 
 object IbisSubject {
-  val coreLevels: Set[String] = Set("EE", "TK")
-  val subjectLevels: Set[String] = Set("HL", "SL")
   // IBIS merkitsee nämä SUBJECT GRADE -kenttään arvosanan sijaan.
   val noGradeCodes: Map[String, String] = Map("N" -> "no grade issued", "P" -> "pending")
 }
 
 case class IbisSession(year: Int, month: String) {
-  def koodiarvo: String = s"$year${IbisSession.kuukausikirjaimet(month)}"
+  def koodiarvo: String = s"$year${IbisSession.vuodenaikakirjaimet(month)}"
 }
 
+// Tutkintokerrat koodataan kuten ylioppilastutkinnossa: toukokuun tutkintokerta on kevät ja marraskuun syksy.
 object IbisSession {
-  val kuukausikirjaimet: Map[String, String] = Map("MAY" -> "M", "NOVEMBER" -> "N")
-  val lokalisointiavaimet: Map[String, String] = Map("MAY" -> "toukokuu", "NOVEMBER" -> "marraskuu")
-  def validMonth(month: String): Boolean = kuukausikirjaimet.contains(month)
+  val vuodenaikakirjaimet: Map[String, String] = Map("MAY" -> "K", "NOVEMBER" -> "S")
+  val lokalisointiavaimet: Map[String, String] = Map("MAY" -> "kevät", "NOVEMBER" -> "syksy")
+  def validMonth(month: String): Boolean = vuodenaikakirjaimet.contains(month)
 }
 
 object IbisCategory {

@@ -1,5 +1,6 @@
 package fi.oph.koski.ibis
 
+import java.nio.charset.StandardCharsets
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import scala.util.Try
@@ -7,25 +8,35 @@ import scala.util.Try
 case class IbisParseError(line: Int, message: String)
 
 object IbisCsvParser {
-  private val fixedFieldCount = 15
-  private val subjectFieldCount = 7
+  private val fixedFieldCount = 13
+  private val subjectFieldCount = 6
   private val dateFormat = DateTimeFormatter.ofPattern("dd/MM/yyyy")
+
+  // Tiedosto ei välttämättä ole UTF-8:aa. Virheelliset tavut korvataan, koska tuonnin käyttämät
+  // kentät ovat ASCII-merkkejä.
+  def parse(bytes: Array[Byte]): (List[IbisParseError], List[IbisRecord]) =
+    parse(new String(bytes, StandardCharsets.UTF_8))
 
   // IBIS-tiedostossa ei dokumentaation mukaan ole otsikkoriviä, mutta se ohitetaan, jos sellainen on.
   def parse(content: String): (List[IbisParseError], List[IbisRecord]) = {
-    val lines = content.split("\r?\n").toList.zipWithIndex
-      .map { case (line, index) => (line, index + 1) }
-      .filter { case (line, _) => line.trim.nonEmpty }
+    val lines = content.stripPrefix("\uFEFF").split("\r?\n").toList.zipWithIndex
+      .collect { case (line, index) if line.trim.nonEmpty => (rivinKentät(line), index + 1) }
     val dataLines = lines match {
       case (first, _) :: rest if isHeader(first) => rest
       case all => all
     }
-    val parsed = dataLines.map { case (line, lineNumber) => parseLine(splitLine(line), lineNumber) }
+    val parsed = dataLines.map { case (fields, lineNumber) => parseLine(fields, lineNumber) }
     (parsed.collect { case Left(error) => error }, parsed.collect { case Right(record) => record })
   }
 
-  private def isHeader(line: String): Boolean =
-    splitLine(line).headOption.exists(_.trim.equalsIgnoreCase("YEAR"))
+  // Kun tiedosto avataan ja tallennetaan Excelissä, koko rivi voi päätyä yhdeksi lainausmerkeissä olevaksi kentäksi.
+  private def rivinKentät(line: String): List[String] = splitLine(line) match {
+    case List(koko) if koko.contains(',') => splitLine(koko)
+    case kentät => kentät
+  }
+
+  private def isHeader(fields: List[String]): Boolean =
+    fields.headOption.exists(_.trim.equalsIgnoreCase("YEAR"))
 
   def parseLine(rawFields: List[String], lineNumber: Int): Either[IbisParseError, IbisRecord] = {
     val fields = rawFields.map(_.trim)
@@ -43,8 +54,8 @@ object IbisCsvParser {
     val subjects = subjectFields.grouped(subjectFieldCount).toList
       .filter(_.exists(_.nonEmpty))
       .map {
-        case List(year, month, name, level, grade, additional, language) =>
-          IbisSubject(year.toInt, validMonth(month), name, level.toUpperCase, grade.toUpperCase, additional.equalsIgnoreCase("Y"), language)
+        case List(year, month, name, level, grade, additional) =>
+          IbisSubject(year.toInt, validMonth(month), name, level.toUpperCase, grade.toUpperCase, additional.equalsIgnoreCase("Y"))
         case group =>
           throw new IllegalArgumentException(s"Virheellinen oppiainekenttien ryhmä: $group")
       }
@@ -52,18 +63,16 @@ object IbisCsvParser {
       year = fields(0).toInt,
       month = validMonth(fields(1)),
       school = fields(2),
-      personalCode = fields(3),
-      dateOfBirth = parseDate(fields(4)),
-      gender = fields(5).toUpperCase,
-      category = fields(6).toUpperCase,
-      lastName = fields(7),
-      firstName = fields(8),
-      studentId = fields(9),
-      courseRef = fields(10),
-      lastChangeDate = parseDate(fields(11)),
-      totalPoints = parseInt(fields(12)),
-      resultCode = fields(13).toUpperCase,
-      eeTokPoints = parseInt(fields(14)),
+      sessionNumber = fields(3),
+      personalCode = fields(4),
+      category = fields(5).toUpperCase,
+      lastName = fields(6),
+      firstName = fields(7),
+      universityId = fields(8),
+      lastChangeDate = parseDate(fields(9)),
+      totalPoints = parseInt(fields(10)),
+      resultCode = fields(11).toUpperCase,
+      eeTokPoints = parseInt(fields(12)),
       subjects = subjects,
     )
   }

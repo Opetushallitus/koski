@@ -41,7 +41,7 @@ export type IBDiplomanMuuOppiaine = {
     | 'MATAI'
     | 'WS'
   >
-  taso: Koodistokoodiviite<'oppiaineentasoib', string>
+  taso?: Koodistokoodiviite<'oppiaineentasoib', string>
 }
 
 export const IBDiplomanMuuOppiaine = (o: {
@@ -78,7 +78,7 @@ export const IBDiplomanMuuOppiaine = (o: {
     | 'MATAI'
     | 'WS'
   >
-  taso: Koodistokoodiviite<'oppiaineentasoib', string>
+  taso?: Koodistokoodiviite<'oppiaineentasoib', string>
 }): IBDiplomanMuuOppiaine => ({
   $class: 'fi.oph.koski.schema.IBDiplomanMuuOppiaine',
   ...o

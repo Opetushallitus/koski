@@ -9,13 +9,13 @@ export type IBTutkintokerta = {
   $class: 'fi.oph.koski.schema.IBTutkintokerta'
   koodiarvo: string
   vuosi: number
-  kuukausi: LocalizedString
+  vuodenaika: LocalizedString
 }
 
 export const IBTutkintokerta = (o: {
   koodiarvo: string
   vuosi: number
-  kuukausi: LocalizedString
+  vuodenaika: LocalizedString
 }): IBTutkintokerta => ({ $class: 'fi.oph.koski.schema.IBTutkintokerta', ...o })
 
 IBTutkintokerta.className = 'fi.oph.koski.schema.IBTutkintokerta' as const
