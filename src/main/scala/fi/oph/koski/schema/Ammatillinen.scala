@@ -311,7 +311,7 @@ case class AmmatillisenTutkinnonOsittainenUseastaTutkinnostaSuoritus(
   koulutusmoduuli: AmmatillinenOsiaUseastaTutkinnosta,
   @KoodistoUri("ammatillisentutkinnonsuoritustapa")
   @KoodistoKoodiarvo("reformi")
-  suoritustapa: Koodistokoodiviite = Koodistokoodiviite("ammatillisentutkinnonsuoritustapa", koodistoUri = "reformi"),
+  suoritustapa: Koodistokoodiviite = Koodistokoodiviite("reformi", koodistoUri = "ammatillisentutkinnonsuoritustapa"),
   toimipiste: OrganisaatioWithOid,
   override val alkamispäivä: Option[LocalDate] = None,
   vahvistus: Option[HenkilövahvistusValinnaisellaPaikkakunnalla] = None,
