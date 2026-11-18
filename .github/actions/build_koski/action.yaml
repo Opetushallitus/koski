@@ -35,7 +35,7 @@ runs:
       if: steps.lookup.outputs.cache-hit != 'true'
       run: |
         scripts/retry.sh "Koski dependency resolution" 5m -- \
-          ./mvnw --batch-mode --update-snapshots --activate-profiles frontend,scalafix dependency:go-offline versions:help
+          ./mvnw --batch-mode --update-snapshots --activate-profiles frontend,scalafix dependency:go-offline
       shell: bash
     - name: Build Koski app + tests
       if: steps.lookup.outputs.cache-hit != 'true'
