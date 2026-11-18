@@ -33,7 +33,7 @@ services:
       test: ["CMD", "curl", "--silent", "--fail", "localhost:9200/_cluster/health?wait_for_status=yellow&timeout=5s"]
       interval: 5s
       timeout: 10s
-      retries: 3
+      retries: 12
       start_period: 120s
 
   dynamodb:
