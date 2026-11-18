@@ -21,6 +21,9 @@ type Suoritus = {
   koulutusmoduuli: { tunniste: { koodiarvo: string } }
 }
 
+const suoritusTabs = (page: Page) =>
+  page.locator('[data-testid^="oo.0.suoritusTabs."][data-testid$=".tab"]')
+
 const tallennetutSuoritukset = async (page: Page): Promise<string[]> => {
   const oid = page.url().match(/oppija\/(1\.2\.[\d.]+)/)?.[1]
   expect(oid).toBeDefined()
@@ -85,9 +88,7 @@ test.describe('Ahvenanmaan perusopetuksen päätason suorituksen poisto', () => 
     await page.getByTestId('oo.0.suoritukset.1.button').click()
     await page.getByTestId('oo.0.suoritukset.1.confirm').click()
 
-    const tabs = page.locator(
-      '[data-testid^="oo.0.suoritusTabs."][data-testid$=".tab"]'
-    )
+    const tabs = suoritusTabs(page)
     await expect(tabs.filter({ hasText: '2. vuosiluokka' })).toHaveCount(0)
     await expect(tabs.filter({ hasText: '1. vuosiluokka' })).toHaveCount(1)
     expect(await tallennetutSuoritukset(page)).toEqual(['oppimäärä', '1'])
@@ -95,6 +96,33 @@ test.describe('Ahvenanmaan perusopetuksen päätason suorituksen poisto', () => 
     await page.getByTestId(saveButton).click()
     await expect(page.getByTestId(editButton)).toBeVisible()
     expect(await tallennetutSuoritukset(page)).toEqual(['oppimäärä', '1'])
+  })
+})
+
+// Åländsk Alinan suoritukset on tallennettu järjestyksessä 8., 9. vuosiluokka,
+// päättötodistus, mutta editori järjestää päättötodistuksen ensimmäiseksi.
+test.describe('Tallennusjärjestyksestä poikkeava opiskeluoikeus', () => {
+  test.use({ storageState: virkailija('kalle') })
+
+  test('välilehtien järjestys säilyy poiston jälkeen', async ({
+    page,
+    oppijaPage,
+    fixtures
+  }) => {
+    await fixtures.reset()
+    await oppijaPage.goto(
+      '1.2.246.562.24.00000000190?opiskeluoikeudenTyyppi=ahvenanmaanperusopetus'
+    )
+    await page.getByTestId(editButton).click()
+    await suoritusTabs(page).filter({ hasText: '8. vuosiluokka' }).click()
+    await page.getByTestId('oo.0.suoritukset.2.button').click()
+    await page.getByTestId('oo.0.suoritukset.2.confirm').click()
+
+    await expect(page.getByTestId(editButton)).toBeVisible()
+    await expect(suoritusTabs(page)).toHaveText([
+      'Päättötodistus',
+      '9. vuosiluokka'
+    ])
   })
 })
 
