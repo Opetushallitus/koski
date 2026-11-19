@@ -2,6 +2,7 @@
  * Palauttaa hakuehtojen mukaiset organisaation ja sen alaorganisaatioiden opiskeluoikeudet.
  * Tulostiedostot sisältävät tiedot json-muodossa. Jokaista oppijaa kohden luodaan oma tiedostonsa, jonka alle opiskeluoikeudet on ryhmitelty.
  * Tiedostojen sisältö vastaa pääosin opintohallintojärjestelmille tarkoitettua rajapintaa GET /koski/api/oppija/{oid}. Tulokset ryhmitellään henkilön master-oidin mukaan ja sisältävät linkitetytOidit-kentän.
+ * Vastauksen skeema on saatavana <a href="/koski/json-schema-viewer/?schema=massaluovutus-oppija-result.json">täältä.</a>
  *
  * @see `fi.oph.koski.massaluovutus.organisaationopiskeluoikeudet.MassaluovutusQueryOrganisaationOpiskeluoikeudetJson`
  */

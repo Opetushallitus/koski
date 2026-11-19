@@ -13,7 +13,9 @@ import fi.oph.koski.massaluovutus.aiemmatopiskeluoikeudet.MassaluovutusQueryAiem
 import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.util.Wait
 import fi.oph.scalaschema.Serializer.format
-import org.json4s.{JNothing, JValue}
+import com.github.fge.jackson.JsonLoader
+import com.github.fge.jsonschema.main.JsonSchemaFactory
+import org.json4s.{JArray, JBool, JNothing, JObject, JValue}
 import org.json4s.jackson.JsonMethods
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.should.Matchers
@@ -130,6 +132,16 @@ class MassaluovutusAiemmatOpiskeluoikeudetSpec extends AnyFreeSpec with Massaluo
 
   private def oppilaitoksetJaKoulutusmuodot(json: JValue): Set[(String, String)] =
     (json \ "opiskeluoikeudet").children.map(oo => ((oo \ "oppilaitos" \ "oid").extract[String], (oo \ "tyyppi" \ "koodiarvo").extract[String])).toSet
+
+  // Skeeman kentät (properties-avaimen alla), joilla on annettu merkintä
+  private def propertiesMarkedWith(json: JValue, marker: String): List[String] = json match {
+    case JObject(fields) => fields.flatMap {
+      case ("properties", JObject(p)) => p.collect { case (name, k) if (k \ marker) == JBool(true) => name } ++ p.flatMap(k => propertiesMarkedWith(k._2, marker))
+      case (_, value) => propertiesMarkedWith(value, marker)
+    }
+    case JArray(values) => values.flatMap(propertiesMarkedWith(_, marker))
+    case _ => Nil
+  }
 
   private def lisätieto(json: JValue, koulutusmuoto: String, kenttä: String): JValue =
     (json \ "opiskeluoikeudet").children
@@ -362,6 +374,29 @@ class MassaluovutusAiemmatOpiskeluoikeudetSpec extends AnyFreeSpec with Massaluo
         val vuosiluokat = (json \ "opiskeluoikeudet").children.flatMap(oo => (oo \ "suoritukset").children).filter(s => (s \ "tyyppi" \ "koodiarvo").extract[String] == "perusopetuksenvuosiluokka")
         vuosiluokat should not be empty
         vuosiluokat.map(_ \ "käyttäytymisenArvio") should contain only JNothing
+      }
+    }
+
+    "Tulostiedoston skeema sisältää vain sallitut koulutusmuodot eikä vanhentuneita tai piilotettuja kenttiä" in {
+      val schema = MassaluovutusQueryAiemmatOpiskeluoikeudet.schemaJson
+      val alternatives = (schema \ "definitions" \ "koskeentallennettavaopiskeluoikeus" \ "anyOf").children.map(v => (v \ "$ref").extract[String])
+      alternatives should have size MassaluovutusQueryAiemmatOpiskeluoikeudet.sallitutKoulutusmuodot.size
+      alternatives should contain("#/definitions/perusopetuksenopiskeluoikeus")
+      (schema \ "definitions" \ "vapaansivistystyönopiskeluoikeus") shouldBe JNothing
+      propertiesMarkedWith(schema, "hiddenFromAiemmatOpiskeluoikeudet") shouldBe empty
+      propertiesMarkedWith(schema, "deprecated") shouldBe empty
+      propertiesMarkedWith(schema, "redundantData") shouldBe empty
+      (schema \ "definitions" \ "ammatillisenopiskeluoikeudenlisätiedot" \ "properties" \ "hojks") should not be JNothing
+    }
+
+    "Tulostiedosto noudattaa dokumentoitua skeemaa" in {
+      val validator = JsonSchemaFactory.byDefault.getValidator
+      val schema = JsonLoader.fromString(JsonMethods.compact(MassaluovutusQueryAiemmatOpiskeluoikeudet.schemaJson))
+      List(KoskiSpecificMockOppijat.aiemmatOmaOppilaitos, KoskiSpecificMockOppijat.aiemmatTestiTulevaisuudessaAlkava, KoskiSpecificMockOppijat.aiemmatTestiKansainvälisetAiemmin).foreach { oppija =>
+        oppijanTulos(haeTulostiedostot(oidilla(oppija)), oppija) { json =>
+          val report = validator.validate(schema, JsonLoader.fromString(JsonMethods.compact(json)))
+          withClue(s"${oppija.sukunimi}: $report") { report.isSuccess shouldBe true }
+        }
       }
     }
 

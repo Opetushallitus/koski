@@ -6,6 +6,8 @@ import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.koodisto.Koodistot
 import fi.oph.koski.koskiuser.Unauthenticated
 import fi.oph.koski.massaluovutus.luokallejaaneet.MassaluovutusQueryLuokalleJaaneetResult
+import fi.oph.koski.massaluovutus.aiemmatopiskeluoikeudet.MassaluovutusQueryAiemmatOpiskeluoikeudet
+import fi.oph.koski.massaluovutus.organisaationopiskeluoikeudet.MassaluovutusOppija
 import fi.oph.koski.massaluovutus.suorituspalvelu.SupaResponse
 import fi.oph.koski.massaluovutus.valintalaskenta.ValintalaskentaResult
 import fi.oph.koski.massaluovutus.QueryDocumentation
@@ -160,6 +162,14 @@ class DocumentationApiServlet(application: KoskiApplication) extends KoskiSpecif
 
   get("/luokalle-jaaneet-result.json") {
     MassaluovutusQueryLuokalleJaaneetResult.schemaJson
+  }
+
+  get("/massaluovutus-oppija-result.json") {
+    MassaluovutusOppija.schemaJson
+  }
+
+  get("/aiemmat-opiskeluoikeudet-result.json") {
+    MassaluovutusQueryAiemmatOpiskeluoikeudet.schemaJson
   }
 
   get("/omadata-oauth2-suoritetut-tutkinnot-oppija-schema.json") {
