@@ -154,6 +154,10 @@ Older dated snapshots are kept and still run through `KoskiValidator`, so a **ne
 
 `MigrationSpec` stores a checksum of every file under `raportointikanta/`, so **any edit there fails it**, even a rename that can't touch the reporting schema. Run it after a cross-cutting rename or `sed` over `src/main`. To update a checksum, copy the `nykyinen` value from the failure; it isn't a plain `md5sum` of the file.
 
+**A spec that leaves fixture data changed mixes in `DirtiesFixtures`**, which resets the fixtures in `afterAll`. The suites of one run (one CI job, or one local `-Dsuites` list) share the database and nothing resets it between them, so specs that only read assume the previous suite left the defaults. Resetting only in `beforeAll` is not enough. Replacing just your own test oppija's opiskeluoikeudet with `setupOppijaWithOpiskeluoikeus` needs no reset. A spec that passes alone but fails after another suite is usually reading what that suite left behind.
+
+`resetFixtures()` clears the caches but doesn't reload the reporting database: reporting specs call `reloadRaportointikanta()` themselves, and that reload doesn't clear caches.
+
 ### Frontend Tests
 - **Mocha browser tests**: `web/test/` - run with `make fronttest`
 - **Vitest unit tests**: `web/test/unit-test/*.test.ts` - run with `make js-unit-test`
