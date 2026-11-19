@@ -14,6 +14,7 @@ object ExamplesIBDiploma {
   val iboTunniste = "ABC123"
   val vahvistuspäivä: LocalDate = date(2016, 7, 6)
   val tutkintokerta: IBTutkintokerta = IBTutkintokerta("2016K", 2016, finnish("kevät"))
+  val englanti: Option[Koodistokoodiviite] = Some(Koodistokoodiviite("EN", "kieli"))
 
   def oppiaineenArviointi(arvosana: String): Option[List[IBDiplomanOppiaineenArviointi]] =
     Some(List(IBDiplomanOppiaineenArviointi(Koodistokoodiviite(arvosana, "arviointiasteikkoib"), Some(vahvistuspäivä))))
@@ -23,6 +24,7 @@ object ExamplesIBDiploma {
       koulutusmoduuli = IBDiplomanMuuOppiaine(Koodistokoodiviite(tunniste, "oppiaineetib"), Some(Koodistokoodiviite(taso, "oppiaineentasoib"))),
       tutkintokerta = tutkintokerta,
       arviointi = oppiaineenArviointi(arvosana),
+      suorituskieli = englanti,
       additionalSubject = additionalSubject,
     )
 
@@ -35,6 +37,7 @@ object ExamplesIBDiploma {
       ),
       tutkintokerta = tutkintokerta,
       arviointi = oppiaineenArviointi(arvosana),
+      suorituskieli = Some(Koodistokoodiviite(kieli, "kieli")),
     )
 
   def coreArviointi(arvosana: String): Option[List[IBDiplomanCoreArviointi]] =
@@ -45,6 +48,7 @@ object ExamplesIBDiploma {
       koulutusmoduuli = IBDiplomanExtendedEssay(aine = Some(IBDiplomanMuuOppiaine(Koodistokoodiviite(aine, "oppiaineetib"), None))),
       tutkintokerta = tutkintokerta,
       arviointi = coreArviointi(arvosana),
+      suorituskieli = englanti,
     )
 
   def theoryOfKnowledge(arvosana: String): IBDiplomanCoreSuoritus =
@@ -52,6 +56,7 @@ object ExamplesIBDiploma {
       koulutusmoduuli = IBDiplomanTheoryOfKnowledge(),
       tutkintokerta = tutkintokerta,
       arviointi = coreArviointi(arvosana),
+      suorituskieli = englanti,
     )
 
   val suoritus: IBDiplomanSuoritus = IBDiplomanSuoritus(

@@ -8,8 +8,8 @@ import scala.util.Try
 case class IbisParseError(line: Int, message: String)
 
 object IbisCsvParser {
-  private val fixedFieldCount = 13
-  private val subjectFieldCount = 6
+  private val fixedFieldCount = 15
+  private val subjectFieldCount = 7
   private val dateFormat = DateTimeFormatter.ofPattern("dd/MM/yyyy")
 
   // Tiedosto ei välttämättä ole UTF-8:aa. Virheelliset tavut korvataan, koska tuonnin käyttämät
@@ -54,8 +54,8 @@ object IbisCsvParser {
     val subjects = subjectFields.grouped(subjectFieldCount).toList
       .filter(_.exists(_.nonEmpty))
       .map {
-        case List(year, month, name, level, grade, additional) =>
-          IbisSubject(year.toInt, validMonth(month), name, level.toUpperCase, grade.toUpperCase, additional.equalsIgnoreCase("Y"))
+        case List(year, month, name, level, grade, additional, language) =>
+          IbisSubject(year.toInt, validMonth(month), name, level.toUpperCase, grade.toUpperCase, additional.equalsIgnoreCase("Y"), language)
         case group =>
           throw new IllegalArgumentException(s"Virheellinen oppiainekenttien ryhmä: $group")
       }
@@ -63,16 +63,18 @@ object IbisCsvParser {
       year = fields(0).toInt,
       month = validMonth(fields(1)),
       school = fields(2),
-      sessionNumber = fields(3),
-      personalCode = fields(4),
-      category = fields(5).toUpperCase,
-      lastName = fields(6),
-      firstName = fields(7),
-      universityId = fields(8),
-      lastChangeDate = parseDate(fields(9)),
-      totalPoints = parseInt(fields(10)),
-      resultCode = fields(11).toUpperCase,
-      eeTokPoints = parseInt(fields(12)),
+      personalCode = fields(3),
+      dateOfBirth = parseDate(fields(4)),
+      gender = fields(5).toUpperCase,
+      category = fields(6).toUpperCase,
+      lastName = fields(7),
+      firstName = fields(8),
+      studentId = fields(9),
+      courseRef = fields(10),
+      lastChangeDate = parseDate(fields(11)),
+      totalPoints = parseInt(fields(12)),
+      resultCode = fields(13).toUpperCase,
+      eeTokPoints = parseInt(fields(14)),
       subjects = subjects,
     )
   }

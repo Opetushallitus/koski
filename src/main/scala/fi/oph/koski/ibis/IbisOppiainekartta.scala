@@ -23,7 +23,7 @@ object IbisOppiainekartta {
   }
 
   // IBO:n luettelossa kirjainkoko vaihtelee (ENGLISH A: Literature, KOREAN A: Lang and Literature).
-  private def normalisoi(nimi: String): String = nimi.trim.replaceAll("\\s+", " ").toUpperCase(Locale.ROOT)
+  private[ibis] def normalisoi(nimi: String): String = nimi.trim.replaceAll("\\s+", " ").toUpperCase(Locale.ROOT)
 
   // TODO TOR-747: Näille IBO:n oppiaineluettelon nimille ei vielä ole vastinetta Koskessa:
   // - Kieli puuttuu kielivalikoimasta (nimet muotoa "<KIELI> A" tai "<KIELI> A: Literature"): AKAN, BELARUSIAN, BEMBA, BURMESE,

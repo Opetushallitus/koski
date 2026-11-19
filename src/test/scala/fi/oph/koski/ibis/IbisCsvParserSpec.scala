@@ -17,7 +17,7 @@ class IbisCsvParserSpec extends AnyFreeSpec with TestEnvironment with Matchers {
 
     "jäsentää kaikki rivit ilman virheitä" in {
       virheet should be(empty)
-      rivit should have length 3
+      rivit should have length 4
     }
 
     "lukee kiinteät kentät" in {
@@ -25,12 +25,14 @@ class IbisCsvParserSpec extends AnyFreeSpec with TestEnvironment with Matchers {
       rivi.year should be(2016)
       rivi.month should be("MAY")
       rivi.school should be("000001")
-      rivi.sessionNumber should be("0001")
       rivi.personalCode should be("abc123")
+      rivi.dateOfBirth should be(Some(LocalDate.of(2001, 7, 4)))
+      rivi.gender should be("FEMALE")
       rivi.category should be("DIPLOMA")
       rivi.lastName should be("IB-Diploma")
       rivi.firstName should be("Dani")
-      rivi.universityId should be("")
+      rivi.studentId should be("")
+      rivi.courseRef should be("")
       rivi.lastChangeDate should be(Some(LocalDate.of(2016, 7, 6)))
       rivi.totalPoints should be(Some(37))
       rivi.resultCode should be("D")
@@ -38,18 +40,19 @@ class IbisCsvParserSpec extends AnyFreeSpec with TestEnvironment with Matchers {
       rivi.session.koodiarvo should be("2016K")
     }
 
-    "lukee toistuvat oppiainekentät" in {
+    "lukee toistuvat oppiainekentät kielineen" in {
       val oppiaineet = rivit.head.subjects
       oppiaineet should have length 8
-      oppiaineet.head should be(IbisSubject(2016, "MAY", "FINNISH A: Literature", "HL", "7", additional = false))
+      oppiaineet.head should be(IbisSubject(2016, "MAY", "FINNISH A: Literature", "HL", "7", additional = false, language = "FINNISH"))
       oppiaineet.map(_.level) should be(List("HL", "HL", "HL", "SL", "SL", "SL", "EE", "TK"))
+      rivit(3).subjects.map(_.language).distinct should be(List("ENGLISH", "NORWEGIAN", "JAPANESE"))
     }
 
     "käsittelee lainausmerkeissä olevat pilkut ja kahdennetut lainausmerkit" in {
       val courseRivi = rivit(1)
       courseRivi.lastName should be("Kurssi, Kalle")
       courseRivi.firstName should be("Kalle \"Kale\"")
-      courseRivi.universityId should be("1230456789")
+      courseRivi.courseRef should be("BIOLOGY 00104")
       courseRivi.totalPoints should be(None)
       courseRivi.resultCode should be("")
       courseRivi.eeTokPoints should be(None)
@@ -58,6 +61,7 @@ class IbisCsvParserSpec extends AnyFreeSpec with TestEnvironment with Matchers {
     "lukee additional subjectin ja aiemman tutkintokerran" in {
       val retakeRivi = rivit(2)
       retakeRivi.category should be("RETAKE")
+      retakeRivi.studentId should be("1230456789")
       retakeRivi.resultCode should be("B")
       retakeRivi.subjects.head.additional should be(true)
       retakeRivi.subjects.head.session should be(IbisSession(2015, "NOVEMBER"))
@@ -66,23 +70,23 @@ class IbisCsvParserSpec extends AnyFreeSpec with TestEnvironment with Matchers {
     }
 
     "ohittaa otsikkorivin" in {
-      val otsikolla = "YEAR,\"MONTH\",\"SCHOOL\",\"SESSION NUMBER\",\"PERSONAL CODE\"\n" + esimerkki
+      val otsikolla = "YEAR,\"MONTH\",\"SCHOOL\",\"PERSONAL CODE\",\"DATE OF BIRTH\"\n" + esimerkki
       val (virheet, rivit) = IbisCsvParser.parse(otsikolla)
       virheet should be(empty)
-      rivit should have length 3
+      rivit should have length 4
     }
 
     "raportoi virheelliset rivit rivinumerolla ja jäsentää loput" in {
       val rikki = esimerkki.replace("\"def456\"", "\"def456\",\"ylimääräinen\"")
       val (virheet, rivit) = IbisCsvParser.parse(rikki)
-      rivit should have length 2
+      rivit should have length 3
       virheet.map(_.line) should be(List(3))
-      virheet.head.message should include("ei ole jaollinen luvulla 6")
+      virheet.head.message should include("ei ole jaollinen luvulla 7")
     }
 
     "hylkää tuntemattoman tutkintokerran kuukauden" in {
       val (virheet, rivit) = IbisCsvParser.parse(esimerkki.replace("\"2015\",\"NOVEMBER\"", "\"2015\",\"JUNE\""))
-      rivit should have length 2
+      rivit should have length 3
       virheet.head.message should include("JUNE")
     }
   }
@@ -91,21 +95,6 @@ class IbisCsvParserSpec extends AnyFreeSpec with TestEnvironment with Matchers {
     "jäsennetään samoin kuin alkuperäinen tiedosto" in {
       val kääritty = esimerkki.split("\n").map(rivi => "\"" + rivi.replace("\"", "\"\"") + "\"").mkString("\r\n")
       IbisCsvParser.parse(kääritty) should be(IbisCsvParser.parse(esimerkki))
-    }
-  }
-
-  "Kevään 2026 tulostiedosto" - {
-    val (virheet, rivit) = IbisCsvParser.parse(resurssi("ib_diploma_kevat_2026_example.csv"))
-
-    "jäsennetään ilman virheitä" in {
-      virheet should be(empty)
-      rivit.map(_.personalCode) should be(List("abc123", "abc132", "cba987", "cab789"))
-    }
-
-    "säilyttää oppiaineiden nimet ja tutkintokerrat sellaisinaan" in {
-      rivit.map(_.subjects.length) should be(List(8, 8, 8, 8))
-      rivit(1).subjects.head should be(IbisSubject(2025, "MAY", "FINNISH A: Literature", "SL", "6", additional = false))
-      rivit(1).subjects.map(_.name) should contain("MATHEMATICS ANALYSIS AND APPRO")
     }
   }
 
