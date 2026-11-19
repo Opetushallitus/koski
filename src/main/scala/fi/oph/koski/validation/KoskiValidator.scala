@@ -373,6 +373,9 @@ class KoskiValidator(
       }))
     case kituOo: KielitutkinnonOpiskeluoikeus if kituOo.koulutustoimija.isEmpty && kituOo.isValtionhallinnonKielitutkinto =>
       Right(kituOo.copy(koulutustoimija = organisaatioRepository.getOrganisaatio(Opetushallitus.koulutustoimijaOid).flatMap(_.toKoulutustoimija)))
+    // TODO TOR-747: IB Diploman koulutustoimija jätetään tyhjäksi, kunnes PO päättää siitä.
+    case _: IBDiplomaOpiskeluoikeus =>
+      Right(oo)
     case _ => organisaatioRepository.findKoulutustoimijaForOppilaitos(oo.getOppilaitos) match {
       case Some(löydettyKoulutustoimija) =>
         oo.koulutustoimija.map(_.oid) match {

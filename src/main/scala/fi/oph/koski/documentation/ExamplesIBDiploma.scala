@@ -9,9 +9,10 @@ import fi.oph.koski.schema._
 import java.time.LocalDate
 import java.time.LocalDate.{of => date}
 
-// TODO TOR-747: Luonnos. Esimerkki vastaa ExamplesIB.opiskeluoikeus-oppijan IB-koulutusta (sama iboTunniste ja oppilaitos).
+// TODO TOR-747: Luonnos. Esimerkki vastaa IB-koulutuksen opiskeluoikeutta ibKoulutuksenOpiskeluoikeus (sama iboTunniste ja oppilaitos).
 object ExamplesIBDiploma {
-  val iboTunniste = "ABC123"
+  val iboTunniste = "dip123"
+  val ibKoulutuksenOpiskeluoikeus: IBOpiskeluoikeus = ExamplesIB.opiskeluoikeus.copy(iboTunniste = Some(iboTunniste))
   val vahvistuspäivä: LocalDate = date(2016, 7, 6)
   val tutkintokerta: IBTutkintokerta = IBTutkintokerta("2016K", 2016, finnish("kevät"))
   val englanti: Option[Koodistokoodiviite] = Some(Koodistokoodiviite("EN", "kieli"))

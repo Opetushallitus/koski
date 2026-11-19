@@ -2,7 +2,7 @@ package fi.oph.koski.api.oppijavalidation
 
 import fi.oph.koski.KoskiHttpSpec
 import fi.oph.koski.api.misc.PutOpiskeluoikeusTestMethods
-import fi.oph.koski.documentation.{ExamplesIB, ExamplesIBDiploma, ExamplesInternationalSchool}
+import fi.oph.koski.documentation.{ExamplesIBDiploma, ExamplesInternationalSchool}
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
 import fi.oph.koski.http.{ErrorMatcher, KoskiErrorCategory}
 import fi.oph.koski.schema._
@@ -18,9 +18,10 @@ class OppijaValidationIBDiplomaSpec
   override def defaultOpiskeluoikeus = ExamplesIBDiploma.opiskeluoikeus
 
   private val henkilö = KoskiSpecificMockOppijat.ibDiploma
+  private val ibKoulutus = ExamplesIBDiploma.ibKoulutuksenOpiskeluoikeus
 
   "Example-opiskeluoikeus voidaan kirjoittaa tietokantaan, kun oppijalla on IB-koulutus samalla iboTunnisteella" in {
-    setupOppijaWithOpiskeluoikeus(ExamplesIB.opiskeluoikeus, henkilö = henkilö) {
+    setupOppijaWithOpiskeluoikeus(ibKoulutus, henkilö = henkilö) {
       verifyResponseStatusOk()
     }
 
@@ -29,24 +30,45 @@ class OppijaValidationIBDiplomaSpec
     }
   }
 
-  "Voidaan kirjoittaa International schoolin opiskeluoikeuden perusteella" in {
+  "iboTunnisteen kirjainkoolla ei ole väliä" in {
+    setupOppijaWithOpiskeluoikeus(ibKoulutus.copy(iboTunniste = Some(ExamplesIBDiploma.iboTunniste.toUpperCase)), henkilö = henkilö) {
+      verifyResponseStatusOk()
+    }
+
+    putOpiskeluoikeus(defaultOpiskeluoikeus, henkilö = henkilö) {
+      verifyResponseStatusOk()
+    }
+  }
+
+  "Koulutustoimija jätetään tyhjäksi" in {
+    setupOppijaWithOpiskeluoikeus(ibKoulutus, henkilö = henkilö) {
+      verifyResponseStatusOk()
+    }
+
+    putOpiskeluoikeus(defaultOpiskeluoikeus, henkilö = henkilö) {
+      verifyResponseStatusOk()
+    }
+    getOpiskeluoikeudet(henkilö.oid).collect { case diploma: IBDiplomaOpiskeluoikeus => diploma.koulutustoimija } should be(List(None))
+  }
+
+  "Ei voi kirjoittaa International schoolin opiskeluoikeuden perusteella" in {
     setupOppijaWithOpiskeluoikeus(ExamplesInternationalSchool.opiskeluoikeus.copy(iboTunniste = Some(ExamplesIBDiploma.iboTunniste)), henkilö = henkilö) {
       verifyResponseStatusOk()
     }
 
     putOpiskeluoikeus(defaultOpiskeluoikeus, henkilö = henkilö) {
-      verifyResponseStatusOk()
+      verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.ibdiploma.puuttuvaKoulutus())
     }
   }
 
-  "Ei voi kirjoittaa, jos oppijalla ei ole IB-koulutuksen eikä International schoolin opiskeluoikeutta" in {
+  "Ei voi kirjoittaa, jos oppijalla ei ole IB-koulutuksen opiskeluoikeutta" in {
     setupOppijaWithOpiskeluoikeus(defaultOpiskeluoikeus, henkilö = KoskiSpecificMockOppijat.tyhjä) {
       verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.ibdiploma.puuttuvaKoulutus())
     }
   }
 
-  "Ei voi kirjoittaa, jos koulutuksen opiskeluoikeudella on eri iboTunniste" in {
-    setupOppijaWithOpiskeluoikeus(ExamplesIB.opiskeluoikeus.copy(iboTunniste = Some("XYZ999")), henkilö = henkilö) {
+  "Ei voi kirjoittaa, jos IB-koulutuksen opiskeluoikeudella on eri iboTunniste" in {
+    setupOppijaWithOpiskeluoikeus(ibKoulutus.copy(iboTunniste = Some("XYZ999")), henkilö = henkilö) {
       verifyResponseStatusOk()
     }
 
@@ -55,8 +77,8 @@ class OppijaValidationIBDiplomaSpec
     }
   }
 
-  "Ei voi kirjoittaa, jos koulutuksen opiskeluoikeudella ei ole iboTunnistetta" in {
-    setupOppijaWithOpiskeluoikeus(ExamplesIB.opiskeluoikeus.copy(iboTunniste = None), henkilö = henkilö) {
+  "Ei voi kirjoittaa, jos IB-koulutuksen opiskeluoikeudella ei ole iboTunnistetta" in {
+    setupOppijaWithOpiskeluoikeus(ibKoulutus.copy(iboTunniste = None), henkilö = henkilö) {
       verifyResponseStatusOk()
     }
 
@@ -67,7 +89,7 @@ class OppijaValidationIBDiplomaSpec
 
   "Skeema" - {
     "totalPoints ei voi ylittää 45" in {
-      setupOppijaWithOpiskeluoikeus(ExamplesIB.opiskeluoikeus, henkilö = henkilö) {
+      setupOppijaWithOpiskeluoikeus(ibKoulutus, henkilö = henkilö) {
         verifyResponseStatusOk()
       }
 
@@ -78,7 +100,7 @@ class OppijaValidationIBDiplomaSpec
     }
 
     "tila ei voi olla läsnä" in {
-      setupOppijaWithOpiskeluoikeus(ExamplesIB.opiskeluoikeus, henkilö = henkilö) {
+      setupOppijaWithOpiskeluoikeus(ibKoulutus, henkilö = henkilö) {
         verifyResponseStatusOk()
       }
 

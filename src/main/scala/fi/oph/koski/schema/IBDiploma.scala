@@ -17,9 +17,8 @@ case class IBDiplomaOpiskeluoikeus(
   versionumero: Option[Int] = None,
   aikaleima: Option[LocalDateTime] = None,
   lähdejärjestelmänId: Option[LähdejärjestelmäId] = None,
-  // Oppilaitos kopioidaan siitä IB-koulutuksen tai International schoolin opiskeluoikeudesta, johon diploma on yhdistetty.
-  // IBO ei ole organisaatiopalvelussa, joten YTR:n tapaan tutkintolautakuntaa ei voi käyttää koulutustoimijana.
   oppilaitos: Option[Oppilaitos] = None,
+  // TODO TOR-747: Koulutustoimija jätetään tyhjäksi, kunnes PO päättää siitä. IBO ei ole vielä organisaatiopalvelussa.
   koulutustoimija: Option[Koulutustoimija] = None,
   arvioituPäättymispäivä: Option[LocalDate] = None,
   tila: IBDiplomaOpiskeluoikeudenTila,
@@ -30,9 +29,7 @@ case class IBDiplomaOpiskeluoikeus(
   tyyppi: Koodistokoodiviite = OpiskeluoikeudenTyyppi.ibdiploma,
   organisaatiohistoria: Option[List[OpiskeluoikeudenOrganisaatiohistoria]] = None,
   lähdejärjestelmäkytkentäPurettu: Option[LähdejärjestelmäkytkennänPurkaminen] = None,
-  // TODO TOR-747: Muoto on IBIS-dokumentaation mukaan 3 kirjainta + 3 numeroa. Lisätään @RegularExpression, kun oikea aineisto
-  // vahvistaa kirjainkoon. Koulutuksen puolella (IBOpiskeluoikeus, InternationalSchoolOpiskeluoikeus) tunniste pysyy vapaaehtoisena.
-  @Description("Opiskelijan tunniste IBO:n järjestelmässä (IBIS PERSONAL CODE)")
+  @Description("Opiskelijan tunniste IBO:n järjestelmässä")
   iboTunniste: String,
 ) extends KoskeenTallennettavaOpiskeluoikeus {
   override def withOppilaitos(oppilaitos: Oppilaitos) = this.copy(oppilaitos = Some(oppilaitos))
@@ -65,15 +62,15 @@ case class IBDiplomanSuoritus(
   vahvistus: Option[Päivämäärävahvistus] = None,
   @Description("Tutkintokerta, jossa diploma myönnettiin")
   tutkintokerta: IBTutkintokerta,
-  @Description("Diploman kokonaispistemäärä (IBIS TOTAL POINTS)")
+  @Description("Diploman kokonaispistemäärä")
   @MinValue(0)
   @MaxValue(45)
   totalPoints: Option[Int] = None,
-  @Description("Extended essayn ja Theory of knowledgen yhteispisteet (IBIS EE/TOK POINTS)")
+  @Description("Oppiaineiden Extended Essay ja Theory of Knowledge yhdistetty arvosana")
   @MinValue(0)
   @MaxValue(3)
   combinedGrade: Option[Int] = None,
-  @Description("Diploman tulos IBO:n tuloskoodin mukaan (IBIS RESULT CODE)")
+  @Description("Diploman tulos")
   @KoodistoUri("ibdiplomaresult")
   result: Koodistokoodiviite,
   @KoodistoKoodiarvo("ibdiploma")
@@ -110,7 +107,6 @@ case class IBDiplomanOppiaineenSuoritus(
 ) extends IBDiplomanOsasuoritus
 
 @Title("IB Diploman core-suoritus")
-@Description("Extended essayn (EE) tai Theory of knowledgen (TOK) tulos")
 case class IBDiplomanCoreSuoritus(
   @Title("Oppiaine")
   koulutusmoduuli: IBDiplomanCoreOppiaine,

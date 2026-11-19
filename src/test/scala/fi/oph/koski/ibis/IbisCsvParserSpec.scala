@@ -25,7 +25,7 @@ class IbisCsvParserSpec extends AnyFreeSpec with TestEnvironment with Matchers {
       rivi.year should be(2016)
       rivi.month should be("MAY")
       rivi.school should be("000001")
-      rivi.personalCode should be("abc123")
+      rivi.iboTunniste should be("abc123")
       rivi.dateOfBirth should be(Some(LocalDate.of(2001, 7, 4)))
       rivi.gender should be("FEMALE")
       rivi.category should be("DIPLOMA")
@@ -36,7 +36,7 @@ class IbisCsvParserSpec extends AnyFreeSpec with TestEnvironment with Matchers {
       rivi.lastChangeDate should be(Some(LocalDate.of(2016, 7, 6)))
       rivi.totalPoints should be(Some(37))
       rivi.resultCode should be("D")
-      rivi.eeTokPoints should be(Some(2))
+      rivi.combinedGrade should be(Some(2))
       rivi.session.koodiarvo should be("2016K")
     }
 
@@ -55,7 +55,7 @@ class IbisCsvParserSpec extends AnyFreeSpec with TestEnvironment with Matchers {
       courseRivi.courseRef should be("BIOLOGY 00104")
       courseRivi.totalPoints should be(None)
       courseRivi.resultCode should be("")
-      courseRivi.eeTokPoints should be(None)
+      courseRivi.combinedGrade should be(None)
     }
 
     "lukee additional subjectin ja aiemman tutkintokerran" in {
@@ -105,7 +105,7 @@ class IbisCsvParserSpec extends AnyFreeSpec with TestEnvironment with Matchers {
       val rivi = esimerkki.linesIterator.next().replace("IB-Diploma", "Mäkinen").getBytes(StandardCharsets.ISO_8859_1)
       val (virheet, rivit) = IbisCsvParser.parse(bom ++ rivi)
       virheet should be(empty)
-      rivit.map(_.personalCode) should be(List("abc123"))
+      rivit.map(_.iboTunniste) should be(List("abc123"))
       rivit.head.subjects should have length 8
     }
   }
