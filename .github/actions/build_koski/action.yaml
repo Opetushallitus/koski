@@ -35,7 +35,7 @@ runs:
       if: steps.lookup.outputs.cache-hit != 'true'
       run: |
         scripts/retry.sh "Koski dependency resolution" 5m -- \
-          ./mvnw --batch-mode --update-snapshots --activate-profiles frontend,scalafix dependency:go-offline
+          ./mvnw --batch-mode --update-snapshots --activate-profiles frontend,scalafix dependency:resolve-plugins dependency:resolve
       shell: bash
     - name: Build Koski app + tests
       if: steps.lookup.outputs.cache-hit != 'true'
@@ -53,7 +53,7 @@ runs:
       working-directory: omadata-oauth2-sample/java
       run: |
         ../../scripts/retry.sh "OmaData Java sample dependency resolution" 5m -- \
-          ./mvnw --batch-mode --update-snapshots dependency:go-offline compile
+          ./mvnw --batch-mode --update-snapshots dependency:resolve-plugins dependency:resolve compile
       shell: bash
     - name: Cache target dir
       if: steps.lookup.outputs.cache-hit != 'true'
