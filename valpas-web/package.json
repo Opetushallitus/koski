@@ -75,7 +75,7 @@
     "typescript-eslint": "8.72.2"
   },
   "dependencies": {
-    "bem-ts": "0.15.1",
+    "bem-ts": "0.15.2",
     "date-fns": "4.4.0",
     "fp-ts": "2.16.11",
     "js-cookie": "3.0.8",
