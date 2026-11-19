@@ -12,13 +12,13 @@ import fi.oph.koski.log.AuditLogMessage.AuditLogMessageField
 import fi.oph.koski.log.{KoskiAuditLogMessageField, KoskiOperation, Logging, OpiskeluoikeusOiditAuditLog}
 import fi.oph.koski.massaluovutus.MassaluovutusUtils.{QueryResourceManager, auditlokinKentät}
 import fi.oph.koski.massaluovutus.organisaationopiskeluoikeudet.MassaluovutusOppija
-import fi.oph.koski.massaluovutus.{KoulutuksenjärjestäjienMassaluovutusQueryParameters, MassaluovutusException, MassaluovutusUtils, QueryFormat, QueryResultWriter}
+import fi.oph.koski.massaluovutus.{KoulutuksenjärjestäjienMassaluovutusQueryParameters, MassaluovutusException, MassaluovutusResultSchema, MassaluovutusUtils, QueryFormat, QueryResultWriter}
 import fi.oph.koski.opiskeluoikeus.OpiskeluoikeusQueryContext
 import fi.oph.koski.organisaatio.{MockOrganisaatiot, OrganisaationAlaisetOrganisaatiot}
 import fi.oph.koski.schema._
 import fi.oph.koski.schema.annotation.{Deprecated, EnumValues, HiddenFromAiemmatOpiskeluoikeudet}
 import fi.oph.koski.util.Retry.retryWithInterval
-import fi.oph.scalaschema.Serializer
+import fi.oph.scalaschema.{Property, Serializer}
 import fi.oph.scalaschema.annotation.{Description, Title}
 import org.json4s.JValue
 
@@ -31,7 +31,7 @@ import scala.concurrent.duration.DurationInt
 @Description("Oppijat annetaan henkilötunnuksina tai oppijanumeroina. Jokaisen annetun oppijan on oltava oppilaitoksen nykyinen opiskelija ja alle 18-vuotias tai kyselyn tekovuonna 18 vuotta täyttävä, muuten koko kysely hylätään ja vastaus kertoo, mitkä oppijat eivät täytä ehtoja. Nykyinen opiskelija on oppija, jolla on kyselyn oppilaitoksessa päättymätön, myös vasta tulevaisuudessa alkava, jonkin näistä koulutusmuodoista opiskeluoikeus. Kysely tehdään aina yhdelle oppilaitokselle.")
 @Description("Esiopetustasoiset tiedot eli esiopetuksen opiskeluoikeudet sekä International Schoolin explorer-vuosiluokka ja Helsingin eurooppalaisen koulun nursery-vuosiluokat palautetaan vain, jos oppija on kyselyn oppilaitoksessa esi- tai perusopetustasoinen opiskelija. International Schoolissa ja eurooppalaisessa koulussa taso päätellään nykyisen opiskeluoikeuden uusimmasta vuosiluokasta: PYP ja MYP 6–9 sekä nursery, primary ja S1–S4 ovat perusopetustasoa, MYP 10, Diploma ja S5–S7 toista astetta. Oppilaitoksen omaa nykyistä opiskeluoikeutta ei karsita.")
 @Description("Kysely on käytettävissä palvelukäyttäjälle, jolla on kyselyn oppilaitoksessa lukuoikeus ja AIEMMAT_OPISKELUOIKEUDET-käyttöoikeus, sekä Opetushallituksen pääkäyttäjälle. Palautettavat koulutusmuodot eivät riipu käyttäjän omista koulutusmuotokohtaisista käyttöoikeuksista, vaan ainoastaan tästä roolista. Arkaluontoiset tiedot palautetaan aina. Skeemassa HiddenFromAiemmatOpiskeluoikeudet-merkinnällä varustetut kentät (esim. vankilaopetuksessa ja käyttäytymisenArvio) sekä vanhentuneiksi (Deprecated) merkityt kentät jätetään pois.")
-@Description("Tulostiedostot vastaavat organisaationOpiskeluoikeudet-kyselyn json-muotoa: yksi tiedosto oppijaa kohden.")
+@Description("Tulostiedostot vastaavat organisaationOpiskeluoikeudet-kyselyn json-muotoa: yksi tiedosto oppijaa kohden. Vastauksen skeema, josta on karsittu muut koulutusmuodot sekä pois jätettävät kentät, on saatavana <a href=\"/koski/json-schema-viewer/?schema=aiemmat-opiskeluoikeudet-result.json\">täältä.</a>")
 case class MassaluovutusQueryAiemmatOpiskeluoikeudet(
   @EnumValues(Set("aiemmatOpiskeluoikeudet"))
   `type`: String = "aiemmatOpiskeluoikeudet",
@@ -110,14 +110,8 @@ case class MassaluovutusQueryAiemmatOpiskeluoikeudet(
     case _ => Left(KoskiErrorCategory.forbidden())
   }
 
-  // Arkaluontoiset tiedot palautetaan käyttäjän rooleista riippumatta; HiddenFromAiemmatOpiskeluoikeudet- ja Deprecated-kentät jätetään pois
-  private def serialize(oppija: MassaluovutusOppija): JValue = {
-    val filter = SensitiveAndRedundantDataFilter(SensitiveDataAllowed.SystemUser)
-    val context = filter.serializationContext.copy(propertyProcessor = (schema, property) =>
-      if (property.metadata.exists(m => m.isInstanceOf[HiddenFromAiemmatOpiskeluoikeudet] || m.isInstanceOf[Deprecated])) Nil else filter.filterSensitiveData(schema, property)
-    )
-    Serializer.serialize(oppija, context)
-  }
+  private def serialize(oppija: MassaluovutusOppija): JValue =
+    Serializer.serialize(oppija, sensitiveDataFilter.serializationContext.copy(propertyProcessor = (_, property) => if (includeProperty(property)) List(property) else Nil))
 
   private def annetutHetut: List[String] = hetut.toList.flatten
   private def annetutOidit: List[String] = oppijaOidit.toList.flatten
@@ -243,6 +237,17 @@ object MassaluovutusQueryAiemmatOpiskeluoikeudet {
       Option.when(suoritukset.nonEmpty)(oo.copy(suoritukset = suoritukset))
     case oo => Some(oo)
   }
+
+  // Sama sääntö ohjaa tulostiedoston serialisointia ja dokumentaation skeemaa: arkaluontoiset tiedot palautetaan
+  // käyttäjän rooleista riippumatta, HiddenFromAiemmatOpiskeluoikeudet-, Deprecated- ja RedundantData-kentät jätetään pois
+  private val sensitiveDataFilter = SensitiveAndRedundantDataFilter(SensitiveDataAllowed.SystemUser)
+  def includeProperty(property: Property): Boolean =
+    !property.metadata.exists(m => m.isInstanceOf[HiddenFromAiemmatOpiskeluoikeudet] || m.isInstanceOf[Deprecated]) &&
+      !sensitiveDataFilter.shouldHideField(property.metadata)
+
+  lazy val resultSchema: MassaluovutusResultSchema =
+    MassaluovutusResultSchema(MassaluovutusOppija.schema, includeProperty, Some(sallitutKoulutusmuodot))
+  lazy val schemaJson: JValue = resultSchema.json
 
   private case class OmaOpiskeluoikeus(oid: String, oppijaOid: String)
   private case class NykyinenOpiskelija(henkilö: LaajatOppijaHenkilöTiedot, omatOpiskeluoikeusOidit: Set[String])
