@@ -241,6 +241,23 @@
       "automerge": true
     },
     {
+      "description": "Automerge minor and patch updates of valpas-web runtime libraries that the Valpas browser tests exercise.",
+      "matchManagers": ["npm"],
+      "matchFileNames": ["valpas-web/package.json"],
+      "matchDepTypes": ["dependencies"],
+      "matchUpdateTypes": ["minor", "patch"],
+      "matchPackageNames": ["bem-ts"],
+      "automerge": true
+    },
+    {
+      "description": "Move the automerged runtime patch updates out of the manual npm dependencies group into their own. Renovate automerges a group only when every update in it may be automerged.",
+      "matchManagers": ["npm"],
+      "matchUpdateTypes": ["patch"],
+      "matchJsonata": ["automerge = true and groupName = 'npm dependencies'"],
+      "groupName": "npm core runtime dependencies",
+      "group": { "description": ["Multiple packages: npm core runtime dependencies"] }
+    },
+    {
       "description": "Group all Parcel updates together. Placed after the npm patch groups so that their groupName does not override this one.",
       "groupName": "Parcel",
       "matchPackageNames": [
