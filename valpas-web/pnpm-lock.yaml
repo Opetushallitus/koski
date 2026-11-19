@@ -176,8 +176,8 @@ importers:
   .:
     dependencies:
       bem-ts:
-        specifier: 0.15.1
-        version: 0.15.1
+        specifier: 0.15.2
+        version: 0.15.2
       date-fns:
         specifier: 4.4.0
         version: 4.4.0
@@ -1742,8 +1742,8 @@ packages:
     engines: {node: '>=6.0.0'}
     hasBin: true
 
-  bem-ts@0.15.1:
-    resolution: {integrity: sha512-k2W/7l0VW/yqUmrNcmW+I9BmtEJ5QIrKqdOz3iNBrbzuKdYcCd39QIrb9lKvOcyrzsNgLHEAj6BmvbEo53p8eg==}
+  bem-ts@0.15.2:
+    resolution: {integrity: sha512-cEwJdiS/VGHz68LaKecnY6N6yu3qXAb3RJ9jU1/S2xHBM6dAg9+dALE/8aSnqifwJ3bQoaJUhrUM3HaPTl/vzg==}
     engines: {node: '>=20.0.0'}
 
   boolbase@1.0.0:
@@ -5258,7 +5258,7 @@ snapshots:
 
   baseline-browser-mapping@2.11.37: {}
 
-  bem-ts@0.15.1: {}
+  bem-ts@0.15.2: {}
 
   boolbase@1.0.0: {}
 
