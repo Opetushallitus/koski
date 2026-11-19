@@ -8,7 +8,7 @@ case class IbisRecord(
   year: Int,
   month: String,
   school: String,
-  personalCode: String,
+  iboTunniste: String,
   dateOfBirth: Option[LocalDate],
   gender: String,
   category: String,
@@ -19,7 +19,7 @@ case class IbisRecord(
   lastChangeDate: Option[LocalDate],
   totalPoints: Option[Int],
   resultCode: String,
-  eeTokPoints: Option[Int],
+  combinedGrade: Option[Int],
   subjects: List[IbisSubject],
 ) {
   def session: IbisSession = IbisSession(year, month)

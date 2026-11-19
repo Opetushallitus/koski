@@ -9,16 +9,7 @@ import fi.oph.scalaschema.{SerializationContext, Serializer}
 
 import java.time.LocalDate
 
-// Koulutuksen opiskeluoikeus (IBOpiskeluoikeus tai InternationalSchoolOpiskeluoikeus), johon IBIS-rivi on yhdistetty
-// iboTunnisteen perusteella. Diploman oppilaitos ja koulutustoimija kopioidaan siitä.
-// TODO TOR-747: Yhdistäminen (haku iboTunnisteella) ja tuontipalvelu käyttöliittymineen puuttuvat vielä.
-case class IbisKohde(
-  oppijaOid: String,
-  oppilaitos: Oppilaitos,
-  koulutustoimija: Option[Koulutustoimija],
-)
-
-case class IbisKonversiovirhe(personalCode: String, syy: String)
+case class IbisKonversiovirhe(iboTunniste: String, syy: String)
 
 class IbisOpiskeluoikeusConverter(
   koodistoViitePalvelu: KoodistoViitePalvelu,
@@ -34,37 +25,37 @@ class IbisOpiskeluoikeusConverter(
   private val tuotavatTulokset = Set(IbisResultCode.DiplomaAwarded, IbisResultCode.BilingualDiplomaAwarded)
 
   // vahvistuspäivä: todistuksen myöntämispäivä, jota ei ole IBIS-tiedostossa. TODO TOR-747: tuoja antaa sen eräkohtaisesti.
-  def convert(record: IbisRecord, kohde: IbisKohde, vahvistuspäivä: LocalDate): Either[IbisKonversiovirhe, IBDiplomaOpiskeluoikeus] = {
+  def convert(record: IbisRecord, oppija: IbisYhdistettyOppija, vahvistuspäivä: LocalDate): Either[IbisKonversiovirhe, IBDiplomaOpiskeluoikeus] = {
     for {
       _ <- tarkistaTuotava(record)
       result <- koodi(record, "ibdiplomaresult", record.resultCode)
       kerta <- tutkintokerta(record, record.session)
       osasuoritukset <- sequence(arvioidutOppiaineet(record).map(convertSubject(record, vahvistuspäivä)))
       opiskeluoikeus <- täydennäKoodistoYmsMerkkijonot(record, IBDiplomaOpiskeluoikeus(
-        oppilaitos = Some(kohde.oppilaitos),
-        koulutustoimija = kohde.koulutustoimija,
+        oid = oppija.diplomanOid,
+        oppilaitos = Some(oppija.oppilaitos),
         tila = IBDiplomaOpiskeluoikeudenTila(List(
           IBDiplomaOpiskeluoikeusjakso(vahvistuspäivä, Koodistokoodiviite("valmistunut", "koskiopiskeluoikeudentila"))
         )),
         suoritukset = List(IBDiplomanSuoritus(
-          toimipiste = kohde.oppilaitos,
-          vahvistus = Some(Päivämäärävahvistus(vahvistuspäivä, kohde.oppilaitos)),
+          toimipiste = oppija.oppilaitos,
+          vahvistus = Some(Päivämäärävahvistus(vahvistuspäivä, oppija.oppilaitos)),
           tutkintokerta = kerta,
           totalPoints = record.totalPoints,
-          combinedGrade = record.eeTokPoints,
+          combinedGrade = record.combinedGrade,
           result = result,
           osasuoritukset = Some(osasuoritukset),
         )),
-        iboTunniste = record.personalCode,
+        iboTunniste = record.iboTunniste,
       ))
     } yield opiskeluoikeus
   }
 
   private def tarkistaTuotava(record: IbisRecord): Either[IbisKonversiovirhe, Unit] = {
     if (!tuotavatCategoryArvot.contains(record.category)) {
-      Left(IbisKonversiovirhe(record.personalCode, s"CATEGORY-arvoa ${record.category} ei tuoda Koskeen"))
+      Left(IbisKonversiovirhe(record.iboTunniste, s"CATEGORY-arvoa ${record.category} ei tuoda Koskeen"))
     } else if (!tuotavatTulokset.contains(record.resultCode)) {
-      Left(IbisKonversiovirhe(record.personalCode, s"Tuloskoodia '${record.resultCode}' ei tuoda Koskeen"))
+      Left(IbisKonversiovirhe(record.iboTunniste, s"Tuloskoodia '${record.resultCode}' ei tuoda Koskeen"))
     } else {
       Right(())
     }
@@ -94,7 +85,7 @@ class IbisOpiskeluoikeusConverter(
           coreSuoritus(record, subject, IBDiplomanTheoryOfKnowledge(), kerta, päivä, kieli)
         case "HL" | "SL" =>
           for {
-            oppiaine <- IbisOppiainekartta.get(subject.name).toRight(IbisKonversiovirhe(record.personalCode, s"IBO:n oppiaineelle '${subject.name}' ei ole vastinetta Koskessa"))
+            oppiaine <- IbisOppiainekartta.get(subject.name).toRight(IbisKonversiovirhe(record.iboTunniste, s"IBO:n oppiaineelle '${subject.name}' ei ole vastinetta Koskessa"))
             taso <- koodi(record, "oppiaineentasoib", subject.level)
             koulutusmoduuli <- diplomanOppiaine(record, oppiaine, Some(taso))
             arvosana <- koodi(record, "arviointiasteikkoib", subject.grade)
@@ -106,7 +97,7 @@ class IbisOpiskeluoikeusConverter(
             additionalSubject = subject.additional,
           )
         case muu =>
-          Left(IbisKonversiovirhe(record.personalCode, s"Tuntematon oppiaineen taso $muu"))
+          Left(IbisKonversiovirhe(record.iboTunniste, s"Tuntematon oppiaineen taso $muu"))
       }
     } yield osasuoritus
   }
@@ -153,18 +144,18 @@ class IbisOpiskeluoikeusConverter(
   private def tutkintokerta(record: IbisRecord, session: IbisSession): Either[IbisKonversiovirhe, IBTutkintokerta] =
     IbisSession.lokalisointiavaimet.get(session.month)
       .map(avain => IBTutkintokerta(session.koodiarvo, session.year, localizations.get(avain)))
-      .toRight(IbisKonversiovirhe(record.personalCode, s"Tuntematon tutkintokerran kuukausi ${session.month}"))
+      .toRight(IbisKonversiovirhe(record.iboTunniste, s"Tuntematon tutkintokerran kuukausi ${session.month}"))
 
   private def koodi(record: IbisRecord, koodistoUri: String, koodiarvo: String): Either[IbisKonversiovirhe, Koodistokoodiviite] =
     koodistoViitePalvelu.validate(koodistoUri, koodiarvo)
-      .toRight(IbisKonversiovirhe(record.personalCode, s"Koodiarvoa '$koodiarvo' ei löydy koodistosta $koodistoUri"))
+      .toRight(IbisKonversiovirhe(record.iboTunniste, s"Koodiarvoa '$koodiarvo' ei löydy koodistosta $koodistoUri"))
 
   // Serialisoi ja deserialisoi opiskeluoikeus, jotta koodistoarvoille ja organisaatioille haetaan nimet samoin kuin
   // muille Koskeen tallennettaville opiskeluoikeuksille (vrt. YtrDownloadOppijaConverter).
   private def täydennäKoodistoYmsMerkkijonot(record: IbisRecord, opiskeluoikeus: IBDiplomaOpiskeluoikeus): Either[IbisKonversiovirhe, IBDiplomaOpiskeluoikeus] = {
     val json = Serializer.serialize(opiskeluoikeus, serializationContext)
     validatingAndResolvingExtractor.extract[IBDiplomaOpiskeluoikeus](deserializationContext)(json)
-      .left.map(status => IbisKonversiovirhe(record.personalCode, s"Opiskeluoikeuden täydentäminen epäonnistui: ${status.errorString.getOrElse(status.statusCode.toString)}"))
+      .left.map(status => IbisKonversiovirhe(record.iboTunniste, s"Opiskeluoikeuden täydentäminen epäonnistui: ${status.errorString.getOrElse(status.statusCode.toString)}"))
   }
 
   private def sequence[A](xs: List[Either[IbisKonversiovirhe, A]]): Either[IbisKonversiovirhe, List[A]] =

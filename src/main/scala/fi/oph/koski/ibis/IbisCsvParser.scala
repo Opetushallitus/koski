@@ -63,7 +63,7 @@ object IbisCsvParser {
       year = fields(0).toInt,
       month = validMonth(fields(1)),
       school = fields(2),
-      personalCode = fields(3),
+      iboTunniste = fields(3),
       dateOfBirth = parseDate(fields(4)),
       gender = fields(5).toUpperCase,
       category = fields(6).toUpperCase,
@@ -74,7 +74,7 @@ object IbisCsvParser {
       lastChangeDate = parseDate(fields(11)),
       totalPoints = parseInt(fields(12)),
       resultCode = fields(13).toUpperCase,
-      eeTokPoints = parseInt(fields(14)),
+      combinedGrade = parseInt(fields(14)),
       subjects = subjects,
     )
   }

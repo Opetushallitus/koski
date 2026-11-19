@@ -57,9 +57,9 @@ class IbisOppiainekarttaSpec extends AnyFreeSpec with TestEnvironment with Match
         KoskiApplicationForTests.koskiLocalizationRepository,
         KoskiApplicationForTests.validatingAndResolvingExtractor,
       )
-      val kohde = IbisKohde("1.2.246.562.24.00000000001", ressunLukio, None)
+      val oppija = IbisYhdistettyOppija("1.2.246.562.24.00000000001", ressunLukio, None)
       val virheet = IbisOppiainekartta.oppiaineet.keys.toList.sorted.flatMap { nimi =>
-        converter.convert(diplomaOppiaineella(nimi), kohde, LocalDate.of(2026, 7, 6)).left.toOption.map(virhe => s"$nimi: ${virhe.syy}")
+        converter.convert(diplomaOppiaineella(nimi), oppija, LocalDate.of(2026, 7, 6)).left.toOption.map(virhe => s"$nimi: ${virhe.syy}")
       }
       virheet should be(empty)
     }
@@ -69,7 +69,7 @@ class IbisOppiainekarttaSpec extends AnyFreeSpec with TestEnvironment with Match
     year = 2026,
     month = "MAY",
     school = "000001",
-    personalCode = "abc123",
+    iboTunniste = "abc123",
     dateOfBirth = None,
     gender = "",
     category = IbisCategory.Diploma,
@@ -80,7 +80,7 @@ class IbisOppiainekarttaSpec extends AnyFreeSpec with TestEnvironment with Match
     lastChangeDate = None,
     totalPoints = Some(30),
     resultCode = IbisResultCode.DiplomaAwarded,
-    eeTokPoints = Some(1),
+    combinedGrade = Some(1),
     subjects = List(IbisSubject(2026, "MAY", nimi, "HL", "5", additional = false, language = "ENGLISH")),
   )
 }

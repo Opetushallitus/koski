@@ -5,7 +5,7 @@ import { IBTutkintokerta } from './IBTutkintokerta'
 import { IBDiplomanCoreOppiaine } from './IBDiplomanCoreOppiaine'
 
 /**
- * Extended essayn (EE) tai Theory of knowledgen (TOK) tulos
+ * IBDiplomanCoreSuoritus
  *
  * @see `fi.oph.koski.schema.IBDiplomanCoreSuoritus`
  */

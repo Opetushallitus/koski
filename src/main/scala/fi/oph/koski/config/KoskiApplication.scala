@@ -14,6 +14,7 @@ import fi.oph.koski.healthcheck.{HealthChecker, HealthMonitoring}
 import fi.oph.koski.henkilo.{HenkilöRepository, Hetu, KoskiHenkilöCache, OpintopolkuHenkilöFacade}
 import fi.oph.koski.history.{KoskiOpiskeluoikeusHistoryRepository, YtrOpiskeluoikeusHistoryRepository}
 import fi.oph.koski.huoltaja.{HuollettavatRepository, HuoltajaServiceVtj}
+import fi.oph.koski.ibis.{IbisOpiskeluoikeusRepository, IbisService}
 import fi.oph.koski.koodisto.{KoodistoCreator, KoodistoPalvelu, KoodistoViitePalvelu}
 import fi.oph.koski.koskiuser._
 import fi.oph.koski.massaluovutus.{MassaluovutusCleanupScheduler, MassaluovutusScheduler, MassaluovutusService}
@@ -172,6 +173,7 @@ class KoskiApplication(
   lazy val perustiedotSyncScheduler = new PerustiedotSyncScheduler(this)
   lazy val perustiedotManualSyncScheduler = new PerustiedotManualSyncScheduler(this)
   lazy val oppijaFacade = new KoskiOppijaFacade(henkilöRepository, opiskeluoikeusRepository, ytrPossu, historyRepository, ytrHistoryRepository, globaaliValidator, config, hetu)
+  lazy val ibisService = new IbisService(new IbisOpiskeluoikeusRepository(masterDatabase.db), opintopolkuHenkilöFacade)
   lazy val suoritusjakoRepository = new SuoritusjakoRepository(masterDatabase.db)
   lazy val suoritusjakoService = new SuoritusjakoService(suoritusjakoRepository, oppijaFacade, suoritetutTutkinnotService, aktiivisetJaPäättyneetOpinnotService)
   lazy val mydataRepository = new MyDataRepository(masterDatabase.db)

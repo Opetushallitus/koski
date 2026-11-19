@@ -22,24 +22,31 @@ class IbisOpiskeluoikeusConverterSpec extends AnyFreeSpec with TestEnvironment w
     KoskiApplicationForTests.validatingAndResolvingExtractor,
   )
 
-  private val kohde = IbisKohde("1.2.246.562.24.00000000001", ressunLukio, None)
+  private val oppija = IbisYhdistettyOppija("1.2.246.562.24.00000000001", ressunLukio, None)
   private val vahvistuspäivä = LocalDate.of(2016, 7, 6)
 
-  private def rivi(personalCode: String): IbisRecord = rivit.find(_.personalCode == personalCode).get
+  private def rivi(iboTunniste: String): IbisRecord = rivit.find(_.iboTunniste == iboTunniste).get
 
   private def coreOppiaineet(oo: IBDiplomaOpiskeluoikeus): List[IBDiplomanCoreOppiaine] =
     oo.suoritukset.head.osasuoritukset.toList.flatten.collect { case s: IBDiplomanCoreSuoritus => s.koulutusmoduuli }
 
   "Diploma awarded" - {
-    val oo = converter.convert(rivi("abc123"), kohde, vahvistuspäivä).toOption.get
+    val oo = converter.convert(rivi("abc123"), oppija, vahvistuspäivä).toOption.get
     val suoritus = oo.suoritukset.head
 
     "saa tunnisteen, oppilaitoksen ja valmistunut-tilan vahvistuspäivälle" in {
+      oo.oid should be(None)
       oo.iboTunniste should be("abc123")
       oo.oppilaitos.map(_.oid) should be(Some(ressunLukio.oid))
+      oo.koulutustoimija should be(None)
       oo.tila.opiskeluoikeusjaksot.map(j => (j.alku, j.tila.koodiarvo)) should be(List((vahvistuspäivä, "valmistunut")))
       oo.alkamispäivä should be(Some(vahvistuspäivä))
       oo.päättymispäivä should be(Some(vahvistuspäivä))
+    }
+
+    "saa olemassa olevan diploman oidin, jotta tuonti päivittää sen" in {
+      val diplomanOid = "1.2.246.562.15.12345678901"
+      converter.convert(rivi("abc123"), oppija.copy(diplomanOid = Some(diplomanOid)), vahvistuspäivä).toOption.flatMap(_.oid) should be(Some(diplomanOid))
     }
 
     "saa pisteet, tuloksen, tutkintokerran ja vahvistuksen" in {
@@ -91,7 +98,7 @@ class IbisOpiskeluoikeusConverterSpec extends AnyFreeSpec with TestEnvironment w
   }
 
   "Bilingual diploma, RETAKE" - {
-    val oo = converter.convert(rivi("def456"), kohde, vahvistuspäivä).toOption.get
+    val oo = converter.convert(rivi("def456"), oppija, vahvistuspäivä).toOption.get
     val osasuoritukset = oo.suoritukset.head.osasuoritukset.toList.flatten
 
     "saa tuloskoodin B" in {
@@ -112,7 +119,7 @@ class IbisOpiskeluoikeusConverterSpec extends AnyFreeSpec with TestEnvironment w
       val alkuperäinen = rivi("abc123")
       val muutettu = alkuperäinen.copy(subjects = alkuperäinen.subjects.map(s => if (s.level == "EE") s.copy(name = "WELSH A") else s))
       RootLogTester.clearMessages()
-      val oo = converter.convert(muutettu, kohde, vahvistuspäivä).toOption.get
+      val oo = converter.convert(muutettu, oppija, vahvistuspäivä).toOption.get
       val ee = coreOppiaineet(oo).head.asInstanceOf[IBDiplomanExtendedEssay]
       ee.tunniste.koodiarvo should be("EE")
       ee.aine should be(None)
@@ -125,7 +132,7 @@ class IbisOpiskeluoikeusConverterSpec extends AnyFreeSpec with TestEnvironment w
       val alkuperäinen = rivi("abc123")
       val muutettu = alkuperäinen.copy(subjects = alkuperäinen.subjects.map(s => if (s.name == "HISTORY" && s.level == "HL") s.copy(language = "BEMBA") else s))
       RootLogTester.clearMessages()
-      val oo = converter.convert(muutettu, kohde, vahvistuspäivä).toOption.get
+      val oo = converter.convert(muutettu, oppija, vahvistuspäivä).toOption.get
       val historia = oo.suoritukset.head.osasuoritukset.toList.flatten.collectFirst { case s: IBDiplomanOppiaineenSuoritus if s.koulutusmoduuli.tunniste.koodiarvo == "HIS" => s }.get
       historia.suorituskieli should be(None)
       RootLogTester.getLogMessages.exists(_.contains("oppiaineen HISTORY (HL) kielelle BEMBA ei ole vastinetta Koskessa")) should be(true)
@@ -134,23 +141,23 @@ class IbisOpiskeluoikeusConverterSpec extends AnyFreeSpec with TestEnvironment w
 
   "Ei tuotavat rivit" - {
     "CATEGORY COURSE hylätään" in {
-      converter.convert(rivi("xyz999"), kohde, vahvistuspäivä) should be(Left(IbisKonversiovirhe("xyz999", "CATEGORY-arvoa COURSE ei tuoda Koskeen")))
+      converter.convert(rivi("xyz999"), oppija, vahvistuspäivä) should be(Left(IbisKonversiovirhe("xyz999", "CATEGORY-arvoa COURSE ei tuoda Koskeen")))
     }
 
     "failed diploma hylätään" in {
       val failedDiploma = rivi("abc123").copy(resultCode = IbisResultCode.FailedDiploma)
-      converter.convert(failedDiploma, kohde, vahvistuspäivä) should be(Left(IbisKonversiovirhe("abc123", "Tuloskoodia 'F' ei tuoda Koskeen")))
+      converter.convert(failedDiploma, oppija, vahvistuspäivä) should be(Left(IbisKonversiovirhe("abc123", "Tuloskoodia 'F' ei tuoda Koskeen")))
     }
 
     "oppiaine, jolle ei ole vastinetta Koskessa, hylkää koko rivin" in {
       val alkuperäinen = rivi("abc123")
       val muutettu = alkuperäinen.copy(subjects = alkuperäinen.subjects.map(s => if (s.name == "BIOLOGY") s.copy(name = "ART HISTORY") else s))
-      converter.convert(muutettu, kohde, vahvistuspäivä) should be(Left(IbisKonversiovirhe("abc123", "IBO:n oppiaineelle 'ART HISTORY' ei ole vastinetta Koskessa")))
+      converter.convert(muutettu, oppija, vahvistuspäivä) should be(Left(IbisKonversiovirhe("abc123", "IBO:n oppiaineelle 'ART HISTORY' ei ole vastinetta Koskessa")))
     }
   }
 
   "Diploma, jossa on kielioppiaineita usealla kielellä" - {
-    val oo = converter.convert(rivi("ghi789"), kohde, vahvistuspäivä).toOption.get
+    val oo = converter.convert(rivi("ghi789"), oppija, vahvistuspäivä).toOption.get
     val oppiaineet = oo.suoritukset.head.osasuoritukset.toList.flatten.collect { case s: IBDiplomanOppiaineenSuoritus => s }
 
     "saa kielioppiaineille kielen ja suorituskielen" in {
