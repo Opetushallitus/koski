@@ -38,6 +38,21 @@ class MassaluovutusDocumentationSpec extends AnyFreeSpec with Matchers {
       html should include("""POST /koski/api/massaluovutus HTTP/1.1""")
     }
 
+    "jokaisella kyselyllä on kokeilulomakkeen paikkamerkki, jossa kyselyn osoite ja esimerkki" in {
+      val html = sections("massaluovutus_koulutuksenjarjestajat")
+      html should include("<summary>Kokeile</summary>")
+      html should include("""<div class="query-tester" data-api-path="/koski/api/massaluovutus" data-example="{""")
+      html should include("""&quot;type&quot; : &quot;organisaationOpiskeluoikeudet&quot;""")
+      sections("massaluovutus_valpas") should include("""data-api-path="/koski/valpas/api/massaluovutus"""")
+    }
+
+    "tuotannossa kokeilulomaketta ei tarjota" in {
+      val html = QueryDocumentation.addQueryDocs("{{query:AiemmatOpiskeluoikeudet}}", includeTester = false)
+      html should include("<summary>Esimerkki</summary>")
+      html should not include "Kokeile"
+      html should not include "query-tester"
+    }
+
     "raporttisivulla yhteiset parametrit kuvataan kerran ja raportit ryhmitellään koulutusmuodoittain" in {
       val html = sections("massaluovutus_raportit")
       html should include("<summary>Yhteiset parametrit</summary>")

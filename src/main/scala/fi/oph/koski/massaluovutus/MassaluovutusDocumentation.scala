@@ -1,6 +1,6 @@
 package fi.oph.koski.massaluovutus
 
-import fi.oph.koski.config.KoskiApplication
+import fi.oph.koski.config.{Environment, KoskiApplication}
 import fi.oph.koski.documentation.Markdown
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.log.Logging
@@ -61,7 +61,8 @@ object QueryDocumentation extends Logging {
     TryWithLogging.andResources(logger, { use =>
       val source = use(Source.fromResource(path)).mkString
       val html = Markdown.markdownToXhtmlString(source)
-      val expanded = addQueryDocs(addClassTitles(addClassDocs(addJsonExamples(application, html))))
+      val includeTester = !Environment.isProdEnvironment(application.config)
+      val expanded = addQueryDocs(addClassTitles(addClassDocs(addJsonExamples(application, html))), includeTester)
       addVariableTexts(application, addToc(addHeadingIds(expanded)))
     }).getOrElse(missingSection(path))
 
@@ -118,7 +119,8 @@ object QueryDocumentation extends Logging {
   // {{query:esimerkki[,esimerkki]|h3|raportti|exclude=kenttä}}: kyselyn otsikko, kuvaus, parametrit ja esimerkki.
   // Useampi esimerkki samassa direktiivissä tuottaa formaattikohtaiset välilehdet (esim. CSV/JSON).
   // raportti = jättää pois RaporttikyselynYhteisetParametrit-kentät, jotka kuvataan raporttisivulla kerran.
-  def addQueryDocs(markdown: String): String =
+  // includeTester = lisää Kokeile-lomakkeen paikkamerkin; tuotannossa ei, ettei kyselyä ajeta oikeaan dataan vahingossa.
+  def addQueryDocs(markdown: String, includeTester: Boolean): String =
     """\{\{query:(?<args>.+?)}}""".r
       .replaceAllIn(markdown, { m =>
         val args = parseDirectiveArgs(m.group("args"))
@@ -129,6 +131,7 @@ object QueryDocumentation extends Logging {
             examples = examples.collect { case Right(e) => e },
             headingLevel = if (args.flags.contains("h3")) 3 else 2,
             exclude = exclude,
+            includeTester = includeTester,
           )
         }
         Regex.quoteReplacement(html)
@@ -331,7 +334,7 @@ object PropertyHtmlDocs {
 object QueryHtmlDocs {
   case class FormatTab(label: String, descriptions: List[String], properties: Seq[Property], example: QueryExample)
 
-  def render(examples: List[QueryExample], headingLevel: Int, exclude: Set[String]): String = {
+  def render(examples: List[QueryExample], headingLevel: Int, exclude: Set[String], includeTester: Boolean): String = {
     val schemas = examples.map(e => PropertyHtmlDocs.getSchema(e.query.getClass.getName).asInstanceOf[ClassSchema])
     val titles = schemas.map(_.metadata.collect { case Title(t) => t })
     val descriptions = schemas.map(_.metadata.collect { case d: Description => d.text })
@@ -350,7 +353,7 @@ object QueryHtmlDocs {
     }
 
     val heading: Elem = if (headingLevel == 3) <h3 id={id}>{title}</h3> else <h2 id={id}>{title}</h2>
-    val body: NodeSeq = if (tabs.size == 1) tabBody(tabs.head) else formatTabs(id, tabs)
+    val body: NodeSeq = if (tabs.size == 1) tabBody(tabs.head, includeTester) else formatTabs(id, tabs, includeTester)
     val section: Elem =
       <section class="query-doc">
         {heading}
@@ -360,7 +363,7 @@ object QueryHtmlDocs {
     section.toString()
   }
 
-  private def formatTabs(id: String, tabs: List[FormatTab]): NodeSeq = {
+  private def formatTabs(id: String, tabs: List[FormatTab], includeTester: Boolean): NodeSeq = {
     val inputs = tabs.zipWithIndex.map { case (_, i) =>
       val input = <input type="radio" name={s"format-$id"} id={s"format-$id-$i"}/>
       if (i == 0) input % scala.xml.Attribute(None, "checked", Text("checked"), scala.xml.Null) else input
@@ -370,20 +373,25 @@ object QueryHtmlDocs {
       <div class="format-tab-labels">
         {tabs.zipWithIndex.map { case (tab, i) => <label for={s"format-$id-$i"}>{tab.label}</label> }}
       </div>
-      {tabs.map(tab => <section class="format-tab">{tabBody(tab)}</section>)}
+      {tabs.map(tab => <section class="format-tab">{tabBody(tab, includeTester)}</section>)}
     </div>
   }
 
-  private def tabBody(tab: FormatTab): NodeSeq =
+  private def tabBody(tab: FormatTab, includeTester: Boolean): NodeSeq =
     <div class="query-doc-body">
       {if (tab.descriptions.nonEmpty) PropertyHtmlDocs.descriptionParagraphs(tab.descriptions) else NodeSeq.Empty}
       {PropertyHtmlDocs.details("Parametrit", PropertyHtmlDocs.renderPropertiesTable(tab.properties))}
       {PropertyHtmlDocs.details("Esimerkki", exampleRequest(tab.example))}
+      {if (includeTester) PropertyHtmlDocs.details("Kokeile", queryTester(tab.example)) else NodeSeq.Empty}
     </div>
 
   // {{var:…}}-muuttujat korvataan vasta direktiivien jälkeen, joten ne voi jättää tähän sellaisenaan
   private def exampleRequest(example: QueryExample): Node =
     <pre><code>{Text(s"POST {{var:baseUrl}}${apiPath(example.query)} HTTP/1.1\n{{var:headers}}\n\n${example.json}")}</code></pre>
+
+  // Selainpuoli (MassaluovutusKokeile.tsx) liittää tähän lomakkeen, jolla kirjautunut käyttäjä voi ajaa kyselyn
+  private def queryTester(example: QueryExample): Node =
+    <div class="query-tester" data-api-path={s"{{var:baseUrl}}${apiPath(example.query)}"} data-example={example.json}></div>
 
   private def apiPath(query: MassaluovutusQueryParameters): String = query match {
     case _: ValpasMassaluovutusQueryParameters => "/valpas/api/massaluovutus"
