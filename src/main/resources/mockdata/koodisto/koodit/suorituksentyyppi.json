@@ -4093,5 +4093,89 @@
     "koodiUri": "suorituksentyyppi_ylioppilastutkinto",
     "versio": 1,
     "koodiArvo": "ylioppilastutkinto"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "IB Diploma",
+        "kuvaus": "",
+        "lyhytNimi": "",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "IB Diploma",
+        "kuvaus": "",
+        "lyhytNimi": "",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "IB Diploma",
+        "kuvaus": "",
+        "lyhytNimi": "",
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "suorituksentyyppi_ibdiploma",
+    "versio": 1,
+    "koodiArvo": "ibdiploma"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "IB Diploman oppiaine",
+        "kuvaus": "",
+        "lyhytNimi": "",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "IB Diploma-läroämne",
+        "kuvaus": "",
+        "lyhytNimi": "",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "IB Diploma subject",
+        "kuvaus": "",
+        "lyhytNimi": "",
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "suorituksentyyppi_ibdiplomanoppiaine",
+    "versio": 1,
+    "koodiArvo": "ibdiplomanoppiaine"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "IB Diploman core-suoritus",
+        "kuvaus": "",
+        "lyhytNimi": "",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "IB Diploma core-prestation",
+        "kuvaus": "",
+        "lyhytNimi": "",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "IB Diploma core element",
+        "kuvaus": "",
+        "lyhytNimi": "",
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "suorituksentyyppi_ibdiplomancore",
+    "versio": 1,
+    "koodiArvo": "ibdiplomancore"
   }
 ]

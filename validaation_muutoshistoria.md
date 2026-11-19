@@ -1,5 +1,9 @@
 # Koskeen tallennettavien tietojen validaatiosäännöt
 
+## xx.xx.2026
+
+- IB Diploma -opiskeluoikeuden (`ibdiploma`) voi tallentaa vain, jos oppijalla on IB-koulutuksen (`ibtutkinto`) opiskeluoikeus, jolla on sama `iboTunniste`.
+
 ## 17.11.2026
 
 Vapaan sivistystyön vapaatavoitteisen koulutuksen (`vstvapaatavoitteinenkoulutus`) opiskeluoikeuksille sallitaan tila `lasna` ja osaamismerkin (`vstosaamismerkki`) opiskeluoikeuksille tilat `lasna` ja `keskeytynyt`. Opiskeluoikeuksille, jotka ovat päättyneet 1.1.2027 tai sen jälkeen tai ovat edelleen voimassa, validaatiot muuttuvat:
