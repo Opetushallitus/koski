@@ -7,7 +7,7 @@ import java.time.{LocalDate, LocalDateTime}
 
 // TODO TOR-747: Luonnos IBO:n myöntämän IB-tutkinnon (IB Diploma) tietomallista. Nykyinen IBOpiskeluoikeus (ibtutkinto)
 // kuvaa oppilaitoksen antamaa IB-koulutusta; tämä opiskeluoikeus kuvaa IBO:n myöntämää tutkintoa ja täytetään IBIS-tulostiedostosta
-// (ks. fi.oph.koski.ibis). Koodiarvot ibdiploma, ibdiplomanoppiaine ja ibdiplomancore sekä koodisto ibdiplomantulos ovat
+// (ks. fi.oph.koski.ibis). Koodiarvot ibdiploma, ibdiplomanoppiaine ja ibdiplomancore sekä koodisto ibdiplomaresult ovat
 // työnimiä, koska ibtutkinto on jo käytössä sekä opiskeluoikeuden että suorituksen tyyppinä.
 
 @Title("IB Diploma -opiskeluoikeus")
@@ -68,14 +68,14 @@ case class IBDiplomanSuoritus(
   @Description("Diploman kokonaispistemäärä (IBIS TOTAL POINTS)")
   @MinValue(0)
   @MaxValue(45)
-  kokonaispistemäärä: Option[Int] = None,
+  totalPoints: Option[Int] = None,
   @Description("Extended essayn ja Theory of knowledgen yhteispisteet (IBIS EE/TOK POINTS)")
   @MinValue(0)
   @MaxValue(3)
-  lisäpisteet: Option[Int] = None,
+  combinedGrade: Option[Int] = None,
   @Description("Diploman tulos IBO:n tuloskoodin mukaan (IBIS RESULT CODE)")
-  @KoodistoUri("ibdiplomantulos")
-  tulos: Koodistokoodiviite,
+  @KoodistoUri("ibdiplomaresult")
+  result: Koodistokoodiviite,
   @KoodistoKoodiarvo("ibdiploma")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("ibdiploma", "suorituksentyyppi"),
   override val osasuoritukset: Option[List[IBDiplomanOsasuoritus]] = None

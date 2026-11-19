@@ -58,9 +58,9 @@ object ExamplesIBDiploma {
     toimipiste = ressunLukio,
     vahvistus = Some(Päivämäärävahvistus(vahvistuspäivä, ressunLukio)),
     tutkintokerta = tutkintokerta,
-    kokonaispistemäärä = Some(37),
-    lisäpisteet = Some(2),
-    tulos = Koodistokoodiviite("D", "ibdiplomantulos"),
+    totalPoints = Some(37),
+    combinedGrade = Some(2),
+    result = Koodistokoodiviite("D", "ibdiplomaresult"),
     osasuoritukset = Some(List(
       kieliOppiaine("A", "FI", "HL", "7"),
       kieliOppiaine("B", "EN", "HL", "6"),

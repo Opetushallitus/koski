@@ -3,7 +3,7 @@
     "metadata": [
       {
         "nimi": "Diploma awarded",
-        "kuvaus": "IBIS RESULT CODE D – Diploma awarded",
+        "kuvaus": "Diploma awarded",
         "lyhytNimi": "Diploma",
         "kieli": "FI"
       },
@@ -21,7 +21,7 @@
     "withinCodeElements": [],
     "includesCodeElements": [],
     "levelsWithCodeElements": [],
-    "koodiUri": "ibdiplomantulos_d",
+    "koodiUri": "ibdiplomaresult_d",
     "versio": 1,
     "koodiArvo": "D"
   },
@@ -29,7 +29,7 @@
     "metadata": [
       {
         "nimi": "Bilingual diploma awarded",
-        "kuvaus": "IBIS RESULT CODE B – Bilingual diploma awarded",
+        "kuvaus": "Bilingual diploma awarded",
         "lyhytNimi": "Bilingual diploma",
         "kieli": "FI"
       },
@@ -47,7 +47,7 @@
     "withinCodeElements": [],
     "includesCodeElements": [],
     "levelsWithCodeElements": [],
-    "koodiUri": "ibdiplomantulos_b",
+    "koodiUri": "ibdiplomaresult_b",
     "versio": 1,
     "koodiArvo": "B"
   },
@@ -55,7 +55,7 @@
     "metadata": [
       {
         "nimi": "Failed diploma, individual course awarded",
-        "kuvaus": "IBIS RESULT CODE F – Failed diploma, individual course awarded",
+        "kuvaus": "Failed diploma, individual course awarded",
         "lyhytNimi": "Failed diploma",
         "kieli": "FI"
       },
@@ -73,7 +73,7 @@
     "withinCodeElements": [],
     "includesCodeElements": [],
     "levelsWithCodeElements": [],
-    "koodiUri": "ibdiplomantulos_f",
+    "koodiUri": "ibdiplomaresult_f",
     "versio": 1,
     "koodiArvo": "F"
   }

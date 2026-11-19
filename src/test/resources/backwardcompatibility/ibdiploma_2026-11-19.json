@@ -127,11 +127,11 @@
           "fi" : "kevät"
         }
       },
-      "kokonaispistemäärä" : 37,
-      "lisäpisteet" : 2,
-      "tulos" : {
+      "totalPoints" : 37,
+      "combinedGrade" : 2,
+      "result" : {
         "koodiarvo" : "D",
-        "koodistoUri" : "ibdiplomantulos"
+        "koodistoUri" : "ibdiplomaresult"
       },
       "tyyppi" : {
         "koodiarvo" : "ibdiploma",
