@@ -1,6 +1,6 @@
 package fi.oph.koski.api.misc
 
-import fi.oph.koski.KoskiHttpSpec
+import fi.oph.koski.{DirtiesFixtures, KoskiHttpSpec}
 import fi.oph.koski.documentation.Examples.oppijaExamples
 import fi.oph.koski.documentation.ExamplesKielitutkinto
 import fi.oph.koski.json.JsonSerializer
@@ -10,7 +10,7 @@ import org.scalatest.BeforeAndAfterAll
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.should.Matchers
 
-class OppijaExamplesTest extends AnyFreeSpec with Matchers with KoskiHttpSpec with Logging with BeforeAndAfterAll with OpiskeluoikeusTestMethods with SearchTestMethods {
+class OppijaExamplesTest extends AnyFreeSpec with Matchers with KoskiHttpSpec with Logging with BeforeAndAfterAll with OpiskeluoikeusTestMethods with SearchTestMethods with DirtiesFixtures {
   override def beforeAll(): Unit = {
     super.beforeAll()
     resetFixtures()
