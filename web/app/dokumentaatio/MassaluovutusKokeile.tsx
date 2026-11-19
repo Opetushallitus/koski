@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import ReactDOM from 'react-dom'
-import { enrichJsonRequest } from '../api-fetch'
+import { enrichJsonRequest, useSafeState } from '../api-fetch'
 
 const pollIntervalMs = 3000
 
@@ -30,11 +30,29 @@ const readResponse = async (response: Response): Promise<RawResponse> => {
   return { status: response.status, statusText: response.statusText, body }
 }
 
+const connectionFailure = (e: unknown): RawResponse => ({
+  status: 0,
+  statusText: 'Yhteysvirhe',
+  body: String(e)
+})
+
+// Ei koskaan hylkää: verkkovirhekin on vastaus, jotta lomake ei jää lähetys- tai pollaustilaan
+const request = (input: string, init: RequestInit): Promise<RawResponse> =>
+  fetch(input, init).then(readResponse).catch(connectionFailure)
+
+const createQuery = (apiPath: string, body: unknown): Promise<RawResponse> =>
+  request(apiPath, enrichJsonRequest('POST', 'application/json', { body }))
+
 const fetchQuery = (apiPath: string, queryId: string): Promise<RawResponse> =>
-  fetch(
+  request(
     `${apiPath}/${encodeURIComponent(queryId)}`,
     enrichJsonRequest('GET', 'application/json')
-  ).then(readResponse)
+  )
+
+const stateFor = (response: RawResponse): State =>
+  response.status === 200 && isInProgress(response.body)
+    ? { phase: 'polling', response }
+    : { phase: 'done', response }
 
 export type MassaluovutusKokeileProps = {
   apiPath: string
@@ -46,7 +64,7 @@ export const MassaluovutusKokeile: React.FC<MassaluovutusKokeileProps> = ({
   example
 }) => {
   const [query, setQuery] = useState(example)
-  const [state, setState] = useState<State>({ phase: 'idle' })
+  const [state, setState] = useSafeState<State>({ phase: 'idle' })
 
   const send = useCallback(async () => {
     let body: unknown
@@ -64,32 +82,20 @@ export const MassaluovutusKokeile: React.FC<MassaluovutusKokeileProps> = ({
       return
     }
     setState({ phase: 'sending' })
-    const response = await fetch(
-      apiPath,
-      enrichJsonRequest('POST', 'application/json', { body })
-    ).then(readResponse)
-    setState(
-      response.status === 200 && isInProgress(response.body)
-        ? { phase: 'polling', response }
-        : { phase: 'done', response }
-    )
-  }, [apiPath, query])
+    setState(stateFor(await createQuery(apiPath, body)))
+  }, [apiPath, query, setState])
 
   useEffect(() => {
     if (state.phase !== 'polling') return
     const queryId = state.response.body.queryId
     const timer = setTimeout(async () => {
-      const response = await fetchQuery(apiPath, queryId)
-      setState(
-        response.status === 200 && isInProgress(response.body)
-          ? { phase: 'polling', response }
-          : { phase: 'done', response }
-      )
+      setState(stateFor(await fetchQuery(apiPath, queryId)))
     }, pollIntervalMs)
     return () => clearTimeout(timer)
-  }, [apiPath, state])
+  }, [apiPath, state, setState])
 
-  const busy = state.phase === 'sending' || state.phase === 'polling'
+  // Vain lähetyksen ajan: pollauksen aikana kyselyä saa muokata ja lähettää uudelleen
+  const busy = state.phase === 'sending'
 
   return (
     <div className="massaluovutus-kokeile">
