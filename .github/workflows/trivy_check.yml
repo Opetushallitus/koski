@@ -40,7 +40,9 @@ jobs:
       - uses: $/.github/actions/setup_java_25
 
       - name: Resolve Maven dependencies
-        run: ./mvnw --batch-mode --file pom.xml dependency:go-offline
+        run: |
+          scripts/retry.sh "Maven dependency resolution" 5m -- \
+            ./mvnw --batch-mode --update-snapshots --file pom.xml dependency:resolve
 
       - name: Trivy vulnerability scan
         uses: aquasecurity/trivy-action@ed142fd0673e97e23eac54620cfb913e5ce36c25 # v0.36.0
@@ -73,7 +75,9 @@ jobs:
       - name: Resolve Maven dependencies of the base commit
         if: env.BASE_SHA != ''
         working-directory: base
-        run: ./mvnw --batch-mode --file pom.xml dependency:go-offline
+        run: |
+          ../scripts/retry.sh "Maven dependency resolution of the base commit" 5m -- \
+            ./mvnw --batch-mode --update-snapshots --file pom.xml dependency:resolve
 
       - name: Trivy scan of the base commit
         if: env.BASE_SHA != ''
