@@ -2,7 +2,7 @@
   "codesGroupUri": "koski",
   "codesVersions": [],
   "includesCodes": [],
-  "koodistoUri": "ibdiplomantulos",
+  "koodistoUri": "ibdiplomaresult",
   "levelsWithCodes": [],
   "lukittu": null,
   "metadata": [
@@ -53,7 +53,7 @@
   "organisaatioOid": "1.2.246.562.10.00000000001",
   "paivittajaOid": "1.2.246.562.24.98063222086",
   "paivitysPvm": "2026-11-03",
-  "resourceUri": "https://virkailija.opintopolku.fi/koodisto-service/rest/codes/ibdiplomantulos",
+  "resourceUri": "https://virkailija.opintopolku.fi/koodisto-service/rest/codes/ibdiplomaresult",
   "tila": "LUONNOS",
   "versio": 1,
   "version": 0,

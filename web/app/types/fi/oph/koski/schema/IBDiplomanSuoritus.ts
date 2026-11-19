@@ -1,10 +1,10 @@
 import { Koodistokoodiviite } from './Koodistokoodiviite'
 import { LocalizedString } from './LocalizedString'
 import { IBTutkintokerta } from './IBTutkintokerta'
+import { IBTutkinto } from './IBTutkinto'
 import { OrganisaatioWithOid } from './OrganisaatioWithOid'
 import { IBDiplomanOsasuoritus } from './IBDiplomanOsasuoritus'
 import { Päivämäärävahvistus } from './Paivamaaravahvistus'
-import { IBTutkinto } from './IBTutkinto'
 
 /**
  * IBDiplomanSuoritus
@@ -15,39 +15,39 @@ export type IBDiplomanSuoritus = {
   $class: 'fi.oph.koski.schema.IBDiplomanSuoritus'
   tyyppi: Koodistokoodiviite<'suorituksentyyppi', 'ibdiploma'>
   tila?: Koodistokoodiviite<'suorituksentila', string>
+  result: Koodistokoodiviite<'ibdiplomaresult', string>
   tutkintokerta: IBTutkintokerta
-  kokonaispistemäärä?: number
+  totalPoints?: number
+  combinedGrade?: number
+  koulutusmoduuli: IBTutkinto
   toimipiste: OrganisaatioWithOid
   osasuoritukset?: Array<IBDiplomanOsasuoritus>
-  tulos: Koodistokoodiviite<'ibdiplomantulos', string>
   vahvistus?: Päivämäärävahvistus
-  lisäpisteet?: number
-  koulutusmoduuli: IBTutkinto
 }
 
 export const IBDiplomanSuoritus = (o: {
   tyyppi?: Koodistokoodiviite<'suorituksentyyppi', 'ibdiploma'>
   tila?: Koodistokoodiviite<'suorituksentila', string>
+  result: Koodistokoodiviite<'ibdiplomaresult', string>
   tutkintokerta: IBTutkintokerta
-  kokonaispistemäärä?: number
+  totalPoints?: number
+  combinedGrade?: number
+  koulutusmoduuli?: IBTutkinto
   toimipiste: OrganisaatioWithOid
   osasuoritukset?: Array<IBDiplomanOsasuoritus>
-  tulos: Koodistokoodiviite<'ibdiplomantulos', string>
   vahvistus?: Päivämäärävahvistus
-  lisäpisteet?: number
-  koulutusmoduuli?: IBTutkinto
 }): IBDiplomanSuoritus => ({
   tyyppi: Koodistokoodiviite({
     koodiarvo: 'ibdiploma',
     koodistoUri: 'suorituksentyyppi'
   }),
-  $class: 'fi.oph.koski.schema.IBDiplomanSuoritus',
   koulutusmoduuli: IBTutkinto({
     tunniste: Koodistokoodiviite({
       koodiarvo: '301102',
       koodistoUri: 'koulutus'
     })
   }),
+  $class: 'fi.oph.koski.schema.IBDiplomanSuoritus',
   ...o
 })
 

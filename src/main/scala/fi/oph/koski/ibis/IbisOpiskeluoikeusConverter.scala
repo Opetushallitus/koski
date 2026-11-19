@@ -37,7 +37,7 @@ class IbisOpiskeluoikeusConverter(
   def convert(record: IbisRecord, kohde: IbisKohde, vahvistuspäivä: LocalDate): Either[IbisKonversiovirhe, IBDiplomaOpiskeluoikeus] = {
     for {
       _ <- tarkistaTuotava(record)
-      tulos <- koodi(record, "ibdiplomantulos", record.resultCode)
+      result <- koodi(record, "ibdiplomaresult", record.resultCode)
       kerta <- tutkintokerta(record, record.session)
       osasuoritukset <- sequence(arvioidutOppiaineet(record).map(convertSubject(record, vahvistuspäivä)))
       opiskeluoikeus <- täydennäKoodistoYmsMerkkijonot(record, IBDiplomaOpiskeluoikeus(
@@ -50,9 +50,9 @@ class IbisOpiskeluoikeusConverter(
           toimipiste = kohde.oppilaitos,
           vahvistus = Some(Päivämäärävahvistus(vahvistuspäivä, kohde.oppilaitos)),
           tutkintokerta = kerta,
-          kokonaispistemäärä = record.totalPoints,
-          lisäpisteet = record.eeTokPoints,
-          tulos = tulos,
+          totalPoints = record.totalPoints,
+          combinedGrade = record.eeTokPoints,
+          result = result,
           osasuoritukset = Some(osasuoritukset),
         )),
         iboTunniste = record.personalCode,

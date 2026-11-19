@@ -66,14 +66,14 @@ class OppijaValidationIBDiplomaSpec
   }
 
   "Skeema" - {
-    "kokonaispistemäärä ei voi ylittää 45" in {
+    "totalPoints ei voi ylittää 45" in {
       setupOppijaWithOpiskeluoikeus(ExamplesIB.opiskeluoikeus, henkilö = henkilö) {
         verifyResponseStatusOk()
       }
 
-      val oo = defaultOpiskeluoikeus.copy(suoritukset = List(ExamplesIBDiploma.suoritus.copy(kokonaispistemäärä = Some(46))))
+      val oo = defaultOpiskeluoikeus.copy(suoritukset = List(ExamplesIBDiploma.suoritus.copy(totalPoints = Some(46))))
       putOpiskeluoikeus(oo, henkilö = henkilö) {
-        verifyResponseStatus(400, ErrorMatcher.regex(KoskiErrorCategory.badRequest.validation.jsonSchema, ".*kokonaispistemäärä.*".r))
+        verifyResponseStatus(400, ErrorMatcher.regex(KoskiErrorCategory.badRequest.validation.jsonSchema, ".*totalPoints.*".r))
       }
     }
 

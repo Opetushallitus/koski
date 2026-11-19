@@ -43,13 +43,18 @@ class IbisOpiskeluoikeusConverterSpec extends AnyFreeSpec with TestEnvironment w
     }
 
     "saa pisteet, tuloksen, tutkintokerran ja vahvistuksen" in {
-      suoritus.kokonaispistemäärä should be(Some(37))
-      suoritus.lisäpisteet should be(Some(2))
-      suoritus.tulos.koodiarvo should be("D")
+      suoritus.totalPoints should be(Some(37))
+      suoritus.combinedGrade should be(Some(2))
+      suoritus.result.koodiarvo should be("D")
       suoritus.tutkintokerta should be(IBTutkintokerta("2016K", 2016, suoritus.tutkintokerta.vuodenaika))
       suoritus.tutkintokerta.vuodenaika.get("fi") should be("kevät")
       suoritus.vahvistus.map(_.päivä) should be(Some(vahvistuspäivä))
       suoritus.vahvistus.map(_.myöntäjäOrganisaatio).collect { case o: OrganisaatioWithOid => o.oid } should be(Some(ressunLukio.oid))
+    }
+
+    "merkitsee osasuorituksille tutkintokerran" in {
+      val kerrat = suoritus.osasuoritukset.toList.flatten.map(_.tutkintokerta).distinct
+      kerrat.map(k => (k.koodiarvo, k.vuosi, k.vuodenaika.get("fi"))) should be(List(("2016K", 2016, "kevät")))
     }
 
     "muuntaa oppiaineet tasoineen, kielineen ja arvosanoineen, myös katkaistulla nimellä" in {
@@ -76,7 +81,7 @@ class IbisOpiskeluoikeusConverterSpec extends AnyFreeSpec with TestEnvironment w
     }
 
     "täydentää koodistojen ja organisaatioiden nimet" in {
-      suoritus.tulos.nimi should be(defined)
+      suoritus.result.nimi should be(defined)
       oo.oppilaitos.flatMap(_.nimi) should be(defined)
     }
   }
@@ -86,7 +91,7 @@ class IbisOpiskeluoikeusConverterSpec extends AnyFreeSpec with TestEnvironment w
     val osasuoritukset = oo.suoritukset.head.osasuoritukset.toList.flatten
 
     "saa tuloskoodin B" in {
-      oo.suoritukset.head.tulos.koodiarvo should be("B")
+      oo.suoritukset.head.result.koodiarvo should be("B")
     }
 
     "säilyttää additional subjectin ja aiemman tutkintokerran, mutta jättää arvosanattoman oppiaineen pois" in {
