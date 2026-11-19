@@ -79,19 +79,19 @@ class IbisOpiskeluoikeusConverter(
   }
 
   private def convertSubject(record: IbisRecord, vahvistuspäivä: LocalDate)(subject: IbisSubject): Either[IbisKonversiovirhe, IBDiplomanOsasuoritus] = {
-    // TODO TOR-747: Arviointipäiväksi merkitään vahvistuspäivä, koska IBIS ei kerro tulosten julkaisupäivää. Suorituskieli jää
-    // tyhjäksi, koska nykyisessä tiedostomuodossa (CSV file (normal)) ei ole SUBJECT LANGUAGE -kenttää.
+    // TODO TOR-747: Arviointipäiväksi merkitään vahvistuspäivä, koska IBIS ei kerro tulosten julkaisupäivää.
     val päivä = Some(vahvistuspäivä)
+    val kieli = suorituskieli(subject)
     for {
       kerta <- tutkintokerta(record, subject.session)
       osasuoritus <- subject.level match {
         case "EE" =>
           for {
             aine <- sequenceOption(extendedEssaynAine(subject).map(diplomanOppiaine(record, _, taso = None)))
-            suoritus <- coreSuoritus(record, subject, IBDiplomanExtendedEssay(aine = aine), kerta, päivä)
+            suoritus <- coreSuoritus(record, subject, IBDiplomanExtendedEssay(aine = aine), kerta, päivä, kieli)
           } yield suoritus
         case "TK" =>
-          coreSuoritus(record, subject, IBDiplomanTheoryOfKnowledge(), kerta, päivä)
+          coreSuoritus(record, subject, IBDiplomanTheoryOfKnowledge(), kerta, päivä, kieli)
         case "HL" | "SL" =>
           for {
             oppiaine <- IbisOppiainekartta.get(subject.name).toRight(IbisKonversiovirhe(record.personalCode, s"IBO:n oppiaineelle '${subject.name}' ei ole vastinetta Koskessa"))
@@ -102,6 +102,7 @@ class IbisOpiskeluoikeusConverter(
             koulutusmoduuli = koulutusmoduuli,
             tutkintokerta = kerta,
             arviointi = Some(List(IBDiplomanOppiaineenArviointi(arvosana, päivä))),
+            suorituskieli = kieli,
             additionalSubject = subject.additional,
           )
         case muu =>
@@ -116,12 +117,23 @@ class IbisOpiskeluoikeusConverter(
     koulutusmoduuli: IBDiplomanCoreOppiaine,
     kerta: IBTutkintokerta,
     päivä: Option[LocalDate],
+    kieli: Option[Koodistokoodiviite],
   ): Either[IbisKonversiovirhe, IBDiplomanCoreSuoritus] =
     koodi(record, "arviointiasteikkocorerequirementsib", subject.grade).map(arvosana => IBDiplomanCoreSuoritus(
       koulutusmoduuli = koulutusmoduuli,
       tutkintokerta = kerta,
       arviointi = Some(List(IBDiplomanCoreArviointi(arvosana, päivä))),
+      suorituskieli = kieli,
     ))
+
+  // Suorituskieli on vapaaehtoinen tieto, joten vastineeton kieli ei hylkää riviä.
+  private def suorituskieli(subject: IbisSubject): Option[Koodistokoodiviite] = {
+    val kieli = IbisKielikartta.get(subject.language).flatMap(koodiarvo => koodistoViitePalvelu.validate("kieli", koodiarvo))
+    if (kieli.isEmpty && subject.language.trim.nonEmpty) {
+      logger.warn(s"IBIS: oppiaineen ${subject.name} (${subject.level}) kielelle ${subject.language} ei ole vastinetta Koskessa, joten suorituskieli jätetään pois")
+    }
+    kieli
+  }
 
   // Extended essayn aine on vapaaehtoinen tieto, joten vastineeton aine ei hylkää riviä kuten HL/SL-oppiaine.
   private def extendedEssaynAine(subject: IbisSubject): Option[IbisOppiaine] = {

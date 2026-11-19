@@ -167,6 +167,10 @@
           "päivä" : "2016-07-06",
           "hyväksytty" : true
         } ],
+        "suorituskieli" : {
+          "koodiarvo" : "FI",
+          "koodistoUri" : "kieli"
+        },
         "additionalSubject" : false,
         "tyyppi" : {
           "koodiarvo" : "ibdiplomanoppiaine",
@@ -202,6 +206,10 @@
           "päivä" : "2016-07-06",
           "hyväksytty" : true
         } ],
+        "suorituskieli" : {
+          "koodiarvo" : "EN",
+          "koodistoUri" : "kieli"
+        },
         "additionalSubject" : false,
         "tyyppi" : {
           "koodiarvo" : "ibdiplomanoppiaine",
@@ -233,6 +241,10 @@
           "päivä" : "2016-07-06",
           "hyväksytty" : true
         } ],
+        "suorituskieli" : {
+          "koodiarvo" : "EN",
+          "koodistoUri" : "kieli"
+        },
         "additionalSubject" : false,
         "tyyppi" : {
           "koodiarvo" : "ibdiplomanoppiaine",
@@ -264,6 +276,10 @@
           "päivä" : "2016-07-06",
           "hyväksytty" : true
         } ],
+        "suorituskieli" : {
+          "koodiarvo" : "EN",
+          "koodistoUri" : "kieli"
+        },
         "additionalSubject" : false,
         "tyyppi" : {
           "koodiarvo" : "ibdiplomanoppiaine",
@@ -295,6 +311,10 @@
           "päivä" : "2016-07-06",
           "hyväksytty" : true
         } ],
+        "suorituskieli" : {
+          "koodiarvo" : "EN",
+          "koodistoUri" : "kieli"
+        },
         "additionalSubject" : false,
         "tyyppi" : {
           "koodiarvo" : "ibdiplomanoppiaine",
@@ -326,6 +346,10 @@
           "päivä" : "2016-07-06",
           "hyväksytty" : true
         } ],
+        "suorituskieli" : {
+          "koodiarvo" : "EN",
+          "koodistoUri" : "kieli"
+        },
         "additionalSubject" : false,
         "tyyppi" : {
           "koodiarvo" : "ibdiplomanoppiaine",
@@ -359,6 +383,10 @@
           "päivä" : "2016-07-06",
           "hyväksytty" : true
         } ],
+        "suorituskieli" : {
+          "koodiarvo" : "EN",
+          "koodistoUri" : "kieli"
+        },
         "tyyppi" : {
           "koodiarvo" : "ibdiplomancore",
           "koodistoUri" : "suorituksentyyppi"
@@ -385,6 +413,10 @@
           "päivä" : "2016-07-06",
           "hyväksytty" : true
         } ],
+        "suorituskieli" : {
+          "koodiarvo" : "EN",
+          "koodistoUri" : "kieli"
+        },
         "tyyppi" : {
           "koodiarvo" : "ibdiplomancore",
           "koodistoUri" : "suorituksentyyppi"

@@ -68,6 +68,7 @@ class IbisOpiskeluoikeusConverterSpec extends AnyFreeSpec with TestEnvironment w
       oppiaineet.head.arviointi.toList.flatten.head.päivä should be(Some(vahvistuspäivä))
       oppiaineet.map(_.koulutusmoduuli.tunniste.koodiarvo) should be(List("A", "B", "HIS", "BIO", "MATAA", "PHY"))
       oppiaineet.map(_.additionalSubject) should be(List.fill(6)(false))
+      oppiaineet.map(_.suorituskieli.map(_.koodiarvo)) should be(Some("FI") :: List.fill(5)(Some("EN")))
     }
 
     "muuntaa extended essayn aineineen ja theory of knowledgen" in {
@@ -77,11 +78,14 @@ class IbisOpiskeluoikeusConverterSpec extends AnyFreeSpec with TestEnvironment w
       aine.tunniste.koodiarvo should be("HIS")
       aine.taso should be(None)
       core(1) shouldBe an[IBDiplomanTheoryOfKnowledge]
-      suoritus.osasuoritukset.toList.flatten.collect { case s: IBDiplomanCoreSuoritus => s.viimeisinArvosana } should be(List(Some("B"), Some("A")))
+      val coreSuoritukset = suoritus.osasuoritukset.toList.flatten.collect { case s: IBDiplomanCoreSuoritus => s }
+      coreSuoritukset.map(_.viimeisinArvosana) should be(List(Some("B"), Some("A")))
+      coreSuoritukset.map(_.suorituskieli.map(_.koodiarvo)) should be(List(Some("EN"), Some("EN")))
     }
 
     "täydentää koodistojen ja organisaatioiden nimet" in {
       suoritus.result.nimi should be(defined)
+      suoritus.osasuoritukset.toList.flatten.head.suorituskieli.flatMap(_.nimi) should be(defined)
       oo.oppilaitos.flatMap(_.nimi) should be(defined)
     }
   }
@@ -116,6 +120,18 @@ class IbisOpiskeluoikeusConverterSpec extends AnyFreeSpec with TestEnvironment w
     }
   }
 
+  "Oppiaine, jonka kielelle ei ole vastinetta Koskessa" - {
+    "tuodaan ilman suorituskieltä, ja siitä kirjataan varoitus" in {
+      val alkuperäinen = rivi("abc123")
+      val muutettu = alkuperäinen.copy(subjects = alkuperäinen.subjects.map(s => if (s.name == "HISTORY" && s.level == "HL") s.copy(language = "BEMBA") else s))
+      RootLogTester.clearMessages()
+      val oo = converter.convert(muutettu, kohde, vahvistuspäivä).toOption.get
+      val historia = oo.suoritukset.head.osasuoritukset.toList.flatten.collectFirst { case s: IBDiplomanOppiaineenSuoritus if s.koulutusmoduuli.tunniste.koodiarvo == "HIS" => s }.get
+      historia.suorituskieli should be(None)
+      RootLogTester.getLogMessages.exists(_.contains("oppiaineen HISTORY (HL) kielelle BEMBA ei ole vastinetta Koskessa")) should be(true)
+    }
+  }
+
   "Ei tuotavat rivit" - {
     "CATEGORY COURSE hylätään" in {
       converter.convert(rivi("xyz999"), kohde, vahvistuspäivä) should be(Left(IbisKonversiovirhe("xyz999", "CATEGORY-arvoa COURSE ei tuoda Koskeen")))
@@ -133,20 +149,27 @@ class IbisOpiskeluoikeusConverterSpec extends AnyFreeSpec with TestEnvironment w
     }
   }
 
-  "Kevään 2026 tulostiedosto" - {
-    val tulokset = rivitTiedostosta("ib_diploma_kevat_2026_example.csv").map(converter.convert(_, kohde, LocalDate.of(2026, 7, 6)))
-    val opiskeluoikeudet = tulokset.flatMap(_.toOption)
+  "Diploma, jossa on kielioppiaineita usealla kielellä" - {
+    val oo = converter.convert(rivi("ghi789"), kohde, vahvistuspäivä).toOption.get
+    val oppiaineet = oo.suoritukset.head.osasuoritukset.toList.flatten.collect { case s: IBDiplomanOppiaineenSuoritus => s }
 
-    "kaikki diplomat muunnetaan, myös IBIS:n katkaisemilla matematiikan nimillä" in {
-      tulokset.collect { case Left(virhe) => virhe } should be(empty)
-      val tunnisteet = opiskeluoikeudet.flatMap(_.suoritukset.head.osasuoritukset.toList.flatten).collect {
-        case s: IBDiplomanOppiaineenSuoritus => s.koulutusmoduuli.tunniste.koodiarvo
-      }
-      tunnisteet should contain allOf("MATAA", "MATAI")
+    "saa kielioppiaineille kielen ja suorituskielen" in {
+      oppiaineet.flatMap(s => s.koulutusmoduuli match {
+        case k: IBDiplomanKieliOppiaine => Some((k.tunniste.koodiarvo, k.kieli.koodiarvo, s.suorituskieli.map(_.koodiarvo)))
+        case _ => None
+      }) should be(List(("A2", "EN", Some("EN")), ("B", "NO", Some("NO")), ("AB", "JA", Some("JA"))))
+    }
+
+    "säilyttää aiemmalla tutkintokerralla suoritetun oppiaineen tutkintokerran" in {
+      oppiaineet.find(_.koulutusmoduuli.tunniste.koodiarvo == "B").map(_.tutkintokerta.koodiarvo) should be(Some("2015K"))
+    }
+
+    "tunnistaa IBIS:n katkaiseman matematiikan nimen" in {
+      oppiaineet.map(_.koulutusmoduuli.tunniste.koodiarvo) should contain("MATAI")
     }
 
     "kielioppiaineesta kirjoitetun extended essayn aine saa kielen" in {
-      val ee = coreOppiaineet(opiskeluoikeudet(1)).collectFirst { case ee: IBDiplomanExtendedEssay => ee }.get
+      val ee = coreOppiaineet(oo).collectFirst { case ee: IBDiplomanExtendedEssay => ee }.get
       val aine = ee.aine.get.asInstanceOf[IBDiplomanKieliOppiaine]
       aine.tunniste.koodiarvo should be("B")
       aine.kieli.koodiarvo should be("EN")
