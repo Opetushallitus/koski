@@ -3,16 +3,13 @@ package fi.oph.koski.massaluovutus.organisaationopiskeluoikeudet
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.koskiuser.KoskiSpecificSession
 import fi.oph.koski.organisaatio.{MockOrganisaatiot, OrganisaationAlaisetOrganisaatiot}
-import fi.oph.koski.massaluovutus.MassaluovutusUtils.QueryResourceManager
-import fi.oph.koski.massaluovutus.{MassaluovutusUtils, QueryFormat, QueryResultWriter}
+import fi.oph.koski.massaluovutus.{QueryFormat, QueryResultWriter}
 import fi.oph.koski.schema.Organisaatio.Oid
 import fi.oph.koski.schema.annotation.EnumValues
 import fi.oph.koski.schema.{Henkilö, KoskeenTallennettavaOpiskeluoikeus, Organisaatio, TäydellisetHenkilötiedot}
-import fi.oph.koski.util.Retry.retryWithInterval
 import fi.oph.scalaschema.annotation.{Description, Title}
 
 import java.time.{LocalDate, LocalDateTime}
-import scala.concurrent.duration.DurationInt
 
 @Title("(JSON)")
 @Description("Tulostiedostot sisältävät tiedot json-muodossa. Jokaista oppijaa kohden luodaan oma tiedostonsa, jonka alle opiskeluoikeudet on ryhmitelty.")
@@ -37,22 +34,8 @@ case class MassaluovutusQueryOrganisaationOpiskeluoikeudetJson(
     application: KoskiApplication,
     writer: QueryResultWriter,
     organisaatiot: OrganisaationAlaisetOrganisaatiot,
-  )(implicit user: KoskiSpecificSession): Either[String, Unit] = QueryResourceManager(logger) { _ =>
-    val db = getDb(application)
-    val filters = defaultBaseFilter(organisaatiot)
-    val oppijaOids = getOppijaOids(db, filters).toList
-    val masterHenkilöt = retryWithInterval(5, 5.seconds.toMillis) {
-      application.opintopolkuHenkilöFacade.findMasterOppijatWithSlaveOids(oppijaOids).values.toList.distinctBy(_.oid)
-    }
-
-    forEachHenkilöAndOpiskeluoikeudet(application, filters, masterHenkilöt) { (henkilö, opiskeluoikeudet) =>
-      writer.putJson(henkilö.oid, MassaluovutusOppija(
-        henkilö = application.henkilöRepository.oppijaHenkilöToTäydellisetHenkilötiedot(henkilö),
-        linkitetytOidit = henkilö.linkitetytOidit,
-        opiskeluoikeudet = opiskeluoikeudet.map(MassaluovutusUtils.toKoskeenTallennettavaOpiskeluoikeus(application, logger)),
-      ))
-    }
-  }
+  )(implicit user: KoskiSpecificSession): Either[String, Unit] =
+    fetchDataAsJson(application, writer, organisaatiot)
 }
 
 case class MassaluovutusOppija(

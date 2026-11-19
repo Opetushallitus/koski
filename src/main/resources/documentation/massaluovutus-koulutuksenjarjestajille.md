@@ -10,6 +10,8 @@ Raporttinäkymän raportit, mukaan lukien päällekkäiset opiskeluoikeudet, on 
 
 {{query:OrganisaationOpiskeluoikeudetCsv,OrganisaationOpiskeluoikeudetJson}}
 
+{{query:SisaltyvatOpiskeluoikeudet}}
+
 {{query:LuokalleJaaneetJson,LuokalleJaaneetCsv}}
 
 {{query:AiemmatOpiskeluoikeudet}}
