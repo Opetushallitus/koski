@@ -136,5 +136,3 @@ Esimerkiksi:
     [
       "1.2.246.562.15.99999999999"
     ]
-
-Vastaus sisältää myös mitätöidyt opiskeluoikeudet, jotka on sittemmin poistettu KOSKI-datasta kokonaan.

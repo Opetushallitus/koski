@@ -38,10 +38,6 @@ class EhoksService(application: KoskiApplication) extends QueryMethods {
       where mitatoity
         and koulutusmuoto = any(${EhoksSchema.palautettavatOpiskeluoikeudenTyypit})
         and aikaleima >= $alkuHetki and aikaleima < $loppuHetki
-      union
-      select oid from poistettu_opiskeluoikeus
-      where koulutusmuoto = any(${EhoksSchema.palautettavatOpiskeluoikeudenTyypit})
-        and mitatoity_aikaleima >= $alkuHetki and mitatoity_aikaleima < $loppuHetki
       order by oid
     """.as[String])
   }
