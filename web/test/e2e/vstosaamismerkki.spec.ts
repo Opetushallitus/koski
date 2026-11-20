@@ -31,6 +31,12 @@ test.describe('Vapaan sivistyön VST osaamismerkki', () => {
     )
     await uusiOppijaPage.submitAndExpectSuccess()
 
+    // Vahvistamattomalle osaamismerkille ei näytetä merkin kuvaa
+    await expect(page.getByTestId('oo.0.opiskeluoikeus.nimi')).toBeVisible()
+    await expect(
+      page.getByTestId('oo.0.opiskeluoikeus.kuva')
+    ).not.toBeAttached()
+
     // Ensimuokkaus
     await vstOppijaPage.edit()
 
@@ -66,6 +72,9 @@ test.describe('Vapaan sivistyön VST osaamismerkki', () => {
     // Tallenna muutokset
     await page.getByTestId('oo.0.opiskeluoikeus.save').click()
 
+    // Vahvistetulle osaamismerkille näytetään merkin kuva
+    await expect(page.getByTestId('oo.0.opiskeluoikeus.kuva')).toBeVisible()
+
     // Oppija löytyy oppijahaulla uudestaan
     await virkailijaPage.goto()
     const search = await oppijaHaku.search('210610A426P')
@@ -84,7 +93,7 @@ test.describe('Vapaan sivistyön VST osaamismerkki', () => {
     )
   })
 
-  test('Keskeytyneelle osaamismerkille ei näytetä merkin kuvaa', async ({
+  test('Vahvistamattomalle keskeytyneelle osaamismerkille ei näytetä merkin kuvaa', async ({
     page
   }) => {
     const uusiOppijaPage = new KoskiUusiOppijaPage(page)
@@ -112,6 +121,30 @@ test.describe('Vapaan sivistyön VST osaamismerkki', () => {
     await expect(
       page.getByTestId('oo.0.opiskeluoikeus.kuva')
     ).not.toBeAttached()
+  })
+
+  test('Tallennetun osaamismerkin arvosanan tyhjentäminen poistaa arvioinnin ja lomakkeen voi tallentaa', async ({
+    page,
+    vstOppijaPage
+  }) => {
+    // Fixture-oppija, jolla on arvioitu ja vahvistettu osaamismerkki
+    await vstOppijaPage.goto('1.2.246.562.24.00000000164')
+    await vstOppijaPage.edit()
+
+    const arvosana = page.getByTestId(
+      'oo.0.suoritukset.0.arviointi.0.arvosana.edit.input'
+    )
+    await expect(arvosana).toHaveValue('Hyväksytty')
+    await arvosana.click()
+    await arvosana.fill('')
+    await page.keyboard.press('Tab')
+
+    // Arviointi poistuu kokonaan ja tilalle tulee tyhjä arvosanavalinta
+    await expect(arvosana).not.toBeAttached()
+    await expect(
+      page.getByTestId('oo.0.suoritukset.0.arvosana.edit.input')
+    ).toBeVisible()
+    await expect(page.getByTestId('oo.0.opiskeluoikeus.save')).toBeEnabled()
   })
 })
 
