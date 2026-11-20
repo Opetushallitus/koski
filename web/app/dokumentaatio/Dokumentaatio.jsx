@@ -8,6 +8,7 @@ import { ApiOperations } from './DokumentaatioApiTester'
 import Link from '../components/Link'
 import { replaceLocationSilently } from '../util/router'
 import Text from '../i18n/Text'
+import { mountQueryTesters } from './MassaluovutusKokeile'
 
 const JsonExampleTable = ({ contents }) => {
   return (
@@ -109,6 +110,7 @@ const revealAnchor = (hash) => {
 // Sisältö ladataan asynkronisesti, joten selaimen oma hash-vieritys ehtii ajaa ennen kuin
 // kohde on olemassa. Hash käsitellään, kun markdown-sisältö on liitetty DOM:iin.
 const revealAnchorOnMount = (element) => {
+  mountQueryTesters(element)
   if (element) {
     revealAnchor(window.location.hash)
   }
@@ -391,7 +393,9 @@ export const dokumentaatioKyselytP = (path) => {
     htmlSectionsP().map((htmlSections) => ({
       content: (
         <div>
+          {/* key pakottaa uuden elementin sivua vaihdettaessa: muuten React kierrättää saman divin eikä kutsu ref-funktiota uudelleen */}
           <div
+            key={section}
             className="markdown-content"
             ref={revealAnchorOnMount}
             onClick={scrollToAnchor}

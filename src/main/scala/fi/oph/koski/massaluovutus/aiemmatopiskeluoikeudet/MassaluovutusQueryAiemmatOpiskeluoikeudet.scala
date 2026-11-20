@@ -256,7 +256,7 @@ object MassaluovutusQueryAiemmatOpiskeluoikeudet {
 object MassaluovutusQueryAiemmatOpiskeluoikeudetDocumentation {
   def example: MassaluovutusQueryAiemmatOpiskeluoikeudet = MassaluovutusQueryAiemmatOpiskeluoikeudet(
     organisaatioOid = MockOrganisaatiot.stadinAmmattiopisto,
-    hetut = KoskiSpecificMockOppijat.aiemmatEsiJaPerusopetus.hetu.map(List(_)),
+    hetut = KoskiSpecificMockOppijat.aiemmatAmmatillinen.hetu.map(List(_)),
     oppijaOidit = Some(List(KoskiSpecificMockOppijat.aiemmatLukio.oid)),
     koulutusmuoto = Some(List("perusopetus", "lukiokoulutus")),
   )
