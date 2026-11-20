@@ -325,8 +325,9 @@ class MassaluovutusAiemmatOpiskeluoikeudetSpec extends AnyFreeSpec with Massaluo
 
     "Palauttaa arkaluontoiset tiedot, vaikka palvelukäyttäjällä ei ole LUOTTAMUKSELLINEN_KAIKKI_TIEDOT-roolia" in {
       MockUsers.helsinkiAiemmatOpiskeluoikeudet.käyttöoikeudetRaw.flatMap(_.kayttooikeudet).map(_.oikeus) should not contain Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT
-      oppijanTulos(haeTulostiedostot(oidilla(lauri)), lauri) { json =>
-        lisätieto(json, "lukiokoulutus", "sisäoppilaitosmainenMajoitus") should not be JNothing
+      val oppija = KoskiSpecificMockOppijat.aiemmatOmaOppilaitos
+      oppijanTulos(haeTulostiedostot(oidilla(oppija)), oppija) { json =>
+        lisätieto(json, "ammatillinenkoulutus", "vaativanErityisenTuenErityinenTehtävä") should not be JNothing
       }
     }
 
@@ -367,6 +368,9 @@ class MassaluovutusAiemmatOpiskeluoikeudetSpec extends AnyFreeSpec with Massaluo
       oppijanTulos(haeTulostiedostot(oidilla(KoskiSpecificMockOppijat.aiemmatOmaOppilaitos)), KoskiSpecificMockOppijat.aiemmatOmaOppilaitos) { json =>
         lisätieto(json, "ammatillinenkoulutus", "vaativanErityisenTuenErityinenTehtävä") should not be JNothing
         lisätieto(json, "ammatillinenkoulutus", "vankilaopetuksessa") shouldBe JNothing
+      }
+      oppijanTulos(haeTulostiedostot(oidilla(lauri)), lauri) { json =>
+        lisätieto(json, "lukiokoulutus", "sisäoppilaitosmainenMajoitus") shouldBe JNothing
       }
       // Oppijan perusopetus on PerusopetusExampleData.päättötodistusOpiskeluoikeus, jonka 8. luokan suorituksella on käyttäytymisenArvio
       val oppija = KoskiSpecificMockOppijat.aiemmatTestiTulevaisuudessaAlkava
@@ -492,8 +496,17 @@ class MassaluovutusAiemmatOpiskeluoikeudetSpec extends AnyFreeSpec with Massaluo
         oppijanTulos(haeTulostiedostot(kulosaarenQuery), aino) { json =>
           lisätieto(json, "esiopetus", "pidennettyOppivelvollisuus") should not be JNothing
           lisätieto(json, "esiopetus", "erityisenTuenPäätökset") should not be JNothing
-          lisätieto(json, "perusopetus", "kuljetusetu") should not be JNothing
-          lisätieto(json, "perusopetus", "sisäoppilaitosmainenMajoitus") should not be JNothing
+          lisätieto(json, "esiopetus", "vaikeastiVammainen") should not be JNothing
+          lisätieto(json, "perusopetus", "koulukoti") should not be JNothing
+        }
+      }
+
+      "OPH:n listaamat majoitus- ja kuljetustiedot jätetään pois, vaikka ne ovat arkaluontoisia" in {
+        oppijanTulos(haeTulostiedostot(kulosaarenQuery), aino) { json =>
+          lisätieto(json, "esiopetus", "kuljetusetu") shouldBe JNothing
+          lisätieto(json, "esiopetus", "sisäoppilaitosmainenMajoitus") shouldBe JNothing
+          lisätieto(json, "perusopetus", "kuljetusetu") shouldBe JNothing
+          lisätieto(json, "perusopetus", "sisäoppilaitosmainenMajoitus") shouldBe JNothing
         }
       }
 

@@ -72,10 +72,12 @@ case class LukionOpiskeluoikeudenLisätiedot(
   @Title("Syy alle 18-vuotiaana aloitettuun opiskeluun aikuisten lukiokoulutuksessa")
   @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT))
   @RedundantData
+  @HiddenFromAiemmatOpiskeluoikeudet
   alle18vuotiaanAikuistenLukiokoulutuksenAloittamisenSyy: Option[LocalizedString] = None,
   @Description("Yksityisopiskelija aikuisten lukiokoulutuksessa (true/false). Rahoituksen laskennassa käytettävä tieto.")
   @DefaultValue(None)
   @RedundantData
+  @HiddenFromAiemmatOpiskeluoikeudet
   yksityisopiskelija: Option[Boolean] = None,
   erityisenKoulutustehtävänJaksot: Option[List[ErityisenKoulutustehtävänJakso]] = None,
   @Description("Rahoituksen laskennassa käytettävä tieto.")
@@ -83,9 +85,11 @@ case class LukionOpiskeluoikeudenLisätiedot(
   @Description("Tieto onko oppijalla maksuton majoitus. Rahoituksen laskennassa käytettävä tieto.")
   @DefaultValue(None)
   @RedundantData
+  @HiddenFromAiemmatOpiskeluoikeudet
   oikeusMaksuttomaanAsuntolapaikkaan: Option[Boolean] = None,
   @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT))
   @Description("Onko opiskelija sisöoppilaitosmaisessa majoituksessa. Rahoituksen laskennassa käytettävä tieto.")
+  @HiddenFromAiemmatOpiskeluoikeudet
   sisäoppilaitosmainenMajoitus: Option[List[Aikajakso]] = None,
   maksuttomuus: Option[List[Maksuttomuus]] = None,
   oikeuttaMaksuttomuuteenPidennetty: Option[List[OikeuttaMaksuttomuuteenPidennetty]] = None
