@@ -1,4 +1,8 @@
 import {
+  AhvenanmaanAmmatillinenOpiskeluoikeusjakso,
+  isAhvenanmaanAmmatillinenOpiskeluoikeusjakso
+} from './AhvenanmaanAmmatillinenOpiskeluoikeusjakso'
+import {
   AhvenanmaanPerusopetuksenOpiskeluoikeusjakso,
   isAhvenanmaanPerusopetuksenOpiskeluoikeusjakso
 } from './AhvenanmaanPerusopetuksenOpiskeluoikeusjakso'
@@ -85,6 +89,7 @@ import {
  * @see `fi.oph.koski.schema.Opiskeluoikeusjakso`
  */
 export type Opiskeluoikeusjakso =
+  | AhvenanmaanAmmatillinenOpiskeluoikeusjakso
   | AhvenanmaanPerusopetuksenOpiskeluoikeusjakso
   | AikuistenPerusopetuksenOpiskeluoikeusjakso
   | AmmatillinenOpiskeluoikeusjakso
@@ -107,6 +112,7 @@ export type Opiskeluoikeusjakso =
   | YlioppilastutkinnonOpiskeluoikeusjakso
 
 export const isOpiskeluoikeusjakso = (a: any): a is Opiskeluoikeusjakso =>
+  isAhvenanmaanAmmatillinenOpiskeluoikeusjakso(a) ||
   isAhvenanmaanPerusopetuksenOpiskeluoikeusjakso(a) ||
   isAikuistenPerusopetuksenOpiskeluoikeusjakso(a) ||
   isAmmatillinenOpiskeluoikeusjakso(a) ||
