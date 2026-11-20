@@ -259,6 +259,15 @@
       "automerge": true
     },
     {
+      "description": "Keep radiator's manual runtime minors in their own branches. Renovate puts a package's minors from every package file in one branch and automerges it only if it may automerge them all. The groups already split patches.",
+      "matchManagers": ["npm"],
+      "matchFileNames": ["radiator/package.json"],
+      "matchDepTypes": ["dependencies"],
+      "matchUpdateTypes": ["minor"],
+      "additionalBranchPrefix": "radiator-",
+      "commitMessageTopic": "radiator dependency {{{depName}}}"
+    },
+    {
       "description": "Move the automerged runtime patch updates out of the manual npm dependencies group into their own. Renovate automerges a group only when every update in it may be automerged.",
       "matchManagers": ["npm"],
       "matchUpdateTypes": ["patch"],
@@ -461,6 +470,14 @@
         "org.apache.poi:poi-ooxml",
         "org.scalatra:**"
       ],
+      "automerge": true
+    },
+    {
+      "description": "Automerge the OmaData OAuth2 Java sample's minor and patch updates after CI, whose OAuth2 browser tests run the sample's whole OAuth2 flow.",
+      "matchManagers": ["maven"],
+      "matchFileNames": ["omadata-oauth2-sample/java/pom.xml"],
+      "matchUpdateTypes": ["minor", "patch"],
+      "matchPackageNames": ["org.springframework.boot:spring-boot-starter-parent"],
       "automerge": true
     },
     {
