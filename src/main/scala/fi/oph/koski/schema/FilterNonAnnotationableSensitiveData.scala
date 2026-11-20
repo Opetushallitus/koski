@@ -15,6 +15,8 @@ object FilterNonAnnotationableSensitiveData {
     oo match {
       case oo: AmmatillinenOpiskeluoikeus =>
         filterAmmatillinen(oo)
+      case oo: AhvenanmaanAmmatillinenOpiskeluoikeus =>
+        filterAmmatillinen(oo)
       case oo: PerusopetuksenOpiskeluoikeus =>
         filterPerusopetus(oo)
       case oo: PerusopetuksenLisäopetus =>
@@ -23,7 +25,7 @@ object FilterNonAnnotationableSensitiveData {
     }
   }
 
-  private def filterAmmatillinen(oo: AmmatillinenOpiskeluoikeus)(implicit user: SensitiveDataAllowed): KoskeenTallennettavaOpiskeluoikeus = {
+  private def filterAmmatillinen(oo: KoskeenTallennettavaOpiskeluoikeus)(implicit user: SensitiveDataAllowed): KoskeenTallennettavaOpiskeluoikeus = {
     oo.withSuoritukset(
       oo.suoritukset.map(suoritus =>
         if (suoritus.osasuoritukset.nonEmpty) {

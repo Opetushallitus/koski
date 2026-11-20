@@ -215,6 +215,9 @@ case class TutkintoRakenneValidator(tutkintoRepository: TutkintoRepository, kood
         HttpStatus.justStatus(
           validateKoulutustyypitJaHaeRakenteet(s.koulutusmoduuli, Some(List(taiteenperusopetus)), Some(vaadittuPerusteenVoimassaolopäivä))
         ).onSuccess(validateTaiteenPerusopetuksenPerusteenDiaarinumero2017(s))
+      case _: AhvenanmaanAmmatillinenPäätasonSuoritus =>
+        // TODO TOR-2837: ohitetaan, kunnes kaikki Ahvenanmaan tutkinnot on todettu manner-Suomen perusteiden mukaisiksi (ks. AhvenanmaanAmmatillinen.scala).
+        HttpStatus.ok
       case _ =>
         suoritus.koulutusmoduuli match {
           case d: Esiopetus =>

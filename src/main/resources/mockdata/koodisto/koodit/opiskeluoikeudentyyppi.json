@@ -2,6 +2,33 @@
   {
     "metadata": [
       {
+        "nimi": "Ahvenanmaan ammatillinen koulutus",
+        "kuvaus": "",
+        "lyhytNimi": "Ahvenanmaan ammatillinen koulutus",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Yrkesutbildning på Åland",
+        "kuvaus": "",
+        "lyhytNimi": "",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Vocational education and training in Åland",
+        "kuvaus": null,
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "opiskeluoikeudentyyppi_ahvenanmaanammatillinenkoulutus",
+    "versio": 1,
+    "koodiArvo": "ahvenanmaanammatillinenkoulutus"
+  },
+  {
+    "metadata": [
+      {
         "nimi": "Ahvenanmaan perusopetus",
         "kuvaus": "",
         "lyhytNimi": "Ahvenanmaan perusopetus",

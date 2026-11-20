@@ -465,6 +465,8 @@ object KoskiSpecificMockOppijat {
   val aiemmatTestiEshS5 = koskiSpecificOppijat.oppijaSyntymäaikaHetusta("AiemmatTesti-ESH-S5", "Emil", aiemmatHetu(12, 1, vuosi = aiemmatSyntymävuosi + 2))
   val aiemmatTestiKansainvälisetAiemmin = koskiSpecificOppijat.oppijaSyntymäaikaHetusta("AiemmatTesti-Kansainväliset-Aiemmin", "Aapo", aiemmatHetu(13, 1))
 
+  val ahvenanmaanAmmattiopiskelija = koskiSpecificOppijat.oppija("Ålänning", "Ebba", "120502A417R")
+
   def defaultOppijat = koskiSpecificOppijat.getOppijat
   def defaultKuntahistoriat: mutable.Map[String, Seq[OppijanumerorekisteriKotikuntahistoriaRow]] = koskiSpecificOppijat.getKuntahistoriat
   def defaultTurvakieltoKuntahistoriat: mutable.Map[String, Seq[OppijanumerorekisteriKotikuntahistoriaRow]] = koskiSpecificOppijat.getTurvakieltoKuntahistoriat

@@ -13,8 +13,8 @@ import { virkailija } from './setup/auth'
  * opiskeluoikeuden tyypin tasoista tarkistusta — siksi molemmat testataan
  * erikseen luontiin asti.
  *
- * Övernäs skola (Maarianhamina, kunta_478) on mockdatan ainoa ahvenanmaalainen
- * oppilaitos, ja OppilaitosServlet tarjoaa sille Ahvenanmaan perusopetuksen
+ * Övernäs skola (Maarianhamina, kunta_478) on mockdatan ahvenanmaalainen
+ * peruskoulu, ja OppilaitosServlet tarjoaa sille Ahvenanmaan perusopetuksen
  * manner-Suomen perusopetuksen tyyppien sijaan.
  */
 

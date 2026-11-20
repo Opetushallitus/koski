@@ -3,6 +3,14 @@ import {
   isAhvenanmaanAikuistenPerusopetuksenOppimääränSuoritus
 } from './AhvenanmaanAikuistenPerusopetuksenOppimaaranSuoritus'
 import {
+  AhvenanmaanAmmatillisenTutkinnonOsittainenSuoritus,
+  isAhvenanmaanAmmatillisenTutkinnonOsittainenSuoritus
+} from './AhvenanmaanAmmatillisenTutkinnonOsittainenSuoritus'
+import {
+  AhvenanmaanAmmatillisenTutkinnonSuoritus,
+  isAhvenanmaanAmmatillisenTutkinnonSuoritus
+} from './AhvenanmaanAmmatillisenTutkinnonSuoritus'
+import {
   AhvenanmaanPerusopetuksenOppimääränSuoritus,
   isAhvenanmaanPerusopetuksenOppimääränSuoritus
 } from './AhvenanmaanPerusopetuksenOppimaaranSuoritus'
@@ -184,6 +192,8 @@ import {
  */
 export type Suorituskielellinen =
   | AhvenanmaanAikuistenPerusopetuksenOppimääränSuoritus
+  | AhvenanmaanAmmatillisenTutkinnonOsittainenSuoritus
+  | AhvenanmaanAmmatillisenTutkinnonSuoritus
   | AhvenanmaanPerusopetuksenOppimääränSuoritus
   | AhvenanmaanPerusopetuksenVuosiluokanSuoritus
   | AikuistenPerusopetuksenAlkuvaiheenSuoritus
@@ -232,6 +242,8 @@ export type Suorituskielellinen =
 
 export const isSuorituskielellinen = (a: any): a is Suorituskielellinen =>
   isAhvenanmaanAikuistenPerusopetuksenOppimääränSuoritus(a) ||
+  isAhvenanmaanAmmatillisenTutkinnonOsittainenSuoritus(a) ||
+  isAhvenanmaanAmmatillisenTutkinnonSuoritus(a) ||
   isAhvenanmaanPerusopetuksenOppimääränSuoritus(a) ||
   isAhvenanmaanPerusopetuksenVuosiluokanSuoritus(a) ||
   isAikuistenPerusopetuksenAlkuvaiheenSuoritus(a) ||

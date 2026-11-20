@@ -17,9 +17,12 @@ class EPerusteetFiller(
 ) extends EPerusteetValidationUtils(tutkintoRepository, koodistoViitePalvelu) with Logging {
 
   def addKoulutustyyppi(oo: KoskeenTallennettavaOpiskeluoikeus): KoskeenTallennettavaOpiskeluoikeus = {
+    // TODO TOR-2837: Ahvenanmaan ammatillisen koulutustyyppi päätellään koulutuskoodista, kunnes kaikki
+    // Ahvenanmaan tutkinnot on todettu manner-Suomen perusteiden mukaisiksi (ks. AhvenanmaanAmmatillinen.scala).
+    val päätteleePerusteesta = !oo.isInstanceOf[AhvenanmaanAmmatillinenOpiskeluoikeus]
     koulutustyyppiTraversal.modify(oo) { koulutus =>
       val koulutustyyppi = koulutus match {
-        case d: Diaarinumerollinen if !d.perusteenDiaarinumero.exists(onKoodistossa) =>
+        case d: Diaarinumerollinen if päätteleePerusteesta && !d.perusteenDiaarinumero.exists(onKoodistossa) =>
           d.perusteenDiaarinumero.flatMap(haeKoulutustyyppi)
         case _ =>
           val koulutustyyppiKoodisto = koodistoViitePalvelu.koodistoPalvelu.getLatestVersionRequired("koulutustyyppi")

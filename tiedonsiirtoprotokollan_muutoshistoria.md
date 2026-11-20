@@ -4,6 +4,7 @@
   - Uudet tilat voi siirtää vasta 1.1.2027 alkaen ja vain opiskeluoikeudelle, joka on päättynyt 1.1.2027 tai sen jälkeen tai on edelleen voimassa. Läsnä-jakson alkupäivä saa kuitenkin olla ennen 1.1.2027.
   - Opiskeluoikeus voi olla tyhjä: se voi jäädä tilaan `lasna` tai päättyä tilaan `keskeytynyt` ilman arviointia, vahvistusta tai osasuorituksia, myös lähdejärjestelmästä siirrettäessä. Tilaan `hyvaksytystisuoritettu` päättyvällä opiskeluoikeudella on oltava vahvistettu päätason suoritus.
   - Ennen 1.1.2027 päättyneet opiskeluoikeudet validoidaan aiempien sääntöjen mukaan.
+- Lisätty ensimmäinen luonnos Ahvenanmaan ammatillisen koulutuksen skeemasta (TOR-2837). Uusi opiskeluoikeustyyppi `ahvenanmaanammatillinenkoulutus`, haarautettu manner-Suomen ammatillisen koulutuksen skeemasta. Päätason suorituksina ammatillisen tutkinnon suoritus (`ahvenanmaanammatillinentutkinto`) ja ammatillisen tutkinnon osa/osia (`ahvenanmaanammatillinentutkintoosittainen`). Osasuoritukset ovat samat kuin manner-Suomen ammatillisen tutkinnon ja ammatillisen tutkinnon osa/osia -suorituksilla; manner-Suomen osa/osia-osasuoritukset ja niiden `korotettu`-kenttä sallitaan siksi myös päätason suorituksen tyypillä `ahvenanmaanammatillinentutkintoosittainen`. Ei vielä käytössä tuotannossa.
 
 # 12.11.2026
 

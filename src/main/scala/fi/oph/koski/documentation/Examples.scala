@@ -6,6 +6,7 @@ import fi.oph.koski.tiedonsiirto.ExamplesTiedonsiirto
 object Examples {
   val oppijaExamples: List[Example] =
     ExamplesAmmatillinen.examples ++
+    ExamplesAhvenanmaanAmmatillinen.examples ++
     ExamplesMuuAmmatillinen.examples ++
     ExamplesValma.examples ++
     ExamplesTelma.examples ++

@@ -168,6 +168,7 @@ class KoskiSpecificSessionSpec
         val session = createAndVerifySession("Teuvo", MockUsers.toinenAsteViranomainen.ldapUser)
         val expectedOpiskeluoikeustyypit = Set(
           tuva,
+          ahvenanmaanammatillinenkoulutus,
           ammatillinenkoulutus,
           ibtutkinto,
           diatutkinto,

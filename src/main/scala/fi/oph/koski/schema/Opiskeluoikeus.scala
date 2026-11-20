@@ -161,6 +161,7 @@ trait Opiskeluoikeus extends Lähdejärjestelmällinen with OrganisaatioonLiitty
 object OpiskeluoikeudenTyyppi {
   private var tyypit: Set[Koodistokoodiviite] = Set()
 
+  val ahvenanmaanammatillinenkoulutus = apply("ahvenanmaanammatillinenkoulutus")
   val ahvenanmaanperusopetus = apply("ahvenanmaanperusopetus")
   val aikuistenperusopetus = apply("aikuistenperusopetus")
   val ammatillinenkoulutus = apply("ammatillinenkoulutus")
@@ -280,6 +281,8 @@ trait KoskeenTallennettavaOpiskeluoikeus extends Opiskeluoikeus with Lähdejärj
         t.copy(opiskeluoikeusjaksot = t.opiskeluoikeusjaksot :+ KielitutkinnonOpiskeluoikeudenOpiskeluoikeusjakso(mitatointiPvm, mitätöityKoodistokoodiviite))
       case t: AhvenanmaanPerusopetuksenOpiskeluoikeudenTila =>
         t.copy(opiskeluoikeusjaksot = t.opiskeluoikeusjaksot :+ AhvenanmaanPerusopetuksenOpiskeluoikeusjakso(mitatointiPvm, mitätöityKoodistokoodiviite))
+      case t: AhvenanmaanAmmatillinenOpiskeluoikeudenTila =>
+        t.copy(opiskeluoikeusjaksot = t.opiskeluoikeusjaksot :+ AhvenanmaanAmmatillinenOpiskeluoikeusjakso(mitatointiPvm, mitätöityKoodistokoodiviite))
     }
 
     withTila(uusiTila)

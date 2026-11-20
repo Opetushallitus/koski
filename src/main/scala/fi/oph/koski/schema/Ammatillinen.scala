@@ -510,6 +510,7 @@ trait YhteisenTutkinnonOsanSuoritus extends Suoritus with AmmatillisenTutkinnonO
 @Description("Ammatilliseen tutkintoon liittyvän yhteisen tutkinnonosan suoritus")
 @Title("Yhteisen tutkinnon osan suoritus")
 @OnlyWhen("../../tyyppi/koodiarvo", "ammatillinentutkintoosittainen") // Tarvitaan jotta osaamisen tunnustamisen suoritus deserialisoituu
+@OnlyWhen("../../tyyppi/koodiarvo", "ahvenanmaanammatillinentutkintoosittainen")
 case class YhteisenOsittaisenAmmatillisenTutkinnonTutkinnonosanSuoritus(
   koulutusmoduuli: YhteinenTutkinnonOsa,
   tutkinto: Option[AmmatillinenTutkintoKoulutus] = None,
@@ -537,6 +538,7 @@ case class YhteisenOsittaisenAmmatillisenTutkinnonTutkinnonosanSuoritus(
 @Description("Ammatilliseen tutkintoon liittyvän, muun kuin yhteisen tutkinnonosan suoritus")
 @Title("Muun tutkinnon osan suoritus")
 @OnlyWhen("../../tyyppi/koodiarvo", "ammatillinentutkintoosittainen") // Tarvitaan jotta osaamisen tunnustamisen suoritus deserialisoituu
+@OnlyWhen("../../tyyppi/koodiarvo", "ahvenanmaanammatillinentutkintoosittainen")
 case class MuunOsittaisenAmmatillisenTutkinnonTutkinnonosanSuoritus(
   koulutusmoduuli: MuuKuinYhteinenTutkinnonOsa,
   tutkinto: Option[AmmatillinenTutkintoKoulutus] = None,
@@ -987,6 +989,7 @@ case class MuidenOpintovalmiuksiaTukevienOpintojenSuoritus(
   @KoodistoKoodiarvo("ammatillinenmuitaopintovalmiuksiatukeviaopintoja")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("ammatillinenmuitaopintovalmiuksiatukeviaopintoja", "suorituksentyyppi"),
   @OnlyWhen("../../../../tyyppi/koodiarvo","ammatillinentutkintoosittainen")
+  @OnlyWhen("../../../../tyyppi/koodiarvo","ahvenanmaanammatillinentutkintoosittainen")
   korotettu: Option[Koodistokoodiviite] = None
 ) extends Suoritus
   with Vahvistukseton
@@ -1099,6 +1102,7 @@ case class YhteisenTutkinnonOsanOsaAlueenSuoritus(
   @KoodistoKoodiarvo("ammatillisentutkinnonosanosaalue")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("ammatillisentutkinnonosanosaalue", "suorituksentyyppi"),
   @OnlyWhen("../../../../tyyppi/koodiarvo","ammatillinentutkintoosittainen")
+  @OnlyWhen("../../../../tyyppi/koodiarvo","ahvenanmaanammatillinentutkintoosittainen")
   korotettu: Option[Koodistokoodiviite] = None
 ) extends Suoritus
   with Vahvistukseton
