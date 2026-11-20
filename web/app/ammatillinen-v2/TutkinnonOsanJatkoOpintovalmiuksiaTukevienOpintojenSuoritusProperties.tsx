@@ -1,6 +1,8 @@
 import { FormModel, FormOptic } from '../components-v2/forms/FormModel'
-import { AmmatillinenOpiskeluoikeus } from '../types/fi/oph/koski/schema/AmmatillinenOpiskeluoikeus'
-import { AmisJatkoOpintovalmiuksiaTukevienOpintojenSuoritus } from './tutkinnonOsanSuoritukset'
+import {
+  AmisJatkoOpintovalmiuksiaTukevienOpintojenSuoritus,
+  AmisTaiAhvenanmaanOpiskeluoikeus
+} from './tutkinnonOsanSuoritukset'
 import { isOsittaisenAmmatillisenTutkinnonOsanJatkoOpintovalmiuksiaTukevienOpintojenSuoritus } from '../types/fi/oph/koski/schema/OsittaisenAmmatillisenTutkinnonOsanJatkoOpintovalmiuksiaTukevienOpintojenSuoritus'
 import { localize, t } from '../i18n/i18n'
 import { OsasuoritusTable } from '../components-v2/opiskeluoikeus/OsasuoritusTable'
@@ -82,22 +84,23 @@ import {
 import { usePeruste } from '../appstate/peruste'
 import { OptionList, Select } from '../components-v2/controls/Select'
 
-export type TutkinnonOsanJatkoOpintovalmiuksiaTukevienOpintojenSuoritusPropertiesProps =
-  {
-    form: FormModel<AmmatillinenOpiskeluoikeus>
-    osasuoritusPath: FormOptic<
-      AmmatillinenOpiskeluoikeus,
-      AmisJatkoOpintovalmiuksiaTukevienOpintojenSuoritus
-    >
-    osasuoritus: AmisJatkoOpintovalmiuksiaTukevienOpintojenSuoritus
-  }
+export type TutkinnonOsanJatkoOpintovalmiuksiaTukevienOpintojenSuoritusPropertiesProps<
+  T extends AmisTaiAhvenanmaanOpiskeluoikeus
+> = {
+  form: FormModel<T>
+  osasuoritusPath: FormOptic<
+    T,
+    AmisJatkoOpintovalmiuksiaTukevienOpintojenSuoritus
+  >
+  osasuoritus: AmisJatkoOpintovalmiuksiaTukevienOpintojenSuoritus
+}
 
 export const TutkinnonOsanJatkoOpintovalmiuksiaTukevienOpintojenSuoritusProperties =
-  ({
+  <T extends AmisTaiAhvenanmaanOpiskeluoikeus>({
     form,
     osasuoritusPath,
     osasuoritus
-  }: TutkinnonOsanJatkoOpintovalmiuksiaTukevienOpintojenSuoritusPropertiesProps) => {
+  }: TutkinnonOsanJatkoOpintovalmiuksiaTukevienOpintojenSuoritusPropertiesProps<T>) => {
     return (
       <>
         <OsasuoritusTable
@@ -181,15 +184,15 @@ export const TutkinnonOsanJatkoOpintovalmiuksiaTukevienOpintojenSuoritusProperti
     )
   }
 
-type NewOsasuoritusProps = {
-  form: FormModel<AmmatillinenOpiskeluoikeus>
-  suoritusPath: FormOptic<
-    AmmatillinenOpiskeluoikeus,
-    AmisJatkoOpintovalmiuksiaTukevienOpintojenSuoritus
-  >
+type NewOsasuoritusProps<T extends AmisTaiAhvenanmaanOpiskeluoikeus> = {
+  form: FormModel<T>
+  suoritusPath: FormOptic<T, AmisJatkoOpintovalmiuksiaTukevienOpintojenSuoritus>
 }
 
-const NewOsasuoritus = ({ form, suoritusPath }: NewOsasuoritusProps) => {
+const NewOsasuoritus = <T extends AmisTaiAhvenanmaanOpiskeluoikeus>({
+  form,
+  suoritusPath
+}: NewOsasuoritusProps<T>) => {
   return (
     <ColumnRow indent={2}>
       <Column span={6}>
@@ -211,18 +214,19 @@ const NewOsasuoritus = ({ form, suoritusPath }: NewOsasuoritusProps) => {
   )
 }
 
-type NewYhteisenTutkinnonOsanOsaAlueenSuoritusProps = {
-  form: FormModel<AmmatillinenOpiskeluoikeus>
-  suoritusPath: FormOptic<
-    AmmatillinenOpiskeluoikeus,
-    AmisJatkoOpintovalmiuksiaTukevienOpintojenSuoritus
-  >
+type NewYhteisenTutkinnonOsanOsaAlueenSuoritusProps<
+  T extends AmisTaiAhvenanmaanOpiskeluoikeus
+> = {
+  form: FormModel<T>
+  suoritusPath: FormOptic<T, AmisJatkoOpintovalmiuksiaTukevienOpintojenSuoritus>
 }
 
-const NewYhteisenTutkinnonOsanOsaAlueenSuoritus = ({
+const NewYhteisenTutkinnonOsanOsaAlueenSuoritus = <
+  T extends AmisTaiAhvenanmaanOpiskeluoikeus
+>({
   form,
   suoritusPath
-}: NewYhteisenTutkinnonOsanOsaAlueenSuoritusProps) => {
+}: NewYhteisenTutkinnonOsanOsaAlueenSuoritusProps<T>) => {
   const [showModal, setShowModal] = useState(false)
 
   return (
@@ -259,10 +263,10 @@ const NewYhteisenTutkinnonOsanOsaAlueenSuoritus = ({
   )
 }
 
-const NewLukioOpinto = ({
+const NewLukioOpinto = <T extends AmisTaiAhvenanmaanOpiskeluoikeus>({
   form,
   suoritusPath
-}: NewYhteisenTutkinnonOsanOsaAlueenSuoritusProps) => {
+}: NewYhteisenTutkinnonOsanOsaAlueenSuoritusProps<T>) => {
   const [showModal, setShowModal] = useState(false)
 
   return (
@@ -366,10 +370,12 @@ const NewLukioOpintoModal = ({
   )
 }
 
-const NewMuidenOpintovalmiuksiaTukevienOpintojenSuoritus = ({
+const NewMuidenOpintovalmiuksiaTukevienOpintojenSuoritus = <
+  T extends AmisTaiAhvenanmaanOpiskeluoikeus
+>({
   form,
   suoritusPath
-}: NewOsasuoritusProps) => {
+}: NewOsasuoritusProps<T>) => {
   const [showModal, setShowModal] = useState(false)
 
   return (
@@ -437,25 +443,25 @@ const NewMuidenOpintovalmiuksiaTukevienOpintojenSuoritusModal = ({
   )
 }
 
-type OsasuoritusPropertiesProps = {
-  form: FormModel<AmmatillinenOpiskeluoikeus>
+type OsasuoritusPropertiesProps<T extends AmisTaiAhvenanmaanOpiskeluoikeus> = {
+  form: FormModel<T>
   osasuoritusPath: FormOptic<
-    AmmatillinenOpiskeluoikeus,
+    T,
     YhteistenTutkinnonOsienOsaAlueidenTaiLukioOpintojenTaiMuidenOpintovalmiuksiaTukevienOpintojenOsasuoritus
   >
   osasuoritus: YhteistenTutkinnonOsienOsaAlueidenTaiLukioOpintojenTaiMuidenOpintovalmiuksiaTukevienOpintojenOsasuoritus
   korotusSallittu: boolean
 }
 
-const OsasuoritusProperties = ({
+const OsasuoritusProperties = <T extends AmisTaiAhvenanmaanOpiskeluoikeus>({
   form,
   osasuoritusPath,
   osasuoritus,
   korotusSallittu
-}: OsasuoritusPropertiesProps) => {
+}: OsasuoritusPropertiesProps<T>) => {
   if (isYhteisenTutkinnonOsanOsaAlueenSuoritus(osasuoritus)) {
     const yhteinenPath = osasuoritusPath as unknown as FormOptic<
-      AmmatillinenOpiskeluoikeus,
+      T,
       YhteisenTutkinnonOsanOsaAlueenSuoritus
     >
 
@@ -469,7 +475,7 @@ const OsasuoritusProperties = ({
     )
   } else if (isLukioTaiMuuOsasuoritus(osasuoritus)) {
     const lukioTaiMuuPath = osasuoritusPath as unknown as FormOptic<
-      AmmatillinenOpiskeluoikeus,
+      T,
       LukioTaiMuuOsasuoritus
     >
 
@@ -492,19 +498,23 @@ const isLukioTaiMuuOsasuoritus = (a: unknown): a is LukioTaiMuuOsasuoritus =>
   isLukioOpintojenSuoritus(a) ||
   isMuidenOpintovalmiuksiaTukevienOpintojenSuoritus(a)
 
-type LukionJaMuunOsasoritusPropertiesProps = {
-  form: FormModel<AmmatillinenOpiskeluoikeus>
-  osasuoritusPath: FormOptic<AmmatillinenOpiskeluoikeus, LukioTaiMuuOsasuoritus>
+type LukionJaMuunOsasoritusPropertiesProps<
+  T extends AmisTaiAhvenanmaanOpiskeluoikeus
+> = {
+  form: FormModel<T>
+  osasuoritusPath: FormOptic<T, LukioTaiMuuOsasuoritus>
   osasuoritus: LukioTaiMuuOsasuoritus
   korotusSallittu: boolean
 }
 
-const LukionJaMuunOsasoritusProperties = ({
+const LukionJaMuunOsasoritusProperties = <
+  T extends AmisTaiAhvenanmaanOpiskeluoikeus
+>({
   form,
   osasuoritusPath,
   osasuoritus,
   korotusSallittu
-}: LukionJaMuunOsasoritusPropertiesProps) => {
+}: LukionJaMuunOsasoritusPropertiesProps<T>) => {
   return (
     <>
       {osasuoritus.suorituskieli && (
@@ -621,7 +631,7 @@ const LukionJaMuunOsasoritusProperties = ({
                 }}
                 path={(
                   osasuoritusPath as FormOptic<
-                    AmmatillinenOpiskeluoikeus,
+                    T,
                     MuidenOpintovalmiuksiaTukevienOpintojenSuoritus
                   >
                 ).prop('korotettu')}

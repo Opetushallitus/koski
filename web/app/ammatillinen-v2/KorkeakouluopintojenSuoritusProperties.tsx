@@ -1,4 +1,4 @@
-import { AmmatillinenOpiskeluoikeus } from '../types/fi/oph/koski/schema/AmmatillinenOpiskeluoikeus'
+import { AmisTaiAhvenanmaanOpiskeluoikeus } from './tutkinnonOsanSuoritukset'
 import { FormModel, FormOptic } from '../components-v2/forms/FormModel'
 import { KorkeakouluopintojenSuoritus } from '../types/fi/oph/koski/schema/KorkeakouluopintojenSuoritus'
 import {
@@ -33,20 +33,21 @@ import {
   LocalizedTextView
 } from '../components-v2/controls/LocalizedTestField'
 
-export type KorkeakouluopintojenSuoritusPropertiesProps = {
-  form: FormModel<AmmatillinenOpiskeluoikeus>
-  osasuoritusPath: FormOptic<
-    AmmatillinenOpiskeluoikeus,
-    KorkeakouluopintojenSuoritus
-  >
+export type KorkeakouluopintojenSuoritusPropertiesProps<
+  T extends AmisTaiAhvenanmaanOpiskeluoikeus
+> = {
+  form: FormModel<T>
+  osasuoritusPath: FormOptic<T, KorkeakouluopintojenSuoritus>
   osasuoritus: KorkeakouluopintojenSuoritus
 }
 
-export const KorkeakouluopintojenSuoritusProperties = ({
+export const KorkeakouluopintojenSuoritusProperties = <
+  T extends AmisTaiAhvenanmaanOpiskeluoikeus
+>({
   form,
   osasuoritusPath,
   osasuoritus
-}: KorkeakouluopintojenSuoritusPropertiesProps) => {
+}: KorkeakouluopintojenSuoritusPropertiesProps<T>) => {
   return (
     <>
       {osasuoritus.suorituskieli && (

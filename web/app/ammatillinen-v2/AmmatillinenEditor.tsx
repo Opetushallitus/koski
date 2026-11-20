@@ -180,7 +180,8 @@ const AmmatillinenPäätasonSuoritusEditor: React.FC<
 // Tutkinnon (osan/osien) ja näyttötutkintoon valmistavan koulutuksen
 // suorituksilla on pääosin samat kentät, joten ne näytetään samalla taulukolla.
 type TutkintoTaiValmistavaSuoritus =
-  AmisTutkinnonSuoritus | NäyttötutkintoonValmistavanKoulutuksenSuoritus
+  | Extract<AmmatillinenPäätasonSuoritus, AmisTutkinnonSuoritus>
+  | NäyttötutkintoonValmistavanKoulutuksenSuoritus
 
 const isTutkintoTaiValmistavaSuoritus = (
   s: unknown
