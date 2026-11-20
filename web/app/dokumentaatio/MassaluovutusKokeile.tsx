@@ -88,10 +88,16 @@ export const MassaluovutusKokeile: React.FC<MassaluovutusKokeileProps> = ({
   useEffect(() => {
     if (state.phase !== 'polling') return
     const queryId = state.response.body.queryId
+    // Uusi lähetys tai palautus pollauksen aikana: jo lähtenyt haku ei saa ylikirjoittaa uutta tilaa
+    let cancelled = false
     const timer = setTimeout(async () => {
-      setState(stateFor(await fetchQuery(apiPath, queryId)))
+      const response = await fetchQuery(apiPath, queryId)
+      if (!cancelled) setState(stateFor(response))
     }, pollIntervalMs)
-    return () => clearTimeout(timer)
+    return () => {
+      cancelled = true
+      clearTimeout(timer)
+    }
   }, [apiPath, state, setState])
 
   // Vain lähetyksen ajan: pollauksen aikana kyselyä saa muokata ja lähettää uudelleen
