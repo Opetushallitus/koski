@@ -1,6 +1,7 @@
 import { FormModel, FormOptic } from '../components-v2/forms/FormModel'
 import { AmmatillinenOpiskeluoikeus } from '../types/fi/oph/koski/schema/AmmatillinenOpiskeluoikeus'
 import { AmisJatkoOpintovalmiuksiaTukevienOpintojenSuoritus } from './tutkinnonOsanSuoritukset'
+import { isOsittaisenAmmatillisenTutkinnonOsanJatkoOpintovalmiuksiaTukevienOpintojenSuoritus } from '../types/fi/oph/koski/schema/OsittaisenAmmatillisenTutkinnonOsanJatkoOpintovalmiuksiaTukevienOpintojenSuoritus'
 import { localize, t } from '../i18n/i18n'
 import { OsasuoritusTable } from '../components-v2/opiskeluoikeus/OsasuoritusTable'
 import { YhteisenTutkinnonOsanOsaAlueenSuoritusProperties } from './YhteisenTutkinnonOsanOsaAlueenSuoritusProperties'
@@ -146,6 +147,9 @@ export const TutkinnonOsanJatkoOpintovalmiuksiaTukevienOpintojenSuoritusProperti
                       .valueOr([])
                       .at(index)}
                     osasuoritus={s}
+                    korotusSallittu={isOsittaisenAmmatillisenTutkinnonOsanJatkoOpintovalmiuksiaTukevienOpintojenSuoritus(
+                      osasuoritus
+                    )}
                   />
                 ),
                 expandable: true
@@ -440,12 +444,14 @@ type OsasuoritusPropertiesProps = {
     YhteistenTutkinnonOsienOsaAlueidenTaiLukioOpintojenTaiMuidenOpintovalmiuksiaTukevienOpintojenOsasuoritus
   >
   osasuoritus: YhteistenTutkinnonOsienOsaAlueidenTaiLukioOpintojenTaiMuidenOpintovalmiuksiaTukevienOpintojenOsasuoritus
+  korotusSallittu: boolean
 }
 
 const OsasuoritusProperties = ({
   form,
   osasuoritusPath,
-  osasuoritus
+  osasuoritus,
+  korotusSallittu
 }: OsasuoritusPropertiesProps) => {
   if (isYhteisenTutkinnonOsanOsaAlueenSuoritus(osasuoritus)) {
     const yhteinenPath = osasuoritusPath as unknown as FormOptic<
@@ -458,6 +464,7 @@ const OsasuoritusProperties = ({
         form={form}
         osasuoritusPath={yhteinenPath}
         osasuoritus={osasuoritus}
+        korotusSallittu={korotusSallittu}
       />
     )
   } else if (isLukioTaiMuuOsasuoritus(osasuoritus)) {
@@ -471,6 +478,7 @@ const OsasuoritusProperties = ({
         form={form}
         osasuoritusPath={lukioTaiMuuPath}
         osasuoritus={osasuoritus}
+        korotusSallittu={korotusSallittu}
       />
     )
   }
@@ -488,12 +496,14 @@ type LukionJaMuunOsasoritusPropertiesProps = {
   form: FormModel<AmmatillinenOpiskeluoikeus>
   osasuoritusPath: FormOptic<AmmatillinenOpiskeluoikeus, LukioTaiMuuOsasuoritus>
   osasuoritus: LukioTaiMuuOsasuoritus
+  korotusSallittu: boolean
 }
 
 const LukionJaMuunOsasoritusProperties = ({
   form,
   osasuoritusPath,
-  osasuoritus
+  osasuoritus,
+  korotusSallittu
 }: LukionJaMuunOsasoritusPropertiesProps) => {
   return (
     <>
@@ -597,7 +607,8 @@ const LukionJaMuunOsasoritusProperties = ({
         </OsasuoritusProperty>
       )}
       {isMuidenOpintovalmiuksiaTukevienOpintojenSuoritus(osasuoritus) &&
-        (form.editMode || osasuoritus.korotettu !== undefined) && (
+        ((korotusSallittu && form.editMode) ||
+          osasuoritus.korotettu !== undefined) && (
           <OsasuoritusProperty label={'Korotettu suoritus'}>
             <OsasuoritusPropertyValue>
               <FormField

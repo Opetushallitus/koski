@@ -50,11 +50,15 @@ type YhteisenTutkinnonOsanOsaAlueenSuoritusPropertiesProps = {
     YhteisenTutkinnonOsanOsaAlueenSuoritus
   >
   osasuoritus: YhteisenTutkinnonOsanOsaAlueenSuoritus
+  // Korotuksen voi merkitä vain tutkinnon osan/osien suoritukselle. Osa-alueen
+  // luokka on sama myös koko tutkinnolla, joten tieto tulee ylemmältä tasolta.
+  korotusSallittu: boolean
 }
 export const YhteisenTutkinnonOsanOsaAlueenSuoritusProperties = ({
   form,
   osasuoritusPath,
-  osasuoritus
+  osasuoritus,
+  korotusSallittu
 }: YhteisenTutkinnonOsanOsaAlueenSuoritusPropertiesProps) => {
   const paikallinenKoulutusmoduuli =
     isPaikallinenAmmatillisenTutkinnonOsanOsaAlue(osasuoritus.koulutusmoduuli)
@@ -193,7 +197,8 @@ export const YhteisenTutkinnonOsanOsaAlueenSuoritusProperties = ({
           </OsasuoritusPropertyValue>
         </OsasuoritusProperty>
       )}
-      {(form.editMode || osasuoritus.korotettu !== undefined) && (
+      {((korotusSallittu && form.editMode) ||
+        osasuoritus.korotettu !== undefined) && (
         <OsasuoritusProperty label={'Korotettu suoritus'}>
           <OsasuoritusPropertyValue>
             <FormField
