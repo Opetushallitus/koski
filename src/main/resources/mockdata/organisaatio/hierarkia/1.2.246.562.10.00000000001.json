@@ -19021,6 +19021,51 @@
       "status": "AKTIIVINEN"
     },
     {
+      "oid": "1.2.246.562.10.48371950262",
+      "alkuPvm": 258760800000,
+      "parentOid": "1.2.246.562.10.00000000001",
+      "parentOidPath": 25,
+      "ytunnus": "0145076-7",
+      "toimipistekoodi": "",
+      "match": true,
+      "nimi": {
+        "fi": "Ålands Landskapsregering",
+        "sv": "Ålands Landskapsregering",
+        "en": "Ålands Landskapsregering"
+      },
+      "kieletUris": [
+        "oppilaitoksenopetuskieli_1#1",
+        "oppilaitoksenopetuskieli_2#1"
+      ],
+      "kotipaikkaUri": "kunta_478",
+      "children": [
+        {
+          "oid": "1.2.246.562.10.62744318455",
+          "alkuPvm": 694216800000,
+          "parentOid": "1.2.246.562.10.48371950262",
+          "parentOidPath": "25/1.2.246.562.10.48371950262",
+          "oppilaitosKoodi": "10102",
+          "oppilaitostyyppi": "oppilaitostyyppi_21#1",
+          "toimipistekoodi": "10102",
+          "match": true,
+          "nimi": {
+            "fi": "Ålands yrkesgymnasium",
+            "sv": "Ålands yrkesgymnasium",
+            "en": "Ålands yrkesgymnasium"
+          },
+          "kieletUris": ["oppilaitoksenopetuskieli_2#1"],
+          "kotipaikkaUri": "kunta_478",
+          "children": [],
+          "aliOrganisaatioMaara": 0,
+          "organisaatiotyypit": ["organisaatiotyyppi_02"],
+          "status": "AKTIIVINEN"
+        }
+      ],
+      "aliOrganisaatioMaara": 1,
+      "organisaatiotyypit": ["organisaatiotyyppi_01"],
+      "status": "AKTIIVINEN"
+    },
+    {
       "oid": "1.2.246.562.10.82016343103",
       "alkuPvm": 258760800000,
       "parentOid": "1.2.246.562.10.00000000001",

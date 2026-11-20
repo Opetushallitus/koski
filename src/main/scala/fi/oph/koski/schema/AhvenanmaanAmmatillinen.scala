@@ -12,7 +12,7 @@ import fi.oph.scalaschema.annotation._
 //
 // - Päätason suorituksilla on omat luokat ja suorituksentyypit: manner-Suomen koodiarvo samalla
 //   rakenteella tekisi tunnustettu.osaaminen-kentän deserialisoinnista monitulkintaisen
-//   (TooManyMatchingCasesException). Wikissä omien koodien tarve on vielä auki.
+//   (TooManyMatchingCasesException).
 // - Osasuoritukset ovat manner-Suomen luokkia: tutkinnon suorituksella samat kuin
 //   AmmatillisenTutkinnonSuorituksella, osa/osia-suorituksella samat kuin
 //   AmmatillisenTutkinnonOsittainenSuorituksella. Osa/osia-osasuoritusten @OnlyWhen-ehdot
@@ -25,9 +25,19 @@ import fi.oph.scalaschema.annotation._
 //   validoinnit ja tietoluovutukset rajautuvat pois samasta syystä: ne lähtevät manner-Suomen
 //   opiskeluoikeus- tai päätason luokista.
 //
-// Tekemättä ennen kuin tyypin voi tallentaa:
-// - OpiskeluoikeudenTyyppi-rekisteröinti, koodistot (opiskeluoikeudentyyppi, suorituksentyyppi),
-//   käyttöoikeudet, validoinnit (wiki: manner-Suomen validoinnit soveltuvin osin), raportointikanta.
+// Tuotannossa tallennus estetään features.disabledPäätasonSuoritusLuokat-asetuksella
+// (AhvenanmaanAmmatillisenTutkinnonSuoritus, AhvenanmaanAmmatillisenTutkinnonOsittainenSuoritus),
+// kunnes tyyppi otetaan käyttöön.
+//
+// Perusteet: Ahvenanmaan Läroplansgrunder (2025) edellyttää, että ammatilliset tutkinnon osat
+// noudattavat voimassa olevia manner-Suomen perusteita (6.2.1), ja todistukset viittaavat niihin
+// (esim. OPH-5085-2021, OPH-5162-2021). Yhteisten tutkinnon osien rakenne ja laajuudet ovat sen
+// sijaan Ahvenanmaan omat (6.2.2), joten manner-Suomen YTO-säännöt eivät sellaisenaan sovi.
+//
+// Tekemättä:
+// - ePerusteet-validointi on ohitettu (TODO TOR-2837), kunnes kaikista Ahvenanmaan tutkinnoista
+//   tiedetään, että ne noudattavat manner-Suomen perusteita.
+// - Validoinnit (wiki: manner-Suomen validoinnit soveltuvin osin).
 //
 // Osasuoritusten on toteutettava AmmatillisenTutkinnonOsanLisätiedollinen, jotta
 // FilterNonAnnotationableSensitiveData piilottaa mukautetun arvioinnin lisätiedot.

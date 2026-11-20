@@ -114,6 +114,9 @@ class EPerusteisiinPerustuvaValidator(
           case (_: AhvenanmaanPerusopetuksenPäätasonSuoritus, _) =>
             // Ahvenanmaan OPS (ÅLR2020/9841) ei ole julkisena ePerusteissa.
             HttpStatus.ok
+          case (_: AhvenanmaanAmmatillinenPäätasonSuoritus, _) =>
+            // TODO TOR-2837: ohitetaan, kunnes kaikki Ahvenanmaan tutkinnot on todettu manner-Suomen perusteiden mukaisiksi (ks. AhvenanmaanAmmatillinen.scala).
+            HttpStatus.ok
           case (_, diaarillinen: Diaarinumerollinen) if diaarillinen.perusteenDiaarinumero.isDefined =>
             validatePerusteVoimassa(diaarillinen.perusteenDiaarinumero.get, vaadittuPerusteenVoimassaolopäivä)
           case _ => HttpStatus.ok

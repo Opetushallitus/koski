@@ -15,3 +15,4 @@ TOR-XXXX - poistettu käyttämätön PUT /api/oppija/batch -rajapinta ja sen er�
 TOR-XXX - Scala-kääntäjän ja Scalafixin tarkistusten vaatimia koodimuutoksia validaatiotiedostoissa; validaatiologiikka ennallaan
 TOR-2745 - korjattu virheviestin sanamuoto
 TOR-2265 - isServerEnvironment nimetty isCloudEnvironmentiksi ja kommentti päivitetty, validaatiologiikka ennallaan
+TOR-2837 - Ahvenanmaan ammatillinen: ePerusteet-validoinnin ohitus uudelle tyypille, ei vaikuta olemassaoleviin

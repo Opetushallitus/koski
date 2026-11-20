@@ -1,0 +1,357 @@
+{
+  "henkilö" : {
+    "hetu" : "120502A417R",
+    "etunimet" : "Ebba",
+    "kutsumanimi" : "Ebba",
+    "sukunimi" : "Ålänning"
+  },
+  "opiskeluoikeudet" : [ {
+    "oppilaitos" : {
+      "oid" : "1.2.246.562.10.62744318455",
+      "oppilaitosnumero" : {
+        "koodiarvo" : "10102",
+        "nimi" : {
+          "fi" : "Ålands yrkesgymnasium",
+          "sv" : "Ålands yrkesgymnasium",
+          "en" : "Ålands yrkesgymnasium"
+        },
+        "lyhytNimi" : {
+          "fi" : "Ålands yrkesgymnasium",
+          "sv" : "Ålands yrkesgymnasium",
+          "en" : "Ålands yrkesgymnasium"
+        },
+        "koodistoUri" : "oppilaitosnumero"
+      },
+      "nimi" : {
+        "fi" : "Ålands yrkesgymnasium",
+        "sv" : "Ålands yrkesgymnasium",
+        "en" : "Ålands yrkesgymnasium"
+      },
+      "kotipaikka" : {
+        "koodiarvo" : "478",
+        "nimi" : {
+          "fi" : "Maarianhamina",
+          "sv" : "Mariehamn"
+        },
+        "koodistoUri" : "kunta"
+      }
+    },
+    "ostettu" : false,
+    "tila" : {
+      "opiskeluoikeusjaksot" : [ {
+        "alku" : "2023-08-15",
+        "tila" : {
+          "koodiarvo" : "lasna",
+          "nimi" : {
+            "fi" : "Läsnä"
+          },
+          "koodistoUri" : "koskiopiskeluoikeudentila",
+          "koodistoVersio" : 1
+        }
+      }, {
+        "alku" : "2026-05-29",
+        "tila" : {
+          "koodiarvo" : "valmistunut",
+          "nimi" : {
+            "fi" : "Valmistunut"
+          },
+          "koodistoUri" : "koskiopiskeluoikeudentila",
+          "koodistoVersio" : 1
+        }
+      } ]
+    },
+    "suoritukset" : [ {
+      "koulutusmoduuli" : {
+        "tunniste" : {
+          "koodiarvo" : "371101",
+          "koodistoUri" : "koulutus"
+        },
+        "perusteenDiaarinumero" : "OPH-5085-2021"
+      },
+      "suoritustapa" : {
+        "koodiarvo" : "reformi",
+        "koodistoUri" : "ammatillisentutkinnonsuoritustapa"
+      },
+      "toimipiste" : {
+        "oid" : "1.2.246.562.10.62744318455"
+      },
+      "alkamispäivä" : "2023-08-15",
+      "vahvistus" : {
+        "päivä" : "2026-05-29",
+        "paikkakunta" : {
+          "koodiarvo" : "478",
+          "nimi" : {
+            "fi" : "Maarianhamina"
+          },
+          "koodistoUri" : "kunta"
+        },
+        "myöntäjäOrganisaatio" : {
+          "oid" : "1.2.246.562.10.62744318455",
+          "oppilaitosnumero" : {
+            "koodiarvo" : "10102",
+            "nimi" : {
+              "fi" : "Ålands yrkesgymnasium",
+              "sv" : "Ålands yrkesgymnasium",
+              "en" : "Ålands yrkesgymnasium"
+            },
+            "lyhytNimi" : {
+              "fi" : "Ålands yrkesgymnasium",
+              "sv" : "Ålands yrkesgymnasium",
+              "en" : "Ålands yrkesgymnasium"
+            },
+            "koodistoUri" : "oppilaitosnumero"
+          },
+          "nimi" : {
+            "fi" : "Ålands yrkesgymnasium",
+            "sv" : "Ålands yrkesgymnasium",
+            "en" : "Ålands yrkesgymnasium"
+          },
+          "kotipaikka" : {
+            "koodiarvo" : "478",
+            "nimi" : {
+              "fi" : "Maarianhamina",
+              "sv" : "Mariehamn"
+            },
+            "koodistoUri" : "kunta"
+          }
+        },
+        "myöntäjäHenkilöt" : [ {
+          "nimi" : "Reijo Reksi",
+          "titteli" : {
+            "fi" : "rehtori"
+          },
+          "organisaatio" : {
+            "oid" : "1.2.246.562.10.62744318455",
+            "oppilaitosnumero" : {
+              "koodiarvo" : "10102",
+              "nimi" : {
+                "fi" : "Ålands yrkesgymnasium",
+                "sv" : "Ålands yrkesgymnasium",
+                "en" : "Ålands yrkesgymnasium"
+              },
+              "lyhytNimi" : {
+                "fi" : "Ålands yrkesgymnasium",
+                "sv" : "Ålands yrkesgymnasium",
+                "en" : "Ålands yrkesgymnasium"
+              },
+              "koodistoUri" : "oppilaitosnumero"
+            },
+            "nimi" : {
+              "fi" : "Ålands yrkesgymnasium",
+              "sv" : "Ålands yrkesgymnasium",
+              "en" : "Ålands yrkesgymnasium"
+            },
+            "kotipaikka" : {
+              "koodiarvo" : "478",
+              "nimi" : {
+                "fi" : "Maarianhamina",
+                "sv" : "Mariehamn"
+              },
+              "koodistoUri" : "kunta"
+            }
+          }
+        } ]
+      },
+      "suorituskieli" : {
+        "koodiarvo" : "SV",
+        "nimi" : {
+          "fi" : "ruotsi"
+        },
+        "koodistoUri" : "kieli"
+      },
+      "osasuoritukset" : [ {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "100832",
+            "koodistoUri" : "tutkinnonosat"
+          },
+          "pakollinen" : true,
+          "laajuus" : {
+            "arvo" : 25.0,
+            "yksikkö" : {
+              "koodiarvo" : "6",
+              "nimi" : {
+                "fi" : "osaamispistettä",
+                "sv" : "kompetenspoäng",
+                "en" : "ECVET competence points"
+              },
+              "lyhytNimi" : {
+                "fi" : "osp",
+                "sv" : "kp",
+                "en" : "competence points"
+              },
+              "koodistoUri" : "opintojenlaajuusyksikko"
+            }
+          }
+        },
+        "tutkinnonOsanRyhmä" : {
+          "koodiarvo" : "1",
+          "koodistoUri" : "ammatillisentutkinnonosanryhma"
+        },
+        "toimipiste" : {
+          "oid" : "1.2.246.562.10.62744318455"
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "4",
+            "koodistoUri" : "arviointiasteikkoammatillinen15"
+          },
+          "päivä" : "2025-05-20",
+          "hyväksytty" : true
+        } ],
+        "näyttö" : {
+          "kuvaus" : {
+            "fi" : "Barnets utveckling och handledning i daghem"
+          },
+          "suorituspaikka" : {
+            "tunniste" : {
+              "koodiarvo" : "1",
+              "koodistoUri" : "ammatillisennaytonsuorituspaikka"
+            },
+            "kuvaus" : {
+              "fi" : "Daghemmet Solrosen, Mariehamn"
+            }
+          },
+          "suoritusaika" : {
+            "alku" : "2025-05-05",
+            "loppu" : "2025-05-09"
+          },
+          "työssäoppimisenYhteydessä" : false
+        },
+        "tyyppi" : {
+          "koodiarvo" : "ammatillisentutkinnonosa",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "106728",
+            "koodistoUri" : "tutkinnonosat"
+          },
+          "pakollinen" : true,
+          "laajuus" : {
+            "arvo" : 6.0,
+            "yksikkö" : {
+              "koodiarvo" : "6",
+              "nimi" : {
+                "fi" : "osaamispistettä",
+                "sv" : "kompetenspoäng",
+                "en" : "ECVET competence points"
+              },
+              "lyhytNimi" : {
+                "fi" : "osp",
+                "sv" : "kp",
+                "en" : "competence points"
+              },
+              "koodistoUri" : "opintojenlaajuusyksikko"
+            }
+          }
+        },
+        "tutkinnonOsanRyhmä" : {
+          "koodiarvo" : "2",
+          "koodistoUri" : "ammatillisentutkinnonosanryhma"
+        },
+        "toimipiste" : {
+          "oid" : "1.2.246.562.10.62744318455"
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "3",
+            "koodistoUri" : "arviointiasteikkoammatillinen15"
+          },
+          "päivä" : "2025-12-12",
+          "hyväksytty" : true
+        } ],
+        "osasuoritukset" : [ {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "MLMA",
+              "koodistoUri" : "ammatillisenoppiaineet"
+            },
+            "pakollinen" : true,
+            "laajuus" : {
+              "arvo" : 4.0,
+              "yksikkö" : {
+                "koodiarvo" : "6",
+                "nimi" : {
+                  "fi" : "osaamispistettä",
+                  "sv" : "kompetenspoäng",
+                  "en" : "ECVET competence points"
+                },
+                "lyhytNimi" : {
+                  "fi" : "osp",
+                  "sv" : "kp",
+                  "en" : "competence points"
+                },
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            }
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "3",
+              "koodistoUri" : "arviointiasteikkoammatillinen15"
+            },
+            "päivä" : "2025-12-12",
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "ammatillisentutkinnonosanosaalue",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        }, {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "MLFK",
+              "koodistoUri" : "ammatillisenoppiaineet"
+            },
+            "pakollinen" : true,
+            "laajuus" : {
+              "arvo" : 2.0,
+              "yksikkö" : {
+                "koodiarvo" : "6",
+                "nimi" : {
+                  "fi" : "osaamispistettä",
+                  "sv" : "kompetenspoäng",
+                  "en" : "ECVET competence points"
+                },
+                "lyhytNimi" : {
+                  "fi" : "osp",
+                  "sv" : "kp",
+                  "en" : "competence points"
+                },
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            }
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "3",
+              "koodistoUri" : "arviointiasteikkoammatillinen15"
+            },
+            "päivä" : "2025-12-12",
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "ammatillisentutkinnonosanosaalue",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "ammatillisentutkinnonosa",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      } ],
+      "tyyppi" : {
+        "koodiarvo" : "ahvenanmaanammatillinentutkinto",
+        "koodistoUri" : "suorituksentyyppi"
+      }
+    } ],
+    "tyyppi" : {
+      "koodiarvo" : "ahvenanmaanammatillinenkoulutus",
+      "koodistoUri" : "opiskeluoikeudentyyppi"
+    },
+    "alkamispäivä" : "2023-08-15",
+    "päättymispäivä" : "2026-05-29"
+  } ]
+}

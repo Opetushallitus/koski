@@ -112,6 +112,60 @@
   {
     "metadata": [
       {
+        "nimi": "Ahvenanmaan ammatillinen tutkinto",
+        "kuvaus": "",
+        "lyhytNimi": "",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Yrkesinriktad examen på Åland",
+        "kuvaus": "",
+        "lyhytNimi": "",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Vocational education qualification in Åland",
+        "kuvaus": null,
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "suorituksentyyppi_ahvenanmaanammatillinentutkinto",
+    "versio": 1,
+    "koodiArvo": "ahvenanmaanammatillinentutkinto"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "Ahvenanmaan ammatillisen tutkinnon osa/osia",
+        "kuvaus": "",
+        "lyhytNimi": "",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Examensdel/delar inom en yrkesinriktad examen på Åland",
+        "kuvaus": "",
+        "lyhytNimi": "",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Vocational education qualification unit/units in Åland",
+        "kuvaus": null,
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "suorituksentyyppi_ahvenanmaanammatillinentutkintoosittainen",
+    "versio": 1,
+    "koodiArvo": "ahvenanmaanammatillinentutkintoosittainen"
+  },
+  {
+    "metadata": [
+      {
         "nimi": "Aikuisten perusopetuksen alkuvaiheen kurssi",
         "kuvaus": "",
         "lyhytNimi": "",

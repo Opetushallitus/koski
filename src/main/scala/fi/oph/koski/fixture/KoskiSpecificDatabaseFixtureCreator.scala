@@ -414,7 +414,9 @@ class KoskiSpecificDatabaseFixtureCreator(application: KoskiApplication) extends
           )
         )
       ),
-    ) ++ AiemmatOpiskeluoikeudetDemoFixtures.opiskeluoikeudet
+    ) ++ AiemmatOpiskeluoikeudetDemoFixtures.opiskeluoikeudet ++ List(
+      (KoskiSpecificMockOppijat.ahvenanmaanAmmattiopiskelija, AhvenanmaanAmmatillinenExampleData.opiskeluoikeus),
+    )
   }
 
   protected def secondBatchOpiskeluOikeudet: List[(OppijaHenkilö, KoskeenTallennettavaOpiskeluoikeus)] = {

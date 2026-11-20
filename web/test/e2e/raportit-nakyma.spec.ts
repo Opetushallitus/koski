@@ -60,6 +60,7 @@ const kallenKaikkiOrganisaatiot = [
   'WinNova',
   'Ylioppilastutkintolautakunta',
   'Yrkeshögskolan Arcada',
+  'Ålands yrkesgymnasium',
   'Övernäs skola'
 ]
 

@@ -55,6 +55,10 @@ object MockOrganisaatiot {
   // Ahvenanmaalainen peruskoulu: kotipaikan (kunta_478) perusteella tarjotaan Ahvenanmaan
   // perusopetusta manner-Suomen perusopetuksen tyyppien sijaan, ks. OppilaitosServlet.
   val övernäsSkola = "1.2.246.562.10.31756453904"
+  // Kuten organisaatiopalvelussa: Ålands yrkesgymnasiumin koulutustoimija on Ålands landskapsregering,
+  // ei kouluja ylläpitävä viranomainen Ålands gymnasium.
+  val ålandsLandskapsregering = "1.2.246.562.10.48371950262"
+  val ålandsYrkesgymnasium = "1.2.246.562.10.62744318455"
   val kiipulasäätiö = "1.2.246.562.10.82016343103"
   val kiipulanAmmattiopisto = "1.2.246.562.10.78979122013"
   val kiipulanAmmattiopistoNokianToimipaikka = "1.2.246.562.10.28100171934"
@@ -121,7 +125,8 @@ object MockOrganisaatiot {
     EuropeanSchoolOfHelsinki.oppilaitos,
     MuuKuinSäänneltyKoulutusToimija.oppilaitos,
     oulunAikuislukio,
-    övernäsSkola
+    övernäsSkola,
+    ålandsYrkesgymnasium
   )
 }
 
