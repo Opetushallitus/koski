@@ -78,17 +78,21 @@ case class AmmatillisenOpiskeluoikeudenLisätiedot(
   @Tooltip("Valitse valintaruutu, jos opiskelijalla on oikeus maksuttomaan asuntolapaikkaan.")
   @DefaultValue(None)
   @RedundantData
+  @HiddenFromAiemmatOpiskeluoikeudet
   oikeusMaksuttomaanAsuntolapaikkaan: Option[Boolean] = None,
   @Description("Koulutuksen tarjoajan majoitus, huoneeseen muuttopäivä ja lähtöpäivä. Lista alku-loppu päivämääräpareja. Rahoituksen laskennassa käytettävä tieto.")
   @Tooltip("Koulutuksen järjestäjän tarjoama(t) majoitusjakso(t). Huoneeseen muuttopäivä ja lähtöpäivä. Rahoituksen laskennassa käytettävä tieto.")
+  @HiddenFromAiemmatOpiskeluoikeudet
   majoitus: Option[List[Aikajakso]] = None,
   @Description("Sisäoppilaitosmuotoinen majoitus, aloituspäivä ja loppupäivä. Lista alku-loppu päivämääräpareja. Rahoituksen laskennassa käytettävä tieto")
   @Tooltip("Sisäoppilaitosmuotoisen majoituksen aloituspäivä ja loppupäivä. Voi olla useita erillisiä jaksoja. Rahoituksen laskennassa käytettävä tieto")
   @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT))
+  @HiddenFromAiemmatOpiskeluoikeudet
   sisäoppilaitosmainenMajoitus: Option[List[Aikajakso]] = None,
   @Description("Vaativan erityisen tuen yhteydessä järjestettävä majoitus. Lista alku-loppu päivämääräpareja. Rahoituksen laskennassa käytettävä tieto.")
   @Tooltip("Vaativan erityisen tuen yhteydessä järjestettävä majoitus (aloitus- ja loppupäivä). Voi olla useita erillisiä jaksoja. Rahoituksen laskennassa käytettävä tieto.")
   @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT))
+  @HiddenFromAiemmatOpiskeluoikeudet
   vaativanErityisenTuenYhteydessäJärjestettäväMajoitus: Option[List[Aikajakso]] = None,
   @Description("Tieto siitä että oppija on erityisopetuksessa, aloituspäivä ja loppupäivä. Lista alku-loppu päivämääräpareja. Rahoituksen laskennassa käytettävä tieto. Kenttä ei ole käytössä 1.1.2026 alkaen.")
   @Tooltip("Tieto siitä että oppija on erityisopetuksessa. Merkitään erityisopetuksen alku- ja loppupäivä. Voi olla useita erillisiä jaksoja. Rahoituksen laskennassa käytettävä tieto.")
@@ -121,6 +125,7 @@ case class AmmatillisenOpiskeluoikeudenLisätiedot(
   @Description("Kyseessä on henkilöstökoulutus (kyllä/ei). Kentän välittämättä jättäminen tulkitaan että kyseessä ei ole henkilöstökoulutus. Rahoituksen laskennassa käytettävä tieto. Kenttä ei ole käytössä 1.1.2026 tai sen jälkeen alkavilla opiskeluoikeuksilla.")
   @Tooltip("Valitse valintaruutu, jos kyseessä on henkilöstökoulutus.")
   @DefaultValue(false)
+  @HiddenFromAiemmatOpiskeluoikeudet
   henkilöstökoulutus: Boolean = false,
   @Description("Kyseessä on vankilaopetus. Lista alku-loppu päivämääräpareja. Rahoituksen laskennassa käytettävä tieto")
   @Tooltip("Tieto vankilaopetusjaksoista (alku- ja loppupäivämäärä). Voi olla useita erillisiä jaksoja. Rahoituksen laskennassa käytettävä tieto")
@@ -133,6 +138,7 @@ case class AmmatillisenOpiskeluoikeudenLisätiedot(
   koulutusvienti: Boolean = false,
   maksuttomuus: Option[List[Maksuttomuus]] = None,
   oikeuttaMaksuttomuuteenPidennetty: Option[List[OikeuttaMaksuttomuuteenPidennetty]] = None,
+  @HiddenFromAiemmatOpiskeluoikeudet
   jotpaAsianumero: Option[Koodistokoodiviite] = None,
   @Description("Onko opiskeluoikeuden päättymisen syy siirtyminen tutkinnon uusiin perusteisiin.")
   siirtynytUusiinTutkinnonPerusteisiin: Option[Boolean] = None,
