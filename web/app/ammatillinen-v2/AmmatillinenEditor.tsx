@@ -826,7 +826,7 @@ const keskiarvoFormatter = new Intl.NumberFormat('fi-FI', {
 })
 
 // Keskiarvo näytetään kahden desimaalin tarkkuudella kuten vanhassa käyttöliittymässä
-const KeskiarvoView: React.FC<
+export const KeskiarvoView: React.FC<
   CommonProps<FieldViewerProps<number | undefined, EmptyObject>>
 > = ({ value, testId }) =>
   value !== undefined ? (
