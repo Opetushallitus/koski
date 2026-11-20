@@ -95,3 +95,44 @@ Esimerkiksi opiskeluoikeuden `1.2.246.562.15.99999999999` versio `1` voidaan pyy
 
 Rajapinta palauttaa 404-virhekoodin, mikäli pyydettyä opiskeluoikeutta tai versiota ei löydy KOSKI-datasta.
 Myös mitätöityjen tai poistettujen opiskeluoikeuksien tapauksissa rajapinta palauttaa 404-virhekoodin.
+
+## eHOKS-palvelun rajapinnat
+
+Suorat rajapinnat eHOKS-palvelulle. Nämä rajapinnat eivät ole osana massaluovutuksen rajapintoja, vaan pyydetyt tiedot saadaan suoraan rajapintakutsun vastauksessa.
+
+Rajapinnat palauttavat vain ammatillisen koulutuksen ja tutkintokoulutukseen valmentavan koulutuksen (TUVA) opiskeluoikeuksia, ja niistä vain eHOKS-palvelun tarvitsemat kentät.
+Vastauksen skeema on <a href="/koski/json-schema-viewer/?schema=ehoks-oppija-result.json">EhoksOppija</a>-objekti; yksittäisen opiskeluoikeuden rajapinta palauttaa sen sisältämän EhoksOpiskeluoikeus-objektin.
+
+Rajapintojen käyttö edellyttää globaaleja lukuoikeuksia.
+
+### Oppijan opiskeluoikeudet
+
+`GET {{var:baseUrl}}/api/ehoks/oppija/<oppijaOid>`
+
+Palauttaa oppijan ammatilliset ja TUVA-opiskeluoikeudet. Mitätöityjä opiskeluoikeuksia ei palauteta.
+Linkitettyjen oppijoiden opiskeluoikeudet palautetaan master-oidin alla.
+
+Rajapinta palauttaa 404-virhekoodin, mikäli oppijaa ei löydy tai oppijalla ei ole yhtään opiskeluoikeutta KOSKI-datassa.
+Jos oppijalla on opiskeluoikeuksia, mutta ei yhtään ammatillista tai TUVA-opiskeluoikeutta, palautetaan tyhjä `opiskeluoikeudet`-lista.
+
+### Yksittäinen opiskeluoikeus
+
+`GET {{var:baseUrl}}/api/ehoks/opiskeluoikeus/<opiskeluoikeusOid>`
+
+Rajapinta palauttaa 404-virhekoodin, mikäli opiskeluoikeutta ei löydy, se on mitätöity tai se on muun kuin ammatillisen tai TUVA-koulutuksen opiskeluoikeus.
+
+### Mitätöidyt opiskeluoikeudet
+
+`GET {{var:baseUrl}}/api/ehoks/mitatoidyt?alku=<päivämäärä>&loppu=<päivämäärä>`
+
+Palauttaa listan niiden ammatillisten ja TUVA-opiskeluoikeuksien oideista, jotka on mitätöity annetulla aikavälillä.
+Päivämäärät annetaan muodossa `VVVV-KK-PP`, ja aikaväli sisältää molemmat päivät.
+Parametri `loppu` on valinnainen, oletuksena kuluva päivä.
+
+Esimerkiksi:
+
+`GET {{var:baseUrl}}/api/ehoks/mitatoidyt?alku=2026-01-01&loppu=2026-01-31`
+
+    [
+      "1.2.246.562.15.99999999999"
+    ]

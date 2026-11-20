@@ -1,6 +1,7 @@
 package fi.oph.koski.documentation
 
 import fi.oph.koski.config.KoskiApplication
+import fi.oph.koski.ehoks.EhoksSchema
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.koodisto.Koodistot
@@ -158,6 +159,10 @@ class DocumentationApiServlet(application: KoskiApplication) extends KoskiSpecif
 
   get("/suorituspalvelu-versio-result.json") {
     SupaOpiskeluoikeudenVersioResponse.schemaJson
+  }
+
+  get("/ehoks-oppija-result.json") {
+    EhoksSchema.schemaJson
   }
 
   get("/luokalle-jaaneet-result.json") {
