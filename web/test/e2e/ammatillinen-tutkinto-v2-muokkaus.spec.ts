@@ -21,6 +21,10 @@ const ammattilainen = '1.2.246.562.24.00000000020'
 const tunnustettu = '1.2.246.562.24.00000000057'
 // Tieto- ja viestintätekniikan perustutkinto, koulutusvientikokeilu
 const historoitsija = '1.2.246.562.24.00000000073'
+// Ajoneuvoalan perustutkinto, reformi, kesken; jatko-opintovalmiuksia tukevia opintoja
+const autonen = '1.2.246.562.24.00000000137'
+// Tutkinnon osa/osia, reformi; yhteisten tutkinnon osien osa-alueita
+const osittainen = '1.2.246.562.24.00000000056'
 
 const suoritus = (page: Page, testId: string) =>
   page.getByTestId(`oo.0.suoritukset.0.${testId}`)
@@ -52,6 +56,14 @@ const lisätietoRivi = (page: Page, otsikko: string) =>
 const ominaisuus = (page: Page, otsikko: string) =>
   page.locator('.OsasuoritusProperty', {
     has: page.getByText(otsikko, { exact: true })
+  })
+
+const sisäkkäistenRivienOminaisuudet = (page: Page) =>
+  page.locator('.OsasuoritusRow--sisakkainen + .OsasuoritusProperties')
+
+const sisäkkäistenRivienKorotukset = (page: Page) =>
+  sisäkkäistenRivienOminaisuudet(page).locator('> .OsasuoritusProperty', {
+    has: page.getByText('Korotettu suoritus', { exact: true })
   })
 
 // Huolto- ja korjaustyöt
@@ -668,6 +680,39 @@ test.describe('Ammatillisen tutkinnon uusi käyttöliittymä: tietojen muokkaus'
       await muokkaa(page)
       await expect(arviointi('lisää-arviointi')).toBeVisible()
       await expect(arviointi('0.arvosana')).toHaveCount(0)
+    })
+  })
+
+  // Backend sallii korotuksen vain tutkinnon osan/osien suorituksen alla.
+  // Osa-alueen ja muun opintovalmiuksia tukevan opinnon luokka on sama myös
+  // koko tutkinnolla.
+  test.describe('Korotettu suoritus', () => {
+    for (const [kuvaus, oppija] of [
+      ['yhteisten tutkinnon osien osa-alueille', ammattilainen],
+      ['jatko-opintovalmiuksia tukeville opinnoille', autonen]
+    ]) {
+      test(`Koko tutkinnon ${kuvaus} ei tarjota korotusta`, async ({
+        page,
+        oppijaPage,
+        oppijaPageV2
+      }) => {
+        await oppijaPage.goto(oppija)
+        await muokkaa(page)
+        await oppijaPageV2.openAllOsasuoritukset()
+        await expect(sisäkkäistenRivienOminaisuudet(page).first()).toBeVisible()
+        await expect(sisäkkäistenRivienKorotukset(page)).toHaveCount(0)
+      })
+    }
+
+    test('Tutkinnon osan/osien osa-alueille tarjotaan korotusta', async ({
+      page,
+      oppijaPage,
+      oppijaPageV2
+    }) => {
+      await oppijaPage.goto(osittainen)
+      await muokkaa(page)
+      await oppijaPageV2.openAllOsasuoritukset()
+      await expect(sisäkkäistenRivienKorotukset(page).first()).toBeVisible()
     })
   })
 

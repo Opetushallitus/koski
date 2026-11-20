@@ -1,6 +1,7 @@
 import { FormModel, FormOptic } from '../components-v2/forms/FormModel'
 import { AmmatillinenOpiskeluoikeus } from '../types/fi/oph/koski/schema/AmmatillinenOpiskeluoikeus'
 import { AmisYhteisenTutkinnonOsanSuoritus } from './tutkinnonOsanSuoritukset'
+import { isYhteisenOsittaisenAmmatillisenTutkinnonTutkinnonosanSuoritus } from '../types/fi/oph/koski/schema/YhteisenOsittaisenAmmatillisenTutkinnonTutkinnonosanSuoritus'
 import {
   OsasuoritusProperty,
   OsasuoritusPropertyValue
@@ -305,6 +306,9 @@ export const YhteisenTutkinnonOsanSuoritusProperties = ({
                     .valueOr([])
                     .at(index)}
                   osasuoritus={s}
+                  korotusSallittu={isYhteisenOsittaisenAmmatillisenTutkinnonTutkinnonosanSuoritus(
+                    osasuoritus
+                  )}
                 />
               ),
               expandable: true

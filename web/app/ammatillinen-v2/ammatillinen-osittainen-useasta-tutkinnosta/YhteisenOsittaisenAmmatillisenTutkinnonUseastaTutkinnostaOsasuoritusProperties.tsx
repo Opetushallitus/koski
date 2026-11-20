@@ -300,6 +300,8 @@ export const YhteisenOsittaisenAmmatillisenTutkinnonUseastaTutkinnostaOsasuoritu
                       .valueOr([])
                       .at(index)}
                     osasuoritus={s}
+                    // Osia useasta tutkinnosta on aina tutkinnon osien suoritus.
+                    korotusSallittu
                   />
                 ),
                 expandable: true
