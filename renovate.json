@@ -473,6 +473,14 @@
       "automerge": true
     },
     {
+      "description": "Automerge the OmaData OAuth2 Java sample's minor and patch updates after CI, whose OAuth2 browser tests run the sample's whole OAuth2 flow.",
+      "matchManagers": ["maven"],
+      "matchFileNames": ["omadata-oauth2-sample/java/pom.xml"],
+      "matchUpdateTypes": ["minor", "patch"],
+      "matchPackageNames": ["org.springframework.boot:spring-boot-starter-parent"],
+      "automerge": true
+    },
+    {
       "description": "scalafix-cli is published per Scala patch version, and each release only for the newest one. A release built for a newer Scala than scalafix.scala.version in pom.xml therefore never appears under the current artifact name. Look up versions from scalafix-interfaces, which has no Scala suffix, so that the update is still proposed instead of silently stopping.",
       "matchManagers": ["maven"],
       "matchPackageNames": ["ch.epfl.scala:scalafix-cli_*"],
