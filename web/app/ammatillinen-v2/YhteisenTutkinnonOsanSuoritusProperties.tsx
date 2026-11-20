@@ -1,6 +1,8 @@
 import { FormModel, FormOptic } from '../components-v2/forms/FormModel'
-import { AmmatillinenOpiskeluoikeus } from '../types/fi/oph/koski/schema/AmmatillinenOpiskeluoikeus'
-import { AmisYhteisenTutkinnonOsanSuoritus } from './tutkinnonOsanSuoritukset'
+import {
+  AmisTaiAhvenanmaanOpiskeluoikeus,
+  AmisYhteisenTutkinnonOsanSuoritus
+} from './tutkinnonOsanSuoritukset'
 import { isYhteisenOsittaisenAmmatillisenTutkinnonTutkinnonosanSuoritus } from '../types/fi/oph/koski/schema/YhteisenOsittaisenAmmatillisenTutkinnonTutkinnonosanSuoritus'
 import {
   OsasuoritusProperty,
@@ -70,21 +72,22 @@ import { PerusteView } from '../components-v2/opiskeluoikeus/PerusteField'
 import { useTutkinnonOsanOsat } from './useTutkinnonOsanOsat'
 import { KoulutuksenKoodiarvo } from '../components-v2/opiskeluoikeus/KoulutuksenKoodiarvo'
 
-type YhteisenTutkinnonOsanSuoritusPropertiesProps = {
-  form: FormModel<AmmatillinenOpiskeluoikeus>
-  osasuoritusPath: FormOptic<
-    AmmatillinenOpiskeluoikeus,
-    AmisYhteisenTutkinnonOsanSuoritus
-  >
+type YhteisenTutkinnonOsanSuoritusPropertiesProps<
+  T extends AmisTaiAhvenanmaanOpiskeluoikeus
+> = {
+  form: FormModel<T>
+  osasuoritusPath: FormOptic<T, AmisYhteisenTutkinnonOsanSuoritus>
   osasuoritus: AmisYhteisenTutkinnonOsanSuoritus
   perusteenDiaarinumero?: string
 }
-export const YhteisenTutkinnonOsanSuoritusProperties = ({
+export const YhteisenTutkinnonOsanSuoritusProperties = <
+  T extends AmisTaiAhvenanmaanOpiskeluoikeus
+>({
   form,
   osasuoritusPath,
   osasuoritus,
   perusteenDiaarinumero
-}: YhteisenTutkinnonOsanSuoritusPropertiesProps) => {
+}: YhteisenTutkinnonOsanSuoritusPropertiesProps<T>) => {
   return (
     <>
       {osasuoritus.suorituskieli && (
@@ -235,7 +238,7 @@ export const YhteisenTutkinnonOsanSuoritusProperties = ({
               .valueOr([])
               .at(index)
               .prop('koulutusmoduuli') as unknown as FormOptic<
-              AmmatillinenOpiskeluoikeus,
+              T,
               KielillinenKoulutusmoduuli
             >
 
@@ -342,22 +345,23 @@ export const YhteisenTutkinnonOsanSuoritusProperties = ({
   )
 }
 
-type NewYhteisenTutkinnonOsanOsaAlueenSuoritusProps = {
-  form: FormModel<AmmatillinenOpiskeluoikeus>
-  suoritusPath: FormOptic<
-    AmmatillinenOpiskeluoikeus,
-    AmisYhteisenTutkinnonOsanSuoritus
-  >
+type NewYhteisenTutkinnonOsanOsaAlueenSuoritusProps<
+  T extends AmisTaiAhvenanmaanOpiskeluoikeus
+> = {
+  form: FormModel<T>
+  suoritusPath: FormOptic<T, AmisYhteisenTutkinnonOsanSuoritus>
   osasuoritus: AmisYhteisenTutkinnonOsanSuoritus
   perusteenDiaarinumero?: string
 }
 
-const NewYhteisenTutkinnonOsanOsaAlueenSuoritus = ({
+const NewYhteisenTutkinnonOsanOsaAlueenSuoritus = <
+  T extends AmisTaiAhvenanmaanOpiskeluoikeus
+>({
   form,
   suoritusPath,
   osasuoritus,
   perusteenDiaarinumero
-}: NewYhteisenTutkinnonOsanOsaAlueenSuoritusProps) => {
+}: NewYhteisenTutkinnonOsanOsaAlueenSuoritusProps<T>) => {
   const [showModal, setShowModal] = useState(false)
   const lisättävätOsat = useTutkinnonOsanOsat(
     perusteenDiaarinumero || '',

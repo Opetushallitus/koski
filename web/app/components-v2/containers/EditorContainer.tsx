@@ -312,11 +312,9 @@ const LisätiedotToggle: React.FC<{
 const defaultSuorituksenNimi = (s: Suoritus): LocalizedString =>
   s.tyyppi.nimi || localize(s.tyyppi.koodiarvo)
 
-export const hasPäätasonsuoritusOf = <
-  T extends Opiskeluoikeus,
-  S extends PäätasonSuoritusOf<T>
->(
+export const hasPäätasonsuoritusOf = <T extends Opiskeluoikeus, S>(
   guard: (s: any) => s is S,
   pts: ActivePäätasonSuoritus<T>
-): pts is ActivePäätasonSuoritus<T> & ActivePäätasonSuoritus<T, S> =>
+): pts is ActivePäätasonSuoritus<T> &
+  ActivePäätasonSuoritus<T, Extract<PäätasonSuoritusOf<T>, S>> =>
   guard(pts.suoritus)

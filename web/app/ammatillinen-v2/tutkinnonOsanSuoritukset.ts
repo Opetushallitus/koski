@@ -1,4 +1,11 @@
 import {
+  AhvenanmaanAmmatillinenPäätasonSuoritus,
+  isAhvenanmaanAmmatillinenPäätasonSuoritus
+} from '../types/fi/oph/koski/schema/AhvenanmaanAmmatillinenPaatasonSuoritus'
+import { AhvenanmaanAmmatillinenOpiskeluoikeus } from '../types/fi/oph/koski/schema/AhvenanmaanAmmatillinenOpiskeluoikeus'
+import { isAhvenanmaanAmmatillisenTutkinnonSuoritus } from '../types/fi/oph/koski/schema/AhvenanmaanAmmatillisenTutkinnonSuoritus'
+import { AmmatillinenOpiskeluoikeus } from '../types/fi/oph/koski/schema/AmmatillinenOpiskeluoikeus'
+import {
   AmmatillisenTutkinnonOsanJatkoOpintovalmiuksiaTukevienOpintojenSuoritus,
   isAmmatillisenTutkinnonOsanJatkoOpintovalmiuksiaTukevienOpintojenSuoritus
 } from '../types/fi/oph/koski/schema/AmmatillisenTutkinnonOsanJatkoOpintovalmiuksiaTukevienOpintojenSuoritus'
@@ -48,15 +55,29 @@ import {
 // luokka valitaan vain uutta osasuoritusta luotaessa päätason suorituksen
 // mukaan. Osia useasta tutkinnosta -suoritus ei kuulu tähän, koska sen osat
 // liittyvät aina johonkin toiseen tutkintoon eivätkä yhteen perusteeseen.
+//
+// Ahvenanmaan ammatillisen koulutuksen päätason suorituksilla on samat
+// tutkinnon osien suoritusluokat kuin manner-Suomen vastineillaan, joten
+// tutkinnon osien komponentit käsittelevät myös niitä.
 
 export type AmisTutkinnonSuoritus =
-  AmmatillisenTutkinnonSuoritus | AmmatillisenTutkinnonOsittainenSuoritus
+  | AmmatillisenTutkinnonSuoritus
+  | AmmatillisenTutkinnonOsittainenSuoritus
+  | AhvenanmaanAmmatillinenPäätasonSuoritus
 
 export const isAmisTutkinnonSuoritus = (
   s: unknown
 ): s is AmisTutkinnonSuoritus =>
   isAmmatillisenTutkinnonSuoritus(s) ||
-  isAmmatillisenTutkinnonOsittainenSuoritus(s)
+  isAmmatillisenTutkinnonOsittainenSuoritus(s) ||
+  isAhvenanmaanAmmatillinenPäätasonSuoritus(s)
+
+export type AmisTaiAhvenanmaanOpiskeluoikeus =
+  AmmatillinenOpiskeluoikeus | AhvenanmaanAmmatillinenOpiskeluoikeus
+
+export const isKokoTutkinnonSuoritus = (s: unknown): boolean =>
+  isAmmatillisenTutkinnonSuoritus(s) ||
+  isAhvenanmaanAmmatillisenTutkinnonSuoritus(s)
 
 export type AmisTutkinnonOsanSuoritus =
   | AmmatillisenTutkinnonOsanSuoritus
@@ -114,7 +135,7 @@ export const newYhteisenTutkinnonOsanSuoritus = (
   päätasonSuoritus: AmisTutkinnonSuoritus,
   kentät: YhteisenOsanKentät
 ): AmisYhteisenTutkinnonOsanSuoritus =>
-  isAmmatillisenTutkinnonSuoritus(päätasonSuoritus)
+  isKokoTutkinnonSuoritus(päätasonSuoritus)
     ? YhteisenAmmatillisenTutkinnonOsanSuoritus(kentät)
     : YhteisenOsittaisenAmmatillisenTutkinnonTutkinnonosanSuoritus(kentät)
 
@@ -126,7 +147,7 @@ export const newMuunTutkinnonOsanSuoritus = (
   päätasonSuoritus: AmisTutkinnonSuoritus,
   kentät: MuunOsanKentät
 ): AmisMuunTutkinnonOsanSuoritus =>
-  isAmmatillisenTutkinnonSuoritus(päätasonSuoritus)
+  isKokoTutkinnonSuoritus(päätasonSuoritus)
     ? MuunAmmatillisenTutkinnonOsanSuoritus(kentät)
     : MuunOsittaisenAmmatillisenTutkinnonTutkinnonosanSuoritus(kentät)
 
@@ -138,7 +159,7 @@ export const newKorkeakouluopintoSuoritus = (
   päätasonSuoritus: AmisTutkinnonSuoritus,
   kentät: ValinnanMahdollisuudenKentät
 ): AmisKorkeakouluopintoSuoritus =>
-  isAmmatillisenTutkinnonSuoritus(päätasonSuoritus)
+  isKokoTutkinnonSuoritus(päätasonSuoritus)
     ? AmmatillisenTutkinnonOsanKorkeakouluopintoSuoritus(kentät)
     : OsittaisenAmmatillisenTutkinnonOsanKorkeakouluopintoSuoritus(kentät)
 
@@ -146,7 +167,7 @@ export const newJatkoOpintovalmiuksiaTukevienOpintojenSuoritus = (
   päätasonSuoritus: AmisTutkinnonSuoritus,
   kentät: ValinnanMahdollisuudenKentät
 ): AmisJatkoOpintovalmiuksiaTukevienOpintojenSuoritus =>
-  isAmmatillisenTutkinnonSuoritus(päätasonSuoritus)
+  isKokoTutkinnonSuoritus(päätasonSuoritus)
     ? AmmatillisenTutkinnonOsanJatkoOpintovalmiuksiaTukevienOpintojenSuoritus(
         kentät
       )

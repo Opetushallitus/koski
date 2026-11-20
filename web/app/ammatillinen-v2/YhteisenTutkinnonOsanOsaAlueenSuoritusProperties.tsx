@@ -25,7 +25,7 @@ import { append } from '../util/fp/arrays'
 import { NäyttöEdit, NäyttöView } from './Näyttö'
 import React from 'react'
 import { FormModel, FormOptic } from '../components-v2/forms/FormModel'
-import { AmmatillinenOpiskeluoikeus } from '../types/fi/oph/koski/schema/AmmatillinenOpiskeluoikeus'
+import { AmisTaiAhvenanmaanOpiskeluoikeus } from './tutkinnonOsanSuoritukset'
 import { YhteisenTutkinnonOsanOsaAlueenSuoritus } from '../types/fi/oph/koski/schema/YhteisenTutkinnonOsanOsaAlueenSuoritus'
 import {
   KoodistoEdit,
@@ -43,23 +43,24 @@ import {
   PaikallinenAmmatillisenTutkinnonOsanOsaAlue
 } from '../types/fi/oph/koski/schema/PaikallinenAmmatillisenTutkinnonOsanOsaAlue'
 
-type YhteisenTutkinnonOsanOsaAlueenSuoritusPropertiesProps = {
-  form: FormModel<AmmatillinenOpiskeluoikeus>
-  osasuoritusPath: FormOptic<
-    AmmatillinenOpiskeluoikeus,
-    YhteisenTutkinnonOsanOsaAlueenSuoritus
-  >
+type YhteisenTutkinnonOsanOsaAlueenSuoritusPropertiesProps<
+  T extends AmisTaiAhvenanmaanOpiskeluoikeus
+> = {
+  form: FormModel<T>
+  osasuoritusPath: FormOptic<T, YhteisenTutkinnonOsanOsaAlueenSuoritus>
   osasuoritus: YhteisenTutkinnonOsanOsaAlueenSuoritus
   // Korotuksen voi merkitä vain tutkinnon osan/osien suoritukselle. Osa-alueen
   // luokka on sama myös koko tutkinnolla, joten tieto tulee ylemmältä tasolta.
   korotusSallittu: boolean
 }
-export const YhteisenTutkinnonOsanOsaAlueenSuoritusProperties = ({
+export const YhteisenTutkinnonOsanOsaAlueenSuoritusProperties = <
+  T extends AmisTaiAhvenanmaanOpiskeluoikeus
+>({
   form,
   osasuoritusPath,
   osasuoritus,
   korotusSallittu
-}: YhteisenTutkinnonOsanOsaAlueenSuoritusPropertiesProps) => {
+}: YhteisenTutkinnonOsanOsaAlueenSuoritusPropertiesProps<T>) => {
   const paikallinenKoulutusmoduuli =
     isPaikallinenAmmatillisenTutkinnonOsanOsaAlue(osasuoritus.koulutusmoduuli)
       ? osasuoritus.koulutusmoduuli
@@ -89,7 +90,7 @@ export const YhteisenTutkinnonOsanOsaAlueenSuoritusProperties = ({
                   osasuoritusPath.prop(
                     'koulutusmoduuli'
                   ) as unknown as FormOptic<
-                    AmmatillinenOpiskeluoikeus,
+                    T,
                     PaikallinenAmmatillisenTutkinnonOsanOsaAlue
                   >
                 ).prop('kuvaus')}
