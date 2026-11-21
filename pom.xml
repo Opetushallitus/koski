@@ -19,7 +19,7 @@
     <slick.version>3.6.1</slick.version>
     <slick-pg.version>0.23.1</slick-pg.version>
     <scalatra.version>3.2.1</scalatra.version>
-    <http4s.version>0.23.38</http4s.version>
+    <http4s.version>0.23.39</http4s.version>
     <http4s-blaze-client.version>0.23.18</http4s-blaze-client.version>
     <json4s.version>4.0.7</json4s.version>
     <awssdk.version>2.59.2</awssdk.version>
