@@ -1620,8 +1620,8 @@ packages:
   ast-metadata-inferer@0.8.1:
     resolution: {integrity: sha512-ht3Dm6Zr7SXv6t1Ra6gFo0+kLDglHGrEbYihTkcycrbHw7WCcuhBzPlJYHEsIpycaUwzsJHje+vUcxXUX4ztTA==}
 
-  autoprefixer@10.6.2:
-    resolution: {integrity: sha512-VOw9/yGTGwPPgzFcODtcv6zhEPIeIWkRSe10L2ri2f5vZ7ID7lCt6jZzRF5/ubgOZ+szYydmEF5AYsA5jxX1tA==}
+  autoprefixer@10.7.0:
+    resolution: {integrity: sha512-M4rWhYFPp8YSAfqLDT/wRN9trfe/Z/aZLPxrLQJUQRTPrChss2T+hmgaV5770J52bLuGOMzt6Hjl8tEb6YWv5Q==}
     engines: {node: ^10 || ^12 || >=14}
     hasBin: true
     peerDependencies:
@@ -4710,7 +4710,7 @@ snapshots:
     dependencies:
       '@mdn/browser-compat-data': 5.7.6
 
-  autoprefixer@10.6.2(postcss@8.5.33):
+  autoprefixer@10.7.0(postcss@8.5.33):
     dependencies:
       browserslist: 4.29.6
       caniuse-lite: 1.0.30001826
@@ -5906,7 +5906,7 @@ snapshots:
       '@csstools/postcss-text-decoration-shorthand': 5.0.8(postcss@8.5.33)
       '@csstools/postcss-trigonometric-functions': 5.0.10(postcss@8.5.33)
       '@csstools/postcss-unset-value': 5.0.0(postcss@8.5.33)
-      autoprefixer: 10.6.2(postcss@8.5.33)
+      autoprefixer: 10.7.0(postcss@8.5.33)
       browserslist: 4.29.6
       css-blank-pseudo: 8.0.2(postcss@8.5.33)
       css-has-pseudo: 8.0.2(postcss@8.5.33)
