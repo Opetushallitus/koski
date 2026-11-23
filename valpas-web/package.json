@@ -69,7 +69,7 @@
     "postcss-less": "7.1.1",
     "prettier": "3.10.1",
     "selenium-webdriver": "4.53.0",
-    "stylelint": "18.0.0",
+    "stylelint": "18.1.0",
     "stylelint-no-unsupported-browser-features": "8.1.2",
     "typescript": "6.0.3",
     "typescript-eslint": "8.73.0"
