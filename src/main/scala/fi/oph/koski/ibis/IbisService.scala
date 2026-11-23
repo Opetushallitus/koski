@@ -54,15 +54,19 @@ class IbisService(application: KoskiApplication) {
   // Validoi diplomat kuten tallennus, mutta ei tallenna niitä.
   def esikatsele(tiedosto: Array[Byte])(implicit user: KoskiSpecificSession): IbisTuonninRaportti =
     käsitteleCsv(tiedosto, IBIS_ESIKATSELU, tallennettu = false) { (oppija, diploma) =>
-      application.validator.updateFieldsAndValidateAsJson(Oppija(OidHenkilö(oppija.oppijaOid), List(diploma)))(user, AccessType.write)
-        .map(_ => oppija.diplomanOid)
+      validoi(oppija, diploma).map(_ => oppija.diplomanOid)
     }
 
   def tuo(tiedosto: Array[Byte])(implicit user: KoskiSpecificSession): IbisTuonninRaportti =
     käsitteleCsv(tiedosto, IBIS_TALLENNUS, tallennettu = true) { (oppija, diploma) =>
-      application.oppijaFacade.createOrUpdate(Oppija(OidHenkilö(oppija.oppijaOid), List(diploma)), allowUpdate = true)
+      // createOrUpdate ei aja KoskiValidatoria.
+      validoi(oppija, diploma)
+        .flatMap(validoitu => application.oppijaFacade.createOrUpdate(validoitu, allowUpdate = true))
         .map(_.opiskeluoikeudet.headOption.map(_.oid))
     }
+
+  private def validoi(oppija: IbisYhdistettyOppija, diploma: IBDiplomaOpiskeluoikeus)(implicit user: KoskiSpecificSession): Either[HttpStatus, Oppija] =
+    application.validator.updateFieldsAndValidateAsJson(Oppija(OidHenkilö(oppija.oppijaOid), List(diploma)))(user, AccessType.write)
 
   // käsitteleDiploma palauttaa diploman oidin, jos se on tiedossa.
   private def käsitteleCsv(tiedosto: Array[Byte], operaatio: KoskiOperation, tallennettu: Boolean)(
