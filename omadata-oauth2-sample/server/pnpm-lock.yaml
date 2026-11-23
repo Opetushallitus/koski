@@ -188,8 +188,8 @@ importers:
         specifier: 8.3.0
         version: 8.3.0
       openid-client:
-        specifier: 6.9.0
-        version: 6.9.0
+        specifier: 6.9.1
+        version: 6.9.1
       undici:
         specifier: 8.12.4
         version: 8.12.4
@@ -1065,8 +1065,8 @@ packages:
   once@1.4.0:
     resolution: {integrity: sha512-lNaJgI+2Q5URQBkccEKHTQOPaXdUxnZZElQTZY0MFUAuaEqe1E+Nyvgdz/aIyNi6Z9MzO5dv1H8n58/GELp3+w==}
 
-  openid-client@6.9.0:
-    resolution: {integrity: sha512-2IvamJR8PAnWHngaCsGGA8TYfcLI2egvuqa9cOQYHIISwIUhxJwwwcCnkgVX95fzZ6J0TAna0aVGUMOxnPeRqg==}
+  openid-client@6.9.1:
+    resolution: {integrity: sha512-wysSRjtNRRpu1S/HCVaQ7LRPSNc42lhS1szB1SihVTcA2kAarpzKyvAd+sjFX41ky7iDblGerORC8ASwpt3zqA==}
 
   optionator@0.9.4:
     resolution: {integrity: sha512-6IpQ7mKUxRcZNLIObR0hz7lxsapSSIYNZJwXPGeF0mTVqGKFIXj1DQcMoT22S3ROcLyY/rz0PWaWZ9ayWmad9g==}
@@ -2232,7 +2232,7 @@ snapshots:
     dependencies:
       wrappy: 1.0.2
 
-  openid-client@6.9.0:
+  openid-client@6.9.1:
     dependencies:
       jose: 6.2.18
       oauth4webapi: 3.8.9
