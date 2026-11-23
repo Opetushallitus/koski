@@ -569,6 +569,21 @@ export class UusiLukioKatselu implements LukioKatselu {
     )
   }
 
+  /**
+   * Matematiikan oppimäärän (pitkä/lyhyt/yhteinen opintokokonaisuus) valinta
+   * uutta oppiainetta lisättäessä - vanhalla käyttöliittymällä ei ole tälle
+   * vastinetta, ks. lukio2019-oppiaineen-lisays-ja-poisto.spec.ts.
+   */
+  get matematiikanOppimääräToggle(): Locator {
+    return this.page.locator(
+      '[data-testid$="uusi-oppiaine-matematiikan-oppimäärä.toggle"]'
+    )
+  }
+
+  async valitseMatematiikanOppimäärä(oppimäärä: string) {
+    await this.valitseDropdownArvo(this.matematiikanOppimääräToggle, oppimäärä)
+  }
+
   async poistaOppiaine(rivi: Locator) {
     await rivi
       .locator('> td.LukionOppiaineet__poisto [data-testid$=".poisto"]')

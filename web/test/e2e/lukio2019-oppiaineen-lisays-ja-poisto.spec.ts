@@ -84,3 +84,55 @@ for (const variantti of VARIANTIT) {
     })
   })
 }
+
+test.describe('Lukiokoulutus 2019: matematiikan oppimäärän valinta uutta oppiainetta lisättäessä', () => {
+  test.use({ storageState: virkailija('pää') })
+
+  // Uusilukio, Ulla (250605A518Y)
+  const oid = '1.2.246.562.24.00000000015'
+  let katselu: UusiLukioKatselu
+
+  test.beforeEach(async ({ fixtures, page }) => {
+    await fixtures.reset()
+    katselu = new UusiLukioKatselu(page)
+    await katselu.goto(oid)
+    await katselu.aloitaMuokkaus()
+    await katselu.poistaViimeisinTila()
+    // Kiinteä fixture sisältää matematiikan jo valmiiksi - poistetaan, jotta
+    // "Lisää oppiaine" tarjoaa sen taas.
+    await katselu.poistaOppiaine(katselu.oppiaineRivi('MA'))
+  })
+
+  test('Matematiikkaa ei lisätä ennen oppimäärän valintaa, ja lisätty oppiaine näyttää valitun oppimäärän', async ({
+    page
+  }) => {
+    await katselu.lisääOppiaine('Matematiikka')
+
+    await expect(katselu.oppiaineRivi('MA')).toHaveCount(0)
+    await expect(katselu.matematiikanOppimääräToggle).toBeVisible()
+
+    await katselu.valitseMatematiikanOppimäärä('Matematiikka, pitkä oppimäärä')
+
+    const ma = katselu.oppiaineRivi('MA')
+    await expect(katselu.oppiaineenNimi(ma)).toHaveText(
+      'Matematiikka, pitkä oppimäärä'
+    )
+    await expect(katselu.matematiikanOppimääräToggle).toHaveCount(0)
+
+    await katselu.muokkaaOppiaineenArvosanaa(ma, '9')
+    await katselu.tallenna()
+
+    await expect(katselu.oppiaineenNimi(ma)).toHaveText(
+      'Matematiikka, pitkä oppimäärä'
+    )
+    await expect(katselu.oppiaineenArvosana(ma)).toHaveText('9')
+
+    // Varmistetaan, että tieto on myös todella tallentunut taustajärjestelmään
+    await page.reload()
+    const maAfterReload = katselu.oppiaineRivi('MA')
+    await expect(katselu.oppiaineenNimi(maAfterReload)).toHaveText(
+      'Matematiikka, pitkä oppimäärä'
+    )
+    await expect(katselu.oppiaineenArvosana(maAfterReload)).toHaveText('9')
+  })
+})

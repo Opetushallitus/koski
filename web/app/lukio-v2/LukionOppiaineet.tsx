@@ -66,6 +66,7 @@ import {
 import { appendOptional, deleteAt } from '../util/array'
 import { IconButton } from '../components-v2/controls/IconButton'
 import { Select, SelectOption } from '../components-v2/controls/Select'
+import { KoodistoSelect } from '../components-v2/opiskeluoikeus/KoodistoSelect'
 import { useKoodisto } from '../appstate/koodisto'
 import { Koodistokoodiviite } from '../types/fi/oph/koski/schema/Koodistokoodiviite'
 import { LukionUskonto2019 } from '../types/fi/oph/koski/schema/LukionUskonto2019'
@@ -1196,7 +1197,8 @@ const LISATTAVAT_VALTAKUNNALLISET_KOODIARVOT = [
   'PS',
   'TE',
   'YH',
-  'KT'
+  'KT',
+  'MA'
 ]
 
 const uusiValtakunnallinenLukionOppiaine = (
@@ -1231,6 +1233,8 @@ const UusiLukionOppiaine: React.FC<{
       organisaatio?.oid,
       PAIKALLINEN_OPPIAINE_PREF_TYPE
     )
+  const [matematiikanOppimääräAuki, setMatematiikanOppimääräAuki] =
+    useState(false)
 
   if (!form.editMode) return null
 
@@ -1267,6 +1271,8 @@ const UusiLukionOppiaine: React.FC<{
   ) => {
     if (!option) return
 
+    setMatematiikanOppimääräAuki(false)
+
     if (option.key === UUSI_PAIKALLINEN_OPPIAINE_KEY) {
       const newSuoritus = LukionOppiaineenSuoritus2019({
         koulutusmoduuli: PaikallinenLukionOppiaine2019({
@@ -1298,6 +1304,10 @@ const UusiLukionOppiaine: React.FC<{
     }
 
     if (option.value) {
+      if (option.value.koodiarvo === 'MA') {
+        setMatematiikanOppimääräAuki(true)
+        return
+      }
       const newSuoritus = LukionOppiaineenSuoritus2019({
         koulutusmoduuli: uusiValtakunnallinenLukionOppiaine(
           option.value as Koodistokoodiviite<'koskioppiaineetyleissivistava'>
@@ -1305,6 +1315,17 @@ const UusiLukionOppiaine: React.FC<{
       })
       form.updateAt(osasuorituksetPath, (os) => appendOptional(newSuoritus)(os))
     }
+  }
+
+  const onValitseMatematiikanOppimäärä = (
+    oppimäärä?: Koodistokoodiviite<'oppiainematematiikka'>
+  ) => {
+    if (!oppimäärä) return
+    const newSuoritus = LukionOppiaineenSuoritus2019({
+      koulutusmoduuli: LukionMatematiikka2019({ pakollinen: true, oppimäärä })
+    })
+    form.updateAt(osasuorituksetPath, (os) => appendOptional(newSuoritus)(os))
+    setMatematiikanOppimääräAuki(false)
   }
 
   const onRemove = (
@@ -1318,14 +1339,26 @@ const UusiLukionOppiaine: React.FC<{
   }
 
   return (
-    <Select
-      placeholder={t('Lisää oppiaine')}
-      options={options}
-      hideEmpty
-      onChange={onChange}
-      onRemove={onRemove}
-      testId="uusi-oppiaine"
-    />
+    <>
+      <Select
+        placeholder={t('Lisää oppiaine')}
+        options={options}
+        hideEmpty
+        onChange={onChange}
+        onRemove={onRemove}
+        testId="uusi-oppiaine"
+      />
+      {matematiikanOppimääräAuki && (
+        <label className="LukionOppiaineet__uusiMatematiikanOppimäärä">
+          {t('Oppimäärä')}
+          <KoodistoSelect
+            koodistoUri="oppiainematematiikka"
+            onSelect={onValitseMatematiikanOppimäärä}
+            testId="uusi-oppiaine-matematiikan-oppimäärä"
+          />
+        </label>
+      )}
+    </>
   )
 }
 
