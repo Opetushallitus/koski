@@ -1428,8 +1428,8 @@ packages:
   minimatch@3.1.5:
     resolution: {integrity: sha512-VgjWUsnnT6n+NUk6eZq77zeFdpW2LWDzP6zFGrCbHXiYNul5Dzqk2HHQ5uFH2DNW5Xbp8+jVzaeNt94ssEEl4w==}
 
-  minimizer-webpack-plugin@5.14.0:
-    resolution: {integrity: sha512-PnvQXCJxhgH2ZVVO7Lj0sM6q8L1XGxnUvd8wVQIRwi8khMCLq5wg0Ngxe44bcuZL2FSN81RdVE7YHEVzTKsQDQ==}
+  minimizer-webpack-plugin@5.14.1:
+    resolution: {integrity: sha512-qsfTb5Ao4nre9krFweqj8k5bVU7KxgsP4WkLO/ITTuiJkbitCzYBY+Aum5KTKRhY0wDr8VJ1RILsTCSUtPd1kQ==}
     engines: {node: '>= 10.13.0'}
     peerDependencies:
       '@minify-html/node': '*'
@@ -3168,7 +3168,7 @@ snapshots:
     dependencies:
       brace-expansion: 1.1.22
 
-  minimizer-webpack-plugin@5.14.0(@swc/core@1.16.22)(cssnano@7.1.9(postcss@8.5.33))(csso@5.0.5)(postcss@8.5.33)(svgo@4.1.0)(webpack@5.113.0):
+  minimizer-webpack-plugin@5.14.1(@swc/core@1.16.22)(cssnano@7.1.9(postcss@8.5.33))(csso@5.0.5)(postcss@8.5.33)(svgo@4.1.0)(webpack@5.113.0):
     dependencies:
       jest-worker: 27.5.1
       schema-utils: 4.8.5(webpack@5.113.0)
@@ -3690,7 +3690,7 @@ snapshots:
       events: 3.3.0
       graceful-fs: 4.2.12
       mime-db: 1.54.0
-      minimizer-webpack-plugin: 5.14.0(@swc/core@1.16.22)(cssnano@7.1.9(postcss@8.5.33))(csso@5.0.5)(postcss@8.5.33)(svgo@4.1.0)(webpack@5.113.0)
+      minimizer-webpack-plugin: 5.14.1(@swc/core@1.16.22)(cssnano@7.1.9(postcss@8.5.33))(csso@5.0.5)(postcss@8.5.33)(svgo@4.1.0)(webpack@5.113.0)
       schema-utils: 4.8.5(webpack@5.113.0)
       tapable: 2.3.4
       watchpack: 2.6.4
