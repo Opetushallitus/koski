@@ -194,7 +194,14 @@ class MassaluovutusAiemmatOpiskeluoikeudetSpec extends AnyFreeSpec with Massaluo
 
       "Ei onnistu koulutustoimijan oidilla globaaleilla lukuoikeuksilla" in {
         addQuery(query.copy(organisaatioOid = MockOrganisaatiot.helsinginKaupunki), MockUsers.paakayttaja) {
-          verifyResponseStatus(403, KoskiErrorCategory.forbidden())
+          verifyResponseStatus(400, KoskiErrorCategory.badRequest.massaluovutus.eiOppilaitos())
+        }
+      }
+
+      "Ei onnistu tyhjällä koulutusmuotolistalla" in {
+        addQuery(query.copy(koulutusmuoto = Some(Nil)), oletuskäyttäjä) {
+          verifyResponseStatus(400)
+          body should include("Tyhjä koulutusmuotolista")
         }
       }
 
@@ -270,6 +277,16 @@ class MassaluovutusAiemmatOpiskeluoikeudetSpec extends AnyFreeSpec with Massaluo
           verifyResponseStatus(400)
           body should include("eiNykyinenOpiskelija")
           body should include(oppija.oid)
+        }
+      }
+
+      "Täysi-ikäinen, joka ei ole oppilaitoksen opiskelija, hylätään kuten tuntematon eikä ikää paljasteta" in {
+        val ulkopuolinen = KoskiSpecificMockOppijat.ylioppilasEiOppilaitosta
+        addQuery(oidilla(lauri).copy(oppijaOidit = Some(List(lauri.oid, ulkopuolinen.oid))), oletuskäyttäjä) {
+          verifyResponseStatus(400)
+          body should include("eiNykyinenOpiskelija")
+          body should include(ulkopuolinen.oid)
+          body should not include "täyttänyt18EnnenKyselyvuotta"
         }
       }
 

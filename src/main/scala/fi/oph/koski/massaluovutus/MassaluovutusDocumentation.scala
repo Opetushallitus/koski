@@ -24,8 +24,10 @@ import org.json4s.JValue
 import java.net.URI
 import java.time.{Duration, OffsetDateTime}
 import java.util.UUID
+import scala.collection.concurrent.TrieMap
 import scala.io.Source
 import scala.reflect.runtime.universe.TypeTag
+import scala.util.Try
 import scala.util.matching.Regex
 import scala.xml.{Elem, Node, NodeSeq, Text}
 
@@ -54,14 +56,18 @@ object QueryDocumentation extends Logging {
     "massaluovutus_valpas" -> "documentation/massaluovutus-valpas.md"
   )
 
-  def htmlTextSections(application: KoskiApplication): Map[String, String] =
-    sectionSources.view.mapValues(htmlTextSection(application)).toMap
+  // Sisältö riippuu vain resursseista ja konfiguraatiosta, joten se renderöidään kerran: jokainen {{query:}}-direktiivi rakentaa skeeman
+  private val renderedSections = TrieMap.empty[Boolean, Map[String, String]]
 
-  def htmlTextSection(application: KoskiApplication)(path: String): String =
+  def htmlTextSections(application: KoskiApplication): Map[String, String] = {
+    val includeTester = !Environment.isProdEnvironment(application.config)
+    renderedSections.getOrElseUpdate(includeTester, sectionSources.view.mapValues(htmlTextSection(application, includeTester)).toMap)
+  }
+
+  def htmlTextSection(application: KoskiApplication, includeTester: Boolean)(path: String): String =
     TryWithLogging.andResources(logger, { use =>
       val source = use(Source.fromResource(path)).mkString
       val html = Markdown.markdownToXhtmlString(source)
-      val includeTester = !Environment.isProdEnvironment(application.config)
       val expanded = addQueryDocs(addClassTitles(addClassDocs(addJsonExamples(application, html))), includeTester)
       addVariableTexts(application, addToc(addHeadingIds(expanded)))
     }).getOrElse(missingSection(path))
@@ -74,7 +80,7 @@ object QueryDocumentation extends Logging {
     """\{\{json:(?<name>\w+)}}""".r
       .replaceAllIn(markdown, { m =>
         val name = m.group("name")
-        QueryExamples.jsonByName(application, name).getOrElse(s"Esimerkkiä ei löydy: $name")
+        Regex.quoteReplacement(QueryExamples.jsonByName(application, name).getOrElse(s"Esimerkkiä ei löydy: $name"))
       })
 
   // Direktiivien yhteinen muoto: {{nimi:arg1,arg2|lippu|avain=arvo}}
@@ -315,10 +321,17 @@ object PropertyHtmlDocs {
 
   // Taulukon solussa kuvaukset yhdistetään yhdeksi tekstiksi, osion alussa jokainen @Description on oma kappaleensa
   def descriptions(texts: List[String]): Node =
-    scala.xml.XML.loadString("<div class=\"description\">" + texts.mkString(" ") + "</div>")
+    <div class="description">{inlineHtml(texts.mkString(" "))}</div>
 
   def descriptionParagraphs(texts: List[String]): Node =
-    scala.xml.XML.loadString("<div class=\"description\">" + texts.map(t => s"<p>$t</p>").mkString + "</div>")
+    <div class="description">{texts.map(t => <p>{inlineHtml(t)}</p>)}</div>
+
+  // Kuvaukset saavat sisältää HTML-merkkausta (esim. linkin). Paljas &-merkki tai muu virhe ei saa kaataa koko dokumentaatiosivua:
+  // tunnisteettomat &-merkit koodataan ja jäsentymätön teksti näytetään sellaisenaan
+  private def inlineHtml(text: String): NodeSeq = {
+    val escaped = text.replaceAll("&(?![A-Za-z]+;|#[0-9]+;|#x[0-9A-Fa-f]+;)", "&amp;")
+    Try(scala.xml.XML.loadString(s"<span>$escaped</span>").child).getOrElse(Text(text))
+  }
 
   private def sort(properties: Seq[Property]): Seq[Property] =
     properties.sortBy(p => if (isOptional(p)) 1 else 0)
