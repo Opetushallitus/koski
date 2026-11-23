@@ -46,6 +46,12 @@ class MassaluovutusDocumentationSpec extends AnyFreeSpec with Matchers {
       sections("massaluovutus_valpas") should include("""data-api-path="/koski/valpas/api/massaluovutus"""")
     }
 
+    "kuvauksen paljas &-merkki ei kaada sivua ja HTML-merkkaus säilyy" in {
+      val html = PropertyHtmlDocs.descriptionParagraphs(List("Esi- & perusopetus", "Katso <a href=\"/koski\">linkki</a> &amp; muuta")).toString
+      html should include("<p>Esi- &amp; perusopetus</p>")
+      html should include("""<a href="/koski">linkki</a> &amp; muuta""")
+    }
+
     "tuotannossa kokeilulomaketta ei tarjota" in {
       val html = QueryDocumentation.addQueryDocs("{{query:AiemmatOpiskeluoikeudet}}", includeTester = false)
       html should include("<summary>Esimerkki</summary>")

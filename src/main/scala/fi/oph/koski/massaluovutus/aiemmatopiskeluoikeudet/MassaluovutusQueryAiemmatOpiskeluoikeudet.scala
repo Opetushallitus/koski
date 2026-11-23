@@ -30,7 +30,7 @@ import scala.concurrent.duration.DurationInt
 @Description("Palauttaa annettujen, oppilaitoksen nykyisten opiskelijoiden kaikki esi-, perus-, ammatillisen, lukio-, TUVA-, IB-, EB-, DIA-, International School- ja European School of Helsinki -koulutuksen opiskeluoikeudet: aiemmat, nykyiset ja tulevat, sekä muiden organisaatioiden että oppilaitoksen omat.")
 @Description("Oppijat annetaan henkilötunnuksina tai oppijanumeroina. Jokaisen annetun oppijan on oltava oppilaitoksen nykyinen opiskelija ja alle 18-vuotias tai kyselyn tekovuonna 18 vuotta täyttävä, muuten koko kysely hylätään ja vastaus kertoo, mitkä oppijat eivät täytä ehtoja. Nykyinen opiskelija on oppija, jolla on kyselyn oppilaitoksessa päättymätön, myös vasta tulevaisuudessa alkava, jonkin näistä koulutusmuodoista opiskeluoikeus. Kysely tehdään aina yhdelle oppilaitokselle.")
 @Description("Esiopetustasoiset tiedot eli esiopetuksen opiskeluoikeudet sekä International Schoolin explorer-vuosiluokka ja Helsingin eurooppalaisen koulun nursery-vuosiluokat palautetaan vain, jos oppija on kyselyn oppilaitoksessa esi- tai perusopetustasoinen opiskelija. International Schoolissa ja eurooppalaisessa koulussa taso päätellään nykyisen opiskeluoikeuden uusimmasta vuosiluokasta: PYP ja MYP 6–9 sekä nursery, primary ja S1–S4 ovat perusopetustasoa, MYP 10, Diploma ja S5–S7 toista astetta. Oppilaitoksen omaa nykyistä opiskeluoikeutta ei karsita.")
-@Description("Kysely on käytettävissä palvelukäyttäjälle, jolla on kyselyn oppilaitoksessa lukuoikeus ja AIEMMAT_OPISKELUOIKEUDET-käyttöoikeus, sekä Opetushallituksen pääkäyttäjälle. Palautettavat koulutusmuodot eivät riipu käyttäjän omista koulutusmuotokohtaisista käyttöoikeuksista, vaan ainoastaan tästä roolista. Arkaluontoiset tiedot palautetaan aina. Skeemassa HiddenFromAiemmatOpiskeluoikeudet-merkinnällä varustetut kentät (esim. vankilaopetuksessa ja käyttäytymisenArvio) sekä vanhentuneiksi (Deprecated) merkityt kentät jätetään pois.")
+@Description("Kysely on käytettävissä palvelukäyttäjälle, jolla on kyselyn oppilaitoksessa lukuoikeus ja AIEMMAT_OPISKELUOIKEUDET-käyttöoikeus, sekä Opetushallituksen pääkäyttäjälle. Palautettavat koulutusmuodot eivät riipu käyttäjän omista koulutusmuotokohtaisista käyttöoikeuksista, vaan ainoastaan tästä roolista. Arkaluontoiset tiedot palautetaan aina. Skeemassa HiddenFromAiemmatOpiskeluoikeudet-merkinnällä varustetut kentät (esim. vankilaopetuksessa ja käyttäytymisenArvio), vanhentuneiksi (Deprecated) merkityt kentät sekä RedundantData-merkityt kentät, joita KOSKI ei tallenna, jätetään pois.")
 @Description("Tulostiedostot vastaavat organisaationOpiskeluoikeudet-kyselyn json-muotoa: yksi tiedosto oppijaa kohden. Vastauksen skeema, josta on karsittu muut koulutusmuodot sekä pois jätettävät kentät, on saatavana <a href=\"/koski/json-schema-viewer/?schema=aiemmat-opiskeluoikeudet-result.json\">täältä.</a>")
 case class MassaluovutusQueryAiemmatOpiskeluoikeudet(
   @EnumValues(Set("aiemmatOpiskeluoikeudet"))
@@ -52,8 +52,9 @@ case class MassaluovutusQueryAiemmatOpiskeluoikeudet(
     withKoskiSpecificSession { implicit u =>
       QueryResourceManager(logger) { _ =>
         val db = application.replicaDatabase.db
+        // Virheviestiin vain virheavaimet: tunnisteet kerrottiin jo kyselyn luonnin 400-vastauksessa, eikä niitä haluta lokiin
         val opiskelijat = haeNykyisetOpiskelijat(application, LocalDate.now(), onrYritykset = 5)
-          .fold(status => throw new MassaluovutusException(status.errorString.getOrElse("Kyselyn oppijat eivät täytä ehtoja")), identity)
+          .fold(status => throw new MassaluovutusException(s"Kyselyn oppijat eivät enää täytä ehtoja: ${status.errors.map(_.key).distinct.mkString(", ")}"), identity)
 
         writer.predictFileCount(opiskelijat.size)
         opiskelijat.foreach { opiskelija =>
@@ -80,9 +81,8 @@ case class MassaluovutusQueryAiemmatOpiskeluoikeudet(
     }
 
   override def queryAllowed(application: KoskiApplication)(implicit user: Session): Boolean = withKoskiSpecificSession { u =>
-    def onOppilaitos = application.organisaatioRepository.getOrganisaatio(organisaatioOid).exists(_.toOppilaitos.isDefined)
     // Suljettu tuotannossa, kunnes OPH on vahvistanut palautettavat kentät ja ensimmäinen käyttöoikeusryhmä on perustettu
-    !Environment.isProdEnvironment(application.config) && onOppilaitos && (
+    !Environment.isProdEnvironment(application.config) && (
       u.isRoot || (
         u.isPalvelukäyttäjä
           && u.organisationOids(AccessType.read).contains(organisaatioOid)
@@ -92,12 +92,11 @@ case class MassaluovutusQueryAiemmatOpiskeluoikeudet(
   }
 
   override def fillAndValidate(implicit user: Session): Either[HttpStatus, MassaluovutusQueryAiemmatOpiskeluoikeudet] = {
-    val käyttöoikeusMuuhunKuinOppilaitokseen = user.orgKäyttöoikeudet.exists(k => k.organisaatio.oid == organisaatioOid && k.organisaatio.toOppilaitos.isEmpty)
     val tuntemattomat = koulutusmuoto.toList.flatten.filterNot(sallitutKoulutusmuodot.contains)
-    if (käyttöoikeusMuuhunKuinOppilaitokseen) {
-      Left(KoskiErrorCategory.badRequest.massaluovutus.eiOppilaitos())
-    } else if (annetutHetut.isEmpty && annetutOidit.isEmpty) {
+    if (annetutHetut.isEmpty && annetutOidit.isEmpty) {
       Left(KoskiErrorCategory.badRequest.massaluovutus.eiOppijoita())
+    } else if (koulutusmuoto.exists(_.isEmpty)) {
+      Left(KoskiErrorCategory.badRequest(s"Tyhjä koulutusmuotolista. Jätä kenttä pois, jos haluat kaikki sallitut: ${sallitutKoulutusmuodot.mkString(", ")}"))
     } else if (tuntemattomat.nonEmpty) {
       Left(KoskiErrorCategory.badRequest(s"Tuntematon koulutusmuoto: ${tuntemattomat.mkString(", ")}. Sallitut arvot: ${sallitutKoulutusmuodot.mkString(", ")}"))
     } else {
@@ -105,8 +104,12 @@ case class MassaluovutusQueryAiemmatOpiskeluoikeudet(
     }
   }
 
+  // Oppilaitosehto tarkistetaan vasta käyttöoikeuksien jälkeen, jotta vastaus on sama 400 kaikille, joilla olisi oikeus kyselyyn
   override def validateWithApplication(application: KoskiApplication)(implicit user: Session): Either[HttpStatus, MassaluovutusQueryAiemmatOpiskeluoikeudet] = user match {
-    case u: KoskiSpecificSession => haeNykyisetOpiskelijat(application, LocalDate.now(), onrYritykset = 1)(u).map(_ => this)
+    case u: KoskiSpecificSession =>
+      val onOppilaitos = application.organisaatioRepository.getOrganisaatio(organisaatioOid).exists(_.toOppilaitos.isDefined)
+      if (onOppilaitos) haeNykyisetOpiskelijat(application, LocalDate.now(), onrYritykset = 1)(u).map(_ => this)
+      else Left(KoskiErrorCategory.badRequest.massaluovutus.eiOppilaitos())
     case _ => Left(KoskiErrorCategory.forbidden())
   }
 
@@ -142,9 +145,10 @@ case class MassaluovutusQueryAiemmatOpiskeluoikeudet(
       }
       val opiskelijaOidit = opiskelijat.map(_.henkilö.oid).toSet
 
-      // Tuntematonta tunnistetta ei eroteta muusta kuin nykyisestä opiskelijasta, jottei vastaus paljasta, onko henkilö rekisterissä
+      // Tuntematonta tunnistetta ei eroteta muusta kuin nykyisestä opiskelijasta, jottei vastaus paljasta, onko henkilö rekisterissä.
+      // Samasta syystä ikä tarkistetaan vain nykyisiltä opiskelijoilta.
       val eiNykyiset = annetut.collect { case (tunniste, henkilö) if !henkilö.exists(h => opiskelijaOidit.contains(h.oid)) => tunniste }
-      val täysiIkäiset = annetut.collect { case (tunniste, Some(henkilö)) if täyttänyt18EnnenVuotta(henkilö, tänään.getYear) => tunniste }
+      val täysiIkäiset = annetut.collect { case (tunniste, Some(henkilö)) if opiskelijaOidit.contains(henkilö.oid) && täyttänyt18EnnenVuotta(henkilö, tänään.getYear) => tunniste }
       HttpStatus.fold(
         HttpStatus.validate(eiNykyiset.isEmpty)(KoskiErrorCategory.badRequest.massaluovutus.eiNykyinenOpiskelija(s"Ei oppilaitoksen nykyisiä opiskelijoita: ${eiNykyiset.mkString(", ")}")),
         HttpStatus.validate(täysiIkäiset.isEmpty)(KoskiErrorCategory.badRequest.massaluovutus.täyttänyt18EnnenKyselyvuotta(s"Täyttänyt 18 vuotta ennen vuotta ${tänään.getYear}: ${täysiIkäiset.mkString(", ")}")),
