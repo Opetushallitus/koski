@@ -1,7 +1,7 @@
 import React from 'react'
 import { useVirkailijaUser } from '../appstate/user'
 import { FormModel } from '../components-v2/forms/FormModel'
-import { AmmatillinenOpiskeluoikeus } from '../types/fi/oph/koski/schema/AmmatillinenOpiskeluoikeus'
+import { AmisTaiAhvenanmaanOpiskeluoikeus } from './tutkinnonOsanSuoritukset'
 import { SisältäväOpiskeluoikeus } from '../types/fi/oph/koski/schema/SisaltavaOpiskeluoikeus'
 import { CommonProps } from '../components-v2/CommonProps'
 import {
@@ -30,8 +30,10 @@ import { CHARCODE_REMOVE } from '../components-v2/texts/Icon'
 import { IconButton } from '../components-v2/controls/IconButton'
 import { hasErrorInField } from '../components-v2/forms/validator'
 
-interface SisältyyOpiskeluoikeuteenProps {
-  form: FormModel<AmmatillinenOpiskeluoikeus>
+interface SisältyyOpiskeluoikeuteenProps<
+  T extends AmisTaiAhvenanmaanOpiskeluoikeus
+> {
+  form: FormModel<T>
 }
 
 const emptySisältäväOpiskeluoikeus: SisältäväOpiskeluoikeus =
@@ -40,9 +42,11 @@ const emptySisältäväOpiskeluoikeus: SisältäväOpiskeluoikeus =
     oppilaitos: Oppilaitos({ oid: '' })
   })
 
-export const SisältyyOpiskeluoikeuteen: React.FC<
-  SisältyyOpiskeluoikeuteenProps
-> = ({ form }) => {
+export const SisältyyOpiskeluoikeuteen = <
+  T extends AmisTaiAhvenanmaanOpiskeluoikeus
+>({
+  form
+}: SisältyyOpiskeluoikeuteenProps<T>) => {
   const path = form.root.prop('sisältyyOpiskeluoikeuteen')
   const virkailija = useVirkailijaUser()
 

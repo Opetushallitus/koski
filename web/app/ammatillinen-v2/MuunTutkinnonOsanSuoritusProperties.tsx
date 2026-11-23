@@ -1,6 +1,8 @@
 import { FormModel, FormOptic } from '../components-v2/forms/FormModel'
-import { AmmatillinenOpiskeluoikeus } from '../types/fi/oph/koski/schema/AmmatillinenOpiskeluoikeus'
-import { AmisMuunTutkinnonOsanSuoritus } from './tutkinnonOsanSuoritukset'
+import {
+  AmisMuunTutkinnonOsanSuoritus,
+  AmisTaiAhvenanmaanOpiskeluoikeus
+} from './tutkinnonOsanSuoritukset'
 import {
   isMuunOsittaisenAmmatillisenTutkinnonTutkinnonosanSuoritus,
   MuunOsittaisenAmmatillisenTutkinnonTutkinnonosanSuoritus
@@ -60,19 +62,20 @@ import {
 import { PerusteView } from '../components-v2/opiskeluoikeus/PerusteField'
 import { KoulutuksenKoodiarvo } from '../components-v2/opiskeluoikeus/KoulutuksenKoodiarvo'
 
-type MuunTutkinnonOsanSuoritusPropertiesProps = {
-  form: FormModel<AmmatillinenOpiskeluoikeus>
-  osasuoritusPath: FormOptic<
-    AmmatillinenOpiskeluoikeus,
-    AmisMuunTutkinnonOsanSuoritus
-  >
+type MuunTutkinnonOsanSuoritusPropertiesProps<
+  T extends AmisTaiAhvenanmaanOpiskeluoikeus
+> = {
+  form: FormModel<T>
+  osasuoritusPath: FormOptic<T, AmisMuunTutkinnonOsanSuoritus>
   osasuoritus: AmisMuunTutkinnonOsanSuoritus
 }
-export const MuunTutkinnonOsanSuoritusProperties = ({
+export const MuunTutkinnonOsanSuoritusProperties = <
+  T extends AmisTaiAhvenanmaanOpiskeluoikeus
+>({
   form,
   osasuoritusPath,
   osasuoritus
-}: MuunTutkinnonOsanSuoritusPropertiesProps) => {
+}: MuunTutkinnonOsanSuoritusPropertiesProps<T>) => {
   return (
     <>
       {osasuoritus.suorituskieli && (
@@ -244,7 +247,7 @@ export const MuunTutkinnonOsanSuoritusProperties = ({
                 }}
                 path={(
                   osasuoritusPath as FormOptic<
-                    AmmatillinenOpiskeluoikeus,
+                    T,
                     MuunOsittaisenAmmatillisenTutkinnonTutkinnonosanSuoritus
                   >
                 ).prop('korotettu')}

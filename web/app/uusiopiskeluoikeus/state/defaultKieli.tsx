@@ -6,8 +6,9 @@ export const useDefaultKieli = (
   switch (state.opiskeluoikeus.value?.koodiarvo) {
     case 'diatutkinto':
       return 'kieli_DE'
-    // Ahvenanmaan perusopetus on ruotsinkielistä.
+    // Ahvenanmaan koulutus on ruotsinkielistä.
     case 'ahvenanmaanperusopetus':
+    case 'ahvenanmaanammatillinenkoulutus':
       return 'kieli_SV'
     default:
       return 'kieli_FI'

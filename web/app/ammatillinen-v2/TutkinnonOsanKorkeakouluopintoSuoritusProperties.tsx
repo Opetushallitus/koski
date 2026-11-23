@@ -1,6 +1,8 @@
 import { FormModel, FormOptic } from '../components-v2/forms/FormModel'
-import { AmmatillinenOpiskeluoikeus } from '../types/fi/oph/koski/schema/AmmatillinenOpiskeluoikeus'
-import { AmisKorkeakouluopintoSuoritus } from './tutkinnonOsanSuoritukset'
+import {
+  AmisKorkeakouluopintoSuoritus,
+  AmisTaiAhvenanmaanOpiskeluoikeus
+} from './tutkinnonOsanSuoritukset'
 import { finnish, t } from '../i18n/i18n'
 import { OsasuoritusTable } from '../components-v2/opiskeluoikeus/OsasuoritusTable'
 import React, { useState } from 'react'
@@ -28,20 +30,21 @@ import { KorkeakouluopintojenTutkinnonOsaaPienempiKokonaisuus } from '../types/f
 import { KorkeakouluopintojenSuoritus } from '../types/fi/oph/koski/schema/KorkeakouluopintojenSuoritus'
 import { AmisArvosanaInTableEdit, AmisArvosanaInTableView } from './Arviointi'
 
-export type TutkinnonOsanKorkeakouluopintoSuoritusPropertiesProps = {
-  form: FormModel<AmmatillinenOpiskeluoikeus>
-  osasuoritusPath: FormOptic<
-    AmmatillinenOpiskeluoikeus,
-    AmisKorkeakouluopintoSuoritus
-  >
+export type TutkinnonOsanKorkeakouluopintoSuoritusPropertiesProps<
+  T extends AmisTaiAhvenanmaanOpiskeluoikeus
+> = {
+  form: FormModel<T>
+  osasuoritusPath: FormOptic<T, AmisKorkeakouluopintoSuoritus>
   osasuoritus: AmisKorkeakouluopintoSuoritus
 }
 
-export const TutkinnonOsanKorkeakouluopintoSuoritusProperties = ({
+export const TutkinnonOsanKorkeakouluopintoSuoritusProperties = <
+  T extends AmisTaiAhvenanmaanOpiskeluoikeus
+>({
   form,
   osasuoritusPath,
   osasuoritus
-}: TutkinnonOsanKorkeakouluopintoSuoritusPropertiesProps) => {
+}: TutkinnonOsanKorkeakouluopintoSuoritusPropertiesProps<T>) => {
   return (
     <>
       <OsasuoritusTable
@@ -118,18 +121,19 @@ export const TutkinnonOsanKorkeakouluopintoSuoritusProperties = ({
   )
 }
 
-type NewKorkeakouluopintokokonaisuusProps = {
-  form: FormModel<AmmatillinenOpiskeluoikeus>
-  suoritusPath: FormOptic<
-    AmmatillinenOpiskeluoikeus,
-    AmisKorkeakouluopintoSuoritus
-  >
+type NewKorkeakouluopintokokonaisuusProps<
+  T extends AmisTaiAhvenanmaanOpiskeluoikeus
+> = {
+  form: FormModel<T>
+  suoritusPath: FormOptic<T, AmisKorkeakouluopintoSuoritus>
 }
 
-const NewKorkeakouluopintokokonaisuus = ({
+const NewKorkeakouluopintokokonaisuus = <
+  T extends AmisTaiAhvenanmaanOpiskeluoikeus
+>({
   form,
   suoritusPath
-}: NewKorkeakouluopintokokonaisuusProps) => {
+}: NewKorkeakouluopintokokonaisuusProps<T>) => {
   const [showModal, setShowModal] = useState(false)
 
   return (

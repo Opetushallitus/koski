@@ -56,6 +56,34 @@ class OppilaitosServletSpec extends AnyFreeSpec with Matchers with KoskiHttpSpec
         tyypit should not contain OpiskeluoikeudenTyyppi.ahvenanmaanperusopetus.koodiarvo
       }
     }
+    "Ahvenanmaalaiselle ammatilliselle oppilaitokselle palautetaan Ahvenanmaan ammatillinen koulutus manner-Suomen ammatillisen sijaan" in {
+      authGet(
+        s"api/oppilaitos/opiskeluoikeustyypit/${MockOrganisaatiot.ålandsYrkesgymnasium}",
+        headers = authHeaders(MockUsers.paakayttaja)
+      ) {
+        verifyResponseStatusOk()
+        JsonSerializer.parse[List[Koodistokoodiviite]](body).map(_.koodiarvo).toSet should equal(
+          Set(
+            OpiskeluoikeudenTyyppi.ahvenanmaanperusopetus.koodiarvo,
+            OpiskeluoikeudenTyyppi.ahvenanmaanammatillinenkoulutus.koodiarvo,
+            OpiskeluoikeudenTyyppi.tuva.koodiarvo,
+            OpiskeluoikeudenTyyppi.muukuinsaanneltykoulutus.koodiarvo,
+            OpiskeluoikeudenTyyppi.taiteenperusopetus.koodiarvo
+          )
+        )
+      }
+    }
+    "Manner-Suomen ammatilliselle oppilaitokselle ei tarjota Ahvenanmaan ammatillista koulutusta" in {
+      authGet(
+        s"api/oppilaitos/opiskeluoikeustyypit/${MockOrganisaatiot.stadinAmmattiopisto}",
+        headers = authHeaders(MockUsers.paakayttaja)
+      ) {
+        verifyResponseStatusOk()
+        val tyypit = JsonSerializer.parse[List[Koodistokoodiviite]](body).map(_.koodiarvo)
+        tyypit should contain(OpiskeluoikeudenTyyppi.ammatillinenkoulutus.koodiarvo)
+        tyypit should not contain OpiskeluoikeudenTyyppi.ahvenanmaanammatillinenkoulutus.koodiarvo
+      }
+    }
     "Muks-organisaatiolle palautetaan vain muks ja TPO" in {
       authGet(
         s"api/oppilaitos/opiskeluoikeustyypit/${MockOrganisaatiot.MuuKuinSäänneltyKoulutusToimija.oppilaitos}",

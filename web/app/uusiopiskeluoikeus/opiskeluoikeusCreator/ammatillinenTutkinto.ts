@@ -205,7 +205,7 @@ const createAmmatillinenPäätasonSuoritus = (
   }
 }
 
-const createAmmatillinenTutkintoKoulutus = (tutkinto: TutkintoPeruste) =>
+export const createAmmatillinenTutkintoKoulutus = (tutkinto: TutkintoPeruste) =>
   AmmatillinenTutkintoKoulutus({
     perusteenDiaarinumero: tutkinto.diaarinumero,
     tunniste: Koodistokoodiviite({

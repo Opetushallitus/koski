@@ -180,7 +180,8 @@ const AmmatillinenPäätasonSuoritusEditor: React.FC<
 // Tutkinnon (osan/osien) ja näyttötutkintoon valmistavan koulutuksen
 // suorituksilla on pääosin samat kentät, joten ne näytetään samalla taulukolla.
 type TutkintoTaiValmistavaSuoritus =
-  AmisTutkinnonSuoritus | NäyttötutkintoonValmistavanKoulutuksenSuoritus
+  | Extract<AmmatillinenPäätasonSuoritus, AmisTutkinnonSuoritus>
+  | NäyttötutkintoonValmistavanKoulutuksenSuoritus
 
 const isTutkintoTaiValmistavaSuoritus = (
   s: unknown
@@ -825,7 +826,7 @@ const keskiarvoFormatter = new Intl.NumberFormat('fi-FI', {
 })
 
 // Keskiarvo näytetään kahden desimaalin tarkkuudella kuten vanhassa käyttöliittymässä
-const KeskiarvoView: React.FC<
+export const KeskiarvoView: React.FC<
   CommonProps<FieldViewerProps<number | undefined, EmptyObject>>
 > = ({ value, testId }) =>
   value !== undefined ? (

@@ -1,5 +1,5 @@
 import { FormModel, FormOptic } from '../components-v2/forms/FormModel'
-import { AmmatillinenOpiskeluoikeus } from '../types/fi/oph/koski/schema/AmmatillinenOpiskeluoikeus'
+import { AmisTaiAhvenanmaanOpiskeluoikeus } from './tutkinnonOsanSuoritukset'
 import { AmmatillisenTutkinnonOsaaPienemmänKokonaisuudenSuoritus } from '../types/fi/oph/koski/schema/AmmatillisenTutkinnonOsaaPienemmanKokonaisuudenSuoritus'
 import {
   OsasuoritusProperty,
@@ -35,20 +35,22 @@ import {
   LocalizedTextView
 } from '../components-v2/controls/LocalizedTestField'
 
-type AmmatillisenTutkinnonOsaaPienemmänKokonaisuudenSuoritusPropertiesProps = {
-  form: FormModel<AmmatillinenOpiskeluoikeus>
+type AmmatillisenTutkinnonOsaaPienemmänKokonaisuudenSuoritusPropertiesProps<
+  T extends AmisTaiAhvenanmaanOpiskeluoikeus
+> = {
+  form: FormModel<T>
   osasuoritusPath: FormOptic<
-    AmmatillinenOpiskeluoikeus,
+    T,
     AmmatillisenTutkinnonOsaaPienemmänKokonaisuudenSuoritus
   >
   osasuoritus: AmmatillisenTutkinnonOsaaPienemmänKokonaisuudenSuoritus
 }
 export const AmmatillisenTutkinnonOsaaPienemmänKokonaisuudenSuoritusProperties =
-  ({
+  <T extends AmisTaiAhvenanmaanOpiskeluoikeus>({
     form,
     osasuoritusPath,
     osasuoritus
-  }: AmmatillisenTutkinnonOsaaPienemmänKokonaisuudenSuoritusPropertiesProps) => {
+  }: AmmatillisenTutkinnonOsaaPienemmänKokonaisuudenSuoritusPropertiesProps<T>) => {
     return (
       <>
         {osasuoritus.suorituskieli && (

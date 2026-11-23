@@ -6,19 +6,20 @@ import {
 } from '../api-fetch'
 import { OptionList, Select } from '../components-v2/controls/Select'
 import { FormModel, FormOptic } from '../components-v2/forms/FormModel'
-import { AmmatillinenOpiskeluoikeus } from '../types/fi/oph/koski/schema/AmmatillinenOpiskeluoikeus'
+import { AmisTaiAhvenanmaanOpiskeluoikeus } from './tutkinnonOsanSuoritukset'
 import { Finnish } from '../types/fi/oph/koski/schema/Finnish'
 import { Koodistokoodiviite } from '../types/fi/oph/koski/schema/Koodistokoodiviite'
 import { fetchPerusteenKoulutukset } from '../util/koskiApi'
 
 const koulutuksetCache = createPreferLocalCache(fetchPerusteenKoulutukset)
 
-export type KoulutuskoodiEditProps = {
-  form: FormModel<AmmatillinenOpiskeluoikeus>
-  path: FormOptic<AmmatillinenOpiskeluoikeus, Koodistokoodiviite<'koulutus'>>
-  tunniste: Koodistokoodiviite<'koulutus'>
-  diaarinumero?: string
-}
+export type KoulutuskoodiEditProps<T extends AmisTaiAhvenanmaanOpiskeluoikeus> =
+  {
+    form: FormModel<T>
+    path: FormOptic<T, Koodistokoodiviite<'koulutus'>>
+    tunniste: Koodistokoodiviite<'koulutus'>
+    diaarinumero?: string
+  }
 
 // Editorin rajapinnan koodeilta puuttuu $class, jota lomakkeen validointi vaatii.
 const koulutuskoodi = (
@@ -32,12 +33,12 @@ const koulutuskoodi = (
 
 // Jos perusteella on vain yksi koulutus, ePerusteista poistunut koodi päivittyy
 // siihen automaattisesti. Useasta koulutuksesta käyttäjä valitsee itse.
-export const KoulutuskoodiEdit: React.FC<KoulutuskoodiEditProps> = ({
+export const KoulutuskoodiEdit = <T extends AmisTaiAhvenanmaanOpiskeluoikeus>({
   form,
   path,
   tunniste,
   diaarinumero
-}) => {
+}: KoulutuskoodiEditProps<T>) => {
   const response = useApiWithParams(
     fetchPerusteenKoulutukset,
     diaarinumero ? [diaarinumero] : undefined,

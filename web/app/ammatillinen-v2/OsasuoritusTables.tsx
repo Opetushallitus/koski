@@ -4,13 +4,11 @@ import {
   FormOptic,
   getValue
 } from '../components-v2/forms/FormModel'
-import { AmmatillinenOpiskeluoikeus } from '../types/fi/oph/koski/schema/AmmatillinenOpiskeluoikeus'
 import {
   OsasuoritusRowData,
   OsasuoritusTable
 } from '../components-v2/opiskeluoikeus/OsasuoritusTable'
 import { finnish, t } from '../i18n/i18n'
-import { ActivePäätasonSuoritus } from '../components-v2/containers/EditorContainer'
 import {
   AmmatillinenArviointi,
   isAmmatillinenArviointi
@@ -20,6 +18,7 @@ import {
   AmisJatkoOpintovalmiuksiaTukevienOpintojenSuoritus,
   AmisKorkeakouluopintoSuoritus,
   AmisMuunTutkinnonOsanSuoritus,
+  AmisTaiAhvenanmaanOpiskeluoikeus,
   AmisTutkinnonOsanSuoritus,
   AmisTutkinnonSuoritus,
   AmisYhteisenTutkinnonOsanSuoritus,
@@ -27,6 +26,7 @@ import {
   isAmisKorkeakouluopintoSuoritus,
   isAmisMuunTutkinnonOsanSuoritus,
   isAmisYhteisenTutkinnonOsanSuoritus,
+  isKokoTutkinnonSuoritus,
   newJatkoOpintovalmiuksiaTukevienOpintojenSuoritus,
   newKorkeakouluopintoSuoritus,
   newMuunTutkinnonOsanSuoritus,
@@ -70,27 +70,48 @@ import { DialogSelect } from '../uusiopiskeluoikeus/components/DialogSelect'
 import { TutkintoPeruste } from '../types/fi/oph/koski/tutkinto/TutkintoPeruste'
 import { AmmatillinenTutkintoKoulutus } from '../types/fi/oph/koski/schema/AmmatillinenTutkintoKoulutus'
 import { Spacer } from '../components-v2/layout/Spacer'
-import { isAmmatillisenTutkinnonSuoritus } from '../types/fi/oph/koski/schema/AmmatillisenTutkinnonSuoritus'
 import { TutkinnonOsanLaajuus } from '../types/fi/oph/koski/tutkinto/TutkinnonOsanLaajuus'
 import {
   TutkinnonOsaRyhmänLaajuus,
   useTutkinnonOsaRyhmienLaajuudet
 } from './TutkinnonOsaRyhmänLaajuus'
 
-interface OsasuoritusTablesProps {
-  form: FormModel<AmmatillinenOpiskeluoikeus>
+interface OsasuoritusTablesProps<
+  T extends AmisTaiAhvenanmaanOpiskeluoikeus,
+  S extends AmisTutkinnonSuoritus
+> {
+  form: FormModel<T>
   oppilaitosOid?: string
-  päätasonSuoritus: ActivePäätasonSuoritus<
-    AmmatillinenOpiskeluoikeus,
-    AmisTutkinnonSuoritus
-  >
+  päätasonSuoritus: {
+    index: number
+    // S päätellään suorituksesta: polun tyyppi on kutsujalla usein kahden
+    // optiikan leikkaus, josta päättely päätyisi koko unioniin.
+    path: FormOptic<T, NoInfer<S>>
+    suoritus: S
+  }
 }
 
-export const OsasuoritusTables = ({
+type TutkinnonPäätasonSuoritus<T extends AmisTaiAhvenanmaanOpiskeluoikeus> = {
+  index: number
+  path: FormOptic<T, AmisTutkinnonSuoritus>
+  suoritus: AmisTutkinnonSuoritus
+}
+
+export const OsasuoritusTables = <
+  T extends AmisTaiAhvenanmaanOpiskeluoikeus,
+  S extends AmisTutkinnonSuoritus
+>({
   form,
   oppilaitosOid,
-  päätasonSuoritus
-}: OsasuoritusTablesProps) => {
+  päätasonSuoritus: pts
+}: OsasuoritusTablesProps<T, S>) => {
+  // Optiikka on invariantti kohteensa tyypin suhteen, joten polku tietyn
+  // luokan suoritukseen ei kelpaa sellaisenaan poluksi luokkien unioniin.
+  const päätasonSuoritus: TutkinnonPäätasonSuoritus<T> = {
+    index: pts.index,
+    suoritus: pts.suoritus,
+    path: pts.path as unknown as FormOptic<T, AmisTutkinnonSuoritus>
+  }
   const perusteenRyhmät = useTutkinnonOsaRyhmät(
     päätasonSuoritus.suoritus.koulutusmoduuli.perusteenDiaarinumero || '',
     päätasonSuoritus.suoritus.suoritustapa.koodiarvo
@@ -164,13 +185,10 @@ export const OsasuoritusTables = ({
   )
 }
 
-interface TableProps {
-  form: FormModel<AmmatillinenOpiskeluoikeus>
+interface TableProps<T extends AmisTaiAhvenanmaanOpiskeluoikeus> {
+  form: FormModel<T>
   oppilaitosOid?: string
-  päätasonSuoritus: ActivePäätasonSuoritus<
-    AmmatillinenOpiskeluoikeus,
-    AmisTutkinnonSuoritus
-  >
+  päätasonSuoritus: TutkinnonPäätasonSuoritus<T>
   ryhmä: string
   perusteenRyhmät: Koodistokoodiviite<'tutkinnonosaryhmä'>[]
   ryhmienLaajuudet: Record<string, TutkinnonOsanLaajuus>
@@ -194,7 +212,7 @@ export const dummyRow = <T extends string>(
   }
 }
 
-const TableForTutkinnonOsaRyhmä = ({
+const TableForTutkinnonOsaRyhmä = <T extends AmisTaiAhvenanmaanOpiskeluoikeus>({
   form,
   oppilaitosOid,
   päätasonSuoritus,
@@ -202,7 +220,7 @@ const TableForTutkinnonOsaRyhmä = ({
   perusteenRyhmät,
   ryhmienLaajuudet,
   forceOpen
-}: TableProps) => {
+}: TableProps<T>) => {
   const originalIndexMap: Record<number, number> = {}
 
   const matchFilter = (s: AmisTutkinnonOsanSuoritus) =>
@@ -306,24 +324,30 @@ const TableForTutkinnonOsaRyhmä = ({
   )
 }
 
-interface OsasuoritusToTableRowParams<T extends string> {
+interface OsasuoritusToTableRowParams<
+  T extends AmisTaiAhvenanmaanOpiskeluoikeus,
+  R extends string
+> {
   suoritusIndex: number
   osasuoritusIndex: number
-  suoritusPath: FormOptic<AmmatillinenOpiskeluoikeus, AmisTutkinnonSuoritus>
-  form: FormModel<AmmatillinenOpiskeluoikeus>
+  suoritusPath: FormOptic<T, AmisTutkinnonSuoritus>
+  form: FormModel<T>
   level: number
-  tutkinnonOsaRyhmä: T
+  tutkinnonOsaRyhmä: R
 }
 
-const tutkinnonOsatToTableRow = <T extends string>({
+const tutkinnonOsatToTableRow = <
+  T extends AmisTaiAhvenanmaanOpiskeluoikeus,
+  R extends string
+>({
   suoritusIndex,
   osasuoritusIndex,
   suoritusPath,
   form,
   level,
   tutkinnonOsaRyhmä
-}: OsasuoritusToTableRowParams<T>): OsasuoritusRowData<
-  T | 'Laajuus' | 'Arvosana'
+}: OsasuoritusToTableRowParams<T, R>): OsasuoritusRowData<
+  R | 'Laajuus' | 'Arvosana'
 > => {
   const osasuoritusPath = suoritusPath
     .prop('osasuoritukset')
@@ -331,7 +355,7 @@ const tutkinnonOsatToTableRow = <T extends string>({
     .at(osasuoritusIndex)
   const osasuoritus = getValue(osasuoritusPath)(form.state)
 
-  const columns: Partial<Record<'Laajuus' | 'Arvosana' | T, ReactNode>> = {}
+  const columns: Partial<Record<'Laajuus' | 'Arvosana' | R, ReactNode>> = {}
 
   columns[tutkinnonOsaRyhmä] = (
     <>{t(osasuoritus?.koulutusmoduuli.tunniste.nimi)}</>
@@ -366,9 +390,7 @@ const tutkinnonOsatToTableRow = <T extends string>({
         form={form}
         view={AmisArvosanaInTableView}
         edit={AmisArvosanaInTableEdit}
-        path={(
-          osasuoritusPath as FormOptic<AmmatillinenOpiskeluoikeus, any>
-        ).prop('arviointi')}
+        path={(osasuoritusPath as FormOptic<T, any>).prop('arviointi')}
       />
     )
   } else {
@@ -436,9 +458,9 @@ export const yhteisenTutkinnonOsat = Object.keys(yhteisetKoodiarvot)
 // Osasuorituksen luokka riippuu päätason suorituksesta (koko tutkinto vai
 // tutkinnon osa/osia), joten uusi osasuoritus luodaan päivitettävän päätason
 // suorituksen perusteella.
-const lisääOsasuoritus = (
-  form: FormModel<AmmatillinenOpiskeluoikeus>,
-  suoritusPath: FormOptic<AmmatillinenOpiskeluoikeus, AmisTutkinnonSuoritus>,
+const lisääOsasuoritus = <T extends AmisTaiAhvenanmaanOpiskeluoikeus>(
+  form: FormModel<T>,
+  suoritusPath: FormOptic<T, AmisTutkinnonSuoritus>,
   uusiOsasuoritus: (
     päätasonSuoritus: AmisTutkinnonSuoritus
   ) => AmisTutkinnonOsanSuoritus
@@ -466,19 +488,19 @@ const newYhteinenTutkinnonOsa = (
   })
 }
 
-type NewAmisOsasuoritusProps = {
-  form: FormModel<AmmatillinenOpiskeluoikeus>
+type NewAmisOsasuoritusProps<T extends AmisTaiAhvenanmaanOpiskeluoikeus> = {
+  form: FormModel<T>
   oppilaitosOid?: string
   ryhmä: string
-  suoritusPath: FormOptic<AmmatillinenOpiskeluoikeus, AmisTutkinnonSuoritus>
+  suoritusPath: FormOptic<T, AmisTutkinnonSuoritus>
 }
 
-const NewAmisOsasuoritus = ({
+const NewAmisOsasuoritus = <T extends AmisTaiAhvenanmaanOpiskeluoikeus>({
   form,
   oppilaitosOid,
   ryhmä,
   suoritusPath
-}: NewAmisOsasuoritusProps) => {
+}: NewAmisOsasuoritusProps<T>) => {
   const ryhmät = useKoodisto('ammatillisentutkinnonosanryhma')
   const ryhmäKoodi =
     (ryhmät !== null
@@ -500,7 +522,7 @@ const NewAmisOsasuoritus = ({
   // erikoisammattitutkinto) tutkinnon osille backend ei salli ryhmää.
   const tutkinnonOsanRyhmä =
     ryhmä === 'Tutkinnon osat' &&
-    isAmmatillisenTutkinnonSuoritus(getValue(suoritusPath)(form.state))
+    isKokoTutkinnonSuoritus(getValue(suoritusPath)(form.state))
       ? undefined
       : ryhmäKoodi
 
@@ -674,20 +696,20 @@ const newPaikallinenOsa = (
   })
 }
 
-type NewPaikallinenProps = {
-  form: FormModel<AmmatillinenOpiskeluoikeus>
+type NewPaikallinenProps<T extends AmisTaiAhvenanmaanOpiskeluoikeus> = {
+  form: FormModel<T>
   tutkinnonOsanRyhmä?: Koodistokoodiviite<
     'ammatillisentutkinnonosanryhma',
     '1' | '3' | '4'
   >
-  suoritusPath: FormOptic<AmmatillinenOpiskeluoikeus, AmisTutkinnonSuoritus>
+  suoritusPath: FormOptic<T, AmisTutkinnonSuoritus>
 }
 
-const NewPaikallinen = ({
+const NewPaikallinen = <T extends AmisTaiAhvenanmaanOpiskeluoikeus>({
   form,
   tutkinnonOsanRyhmä,
   suoritusPath
-}: NewPaikallinenProps) => {
+}: NewPaikallinenProps<T>) => {
   const [showModal, setShowModal] = useState(false)
 
   return (
@@ -771,8 +793,8 @@ const newMuuOsaToisestaTutkinnosta = (
   })
 }
 
-type NewToisestaTutkinnostaProps = {
-  form: FormModel<AmmatillinenOpiskeluoikeus>
+type NewToisestaTutkinnostaProps<T extends AmisTaiAhvenanmaanOpiskeluoikeus> = {
+  form: FormModel<T>
   oppilaitosOid?: string
   ryhmäKoodi: Koodistokoodiviite<
     'ammatillisentutkinnonosanryhma',
@@ -782,16 +804,16 @@ type NewToisestaTutkinnostaProps = {
     'ammatillisentutkinnonosanryhma',
     '1' | '3' | '4'
   >
-  suoritusPath: FormOptic<AmmatillinenOpiskeluoikeus, AmisTutkinnonSuoritus>
+  suoritusPath: FormOptic<T, AmisTutkinnonSuoritus>
 }
 
-const NewToisestaTutkinnosta = ({
+const NewToisestaTutkinnosta = <T extends AmisTaiAhvenanmaanOpiskeluoikeus>({
   form,
   oppilaitosOid,
   ryhmäKoodi,
   tutkinnonOsanRyhmä,
   suoritusPath
-}: NewToisestaTutkinnostaProps) => {
+}: NewToisestaTutkinnostaProps<T>) => {
   const [showModal, setShowModal] = useState(false)
 
   return (
@@ -910,25 +932,22 @@ export const NewToisestaTutkinnostaModal = ({
   )
 }
 
-type OsasuoritusPropertiesProps = {
-  form: FormModel<AmmatillinenOpiskeluoikeus>
+type OsasuoritusPropertiesProps<T extends AmisTaiAhvenanmaanOpiskeluoikeus> = {
+  form: FormModel<T>
   osasuoritus: AmisTutkinnonOsanSuoritus
-  osasuoritusPath: FormOptic<
-    AmmatillinenOpiskeluoikeus,
-    AmisTutkinnonOsanSuoritus
-  >
+  osasuoritusPath: FormOptic<T, AmisTutkinnonOsanSuoritus>
   perusteenDiaarinumero?: string
 }
 
-const OsasuoritusProperties = ({
+const OsasuoritusProperties = <T extends AmisTaiAhvenanmaanOpiskeluoikeus>({
   form,
   osasuoritus,
   osasuoritusPath,
   perusteenDiaarinumero
-}: OsasuoritusPropertiesProps) => {
+}: OsasuoritusPropertiesProps<T>) => {
   if (isAmisYhteisenTutkinnonOsanSuoritus(osasuoritus)) {
     const yhteinenPath = osasuoritusPath as unknown as FormOptic<
-      AmmatillinenOpiskeluoikeus,
+      T,
       AmisYhteisenTutkinnonOsanSuoritus
     >
     return (
@@ -941,7 +960,7 @@ const OsasuoritusProperties = ({
     )
   } else if (isAmisMuunTutkinnonOsanSuoritus(osasuoritus)) {
     const muunPath = osasuoritusPath as unknown as FormOptic<
-      AmmatillinenOpiskeluoikeus,
+      T,
       AmisMuunTutkinnonOsanSuoritus
     >
     return (
@@ -953,7 +972,7 @@ const OsasuoritusProperties = ({
     )
   } else if (isAmisKorkeakouluopintoSuoritus(osasuoritus)) {
     const korkeakouluPath = osasuoritusPath as unknown as FormOptic<
-      AmmatillinenOpiskeluoikeus,
+      T,
       AmisKorkeakouluopintoSuoritus
     >
     return (
@@ -967,7 +986,7 @@ const OsasuoritusProperties = ({
     isAmisJatkoOpintovalmiuksiaTukevienOpintojenSuoritus(osasuoritus)
   ) {
     const jatkoPath = osasuoritusPath as unknown as FormOptic<
-      AmmatillinenOpiskeluoikeus,
+      T,
       AmisJatkoOpintovalmiuksiaTukevienOpintojenSuoritus
     >
     return (

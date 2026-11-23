@@ -17,6 +17,7 @@ class OppilaitosServlet(implicit val application: KoskiApplication) extends Kosk
   val ahvenanmaanPerusopetuksenTyypit = List(OpiskeluoikeudenTyyppi.ahvenanmaanperusopetus)
   val esiopetuksenTyypit = List(OpiskeluoikeudenTyyppi.esiopetus, OpiskeluoikeudenTyyppi.perusopetukseenvalmistavaopetus)
   val ammatillisenTyypit = List(OpiskeluoikeudenTyyppi.ammatillinenkoulutus)
+  val ahvenanmaanAmmatillisenTyypit = List(OpiskeluoikeudenTyyppi.ahvenanmaanammatillinenkoulutus)
   val lukionTyypit = List(OpiskeluoikeudenTyyppi.lukiokoulutus, OpiskeluoikeudenTyyppi.ibtutkinto, OpiskeluoikeudenTyyppi.luva)
   val saksalaisenKoulunTyypit = List(OpiskeluoikeudenTyyppi.diatutkinto)
   val internationalSchoolTyypit = List(OpiskeluoikeudenTyyppi.internationalschool)
@@ -49,19 +50,21 @@ class OppilaitosServlet(implicit val application: KoskiApplication) extends Kosk
   }
 
   private def byOppilaitosTyyppi(organisaatiot: List[OrganisaatioHierarkia]) = {
-    // Ahvenanmaalla perusopetus tallennetaan omalla opiskeluoikeuden tyypillään, joten
-    // ahvenanmaalaiselle organisaatiolle tarjotaan se manner-Suomen perusopetuksen tyyppien
+    // Ahvenanmaalla perusopetus ja ammatillinen koulutus tallennetaan omilla opiskeluoikeuden
+    // tyypeillään, joten ahvenanmaalaiselle organisaatiolle tarjotaan ne manner-Suomen tyyppien
     // sijaan. Kotipaikka on ainoa organisaatiodatasta löytyvä tunnusmerkki: Ahvenanmaalle ei
     // ole omaa oppilaitostyyppiä eikä erillistä käyttöoikeutta.
-    val perusopetus = if (onAhvenanmaalainenOrganisaatio(organisaatiot)) ahvenanmaanPerusopetuksenTyypit else perusopetuksenTyypit
+    val ahvenanmaalainen = onAhvenanmaalainenOrganisaatio(organisaatiot)
+    val perusopetus = if (ahvenanmaalainen) ahvenanmaanPerusopetuksenTyypit else perusopetuksenTyypit
+    val ammatillinen = if (ahvenanmaalainen) ahvenanmaanAmmatillisenTyypit else ammatillisenTyypit
 
     organisaatiot.flatMap(_.oppilaitostyyppi).flatMap {
       case tyyppi if List(peruskoulut, peruskouluasteenErityiskoulut).contains(tyyppi) => perusopetus ++ esiopetuksenTyypit ++ tuvaTyypit
-      case tyyppi if List(ammatillisetOppilaitokset, ammatillisetErityisoppilaitokset, ammatillisetErikoisoppilaitokset, ammatillisetAikuiskoulutusKeskukset).contains(tyyppi) => perusopetus ++ ammatillisenTyypit ++ tuvaTyypit
+      case tyyppi if List(ammatillisetOppilaitokset, ammatillisetErityisoppilaitokset, ammatillisetErikoisoppilaitokset, ammatillisetAikuiskoulutusKeskukset).contains(tyyppi) => perusopetus ++ ammatillinen ++ tuvaTyypit
       case tyyppi if List(lukio).contains(tyyppi) => perusopetus ++ lukionTyypit ++ tuvaTyypit
       case tyyppi if List(perusJaLukioasteenKoulut).contains(tyyppi) => perusopetus ++ esiopetuksenTyypit ++ lukionTyypit ++ saksalaisenKoulunTyypit ++ internationalSchoolTyypit ++ tuvaTyypit
       case tyyppi if List(eiTiedossaOppilaitokset).contains(tyyppi) => List.empty
-      case _ => perusopetus ++ ammatillisenTyypit ++ vapaanSivistysTyönTyypit ++ tuvaTyypit
+      case _ => perusopetus ++ ammatillinen ++ vapaanSivistysTyönTyypit ++ tuvaTyypit
     }
   }
 
