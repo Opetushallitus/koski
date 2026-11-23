@@ -64,16 +64,6 @@
       </exclusions>
     </dependency>
     <dependency>
-      <groupId>co.fs2</groupId>
-      <artifactId>fs2-core_2.13</artifactId>
-      <version>3.14.0</version>
-    </dependency>
-    <dependency>
-      <groupId>co.fs2</groupId>
-      <artifactId>fs2-io_2.13</artifactId>
-      <version>3.14.0</version>
-    </dependency>
-    <dependency>
       <!-- Downloaded from jitpack.io -->
       <groupId>com.github.Opetushallitus.java-utils</groupId>
       <artifactId>oid-generator</artifactId>
