@@ -14,6 +14,7 @@ import {
   SelectOption,
   useKoodistoOptions
 } from '../components-v2/controls/Select'
+import { KoodistoSelect } from '../components-v2/opiskeluoikeus/KoodistoSelect'
 import { LaajuusEdit } from '../components-v2/opiskeluoikeus/LaajuusField'
 import { TextEdit } from '../components-v2/controls/TextField'
 import { OpiskeluoikeusContext } from '../appstate/opiskeluoikeus'
@@ -75,7 +76,8 @@ export const UusiLukionModuuliModaali = <TValtakunnallinenSuoritus,>({
   olemassaOlevatKoodiarvot: string[]
   buildValtakunnallinenSuoritus: (
     tunniste: Koodistokoodiviite<'moduulikoodistolops2021'>,
-    laajuus: LaajuusOpintopisteissä
+    laajuus: LaajuusOpintopisteissä,
+    kieli?: Koodistokoodiviite<'kielivalikoima'>
   ) => TValtakunnallinenSuoritus
   onAdd: (
     kurssi:
@@ -92,6 +94,10 @@ export const UusiLukionModuuliModaali = <TValtakunnallinenSuoritus,>({
   const [laajuus, setLaajuus] = useState<LaajuusOpintopisteissä | undefined>(
     undefined
   )
+  const [kieli, setKieli] = useState<
+    Koodistokoodiviite<'kielivalikoima'> | undefined
+  >(undefined)
+  const vaatiiKielen = Boolean(tunniste?.koodiarvo.startsWith('VK'))
   const [paikallinenKoodiarvo, setPaikallinenKoodiarvo] = useState('')
   const [paikallinenNimi, setPaikallinenNimi] = useState('')
   const [paikallinenKuvaus, setPaikallinenKuvaus] = useState('')
@@ -134,7 +140,7 @@ export const UusiLukionModuuliModaali = <TValtakunnallinenSuoritus,>({
 
   const voiLisätä =
     mode === 'valtakunnallinen'
-      ? Boolean(tunniste && laajuus)
+      ? Boolean(tunniste && laajuus && (!vaatiiKielen || kieli))
       : Boolean(
           paikallinenKoodiarvo &&
           paikallinenNimi &&
@@ -161,7 +167,7 @@ export const UusiLukionModuuliModaali = <TValtakunnallinenSuoritus,>({
       return
     }
     if (!tunniste) return
-    onAdd(buildValtakunnallinenSuoritus(tunniste, laajuus))
+    onAdd(buildValtakunnallinenSuoritus(tunniste, laajuus, kieli))
   }
 
   return (
@@ -206,7 +212,19 @@ export const UusiLukionModuuliModaali = <TValtakunnallinenSuoritus,>({
               testId="tunniste"
             />
           </label>
-        ) : (
+        ) : null}
+        {mode === 'valtakunnallinen' && vaatiiKielen && (
+          <label>
+            {t('Kieli')}
+            <KoodistoSelect
+              koodistoUri="kielivalikoima"
+              onSelect={setKieli}
+              value={kieli?.koodiarvo}
+              testId="kieli"
+            />
+          </label>
+        )}
+        {mode === 'paikallinen' && (
           <>
             <label>
               {t('Koodi')}
