@@ -245,6 +245,22 @@ class MassaluovutusRaportitSpec extends AnyFreeSpec with MassaluovutusTestMethod
     }
   }
 
+  "Ahvenanmaan perusopetuksen vuosiluokka" - {
+    val query = MassaluovutusQueryAhvenanmaanPerusopetuksenVuosiluokka(
+      paiva = LocalDate.of(2026, 5, 15),
+      vuosiluokka = "9",
+      organisaatioOid = Some(MockOrganisaatiot.övernäsSkola),
+    )
+
+    "Kysely onnistuu ja palauttaa oikeat tiedostot" in {
+      raporttiKyselyOnnistuu(query, MockUsers.ophkatselija)
+    }
+
+    "Ei onnistu väärän organisaation tietoihin" in {
+      raporttiKyselyEiOnnistu(query, MockUsers.jyväskylänNormaalikoulunPalvelukäyttäjä)
+    }
+  }
+
   "Perusopetuksen oppijamäärät" - {
     val query = MassaluovutusQueryPerusopetuksenOppijamaaratRaportti(
       paiva = LocalDate.of(2012, 1, 1),

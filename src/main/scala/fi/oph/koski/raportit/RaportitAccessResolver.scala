@@ -115,6 +115,7 @@ case class RaportitAccessResolver(
     case "perusopetus" if isKoulutustoimija => Seq(PerusopetuksenVuosiluokka, PerusopetuksenOppijaMääräRaportti, KotikuntalaskelmaRaportti)
     case "perusopetus" => Seq(PerusopetuksenVuosiluokka, PerusopetuksenOppijaMääräRaportti)
     case "perusopetuksenlisaopetus" => Seq(PerusopetuksenLisäopetuksenOppijaMääräRaportti)
+    case "ahvenanmaanperusopetus" => Seq(AhvenanmaanPerusopetuksenVuosiluokka)
     case "lukiokoulutus" if !isKoulutustoimija => Seq(LukionSuoritustietojenTarkistus, LukioDiaIbInternationalESHOpiskelijamaarat, LukioKurssikertyma, LukioOpintopistekertyma)
     case "lukiokoulutus" => Seq(LukioDiaIbInternationalESHOpiskelijamaarat, LukioKurssikertyma, LukioOpintopistekertyma)
     case "ibtutkinto" if !isKoulutustoimija => Seq(LukioDiaIbInternationalESHOpiskelijamaarat, IBSuoritustietojenTarkistus)

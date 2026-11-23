@@ -214,6 +214,13 @@ export class KoskiRaportitPage {
     await expect(this.muodostaButton).toBeVisible()
   }
 
+  async gotoAhvenanmaanPerusopetuksenVuosiluokka() {
+    await this.page.goto(
+      '/koski/raportit/ahvenanmaan-perusopetus/ahvenanmaanperusopetuksenvuosiluokka'
+    )
+    await expect(this.muodostaButton).toBeVisible()
+  }
+
   async gotoAikuistenPerusopetusSuoritustiedot() {
     await this.page.goto(
       '/koski/raportit/aikuisten-perusopetus/aikuistenperusopetussuoritustietojentarkistus'

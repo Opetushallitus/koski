@@ -4,6 +4,10 @@ import {
   MassaluovutusQueryPaallekkaisetOpiskeluoikeudet
 } from '../../types/fi/oph/koski/massaluovutus/paallekkaisetopiskeluoikeudet/MassaluovutusQueryPaallekkaisetOpiskeluoikeudet'
 import {
+  isMassaluovutusQueryAhvenanmaanPerusopetuksenVuosiluokka,
+  MassaluovutusQueryAhvenanmaanPerusopetuksenVuosiluokka
+} from '../../types/fi/oph/koski/massaluovutus/raportit/MassaluovutusQueryAhvenanmaanPerusopetuksenVuosiluokka'
+import {
   isMassaluovutusQueryAikuistenPerusopetuksenKurssikertyma,
   MassaluovutusQueryAikuistenPerusopetuksenKurssikertyma
 } from '../../types/fi/oph/koski/massaluovutus/raportit/MassaluovutusQueryAikuistenPerusopetuksenKurssikertyma'
@@ -563,6 +567,30 @@ export const perusopetuksenVuosiluokkaKyselymalli: MassaluovutusKyselymalli<Vuos
       }),
     lue: (q) =>
       isMassaluovutusQueryPerusopetuksenVuosiluokka(q)
+        ? {
+            organisaatioOid: q.organisaatioOid,
+            paiva: q.paiva,
+            vuosiluokka: q.vuosiluokka,
+            kotikuntaPvm: q.kotikuntaPvm
+          }
+        : null,
+    ajankohdanOtsikko: 'Päivä',
+    näytäVuosiluokka: true,
+    näytäKotikuntaPvm: true
+  }
+
+export const ahvenanmaanPerusopetuksenVuosiluokkaKyselymalli: MassaluovutusKyselymalli<VuosiluokkaraportinKyselynParametrit> =
+  {
+    luo: (p) =>
+      MassaluovutusQueryAhvenanmaanPerusopetuksenVuosiluokka({
+        organisaatioOid: p.organisaatioOid,
+        language: p.language,
+        paiva: p.paiva,
+        vuosiluokka: p.vuosiluokka,
+        kotikuntaPvm: p.kotikuntaPvm
+      }),
+    lue: (q) =>
+      isMassaluovutusQueryAhvenanmaanPerusopetuksenVuosiluokka(q)
         ? {
             organisaatioOid: q.organisaatioOid,
             paiva: q.paiva,

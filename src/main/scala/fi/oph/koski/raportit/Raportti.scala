@@ -4,7 +4,7 @@ import fi.oph.koski.localization.LocalizationReader
 
 import java.time.{LocalDate, LocalDateTime}
 import fi.oph.koski.raportit.aikuistenperusopetus.AikuistenPerusopetusRaporttiType
-import fi.oph.koski.raportit.perusopetus.PerusopetuksenRaportitRepository
+import fi.oph.koski.raportit.perusopetus.{PerusopetuksenRaportitRepository, VuosiluokkaraportinTyypit}
 import fi.oph.koski.raportointikanta.RaportointiDatabase
 import fi.oph.koski.schema.{OpiskeluoikeudenTyyppi, Organisaatio}
 
@@ -28,11 +28,13 @@ trait AikajaksoRaportti extends Raportti {
 
 trait VuosiluokkaRaporttiPaivalta extends Raportti {
 
-  def title(etuliite: String, oppilaitosOid: String, paiva: LocalDate, vuosiluokka: String): String
+  def tyypit: VuosiluokkaraportinTyypit
+
+  def title(oppilaitosOid: String, paiva: LocalDate, vuosiluokka: String, t: LocalizationReader): String
 
   def documentation(t: LocalizationReader): String
 
-  def filename(etuliite: String, oppilaitosOid: String, paiva: LocalDate, vuosiluokka: String): String
+  def filename(oppilaitosOid: String, paiva: LocalDate, vuosiluokka: String, t: LocalizationReader): String
 
   def buildRaportti(raportointiDatabase: PerusopetuksenRaportitRepository, oppilaitosOid: Seq[Organisaatio.Oid], paiva: LocalDate, kotikuntaPvm: Option[LocalDate], vuosiluokka: String, t: LocalizationReader): Seq[Product]
 }
@@ -135,6 +137,10 @@ case object TOPKSAmmatillinen extends AmmatillinenRaportti
 
 case object PerusopetuksenVuosiluokka extends RaportinTyyppi {
   val opiskeluoikeudenTyyppi = OpiskeluoikeudenTyyppi.perusopetus.koodiarvo
+}
+
+case object AhvenanmaanPerusopetuksenVuosiluokka extends RaportinTyyppi {
+  val opiskeluoikeudenTyyppi = OpiskeluoikeudenTyyppi.ahvenanmaanperusopetus.koodiarvo
 }
 
 case object PerusopetuksenOppijaMääräRaportti extends RaportinTyyppi {

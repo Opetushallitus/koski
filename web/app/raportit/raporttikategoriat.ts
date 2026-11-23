@@ -1,4 +1,5 @@
 import {
+  ahvenanmaanPerusopetuksenVuosiluokkaKyselymalli,
   AikajaksoraportinKyselynParametrit,
   aikuistenPerusopetuksenKurssikertymaKyselymalli,
   aikuistenPerusopetuksenOppijamaaratRaporttiKyselymalli,
@@ -224,6 +225,28 @@ export const kaikkiRaportitKategorioittain: Raporttikategoria<Raportti>[] = [
           },
           kyselymalli:
             perusopetuksenLisaopetuksenOppijamaaratRaporttiKyselymalli
+        }
+      }
+    ]
+  },
+  {
+    id: 'ahvenanmaan-perusopetus',
+    tab: 'raporttikategoria-tab-ahvenanmaan-perusopetus',
+    heading: 'raporttikategoria-heading-ahvenanmaan-perusopetus',
+    raportit: [
+      {
+        id: 'ahvenanmaanperusopetuksenvuosiluokka',
+        name: 'raportti-tab-perusopetuksenvuosiluokka',
+        lomake: {
+          tyyppi: 'vuosiluokka',
+          kuvaus:
+            'AhvenanmaanPerusopetuksenVuosiluokka-short-description-massaluovutus',
+          päivänOhje: 'PerusopetuksenVuosiluokka-date-input-help',
+          kotikunta: {
+            ohje: 'PerusopetuksenVuosiluokka-kotikunta-date-input-help'
+          },
+          esimerkki: { kappaleet: 'PerusopetuksenVuosiluokka-example' },
+          kyselymalli: ahvenanmaanPerusopetuksenVuosiluokkaKyselymalli
         }
       }
     ]

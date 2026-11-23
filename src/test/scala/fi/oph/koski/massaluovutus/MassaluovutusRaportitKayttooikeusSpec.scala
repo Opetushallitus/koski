@@ -53,6 +53,7 @@ class MassaluovutusRaportitKayttooikeusSpec extends AnyFreeSpec with Massaluovut
     "Muu ammatillinen koulutus" -> MassaluovutusQueryMuuAmmatillinen(alku = alku, loppu = loppu, organisaatioOid = organisaatioOid),
     "TOPKS ammatillinen koulutus" -> MassaluovutusQueryTOPKSAmmatillinen(alku = alku, loppu = loppu, organisaatioOid = organisaatioOid),
     "Perusopetuksen vuosiluokka" -> MassaluovutusQueryPerusopetuksenVuosiluokka(paiva = paiva, vuosiluokka = "9", organisaatioOid = organisaatioOid),
+    "Ahvenanmaan perusopetuksen vuosiluokka" -> MassaluovutusQueryAhvenanmaanPerusopetuksenVuosiluokka(paiva = paiva, vuosiluokka = "9", organisaatioOid = organisaatioOid),
     "Perusopetuksen oppijamäärät" -> MassaluovutusQueryPerusopetuksenOppijamaaratRaportti(paiva = paiva, organisaatioOid = organisaatioOid),
     "Perusopetuksen lisäopetuksen oppijamäärät" -> MassaluovutusQueryPerusopetuksenLisaopetuksenOppijamaaratRaportti(paiva = paiva, organisaatioOid = organisaatioOid),
     "Perusopetukseen valmistava opetus" -> MassaluovutusQueryPerusopetukseenValmistava(alku = alku, loppu = loppu, organisaatioOid = organisaatioOid),

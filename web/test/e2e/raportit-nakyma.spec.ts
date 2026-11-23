@@ -5,6 +5,7 @@ import { formatFinnishDate } from '../../app/date/date'
 const kaikkiKategoriat = [
   'Esiopetus',
   'Perusopetus',
+  'Ahvenanmaan perusopetus',
   'Perusopetukseen valmistava opetus',
   'TUVA-koulutus',
   'Aikuisten perusopetus',
