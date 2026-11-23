@@ -1,7 +1,6 @@
 package fi.oph.koski.ibis
 
 import fi.oph.koski.documentation.ExamplesIBDiploma
-import fi.oph.koski.documentation.YleissivistavakoulutusExampleData.{jyväskylänNormaalikoulu, ressunLukio}
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
 import fi.oph.koski.koskiuser.{KoskiSpecificSession, MockUsers}
 import fi.oph.koski.log.AuditLogTester
@@ -27,11 +26,7 @@ class IbisServiceSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers with 
 
   private val valmistunut = ExamplesIBDiploma.ibKoulutuksenOpiskeluoikeus
   private val keskeneräinen = valmistunut.copy(tila = LukionOpiskeluoikeudenTila(valmistunut.tila.opiskeluoikeusjaksot.take(1)))
-  private val aiemminValmistunut = valmistunut.copy(
-    oppilaitos = Some(jyväskylänNormaalikoulu),
-    tila = LukionOpiskeluoikeudenTila(valmistunut.tila.opiskeluoikeusjaksot.map(jakso => jakso.copy(alku = jakso.alku.minusYears(1)))),
-  )
-  private val diploma = ExamplesIBDiploma.opiskeluoikeus.copy(oid = Some("1.2.246.562.15.12345678901"), oppilaitos = Some(jyväskylänNormaalikoulu))
+  private val diploma = ExamplesIBDiploma.opiskeluoikeus.copy(oid = Some("1.2.246.562.15.12345678901"))
 
   private def virhe(syy: String) = Left(IbisKonversiovirhe("abc123", List(syy)))
   private val usealtaOppijalta = virhe("Tunnisteella löytyy usean oppijan opiskeluoikeuksia")
@@ -40,20 +35,20 @@ class IbisServiceSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers with 
     def yhdistä(löydetyt: (String, KoskeenTallennettavaOpiskeluoikeus)*) =
       IbisService.yhdistäOppijaan("abc123", löydetyt.map { case (oppijaOid, oo) => IbisTunnisteenOpiskeluoikeus("abc123", oppijaOid, oo) })
 
-    "valmistuneesta IB-koulutuksesta saadaan oppija ja oppilaitos" in {
-      yhdistä(oppija -> valmistunut) should be(Right(IbisYhdistettyOppija(oppija, ressunLukio, None)))
+    "valmistuneesta IB-koulutuksesta saadaan oppija" in {
+      yhdistä(oppija -> valmistunut) should be(Right(IbisYhdistettyOppija(oppija, None)))
     }
 
-    "olemassa oleva diploma päivitetään IB-koulutuksen oppilaitoksella" in {
-      yhdistä(oppija -> valmistunut, oppija -> diploma) should be(Right(IbisYhdistettyOppija(oppija, ressunLukio, diploma.oid)))
+    "olemassa oleva diploma päivitetään" in {
+      yhdistä(oppija -> valmistunut, oppija -> diploma) should be(Right(IbisYhdistettyOppija(oppija, diploma.oid)))
     }
 
-    "pelkkä diploma päivitetään sen nykyisellä oppilaitoksella" in {
-      yhdistä(oppija -> keskeneräinen, oppija -> diploma) should be(Right(IbisYhdistettyOppija(oppija, jyväskylänNormaalikoulu, diploma.oid)))
+    "diploma päivitetään, vaikka IB-koulutus ei ole valmistunut" in {
+      yhdistä(oppija -> keskeneräinen, oppija -> diploma) should be(Right(IbisYhdistettyOppija(oppija, diploma.oid)))
     }
 
-    "useasta valmistuneesta IB-koulutuksesta käytetään viimeksi päättyneen oppilaitosta" in {
-      yhdistä(oppija -> aiemminValmistunut, oppija -> valmistunut).map(_.oppilaitos) should be(Right(ressunLukio))
+    "saman oppijan useasta valmistuneesta IB-koulutuksesta saadaan oppija" in {
+      yhdistä(oppija -> valmistunut, oppija -> valmistunut) should be(Right(IbisYhdistettyOppija(oppija, None)))
     }
 
     "toisen oppijan keskeneräinen IB-koulutus ei estä yhdistämistä" in {
@@ -88,8 +83,8 @@ class IbisServiceSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers with 
     lazy val service = KoskiApplicationForTests.ibisService
 
     "löytää oppijan valmistuneen IB-koulutuksen ja diploman tunnisteella kirjainkoosta riippumatta" in {
-      service.yhdistäOppijoihin(List(rivi(ExamplesIBDiploma.iboTunniste.toUpperCase))).map(_._2.map(k => (k.oppijaOid, k.oppilaitos.oid, k.diplomanOid.isDefined))) should be(
-        List(Right((KoskiSpecificMockOppijat.ibDiploma.oid, ressunLukio.oid, true)))
+      service.yhdistäOppijoihin(List(rivi(ExamplesIBDiploma.iboTunniste.toUpperCase))).map(_._2.map(k => (k.oppijaOid, k.diplomanOid.isDefined))) should be(
+        List(Right((KoskiSpecificMockOppijat.ibDiploma.oid, true)))
       )
     }
 
@@ -137,7 +132,7 @@ class IbisServiceSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers with 
         "ghi789" -> IbisTuonninRivinTila.Hylätty,
       ))
       val päivitys = raportti.rivit.head
-      (päivitys.oppijaOid, päivitys.oppilaitosOid, päivitys.virheet) should be((Some(KoskiSpecificMockOppijat.ibDiploma.oid), Some(ressunLukio.oid), Nil))
+      (päivitys.oppijaOid, päivitys.virheet) should be((Some(KoskiSpecificMockOppijat.ibDiploma.oid), Nil))
       päivitys.diplomanOid should be(defined)
       diplomanVersio should be(versioEnnen)
       AuditLogTester.verifyOnlyAuditLogMessageForOperation(Map(

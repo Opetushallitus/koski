@@ -1,6 +1,6 @@
 package fi.oph.koski.schema
 
-import fi.oph.koski.schema.annotation.{KoodistoKoodiarvo, KoodistoUri}
+import fi.oph.koski.schema.annotation.{KoodistoKoodiarvo, KoodistoUri, MapOidOrganisaatioToOppilaitos}
 import fi.oph.scalaschema.annotation._
 
 import java.time.{LocalDate, LocalDateTime}
@@ -17,8 +17,9 @@ case class IBDiplomaOpiskeluoikeus(
   versionumero: Option[Int] = None,
   aikaleima: Option[LocalDateTime] = None,
   lähdejärjestelmänId: Option[LähdejärjestelmäId] = None,
+  // IBO on koulutustoimija, joka on myös diploman oppilaitos.
+  @MapOidOrganisaatioToOppilaitos
   oppilaitos: Option[Oppilaitos] = None,
-  // TODO TOR-747: Koulutustoimija jätetään tyhjäksi, kunnes PO päättää siitä. IBO ei ole vielä organisaatiopalvelussa.
   koulutustoimija: Option[Koulutustoimija] = None,
   arvioituPäättymispäivä: Option[LocalDate] = None,
   tila: IBDiplomaOpiskeluoikeudenTila,
@@ -58,7 +59,7 @@ case class IBDiplomanSuoritus(
   koulutusmoduuli: IBTutkinto = IBTutkinto(),
   toimipiste: OrganisaatioWithOid,
   // TODO TOR-747: IBIS-tiedostossa ei ole todistuksen myöntämispäivää (vain LAST CHANGE DATE), joten vahvistuspäivä annetaan
-  // tuonnin yhteydessä. IBO ei ole organisaatiopalvelussa, joten myöntäjäorganisaationa käytetään oppilaitosta.
+  // tuonnin yhteydessä.
   vahvistus: Option[Päivämäärävahvistus] = None,
   @Description("Tutkintokerta, jossa diploma myönnettiin")
   tutkintokerta: IBTutkintokerta,

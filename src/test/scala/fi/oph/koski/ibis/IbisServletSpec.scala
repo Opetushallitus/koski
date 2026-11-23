@@ -19,6 +19,8 @@ import scala.io.Source
 class IbisServletSpec extends AnyFreeSpec with KoskiHttpSpec with PutOpiskeluoikeusTestMethods[IBOpiskeluoikeus] with BeforeAndAfterAll {
   override def tag = implicitly[reflect.runtime.universe.TypeTag[IBOpiskeluoikeus]]
   override def defaultOpiskeluoikeus: IBOpiskeluoikeus = ibKoulutus
+  // IB Diplomien oppilaitos on IBO, johon oletuskäyttäjällä kallella ei ole oikeuksia.
+  override def defaultUser = MockUsers.paakayttaja
 
   override protected def beforeAll(): Unit = {
     super.beforeAll()

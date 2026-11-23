@@ -1,15 +1,15 @@
 package fi.oph.koski.documentation
 
-import fi.oph.koski.documentation.YleissivistavakoulutusExampleData.ressunLukio
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
 import fi.oph.koski.henkilo.MockOppijat.asUusiOppija
+import fi.oph.koski.ibis.IBO
 import fi.oph.koski.schema.LocalizedString.finnish
 import fi.oph.koski.schema._
 
 import java.time.LocalDate
 import java.time.LocalDate.{of => date}
 
-// TODO TOR-747: Luonnos. Esimerkki vastaa IB-koulutuksen opiskeluoikeutta ibKoulutuksenOpiskeluoikeus (sama iboTunniste ja oppilaitos).
+// TODO TOR-747: Luonnos. Esimerkki vastaa IB-koulutuksen opiskeluoikeutta ibKoulutuksenOpiskeluoikeus (sama iboTunniste).
 object ExamplesIBDiploma {
   val iboTunniste = "dip123"
   val ibKoulutuksenOpiskeluoikeus: IBOpiskeluoikeus = ExamplesIB.opiskeluoikeus.copy(iboTunniste = Some(iboTunniste))
@@ -61,8 +61,8 @@ object ExamplesIBDiploma {
     )
 
   val suoritus: IBDiplomanSuoritus = IBDiplomanSuoritus(
-    toimipiste = ressunLukio,
-    vahvistus = Some(Päivämäärävahvistus(vahvistuspäivä, ressunLukio)),
+    toimipiste = IBO.oppilaitos,
+    vahvistus = Some(Päivämäärävahvistus(vahvistuspäivä, IBO.oppilaitos)),
     tutkintokerta = tutkintokerta,
     totalPoints = Some(37),
     combinedGrade = Some(2),
@@ -80,7 +80,7 @@ object ExamplesIBDiploma {
   )
 
   val opiskeluoikeus: IBDiplomaOpiskeluoikeus = IBDiplomaOpiskeluoikeus(
-    oppilaitos = Some(ressunLukio),
+    oppilaitos = Some(IBO.oppilaitos),
     tila = IBDiplomaOpiskeluoikeudenTila(List(
       IBDiplomaOpiskeluoikeusjakso(vahvistuspäivä, ExampleData.opiskeluoikeusValmistunut)
     )),

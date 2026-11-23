@@ -3699,6 +3699,23 @@
       "status": "AKTIIVINEN"
     },
     {
+      "oid": "1.2.246.562.10.61324755312",
+      "parentOid": "1.2.246.562.10.00000000001",
+      "toimipistekoodi": "",
+      "match": true,
+      "nimi": {
+        "fi": "International Baccalaureate Organization",
+        "sv": "International Baccalaureate Organization",
+        "en": "International Baccalaureate Organization"
+      },
+      "kieletUris": ["oppilaitoksenopetuskieli_4#1"],
+      "kotipaikkaUri": "kunta_200",
+      "children": [],
+      "aliOrganisaatioMaara": 0,
+      "organisaatiotyypit": ["organisaatiotyyppi_01"],
+      "status": "AKTIIVINEN"
+    },
+    {
       "alkuPvm": 284076000000,
       "children": [],
       "kieletUris": ["oppilaitoksenopetuskieli_1#1"],

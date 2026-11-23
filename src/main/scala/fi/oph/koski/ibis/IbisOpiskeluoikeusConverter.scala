@@ -20,6 +20,13 @@ object IbisKonversiovirhe {
   })
 }
 
+// IB Diploman oppilaitos ja koulutustoimija on sen myöntävä IBO.
+// TODO TOR-747: IBO lisätään organisaatiopalveluun myöhemmin. Siihen asti sen oid on vain mock-datassa.
+object IBO {
+  val oid = "1.2.246.562.10.61324755312"
+  val oppilaitos: Oppilaitos = Oppilaitos(oid)
+}
+
 class IbisOpiskeluoikeusConverter(
   koodistoViitePalvelu: KoodistoViitePalvelu,
   localizations: LocalizationRepository,
@@ -37,7 +44,7 @@ class IbisOpiskeluoikeusConverter(
   private val tuotavatTulokset = Set(IbisResultCode.DiplomaAwarded, IbisResultCode.BilingualDiplomaAwarded)
 
   // vahvistuspäivä: todistuksen myöntämispäivä, jota ei ole IBIS-tiedostossa.
-  def convert(record: IbisRecord, oppija: IbisYhdistettyOppija, vahvistuspäivä: LocalDate): Either[IbisKonversiovirhe, IBDiplomaOpiskeluoikeus] = {
+  def convert(record: IbisRecord, diplomanOid: Option[String], vahvistuspäivä: LocalDate): Either[IbisKonversiovirhe, IBDiplomaOpiskeluoikeus] = {
     val opiskeluoikeus = for {
       // Riviltä, jota ei tuoda, ei kerätä muita virheitä.
       _ <- tarkistaTuotava(record)
@@ -47,14 +54,14 @@ class IbisOpiskeluoikeusConverter(
         kaikki(arvioidutOppiaineet(record).map(convertSubject(vahvistuspäivä))),
       ) { (result, kerta, osasuoritukset) =>
         IBDiplomaOpiskeluoikeus(
-          oid = oppija.diplomanOid,
-          oppilaitos = Some(oppija.oppilaitos),
+          oid = diplomanOid,
+          oppilaitos = Some(IBO.oppilaitos),
           tila = IBDiplomaOpiskeluoikeudenTila(List(
             IBDiplomaOpiskeluoikeusjakso(vahvistuspäivä, Koodistokoodiviite("valmistunut", "koskiopiskeluoikeudentila"))
           )),
           suoritukset = List(IBDiplomanSuoritus(
-            toimipiste = oppija.oppilaitos,
-            vahvistus = Some(Päivämäärävahvistus(vahvistuspäivä, oppija.oppilaitos)),
+            toimipiste = IBO.oppilaitos,
+            vahvistus = Some(Päivämäärävahvistus(vahvistuspäivä, IBO.oppilaitos)),
             tutkintokerta = kerta,
             totalPoints = record.totalPoints,
             combinedGrade = record.combinedGrade,

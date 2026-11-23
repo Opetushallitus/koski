@@ -5,13 +5,12 @@ import fi.oph.koski.http.HttpStatus
 import fi.oph.koski.koskiuser.{AccessType, KoskiSpecificSession}
 import fi.oph.koski.log.KoskiOperation.{IBIS_ESIKATSELU, IBIS_TALLENNUS, KoskiOperation}
 import fi.oph.koski.log.{AuditLog, KoskiAuditLogMessage, KoskiAuditLogMessageField}
-import fi.oph.koski.schema.{IBDiplomaOpiskeluoikeus, IBOpiskeluoikeus, OidHenkilö, Oppija, Oppilaitos}
+import fi.oph.koski.schema.{IBDiplomaOpiskeluoikeus, IBOpiskeluoikeus, OidHenkilö, Oppija}
 
 import java.time.LocalDate
 
 case class IbisYhdistettyOppija(
   oppijaOid: String,
-  oppilaitos: Oppilaitos,
   diplomanOid: Option[String],
 )
 
@@ -25,7 +24,6 @@ case class IbisTuonninRivi(
   iboTunniste: String,
   tila: String,
   oppijaOid: Option[String] = None,
-  oppilaitosOid: Option[String] = None,
   diplomanOid: Option[String] = None,
   virheet: List[String] = Nil,
   varoitukset: List[String] = Nil,
@@ -83,7 +81,7 @@ class IbisService(application: KoskiApplication) {
         case (rivi, Left(virhe)) =>
           IbisTuonninRivi(rivi.iboTunniste, IbisTuonninRivinTila.Hylätty, virheet = virhe.syyt)
         case (rivi, Right(oppija)) =>
-          val tulos = converter.convert(rivi, oppija, vahvistuspäivä).flatMap { diploma =>
+          val tulos = converter.convert(rivi, oppija.diplomanOid, vahvistuspäivä).flatMap { diploma =>
             käsitteleDiploma(oppija, diploma).left.map(status => IbisKonversiovirhe(rivi.iboTunniste, IbisKonversiovirhe.syyt(status)))
           }
           IbisTuonninRivi(
@@ -93,7 +91,6 @@ class IbisService(application: KoskiApplication) {
               _ => if (oppija.diplomanOid.isDefined) IbisTuonninRivinTila.Päivitys else IbisTuonninRivinTila.Uusi,
             ),
             oppijaOid = Some(oppija.oppijaOid),
-            oppilaitosOid = Some(oppija.oppilaitos.oid),
             diplomanOid = tulos.toOption.flatten.orElse(oppija.diplomanOid),
             virheet = tulos.fold(_.syyt, _ => Nil),
             varoitukset = converter.varoitukset(rivi),
@@ -129,20 +126,19 @@ object IbisService {
     val ibKoulutukset = löydetyt.filter(_.opiskeluoikeus.isInstanceOf[IBOpiskeluoikeus])
     val valmistuneetIbKoulutukset = ibKoulutukset.filter(_.opiskeluoikeus.tila.opiskeluoikeusjaksot.lastOption.exists(_.tila.koodiarvo == "valmistunut"))
     val diplomat = löydetyt.filter(_.opiskeluoikeus.isInstanceOf[IBDiplomaOpiskeluoikeus])
+    val oppijat = (valmistuneetIbKoulutukset ++ diplomat).map(_.oppijaOid).distinct
 
-    if ((valmistuneetIbKoulutukset ++ diplomat).map(_.oppijaOid).distinct.size > 1) {
+    if (oppijat.size > 1) {
       Left(IbisKonversiovirhe(iboTunniste, List("Tunnisteella löytyy usean oppijan opiskeluoikeuksia")))
     } else if (diplomat.size > 1) {
       Left(IbisKonversiovirhe(iboTunniste, List("Tunnisteella löytyy useampi IB Diploma -opiskeluoikeus")))
     } else {
-      (valmistuneetIbKoulutukset.maxByOption(_.opiskeluoikeus.päättymispäivä.map(_.toEpochDay)), diplomat.headOption) match {
-        case (Some(ibKoulutus), diploma) =>
-          Right(IbisYhdistettyOppija(ibKoulutus.oppijaOid, ibKoulutus.opiskeluoikeus.getOppilaitos, diploma.flatMap(_.opiskeluoikeus.oid)))
-        case (None, Some(diploma)) =>
-          Right(IbisYhdistettyOppija(diploma.oppijaOid, diploma.opiskeluoikeus.getOppilaitos, diploma.opiskeluoikeus.oid))
-        case (None, None) if ibKoulutukset.nonEmpty =>
+      oppijat.headOption match {
+        case Some(oppijaOid) =>
+          Right(IbisYhdistettyOppija(oppijaOid, diplomat.headOption.flatMap(_.opiskeluoikeus.oid)))
+        case None if ibKoulutukset.nonEmpty =>
           Left(IbisKonversiovirhe(iboTunniste, List("Tunnisteella löytyy IB-koulutuksen opiskeluoikeus, mutta se ei ole valmistunut")))
-        case (None, None) =>
+        case None =>
           Left(IbisKonversiovirhe(iboTunniste, List("Tunnisteella ei löydy valmistunutta IB-koulutuksen opiskeluoikeutta eikä IB Diploma -opiskeluoikeutta")))
       }
     }

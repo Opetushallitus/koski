@@ -5,6 +5,8 @@ import fi.oph.koski.api.misc.PutOpiskeluoikeusTestMethods
 import fi.oph.koski.documentation.{ExamplesIBDiploma, ExamplesInternationalSchool}
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
 import fi.oph.koski.http.{ErrorMatcher, KoskiErrorCategory}
+import fi.oph.koski.ibis.IBO
+import fi.oph.koski.koskiuser.MockUsers
 import fi.oph.koski.schema._
 import org.scalatest.freespec.AnyFreeSpec
 
@@ -14,6 +16,9 @@ class OppijaValidationIBDiplomaSpec
     with PutOpiskeluoikeusTestMethods[IBDiplomaOpiskeluoikeus]
 {
   override def tag = implicitly[reflect.runtime.universe.TypeTag[IBDiplomaOpiskeluoikeus]]
+
+  // IB Diplomien oppilaitos on IBO, johon oletuskäyttäjällä kallella ei ole oikeuksia.
+  override def defaultUser = MockUsers.paakayttaja
 
   override def defaultOpiskeluoikeus = ExamplesIBDiploma.opiskeluoikeus
 
@@ -40,7 +45,7 @@ class OppijaValidationIBDiplomaSpec
     }
   }
 
-  "Koulutustoimija jätetään tyhjäksi" in {
+  "Oppilaitos ja koulutustoimija ovat IBO" in {
     setupOppijaWithOpiskeluoikeus(ibKoulutus, henkilö = henkilö) {
       verifyResponseStatusOk()
     }
@@ -48,7 +53,9 @@ class OppijaValidationIBDiplomaSpec
     putOpiskeluoikeus(defaultOpiskeluoikeus, henkilö = henkilö) {
       verifyResponseStatusOk()
     }
-    getOpiskeluoikeudet(henkilö.oid).collect { case diploma: IBDiplomaOpiskeluoikeus => diploma.koulutustoimija } should be(List(None))
+    getOpiskeluoikeudet(henkilö.oid).collect {
+      case diploma: IBDiplomaOpiskeluoikeus => (diploma.oppilaitos.map(_.oid), diploma.koulutustoimija.map(_.oid))
+    } should be(List((Some(IBO.oid), Some(IBO.oid))))
   }
 
   "Ei voi kirjoittaa International schoolin opiskeluoikeuden perusteella" in {
