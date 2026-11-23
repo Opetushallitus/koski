@@ -16,3 +16,4 @@ TOR-XXX - Scala-kääntäjän ja Scalafixin tarkistusten vaatimia koodimuutoksia
 TOR-2745 - korjattu virheviestin sanamuoto
 TOR-2265 - isServerEnvironment nimetty isCloudEnvironmentiksi ja kommentti päivitetty, validaatiologiikka ennallaan
 TOR-2837 - Ahvenanmaan ammatillinen: ePerusteet-validoinnin ohitus uudelle tyypille, ei vaikuta olemassaoleviin
+TOR-2837 - Ahvenanmaan ammatillinen: perusteen nimi täydennetään ePerusteista kuten manner-Suomessa, ei validaatiomuutos

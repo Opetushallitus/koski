@@ -100,11 +100,10 @@ test.describe('Ahvenanmaan ammatillisen koulutuksen opiskeluoikeuden luonti', ()
     await täytäLomake(page, uusiOppijaPage, tutkinnonHetu)
     await uusiOppijaPage.submitAndExpectSuccess()
 
-    await expect(page.locator('.AmmatillinenTutkinto')).toContainText(
-      '351301'
-    )
-    await expect(page.locator('.AmmatillinenTutkinto')).toContainText(
-      '39/011/2014'
+    // Perusteen nimi täydennetään ePerusteista; koulutuskoodin nimi on
+    // koodistossa "Ajoneuvoalan perustutkinto".
+    await expect(page.getByTestId('oo.0.suoritukset.0.koulutus')).toHaveText(
+      'Autoalan perustutkinto'
     )
 
     const opiskeluoikeus = await haeLuotuOpiskeluoikeus(page)
@@ -120,6 +119,9 @@ test.describe('Ahvenanmaan ammatillisen koulutuksen opiskeluoikeuden luonti', ()
     expect(suoritus.suorituskieli.koodiarvo).toEqual('SV')
     expect(suoritus.koulutusmoduuli.perusteenDiaarinumero).toEqual(
       '39/011/2014'
+    )
+    expect(suoritus.koulutusmoduuli.perusteenNimi.fi).toEqual(
+      'Autoalan perustutkinto'
     )
   })
 

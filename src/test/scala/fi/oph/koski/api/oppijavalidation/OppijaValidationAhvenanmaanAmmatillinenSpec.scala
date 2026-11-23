@@ -5,6 +5,7 @@ import fi.oph.koski.{KoskiApplicationForTests, KoskiHttpSpec}
 import fi.oph.koski.api.misc.PutOpiskeluoikeusTestMethods
 import fi.oph.koski.documentation.AhvenanmaanAmmatillinenExampleData
 import fi.oph.koski.documentation.AhvenanmaanAmmatillinenExampleData._
+import fi.oph.koski.documentation.AmmatillinenExampleData
 import fi.oph.koski.documentation.AmmatillinenExampleData.lisätietoOsaamistavoitteet
 import fi.oph.koski.documentation.ExampleData.{opiskeluoikeusLäsnä, ruotsinKieli}
 import fi.oph.koski.eperusteetvalidation.{EPerusteetFiller, EPerusteisiinPerustuvaValidator}
@@ -121,6 +122,23 @@ class OppijaValidationAhvenanmaanAmmatillinenSpec
       lastOpiskeluoikeusByHetu(defaultHenkilö).suoritukset.head.koulutusmoduuli match {
         case k: AmmatillinenTutkintoKoulutus => k.koulutustyyppi.map(_.koodistoUri) should equal(Some("koulutustyyppi"))
         case k => fail(s"Odottamaton koulutusmoduuli $k")
+      }
+    }
+
+    "Perusteen nimi täydennetään ePerusteista, ja siirretty nimi korvataan" in {
+      val koulutus = AmmatillinenExampleData.autoalanPerustutkinto.copy(perusteenNimi = Some(Finnish("Siirretty nimi")))
+      val suoritukset = List(
+        AhvenanmaanAmmatillisenTutkinnonSuoritus(koulutusmoduuli = koulutus, toimipiste = ålandsYrkesgymnasiumToimipiste, suorituskieli = ruotsinKieli),
+        AhvenanmaanAmmatillisenTutkinnonOsittainenSuoritus(koulutusmoduuli = koulutus, toimipiste = ålandsYrkesgymnasiumToimipiste, suorituskieli = ruotsinKieli)
+      )
+      suoritukset.foreach { suoritus =>
+        setupOppijaWithOpiskeluoikeus(keskeneräinen(suoritus)) {
+          verifyResponseStatusOk()
+        }
+        lastOpiskeluoikeusByHetu(defaultHenkilö).suoritukset.head.koulutusmoduuli match {
+          case k: AmmatillinenTutkintoKoulutus => k.perusteenNimi.map(_.get("fi")) should equal(Some("Autoalan perustutkinto"))
+          case k => fail(s"Odottamaton koulutusmoduuli $k")
+        }
       }
     }
 

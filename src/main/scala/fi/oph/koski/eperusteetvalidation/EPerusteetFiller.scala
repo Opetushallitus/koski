@@ -70,6 +70,14 @@ class EPerusteetFiller(
           }))
         case o => o
       })
+    case a: AhvenanmaanAmmatillinenOpiskeluoikeus =>
+      def perusteenNimellä(koulutus: AmmatillinenTutkintoKoulutus) =
+        koulutus.copy(perusteenNimi = koulutus.perusteenDiaarinumero.flatMap(diaarinumero => perusteenNimi(diaarinumero, Some(oo.getVaadittuPerusteenVoimassaolopäivä))))
+      a.withSuoritukset(
+        a.suoritukset.map {
+          case s: AhvenanmaanAmmatillisenTutkinnonSuoritus => s.copy(koulutusmoduuli = perusteenNimellä(s.koulutusmoduuli))
+          case s: AhvenanmaanAmmatillisenTutkinnonOsittainenSuoritus => s.copy(koulutusmoduuli = perusteenNimellä(s.koulutusmoduuli))
+        })
     case x => x
   }
 
