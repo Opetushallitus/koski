@@ -306,8 +306,8 @@ importers:
         specifier: 4.9.1
         version: 4.9.1(supports-color@8.1.1)
       less-loader:
-        specifier: 13.1.0
-        version: 13.1.0(less@4.9.1(supports-color@8.1.1))(webpack@5.112.2)
+        specifier: 13.1.1
+        version: 13.1.1(less@4.9.1(supports-color@8.1.1))(webpack@5.112.2)
       mocha:
         specifier: 12.0.3
         version: 12.0.3
@@ -2340,8 +2340,8 @@ packages:
     resolution: {integrity: sha512-dcS1ul+9tmeD95T+x28/ehLgd9mENa3LsvDTtzm3vyBEO7RPptvAD+t44WVXaUjTBRcrpFeFlC8WCruUR456hw==}
     engines: {node: '>=0.10.0'}
 
-  less-loader@13.1.0:
-    resolution: {integrity: sha512-oUzF3nuumJeMbYSwCVcEb/DwNn+0R/YdeC9OLIf+oQqcwF2/I42Z4972aNPxUy6R8uEkNdX6vEhYs45T+wiooQ==}
+  less-loader@13.1.1:
+    resolution: {integrity: sha512-v/jsUf6w3TC6nBNVf11W7iROz7PCeMOPAy+HMjM2LZ1RLKnUlStJpyd1ev4EpUzulUvtUVzYSOlq9sPQSpDB6A==}
     engines: {node: '>= 22.11.0'}
     peerDependencies:
       '@rspack/core': 0.x || ^1.0.0 || ^2.0.0-0
@@ -5426,7 +5426,7 @@ snapshots:
 
   kind-of@6.0.3: {}
 
-  less-loader@13.1.0(less@4.9.1(supports-color@8.1.1))(webpack@5.112.2):
+  less-loader@13.1.1(less@4.9.1(supports-color@8.1.1))(webpack@5.112.2):
     dependencies:
       '@types/less': 3.0.8
       less: 4.9.1(supports-color@8.1.1)
