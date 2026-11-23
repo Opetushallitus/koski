@@ -36,6 +36,7 @@ jobs:
       contents: read
       id-token: write
       packages: write
+      pull-requests: read
     secrets:
       ECR_ROLE: ${{ secrets.ECR_ROLE }}
       DEPLOY_ROLE: ${{ secrets.DEPLOY_ROLE }}
