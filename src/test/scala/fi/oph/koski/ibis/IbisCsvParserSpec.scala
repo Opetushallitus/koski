@@ -37,7 +37,7 @@ class IbisCsvParserSpec extends AnyFreeSpec with TestEnvironment with Matchers {
       rivi.totalPoints should be(Some(37))
       rivi.resultCode should be("D")
       rivi.combinedGrade should be(Some(2))
-      rivi.session.koodiarvo should be("2016K")
+      rivi.session should be(IbisSession(2016, "MAY"))
     }
 
     "lukee toistuvat oppiainekentät kielineen" in {
@@ -65,7 +65,6 @@ class IbisCsvParserSpec extends AnyFreeSpec with TestEnvironment with Matchers {
       retakeRivi.resultCode should be("B")
       retakeRivi.subjects.head.additional should be(true)
       retakeRivi.subjects.head.session should be(IbisSession(2015, "NOVEMBER"))
-      retakeRivi.subjects.head.session.koodiarvo should be("2015S")
       retakeRivi.subjects(1).grade should be("N")
     }
 
@@ -82,12 +81,6 @@ class IbisCsvParserSpec extends AnyFreeSpec with TestEnvironment with Matchers {
       rivit should have length 3
       virheet.map(_.line) should be(List(3))
       virheet.head.message should include("ei ole jaollinen luvulla 7")
-    }
-
-    "hylkää tuntemattoman tutkintokerran kuukauden" in {
-      val (virheet, rivit) = IbisCsvParser.parse(esimerkki.replace("\"2015\",\"NOVEMBER\"", "\"2015\",\"JUNE\""))
-      rivit should have length 3
-      virheet.head.message should include("JUNE")
     }
   }
 

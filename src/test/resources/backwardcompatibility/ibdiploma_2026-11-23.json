@@ -1,5 +1,4 @@
 {
-  "ignoreKoskiValidator" : true,
   "henkilö" : {
     "hetu" : "040701A002J",
     "etunimet" : "Dani",
@@ -8,34 +7,7 @@
   },
   "opiskeluoikeudet" : [ {
     "oppilaitos" : {
-      "oid" : "1.2.246.562.10.62858797335",
-      "oppilaitosnumero" : {
-        "koodiarvo" : "00082",
-        "nimi" : {
-          "fi" : "Ressun lukio",
-          "sv" : "Ressun lukio",
-          "en" : "Ressun lukio"
-        },
-        "lyhytNimi" : {
-          "fi" : "Ressun lukio",
-          "sv" : "Ressun lukio",
-          "en" : "Ressun lukio"
-        },
-        "koodistoUri" : "oppilaitosnumero"
-      },
-      "nimi" : {
-        "fi" : "Ressun lukio",
-        "sv" : "Ressun lukio",
-        "en" : "Ressun lukio"
-      },
-      "kotipaikka" : {
-        "koodiarvo" : "091",
-        "nimi" : {
-          "fi" : "Helsinki",
-          "sv" : "Helsingfors"
-        },
-        "koodistoUri" : "kunta"
-      }
+      "oid" : "1.2.246.562.10.61324755312"
     },
     "tila" : {
       "opiskeluoikeusjaksot" : [ {
@@ -58,74 +30,17 @@
         }
       },
       "toimipiste" : {
-        "oid" : "1.2.246.562.10.62858797335",
-        "oppilaitosnumero" : {
-          "koodiarvo" : "00082",
-          "nimi" : {
-            "fi" : "Ressun lukio",
-            "sv" : "Ressun lukio",
-            "en" : "Ressun lukio"
-          },
-          "lyhytNimi" : {
-            "fi" : "Ressun lukio",
-            "sv" : "Ressun lukio",
-            "en" : "Ressun lukio"
-          },
-          "koodistoUri" : "oppilaitosnumero"
-        },
-        "nimi" : {
-          "fi" : "Ressun lukio",
-          "sv" : "Ressun lukio",
-          "en" : "Ressun lukio"
-        },
-        "kotipaikka" : {
-          "koodiarvo" : "091",
-          "nimi" : {
-            "fi" : "Helsinki",
-            "sv" : "Helsingfors"
-          },
-          "koodistoUri" : "kunta"
-        }
+        "oid" : "1.2.246.562.10.61324755312"
       },
       "vahvistus" : {
         "päivä" : "2016-07-06",
         "myöntäjäOrganisaatio" : {
-          "oid" : "1.2.246.562.10.62858797335",
-          "oppilaitosnumero" : {
-            "koodiarvo" : "00082",
-            "nimi" : {
-              "fi" : "Ressun lukio",
-              "sv" : "Ressun lukio",
-              "en" : "Ressun lukio"
-            },
-            "lyhytNimi" : {
-              "fi" : "Ressun lukio",
-              "sv" : "Ressun lukio",
-              "en" : "Ressun lukio"
-            },
-            "koodistoUri" : "oppilaitosnumero"
-          },
-          "nimi" : {
-            "fi" : "Ressun lukio",
-            "sv" : "Ressun lukio",
-            "en" : "Ressun lukio"
-          },
-          "kotipaikka" : {
-            "koodiarvo" : "091",
-            "nimi" : {
-              "fi" : "Helsinki",
-              "sv" : "Helsingfors"
-            },
-            "koodistoUri" : "kunta"
-          }
+          "oid" : "1.2.246.562.10.61324755312"
         }
       },
-      "tutkintokerta" : {
-        "koodiarvo" : "2016K",
-        "vuosi" : 2016,
-        "vuodenaika" : {
-          "fi" : "kevät"
-        }
+      "examinationSession" : {
+        "year" : 2016,
+        "month" : 5
       },
       "totalPoints" : 37,
       "combinedGrade" : 2,
@@ -152,12 +67,9 @@
             "koodistoUri" : "kielivalikoima"
           }
         },
-        "tutkintokerta" : {
-          "koodiarvo" : "2016K",
-          "vuosi" : 2016,
-          "vuodenaika" : {
-            "fi" : "kevät"
-          }
+        "examinationSession" : {
+          "year" : 2016,
+          "month" : 5
         },
         "arviointi" : [ {
           "arvosana" : {
@@ -191,12 +103,9 @@
             "koodistoUri" : "kielivalikoima"
           }
         },
-        "tutkintokerta" : {
-          "koodiarvo" : "2016K",
-          "vuosi" : 2016,
-          "vuodenaika" : {
-            "fi" : "kevät"
-          }
+        "examinationSession" : {
+          "year" : 2016,
+          "month" : 5
         },
         "arviointi" : [ {
           "arvosana" : {
@@ -226,12 +135,9 @@
             "koodistoUri" : "oppiaineentasoib"
           }
         },
-        "tutkintokerta" : {
-          "koodiarvo" : "2016K",
-          "vuosi" : 2016,
-          "vuodenaika" : {
-            "fi" : "kevät"
-          }
+        "examinationSession" : {
+          "year" : 2016,
+          "month" : 5
         },
         "arviointi" : [ {
           "arvosana" : {
@@ -261,12 +167,9 @@
             "koodistoUri" : "oppiaineentasoib"
           }
         },
-        "tutkintokerta" : {
-          "koodiarvo" : "2016K",
-          "vuosi" : 2016,
-          "vuodenaika" : {
-            "fi" : "kevät"
-          }
+        "examinationSession" : {
+          "year" : 2016,
+          "month" : 5
         },
         "arviointi" : [ {
           "arvosana" : {
@@ -296,12 +199,9 @@
             "koodistoUri" : "oppiaineentasoib"
           }
         },
-        "tutkintokerta" : {
-          "koodiarvo" : "2016K",
-          "vuosi" : 2016,
-          "vuodenaika" : {
-            "fi" : "kevät"
-          }
+        "examinationSession" : {
+          "year" : 2016,
+          "month" : 5
         },
         "arviointi" : [ {
           "arvosana" : {
@@ -331,12 +231,9 @@
             "koodistoUri" : "oppiaineentasoib"
           }
         },
-        "tutkintokerta" : {
-          "koodiarvo" : "2016K",
-          "vuosi" : 2016,
-          "vuodenaika" : {
-            "fi" : "kevät"
-          }
+        "examinationSession" : {
+          "year" : 2016,
+          "month" : 5
         },
         "arviointi" : [ {
           "arvosana" : {
@@ -368,12 +265,9 @@
             }
           }
         },
-        "tutkintokerta" : {
-          "koodiarvo" : "2016K",
-          "vuosi" : 2016,
-          "vuodenaika" : {
-            "fi" : "kevät"
-          }
+        "examinationSession" : {
+          "year" : 2016,
+          "month" : 5
         },
         "arviointi" : [ {
           "arvosana" : {
@@ -398,12 +292,9 @@
             "koodistoUri" : "oppiaineetib"
           }
         },
-        "tutkintokerta" : {
-          "koodiarvo" : "2016K",
-          "vuosi" : 2016,
-          "vuodenaika" : {
-            "fi" : "kevät"
-          }
+        "examinationSession" : {
+          "year" : 2016,
+          "month" : 5
         },
         "arviointi" : [ {
           "arvosana" : {

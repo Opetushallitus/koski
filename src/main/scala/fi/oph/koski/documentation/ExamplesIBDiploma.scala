@@ -3,7 +3,6 @@ package fi.oph.koski.documentation
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
 import fi.oph.koski.henkilo.MockOppijat.asUusiOppija
 import fi.oph.koski.ibis.IBO
-import fi.oph.koski.schema.LocalizedString.finnish
 import fi.oph.koski.schema._
 
 import java.time.LocalDate
@@ -14,7 +13,7 @@ object ExamplesIBDiploma {
   val iboTunniste = "dip123"
   val ibKoulutuksenOpiskeluoikeus: IBOpiskeluoikeus = ExamplesIB.opiskeluoikeus.copy(iboTunniste = Some(iboTunniste))
   val vahvistuspäivä: LocalDate = date(2016, 7, 6)
-  val tutkintokerta: IBTutkintokerta = IBTutkintokerta("2016K", 2016, finnish("kevät"))
+  val examinationSession: IBExaminationSession = IBExaminationSession(year = 2016, month = 5)
   val englanti: Option[Koodistokoodiviite] = Some(Koodistokoodiviite("EN", "kieli"))
 
   def oppiaineenArviointi(arvosana: String): Option[List[IBDiplomanOppiaineenArviointi]] =
@@ -23,7 +22,7 @@ object ExamplesIBDiploma {
   def muuOppiaine(tunniste: String, taso: String, arvosana: String, additionalSubject: Boolean = false): IBDiplomanOppiaineenSuoritus =
     IBDiplomanOppiaineenSuoritus(
       koulutusmoduuli = IBDiplomanMuuOppiaine(Koodistokoodiviite(tunniste, "oppiaineetib"), Some(Koodistokoodiviite(taso, "oppiaineentasoib"))),
-      tutkintokerta = tutkintokerta,
+      examinationSession = examinationSession,
       arviointi = oppiaineenArviointi(arvosana),
       suorituskieli = englanti,
       additionalSubject = additionalSubject,
@@ -36,7 +35,7 @@ object ExamplesIBDiploma {
         Some(Koodistokoodiviite(taso, "oppiaineentasoib")),
         Koodistokoodiviite(kieli, "kielivalikoima"),
       ),
-      tutkintokerta = tutkintokerta,
+      examinationSession = examinationSession,
       arviointi = oppiaineenArviointi(arvosana),
       suorituskieli = Some(Koodistokoodiviite(kieli, "kieli")),
     )
@@ -47,7 +46,7 @@ object ExamplesIBDiploma {
   def extendedEssay(aine: String, arvosana: String): IBDiplomanCoreSuoritus =
     IBDiplomanCoreSuoritus(
       koulutusmoduuli = IBDiplomanExtendedEssay(aine = Some(IBDiplomanMuuOppiaine(Koodistokoodiviite(aine, "oppiaineetib"), None))),
-      tutkintokerta = tutkintokerta,
+      examinationSession = examinationSession,
       arviointi = coreArviointi(arvosana),
       suorituskieli = englanti,
     )
@@ -55,7 +54,7 @@ object ExamplesIBDiploma {
   def theoryOfKnowledge(arvosana: String): IBDiplomanCoreSuoritus =
     IBDiplomanCoreSuoritus(
       koulutusmoduuli = IBDiplomanTheoryOfKnowledge(),
-      tutkintokerta = tutkintokerta,
+      examinationSession = examinationSession,
       arviointi = coreArviointi(arvosana),
       suorituskieli = englanti,
     )
@@ -63,7 +62,7 @@ object ExamplesIBDiploma {
   val suoritus: IBDiplomanSuoritus = IBDiplomanSuoritus(
     toimipiste = IBO.oppilaitos,
     vahvistus = Some(Päivämäärävahvistus(vahvistuspäivä, IBO.oppilaitos)),
-    tutkintokerta = tutkintokerta,
+    examinationSession = examinationSession,
     totalPoints = Some(37),
     combinedGrade = Some(2),
     result = Koodistokoodiviite("D", "ibdiplomaresult"),

@@ -45,7 +45,6 @@ class IbisService(application: KoskiApplication) {
   private lazy val repository = new IbisOpiskeluoikeusRepository(application.masterDatabase.db)
   private lazy val converter = new IbisOpiskeluoikeusConverter(
     application.koodistoViitePalvelu,
-    application.koskiLocalizationRepository,
     application.validatingAndResolvingExtractor,
   )
 

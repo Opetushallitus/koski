@@ -1,6 +1,6 @@
+import { IBExaminationSession } from './IBExaminationSession'
 import { Koodistokoodiviite } from './Koodistokoodiviite'
 import { LocalizedString } from './LocalizedString'
-import { IBTutkintokerta } from './IBTutkintokerta'
 import { IBTutkinto } from './IBTutkinto'
 import { OrganisaatioWithOid } from './OrganisaatioWithOid'
 import { IBDiplomanOsasuoritus } from './IBDiplomanOsasuoritus'
@@ -13,10 +13,10 @@ import { Päivämäärävahvistus } from './Paivamaaravahvistus'
  */
 export type IBDiplomanSuoritus = {
   $class: 'fi.oph.koski.schema.IBDiplomanSuoritus'
+  examinationSession: IBExaminationSession
   tyyppi: Koodistokoodiviite<'suorituksentyyppi', 'ibdiploma'>
   tila?: Koodistokoodiviite<'suorituksentila', string>
   result: Koodistokoodiviite<'ibdiplomaresult', string>
-  tutkintokerta: IBTutkintokerta
   totalPoints?: number
   combinedGrade?: number
   koulutusmoduuli: IBTutkinto
@@ -26,10 +26,10 @@ export type IBDiplomanSuoritus = {
 }
 
 export const IBDiplomanSuoritus = (o: {
+  examinationSession: IBExaminationSession
   tyyppi?: Koodistokoodiviite<'suorituksentyyppi', 'ibdiploma'>
   tila?: Koodistokoodiviite<'suorituksentila', string>
   result: Koodistokoodiviite<'ibdiplomaresult', string>
-  tutkintokerta: IBTutkintokerta
   totalPoints?: number
   combinedGrade?: number
   koulutusmoduuli?: IBTutkinto

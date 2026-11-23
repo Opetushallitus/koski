@@ -55,13 +55,13 @@ object IbisCsvParser {
       .filter(_.exists(_.nonEmpty))
       .map {
         case List(year, month, name, level, grade, additional, language) =>
-          IbisSubject(year.toInt, validMonth(month), name, level.toUpperCase, grade.toUpperCase, additional.equalsIgnoreCase("Y"), language)
+          IbisSubject(year.toInt, month.toUpperCase, name, level.toUpperCase, grade.toUpperCase, additional.equalsIgnoreCase("Y"), language)
         case group =>
           throw new IllegalArgumentException(s"Virheellinen oppiainekenttien ryhmä: $group")
       }
     IbisRecord(
       year = fields(0).toInt,
-      month = validMonth(fields(1)),
+      month = fields(1).toUpperCase,
       school = fields(2),
       iboTunniste = fields(3),
       dateOfBirth = parseDate(fields(4)),
@@ -77,11 +77,6 @@ object IbisCsvParser {
       combinedGrade = parseInt(fields(14)),
       subjects = subjects,
     )
-  }
-
-  private def validMonth(month: String): String = {
-    val normalized = month.toUpperCase
-    if (IbisSession.validMonth(normalized)) normalized else throw new IllegalArgumentException(s"Tuntematon tutkintokerran kuukausi $month")
   }
 
   // EE/TOK POINTS on muotoa "+2"

@@ -17,7 +17,6 @@ class IbisOpiskeluoikeusConverterSpec extends AnyFreeSpec with TestEnvironment w
 
   private val converter = new IbisOpiskeluoikeusConverter(
     KoskiApplicationForTests.koodistoViitePalvelu,
-    KoskiApplicationForTests.koskiLocalizationRepository,
     KoskiApplicationForTests.validatingAndResolvingExtractor,
   )
 
@@ -51,16 +50,15 @@ class IbisOpiskeluoikeusConverterSpec extends AnyFreeSpec with TestEnvironment w
       suoritus.totalPoints should be(Some(37))
       suoritus.combinedGrade should be(Some(2))
       suoritus.result.koodiarvo should be("D")
-      suoritus.tutkintokerta should be(IBTutkintokerta("2016K", 2016, suoritus.tutkintokerta.vuodenaika))
-      suoritus.tutkintokerta.vuodenaika.get("fi") should be("kevät")
+      suoritus.examinationSession should be(IBExaminationSession(year = 2016, month = 5))
       suoritus.vahvistus.map(_.päivä) should be(Some(vahvistuspäivä))
       suoritus.toimipiste.oid should be(IBO.oid)
       suoritus.vahvistus.map(_.myöntäjäOrganisaatio).collect { case o: OrganisaatioWithOid => o.oid } should be(Some(IBO.oid))
     }
 
     "merkitsee osasuorituksille tutkintokerran" in {
-      val kerrat = suoritus.osasuoritukset.toList.flatten.map(_.tutkintokerta).distinct
-      kerrat.map(k => (k.koodiarvo, k.vuosi, k.vuodenaika.get("fi"))) should be(List(("2016K", 2016, "kevät")))
+      val kerrat = suoritus.osasuoritukset.toList.flatten.map(_.examinationSession).distinct
+      kerrat should be(List(IBExaminationSession(year = 2016, month = 5)))
     }
 
     "muuntaa oppiaineet tasoineen, kielineen ja arvosanoineen, myös katkaistulla nimellä" in {
@@ -108,8 +106,7 @@ class IbisOpiskeluoikeusConverterSpec extends AnyFreeSpec with TestEnvironment w
       osasuoritukset should have length 1
       val oppiaine = osasuoritukset.head.asInstanceOf[IBDiplomanOppiaineenSuoritus]
       oppiaine.additionalSubject should be(true)
-      oppiaine.tutkintokerta.koodiarvo should be("2015S")
-      oppiaine.tutkintokerta.vuosi should be(2015)
+      oppiaine.examinationSession should be(IBExaminationSession(year = 2015, month = 11))
     }
 
     "kertoo pois jätetystä oppiaineesta varoituksella" in {
@@ -204,7 +201,7 @@ class IbisOpiskeluoikeusConverterSpec extends AnyFreeSpec with TestEnvironment w
     }
 
     "säilyttää aiemmalla tutkintokerralla suoritetun oppiaineen tutkintokerran" in {
-      oppiaineet.find(_.koulutusmoduuli.tunniste.koodiarvo == "B").map(_.tutkintokerta.koodiarvo) should be(Some("2015K"))
+      oppiaineet.find(_.koulutusmoduuli.tunniste.koodiarvo == "B").map(_.examinationSession) should be(Some(IBExaminationSession(year = 2015, month = 5)))
     }
 
     "tunnistaa IBIS:n katkaiseman matematiikan nimen" in {

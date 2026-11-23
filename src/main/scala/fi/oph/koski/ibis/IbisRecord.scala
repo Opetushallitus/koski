@@ -42,16 +42,7 @@ object IbisSubject {
   val noGradeCodes: Map[String, String] = Map("N" -> "no grade issued", "P" -> "pending")
 }
 
-case class IbisSession(year: Int, month: String) {
-  def koodiarvo: String = s"$year${IbisSession.vuodenaikakirjaimet(month)}"
-}
-
-// Tutkintokerrat koodataan kuten ylioppilastutkinnossa: toukokuun tutkintokerta on kevät ja marraskuun syksy.
-object IbisSession {
-  val vuodenaikakirjaimet: Map[String, String] = Map("MAY" -> "K", "NOVEMBER" -> "S")
-  val lokalisointiavaimet: Map[String, String] = Map("MAY" -> "kevät", "NOVEMBER" -> "syksy")
-  def validMonth(month: String): Boolean = vuodenaikakirjaimet.contains(month)
-}
+case class IbisSession(year: Int, month: String)
 
 object IbisCategory {
   val Diploma = "DIPLOMA"

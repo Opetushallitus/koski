@@ -53,7 +53,6 @@ class IbisOppiainekarttaSpec extends AnyFreeSpec with TestEnvironment with Match
     "tuottaa jokaisesta oppiaineesta skeeman ja koodistojen mukaisen IB Diploman oppiaineen" in {
       val converter = new IbisOpiskeluoikeusConverter(
         KoskiApplicationForTests.koodistoViitePalvelu,
-        KoskiApplicationForTests.koskiLocalizationRepository,
         KoskiApplicationForTests.validatingAndResolvingExtractor,
       )
       val virheet = IbisOppiainekartta.oppiaineet.keys.toList.sorted.flatMap { nimi =>

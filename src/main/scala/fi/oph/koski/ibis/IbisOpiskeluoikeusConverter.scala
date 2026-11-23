@@ -2,14 +2,13 @@ package fi.oph.koski.ibis
 
 import fi.oph.koski.http.HttpStatus
 import fi.oph.koski.koodisto.KoodistoViitePalvelu
-import fi.oph.koski.localization.LocalizationRepository
 import fi.oph.koski.schema._
 import fi.oph.koski.validation.ValidatingAndResolvingExtractor
 import fi.oph.scalaschema.{SerializationContext, Serializer}
 import org.json4s.JsonAST.JString
 import org.json4s.jackson.JsonMethods
 
-import java.time.LocalDate
+import java.time.{LocalDate, Month}
 
 case class IbisKonversiovirhe(iboTunniste: String, syyt: List[String])
 
@@ -29,7 +28,6 @@ object IBO {
 
 class IbisOpiskeluoikeusConverter(
   koodistoViitePalvelu: KoodistoViitePalvelu,
-  localizations: LocalizationRepository,
   validatingAndResolvingExtractor: ValidatingAndResolvingExtractor,
 ) {
   // Virheet kerätään listaan, jotta rivin kaikki virheet saadaan raportille kerralla.
@@ -43,6 +41,8 @@ class IbisOpiskeluoikeusConverter(
   private val tuotavatCategoryArvot = Set(IbisCategory.Diploma, IbisCategory.Retake)
   private val tuotavatTulokset = Set(IbisResultCode.DiplomaAwarded, IbisResultCode.BilingualDiplomaAwarded)
 
+  private val tutkintokertojenKuukaudet = Set(Month.MAY, Month.NOVEMBER)
+
   // vahvistuspäivä: todistuksen myöntämispäivä, jota ei ole IBIS-tiedostossa.
   def convert(record: IbisRecord, diplomanOid: Option[String], vahvistuspäivä: LocalDate): Either[IbisKonversiovirhe, IBDiplomaOpiskeluoikeus] = {
     val opiskeluoikeus = for {
@@ -50,9 +50,9 @@ class IbisOpiskeluoikeusConverter(
       _ <- tarkistaTuotava(record)
       diploma <- yhdessä(
         koodi("ibdiplomaresult", record.resultCode),
-        tutkintokerta(record.session),
+        examinationSession(record.session),
         kaikki(arvioidutOppiaineet(record).map(convertSubject(vahvistuspäivä))),
-      ) { (result, kerta, osasuoritukset) =>
+      ) { (result, session, osasuoritukset) =>
         IBDiplomaOpiskeluoikeus(
           oid = diplomanOid,
           oppilaitos = Some(IBO.oppilaitos),
@@ -62,7 +62,7 @@ class IbisOpiskeluoikeusConverter(
           suoritukset = List(IBDiplomanSuoritus(
             toimipiste = IBO.oppilaitos,
             vahvistus = Some(Päivämäärävahvistus(vahvistuspäivä, IBO.oppilaitos)),
-            tutkintokerta = kerta,
+            examinationSession = session,
             totalPoints = record.totalPoints,
             combinedGrade = record.combinedGrade,
             result = result,
@@ -126,10 +126,10 @@ class IbisOpiskeluoikeusConverter(
           taso <- koodi("oppiaineentasoib", subject.level)
           moduuli <- diplomanOppiaine(oppiaine, Some(taso))
         } yield moduuli
-        yhdessä(koulutusmoduuli, tutkintokerta(subject.session), koodi("arviointiasteikkoib", subject.grade)) { (moduuli, kerta, arvosana) =>
+        yhdessä(koulutusmoduuli, examinationSession(subject.session), koodi("arviointiasteikkoib", subject.grade)) { (moduuli, session, arvosana) =>
           IBDiplomanOppiaineenSuoritus(
             koulutusmoduuli = moduuli,
-            tutkintokerta = kerta,
+            examinationSession = session,
             arviointi = Some(List(IBDiplomanOppiaineenArviointi(arvosana, päivä))),
             suorituskieli = kieli,
             additionalSubject = subject.additional,
@@ -146,10 +146,10 @@ class IbisOpiskeluoikeusConverter(
     päivä: Option[LocalDate],
     kieli: Option[Koodistokoodiviite],
   ): Muunnos[IBDiplomanCoreSuoritus] =
-    yhdessä(koulutusmoduuli, tutkintokerta(subject.session), koodi("arviointiasteikkocorerequirementsib", subject.grade)) { (moduuli, kerta, arvosana) =>
+    yhdessä(koulutusmoduuli, examinationSession(subject.session), koodi("arviointiasteikkocorerequirementsib", subject.grade)) { (moduuli, session, arvosana) =>
       IBDiplomanCoreSuoritus(
         koulutusmoduuli = moduuli,
-        tutkintokerta = kerta,
+        examinationSession = session,
         arviointi = Some(List(IBDiplomanCoreArviointi(arvosana, päivä))),
         suorituskieli = kieli,
       )
@@ -167,9 +167,9 @@ class IbisOpiskeluoikeusConverter(
       }
     }
 
-  private def tutkintokerta(session: IbisSession): Muunnos[IBTutkintokerta] =
-    IbisSession.lokalisointiavaimet.get(session.month)
-      .map(avain => IBTutkintokerta(session.koodiarvo, session.year, localizations.get(avain)))
+  private def examinationSession(session: IbisSession): Muunnos[IBExaminationSession] =
+    tutkintokertojenKuukaudet.find(_.name == session.month)
+      .map(kuukausi => IBExaminationSession(session.year, kuukausi.getValue))
       .toRight(List(s"Tuntematon tutkintokerran kuukausi ${session.month}"))
 
   private def koodi(koodistoUri: String, koodiarvo: String): Muunnos[Koodistokoodiviite] =

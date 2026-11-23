@@ -62,7 +62,7 @@ case class IBDiplomanSuoritus(
   // tuonnin yhteydessä.
   vahvistus: Option[Päivämäärävahvistus] = None,
   @Description("Tutkintokerta, jossa diploma myönnettiin")
-  tutkintokerta: IBTutkintokerta,
+  examinationSession: IBExaminationSession,
   @Description("Diploman kokonaispistemäärä")
   @MinValue(0)
   @MaxValue(45)
@@ -81,24 +81,23 @@ case class IBDiplomanSuoritus(
 
 @Title("IB-tutkintokerta")
 @Description("IB-tutkintokerta (examination session), joita on vuosittain kaksi: toukokuu ja marraskuu")
-case class IBTutkintokerta(
-  @Description("Tutkintokerran tunniste muodossa VVVVX, jossa X on K (kevät, May session) tai S (syksy, November session)")
-  @RegularExpression("^[0-9]{4}[KS]$")
-  koodiarvo: String,
-  vuosi: Int,
-  vuodenaika: LocalizedString
+case class IBExaminationSession(
+  year: Int,
+  @MinValue(1)
+  @MaxValue(12)
+  month: Int,
 )
 
 trait IBDiplomanOsasuoritus extends Vahvistukseton with DuplikaatitSallittu with MahdollisestiSuorituskielellinen {
   @Description("Tutkintokerta, jossa tulos on saatu")
-  def tutkintokerta: IBTutkintokerta
+  def examinationSession: IBExaminationSession
 }
 
 @Title("IB Diploman oppiaineen suoritus")
 case class IBDiplomanOppiaineenSuoritus(
   @Title("Oppiaine")
   koulutusmoduuli: IBDiplomanOppiaine,
-  tutkintokerta: IBTutkintokerta,
+  examinationSession: IBExaminationSession,
   arviointi: Option[List[IBDiplomanOppiaineenArviointi]] = None,
   suorituskieli: Option[Koodistokoodiviite] = None,
   @Description("Oppiaine ei kuulu diploman vaatimuksiin eikä vaikuta kokonaispistemäärään (IBIS ADDITIONAL SUBJECT)")
@@ -111,7 +110,7 @@ case class IBDiplomanOppiaineenSuoritus(
 case class IBDiplomanCoreSuoritus(
   @Title("Oppiaine")
   koulutusmoduuli: IBDiplomanCoreOppiaine,
-  tutkintokerta: IBTutkintokerta,
+  examinationSession: IBExaminationSession,
   arviointi: Option[List[IBDiplomanCoreArviointi]] = None,
   suorituskieli: Option[Koodistokoodiviite] = None,
   @KoodistoKoodiarvo("ibdiplomancore")

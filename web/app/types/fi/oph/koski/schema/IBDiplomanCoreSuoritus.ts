@@ -1,7 +1,7 @@
+import { IBExaminationSession } from './IBExaminationSession'
 import { IBDiplomanCoreArviointi } from './IBDiplomanCoreArviointi'
 import { Koodistokoodiviite } from './Koodistokoodiviite'
 import { LocalizedString } from './LocalizedString'
-import { IBTutkintokerta } from './IBTutkintokerta'
 import { IBDiplomanCoreOppiaine } from './IBDiplomanCoreOppiaine'
 
 /**
@@ -11,20 +11,20 @@ import { IBDiplomanCoreOppiaine } from './IBDiplomanCoreOppiaine'
  */
 export type IBDiplomanCoreSuoritus = {
   $class: 'fi.oph.koski.schema.IBDiplomanCoreSuoritus'
+  examinationSession: IBExaminationSession
   arviointi?: Array<IBDiplomanCoreArviointi>
   tyyppi: Koodistokoodiviite<'suorituksentyyppi', 'ibdiplomancore'>
   tila?: Koodistokoodiviite<'suorituksentila', string>
   suorituskieli?: Koodistokoodiviite<'kieli', string>
-  tutkintokerta: IBTutkintokerta
   koulutusmoduuli: IBDiplomanCoreOppiaine
 }
 
 export const IBDiplomanCoreSuoritus = (o: {
+  examinationSession: IBExaminationSession
   arviointi?: Array<IBDiplomanCoreArviointi>
   tyyppi?: Koodistokoodiviite<'suorituksentyyppi', 'ibdiplomancore'>
   tila?: Koodistokoodiviite<'suorituksentila', string>
   suorituskieli?: Koodistokoodiviite<'kieli', string>
-  tutkintokerta: IBTutkintokerta
   koulutusmoduuli: IBDiplomanCoreOppiaine
 }): IBDiplomanCoreSuoritus => ({
   tyyppi: Koodistokoodiviite({
