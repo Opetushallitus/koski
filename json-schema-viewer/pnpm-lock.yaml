@@ -240,11 +240,11 @@ importers:
         specifier: 3.10.1
         version: 3.10.1
       stylelint:
-        specifier: 18.0.0
-        version: 18.0.0
+        specifier: 18.1.0
+        version: 18.1.0
       stylelint-no-unsupported-browser-features:
         specifier: 8.1.2
-        version: 8.1.2(stylelint@18.0.0)
+        version: 8.1.2(stylelint@18.1.0)
       swc-loader:
         specifier: 0.2.7
         version: 0.2.7(@swc/core@1.16.22)(webpack@5.112.2)
@@ -1866,8 +1866,8 @@ packages:
     peerDependencies:
       stylelint: '>=16.0.2'
 
-  stylelint@18.0.0:
-    resolution: {integrity: sha512-kI10GsHXQvsH/AcklVZdQgwDuxtHi+A+h1Ujzd7h9LDf3e5jQiLQkWFlPtpynX3E6oVWHG1wo9v6dL0Mr+nnSA==}
+  stylelint@18.1.0:
+    resolution: {integrity: sha512-QbF/IY7KY6lZRhYU/vmPU1KYxc71wgkXdgeptqzTh3lbnZps6WHaskfPjpL6Fh4JaCzwkKKitVcMrpfQTSwwPA==}
     engines: {node: ^22.22.2 || ^24.15.0 || >=26.0.0}
     hasBin: true
 
@@ -3517,14 +3517,14 @@ snapshots:
       postcss: 8.5.33
       postcss-selector-parser: 7.2.1
 
-  stylelint-no-unsupported-browser-features@8.1.2(stylelint@18.0.0):
+  stylelint-no-unsupported-browser-features@8.1.2(stylelint@18.1.0):
     dependencies:
       browserslist: 4.29.6
       doiuse: 6.0.6
       postcss: 8.5.33
-      stylelint: 18.0.0
+      stylelint: 18.1.0
 
-  stylelint@18.0.0:
+  stylelint@18.1.0:
     dependencies:
       '@csstools/css-calc': 3.4.4(@csstools/css-parser-algorithms@4.0.3(@csstools/css-tokenizer@4.0.3))(@csstools/css-tokenizer@4.0.3)
       '@csstools/css-parser-algorithms': 4.0.3(@csstools/css-tokenizer@4.0.3)
