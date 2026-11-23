@@ -1,21 +1,33 @@
 package fi.oph.koski.ibis
 
+import fi.oph.koski.http.HttpStatus
 import fi.oph.koski.koodisto.KoodistoViitePalvelu
 import fi.oph.koski.localization.LocalizationRepository
-import fi.oph.koski.log.Logging
 import fi.oph.koski.schema._
 import fi.oph.koski.validation.ValidatingAndResolvingExtractor
 import fi.oph.scalaschema.{SerializationContext, Serializer}
+import org.json4s.JsonAST.JString
+import org.json4s.jackson.JsonMethods
 
 import java.time.LocalDate
 
-case class IbisKonversiovirhe(iboTunniste: String, syy: String)
+case class IbisKonversiovirhe(iboTunniste: String, syyt: List[String])
+
+object IbisKonversiovirhe {
+  def syyt(status: HttpStatus): List[String] = status.errors.map(_.message match {
+    case JString(syy) => syy
+    case syy => JsonMethods.compact(syy)
+  })
+}
 
 class IbisOpiskeluoikeusConverter(
   koodistoViitePalvelu: KoodistoViitePalvelu,
   localizations: LocalizationRepository,
   validatingAndResolvingExtractor: ValidatingAndResolvingExtractor,
-) extends Logging {
+) {
+  // Virheet kerätään listaan, jotta rivin kaikki virheet saadaan raportille kerralla.
+  private type Muunnos[A] = Either[List[String], A]
+
   private val serializationContext = SerializationContext(KoskiSchema.schemaFactory)
   private val deserializationContext = KoskiSchema.strictDeserialization
 
@@ -24,38 +36,61 @@ class IbisOpiskeluoikeusConverter(
   private val tuotavatCategoryArvot = Set(IbisCategory.Diploma, IbisCategory.Retake)
   private val tuotavatTulokset = Set(IbisResultCode.DiplomaAwarded, IbisResultCode.BilingualDiplomaAwarded)
 
-  // vahvistuspäivä: todistuksen myöntämispäivä, jota ei ole IBIS-tiedostossa. TODO TOR-747: tuoja antaa sen eräkohtaisesti.
+  // vahvistuspäivä: todistuksen myöntämispäivä, jota ei ole IBIS-tiedostossa.
   def convert(record: IbisRecord, oppija: IbisYhdistettyOppija, vahvistuspäivä: LocalDate): Either[IbisKonversiovirhe, IBDiplomaOpiskeluoikeus] = {
-    for {
+    val opiskeluoikeus = for {
+      // Riviltä, jota ei tuoda, ei kerätä muita virheitä.
       _ <- tarkistaTuotava(record)
-      result <- koodi(record, "ibdiplomaresult", record.resultCode)
-      kerta <- tutkintokerta(record, record.session)
-      osasuoritukset <- sequence(arvioidutOppiaineet(record).map(convertSubject(record, vahvistuspäivä)))
-      opiskeluoikeus <- täydennäKoodistoYmsMerkkijonot(record, IBDiplomaOpiskeluoikeus(
-        oid = oppija.diplomanOid,
-        oppilaitos = Some(oppija.oppilaitos),
-        tila = IBDiplomaOpiskeluoikeudenTila(List(
-          IBDiplomaOpiskeluoikeusjakso(vahvistuspäivä, Koodistokoodiviite("valmistunut", "koskiopiskeluoikeudentila"))
-        )),
-        suoritukset = List(IBDiplomanSuoritus(
-          toimipiste = oppija.oppilaitos,
-          vahvistus = Some(Päivämäärävahvistus(vahvistuspäivä, oppija.oppilaitos)),
-          tutkintokerta = kerta,
-          totalPoints = record.totalPoints,
-          combinedGrade = record.combinedGrade,
-          result = result,
-          osasuoritukset = Some(osasuoritukset),
-        )),
-        iboTunniste = record.iboTunniste,
-      ))
-    } yield opiskeluoikeus
+      diploma <- yhdessä(
+        koodi("ibdiplomaresult", record.resultCode),
+        tutkintokerta(record.session),
+        kaikki(arvioidutOppiaineet(record).map(convertSubject(vahvistuspäivä))),
+      ) { (result, kerta, osasuoritukset) =>
+        IBDiplomaOpiskeluoikeus(
+          oid = oppija.diplomanOid,
+          oppilaitos = Some(oppija.oppilaitos),
+          tila = IBDiplomaOpiskeluoikeudenTila(List(
+            IBDiplomaOpiskeluoikeusjakso(vahvistuspäivä, Koodistokoodiviite("valmistunut", "koskiopiskeluoikeudentila"))
+          )),
+          suoritukset = List(IBDiplomanSuoritus(
+            toimipiste = oppija.oppilaitos,
+            vahvistus = Some(Päivämäärävahvistus(vahvistuspäivä, oppija.oppilaitos)),
+            tutkintokerta = kerta,
+            totalPoints = record.totalPoints,
+            combinedGrade = record.combinedGrade,
+            result = result,
+            osasuoritukset = Some(osasuoritukset),
+          )),
+          iboTunniste = record.iboTunniste,
+        )
+      }
+      täydennetty <- täydennäKoodistoYmsMerkkijonot(diploma)
+    } yield täydennetty
+    // Sama virhe, kuten tuntematon kuukausi, voi toistua usean oppiaineen kohdalla.
+    opiskeluoikeus.left.map(syyt => IbisKonversiovirhe(record.iboTunniste, syyt.distinct))
   }
 
-  private def tarkistaTuotava(record: IbisRecord): Either[IbisKonversiovirhe, Unit] = {
+  // Tuonnin raportille: tiedot, jotka jätetään pois hylkäämättä riviä.
+  def varoitukset(record: IbisRecord): List[String] = record.subjects.flatMap { subject =>
+    if (IbisSubject.noGradeCodes.contains(subject.grade)) {
+      List(s"Oppiaine ${subject.name} (${subject.level}) jätetään pois, koska arvosanan tilalla on ${subject.grade} (${IbisSubject.noGradeCodes(subject.grade)})")
+    } else {
+      List(
+        Option.when(subject.level == "EE" && IbisOppiainekartta.get(subject.name).isEmpty)(
+          s"Extended essayn aineelle ${subject.name} ei ole vastinetta Koskessa, joten aine jätetään pois"
+        ),
+        Option.when(subject.language.trim.nonEmpty && suorituskieli(subject).isEmpty)(
+          s"Oppiaineen ${subject.name} (${subject.level}) kielelle ${subject.language} ei ole vastinetta Koskessa, joten suorituskieli jätetään pois"
+        ),
+      ).flatten
+    }
+  }
+
+  private def tarkistaTuotava(record: IbisRecord): Muunnos[Unit] = {
     if (!tuotavatCategoryArvot.contains(record.category)) {
-      Left(IbisKonversiovirhe(record.iboTunniste, s"CATEGORY-arvoa ${record.category} ei tuoda Koskeen"))
+      Left(List(s"CATEGORY-arvoa ${record.category} ei tuoda Koskeen"))
     } else if (!tuotavatTulokset.contains(record.resultCode)) {
-      Left(IbisKonversiovirhe(record.iboTunniste, s"Tuloskoodia '${record.resultCode}' ei tuoda Koskeen"))
+      Left(List(s"Tuloskoodia '${record.resultCode}' ei tuoda Koskeen"))
     } else {
       Right(())
     }
@@ -63,107 +98,97 @@ class IbisOpiskeluoikeusConverter(
 
   // TODO TOR-747: Oppiaineet ilman arvosanaa (N tai P) jätetään pois. Koodit eivät ole arvosanoja: arviointiasteikkoib ei tunne
   // niitä, ja arviointiasteikkocorerequirementsib:n P tarkoittaa hyväksyttyä (pass) eikä odottavaa tulosta.
-  private def arvioidutOppiaineet(record: IbisRecord): List[IbisSubject] = {
-    val (arvioimattomat, arvioidut) = record.subjects.partition(s => IbisSubject.noGradeCodes.contains(s.grade))
-    arvioimattomat.foreach(s => logger.warn(s"IBIS: ohitetaan arvioimaton oppiaine ${s.name} (${s.level}): arvosanan tilalla ${s.grade} (${IbisSubject.noGradeCodes(s.grade)})"))
-    arvioidut
-  }
+  private def arvioidutOppiaineet(record: IbisRecord): List[IbisSubject] =
+    record.subjects.filterNot(s => IbisSubject.noGradeCodes.contains(s.grade))
 
-  private def convertSubject(record: IbisRecord, vahvistuspäivä: LocalDate)(subject: IbisSubject): Either[IbisKonversiovirhe, IBDiplomanOsasuoritus] = {
+  private def convertSubject(vahvistuspäivä: LocalDate)(subject: IbisSubject): Muunnos[IBDiplomanOsasuoritus] = {
     // TODO TOR-747: Arviointipäiväksi merkitään vahvistuspäivä, koska IBIS ei kerro tulosten julkaisupäivää.
     val päivä = Some(vahvistuspäivä)
     val kieli = suorituskieli(subject)
-    for {
-      kerta <- tutkintokerta(record, subject.session)
-      osasuoritus <- subject.level match {
-        case "EE" =>
-          for {
-            aine <- sequenceOption(extendedEssaynAine(subject).map(diplomanOppiaine(record, _, taso = None)))
-            suoritus <- coreSuoritus(record, subject, IBDiplomanExtendedEssay(aine = aine), kerta, päivä, kieli)
-          } yield suoritus
-        case "TK" =>
-          coreSuoritus(record, subject, IBDiplomanTheoryOfKnowledge(), kerta, päivä, kieli)
-        case "HL" | "SL" =>
-          for {
-            oppiaine <- IbisOppiainekartta.get(subject.name).toRight(IbisKonversiovirhe(record.iboTunniste, s"IBO:n oppiaineelle '${subject.name}' ei ole vastinetta Koskessa"))
-            taso <- koodi(record, "oppiaineentasoib", subject.level)
-            koulutusmoduuli <- diplomanOppiaine(record, oppiaine, Some(taso))
-            arvosana <- koodi(record, "arviointiasteikkoib", subject.grade)
-          } yield IBDiplomanOppiaineenSuoritus(
-            koulutusmoduuli = koulutusmoduuli,
+    subject.level match {
+      // Extended essayn aine on vapaaehtoinen tieto, joten vastineeton aine ei hylkää riviä kuten HL/SL-oppiaine.
+      case "EE" =>
+        val essay = sequenceOption(IbisOppiainekartta.get(subject.name).map(diplomanOppiaine(_, taso = None)))
+          .map(aine => IBDiplomanExtendedEssay(aine = aine))
+        coreSuoritus(subject, essay, päivä, kieli)
+      case "TK" =>
+        coreSuoritus(subject, Right(IBDiplomanTheoryOfKnowledge()), päivä, kieli)
+      case "HL" | "SL" =>
+        val koulutusmoduuli = for {
+          oppiaine <- IbisOppiainekartta.get(subject.name).toRight(List(s"IBO:n oppiaineelle '${subject.name}' ei ole vastinetta Koskessa"))
+          taso <- koodi("oppiaineentasoib", subject.level)
+          moduuli <- diplomanOppiaine(oppiaine, Some(taso))
+        } yield moduuli
+        yhdessä(koulutusmoduuli, tutkintokerta(subject.session), koodi("arviointiasteikkoib", subject.grade)) { (moduuli, kerta, arvosana) =>
+          IBDiplomanOppiaineenSuoritus(
+            koulutusmoduuli = moduuli,
             tutkintokerta = kerta,
             arviointi = Some(List(IBDiplomanOppiaineenArviointi(arvosana, päivä))),
             suorituskieli = kieli,
             additionalSubject = subject.additional,
           )
-        case muu =>
-          Left(IbisKonversiovirhe(record.iboTunniste, s"Tuntematon oppiaineen taso $muu"))
-      }
-    } yield osasuoritus
+        }
+      case muu =>
+        Left(List(s"Tuntematon oppiaineen taso $muu"))
+    }
   }
 
   private def coreSuoritus(
-    record: IbisRecord,
     subject: IbisSubject,
-    koulutusmoduuli: IBDiplomanCoreOppiaine,
-    kerta: IBTutkintokerta,
+    koulutusmoduuli: Muunnos[IBDiplomanCoreOppiaine],
     päivä: Option[LocalDate],
     kieli: Option[Koodistokoodiviite],
-  ): Either[IbisKonversiovirhe, IBDiplomanCoreSuoritus] =
-    koodi(record, "arviointiasteikkocorerequirementsib", subject.grade).map(arvosana => IBDiplomanCoreSuoritus(
-      koulutusmoduuli = koulutusmoduuli,
-      tutkintokerta = kerta,
-      arviointi = Some(List(IBDiplomanCoreArviointi(arvosana, päivä))),
-      suorituskieli = kieli,
-    ))
+  ): Muunnos[IBDiplomanCoreSuoritus] =
+    yhdessä(koulutusmoduuli, tutkintokerta(subject.session), koodi("arviointiasteikkocorerequirementsib", subject.grade)) { (moduuli, kerta, arvosana) =>
+      IBDiplomanCoreSuoritus(
+        koulutusmoduuli = moduuli,
+        tutkintokerta = kerta,
+        arviointi = Some(List(IBDiplomanCoreArviointi(arvosana, päivä))),
+        suorituskieli = kieli,
+      )
+    }
 
   // Suorituskieli on vapaaehtoinen tieto, joten vastineeton kieli ei hylkää riviä.
-  private def suorituskieli(subject: IbisSubject): Option[Koodistokoodiviite] = {
-    val kieli = IbisKielikartta.get(subject.language).flatMap(koodiarvo => koodistoViitePalvelu.validate("kieli", koodiarvo))
-    if (kieli.isEmpty && subject.language.trim.nonEmpty) {
-      logger.warn(s"IBIS: oppiaineen ${subject.name} (${subject.level}) kielelle ${subject.language} ei ole vastinetta Koskessa, joten suorituskieli jätetään pois")
-    }
-    kieli
-  }
+  private def suorituskieli(subject: IbisSubject): Option[Koodistokoodiviite] =
+    IbisKielikartta.get(subject.language).flatMap(koodiarvo => koodistoViitePalvelu.validate("kieli", koodiarvo))
 
-  // Extended essayn aine on vapaaehtoinen tieto, joten vastineeton aine ei hylkää riviä kuten HL/SL-oppiaine.
-  private def extendedEssaynAine(subject: IbisSubject): Option[IbisOppiaine] = {
-    val aine = IbisOppiainekartta.get(subject.name)
-    if (aine.isEmpty) logger.warn(s"IBIS: extended essayn aineelle ${subject.name} ei ole vastinetta Koskessa, joten aine jätetään pois")
-    aine
-  }
-
-  private def diplomanOppiaine(record: IbisRecord, oppiaine: IbisOppiaine, taso: Option[Koodistokoodiviite]): Either[IbisKonversiovirhe, IBDiplomanOppiaine] =
-    koodi(record, "oppiaineetib", oppiaine.tunniste).flatMap { tunniste =>
+  private def diplomanOppiaine(oppiaine: IbisOppiaine, taso: Option[Koodistokoodiviite]): Muunnos[IBDiplomanOppiaine] =
+    koodi("oppiaineetib", oppiaine.tunniste).flatMap { tunniste =>
       oppiaine match {
-        case IbisKieliOppiaine(_, kieli) => koodi(record, "kielivalikoima", kieli).map(IBDiplomanKieliOppiaine(tunniste, taso, _))
+        case IbisKieliOppiaine(_, kieli) => koodi("kielivalikoima", kieli).map(IBDiplomanKieliOppiaine(tunniste, taso, _))
         case IbisMuuOppiaine(_) => Right(IBDiplomanMuuOppiaine(tunniste, taso))
       }
     }
 
-  private def tutkintokerta(record: IbisRecord, session: IbisSession): Either[IbisKonversiovirhe, IBTutkintokerta] =
+  private def tutkintokerta(session: IbisSession): Muunnos[IBTutkintokerta] =
     IbisSession.lokalisointiavaimet.get(session.month)
       .map(avain => IBTutkintokerta(session.koodiarvo, session.year, localizations.get(avain)))
-      .toRight(IbisKonversiovirhe(record.iboTunniste, s"Tuntematon tutkintokerran kuukausi ${session.month}"))
+      .toRight(List(s"Tuntematon tutkintokerran kuukausi ${session.month}"))
 
-  private def koodi(record: IbisRecord, koodistoUri: String, koodiarvo: String): Either[IbisKonversiovirhe, Koodistokoodiviite] =
+  private def koodi(koodistoUri: String, koodiarvo: String): Muunnos[Koodistokoodiviite] =
     koodistoViitePalvelu.validate(koodistoUri, koodiarvo)
-      .toRight(IbisKonversiovirhe(record.iboTunniste, s"Koodiarvoa '$koodiarvo' ei löydy koodistosta $koodistoUri"))
+      .toRight(List(s"Koodiarvoa '$koodiarvo' ei löydy koodistosta $koodistoUri"))
 
   // Serialisoi ja deserialisoi opiskeluoikeus, jotta koodistoarvoille ja organisaatioille haetaan nimet samoin kuin
   // muille Koskeen tallennettaville opiskeluoikeuksille (vrt. YtrDownloadOppijaConverter).
-  private def täydennäKoodistoYmsMerkkijonot(record: IbisRecord, opiskeluoikeus: IBDiplomaOpiskeluoikeus): Either[IbisKonversiovirhe, IBDiplomaOpiskeluoikeus] = {
+  private def täydennäKoodistoYmsMerkkijonot(opiskeluoikeus: IBDiplomaOpiskeluoikeus): Muunnos[IBDiplomaOpiskeluoikeus] = {
     val json = Serializer.serialize(opiskeluoikeus, serializationContext)
     validatingAndResolvingExtractor.extract[IBDiplomaOpiskeluoikeus](deserializationContext)(json)
-      .left.map(status => IbisKonversiovirhe(record.iboTunniste, s"Opiskeluoikeuden täydentäminen epäonnistui: ${status.errorString.getOrElse(status.statusCode.toString)}"))
+      .left.map(status => IbisKonversiovirhe.syyt(status).map(syy => s"Opiskeluoikeuden täydentäminen epäonnistui: $syy"))
   }
 
-  private def sequence[A](xs: List[Either[IbisKonversiovirhe, A]]): Either[IbisKonversiovirhe, List[A]] =
-    xs.partitionMap(identity) match {
-      case (Nil, rights) => Right(rights)
-      case (virhe :: _, _) => Left(virhe)
+  private def yhdessä[A, B, C, D](a: Muunnos[A], b: Muunnos[B], c: Muunnos[C])(f: (A, B, C) => D): Muunnos[D] =
+    (a, b, c) match {
+      case (Right(x), Right(y), Right(z)) => Right(f(x, y, z))
+      case _ => Left(List(a, b, c).flatMap(_.left.getOrElse(Nil)))
     }
 
-  private def sequenceOption[A](x: Option[Either[IbisKonversiovirhe, A]]): Either[IbisKonversiovirhe, Option[A]] =
+  private def kaikki[A](muunnokset: List[Muunnos[A]]): Muunnos[List[A]] =
+    muunnokset.partitionMap(identity) match {
+      case (Nil, arvot) => Right(arvot)
+      case (virheet, _) => Left(virheet.flatten)
+    }
+
+  private def sequenceOption[A](x: Option[Muunnos[A]]): Muunnos[Option[A]] =
     x.map(_.map(Some(_))).getOrElse(Right(None))
 }

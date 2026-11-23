@@ -22,8 +22,8 @@
     },
     {
       "kieli": "FI",
-      "nimi": "IB Diploman tulos",
-      "kuvaus": "IBO:n IBIS-tulostiedoston tuloskoodi (RESULT CODE)",
+      "nimi": "IB Diploma result",
+      "kuvaus": "IBO:n IBIS-tulostiedoston tuloskoodi",
       "kayttoohje": null,
       "kasite": null,
       "kohdealue": null,

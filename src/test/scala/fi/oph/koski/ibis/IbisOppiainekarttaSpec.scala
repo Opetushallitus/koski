@@ -59,7 +59,7 @@ class IbisOppiainekarttaSpec extends AnyFreeSpec with TestEnvironment with Match
       )
       val oppija = IbisYhdistettyOppija("1.2.246.562.24.00000000001", ressunLukio, None)
       val virheet = IbisOppiainekartta.oppiaineet.keys.toList.sorted.flatMap { nimi =>
-        converter.convert(diplomaOppiaineella(nimi), oppija, LocalDate.of(2026, 7, 6)).left.toOption.map(virhe => s"$nimi: ${virhe.syy}")
+        converter.convert(diplomaOppiaineella(nimi), oppija, LocalDate.of(2026, 7, 6)).left.toOption.map(virhe => s"$nimi: ${virhe.syyt.mkString(", ")}")
       }
       virheet should be(empty)
     }

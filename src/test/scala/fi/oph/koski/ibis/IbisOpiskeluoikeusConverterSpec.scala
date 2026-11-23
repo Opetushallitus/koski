@@ -1,7 +1,7 @@
 package fi.oph.koski.ibis
 
 import fi.oph.koski.documentation.YleissivistavakoulutusExampleData.ressunLukio
-import fi.oph.koski.log.RootLogTester
+import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.schema._
 import fi.oph.koski.{KoskiApplicationForTests, TestEnvironment}
 import org.scalatest.freespec.AnyFreeSpec
@@ -112,47 +112,84 @@ class IbisOpiskeluoikeusConverterSpec extends AnyFreeSpec with TestEnvironment w
       oppiaine.tutkintokerta.koodiarvo should be("2015S")
       oppiaine.tutkintokerta.vuosi should be(2015)
     }
+
+    "kertoo pois jätetystä oppiaineesta varoituksella" in {
+      converter.varoitukset(rivi("def456")) should be(List("Oppiaine HISTORY (HL) jätetään pois, koska arvosanan tilalla on N (no grade issued)"))
+    }
+  }
+
+  "Ilman varoituksia muunnettavalla rivillä" - {
+    "ei ole varoituksia" in {
+      converter.varoitukset(rivi("abc123")) should be(empty)
+    }
   }
 
   "Extended essay, jonka aineelle ei ole vastinetta Koskessa" - {
-    "tuodaan ilman ainetta, ja siitä kirjataan varoitus" in {
+    "tuodaan ilman ainetta, ja siitä annetaan varoitus" in {
       val alkuperäinen = rivi("abc123")
       val muutettu = alkuperäinen.copy(subjects = alkuperäinen.subjects.map(s => if (s.level == "EE") s.copy(name = "WELSH A") else s))
-      RootLogTester.clearMessages()
       val oo = converter.convert(muutettu, oppija, vahvistuspäivä).toOption.get
       val ee = coreOppiaineet(oo).head.asInstanceOf[IBDiplomanExtendedEssay]
       ee.tunniste.koodiarvo should be("EE")
       ee.aine should be(None)
-      RootLogTester.getLogMessages.exists(_.contains("extended essayn aineelle WELSH A ei ole vastinetta Koskessa")) should be(true)
+      converter.varoitukset(muutettu) should be(List("Extended essayn aineelle WELSH A ei ole vastinetta Koskessa, joten aine jätetään pois"))
     }
   }
 
   "Oppiaine, jonka kielelle ei ole vastinetta Koskessa" - {
-    "tuodaan ilman suorituskieltä, ja siitä kirjataan varoitus" in {
+    "tuodaan ilman suorituskieltä, ja siitä annetaan varoitus" in {
       val alkuperäinen = rivi("abc123")
       val muutettu = alkuperäinen.copy(subjects = alkuperäinen.subjects.map(s => if (s.name == "HISTORY" && s.level == "HL") s.copy(language = "BEMBA") else s))
-      RootLogTester.clearMessages()
       val oo = converter.convert(muutettu, oppija, vahvistuspäivä).toOption.get
       val historia = oo.suoritukset.head.osasuoritukset.toList.flatten.collectFirst { case s: IBDiplomanOppiaineenSuoritus if s.koulutusmoduuli.tunniste.koodiarvo == "HIS" => s }.get
       historia.suorituskieli should be(None)
-      RootLogTester.getLogMessages.exists(_.contains("oppiaineen HISTORY (HL) kielelle BEMBA ei ole vastinetta Koskessa")) should be(true)
+      converter.varoitukset(muutettu) should be(List("Oppiaineen HISTORY (HL) kielelle BEMBA ei ole vastinetta Koskessa, joten suorituskieli jätetään pois"))
     }
   }
 
   "Ei tuotavat rivit" - {
     "CATEGORY COURSE hylätään" in {
-      converter.convert(rivi("xyz999"), oppija, vahvistuspäivä) should be(Left(IbisKonversiovirhe("xyz999", "CATEGORY-arvoa COURSE ei tuoda Koskeen")))
+      converter.convert(rivi("xyz999"), oppija, vahvistuspäivä) should be(Left(IbisKonversiovirhe("xyz999", List("CATEGORY-arvoa COURSE ei tuoda Koskeen"))))
     }
 
     "failed diploma hylätään" in {
       val failedDiploma = rivi("abc123").copy(resultCode = IbisResultCode.FailedDiploma)
-      converter.convert(failedDiploma, oppija, vahvistuspäivä) should be(Left(IbisKonversiovirhe("abc123", "Tuloskoodia 'F' ei tuoda Koskeen")))
+      converter.convert(failedDiploma, oppija, vahvistuspäivä) should be(Left(IbisKonversiovirhe("abc123", List("Tuloskoodia 'F' ei tuoda Koskeen"))))
     }
 
     "oppiaine, jolle ei ole vastinetta Koskessa, hylkää koko rivin" in {
       val alkuperäinen = rivi("abc123")
       val muutettu = alkuperäinen.copy(subjects = alkuperäinen.subjects.map(s => if (s.name == "BIOLOGY") s.copy(name = "ART HISTORY") else s))
-      converter.convert(muutettu, oppija, vahvistuspäivä) should be(Left(IbisKonversiovirhe("abc123", "IBO:n oppiaineelle 'ART HISTORY' ei ole vastinetta Koskessa")))
+      converter.convert(muutettu, oppija, vahvistuspäivä) should be(Left(IbisKonversiovirhe("abc123", List("IBO:n oppiaineelle 'ART HISTORY' ei ole vastinetta Koskessa"))))
+    }
+
+    "rivin kaikki virheet kerätään" in {
+      val alkuperäinen = rivi("abc123")
+      val muutettu = alkuperäinen.copy(subjects = alkuperäinen.subjects.map {
+        case s if s.name == "BIOLOGY" => s.copy(name = "ART HISTORY", grade = "X")
+        case s if s.name == "PHYSICS" => s.copy(name = "REF PROJECT")
+        case s if s.level == "TK" => s.copy(grade = "X")
+        case s => s
+      })
+      converter.convert(muutettu, oppija, vahvistuspäivä) should be(Left(IbisKonversiovirhe("abc123", List(
+        "IBO:n oppiaineelle 'ART HISTORY' ei ole vastinetta Koskessa",
+        "Koodiarvoa 'X' ei löydy koodistosta arviointiasteikkoib",
+        "IBO:n oppiaineelle 'REF PROJECT' ei ole vastinetta Koskessa",
+        "Koodiarvoa 'X' ei löydy koodistosta arviointiasteikkocorerequirementsib",
+      ))))
+    }
+
+    "toistuva virhe kerrotaan vain kerran" in {
+      val alkuperäinen = rivi("abc123")
+      val muutettu = alkuperäinen.copy(month = "JUNE", subjects = alkuperäinen.subjects.map(_.copy(month = "JUNE")))
+      converter.convert(muutettu, oppija, vahvistuspäivä) should be(Left(IbisKonversiovirhe("abc123", List("Tuntematon tutkintokerran kuukausi JUNE"))))
+    }
+  }
+
+  "Validoinnin virheistä" - {
+    "saadaan kaikki syyt" in {
+      val status = HttpStatus.fold(KoskiErrorCategory.badRequest("Ensimmäinen virhe"), KoskiErrorCategory.badRequest("Toinen virhe"))
+      IbisKonversiovirhe.syyt(status) should be(List("Ensimmäinen virhe", "Toinen virhe"))
     }
   }
 

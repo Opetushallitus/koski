@@ -3,11 +3,18 @@ package fi.oph.koski.ibis
 import fi.oph.koski.documentation.ExamplesIBDiploma
 import fi.oph.koski.documentation.YleissivistavakoulutusExampleData.{jyväskylänNormaalikoulu, ressunLukio}
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
-import fi.oph.koski.schema.{KoskeenTallennettavaOpiskeluoikeus, LukionOpiskeluoikeudenTila}
+import fi.oph.koski.koskiuser.{KoskiSpecificSession, MockUsers}
+import fi.oph.koski.log.AuditLogTester
+import fi.oph.koski.schema.{IBDiplomaOpiskeluoikeus, KoskeenTallennettavaOpiskeluoikeus, LukionOpiskeluoikeudenTila}
 import fi.oph.koski.{KoskiApplicationForTests, KoskiHttpSpec}
+import org.json4s.JsonAST.JString
+import org.json4s.jackson.JsonMethods
 import org.scalatest.BeforeAndAfterAll
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.should.Matchers
+
+import java.nio.charset.StandardCharsets
+import scala.io.Source
 
 class IbisServiceSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers with BeforeAndAfterAll {
   override protected def beforeAll(): Unit = {
@@ -26,7 +33,7 @@ class IbisServiceSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers with 
   )
   private val diploma = ExamplesIBDiploma.opiskeluoikeus.copy(oid = Some("1.2.246.562.15.12345678901"), oppilaitos = Some(jyväskylänNormaalikoulu))
 
-  private def virhe(syy: String) = Left(IbisKonversiovirhe("abc123", syy))
+  private def virhe(syy: String) = Left(IbisKonversiovirhe("abc123", List(syy)))
   private val usealtaOppijalta = virhe("Tunnisteella löytyy usean oppijan opiskeluoikeuksia")
 
   "Yhdistämisen säännöt" - {
@@ -88,15 +95,87 @@ class IbisServiceSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers with 
 
     "ei yhdistä International schoolin opiskeluoikeuteen" in {
       service.yhdistäOppijoihin(List(rivi("ibo1"))).map(_._2) should be(
-        List(Left(IbisKonversiovirhe("ibo1", "Tunnisteella ei löydy valmistunutta IB-koulutuksen opiskeluoikeutta eikä IB Diploma -opiskeluoikeutta")))
+        List(Left(IbisKonversiovirhe("ibo1", List("Tunnisteella ei löydy valmistunutta IB-koulutuksen opiskeluoikeutta eikä IB Diploma -opiskeluoikeutta"))))
       )
     }
 
     "hylkää tunnisteen, joka toistuu tiedostossa" in {
       val tunnisteet = List(ExamplesIBDiploma.iboTunniste, ExamplesIBDiploma.iboTunniste.toUpperCase)
       service.yhdistäOppijoihin(tunnisteet.map(rivi)).map(_._2) should be(
-        tunnisteet.map(tunniste => Left(IbisKonversiovirhe(tunniste, "Sama IBO-tunniste on tiedostossa usealla rivillä")))
+        tunnisteet.map(tunniste => Left(IbisKonversiovirhe(tunniste, List("Sama IBO-tunniste on tiedostossa usealla rivillä"))))
       )
+    }
+  }
+
+  "Tuonti" - {
+    lazy val service = KoskiApplicationForTests.ibisService
+    implicit lazy val pääkäyttäjä: KoskiSpecificSession = MockUsers.paakayttaja.toKoskiSpecificSession(KoskiApplicationForTests.käyttöoikeusRepository)
+
+    lazy val esimerkki = Source.fromInputStream(getClass.getResourceAsStream("/ibis/esimerkki.csv"), "UTF-8").mkString
+
+    // Esimerkkitiedoston ensimmäinen rivi kiintoaineiston IB Diploma -oppijalle ja perään rivi, jota ei voi jäsentää.
+    lazy val tiedosto = (esimerkki.replace("\"abc123\"", s"\"${ExamplesIBDiploma.iboTunniste}\"") + "rikkinäinen rivi\n")
+      .getBytes(StandardCharsets.UTF_8)
+    lazy val tiedostonTunnisteet = s"${ExamplesIBDiploma.iboTunniste},xyz999,def456,ghi789"
+
+    def diplomanVersio: Option[Int] = KoskiApplicationForTests.possu
+      .findByOppijaOids(List(KoskiSpecificMockOppijat.ibDiploma.oid))(KoskiSpecificSession.systemUser)
+      .collectFirst { case diploma: IBDiplomaOpiskeluoikeus => diploma.versionumero }
+      .flatten
+
+    "esikatselu raportoi rivit tallentamatta" in {
+      val versioEnnen = diplomanVersio
+      AuditLogTester.clearMessages()
+      val raportti = service.esikatsele(tiedosto)
+
+      raportti.tallennettu should be(false)
+      raportti.jäsennysvirheet.map(_.line) should be(List(5))
+      raportti.rivit.map(rivi => (rivi.iboTunniste, rivi.tila)) should be(List(
+        ExamplesIBDiploma.iboTunniste -> IbisTuonninRivinTila.Päivitys,
+        "xyz999" -> IbisTuonninRivinTila.Hylätty,
+        "def456" -> IbisTuonninRivinTila.Hylätty,
+        "ghi789" -> IbisTuonninRivinTila.Hylätty,
+      ))
+      val päivitys = raportti.rivit.head
+      (päivitys.oppijaOid, päivitys.oppilaitosOid, päivitys.virheet) should be((Some(KoskiSpecificMockOppijat.ibDiploma.oid), Some(ressunLukio.oid), Nil))
+      päivitys.diplomanOid should be(defined)
+      diplomanVersio should be(versioEnnen)
+      AuditLogTester.verifyOnlyAuditLogMessageForOperation(Map(
+        "operation" -> "IBIS_ESIKATSELU",
+        "target" -> Map("iboTunniste" -> tiedostonTunnisteet),
+      ))
+    }
+
+    "esikatselu jakaa suuren tiedoston tunnisteet useaan audit-lokiviestiin" in {
+      val tunnisteet = (1 to 250).map(i => s"ibis$i").toList
+      val ensimmäinenRivi = esimerkki.linesIterator.next()
+      val suuriTiedosto = tunnisteet.map(t => ensimmäinenRivi.replace("\"abc123\"", s"\"$t\"") + "\n").mkString.getBytes(StandardCharsets.UTF_8)
+      AuditLogTester.clearMessages()
+      service.esikatsele(suuriTiedosto)
+
+      val kirjatut = AuditLogTester.getLogMessages.map(JsonMethods.parse(_)).collect {
+        case viesti if (viesti \ "operation") == JString("IBIS_ESIKATSELU") => (viesti \ "target" \ "iboTunniste").values.toString
+      }
+      kirjatut.map(_.split(",").length) should be(List(100, 100, 50))
+      kirjatut.flatMap(_.split(",")) should be(tunnisteet)
+    }
+
+    "tuonti päivittää olemassa olevan diploman" in {
+      val versioEnnen = diplomanVersio
+      AuditLogTester.clearMessages()
+      val raportti = service.tuo(tiedosto)
+
+      raportti.tallennettu should be(true)
+      raportti.rivit.map(rivi => (rivi.tila, rivi.virheet)).head should be((IbisTuonninRivinTila.Päivitys, Nil))
+      diplomanVersio should be(versioEnnen.map(_ + 1))
+      AuditLogTester.verifyOnlyAuditLogMessageForOperation(Map(
+        "operation" -> "IBIS_TALLENNUS",
+        "target" -> Map("iboTunniste" -> tiedostonTunnisteet),
+      ))
+      AuditLogTester.verifyLastAuditLogMessageForOperation(Map(
+        "operation" -> "OPISKELUOIKEUS_MUUTOS",
+        "target" -> Map("oppijaHenkiloOid" -> KoskiSpecificMockOppijat.ibDiploma.oid),
+      ))
     }
   }
 
