@@ -453,7 +453,7 @@
     <dependency>
       <groupId>software.amazon.jdbc</groupId>
       <artifactId>aws-advanced-jdbc-wrapper</artifactId>
-      <version>4.6.0</version>
+      <version>4.7.0</version>
     </dependency>
     <!-- PDF generation deps -->
     <dependency>
