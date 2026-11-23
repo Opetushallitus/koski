@@ -5,6 +5,7 @@ import { PerusopetukseenValmistavaFields } from './PerusopetukseenValmistavaFiel
 import { PerusopetuksenLisäopetusFields } from './PerusopetuksenLisaopetusFields'
 import { AikuistenPerusopetusFields } from './AikuistenPerusopetusFields'
 import { AhvenanmaanPerusopetusFields } from './AhvenanmaanPerusopetusFields'
+import { AhvenanmaanAmmatillinenFields } from './AhvenanmaanAmmatillinenFields'
 import { EsiopetusFields } from './EsiopetusFields'
 import { TutkintokoulutukseenValmentavaFields } from './TutkintokoulutukseenValmentavaFields'
 import { MuuKuinSäänneltyKoulutusFields } from './MuuKuinSaanneltyKoulutusFields'
@@ -51,6 +52,8 @@ export const SuoritusFields = (props: SuoritusFieldsProps) => {
       return <LukioKoulutusFields {...props} />
     case 'ammatillinenkoulutus':
       return <AmmatillinenKoulutusFields {...props} />
+    case 'ahvenanmaanammatillinenkoulutus':
+      return <AhvenanmaanAmmatillinenFields {...props} />
     case 'europeanschoolofhelsinki':
       return <EuropeanSchoolOfHelsinkiFields {...props} />
     case 'ebtutkinto':
