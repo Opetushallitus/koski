@@ -83,6 +83,7 @@ jobs:
       actions: read
       id-token: write
       contents: read
+      pull-requests: read
     secrets:
       DEPLOY_ROLE: ${{ secrets.DEPLOY_ROLE }}
       ECR_ACCOUNT_ID: ${{ secrets.ECR_ACCOUNT_ID }}

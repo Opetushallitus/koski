@@ -43,6 +43,7 @@ jobs:
     permissions:
       actions: read
       contents: read
+      pull-requests: read
     outputs:
       hold: ${{ steps.in_master.outputs.in_master == 'false' }}
     steps:
@@ -78,8 +79,13 @@ jobs:
         with:
           commit_sha: ${{ steps.qa_version.outputs.sha }}
 
-      - name: Report QA hold
+      - name: Find the merged pull request
+        id: pull_request
         if: ${{ steps.in_master.outputs.in_master == 'false' }}
+        uses: $/.github/actions/merged-pull-request
+
+      - name: Report QA hold
+        if: ${{ steps.in_master.outputs.in_master == 'false' && steps.pull_request.outputs.merged_by != 'renovate[bot]' }}
         uses: $/.github/actions/report-slack
         with:
           webhook: ${{ secrets.SLACK_CI_ALERTS_WEBHOOK }}

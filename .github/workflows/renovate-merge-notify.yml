@@ -14,32 +14,29 @@ jobs:
     runs-on: ubuntu-26.04
 
     steps:
-      # GitHub attributes an auto-merge to whoever enabled it, so merged_by is the
-      # bot only when Renovate merged its own pull request. A pull request someone
-      # released by clicking auto-merge carries their name and is not reported.
+      - name: Find the merged pull request
+        id: pull_request
+        uses: $/.github/actions/merged-pull-request
+
       - name: Resolve the Renovate automerge
         id: resolve
+        if: ${{ steps.pull_request.outputs.merged_by == 'renovate[bot]' }}
         env:
           GH_TOKEN: ${{ github.token }}
+          PR_NUMBER: ${{ steps.pull_request.outputs.pr_number }}
         run: |
           set -euo pipefail
 
-          pull_request_number=$(gh api "repos/$GITHUB_REPOSITORY/commits/$GITHUB_SHA/pulls" --jq '
-            [.[] | select(.user.login == "renovate[bot]"
-                          and .merge_commit_sha == $ENV.GITHUB_SHA)][0].number // empty')
-
-          if [ -z "$pull_request_number" ]; then
-            exit 0
-          fi
-
-          # merged_by is absent from the listing above, so the full object is needed.
           # The title is escaped because a bare > would close the Slack link early.
-          slack_title=$(gh api "repos/$GITHUB_REPOSITORY/pulls/$pull_request_number" --jq '
-            select(.merged_by.login == "renovate[bot]")
-            | ":robot_face: Renovate automerged <\(.html_url)|#\(.number) \(.title | gsub("&"; "&amp;") | gsub("<"; "&lt;") | gsub(">"; "&gt;"))>"')
+          slack_title=$(
+            gh api "repos/$GITHUB_REPOSITORY/pulls/$PR_NUMBER" \
+              --jq '":robot_face: Renovate automerged <\(.html_url)|#\(.number) \(.title | gsub("&"; "&amp;") | gsub("<"; "&lt;") | gsub(">"; "&gt;"))>"'
+          )
 
-          ci_run_url=$(gh api "repos/$GITHUB_REPOSITORY/actions/runs?head_sha=$GITHUB_SHA&event=push" --jq '
-            [.workflow_runs[] | select(.path == ".github/workflows/master.yml")][0].html_url // empty')
+          ci_run_url=$(
+            gh api "repos/$GITHUB_REPOSITORY/actions/runs?head_sha=$GITHUB_SHA&event=push" \
+              --jq '[.workflow_runs[] | select(.path == ".github/workflows/master.yml")][0].html_url // empty'
+          )
 
           echo "slack_title=$slack_title" >> "$GITHUB_OUTPUT"
           echo "ci_run_url=$ci_run_url" >> "$GITHUB_OUTPUT"

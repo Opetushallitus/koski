@@ -1,0 +1,59 @@
+name: Merged pull request
+description: Find the pull request that a master commit merged and who merged it
+
+inputs:
+  commit_sha:
+    description: Merge commit on master
+    default: ${{ github.sha }}
+
+outputs:
+  pr_number:
+    description: Pull request number, empty for a direct push or when the lookup fails.
+    value: ${{ steps.lookup.outputs.pr_number }}
+  merged_by:
+    description: >-
+      Login of whoever merged the pull request, e.g. renovate[bot] for a
+      Renovate automerge. For a merge through the merge queue, whoever last
+      added the pull request to the queue. Empty for a direct push or when the
+      lookup fails.
+    value: ${{ steps.lookup.outputs.merged_by }}
+
+runs:
+  using: composite
+  steps:
+    # A merge through the merge queue may have merged_by github-merge-queue[bot],
+    # and github.actor is that bot for every queued merge. Only the timeline keeps
+    # who queued the pull request.
+    - name: Look up pull request
+      id: lookup
+      shell: bash
+      env:
+        GH_TOKEN: ${{ github.token }}
+        COMMIT_SHA: ${{ inputs.commit_sha }}
+      run: |
+        set -euo pipefail
+
+        pr_number=$(
+          gh api "repos/$GITHUB_REPOSITORY/commits/$COMMIT_SHA/pulls" \
+            --jq '[.[] | select(.merge_commit_sha == $ENV.COMMIT_SHA)][0].number // empty'
+        ) || pr_number=""
+
+        merged_by=""
+        if [ -n "$pr_number" ]; then
+          merged_by=$(
+            gh api "repos/$GITHUB_REPOSITORY/pulls/$pr_number" \
+              --jq '.merged_by.login // empty'
+          ) || merged_by=""
+        fi
+
+        if [ "$merged_by" = "github-merge-queue[bot]" ]; then
+          merged_by=$(
+            gh api --paginate "repos/$GITHUB_REPOSITORY/issues/$pr_number/timeline" \
+              --jq '.[] | select(.event == "added_to_merge_queue") | .actor.login' \
+              | tail --lines 1
+          ) || merged_by=""
+        fi
+
+        echo "Commit $COMMIT_SHA: pull request '$pr_number', merged by '$merged_by'"
+        echo "pr_number=$pr_number" >> "$GITHUB_OUTPUT"
+        echo "merged_by=$merged_by" >> "$GITHUB_OUTPUT"
