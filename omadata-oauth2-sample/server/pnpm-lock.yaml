@@ -191,8 +191,8 @@ importers:
         specifier: 6.9.1
         version: 6.9.1
       undici:
-        specifier: 8.12.4
-        version: 8.12.4
+        specifier: 8.13.0
+        version: 8.13.0
     devDependencies:
       '@eslint/js':
         specifier: 10.0.1
@@ -1263,8 +1263,8 @@ packages:
   undici-types@8.9.0:
     resolution: {integrity: sha512-KTDyRTYX8sWmKXAikPHHSyc63CRPETMctyjKFupcC6OBLXT3xsN0e9aF7m+mIXutFWpUXuedtowG7iLOzp0kQg==}
 
-  undici@8.12.4:
-    resolution: {integrity: sha512-8Mx+uNKKER2bA4AdtedkqRbwUCIJFr2nJckXRe5yrDqzePqwLP7VNcctN8/XdmDSbF7mS+jJKIszlL+vbam1VA==}
+  undici@8.13.0:
+    resolution: {integrity: sha512-mxbeyRlRhHUTWE1zf/FwDOXTKMhE1vMQRz/o2oOir/5fIWsB79TeZrByMkj019EdDuxPg03jprCjFLxLkmxTCQ==}
     engines: {node: '>=22.19.0'}
 
   unpipe@1.0.0:
@@ -2439,7 +2439,7 @@ snapshots:
 
   undici-types@8.9.0: {}
 
-  undici@8.12.4: {}
+  undici@8.13.0: {}
 
   unpipe@1.0.0: {}
 
