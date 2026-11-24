@@ -12,7 +12,7 @@ const kaikkiKategoriat = [
   'Lukiokoulutus',
   'Lukiokoulutus (LOPS2021)',
   'IB-koulutus',
-  'VST',
+  'Vapaa sivistystyö',
   'MUKS',
   'Yleiset'
 ]

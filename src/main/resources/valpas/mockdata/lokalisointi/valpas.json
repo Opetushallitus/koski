@@ -968,6 +968,22 @@
     "description": null,
     "force": null,
     "id": null,
+    "key": "suorittaminennäkymä__taulu_kuntailmoitus_tehty_tooltip",
+    "locale": "en",
+    "modified": null,
+    "modifiedBy": "anonymousUser",
+    "namespace": "valpas",
+    "value": "A municipal notification has been submitted for the learner"
+  },
+  {
+    "accesscount": null,
+    "accessed": null,
+    "category": "valpas",
+    "created": null,
+    "createdBy": "anonymousUser",
+    "description": null,
+    "force": null,
+    "id": null,
     "key": "title__Valpas",
     "locale": "en",
     "modified": null,
@@ -6654,6 +6670,22 @@
     "modifiedBy": "anonymousUser",
     "namespace": "valpas",
     "value": "Koulutus"
+  },
+  {
+    "accesscount": null,
+    "accessed": null,
+    "category": "valpas",
+    "created": null,
+    "createdBy": "anonymousUser",
+    "description": null,
+    "force": null,
+    "id": null,
+    "key": "suorittaminennäkymä__taulu_kuntailmoitus_tehty_tooltip",
+    "locale": "fi",
+    "modified": null,
+    "modifiedBy": "anonymousUser",
+    "namespace": "valpas",
+    "value": "Oppijasta on tehty kuntailmoitus"
   },
   {
     "accesscount": null,
@@ -12910,6 +12942,22 @@
     "modifiedBy": "anonymousUser",
     "namespace": "valpas",
     "value": "Utbildning"
+  },
+  {
+    "accesscount": null,
+    "accessed": null,
+    "category": "valpas",
+    "created": null,
+    "createdBy": "anonymousUser",
+    "description": null,
+    "force": null,
+    "id": null,
+    "key": "suorittaminennäkymä__taulu_kuntailmoitus_tehty_tooltip",
+    "locale": "sv",
+    "modified": null,
+    "modifiedBy": "anonymousUser",
+    "namespace": "valpas",
+    "value": "En kommunanmälan har gjorts om den studerande"
   },
   {
     "accesscount": null,
