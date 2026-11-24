@@ -6,4 +6,6 @@ Lisätietoja Koski-järjestelmästä löydät [Opetushallituksen wiki-sivustolta
 
 Järjestelmän lähdekoodit ja kehitysdokumentaatio [GitHubissa](https://github.com/Opetushallitus/koski).
 
+Koskeen tallennettavien tietojen validaatiosääntöjen muutokset on koottu [validaatioiden muutoshistoriaan](https://github.com/Opetushallitus/koski/blob/master/validaation_muutoshistoria.md) GitHubissa.
+
 [Valpas-palvelun dokumentaatio](/koski/dokumentaatio/valpas) löytyy sivustolta omasta osiostaan.
