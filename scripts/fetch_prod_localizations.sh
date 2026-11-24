@@ -6,14 +6,16 @@ set -euo pipefail
 # which in turn gets its data from Tolgee.
 #
 # Both files of each pair are rewritten: the mockdata file (every language) and
-# *-default-texts.json (Finnish). Production's values win, but what production
-# lacks is kept in its old place instead of dropped:
-# - every key in *-default-texts.json. When the app is deployed to QA, it adds
-#   the keys missing from Lokalisointipalvelu from that file, so a key dropped
-#   from it never gets there and the UI shows the bare key. Production gets the
-#   key only when the localizations are next copied from QA, so a new key is
-#   usually missing from production until then.
-# - the mockdata entries of those keys, so their translations survive locally.
+# *-default-texts.json (Finnish). Production's values and order win, but what
+# production lacks is kept instead of dropped:
+# - every key in *-default-texts.json, placed where production's order puts it.
+#   When the app is deployed to QA, it adds the keys missing from
+#   Lokalisointipalvelu from that file, so a key dropped from it never gets
+#   there and the UI shows the bare key. Production gets the key only when the
+#   localizations are next copied from QA, so a new key is usually missing from
+#   production until then.
+# - the mockdata entries of those keys, after the entry that preceded them, so
+#   their translations survive locally.
 # Mockdata entries whose key is in neither production nor the default texts are
 # dropped.
 #
@@ -54,8 +56,12 @@ readonly JQ_IDX='
 '
 
 # Returns $new plus the entries of $old that $new lacks and keep accepts, each
-# placed right after the entry that preceded it in $old. Re-sorting would
-# rewrite the whole file: neither file is in plain sort order.
+# placed right after the entry that preceded it in $old.
+#
+# insert_missing_sorted does the same for {key, value} entries, but places each
+# key by the order Lokalisointipalvelu returns keys in: letters and digits only,
+# ignoring case and accents. DefaultTextsSpec checks the default texts with the
+# same rule; jq has no Unicode normalisation, so accents are mapped by hand.
 readonly JQ_MERGE='
     def merge_missing($new; $old; id; keep):
         (reduce ($new[] | id) as $i ({}; .[$i] = true)) as $in_new
@@ -66,6 +72,25 @@ readonly JQ_MERGE='
                 elif .anchor == null then .head += [$e]
                 else .after[.anchor] += [$e] end)) as $kept
         | $kept.head + [ $new[] | ., ($kept.after[id] // [])[] ];
+
+    def accent_map:
+        {"a": "äåáàâãÄÅÁÀÂÃ", "c": "çÇ", "e": "éèêëÉÈÊË", "i": "íìîïÍÌÎÏ", "n": "ñÑ",
+         "o": "öóòôõÖÓÒÔÕ", "s": "šŠ", "u": "üúùûÜÚÙÛ", "y": "ýÿÝ", "z": "žŽ"}
+        | reduce to_entries[] as $g ({};
+            reduce ($g.value | explode[]) as $c (.; .[$c | tostring] = ($g.key | explode[0])));
+
+    def sort_key($accents):
+        explode | map($accents[tostring] // .) | implode | ascii_downcase | gsub("[^0-9a-z]"; "");
+
+    def insert_missing_sorted($new; $old):
+        accent_map as $accents
+        | (reduce $new[] as $e ({}; .[$e.key] = true)) as $in_new
+        | [ $new[] | .key | sort_key($accents) ] as $new_keys
+        | [ $old[] | select($in_new[.key] | not) | (.key | sort_key($accents)) as $s
+            | { entry: ., s: $s, pos: ([ $new_keys[] | select(. <= $s) ] | length) } ]
+          | sort_by(.s) as $kept
+        | [ range(0; ($new | length) + 1) as $i
+            | ($kept[] | select(.pos == $i) | .entry), (if $i < ($new | length) then $new[$i] else empty end) ];
 '
 
 WORK_DIR=$(mktemp -d)
@@ -510,7 +535,7 @@ function load_and_format() {
 
     jq -n --slurpfile fetched "$FETCHED" --slurpfile old "$PREVIOUS_DEFAULTS" "$JQ_MERGE"'
         ($fetched[0] | map(select(.locale | contains("fi")) | { (.key): .value }) | add // {}) as $prod
-        | merge_missing($prod | to_entries; $old[0] // {} | to_entries; .key; true)
+        | insert_missing_sorted($prod | to_entries; $old[0] // {} | to_entries)
         | from_entries
     ' > "$DEFAULT_TEXTS_FILE"
 
