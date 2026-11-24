@@ -1,4 +1,4 @@
-import { expect, test } from './schema-viewer-base'
+import { expect, nodeText, test } from './schema-viewer-base'
 import type { Page } from '@playwright/test'
 
 const openNode = async (page: Page, path: string) => {
@@ -153,7 +153,20 @@ test.describe('Schema viewer', () => {
       type: 'object',
       properties: {
         nimi: { type: 'string', description: '<b> & ääkköset' },
-        ikä: { $ref: 'viewer-smoke-age.json' }
+        ikä: { $ref: 'viewer-smoke-age.json' },
+        huoltaja: {
+          type: 'object',
+          properties: {
+            nimi: { type: 'string' },
+            hetu: { type: 'string', sensitive: true }
+          }
+        },
+        vanhaKenttä: { type: 'string', deprecated: true },
+        tunnustettu: {
+          type: 'object',
+          properties: { arvosanaTunnustettu: { type: 'string' } }
+        },
+        arvosana: { type: 'string', koodisto: ['koodistoa', 'koodistob'] }
       }
     }
     const validOppija = { nimi: 'Esimerkki', ikä: 17 }
@@ -175,9 +188,19 @@ test.describe('Schema viewer', () => {
       await expect(page.locator('#loading')).toBeHidden()
     })
 
-    test('jakolinkki päivittyy käsin valitun solmun mukaan ilman alkuhashia', async ({
+    test('jakolinkki päivittyy käsin valitun solmun mukaan ja kopioituu leikepöydälle', async ({
       page
     }) => {
+      await page.addInitScript(() => {
+        Object.defineProperty(navigator, 'clipboard', {
+          value: {
+            writeText: (text: string) => {
+              document.documentElement.dataset.copied = text
+              return Promise.resolve()
+            }
+          }
+        })
+      })
       await page.goto(
         '/koski/json-schema-viewer/?schema=viewer-smoke-schema.json'
       )
@@ -185,21 +208,19 @@ test.describe('Schema viewer', () => {
 
       const originalUrl = page.url()
       expect(new URL(originalUrl).hash).toBe('')
+      const shareLink = page.locator('#share-link')
 
       for (const name of ['nimi', 'ikä']) {
-        const node = page.locator('#jsv-tree .node-text', {
-          hasText: new RegExp(`^${name}\\*?$`)
-        })
-        await node.click()
+        await nodeText(page, name).first().click()
 
-        await page.locator('#permalink').click()
-        await expect(page.locator('#sharelink')).toBeVisible()
-        await expect(page.locator('#sharelink')).toHaveValue(
-          `${originalUrl}#viewer-page?open=${encodeURIComponent(name)}`
+        const expectedUrl = `${originalUrl}#viewer-page?mark=${encodeURIComponent(name)}`
+        await expect(shareLink).toHaveAttribute('href', expectedUrl)
+        await shareLink.click()
+        await expect(shareLink).toHaveText('Link copied')
+        await expect(page.locator('html')).toHaveAttribute(
+          'data-copied',
+          expectedUrl
         )
-        await expect(page).toHaveURL(originalUrl)
-
-        await page.keyboard.press('Escape')
         await expect(page).toHaveURL(originalUrl)
       }
     })
@@ -255,7 +276,7 @@ test.describe('Schema viewer', () => {
       })
       await expect(ageNode).toBeHidden()
 
-      await page.getByPlaceholder('Search...').fill('ikä')
+      await page.locator('#search-input').fill('ikä')
       const searchResults = page.locator('#search-result a')
       const result = searchResults.filter({ hasText: /^ikä$/ })
       await expect(result).toBeVisible()
@@ -263,6 +284,104 @@ test.describe('Schema viewer', () => {
 
       await result.click()
       await expect(ageNode).toBeVisible()
+      await expect(ageNode.locator('..')).toHaveClass(/focus/)
+    })
+
+    test('haku listaa kaikki samannimiset kentät polkuineen', async ({
+      page
+    }) => {
+      await page.locator('#search-input').fill('nimi')
+      await expect(page.locator('#search-result .jsv-search-count')).toHaveText(
+        '2 matches'
+      )
+      const searchResults = page.locator('#search-result a')
+      await expect(searchResults).toHaveCount(2)
+      await expect(searchResults.locator('.jsv-search-name')).toHaveText([
+        'nimi',
+        'nimi'
+      ])
+      await expect(searchResults.nth(0).locator('.jsv-search-path')).toHaveCount(
+        0
+      )
+      await expect(searchResults.nth(1).locator('.jsv-search-path')).toHaveText(
+        'huoltaja'
+      )
+
+      await searchResults.nth(1).click()
+      await expect(page.locator('#permalink')).toHaveText(
+        /huoltaja\{ \} > nimi$/
+      )
+      await expect(searchResults).toHaveCount(2)
+
+      await page.locator('#search-input').fill('huolt.nimi')
+      await expect(page.locator('#search-result .jsv-search-count')).toHaveText(
+        '1 match'
+      )
+      await expect(
+        page.locator('#search-result a .jsv-search-path')
+      ).toHaveText('huoltaja')
+
+      await page.locator('#search-input').fill('nimi huolt')
+      await expect(page.locator('#search-result .jsv-search-count')).toHaveText(
+        '1 match'
+      )
+
+      await page.locator('#search-input').fill('ikä.nimi')
+      await expect(page.locator('#search-result .jsv-search-count')).toHaveText(
+        'No matches'
+      )
+
+      await page.locator('#search-input').fill('arvosana')
+      await expect(page.locator('#search-result .jsv-search-name')).toHaveText([
+        'arvosana'
+      ])
+      await page.locator('#search-input').fill('arvosana tunn')
+      await expect(page.locator('#search-result .jsv-search-name')).toHaveText([
+        'arvosanaTunnustettu'
+      ])
+
+      await page.locator('#search-input').fill('eiloydy')
+      await expect(page.locator('#search-result .jsv-search-count')).toHaveText(
+        'No matches'
+      )
+    })
+
+    test('näyttää kaikki kentän koodistot', async ({ page }) => {
+      await page.goto(
+        '/koski/json-schema-viewer/?schema=viewer-smoke-schema.json#viewer-page?v=arvosana'
+      )
+      const links = page.locator('#info-technical .jsv-koodisto-link')
+      await expect(links).toHaveText(['koodistoa', 'koodistob'])
+      await expect(links.nth(1)).toHaveAttribute(
+        'href',
+        '/koski/dokumentaatio/koodisto/koodistob/latest'
+      )
+    })
+
+    test('selitteen valinnat piilottavat vanhentuneet ja arkaluonteiset kentät', async ({
+      page
+    }) => {
+      const node = (name: string) => nodeText(page, name)
+      await expect(node('vanhaKenttä')).toBeVisible()
+      await expect(node('hetu')).toBeVisible()
+
+      const showDeprecated = page.getByLabel('Show deprecated')
+      await showDeprecated.uncheck()
+      await expect(node('vanhaKenttä')).toHaveCount(0)
+      await expect(node('hetu')).toBeVisible()
+
+      const showSensitive = page.getByLabel('Show sensitive')
+      await showSensitive.uncheck()
+      await expect(node('hetu')).toHaveCount(0)
+      await page.locator('#search-input').fill('hetu')
+      await expect(page.locator('#search-result .jsv-search-count')).toHaveText(
+        'No matches'
+      )
+
+      await showDeprecated.check()
+      await showSensitive.check()
+      await expect(node('vanhaKenttä')).toBeVisible()
+      await expect(node('hetu')).toBeVisible()
     })
 
     test('sulkee ja avaa selitteen', async ({ page }) => {

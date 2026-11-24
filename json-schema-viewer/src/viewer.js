@@ -1,7 +1,6 @@
 /*! JSON Schema Viewer v0.3.4 | https://github.com/jlblcc/json-schema-viewer */
 // @ts-nocheck
 const $ = require('jquery')
-const URI = require('urijs')
 const d3 = require('d3')
 const jsonpointer = require('jsonpointer.js')
 const tv4 = require('./tv4-async-load')
@@ -30,6 +29,8 @@ if (typeof window.JSV === 'undefined') {
     counter: 0,
     maxLabelLength: {},
     maxDepth: 20,
+    // Field names whose subtrees search leaves out unless a term matches the name
+    searchSkip: [],
     labels: {
       allOf: true,
       anyOf: true,
@@ -100,20 +101,7 @@ if (typeof window.JSV === 'undefined') {
       $(window).on('throttledresize', JSV.resizeBtn)
       var cb = function () {
         callback()
-        var items = []
-        JSV.visit(
-          JSV.treeData,
-          function (me) {
-            if (me.isReal) {
-              items.push(me.plainName + '|' + JSV.getNodePath(me).join('-'))
-            }
-          },
-          function (me) {
-            return me.children || me._children
-          }
-        )
-        items.sort()
-        JSV.buildSearchList(items, true)
+        JSV.initSearch()
         $('#loading').fadeOut('slow')
       }
       JSV.createDiagram(cb)
@@ -171,8 +159,7 @@ if (typeof window.JSV === 'undefined') {
         JSV.resizeViewer()
         if (focus) {
           d3.select('#n-' + focus.id).classed('focus', false)
-          $('#permalink').html('Select a Node...')
-          $('#sharelink').val('')
+          JSV.clearPermalink()
         }
       })
       $('#info-panel').on('tabsactivate', function (event, ui) {
@@ -194,8 +181,10 @@ if (typeof window.JSV === 'undefined') {
       })
       d3.selectAll('#zoom-controls>a').on('click', JSV.zoomClick)
       d3.select('#tree-controls>a#reset-tree').on('click', JSV.resetViewer)
-      $('#sharelink').on('click', function () {
-        $(this).select()
+      $('#share-link').on('click', JSV.copyShareLink)
+      $('#legend-filters input').on('change', function () {
+        JSV.hidden[$(this).attr('data-filter')] = !this.checked
+        JSV.applyFilters()
       })
       $(document).on('keydown', JSV.keyNav)
       $(window).on('throttledresize', JSV.pinPanel)
@@ -433,15 +422,20 @@ if (typeof window.JSV === 'undefined') {
         addRow('Format', mono(node.unit))
       }
       if (node.koodisto) {
-        var koodistoLink = $(
-          '<a class="jsv-mono jsv-koodisto-link" target="_blank"></a>'
-        )
-          .attr(
-            'href',
-            '/koski/dokumentaatio/koodisto/' + node.koodisto + '/latest'
+        var koodistotEl = $('<div></div>')
+        $.each([].concat(node.koodisto), function (i, koodisto) {
+          koodistotEl.append(
+            $('<div></div>').append(
+              $('<a class="jsv-mono jsv-koodisto-link" target="_blank"></a>')
+                .attr(
+                  'href',
+                  '/koski/dokumentaatio/koodisto/' + koodisto + '/latest'
+                )
+                .text(koodisto)
+            )
           )
-          .text(node.koodisto)
-        addRow('Koodisto', koodistoLink)
+        })
+        addRow('Koodisto', koodistotEl)
       }
       if (node.oksa) {
         var oksaLink = $(
@@ -727,30 +721,46 @@ if (typeof window.JSV === 'undefined') {
         })
     },
     setPermalink: function (node) {
-      var uri = new URI(),
-        path = JSV.getNodeNamePath(node).map(encodeURIComponent).join('.')
-      uri.hash($.mobile.activePage.attr('id') + '?open=' + path)
-      $('#permalink').html(JSV.compilePath(node))
-      $('#sharelink').val(uri.toString())
+      var path = JSV.getNodeNamePath(node).map(encodeURIComponent).join('.'),
+        url = window.location.href.split('#')[0] + '#viewer-page?mark=' + path
+      $('#permalink').text(JSV.compilePath(node))
+      $('#share-link')
+        .attr('href', url)
+        .text('Copy link')
+        .removeClass('jsv-hidden')
     },
-    getNodePath: function (node, path) {
-      var p = path || [],
-        parent = node.parent
-      if (parent) {
-        var children = parent.children || parent._children
-        p.unshift(children.indexOf(node))
-        return JSV.getNodePath(parent, p)
-      } else {
-        return p
-      }
+    clearPermalink: function () {
+      $('#permalink').text('Select a Node')
+      $('#share-link').removeAttr('href').addClass('jsv-hidden')
+    },
+    // A real link, so that opening it in a new tab or copying it from the context menu also works.
+    copyShareLink: function (event) {
+      var link = $(this),
+        url = link.attr('href'),
+        copy =
+          navigator.clipboard && navigator.clipboard.writeText
+            ? navigator.clipboard.writeText(url)
+            : Promise.reject()
+      event.preventDefault()
+      copy.then(
+        function () {
+          link.text('Link copied')
+          clearTimeout(JSV.shareLinkTimer)
+          JSV.shareLinkTimer = setTimeout(function () {
+            link.text('Copy link')
+          }, 2000)
+        },
+        function () {
+          window.prompt('Copy link', url)
+        }
+      )
     },
     // Koski: deep links, see documentation/json-schema-viewer.md
     getNodeNamePath: function (node, path) {
       var p = path || [],
         parent = node.parent
       if (parent) {
-        var siblings = parent.children || parent._children
-        if (node.isReal || siblings.length > 1) {
+        if (node.isReal || parent.allChildren.length > 1) {
           p.unshift(node.isReal ? node.plainName : node.title)
         }
         return JSV.getNodeNamePath(parent, p)
@@ -835,18 +845,6 @@ if (typeof window.JSV === 'undefined') {
         JSV.expandThroughWrappers(children[0])
       }
     },
-    expandNodePath: function (path) {
-      var node = JSV.resolveNodePath(
-        Array.isArray(path) ? path.join('-') : path
-      )
-      if (!node) {
-        return null
-      }
-      JSV.expandAncestors(node)
-      JSV.update(JSV.treeData)
-      JSV.centerNode(node)
-      return node
-    },
     parseHashParams: function (hash) {
       var params = {},
         query = (hash || '').split('?')[1] || ''
@@ -870,10 +868,7 @@ if (typeof window.JSV === 'undefined') {
           return d.children || d._children
         }
       )
-      if (JSV.focusNode) {
-        d3.select('#n-' + JSV.focusNode.id).classed('focus', false)
-        JSV.focusNode = null
-      }
+      JSV.deselectNode()
       JSV.panelUnpinned = false
       JSV.deepLinkTarget = null
       JSV.resetTree(JSV.treeData, 1)
@@ -932,26 +927,209 @@ if (typeof window.JSV === 'undefined') {
         JSV.centerNode(target)
       }
     },
-    buildSearchList: function (items, init) {
-      var ul = $('ul#search-result')
-      var texts = {}
-      $.each(items, function (i, v) {
-        var data = v.split('|')
-        if (!texts[data[0]]) {
-          texts[data[0]] = true
-          var li = $('<li/>').attr('data-icon', 'false').appendTo(ul)
-          $('<a/>').attr('data-path', data[1]).text(data[0]).appendTo(li)
+    searchIndex: [],
+    searchResultLimit: 100,
+    initSearch: function () {
+      JSV.visit(
+        JSV.treeData,
+        function (node) {
+          var parent = node.parent,
+            skippedVia = parent ? parent.searchSkippedVia : []
+          if (
+            parent &&
+            parent.isReal &&
+            JSV.searchSkip.indexOf(parent.plainName) >= 0
+          ) {
+            skippedVia = skippedVia.concat([parent.plainName.toLowerCase()])
+          }
+          node.searchSkippedVia = skippedVia
+          if (node.isReal) {
+            JSV.searchIndex.push({
+              node: node,
+              name: node.plainName.toLowerCase()
+            })
+          }
+        },
+        function (node) {
+          return node.allChildren
+        }
+      )
+      // Stable sort: equal names keep tree order.
+      JSV.searchIndex.sort(function (a, b) {
+        return a.name < b.name ? -1 : a.name > b.name ? 1 : 0
+      })
+      var ul = $('#search-result'),
+        lastQuery = '',
+        timer
+      // jQuery Mobile's clear button fires only change, typing fires input.
+      $('#search-input').on('input change', function () {
+        var input = this
+        clearTimeout(timer)
+        timer = setTimeout(function () {
+          if (input.value !== lastQuery) {
+            lastQuery = input.value
+            JSV.showSearchResults(input.value)
+          }
+        }, 150)
+      })
+      ul.on('click', 'a', function (e) {
+        e.preventDefault()
+        ul.find('a.ui-btn-active').removeClass('ui-btn-active')
+        $(this).addClass('ui-btn-active')
+        JSV.showNode($(this).data('node'))
+      })
+    },
+    // Space- or dot-separated terms, in any order, each one refining the result:
+    // every term must occur in the field name or in an ancestor's key or class
+    // title, and at least one in the field name itself. Ranked by the best match
+    // on the field name: exact, then prefix, then substring.
+    parseSearchQuery: function (query) {
+      return query
+        .toLowerCase()
+        .split(/[\s.]+/)
+        .map(function (term) {
+          try {
+            return decodeURIComponent(term)
+          } catch {
+            return term
+          }
+        })
+        .filter(Boolean)
+    },
+    pathContains: function (node, term) {
+      var n
+      for (n = node.parent; n; n = n.parent) {
+        if (
+          (n.plainName || '').toLowerCase().indexOf(term) >= 0 ||
+          (n.title || '').toLowerCase().indexOf(term) >= 0
+        ) {
+          return true
+        }
+      }
+      return false
+    },
+    findSearchResults: function (query) {
+      var terms = JSV.parseSearchQuery(query),
+        filtering = JSV.hidden.deprecated || JSV.hidden.sensitive,
+        buckets = [[], [], []]
+      if (!terms.length) {
+        return []
+      }
+      $.each(JSV.searchIndex, function (i, item) {
+        var rank = 3
+        $.each(terms, function (j, term) {
+          var at = item.name.indexOf(term)
+          if (at >= 0) {
+            rank = Math.min(rank, item.name === term ? 0 : at === 0 ? 1 : 2)
+          }
+        })
+        if (
+          rank < 3 &&
+          item.node.searchSkippedVia.every(function (name) {
+            return terms.some(function (term) {
+              return name.indexOf(term) >= 0
+            })
+          }) &&
+          terms.every(function (term) {
+            return (
+              item.name.indexOf(term) >= 0 || JSV.pathContains(item.node, term)
+            )
+          }) &&
+          !(filtering && JSV.isFilteredOut(item.node))
+        ) {
+          buckets[rank].push(item.node)
         }
       })
-      if (init) {
-        ul.filterable()
+      return buckets[0].concat(buckets[1], buckets[2])
+    },
+    showSearchResults: function (query) {
+      var ul = $('#search-result').empty(),
+        results = JSV.findSearchResults(query)
+      if (query.trim()) {
+        $('<li data-role="list-divider" class="jsv-search-count"></li>')
+          .text(
+            results.length === 0
+              ? 'No matches'
+              : results.length === 1
+                ? '1 match'
+                : results.length + ' matches'
+          )
+          .appendTo(ul)
       }
-      ul.filterable('refresh')
-      ul.on('click', function (e) {
-        var path = $(e.target).attr('data-path')
-        var node = JSV.expandNodePath(path.split('-'))
-        JSV.flashNode(node)
+      $.each(results.slice(0, JSV.searchResultLimit), function (i, node) {
+        var context = JSV.getNodeNamePath(node).slice(0, -1).join(' › '),
+          a = $('<a href="#"></a>')
+            .data('node', node)
+            .append(
+              $('<span class="jsv-search-name"></span>').text(node.plainName)
+            )
+        if (context) {
+          a.append($('<span class="jsv-search-path"></span>').text(context))
+        }
+        $('<li data-icon="false"></li>').append(a).appendTo(ul)
       })
+      if (results.length > JSV.searchResultLimit) {
+        $('<li class="jsv-search-more"></li>')
+          .text(
+            results.length -
+              JSV.searchResultLimit +
+              ' more not shown. Refine the search.'
+          )
+          .appendTo(ul)
+      }
+      ul.listview('refresh')
+    },
+    hidden: { deprecated: false, sensitive: false },
+    isHiddenByFilter: function (node) {
+      return (
+        (JSV.hidden.deprecated && (node.deprecated || node.redundantData)) ||
+        (JSV.hidden.sensitive && node.sensitive)
+      )
+    },
+    isFilteredOut: function (node) {
+      var n
+      for (n = node; n; n = n.parent) {
+        if (JSV.isHiddenByFilter(n)) {
+          return true
+        }
+      }
+      return false
+    },
+    // allChildren is the full child list; children/_children hold only the nodes the legend filters let through.
+    applyFilters: function () {
+      if (!JSV.treeData) {
+        return
+      }
+      JSV.visit(
+        JSV.treeData,
+        function (d) {
+          if (!d.allChildren) {
+            return
+          }
+          var visible = d.allChildren.filter(function (c) {
+            return !JSV.isHiddenByFilter(c)
+          })
+          if (d._children) {
+            d._children = visible
+          } else {
+            d.children = visible
+          }
+        },
+        function (d) {
+          return d.allChildren
+        }
+      )
+      if (JSV.focusNode && JSV.isFilteredOut(JSV.focusNode)) {
+        JSV.deselectNode()
+        JSV.clearPermalink()
+      }
+      JSV.update(JSV.treeData)
+    },
+    showNode: function (node) {
+      JSV.expandAncestors(node)
+      JSV.update(JSV.treeData)
+      JSV.selectNode(node, true)
+      JSV.flashNode(node)
     },
     flashNode: function (node, times) {
       var t = times || 4,
@@ -1227,6 +1405,12 @@ if (typeof window.JSV === 'undefined') {
           return
         }
         JSV.selectNode(d, true)
+      }
+    },
+    deselectNode: function () {
+      if (JSV.focusNode) {
+        d3.select('#n-' + JSV.focusNode.id).classed('focus', false)
+        JSV.focusNode = null
       }
     },
     selectNode: function (d, openPanel) {
@@ -1506,7 +1690,7 @@ if (typeof window.JSV === 'undefined') {
         .append('circle')
         .attr('r', 0)
         .classed('collapsed', function (d) {
-          return d._children ? true : false
+          return !!(d._children && d._children.length)
         })
         .on('click', JSV.click)
       nodeEnter
@@ -1553,7 +1737,7 @@ if (typeof window.JSV === 'undefined') {
         .select('.node circle')
         .attr('r', 6.5)
         .classed('collapsed', function (d) {
-          return d._children ? true : false
+          return !!(d._children && d._children.length)
         })
       var nodeUpdate = node
         .transition()
@@ -1615,6 +1799,15 @@ if (typeof window.JSV === 'undefined') {
     createDiagram: function (callback) {
       tv4.asyncLoad([JSV.schema], function () {
         JSV.compileData(tv4.getSchema(JSV.schema), false, 'schema')
+        JSV.visit(
+          JSV.treeData,
+          function (d) {
+            d.allChildren = d.children
+          },
+          function (d) {
+            return d.children
+          }
+        )
         var viewerWidth = JSV.viewerWidth
         var viewerHeight = JSV.viewerHeight
         JSV.zoomListener = d3.behavior
@@ -1689,7 +1882,7 @@ if (typeof window.JSV === 'undefined') {
           .select('#legend-items')
           .append('svg')
           .attr('width', 170)
-          .attr('height', 220)
+          .attr('height', 210)
         var legendItem = legendSvg
           .selectAll('g.item-group')
           .data(legendData)

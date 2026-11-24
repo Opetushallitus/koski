@@ -1,14 +1,8 @@
-import { Page } from '@playwright/test'
-import { expect, test } from './schema-viewer-base'
+import { expect, nodeText, test } from './schema-viewer-base'
 
 const viewer = (hash: string, schema = 'migri-oppija-schema.json') =>
   `/koski/json-schema-viewer/?schema=${schema}#viewer-page?${hash}`
 
-// Pakollisen kentän nimen perässä on tähti
-const nodeText = (page: Page, name: string) =>
-  page.locator('svg#jsv-tree g.node text.node-text', {
-    hasText: new RegExp(`^${name}\\*?$`)
-  })
 
 test.describe('JSON Schema Viewer deep links', () => {
   test('v= nimipolulla avaa ja valitsee solmun', async ({ page }) => {
@@ -182,7 +176,7 @@ test.describe('JSON Schema Viewer deep links', () => {
     await expect(nodeText(page, 'koulutusvienti')).toBeVisible()
   })
 
-  test('jakolinkki näyttää kohdesolmun latauksessa ja uudelleenlatauksessa, ja popup säilyttää solmuvalinnan', async ({
+  test('jakolinkki korostaa kohdesolmun latauksessa ja uudelleenlatauksessa', async ({
     page
   }) => {
     await page.goto(viewer('v=opiskeluoikeudet.lisätiedot.koulutusvienti'))
@@ -190,48 +184,28 @@ test.describe('JSON Schema Viewer deep links', () => {
     const selectedNode = nodeText(page, 'koulutusvienti').locator('..')
     await expect(selectedNode).toHaveClass(/focus/)
 
-    const originalUrl = page.url()
-    await page.locator('#permalink').click()
-
-    const popup = page.locator('#permalink-popup')
-    await expect(popup).toBeVisible()
-
-    const shareLink = page.locator('#sharelink')
+    const shareLink = page.locator('#share-link')
     await expect(shareLink).toBeVisible()
-
-    const overlay = page.locator('#permalink-popup-screen')
-    await expect(overlay).toBeVisible()
-    await expect(page).toHaveURL(originalUrl)
-    await expect(selectedNode).toHaveClass(/focus/)
-    await expect(shareLink).toHaveValue(
-      /#viewer-page\?open=opiskeluoikeudet\.lis%C3%A4tiedot\.koulutusvienti$/
+    await expect(shareLink).toHaveAttribute(
+      'href',
+      /#viewer-page\?mark=opiskeluoikeudet\.lis%C3%A4tiedot\.koulutusvienti$/
     )
-
-    const generatedUrl = await shareLink.inputValue()
+    const generatedUrl = (await shareLink.getAttribute('href'))!
     expect(new URL(generatedUrl).search).toBe(
       '?schema=migri-oppija-schema.json'
     )
 
-    // Klikkaa taustakerroksen kulmaa, jotta klikkaus osuu popupin ulkopuolelle.
-    await overlay.click({ position: { x: 5, y: 5 } })
-    await expect(popup).toBeHidden()
-    await expect(overlay).toBeHidden()
-    await expect(page).toHaveURL(originalUrl)
-    await expect(selectedNode).toHaveClass(/focus/)
-
-    await page.locator('#permalink').click()
-    await expect(shareLink).toBeVisible()
-
-    // Avaa kopioitu linkki uutena sivuna, kuten linkin vastaanottaja.
+    // Avaa linkki uutena sivuna, kuten linkin vastaanottaja.
     await page.goto('about:blank')
     await page.goto(generatedUrl)
     await expect(page.locator('#loading')).toBeHidden()
-    await expect(nodeText(page, 'koulutusvienti')).toBeVisible()
+    const markedNode = nodeText(page, 'koulutusvienti').locator('..')
+    await expect(markedNode).toHaveClass(/marked/)
     await expect(page.locator('.node.focus')).toHaveCount(0)
 
     await page.reload()
     await expect(page.locator('#loading')).toBeHidden()
-    await expect(nodeText(page, 'koulutusvienti')).toBeVisible()
+    await expect(markedNode).toHaveClass(/marked/)
     await expect(page.locator('.node.focus')).toHaveCount(0)
   })
 })
