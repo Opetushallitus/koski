@@ -19,7 +19,7 @@ import org.scalatest.matchers.should.Matchers
 import org.scalatest.{BeforeAndAfterAll, BeforeAndAfterEach}
 
 import java.nio.charset.StandardCharsets
-import java.time.LocalDate
+import java.time.{LocalDate, LocalDateTime}
 
 class MassaluovutusSisaltyvatOpiskeluoikeudetSpec
   extends AnyFreeSpec
@@ -190,6 +190,21 @@ class MassaluovutusSisaltyvatOpiskeluoikeudetSpec
       markkasenTiedosto shouldBe defined
       opiskeluoikeusOidit(markkasenTiedosto.get, user) should equal(List(mitätöitySisältyvä.oid.get))
       mitätöidyt.files.find(_.contains(KoskiSpecificMockOppijat.eerola.oid)) shouldBe None
+    }
+
+    "Audit-lokin hakuehdoissa on muuttunutJälkeen kellonaikoineen ja mitätöidyt" in {
+      AuditLogTester.clearMessages()
+      val user = MockUsers.helsinkiKatselija
+      val kysely = query.copy(mitätöidyt = Some(true), muuttunutJälkeen = Some(LocalDateTime.of(2020, 1, 1, 12, 30, 15)))
+      waitForCompletion(addQuerySuccessfully(kysely, user)(_.queryId), user)
+
+      val auditViesti = AuditLogTester.getLogMessages.map(JsonMethods.parse(_)).find(m =>
+        (m \ "operation").extract[String] == "SISALTYVAT_OPISKELUOIKEUDET_KATSOMINEN" &&
+          (m \ "target" \ "oppijaHenkiloOid").extractOpt[String].contains(KoskiSpecificMockOppijat.markkanen.oid)
+      )
+      auditViesti shouldBe defined
+      (auditViesti.get \ "target" \ "hakuEhto").extract[String] shouldBe
+        s"alkanutAikaisintaan=2020-01-01&mitätöidyt=true&muuttunutJälkeen=2020-01-01T12:30:15&organisaatio=${MockOrganisaatiot.helsinginKaupunki}"
     }
 
     "Toisen käyttäjän kyselyä ei näe" in {
