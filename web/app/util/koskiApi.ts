@@ -1,6 +1,14 @@
-import { apiDelete, ApiFailure, apiGet, apiPost, apiPut } from '../api-fetch'
+import {
+  apiDelete,
+  ApiFailure,
+  apiGet,
+  apiPost,
+  apiPostFile,
+  apiPut
+} from '../api-fetch'
 import { lang } from '../i18n/i18n'
 import { OpiskeluoikeusHistoryPatch } from '../types/fi/oph/koski/history/OpiskeluoikeusHistoryPatch'
+import { IbisTuonninTulos } from '../types/fi/oph/koski/ibis/IbisTuonninTulos'
 import { UserWithAccessRights } from '../types/fi/oph/koski/koskiuser/UserWithAccessRights'
 import { QueryResponse } from '../types/fi/oph/koski/massaluovutus/QueryResponse'
 import { MassaluovutusQueryParameters } from '../types/fi/oph/koski/massaluovutus/MassaluovutusQueryParameters'
@@ -414,6 +422,20 @@ export const createMassaluovutusKysely = (
 
 export const fetchOmatMassaluovutusKyselyt = () =>
   handleExpiredSession(apiGet<QueryResponse[]>(apiUrl('massaluovutus')))
+
+export const esikatseleIbisTiedosto = (tiedosto: File) =>
+  handleExpiredSession(
+    apiPostFile<IbisTuonninTulos>(
+      apiUrl('ibis/esikatselu'),
+      'tiedosto',
+      tiedosto
+    )
+  )
+
+export const tuoIbisTiedosto = (tiedosto: File) =>
+  handleExpiredSession(
+    apiPostFile<IbisTuonninTulos>(apiUrl('ibis/tuonti'), 'tiedosto', tiedosto)
+  )
 
 export const fetchRaporttienOrganisaatiot = () =>
   handleExpiredSession(

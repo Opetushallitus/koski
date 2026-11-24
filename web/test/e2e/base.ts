@@ -10,6 +10,7 @@ import { KoskiOppijaHaku } from './pages/oppija/KoskiOppijaHaku'
 import { KoskiOppijaPage } from './pages/oppija/KoskiOppijaPage'
 import { KoskiUusiOppijaPage } from './pages/oppija/KoskiUusiOppijaPage'
 import { KoskiRaportitPage } from './pages/virkailija/KoskiRaportitPage'
+import { KoskiTiedostonTuontiPage } from './pages/virkailija/KoskiTiedostonTuontiPage'
 import { KoskiVirkailijaPage } from './pages/virkailija/KoskiVirkailijaPage'
 import { KoskiEshOppijaPage } from './pages/oppija/KoskiEshOppijaPage'
 import { KoskiPerusopetusOppijaPage } from './pages/oppija/KoskiPerusopetusOppijaPage'
@@ -31,6 +32,7 @@ type Fixtures = {
   uusiOppijaPage: KoskiUusiOppijaPage
   virkailijaPage: KoskiVirkailijaPage
   raportitPage: KoskiRaportitPage
+  tiedostonTuontiPage: KoskiTiedostonTuontiPage
   kansalainenPage: KoskiKansalainenPage
   taiteenPerusopetusPage: KoskiTpoOppijaPage
   vstOppijaPage: KoskiVSTOppijaPage
@@ -73,6 +75,9 @@ export const test = base.extend<Fixtures>({
   },
   raportitPage: async ({ page }, use) => {
     await use(new KoskiRaportitPage(page))
+  },
+  tiedostonTuontiPage: async ({ page }, use) => {
+    await use(new KoskiTiedostonTuontiPage(page))
   },
   kansalainenPage: async ({ page }, use) => {
     await use(new KoskiKansalainenPage(page))

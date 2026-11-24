@@ -105,6 +105,26 @@ export const apiDelete = async <T>(
 ): Promise<ApiResponse<T>> =>
   apiFetch<T>(input, enrichJsonRequest('DELETE', 'application/json', init))
 
+// Content-Typeä ei aseteta, koska selain lisää multipart-lomakkeelle sen rajamerkkijonoineen.
+export const apiPostFile = async <T>(
+  input: RequestInfo,
+  fieldName: string,
+  file: File
+): Promise<ApiResponse<T>> => {
+  const body = new FormData()
+  body.append(fieldName, file)
+  return apiFetch<T>(input, {
+    credentials: 'include',
+    method: 'POST',
+    headers: {
+      Accept: 'application/json',
+      CSRF: Cookies.get('CSRF') || '',
+      'Caller-id': '1.2.246.562.10.00000000001.koski.frontend'
+    },
+    body
+  })
+}
+
 export const prependUrl = (
   baseUrl: string,
   request: RequestInfo
