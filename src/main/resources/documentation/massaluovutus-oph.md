@@ -101,7 +101,8 @@ Myös mitätöityjen tai poistettujen opiskeluoikeuksien tapauksissa rajapinta p
 Suorat rajapinnat eHOKS-palvelulle. Nämä rajapinnat eivät ole osana massaluovutuksen rajapintoja, vaan pyydetyt tiedot saadaan suoraan rajapintakutsun vastauksessa.
 
 Rajapinnat palauttavat vain ammatillisen koulutuksen ja tutkintokoulutukseen valmentavan koulutuksen (TUVA) opiskeluoikeuksia, ja niistä vain eHOKS-palvelun tarvitsemat kentät.
-Vastauksen skeema on <a href="/koski/json-schema-viewer/?schema=ehoks-oppija-result.json">EhoksOppija</a>-objekti; yksittäisen opiskeluoikeuden rajapinta palauttaa sen sisältämän EhoksOpiskeluoikeus-objektin.
+Vastauksen skeema on <a href="/koski/json-schema-viewer/?schema=ehoks-oppija-result.json">EhoksOppija</a>-objekti; yksittäisen opiskeluoikeuden rajapinta palauttaa yhden sen sisältämistä opiskeluoikeusobjekteista.
+Opiskeluoikeuden ja päätason suorituksen rakenne riippuu niiden `tyyppi`-kentästä.
 
 Rajapintojen käyttö edellyttää globaaleja lukuoikeuksia.
 

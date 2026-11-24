@@ -41,7 +41,8 @@ class EhoksSpec
         val oo = oppija.opiskeluoikeudet.head
         oo.tila.opiskeluoikeusjaksot should not be empty
         oo.koulutustoimija.flatMap(_.nimi) should not be empty
-        val suoritus = oo.suoritukset.head
+        oo shouldBe an[EhoksAmmatillinenOpiskeluoikeus]
+        val suoritus = oo.suoritukset.head.asInstanceOf[EhoksAmmatillisenTutkinnonSuoritus]
         suoritus.tyyppi.koodiarvo should equal("ammatillinentutkinto")
         suoritus.koulutusmoduuli.tunniste.nimi should not be empty
         suoritus.vahvistus should not be empty
@@ -64,7 +65,24 @@ class EhoksSpec
     "palauttaa TUVA-opiskeluoikeuden" in {
       getEhoksOppija(KoskiSpecificMockOppijat.tuva.oid) {
         verifyResponseStatusOk()
-        JsonSerializer.parse[EhoksOppija](body, ignoreExtras = true).opiskeluoikeudet.map(_.tyyppi.koodiarvo) should contain("tuva")
+        val tuva = JsonSerializer.parse[EhoksOppija](body, ignoreExtras = true).opiskeluoikeudet.collect { case oo: EhoksTuvaOpiskeluoikeus => oo }
+        tuva should not be empty
+        tuva.flatMap(_.suoritukset).map(_.tyyppi.koodiarvo) should contain("tuvakoulutuksensuoritus")
+      }
+    }
+
+    "palauttaa muiden ammatillisten koulutusten suoritukset" in {
+      List(
+        KoskiSpecificMockOppijat.telma -> "telma",
+        KoskiSpecificMockOppijat.valma -> "valma",
+        KoskiSpecificMockOppijat.muuAmmatillinen -> "muuammatillinenkoulutus",
+        KoskiSpecificMockOppijat.tutkinnonOsaaPienempiKokonaisuus -> "tutkinnonosaapienemmistäkokonaisuuksistakoostuvasuoritus",
+      ).foreach { case (oppija, suorituksenTyyppi) =>
+        getEhoksOppija(oppija.oid) {
+          verifyResponseStatusOk()
+          val suoritukset = JsonSerializer.parse[EhoksOppija](body, ignoreExtras = true).opiskeluoikeudet.flatMap(_.suoritukset)
+          suoritukset.collect { case s: EhoksMuunAmmatillisenKoulutuksenSuoritus => s.tyyppi.koodiarvo } should contain(suorituksenTyyppi)
+        }
       }
     }
 
@@ -157,7 +175,14 @@ class EhoksSpec
   "Dokumentaation skeema on saatavilla" in {
     get("api/documentation/ehoks-oppija-result.json") {
       verifyResponseStatusOk()
-      body should include("#/definitions/ehoksopiskeluoikeus")
+      List(
+        "ehoksammatillinenopiskeluoikeus",
+        "ehoksammatillisentutkinnonsuoritus",
+        "ehoksmuunammatillisenkoulutuksensuoritus",
+        "ehokstuvaopiskeluoikeus",
+        "ehokstuvasuoritus",
+      ).foreach(definition => body should include(s"#/definitions/$definition"))
+      body should include("\"tuvakoulutuksensuoritus\"")
     }
   }
 
