@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import ReactDOM from 'react-dom'
 import { enrichJsonRequest, useSafeState } from '../api-fetch'
+import { parseQuery } from './parseQuery'
 
 const pollIntervalMs = 3000
 
@@ -67,22 +68,20 @@ export const MassaluovutusKokeile: React.FC<MassaluovutusKokeileProps> = ({
   const [state, setState] = useSafeState<State>({ phase: 'idle' })
 
   const send = useCallback(async () => {
-    let body: unknown
-    try {
-      body = JSON.parse(query)
-    } catch (e) {
+    const parsed = parseQuery(query)
+    if (!parsed.ok) {
       setState({
         phase: 'done',
         response: {
           status: 0,
           statusText: 'Virheellinen JSON',
-          body: String(e)
+          body: parsed.error
         }
       })
       return
     }
     setState({ phase: 'sending' })
-    setState(stateFor(await createQuery(apiPath, body)))
+    setState(stateFor(await createQuery(apiPath, parsed.value)))
   }, [apiPath, query, setState])
 
   useEffect(() => {
