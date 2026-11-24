@@ -9,7 +9,17 @@ case class KoodistoUri(koodistoUri: String) extends Metadata {
   def asLink = <a href={url} target="_blank">{koodistoUri}</a>
 
   override def appendMetadataToJsonSchema(obj: JsonAST.JObject) = {
-    appendToDescription(obj.merge(JsonAST.JObject("koodisto" -> JsonAST.JString(koodistoUri))), s"(Koodisto: $asLink)")
+    val existing = obj \ "koodisto" match {
+      case JsonAST.JString(uri) => List(uri)
+      case JsonAST.JArray(uris) => uris.collect { case JsonAST.JString(uri) => uri }
+      case _ => Nil
+    }
+    val koodisto = (existing :+ koodistoUri).distinct match {
+      case List(uri) => JsonAST.JString(uri)
+      case uris => JsonAST.JArray(uris.map(JsonAST.JString(_)))
+    }
+    val withKoodisto = JsonAST.JObject(obj.obj.filterNot(_._1 == "koodisto") :+ ("koodisto" -> koodisto))
+    appendToDescription(withKoodisto, s"(Koodisto: $asLink)")
   }
 
   override def applyMetadata(x: ObjectWithMetadata[_], schemaFactory: SchemaFactory) = {

@@ -55,7 +55,69 @@ p.ui-content.error-message {
 #legend-container #search-result {
   overflow-y: auto;
   overflow-x: hidden;
-  max-height: 15em;
+  max-height: 24em;
+  width: 320px;
+  margin-left: -120px;
+}
+#search-result:empty {
+  display: none;
+}
+#search-result .ui-btn {
+  white-space: normal;
+  padding-top: 0.5em;
+  padding-bottom: 0.5em;
+}
+#search-result .jsv-search-name {
+  display: block;
+  font-family: 'Courier New', monospace;
+}
+#search-result .jsv-search-path {
+  display: block;
+  font-size: 0.8em;
+  font-weight: normal;
+  color: #666;
+}
+#search-result .ui-btn-active .jsv-search-path {
+  color: inherit;
+}
+#search-result .jsv-search-more {
+  font-size: 0.85em;
+  font-weight: normal;
+  color: #666;
+}
+/* Rows continue the legend SVG's geometry: 20px pitch, mark centred 10px from
+   the left edge, text starting at 25px, same font size as the SVG text. */
+#legend-items svg {
+  display: block;
+}
+#legend-filters {
+  margin-top: 6px;
+  padding-bottom: 8px;
+}
+#legend-filters label {
+  display: flex;
+  align-items: center;
+  min-height: 20px;
+  margin: 0;
+  font-size: inherit;
+  line-height: 20px;
+  cursor: pointer;
+}
+#legend-filters input {
+  flex: none;
+  width: 13px;
+  height: 13px;
+  margin: 0 8.5px 0 3.5px;
+  accent-color: steelblue;
+}
+.jsv-hidden {
+  display: none;
+}
+#schema-path #share-link {
+  float: right;
+  margin-left: 1em;
+  font-weight: normal;
+  cursor: pointer;
 }
 #jsv-tree {
   display: block;

@@ -1,3 +1,7 @@
+# 19.11.2026
+
+- Skeeman JSON-muodossa kentän `koodisto`-avain on nyt taulukko, jos kentän arvo voi tulla useammasta koodistosta (esim. `["arviointiasteikkoammatillinenhyvaksyttyhylatty", "arviointiasteikkoammatillinent1k3"]`). Aiemmin avaimessa näkyi vain yksi koodistoista. Yhden koodiston kentissä arvo on edelleen merkkijono. Siirrettävä data ei muutu.
+
 # 17.11.2026
 
 - Vapaan sivistystyön vapaatavoitteisen koulutuksen (`vstvapaatavoitteinenkoulutus`) opiskeluoikeusjaksoille sallitaan uutena tilana `lasna` ja osaamismerkin (`vstosaamismerkki`) opiskeluoikeusjaksoille tilat `lasna` ja `keskeytynyt`. Opiskeluoikeudelle voi siten siirtää päättymispäivästä erillisen alkamispäivän, ja se voi päättyä ilman suoritusta. Aiemmin opiskeluoikeus alkoi ja päättyi samana päivänä, koska ainoat sallitut tilat olivat päättäviä.

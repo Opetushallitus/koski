@@ -94,6 +94,23 @@ re-vendor from upstream **must re-apply them**:
 - **Deep links** (TOR-2741) — see "Deep links" below. `JSV.applyDeepLinks`,
   `resolveNodePaths`, `getNodeNamePath`, the `.marked` class (reuses `.focus-box`) and
   the "Highlighted" legend row.
+- **Search** (TOR-2741) — `JSV.initSearch` replaces jQuery Mobile's filterable
+  listview, which deduplicated by field name and opened only the first match.
+  Every matching field is listed with its path (exact name first, then prefix,
+  then substring matches; max 100 rows plus a "N more" note), and a click selects
+  the field in the tree. Fields hidden by the legend filters are left out.
+  Each space- or dot-separated term refines the result, in any order: it must
+  occur in the field name or in an ancestor's key or class title, and at least
+  one term in the field name itself (`arvosana amm osa`). Ranking uses the best
+  term match on the field name.
+  Subtrees under the field names in `searchSkip` (the servlet passes
+  `tunnustettu`, whose `osaaminen` repeats the whole `Suoritus` union) are left
+  out unless a term matches that name, e.g. `tunn arvosana`.
+- **Legend filters** (TOR-2741) — the "Show deprecated" (also covers unused)
+  and "Show sensitive" checkboxes (`#legend-filters`) remove matching fields and their
+  subtrees from the tree. `allChildren` holds each node's full child list;
+  `JSV.applyFilters` rebuilds `children`/`_children` from it. Not remembered
+  between visits, so a shared link always shows the whole tree.
 
 The `deprecated` / `redundantData` / `sensitive` booleans the viewer reads come
 from the schema JSON, emitted by the matching annotations in
@@ -150,7 +167,8 @@ Notes:
 - The technical block reads only **structured** JSON fields, never the
   `description` string. Several Koski annotations were given structured fields so
   they can be shown as their own row/chip: `KoodistoUri` → `koodisto` (Koodisto
-  row, linked), `KoodistoKoodiarvo` → `koodiarvot` (Allowed row), `OksaUri` →
+  row, linked; a string, or an array when the field has several `@KoodistoUri`),
+  `KoodistoKoodiarvo` → `koodiarvot` (Allowed row), `OksaUri` →
   `oksa` (Oksa row, linked), `Deprecated` → `deprecatedMessage` (badge),
   `UnitOfMeasure` → `unit` (Format row), `ReadOnly` → `readOnly`/`readOnlyText`
   (Read-only row), `VirtaSource`/`VirtaDerived`/`VirtaNote` → `virta` (Virta row).
@@ -191,8 +209,11 @@ first match. Segments are URL-decoded, so `%2E` stands for a literal dot in a
 name. A path that doesn't resolve is skipped with a `console.warn`; the rest of
 the link still applies.
 
-The share link in the info panel emits this name form as `open=<path>`, so a
-change list can be composed by clicking through the nodes and copying the paths. The legacy
+The "Copy link" link in the footer emits this name form as `mark=<path>` for the
+selected field and copies it to the clipboard (falling back to a `prompt` when
+the Clipboard API is unavailable). It is a real `href`, so it can also be opened
+or copied from the context menu. A change list can be composed by clicking through
+the nodes and joining the paths with commas. The legacy
 index form (`v=1-0-8-7`, child indices from the root) is still accepted, but it
 breaks whenever a property is inserted before the target — which is exactly the
 case a change link is meant to describe.

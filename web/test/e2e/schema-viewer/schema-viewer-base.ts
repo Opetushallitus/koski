@@ -1,3 +1,4 @@
+import type { Page } from '@playwright/test'
 import { expect, test as base } from '../base'
 
 export const test = base.extend<{ checkPageErrors: void }>({
@@ -15,3 +16,9 @@ export const test = base.extend<{ checkPageErrors: void }>({
 })
 
 export { expect } from '../base'
+
+// Pakollisen kentän nimen perässä on tähti
+export const nodeText = (page: Page, name: string) =>
+  page.locator('svg#jsv-tree g.node text.node-text', {
+    hasText: new RegExp(`^${name}\\*?$`)
+  })

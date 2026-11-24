@@ -28,7 +28,9 @@ class JsonSchemaViewerHtmlServlet(implicit val application: KoskiApplication) ex
 
       JSV.init({
         schema: schema,
-        maxDepth: 15
+        maxDepth: 15,
+        // tunnustettu.osaaminen is the whole Suoritus union, repeated under every osasuoritus
+        searchSkip: ['tunnustettu']
       }, function() {
         JSV.setVersion(tv4.getSchema(JSV.treeData.schema).version);
         JSV.applyDeepLinks(window.location.hash);
@@ -52,11 +54,6 @@ class JsonSchemaViewerHtmlServlet(implicit val application: KoskiApplication) ex
     <html>
       <head>
         {scala.xml.Group(Seq[scala.xml.Node](
-          <style nonce={nonce}>
-            #sharelink {{
-              min-width: 300 px;
-            }}
-          </style>,
           <meta charset="utf-8"/>,
           <title>JSON Schema Viewer 0.3.4</title>,
           <meta name="viewport" content="width=device-width, initial-scale=1"/>,
@@ -93,19 +90,19 @@ class JsonSchemaViewerHtmlServlet(implicit val application: KoskiApplication) ex
                 <div id="legend" data-role="collapsible" data-collapsed="false">
                   <h3 class="ui-mini">Legend</h3>
                   <div id="legend-items"></div>
+                  <div id="legend-filters">
+                    <label title="Show deprecated and unused fields in the tree and search"><input type="checkbox" data-role="none" data-filter="deprecated" checked="checked"/>Show deprecated</label>
+                    <label title="Show sensitive fields in the tree and search"><input type="checkbox" data-role="none" data-filter="sensitive" checked="checked"/>Show sensitive</label>
+                  </div>
                 </div>
-                <input type="text" data-type="search" placeholder="Search..." id="search-input"/>
-                <ul id="search-result" data-role="listview" data-filter="true" data-filter-reveal="true" data-input="#search-input" data-inset="true"></ul>
+                <input type="text" data-type="search" placeholder="Search, e.g. arvosana amm osa" title="Every word must occur in the field name or in the name of one of its parents, at least one in the field name" id="search-input"/>
+                <ul id="search-result" data-role="listview" data-inset="true"></ul>
               </div>
             </div>
             <div data-role="footer">
               <div id="schema-path" class="ui-content">
-                <a href="#permalink-popup" id="permalink" data-rel="popup">Select a Node</a>
-                <!-- data-history="false" estää jQuery Mobilea muuttamasta hashia ja solmuvalintaa ponnahdusikkunaa avattaessa ja suljettaessa. -->
-                <div data-role="popup" id="permalink-popup" data-history="false" class="ui-content" data-arrow="true">
-                  <label for="sharelink">Share:</label>
-                  <input type="text" id="sharelink" placeholder="Select a Node to create a permalink." value="" data-theme="a"/>
-                </div>
+                <a id="share-link" class="jsv-hidden" data-ajax="false" title="Copy a link that highlights this field">Copy link</a>
+                <span id="permalink">Select a Node</span>
               </div>
             </div><!-- /footer -->
             <div data-display="push" data-role="panel" id="info-panel" data-swipe-close={"false"}>
