@@ -1109,6 +1109,8 @@ const UusiMuuSuoritus: React.FC<{
       value: k.koodiviite
     }))
 
+  if (options.length === 0) return null
+
   const onChange = (
     option?: SelectOption<Koodistokoodiviite<'lukionmuutopinnot'>>
   ) => {
