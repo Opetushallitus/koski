@@ -77,6 +77,10 @@ class JsonSchemaViewerHtmlServlet(implicit val application: KoskiApplication) ex
                 <a class="ui-btn md-flex-btn ui-corner-all ui-icon-check ui-btn-icon-left" href="#validator-page" title="Go to Validator">Validator</a>
               </div>
               <h1 id="viewer-title">JSON Schema Viewer<span class="schema-version"></span></h1>
+              <div id="header-search" class="ui-btn-right">
+                <input type="text" data-type="search" data-mini="true" placeholder="Search, e.g. arvosana amm osa" title="Every word must occur in the field name or in the name of one of its parents, at least one in the field name" id="search-input"/>
+                <ul id="search-result" data-role="listview" data-inset="true"></ul>
+              </div>
             </div><!-- /header -->
             <div  role="main" class="ui-content" id="main-body">
               <div id="zoom-controls">
@@ -95,8 +99,6 @@ class JsonSchemaViewerHtmlServlet(implicit val application: KoskiApplication) ex
                     <label title="Show sensitive fields in the tree and search"><input type="checkbox" data-role="none" data-filter="sensitive" checked="checked"/>Show sensitive</label>
                   </div>
                 </div>
-                <input type="text" data-type="search" placeholder="Search, e.g. arvosana amm osa" title="Every word must occur in the field name or in the name of one of its parents, at least one in the field name" id="search-input"/>
-                <ul id="search-result" data-role="listview" data-inset="true"></ul>
               </div>
             </div>
             <div data-role="footer">
