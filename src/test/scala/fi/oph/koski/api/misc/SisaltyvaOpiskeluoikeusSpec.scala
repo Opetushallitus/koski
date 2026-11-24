@@ -5,15 +5,15 @@ import com.typesafe.config.ConfigValueFactory.fromAnyRef
 import fi.oph.koski.db.KoskiTables.KoskiOpiskeluOikeudetWithAccessCheck
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.documentation.AmmatillinenExampleData._
-import fi.oph.koski.documentation.ExampleData.longTimeAgo
-import fi.oph.koski.documentation.{AmmattitutkintoExample, LukioExampleData}
+import fi.oph.koski.documentation.ExampleData.{longTimeAgo, opiskeluoikeusLäsnä, valtionosuusRahoitteinen}
+import fi.oph.koski.documentation.{AmmattitutkintoExample, ExamplesAikuistenPerusopetus, LukioExampleData}
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.koskiuser.KoskiSpecificSession.systemUser
 import fi.oph.koski.koskiuser.{AccessType, KoskiSpecificSession, MockUsers}
 import fi.oph.koski.koskiuser.MockUsers.stadinAmmattiopistoJaOppisopimuskeskusTallentaja
 import fi.oph.koski.organisaatio.MockOrganisaatiot.{omnia, stadinAmmattiopisto}
-import fi.oph.koski.schema.{AmmatillinenOpiskeluoikeus, AmmatillisenTutkinnonSuoritus, LukionOpiskeluoikeus, OidOrganisaatio, Oppija, Oppilaitos, SisältäväOpiskeluoikeus}
+import fi.oph.koski.schema.{AikuistenPerusopetuksenOpiskeluoikeudenTila, AikuistenPerusopetuksenOpiskeluoikeus, AikuistenPerusopetuksenOpiskeluoikeusjakso, AmmatillinenOpiskeluoikeus, AmmatillisenTutkinnonSuoritus, LukionOpiskeluoikeus, OidOrganisaatio, Oppija, Oppilaitos, SisältäväOpiskeluoikeus}
 import fi.oph.koski.util.Wait
 import fi.oph.koski.validation.KoskiValidator
 import fi.oph.koski.{DatabaseTestMethods, KoskiApplicationForTests, KoskiHttpSpec}
@@ -172,6 +172,43 @@ class SisältyväOpiskeluoikeusSpec extends AnyFreeSpec with Matchers with Opisk
         mockKoskiValidator(KoskiApplicationForTests.config)
           .updateFieldsAndValidateAsJson(Oppija(KoskiSpecificMockOppijat.tyhjä, List(sisältyvä)))
           .isRight should equal(true)
+      }
+
+      "Aikuisten perusopetuksessa tarkistetaan vain opiskeluoikeuden tyyppi" - {
+        implicit val session: KoskiSpecificSession = KoskiSpecificSession.systemUser
+        implicit val accessType: AccessType.Value = AccessType.write
+
+        def sisältyväAikuistenPerusopetus(sisältävä: SisältäväOpiskeluoikeus): AikuistenPerusopetuksenOpiskeluoikeus = {
+          val oppiaine = ExamplesAikuistenPerusopetus.aikuistenOppiaine("MA").copy(perusteenDiaarinumero = Some("OPH-1280-2017"))
+          ExamplesAikuistenPerusopetus.oppiaineenOppimääräOpiskeluoikeus.copy(
+            sisältyyOpiskeluoikeuteen = Some(sisältävä),
+            tila = AikuistenPerusopetuksenOpiskeluoikeudenTila(List(
+              AikuistenPerusopetuksenOpiskeluoikeusjakso(rajapäivänJälkeinenAlkamispäivä, opiskeluoikeusLäsnä, Some(valtionosuusRahoitteinen))
+            )),
+            suoritukset = List(ExamplesAikuistenPerusopetus.oppiaineenOppimääränSuoritus(oppiaine).copy(vahvistus = None, arviointi = None))
+          )
+        }
+
+        "Linkitys aikuisten perusopetuksen opiskeluoikeuteen sallitaan, vaikka päätason suoritukset eivät täsmää" in {
+          val sisältävä = createOpiskeluoikeus(
+            KoskiSpecificMockOppijat.tyhjä,
+            ExamplesAikuistenPerusopetus.aikuistenPerusopetuksenOpiskeluoikeusAlkuvaiheineenValmistunutVanhanOppivelvollisuuslainAikana,
+            user = MockUsers.paakayttaja
+          )
+          val sisältyvä = sisältyväAikuistenPerusopetus(SisältäväOpiskeluoikeus(sisältävä.oppilaitos.get, sisältävä.oid.get))
+          mockKoskiValidator(KoskiApplicationForTests.config)
+            .updateFieldsAndValidateAsJson(Oppija(KoskiSpecificMockOppijat.tyhjä, List(sisältyvä)))
+            .isRight should equal(true)
+        }
+
+        "Linkitys eri koulutusmuodon opiskeluoikeuteen estetään" in {
+          val sisältyvä = sisältyväAikuistenPerusopetus(SisältäväOpiskeluoikeus(lukioMaster.oppilaitos.get, lukioMaster.oid.get))
+          mockKoskiValidator(KoskiApplicationForTests.config)
+            .updateFieldsAndValidateAsJson(Oppija(KoskiSpecificMockOppijat.tyhjä, List(sisältyvä)))
+            .left.toOption should equal(Some(KoskiErrorCategory.badRequest.validation.sisältäväOpiskeluoikeus.eriPäätasonSuoritus(
+              s"Suoritukset linkitettyjen opiskeluoikeuksien välillä eivät täsmää: Sisältyvän opiskeluoikeuden (oid -) päätason suoritus ei täsmää sisältävällä opiskeluoikeudella (oid ${lukioMaster.oid.get}) olevan päätason suorituksen kanssa"
+            )))
+        }
       }
     }
 

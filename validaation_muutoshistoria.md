@@ -1,5 +1,9 @@
 # Koskeen tallennettavien tietojen validaatiosäännöt
 
+## 24.11.2026
+
+- Aikuisten perusopetuksen opiskeluoikeuden linkityksessä (`sisältyyOpiskeluoikeuteen`) tarkistetaan vain, että sisältävä opiskeluoikeus on myös aikuisten perusopetuksen opiskeluoikeus. Päätason suoritusten ei tarvitse olla sisältävän opiskeluoikeuden päätason suoritusten osajoukko (ks. 20.10.2026).
+
 ## 17.11.2026
 
 Vapaan sivistystyön vapaatavoitteisen koulutuksen (`vstvapaatavoitteinenkoulutus`) opiskeluoikeuksille sallitaan tila `lasna` ja osaamismerkin (`vstosaamismerkki`) opiskeluoikeuksille tilat `lasna` ja `keskeytynyt`. Opiskeluoikeuksille, jotka ovat päättyneet 1.1.2027 tai sen jälkeen tai ovat edelleen voimassa, validaatiot muuttuvat:

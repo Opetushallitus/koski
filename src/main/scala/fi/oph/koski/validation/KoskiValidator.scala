@@ -531,6 +531,7 @@ class KoskiValidator(
   }
 
   // Sisältyvän päätason suoritusten (suoritustyyppi + perusteen diaarinumero) on oltava sisältävän osajoukko.
+  // Aikuisten perusopetuksessa riittää, että opiskeluoikeuden tyyppi on sama.
   private def eriTutkinnonLinkityksenEstoVoimassa: Boolean = {
     val avain = "validaatiot.eriTutkinnonLinkitysEstettyAlkaen"
     !config.hasPath(avain) || !LocalDate.now().isBefore(LocalDate.parse(config.getString(avain)))
@@ -561,8 +562,12 @@ class KoskiValidator(
     }
 
   private def eriTutkinnonLinkitysEstettäisiin(sisältävä: KoskiOpiskeluoikeusRow, sisältyvä: Opiskeluoikeus): Boolean =
-    eriTutkinnonLinkityksenEstoKoskeeTätäOpiskeluoikeutta(sisältyvä) &&
-    !sisältyvänSuorituksetSisältävänOsajoukko(sisältävä, sisältyvä)
+    eriTutkinnonLinkityksenEstoKoskeeTätäOpiskeluoikeutta(sisältyvä) && !sisältyvyysMatches(sisältävä, sisältyvä)
+
+  private def sisältyvyysMatches(sisältävä: KoskiOpiskeluoikeusRow, sisältyvä: Opiskeluoikeus): Boolean = sisältyvä match {
+    case _: AikuistenPerusopetuksenOpiskeluoikeus => sisältävä.koulutusmuoto == sisältyvä.tyyppi.koodiarvo
+    case _ => sisältyvänSuorituksetSisältävänOsajoukko(sisältävä, sisältyvä)
+  }
 
   private def eriTutkinnonLinkitysEstetty(sisältävä: KoskiOpiskeluoikeusRow, sisältyvä: Opiskeluoikeus): Boolean =
     eriTutkinnonLinkityksenEstoVoimassa && eriTutkinnonLinkitysEstettäisiin(sisältävä, sisältyvä)
