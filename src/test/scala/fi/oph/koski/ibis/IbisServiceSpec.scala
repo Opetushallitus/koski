@@ -127,20 +127,20 @@ class IbisServiceSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers with 
       .collectFirst { case diploma: IBDiplomaOpiskeluoikeus => diploma.versionumero }
       .flatten
 
-    "esikatselu raportoi rivit tallentamatta" in {
+    "esikatselu palauttaa rivit tallentamatta" in {
       val versioEnnen = diplomanVersio
       AuditLogTester.clearMessages()
-      val raportti = service.esikatsele(tiedosto)
+      val tulos = service.esikatsele(tiedosto)
 
-      raportti.tallennettu should be(false)
-      raportti.jäsennysvirheet.map(_.line) should be(List(5))
-      raportti.rivit.map(rivi => (rivi.iboTunniste, rivi.tila)) should be(List(
+      tulos.tallennettu should be(false)
+      tulos.jäsennysvirheet.map(_.line) should be(List(5))
+      tulos.rivit.map(rivi => (rivi.iboTunniste, rivi.tila)) should be(List(
         ExamplesIBDiploma.iboTunniste -> IbisTuonninRivinTila.Päivitys,
         "xyz999" -> IbisTuonninRivinTila.Hylätty,
         "def456" -> IbisTuonninRivinTila.Hylätty,
         "ghi789" -> IbisTuonninRivinTila.Hylätty,
       ))
-      val päivitys = raportti.rivit.head
+      val päivitys = tulos.rivit.head
       (päivitys.oppijaOid, päivitys.virheet) should be((Some(KoskiSpecificMockOppijat.ibDiploma.oid), Nil))
       päivitys.diplomanOid should be(defined)
       diplomanVersio should be(versioEnnen)
@@ -167,10 +167,10 @@ class IbisServiceSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers with 
     "tuonti päivittää olemassa olevan diploman" in {
       val versioEnnen = diplomanVersio
       AuditLogTester.clearMessages()
-      val raportti = service.tuo(tiedosto)
+      val tulos = service.tuo(tiedosto)
 
-      raportti.tallennettu should be(true)
-      raportti.rivit.map(rivi => (rivi.tila, rivi.virheet)).head should be((IbisTuonninRivinTila.Päivitys, Nil))
+      tulos.tallennettu should be(true)
+      tulos.rivit.map(rivi => (rivi.tila, rivi.virheet)).head should be((IbisTuonninRivinTila.Päivitys, Nil))
       diplomanVersio should be(versioEnnen.map(_ + 1))
       AuditLogTester.verifyOnlyAuditLogMessageForOperation(Map(
         "operation" -> "IBIS_TALLENNUS",

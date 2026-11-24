@@ -14,7 +14,7 @@ case class IbisYhdistettyOppija(
   diplomanOid: Option[String],
 )
 
-case class IbisTuonninRaportti(
+case class IbisTuonninTulos(
   tallennettu: Boolean,
   jäsennysvirheet: List[IbisParseError],
   rivit: List[IbisTuonninRivi],
@@ -49,12 +49,12 @@ class IbisService(application: KoskiApplication) {
   )
 
   // Validoi diplomat kuten tallennus, mutta ei tallenna niitä.
-  def esikatsele(tiedosto: Array[Byte])(implicit user: KoskiSpecificSession): IbisTuonninRaportti =
+  def esikatsele(tiedosto: Array[Byte])(implicit user: KoskiSpecificSession): IbisTuonninTulos =
     käsitteleCsv(tiedosto, IBIS_ESIKATSELU, tallennettu = false) { (oppija, diploma) =>
       validoi(oppija, diploma).map(_ => oppija.diplomanOid)
     }
 
-  def tuo(tiedosto: Array[Byte])(implicit user: KoskiSpecificSession): IbisTuonninRaportti =
+  def tuo(tiedosto: Array[Byte])(implicit user: KoskiSpecificSession): IbisTuonninTulos =
     käsitteleCsv(tiedosto, IBIS_TALLENNUS, tallennettu = true) { (oppija, diploma) =>
       // createOrUpdate ei aja KoskiValidatoria.
       validoi(oppija, diploma)
@@ -68,12 +68,12 @@ class IbisService(application: KoskiApplication) {
   // käsitteleDiploma palauttaa diploman oidin, jos se on tiedossa.
   private def käsitteleCsv(tiedosto: Array[Byte], operaatio: KoskiOperation, tallennettu: Boolean)(
     käsitteleDiploma: (IbisYhdistettyOppija, IBDiplomaOpiskeluoikeus) => Either[HttpStatus, Option[String]]
-  )(implicit user: KoskiSpecificSession): IbisTuonninRaportti = {
+  )(implicit user: KoskiSpecificSession): IbisTuonninTulos = {
     val (jäsennysvirheet, rivit) = IbisCsvParser.parse(tiedosto)
     rivit.map(_.iboTunniste).grouped(tunnisteitaAuditLokiviestissä).foreach { tunnisteet =>
       AuditLog.log(KoskiAuditLogMessage(operaatio, user, Map(KoskiAuditLogMessageField.iboTunniste -> tunnisteet.mkString(","))))
     }
-    IbisTuonninRaportti(
+    IbisTuonninTulos(
       tallennettu = tallennettu,
       jäsennysvirheet = jäsennysvirheet,
       rivit = yhdistäOppijoihin(rivit).map {

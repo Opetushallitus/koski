@@ -43,14 +43,14 @@ class IbisServletSpec extends AnyFreeSpec with KoskiHttpSpec with PutOpiskeluoik
       }
     }
 
-    "esikatselu palauttaa raportin tallentamatta diplomaa" in {
+    "esikatselu palauttaa tuloksen tallentamatta diplomaa" in {
       val oppijaOid = luoOppijaIbKoulutuksella()
 
       postTiedosto("esikatselu", Some(tiedostoTunnisteella(tunniste))) {
         verifyResponseStatusOk()
-        val raportti = JsonSerializer.parse[IbisTuonninRaportti](body)
-        raportti.tallennettu should be(false)
-        raportti.rivit.map(rivi => (rivi.iboTunniste, rivi.tila, rivi.oppijaOid, rivi.virheet)) should be(
+        val tulos = JsonSerializer.parse[IbisTuonninTulos](body)
+        tulos.tallennettu should be(false)
+        tulos.rivit.map(rivi => (rivi.iboTunniste, rivi.tila, rivi.oppijaOid, rivi.virheet)) should be(
           List((tunniste, IbisTuonninRivinTila.Uusi, Some(oppijaOid), Nil))
         )
       }
@@ -62,10 +62,10 @@ class IbisServletSpec extends AnyFreeSpec with KoskiHttpSpec with PutOpiskeluoik
 
       postTiedosto("tuonti", Some(tiedostoTunnisteella(tunniste))) {
         verifyResponseStatusOk()
-        val raportti = JsonSerializer.parse[IbisTuonninRaportti](body)
-        raportti.tallennettu should be(true)
-        raportti.rivit.map(rivi => (rivi.tila, rivi.virheet)) should be(List((IbisTuonninRivinTila.Uusi, Nil)))
-        ibDiplomat(oppijaOid).flatMap(_.oid) should be(raportti.rivit.flatMap(_.diplomanOid))
+        val tulos = JsonSerializer.parse[IbisTuonninTulos](body)
+        tulos.tallennettu should be(true)
+        tulos.rivit.map(rivi => (rivi.tila, rivi.virheet)) should be(List((IbisTuonninRivinTila.Uusi, Nil)))
+        ibDiplomat(oppijaOid).flatMap(_.oid) should be(tulos.rivit.flatMap(_.diplomanOid))
       }
     }
   }

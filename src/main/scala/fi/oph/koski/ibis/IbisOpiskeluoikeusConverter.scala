@@ -30,7 +30,7 @@ class IbisOpiskeluoikeusConverter(
   koodistoViitePalvelu: KoodistoViitePalvelu,
   validatingAndResolvingExtractor: ValidatingAndResolvingExtractor,
 ) {
-  // Virheet kerätään listaan, jotta rivin kaikki virheet saadaan raportille kerralla.
+  // Virheet kerätään listaan, jotta rivin kaikki virheet saadaan tuonnin tulokseen kerralla.
   private type Muunnos[A] = Either[List[String], A]
 
   private val serializationContext = SerializationContext(KoskiSchema.schemaFactory)
@@ -77,7 +77,7 @@ class IbisOpiskeluoikeusConverter(
     opiskeluoikeus.left.map(syyt => IbisKonversiovirhe(record.iboTunniste, syyt.distinct))
   }
 
-  // Tuonnin raportille: tiedot, jotka jätetään pois hylkäämättä riviä.
+  // Tuonnin tulokseen: tiedot, jotka jätetään pois hylkäämättä riviä.
   def varoitukset(record: IbisRecord): List[String] = record.subjects.flatMap { subject =>
     if (IbisSubject.noGradeCodes.contains(subject.grade)) {
       List(s"Oppiaine ${oppiaineenKuvaus(subject)} (${subject.level}) jätetään pois, koska arvosanan tilalla on ${subject.grade} (${IbisSubject.noGradeCodes(subject.grade)})")
