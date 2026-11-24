@@ -4,7 +4,6 @@ import fi.oph.koski.KoskiApplicationForTests
 import fi.oph.koski.fixture.LukioDiaIbInternationalESHOpiskelijaMaaratRaporttiFixtures
 import fi.oph.koski.koskiuser.MockUsers
 import fi.oph.koski.localization.LocalizationReader
-import fi.oph.koski.log.AuditLogTester
 import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.raportit.lukio.LukioonValmistavanKoulutuksenOpiskelijamaaratRaporttiRow
 import fi.oph.koski.raportointikanta.RaportointikantaTestMethods
@@ -23,26 +22,6 @@ class LukioonValmistavanKoulutuksenOpiskelijamaaratRaporttiSpec extends AnyFreeS
   }
 
   "Lukioon valmistavan koulutuksen opiskelijamaarat" - {
-
-    "Raportin voi ladata ja se tuottaa auditlogin" in {
-      AuditLogTester.clearMessages()
-      authGet(s"api/raportit/luvaopiskelijamaarat?oppilaitosOid=${MockOrganisaatiot.helsinginKaupunki}&paiva=2018-01-01&password=salasana&lang=fi") {
-        verifyResponseStatusOk()
-        response.headers("Content-Disposition").head should equal(s"""attachment; filename="lukioon_valmistavan_koulutuksen_opiskelijamaarat_20180101.xlsx"""")
-        response.bodyBytes.take(ENCRYPTED_XLSX_PREFIX.length) should equal(ENCRYPTED_XLSX_PREFIX)
-        AuditLogTester.verifyLastAuditLogMessageForOperation(Map("operation" -> "OPISKELUOIKEUS_RAPORTTI", "target" -> Map("hakuEhto" -> s"raportti=luvaopiskelijamaarat&oppilaitosOid=${MockOrganisaatiot.helsinginKaupunki}&paiva=2018-01-01&lang=fi")))
-      }
-    }
-
-    "Raportin voi ladata eri lokalisaatiolla ja se tuottaa auditlogin" in {
-      AuditLogTester.clearMessages()
-      authGet(s"api/raportit/luvaopiskelijamaarat?oppilaitosOid=${MockOrganisaatiot.helsinginKaupunki}&paiva=2018-01-01&password=salasana&lang=sv") {
-        verifyResponseStatusOk()
-        response.headers("Content-Disposition").head should equal(s"""attachment; filename="antal_studerande_gymnasieförberedande_20180101.xlsx"""")
-        response.bodyBytes.take(ENCRYPTED_XLSX_PREFIX.length) should equal(ENCRYPTED_XLSX_PREFIX)
-        AuditLogTester.verifyLastAuditLogMessageForOperation(Map("operation" -> "OPISKELUOIKEUS_RAPORTTI", "target" -> Map("hakuEhto" -> s"raportti=luvaopiskelijamaarat&oppilaitosOid=${MockOrganisaatiot.helsinginKaupunki}&paiva=2018-01-01&lang=sv")))
-      }
-    }
 
     lazy val helsinginRaportti = loadRaportti(MockOrganisaatiot.helsinginKaupunki)
     lazy val ressunRaportti = loadRaportti(MockOrganisaatiot.ressunLukio)
@@ -84,7 +63,6 @@ class LukioonValmistavanKoulutuksenOpiskelijamaaratRaporttiSpec extends AnyFreeS
   private def loadRaportti(oppilaitosOid: String) = {
     val request = RaporttiPäivältäRequest(
       oppilaitosOid,
-      downloadToken = None,
       password = "bassword",
       paiva = LukioDiaIbInternationalESHOpiskelijaMaaratRaporttiFixtures.fixedDate,
       lang = "fi"

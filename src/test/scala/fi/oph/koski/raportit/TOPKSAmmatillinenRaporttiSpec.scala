@@ -38,14 +38,6 @@ class TOPKSAmmatillinenRaporttiSpec
 
   "Tutkinnon osaa pienemmistä kokonaisuuksista koostuvan suorituksen suoritustietoraportti (TOPKS)" - {
 
-    "Voidaan ladata ja tuottaa auditlogin" in {
-      verifyRaportinLataaminen(apiUrl = "api/raportit/topksammatillinen", expectedRaporttiNimi = "topksammatillinen", expectedFileNamePrefix = "topks_ammatillinen_koski_raportti")
-    }
-
-    "Voidaan ladata eri lokalisaatiolla ja tuottaa auditlogin" in {
-      verifyRaportinLataaminen(apiUrl = "api/raportit/topksammatillinen", expectedRaporttiNimi = "topksammatillinen", expectedFileNamePrefix = "mindre_än_examensdel_koski_rapport", lang = "sv")
-    }
-
     "Raportin hakuvälin päivämäärä rajaus" - {
       "Opiskeluoikeus päättynyt ennen hakuväliä" in {
         raportti.filter(_.hetu.exists(KoskiSpecificMockOppijat.lukioKesken.hetu.contains)).length should equal(0)

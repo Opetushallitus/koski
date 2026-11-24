@@ -3,11 +3,10 @@ package fi.oph.koski.raportit
 
 import fi.oph.koski.KoskiApplicationForTests
 import fi.oph.koski.api.misc.OpiskeluoikeusTestMethods
-import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.koskiuser.UserWithPassword
 import fi.oph.koski.organisaatio.MockOrganisaatiot._
 import fi.oph.koski.koskiuser.MockUsers._
-import fi.oph.koski.organisaatio.{MockOrganisaatiot, Organisaatiotyyppi}
+import fi.oph.koski.organisaatio.Organisaatiotyyppi
 import fi.oph.koski.raportointikanta.RaportointikantaTestMethods
 import org.json4s.JArray
 import org.json4s.jackson.JsonMethods
@@ -161,55 +160,6 @@ class RaportitServletSpec extends AnyFreeSpec with RaportointikantaTestMethods w
              KunnanOppijatRaportti.toString,
            ))
           }
-        }
-      }
-      "ei voi ladata raporttia jos raportin opiskeluoikeuden tyyppiin ei ole oikeuksia" - {
-        "perusopetuksen oikeuksilla yritys käyttää lukion raporttia" in {
-          authGet(s"api/raportit/lukionsuoritustietojentarkistus?oppilaitosOid=${MockOrganisaatiot.jyväskylänNormaalikoulu}&alku=2016-01-01&loppu=2016-12-31&password=dummy", user = perusopetusTallentaja) {
-            verifyResponseStatus(403, KoskiErrorCategory.forbidden.opiskeluoikeudenTyyppi())
-          }
-        }
-        "esiopetusoikeuksilla yritys käyttää lukion raporttia" in {
-          authGet(s"api/raportit/lukionsuoritustietojentarkistus?oppilaitosOid=${MockOrganisaatiot.jyväskylänNormaalikoulu}&alku=2016-01-01&loppu=2016-12-31&password=dummy", user = esiopetusTallentaja) {
-            verifyResponseStatus(403, KoskiErrorCategory.forbidden.opiskeluoikeudenTyyppi())
-          }
-        }
-      }
-      "koulutustoimijan oikeuksilla voi ladata esiopetuksen ostopalveluiden raportin" in {
-        authGet(s"api/raportit/esiopetus?oppilaitosOid=${KoskiApplicationForTests.organisaatioService.ostopalveluRootOid}&paiva=2022-06-07&lang=fi&password=dummy", user = helsinkiTallentaja) {
-          verifyResponseStatusOk()
-        }
-      }
-      "koulutustoimijan oikeuksilla ei voi ladata perusopetuksen raporttia peruskoululle, joka on esiopetuksen ostopalvelun oppilaitos (eikä koulutustoimijan oma organisaatio)" in {
-        authGet(s"api/raportit/perusopetuksenvuosiluokka?oppilaitosOid=${MockOrganisaatiot.jyväskylänNormaalikoulu}&paiva=2022-06-07&vuosiluokka=9&lang=fi&password=dummy", user = helsinkiTallentaja) {
-          verifyResponseStatus(403, KoskiErrorCategory.forbidden.organisaatio())
-        }
-      }
-      "ei voi ladata kotikuntalaskelmaa oppilaitokselle, joka kuuluu toiseen koulutustoimijaan kuin käyttäjän omaan" in {
-        authGet(s"api/raportit/kotikuntalaskelma?oppilaitosOid=${MockOrganisaatiot.aapajoenKoulu}&paiva=2026-09-01&lang=fi&password=dummy", user = helsinkiTallentaja) {
-          verifyResponseStatus(403, KoskiErrorCategory.forbidden.organisaatio())
-        }
-      }
-      "ei voi ladata raporttia ilman luottamuksellisten tietojen oikeutta" - {
-        "organisaation käyttäjä" in {
-          authGet(s"api/raportit/esiopetus?oppilaitosOid=${MockOrganisaatiot.jyväskylänNormaalikoulu}&paiva=2012-01-01&lang=fi&password=dummy", user = tallentajaEiLuottamuksellinen) {
-            verifyResponseStatus(403, KoskiErrorCategory.forbidden.organisaatio())
-          }
-        }
-        "OPH:n katselija" in {
-          authGet(s"api/raportit/esiopetus?oppilaitosOid=${MockOrganisaatiot.jyväskylänNormaalikoulu}&paiva=2012-01-01&lang=fi&password=dummy", user = viranomainen) {
-            verifyResponseStatus(403, KoskiErrorCategory.forbidden.organisaatio())
-          }
-        }
-        "kielitutkintorekisterin palvelukäyttäjä päällekkäisten opiskeluoikeuksien raporttiin" in {
-          authGet(s"api/raportit/paallekkaisetopiskeluoikeudet?oppilaitosOid=${MockOrganisaatiot.jyväskylänNormaalikoulu}&alku=2012-01-01&loppu=2016-01-01&lang=fi&password=dummy", user = kielitutkintorekisteriKäyttäjä) {
-            verifyResponseStatus(403, KoskiErrorCategory.forbidden.organisaatio())
-          }
-        }
-      }
-      "ei voi ladata raporttia viranomaisen globaalilla lukuoikeudella, vaikka organisaation oikeudet riittäisivät" in {
-        authGet(s"api/raportit/esiopetus?oppilaitosOid=${MockOrganisaatiot.jyväskylänNormaalikoulu}&paiva=2012-01-01&lang=fi&password=dummy", user = viranomainenJaJyväskylänTallentaja) {
-          verifyResponseStatus(403, KoskiErrorCategory.forbidden.organisaatio())
         }
       }
     }

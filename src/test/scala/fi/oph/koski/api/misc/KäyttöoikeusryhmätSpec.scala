@@ -730,7 +730,7 @@ class KäyttöoikeusryhmätSpec
     authGet("api/oppilaitos", user) {
       verifyResponseStatus(403, KoskiErrorCategory.forbidden.kiellettyKäyttöoikeus("Ei sallittu luovutuspalvelukäyttöoikeuksilla"))
     }
-    authGet(s"api/raportit/opiskelijavuositiedot?oppilaitosOid=${MockOrganisaatiot.stadinAmmattiopisto}&alku=2016-01-01&loppu=2016-12-31&password=dummy&downloadToken=test123", user) {
+    authGet("api/raportit/organisaatiot-ja-raporttityypit", user) {
       verifyResponseStatus(403, KoskiErrorCategory.forbidden.kiellettyKäyttöoikeus("Ei sallittu luovutuspalvelukäyttöoikeuksilla"))
     }
   }

@@ -124,7 +124,7 @@ class VstVapaatavoitteinenRaporttiSpec
     alku: LocalDate = LocalDate.of(2020, 1, 1),
     loppu: LocalDate = LocalDate.of(2025, 1, 1),
   ): OppilaitosRaporttiResponse = {
-    val request = AikajaksoRaporttiRequest(organisaatioOid, None, "password", alku, loppu, "fi")
+    val request = AikajaksoRaporttiRequest(organisaatioOid, "password", alku, loppu, "fi")
     val t = new LocalizationReader(KoskiApplicationForTests.koskiLocalizationRepository, "fi")
     raportitService.vstVapaatavoitteinen(request, t)
   }

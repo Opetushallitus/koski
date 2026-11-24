@@ -10,7 +10,6 @@ import fi.oph.koski.fixture.LukioKurssikertymaRaporttiFixtures
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
 import fi.oph.koski.koskiuser.MockUsers
 import fi.oph.koski.localization.LocalizationReader
-import fi.oph.koski.log.AuditLogTester
 import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.raportit.lukio.{LukioKurssikertymaAineopiskelijaRow, LukioKurssikertymaOppimaaraRow, LukioKurssinRahoitusmuotoRow, LukioOppiaineEriVuonnaKorotetutKurssitRow, LukioOppiaineOpiskeluoikeudenUlkopuolisetRow}
 import fi.oph.koski.raportointikanta.RaportointikantaTestMethods
@@ -58,26 +57,6 @@ class LukioKurssikertymaRaporttiSpec extends AnyFreeSpec with RaportointikantaTe
   }
 
   override def defaultUser = MockUsers.helsinginKaupunkiPalvelukäyttäjä
-
-  "Raportin lataaminen onnistuu ja tuottaa auditlogin" in {
-    AuditLogTester.clearMessages()
-    authGet(s"api/raportit/lukiokurssikertymat?oppilaitosOid=${MockOrganisaatiot.helsinginKaupunki}&alku=2018-01-01&loppu=2018-01-01&lang=fi&password=salasana") {
-      verifyResponseStatusOk()
-      response.headers("Content-Disposition").head should equal(s"""attachment; filename="lukion_kurssikertymat_20180101-20180101.xlsx"""")
-      response.bodyBytes.take(ENCRYPTED_XLSX_PREFIX.length) should equal(ENCRYPTED_XLSX_PREFIX)
-      AuditLogTester.verifyLastAuditLogMessageForOperation(Map("operation" -> "OPISKELUOIKEUS_RAPORTTI", "target" -> Map("hakuEhto" -> s"raportti=lukiokurssikertymat&oppilaitosOid=${MockOrganisaatiot.helsinginKaupunki}&alku=2018-01-01&loppu=2018-01-01&lang=fi")))
-    }
-  }
-
-  "Raportin lataaminen eri lokalisaatiolla onnistuu ja tuottaa auditlogin" in {
-    AuditLogTester.clearMessages()
-    authGet(s"api/raportit/lukiokurssikertymat?oppilaitosOid=${MockOrganisaatiot.helsinginKaupunki}&alku=2018-01-01&loppu=2018-01-01&lang=sv&password=salasana") {
-      verifyResponseStatusOk()
-      response.headers("Content-Disposition").head should equal(s"""attachment; filename="gymnasiets_antal_kurser_20180101-20180101.xlsx"""")
-      response.bodyBytes.take(ENCRYPTED_XLSX_PREFIX.length) should equal(ENCRYPTED_XLSX_PREFIX)
-      AuditLogTester.verifyLastAuditLogMessageForOperation(Map("operation" -> "OPISKELUOIKEUS_RAPORTTI", "target" -> Map("hakuEhto" -> s"raportti=lukiokurssikertymat&oppilaitosOid=${MockOrganisaatiot.helsinginKaupunki}&alku=2018-01-01&loppu=2018-01-01&lang=sv")))
-    }
-  }
 
   "Excel välilehtien sarakkeet, valitaan vain ne kurssit joiden arviointipäivä on aikavälin sisällä" - {
     "Oppimäärän välilehti (lukio ops 2015)" - {
@@ -242,7 +221,6 @@ class LukioKurssikertymaRaporttiSpec extends AnyFreeSpec with RaportointikantaTe
   private def loadRaportti = {
     val request = AikajaksoRaporttiRequest(
       oppilaitosOid = MockOrganisaatiot.helsinginKaupunki,
-      downloadToken = None,
       password = "foobar",
       alku = LukioKurssikertymaRaporttiFixtures.raportinAikajaksoAlku,
       loppu = LukioKurssikertymaRaporttiFixtures.raportinAikajaksoLoppu,

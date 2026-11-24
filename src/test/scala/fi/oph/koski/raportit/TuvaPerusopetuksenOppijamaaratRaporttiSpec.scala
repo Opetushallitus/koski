@@ -10,7 +10,6 @@ import java.time.LocalDate.{of => date}
 import fi.oph.koski.{DirtiesFixtures, KoskiApplicationForTests}
 import fi.oph.koski.koskiuser.KoskiMockUser
 import fi.oph.koski.localization.LocalizationReader
-import fi.oph.koski.log.AuditLogTester
 import fi.oph.koski.organisaatio.{MockOrganisaatioRepository, MockOrganisaatiot}
 import fi.oph.koski.organisaatio.MockOrganisaatiot.{jyväskylänNormaalikoulu, stadinAmmattiopisto}
 import fi.oph.koski.raportit.tuva.{TuvaPerusopetuksenOppijamäärätAikajaksovirheetRaportti, TuvaPerusopetuksenOppijamäärätAikajaksovirheetRaporttiRow, TuvaPerusopetuksenOppijamäärätRaportti, TuvaPerusopetuksenOppijamäärätRaporttiRow}
@@ -150,40 +149,6 @@ class TuvaPerusopetuksenOppijamäärätRaporttiSpec extends AnyFreeSpec with Mat
 
   private val application = KoskiApplicationForTests
   private val t = new LocalizationReader(KoskiApplicationForTests.koskiLocalizationRepository, "fi")
-
-  "Tuva perusopetuksen oppijamäärien raportti" - {
-    "Raportti voidaan ladata ja lataaminen tuottaa auditlogin" in {
-      authGet(s"api/raportit/tuvaperusopetuksenoppijamaaratraportti?oppilaitosOid=$jyväskylänNormaalikoulu&paiva=2021-10-01&lang=fi&password=salasana") {
-        verifyResponseStatusOk()
-        response.headers("Content-Disposition").head should equal(s"""attachment; filename="tuva_perusopetus_tunnuslukuraportti-2021-10-01.xlsx"""")
-        response.bodyBytes.take(ENCRYPTED_XLSX_PREFIX.length) should equal(ENCRYPTED_XLSX_PREFIX)
-        AuditLogTester.verifyLastAuditLogMessageForOperation(
-          Map(
-            "operation" -> "OPISKELUOIKEUS_RAPORTTI",
-            "target" -> Map(
-              "hakuEhto" -> s"raportti=tuvaperusopetuksenoppijamaaratraportti&oppilaitosOid=$jyväskylänNormaalikoulu&paiva=2021-10-01&lang=fi"
-            )
-          )
-        )
-      }
-    }
-
-    "Raportti voidaan ladata eri lokalisaatiolla ja lataaminen tuottaa auditlogin" in {
-      authGet(s"api/raportit/tuvaperusopetuksenoppijamaaratraportti?oppilaitosOid=$jyväskylänNormaalikoulu&paiva=2021-10-01&lang=sv&password=salasana") {
-        verifyResponseStatusOk()
-        response.headers("Content-Disposition").head should equal(s"""attachment; filename="hux_grundlaggande_nyckeltalsrapport-2021-10-01.xlsx"""")
-        response.bodyBytes.take(ENCRYPTED_XLSX_PREFIX.length) should equal(ENCRYPTED_XLSX_PREFIX)
-        AuditLogTester.verifyLastAuditLogMessageForOperation(
-          Map(
-            "operation" -> "OPISKELUOIKEUS_RAPORTTI",
-            "target" -> Map(
-              "hakuEhto" -> s"raportti=tuvaperusopetuksenoppijamaaratraportti&oppilaitosOid=$jyväskylänNormaalikoulu&paiva=2021-10-01&lang=sv"
-            )
-          )
-        )
-      }
-    }
-  }
 
   "Tuva perusopetuksen oppijamäärien raportti - päävälilehti" in {
     val rows = tuvaPerusopetuksenOppijamäärätRaportti
