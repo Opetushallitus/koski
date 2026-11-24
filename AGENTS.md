@@ -303,14 +303,14 @@ fallback). Valpas has the same pair under `src/main/resources/valpas/`.
 - **New key** → add it to `koski-default-texts.json`. On startup the app creates in the service
   any key present there but missing from it — but only with the Finnish text, publishing `sv`
   and `en` as empty strings. Swedish and English for a new key must therefore be added in Tolgee
-  as well; writing them straight into the mockdata file works locally and is dropped by the next
-  refresh.
+  as well. Until production has the key, a refresh keeps it and its mockdata translations; after
+  that, production's values win.
 - **Changed text on an existing key** → do **both**: commit the new value to the repo *and* edit
   it in Tolgee. Neither half is enough on its own. `LocalizationRepository.init` only *creates*
   keys missing from the service (`localization.create`) and never updates the value of one that
   already exists — so a repo-only edit never reaches production and the next
-  `scripts/fetch_prod_localizations.sh` run silently reverts it, while a Tolgee-only edit leaves
-  local dev and tests on the old text until someone refreshes.
+  `scripts/fetch_prod_localizations.sh` run reverts it (its report lists the revert), while a
+  Tolgee-only edit leaves local dev and tests on the old text until someone refreshes.
 
 - **New schema field** → needs **two** separate things in `koski-default-texts.json`, or
   `KoskiSpecificSchemaLocalizationSpec` fails: a plain title key for the field name
