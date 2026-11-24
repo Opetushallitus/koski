@@ -40,12 +40,11 @@ class IbisCsvParserSpec extends AnyFreeSpec with TestEnvironment with Matchers {
       rivi.session should be(IbisSession(2016, "MAY"))
     }
 
-    "lukee toistuvat oppiainekentät kielineen" in {
+    "lukee toistuvat oppiainekentät" in {
       val oppiaineet = rivit.head.subjects
       oppiaineet should have length 8
-      oppiaineet.head should be(IbisSubject(2016, "MAY", "FINNISH A: Literature", "HL", "7", additional = false, language = "FINNISH"))
+      oppiaineet.head should be(IbisSubject(2016, "MAY", "112726", "HL", "7", additional = false))
       oppiaineet.map(_.level) should be(List("HL", "HL", "HL", "SL", "SL", "SL", "EE", "TK"))
-      rivit(3).subjects.map(_.language).distinct should be(List("ENGLISH", "NORWEGIAN", "JAPANESE"))
     }
 
     "käsittelee lainausmerkeissä olevat pilkut ja kahdennetut lainausmerkit" in {
@@ -75,12 +74,15 @@ class IbisCsvParserSpec extends AnyFreeSpec with TestEnvironment with Matchers {
       rivit should have length 4
     }
 
-    "raportoi virheelliset rivit rivinumerolla ja jäsentää loput" in {
-      val rikki = esimerkki.replace("\"def456\"", "\"def456\",\"ylimääräinen\"")
-      val (virheet, rivit) = IbisCsvParser.parse(rikki)
+    "raportoi rivit, joilla on väärä määrä kenttiä, rivinumerolla ja jäsentää loput" in {
+      val ylimääräinenKenttä = esimerkki.replace("\"def456\"", "\"def456\",\"ylimääräinen\"")
+      val (virheet, rivit) = IbisCsvParser.parse(ylimääräinenKenttä + "2016,\"MAY\",\"000001\"\n")
       rivit should have length 3
-      virheet.map(_.line) should be(List(3))
-      virheet.head.message should include("ei ole jaollinen luvulla 7")
+      val odotus = "ennen oppiaineita pitäisi olla 15 kenttää ja jokaisessa oppiaineessa 6 kenttää"
+      virheet should be(List(
+        IbisParseError(3, s"Rivin kenttien määrä 28 ei ole odotettu: $odotus"),
+        IbisParseError(5, s"Rivin kenttien määrä 3 ei ole odotettu: $odotus"),
+      ))
     }
   }
 

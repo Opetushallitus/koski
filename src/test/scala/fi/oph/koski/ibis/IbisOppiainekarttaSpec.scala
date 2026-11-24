@@ -8,46 +8,31 @@ import java.time.LocalDate
 
 class IbisOppiainekarttaSpec extends AnyFreeSpec with TestEnvironment with Matchers {
   "Oppiainekartta" - {
-    "tunnistaa kielioppiaineet kielineen, myös IBO:n katkaisemilla nimillä" in {
-      IbisOppiainekartta.get("FINNISH A: Literature") should be(Some(IbisKieliOppiaine("A", "FI")))
-      IbisOppiainekartta.get("ENGLISH A Language and Literature") should be(Some(IbisKieliOppiaine("A2", "EN")))
-      IbisOppiainekartta.get("JAPANESE A: Lang and Literatur") should be(Some(IbisKieliOppiaine("A2", "JA")))
-      IbisOppiainekartta.get("SWEDISH B") should be(Some(IbisKieliOppiaine("B", "SV")))
-      IbisOppiainekartta.get("CHINESE B") should be(Some(IbisKieliOppiaine("B", "ZH")))
-      IbisOppiainekartta.get("CHINESE B - MANDARIN") should be(Some(IbisKieliOppiaine("B", "CMN")))
-      IbisOppiainekartta.get("CHINESE B - CANTONESE") should be(Some(IbisKieliOppiaine("B", "YUE")))
-      IbisOppiainekartta.get("MANDARIN AB.") should be(Some(IbisKieliOppiaine("AB", "CMN")))
-      IbisOppiainekartta.get("LATIN") should be(Some(IbisKieliOppiaine("CLA", "LA")))
+    "tunnistaa kielioppiaineet kielineen" in {
+      IbisOppiainekartta.get("112726") should be(Some(IbisKieliOppiaine("A", "FI"))) // FINNISH A: Literature
+      IbisOppiainekartta.get("112733") should be(Some(IbisKieliOppiaine("A2", "EN"))) // ENGLISH A Language and Literature
+      IbisOppiainekartta.get("128711") should be(Some(IbisKieliOppiaine("A2", "JA"))) // JAPANESE A: Lang and Literatur
+      IbisOppiainekartta.get("100559") should be(Some(IbisKieliOppiaine("B", "SV"))) // SWEDISH B
+      IbisOppiainekartta.get("100124") should be(Some(IbisKieliOppiaine("B", "ZH"))) // CHINESE B
+      IbisOppiainekartta.get("117711") should be(Some(IbisKieliOppiaine("B", "CMN"))) // CHINESE B - MANDARIN
+      IbisOppiainekartta.get("117712") should be(Some(IbisKieliOppiaine("B", "YUE"))) // CHINESE B - CANTONESE
+      IbisOppiainekartta.get("100375") should be(Some(IbisKieliOppiaine("AB", "CMN"))) // MANDARIN AB.
+      IbisOppiainekartta.get("100340") should be(Some(IbisKieliOppiaine("CLA", "LA"))) // LATIN
     }
 
     "tunnistaa extended essayn kielioppiaineen" in {
-      IbisOppiainekartta.get("ENGLISH A") should be(Some(IbisKieliOppiaine("A", "EN")))
+      IbisOppiainekartta.get("100176") should be(Some(IbisKieliOppiaine("A", "EN"))) // ENGLISH A
     }
 
     "tunnistaa muut oppiaineet" in {
-      IbisOppiainekartta.get("MATHEMATICS ANALYSIS AND APPROACHES") should be(Some(IbisMuuOppiaine("MATAA")))
-      IbisOppiainekartta.get("HISTORY EUROPE") should be(Some(IbisMuuOppiaine("HIS")))
-      IbisOppiainekartta.get("WLD. STUDIES ENV/ECO SUSTAINABILTY") should be(Some(IbisMuuOppiaine("WS")))
-    }
-
-    "ei välitä kirjainkoosta eikä ylimääräisistä välilyönneistä" in {
-      IbisOppiainekartta.get("  english a:  literature ") should be(Some(IbisKieliOppiaine("A", "EN")))
-    }
-
-    "tunnistaa IBIS:n 30 merkkiin katkaisemat nimet" in {
-      IbisOppiainekartta.get("MATHEMATICS ANALYSIS AND APPRO") should be(Some(IbisMuuOppiaine("MATAA")))
-      IbisOppiainekartta.get("MATHEMATICS APPLICATIONS AND I") should be(Some(IbisMuuOppiaine("MATAI")))
-    }
-
-    "tunnistaa jokaisen oppiaineen myös 30 merkkiin katkaistulla nimellä" in {
-      val eriävät = IbisOppiainekartta.oppiaineet.toList.collect {
-        case (nimi, oppiaine) if !IbisOppiainekartta.get(nimi.take(30)).contains(oppiaine) => nimi
-      }
-      eriävät should be(empty)
+      IbisOppiainekartta.get("166711") should be(Some(IbisMuuOppiaine("MATAA"))) // MATHEMATICS ANALYSIS AND APPROACHES
+      IbisOppiainekartta.get("149712") should be(Some(IbisMuuOppiaine("HIS"))) // HISTORY EUROPE
+      IbisOppiainekartta.get("159711") should be(Some(IbisMuuOppiaine("WS"))) // WLD. STUDIES ENV/ECO SUSTAINABILTY
     }
 
     "ei tunnista oppiaineita, joille ei vielä ole vastinetta Koskessa" in {
-      List("WELSH A: Literature", "CLASS.GREEK", "ART HISTORY", "REF PROJECT").flatMap(IbisOppiainekartta.get) should be(empty)
+      // WELSH A: Literature, CLASS.GREEK, ART HISTORY ja REF PROJECT
+      List("112715", "100129", "100058", "100657").flatMap(IbisOppiainekartta.get) should be(empty)
     }
 
     "tuottaa jokaisesta oppiaineesta skeeman ja koodistojen mukaisen IB Diploman oppiaineen" in {
@@ -55,14 +40,14 @@ class IbisOppiainekarttaSpec extends AnyFreeSpec with TestEnvironment with Match
         KoskiApplicationForTests.koodistoViitePalvelu,
         KoskiApplicationForTests.validatingAndResolvingExtractor,
       )
-      val virheet = IbisOppiainekartta.oppiaineet.keys.toList.sorted.flatMap { nimi =>
-        converter.convert(diplomaOppiaineella(nimi), None, LocalDate.of(2026, 7, 6)).left.toOption.map(virhe => s"$nimi: ${virhe.syyt.mkString(", ")}")
+      val virheet = IbisOppiainekartta.oppiaineet.keys.toList.sorted.flatMap { koodi =>
+        converter.convert(diplomaOppiaineella(koodi), None, LocalDate.of(2026, 7, 6)).left.toOption.map(virhe => s"$koodi: ${virhe.syyt.mkString(", ")}")
       }
       virheet should be(empty)
     }
   }
 
-  private def diplomaOppiaineella(nimi: String) = IbisRecord(
+  private def diplomaOppiaineella(koodi: String) = IbisRecord(
     year = 2026,
     month = "MAY",
     school = "000001",
@@ -78,6 +63,6 @@ class IbisOppiainekarttaSpec extends AnyFreeSpec with TestEnvironment with Match
     totalPoints = Some(30),
     resultCode = IbisResultCode.DiplomaAwarded,
     combinedGrade = Some(1),
-    subjects = List(IbisSubject(2026, "MAY", nimi, "HL", "5", additional = false, language = "ENGLISH")),
+    subjects = List(IbisSubject(2026, "MAY", koodi, "HL", "5", additional = false)),
   )
 }

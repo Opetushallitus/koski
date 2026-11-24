@@ -88,7 +88,7 @@ case class IBExaminationSession(
   month: Int,
 )
 
-trait IBDiplomanOsasuoritus extends Vahvistukseton with DuplikaatitSallittu with MahdollisestiSuorituskielellinen {
+trait IBDiplomanOsasuoritus extends Vahvistukseton with DuplikaatitSallittu {
   @Description("Tutkintokerta, jossa tulos on saatu")
   def examinationSession: IBExaminationSession
 }
@@ -99,7 +99,6 @@ case class IBDiplomanOppiaineenSuoritus(
   koulutusmoduuli: IBDiplomanOppiaine,
   examinationSession: IBExaminationSession,
   arviointi: Option[List[IBDiplomanOppiaineenArviointi]] = None,
-  suorituskieli: Option[Koodistokoodiviite] = None,
   @Description("Oppiaine ei kuulu diploman vaatimuksiin eikä vaikuta kokonaispistemäärään (IBIS ADDITIONAL SUBJECT)")
   additionalSubject: Boolean = false,
   @KoodistoKoodiarvo("ibdiplomanoppiaine")
@@ -112,7 +111,6 @@ case class IBDiplomanCoreSuoritus(
   koulutusmoduuli: IBDiplomanCoreOppiaine,
   examinationSession: IBExaminationSession,
   arviointi: Option[List[IBDiplomanCoreArviointi]] = None,
-  suorituskieli: Option[Koodistokoodiviite] = None,
   @KoodistoKoodiarvo("ibdiplomancore")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("ibdiplomancore", "suorituksentyyppi")
 ) extends IBDiplomanOsasuoritus

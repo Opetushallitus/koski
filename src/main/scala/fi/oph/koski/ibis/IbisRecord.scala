@@ -3,7 +3,8 @@ package fi.oph.koski.ibis
 import java.time.LocalDate
 
 // IBIS-tulostiedoston rivi, eli yksi candidate registration. Kentät ja niiden järjestys ovat IBO:n dokumentin
-// "IB data file formats" (v1.0, 2021) muodon "CSV file new Language format" mukaiset, ja ne on varmistettu kevään 2026 tiedostosta.
+// "IB data file formats" (v1.0, 2021) muodon "CSV file new format (numeric subject code)" mukaiset, ja ne on varmistettu kevään 2026
+// tiedostosta.
 case class IbisRecord(
   year: Int,
   month: String,
@@ -28,11 +29,10 @@ case class IbisRecord(
 case class IbisSubject(
   year: Int,
   month: String,
-  name: String,
+  code: String,
   level: String,
   grade: String,
   additional: Boolean,
-  language: String,
 ) {
   def session: IbisSession = IbisSession(year, month)
 }

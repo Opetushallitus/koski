@@ -9,7 +9,7 @@ case class IbisParseError(line: Int, message: String)
 
 object IbisCsvParser {
   private val fixedFieldCount = 15
-  private val subjectFieldCount = 7
+  private val subjectFieldCount = 6
   private val dateFormat = DateTimeFormatter.ofPattern("dd/MM/yyyy")
 
   // Tiedosto ei välttämättä ole UTF-8:aa. Virheelliset tavut korvataan, koska tuonnin käyttämät
@@ -41,10 +41,13 @@ object IbisCsvParser {
   def parseLine(rawFields: List[String], lineNumber: Int): Either[IbisParseError, IbisRecord] = {
     val fields = rawFields.map(_.trim)
     val subjectFields = fields.drop(fixedFieldCount)
-    if (fields.length < fixedFieldCount) {
-      Left(IbisParseError(lineNumber, s"Rivillä on ${fields.length} kenttää, odotettiin vähintään $fixedFieldCount"))
-    } else if (subjectFields.length % subjectFieldCount != 0) {
-      Left(IbisParseError(lineNumber, s"Oppiainekenttien määrä ${subjectFields.length} ei ole jaollinen luvulla $subjectFieldCount"))
+    // Ylimääräinen tai puuttuva kenttä siirtää kaikkia sen jälkeisiä kenttiä, joten sen paikkaa ei voi päätellä.
+    if (fields.length < fixedFieldCount || subjectFields.length % subjectFieldCount != 0) {
+      Left(IbisParseError(
+        lineNumber,
+        s"Rivin kenttien määrä ${fields.length} ei ole odotettu: ennen oppiaineita pitäisi olla $fixedFieldCount kenttää " +
+          s"ja jokaisessa oppiaineessa $subjectFieldCount kenttää",
+      ))
     } else {
       Try(toRecord(fields, subjectFields)).toEither.left.map(e => IbisParseError(lineNumber, s"Rivin jäsennys epäonnistui: ${e.getMessage}"))
     }
@@ -54,8 +57,8 @@ object IbisCsvParser {
     val subjects = subjectFields.grouped(subjectFieldCount).toList
       .filter(_.exists(_.nonEmpty))
       .map {
-        case List(year, month, name, level, grade, additional, language) =>
-          IbisSubject(year.toInt, month.toUpperCase, name, level.toUpperCase, grade.toUpperCase, additional.equalsIgnoreCase("Y"), language)
+        case List(year, month, code, level, grade, additional) =>
+          IbisSubject(year.toInt, month.toUpperCase, code, level.toUpperCase, grade.toUpperCase, additional.equalsIgnoreCase("Y"))
         case group =>
           throw new IllegalArgumentException(s"Virheellinen oppiainekenttien ryhmä: $group")
       }
