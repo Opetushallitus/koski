@@ -1895,8 +1895,8 @@ packages:
     resolution: {integrity: sha512-NHFiWnAbMJxNNpBwiO7jJVGDuqMxT9/oV8v57RR+fgBQShkJil5inGD8/xWy0hjLyHQyX1tu27QANhlz3KBqCg==}
     engines: {node: '>=6'}
 
-  terser@5.51.3:
-    resolution: {integrity: sha512-j5jPZZ6Sz0Eg2unusKhdRzUhUlHXJ3Bw2AkIXyJ6AqajWwihUlZOdJS+KSnZzmtVk6mFGdm3hHg0+M2sgyEz5Q==}
+  terser@5.51.4:
+    resolution: {integrity: sha512-VPi1CkDvCWLGUVIToctNBG+NdHbSXwOPjHJnQ3pdB0XknaldnI76wSkAFOGxV2ZdkzOP5d6gpQ5c58XvDghRvw==}
     engines: {node: '>=10'}
     hasBin: true
 
@@ -3172,7 +3172,7 @@ snapshots:
     dependencies:
       jest-worker: 27.5.1
       schema-utils: 4.8.5(webpack@5.113.0)
-      terser: 5.51.3
+      terser: 5.51.4
       webpack: 5.113.0(@swc/core@1.16.22)(cssnano@7.1.9(postcss@8.5.33))(csso@5.0.5)(postcss@8.5.33)(svgo@4.1.0)(webpack-cli@7.3.1)
     optionalDependencies:
       '@swc/core': 1.16.22
@@ -3569,7 +3569,7 @@ snapshots:
 
   tapable@2.3.4: {}
 
-  terser@5.51.3:
+  terser@5.51.4:
     dependencies:
       '@jridgewell/source-map': 0.3.11
       acorn: 8.19.0
