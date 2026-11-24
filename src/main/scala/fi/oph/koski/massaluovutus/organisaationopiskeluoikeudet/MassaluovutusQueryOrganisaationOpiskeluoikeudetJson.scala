@@ -42,7 +42,7 @@ case class MassaluovutusQueryOrganisaationOpiskeluoikeudetJson(
 }
 
 @Title("Oppijakohtainen tulostiedosto")
-@Description("Yhden oppijan tulostiedosto organisaationOpiskeluoikeudet- ja aiemmatOpiskeluoikeudet-kyselyissä: henkilötiedot, linkitetyt oppijanumerot ja opiskeluoikeudet.")
+@Description("Yhden oppijan tulostiedosto organisaationOpiskeluoikeudet-, sisaltyvatOpiskeluoikeudet- ja aiemmatOpiskeluoikeudet-kyselyissä: henkilötiedot, linkitetyt oppijanumerot ja opiskeluoikeudet.")
 case class MassaluovutusOppija(
   henkilö: TäydellisetHenkilötiedot,
   linkitetytOidit: List[Henkilö.Oid],
