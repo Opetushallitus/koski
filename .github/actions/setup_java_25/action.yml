@@ -4,19 +4,18 @@ description: Set up Java 25, Maven caching, and GitHub Packages credentials
 inputs:
   cache-read-only:
     description: >
-      Jos true, ~/.m2-välimuistia ei tallenneta jobin lopuksi. Oletus on true,
-      koska setup-javan post-vaihe ajetaan myös epäonnistuneessa jobissa: kesken
-      jäänyt riippuvuuksien lataus tallentuisi vajaana pom-hashin mukaiselle
-      avaimelle, ja koska avaimet ovat muuttumattomia, vajaa välimuisti jäisi
-      voimaan seuraaviin ajoihin asti. Vain build_koski kirjoittaa välimuistin.
+      Jos true, Maven-välimuisti vain palautetaan eikä sitä tallenneta jobin
+      lopuksi.
     required: false
     default: "true"
   cache-dependency-path:
     description: >
-      Polut, joiden sisällöstä Maven-välimuistin avain lasketaan. Tyhjä käyttää
-      setup-javan oletuksia.
+      Polut, joiden sisällöstä Maven-välimuistin avain lasketaan.
     required: false
-    default: ""
+    default: |
+      **/pom.xml
+      **/.mvn/wrapper/maven-wrapper.properties
+      **/.mvn/extensions.xml
 
 runs:
   using: composite
@@ -32,6 +31,27 @@ runs:
         java-version: "25"
         architecture: "x64"
         distribution: "corretto"
-        cache: "maven"
-        cache-read-only: ${{ inputs.cache-read-only }}
-        cache-dependency-path: ${{ inputs.cache-dependency-path }}
+    - name: Get Maven cache month
+      id: maven-cache
+      shell: bash
+      run: echo "MONTH=$(date --utc +%Y-%m)" >> "$GITHUB_OUTPUT"
+    - name: Cache Maven repository
+      if: inputs.cache-read-only != 'true'
+      uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+      with:
+        path: |
+          ~/.m2/repository
+          ~/.m2/wrapper
+        key: ${{ runner.os }}-maven-${{ steps.maven-cache.outputs.MONTH }}-${{ hashFiles(inputs.cache-dependency-path) }}
+        restore-keys: |
+          ${{ runner.os }}-maven-${{ steps.maven-cache.outputs.MONTH }}-
+    - name: Restore Maven repository
+      if: inputs.cache-read-only == 'true'
+      uses: actions/cache/restore@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+      with:
+        path: |
+          ~/.m2/repository
+          ~/.m2/wrapper
+        key: ${{ runner.os }}-maven-${{ steps.maven-cache.outputs.MONTH }}-${{ hashFiles(inputs.cache-dependency-path) }}
+        restore-keys: |
+          ${{ runner.os }}-maven-${{ steps.maven-cache.outputs.MONTH }}-
