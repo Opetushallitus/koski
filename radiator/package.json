@@ -37,8 +37,8 @@
     "typescript-eslint": "8.73.0"
   },
   "engines": {
-    "pnpm": "12.21.0",
+    "pnpm": "12.22.0",
     "node": ">=24"
   },
-  "packageManager": "pnpm@12.21.0"
+  "packageManager": "pnpm@12.22.0"
 }
