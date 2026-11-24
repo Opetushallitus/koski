@@ -113,8 +113,9 @@ trait MassaluovutusQueryOrganisaationOpiskeluoikeudetBase extends Koulutuksenjä
       "päättynytAikaisintaan" -> päättynytAikaisintaan.toList.map(_.format(DateTimeFormatter.ISO_DATE)),
       "päättynytViimeistään" -> päättynytViimeistään.toList.map(_.format(DateTimeFormatter.ISO_DATE)),
       "eiPäättymispäivää" -> eiPäättymispäivää.toList.map(_.toString),
-      "muuttunutJälkeen" -> muuttunutJälkeen.toList.map(_.format(DateTimeFormatter.ISO_DATE)),
+      "muuttunutJälkeen" -> muuttunutJälkeen.toList.map(_.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME)),
       "koulutusmuoto" -> koulutusmuoto.toList,
+      "mitätöidyt" -> mitätöidyt.toList.map(_.toString),
     ).filter(_._2.nonEmpty))
 
   protected def getDb(application: KoskiApplication): DB = application.replicaDatabase.db
