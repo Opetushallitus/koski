@@ -5,7 +5,7 @@ import fi.oph.koski.http.HttpStatus
 import fi.oph.koski.koskiuser.{AccessType, KoskiSpecificSession}
 import fi.oph.koski.log.KoskiOperation.{IBIS_ESIKATSELU, IBIS_TALLENNUS, KoskiOperation}
 import fi.oph.koski.log.{AuditLog, KoskiAuditLogMessage, KoskiAuditLogMessageField}
-import fi.oph.koski.schema.{IBDiplomaOpiskeluoikeus, IBOpiskeluoikeus, OidHenkilö, Oppija}
+import fi.oph.koski.schema.{IBDiplomaOpiskeluoikeus, OidHenkilö, Oppija}
 
 import java.time.LocalDate
 
@@ -122,24 +122,17 @@ class IbisService(application: KoskiApplication) {
 
 object IbisService {
   def yhdistäOppijaan(iboTunniste: String, löydetyt: Seq[IbisTunnisteenOpiskeluoikeus]): Either[IbisKonversiovirhe, IbisYhdistettyOppija] = {
-    val ibKoulutukset = löydetyt.filter(_.opiskeluoikeus.isInstanceOf[IBOpiskeluoikeus])
-    val valmistuneetIbKoulutukset = ibKoulutukset.filter(_.opiskeluoikeus.tila.opiskeluoikeusjaksot.lastOption.exists(_.tila.koodiarvo == "valmistunut"))
+    val oppijat = löydetyt.map(_.oppijaOid).distinct
     val diplomat = löydetyt.filter(_.opiskeluoikeus.isInstanceOf[IBDiplomaOpiskeluoikeus])
-    val oppijat = (valmistuneetIbKoulutukset ++ diplomat).map(_.oppijaOid).distinct
 
     if (oppijat.size > 1) {
-      Left(IbisKonversiovirhe(iboTunniste, List("Tunnisteella löytyy usean oppijan opiskeluoikeuksia")))
+      Left(IbisKonversiovirhe(iboTunniste, List("IBO-tunnisteella löytyy usean oppijan opiskeluoikeuksia")))
     } else if (diplomat.size > 1) {
-      Left(IbisKonversiovirhe(iboTunniste, List("Tunnisteella löytyy useampi IB Diploma -opiskeluoikeus")))
+      Left(IbisKonversiovirhe(iboTunniste, List("IBO-tunnisteella löytyy useampi IB Diploma -opiskeluoikeus")))
     } else {
-      oppijat.headOption match {
-        case Some(oppijaOid) =>
-          Right(IbisYhdistettyOppija(oppijaOid, diplomat.headOption.flatMap(_.opiskeluoikeus.oid)))
-        case None if ibKoulutukset.nonEmpty =>
-          Left(IbisKonversiovirhe(iboTunniste, List("Tunnisteella löytyy IB-koulutuksen opiskeluoikeus, mutta se ei ole valmistunut")))
-        case None =>
-          Left(IbisKonversiovirhe(iboTunniste, List("Tunnisteella ei löydy valmistunutta IB-koulutuksen opiskeluoikeutta eikä IB Diploma -opiskeluoikeutta")))
-      }
+      oppijat.headOption
+        .map(oppijaOid => IbisYhdistettyOppija(oppijaOid, diplomat.headOption.flatMap(_.opiskeluoikeus.oid)))
+        .toRight(IbisKonversiovirhe(iboTunniste, List("Oppijaa ei voitu tunnistaa, koska IBO-tunnisteella ei löytynyt olemassa olevaa opiskeluoikeutta")))
     }
   }
 }

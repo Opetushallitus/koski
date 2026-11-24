@@ -1,6 +1,6 @@
 package fi.oph.koski.ibis
 
-import fi.oph.koski.documentation.ExamplesIBDiploma
+import fi.oph.koski.documentation.{ExamplesIBDiploma, ExamplesInternationalSchool}
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
 import fi.oph.koski.koskiuser.{KoskiSpecificSession, MockUsers}
 import fi.oph.koski.log.AuditLogTester
@@ -26,10 +26,11 @@ class IbisServiceSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers with 
 
   private val valmistunut = ExamplesIBDiploma.ibKoulutuksenOpiskeluoikeus
   private val keskeneräinen = valmistunut.copy(tila = LukionOpiskeluoikeudenTila(valmistunut.tila.opiskeluoikeusjaksot.take(1)))
+  private val internationalSchool = ExamplesInternationalSchool.opiskeluoikeus
   private val diploma = ExamplesIBDiploma.opiskeluoikeus.copy(oid = Some("1.2.246.562.15.12345678901"))
 
   private def virhe(syy: String) = Left(IbisKonversiovirhe("abc123", List(syy)))
-  private val usealtaOppijalta = virhe("Tunnisteella löytyy usean oppijan opiskeluoikeuksia")
+  private val usealtaOppijalta = virhe("IBO-tunnisteella löytyy usean oppijan opiskeluoikeuksia")
 
   "Yhdistämisen säännöt" - {
     def yhdistä(löydetyt: (String, KoskeenTallennettavaOpiskeluoikeus)*) =
@@ -37,6 +38,14 @@ class IbisServiceSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers with 
 
     "valmistuneesta IB-koulutuksesta saadaan oppija" in {
       yhdistä(oppija -> valmistunut) should be(Right(IbisYhdistettyOppija(oppija, None)))
+    }
+
+    "keskeneräisestä IB-koulutuksesta saadaan oppija" in {
+      yhdistä(oppija -> keskeneräinen) should be(Right(IbisYhdistettyOppija(oppija, None)))
+    }
+
+    "International schoolin opiskeluoikeudesta saadaan oppija" in {
+      yhdistä(oppija -> internationalSchool) should be(Right(IbisYhdistettyOppija(oppija, None)))
     }
 
     "olemassa oleva diploma päivitetään" in {
@@ -51,16 +60,16 @@ class IbisServiceSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers with 
       yhdistä(oppija -> valmistunut, oppija -> valmistunut) should be(Right(IbisYhdistettyOppija(oppija, None)))
     }
 
-    "toisen oppijan keskeneräinen IB-koulutus ei estä yhdistämistä" in {
-      yhdistä(oppija -> valmistunut, toinenOppija -> keskeneräinen).map(_.oppijaOid) should be(Right(oppija))
+    "toisen oppijan keskeneräinen IB-koulutus estää yhdistämisen" in {
+      yhdistä(oppija -> valmistunut, toinenOppija -> keskeneräinen) should be(usealtaOppijalta)
     }
 
-    "keskeneräiseen IB-koulutukseen ei yhdistetä" in {
-      yhdistä(oppija -> keskeneräinen) should be(virhe("Tunnisteella löytyy IB-koulutuksen opiskeluoikeus, mutta se ei ole valmistunut"))
+    "toisen oppijan International schoolin opiskeluoikeus estää yhdistämisen" in {
+      yhdistä(oppija -> valmistunut, toinenOppija -> internationalSchool) should be(usealtaOppijalta)
     }
 
     "ilman opiskeluoikeuksia ei yhdistetä" in {
-      yhdistä() should be(virhe("Tunnisteella ei löydy valmistunutta IB-koulutuksen opiskeluoikeutta eikä IB Diploma -opiskeluoikeutta"))
+      yhdistä() should be(virhe("Oppijaa ei voitu tunnistaa, koska IBO-tunnisteella ei löytynyt olemassa olevaa opiskeluoikeutta"))
     }
 
     "usean oppijan IB-koulutuksiin ei yhdistetä" in {
@@ -74,7 +83,7 @@ class IbisServiceSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers with 
     "useaan diplomaan ei yhdistetä" in {
       val toinenDiploma = diploma.copy(oid = Some("1.2.246.562.15.10987654321"))
       yhdistä(oppija -> valmistunut, oppija -> diploma, oppija -> toinenDiploma) should be(
-        virhe("Tunnisteella löytyy useampi IB Diploma -opiskeluoikeus")
+        virhe("IBO-tunnisteella löytyy useampi IB Diploma -opiskeluoikeus")
       )
     }
   }
@@ -88,9 +97,9 @@ class IbisServiceSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers with 
       )
     }
 
-    "ei yhdistä International schoolin opiskeluoikeuteen" in {
+    "löytää oppijan International schoolin opiskeluoikeuden tunnisteella" in {
       service.yhdistäOppijoihin(List(rivi("ibo1"))).map(_._2) should be(
-        List(Left(IbisKonversiovirhe("ibo1", List("Tunnisteella ei löydy valmistunutta IB-koulutuksen opiskeluoikeutta eikä IB Diploma -opiskeluoikeutta"))))
+        List(Right(IbisYhdistettyOppija(KoskiSpecificMockOppijat.internationalschool.oid, None)))
       )
     }
 

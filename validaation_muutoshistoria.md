@@ -2,7 +2,7 @@
 
 ## xx.xx.2026
 
-- IB Diploma -opiskeluoikeuden (`ibdiploma`) voi tallentaa vain, jos oppijalla on IB-koulutuksen (`ibtutkinto`) opiskeluoikeus, jolla on sama `iboTunniste`.
+- IB Diploma -opiskeluoikeuden (`ibdiploma`) voi tallentaa vain, jos oppijalla on IB-koulutuksen (`ibtutkinto`) tai International schoolin (`internationalschool`) opiskeluoikeus, jolla on sama `iboTunniste`.
 
 ## 24.11.2026
 

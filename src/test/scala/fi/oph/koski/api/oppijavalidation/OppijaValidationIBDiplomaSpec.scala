@@ -58,17 +58,17 @@ class OppijaValidationIBDiplomaSpec
     } should be(List((Some(IBO.oid), Some(IBO.oid))))
   }
 
-  "Ei voi kirjoittaa International schoolin opiskeluoikeuden perusteella" in {
+  "Voi kirjoittaa International schoolin opiskeluoikeuden perusteella" in {
     setupOppijaWithOpiskeluoikeus(ExamplesInternationalSchool.opiskeluoikeus.copy(iboTunniste = Some(ExamplesIBDiploma.iboTunniste)), henkilö = henkilö) {
       verifyResponseStatusOk()
     }
 
     putOpiskeluoikeus(defaultOpiskeluoikeus, henkilö = henkilö) {
-      verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.ibdiploma.puuttuvaKoulutus())
+      verifyResponseStatusOk()
     }
   }
 
-  "Ei voi kirjoittaa, jos oppijalla ei ole IB-koulutuksen opiskeluoikeutta" in {
+  "Ei voi kirjoittaa, jos oppijalla ei ole IB-koulutuksen eikä International schoolin opiskeluoikeutta" in {
     setupOppijaWithOpiskeluoikeus(defaultOpiskeluoikeus, henkilö = KoskiSpecificMockOppijat.tyhjä) {
       verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.ibdiploma.puuttuvaKoulutus())
     }

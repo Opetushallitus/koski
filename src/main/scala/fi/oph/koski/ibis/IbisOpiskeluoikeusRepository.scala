@@ -10,7 +10,7 @@ case class IbisTunnisteenOpiskeluoikeus(iboTunniste: String, oppijaOid: String, 
 
 // Haku tehdään ilman käyttöoikeusrajausta, koska IBIS-tuonnin tekee Opetushallituksen pääkäyttäjä.
 class IbisOpiskeluoikeusRepository(val db: DB) extends QueryMethods {
-  private val koulutusmuodot = Set("ibtutkinto", "ibdiploma")
+  private val koulutusmuodot = Set("ibtutkinto", "internationalschool", "ibdiploma")
 
   // Haku ei välitä kirjainkoosta, ja tunnisteet palautetaan pienillä kirjaimilla.
   def findByIboTunnisteet(tunnisteet: Set[String]): Seq[IbisTunnisteenOpiskeluoikeus] = {
