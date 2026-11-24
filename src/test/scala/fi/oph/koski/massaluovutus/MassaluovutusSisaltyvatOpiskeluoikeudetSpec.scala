@@ -40,6 +40,8 @@ class MassaluovutusSisaltyvatOpiskeluoikeudetSpec
   private var sisältyvä: AmmatillinenOpiskeluoikeus = _
   // Toinen pari, jonka sisältävä opiskeluoikeus mitätöidään
   private var mitätöitySisältävä: AmmatillinenOpiskeluoikeus = _
+  // Kolmas pari, jonka sisältyvä opiskeluoikeus mitätöidään
+  private var mitätöitySisältyvä: AmmatillinenOpiskeluoikeus = _
 
   override protected def beforeAll(): Unit = {
     super.beforeAll()
@@ -51,6 +53,10 @@ class MassaluovutusSisaltyvatOpiskeluoikeudetSpec
     mitätöitySisältävä = setupOppijaWithAndGetOpiskeluoikeus(makeOpiskeluoikeus(alkamispäivä = sisältävänAlkamispäivä), KoskiSpecificMockOppijat.eerola, MockUsers.stadinAmmattiopistoJaOppisopimuskeskusTallentaja)
     createOpiskeluoikeus(KoskiSpecificMockOppijat.eerola, sisältyväOmniassa(mitätöitySisältävä), user = MockUsers.omniaTallentaja)
     mitätöiOpiskeluoikeus(mitätöitySisältävä.oid.get, MockUsers.stadinAmmattiopistoJaOppisopimuskeskusTallentaja)
+
+    val sisältäväMitätöidylle = setupOppijaWithAndGetOpiskeluoikeus(makeOpiskeluoikeus(alkamispäivä = sisältävänAlkamispäivä), KoskiSpecificMockOppijat.markkanen, MockUsers.stadinAmmattiopistoJaOppisopimuskeskusTallentaja)
+    mitätöitySisältyvä = createOpiskeluoikeus(KoskiSpecificMockOppijat.markkanen, sisältyväOmniassa(sisältäväMitätöidylle), user = MockUsers.omniaTallentaja)
+    mitätöiOpiskeluoikeus(mitätöitySisältyvä.oid.get, MockUsers.omniaTallentaja)
   }
 
   override protected def afterAll(): Unit = {
@@ -172,6 +178,18 @@ class MassaluovutusSisaltyvatOpiskeluoikeudetSpec
       val complete = waitForCompletion(queryId, user)
 
       complete.files.find(_.contains(KoskiSpecificMockOppijat.eerola.oid)) shouldBe None
+    }
+
+    "Mitätöity sisältyvä opiskeluoikeus palautetaan vain mitätöidyt-parametrilla, mitätöidyn sisältävän sisältyvää ei silloinkaan" in {
+      val user = MockUsers.helsinkiKatselija
+      val oletus = waitForCompletion(addQuerySuccessfully(query, user)(_.queryId), user)
+      oletus.files.find(_.contains(KoskiSpecificMockOppijat.markkanen.oid)) shouldBe None
+
+      val mitätöidyt = waitForCompletion(addQuerySuccessfully(query.copy(mitätöidyt = Some(true)), user)(_.queryId), user)
+      val markkasenTiedosto = mitätöidyt.files.find(_.contains(KoskiSpecificMockOppijat.markkanen.oid))
+      markkasenTiedosto shouldBe defined
+      opiskeluoikeusOidit(markkasenTiedosto.get, user) should equal(List(mitätöitySisältyvä.oid.get))
+      mitätöidyt.files.find(_.contains(KoskiSpecificMockOppijat.eerola.oid)) shouldBe None
     }
 
     "Toisen käyttäjän kyselyä ei näe" in {
