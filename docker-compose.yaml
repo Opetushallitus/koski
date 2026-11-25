@@ -9,7 +9,7 @@ services:
       - "POSTGRES_PASSWORD=oph"
       - "TZ=Europe/Helsinki"
     ports:
-      - "5432:5432"
+      - "127.0.0.1:5432:5432"
     volumes:
       - "./postgresql/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d"
     healthcheck:
@@ -26,7 +26,7 @@ services:
       - "discovery.type=single-node"
       - "plugins.security.disabled=true"
     ports:
-      - "9200:9200"
+      - "127.0.0.1:9200:9200"
     volumes:
       - "./opensearch/opensearch-docker.yml:/usr/share/opensearch/config/opensearch.yml"
     healthcheck:
@@ -39,7 +39,7 @@ services:
   dynamodb:
     image: "amazon/dynamodb-local:3.3.2@sha256:6ada631ec7aa5fc83446855eb17233e3dad184fec47477e8140c6c569cfe0c86"
     ports:
-      - "8000:8000"
+      - "127.0.0.1:8000:8000"
 
   localstack:
     container_name: koski-localstack
