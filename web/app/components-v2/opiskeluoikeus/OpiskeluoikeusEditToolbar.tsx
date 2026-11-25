@@ -28,6 +28,7 @@ export type OpiskeluoikeusEditToolbarProps = {
   editMode: boolean
   invalidatable: boolean
   onStartEdit: () => void
+  hideVoimassaoloaika?: boolean
 }
 
 export const OpiskeluoikeusEditToolbar = (
@@ -48,22 +49,24 @@ export const OpiskeluoikeusEditToolbar = (
 
   return (
     <div className="OpiskeluoikeusEditToolbar">
-      <div className="OpiskeluoikeusEditToolbar__voimassaoloaika">
-        <TestIdText id="voimassaoloaika">
-          <Trans>{'Opiskeluoikeuden voimassaoloaika'}</Trans>
-          {': '}
-          {'arvioituPäättymispäivä' in props.opiskeluoikeus &&
-          !props.opiskeluoikeus.päättymispäivä
-            ? `${formatDateRange(
-                props.opiskeluoikeus.alkamispäivä,
-                props.opiskeluoikeus.arvioituPäättymispäivä
-              )} (${t('Arvioitu päättymispäivä')})`
-            : formatDateRange(
-                props.opiskeluoikeus.alkamispäivä,
-                props.opiskeluoikeus.päättymispäivä
-              )}
-        </TestIdText>
-      </div>
+      {!props.hideVoimassaoloaika && (
+        <div className="OpiskeluoikeusEditToolbar__voimassaoloaika">
+          <TestIdText id="voimassaoloaika">
+            <Trans>{'Opiskeluoikeuden voimassaoloaika'}</Trans>
+            {': '}
+            {'arvioituPäättymispäivä' in props.opiskeluoikeus &&
+            !props.opiskeluoikeus.päättymispäivä
+              ? `${formatDateRange(
+                  props.opiskeluoikeus.alkamispäivä,
+                  props.opiskeluoikeus.arvioituPäättymispäivä
+                )} (${t('Arvioitu päättymispäivä')})`
+              : formatDateRange(
+                  props.opiskeluoikeus.alkamispäivä,
+                  props.opiskeluoikeus.päättymispäivä
+                )}
+          </TestIdText>
+        </div>
+      )}
       <div className="OpiskeluoikeusEditToolbar__painikkeet">
         {mitätöintiTarjolla && opiskeluoikeusOid && (
           <MitätöintiButton opiskeluoikeusOid={opiskeluoikeusOid} />

@@ -25,6 +25,7 @@ export type OpiskeluoikeusTitleProps = CommonProps<{
   oppilaitos?: string
   opiskeluoikeudenNimi?: string
   pvmJaTila?: string
+  hidePvmJaTila?: boolean
 }>
 
 const join = (...as: Array<string | undefined>) => as.filter(nonNull).join(', ')
@@ -34,7 +35,9 @@ export const OpiskeluoikeusTitle = (props: OpiskeluoikeusTitleProps) => {
     props.opiskeluoikeudenNimi ||
     t(props.opiskeluoikeus.suoritukset[0]?.tyyppi.nimi)
 
-  const keepCapitalized = props.opiskeluoikeus.tyyppi.koodiarvo === 'ibtutkinto'
+  const keepCapitalized = ['ibtutkinto', 'ibdiploma'].includes(
+    props.opiskeluoikeus.tyyppi.koodiarvo
+  )
 
   const kansalainenTaiSuoritusjako = useKansalainenTaiSuoritusjako()
   const otsikkoteksti = kansalainenTaiSuoritusjako
@@ -82,9 +85,14 @@ export const OpiskeluoikeusTitle = (props: OpiskeluoikeusTitleProps) => {
           align={{ default: 'left', small: 'left' }}
         >
           <TestIdText id="nimi">
-            {otsikkoteksti} {'('}
-            <Lowercase>{props.pvmJaTila || aikaväliJaTila()}</Lowercase>
-            {')'}
+            {otsikkoteksti}
+            {!props.hidePvmJaTila && (
+              <>
+                {' ('}
+                <Lowercase>{props.pvmJaTila || aikaväliJaTila()}</Lowercase>
+                {')'}
+              </>
+            )}
           </TestIdText>
         </Column>
 

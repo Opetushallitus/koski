@@ -8,7 +8,7 @@ import fi.oph.koski.schema._
 import java.time.LocalDate
 import java.time.LocalDate.{of => date}
 
-// TODO TOR-747: Luonnos. Esimerkki vastaa IB-koulutuksen opiskeluoikeutta ibKoulutuksenOpiskeluoikeus (sama iboTunniste).
+// Esimerkki vastaa IB-koulutuksen opiskeluoikeutta ibKoulutuksenOpiskeluoikeus (sama iboTunniste).
 object ExamplesIBDiploma {
   val iboTunniste = "dip123"
   val ibKoulutuksenOpiskeluoikeus: IBOpiskeluoikeus = ExamplesIB.opiskeluoikeus.copy(iboTunniste = Some(iboTunniste))
@@ -68,6 +68,7 @@ object ExamplesIBDiploma {
       muuOppiaine("BIO", "SL", "6"),
       muuOppiaine("MATAA", "SL", "5"),
       muuOppiaine("PHY", "SL", "5"),
+      muuOppiaine("CHE", "SL", "5").copy(examinationSession = IBExaminationSession(2015, 11), additionalSubject = true),
       extendedEssay("HIS", "B"),
       theoryOfKnowledge("A"),
     )),

@@ -13,7 +13,6 @@ const europeanSchoolOfHelsinkiTilat = [
   'mitatoity'
 ]
 const ebTilat = ['eronnut', 'lasna', 'valmistunut', 'mitatoity']
-const ibDiplomaTilat = ['valmistunut']
 
 const oppivelvollisilleSuunnatunVapaanSivistystyönKoulutuksenTilat = [
   'lasna',
@@ -103,8 +102,6 @@ const filterByOpiskeluoikeudenTyyppi = (
       )
     case 'ebtutkinto':
       return tilat.filter((t) => ebTilat.includes(koodiarvo(t)))
-    case 'ibdiploma':
-      return tilat.filter((t) => ibDiplomaTilat.includes(koodiarvo(t)))
     case 'europeanschoolofhelsinki':
       return tilat.filter((t) =>
         europeanSchoolOfHelsinkiTilat.includes(koodiarvo(t))

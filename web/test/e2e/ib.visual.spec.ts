@@ -57,3 +57,26 @@ test.describe('IB – visuaaliset regressiot', () => {
     await takeFullPageScreenshot(page, 'ib-pre-ib-2019-katselu.png')
   })
 })
+
+// IB-Diploma Dani. Diploman oppilaitos on IBO, jota kalle ei näe.
+const ibDiploma = '1.2.246.562.24.00000000233'
+
+test.describe('IB Diploma – visuaaliset regressiot', () => {
+  test.skip(
+    process.platform !== 'linux',
+    'Visuaalitestit ajetaan vain Linuxilla. Paikallinen ajo: make visual-test'
+  )
+
+  test.use({ storageState: virkailija('pää') })
+
+  test.beforeAll(async ({ fixtures }) => {
+    await fixtures.reset()
+  })
+
+  test('IB Diploma, katselunäkymä', async ({ page, oppijaPage }) => {
+    await oppijaPage.goto(ibDiploma)
+    await oppijaPage.selectOpiskeluoikeus('ibdiploma')
+    await expect(page.getByTestId('oo.0.suoritukset.0.koulutus')).toBeVisible()
+    await takeFullPageScreenshot(page, 'ib-diploma-katselu.png')
+  })
+})

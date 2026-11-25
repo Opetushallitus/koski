@@ -73,29 +73,37 @@ export default ({ oppijaOid, opiskeluoikeusTyypit, selectedIndex }) => {
                         >
                           <span className="koulutus">
                             {koulutuksenNimi(opiskeluoikeus)}
-                          </span>{' '}
-                          {modelData(opiskeluoikeus, 'alkamispäivä') ? (
-                            <span>
-                              <span className="alku pvm">
-                                {yearFromIsoDateString(
-                                  modelTitle(opiskeluoikeus, 'alkamispäivä')
-                                )}
-                              </span>
-                              {'—'}
-                              <span className="loppu pvm">
-                                {yearFromIsoDateString(
-                                  modelTitle(opiskeluoikeus, 'päättymispäivä')
-                                )}
-                                {', '}
-                              </span>
-                            </span>
-                          ) : null}
-                          <span className="tila">
-                            {modelTitle(
-                              opiskeluoikeus,
-                              'tila.opiskeluoikeusjaksot.-1.tila'
-                            )}
                           </span>
+                          {näytetäänVuodetJaTila(opiskeluoikeus) && (
+                            <>
+                              {' '}
+                              {modelData(opiskeluoikeus, 'alkamispäivä') ? (
+                                <span>
+                                  <span className="alku pvm">
+                                    {yearFromIsoDateString(
+                                      modelTitle(opiskeluoikeus, 'alkamispäivä')
+                                    )}
+                                  </span>
+                                  {'—'}
+                                  <span className="loppu pvm">
+                                    {yearFromIsoDateString(
+                                      modelTitle(
+                                        opiskeluoikeus,
+                                        'päättymispäivä'
+                                      )
+                                    )}
+                                    {', '}
+                                  </span>
+                                </span>
+                              ) : null}
+                              <span className="tila">
+                                {modelTitle(
+                                  opiskeluoikeus,
+                                  'tila.opiskeluoikeusjaksot.-1.tila'
+                                )}
+                              </span>
+                            </>
+                          )}
                         </li>
                       ))}
                     </ul>
@@ -153,6 +161,9 @@ export default ({ oppijaOid, opiskeluoikeusTyypit, selectedIndex }) => {
     </ul>
   )
 }
+
+const näytetäänVuodetJaTila = (opiskeluoikeus) =>
+  modelData(opiskeluoikeus, 'tyyppi.koodiarvo') !== 'ibdiploma'
 
 const koulutuksenNimi = (opiskeluoikeus) => {
   const tyyppi = modelData(opiskeluoikeus, 'tyyppi.koodiarvo')
