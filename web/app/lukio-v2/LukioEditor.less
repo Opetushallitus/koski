@@ -135,6 +135,7 @@
 }
 
 .LukionOmanÄidinkielenOpinnot__tiedot {
+  width: 100%;
   table-layout: auto;
   border-collapse: collapse;
 
@@ -181,6 +182,13 @@
 
 .LukionOmanÄidinkielenOpinnot__arviointi {
   width: 26%;
+}
+
+// Pelkkää leimaa "nimi: arvo" varten - ei KeyValueTablea, jonka
+// max-content-levyinen nimisarake ei mahdu tämän kapean sarakkeen sisään
+// (ks. TOR-2777: Arviointipäivä leikkautui).
+.LukionOmanÄidinkielenOpinnot__pieniTieto {
+  color: @color-label;
 }
 
 .LukionOmanÄidinkielenOpinnot__osasuorituksetEdit {

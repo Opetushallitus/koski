@@ -464,18 +464,29 @@ const OmanÄidinkielenOpinnotRow: React.FC<{
             {(form.editMode ||
               (opinnot.osasuoritukset &&
                 opinnot.osasuoritukset.length > 0)) && (
-              <tr>
-                <td className="LukionOmanÄidinkielenOpinnot__tietoLabel">
-                  {t('Osasuoritukset')}
-                </td>
-                <td>
-                  <OmanÄidinkielenOpintojenOsasuorituksetLista
-                    form={form}
-                    opinnotPath={opinnotOptionalPath}
-                    osasuoritukset={opinnot.osasuoritukset || []}
-                  />
-                </td>
-              </tr>
+              <>
+                <tr>
+                  <td
+                    className="LukionOmanÄidinkielenOpinnot__tietoLabel"
+                    colSpan={2}
+                  >
+                    {t('Osasuoritukset')}
+                  </td>
+                </tr>
+                <tr>
+                  {/* colSpan: osasuoritukset-taulukon pitää ulottua koko
+                      tiedot-taulukon leveydelle, ei vain arvosarakkeelle,
+                      jotta sen oma otsikkorivi ylettyy samaan reunaan kuin
+                      esim. Puhvi-kokeen kuvaus-kenttä. */}
+                  <td colSpan={2}>
+                    <OmanÄidinkielenOpintojenOsasuorituksetLista
+                      form={form}
+                      opinnotPath={opinnotOptionalPath}
+                      osasuoritukset={opinnot.osasuoritukset || []}
+                    />
+                  </td>
+                </tr>
+              </>
             )}
           </tbody>
         </table>
@@ -567,14 +578,14 @@ const OmanÄidinkielenOpintojenOsasuorituksetViewTable: React.FC<{
                 <TestIdText id="nimi">
                   {t(osasuoritus.koulutusmoduuli.tunniste.nimi)}
                 </TestIdText>
-                <KeyValueTable>
-                  <KeyValueRow localizableLabel="Laajuus" innerKeyValueTable>
-                    <TestIdText id="laajuus">
-                      {osasuoritus.koulutusmoduuli.laajuus.arvo}{' '}
-                      {t(osasuoritus.koulutusmoduuli.laajuus.yksikkö.lyhytNimi)}
-                    </TestIdText>
-                  </KeyValueRow>
-                </KeyValueTable>
+                <div className="LukionOmanÄidinkielenOpinnot__pieniTieto">
+                  {t('Laajuus')}
+                  {': '}
+                  <TestIdText id="laajuus">
+                    {osasuoritus.koulutusmoduuli.laajuus.arvo}{' '}
+                    {t(osasuoritus.koulutusmoduuli.laajuus.yksikkö.lyhytNimi)}
+                  </TestIdText>
+                </div>
               </td>
               <td className="LukionOmanÄidinkielenOpinnot__suorituskieli">
                 {osasuoritus.suorituskieli && (
@@ -585,21 +596,22 @@ const OmanÄidinkielenOpintojenOsasuorituksetViewTable: React.FC<{
               </td>
               <td className="LukionOmanÄidinkielenOpinnot__arviointi">
                 {paras && (
-                  <KeyValueTable>
-                    <KeyValueRow localizableLabel="Arvosana" innerKeyValueTable>
+                  <>
+                    <div className="LukionOmanÄidinkielenOpinnot__pieniTieto">
+                      {t('Arvosana')}
+                      {': '}
                       <TestIdText id="arvosana.value">
                         {paras.arvosana.koodiarvo}
                       </TestIdText>
-                    </KeyValueRow>
-                    <KeyValueRow
-                      localizableLabel="Arviointipäivä"
-                      innerKeyValueTable
-                    >
+                    </div>
+                    <div className="LukionOmanÄidinkielenOpinnot__pieniTieto">
+                      {t('Arviointipäivä')}
+                      {': '}
                       <TestIdText id="arviointipäivä.value">
                         {ISO2FinnishDate(paras.päivä)}
                       </TestIdText>
-                    </KeyValueRow>
-                  </KeyValueTable>
+                    </div>
+                  </>
                 )}
               </td>
             </TestIdLayer>
