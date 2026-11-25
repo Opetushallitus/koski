@@ -435,7 +435,6 @@ object KoskiSpecificMockOppijat {
   val kotikuntalaskelmaEsiopetus = koskiSpecificOppijat.oppija("Esiopetus", "Elias", "200520A802Y", syntymäaika = Some(LocalDate.of(2020, 5, 20)), kotikunta = Some(Kunta.helsinki))
   val kotikuntalaskelmaKansainvalinenEdellinenLukuvuosi = koskiSpecificOppijat.oppija("KansainvalinenEdellinenLukuvuosi", "Nea", "200819A8024", syntymäaika = Some(LocalDate.of(2019, 8, 20)), kotikunta = Some(Kunta.helsinki))
   val vstVapaatavoitteinenKeskeytynyt = koskiSpecificOppijat.oppija("Vapaa-Sivistys", "Keskeyttänyt-Kouluttautuja", "150685-200W")
-  val ibDiploma = koskiSpecificOppijat.oppija("IB-Diploma", "Dani", "040701A002J")
 
   // aiemmatOpiskeluoikeudet-massaluovutuskyselyn demo-oppijat: Helsingin kaupungin nykyisiä opiskelijoita, ks. AiemmatOpiskeluoikeudetDemoFixtures.
   // Kysely hylkää ennen kyselyvuotta 18 vuotta täyttäneet oppijat, joten syntymävuosi lasketaan kuluvasta vuodesta.
@@ -468,6 +467,7 @@ object KoskiSpecificMockOppijat {
 
   val ahvenanmaanAmmattiopiskelija = koskiSpecificOppijat.oppija("Ålänning", "Ebba", "120502A417R")
   val aiemmatTestiValmistava = koskiSpecificOppijat.oppijaSyntymäaikaHetusta("AiemmatTesti-Valmistava", "Valma", aiemmatHetu(14, 1, vuosi = aiemmatSyntymävuosi + 6))
+  val ibDiploma = koskiSpecificOppijat.oppija("IB-Diploma", "Dani", "040701A002J")
 
   def defaultOppijat = koskiSpecificOppijat.getOppijat
   def defaultKuntahistoriat: mutable.Map[String, Seq[OppijanumerorekisteriKotikuntahistoriaRow]] = koskiSpecificOppijat.getKuntahistoriat
