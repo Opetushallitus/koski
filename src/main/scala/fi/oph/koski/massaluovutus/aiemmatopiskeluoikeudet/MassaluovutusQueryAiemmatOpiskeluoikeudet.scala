@@ -27,9 +27,9 @@ import scala.concurrent.duration.DurationInt
 
 @Title("Tiedonvaihtotyökalu oppijan siirtymä- ja nivelvaiheisiin")
 @Description("Oppilaitos saa siirtymä- ja nivelvaiheessa olevien uusien opiskelijoidensa aiemmat opinnot muilta koulutuksen järjestäjiltä.")
-@Description("Palauttaa annettujen, oppilaitoksen nykyisten opiskelijoiden kaikki esi-, perus-, ammatillisen, lukio-, TUVA-, IB-, EB-, DIA-, International School- ja European School of Helsinki -koulutuksen opiskeluoikeudet: aiemmat, nykyiset ja tulevat, sekä muiden organisaatioiden että oppilaitoksen omat.")
+@Description("Palauttaa annettujen, oppilaitoksen nykyisten opiskelijoiden kaikki esi-, perus-, perusopetukseen valmistavan, ammatillisen, lukio-, TUVA-, IB-, EB-, DIA-, International School- ja European School of Helsinki -koulutuksen opiskeluoikeudet: aiemmat, nykyiset ja tulevat, sekä muiden organisaatioiden että oppilaitoksen omat.")
 @Description("Oppijat annetaan henkilötunnuksina tai oppijanumeroina. Jokaisen annetun oppijan on oltava oppilaitoksen nykyinen opiskelija ja alle 18-vuotias tai kyselyn tekovuonna 18 vuotta täyttävä, muuten koko kysely hylätään ja vastaus kertoo, mitkä oppijat eivät täytä ehtoja. Nykyinen opiskelija on oppija, jolla on kyselyn oppilaitoksessa päättymätön, myös vasta tulevaisuudessa alkava, jonkin näistä koulutusmuodoista opiskeluoikeus. Kysely tehdään aina yhdelle oppilaitokselle.")
-@Description("Esiopetustasoiset tiedot eli esiopetuksen opiskeluoikeudet sekä International Schoolin explorer-vuosiluokka ja Helsingin eurooppalaisen koulun nursery-vuosiluokat palautetaan vain, jos oppija on kyselyn oppilaitoksessa esi- tai perusopetustasoinen opiskelija. International Schoolissa ja eurooppalaisessa koulussa taso päätellään nykyisen opiskeluoikeuden uusimmasta vuosiluokasta: PYP ja MYP 6–9 sekä nursery, primary ja S1–S4 ovat perusopetustasoa, MYP 10, Diploma ja S5–S7 toista astetta. Oppilaitoksen omaa nykyistä opiskeluoikeutta ei karsita.")
+@Description("Esiopetustasoiset tiedot eli esiopetuksen opiskeluoikeudet sekä International Schoolin explorer-vuosiluokka ja Helsingin eurooppalaisen koulun nursery-vuosiluokat palautetaan vain, jos oppija on kyselyn oppilaitoksessa esi- tai perusopetustasoinen (myös perusopetukseen valmistavan opetuksen) opiskelija. International Schoolissa ja eurooppalaisessa koulussa taso päätellään nykyisen opiskeluoikeuden uusimmasta vuosiluokasta: PYP ja MYP 6–9 sekä nursery, primary ja S1–S4 ovat perusopetustasoa, MYP 10, Diploma ja S5–S7 toista astetta. Oppilaitoksen omaa nykyistä opiskeluoikeutta ei karsita.")
 @Description("Kysely on käytettävissä palvelukäyttäjälle, jolla on kyselyn oppilaitoksessa lukuoikeus ja AIEMMAT_OPISKELUOIKEUDET-käyttöoikeus, sekä Opetushallituksen pääkäyttäjälle. Palautettavat koulutusmuodot eivät riipu käyttäjän omista koulutusmuotokohtaisista käyttöoikeuksista, vaan ainoastaan tästä roolista. Arkaluontoiset tiedot palautetaan aina. Skeemassa HiddenFromAiemmatOpiskeluoikeudet-merkinnällä varustetut kentät (esim. vankilaopetuksessa ja käyttäytymisenArvio), vanhentuneiksi (Deprecated) merkityt kentät sekä RedundantData-merkityt kentät, joita KOSKI ei tallenna, jätetään pois.")
 @Description("Tulostiedostot vastaavat organisaationOpiskeluoikeudet-kyselyn json-muotoa: yksi tiedosto oppijaa kohden. Vastauksen skeema, josta on karsittu muut koulutusmuodot sekä pois jätettävät kentät, on saatavana <a href=\"/koski/json-schema-viewer/?schema=aiemmat-opiskeluoikeudet-result.json\">täältä.</a>")
 case class MassaluovutusQueryAiemmatOpiskeluoikeudet(
@@ -43,7 +43,7 @@ case class MassaluovutusQueryAiemmatOpiskeluoikeudet(
   hetut: Option[List[String]] = None,
   @Description("Haettavat oppijat oppijanumeroina.")
   oppijaOidit: Option[List[String]] = None,
-  @Description("Palautettavat koulutusmuodot. Oletuksena kaikki sallitut: esiopetus, perusopetus, ammatillinenkoulutus, lukiokoulutus, tuva, ibtutkinto, ebtutkinto, diatutkinto, internationalschool, europeanschoolofhelsinki.")
+  @Description("Palautettavat koulutusmuodot. Oletuksena kaikki sallitut: esiopetus, perusopetus, perusopetukseenvalmistavaopetus, ammatillinenkoulutus, lukiokoulutus, tuva, ibtutkinto, ebtutkinto, diatutkinto, internationalschool, europeanschoolofhelsinki.")
   koulutusmuoto: Option[List[String]] = None,
 ) extends KoulutuksenjärjestäjienMassaluovutusQueryParameters with DatabaseConverters with Logging {
   import MassaluovutusQueryAiemmatOpiskeluoikeudet._
@@ -208,12 +208,12 @@ case class MassaluovutusQueryAiemmatOpiskeluoikeudet(
 
 object MassaluovutusQueryAiemmatOpiskeluoikeudet {
   // Sekä palautettavat koulutusmuodot että ne, joiden opiskelijana oppija on kyselyn oppilaitoksen nykyinen opiskelija
-  val sallitutKoulutusmuodot: List[String] = List("esiopetus", "perusopetus", "ammatillinenkoulutus", "lukiokoulutus", "tuva", "ibtutkinto", "ebtutkinto", "diatutkinto", "internationalschool", "europeanschoolofhelsinki")
+  val sallitutKoulutusmuodot: List[String] = List("esiopetus", "perusopetus", "perusopetukseenvalmistavaopetus", "ammatillinenkoulutus", "lukiokoulutus", "tuva", "ibtutkinto", "ebtutkinto", "diatutkinto", "internationalschool", "europeanschoolofhelsinki")
   val onrEräkoko = 1000
   // Esiopetustasoiset tiedot palautetaan vain, jos oppija on kyselyn oppilaitoksessa esi- tai perusopetustasoinen opiskelija.
   // International Schoolissa ja ESH:ssa taso päätellään uusimmasta vuosiluokasta samoin rajoin kuin Valppaassa: MYP 10 ja S5 ovat jo toista astetta.
   def oikeuttaaEsiopetustasoisiinTietoihin(oo: KoskeenTallennettavaOpiskeluoikeus): Boolean = oo match {
-    case _: EsiopetuksenOpiskeluoikeus | _: PerusopetuksenOpiskeluoikeus => true
+    case _: EsiopetuksenOpiskeluoikeus | _: PerusopetuksenOpiskeluoikeus | _: PerusopetukseenValmistavanOpetuksenOpiskeluoikeus => true
     case oo: InternationalSchoolOpiskeluoikeus => uusinSuoritus(oo.suoritukset).exists {
       case _: PYPVuosiluokanSuoritus => true
       case s: MYPVuosiluokanSuoritus => s.koulutusmoduuli.tunniste.koodiarvo != "10"

@@ -3,8 +3,8 @@ package fi.oph.koski.massaluovutus
 import com.typesafe.config.ConfigValueFactory.fromAnyRef
 import fi.oph.koski.api.misc.OpiskeluoikeusTestMethodsAmmatillinen
 import fi.oph.koski.config.{Environment, KoskiApplication}
-import fi.oph.koski.documentation.{AmmatillinenExampleData, ExampleData, ExamplesEsiopetus, ExamplesEuropeanSchoolOfHelsinki, ExamplesInternationalSchool, ExamplesTutkintokoulutukseenValmentavaKoulutus, LukioExampleData, PerusopetusExampleData}
-import fi.oph.koski.schema.{EuropeanSchoolOfHelsinkiOpiskeluoikeudenTila, EuropeanSchoolOfHelsinkiOpiskeluoikeusjakso, InternationalSchoolOpiskeluoikeudenTila, InternationalSchoolOpiskeluoikeusjakso, Oppilaitos}
+import fi.oph.koski.documentation.{AmmatillinenExampleData, ExampleData, ExamplesEsiopetus, ExamplesEuropeanSchoolOfHelsinki, ExamplesInternationalSchool, ExamplesPerusopetukseenValmistavaOpetus, ExamplesTutkintokoulutukseenValmentavaKoulutus, LukioExampleData, PerusopetusExampleData}
+import fi.oph.koski.schema.{EuropeanSchoolOfHelsinkiOpiskeluoikeudenTila, EuropeanSchoolOfHelsinkiOpiskeluoikeusjakso, InternationalSchoolOpiskeluoikeudenTila, InternationalSchoolOpiskeluoikeusjakso, Oppilaitos, PerusopetukseenValmistavanOpetuksenOpiskeluoikeudenTila, PerusopetukseenValmistavanOpetuksenOpiskeluoikeusJakso}
 import fi.oph.koski.henkilo.{KoskiSpecificMockOppijat, OppijaHenkilö}
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.koskiuser.{MockUsers, Rooli, UserWithPassword}
@@ -62,6 +62,9 @@ class MassaluovutusAiemmatOpiskeluoikeudetSpec extends AnyFreeSpec with Massaluo
       alkamispäivä = LocalDate.of(2024, 8, 15),
       päättymispäivä = None,
     ))
+    val valmistava = KoskiSpecificMockOppijat.aiemmatTestiValmistava
+    createOrUpdate(valmistava, ExamplesEsiopetus.opiskeluoikeus)
+    createOrUpdate(valmistava, stadinValmistavaOpetus)
     val slave = KoskiSpecificMockOppijat.aiemmatTestiSlave.henkilö
     createOrUpdate(slave, PerusopetusExampleData.päättötodistusOpiskeluoikeus())
     createOrUpdate(slave, makeOpiskeluoikeus(alkamispäivä = LocalDate.of(2020, 1, 1)))
@@ -106,6 +109,11 @@ class MassaluovutusAiemmatOpiskeluoikeudetSpec extends AnyFreeSpec with Massaluo
     app.massaluovutusService.truncate()
   }
 
+  private val stadinValmistavaOpetus = ExamplesPerusopetukseenValmistavaOpetus.perusopetukseenValmistavaOpiskeluoikeus.copy(
+    oppilaitos = Some(Oppilaitos(MockOrganisaatiot.stadinAmmattiopisto)),
+    tila = PerusopetukseenValmistavanOpetuksenOpiskeluoikeudenTila(List(PerusopetukseenValmistavanOpetuksenOpiskeluoikeusJakso(LocalDate.of(2025, 8, 15), ExampleData.opiskeluoikeusLäsnä))),
+    suoritukset = List(ExamplesPerusopetukseenValmistavaOpetus.perusopetukseenValmistavanOpetuksenSuoritus.copy(toimipiste = AmmatillinenExampleData.stadinToimipiste, vahvistus = None)),
+  )
   private val ishSuoritukset = ExamplesInternationalSchool.opiskeluoikeus.suoritukset
   private def ishOpiskeluoikeus(suoritukset: List[fi.oph.koski.schema.InternationalSchoolVuosiluokanSuoritus]) = ExamplesInternationalSchool.opiskeluoikeus.copy(
     tila = InternationalSchoolOpiskeluoikeudenTila(List(InternationalSchoolOpiskeluoikeusjakso(LocalDate.of(2005, 8, 15), LukioExampleData.opiskeluoikeusAktiivinen, Some(ExampleData.valtionosuusRahoitteinen)))),
@@ -378,6 +386,13 @@ class MassaluovutusAiemmatOpiskeluoikeudetSpec extends AnyFreeSpec with Massaluo
       val oppija = KoskiSpecificMockOppijat.aiemmatTestiTuva
       oppijanTulos(haeTulostiedostot(oidilla(oppija)), oppija) { json =>
         oppilaitoksetJaKoulutusmuodot(json) shouldBe Set(perusopetusJyväskylässä, (MockOrganisaatiot.stadinAmmattiopisto, "tuva"))
+      }
+    }
+
+    "Perusopetukseen valmistavan opetuksen opiskelija on nykyinen opiskelija, ja esiopetus palautetaan hänelle" in {
+      val oppija = KoskiSpecificMockOppijat.aiemmatTestiValmistava
+      oppijanTulos(haeTulostiedostot(oidilla(oppija)), oppija) { json =>
+        oppilaitoksetJaKoulutusmuodot(json) shouldBe Set((MockOrganisaatiot.jyväskylänNormaalikoulu, "esiopetus"), (MockOrganisaatiot.stadinAmmattiopisto, "perusopetukseenvalmistavaopetus"))
       }
     }
 
