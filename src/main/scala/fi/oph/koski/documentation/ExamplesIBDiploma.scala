@@ -55,8 +55,8 @@ object ExamplesIBDiploma {
     )
 
   val suoritus: IBDiplomanSuoritus = IBDiplomanSuoritus(
-    toimipiste = IBO.oppilaitos,
-    vahvistus = Some(Päivämäärävahvistus(vahvistuspäivä, IBO.oppilaitos)),
+    toimipiste = IBO.organisaatio,
+    vahvistus = Some(Päivämäärävahvistus(vahvistuspäivä, IBO.organisaatio)),
     examinationSession = examinationSession,
     totalPoints = Some(37),
     combinedGrade = Some(2),

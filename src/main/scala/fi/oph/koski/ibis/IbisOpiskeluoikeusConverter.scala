@@ -24,6 +24,8 @@ object IbisKonversiovirhe {
 object IBO {
   val oid = "1.2.246.562.10.61324755312"
   val oppilaitos: Oppilaitos = Oppilaitos(oid)
+  // Toimipisteelle ja myöntäjälle, koska pelkän oidin sisältävä Oppilaitos deserialisoituu OidOrganisaatioksi.
+  val organisaatio: OidOrganisaatio = OidOrganisaatio(oid)
 }
 
 class IbisOpiskeluoikeusConverter(
@@ -60,8 +62,8 @@ class IbisOpiskeluoikeusConverter(
             IBDiplomaOpiskeluoikeusjakso(vahvistuspäivä, Koodistokoodiviite("valmistunut", "koskiopiskeluoikeudentila"))
           )),
           suoritukset = List(IBDiplomanSuoritus(
-            toimipiste = IBO.oppilaitos,
-            vahvistus = Some(Päivämäärävahvistus(vahvistuspäivä, IBO.oppilaitos)),
+            toimipiste = IBO.organisaatio,
+            vahvistus = Some(Päivämäärävahvistus(vahvistuspäivä, IBO.organisaatio)),
             examinationSession = session,
             totalPoints = record.totalPoints,
             combinedGrade = record.combinedGrade,
