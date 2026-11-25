@@ -49,14 +49,16 @@ const eIdasLogin = async (page: Page) => {
   await click(page, ".login-button");
   await click(page, "#eidas_high");
   await click(page, "#li_EE");
+  await click(page, "#eidas_2");
+  await click(page, "#tunnistaudu");
   await click(page, "#continue-button");
 
   const header = await textContent(page, ".header__name");
 
   return (
-    header?.includes("Amir Testi") &&
-    header.includes("Aaltonen-Testi") &&
-    header.includes("s. 9.7.1972")
+    header?.includes("Arvi Testi") &&
+    header.includes("Palosaari-Testi") &&
+    header.includes("s. 14.7.2013")
   );
 };
 
