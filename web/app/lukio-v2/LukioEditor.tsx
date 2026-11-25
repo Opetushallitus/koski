@@ -11,7 +11,12 @@ import {
   usePäätasonSuoritus
 } from '../components-v2/containers/EditorContainer'
 import { LukionOpiskeluoikeusjakso } from '../types/fi/oph/koski/schema/LukionOpiskeluoikeusjakso'
+import { LukionOpiskeluoikeudenTila } from '../types/fi/oph/koski/schema/LukionOpiskeluoikeudenTila'
 import { UusiOpiskeluoikeusjakso } from '../components-v2/opiskeluoikeus/UusiOpiskeluoikeudenTilaModal'
+import {
+  OpiskeluoikeudenTilaEdit,
+  OpiskeluoikeudenTilaView
+} from '../components-v2/opiskeluoikeus/OpiskeluoikeudenTila'
 import { Spacer } from '../components-v2/layout/Spacer'
 import { localize, t } from '../i18n/i18n'
 import { LocalizedString } from '../types/fi/oph/koski/schema/LocalizedString'
@@ -131,13 +136,27 @@ const LukionPäätasonSuoritusEditor: React.FC<
         testId={päätasonSuoritus.testId}
         createOpiskeluoikeusjakso={createOpiskeluoikeusjakso}
         suorituksenNimi={lukionSuorituksenNimi}
-        additionalOpiskeluoikeusFields={LukionOpiskeluoikeudenLisäkentät}
         lisätiedotContainer={LukionLisätiedot}
-        // Vanha käyttöliittymä sallii opiskeluoikeuden tilan merkitsemisen
-        // "Valmistunut"-tilaan, vaikka suoritusta ei olisi vielä vahvistettu -
-        // EditorContainerin oletusarvo (suorituksetVahvistettu = kaikilla
-        // suorituksilla on vahvistus) estäisi tämän muuten.
-        suorituksetVahvistettu
+        opiskeluoikeudenTilaEditor={
+          <>
+            <FormField
+              form={props.form}
+              path={props.form.root.prop('tila')}
+              view={OpiskeluoikeudenTilaView<LukionOpiskeluoikeudenTila>}
+              edit={OpiskeluoikeudenTilaEdit<LukionOpiskeluoikeudenTila>}
+              editProps={{
+                // Vanha käyttöliittymä sallii opiskeluoikeuden tilan
+                // merkitsemisen "Valmistunut"-tilaan, vaikka suoritusta ei
+                // olisi vielä vahvistettu - EditorContainerin oletusarvo
+                // (kaikilla suorituksilla on vahvistus) estäisi tämän muuten.
+                enableValmistuminen: true,
+                createJakso: createOpiskeluoikeusjakso
+              }}
+            />
+            <Spacer />
+            <LukionOpiskeluoikeudenLisäkentät form={props.form} />
+          </>
+        }
       >
         {props.form.state.suoritukset.length > 1 && (
           <RemovePaatasonSuoritus
@@ -234,7 +253,7 @@ const useSyncPaikallisetOppiaineetJaKurssit = (
 const LukionOpiskeluoikeudenLisäkentät: React.FC<{
   form: FormModel<LukionOpiskeluoikeus>
 }> = ({ form }) =>
-  !form.editMode && form.state.oppimääräSuoritettu === undefined ? null : (
+  !form.editMode && !form.state.oppimääräSuoritettu ? null : (
     <KeyValueTable>
       <KeyValueRow localizableLabel="Oppimäärä suoritettu">
         <FormField
