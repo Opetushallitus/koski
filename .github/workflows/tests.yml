@@ -160,6 +160,10 @@ jobs:
         with:
           commithash: ${{ github.sha }}
 
+      # Jos tämä epäonnistuu, testijobit hakevat imaget itse.
+      - uses: $/.github/actions/cache_container_images
+        continue-on-error: true
+
   docker_image:
     if: ${{ inputs.run-docker-image-tests }}
     name: Koski Docker image
