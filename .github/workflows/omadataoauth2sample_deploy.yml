@@ -70,7 +70,8 @@ jobs:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
           IMAGE_TAG: ${{ inputs.commithash }}
         run: |
-          docker build -f omadata-oauth2-sample/Dockerfile -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG omadata-oauth2-sample
+          scripts/retry.sh "Image build" 5m -- \
+            docker build --file omadata-oauth2-sample/Dockerfile --tag "$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG" omadata-oauth2-sample
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
 
       # Siirrä liikkuva deploy-<env> -tagi osoittamaan tähän buildiin. CDK
