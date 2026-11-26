@@ -44,14 +44,12 @@ trait PerusopetuksenVuosiluokkaraporttiPohja extends VuosiluokkaRaporttiPaivalta
   protected def oppilaitoksenNimi(row: PerusopetuksenRaporttiRows, t: LocalizationReader): String =
     if (t.language == "sv") row.opiskeluoikeus.oppilaitosNimiSv else row.opiskeluoikeus.oppilaitosNimi
 
-  protected def oppilaitosRaportointipäivänä(row: PerusopetuksenRaporttiRows): Option[String] = {
-    val organisaatiohistoriaRaportointipäivältä = row.organisaatiohistoriaResult.head
-    if (organisaatiohistoriaRaportointipäivältä.oppilaitosOid == row.opiskeluoikeus.oppilaitosOid) {
-      None
-    } else {
-      Some(organisaatiohistoriaRaportointipäivältä.toString)
-    }
-  }
+  // Tyhjä, jos raportointipäivän organisaatiohistoriasta puuttuu koulutustoimija: fetchOrganisaatiohistoriat
+  // liittää koulutustoimijan inner joinilla.
+  protected def oppilaitosRaportointipäivänä(row: PerusopetuksenRaporttiRows): Option[String] =
+    row.organisaatiohistoriaResult.headOption
+      .filter(_.oppilaitosOid != row.opiskeluoikeus.oppilaitosOid)
+      .map(_.toString)
 
   protected def kotikunta(row: PerusopetuksenRaporttiRows, kotikuntaPvm: Option[LocalDate], t: LocalizationReader): Option[String] = {
     val nykyinenKotikunta = if (t.language == "sv") row.henkilo.kotikuntaNimiSv else row.henkilo.kotikuntaNimiFi

@@ -4,6 +4,7 @@ import java.time.LocalDate
 import java.time.LocalDate.{of => date}
 import fi.oph.koski.KoskiApplicationForTests
 import fi.oph.koski.api.misc.OpiskeluoikeusTestMethodsPerusopetus
+import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.documentation.ExampleData._
 import fi.oph.koski.documentation.ExamplesPerusopetus._
 import fi.oph.koski.documentation.PerusopetusExampleData
@@ -190,6 +191,24 @@ class PerusopetuksenVuosiluokkaRaporttiSpec
 
         row.elamankatsomustieto should equal("5")
         row.uskonto should equal("Oppiaine puuttuu")
+      }
+    }
+
+    "Opiskeluoikeus, jonka organisaatiohistoriasta puuttuu koulutustoimija, ei kaada raporttia" in {
+      val opiskeluoikeusOid = lastOpiskeluoikeus(KoskiSpecificMockOppijat.ysiluokkalainen.oid).oid.get
+      try {
+        val päivitetytRivit = mainRaportointiDb.runDbSync(
+          mainRaportointiDb.ROrganisaatioHistoriat
+            .filter(_.opiskeluoikeusOid === opiskeluoikeusOid)
+            .map(_.koulutustoimijaOid)
+            .update(None)
+        )
+        päivitetytRivit should be > 0
+
+        val result = PerusopetuksenVuosiluokkaRaportti.buildRaportti(repository, Seq(MockOrganisaatiot.jyväskylänNormaalikoulu), LocalDate.of(2014, 8, 15), None, vuosiluokka = "8", t)
+        result.find(_.opiskeluoikeusOid == opiskeluoikeusOid).map(_.oppilaitosRaportointipäivänä) should equal(Some(None))
+      } finally {
+        reloadRaportointikanta()
       }
     }
 
