@@ -20,9 +20,8 @@ object IbisKonversiovirhe {
 }
 
 // IB Diploman oppilaitos ja koulutustoimija on sen myöntävä IBO.
-// TODO TOR-747: IBO lisätään organisaatiopalveluun myöhemmin. Siihen asti sen oid on vain mock-datassa.
 object IBO {
-  val oid = "1.2.246.562.10.61324755312"
+  val oid = "1.2.246.562.10.58749965420"
   val oppilaitos: Oppilaitos = Oppilaitos(oid)
   // Toimipisteelle ja myöntäjälle, koska pelkän oidin sisältävä Oppilaitos deserialisoituu OidOrganisaatioksi.
   val organisaatio: OidOrganisaatio = OidOrganisaatio(oid)
