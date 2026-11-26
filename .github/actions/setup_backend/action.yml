@@ -18,6 +18,8 @@ runs:
         sudo sysctl -w vm.max_map_count=262144
       shell: bash
 
+    - uses: $/.github/actions/use_docker_hub_mirror
+
     # build_koski tallentaa imaget välimuistiin samalla avaimella
     - name: Restore container images
       id: restore-images

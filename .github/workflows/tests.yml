@@ -747,6 +747,8 @@ jobs:
           pnpm install --frozen-lockfile
           pnpm run lint:check
 
+      - uses: $/.github/actions/use_docker_hub_mirror
+
       - name: Build and smoke test image
         working-directory: omadata-oauth2-sample
         run: |

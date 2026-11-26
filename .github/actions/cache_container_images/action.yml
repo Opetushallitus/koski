@@ -18,6 +18,9 @@ runs:
         key: ${{ runner.os }}-container-images-${{ hashFiles('docker-compose.yaml', 'opensearch/**') }}
         lookup-only: "true"
 
+    - if: steps.lookup.outputs.cache-hit != 'true'
+      uses: $/.github/actions/use_docker_hub_mirror
+
     - name: Pull, build and save container images
       if: steps.lookup.outputs.cache-hit != 'true'
       env:
