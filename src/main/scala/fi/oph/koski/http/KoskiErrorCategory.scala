@@ -330,6 +330,7 @@ object KoskiErrorCategory {
         "IB Diploma -opiskeluoikeuden kirjauksiin liittyvä validointivirhe"
       ) {
         val puuttuvaKoulutus = subcategory("puuttuvaKoulutus", "IB Diploma -opiskeluoikeutta ei voi kirjata, jos oppijalla ei ole IB-koulutuksen tai International schoolin opiskeluoikeutta, jolla on sama IBO-tunniste")
+        val vääräOrganisaatio = subcategory("vääräOrganisaatio", "IB Diploma -opiskeluoikeuden oppilaitoksen ja koulutustoimijan on oltava diploman myöntävä International Baccalaureate Organization (IBO)")
       }
 
       val ibdiploma = new IBDiploma

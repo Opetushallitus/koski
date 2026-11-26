@@ -3,10 +3,13 @@ package fi.oph.koski.api.oppijavalidation
 import fi.oph.koski.KoskiHttpSpec
 import fi.oph.koski.api.misc.PutOpiskeluoikeusTestMethods
 import fi.oph.koski.documentation.{ExamplesIBDiploma, ExamplesInternationalSchool}
+import fi.oph.koski.documentation.YleissivistavakoulutusExampleData.ressunLukio
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
 import fi.oph.koski.http.{ErrorMatcher, KoskiErrorCategory}
 import fi.oph.koski.ibis.IBO
 import fi.oph.koski.koskiuser.MockUsers
+import fi.oph.koski.organisaatio.MockOrganisaatiot
+import fi.oph.koski.validation.IBDiplomaValidation
 import fi.oph.koski.schema._
 import org.scalatest.freespec.AnyFreeSpec
 
@@ -56,6 +59,45 @@ class OppijaValidationIBDiplomaSpec
     getOpiskeluoikeudet(henkilö.oid).collect {
       case diploma: IBDiplomaOpiskeluoikeus => (diploma.oppilaitos.map(_.oid), diploma.koulutustoimija.map(_.oid))
     } should be(List((Some(IBO.oid), Some(IBO.oid))))
+  }
+
+  "Ei voi kirjoittaa muulle oppilaitokselle kuin IBO:lle" in {
+    setupOppijaWithOpiskeluoikeus(ibKoulutus, henkilö = henkilö) {
+      verifyResponseStatusOk()
+    }
+
+    // kalle on IB-koulutuksen järjestäjän, Ressun lukion, tallentaja.
+    val koulunDiploma = defaultOpiskeluoikeus.copy(
+      oppilaitos = Some(ressunLukio),
+      suoritukset = List(ExamplesIBDiploma.suoritus.copy(
+        toimipiste = ressunLukio,
+        vahvistus = Some(Päivämäärävahvistus(ExamplesIBDiploma.vahvistuspäivä, ressunLukio)),
+      )),
+    )
+    putOpiskeluoikeus(koulunDiploma, henkilö = henkilö, headers = authHeaders(MockUsers.kalle) ++ jsonContent) {
+      verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.ibdiploma.vääräOrganisaatio())
+    }
+  }
+
+  "Koulun käyttäjä ei voi muokata IBO:n diplomaa" in {
+    setupOppijaWithOpiskeluoikeus(ibKoulutus, henkilö = henkilö) {
+      verifyResponseStatusOk()
+    }
+    putOpiskeluoikeus(defaultOpiskeluoikeus, henkilö = henkilö) {
+      verifyResponseStatusOk()
+    }
+    val tallennettu = getOpiskeluoikeudet(henkilö.oid).collectFirst { case d: IBDiplomaOpiskeluoikeus => d }.get
+
+    val muutettu = tallennettu.copy(suoritukset = tallennettu.suoritukset.map(_.copy(totalPoints = Some(40))))
+    putOpiskeluoikeus(muutettu, henkilö = henkilö, headers = authHeaders(MockUsers.kalle) ++ jsonContent) {
+      verifyResponseStatus(403, KoskiErrorCategory.forbidden.organisaatio("Ei oikeuksia organisatioon " + IBO.oid))
+    }
+  }
+
+  "Koulutustoimija tarkistetaan, vaikka se päätellään oppilaitoksesta" in {
+    // Rajapinnan kautta koulutustoimija ei voi poiketa oppilaitoksesta päätellystä, joten sääntöä kokeillaan suoraan.
+    val diploma = defaultOpiskeluoikeus.copy(koulutustoimija = Some(Koulutustoimija(MockOrganisaatiot.helsinginKaupunki)))
+    IBDiplomaValidation.validateOrganisaatiot(diploma) should equal(KoskiErrorCategory.badRequest.validation.ibdiploma.vääräOrganisaatio())
   }
 
   "Voi kirjoittaa International schoolin opiskeluoikeuden perusteella" in {

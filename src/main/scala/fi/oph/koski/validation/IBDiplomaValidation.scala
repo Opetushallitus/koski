@@ -2,6 +2,7 @@ package fi.oph.koski.validation
 
 import fi.oph.koski.henkilo.HenkilöRepository
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
+import fi.oph.koski.ibis.IBO
 import fi.oph.koski.koskiuser.KoskiSpecificSession
 import fi.oph.koski.opiskeluoikeus.KoskiOpiskeluoikeusRepository
 import fi.oph.koski.schema.{Henkilö, HenkilöWithOid, IBDiplomaOpiskeluoikeus, IBOpiskeluoikeus, InternationalSchoolOpiskeluoikeus, KoskeenTallennettavaOpiskeluoikeus, UusiHenkilö}
@@ -13,9 +14,18 @@ object IBDiplomaValidation {
     henkilö: Option[Henkilö],
     oo: KoskeenTallennettavaOpiskeluoikeus,
   ): HttpStatus = oo match {
-    case diploma: IBDiplomaOpiskeluoikeus => validateKoulutusSamallaIboTunnisteella(henkilöRepository, koskiOpiskeluoikeudet, henkilö, diploma)
+    case diploma: IBDiplomaOpiskeluoikeus => HttpStatus.fold(
+      validateOrganisaatiot(diploma),
+      validateKoulutusSamallaIboTunnisteella(henkilöRepository, koskiOpiskeluoikeudet, henkilö, diploma),
+    )
     case _ => HttpStatus.ok
   }
+
+  // Koulutustoimija tarkistetaan, vaikka KoskiValidator päättelee sen oppilaitoksesta, ettei sääntö riipu päättelystä.
+  def validateOrganisaatiot(diploma: IBDiplomaOpiskeluoikeus): HttpStatus =
+    HttpStatus.validate(diploma.oppilaitos.exists(_.oid == IBO.oid) && diploma.koulutustoimija.exists(_.oid == IBO.oid))(
+      KoskiErrorCategory.badRequest.validation.ibdiploma.vääräOrganisaatio()
+    )
 
   private def validateKoulutusSamallaIboTunnisteella(
     henkilöRepository: HenkilöRepository,
