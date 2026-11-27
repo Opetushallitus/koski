@@ -1,0 +1,39 @@
+name: Cache container images
+description: "Pull and build the docker compose images and cache them for setup_backend, unless they are cached already"
+
+runs:
+  using: composite
+  steps:
+    - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      if: hashFiles('docker-compose.yaml') == ''
+      with:
+        persist-credentials: false
+
+    # Sama avain kuin setup_backendissa
+    - name: Look up container image cache
+      id: lookup
+      uses: actions/cache/restore@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+      with:
+        path: ${{ runner.temp }}/container-images.tar
+        key: ${{ runner.os }}-container-images-${{ hashFiles('docker-compose.yaml', 'opensearch/**') }}
+        lookup-only: "true"
+
+    - if: steps.lookup.outputs.cache-hit != 'true'
+      uses: $/.github/actions/use_docker_hub_mirror
+
+    - name: Pull, build and save container images
+      if: steps.lookup.outputs.cache-hit != 'true'
+      env:
+        ARCHIVE: ${{ runner.temp }}/container-images.tar
+      run: |
+        scripts/retry.sh "Container image pull" 90s -- docker compose --progress quiet pull --ignore-buildable
+        scripts/retry.sh "Container image build" 90s -- docker compose --progress quiet build
+        docker compose config --images | xargs docker save --output "$ARCHIVE"
+      shell: bash
+
+    - name: Cache container images
+      if: steps.lookup.outputs.cache-hit != 'true'
+      uses: actions/cache/save@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+      with:
+        path: ${{ runner.temp }}/container-images.tar
+        key: ${{ runner.os }}-container-images-${{ hashFiles('docker-compose.yaml', 'opensearch/**') }}

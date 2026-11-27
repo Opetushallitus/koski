@@ -109,11 +109,14 @@ jobs:
           ./mvnw versions:set -DnewVersion="$version" --batch-mode
           ./mvnw war:war deploy:deploy --batch-mode -Dmaven.skip.install=true -DaltDeploymentRepository=github::default::https://maven.pkg.github.com/Opetushallitus/koski
 
+      - uses: $/.github/actions/use_docker_hub_mirror
+
       - name: Build, tag, and push image to Amazon ECR
         env:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
           ECR_REPOSITORY: koski
           IMAGE_TAG: ${{ inputs.commithash }}
         run: |
-          docker build -f docker-build/Dockerfile -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG --build-arg KOSKI_VERSION=$IMAGE_TAG .
+          scripts/retry.sh "Image build" 5m -- \
+            docker build --file docker-build/Dockerfile --tag "$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG" --build-arg KOSKI_VERSION="$IMAGE_TAG" .
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG

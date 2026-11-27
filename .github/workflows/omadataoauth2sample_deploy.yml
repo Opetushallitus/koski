@@ -64,13 +64,17 @@ jobs:
         run: |
           echo "image-exists=$(docker manifest inspect $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG > /dev/null 2>&1 ; echo $?)" >> $GITHUB_OUTPUT
 
+      - if: steps.check-image.outputs.image-exists != '0'
+        uses: $/.github/actions/use_docker_hub_mirror
+
       - name: Build, tag, and push image to Amazon ECR
         if: steps.check-image.outputs.image-exists != '0'
         env:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
           IMAGE_TAG: ${{ inputs.commithash }}
         run: |
-          docker build -f omadata-oauth2-sample/Dockerfile -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG omadata-oauth2-sample
+          scripts/retry.sh "Image build" 5m -- \
+            docker build --file omadata-oauth2-sample/Dockerfile --tag "$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG" omadata-oauth2-sample
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
 
       # Siirrä liikkuva deploy-<env> -tagi osoittamaan tähän buildiin. CDK

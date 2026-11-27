@@ -160,6 +160,10 @@ jobs:
         with:
           commithash: ${{ github.sha }}
 
+      # Jos tämä epäonnistuu, testijobit hakevat imaget itse.
+      - uses: $/.github/actions/cache_container_images
+        continue-on-error: true
+
   docker_image:
     if: ${{ inputs.run-docker-image-tests }}
     name: Koski Docker image
@@ -744,10 +748,12 @@ jobs:
           pnpm install --frozen-lockfile
           pnpm run lint:check
 
+      - uses: $/.github/actions/use_docker_hub_mirror
+
       - name: Build and smoke test image
         working-directory: omadata-oauth2-sample
         run: |
-          docker build --tag omadataoauth2sample:ci .
+          ../scripts/retry.sh "Image build" 5m -- docker build --tag omadataoauth2sample:ci .
           docker run --detach --read-only --name omadataoauth2sample --publish 8080:8080 omadataoauth2sample:ci
           for _ in $(seq 1 30); do
             curl --fail --fail-early --silent --show-error --max-time 5 \

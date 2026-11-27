@@ -1,0 +1,14 @@
+name: Use Docker Hub mirror
+description: "Pull Docker Hub images from mirror.gcr.io first and fall back to Docker Hub if the mirror fails"
+
+runs:
+  using: composite
+  steps:
+    - name: Configure Docker Hub mirror
+      run: |
+        daemon_config=$(sudo cat /etc/docker/daemon.json 2> /dev/null || echo '{}')
+        jq '."registry-mirrors" = ["https://mirror.gcr.io"]' <<< "$daemon_config" |
+          sudo tee /etc/docker/daemon.json > /dev/null
+        sudo systemctl restart docker
+        echo "Registry mirrors: $(docker info --format '{{json .RegistryConfig.Mirrors}}')"
+      shell: bash

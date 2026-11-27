@@ -18,13 +18,42 @@ runs:
         sudo sysctl -w vm.max_map_count=262144
       shell: bash
 
+    - uses: $/.github/actions/use_docker_hub_mirror
+
+    # build_koski tallentaa imaget välimuistiin samalla avaimella
+    - name: Restore container images
+      id: restore-images
+      uses: actions/cache/restore@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+      with:
+        path: ${{ runner.temp }}/container-images.tar
+        key: ${{ runner.os }}-container-images-${{ hashFiles('docker-compose.yaml', 'opensearch/**') }}
+
+    - name: Load container images
+      id: load-images
+      if: steps.restore-images.outputs.cache-hit == 'true'
+      continue-on-error: true
+      env:
+        ARCHIVE: ${{ runner.temp }}/container-images.tar
+      run: |
+        docker load --quiet --input "$ARCHIVE"
+        rm "$ARCHIVE"
+        for image in $(docker compose config --images); do
+          docker image inspect "$image" > /dev/null 2>&1 ||
+            echo "::warning::Container image $image is missing from the cache and will be pulled"
+        done
+      shell: bash
+
     # Docker Hub palauttaa ajoittain 5xx-virheitä tai auth-timeouteja, imageiden hakua
     # yritetään uudelleen. --policy missing ei hae uudelleen jo ladattuja imageja.
     # Jumittunut yhteys ei katkea itsestään, joten yrityksillä on aikaraja.
-    - name: Pull and build container images
+    - name: Pull and build missing container images
+      env:
+        IMAGES_LOADED: ${{ steps.load-images.outcome == 'success' }}
       run: |
-        scripts/retry.sh "Container image pull/build" 90s -- bash -c \
-          'docker compose --progress quiet pull --policy missing --ignore-buildable && docker compose --progress quiet build'
+        scripts/retry.sh "Container image pull" 90s -- docker compose --progress quiet pull --policy missing --ignore-buildable
+        if [ "$IMAGES_LOADED" != true ]; then
+          scripts/retry.sh "Container image build" 90s -- docker compose --progress quiet build
+        fi
       shell: bash
 
     - name: Start Postgres and OS containers
