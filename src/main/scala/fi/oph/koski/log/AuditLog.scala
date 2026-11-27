@@ -104,7 +104,8 @@ object KoskiAuditLogMessageField extends Enumeration {
   tiedoteTyyppi,
   todistusTemplateVariant,
   massaluovutusId,
-  massaluovutusTiedosto = Value
+  massaluovutusTiedosto,
+  iboTunniste = Value
 }
 
 object KoskiOperation extends Enumeration {
@@ -157,7 +158,9 @@ object KoskiOperation extends Enumeration {
   TODISTUKSEN_ESIKATSELU,
   TIEDOTE_LAHETETTY,
   TIEDOTE_RESETOITU,
-  MASSALUOVUTUKSEN_LATAAMINEN = Value
+  MASSALUOVUTUKSEN_LATAAMINEN,
+  IBIS_ESIKATSELU,
+  IBIS_TALLENNUS = Value
 }
 
 private class KoskiAuditLogOperation(op: KoskiOperation) extends AuditLogOperation(op)

@@ -29,6 +29,7 @@ class KaikilleOpiskeluoikeudenTyypeilleOnKayttooikeusSpec extends AnyFreeSpec wi
       Rooli.TUVA,
       Rooli.ESH,
       Rooli.EBTUTKINTO,
+      Rooli.IBDIPLOMA,
       Rooli.TAITEENPERUSOPETUS,
       Rooli.KIELITUTKINTO,
     ).map(_.toLowerCase))

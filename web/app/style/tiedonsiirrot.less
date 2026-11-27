@@ -136,3 +136,104 @@
     }
   }
 }
+
+.tiedoston-tuonti {
+  .tiedoston-tuonti__ohjeet {
+    margin: 0 0 20px;
+    padding-left: 20px;
+
+    li {
+      margin-bottom: 5px;
+    }
+  }
+
+  .tiedoston-tuonti__esimerkki {
+    margin: 0 0 20px;
+
+    summary {
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    p {
+      margin: 10px 0 0;
+    }
+
+    pre {
+      margin-top: 10px;
+      padding: 10px;
+      overflow-x: auto;
+      background-color: #f0f0f0;
+    }
+  }
+
+  .tiedoston-tuonti__valinta {
+    margin: 30px 0;
+    padding: 20px;
+    background-color: @color-white;
+    border: 1px solid @color-input-border;
+
+    label {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      font-weight: bold;
+    }
+
+    input {
+      font-weight: normal;
+    }
+  }
+
+  .tiedoston-tuonti__toiminnot {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 30px;
+  }
+
+  .tiedoston-tuonti__virheilmoitus {
+    color: @color-red;
+  }
+
+  .tiedoston-tuonti__tulos {
+    padding: 15px 20px;
+    border-left: 6px solid;
+
+    &--esikatselu {
+      border-color: @color-blue;
+      background-color: @color-blue-background;
+    }
+
+    &--tuonti {
+      border-color: @color-green;
+      background-color: fade(@color-green, 10%);
+    }
+
+    h3 {
+      margin-top: 0;
+    }
+
+    table {
+      background-color: @color-white;
+    }
+  }
+
+  .tiedoston-tuonti__tulosilmoitus {
+    font-weight: bold;
+  }
+
+  .tiedoston-tuonti__yhteenveto {
+    display: grid;
+    grid-template-columns: max-content max-content;
+    column-gap: 20px;
+    row-gap: 5px;
+
+    dd {
+      margin: 0;
+    }
+  }
+
+  .tiedoston-tuonti__tila--hylätty {
+    color: @color-red;
+  }
+}

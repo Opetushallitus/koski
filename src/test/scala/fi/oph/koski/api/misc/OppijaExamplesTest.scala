@@ -2,7 +2,7 @@ package fi.oph.koski.api.misc
 
 import fi.oph.koski.{DirtiesFixtures, KoskiHttpSpec}
 import fi.oph.koski.documentation.Examples.oppijaExamples
-import fi.oph.koski.documentation.ExamplesKielitutkinto
+import fi.oph.koski.documentation.{ExamplesIBDiploma, ExamplesKielitutkinto}
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.koskiuser.MockUsers
 import fi.oph.koski.log.Logging
@@ -17,7 +17,7 @@ class OppijaExamplesTest extends AnyFreeSpec with Matchers with KoskiHttpSpec wi
   }
 
   "API examples" - {
-    val pääkäyttäjänäAjettavatEsimerkit = ExamplesKielitutkinto.examples
+    val pääkäyttäjänäAjettavatEsimerkit = ExamplesKielitutkinto.examples ++ ExamplesIBDiploma.examples
 
     oppijaExamples.foreach { example =>
       "PUT " + example.name in {

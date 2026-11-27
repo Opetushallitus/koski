@@ -178,7 +178,8 @@ class KoskiSpecificSessionSpec
           ylioppilastutkinto,
           internationalschool,
           europeanschoolofhelsinki,
-          ebtutkinto
+          ebtutkinto,
+          ibdiploma
         ).flatMap(OoPtsMask.fromKoodistokoodiviite)
         session.allowedOpiskeluoikeudetJaPäätasonSuoritukset should equal(expectedOpiskeluoikeustyypit)
       }

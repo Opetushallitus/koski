@@ -137,6 +137,15 @@ import {
 } from './IBCoreKurssinSuoritus'
 import { IBDPCoreSuoritus, isIBDPCoreSuoritus } from './IBDPCoreSuoritus'
 import {
+  IBDiplomanCoreSuoritus,
+  isIBDiplomanCoreSuoritus
+} from './IBDiplomanCoreSuoritus'
+import {
+  IBDiplomanOppiaineenSuoritus,
+  isIBDiplomanOppiaineenSuoritus
+} from './IBDiplomanOppiaineenSuoritus'
+import { IBDiplomanSuoritus, isIBDiplomanSuoritus } from './IBDiplomanSuoritus'
+import {
   IBExtendedEssaySuoritus,
   isIBExtendedEssaySuoritus
 } from './IBExtendedEssaySuoritus'
@@ -714,6 +723,9 @@ export type Suoritus =
   | IBCASSuoritus
   | IBCoreKurssinSuoritus
   | IBDPCoreSuoritus
+  | IBDiplomanCoreSuoritus
+  | IBDiplomanOppiaineenSuoritus
+  | IBDiplomanSuoritus
   | IBExtendedEssaySuoritus
   | IBKurssinSuoritus
   | IBOppiaineenSuoritus
@@ -890,6 +902,9 @@ export const isSuoritus = (a: any): a is Suoritus =>
   isIBCASSuoritus(a) ||
   isIBCoreKurssinSuoritus(a) ||
   isIBDPCoreSuoritus(a) ||
+  isIBDiplomanCoreSuoritus(a) ||
+  isIBDiplomanOppiaineenSuoritus(a) ||
+  isIBDiplomanSuoritus(a) ||
   isIBExtendedEssaySuoritus(a) ||
   isIBKurssinSuoritus(a) ||
   isIBOppiaineenSuoritus(a) ||

@@ -6,6 +6,9 @@ import fi.oph.koski.schema.annotation.{ComplexObject, Deprecated, FlattenInUI, H
 import fi.oph.koski.util.DateOrdering.localDateOrdering
 import fi.oph.scalaschema.annotation._
 
+// TODO TOR-747: Tämä opiskeluoikeus on oppilaitoksen antamaa IB-koulutusta, ei IBO:n myöntämää tutkintoa. Nimetään "IB-koulutuksen
+// opiskeluoikeus", kun koodin opiskeluoikeudentyyppi_ibtutkinto nimi on muutettu koodistopalvelussa; samalla IBDiplomaOpiskeluoikeus
+// saa nimen "IB-tutkinnon opiskeluoikeus". Koodiarvo ibtutkinto ei muutu, joten tiedonsiirtoihin tai tietokantaan ei tule muutoksia.
 @Description("IB-tutkinnon opiskeluoikeus")
 @Title("IB-tutkinnon opiskeluoikeus")
 case class IBOpiskeluoikeus(

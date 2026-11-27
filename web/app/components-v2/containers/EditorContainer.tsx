@@ -59,7 +59,11 @@ export type EditorContainerProps<T extends Opiskeluoikeus> =
     additionalOpiskeluoikeusFields?: React.FC<any>
     lisätiedotContainer?: React.FC<any>
     opiskeluoikeudenTilaEditor?: React.ReactNode
-    hideOpiskeluoikeusVoimassaoloaika?: boolean
+    /**
+     * Kansalaiselta piilotetaan koko työkalurivi, koska siinä ei ole hänelle
+     * muuta kuin voimassaoloaika. Virkailijalle painikkeet näytetään aina.
+     */
+    hideOpiskeluoikeusVoimassaoloaika?: 'kansalaiselta' | 'kaikilta'
   }>
 
 export type ActivePäätasonSuoritus<
@@ -178,6 +182,9 @@ export const EditorContainer = <T extends Opiskeluoikeus>(
               editMode={props.form.editMode}
               invalidatable={props.invalidatable}
               onStartEdit={props.form.startEdit}
+              hideVoimassaoloaika={
+                props.hideOpiskeluoikeusVoimassaoloaika === 'kaikilta'
+              }
             />
             <Spacer />
           </>

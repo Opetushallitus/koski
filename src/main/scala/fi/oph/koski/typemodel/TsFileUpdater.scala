@@ -3,6 +3,7 @@ package fi.oph.koski.typemodel
 import fi.oph.koski.aktiivisetjapaattyneetopinnot.AktiivisetJaPäättyneetOpinnotKoskeenTallennettavaOpiskeluoikeus
 import fi.oph.koski.config.ConfigForFrontend
 import fi.oph.koski.history.OpiskeluoikeusHistoryPatch
+import fi.oph.koski.ibis.IbisTuonninTulos
 import fi.oph.koski.koskiuser.UserWithAccessRights
 import fi.oph.koski.massaluovutus.QueryResponse
 import fi.oph.koski.oppija.HenkilönOpiskeluoikeusVersiot
@@ -73,6 +74,7 @@ case class AdditionalExports(
   configForFrontend: ConfigForFrontend,
   todistusJob: TodistusJob,
   massaluovutusQueryResponse: QueryResponse,
+  ibisTuonninTulos: IbisTuonninTulos,
 
   // Traitit jotka eivät automaattisesti exporttaudu skeemasta, koska ne eivät sellaisenaan
   // ole minkään tietomallin jäseniä (ainoastaan traitista periintyvät konkreettiset luokat exportataan automaattisesti).

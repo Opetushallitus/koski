@@ -10,6 +10,7 @@ import fi.oph.koski.hakemuspalvelu.HakemuspalveluServlet
 import fi.oph.koski.healthcheck.{HealthCheckApiServlet, HealthCheckHtmlServlet}
 import fi.oph.koski.henkilo.HenkilötiedotServlet
 import fi.oph.koski.history.KoskiHistoryServlet
+import fi.oph.koski.ibis.IbisServlet
 import fi.oph.koski.jsonschemaviewer.JsonSchemaViewerHtmlServlet
 import fi.oph.koski.kela.KelaServlet
 import fi.oph.koski.koskiuser._
@@ -104,6 +105,7 @@ class ScalatraBootstrap extends LifeCycle with Logging with Timing with GlobalEx
     mount("/koski/api/editor/koodit", new EditorKooditServlet)
     mount("/koski/api/types", new TypeModelServlet)
     mount("/koski/api/elaketurvakeskus", new ElaketurvakeskusServlet)
+    mount("/koski/api/ibis", new IbisServlet)
     mount("/koski/api/healthcheck", new HealthCheckApiServlet)
     mount("/koski/api/status", new StatusApiServlet)
     mount("/koski/api/henkilo", new HenkilötiedotServlet)

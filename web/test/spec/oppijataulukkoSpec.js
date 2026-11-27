@@ -228,6 +228,7 @@ describe('Oppijataulukko', function () {
           'aine, opiskelija',
           'dia, opiskelija',
           'ib, opiskelija',
+          'IB-Diploma, Dani',
           'IB-final, Iina',
           'IB-Pre-IB-uusilukio, Pate',
           'IB-predicted, Petteri',
@@ -236,7 +237,7 @@ describe('Oppijataulukko', function () {
           'Kurssikertyma, Eronnut Aineopiskelija',
           'Kurssikertyma, Valmistunut Aineopiskelija'
         ])
-        expect(page.opiskeluoikeudeTotal()).to.equal('10')
+        expect(page.opiskeluoikeudeTotal()).to.equal('11')
       })
     })
 
@@ -296,6 +297,7 @@ describe('Oppijataulukko', function () {
           'Eurooppalainen, Emilia',
           'Hetuton, Heikki',
           'Historoitsija, Hiisi',
+          'IB-Diploma, Dani',
           'IB-final, Iina',
           'IB-Pre-IB-uusilukio, Pate',
           'IB-predicted, Petteri',
@@ -363,10 +365,9 @@ describe('Oppijataulukko', function () {
           'Tehtävään-Valmistava, Tauno',
           'Tehtävään-Valmistava-vahvistettu, Tauno',
           'Tekijä, Teija',
-          'Telmanen, Tuula',
-          'Tiedonsiirto, Tiina'
+          'Telmanen, Tuula'
         ])
-        expect(page.opiskeluoikeudeTotal()).to.equal('125')
+        expect(page.opiskeluoikeudeTotal()).to.equal('126')
       })
     })
 

@@ -6,6 +6,8 @@ import { UusiOppija } from '../uusioppija/UusiOppija'
 import { tiedonsiirtolokiContentP } from '../tiedonsiirrot/Tiedonsiirtoloki'
 import { tiedonsiirtovirheetContentP } from '../tiedonsiirrot/Tiedonsiirtovirheet'
 import { tiedonsiirtojenYhteenvetoContentP } from '../tiedonsiirrot/TiedonsiirtojenYhteenveto'
+import { TiedostonTuonti } from '../tiedonsiirrot/TiedostonTuonti'
+import { tiedostonTuontiPath } from '../tiedonsiirrot/TiedonsiirrotNavi'
 import { oppijataulukkoContentP } from './Oppijataulukko'
 import {
   dokumentaatioYleistäP,
@@ -55,6 +57,8 @@ export const routeP = locationP
       return tiedonsiirtovirheetContentP(queryString)
     } else if (path === '/koski/tiedonsiirrot/yhteenveto') {
       return tiedonsiirtojenYhteenvetoContentP(queryString)
+    } else if (path === tiedostonTuontiPath) {
+      return { content: <TiedostonTuonti />, title: 'IBIS-tuonti' }
     } else if (path.includes('/koski/raportit')) {
       const match = path.match(/^\/koski\/raportit\/(.*)$/)
       const tokens = (match ? match[1].split('/') : []).map(decodeURIComponent)

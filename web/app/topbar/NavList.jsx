@@ -1,5 +1,5 @@
 import React from '../util/baret'
-import { naviLink } from '../tiedonsiirrot/Tiedonsiirrot'
+import { naviLink } from '../tiedonsiirrot/naviLink'
 
 export default ({ location, user }) => {
   if (!user) {

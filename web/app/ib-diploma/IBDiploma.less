@@ -1,0 +1,36 @@
+.IBDiplomanOppiaineet {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: (@baseline / 2) 0;
+
+  th,
+  td {
+    padding: (@baseline / 2);
+    text-align: left;
+    vertical-align: top;
+
+    &.IBDiplomanOppiaineet__arvosana {
+      text-align: right;
+    }
+  }
+
+  th {
+    font-weight: normal;
+    background-color: @color-neutral-gray;
+  }
+}
+
+.IBDiplomanOppiaineet__oppiaine {
+  display: flex;
+  gap: (@baseline / 2);
+}
+
+.IBDiplomanOppiaineet__icon {
+  font-family: FontAwesome;
+  width: 15px;
+}
+
+.IBDiplomanOppiaineet__selite {
+  margin: (@baseline / 2) (@baseline / 2) 0;
+  color: #747474;
+}
