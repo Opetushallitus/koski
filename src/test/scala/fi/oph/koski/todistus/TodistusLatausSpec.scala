@@ -648,19 +648,19 @@ class TodistusLatausSpec extends TodistusSpecHelpers with BeforeAndAfterAll {
         )),
 
       TextRegion("Sivun 2 taso 3", pageIndex = 1,
-        x = 85, y = 410, width = 410, height = 75,
+        x = 85, y = 395, width = 410, height = 75,
         expectedTexts = Seq(
           "Ymmärtää pidempää yhtäjaksoista"
         )),
 
       TextRegion("Sivun 2 taso 2", pageIndex = 1,
-        x = 85, y = 540, width = 410, height = 75,
+        x = 85, y = 525, width = 410, height = 75,
         expectedTexts = Seq(
           "Ymmärtää selkeää ja yksinkertaistettua"
         )),
 
       TextRegion("Sivun 2 taso 1", pageIndex = 1,
-        x = 85, y = 640, width = 410, height = 75,
+        x = 85, y = 625, width = 410, height = 75,
         expectedTexts = Seq(
           "Ymmärtää hitaasta ja selkeästä"
         )),
@@ -768,8 +768,8 @@ class TodistusLatausSpec extends TodistusSpecHelpers with BeforeAndAfterAll {
         x = 100, y = 85, width = 396, height = 650,
         expectedTexts = Seq(
           "Opetushallitus on myöntänyt sinulle todistuksen yleisestä kielitutkinnosta (YKI).",
-          "YKI-testissä saat jokaisesta osakokeesta oman erillisen arvosanan eli",
-          "taitotasoarvion. Voit saada YKI-testin hyväksytyistä osakokeista",
+          "YKI-testissä saat jokaisesta osakokeesta oman erillisen arvosanan eli taitotasoarvion.",
+          "Voit saada YKI-testin hyväksytyistä osakokeista",
           "perustasolla taitotasoarvion 1 tai 2",
           "keskitasolla taitotasoarvion 3 tai 4",
           "ylimmällä tasolla taitotasoarvion 5 tai 6.",
@@ -781,9 +781,9 @@ class TodistusLatausSpec extends TodistusSpecHelpers with BeforeAndAfterAll {
           "Sinulla on 30 vuorokautta aikaa pyytää tarkistusarviointia. Aika alkaa siitä, kun",
           "saat todistuksen postilla. Voit pyytää tarkistusarviointia YKI-ilmoittautumissivulla",
           "osoitteessa https://yki.opintopolku.fi/yki/tarkistusarviointi.",
-          "2.  Pyydä ensin tietoa arvosteluperusteiden soveltamisesta testiisi. Se tarkoittaa,",
-          "että pyydät tietoa siitä, miten YKI-testisi on arvioitu. Arvosteluperusteiden",
-          "pyytäminen ei muuta testisi arviointia.",
+          "2.  Pyydä ensin tietoa arvosteluperusteiden soveltamisesta testiisi. Se tarkoittaa, että",
+          "pyydät tietoa siitä, miten YKI-testisi on arvioitu. Arvosteluperusteiden pyytäminen",
+          "ei muuta testisi arviointia.",
           "Sinulla on 14 vuorokautta aikaa pyytää tietoa arvosteluperusteista. Aika alkaa",
           "siitä, kun saat todistuksen postilla. Lue tarkemmat ohjeet Opetushallituksen",
           "verkkosivuilta osoitteessa https://www.oph.fi/yki/tarkistusarviointi.",
