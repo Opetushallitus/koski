@@ -74,6 +74,7 @@ import { ISO2FinnishDate } from '../date/date'
 import { BooleanEdit } from '../components-v2/opiskeluoikeus/BooleanField'
 import { UusiOmanÄidinkielenOpinnotModal } from './UusiOmanAidinkielenOpinnot'
 import { UusiOmanÄidinkielenOpintojenKurssi } from './UusiOmanAidinkielenOpintojenKurssi'
+import { Infobox } from '../components/Infobox'
 
 type LukionSuorituksenTiedotProps = {
   form: FormModel<LukionOpiskeluoikeus>
@@ -736,6 +737,21 @@ const OmanÄidinkielenOpintojenOsasuorituksetEditList: React.FC<{
   </TestIdLayer>
 )
 
+const PuhviKoeLabel: React.FC = () => (
+  <>
+    {t('Puhvi-koe')}
+    <Infobox>
+      <>
+        <strong>{t('Puhvi-koe')}</strong>
+        <br />
+        {t(
+          'Puheviestintätaitojen päättökoe eli Puhvi-koe on Opetushallituksen vuosittain laatima toisen asteen opiskelijoiden puheviestintätaitojen päättökoe lukiolaisille ja ammatillisen peruskoulutuksen opiskelijoille.'
+        )}
+      </>
+    </Infobox>
+  </>
+)
+
 const PuhviKoeRow: React.FC<{
   form: FormModel<LukionOpiskeluoikeus>
   path: FormOptic<LukionOpiskeluoikeus, TuettuSuoritus>
@@ -748,7 +764,7 @@ const PuhviKoeRow: React.FC<{
 
   if (form.editMode && !puhviKoe) {
     return (
-      <KeyValueRow localizableLabel="Puhvi-koe">
+      <KeyValueRow labelContent={<PuhviKoeLabel />}>
         <FlatButton testId="puhviKoe.lisää" onClick={() => setLisääAuki(true)}>
           {t('Lisää Puhvi-koe')}
         </FlatButton>
@@ -768,7 +784,7 @@ const PuhviKoeRow: React.FC<{
   if (!puhviKoe) return null
 
   return (
-    <KeyValueRow localizableLabel="Puhvi-koe">
+    <KeyValueRow labelContent={<PuhviKoeLabel />}>
       <Removable
         isRemovable={form.editMode}
         onClick={() => form.updateAt(path.prop('puhviKoe'), () => undefined)}
