@@ -24,6 +24,7 @@ import { LaajuusOpintopisteissä } from '../types/fi/oph/koski/schema/LaajuusOpi
 import { LukionOmanÄidinkielenOpinnonOsasuorituksenArviointi } from '../types/fi/oph/koski/schema/LukionOmanAidinkielenOpinnonOsasuorituksenArviointi'
 import { LukionOmanÄidinkielenOpinto } from '../types/fi/oph/koski/schema/LukionOmanAidinkielenOpinto'
 import { LukionOmanÄidinkielenOpintojenOsasuoritus } from '../types/fi/oph/koski/schema/LukionOmanAidinkielenOpintojenOsasuoritus'
+import { koodiviiteId } from '../util/koodisto'
 import { labelWithKoodiarvo } from './UusiLukionModuuli'
 
 type OmanÄidinkielenOpinnonTunniste = LukionOmanÄidinkielenOpinto['tunniste']
@@ -88,7 +89,7 @@ export const UusiOmanÄidinkielenOpintojenKurssi: React.FC<{
           {t('Kurssi')}
           <Select
             options={tunnisteOptions}
-            value={tunniste?.koodiarvo}
+            value={tunniste && koodiviiteId(tunniste)}
             onChange={(option) => setTunniste(option?.value)}
             testId="tunniste"
           />
