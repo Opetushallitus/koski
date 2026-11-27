@@ -191,6 +191,14 @@
   color: @color-label;
 }
 
+// KeyValueRow'n nimisarakkeen rivinkorkeus (2 * @baseline) on matalampi kuin
+// TextEdit__input-tekstialueen oma rivinkorkeus (2.5 * @baseline), jolloin
+// "Kuvaus"-nimiö näyttää hieman tekstialueen ensimmäistä riviä korkeammalta,
+// vaikka molemmat laatikot alkavat samasta kohdasta.
+.LukionSuorituksenTiedot__kuvausRivi .KeyValueRow__name {
+  line-height: 2.5 * @baseline;
+}
+
 .LukionOmanÄidinkielenOpinnot__osasuorituksetEdit {
   list-style: none;
   padding: 0;

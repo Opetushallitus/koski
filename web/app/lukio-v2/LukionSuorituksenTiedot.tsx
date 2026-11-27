@@ -808,7 +808,11 @@ const PuhviKoeRow: React.FC<{
             )}
           </KeyValueRow>
           {(form.editMode || puhviKoe.kuvaus) && (
-            <KeyValueRow localizableLabel="Kuvaus" innerKeyValueTable>
+            <KeyValueRow
+              localizableLabel="Kuvaus"
+              innerKeyValueTable
+              className="LukionSuorituksenTiedot__kuvausRivi"
+            >
               <FormField
                 form={form}
                 path={puhviKoeOptionalPath.prop('kuvaus')}
@@ -972,7 +976,11 @@ const SuullisenKielitaidonKokeetRow: React.FC<{
                           testId="taitotaso"
                         />
                       </KeyValueRow>
-                      <KeyValueRow localizableLabel="Kuvaus" innerKeyValueTable>
+                      <KeyValueRow
+                        localizableLabel="Kuvaus"
+                        innerKeyValueTable
+                        className="LukionSuorituksenTiedot__kuvausRivi"
+                      >
                         <FormField
                           form={form}
                           path={koePath.prop('kuvaus')}
@@ -1211,7 +1219,11 @@ const LukiodiplomitRow: React.FC<{
                           testId="arvosana"
                         />
                       </KeyValueRow>
-                      <KeyValueRow localizableLabel="Kuvaus" innerKeyValueTable>
+                      <KeyValueRow
+                        localizableLabel="Kuvaus"
+                        innerKeyValueTable
+                        className="LukionSuorituksenTiedot__kuvausRivi"
+                      >
                         <FormField
                           form={form}
                           path={diplomiPath.prop('kuvaus')}
