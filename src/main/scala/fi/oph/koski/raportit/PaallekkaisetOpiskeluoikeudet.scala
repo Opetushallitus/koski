@@ -253,13 +253,13 @@ object PaallekkaisetOpiskeluoikeudet extends Logging {
         oppijaEtunimet = Option(rs.getString("etunimet")),
         opiskeluoikeusOid = rs.getString("opiskeluoikeus_oid"),
         oppilaitosNimi = rs.getString(if(t.language == "sv") "oppilaitos_nimi_sv" else "oppilaitos_nimi"),
-        koulutusmuoto = rs.getString("koulutusmuoto"),
+        koulutusmuoto = t.koodiarvo("opiskeluoikeudentyyppi", rs.getString("koulutusmuoto")),
         suoritusTyyppi = suorituksistaKaytettavaNimi(rs.getString("paatason_suoritukset"), t),
         perusteenDiaarinumero = Option(rs.getString("opiskeluoikeus_diaarit")),
         alkamispaiva = r.getLocalDate("alkamispaiva"),
-        tilatParametrienSisalla = removeConsecutiveDuplicates(rs.getString("tilat_parametrien_sisalla")),
+        tilatParametrienSisalla = tilat(removeConsecutiveDuplicates(rs.getString("tilat_parametrien_sisalla"))),
         paattymispaiva = Option(r.getLocalDate("paattymispaiva")),
-        viimeisinTila = rs.getString("viimeisin_tila"),
+        viimeisinTila = t.koodiarvo("koskiopiskeluoikeudentila", rs.getString("viimeisin_tila")),
         rahoitusmuodot = Option(rs.getString("rahoitusmuodot")).map(removeConsecutiveDuplicates),
         rahoitusmuodotParametrienSisalla = Option(rs.getString("rahoitusmuodot_osuu_parametreille"))
           .map(removeConsecutiveDuplicates),
@@ -267,11 +267,12 @@ object PaallekkaisetOpiskeluoikeudet extends Logging {
         paallekkainenKoulutustoimijaNimi = rs.getString(if(t.language == "sv") "paallekkainen_koulutustoimija_nimi_sv" else "paallekkainen_koulutustoimija_nimi"),
         paallekkainenOppilaitosOid = rs.getString("paallekkainen_oppilaitos_oid"),
         paallekkainenOppilaitosNimi = rs.getString(if(t.language == "sv") "paallekkainen_oppilaitos_nimi_sv" else "paallekkainen_oppilaitos_nimi"),
-        paallekkainenKoulutusmuoto = rs.getString("paallekkainen_koulutusmuoto"),
+        paallekkainenKoulutusmuoto = t.koodiarvo("opiskeluoikeudentyyppi", rs.getString("paallekkainen_koulutusmuoto")),
         paallekkainenSuoritusTyyppi = suorituksistaKaytettavaNimi(rs.getString("paallekkainen_paatason_suoritukset"), t),
         paallekkainenTilatParametrienSisalla = Option(rs.getString("paallekkainen_tilat_parametrien_sisalla"))
-          .map(removeConsecutiveDuplicates),
-        paallekkainenViimeisinTila = rs.getString("paallekkainen_viimeisin_tila"),
+          .map(removeConsecutiveDuplicates)
+          .map(tilat),
+        paallekkainenViimeisinTila = t.koodiarvo("koskiopiskeluoikeudentila", rs.getString("paallekkainen_viimeisin_tila")),
         paallekkainenAlkamispaiva = r.getLocalDate("paallekkainen_alkamispaiva"),
         paallekkainenPaattymispaiva = Option(r.getLocalDate("paallekkainen_paattymispaiva")),
         paallekkainenAlkanutEka = if (rs.getBoolean("sama_alkupaiva")) {
@@ -345,6 +346,9 @@ object PaallekkaisetOpiskeluoikeudet extends Logging {
     if (nimi.forall(_.isLower)) logger.error(s"Unhandled suorituksen tyyppi $nimi. Raportin voi ladata, mutta päällekkäisen opiskeluoikeuden suorituksen nimenä käytettiin suorituksen tyyppiä")
     nimi
   }
+
+  private def tilat(tilat: String)(implicit t: LocalizationReader): String =
+    tilat.split(",").map(t.koodiarvo("koskiopiskeluoikeudentila", _)).mkString(",")
 
   private def removeConsecutiveDuplicates(str: String) =
     str.split(",").foldRight(List.empty[String])((current, result) => if (result.headOption.contains(current)) result else current :: result).mkString(",")

@@ -30,7 +30,10 @@ case class AikuistenPerusopetuksenEiRahoitustietoaKurssit(db: DB) extends QueryM
     val rows = runDbSync(raporttiQuery, timeout = 5.minutes)
     DataSheet(
       title = t.get("raportti-excel-eirahoitustietoa-sheet-name"),
-      rows = rows,
+      rows = rows.map(r => r.copy(
+        päätasonSuorituksenTyyppi = t.koodiarvo("suorituksentyyppi", r.päätasonSuorituksenTyyppi),
+        kurssinSuorituksenTyyppi = t.koodiarvo("suorituksentyyppi", r.kurssinSuorituksenTyyppi)
+      )),
       columnSettings = columnSettings(t)
     )
   }

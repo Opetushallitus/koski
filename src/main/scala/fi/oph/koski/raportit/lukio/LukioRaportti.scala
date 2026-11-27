@@ -119,10 +119,10 @@ case class LukioRaportti(repository: LukioRaportitRepository, t: LocalizationRea
        etunimet = row.henkilo.etunimet,
        kotikunta = getKotikunta(row, kotikuntaPvm),
        opiskeluoikeuden_alkamispäivä = row.opiskeluoikeus.alkamispäivä.map(_.toLocalDate),
-       opiskeluoikeuden_viimeisin_tila = row.opiskeluoikeus.viimeisinTila,
-       opiskeluoikeuden_tilat_aikajakson_aikana = removeContinuousSameTila(row.aikajaksot).map(_.tila).mkString(","),
+       opiskeluoikeuden_viimeisin_tila = row.opiskeluoikeus.viimeisinTila.map(t.koodiarvo("koskiopiskeluoikeudentila", _)),
+       opiskeluoikeuden_tilat_aikajakson_aikana = removeContinuousSameTila(row.aikajaksot).map(_.tila).map(t.koodiarvo("koskiopiskeluoikeudentila", _)).mkString(","),
        opetussuunnitelma = opetussuunnitelma(row.päätasonSuoritus),
-       suorituksenTyyppi = row.päätasonSuoritus.suorituksenTyyppi,
+       suorituksenTyyppi = t.koodiarvo("suorituksentyyppi", row.päätasonSuoritus.suorituksenTyyppi),
        suorituksenTila = row.päätasonSuoritus.vahvistusPäivä.fold(t.get("raportti-excel-default-value-kesken"))(_ => t.get("raportti-excel-default-value-valmis")),
        suorituksenVahvistuspäivä = row.päätasonSuoritus.vahvistusPäivä.map(_.toLocalDate),
        oppimääräSuoritettu = oppimääräSuoritettu.getOrElse(false),
@@ -182,7 +182,7 @@ case class LukioRaportti(repository: LukioRaportitRepository, t: LocalizationRea
         kotikunta = getKotikunta(row, kotikuntaPvm),
         toimipiste = if (t.language == "sv") row.päätasonSuoritus.toimipisteNimiSv else row.päätasonSuoritus.toimipisteNimi,
         opetussuunnitelma = opetussuunnitelma(row.päätasonSuoritus),
-        suorituksenTyyppi = row.päätasonSuoritus.suorituksenTyyppi
+        suorituksenTyyppi = t.koodiarvo("suorituksentyyppi", row.päätasonSuoritus.suorituksenTyyppi)
       ),
       kurssit = kurssienTiedot(row, oppijoidenRivitJärjestettyKursseittain)
     )
@@ -354,7 +354,7 @@ case class LukioOppiaineenKurssienVälilehtiStaattisetKolumnit(
 case class LukioKurssinTiedot(kurssintyyppi: Option[String], arvosana: Option[String], laajuus: Option[Double], tunnustettu: Boolean, korotettuEriVuonna: Boolean) {
   def toStringLokalisoitu(t: LocalizationReader): String = {
     List(
-      Some(kurssintyyppi.getOrElse(t.get("raportti-excel-default-value-ei-tyyppiä")).capitalize),
+      Some(kurssintyyppi.map(t.koodiarvo("lukionkurssintyyppi", _)).getOrElse(t.get("raportti-excel-default-value-ei-tyyppiä")).capitalize),
       Some(arvosana.map(s"${t.get("raportti-excel-default-value-arvosana")} " + _).getOrElse(t.get("raportti-excel-default-value-ei-arvosanaa"))),
       Some(laajuus.map(s"${t.get("raportti-excel-default-value-laajuus").capitalize} " + _).getOrElse(t.get("raportti-excel-default-value-laajuus-puuttuu"))),
       if (tunnustettu) Some(t.get("raportti-excel-default-value-tunnustettu")) else None,

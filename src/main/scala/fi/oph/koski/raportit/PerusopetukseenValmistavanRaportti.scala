@@ -81,9 +81,9 @@ case class PerusopetukseenValmistavanRaportti(repository: PerusopetukseenValmist
       etunimet = row.henkilo.etunimet,
       kansalaisuus = row.henkilo.kansalaisuus,
       opiskeluoikeudenAlkamispäivä = row.opiskeluoikeus.alkamispäivä.map(_.toLocalDate),
-      opiskeluoikeudenTila = row.opiskeluoikeus.viimeisinTila,
-      opiskeluoikeudenTilatAikajaksonAikana = removeContinuousSameTila(row.aikajaksot).map(_.tila).mkString(","),
-      suoritustyyppi = row.päätasonSuoritus.suorituksenTyyppi,
+      opiskeluoikeudenTila = row.opiskeluoikeus.viimeisinTila.map(t.koodiarvo("koskiopiskeluoikeudentila", _)),
+      opiskeluoikeudenTilatAikajaksonAikana = removeContinuousSameTila(row.aikajaksot).map(_.tila).map(t.koodiarvo("koskiopiskeluoikeudentila", _)).mkString(","),
+      suoritustyyppi = t.koodiarvo("suorituksentyyppi", row.päätasonSuoritus.suorituksenTyyppi),
       suorituksenTila = if (row.päätasonSuoritus.vahvistusPäivä.isDefined) t.get("raportti-excel-default-value-valmis") else t.get("raportti-excel-default-value-kesken"),
       suorituksenVahvistuspaiva = row.päätasonSuoritus.vahvistusPäivä.getOrElse("").toString,
       läsnäolopäiviäAikajaksonAikana = row.aikajaksot.filter(j => j.tila == "lasna" || j.tila == "eronnut" || j.tila == "valmistunut").map(j => Aikajakso(j.alku.toLocalDate, Some(j.loppu.toLocalDate))).map(lengthInDaysInDateRange(_, alku, loppu)).sum

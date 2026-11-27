@@ -57,7 +57,10 @@ case class EsiopetusRaportti(db: DB, organisaatioService: OrganisaatioService) e
     val raporttiQuery = query(validateOids(oppilaitosOids), päivä, kotikuntaPäivänä, t).as[EsiopetusRaporttiRow]
     DataSheet(
       title = t.get("raportti-excel-suoritukset-sheet-name"),
-      rows = runDbSync(raporttiQuery, timeout = 5.minutes),
+      rows = runDbSync(raporttiQuery, timeout = 5.minutes).map(r => r.copy(
+        opiskeluoikeudenViimeisinTila = t.koodiarvo("koskiopiskeluoikeudentila", r.opiskeluoikeudenViimeisinTila),
+        opiskeluoikeudenTilaRaportinTarkasteluajankohtana = t.koodiarvo("koskiopiskeluoikeudentila", r.opiskeluoikeudenTilaRaportinTarkasteluajankohtana)
+      )),
       columnSettings = columnSettings(t)
     )
   }

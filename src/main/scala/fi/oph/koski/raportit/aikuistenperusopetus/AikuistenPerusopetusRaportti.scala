@@ -214,9 +214,9 @@ case class AikuistenPerusopetusRaportti(
         sukunimi = row.henkilo.sukunimi,
         etunimet = row.henkilo.etunimet,
         opiskeluoikeuden_alkamispäivä = row.opiskeluoikeus.alkamispäivä.map(_.toLocalDate),
-        opiskeluoikeuden_viimeisin_tila = row.opiskeluoikeus.viimeisinTila,
-        opiskeluoikeuden_tilat_aikajakson_aikana = removeContinuousSameTila(row.aikajaksot).map(_.tila).mkString(", "),
-        suorituksenTyyppi = row.päätasonSuoritus.suorituksenTyyppi,
+        opiskeluoikeuden_viimeisin_tila = row.opiskeluoikeus.viimeisinTila.map(t.koodiarvo("koskiopiskeluoikeudentila", _)),
+        opiskeluoikeuden_tilat_aikajakson_aikana = removeContinuousSameTila(row.aikajaksot).map(_.tila).map(t.koodiarvo("koskiopiskeluoikeudentila", _)).mkString(", "),
+        suorituksenTyyppi = t.koodiarvo("suorituksentyyppi", row.päätasonSuoritus.suorituksenTyyppi),
         alkuvaiheenSuorituksia = row.hasAlkuvaihe,
         päättövaiheenSuorituksia = row.hasPäättövaihe,
         tutkintokoodi = row.päätasonSuoritus.koulutusmoduuliKoodiarvo,
@@ -269,7 +269,7 @@ case class AikuistenPerusopetusRaportti(
         sukinimi = row.henkilo.sukunimi,
         etunimet = row.henkilo.etunimet,
         toimipiste = if (t.language == "sv") row.päätasonSuoritus.toimipisteNimiSv else row.päätasonSuoritus.toimipisteNimi,
-        suorituksenTyyppi = row.päätasonSuoritus.suorituksenTyyppi
+        suorituksenTyyppi = t.koodiarvo("suorituksentyyppi", row.päätasonSuoritus.suorituksenTyyppi)
       ),
       kurssit = kurssienTiedot(row, oppijoidenRivitJärjestettyKursseittain)
     )

@@ -43,8 +43,8 @@ class AhvenanmaanPerusopetuksenVuosiluokkaRaporttiSpec
     reloadRaportointikanta()
   }
 
-  private def raportti(vuosiluokka: String, päivä: LocalDate, kotikuntaPvm: Option[LocalDate] = None, oppilaitokset: Seq[String] = Seq(MockOrganisaatiot.övernäsSkola)) =
-    AhvenanmaanPerusopetuksenVuosiluokkaRaportti.buildRaportti(repository, oppilaitokset, päivä, kotikuntaPvm, vuosiluokka, t)
+  private def raportti(vuosiluokka: String, päivä: LocalDate, kotikuntaPvm: Option[LocalDate] = None, oppilaitokset: Seq[String] = Seq(MockOrganisaatiot.övernäsSkola), kieli: LocalizationReader = t) =
+    AhvenanmaanPerusopetuksenVuosiluokkaRaportti.buildRaportti(repository, oppilaitokset, päivä, kotikuntaPvm, vuosiluokka, kieli)
 
   private def oppijanRivi(rivit: Seq[AhvenanmaanPerusopetusRow], oppija: LaajatOppijaHenkilöTiedot) =
     rivit.filter(_.oppijaOid == oppija.oid)
@@ -53,6 +53,13 @@ class AhvenanmaanPerusopetuksenVuosiluokkaRaporttiSpec
     "Vuosiluokan suorituksen tiedot" in {
       val rivit = oppijanRivi(raportti("8", kevätlukukausi2025), perusoppilas)
       rivit should equal(List(kahdeksannenLuokanRivi.copy(opiskeluoikeusOid = opiskeluoikeusOid(perusoppilas))))
+    }
+
+    "Ruotsinkielisellä raportilla opiskeluoikeuden tiloista näytetään ruotsinkieliset nimet" in {
+      val ruotsi = new LocalizationReader(KoskiApplicationForTests.koskiLocalizationRepository, "sv", Some(KoskiApplicationForTests.koodistoViitePalvelu))
+      val rivi = oppijanRivi(raportti("8", kevätlukukausi2025, kieli = ruotsi), perusoppilas).head
+      rivi.viimeisinTila should equal("Utexaminerad")
+      rivi.tilaHakupaivalla should equal("Närvarande")
     }
 
     "Päättävien raportilla oppimäärän suoritus ja päättövuoden luokka" in {

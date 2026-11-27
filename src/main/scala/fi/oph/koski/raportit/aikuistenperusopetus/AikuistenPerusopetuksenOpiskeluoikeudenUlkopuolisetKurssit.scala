@@ -30,7 +30,10 @@ case class AikuistenPerusopetuksenOpiskeluoikeudenUlkopuolisetKurssit(db: DB) ex
     val rows = runDbSync(raporttiQuery, timeout = 5.minutes)
     DataSheet(
       title = t.get("raportti-excel-opiskeluoikeudenulkop-sheet-name"),
-      rows = rows,
+      rows = rows.map(r => r.copy(
+        päätasonSuorituksenTyyppi = t.koodiarvo("suorituksentyyppi", r.päätasonSuorituksenTyyppi),
+        kurssinSuorituksenTyyppi = t.koodiarvo("suorituksentyyppi", r.kurssinSuorituksenTyyppi)
+      )),
       columnSettings = columnSettings(t)
     )
   }

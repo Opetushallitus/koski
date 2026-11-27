@@ -113,7 +113,7 @@ object VSTVapaatavoitteinenRow {
       päivitetty = oo.aikaleima.toLocalDateTime.toLocalDate,
       opiskeluoikeudenAlkamispäivä = oo.alkamispäivä.map(_.toLocalDate),
       opiskeluoikeudenPäättymispäivä = oo.päättymispäivä.map(_.toLocalDate),
-      viimeisinTila = oo.viimeisinTila,
+      viimeisinTila = oo.viimeisinTila.map(t.koodiarvo("koskiopiskeluoikeudentila", _)),
       suoritusVahvistettu = pts.vahvistusPäivä.isDefined,
       suorituksenVahvistuspäivä = pts.vahvistusPäivä.map(_.toLocalDate),
       opintokokonaisuusKoodiarvo = opintokokonaisuus.map(_.koodiarvo),

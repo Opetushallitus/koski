@@ -42,7 +42,7 @@ case class MuuAmmatillinenRaporttiBuilder(db: DB) extends QueryMethods {
     val rows = runDbSync(queryMuuAmmatillisenSuoritukset(oppilaitosOid, alku, loppu, t.language).as[MuuAmmatillinenRaporttiRow], timeout = 5.minutes)
     DataSheet(
       title = t.get("raportti-excel-muu-ammatillinen-sheet-name"),
-      rows,
+      rows.map(r => r.copy(opiskeluoikeudenViimeisinTila = t.koodiarvo("koskiopiskeluoikeudentila", r.opiskeluoikeudenViimeisinTila))),
       columnSettings(t)
     )
   }

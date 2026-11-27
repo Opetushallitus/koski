@@ -78,8 +78,8 @@ object AmmatillinenTutkintoRaportti {
       päätasonSuorituksenSuoritusTapa = suoritusTavat(List(päätasonSuoritus), t.language),
       päätasonSuorituksenTila = vahvistusPäiväToTila(päätasonSuoritus.vahvistusPäivä, t),
       opiskeluoikeudenAlkamispäivä = opiskeluoikeus.alkamispäivä.map(_.toLocalDate),
-      viimeisinOpiskeluoikeudenTila = opiskeluoikeus.viimeisinTila,
-      viimeisinOpiskeluoikeudenTilaAikajaksonLopussa = aikajaksot.last.tila,
+      viimeisinOpiskeluoikeudenTila = opiskeluoikeus.viimeisinTila.map(t.koodiarvo("koskiopiskeluoikeudentila", _)),
+      viimeisinOpiskeluoikeudenTilaAikajaksonLopussa = t.koodiarvo("koskiopiskeluoikeudentila", aikajaksot.last.tila),
       opintojenRahoitukset = aikajaksot.flatMap(_.opintojenRahoitus).sorted.distinct.mkString(","),
       painotettuKeskiarvo = JsonSerializer.extract[Option[Float]](päätasonSuoritus.data \ "keskiarvo") match {
         case Some(f) => f.toString
