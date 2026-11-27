@@ -704,6 +704,18 @@ test.describe('Ahvenanmaan perusopetuksen käyttöliittymä ruotsiksi', () => {
       'Grundläggande utbildning'
     )
   })
+
+  test('Opiskeluoikeuksien navigaatio nimeää opiskeluoikeuden oppimäärästä', async ({
+    oppijaPage,
+    fixtures
+  }) => {
+    await fixtures.reset()
+    await oppijaPage.goto(url)
+
+    await expect(
+      oppijaPage.opiskeluoikeudetNavValittuVälilehti.locator('.koulutus')
+    ).toHaveText('Grundskolans lärokurs på Åland')
+  })
 })
 
 /** Avaa vuosiluokan lisäysdialogin, täyttää kentät ja klikkaa Lisää. */
