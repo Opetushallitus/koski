@@ -1,7 +1,7 @@
 import React from 'react'
 import { PäivämääräväliView } from './PaivamaaravaliView'
 import { TestIdLayer, TestIdText } from '../../appstate/useTestId'
-import { t } from '../../i18n/i18n'
+import { emptyLocalizedString, t } from '../../i18n/i18n'
 import { ErityisenKoulutustehtävänJakso } from '../../types/fi/oph/koski/schema/ErityisenKoulutustehtavanJakso'
 import { Koodistokoodiviite } from '../../types/fi/oph/koski/schema/Koodistokoodiviite'
 import { CommonProps } from '../CommonProps'
@@ -35,7 +35,8 @@ export const emptyErityisenKoulutustehtävänJakso =
     alku: '',
     tehtävä: Koodistokoodiviite({
       koodistoUri: 'erityinenkoulutustehtava',
-      koodiarvo: '101'
+      koodiarvo: '',
+      nimi: emptyLocalizedString
     })
   })
 
@@ -85,6 +86,7 @@ export const ErityisenKoulutustehtävänJaksoEdit: React.FC<
           koodistoUri="erityinenkoulutustehtava"
           value={value?.tehtävä.koodiarvo}
           onSelect={setTehtävä}
+          addNewText={t('Ei valintaa')}
           testId="tehtävä"
         />
       </div>
