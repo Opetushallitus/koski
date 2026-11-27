@@ -102,7 +102,7 @@ object VSTOsaamismerkkiRow {
       päivitetty = oo.aikaleima.toLocalDateTime.toLocalDate,
       opiskeluoikeudenAlkamispäivä = oo.alkamispäivä.map(_.toLocalDate),
       opiskeluoikeudenPäättymispäivä = oo.päättymispäivä.map(_.toLocalDate),
-      viimeisinTila = oo.viimeisinTila,
+      viimeisinTila = oo.viimeisinTila.map(t.koodiarvo("koskiopiskeluoikeudentila", _)),
       osaamismerkkiKoodiarvo = pts.koulutusmoduuliKoodiarvo,
       osaamismerkkiNimi = osaamismerkki.flatMap(_.nimi).map(t.from).orElse(pts.koulutusmoduuliNimi),
       suoritusArvioitu = pts.arviointiArvosanaKoodiarvo.isDefined,

@@ -61,6 +61,10 @@ kuvauksissa näytetään vain raportin omat parametrit.
 
 {{query:PerusopetukseenValmistavaXlsx|h3|raportti}}
 
+## Ahvenanmaan perusopetus
+
+{{query:AhvenanmaanPerusopetuksenVuosiluokkaXlsx|h3|raportti}}
+
 ## Aikuisten perusopetus
 
 {{query:AikuistenPerusopetusSuoritustiedotXlsx|h3|raportti}}

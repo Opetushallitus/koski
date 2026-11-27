@@ -175,7 +175,7 @@ object VSTKOPSRow {
       päivitetty = oo.aikaleima.toLocalDateTime.toLocalDate,
       opiskeluoikeudenAlkamispäivä = oo.alkamispäivä.map(_.toLocalDate),
       opiskeluoikeudenPäättymispäivä = oo.päättymispäivä.map(_.toLocalDate),
-      viimeisinTila = oo.viimeisinTila,
+      viimeisinTila = oo.viimeisinTila.map(t.koodiarvo("koskiopiskeluoikeudentila", _)),
       maksuttomuus = RaporttiUtils.jaksotMerkkijonona(lisätiedot.flatMap(_.maksuttomuus).map(_.filter(_.maksuton)), rajaus),
       maksullisuus = RaporttiUtils.jaksotMerkkijonona(lisätiedot.flatMap(_.maksuttomuus).map(_.filterNot(_.maksuton)), rajaus),
       oikeuttaMaksuttomuuteenPidennetty = RaporttiUtils.jaksotMerkkijonona(lisätiedot.flatMap(_.oikeuttaMaksuttomuuteenPidennetty)),

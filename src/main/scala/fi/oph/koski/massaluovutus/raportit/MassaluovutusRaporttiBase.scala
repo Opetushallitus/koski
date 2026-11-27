@@ -10,7 +10,7 @@ import fi.oph.koski.log.KoskiOperation.OPISKELUOIKEUS_RAPORTTI
 import fi.oph.koski.log.{AuditLog, KoskiAuditLogMessage, Logging}
 import fi.oph.koski.opiskeluoikeus.OpiskeluoikeusQueryContext
 import fi.oph.koski.massaluovutus.MassaluovutusUtils.{QueryResourceManager, auditlokinKentät, defaultOrganisaatio, generatePassword}
-import fi.oph.koski.massaluovutus.{KoulutuksenjärjestäjienMassaluovutusQueryParameters, QueryMeta, QueryResultWriter}
+import fi.oph.koski.massaluovutus.{KoulutuksenjärjestäjienMassaluovutusQueryParameters, QueryFormat, QueryMeta, QueryResultWriter}
 import fi.oph.koski.raportit.{OppilaitosRaporttiResponse, RaportitService}
 import fi.oph.koski.schema.{Koodistokoodiviite, Organisaatio}
 
@@ -94,7 +94,9 @@ trait MassaluovutusRaporttiBase[Self <: MassaluovutusRaporttiBase[Self]]
       implicit val session: KoskiSpecificSession = user.asInstanceOf[KoskiSpecificSession]
 
       val raportitService = new RaportitService(application)
-      val localizationReader = new LocalizationReader(application.koskiLocalizationRepository, language.get)
+      // Ruotsinkielinen Excel-raportti näyttää koodiarvojen sijaan koodien ruotsinkieliset nimet. CSV-tiedostossa on aina koodiarvot.
+      val koodistoViitePalvelu = Option.when(format == QueryFormat.xlsx)(application.koodistoViitePalvelu)
+      val localizationReader = new LocalizationReader(application.koskiLocalizationRepository, language.get, koodistoViitePalvelu)
       val pw = password.getOrElse(generatePassword(16))
 
       val response = generateReport(raportitService, localizationReader, pw)

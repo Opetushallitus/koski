@@ -1,11 +1,17 @@
 package fi.oph.koski.localization
 
+import fi.oph.koski.koodisto.KoodistoViitePalvelu
 import fi.oph.koski.schema.{Koodistokoodiviite, LocalizedString}
 import fi.oph.koski.util.FinnishDateFormat.finnishDateFormat
 
 import java.time.LocalDate
+import scala.collection.concurrent.TrieMap
 
-class LocalizationReader(repository: LocalizationRepository, val language: String) {
+class LocalizationReader(
+  repository: LocalizationRepository,
+  val language: String,
+  koodistoViitePalvelu: Option[KoodistoViitePalvelu] = None
+) {
   def get(key: String): String = repository.get(key).get(language)
 
   def get(key: String, params: Map[String, String]): String = params.foldLeft(get(key))((acc, kv) => acc.replaceAll("\\{\\{" + kv._1 + "\\}\\}", kv._2))
@@ -25,4 +31,23 @@ class LocalizationReader(repository: LocalizationRepository, val language: Strin
       .flatten
       .headOption
       .getOrElse(fallback)
+
+  private val ruotsinkielisetNimetKoodistoittain = TrieMap.empty[String, Map[String, String]]
+
+  // Osa raporttien koodiarvoista on suomenkielisiä sanoja (esim. opiskeluoikeuden tila "lasna"). Ruotsiksi näytetään
+  // koodin ruotsinkielinen nimi, jos se poikkeaa suomenkielisestä. Muuten, ja muilla kielillä, näytetään koodiarvo.
+  def koodiarvo(koodistoUri: String, koodiarvo: String): String =
+    koodistoViitePalvelu
+      .filter(_ => language == "sv")
+      .flatMap(palvelu => ruotsinkielisetNimetKoodistoittain.getOrElseUpdate(koodistoUri, ruotsinkielisetNimet(palvelu, koodistoUri)).get(koodiarvo))
+      .getOrElse(koodiarvo)
+
+  private def ruotsinkielisetNimet(palvelu: KoodistoViitePalvelu, koodistoUri: String): Map[String, String] =
+    palvelu
+      .getKoodistoKoodiViitteet(palvelu.getLatestVersionRequired(koodistoUri))
+      .flatMap { koodi =>
+        val nimet = koodi.nimi.map(_.values).getOrElse(Map.empty[String, String])
+        nimet.get("sv").filterNot(nimet.get("fi").contains).map(koodi.koodiarvo -> _)
+      }
+      .toMap
 }

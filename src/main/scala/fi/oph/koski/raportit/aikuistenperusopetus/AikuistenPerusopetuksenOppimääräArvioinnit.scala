@@ -45,6 +45,8 @@ case class AikuistenPerusopetuksenOppimääräArvioinnit(db: DB, koodistoViitePa
     DataSheet(
       title = t.get("raportti-excel-arvioinnit-sheet-name"),
       rows = rows.map(r => r.copy(
+        viimeisinTila = t.koodiarvo("koskiopiskeluoikeudentila", r.viimeisinTila),
+        suorituksenTyyppi = t.koodiarvo("suorituksentyyppi", r.suorituksenTyyppi),
         rahoitusmuotoArviointipaivana = r.rahoitusmuotoArviointipaivana.map(rahoitusKoodistokoodi =>
           koodistoViitePalvelu.validate("opintojenrahoitus", rahoitusKoodistokoodi)
             .flatMap(_.nimi.map(_.get(t.language)))

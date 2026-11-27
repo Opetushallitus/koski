@@ -43,7 +43,7 @@ case class TOPKSAmmatillinenRaporttiBuilder(db: DB) extends QueryMethods {
     val rows = runDbSync(queryTOPKSSuoritukset(oppilaitosOid, alku, loppu, t.language).as[TOPKSAmmatillinenRaporttiRow], timeout = 5.minutes)
     DataSheet(
       title = t.get("raportti-excel-ammatillinen-topks-sheet-name"),
-      rows,
+      rows.map(r => r.copy(opiskeluoikeudenViimeisinTila = t.koodiarvo("koskiopiskeluoikeudentila", r.opiskeluoikeudenViimeisinTila))),
       columnSettings(t)
     )
   }

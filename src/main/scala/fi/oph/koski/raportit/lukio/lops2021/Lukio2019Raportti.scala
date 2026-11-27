@@ -120,10 +120,10 @@ case class Lukio2019Raportti(repository: Lukio2019RaportitRepository, t: Localiz
        etunimet = row.henkilo.etunimet,
        kotikunta = getKotikunta(row, kotikuntaPvm),
        opiskeluoikeuden_alkamispäivä = row.opiskeluoikeus.alkamispäivä.map(_.toLocalDate),
-       opiskeluoikeuden_viimeisin_tila = row.opiskeluoikeus.viimeisinTila,
-       opiskeluoikeuden_tilat_aikajakson_aikana = removeContinuousSameTila(row.aikajaksot).map(_.tila).mkString(","),
+       opiskeluoikeuden_viimeisin_tila = row.opiskeluoikeus.viimeisinTila.map(t.koodiarvo("koskiopiskeluoikeudentila", _)),
+       opiskeluoikeuden_tilat_aikajakson_aikana = removeContinuousSameTila(row.aikajaksot).map(_.tila).map(t.koodiarvo("koskiopiskeluoikeudentila", _)).mkString(","),
        opetussuunnitelma = opetussuunnitelma(row.päätasonSuoritus),
-       suorituksenTyyppi = row.päätasonSuoritus.suorituksenTyyppi,
+       suorituksenTyyppi = t.koodiarvo("suorituksentyyppi", row.päätasonSuoritus.suorituksenTyyppi),
        suorituksenTila = row.päätasonSuoritus.vahvistusPäivä.fold(t.get("raportti-excel-default-value-kesken"))(_ => t.get("raportti-excel-default-value-valmis")),
        suorituksenVahvistuspäivä = row.päätasonSuoritus.vahvistusPäivä.map(_.toLocalDate),
        suorituskieliKoodiarvo = row.päätasonSuoritus.suorituskieliKoodiarvo,
@@ -184,7 +184,7 @@ case class Lukio2019Raportti(repository: Lukio2019RaportitRepository, t: Localiz
         kotikunta = getKotikunta(oppijanRivit, kotikuntaPvm),
         toimipiste = if (t.language == "sv") oppijanRivit.päätasonSuoritus.toimipisteNimiSv else oppijanRivit.päätasonSuoritus.toimipisteNimi,
         opetussuunnitelma = opetussuunnitelma(oppijanRivit.päätasonSuoritus),
-        suorituksenTyyppi = oppijanRivit.päätasonSuoritus.suorituksenTyyppi
+        suorituksenTyyppi = t.koodiarvo("suorituksentyyppi", oppijanRivit.päätasonSuoritus.suorituksenTyyppi)
       ),
       osasuoritukset = kurssienTiedot(oppijanRivit, oppijoidenRivitJärjestettyKursseittain)
     )

@@ -57,7 +57,9 @@ case class MassaluovutusQueryPaallekkaisetOpiskeluoikeudet(
         lang = language.get,
       )
 
-      val localizationReader = new LocalizationReader(application.koskiLocalizationRepository, language.get)
+      // Ruotsinkielinen Excel-raportti näyttää koodiarvojen sijaan koodien ruotsinkieliset nimet. CSV-tiedostossa on aina koodiarvot.
+      val koodistoViitePalvelu = Option.when(format == QueryFormat.xlsx)(application.koodistoViitePalvelu)
+      val localizationReader = new LocalizationReader(application.koskiLocalizationRepository, language.get, koodistoViitePalvelu)
       val raportti = raportitService.paallekkaisetOpiskeluoikeudet(request, localizationReader)
       auditLog(writer.queryId.toString)
       writer.putReport(raportti, format, localizationReader)

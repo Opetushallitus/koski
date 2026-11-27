@@ -5,7 +5,7 @@ import fi.oph.koski.db.{DB, QueryMethods}
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.localization.LocalizationReader
 import fi.oph.koski.raportointikanta._
-import fi.oph.koski.schema.Organisaatio
+import fi.oph.koski.schema.{OpiskeluoikeudenTyyppi, Organisaatio}
 import fi.oph.koski.util.DateOrdering.sqlDateOrdering
 import fi.oph.koski.util.FinnishDateFormat.finnishDateFormat
 import org.json4s.jackson.JsonMethods
@@ -23,39 +23,42 @@ case class PerusopetuksenRaportitRepository(db: DB) extends QueryMethods with Ra
   type Tunnisteet = (OpiskeluoikeusOid, Seq[PäätasonSuoritusId], Seq[AikajaksoId])
 
   def perusopetuksenvuosiluokka(
+    tyypit: VuosiluokkaraportinTyypit,
     organisaatioOidit: Seq[Organisaatio.Oid],
     päivä: LocalDate,
     kotikuntaPvm: Option[LocalDate],
     vuosiluokka: String,
     t: LocalizationReader
   ): Seq[PerusopetuksenRaporttiRows] = {
-    val potentiaalisestiKeskeyttäneet = mahdollisestiKeskeyttäneet(organisaatioOidit, päivä, vuosiluokka)
-    val tunnisteet = opiskeluoikeusAikajaksotPaatasonSuorituksetQuery(organisaatioOidit, päivä, vuosiluokka) ++ potentiaalisestiKeskeyttäneet
+    val potentiaalisestiKeskeyttäneet = mahdollisestiKeskeyttäneet(tyypit, organisaatioOidit, päivä, vuosiluokka)
+    val tunnisteet = opiskeluoikeusAikajaksotPaatasonSuorituksetQuery(tyypit, organisaatioOidit, päivä, vuosiluokka) ++ potentiaalisestiKeskeyttäneet
     val opiskeluoikeusOids = tunnisteet.map(_._1)
     val paatasonSuoritusIds = tunnisteet.flatMap(_._2)
     val aikajaksoIds = tunnisteet.flatMap(_._3)
 
-    suoritustiedot(päivä, opiskeluoikeusOids, paatasonSuoritusIds, aikajaksoIds, vuosiluokka, kotikuntaPvm, t)
+    suoritustiedot(tyypit, päivä, opiskeluoikeusOids, paatasonSuoritusIds, aikajaksoIds, vuosiluokka, kotikuntaPvm, t)
   }
 
   def peruskoulunPaattavatJaLuokalleJääneet(
+    tyypit: VuosiluokkaraportinTyypit,
     organisaatioOidit: Seq[Organisaatio.Oid],
     päivä: LocalDate,
     kotikuntaPvm: Option[LocalDate],
     vuosiluokka: String,
     t: LocalizationReader
   ): Seq[PerusopetuksenRaporttiRows] = {
-    val luokalleJäävienTunnisteet = queryLuokalleJäävienTunnisteet(organisaatioOidit, päivä)
+    val luokalleJäävienTunnisteet = queryLuokalleJäävienTunnisteet(tyypit, organisaatioOidit, päivä)
     val luokalleJaavienOidit = luokalleJäävienTunnisteet.map(_._1)
-    val peruskoulunPäättävienTunnisteet = queryPeruskoulunPäättäneidenTunnisteet(organisaatioOidit, päivä, luokalleJaavienOidit.distinct)
+    val peruskoulunPäättävienTunnisteet = queryPeruskoulunPäättäneidenTunnisteet(tyypit, organisaatioOidit, päivä, luokalleJaavienOidit.distinct)
     val opiskeluoikeusOids = luokalleJaavienOidit ++ peruskoulunPäättävienTunnisteet.map(_._1)
     val paatasonSuoritusIds = luokalleJäävienTunnisteet.flatMap(_._2) ++ peruskoulunPäättävienTunnisteet.flatMap(_._2)
     val aikajaksoIds = luokalleJäävienTunnisteet.flatMap(_._3) ++ peruskoulunPäättävienTunnisteet.flatMap(_._3)
 
-    suoritustiedot(päivä, opiskeluoikeusOids, paatasonSuoritusIds, aikajaksoIds, vuosiluokka, kotikuntaPvm, t)
+    suoritustiedot(tyypit, päivä, opiskeluoikeusOids, paatasonSuoritusIds, aikajaksoIds, vuosiluokka, kotikuntaPvm, t)
   }
 
   private def suoritustiedot(
+    tyypit: VuosiluokkaraportinTyypit,
     päivä: LocalDate,
     opiskeluoikeusOids: Seq[OpiskeluoikeusOid],
     paatasonSuoritusIds: Seq[PäätasonSuoritusId],
@@ -79,8 +82,8 @@ case class PerusopetuksenRaportitRepository(db: DB) extends QueryMethods with Ra
         .result
       )
     }
-    val voimassaOlevatVuosiluokat = runDbSync(voimassaOlevatVuosiluokatQuery(opiskeluoikeusOids).result, timeout = 5.minutes).groupBy(_._1).view.mapValues(_.map(_._2).toSeq).toMap
-    val luokat = runDbSync(luokkatiedotVuosiluokalleQuery(opiskeluoikeusOids, vuosiluokka).result, timeout = 5.minutes).groupBy(_._1).view.mapValues(_.map(_._2).distinct.sorted.mkString(",")).toMap
+    val voimassaOlevatVuosiluokat = runDbSync(voimassaOlevatVuosiluokatQuery(tyypit, opiskeluoikeusOids).result, timeout = 5.minutes).groupBy(_._1).view.mapValues(_.map(_._2).toSeq).toMap
+    val luokat = runDbSync(luokkatiedotVuosiluokalleQuery(tyypit, opiskeluoikeusOids, vuosiluokka).result, timeout = 5.minutes).groupBy(_._1).view.mapValues(_.map(_._2).distinct.sorted.mkString(",")).toMap
     val organisaatiohistoriat = fetchOrganisaatiohistoriat(päivä, opiskeluoikeusOids, t.language).groupBy(_.opiskeluoikeusOid)
 
     opiskeluoikeudet.flatMap { oo =>
@@ -130,23 +133,23 @@ case class PerusopetuksenRaportitRepository(db: DB) extends QueryMethods with Ra
     runDbSync(query.as[OrganisaatiohistoriaResult])
   }
 
-  private def voimassaOlevatVuosiluokatQuery(opiskeluoikeusOids: Seq[String]) = {
+  private def voimassaOlevatVuosiluokatQuery(tyypit: VuosiluokkaraportinTyypit, opiskeluoikeusOids: Seq[String]) = {
     RPäätasonSuoritukset
       .filter(_.opiskeluoikeusOid inSet opiskeluoikeusOids)
-      .filter(_.suorituksenTyyppi === "perusopetuksenvuosiluokka")
+      .filter(_.suorituksenTyyppi === tyypit.vuosiluokanSuoritus)
       .filter(_.vahvistusPäivä.isEmpty)
       .map(row => (row.opiskeluoikeusOid, row.koulutusmoduuliKoodiarvo))
   }
 
-  private def luokkatiedotVuosiluokalleQuery(opiskeluoikeusOid: Seq[String], vuosiluokka: String) = {
+  private def luokkatiedotVuosiluokalleQuery(tyypit: VuosiluokkaraportinTyypit, opiskeluoikeusOid: Seq[String], vuosiluokka: String) = {
     RPäätasonSuoritukset
       .filter(_.opiskeluoikeusOid inSet opiskeluoikeusOid)
-      .filter(_.suorituksenTyyppi === "perusopetuksenvuosiluokka")
+      .filter(_.suorituksenTyyppi === tyypit.vuosiluokanSuoritus)
       .filter(_.koulutusmoduuliKoodiarvo === vuosiluokka)
       .map(row => (row.opiskeluoikeusOid, row.data+>>("luokka")))
   }
 
-  private def opiskeluoikeusAikajaksotPaatasonSuorituksetQuery(oppilaitokset: Seq[String], päivä: LocalDate, vuosiluokka: String) = {
+  private def opiskeluoikeusAikajaksotPaatasonSuorituksetQuery(tyypit: VuosiluokkaraportinTyypit, oppilaitokset: Seq[String], päivä: LocalDate, vuosiluokka: String) = {
     implicit val getResult = GetResult(rs => (rs.nextString(), rs.nextArray(), rs.nextArray()))
 
     val query = sql"""
@@ -166,8 +169,8 @@ case class PerusopetuksenRaportitRepository(db: DB) extends QueryMethods with Ra
       aikaj.opiskeluoikeus_oid = oo.opiskeluoikeus_oid
     where
       oo.oppilaitos_oid = any ($oppilaitokset) and
-      oo.koulutusmuoto = 'perusopetus' and
-      pts.suorituksen_tyyppi = 'perusopetuksenvuosiluokka' and
+      oo.koulutusmuoto = ${tyypit.koulutusmuoto} and
+      pts.suorituksen_tyyppi = ${tyypit.vuosiluokanSuoritus} and
       pts.koulutusmoduuli_koodiarvo = $vuosiluokka and
       (pts.vahvistus_paiva >= $päivä or pts.vahvistus_paiva is null) and
       (pts.data->>'alkamispäivä' <= $päivä or pts.data->>'alkamispäivä' is null) and
@@ -177,7 +180,7 @@ case class PerusopetuksenRaportitRepository(db: DB) extends QueryMethods with Ra
     runDbSync(query.as[Tunnisteet], timeout = 5.minutes)
   }
 
-  private def queryLuokalleJäävienTunnisteet(oppilaitokset: Seq[String], päivä: LocalDate) = {
+  private def queryLuokalleJäävienTunnisteet(tyypit: VuosiluokkaraportinTyypit, oppilaitokset: Seq[String], päivä: LocalDate) = {
     implicit val getResult = GetResult(rs => (rs.nextString(), rs.nextArray(), rs.nextArray()))
 
     val query = sql"""
@@ -197,8 +200,8 @@ case class PerusopetuksenRaportitRepository(db: DB) extends QueryMethods with Ra
       aikaj.opiskeluoikeus_oid = oo.opiskeluoikeus_oid
     where
       oo.oppilaitos_oid = any($oppilaitokset) and
-      oo.koulutusmuoto = 'perusopetus' and
-      pts.suorituksen_tyyppi = 'perusopetuksenvuosiluokka' and
+      oo.koulutusmuoto = ${tyypit.koulutusmuoto} and
+      pts.suorituksen_tyyppi = ${tyypit.vuosiluokanSuoritus} and
       pts.koulutusmoduuli_koodiarvo = '9' and
       (pts.data->>'jääLuokalle')::boolean and
       (pts.vahvistus_paiva is null or pts.vahvistus_paiva >= $päivä) and
@@ -210,7 +213,7 @@ case class PerusopetuksenRaportitRepository(db: DB) extends QueryMethods with Ra
     runDbSync(query.as[Tunnisteet], timeout = 5.minutes)
   }
 
-  private def queryPeruskoulunPäättäneidenTunnisteet(oppilaitokset: Seq[String], päivä: LocalDate, luokalleJaavatOidit: Seq[String]) = {
+  private def queryPeruskoulunPäättäneidenTunnisteet(tyypit: VuosiluokkaraportinTyypit, oppilaitokset: Seq[String], päivä: LocalDate, luokalleJaavatOidit: Seq[String]) = {
     implicit val getResult = GetResult(rs => (rs.nextString(), rs.nextArray(), rs.nextArray()))
 
     val query = sql"""
@@ -225,9 +228,9 @@ case class PerusopetuksenRaportitRepository(db: DB) extends QueryMethods with Ra
           pts.opiskeluoikeus_oid = oo.opiskeluoikeus_oid
         where
           oo.oppilaitos_oid = any ($oppilaitokset) and
-          oo.koulutusmuoto = 'perusopetus' and
+          oo.koulutusmuoto = ${tyypit.koulutusmuoto} and
           not (oo.opiskeluoikeus_oid = any ($luokalleJaavatOidit)) and
-          pts.suorituksen_tyyppi = 'perusopetuksenvuosiluokka' and
+          pts.suorituksen_tyyppi = ${tyypit.vuosiluokanSuoritus} and
           pts.koulutusmoduuli_koodiarvo = '9' and
           (pts.vahvistus_paiva is null or pts.vahvistus_paiva >= $päivä) and
           (pts.data->>'alkamispäivä' <= $päivä or pts.data->>'alkamispäivä' is null)
@@ -247,7 +250,7 @@ case class PerusopetuksenRaportitRepository(db: DB) extends QueryMethods with Ra
       on
         pts.opiskeluoikeus_oid = oo.opiskeluoikeus_oid
       where
-        pts.suorituksen_tyyppi = 'perusopetuksenoppimaara' and
+        pts.suorituksen_tyyppi = ${tyypit.oppimääränSuoritus} and
         (pts.vahvistus_paiva is null or pts.vahvistus_paiva >= $päivä) and
         aikaj.alku <= $päivä and aikaj.loppu >= $päivä
       group by
@@ -258,8 +261,8 @@ case class PerusopetuksenRaportitRepository(db: DB) extends QueryMethods with Ra
 
   // Tarkoituksena hakea tapauksia joilla on vuosiluokka valmiina, ei ole merkitty seuraavalle luokalle, eikä niiden opintoja ole merkitty päättyviksi.
   // Nämä mahdollisesti keskeyttäneet halutaan saada näkyviin oppilaitoksille, koska ne ovat potentiaalisesti virheellisiä.
-  private def mahdollisestiKeskeyttäneet(oppilaitokset: Seq[Organisaatio.Oid], päivä: LocalDate, vuosiluokka: String): Seq[Tunnisteet] = {
-    aktiivistenSuoritukset(oppilaitokset, päivä).flatMap {
+  private def mahdollisestiKeskeyttäneet(tyypit: VuosiluokkaraportinTyypit, oppilaitokset: Seq[Organisaatio.Oid], päivä: LocalDate, vuosiluokka: String): Seq[Tunnisteet] = {
+    aktiivistenSuoritukset(tyypit, oppilaitokset, päivä).flatMap {
       case (opiskeluoikeusOid, vuosiluokkienTiedot, aikajaksoIds) => {
         val vahvistettujenVuosiluokkienIds = vuosiluokkienTiedot
           .takeWhile { x => x.vuosiluokka == vuosiluokka && x.vahvistuspäivä.isDefined }
@@ -273,8 +276,8 @@ case class PerusopetuksenRaportitRepository(db: DB) extends QueryMethods with Ra
     }
   }
 
-  private def aktiivistenSuoritukset(oppilaitokset: Seq[String], päivä: LocalDate) = {
-    queryAktiivisetSuoritukset(oppilaitokset, päivä)
+  private def aktiivistenSuoritukset(tyypit: VuosiluokkaraportinTyypit, oppilaitokset: Seq[String], päivä: LocalDate) = {
+    queryAktiivisetSuoritukset(tyypit, oppilaitokset, päivä)
       .map { case (opiskeluoikeusOid, jsonStrings, aikajaksoIds) =>
         val vuosiluokkienTiedot = jsonStrings
           .map(JsonMethods.parse(_))
@@ -284,7 +287,7 @@ case class PerusopetuksenRaportitRepository(db: DB) extends QueryMethods with Ra
       }
   }
 
-  private def queryAktiivisetSuoritukset(oppilaitokset: Seq[String], päivä: LocalDate) = {
+  private def queryAktiivisetSuoritukset(tyypit: VuosiluokkaraportinTyypit, oppilaitokset: Seq[String], päivä: LocalDate) = {
     implicit val getResult = GetResult(rs => (rs.nextString(), rs.nextArray(), rs.nextArray()))
 
     val query = sql"""
@@ -311,13 +314,33 @@ case class PerusopetuksenRaportitRepository(db: DB) extends QueryMethods with Ra
        aikaj.opiskeluoikeus_oid = oo.opiskeluoikeus_oid
       where
         oo.oppilaitos_oid = any($oppilaitokset) and
-        oo.koulutusmuoto = 'perusopetus' and
-        pts.suorituksen_tyyppi = 'perusopetuksenvuosiluokka' and
+        oo.koulutusmuoto = ${tyypit.koulutusmuoto} and
+        pts.suorituksen_tyyppi = ${tyypit.vuosiluokanSuoritus} and
         aikaj.alku <= $päivä and aikaj.loppu >= $päivä
       group by oo.opiskeluoikeus_oid"""
 
     runDbSync(query.as[(OpiskeluoikeusOid, Seq[String], Seq[AikajaksoId])], timeout = 5.minutes)
   }
+}
+
+case class VuosiluokkaraportinTyypit(
+  koulutusmuoto: String,
+  vuosiluokanSuoritus: String,
+  oppimääränSuoritus: String
+)
+
+object VuosiluokkaraportinTyypit {
+  val perusopetus: VuosiluokkaraportinTyypit = VuosiluokkaraportinTyypit(
+    koulutusmuoto = OpiskeluoikeudenTyyppi.perusopetus.koodiarvo,
+    vuosiluokanSuoritus = "perusopetuksenvuosiluokka",
+    oppimääränSuoritus = "perusopetuksenoppimaara"
+  )
+
+  val ahvenanmaanPerusopetus: VuosiluokkaraportinTyypit = VuosiluokkaraportinTyypit(
+    koulutusmuoto = OpiskeluoikeudenTyyppi.ahvenanmaanperusopetus.koodiarvo,
+    vuosiluokanSuoritus = "ahvenanmaanperusopetuksenvuosiluokka",
+    oppimääränSuoritus = "ahvenanmaanperusopetuksenoppimaara"
+  )
 }
 
 case class VuosiluokanTiedot(

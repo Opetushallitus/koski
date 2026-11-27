@@ -23,6 +23,10 @@ import {
   isMassaluovutusQueryPaallekkaisetOpiskeluoikeudet
 } from './paallekkaisetopiskeluoikeudet/MassaluovutusQueryPaallekkaisetOpiskeluoikeudet'
 import {
+  MassaluovutusQueryAhvenanmaanPerusopetuksenVuosiluokka,
+  isMassaluovutusQueryAhvenanmaanPerusopetuksenVuosiluokka
+} from './raportit/MassaluovutusQueryAhvenanmaanPerusopetuksenVuosiluokka'
+import {
   MassaluovutusQueryAikuistenPerusopetuksenKurssikertyma,
   isMassaluovutusQueryAikuistenPerusopetuksenKurssikertyma
 } from './raportit/MassaluovutusQueryAikuistenPerusopetuksenKurssikertyma'
@@ -179,6 +183,7 @@ export type MassaluovutusQueryParameters =
   | MassaluovutusQueryOrganisaationOpiskeluoikeudetCsv
   | MassaluovutusQueryOrganisaationOpiskeluoikeudetJson
   | MassaluovutusQueryPaallekkaisetOpiskeluoikeudet
+  | MassaluovutusQueryAhvenanmaanPerusopetuksenVuosiluokka
   | MassaluovutusQueryAikuistenPerusopetuksenKurssikertyma
   | MassaluovutusQueryAikuistenPerusopetuksenOppijamaaratRaportti
   | MassaluovutusQueryAikuistenPerusopetusSuoritustiedot
@@ -225,6 +230,7 @@ export const isMassaluovutusQueryParameters = (
   isMassaluovutusQueryOrganisaationOpiskeluoikeudetCsv(a) ||
   isMassaluovutusQueryOrganisaationOpiskeluoikeudetJson(a) ||
   isMassaluovutusQueryPaallekkaisetOpiskeluoikeudet(a) ||
+  isMassaluovutusQueryAhvenanmaanPerusopetuksenVuosiluokka(a) ||
   isMassaluovutusQueryAikuistenPerusopetuksenKurssikertyma(a) ||
   isMassaluovutusQueryAikuistenPerusopetuksenOppijamaaratRaportti(a) ||
   isMassaluovutusQueryAikuistenPerusopetusSuoritustiedot(a) ||
