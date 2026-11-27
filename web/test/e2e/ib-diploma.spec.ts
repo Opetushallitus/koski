@@ -3,7 +3,7 @@ import { expect, test } from './base'
 import { kansalainen, virkailija } from './setup/auth'
 
 // IB-Diploma Dani (040701A002J): IB-koulutuksen opiskeluoikeus ja IB Diploma.
-const dani = '1.2.246.562.24.00000000233'
+const dani = '1.2.246.562.24.00000000234'
 
 const oppiaineidenSarake = (page: Page, prefix: string, sarake: string) =>
   page.getByTestId(new RegExp(`^${prefix}\\.oppiaineet\\.\\d+\\.${sarake}$`))

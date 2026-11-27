@@ -59,7 +59,7 @@ test.describe('IB – visuaaliset regressiot', () => {
 })
 
 // IB-Diploma Dani. Diploman oppilaitos on IBO, jota kalle ei näe.
-const ibDiploma = '1.2.246.562.24.00000000233'
+const ibDiploma = '1.2.246.562.24.00000000234'
 
 test.describe('IB Diploma – visuaaliset regressiot', () => {
   test.skip(
