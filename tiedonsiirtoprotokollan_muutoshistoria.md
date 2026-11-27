@@ -1,4 +1,4 @@
-# xx.xx.2026
+# 27.11.2026
 
 - Lisätty uusi opiskeluoikeuden tyyppi `ibdiploma` (IB Diploma) päätason suorituksella `ibdiploma` ja osasuorituksilla `ibdiplomanoppiaine` ja `ibdiplomancore`. Se kuvaa IBO:n myöntämää IB-tutkintoa erotuksena oppilaitosten tallentamasta IB-koulutuksesta (`ibtutkinto`). Opiskeluoikeudet tuodaan Koskeen IBO:n IBIS-järjestelmän tulostiedostosta, ja niiden tallennus on rajattu Opetushallituksen pääkäyttäjille. Opiskeluoikeuden oppilaitoksena ja koulutustoimijana on IBO.
 

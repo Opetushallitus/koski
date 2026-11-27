@@ -968,7 +968,7 @@
   "Hyväksytysti arvioitu (opintopistettä)": "Hyväksytysti arvioitu (opintopistettä)",
   "IBIS-tuonti": "IBIS-tuonti",
   "ibis-tuonti-esimerkki-kuvaus": "Kandidaatin IBO-tunniste on abc123. Hänellä on hyväksytty IB Diploman suoritus ja osasuoritukset kahdeksasta oppiaineesta, joihin sisältyvät EE ja TOK.",
-  "ibis-tuonti-ohjeet": "Tuo IB Diploma -opiskeluoikeudet IBO:n IBIS-tulostiedostosta.\nEsikatsele tiedosto ensin. Esikatselu tarkistaa rivit tallentamatta niitä.\nTuonti tallentaa hyväksytyt rivit ja jättää hylätyt rivit tallentamatta.\nOlemassa oleva IB Diploman opiskeluoikeus päivitetään uuden tuonnin myötä.\nOppija tunnistetaan IBO-tunnisteesta (PERSONAL CODE). Oppijalla on oltava Koskessa IB-koulutuksen, International schoolin tai IB Diploman opiskeluoikeus samalla tunnisteella.",
+  "ibis-tuonti-ohjeet": "Tuo IB Diploma -opiskeluoikeudet IBO:n IBIS-tulostiedostosta.\nEsikatsele tiedosto ensin. Esikatselu tarkistaa rivit tallentamatta niitä.\nTuonti tallentaa hyväksytyt rivit ja jättää hylätyt rivit tallentamatta.\nOlemassa oleva IB Diploman opiskeluoikeus päivitetään uuden tuonnin myötä.\nOppija tunnistetaan IBO-tunnisteesta (PERSONAL CODE). Oppijalla on oltava Koskessa IB-koulutuksen tai International schoolin opiskeluoikeus samalla tunnisteella.",
   "ibis-tuonti-tiedoston-muoto": "Tuotava tiedosto on oltava IBIS-järjestelmästä ladattava tulostiedosto muodossa \"CSV file new format (numeric subject code)\".\nMahdollinen otsikkorivi ohitetaan.",
   "IB-kurssit": "IB-kurssit",
   "IB-oppiaine": "IB-oppiaine",
