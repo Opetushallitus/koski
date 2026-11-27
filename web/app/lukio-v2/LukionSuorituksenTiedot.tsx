@@ -1099,7 +1099,6 @@ const UusiSuullisenKielitaidonKoeModal: React.FC<{
           {t('Kieli')}
           <KoodistoSelect
             koodistoUri="kielivalikoima"
-            skipAutoFocus
             onSelect={(k) => setKieli(k)}
             value={kieli?.koodiarvo}
             testId="kieli"
@@ -1108,6 +1107,7 @@ const UusiSuullisenKielitaidonKoeModal: React.FC<{
         <label>
           {t('Arvosana')}
           <ArvosanaKoodistoSelect<SuullisenKielitaidonKoe2019['arvosana']>
+            skipAutoFocus
             onSelect={(k) => k && setArvosana(k)}
             value={arvosana?.koodiarvo}
             testId="arvosana"
@@ -1117,6 +1117,7 @@ const UusiSuullisenKielitaidonKoeModal: React.FC<{
           {t('Taitotaso')}
           <KoodistoSelect
             koodistoUri="arviointiasteikkokehittyvankielitaidontasot"
+            skipAutoFocus
             onSelect={(k) =>
               setTaitotaso(k as SuullisenKielitaidonKoe2019['taitotaso'])
             }
@@ -1360,6 +1361,7 @@ const UusiLukiodiplomiModal: React.FC<{
           {t('Arvosana')}
           <ArvosanaKoodistoSelect<LukiodiplominSuoritusJaArviointi['arvosana']>
             koodiarvot={LUKIODIPLOMIN_ARVOSANA_KOODIARVOT}
+            skipAutoFocus
             onSelect={(k) => k && setArvosana(k)}
             value={arvosana?.koodiarvo}
             testId="arvosana"
