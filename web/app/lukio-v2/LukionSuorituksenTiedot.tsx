@@ -253,7 +253,7 @@ export const LukionSuorituksenTiedot: React.FC<
         form={form}
         suoritusPath={päätasonSuoritus.path}
         organisaatio={form.state.oppilaitos}
-        disableAdd
+        disableAdd={false}
         vahvistusClass={HenkilövahvistusPaikkakunnalla.className}
       />
     </>
