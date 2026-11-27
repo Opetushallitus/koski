@@ -130,17 +130,29 @@ trait MassaluovutusQueryOrganisaationOpiskeluoikeudetBase extends Koulutuksenjä
     päättynytViimeistään.map(l => sql" AND paattymispaiva <= $l"),
     eiPäättymispäivää.flatMap(b => if (b) Some(sql" AND paattymispaiva IS NULL ") else Some(sql" AND paattymispaiva IS NOT NULL ")),
     muuttunutJälkeen.map(Timestamp.valueOf).map(a => sql" AND aikaleima >= $a "),
-    // Koulutusmuotorajaus on tehtävä aina. Aiemmin se jätettiin kokonaan pois
-    // käyttäjiltä, joilla on oikeus kaikkiin allowedKoulutusmuodot-listan
-    // muotoihin, jolloin kyselyyn osuivat myös listan ulkopuoliset tyypit
-    // (ahvenanmaanperusopetus, kielitutkinto, ylioppilastutkinto).
-    // koulutusmuoto-parametri on @EnumValues-rajattu listaan, joten Some-haara
-    // ei voi osua listan ulkopuolelle.
-    koulutusmuoto match {
-      case Some(t) => Some(sql" AND koulutusmuoto = $t ")
-      case None => Some(sql" AND koulutusmuoto = any(${allowedKoulutusmuodotForUser(session)}) ")
-    },
+    Some(koulutusmuotoFilter(session)),
   )
+
+  // Koulutusmuotorajaus on tehtävä aina, myös käyttäjälle, jolla on oikeus kaikkiin allowedKoulutusmuodot-listan
+  // muotoihin: muuten kyselyyn osuisivat listan ulkopuoliset tyypit (ahvenanmaanperusopetus, kielitutkinto,
+  // ylioppilastutkinto).
+  //
+  // Päätason suoritukseen rajattu oikeus (esim. AMMATILLINENKOULUTUS__TELMA) rajaa vain oman koulutusmuotonsa
+  // opiskeluoikeuksia. KoskiOpiskeluOikeudetWithAccessCheck rajaa suoritustyypit kaikista koulutusmuodoista kerralla.
+  private def koulutusmuotoFilter(session: KoskiSpecificSession): SQLActionBuilder = {
+    val maskit = session.allowedOpiskeluoikeudetJaPäätasonSuoritukset
+      .filter(m => MassaluovutusQueryOrganisaationOpiskeluoikeudet.allowedKoulutusmuodot.contains(m.opiskeluoikeus))
+      .filter(m => koulutusmuoto.forall(_ == m.opiskeluoikeus))
+    val kokonaanSallitut = maskit.filter(_.päätasonSuoritukset.isEmpty).map(_.opiskeluoikeus)
+    val päätasonSuorituksiinRajatut = maskit.toList
+      .filterNot(m => kokonaanSallitut.contains(m.opiskeluoikeus))
+      .map { m =>
+        val suoritustyypit: List[String] = m.päätasonSuoritukset.getOrElse(Nil)
+        sql" OR (koulutusmuoto = ${m.opiskeluoikeus} AND suoritustyypit && $suoritustyypit::text[]) "
+      }
+    val ehdot = List(sql" AND (koulutusmuoto = any(${kokonaanSallitut.toList})") ++ päätasonSuorituksiinRajatut ++ List(sql") ")
+    ehdot.reduce(SQLHelpers.concat)
+  }
 
   protected def getOppijaOids(db: DB, filters: SQLActionBuilder): Seq[String] = QueryMethods.runDbSync(
     db,
@@ -212,7 +224,4 @@ trait MassaluovutusQueryOrganisaationOpiskeluoikeudetBase extends Koulutuksenjä
   }
 
   private def includeMitätöidyt(implicit session: KoskiSpecificSession): Boolean = mitätöidyt.contains(true)
-
-  protected def allowedKoulutusmuodotForUser(session: KoskiSpecificSession): List[String] =
-    MassaluovutusQueryOrganisaationOpiskeluoikeudet.allowedKoulutusmuodot.intersect(session.allowedOpiskeluoikeudetJaPäätasonSuoritukset.toOpiskeluoikeudenTyypit).toList
 }

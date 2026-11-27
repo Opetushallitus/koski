@@ -449,6 +449,45 @@ class MassaluovutusSpec extends AnyFreeSpec with MassaluovutusTestMethods with M
         // Jyväskylän yliopiston esiopetus Helsingin ostopalveluyksiköstä.
         complete.files should have length 1
       }
+
+      "Päätason suoritukseen rajatulla oikeudella saa vain sen päätason suorituksen opiskeluoikeudet" - {
+        val stadinQuery = MassaluovutusQueryOrganisaationOpiskeluoikeudetJson(
+          organisaatioOid = Some(MockOrganisaatiot.stadinAmmattiopisto),
+          alkanutAikaisintaan = LocalDate.of(2000, 1, 1),
+        )
+
+        def päätasonSuoritustenTyypit(user: MockUser, query: MassaluovutusQueryOrganisaationOpiskeluoikeudetJson): List[String] = {
+          val queryId = addQuerySuccessfully(query, user)(_.queryId)
+          val complete = waitForCompletion(queryId, user)
+          complete.files.flatMap { file =>
+            verifyResultAndContent(file, user) {
+              (JsonMethods.parse(body) \ "opiskeluoikeudet" \ "suoritukset" \ "tyyppi" \ "koodiarvo").extract[List[String]]
+            }
+          }
+        }
+
+        "Rajaamattomalla oikeudella samasta organisaatiosta tulee muitakin ammatillisia suorituksia" in {
+          päätasonSuoritustenTyypit(MockUsers.stadinAmmattiopistoKatselija, stadinQuery).distinct should contain allOf ("telma", "ammatillinentutkinto")
+        }
+
+        "Ilman koulutusmuotoa" in {
+          päätasonSuoritustenTyypit(MockUsers.stadinTelma, stadinQuery).distinct should equal(List("telma"))
+        }
+
+        "Koulutusmuodolla" in {
+          päätasonSuoritustenTyypit(MockUsers.stadinTelma, stadinQuery.copy(koulutusmuoto = Some("ammatillinenkoulutus"))).distinct should equal(List("telma"))
+        }
+
+        "Globaali, päätason suoritukseen rajattu lukuoikeus ei avaa muita koulutusmuotoja koulutusmuotoparametrilla" in {
+          val query = MassaluovutusQueryOrganisaationOpiskeluoikeudetJson(
+            organisaatioOid = Some(MockOrganisaatiot.jyväskylänNormaalikoulu),
+            alkanutAikaisintaan = LocalDate.of(2000, 1, 1),
+            koulutusmuoto = Some("perusopetus"),
+          )
+          päätasonSuoritustenTyypit(MockUsers.paakayttaja, query) should not be empty
+          päätasonSuoritustenTyypit(MockUsers.valtionhallinnonKielitutkinnonKäyttäjä, query) shouldBe empty
+        }
+      }
     }
 
     "CSV" - {
