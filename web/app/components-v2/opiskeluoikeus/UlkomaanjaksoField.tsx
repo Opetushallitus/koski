@@ -92,7 +92,7 @@ export const UlkomaanjaksoEdit: React.FC<UlkomaanjaksoEditProps> = ({
 
   return (
     <TestIdLayer id="ulkomaanjakso">
-      <div className="AikajaksoEdit">
+      <div className="AikajaksoEdit AikajaksoEdit--ulkomaanjakso">
         <DateInput
           value={value?.alku}
           onChange={setAlku}
@@ -106,23 +106,28 @@ export const UlkomaanjaksoEdit: React.FC<UlkomaanjaksoEditProps> = ({
           testId="loppu"
           hasErrors={hasErrorInField(errors, 'loppu')}
         />
-        <span className="InlineJakso__label">{t('Maa')}</span>
-        <div className="AikajaksoEdit__select">
-          <KoodistoSelect
-            koodistoUri="maatjavaltiot2"
-            value={value?.maa.koodiarvo}
-            onSelect={setMaa}
-            testId="maa"
-            hasErrors={hasErrors && !value?.maa.koodiarvo}
+        <span className="AikajaksoEdit__kenttä">
+          <span className="InlineJakso__label">{t('Maa')}</span>
+          <div className="AikajaksoEdit__select">
+            <KoodistoSelect
+              koodistoUri="maatjavaltiot2"
+              value={value?.maa.koodiarvo}
+              onSelect={setMaa}
+              testId="maa"
+              hasErrors={hasErrors && !value?.maa.koodiarvo}
+            />
+          </div>
+        </span>
+        <span className="AikajaksoEdit__kenttä">
+          <span className="InlineJakso__label">{t('Kuvaus')}</span>
+          <LocalizedTextEdit
+            className="AikajaksoEdit__kuvaus"
+            value={value?.kuvaus}
+            onChange={setKuvaus}
+            testId="kuvaus"
+            hasErrors={hasErrorInField(errors, 'kuvaus')}
           />
-        </div>
-        <span className="InlineJakso__label">{t('Kuvaus')}</span>
-        <LocalizedTextEdit
-          value={value?.kuvaus}
-          onChange={setKuvaus}
-          testId="kuvaus"
-          hasErrors={hasErrorInField(errors, 'kuvaus')}
-        />
+        </span>
       </div>
     </TestIdLayer>
   )

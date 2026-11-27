@@ -27,4 +27,36 @@
       min-width: 0;
     }
   }
+
+  // Pitää otsikon ja kentän samassa flex-kohteessa, jotta flex-wrap ei voi
+  // katkaista niitä toisistaan - ilman tätä otsikko voi jäädä edelliselle
+  // riville kentän rivittyessä yksinään seuraavalle.
+  &__kenttä {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    flex: 0 1 auto;
+    min-width: 200px;
+  }
+}
+
+// Ulkomaanjaksolla on enemmän kenttiä (alku, loppu, maa, kuvaus) kuin muilla
+// AikajaksoEdit-pohjaisilla kentillä, joten päivämäärät ja maa-valinta
+// kavennetaan hieman, jotta kuvauskin mahtuu samalle riville.
+.AikajaksoEdit--ulkomaanjakso {
+  .DateEdit__field {
+    width: 120px;
+  }
+
+  .AikajaksoEdit__select {
+    width: 120px;
+  }
+
+  .AikajaksoEdit__kenttä {
+    min-width: 110px;
+  }
+
+  .AikajaksoEdit__kuvaus .TextEdit__input {
+    width: 140px;
+  }
 }
