@@ -575,9 +575,11 @@ const OmanÄidinkielenOpintojenOsasuorituksetViewTable: React.FC<{
               wrap="tr"
             >
               <td className="LukionOmanÄidinkielenOpinnot__kurssi">
-                <TestIdText id="nimi">
-                  {t(osasuoritus.koulutusmoduuli.tunniste.nimi)}
-                </TestIdText>
+                <span title={t(osasuoritus.koulutusmoduuli.tunniste.nimi)}>
+                  <TestIdText id="nimi">
+                    {osasuoritus.koulutusmoduuli.tunniste.koodiarvo}
+                  </TestIdText>
+                </span>
                 <div className="LukionOmanÄidinkielenOpinnot__pieniTieto">
                   {t('Laajuus')}
                   {': '}
@@ -651,9 +653,11 @@ const OmanÄidinkielenOpintojenOsasuorituksetEditList: React.FC<{
             <KeyValueTable>
               <KeyValueRow localizableLabel="Nimi">
                 <div className="LukionOmanÄidinkielenOpinnot__osasuoritusNimi">
-                  <TestIdText id="nimi">
-                    {t(osasuoritus.koulutusmoduuli.tunniste.nimi)}
-                  </TestIdText>
+                  <span title={t(osasuoritus.koulutusmoduuli.tunniste.nimi)}>
+                    <TestIdText id="nimi">
+                      {osasuoritus.koulutusmoduuli.tunniste.koodiarvo}
+                    </TestIdText>
+                  </span>
                   <IconButton
                     charCode={CHARCODE_REMOVE}
                     label={t('Poista')}
