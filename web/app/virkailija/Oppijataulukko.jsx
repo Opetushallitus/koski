@@ -22,6 +22,10 @@ import { userP } from '../util/user'
 import { uniq } from 'fp-ts/lib/Array'
 import * as string from 'fp-ts/lib/string'
 import { arraysEqual } from '../util/fp/arrays'
+import {
+  ahvenanmaanOppimääränKoulutuksenNimi,
+  isAhvenanmaanOppimääränSuoritustyyppi
+} from '../ahvenanmaan-perusopetus/oppimaaranSuoritus'
 
 export const listviewPath = () => {
   return sessionStorage.previousListViewPath || '/koski/virkailija'
@@ -298,7 +302,7 @@ export class Oppijataulukko extends React.Component {
                                     matching="wordPrefix"
                                     searchQuery={params.tutkintohaku || ''}
                                   >
-                                    {t(suoritus.koulutusmoduuli.tunniste.nimi)}
+                                    {koulutuksenNimi(suoritus)}
                                   </Highlight>
                                 </li>
                               }
@@ -480,6 +484,11 @@ export const oppijataulukkoContentP = (query, params) => {
 
 const uniqContramapString = (getString) => (as) =>
   uniq(string.Eq)(as.map(getString))
+
+const koulutuksenNimi = (suoritus) =>
+  isAhvenanmaanOppimääränSuoritustyyppi(suoritus.tyyppi.koodiarvo)
+    ? ahvenanmaanOppimääränKoulutuksenNimi()
+    : t(suoritus.koulutusmoduuli.tunniste.nimi)
 
 const uniqToimipiste = uniqContramapString((suoritus) =>
   t(suoritus.toimipiste.nimi)

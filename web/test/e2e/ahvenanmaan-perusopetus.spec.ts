@@ -679,6 +679,31 @@ test.describe('Ahvenanmaan perusopetuksen käyttöliittymä ruotsiksi', () => {
       'Grundskoleutbildning'
     )
   })
+
+  test('Opiskelijalistalla koulutuksen nimi on Ahvenanmaan termi', async ({
+    page,
+    fixtures
+  }) => {
+    await fixtures.reset()
+    // Perustiedot-indeksissä on koulutuskoodin nimi, joten tutkintohaku
+    // löytää rivit sillä, vaikka listalla näkyy Ahvenanmaan termi.
+    await page.goto(
+      '/koski/virkailija?nimihaku=Åländsk&tutkintohaku=grundläggande'
+    )
+
+    const taulukko = page.getByTestId('oppijataulukko')
+    for (const nimi of ['Åländsk, Alina', 'Åländsk, Anders']) {
+      await expect(
+        taulukko
+          .locator('tbody tr')
+          .filter({ hasText: nimi })
+          .locator('td.tutkinto')
+      ).toContainText('Grundskoleutbildning')
+    }
+    await expect(taulukko.locator('tbody')).not.toContainText(
+      'Grundläggande utbildning'
+    )
+  })
 })
 
 /** Avaa vuosiluokan lisäysdialogin, täyttää kentät ja klikkaa Lisää. */

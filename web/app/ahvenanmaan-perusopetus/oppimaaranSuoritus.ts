@@ -22,12 +22,26 @@ export const isAhvenanmaanOppimääränSuoritus = (
   isAhvenanmaanPerusopetuksenOppimääränSuoritus(s) ||
   isAhvenanmaanAikuistenPerusopetuksenOppimääränSuoritus(s)
 
+// Opiskelijalistan rivit tulevat perustiedot-indeksistä ilman $classia, joten
+// niiden oppimäärän suoritus tunnistetaan suorituksen tyypistä.
+const ahvenanmaanOppimääränSuoritustyypit = [
+  'ahvenanmaanperusopetuksenoppimaara',
+  'ahvenanmaanperusopetuksenoppimaaraaikuiset'
+]
+
+export const isAhvenanmaanOppimääränSuoritustyyppi = (
+  koodiarvo: string
+): boolean => ahvenanmaanOppimääränSuoritustyypit.includes(koodiarvo)
+
 // Oppimäärän koulutuskoodi 201101 on valtakunnallinen, ja sen ruotsinkielinen
 // nimi on manner-Suomen termi "Grundläggande utbildning". Ahvenanmaalla
 // käytetään omaa termiä, joten nimi tulee lokalisaatioavaimesta.
+export const ahvenanmaanOppimääränKoulutuksenNimi = (): string =>
+  t('ahvenanmaan-perusopetus-koulutuksen-nimi')
+
 export const ahvenanmaanKoulutuksenNimi = (
   s: AhvenanmaanPerusopetuksenPäätasonSuoritus | undefined
 ): string =>
   isAhvenanmaanOppimääränSuoritus(s)
-    ? t('ahvenanmaan-perusopetus-koulutuksen-nimi')
+    ? ahvenanmaanOppimääränKoulutuksenNimi()
     : t(s?.koulutusmoduuli.tunniste.nimi)
