@@ -145,3 +145,35 @@ test.describe('Lukiokoulutus 2019: kurssin tietojen muokkausmodaali', () => {
     ).toHaveValue('Kurssin muokattu kuvaus')
   })
 })
+
+// Vanhassa käyttöliittymässä (onKeskeneräisiäOsasuorituksia) "Merkitse valmiiksi"
+// on estetty, jos suorituksessa on arvioimattomia osasuorituksia millä tahansa
+// tasolla - sekä oppiaineen että sen kurssien/opintojaksojen tulee olla arvioitu.
+// Uudessa käyttöliittymässä sama este toteutuu tallennusvaiheen validointina
+// (lukio-v2/validointi.ts), ei painikkeen poistamisena käytöstä - ei vanhan
+// käyttöliittymän omaa testiä olemassa, josta portata.
+test.describe('Lukiokoulutus 2019: kurssin arviointi vaaditaan valmiilta suoritukselta', () => {
+  test.use({ storageState: virkailija('pää') })
+
+  // Uusilukio, Ulla (250605A518Y)
+  const oid = '1.2.246.562.24.00000000015'
+  let katselu: UusiLukioKatselu
+
+  test.beforeEach(async ({ fixtures, page }) => {
+    await fixtures.reset()
+    katselu = new UusiLukioKatselu(page)
+    await katselu.goto(oid)
+    await katselu.aloitaMuokkaus()
+  })
+
+  test('Arvioimaton kurssi estää tallennuksen valmiiksi merkityllä suorituksella, arvosanan lisääminen sallii tallennuksen', async () => {
+    const aom = katselu.oppiaineRivi('AOM')
+    const rua2 = await katselu.lisääKurssi(aom, 'RUA2', '2')
+
+    await expect(katselu.tallennaBtn).toBeDisabled()
+
+    await katselu.muokkaaKurssinArvosanaa(rua2, '9')
+
+    await expect(katselu.tallennaBtn).toBeEnabled()
+  })
+})

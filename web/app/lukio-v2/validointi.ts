@@ -7,6 +7,12 @@ type LukionPäätasonSuoritus = {
   osasuoritukset?: unknown[]
 }
 
+const puuttuuArviointi = (s: { arviointi?: unknown[] }): boolean =>
+  (s.arviointi || []).length === 0
+
+// Vanha käyttöliittymä (onKeskeneräisiäOsasuorituksia) vaatii arvioinnin sekä
+// oppiaineelta että jokaiselta sen kurssilta/opintojaksolta rekursiivisesti -
+// pelkkä oppiaineen oma arviointi ei riitä.
 export const lukionOppiaineenArviointiVaaditaanVahvistetultaSuoritukselta =
   pathPatternValidationRule<LukionPäätasonSuoritus>(
     'suoritukset',
@@ -14,20 +20,33 @@ export const lukionOppiaineenArviointiVaaditaanVahvistetultaSuoritukselta =
   )((suoritus, path) =>
     suoritus.vahvistus === undefined
       ? []
-      : (suoritus.osasuoritukset || []).flatMap((osasuoritus, index) =>
-          isLukionOppiaineenSuoritus2019(osasuoritus) &&
-          (osasuoritus.arviointi || []).length === 0
+      : (suoritus.osasuoritukset || []).flatMap((osasuoritus, index) => {
+          if (!isLukionOppiaineenSuoritus2019(osasuoritus)) return []
+          const oppiainePath = [...path, 'osasuoritukset', index.toString()]
+          const oppiaineenVirhe = puuttuuArviointi(osasuoritus)
             ? [
                 {
                   type: 'arviointiPuuttuuValmiiltaSuoritukselta' as const,
-                  path: pathToString([
-                    ...path,
-                    'osasuoritukset',
-                    index.toString(),
-                    'arviointi'
-                  ])
+                  path: pathToString([...oppiainePath, 'arviointi'])
                 }
               ]
             : []
-        )
+          const kurssienVirheet = (osasuoritus.osasuoritukset || []).flatMap(
+            (kurssi, kurssiIndex) =>
+              puuttuuArviointi(kurssi)
+                ? [
+                    {
+                      type: 'arviointiPuuttuuValmiiltaSuoritukselta' as const,
+                      path: pathToString([
+                        ...oppiainePath,
+                        'osasuoritukset',
+                        kurssiIndex.toString(),
+                        'arviointi'
+                      ])
+                    }
+                  ]
+                : []
+          )
+          return [...oppiaineenVirhe, ...kurssienVirheet]
+        })
   )
