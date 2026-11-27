@@ -237,7 +237,7 @@ describe('Oppijataulukko', function () {
           'Kurssikertyma, Eronnut Aineopiskelija',
           'Kurssikertyma, Valmistunut Aineopiskelija'
         ])
-        expect(page.opiskeluoikeudeTotal()).to.equal('12')
+        expect(page.opiskeluoikeudeTotal()).to.equal('11')
       })
     })
 
@@ -364,9 +364,10 @@ describe('Oppijataulukko', function () {
           't, tavallinen',
           'Tehtävään-Valmistava, Tauno',
           'Tehtävään-Valmistava-vahvistettu, Tauno',
-          'Tekijä, Teija'
+          'Tekijä, Teija',
+          'Telmanen, Tuula'
         ])
-        expect(page.opiskeluoikeudeTotal()).to.equal('127')
+        expect(page.opiskeluoikeudeTotal()).to.equal('126')
       })
     })
 
