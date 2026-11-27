@@ -62,6 +62,7 @@ object OppijaEditorModel extends Timing {
     OppilaitoksenOpiskeluoikeudet(oppilaitos, sort(opiskeluoikeudet).map {
       case oo: AikuistenPerusopetuksenOpiskeluoikeus => oo.copy(suoritukset = oo.suoritukset.sortBy(aikuistenPerusopetuksenSuoritustenJärjestysKriteeri))
       case oo: PerusopetuksenOpiskeluoikeus => oo.copy(suoritukset = oo.suoritukset.sortBy(perusopetuksenSuoritustenJärjestysKriteeri))
+      case oo: AhvenanmaanPerusopetuksenOpiskeluoikeus => oo.copy(suoritukset = oo.suoritukset.sortBy(ahvenanmaanPerusopetuksenSuoritustenJärjestysKriteeri))
       case oo: AmmatillinenOpiskeluoikeus => oo.copy(suoritukset = oo.suoritukset.sortBy(ammatillisenSuoritustenJärjestysKriteeri))
       case oo: IBOpiskeluoikeus => oo.copy(suoritukset = oo.suoritukset.sortBy(ibSuoritustenJärjestysKriteeri))
       case oo: DIAOpiskeluoikeus => oo.copy(suoritukset = oo.suoritukset.sortBy(diaSuoritustenJärjestysKriteeri))
@@ -103,6 +104,18 @@ object OppijaEditorModel extends Timing {
     val secondary = s.valmis
     val trinary = s.alkamispäivä.map(a => -a.toEpochDay.toInt).getOrElse(0)
     (primary, secondary, trinary)
+  }
+
+  // Sama järjestys kuin v2-editorin välilehdillä (sortPäätasonSuoritukset), jotta
+  // opiskeluoikeuksien navigaatio nimeää opiskeluoikeuden samasta suorituksesta.
+  def ahvenanmaanPerusopetuksenSuoritustenJärjestysKriteeri(s: AhvenanmaanPerusopetuksenPäätasonSuoritus): (Int, Int) = {
+    val primary = s match {
+      case _: AhvenanmaanPerusopetuksenOppimääränSuoritus | _: AhvenanmaanAikuistenPerusopetuksenOppimääränSuoritus => -100
+      case v: AhvenanmaanPerusopetuksenVuosiluokanSuoritus => -v.koulutusmoduuli.tunniste.koodiarvo.toInt
+      case _ => 100
+    }
+    val secondary = s.alkamispäivä.map(a => -a.toEpochDay.toInt).getOrElse(0)
+    (primary, secondary)
   }
 
   def ammatillisenSuoritustenJärjestysKriteeri(s: AmmatillinenPäätasonSuoritus): Int = s match {
