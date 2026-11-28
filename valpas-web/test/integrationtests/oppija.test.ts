@@ -578,6 +578,15 @@ describe("Oppijakohtainen näkymä 1/2", () => {
   it("Oppivelvollisuuden suorittamiseen kelpaamattomia opintoja ei näytetä (paitsi lukion aineopinnot)", async () => {
     await loginAs(lukionAineopinnotAloittanutPath, "valpas-jkl-normaali")
     await mainHeadingEquals("LukionAineopinnotAloittanut Valpas (040305A559A)")
+    await oppivelvollisuustiedotEquals(
+      oppivelvollisuustiedot({
+        opiskelutilanne: "Ei",
+        oppivelvollisuus: "3.3.2023 asti",
+        maksuttomuusoikeus: "31.12.2025 asti",
+        kuntailmoitusBtn: true,
+        kotikuntaSuomessaAlkaen: "4.3.2005",
+      }),
+    )
     await opiskeluhistoriaEquals(
       merge(
         historiaOpintoOikeus({

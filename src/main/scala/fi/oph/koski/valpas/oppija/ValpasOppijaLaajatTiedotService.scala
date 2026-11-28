@@ -349,8 +349,9 @@ class ValpasOppijaLaajatTiedotService(
         }
         // 2. Voimassaoleva ovl-kelpoinen opiskeluoikeus alkanut (ja mahdollisesti päättynyt) kuntailmoituksen tekemisen jälkeen --> passiivinen
         else if (oppija.opiskeluoikeudet.exists(oo =>
-          (oo.isOpiskelu || oo.isKuntailmoituksenPassivoivassaTerminaalitilassa ) &&
+          (oo.isOpiskelu || oo.isKuntailmoituksenPassivoivassaTerminaalitilassa) &&
             oo.oppivelvollisuudenSuorittamiseenKelpaava &&
+            !oo.onPelkkiäLukionAineopintoja &&
             oo.alkamispäivä.exists(_.isAfter(ilmoituksentekopäivä)))) {
           false
         }
@@ -364,7 +365,7 @@ class ValpasOppijaLaajatTiedotService(
         }
         // 4. Aktiivinen jos oppijalla ei ole oppivelvollisuuden suorittamiseen kelpaavaa opiskeluoikeutta
         else {
-          oppija.opiskeluoikeudet.forall(oo => !oo.isOpiskelu)
+          oppija.opiskeluoikeudet.forall(oo => !oo.isOppivelvollisuudenSuorittamista)
         }
       }
 

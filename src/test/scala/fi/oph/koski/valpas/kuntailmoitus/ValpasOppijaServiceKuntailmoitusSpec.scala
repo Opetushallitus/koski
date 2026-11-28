@@ -237,6 +237,28 @@ class ValpasOppijaServiceKuntailmoitusSpec extends ValpasOppijaTestBase {
       validateKuntailmoitukset(oppija, Seq(expectedIlmoitus))
     }
 
+    "aktiivinen, vaikka yli 2 kk ilmoituksesta, jos ilmoituksen tekemisen jälkeen alkaneet opinnot ovat pelkkiä lukion aineopintoja" in {
+      val ilmoituksenTekopäivä = date(2021, 6, 10)
+      val tarkastelupäivä = ilmoituksenTekopäivä.plusMonths(rajapäivätService.kuntailmoitusAktiivisuusKuukausina).plusDays(10)
+
+      rajapäivätService.asInstanceOf[MockValpasRajapäivätService].asetaMockTarkastelupäivä(ilmoituksenTekopäivä)
+      val ilmoitus =
+        ValpasExampleData.oppilaitoksenIlmoitusKaikillaTiedoilla.withOppijaOid(ValpasMockOppijat.lukionAineopinnotAloittanut.oid)
+      kuntailmoitusRepository.create(ilmoitus, Seq.empty)
+
+      rajapäivätService.asInstanceOf[MockValpasRajapäivätService].asetaMockTarkastelupäivä(tarkastelupäivä)
+      val oppija = oppijaLaajatTiedotService.getOppijaLaajatTiedotYhteystiedoillaJaKuntailmoituksilla(
+        ValpasMockOppijat.lukionAineopinnotAloittanut.oid,
+        palautaLukionAineopinnot = true
+      )(defaultSession).toOption.get
+      oppija.oppija.opiskeluoikeudet.exists(_.onPelkkiäLukionAineopintoja) shouldBe true
+
+      val expectedIlmoitus =
+        täydennäAikaleimallaJaOrganisaatiotiedoilla(ValpasExampleData.oppilaitoksenIlmoitusKaikillaTiedoilla, ilmoituksenTekopäivä.atStartOfDay).withAktiivinen(true)
+
+      validateKuntailmoitukset(oppija, Seq(expectedIlmoitus))
+    }
+
     "Passiivinen jos on ilmoituksen tekemisen jälkeen alkanut ja päättynyt ov-suorittamiseen kelpaava opiskeluoikeus" in {
       val ilmoituksenTekopäivä = date(2021, 7, 15)
       val tarkastelupäivä = date(2022, 6, 1)

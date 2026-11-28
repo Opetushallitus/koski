@@ -21,7 +21,7 @@ trait ValpasOppija {
   def oppivelvollisuusVoimassaAsti: LocalDate
 
   @SyntheticProperty
-  def opiskelee: Boolean = opiskeluoikeudet.exists(_.isOpiskelu)
+  def opiskelee: Boolean = opiskeluoikeudet.exists(_.isOppivelvollisuudenSuorittamista)
 }
 
 trait ValpasOppijaLaajatTiedot extends ValpasOppija {
@@ -44,7 +44,7 @@ trait ValpasOppijaLaajatTiedot extends ValpasOppija {
   def oppivelvollisuudestaVapautettu: Boolean = oppivelvollisuudestaVapautus.exists(v => !v.tulevaisuudessa && !v.mitätöitymässä)
 
   def suorittaaOppivelvollisuutta: Boolean =
-    !oppivelvollisuudestaVapautettu && opiskeluoikeudet.exists(oo => oo.oppivelvollisuudenSuorittamiseenKelpaava && oo.isOpiskelu)
+    !oppivelvollisuudestaVapautettu && opiskeluoikeudet.exists(oo => oo.oppivelvollisuudenSuorittamiseenKelpaava && oo.isOppivelvollisuudenSuorittamista)
 
   def ifOppivelvollinenOtherwise[A](default: A)(fn: ValpasOppivelvollinenOppijaLaajatTiedot => A): A =
     this match {
@@ -192,6 +192,8 @@ case class ValpasHenkilöLaajatTiedot(
 
 object ValpasOpiskeluoikeus {
   type Oid = String
+
+  val lukionAineopintojenSuoritustyypit: Set[String] = Set("lukionaineopinnot", "lukionoppiaineenoppimaara")
 }
 
 trait ValpasOpiskeluoikeus {
@@ -219,6 +221,13 @@ trait ValpasOpiskeluoikeus {
 
   @SyntheticProperty
   def isOpiskeluTulevaisuudessa: Boolean = opiskeluoikeustiedot.exists(_.isOpiskeluTulevaisuudessa)
+
+  // Lukion aineopinnot näytetään Valppaassa (mm. kaksoistutkinnon takia), mutta yksinään ne eivät ole oppivelvollisuuden suorittamista
+  def onPelkkiäLukionAineopintoja: Boolean =
+    päätasonSuoritukset.nonEmpty &&
+      päätasonSuoritukset.forall(s => ValpasOpiskeluoikeus.lukionAineopintojenSuoritustyypit.contains(s.suorituksenTyyppi.koodiarvo))
+
+  def isOppivelvollisuudenSuorittamista: Boolean = isOpiskelu && !onPelkkiäLukionAineopintoja
 
   def isKuntailmoituksenPassivoivassaTerminaalitilassa: Boolean =
     opiskeluoikeustiedot.exists(t => ValpasKuntailmoitusService.isKuntailmoituksenPassivoivaTerminaalitila(t.tarkastelupäivänTila))
