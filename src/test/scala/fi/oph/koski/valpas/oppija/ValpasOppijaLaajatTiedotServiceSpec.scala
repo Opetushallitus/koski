@@ -24,6 +24,26 @@ class ValpasOppijaLaajatTiedotServiceSpec extends ValpasOppijaTestBase {
       result.left.map(_.statusCode) should be(Left(403))
     }
 
+    "pelkät lukion aineopinnot eivät riitä opiskelee-tilaan" in {
+      val result = oppijaLaajatTiedotService.getOppijaLaajatTiedotYhteystiedoillaJaKuntailmoituksilla(
+        ValpasMockOppijat.lukionAineopinnotAloittanut.oid,
+        palautaLukionAineopinnot = true
+      )(defaultSession).toOption.get
+
+      result.oppija.opiskeluoikeudet.filter(_.isOpiskelu).map(_.onPelkkiäLukionAineopintoja) shouldBe Seq(true)
+      result.oppija.opiskelee shouldBe false
+    }
+
+    "lukion aineopintojen rinnalla suoritettavat ammatilliset opinnot riittävät opiskelee-tilaan" in {
+      val result = oppijaLaajatTiedotService.getOppijaLaajatTiedotYhteystiedoillaJaKuntailmoituksilla(
+        ValpasMockOppijat.lukionAineOpinnotJaAmmatillisia.oid,
+        palautaLukionAineopinnot = true
+      )(session(ValpasMockUsers.valpasMonta)).toOption.get
+
+      result.oppija.opiskeluoikeudet.filter(_.isOpiskelu).map(_.onPelkkiäLukionAineopintoja) should contain theSameElementsAs Seq(true, false)
+      result.oppija.opiskelee shouldBe true
+    }
+
     "palautetun oppijan valintatilat ovat oikein" in {
       val result = oppijaLaajatTiedotService.getOppijaLaajatTiedotYhteystiedoillaJaKuntailmoituksilla(ValpasMockOppijat.oppivelvollinenYsiluokkaKeskenKeväällä2021.oid)(defaultSession).toOption.get
 
